@@ -48,105 +48,74 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_ITER_DATA_H__
-#define __TITANIA_OUTLINE_EDITOR_OUTLINE_ITER_DATA_H__
+#ifndef __TITANIA_OUTLINE_EDITOR_CELL_RENDERER_OUTLINE_CELL_RENDERER_H__
+#define __TITANIA_OUTLINE_EDITOR_CELL_RENDERER_OUTLINE_CELL_RENDERER_H__
 
-#include <Titania/X3D.h>
-#include <deque>
+#include "../OutlineTreeData.h"
+
+#include <gdkmm.h>
+#include <gtkmm/cellrenderer.h>
+#include <glibmm/property.h>
 
 namespace titania {
 namespace puck {
 
-enum class OutlineIterType
-{
-	X3DFieldValue,
-	X3DField,
-	X3DBaseNode
-
-};
-
-class X3DOutlineIterParent
+class OutlineCellRenderer :
+	public Gtk::CellRenderer
 {
 public:
 
-	X3D::X3DChildObject*
-	object () const
-	{ return m_object; }
+	OutlineCellRenderer ();
 
-	OutlineIterType
-	type () const
-	{ return m_type; }
+	// Properties
+	Glib::Property <OutlineTreeData*> &
+	property_data ()
+	{ return data_property; }
 
-	size_t
-	index () const
-	{ return m_index; }
+	const Glib::Property <OutlineTreeData*> &
+	property_data () const
+	{ return data_property; }
 
-	~X3DOutlineIterParent ()
-	{
-		if (m_type == OutlineIterType::X3DBaseNode)
-			delete m_object;
-	}
+	// Edited signal
+	typedef sigc::signal <void, const Glib::ustring &, const Glib::ustring &> signal_edited_t;
 
-protected:
+	signal_edited_t &
+	signal_edited ()
+	{ return edited_signal; }
 
-	X3DOutlineIterParent (OutlineIterType type, X3D::X3DChildObject* object, size_t index) :
-		m_object (object),
-		m_type (type),
-		m_index (index)
-	{
-		if (m_type == OutlineIterType::X3DBaseNode)
-			m_object = new X3D::SFNode (static_cast <X3D::SFNode*> (m_object) -> getValue ());
-	}
-
-	X3DOutlineIterParent (const X3DOutlineIterParent & value) :
-		X3DOutlineIterParent (value .type (), value .object (), value .index ())
+	virtual
+	~OutlineCellRenderer ()
 	{ }
-
-	X3DOutlineIterParent (X3DOutlineIterParent &&) = delete;
-
-	X3DOutlineIterParent &
-	operator = (const X3DOutlineIterParent &) = delete;
 
 
 private:
 
-	X3D::X3DChildObject*  m_object;
-	const OutlineIterType m_type;
-	const size_t          m_index;
+	Glib::Property <OutlineTreeData*> data_property;
+	signal_edited_t                   edited_signal;
 
-};
+	virtual
+	void
+	get_size_vfunc (Gtk::Widget &, const Gdk::Rectangle*, int*, int*, int*, int*) const final;
 
-class OutlineIterParent :
-	public X3DOutlineIterParent
-{
-public:
+	virtual
+	void
+	render_vfunc (const Cairo::RefPtr <Cairo::Context> &, Gtk::Widget &, const Gdk::Rectangle &, const Gdk::Rectangle &, Gtk::CellRendererState) final;
 
-	OutlineIterParent (OutlineIterType type, X3D::X3DChildObject* object, size_t index) :
-		X3DOutlineIterParent (type, object, index)
-	{ }
-
-};
-
-class OutlineIterData :
-	public OutlineIterParent
-{
-public:
-
-	typedef std::deque <OutlineIterParent> parents_type;
-
-	OutlineIterData (OutlineIterType type, X3D::X3DChildObject* object, int index, const parents_type & parents) :
-		OutlineIterParent (type, object, index),
-		m_parents (parents)
-	{ }
-
-	const parents_type &
-	parents () const
-	{ return m_parents; }
-
-
-private:
-
-	const parents_type m_parents;
+	//	virtual
+	//	bool
+	//	activate_vfunc (GdkEvent*, Gtk::Widget &, const Glib::ustring &, const Gdk::Rectangle &, const Gdk::Rectangle &, Gtk::CellRendererState) final;
+	//
+	//	virtual
+	//	Gtk::CellEditable*
+	//	start_editing_vfunc (GdkEvent*, Gtk::Widget &, const Glib::ustring &, const Gdk::Rectangle &, const Gdk::Rectangle &, Gtk::CellRendererState) final;
+	//
+	//	// Manage editing_done event for color_cell_edit_ptr_
+	//	void
+	//	on_editing_done ();
+	//
+	//	// Raise the edited event
+	//	void
+	//	edited (const Glib::ustring & path, const Glib::ustring & new_text);
 
 };
 

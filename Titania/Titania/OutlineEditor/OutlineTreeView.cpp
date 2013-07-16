@@ -51,6 +51,7 @@
 #include "OutlineTreeView.h"
 
 #include "../OutlineEditor/OutlineTreeModel.h"
+#include "../OutlineEditor/CellRenderer/OutlineCellRenderer.h"
 
 namespace titania {
 namespace puck {
@@ -75,32 +76,41 @@ OutlineTreeView::OutlineTreeView (const X3D::X3DSFNode <X3D::Browser> & browser)
 	auto selectedBackgroundColor = get_style_context () -> get_background_color (Gtk::STATE_FLAG_SELECTED);
 
 	Gtk::TreeViewColumn* treeviewcolumn_name = Gtk::manage (new Gtk::TreeViewColumn ("Name"));
+	treeviewcolumn_name -> set_expand (false);
 
 	// Image
 
 	Gtk::CellRendererPixbuf* cellrenderer_icon = Gtk::manage (new Gtk::CellRendererPixbuf ());
 	treeviewcolumn_name -> pack_start (*cellrenderer_icon, false);
-	treeviewcolumn_name -> add_attribute (*cellrenderer_icon, "pixbuf", 0);
-	treeviewcolumn_name -> add_attribute (*cellrenderer_icon, "cell-background-set", 2);
+	treeviewcolumn_name -> add_attribute (*cellrenderer_icon, "pixbuf",              OutlineTreeModel::ICON_COLUMN);
+	treeviewcolumn_name -> add_attribute (*cellrenderer_icon, "cell-background-set", OutlineTreeModel::SELECTED_COLUMN);
+	//treeviewcolumn_name -> add_attribute (*cellrenderer_icon, "visible",           OutlineTreeModel::SELECTED_COLUMN);
 	cellrenderer_icon -> property_cell_background_rgba () = selectedBackgroundColor;
 
 	// Node typeName or field name
 
 	Gtk::CellRendererText* cellrenderer_name = Gtk::manage (new Gtk::CellRendererText ());
-	treeviewcolumn_name -> pack_start (*cellrenderer_name, false);
-	treeviewcolumn_name -> add_attribute (*cellrenderer_name, "markup", 3);
-	treeviewcolumn_name -> add_attribute (*cellrenderer_name, "foreground-set", 2);
-	treeviewcolumn_name -> add_attribute (*cellrenderer_name, "background-set", 2);
+	treeviewcolumn_name -> pack_start (*cellrenderer_name, true);
+	treeviewcolumn_name -> add_attribute (*cellrenderer_name, "markup",         OutlineTreeModel::NAME_COLUMN);
+	treeviewcolumn_name -> add_attribute (*cellrenderer_name, "foreground-set", OutlineTreeModel::SELECTED_COLUMN);
+	treeviewcolumn_name -> add_attribute (*cellrenderer_name, "background-set", OutlineTreeModel::SELECTED_COLUMN);
 	cellrenderer_name -> property_foreground_rgba () = selectedForegroundColor;
 	cellrenderer_name -> property_background_rgba () = selectedBackgroundColor;
 
-	// AccessType Image
-
+//	// AccessType Image
+//
 //	Gtk::CellRendererPixbuf* cellrenderer_access_type = Gtk::manage (new Gtk::CellRendererPixbuf ());
 //	treeviewcolumn_name -> pack_start (*cellrenderer_access_type, false);
-//	treeviewcolumn_name -> add_attribute (*cellrenderer_access_type, "pixbuf", 4);
-//	treeviewcolumn_name -> add_attribute (*cellrenderer_access_type, "cell-background-set", 2);
+//	treeviewcolumn_name -> add_attribute (*cellrenderer_access_type, "pixbuf",              OutlineTreeModel::ACCESS_TYPE_ICON_COLUMN);
+//	treeviewcolumn_name -> add_attribute (*cellrenderer_access_type, "cell-background-set", OutlineTreeModel::SELECTED_COLUMN);
 //	cellrenderer_access_type -> property_cell_background_rgba () = selectedBackgroundColor;
+
+//	// CellRenderer
+//	OutlineCellRenderer* cellrenderer = Gtk::manage (new OutlineCellRenderer ());
+//	treeviewcolumn_name -> pack_start (*cellrenderer, false);
+//	treeviewcolumn_name -> add_attribute (*cellrenderer, "tree-data",           OutlineTreeModel::DATA_COLUMN);
+//	treeviewcolumn_name -> add_attribute (*cellrenderer, "cell-background-set", OutlineTreeModel::SELECTED_COLUMN);
+//	cellrenderer -> property_cell_background_rgba () = selectedBackgroundColor;
 
 	// Append column
 
@@ -410,7 +420,7 @@ OutlineTreeView::unwatch_tree (bool root, const OutlineNode & treeNode)
 }
 
 void
-OutlineTreeView::unwatch (bool root, const OutlineIterData* data)
+OutlineTreeView::unwatch (bool root, const OutlineTreeData* data)
 {
 	if (data -> type () == OutlineIterType::X3DField)
 	{

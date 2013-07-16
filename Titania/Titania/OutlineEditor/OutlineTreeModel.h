@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -52,24 +52,32 @@
 #define __TITANIA_OUTLINE_EDITOR_OUTLINE_TREE_MODEL_H__
 
 #include "../Base/X3DBaseInterface.h"
-#include "../OutlineEditor/OutlineUserData.h"
-#include "../OutlineEditor/OutlineIterData.h"
 #include "../OutlineEditor/OutlineTree.h"
+#include "../OutlineEditor/OutlineTreeData.h"
+#include "../OutlineEditor/OutlineUserData.h"
 #include <Titania/X3D.h>
 
 #include <deque>
 #include <gtkmm.h>
-#include <iostream>
 
 namespace titania {
 namespace puck {
 
 class OutlineTreeModel :
-	public Glib::Object, public Gtk::TreeModel//, public X3DBaseInterface
+	public Glib::Object, public Gtk::TreeModel, public X3DBaseInterface
 {
 public:
 
 	using Gtk::TreeModel::get_path;
+
+	enum
+	{
+		ICON_COLUMN,
+		DATA_COLUMN,
+		SELECTED_COLUMN,
+		NAME_COLUMN,
+		ACCESS_TYPE_ICON_COLUMN
+	};
 
 	OutlineTreeModel (const X3D::X3DSFNode <X3D::Browser> &);
 
@@ -77,21 +85,18 @@ public:
 	Glib::RefPtr <OutlineTreeModel>
 	create (const X3D::X3DSFNode <X3D::Browser> &);
 
-	const X3D::X3DSFNode <X3D::X3DExecutionContext> &
-	getExecutionContext ()
-	{ return executionContext; }
-	
+	bool
+	iter_is_valid (const iterator & iter) const;
+
 	const OutlineTree &
 	get_tree () const
 	{ return tree; }
 
-	static
 	OutlineUserDataPtr
-	get_user_data (const iterator &);
+	get_user_data (const iterator &) const;
 
-	static
 	OutlineUserDataPtr
-	get_user_data (X3D::X3DChildObject*);
+	get_user_data (X3D::X3DChildObject*) const;
 
 	static
 	OutlineIterType
@@ -100,9 +105,6 @@ public:
 	static
 	X3D::X3DChildObject*
 	get_object (const iterator &);
-
-	void
-	select_fields (const iterator & iter);
 
 	void
 	collapse_row (const Path &);
@@ -114,23 +116,22 @@ public:
 private:
 
 	void
-	set_data (iterator &, OutlineIterType type, X3D::X3DChildObject* object, size_t index, const OutlineIterData::parents_type & parents) const;
+	set_data (iterator &, OutlineIterType type, X3D::X3DChildObject* object, size_t index, const OutlineTreeData::parents_type & parents) const;
 
 	static
-	OutlineIterData*
+	OutlineTreeData*
 	get_data (const iterator &);
 
 	static
-	const OutlineIterData::parents_type &
+	const OutlineTreeData::parents_type &
 	get_parents (const iterator &);
 
 	static
 	size_t
 	get_index (const iterator &);
 
-	static
 	X3D::FieldDefinitionArray
-	get_fields (X3D::X3DChildObject*);
+	get_fields (X3D::X3DChildObject*) const;
 
 	void
 	set_rootNodes ();
@@ -158,7 +159,7 @@ private:
 	get_path_vfunc (const iterator & iter) const;
 
 	Path
-	get_path (const OutlineIterData::parents_type & parents, size_t) const;
+	get_path (const OutlineTreeData::parents_type & parents, size_t) const;
 
 	virtual
 	bool
@@ -225,27 +226,27 @@ private:
 	on_rows_reordered (const Path &, const iterator &, int*);
 
 	typedef Gtk::TreeModelColumn <Glib::RefPtr <Gdk::Pixbuf>> IconColumn;
-	typedef Gtk::TreeModelColumn <OutlineIterData*>            DataColumn;
-	typedef Gtk::TreeModelColumn <bool>                        SelectedColorColumn;
+	typedef Gtk::TreeModelColumn <OutlineTreeData*>            DataColumn;
+	typedef Gtk::TreeModelColumn <bool>                        SelectedColumn;
 	typedef Gtk::TreeModelColumn <Glib::ustring>               NameColumn;
-	typedef Gtk::TreeModelColumn <Glib::RefPtr <Gdk::Pixbuf>>  AccessTypeImageColumn;
+	typedef Gtk::TreeModelColumn <Glib::RefPtr <Gdk::Pixbuf>> AccessTypeIconColumn;
 
 	typedef std::map <const X3D::X3DConstants::FieldType, Glib::RefPtr <Gdk::Pixbuf>> FieldTypeImageIndex;
 
 	X3D::X3DSFNode <X3D::X3DExecutionContext> executionContext;
 
-	IconColumn            icon_column;
-	DataColumn            data_column;
-	SelectedColorColumn   selected_color_column;
-	NameColumn            name_column;
-	AccessTypeImageColumn access_type_image_column;
+	IconColumn           icon_column;
+	DataColumn           data_column;
+	SelectedColumn       selected_column;
+	NameColumn           name_column;
+	AccessTypeIconColumn access_type_icon_column;
 
 	Glib::RefPtr <Gdk::Pixbuf> noneImage;
 	Glib::RefPtr <Gdk::Pixbuf> baseNodeImage;
 	FieldTypeImageIndex        fieldTypeImages;
 
-	int                 stamp;
 	mutable OutlineTree tree;
+	int                 stamp;
 
 };
 

@@ -16,6 +16,7 @@ titania_SOURCES =  \
 	Titania/HistoryEditor/HistoryEditor.cpp \
 	Titania/main.cpp \
 	Titania/MotionBlurEditor/MotionBlurEditor.cpp \
+	Titania/OutlineEditor/CellRenderer/OutlineCellRenderer.cpp \
 	Titania/OutlineEditor/OutlineEditor.cpp \
 	Titania/OutlineEditor/OutlineSelection.cpp \
 	Titania/OutlineEditor/OutlineTreeModel.cpp \

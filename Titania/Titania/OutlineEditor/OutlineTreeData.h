@@ -48,100 +48,111 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_TREE_H__
-#define __TITANIA_OUTLINE_EDITOR_OUTLINE_TREE_H__
+#ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_ITER_DATA_H__
+#define __TITANIA_OUTLINE_EDITOR_OUTLINE_ITER_DATA_H__
 
-#include "../OutlineEditor/OutlineTreeData.h"
+#include <Titania/X3D.h>
 #include <deque>
-#include <gtkmm.h>
 
 namespace titania {
 namespace puck {
 
-class OutlineNode
+enum class OutlineIterType
 {
-public:
-
-	OutlineNode () :
-		data (NULL),
-		children ()
-	{ }
-
-	const std::deque <OutlineNode> &
-	getChildren ()
-	{ return children; }
-
-	void
-	clear ()
-	{ children .clear (); }
-
-	~OutlineNode ()
-	{
-		if (data)
-			delete data;
-	}
-
-	OutlineTreeData*         data;
-	std::deque <OutlineNode> children;
+	X3DFieldValue,
+	X3DField,
+	X3DBaseNode
 
 };
 
-class OutlineTree :
-	public OutlineNode
+class X3DOutlineTreeDataParent :
+	public Glib::Object
 {
 public:
 
-	OutlineTree () :
-		OutlineNode ()
+	X3D::X3DChildObject*
+	object () const
+	{ return m_object; }
+
+	OutlineIterType
+	type () const
+	{ return m_type; }
+
+	size_t
+	index () const
+	{ return m_index; }
+
+	~X3DOutlineTreeDataParent ()
+	{
+		if (m_type == OutlineIterType::X3DBaseNode)
+			delete m_object;
+	}
+
+protected:
+
+	X3DOutlineTreeDataParent (OutlineIterType type, X3D::X3DChildObject* object, size_t index) :
+		Glib::Object (),
+		m_object (object),
+		m_type (type),
+		m_index (index)
+	{
+		if (m_type == OutlineIterType::X3DBaseNode)
+			m_object = new X3D::SFNode (static_cast <X3D::SFNode*> (m_object) -> getValue ());
+	}
+
+	X3DOutlineTreeDataParent (const X3DOutlineTreeDataParent & value) :
+		X3DOutlineTreeDataParent (value .type (), value .object (), value .index ())
 	{ }
 
-	OutlineNode &
-	createNode (const Gtk::TreePath & path)
-	{
-		OutlineNode* node = this;
+	X3DOutlineTreeDataParent (X3DOutlineTreeDataParent &&) = delete;
 
-		for (const auto & index : path)
-			node = &createChild (node, index);
+	X3DOutlineTreeDataParent &
+	operator = (const X3DOutlineTreeDataParent &) = delete;
 
-		return *node;
-	}
-
-	const OutlineNode &
-	getNode (const Gtk::TreePath & path) const
-	{
-		const OutlineNode* node = this;
-
-		for (const auto & index : path)
-			node = &getChild (node, index);
-
-		return *node;
-	}
-
-	void
-	removeChildren (const Gtk::TreePath & path)
-	{
-		createNode (path) .children .clear ();
-	}
 
 private:
 
-	OutlineNode &
-	createChild (OutlineNode* parent, size_t index)
-	{
-		if (index + 1 > parent -> children .size ())
-			parent -> children .resize (index + 1);
+	X3D::X3DChildObject*  m_object;
+	const OutlineIterType m_type;
+	const size_t          m_index;
 
-		return parent -> children [index];
-	}
+};
 
-	const OutlineNode &
-	getChild (const OutlineNode* parent, size_t index) const
-	{
-		if (index + 1 > parent -> children .size ())
-			std::out_of_range ("OutlineTree: path does not exists.");
+class OutlineTreeDataParent :
+	public X3DOutlineTreeDataParent
+{
+public:
 
-		return parent -> children [index];
-	}
+	OutlineTreeDataParent (OutlineIterType type, X3D::X3DChildObject* object, size_t index) :
+		X3DOutlineTreeDataParent (type, object, index)
+	{ }
+
+	OutlineTreeDataParent (const OutlineTreeDataParent & value) :
+		X3DOutlineTreeDataParent (value)
+	{ }
+
+};
+
+class OutlineTreeData :
+	public OutlineTreeDataParent
+{
+public:
+
+	typedef std::deque <OutlineTreeDataParent> parents_type;
+
+	OutlineTreeData (OutlineIterType type, X3D::X3DChildObject* object, int index, const parents_type & parents) :
+		OutlineTreeDataParent (type, object, index),
+		m_parents (parents)
+	{ }
+
+	const parents_type &
+	parents () const
+	{ return m_parents; }
+
+
+private:
+
+	const parents_type m_parents;
 
 };
 

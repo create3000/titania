@@ -126,8 +126,10 @@ X3DOutput::eraseInterest (const void* object, const void* memberFunction) const
 	{
 		requesters .erase (requester -> second);
 		requesterIndex .erase (requester);
-		inputs .erase (static_cast <const X3DInput*> (object));
 	}
+
+	// Allways try to erase input, this output could be disposed.
+	inputs .erase (static_cast <const X3DInput*> (object));
 }
 
 void

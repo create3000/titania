@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -60,10 +60,10 @@ OutlineTreeModel::OutlineTreeModel (const X3D::X3DSFNode <X3D::Browser> & browse
 	Glib::ObjectBase (typeid (OutlineTreeModel)),
 	    Glib::Object (),
 	  Gtk::TreeModel (),
-	//X3DBaseInterface (),
+	X3DBaseInterface (),
 	executionContext (browser -> getExecutionContext ()),
-	           stamp ((long int) this),
-	            tree ()
+	            tree (),
+	           stamp (reinterpret_cast <long int> (this))
 {
 	//__LOG__ << std::endl;
 	//setBrowser (browser);
@@ -84,28 +84,34 @@ OutlineTreeModel::create (const X3D::X3DSFNode <X3D::Browser> & browser)
 	return Glib::RefPtr <OutlineTreeModel> (new OutlineTreeModel (browser));
 }
 
-void
-OutlineTreeModel::collapse_row (const Path & path)
+bool
+OutlineTreeModel::iter_is_valid (const iterator & iter) const
 {
-	tree .removeChildren (path);
+	if (iter .get_stamp () not_eq stamp)
+		return false;
+
+	return get_data (iter);
 }
 
 OutlineUserDataPtr
-OutlineTreeModel::get_user_data (const iterator & iter)
+OutlineTreeModel::get_user_data (const iterator & iter) const
 {
-	auto object = get_object (iter);
+	if (iter_is_valid (iter))
+	{
+		auto object = get_object (iter);
 
-	if (get_data_type (iter) == OutlineIterType::X3DBaseNode)
-		object = static_cast <X3D::SFNode*> (object) -> getValue ();
+		if (get_data_type (iter) == OutlineIterType::X3DBaseNode)
+			object = static_cast <X3D::SFNode*> (object) -> getValue ();
 
-	if (object)
-		return get_user_data (object);
+		if (object)
+			return get_user_data (object);
+	}
 
 	return NULL;
 }
 
 OutlineUserDataPtr
-OutlineTreeModel::get_user_data (X3D::X3DChildObject* object)
+OutlineTreeModel::get_user_data (X3D::X3DChildObject* object) const
 {
 	if (not object -> getUserData ())
 		object -> setUserData (X3D::UserData (new OutlineUserData ()));
@@ -125,7 +131,7 @@ OutlineTreeModel::get_object (const iterator & iter)
 	return get_data (iter) -> object ();
 }
 
-const OutlineIterData::parents_type &
+const OutlineTreeData::parents_type &
 OutlineTreeModel::get_parents (const iterator & iter)
 {
 	return get_data (iter) -> parents ();
@@ -139,27 +145,27 @@ OutlineTreeModel::get_index (const iterator & iter)
 
 void
 OutlineTreeModel::set_data (iterator & iter,
-                           OutlineIterType type,
-                           X3D::X3DChildObject* object,
-                           size_t index,
-                           const OutlineIterData::parents_type & parents) const
+                            OutlineIterType type,
+                            X3D::X3DChildObject* object,
+                            size_t index,
+                            const OutlineTreeData::parents_type & parents) const
 {
 	auto & node = tree .createNode (get_path (parents, index));
 
 	if (not node .data)
-		node .data = new OutlineIterData (type, object, index, parents);
+		node .data = new OutlineTreeData (type, object, index, parents);
 
 	iter .gobj () -> user_data = node .data;
 }
 
-OutlineIterData*
+OutlineTreeData*
 OutlineTreeModel::get_data (const iterator & iter)
 {
-	return static_cast <OutlineIterData*> (iter .gobj () -> user_data);
+	return static_cast <OutlineTreeData*> (iter .gobj () -> user_data);
 }
 
 X3D::FieldDefinitionArray
-OutlineTreeModel::get_fields (X3D::X3DChildObject* object)
+OutlineTreeModel::get_fields (X3D::X3DChildObject* object) const
 {
 	auto sfnode = static_cast <X3D::SFNode*> (object);
 	auto node   = sfnode -> getValue ();
@@ -187,8 +193,14 @@ OutlineTreeModel::get_fields (X3D::X3DChildObject* object)
 
 		return visibleFields;
 	}
-	
+
 	return X3D::FieldDefinitionArray ();
+}
+
+void
+OutlineTreeModel::collapse_row (const Path & path)
+{
+	tree .removeChildren (path);
 }
 
 void
@@ -196,7 +208,7 @@ OutlineTreeModel::set_rootNodes ()
 {
 	//__LOG__ << std::endl;
 
-	clear ();	
+	clear ();
 
 	size_t size = executionContext -> getRootNodes () .size ();
 
@@ -249,16 +261,21 @@ OutlineTreeModel::get_column_type_vfunc (int index) const
 
 	switch (index)
 	{
-		case 0:
+		case ICON_COLUMN:
 			return icon_column .type ();
-		case 1:
+
+		case DATA_COLUMN:
 			return data_column .type ();
-		case 2:
-			return selected_color_column .type ();
-		case 3:
+
+		case SELECTED_COLUMN:
+			return selected_column .type ();
+
+		case NAME_COLUMN:
 			return name_column .type ();
-		case 4:
-			return access_type_image_column .type ();
+
+		case ACCESS_TYPE_ICON_COLUMN:
+			return access_type_icon_column .type ();
+
 		default:
 			return 0;
 	}
@@ -271,7 +288,7 @@ OutlineTreeModel::get_value_vfunc (const iterator & iter, int column, Glib::Valu
 
 	switch (column)
 	{
-		case 0: // Row type image
+		case ICON_COLUMN: // Row type image
 		{
 			IconColumn::ValueType val;
 			val .init (IconColumn::ValueType::value_type ());
@@ -305,7 +322,7 @@ OutlineTreeModel::get_value_vfunc (const iterator & iter, int column, Glib::Valu
 
 			break;
 		}
-		case 1: // OutlineIterData
+		case DATA_COLUMN:     // OutlineTreeData
 		{
 			DataColumn::ValueType val;
 			val .init (DataColumn::ValueType::value_type ());
@@ -316,22 +333,22 @@ OutlineTreeModel::get_value_vfunc (const iterator & iter, int column, Glib::Valu
 
 			break;
 		}
-		case 2: // Selected
+		case SELECTED_COLUMN: // Selected
 		{
-			SelectedColorColumn::ValueType val;
-			val .init (SelectedColorColumn::ValueType::value_type ());
+			SelectedColumn::ValueType val;
+			val .init (SelectedColumn::ValueType::value_type ());
 
 			auto userData       = get_user_data (iter);
-			auto parentUserData = get_user_data (get_object (iter));
+			auto parentUserData = get_user_data (iter -> parent ());
 
-			val .set ((userData and userData -> selected) or parentUserData -> selected);
+			val .set ((userData and userData -> selected)or (parentUserData and parentUserData -> selected));
 
-			value .init (SelectedColorColumn::ValueType::value_type ());
+			value .init (SelectedColumn::ValueType::value_type ());
 			value = val;
 
 			break;
 		}
-		case 3: // Value, name or name and typeName
+		case NAME_COLUMN:     // Value, name or name and typeName
 		{
 			NameColumn::ValueType val;
 			val .init (NameColumn::ValueType::value_type ());
@@ -361,14 +378,14 @@ OutlineTreeModel::get_value_vfunc (const iterator & iter, int column, Glib::Valu
 					if (*sfnode)
 					{
 						X3D::X3DBaseNode* node = sfnode -> getValue ();
-						
+
 						std::string typeName  = Glib::Markup::escape_text (node -> getTypeName ());
 						std::string name      = Glib::Markup::escape_text (node -> getName ());
 						size_t      numClones = node -> getNumClones ();
-						
+
 						X3D::RegEx::_Num .Replace ("", &name);
 
-						std::string string ="<b>" + typeName + "</b> " + name;
+						std::string string = "<b>" + typeName + "</b> " + name;
 
 						if (numClones > 1)
 							string += " [" + std::to_string (numClones) + "]";
@@ -388,10 +405,10 @@ OutlineTreeModel::get_value_vfunc (const iterator & iter, int column, Glib::Valu
 
 			break;
 		}
-		case 4: // AccesType image
+		case ACCESS_TYPE_ICON_COLUMN: // AccesType image
 		{
-			AccessTypeImageColumn::ValueType val;
-			val .init (AccessTypeImageColumn::ValueType::value_type ());
+			AccessTypeIconColumn::ValueType val;
+			val .init (AccessTypeIconColumn::ValueType::value_type ());
 
 			switch (get_data_type (iter))
 			{
@@ -417,7 +434,7 @@ OutlineTreeModel::get_value_vfunc (const iterator & iter, int column, Glib::Valu
 				}
 			}
 
-			value .init (AccessTypeImageColumn::ValueType::value_type ());
+			value .init (AccessTypeIconColumn::ValueType::value_type ());
 			value = val;
 
 			break;
@@ -439,7 +456,7 @@ OutlineTreeModel::get_path_vfunc (const iterator & iter) const
 }
 
 Gtk::TreeModel::Path
-OutlineTreeModel::get_path (const OutlineIterData::parents_type & parents, size_t index) const
+OutlineTreeModel::get_path (const OutlineTreeData::parents_type & parents, size_t index) const
 {
 	Path path;
 
@@ -492,7 +509,7 @@ OutlineTreeModel::iter_nth_root_child_vfunc (int index, iterator & iter) const
 
 	if ((size_t) index < rootNodes -> size ())
 	{
-		OutlineIterData::parents_type parents;
+		OutlineTreeData::parents_type parents;
 		parents .emplace_front (OutlineIterType::X3DField, rootNodes, 0);
 
 		set_data (iter, OutlineIterType::X3DBaseNode, &rootNodes -> at (index), index, parents);
@@ -788,7 +805,7 @@ OutlineTreeModel::~OutlineTreeModel ()
 {
 	//__LOG__ << std::endl;
 
-	executionContext -> getRootNodes () .removeInterest (this, &OutlineTreeModel::set_rootNodes);
+	//executionContext -> getRootNodes () .removeInterest (this, &OutlineTreeModel::set_rootNodes);
 }
 
 } // puck

@@ -56,7 +56,7 @@
 
 #include "../Base/X3DBaseInterface.h"
 #include "../OutlineEditor/OutlineSelection.h"
-#include "../OutlineEditor/OutlineIterData.h"
+#include "../OutlineEditor/OutlineTreeData.h"
 #include "../OutlineEditor/OutlineUserData.h"
 #include "../OutlineEditor/OutlineTree.h"
 #include <Titania/X3D.h>
@@ -65,6 +65,7 @@ namespace titania {
 namespace puck {
 
 class OutlineTreeModel;
+class OutlineCellRenderer;
 
 class OutlineTreeView :
 	public Gtk::TreeView, public X3DBaseInterface
@@ -169,7 +170,7 @@ private:
 	unwatch_tree (bool, const OutlineNode &);
 
 	void
-	unwatch (bool, const OutlineIterData*);
+	unwatch (bool, const OutlineTreeData*);
 
 	void
 	set_field (const Gtk::TreeModel::Path &);
