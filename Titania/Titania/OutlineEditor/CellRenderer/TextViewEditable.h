@@ -48,116 +48,73 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_FIELDS_SFIMAGE_H__
-#define __TITANIA_X3D_FIELDS_SFIMAGE_H__
+#ifndef __TITANIA_OUTLINE_EDITOR_CELL_RENDERER_TEXT_VIEW_EDITABLE_H__
+#define __TITANIA_OUTLINE_EDITOR_CELL_RENDERER_TEXT_VIEW_EDITABLE_H__
 
-#include "../Basic/X3DField.h"
-#include "../Types/Image.h"
+#include <gtkmm.h>
 
 namespace titania {
-namespace X3D {
+namespace puck {
 
-extern template class X3DField <Image>;
-
-class SFImage :
-	public X3DField <Image>
+class TextViewEditable :
+	public Gtk::ScrolledWindow, public Gtk::CellEditable
 {
 public:
 
-	typedef Image::array_type::scalar_type scalar_type;
-	typedef Image::size_type               size_type;
+	TextViewEditable (const Glib::ustring &, bool = true);
 
-	using X3DField <Image>::addInterest;
-	using X3DField <Image>::setValue;
-	using X3DField <Image>::getValue;
-	using X3DField <Image>::operator =;
+	// Properties
+	Glib::Property <bool> &
+	property_editing_canceled ()
+	{ return editing_canceled_property; }
 
-	SFImage ();
+	const Glib::Property <bool> &
+	property_editing_canceled () const
+	{ return editing_canceled_property; }
 
-	SFImage (const SFImage &);
+	void
+	set_text (const Glib::ustring & value)
+	{ textview .get_buffer () -> set_text (value); }
 
-	explicit
-	SFImage (const Image &);
+	Glib::ustring
+	get_text ()
+	{ return textview .get_buffer () -> get_text (); }
 
-	SFImage (const size_type, const size_type, const size_type, const MFInt32 &);
+	const Glib::ustring &
+	get_path ()
+	{ return path; }
 
 	virtual
-	SFImage*
-	clone () const final;
-
-	///  6.7.7 Add field interest.
-
-	template <class Class>
-	void
-	addInterest (Class* object, void (Class::* memberFunction) (const SFImage &)) const
-	{ addInterest (object, memberFunction, std::cref (*this)); }
-
-	template <class Class>
-	void
-	addInterest (Class & object, void (Class::* memberFunction) (const SFImage &)) const
-	{ addInterest (object, memberFunction, std::cref (*this)); }
-
-	///  Functions
-
-	void
-	setWidth (const size_type);
-
-	size_type
-	getWidth () const;
-
-	void
-	setHeight (const size_type);
-
-	size_type
-	getHeight () const;
-
-	void
-	setComponents (const size_type);
-
-	size_type
-	getComponents () const;
-
-	void
-	setArray (const MFInt32 &);
-
-	MFInt32 &
-	getArray ();
-
-	const MFInt32 &
-	getArray () const;
-
-	void
-	setValue (const size_type, const size_type, const size_type, const MFInt32 &);
-
-	void
-	getValue (size_type &, size_type &, size_type &, MFInt32 &) const;
-
-	///  @name Input operator.
-	virtual
-	void
-	fromStream (std::istream &)
-	throw (Error <INVALID_X3D>,
-	       Error <NOT_SUPPORTED>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final;
-
-	///  @name Output operator.
-	virtual
-	void
-	toStream (std::ostream &) const final;
-
-	virtual
-	void
-	dispose () final;
+	~TextViewEditable ();
 
 
 private:
 
-	using X3DField <Image>::get;
+	virtual
+	void
+	start_editing_vfunc (GdkEvent*) final;
+
+	virtual
+	void
+	on_grab_focus ();
+
+	bool
+	on_textview_focus_out_event (GdkEventFocus*);
+
+	bool
+	on_textview_key_press_event (GdkEventKey*);
+
+	void
+	editing_canceled ();
+
+	Glib::Property <bool> editing_canceled_property;
+	Gtk::TextView         textview;
+	bool                  multi;
+	const Glib::ustring   path;
 
 };
 
-} // X3D
+} // puck
 } // titania
 
 #endif

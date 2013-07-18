@@ -47,7 +47,6 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-
 #include "X3DConsoleUI.h"
 
 namespace titania {
@@ -66,7 +65,9 @@ X3DConsoleUI::create (const std::string & filename)
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_window);
+	m_window -> set_name ("Window");
 	m_builder -> get_widget ("Widget", m_widget);
+	m_widget -> set_name ("Widget");
 
 	// Call construct handler of base class.
 	construct ();

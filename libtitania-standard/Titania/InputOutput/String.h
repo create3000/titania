@@ -75,28 +75,32 @@ private:
 	typedef typename std::basic_istream <CharT, Traits>::int_type int_type;
 
 	std::basic_string <CharT> value;
+	size_t                    size;
 
 };
 
 template <class CharT, class Traits>
 basic_string <CharT, Traits>::basic_string (const std::basic_string <CharT> & value) :
-	value (value)
+	value (value),
+	 size (value .size ())
 { }
 
 template <class CharT, class Traits>
 bool
 basic_string <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> & istream)
 {
-	auto pos = istream .tellg ();
+	auto state = istream .rdstate ();
 
-	for (const auto & c : value)
+	for (size_t i = 0; i < size; ++ i)
 	{
-		if (istream .get () not_eq (int_type) c)
+		if (istream .peek () not_eq (int_type) value [i])
 		{
-			istream .seekg (pos - istream .tellg (), std::ios_base::cur);
-
+			istream .seekg (-i, std::ios_base::cur);
+			istream .clear (state);
 			return false;
 		}
+		else
+			istream .get ();
 	}
 
 	return true;

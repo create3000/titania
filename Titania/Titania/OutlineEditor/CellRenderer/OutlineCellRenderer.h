@@ -52,15 +52,17 @@
 #define __TITANIA_OUTLINE_EDITOR_CELL_RENDERER_OUTLINE_CELL_RENDERER_H__
 
 #include "../OutlineTreeData.h"
+#include "TextViewEditable.h"
 
 #include <Titania/X3D.h>
 #include <gtkmm.h>
+#include <memory>
 
 namespace titania {
 namespace puck {
 
 class OutlineCellRenderer :
-	public Gtk::CellRenderer
+	public Gtk::CellRendererText
 {
 public:
 
@@ -74,29 +76,9 @@ public:
 	const Glib::Property <OutlineTreeData*> &
 	property_data () const
 	{ return data_property; }
-	
-	Glib::Property <Gdk::RGBA> &
-	property_foreground_rgba ()
-	{ return foreground_rgba_property; }
-
-	const Glib::Property <Gdk::RGBA> &
-	property_foreground_rgba () const
-	{ return foreground_rgba_property; }
-
-	Glib::Property <bool> &
-	property_foreground_set ()
-	{ return foreground_set_property; }
-
-	const Glib::Property <bool> &
-	property_foreground_set () const
-	{ return foreground_set_property; }
 
 	// Edited signal
 	typedef sigc::signal <void, const Glib::ustring &, const Glib::ustring &> signal_edited_t;
-
-	signal_edited_t &
-	signal_edited ()
-	{ return edited_signal; }
 
 	virtual
 	~OutlineCellRenderer ()
@@ -126,6 +108,9 @@ private:
 	std::string
 	get_field_value () const;
 
+	bool
+	is_array () const;
+
 	virtual
 	void
 	get_preferred_width_vfunc (Gtk::Widget & widget, int & minimum_width, int & natural_width) const final;
@@ -141,6 +126,13 @@ private:
 	virtual
 	void
 	get_preferred_width_for_height_vfunc (Gtk::Widget & widget, int height, int & minimum_width, int & natural_width) const final;
+
+	virtual
+	Gtk::CellEditable*
+	start_editing_vfunc (GdkEvent*, Gtk::Widget &, const Glib::ustring &, const Gdk::Rectangle &, const Gdk::Rectangle &, Gtk::CellRendererState) final;
+
+	void
+	on_editing_done ();
 
 	virtual
 	void
@@ -166,19 +158,16 @@ private:
 	typedef std::map <const X3D::X3DConstants::AccessType, std::deque <Glib::RefPtr <Gdk::Pixbuf>>> AccessTypeImageIndex;
 
 	Glib::Property <OutlineTreeData*> data_property;
-	Glib::Property <Gdk::RGBA>        foreground_rgba_property;
-	Glib::Property <bool>             foreground_set_property;
-
-	signal_edited_t                   edited_signal;
 
 	mutable Gtk::CellRendererPixbuf cellrenderer_icon;
-	mutable Gtk::CellRendererText   cellrenderer_name;
 	mutable Gtk::CellRendererPixbuf cellrenderer_access_type_icon;
 
 	Glib::RefPtr <Gdk::Pixbuf> noneImage;
 	Glib::RefPtr <Gdk::Pixbuf> baseNodeImage;
 	FieldTypeImageIndex        fieldTypeImages;
 	AccessTypeImageIndex       accessTypeImages;
+	
+	std::unique_ptr <TextViewEditable> textview;
 
 };
 

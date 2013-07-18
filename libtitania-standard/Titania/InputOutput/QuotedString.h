@@ -53,6 +53,7 @@
 
 #include <istream>
 #include <string>
+#include <Titania/LOG.h>
 
 namespace titania {
 namespace io {
@@ -85,39 +86,49 @@ template <class CharT, class Traits>
 bool
 basic_quoted_string <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> & istream, std::basic_string <CharT> & string)
 {
-	int_type c = istream .get ();
+	std::basic_string <CharT> parsed;
 
-	if (c == (int_type) delimiter)
+	if (istream .peek () == (int_type) delimiter)
 	{
-		for ( ; ;)
+		istream .get ();
+
+		while (istream)
 		{
-			c = istream .get ();
-
-			if (istream)
+			int_type c = istream .peek ();
+	
+			if (istream .eof ())
 			{
-				if (c == '\\')
-				{
-					c = istream .get ();
-
-					if (istream)
-					{
-						if (c not_eq (int_type) delimiter)
-							string .push_back ('\\');
-					}
-					else
-						return false;
-				}
-				else if (c == (int_type) delimiter)
-					return true;
-
-				string .push_back (c);
-			}
-			else
+				istream .setstate (std::ios_base::failbit);
 				return false;
+			}
+
+			if (c == '\\')
+			{
+				istream .get ();
+
+				c = istream .peek ();
+
+				if (istream .eof ())
+				{
+					istream .setstate (std::ios_base::failbit);
+					return false;
+				}
+
+				if (c not_eq (int_type) delimiter)
+					parsed .push_back ('\\');
+			}
+			else if (c == (int_type) delimiter)
+			{
+				istream .get ();
+				string = std::move (parsed);
+				return true;
+			}
+
+			parsed .push_back (istream .get ());
 		}
 	}
 
-	istream .unget ();
+	istream .setstate (std::ios_base::failbit);
 
 	return false;
 }

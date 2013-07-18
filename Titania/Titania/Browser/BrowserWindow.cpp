@@ -50,6 +50,8 @@
 
 #include "BrowserWindow.h"
 
+#include "../Configuration/config.h"
+
 namespace titania {
 namespace puck {
 
@@ -95,11 +97,12 @@ BrowserWindow::initialize ()
 	// OutlineEditor
 	getOutlineEditor () .reparent (getOutlineEditorBox (), getWindow ());
 
-	// Console
-	Pango::FontDescription font;
-	font .set_family ("monospace");
-	getConsole () . override_font (font);
+	// CSS
+	Glib::RefPtr <Gtk::CssProvider> cssProvider = Gtk::CssProvider::create ();
+	cssProvider -> load_from_path (get_ui ("style.css"));
+	Gtk::StyleContext::add_provider_for_screen (Gdk::Screen::get_default (), cssProvider, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 
+	// Window
 	getWindow () .grab_focus ();
 }
 
@@ -206,12 +209,6 @@ void
 BrowserWindow::on_footer_toggled ()
 {
 	toggleWidget (getFooter (), getFooterMenuItem () .get_active ());
-}
-
-void
-BrowserWindow::on_statusBar_toggled ()
-{
-	toggleWidget (getStatusBar (), getStatusBarMenuItem () .get_active ());
 }
 
 // Shading menu
@@ -341,18 +338,6 @@ BrowserWindow::on_enableInlineViewpoints_toggled ()
 }
 
 // Editor handling
-
-void
-BrowserWindow::on_outline_editor_activate ()
-{
-	//getOutlineEditor () .getWindow () .present ();
-}
-
-void
-BrowserWindow::on_viewpoint_editor_activate ()
-{
-	//getViewpointEditor () .getWindow () .present ();
-}
 
 void
 BrowserWindow::on_motion_blur_editor_activate ()

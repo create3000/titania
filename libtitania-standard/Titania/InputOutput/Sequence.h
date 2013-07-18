@@ -93,22 +93,14 @@ basic_sequence <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> 
 {
 	string .clear ();
 
-	for ( ; ;)
+	while (istream)
 	{
-		int_type c = istream .get ();
+		int_type c = istream .peek ();
 
-		if (istream)
-		{
-			if (value .find (c) == value .end ())
-			{
-				istream .unget ();
-				break;
-			}
-		}
-		else
+		if (value .find (c) == value .end ())
 			break;
 
-		string .push_back (c);
+		string .push_back (istream .get ());
 	}
 
 	if (string .size ())

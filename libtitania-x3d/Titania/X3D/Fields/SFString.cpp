@@ -50,7 +50,7 @@
 
 #include "SFString.h"
 
-#include "../Parser/RegEx.h"
+#include "../Parser/Grammar.h"
 
 namespace titania {
 namespace X3D {
@@ -115,7 +115,14 @@ throw (Error <INVALID_X3D>,
        Error <NOT_SUPPORTED>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
-{ }
+{
+	Grammar::whitespaces (istream);
+	
+	std::string string;
+	
+	if (Grammar::string (istream, string))
+		setValue (string);
+}
 
 void
 SFString::toStream (std::ostream & ostream) const

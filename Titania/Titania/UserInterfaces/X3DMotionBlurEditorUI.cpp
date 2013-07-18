@@ -47,7 +47,6 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-
 #include "X3DMotionBlurEditorUI.h"
 
 namespace titania {
@@ -65,9 +64,13 @@ X3DMotionBlurEditorUI::create (const std::string & filename)
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_window);
+	m_window -> set_name ("Window");
 	m_builder -> get_widget ("Widget", m_widget);
+	m_widget -> set_name ("Widget");
 	m_builder -> get_widget ("Intensity", m_intensity);
+	m_intensity -> set_name ("Intensity");
 	m_builder -> get_widget ("Enabled", m_enabled);
+	m_enabled -> set_name ("Enabled");
 
 	// Connect object Gtk::HScale with id 'Intensity'.
 	connections .emplace_back (m_intensity -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DMotionBlurEditorUI::on_intensity_changed)));

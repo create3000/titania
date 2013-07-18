@@ -47,117 +47,34 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-
-#ifndef __TITANIA_X3D_FIELDS_SFIMAGE_H__
-#define __TITANIA_X3D_FIELDS_SFIMAGE_H__
-
-#include "../Basic/X3DField.h"
-#include "../Types/Image.h"
+#include "X3DOutlineTreeViewUI.h"
 
 namespace titania {
-namespace X3D {
+namespace puck {
 
-extern template class X3DField <Image>;
+const std::string X3DOutlineTreeViewUI::m_widgetName = "OutlineTreeView";
 
-class SFImage :
-	public X3DField <Image>
+void
+X3DOutlineTreeViewUI::create (const std::string & filename)
 {
-public:
+	// Create Builder.
+	m_builder = Gtk::Builder::create_from_file (filename);
 
-	typedef Image::array_type::scalar_type scalar_type;
-	typedef Image::size_type               size_type;
+	// Get objects.
 
-	using X3DField <Image>::addInterest;
-	using X3DField <Image>::setValue;
-	using X3DField <Image>::getValue;
-	using X3DField <Image>::operator =;
+	// Get widgets.
+	m_builder -> get_widget ("PopupMenu", m_popupMenu);
+	m_popupMenu -> set_name ("PopupMenu");
+	m_builder -> get_widget ("EditMenuItem", m_editMenuItem);
+	m_editMenuItem -> set_name ("EditMenuItem");
+	m_builder -> get_widget ("Window", m_window);
+	m_window -> set_name ("Window");
+	m_builder -> get_widget ("Widget", m_widget);
+	m_widget -> set_name ("Widget");
 
-	SFImage ();
+	// Call construct handler of base class.
+	construct ();
+}
 
-	SFImage (const SFImage &);
-
-	explicit
-	SFImage (const Image &);
-
-	SFImage (const size_type, const size_type, const size_type, const MFInt32 &);
-
-	virtual
-	SFImage*
-	clone () const final;
-
-	///  6.7.7 Add field interest.
-
-	template <class Class>
-	void
-	addInterest (Class* object, void (Class::* memberFunction) (const SFImage &)) const
-	{ addInterest (object, memberFunction, std::cref (*this)); }
-
-	template <class Class>
-	void
-	addInterest (Class & object, void (Class::* memberFunction) (const SFImage &)) const
-	{ addInterest (object, memberFunction, std::cref (*this)); }
-
-	///  Functions
-
-	void
-	setWidth (const size_type);
-
-	size_type
-	getWidth () const;
-
-	void
-	setHeight (const size_type);
-
-	size_type
-	getHeight () const;
-
-	void
-	setComponents (const size_type);
-
-	size_type
-	getComponents () const;
-
-	void
-	setArray (const MFInt32 &);
-
-	MFInt32 &
-	getArray ();
-
-	const MFInt32 &
-	getArray () const;
-
-	void
-	setValue (const size_type, const size_type, const size_type, const MFInt32 &);
-
-	void
-	getValue (size_type &, size_type &, size_type &, MFInt32 &) const;
-
-	///  @name Input operator.
-	virtual
-	void
-	fromStream (std::istream &)
-	throw (Error <INVALID_X3D>,
-	       Error <NOT_SUPPORTED>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final;
-
-	///  @name Output operator.
-	virtual
-	void
-	toStream (std::ostream &) const final;
-
-	virtual
-	void
-	dispose () final;
-
-
-private:
-
-	using X3DField <Image>::get;
-
-};
-
-} // X3D
+} // puck
 } // titania
-
-#endif

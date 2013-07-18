@@ -121,19 +121,51 @@ public:
 
 template <>
 void
-X3DScalar <bool>::toStream (std::ostream & ostream) const;
+X3DScalar <bool>::fromStream (std::istream &)
+throw (Error <INVALID_X3D>,
+       Error <NOT_SUPPORTED>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>);
 
 template <>
 void
-X3DScalar <Double>::toStream (std::ostream & ostream) const;
+X3DScalar <Double>::fromStream (std::istream &)
+throw (Error <INVALID_X3D>,
+       Error <NOT_SUPPORTED>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>);
 
 template <>
 void
-X3DScalar <Float>::toStream (std::ostream & ostream) const;
+X3DScalar <Float>::fromStream (std::istream &)
+throw (Error <INVALID_X3D>,
+       Error <NOT_SUPPORTED>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>);
 
 template <>
 void
-X3DScalar <Int32>::toStream (std::ostream & ostream) const;
+X3DScalar <Int32>::fromStream (std::istream &)
+throw (Error <INVALID_X3D>,
+       Error <NOT_SUPPORTED>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>);
+
+template <>
+void
+X3DScalar <bool>::toStream (std::ostream &) const;
+
+template <>
+void
+X3DScalar <Double>::toStream (std::ostream &) const;
+
+template <>
+void
+X3DScalar <Float>::toStream (std::ostream &) const;
+
+template <>
+void
+X3DScalar <Int32>::toStream (std::ostream &) const;
 
 extern template class X3DScalar <bool>;
 extern template class X3DScalar <Double>;

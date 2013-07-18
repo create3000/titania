@@ -48,116 +48,96 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_FIELDS_SFIMAGE_H__
-#define __TITANIA_X3D_FIELDS_SFIMAGE_H__
+#include "TextViewEditable.h"
 
-#include "../Basic/X3DField.h"
-#include "../Types/Image.h"
+#include <Titania/LOG.h>
 
 namespace titania {
-namespace X3D {
+namespace puck {
 
-extern template class X3DField <Image>;
-
-class SFImage :
-	public X3DField <Image>
+TextViewEditable::TextViewEditable (const Glib::ustring & path, bool multi) :
+	         Glib::ObjectBase (typeid (TextViewEditable)),
+	      Gtk::ScrolledWindow (),
+	        Gtk::CellEditable (),
+	editing_canceled_property (*this, "editing-canceled", false),
+	                 textview (),
+	                    multi (multi),
+	                     path (path)
 {
-public:
+	set_policy (Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+	set_visible (true);
+	add (textview);
 
-	typedef Image::array_type::scalar_type scalar_type;
-	typedef Image::size_type               size_type;
+	textview .get_style_context () -> add_class ("textview-editable");
+	textview .set_editable (true);
+	textview .set_visible (true);
 
-	using X3DField <Image>::addInterest;
-	using X3DField <Image>::setValue;
-	using X3DField <Image>::getValue;
-	using X3DField <Image>::operator =;
+	textview .signal_focus_out_event () .connect (sigc::mem_fun (this, &TextViewEditable::on_textview_focus_out_event));
+	textview .signal_key_press_event () .connect (sigc::mem_fun (this, &TextViewEditable::on_textview_key_press_event), false);
+}
 
-	SFImage ();
+void
+TextViewEditable::start_editing_vfunc (GdkEvent* event)
+{
+	property_editing_canceled () = false;
+}
 
-	SFImage (const SFImage &);
+void
+TextViewEditable::on_grab_focus ()
+{
+	textview .grab_focus ();
 
-	explicit
-	SFImage (const Image &);
+	auto buffer = textview .get_buffer ();
 
-	SFImage (const size_type, const size_type, const size_type, const MFInt32 &);
+	buffer -> place_cursor (buffer -> begin ());
+}
 
-	virtual
-	SFImage*
-	clone () const final;
+bool
+TextViewEditable::on_textview_focus_out_event (GdkEventFocus* event)
+{
+	editing_done ();
+	return false;
+}
 
-	///  6.7.7 Add field interest.
+bool
+TextViewEditable::on_textview_key_press_event (GdkEventKey* event)
+{
+	if (multi)
+	{
+		if (event -> state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK) and (event -> keyval == GDK_KEY_Return or event -> keyval == GDK_KEY_KP_Enter))
+		{
+			editing_done ();
+			return true;
+		}
+	}
+	else
+	{
+		if (event -> keyval == GDK_KEY_Return or event -> keyval == GDK_KEY_KP_Enter)
+		{
+			editing_done ();
+			return true;
+		}
+	}
 
-	template <class Class>
-	void
-	addInterest (Class* object, void (Class::* memberFunction) (const SFImage &)) const
-	{ addInterest (object, memberFunction, std::cref (*this)); }
+	if (event -> keyval == GDK_KEY_Escape)
+	{
+		editing_canceled ();
+		return true;
+	}
 
-	template <class Class>
-	void
-	addInterest (Class & object, void (Class::* memberFunction) (const SFImage &)) const
-	{ addInterest (object, memberFunction, std::cref (*this)); }
+	return false;
+}
 
-	///  Functions
+void
+TextViewEditable::editing_canceled ()
+{
+	property_editing_canceled () = true;
+	editing_done ();
+	remove_widget ();
+}
 
-	void
-	setWidth (const size_type);
+TextViewEditable::~TextViewEditable ()
+{ }
 
-	size_type
-	getWidth () const;
-
-	void
-	setHeight (const size_type);
-
-	size_type
-	getHeight () const;
-
-	void
-	setComponents (const size_type);
-
-	size_type
-	getComponents () const;
-
-	void
-	setArray (const MFInt32 &);
-
-	MFInt32 &
-	getArray ();
-
-	const MFInt32 &
-	getArray () const;
-
-	void
-	setValue (const size_type, const size_type, const size_type, const MFInt32 &);
-
-	void
-	getValue (size_type &, size_type &, size_type &, MFInt32 &) const;
-
-	///  @name Input operator.
-	virtual
-	void
-	fromStream (std::istream &)
-	throw (Error <INVALID_X3D>,
-	       Error <NOT_SUPPORTED>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final;
-
-	///  @name Output operator.
-	virtual
-	void
-	toStream (std::ostream &) const final;
-
-	virtual
-	void
-	dispose () final;
-
-
-private:
-
-	using X3DField <Image>::get;
-
-};
-
-} // X3D
+} // puck
 } // titania
-
-#endif

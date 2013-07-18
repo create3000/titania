@@ -62,13 +62,13 @@ namespace titania {
 namespace X3D {
 
 NavigationInfo::Fields::Fields () :
-	avatarSize (new MFFloat ({ 0.25, 1.6, 0.75 })),
-	headlight (new SFBool (true)),
-	speed (new SFFloat (1)),
-	transitionTime (new SFTime (1)),
-	transitionType (new MFString ({ "LINEAR" })),
 	type (new MFString ({ "EXAMINE", "ANY" })),
+	avatarSize (new MFFloat ({ 0.25, 1.6, 0.75 })),
+	speed (new SFFloat (1)),
+	headlight (new SFBool (true)),
 	visibilityLimit (new SFFloat ()),
+	transitionType (new MFString ({ "LINEAR" })),
+	transitionTime (new SFTime (1)),
 	transitionComplete (new SFBool ())
 { }
 
@@ -84,13 +84,13 @@ NavigationInfo::NavigationInfo (X3DExecutionContext* const executionContext) :
 
 	addField (inputOutput, "metadata",           metadata ());
 	addField (inputOnly,   "set_bind",           set_bind ());
-	addField (inputOutput, "avatarSize",         avatarSize ());
-	addField (inputOutput, "headlight",          headlight ());
-	addField (inputOutput, "speed",              speed ());
-	addField (inputOutput, "transitionTime",     transitionTime ());
-	addField (inputOutput, "transitionType",     transitionType ());
 	addField (inputOutput, "type",               type ());
+	addField (inputOutput, "avatarSize",         avatarSize ());
+	addField (inputOutput, "speed",              speed ());
+	addField (inputOutput, "headlight",          headlight ());
 	addField (inputOutput, "visibilityLimit",    visibilityLimit ());
+	addField (inputOutput, "transitionType",     transitionType ());
+	addField (inputOutput, "transitionTime",     transitionTime ());
 	addField (outputOnly,  "transitionComplete", transitionComplete ());
 	addField (outputOnly,  "bindTime",           bindTime ());
 	addField (outputOnly,  "isBound",            isBound ());

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -50,30 +50,36 @@
 
 #include "OutlineTreeView.h"
 
-#include "../OutlineEditor/OutlineTreeModel.h"
 #include "../OutlineEditor/CellRenderer/OutlineCellRenderer.h"
+#include "../OutlineEditor/OutlineTreeModel.h"
+#include "../Configuration/config.h"
 
 namespace titania {
 namespace puck {
 
 OutlineTreeView::OutlineTreeView (const X3D::X3DSFNode <X3D::Browser> & browser) :
-	   Gtk::TreeView (),
-	X3DBaseInterface (),
-	           model (),
-	       selection (this, browser),
-	            keys ()
+       Glib::ObjectBase (typeid (OutlineTreeView)),
+	       Gtk::TreeView (),
+	X3DOutlineTreeViewUI (get_ui ("OutlineTreeView.ui"), gconf_dir ()),
+	               model (),
+	           selection (this, browser),
+	                keys ()
 {
 	setBrowser (browser);
+
+	// Options
 
 	set_headers_visible (true);
 	set_enable_search (false);
 	get_selection () -> set_mode (Gtk::SELECTION_NONE);
-	get_style_context () -> add_class ("OutlineTreeView");
+	set_name ("OutlineTreeView");
 
-	// Columns
+	// Color
 
 	auto selectedForegroundColor = get_style_context () -> get_color (Gtk::STATE_FLAG_SELECTED);
 	auto selectedBackgroundColor = get_style_context () -> get_background_color (Gtk::STATE_FLAG_SELECTED);
+
+	// Columns
 
 	Gtk::TreeViewColumn* treeviewcolumn_name = Gtk::manage (new Gtk::TreeViewColumn ("Tree"));
 	treeviewcolumn_name -> set_expand (false);
@@ -86,11 +92,12 @@ OutlineTreeView::OutlineTreeView (const X3D::X3DSFNode <X3D::Browser> & browser)
 	treeviewcolumn_name -> add_attribute (*cellrenderer, "cell-background-set", OutlineTreeModel::SELECTED_COLUMN);
 	cellrenderer -> property_foreground_rgba ()      = selectedForegroundColor;
 	cellrenderer -> property_cell_background_rgba () = selectedBackgroundColor;
+	cellrenderer -> signal_edited () .connect (sigc::mem_fun (this, &OutlineTreeView::on_edited));
 
 	// Append column
 
 	append_column (*treeviewcolumn_name);
-	
+
 	// Register browser interest
 
 	getBrowser () -> initialized .addInterest (this, &OutlineTreeView::set_world);
@@ -163,7 +170,7 @@ OutlineTreeView::get_expanded (const Gtk::TreeModel::iterator & iter) const
 
 	if (userData)
 		return userData -> expanded;
-	
+
 	return false;
 }
 
@@ -183,7 +190,7 @@ OutlineTreeView::get_expand_all (const Gtk::TreeModel::iterator & iter) const
 
 	if (userData)
 		return userData -> expand_all;
-	
+
 	return false;
 }
 
@@ -203,7 +210,7 @@ OutlineTreeView::get_animated (const Gtk::TreeModel::iterator & iter) const
 
 	if (userData)
 		return userData -> animated;
-	
+
 	return false;
 }
 
@@ -215,6 +222,15 @@ OutlineTreeView::set_world ()
 	set_model (OutlineTreeModel::create (getBrowser ()));
 
 	get_model () -> signal_row_has_child_toggled () .connect (sigc::mem_fun (this, &OutlineTreeView::on_row_has_child_toggled));
+}
+
+void
+OutlineTreeView::on_edited (const Glib::ustring & string_path, const Glib::ustring & text)
+{
+	Gtk::TreeModel::Path path (string_path);
+	Gtk::TreeModel::iterator iter = get_model () -> get_iter (path);
+
+	get_model () -> row_changed (path, iter);
 }
 
 bool
@@ -234,7 +250,7 @@ OutlineTreeView::on_key_press_event (GdkEventKey* event)
 
 	selection .set_select_multiple (keys .shift ());
 
-	return false;
+	return true;
 }
 
 bool
@@ -254,13 +270,51 @@ OutlineTreeView::on_key_release_event (GdkEventKey* event)
 
 	selection .set_select_multiple (keys .shift ());
 
-	return false;
+	return true;
+}
+
+bool
+OutlineTreeView::on_button_press_event (GdkEventButton* event)
+{
+	if (event -> button == 3)
+	{
+		getPopupMenu () .popup (event -> button, event -> time);
+		return true;
+	}
+
+	{
+		int x = event -> x;
+		int y = event -> y;
+
+		Gtk::TreeModel::Path path;
+		Gtk::TreeViewColumn* column = nullptr;
+		int                  cell_x = 0;
+		int                  cell_y = 0;
+
+		get_path_at_pos (x, y, path, column, cell_x, cell_y);
+
+		if (path .size ())
+		{
+			Gtk::TreeModel::iterator iter = get_model () -> get_iter (path);
+
+			if (get_data_type (iter) == OutlineIterType::X3DFieldValue)
+			{
+				grab_focus ();
+				set_cursor (path, *column, true);
+				return true;
+			}
+		}
+	}
+
+	return Gtk::TreeView::on_button_press_event (event);
 }
 
 void
 OutlineTreeView::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column)
 {
 	select (get_model () -> get_iter (path), path);
+
+	set_cursor (path, *column, true);
 }
 
 void
@@ -334,7 +388,7 @@ OutlineTreeView::watch (const Gtk::TreeModel::iterator & iter, const Gtk::TreeMo
 		case OutlineIterType::X3DField:
 		{
 			auto field = static_cast <X3D::X3DFieldDefinition*> (get_object (iter));
-	 
+
 			switch (field -> getType ())
 			{
 				case X3D::X3DConstants::SFNode:
@@ -353,7 +407,7 @@ OutlineTreeView::watch (const Gtk::TreeModel::iterator & iter, const Gtk::TreeMo
 					break;
 				}
 			}
-			
+
 			break;
 		}
 		case OutlineIterType::X3DBaseNode:
@@ -362,18 +416,19 @@ OutlineTreeView::watch (const Gtk::TreeModel::iterator & iter, const Gtk::TreeMo
 			{
 				switch (static_cast <X3D::X3DFieldDefinition*> (get_object (child)) -> getType ())
 				{
-					case X3D::X3DConstants::MFNode:
-					{
-						X3D::MFNode* field = static_cast <X3D::MFNode*> (get_object (child));
-						
-						field -> addInterest (this, &OutlineTreeView::set_children, get_model () -> get_path (child));
+					case X3D::X3DConstants::MFNode :
+						{
+							X3D::MFNode* field = static_cast <X3D::MFNode*> (get_object (child));
 
-						break;
-					}
+							field -> addInterest (this, &OutlineTreeView::set_children, get_model () -> get_path (child));
+
+							break;
+						}
 					default:
 						break;
 				}
 			}
+
 			break;
 		}
 	}
@@ -430,10 +485,11 @@ void
 OutlineTreeView::set_field (const Gtk::TreeModel::Path & path)
 {
 	Gtk::TreeModel::Path child = path;
+
 	child .push_back (0);
-	
+
 	Gtk::TreeModel::iterator iter = get_model () -> get_iter (child);
-	
+
 	get_model () -> row_changed (child, iter);
 }
 
@@ -441,20 +497,20 @@ void
 OutlineTreeView::collapse_field (X3D::X3DFieldDefinition* const field, const Gtk::TreeModel::Path & path, size_t size)
 {
 	__LOG__ << X3D::SFTime (chrono::now ()) << std::endl;
-	
+
 	Gtk::TreeModel::iterator iter = get_model () -> get_iter (path);
 
-	set_animated (iter, true);	
+	set_animated (iter, true);
 	set_expanded (iter, false);
-	
+
 	// Remove all rows
-	
+
 	Gtk::TreeModel::Path child = path;
 	child .push_back (0);
-	
+
 	for (size_t i = 0; i < size; ++ i)
 		get_model () -> row_deleted (child);
-		
+
 	//
 
 	unwatch_tree (path);
@@ -481,7 +537,7 @@ OutlineTreeView::collapse_clone (const Gtk::TreeModel::iterator & iter)
 		if (get_expanded (iter))
 		{
 			set_expand_all (iter, false);
-		
+
 			collapse_row (get_path (iter));
 		}
 	}
@@ -495,10 +551,10 @@ OutlineTreeView::select_fields (const Gtk::TreeModel::iterator & iter, const Gtk
 		auto nodeUserData = get_user_data (iter);
 
 		if (nodeUserData)
-		{	
+		{
 			auto sfnode = static_cast <X3D::SFNode*> (get_object (iter));
 			auto node   = sfnode -> getValue ();
-			
+
 			if (node)
 			{
 				// Select visible fields
@@ -506,7 +562,7 @@ OutlineTreeView::select_fields (const Gtk::TreeModel::iterator & iter, const Gtk
 				if (get_expand_all (iter))
 				{
 					for (const auto & field : node -> getFieldDefinitions ())
-						get_user_data (field)-> visible = true;
+						get_user_data (field) -> visible = true;
 
 					set_expand_all (iter, false);
 				}
@@ -520,22 +576,22 @@ OutlineTreeView::select_fields (const Gtk::TreeModel::iterator & iter, const Gtk
 						{
 							if (field -> getInputRoutes () .empty () and field -> getOutputRoutes () .empty ())
 							{
-								get_user_data (field)-> visible = false;
+								get_user_data (field) -> visible = false;
 								continue;
 							}
 						}
 
-						get_user_data (field)-> visible = true;
-						visible = true;
+						get_user_data (field) -> visible = true;
+						visible                         = true;
 					}
-					
+
 					if (visible)
 						set_expand_all (iter, true);
 
 					else
 					{
 						for (const auto & field : node -> getFieldDefinitions ())
-							get_user_data (field)-> visible = true;
+							get_user_data (field) -> visible = true;
 
 						set_expand_all (iter, false);
 					}

@@ -191,7 +191,12 @@ public:
 
 	virtual
 	bool
-	operator == (const X3DFieldDefinition &) const;
+	isArray () const final
+	{ return true; }
+
+	virtual
+	bool
+	operator == (const X3DFieldDefinition &) const final;
 
 	///  6.7.7 Add field interest.
 
@@ -219,7 +224,7 @@ public:
 	///  Set @a value to this field without notfying parents.
 	virtual
 	void
-	set (const value_type &);
+	set (const value_type &) final;
 
 	template <class InputIterator>
 	void
@@ -690,12 +695,19 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	clear ();
+	if (istream)
+	{
+		X3DArrayField array;
+		ValueType     value;
 
-	ValueType value;
+		while (istream >> value)
+			array .emplace_back (value);
 
-	while (istream >> value)
-		emplace_back (value);
+		istream .clear (~std::ios_base::failbit & istream .rdstate ());
+
+		if (istream)
+			*this = array;
+	}
 }
 
 template <class ValueType>

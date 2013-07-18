@@ -1349,7 +1349,8 @@ Parser::scriptBodyElement (X3DBaseNode* const _basicNode)
 {
 	//__LOG__ << std::endl;
 
-	auto pos = istream .tellg ();
+	auto state = istream .rdstate ();
+	auto pos   = istream .tellg ();
 
 	std::string _accessTypeId;
 
@@ -1422,6 +1423,7 @@ Parser::scriptBodyElement (X3DBaseNode* const _basicNode)
 		}
 	}
 
+	istream .setstate (state);
 	istream .seekg (pos - istream .tellg (), std::ios_base::cur);
 
 	X3DFieldDefinition* _field = interfaceDeclaration ();
@@ -1541,12 +1543,13 @@ Parser::Id (std::string & _Id)
 
 	comments ();
 
-	std::istream::int_type c = istream .get ();
-
 	if (istream)
 	{
+		std::istream::int_type c = istream .peek ();
+	
 		switch (c)
 		{
+			case -1:
 			case '\x22':
 			case '\x23':
 			case '\x27':
@@ -1561,18 +1564,16 @@ Parser::Id (std::string & _Id)
 			case '\x7d':
 			case '\x7f':
 			{
-				istream .unget ();
 				return false;
 			}
 			default:
 			{
 				if ((c >= '\x00' and c <= '\x20')or (c >= '\x30' and c <= '\x39'))
 				{
-					istream .unget ();
 					return false;
 				}
 
-				_Id .push_back (c);
+				_Id .push_back (istream .get ());
 			}
 		}
 	}
@@ -1581,12 +1582,13 @@ Parser::Id (std::string & _Id)
 
 	for ( ; istream;)
 	{
-		c = istream .get ();
-
 		if (istream)
 		{
+			std::istream::int_type c = istream .peek ();
+	
 			switch (c)
 			{
+				case -1:
 				case '\x22':
 				case '\x23':
 				case '\x27':
@@ -1599,18 +1601,16 @@ Parser::Id (std::string & _Id)
 				case '\x7d':
 				case '\x7f':
 				{
-					istream .unget ();
 					return true;
 				}
 				default:
 				{
 					if ((c >= '\x00' and c <= '\x20'))
 					{
-						istream .unget ();
 						return true;
 					}
 
-					_Id .push_back (c);
+					_Id .push_back (istream .get ());
 				}
 			}
 		}
@@ -1810,10 +1810,7 @@ Parser::Int32 (int32_t & _value)
 
 	comments ();
 
-	if (Grammar::hex (istream) or Grammar::HEX (istream))
-		return Hex ((uint32_t &)_value);
-
-	if (istream >> std::dec >> _value)
+	if (Grammar::Int32 (istream, _value))
 		return true;
 
 	istream .clear ();
@@ -1828,7 +1825,12 @@ Parser::String (std::string & _value)
 
 	comments ();
 
-	return Grammar::string (istream, _value);
+	if (Grammar::string (istream, _value))
+		return true;
+
+	istream .clear ();
+
+	return false;
 }
 
 bool

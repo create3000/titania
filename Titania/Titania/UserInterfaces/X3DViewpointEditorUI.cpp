@@ -47,7 +47,6 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-
 #include "X3DViewpointEditorUI.h"
 
 namespace titania {
@@ -68,10 +67,15 @@ X3DViewpointEditorUI::create (const std::string & filename)
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_window);
+	m_window -> set_name ("Window");
 	m_builder -> get_widget ("Widget", m_widget);
+	m_widget -> set_name ("Widget");
 	m_builder -> get_widget ("ScrolledWindow", m_scrolledWindow);
+	m_scrolledWindow -> set_name ("ScrolledWindow");
 	m_builder -> get_widget ("TreeView", m_treeView);
+	m_treeView -> set_name ("TreeView");
 	m_builder -> get_widget ("FieldOfView", m_fieldOfView);
+	m_fieldOfView -> set_name ("FieldOfView");
 
 	// Connect object Gtk::TreeView with id 'TreeView'.
 	connections .emplace_back (m_treeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DViewpointEditorUI::on_row_activated)));

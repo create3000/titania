@@ -50,6 +50,8 @@
 
 #include "X3DScalar.h"
 
+#include "../Parser/Grammar.h"
+
 namespace titania {
 namespace X3D {
 
@@ -76,6 +78,77 @@ const X3DConstants::FieldType X3DField <Float>::type = X3DConstants::SFFloat;
 
 template <>
 const X3DConstants::FieldType X3DField <Int32>::type = X3DConstants::SFInt32;
+
+template <>
+void
+X3DScalar <bool>::fromStream (std::istream & istream)
+throw (Error <INVALID_X3D>,
+       Error <NOT_SUPPORTED>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	Grammar::whitespaces (istream);
+
+	if (Grammar::_true (istream))
+	{
+		setValue (true);
+		return;
+	}
+
+	if (Grammar::_false (istream))
+	{
+		setValue (false);
+		return;
+	}
+}
+
+template <>
+void
+X3DScalar <Double>::fromStream (std::istream & istream)
+throw (Error <INVALID_X3D>,
+       Error <NOT_SUPPORTED>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	Grammar::whitespaces (istream);
+
+	istream >> get ();
+
+	if (istream)
+		addEvent ();
+}
+
+template <>
+void
+X3DScalar <Float>::fromStream (std::istream & istream)
+throw (Error <INVALID_X3D>,
+       Error <NOT_SUPPORTED>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	Grammar::whitespaces (istream);
+
+	istream >> get ();
+
+	if (istream)
+		addEvent ();
+}
+
+template <>
+void
+X3DScalar <Int32>::fromStream (std::istream & istream)
+throw (Error <INVALID_X3D>,
+       Error <NOT_SUPPORTED>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	Grammar::whitespaces (istream);
+
+	Grammar::Int32 (istream, get ());
+
+	if (istream)
+		addEvent ();
+}
 
 template <>
 void

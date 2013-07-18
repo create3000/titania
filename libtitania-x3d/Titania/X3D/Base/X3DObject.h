@@ -113,6 +113,9 @@ public:
 
 	///  @name String Creation
 
+	bool
+	fromString (const std::string &);
+
 	std::string
 	toString () const;
 

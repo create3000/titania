@@ -73,6 +73,14 @@ public:
 
 	///  @name Fields
 
+	MFString &
+	type ()
+	{ return *fields .type; }
+
+	const MFString &
+	type () const
+	{ return *fields .type; }
+
 	MFFloat &
 	avatarSize ()
 	{ return *fields .avatarSize; }
@@ -80,6 +88,14 @@ public:
 	const MFFloat &
 	avatarSize () const
 	{ return *fields .avatarSize; }
+
+	SFFloat &
+	speed ()
+	{ return *fields .speed; }
+
+	const SFFloat &
+	speed () const
+	{ return *fields .speed; }
 
 	SFBool &
 	headlight ()
@@ -90,20 +106,12 @@ public:
 	{ return *fields .headlight; }
 
 	SFFloat &
-	speed ()
-	{ return *fields .speed; }
+	visibilityLimit ()
+	{ return *fields .visibilityLimit; }
 
 	const SFFloat &
-	speed () const
-	{ return *fields .speed; }
-
-	SFTime &
-	transitionTime ()
-	{ return *fields .transitionTime; }
-
-	const SFTime &
-	transitionTime () const
-	{ return *fields .transitionTime; }
+	visibilityLimit () const
+	{ return *fields .visibilityLimit; }
 
 	MFString &
 	transitionType ()
@@ -113,21 +121,13 @@ public:
 	transitionType () const
 	{ return *fields .transitionType; }
 
-	MFString &
-	type ()
-	{ return *fields .type; }
+	SFTime &
+	transitionTime ()
+	{ return *fields .transitionTime; }
 
-	const MFString &
-	type () const
-	{ return *fields .type; }
-
-	SFFloat &
-	visibilityLimit ()
-	{ return *fields .visibilityLimit; }
-
-	const SFFloat &
-	visibilityLimit () const
-	{ return *fields .visibilityLimit; }
+	const SFTime &
+	transitionTime () const
+	{ return *fields .transitionTime; }
 
 	SFBool &
 	transitionComplete ()
@@ -188,13 +188,13 @@ private:
 	{
 		Fields ();
 
-		MFFloat* const avatarSize;
-		SFBool* const headlight;
-		SFFloat* const speed;
-		SFTime* const transitionTime;
-		MFString* const transitionType;
 		MFString* const type;
+		MFFloat* const avatarSize;
+		SFFloat* const speed;
+		SFBool* const headlight;
 		SFFloat* const visibilityLimit;
+		MFString* const transitionType;
+		SFTime* const transitionTime;
 		SFBool* const transitionComplete;
 	};
 

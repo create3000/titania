@@ -152,12 +152,18 @@ sub h_signal_handler
 
 	return if $name ne "signal";
 	return if exists $self -> {h_signal_handler} {$attributes {handler}};
-
+	
 	$self -> {h_signal_handler} {$attributes {handler}} = 1;
 
 	$attributes {name} =~ s/-/_/;
 
 	my $prototype = $self -> getPrototype ($attributes {name});
+	
+	unless ($prototype)
+	{
+		say "\t missing prototype for", $attributes {name};
+		return;
+	}
 
 	$prototype =~ s/(virtual)\s/$1\n/s;
 	$prototype =~ s/on_($attributes{name})/\n$attributes{handler}/s;
@@ -192,6 +198,7 @@ sub cpp_get_widgets
 	return if not isWidget ($attributes {class});
 	
 	say $file "m_builder -> get_widget (\"$attributes{id}\", m_" . lcfirst ($attributes {id}) . ");";
+	say $file "m_" . lcfirst ($attributes {id}) . " -> set_name (\"" . $attributes {id} . "\");";
 }
 
 sub cpp_signals
@@ -553,4 +560,6 @@ page_added
   virtual void on_page_added(Widget* page, guint page_num);
 page_removed
   virtual void on_page_removed(Widget* page, guint page_num);
+
+button_press-event
 

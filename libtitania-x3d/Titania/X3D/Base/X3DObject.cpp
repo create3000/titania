@@ -52,6 +52,9 @@
 
 #include <sstream>
 
+#include "../Fields/ArrayFields.h"
+#include "../Parser/Grammar.h"
+
 namespace titania {
 namespace X3D {
 
@@ -66,6 +69,16 @@ X3DObject::X3DObject () :
 { }
 
 // String
+
+bool
+X3DObject::fromString (const std::string & string)
+{
+	std::istringstream istringstream (string);
+
+	fromStream (istringstream);
+
+	return istringstream;
+}
 
 std::string
 X3DObject::toString () const

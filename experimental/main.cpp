@@ -49,6 +49,7 @@
 #include <Titania/Stream/IGZFilter.h>
 #include <Titania/Stream/InputFileStream.h>
 #include <Titania/Utility/Pass.h>
+#include <Titania/InputOutput.h>
 //#include <Titania/Stream/InputHTTPStream.h>
 
 #include <Titania/Algorithm.h>
@@ -228,12 +229,30 @@ main (int argc, char** argv)
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
 
-	Plane3f p1 (Vector3f (), Vector3f (1, 0, 0));
-	Plane3f p2 (Vector3f (), Vector3f (0, 1, 0));
-	Line3f  l;
+	io::comment hex ('"');
+	std::string s = "\"";
+	std::string v;
+	std::istringstream ss (s);
+		
+	std::clog << std::endl;
+	std::clog << "good: " << ss .good () << std::endl;
+	std::clog << "eof:  " << ss .eof () << std::endl;
+	std::clog << "fail: " << ss .fail () << std::endl;
+	std::clog << "bad:  " << ss .bad () << std::endl;
+	
+	std::clog << std::endl;
+	std::clog << "tellg: " << ss .tellg () << std::endl;
+	std::clog << "peek: " << ss .peek () << std::endl;
 
-	std::cout << intersect (p1, p2, l) << std::endl;
-	std::cout << l << std::endl;
+	std::clog << std::endl;
+	std::clog << "hex: " << hex (ss) << std::endl;
+	std::clog << "hex: " << v << std::endl;
+	
+	std::clog << std::endl;
+	std::clog << "good: " << ss .good () << std::endl;
+	std::clog << "eof:  " << ss .eof () << std::endl;
+	std::clog << "fail: " << ss .fail () << std::endl;
+	std::clog << "bad:  " << ss .bad () << std::endl;
 
 	std::clog << "Function main done." << std::endl;
 	exit (0);

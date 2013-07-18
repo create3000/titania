@@ -60,9 +60,6 @@ template <>
 const X3DConstants::FieldType X3DField <Image>::type = X3DConstants::SFImage;
 
 template class X3DField <Image>;
-template
-std::ostream &
-operator << (std::ostream & ostream, const Image & image);
 
 SFImage::SFImage () :
 	X3DField <Image> ()
@@ -169,12 +166,100 @@ throw (Error <INVALID_X3D>,
        Error <NOT_SUPPORTED>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
-{ }
+{
+	size_type width, height, components;
+	MFInt32   array;
+
+	Grammar::whitespaces (istream);
+	
+	if (istream >> width)
+	{
+		if (Grammar::whitespaces (istream))
+		{
+			if (istream >> height)
+			{
+				if (Grammar::whitespaces (istream))
+				{
+					if (istream >> components)
+					{
+						for (size_t i = 0, size = width * height; i < size; ++ i)
+						{
+							int32_t pixel;
+							
+							if (Grammar::whitespaces (istream) and Grammar::Int32 (istream, pixel))
+								array .emplace_back (pixel);
+
+							else
+								return;
+						}
+
+						if (istream)
+							setValue (width, height, components, array);
+					}
+				}
+			}
+		}
+	}
+}
 
 void
 SFImage::toStream (std::ostream & ostream) const
 {
-	ostream << getValue ();
+	const Image & image = getValue ();
+
+	ostream
+		<< image .width ()
+		<< Generator::Space
+		<< image .height ()
+		<< Generator::Space
+		<< image .components ();
+
+	if (image .width () and image .height ())
+	{
+		ostream
+			<< std::hex
+			<< std::showbase
+			<< Generator::ListBreak
+			<< Generator::IncIndent;
+
+		Image::size_type y;
+
+		for (y = 0; y < image .height () - 1; ++ y)
+		{
+			if (Generator::HasListBreak ())
+				ostream << Generator::Indent;
+
+			Image::size_type x;
+
+			for (x = 0; x < image .width () - 1; ++ x)
+			{
+				ostream
+					<< image .array () .at (x + y * image .width ())
+					<< Generator::Space;
+			}
+
+			ostream
+				<< image .array () .at (x + y * image .width ())
+				<< Generator::ListBreak;
+		}
+
+		if (Generator::HasListBreak ())
+			ostream << Generator::Indent;
+
+		Image::size_type x;
+
+		for (x = 0; x < image .width () - 1; ++ x)
+		{
+			ostream
+				<< image .array () .at (x + y * image .width ())
+				<< Generator::Space;
+		}
+
+		ostream
+			<< image .array () .at (x + y * image .width ())
+			<< Generator::DecIndent
+			<< std::dec;
+	}
 }
 
 void

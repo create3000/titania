@@ -2280,6 +2280,7 @@
     <None Include="Tests\Basic\Clone.wrl" />
     <None Include="Tests\Scripting\SFNode.wrl" />
     <None Include="Tests\Scripting\SFNode.input.wrl" />
+    <None Include="Models\Machines\bucketWheel.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

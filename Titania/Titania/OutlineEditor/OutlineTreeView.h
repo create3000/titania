@@ -54,7 +54,7 @@
 #include <gtkmm.h>
 #include <iostream>
 
-#include "../Base/X3DBaseInterface.h"
+#include "../UserInterfaces/X3DOutlineTreeViewUI.h"
 #include "../OutlineEditor/OutlineSelection.h"
 #include "../OutlineEditor/OutlineTreeData.h"
 #include "../OutlineEditor/OutlineUserData.h"
@@ -68,7 +68,7 @@ class OutlineTreeModel;
 class OutlineCellRenderer;
 
 class OutlineTreeView :
-	public Gtk::TreeView, public X3DBaseInterface
+	public Gtk::TreeView, public X3DOutlineTreeViewUI
 {
 public:
 
@@ -127,38 +127,48 @@ private:
 	set_world ();
 
 	virtual
-	bool
-	on_key_press_event (GdkEventKey*);
-
-	virtual
-	bool
-	on_key_release_event (GdkEventKey*);
-
-	virtual
 	void
-	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*);
-
-	void
-	on_row_inserted (const Gtk::TreeModel::Path &, const Gtk::TreeModel::iterator &);
-
-	void
-	on_row_has_child_toggled (const Gtk::TreeModel::Path &, const Gtk::TreeModel::iterator &);
+	on_edited (const Glib::ustring &, const Glib::ustring &) final;
 
 	virtual
 	bool
-	on_test_expand_row (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
-
-	virtual
-	void
-	on_row_expanded (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
+	on_key_press_event (GdkEventKey*) final;
 
 	virtual
 	bool
-	on_test_collapse_row (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
+	on_key_release_event (GdkEventKey*) final;
+
+	virtual
+	bool
+	on_button_press_event (GdkEventButton*) final;
 
 	virtual
 	void
-	on_row_collapsed (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path);
+	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final;
+
+	virtual
+	void
+	on_row_inserted (const Gtk::TreeModel::Path &, const Gtk::TreeModel::iterator &) final;
+
+	virtual
+	void
+	on_row_has_child_toggled (const Gtk::TreeModel::Path &, const Gtk::TreeModel::iterator &) final;
+
+	virtual
+	bool
+	on_test_expand_row (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &) final;
+
+	virtual
+	void
+	on_row_expanded (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &) final;
+
+	virtual
+	bool
+	on_test_collapse_row (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &) final;
+
+	virtual
+	void
+	on_row_collapsed (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path) final;
 
 	void
 	watch (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);

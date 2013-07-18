@@ -47,117 +47,62 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+#ifndef __TMP_GLAD2CPP_OUTLINE_TREE_VIEW_H__
+#define __TMP_GLAD2CPP_OUTLINE_TREE_VIEW_H__
 
-#ifndef __TITANIA_X3D_FIELDS_SFIMAGE_H__
-#define __TITANIA_X3D_FIELDS_SFIMAGE_H__
-
-#include "../Basic/X3DField.h"
-#include "../Types/Image.h"
+#include "../Base/X3DUserInterface.h"
+#include <gtkmm.h>
+#include <string>
 
 namespace titania {
-namespace X3D {
+namespace puck {
 
-extern template class X3DField <Image>;
+using namespace Gtk;
 
-class SFImage :
-	public X3DField <Image>
+class X3DOutlineTreeViewUI :
+	public X3DUserInterface
 {
 public:
 
-	typedef Image::array_type::scalar_type scalar_type;
-	typedef Image::size_type               size_type;
+	template <class ... Arguments>
+	X3DOutlineTreeViewUI (const std::string & filename, const Arguments & ... arguments) :
+		X3DUserInterface (m_widgetName, arguments ...),
+		connections ()
+	{ create (filename); }
 
-	using X3DField <Image>::addInterest;
-	using X3DField <Image>::setValue;
-	using X3DField <Image>::getValue;
-	using X3DField <Image>::operator =;
+	const std::string &
+	getWidgetName () const { return m_widgetName; }
 
-	SFImage ();
+	Gtk::Menu &
+	getPopupMenu () const { return *m_popupMenu; }
 
-	SFImage (const SFImage &);
+	Gtk::ImageMenuItem &
+	getEditMenuItem () const { return *m_editMenuItem; }
 
-	explicit
-	SFImage (const Image &);
+	Gtk::Window &
+	getWindow () const { return *m_window; }
 
-	SFImage (const size_type, const size_type, const size_type, const MFInt32 &);
-
-	virtual
-	SFImage*
-	clone () const final;
-
-	///  6.7.7 Add field interest.
-
-	template <class Class>
-	void
-	addInterest (Class* object, void (Class::* memberFunction) (const SFImage &)) const
-	{ addInterest (object, memberFunction, std::cref (*this)); }
-
-	template <class Class>
-	void
-	addInterest (Class & object, void (Class::* memberFunction) (const SFImage &)) const
-	{ addInterest (object, memberFunction, std::cref (*this)); }
-
-	///  Functions
-
-	void
-	setWidth (const size_type);
-
-	size_type
-	getWidth () const;
-
-	void
-	setHeight (const size_type);
-
-	size_type
-	getHeight () const;
-
-	void
-	setComponents (const size_type);
-
-	size_type
-	getComponents () const;
-
-	void
-	setArray (const MFInt32 &);
-
-	MFInt32 &
-	getArray ();
-
-	const MFInt32 &
-	getArray () const;
-
-	void
-	setValue (const size_type, const size_type, const size_type, const MFInt32 &);
-
-	void
-	getValue (size_type &, size_type &, size_type &, MFInt32 &) const;
-
-	///  @name Input operator.
-	virtual
-	void
-	fromStream (std::istream &)
-	throw (Error <INVALID_X3D>,
-	       Error <NOT_SUPPORTED>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final;
-
-	///  @name Output operator.
-	virtual
-	void
-	toStream (std::ostream &) const final;
-
-	virtual
-	void
-	dispose () final;
+	Gtk::Box &
+	getWidget () const { return *m_widget; }
 
 
 private:
 
-	using X3DField <Image>::get;
+	void
+	create (const std::string &);
+
+	static const std::string m_widgetName;
+
+	std::deque <sigc::connection> connections;
+	Glib::RefPtr <Gtk::Builder>   m_builder;
+	Gtk::Menu*                    m_popupMenu;
+	Gtk::ImageMenuItem*           m_editMenuItem;
+	Gtk::Window*                  m_window;
+	Gtk::Box*                     m_widget;
 
 };
 
-} // X3D
+} // puck
 } // titania
 
 #endif

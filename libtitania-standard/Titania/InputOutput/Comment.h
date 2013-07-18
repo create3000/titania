@@ -73,14 +73,16 @@ public:
 
 private:
 
-	basic_character <CharT, Traits> value;
-	std::basic_string <CharT>       string;
+	typedef typename std::basic_istream <CharT, Traits>::int_type int_type;
+
+	CharT                     start;
+	std::basic_string <CharT> string;
 
 };
 
 template <class CharT, class Traits>
-basic_comment <CharT, Traits>::basic_comment (const CharT & value) :
-	value (value)
+basic_comment <CharT, Traits>::basic_comment (const CharT & start) :
+	start (start)
 { }
 
 template <class CharT, class Traits>
@@ -89,27 +91,27 @@ basic_comment <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> &
 {
 	string .clear ();
 
-	if (value (istream))
+	if (istream .peek () == (int_type) start)
 	{
-		for ( ; ;)
+		istream .get ();
+
+		while (istream)
 		{
-			auto c = istream .get ();
+			int_type c = istream .peek ();
 
-			if (istream)
+			switch (c)
 			{
-				switch (c)
-				{
-					case '\r':
-					case '\n':
-						return true;
+				case -1:
+				case '\r':
+				case '\n':
+					return true;
 
-					default:
-						string .push_back (c);
-						break;
+				default:
+				{
+					string .push_back (istream .get ());
+					break;
 				}
 			}
-			else
-				return true;
 		}
 	}
 

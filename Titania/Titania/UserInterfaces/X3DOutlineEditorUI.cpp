@@ -47,7 +47,6 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-
 #include "X3DOutlineEditorUI.h"
 
 namespace titania {
@@ -65,9 +64,13 @@ X3DOutlineEditorUI::create (const std::string & filename)
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_window);
+	m_window -> set_name ("Window");
 	m_builder -> get_widget ("Menu", m_menu);
+	m_menu -> set_name ("Menu");
 	m_builder -> get_widget ("Widget", m_widget);
+	m_widget -> set_name ("Widget");
 	m_builder -> get_widget ("ScrolledWindow", m_scrolledWindow);
+	m_scrolledWindow -> set_name ("ScrolledWindow");
 
 	// Call construct handler of base class.
 	construct ();

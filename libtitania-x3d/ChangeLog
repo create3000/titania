@@ -1,3 +1,31 @@
+2013-07-18  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* SFVec3.h:
+	* SFVec4.h:
+	* Parser.h:
+	* SFVec2.h:
+	* SFImage.h:
+	* X3DField.h:
+	* X3DObject.h:
+	* Grammar.h:
+	* SFTime.cpp:
+	* Parser.cpp:
+	* Grammar.cpp:
+	* X3DScalar.h:
+	* SFMatrix4.h:
+	* SFImage.cpp:
+	* SFColor.cpp:
+	* X3DObject.cpp:
+	* SFMatrix3.h:
+	* SFString.cpp:
+	* SFRotation4.h:
+	* X3DScalar.cpp:
+	* X3DArrayField.h:
+	* SFColorRGBA.cpp:
+	* X3DFieldDefinition.h:
+	* NavigationInfo.h:
+	* NavigationInfo.cpp: 
+
 2013-07-16  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DObject.h:

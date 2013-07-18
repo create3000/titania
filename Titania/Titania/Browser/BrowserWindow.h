@@ -111,164 +111,152 @@ private:
 
 	virtual
 	void
-	on_new ();
+	on_new () final;
 
 	virtual
 	void
-	on_open ();
+	on_open () final;
 
 	virtual
 	void
-	on_save ();
+	on_save () final;
 
 	virtual
 	void
-	on_save_as ();
+	on_save_as () final;
 
 	virtual
 	void
-	on_revert_to_saved ();
+	on_revert_to_saved () final;
 
 	virtual
 	void
-	on_close ();
+	on_close () final;
 
 	/// @name File open dialog response
 
 	virtual
 	void
-	on_fileOpenDialog_response (int);
+	on_fileOpenDialog_response (int) final;
 
 	/// @name File save dialog response
 
 	virtual
 	void
-	on_fileSaveDialog_response (int);
+	on_fileSaveDialog_response (int) final;
 
 	/// @name Bar view handling
 
 	virtual
 	void
-	on_toolBar_toggled ();
+	on_toolBar_toggled () final;
 
 	virtual
 	void
-	on_sideBar_toggled ();
+	on_sideBar_toggled () final;
 
 	virtual
 	void
-	on_footer_toggled ();
-
-	virtual
-	void
-	on_statusBar_toggled ();
+	on_footer_toggled () final;
 
 	/// @name Shading
 
 	virtual
 	void
-	phong_activate ();
+	phong_activate () final;
 
 	virtual
 	void
-	gouraud_activate ();
+	gouraud_activate () final;
 
 	virtual
 	void
-	flat_activate ();
+	flat_activate () final;
 
 	virtual
 	void
-	wireframe_activate ();
+	wireframe_activate () final;
 
 	virtual
 	void
-	pointset_activate ();
+	pointset_activate () final;
 
 	///  @name Rendering quality
 
 	virtual
 	void
-	on_low_quality_activate ();
+	on_low_quality_activate () final;
 
 	virtual
 	void
-	on_medium_quality_activate ();
+	on_medium_quality_activate () final;
 
 	virtual
 	void
-	on_high_quality_activate ();
+	on_high_quality_activate () final;
 
 	///  @name Rendering properties
 
 	virtual
 	void
-	on_rendering_properties_toggled ();
+	on_rendering_properties_toggled () final;
 
 	///  @name Fullscreen modus
 
 	virtual
 	void
-	on_fullscreen_toggled ();
+	on_fullscreen_toggled () final;
 
 	///  @name Navigation
 
 	virtual
 	void
-	on_headlight_toggled ();
+	on_headlight_toggled () final;
 
 	virtual
 	void
-	on_rubberband_toggled ();
+	on_rubberband_toggled () final;
 
 	virtual
 	void
-	on_look_at_all_activate ();
+	on_look_at_all_activate () final;
 
 	void
-	on_enableInlineViewpoints_toggled ();
+	on_enableInlineViewpoints_toggled () final;
 
 	///  @name Editor handling
 
 	virtual
 	void
-	on_outline_editor_activate ();
-
-	virtual
-	void
-	on_viewpoint_editor_activate ();
-
-	virtual
-	void
-	on_motion_blur_editor_activate ();
+	on_motion_blur_editor_activate () final;
 
 	///  @name Help menu
 
 	virtual
 	void
-	on_info ();
+	on_info () final;
 
 	virtual
 	void
-	on_standard_size ();
+	on_standard_size () final;
 
 	///  @name Browser toolbar handling
 
 	virtual
 	void
-	on_hand_button_toggled ();
+	on_hand_button_toggled () final;
 
 	virtual
 	void
-	on_arrow_button_toggled ();
+	on_arrow_button_toggled () final;
 
 	virtual
 	void
-	on_look_at_all_clicked ();
+	on_look_at_all_clicked () final;
 
 	virtual
 	void
-	on_look_at_toggled ();
+	on_look_at_toggled () final;
 
 	///  @name Dialog response handling
 

@@ -1,56 +1,31 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Library/Tests/Handles/TransformHandle.wrl">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Base/X3DObject.cpp">
     <Files>
-      <File FileName="experimental/main.cpp" Line="146" Column="3" />
-      <File FileName="Titania/Titania/OutlineEditor/OutlineTreeModel.h" Line="66" Column="1" />
-      <File FileName="Titania/Titania/OutlineEditor/OutlineTreeModel.cpp" Line="113" Column="27" />
-      <File FileName="Titania/Titania/OutlineEditor/OutlineTreeView.h" Line="90" Column="1" />
-      <File FileName="Titania/Titania/OutlineEditor/OutlineTreeView.cpp" Line="426" Column="7" />
-      <File FileName="Titania/Titania/OutlineEditor/OutlineSelection.cpp" Line="130" Column="1" />
-      <File FileName="Titania/Titania/OutlineEditor/OutlineSelection.h" Line="76" Column="47" />
-      <File FileName="Library/Tests/Handles/TransformHandle.wrl" Line="40" Column="21" />
+      <File FileName="experimental/main.cpp" Line="248" Column="33" />
+      <File FileName="libtitania-standard/Titania/InputOutput/QuotedString.h" Line="101" Column="1" />
+      <File FileName="Titania/Titania/OutlineEditor/OutlineTreeView.h" Line="128" Column="1" />
+      <File FileName="Titania/Titania/OutlineEditor/OutlineTreeView.cpp" Line="94" Column="1" />
+      <File FileName="Titania/Titania/OutlineEditor/OutlineEditor.h" Line="79" Column="18" />
+      <File FileName="Titania/Titania/OutlineEditor/OutlineEditor.cpp" Line="54" Column="1" />
+      <File FileName="Titania/Titania/OutlineEditor/CellRenderer/OutlineCellRenderer.h" Line="135" Column="1" />
+      <File FileName="Titania/Titania/OutlineEditor/CellRenderer/OutlineCellRenderer.cpp" Line="58" Column="28" />
+      <File FileName="libtitania-x3d/Titania/X3D/Fields/SFString.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Base/X3DObject.cpp" Line="82" Column="9" />
+      <File FileName="libtitania-standard/Titania/InputOutput/String.h" Line="99" Column="18" />
+      <File FileName="libtitania-standard/Titania/InputOutput/Character.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-standard/Titania/InputOutput/Character.h" Line="95" Column="1" />
+      <File FileName="libtitania-standard/Titania/InputOutput/Comment.h" Line="96" Column="30" />
+      <File FileName="libtitania-standard/Titania/InputOutput/Sequence.h" Line="105" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DArrayField.h" Line="707" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="miscellaneous" expanded="True">
-            <Node name="uncrustify-all" expanded="True" />
-          </Node>
-          <Node name="build" expanded="True">
-            <Node name="debian" expanded="True" />
-          </Node>
           <Node name="experimental" expanded="True" />
-          <Node name="Library" expanded="True">
-            <Node name="Examples" expanded="True">
-              <Node name="Astronomy" expanded="True">
-                <Node name="stage" expanded="True" />
-              </Node>
-              <Node name="Pong" expanded="True">
-                <Node name="stage" expanded="True" />
-              </Node>
-            </Node>
-            <Node name="Models" expanded="True">
-              <Node name="People" expanded="True" />
-            </Node>
-            <Node name="Tests" expanded="True">
-              <Node name="Basic" expanded="True" />
-              <Node name="EnvironmentalSensors" expanded="True" />
-              <Node name="Grouping" expanded="True" />
-              <Node name="Handles" expanded="True">
-                <Node name="TransformHandle.wrl" selected="True" />
-              </Node>
-              <Node name="Navigation" expanded="True" />
-              <Node name="PointingDeviceSensor" expanded="True" />
-              <Node name="PROTO" expanded="True">
-                <Node name="Particle" expanded="True" />
-              </Node>
-              <Node name="Scripting" expanded="True" />
-            </Node>
-          </Node>
-          <Node name="libtitania-opengl-surface" expanded="True">
+          <Node name="libtitania-standard" expanded="True">
             <Node name="Titania" expanded="True">
-              <Node name="OpenGL" expanded="True" />
+              <Node name="InputOutput" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
@@ -61,53 +36,38 @@
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
-                <Node name="Base" expanded="True" />
+                <Node name="Base" expanded="True">
+                  <Node name="X3DObject.cpp" selected="True" />
+                </Node>
                 <Node name="Basic" expanded="True" />
                 <Node name="Bits" expanded="True" />
                 <Node name="Browser" expanded="True">
+                  <Node name="Properties" expanded="True" />
                   <Node name="Viewer" expanded="True" />
                 </Node>
                 <Node name="Components" expanded="True">
-                  <Node name="CADGeometry" expanded="True" />
-                  <Node name="Core" expanded="True" />
-                  <Node name="CubeMapTexturing" expanded="True" />
-                  <Node name="EnvironmentalEffects" expanded="True" />
-                  <Node name="EnvironmentalSensor" expanded="True" />
-                  <Node name="Geometry2D" expanded="True" />
-                  <Node name="Geometry3D" expanded="True" />
-                  <Node name="Grouping" expanded="True" />
-                  <Node name="Layering" expanded="True" />
-                  <Node name="Layout" expanded="True" />
                   <Node name="Navigation" expanded="True" />
-                  <Node name="Networking" expanded="True" />
-                  <Node name="PointingDeviceSensor" expanded="True" />
-                  <Node name="Rendering" expanded="True" />
-                  <Node name="Time" expanded="True" />
                 </Node>
                 <Node name="Execution" expanded="True" />
                 <Node name="Fields" expanded="True" />
-                <Node name="Handles" expanded="True" />
                 <Node name="JavaScript" expanded="True">
                   <Node name="SpiderMonkey" expanded="True">
                     <Node name="Fields" expanded="True" />
                   </Node>
                 </Node>
                 <Node name="Parser" expanded="True" />
-                <Node name="Rendering" expanded="True" />
-                <Node name="Routing" expanded="True" />
+                <Node name="Prototype" expanded="True" />
               </Node>
             </Node>
           </Node>
           <Node name="Papers" expanded="True">
+            <Node name="CosmoWorlds" expanded="True" />
             <Node name="xxx" expanded="True" />
           </Node>
           <Node name="Titania" expanded="True">
-            <Node name="config" expanded="True" />
             <Node name="share" expanded="True">
               <Node name="titania" expanded="True">
-                <Node name="pages" expanded="True">
-                  <Node name="about" expanded="True" />
-                </Node>
+                <Node name="ui" expanded="True" />
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
@@ -115,7 +75,9 @@
               <Node name="Browser" expanded="True" />
               <Node name="HistoryEditor" expanded="True" />
               <Node name="MotionBlurEditor" expanded="True" />
-              <Node name="OutlineEditor" expanded="True" />
+              <Node name="OutlineEditor" expanded="True">
+                <Node name="CellRenderer" expanded="True" />
+              </Node>
               <Node name="UserInterfaces" expanded="True" />
               <Node name="ViewpointEditor" expanded="True" />
             </Node>

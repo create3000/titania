@@ -357,7 +357,7 @@ X3DBrowserWindow::set_console ()
 	for (const auto & string : getBrowser () -> getConsole () -> string_changed ())
 		buffer -> insert (buffer -> end (), string .getValue ());
 
-	buffer -> move_mark (buffer -> get_insert (), buffer -> end ());
+	buffer -> place_cursor (buffer -> end ());
 
 	getConsole () .scroll_to (buffer -> get_insert ());
 }

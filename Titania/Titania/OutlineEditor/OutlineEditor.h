@@ -74,12 +74,9 @@ private:
 
 	virtual
 	void
-	initialize ();
+	initialize () final;
 
 	OutlineTreeView treeview;
-
-	bool
-	on_button_release_event (GdkEventButton*);
 
 };
 

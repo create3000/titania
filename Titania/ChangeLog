@@ -1,3 +1,38 @@
+2013-07-18  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* style.css:
+	* none.png:
+	* BrowserWindow.h:
+	* BrowserWindow.cpp:
+	* BrowserWindow.ui:
+	* OutlineEditor.ui:
+	* OutlineTreeView.ui:
+	* X3DBrowserWindow.cpp:
+	* OutlineEditor.h:
+	* X3DConsoleUI.h:
+	* OutlineEditor.cpp:
+	* X3DConsoleUI.cpp:
+	* OutlineTreeView.h:
+	* OutlineTreeModel.h:
+	* OutlineTreeView.cpp:
+	* X3DBrowserWindowUI.h:
+	* X3DHistoryEditorUI.h:
+	* X3DOutlineEditorUI.h:
+	* X3DHistoryEditorUI.cpp:
+	* X3DOutlineEditorUI.cpp:
+	* X3DBrowserWindowUI.cpp:
+	* X3DViewpointEditorUI.h:
+	* X3DOutlineTreeViewUI.h:
+	* X3DMotionBlurEditorUI.h:
+	* X3DOutlineTreeViewUI.cpp:
+	* X3DViewpointEditorUI.cpp:
+	* X3DMotionBlurEditorUI.cpp:
+	* TextViewEditable.h:
+	* TextViewEditable.cpp:
+	* OutlineCellRenderer.h:
+	* OutlineCellRenderer.cpp: 
+
 2013-07-16  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* OutlineCellRenderer.h:

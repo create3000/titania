@@ -63,6 +63,10 @@ class Grammar
 {
 public:
 
+	static
+	bool
+	Int32 (std::istream &, int32_t &);
+
 	///  @name General
 	static io::sequence whitespaces;
 	static io::comment  comment;
@@ -109,18 +113,22 @@ public:
 	static io::character Period;
 	static io::character Colon;
 
-	///  @name Values
-	static io::string hex;
-	static io::string HEX;
-
 	static io::quoted_string string;
 
 
 private:
 
 	static
+	bool
+	Hex (std::istream &, uint32_t &);
+
+	static
 	std::set <std::string>
 	getFieldType ();
+
+	///  @name Values
+	static io::string hex;
+	static io::string HEX;
 
 };
 

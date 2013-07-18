@@ -108,6 +108,21 @@ io::string Grammar::HEX ("0X");
 
 io::quoted_string Grammar::string ('\"');
 
+bool
+Grammar::Int32 (std::istream & istream, int32_t & _value)
+{
+	if (hex (istream) or HEX (istream))
+		return Hex (istream, (uint32_t &)_value);
+
+	return istream >> std::dec >> _value;
+}
+
+bool
+Grammar::Hex (std::istream & istream, uint32_t & value)
+{
+	return istream >> std::hex >> value;
+}
+
 std::set <std::string>
 Grammar::getFieldType ()
 {

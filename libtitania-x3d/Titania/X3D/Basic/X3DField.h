@@ -53,6 +53,7 @@
 
 #include "../Basic/X3DFieldDefinition.h"
 #include "../InputOutput/Generator.h"
+#include "../Parser/Grammar.h"
 #include <cassert>
 
 namespace titania {

@@ -87,10 +87,11 @@ template <class CharT, class Traits>
 bool
 basic_character <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> & istream)
 {
-	if (istream .get () == (int_type) value)
+	if (istream .peek () == (int_type) value)
+	{
+		istream .get ();
 		return true;
-
-	istream .unget ();
+	}
 
 	return false;
 }

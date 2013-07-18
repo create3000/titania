@@ -59,12 +59,19 @@ constexpr int NAME_PAD_X        = 1;
 constexpr int ACCESS_TYPE_PAD_X = 8;
 
 OutlineCellRenderer::OutlineCellRenderer (const X3D::X3DSFNode <X3D::Browser> & browser) :
-	        Glib::ObjectBase (typeid (OutlineCellRenderer)),
-	       Gtk::CellRenderer (),
-	           data_property (*this, "tree-data", nullptr),
-	foreground_rgba_property (*this, "foreground-rgba", Gdk::RGBA ()),
-	 foreground_set_property (*this, "foreground-set", false)
+	             Glib::ObjectBase (typeid (OutlineCellRenderer)),
+	        Gtk::CellRendererText (),
+	                data_property (*this, "tree-data", nullptr),
+	            cellrenderer_icon (),
+	cellrenderer_access_type_icon (),
+	                    noneImage (),
+	                baseNodeImage (),
+	              fieldTypeImages (),
+	             accessTypeImages (),
+	                     textview ()
 {
+	// Images
+
 	noneImage     = Gdk::Pixbuf::create_from_file (puck::get_icon ("none.png"));
 	baseNodeImage = Gdk::Pixbuf::create_from_file (puck::get_icon ("Node.png"));
 
@@ -90,8 +97,12 @@ OutlineCellRenderer::OutlineCellRenderer (const X3D::X3DSFNode <X3D::Browser> & 
 	accessTypeImages [X3D::inputOutput]    .emplace_back (Gdk::Pixbuf::create_from_file (puck::get_icon ("inputOutput.2.1.png")));
 	accessTypeImages [X3D::inputOutput]    .emplace_back (Gdk::Pixbuf::create_from_file (puck::get_icon ("inputOutput.2.2.png")));
 
-	cellrenderer_icon .set_alignment (0, 0.5);
+	// CellRendererPixbuf
+
+	cellrenderer_icon             .set_alignment (0, 0.5);
 	cellrenderer_access_type_icon .set_alignment (0, 0.5);
+
+	// Signals
 
 	data_property .get_proxy () .signal_changed () .connect (sigc::mem_fun (this, &OutlineCellRenderer::set_data));
 }
@@ -105,18 +116,24 @@ OutlineCellRenderer::set_data ()
 	{
 		case OutlineIterType::X3DFieldValue:
 		{
-			cellrenderer_name .property_text () = get_field_value ();
+			property_editable () = true;
+			property_text ()     = get_field_value ();
+			set_alignment (0, 0);
 			break;
 		}
 		case OutlineIterType::X3DField:
 		{
-			cellrenderer_name .property_text ()               = get_object () -> getName ();
+			property_editable ()                              = false;
+			property_text ()                                  = get_object () -> getName ();
 			cellrenderer_access_type_icon .property_pixbuf () = get_access_type_icon ();
+			set_alignment (0, 0.5);
 			break;
 		}
 		case OutlineIterType::X3DBaseNode:
 		{
-			cellrenderer_name .property_markup () = get_node_name ();
+			property_editable () = false;
+			property_markup ()   = get_node_name ();
+			set_alignment (0, 0.5);
 			break;
 		}
 	}
@@ -217,6 +234,7 @@ OutlineCellRenderer::get_node_name () const
 }
 
 template <class Type>
+static
 std::string
 array_to_string (const Type & array)
 {
@@ -245,9 +263,6 @@ OutlineCellRenderer::get_field_value () const
 	{
 		case X3D::X3DConstants::SFNode:
 			return "";
-
-		case X3D::X3DConstants::SFString:
-			return *static_cast <X3D::SFString*> (field);
 
 		case X3D::X3DConstants::MFBool:
 			return array_to_string (*static_cast <X3D::MFBool*> (field));
@@ -317,6 +332,12 @@ OutlineCellRenderer::get_field_value () const
 	}
 }
 
+bool
+OutlineCellRenderer::is_array () const
+{
+	return static_cast <X3D::X3DFieldDefinition*> (get_object ()) -> isArray ();
+}
+
 void
 OutlineCellRenderer::get_preferred_width_vfunc (Gtk::Widget & widget, int & minimum_width, int & natural_width) const
 {
@@ -326,17 +347,23 @@ OutlineCellRenderer::get_preferred_width_vfunc (Gtk::Widget & widget, int & mini
 	int minimum = 0;
 	int natural = 0;
 
+	// Icon
+
 	{
 		cellrenderer_icon .get_preferred_width (widget, minimum, natural);
 		minimum_width += minimum;
 		natural_width += natural;
 	}
 
+	// Name or value
+
 	{
-		cellrenderer_name .get_preferred_width (widget, minimum, natural);
+		Gtk::CellRendererText::get_preferred_width_vfunc (widget, minimum, natural);
 		minimum_width += minimum;
 		natural_width += natural;
 	}
+
+	// Access type and routes
 
 	if (get_data_type () == OutlineIterType::X3DField)
 	{
@@ -344,6 +371,8 @@ OutlineCellRenderer::get_preferred_width_vfunc (Gtk::Widget & widget, int & mini
 		minimum_width += minimum;
 		natural_width += natural;
 	}
+
+	// Padding
 
 	minimum_width += NAME_PAD_X;
 	natural_width += NAME_PAD_X;
@@ -361,17 +390,23 @@ OutlineCellRenderer::get_preferred_height_for_width_vfunc (Gtk::Widget & widget,
 	int minimum = 0;
 	int natural = 0;
 
+	// Icon
+
 	{
 		cellrenderer_access_type_icon .get_preferred_height_for_width (widget, width, minimum, natural);
 		minimum_height = std::max (minimum, minimum_height);
 		natural_height = std::max (natural, natural_height);
 	}
 
+	// Name or value
+
 	{
-		cellrenderer_name .get_preferred_height_for_width (widget, width, minimum, natural);
+		Gtk::CellRendererText::get_preferred_height_for_width_vfunc (widget, width, minimum, natural);
 		minimum_height = std::max (minimum, minimum_height);
 		natural_height = std::max (natural, natural_height);
 	}
+
+	// Access type and routes
 
 	if (get_data_type () == OutlineIterType::X3DField)
 	{
@@ -390,17 +425,23 @@ OutlineCellRenderer::get_preferred_height_vfunc (Gtk::Widget & widget, int & min
 	int minimum = 0;
 	int natural = 0;
 
+	// Icon
+
 	{
 		cellrenderer_icon .get_preferred_height (widget, minimum, natural);
 		minimum_height = std::max (minimum, minimum_height);
 		natural_height = std::max (natural, natural_height);
 	}
 
+	// Name or value
+
 	{
-		cellrenderer_name .get_preferred_height (widget, minimum, natural);
+		Gtk::CellRendererText::get_preferred_height_vfunc (widget, minimum, natural);
 		minimum_height = std::max (minimum, minimum_height);
 		natural_height = std::max (natural, natural_height);
 	}
+
+	// Access type and routes
 
 	if (get_data_type () == OutlineIterType::X3DField)
 	{
@@ -419,17 +460,23 @@ OutlineCellRenderer::get_preferred_width_for_height_vfunc (Gtk::Widget & widget,
 	int minimum = 0;
 	int natural = 0;
 
+	// Icon
+
 	{
 		cellrenderer_icon .get_preferred_width_for_height (widget, height, minimum, natural);
 		minimum_width += minimum;
 		natural_width += natural;
 	}
 
+	// Name or value
+
 	{
-		cellrenderer_name .get_preferred_width_for_height (widget, height, minimum, natural);
+		Gtk::CellRendererText::get_preferred_width_for_height_vfunc (widget, height, minimum, natural);
 		minimum_width += minimum;
 		natural_width += natural;
 	}
+
+	// Access type and routes
 
 	if (get_data_type () == OutlineIterType::X3DField)
 	{
@@ -438,11 +485,78 @@ OutlineCellRenderer::get_preferred_width_for_height_vfunc (Gtk::Widget & widget,
 		natural_width += natural;
 	}
 
+	// Padding
+
 	minimum_width += NAME_PAD_X;
 	natural_width += NAME_PAD_X;
 
 	minimum_width += ACCESS_TYPE_PAD_X;
 	natural_width += ACCESS_TYPE_PAD_X;
+}
+
+Gtk::CellEditable*
+OutlineCellRenderer::start_editing_vfunc (GdkEvent* event,
+                                          Gtk::Widget & widget,
+                                          const Glib::ustring & path,
+                                          const Gdk::Rectangle & background_area,
+                                          const Gdk::Rectangle & cell_area,
+                                          Gtk::CellRendererState flags)
+{
+	int icon_width    = 0;
+	int natural_width = 0;
+
+	cellrenderer_icon .get_preferred_width (widget, icon_width, natural_width);
+
+	int x_pad = icon_width + NAME_PAD_X + property_xpad ();
+	
+	switch (get_data_type ())
+	{
+		case OutlineIterType::X3DFieldValue:
+		{
+			auto field = static_cast <X3D::X3DFieldDefinition*> (get_object ());
+
+			textview .reset (new TextViewEditable (path, field -> isArray () or dynamic_cast <X3D::SFString*> (field)));
+			textview -> set_text (property_text ());
+			textview -> set_margin_left (x_pad);
+			textview -> set_margin_top (property_ypad ());
+			textview -> set_margin_bottom (property_ypad ());
+			textview -> set_size_request (cell_area .get_width () - x_pad, cell_area .get_height ());
+
+			textview -> signal_editing_done () .connect (sigc::mem_fun (this, &OutlineCellRenderer::on_editing_done));
+
+			return textview .get ();
+		}
+		default:
+			break;
+	}
+
+	return nullptr;
+}
+
+void
+OutlineCellRenderer::on_editing_done ()
+{
+	if (textview -> property_editing_canceled ())
+		return;
+	
+	std::string text = textview -> get_text ();
+	
+	switch (get_data_type ())
+	{
+		case OutlineIterType::X3DFieldValue:
+		{
+			if (get_object () -> fromString (text))
+			{
+				textview -> remove_widget ();
+				edited (textview -> get_path (), text);
+			}
+
+			break;
+		}
+		case OutlineIterType::X3DField:
+		case OutlineIterType::X3DBaseNode:
+			break;
+	}
 }
 
 void
@@ -459,6 +573,8 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 	int minimum_width = 0;
 	int natural_width = 0;
 
+	// Icon
+
 	{
 		cellrenderer_icon .render (context, widget, background_area, cell_area, flags);
 		cellrenderer_icon .get_preferred_width (widget, minimum_width, natural_width);
@@ -467,30 +583,28 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 		width -= minimum_width;
 	}
 
+	// Name or value
+
 	{
 		x     += NAME_PAD_X;
 		width -= NAME_PAD_X;
 
-		Gdk::Rectangle background_area (x, y, width, height);
 		Gdk::Rectangle cell_area (x, y, width, height);
-
-		cellrenderer_name .property_foreground_rgba () = property_foreground_rgba ();
-		cellrenderer_name .property_foreground_set ()  = property_foreground_set ();
-		cellrenderer_name .render (context, widget, background_area, cell_area, flags);
-		cellrenderer_name .get_preferred_width (widget, minimum_width, natural_width);
+		Gtk::CellRendererText::render_vfunc (context, widget, background_area, cell_area, flags);
+		Gtk::CellRendererText::get_preferred_width_vfunc (widget, minimum_width, natural_width);
 
 		x     += minimum_width;
 		width -= minimum_width;
 	}
+
+	// Access type and routes
 
 	if (get_data_type () == OutlineIterType::X3DField)
 	{
 		x     += ACCESS_TYPE_PAD_X;
 		width -= ACCESS_TYPE_PAD_X;
 
-		Gdk::Rectangle background_area (x, y, width, height);
 		Gdk::Rectangle cell_area (x, y, width, height);
-
 		cellrenderer_access_type_icon .render (context, widget, background_area, cell_area, flags);
 	}
 }

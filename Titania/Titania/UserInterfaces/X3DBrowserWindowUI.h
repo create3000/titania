@@ -47,9 +47,8 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-
-#ifndef __TITANIA_USER_INTERFACES_X3DBROWSER_WINDOW_UI_H__
-#define __TITANIA_USER_INTERFACES_X3DBROWSER_WINDOW_UI_H__
+#ifndef __TMP_GLAD2CPP_BROWSER_WINDOW_H__
+#define __TMP_GLAD2CPP_BROWSER_WINDOW_H__
 
 #include "../Base/X3DUserInterface.h"
 #include <gtkmm.h>
@@ -74,12 +73,6 @@ public:
 	const std::string &
 	getWidgetName () const { return m_widgetName; }
 
-	const Glib::RefPtr <Gtk::FileFilter> &
-	getFileFilerX3D () const { return m_fileFilerX3D; }
-
-	const Glib::RefPtr <Gtk::FileFilter> &
-	getFileFilterAllFiles () const { return m_fileFilterAllFiles; }
-
 	const Glib::RefPtr <Gtk::IconFactory> &
 	getIconFactory () const { return m_iconFactory; }
 
@@ -94,6 +87,12 @@ public:
 
 	const Glib::RefPtr <Gtk::Action> &
 	getSaveAction () const { return m_saveAction; }
+
+	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilerX3D () const { return m_fileFilerX3D; }
+
+	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilterAllFiles () const { return m_fileFilterAllFiles; }
 
 	const Glib::RefPtr <Gtk::AccelGroup> &
 	getMenuAccelGroup () const { return m_menuAccelGroup; }
@@ -152,9 +151,6 @@ public:
 	Gtk::CheckMenuItem &
 	getFooterMenuItem () const { return *m_footerMenuItem; }
 
-	Gtk::CheckMenuItem &
-	getStatusBarMenuItem () const { return *m_statusBarMenuItem; }
-
 	Gtk::MenuItem &
 	getShadingMenuItem () const { return *m_shadingMenuItem; }
 
@@ -210,16 +206,7 @@ public:
 	getToolsMenuItem () const { return *m_toolsMenuItem; }
 
 	Gtk::MenuItem &
-	getOutlineEditorMenuItem () const { return *m_outlineEditorMenuItem; }
-
-	Gtk::MenuItem &
-	getViewpointEditorMenuItem () const { return *m_viewpointEditorMenuItem; }
-
-	Gtk::MenuItem &
 	getMotionBlurMenuItem () const { return *m_motionBlurMenuItem; }
-
-	Gtk::MenuItem &
-	getConsoleMenuItem () const { return *m_consoleMenuItem; }
 
 	Gtk::MenuItem &
 	getHelpMenuItem () const { return *m_helpMenuItem; }
@@ -299,9 +286,6 @@ public:
 	Gtk::Box &
 	getOutlineEditorBox () const { return *m_outlineEditorBox; }
 
-	Gtk::Statusbar &
-	getStatusBar () const { return *m_statusBar; }
-
 	Gtk::MessageDialog &
 	getMessageDialog () const { return *m_messageDialog; }
 
@@ -348,10 +332,6 @@ public:
 	virtual
 	void
 	on_footer_toggled () = 0;
-
-	virtual
-	void
-	on_statusBar_toggled () = 0;
 
 	virtual
 	void
@@ -411,14 +391,6 @@ public:
 
 	virtual
 	void
-	on_outline_editor_activate () = 0;
-
-	virtual
-	void
-	on_viewpoint_editor_activate () = 0;
-
-	virtual
-	void
 	on_motion_blur_editor_activate () = 0;
 
 	virtual
@@ -459,13 +431,13 @@ private:
 
 	std::deque <sigc::connection>   connections;
 	Glib::RefPtr <Gtk::Builder>     m_builder;
-	Glib::RefPtr <Gtk::FileFilter>  m_fileFilerX3D;
-	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterAllFiles;
 	Glib::RefPtr <Gtk::IconFactory> m_iconFactory;
 	Glib::RefPtr <Gtk::Action>      m_newAction;
 	Glib::RefPtr <Gtk::Action>      m_openAction;
 	Glib::RefPtr <Gtk::Action>      m_revertAction;
 	Glib::RefPtr <Gtk::Action>      m_saveAction;
+	Glib::RefPtr <Gtk::FileFilter>  m_fileFilerX3D;
+	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterAllFiles;
 	Glib::RefPtr <Gtk::AccelGroup>  m_menuAccelGroup;
 	Gtk::FileChooserDialog*         m_fileOpenDialog;
 	Gtk::FileChooserDialog*         m_fileSaveDialog;
@@ -485,7 +457,6 @@ private:
 	Gtk::CheckMenuItem*             m_toolBarMenuItem;
 	Gtk::CheckMenuItem*             m_sideBarMenuItem;
 	Gtk::CheckMenuItem*             m_footerMenuItem;
-	Gtk::CheckMenuItem*             m_statusBarMenuItem;
 	Gtk::MenuItem*                  m_shadingMenuItem;
 	Gtk::RadioMenuItem*             m_phongMenuItem;
 	Gtk::RadioMenuItem*             m_gouraudMenuItem;
@@ -504,10 +475,7 @@ private:
 	Gtk::MenuItem*                  m_lookAtAllMenuItem;
 	Gtk::CheckMenuItem*             m_enableInlineViewpointsMenuItem;
 	Gtk::MenuItem*                  m_toolsMenuItem;
-	Gtk::MenuItem*                  m_outlineEditorMenuItem;
-	Gtk::MenuItem*                  m_viewpointEditorMenuItem;
 	Gtk::MenuItem*                  m_motionBlurMenuItem;
-	Gtk::MenuItem*                  m_consoleMenuItem;
 	Gtk::MenuItem*                  m_helpMenuItem;
 	Gtk::ImageMenuItem*             m_infoMenuItem;
 	Gtk::ImageMenuItem*             m_standardSizeMenuItem;
@@ -534,7 +502,6 @@ private:
 	Gtk::Box*                       m_historyEditorBox;
 	Gtk::Box*                       m_viewpointEditorBox;
 	Gtk::Box*                       m_outlineEditorBox;
-	Gtk::Statusbar*                 m_statusBar;
 	Gtk::MessageDialog*             m_messageDialog;
 
 };

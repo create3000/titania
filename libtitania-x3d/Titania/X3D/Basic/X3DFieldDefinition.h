@@ -89,6 +89,11 @@ public:
 	operator = (const X3DFieldDefinition &);
 
 	virtual
+	bool
+	isArray () const
+	{ return false; }
+
+	virtual
 	X3DConstants::FieldType
 	getType () const = 0;
 

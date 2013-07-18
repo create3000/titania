@@ -510,7 +510,14 @@ throw (Error <INVALID_X3D>,
        Error <NOT_SUPPORTED>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
-{ }
+{
+	Grammar::whitespaces (istream);
+
+	istream >> get ();
+
+	if (istream)
+		addEvent ();
+}
 
 template <class ValueType>
 inline

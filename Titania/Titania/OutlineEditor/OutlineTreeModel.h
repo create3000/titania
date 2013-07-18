@@ -76,7 +76,32 @@ public:
 		SELECTED_COLUMN,
 	};
 
-	OutlineTreeModel (const X3D::X3DSFNode <X3D::Browser> &);
+//	class Columns :
+//		public Gtk::TreeModel::ColumnRecord
+//	{
+//	public:
+//
+//		Columns ()
+//		{
+//			add (col_id);
+//			add (col_name);
+//			add (col_price);
+//			add (col_stock);
+//		}
+//
+//		~Columns () { }
+//
+//		typedef Gtk::TreeModelColumn <OutlineTreeData*> DataColumn;
+//		typedef Gtk::TreeModelColumn <bool>             SelectedColumn;
+//
+//		Gtk::TreeModelColumn <unsigned>      col_id;
+//		Gtk::TreeModelColumn <Glib::ustring> col_name;
+//		Gtk::TreeModelColumn <float>         col_price;
+//		Gtk::TreeModelColumn <bool>          col_stock;
+//
+//		DataColumn     data_column;
+//		SelectedColumn selected_column;
+//	};
 
 	static
 	Glib::RefPtr <OutlineTreeModel>
@@ -111,6 +136,8 @@ public:
 
 
 private:
+
+	OutlineTreeModel (const X3D::X3DSFNode <X3D::Browser> &);
 
 	void
 	set_data (iterator &, OutlineIterType type, X3D::X3DChildObject* object, size_t index, const OutlineTreeData::parents_type & parents) const;
@@ -222,8 +249,8 @@ private:
 	void
 	on_rows_reordered (const Path &, const iterator &, int*);
 
-	typedef Gtk::TreeModelColumn <OutlineTreeData*>            DataColumn;
-	typedef Gtk::TreeModelColumn <bool>                        SelectedColumn;
+	typedef Gtk::TreeModelColumn <OutlineTreeData*> DataColumn;
+	typedef Gtk::TreeModelColumn <bool>             SelectedColumn;
 
 	X3D::X3DSFNode <X3D::X3DExecutionContext> executionContext;
 
