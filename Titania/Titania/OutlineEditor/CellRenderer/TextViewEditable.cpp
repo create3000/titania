@@ -55,13 +55,13 @@
 namespace titania {
 namespace puck {
 
-TextViewEditable::TextViewEditable (const Glib::ustring & path, bool multi) :
+TextViewEditable::TextViewEditable (const Glib::ustring & path, bool multiline) :
 	         Glib::ObjectBase (typeid (TextViewEditable)),
 	      Gtk::ScrolledWindow (),
 	        Gtk::CellEditable (),
 	editing_canceled_property (*this, "editing-canceled", false),
 	                 textview (),
-	                    multi (multi),
+	                multiline (multiline),
 	                     path (path)
 {
 	set_policy (Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
@@ -102,7 +102,7 @@ TextViewEditable::on_textview_focus_out_event (GdkEventFocus* event)
 bool
 TextViewEditable::on_textview_key_press_event (GdkEventKey* event)
 {
-	if (multi)
+	if (multiline)
 	{
 		if (event -> state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK) and (event -> keyval == GDK_KEY_Return or event -> keyval == GDK_KEY_KP_Enter))
 		{

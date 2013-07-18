@@ -1,5 +1,9 @@
 2013-07-18  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DArrayField.h: 
+
+2013-07-18  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* SFVec3.h:
 	* SFVec4.h:
 	* Parser.h:

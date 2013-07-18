@@ -109,7 +109,7 @@ private:
 
 	Glib::Property <bool> editing_canceled_property;
 	Gtk::TextView         textview;
-	bool                  multi;
+	bool                  multiline;
 	const Glib::ustring   path;
 
 };

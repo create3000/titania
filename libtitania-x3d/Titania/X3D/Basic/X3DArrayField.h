@@ -697,16 +697,36 @@ throw (Error <INVALID_X3D>,
 {
 	if (istream)
 	{
-		X3DArrayField array;
-		ValueType     value;
+		Grammar::whitespaces (istream);
+		
+		if (Grammar::OpenBracket (istream))
+		{
+			X3DArrayField array;
+			ValueType     value;
 
-		while (istream >> value)
-			array .emplace_back (value);
+			while (istream >> value)
+				array .emplace_back (value);
 
-		istream .clear (~std::ios_base::failbit & istream .rdstate ());
+			istream .clear (~std::ios_base::failbit & istream .rdstate ());
 
-		if (istream)
-			*this = array;
+			if (Grammar::CloseBracket (istream))
+			{
+				*this = array;
+				return;
+			}
+			else
+				istream .setstate (std::ios_base::failbit);
+		}
+		else
+		{
+			ValueType value;
+
+			if (istream >> value)
+			{
+				emplace_back (value);
+				return;
+			}
+		}
 	}
 }
 

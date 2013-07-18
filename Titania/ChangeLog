@@ -1,5 +1,12 @@
 2013-07-18  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* TextViewEditable.h:
+	* TextViewEditable.cpp:
+	* OutlineCellRenderer.h:
+	* OutlineCellRenderer.cpp: 
+
+2013-07-18  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* style.css:
 	* none.png:

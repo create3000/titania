@@ -539,16 +539,16 @@ OutlineCellRenderer::on_editing_done ()
 	if (textview -> property_editing_canceled ())
 		return;
 	
-	std::string text = textview -> get_text ();
-	
 	switch (get_data_type ())
 	{
 		case OutlineIterType::X3DFieldValue:
 		{
-			if (get_object () -> fromString (text))
+			std::string string = textview -> get_text ();
+			
+			if (set_field_value (string))
 			{
 				textview -> remove_widget ();
-				edited (textview -> get_path (), text);
+				edited (textview -> get_path (), string);
 			}
 
 			break;
@@ -557,6 +557,17 @@ OutlineCellRenderer::on_editing_done ()
 		case OutlineIterType::X3DBaseNode:
 			break;
 	}
+}
+
+bool
+OutlineCellRenderer::set_field_value (const std::string & string)
+{
+	auto field = static_cast <X3D::X3DFieldDefinition*> (get_object ());
+
+	if (field -> isArray ())
+		return field -> fromString ("[" + string + "]");
+
+	return field -> fromString (string);
 }
 
 void

@@ -134,6 +134,9 @@ private:
 	void
 	on_editing_done ();
 
+	bool
+	set_field_value (const std::string &);
+
 	virtual
 	void
 	render_vfunc (const Cairo::RefPtr <Cairo::Context> &, Gtk::Widget &, const Gdk::Rectangle &, const Gdk::Rectangle &, Gtk::CellRendererState) final;
