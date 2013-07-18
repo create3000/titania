@@ -51,6 +51,7 @@
 #ifndef __TITANIA_OUTLINE_EDITOR_CELL_RENDERER_TEXT_VIEW_EDITABLE_H__
 #define __TITANIA_OUTLINE_EDITOR_CELL_RENDERER_TEXT_VIEW_EDITABLE_H__
 
+#include <Titania/X3D.h>
 #include <gtkmm.h>
 
 namespace titania {
@@ -61,7 +62,7 @@ class TextViewEditable :
 {
 public:
 
-	TextViewEditable (const Glib::ustring &, bool = true);
+	TextViewEditable (X3D::X3DChildObject* const, const Glib::ustring &, bool = true);
 
 	// Properties
 	Glib::Property <bool> &
@@ -77,11 +78,15 @@ public:
 	{ textview .get_buffer () -> set_text (value); }
 
 	Glib::ustring
-	get_text ()
+	get_text () const
 	{ return textview .get_buffer () -> get_text (); }
 
+	X3D::X3DChildObject*
+	get_object () const
+	{ return object; }
+
 	const Glib::ustring &
-	get_path ()
+	get_path () const
 	{ return path; }
 
 	virtual
@@ -109,6 +114,7 @@ private:
 
 	Glib::Property <bool> editing_canceled_property;
 	Gtk::TextView         textview;
+	X3D::X3DChildObject* const object;
 	bool                  multiline;
 	const Glib::ustring   path;
 

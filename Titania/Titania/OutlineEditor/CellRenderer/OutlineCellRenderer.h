@@ -135,7 +135,7 @@ private:
 	on_editing_done ();
 
 	bool
-	set_field_value (const std::string &);
+	set_field_value (X3D::X3DChildObject* const, const std::string &);
 
 	virtual
 	void

@@ -183,7 +183,7 @@ private:
 	unwatch (bool, const OutlineTreeData*);
 
 	void
-	set_field (const Gtk::TreeModel::Path &);
+	row_changed (const Gtk::TreeModel::Path &);
 
 	void
 	collapse_field (X3D::X3DFieldDefinition* const field, const Gtk::TreeModel::Path &, size_t);
