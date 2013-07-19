@@ -171,6 +171,12 @@ private:
 	on_row_collapsed (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path) final;
 
 	void
+	watch_expanded (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
+
+	void
+	watch_children (const Gtk::TreeModel::iterator &);
+
+	void
 	watch (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
 
 	void
@@ -183,13 +189,13 @@ private:
 	unwatch (bool, const OutlineTreeData*);
 
 	void
+	row_has_child_toggled (const Gtk::TreeModel::Path &);
+
+	void
 	row_changed (const Gtk::TreeModel::Path &);
 
 	void
 	collapse_field (X3D::X3DFieldDefinition* const field, const Gtk::TreeModel::Path &, size_t);
-
-	void
-	set_children (const Gtk::TreeModel::Path &);
 
 	void
 	collapse_clone (const Gtk::TreeModel::iterator &);

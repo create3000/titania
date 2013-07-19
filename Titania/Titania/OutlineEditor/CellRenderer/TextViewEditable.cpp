@@ -55,13 +55,13 @@
 namespace titania {
 namespace puck {
 
-TextViewEditable::TextViewEditable (X3D::X3DChildObject* const object, const Glib::ustring & path, bool multiline) :
+TextViewEditable::TextViewEditable (OutlineTreeData* const data, const Glib::ustring & path, bool multiline) :
 	         Glib::ObjectBase (typeid (TextViewEditable)),
 	      Gtk::ScrolledWindow (),
 	        Gtk::CellEditable (),
 	editing_canceled_property (*this, "editing-canceled", false),
 	                 textview (),
-	                   object (object),
+	                     data (data),
 	                multiline (multiline),
 	                     path (path)
 {

@@ -515,7 +515,7 @@ OutlineCellRenderer::start_editing_vfunc (GdkEvent* event,
 		{
 			auto field = static_cast <X3D::X3DFieldDefinition*> (get_object ());
 
-			textview .reset (new TextViewEditable (field, path, field -> isArray () or dynamic_cast <X3D::SFString*> (field)));
+			textview .reset (new TextViewEditable (property_data (), path, field -> isArray () or dynamic_cast <X3D::SFString*> (field)));
 			textview -> set_text (property_text ());
 			textview -> set_margin_left (x_pad);
 			textview -> set_margin_top (property_ypad ());
@@ -538,14 +538,16 @@ OutlineCellRenderer::on_editing_done ()
 {
 	if (textview -> property_editing_canceled ())
 		return;
+
+	OutlineTreeData* data = textview -> get_data ();
 	
-	switch (get_data_type ())
+	switch (data -> get_type ())
 	{
 		case OutlineIterType::X3DFieldValue:
 		{
 			std::string string = textview -> get_text ();
 			
-			if (set_field_value (textview -> get_object (), string))
+			if (set_field_value (data -> get_object (), string))
 			{
 				textview -> remove_widget ();
 				edited (textview -> get_path (), string);

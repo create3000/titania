@@ -51,6 +51,7 @@
 #ifndef __TITANIA_OUTLINE_EDITOR_CELL_RENDERER_TEXT_VIEW_EDITABLE_H__
 #define __TITANIA_OUTLINE_EDITOR_CELL_RENDERER_TEXT_VIEW_EDITABLE_H__
 
+#include "../OutlineTreeData.h"
 #include <Titania/X3D.h>
 #include <gtkmm.h>
 
@@ -62,7 +63,7 @@ class TextViewEditable :
 {
 public:
 
-	TextViewEditable (X3D::X3DChildObject* const, const Glib::ustring &, bool = true);
+	TextViewEditable (OutlineTreeData* const, const Glib::ustring &, bool = true);
 
 	// Properties
 	Glib::Property <bool> &
@@ -81,9 +82,9 @@ public:
 	get_text () const
 	{ return textview .get_buffer () -> get_text (); }
 
-	X3D::X3DChildObject*
-	get_object () const
-	{ return object; }
+	OutlineTreeData*
+	get_data () const
+	{ return data; }
 
 	const Glib::ustring &
 	get_path () const
@@ -112,11 +113,11 @@ private:
 	void
 	editing_canceled ();
 
-	Glib::Property <bool> editing_canceled_property;
-	Gtk::TextView         textview;
-	X3D::X3DChildObject* const object;
-	bool                  multiline;
-	const Glib::ustring   path;
+	Glib::Property <bool>  editing_canceled_property;
+	Gtk::TextView          textview;
+	OutlineTreeData* const data;
+	bool                   multiline;
+	const Glib::ustring    path;
 
 };
 
