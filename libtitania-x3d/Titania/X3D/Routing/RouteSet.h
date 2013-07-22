@@ -51,17 +51,18 @@
 #ifndef __TITANIA_X3D_ROUTING_ROUTE_SET_H__
 #define __TITANIA_X3D_ROUTING_ROUTE_SET_H__
 
-#include "../Routing/X3DRoute.h"
-#include <set>
+#include "../Types/Set.h"
 
 namespace titania {
 namespace X3D {
 
-typedef std::set <X3DRoute*> RouteSet;
+class Route;
+
+typedef Set <Route*> RouteSet;
+
+extern template class Set <Route*>;
 
 } // X3D
 } // titania
-
-extern template class std::set <titania::X3D::X3DRoute*>;
 
 #endif

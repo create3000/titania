@@ -86,31 +86,26 @@ OutlineSelection::set_select_multiple (bool value)
 }
 
 void
-OutlineSelection::select (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path)
+OutlineSelection::select (const X3D::SFNode & sfnode)
 {
-	if (treeView -> get_data_type (iter) == OutlineIterType::X3DBaseNode)
+	if (sfnode)
 	{
-		auto sfnode = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+		const auto & children = getBrowser () -> getSelection () -> children ();
 
-		if (sfnode)
+		bool selected = std::find (children .begin (), children .end (), sfnode) not_eq children .end ();
+
+		if (selectMultiple)
 		{
-			const auto & children = getBrowser () -> getSelection () -> children ();
+			if (selected)
+				remove (sfnode);
+		}
+		else
+			clear ();
 
-			bool selected = std::find (children .begin (), children .end (), sfnode) not_eq children .end ();
-
-			if (selectMultiple)
-			{
-				if (selected)
-					remove (sfnode);
-			}
-			else
-				clear ();
-
-			if (not selected or forceSelection)
-			{
-				forceSelection = false;
-				getBrowser () -> getSelection () -> addChild (sfnode);
-			}
+		if (not selected or forceSelection)
+		{
+			forceSelection = false;
+			getBrowser () -> getSelection () -> addChild (sfnode);
 		}
 	}
 }

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -54,11 +54,11 @@
 #include <gtkmm.h>
 #include <iostream>
 
-#include "../UserInterfaces/X3DOutlineTreeViewUI.h"
 #include "../OutlineEditor/OutlineSelection.h"
+#include "../OutlineEditor/OutlineTree.h"
 #include "../OutlineEditor/OutlineTreeData.h"
 #include "../OutlineEditor/OutlineUserData.h"
-#include "../OutlineEditor/OutlineTree.h"
+#include "../UserInterfaces/X3DOutlineTreeViewUI.h"
 #include <Titania/X3D.h>
 
 namespace titania {
@@ -72,11 +72,9 @@ class OutlineTreeView :
 {
 public:
 
-	OutlineTreeView (const X3D::X3DSFNode <X3D::Browser> &);
+	using Gtk::TreeView::expand_row;
 
-	const Glib::RefPtr <OutlineTreeModel> &
-	get_model () const
-	{ return model; }
+	OutlineTreeView (const X3D::X3DSFNode <X3D::Browser> &);
 
 	OutlineIterType
 	get_data_type (const Gtk::TreeModel::iterator &) const;
@@ -99,6 +97,10 @@ private:
 	void
 	set_model (const Glib::RefPtr <OutlineTreeModel> &);
 
+	const Glib::RefPtr <OutlineTreeModel> &
+	get_model () const
+	{ return model; }
+
 	void
 	set_path (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
 
@@ -107,15 +109,21 @@ private:
 
 	void
 	set_expanded (const Gtk::TreeModel::iterator &, bool);
-	
+
 	bool
 	get_expanded (const Gtk::TreeModel::iterator &) const;
 
 	void
-	set_expand_all (const Gtk::TreeModel::iterator &, bool);
-	
+	set_all_expanded (const Gtk::TreeModel::iterator &, bool);
+
 	bool
 	get_expand_all (const Gtk::TreeModel::iterator &) const;
+
+	void
+	set_expand_all (const Gtk::TreeModel::iterator &, bool);
+
+	bool
+	get_all_expanded (const Gtk::TreeModel::iterator &) const;
 
 	void
 	set_animated (const Gtk::TreeModel::iterator &, bool);
@@ -126,9 +134,16 @@ private:
 	void
 	set_world ();
 
+	void
+	set_rootNodes ();
+
 	virtual
 	void
 	on_edited (const Glib::ustring &, const Glib::ustring &) final;
+
+	virtual
+	bool
+	on_enter_notify_event (GdkEventCrossing* event);
 
 	virtual
 	bool
@@ -145,14 +160,6 @@ private:
 	virtual
 	void
 	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final;
-
-	virtual
-	void
-	on_row_inserted (const Gtk::TreeModel::Path &, const Gtk::TreeModel::iterator &) final;
-
-	virtual
-	void
-	on_row_has_child_toggled (const Gtk::TreeModel::Path &, const Gtk::TreeModel::iterator &) final;
 
 	virtual
 	bool
@@ -180,13 +187,10 @@ private:
 	watch (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
 
 	void
-	unwatch_tree (const Gtk::TreeModel::Path &);
+	unwatch_tree (const Gtk::TreeModel::iterator &, bool = true);
 
 	void
-	unwatch_tree (bool, const OutlineNode &);
-
-	void
-	unwatch (bool, const OutlineTreeData*);
+	unwatch (const Gtk::TreeModel::iterator &, bool);
 
 	void
 	row_has_child_toggled (const Gtk::TreeModel::Path &);
@@ -195,44 +199,35 @@ private:
 	row_changed (const Gtk::TreeModel::Path &);
 
 	void
-	collapse_field (X3D::X3DFieldDefinition* const field, const Gtk::TreeModel::Path &, size_t);
+	collapse_field (const Gtk::TreeModel::Path &);
+
+	void
+	toggle_field (const Gtk::TreeModel::Path &);
 
 	void
 	collapse_clone (const Gtk::TreeModel::iterator &);
 
 	void
-	select_fields (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
+	expand_row (const Gtk::TreeModel::iterator &);
+
+	void
+	expand_routes (const Gtk::TreeModel::iterator &, X3D::X3DFieldDefinition*);
 
 	void
 	toggle_expand (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path & path);
 
 	void
-	auto_expand_fields (const Gtk::TreeModel::iterator &);
+	auto_expand (const Gtk::TreeModel::iterator &);
 
 	void
-	select (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
+	select_node (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
 
-	class Keys
-	{
-	public:
-
-		Keys () :
-			shift_l (false),
-			shift_r (false)
-		{ }
-
-		bool
-		shift ()
-		{ return shift_l or shift_r; }
-
-		bool shift_l;
-		bool shift_r;
-
-	};
+	bool
+	select_field (int x, int y);
 
 	Glib::RefPtr <OutlineTreeModel> model;
 	OutlineSelection                selection;
-	Keys                            keys;
+	X3D::Keys                       keys;
 
 };
 

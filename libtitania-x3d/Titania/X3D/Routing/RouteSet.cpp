@@ -53,9 +53,7 @@
 namespace titania {
 namespace X3D {
 
-//
+template class Set <Route*>;
 
 } // X3D
 } // titania
-
-template class std::set <titania::X3D::X3DRoute*>;

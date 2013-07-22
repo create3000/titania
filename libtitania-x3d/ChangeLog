@@ -1,3 +1,21 @@
+2013-07-22  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* X3D.h:
+	* libtitania-x3d.cproj:
+	* Keys.h:
+	* Set.h:
+	* Keys.cpp:
+	* Route.h:
+	* Route.cpp:
+	* RouteSet.h:
+	* X3DRoute.h:
+	* RouteSet.cpp:
+	* X3DFieldDefinition.h:
+	* X3DFieldDefinition.cpp:
+	* X3DFlyViewer.h:
+	* X3DFlyViewer.cpp: 
+
 2013-07-18  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DArrayField.h: 

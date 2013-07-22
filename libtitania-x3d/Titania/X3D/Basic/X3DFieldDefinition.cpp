@@ -50,6 +50,8 @@
 
 #include "X3DFieldDefinition.h"
 
+#include "../Routing/Route.h"
+
 namespace titania {
 namespace X3D {
 

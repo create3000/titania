@@ -51,6 +51,7 @@
 #include "OutlineCellRenderer.h"
 
 #include "../../Configuration/config.h"
+#include "../OutlineTreeModel.h"
 
 namespace titania {
 namespace puck {
@@ -104,16 +105,44 @@ OutlineCellRenderer::OutlineCellRenderer (const X3D::X3DSFNode <X3D::Browser> & 
 
 	// Signals
 
-	data_property .get_proxy () .signal_changed () .connect (sigc::mem_fun (this, &OutlineCellRenderer::set_data));
+	data_property .get_proxy () .signal_changed () .connect (sigc::mem_fun (this, &OutlineCellRenderer::on_data));
 }
 
 void
-OutlineCellRenderer::set_data ()
+OutlineCellRenderer::on_data ()
 {
 	cellrenderer_icon .property_pixbuf () = get_icon ();
 
 	switch (get_data_type ())
 	{
+		case OutlineIterType::X3DInputRoute:
+		{
+			auto route = static_cast <X3D::Route*> (get_object ());
+
+			const std::string name = route -> getSourceNode () -> getName () .size ()
+			                         ? route -> getSourceNode () -> getName ()
+											 : "<unnamed>";
+
+			property_editable ()                              = false;
+			property_markup ()                                = "Route from " + name + "." + route -> getSourceField ();
+			cellrenderer_access_type_icon .property_pixbuf () = accessTypeImages [X3D::inputOnly] [1];
+			set_alignment (0, 0.5);
+			break;
+		}
+		case OutlineIterType::X3DOutputRoute:
+		{
+			auto route = static_cast <X3D::Route*> (get_object ());
+
+			const std::string name = route -> getDestinationNode () -> getName () .size ()
+			                         ? route -> getDestinationNode () -> getName ()
+											 : "<unnamed>";
+
+			property_editable ()                              = false;
+			property_markup ()                                = "Route to " + name + "." + route -> getDestinationField ();
+			cellrenderer_access_type_icon .property_pixbuf () = accessTypeImages [X3D::outputOnly] [1];
+			set_alignment (0, 0.5);
+			break;
+		}
 		case OutlineIterType::X3DFieldValue:
 		{
 			property_editable () = true;
@@ -151,11 +180,25 @@ OutlineCellRenderer::get_object () const
 	return property_data () .get_value () -> get_object ();
 }
 
+bool
+OutlineCellRenderer::get_expanded () const
+{
+	return OutlineTreeModel::get_user_data (get_object ()) -> expanded;
+}
+
+bool
+OutlineCellRenderer::get_all_expanded () const
+{
+	return OutlineTreeModel::get_user_data (get_object ()) -> all_expanded;
+}
+
 const Glib::RefPtr <Gdk::Pixbuf> &
 OutlineCellRenderer::get_icon () const
 {
 	switch (get_data_type ())
 	{
+		case OutlineIterType::X3DInputRoute:
+		case OutlineIterType::X3DOutputRoute:
 		case OutlineIterType::X3DFieldValue:
 		{
 			return noneImage;
@@ -358,6 +401,9 @@ OutlineCellRenderer::get_preferred_width_vfunc (Gtk::Widget & widget, int & mini
 	// Name or value
 
 	{
+		minimum_width += NAME_PAD_X;
+		natural_width += NAME_PAD_X;
+
 		Gtk::CellRendererText::get_preferred_width_vfunc (widget, minimum, natural);
 		minimum_width += minimum;
 		natural_width += natural;
@@ -365,20 +411,28 @@ OutlineCellRenderer::get_preferred_width_vfunc (Gtk::Widget & widget, int & mini
 
 	// Access type and routes
 
-	if (get_data_type () == OutlineIterType::X3DField)
+	switch (get_data_type ())
 	{
-		cellrenderer_access_type_icon .get_preferred_width (widget, minimum, natural);
-		minimum_width += minimum;
-		natural_width += natural;
+		case OutlineIterType::X3DField:
+		{
+			if (get_all_expanded () and get_expanded ())
+				break;
+		}
+		case OutlineIterType::X3DInputRoute:
+		case OutlineIterType::X3DOutputRoute:
+		{
+			minimum_width += ACCESS_TYPE_PAD_X;
+			natural_width += ACCESS_TYPE_PAD_X;
+
+			cellrenderer_access_type_icon .get_preferred_width (widget, minimum, natural);
+			minimum_width += minimum;
+			natural_width += natural;
+
+			break;
+		}
+		default:
+			break;
 	}
-
-	// Padding
-
-	minimum_width += NAME_PAD_X;
-	natural_width += NAME_PAD_X;
-
-	minimum_width += ACCESS_TYPE_PAD_X;
-	natural_width += ACCESS_TYPE_PAD_X;
 }
 
 void
@@ -408,11 +462,24 @@ OutlineCellRenderer::get_preferred_height_for_width_vfunc (Gtk::Widget & widget,
 
 	// Access type and routes
 
-	if (get_data_type () == OutlineIterType::X3DField)
+	switch (get_data_type ())
 	{
-		cellrenderer_access_type_icon .get_preferred_height_for_width (widget, width, minimum, natural);
-		minimum_height = std::max (minimum, minimum_height);
-		natural_height = std::max (natural, natural_height);
+		case OutlineIterType::X3DField:
+		{
+			if (get_all_expanded () and get_expanded ())
+				break;
+		}
+		case OutlineIterType::X3DInputRoute:
+		case OutlineIterType::X3DOutputRoute:
+		{
+			cellrenderer_access_type_icon .get_preferred_height_for_width (widget, width, minimum, natural);
+			minimum_height = std::max (minimum, minimum_height);
+			natural_height = std::max (natural, natural_height);
+
+			break;
+		}
+		default:
+			break;
 	}
 }
 
@@ -443,11 +510,24 @@ OutlineCellRenderer::get_preferred_height_vfunc (Gtk::Widget & widget, int & min
 
 	// Access type and routes
 
-	if (get_data_type () == OutlineIterType::X3DField)
+	switch (get_data_type ())
 	{
-		cellrenderer_access_type_icon .get_preferred_height (widget, minimum, natural);
-		minimum_height = std::max (minimum, minimum_height);
-		natural_height = std::max (natural, natural_height);
+		case OutlineIterType::X3DField:
+		{
+			if (get_all_expanded () and get_expanded ())
+				break;
+		}
+		case OutlineIterType::X3DInputRoute:
+		case OutlineIterType::X3DOutputRoute:
+		{
+			cellrenderer_access_type_icon .get_preferred_height (widget, minimum, natural);
+			minimum_height = std::max (minimum, minimum_height);
+			natural_height = std::max (natural, natural_height);
+
+			break;
+		}
+		default:
+			break;
 	}
 }
 
@@ -471,6 +551,9 @@ OutlineCellRenderer::get_preferred_width_for_height_vfunc (Gtk::Widget & widget,
 	// Name or value
 
 	{
+		minimum_width += NAME_PAD_X;
+		natural_width += NAME_PAD_X;
+
 		Gtk::CellRendererText::get_preferred_width_for_height_vfunc (widget, height, minimum, natural);
 		minimum_width += minimum;
 		natural_width += natural;
@@ -478,20 +561,28 @@ OutlineCellRenderer::get_preferred_width_for_height_vfunc (Gtk::Widget & widget,
 
 	// Access type and routes
 
-	if (get_data_type () == OutlineIterType::X3DField)
+	switch (get_data_type ())
 	{
-		cellrenderer_access_type_icon .get_preferred_width_for_height (widget, height, minimum, natural);
-		minimum_width += minimum;
-		natural_width += natural;
+		case OutlineIterType::X3DField:
+		{
+			if (get_all_expanded () and get_expanded ())
+				break;
+		}
+		case OutlineIterType::X3DInputRoute:
+		case OutlineIterType::X3DOutputRoute:
+		{
+			minimum_width += ACCESS_TYPE_PAD_X;
+			natural_width += ACCESS_TYPE_PAD_X;
+
+			cellrenderer_access_type_icon .get_preferred_width_for_height (widget, height, minimum, natural);
+			minimum_width += minimum;
+			natural_width += natural;
+
+			break;
+		}
+		default:
+			break;
 	}
-
-	// Padding
-
-	minimum_width += NAME_PAD_X;
-	natural_width += NAME_PAD_X;
-
-	minimum_width += ACCESS_TYPE_PAD_X;
-	natural_width += ACCESS_TYPE_PAD_X;
 }
 
 Gtk::CellEditable*
@@ -508,7 +599,7 @@ OutlineCellRenderer::start_editing_vfunc (GdkEvent* event,
 	cellrenderer_icon .get_preferred_width (widget, icon_width, natural_width);
 
 	int x_pad = icon_width + NAME_PAD_X + property_xpad ();
-	
+
 	switch (get_data_type ())
 	{
 		case OutlineIterType::X3DFieldValue:
@@ -540,13 +631,17 @@ OutlineCellRenderer::on_editing_done ()
 		return;
 
 	OutlineTreeData* data = textview -> get_data ();
-	
+
 	switch (data -> get_type ())
 	{
+		case OutlineIterType::X3DInputRoute:
+		case OutlineIterType::X3DOutputRoute:
+		case OutlineIterType::X3DField:
+			break;
 		case OutlineIterType::X3DFieldValue:
 		{
 			std::string string = textview -> get_text ();
-			
+
 			if (set_field_value (data -> get_object (), string))
 			{
 				textview -> remove_widget ();
@@ -555,7 +650,6 @@ OutlineCellRenderer::on_editing_done ()
 
 			break;
 		}
-		case OutlineIterType::X3DField:
 		case OutlineIterType::X3DBaseNode:
 			break;
 	}
@@ -612,13 +706,26 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 
 	// Access type and routes
 
-	if (get_data_type () == OutlineIterType::X3DField)
+	switch (get_data_type ())
 	{
-		x     += ACCESS_TYPE_PAD_X;
-		width -= ACCESS_TYPE_PAD_X;
+		case OutlineIterType::X3DField:
+		{
+			if (get_all_expanded () and get_expanded ())
+				break;
+		}
+		case OutlineIterType::X3DInputRoute:
+		case OutlineIterType::X3DOutputRoute:
+		{
+			x     += ACCESS_TYPE_PAD_X;
+			width -= ACCESS_TYPE_PAD_X;
 
-		Gdk::Rectangle cell_area (x, y, width, height);
-		cellrenderer_access_type_icon .render (context, widget, background_area, cell_area, flags);
+			Gdk::Rectangle cell_area (x, y, width, height);
+			cellrenderer_access_type_icon .render (context, widget, background_area, cell_area, flags);
+
+			break;
+		}
+		default:
+			break;
 	}
 }
 

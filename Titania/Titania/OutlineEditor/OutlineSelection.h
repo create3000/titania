@@ -73,7 +73,7 @@ public:
 	set_select_multiple (bool);
 
 	void
-	select (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path);
+	select (const X3D::SFNode &);
 
 	void
 	clear ();

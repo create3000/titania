@@ -65,18 +65,18 @@ public:
 	OutlineUserData () :
 		path (),
 		expanded (false),
+		all_expanded (true),
 		expand_all (false),
 		selected (false),
-		visible (false),
 		animated (false)
 	{ }
 
 	Gtk::TreeModel::Path path;
 
 	bool expanded;
+	bool all_expanded;
 	bool expand_all;
 	bool selected;
-	bool visible;
 	bool animated;
 
 };

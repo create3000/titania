@@ -53,7 +53,6 @@
 
 #include "../Basic/X3DBaseNode.h"
 #include "../Fields.h"
-#include "../Routing/X3DRoute.h"
 
 namespace titania {
 namespace X3D {
@@ -61,7 +60,7 @@ namespace X3D {
 typedef std::pair <X3DFieldDefinition*, X3DFieldDefinition*> RouteId;
 
 class Route :
-	virtual public X3DBaseNode, public X3DRoute
+	public X3DBaseNode
 {
 public:
 
@@ -71,9 +70,8 @@ public:
 
 	virtual
 	Route*
-	clone (X3DExecutionContext* const) const;
+	clone (X3DExecutionContext* const) const final;
 
-	virtual
 	bool
 	isConnected ();
 
@@ -92,21 +90,19 @@ public:
 	const std::string &
 	getDestinationField () const;
 
-	virtual
 	void
 	disconnect ();
 
-	virtual
 	void
 	remove ();
 
 	virtual
 	void
-	toStream (std::ostream &) const;
+	toStream (std::ostream &) const final;
 
 	virtual
 	void
-	dispose ();
+	dispose () final;
 
 
 private:
@@ -117,7 +113,7 @@ private:
 
 	virtual
 	void
-	initialize ();
+	initialize () final;
 
 	void
 	connect ();

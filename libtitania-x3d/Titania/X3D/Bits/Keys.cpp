@@ -48,105 +48,83 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_VIEWER_X3DFLY_VIEWER_H__
-#define __TITANIA_X3D_BROWSER_VIEWER_X3DFLY_VIEWER_H__
-
-#include <gdkmm.h>
-
-#include "../../Components/Navigation/Viewpoint.h"
-#include "../../Components/Navigation/X3DViewpointNode.h"
-#include "../../Fields/SFNode.h"
-#include "../../Bits/Keys.h"
-#include "../Viewer/X3DViewer.h"
+#include "Keys.h"
 
 namespace titania {
 namespace X3D {
 
-class X3DFlyViewer :
-	public X3DViewer
+Keys::Keys () :
+	  m_shift (0),
+	m_control (0)
+{ }
+
+void
+Keys::press (GdkEventKey* event)
 {
-public:
+	switch (event -> keyval)
+	{
+		case GDK_KEY_Shift_L:
+			m_shift |= Shift_L;
+			break;
+		case GDK_KEY_Shift_R:
+			m_shift |= Shift_R;
+			break;
+		case GDK_KEY_Control_L:
+			m_control |= Control_L;
+			break;
+		case GDK_KEY_Control_R:
+			m_control |= Control_R;
+			break;
+		default:
+			break;
+	}
+}
 
-	X3DFlyViewer (Browser* const, NavigationInfo*);
+void
+Keys::release (GdkEventKey* event)
+{
+	switch (event -> keyval)
+	{
+		case GDK_KEY_Shift_L:
+			m_shift &= ~Shift_L;
+			break;
+		case GDK_KEY_Shift_R:
+			m_shift &= ~Shift_R;
+			break;
+		case GDK_KEY_Control_L:
+			m_control &= ~Control_L;
+			break;
+		case GDK_KEY_Control_R:
+			m_control &= ~Control_R;
+			break;
+		default:
+			break;
+	}
+}
 
-	virtual
-	NavigationInfo*
-	getNavigationInfo () const final
-	{ return navigationInfo; }
+void
+Keys::shift (int value)
+{
+	m_shift = value;
+}
 
+int
+Keys::shift () const
+{
+	return m_shift;
+}
 
-private:
+void
+Keys::control (int value)
+{
+	m_control = value;
+}
 
-	virtual
-	void
-	initialize () override;
-
-	void
-	set_collisionNormal ();
-
-	bool
-	on_button_press_event (GdkEventButton*);
-
-	bool
-	on_button_release_event (GdkEventButton*);
-
-	bool
-	on_motion_notify_event (GdkEventMotion*);
-
-	bool
-	on_scroll_event (GdkEventScroll*);
-
-	bool
-	on_key_press_event (GdkEventKey*);
-
-	bool
-	on_key_release_event (GdkEventKey*);
-
-	bool
-	fly ();
-
-	bool
-	pan ();
-
-	bool
-	roll ();
-
-	Vector3f
-	getTranslation (const Vector3f &) const;
-
-	void
-	addFly ();
-
-	void
-	addPan ();
-
-	void
-	addRoll ();
-
-	void
-	disconnect ();
-
-	void
-	display ();
-
-	static Vector3f upVector;
-
-	NavigationInfo*  navigationInfo;
-	Vector3f         fromVector;
-	Vector3f         toVector;
-	Vector3f         direction;
-	Rotation4f       sourceRotation;
-	Rotation4f       destinationRotation;
-	time_type        startTime;
-	guint            button;
-	Keys             keys;
-	sigc::connection fly_id;
-	sigc::connection pan_id;
-	sigc::connection roll_id;
-
-};
+int
+Keys::control () const
+{
+	return m_shift;
+}
 
 } // X3D
-} // titania
-
-#endif
+} // titania/

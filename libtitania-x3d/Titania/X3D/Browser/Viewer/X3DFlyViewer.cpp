@@ -195,36 +195,14 @@ X3DFlyViewer::on_scroll_event (GdkEventScroll* event)
 bool
 X3DFlyViewer::on_key_press_event (GdkEventKey* event)
 {
-	switch (event -> keyval)
-	{
-		case GDK_KEY_Shift_L:
-			keys .shift_l = true;
-			break;
-		case GDK_KEY_Shift_R:
-			keys .shift_r = true;
-			break;
-		default:
-			break;
-	}
-
+	keys .press (event);
 	return false;
 }
 
 bool
 X3DFlyViewer::on_key_release_event (GdkEventKey* event)
 {
-	switch (event -> keyval)
-	{
-		case GDK_KEY_Shift_L:
-			keys .shift_l = false;
-			break;
-		case GDK_KEY_Shift_R:
-			keys .shift_r = false;
-			break;
-		default:
-			break;
-	}
-
+	keys .release (event);
 	return false;
 }
 

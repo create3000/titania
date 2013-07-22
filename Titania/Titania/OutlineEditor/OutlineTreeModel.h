@@ -107,18 +107,12 @@ public:
 	Glib::RefPtr <OutlineTreeModel>
 	create (const X3D::X3DSFNode <X3D::Browser> &);
 
-	bool
-	iter_is_valid (const iterator & iter) const;
-
-	const OutlineTree &
-	get_tree () const
-	{ return tree; }
-
 	OutlineUserDataPtr
 	get_user_data (const iterator &) const;
 
+	static
 	OutlineUserDataPtr
-	get_user_data (X3D::X3DChildObject*) const;
+	get_user_data (X3D::X3DChildObject*);
 
 	static
 	OutlineIterType
@@ -128,8 +122,17 @@ public:
 	X3D::X3DChildObject*
 	get_object (const iterator &);
 
+	iterator
+	append (OutlineIterType type, X3D::X3DChildObject*);
+
+	iterator
+	append (const iterator &, OutlineIterType type, X3D::X3DChildObject*);
+
 	void
-	collapse_row (const Path &);
+	clear ();
+
+	void
+	clear (const iterator &);
 
 	virtual
 	~OutlineTreeModel ();
@@ -139,29 +142,21 @@ private:
 
 	OutlineTreeModel (const X3D::X3DSFNode <X3D::Browser> &);
 
+	bool
+	iter_is_valid (const iterator & iter) const;
+
 	void
-	set_data (iterator &, OutlineIterType type, X3D::X3DChildObject* object, size_t index, const OutlineTreeData::parents_type & parents) const;
+	set_data (iterator &, OutlineIterType type, X3D::X3DChildObject* object, const Path & path) const;
+
+	void
+	set_data (iterator &, OutlineTreeData*) const;
 
 	static
 	OutlineTreeData*
 	get_data (const iterator &);
 
-	static
-	const OutlineTreeData::parents_type &
-	get_parents (const iterator &);
-
-	static
-	size_t
-	get_index (const iterator &);
-
-	X3D::FieldDefinitionArray
-	get_fields (X3D::X3DChildObject*) const;
-
-	void
-	set_rootNodes ();
-
-	void
-	clear ();
+	std::deque <OutlineTreeData*>
+	get_parents (const iterator &) const;
 
 	virtual
 	Gtk::TreeModelFlags
@@ -181,9 +176,6 @@ private:
 	virtual
 	Path
 	get_path_vfunc (const iterator & iter) const;
-
-	Path
-	get_path (const OutlineTreeData::parents_type & parents, size_t) const;
 
 	virtual
 	bool

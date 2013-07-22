@@ -63,23 +63,45 @@ class OutlineNode
 public:
 
 	OutlineNode () :
-		data (NULL),
+		data (),
 		children ()
 	{ }
+	
+	void
+	set_data (OutlineTreeData* value)
+	{
+		if (data)
+			delete data;
+
+		data = value;
+	}
+
+	OutlineTreeData*
+	get_data () const
+	{ return data; }
+
+	std::deque <OutlineNode> &
+	get_children ()
+	{ return children; }
 
 	const std::deque <OutlineNode> &
-	getChildren ()
+	get_children () const
 	{ return children; }
 
 	void
 	clear ()
 	{ children .clear (); }
 
+	size_t
+	size () const
+	{ return children .size (); }
+
+	virtual
 	~OutlineNode ()
-	{
-		if (data)
-			delete data;
-	}
+	{ }
+
+
+private:
 
 	OutlineTreeData*         data;
 	std::deque <OutlineNode> children;
@@ -91,56 +113,82 @@ class OutlineTree :
 {
 public:
 
+	using OutlineNode::clear;
+
 	OutlineTree () :
 		OutlineNode ()
 	{ }
+	
+	std::deque <OutlineTreeData*>
+	get_parents (const Gtk::TreePath & path) const
+	throw (std::out_of_range)
+	{
+		std::deque <OutlineTreeData*> parents;
+
+		const OutlineNode* node = this;
+		
+		for (const size_t index : path)
+		{
+			if (index < node -> get_children () .size ())
+			{
+				node = &node -> get_children () [index];
+				parents .emplace_back (node -> get_data ());
+			}
+			else
+				throw std::out_of_range ("OutlineTree::getParents: path '" + path .to_string () + "' does not exists.");	
+		}
+		
+		parents .pop_back ();
+
+		return parents;
+	}
 
 	OutlineNode &
-	createNode (const Gtk::TreePath & path)
+	get_node (const Gtk::TreePath & path, bool create = false)
+	throw (std::out_of_range)
 	{
 		OutlineNode* node = this;
 
 		for (const auto & index : path)
-			node = &createChild (node, index);
+			node = &get_child (node, index, create);
 
 		return *node;
 	}
 
 	const OutlineNode &
-	getNode (const Gtk::TreePath & path) const
+	get_node (const Gtk::TreePath & path) const
+	throw (std::out_of_range)
 	{
-		const OutlineNode* node = this;
-
-		for (const auto & index : path)
-			node = &getChild (node, index);
-
-		return *node;
+		return const_cast <OutlineTree*> (this) -> get_node (path, false);
 	}
 
 	void
-	removeChildren (const Gtk::TreePath & path)
+	clear (const Gtk::TreePath & path)
 	{
-		createNode (path) .children .clear ();
+		try
+		{
+			get_node (path) .clear ();
+		}
+		catch (const std::out_of_range &)
+		{ }
 	}
 
 private:
 
 	OutlineNode &
-	createChild (OutlineNode* parent, size_t index)
+	get_child (OutlineNode* parent, size_t index, bool create)
+	throw (std::out_of_range)
 	{
-		if (index + 1 > parent -> children .size ())
-			parent -> children .resize (index + 1);
+		if (index < parent -> get_children () .size ())
+			return parent -> get_children () [index];
 
-		return parent -> children [index];
-	}
+		if (create)
+		{
+			parent -> get_children () .resize (index + 1);
+			return parent -> get_children () [index];
+		}
 
-	const OutlineNode &
-	getChild (const OutlineNode* parent, size_t index) const
-	{
-		if (index + 1 > parent -> children .size ())
-			std::out_of_range ("OutlineTree: path does not exists.");
-
-		return parent -> children [index];
+		throw std::out_of_range ("OutlineTree::getChild: path does not exists.");
 	}
 
 };

@@ -62,7 +62,6 @@ Route::Route (X3DExecutionContext* const executionContext,
               const SFNode & _sourceNode,      X3DFieldDefinition* const sourceField,
               const SFNode & _destinationNode, X3DFieldDefinition* const destinationField) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	        X3DRoute (),
 	      sourceNode (_sourceNode),                                         // SFNode   [ ] sourceNode         NULL
 	 destinationNode (_destinationNode),                                    // SFNode   [ ] destinationNode    NULL
 	     sourceField (sourceField),

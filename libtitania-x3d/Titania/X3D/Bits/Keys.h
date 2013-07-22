@@ -48,30 +48,48 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_ROUTING_X3DROUTE_H__
-#define __TITANIA_X3D_ROUTING_X3DROUTE_H__
+#ifndef __TITANIA_X3D_BITS_KEYS_H__
+#define __TITANIA_X3D_BITS_KEYS_H__
 
-#include "../Base/X3DBase.h"
+#include <gdkmm.h>
 
 namespace titania {
 namespace X3D {
 
-class X3DRoute :
-	virtual public X3DBase
+class Keys
 {
 public:
 
-	virtual
-	bool
-	isConnected () = 0;
+	Keys ();
 
-	virtual
 	void
-	disconnect () = 0;
+	press (GdkEventKey* event);
 
-	virtual
 	void
-	remove () = 0;
+	release (GdkEventKey*);
+
+	void
+	shift (int);
+
+	int
+	shift () const;
+
+	void
+	control (int);
+
+	int
+	control () const;
+
+	static constexpr int Shift_R   = 1;
+	static constexpr int Shift_L   = 2;
+	static constexpr int Control_R = 1;
+	static constexpr int Control_L = 2;
+
+
+private:
+
+	int m_shift;
+	int m_control;
 
 };
 

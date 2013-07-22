@@ -88,13 +88,19 @@ public:
 private:
 
 	void
-	set_data ();
+	on_data ();
 
 	OutlineIterType
 	get_data_type () const;
 
 	X3D::X3DChildObject*
 	get_object () const;
+	
+	bool
+	get_expanded () const;
+
+	bool
+	get_all_expanded () const;
 
 	const Glib::RefPtr <Gdk::Pixbuf> &
 	get_icon () const;

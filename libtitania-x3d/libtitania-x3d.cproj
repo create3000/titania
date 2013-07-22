@@ -440,7 +440,6 @@
     <None Include="Titania\X3D\Routing\RouteArray.h" />
     <None Include="Titania\X3D\Routing\Router.h" />
     <None Include="Titania\X3D\Routing\RouteSet.h" />
-    <None Include="Titania\X3D\Routing\X3DRoute.h" />
     <None Include="Titania\X3D\Parser\Parser.h" />
     <None Include="Titania\X3D\Parser\RegEx.h" />
     <None Include="Titania\X3D\Parser\X3DParser.h" />
@@ -561,6 +560,8 @@
     <None Include="Titania\X3D\Handles\X3DHandleObject.h" />
     <None Include="Titania\X3D\Fields\X3DSFNode.h" />
     <None Include="Titania\X3D\Fields\SFNode.h" />
+    <None Include="Titania\X3D\Types\Set.h" />
+    <None Include="Titania\X3D\Bits\Keys.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -992,6 +993,7 @@
     <Compile Include="Titania\X3D\Rendering\DepthBuffer.cpp" />
     <Compile Include="Titania\X3D\Handles\X3DHandleObject.cpp" />
     <Compile Include="Titania\X3D\Fields\SFNode.cpp" />
+    <Compile Include="Titania\X3D\Bits\Keys.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

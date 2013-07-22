@@ -6,7 +6,7 @@ Background {
   skyColor 0.4 0.4 0.4
 }
 
-DEF _0 Viewpoint {
+Viewpoint {
   fieldOfView 0.785398
   jump TRUE
   position 6 -4 -5.81846

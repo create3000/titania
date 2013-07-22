@@ -112,6 +112,8 @@ HistoryEditor::getTitle (const basic::uri & worldURL)
 void
 HistoryEditor::set_world ()
 {
+	__LOG__ << std::endl;
+
 	const basic::uri & worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
 
 	if (not worldURL .str () .size ())

@@ -63,6 +63,7 @@
 #include "X3D/Execution/BindableNodeStack.h"
 
 #include <Titania/X3D/Parser/RegEx.h>
+#include <Titania/X3D/Bits/Keys.h>
 
 namespace titania {
 namespace X3D {

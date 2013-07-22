@@ -153,11 +153,11 @@ public:
 	operator not_eq (const X3DFieldDefinition &) const = 0;
 
 	void
-	addInputRoute (X3DRoute* const route)
+	addInputRoute (Route* const route)
 	{ inputRoutes .insert (route); }
 
 	void
-	removeInputRoute (X3DRoute* const route)
+	removeInputRoute (Route* const route)
 	{ inputRoutes .erase (route); }
 
 	const RouteSet &
@@ -165,11 +165,11 @@ public:
 	{ return inputRoutes; }
 
 	void
-	addOutputRoute (X3DRoute* const route)
+	addOutputRoute (Route* const route)
 	{ outputRoutes .insert (route); }
 
 	void
-	removeOutputRoute (X3DRoute* const route)
+	removeOutputRoute (Route* const route)
 	{ outputRoutes .erase (route); }
 
 	const RouteSet &
