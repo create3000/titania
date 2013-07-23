@@ -52,7 +52,7 @@
 #define __TITANIA_HISTORY_EDITOR_HISTORY_EDITOR_H__
 
 #include "../HistoryEditor/History.h"
-#include "../UserInterfaces/X3DHistoryEditorUI.h"
+#include "../UserInterfaces/X3DHistoryEditorInterface.h"
 #include <Titania/X3D.h>
 #include <gtkmm.h>
 
@@ -62,7 +62,7 @@ namespace puck {
 class BrowserWindow;
 
 class HistoryEditor :
-	public X3DHistoryEditorUI
+	public X3DHistoryEditorInterface
 {
 public:
 

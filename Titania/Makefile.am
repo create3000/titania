@@ -22,13 +22,13 @@ titania_SOURCES =  \
 	Titania/OutlineEditor/OutlineSelection.cpp \
 	Titania/OutlineEditor/OutlineTreeModel.cpp \
 	Titania/OutlineEditor/OutlineTreeView.cpp \
-	Titania/UserInterfaces/X3DBrowserWindowUI.cpp \
-	Titania/UserInterfaces/X3DConsoleUI.cpp \
-	Titania/UserInterfaces/X3DHistoryEditorUI.cpp \
-	Titania/UserInterfaces/X3DMotionBlurEditorUI.cpp \
-	Titania/UserInterfaces/X3DOutlineEditorUI.cpp \
-	Titania/UserInterfaces/X3DOutlineTreeViewUI.cpp \
-	Titania/UserInterfaces/X3DViewpointEditorUI.cpp \
+	Titania/UserInterfaces/X3DBrowserWindowInterface.cpp \
+	Titania/UserInterfaces/X3DConsoleInterface.cpp \
+	Titania/UserInterfaces/X3DHistoryEditorInterface.cpp \
+	Titania/UserInterfaces/X3DMotionBlurEditorInterface.cpp \
+	Titania/UserInterfaces/X3DOutlineEditorInterface.cpp \
+	Titania/UserInterfaces/X3DOutlineTreeViewInterface.cpp \
+	Titania/UserInterfaces/X3DViewpointEditorInterface.cpp \
 	Titania/ViewpointEditor/ViewpointEditor.cpp
 
 titania_LDADD = $(TITANIA_LIBS) \

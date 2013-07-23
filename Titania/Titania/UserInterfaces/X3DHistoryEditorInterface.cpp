@@ -47,61 +47,44 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-
-#ifndef __TITANIA_USER_INTERFACES_X3DRENDERING_PROPERTIES_UI_H__
-#define __TITANIA_USER_INTERFACES_X3DRENDERING_PROPERTIES_UI_H__
-
-#include "../Base/X3DUserInterface.h"
-#include <gtkmm.h>
-#include <string>
+#include "X3DHistoryEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-using namespace Gtk;
+const std::string X3DHistoryEditorInterface::m_widgetName = "HistoryEditor";
 
-class X3DRenderingPropertiesUI :
-	public X3DUserInterface
+void
+X3DHistoryEditorInterface::create (const std::string & filename)
 {
-public:
+	// Create Builder.
+	m_builder = Gtk::Builder::create_from_file (filename);
 
-	template <class ... Arguments>
-	X3DRenderingPropertiesUI (const std::string & filename, const Arguments & ... arguments) :
-		X3DUserInterface (m_widgetName, arguments ...)
-	{ create (filename); }
+	// Get objects.
+	m_listStore        = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("ListStore"));
+	m_icon             = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("Icon"));
+	m_iconRenderer     = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("IconRenderer"));
+	m_titleColumn      = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("TitleColumn"));
+	m_titleRenderer    = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("TitleRenderer"));
+	m_locationColumn   = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("LocationColumn"));
+	m_locationRenderer = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("LocationRenderer"));
 
-	const std::string &
-	getWidgetName () const { return m_widgetName; }
+	// Get widgets.
+	m_builder -> get_widget ("Window", m_window);
+	m_window -> set_name ("Window");
+	m_builder -> get_widget ("Widget", m_widget);
+	m_widget -> set_name ("Widget");
+	m_builder -> get_widget ("ScrolledWindow", m_scrolledWindow);
+	m_scrolledWindow -> set_name ("ScrolledWindow");
+	m_builder -> get_widget ("TreeView", m_treeView);
+	m_treeView -> set_name ("TreeView");
 
-	const Glib::RefPtr <Gtk::TextBuffer> &
-	getTextBuffer () const { return m_textBuffer; }
+	// Connect object Gtk::TreeView with id 'TreeView'.
+	connections .emplace_back (m_treeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DHistoryEditorInterface::on_row_activated)));
 
-	Gtk::Window &
-	getWindow () const { return *m_window; }
-
-	Gtk::Box &
-	getWidget () const { return *m_widget; }
-
-	Gtk::TextView &
-	getTextView () const { return *m_textView; }
-
-
-private:
-
-	void
-	create (const std::string &);
-
-	static const std::string m_widgetName;
-
-	Glib::RefPtr <Gtk::Builder>    m_builder;
-	Glib::RefPtr <Gtk::TextBuffer> m_textBuffer;
-	Gtk::Window*                   m_window;
-	Gtk::Box*                      m_widget;
-	Gtk::TextView*                 m_textView;
-
-};
+	// Call construct handler of base class.
+	construct ();
+}
 
 } // puck
 } // titania
-
-#endif

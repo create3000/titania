@@ -155,7 +155,7 @@ sub h_signal_handler
 	
 	$self -> {h_signal_handler} {$attributes {handler}} = 1;
 
-	$attributes {name} =~ s/-/_/;
+	$attributes {name} =~ s/-/_/sgo;
 
 	my $prototype = $self -> getPrototype ($attributes {name});
 	
@@ -225,7 +225,7 @@ sub cpp_signals
 		say $file "// Connect object $self->{class} with id '$self->{id}'.";
 	}
 	
-	$attributes {name} =~ s/-/_/;
+	$attributes {name} =~ s/-/_/sgo;
 	
 	my $signal = "m_" . lcfirst ($self -> {id}) . " -> signal_$attributes{name} ()";
 
@@ -563,3 +563,15 @@ page_removed
 
 button_press-event
 
+key_press-event
+
+key_press-event
+
+key_press_event
+  virtual bool on_key_press_event(GdkEventKey* event);
+key_press_event
+  virtual bool on_key_press_event(GdkEventKey* event);
+key_release_event
+  virtual bool on_key_release_event(GdkEventKey* event);
+key_press_event
+  virtual bool on_key_press_event(GdkEventKey* event);

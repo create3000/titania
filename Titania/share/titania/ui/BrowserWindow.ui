@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <!-- interface-requires gtk+ 3.0 -->
+  <object class="GtkAction" id="NewAction">
+    <signal name="activate" handler="on_new" swapped="no"/>
+  </object>
+  <object class="GtkAction" id="OpenAction">
+    <signal name="activate" handler="on_open" swapped="no"/>
+  </object>
+  <object class="GtkAction" id="RevertAction">
+    <signal name="activate" handler="on_revert_to_saved" swapped="no"/>
+  </object>
+  <object class="GtkAction" id="SaveAction">
+    <signal name="activate" handler="on_save" swapped="no"/>
+  </object>
   <object class="GtkFileFilter" id="FileFilerX3D">
     <mime-types>
       <mime-type>model/vrml</mime-type>
@@ -32,18 +44,6 @@
       <source stock-id="Arrow" filename="icons/arrow.png"/>
       <source stock-id="Hand" filename="icons/hand.png"/>
     </sources>
-  </object>
-  <object class="GtkAction" id="NewAction">
-    <signal name="activate" handler="on_new" swapped="no"/>
-  </object>
-  <object class="GtkAction" id="OpenAction">
-    <signal name="activate" handler="on_open" swapped="no"/>
-  </object>
-  <object class="GtkAction" id="RevertAction">
-    <signal name="activate" handler="on_revert_to_saved" swapped="no"/>
-  </object>
-  <object class="GtkAction" id="SaveAction">
-    <signal name="activate" handler="on_save" swapped="no"/>
   </object>
   <object class="GtkFileChooserDialog" id="FileOpenDialog">
     <property name="can_focus">False</property>
@@ -184,7 +184,7 @@
     <accel-groups>
       <group name="MenuAccelGroup"/>
     </accel-groups>
-    <signal name="key-press-event" handler="on_key_press_event" swapped="no"/>
+    <signal name="key-release-event" handler="on_key_release_event" swapped="no"/>
     <signal name="key-press-event" handler="on_key_press_event" swapped="no"/>
     <child>
       <object class="GtkVBox" id="Widget">

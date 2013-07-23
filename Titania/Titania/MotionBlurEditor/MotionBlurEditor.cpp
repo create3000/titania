@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -57,14 +57,14 @@ namespace titania {
 namespace puck {
 
 MotionBlurEditor::MotionBlurEditor (BrowserWindow* const browserWindow) :
-        X3DBaseInterface (browserWindow),
-	X3DMotionBlurEditorUI (get_ui ("MotionBlurEditor.ui"), gconf_dir ())
+	            X3DBaseInterface (browserWindow),
+	X3DMotionBlurEditorInterface (get_ui ("MotionBlurEditor.ui"), gconf_dir ())
 { }
 
 void
 MotionBlurEditor::initialize ()
 {
-	X3DMotionBlurEditorUI::initialize ();
+	X3DMotionBlurEditorInterface::initialize ();
 
 	getIntensity () .set_value (getBrowser () -> getBrowserOptions () -> motionBlurProperties () -> intensity ());
 }

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -72,15 +72,15 @@ constexpr int Bold   = 700;
 };
 
 ViewpointEditor::ViewpointEditor (BrowserWindow* const browserWindow) :
-       X3DBaseInterface (browserWindow),
-	X3DViewpointEditorUI (get_ui ("ViewpointEditor.ui"), gconf_dir ()),
-	         activeLayer ()
+	           X3DBaseInterface (browserWindow),
+	X3DViewpointEditorInterface (get_ui ("ViewpointEditor.ui"), gconf_dir ()),
+	                activeLayer ()
 { }
 
 void
 ViewpointEditor::initialize ()
 {
-	X3DViewpointEditorUI::initialize ();
+	X3DViewpointEditorInterface::initialize ();
 
 	getCellRendererDescription () -> property_weight_set () = true;
 

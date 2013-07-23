@@ -6,7 +6,7 @@ echo "Generating Interfaces\n"
 -v \
 -n titania -n puck \
 -p X3D \
--s UI \
+-s Interface \
 -b /home/holger/Projekte/Titania/Titania/Titania/Base/X3DUserInterface.h \
 -o /home/holger/Projekte/Titania/Titania/Titania/UserInterfaces \
 `find /home/holger/Projekte/Titania/Titania/share/titania/ui/ -name \*.ui;`

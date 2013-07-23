@@ -47,62 +47,45 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#ifndef __TMP_GLAD2CPP_OUTLINE_TREE_VIEW_H__
-#define __TMP_GLAD2CPP_OUTLINE_TREE_VIEW_H__
-
-#include "../Base/X3DUserInterface.h"
-#include <gtkmm.h>
-#include <string>
+#include "X3DViewpointEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-using namespace Gtk;
+const std::string X3DViewpointEditorInterface::m_widgetName = "ViewpointEditor";
 
-class X3DOutlineTreeViewUI :
-	public X3DUserInterface
+void
+X3DViewpointEditorInterface::create (const std::string & filename)
 {
-public:
+	// Create Builder.
+	m_builder = Gtk::Builder::create_from_file (filename);
 
-	template <class ... Arguments>
-	X3DOutlineTreeViewUI (const std::string & filename, const Arguments & ... arguments) :
-		X3DUserInterface (m_widgetName, arguments ...),
-		connections ()
-	{ create (filename); }
+	// Get objects.
+	m_listStore               = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("ListStore"));
+	m_descriptionColumn       = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("DescriptionColumn"));
+	m_cellRendererDescription = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("CellRendererDescription"));
 
-	const std::string &
-	getWidgetName () const { return m_widgetName; }
+	// Get widgets.
+	m_builder -> get_widget ("Window", m_window);
+	m_window -> set_name ("Window");
+	m_builder -> get_widget ("Widget", m_widget);
+	m_widget -> set_name ("Widget");
+	m_builder -> get_widget ("ScrolledWindow", m_scrolledWindow);
+	m_scrolledWindow -> set_name ("ScrolledWindow");
+	m_builder -> get_widget ("TreeView", m_treeView);
+	m_treeView -> set_name ("TreeView");
+	m_builder -> get_widget ("FieldOfView", m_fieldOfView);
+	m_fieldOfView -> set_name ("FieldOfView");
 
-	Gtk::Menu &
-	getPopupMenu () const { return *m_popupMenu; }
+	// Connect object Gtk::TreeView with id 'TreeView'.
+	connections .emplace_back (m_treeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DViewpointEditorInterface::on_row_activated)));
 
-	Gtk::ImageMenuItem &
-	getEditMenuItem () const { return *m_editMenuItem; }
+	// Connect object Gtk::HScale with id 'FieldOfView'.
+	connections .emplace_back (m_fieldOfView -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DViewpointEditorInterface::on_fieldOfView_changed)));
 
-	Gtk::Window &
-	getWindow () const { return *m_window; }
-
-	Gtk::Box &
-	getWidget () const { return *m_widget; }
-
-
-private:
-
-	void
-	create (const std::string &);
-
-	static const std::string m_widgetName;
-
-	std::deque <sigc::connection> connections;
-	Glib::RefPtr <Gtk::Builder>   m_builder;
-	Gtk::Menu*                    m_popupMenu;
-	Gtk::ImageMenuItem*           m_editMenuItem;
-	Gtk::Window*                  m_window;
-	Gtk::Box*                     m_widget;
-
-};
+	// Call construct handler of base class.
+	construct ();
+}
 
 } // puck
 } // titania
-
-#endif

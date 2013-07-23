@@ -59,12 +59,12 @@ namespace titania {
 namespace puck {
 
 OutlineTreeView::OutlineTreeView (BrowserWindow* const browserWindow) :
-	    Glib::ObjectBase (typeid (OutlineTreeView)),
-	    X3DBaseInterface (browserWindow),
-	       Gtk::TreeView (),
-	X3DOutlineTreeViewUI (get_ui ("OutlineTreeView.ui"), gconf_dir ()),
-	               model (),
-	           selection (browserWindow, this)
+	           Glib::ObjectBase (typeid (OutlineTreeView)),
+	           X3DBaseInterface (browserWindow),
+	              Gtk::TreeView (),
+	X3DOutlineTreeViewInterface (get_ui ("OutlineTreeView.ui"), gconf_dir ()),
+	                      model (),
+	                  selection (browserWindow, this)
 {
 	// Options
 
@@ -256,7 +256,7 @@ OutlineTreeView::set_rootNodes ()
 	for (auto & rootNode : getBrowser () -> getExecutionContext () -> getRootNodes ())
 	{
 		Gtk::TreeModel::iterator iter = get_model () -> append (OutlineIterType::X3DBaseNode, &rootNode);
-		
+
 		// Expand row again if it was previously expanded.
 
 		if (get_expanded (iter))
@@ -590,13 +590,13 @@ OutlineTreeView::expand_row (const Gtk::TreeModel::iterator & iter)
 		case OutlineIterType::X3DField:
 		{
 			auto field = static_cast <X3D::X3DFieldDefinition*> (get_object (iter));
-			
+
 			if (getBrowserWindow () -> getKeys () .shift () or get_expand_all (iter))
 				expand_routes (iter, field);
 
 			else
 				set_all_expanded (iter, false);
-			
+
 			switch (field -> getType ())
 			{
 				case X3D::X3DConstants::SFNode:
@@ -610,7 +610,7 @@ OutlineTreeView::expand_row (const Gtk::TreeModel::iterator & iter)
 
 					for (auto & value :* mfnode)
 						get_model () -> append (iter, OutlineIterType::X3DBaseNode, &value);
-						
+
 					if (mfnode -> empty () and not get_all_expanded (iter))
 						expand_routes (iter, field);
 
@@ -733,17 +733,17 @@ OutlineTreeView::auto_expand (const Gtk::TreeModel::iterator & parent)
 			{
 				switch (get_data_type (child))
 				{
-					case OutlineIterType::X3DBaseNode:
-					{
-						if (get_expanded (child))
+					case OutlineIterType::X3DBaseNode :
 						{
-							set_all_expanded (child, not get_all_expanded (child));
+							if (get_expanded (child))
+							{
+								set_all_expanded (child, not get_all_expanded (child));
 
-							expand_row (Gtk::TreePath (child), false);
+								expand_row (Gtk::TreePath (child), false);
 
-							break;
+								break;
+							}
 						}
-					}
 					default:
 						break;
 				}
@@ -779,7 +779,7 @@ OutlineTreeView::auto_expand (const Gtk::TreeModel::iterator & parent)
 					case X3D::X3DConstants::MFNode:
 					{
 						auto mfnode = static_cast <X3D::MFNode*> (field);
-					
+
 						if (mfnode -> size () and (field -> isInitializeable () or get_expanded (child)))
 						{
 							if (get_expanded (child))
@@ -795,7 +795,7 @@ OutlineTreeView::auto_expand (const Gtk::TreeModel::iterator & parent)
 						if (get_expanded (child))
 						{
 							set_expand_all (child, get_all_expanded (child));
-	
+
 							expand_row (Gtk::TreePath (child), false);
 						}
 
@@ -837,7 +837,7 @@ OutlineTreeView::select_field (int x, int y)
 			return true;
 		}
 	}
-	
+
 	return false;
 }
 

@@ -47,8 +47,8 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#ifndef __TMP_GLAD2CPP_MOTION_BLUR_EDITOR_H__
-#define __TMP_GLAD2CPP_MOTION_BLUR_EDITOR_H__
+#ifndef __TMP_GLAD2CPP_OUTLINE_EDITOR_H__
+#define __TMP_GLAD2CPP_OUTLINE_EDITOR_H__
 
 #include "../Base/X3DUserInterface.h"
 #include <gtkmm.h>
@@ -59,13 +59,13 @@ namespace puck {
 
 using namespace Gtk;
 
-class X3DMotionBlurEditorUI :
+class X3DOutlineEditorInterface :
 	public X3DUserInterface
 {
 public:
 
 	template <class ... Arguments>
-	X3DMotionBlurEditorUI (const std::string & filename, const Arguments & ... arguments) :
+	X3DOutlineEditorInterface (const std::string & filename, const Arguments & ... arguments) :
 		X3DUserInterface (m_widgetName, arguments ...),
 		connections ()
 	{ create (filename); }
@@ -76,22 +76,14 @@ public:
 	Gtk::Window &
 	getWindow () const { return *m_window; }
 
-	Gtk::Table &
+	Gtk::MenuBar &
+	getMenu () const { return *m_menu; }
+
+	Gtk::Box &
 	getWidget () const { return *m_widget; }
 
-	Gtk::HScale &
-	getIntensity () const { return *m_intensity; }
-
-	Gtk::CheckButton &
-	getEnabled () const { return *m_enabled; }
-
-	virtual
-	void
-	on_intensity_changed () = 0;
-
-	virtual
-	void
-	on_enabled_toggled () = 0;
+	Gtk::ScrolledWindow &
+	getScrolledWindow () const { return *m_scrolledWindow; }
 
 
 private:
@@ -104,9 +96,9 @@ private:
 	std::deque <sigc::connection> connections;
 	Glib::RefPtr <Gtk::Builder>   m_builder;
 	Gtk::Window*                  m_window;
-	Gtk::Table*                   m_widget;
-	Gtk::HScale*                  m_intensity;
-	Gtk::CheckButton*             m_enabled;
+	Gtk::MenuBar*                 m_menu;
+	Gtk::Box*                     m_widget;
+	Gtk::ScrolledWindow*          m_scrolledWindow;
 
 };
 

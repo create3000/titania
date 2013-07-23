@@ -47,15 +47,15 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#include "X3DConsoleUI.h"
+#include "X3DConsoleInterface.h"
 
 namespace titania {
 namespace puck {
 
-const std::string X3DConsoleUI::m_widgetName = "Console";
+const std::string X3DConsoleInterface::m_widgetName = "Console";
 
 void
-X3DConsoleUI::create (const std::string & filename)
+X3DConsoleInterface::create (const std::string & filename)
 {
 	// Create Builder.
 	m_builder = Gtk::Builder::create_from_file (filename);

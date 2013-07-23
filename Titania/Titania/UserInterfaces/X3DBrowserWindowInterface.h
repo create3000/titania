@@ -59,22 +59,19 @@ namespace puck {
 
 using namespace Gtk;
 
-class X3DBrowserWindowUI :
+class X3DBrowserWindowInterface :
 	public X3DUserInterface
 {
 public:
 
 	template <class ... Arguments>
-	X3DBrowserWindowUI (const std::string & filename, const Arguments & ... arguments) :
+	X3DBrowserWindowInterface (const std::string & filename, const Arguments & ... arguments) :
 		X3DUserInterface (m_widgetName, arguments ...),
 		connections ()
 	{ create (filename); }
 
 	const std::string &
 	getWidgetName () const { return m_widgetName; }
-
-	const Glib::RefPtr <Gtk::IconFactory> &
-	getIconFactory () const { return m_iconFactory; }
 
 	const Glib::RefPtr <Gtk::Action> &
 	getNewAction () const { return m_newAction; }
@@ -94,6 +91,9 @@ public:
 	const Glib::RefPtr <Gtk::FileFilter> &
 	getFileFilterAllFiles () const { return m_fileFilterAllFiles; }
 
+	const Glib::RefPtr <Gtk::IconFactory> &
+	getIconFactory () const { return m_iconFactory; }
+
 	const Glib::RefPtr <Gtk::AccelGroup> &
 	getMenuAccelGroup () const { return m_menuAccelGroup; }
 
@@ -105,6 +105,9 @@ public:
 
 	Gtk::CheckButton &
 	getSaveCompressedButton () const { return *m_saveCompressedButton; }
+
+	Gtk::MessageDialog &
+	getMessageDialog () const { return *m_messageDialog; }
 
 	Gtk::Window &
 	getWindow () const { return *m_window; }
@@ -286,9 +289,6 @@ public:
 	Gtk::Box &
 	getOutlineEditorBox () const { return *m_outlineEditorBox; }
 
-	Gtk::MessageDialog &
-	getMessageDialog () const { return *m_messageDialog; }
-
 	virtual
 	void
 	on_new () = 0;
@@ -312,6 +312,18 @@ public:
 	virtual
 	void
 	on_fileSaveDialog_response (int response_id) = 0;
+
+	virtual
+	void
+	on_messageDialog_response (int response_id) = 0;
+
+	virtual
+	bool
+	on_key_release_event (GdkEventKey* event) = 0;
+
+	virtual
+	bool
+	on_key_press_event (GdkEventKey* event) = 0;
 
 	virtual
 	void
@@ -417,10 +429,6 @@ public:
 	void
 	on_look_at_toggled () = 0;
 
-	virtual
-	void
-	on_messageDialog_response (int response_id) = 0;
-
 
 private:
 
@@ -431,17 +439,18 @@ private:
 
 	std::deque <sigc::connection>   connections;
 	Glib::RefPtr <Gtk::Builder>     m_builder;
-	Glib::RefPtr <Gtk::IconFactory> m_iconFactory;
 	Glib::RefPtr <Gtk::Action>      m_newAction;
 	Glib::RefPtr <Gtk::Action>      m_openAction;
 	Glib::RefPtr <Gtk::Action>      m_revertAction;
 	Glib::RefPtr <Gtk::Action>      m_saveAction;
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilerX3D;
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterAllFiles;
+	Glib::RefPtr <Gtk::IconFactory> m_iconFactory;
 	Glib::RefPtr <Gtk::AccelGroup>  m_menuAccelGroup;
 	Gtk::FileChooserDialog*         m_fileOpenDialog;
 	Gtk::FileChooserDialog*         m_fileSaveDialog;
 	Gtk::CheckButton*               m_saveCompressedButton;
+	Gtk::MessageDialog*             m_messageDialog;
 	Gtk::Window*                    m_window;
 	Gtk::VBox*                      m_widget;
 	Gtk::MenuBar*                   m_menuBar;
@@ -502,7 +511,6 @@ private:
 	Gtk::Box*                       m_historyEditorBox;
 	Gtk::Box*                       m_viewpointEditorBox;
 	Gtk::Box*                       m_outlineEditorBox;
-	Gtk::MessageDialog*             m_messageDialog;
 
 };
 

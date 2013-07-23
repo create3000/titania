@@ -47,27 +47,30 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-
-#include "X3DRenderingPropertiesUI.h"
+#include "X3DOutlineTreeViewInterface.h"
 
 namespace titania {
 namespace puck {
 
-const std::string X3DRenderingPropertiesUI::m_widgetName = "RenderingProperties";
+const std::string X3DOutlineTreeViewInterface::m_widgetName = "OutlineTreeView";
 
 void
-X3DRenderingPropertiesUI::create (const std::string & filename)
+X3DOutlineTreeViewInterface::create (const std::string & filename)
 {
 	// Create Builder.
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
-	m_textBuffer = Glib::RefPtr <Gtk::TextBuffer>::cast_dynamic (m_builder -> get_object ("TextBuffer"));
 
 	// Get widgets.
+	m_builder -> get_widget ("PopupMenu", m_popupMenu);
+	m_popupMenu -> set_name ("PopupMenu");
+	m_builder -> get_widget ("EditMenuItem", m_editMenuItem);
+	m_editMenuItem -> set_name ("EditMenuItem");
 	m_builder -> get_widget ("Window", m_window);
+	m_window -> set_name ("Window");
 	m_builder -> get_widget ("Widget", m_widget);
-	m_builder -> get_widget ("TextView", m_textView);
+	m_widget -> set_name ("Widget");
 
 	// Call construct handler of base class.
 	construct ();

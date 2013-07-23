@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,7 +51,7 @@
 #ifndef __TITANIA_MOTION_BLUR_EDITOR_MOTION_BLUR_EDITOR_H__
 #define __TITANIA_MOTION_BLUR_EDITOR_MOTION_BLUR_EDITOR_H__
 
-#include "../UserInterfaces/X3DMotionBlurEditorUI.h"
+#include "../UserInterfaces/X3DMotionBlurEditorInterface.h"
 #include <Titania/X3D.h>
 #include <gtkmm.h>
 
@@ -61,7 +61,7 @@ namespace puck {
 class X3DBrowserWindow;
 
 class MotionBlurEditor :
-	public X3DMotionBlurEditorUI
+	public X3DMotionBlurEditorInterface
 {
 public:
 

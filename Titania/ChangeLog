@@ -1,5 +1,52 @@
 2013-07-23  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* BrowserWindow.ui:
+	* X3DBrowserWindow.h:
+	* X3DBrowserWindow.cpp:
+	* HistoryEditor.h:
+	* X3DConsoleUI.h:
+	* OutlineEditor.h:
+	* HistoryEditor.cpp:
+	* X3DConsoleUI.cpp:
+	* OutlineTreeView.h:
+	* OutlineEditor.cpp:
+	* OutlineTreeView.cpp:
+	* ViewpointEditor.h:
+	* X3DBrowserWindowUI.h:
+	* MotionBlurEditor.h:
+	* ViewpointEditor.cpp:
+	* X3DHistoryEditorUI.h:
+	* X3DOutlineEditorUI.h:
+	* X3DConsoleInterface.h:
+	* X3DViewpointEditorUI.h:
+	* X3DOutlineTreeViewUI.h:
+	* X3DBrowserWindowUI.cpp:
+	* MotionBlurEditor.cpp:
+	* X3DHistoryEditorUI.cpp:
+	* X3DOutlineEditorUI.cpp:
+	* X3DConsoleInterface.cpp:
+	* X3DMotionBlurEditorUI.h:
+	* X3DOutlineTreeViewUI.cpp:
+	* X3DViewpointEditorUI.cpp:
+	* X3DMotionBlurEditorUI.cpp:
+	* X3DRenderingPropertiesUI.h:
+	* X3DOutlineEditorInterface.h:
+	* X3DHistoryEditorInterface.h:
+	* X3DBrowserWindowInterface.h:
+	* X3DRenderingPropertiesUI.cpp:
+	* X3DOutlineTreeViewInterface.h:
+	* X3DHistoryEditorInterface.cpp:
+	* X3DViewpointEditorInterface.h:
+	* X3DBrowserWindowInterface.cpp:
+	* X3DOutlineEditorInterface.cpp:
+	* X3DMotionBlurEditorInterface.h:
+	* X3DViewpointEditorInterface.cpp:
+	* X3DOutlineTreeViewInterface.cpp:
+	* X3DMotionBlurEditorInterface.cpp: 
+
+2013-07-23  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* BrowserWindow.h:
 	* X3DBaseInterface.h:
 	* BrowserWindow.ui:

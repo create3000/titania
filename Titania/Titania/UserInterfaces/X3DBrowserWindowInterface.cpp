@@ -47,27 +47,27 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#include "X3DBrowserWindowUI.h"
+#include "X3DBrowserWindowInterface.h"
 
 namespace titania {
 namespace puck {
 
-const std::string X3DBrowserWindowUI::m_widgetName = "BrowserWindow";
+const std::string X3DBrowserWindowInterface::m_widgetName = "BrowserWindow";
 
 void
-X3DBrowserWindowUI::create (const std::string & filename)
+X3DBrowserWindowInterface::create (const std::string & filename)
 {
 	// Create Builder.
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
-	m_iconFactory        = Glib::RefPtr <Gtk::IconFactory>::cast_dynamic (m_builder -> get_object ("IconFactory"));
 	m_newAction          = Glib::RefPtr <Gtk::Action>::cast_dynamic (m_builder -> get_object ("NewAction"));
 	m_openAction         = Glib::RefPtr <Gtk::Action>::cast_dynamic (m_builder -> get_object ("OpenAction"));
 	m_revertAction       = Glib::RefPtr <Gtk::Action>::cast_dynamic (m_builder -> get_object ("RevertAction"));
 	m_saveAction         = Glib::RefPtr <Gtk::Action>::cast_dynamic (m_builder -> get_object ("SaveAction"));
 	m_fileFilerX3D       = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilerX3D"));
 	m_fileFilterAllFiles = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterAllFiles"));
+	m_iconFactory        = Glib::RefPtr <Gtk::IconFactory>::cast_dynamic (m_builder -> get_object ("IconFactory"));
 	m_menuAccelGroup     = Glib::RefPtr <Gtk::AccelGroup>::cast_dynamic (m_builder -> get_object ("MenuAccelGroup"));
 
 	// Get widgets.
@@ -77,6 +77,8 @@ X3DBrowserWindowUI::create (const std::string & filename)
 	m_fileSaveDialog -> set_name ("FileSaveDialog");
 	m_builder -> get_widget ("SaveCompressedButton", m_saveCompressedButton);
 	m_saveCompressedButton -> set_name ("SaveCompressedButton");
+	m_builder -> get_widget ("MessageDialog", m_messageDialog);
+	m_messageDialog -> set_name ("MessageDialog");
 	m_builder -> get_widget ("Window", m_window);
 	m_window -> set_name ("Window");
 	m_builder -> get_widget ("Widget", m_widget);
@@ -197,70 +199,72 @@ X3DBrowserWindowUI::create (const std::string & filename)
 	m_viewpointEditorBox -> set_name ("ViewpointEditorBox");
 	m_builder -> get_widget ("OutlineEditorBox", m_outlineEditorBox);
 	m_outlineEditorBox -> set_name ("OutlineEditorBox");
-	m_builder -> get_widget ("MessageDialog", m_messageDialog);
-	m_messageDialog -> set_name ("MessageDialog");
 
 	// Connect object Gtk::Action with id 'NewAction'.
-	connections .emplace_back (m_newAction -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_new)));
-	connections .emplace_back (m_openAction -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_open)));
-	connections .emplace_back (m_revertAction -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_revert_to_saved)));
-	connections .emplace_back (m_saveAction -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_save)));
+	connections .emplace_back (m_newAction -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_new)));
+	connections .emplace_back (m_openAction -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_open)));
+	connections .emplace_back (m_revertAction -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_revert_to_saved)));
+	connections .emplace_back (m_saveAction -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_save)));
 
 	// Connect object Gtk::FileChooserDialog with id 'FileOpenDialog'.
-	connections .emplace_back (m_fileOpenDialog -> signal_response () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_fileOpenDialog_response)));
-	connections .emplace_back (m_fileSaveDialog -> signal_response () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_fileSaveDialog_response)));
-
-	// Connect object Gtk::ImageMenuItem with id 'SaveMenuItem'.
-	connections .emplace_back (m_saveMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_save)));
-	connections .emplace_back (m_saveAsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_save_as)));
-	connections .emplace_back (m_quitMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_close)));
-
-	// Connect object Gtk::CheckMenuItem with id 'ToolBarMenuItem'.
-	connections .emplace_back (m_toolBarMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_toolBar_toggled)));
-	connections .emplace_back (m_sideBarMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_sideBar_toggled)));
-	connections .emplace_back (m_footerMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_footer_toggled)));
-
-	// Connect object Gtk::RadioMenuItem with id 'PhongMenuItem'.
-	connections .emplace_back (m_phongMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::phong_activate)));
-	connections .emplace_back (m_gouraudMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::gouraud_activate)));
-	connections .emplace_back (m_flatMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::flat_activate)));
-	connections .emplace_back (m_wireFrameMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::wireframe_activate)));
-	connections .emplace_back (m_pointSetMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::pointset_activate)));
-	connections .emplace_back (m_highQualityMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_high_quality_activate)));
-	connections .emplace_back (m_mediumQualityMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_medium_quality_activate)));
-	connections .emplace_back (m_lowQualityMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_low_quality_activate)));
-
-	// Connect object Gtk::CheckMenuItem with id 'RenderingPropertiesMenuItem'.
-	connections .emplace_back (m_renderingPropertiesMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_rendering_properties_toggled)));
-	connections .emplace_back (m_fullScreenMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_fullscreen_toggled)));
-	connections .emplace_back (m_headlightMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_headlight_toggled)));
-	connections .emplace_back (m_rubberbandMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_rubberband_toggled)));
-
-	// Connect object Gtk::MenuItem with id 'LookAtAllMenuItem'.
-	connections .emplace_back (m_lookAtAllMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_look_at_all_activate)));
-
-	// Connect object Gtk::CheckMenuItem with id 'EnableInlineViewpointsMenuItem'.
-	connections .emplace_back (m_enableInlineViewpointsMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_enableInlineViewpoints_toggled)));
-
-	// Connect object Gtk::MenuItem with id 'MotionBlurMenuItem'.
-	connections .emplace_back (m_motionBlurMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_motion_blur_editor_activate)));
-
-	// Connect object Gtk::ImageMenuItem with id 'InfoMenuItem'.
-	connections .emplace_back (m_infoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_info)));
-	connections .emplace_back (m_standardSizeMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_standard_size)));
-
-	// Connect object Gtk::RadioToolButton with id 'HandButton'.
-	connections .emplace_back (m_handButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_hand_button_toggled)));
-	connections .emplace_back (m_arrowButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_arrow_button_toggled)));
-
-	// Connect object Gtk::ToolButton with id 'LookAtAllButton'.
-	connections .emplace_back (m_lookAtAllButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_look_at_all_clicked)));
-
-	// Connect object Gtk::ToggleToolButton with id 'LookAtButton'.
-	connections .emplace_back (m_lookAtButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_look_at_toggled)));
+	connections .emplace_back (m_fileOpenDialog -> signal_response () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_fileOpenDialog_response)));
+	connections .emplace_back (m_fileSaveDialog -> signal_response () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_fileSaveDialog_response)));
 
 	// Connect object Gtk::MessageDialog with id 'MessageDialog'.
-	connections .emplace_back (m_messageDialog -> signal_response () .connect (sigc::mem_fun (*this, &X3DBrowserWindowUI::on_messageDialog_response)));
+	connections .emplace_back (m_messageDialog -> signal_response () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_messageDialog_response)));
+
+	// Connect object Gtk::Window with id 'Window'.
+	connections .emplace_back (m_window -> signal_key_release_event () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_key_release_event)));
+	connections .emplace_back (m_window -> signal_key_press_event () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_key_press_event)));
+
+	// Connect object Gtk::ImageMenuItem with id 'SaveMenuItem'.
+	connections .emplace_back (m_saveMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_save)));
+	connections .emplace_back (m_saveAsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_save_as)));
+	connections .emplace_back (m_quitMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_close)));
+
+	// Connect object Gtk::CheckMenuItem with id 'ToolBarMenuItem'.
+	connections .emplace_back (m_toolBarMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_toolBar_toggled)));
+	connections .emplace_back (m_sideBarMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_sideBar_toggled)));
+	connections .emplace_back (m_footerMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_footer_toggled)));
+
+	// Connect object Gtk::RadioMenuItem with id 'PhongMenuItem'.
+	connections .emplace_back (m_phongMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::phong_activate)));
+	connections .emplace_back (m_gouraudMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::gouraud_activate)));
+	connections .emplace_back (m_flatMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::flat_activate)));
+	connections .emplace_back (m_wireFrameMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::wireframe_activate)));
+	connections .emplace_back (m_pointSetMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::pointset_activate)));
+	connections .emplace_back (m_highQualityMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_high_quality_activate)));
+	connections .emplace_back (m_mediumQualityMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_medium_quality_activate)));
+	connections .emplace_back (m_lowQualityMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_low_quality_activate)));
+
+	// Connect object Gtk::CheckMenuItem with id 'RenderingPropertiesMenuItem'.
+	connections .emplace_back (m_renderingPropertiesMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_rendering_properties_toggled)));
+	connections .emplace_back (m_fullScreenMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_fullscreen_toggled)));
+	connections .emplace_back (m_headlightMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_headlight_toggled)));
+	connections .emplace_back (m_rubberbandMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_rubberband_toggled)));
+
+	// Connect object Gtk::MenuItem with id 'LookAtAllMenuItem'.
+	connections .emplace_back (m_lookAtAllMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_look_at_all_activate)));
+
+	// Connect object Gtk::CheckMenuItem with id 'EnableInlineViewpointsMenuItem'.
+	connections .emplace_back (m_enableInlineViewpointsMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_enableInlineViewpoints_toggled)));
+
+	// Connect object Gtk::MenuItem with id 'MotionBlurMenuItem'.
+	connections .emplace_back (m_motionBlurMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_motion_blur_editor_activate)));
+
+	// Connect object Gtk::ImageMenuItem with id 'InfoMenuItem'.
+	connections .emplace_back (m_infoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_info)));
+	connections .emplace_back (m_standardSizeMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_standard_size)));
+
+	// Connect object Gtk::RadioToolButton with id 'HandButton'.
+	connections .emplace_back (m_handButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_hand_button_toggled)));
+	connections .emplace_back (m_arrowButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_arrow_button_toggled)));
+
+	// Connect object Gtk::ToolButton with id 'LookAtAllButton'.
+	connections .emplace_back (m_lookAtAllButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_look_at_all_clicked)));
+
+	// Connect object Gtk::ToggleToolButton with id 'LookAtButton'.
+	connections .emplace_back (m_lookAtButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_look_at_toggled)));
 
 	// Call construct handler of base class.
 	construct ();

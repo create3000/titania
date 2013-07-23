@@ -47,41 +47,36 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#include "X3DViewpointEditorUI.h"
+#include "X3DMotionBlurEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-const std::string X3DViewpointEditorUI::m_widgetName = "ViewpointEditor";
+const std::string X3DMotionBlurEditorInterface::m_widgetName = "MotionBlurEditor";
 
 void
-X3DViewpointEditorUI::create (const std::string & filename)
+X3DMotionBlurEditorInterface::create (const std::string & filename)
 {
 	// Create Builder.
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
-	m_listStore               = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("ListStore"));
-	m_descriptionColumn       = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("DescriptionColumn"));
-	m_cellRendererDescription = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("CellRendererDescription"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_window);
 	m_window -> set_name ("Window");
 	m_builder -> get_widget ("Widget", m_widget);
 	m_widget -> set_name ("Widget");
-	m_builder -> get_widget ("ScrolledWindow", m_scrolledWindow);
-	m_scrolledWindow -> set_name ("ScrolledWindow");
-	m_builder -> get_widget ("TreeView", m_treeView);
-	m_treeView -> set_name ("TreeView");
-	m_builder -> get_widget ("FieldOfView", m_fieldOfView);
-	m_fieldOfView -> set_name ("FieldOfView");
+	m_builder -> get_widget ("Intensity", m_intensity);
+	m_intensity -> set_name ("Intensity");
+	m_builder -> get_widget ("Enabled", m_enabled);
+	m_enabled -> set_name ("Enabled");
 
-	// Connect object Gtk::TreeView with id 'TreeView'.
-	connections .emplace_back (m_treeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DViewpointEditorUI::on_row_activated)));
+	// Connect object Gtk::HScale with id 'Intensity'.
+	connections .emplace_back (m_intensity -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DMotionBlurEditorInterface::on_intensity_changed)));
 
-	// Connect object Gtk::HScale with id 'FieldOfView'.
-	connections .emplace_back (m_fieldOfView -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DViewpointEditorUI::on_fieldOfView_changed)));
+	// Connect object Gtk::CheckButton with id 'Enabled'.
+	connections .emplace_back (m_enabled -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DMotionBlurEditorInterface::on_enabled_toggled)));
 
 	// Call construct handler of base class.
 	construct ();

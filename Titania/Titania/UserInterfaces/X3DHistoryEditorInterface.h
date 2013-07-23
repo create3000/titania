@@ -47,8 +47,8 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#ifndef __TMP_GLAD2CPP_VIEWPOINT_EDITOR_H__
-#define __TMP_GLAD2CPP_VIEWPOINT_EDITOR_H__
+#ifndef __TMP_GLAD2CPP_HISTORY_EDITOR_H__
+#define __TMP_GLAD2CPP_HISTORY_EDITOR_H__
 
 #include "../Base/X3DUserInterface.h"
 #include <gtkmm.h>
@@ -59,13 +59,13 @@ namespace puck {
 
 using namespace Gtk;
 
-class X3DViewpointEditorUI :
+class X3DHistoryEditorInterface :
 	public X3DUserInterface
 {
 public:
 
 	template <class ... Arguments>
-	X3DViewpointEditorUI (const std::string & filename, const Arguments & ... arguments) :
+	X3DHistoryEditorInterface (const std::string & filename, const Arguments & ... arguments) :
 		X3DUserInterface (m_widgetName, arguments ...),
 		connections ()
 	{ create (filename); }
@@ -77,10 +77,22 @@ public:
 	getListStore () const { return m_listStore; }
 
 	const Glib::RefPtr <Gtk::TreeViewColumn> &
-	getDescriptionColumn () const { return m_descriptionColumn; }
+	getIcon () const { return m_icon; }
+
+	const Glib::RefPtr <Gtk::CellRendererPixbuf> &
+	getIconRenderer () const { return m_iconRenderer; }
+
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getTitleColumn () const { return m_titleColumn; }
 
 	const Glib::RefPtr <Gtk::CellRendererText> &
-	getCellRendererDescription () const { return m_cellRendererDescription; }
+	getTitleRenderer () const { return m_titleRenderer; }
+
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getLocationColumn () const { return m_locationColumn; }
+
+	const Glib::RefPtr <Gtk::CellRendererText> &
+	getLocationRenderer () const { return m_locationRenderer; }
 
 	Gtk::Window &
 	getWindow () const { return *m_window; }
@@ -94,16 +106,9 @@ public:
 	Gtk::TreeView &
 	getTreeView () const { return *m_treeView; }
 
-	Gtk::HScale &
-	getFieldOfView () const { return *m_fieldOfView; }
-
 	virtual
 	void
 	on_row_activated (const TreeModel::Path & path, TreeViewColumn* column) = 0;
-
-	virtual
-	void
-	on_fieldOfView_changed () = 0;
 
 
 private:
@@ -113,16 +118,19 @@ private:
 
 	static const std::string m_widgetName;
 
-	std::deque <sigc::connection>        connections;
-	Glib::RefPtr <Gtk::Builder>          m_builder;
-	Glib::RefPtr <Gtk::ListStore>        m_listStore;
-	Glib::RefPtr <Gtk::TreeViewColumn>   m_descriptionColumn;
-	Glib::RefPtr <Gtk::CellRendererText> m_cellRendererDescription;
-	Gtk::Window*                         m_window;
-	Gtk::Box*                            m_widget;
-	Gtk::ScrolledWindow*                 m_scrolledWindow;
-	Gtk::TreeView*                       m_treeView;
-	Gtk::HScale*                         m_fieldOfView;
+	std::deque <sigc::connection>          connections;
+	Glib::RefPtr <Gtk::Builder>            m_builder;
+	Glib::RefPtr <Gtk::ListStore>          m_listStore;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_icon;
+	Glib::RefPtr <Gtk::CellRendererPixbuf> m_iconRenderer;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_titleColumn;
+	Glib::RefPtr <Gtk::CellRendererText>   m_titleRenderer;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_locationColumn;
+	Glib::RefPtr <Gtk::CellRendererText>   m_locationRenderer;
+	Gtk::Window*                           m_window;
+	Gtk::Box*                              m_widget;
+	Gtk::ScrolledWindow*                   m_scrolledWindow;
+	Gtk::TreeView*                         m_treeView;
 
 };
 

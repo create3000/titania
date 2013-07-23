@@ -47,8 +47,8 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#ifndef __TMP_GLAD2CPP_OUTLINE_EDITOR_H__
-#define __TMP_GLAD2CPP_OUTLINE_EDITOR_H__
+#ifndef __TMP_GLAD2CPP_OUTLINE_TREE_VIEW_H__
+#define __TMP_GLAD2CPP_OUTLINE_TREE_VIEW_H__
 
 #include "../Base/X3DUserInterface.h"
 #include <gtkmm.h>
@@ -59,13 +59,13 @@ namespace puck {
 
 using namespace Gtk;
 
-class X3DOutlineEditorUI :
+class X3DOutlineTreeViewInterface :
 	public X3DUserInterface
 {
 public:
 
 	template <class ... Arguments>
-	X3DOutlineEditorUI (const std::string & filename, const Arguments & ... arguments) :
+	X3DOutlineTreeViewInterface (const std::string & filename, const Arguments & ... arguments) :
 		X3DUserInterface (m_widgetName, arguments ...),
 		connections ()
 	{ create (filename); }
@@ -73,17 +73,17 @@ public:
 	const std::string &
 	getWidgetName () const { return m_widgetName; }
 
+	Gtk::Menu &
+	getPopupMenu () const { return *m_popupMenu; }
+
+	Gtk::ImageMenuItem &
+	getEditMenuItem () const { return *m_editMenuItem; }
+
 	Gtk::Window &
 	getWindow () const { return *m_window; }
 
-	Gtk::MenuBar &
-	getMenu () const { return *m_menu; }
-
 	Gtk::Box &
 	getWidget () const { return *m_widget; }
-
-	Gtk::ScrolledWindow &
-	getScrolledWindow () const { return *m_scrolledWindow; }
 
 
 private:
@@ -95,10 +95,10 @@ private:
 
 	std::deque <sigc::connection> connections;
 	Glib::RefPtr <Gtk::Builder>   m_builder;
+	Gtk::Menu*                    m_popupMenu;
+	Gtk::ImageMenuItem*           m_editMenuItem;
 	Gtk::Window*                  m_window;
-	Gtk::MenuBar*                 m_menu;
 	Gtk::Box*                     m_widget;
-	Gtk::ScrolledWindow*          m_scrolledWindow;
 
 };
 

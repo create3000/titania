@@ -62,8 +62,8 @@ namespace titania {
 namespace puck {
 
 X3DBrowserWindow::X3DBrowserWindow (const basic::uri & worldURL) :
-	X3DBrowserWindowUI (get_ui ("BrowserWindow.ui"), gconf_dir ()),
-	           browser (X3D::createBrowser ())
+	X3DBrowserWindowInterface (get_ui ("BrowserWindow.ui"), gconf_dir ()),
+	                  browser (X3D::createBrowser ())
 {
 	if (worldURL .size ())
 		getConfig () .setItem ("worldURL", worldURL);
@@ -89,7 +89,7 @@ X3DBrowserWindow::X3DBrowserWindow (const basic::uri & worldURL) :
 void
 X3DBrowserWindow::initialize ()
 {
-	X3DBrowserWindowUI::initialize ();
+	X3DBrowserWindowInterface::initialize ();
 
 	__LOG__ << std::endl;
 
@@ -314,7 +314,7 @@ X3DBrowserWindow::reload ()
 bool
 X3DBrowserWindow::close ()
 {
-	X3DBrowserWindowUI::close ();
+	X3DBrowserWindowInterface::close ();
 
 	return false;
 }

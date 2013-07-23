@@ -51,7 +51,7 @@
 #ifndef __TITANIA_BROWSER_X3DBROWSER_WINDOW_H__
 #define __TITANIA_BROWSER_X3DBROWSER_WINDOW_H__
 
-#include "../UserInterfaces/X3DBrowserWindowUI.h"
+#include "../UserInterfaces/X3DBrowserWindowInterface.h"
 #include <gtkmm.h>
 #include <memory>
 
@@ -59,7 +59,7 @@ namespace titania {
 namespace puck {
 
 class X3DBrowserWindow :
-	public X3DBrowserWindowUI
+	public X3DBrowserWindowInterface
 {
 public:
 

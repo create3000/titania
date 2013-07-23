@@ -58,7 +58,7 @@
 #include "../OutlineEditor/OutlineTree.h"
 #include "../OutlineEditor/OutlineTreeData.h"
 #include "../OutlineEditor/OutlineUserData.h"
-#include "../UserInterfaces/X3DOutlineTreeViewUI.h"
+#include "../UserInterfaces/X3DOutlineTreeViewInterface.h"
 #include <Titania/X3D.h>
 
 namespace titania {
@@ -68,7 +68,7 @@ class OutlineTreeModel;
 class OutlineCellRenderer;
 
 class OutlineTreeView :
-	public Gtk::TreeView, public X3DOutlineTreeViewUI
+	public Gtk::TreeView, public X3DOutlineTreeViewInterface
 {
 public:
 

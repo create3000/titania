@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -57,15 +57,15 @@ namespace titania {
 namespace puck {
 
 OutlineEditor::OutlineEditor (BrowserWindow* const browserWindow) :
-     X3DBaseInterface (browserWindow),
-	X3DOutlineEditorUI (get_ui ("OutlineEditor.ui"), gconf_dir ()),
-	          treeview (browserWindow)
+	         X3DBaseInterface (browserWindow),
+	X3DOutlineEditorInterface (get_ui ("OutlineEditor.ui"), gconf_dir ()),
+	                 treeview (browserWindow)
 { }
 
 void
 OutlineEditor::initialize ()
 {
-	X3DOutlineEditorUI::initialize ();
+	X3DOutlineEditorInterface::initialize ();
 
 	getScrolledWindow () .add (treeview);
 

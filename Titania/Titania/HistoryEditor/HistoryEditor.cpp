@@ -62,15 +62,15 @@ static constexpr int TITLE_COLUMN     = 1;
 static constexpr int WORLD_URL_COLUMN = 2;
 
 HistoryEditor::HistoryEditor (BrowserWindow* const browserWindow) :
-     X3DBaseInterface (browserWindow),
-	X3DHistoryEditorUI (get_ui ("HistoryEditor.ui"), gconf_dir ()),
-	           history ()
+	         X3DBaseInterface (browserWindow),
+	X3DHistoryEditorInterface (get_ui ("HistoryEditor.ui"), gconf_dir ()),
+	                  history ()
 { }
 
 void
 HistoryEditor::initialize ()
 {
-	X3DHistoryEditorUI::initialize ();
+	X3DHistoryEditorInterface::initialize ();
 
 	for (const auto & item : history .getItems ())
 	{

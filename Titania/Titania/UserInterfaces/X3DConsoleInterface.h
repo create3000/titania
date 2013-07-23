@@ -47,40 +47,58 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#include "X3DMotionBlurEditorUI.h"
+#ifndef __TMP_GLAD2CPP_CONSOLE_H__
+#define __TMP_GLAD2CPP_CONSOLE_H__
+
+#include "../Base/X3DUserInterface.h"
+#include <gtkmm.h>
+#include <string>
 
 namespace titania {
 namespace puck {
 
-const std::string X3DMotionBlurEditorUI::m_widgetName = "MotionBlurEditor";
+using namespace Gtk;
 
-void
-X3DMotionBlurEditorUI::create (const std::string & filename)
+class X3DConsoleInterface :
+	public X3DUserInterface
 {
-	// Create Builder.
-	m_builder = Gtk::Builder::create_from_file (filename);
+public:
 
-	// Get objects.
+	template <class ... Arguments>
+	X3DConsoleInterface (const std::string & filename, const Arguments & ... arguments) :
+		X3DUserInterface (m_widgetName, arguments ...),
+		connections ()
+	{ create (filename); }
 
-	// Get widgets.
-	m_builder -> get_widget ("Window", m_window);
-	m_window -> set_name ("Window");
-	m_builder -> get_widget ("Widget", m_widget);
-	m_widget -> set_name ("Widget");
-	m_builder -> get_widget ("Intensity", m_intensity);
-	m_intensity -> set_name ("Intensity");
-	m_builder -> get_widget ("Enabled", m_enabled);
-	m_enabled -> set_name ("Enabled");
+	const std::string &
+	getWidgetName () const { return m_widgetName; }
 
-	// Connect object Gtk::HScale with id 'Intensity'.
-	connections .emplace_back (m_intensity -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DMotionBlurEditorUI::on_intensity_changed)));
+	const Glib::RefPtr <Gtk::TextBuffer> &
+	getTextbuffer () const { return m_textbuffer; }
 
-	// Connect object Gtk::CheckButton with id 'Enabled'.
-	connections .emplace_back (m_enabled -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DMotionBlurEditorUI::on_enabled_toggled)));
+	Gtk::Window &
+	getWindow () const { return *m_window; }
 
-	// Call construct handler of base class.
-	construct ();
-}
+	Gtk::Box &
+	getWidget () const { return *m_widget; }
+
+
+private:
+
+	void
+	create (const std::string &);
+
+	static const std::string m_widgetName;
+
+	std::deque <sigc::connection>  connections;
+	Glib::RefPtr <Gtk::Builder>    m_builder;
+	Glib::RefPtr <Gtk::TextBuffer> m_textbuffer;
+	Gtk::Window*                   m_window;
+	Gtk::Box*                      m_widget;
+
+};
 
 } // puck
 } // titania
+
+#endif

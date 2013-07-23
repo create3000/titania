@@ -47,34 +47,70 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#include "X3DOutlineTreeViewUI.h"
+#ifndef __TMP_GLAD2CPP_MOTION_BLUR_EDITOR_H__
+#define __TMP_GLAD2CPP_MOTION_BLUR_EDITOR_H__
+
+#include "../Base/X3DUserInterface.h"
+#include <gtkmm.h>
+#include <string>
 
 namespace titania {
 namespace puck {
 
-const std::string X3DOutlineTreeViewUI::m_widgetName = "OutlineTreeView";
+using namespace Gtk;
 
-void
-X3DOutlineTreeViewUI::create (const std::string & filename)
+class X3DMotionBlurEditorInterface :
+	public X3DUserInterface
 {
-	// Create Builder.
-	m_builder = Gtk::Builder::create_from_file (filename);
+public:
 
-	// Get objects.
+	template <class ... Arguments>
+	X3DMotionBlurEditorInterface (const std::string & filename, const Arguments & ... arguments) :
+		X3DUserInterface (m_widgetName, arguments ...),
+		connections ()
+	{ create (filename); }
 
-	// Get widgets.
-	m_builder -> get_widget ("PopupMenu", m_popupMenu);
-	m_popupMenu -> set_name ("PopupMenu");
-	m_builder -> get_widget ("EditMenuItem", m_editMenuItem);
-	m_editMenuItem -> set_name ("EditMenuItem");
-	m_builder -> get_widget ("Window", m_window);
-	m_window -> set_name ("Window");
-	m_builder -> get_widget ("Widget", m_widget);
-	m_widget -> set_name ("Widget");
+	const std::string &
+	getWidgetName () const { return m_widgetName; }
 
-	// Call construct handler of base class.
-	construct ();
-}
+	Gtk::Window &
+	getWindow () const { return *m_window; }
+
+	Gtk::Table &
+	getWidget () const { return *m_widget; }
+
+	Gtk::HScale &
+	getIntensity () const { return *m_intensity; }
+
+	Gtk::CheckButton &
+	getEnabled () const { return *m_enabled; }
+
+	virtual
+	void
+	on_intensity_changed () = 0;
+
+	virtual
+	void
+	on_enabled_toggled () = 0;
+
+
+private:
+
+	void
+	create (const std::string &);
+
+	static const std::string m_widgetName;
+
+	std::deque <sigc::connection> connections;
+	Glib::RefPtr <Gtk::Builder>   m_builder;
+	Gtk::Window*                  m_window;
+	Gtk::Table*                   m_widget;
+	Gtk::HScale*                  m_intensity;
+	Gtk::CheckButton*             m_enabled;
+
+};
 
 } // puck
 } // titania
+
+#endif

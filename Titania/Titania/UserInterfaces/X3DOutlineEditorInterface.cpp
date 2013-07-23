@@ -47,15 +47,15 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#include "X3DOutlineEditorUI.h"
+#include "X3DOutlineEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-const std::string X3DOutlineEditorUI::m_widgetName = "OutlineEditor";
+const std::string X3DOutlineEditorInterface::m_widgetName = "OutlineEditor";
 
 void
-X3DOutlineEditorUI::create (const std::string & filename)
+X3DOutlineEditorInterface::create (const std::string & filename)
 {
 	// Create Builder.
 	m_builder = Gtk::Builder::create_from_file (filename);
