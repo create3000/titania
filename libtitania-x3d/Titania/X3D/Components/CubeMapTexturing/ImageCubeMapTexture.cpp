@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -56,7 +56,7 @@ namespace titania {
 namespace X3D {
 
 ImageCubeMapTexture::Fields::Fields () :
-	textureProperties (new SFNode ())
+	textureOptions (new SFNode ())
 { }
 
 ImageCubeMapTexture::ImageCubeMapTexture (X3DExecutionContext* const executionContext) :
@@ -70,7 +70,7 @@ ImageCubeMapTexture::ImageCubeMapTexture (X3DExecutionContext* const executionCo
 
 	addField (inputOutput,    "metadata",          metadata ());
 	addField (inputOutput,    "url",               url ());
-	addField (initializeOnly, "textureProperties", textureProperties ());
+	addField (initializeOnly, "textureOptions", textureOptions ());
 }
 
 X3DBaseNode*

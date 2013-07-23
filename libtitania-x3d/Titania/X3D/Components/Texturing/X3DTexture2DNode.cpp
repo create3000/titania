@@ -75,7 +75,7 @@ const GLint X3DTexture2DNode::wrapTypes [2] = { GL_CLAMP, GL_REPEAT };
 X3DTexture2DNode::Fields::Fields () :
 	repeatS (new SFBool (true)),
 	repeatT (new SFBool (true)),
-	textureProperties (new SFNode ())
+	textureOptions (new SFNode ())
 { }
 
 X3DTexture2DNode::X3DTexture2DNode () :
@@ -92,12 +92,12 @@ X3DTexture2DNode::X3DTexture2DNode () :
 const TextureProperties*
 X3DTexture2DNode::getTextureProperties () const
 {
-	auto _textureProperties = x3d_cast <TextureProperties*> (textureProperties ());
+	auto _textureOptions = x3d_cast <TextureProperties*> (textureOptions ());
 
-	if (_textureProperties)
-		return _textureProperties;
+	if (_textureOptions)
+		return _textureOptions;
 
-	return x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties ());
+	return x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureOptions ());
 }
 
 void
@@ -244,13 +244,13 @@ X3DTexture2DNode::setImage (size_t components, GLenum format, GLint width, GLint
 {
 	// transfer image
 
-	auto textureProperties = getTextureProperties ();
+	auto textureOptions = getTextureProperties ();
 
 	GLint level = 0;     // This texture is level 0 in mimpap generation.
 
 	glBindTexture (GL_TEXTURE_2D, getTextureId ());
 
-	applyTextureProperties (textureProperties);
+	applyTextureProperties (textureOptions);
 
 	glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
 
@@ -274,9 +274,9 @@ X3DTexture2DNode::updateImage (GLenum format, GLint width, GLint height, const v
 }
 
 void
-X3DTexture2DNode::applyTextureProperties (const TextureProperties* textureProperties) const
+X3DTexture2DNode::applyTextureProperties (const TextureProperties* textureOptions) const
 {
-	if (std::max (width, height) < MIN_SCALE_SIZE and textureProperties == x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties ()))
+	if (std::max (width, height) < MIN_SCALE_SIZE and textureOptions == x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureOptions ()))
 	{
 		glTexParameteri (GL_TEXTURE_2D, GL_GENERATE_MIPMAP, false);
 		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -287,14 +287,14 @@ X3DTexture2DNode::applyTextureProperties (const TextureProperties* textureProper
 	}
 	else
 	{
-		glTexParameteri (GL_TEXTURE_2D, GL_GENERATE_MIPMAP,    textureProperties -> generateMipMaps ());
-		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, textureProperties -> getMinificationFilter ());
-		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, textureProperties -> getMagnificationFilter ());
+		glTexParameteri (GL_TEXTURE_2D, GL_GENERATE_MIPMAP,    textureOptions -> generateMipMaps ());
+		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, textureOptions -> getMinificationFilter ());
+		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, textureOptions -> getMagnificationFilter ());
 
-		if (this -> textureProperties ())
+		if (this -> textureOptions ())
 		{
-			glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, textureProperties -> getBoundaryModeS ());
-			glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, textureProperties -> getBoundaryModeT ());
+			glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, textureOptions -> getBoundaryModeS ());
+			glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, textureOptions -> getBoundaryModeT ());
 		}
 		else
 		{
@@ -303,8 +303,8 @@ X3DTexture2DNode::applyTextureProperties (const TextureProperties* textureProper
 		}
 	}
 
-	glTexParameterfv (GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, textureProperties -> borderColor () .getValue () .data ());
-	glTexParameterf  (GL_TEXTURE_2D, GL_TEXTURE_PRIORITY,     textureProperties -> texturePriority ());
+	glTexParameterfv (GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, textureOptions -> borderColor () .getValue () .data ());
+	glTexParameterf  (GL_TEXTURE_2D, GL_TEXTURE_PRIORITY,     textureOptions -> texturePriority ());
 }
 
 void

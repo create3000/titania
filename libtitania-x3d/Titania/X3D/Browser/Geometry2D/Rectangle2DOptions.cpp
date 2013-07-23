@@ -48,14 +48,67 @@
  *
  ******************************************************************************/
 
-#include "X3DSpherePropertyNode.h"
+#include "Rectangle2DOptions.h"
+
+#include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {
 
-X3DSpherePropertyNode::X3DSpherePropertyNode () :
-	X3DGeometryPropertyNode ()
-{ }
+Rectangle2DOptions::Rectangle2DOptions (X3DExecutionContext* const executionContext) :
+	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DGeometricOptionNode ()
+{
+	setComponent ("Browser"),
+	setTypeName ("Rectangle2DOptions");
+}
+
+Rectangle2DOptions*
+Rectangle2DOptions::create (X3DExecutionContext* const executionContext) const
+{
+	return new Rectangle2DOptions (executionContext);
+}
+
+void
+Rectangle2DOptions::initialize ()
+{
+	X3DGeometricOptionNode::initialize ();
+
+	build ();
+}
+
+void
+Rectangle2DOptions::eventsProcessed ()
+{
+	X3DGeometricOptionNode::eventsProcessed ();
+
+	update ();
+}
+
+void
+Rectangle2DOptions::build ()
+{
+	getTexCoord () .reserve (4);
+	getNormals  () .reserve (4);
+	getVertices () .reserve (4);
+
+	// Front Face
+	getTexCoord () .emplace_back (0, 0, 0);
+	getNormals  () .emplace_back (0, 0, 1);
+	getVertices () .emplace_back (-1, -1, 0);
+
+	getTexCoord () .emplace_back (1, 0, 0);
+	getNormals  () .emplace_back (0, 0, 1);
+	getVertices () .emplace_back (1, -1, 0);
+
+	getTexCoord () .emplace_back (1, 1, 0);
+	getNormals  () .emplace_back (0, 0, 1);
+	getVertices () .emplace_back (1, 1, 0);
+
+	getTexCoord () .emplace_back (0, 1, 0);
+	getNormals  () .emplace_back (0, 0, 1);
+	getVertices () .emplace_back (-1, 1, 0);
+}
 
 } // X3D
 } // titania

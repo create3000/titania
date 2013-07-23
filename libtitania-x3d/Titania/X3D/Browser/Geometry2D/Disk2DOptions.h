@@ -48,65 +48,65 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_PROPERTIES_X3DGEOMETRY_PROPERTY_NODE_H__
-#define __TITANIA_X3D_BROWSER_PROPERTIES_X3DGEOMETRY_PROPERTY_NODE_H__
+#ifndef __TITANIA_X3D_BROWSER_GEOMETRY2D_DISK2DPROPERTIES_H__
+#define __TITANIA_X3D_BROWSER_GEOMETRY2D_DISK2DPROPERTIES_H__
 
-#include "../../Components/Core/X3DPropertyNode.h"
+#include "../Geometry2D/X3DGeometricOptionNode.h"
 
 namespace titania {
 namespace X3D {
 
-class X3DGeometryPropertyNode :
-	public X3DPropertyNode
+//	Property Name           Value data type      Description
+
+class Disk2DOptions :
+	public X3DGeometricOptionNode
 {
 public:
 
-	X3DGeometryPropertyNode ();
+	Disk2DOptions (X3DExecutionContext* const);
 
-	const std::vector <Vector3f> &
-	getTexCoord () const
-	{ return texCoord; }
+	///  @name Fields
 
-	const std::vector <Vector3f> &
-	getNormals () const
-	{ return normals; }
+	SFInt32 &
+	segments ()
+	{ return *fields .segments; }
 
-	const std::vector <Vector3f> &
-	getVertices () const
-	{ return vertices; }
+	const SFInt32 &
+	segments () const
+	{ return *fields .segments; }
 
 	virtual
 	GLenum
-	getVertexMode () const = 0;
-
-
-protected:
-
-	std::vector <Vector3f> &
-	getTexCoord ()
-	{ return texCoord; }
-
-	std::vector <Vector3f> &
-	getNormals ()
-	{ return normals; }
-
-	std::vector <Vector3f> &
-	getVertices ()
-	{ return vertices; }
-
-	void
-	update ();
-
-	virtual
-	void
-	build () = 0;
+	getVertexMode () const final
+	{ return GL_POLYGON; }
 
 
 private:
 
-	std::vector <Vector3f> texCoord;
-	std::vector <Vector3f> normals;
-	std::vector <Vector3f> vertices;
+	virtual
+	Disk2DOptions*
+	create (X3DExecutionContext* const) const final;
+
+	virtual
+	void
+	initialize () final;
+
+	virtual
+	void
+	eventsProcessed () final;
+
+	virtual
+	void
+	build () final;
+
+	struct Fields
+	{
+		Fields ();
+
+		SFInt32* const segments;
+	};
+
+	Fields fields;
 
 };
 

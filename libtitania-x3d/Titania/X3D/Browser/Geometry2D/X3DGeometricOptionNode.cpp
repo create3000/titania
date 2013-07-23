@@ -48,50 +48,27 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_GEOMETRY2D_RECTANGLE2DPROPERTIES_H__
-#define __TITANIA_X3D_BROWSER_GEOMETRY2D_RECTANGLE2DPROPERTIES_H__
-
-#include "../Properties/X3DGeometryPropertyNode.h"
+#include "X3DGeometricOptionNode.h"
 
 namespace titania {
 namespace X3D {
 
-//	Property Name           Value data type      Description
+X3DGeometricOptionNode::X3DGeometricOptionNode () :
+	X3DOptionNode (),
+	     texCoord (),
+	      normals (),
+	     vertices ()
+{ }
 
-class Rectangle2DProperties :
-	public X3DGeometryPropertyNode
+void
+X3DGeometricOptionNode::update ()
 {
-public:
+	texCoord .clear ();
+	normals  .clear ();
+	vertices .clear ();
 
-	Rectangle2DProperties (X3DExecutionContext* const);
-
-	virtual
-	GLenum
-	getVertexMode () const final
-	{ return GL_QUADS; }
-
-
-private:
-
-	virtual
-	Rectangle2DProperties*
-	create (X3DExecutionContext* const) const final;
-
-	virtual
-	void
-	initialize () final;
-
-	virtual
-	void
-	eventsProcessed () final;
-
-	virtual
-	void
-	build () final;
-
-};
+	build ();
+}
 
 } // X3D
 } // titania
-
-#endif

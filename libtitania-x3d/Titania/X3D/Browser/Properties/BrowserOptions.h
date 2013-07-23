@@ -55,13 +55,13 @@
 #include "../../Components/Text/FontStyle.h"
 #include "../../Components/Texturing/TextureProperties.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "../Geometry2D/Arc2DProperties.h"
-#include "../Geometry2D/ArcClose2DProperties.h"
-#include "../Geometry2D/Circle2DProperties.h"
-#include "../Geometry2D/Disk2DProperties.h"
-#include "../Geometry2D/Rectangle2DProperties.h"
-#include "../Geometry3D/BoxProperties.h"
-#include "../Geometry3D/X3DSpherePropertyNode.h"
+#include "../Geometry2D/Arc2DOptions.h"
+#include "../Geometry2D/ArcClose2DOptions.h"
+#include "../Geometry2D/Circle2DOptions.h"
+#include "../Geometry2D/Disk2DOptions.h"
+#include "../Geometry2D/Rectangle2DOptions.h"
+#include "../Geometry3D/BoxOptions.h"
+#include "../Geometry3D/X3DSphereOptionNode.h"
 #include "../Properties/MotionBlur.h"
 
 namespace titania {
@@ -193,76 +193,76 @@ public:
 	{ return *fields .gravity; }
 
 	X3DSFNode <MotionBlur> &
-	motionBlurProperties ()
-	{ return fields .motionBlurProperties; }
+	motionBlurOptions ()
+	{ return fields .motionBlurOptions; }
 
 	const X3DSFNode <MotionBlur> &
-	motionBlurProperties () const
-	{ return fields .motionBlurProperties; }
+	motionBlurOptions () const
+	{ return fields .motionBlurOptions; }
 
 	X3DSFNode <TextureProperties> &
-	textureProperties ()
-	{ return fields .textureProperties; }
+	textureOptions ()
+	{ return fields .textureOptions; }
 
 	const X3DSFNode <TextureProperties> &
-	textureProperties () const
-	{ return fields .textureProperties; }
+	textureOptions () const
+	{ return fields .textureOptions; }
 
-	X3DSFNode <Arc2DProperties> &
-	arc2DProperties ()
-	{ return fields .arc2DProperties; }
+	X3DSFNode <Arc2DOptions> &
+	arc2DOptions ()
+	{ return fields .arc2DOptions; }
 
-	const X3DSFNode <Arc2DProperties> &
-	arc2DProperties () const
-	{ return fields .arc2DProperties; }
+	const X3DSFNode <Arc2DOptions> &
+	arc2DOptions () const
+	{ return fields .arc2DOptions; }
 
-	X3DSFNode <ArcClose2DProperties> &
-	arcClose2DProperties ()
-	{ return fields .arcClose2DProperties; }
+	X3DSFNode <ArcClose2DOptions> &
+	arcClose2DOptions ()
+	{ return fields .arcClose2DOptions; }
 
-	const X3DSFNode <ArcClose2DProperties> &
-	arcClose2DProperties () const
-	{ return fields .arcClose2DProperties; }
+	const X3DSFNode <ArcClose2DOptions> &
+	arcClose2DOptions () const
+	{ return fields .arcClose2DOptions; }
 
-	X3DSFNode <Circle2DProperties> &
-	circle2DProperties ()
-	{ return fields .circle2DProperties; }
+	X3DSFNode <Circle2DOptions> &
+	circle2DOptions ()
+	{ return fields .circle2DOptions; }
 
-	const X3DSFNode <Circle2DProperties> &
-	circle2DProperties () const
-	{ return fields .circle2DProperties; }
+	const X3DSFNode <Circle2DOptions> &
+	circle2DOptions () const
+	{ return fields .circle2DOptions; }
 
-	X3DSFNode <Disk2DProperties> &
-	disc2DProperties ()
-	{ return fields .disc2DProperties; }
+	X3DSFNode <Disk2DOptions> &
+	disc2DOptions ()
+	{ return fields .disc2DOptions; }
 
-	const X3DSFNode <Disk2DProperties> &
-	disc2DProperties () const
-	{ return fields .disc2DProperties; }
+	const X3DSFNode <Disk2DOptions> &
+	disc2DOptions () const
+	{ return fields .disc2DOptions; }
 
-	X3DSFNode <Rectangle2DProperties> &
-	rectangle2DProperties ()
-	{ return fields .rectangle2DProperties; }
+	X3DSFNode <Rectangle2DOptions> &
+	rectangle2DOptions ()
+	{ return fields .rectangle2DOptions; }
 
-	const X3DSFNode <Rectangle2DProperties> &
-	rectangle2DProperties () const
-	{ return fields .rectangle2DProperties; }
+	const X3DSFNode <Rectangle2DOptions> &
+	rectangle2DOptions () const
+	{ return fields .rectangle2DOptions; }
 
-	X3DSFNode <BoxProperties> &
-	boxProperties ()
-	{ return fields .boxProperties; }
+	X3DSFNode <BoxOptions> &
+	boxOptions ()
+	{ return fields .boxOptions; }
 
-	const X3DSFNode <BoxProperties> &
-	boxProperties () const
-	{ return fields .boxProperties; }
+	const X3DSFNode <BoxOptions> &
+	boxOptions () const
+	{ return fields .boxOptions; }
 
-	X3DSFNode <X3DSpherePropertyNode> &
-	sphereProperties ()
-	{ return fields .sphereProperties; }
+	X3DSFNode <X3DSphereOptionNode> &
+	sphereOptions ()
+	{ return fields .sphereOptions; }
 
-	const X3DSFNode <X3DSpherePropertyNode> &
-	sphereProperties () const
-	{ return fields .sphereProperties; }
+	const X3DSFNode <X3DSphereOptionNode> &
+	sphereOptions () const
+	{ return fields .sphereOptions; }
 
 	X3DSFNode <X3DFontStyleNode> &
 	fontStyle ()
@@ -311,15 +311,15 @@ private:
 		SFString* const shading;
 		SFBool* const animateStairWalks;
 		SFFloat* const gravity;
-		X3DSFNode <MotionBlur> motionBlurProperties;
-		X3DSFNode <TextureProperties> textureProperties;
-		X3DSFNode <Arc2DProperties> arc2DProperties;
-		X3DSFNode <ArcClose2DProperties> arcClose2DProperties;
-		X3DSFNode <Circle2DProperties> circle2DProperties;
-		X3DSFNode <Disk2DProperties> disc2DProperties;
-		X3DSFNode <Rectangle2DProperties> rectangle2DProperties;
-		X3DSFNode <BoxProperties> boxProperties;
-		X3DSFNode <X3DSpherePropertyNode> sphereProperties;
+		X3DSFNode <MotionBlur> motionBlurOptions;
+		X3DSFNode <TextureProperties> textureOptions;
+		X3DSFNode <Arc2DOptions> arc2DOptions;
+		X3DSFNode <ArcClose2DOptions> arcClose2DOptions;
+		X3DSFNode <Circle2DOptions> circle2DOptions;
+		X3DSFNode <Disk2DOptions> disc2DOptions;
+		X3DSFNode <Rectangle2DOptions> rectangle2DOptions;
+		X3DSFNode <BoxOptions> boxOptions;
+		X3DSFNode <X3DSphereOptionNode> sphereOptions;
 		X3DSFNode <X3DFontStyleNode> fontStyle;
 	};
 

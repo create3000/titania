@@ -48,34 +48,52 @@
  *
  ******************************************************************************/
 
-#include "ArcClose2DProperties.h"
+#ifndef __TITANIA_X3D_BROWSER_GEOMETRY2D_ARC2DPROPERTIES_H__
+#define __TITANIA_X3D_BROWSER_GEOMETRY2D_ARC2DPROPERTIES_H__
 
-#include "../../Execution/X3DExecutionContext.h"
-#include <complex>
+#include "../Properties/X3DOptionNode.h"
 
 namespace titania {
 namespace X3D {
 
-ArcClose2DProperties::Fields::Fields () :
-	minAngle (new SFFloat (M_PI / 20))
-{ }
+//	Property Name           Value data type      Description
 
-ArcClose2DProperties::ArcClose2DProperties (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DPropertyNode (),
-	         fields ()
+class Arc2DOptions :
+	public X3DOptionNode
 {
-	setComponent ("Browser"),
-	setTypeName ("ArcClose2DProperties");
+public:
 
-	addField (inputOutput, "minAngle", minAngle ());
-}
+	Arc2DOptions (X3DExecutionContext* const);
 
-ArcClose2DProperties*
-ArcClose2DProperties::create (X3DExecutionContext* const executionContext) const
-{
-	return new ArcClose2DProperties (executionContext);
-}
+	///  @name Fields
+
+	SFFloat &
+	minAngle ()
+	{ return *fields .minAngle; }
+
+	const SFFloat &
+	minAngle () const
+	{ return *fields .minAngle; }
+
+
+private:
+
+	virtual
+	Arc2DOptions*
+	create (X3DExecutionContext* const) const final;
+
+	struct Fields
+	{
+		Fields ();
+
+		SFFloat* const minAngle;
+	};
+
+	Fields fields;
+
+};
 
 } // X3D
 } // titania
+
+#endif

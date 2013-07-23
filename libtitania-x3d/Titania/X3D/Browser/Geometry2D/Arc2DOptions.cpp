@@ -48,24 +48,34 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_GEOMETRY3D_X3DSPHERE_PROPERTY_NODE_H__
-#define __TITANIA_X3D_BROWSER_GEOMETRY3D_X3DSPHERE_PROPERTY_NODE_H__
+#include "Arc2DOptions.h"
 
-#include "../Properties/X3DGeometryPropertyNode.h"
+#include "../../Execution/X3DExecutionContext.h"
+#include <complex>
 
 namespace titania {
 namespace X3D {
 
-class X3DSpherePropertyNode :
-	public X3DGeometryPropertyNode
+Arc2DOptions::Fields::Fields () :
+	minAngle (new SFFloat (M_PI / 20))
+{ }
+
+Arc2DOptions::Arc2DOptions (X3DExecutionContext* const executionContext) :
+	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DOptionNode (),
+	       fields ()
 {
-protected:
+	setComponent ("Browser"),
+	setTypeName ("Arc2DOptions");
 
-	X3DSpherePropertyNode ();
+	addField (inputOutput, "minAngle", minAngle ());
+}
 
-};
+Arc2DOptions*
+Arc2DOptions::create (X3DExecutionContext* const executionContext) const
+{
+	return new Arc2DOptions (executionContext);
+}
 
 } // X3D
 } // titania
-
-#endif

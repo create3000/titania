@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,65 +48,80 @@
  *
  ******************************************************************************/
 
-#include "Circle2DProperties.h"
+#ifndef __TITANIA_X3D_BROWSER_PROPERTIES_X3DGEOMETRY_PROPERTY_NODE_H__
+#define __TITANIA_X3D_BROWSER_PROPERTIES_X3DGEOMETRY_PROPERTY_NODE_H__
 
-#include "../../Execution/X3DExecutionContext.h"
-#include <complex>
+#include "../Properties/X3DOptionNode.h"
+
+extern "C"
+{
+#include <GL/glew.h>
+
+#include <GL/glu.h>
+
+#include <GL/gl.h>
+
+#include <GL/glx.h>
+}
 
 namespace titania {
 namespace X3D {
 
-Circle2DProperties::Fields::Fields () :
-	segments (new SFInt32 (60))
-{ }
-
-Circle2DProperties::Circle2DProperties (X3DExecutionContext* const executionContext) :
-	            X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DGeometryPropertyNode (),
-	                 fields ()
+class X3DGeometricOptionNode :
+	public X3DOptionNode
 {
-	setComponent ("Browser"),
-	setTypeName ("Circle2DProperties");
+public:
 
-	addField (inputOutput, "segments", segments ());
-}
+	const std::vector <Vector3f> &
+	getTexCoord () const
+	{ return texCoord; }
 
-Circle2DProperties*
-Circle2DProperties::create (X3DExecutionContext* const executionContext) const
-{
-	return new Circle2DProperties (executionContext);
-}
+	const std::vector <Vector3f> &
+	getNormals () const
+	{ return normals; }
 
-void
-Circle2DProperties::initialize ()
-{
-	X3DGeometryPropertyNode::initialize ();
+	const std::vector <Vector3f> &
+	getVertices () const
+	{ return vertices; }
 
-	build ();
-}
+	virtual
+	GLenum
+	getVertexMode () const = 0;
 
-void
-Circle2DProperties::eventsProcessed ()
-{
-	X3DGeometryPropertyNode::eventsProcessed ();
 
+protected:
+
+	X3DGeometricOptionNode ();
+
+	std::vector <Vector3f> &
+	getTexCoord ()
+	{ return texCoord; }
+
+	std::vector <Vector3f> &
+	getNormals ()
+	{ return normals; }
+
+	std::vector <Vector3f> &
+	getVertices ()
+	{ return vertices; }
+
+	void
 	update ();
-}
 
-void
-Circle2DProperties::build ()
-{
-	getVertices () .reserve (segments ());
+	virtual
+	void
+	build () = 0;
 
-	float angle = M_PI2 / segments ();
 
-	for (int32_t n = 0; n < segments (); ++ n)
-	{
-		std::complex <float> point = std::polar <float> (1, angle * n);
+private:
 
-		getVertices () .emplace_back (point .real (), point .imag (), 0);
-	}
-}
+	std::vector <Vector3f> texCoord;
+	std::vector <Vector3f> normals;
+	std::vector <Vector3f> vertices;
+
+};
 
 } // X3D
 } // titania
+
+#endif

@@ -48,7 +48,7 @@
  *
  ******************************************************************************/
 
-#include "QuadSphereProperties.h"
+#include "QuadSphereOptions.h"
 
 #include "../../Components/Geometry3D/Sphere.h"
 #include "../../Execution/X3DExecutionContext.h"
@@ -57,18 +57,18 @@
 namespace titania {
 namespace X3D {
 
-QuadSphereProperties::Fields::Fields () :
+QuadSphereOptions::Fields::Fields () :
 	uDimension (new SFInt32 (40)),
 	vDimension (new SFInt32 (20))
 { }
 
-QuadSphereProperties::QuadSphereProperties (X3DExecutionContext* const executionContext) :
-	          X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DSpherePropertyNode (),
-	               fields ()
+QuadSphereOptions::QuadSphereOptions (X3DExecutionContext* const executionContext) :
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DSphereOptionNode (),
+	             fields ()
 {
 	setComponent ("Browser"),
-	setTypeName ("QuadSphereProperties");
+	setTypeName ("QuadSphereOptions");
 
 	addField (inputOutput, "uDimension", uDimension ());
 	addField (inputOutput, "vDimension", vDimension ());
@@ -79,30 +79,30 @@ QuadSphereProperties::QuadSphereProperties (X3DExecutionContext* const execution
 	//addField (inputOutput, "points",     points ());
 }
 
-QuadSphereProperties*
-QuadSphereProperties::create (X3DExecutionContext* const executionContext) const
+QuadSphereOptions*
+QuadSphereOptions::create (X3DExecutionContext* const executionContext) const
 {
-	return new QuadSphereProperties (executionContext);
+	return new QuadSphereOptions (executionContext);
 }
 
 void
-QuadSphereProperties::initialize ()
+QuadSphereOptions::initialize ()
 {
-	X3DSpherePropertyNode::initialize ();
+	X3DSphereOptionNode::initialize ();
 
 	build ();
 }
 
 void
-QuadSphereProperties::eventsProcessed ()
+QuadSphereOptions::eventsProcessed ()
 {
-	X3DSpherePropertyNode::eventsProcessed ();
+	X3DSphereOptionNode::eventsProcessed ();
 
 	update ();
 }
 
 std::deque <int32_t>
-QuadSphereProperties::createTexIndices ()
+QuadSphereOptions::createTexIndices ()
 {
 	std::deque <int32_t> texIndices;
 
@@ -121,7 +121,7 @@ QuadSphereProperties::createTexIndices ()
 }
 
 std::deque <Vector3f>
-QuadSphereProperties::createTexCoord ()
+QuadSphereOptions::createTexCoord ()
 {
 	std::deque <Vector3f> texCoord;
 
@@ -142,7 +142,7 @@ QuadSphereProperties::createTexCoord ()
 }
 
 std::deque <int32_t>
-QuadSphereProperties::createCoordIndices ()
+QuadSphereOptions::createCoordIndices ()
 {
 	std::deque <int32_t> indices;
 
@@ -166,7 +166,7 @@ QuadSphereProperties::createCoordIndices ()
 }
 
 std::deque <Vector3f>
-QuadSphereProperties::createPoints ()
+QuadSphereOptions::createPoints ()
 {
 	std::deque <Vector3f> points;
 
@@ -195,7 +195,7 @@ QuadSphereProperties::createPoints ()
 }
 
 void
-QuadSphereProperties::build ()
+QuadSphereOptions::build ()
 {
 	std::deque <int32_t>  texIndices = createTexIndices ();
 	std::deque <Vector3f> texCoord   = createTexCoord ();

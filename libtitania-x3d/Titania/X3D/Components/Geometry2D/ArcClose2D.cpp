@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -50,7 +50,7 @@
 
 #include "ArcClose2D.h"
 
-#include "../../Browser/Geometry2D/ArcClose2DProperties.h"
+#include "../../Browser/Geometry2D/ArcClose2DOptions.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
@@ -94,7 +94,7 @@ ArcClose2D::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	getBrowser () -> getBrowserOptions () -> arcClose2DProperties () .addInterest (this, &ArcClose2D::set_properties);
+	getBrowser () -> getBrowserOptions () -> arcClose2DOptions () .addInterest (this, &ArcClose2D::set_properties);
 }
 
 float
@@ -123,7 +123,7 @@ ArcClose2D::set_properties ()
 void
 ArcClose2D::build ()
 {
-	const ArcClose2DProperties* properties = getBrowser () -> getBrowserOptions () -> arcClose2DProperties ();
+	const ArcClose2DOptions* properties = getBrowser () -> getBrowserOptions () -> arcClose2DOptions ();
 
 	float  difference = getAngle ();
 	size_t segments   = std::ceil (difference / properties -> minAngle ());

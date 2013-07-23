@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -50,7 +50,7 @@
 
 #include "Rectangle2D.h"
 
-#include "../../Browser/Geometry2D/Rectangle2DProperties.h"
+#include "../../Browser/Geometry2D/Rectangle2DOptions.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
@@ -86,7 +86,7 @@ Rectangle2D::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	getBrowser () -> getBrowserOptions () -> rectangle2DProperties () .addInterest (this, &Rectangle2D::set_properties);
+	getBrowser () -> getBrowserOptions () -> rectangle2DOptions () .addInterest (this, &Rectangle2D::set_properties);
 }
 
 Box3f
@@ -104,7 +104,7 @@ Rectangle2D::set_properties ()
 void
 Rectangle2D::build ()
 {
-	const Rectangle2DProperties* properties = getBrowser () -> getBrowserOptions () -> rectangle2DProperties ();
+	const Rectangle2DOptions* properties = getBrowser () -> getBrowserOptions () -> rectangle2DOptions ();
 
 	size_t elements = solid () ? 1 : 2;
 

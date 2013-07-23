@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,77 +48,34 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_CUBE_MAP_TEXTURING_GENERATED_CUBE_MAP_TEXTURE_H__
-#define __TITANIA_X3D_COMPONENTS_CUBE_MAP_TEXTURING_GENERATED_CUBE_MAP_TEXTURE_H__
+#include "ArcClose2DOptions.h"
 
-#include "../CubeMapTexturing/X3DEnvironmentTextureNode.h"
+#include "../../Execution/X3DExecutionContext.h"
+#include <complex>
 
 namespace titania {
 namespace X3D {
 
-class GeneratedCubeMapTexture :
-	public X3DEnvironmentTextureNode
+ArcClose2DOptions::Fields::Fields () :
+	minAngle (new SFFloat (M_PI / 20))
+{ }
+
+ArcClose2DOptions::ArcClose2DOptions (X3DExecutionContext* const executionContext) :
+	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DOptionNode (),
+	       fields ()
 {
-public:
+	setComponent ("Browser"),
+	setTypeName ("ArcClose2DOptions");
 
-	GeneratedCubeMapTexture (X3DExecutionContext* const);
+	addField (inputOutput, "minAngle", minAngle ());
+}
 
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final;
-
-	///  @name Fields
-
-	SFString &
-	update ()
-	{ return *fields .update; }
-
-	const SFString &
-	update () const
-	{ return *fields .update; }
-
-	SFInt32 &
-	size ()
-	{ return *fields .size; }
-
-	const SFInt32 &
-	size () const
-	{ return *fields .size; }
-
-	SFNode &
-	textureOptions ()
-	{ return *fields .textureOptions; }
-
-	const SFNode &
-	textureOptions () const
-	{ return *fields .textureOptions; }
-
-	virtual
-	bool
-	isTransparent () const
-	{ return false; }
-
-	virtual
-	void
-	draw ();
-
-
-private:
-
-	struct Fields
-	{
-		Fields ();
-
-		SFString* const update;
-		SFInt32* const size;
-		SFNode* const textureOptions;
-	};
-
-	Fields fields;
-
-};
+ArcClose2DOptions*
+ArcClose2DOptions::create (X3DExecutionContext* const executionContext) const
+{
+	return new ArcClose2DOptions (executionContext);
+}
 
 } // X3D
 } // titania
-
-#endif

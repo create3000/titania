@@ -1,5 +1,10 @@
 2013-07-23  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* OutlineUserData.h:
+	* MotionBlurEditor.cpp: 
+
+2013-07-23  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* HistoryEditor.ui:
 	* OutlineEditor.ui:
 	* BrowserWindow.ui:

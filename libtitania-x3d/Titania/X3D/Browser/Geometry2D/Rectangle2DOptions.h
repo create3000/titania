@@ -48,43 +48,33 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_GEOMETRY2D_DISK2DPROPERTIES_H__
-#define __TITANIA_X3D_BROWSER_GEOMETRY2D_DISK2DPROPERTIES_H__
+#ifndef __TITANIA_X3D_BROWSER_GEOMETRY2D_RECTANGLE2DPROPERTIES_H__
+#define __TITANIA_X3D_BROWSER_GEOMETRY2D_RECTANGLE2DPROPERTIES_H__
 
-#include "../Properties/X3DGeometryPropertyNode.h"
+#include "../Geometry2D/X3DGeometricOptionNode.h"
 
 namespace titania {
 namespace X3D {
 
 //	Property Name           Value data type      Description
 
-class Disk2DProperties :
-	public X3DGeometryPropertyNode
+class Rectangle2DOptions :
+	public X3DGeometricOptionNode
 {
 public:
 
-	Disk2DProperties (X3DExecutionContext* const);
-
-	///  @name Fields
-
-	SFInt32 &
-	segments ()
-	{ return *fields .segments; }
-
-	const SFInt32 &
-	segments () const
-	{ return *fields .segments; }
+	Rectangle2DOptions (X3DExecutionContext* const);
 
 	virtual
 	GLenum
 	getVertexMode () const final
-	{ return GL_POLYGON; }
+	{ return GL_QUADS; }
 
 
 private:
 
 	virtual
-	Disk2DProperties*
+	Rectangle2DOptions*
 	create (X3DExecutionContext* const) const final;
 
 	virtual
@@ -98,15 +88,6 @@ private:
 	virtual
 	void
 	build () final;
-
-	struct Fields
-	{
-		Fields ();
-
-		SFInt32* const segments;
-	};
-
-	Fields fields;
 
 };
 

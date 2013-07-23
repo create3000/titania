@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_BROWSER_GEOMETRY3D_QUAD_SPHERE_PROPERTIES_H__
 #define __TITANIA_X3D_BROWSER_GEOMETRY3D_QUAD_SPHERE_PROPERTIES_H__
 
-#include "../Geometry3D/X3DSpherePropertyNode.h"
+#include "../Geometry3D/X3DSphereOptionNode.h"
 
 namespace titania {
 namespace X3D {
@@ -60,12 +60,12 @@ namespace X3D {
 //	U_DIMESIONS             Boolean              The browser implementation supports the ab
 //	V_DIMESIONS             Boolean              The browser implementation supports the ab
 
-class QuadSphereProperties :
-	public X3DSpherePropertyNode
+class QuadSphereOptions :
+	public X3DSphereOptionNode
 {
 public:
 
-	QuadSphereProperties (X3DExecutionContext* const);
+	QuadSphereOptions (X3DExecutionContext* const);
 
 	///  @name Fields
 
@@ -94,7 +94,7 @@ public:
 private:
 
 	virtual
-	QuadSphereProperties*
+	QuadSphereOptions*
 	create (X3DExecutionContext* const) const final;
 
 	virtual

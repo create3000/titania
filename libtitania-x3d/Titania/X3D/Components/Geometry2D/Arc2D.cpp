@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -50,7 +50,7 @@
 
 #include "Arc2D.h"
 
-#include "../../Browser/Geometry2D/Arc2DProperties.h"
+#include "../../Browser/Geometry2D/Arc2DOptions.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
@@ -88,7 +88,7 @@ Arc2D::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	getBrowser () -> getBrowserOptions () -> arcClose2DProperties () .addInterest (this, &Arc2D::set_properties);
+	getBrowser () -> getBrowserOptions () -> arcClose2DOptions () .addInterest (this, &Arc2D::set_properties);
 }
 
 float
@@ -117,7 +117,7 @@ Arc2D::set_properties ()
 void
 Arc2D::build ()
 {
-	const Arc2DProperties* properties = getBrowser () -> getBrowserOptions () -> arc2DProperties ();
+	const Arc2DOptions* properties = getBrowser () -> getBrowserOptions () -> arc2DOptions ();
 
 	float  difference = getAngle ();
 	size_t segments   = std::ceil (difference / properties -> minAngle ());

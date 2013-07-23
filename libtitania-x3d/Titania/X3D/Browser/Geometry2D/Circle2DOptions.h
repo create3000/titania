@@ -48,70 +48,69 @@
  *
  ******************************************************************************/
 
-#include "Disk2DProperties.h"
+#ifndef __TITANIA_X3D_BROWSER_GEOMETRY2D_CIRCLE2DPROPERTIES_H__
+#define __TITANIA_X3D_BROWSER_GEOMETRY2D_CIRCLE2DPROPERTIES_H__
 
-#include "../../Execution/X3DExecutionContext.h"
-#include <complex>
+#include "../Geometry2D/X3DGeometricOptionNode.h"
 
 namespace titania {
 namespace X3D {
 
-Disk2DProperties::Fields::Fields () :
-	segments (new SFInt32 (60))
-{ }
+//	Property Name           Value data type      Description
 
-Disk2DProperties::Disk2DProperties (X3DExecutionContext* const executionContext) :
-	            X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DGeometryPropertyNode (),
-	                 fields ()
+class Circle2DOptions :
+	public X3DGeometricOptionNode
 {
-	setComponent ("Browser"),
-	setTypeName ("Disk2DProperties");
+public:
 
-	addField (inputOutput, "segments", segments ());
-}
+	Circle2DOptions (X3DExecutionContext* const);
 
-Disk2DProperties*
-Disk2DProperties::create (X3DExecutionContext* const executionContext) const
-{
-	return new Disk2DProperties (executionContext);
-}
+	///  @name Fields
 
-void
-Disk2DProperties::initialize ()
-{
-	X3DGeometryPropertyNode::initialize ();
+	SFInt32 &
+	segments ()
+	{ return *fields .segments; }
 
-	build ();
-}
+	const SFInt32 &
+	segments () const
+	{ return *fields .segments; }
 
-void
-Disk2DProperties::eventsProcessed ()
-{
-	X3DGeometryPropertyNode::eventsProcessed ();
+	virtual
+	GLenum
+	getVertexMode () const final
+	{ return GL_LINE_LOOP; }
 
-	update ();
-}
 
-void
-Disk2DProperties::build ()
-{
-	getVertices () .reserve (segments ());
+private:
 
-	float angle = M_PI2 / segments ();
+	virtual
+	Circle2DOptions*
+	create (X3DExecutionContext* const) const final;
 
-	for (int32_t n = 0; n < segments (); ++ n)
+	virtual
+	void
+	initialize () final;
+
+	virtual
+	void
+	eventsProcessed () final;
+
+	virtual
+	void
+	build () final;
+
+	struct Fields
 	{
-		float theta = angle * n;
+		Fields ();
 
-		std::complex <float> texCoord = std::polar <float> (0.5, theta) + std::complex <float> (0.5, 0.5);
-		std::complex <float> point    = std::polar <float> (1, theta);
+		SFInt32* const segments;
+	};
 
-		getTexCoord () .emplace_back (texCoord .real (), texCoord .imag (), 0);
-		getNormals  () .emplace_back (0, 0, 1);
-		getVertices () .emplace_back (point .real (), point .imag (), 0);
-	}
-}
+	Fields fields;
+
+};
 
 } // X3D
 } // titania
+
+#endif

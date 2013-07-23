@@ -1,3 +1,73 @@
+2013-07-23  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Box.cpp:
+	* BoxOptions.h:
+	* Arc2D.cpp:
+	* Disk2D.cpp:
+	* Sphere.cpp:
+	* Arc2DOptions.h:
+	* BoxOptions.cpp:
+	* X3DOptionNode.h:
+	* Circle2D.cpp:
+	* BoxProperties.h:
+	* Disk2DOptions.h:
+	* BrowserOptions.h:
+	* Arc2DOptions.cpp:
+	* BoxProperties.cpp:
+	* ArcClose2D.cpp:
+	* Arc2DProperties.h:
+	* X3DOptionNode.cpp:
+	* Disk2DOptions.cpp:
+	* Circle2DOptions.h:
+	* Rectangle2D.cpp:
+	* Disk2DProperties.h:
+	* BrowserOptions.cpp:
+	* PixelTexture.cpp:
+	* MovieTexture.cpp:
+	* ImageTexture.cpp:
+	* Circle2DOptions.cpp:
+	* Arc2DProperties.cpp:
+	* ArcClose2DOptions.h:
+	* QuadSphereOptions.h:
+	* Rectangle2DOptions.h:
+	* Circle2DProperties.h:
+	* Disk2DProperties.cpp:
+	* X3DTexture2DNode.h:
+	* X3DSphereOptionNode.h:
+	* ArcClose2DOptions.cpp:
+	* QuadSphereOptions.cpp:
+	* ArcClose2DProperties.h:
+	* X3DTexture2DNode.cpp:
+	* X3DTexture3DNode.h:
+	* PixelTexture3D.cpp:
+	* ImageTexture3D.cpp:
+	* QuadSphereProperties.h:
+	* Circle2DProperties.cpp:
+	* Rectangle2DOptions.cpp:
+	* Rectangle2DProperties.h:
+	* X3DSpherePropertyNode.h:
+	* TextureProperties.cpp:
+	* X3DSphereOptionNode.cpp:
+	* ArcClose2DProperties.cpp:
+	* QuadSphereProperties.cpp:
+	* X3DGeometricOptionNode.h:
+	* X3DTexture3DNode.cpp:
+	* X3DGeometryPropertyNode.h:
+	* X3DSpherePropertyNode.cpp:
+	* Rectangle2DProperties.cpp:
+	* Background.h:
+	* ComposedTexture3D.cpp:
+	* X3DGeometricOptionNode.cpp:
+	* Background.cpp:
+	* X3DGeometryPropertyNode.cpp:
+	* ImageCubeMapTexture.h:
+	* ImageCubeMapTexture.cpp:
+	* GeneratedCubeMapTexture.h:
+	* ComposedCubeMapTexture.cpp:
+	* GeneratedCubeMapTexture.cpp: 
+
 2013-07-22  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -50,7 +50,7 @@
 
 #include "Circle2D.h"
 
-#include "../../Browser/Geometry2D/Circle2DProperties.h"
+#include "../../Browser/Geometry2D/Circle2DOptions.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
@@ -84,7 +84,7 @@ Circle2D::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	getBrowser () -> getBrowserOptions () -> circle2DProperties () .addInterest (this, &Circle2D::set_properties);
+	getBrowser () -> getBrowserOptions () -> circle2DOptions () .addInterest (this, &Circle2D::set_properties);
 }
 
 Box3f
@@ -102,7 +102,7 @@ Circle2D::set_properties ()
 void
 Circle2D::build ()
 {
-	const Circle2DProperties* properties = getBrowser () -> getBrowserOptions () -> circle2DProperties ();
+	const Circle2DOptions* properties = getBrowser () -> getBrowserOptions () -> circle2DOptions ();
 
 	if (std::abs (radius ()) == 1.0f)
 		getVertices () = properties -> getVertices ();

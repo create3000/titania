@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -58,7 +58,7 @@ namespace X3D {
 GeneratedCubeMapTexture::Fields::Fields () :
 	update (new SFString ("NONE")),
 	size (new SFInt32 (128)),
-	textureProperties (new SFNode ())
+	textureOptions (new SFNode ())
 { }
 
 GeneratedCubeMapTexture::GeneratedCubeMapTexture (X3DExecutionContext* const executionContext) :
@@ -72,7 +72,7 @@ GeneratedCubeMapTexture::GeneratedCubeMapTexture (X3DExecutionContext* const exe
 	addField (inputOutput,    "metadata",          metadata ());
 	addField (inputOutput,    "update",            update ());
 	addField (initializeOnly, "size",              size ());
-	addField (initializeOnly, "textureProperties", textureProperties ());
+	addField (initializeOnly, "textureOptions", textureOptions ());
 }
 
 X3DBaseNode*

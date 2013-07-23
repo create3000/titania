@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -74,7 +74,7 @@ Background::Background (X3DExecutionContext* const executionContext) :
 	     rightTexture (new ImageTexture (executionContext)),
 	       topTexture (new ImageTexture (executionContext)),
 	    bottomTexture (new ImageTexture (executionContext)),
-	textureProperties (new TextureProperties (executionContext))
+	textureOptions (new TextureProperties (executionContext))
 {
 	setComponent ("EnvironmentalEffects");
 	setTypeName ("Background");
@@ -101,7 +101,7 @@ Background::Background (X3DExecutionContext* const executionContext) :
 	             rightTexture,
 	             topTexture,
 	             bottomTexture,
-	             textureProperties);
+	             textureOptions);
 }
 
 X3DBaseNode*
@@ -122,9 +122,9 @@ Background::initialize ()
 	topUrl ()    .addInterest (topTexture    -> url ());
 	bottomUrl () .addInterest (bottomTexture -> url ());
 
-	textureProperties -> boundaryModeS () = "CLAMP_TO_EDGE";
-	textureProperties -> boundaryModeT () = "CLAMP_TO_EDGE";
-	textureProperties -> boundaryModeR () = "CLAMP_TO_EDGE";
+	textureOptions -> boundaryModeS () = "CLAMP_TO_EDGE";
+	textureOptions -> boundaryModeT () = "CLAMP_TO_EDGE";
+	textureOptions -> boundaryModeR () = "CLAMP_TO_EDGE";
 
 	frontTexture  -> url () = frontUrl ();
 	backTexture   -> url () = backUrl ();
@@ -133,14 +133,14 @@ Background::initialize ()
 	topTexture    -> url () = topUrl ();
 	bottomTexture -> url () = bottomUrl ();
 
-	frontTexture  -> textureProperties () = *textureProperties;
-	backTexture   -> textureProperties () = *textureProperties;
-	leftTexture   -> textureProperties () = *textureProperties;
-	rightTexture  -> textureProperties () = *textureProperties;
-	topTexture    -> textureProperties () = *textureProperties;
-	bottomTexture -> textureProperties () = *textureProperties;
+	frontTexture  -> textureOptions () = *textureOptions;
+	backTexture   -> textureOptions () = *textureOptions;
+	leftTexture   -> textureOptions () = *textureOptions;
+	rightTexture  -> textureOptions () = *textureOptions;
+	topTexture    -> textureOptions () = *textureOptions;
+	bottomTexture -> textureOptions () = *textureOptions;
 
-	textureProperties -> setup ();
+	textureOptions -> setup ();
 	frontTexture      -> setup ();
 	backTexture       -> setup ();
 	leftTexture       -> setup ();
@@ -292,7 +292,7 @@ Background::draw ()
 void
 Background::dispose ()
 {
-	textureProperties .dispose ();
+	textureOptions .dispose ();
 	frontTexture      .dispose ();
 	backTexture       .dispose ();
 	leftTexture       .dispose ();

@@ -27,14 +27,15 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Bits/Keys.cpp \
 	Titania/X3D/Browser/Browser.cpp \
 	Titania/X3D/Browser/Console.cpp \
-	Titania/X3D/Browser/Geometry2D/Arc2DProperties.cpp \
-	Titania/X3D/Browser/Geometry2D/ArcClose2DProperties.cpp \
-	Titania/X3D/Browser/Geometry2D/Circle2DProperties.cpp \
-	Titania/X3D/Browser/Geometry2D/Disk2DProperties.cpp \
-	Titania/X3D/Browser/Geometry2D/Rectangle2DProperties.cpp \
-	Titania/X3D/Browser/Geometry3D/BoxProperties.cpp \
-	Titania/X3D/Browser/Geometry3D/QuadSphereProperties.cpp \
-	Titania/X3D/Browser/Geometry3D/X3DSpherePropertyNode.cpp \
+	Titania/X3D/Browser/Geometry2D/Arc2DOptions.cpp \
+	Titania/X3D/Browser/Geometry2D/ArcClose2DOptions.cpp \
+	Titania/X3D/Browser/Geometry2D/Circle2DOptions.cpp \
+	Titania/X3D/Browser/Geometry2D/Disk2DOptions.cpp \
+	Titania/X3D/Browser/Geometry2D/Rectangle2DOptions.cpp \
+	Titania/X3D/Browser/Geometry2D/X3DGeometricOptionNode.cpp \
+	Titania/X3D/Browser/Geometry3D/BoxOptions.cpp \
+	Titania/X3D/Browser/Geometry3D/QuadSphereOptions.cpp \
+	Titania/X3D/Browser/Geometry3D/X3DSphereOptionNode.cpp \
 	Titania/X3D/Browser/Hit.cpp \
 	Titania/X3D/Browser/HitArray.cpp \
 	Titania/X3D/Browser/PointingDevice.cpp \
@@ -42,7 +43,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/Properties/BrowserProperties.cpp \
 	Titania/X3D/Browser/Properties/MotionBlur.cpp \
 	Titania/X3D/Browser/Properties/RenderingProperties.cpp \
-	Titania/X3D/Browser/Properties/X3DGeometryPropertyNode.cpp \
+	Titania/X3D/Browser/Properties/X3DOptionNode.cpp \
 	Titania/X3D/Browser/Selection.cpp \
 	Titania/X3D/Browser/Viewer/ExamineViewer.cpp \
 	Titania/X3D/Browser/Viewer/FlyViewer.cpp \

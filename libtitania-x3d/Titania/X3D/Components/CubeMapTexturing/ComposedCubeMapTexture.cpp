@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -183,7 +183,7 @@ ComposedCubeMapTexture::setTexture (GLenum target, const X3DTexture2DNode* const
 
 	// Transfer image
 
-	//applyTextureProperties (textureProperties);
+	//applyTextureProperties (textureOptions);
 
 	glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
 
@@ -191,16 +191,16 @@ ComposedCubeMapTexture::setTexture (GLenum target, const X3DTexture2DNode* const
 }
 
 //void
-//ComposedCubeMapTexture::applyTextureProperties (const TextureProperties* textureProperties) const
+//ComposedCubeMapTexture::applyTextureProperties (const TextureProperties* textureOptions) const
 //{
-//	glTexParameteri (GL_TEXTURE_2D, GL_GENERATE_MIPMAP,    textureProperties -> generateMipMaps);
-//	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, textureProperties -> getMinificationFilter ());
-//	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, textureProperties -> getMagnificationFilter ());
+//	glTexParameteri (GL_TEXTURE_2D, GL_GENERATE_MIPMAP,    textureOptions -> generateMipMaps);
+//	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, textureOptions -> getMinificationFilter ());
+//	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, textureOptions -> getMagnificationFilter ());
 //
-//	if (this -> textureProperties)
+//	if (this -> textureOptions)
 //	{
-//		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, textureProperties -> getBoundaryModeS ());
-//		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, textureProperties -> getBoundaryModeT ());
+//		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, textureOptions -> getBoundaryModeS ());
+//		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, textureOptions -> getBoundaryModeT ());
 //	}
 //	else
 //	{
@@ -208,8 +208,8 @@ ComposedCubeMapTexture::setTexture (GLenum target, const X3DTexture2DNode* const
 //		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapTypes [repeatT]);
 //	}
 //
-//	glTexParameterfv (GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, textureProperties -> borderColor .getValue () .data ());
-//	glTexParameterf  (GL_TEXTURE_2D, GL_TEXTURE_PRIORITY,     textureProperties -> texturePriority);
+//	glTexParameterfv (GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, textureOptions -> borderColor .getValue () .data ());
+//	glTexParameterf  (GL_TEXTURE_2D, GL_TEXTURE_PRIORITY,     textureOptions -> texturePriority);
 //}
 
 void

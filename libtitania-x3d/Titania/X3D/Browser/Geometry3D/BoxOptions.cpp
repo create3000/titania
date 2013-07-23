@@ -48,45 +48,45 @@
  *
  ******************************************************************************/
 
-#include "BoxProperties.h"
+#include "BoxOptions.h"
 
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {
 
-BoxProperties::BoxProperties (X3DExecutionContext* const executionContext) :
-	            X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DGeometryPropertyNode ()
+BoxOptions::BoxOptions (X3DExecutionContext* const executionContext) :
+	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DGeometricOptionNode ()
 {
 	setComponent ("Browser"),
-	setTypeName ("BoxProperties");
+	setTypeName ("BoxOptions");
 }
 
-BoxProperties*
-BoxProperties::create (X3DExecutionContext* const executionContext) const
+BoxOptions*
+BoxOptions::create (X3DExecutionContext* const executionContext) const
 {
-	return new BoxProperties (executionContext);
+	return new BoxOptions (executionContext);
 }
 
 void
-BoxProperties::initialize ()
+BoxOptions::initialize ()
 {
-	X3DGeometryPropertyNode::initialize ();
+	X3DGeometricOptionNode::initialize ();
 
 	build ();
 }
 
 void
-BoxProperties::eventsProcessed ()
+BoxOptions::eventsProcessed ()
 {
-	X3DGeometryPropertyNode::eventsProcessed ();
+	X3DGeometricOptionNode::eventsProcessed ();
 
 	update ();
 }
 
 void
-BoxProperties::build ()
+BoxOptions::build ()
 {
 	getTexCoord () .reserve (24);
 	getNormals  () .reserve (24);

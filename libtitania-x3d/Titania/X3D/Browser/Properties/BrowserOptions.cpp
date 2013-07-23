@@ -51,7 +51,7 @@
 #include "BrowserOptions.h"
 
 #include "../../Execution/X3DExecutionContext.h"
-#include "../Geometry3D/QuadSphereProperties.h"
+#include "../Geometry3D/QuadSphereOptions.h"
 #include <Titania/Physics/Constants.h>
 #include <Titania/String/Join.h>
 
@@ -91,15 +91,15 @@ BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
 	shading (new SFString ("GOURAUD")),
 	animateStairWalks (new SFBool ()),
 	gravity (new SFFloat (P_GN)),
-	motionBlurProperties (new MotionBlur (executionContext)),
-	textureProperties (new TextureProperties (executionContext)),
-	arc2DProperties (new Arc2DProperties (executionContext)),
-	arcClose2DProperties (new ArcClose2DProperties (executionContext)),
-	circle2DProperties (new Circle2DProperties (executionContext)),
-	disc2DProperties (new Disk2DProperties (executionContext)),
-	rectangle2DProperties (new Rectangle2DProperties (executionContext)),
-	boxProperties (new BoxProperties (executionContext)),
-	sphereProperties (new QuadSphereProperties (executionContext)),
+	motionBlurOptions (new MotionBlur (executionContext)),
+	textureOptions (new TextureProperties (executionContext)),
+	arc2DOptions (new Arc2DOptions (executionContext)),
+	arcClose2DOptions (new ArcClose2DOptions (executionContext)),
+	circle2DOptions (new Circle2DOptions (executionContext)),
+	disc2DOptions (new Disk2DOptions (executionContext)),
+	rectangle2DOptions (new Rectangle2DOptions (executionContext)),
+	boxOptions (new BoxOptions (executionContext)),
+	sphereOptions (new QuadSphereOptions (executionContext)),
 	fontStyle (new FontStyle (executionContext))
 { }
 
@@ -127,15 +127,15 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 
 	addField ("AntiAliased", "Antialiased");
 
-	addChildren (motionBlurProperties (),
-	             textureProperties (),
-	             arc2DProperties (),
-	             arcClose2DProperties (),
-	             circle2DProperties (),
-	             disc2DProperties (),
-	             rectangle2DProperties (),
-	             boxProperties (),
-	             sphereProperties (),
+	addChildren (motionBlurOptions (),
+	             textureOptions (),
+	             arc2DOptions (),
+	             arcClose2DOptions (),
+	             circle2DOptions (),
+	             disc2DOptions (),
+	             rectangle2DOptions (),
+	             boxOptions (),
+	             sphereOptions (),
 	             fontStyle ());
 }
 
@@ -150,16 +150,16 @@ BrowserOptions::initialize ()
 {
 	X3DPropertyNode::initialize ();
 
-	motionBlurProperties ()  -> setup ();
-	textureProperties ()     -> setup ();
-	arc2DProperties ()       -> setup ();
-	arcClose2DProperties ()  -> setup ();
-	circle2DProperties ()    -> setup ();
-	disc2DProperties ()      -> setup ();
-	rectangle2DProperties () -> setup ();
-	boxProperties ()         -> setup ();
-	sphereProperties ()      -> setup ();
-	fontStyle ()             -> setup ();
+	motionBlurOptions ()  -> setup ();
+	textureOptions ()     -> setup ();
+	arc2DOptions ()       -> setup ();
+	arcClose2DOptions ()  -> setup ();
+	circle2DOptions ()    -> setup ();
+	disc2DOptions ()      -> setup ();
+	rectangle2DOptions () -> setup ();
+	boxOptions ()         -> setup ();
+	sphereOptions ()      -> setup ();
+	fontStyle ()          -> setup ();
 
 	primitiveQuality () .addInterest (this, &BrowserOptions::set_primitiveQuality);
 	shading ()          .addInterest (this, &BrowserOptions::set_shading);
@@ -172,34 +172,34 @@ BrowserOptions::initialize ()
 SFBool &
 BrowserOptions::motionBlur ()
 {
-	return motionBlurProperties () -> enabled ();
+	return motionBlurOptions () -> enabled ();
 }
 
 const SFBool &
 BrowserOptions::motionBlur () const
 {
-	return motionBlurProperties () -> enabled ();
+	return motionBlurOptions () -> enabled ();
 }
 
 SFFloat &
 BrowserOptions::motionBlurIntensity ()
 {
-	return motionBlurProperties () -> intensity ();
+	return motionBlurOptions () -> intensity ();
 }
 
 const SFFloat &
 BrowserOptions::motionBlurIntensity () const
 {
-	return motionBlurProperties () -> intensity ();
+	return motionBlurOptions () -> intensity ();
 }
 
 void
 BrowserOptions::set_textureQuality ()
 {
-	textureProperties () -> magnificationFilter () = "NICEST";
-	textureProperties () -> minificationFilter ()  = "NICEST";
-	textureProperties () -> textureCompression ()  = "NICEST";
-	textureProperties () -> generateMipMaps ()     = true;
+	textureOptions () -> magnificationFilter () = "NICEST";
+	textureOptions () -> minificationFilter ()  = "NICEST";
+	textureOptions () -> textureCompression ()  = "NICEST";
+	textureOptions () -> generateMipMaps ()     = true;
 }
 
 void
@@ -209,12 +209,12 @@ BrowserOptions::set_primitiveQuality ()
 
 	if (primitiveQuality () == "LOW")
 	{
-		arc2DProperties ()      -> minAngle () = M_PI / 10;
-		arcClose2DProperties () -> minAngle () = M_PI / 10;
-		circle2DProperties ()   -> segments () = 20;
-		disc2DProperties ()     -> segments () = 20;
+		arc2DOptions ()      -> minAngle () = M_PI / 10;
+		arcClose2DOptions () -> minAngle () = M_PI / 10;
+		circle2DOptions ()   -> segments () = 20;
+		disc2DOptions ()     -> segments () = 20;
 
-		auto quadSphereProperties = dynamic_cast <QuadSphereProperties*> (sphereProperties () .getValue ());
+		auto quadSphereProperties = dynamic_cast <QuadSphereOptions*> (sphereOptions () .getValue ());
 
 		if (quadSphereProperties)
 		{
@@ -224,12 +224,12 @@ BrowserOptions::set_primitiveQuality ()
 	}
 	else if (primitiveQuality () == "MEDIUM")
 	{
-		arc2DProperties ()      -> minAngle () = M_PI / 20;
-		arcClose2DProperties () -> minAngle () = M_PI / 20;
-		circle2DProperties ()   -> segments () = 60;
-		disc2DProperties ()     -> segments () = 60;
+		arc2DOptions ()      -> minAngle () = M_PI / 20;
+		arcClose2DOptions () -> minAngle () = M_PI / 20;
+		circle2DOptions ()   -> segments () = 60;
+		disc2DOptions ()     -> segments () = 60;
 
-		auto quadSphereProperties = dynamic_cast <QuadSphereProperties*> (sphereProperties () .getValue ());
+		auto quadSphereProperties = dynamic_cast <QuadSphereOptions*> (sphereOptions () .getValue ());
 
 		if (quadSphereProperties)
 		{
@@ -239,12 +239,12 @@ BrowserOptions::set_primitiveQuality ()
 	}
 	else if (primitiveQuality () == "HIGH")
 	{
-		arc2DProperties ()      -> minAngle () = M_PI / 40;
-		arcClose2DProperties () -> minAngle () = M_PI / 40;
-		circle2DProperties ()   -> segments () = 100;
-		disc2DProperties ()     -> segments () = 100;
+		arc2DOptions ()      -> minAngle () = M_PI / 40;
+		arcClose2DOptions () -> minAngle () = M_PI / 40;
+		circle2DOptions ()   -> segments () = 100;
+		disc2DOptions ()     -> segments () = 100;
 
-		auto quadSphereProperties = dynamic_cast <QuadSphereProperties*> (sphereProperties () .getValue ());
+		auto quadSphereProperties = dynamic_cast <QuadSphereOptions*> (sphereOptions () .getValue ());
 
 		if (quadSphereProperties)
 		{
@@ -289,16 +289,16 @@ BrowserOptions::set_shading ()
 void
 BrowserOptions::dispose ()
 {
-	motionBlurProperties ()  .dispose ();
-	textureProperties ()     .dispose ();
-	arc2DProperties ()       .dispose ();
-	arcClose2DProperties ()  .dispose ();
-	circle2DProperties ()    .dispose ();
-	disc2DProperties ()      .dispose ();
-	rectangle2DProperties () .dispose ();
-	boxProperties ()         .dispose ();
-	sphereProperties ()      .dispose ();
-	fontStyle ()             .dispose ();
+	motionBlurOptions ()  .dispose ();
+	textureOptions ()     .dispose ();
+	arc2DOptions ()       .dispose ();
+	arcClose2DOptions ()  .dispose ();
+	circle2DOptions ()    .dispose ();
+	disc2DOptions ()      .dispose ();
+	rectangle2DOptions () .dispose ();
+	boxOptions ()         .dispose ();
+	sphereOptions ()      .dispose ();
+	fontStyle ()           .dispose ();
 }
 
 } // X3D

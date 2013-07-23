@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,34 +48,14 @@
  *
  ******************************************************************************/
 
-#include "Arc2DProperties.h"
-
-#include "../../Execution/X3DExecutionContext.h"
-#include <complex>
+#include "X3DSphereOptionNode.h"
 
 namespace titania {
 namespace X3D {
 
-Arc2DProperties::Fields::Fields () :
-	minAngle (new SFFloat (M_PI / 20))
+X3DSphereOptionNode::X3DSphereOptionNode () :
+	X3DGeometricOptionNode ()
 { }
-
-Arc2DProperties::Arc2DProperties (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DPropertyNode (),
-	         fields ()
-{
-	setComponent ("Browser"),
-	setTypeName ("Arc2DProperties");
-
-	addField (inputOutput, "minAngle", minAngle ());
-}
-
-Arc2DProperties*
-Arc2DProperties::create (X3DExecutionContext* const executionContext) const
-{
-	return new Arc2DProperties (executionContext);
-}
 
 } // X3D
 } // titania

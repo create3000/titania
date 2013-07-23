@@ -66,13 +66,13 @@ MotionBlurEditor::initialize ()
 {
 	X3DMotionBlurEditorInterface::initialize ();
 
-	getIntensity () .set_value (getBrowser () -> getBrowserOptions () -> motionBlurProperties () -> intensity ());
+	getIntensity () .set_value (getBrowser () -> getBrowserOptions () -> motionBlurOptions () -> intensity ());
 }
 
 void
 MotionBlurEditor::on_enabled_toggled ()
 {
-	getBrowser () -> getBrowserOptions () -> motionBlurProperties () -> enabled () = getEnabled () .get_active ();
+	getBrowser () -> getBrowserOptions () -> motionBlurOptions () -> enabled () = getEnabled () .get_active ();
 }
 
 void
@@ -80,7 +80,7 @@ MotionBlurEditor::on_intensity_changed ()
 {
 	float x = getIntensity () .get_value ();
 
-	getBrowser () -> getBrowserOptions () -> motionBlurProperties () -> intensity () = -x * x + 2 * x;
+	getBrowser () -> getBrowserOptions () -> motionBlurOptions () -> intensity () = -x * x + 2 * x;
 }
 
 } // puck

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -71,13 +71,13 @@ public:
 		animated (false)
 	{ }
 
-	Gtk::TreeModel::Path path;
+	Gtk::TreeModel::Path path; // Path of expanded node/clone
 
-	bool expanded;
-	bool all_expanded;
-	bool expand_all;
-	bool selected;
-	bool animated;
+	bool expanded;             // Expanded state
+	bool all_expanded;         // Expanded mode
+	bool expand_all;           // Force expand all for fields
+	bool selected;             // Selected state
+	bool animated;             // Prevent expansion
 
 };
 

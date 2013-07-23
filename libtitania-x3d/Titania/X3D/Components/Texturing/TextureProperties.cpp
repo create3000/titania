@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -166,7 +166,7 @@ TextureProperties::getMinificationFilter () const
 		return GL_NEAREST_MIPMAP_NEAREST;
 
 	if (minificationFilter () == "DEFAULT")
-		return x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties ()) -> getMinificationFilter ();
+		return x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureOptions ()) -> getMinificationFilter ();
 
 	if (minificationFilter () == "FASTEST")
 		return GL_NEAREST;
@@ -187,7 +187,7 @@ TextureProperties::getMagnificationFilter () const
 		return GL_NEAREST;
 
 	if (magnificationFilter () == "DEFAULT")
-		return x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties ()) -> getMagnificationFilter ();
+		return x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureOptions ()) -> getMagnificationFilter ();
 
 	if (magnificationFilter () == "FASTEST")
 		return GL_NEAREST;
@@ -209,7 +209,7 @@ TextureProperties::getTextureCompression () const
 		return CompressionMode::HIGH;
 
 	if (textureCompression () == "DEFAULT")
-		return x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties ()) -> getTextureCompression ();
+		return x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureOptions ()) -> getTextureCompression ();
 
 	if (textureCompression () == "FASTEST")
 		return CompressionMode::FASTEST;

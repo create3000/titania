@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -79,12 +79,12 @@ public:
 	{ return *fields .repeatT; }
 
 	SFNode &
-	textureProperties ()
-	{ return *fields .textureProperties; }
+	textureOptions ()
+	{ return *fields .textureOptions; }
 
 	const SFNode &
-	textureProperties () const
-	{ return *fields .textureProperties; }
+	textureOptions () const
+	{ return *fields .textureOptions; }
 
 	virtual
 	bool
@@ -135,7 +135,7 @@ private:
 
 		SFBool* const repeatS;
 		SFBool* const repeatT;
-		SFNode* const textureProperties;
+		SFNode* const textureOptions;
 	};
 
 	Fields fields;

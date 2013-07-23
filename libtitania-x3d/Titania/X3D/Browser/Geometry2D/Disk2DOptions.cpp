@@ -48,50 +48,70 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_GEOMETRY3D_BOX_PROPERTIES_H__
-#define __TITANIA_X3D_BROWSER_GEOMETRY3D_BOX_PROPERTIES_H__
+#include "Disk2DOptions.h"
 
-#include "../Properties/X3DGeometryPropertyNode.h"
+#include "../../Execution/X3DExecutionContext.h"
+#include <complex>
 
 namespace titania {
 namespace X3D {
 
-//	Property Name           Value data type      Description
+Disk2DOptions::Fields::Fields () :
+	segments (new SFInt32 (60))
+{ }
 
-class BoxProperties :
-	public X3DGeometryPropertyNode
+Disk2DOptions::Disk2DOptions (X3DExecutionContext* const executionContext) :
+	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DGeometricOptionNode (),
+	                fields ()
 {
-public:
+	setComponent ("Browser"),
+	setTypeName ("Disk2DOptions");
 
-	BoxProperties (X3DExecutionContext* const);
+	addField (inputOutput, "segments", segments ());
+}
 
-	virtual
-	GLenum
-	getVertexMode () const final
-	{ return GL_QUADS; }
+Disk2DOptions*
+Disk2DOptions::create (X3DExecutionContext* const executionContext) const
+{
+	return new Disk2DOptions (executionContext);
+}
 
+void
+Disk2DOptions::initialize ()
+{
+	X3DGeometricOptionNode::initialize ();
 
-private:
+	build ();
+}
 
-	virtual
-	BoxProperties*
-	create (X3DExecutionContext* const) const final;
+void
+Disk2DOptions::eventsProcessed ()
+{
+	X3DGeometricOptionNode::eventsProcessed ();
 
-	virtual
-	void
-	initialize () final;
+	update ();
+}
 
-	virtual
-	void
-	eventsProcessed () final;
+void
+Disk2DOptions::build ()
+{
+	getVertices () .reserve (segments ());
 
-	virtual
-	void
-	build () final;
+	float angle = M_PI2 / segments ();
 
-};
+	for (int32_t n = 0; n < segments (); ++ n)
+	{
+		float theta = angle * n;
+
+		std::complex <float> texCoord = std::polar <float> (0.5, theta) + std::complex <float> (0.5, 0.5);
+		std::complex <float> point    = std::polar <float> (1, theta);
+
+		getTexCoord () .emplace_back (texCoord .real (), texCoord .imag (), 0);
+		getNormals  () .emplace_back (0, 0, 1);
+		getVertices () .emplace_back (point .real (), point .imag (), 0);
+	}
+}
 
 } // X3D
 } // titania
-
-#endif

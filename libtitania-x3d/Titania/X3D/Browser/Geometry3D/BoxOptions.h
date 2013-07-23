@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,73 +48,46 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_CUBE_MAP_TEXTURING_GENERATED_CUBE_MAP_TEXTURE_H__
-#define __TITANIA_X3D_COMPONENTS_CUBE_MAP_TEXTURING_GENERATED_CUBE_MAP_TEXTURE_H__
+#ifndef __TITANIA_X3D_BROWSER_GEOMETRY3D_BOX_PROPERTIES_H__
+#define __TITANIA_X3D_BROWSER_GEOMETRY3D_BOX_PROPERTIES_H__
 
-#include "../CubeMapTexturing/X3DEnvironmentTextureNode.h"
+#include "../Geometry2D/X3DGeometricOptionNode.h"
 
 namespace titania {
 namespace X3D {
 
-class GeneratedCubeMapTexture :
-	public X3DEnvironmentTextureNode
+//	Property Name           Value data type      Description
+
+class BoxOptions :
+	public X3DGeometricOptionNode
 {
 public:
 
-	GeneratedCubeMapTexture (X3DExecutionContext* const);
+	BoxOptions (X3DExecutionContext* const);
 
 	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final;
-
-	///  @name Fields
-
-	SFString &
-	update ()
-	{ return *fields .update; }
-
-	const SFString &
-	update () const
-	{ return *fields .update; }
-
-	SFInt32 &
-	size ()
-	{ return *fields .size; }
-
-	const SFInt32 &
-	size () const
-	{ return *fields .size; }
-
-	SFNode &
-	textureOptions ()
-	{ return *fields .textureOptions; }
-
-	const SFNode &
-	textureOptions () const
-	{ return *fields .textureOptions; }
-
-	virtual
-	bool
-	isTransparent () const
-	{ return false; }
-
-	virtual
-	void
-	draw ();
+	GLenum
+	getVertexMode () const final
+	{ return GL_QUADS; }
 
 
 private:
 
-	struct Fields
-	{
-		Fields ();
+	virtual
+	BoxOptions*
+	create (X3DExecutionContext* const) const final;
 
-		SFString* const update;
-		SFInt32* const size;
-		SFNode* const textureOptions;
-	};
+	virtual
+	void
+	initialize () final;
 
-	Fields fields;
+	virtual
+	void
+	eventsProcessed () final;
+
+	virtual
+	void
+	build () final;
 
 };
 

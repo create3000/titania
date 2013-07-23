@@ -48,52 +48,65 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_GEOMETRY2D_ARC_CLOSE2DPROPERTIES_H__
-#define __TITANIA_X3D_BROWSER_GEOMETRY2D_ARC_CLOSE2DPROPERTIES_H__
+#include "Circle2DOptions.h"
 
-#include "../../Components/Core/X3DPropertyNode.h"
+#include "../../Execution/X3DExecutionContext.h"
+#include <complex>
 
 namespace titania {
 namespace X3D {
 
-//	Property Name           Value data type      Description
+Circle2DOptions::Fields::Fields () :
+	segments (new SFInt32 (60))
+{ }
 
-class ArcClose2DProperties :
-	public X3DPropertyNode
+Circle2DOptions::Circle2DOptions (X3DExecutionContext* const executionContext) :
+	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DGeometricOptionNode (),
+	                fields ()
 {
-public:
+	setComponent ("Browser"),
+	setTypeName ("Circle2DOptions");
 
-	ArcClose2DProperties (X3DExecutionContext* const);
+	addField (inputOutput, "segments", segments ());
+}
 
-	///  @name Fields
+Circle2DOptions*
+Circle2DOptions::create (X3DExecutionContext* const executionContext) const
+{
+	return new Circle2DOptions (executionContext);
+}
 
-	SFFloat &
-	minAngle ()
-	{ return *fields .minAngle; }
+void
+Circle2DOptions::initialize ()
+{
+	X3DGeometricOptionNode::initialize ();
 
-	const SFFloat &
-	minAngle () const
-	{ return *fields .minAngle; }
+	build ();
+}
 
+void
+Circle2DOptions::eventsProcessed ()
+{
+	X3DGeometricOptionNode::eventsProcessed ();
 
-private:
+	update ();
+}
 
-	virtual
-	ArcClose2DProperties*
-	create (X3DExecutionContext* const) const final;
+void
+Circle2DOptions::build ()
+{
+	getVertices () .reserve (segments ());
 
-	struct Fields
+	float angle = M_PI2 / segments ();
+
+	for (int32_t n = 0; n < segments (); ++ n)
 	{
-		Fields ();
+		std::complex <float> point = std::polar <float> (1, angle * n);
 
-		SFFloat* const minAngle;
-	};
-
-	Fields fields;
-
-};
+		getVertices () .emplace_back (point .real (), point .imag (), 0);
+	}
+}
 
 } // X3D
 } // titania
-
-#endif

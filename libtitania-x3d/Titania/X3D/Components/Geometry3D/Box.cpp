@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -50,7 +50,7 @@
 
 #include "Box.h"
 
-#include "../../Browser/Geometry3D/BoxProperties.h"
+#include "../../Browser/Geometry3D/BoxOptions.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
@@ -86,7 +86,7 @@ Box::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	getBrowser () -> getBrowserOptions () -> boxProperties () .addInterest (this, &Box::set_properties);
+	getBrowser () -> getBrowserOptions () -> boxOptions () .addInterest (this, &Box::set_properties);
 }
 
 Box3f
@@ -104,7 +104,7 @@ Box::set_properties ()
 void
 Box::build ()
 {
-	const BoxProperties* properties = getBrowser () -> getBrowserOptions () -> boxProperties ();
+	const BoxOptions* properties = getBrowser () -> getBrowserOptions () -> boxOptions ();
 
 	getTexCoord () = properties -> getTexCoord ();
 	getNormals  () = properties -> getNormals  ();

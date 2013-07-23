@@ -499,19 +499,10 @@
     <None Include="Titania\X3D\Base\X3DObject.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsX3DScalar.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsArrayFields.h" />
-    <None Include="Titania\X3D\Browser\Properties\X3DGeometryPropertyNode.h" />
-    <None Include="Titania\X3D\Browser\Geometry3D\BoxProperties.h" />
-    <None Include="Titania\X3D\Browser\Geometry3D\QuadSphereProperties.h" />
-    <None Include="Titania\X3D\Browser\Geometry3D\X3DSpherePropertyNode.h" />
     <None Include="Titania\X3D\Browser\Properties\MotionBlur.h" />
     <None Include="Titania\X3D\Browser\BrowserApplication.h" />
     <None Include="Titania\X3D\Components\Navigation\X3DViewpointObject.h" />
-    <None Include="Titania\X3D\Browser\Geometry2D\Rectangle2DProperties.h" />
     <None Include="Titania\X3D\Bits\Cast.h" />
-    <None Include="Titania\X3D\Browser\Geometry2D\Circle2DProperties.h" />
-    <None Include="Titania\X3D\Browser\Geometry2D\ArcClose2DProperties.h" />
-    <None Include="Titania\X3D\Browser\Geometry2D\Arc2DProperties.h" />
-    <None Include="Titania\X3D\Browser\Geometry2D\Disk2DProperties.h" />
     <None Include="Titania\X3D\Browser\PointingDevice.h" />
     <None Include="Titania\X3D\Browser\X3DWidget.h" />
     <None Include="Titania\X3D\Browser\Viewer\ExamineViewer.h" />
@@ -562,6 +553,16 @@
     <None Include="Titania\X3D\Fields\SFNode.h" />
     <None Include="Titania\X3D\Types\Set.h" />
     <None Include="Titania\X3D\Bits\Keys.h" />
+    <None Include="Titania\X3D\Browser\Properties\X3DOptionNode.h" />
+    <None Include="Titania\X3D\Browser\Geometry2D\X3DGeometricOptionNode.h" />
+    <None Include="Titania\X3D\Browser\Geometry2D\Rectangle2DOptions.h" />
+    <None Include="Titania\X3D\Browser\Geometry2D\Disk2DOptions.h" />
+    <None Include="Titania\X3D\Browser\Geometry2D\Circle2DOptions.h" />
+    <None Include="Titania\X3D\Browser\Geometry2D\ArcClose2DOptions.h" />
+    <None Include="Titania\X3D\Browser\Geometry2D\Arc2DOptions.h" />
+    <None Include="Titania\X3D\Browser\Geometry3D\BoxOptions.h" />
+    <None Include="Titania\X3D\Browser\Geometry3D\QuadSphereOptions.h" />
+    <None Include="Titania\X3D\Browser\Geometry3D\X3DSphereOptionNode.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -942,17 +943,8 @@
     <Compile Include="Titania\X3D\Base\X3DObject.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DArrayField.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsArrayFields.cpp" />
-    <Compile Include="Titania\X3D\Browser\Properties\X3DGeometryPropertyNode.cpp" />
-    <Compile Include="Titania\X3D\Browser\Geometry3D\BoxProperties.cpp" />
-    <Compile Include="Titania\X3D\Browser\Geometry3D\QuadSphereProperties.cpp" />
-    <Compile Include="Titania\X3D\Browser\Geometry3D\X3DSpherePropertyNode.cpp" />
     <Compile Include="Titania\X3D\Browser\Properties\MotionBlur.cpp" />
     <Compile Include="Titania\X3D\Components\Navigation\X3DViewpointObject.cpp" />
-    <Compile Include="Titania\X3D\Browser\Geometry2D\Rectangle2DProperties.cpp" />
-    <Compile Include="Titania\X3D\Browser\Geometry2D\Circle2DProperties.cpp" />
-    <Compile Include="Titania\X3D\Browser\Geometry2D\ArcClose2DProperties.cpp" />
-    <Compile Include="Titania\X3D\Browser\Geometry2D\Arc2DProperties.cpp" />
-    <Compile Include="Titania\X3D\Browser\Geometry2D\Disk2DProperties.cpp" />
     <Compile Include="Titania\X3D\Browser\PointingDevice.cpp" />
     <Compile Include="Titania\X3D\Browser\X3DWidget.cpp" />
     <Compile Include="Titania\X3D\Rendering\LightContainer.cpp" />
@@ -994,6 +986,16 @@
     <Compile Include="Titania\X3D\Handles\X3DHandleObject.cpp" />
     <Compile Include="Titania\X3D\Fields\SFNode.cpp" />
     <Compile Include="Titania\X3D\Bits\Keys.cpp" />
+    <Compile Include="Titania\X3D\Browser\Properties\X3DOptionNode.cpp" />
+    <Compile Include="Titania\X3D\Browser\Geometry2D\X3DGeometricOptionNode.cpp" />
+    <Compile Include="Titania\X3D\Browser\Geometry2D\Rectangle2DOptions.cpp" />
+    <Compile Include="Titania\X3D\Browser\Geometry2D\Disk2DOptions.cpp" />
+    <Compile Include="Titania\X3D\Browser\Geometry2D\Circle2DOptions.cpp" />
+    <Compile Include="Titania\X3D\Browser\Geometry2D\ArcClose2DOptions.cpp" />
+    <Compile Include="Titania\X3D\Browser\Geometry2D\Arc2DOptions.cpp" />
+    <Compile Include="Titania\X3D\Browser\Geometry3D\BoxOptions.cpp" />
+    <Compile Include="Titania\X3D\Browser\Geometry3D\QuadSphereOptions.cpp" />
+    <Compile Include="Titania\X3D\Browser\Geometry3D\X3DSphereOptionNode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

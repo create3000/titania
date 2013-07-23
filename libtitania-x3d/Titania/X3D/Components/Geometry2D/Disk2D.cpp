@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -50,7 +50,7 @@
 
 #include "Disk2D.h"
 
-#include "../../Browser/Geometry2D/Disk2DProperties.h"
+#include "../../Browser/Geometry2D/Disk2DOptions.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
@@ -88,7 +88,7 @@ Disk2D::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	getBrowser () -> getBrowserOptions () -> disc2DProperties () .addInterest (this, &Disk2D::set_properties);
+	getBrowser () -> getBrowserOptions () -> disc2DOptions () .addInterest (this, &Disk2D::set_properties);
 }
 
 Box3f
@@ -108,7 +108,7 @@ Disk2D::set_properties ()
 void
 Disk2D::build ()
 {
-	const Disk2DProperties* properties = getBrowser () -> getBrowserOptions () -> disc2DProperties ();
+	const Disk2DOptions* properties = getBrowser () -> getBrowserOptions () -> disc2DOptions ();
 
 	if (innerRadius () == outerRadius ())
 	{

@@ -48,26 +48,21 @@
  *
  ******************************************************************************/
 
-#include "X3DGeometryPropertyNode.h"
+#include "X3DOptionNode.h"
 
 namespace titania {
 namespace X3D {
 
-X3DGeometryPropertyNode::X3DGeometryPropertyNode () :
-	X3DPropertyNode (),
-	       texCoord (),
-	        normals (),
-	       vertices ()
+X3DOptionNode::X3DOptionNode () :
+	X3DBaseNode ()
 { }
 
 void
-X3DGeometryPropertyNode::update ()
+X3DOptionNode::eventsProcessed ()
 {
-	texCoord .clear ();
-	normals  .clear ();
-	vertices .clear ();
+	X3DBaseNode::eventsProcessed ();
 
-	build ();
+	X3DChildObject::addEvent ();
 }
 
 } // X3D

@@ -48,62 +48,45 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_GEOMETRY2D_CIRCLE2DPROPERTIES_H__
-#define __TITANIA_X3D_BROWSER_GEOMETRY2D_CIRCLE2DPROPERTIES_H__
+#ifndef __TITANIA_X3D_BROWSER_GEOMETRY2D_ARC_CLOSE2DPROPERTIES_H__
+#define __TITANIA_X3D_BROWSER_GEOMETRY2D_ARC_CLOSE2DPROPERTIES_H__
 
-#include "../Properties/X3DGeometryPropertyNode.h"
+#include "../Properties/X3DOptionNode.h"
 
 namespace titania {
 namespace X3D {
 
 //	Property Name           Value data type      Description
 
-class Circle2DProperties :
-	public X3DGeometryPropertyNode
+class ArcClose2DOptions :
+	public X3DOptionNode
 {
 public:
 
-	Circle2DProperties (X3DExecutionContext* const);
+	ArcClose2DOptions (X3DExecutionContext* const);
 
 	///  @name Fields
 
-	SFInt32 &
-	segments ()
-	{ return *fields .segments; }
+	SFFloat &
+	minAngle ()
+	{ return *fields .minAngle; }
 
-	const SFInt32 &
-	segments () const
-	{ return *fields .segments; }
-
-	virtual
-	GLenum
-	getVertexMode () const final
-	{ return GL_LINE_LOOP; }
+	const SFFloat &
+	minAngle () const
+	{ return *fields .minAngle; }
 
 
 private:
 
 	virtual
-	Circle2DProperties*
+	ArcClose2DOptions*
 	create (X3DExecutionContext* const) const final;
-
-	virtual
-	void
-	initialize () final;
-
-	virtual
-	void
-	eventsProcessed () final;
-
-	virtual
-	void
-	build () final;
 
 	struct Fields
 	{
 		Fields ();
 
-		SFInt32* const segments;
+		SFFloat* const minAngle;
 	};
 
 	Fields fields;

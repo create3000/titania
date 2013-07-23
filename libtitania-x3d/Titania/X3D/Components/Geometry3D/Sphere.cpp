@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -50,7 +50,7 @@
 
 #include "Sphere.h"
 
-#include "../../Browser/Geometry3D/QuadSphereProperties.h"
+#include "../../Browser/Geometry3D/QuadSphereOptions.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
@@ -86,7 +86,7 @@ Sphere::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	getBrowser () -> getBrowserOptions () -> sphereProperties () .addInterest (this, &Sphere::set_properties);
+	getBrowser () -> getBrowserOptions () -> sphereOptions () .addInterest (this, &Sphere::set_properties);
 }
 
 void
@@ -106,7 +106,7 @@ Sphere::createBBox ()
 void
 Sphere::build ()
 {
-	const X3DSpherePropertyNode* properties = getBrowser () -> getBrowserOptions () -> sphereProperties ();
+	const X3DSphereOptionNode* properties = getBrowser () -> getBrowserOptions () -> sphereOptions ();
 
 	getTexCoord () = properties -> getTexCoord ();
 	getNormals  () = properties -> getNormals  ();

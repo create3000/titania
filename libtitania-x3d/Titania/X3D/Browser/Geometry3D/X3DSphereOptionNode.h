@@ -48,48 +48,20 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_GEOMETRY2D_ARC2DPROPERTIES_H__
-#define __TITANIA_X3D_BROWSER_GEOMETRY2D_ARC2DPROPERTIES_H__
+#ifndef __TITANIA_X3D_BROWSER_GEOMETRY3D_X3DSPHERE_PROPERTY_NODE_H__
+#define __TITANIA_X3D_BROWSER_GEOMETRY3D_X3DSPHERE_PROPERTY_NODE_H__
 
-#include "../../Components/Core/X3DPropertyNode.h"
+#include "../Geometry2D/X3DGeometricOptionNode.h"
 
 namespace titania {
 namespace X3D {
 
-//	Property Name           Value data type      Description
-
-class Arc2DProperties :
-	public X3DPropertyNode
+class X3DSphereOptionNode :
+	public X3DGeometricOptionNode
 {
-public:
+protected:
 
-	Arc2DProperties (X3DExecutionContext* const);
-
-	///  @name Fields
-
-	SFFloat &
-	minAngle ()
-	{ return *fields .minAngle; }
-
-	const SFFloat &
-	minAngle () const
-	{ return *fields .minAngle; }
-
-
-private:
-
-	virtual
-	Arc2DProperties*
-	create (X3DExecutionContext* const) const final;
-
-	struct Fields
-	{
-		Fields ();
-
-		SFFloat* const minAngle;
-	};
-
-	Fields fields;
+	X3DSphereOptionNode ();
 
 };
 
