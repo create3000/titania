@@ -65,12 +65,15 @@ X3DOutlineEditorInterface::create (const std::string & filename)
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_window);
 	m_window -> set_name ("Window");
-	m_builder -> get_widget ("Menu", m_menu);
-	m_menu -> set_name ("Menu");
 	m_builder -> get_widget ("Widget", m_widget);
 	m_widget -> set_name ("Widget");
 	m_builder -> get_widget ("ScrolledWindow", m_scrolledWindow);
 	m_scrolledWindow -> set_name ("ScrolledWindow");
+	m_builder -> get_widget ("Viewport", m_viewport);
+	m_viewport -> set_name ("Viewport");
+
+	// Connect object Gtk::Box with id 'Widget'.
+	connections .emplace_back (m_widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_map)));
 
 	// Call construct handler of base class.
 	construct ();

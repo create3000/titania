@@ -50,8 +50,8 @@
 
 #include "ViewpointEditor.h"
 
+#include "../Browser/BrowserWindow.h"
 #include "../Configuration/config.h"
-#include <iostream>
 
 namespace titania {
 namespace puck {
@@ -170,6 +170,12 @@ ViewpointEditor::set_currentViewpoint ()
 
 	if (viewpoint)
 		getFieldOfView () .set_value (viewpoint -> fieldOfView ());
+}
+
+void
+ViewpointEditor::on_map ()
+{
+	getBrowserWindow () -> getSideBarLabel () .set_text ("ViewpointEditor");
 }
 
 void

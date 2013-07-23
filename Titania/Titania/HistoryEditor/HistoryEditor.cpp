@@ -137,6 +137,12 @@ HistoryEditor::set_world ()
 }
 
 void
+HistoryEditor::on_map ()
+{
+	getBrowserWindow () -> getSideBarLabel () .set_text ("HistoryEditor");
+}
+
+void
 HistoryEditor::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn*)
 {
 	// Open worldURL.

@@ -99,6 +99,10 @@ public:
 
 	virtual
 	void
+	on_map () = 0;
+
+	virtual
+	void
 	on_row_activated (const TreeModel::Path & path, TreeViewColumn* column) = 0;
 
 	virtual

@@ -73,6 +73,9 @@ public:
 	const std::string &
 	getWidgetName () const { return m_widgetName; }
 
+	const Glib::RefPtr <Gtk::IconFactory> &
+	getIconFactory () const { return m_iconFactory; }
+
 	const Glib::RefPtr <Gtk::Action> &
 	getNewAction () const { return m_newAction; }
 
@@ -90,9 +93,6 @@ public:
 
 	const Glib::RefPtr <Gtk::FileFilter> &
 	getFileFilterAllFiles () const { return m_fileFilterAllFiles; }
-
-	const Glib::RefPtr <Gtk::IconFactory> &
-	getIconFactory () const { return m_iconFactory; }
 
 	const Glib::RefPtr <Gtk::AccelGroup> &
 	getMenuAccelGroup () const { return m_menuAccelGroup; }
@@ -259,9 +259,6 @@ public:
 	Gtk::Box &
 	getFooter () const { return *m_footer; }
 
-	Gtk::Button &
-	getFooterCloseButton () const { return *m_footerCloseButton; }
-
 	Gtk::Notebook &
 	getFooterNotebook () const { return *m_footerNotebook; }
 
@@ -274,8 +271,8 @@ public:
 	Gtk::Box &
 	getSideBar () const { return *m_sideBar; }
 
-	Gtk::Button &
-	getSideBarCloseButton () const { return *m_sideBarCloseButton; }
+	Gtk::Label &
+	getSideBarLabel () const { return *m_sideBarLabel; }
 
 	Gtk::Notebook &
 	getSideBarNotebook () const { return *m_sideBarNotebook; }
@@ -439,13 +436,13 @@ private:
 
 	std::deque <sigc::connection>   connections;
 	Glib::RefPtr <Gtk::Builder>     m_builder;
+	Glib::RefPtr <Gtk::IconFactory> m_iconFactory;
 	Glib::RefPtr <Gtk::Action>      m_newAction;
 	Glib::RefPtr <Gtk::Action>      m_openAction;
 	Glib::RefPtr <Gtk::Action>      m_revertAction;
 	Glib::RefPtr <Gtk::Action>      m_saveAction;
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilerX3D;
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterAllFiles;
-	Glib::RefPtr <Gtk::IconFactory> m_iconFactory;
 	Glib::RefPtr <Gtk::AccelGroup>  m_menuAccelGroup;
 	Gtk::FileChooserDialog*         m_fileOpenDialog;
 	Gtk::FileChooserDialog*         m_fileSaveDialog;
@@ -501,12 +498,11 @@ private:
 	Gtk::ToolButton*                m_lookAtAllButton;
 	Gtk::ToggleToolButton*          m_lookAtButton;
 	Gtk::Box*                       m_footer;
-	Gtk::Button*                    m_footerCloseButton;
 	Gtk::Notebook*                  m_footerNotebook;
 	Gtk::Box*                       m_consoleBox;
 	Gtk::TextView*                  m_console;
 	Gtk::Box*                       m_sideBar;
-	Gtk::Button*                    m_sideBarCloseButton;
+	Gtk::Label*                     m_sideBarLabel;
 	Gtk::Notebook*                  m_sideBarNotebook;
 	Gtk::Box*                       m_historyEditorBox;
 	Gtk::Box*                       m_viewpointEditorBox;

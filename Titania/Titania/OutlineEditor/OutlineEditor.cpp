@@ -50,8 +50,8 @@
 
 #include "OutlineEditor.h"
 
+#include "../Browser/BrowserWindow.h"
 #include "../Configuration/config.h"
-#include <iostream>
 
 namespace titania {
 namespace puck {
@@ -67,9 +67,15 @@ OutlineEditor::initialize ()
 {
 	X3DOutlineEditorInterface::initialize ();
 
-	getScrolledWindow () .add (treeview);
+	getViewport () .add (treeview);
 
 	treeview .show ();
+}
+
+void
+OutlineEditor::on_map ()
+{
+	getBrowserWindow () -> getSideBarLabel () .set_text ("OutlineEditor");
 }
 
 } // puck

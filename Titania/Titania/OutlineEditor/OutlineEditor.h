@@ -76,6 +76,10 @@ private:
 	void
 	initialize () final;
 
+	virtual
+	void
+	on_map () final;
+
 	OutlineTreeView treeview;
 
 };

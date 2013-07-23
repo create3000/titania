@@ -143,10 +143,6 @@ private:
 
 	virtual
 	bool
-	on_enter_notify_event (GdkEventCrossing* event);
-
-	virtual
-	bool
 	on_key_press_event (GdkEventKey*) final;
 
 	virtual

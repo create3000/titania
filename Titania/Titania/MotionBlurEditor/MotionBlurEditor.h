@@ -72,15 +72,15 @@ private:
 
 	virtual
 	void
-	initialize ();
+	initialize () final;
 
 	virtual
 	void
-	on_enabled_toggled ();
+	on_enabled_toggled () final;
 
 	virtual
 	void
-	on_intensity_changed ();
+	on_intensity_changed () final;
 
 };
 

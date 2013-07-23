@@ -279,13 +279,6 @@ OutlineTreeView::on_edited (const Glib::ustring & string_path, const Glib::ustri
 }
 
 bool
-OutlineTreeView::on_enter_notify_event (GdkEventCrossing* event)
-{
-	//grab_focus ();
-	return false;
-}
-
-bool
 OutlineTreeView::on_key_press_event (GdkEventKey* event)
 {
 	selection .set_select_multiple (getBrowserWindow () -> getKeys () .shift ());

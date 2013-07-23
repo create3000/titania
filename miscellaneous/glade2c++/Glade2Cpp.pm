@@ -575,3 +575,35 @@ key_release_event
   virtual bool on_key_release_event(GdkEventKey* event);
 key_press_event
   virtual bool on_key_press_event(GdkEventKey* event);
+key_release_event
+  virtual bool on_key_release_event(GdkEventKey* event);
+key_press_event
+  virtual bool on_key_press_event(GdkEventKey* event);
+key_release_event
+  virtual bool on_key_release_event(GdkEventKey* event);
+key_press_event
+  virtual bool on_key_press_event(GdkEventKey* event);
+key_release_event
+  virtual bool on_key_release_event(GdkEventKey* event);
+key_press_event
+  virtual bool on_key_press_event(GdkEventKey* event);
+key_release_event
+  virtual bool on_key_release_event(GdkEventKey* event);
+key_press_event
+  virtual bool on_key_press_event(GdkEventKey* event);
+key_release_event
+  virtual bool on_key_release_event(GdkEventKey* event);
+key_press_event
+  virtual bool on_key_press_event(GdkEventKey* event);
+key_release_event
+  virtual bool on_key_release_event(GdkEventKey* event);
+key_press_event
+  virtual bool on_key_press_event(GdkEventKey* event);
+key_release_event
+  virtual bool on_key_release_event(GdkEventKey* event);
+key_press_event
+  virtual bool on_key_press_event(GdkEventKey* event);
+key_release_event
+  virtual bool on_key_release_event(GdkEventKey* event);
+key_press_event
+  virtual bool on_key_press_event(GdkEventKey* event);

@@ -1,5 +1,29 @@
 2013-07-23  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* HistoryEditor.ui:
+	* OutlineEditor.ui:
+	* BrowserWindow.ui:
+	* ViewpointEditor.ui:
+	* OutlineEditor.h:
+	* HistoryEditor.h:
+	* OutlineTreeView.h:
+	* HistoryEditor.cpp:
+	* OutlineEditor.cpp:
+	* OutlineTreeView.cpp:
+	* ViewpointEditor.h:
+	* ViewpointEditor.cpp:
+	* MotionBlurEditor.h:
+	* X3DOutlineEditorInterface.h:
+	* X3DHistoryEditorInterface.h:
+	* X3DBrowserWindowInterface.h:
+	* X3DBrowserWindowInterface.cpp:
+	* X3DHistoryEditorInterface.cpp:
+	* X3DViewpointEditorInterface.h:
+	* X3DOutlineEditorInterface.cpp:
+	* X3DViewpointEditorInterface.cpp: 
+
+2013-07-23  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* BrowserWindow.ui:
 	* X3DBrowserWindow.h:

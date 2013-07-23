@@ -76,14 +76,18 @@ public:
 	Gtk::Window &
 	getWindow () const { return *m_window; }
 
-	Gtk::MenuBar &
-	getMenu () const { return *m_menu; }
-
 	Gtk::Box &
 	getWidget () const { return *m_widget; }
 
 	Gtk::ScrolledWindow &
 	getScrolledWindow () const { return *m_scrolledWindow; }
+
+	Gtk::Viewport &
+	getViewport () const { return *m_viewport; }
+
+	virtual
+	void
+	on_map () = 0;
 
 
 private:
@@ -96,9 +100,9 @@ private:
 	std::deque <sigc::connection> connections;
 	Glib::RefPtr <Gtk::Builder>   m_builder;
 	Gtk::Window*                  m_window;
-	Gtk::MenuBar*                 m_menu;
 	Gtk::Box*                     m_widget;
 	Gtk::ScrolledWindow*          m_scrolledWindow;
+	Gtk::Viewport*                m_viewport;
 
 };
 

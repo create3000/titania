@@ -61,13 +61,13 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
+	m_iconFactory        = Glib::RefPtr <Gtk::IconFactory>::cast_dynamic (m_builder -> get_object ("IconFactory"));
 	m_newAction          = Glib::RefPtr <Gtk::Action>::cast_dynamic (m_builder -> get_object ("NewAction"));
 	m_openAction         = Glib::RefPtr <Gtk::Action>::cast_dynamic (m_builder -> get_object ("OpenAction"));
 	m_revertAction       = Glib::RefPtr <Gtk::Action>::cast_dynamic (m_builder -> get_object ("RevertAction"));
 	m_saveAction         = Glib::RefPtr <Gtk::Action>::cast_dynamic (m_builder -> get_object ("SaveAction"));
 	m_fileFilerX3D       = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilerX3D"));
 	m_fileFilterAllFiles = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterAllFiles"));
-	m_iconFactory        = Glib::RefPtr <Gtk::IconFactory>::cast_dynamic (m_builder -> get_object ("IconFactory"));
 	m_menuAccelGroup     = Glib::RefPtr <Gtk::AccelGroup>::cast_dynamic (m_builder -> get_object ("MenuAccelGroup"));
 
 	// Get widgets.
@@ -179,8 +179,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_lookAtButton -> set_name ("LookAtButton");
 	m_builder -> get_widget ("Footer", m_footer);
 	m_footer -> set_name ("Footer");
-	m_builder -> get_widget ("FooterCloseButton", m_footerCloseButton);
-	m_footerCloseButton -> set_name ("FooterCloseButton");
 	m_builder -> get_widget ("FooterNotebook", m_footerNotebook);
 	m_footerNotebook -> set_name ("FooterNotebook");
 	m_builder -> get_widget ("ConsoleBox", m_consoleBox);
@@ -189,8 +187,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_console -> set_name ("Console");
 	m_builder -> get_widget ("SideBar", m_sideBar);
 	m_sideBar -> set_name ("SideBar");
-	m_builder -> get_widget ("SideBarCloseButton", m_sideBarCloseButton);
-	m_sideBarCloseButton -> set_name ("SideBarCloseButton");
+	m_builder -> get_widget ("SideBarLabel", m_sideBarLabel);
+	m_sideBarLabel -> set_name ("SideBarLabel");
 	m_builder -> get_widget ("SideBarNotebook", m_sideBarNotebook);
 	m_sideBarNotebook -> set_name ("SideBarNotebook");
 	m_builder -> get_widget ("HistoryEditorBox", m_historyEditorBox);

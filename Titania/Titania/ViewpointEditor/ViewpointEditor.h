@@ -72,7 +72,7 @@ private:
 
 	virtual
 	void
-	initialize ();
+	initialize () final;
 
 	const X3D::X3DSFNode <X3D::ViewpointStack> &
 	getViewpointStack ();
@@ -94,11 +94,15 @@ private:
 
 	virtual
 	void
-	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*);
+	on_map () final;
 
 	virtual
 	void
-	on_fieldOfView_changed ();
+	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final;
+
+	virtual
+	void
+	on_fieldOfView_changed () final;
 
 	X3D::X3DSFNode <X3D::X3DLayerNode> activeLayer;
 
