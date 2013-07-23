@@ -110,7 +110,7 @@ X3DTimeDependentNode::getElapsedTime () const
 void
 X3DTimeDependentNode::set_loop ()
 {
-	if (isEnabled ())
+	if (enabled ())
 	{
 		if (loop () and stopTime () <= startTime ())
 			set_start ();
@@ -120,7 +120,7 @@ X3DTimeDependentNode::set_loop ()
 void
 X3DTimeDependentNode::set_startTime ()
 {
-	if (not isEnabled ())
+	if (not enabled ())
 		return;
 
 	if (getCurrentTime () >= startTime ())
@@ -133,7 +133,7 @@ X3DTimeDependentNode::set_startTime ()
 bool
 X3DTimeDependentNode::do_start ()
 {
-	if (isEnabled ())
+	if (enabled ())
 		set_start ();
 
 	return false;
@@ -142,7 +142,7 @@ X3DTimeDependentNode::do_start ()
 void
 X3DTimeDependentNode::set_stopTime ()
 {
-	if (not isEnabled ())
+	if (not enabled ())
 		return;
 
 	if (stopTime () <= getCurrentTime ())
@@ -157,7 +157,7 @@ X3DTimeDependentNode::set_stopTime ()
 bool
 X3DTimeDependentNode::do_stop ()
 {
-	if (isEnabled ())
+	if (enabled ())
 		set_stop ();
 
 	return false;
@@ -166,14 +166,14 @@ X3DTimeDependentNode::do_stop ()
 void
 X3DTimeDependentNode::set_pauseTime ()
 {
-	if (not isEnabled ())
+	if (not enabled ())
 		return;
 }
 
 bool
 X3DTimeDependentNode::do_pause ()
 {
-	if (isEnabled ())
+	if (enabled ())
 		set_pause ();
 
 	return false;
@@ -182,14 +182,14 @@ X3DTimeDependentNode::do_pause ()
 void
 X3DTimeDependentNode::set_resumeTime ()
 {
-	if (not isEnabled ())
+	if (not enabled ())
 		return;
 }
 
 bool
 X3DTimeDependentNode::do_resume ()
 {
-	if (isEnabled ())
+	if (enabled ())
 		set_resume ();
 
 	return false;

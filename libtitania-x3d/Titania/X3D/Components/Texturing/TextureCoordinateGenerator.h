@@ -99,7 +99,7 @@ private:
 
 	virtual
 	void
-	initialize ();
+	initialize () final;
 
 	struct Fields
 	{

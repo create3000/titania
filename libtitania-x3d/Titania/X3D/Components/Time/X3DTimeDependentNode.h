@@ -63,6 +63,14 @@ class X3DTimeDependentNode :
 {
 public:
 
+	virtual
+	SFBool &
+	enabled () = 0;
+
+	virtual
+	const SFBool &
+	enabled () const = 0;
+
 	SFBool &
 	loop ()
 	{ return *fields .loop; }
@@ -129,23 +137,19 @@ public:
 
 	virtual
 	void
-	dispose ();
+	dispose () override;
 
 
 protected:
 
 	X3DTimeDependentNode ();
 
-	virtual
-	bool
-	isEnabled () const = 0;
-
 	time_type
 	getElapsedTime () const;
 
 	virtual
 	void
-	initialize ();
+	initialize () override;
 
 	virtual
 	void

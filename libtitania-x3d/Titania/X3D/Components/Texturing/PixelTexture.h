@@ -82,7 +82,7 @@ private:
 
 	virtual
 	void
-	initialize ();
+	initialize () final;
 
 	void
 	requestImmediateLoad ();

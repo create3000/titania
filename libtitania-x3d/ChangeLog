@@ -1,5 +1,21 @@
 2013-07-23  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* TimeSensor.h:
+	* Inline.cpp:
+	* ImageTexture.h:
+	* PixelTexture.h:
+	* X3DTextureNode.h:
+	* X3DSoundSourceNode.h:
+	* X3DTimeDependentNode.h:
+	* X3DSoundSourceNode.cpp:
+	* X3DTexture2DNode.h:
+	* TextureTransform.h:
+	* X3DTimeDependentNode.cpp:
+	* TextureProperties.h:
+	* TextureCoordinateGenerator.h: 
+
+2013-07-23  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* Box.cpp:

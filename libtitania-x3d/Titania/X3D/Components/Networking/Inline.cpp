@@ -147,8 +147,11 @@ void
 Inline::set_load ()
 {
 	if (load ())
-		requestLoad ();
+	{
+		setLoadState (NOT_STARTED_STATE);
 
+		requestLoad ();
+	}
 	else
 		requestUnload ();
 }
@@ -157,7 +160,11 @@ void
 Inline::set_url ()
 {
 	if (load ())
+	{
+		setLoadState (NOT_STARTED_STATE);
+
 		requestLoad ();
+	}
 }
 
 void

@@ -81,7 +81,7 @@ protected:
 
 	virtual
 	void
-	initialize ();
+	initialize () override;
 
 	static
 	void

@@ -88,21 +88,8 @@ public:
 
 	virtual
 	bool
-	isTransparent () const
+	isTransparent () const override
 	{ return transparent; }
-
-	GLenum
-	getInternalFormat () const
-	{ return getTextureProperties () -> getInternalFormat (components); }
-
-	const TextureProperties*
-	getTextureProperties () const;
-
-	void
-	setImage (size_t, GLenum, GLint, GLint, const void*);
-
-	void
-	updateImage (GLenum, GLint, GLint, const void*);
 
 	virtual
 	void
@@ -120,8 +107,21 @@ protected:
 	void
 	setImage (Magick::Image &);
 
+	void
+	setImage (size_t, GLenum, GLint, GLint, const void*);
+
+	void
+	updateImage (GLenum, GLint, GLint, const void*);
+
 
 private:
+
+	GLenum
+	getInternalFormat () const
+	{ return getTextureProperties () -> getInternalFormat (components); }
+
+	const TextureProperties*
+	getTextureProperties () const;
 
 	void
 	scaleImage (Magick::Image &);

@@ -19,5 +19,4 @@
   <Task file="" description="notify deferred" />
   <Task file="" description="Full profile in ExecutionContext" />
   <Task file="" description="TextViewEditable set_validated einfügen und ableiten" />
-  <Task file="" description="primitive Qualtity überprüfen" />
 </ListOfTask>

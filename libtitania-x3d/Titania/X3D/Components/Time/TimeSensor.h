@@ -70,6 +70,16 @@ public:
 
 	///  @name Fields
 
+	virtual
+	SFBool &
+	enabled () final
+	{ return X3DSensorNode::enabled (); }
+
+	virtual
+	const SFBool &
+	enabled () const final
+	{ return X3DSensorNode::enabled (); }
+
 	SFTime &
 	cycleInterval ()
 	{ return *fields .cycleInterval; }
@@ -98,13 +108,8 @@ public:
 private:
 
 	virtual
-	bool
-	isEnabled () const
-	{ return enabled (); }
-
-	virtual
 	void
-	initialize ();
+	initialize () final;
 
 	void
 	prepareEvents ();
@@ -114,19 +119,19 @@ private:
 
 	virtual
 	void
-	set_start ();
+	set_start () final;
 
 	virtual
 	void
-	set_stop ();
+	set_stop () final;
 
 	virtual
 	void
-	set_pause ();
+	set_pause () final;
 
 	virtual
 	void
-	set_resume ();
+	set_resume () final;
 
 	struct Fields
 	{

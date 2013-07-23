@@ -170,7 +170,7 @@ public:
 
 	virtual
 	void
-	initialize ();
+	initialize () final;
 
 	GLenum
 	getBoundaryModeS () const;

@@ -307,7 +307,7 @@ X3DSoundSourceNode::setUri (const basic::uri & uri)
 }
 
 float
-X3DSoundSourceNode::getDuration ()
+X3DSoundSourceNode::getDuration () const
 {
 	return gstream -> getDuration ();
 }
@@ -319,13 +319,13 @@ X3DSoundSourceNode::setVolume (float value)
 }
 
 bool
-X3DSoundSourceNode::sync ()
+X3DSoundSourceNode::sync () const
 {
 	return gstream -> getState () not_eq Gst::STATE_NULL;
 }
 
 const Glib::RefPtr <Gst::XImageSink> &
-X3DSoundSourceNode::getVideoSink ()
+X3DSoundSourceNode::getVideoSink () const
 {
 	return gstream -> vsink;
 }

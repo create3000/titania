@@ -69,12 +69,14 @@ class X3DSoundSourceNode :
 {
 public:
 
+	virtual
 	SFBool &
-	enabled ()
+	enabled () final
 	{ return *fields .enabled; }
 
+	virtual
 	const SFBool &
-	enabled () const
+	enabled () const final
 	{ return *fields .enabled; }
 
 	SFString &
@@ -116,9 +118,13 @@ public:
 	const SFTime &
 	duration_changed () const
 	{ return *fields .duration_changed; }
+	
+	///  @name Modifiers
 
 	void
 	setVolume (float);
+	
+	///  @name Destruction
 
 	virtual
 	void
@@ -137,21 +143,16 @@ protected:
 	setUri (const basic::uri &);
 
 	float
-	getDuration ();
+	getDuration () const;
 
 	bool
-	sync ();
+	sync () const;
 
 	const Glib::RefPtr <Gst::XImageSink> &
-	getVideoSink ();
+	getVideoSink () const;
 
 
 private:
-
-	virtual
-	bool
-	isEnabled () const override
-	{ return enabled (); }
 
 	void
 	prepareEvents ();
@@ -164,19 +165,19 @@ private:
 
 	virtual
 	void
-	set_start ();
+	set_start () final;
 
 	virtual
 	void
-	set_stop ();
+	set_stop () final;
 
 	virtual
 	void
-	set_pause ();
+	set_pause () final;
 
 	virtual
 	void
-	set_resume ();
+	set_resume () final;
 
 	void
 	set_end ();

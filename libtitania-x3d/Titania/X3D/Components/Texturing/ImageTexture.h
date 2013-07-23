@@ -73,7 +73,7 @@ public:
 
 	virtual
 	void
-	dispose ();
+	dispose () final;
 
 
 private:
@@ -82,7 +82,7 @@ private:
 
 	virtual
 	void
-	initialize ();
+	initialize () final;
 
 	void
 	set_url ();
