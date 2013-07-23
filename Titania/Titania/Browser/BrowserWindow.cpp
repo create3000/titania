@@ -56,11 +56,13 @@ namespace titania {
 namespace puck {
 
 BrowserWindow::BrowserWindow (const basic::uri & worldURL) :
+   X3DBaseInterface (this),
 	X3DBrowserWindow (worldURL),
-	motionBlurEditor (getBrowser ()),
-	 viewpointEditor (getBrowser ()),
+	motionBlurEditor (this),
+	 viewpointEditor (this),
 	   historyEditor (this),
-	   outlineEditor (getBrowser ())
+	   outlineEditor (this),
+	            keys ()
 { }
 
 void
@@ -402,6 +404,22 @@ void
 BrowserWindow::on_messageDialog_response (int response_id)
 {
 	getMessageDialog () .hide ();
+}
+
+bool
+BrowserWindow::on_key_press_event (GdkEventKey* event)
+{
+	keys .press (event);
+
+	return false;
+}
+
+bool
+BrowserWindow::on_key_release_event (GdkEventKey* event)
+{
+	keys .release (event);
+
+	return false;
 }
 
 } // puck

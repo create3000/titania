@@ -65,7 +65,7 @@ class MotionBlurEditor :
 {
 public:
 
-	MotionBlurEditor (const X3D::X3DSFNode <X3D::Browser> &);
+	MotionBlurEditor (BrowserWindow* const);
 
 
 private:

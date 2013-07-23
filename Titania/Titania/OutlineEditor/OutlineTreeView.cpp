@@ -50,6 +50,7 @@
 
 #include "OutlineTreeView.h"
 
+#include "../Browser/BrowserWindow.h"
 #include "../Configuration/config.h"
 #include "../OutlineEditor/CellRenderer/OutlineCellRenderer.h"
 #include "../OutlineEditor/OutlineTreeModel.h"
@@ -57,16 +58,14 @@
 namespace titania {
 namespace puck {
 
-OutlineTreeView::OutlineTreeView (const X3D::X3DSFNode <X3D::Browser> & browser) :
+OutlineTreeView::OutlineTreeView (BrowserWindow* const browserWindow) :
 	    Glib::ObjectBase (typeid (OutlineTreeView)),
+	    X3DBaseInterface (browserWindow),
 	       Gtk::TreeView (),
 	X3DOutlineTreeViewUI (get_ui ("OutlineTreeView.ui"), gconf_dir ()),
 	               model (),
-	           selection (this, browser),
-	                keys ()
+	           selection (browserWindow, this)
 {
-	setBrowser (browser);
-
 	// Options
 
 	set_headers_visible (true);
@@ -239,7 +238,7 @@ OutlineTreeView::set_world ()
 {
 	selection .clear ();
 
-	set_model (OutlineTreeModel::create (getBrowser ()));
+	set_model (OutlineTreeModel::create (getBrowserWindow ()));
 
 	getBrowser () -> getExecutionContext () -> getRootNodes () .addInterest (this, &OutlineTreeView::set_rootNodes);
 
@@ -289,11 +288,7 @@ OutlineTreeView::on_enter_notify_event (GdkEventCrossing* event)
 bool
 OutlineTreeView::on_key_press_event (GdkEventKey* event)
 {
-	keys .press (event);
-	
-	__LOG__ << keys .shift () << std::endl;
-
-	selection .set_select_multiple (keys .shift ());
+	selection .set_select_multiple (getBrowserWindow () -> getKeys () .shift ());
 
 	return Gtk::TreeView::on_key_press_event (event);
 }
@@ -301,9 +296,7 @@ OutlineTreeView::on_key_press_event (GdkEventKey* event)
 bool
 OutlineTreeView::on_key_release_event (GdkEventKey* event)
 {
-	keys .release (event);
-
-	selection .set_select_multiple (keys .shift ());
+	selection .set_select_multiple (getBrowserWindow () -> getKeys () .shift ());
 
 	return Gtk::TreeView::on_key_release_event (event);
 }
@@ -598,7 +591,7 @@ OutlineTreeView::expand_row (const Gtk::TreeModel::iterator & iter)
 		{
 			auto field = static_cast <X3D::X3DFieldDefinition*> (get_object (iter));
 			
-			if (keys .shift () or get_expand_all (iter))
+			if (getBrowserWindow () -> getKeys () .shift () or get_expand_all (iter))
 				expand_routes (iter, field);
 
 			else
@@ -704,7 +697,7 @@ OutlineTreeView::toggle_expand (const Gtk::TreeModel::iterator & iter, const Gtk
 	{
 		case OutlineIterType::X3DField:
 		{
-			if (keys .shift ())
+			if (getBrowserWindow () -> getKeys () .shift ())
 			{
 				if (not get_all_expanded (iter))
 					expand_row (path, false);

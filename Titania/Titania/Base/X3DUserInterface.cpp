@@ -59,6 +59,7 @@ namespace puck {
 X3DUserInterface::Array X3DUserInterface::userInterfaces;
 
 X3DUserInterface::X3DUserInterface (const std::string & widgetName, const std::string & configKey) :
+         X3DBaseInterface (),
 	                 gconf (configKey, widgetName),
 	initialized_connection (),
 	         userInterface ()

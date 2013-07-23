@@ -56,11 +56,10 @@
 namespace titania {
 namespace puck {
 
-MotionBlurEditor::MotionBlurEditor (const X3D::X3DSFNode <X3D::Browser> & browser) :
+MotionBlurEditor::MotionBlurEditor (BrowserWindow* const browserWindow) :
+        X3DBaseInterface (browserWindow),
 	X3DMotionBlurEditorUI (get_ui ("MotionBlurEditor.ui"), gconf_dir ())
-{
-	setBrowser (browser);
-}
+{ }
 
 void
 MotionBlurEditor::initialize ()

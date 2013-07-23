@@ -55,24 +55,23 @@
 namespace titania {
 namespace puck {
 
-OutlineTreeModel::OutlineTreeModel (const X3D::X3DSFNode <X3D::Browser> & browser) :
+OutlineTreeModel::OutlineTreeModel (BrowserWindow* const browserWindow) :
 	Glib::ObjectBase (typeid (OutlineTreeModel)),
 	    Glib::Object (),
 	  Gtk::TreeModel (),
-	X3DBaseInterface (),
-	executionContext (browser -> getExecutionContext ()),
+	X3DBaseInterface (browserWindow),
+	executionContext (getBrowser () -> getExecutionContext ()),
 	            tree (),
 	           stamp (reinterpret_cast <long int> (this))
 {
 	//__LOG__ << std::endl;
-	setBrowser (browser);
 }
 
 Glib::RefPtr <OutlineTreeModel>
-OutlineTreeModel::create (const X3D::X3DSFNode <X3D::Browser> & browser)
+OutlineTreeModel::create (BrowserWindow* const browserWindow)
 {
 	//__LOG__ << std::endl;
-	return Glib::RefPtr <OutlineTreeModel> (new OutlineTreeModel (browser));
+	return Glib::RefPtr <OutlineTreeModel> (new OutlineTreeModel (browserWindow));
 }
 
 bool
@@ -351,18 +350,18 @@ OutlineTreeModel::iter_has_child_vfunc (const iterator & iter) const
 		{
 			auto field = static_cast <X3D::X3DFieldDefinition*> (get_object (iter));
 
-			size_t size = field -> getInputRoutes () .size () + field -> getOutputRoutes () .size ();
+			bool size = field -> getInputRoutes () .size () + field -> getOutputRoutes () .size ();
 
 			switch (field -> getType ())
 			{
 				case X3D::X3DConstants::MFNode:
 				{
-					size += static_cast <X3D::MFNode*> (field) -> size ();
+					size |= static_cast <X3D::MFNode*> (field) -> size ();
 					break;
 				}
 				default:
 				{
-					size += 1;
+					size |= 1;
 					break;
 				}
 			}

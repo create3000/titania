@@ -56,12 +56,11 @@
 namespace titania {
 namespace puck {
 
-OutlineEditor::OutlineEditor (const X3D::X3DSFNode <X3D::Browser> & browser) :
+OutlineEditor::OutlineEditor (BrowserWindow* const browserWindow) :
+     X3DBaseInterface (browserWindow),
 	X3DOutlineEditorUI (get_ui ("OutlineEditor.ui"), gconf_dir ()),
-	          treeview (browser)
-{
-	setBrowser (browser);
-}
+	          treeview (browserWindow)
+{ }
 
 void
 OutlineEditor::initialize ()

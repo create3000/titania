@@ -71,12 +71,11 @@ constexpr int Bold   = 700;
 
 };
 
-ViewpointEditor::ViewpointEditor (const X3D::X3DSFNode <X3D::Browser> & browser) :
+ViewpointEditor::ViewpointEditor (BrowserWindow* const browserWindow) :
+       X3DBaseInterface (browserWindow),
 	X3DViewpointEditorUI (get_ui ("ViewpointEditor.ui"), gconf_dir ()),
 	         activeLayer ()
-{
-	setBrowser (browser);
-}
+{ }
 
 void
 ViewpointEditor::initialize ()

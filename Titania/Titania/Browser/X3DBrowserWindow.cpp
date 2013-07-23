@@ -62,7 +62,8 @@ namespace titania {
 namespace puck {
 
 X3DBrowserWindow::X3DBrowserWindow (const basic::uri & worldURL) :
-	X3DBrowserWindowUI (get_ui ("BrowserWindow.ui"), gconf_dir ())
+	X3DBrowserWindowUI (get_ui ("BrowserWindow.ui"), gconf_dir ()),
+	           browser (X3D::createBrowser ())
 {
 	if (worldURL .size ())
 		getConfig () .setItem ("worldURL", worldURL);
@@ -83,7 +84,6 @@ X3DBrowserWindow::X3DBrowserWindow (const basic::uri & worldURL) :
 
 	// Browser
 	X3D::getBrowser () -> getBrowserOptions () -> splashScreen () = true;
-	setBrowser (X3D::createBrowser ());
 }
 
 void

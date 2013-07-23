@@ -66,6 +66,10 @@ class BrowserWindow :
 public:
 
 	BrowserWindow (const basic::uri &);
+	
+	const X3D::Keys &
+	getKeys () const
+	{ return keys; }
 
 
 private:
@@ -263,10 +267,23 @@ private:
 	void
 	on_messageDialog_response (int);
 
+	///  @name Key events
+
+	virtual
+	bool
+	on_key_press_event (GdkEventKey*) final;
+
+	virtual
+	bool
+	on_key_release_event (GdkEventKey*) final;
+	
+	///  @name Properties
+
 	MotionBlurEditor motionBlurEditor;
 	ViewpointEditor  viewpointEditor;
 	HistoryEditor    historyEditor;
 	OutlineEditor    outlineEditor;
+	X3D::Keys        keys;
 
 };
 

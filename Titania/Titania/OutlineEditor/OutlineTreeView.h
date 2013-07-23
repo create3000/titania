@@ -74,7 +74,7 @@ public:
 
 	using Gtk::TreeView::expand_row;
 
-	OutlineTreeView (const X3D::X3DSFNode <X3D::Browser> &);
+	OutlineTreeView (BrowserWindow* const);
 
 	OutlineIterType
 	get_data_type (const Gtk::TreeModel::iterator &) const;
@@ -227,7 +227,6 @@ private:
 
 	Glib::RefPtr <OutlineTreeModel> model;
 	OutlineSelection                selection;
-	X3D::Keys                       keys;
 
 };
 

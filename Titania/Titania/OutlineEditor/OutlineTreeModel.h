@@ -105,7 +105,7 @@ public:
 
 	static
 	Glib::RefPtr <OutlineTreeModel>
-	create (const X3D::X3DSFNode <X3D::Browser> &);
+	create (BrowserWindow* const);
 
 	OutlineUserDataPtr
 	get_user_data (const iterator &) const;
@@ -140,7 +140,7 @@ public:
 
 private:
 
-	OutlineTreeModel (const X3D::X3DSFNode <X3D::Browser> &);
+	OutlineTreeModel (BrowserWindow* const);
 
 	bool
 	iter_is_valid (const iterator & iter) const;

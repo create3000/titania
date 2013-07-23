@@ -61,13 +61,11 @@ static constexpr int ICON_COLUMN      = 0;
 static constexpr int TITLE_COLUMN     = 1;
 static constexpr int WORLD_URL_COLUMN = 2;
 
-HistoryEditor::HistoryEditor (BrowserWindow* browserWindow) :
+HistoryEditor::HistoryEditor (BrowserWindow* const browserWindow) :
+     X3DBaseInterface (browserWindow),
 	X3DHistoryEditorUI (get_ui ("HistoryEditor.ui"), gconf_dir ()),
-	     browserWindow (browserWindow),
 	           history ()
-{
-	setBrowser (browserWindow -> getBrowser ());
-}
+{ }
 
 void
 HistoryEditor::initialize ()
@@ -143,7 +141,7 @@ HistoryEditor::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeVie
 {
 	// Open worldURL.
 
-	browserWindow -> open ({ history .getItemFromIndex (path .to_string ()) .at ("worldURL") });
+	getBrowserWindow () -> open ({ history .getItemFromIndex (path .to_string ()) .at ("worldURL") });
 }
 
 HistoryEditor::~HistoryEditor ()

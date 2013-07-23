@@ -50,13 +50,24 @@
 
 #include "X3DBaseInterface.h"
 
+#include "../Browser/BrowserWindow.h"
+
 namespace titania {
 namespace puck {
 
-X3DBaseInterface::X3DBaseInterface () :
+X3DBaseInterface::X3DBaseInterface (BrowserWindow* const browserWindow) :
 	  X3D::X3DInput (),
-	sigc::trackable ()
-{ }
+	sigc::trackable (),
+	  browserWindow (browserWindow)
+{
+	assert (browserWindow);
+}
+
+const X3D::X3DSFNode <X3D::Browser> &
+X3DBaseInterface::getBrowser () const
+{
+	return browserWindow -> getBrowser ();
+}
 
 } // puck
 } // titania

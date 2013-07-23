@@ -65,6 +65,11 @@ public:
 
 	///  @name Application Handling
 
+	virtual
+	const X3D::X3DSFNode <X3D::Browser> &
+	getBrowser () const final
+	{ return browser; }
+
 	void
 	restoreSession ();
 
@@ -130,8 +135,9 @@ private:
 	bool
 	statistics ();
 
-	double           loadTime;
-	sigc::connection timeout;
+	X3D::X3DSFNode <X3D::Browser> browser;
+	double                        loadTime;
+	sigc::connection              timeout;
 
 };
 

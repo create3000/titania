@@ -67,7 +67,7 @@ class OutlineEditor :
 {
 public:
 
-	OutlineEditor (const X3D::X3DSFNode <X3D::Browser> &);
+	OutlineEditor (BrowserWindow* const);
 
 
 private:

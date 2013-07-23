@@ -1,3 +1,28 @@
+2013-07-23  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* BrowserWindow.h:
+	* X3DBaseInterface.h:
+	* BrowserWindow.ui:
+	* BrowserWindow.cpp:
+	* X3DBaseInterface.cpp:
+	* X3DUserInterface.cpp:
+	* X3DBrowserWindow.h:
+	* X3DBrowserWindow.cpp:
+	* HistoryEditor.h:
+	* OutlineEditor.h:
+	* OutlineTreeView.h:
+	* OutlineEditor.cpp:
+	* HistoryEditor.cpp:
+	* OutlineTreeModel.h:
+	* OutlineSelection.h:
+	* ViewpointEditor.h:
+	* OutlineTreeView.cpp:
+	* OutlineSelection.cpp:
+	* OutlineTreeModel.cpp:
+	* ViewpointEditor.cpp:
+	* MotionBlurEditor.h:
+	* MotionBlurEditor.cpp: 
+
 2013-07-22  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* OutlineTree.h:

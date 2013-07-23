@@ -57,15 +57,20 @@
 namespace titania {
 namespace puck {
 
+class BrowserWindow;
+
 class X3DBaseInterface :
 	virtual public X3D::X3DInput, virtual public sigc::trackable
 {
 public:
 
+	BrowserWindow*
+	getBrowserWindow () const
+	{ return browserWindow; }
+
 	virtual
 	const X3D::X3DSFNode <X3D::Browser> &
-	getBrowser () const
-	{ return browser; }
+	getBrowser () const;
 
 	virtual
 	~X3DBaseInterface ()
@@ -74,16 +79,12 @@ public:
 
 protected:
 
-	X3DBaseInterface ();
-
-	void
-	setBrowser (const X3D::X3DSFNode <X3D::Browser> & value)
-	{ browser = value; }
+	X3DBaseInterface (BrowserWindow* const = nullptr);
 
 
 private:
 
-	X3D::X3DSFNode <X3D::Browser> browser;
+	BrowserWindow* browserWindow;
 
 };
 

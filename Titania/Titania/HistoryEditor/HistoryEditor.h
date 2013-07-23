@@ -66,7 +66,7 @@ class HistoryEditor :
 {
 public:
 
-	HistoryEditor (BrowserWindow*);
+	HistoryEditor (BrowserWindow* const);
 
 	virtual
 	~HistoryEditor ();
@@ -91,8 +91,7 @@ private:
 	void
 	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*);
 
-	BrowserWindow* browserWindow;
-	History        history;
+	History history;
 
 };
 

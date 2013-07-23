@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <!-- interface-requires gtk+ 3.0 -->
+  <object class="GtkFileFilter" id="FileFilerX3D">
+    <mime-types>
+      <mime-type>model/vrml</mime-type>
+      <mime-type>model/x3d+vrml</mime-type>
+      <mime-type>x-world/x-vrml</mime-type>
+    </mime-types>
+    <patterns>
+      <pattern>*.x3d</pattern>
+      <pattern>*.x3d.gz</pattern>
+      <pattern>*.x3dv</pattern>
+      <pattern>*.x3dvz</pattern>
+      <pattern>*.wrl</pattern>
+      <pattern>*.wrl.gz</pattern>
+      <pattern>*.wrz</pattern>
+    </patterns>
+  </object>
+  <object class="GtkFileFilter" id="FileFilterAllFiles">
+    <patterns>
+      <pattern>*</pattern>
+    </patterns>
+  </object>
   <object class="GtkIconFactory" id="IconFactory">
     <sources>
       <source stock-id="Icon" filename="icons/icon.svg"/>
@@ -23,27 +44,6 @@
   </object>
   <object class="GtkAction" id="SaveAction">
     <signal name="activate" handler="on_save" swapped="no"/>
-  </object>
-  <object class="GtkFileFilter" id="FileFilerX3D">
-    <mime-types>
-      <mime-type>model/vrml</mime-type>
-      <mime-type>model/x3d+vrml</mime-type>
-      <mime-type>x-world/x-vrml</mime-type>
-    </mime-types>
-    <patterns>
-      <pattern>*.x3d</pattern>
-      <pattern>*.x3d.gz</pattern>
-      <pattern>*.x3dv</pattern>
-      <pattern>*.x3dvz</pattern>
-      <pattern>*.wrl</pattern>
-      <pattern>*.wrl.gz</pattern>
-      <pattern>*.wrz</pattern>
-    </patterns>
-  </object>
-  <object class="GtkFileFilter" id="FileFilterAllFiles">
-    <patterns>
-      <pattern>*</pattern>
-    </patterns>
   </object>
   <object class="GtkFileChooserDialog" id="FileOpenDialog">
     <property name="can_focus">False</property>
@@ -141,6 +141,35 @@
     </child>
   </object>
   <object class="GtkAccelGroup" id="MenuAccelGroup"/>
+  <object class="GtkMessageDialog" id="MessageDialog">
+    <property name="can_focus">False</property>
+    <property name="border_width">5</property>
+    <property name="title" translatable="yes">Messgage</property>
+    <property name="destroy_with_parent">True</property>
+    <property name="hide_titlebar_when_maximized">True</property>
+    <property name="type_hint">dialog</property>
+    <property name="skip_taskbar_hint">True</property>
+    <property name="transient_for">Window</property>
+    <property name="buttons">ok</property>
+    <property name="use_markup">True</property>
+    <signal name="response" handler="on_messageDialog_response" swapped="no"/>
+    <child internal-child="vbox">
+      <object class="GtkBox" id="messagedialog-vbox">
+        <property name="can_focus">False</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox" id="messagedialog-action_area">
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
   <object class="GtkWindow" id="Window">
     <property name="width_request">1000</property>
     <property name="height_request">618</property>
@@ -155,6 +184,8 @@
     <accel-groups>
       <group name="MenuAccelGroup"/>
     </accel-groups>
+    <signal name="key-press-event" handler="on_key_press_event" swapped="no"/>
+    <signal name="key-press-event" handler="on_key_press_event" swapped="no"/>
     <child>
       <object class="GtkVBox" id="Widget">
         <property name="visible">True</property>
@@ -1144,35 +1175,6 @@
             <property name="expand">True</property>
             <property name="fill">True</property>
             <property name="position">2</property>
-          </packing>
-        </child>
-      </object>
-    </child>
-  </object>
-  <object class="GtkMessageDialog" id="MessageDialog">
-    <property name="can_focus">False</property>
-    <property name="border_width">5</property>
-    <property name="title" translatable="yes">Messgage</property>
-    <property name="destroy_with_parent">True</property>
-    <property name="hide_titlebar_when_maximized">True</property>
-    <property name="type_hint">dialog</property>
-    <property name="skip_taskbar_hint">True</property>
-    <property name="transient_for">Window</property>
-    <property name="buttons">ok</property>
-    <property name="use_markup">True</property>
-    <signal name="response" handler="on_messageDialog_response" swapped="no"/>
-    <child internal-child="vbox">
-      <object class="GtkBox" id="messagedialog-vbox">
-        <property name="can_focus">False</property>
-        <child internal-child="action_area">
-          <object class="GtkButtonBox" id="messagedialog-action_area">
-            <property name="can_focus">False</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="pack_type">end</property>
-            <property name="position">0</property>
           </packing>
         </child>
       </object>
