@@ -48,29 +48,38 @@
  *
  ******************************************************************************/
 
-#include "Scene.h"
+#ifndef __TITANIA_X3D_DEBUG_H__
+#define __TITANIA_X3D_DEBUG_H__
 
 namespace titania {
 namespace X3D {
 
-Scene::Scene (X3DBrowser* const browser) :
-	X3DBaseNode (browser, this),
-	   X3DScene ()
+void
+debug_roots (X3DChildObject* node, std::set <X3DChildObject*> & seen)
 {
-	setComponent ("Browser");
-	setTypeName ("Scene");
-}
+	if (not seen .insert (node) .second)
+		return;
 
-Scene*
-Scene::create (X3DExecutionContext* const executionContext) const
-{
-	return new Scene (executionContext -> getBrowser ());
-}
+	static int i = 0;
 
-Scene::~Scene ()
-{
-	__LOG__ << std::endl;
+	__LOG__ << std::string (i, '\t') << node -> getParents () .size () << " : " << node -> getTypeName () << std::endl;
+
+	if (node -> getParents () .size ())
+	{
+		++ i;
+
+		for (auto & child : node -> getParents ())
+			test (child, seen);
+
+		-- i;
+
+		return;
+	}
+
+	__LOG__ << node -> getTypeName () << " : " << node -> getName () << std::endl;
 }
 
 } // X3D
 } // titania
+
+#endif

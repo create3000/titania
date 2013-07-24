@@ -563,6 +563,7 @@
     <None Include="Titania\X3D\Browser\Geometry3D\BoxOptions.h" />
     <None Include="Titania\X3D\Browser\Geometry3D\QuadSphereOptions.h" />
     <None Include="Titania\X3D\Browser\Geometry3D\X3DSphereOptionNode.h" />
+    <None Include="Titania\X3D\Debug.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

@@ -53,6 +53,7 @@
 
 #include "../OutlineEditor/OutlineTreeData.h"
 #include <deque>
+#include <memory>
 #include <gtkmm.h>
 
 namespace titania {
@@ -69,16 +70,11 @@ public:
 	
 	void
 	set_data (OutlineTreeData* value)
-	{
-		if (data)
-			delete data;
-
-		data = value;
-	}
+	{ data .reset (value); }
 
 	OutlineTreeData*
 	get_data () const
-	{ return data; }
+	{ return data .get (); }
 
 	std::deque <OutlineNode> &
 	get_children ()
@@ -103,8 +99,8 @@ public:
 
 private:
 
-	OutlineTreeData*         data;
-	std::deque <OutlineNode> children;
+	std::unique_ptr <OutlineTreeData> data;
+	std::deque <OutlineNode>          children;
 
 };
 

@@ -2,9 +2,4 @@
 
 META "title" "Basic Test"
 
-DEF Cube Shape {
-  appearance Appearance {
-    material Material { }
-  }
-  geometry Box { }
-}
+VisibilitySensor { }

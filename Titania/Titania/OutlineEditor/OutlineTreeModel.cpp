@@ -518,9 +518,7 @@ OutlineTreeModel::on_rows_reordered (const Path & path, const iterator & iter, i
 
 OutlineTreeModel::~OutlineTreeModel ()
 {
-	//__LOG__ << std::endl;
-
-	//executionContext -> getRootNodes () .removeInterest (this, &OutlineTreeModel::set_rootNodes);
+	__LOG__ << std::endl;
 }
 
 } // puck
