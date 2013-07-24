@@ -287,8 +287,8 @@ private:
 	HitArray              hits;
 	HitComp               hitComp;
 	std::deque <NodeSet>  enabledSensors;
-	NodeSet               overSensors;
-	NodeSet               activeSensors;
+	MFNode                overSensors;
+	MFNode                activeSensors;
 	X3DSFNode <Selection> selection;
 
 	time_type                changedTime;

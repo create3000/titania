@@ -566,7 +566,10 @@ OutlineTreeView::collapse_clone (const Gtk::TreeModel::iterator & iter)
 	if (get_data_type (iter) == OutlineIterType::X3DBaseNode)
 	{
 		if (get_expanded (iter))
+		{
+			set_all_expanded (iter, true);
 			collapse_row (get_path (iter));
+		}
 	}
 }
 

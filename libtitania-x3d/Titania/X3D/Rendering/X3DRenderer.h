@@ -128,13 +128,10 @@ private:
 	void
 	addStepUp ();
 
-	void
-	clear ();
-
-	ShapeContainerArray     shapes;
-	ShapeContainerArray     transparentShapes;
-	CollisionShapeArray     collisionShapes;
-	std::deque <Collision*> activeCollisions;
+	ShapeContainerArray                shapes;
+	ShapeContainerArray                transparentShapes;
+	CollisionShapeArray                collisionShapes;
+	std::deque <X3DSFNode <Collision>> activeCollisions;
 
 	std::unique_ptr <DepthBuffer> depthBuffer;
 	float                         speed;

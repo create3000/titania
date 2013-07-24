@@ -1,5 +1,12 @@
 2013-07-24  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DRenderer.h:
+	* X3DRenderer.cpp:
+	* X3DBrowserContext.h:
+	* X3DBrowserContext.cpp: 
+
+2013-07-24  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Debug.h:
 	* libtitania-x3d.cproj:
 	* Scene.cpp: 

@@ -378,16 +378,15 @@ X3DBrowserContext::motionNotifyEvent ()
 
 	if (getHits () .size ())
 	{
-		overSensors = getHits () .front () -> sensors;
+		overSensors .assign (getHits () .front () -> sensors .begin (),
+		                     getHits () .front () -> sensors .end ());
 
 		for (const auto & node : overSensors)
 		{
-			auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node);
+			auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (*node);
 
 			if (pointingDeviceSensorNode)
-			{
 				pointingDeviceSensorNode -> set_over (getHits () .front (), true);
-			}
 		}
 	}
 	else
@@ -397,14 +396,14 @@ X3DBrowserContext::motionNotifyEvent ()
 
 	for (const auto & node : activeSensors)
 	{
-		auto dragSensorNode = dynamic_cast <X3DDragSensorNode*> (node);
+		auto dragSensorNode = dynamic_cast <X3DDragSensorNode*> (*node);
 
 		if (dragSensorNode)
 		{
 			dragSensorNode -> set_motion (
 			   getHits () .size ()
 			   ? getHits () .front ()
-				: std::make_shared <Hit> (Matrix4f (), hitRay, std::make_shared <Intersection> (), enabledSensors .back (), nullptr)
+				: std::make_shared <Hit> (Matrix4f (), hitRay, std::make_shared <Intersection> (), NodeSet (), nullptr)
 			   );
 		}
 	}
@@ -413,18 +412,19 @@ X3DBrowserContext::motionNotifyEvent ()
 void
 X3DBrowserContext::buttonPressEvent ()
 {
-	activeSensors = getHits () .front () -> sensors;
+	activeSensors .assign (getHits () .front () -> sensors .begin (),
+	                       getHits () .front () -> sensors .end ());
 
 	for (const auto & node : activeSensors)
 	{
-		auto anchor = dynamic_cast <Anchor*> (node);
+		auto anchor = dynamic_cast <Anchor*> (*node);
 
 		if (anchor)
 			anchor -> set_active (true);
 
 		else
 		{
-			auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node);
+			auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (*node);
 
 			if (pointingDeviceSensorNode)
 				pointingDeviceSensorNode -> set_active (getHits () .front (), true);
@@ -437,18 +437,18 @@ X3DBrowserContext::buttonReleaseEvent ()
 {
 	for (const auto & node : activeSensors)
 	{
-		auto anchor = dynamic_cast <Anchor*> (node);
+		auto anchor = dynamic_cast <Anchor*> (*node);
 
 		if (anchor)
 			anchor -> set_active (false);
 
 		else
 		{
-			auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node);
+			auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (*node);
 
 			if (pointingDeviceSensorNode)
 				pointingDeviceSensorNode -> set_active (
-				   std::make_shared <Hit> (Matrix4f (), hitRay, std::make_shared <Intersection> (), enabledSensors .back (), nullptr),
+				   std::make_shared <Hit> (Matrix4f (), hitRay, std::make_shared <Intersection> (), NodeSet (), nullptr),
 				   false
 				   );
 		}
@@ -553,6 +553,8 @@ X3DBrowserContext::dispose ()
 	browserProperties   .dispose ();
 	browserOptions      .dispose ();
 	activeLayer         .dispose ();
+	overSensors         .clear ();
+	activeSensors       .clear ();
 	selection           .dispose ();
 	console             .dispose ();
 

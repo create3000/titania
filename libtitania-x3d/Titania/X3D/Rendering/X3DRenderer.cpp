@@ -463,7 +463,8 @@ X3DRenderer::collide ()
 	{
 		if (shape -> intersect (collisionSphere))
 		{
-			collisions = shape -> getCollisions ();
+			for (auto & collision : shape -> getCollisions ())
+				collisions .emplace_back (collision);
 		}
 	}
 
@@ -480,14 +481,14 @@ X3DRenderer::collide ()
 		                     std::back_inserter (difference));
 	}
 	else
-		difference = activeCollisions;
+		difference .assign (activeCollisions .begin (), activeCollisions .end ());
 
 	for (const auto & collisions : difference)
 		collisions -> set_active (false);
 
 	// Set isActive to TRUE for appropriate nodes
 
-	activeCollisions = std::move (collisions);
+	activeCollisions .assign (collisions .begin (), collisions .end ());
 
 	for (const auto & collision : activeCollisions)
 		collision -> set_active (true);
@@ -598,7 +599,13 @@ X3DRenderer::gravite ()
 }
 
 void
-X3DRenderer::clear ()
+X3DRenderer::dispose ()
+{
+	depthBuffer .reset ();
+	activeCollisions .clear ();
+}
+
+X3DRenderer::~X3DRenderer ()
 {
 	for (const auto & shape : shapes)
 		delete shape;
@@ -614,17 +621,6 @@ X3DRenderer::clear ()
 		delete shape;
 
 	collisionShapes .clear ();
-}
-
-void
-X3DRenderer::dispose ()
-{
-	depthBuffer .reset ();
-}
-
-X3DRenderer::~X3DRenderer ()
-{
-	clear ();
 }
 
 } // X3D
