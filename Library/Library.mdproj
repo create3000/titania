@@ -2060,18 +2060,6 @@
     <None Include="Prototypes\Composer\ComposeSFVec2f\ComposeSFVec2f.wrl" />
     <None Include="Tests\Rendering\TriangleFanSet.wrl" />
     <None Include="Tests\Rendering\TriangleStripSet.wrl" />
-    <None Include="Examples\CIS2\AISC_Sculpture_J.wrl" />
-    <None Include="Examples\CIS2\Bentley1.wrl" />
-    <None Include="Examples\CIS2\CADstudio.wrl" />
-    <None Include="Examples\CIS2\DAM.wrl" />
-    <None Include="Examples\CIS2\GoldenGate.wrl" />
-    <None Include="Examples\CIS2\IBC.wrl" />
-    <None Include="Examples\CIS2\Preheat48.wrl" />
-    <None Include="Examples\CIS2\RAM4.wrl" />
-    <None Include="Examples\CIS2\ramcis2.wrl" />
-    <None Include="Examples\CIS2\Revit1.wrl" />
-    <None Include="Examples\CIS2\Stadium.wrl" />
-    <None Include="Examples\CIS2\TrainingStructure.wrl" />
     <None Include="Examples\WTC\wtc.wrl" />
     <None Include="Examples\WTC\wtc.wrl.gz" />
     <None Include="Tests\PROTO\SimpleExternproto.wrl" />
@@ -2281,6 +2269,18 @@
     <None Include="Tests\Scripting\SFNode.wrl" />
     <None Include="Tests\Scripting\SFNode.input.wrl" />
     <None Include="Models\Machines\bucketWheel.wrl" />
+    <None Include="Tests\3rd Party\CIS2\AISC_Sculpture_J.wrl" />
+    <None Include="Tests\3rd Party\CIS2\Bentley1.wrl" />
+    <None Include="Tests\3rd Party\CIS2\CADstudio.wrl" />
+    <None Include="Tests\3rd Party\CIS2\DAM.wrl" />
+    <None Include="Tests\3rd Party\CIS2\GoldenGate.wrl" />
+    <None Include="Tests\3rd Party\CIS2\IBC.wrl" />
+    <None Include="Tests\3rd Party\CIS2\Preheat48.wrl" />
+    <None Include="Tests\3rd Party\CIS2\RAM4.wrl" />
+    <None Include="Tests\3rd Party\CIS2\ramcis2.wrl" />
+    <None Include="Tests\3rd Party\CIS2\Revit1.wrl" />
+    <None Include="Tests\3rd Party\CIS2\Stadium.wrl" />
+    <None Include="Tests\3rd Party\CIS2\TrainingStructure.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
@@ -2389,7 +2389,6 @@
     <Folder Include="Prototypes\Composer\" />
     <Folder Include="Prototypes\Composer\ComposeSFVec3f\" />
     <Folder Include="Prototypes\Composer\ComposeSFVec2f\" />
-    <Folder Include="Examples\CIS2\" />
     <Folder Include="Examples\DLMF\" />
     <Folder Include="Examples\WTC\" />
     <Folder Include="Tests\Scripting\external\" />
