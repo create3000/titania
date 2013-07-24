@@ -299,7 +299,7 @@ OutlineTreeView::on_button_press_event (GdkEventButton* event)
 {
 	if (event -> button == 3)
 	{
-		//getPopupMenu () .popup (event -> button, event -> time);
+		getPopupMenu () .popup (event -> button, event -> time);
 		return true;
 	}
 
@@ -726,17 +726,20 @@ OutlineTreeView::auto_expand (const Gtk::TreeModel::iterator & parent)
 			{
 				switch (get_data_type (child))
 				{
-					case OutlineIterType::X3DBaseNode :
+					case OutlineIterType::X3DBaseNode:
+					{
+						if (get_expanded (child))
 						{
-							if (get_expanded (child))
+							if (not get_path (child) .is_ancestor (get_model () -> get_path (child)))
 							{
 								set_all_expanded (child, not get_all_expanded (child));
 
 								expand_row (Gtk::TreePath (child), false);
-
-								break;
 							}
 						}
+
+						break;
+					}
 					default:
 						break;
 				}

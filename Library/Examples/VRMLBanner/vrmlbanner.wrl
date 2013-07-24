@@ -3633,7 +3633,6 @@ DEF Gi Group {
       description "Home"
     }
     DEF Ji NavigationInfo {
-      headlight FALSE
       type "NONE"
     }
     DEF Ki Background {
