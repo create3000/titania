@@ -113,19 +113,20 @@ namespace X3D {
  */
 
 X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const executionContext) :
-	      X3DChildObject (),
-	             browser (browser),
-	    executionContext (executionContext),
-	           component (),
-	            typeName (),
-	            nodeType (),
-	    fieldDefinitions (),
-	              fields (),
-	        fieldAliases (),
-	numUserDefinedFields (0),
-	              nodeId (),
-	              handle (NULL),
-	            comments ()
+	       X3DChildObject (),
+	              browser (browser),
+	     executionContext (executionContext),
+	            component (),
+	             typeName (),
+	             nodeType (),
+	     fieldDefinitions (),
+	               fields (),
+	         fieldAliases (),
+	 numUserDefinedFields (0),
+	extendedEventHandling (true),
+	               nodeId (),
+	               handle (NULL),
+	             comments ()
 {
 	assert (executionContext);
 
@@ -584,7 +585,7 @@ X3DBaseNode::addEvent (X3DChildObject* const object, const Event & event)
 
 	// Register for eventsProcessed
 
-	if (object -> isInput ())
+	if (object -> isInput () or (extendedEventHandling and not object -> isOutput ()))
 	{
 		if (isNotValid (nodeId))
 			nodeId = getBrowser () -> getRouter () .addNode (this);

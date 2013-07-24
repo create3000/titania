@@ -267,6 +267,14 @@ protected:
 
 	void
 	addField (const std::string &, const std::string &);
+	
+	void
+	setExtendedEventHandling (bool value)
+	{ extendedEventHandling = value; }
+
+	bool
+	getExtendedEventHandling () const
+	{ return extendedEventHandling; }
 
 	virtual
 	void
@@ -302,12 +310,13 @@ private:
 	std::string   typeName;
 	NodeTypeArray nodeType;
 
-	FieldDefinitionArray fieldDefinitions; // pre-defined and user-defined field definitions
-	FieldsMap            fields;           // pre-defined and user-defined fields
-	FieldAliasesMap      fieldAliases;
-	size_t               numUserDefinedFields;
+	FieldDefinitionArray fieldDefinitions;     // Pre-defined and user-defined field definitions
+	FieldsMap            fields;               // Pre-defined and user-defined fields
+	FieldAliasesMap      fieldAliases;         // VRML names
+	size_t               numUserDefinedFields; // Number of user defined fields
 
-	NodeId nodeId;                         // Router eventsProcessed id
+	bool   extendedEventHandling;              // Handle initializeOnlys as input events
+	NodeId nodeId;                             // Router eventsProcessed id
 
 	X3DBaseNode*             handle;
 	std::deque <std::string> comments;

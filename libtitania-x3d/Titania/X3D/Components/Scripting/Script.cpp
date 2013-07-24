@@ -77,6 +77,8 @@ Script::Script (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "mustEvaluate", mustEvaluate ());
 
 	addChildren (javaScript);
+
+	setExtendedEventHandling (false);
 }
 
 X3DBaseNode*
