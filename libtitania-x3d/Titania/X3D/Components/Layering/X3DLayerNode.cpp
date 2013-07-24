@@ -56,6 +56,7 @@
 #include "../../Execution/BindableNodeStack.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../EnvironmentalEffects/Background.h"
+#include "../Navigation/Viewpoint.h"
 
 namespace titania {
 namespace X3D {

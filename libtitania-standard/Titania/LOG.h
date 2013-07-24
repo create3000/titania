@@ -58,19 +58,6 @@ namespace titania {
 
 #define __LOG__ (std::clog << "########## " __FILE__ << ":" << __LINE__ << ": in function '" << __func__ << "': ")
 
-inline
-void
-backtrace_fn (size_t size = 30)
-{
-	void* array [size];
-
-	// get void*'s for all entries on the stack
-	size = ::backtrace (array, size);
-
-	// print out all the frames to stderr
-	backtrace_symbols_fd (array, size, 2);
-}
-
 } // titania
 
 #endif

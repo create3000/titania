@@ -80,6 +80,8 @@ X3DBrowserContext::X3DBrowserContext () :
 	             layers (),
 	             lights (),
 	       textureUnits (),
+	        activeLayer (),
+	activeNavigationInfo (nullptr),
 	                  x (0),
 	                  y (0),
 	             hitRay (),
@@ -99,6 +101,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	             browserProperties,
 	             browserOptions,
 	             javaScriptEngine,
+	             activeLayer,
 	             selection,
 	             console);
 }
@@ -171,15 +174,6 @@ X3DBrowserContext::initialize ()
 	initialized .addInterest (this, &X3DBrowserContext::set_initialized);
 }
 
-void
-X3DBrowserContext::set_initialized ()
-{
-	hits .clear ();
-
-	overSensors   .clear ();
-	activeSensors .clear ();
-}
-
 time_type
 X3DBrowserContext::getCurrentTime () const
 throw (Error <INVALID_OPERATION_TIMING>,
@@ -204,12 +198,114 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	return currentFrameRate;
 }
 
-// Event handling
+// Layer handling
 
-Router &
-X3DBrowserContext::getRouter ()
+NavigationInfo*
+X3DBrowserContext::getActiveNavigationInfo () const
 {
-	return router;
+	if (activeLayer)
+		return activeLayer -> getNavigationInfo ();
+
+	return NULL;
+}
+
+X3DViewpointNode*
+X3DBrowserContext::getActiveViewpoint () const
+{
+	if (activeLayer)
+		return activeLayer -> getViewpoint ();
+
+	return NULL;
+}
+
+void
+X3DBrowserContext::set_initialized ()
+{
+	hits .clear ();
+
+	overSensors   .clear ();
+	activeSensors .clear ();
+
+	getWorld () -> getActiveLayer () .addInterest (this, &X3DBrowserContext::set_activeLayer);
+
+	set_activeLayer ();
+}
+
+void
+X3DBrowserContext::set_activeLayer ()
+{
+	if (activeLayer not_eq getWorld () -> getActiveLayer ())
+	{
+		if (activeLayer)
+			activeLayer -> getNavigationInfoStack () -> bindTime () .removeInterest (this, &X3DBrowserContext::set_navigationInfo);
+
+		activeLayer = getWorld () -> getActiveLayer ();
+
+		if (activeLayer)
+			activeLayer -> getNavigationInfoStack () -> bindTime () .addInterest (this, &X3DBrowserContext::set_navigationInfo);
+
+		set_navigationInfo ();
+	}
+}
+
+void
+X3DBrowserContext::set_navigationInfo ()
+{
+	if (activeNavigationInfo)
+		activeNavigationInfo -> type () .removeInterest (this, &X3DBrowserContext::set_navigationInfo_type);
+
+	activeNavigationInfo = getActiveNavigationInfo ();
+
+	if (activeNavigationInfo)
+		activeNavigationInfo -> type () .addInterest (this, &X3DBrowserContext::set_navigationInfo_type);
+
+	set_navigationInfo_type ();
+}
+
+void
+X3DBrowserContext::set_navigationInfo_type ()
+{
+	if (activeNavigationInfo)
+	{
+		for (const auto & type : activeNavigationInfo -> type ())
+		{
+			if (type == "NONE")
+			{
+				setViewer (ViewerType::NONE, nullptr);
+				goto END;
+			}
+
+			else if (type == "WALK")
+			{
+				setViewer (ViewerType::WALK, activeNavigationInfo);
+				goto END;
+			}
+
+			else if (type == "FLY")
+			{
+				setViewer (ViewerType::FLY, activeNavigationInfo);
+				goto END;
+			}
+
+			else if (type == "LOOKAT")
+			{ }
+
+			else if (type == "ANY")
+			{ }
+
+			else
+			{
+				setViewer (ViewerType::EXAMINE, activeNavigationInfo);
+				goto END;
+			}
+		}
+
+		setViewer (ViewerType::EXAMINE, activeNavigationInfo);
+
+END:;
+	}
+	else
+		setViewer (ViewerType::NONE, nullptr);
 }
 
 // Selection
@@ -456,6 +552,7 @@ X3DBrowserContext::dispose ()
 	renderingProperties .dispose ();
 	browserProperties   .dispose ();
 	browserOptions      .dispose ();
+	activeLayer         .dispose ();
 	selection           .dispose ();
 	console             .dispose ();
 

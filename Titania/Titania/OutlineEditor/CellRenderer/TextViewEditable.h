@@ -73,6 +73,14 @@ public:
 	const Glib::Property <bool> &
 	property_editing_canceled () const
 	{ return editing_canceled_property; }
+	
+	void
+	set_validated (bool value)
+	{ validated = value; }
+
+	bool
+	get_validated () const
+	{ return validated; }
 
 	void
 	set_text (const Glib::ustring & value)
@@ -118,6 +126,7 @@ private:
 	OutlineTreeData* const data;
 	bool                   multiline;
 	const Glib::ustring    path;
+	bool                   validated;
 
 };
 

@@ -627,7 +627,7 @@ OutlineCellRenderer::start_editing_vfunc (GdkEvent* event,
 void
 OutlineCellRenderer::on_editing_done ()
 {
-	if (textview -> property_editing_canceled ())
+	if (textview -> property_editing_canceled () or textview -> get_validated ())
 		return;
 
 	OutlineTreeData* data = textview -> get_data ();
@@ -644,6 +644,7 @@ OutlineCellRenderer::on_editing_done ()
 
 			if (set_field_value (data -> get_object (), string))
 			{
+				textview -> set_validated (true);
 				textview -> remove_widget ();
 				edited (textview -> get_path (), string);
 			}

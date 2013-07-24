@@ -58,9 +58,8 @@
 #include "../Browser/Selection.h"
 #include "../Browser/Viewer/ViewerType.h"
 #include "../Components/Core/X3DSensorNode.h"
-#include "../Components/Navigation/NavigationInfo.h"
-#include "../Components/Navigation/Viewpoint.h"
 #include "../Execution/World.h"
+#include "../Execution/BindableNodeStack.h"
 #include "../Execution/X3DExecutionContext.h"
 #include "../JavaScript/X3DJavaScriptEngine.h"
 
@@ -114,10 +113,23 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
+	///  @name Layer handling
+
+	const X3DSFNode <X3DLayerNode> &
+	getActiveLayer () const
+	{ return activeLayer; }
+
+	NavigationInfo*
+	getActiveNavigationInfo () const;
+
+	X3DViewpointNode*
+	getActiveViewpoint () const;
+
 	///  @name Event handling
 
 	Router &
-	getRouter ();
+	getRouter ()
+	{ return router; }
 
 	///  @name JavaScript handling
 
@@ -154,16 +166,6 @@ public:
 	TextureUnitStack &
 	getTextureUnits ()
 	{ return textureUnits; }
-
-	///  @name Layer handling
-
-	virtual
-	NavigationInfo*
-	getActiveNavigationInfo () const = 0;
-
-	virtual
-	X3DViewpointNode*
-	getActiveViewpoint () const = 0;
 
 	///  @name Console handling
 
@@ -246,6 +248,11 @@ protected:
 
 	virtual
 	void
+	setViewer (ViewerType, NavigationInfo*)
+	{ }
+
+	virtual
+	void
 	update ();
 
 	std::shared_ptr <X3DClock> clock;
@@ -256,11 +263,23 @@ private:
 	void
 	set_initialized ();
 
+	void
+	set_activeLayer ();
+
+	void
+	set_navigationInfo ();
+
+	void
+	set_navigationInfo_type ();
+
 	Router           router;
 	RendererStack    renderers;
 	LayerStack       layers;
 	LightStack       lights;
 	TextureUnitStack textureUnits;
+
+	X3DSFNode <X3DLayerNode> activeLayer;
+	NavigationInfo*          activeNavigationInfo;
 
 	double                x;
 	double                y;
@@ -272,10 +291,10 @@ private:
 	NodeSet               activeSensors;
 	X3DSFNode <Selection> selection;
 
-	time_type           changedTime;
-	Speed <double>      currentSpeed;
-	double              currentFrameRate;
-	X3DSFNode <Console> console;
+	time_type                changedTime;
+	Speed <double>           currentSpeed;
+	double                   currentFrameRate;
+	X3DSFNode <Console>      console;
 
 };
 

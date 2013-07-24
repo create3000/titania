@@ -48,107 +48,48 @@
  *
  ******************************************************************************/
 
-#include "Browser.h"
+#ifndef __TITANIA_BACKTRACE_H__
+#define __TITANIA_BACKTRACE_H__
 
-#include "../Browser/Viewer/ExamineViewer.h"
-#include "../Browser/Viewer/FlyViewer.h"
-#include "../Browser/Viewer/NoneViewer.h"
-#include "../Browser/Viewer/WalkViewer.h"
-#include "../Components/EnvironmentalEffects/Fog.h"
-#include "../Components/EnvironmentalEffects/X3DBackgroundNode.h"
-#include "../Components/Layering/X3DLayerNode.h"
-#include "../Components/Navigation/NavigationInfo.h"
-
-#include <algorithm>
-#include <iomanip>
+#include <execinfo.h>
 #include <iostream>
-#include <limits>
+
+#include <csignal>
+#include <cstdlib>
 
 namespace titania {
-namespace X3D {
 
-Browser::Browser () :
-	    X3DBaseNode (this, this),
-	opengl::Surface (),
-	     X3DBrowser (),
-	        viewer  (new NoneViewer (this)),
-	pointingDevice  (this)
-{
-	add_events (Gdk::BUTTON_PRESS_MASK |
-	            Gdk::POINTER_MOTION_MASK |
-	            Gdk::POINTER_MOTION_HINT_MASK |
-	            Gdk::BUTTON_RELEASE_MASK |
-	            Gdk::SCROLL_MASK |
-	            Gdk::KEY_PRESS_MASK |
-	            Gdk::KEY_RELEASE_MASK);
-
-	set_can_focus (true);
-
-	changed .addInterest (static_cast <Gtk::Widget*> (this), &Browser::queue_draw);
-}
-
-X3DBaseNode*
-Browser::create (X3DExecutionContext* const) const
-{
-	return new Browser ();
-}
-
+static
 void
-Browser::construct ()
+backtrace_fn (size_t size = 30)
 {
-	setup ();
+	void* array [size];
 
-	setCursor (Gdk::ARROW);
+	// get void*'s for all entries on the stack
+	size = ::backtrace (array, size);
+
+	// print out all the frames to stderr
+	backtrace_symbols_fd (array, size, 2);
 }
 
+static
 void
-Browser::setViewer (ViewerType type, NavigationInfo* navigationInfo)
+backtrace_signal_handler (int sig)
 {
-	if (viewer -> getType () not_eq type or viewer -> getNavigationInfo () not_eq navigationInfo)
-	{
-		switch (type)
-		{
-			case ViewerType::NONE:
-			{
-				viewer .reset (new NoneViewer (this));
-				break;
-			}
-			case ViewerType::FLY:
-			{
-				viewer .reset (new FlyViewer (this, navigationInfo));
-				break;
-			}
-			case ViewerType::EXAMINE:
-			{
-				viewer .reset (new ExamineViewer (this, navigationInfo));
-				break;
-			}
-			case ViewerType::WALK:
-			{
-				viewer .reset (new WalkViewer (this, navigationInfo));
-				break;
-			}
-		}
-
-		viewer -> setup ();
-	}
+	// print out all the frames to stderr
+	std::clog << "Error: signal " << sig << ":" << std::endl;
+	backtrace_fn (100);
+	exit (1);
 }
 
+static
 void
-Browser::reshape ()
+enable_backtrace ()
 {
-	reshaped .processInterests ();
+	// install our handler
+	std::signal (SIGSEGV, backtrace_signal_handler);
 }
 
-void
-Browser::dispose ()
-{
-	viewer .reset ();
-	pointingDevice .dispose ();
-
-	opengl::Surface::dispose ();
-	X3DBrowser::dispose ();
-}
-
-} // X3D
 } // titania
+
+#endif

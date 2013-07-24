@@ -191,20 +191,6 @@ public:
 	//	throw (Error <INVALID_OPERATION_TIMING>,
 	//	       Error <DISPOSED>);
 
-	///  @name Layer handling
-
-	const X3DSFNode <X3DLayerNode> &
-	getActiveLayer () const
-	{ return activeLayer; }
-
-	virtual
-	NavigationInfo*
-	getActiveNavigationInfo () const final;
-
-	virtual
-	X3DViewpointNode*
-	getActiveViewpoint () const final;
-
 	///  @name print
 
 	template <typename ... Args>
@@ -271,14 +257,6 @@ private:
 	void
 	set_scene ();
 
-	void
-	set_activeLayer ();
-
-	virtual
-	void
-	set_navigationInfo ()
-	{ }
-
 	static const std::string version;
 
 	SupportedFields     supportedFields;
@@ -288,9 +266,8 @@ private:
 
 	SFString description;
 
-	X3DSFNode <Scene>        scene;
-	X3DSFNode <World>        world;
-	X3DSFNode <X3DLayerNode> activeLayer;
+	X3DSFNode <Scene> scene;
+	X3DSFNode <World> world;
 
 };
 

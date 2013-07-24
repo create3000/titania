@@ -1,5 +1,15 @@
 2013-07-24  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Browser.h:
+	* Browser.cpp:
+	* X3DBrowser.h:
+	* X3DBrowser.cpp:
+	* X3DBrowserContext.h:
+	* X3DBrowserContext.cpp:
+	* X3DLayerNode.cpp: 
+
+2013-07-24  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBaseNode.h:
 	* X3DBaseNode.cpp:
 	* Script.cpp: 

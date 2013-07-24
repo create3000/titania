@@ -63,7 +63,8 @@ TextViewEditable::TextViewEditable (OutlineTreeData* const data, const Glib::ust
 	                 textview (),
 	                     data (data),
 	                multiline (multiline),
-	                     path (path)
+	                     path (path),
+	                validated (false)
 {
 	set_policy (Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
 	set_visible (true);
@@ -81,6 +82,7 @@ void
 TextViewEditable::start_editing_vfunc (GdkEvent* event)
 {
 	property_editing_canceled () = false;
+	validated = false;
 }
 
 void

@@ -31,22 +31,10 @@
 #include "X3DBrowser.h"
 
 #include "../Bits/config.h"
-#include "../Components/Navigation/X3DViewpointNode.h"
-
-#include <csignal>
-#include <cstdlib>
+#include <Titania/Backtrace.h>
 
 namespace titania {
 namespace X3D {
-
-void
-signal_handler (int sig)
-{
-	// print out all the frames to stderr
-	std::clog << "Error: signal " << sig << ":" << std::endl;
-	backtrace_fn (100);
-	exit (1);
-}
 
 const std::string X3DBrowser::version ("0.3");
 
@@ -59,13 +47,11 @@ X3DBrowser::X3DBrowser () :
 	  supportedProfiles (this, supportedComponents),
 	        description (),                          // SFString  [in,out] description ""
 	              scene (),                          // SFNode    [in,out] scene       NULL
-	              world (),                          // SFNode    [in,out] world       NULL
-	        activeLayer ()
+	              world ()                           // SFNode    [in,out] world       NULL
 {
 	std::clog << "Constructing Browser:" << std::endl;
-
-	// install our handler
-	std::signal (SIGSEGV, signal_handler);
+	
+	enable_backtrace ();
 
 	setComponent ("Browser");
 	setTypeName ("Browser");
@@ -73,7 +59,7 @@ X3DBrowser::X3DBrowser () :
 
 	addField (outputOnly, "url", url ());
 
-	addChildren (description, scene, world, activeLayer);
+	addChildren (description, scene, world);
 
 	X3D::X3DUrlObject::addURN ("about:splash", get_page ("about/splash.wrl"));
 
@@ -242,7 +228,6 @@ throw (Error <INVALID_SCENE>)
 		scene = createScene ();
 
 	world = new World (scene);
-	world -> getActiveLayer () .addInterest (this, &X3DBrowser::set_activeLayer);
 	world -> setup ();
 
 	browserOptions -> assign (X3D::getBrowser () -> getBrowserOptions ());
@@ -258,23 +243,6 @@ X3DBrowser::set_scene ()
 	initialized = getCurrentTime ();
 
 	std::clog << "Replacing world done." << std::endl;
-}
-
-void
-X3DBrowser::set_activeLayer ()
-{
-	if (activeLayer not_eq world -> getActiveLayer ())
-	{
-		if (activeLayer)
-			activeLayer -> getNavigationInfoStack () -> bindTime () .removeInterest (this, &X3DBrowser::set_navigationInfo);
-
-		activeLayer = world -> getActiveLayer ();
-
-		if (activeLayer)
-			activeLayer -> getNavigationInfoStack () -> bindTime () .addInterest (this, &X3DBrowser::set_navigationInfo);
-
-		set_navigationInfo ();
-	}
 }
 
 void
@@ -347,26 +315,6 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	}
 }
 
-// Layer handling
-
-NavigationInfo*
-X3DBrowser::getActiveNavigationInfo () const
-{
-	if (activeLayer)
-		return activeLayer -> getNavigationInfo ();
-
-	return NULL;
-}
-
-X3DViewpointNode*
-X3DBrowser::getActiveViewpoint () const
-{
-	if (activeLayer)
-		return activeLayer -> getViewpoint ();
-
-	return NULL;
-}
-
 // Destruction
 
 void
@@ -374,9 +322,8 @@ X3DBrowser::dispose ()
 {
 	__LOG__ << this << std::endl;
 
-	scene       .dispose ();
-	world       .dispose ();
-	activeLayer .dispose ();
+	scene .dispose ();
+	world .dispose ();
 
 	supportedFields     .dispose ();
 	supportedNodes      .dispose ();
