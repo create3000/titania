@@ -96,11 +96,11 @@ ComposedShader::initialize ()
 	X3DShaderNode::initialize ();
 	X3DProgrammableShaderObject::initialize ();
 
-	parts () .addInterest (this, &ComposedShader::set_parts);
-
 	if (glXGetCurrentContext ())
 	{
 		shaderProgram = glCreateProgram ();
+
+		parts () .addInterest (this, &ComposedShader::set_parts);
 
 		set_parts ();
 

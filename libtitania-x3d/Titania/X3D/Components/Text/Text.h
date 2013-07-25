@@ -147,10 +147,6 @@ public:
 
 private:
 
-	virtual
-	void
-	initialize () final;
-
 	float
 	getLength (const size_t);
 
@@ -158,18 +154,18 @@ private:
 	getFontStyle () const;
 
 	void
-	set_fontStyle ();
+	updateFont ();
 
 	virtual
 	Box3f
 	createBBox () final;
 
+	Box2f
+	getLineBBox (const X3DFontStyleNode*, const std::string &);
+
 	virtual
 	void
 	build () final;
-
-	Box2f
-	getLineBBox (const X3DFontStyleNode*, const std::string &);
 
 	struct Fields
 	{

@@ -99,16 +99,6 @@ Text::create (X3DExecutionContext* const executionContext) const
 	return new Text (executionContext);
 }
 
-void
-Text::initialize ()
-{
-	X3DGeometryNode::initialize ();
-
-	fontStyle () .addInterest (this, &Text::set_fontStyle);
-
-	set_fontStyle ();
-}
-
 float
 Text::getLength (const size_t index)
 {
@@ -130,7 +120,7 @@ Text::getFontStyle () const
 }
 
 void
-Text::set_fontStyle ()
+Text::updateFont ()
 {
 	const X3DFontStyleNode* fontStyle = getFontStyle ();
 
@@ -257,10 +247,34 @@ Text::createBBox ()
 	              true);
 }
 
+Box2f
+Text::getLineBBox (const X3DFontStyleNode* fontStyle, const std::string & line)
+{
+	FTBBox  ftbbox = font -> BBox (line .c_str ());
+	FTPoint min    = ftbbox .Lower ();
+	FTPoint max    = ftbbox .Upper ();
+
+	switch (fontStyle -> getMajorAlignment ())
+	{
+		case FontStyle::Alignment::BEGIN:
+		case FontStyle::Alignment::FIRST:
+			return Box2f (Vector2f (0, min .Y ()), Vector2f (max .X (), max .Y ()), true);
+
+		case FontStyle::Alignment::MIDDLE:
+		case FontStyle::Alignment::END:
+			return Box2f (Vector2f (min .X (), min .Y ()), Vector2f (max .X (), max .Y ()), true);
+	}
+
+	// Control never reaches this line.
+	return Box2f ();
+}
+
 void
 Text::build ()
 {
 	X3DGeometryNode::build ();
+	
+	updateFont ();
 
 	// We cannot access the geometry thus we add a simple rectangle to the geometry to enable picking.
 
@@ -285,28 +299,6 @@ Text::build ()
 	getVertices () .emplace_back (min .x (), max .y (), min .z ());
 
 	addElements (GL_QUADS, getVertices () .size ());
-}
-
-Box2f
-Text::getLineBBox (const X3DFontStyleNode* fontStyle, const std::string & line)
-{
-	FTBBox  ftbbox = font -> BBox (line .c_str ());
-	FTPoint min    = ftbbox .Lower ();
-	FTPoint max    = ftbbox .Upper ();
-
-	switch (fontStyle -> getMajorAlignment ())
-	{
-		case FontStyle::Alignment::BEGIN:
-		case FontStyle::Alignment::FIRST:
-			return Box2f (Vector2f (0, min .Y ()), Vector2f (max .X (), max .Y ()), true);
-
-		case FontStyle::Alignment::MIDDLE:
-		case FontStyle::Alignment::END:
-			return Box2f (Vector2f (min .X (), min .Y ()), Vector2f (max .X (), max .Y ()), true);
-	}
-
-	// Control never reaches this line.
-	return Box2f ();
 }
 
 void

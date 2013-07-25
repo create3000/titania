@@ -1,5 +1,11 @@
 2013-07-25  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Text.h:
+	* Text.cpp:
+	* ComposedShader.cpp: 
+
+2013-07-25  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Proto.cpp:
 	* X3DBaseNode.cpp:
 	* Generator.h:
