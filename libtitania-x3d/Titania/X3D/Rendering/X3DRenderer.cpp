@@ -483,15 +483,21 @@ X3DRenderer::collide ()
 	else
 		difference .assign (activeCollisions .begin (), activeCollisions .end ());
 
-	for (const auto & collisions : difference)
-		collisions -> set_active (false);
+	for (const auto & collision : difference)
+	{
+		collision -> set_active (false);
+		collision -> removeParent (this);
+	}
 
 	// Set isActive to TRUE for appropriate nodes
 
 	activeCollisions .assign (collisions .begin (), collisions .end ());
 
 	for (const auto & collision : activeCollisions)
+	{
+		collision -> addParent (this);
 		collision -> set_active (true);
+	}
 }
 
 void

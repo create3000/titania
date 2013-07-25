@@ -91,6 +91,40 @@ void
 Script::initialize ()
 {
 	X3DScriptNode::initialize ();
+	
+	url () .addInterest (this, &Script::set_url);
+
+	requestImmediateLoad ();
+}
+
+bool
+Script::loadDocument (const SFString & URL, std::string & ecmascript)
+{
+	if (RegEx::ECMAScript .FullMatch (URL .str (), &ecmascript))
+	{
+		setReferer (getExecutionContext () -> getWorldURL ());
+		return true;
+	}
+
+	try
+	{
+		ecmascript = std::move (loadDocument (URL));
+		setReferer (getWorldURL ());
+		return true;
+	}
+	catch (const X3DError &)
+	{ }
+
+	return false;
+}
+
+void
+Script::requestImmediateLoad ()
+{
+	if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)
+		return;
+
+	setLoadState (IN_PROGRESS_STATE);
 
 	// Find first working script.
 
@@ -116,35 +150,33 @@ Script::initialize ()
 		++ index;
 	}
 
-	// Assign an empty script if no working script is found.
+	if (javaScript)
+		setLoadState (COMPLETE_STATE);
+	
+	else
+	{
+		try
+		{
+			// Assign an empty script if no working script is found.
+			javaScript = getBrowser () -> getJavaScriptEngine () -> createContext (this, "", "", 0);
+		}
+		catch (const std::invalid_argument & error)
+		{ }
 
-	if (not javaScript)
-		javaScript = getBrowser () -> getJavaScriptEngine () -> createContext (this, "", "", 0);
+		setLoadState (FAILED_STATE);
+	}
 
 	// Initialize.
 
 	javaScript -> setup ();
 }
 
-bool
-Script::loadDocument (const SFString & URL, std::string & ecmascript)
+void
+Script::set_url ()
 {
-	if (RegEx::ECMAScript .FullMatch (URL .str (), &ecmascript))
-	{
-		setReferer (getExecutionContext () -> getWorldURL ());
-		return true;
-	}
+	setLoadState (NOT_STARTED_STATE);
 
-	try
-	{
-		ecmascript = std::move (loadDocument (URL));
-		setReferer (getWorldURL ());
-		return true;
-	}
-	catch (const X3DError &)
-	{ }
-
-	return false;
+	requestImmediateLoad ();
 }
 
 void
@@ -152,7 +184,8 @@ Script::eventsProcessed ()
 {
 	X3DScriptNode::eventsProcessed ();
 
-	javaScript -> eventsProcessed ();
+	if (checkLoadState () == COMPLETE_STATE)
+		javaScript -> eventsProcessed ();
 }
 
 void

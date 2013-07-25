@@ -20,4 +20,5 @@
   <Task file="" description="Full profile in ExecutionContext" />
   <Task file="" description="TextViewEditable set_validated einfügen und ableiten" />
   <Task file="" description="write to set" />
+  <Task file="" description="operator * () in X3DSFNode" />
 </ListOfTask>

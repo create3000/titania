@@ -90,19 +90,22 @@ jsContext::jsContext (Script* script, const std::string & ecmascript, const basi
 {
 	setComponent ("Browser");
 	setTypeName ("jsContext");
+
+	addField (inputOutput, "url", url ());
+
 	setWorldURL (uri);
 
 	// Get a JS runtime.
 	runtime = JS_NewRuntime (64 * 1024 * 1024); // 64 MB runtime memory
 
 	if (runtime == NULL)
-		return;
+		throw std::invalid_argument ("Couldn't not create JavaScript runtime.");
 
 	// Create a context.
 	context = JS_NewContext (runtime, 512);
 
 	if (context == NULL)
-		return;
+		throw std::invalid_argument ("Couldn't not create JavaScript context.");
 
 	JS_SetOptions (context, JSOPTION_ATLINE | JSOPTION_VAROBJFIX | JSOPTION_JIT | JSOPTION_METHODJIT);
 	JS_SetVersion (context, JSVERSION_LATEST);
@@ -112,7 +115,7 @@ jsContext::jsContext (Script* script, const std::string & ecmascript, const basi
 	global = JS_NewCompartmentAndGlobalObject (context, &global_class, NULL);
 
 	if (global == NULL)
-		return;
+		throw std::invalid_argument ("Couldn't not create JavaScript global object.");
 
 	initContext ();
 
@@ -327,7 +330,7 @@ jsContext::getBuildInProperty (JSContext* context, JSObject* obj, jsid id, jsval
 	if (JS_IdToValue (context, id, &name))
 	{
 		jsContext*          javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
-		Script*      script     = javaScript -> getNode ();
+		Script*             script     = javaScript -> getNode ();
 		X3DFieldDefinition* field      = script -> getField (JS_GetString (context, name));
 
 		return JS_NewFieldValue (context, field, vp);
@@ -560,9 +563,9 @@ jsContext::getObject (X3DFieldDefinition* field)
 void
 jsContext::error (JSContext* context, const char* message, JSErrorReport* report)
 {
-	jsContext*     javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
-	Script* script     = javaScript -> getNode ();
-	X3DBrowser*    browser    = script -> getBrowser ();
+	jsContext*  javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
+	Script*     script     = javaScript -> getNode ();
+	X3DBrowser* browser    = script -> getBrowser ();
 
 	// Get script
 

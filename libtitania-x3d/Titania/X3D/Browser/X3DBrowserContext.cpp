@@ -81,7 +81,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	             lights (),
 	       textureUnits (),
 	        activeLayer (),
-	activeNavigationInfo (nullptr),
+	activeNavigationInfo (),
 	                  x (0),
 	                  y (0),
 	             hitRay (),
@@ -102,6 +102,9 @@ X3DBrowserContext::X3DBrowserContext () :
 	             browserOptions,
 	             javaScriptEngine,
 	             activeLayer,
+	             activeNavigationInfo,
+	             overSensors,
+	             activeSensors,
 	             selection,
 	             console);
 }
@@ -549,14 +552,15 @@ X3DBrowserContext::dispose ()
 	shutdown      .dispose ();
 	changed       .dispose ();
 
-	renderingProperties .dispose ();
-	browserProperties   .dispose ();
-	browserOptions      .dispose ();
-	activeLayer         .dispose ();
-	overSensors         .clear ();
-	activeSensors       .clear ();
-	selection           .dispose ();
-	console             .dispose ();
+	renderingProperties  .dispose ();
+	browserProperties    .dispose ();
+	browserOptions       .dispose ();
+	activeLayer          .dispose ();
+	activeNavigationInfo .dispose ();
+	overSensors          .clear ();
+	activeSensors        .clear ();
+	selection            .dispose ();
+	console              .dispose ();
 
 	javaScriptEngine .dispose ();
 

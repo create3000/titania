@@ -636,7 +636,7 @@ OutlineTreeView::expand_row (const Gtk::TreeModel::iterator & iter)
 
 					if (not get_all_expanded (iter))
 					{
-						for (const auto & field : node -> getFieldDefinitions ())
+						for (const auto & field : get_fields (node))
 							get_model () -> append (iter, OutlineIterType::X3DField, field);
 
 						set_all_expanded (iter, true);
@@ -645,7 +645,7 @@ OutlineTreeView::expand_row (const Gtk::TreeModel::iterator & iter)
 					{
 						bool visibles = false;
 
-						for (const auto & field : node -> getFieldDefinitions ())
+						for (const auto & field : get_fields (node))
 						{
 							if (not field -> isInitializeable () or node -> isDefaultValue (field))
 							{
@@ -662,7 +662,7 @@ OutlineTreeView::expand_row (const Gtk::TreeModel::iterator & iter)
 
 						else
 						{
-							for (const auto & field : node -> getFieldDefinitions ())
+							for (const auto & field : get_fields (node))
 								get_model () -> append (iter, OutlineIterType::X3DField, field);
 
 							set_all_expanded (iter, true);
@@ -672,6 +672,21 @@ OutlineTreeView::expand_row (const Gtk::TreeModel::iterator & iter)
 			}
 		}
 	}
+}
+
+X3D::FieldDefinitionArray
+OutlineTreeView::get_fields (X3D::X3DBaseNode* const node) const
+{
+	auto fields            = node -> getPreDefinedFields ();
+	auto userDefinedFields = node -> getUserDefinedFields ();
+
+	if (dynamic_cast <X3D::X3DNode*> (node))
+		fields .insert (fields .begin () + 1, userDefinedFields .begin (), userDefinedFields .end ());
+
+	else
+		fields .insert (fields .begin (), userDefinedFields .begin (), userDefinedFields .end ());
+
+	return fields;
 }
 
 void

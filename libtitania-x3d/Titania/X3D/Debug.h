@@ -69,7 +69,7 @@ debug_roots (X3DChildObject* node, std::set <X3DChildObject*> & seen)
 		++ i;
 
 		for (auto & child : node -> getParents ())
-			test (child, seen);
+			debug_roots (child, seen);
 
 		-- i;
 

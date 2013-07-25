@@ -59,6 +59,8 @@ Scene::Scene (X3DBrowser* const browser) :
 {
 	setComponent ("Browser");
 	setTypeName ("Scene");
+
+	addField (inputOutput, "metadata", metadata ());
 }
 
 Scene*

@@ -1,3 +1,9 @@
+2013-07-25  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DBrowserWindow.cpp:
+	* OutlineTreeView.h:
+	* OutlineTreeView.cpp: 
+
 2013-07-24  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* OutlineTreeView.cpp: 

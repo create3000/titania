@@ -155,12 +155,16 @@ X3DOutput::dispose ()
 {
 	requesters .clear ();
 	requesterIndex .clear ();
+
+	for (const auto & input : inputs)
+		input -> deleted () .removeInterest (this, &X3DOutput::eraseInterest);
+		
+	inputs .clear ();
 }
 
 X3DOutput::~X3DOutput ()
 {
-	for (const auto & input : inputs)
-		input -> deleted () .removeInterest (this, &X3DOutput::eraseInterest);
+	X3DOutput::dispose ();
 }
 
 } // X3D

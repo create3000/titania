@@ -117,16 +117,16 @@ private:
 	setScene (const X3DSFNode <Scene> &);
 
 	void
-	set_load ();
-
-	void
-	set_url ();
-
-	void
 	requestLoad ();
 
 	void
 	requestUnload ();
+
+	void
+	set_load ();
+
+	void
+	set_url ();
 
 	struct Fields
 	{

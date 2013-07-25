@@ -259,7 +259,7 @@ X3DBrowserWindow::blank ()
 	if (not getBrowser () -> makeCurrent ())
 		return;
 
-	getBrowser () -> replaceWorld (getBrowser () -> createScene ());
+	getBrowser () -> replaceWorld (nullptr);
 }
 
 void

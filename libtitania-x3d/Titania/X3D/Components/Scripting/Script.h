@@ -94,6 +94,10 @@ public:
 
 	virtual
 	void
+	requestImmediateLoad () final;
+
+	virtual
+	void
 	eventsProcessed () final;
 
 	virtual
@@ -106,6 +110,9 @@ private:
 	virtual
 	void
 	initialize () final;
+
+	void
+	set_url ();
 
 	struct Fields
 	{

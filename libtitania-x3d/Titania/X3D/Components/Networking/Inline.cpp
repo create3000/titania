@@ -144,30 +144,6 @@ throw (Error <INVALID_NAME>,
 }
 
 void
-Inline::set_load ()
-{
-	if (load ())
-	{
-		setLoadState (NOT_STARTED_STATE);
-
-		requestLoad ();
-	}
-	else
-		requestUnload ();
-}
-
-void
-Inline::set_url ()
-{
-	if (load ())
-	{
-		setLoadState (NOT_STARTED_STATE);
-
-		requestLoad ();
-	}
-}
-
-void
 Inline::requestLoad ()
 {
 	requestImmediateLoad ();
@@ -207,6 +183,30 @@ Inline::requestUnload ()
 	setScene (getBrowser () -> createScene ());
 
 	setLoadState (NOT_STARTED_STATE);
+}
+
+void
+Inline::set_load ()
+{
+	if (load ())
+	{
+		setLoadState (NOT_STARTED_STATE);
+
+		requestLoad ();
+	}
+	else
+		requestUnload ();
+}
+
+void
+Inline::set_url ()
+{
+	if (load ())
+	{
+		setLoadState (NOT_STARTED_STATE);
+
+		requestLoad ();
+	}
 }
 
 void

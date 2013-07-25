@@ -278,8 +278,8 @@ private:
 	LightStack       lights;
 	TextureUnitStack textureUnits;
 
-	X3DSFNode <X3DLayerNode> activeLayer;
-	NavigationInfo*          activeNavigationInfo;
+	X3DSFNode <X3DLayerNode>   activeLayer;
+	X3DSFNode <NavigationInfo> activeNavigationInfo;
 
 	double                x;
 	double                y;

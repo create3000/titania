@@ -206,6 +206,9 @@ private:
 	void
 	expand_row (const Gtk::TreeModel::iterator &);
 
+	X3D::FieldDefinitionArray
+	get_fields (X3D::X3DBaseNode* const) const;
+
 	void
 	expand_routes (const Gtk::TreeModel::iterator &, X3D::X3DFieldDefinition*);
 

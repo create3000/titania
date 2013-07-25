@@ -1,3 +1,19 @@
+2013-07-25  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Debug.h:
+	* X3DInput.cpp:
+	* X3DOutput.cpp:
+	* Scene.cpp:
+	* X3DRenderer.h:
+	* X3DRenderer.cpp:
+	* X3DBrowserContext.h:
+	* X3DBrowserContext.cpp:
+	* Script.h:
+	* Inline.h:
+	* Script.cpp:
+	* Inline.cpp:
+	* jsContext.cpp: 
+
 2013-07-24  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DRenderer.h:
