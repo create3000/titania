@@ -69,7 +69,7 @@ ImageTexture::ImageTexture (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "url",               url ());
 	addField (initializeOnly, "repeatS",           repeatS ());
 	addField (initializeOnly, "repeatT",           repeatT ());
-	addField (initializeOnly, "textureOptions", textureOptions ());
+	addField (initializeOnly, "textureProperties", textureProperties ());
 }
 
 X3DBaseNode*
@@ -84,13 +84,13 @@ ImageTexture::initialize ()
 	X3DTexture2DNode::initialize ();
 	X3DUrlObject::initialize ();
 
-	url () .addInterest (this, &ImageTexture::set_url);
+	url () .addInterest (this, &ImageTexture::update);
 
 	requestImmediateLoad ();
 }
 
 void
-ImageTexture::set_url ()
+ImageTexture::update ()
 {
 	setLoadState (NOT_STARTED_STATE);
 	requestImmediateLoad ();

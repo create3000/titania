@@ -57,7 +57,7 @@ X3DTexture3DNode::Fields::Fields () :
 	repeatS (new SFBool ()),
 	repeatT (new SFBool ()),
 	repeatR (new SFBool ()),
-	textureOptions (new SFNode ())
+	textureProperties (new SFNode ())
 { }
 
 X3DTexture3DNode::X3DTexture3DNode () :

@@ -86,12 +86,12 @@ public:
 	{ return *fields .size; }
 
 	SFNode &
-	textureOptions ()
-	{ return *fields .textureOptions; }
+	textureProperties ()
+	{ return *fields .textureProperties; }
 
 	const SFNode &
-	textureOptions () const
-	{ return *fields .textureOptions; }
+	textureProperties () const
+	{ return *fields .textureProperties; }
 
 	virtual
 	bool
@@ -111,7 +111,7 @@ private:
 
 		SFString* const update;
 		SFInt32* const size;
-		SFNode* const textureOptions;
+		SFNode* const textureProperties;
 	};
 
 	Fields fields;

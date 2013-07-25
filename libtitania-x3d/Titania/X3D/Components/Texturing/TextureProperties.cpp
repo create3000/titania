@@ -166,7 +166,7 @@ TextureProperties::getMinificationFilter () const
 		return GL_NEAREST_MIPMAP_NEAREST;
 
 	if (minificationFilter () == "DEFAULT")
-		return x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureOptions ()) -> getMinificationFilter ();
+		return x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties ()) -> getMinificationFilter ();
 
 	if (minificationFilter () == "FASTEST")
 		return GL_NEAREST;
@@ -187,7 +187,7 @@ TextureProperties::getMagnificationFilter () const
 		return GL_NEAREST;
 
 	if (magnificationFilter () == "DEFAULT")
-		return x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureOptions ()) -> getMagnificationFilter ();
+		return x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties ()) -> getMagnificationFilter ();
 
 	if (magnificationFilter () == "FASTEST")
 		return GL_NEAREST;
@@ -209,7 +209,7 @@ TextureProperties::getTextureCompression () const
 		return CompressionMode::HIGH;
 
 	if (textureCompression () == "DEFAULT")
-		return x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureOptions ()) -> getTextureCompression ();
+		return x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties ()) -> getTextureCompression ();
 
 	if (textureCompression () == "FASTEST")
 		return CompressionMode::FASTEST;

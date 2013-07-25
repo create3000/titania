@@ -71,7 +71,7 @@ ComposedTexture3D::ComposedTexture3D (X3DExecutionContext* const executionContex
 	addField (initializeOnly, "repeatS",           repeatS ());
 	addField (initializeOnly, "repeatT",           repeatT ());
 	addField (initializeOnly, "repeatR",           repeatR ());
-	addField (initializeOnly, "textureOptions", textureOptions ());
+	addField (initializeOnly, "textureProperties", textureProperties ());
 	addField (inputOutput,    "texture",           texture ());
 }
 

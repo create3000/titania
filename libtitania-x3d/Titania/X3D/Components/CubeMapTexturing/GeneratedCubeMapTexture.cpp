@@ -58,7 +58,7 @@ namespace X3D {
 GeneratedCubeMapTexture::Fields::Fields () :
 	update (new SFString ("NONE")),
 	size (new SFInt32 (128)),
-	textureOptions (new SFNode ())
+	textureProperties (new SFNode ())
 { }
 
 GeneratedCubeMapTexture::GeneratedCubeMapTexture (X3DExecutionContext* const executionContext) :
@@ -72,7 +72,7 @@ GeneratedCubeMapTexture::GeneratedCubeMapTexture (X3DExecutionContext* const exe
 	addField (inputOutput,    "metadata",          metadata ());
 	addField (inputOutput,    "update",            update ());
 	addField (initializeOnly, "size",              size ());
-	addField (initializeOnly, "textureOptions", textureOptions ());
+	addField (initializeOnly, "textureProperties", textureProperties ());
 }
 
 X3DBaseNode*

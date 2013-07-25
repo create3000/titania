@@ -84,7 +84,7 @@ MovieTexture::MovieTexture (X3DExecutionContext* const executionContext) :
 	addField (outputOnly,     "cycleTime",         cycleTime ());   // non standard
 	addField (outputOnly,     "elapsedTime",       elapsedTime ());
 	addField (outputOnly,     "duration_changed",  duration_changed ());
-	addField (initializeOnly, "textureOptions", textureOptions ());
+	addField (initializeOnly, "textureProperties", textureProperties ());
 }
 
 X3DBaseNode*
@@ -100,7 +100,7 @@ MovieTexture::initialize ()
 	X3DSoundSourceNode::initialize ();
 	X3DUrlObject::initialize ();
 
-	url () .addInterest (this, &MovieTexture::set_url);
+	url () .addInterest (this, &MovieTexture::update);
 
 	requestImmediateLoad ();
 }
@@ -156,7 +156,7 @@ MovieTexture::requestImmediateLoad ()
 }
 
 void
-MovieTexture::set_url ()
+MovieTexture::update ()
 {
 	setLoadState (NOT_STARTED_STATE);
 

@@ -84,8 +84,9 @@ private:
 	void
 	initialize () final;
 
+	virtual
 	void
-	requestImmediateLoad ();
+	update () final;
 
 	struct Fields
 	{

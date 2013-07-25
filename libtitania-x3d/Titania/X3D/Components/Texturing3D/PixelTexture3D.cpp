@@ -71,7 +71,7 @@ PixelTexture3D::PixelTexture3D (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "repeatS",           repeatS ());
 	addField (initializeOnly, "repeatT",           repeatT ());
 	addField (initializeOnly, "repeatR",           repeatR ());
-	addField (initializeOnly, "textureOptions", textureOptions ());
+	addField (initializeOnly, "textureProperties", textureProperties ());
 	addField (inputOutput,    "image",             image ());
 }
 

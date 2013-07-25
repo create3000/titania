@@ -92,7 +92,7 @@ BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
 	animateStairWalks (new SFBool ()),
 	gravity (new SFFloat (P_GN)),
 	motionBlurOptions (new MotionBlur (executionContext)),
-	textureOptions (new TextureProperties (executionContext)),
+	textureProperties (new TextureProperties (executionContext)),
 	arc2DOptions (new Arc2DOptions (executionContext)),
 	arcClose2DOptions (new ArcClose2DOptions (executionContext)),
 	circle2DOptions (new Circle2DOptions (executionContext)),
@@ -128,7 +128,7 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 	addField ("AntiAliased", "Antialiased");
 
 	addChildren (motionBlurOptions (),
-	             textureOptions (),
+	             textureProperties (),
 	             arc2DOptions (),
 	             arcClose2DOptions (),
 	             circle2DOptions (),
@@ -151,7 +151,7 @@ BrowserOptions::initialize ()
 	X3DPropertyNode::initialize ();
 
 	motionBlurOptions ()  -> setup ();
-	textureOptions ()     -> setup ();
+	textureProperties ()     -> setup ();
 	arc2DOptions ()       -> setup ();
 	arcClose2DOptions ()  -> setup ();
 	circle2DOptions ()    -> setup ();
@@ -196,10 +196,10 @@ BrowserOptions::motionBlurIntensity () const
 void
 BrowserOptions::set_textureQuality ()
 {
-	textureOptions () -> magnificationFilter () = "NICEST";
-	textureOptions () -> minificationFilter ()  = "NICEST";
-	textureOptions () -> textureCompression ()  = "NICEST";
-	textureOptions () -> generateMipMaps ()     = true;
+	textureProperties () -> magnificationFilter () = "NICEST";
+	textureProperties () -> minificationFilter ()  = "NICEST";
+	textureProperties () -> textureCompression ()  = "NICEST";
+	textureProperties () -> generateMipMaps ()     = true;
 }
 
 void
@@ -290,7 +290,7 @@ void
 BrowserOptions::dispose ()
 {
 	motionBlurOptions ()  .dispose ();
-	textureOptions ()     .dispose ();
+	textureProperties ()     .dispose ();
 	arc2DOptions ()       .dispose ();
 	arcClose2DOptions ()  .dispose ();
 	circle2DOptions ()    .dispose ();

@@ -57,9 +57,9 @@
 namespace titania {
 namespace X3D {
 
-template std::ostream & CleanStyle   (std::ostream &);
+template std::ostream & SmallestStyle   (std::ostream &);
 template std::ostream & CompactStyle (std::ostream &);
-template std::ostream & TidyStyle    (std::ostream &);
+template std::ostream & NicestStyle    (std::ostream &);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -190,8 +190,8 @@ Generator::NewNamesIndex      Generator::newNames;
 size_t                        Generator::newName = 0;
 Generator::ImportedNamesIndex Generator::importedNames;
 
-bool        Generator::expandNodes = false;
-std::string Generator::style       = "tidy";
+bool                 Generator::expandNodes = false;
+Generator::StyleType Generator::style       = NICEST;
 
 bool Generator::x3dFieldNames  = true;
 bool Generator::x3dAccessTypes = true;
@@ -200,19 +200,22 @@ void
 Generator::Style (const std::string & value)
 {
 	if (value == "clean")
-		CleanStyle ();
+		SmallestStyle ();
 
 	else if (value == "compact")
 		CompactStyle ();
 
 	else
-		TidyStyle ();
+		NicestStyle ();
 }
 
 void
-Generator::CleanStyle ()
+Generator::SmallestStyle ()
 {
-	style = "clean";
+	if (style == SMALLEST)
+		return;
+
+	style = SMALLEST;
 
 	space     = " ";
 	tidySpace = "";
@@ -230,7 +233,10 @@ Generator::CleanStyle ()
 void
 Generator::CompactStyle ()
 {
-	style = "compact";
+	if (style == COMPACT)
+		return;
+
+	style = COMPACT;
 
 	space     = " ";
 	tidySpace = " ";
@@ -246,9 +252,12 @@ Generator::CompactStyle ()
 }
 
 void
-Generator::TidyStyle ()
+Generator::NicestStyle ()
 {
-	style = "tidy";
+	if (style == NICEST)
+		return;
+
+	style = NICEST;
 
 	space     = " ";
 	tidySpace = " ";

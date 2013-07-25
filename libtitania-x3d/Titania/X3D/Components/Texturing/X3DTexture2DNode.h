@@ -79,17 +79,21 @@ public:
 	{ return *fields .repeatT; }
 
 	SFNode &
-	textureOptions ()
-	{ return *fields .textureOptions; }
+	textureProperties ()
+	{ return *fields .textureProperties; }
 
 	const SFNode &
-	textureOptions () const
-	{ return *fields .textureOptions; }
+	textureProperties () const
+	{ return *fields .textureProperties; }
 
 	virtual
 	bool
 	isTransparent () const override
 	{ return transparent; }
+
+	virtual
+	void
+	notify () final;
 
 	virtual
 	void
@@ -102,7 +106,11 @@ protected:
 
 	virtual
 	void
-	requestImmediateLoad () = 0;
+	initialize () override;
+
+	virtual
+	void
+	update () = 0;
 
 	void
 	setImage (Magick::Image &);
@@ -129,19 +137,19 @@ private:
 	void
 	getImageFormat (Magick::Image &, GLenum &);
 
+	void
+	updateTextureProperties () const;
+
 	struct Fields
 	{
 		Fields ();
 
 		SFBool* const repeatS;
 		SFBool* const repeatT;
-		SFNode* const textureOptions;
+		SFNode* const textureProperties;
 	};
 
 	Fields fields;
-
-	void
-	applyTextureProperties (const TextureProperties*) const;
 
 	static const GLint wrapTypes [2];
 

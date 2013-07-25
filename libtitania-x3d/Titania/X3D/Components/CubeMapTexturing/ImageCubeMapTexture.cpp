@@ -56,7 +56,7 @@ namespace titania {
 namespace X3D {
 
 ImageCubeMapTexture::Fields::Fields () :
-	textureOptions (new SFNode ())
+	textureProperties (new SFNode ())
 { }
 
 ImageCubeMapTexture::ImageCubeMapTexture (X3DExecutionContext* const executionContext) :
@@ -70,7 +70,7 @@ ImageCubeMapTexture::ImageCubeMapTexture (X3DExecutionContext* const executionCo
 
 	addField (inputOutput,    "metadata",          metadata ());
 	addField (inputOutput,    "url",               url ());
-	addField (initializeOnly, "textureOptions", textureOptions ());
+	addField (initializeOnly, "textureProperties", textureProperties ());
 }
 
 X3DBaseNode*

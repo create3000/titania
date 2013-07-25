@@ -1893,17 +1893,6 @@
     <None Include="Examples\TreasureIsland\stage\wet_fl.png" />
     <None Include="Examples\TreasureIsland\preview.gif" />
     <None Include="Examples\TreasureIsland\index.wrl" />
-    <None Include="Examples\TipperTruck\stage\birch.png" />
-    <None Include="Examples\TipperTruck\stage\boden.png" />
-    <None Include="Examples\TipperTruck\stage\index.htm" />
-    <None Include="Examples\TipperTruck\stage\index.html" />
-    <None Include="Examples\TipperTruck\stage\index.wrl" />
-    <None Include="Examples\TipperTruck\stage\kipp.png" />
-    <None Include="Examples\TipperTruck\stage\krkipper1.wrl" />
-    <None Include="Examples\TipperTruck\stage\krkipper2x.wrl" />
-    <None Include="Examples\TipperTruck\stage\mk.png" />
-    <None Include="Examples\TipperTruck\preview.gif" />
-    <None Include="Examples\TipperTruck\index.wrl" />
     <None Include="Examples\Approach\stage\gate.wrl" />
     <None Include="Examples\Approach\stage\gatetex.png" />
     <None Include="Examples\Approach\stage\glow_cyan_q.png" />
@@ -2281,6 +2270,17 @@
     <None Include="Tests\3rd Party\CIS2\Revit1.wrl" />
     <None Include="Tests\3rd Party\CIS2\Stadium.wrl" />
     <None Include="Tests\3rd Party\CIS2\TrainingStructure.wrl" />
+    <None Include="Tests\3rd Party\TipperTruck\stage\birch.png" />
+    <None Include="Tests\3rd Party\TipperTruck\stage\boden.png" />
+    <None Include="Tests\3rd Party\TipperTruck\stage\index.htm" />
+    <None Include="Tests\3rd Party\TipperTruck\stage\index.html" />
+    <None Include="Tests\3rd Party\TipperTruck\stage\index.wrl" />
+    <None Include="Tests\3rd Party\TipperTruck\stage\kipp.png" />
+    <None Include="Tests\3rd Party\TipperTruck\stage\krkipper1.wrl" />
+    <None Include="Tests\3rd Party\TipperTruck\stage\krkipper2x.wrl" />
+    <None Include="Tests\3rd Party\TipperTruck\stage\mk.png" />
+    <None Include="Tests\3rd Party\TipperTruck\preview.gif" />
+    <None Include="Tests\3rd Party\TipperTruck\index.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
@@ -2321,7 +2321,6 @@
     <Folder Include="Examples\Appartment\stage\" />
     <Folder Include="Examples\Schacht\stage\" />
     <Folder Include="Examples\TikiWorld\stage\" />
-    <Folder Include="Examples\TipperTruck\stage\" />
     <Folder Include="Examples\Approach\stage\" />
     <Folder Include="Prototypes\" />
     <Folder Include="Prototypes\Geometry2D\" />

@@ -75,7 +75,7 @@ const GLint X3DTexture2DNode::wrapTypes [2] = { GL_CLAMP, GL_REPEAT };
 X3DTexture2DNode::Fields::Fields () :
 	repeatS (new SFBool (true)),
 	repeatT (new SFBool (true)),
-	textureOptions (new SFNode ())
+	textureProperties (new SFNode ())
 { }
 
 X3DTexture2DNode::X3DTexture2DNode () :
@@ -89,15 +89,25 @@ X3DTexture2DNode::X3DTexture2DNode () :
 	addNodeType (X3DConstants::X3DTexture2DNode);
 }
 
+void
+X3DTexture2DNode::initialize ()
+{
+	X3DTextureNode::initialize ();
+
+	repeatS ()           .addInterest (this, &X3DTexture2DNode::updateTextureProperties);
+	repeatT ()           .addInterest (this, &X3DTexture2DNode::updateTextureProperties);
+	textureProperties () .addInterest (this, &X3DTexture2DNode::updateTextureProperties);
+}
+
 const TextureProperties*
 X3DTexture2DNode::getTextureProperties () const
 {
-	auto _textureOptions = x3d_cast <TextureProperties*> (textureOptions ());
+	auto _textureProperties = x3d_cast <TextureProperties*> (textureProperties ());
 
-	if (_textureOptions)
-		return _textureOptions;
+	if (_textureProperties)
+		return _textureProperties;
 
-	return x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureOptions ());
+	return x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties ());
 }
 
 void
@@ -244,13 +254,11 @@ X3DTexture2DNode::setImage (size_t components, GLenum format, GLint width, GLint
 {
 	// transfer image
 
-	auto textureOptions = getTextureProperties ();
-
 	GLint level = 0;     // This texture is level 0 in mimpap generation.
 
 	glBindTexture (GL_TEXTURE_2D, getTextureId ());
 
-	applyTextureProperties (textureOptions);
+	updateTextureProperties ();
 
 	glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
 
@@ -274,9 +282,13 @@ X3DTexture2DNode::updateImage (GLenum format, GLint width, GLint height, const v
 }
 
 void
-X3DTexture2DNode::applyTextureProperties (const TextureProperties* textureOptions) const
+X3DTexture2DNode::updateTextureProperties () const
 {
-	if (std::max (width, height) < MIN_SCALE_SIZE and textureOptions == x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureOptions ()))
+	auto textureProperties = getTextureProperties ();
+
+	glBindTexture (GL_TEXTURE_2D, getTextureId ());
+
+	if (std::max (width, height) < MIN_SCALE_SIZE and textureProperties == x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties ()))
 	{
 		glTexParameteri (GL_TEXTURE_2D, GL_GENERATE_MIPMAP, false);
 		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -287,14 +299,14 @@ X3DTexture2DNode::applyTextureProperties (const TextureProperties* textureOption
 	}
 	else
 	{
-		glTexParameteri (GL_TEXTURE_2D, GL_GENERATE_MIPMAP,    textureOptions -> generateMipMaps ());
-		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, textureOptions -> getMinificationFilter ());
-		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, textureOptions -> getMagnificationFilter ());
+		glTexParameteri (GL_TEXTURE_2D, GL_GENERATE_MIPMAP,    textureProperties -> generateMipMaps ());
+		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, textureProperties -> getMinificationFilter ());
+		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, textureProperties -> getMagnificationFilter ());
 
-		if (this -> textureOptions ())
+		if (this -> textureProperties ())
 		{
-			glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, textureOptions -> getBoundaryModeS ());
-			glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, textureOptions -> getBoundaryModeT ());
+			glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, textureProperties -> getBoundaryModeS ());
+			glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, textureProperties -> getBoundaryModeT ());
 		}
 		else
 		{
@@ -303,8 +315,16 @@ X3DTexture2DNode::applyTextureProperties (const TextureProperties* textureOption
 		}
 	}
 
-	glTexParameterfv (GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, textureOptions -> borderColor () .getValue () .data ());
-	glTexParameterf  (GL_TEXTURE_2D, GL_TEXTURE_PRIORITY,     textureOptions -> texturePriority ());
+	glTexParameterfv (GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR,       textureProperties -> borderColor () .getValue () .data ());
+	glTexParameterf  (GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, textureProperties -> anisotropicDegree ());
+	glTexParameterf  (GL_TEXTURE_2D, GL_TEXTURE_PRIORITY,           textureProperties -> texturePriority ());
+	
+}
+
+void
+X3DTexture2DNode::notify ()
+{
+	update ();
 }
 
 void

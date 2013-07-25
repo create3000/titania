@@ -71,12 +71,12 @@ public:
 	///  @name Fields
 
 	SFNode &
-	textureOptions ()
-	{ return *fields .textureOptions; }
+	textureProperties ()
+	{ return *fields .textureProperties; }
 
 	const SFNode &
-	textureOptions () const
-	{ return *fields .textureOptions; }
+	textureProperties () const
+	{ return *fields .textureProperties; }
 
 	virtual
 	void
@@ -106,7 +106,7 @@ private:
 	{
 		Fields ();
 
-		SFNode* const textureOptions;
+		SFNode* const textureProperties;
 	};
 
 	Fields fields;

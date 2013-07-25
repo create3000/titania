@@ -183,7 +183,7 @@ ComposedCubeMapTexture::setTexture (GLenum target, const X3DTexture2DNode* const
 
 	// Transfer image
 
-	//applyTextureProperties (textureOptions);
+	//applyTextureProperties (textureProperties);
 
 	glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
 
@@ -191,16 +191,16 @@ ComposedCubeMapTexture::setTexture (GLenum target, const X3DTexture2DNode* const
 }
 
 //void
-//ComposedCubeMapTexture::applyTextureProperties (const TextureProperties* textureOptions) const
+//ComposedCubeMapTexture::applyTextureProperties (const TextureProperties* textureProperties) const
 //{
-//	glTexParameteri (GL_TEXTURE_2D, GL_GENERATE_MIPMAP,    textureOptions -> generateMipMaps);
-//	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, textureOptions -> getMinificationFilter ());
-//	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, textureOptions -> getMagnificationFilter ());
+//	glTexParameteri (GL_TEXTURE_2D, GL_GENERATE_MIPMAP,    textureProperties -> generateMipMaps);
+//	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, textureProperties -> getMinificationFilter ());
+//	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, textureProperties -> getMagnificationFilter ());
 //
-//	if (this -> textureOptions)
+//	if (this -> textureProperties)
 //	{
-//		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, textureOptions -> getBoundaryModeS ());
-//		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, textureOptions -> getBoundaryModeT ());
+//		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, textureProperties -> getBoundaryModeS ());
+//		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, textureProperties -> getBoundaryModeT ());
 //	}
 //	else
 //	{
@@ -208,8 +208,8 @@ ComposedCubeMapTexture::setTexture (GLenum target, const X3DTexture2DNode* const
 //		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapTypes [repeatT]);
 //	}
 //
-//	glTexParameterfv (GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, textureOptions -> borderColor .getValue () .data ());
-//	glTexParameterf  (GL_TEXTURE_2D, GL_TEXTURE_PRIORITY,     textureOptions -> texturePriority);
+//	glTexParameterfv (GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, textureProperties -> borderColor .getValue () .data ());
+//	glTexParameterf  (GL_TEXTURE_2D, GL_TEXTURE_PRIORITY,     textureProperties -> texturePriority);
 //}
 
 void

@@ -201,12 +201,12 @@ public:
 	{ return fields .motionBlurOptions; }
 
 	X3DSFNode <TextureProperties> &
-	textureOptions ()
-	{ return fields .textureOptions; }
+	textureProperties ()
+	{ return fields .textureProperties; }
 
 	const X3DSFNode <TextureProperties> &
-	textureOptions () const
-	{ return fields .textureOptions; }
+	textureProperties () const
+	{ return fields .textureProperties; }
 
 	X3DSFNode <Arc2DOptions> &
 	arc2DOptions ()
@@ -312,7 +312,7 @@ private:
 		SFBool* const animateStairWalks;
 		SFFloat* const gravity;
 		X3DSFNode <MotionBlur> motionBlurOptions;
-		X3DSFNode <TextureProperties> textureOptions;
+		X3DSFNode <TextureProperties> textureProperties;
 		X3DSFNode <Arc2DOptions> arc2DOptions;
 		X3DSFNode <ArcClose2DOptions> arcClose2DOptions;
 		X3DSFNode <Circle2DOptions> circle2DOptions;

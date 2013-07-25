@@ -292,7 +292,7 @@ X3DBrowserWindow::save (const basic::uri & worldURL)
 	if (getSaveCompressedButton () .get_active ())
 	{
 		ogzstream file (worldURL .path ());
-		file << X3D::CleanStyle << getBrowser () -> getExecutionContext () << std::flush;
+		file << X3D::SmallestStyle << getBrowser () -> getExecutionContext () << std::flush;
 		file .close ();
 	}
 	else

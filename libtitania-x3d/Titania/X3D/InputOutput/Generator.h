@@ -68,7 +68,14 @@ class X3DBaseNode;
 class Generator :
 	public io::Generator
 {
-private:
+public:
+
+	enum StyleType
+	{
+		SMALLEST,
+		COMPACT,
+		NICEST
+	};
 
 	class AccessTypesIndex :
 		private std::vector <std::string>
@@ -109,20 +116,17 @@ private:
 
 	};
 
-
-public:
-
 	static
 	void
 	Style (const std::string &);
 
 	static
-	const std::string &
+	StyleType
 	Style () { return style; }
 
 	static
 	void
-	CleanStyle ();
+	SmallestStyle ();
 
 	static
 	void
@@ -130,7 +134,7 @@ public:
 
 	static
 	void
-	TidyStyle ();
+	NicestStyle ();
 
 	static
 	void
@@ -201,18 +205,18 @@ private:
 	static size_t             newName;
 	static ImportedNamesIndex importedNames;
 
-	static bool        expandNodes;
-	static std::string style;
-	static bool        x3dFieldNames;
-	static bool        x3dAccessTypes;
+	static bool      expandNodes;
+	static StyleType style;
+	static bool      x3dFieldNames;
+	static bool      x3dAccessTypes;
 
 };
 
 template <class CharT, class Traits>
 std::basic_ostream <CharT, Traits> &
-CleanStyle (std::basic_ostream <CharT, Traits> & ostream)
+SmallestStyle (std::basic_ostream <CharT, Traits> & ostream)
 {
-	Generator::CleanStyle ();
+	Generator::SmallestStyle ();
 	return ostream;
 }
 
@@ -226,17 +230,17 @@ CompactStyle (std::basic_ostream <CharT, Traits> & ostream)
 
 template <class CharT, class Traits>
 std::basic_ostream <CharT, Traits> &
-TidyStyle (std::basic_ostream <CharT, Traits> & ostream)
+NicestStyle (std::basic_ostream <CharT, Traits> & ostream)
 {
-	Generator::TidyStyle ();
+	Generator::NicestStyle ();
 	return ostream;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-extern template std::ostream & CleanStyle   (std::ostream &);
+extern template std::ostream & SmallestStyle   (std::ostream &);
 extern template std::ostream & CompactStyle (std::ostream &);
-extern template std::ostream & TidyStyle    (std::ostream &);
+extern template std::ostream & NicestStyle    (std::ostream &);
 
 } // X3D
 } // titania

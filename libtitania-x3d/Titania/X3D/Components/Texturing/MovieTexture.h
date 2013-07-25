@@ -97,8 +97,9 @@ private:
 	void
 	initialize () final;
 
+	virtual
 	void
-	set_url ();
+	update () final;
 
 	Glib::RefPtr <Gst::XImageSink> vsink;
 

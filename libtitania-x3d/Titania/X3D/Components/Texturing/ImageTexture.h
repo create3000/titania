@@ -68,8 +68,9 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const final;
 
+	virtual
 	void
-	requestImmediateLoad ();
+	requestImmediateLoad () final;
 
 	virtual
 	void
@@ -84,8 +85,9 @@ private:
 	void
 	initialize () final;
 
+	virtual
 	void
-	set_url ();
+	update () final;
 
 	void
 	setImage (const std::string &);

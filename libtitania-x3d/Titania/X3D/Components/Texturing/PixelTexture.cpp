@@ -71,7 +71,7 @@ PixelTexture::PixelTexture (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "image",             image ());
 	addField (initializeOnly, "repeatS",           repeatS ());
 	addField (initializeOnly, "repeatT",           repeatT ());
-	addField (initializeOnly, "textureOptions", textureOptions ());
+	addField (initializeOnly, "textureProperties", textureProperties ());
 }
 
 X3DBaseNode*
@@ -85,16 +85,13 @@ PixelTexture::initialize ()
 {
 	X3DTexture2DNode::initialize ();
 
-	//Replacing All or Part of a Texture Image
-	//void glTexSubImage2D (...);
+	image () .addInterest (this, &PixelTexture::update);
 
-	image () .addInterest (this, &PixelTexture::requestImmediateLoad);
-
-	requestImmediateLoad ();
+	update ();
 }
 
 void
-PixelTexture::requestImmediateLoad ()
+PixelTexture::update ()
 {
 	if (image () .getComponents () < 1 or image () .getComponents () > 4 or image () .getWidth () <= 0 or image () .getHeight () <= 0)
 		return;

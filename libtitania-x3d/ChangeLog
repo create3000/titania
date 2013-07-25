@@ -1,5 +1,36 @@
 2013-07-25  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Proto.cpp:
+	* X3DBaseNode.cpp:
+	* Generator.h:
+	* Generator.cpp:
+	* ExternProto.cpp:
+	* ImageTexture.h:
+	* MovieTexture.h:
+	* PixelTexture.h:
+	* BrowserOptions.h:
+	* MovieTexture.cpp:
+	* PixelTexture.cpp:
+	* BrowserOptions.cpp:
+	* ImageTexture.cpp:
+	* X3DTexture2DNode.h:
+	* ImageTexture3D.cpp:
+	* X3DTexture3DNode.h:
+	* PixelTexture3D.cpp:
+	* X3DTexture2DNode.cpp:
+	* TextureProperties.cpp:
+	* X3DTexture3DNode.cpp:
+	* ComposedTexture3D.cpp:
+	* Background.h:
+	* Background.cpp:
+	* ImageCubeMapTexture.h:
+	* ImageCubeMapTexture.cpp:
+	* GeneratedCubeMapTexture.h:
+	* ComposedCubeMapTexture.cpp:
+	* GeneratedCubeMapTexture.cpp: 
+
+2013-07-25  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Debug.h:
 	* X3DInput.cpp:
 	* X3DOutput.cpp:

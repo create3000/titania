@@ -154,7 +154,7 @@ private:
 	X3DSFNode <ImageTexture>      rightTexture;
 	X3DSFNode <ImageTexture>      topTexture;
 	X3DSFNode <ImageTexture>      bottomTexture;
-	X3DSFNode <TextureProperties> textureOptions;
+	X3DSFNode <TextureProperties> textureProperties;
 
 };
 

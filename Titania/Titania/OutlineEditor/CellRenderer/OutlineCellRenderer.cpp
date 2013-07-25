@@ -302,6 +302,8 @@ OutlineCellRenderer::get_field_value () const
 {
 	auto field = static_cast <X3D::X3DFieldDefinition*> (get_object ());
 
+	X3D::Generator::NicestStyle ();
+
 	switch (field -> getType ())
 	{
 		case X3D::X3DConstants::SFNode:

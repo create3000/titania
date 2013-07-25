@@ -86,12 +86,12 @@ public:
 	{ return *fields .repeatR; }
 
 	SFNode &
-	textureOptions ()
-	{ return *fields .textureOptions; }
+	textureProperties ()
+	{ return *fields .textureProperties; }
 
 	const SFNode &
-	textureOptions () const
-	{ return *fields .textureOptions; }
+	textureProperties () const
+	{ return *fields .textureProperties; }
 
 	virtual
 	void
@@ -112,7 +112,7 @@ private:
 		SFBool* const repeatS;
 		SFBool* const repeatT;
 		SFBool* const repeatR;
-		SFNode* const textureOptions;
+		SFNode* const textureProperties;
 	};
 
 	Fields fields;
