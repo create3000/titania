@@ -524,6 +524,8 @@ OutlineTreeView::row_has_child_toggled (const Gtk::TreeModel::Path & path)
 void
 OutlineTreeView::row_changed (const Gtk::TreeModel::Path & path)
 {
+	//__LOG__ << X3D::SFTime (chrono::now ()) << std::endl;
+
 	get_model () -> row_changed (path, get_model () -> get_iter (path));
 }
 
@@ -547,7 +549,7 @@ OutlineTreeView::collapse_field (const Gtk::TreeModel::Path & path)
 void
 OutlineTreeView::toggle_field (const Gtk::TreeModel::Path & path)
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 
 	Gtk::TreeModel::iterator iter = get_model () -> get_iter (path);
 
@@ -565,10 +567,12 @@ OutlineTreeView::collapse_clone (const Gtk::TreeModel::iterator & iter)
 {
 	if (get_data_type (iter) == OutlineIterType::X3DBaseNode)
 	{
-		if (get_expanded (iter))
+		Gtk::TreeModel::Path path = get_path (iter);
+	
+		if (row_expanded (path))
 		{
 			set_all_expanded (iter, true);
-			collapse_row (get_path (iter));
+			collapse_row (path);
 		}
 	}
 }

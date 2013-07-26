@@ -76,9 +76,9 @@ class ihttpstream :
 {
 public:
 
-	typedef std::array <std::string, 3>                        method_array;
-	typedef std::deque <std::pair <std::string, std::string>> headers_type;
-	typedef size_t                                             status_type;
+	typedef std::array <std::string, 3>         method_array;
+	typedef std::map <std::string, std::string> headers_type;
+	typedef size_t                              status_type;
 
 	/// @name Constructors
 
@@ -111,10 +111,10 @@ public:
 	request_header (const std::string &, const std::string &);
 
 	const headers_type &
-	request_headers () { return request_headers_array; }
+	request_headers () { return request_headers_map; }
 
 	const headers_type &
-	response_headers () { return response_headers_array; }
+	response_headers () { return response_headers_map; }
 
 	/// @name Element access
 
@@ -158,8 +158,8 @@ private:
 	socketstreambuf* buf;
 	std::string      http_method;
 
-	headers_type request_headers_array;
-	headers_type response_headers_array;
+	headers_type request_headers_map;
+	headers_type response_headers_map;
 
 	std::string response_http_version;
 	status_type response_status;

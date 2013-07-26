@@ -50,6 +50,7 @@
 
 #include "Viewpoint.h"
 
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/Matrix.h"
 
@@ -91,8 +92,11 @@ Viewpoint::create (X3DExecutionContext* const executionContext) const
 Vector3f
 Viewpoint::lookAtPositionOffset (Box3f bbox)
 {
+	float distance    = (abs (bbox .size ()) * 0.5f) / std::tan (fieldOfView () * 0.5f);
+	float minDistance = getBrowser () -> getActiveNavigationInfo () -> getNearPlane () * 2;
+
 	return bbox .center ()
-	       + getUserOrientation () * (Vector3f (0, 0, (abs (bbox .size ()) * 0.5f) / std::tan (fieldOfView () * 0.5f)))
+	       + getUserOrientation () * Vector3f (0, 0, std::max (distance, minDistance))
 	       - position ();
 }
 
@@ -107,8 +111,7 @@ Viewpoint::reshape (const float zNear, const float zFar)
 	size_t width  = viewport [2];
 	size_t height = viewport [3];
 
-	float fov = fieldOfView () > 0 and fieldOfView () < M_PI ? fieldOfView () :
-						M_PI / 4;
+	float fov = fieldOfView () > 0 and fieldOfView () < M_PI ? fieldOfView () : M_PI / 4;
 	float ratio = std::tan (fov / 2) * zNear;
 
 	if (width > height)

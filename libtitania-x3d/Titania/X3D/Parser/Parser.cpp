@@ -56,6 +56,7 @@
 #include "../Components/Networking/Inline.h"
 #include "../Components/Scripting/Script.h"
 #include "../Components/Shaders/X3DProgrammableShaderObject.h"
+#include "../Parser/Filter.h"
 #include "../Parser/Grammar.h"
 #include "../Prototype/ExternProto.h"
 
@@ -104,6 +105,10 @@ throw (Error <INVALID_X3D>)
 	{
 		throw Error <INVALID_X3D> (getMessageFromError (error));
 	}
+	catch (...)
+	{
+		throw Error <INVALID_X3D> ("Unkown parser error.");
+	}
 
 	std::clog << "Done parsing into scene: " << scene -> getWorldURL () << "." << std::endl;
 }
@@ -123,6 +128,15 @@ Parser::getMessageFromError (const X3DError & error)
 	std::string line    = rgetline ();
 	std::string preLine = rgetline ();
 	size_t      linePos = line .size () - rest .size ();
+	std::string string  = error .what ();
+
+	filter_control_characters (line);
+	filter_control_characters (preLine);
+	filter_control_characters (string);
+
+	filter_bad_utf8_characters (line);
+	filter_bad_utf8_characters (preLine);
+	filter_bad_utf8_characters (string);
 
 	// Format error
 
@@ -136,7 +150,7 @@ Parser::getMessageFromError (const X3DError & error)
 		<< preLine << std::endl
 		<< line << std::endl
 		<< std::string (linePos, ' ') << '^' << std::endl
-		<< error .what () << std::endl
+		<< string << std::endl
 		<< std::string (80, '*') << std::endl;
 
 	getBrowser () -> print (stringstream .str ());
@@ -1546,7 +1560,7 @@ Parser::Id (std::string & _Id)
 	if (istream)
 	{
 		std::istream::int_type c = istream .peek ();
-	
+
 		switch (c)
 		{
 			case -1:
@@ -1585,7 +1599,7 @@ Parser::Id (std::string & _Id)
 		if (istream)
 		{
 			std::istream::int_type c = istream .peek ();
-	
+
 			switch (c)
 			{
 				case -1:

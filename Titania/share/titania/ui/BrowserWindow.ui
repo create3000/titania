@@ -1,7 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <!-- interface-requires gtk+ 3.0 -->
-  <object class="GtkFileFilter" id="FileFilerX3D">
+  <object class="GtkAction" id="OpenAction">
+    <signal name="activate" handler="on_open" swapped="no"/>
+  </object>
+  <object class="GtkAction" id="RevertAction">
+    <signal name="activate" handler="on_revert_to_saved" swapped="no"/>
+  </object>
+  <object class="GtkAction" id="SaveAction">
+    <signal name="activate" handler="on_save" swapped="no"/>
+  </object>
+  <object class="GtkFileFilter" id="FileFilterAllFiles">
+    <patterns>
+      <pattern>*</pattern>
+    </patterns>
+  </object>
+  <object class="GtkFileFilter" id="FileFilterAudio">
+    <mime-types>
+      <mime-type>audio/*</mime-type>
+    </mime-types>
+  </object>
+  <object class="GtkFileFilter" id="FileFilterImage">
+    <mime-types>
+      <mime-type>image/*</mime-type>
+    </mime-types>
+  </object>
+  <object class="GtkFileFilter" id="FileFilterVideo">
+    <mime-types>
+      <mime-type>video/*</mime-type>
+    </mime-types>
+  </object>
+  <object class="GtkFileFilter" id="FileFilterX3D">
     <mime-types>
       <mime-type>model/vrml</mime-type>
       <mime-type>model/x3d+vrml</mime-type>
@@ -17,11 +46,6 @@
       <pattern>*.wrz</pattern>
     </patterns>
   </object>
-  <object class="GtkFileFilter" id="FileFilterAllFiles">
-    <patterns>
-      <pattern>*</pattern>
-    </patterns>
-  </object>
   <object class="GtkIconFactory" id="IconFactory">
     <sources>
       <source stock-id="Icon" filename="icons/icon.svg"/>
@@ -33,18 +57,6 @@
       <source stock-id="Hand" filename="icons/hand.png"/>
     </sources>
   </object>
-  <object class="GtkAction" id="NewAction">
-    <signal name="activate" handler="on_new" swapped="no"/>
-  </object>
-  <object class="GtkAction" id="OpenAction">
-    <signal name="activate" handler="on_open" swapped="no"/>
-  </object>
-  <object class="GtkAction" id="RevertAction">
-    <signal name="activate" handler="on_revert_to_saved" swapped="no"/>
-  </object>
-  <object class="GtkAction" id="SaveAction">
-    <signal name="activate" handler="on_save" swapped="no"/>
-  </object>
   <object class="GtkFileChooserDialog" id="FileOpenDialog">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
@@ -55,7 +67,6 @@
     <property name="type_hint">dialog</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="transient_for">Window</property>
-    <property name="filter">FileFilerX3D</property>
     <property name="local_only">False</property>
     <signal name="response" handler="on_fileOpenDialog_response" swapped="no"/>
     <child internal-child="vbox">
@@ -141,6 +152,9 @@
     </child>
   </object>
   <object class="GtkAccelGroup" id="MenuAccelGroup"/>
+  <object class="GtkAction" id="NewAction">
+    <signal name="activate" handler="on_new" swapped="no"/>
+  </object>
   <object class="GtkMessageDialog" id="MessageDialog">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
@@ -774,6 +788,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="double_buffered">False</property>
+                            <signal name="drag-data-received" handler="on_drag_data_received" swapped="no"/>
                             <child>
                               <placeholder/>
                             </child>

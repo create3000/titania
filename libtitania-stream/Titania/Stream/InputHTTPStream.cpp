@@ -38,40 +38,40 @@ namespace basic {
 const ihttpstream::method_array ihttpstream::methods { { "HEAD", "GET", "POST" } };
 
 ihttpstream::ihttpstream () :
-	          std::istream (),
-	                   buf (NULL),
-	           http_method (),
-	 request_headers_array (),
-	response_headers_array (),
-	 response_http_version (),
-	       response_status (0),
-	       response_reason ()
+	         std::istream (),
+	                  buf (NULL),
+	          http_method (),
+	  request_headers_map (),
+	 response_headers_map (),
+	response_http_version (),
+	      response_status (0),
+	      response_reason ()
 {
 	clear (std::ios::badbit);
 }
 
 ihttpstream::ihttpstream (const http::method method, const basic::uri & url) :
-	          std::istream (),
-	                   buf (NULL),
-	           http_method (),
-	 request_headers_array (),
-	response_headers_array (),
-	 response_http_version (),
-	       response_status (0),
-	       response_reason ()
+	         std::istream (),
+	                  buf (NULL),
+	          http_method (),
+	  request_headers_map (),
+	 response_headers_map (),
+	response_http_version (),
+	      response_status (0),
+	      response_reason ()
 {
 	open (method, url);
 }
 
 ihttpstream::ihttpstream (ihttpstream && other) :
-	          std::istream (),
-	                   buf (NULL),
-	           http_method (std::move (other .http_method)),
-	 request_headers_array (std::move (other .request_headers_array)),
-	response_headers_array (std::move (other .response_headers_array)),
-	 response_http_version (std::move (other .response_http_version)),
-	       response_status (other .response_status),
-	       response_reason (std::move (other .response_reason))
+	         std::istream (),
+	                  buf (NULL),
+	          http_method (std::move (other .http_method)),
+	  request_headers_map (std::move (other .request_headers_map)),
+	 response_headers_map (std::move (other .response_headers_map)),
+	response_http_version (std::move (other .response_http_version)),
+	      response_status (other .response_status),
+	      response_reason (std::move (other .response_reason))
 {
 	buf        = other .buf;
 	other .buf = NULL;
@@ -104,7 +104,7 @@ ihttpstream::send ()
 		<< http_method << " " << url () << " HTTP/1.0\r\n"
 		<< "Host: " << url () .host () << "\r\n";
 
-	for (const auto & request_header : request_headers_array)
+	for (const auto & request_header : request_headers_map)
 		request << request_header .first << ": " << request_header .second << "\r\n";
 
 	request << "\r\n";
@@ -167,7 +167,7 @@ ihttpstream::parse_response_header ()
 	if (get () not_eq '\n')
 		return close ();
 
-	response_headers_array .emplace_back (header, value .str ());
+	response_headers_map .insert (std::make_pair (header, value .str ()));
 }
 
 void
@@ -181,7 +181,7 @@ ihttpstream::close ()
 void
 ihttpstream::request_header (const std::string & header, const std::string & value)
 {
-	request_headers_array .emplace_back (header, value);
+	request_headers_map .insert (std::make_pair (header, value));
 }
 
 ihttpstream::~ihttpstream ()

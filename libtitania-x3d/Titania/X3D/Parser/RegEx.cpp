@@ -53,7 +53,7 @@
 namespace titania {
 namespace X3D {
 
-const pcrecpp::RE RegEx::_Number ("_\\d+$"); // Not used
+const pcrecpp::RE RegEx::_Number ("_\\d+$");
 const pcrecpp::RE RegEx::ECMAScript ("\\A(?:vrmlscript|javascript|ecmascript)\\:(.*)$", pcrecpp::RE_Options () .set_dotall (true));
 
 } // X3D

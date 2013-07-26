@@ -107,6 +107,14 @@ protected:
 	void
 	initialize ();
 
+	void
+	set_save_as (bool value)
+	{ save_as = value; }
+
+	bool
+	get_save_as ()
+	{ return save_as; }
+
 
 private:
 
@@ -136,8 +144,11 @@ private:
 	statistics ();
 
 	X3D::X3DSFNode <X3D::Browser> browser;
-	double                        loadTime;
-	sigc::connection              timeout;
+
+	bool save_as;
+
+	double           loadTime;
+	sigc::connection timeout;
 
 };
 

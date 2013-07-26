@@ -70,10 +70,10 @@ LocalFog::LocalFog (X3DExecutionContext* const executionContext) :
 	setTypeName ("LocalFog");
 
 	addField (inputOutput, "metadata",        metadata ());
-	addField (inputOutput, "color",           color ());
-	addField (inputOutput, "fogType",         fogType ());
-	addField (inputOutput, "visibilityRange", visibilityRange ());
 	addField (inputOutput, "enabled",         enabled ());
+	addField (inputOutput, "fogType",         fogType ());
+	addField (inputOutput, "color",           color ());
+	addField (inputOutput, "visibilityRange", visibilityRange ());
 }
 
 X3DBaseNode*

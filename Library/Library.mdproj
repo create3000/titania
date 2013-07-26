@@ -2281,6 +2281,10 @@
     <None Include="Tests\3rd Party\TipperTruck\stage\mk.png" />
     <None Include="Tests\3rd Party\TipperTruck\preview.gif" />
     <None Include="Tests\3rd Party\TipperTruck\index.wrl" />
+    <None Include="Examples\Terrain\stage\9.jpg" />
+    <None Include="Examples\Terrain\stage\floor3.htm" />
+    <None Include="Examples\Terrain\stage\floor3.wrl" />
+    <None Include="Examples\Terrain\index.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
@@ -2400,6 +2404,8 @@
     <Folder Include="Examples\Pong\stage\" />
     <Folder Include="Examples\Astronomy\" />
     <Folder Include="Tests\Handles\" />
+    <Folder Include="Examples\Terrain\" />
+    <Folder Include="Examples\Terrain\stage\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Navigation\Rotor.wrl" />

@@ -107,15 +107,8 @@ public:
 
 private:
 
-	virtual
-	void
-	initialize () final;
-
 	void
 	prepareEvents ();
-
-	void
-	set_enabled ();
 
 	virtual
 	void

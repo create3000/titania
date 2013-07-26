@@ -72,8 +72,6 @@ MovieTexture::MovieTexture (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "url",               url ());
 	addField (inputOutput,    "speed",             speed ());
 	addField (inputOutput,    "pitch",             pitch ());
-	addField (initializeOnly, "repeatS",           repeatS ());
-	addField (initializeOnly, "repeatT",           repeatT ());
 	addField (inputOutput,    "loop",              loop ());
 	addField (inputOutput,    "startTime",         startTime ());
 	addField (inputOutput,    "stopTime",          stopTime ());
@@ -84,6 +82,8 @@ MovieTexture::MovieTexture (X3DExecutionContext* const executionContext) :
 	addField (outputOnly,     "cycleTime",         cycleTime ());   // non standard
 	addField (outputOnly,     "elapsedTime",       elapsedTime ());
 	addField (outputOnly,     "duration_changed",  duration_changed ());
+	addField (initializeOnly, "repeatS",           repeatS ());
+	addField (initializeOnly, "repeatT",           repeatT ());
 	addField (initializeOnly, "textureProperties", textureProperties ());
 }
 

@@ -1,0 +1,19 @@
+#X3D V3.0 utf8 Titania
+
+DEF __NAME__ Transform {
+  scale __WIDTH__ __HEIGHT__ 1
+  children Shape {
+    appearance Appearance {
+      texture DEF Movie MovieTexture {
+        description __DESCRIPTION__
+        url __URL__
+        loop TRUE
+        repeatS FALSE
+        repeatT FALSE
+      }
+    }
+    geometry Rectangle2D {
+      solid FALSE
+    }
+  }
+}

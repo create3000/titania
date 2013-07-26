@@ -8,6 +8,7 @@ titania_SOURCES =  \
 	Titania/Base/X3DBaseInterface.cpp \
 	Titania/Base/X3DUserInterface.cpp \
 	Titania/Browser/BrowserWindow.cpp \
+	Titania/Browser/GoldenGate.cpp \
 	Titania/Browser/ViewpointMenuItem.cpp \
 	Titania/Browser/X3DBrowserWindow.cpp \
 	Titania/Configuration/config.cpp \

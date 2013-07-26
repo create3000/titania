@@ -115,6 +115,8 @@
     <None Include="Titania\Math\Algorithms\SquadInterpolator.h" />
     <None Include="Titania\Basic\ReferenceIterator.h" />
     <None Include="Titania\Backtrace.h" />
+    <None Include="Titania\String\Trim.h" />
+    <None Include="Titania\OS\FileSize.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />
@@ -159,6 +161,7 @@
     <Compile Include="Titania\InputOutput\Generator.cpp" />
     <Compile Include="Titania\Math\Algorithms\CatmullRomSplineInterpolator.cpp" />
     <Compile Include="Titania\Math\Algorithms\SquadInterpolator.cpp" />
+    <Compile Include="Titania\OS\FileSize.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

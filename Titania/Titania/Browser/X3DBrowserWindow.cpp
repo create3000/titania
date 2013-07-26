@@ -51,10 +51,12 @@
 #include "X3DBrowserWindow.h"
 
 #include "../Browser/Image.h"
+#include "../Browser/GoldenGate.h"
 #include "../Configuration/config.h"
 
 #include <Titania/String.h>
 #include <Titania/gzstream.h>
+
 #include <fstream>
 #include <iostream>
 
@@ -63,7 +65,8 @@ namespace puck {
 
 X3DBrowserWindow::X3DBrowserWindow (const basic::uri & worldURL) :
 	X3DBrowserWindowInterface (get_ui ("BrowserWindow.ui"), gconf_dir ()),
-	                  browser (X3D::createBrowser ())
+	                  browser (X3D::createBrowser ()),
+	                  save_as (false)
 {
 	if (worldURL .size ())
 		getConfig () .setItem ("worldURL", worldURL);
@@ -278,12 +281,28 @@ X3DBrowserWindow::open (const basic::uri & worldURL)
 {
 	try
 	{
-		loadTime = chrono::now ();
+		std::istringstream istream (golden_gate (worldURL));
 
-		getBrowser () -> loadURL ({ worldURL .str () });
+		auto scene = getBrowser () -> createScene ();
+		scene -> fromStream (worldURL, istream);
+
+		getBrowser () -> replaceWorld (scene);
+
+		set_save_as (true);
 	}
 	catch (...)
-	{ }
+	{
+		try
+		{
+			loadTime = chrono::now ();
+
+			getBrowser () -> loadURL ({ worldURL .str () });
+
+			set_save_as (false);
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
 }
 
 void

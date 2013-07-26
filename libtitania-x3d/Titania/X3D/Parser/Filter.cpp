@@ -48,168 +48,35 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_SOUND_X3DSOUND_SOURCE_NODE_H__
-#define __TITANIA_X3D_COMPONENTS_SOUND_X3DSOUND_SOURCE_NODE_H__
+#include "Filter.h"
 
-#include "../Time/X3DTimeDependentNode.h"
-
-#include <Titania/Basic/URI.h>
-#include <glibmm/refptr.h>
-#include <memory>
-
-namespace Gst {
-
-class XImageSink;
-class Message;
-
-}
+#include <pcrecpp.h>
 
 namespace titania {
 namespace X3D {
 
-class MediaStream;
-
-class X3DSoundSourceNode :
-	public X3DTimeDependentNode
+void
+filter_control_characters (std::string & string)
 {
-public:
+	static const pcrecpp::RE ControlCharacters (R"/([\x00-\x08\x0B\x0C\x0E-\x1F])/", pcrecpp::RE_Options () .set_multiline (true));
 
-	virtual
-	SFBool &
-	enabled () final
-	{ return *fields .enabled; }
+	ControlCharacters .GlobalReplace ("", &string);
+}
 
-	virtual
-	const SFBool &
-	enabled () const final
-	{ return *fields .enabled; }
+void
+filter_bad_utf8_characters (std::string & string)
+{
+	static const pcrecpp::RE UTF8Characters (R"/(([\000-\177])/"
+	                                         R"/(|[\300-\337][\200-\277])/"
+	                                         R"/(|[\340-\357][\200-\277]{2})/"
+	                                         R"/(|[\360-\367][\200-\277]{3})/"
+	                                         R"/(|[\370-\373][\200-\277]{4})/"
+	                                         R"/(|[\374-\375][\200-\277]{5})/"
+	                                         R"/()|.)/",
+	                                         pcrecpp::RE_Options () .set_multiline (true));
 
-	SFString &
-	description ()
-	{ return *fields .description; }
-
-	const SFString &
-	description () const
-	{ return *fields .description; }
-
-	SFFloat &
-	speed ()
-	{ return *fields .speed; }
-
-	const SFFloat &
-	speed () const
-	{ return *fields .speed; }
-
-	SFFloat &
-	pitch ()
-	{ return *fields .pitch; }
-
-	const SFFloat &
-	pitch () const
-	{ return *fields .pitch; }
-
-	SFBool &
-	isActive ()
-	{ return *fields .isActive; }
-
-	const SFBool &
-	isActive () const
-	{ return *fields .isActive; }
-
-	SFTime &
-	duration_changed ()
-	{ return *fields .duration_changed; }
-
-	const SFTime &
-	duration_changed () const
-	{ return *fields .duration_changed; }
-
-	///  @name Modifiers
-
-	void
-	setVolume (float);
-
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () override;
-
-
-protected:
-
-	X3DSoundSourceNode ();
-
-	virtual
-	void
-	initialize () override;
-
-	void
-	setUri (const basic::uri &);
-
-	float
-	getDuration () const;
-
-	bool
-	sync () const;
-
-	const Glib::RefPtr <Gst::XImageSink> &
-	getVideoSink () const;
-
-
-private:
-
-	void
-	prepareEvents ();
-
-	void
-	on_message (const Glib::RefPtr <Gst::Message> &);
-
-	void
-	set_speed ();
-
-	void
-	set_pitch ();
-
-	virtual
-	void
-	set_start () final;
-
-	virtual
-	void
-	set_stop () final;
-
-	virtual
-	void
-	set_pause () final;
-
-	virtual
-	void
-	set_resume () final;
-
-	void
-	set_end ();
-
-	struct Fields
-	{
-		Fields ();
-
-		SFBool* const enabled;
-		SFString* const description;
-		SFFloat* const speed;
-		SFFloat* const pitch;
-		SFBool* const isActive;
-		SFTime* const duration_changed;
-	};
-
-	Fields fields;
-
-	SFTime                        end;
-	std::shared_ptr <MediaStream> mediaStream;
-
-};
+	UTF8Characters .GlobalReplace ("\\1", &string);
+}
 
 } // X3D
 } // titania
-
-#endif

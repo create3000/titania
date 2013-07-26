@@ -232,16 +232,16 @@ throw (Error <INVALID_SCENE>)
 
 	browserOptions -> assign (X3D::getBrowser () -> getBrowserOptions ());
 
+	// Generate initialized event immediately upon receiving this service.
+
+	initialized = getCurrentTime ();
+
 	print ("*** The browser is requested to replace the world with '", scene -> getWorldURL (), "'.\n");
 }
 
 void
 X3DBrowser::set_scene ()
 {
-	// Generate initialized event immediately upon receiving this service.
-
-	initialized = getCurrentTime ();
-
 	std::clog << "Replacing world done." << std::endl;
 }
 

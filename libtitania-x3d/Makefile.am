@@ -416,6 +416,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/JavaScript/SpiderMonkey/jsX3DScene.cpp \
 	Titania/X3D/JavaScript/X3DJavaScriptContext.cpp \
 	Titania/X3D/JavaScript/X3DJavaScriptEngine.cpp \
+	Titania/X3D/Parser/Filter.cpp \
 	Titania/X3D/Parser/Grammar.cpp \
 	Titania/X3D/Parser/Parser.cpp \
 	Titania/X3D/Parser/RegEx.cpp \
@@ -435,7 +436,8 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Routing/RouteArray.cpp \
 	Titania/X3D/Routing/Router.cpp \
 	Titania/X3D/Routing/RouteSet.cpp \
-	Titania/X3D/Types/Image.cpp
+	Titania/X3D/Types/Image.cpp \
+	Titania/X3D/Types/MediaStream.cpp
 
 libtitania_x3d_la_LIBADD = $(TITANIA_X3D_LIBS)  \
 	$(TITANIA_GZSTREAM_LIBS) \

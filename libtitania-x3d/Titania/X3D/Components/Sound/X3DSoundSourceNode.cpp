@@ -53,226 +53,10 @@
 #include "X3DSoundSourceNode.h"
 
 #include "../../Browser/X3DBrowser.h"
+#include "../../Types/MediaStream.h"
 
 namespace titania {
 namespace X3D {
-
-/* Playback speed
- *   http://docs.gstreamer.com/display/GstSDK/Basic+tutorial+13%3A+Playback+speed
- * Player
- *   http://code.metager.de/source/xref/freedesktop/gstreamer/gstreamermm/examples/media_player_gtkmm/player_window.cc
- * PlayBin2
- *   http://www.freedesktop.org/software/gstreamer-sdk/data/docs/latest/gst-plugins-base-plugins-0.10/gst-plugins-base-plugins-playbin2.html
- */
-
-class X3DSoundSourceNode::GStream
-{
-public:
-
-	GStream (X3DSoundSourceNode* source) :
-		source (source),
-		player (),
-		message (),
-		pixmap (0),
-		display (NULL)
-	{
-		// Static init
-
-		int    argc = 0;
-		char** argv = NULL;
-
-		Gst::init_check (argc, argv);
-
-		// X11
-
-		if (glXGetCurrentContext ())
-			display = XOpenDisplay (NULL);
-
-		if (display)
-			pixmap = XCreatePixmap (display, 0, 0, 0, 0);
-
-		// Construct
-
-		player = Gst::PlayBin::create ("player");
-		vsink  = Gst::XImageSink::create ("vsink");
-
-		player -> set_property ("video-sink", vsink);
-		player -> set_property ("volume", 0.0);
-		//player -> set_property ("mute", false);
-
-		auto bus = player -> get_bus ();
-
-		bus -> enable_sync_message_emission ();
-		bus -> signal_sync_message ().connect (sigc::mem_fun (*this, &GStream::on_bus_message_sync));
-
-		bus -> add_signal_watch ();
-		message = bus -> signal_message () .connect (sigc::mem_fun (*this, &GStream::on_message));
-	}
-
-	bool
-	setUri (const basic::uri & uri)
-	{
-		player -> set_property ("uri", uri .str ());
-		player -> set_state (Gst::STATE_PAUSED);
-
-		return true;
-	}
-
-	time_type
-	getDuration () const
-	{
-		auto   format   = Gst::FORMAT_TIME;
-		gint64 duration = 0;
-
-		if (player -> query_duration (format, duration))
-			return duration / 1000000000.0;
-
-		return -1;
-	}
-
-	void
-	setVolume (double value)
-	{
-		player -> set_property ("volume", value);
-	}
-
-	Gst::State
-	getState () const
-	{
-		Gst::State             state;
-		Gst::State             pending;
-		Gst::StateChangeReturn ret = player -> get_state (state, pending, 10 * Gst::SECOND);
-
-		if (ret == Gst::STATE_CHANGE_SUCCESS)
-		{
-			return state;
-		}
-		else if (ret == Gst::STATE_CHANGE_ASYNC)
-		{
-			//Log::debug ("Query state failed, still performing change");
-		}
-		else
-		{
-			//Log::debug ("Query state failed, hard failure");
-		}
-
-		return Gst::STATE_NULL;
-	}
-
-	//	void
-	//	setSpeed (double speed)
-	//	{
-	//		auto format = Gst::FORMAT_TIME;
-	//
-	//		if (speed > 0)
-	//		{
-	//			player -> seek (speed,
-	//			                format,
-	//			                Gst::SEEK_FLAG_FLUSH | Gst::SEEK_FLAG_ACCURATE,
-	//			                Gst::SEEK_TYPE_CUR, 0,
-	//			                Gst::SEEK_TYPE_END, 0);
-	//		}
-	//		else
-	//		{
-	//			gint64 position = 0;
-	//
-	//			if (player -> query_position (format, position))
-	//			{
-	//				__LOG__ << position / 1000000000.0 << std::endl;
-	//
-	//				player -> seek (speed,
-	//				                format,
-	//				                Gst::SEEK_FLAG_FLUSH | Gst::SEEK_FLAG_ACCURATE,
-	//				                Gst::SEEK_TYPE_SET, 0,
-	//				                Gst::SEEK_TYPE_SET, position);
-	//			}
-	//			else
-	//				__LOG__ << "*** query_position failed" << std::endl;
-	//		}
-	//	}
-
-	void
-	start (double speed, time_type position)
-	{
-		auto format = Gst::FORMAT_TIME;
-
-		player -> seek (format,
-		                Gst::SEEK_FLAG_FLUSH | Gst::SEEK_FLAG_ACCURATE,
-		                position * 1000000000.0);
-
-		player -> set_state (Gst::STATE_PLAYING);
-	}
-
-	void
-	stop ()
-	{
-		player -> set_state (Gst::STATE_PAUSED);
-	}
-
-	void
-	on_message (const Glib::RefPtr <Gst::Message> & message)
-	{
-		switch (message -> get_message_type ())
-		{
-			case Gst::MESSAGE_EOS:
-			{
-				source -> set_end ();
-				break;
-			}
-			case Gst::MESSAGE_ERROR:
-			{
-				__LOG__ << "MESSAGE_ERROR" << std::endl;
-				source -> set_stop ();
-				break;
-			}
-			default:
-			{ }
-		}
-	}
-
-	void
-	on_bus_message_sync (const Glib::RefPtr <Gst::Message> & message)
-	{
-		// ignore anything but 'prepare-xwindow-id' element messages
-		if (message -> get_message_type () not_eq Gst::MESSAGE_ELEMENT)
-			return;
-
-		if (not message -> get_structure () .has_name ("prepare-xwindow-id"))
-			return;
-
-		auto element  = Glib::RefPtr <Gst::Element>::cast_dynamic (message -> get_source ());
-		auto xoverlay = Gst::Interface::cast <Gst::XOverlay> (element);
-
-		if (xoverlay)
-		{
-			if (pixmap)
-				xoverlay -> set_xwindow_id (pixmap);
-		}
-	}
-
-	~GStream ()
-	{
-		message .disconnect ();
-
-		player -> set_state (Gst::STATE_NULL);
-
-		if (pixmap)
-			XFreePixmap (display, pixmap);
-
-		if (display)
-			XCloseDisplay (display);
-	}
-
-	X3DSoundSourceNode* source;
-
-	Glib::RefPtr <Gst::PlayBin>    player;
-	Glib::RefPtr <Gst::XImageSink> vsink;
-	sigc::connection               message;
-
-	Pixmap   pixmap;
-	Display* display;
-
-};
 
 X3DSoundSourceNode::Fields::Fields () :
 	enabled (new SFBool (true)),
@@ -286,9 +70,12 @@ X3DSoundSourceNode::Fields::Fields () :
 X3DSoundSourceNode::X3DSoundSourceNode () :
 	X3DTimeDependentNode (),
 	              fields (),
-	             gstream (new GStream (this))
+	                 end (),
+	         mediaStream (new MediaStream ())
 {
 	addNodeType (X3DConstants::X3DSoundSourceNode);
+	
+	addChildren (end);
 }
 
 void
@@ -298,42 +85,69 @@ X3DSoundSourceNode::initialize ()
 
 	speed () .addInterest (this, &X3DSoundSourceNode::set_speed);
 	pitch () .addInterest (this, &X3DSoundSourceNode::set_pitch);
+	end      .addInterest (this, &X3DSoundSourceNode::set_end);
+
+	auto bus = mediaStream -> getPlayer () -> get_bus ();
+
+	bus -> add_signal_watch ();
+	bus -> signal_message () .connect (sigc::mem_fun (*this, &X3DSoundSourceNode::on_message));
 }
 
 void
 X3DSoundSourceNode::setUri (const basic::uri & uri)
 {
-	gstream -> setUri (uri);
+	mediaStream -> setUri (uri);
 }
 
 float
 X3DSoundSourceNode::getDuration () const
 {
-	return gstream -> getDuration ();
+	return mediaStream -> getDuration ();
 }
 
 void
 X3DSoundSourceNode::setVolume (float value)
 {
-	return gstream -> setVolume (value);
+	return mediaStream -> setVolume (value);
 }
 
 bool
 X3DSoundSourceNode::sync () const
 {
-	return gstream -> getState () not_eq Gst::STATE_NULL;
+	return mediaStream -> sync ();
 }
 
 const Glib::RefPtr <Gst::XImageSink> &
 X3DSoundSourceNode::getVideoSink () const
 {
-	return gstream -> vsink;
+	return mediaStream -> getVideoSink ();
 }
 
 void
 X3DSoundSourceNode::prepareEvents ()
 {
 	elapsedTime () = getElapsedTime ();
+}
+
+void
+X3DSoundSourceNode::on_message (const Glib::RefPtr <Gst::Message> & message)
+{
+	switch (message -> get_message_type ())
+	{
+		case Gst::MESSAGE_EOS:
+		{
+			end = getCurrentTime ();;
+			break;
+		}
+		case Gst::MESSAGE_ERROR:
+		{
+			__LOG__ << "MESSAGE_ERROR" << std::endl;
+			set_stop ();
+			break;
+		}
+		default:
+		{ }
+	}
 }
 
 void
@@ -352,7 +166,7 @@ X3DSoundSourceNode::set_start ()
 	if (not isActive ())
 	{
 		if (speed ())
-			gstream -> start (speed (), 0);
+			mediaStream -> start (speed (), 0);
 
 		isActive ()    = true;
 		cycleTime ()   = getCurrentTime ();
@@ -367,8 +181,10 @@ X3DSoundSourceNode::set_stop ()
 {
 	if (isActive ())
 	{
-		gstream -> stop ();
-		isActive () = false;
+		mediaStream -> stop ();
+		
+		isActive ()    = false;
+		elapsedTime () = getElapsedTime ();
 
 		getBrowser () -> prepareEvents .removeInterest (this, &X3DSoundSourceNode::prepareEvents);
 	}
@@ -385,28 +201,22 @@ X3DSoundSourceNode::set_resume ()
 void
 X3DSoundSourceNode::set_end ()
 {
-	// XXX thread save???
-
 	if (loop ())
 	{
 		if (speed ())
-			gstream -> start (speed (), 0);
+			mediaStream -> start (speed (), 0);
 
 		cycleTime ()   = getCurrentTime ();
 		elapsedTime () = getElapsedTime ();
 	}
 	else
-	{
-		isActive () = false;
-
-		getBrowser () -> prepareEvents .removeInterest (this, &X3DSoundSourceNode::prepareEvents);
-	}
+		set_stop ();
 }
 
 void
 X3DSoundSourceNode::dispose ()
 {
-	gstream .reset ();
+	mediaStream .reset ();
 
 	X3DTimeDependentNode::dispose ();
 }

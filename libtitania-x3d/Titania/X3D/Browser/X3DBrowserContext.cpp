@@ -224,6 +224,8 @@ X3DBrowserContext::getActiveViewpoint () const
 void
 X3DBrowserContext::set_initialized ()
 {
+	__LOG__ << std::endl;
+
 	hits .clear ();
 
 	overSensors   .clear ();

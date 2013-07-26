@@ -229,30 +229,12 @@ main (int argc, char** argv)
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
 
-	io::comment hex ('"');
-	std::string s = "\"";
-	std::string v;
-	std::istringstream ss (s);
-		
-	std::clog << std::endl;
-	std::clog << "good: " << ss .good () << std::endl;
-	std::clog << "eof:  " << ss .eof () << std::endl;
-	std::clog << "fail: " << ss .fail () << std::endl;
-	std::clog << "bad:  " << ss .bad () << std::endl;
+	basic::uri uri ("/home/holger/Videos/Kino/Priscilla - Königin der Wüste.avi");
 	
-	std::clog << std::endl;
-	std::clog << "tellg: " << ss .tellg () << std::endl;
-	std::clog << "peek: " << ss .peek () << std::endl;
-
-	std::clog << std::endl;
-	std::clog << "hex: " << hex (ss) << std::endl;
-	std::clog << "hex: " << v << std::endl;
-	
-	std::clog << std::endl;
-	std::clog << "good: " << ss .good () << std::endl;
-	std::clog << "eof:  " << ss .eof () << std::endl;
-	std::clog << "fail: " << ss .fail () << std::endl;
-	std::clog << "bad:  " << ss .bad () << std::endl;
+	std::clog << "1: " << uri .basename () << std::endl;
+	std::clog << "2: " << uri .suffix () << std::endl;
+	std::clog << "3: " << uri .basename (uri .suffix ()) << std::endl;
+	std::clog << "4: " << uri .basename (false) << std::endl;
 
 	std::clog << "Function main done." << std::endl;
 	exit (0);

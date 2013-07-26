@@ -48,164 +48,69 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_SOUND_X3DSOUND_SOURCE_NODE_H__
-#define __TITANIA_X3D_COMPONENTS_SOUND_X3DSOUND_SOURCE_NODE_H__
+#ifndef __TITANIA_X3D_TYPES_MEDIA_STREAM_H__
+#define __TITANIA_X3D_TYPES_MEDIA_STREAM_H__
 
-#include "../Time/X3DTimeDependentNode.h"
-
+#include <gstreamermm.h>
 #include <Titania/Basic/URI.h>
-#include <glibmm/refptr.h>
-#include <memory>
 
-namespace Gst {
-
-class XImageSink;
-class Message;
-
+extern "C"
+{
+#include <X11/Xlib.h>
 }
 
 namespace titania {
 namespace X3D {
 
-class MediaStream;
-
-class X3DSoundSourceNode :
-	public X3DTimeDependentNode
+class MediaStream
 {
 public:
 
-	virtual
-	SFBool &
-	enabled () final
-	{ return *fields .enabled; }
+	MediaStream ();
 
-	virtual
-	const SFBool &
-	enabled () const final
-	{ return *fields .enabled; }
+	const Glib::RefPtr <Gst::PlayBin> &
+	getPlayer () const
+	{ return player; }
 
-	SFString &
-	description ()
-	{ return *fields .description; }
+	const Glib::RefPtr <Gst::XImageSink> &
+	getVideoSink () const
+	{ return vsink; }
 
-	const SFString &
-	description () const
-	{ return *fields .description; }
+	bool
+	setUri (const basic::uri & uri);
 
-	SFFloat &
-	speed ()
-	{ return *fields .speed; }
-
-	const SFFloat &
-	speed () const
-	{ return *fields .speed; }
-
-	SFFloat &
-	pitch ()
-	{ return *fields .pitch; }
-
-	const SFFloat &
-	pitch () const
-	{ return *fields .pitch; }
-
-	SFBool &
-	isActive ()
-	{ return *fields .isActive; }
-
-	const SFBool &
-	isActive () const
-	{ return *fields .isActive; }
-
-	SFTime &
-	duration_changed ()
-	{ return *fields .duration_changed; }
-
-	const SFTime &
-	duration_changed () const
-	{ return *fields .duration_changed; }
-
-	///  @name Modifiers
-
-	void
-	setVolume (float);
-
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () override;
-
-
-protected:
-
-	X3DSoundSourceNode ();
-
-	virtual
-	void
-	initialize () override;
-
-	void
-	setUri (const basic::uri &);
-
-	float
+	double
 	getDuration () const;
+
+	void
+	setVolume (double value);
+
+	Gst::State
+	getState () const;
 
 	bool
 	sync () const;
 
-	const Glib::RefPtr <Gst::XImageSink> &
-	getVideoSink () const;
+	void
+	start (double speed, double position);
+
+	void
+	stop ();
+
+	void
+	on_bus_message_sync (const Glib::RefPtr <Gst::Message> & message);
+
+	~MediaStream ();
 
 
 private:
 
-	void
-	prepareEvents ();
+	Glib::RefPtr <Gst::PlayBin>    player;
+	Glib::RefPtr <Gst::XImageSink> vsink;
+	sigc::connection               message;
 
-	void
-	on_message (const Glib::RefPtr <Gst::Message> &);
-
-	void
-	set_speed ();
-
-	void
-	set_pitch ();
-
-	virtual
-	void
-	set_start () final;
-
-	virtual
-	void
-	set_stop () final;
-
-	virtual
-	void
-	set_pause () final;
-
-	virtual
-	void
-	set_resume () final;
-
-	void
-	set_end ();
-
-	struct Fields
-	{
-		Fields ();
-
-		SFBool* const enabled;
-		SFString* const description;
-		SFFloat* const speed;
-		SFFloat* const pitch;
-		SFBool* const isActive;
-		SFTime* const duration_changed;
-	};
-
-	Fields fields;
-
-	SFTime                        end;
-	std::shared_ptr <MediaStream> mediaStream;
+	Pixmap   pixmap;
+	Display* display;
 
 };
 

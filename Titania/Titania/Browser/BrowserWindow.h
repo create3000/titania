@@ -276,7 +276,11 @@ private:
 	virtual
 	bool
 	on_key_release_event (GdkEventKey*) final;
-	
+
+	virtual
+	void
+	on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> &, int, int, const Gtk::SelectionData &, guint info, guint) final;
+
 	///  @name Properties
 
 	MotionBlurEditor motionBlurEditor;

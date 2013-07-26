@@ -29,6 +29,9 @@
 #include "InputFileStream.h"
 
 #include <Titania/OS/IsFile.h>
+#include <Titania/OS/FileSize.h>
+#include <Titania/LOG.h>
+#include <giomm.h>
 #include <iostream>
 #include <utility>
 
@@ -111,8 +114,8 @@ ifilestream::open (const http::method method, const basic::uri & url)
 			length = url .path () .size () - first;
 		}
 
-		file_response_headers .emplace_back ("Content-Type",   url .path () .substr (0, comma));
-		file_response_headers .emplace_back ("Content-Length", std::to_string (length));
+		file_response_headers .insert (std::make_pair ("Content-Type",   url .path () .substr (0, comma)));
+		file_response_headers .insert (std::make_pair ("Content-Length", std::to_string (length)));
 
 		istream = data_istream = new std::istringstream (url .path () .substr (first));
 	}
@@ -139,8 +142,26 @@ ifilestream::open (const http::method method, const basic::uri & url)
 void
 ifilestream::send ()
 {
-	if (http_istream)
+	if (http_istream and *http_istream)
 		http_istream -> send ();
+		
+	else if (file_istream)
+	{		
+		// Guess content type
+
+		char data [64];
+		size_t data_size = file_istream -> rdbuf () -> sgetn (data, 64);
+		
+		bool result_uncertain;
+		std::string content_type = Gio::content_type_guess (url () .path (), (guchar*) data, data_size, result_uncertain);
+	
+		file_response_headers .insert (std::make_pair ("Content-Type",   content_type));
+		file_response_headers .insert (std::make_pair ("Content-Length", std::to_string (os::file_size (url () .path ()))));
+
+		// Reset stream
+
+		file_istream -> seekg (0, std::ios_base::beg);
+	}	
 }
 
 void
@@ -169,7 +190,7 @@ ifilestream::request_header (const std::string & header, const std::string & val
 	if (http_istream)
 		return http_istream -> request_header (header, value);
 
-	file_request_headers .emplace_back (header, value);
+	file_request_headers .insert (std::make_pair (header, value));
 }
 
 const ifilestream::headers_type &

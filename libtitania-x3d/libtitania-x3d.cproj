@@ -564,6 +564,8 @@
     <None Include="Titania\X3D\Browser\Geometry3D\QuadSphereOptions.h" />
     <None Include="Titania\X3D\Browser\Geometry3D\X3DSphereOptionNode.h" />
     <None Include="Titania\X3D\Debug.h" />
+    <None Include="Titania\X3D\Parser\Filter.h" />
+    <None Include="Titania\X3D\Types\MediaStream.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -997,6 +999,8 @@
     <Compile Include="Titania\X3D\Browser\Geometry3D\BoxOptions.cpp" />
     <Compile Include="Titania\X3D\Browser\Geometry3D\QuadSphereOptions.cpp" />
     <Compile Include="Titania\X3D\Browser\Geometry3D\X3DSphereOptionNode.cpp" />
+    <Compile Include="Titania\X3D\Parser\Filter.cpp" />
+    <Compile Include="Titania\X3D\Types\MediaStream.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

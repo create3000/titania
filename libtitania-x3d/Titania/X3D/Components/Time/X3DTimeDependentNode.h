@@ -176,6 +176,9 @@ private:
 	set_initialized ();
 
 	void
+	set_enabled ();
+
+	void
 	set_loop ();
 
 	void

@@ -98,14 +98,6 @@ TimeSensor::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-TimeSensor::initialize ()
-{
-	X3DTimeDependentNode::initialize ();
-
-	enabled () .addInterest (this, &TimeSensor::set_enabled);
-}
-
-void
 TimeSensor::prepareEvents ()
 {
 	//std::clog << "###### " << getCurrentTime () - cycleTime << " " << interval << std::endl;
@@ -132,24 +124,6 @@ TimeSensor::prepareEvents ()
 	}
 
 	time () = getCurrentTime ();
-}
-
-void
-TimeSensor::set_enabled ()
-{
-	if (enabled ())
-	{
-		if (loop () and stopTime () <= startTime ())
-			set_start ();
-	}
-	else
-	{
-		if (isActive ())
-		{
-			isActive () = false;
-			getBrowser () -> prepareEvents .removeInterest (this, &TimeSensor::prepareEvents);
-		}
-	}
 }
 
 void

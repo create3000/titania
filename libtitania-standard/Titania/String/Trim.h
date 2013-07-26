@@ -48,168 +48,28 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_SOUND_X3DSOUND_SOURCE_NODE_H__
-#define __TITANIA_X3D_COMPONENTS_SOUND_X3DSOUND_SOURCE_NODE_H__
-
-#include "../Time/X3DTimeDependentNode.h"
-
-#include <Titania/Basic/URI.h>
-#include <glibmm/refptr.h>
-#include <memory>
-
-namespace Gst {
-
-class XImageSink;
-class Message;
-
-}
+#ifndef __TITANIA_STRING_TRIM_H__
+#define __TITANIA_STRING_TRIM_H__
 
 namespace titania {
-namespace X3D {
+namespace basic {
 
-class MediaStream;
-
-class X3DSoundSourceNode :
-	public X3DTimeDependentNode
+template <class CharT, class Traits, class Allocator>
+std::basic_string <CharT, Traits, Allocator>
+trim (const std::basic_string <CharT, Traits, Allocator> & string, const CharT* charlist = " \t\n\r\0\x0B")
 {
-public:
+	typedef std::basic_string <CharT, Traits, Allocator> string_type;
 
-	virtual
-	SFBool &
-	enabled () final
-	{ return *fields .enabled; }
+	typename string_type::size_type first = string .find_first_not_of (charlist);
+	typename string_type::size_type last  = string .find_last_not_of  (charlist);
 
-	virtual
-	const SFBool &
-	enabled () const final
-	{ return *fields .enabled; }
+	if (first == string_type::npos or last == string_type::npos)
+		return string_type ();
 
-	SFString &
-	description ()
-	{ return *fields .description; }
+	return string .substr (first, last - first + 1);
+}
 
-	const SFString &
-	description () const
-	{ return *fields .description; }
-
-	SFFloat &
-	speed ()
-	{ return *fields .speed; }
-
-	const SFFloat &
-	speed () const
-	{ return *fields .speed; }
-
-	SFFloat &
-	pitch ()
-	{ return *fields .pitch; }
-
-	const SFFloat &
-	pitch () const
-	{ return *fields .pitch; }
-
-	SFBool &
-	isActive ()
-	{ return *fields .isActive; }
-
-	const SFBool &
-	isActive () const
-	{ return *fields .isActive; }
-
-	SFTime &
-	duration_changed ()
-	{ return *fields .duration_changed; }
-
-	const SFTime &
-	duration_changed () const
-	{ return *fields .duration_changed; }
-
-	///  @name Modifiers
-
-	void
-	setVolume (float);
-
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () override;
-
-
-protected:
-
-	X3DSoundSourceNode ();
-
-	virtual
-	void
-	initialize () override;
-
-	void
-	setUri (const basic::uri &);
-
-	float
-	getDuration () const;
-
-	bool
-	sync () const;
-
-	const Glib::RefPtr <Gst::XImageSink> &
-	getVideoSink () const;
-
-
-private:
-
-	void
-	prepareEvents ();
-
-	void
-	on_message (const Glib::RefPtr <Gst::Message> &);
-
-	void
-	set_speed ();
-
-	void
-	set_pitch ();
-
-	virtual
-	void
-	set_start () final;
-
-	virtual
-	void
-	set_stop () final;
-
-	virtual
-	void
-	set_pause () final;
-
-	virtual
-	void
-	set_resume () final;
-
-	void
-	set_end ();
-
-	struct Fields
-	{
-		Fields ();
-
-		SFBool* const enabled;
-		SFString* const description;
-		SFFloat* const speed;
-		SFFloat* const pitch;
-		SFBool* const isActive;
-		SFTime* const duration_changed;
-	};
-
-	Fields fields;
-
-	SFTime                        end;
-	std::shared_ptr <MediaStream> mediaStream;
-
-};
-
-} // X3D
+} // basic
 } // titania
 
 #endif

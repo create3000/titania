@@ -56,7 +56,7 @@
 #include <stdexcept>
 #include <string>
 
-#include <iostream>
+#include "../LOG.h"
 
 namespace titania {
 namespace basic {
@@ -345,7 +345,7 @@ public:
 
 	///  Returns the full basename of this URI.
 	string_type
-	basename () const;
+	basename (bool = true) const;
 
 	///  Returns the basename of this URI.
 	string_type
@@ -738,10 +738,15 @@ basic_uri <StringT>::filename () const
 
 template <class StringT>
 typename basic_uri <StringT>::string_type
-basic_uri <StringT>::basename () const
+basic_uri <StringT>::basename (bool suf) const
 {
-	if (path () .length ())
-		return path () .substr (path (). rfind (Signs::Slash) + 1);
+	if (suf)
+	{
+		if (path () .length ())
+			return path () .substr (path (). rfind (Signs::Slash) + 1);
+	}
+	else
+		return basename (suffix ());
 
 	return string_type ();
 }
@@ -780,10 +785,10 @@ template <class StringT>
 typename basic_uri <StringT>::string_type
 basic_uri <StringT>::suffix () const
 {
-	typename string_type::size_type dot = path () .rfind (Signs::DotSlash, 2);
+	typename string_type::size_type dot = path () .find_last_of (Signs::DotSlash);
 
 	if (dot not_eq string_type::npos and path () [dot] == Signs::Dot)
-		return path () .substr (dot + 1);
+		return path () .substr (dot);
 
 	return string_type ();
 }

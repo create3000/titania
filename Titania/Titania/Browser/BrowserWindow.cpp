@@ -51,6 +51,7 @@
 #include "BrowserWindow.h"
 
 #include "../Configuration/config.h"
+#include <Titania/String/Trim.h>
 
 namespace titania {
 namespace puck {
@@ -81,6 +82,18 @@ BrowserWindow::initialize ()
 	getFileOpenDialog () .set_default_response (Gtk::RESPONSE_OK);
 	getFileOpenDialog () .add_button ("gtk-open", Gtk::RESPONSE_OK);
 	getFileOpenDialog () .add_button ("gtk-cancel", Gtk::RESPONSE_CANCEL);
+	
+	getFileFilterX3D   () -> set_name ("X3D");
+	getFileFilterImage () -> set_name ("Images");
+	getFileFilterAudio () -> set_name ("Audio");
+	getFileFilterVideo () -> set_name ("Videos");
+
+	getFileOpenDialog () .add_filter (getFileFilterX3D ());
+	getFileOpenDialog () .add_filter (getFileFilterImage ());
+	getFileOpenDialog () .add_filter (getFileFilterAudio ());
+	getFileOpenDialog () .add_filter (getFileFilterVideo ());
+
+	getFileOpenDialog () .set_filter (getFileFilterX3D ());
 
 	// FileSaveDialog
 	getFileSaveDialog () .set_default_response (Gtk::RESPONSE_OK);
@@ -103,6 +116,14 @@ BrowserWindow::initialize ()
 	Glib::RefPtr <Gtk::CssProvider> cssProvider = Gtk::CssProvider::create ();
 	cssProvider -> load_from_path (get_ui ("style.css"));
 	Gtk::StyleContext::add_provider_for_screen (Gdk::Screen::get_default (), cssProvider, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+
+	// Drag & drop targets
+	std::vector<Gtk::TargetEntry> targets = {
+		Gtk::TargetEntry ("STRING"),
+		Gtk::TargetEntry ("text/plain")
+	};
+
+	getSurfaceBox () .drag_dest_set (targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
 
 	// Window
 	getWindow () .grab_focus ();
@@ -127,7 +148,7 @@ BrowserWindow::on_save ()
 {
 	const basic::uri & worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
 
-	if (worldURL .empty () or worldURL .is_network ())
+	if (get_save_as () or worldURL .empty () or worldURL .is_network ())
 		on_save_as ();
 
 	else
@@ -420,6 +441,24 @@ BrowserWindow::on_key_release_event (GdkEventKey* event)
 	keys .release (event);
 
 	return false;
+}
+
+void
+BrowserWindow::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context, 
+                                      int x, int y,
+                                      const Gtk::SelectionData & selection_data,
+                                      guint info,
+                                      guint time)
+{
+	if (selection_data .get_format () == 8)
+	{
+		open (Glib::uri_unescape_string (basic::trim (selection_data .get_data_as_string ())));
+
+		context -> drag_finish (true, false, time);
+		return;
+	}
+
+	context -> drag_finish (false, false, time);
 }
 
 } // puck

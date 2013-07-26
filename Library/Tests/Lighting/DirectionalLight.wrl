@@ -2,17 +2,18 @@
 
 META "title" "DirectionalLight"
 
-NavigationInfo {
+DEF _0 NavigationInfo {
   headlight FALSE
+
   #type [ "ANY", "WALK" ]
 }
 
 DEF Light1 DirectionalLight {
-  ambientIntensity 0.44
+  ambientIntensity 1
   direction -0.342887 -0.849953 0.400012
 }
 
-Transform {
+DEF _1 Transform {
   children Transform {
     children [
       Transform {
@@ -24,8 +25,11 @@ Transform {
         }
       }
       PointLight {
+        global FALSE
+        color 1 0 0
         location 12 0 0
         radius 1
+        ambientIntensity 1
         attenuation 1 1 0
       }
     ]

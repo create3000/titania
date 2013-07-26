@@ -85,19 +85,25 @@ config_dir (const std::string & filename)
 basic::uri
 get_page (const std::string & filename)
 {
-	return os::find_data_file (TITANIA_DATA_DIR + "pages/" + filename);
+	return find_data_file ("pages/" + filename);
 }
 
 std::string
 get_ui (const std::string & filename)
 {
-	return os::find_data_file (TITANIA_DATA_DIR + "ui/" + filename);
+	return find_data_file ("ui/" + filename);
 }
 
 std::string
 get_icon (const std::string & filename)
 {
-	return os::find_data_file (TITANIA_DATA_DIR + "icons/" + filename);
+	return find_data_file ("icons/" + filename);
+}
+
+std::string
+find_data_file (const std::string & filename)
+{
+	return os::find_data_file (TITANIA_DATA_DIR + filename);
 }
 
 } // puck

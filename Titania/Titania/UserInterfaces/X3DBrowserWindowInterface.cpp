@@ -61,14 +61,17 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
+	m_fileFilterAllFiles = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterAllFiles"));
+	m_fileFilterAudio    = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterAudio"));
+	m_fileFilterImage    = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterImage"));
+	m_fileFilterVideo    = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterVideo"));
+	m_fileFilterX3D      = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterX3D"));
 	m_iconFactory        = Glib::RefPtr <Gtk::IconFactory>::cast_dynamic (m_builder -> get_object ("IconFactory"));
+	m_menuAccelGroup     = Glib::RefPtr <Gtk::AccelGroup>::cast_dynamic (m_builder -> get_object ("MenuAccelGroup"));
 	m_newAction          = Glib::RefPtr <Gtk::Action>::cast_dynamic (m_builder -> get_object ("NewAction"));
 	m_openAction         = Glib::RefPtr <Gtk::Action>::cast_dynamic (m_builder -> get_object ("OpenAction"));
 	m_revertAction       = Glib::RefPtr <Gtk::Action>::cast_dynamic (m_builder -> get_object ("RevertAction"));
 	m_saveAction         = Glib::RefPtr <Gtk::Action>::cast_dynamic (m_builder -> get_object ("SaveAction"));
-	m_fileFilerX3D       = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilerX3D"));
-	m_fileFilterAllFiles = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterAllFiles"));
-	m_menuAccelGroup     = Glib::RefPtr <Gtk::AccelGroup>::cast_dynamic (m_builder -> get_object ("MenuAccelGroup"));
 
 	// Get widgets.
 	m_builder -> get_widget ("FileOpenDialog", m_fileOpenDialog);
@@ -253,6 +256,9 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	// Connect object Gtk::ImageMenuItem with id 'InfoMenuItem'.
 	connections .emplace_back (m_infoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_info)));
 	connections .emplace_back (m_standardSizeMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_standard_size)));
+
+	// Connect object Gtk::HBox with id 'SurfaceBox'.
+	connections .emplace_back (m_surfaceBox -> signal_drag_data_received () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_drag_data_received)));
 
 	// Connect object Gtk::RadioToolButton with id 'HandButton'.
 	connections .emplace_back (m_handButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_hand_button_toggled)));

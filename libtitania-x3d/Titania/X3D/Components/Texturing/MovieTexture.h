@@ -101,8 +101,6 @@ private:
 	void
 	update () final;
 
-	Glib::RefPtr <Gst::XImageSink> vsink;
-
 };
 
 } // X3D

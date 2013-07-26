@@ -118,7 +118,8 @@ libpcrecpp
 ImageMagick++)
 
 PKG_CHECK_MODULES(TITANIA_STREAM,
-libcurl)
+libcurl
+giomm-2.4)
 
 PKG_CHECK_MODULES(TITANIA_SQLITE,
 sqlite3)

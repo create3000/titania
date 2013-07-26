@@ -1,0 +1,9 @@
+#X3D V3.0 utf8 Titania
+
+DEF __NAME__ Sound {
+  source AudioClip {
+    description "__DESCRIPTION__"
+    url __URL__
+    loop TRUE
+  }
+}

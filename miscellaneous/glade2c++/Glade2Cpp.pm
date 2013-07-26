@@ -560,50 +560,9 @@ page_added
   virtual void on_page_added(Widget* page, guint page_num);
 page_removed
   virtual void on_page_removed(Widget* page, guint page_num);
-
-button_press-event
-
-key_press-event
-
-key_press-event
-
-key_press_event
-  virtual bool on_key_press_event(GdkEventKey* event);
 key_press_event
   virtual bool on_key_press_event(GdkEventKey* event);
 key_release_event
   virtual bool on_key_release_event(GdkEventKey* event);
-key_press_event
-  virtual bool on_key_press_event(GdkEventKey* event);
-key_release_event
-  virtual bool on_key_release_event(GdkEventKey* event);
-key_press_event
-  virtual bool on_key_press_event(GdkEventKey* event);
-key_release_event
-  virtual bool on_key_release_event(GdkEventKey* event);
-key_press_event
-  virtual bool on_key_press_event(GdkEventKey* event);
-key_release_event
-  virtual bool on_key_release_event(GdkEventKey* event);
-key_press_event
-  virtual bool on_key_press_event(GdkEventKey* event);
-key_release_event
-  virtual bool on_key_release_event(GdkEventKey* event);
-key_press_event
-  virtual bool on_key_press_event(GdkEventKey* event);
-key_release_event
-  virtual bool on_key_release_event(GdkEventKey* event);
-key_press_event
-  virtual bool on_key_press_event(GdkEventKey* event);
-key_release_event
-  virtual bool on_key_release_event(GdkEventKey* event);
-key_press_event
-  virtual bool on_key_press_event(GdkEventKey* event);
-key_release_event
-  virtual bool on_key_release_event(GdkEventKey* event);
-key_press_event
-  virtual bool on_key_press_event(GdkEventKey* event);
-key_release_event
-  virtual bool on_key_release_event(GdkEventKey* event);
-key_press_event
-  virtual bool on_key_press_event(GdkEventKey* event);
+drag_data_received
+  virtual void on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, const SelectionData& selection_data, guint info, guint time);

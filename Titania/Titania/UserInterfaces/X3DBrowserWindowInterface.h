@@ -73,8 +73,26 @@ public:
 	const std::string &
 	getWidgetName () const { return m_widgetName; }
 
+	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilterAllFiles () const { return m_fileFilterAllFiles; }
+
+	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilterAudio () const { return m_fileFilterAudio; }
+
+	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilterImage () const { return m_fileFilterImage; }
+
+	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilterVideo () const { return m_fileFilterVideo; }
+
+	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilterX3D () const { return m_fileFilterX3D; }
+
 	const Glib::RefPtr <Gtk::IconFactory> &
 	getIconFactory () const { return m_iconFactory; }
+
+	const Glib::RefPtr <Gtk::AccelGroup> &
+	getMenuAccelGroup () const { return m_menuAccelGroup; }
 
 	const Glib::RefPtr <Gtk::Action> &
 	getNewAction () const { return m_newAction; }
@@ -87,15 +105,6 @@ public:
 
 	const Glib::RefPtr <Gtk::Action> &
 	getSaveAction () const { return m_saveAction; }
-
-	const Glib::RefPtr <Gtk::FileFilter> &
-	getFileFilerX3D () const { return m_fileFilerX3D; }
-
-	const Glib::RefPtr <Gtk::FileFilter> &
-	getFileFilterAllFiles () const { return m_fileFilterAllFiles; }
-
-	const Glib::RefPtr <Gtk::AccelGroup> &
-	getMenuAccelGroup () const { return m_menuAccelGroup; }
 
 	Gtk::FileChooserDialog &
 	getFileOpenDialog () const { return *m_fileOpenDialog; }
@@ -412,6 +421,10 @@ public:
 
 	virtual
 	void
+	on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y, const SelectionData & selection_data, guint info, guint time) = 0;
+
+	virtual
+	void
 	on_hand_button_toggled () = 0;
 
 	virtual
@@ -436,14 +449,17 @@ private:
 
 	std::deque <sigc::connection>   connections;
 	Glib::RefPtr <Gtk::Builder>     m_builder;
+	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterAllFiles;
+	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterAudio;
+	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterImage;
+	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterVideo;
+	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterX3D;
 	Glib::RefPtr <Gtk::IconFactory> m_iconFactory;
+	Glib::RefPtr <Gtk::AccelGroup>  m_menuAccelGroup;
 	Glib::RefPtr <Gtk::Action>      m_newAction;
 	Glib::RefPtr <Gtk::Action>      m_openAction;
 	Glib::RefPtr <Gtk::Action>      m_revertAction;
 	Glib::RefPtr <Gtk::Action>      m_saveAction;
-	Glib::RefPtr <Gtk::FileFilter>  m_fileFilerX3D;
-	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterAllFiles;
-	Glib::RefPtr <Gtk::AccelGroup>  m_menuAccelGroup;
 	Gtk::FileChooserDialog*         m_fileOpenDialog;
 	Gtk::FileChooserDialog*         m_fileSaveDialog;
 	Gtk::CheckButton*               m_saveCompressedButton;
