@@ -672,6 +672,11 @@ jsX3DExecutionContext::addRoute (JSContext* context, uintN argc, jsval* vp)
 				return JS_FALSE;
 			}
 		}
+		else
+		{
+			JS_ReportError (context, "X3DExecutionContext .addRoute: couldn't add route, directOutput is FALSE.");
+			return JS_FALSE;
+		}
 	}
 
 	JS_ReportError (context, "X3DExecutionContext .addRoute: wrong number of arguments");
@@ -716,6 +721,11 @@ jsX3DExecutionContext::deleteRoute (JSContext* context, uintN argc, jsval* vp)
 				JS_ReportError (context, error .what ());
 				return JS_FALSE;
 			}
+		}
+		else
+		{
+			JS_ReportError (context, "X3DExecutionContext .deleteRoute: couldn't delete route, directOutput is FALSE.");
+			return JS_FALSE;
 		}
 	}
 

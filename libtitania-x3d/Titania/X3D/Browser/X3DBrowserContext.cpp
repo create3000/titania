@@ -116,7 +116,7 @@ X3DBrowserContext::initialize ()
 
 	// Initialize clock
 
-	clock -> advance ();
+	advanceClock ();
 
 	// Properties
 
@@ -484,23 +484,29 @@ X3DBrowserContext::addEvent ()
  */
 
 void
+X3DBrowserContext::advanceClock ()
+{
+	clock -> advance ();
+
+	X3DViewpointNode* activeViewpoint = getActiveViewpoint ();
+
+	if (activeViewpoint)
+		currentSpeed .setPosition (activeViewpoint -> getTransformationMatrix () .translation (), currentFrameRate);
+
+	else
+		currentSpeed .setPosition (Vector3f (), 0);
+
+	currentFrameRate = 1 / clock -> interval ();
+}
+
+void
 X3DBrowserContext::update ()
 {
 	try
 	{
 		// Prepare
 
-		clock -> advance ();
-
-		X3DViewpointNode* activeViewpoint = getActiveViewpoint ();
-
-		if (activeViewpoint)
-			currentSpeed .setPosition (activeViewpoint -> getTransformationMatrix () .translation (), currentFrameRate);
-
-		else
-			currentSpeed .setPosition (Vector3f (), 0);
-
-		currentFrameRate = 1 / clock -> interval ();
+		advanceClock ();
 
 		prepareEvents .processInterests ();
 		router .processEvents ();

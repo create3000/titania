@@ -99,9 +99,6 @@ private:
 	void
 	select (X3D::X3DFieldDefinition* const, bool, X3D::ChildObjectSet &) const;
 
-	bool
-	is_parent_selected (X3D::X3DBaseNode* const) const;
-
 	OutlineTreeView* const treeView;
 	bool                   selectMultiple;
 	bool                   forceSelection;

@@ -194,17 +194,5 @@ OutlineSelection::select (X3D::X3DFieldDefinition* const field, bool value, X3D:
 	}
 }
 
-bool
-OutlineSelection::is_parent_selected (X3D::X3DBaseNode* const node) const
-{
-	for (const auto & parent : node -> getParents ())
-	{
-		if (treeView -> get_user_data (parent) -> selected)
-			return true;
-	}
-
-	return false;
-}
-
 } // puck
 } // titania

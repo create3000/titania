@@ -216,7 +216,7 @@ throw (Error <INVALID_SCENE>)
 {
 	// Replace world.
 
-	clock -> advance ();
+	advanceClock ();
 
 	if (initialized)
 		shutdown .processInterests ();
@@ -268,7 +268,7 @@ throw (Error <INVALID_URL>,
 
 	world -> bind ();
 
-	clock -> advance ();
+	advanceClock ();
 }
 
 X3DSFNode <Scene>

@@ -87,6 +87,12 @@ operator == (const X3D::Array <X3D::X3DField <Type>> & lhs, const X3D::Array <X3
 	                   [ ] (const Type * a, const Type * b){ return *a == *b; });
 }
 
+void
+delete_object (X3D::X3DObject* o)
+{
+	delete o;
+}
+
 int
 main (int argc, char* argv [ ])
 {
@@ -96,6 +102,23 @@ main (int argc, char* argv [ ])
 	Gtk::Main::init_gtkmm_internals ();
 
 	std::clog << std::boolalpha << std::endl;
+	
+	__LOG__ << sizeof (X3D::SFBool) << std::endl;
+	__LOG__ << sizeof (X3D::SFDouble) << std::endl;
+	__LOG__ << sizeof (X3D::SFString) << std::endl;
+	__LOG__ << sizeof (X3D::SFMatrix4d) << std::endl;
+	__LOG__ << sizeof (X3D::SFVec4d) << std::endl;
+
+	__LOG__ << std::endl;
+	__LOG__ << sizeof (X3D::MFBool) << std::endl;
+	__LOG__ << sizeof (X3D::MFDouble) << std::endl;
+	__LOG__ << sizeof (X3D::MFString) << std::endl;
+	__LOG__ << sizeof (X3D::MFMatrix4d) << std::endl;
+	__LOG__ << sizeof (X3D::MFVec4d) << std::endl;
+
+	__LOG__ << std::endl;
+	__LOG__ << sizeof (X3D::Scene) << std::endl;
+	__LOG__ << sizeof (X3D::Transform) << std::endl;
 
 	std::clog << "Test started ..." << std::endl << std::endl;
 	{
@@ -104,27 +127,40 @@ main (int argc, char* argv [ ])
 		{
 			auto browser = X3D::getBrowser ();
 
-			X3D::Array <X3D::SFInt32> a1;
-			X3D::Array <X3D::SFInt32> a2;
+			for (int i = 0; i < 5; ++ i)
+			{
+				{
+					X3D::MFInt32 a1;
 
-			std::clog << (a1 == a2) << std::endl;
+					a1 .resize (2000000);
 
-			//			X3D::MFInt32 o;
-			//
-			//			for (int i = 0; i < 10; ++ i)
-			//			{
-			//				{
-			//					X3D::MFInt32 a1;
-			//
-			//					a1 .resize (2000000);
-			//
-			//					__LOG__ << a1 .size () << std::endl;
-			//				}
-			//
-			//				o .getGarbageCollector () .dispose ();
-			//
-			//				sleep (1);
-			//			}
+					__LOG__ << a1 .size () << std::endl;
+				}
+
+				__LOG__ << browser .getGarbageCollector () .size () << std::endl;
+				browser .getGarbageCollector () .dispose ();
+
+				sleep (3);
+			}
+
+//			for (int i = 0; i < 5; ++ i)
+//			{
+//				{
+//					std::deque <X3D::SFInt32*> a1;
+//
+//					for (int i = 0; i < 2000000; ++ i)
+//						a1 .emplace_back (new X3D::SFInt32 ());
+//
+//					for (const auto & field : a1)
+//						browser .getGarbageCollector () .addObject (field);
+//
+//					__LOG__ << a1 .size () << std::endl;
+//				}
+//
+//				browser .getGarbageCollector () .dispose ();
+//
+//				sleep (1);
+//			}
 		}
 
 		std::clog << "End of block ..." << std::endl;

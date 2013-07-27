@@ -904,6 +904,11 @@ jsBrowser::deleteRoute (JSContext* context, uintN argc, jsval* vp)
 				return JS_FALSE;
 			}
 		}
+		else
+		{
+			JS_ReportError (context, "Browser .deleteRoute: couldn't delete route, directOutput is FALSE.");
+			return JS_TRUE;
+		}
 	}
 
 	JS_ReportError (context, "Browser .deleteRoute: wrong number of arguments");

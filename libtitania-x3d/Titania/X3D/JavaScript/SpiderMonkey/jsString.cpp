@@ -81,7 +81,7 @@ JS_NewStringValue (JSContext* context, const std::string & string, jsval* vp)
 std::string
 JS_GetString (JSContext* context, JSString* jsstring)
 {
-	char* chars = JS_EncodeString (context, jsstring);
+	char* chars = jsstring ? JS_EncodeString (context, jsstring) : nullptr;
 
 	std::string string = chars ? chars : "";
 

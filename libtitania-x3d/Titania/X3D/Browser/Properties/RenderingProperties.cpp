@@ -52,13 +52,13 @@
 
 #include "../../Execution/X3DExecutionContext.h"
 #include "../X3DBrowser.h"
-#include <Titania/String/Join.h>
-#include <Titania/String/Split.h>
-#include <Titania/String/strfsize.h>
+
+#include <Titania/String.h>
+
 #include <iomanip>
 #include <iostream>
 
-#include <sys/resource.h>
+#include <malloc.h>
 
 namespace titania {
 namespace X3D {
@@ -381,7 +381,7 @@ RenderingProperties::update ()
 	stringstream .str (""); stringstream << "Texture units:             " << textureUnits ();
 	string .emplace_back (stringstream .str ());
 
-	stringstream .str (""); stringstream << "Max texture size:          " << maxTextureSize () << " × " << maxTextureSize () << " pixel";
+	stringstream .str (""); stringstream << "Max texture size:          " << maxTextureSize () << " x " << maxTextureSize () << " pixel";
 	string .emplace_back (stringstream .str ());
 
 	stringstream .str (""); stringstream << "Antialiased:               " << antialiased ();
@@ -396,10 +396,7 @@ RenderingProperties::update ()
 	stringstream .str (""); stringstream << "Available Texture Memory:  " << strfsize (getAvailableTextureMemory ());
 	string .emplace_back (stringstream .str ());
 
-	struct rusage usage;
-	getrusage (RUSAGE_SELF, &usage);
-
-	stringstream .str (""); stringstream << "Memory Usage:              " << strfsize (usage .ru_maxrss * 1024);
+	stringstream .str (""); stringstream << "Memory Usage:              " << strfsize (getGarbageCollector () .getAllocatedMemory ());
 	string .emplace_back (stringstream .str ());
 
 	stringstream .str ("");

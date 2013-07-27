@@ -46,40 +46,41 @@
  *
  * For Silvio, Joy and Adi.
  *
- ******************************************************************************/
+ ****************#include <glibtop/mem.h>**************************************************************/
 
 #include "GarbageCollector.h"
 
-#include "../Base/X3DChildObject.h"
+#include "../Base/X3DObject.h"
 
-#include <cassert>
-#include <iostream>
+#include <glibtop.h>
+#include <glibtop/procmem.h>
+
+#include <unistd.h>
+#include <malloc.h>
+#include <thread>
 
 namespace titania {
 namespace X3D {
 
 GarbageCollector::GarbageCollector ()
-{ }
+{
+	glibtop_init ();
+}
+
+size_t
+GarbageCollector::getAllocatedMemory () const
+{
+	static glibtop_proc_mem memory;
+
+	glibtop_get_proc_mem (&memory, getpid ());
+
+	return memory .rss;
+}
 
 void
 GarbageCollector::addObject (X3DObject* object)
 {
-	//	try
-	//	{
-	//		__LOG__ << object -> getTypeName () << " '" << object -> getName () << "' " << (X3DChildObject*) object << std::endl;
-	//	}
-	//	catch (...)
-	//	{ }
-
-	if (not disposedObjects .insert (object) .second)
-	{
-		try
-		{
-			__LOG__ << object -> getTypeName () << " '" << object -> getName () << "' " << (X3DChildObject*) object << std::endl;
-		}
-		catch (...)
-		{ }
-	}
+	disposedObjects .emplace_back (object);
 }
 
 void
@@ -87,7 +88,7 @@ GarbageCollector::dispose ()
 {
 	while (disposedObjects .size ())
 	{
-		for (const auto & object : ObjectSet (std::move (disposedObjects)))
+		for (const auto & object : ObjectArray (std::move (disposedObjects)))
 		{
 			// __LOG__ << (X3DChildObject*) object << " " << object -> getName () << std::endl;
 
@@ -96,8 +97,14 @@ GarbageCollector::dispose ()
 	}
 }
 
-GarbageCollector::size_type
-GarbageCollector::size ()
+void
+GarbageCollector::trimFreeMemory () const
+{
+	std::thread (malloc_trim, 0) .detach ();
+}
+
+size_t
+GarbageCollector::size () const
 {
 	return disposedObjects .size ();
 }

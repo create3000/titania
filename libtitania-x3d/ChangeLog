@@ -1,5 +1,22 @@
 2013-07-27  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* ObjectSet.h:
+	* ObjectSet.cpp:
+	* Scene.cpp:
+	* X3DBrowser.cpp:
+	* GarbageCollector.h:
+	* GarbargeCollector.cpp:
+	* X3DBrowserContext.h:
+	* X3DBrowserContext.cpp:
+	* jsString.cpp:
+	* jsBrowser.cpp:
+	* RenderingProperties.cpp:
+	* jsX3DExecutionContext.cpp: 
+
+2013-07-27  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* TransformHandle.h:
 	* X3DGroupingNode.h: 
 

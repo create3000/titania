@@ -251,11 +251,12 @@ protected:
 	setViewer (ViewerType, NavigationInfo*)
 	{ }
 
+	void
+	advanceClock ();
+
 	virtual
 	void
 	update ();
-
-	std::shared_ptr <X3DClock> clock;
 
 
 private:
@@ -271,6 +272,10 @@ private:
 
 	void
 	set_navigationInfo_type ();
+
+	// Members
+
+	std::shared_ptr <X3DClock> clock;
 
 	Router           router;
 	RendererStack    renderers;

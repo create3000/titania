@@ -51,3 +51,4 @@
 #include "String/Join.h"
 #include "String/Split.h"
 #include "String/Trim.h"
+#include "String/strfsize.h"

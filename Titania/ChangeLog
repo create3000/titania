@@ -1,5 +1,11 @@
 2013-07-27  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* history.db:
+	* OutlineSelection.h:
+	* OutlineSelection.cpp: 
+
+2013-07-27  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* History.cpp:
 	* date.wrl:
 	* test.wrl:

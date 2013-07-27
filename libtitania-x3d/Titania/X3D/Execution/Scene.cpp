@@ -50,6 +50,8 @@
 
 #include "Scene.h"
 
+#include <malloc.h>
+
 namespace titania {
 namespace X3D {
 
@@ -72,6 +74,8 @@ Scene::create (X3DExecutionContext* const executionContext) const
 Scene::~Scene ()
 {
 	__LOG__ << std::endl;
+
+	getGarbageCollector () .trimFreeMemory ();
 }
 
 } // X3D

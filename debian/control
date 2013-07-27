@@ -20,7 +20,8 @@ Build-Depends: debhelper (>= 5),
                intltool,
                gettext,
                libtool,
-               firefox-dev
+               firefox-dev,
+               libgtop2-dev
 
 Homepage: https://titania.create3000.de/
 Package: titania
@@ -41,7 +42,8 @@ Depends: ${shlibs:Depends},
          libcurl4-gnutls-dev, 
          libsqlite3-0, 
          libgstreamermm-0.10-2,
-         zlib1g
+         zlib1g,
+         libgtop2-common
 Conflicts:
 Replaces:
 Provides: titania

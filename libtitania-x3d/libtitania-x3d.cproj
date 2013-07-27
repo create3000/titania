@@ -526,7 +526,6 @@
     <None Include="Titania\X3D\Parser\Grammar.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DConstants.h" />
     <None Include="Titania\X3D\Basic\NodeSet.h" />
-    <None Include="Titania\X3D\Base\ObjectSet.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey.h" />
     <None Include="Titania\X3D\JavaScript\X3DJavaScriptEngine.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsContext.h" />
@@ -966,7 +965,6 @@
     <Compile Include="Titania\X3D\Parser\Grammar.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DConstants.cpp" />
     <Compile Include="Titania\X3D\Basic\NodeSet.cpp" />
-    <Compile Include="Titania\X3D\Base\ObjectSet.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey.cpp" />
     <Compile Include="Titania\X3D\JavaScript\X3DJavaScriptEngine.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsContext.cpp" />

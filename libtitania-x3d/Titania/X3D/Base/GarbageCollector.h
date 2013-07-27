@@ -51,27 +51,34 @@
 #ifndef __TITANIA_X3D_BASE_GARBAGE_COLLECTOR_H__
 #define __TITANIA_X3D_BASE_GARBAGE_COLLECTOR_H__
 
-#include "../Base/ObjectSet.h"
+#include <cstddef>
+#include <deque>
 
 namespace titania {
 namespace X3D {
+
+class X3DObject;
 
 class GarbageCollector
 {
 public:
 
-	typedef ObjectSet::size_type size_type;
-
 	GarbageCollector ();
+
+	size_t
+	getAllocatedMemory () const;
 
 	void
 	addObject (X3DObject*);
 
-	size_type
-	size ();
-
 	void
 	dispose ();
+
+	void
+	trimFreeMemory () const;
+
+	size_t
+	size () const;
 
 	~GarbageCollector ();
 
@@ -83,7 +90,9 @@ private:
 	GarbageCollector &
 	operator = (const GarbageCollector &) = delete;
 
-	ObjectSet disposedObjects;
+	typedef std::deque <X3DObject*> ObjectArray;
+
+	ObjectArray disposedObjects;
 
 };
 

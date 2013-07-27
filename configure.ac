@@ -115,7 +115,8 @@ ftgl
 glu
 mozjs185
 libpcrecpp
-ImageMagick++)
+ImageMagick++
+libgtop-2.0)
 
 PKG_CHECK_MODULES(TITANIA_STREAM,
 libcurl
