@@ -119,6 +119,7 @@
     <None Include="Titania\OS\FileSize.h" />
     <None Include="Titania\OS\LoadFile.h" />
     <None Include="Titania\Chrono.h" />
+    <None Include="Titania\OS\FileExists.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />
@@ -165,6 +166,7 @@
     <Compile Include="Titania\Math\Algorithms\SquadInterpolator.cpp" />
     <Compile Include="Titania\OS\FileSize.cpp" />
     <Compile Include="Titania\OS\LoadFile.cpp" />
+    <Compile Include="Titania\OS\FileExists.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

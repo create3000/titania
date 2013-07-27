@@ -97,7 +97,7 @@ public:
 
 	virtual
 	void
-	notify () final;
+	notify () override;
 
 	virtual
 	void

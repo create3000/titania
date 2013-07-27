@@ -39,6 +39,7 @@ libtitania_standard_la_SOURCES =  \
 	Titania/Math/Numbers/Vector4.cpp \
 	Titania/OS/CWD.cpp \
 	Titania/OS/Env.cpp \
+	Titania/OS/FileExists.cpp \
 	Titania/OS/FileSize.cpp \
 	Titania/OS/FindDataFile.cpp \
 	Titania/OS/Home.cpp \

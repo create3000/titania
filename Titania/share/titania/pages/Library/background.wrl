@@ -3,6 +3,8 @@
 META "icon" "about:icon"
 META "title" "about:url_error"
 
+# Background used in date and url_error
+
 EXTERNPROTO Red [
   inputOutput SFFloat transparency
 ]

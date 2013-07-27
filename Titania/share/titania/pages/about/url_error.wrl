@@ -13,7 +13,7 @@ NavigationInfo {
 }
 
 Inline {
-  url "background.wrl"
+  url "../Library/background.wrl"
 }
 
 Viewpoint { }

@@ -1,5 +1,17 @@
 2013-07-27  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* History.cpp:
+	* date.wrl:
+	* test.wrl:
+	* url_error.wrl:
+	* background.wrl:
+	* OutlineSelection.h:
+	* OutlineTreeView.cpp:
+	* background.wrl:
+	* OutlineSelection.cpp: 
+
+2013-07-27  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* GoldenGate.cpp: 
 
 2013-07-26  Holger Seelig  <holger.seelig@yahoo.de>

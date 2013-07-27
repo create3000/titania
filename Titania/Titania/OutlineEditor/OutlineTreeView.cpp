@@ -281,16 +281,12 @@ OutlineTreeView::on_edited (const Glib::ustring & string_path, const Glib::ustri
 bool
 OutlineTreeView::on_key_press_event (GdkEventKey* event)
 {
-	selection .set_select_multiple (getBrowserWindow () -> getKeys () .shift ());
-
 	return Gtk::TreeView::on_key_press_event (event);
 }
 
 bool
 OutlineTreeView::on_key_release_event (GdkEventKey* event)
 {
-	selection .set_select_multiple (getBrowserWindow () -> getKeys () .shift ());
-
 	return Gtk::TreeView::on_key_release_event (event);
 }
 
@@ -830,6 +826,8 @@ OutlineTreeView::select_node (const Gtk::TreeModel::iterator & iter, const Gtk::
 {
 	if (get_data_type (iter) == OutlineIterType::X3DBaseNode)
 	{
+		selection .set_select_multiple (getBrowserWindow () -> getKeys () .shift ());
+
 		selection .select (*static_cast <X3D::SFNode*> (get_object (iter)));
 	}
 }

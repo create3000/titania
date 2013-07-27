@@ -62,25 +62,34 @@ OutlineSelection::OutlineSelection (BrowserWindow* const browserWindow, OutlineT
 	  selectMultiple (false),
 	  forceSelection (false)
 {
-	getBrowser () -> getSelection () -> children () .addInterest (this, &OutlineSelection::set_selection);
-}
-
-void
-OutlineSelection::set_selection ()
-{
-	for (const auto & sfnode : getBrowser () -> getSelection () -> children ())
-		select (sfnode .getValue (), true);
-
-	treeView -> queue_draw ();
+	getBrowser () -> getSelection () -> children () .addInterest (this, &OutlineSelection::set_children);
 }
 
 void
 OutlineSelection::set_select_multiple (bool value)
 {
-	selectMultiple = value;
+	if (value not_eq selectMultiple)
+	{
+		selectMultiple = value;
 
-	if (not value)
-		forceSelection = true;
+		if (not value)
+			forceSelection = true;
+	}
+}
+	
+const X3D::MFNode &
+OutlineSelection::get_children () const
+{
+	return getBrowser () -> getSelection () -> children ();
+}
+
+void
+OutlineSelection::set_children ()
+{
+	for (const auto & sfnode : get_children ())
+		select (sfnode .getValue (), true);
+
+	treeView -> queue_draw ();
 }
 
 void
@@ -88,9 +97,7 @@ OutlineSelection::select (const X3D::SFNode & sfnode)
 {
 	if (sfnode)
 	{
-		const auto & children = getBrowser () -> getSelection () -> children ();
-
-		bool selected = std::find (children .begin (), children .end (), sfnode) not_eq children .end ();
+		bool selected = std::find (get_children () .begin (), get_children () .end (), sfnode) not_eq get_children () .end ();
 
 		if (selectMultiple)
 		{
@@ -109,7 +116,7 @@ OutlineSelection::select (const X3D::SFNode & sfnode)
 }
 
 void
-OutlineSelection::remove (const X3D::SFNode & sfnode)
+OutlineSelection::remove (const X3D::SFNode & sfnode) const
 {
 	select (sfnode .getValue (), false);
 
@@ -119,14 +126,14 @@ OutlineSelection::remove (const X3D::SFNode & sfnode)
 void
 OutlineSelection::clear ()
 {
-	for (const auto & sfnode : getBrowser () -> getSelection () -> children ())
+	for (const auto & sfnode : get_children ())
 		select (sfnode .getValue (), false);
 
 	getBrowser () -> getSelection () -> clear ();
 }
 
 void
-OutlineSelection::select (X3D::X3DBaseNode* node, bool value)
+OutlineSelection::select (X3D::X3DBaseNode* const node, bool value) const
 {
 	X3D::ChildObjectSet objects;
 
@@ -134,18 +141,15 @@ OutlineSelection::select (X3D::X3DBaseNode* node, bool value)
 }
 
 void
-OutlineSelection::select (X3D::X3DBaseNode* node, bool value, X3D::ChildObjectSet & seen)
+OutlineSelection::select (X3D::X3DBaseNode* const node, bool value, X3D::ChildObjectSet & seen) const
 {
 	if (node)
 	{
 		if (not seen .insert (node) .second)
 			return;
 
-		if (treeView -> get_user_data (node) -> selected == value)
-			return;
-
 		// Select node
-
+			
 		treeView -> get_user_data (node) -> selected = value;
 
 		// Select children
@@ -156,11 +160,8 @@ OutlineSelection::select (X3D::X3DBaseNode* node, bool value, X3D::ChildObjectSe
 }
 
 void
-OutlineSelection::select (X3D::X3DFieldDefinition* field, bool value, X3D::ChildObjectSet & seen)
+OutlineSelection::select (X3D::X3DFieldDefinition* const field, bool value, X3D::ChildObjectSet & seen) const
 {
-	if (treeView -> get_user_data (field) -> selected == value)
-		return;
-
 	// Select field
 
 	treeView -> get_user_data (field) -> selected = value;
@@ -180,13 +181,29 @@ OutlineSelection::select (X3D::X3DFieldDefinition* field, bool value, X3D::Child
 			auto mfnode = static_cast <X3D::MFNode*> (field);
 
 			for (auto & sfnode :* mfnode)
-				select (&sfnode, value, seen);
+			{
+				treeView -> get_user_data (&sfnode) -> selected = value;
+
+				select (sfnode .getValue (), value, seen);
+			}
 
 			break;
 		}
 		default:
 			break;
 	}
+}
+
+bool
+OutlineSelection::is_parent_selected (X3D::X3DBaseNode* const node) const
+{
+	for (const auto & parent : node -> getParents ())
+	{
+		if (treeView -> get_user_data (parent) -> selected)
+			return true;
+	}
+
+	return false;
 }
 
 } // puck

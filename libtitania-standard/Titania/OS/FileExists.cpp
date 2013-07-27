@@ -48,77 +48,20 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_HANDLES_TRANSFORM_HANDLE_H__
-#define __TITANIA_X3D_HANDLES_TRANSFORM_HANDLE_H__
+#include "IsDirectory.h"
 
-#include "../Handles/X3DHandleObject.h"
-
-#include "../Components/Grouping/Transform.h"
+#include <sys/stat.h>
 
 namespace titania {
-namespace X3D {
+namespace os {
 
-class Transform;
-
-class TransformHandle :
-	public Transform, public X3DHandleObject
+bool
+file_exists (const std::string & pathname)
 {
-public:
+	static struct stat sb;
 
-	TransformHandle (Transform* const, X3DExecutionContext* const);
+	return stat (pathname .c_str (), &sb) == 0;
+}
 
-	virtual
-	Box3f
-	getBBox () final;
-
-	virtual
-	void
-	addHandle () final
-	{ }
-
-	virtual
-	void
-	removeHandle () final;
-
-	virtual
-	void
-	notify () final
-	{ }
-
-	virtual
-	void
-	addEvent (X3DChildObject* const) final
-	{ }
-
-	virtual
-	void
-	addEvent (X3DChildObject* const, const Event &) final
-	{ }
-
-	virtual
-	void
-	traverse (TraverseType type) final;
-
-	virtual
-	void
-	dispose () final;
-
-
-private:
-
-	virtual
-	void
-	initialize () final;
-
-	void
-	reshape ();
-
-	X3DSFNode <Transform> transform;
-	X3DSFNode <Scene>     scene;
-
-};
-
-} // X3D
+} // os
 } // titania
-
-#endif

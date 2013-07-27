@@ -80,21 +80,27 @@ public:
 
 
 private:
+	
+	const X3D::MFNode &
+	get_children () const;
 
 	void
-	set_selection ();
+	set_children ();
 
 	void
-	remove (const X3D::SFNode &);
+	remove (const X3D::SFNode &) const;
 
 	void
-	select (X3D::X3DBaseNode*, bool);
+	select (X3D::X3DBaseNode* const, bool) const;
 
 	void
-	select (X3D::X3DBaseNode*, bool, X3D::ChildObjectSet &);
+	select (X3D::X3DBaseNode* const, bool, X3D::ChildObjectSet &) const;
 
 	void
-	select (X3D::X3DFieldDefinition*, bool, X3D::ChildObjectSet &);
+	select (X3D::X3DFieldDefinition* const, bool, X3D::ChildObjectSet &) const;
+
+	bool
+	is_parent_selected (X3D::X3DBaseNode* const) const;
 
 	OutlineTreeView* const treeView;
 	bool                   selectMultiple;

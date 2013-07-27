@@ -48,77 +48,18 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_HANDLES_TRANSFORM_HANDLE_H__
-#define __TITANIA_X3D_HANDLES_TRANSFORM_HANDLE_H__
+#ifndef __TITANIA_OS_FILE_EXISTS_H__
+#define __TITANIA_OS_FILE_EXISTS_H__
 
-#include "../Handles/X3DHandleObject.h"
-
-#include "../Components/Grouping/Transform.h"
+#include <string>
 
 namespace titania {
-namespace X3D {
+namespace os {
 
-class Transform;
+bool
+file_exists (const std::string &);
 
-class TransformHandle :
-	public Transform, public X3DHandleObject
-{
-public:
-
-	TransformHandle (Transform* const, X3DExecutionContext* const);
-
-	virtual
-	Box3f
-	getBBox () final;
-
-	virtual
-	void
-	addHandle () final
-	{ }
-
-	virtual
-	void
-	removeHandle () final;
-
-	virtual
-	void
-	notify () final
-	{ }
-
-	virtual
-	void
-	addEvent (X3DChildObject* const) final
-	{ }
-
-	virtual
-	void
-	addEvent (X3DChildObject* const, const Event &) final
-	{ }
-
-	virtual
-	void
-	traverse (TraverseType type) final;
-
-	virtual
-	void
-	dispose () final;
-
-
-private:
-
-	virtual
-	void
-	initialize () final;
-
-	void
-	reshape ();
-
-	X3DSFNode <Transform> transform;
-	X3DSFNode <Scene>     scene;
-
-};
-
-} // X3D
+} // os
 } // titania
 
 #endif

@@ -4,7 +4,7 @@ META "icon" "about:icon"
 META "title" "about:date"
 
 Inline {
-  url "background.wrl"
+  url "../Library/background.wrl"
 }
 
 Transform {

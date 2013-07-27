@@ -60,9 +60,12 @@ namespace puck {
 History::History () :
 	database ()
 {
+	std::string filename     = config_dir ("history.db");
+	bool        have_history = os::file_exists (filename);
+
 	os::system ("mkdir", "-p", config_dir ());
 
-	database .open (config_dir ("history.db"));
+	database .open (filename);
 
 	database .query ("CREATE TABLE IF NOT EXISTS History ("
 	                 "id           INTEGER, "
@@ -73,6 +76,13 @@ History::History () :
 	                 "lastAccess   REAL    DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now')),"
 	                 "creationTime REAL    DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now')),"
 	                 "PRIMARY KEY (id ASC))");
+
+	if (not have_history)
+	{
+		setItem ("about:date",  "about:date");
+		setItem ("about:gears", "about:gears");
+		setItem ("about:home",  "about:home");
+	}
 }
 
 void

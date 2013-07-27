@@ -53,6 +53,7 @@
 
 #include "OS/CWD.h"
 #include "OS/Env.h"
+#include "OS/FileExists.h"
 #include "OS/FileSize.h"
 #include "OS/FindDataFile.h"
 #include "OS/Home.h"

@@ -2,6 +2,14 @@
 
 	* Makefile.am:
 	* OS.h:
+	* FileExists.h:
+	* libtitania-standard.cproj:
+	* FileExists.cpp: 
+
+2013-07-27  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* OS.h:
 	* Chrono.h:
 	* LoadFile.h:
 	* LoadFile.cpp:
