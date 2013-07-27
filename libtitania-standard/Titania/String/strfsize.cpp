@@ -51,44 +51,44 @@
 #include "strfsize.h"
 
 #include <iomanip>
+#include <vector>
 #include <sstream>
 
 namespace titania {
 namespace X3D {
 
 std::string
-strfsize (size_t size)
+strfsize (size_t bytes)
 {
 	// Create human readable storage units string.
 
-	std::ostringstream stringstream;
+	static const std::vector <std::string> sizes = {
+		"Bytes",
+		"KiB",
+		"MiB",
+		"GiB",
+		"TiB",
+		"PiB",
+		"EiB",
+		"ZiB",
+		"YiB"
+	};
 
-	if (size > 10995116277760)
-	{
-		size /= 1099511627776;
-		stringstream << std::setprecision (size < 100 ? 1 : 0) << std::fixed << size << " TiB";
-	}
-	else if (size > 10737418240)
-	{
-		size /= 1073741824;
-		stringstream << std::setprecision (size < 100 ? 1 : 0) << std::fixed << size << " GiB";
-	}
-	else if (size > 10485760)
-	{
-		size /= 1048576;
-		stringstream << std::setprecision (size < 100 ? 1 : 0) << std::fixed << size << " MiB";
-	}
-	else if (size > 10240)
-	{
+	long double size = bytes;
+	size_t      i    = 0;
+
+	for ( ; size > 10240; ++ i)
 		size /= 1024;
-		stringstream << std::setprecision (size < 100 ? 1 : 0) << std::fixed << size << " KiB";
-	}
-	else
-	{
-		stringstream << size << " Bytes";
-	}
 
-	return stringstream .str ();
+	std::ostringstream ostream;
+
+	if (i)
+		ostream << std::setprecision (size < 100 ? 1 : 0) << std::fixed << size << ' ' << sizes [i];
+		
+	else
+		ostream << size << ' ' << sizes [i];
+
+	return ostream .str ();
 }
 
 } // X3D
