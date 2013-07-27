@@ -58,6 +58,7 @@
 #include "OS/Home.h"
 #include "OS/IsDirectory.h"
 #include "OS/IsFile.h"
+#include "OS/LoadFile.h"
 #include "OS/Mkdir.h"
 #include "OS/System.h"
 

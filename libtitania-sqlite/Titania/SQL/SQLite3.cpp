@@ -50,6 +50,7 @@
 
 #include "SQLite3.h"
 
+#include <pcrecpp.h>
 #include <iostream>
 
 namespace titania {
@@ -114,7 +115,13 @@ throw (std::out_of_range)
 std::string
 sqlite3::quote (const std::string & value) const
 {
-	return "'" + value + "'";
+	static const pcrecpp::RE SingleQuote ("'");
+	
+	std::string string = value;
+	
+	SingleQuote .GlobalReplace ("''", &string);
+
+	return "'" + string + "'";
 }
 
 void

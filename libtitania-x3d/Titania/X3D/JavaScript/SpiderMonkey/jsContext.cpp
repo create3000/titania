@@ -590,7 +590,7 @@ jsContext::error (JSContext* context, const char* message, JSErrorReport* report
 
 	if (ecmascript .size ())
 	{
-		char nl = ecmascript .find ('\n', 0) == String::npos ? '\r' : '\n';
+		char nl = ecmascript .find ('\n', 0) == std::string::npos ? '\r' : '\n';
 
 		std::string::size_type start = 0;
 		std::string::size_type end   = 0;
@@ -599,16 +599,16 @@ jsContext::error (JSContext* context, const char* message, JSErrorReport* report
 		{
 			start = ecmascript .find (nl, start);
 
-			if (start == String::npos)
+			if (start == std::string::npos)
 				break;
 
 			else
 				++ start;
 		}
 
-		if (start not_eq String::npos)
+		if (start not_eq std::string::npos)
 		{
-			if ((end = ecmascript .find (nl, start)) == String::npos)
+			if ((end = ecmascript .find (nl, start)) == std::string::npos)
 				end = ecmascript .length ();
 
 			line = ecmascript .substr (start, end - start);

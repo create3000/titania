@@ -57,6 +57,9 @@ namespace titania {
 namespace X3D {
 
 void
+filter_non_id_characters (std::string &);
+
+void
 filter_control_characters (std::string &);
 
 void

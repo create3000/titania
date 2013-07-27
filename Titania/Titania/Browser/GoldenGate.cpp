@@ -52,54 +52,21 @@
 
 #include "../Configuration/config.h"
 
-#include <Titania/LOG.h>
-#include <Titania/Stream/InputFileStream.h>
+#include <Titania/OS.h>
 #include <Titania/X3D.h>
-#include <Titania/X3D/Types/MediaStream.h>
 
 #include <Magick++.h>
 #include <giomm.h>
 #include <pcrecpp.h>
 
-#include <fstream>
-#include <sstream>
-
 namespace titania {
 namespace puck {
-
-#define M_INCH 0.0254
 
 static const pcrecpp::RE Name        ("__NAME__");
 static const pcrecpp::RE Description ("__DESCRIPTION__");
 static const pcrecpp::RE Width       ("__WIDTH__");
 static const pcrecpp::RE Height      ("__HEIGHT__");
 static const pcrecpp::RE URL         ("__URL__");
-
-static
-std::string
-load_file (const std::string & filename)
-{
-	std::ifstream ifstream (filename);
-
-	std::ostringstream osstream;
-
-	osstream << ifstream .rdbuf ();
-
-	return osstream .str ();
-}
-
-static
-void
-filter_non_id_characters (std::string & string)
-{
-	static const pcrecpp::RE NonIdFirstChar (R"/(^[\x30-\x39\x00-\x20\x22\x23\x27\x2b\x2c\x2d\x2e\x5b\x5c\x5d\x7b\x7d\x7f])/");
-	static const pcrecpp::RE NonIdChars (R"/([\x00-\x20\x22\x23\x27\x2c\x2e\x5b\x5c\x5d\x7b\x7d\x7f])/");
-
-	NonIdChars .GlobalReplace ("", &string);
-
-	while (NonIdFirstChar .Replace ("", &string))
-		;
-}
 
 static
 std::string
@@ -111,7 +78,7 @@ get_name (const basic::uri & uri)
 
 	Spaces .GlobalReplace ("_", &name);
 
-	filter_non_id_characters (name);
+	X3D::filter_non_id_characters (name);
 
 	if (name .size ())
 		return name;
@@ -134,7 +101,7 @@ golden_image (const basic::uri & uri)
 		float width  = (float) image .size () .width  () / (float) image .density () .width  () * M_INCH;
 		float height = (float) image .size () .height () / (float) image .density () .height () * M_INCH;
 
-		std::string file = load_file (find_data_file ("filetype/image.wrl"));
+		std::string file = os::load_file (find_data_file ("filetype/image.wrl"));
 
 		Name   .GlobalReplace (get_name (uri), &file);
 		Width  .GlobalReplace (std::to_string (width), &file);
@@ -155,7 +122,7 @@ static
 std::string
 golden_audio (const basic::uri & uri)
 {
-	std::string file = load_file (find_data_file ("filetype/audio.wrl"));
+	std::string file = os::load_file (find_data_file ("filetype/audio.wrl"));
 
 	Name        .GlobalReplace (get_name (uri), &file);
 	Description .GlobalReplace (X3D::SFString (uri .basename (false)) .toString (), &file);
@@ -173,14 +140,14 @@ golden_video (const basic::uri & uri)
 	mediaStream .setUri (uri);
 	mediaStream .sync ();
 
-	std::string file = load_file (find_data_file ("filetype/video.wrl"));
+	std::string file = os::load_file (find_data_file ("filetype/video.wrl"));
 
 	float width  = 1;
 	float height = 1;
 
 	if (mediaStream .getVideoSink () -> get_last_buffer ())
 	{
-		width  = (float) mediaStream .getVideoSink () -> get_width () / 72.0f * M_INCH;
+		width  = (float) mediaStream .getVideoSink () -> get_width  () / 72.0f * M_INCH;
 		height = (float) mediaStream .getVideoSink () -> get_height () / 72.0f * M_INCH;
 	}
 
@@ -213,9 +180,6 @@ throw (std::invalid_argument)
 
 		else if (Gio::content_type_is_a (stream .response_headers () .at ("Content-Type"), "video/*"))
 			return golden_video (uri);
-
-		else
-			throw std::invalid_argument ("");
 	}
 	catch (...)
 	{ }

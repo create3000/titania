@@ -48,22 +48,18 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_MATH_CONSTANTS_H__
-#define __TITANIA_MATH_CONSTANTS_H__
+#ifndef __TITANIA_OS_LOAD_FILE_H__
+#define __TITANIA_OS_LOAD_FILE_H__
 
-#include <cmath>
+#include <string>
 
 namespace titania {
-namespace math {
+namespace os {
 
-#define M_PI1_2  (M_PI / 2)
-#define M_PI2    (2 * M_PI)
+std::string
+load_file (const std::string &);
 
-#define M_PHI    1.6180339887498948482045868343656381177203091798057628
-
-#define M_INCH   0.0254
-
-} // math
+} // os
 } // titania
 
 #endif

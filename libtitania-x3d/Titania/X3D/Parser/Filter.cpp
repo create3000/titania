@@ -56,6 +56,18 @@ namespace titania {
 namespace X3D {
 
 void
+filter_non_id_characters (std::string & string)
+{
+	static const pcrecpp::RE NonIdFirstChar (R"/(^[\x30-\x39\x00-\x20\x22\x23\x27\x2b\x2c\x2d\x2e\x5b\x5c\x5d\x7b\x7d\x7f])/");
+	static const pcrecpp::RE NonIdChars (R"/([\x00-\x20\x22\x23\x27\x2c\x2e\x5b\x5c\x5d\x7b\x7d\x7f])/");
+
+	NonIdChars .GlobalReplace ("", &string);
+
+	while (NonIdFirstChar .Replace ("", &string))
+		;
+}
+
+void
 filter_control_characters (std::string & string)
 {
 	static const pcrecpp::RE ControlCharacters (R"/([\x00-\x08\x0B\x0C\x0E-\x1F])/", pcrecpp::RE_Options () .set_multiline (true));

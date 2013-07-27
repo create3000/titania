@@ -48,22 +48,25 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_MATH_CONSTANTS_H__
-#define __TITANIA_MATH_CONSTANTS_H__
+#include "LoadFile.h"
 
-#include <cmath>
+#include <fstream>
+#include <sstream>
 
 namespace titania {
-namespace math {
+namespace os {
 
-#define M_PI1_2  (M_PI / 2)
-#define M_PI2    (2 * M_PI)
+std::string
+load_file (const std::string & filename)
+{
+	std::ifstream ifstream (filename);
 
-#define M_PHI    1.6180339887498948482045868343656381177203091798057628
+	std::ostringstream osstream;
 
-#define M_INCH   0.0254
+	osstream << ifstream .rdbuf ();
 
-} // math
+	return osstream .str ();
+}
+
+} // os
 } // titania
-
-#endif
