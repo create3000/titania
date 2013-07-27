@@ -61,8 +61,6 @@ namespace math {
 
 #define M_PHI    1.6180339887498948482045868343656381177203091798057628
 
-#define M_INCH   0.0254
-
 } // math
 } // titania
 

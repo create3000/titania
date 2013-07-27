@@ -60,7 +60,7 @@ namespace X3D {
 std::string
 strfsize (size_t bytes)
 {
-	// Create human readable storage units string.
+	// Create human readable storage unit string.
 
 	static const std::vector <std::string> sizes = {
 		"Bytes",
@@ -73,12 +73,18 @@ strfsize (size_t bytes)
 		"ZiB",
 		"YiB"
 	};
+	
+	static const size_t numSizes_1 = sizes .size () - 1;
+
+	// Shrink size
 
 	long double size = bytes;
 	size_t      i    = 0;
 
-	for ( ; size > 10240; ++ i)
+	for ( ; size > 10240 and i < numSizes_1; ++ i)
 		size /= 1024;
+
+	// Output size
 
 	std::ostringstream ostream;
 

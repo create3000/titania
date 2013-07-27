@@ -68,7 +68,7 @@ GarbageCollector::GarbageCollector ()
 }
 
 size_t
-GarbageCollector::getAllocatedMemory () const
+GarbageCollector::getMemoryUsage () const
 {
 	static glibtop_proc_mem memory;
 

@@ -1,3 +1,13 @@
+2013-07-28  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* Trim.h:
+	* Trim.cpp:
+	* Constants.h:
+	* libtitania-standard.cproj:
+	* strfsize.cpp:
+	* Constants.h: 
+
 2013-07-27  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* strfsize.cpp: 

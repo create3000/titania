@@ -1,3 +1,9 @@
+2013-07-28  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* GarbageCollector.h:
+	* GarbargeCollector.cpp:
+	* RenderingProperties.cpp: 
+
 2013-07-27  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

@@ -54,6 +54,7 @@
 
 #include <Titania/OS.h>
 #include <Titania/X3D.h>
+#include <Titania/Physics/Constants.h>
 
 #include <Magick++.h>
 #include <giomm.h>

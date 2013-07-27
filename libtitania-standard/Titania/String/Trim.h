@@ -51,23 +51,13 @@
 #ifndef __TITANIA_STRING_TRIM_H__
 #define __TITANIA_STRING_TRIM_H__
 
+#include <string>
+
 namespace titania {
 namespace basic {
 
-template <class CharT, class Traits, class Allocator>
-std::basic_string <CharT, Traits, Allocator>
-trim (const std::basic_string <CharT, Traits, Allocator> & string, const CharT* charlist = " \t\n\r\0\x0B")
-{
-	typedef std::basic_string <CharT, Traits, Allocator> string_type;
-
-	typename string_type::size_type first = string .find_first_not_of (charlist);
-	typename string_type::size_type last  = string .find_last_not_of  (charlist);
-
-	if (first == string_type::npos or last == string_type::npos)
-		return string_type ();
-
-	return string .substr (first, last - first + 1);
-}
+std::string
+trim (const std::string &, const std::string::value_type* = " \t\n\r\0\x0B");
 
 } // basic
 } // titania

@@ -396,7 +396,7 @@ RenderingProperties::update ()
 	stringstream .str (""); stringstream << "Available Texture Memory:  " << strfsize (getAvailableTextureMemory ());
 	string .emplace_back (stringstream .str ());
 
-	stringstream .str (""); stringstream << "Memory Usage:              " << strfsize (getGarbageCollector () .getAllocatedMemory ());
+	stringstream .str (""); stringstream << "Memory Usage:              " << strfsize (getGarbageCollector () .getMemoryUsage ());
 	string .emplace_back (stringstream .str ());
 
 	stringstream .str ("");

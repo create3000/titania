@@ -167,6 +167,7 @@
     <Compile Include="Titania\OS\FileSize.cpp" />
     <Compile Include="Titania\OS\LoadFile.cpp" />
     <Compile Include="Titania\OS\FileExists.cpp" />
+    <Compile Include="Titania\String\Trim.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

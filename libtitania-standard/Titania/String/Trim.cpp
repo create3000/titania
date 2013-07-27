@@ -48,55 +48,22 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BASE_GARBAGE_COLLECTOR_H__
-#define __TITANIA_X3D_BASE_GARBAGE_COLLECTOR_H__
-
-#include <cstddef>
-#include <deque>
+#include "Trim.h"
 
 namespace titania {
-namespace X3D {
+namespace basic {
 
-class X3DObject;
-
-class GarbageCollector
+std::string
+trim (const std::string & string, const std::string::value_type* charlist)
 {
-public:
+	std::string::size_type first = string .find_first_not_of (charlist);
+	std::string::size_type last  = string .find_last_not_of  (charlist);
 
-	GarbageCollector ();
+	if (first == std::string::npos or last == std::string::npos)
+		return std::string ();
 
-	size_t
-	getMemoryUsage () const;
-
-	void
-	addObject (X3DObject*);
-
-	void
-	dispose ();
-
-	void
-	trimFreeMemory () const;
-
-	size_t
-	size () const;
-
-	~GarbageCollector ();
-
-
-private:
-
-	GarbageCollector (const GarbageCollector &) = delete;
-
-	GarbageCollector &
-	operator = (const GarbageCollector &) = delete;
-
-	typedef std::deque <X3DObject*> ObjectArray;
-
-	ObjectArray disposedObjects;
-
-};
+	return string .substr (first, last - first + 1);
+}
 
 } // X3D
 } // titania
-
-#endif

@@ -49,7 +49,8 @@ libtitania_standard_la_SOURCES =  \
 	Titania/OS/Mkdir.cpp \
 	Titania/OS/System.cpp \
 	Titania/String/Split.cpp \
-	Titania/String/strfsize.cpp
+	Titania/String/strfsize.cpp \
+	Titania/String/Trim.cpp
 
 libtitania_standard_la_LIBADD = $(TITANIA_STANDARD_LIBS) 
 

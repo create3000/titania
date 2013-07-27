@@ -56,6 +56,8 @@ namespace math {
 
 #define P_GN     9.80665
 
+#define M_INCH   0.0254
+
 } // math
 } // titania
 
