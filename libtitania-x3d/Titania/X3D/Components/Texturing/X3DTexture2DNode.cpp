@@ -96,7 +96,7 @@ X3DTexture2DNode::initialize ()
 
 	repeatS ()           .addInterest (this, &X3DTexture2DNode::updateTextureProperties);
 	repeatT ()           .addInterest (this, &X3DTexture2DNode::updateTextureProperties);
-	textureProperties () .addInterest (this, &X3DTexture2DNode::updateTextureProperties);
+	textureProperties () .addInterest (this, &X3DTexture2DNode::update);
 }
 
 const TextureProperties*
@@ -108,6 +108,70 @@ X3DTexture2DNode::getTextureProperties () const
 		return _textureProperties;
 
 	return x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties ());
+}
+
+void
+X3DTexture2DNode::addBorder (Magick::Image & image)
+{
+	const TextureProperties* textureProperties = getTextureProperties ();
+
+	if (textureProperties -> borderWidth () > 0)
+	{
+		std::ostringstream color;
+
+		color
+			<< std::hex
+			<< '#'
+			<< std::setfill ('0')
+			<< std::setw (2) << (int) (uint8_t) (textureProperties -> borderColor () .getR () * 255)
+			<< std::setw (2) << (int) (uint8_t) (textureProperties -> borderColor () .getG () * 255)
+			<< std::setw (2) << (int) (uint8_t) (textureProperties -> borderColor () .getB () * 255)
+			<< std::setw (2) << (int) (uint8_t) (textureProperties -> borderColor () .getA () * 255);
+
+		image .borderColor (Magick::Color (color .str ()));
+
+		image .border (Magick::Geometry (textureProperties -> borderWidth (),
+		                                 textureProperties -> borderWidth ()));
+	}
+}
+
+void
+X3DTexture2DNode::scaleImage (Magick::Image & image)
+{
+	if (std::max (width, height) < MIN_SCALE_SIZE)
+		return;
+
+	bool needsScaling = false;
+
+	size_t width  = this -> width;
+	size_t height = this -> height;
+
+	GLint max_texture_size;
+
+	glGetIntegerv (GL_MAX_TEXTURE_SIZE, &max_texture_size);
+
+	if (not math::is_power_of_two (width))
+	{
+		width        = std::min (math::next_power_of_two (width), (size_t) max_texture_size);
+		needsScaling = true;
+	}
+
+	if (not math::is_power_of_two (height))
+	{
+		height       = std::min (math::next_power_of_two (height), (size_t) max_texture_size);
+		needsScaling = true;
+	}
+
+	if (needsScaling)
+	{
+		std::clog
+			<< "Warning: Texture needs scaling: scaling texture from "
+			<< this -> width << " × " << this -> height
+			<< " to " << width << " × " << height << " pixel."
+			<< std::endl;
+
+		X3DTextureNode::scaleImage (image, width, height);
+	}
 }
 
 void
@@ -175,45 +239,6 @@ X3DTexture2DNode::getImageFormat (Magick::Image & image, GLenum & format)
 }
 
 void
-X3DTexture2DNode::scaleImage (Magick::Image & image)
-{
-	if (std::max (width, height) < MIN_SCALE_SIZE)
-		return;
-
-	bool needsScaling = false;
-
-	size_t width  = this -> width;
-	size_t height = this -> height;
-
-	GLint max_texture_size;
-
-	glGetIntegerv (GL_MAX_TEXTURE_SIZE, &max_texture_size);
-
-	if (not math::is_power_of_two (width))
-	{
-		width        = std::min (math::next_power_of_two (width), (size_t) max_texture_size);
-		needsScaling = true;
-	}
-
-	if (not math::is_power_of_two (height))
-	{
-		height       = std::min (math::next_power_of_two (height), (size_t) max_texture_size);
-		needsScaling = true;
-	}
-
-	if (needsScaling)
-	{
-		std::clog
-			<< "Warning: Texture needs scaling: scaling texture from "
-			<< this -> width << " × " << this -> height
-			<< " to " << width << " × " << height << " pixel."
-			<< std::endl;
-
-		X3DTextureNode::scaleImage (image, width, height);
-	}
-}
-
-void
 X3DTexture2DNode::setImage (Magick::Image & image)
 {
 	// TextureProperties
@@ -225,8 +250,9 @@ X3DTexture2DNode::setImage (Magick::Image & image)
 
 	//image .flip ();
 
-	// scale image
+	// Process image
 
+	addBorder (image);
 	scaleImage (image);
 
 	// get image properties
@@ -318,7 +344,7 @@ X3DTexture2DNode::updateTextureProperties () const
 	glTexParameterfv (GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR,       textureProperties -> borderColor () .getValue () .data ());
 	glTexParameterf  (GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, textureProperties -> anisotropicDegree ());
 	glTexParameterf  (GL_TEXTURE_2D, GL_TEXTURE_PRIORITY,           textureProperties -> texturePriority ());
-	
+
 }
 
 void

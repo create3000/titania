@@ -132,6 +132,9 @@ private:
 	getTextureProperties () const;
 
 	void
+	addBorder (Magick::Image &);
+
+	void
 	scaleImage (Magick::Image &);
 
 	void
