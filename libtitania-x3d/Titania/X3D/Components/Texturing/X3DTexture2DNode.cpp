@@ -276,9 +276,12 @@ X3DTexture2DNode::setImage (Magick::Image & image)
 }
 
 void
-X3DTexture2DNode::setImage (size_t components, GLenum format, GLint width, GLint height, const void* data)
+X3DTexture2DNode::setImage (size_t components, GLenum format, GLint w, GLint h, const void* data)
 {
 	// transfer image
+	
+	width  = w;
+	height = h;
 
 	GLint level = 0;     // This texture is level 0 in mimpap generation.
 

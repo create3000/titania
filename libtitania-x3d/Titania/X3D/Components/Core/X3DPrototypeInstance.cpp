@@ -83,6 +83,8 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 
 	if (not executionContext -> isProto ())
 		assign1 (proto);
+
+	setExtendedEventHandling (false);
 }
 
 X3DPrototypeInstance*

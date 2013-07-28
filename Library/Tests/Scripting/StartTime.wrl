@@ -33,7 +33,8 @@ function set_startTime (value)
 	print ('********** set_startTime: ' + value);
 
 }
-		"
+"
+    directOutput TRUE
   }
 
   ROUTE Data.startTime_changed TO _Test.set_startTime
@@ -48,7 +49,7 @@ function initialize ()
 {
 	time = 1000;
 }
-  "
+"
 }
 
 DEF Test Test {
