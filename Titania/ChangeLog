@@ -1,5 +1,13 @@
 2013-07-28  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* BrowserWindow.h:
+	* BrowserWindow.ui:
+	* BrowserWindow.cpp:
+	* X3DBrowserWindowInterface.h:
+	* X3DBrowserWindowInterface.cpp: 
+
+2013-07-28  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* GoldenGate.cpp: 
 
 2013-07-27  Holger Seelig  <holger.seelig@yahoo.de>

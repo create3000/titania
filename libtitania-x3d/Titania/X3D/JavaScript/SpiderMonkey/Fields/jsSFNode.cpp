@@ -159,7 +159,7 @@ jsSFNode::construct (JSContext* context, uintN argc, jsval* vp)
 		}
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (context, "SFNode .construct: wrong number of arguments");
 
 	return JS_FALSE;
 }
@@ -254,33 +254,28 @@ jsSFNode::getProperty (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 JSBool
 jsSFNode::setProperty (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
-	Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
-
-	if (script -> directOutput ())
+	if (JSID_IS_STRING (id))
 	{
-		if (JSID_IS_STRING (id))
+		SFNode* sfnode = (SFNode*) JS_GetPrivate (context, obj);
+
+		if (sfnode -> getValue ())
 		{
-			SFNode* sfnode = (SFNode*) JS_GetPrivate (context, obj);
-
-			if (sfnode -> getValue ())
+			try
 			{
-				try
-				{
-					X3DFieldDefinition* field = sfnode -> getValue () -> getField (JS_GetString (context, id));
+				X3DFieldDefinition* field = sfnode -> getValue () -> getField (JS_GetString (context, id));
 
-					if (field -> getAccessType () == initializeOnly or field -> getAccessType () == outputOnly)
-						return JS_TRUE;
-
-					if (not JS_ValueToField (context, field, vp))
-						return JS_FALSE;
-
-					*vp = JSVAL_VOID;
-
+				if (field -> getAccessType () == initializeOnly or field -> getAccessType () == outputOnly)
 					return JS_TRUE;
-				}
-				catch (const Error <INVALID_NAME> &)
-				{ }
+
+				if (not JS_ValueToField (context, field, vp))
+					return JS_FALSE;
+
+				*vp = JSVAL_VOID;
+
+				return JS_TRUE;
 			}
+			catch (const Error <INVALID_NAME> &)
+			{ }
 		}
 	}
 
@@ -297,7 +292,7 @@ jsSFNode::getNodeName (JSContext* context, uintN argc, jsval* vp)
 		return JS_NewStringValue (context, *sfnode ? sfnode -> getValue () -> getName () : "", &JS_RVAL (context, vp));
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (context, "SFNode .getNodeName: wrong number of arguments");
 
 	return JS_FALSE;
 }
@@ -335,7 +330,7 @@ jsSFNode::getNodeType (JSContext* context, uintN argc, jsval* vp)
 		return JS_TRUE;
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (context, "SFNode .getNodeType: wrong number of arguments");
 
 	return JS_FALSE;
 }
@@ -353,7 +348,7 @@ jsSFNode::getFieldDefinitions (JSContext* context, uintN argc, jsval* vp)
 			return jsFieldDefinitionArray::create (context, NULL, &JS_RVAL (context, vp));
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (context, "SFNode .getFieldDefinitions: wrong number of arguments");
 
 	return JS_FALSE;
 }
@@ -368,7 +363,7 @@ jsSFNode::toVRMLString (JSContext* context, uintN argc, jsval* vp)
 		return JS_NewStringValue (context, sfnode -> toString (), &JS_RVAL (context, vp));
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (context, "SFNode .toVRMLString: wrong number of arguments");
 
 	return JS_FALSE;
 }
@@ -383,7 +378,7 @@ jsSFNode::toXMLString (JSContext* context, uintN argc, jsval* vp)
 		return JS_NewStringValue (context, "", &JS_RVAL (context, vp));
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (context, "SFNode .toXMLString: wrong number of arguments");
 
 	return JS_FALSE;
 }
@@ -402,7 +397,7 @@ jsSFNode::toString (JSContext* context, uintN argc, jsval* vp)
 			return JS_NewStringValue (context, "NULL", &JS_RVAL (context, vp));
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (context, "SFNode .toString: wrong number of arguments");
 
 	return JS_FALSE;
 }

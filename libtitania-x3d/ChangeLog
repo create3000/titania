@@ -1,5 +1,15 @@
 2013-07-28  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* jsBrowser.cpp:
+	* jsSFVec3.h:
+	* jsSFVec4.h:
+	* jsSFVec2.h:
+	* jsSFNode.cpp:
+	* jsSFRotation.cpp:
+	* jsX3DExecutionContext.cpp: 
+
+2013-07-28  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* MovieTexture.cpp:
 	* X3DTexture2DNode.cpp: 
 

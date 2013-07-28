@@ -232,7 +232,7 @@ jsBrowser::replaceWorld (JSContext* context, uintN argc, jsval* vp)
 
 			if (not JS_InstanceOf (context, scene, jsX3DScene::getClass (), NULL))
 			{
-				JS_ReportError (context, "Type of argument 1 is invalid - should be X3DScene, is %s", JS_GetClass (context, scene) -> name);
+				JS_ReportError (context, "Browser .replaceWorld: Type of argument 1 is invalid - should be X3DScene, is %s", JS_GetClass (context, scene) -> name);
 				return JS_FALSE;
 			}
 
@@ -244,7 +244,7 @@ jsBrowser::replaceWorld (JSContext* context, uintN argc, jsval* vp)
 		return JS_TRUE;
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (context, "Browser .replaceWorld: wrong number of arguments");
 
 	return JS_FALSE;
 }
@@ -276,7 +276,7 @@ jsBrowser::createX3DFromString (JSContext* context, uintN argc, jsval* vp)
 		}
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (context, "Browser .createX3DFromString: wrong number of arguments");
 
 	return JS_FALSE;
 }
@@ -300,7 +300,7 @@ jsBrowser::createX3DFromURL (JSContext* context, uintN argc, jsval* vp)
 
 		if (JS_GetClass (context, ourl) not_eq jsMFString::getClass ())
 		{
-			JS_ReportError (context, "Type of argument 1 is invalid - should be MFString, is %s", JS_GetClass (context, ourl) -> name);
+			JS_ReportError (context, "Browser .createX3DFromURL: type of argument 1 is invalid - should be MFString, is %s", JS_GetClass (context, ourl) -> name);
 			return JS_FALSE;
 		}
 
@@ -384,7 +384,7 @@ jsBrowser::createX3DFromURL (JSContext* context, uintN argc, jsval* vp)
 						return JS_TRUE;
 					}
 
-					JS_ReportError (context, "Couldn't call function '%s'.", JS_GetString (context, event) .c_str ());
+					JS_ReportError (context, "Browser .createX3DFromURL: Couldn't call function '%s'.", JS_GetString (context, event) .c_str ());
 					return JS_FALSE;
 				}
 				catch (const X3DError & error)
@@ -432,7 +432,7 @@ jsBrowser::loadURL (JSContext* context, uintN argc, jsval* vp)
 
 		if (JS_GetClass (context, ourl) not_eq jsMFString::getClass ())
 		{
-			JS_ReportError (context, "Type of argument 1 is invalid - should be MFString, is %s", JS_GetClass (context, ourl) -> name);
+			JS_ReportError (context, "Browser .loadURL: type of argument 1 is invalid - should be MFString, is %s", JS_GetClass (context, ourl) -> name);
 			return JS_FALSE;
 		}
 
@@ -440,7 +440,7 @@ jsBrowser::loadURL (JSContext* context, uintN argc, jsval* vp)
 
 		if (JS_GetClass (context, oparameter) not_eq jsMFString::getClass ())
 		{
-			JS_ReportError (context, "Type of argument 1 is invalid - should be MFString, is %s", JS_GetClass (context, oparameter) -> name);
+			JS_ReportError (context, "Browser .loadURL: type of argument 1 is invalid - should be MFString, is %s", JS_GetClass (context, oparameter) -> name);
 			return JS_FALSE;
 		}
 
@@ -657,7 +657,7 @@ jsBrowser::getName (JSContext* context, uintN argc, jsval* vp)
 		return JS_NewStringValue (context, script -> getBrowser () -> getName (), &JS_RVAL (context, vp));
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (context, "Browser .getName: wrong number of arguments");
 
 	return JS_FALSE;
 }
@@ -672,7 +672,7 @@ jsBrowser::getVersion (JSContext* context, uintN argc, jsval* vp)
 		return JS_NewStringValue (context, script -> getBrowser () -> getVersion (), &JS_RVAL (context, vp));
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (context, "Browser .getVersion: wrong number of arguments");
 
 	return JS_FALSE;
 }
@@ -687,7 +687,7 @@ jsBrowser::getCurrentSpeed (JSContext* context, uintN argc, jsval* vp)
 		return JS_NewNumberValue (context, script -> getBrowser () -> getCurrentSpeed (), &JS_RVAL (context, vp));
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (context, "Browser .getCurrentSpeed: wrong number of arguments");
 
 	return JS_FALSE;
 }
@@ -702,7 +702,7 @@ jsBrowser::getCurrentFrameRate (JSContext* context, uintN argc, jsval* vp)
 		return JS_NewNumberValue (context, script -> getBrowser () -> getCurrentFrameRate (), &JS_RVAL (context, vp));
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (context, "Browser .getCurrentFrameRate: wrong number of arguments");
 
 	return JS_FALSE;
 }
@@ -717,7 +717,7 @@ jsBrowser::getWorldURL (JSContext* context, uintN argc, jsval* vp)
 		return JS_NewStringValue (context, script -> getBrowser () -> getWorldURL (), &JS_RVAL (context, vp));
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (context, "Browser .getWorldURL: wrong number of arguments");
 
 	return JS_FALSE;
 }
@@ -750,7 +750,7 @@ jsBrowser::createVrmlFromString (JSContext* context, uintN argc, jsval* vp)
 		}
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (context, "Browser .createVrmlFromString: wrong number of arguments");
 
 	return JS_FALSE;
 }
@@ -774,7 +774,7 @@ jsBrowser::createVrmlFromURL (JSContext* context, uintN argc, jsval* vp)
 
 		if (JS_GetClass (context, ourl) not_eq jsMFString::getClass ())
 		{
-			JS_ReportError (context, "Type of argument 1 is invalid - should be MFString, is %s", JS_GetClass (context, ourl) -> name);
+			JS_ReportError (context, "Browser .createVrmlFromURL: type of argument 1 is invalid - should be MFString, is %s", JS_GetClass (context, ourl) -> name);
 			return JS_FALSE;
 		}
 
@@ -782,7 +782,7 @@ jsBrowser::createVrmlFromURL (JSContext* context, uintN argc, jsval* vp)
 
 		if (JS_GetClass (context, onode) not_eq jsSFNode::getClass ())
 		{
-			JS_ReportError (context, "Type of argument 2 is invalid - should be SFNode, is %s", JS_GetClass (context, onode) -> name);
+			JS_ReportError (context, "Browser .createVrmlFromURL: type of argument 2 is invalid - should be SFNode, is %s", JS_GetClass (context, onode) -> name);
 			return JS_FALSE;
 		}
 
@@ -861,53 +861,45 @@ jsBrowser::deleteRoute (JSContext* context, uintN argc, jsval* vp)
 	{
 		Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 		
-		if (script -> directOutput ())
+		JSObject* ofromNode;
+		JSObject* otoNode;
+		JSString* fromEventOut;
+		JSString* toEventIn;
+
+		jsval* argv = JS_ARGV (context, vp);
+
+		if (not JS_ConvertArguments (context, argc, argv, "oSoS", &ofromNode, &fromEventOut, &otoNode, &toEventIn))
+			return JS_FALSE;
+
+		if (JS_GetClass (context, ofromNode) not_eq jsSFNode::getClass ())
 		{
-			JSObject* ofromNode;
-			JSObject* otoNode;
-			JSString* fromEventOut;
-			JSString* toEventIn;
-
-			jsval* argv = JS_ARGV (context, vp);
-
-			if (not JS_ConvertArguments (context, argc, argv, "oSoS", &ofromNode, &fromEventOut, &otoNode, &toEventIn))
-				return JS_FALSE;
-
-			if (JS_GetClass (context, ofromNode) not_eq jsSFNode::getClass ())
-			{
-				JS_ReportError (context, "Type of argument 1 is invalid - should be SFNode, is %s", JS_GetClass (context, ofromNode) -> name);
-				return JS_FALSE;
-			}
-
-			auto & fromNode = *static_cast <SFNode*> (JS_GetPrivate (context, ofromNode));
-
-			if (JS_GetClass (context, otoNode) not_eq jsSFNode::getClass ())
-			{
-				JS_ReportError (context, "Type of argument 3 is invalid - should be SFNode, is %s", JS_GetClass (context, otoNode) -> name);
-				return JS_FALSE;
-			}
-
-			auto & toNode = *static_cast <SFNode*> (JS_GetPrivate (context, otoNode));
-
-			try
-			{
-				script -> getExecutionContext () -> deleteRoute (fromNode, JS_GetString (context, fromEventOut),
-				                                                 toNode,   JS_GetString (context, toEventIn));
-
-				JS_SET_RVAL (context, vp, JSVAL_VOID);
-
-				return JS_TRUE;
-			}
-			catch (const X3DError & error)
-			{
-				JS_ReportError (context, error .what ());
-				return JS_FALSE;
-			}
+			JS_ReportError (context, "Browser .deleteRoute: Type of argument 1 is invalid - should be SFNode, is %s", JS_GetClass (context, ofromNode) -> name);
+			return JS_FALSE;
 		}
-		else
+
+		auto & fromNode = *static_cast <SFNode*> (JS_GetPrivate (context, ofromNode));
+
+		if (JS_GetClass (context, otoNode) not_eq jsSFNode::getClass ())
 		{
-			JS_ReportError (context, "Browser .deleteRoute: couldn't delete route, directOutput is FALSE.");
+			JS_ReportError (context, "Browser .deleteRoute: Type of argument 3 is invalid - should be SFNode, is %s", JS_GetClass (context, otoNode) -> name);
+			return JS_FALSE;
+		}
+
+		auto & toNode = *static_cast <SFNode*> (JS_GetPrivate (context, otoNode));
+
+		try
+		{
+			script -> getExecutionContext () -> deleteRoute (fromNode, JS_GetString (context, fromEventOut),
+			                                                 toNode,   JS_GetString (context, toEventIn));
+
+			JS_SET_RVAL (context, vp, JSVAL_VOID);
+
 			return JS_TRUE;
+		}
+		catch (const X3DError & error)
+		{
+			JS_ReportError (context, error .what ());
+			return JS_FALSE;
 		}
 	}
 

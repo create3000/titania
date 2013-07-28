@@ -215,7 +215,7 @@ jsSFVec3 <Type>::construct (JSContext* context, uintN argc, jsval* vp)
 		return create (context, new Type (x, y, z), &JS_RVAL (context, vp));
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (context, "%s .construct: wrong number of arguments", getClass () -> name);
 
 	return JS_FALSE;
 }
@@ -307,7 +307,7 @@ jsSFVec3 <Type>::negate (JSContext* context, uintN argc, jsval* vp)
 		return create (context, self -> negate (), &JS_RVAL (context, vp));
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (context, "%s .negate: wrong number of arguments", getClass () -> name);
 
 	return JS_FALSE;
 }
@@ -329,7 +329,7 @@ jsSFVec3 <Type>::add (JSContext* context, uintN argc, jsval* vp)
 
 		if (not JS_InstanceOf (context, rhs, getClass (), NULL))
 		{
-			JS_ReportError (context, "Type of argument 1 is invalid - should be %s, is %s", getClass () -> name, JS_GetClass (context, rhs) -> name);
+			JS_ReportError (context, "%s .add: type of argument 1 is invalid - should be %s, is %s", getClass () -> name, getClass () -> name, JS_GetClass (context, rhs) -> name);
 			return JS_FALSE;
 		}
 
@@ -338,7 +338,7 @@ jsSFVec3 <Type>::add (JSContext* context, uintN argc, jsval* vp)
 		return create (context, self -> add (*vector), &JS_RVAL (context, vp));
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (context, "%s .add: wrong number of arguments", getClass () -> name);
 
 	return JS_FALSE;
 }
@@ -369,7 +369,7 @@ jsSFVec3 <Type>::subtract (JSContext* context, uintN argc, jsval* vp)
 		return create (context, self -> subtract (*vector), &JS_RVAL (context, vp));
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (context, "%s .subtract: wrong number of arguments", getClass () -> name);
 
 	return JS_FALSE;
 }
@@ -392,7 +392,7 @@ jsSFVec3 <Type>::multiply (JSContext* context, uintN argc, jsval* vp)
 		return create (context, self -> multiply (value), &JS_RVAL (context, vp));
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (context, "%s .multiply: wrong number of arguments", getClass () -> name);
 
 	return JS_FALSE;
 }
@@ -415,7 +415,7 @@ jsSFVec3 <Type>::divide (JSContext* context, uintN argc, jsval* vp)
 		return create (context, self -> divide (value), &JS_RVAL (context, vp));
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (context, "%s .divide: wrong number of arguments", getClass () -> name);
 
 	return JS_FALSE;
 }
@@ -446,7 +446,7 @@ jsSFVec3 <Type>::cross (JSContext* context, uintN argc, jsval* vp)
 		return create (context, self -> cross (*vector), &JS_RVAL (context, vp));
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (context, "%s .cross: wrong number of arguments", getClass () -> name);
 
 	return JS_FALSE;
 }
@@ -477,7 +477,7 @@ jsSFVec3 <Type>::dot (JSContext* context, uintN argc, jsval* vp)
 		return JS_NewNumberValue (context, self -> dot (*vector), &JS_RVAL (context, vp));
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (context, "%s .dot: wrong number of arguments", getClass () -> name);
 
 	return JS_FALSE;
 }
@@ -493,7 +493,7 @@ jsSFVec3 <Type>::normalize (JSContext* context, uintN argc, jsval* vp)
 		return create (context, self -> normalize (), &JS_RVAL (context, vp));
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (context, "%s .normalize: wrong number of arguments", getClass () -> name);
 
 	return JS_FALSE;
 }
@@ -509,7 +509,7 @@ jsSFVec3 <Type>::length (JSContext* context, uintN argc, jsval* vp)
 		return JS_NewNumberValue (context, self -> length (), &JS_RVAL (context, vp));
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (context, "%s .length: wrong number of arguments", getClass () -> name);
 
 	return JS_FALSE;
 }

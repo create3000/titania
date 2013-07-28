@@ -73,6 +73,18 @@ public:
 	const std::string &
 	getWidgetName () const { return m_widgetName; }
 
+	const Glib::RefPtr <Gtk::Action> &
+	getNewAction () const { return m_newAction; }
+
+	const Glib::RefPtr <Gtk::Action> &
+	getOpenAction () const { return m_openAction; }
+
+	const Glib::RefPtr <Gtk::Action> &
+	getRevertAction () const { return m_revertAction; }
+
+	const Glib::RefPtr <Gtk::Action> &
+	getSaveAction () const { return m_saveAction; }
+
 	const Glib::RefPtr <Gtk::FileFilter> &
 	getFileFilterAllFiles () const { return m_fileFilterAllFiles; }
 
@@ -94,18 +106,6 @@ public:
 	const Glib::RefPtr <Gtk::AccelGroup> &
 	getMenuAccelGroup () const { return m_menuAccelGroup; }
 
-	const Glib::RefPtr <Gtk::Action> &
-	getNewAction () const { return m_newAction; }
-
-	const Glib::RefPtr <Gtk::Action> &
-	getOpenAction () const { return m_openAction; }
-
-	const Glib::RefPtr <Gtk::Action> &
-	getRevertAction () const { return m_revertAction; }
-
-	const Glib::RefPtr <Gtk::Action> &
-	getSaveAction () const { return m_saveAction; }
-
 	Gtk::FileChooserDialog &
 	getFileOpenDialog () const { return *m_fileOpenDialog; }
 
@@ -117,6 +117,12 @@ public:
 
 	Gtk::MessageDialog &
 	getMessageDialog () const { return *m_messageDialog; }
+
+	Gtk::Dialog &
+	getOpenLocationDialog () const { return *m_openLocationDialog; }
+
+	Gtk::Entry &
+	getOpenLocationEntry () const { return *m_openLocationEntry; }
 
 	Gtk::Window &
 	getWindow () const { return *m_window; }
@@ -135,6 +141,9 @@ public:
 
 	Gtk::ImageMenuItem &
 	getOpenMenuItem () const { return *m_openMenuItem; }
+
+	Gtk::MenuItem &
+	getOpenLocationMenuItem () const { return *m_openLocationMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getSaveMenuItem () const { return *m_saveMenuItem; }
@@ -324,12 +333,24 @@ public:
 	on_messageDialog_response (int response_id) = 0;
 
 	virtual
+	void
+	on_openLocationDialog_response (int response_id) = 0;
+
+	virtual
+	bool
+	on_openLocationEntry_key_release_event (GdkEventKey* event) = 0;
+
+	virtual
 	bool
 	on_key_release_event (GdkEventKey* event) = 0;
 
 	virtual
 	bool
 	on_key_press_event (GdkEventKey* event) = 0;
+
+	virtual
+	void
+	on_open_location_dialog () = 0;
 
 	virtual
 	void
@@ -449,6 +470,10 @@ private:
 
 	std::deque <sigc::connection>   connections;
 	Glib::RefPtr <Gtk::Builder>     m_builder;
+	Glib::RefPtr <Gtk::Action>      m_newAction;
+	Glib::RefPtr <Gtk::Action>      m_openAction;
+	Glib::RefPtr <Gtk::Action>      m_revertAction;
+	Glib::RefPtr <Gtk::Action>      m_saveAction;
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterAllFiles;
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterAudio;
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterImage;
@@ -456,20 +481,19 @@ private:
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterX3D;
 	Glib::RefPtr <Gtk::IconFactory> m_iconFactory;
 	Glib::RefPtr <Gtk::AccelGroup>  m_menuAccelGroup;
-	Glib::RefPtr <Gtk::Action>      m_newAction;
-	Glib::RefPtr <Gtk::Action>      m_openAction;
-	Glib::RefPtr <Gtk::Action>      m_revertAction;
-	Glib::RefPtr <Gtk::Action>      m_saveAction;
 	Gtk::FileChooserDialog*         m_fileOpenDialog;
 	Gtk::FileChooserDialog*         m_fileSaveDialog;
 	Gtk::CheckButton*               m_saveCompressedButton;
 	Gtk::MessageDialog*             m_messageDialog;
+	Gtk::Dialog*                    m_openLocationDialog;
+	Gtk::Entry*                     m_openLocationEntry;
 	Gtk::Window*                    m_window;
 	Gtk::VBox*                      m_widget;
 	Gtk::MenuBar*                   m_menuBar;
 	Gtk::MenuItem*                  m_fileMenuItem;
 	Gtk::ImageMenuItem*             m_newMenuItem;
 	Gtk::ImageMenuItem*             m_openMenuItem;
+	Gtk::MenuItem*                  m_openLocationMenuItem;
 	Gtk::ImageMenuItem*             m_saveMenuItem;
 	Gtk::ImageMenuItem*             m_saveAsMenuItem;
 	Gtk::ImageMenuItem*             m_revertMenuItem;

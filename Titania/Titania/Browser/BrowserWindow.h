@@ -120,6 +120,10 @@ private:
 	virtual
 	void
 	on_open () final;
+	
+	virtual
+	void
+	on_open_location_dialog () final;
 
 	virtual
 	void
@@ -137,13 +141,19 @@ private:
 	void
 	on_close () final;
 
-	/// @name File open dialog response
+	/// @name Dialog response
 
 	virtual
 	void
 	on_fileOpenDialog_response (int) final;
 
-	/// @name File save dialog response
+	virtual
+	bool
+	on_openLocationEntry_key_release_event (GdkEventKey*) final;
+
+	virtual
+	void
+	on_openLocationDialog_response (int) final;
 
 	virtual
 	void

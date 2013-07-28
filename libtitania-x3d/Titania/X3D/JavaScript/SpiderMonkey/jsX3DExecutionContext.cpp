@@ -254,7 +254,7 @@ jsX3DExecutionContext::createNode (JSContext* context, uintN argc, jsval* vp)
 		}
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (context, "X3DExecutionContext .createNode: wrong number of arguments");
 
 	return JS_FALSE;
 }
@@ -287,7 +287,7 @@ jsX3DExecutionContext::createProto (JSContext* context, uintN argc, jsval* vp)
 		}
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (context, "X3DExecutionContext .createProto: wrong number of arguments");
 
 	return JS_FALSE;
 }
@@ -330,7 +330,7 @@ jsX3DExecutionContext::addNamedNode (JSContext* context, uintN argc, jsval* vp)
 		}
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (context, "X3DExecutionContext .addNamedNode: wrong number of arguments");
 
 	return JS_FALSE;
 }
@@ -364,7 +364,7 @@ jsX3DExecutionContext::removeNamedNode (JSContext* context, uintN argc, jsval* v
 		}
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (context, "X3DExecutionContext .removeNamedNode: wrong number of arguments");
 
 	return JS_FALSE;
 }
@@ -407,7 +407,7 @@ jsX3DExecutionContext::updateNamedNode (JSContext* context, uintN argc, jsval* v
 		}
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (context, "X3DExecutionContext .updateNamedNode: wrong number of arguments");
 
 	return JS_FALSE;
 }
@@ -439,7 +439,7 @@ jsX3DExecutionContext::getNamedNode (JSContext* context, uintN argc, jsval* vp)
 		}
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (context, "X3DExecutionContext .getNamedNode: wrong number of arguments");
 
 	return JS_FALSE;
 }
@@ -496,7 +496,7 @@ jsX3DExecutionContext::addImportedNode (JSContext* context, uintN argc, jsval* v
 		}
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (context, "X3DExecutionContext .addImportedNode: wrong number of arguments");
 
 	return JS_FALSE;
 }
@@ -530,7 +530,7 @@ jsX3DExecutionContext::removeImportedNode (JSContext* context, uintN argc, jsval
 		}
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (context, "X3DExecutionContext .removeImportedNode: wrong number of arguments");
 
 	return JS_FALSE;
 }
@@ -587,7 +587,7 @@ jsX3DExecutionContext::updateImportedNode (JSContext* context, uintN argc, jsval
 		}
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (context, "X3DExecutionContext .updateImportedNode: wrong number of arguments");
 
 	return JS_FALSE;
 }
@@ -619,7 +619,7 @@ jsX3DExecutionContext::getImportedNode (JSContext* context, uintN argc, jsval* v
 		}
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (context, "X3DExecutionContext .getImportedNode: wrong number of arguments");
 
 	return JS_FALSE;
 }
@@ -631,50 +631,42 @@ jsX3DExecutionContext::addRoute (JSContext* context, uintN argc, jsval* vp)
 	{
 		Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
-		if (script -> directOutput ())
+		JSObject* ofromNode;
+		JSObject* otoNode;
+		JSString* fromEventOut;
+		JSString* toEventIn;
+
+		jsval* argv = JS_ARGV (context, vp);
+
+		if (not JS_ConvertArguments (context, argc, argv, "oSoS", &ofromNode, &fromEventOut, &otoNode, &toEventIn))
+			return JS_FALSE;
+
+		if (JS_GetClass (context, ofromNode) not_eq jsSFNode::getClass ())
 		{
-			JSObject* ofromNode;
-			JSObject* otoNode;
-			JSString* fromEventOut;
-			JSString* toEventIn;
-
-			jsval* argv = JS_ARGV (context, vp);
-
-			if (not JS_ConvertArguments (context, argc, argv, "oSoS", &ofromNode, &fromEventOut, &otoNode, &toEventIn))
-				return JS_FALSE;
-
-			if (JS_GetClass (context, ofromNode) not_eq jsSFNode::getClass ())
-			{
-				JS_ReportError (context, "Type of argument 1 is invalid - should be SFNode, is %s", JS_GetClass (context, ofromNode) -> name);
-				return JS_FALSE;
-			}
-
-			auto & fromNode = *static_cast <SFNode*> (JS_GetPrivate (context, ofromNode));
-
-			if (JS_GetClass (context, otoNode) not_eq jsSFNode::getClass ())
-			{
-				JS_ReportError (context, "Type of argument 3 is invalid - should be SFNode, is %s", JS_GetClass (context, otoNode) -> name);
-				return JS_FALSE;
-			}
-
-			auto & toNode = *static_cast <SFNode*> (JS_GetPrivate (context, otoNode));
-
-			try
-			{
-				X3DSFNode <Route> route = script -> getExecutionContext () -> addRoute (fromNode, JS_GetString (context, fromEventOut),
-				                                                                        toNode,   JS_GetString (context, toEventIn));
-
-				return jsX3DRoute::create (context, route, &JS_RVAL (context, vp));
-			}
-			catch (const X3DError & error)
-			{
-				JS_ReportError (context, error .what ());
-				return JS_FALSE;
-			}
+			JS_ReportError (context, "Type of argument 1 is invalid - should be SFNode, is %s", JS_GetClass (context, ofromNode) -> name);
+			return JS_FALSE;
 		}
-		else
+
+		auto & fromNode = *static_cast <SFNode*> (JS_GetPrivate (context, ofromNode));
+
+		if (JS_GetClass (context, otoNode) not_eq jsSFNode::getClass ())
 		{
-			JS_ReportError (context, "X3DExecutionContext .addRoute: couldn't add route, directOutput is FALSE.");
+			JS_ReportError (context, "Type of argument 3 is invalid - should be SFNode, is %s", JS_GetClass (context, otoNode) -> name);
+			return JS_FALSE;
+		}
+
+		auto & toNode = *static_cast <SFNode*> (JS_GetPrivate (context, otoNode));
+
+		try
+		{
+			X3DSFNode <Route> route = script -> getExecutionContext () -> addRoute (fromNode, JS_GetString (context, fromEventOut),
+			                                                                        toNode,   JS_GetString (context, toEventIn));
+
+			return jsX3DRoute::create (context, route, &JS_RVAL (context, vp));
+		}
+		catch (const X3DError & error)
+		{
+			JS_ReportError (context, error .what ());
 			return JS_FALSE;
 		}
 	}
@@ -691,40 +683,32 @@ jsX3DExecutionContext::deleteRoute (JSContext* context, uintN argc, jsval* vp)
 	{
 		Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
-		if (script -> directOutput ())
+		JSObject* oRoute;
+
+		jsval* argv = JS_ARGV (context, vp);
+
+		if (not JS_ConvertArguments (context, argc, argv, "o", &oRoute))
+			return JS_FALSE;
+
+		if (JS_GetClass (context, oRoute) not_eq jsX3DRoute::getClass ())
 		{
-			JSObject* oRoute;
-
-			jsval* argv = JS_ARGV (context, vp);
-
-			if (not JS_ConvertArguments (context, argc, argv, "o", &oRoute))
-				return JS_FALSE;
-
-			if (JS_GetClass (context, oRoute) not_eq jsX3DRoute::getClass ())
-			{
-				JS_ReportError (context, "Type of argument 1 is invalid - should be X3DRoute, is %s", JS_GetClass (context, oRoute) -> name);
-				return JS_FALSE;
-			}
-
-			auto & route = *static_cast <X3DSFNode <Route>*> (JS_GetPrivate (context, oRoute));
-
-			try
-			{
-				script -> getExecutionContext () -> deleteRoute (route);
-
-				JS_SET_RVAL (context, vp, JSVAL_VOID);
-
-				return JS_TRUE;
-			}
-			catch (const X3DError & error)
-			{
-				JS_ReportError (context, error .what ());
-				return JS_FALSE;
-			}
+			JS_ReportError (context, "Type of argument 1 is invalid - should be X3DRoute, is %s", JS_GetClass (context, oRoute) -> name);
+			return JS_FALSE;
 		}
-		else
+
+		auto & route = *static_cast <X3DSFNode <Route>*> (JS_GetPrivate (context, oRoute));
+
+		try
 		{
-			JS_ReportError (context, "X3DExecutionContext .deleteRoute: couldn't delete route, directOutput is FALSE.");
+			script -> getExecutionContext () -> deleteRoute (route);
+
+			JS_SET_RVAL (context, vp, JSVAL_VOID);
+
+			return JS_TRUE;
+		}
+		catch (const X3DError & error)
+		{
+			JS_ReportError (context, error .what ());
 			return JS_FALSE;
 		}
 	}

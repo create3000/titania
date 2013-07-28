@@ -80,8 +80,8 @@ BrowserWindow::initialize ()
 
 	// FileOpenDialog
 	getFileOpenDialog () .set_default_response (Gtk::RESPONSE_OK);
-	getFileOpenDialog () .add_button ("gtk-open", Gtk::RESPONSE_OK);
 	getFileOpenDialog () .add_button ("gtk-cancel", Gtk::RESPONSE_CANCEL);
+	getFileOpenDialog () .add_button ("gtk-open", Gtk::RESPONSE_OK);
 	
 	getFileFilterX3D   () -> set_name ("X3D");
 	getFileFilterImage () -> set_name ("Images");
@@ -94,11 +94,16 @@ BrowserWindow::initialize ()
 	getFileOpenDialog () .add_filter (getFileFilterVideo ());
 
 	getFileOpenDialog () .set_filter (getFileFilterX3D ());
+	
+	// OpenLocationDialog
+	getOpenLocationDialog () .set_default_response (Gtk::RESPONSE_OK);
+	getOpenLocationDialog () .add_button ("gtk-cancel", Gtk::RESPONSE_CANCEL);
+	getOpenLocationDialog () .add_button ("gtk-open", Gtk::RESPONSE_OK);
 
 	// FileSaveDialog
 	getFileSaveDialog () .set_default_response (Gtk::RESPONSE_OK);
-	getFileSaveDialog () .add_button ("gtk-save", Gtk::RESPONSE_OK);
 	getFileSaveDialog () .add_button ("gtk-cancel", Gtk::RESPONSE_CANCEL);
+	getFileSaveDialog () .add_button ("gtk-save", Gtk::RESPONSE_OK);
 
 	// MotionBlurEditor
 	getMotionBlurEditor () .getWindow () .set_transient_for (getWindow ());
@@ -141,6 +146,25 @@ void
 BrowserWindow::on_open ()
 {
 	open ();
+}
+
+void
+BrowserWindow::on_open_location_dialog ()
+{
+	Glib::RefPtr<Gtk::Clipboard> clipboard = Gtk::Clipboard::get();
+
+	if (clipboard -> wait_is_text_available ())
+	{
+		basic::uri uri (clipboard -> wait_for_text ());
+
+		if (uri .is_network ())
+			getOpenLocationEntry () .set_text (uri .str ());
+	}
+
+	if (getOpenLocationEntry () .get_text () .empty ())
+		getOpenLocationDialog () .set_response_sensitive (Gtk::RESPONSE_OK, false);
+	
+	getOpenLocationDialog () .present ();
 }
 
 void
@@ -195,6 +219,29 @@ BrowserWindow::on_fileOpenDialog_response (int response_id)
 		if (worldURL .is_local ())
 			getFileOpenDialog () .set_current_folder_uri (worldURL .base () .str ());
 	}
+}
+
+bool
+BrowserWindow::on_openLocationEntry_key_release_event (GdkEventKey* event)
+{
+	getOpenLocationDialog () .set_response_sensitive (Gtk::RESPONSE_OK, getOpenLocationEntry () .get_text () .size ());
+
+	if (event -> keyval == GDK_KEY_Return or event -> keyval == GDK_KEY_KP_Enter)
+	{
+		getOpenLocationDialog () .response (Gtk::RESPONSE_OK);
+		return true;
+	}
+
+	return false;
+}
+
+void
+BrowserWindow::on_openLocationDialog_response (int response_id)
+{
+	getOpenLocationDialog () .hide ();
+
+	if (response_id == Gtk::RESPONSE_OK)
+		open (Glib::uri_unescape_string (getOpenLocationEntry () .get_text ()));
 }
 
 void

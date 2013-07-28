@@ -78,12 +78,12 @@ JSPropertySpec jsSFRotation::properties [ ] = {
 JSFunctionSpec jsSFRotation::functions [ ] = {
 	{ "getName",     getName <X3DChildObject>,     0, 0 },
 	{ "getTypeName", getTypeName <X3DChildObject>, 0, 0 },
-	{ "getType",             getType,              0, 0 },
-	{ "isReadable",          isReadable,           0, 0 },
-	{ "isWritable",          isWritable,           0, 0 },
+	{ "getType",     getType,                      0, 0 },
+	{ "isReadable",  isReadable,                   0, 0 },
+	{ "isWritable",  isWritable,                   0, 0 },
 
 	{ "getAxis",     getAxis,     0, 0 },
-	{ "setAxis",     getAxis,     0, 0 },
+	{ "setAxis",     setAxis,     0, 0 },
 
 	{ "inverse",     inverse,     0, 0 },
 	{ "multiply",    multiply,    1, 0 },
@@ -196,7 +196,7 @@ jsSFRotation::construct (JSContext* context, uintN argc, jsval* vp)
 		return create (context, new SFRotation (x, y, z, angle), &JS_RVAL (context, vp));
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (context, "%s .construct: wrong number of arguments", getClass () -> name);
 
 	return JS_FALSE;
 }
@@ -284,7 +284,7 @@ jsSFRotation::getAxis (JSContext* context, uintN argc, jsval* vp)
 		return jsSFVec3f::create (context, sfrotation -> getAxis (), &JS_RVAL (context, vp));
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (context, "%s .getAxis: wrong number of arguments", getClass () -> name);
 
 	return JS_FALSE;
 }
@@ -318,7 +318,7 @@ jsSFRotation::setAxis (JSContext* context, uintN argc, jsval* vp)
 		return JS_TRUE;
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (context, "%s .setAxis: wrong number of arguments", getClass () -> name);
 
 	return JS_FALSE;
 }
@@ -333,7 +333,7 @@ jsSFRotation::inverse (JSContext* context, uintN argc, jsval* vp)
 		return create (context, sfrotation -> inverse (), &JS_RVAL (context, vp));
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (context, "%s .inverse: wrong number of arguments", getClass () -> name);
 
 	return JS_FALSE;
 }
@@ -363,7 +363,7 @@ jsSFRotation::multiply (JSContext* context, uintN argc, jsval* vp)
 		return create (context, sfrotation1 -> multiply (*sfrotation2), &JS_RVAL (context, vp));
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (context, "%s .multiply: wrong number of arguments", getClass () -> name);
 
 	return JS_FALSE;
 }
@@ -393,7 +393,7 @@ jsSFRotation::multVec (JSContext* context, uintN argc, jsval* vp)
 		return jsSFVec3f::create (context, sfrotation -> multVec (*sfvec3f), &JS_RVAL (context, vp));
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (context, "%s .multVec: wrong number of arguments", getClass () -> name);
 
 	return JS_FALSE;
 }
@@ -432,7 +432,7 @@ jsSFRotation::slerp (JSContext* context, uintN argc, jsval* vp)
 		}
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (context, "%s .slerp: wrong number of arguments", getClass () -> name);
 
 	return JS_FALSE;
 }
