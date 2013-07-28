@@ -78,9 +78,9 @@ AudioClip::AudioClip (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "pitch",            pitch ());
 	addField (inputOutput, "loop",             loop ());
 	addField (inputOutput, "startTime",        startTime ());
-	addField (inputOutput, "stopTime",         stopTime ());
 	addField (inputOutput, "pauseTime",        pauseTime ());
 	addField (inputOutput, "resumeTime",       resumeTime ());
+	addField (inputOutput, "stopTime",         stopTime ());
 	addField (outputOnly,  "isPaused",         isPaused ());
 	addField (outputOnly,  "isActive",         isActive ());
 	addField (outputOnly,  "cycleTime",        cycleTime ());           // non standard

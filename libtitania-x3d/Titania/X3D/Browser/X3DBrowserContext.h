@@ -97,6 +97,9 @@ public:
 
 	///  @name Time handling
 
+	void
+	advanceClock ();
+
 	virtual
 	time_type
 	getCurrentTime () const
@@ -250,9 +253,6 @@ protected:
 	void
 	setViewer (ViewerType, NavigationInfo*)
 	{ }
-
-	void
-	advanceClock ();
 
 	virtual
 	void

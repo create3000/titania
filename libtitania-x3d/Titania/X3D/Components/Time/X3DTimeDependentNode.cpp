@@ -61,9 +61,9 @@ namespace X3D {
 X3DTimeDependentNode::Fields::Fields () :
 	loop (new SFBool ()),
 	startTime (new SFTime ()),
-	stopTime (new SFTime ()),
 	pauseTime (new SFTime ()),
 	resumeTime (new SFTime ()),
+	stopTime (new SFTime ()),
 	isPaused (new SFBool ()),
 	cycleTime (new SFTime ()),
 	elapsedTime (new SFTime ())
@@ -72,11 +72,13 @@ X3DTimeDependentNode::Fields::Fields () :
 X3DTimeDependentNode::X3DTimeDependentNode () :
 	 X3DChildNode (),
 	       fields (),
+	        start (0),
 	        pause (0),
+	pauseInterval (0),
 	 startTimeout (),
-	  stopTimeout (),
 	 pauseTimeout (),
-	resumeTimeout ()
+	resumeTimeout (),
+	  stopTimeout ()
 {
 	addNodeType (X3DConstants::X3DTimeDependentNode);
 }
@@ -91,9 +93,9 @@ X3DTimeDependentNode::initialize ()
 	enabled ()    .addInterest (this, &TimeSensor::set_enabled);
 	loop ()       .addInterest (this, &X3DTimeDependentNode::set_loop);
 	startTime ()  .addInterest (this, &X3DTimeDependentNode::set_startTime);
-	stopTime ()   .addInterest (this, &X3DTimeDependentNode::set_stopTime);
 	pauseTime ()  .addInterest (this, &X3DTimeDependentNode::set_pauseTime);
 	resumeTime () .addInterest (this, &X3DTimeDependentNode::set_resumeTime);
+	stopTime ()   .addInterest (this, &X3DTimeDependentNode::set_stopTime);
 }
 
 void
@@ -105,8 +107,10 @@ X3DTimeDependentNode::set_initialized ()
 time_type
 X3DTimeDependentNode::getElapsedTime () const
 {
-	return getCurrentTime () - cycleTime () - pause;
+	return getCurrentTime () - start - pauseInterval;
 }
+
+// Event callbacks
 
 void
 X3DTimeDependentNode::set_enabled ()
@@ -114,10 +118,14 @@ X3DTimeDependentNode::set_enabled ()
 	if (enabled ())
 	{
 		if (loop () and stopTime () <= startTime ())
-			set_start ();
+			do_start ();
 	}
 	else
-		set_stop ();
+	{
+		removeTimeouts ();
+
+		do_stop ();
+	}
 }
 
 void
@@ -126,7 +134,7 @@ X3DTimeDependentNode::set_loop ()
 	if (enabled ())
 	{
 		if (loop () and stopTime () <= startTime ())
-			set_start ();
+			do_start ();
 	}
 }
 
@@ -136,20 +144,37 @@ X3DTimeDependentNode::set_startTime ()
 	if (not enabled ())
 		return;
 
-	if (getCurrentTime () >= startTime ())
-		set_start ();
+	if (startTime () <= getCurrentTime ())
+		do_start ();
 
 	else
 		addTimeout (startTimeout, &TimeSensor::do_start, startTime ());
 }
 
-bool
-X3DTimeDependentNode::do_start ()
+void
+X3DTimeDependentNode::set_pauseTime ()
 {
-	if (enabled ())
-		set_start ();
+	if (not enabled ())
+		return;
 
-	return false;
+	if (pauseTime () <= getCurrentTime ())
+		do_pause ();
+
+	else
+		addTimeout (pauseTimeout, &TimeSensor::do_pause, pauseTime ());
+}
+
+void
+X3DTimeDependentNode::set_resumeTime ()
+{
+	if (not enabled ())
+		return;
+
+	if (resumeTime () <= getCurrentTime ())
+		do_resume ();
+
+	else
+		addTimeout (resumeTimeout, &TimeSensor::do_resume, resumeTime ());
 }
 
 void
@@ -159,52 +184,113 @@ X3DTimeDependentNode::set_stopTime ()
 		return;
 
 	if (stopTime () <= getCurrentTime ())
-	{
-		if (stopTime () > startTime ())
-			set_stop ();
-	}
+		do_stop ();
+
 	else
 		addTimeout (stopTimeout, &TimeSensor::do_stop, stopTime ());
 }
 
-bool
-X3DTimeDependentNode::do_stop ()
-{
-	if (enabled ())
-		set_stop ();
+// Wrapper functions
 
-	return false;
+void
+X3DTimeDependentNode::do_start ()
+{
+	if (not isActive ())
+	{
+		start         = getCurrentTime ();
+		pauseInterval = 0;
+
+		// The event order below is very important.
+
+		isActive () = true;
+
+		set_start ();
+
+		elapsedTime () = 0;
+		cycleTime ()   = getCurrentTime ();
+
+		getBrowser () -> prepareEvents .addInterest (this, &X3DTimeDependentNode::prepareEvents);
+	}
 }
 
 void
-X3DTimeDependentNode::set_pauseTime ()
-{
-	if (not enabled ())
-		return;
-}
-
-bool
 X3DTimeDependentNode::do_pause ()
 {
-	if (enabled ())
+	if (pauseTime () <= resumeTime ())
+		return;
+
+	if (isActive () and not isPaused ())
+	{
+		isPaused () = true;
+		pause       = getCurrentTime ();
+		
+		if (pauseTime () not_eq getCurrentTime ())
+			pauseTime () = getCurrentTime ();
+
 		set_pause ();
 
-	return false;
+		getBrowser () -> prepareEvents .removeInterest (this, &X3DTimeDependentNode::prepareEvents);
+	}
 }
 
 void
-X3DTimeDependentNode::set_resumeTime ()
-{
-	if (not enabled ())
-		return;
-}
-
-bool
 X3DTimeDependentNode::do_resume ()
 {
-	if (enabled ())
-		set_resume ();
+	if (resumeTime () <= pauseTime ())
+		return;
 
+	if (isActive () and isPaused ())
+	{
+		isPaused () = false;
+	
+		if (resumeTime () not_eq getCurrentTime ())
+			resumeTime () = getCurrentTime ();
+
+		float interval = getCurrentTime () - pause;
+		pauseInterval += interval;
+
+		set_resume (interval);
+
+		getBrowser () -> prepareEvents .addInterest (this, &X3DTimeDependentNode::prepareEvents);
+	}
+}
+
+void
+X3DTimeDependentNode::do_stop ()
+{
+	if (stopTime () <= startTime () and enabled ())
+		return;
+
+	stop ();
+}
+
+void
+X3DTimeDependentNode::stop ()
+{
+	if (isActive ())
+	{
+		// The event order below is very important.
+
+		set_stop ();
+		
+		elapsedTime () = getElapsedTime ();
+
+		if (isPaused ())
+			isPaused () = false;
+
+		isActive () = false;
+
+		getBrowser () -> prepareEvents .removeInterest (this, &X3DTimeDependentNode::prepareEvents);
+	}
+}
+
+// Timeout
+
+bool
+X3DTimeDependentNode::timeout (TimeoutHandler handler)
+{
+	getBrowser () -> advanceClock ();
+	(this ->* handler) ();
 	return false;
 }
 
@@ -213,18 +299,26 @@ X3DTimeDependentNode::addTimeout (sigc::connection & timeout, TimeoutHandler cal
 {
 	timeout .disconnect ();
 
-	timeout = Glib::signal_timeout () .connect (sigc::mem_fun (*this, callback),
+	timeout = Glib::signal_timeout () .connect (sigc::bind (sigc::mem_fun (*this, &X3DTimeDependentNode::timeout), callback),
 	                                            (time - getCurrentTime ()) * 1000,
 	                                            GDK_PRIORITY_REDRAW);
 }
 
 void
-X3DTimeDependentNode::dispose ()
+X3DTimeDependentNode::removeTimeouts ()
 {
 	startTimeout  .disconnect ();
-	stopTimeout   .disconnect ();
 	pauseTimeout  .disconnect ();
 	resumeTimeout .disconnect ();
+	stopTimeout   .disconnect ();
+}
+
+// Destruction
+
+void
+X3DTimeDependentNode::dispose ()
+{
+	removeTimeouts ();
 
 	X3DChildNode::dispose ();
 }

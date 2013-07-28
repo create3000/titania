@@ -92,6 +92,16 @@ public:
 	fraction_changed ()
 	{ return *fields .fraction_changed; }
 
+	virtual
+	SFBool &
+	isActive () final
+	{ return X3DSensorNode::isActive (); }
+
+	virtual
+	const SFBool &
+	isActive () const final
+	{ return X3DSensorNode::isActive (); }
+
 	const SFFloat &
 	fraction_changed () const
 	{ return *fields .fraction_changed; }
@@ -107,8 +117,9 @@ public:
 
 private:
 
+	virtual
 	void
-	prepareEvents ();
+	prepareEvents () final;
 
 	virtual
 	void
@@ -124,7 +135,7 @@ private:
 
 	virtual
 	void
-	set_resume () final;
+	set_resume (time_type) final;
 
 	struct Fields
 	{

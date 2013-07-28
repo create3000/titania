@@ -1,5 +1,20 @@
 2013-07-28  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* MediaStream.h:
+	* MediaStream.cpp:
+	* X3DBrowserContext.h:
+	* TimeSensor.h:
+	* X3DBrowserContext.cpp:
+	* TimeSensor.cpp:
+	* AudioClip.cpp:
+	* X3DSoundSourceNode.h:
+	* MovieTexture.cpp:
+	* X3DTimeDependentNode.h:
+	* X3DSoundSourceNode.cpp:
+	* X3DTimeDependentNode.cpp: 
+
+2013-07-28  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DTexture2DNode.h:
 	* X3DTexture2DNode.cpp: 
 

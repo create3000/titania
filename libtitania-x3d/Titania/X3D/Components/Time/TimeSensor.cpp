@@ -80,9 +80,9 @@ TimeSensor::TimeSensor (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "cycleInterval",    cycleInterval ());
 	addField (inputOutput, "loop",             loop ());
 	addField (inputOutput, "startTime",        startTime ());
-	addField (inputOutput, "stopTime",         stopTime ());
 	addField (inputOutput, "pauseTime",        pauseTime ());
 	addField (inputOutput, "resumeTime",       resumeTime ());
+	addField (inputOutput, "stopTime",         stopTime ());
 	addField (outputOnly,  "isPaused",         isPaused ());
 	addField (outputOnly,  "isActive",         isActive ());
 	addField (outputOnly,  "cycleTime",        cycleTime ());
@@ -100,7 +100,7 @@ TimeSensor::create (X3DExecutionContext* const executionContext) const
 void
 TimeSensor::prepareEvents ()
 {
-	//std::clog << "###### " << getCurrentTime () - cycleTime << " " << interval << std::endl;
+   // The event order below is very important.
 
 	if (getCurrentTime () - cycle >= interval)
 	{
@@ -108,19 +108,21 @@ TimeSensor::prepareEvents ()
 		{
 			cycle              += interval;
 			fraction_changed () = 1;
-			cycleTime ()        = getCurrentTime ();
 			elapsedTime ()      = getElapsedTime ();
+			cycleTime ()        = getCurrentTime ();
 		}
 		else
 		{
 			fraction_changed () = 1;
-			set_stop ();
+			stop ();
 		}
 	}
 	else
 	{
 		static time_type intpart;
+
 		fraction_changed () = std::modf ((getCurrentTime () - cycle) / interval, &intpart);
+		elapsedTime ()      = getElapsedTime ();
 	}
 
 	time () = getCurrentTime ();
@@ -129,31 +131,11 @@ TimeSensor::prepareEvents ()
 void
 TimeSensor::set_start ()
 {
-	if (not isActive ())
-	{
-		cycle    = getCurrentTime ();
-		interval = cycleInterval ();
+	cycle    = getCurrentTime ();
+	interval = cycleInterval ();
 
-		isActive ()         = true;
-		fraction_changed () = 0;
-		cycleTime ()        = getCurrentTime ();
-		elapsedTime ()      = 0;
-		time ()             = getCurrentTime ();
-
-		getBrowser () -> prepareEvents .addInterest (this, &TimeSensor::prepareEvents);
-	}
-}
-
-void
-TimeSensor::set_stop ()
-{
-	if (isActive ())
-	{
-		isActive ()    = false;
-		elapsedTime () = getElapsedTime ();
-
-		getBrowser () -> prepareEvents .removeInterest (this, &TimeSensor::prepareEvents);
-	}
+	fraction_changed () = 0;
+	time ()             = getCurrentTime ();
 }
 
 void
@@ -161,7 +143,13 @@ TimeSensor::set_pause ()
 { }
 
 void
-TimeSensor::set_resume ()
+TimeSensor::set_resume (time_type pauseInterval)
+{
+	cycle += pauseInterval;
+}
+
+void
+TimeSensor::set_stop ()
 { }
 
 } // X3D

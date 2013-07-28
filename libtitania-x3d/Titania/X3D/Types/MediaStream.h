@@ -95,6 +95,12 @@ public:
 	start (double speed, double position);
 
 	void
+	pause ();
+
+	void
+	resume ();
+
+	void
 	stop ();
 
 	void

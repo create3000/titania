@@ -88,14 +88,6 @@ public:
 	{ return *fields .startTime; }
 
 	SFTime &
-	stopTime ()
-	{ return *fields .stopTime; }
-
-	const SFTime &
-	stopTime () const
-	{ return *fields .stopTime; }
-
-	SFTime &
 	pauseTime ()
 	{ return *fields .pauseTime; }
 
@@ -111,6 +103,14 @@ public:
 	resumeTime () const
 	{ return *fields .resumeTime; }
 
+	SFTime &
+	stopTime ()
+	{ return *fields .stopTime; }
+
+	const SFTime &
+	stopTime () const
+	{ return *fields .stopTime; }
+
 	SFBool &
 	isPaused ()
 	{ return *fields .isPaused; }
@@ -118,6 +118,14 @@ public:
 	const SFBool &
 	isPaused () const
 	{ return *fields .isPaused; }
+
+	virtual
+	SFBool &
+	isActive () = 0;
+
+	virtual
+	const SFBool &
+	isActive () const = 0;
 
 	SFTime &
 	cycleTime ()
@@ -150,6 +158,10 @@ protected:
 	virtual
 	void
 	initialize () override;
+	
+	virtual
+	void
+	prepareEvents () = 0;
 
 	virtual
 	void
@@ -157,20 +169,23 @@ protected:
 
 	virtual
 	void
-	set_stop () = 0;
-
-	virtual
-	void
 	set_pause () = 0;
 
 	virtual
 	void
-	set_resume () = 0;
+	set_resume (time_type) = 0;
+
+	virtual
+	void
+	set_stop () = 0;
+
+	void
+	stop ();
 
 
 private:
 
-	typedef bool (X3DTimeDependentNode::* TimeoutHandler)();
+	typedef void (X3DTimeDependentNode::* TimeoutHandler)();
 
 	void
 	set_initialized ();
@@ -184,29 +199,41 @@ private:
 	void
 	set_startTime ();
 
-	bool
-	do_start ();
-
-	void
-	set_stopTime ();
-
-	bool
-	do_stop ();
-
 	void
 	set_pauseTime ();
-
-	bool
-	do_pause ();
 
 	void
 	set_resumeTime ();
 
-	bool
+	void
+	set_stopTime ();
+
+	// Wrapper functions
+
+	void
+	do_start ();
+
+	void
+	do_pause ();
+
+	void
 	do_resume ();
+	
+	void
+	do_stop ();
+
+	// Timeout
+
+	bool
+	timeout (TimeoutHandler);
 
 	void
 	addTimeout (sigc::connection &, TimeoutHandler, const time_type);
+
+	void
+	removeTimeouts ();
+	
+	// Members
 
 	struct Fields
 	{
@@ -214,9 +241,9 @@ private:
 
 		SFBool* const loop;
 		SFTime* const startTime;
-		SFTime* const stopTime;
 		SFTime* const pauseTime;
 		SFTime* const resumeTime;
+		SFTime* const stopTime;
 		SFBool* const isPaused;
 		SFTime* const cycleTime;
 		SFTime* const elapsedTime;
@@ -224,12 +251,14 @@ private:
 
 	Fields fields;
 
+	time_type start;
 	time_type pause;
+	time_type pauseInterval;
 
 	sigc::connection startTimeout;
-	sigc::connection stopTimeout;
 	sigc::connection pauseTimeout;
 	sigc::connection resumeTimeout;
+	sigc::connection stopTimeout;
 
 };
 

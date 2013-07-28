@@ -108,12 +108,14 @@ public:
 	pitch () const
 	{ return *fields .pitch; }
 
+	virtual
 	SFBool &
-	isActive ()
+	isActive () final
 	{ return *fields .isActive; }
 
+	virtual
 	const SFBool &
-	isActive () const
+	isActive () const final
 	{ return *fields .isActive; }
 
 	SFTime &
@@ -150,17 +152,18 @@ protected:
 	float
 	getDuration () const;
 
-	bool
-	sync () const;
-
 	const Glib::RefPtr <Gst::XImageSink> &
 	getVideoSink () const;
+
+	bool
+	sync () const;
 
 
 private:
 
+	virtual
 	void
-	prepareEvents ();
+	prepareEvents () final;
 
 	void
 	on_message (const Glib::RefPtr <Gst::Message> &);
@@ -185,7 +188,7 @@ private:
 
 	virtual
 	void
-	set_resume () final;
+	set_resume (time_type) final;
 
 	void
 	set_end ();

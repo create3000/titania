@@ -177,6 +177,22 @@ X3DBrowserContext::initialize ()
 	initialized .addInterest (this, &X3DBrowserContext::set_initialized);
 }
 
+void
+X3DBrowserContext::advanceClock ()
+{
+	clock -> advance ();
+
+	X3DViewpointNode* activeViewpoint = getActiveViewpoint ();
+
+	if (activeViewpoint)
+		currentSpeed .setPosition (activeViewpoint -> getTransformationMatrix () .translation (), currentFrameRate);
+
+	else
+		currentSpeed .setPosition (Vector3f (), 0);
+
+	currentFrameRate = 1 / clock -> interval ();
+}
+
 time_type
 X3DBrowserContext::getCurrentTime () const
 throw (Error <INVALID_OPERATION_TIMING>,
@@ -482,22 +498,6 @@ X3DBrowserContext::addEvent ()
  * e) If particle system evaluation is to take place, evaluate the particle systems here.
  * f) If physics model evaluation is to take place, evaluate the physics model.
  */
-
-void
-X3DBrowserContext::advanceClock ()
-{
-	clock -> advance ();
-
-	X3DViewpointNode* activeViewpoint = getActiveViewpoint ();
-
-	if (activeViewpoint)
-		currentSpeed .setPosition (activeViewpoint -> getTransformationMatrix () .translation (), currentFrameRate);
-
-	else
-		currentSpeed .setPosition (Vector3f (), 0);
-
-	currentFrameRate = 1 / clock -> interval ();
-}
 
 void
 X3DBrowserContext::update ()

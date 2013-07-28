@@ -3,6 +3,7 @@
 META "title" "EaseInEaseOut"
 
 DEF Box Transform {
+  translation -4.59964 0 0
   children Shape {
     appearance Appearance {
       material Material { }
@@ -26,6 +27,194 @@ DEF Pos PositionInterpolator {
   keyValue [ -5 0 0, 0 0 0, 5 0 0 ]
 }
 
+DEF _0 Transform {
+  translation -1 -3 0
+  scale 0.2 0.2 0.2
+  children [
+    DEF Enabled TouchSensor { }
+    Inline {
+      url "../Scripting/Cube.wrl"
+    }
+  ]
+}
+
+DEF _1 Transform {
+  translation 0.5 -3 0
+  scale 0.2 0.2 0.2
+  children [
+    DEF Start TouchSensor { }
+    Inline {
+      url "../Scripting/Cube.wrl"
+    }
+  ]
+}
+
+DEF _3 Transform {
+  translation 1.5 -3 0
+  scale 0.2 0.2 0.2
+  children [
+    DEF Pause TouchSensor { }
+    Inline {
+      url "../Scripting/Cube.wrl"
+    }
+  ]
+}
+
+DEF _4 Transform {
+  translation 2 -3 0
+  scale 0.2 0.2 0.2
+  children [
+    DEF Resume TouchSensor { }
+    Inline {
+      url "../Scripting/Cube.wrl"
+    }
+  ]
+}
+
+DEF _2 Transform {
+  translation 3 -3 0
+  scale 0.2 0.2 0.2
+  children [
+    DEF Stop TouchSensor { }
+    Inline {
+      url "../Scripting/Cube.wrl"
+    }
+  ]
+}
+
+DEF _1 Transform {
+  translation 0.5 -3.5 0
+  scale 0.2 0.2 0.2
+  children [
+    DEF Start1 TouchSensor { }
+    Inline {
+      url "../Scripting/Cube.wrl"
+    }
+  ]
+}
+
+DEF _3 Transform {
+  translation 1.5 -3.5 0
+  scale 0.2 0.2 0.2
+  children [
+    DEF Pause1 TouchSensor { }
+    Inline {
+      url "../Scripting/Cube.wrl"
+    }
+  ]
+}
+
+DEF _4 Transform {
+  translation 2 -3.5 0
+  scale 0.2 0.2 0.2
+  children [
+    DEF Resume1 TouchSensor { }
+    Inline {
+      url "../Scripting/Cube.wrl"
+    }
+  ]
+}
+
+DEF _2 Transform {
+  translation 3 -3.5 0
+  scale 0.2 0.2 0.2
+  children [
+    DEF Stop1 TouchSensor { }
+    Inline {
+      url "../Scripting/Cube.wrl"
+    }
+  ]
+}
+
+DEF Debug Script {
+  inputOnly      SFBool set_enabled
+  inputOnly      SFTime set_startTime
+  inputOnly      SFTime set_pauseTime
+  inputOnly      SFTime set_resumeTime
+  inputOnly      SFTime set_stopTime
+  inputOnly      SFTime set_startTime1
+  inputOnly      SFTime set_pauseTime1
+  inputOnly      SFTime set_resumeTime1
+   inputOnly      SFTime set_stopTime1
+ field SFTime offset 3
+  initializeOnly SFNode timer USE Timer
+
+  url "vrmlscript:
+
+function set_enabled (value, time)
+{
+	print ('enabled: ', value);
+	timer .enabled = !value;
+}
+
+function set_startTime (value, time)
+{
+	print ('startTime: ', time);
+	timer .startTime = time;
+}
+
+function set_pauseTime (value, time)
+{
+	print ('pauseTime: ', time);
+	timer .pauseTime = time;
+}
+
+function set_resumeTime (value, time)
+{
+	print ('resumeTime: ', time);
+	timer .resumeTime = time;
+}
+
+function set_stopTime (value, time)
+{
+	print ('stopTime: ', time);
+	timer .stopTime = time;
+	
+}
+
+function set_startTime1 (value, time)
+{
+	print ('startTime1: ', time);
+	timer .startTime = time + offset;
+}
+
+function set_pauseTime1 (value, time)
+{
+	print ('pauseTime1: ', time);
+	timer .pauseTime = time + offset;
+}
+
+function set_resumeTime1 (value, time)
+{
+	print ('resumeTime1: ', time);
+	timer .resumeTime = time + offset;
+}
+
+function set_stopTime1 (value, time)
+{
+	print ('stopTime1: ', time);
+	timer .stopTime = time + offset;
+	
+}
+"
+  directOutput TRUE
+}
+
 ROUTE Timer.fraction_changed TO Ease.set_fraction
 ROUTE Ease.modifiedFraction_changed TO Pos.set_fraction
 ROUTE Pos.value_changed TO Box.set_translation
+
+#
+
+ROUTE Enabled.isActive TO Debug.set_enabled
+ROUTE Start.touchTime TO Debug.set_startTime
+ROUTE Pause.touchTime TO Debug.set_pauseTime
+ROUTE Resume.touchTime TO Debug.set_resumeTime
+ROUTE Stop.touchTime TO Debug.set_stopTime
+
+#
+
+ROUTE Start1.touchTime TO Debug.set_startTime1
+ROUTE Pause1.touchTime TO Debug.set_pauseTime1
+ROUTE Resume1.touchTime TO Debug.set_resumeTime1
+ROUTE Stop1.touchTime TO Debug.set_stopTime1

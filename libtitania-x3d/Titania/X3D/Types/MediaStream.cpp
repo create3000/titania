@@ -203,6 +203,18 @@ MediaStream::start (double speed, double position)
 }
 
 void
+MediaStream::pause ()
+{
+	player -> set_state (Gst::STATE_PAUSED);
+}
+
+void
+MediaStream::resume ()
+{
+	player -> set_state (Gst::STATE_PLAYING);
+}
+
+void
 MediaStream::stop ()
 {
 	player -> set_state (Gst::STATE_PAUSED);

@@ -111,16 +111,16 @@ X3DSoundSourceNode::setVolume (float value)
 	return mediaStream -> setVolume (value);
 }
 
-bool
-X3DSoundSourceNode::sync () const
-{
-	return mediaStream -> sync ();
-}
-
 const Glib::RefPtr <Gst::XImageSink> &
 X3DSoundSourceNode::getVideoSink () const
 {
 	return mediaStream -> getVideoSink ();
+}
+
+bool
+X3DSoundSourceNode::sync () const
+{
+	return mediaStream -> sync ();
 }
 
 void
@@ -136,17 +136,21 @@ X3DSoundSourceNode::on_message (const Glib::RefPtr <Gst::Message> & message)
 	{
 		case Gst::MESSAGE_EOS:
 		{
-			end = getCurrentTime ();;
+			end = getCurrentTime ();
 			break;
 		}
 		case Gst::MESSAGE_ERROR:
 		{
-			__LOG__ << "MESSAGE_ERROR" << std::endl;
-			set_stop ();
+			__LOG__
+				<< "MESSAGE_ERROR: "
+				<< Glib::RefPtr <Gst::MessageError>::cast_dynamic (message) -> parse () .what ()
+				<< std::endl;
+
+			stop ();
 			break;
 		}
 		default:
-		{ }
+			break;
 	}
 }
 
@@ -163,40 +167,28 @@ X3DSoundSourceNode::set_pitch ()
 void
 X3DSoundSourceNode::set_start ()
 {
-	if (not isActive ())
-	{
-		if (speed ())
-			mediaStream -> start (speed (), 0);
+	if (speed ())
+		mediaStream -> start (speed (), 0);
+}
 
-		isActive ()    = true;
-		cycleTime ()   = getCurrentTime ();
-		elapsedTime () = 0;
+void
+X3DSoundSourceNode::set_pause ()
+{
+	mediaStream -> pause ();
+}
 
-		getBrowser () -> prepareEvents .addInterest (this, &X3DSoundSourceNode::prepareEvents);
-	}
+void
+X3DSoundSourceNode::set_resume (time_type)
+{
+	if (speed ())
+		mediaStream -> resume ();
 }
 
 void
 X3DSoundSourceNode::set_stop ()
 {
-	if (isActive ())
-	{
-		mediaStream -> stop ();
-		
-		isActive ()    = false;
-		elapsedTime () = getElapsedTime ();
-
-		getBrowser () -> prepareEvents .removeInterest (this, &X3DSoundSourceNode::prepareEvents);
-	}
+	mediaStream -> stop ();
 }
-
-void
-X3DSoundSourceNode::set_pause ()
-{ }
-
-void
-X3DSoundSourceNode::set_resume ()
-{ }
 
 void
 X3DSoundSourceNode::set_end ()
@@ -206,11 +198,13 @@ X3DSoundSourceNode::set_end ()
 		if (speed ())
 			mediaStream -> start (speed (), 0);
 
-		cycleTime ()   = getCurrentTime ();
+      // The event order below is very important.
+ 
 		elapsedTime () = getElapsedTime ();
+		cycleTime ()   = getCurrentTime ();
 	}
 	else
-		set_stop ();
+		stop ();
 }
 
 void
