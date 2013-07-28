@@ -137,7 +137,7 @@ MovieTexture::requestImmediateLoad ()
 		{
 			duration_changed () = getDuration ();
 
-			setImage (4, GL_BGRA,
+			setImage (3, GL_BGRA,
 			          getVideoSink () -> get_width (),
 			          getVideoSink () -> get_height (),
 			          getVideoSink () -> get_last_buffer () -> get_data ());

@@ -1,5 +1,10 @@
 2013-07-28  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* MovieTexture.cpp:
+	* X3DTexture2DNode.cpp: 
+
+2013-07-28  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DPrototypeInstance.cpp:
 	* X3DTexture2DNode.cpp: 
 
