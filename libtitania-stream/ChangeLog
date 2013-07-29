@@ -1,11 +1,6 @@
 2013-07-29  Holger Seelig  <holger.seelig@yahoo.de>
 
-	* InputHTTPStream.h:
-	* InputFileStream.h:
-	* SocketStreamBuf.h:
-	* SocketStreamBuf.cpp:
-	* InputFileStream.cpp:
-	* InputHTTPStream.cpp: 
+	* ChangeLog: 
 
 2013-07-26  Holger Seelig  <holger.seelig@yahoo.de>
 

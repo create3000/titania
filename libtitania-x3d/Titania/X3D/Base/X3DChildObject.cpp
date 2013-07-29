@@ -39,8 +39,7 @@ namespace X3D {
 X3DChildObject::X3DChildObject () :
 	X3DObject (),
 	  parents (),
-	    roots (),
-	 nonRoots (),
+	     root (nullptr),
 	  tainted (false)
 { }
 
@@ -73,7 +72,6 @@ void
 X3DChildObject::addParent (X3DChildObject* const parent)
 {
 	parents  .insert (parent);
-	nonRoots .insert (parent);
 }
 
 void
@@ -81,8 +79,8 @@ X3DChildObject::removeParent (X3DChildObject* const parent)
 {
 	if (parents .erase (parent))
 	{
-		if (not roots .erase (parent))
-			nonRoots .erase (parent);
+		if (root == parent)
+			root = nullptr;
 
 		if (parents .size ())
 		{
@@ -107,69 +105,40 @@ X3DChildObject::removeParent (X3DChildObject* const parent)
 		dispose ();
 
 		getGarbageCollector () .addObject (this);
-
-		return;
 	}
-
-	return;
 }
 
 bool
 X3DChildObject::hasRoots (ChildObjectSet & seen)
 {
-	if (parents .size ())
-	{
-		if (seen .insert (this) .second)
-		{
-			ChildObjectArray tmp;
+	if (parents .empty ())
+		return true;
 		
-			for (auto & parent : roots)
-			{
-				if (parent -> hasRoots (seen))
-				{
-					removeRoots (tmp);
-					return true;
-				}
-				else
-					tmp .emplace_back (parent);
-			}
-
-			removeRoots (tmp);
-
-			for (auto & parent : nonRoots)
-			{
-				if (parent -> hasRoots (seen))
-				{
-					addRoot (parent);					
-					return true;
-				}
-			}
-
-			return false;
-		}
-
-		return false;
-	}
-
-	// this is a root node
-	return true;
-}
-
-void
-X3DChildObject::addRoot (X3DChildObject* parent)
-{
-	roots .insert (parent);
-	nonRoots .erase (parent);
-}
-
-void
-X3DChildObject::removeRoots (const ChildObjectArray & parents)
-{
-	for (auto & parent : parents)
+	if (seen .insert (this) .second)
 	{
-		roots .erase (parent);
-		nonRoots .insert (parent);
+		// First test the good way
+	
+		if (root)
+		{
+			if (root -> hasRoots (seen))
+				return true;
+			else
+				root = nullptr;
+		}
+		
+		// Test all other ways and save the good way.
+
+		for (auto & parent : parents)
+		{
+			if (parent -> hasRoots (seen))
+			{
+				root = parent;					
+				return true;
+			}
+		}
 	}
+
+	return false;
 }
 
 // Object
@@ -177,9 +146,8 @@ X3DChildObject::removeRoots (const ChildObjectArray & parents)
 void
 X3DChildObject::dispose ()
 {
-	parents  .clear ();
-	roots    .clear ();
-	nonRoots .clear ();
+	parents .clear ();
+	root = nullptr;
 
 	X3DObject::dispose ();
 }

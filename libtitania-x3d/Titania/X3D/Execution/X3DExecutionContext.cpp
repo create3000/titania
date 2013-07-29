@@ -91,8 +91,6 @@ void
 X3DExecutionContext::setup ()
 {
 	X3DNode::setup ();
-
-	// Add rootNodes here as child. This prevents X3DProtoypeInstances from being disposed on construction.
 }
 
 void

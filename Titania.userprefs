@@ -1,19 +1,19 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Base/X3DChildObject.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Browser/X3DBrowserWindow.cpp">
     <Files>
       <File FileName="experimental/main.cpp" Line="222" Column="1" />
       <File FileName="Titania/Titania/OutlineEditor/OutlineTreeModel.h" Line="108" Column="30" />
       <File FileName="Titania/Titania/OutlineEditor/OutlineTreeModel.cpp" Line="63" Column="33" />
       <File FileName="Titania/Titania/OutlineEditor/OutlineTreeView.h" Line="143" Column="1" />
       <File FileName="Titania/Titania/OutlineEditor/OutlineTreeView.cpp" Line="830" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWindow.cpp" Line="81" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWindow.cpp" Line="79" Column="52" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="55" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.cpp" Line="518" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DExecutionContext.cpp" Line="104" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/Base/X3DChildObject.cpp" Line="74" Column="2" />
+      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DExecutionContext.cpp" Line="104" Column="9" />
+      <File FileName="libtitania-x3d/Titania/X3D/Base/X3DChildObject.cpp" Line="49" Column="29" />
       <File FileName="libtitania-x3d/Titania/X3D/Base/X3DChildObject.h" Line="163" Column="9" />
-      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DFieldDefinition.cpp" Line="150" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DFieldDefinition.cpp" Line="150" Column="14" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -68,9 +68,7 @@
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
-                <Node name="Base" expanded="True">
-                  <Node name="X3DChildObject.cpp" selected="True" />
-                </Node>
+                <Node name="Base" expanded="True" />
                 <Node name="Basic" expanded="True" />
                 <Node name="Bits" expanded="True" />
                 <Node name="Browser" expanded="True">
@@ -97,7 +95,9 @@
           <Node name="test" expanded="True" />
           <Node name="Titania" expanded="True">
             <Node name="Titania" expanded="True">
-              <Node name="Browser" expanded="True" />
+              <Node name="Browser" expanded="True">
+                <Node name="X3DBrowserWindow.cpp" selected="True" />
+              </Node>
               <Node name="HistoryEditor" expanded="True" />
             </Node>
           </Node>
