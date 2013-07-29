@@ -43,24 +43,18 @@ const std::string ifilestream::empty_string;
 
 ifilestream::ifilestream () :
 	         std::istream (),
-	         data_istream (NULL),
-	         file_istream (NULL),
-	         http_istream (NULL),
-	              istream (NULL),
+	         data_istream (nullptr),
+	         file_istream (nullptr),
+	         http_istream (nullptr),
+	              istream (nullptr),
 	 file_request_headers (),
 	file_response_headers (),
-	                m_url ()
+	                m_url (),
+	             m_status ()
 { }
 
 ifilestream::ifilestream (const http::method method, const basic::uri & url) :
-	         std::istream (),
-	         data_istream (NULL),
-	         file_istream (NULL),
-	         http_istream (NULL),
-	              istream (NULL),
-	 file_request_headers (),
-	file_response_headers (),
-	                m_url (url)
+	ifilestream ()
 {
 	open (method, url);
 }
@@ -98,70 +92,89 @@ ifilestream::operator = (ifilestream && other)
 // Connection handling
 
 void
-ifilestream::open (const http::method method, const basic::uri & url)
+ifilestream::open (const http::method method, const basic::uri & URL)
 {
+	url (URL);
+
 	close ();
 
-	if (url .scheme () == "data")
+	if (url () .scheme () == "data")
 	{
 		std::string::size_type first  = std::string::npos;
 		std::string::size_type length = 0;
-		std::string::size_type comma  = url .path () .find (',');
+		std::string::size_type comma  = url () .path () .find (',');
 
 		if (comma not_eq std::string::npos)
 		{
 			first  = comma + 1;
-			length = url .path () .size () - first;
+			length = url () .path () .size () - first;
 		}
 
-		file_response_headers .insert (std::make_pair ("Content-Type",   url .path () .substr (0, comma)));
+		file_response_headers .insert (std::make_pair ("Content-Type",   url () .path () .substr (0, comma)));
 		file_response_headers .insert (std::make_pair ("Content-Length", std::to_string (length)));
 
-		istream = data_istream = new std::istringstream (url .path () .substr (first));
+		istream = data_istream = new std::istringstream (url () .path () .substr (first));
 	}
-	else if (url .is_local ())
+	else if (url () .is_local ())
 	{
 		istream = file_istream = new std::ifstream ();
-
-		if (os::is_file (url .path ()))
-			file_istream -> open (url .path ());
-
-		else
-			file_istream -> setstate (std::ios::failbit);
 	}
 	else
 	{
 		istream = http_istream = new ihttpstream ();
-		http_istream -> open (method, url);
+		http_istream -> open (method, url ());
 	}
 
 	init (istream -> rdbuf ());
-	clear (istream -> rdstate ());
+	setstate (istream -> rdstate ());
 }
 
 void
 ifilestream::send ()
 {
 	if (http_istream and *http_istream)
+	{
 		http_istream -> send ();
-		
+		url (http_istream -> url ());
+		status (http_istream -> status ());
+	}
 	else if (file_istream)
 	{		
-		// Guess content type
+		if (os::is_file (url () .path ()))
+		{
+			file_istream -> open (url () .path ());
 
-		char data [64];
-		size_t data_size = file_istream -> rdbuf () -> sgetn (data, 64);
-		
-		bool result_uncertain;
-		std::string content_type = Gio::content_type_guess (url () .path (), (guchar*) data, data_size, result_uncertain);
-	
-		file_response_headers .insert (std::make_pair ("Content-Type",   content_type));
-		file_response_headers .insert (std::make_pair ("Content-Length", std::to_string (os::file_size (url () .path ()))));
+			if (*file_istream)
+			{
+				// Guess content type
 
-		// Reset stream
+				char data [64];
+				size_t data_size = file_istream -> rdbuf () -> sgetn (data, 64);
+				
+				bool result_uncertain;
+				std::string content_type = Gio::content_type_guess (url () .path (), (guchar*) data, data_size, result_uncertain);
+			
+				file_response_headers .insert (std::make_pair ("Content-Type",   content_type));
+				file_response_headers .insert (std::make_pair ("Content-Length", std::to_string (os::file_size (url () .path ()))));
 
-		file_istream -> seekg (0, std::ios_base::beg);
+				// Reset stream
+
+				file_istream -> seekg (0, std::ios_base::beg);
+			}
+			else
+			{
+				status (404);
+				setstate (std::ios::failbit);			
+			}
+		}
+		else
+		{
+			status (404);
+			setstate (std::ios::failbit);
+		}
 	}	
+
+	setstate (istream -> rdstate ());
 }
 
 void
@@ -220,15 +233,6 @@ ifilestream::http_version ()
 		return http_istream -> http_version ();
 
 	return empty_string;
-}
-
-ifilestream::status_type
-ifilestream::status ()
-{
-	if (http_istream)
-		return http_istream -> status ();
-
-	return *istream ? 200 : 0;
 }
 
 const std::string &

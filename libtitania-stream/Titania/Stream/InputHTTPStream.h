@@ -56,6 +56,7 @@
 #include <deque>
 #include <istream>
 #include <string>
+#include <memory>
 
 namespace titania {
 namespace basic {
@@ -111,30 +112,36 @@ public:
 	request_header (const std::string &, const std::string &);
 
 	const headers_type &
-	request_headers () { return request_headers_map; }
+	request_headers ()
+	{ return request_headers_map; }
 
 	const headers_type &
-	response_headers () { return response_headers_map; }
+	response_headers ()
+	{ return response_headers_map; }
 
 	/// @name Element access
 
 	const method_array
-	supported_methods () { return methods; }
+	supported_methods ()
+	{ return methods; }
 
 	const std::string &
-	http_version () { return response_http_version; }
+	http_version ()
+	{ return response_http_version; }
 
 	status_type
-	status () { return response_status; }
+	status ()
+	{ return response_status; }
 
 	const std::string &
-	reason () { return response_reason; }
+	reason ()
+	{ return response_reason; }
 
 	/// @name SocketStreamBuffer
 
 	socketstreambuf*
 	rdbuf ()
-	{ return buf; }
+	{ return buf .get (); }
 
 	/// @name Destructor
 
@@ -152,11 +159,17 @@ private:
 
 	void
 	parse_response_header ();
+	
+	void
+	process_status ();
+	
+	///  @name Members
 
 	static const method_array methods;
 
-	socketstreambuf* buf;
-	std::string      http_method;
+	std::unique_ptr <socketstreambuf> buf;
+
+	http::method http_method;
 
 	headers_type request_headers_map;
 	headers_type response_headers_map;

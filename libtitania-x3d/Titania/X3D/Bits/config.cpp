@@ -60,13 +60,13 @@ static const std::string TITANIA_DATA_DIR = "titania/";
 basic::uri
 get_page (const std::string & filename)
 {
-	return os::find_data_file (TITANIA_DATA_DIR + "pages/" + filename);
+	return "file://" + os::find_data_file (TITANIA_DATA_DIR + "pages/" + filename);
 }
 
 basic::uri
 get_handle (const std::string & filename)
 {
-	return os::find_data_file (TITANIA_DATA_DIR + "handles/" + filename);
+	return "file://" + os::find_data_file (TITANIA_DATA_DIR + "handles/" + filename);
 }
 
 } // X3D

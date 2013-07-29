@@ -456,7 +456,7 @@ private:
 	RouteArray         routes;
 	MFNode             rootNodes;
 
-	std::deque <X3DBaseNode*> nodes;
+	MFNode nodes;
 
 };
 

@@ -111,7 +111,8 @@ public:
 	http_version ();
 
 	ihttpstream::status_type
-	status ();
+	status () const
+	{ return m_status; }
 
 	const std::string &
 	reason ();
@@ -129,6 +130,14 @@ public:
 
 private:
 
+	void
+	url (const basic::uri & value)
+	{ m_url = value; }
+
+	void
+	status (size_t value)
+	{ m_status = value; }
+
 	ifilestream (const ifilestream &) = delete;
 
 	ifilestream &
@@ -145,7 +154,8 @@ private:
 	headers_type file_request_headers;
 	headers_type file_response_headers;
 
-	basic::uri m_url;
+	basic::uri               m_url;
+	ihttpstream::status_type m_status;
 
 };
 

@@ -30,7 +30,7 @@
 
 #include <utility>
 
-#include <iostream>
+#include <Titania/LOG.h>
 
 namespace titania {
 namespace basic {
@@ -39,44 +39,35 @@ const ihttpstream::method_array ihttpstream::methods { { "HEAD", "GET", "POST" }
 
 ihttpstream::ihttpstream () :
 	         std::istream (),
-	                  buf (NULL),
-	          http_method (),
+	                  buf (new socketstreambuf ()),
+	          http_method (http::method::GET),
 	  request_headers_map (),
 	 response_headers_map (),
 	response_http_version (),
 	      response_status (0),
 	      response_reason ()
 {
-	clear (std::ios::badbit);
+	init (buf .get ());
+	clear ();
 }
 
 ihttpstream::ihttpstream (const http::method method, const basic::uri & url) :
-	         std::istream (),
-	                  buf (NULL),
-	          http_method (),
-	  request_headers_map (),
-	 response_headers_map (),
-	response_http_version (),
-	      response_status (0),
-	      response_reason ()
+	          ihttpstream ()
 {
 	open (method, url);
 }
 
 ihttpstream::ihttpstream (ihttpstream && other) :
 	         std::istream (),
-	                  buf (NULL),
-	          http_method (std::move (other .http_method)),
+	                  buf (std::move (other .buf)),
+	          http_method (other .http_method),
 	  request_headers_map (std::move (other .request_headers_map)),
 	 response_headers_map (std::move (other .response_headers_map)),
 	response_http_version (std::move (other .response_http_version)),
 	      response_status (other .response_status),
 	      response_reason (std::move (other .response_reason))
 {
-	buf        = other .buf;
-	other .buf = NULL;
-
-	init (buf);
+	init (buf .get ());
 
 	clear (other .rdstate ());
 	other .clear (std::ios::badbit);
@@ -85,14 +76,13 @@ ihttpstream::ihttpstream (ihttpstream && other) :
 void
 ihttpstream::open (const http::method method, const basic::uri & url)
 {
-	http_method = methods [method];
+	http_method = method;
 
-	buf = new socketstreambuf (url);
+	clear ();
+	buf -> close ();
 
-	init (buf);
-
-	if (not buf -> open ())
-		clear (std::ios::failbit);
+	if (not buf -> open (url))
+		setstate (std::ios::failbit);
 }
 
 void
@@ -101,7 +91,7 @@ ihttpstream::send ()
 	std::ostringstream request;
 
 	request
-		<< http_method << " " << url () << " HTTP/1.0\r\n"
+		<< methods [http_method] << " " << url () << " HTTP/1.0\r\n"
 		<< "Host: " << url () .host () << "\r\n";
 
 	for (const auto & request_header : request_headers_map)
@@ -113,6 +103,8 @@ ihttpstream::send ()
 
 	parse_status_line ();
 	parse_response_headers ();
+
+	process_status ();
 }
 
 void
@@ -122,7 +114,10 @@ ihttpstream::parse_status_line ()
 
 	get (*line .rdbuf (), widen ('\n'));
 
-	line >> response_http_version >> response_status >> response_reason;
+	line
+		>> response_http_version
+		>> response_status
+		>> response_reason;
 
 	if (get () not_eq '\n')
 		return close ();
@@ -171,11 +166,56 @@ ihttpstream::parse_response_header ()
 }
 
 void
+ihttpstream::process_status ()
+{
+	try
+	{
+		switch (status ())
+		{
+			case 302: // Found
+			case 303: // See Other
+			{
+				open (http::method::GET, response_headers () .at ("Location"));
+				send ();
+				break;
+			}
+			case 300: // Multiple Choices
+			case 301: // Moved Permanently
+			case 307: // Temporary Redirect
+			case 308: // Permanent Redirect
+			{
+				open (http_method, response_headers () .at ("Location"));
+				send ();
+				break;
+			}
+			default:
+			{
+				if (status () >= 400 and status () <= 499)
+					setstate (std::ios::failbit);
+
+				break;
+			}
+		}
+	}
+	catch (const std::out_of_range &)
+	{
+		close ();
+	}
+}
+
+void
 ihttpstream::close ()
 {
 	buf -> close ();
 
-	clear (rdstate () | std::ios::badbit);
+	http_method = http::method::GET;
+	request_headers_map   .clear ();
+	response_headers_map  .clear ();
+	response_http_version .clear ();
+	response_reason       .clear ();
+	response_status = 0;
+
+	setstate (std::ios::badbit);
 }
 
 void
@@ -185,13 +225,7 @@ ihttpstream::request_header (const std::string & header, const std::string & val
 }
 
 ihttpstream::~ihttpstream ()
-{
-	if (buf)
-	{
-		buf -> close ();
-		delete buf;
-	}
-}
+{ }
 
 } // basic
 } // titania

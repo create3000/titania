@@ -84,7 +84,7 @@ X3DExecutionContext::X3DExecutionContext () :
 	           rootNodes (),
 	               nodes ()
 {
-	addChildren (rootNodes);
+	addChildren (rootNodes, nodes);
 }
 
 void
@@ -798,6 +798,7 @@ X3DExecutionContext::dispose ()
 	routes        .clear ();
 
 	rootNodes .dispose ();
+	nodes     .dispose ();
 
 	X3DNode::dispose ();
 }

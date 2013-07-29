@@ -65,14 +65,14 @@ public:
 
 	typedef size_t size_type;
 
-	socketstreambuf (const basic::uri &);
+	socketstreambuf ();
 
 	int
 	is_open ()
 	{ return opened; }
 
 	socketstreambuf*
-	open ();
+	open (const basic::uri &);
 
 	socketstreambuf*
 	send (const std::string &);

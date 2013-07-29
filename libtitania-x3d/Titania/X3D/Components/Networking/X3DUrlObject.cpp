@@ -245,22 +245,20 @@ throw (Error <INVALID_URL>,
 		stream .request_header ("Referer",    getReferer ());
 		stream .send ();
 
-		if (uri .is_network ())
+		if (stream)
 		{
-			worldURL = uri;
+			worldURL = stream .url ();
+
+			std::clog << "\tLoaded URL is '" << worldURL << "': " << std::endl;
+			std::clog << "Done." << std::endl;
+
+			return stream;
 		}
-		else
-			worldURL = transformedURL;
-
-		std::clog << "\tLoaded URL is '" << worldURL << "': " << std::endl;
-		std::clog << "Done." << std::endl;
-
-		return stream;
 	}
 
 	std::clog << "Failed." << std::endl;
 
-	throw Error <URL_UNAVAILABLE> ("Couldn't load URL '" + transformedURL + "'");
+	throw Error <URL_UNAVAILABLE> ("Couldn't load URL '" + transformedURL + "'\nStatus: " + std::to_string (stream .status ()));
 }
 
 //  URI Handling

@@ -160,10 +160,8 @@ BrowserWindow::on_open_location_dialog ()
 		if (uri .is_network ())
 			getOpenLocationEntry () .set_text (uri .str ());
 	}
-
-	if (getOpenLocationEntry () .get_text () .empty ())
-		getOpenLocationDialog () .set_response_sensitive (Gtk::RESPONSE_OK, false);
 	
+	getOpenLocationDialog () .set_response_sensitive (Gtk::RESPONSE_OK, getOpenLocationEntry () .get_text () .size ());
 	getOpenLocationDialog () .present ();
 }
 

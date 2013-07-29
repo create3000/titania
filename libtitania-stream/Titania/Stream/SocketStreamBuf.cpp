@@ -38,13 +38,13 @@
 namespace titania {
 namespace basic {
 
-socketstreambuf::socketstreambuf (const basic::uri & URL) :
+socketstreambuf::socketstreambuf () :
 	std::streambuf (),
 	          curl (NULL),
 	        sockfd (-1),
 	        buffer (),
 	        opened (false),
-	           URL (URL),
+	           URL (),
 	totalBytesRead (0),
 	     bytesRead (0),
 	 lastBytesRead (0),
@@ -56,8 +56,10 @@ socketstreambuf::socketstreambuf (const basic::uri & URL) :
 }
 
 socketstreambuf*
-socketstreambuf::open ()
+socketstreambuf::open (const basic::uri & url)
 {
+	URL = url;
+
 	CURLcode retcode;
 
 	if (is_open ())
@@ -168,13 +170,17 @@ socketstreambuf::close ()
 		// Cleanup.
 
 		curl_easy_cleanup (curl);
+
+		setg (buffer + bufferSize,  // beginning of putback area
+		      buffer + bufferSize,  // read position
+		      buffer + bufferSize); // end position
 	}
 
 	return this;
 }
 
 int
-socketstreambuf::underflow ()   // used for input buffer only
+socketstreambuf::underflow ()     // used for input buffer only
 {
 	if (! is_open ())
 		return EOF;
