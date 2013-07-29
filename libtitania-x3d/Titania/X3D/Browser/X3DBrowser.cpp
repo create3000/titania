@@ -58,10 +58,7 @@ X3DBrowser::X3DBrowser () :
 	setName ("Titania");
 
 	addField (outputOnly, "url", url ());
-
 	addChildren (description, scene, world);
-
-	X3D::X3DUrlObject::addURN ("about:splash", get_page ("about/splash.wrl"));
 
 	std::clog << "\tDone constructing Browser." << std::endl;
 }
@@ -71,24 +68,25 @@ X3DBrowser::initialize ()
 {
 	std::clog << "Initializing Browser ..." << std::endl;
 
+	initialized .isTainted (true);
 	X3DBrowserContext::initialize ();
 	X3DUrlObject::initialize ();
-
+	
 	// Initialize scene
 
 	replaceWorld (scene = createScene ());
-
-	if (browserOptions -> splashScreen ())
-		replaceWorld (createX3DFromURL ({ "about:splash" }));
+	
+	try
+	{
+		if (browserOptions -> splashScreen ())
+			replaceWorld (createX3DFromURL ({ get_page ("about/splash.wrl") .str () }));
+	}
+	catch (const X3DError & error)
+	{
+		std::clog << error .what () << std::endl;
+	}
 
 	world -> bind ();
-
-	// Process outstanding events
-
-	getRouter () .processEvents ();
-
-	// Update display
-
 	update ();
 
 	// Replace world service.
@@ -117,6 +115,9 @@ X3DBrowser::initialize ()
 	std::clog
 		<< "\tDone initializing Browser." << std::endl
 		<< std::endl;
+
+	initialized .isTainted (false);
+	initialized = getCurrentTime ();
 }
 
 X3DBrowser*

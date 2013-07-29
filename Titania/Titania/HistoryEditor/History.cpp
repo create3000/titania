@@ -79,9 +79,9 @@ History::History () :
 
 	if (not have_history)
 	{
-		setItem ("about:date",  "about:date");
-		setItem ("about:gears", "about:gears");
-		setItem ("about:home",  "about:home");
+		setItem ("about:date",  get_page ("about/date.wrl"));
+		setItem ("about:gears", get_page ("about/gears.wrl"));
+		setItem ("about:home",  get_page ("about/home.wrl"));
 	}
 }
 

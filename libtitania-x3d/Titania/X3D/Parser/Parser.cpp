@@ -154,8 +154,6 @@ Parser::getMessageFromError (const X3DError & error)
 		<< std::string (80, '*') << std::endl;
 
 	getBrowser () -> print (stringstream .str ());
-	
-	std::clog << istream .rdbuf () << std::endl;
 
 	return stringstream .str ();
 }

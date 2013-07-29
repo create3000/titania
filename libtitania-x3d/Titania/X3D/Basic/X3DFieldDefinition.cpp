@@ -145,17 +145,14 @@ X3DFieldDefinition::removeReference ()
 bool
 X3DFieldDefinition::hasRoots (ChildObjectSet & seen)
 {
-	if (getParents () .size ())
-	{
-		for (auto & parent : getParents ())
-			if (parent -> hasRoots (seen))
-				return true;
+	if (getParents () .empty ())
+		return true;
 
-		return false;
-	}
+	for (auto & parent : getParents ())
+		if (parent -> hasRoots (seen))
+			return true;
 
-	// this is a root node
-	return true;
+	return false;
 }
 
 void

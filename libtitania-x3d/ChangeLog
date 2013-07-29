@@ -1,5 +1,14 @@
 2013-07-29  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Parser.cpp:
+	* X3DChildObject.h:
+	* X3DBrowser.cpp:
+	* X3DChildObject.cpp:
+	* splash.wrl:
+	* X3DFieldDefinition.cpp: 
+
+2013-07-29  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* config.cpp:
 	* Parser.cpp:
 	* X3DExecutionContext.h:

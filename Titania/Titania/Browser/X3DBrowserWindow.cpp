@@ -75,16 +75,6 @@ X3DBrowserWindow::X3DBrowserWindow (const basic::uri & worldURL) :
 
 	setTransparent (true);
 
-	// Add URNs to X3D::X3DUrlObject
-	X3D::X3DUrlObject::addURN ("about:icon",      get_ui   ("icons/icon-bw.svg"));
-	X3D::X3DUrlObject::addURN ("about:blank",     get_page ("about/blank.wrl"));
-	X3D::X3DUrlObject::addURN ("about:date",      get_page ("about/date.wrl"));
-	X3D::X3DUrlObject::addURN ("about:gears",     get_page ("about/gears.wrl"));
-	X3D::X3DUrlObject::addURN ("about:home",      get_page ("about/home.wrl"));
-	X3D::X3DUrlObject::addURN ("about:info",      get_page ("about/info.wrl"));
-	X3D::X3DUrlObject::addURN ("about:url_error", get_page ("about/url_error.wrl"));
-	X3D::X3DUrlObject::addURN ("about:hello_world", "http://titania.create3000.de/examples/hello_world.wrl");
-
 	// Browser
 	X3D::getBrowser () -> getBrowserOptions () -> splashScreen () = true;
 }

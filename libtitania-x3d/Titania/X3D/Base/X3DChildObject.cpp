@@ -32,12 +32,15 @@
 
 #include <algorithm>
 
+
 namespace titania {
 namespace X3D {
 
 X3DChildObject::X3DChildObject () :
 	X3DObject (),
 	  parents (),
+	    roots (),
+	 nonRoots (),
 	  tainted (false)
 { }
 
@@ -69,7 +72,8 @@ X3DChildObject::addEvent (X3DChildObject* const, const Event & event)
 void
 X3DChildObject::addParent (X3DChildObject* const parent)
 {
-	parents .insert (parent);
+	parents  .insert (parent);
+	nonRoots .insert (parent);
 }
 
 void
@@ -77,6 +81,9 @@ X3DChildObject::removeParent (X3DChildObject* const parent)
 {
 	if (parents .erase (parent))
 	{
+		if (not roots .erase (parent))
+			nonRoots .erase (parent);
+
 		if (parents .size ())
 		{
 			ChildObjectSet circle;
@@ -114,10 +121,28 @@ X3DChildObject::hasRoots (ChildObjectSet & seen)
 	{
 		if (seen .insert (this) .second)
 		{
-			for (auto & parent : parents)
+			ChildObjectArray tmp;
+		
+			for (auto & parent : roots)
 			{
 				if (parent -> hasRoots (seen))
+				{
+					removeRoots (tmp);
 					return true;
+				}
+				else
+					tmp .emplace_back (parent);
+			}
+
+			removeRoots (tmp);
+
+			for (auto & parent : nonRoots)
+			{
+				if (parent -> hasRoots (seen))
+				{
+					addRoot (parent);					
+					return true;
+				}
 			}
 
 			return false;
@@ -130,12 +155,31 @@ X3DChildObject::hasRoots (ChildObjectSet & seen)
 	return true;
 }
 
+void
+X3DChildObject::addRoot (X3DChildObject* parent)
+{
+	roots .insert (parent);
+	nonRoots .erase (parent);
+}
+
+void
+X3DChildObject::removeRoots (const ChildObjectArray & parents)
+{
+	for (auto & parent : parents)
+	{
+		roots .erase (parent);
+		nonRoots .insert (parent);
+	}
+}
+
 // Object
 
 void
 X3DChildObject::dispose ()
 {
-	parents .clear ();
+	parents  .clear ();
+	roots    .clear ();
+	nonRoots .clear ();
 
 	X3DObject::dispose ();
 }

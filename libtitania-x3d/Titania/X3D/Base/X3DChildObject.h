@@ -162,11 +162,21 @@ protected:
 
 private:
 
+	typedef std::vector <X3DChildObject*> ChildObjectArray;
+
+	void
+	addRoot (X3DChildObject*);
+
+	void
+	removeRoots (const ChildObjectArray &);
+
 	template <class Root, class Type>
 	void
 	findParents (std::deque <Type*> &, ChildObjectSet &);
 
 	ChildObjectSet parents;
+	ChildObjectSet roots;
+	ChildObjectSet nonRoots;
 	bool           tainted;
 
 };
