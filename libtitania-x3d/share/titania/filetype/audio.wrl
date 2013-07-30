@@ -2,7 +2,7 @@
 
 DEF __NAME__ Sound {
   source AudioClip {
-    description "__DESCRIPTION__"
+    description __DESCRIPTION__
     url __URL__
     loop TRUE
   }

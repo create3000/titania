@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,6 +51,7 @@
 #include "jsSFImage.h"
 
 #include "../jsContext.h"
+#include "../jsError.h"
 #include "jsMFInt32.h"
 
 namespace titania {
@@ -134,25 +135,22 @@ jsSFImage::construct (JSContext* context, uintN argc, jsval* vp)
 	else if (argc == 4)
 	{
 		uint32    width, height, comp;
-		JSObject* obj2;
+		JSObject* obj2 = nullptr;
 
 		jsval* argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "uuuo", &width, &height, &comp, &obj2))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, obj2, jsMFInt32::getClass (), NULL))
-		{
-			JS_ReportError (context, "Type of argument 4 is invalid - should be MFInt32, is %s", JS_GetClass (context, obj2) -> name);
+		if (JS_InstanceOfError (context, obj2, jsMFInt32::getClass ()))
 			return JS_FALSE;
-		}
 
 		MFInt32* array = (MFInt32*) JS_GetPrivate (context, obj2);
 
 		return create (context, new SFImage (width, height, comp, *array), &JS_RVAL (context, vp));
 	}
 
-	JS_ReportError (context, "wrong number of arguments");
+	JS_ReportError (context, "new SFImage: wrong number of arguments");
 
 	return JS_FALSE;
 }
@@ -239,16 +237,13 @@ jsSFImage::array (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsv
 {
 	SFImage* sfimage = (SFImage*) JS_GetPrivate (context, obj);
 
-	JSObject* obj2;
+	JSObject* obj2 = nullptr;
 
 	if (not JS_ValueToObject (context, *vp, &obj2))
 		return JS_FALSE;
-
-	if (not JS_InstanceOf (context, obj2, jsMFInt32::getClass (), NULL))
-	{
-		JS_ReportError (context, "Type of argument is invalid - should be MFInt32, is %s", JS_GetClass (context, obj2) -> name);
+		
+	if (JS_InstanceOfError (context, obj2, jsMFInt32::getClass ()))
 		return JS_FALSE;
-	}
 
 	sfimage -> setArray (*(MFInt32*) JS_GetPrivate (context, obj2));
 

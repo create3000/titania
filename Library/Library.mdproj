@@ -2285,6 +2285,7 @@
     <None Include="Examples\Terrain\stage\floor3.htm" />
     <None Include="Examples\Terrain\stage\floor3.wrl" />
     <None Include="Examples\Terrain\index.wrl" />
+    <None Include="Tests\Scripting\Normal.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

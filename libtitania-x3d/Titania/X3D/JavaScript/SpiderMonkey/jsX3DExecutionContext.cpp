@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -63,6 +63,7 @@
 #include "jsProtoDeclarationArray.h"
 #include "jsRouteArray.h"
 #include "jsString.h"
+#include "jsError.h"
 
 namespace titania {
 namespace X3D {
@@ -298,18 +299,15 @@ jsX3DExecutionContext::addNamedNode (JSContext* context, uintN argc, jsval* vp)
 	if (argc == 2)
 	{
 		JSString* name;
-		JSObject* oNode;
+		JSObject* oNode = nullptr;
 
 		jsval* argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "So", &name, &oNode))
 			return JS_FALSE;
 
-		if (JS_GetClass (context, oNode) not_eq jsSFNode::getClass ())
-		{
-			JS_ReportError (context, "Type of argument 2 is invalid - should be SFNode, is %s", JS_GetClass (context, oNode) -> name);
+		if (JS_InstanceOfError (context, oNode, jsSFNode::getClass ()))
 			return JS_FALSE;
-		}
 
 		auto & node = *static_cast <SFNode*> (JS_GetPrivate (context, oNode));
 
@@ -375,18 +373,15 @@ jsX3DExecutionContext::updateNamedNode (JSContext* context, uintN argc, jsval* v
 	if (argc == 2)
 	{
 		JSString* name;
-		JSObject* oNode;
+		JSObject* oNode = nullptr;
 
 		jsval* argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "So", &name, &oNode))
 			return JS_FALSE;
 
-		if (JS_GetClass (context, oNode) not_eq jsSFNode::getClass ())
-		{
-			JS_ReportError (context, "Type of argument 2 is invalid - should be SFNode, is %s", JS_GetClass (context, oNode) -> name);
+		if (JS_InstanceOfError (context, oNode, jsSFNode::getClass ()))
 			return JS_FALSE;
-		}
 
 		auto & node = *static_cast <SFNode*> (JS_GetPrivate (context, oNode));
 
@@ -449,7 +444,7 @@ jsX3DExecutionContext::addImportedNode (JSContext* context, uintN argc, jsval* v
 {
 	if (argc == 2 or argc == 3)
 	{
-		JSObject* oInline;
+		JSObject* oInline = nullptr;
 		JSString* exportedName;
 		JSString* importedName;
 
@@ -458,11 +453,8 @@ jsX3DExecutionContext::addImportedNode (JSContext* context, uintN argc, jsval* v
 		if (not JS_ConvertArguments (context, argc, argv, "oS/S", &oInline, &exportedName, &importedName))
 			return JS_FALSE;
 
-		if (JS_GetClass (context, oInline) not_eq jsSFNode::getClass ())
-		{
-			JS_ReportError (context, "Type of argument 1 is invalid - should be SFNode, is %s", JS_GetClass (context, oInline) -> name);
+		if (JS_InstanceOfError (context, oInline, jsSFNode::getClass ()))
 			return JS_FALSE;
-		}
 
 		auto & node       = *static_cast <SFNode*> (JS_GetPrivate (context, oInline));
 		auto   inlineNode = x3d_cast <Inline*> (node);
@@ -540,7 +532,7 @@ jsX3DExecutionContext::updateImportedNode (JSContext* context, uintN argc, jsval
 {
 	if (argc == 2 or argc == 3)
 	{
-		JSObject* oInline;
+		JSObject* oInline = nullptr;
 		JSString* exportedName;
 		JSString* importedName;
 
@@ -549,11 +541,8 @@ jsX3DExecutionContext::updateImportedNode (JSContext* context, uintN argc, jsval
 		if (not JS_ConvertArguments (context, argc, argv, "oS/S", &oInline, &exportedName, &importedName))
 			return JS_FALSE;
 
-		if (JS_GetClass (context, oInline) not_eq jsSFNode::getClass ())
-		{
-			JS_ReportError (context, "Type of argument 1 is invalid - should be SFNode, is %s", JS_GetClass (context, oInline) -> name);
+		if (JS_InstanceOfError (context, oInline, jsSFNode::getClass ()))
 			return JS_FALSE;
-		}
 
 		auto & node       = *static_cast <SFNode*> (JS_GetPrivate (context, oInline));
 		auto   inlineNode = x3d_cast <Inline*> (node);
@@ -631,8 +620,8 @@ jsX3DExecutionContext::addRoute (JSContext* context, uintN argc, jsval* vp)
 	{
 		Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
-		JSObject* ofromNode;
-		JSObject* otoNode;
+		JSObject* ofromNode = nullptr;
+		JSObject* otoNode = nullptr;
 		JSString* fromEventOut;
 		JSString* toEventIn;
 
@@ -641,19 +630,13 @@ jsX3DExecutionContext::addRoute (JSContext* context, uintN argc, jsval* vp)
 		if (not JS_ConvertArguments (context, argc, argv, "oSoS", &ofromNode, &fromEventOut, &otoNode, &toEventIn))
 			return JS_FALSE;
 
-		if (JS_GetClass (context, ofromNode) not_eq jsSFNode::getClass ())
-		{
-			JS_ReportError (context, "Type of argument 1 is invalid - should be SFNode, is %s", JS_GetClass (context, ofromNode) -> name);
+		if (JS_InstanceOfError (context, ofromNode, jsSFNode::getClass ()))
 			return JS_FALSE;
-		}
 
 		auto & fromNode = *static_cast <SFNode*> (JS_GetPrivate (context, ofromNode));
 
-		if (JS_GetClass (context, otoNode) not_eq jsSFNode::getClass ())
-		{
-			JS_ReportError (context, "Type of argument 3 is invalid - should be SFNode, is %s", JS_GetClass (context, otoNode) -> name);
+		if (JS_InstanceOfError (context, otoNode, jsSFNode::getClass ()))
 			return JS_FALSE;
-		}
 
 		auto & toNode = *static_cast <SFNode*> (JS_GetPrivate (context, otoNode));
 
@@ -683,18 +666,15 @@ jsX3DExecutionContext::deleteRoute (JSContext* context, uintN argc, jsval* vp)
 	{
 		Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
-		JSObject* oRoute;
+		JSObject* oRoute = nullptr;
 
 		jsval* argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "o", &oRoute))
 			return JS_FALSE;
-
-		if (JS_GetClass (context, oRoute) not_eq jsX3DRoute::getClass ())
-		{
-			JS_ReportError (context, "Type of argument 1 is invalid - should be X3DRoute, is %s", JS_GetClass (context, oRoute) -> name);
+	
+		if (JS_InstanceOfError (context, oRoute, jsX3DRoute::getClass ()))
 			return JS_FALSE;
-		}
 
 		auto & route = *static_cast <X3DSFNode <Route>*> (JS_GetPrivate (context, oRoute));
 

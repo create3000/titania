@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,37 +48,33 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_FIELDS_JS_MFNODE_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_FIELDS_JS_MFNODE_H__
-
-#include "../../../Fields/MFNode.h"
-#include "../jsX3DArrayField.h"
-#include "jsSFNode.h"
+#include "jsError.h"
 
 namespace titania {
 namespace X3D {
 
-template <>
 JSBool
-jsX3DArrayField <jsSFNode, MFNode>::construct (JSContext *, uintN, jsval*);
+JS_InstanceOfError (JSContext* context, JSObject* object, JSClass* class_type)
+{
+	if (not object)
+	{
+		JS_ReportError (context, "Type of argument 1 is invalid - should be %s, is NULL",
+		                class_type -> name);
 
-template <>
-JSBool
-jsX3DArrayField <jsSFNode, MFNode>::set1Value (JSContext *, JSObject *, jsid, JSBool, jsval*);
+		return JS_TRUE;
+	}
 
-template <>
-JSBool
-jsX3DArrayField <jsSFNode, MFNode>::unshift (JSContext *, uintN, jsval*);
+	if (not JS_InstanceOf (context, object, class_type, NULL))
+	{
+		JS_ReportError (context, "Type of argument 1 is invalid - should be %s, is %s",
+		                class_type -> name,
+		                JS_GetClass (context, object) -> name);
 
-template <>
-JSBool
-jsX3DArrayField <jsSFNode, MFNode>::push (JSContext *, uintN, jsval*);
+		return JS_TRUE;
+	}
 
-extern template class jsX3DArrayField <jsSFNode, MFNode>;
-
-typedef jsX3DArrayField <jsSFNode, MFNode> jsMFNode;
+	return JS_FALSE;
+}
 
 } // X3D
 } // titania
-
-#endif

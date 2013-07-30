@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,35 +48,16 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_FIELDS_JS_MFNODE_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_FIELDS_JS_MFNODE_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_ERROR_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_ERROR_H__
 
-#include "../../../Fields/MFNode.h"
-#include "../jsX3DArrayField.h"
-#include "jsSFNode.h"
+#include <jsapi.h>
 
 namespace titania {
 namespace X3D {
 
-template <>
 JSBool
-jsX3DArrayField <jsSFNode, MFNode>::construct (JSContext *, uintN, jsval*);
-
-template <>
-JSBool
-jsX3DArrayField <jsSFNode, MFNode>::set1Value (JSContext *, JSObject *, jsid, JSBool, jsval*);
-
-template <>
-JSBool
-jsX3DArrayField <jsSFNode, MFNode>::unshift (JSContext *, uintN, jsval*);
-
-template <>
-JSBool
-jsX3DArrayField <jsSFNode, MFNode>::push (JSContext *, uintN, jsval*);
-
-extern template class jsX3DArrayField <jsSFNode, MFNode>;
-
-typedef jsX3DArrayField <jsSFNode, MFNode> jsMFNode;
+JS_InstanceOfError (JSContext*, JSObject*, JSClass*);
 
 } // X3D
 } // titania

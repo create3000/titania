@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,6 +51,7 @@
 #include "jsSFRotation.h"
 
 #include "../jsContext.h"
+#include "../jsError.h"
 #include "jsSFVec3.h"
 
 namespace titania {
@@ -146,25 +147,22 @@ jsSFRotation::construct (JSContext* context, uintN argc, jsval* vp)
 	}
 	else if (argc == 2)
 	{
-		JSObject* obj2;
+		JSObject* obj2 = nullptr;
 
 		jsval* argv = JS_ARGV (context, vp);
 
 		if (not JS_ValueToObject (context, argv [0], &obj2))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, obj2, jsSFVec3f::getClass (), NULL))
-		{
-			JS_ReportError (context, "Type of argument 1 is invalid - should be SFVec3f, is %s", JS_GetClass (context, obj2) -> name);
+		if (JS_InstanceOfError (context, obj2, jsSFVec3f::getClass ()))
 			return JS_FALSE;
-		}
 
-		JSObject* obj3;
+		JSObject* obj3 = nullptr;
 
 		if (not JS_ValueToObject (context, argv [1], &obj3))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, obj3, jsSFVec3f::getClass (), NULL))
+		if (not obj3 or not JS_InstanceOf (context, obj3, jsSFVec3f::getClass (), nullptr))
 		{
 			jsdouble angle;
 
@@ -296,18 +294,15 @@ jsSFRotation::setAxis (JSContext* context, uintN argc, jsval* vp)
 	{
 		SFRotation4f* sfrotation = (SFRotation4f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
-		JSObject* obj2;
+		JSObject* obj2 = nullptr;
 
 		jsval* argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "o", &obj2))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, obj2, jsSFVec3f::getClass (), NULL))
-		{
-			JS_ReportError (context, "Type of argument 1 is invalid - should be SFVec3f, is %s", JS_GetClass (context, obj2) -> name);
+		if (JS_InstanceOfError (context, obj2, jsSFVec3f::getClass ()))
 			return JS_FALSE;
-		}
 
 		SFVec3f* sfvec3f = (SFVec3f*) JS_GetPrivate (context, obj2);
 
@@ -345,18 +340,15 @@ jsSFRotation::multiply (JSContext* context, uintN argc, jsval* vp)
 	{
 		SFRotation4f* sfrotation1 = (SFRotation4f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
-		JSObject* obj2;
+		JSObject* obj2 = nullptr;
 
 		jsval* argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "o", &obj2))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, obj2, getClass (), NULL))
-		{
-			JS_ReportError (context, "Type of argument 1 is invalid - should be SFRotation, is %s", JS_GetClass (context, obj2) -> name);
+		if (JS_InstanceOfError (context, obj2, getClass ()))
 			return JS_FALSE;
-		}
 
 		SFRotation4f* sfrotation2 = (SFRotation4f*) JS_GetPrivate (context, obj2);
 
@@ -375,18 +367,15 @@ jsSFRotation::multVec (JSContext* context, uintN argc, jsval* vp)
 	{
 		SFRotation4f* sfrotation = (SFRotation4f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
-		JSObject* obj2;
+		JSObject* obj2 = nullptr;
 
 		jsval* argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "o", &obj2))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, obj2, jsSFVec3f::getClass (), NULL))
-		{
-			JS_ReportError (context, "Type of argument 1 is invalid - should be SFVec3f, is %s", JS_GetClass (context, obj2) -> name);
+		if (JS_InstanceOfError (context, obj2, jsSFVec3f::getClass ()))
 			return JS_FALSE;
-		}
 
 		SFVec3f* sfvec3f = (SFVec3f*) JS_GetPrivate (context, obj2);
 
@@ -407,7 +396,7 @@ jsSFRotation::slerp (JSContext* context, uintN argc, jsval* vp)
 		{
 			SFRotation4f* sfrotation = (SFRotation4f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
-			JSObject* obj2;
+			JSObject* obj2 = nullptr;
 			jsdouble  t;
 
 			jsval* argv = JS_ARGV (context, vp);
@@ -415,11 +404,8 @@ jsSFRotation::slerp (JSContext* context, uintN argc, jsval* vp)
 			if (not JS_ConvertArguments (context, argc, argv, "od", &obj2, &t))
 				return JS_FALSE;
 
-			if (not JS_InstanceOf (context, obj2, getClass (), NULL))
-			{
-				JS_ReportError (context, "Type of argument 1 is invalid - should be SFRotation, is %s", JS_GetClass (context, obj2) -> name);
+			if (JS_InstanceOfError (context, obj2, getClass ()))
 				return JS_FALSE;
-			}
 
 			SFRotation4f* dest = (SFRotation4f*) JS_GetPrivate (context, obj2);
 

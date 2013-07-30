@@ -85,7 +85,7 @@ config_dir (const std::string & filename)
 basic::uri
 get_page (const std::string & filename)
 {
-	return find_data_file ("pages/" + filename);
+	return "file://" + find_data_file ("pages/" + filename);
 }
 
 std::string

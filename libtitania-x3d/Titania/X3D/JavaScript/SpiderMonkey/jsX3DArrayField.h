@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -54,6 +54,7 @@
 #include "jsContext.h"
 #include "jsString.h"
 #include "jsX3DField.h"
+#include "jsError.h"
 
 namespace titania {
 namespace X3D {
@@ -198,21 +199,13 @@ jsX3DArrayField <Type, FieldType>::construct (JSContext* context, uintN argc, js
 
 		for (uintN i = 0; i < argc; ++ i)
 		{
-			JSObject* value;
+			JSObject* value = nullptr;
 
 			if (not JS_ValueToObject (context, argv [i], &value))
 				return JS_FALSE;
-
-			if (not JS_InstanceOf (context, value, value_type::getClass (), NULL))
-			{
-				JS_ReportError (context, "new %s: Type of argument %d is invalid - should be %s, is %s",
-				                getClass () -> name,
-				                i + 1,
-				                value_type::getClass () -> name,
-				                JS_GetClass (context, value) -> name);
-
+			
+			if (JS_InstanceOfError (context, value, value_type::getClass ()))
 				return JS_FALSE;
-			}
 
 			field -> emplace_back (*(field_value_type*) JS_GetPrivate (context, value));
 		}
@@ -287,7 +280,7 @@ jsX3DArrayField <Type, FieldType>::get1Value (JSContext* context, JSObject* obj,
 
 	if (index < 0)
 	{
-		JS_ReportError (context, "index out of range");
+		JS_ReportError (context, "%s .get1Value: index out of range.", getClass () -> name);
 		return JS_FALSE;
 	}
 
@@ -311,19 +304,13 @@ jsX3DArrayField <Type, FieldType>::set1Value (JSContext* context, JSObject* obj,
 		return JS_FALSE;
 	}
 
-	JSObject* value;
+	JSObject* value = nullptr;
 
 	if (not JS_ValueToObject (context, *vp, &value))
 		return JS_FALSE;
-
-	if (not JS_InstanceOf (context, value, value_type::getClass (), NULL))
-	{
-		JS_ReportError (context, "Type of argument is invalid - should be %s, is %s",
-		                value_type::getClass () -> name,
-		                JS_GetClass (context, value) -> name);
-
+		
+	if (JS_InstanceOfError (context, value, value_type::getClass ()))
 		return JS_FALSE;
-	}
 
 	FieldType* field = (FieldType*) JS_GetPrivate (context, obj);
 
@@ -340,21 +327,15 @@ jsX3DArrayField <Type, FieldType>::unshift (JSContext* context, uintN argc, jsva
 {
 	if (argc == 1)
 	{
-		JSObject* value;
+		JSObject* value = nullptr;
 
 		jsval* argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "o", &value))
 			return JS_FALSE;
-
-		if (not JS_InstanceOf (context, value, value_type::getClass (), NULL))
-		{
-			JS_ReportError (context, "Type of argument is invalid - should be %s, is %s",
-			                value_type::getClass () -> name,
-			                JS_GetClass (context, value) -> name);
-
+			
+		if (JS_InstanceOfError (context, value, value_type::getClass ()))
 			return JS_FALSE;
-		}
 
 		FieldType* field = (FieldType*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
@@ -374,21 +355,15 @@ jsX3DArrayField <Type, FieldType>::push (JSContext* context, uintN argc, jsval* 
 {
 	if (argc == 1)
 	{
-		JSObject* value;
+		JSObject* value = nullptr;
 
 		jsval* argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "o", &value))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, value, value_type::getClass (), NULL))
-		{
-			JS_ReportError (context, "Type of argument is invalid - should be %s, is %s",
-			                value_type::getClass () -> name,
-			                JS_GetClass (context, value) -> name);
-
+		if (JS_InstanceOfError (context, value, value_type::getClass ()))
 			return JS_FALSE;
-		}
 
 		FieldType* field = (FieldType*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -53,6 +53,7 @@
 #include "Fields/jsMFNode.h"
 #include "Fields/jsSFNode.h"
 #include "jsContext.h"
+#include "jsError.h"
 
 namespace titania {
 namespace X3D {
@@ -133,16 +134,13 @@ jsX3DScene::rootNodes (JSContext* context, JSObject* obj, jsid id, JSBool strict
 {
 	auto scene = static_cast <X3DScene*> (JS_GetPrivate (context, obj));
 
-	JSObject* omfnode;
+	JSObject* omfnode = nullptr;
 
 	if (not JS_ValueToObject (context, *vp, &omfnode))
 		return JS_FALSE;
 
-	if (JS_GetClass (context, omfnode) not_eq jsMFNode::getClass ())
-	{
-		JS_ReportError (context, "Type of argument is invalid - should be MFNode, is %s", JS_GetClass (context, omfnode) -> name);
+	if (JS_InstanceOfError (context, omfnode, jsMFNode::getClass ()))
 		return JS_FALSE;
-	}
 
 	scene -> getRootNodes () = *static_cast <MFNode*> (JS_GetPrivate (context, omfnode));
 
@@ -211,18 +209,15 @@ jsX3DScene::addExportedNode (JSContext* context, uintN argc, jsval* vp)
 	if (argc == 2)
 	{
 		JSString* exportedName;
-		JSObject* oNode;
+		JSObject* oNode = nullptr;
 
 		jsval* argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "So", &exportedName, &oNode))
 			return JS_FALSE;
 
-		if (JS_GetClass (context, oNode) not_eq jsSFNode::getClass ())
-		{
-			JS_ReportError (context, "Type of argument 1 is invalid - should be SFNode, is %s", JS_GetClass (context, oNode) -> name);
+		if (JS_InstanceOfError (context, oNode, jsSFNode::getClass ()))
 			return JS_FALSE;
-		}
 
 		auto & node = *static_cast <SFNode*> (JS_GetPrivate (context, oNode));
 
@@ -288,18 +283,15 @@ jsX3DScene::updateExportedNode (JSContext* context, uintN argc, jsval* vp)
 	if (argc == 2)
 	{
 		JSString* exportedName;
-		JSObject* oNode;
+		JSObject* oNode = nullptr;
 
 		jsval* argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "So", &exportedName, &oNode))
 			return JS_FALSE;
 
-		if (JS_GetClass (context, oNode) not_eq jsSFNode::getClass ())
-		{
-			JS_ReportError (context, "Type of argument 1 is invalid - should be SFNode, is %s", JS_GetClass (context, oNode) -> name);
+		if (JS_InstanceOfError (context, oNode, jsSFNode::getClass ()))
 			return JS_FALSE;
-		}
 
 		auto & node = *static_cast <SFNode*> (JS_GetPrivate (context, oNode));
 

@@ -304,7 +304,7 @@ jsSFNode::getNodeType (JSContext* context, uintN argc, jsval* vp)
 	{
 		SFNode* sfnode = (SFNode*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
-		JSObject* result;
+		JSObject* result = nullptr;
 
 		if (*sfnode)
 		{

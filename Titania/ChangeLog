@@ -1,5 +1,9 @@
 2013-07-30  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* config.cpp: 
+
+2013-07-30  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* main.cpp:
 	* history.db:

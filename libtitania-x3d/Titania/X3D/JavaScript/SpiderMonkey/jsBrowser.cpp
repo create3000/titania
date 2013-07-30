@@ -63,6 +63,7 @@
 #include "jsX3DExecutionContext.h"
 #include "jsX3DScene.h"
 #include "jsfield.h"
+#include "jsError.h"
 
 namespace titania {
 namespace X3D {
@@ -218,7 +219,7 @@ jsBrowser::replaceWorld (JSContext* context, uintN argc, jsval* vp)
 	{
 		Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
-		JSObject* scene;
+		JSObject* scene = nullptr;
 
 		jsval* argv = JS_ARGV (context, vp);
 
@@ -230,11 +231,8 @@ jsBrowser::replaceWorld (JSContext* context, uintN argc, jsval* vp)
 			if (not JS_ConvertArguments (context, argc, argv, "o", &scene))
 				return JS_FALSE;
 
-			if (not JS_InstanceOf (context, scene, jsX3DScene::getClass (), NULL))
-			{
-				JS_ReportError (context, "Browser .replaceWorld: Type of argument 1 is invalid - should be X3DScene, is %s", JS_GetClass (context, scene) -> name);
+			if (JS_InstanceOfError (context, scene, jsX3DScene::getClass ()))
 				return JS_FALSE;
-			}
 
 			script -> getBrowser () -> replaceWorld (static_cast <Scene*> (JS_GetPrivate (context, scene)));
 		}
@@ -289,8 +287,8 @@ jsBrowser::createX3DFromURL (JSContext* context, uintN argc, jsval* vp)
 		auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
 		auto script     = javaScript -> getNode ();
 
-		JSObject* ourl;
-		JSObject* onode;
+		JSObject* ourl = nullptr;
+		JSObject* onode = nullptr;
 		JSString* event;
 
 		jsval* argv = JS_ARGV (context, vp);
@@ -298,11 +296,8 @@ jsBrowser::createX3DFromURL (JSContext* context, uintN argc, jsval* vp)
 		if (not JS_ConvertArguments (context, argc, argv, "o/So", &ourl, &event, &onode))
 			return JS_FALSE;
 
-		if (JS_GetClass (context, ourl) not_eq jsMFString::getClass ())
-		{
-			JS_ReportError (context, "Browser .createX3DFromURL: type of argument 1 is invalid - should be MFString, is %s", JS_GetClass (context, ourl) -> name);
+		if (JS_InstanceOfError (context, ourl, jsMFString::getClass ()))
 			return JS_FALSE;
-		}
 
 		MFString* url = static_cast <MFString*> (JS_GetPrivate (context, ourl));
 
@@ -422,27 +417,21 @@ jsBrowser::loadURL (JSContext* context, uintN argc, jsval* vp)
 	{
 		Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
-		JSObject* ourl;
-		JSObject* oparameter;
+		JSObject* ourl = nullptr;
+		JSObject* oparameter = nullptr;
 
 		jsval* argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "oo", &ourl, &oparameter))
 			return JS_FALSE;
 
-		if (JS_GetClass (context, ourl) not_eq jsMFString::getClass ())
-		{
-			JS_ReportError (context, "Browser .loadURL: type of argument 1 is invalid - should be MFString, is %s", JS_GetClass (context, ourl) -> name);
+		if (JS_InstanceOfError (context, ourl, jsMFString::getClass ()))
 			return JS_FALSE;
-		}
 
 		MFString* url = static_cast <MFString*> (JS_GetPrivate (context, ourl));
 
-		if (JS_GetClass (context, oparameter) not_eq jsMFString::getClass ())
-		{
-			JS_ReportError (context, "Browser .loadURL: type of argument 1 is invalid - should be MFString, is %s", JS_GetClass (context, oparameter) -> name);
+		if (JS_InstanceOfError (context, oparameter, jsMFString::getClass ()))
 			return JS_FALSE;
-		}
 
 		MFString* parameter = static_cast <MFString*> (JS_GetPrivate (context, oparameter));
 
@@ -763,8 +752,8 @@ jsBrowser::createVrmlFromURL (JSContext* context, uintN argc, jsval* vp)
 	{
 		Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
-		JSObject* ourl;
-		JSObject* onode;
+		JSObject* ourl = nullptr;
+		JSObject* onode = nullptr;
 		JSString* event;
 
 		jsval* argv = JS_ARGV (context, vp);
@@ -772,19 +761,13 @@ jsBrowser::createVrmlFromURL (JSContext* context, uintN argc, jsval* vp)
 		if (not JS_ConvertArguments (context, argc, argv, "ooS", &ourl, &onode, &event))
 			return JS_FALSE;
 
-		if (JS_GetClass (context, ourl) not_eq jsMFString::getClass ())
-		{
-			JS_ReportError (context, "Browser .createVrmlFromURL: type of argument 1 is invalid - should be MFString, is %s", JS_GetClass (context, ourl) -> name);
+		if (JS_InstanceOfError (context, ourl, jsMFString::getClass ()))
 			return JS_FALSE;
-		}
 
 		MFString* url = static_cast <MFString*> (JS_GetPrivate (context, ourl));
 
-		if (JS_GetClass (context, onode) not_eq jsSFNode::getClass ())
-		{
-			JS_ReportError (context, "Browser .createVrmlFromURL: type of argument 2 is invalid - should be SFNode, is %s", JS_GetClass (context, onode) -> name);
+		if (JS_InstanceOfError (context, onode, jsSFNode::getClass ()))
 			return JS_FALSE;
-		}
 
 		SFNode* sfnode = static_cast <SFNode*> (JS_GetPrivate (context, onode));
 
@@ -861,8 +844,8 @@ jsBrowser::deleteRoute (JSContext* context, uintN argc, jsval* vp)
 	{
 		Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 		
-		JSObject* ofromNode;
-		JSObject* otoNode;
+		JSObject* ofromNode = nullptr;
+		JSObject* otoNode = nullptr;
 		JSString* fromEventOut;
 		JSString* toEventIn;
 
@@ -871,19 +854,13 @@ jsBrowser::deleteRoute (JSContext* context, uintN argc, jsval* vp)
 		if (not JS_ConvertArguments (context, argc, argv, "oSoS", &ofromNode, &fromEventOut, &otoNode, &toEventIn))
 			return JS_FALSE;
 
-		if (JS_GetClass (context, ofromNode) not_eq jsSFNode::getClass ())
-		{
-			JS_ReportError (context, "Browser .deleteRoute: Type of argument 1 is invalid - should be SFNode, is %s", JS_GetClass (context, ofromNode) -> name);
+		if (JS_InstanceOfError (context, ofromNode, jsSFNode::getClass ()))
 			return JS_FALSE;
-		}
 
 		auto & fromNode = *static_cast <SFNode*> (JS_GetPrivate (context, ofromNode));
 
-		if (JS_GetClass (context, otoNode) not_eq jsSFNode::getClass ())
-		{
-			JS_ReportError (context, "Browser .deleteRoute: Type of argument 3 is invalid - should be SFNode, is %s", JS_GetClass (context, otoNode) -> name);
+		if (JS_InstanceOfError (context, otoNode, jsSFNode::getClass ()))
 			return JS_FALSE;
-		}
 
 		auto & toNode = *static_cast <SFNode*> (JS_GetPrivate (context, otoNode));
 

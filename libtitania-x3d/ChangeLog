@@ -2,6 +2,30 @@
 
 	* Makefile.am:
 	* libtitania-x3d.cproj:
+	* audio.wrl:
+	* jsError.h:
+	* jsContext.h:
+	* jsfield.cpp:
+	* jsError.cpp:
+	* jsBrowser.cpp:
+	* jsX3DScene.cpp:
+	* jsSFVec4.h:
+	* jsX3DArrayField.h:
+	* jsSFVec3.h:
+	* jsMFNode.h:
+	* jsSFVec2.h:
+	* jsMFNode.cpp:
+	* jsSFNode.cpp:
+	* jsSFImage.cpp:
+	* jsSFMatrix3.h:
+	* jsSFMatrix4.h:
+	* jsSFRotation.cpp:
+	* jsX3DExecutionContext.cpp: 
+
+2013-07-30  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
 	* Browser.h:
 	* GoldenGate.h:
 	* X3DWidget.h:

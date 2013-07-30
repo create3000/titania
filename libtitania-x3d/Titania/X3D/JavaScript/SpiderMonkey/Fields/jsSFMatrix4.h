@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -54,6 +54,7 @@
 #include "../../../Fields/SFMatrix4.h"
 #include "../jsContext.h"
 #include "../jsX3DField.h"
+#include "../jsError.h"
 #include "jsSFRotation.h"
 #include "jsSFVec3.h"
 
@@ -331,66 +332,36 @@ jsSFMatrix4 <Type>::setTransform (JSContext* context, uintN argc, jsval* vp)
 
 		if (argc >= 1)
 		{
-			if (not JS_InstanceOf (context, translationObj, vector3_type::getClass (), NULL))
-			{
-				JS_ReportError (context, "Type of argument 1 is invalid - should be %s, is %s",
-				                vector3_type::getClass () -> name,
-				                JS_GetClass (context, translationObj) -> name);
-
+			if (JS_InstanceOfError (context, translationObj, vector3_type::getClass ()))
 				return JS_FALSE;
-			}
 
 			vector3_field_type* translation = (vector3_field_type*) JS_GetPrivate (context, translationObj);
 
 			if (argc >= 2)
 			{
-				if (not JS_InstanceOf (context, rotationObj, jsSFRotation::getClass (), NULL))
-				{
-					JS_ReportError (context, "Type of argument 2 is invalid - should be %s, is %s",
-					                rotation_type::getClass () -> name,
-					                JS_GetClass (context, rotationObj) -> name);
-
+				if (JS_InstanceOfError (context, rotationObj, jsSFRotation::getClass ()))
 					return JS_FALSE;
-				}
 
 				rotation_field_type* rotation = (rotation_field_type*) JS_GetPrivate (context, rotationObj);
 
 				if (argc >= 3)
 				{
-					if (not JS_InstanceOf (context, scaleObj, vector3_type::getClass (), NULL))
-					{
-						JS_ReportError (context, "Type of argument 3 is invalid - should be %s, is %s",
-						                vector3_type::getClass () -> name,
-						                JS_GetClass (context, scaleObj) -> name);
-
+					if (JS_InstanceOfError (context, scaleObj, vector3_type::getClass ()))
 						return JS_FALSE;
-					}
 
 					vector3_field_type* scale = (vector3_field_type*) JS_GetPrivate (context, scaleObj);
 
 					if (argc >= 4)
 					{
-						if (not JS_InstanceOf (context, scaleOrientationObj, jsSFRotation::getClass (), NULL))
-						{
-							JS_ReportError (context, "Type of argument 4 is invalid - should be %s, is %s",
-							                rotation_type::getClass () -> name,
-							                JS_GetClass (context, scaleOrientationObj) -> name);
-
+						if (JS_InstanceOfError (context, scaleOrientationObj, jsSFRotation::getClass ()))
 							return JS_FALSE;
-						}
 
 						rotation_field_type* scaleOrientation = (rotation_field_type*) JS_GetPrivate (context, scaleOrientationObj);
 
 						if (argc >= 5)
 						{
-							if (not JS_InstanceOf (context, centerObj, vector3_type::getClass (), NULL))
-							{
-								JS_ReportError (context, "Type of argument 5 is invalid - should be %s, is %s",
-								                vector3_type::getClass () -> name,
-								                JS_GetClass (context, centerObj) -> name);
-
+							if (JS_InstanceOfError (context, centerObj, vector3_type::getClass ()))
 								return JS_FALSE;
-							}
 
 							vector3_field_type* center = (vector3_field_type*) JS_GetPrivate (context, centerObj);
 
@@ -461,14 +432,9 @@ jsSFMatrix4 <Type>::getTransform (JSContext* context, uintN argc, jsval* vp)
 
 		if (translationObj)
 		{
-			if (not JS_InstanceOf (context, translationObj, vector3_type::getClass (), NULL))
-			{
-				JS_ReportError (context, "Type of argument 1 is invalid - should be %s or null, is %s",
-				                vector3_type::getClass () -> name,
-				                JS_GetClass (context, translationObj) -> name);
-
+			if (JS_InstanceOfError (context, translationObj, vector3_type::getClass ()))
 				return JS_FALSE;
-			}
+				
 			else
 				translation = (vector3_field_type*) JS_GetPrivate (context, translationObj);
 		}
@@ -480,12 +446,8 @@ jsSFMatrix4 <Type>::getTransform (JSContext* context, uintN argc, jsval* vp)
 
 		if (rotationObj)
 		{
-			if (not JS_InstanceOf (context, rotationObj, jsSFRotation::getClass (), NULL))
+			if (JS_InstanceOfError (context, rotationObj, jsSFRotation::getClass ()))
 			{
-				JS_ReportError (context, "Type of argument 2 is invalid - should be %s or null, is %s",
-				                rotation_type::getClass () -> name,
-				                JS_GetClass (context, rotationObj) -> name);
-
 				if (noTranslation)
 					delete translation;
 
@@ -502,12 +464,8 @@ jsSFMatrix4 <Type>::getTransform (JSContext* context, uintN argc, jsval* vp)
 
 		if (scaleObj)
 		{
-			if (not JS_InstanceOf (context, scaleObj, vector3_type::getClass (), NULL))
+			if (JS_InstanceOfError (context, scaleObj, vector3_type::getClass ()))
 			{
-				JS_ReportError (context, "Type of argument 3 is invalid - should be %s or null, is %s",
-				                vector3_type::getClass () -> name,
-				                JS_GetClass (context, scaleObj) -> name);
-
 				if (noTranslation)
 					delete translation;
 
@@ -527,12 +485,8 @@ jsSFMatrix4 <Type>::getTransform (JSContext* context, uintN argc, jsval* vp)
 
 		if (scaleOrientationObj)
 		{
-			if (not JS_InstanceOf (context, scaleObj, vector3_type::getClass (), NULL))
+			if (JS_InstanceOfError (context, scaleObj, vector3_type::getClass ()))
 			{
-				JS_ReportError (context, "Type of argument 4 is invalid - should be %s or null, is %s",
-				                rotation_type::getClass () -> name,
-				                JS_GetClass (context, scaleObj) -> name);
-
 				if (noTranslation)
 					delete translation;
 
@@ -641,20 +595,15 @@ jsSFMatrix4 <Type>::multLeft (JSContext* context, uintN argc, jsval* vp)
 	{
 		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
-		JSObject* rhs;
+		JSObject* rhs = nullptr;
 
 		jsval* argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "o", &rhs))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, rhs, getClass (), NULL))
-		{
-			JS_ReportError (context, "Type of argument 1 is invalid - should be Type, is %s",
-			                JS_GetClass (context, rhs) -> name);
-
+		if (JS_InstanceOfError (context, rhs, getClass ()))
 			return JS_FALSE;
-		}
 
 		Type* matrix = (Type*) JS_GetPrivate (context, rhs);
 
@@ -674,20 +623,15 @@ jsSFMatrix4 <Type>::multRight (JSContext* context, uintN argc, jsval* vp)
 	{
 		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
-		JSObject* rhs;
+		JSObject* rhs = nullptr;
 
 		jsval* argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "o", &rhs))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, rhs, getClass (), NULL))
-		{
-			JS_ReportError (context, "Type of argument 1 is invalid - should be Type, is %s",
-			                JS_GetClass (context, rhs) -> name);
-
+		if (JS_InstanceOfError (context, rhs, getClass ()))
 			return JS_FALSE;
-		}
 
 		Type* matrix = (Type*) JS_GetPrivate (context, rhs);
 
@@ -707,21 +651,15 @@ jsSFMatrix4 <Type>::multVecMatrix (JSContext* context, uintN argc, jsval* vp)
 	{
 		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
-		JSObject* rhs;
+		JSObject* rhs = nullptr;
 
 		jsval* argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "o", &rhs))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, rhs, vector3_type::getClass (), NULL))
-		{
-			JS_ReportError (context, "Type of argument 1 is invalid - should be %s, is %s",
-			                vector3_type::getClass () -> name,
-			                JS_GetClass (context, rhs) -> name);
-
+		if (JS_InstanceOfError (context, rhs, vector3_type::getClass ()))
 			return JS_FALSE;
-		}
 
 		vector3_field_type* vector = (vector3_field_type*) JS_GetPrivate (context, rhs);
 
@@ -741,21 +679,15 @@ jsSFMatrix4 <Type>::multMatrixVec (JSContext* context, uintN argc, jsval* vp)
 	{
 		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
-		JSObject* rhs;
+		JSObject* rhs = nullptr;
 
 		jsval* argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "o", &rhs))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, rhs, vector3_type::getClass (), NULL))
-		{
-			JS_ReportError (context, "Type of argument 1 is invalid - should be %s, is %s",
-			                vector3_type::getClass () -> name,
-			                JS_GetClass (context, rhs) -> name);
-
+		if (JS_InstanceOfError (context, rhs, vector3_type::getClass ()))
 			return JS_FALSE;
-		}
 
 		vector3_field_type* vector = (vector3_field_type*) JS_GetPrivate (context, rhs);
 
@@ -775,21 +707,15 @@ jsSFMatrix4 <Type>::multDirMatrix (JSContext* context, uintN argc, jsval* vp)
 	{
 		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
-		JSObject* rhs;
+		JSObject* rhs = nullptr;
 
 		jsval* argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "o", &rhs))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, rhs, vector3_type::getClass (), NULL))
-		{
-			JS_ReportError (context, "Type of argument 1 is invalid - should be %s, is %s",
-			                vector3_type::getClass () -> name,
-			                JS_GetClass (context, rhs) -> name);
-
+		if (JS_InstanceOfError (context, rhs, vector3_type::getClass ()))
 			return JS_FALSE;
-		}
 
 		vector3_field_type* vector = (vector3_field_type*) JS_GetPrivate (context, rhs);
 
@@ -809,21 +735,15 @@ jsSFMatrix4 <Type>::multMatrixDir (JSContext* context, uintN argc, jsval* vp)
 	{
 		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
-		JSObject* rhs;
+		JSObject* rhs = nullptr;
 
 		jsval* argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "o", &rhs))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, rhs, vector3_type::getClass (), NULL))
-		{
-			JS_ReportError (context, "Type of argument 1 is invalid - should be %s, is %s",
-			                vector3_type::getClass () -> name,
-			                JS_GetClass (context, rhs) -> name);
-
+		if (JS_InstanceOfError (context, rhs, vector3_type::getClass ()))
 			return JS_FALSE;
-		}
 
 		vector3_field_type* vector = (vector3_field_type*) JS_GetPrivate (context, rhs);
 

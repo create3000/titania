@@ -2,187 +2,20 @@
 
 META "title" "Scripting test"
 
-PROTO Vector3f [
-  exposedField SFBool   enabled TRUE
-  exposedField MFString description ""
-  exposedField SFVec3f  vector 0 0 0
-  exposedField SFColor  color 0.8 0.8 0.8
-]
-{
-  PROTO Fields [
-    exposedField SFVec3f vector 0 0 0
-    exposedField SFColor color 0.8 0.8 0.8
-  ]
-  {
-    Group { }
-  }
-
-  Group {
-    children [
-      DEF Sensor SphereSensor {
-        enabled IS enabled
-      }
-      Shape {
-        geometry DEF Line IndexedLineSet {
-          colorPerVertex FALSE
-          colorIndex [ 0, 1 ]
-          coordIndex [ 0, 1, -1 ]
-          color Color {
-            color 1 1 0
-          }
-          coord Coordinate {
-            point [ 0 0 0, 0 0 2 ]
-          }
-        }
-      }
-      DEF Arrow Transform {
-        children Transform {
-          rotation 1 0 0 1.5708
-          scale 0.1 0.1 0.1
-          children Shape {
-            appearance Appearance {
-              material DEF Material Material {
-                diffuseColor 1 1 0
-              }
-            }
-            geometry Cone { }
-          }
-        }
-      }
-      DEF Description Transform {
-        scale 0.3 0.3 0.3
-        children Billboard {
-          axisOfRotation 0 0 0
-          children Shape {
-            appearance Appearance {
-              material Material {
-                diffuseColor 0 0 0
-              }
-            }
-            geometry Text {
-              string IS description
-            }
-          }
-        }
-      }
-    ]
-  }
-
-  DEF Vector3f Script {
-    eventIn SFVec3f    set_vector
-    eventIn SFRotation set_rotation
-    field   SFNode     line USE Line
-    field   SFNode     arrow USE Arrow
-    field   SFNode     material USE Material
-    field   SFNode     description USE Description
-    field   SFNode     sensor USE Sensor
-    field   SFNode     fields DEF Fields Fields {
-      vector IS vector
-      color IS color
-    }
-
-    url "vrmlscript:
-var zAxis = new SFVec3f (0, 0, 1);    
-
-function initialize ()
-{
-	fields .vector = fields .vector;
-}
-
-function set_rotation (value, time)
-{
-	fields .vector = value .multVec (zAxis) .multiply (fields .vector .length ());
-}
-
-function set_vector (value, time)
-{
-	var rotation = new SFRotation (zAxis, value);
-
-	// Vector
-
-	line .coord .point [1] = value;
-
-	arrow .translation = value;
-	arrow .rotation    = rotation;
-
-	description .translation = value;
-	
-	sensor .offset = rotation;
-	
-	// Color	
-	
-	line .color .color [0] = fields .color;
-	material .diffuseColor = fields .color;
-}
-    "
-    directOutput TRUE
-  }
-
-  ROUTE Fields.vector_changed TO Vector3f.set_vector
-  ROUTE Sensor.rotation_changed TO Vector3f.set_rotation
-}
-
-Background {
-  skyColor 0.5 0.5 0.5
-}
-
-Viewpoint {
-  description "Home"
-  position 0 0 5
-}
-
-DEF A Vector3f {
-  description " a"
-  vector 1 0 0
-  color 1 0 1
-}
-
-DEF B Vector3f {
-  description " b"
-  vector 0 1 0
-  color 0 0 1
-}
-
-DEF Normal Vector3f {
-  enabled FALSE
-  description " normal"
-  vector 1 1 0
-  color 1 1 0
-}
-
 DEF Script Script {
-  eventIn SFVec3f set_vector
-  field   SFNode  a USE A
-  field   SFNode  b USE B
-  field   SFNode  normal USE Normal
+  field   SFVec3f vector 0 0 0
+  field   SFNode  node Transform { }
 
   url "vrmlscript:
-function sign (value)
+function initialize ()
 {
-	if (value > 0)
-		return 1;
+	print (node);
 	
-	if (value < 0)
-		return -1;
+	node = null;
 	
-	return 0;
+	print (node == null);
 }
 
-function eventsProcessed ()
-{
-	var v1 = a .vector;
-	var v2 = b .vector;
-	
-	var cosa  = v1 .dot (v2);
-	var cross = v1 .cross (v2);
-
-	print ('angle : ', sign (cross .x + cross .y + cross .z) * Math .acos (cosa));
-	
-	normal .vector = cross .normalize ();
-}
     "
   directOutput TRUE
 }
-
-ROUTE A.vector_changed TO Script.set_vector
-ROUTE B.vector_changed TO Script.set_vector

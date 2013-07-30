@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -54,6 +54,7 @@
 #include "../../../Fields/SFVec3.h"
 #include "../jsContext.h"
 #include "../jsX3DField.h"
+#include "../jsError.h"
 
 namespace titania {
 namespace X3D {
@@ -320,18 +321,15 @@ jsSFVec3 <Type>::add (JSContext* context, uintN argc, jsval* vp)
 	{
 		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
-		JSObject* rhs;
+		JSObject* rhs = nullptr;
 
 		jsval* argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "o", &rhs))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, rhs, getClass (), NULL))
-		{
-			JS_ReportError (context, "%s .add: type of argument 1 is invalid - should be %s, is %s", getClass () -> name, getClass () -> name, JS_GetClass (context, rhs) -> name);
+		if (JS_InstanceOfError (context, rhs, getClass ()))
 			return JS_FALSE;
-		}
 
 		Type* vector = (Type*) JS_GetPrivate (context, rhs);
 
@@ -351,18 +349,15 @@ jsSFVec3 <Type>::subtract (JSContext* context, uintN argc, jsval* vp)
 	{
 		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
-		JSObject* rhs;
+		JSObject* rhs = nullptr;
 
 		jsval* argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "o", &rhs))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, rhs, getClass (), NULL))
-		{
-			JS_ReportError (context, "Type of argument 1 is invalid - should be %s, is %s", getClass () -> name, JS_GetClass (context, rhs) -> name);
+		if (JS_InstanceOfError (context, rhs, getClass ()))
 			return JS_FALSE;
-		}
 
 		Type* vector = (Type*) JS_GetPrivate (context, rhs);
 
@@ -428,18 +423,15 @@ jsSFVec3 <Type>::cross (JSContext* context, uintN argc, jsval* vp)
 	{
 		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
-		JSObject* rhs;
+		JSObject* rhs = nullptr;
 
 		jsval* argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "o", &rhs))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, rhs, getClass (), NULL))
-		{
-			JS_ReportError (context, "Type of argument 1 is invalid - should be %s, is %s", getClass () -> name, JS_GetClass (context, rhs) -> name);
+		if (JS_InstanceOfError (context, rhs, getClass ()))
 			return JS_FALSE;
-		}
 
 		Type* vector = (Type*) JS_GetPrivate (context, rhs);
 
@@ -459,18 +451,15 @@ jsSFVec3 <Type>::dot (JSContext* context, uintN argc, jsval* vp)
 	{
 		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
-		JSObject* rhs;
+		JSObject* rhs = nullptr;
 
 		jsval* argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "o", &rhs))
 			return JS_FALSE;
 
-		if (not JS_InstanceOf (context, rhs, getClass (), NULL))
-		{
-			JS_ReportError (context, "Type of argument 1 is invalid - should be %s, is %s", getClass () -> name, JS_GetClass (context, rhs) -> name);
+		if (JS_InstanceOfError (context, rhs, getClass ()))
 			return JS_FALSE;
-		}
 
 		Type* vector = (Type*) JS_GetPrivate (context, rhs);
 

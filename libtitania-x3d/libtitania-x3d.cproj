@@ -566,6 +566,7 @@
     <None Include="Titania\X3D\Parser\Filter.h" />
     <None Include="Titania\X3D\Types\MediaStream.h" />
     <None Include="Titania\X3D\Bits\GoldenGate.h" />
+    <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsError.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1001,6 +1002,7 @@
     <Compile Include="Titania\X3D\Parser\Filter.cpp" />
     <Compile Include="Titania\X3D\Types\MediaStream.cpp" />
     <Compile Include="Titania\X3D\Bits\GoldenGate.cpp" />
+    <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsError.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
