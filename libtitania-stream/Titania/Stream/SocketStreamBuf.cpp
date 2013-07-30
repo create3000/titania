@@ -32,6 +32,7 @@
 #include <curl/curl.h>
 #include <istream>
 
+#include <Titania/LOG.h>
 #include <iostream>
 #include <stdexcept>
 
@@ -40,55 +41,59 @@ namespace basic {
 
 socketstreambuf::socketstreambuf () :
 	std::streambuf (),
-	          curl (NULL),
+	          curl (nullptr),
 	        sockfd (-1),
 	        buffer (),
 	        opened (false),
-	           URL (),
+	         m_url (),
+	     m_timeout (60000), // 60 seconds
 	totalBytesRead (0),
 	     bytesRead (0),
 	 lastBytesRead (0),
 	     bytesGone (0)
 {
-	setg (buffer + bufferSize,                    // beginning of putback area
-	      buffer + bufferSize,                    // read position
-	      buffer + bufferSize);                   // end position
+	setg (buffer + bufferSize,  // beginning of putback area
+	      buffer + bufferSize,  // read position
+	      buffer + bufferSize); // end position
 }
 
 socketstreambuf*
-socketstreambuf::open (const basic::uri & url)
+socketstreambuf::open (const basic::uri & URL)
 {
-	URL = url;
+	url (URL);
 
 	CURLcode retcode;
 
 	if (is_open ())
-		return NULL;
+		return nullptr;
 
-	if (not URL .host () .size ())
-		return NULL;
+	if (not url () .host () .size ())
+		return nullptr;
 
 	// Init CURL.
 
 	curl = curl_easy_init ();
 
 	if (not curl)
-		return NULL;
+		return nullptr;
 
 	opened = true;
 
 	// Connect.
 
-	curl_easy_setopt (curl, CURLOPT_URL, URL .root () .str () .c_str ());
-	curl_easy_setopt (curl, CURLOPT_CONNECT_ONLY, 1L);
+	curl_easy_setopt (curl, CURLOPT_URL,               url () .root () .str () .c_str ());
+	curl_easy_setopt (curl, CURLOPT_CONNECT_ONLY,      1L);
+	curl_easy_setopt (curl, CURLOPT_CONNECTTIMEOUT_MS, timeout ());
+	curl_easy_setopt (curl, CURLOPT_TIMEOUT_MS,        timeout ());
+	curl_easy_setopt (curl, CURLOPT_ACCEPTTIMEOUT_MS,  timeout ());
 
 	retcode = curl_easy_perform (curl);
 
 	if (retcode not_eq CURLE_OK)
 	{
-		std::clog << "CURL Error: " << "Can't open URI '" << URL << "': " << std::strerror (retcode) << std::endl;
+		std::clog << "CURL Error: " << "Can't open URI '" << url () << "': " << std::strerror (retcode) << std::endl;
 		close ();
-		return NULL;
+		return nullptr;
 	}
 
 	// Get socket.
@@ -107,11 +112,11 @@ socketstreambuf::send (const std::string & request)
 {
 	// Wait for the socket to become ready for sending.
 
-	if (not wait (SEND, 60000L))
+	if (not wait (SEND, timeout ()))
 	{
 		std::clog << "CURL Error: " << "timeout" << std::endl;
 		close ();
-		return NULL;
+		return nullptr;
 	}
 
 	// Sending request.
@@ -123,7 +128,7 @@ socketstreambuf::send (const std::string & request)
 	{
 		std::clog << "CURL Error: " << "Can't send Request: " << std::strerror (retcode) << std::endl;
 		close ();
-		return NULL;
+		return nullptr;
 	}
 
 	//
@@ -195,7 +200,7 @@ socketstreambuf::underflow ()     // used for input buffer only
 
 	lastBytesRead = bytesRead;
 
-	wait (RECEIVE, 60000L);
+	wait (RECEIVE, timeout ());
 
 	CURLcode retcode = curl_easy_recv (curl, buffer + bufferSize, bufferSize, &bytesRead);
 

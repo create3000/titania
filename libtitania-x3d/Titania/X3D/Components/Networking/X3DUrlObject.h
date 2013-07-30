@@ -131,6 +131,13 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
+	X3DSFNode <Scene>
+	createX3DFromStream (const basic::uri &, std::istream &)
+	throw (Error <INVALID_X3D>,
+	       Error <NOT_SUPPORTED>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
 	///
 	void
 	createX3DFromURL (const MFString &, const SFNode &, const std::string &)
@@ -173,35 +180,17 @@ public:
 	/// URI Handling
 
 	MFString
-	transformURI (const MFString &);
+	transformUri (const MFString &);
 
 	MFString
-	transformURI (const basic::uri &, const MFString &);
+	transformUri (const basic::uri &, const MFString &);
 
 	basic::uri
-	transformURI (const basic::uri &);
-
-	static
-	basic::uri
-	transformURI (const basic::uri &, const basic::uri &);
-
-	/// URN Handling
-
-	static
-	void
-	addURN (const basic::uri &, const basic::uri &);
-
-	static
-	void
-	removeURN (const basic::uri &);
+	transformUri (const basic::uri &);
 
 	static
 	basic::uri
-	getURL (const basic::uri & uri);
-
-	static
-	const URNIndex &
-	getURNs ();
+	transformUri (const basic::uri &, const basic::uri &);
 
 
 protected:
@@ -238,8 +227,6 @@ protected:
 
 
 private:
-
-	static URNIndex URNCache;
 
 	struct Fields
 	{

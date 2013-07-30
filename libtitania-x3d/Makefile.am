@@ -23,6 +23,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Basic/X3DFieldDefinition.cpp \
 	Titania/X3D/Bits/config.cpp \
 	Titania/X3D/Bits/Error.cpp \
+	Titania/X3D/Bits/GoldenGate.cpp \
 	Titania/X3D/Bits/Keys.cpp \
 	Titania/X3D/Browser/Browser.cpp \
 	Titania/X3D/Browser/Console.cpp \

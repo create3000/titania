@@ -78,7 +78,7 @@ public:
 			add_window ("");
 
 		else
-			add_window ("about:blank");
+			add_window (get_page ("about/blank.wrl"));
 	}
 
 	virtual

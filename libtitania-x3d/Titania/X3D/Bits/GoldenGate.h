@@ -48,20 +48,20 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BROWSER_GOLDEN_GATE_H__
-#define __TITANIA_BROWSER_GOLDEN_GATE_H__
+#ifndef __TITANIA_X3D_BITS_GOLDEN_GATE_H__
+#define __TITANIA_X3D_BITS_GOLDEN_GATE_H__
 
 #include <Titania/Basic/URI.h>
+#include <Titania/Stream/InputFileStream.h>
 #include <string>
 
 namespace titania {
-namespace puck {
+namespace X3D {
 
-std::string
-golden_gate (const basic::uri &)
-throw (std::invalid_argument);
+basic::ifilestream
+golden_gate (const basic::uri &, basic::ifilestream &&);
 
-} // puck
+} // X3D
 } // titania
 
 #endif

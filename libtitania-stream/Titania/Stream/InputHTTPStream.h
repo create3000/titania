@@ -85,20 +85,20 @@ public:
 
 	ihttpstream ();
 
-	ihttpstream (const http::method, const basic::uri &);
+	ihttpstream (const http::method, const basic::uri &, size_t = 60000);
 
 	ihttpstream (ihttpstream &&);
 
 	/// @name Properties
 
 	const basic::uri &
-	url ()
+	url () const
 	{ return buf -> url (); }
 
 	/// @name Connection handling
 
 	void
-	open (const http::method, const basic::uri &);
+	open (const http::method, const basic::uri &, size_t = 60000);
 
 	void
 	send ();
@@ -111,18 +111,22 @@ public:
 	void
 	request_header (const std::string &, const std::string &);
 
+	void
+	request_headers (const headers_type & value)
+	{ request_headers_map = value; }
+
 	const headers_type &
-	request_headers ()
+	request_headers () const
 	{ return request_headers_map; }
 
 	const headers_type &
-	response_headers ()
+	response_headers () const
 	{ return response_headers_map; }
 
 	/// @name Element access
 
 	const method_array
-	supported_methods ()
+	supported_methods () const
 	{ return methods; }
 
 	const std::string &
@@ -130,17 +134,25 @@ public:
 	{ return response_http_version; }
 
 	status_type
-	status ()
+	status () const
 	{ return response_status; }
 
 	const std::string &
-	reason ()
+	reason () const
 	{ return response_reason; }
+
+	size_t
+	timeout () const
+	{ return rdbuf () -> timeout (); }
+
+	void
+	timeout (size_t value)
+	{ return rdbuf () -> timeout (value); }
 
 	/// @name SocketStreamBuffer
 
 	socketstreambuf*
-	rdbuf ()
+	rdbuf () const
 	{ return buf .get (); }
 
 	/// @name Destructor
@@ -150,6 +162,11 @@ public:
 
 
 private:
+
+	ihttpstream (const ihttpstream &) = delete;
+	
+	ihttpstream &
+	operator = (const ihttpstream &) = delete;
 
 	void
 	parse_status_line ();

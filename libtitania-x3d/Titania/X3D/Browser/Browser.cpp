@@ -83,8 +83,6 @@ Browser::Browser () :
 	            Gdk::KEY_RELEASE_MASK);
 
 	set_can_focus (true);
-
-	changed .addInterest (static_cast <Gtk::Widget*> (this), &Browser::queue_draw);
 }
 
 X3DBaseNode*
@@ -97,6 +95,16 @@ void
 Browser::construct ()
 {
 	setup ();
+}
+
+void
+Browser::initialize ()
+{
+	X3DBrowser::initialize ();
+
+	pointingDevice .setup ();
+
+	changed .addInterest (static_cast <Gtk::Widget*> (this), &Browser::queue_draw);
 
 	setCursor (Gdk::ARROW);
 }

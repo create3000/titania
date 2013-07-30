@@ -1,3 +1,18 @@
+2013-07-30  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* main.cpp:
+	* history.db:
+	* GoldenGate.h:
+	* GoldenGate.cpp:
+	* video.wrl:
+	* audio.wrl:
+	* image.wrl:
+	* BrowserWindow.cpp:
+	* BrowserWindow.ui:
+	* X3DBrowserWindow.cpp:
+	* ViewpointEditor.cpp: 
+
 2013-07-29  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* ChangeLog: 

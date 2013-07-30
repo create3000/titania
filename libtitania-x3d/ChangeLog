@@ -1,3 +1,31 @@
+2013-07-30  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Browser.h:
+	* GoldenGate.h:
+	* X3DWidget.h:
+	* GoldenGate.cpp:
+	* World.cpp:
+	* Browser.cpp:
+	* audio.wrl:
+	* video.wrl:
+	* image.wrl:
+	* PointingDevice.h:
+	* splash.wrl:
+	* PointingDevice.cpp:
+	* X3DBrowserContext.h:
+	* X3DBrowserContext.cpp:
+	* AudioClip.cpp:
+	* X3DFlyViewer.cpp:
+	* ExamineViewer.cpp:
+	* X3DExecutionContext.cpp:
+	* X3DUrlObject.h:
+	* jsContext.cpp:
+	* MovieTexture.cpp:
+	* X3DUrlObject.cpp:
+	* X3DViewpointNode.cpp: 
+
 2013-07-29  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* ChangeLog:

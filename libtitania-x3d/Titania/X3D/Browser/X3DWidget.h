@@ -87,12 +87,15 @@ public:
 	{ }
 
 
-private:
+protected:
 
 	virtual
 	void
 	initialize ()
 	{ }
+
+
+private:
 
 	Browser* browser;
 

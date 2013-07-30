@@ -166,7 +166,7 @@ ViewpointEditor::set_currentViewpoint ()
 
 	// Update fieldOfView widget
 
-	auto viewpoint = dynamic_cast <X3D::Viewpoint*> (getBrowser () -> getActiveViewpoint ());
+	auto viewpoint = dynamic_cast <X3D::Viewpoint*> (getBrowser () -> getActiveViewpoint () .getValue ());
 
 	if (viewpoint)
 		getFieldOfView () .set_value (viewpoint -> fieldOfView ());
@@ -195,7 +195,7 @@ ViewpointEditor::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeV
 void
 ViewpointEditor::on_fieldOfView_changed ()
 {
-	auto viewpoint = dynamic_cast <X3D::Viewpoint*> (getBrowser () -> getActiveViewpoint ());
+	auto viewpoint = dynamic_cast <X3D::Viewpoint*> (getBrowser () -> getActiveViewpoint () .getValue ());
 
 	if (viewpoint)
 		viewpoint -> fieldOfView () = getFieldOfView () .get_value ();

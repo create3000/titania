@@ -173,7 +173,7 @@ X3DFlyViewer::on_motion_notify_event (GdkEventMotion* event)
 bool
 X3DFlyViewer::on_scroll_event (GdkEventScroll* event)
 {
-	X3DViewpointNode* viewpoint = getBrowser () -> getActiveViewpoint ();
+	auto viewpoint = getBrowser () -> getActiveViewpoint ();
 
 	if (event -> direction == GDK_SCROLL_UP)
 	{
@@ -212,7 +212,7 @@ X3DFlyViewer::fly ()
 	time_type now = chrono::now ();
 	float     dt  = now - startTime;
 
-	X3DViewpointNode* viewpoint = getBrowser () -> getActiveViewpoint ();
+	auto viewpoint = getBrowser () -> getActiveViewpoint ();
 
 	// Orientation offset
 
@@ -242,7 +242,7 @@ X3DFlyViewer::pan ()
 	time_type now = chrono::now ();
 	float     dt  = now - startTime;
 
-	X3DViewpointNode* viewpoint = getBrowser () -> getActiveViewpoint ();
+	auto viewpoint = getBrowser () -> getActiveViewpoint ();
 
 	float speed_factor = keys .shift () ? PAN_SHIFT_SPEED_FACTOR : 1;
 
@@ -263,7 +263,7 @@ X3DFlyViewer::roll ()
 	if (elapsedTime > ROLL_TIME)
 		return false;
 
-	X3DViewpointNode* viewpoint = getBrowser () -> getActiveViewpoint ();
+	auto viewpoint = getBrowser () -> getActiveViewpoint ();
 
 	viewpoint -> orientationOffset () = math::slerp <float> (sourceRotation, destinationRotation, elapsedTime / ROLL_TIME);
 

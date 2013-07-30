@@ -58,8 +58,8 @@
 #include "../Browser/Selection.h"
 #include "../Browser/Viewer/ViewerType.h"
 #include "../Components/Core/X3DSensorNode.h"
-#include "../Execution/World.h"
 #include "../Execution/BindableNodeStack.h"
+#include "../Execution/World.h"
 #include "../Execution/X3DExecutionContext.h"
 #include "../JavaScript/X3DJavaScriptEngine.h"
 
@@ -122,11 +122,13 @@ public:
 	getActiveLayer () const
 	{ return activeLayer; }
 
-	NavigationInfo*
-	getActiveNavigationInfo () const;
+	const X3DSFNode <NavigationInfo> &
+	getActiveNavigationInfo () const
+	{ return activeNavigationInfo; }
 
-	X3DViewpointNode*
-	getActiveViewpoint () const;
+	const X3DSFNode <X3DViewpointNode> &
+	getActiveViewpoint () const
+	{ return activeViewpoint; }
 
 	///  @name Event handling
 
@@ -215,7 +217,7 @@ public:
 	///  @name Event handling
 
 	void
-	addEvent ();;
+	addEvent ();
 
 	///  @name Rendering
 
@@ -271,6 +273,9 @@ private:
 	set_navigationInfo ();
 
 	void
+	set_viewpoint ();
+
+	void
 	set_navigationInfo_type ();
 
 	// Members
@@ -283,8 +288,9 @@ private:
 	LightStack       lights;
 	TextureUnitStack textureUnits;
 
-	X3DSFNode <X3DLayerNode>   activeLayer;
-	X3DSFNode <NavigationInfo> activeNavigationInfo;
+	X3DSFNode <X3DLayerNode>     activeLayer;
+	X3DSFNode <NavigationInfo>   activeNavigationInfo;
+	X3DSFNode <X3DViewpointNode> activeViewpoint;
 
 	double                x;
 	double                y;
@@ -296,10 +302,10 @@ private:
 	MFNode                activeSensors;
 	X3DSFNode <Selection> selection;
 
-	time_type                changedTime;
-	Speed <double>           currentSpeed;
-	double                   currentFrameRate;
-	X3DSFNode <Console>      console;
+	time_type           changedTime;
+	Speed <double>      currentSpeed;
+	double              currentFrameRate;
+	X3DSFNode <Console> console;
 
 };
 

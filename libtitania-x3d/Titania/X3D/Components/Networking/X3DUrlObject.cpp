@@ -50,6 +50,7 @@
 
 #include "X3DUrlObject.h"
 
+#include "../../Bits/GoldenGate.h"
 #include "../../Browser/X3DBrowser.h"
 #include <Titania/Basic/URI.h>
 
@@ -59,8 +60,6 @@
 
 namespace titania {
 namespace X3D {
-
-URNIndex X3DUrlObject::URNCache;
 
 X3DUrlObject::Fields::Fields () :
 	url (new MFString ()),
@@ -127,6 +126,20 @@ throw (Error <INVALID_X3D>,
 	return scene;
 }
 
+X3DSFNode <Scene>
+X3DUrlObject::createX3DFromStream (const basic::uri & worldURL, std::istream & istream)
+throw (Error <INVALID_X3D>,
+       Error <NOT_SUPPORTED>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	X3DSFNode <Scene> scene = getBrowser () -> createScene ();
+
+	scene -> fromStream (worldURL, istream);
+
+	return scene;
+}
+
 void
 X3DUrlObject::createX3DFromURL (const MFString & url, const SFNode & node, const std::string & fieldName)
 throw (Error <INVALID_URL>,
@@ -157,7 +170,7 @@ throw (Error <INVALID_URL>,
 			basic::uri uri = URL .str ();
 
 			if (uri .filename () .length ())
-				getBrowser () -> loadURL ({ transformURI (uri) .str () }, parameter);
+				getBrowser () -> loadURL ({ transformUri (uri) .str () }, parameter);
 
 			else
 				getExecutionContext () -> changeViewpoint (uri .fragment ());
@@ -182,9 +195,11 @@ throw (Error <INVALID_URL>,
 		{
 			try
 			{
-				basic::ifilestream stream = loadStream (URL .str ());
+				basic::uri uri = URL .str ();
+			
+				basic::ifilestream istream  = golden_gate (URL .str (), loadStream (uri));
 
-				scene -> fromStream (worldURL, stream);
+				scene -> fromStream (worldURL, istream);
 
 				return;
 			}
@@ -234,10 +249,10 @@ throw (Error <INVALID_URL>,
 
 	std::clog << "Trying to load URI '" << uri << "': " << std::endl;
 
-	basic::uri transformedURL = transformURI (uri);
+	basic::uri transformedURL = transformUri (uri);
 	std::clog << "\tResolved URL is '" << transformedURL << "'" << std::endl;
 
-	basic::ifilestream stream (basic::http::GET, transformedURL);
+	basic::ifilestream stream (basic::http::GET, transformedURL, 10000);
 
 	if (stream)
 	{
@@ -258,83 +273,40 @@ throw (Error <INVALID_URL>,
 
 	std::clog << "Failed." << std::endl;
 
-	throw Error <URL_UNAVAILABLE> ("Couldn't load URL '" + transformedURL + "'\nStatus: " + std::to_string (stream .status ()));
+	throw Error <URL_UNAVAILABLE> ("Couldn't load URL '" + transformedURL + "'\nStatus: " + std::to_string (stream .status ()) + " " + stream .reason ());
 }
 
 //  URI Handling
 
 MFString
-X3DUrlObject::transformURI (const MFString & uri)
+X3DUrlObject::transformUri (const MFString & uri)
 {
-	return transformURI (getReferer (), uri);
+	return transformUri (getReferer (), uri);
 }
 
 MFString
-X3DUrlObject::transformURI (const basic::uri & base, const MFString & uri)
+X3DUrlObject::transformUri (const basic::uri & base, const MFString & uri)
 {
 	MFString url;
 
 	for (const auto & URI : uri)
-		url .emplace_back (transformURI (base, URI .str ()) .str ());
+		url .emplace_back (transformUri (base, URI .str ()) .str ());
 
 	return url;
 }
 
 basic::uri
-X3DUrlObject::transformURI (const basic::uri & uri)
+X3DUrlObject::transformUri (const basic::uri & uri)
 {
-	return transformURI (getReferer (), uri);
+	return transformUri (getReferer (), uri);
 }
 
 basic::uri
-X3DUrlObject::transformURI (const basic::uri & _base, const basic::uri & uri)
+X3DUrlObject::transformUri (const basic::uri & base, const basic::uri & uri)
 {
-	if (uri .is_absolute () and uri .is_network ())
-		return getURL (uri);
-
-	const basic::uri & base = getURL (_base);
-
 	std::clog << "\t\tWorld URL is '" << base << "'" << std::endl;
 
-	auto transformedURL = base .transform (uri);
-
-	return transformedURL;
-}
-
-//  URN Handling
-
-void
-X3DUrlObject::addURN (const basic::uri & urn, const basic::uri & uri)
-{
-	URNCache .insert (std::make_pair (urn .filename (), uri));
-}
-
-void
-X3DUrlObject::removeURN (const basic::uri & urn)
-{
-	URNCache .erase (urn .filename ());
-}
-
-basic::uri
-X3DUrlObject::getURL (const basic::uri & uri)
-{
-	const auto urn = URNCache .find (uri .filename ());
-
-	if (urn not_eq URNCache .end ())
-	{
-		basic::uri url = urn -> second;
-		url .query    (uri .query ());
-		url .fragment (uri .fragment ());
-		return url;
-	}
-
-	return uri;
-}
-
-const URNIndex &
-X3DUrlObject::getURNs ()
-{
-	return URNCache;
+	return base .transform (uri);
 }
 
 void

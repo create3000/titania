@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -63,38 +63,39 @@ namespace titania {
 namespace X3D {
 
 X3DBrowserContext::X3DBrowserContext () :
-	X3DExecutionContext (),
-	            sensors (),                                        // [out]  sensors
-	           reshaped (),                                        // [out]  reshape
-	      prepareEvents (),                                        // [out]  prepareEvents
-	          displayed (),                                        // [out]  displayed
-	           finished (),                                        // [out]  finished
-	            changed (),                                        // [out]  changed
-	             select (false),                                   // SFBool  [in,out]  select              FALSE
-	renderingProperties (new RenderingProperties (this)),          // SFNode  [ ]       renderingProperties NULL   [RenderingProperties]
-	  browserProperties (new BrowserProperties   (this)),          // SFNode  [ ]       browserProperties   NULL   [BrowserProperties]
-	     browserOptions (new BrowserOptions      (this)),          // SFNode  [ ]       browserOptions      NULL   [BrowserOptions]
-	   javaScriptEngine (new SpiderMonkey        (this)),          // SFNode  [ ]       javaScriptEngine    NULL   [JavaScriptEngine]
-	              clock (new chrono::system_clock <time_type> ()),
-	             router (),
-	             layers (),
-	             lights (),
-	       textureUnits (),
-	        activeLayer (),
+	 X3DExecutionContext (),
+	             sensors (),                                        // [out]  sensors
+	            reshaped (),                                        // [out]  reshape
+	       prepareEvents (),                                        // [out]  prepareEvents
+	           displayed (),                                        // [out]  displayed
+	            finished (),                                        // [out]  finished
+	             changed (),                                        // [out]  changed
+	              select (false),                                   // SFBool  [in,out]  select              FALSE
+	 renderingProperties (new RenderingProperties (this)),          // SFNode  [ ]       renderingProperties NULL   [RenderingProperties]
+	   browserProperties (new BrowserProperties   (this)),          // SFNode  [ ]       browserProperties   NULL   [BrowserProperties]
+	      browserOptions (new BrowserOptions      (this)),          // SFNode  [ ]       browserOptions      NULL   [BrowserOptions]
+	    javaScriptEngine (new SpiderMonkey        (this)),          // SFNode  [ ]       javaScriptEngine    NULL   [JavaScriptEngine]
+	               clock (new chrono::system_clock <time_type> ()),
+	              router (),
+	              layers (),
+	              lights (),
+	        textureUnits (),
+	         activeLayer (),
 	activeNavigationInfo (),
-	                  x (0),
-	                  y (0),
-	             hitRay (),
-	               hits (),
-	            hitComp (),
-	     enabledSensors ({ NodeSet () }),
-	        overSensors (),
-	      activeSensors (),
-	          selection (new Selection (this)),                    // SFNode  [ ]   selection    NULL  [Selection]
-	        changedTime (clock -> cycle ()),
-	       currentSpeed (0),
-	   currentFrameRate (0),
-	            console (new Console (this))                       // SFNode  [ ]   console    NULL  [Console]
+	     activeViewpoint (),
+	                   x (0),
+	                   y (0),
+	              hitRay (),
+	                hits (),
+	             hitComp (),
+	      enabledSensors ({ NodeSet () }),
+	         overSensors (),
+	       activeSensors (),
+	           selection (new Selection (this)),                    // SFNode  [ ]   selection    NULL  [Selection]
+	         changedTime (clock -> cycle ()),
+	        currentSpeed (0),
+	    currentFrameRate (0),
+	             console (new Console (this))                       // SFNode  [ ]   console    NULL  [Console]
 {
 	addChildren (select,
 	             renderingProperties,
@@ -103,6 +104,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	             javaScriptEngine,
 	             activeLayer,
 	             activeNavigationInfo,
+	             activeViewpoint,
 	             overSensors,
 	             activeSensors,
 	             selection,
@@ -182,7 +184,7 @@ X3DBrowserContext::advanceClock ()
 {
 	clock -> advance ();
 
-	X3DViewpointNode* activeViewpoint = getActiveViewpoint ();
+	auto activeViewpoint = getActiveViewpoint ();
 
 	if (activeViewpoint)
 		currentSpeed .setPosition (activeViewpoint -> getTransformationMatrix () .translation (), currentFrameRate);
@@ -217,26 +219,6 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	return currentFrameRate;
 }
 
-// Layer handling
-
-NavigationInfo*
-X3DBrowserContext::getActiveNavigationInfo () const
-{
-	if (activeLayer)
-		return activeLayer -> getNavigationInfo ();
-
-	return NULL;
-}
-
-X3DViewpointNode*
-X3DBrowserContext::getActiveViewpoint () const
-{
-	if (activeLayer)
-		return activeLayer -> getViewpoint ();
-
-	return NULL;
-}
-
 void
 X3DBrowserContext::set_initialized ()
 {
@@ -258,14 +240,21 @@ X3DBrowserContext::set_activeLayer ()
 	if (activeLayer not_eq getWorld () -> getActiveLayer ())
 	{
 		if (activeLayer)
+		{
 			activeLayer -> getNavigationInfoStack () -> bindTime () .removeInterest (this, &X3DBrowserContext::set_navigationInfo);
+			activeLayer -> getViewpointStack () -> bindTime () .removeInterest (this, &X3DBrowserContext::set_viewpoint);
+		}
 
 		activeLayer = getWorld () -> getActiveLayer ();
 
 		if (activeLayer)
+		{
 			activeLayer -> getNavigationInfoStack () -> bindTime () .addInterest (this, &X3DBrowserContext::set_navigationInfo);
+			activeLayer -> getViewpointStack () -> bindTime () .addInterest (this, &X3DBrowserContext::set_viewpoint);
+		}
 
 		set_navigationInfo ();
+		set_viewpoint ();
 	}
 }
 
@@ -275,12 +264,18 @@ X3DBrowserContext::set_navigationInfo ()
 	if (activeNavigationInfo)
 		activeNavigationInfo -> type () .removeInterest (this, &X3DBrowserContext::set_navigationInfo_type);
 
-	activeNavigationInfo = getActiveNavigationInfo ();
+	activeNavigationInfo = activeLayer ? activeLayer -> getNavigationInfo () : nullptr;
 
 	if (activeNavigationInfo)
 		activeNavigationInfo -> type () .addInterest (this, &X3DBrowserContext::set_navigationInfo_type);
 
 	set_navigationInfo_type ();
+}
+
+void
+X3DBrowserContext::set_viewpoint ()
+{
+	activeViewpoint = activeLayer ? activeLayer -> getViewpoint () : nullptr;
 }
 
 void
@@ -565,6 +560,7 @@ X3DBrowserContext::dispose ()
 	browserOptions       .dispose ();
 	activeLayer          .dispose ();
 	activeNavigationInfo .dispose ();
+	activeViewpoint      .dispose ();
 	overSensors          .clear ();
 	activeSensors        .clear ();
 	selection            .dispose ();

@@ -48,6 +48,7 @@
       <source stock-id="Hand" filename="icons/hand.png"/>
     </sources>
   </object>
+  <object class="GtkAccelGroup" id="MenuAccelGroup"/>
   <object class="GtkAction" id="NewAction">
     <signal name="activate" handler="on_new" swapped="no"/>
   </object>
@@ -154,7 +155,35 @@
       </object>
     </child>
   </object>
-  <object class="GtkAccelGroup" id="MenuAccelGroup"/>
+  <object class="GtkMessageDialog" id="MessageDialog">
+    <property name="can_focus">False</property>
+    <property name="border_width">5</property>
+    <property name="title" translatable="yes">Messgage</property>
+    <property name="destroy_with_parent">True</property>
+    <property name="hide_titlebar_when_maximized">True</property>
+    <property name="type_hint">dialog</property>
+    <property name="skip_taskbar_hint">True</property>
+    <property name="transient_for">Window</property>
+    <property name="buttons">ok</property>
+    <property name="use_markup">True</property>
+    <signal name="response" handler="on_messageDialog_response" swapped="no"/>
+    <child internal-child="vbox">
+      <object class="GtkBox" id="messagedialog-vbox">
+        <property name="can_focus">False</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox" id="messagedialog-action_area">
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
   <object class="GtkDialog" id="OpenLocationDialog">
     <property name="width_request">380</property>
     <property name="can_focus">False</property>
@@ -886,7 +915,6 @@
                                 </child>
                                 <child>
                                   <object class="GtkRadioToolButton" id="ArrowButton">
-                                    <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="label" translatable="yes">toolbutton2</property>
                                     <property name="use_underline">True</property>
@@ -927,7 +955,6 @@
                                 </child>
                                 <child>
                                   <object class="GtkToggleToolButton" id="LookAtButton">
-                                    <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="has_tooltip">True</property>
                                     <property name="tooltip_markup" translatable="yes">Look at.</property>
@@ -1221,35 +1248,6 @@
             <property name="expand">True</property>
             <property name="fill">True</property>
             <property name="position">2</property>
-          </packing>
-        </child>
-      </object>
-    </child>
-  </object>
-  <object class="GtkMessageDialog" id="MessageDialog">
-    <property name="can_focus">False</property>
-    <property name="border_width">5</property>
-    <property name="title" translatable="yes">Messgage</property>
-    <property name="destroy_with_parent">True</property>
-    <property name="hide_titlebar_when_maximized">True</property>
-    <property name="type_hint">dialog</property>
-    <property name="skip_taskbar_hint">True</property>
-    <property name="transient_for">Window</property>
-    <property name="buttons">ok</property>
-    <property name="use_markup">True</property>
-    <signal name="response" handler="on_messageDialog_response" swapped="no"/>
-    <child internal-child="vbox">
-      <object class="GtkBox" id="messagedialog-vbox">
-        <property name="can_focus">False</property>
-        <child internal-child="action_area">
-          <object class="GtkButtonBox" id="messagedialog-action_area">
-            <property name="can_focus">False</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="pack_type">end</property>
-            <property name="position">0</property>
           </packing>
         </child>
       </object>

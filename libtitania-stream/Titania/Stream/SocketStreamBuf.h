@@ -89,8 +89,16 @@ public:
 	seekoff (off_type, std::ios_base::seekdir, std::ios_base::openmode);
 
 	const basic::uri &
-	url ()
-	{ return URL; }
+	url () const
+	{ return m_url; }
+
+	size_type
+	timeout () const
+	{ return m_timeout; }
+
+	void
+	timeout (size_type value)
+	{ m_timeout = value; }
 
 	virtual
 	~socketstreambuf ()
@@ -98,6 +106,15 @@ public:
 
 
 private:
+
+	socketstreambuf (const socketstreambuf &) = delete;
+
+	socketstreambuf &
+	operator = (const socketstreambuf &) = delete;
+
+	void
+	url (const basic::uri & value) 
+	{ m_url = value; }
 
 	enum Direction
 	{
@@ -108,17 +125,16 @@ private:
 	int
 	wait (Direction, size_t);
 
-	static constexpr size_type timeout = 60000; // in ms
-
 	// Size of put back data buffer & data buffer.
 	static constexpr size_type bufferSize = 24;
 
-	CURL*         curl;                         // CURL handle
-	curl_socket_t sockfd;                       // Socket file descriptor
-	char          buffer [2 * bufferSize];      // Data buffer
-	bool          opened;                       // Open/close state of stream
+	CURL*         curl;                    // CURL handle
+	curl_socket_t sockfd;                  // Socket file descriptor
+	char          buffer [2 * bufferSize]; // Data buffer
+	bool          opened;                  // Open/close state of stream
 
-	basic::uri URL;
+	basic::uri m_url;
+	size_type  m_timeout;                  // in ms
 
 	size_type totalBytesRead;
 	size_t    bytesRead;

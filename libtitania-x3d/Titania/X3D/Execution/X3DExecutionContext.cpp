@@ -99,7 +99,7 @@ X3DExecutionContext::setupNodes ()
 	for (auto & node : nodes)
 		node -> setup ();
 
-	nodes .clear ();
+	nodes .clear (); // XXX Slows down TreasureIsland
 }
 
 void

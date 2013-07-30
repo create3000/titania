@@ -45,16 +45,16 @@ ihttpstream::ihttpstream () :
 	 response_headers_map (),
 	response_http_version (),
 	      response_status (0),
-	      response_reason ()
+	      response_reason ("Could not establish connection.")
 {
 	init (buf .get ());
 	clear ();
 }
 
-ihttpstream::ihttpstream (const http::method method, const basic::uri & url) :
+ihttpstream::ihttpstream (const http::method method, const basic::uri & url, size_t timeout) :
 	          ihttpstream ()
 {
-	open (method, url);
+	open (method, url, timeout);
 }
 
 ihttpstream::ihttpstream (ihttpstream && other) :
@@ -74,12 +74,14 @@ ihttpstream::ihttpstream (ihttpstream && other) :
 }
 
 void
-ihttpstream::open (const http::method method, const basic::uri & url)
+ihttpstream::open (const http::method method, const basic::uri & url, size_t timeout)
 {
 	http_method = method;
 
 	clear ();
 	buf -> close ();
+
+	buf -> timeout (timeout);
 
 	if (not buf -> open (url))
 		setstate (std::ios::failbit);
@@ -116,8 +118,16 @@ ihttpstream::parse_status_line ()
 
 	line
 		>> response_http_version
-		>> response_status
-		>> response_reason;
+		>> response_status;
+	
+	sentry s (line);
+
+	std::ostringstream oss_reason;
+	oss_reason << line .rdbuf ();
+
+	response_reason = oss_reason .str ();
+	if (response_reason .size ())
+		response_reason .resize (response_reason .size () - 1);
 
 	if (get () not_eq '\n')
 		return close ();
@@ -168,6 +178,8 @@ ihttpstream::parse_response_header ()
 void
 ihttpstream::process_status ()
 {
+	// http://de.wikipedia.org/wiki/HTTP-Statuscode
+
 	try
 	{
 		switch (status ())
@@ -175,7 +187,9 @@ ihttpstream::process_status ()
 			case 302: // Found
 			case 303: // See Other
 			{
-				open (http::method::GET, response_headers () .at ("Location"));
+				headers_type headers = request_headers ();
+				open (http::method::GET, response_headers () .at ("Location"), timeout ());
+				request_headers (headers);
 				send ();
 				break;
 			}
@@ -184,13 +198,15 @@ ihttpstream::process_status ()
 			case 307: // Temporary Redirect
 			case 308: // Permanent Redirect
 			{
-				open (http_method, response_headers () .at ("Location"));
+				headers_type headers = request_headers ();
+				open (http_method, response_headers () .at ("Location"), timeout ());
+				request_headers (headers);
 				send ();
 				break;
 			}
 			default:
 			{
-				if (status () >= 400 and status () <= 499)
+				if (status () >= 400 and status () <= 599)
 					setstate (std::ios::failbit);
 
 				break;
@@ -199,7 +215,7 @@ ihttpstream::process_status ()
 	}
 	catch (const std::out_of_range &)
 	{
-		close ();
+		setstate (std::ios::failbit);
 	}
 }
 

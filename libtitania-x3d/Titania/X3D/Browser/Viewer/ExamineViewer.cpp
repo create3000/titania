@@ -83,6 +83,8 @@ ExamineViewer::initialize ()
 	getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &ExamineViewer::on_button_release_event));
 	getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &ExamineViewer::on_motion_notify_event), false);
 	getBrowser () -> signal_scroll_event         () .connect (sigc::mem_fun (*this, &ExamineViewer::on_scroll_event));
+
+	getBrowser () -> getActiveViewpoint () .addInterest (this, &ExamineViewer::set_viewpoint);
 }
 
 void
@@ -90,7 +92,9 @@ ExamineViewer::set_viewpoint ()
 {
 	// Update distance and orientationOffset.
 
-	X3DViewpointNode* viewpoint = getBrowser () -> getActiveViewpoint ();
+	spin_id .disconnect ();
+
+	auto viewpoint = getBrowser () -> getActiveViewpoint ();
 
 	orientation = viewpoint -> getUserOrientation ();
 	distance    = getDistance ();
@@ -99,8 +103,6 @@ ExamineViewer::set_viewpoint ()
 bool
 ExamineViewer::on_button_press_event (GdkEventButton* event)
 {
-	spin_id .disconnect ();
-
 	button = event -> button;
 
 	if (button == 1)
@@ -145,7 +147,7 @@ ExamineViewer::on_motion_notify_event (GdkEventMotion* event)
 {
 	if (button == 1)
 	{
-		X3DViewpointNode* viewpoint = getBrowser () -> getActiveViewpoint ();
+		auto viewpoint = getBrowser () -> getActiveViewpoint ();
 
 		Vector3f toVector = trackballProjectToSphere (event -> x, event -> y);
 
@@ -161,7 +163,7 @@ ExamineViewer::on_motion_notify_event (GdkEventMotion* event)
 
 	else if (button == 2)
 	{
-		X3DViewpointNode* viewpoint = getBrowser () -> getActiveViewpoint ();
+		auto viewpoint = getBrowser () -> getActiveViewpoint ();
 
 		Vector3f toPoint     = getPoint (event -> x, event -> y);
 		Vector3f translation = viewpoint -> getUserOrientation () * (toPoint - fromPoint);
@@ -180,7 +182,7 @@ ExamineViewer::on_motion_notify_event (GdkEventMotion* event)
 bool
 ExamineViewer::on_scroll_event (GdkEventScroll* event)
 {
-	X3DViewpointNode* viewpoint = getBrowser () -> getActiveViewpoint ();
+	auto viewpoint = getBrowser () -> getActiveViewpoint ();
 
 	Vector3f step           = distance * SCOLL_FACTOR;
 	Vector3f positionOffset = viewpoint -> getUserOrientation () * Vector3f (0, 0, abs (step));
@@ -203,7 +205,7 @@ ExamineViewer::on_scroll_event (GdkEventScroll* event)
 bool
 ExamineViewer::spin ()
 {
-	X3DViewpointNode* viewpoint = getBrowser () -> getActiveViewpoint ();
+	auto viewpoint = getBrowser () -> getActiveViewpoint ();
 
 	viewpoint -> orientationOffset () = getOrientationOffset ();
 	viewpoint -> positionOffset ()    = getPositionOffset ();
@@ -221,7 +223,7 @@ ExamineViewer::addSpinning ()
 Vector3f
 ExamineViewer::getDistance () const
 {
-	X3DViewpointNode* viewpoint = getBrowser () -> getActiveViewpoint ();
+	auto viewpoint = getBrowser () -> getActiveViewpoint ();
 
 	return ~viewpoint -> orientationOffset () * (viewpoint -> getUserPosition ()
 	                                             - viewpoint -> getUserCenterOfRotation ());
@@ -230,7 +232,7 @@ ExamineViewer::getDistance () const
 Vector3f
 ExamineViewer::getPositionOffset () const
 {
-	X3DViewpointNode* viewpoint = getBrowser () -> getActiveViewpoint ();
+	auto viewpoint = getBrowser () -> getActiveViewpoint ();
 
 	// The new positionOffset is calculated here by calculating the new position and
 	// then subtracting the viewpoints position to get the new positionOffset.
@@ -243,7 +245,7 @@ ExamineViewer::getPositionOffset () const
 Rotation4f
 ExamineViewer::getOrientationOffset ()
 {
-	X3DViewpointNode* viewpoint = getBrowser () -> getActiveViewpoint ();
+	auto viewpoint = getBrowser () -> getActiveViewpoint ();
 
 	orientation = rotation * orientation;
 	return ~viewpoint -> orientation () * orientation;
@@ -255,8 +257,8 @@ ExamineViewer::getPoint (const double x, const double y)
 {
 	try
 	{
-		X3DViewpointNode* viewpoint      = getBrowser () -> getActiveViewpoint ();
-		NavigationInfo*   navigationInfo = getBrowser () -> getActiveNavigationInfo ();
+		auto viewpoint      = getBrowser () -> getActiveViewpoint ();
+		auto navigationInfo = getBrowser () -> getActiveNavigationInfo ();
 
 		viewpoint -> reshape (navigationInfo -> getNearPlane (), navigationInfo -> getFarPlane ());
 
@@ -267,7 +269,7 @@ ExamineViewer::getPoint (const double x, const double y)
 		// Far plane point
 		Vector3d far = ViewVolume::unProjectPoint (x, y, 0.9, modelview, projection, viewport);
 
-		if (dynamic_cast <OrthoViewpoint*> (viewpoint))
+		if (dynamic_cast <OrthoViewpoint*> (viewpoint .getValue ()))
 			return Vector3f (-far .x (), far .y (), -abs (distance));
 
 		Vector3f direction = normalize (Vector3f (-far .x (), far .y (), far .z ()));

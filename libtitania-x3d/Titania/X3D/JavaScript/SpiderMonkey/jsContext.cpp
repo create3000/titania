@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -379,7 +379,7 @@ jsContext::require (const basic::uri & uri, jsval & rval)
 	{
 		// Resolve uri
 
-		basic::uri resolvedURL = transformURI (worldURL .back (), uri);
+		basic::uri resolvedURL = transformUri (worldURL .back (), uri);
 
 		// Get cached result
 

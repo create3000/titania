@@ -5,19 +5,19 @@ META "title" "about:splash"
 EXTERNPROTO LogoBlackAndWhite [ ]
 "../Library/Logo.wrl"
 
-Background {
+DEF _0 Background {
   skyColor 1 1 1
 }
 
-NavigationInfo {
+DEF _1 NavigationInfo {
   type "NONE"
 }
 
-Viewpoint {
+DEF _2 Viewpoint {
   position 5.93602 -5.08562 15.6001
   centerOfRotation 5.93602 -5.08562 0
 }
 
-Viewpoint { }
+DEF _3 Viewpoint { }
 
-LogoBlackAndWhite {   }
+DEF _4 LogoBlackAndWhite { }

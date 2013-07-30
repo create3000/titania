@@ -67,8 +67,11 @@ public:
 
 	PointingDevice (Browser* const);
 
-
 private:
+
+	virtual
+	void
+	initialize () final;
 
 	bool
 	on_motion_notify_event (GdkEventMotion*);

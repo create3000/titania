@@ -334,11 +334,9 @@ public:
 	///  Returns a relative path, relative from base path.
 	string_type
 	relative_path (const basic_uri &) const;
-	//@}
 
 	/// @name Filename Operations
 
-	//@{
 	///  Returns the full basename of this URI.
 	basic_uri
 	filename () const;
@@ -358,7 +356,10 @@ public:
 	///  Returns the suffix of this URI's filename.
 	string_type
 	suffix () const;
-	//@}
+
+	///  Adds the file sheme if uri is local and absolute.
+	basic_uri
+	add_file_scheme () const;
 
 
 private:
@@ -793,6 +794,27 @@ basic_uri <StringT>::suffix () const
 	return string_type ();
 }
 
+template <class StringT>
+basic_uri <StringT>
+basic_uri <StringT>::add_file_scheme () const
+{
+	if (is_local () and is_absolute ())
+	{
+		return basic_uri ({ is_local (),
+		                    is_absolute (),
+		                    FileSchemeId,
+		                    StringT (2, Signs::Slash),
+		                    authority (),
+		                    host (),
+		                    port (),
+		                    path (),
+		                    query (),
+		                    fragment () });
+	}
+
+	return *this;
+}
+
 // Private Funtions
 
 template <class StringT>
@@ -1027,8 +1049,6 @@ basic_uri <StringT>::parser::fragment (size_type first) const
 ///  @relates basic_uri
 ///  @name Comparision operations
 
-///@{
-//@{
 ///  Compares two basic_uri's.
 ///  Return true if @a a is equal to @a b.
 template <class StringT>
@@ -1127,9 +1147,7 @@ operator not_eq (const typename StringT::value_type* lhs, const basic_uri <Strin
 {
 	return not (lhs == rhs);
 }
-//@}
 
-//@{
 ///  Compares two basic_uri's.
 ///  Return true if URI @a a is less than @a b.
 template <class StringT>
@@ -1148,10 +1166,7 @@ operator > (const basic_uri <StringT> & lhs, const basic_uri <StringT> & rhs)
 {
 	return lhs .str () > rhs .str ();
 }
-//@}
-///@}
 
-//@{
 ///  Compares two basic_uri's.
 ///  Return true if URI @a a is less equal than @a b.
 template <class StringT>
@@ -1170,14 +1185,10 @@ operator >= (const basic_uri <StringT> & lhs, const basic_uri <StringT> & rhs)
 {
 	return lhs .str () >= rhs .str ();
 }
-//@}
-///@}
 
 ///  @relates basic_uri
 ///  @name String concatanation
 
-///@{
-//@{
 ///  Compares two basic_uri's.
 ///  Returns a string containing characters from @a uri followed by the characters from @a string.
 template <class StringT>
@@ -1214,14 +1225,10 @@ operator + (const typename StringT::value_type* string, const basic_uri <StringT
 {
 	return string + uri .str ();
 }
-//@}
-///@}
 
 ///  @relates basic_uri
 ///  @name Input/Output operations
 
-///@{
-//@{
 ///  Insertion operator for URI values.
 template <class StringT, class Traits>
 inline
@@ -1230,13 +1237,8 @@ operator << (std::basic_ostream <typename StringT::value_type, Traits> & ostream
 {
 	return ostream << uri .str ();
 }
-//@}
-///@}
 
 ///  @relates basic_uri
-
-///@{
-//@{
 
 typedef basic_uri <std::string>  uri;
 typedef basic_uri <std::wstring> wuri;
@@ -1248,8 +1250,6 @@ extern template class basic_uri <std::wstring>;
 //
 extern template std::ostream & operator << (std::ostream &, const uri &);
 extern template std::wostream & operator << (std::wostream &, const wuri &);
-//@}
-///@}
 
 } // basic
 } // titania

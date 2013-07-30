@@ -50,10 +50,11 @@
 
 #include "GoldenGate.h"
 
-#include "../Configuration/config.h"
+#include "../Fields.h"
+#include "../Parser/Filter.h"
+#include "../Types/MediaStream.h"
 
 #include <Titania/OS.h>
-#include <Titania/X3D.h>
 #include <Titania/Physics/Constants.h>
 
 #include <Magick++.h>
@@ -61,7 +62,7 @@
 #include <pcrecpp.h>
 
 namespace titania {
-namespace puck {
+namespace X3D {
 
 static const pcrecpp::RE Name        ("__NAME__");
 static const pcrecpp::RE Description ("__DESCRIPTION__");
@@ -79,7 +80,7 @@ get_name (const basic::uri & uri)
 
 	Spaces .GlobalReplace ("_", &name);
 
-	X3D::filter_non_id_characters (name);
+	filter_non_id_characters (name);
 
 	if (name .size ())
 		return name;
@@ -88,7 +89,7 @@ get_name (const basic::uri & uri)
 }
 
 static
-std::string
+basic::ifilestream
 golden_image (const basic::uri & uri)
 {
 	auto locale = std::locale::global (std::locale::classic ());
@@ -102,15 +103,16 @@ golden_image (const basic::uri & uri)
 		float width  = (float) image .size () .width  () / (float) image .density () .width  () * M_INCH;
 		float height = (float) image .size () .height () / (float) image .density () .height () * M_INCH;
 
-		std::string file = os::load_file (find_data_file ("filetype/image.wrl"));
+		std::string file = os::load_file (os::find_data_file ("titania/filetype/image.wrl"));
 
 		Name   .GlobalReplace (get_name (uri), &file);
 		Width  .GlobalReplace (std::to_string (width), &file);
 		Height .GlobalReplace (std::to_string (height), &file);
-		URL    .GlobalReplace (X3D::MFString ({ uri .basename (), uri .str () }) .toString (), &file);
+		URL    .GlobalReplace (MFString ({ uri .basename (), uri .str () }) .toString (), &file);
 
 		std::locale::global (locale);
-		return file;
+
+		return basic::ifilestream (basic::http::GET, "data:model/vrml;charset=UTF-8," + file);
 	}
 	catch (...)
 	{
@@ -120,28 +122,28 @@ golden_image (const basic::uri & uri)
 }
 
 static
-std::string
+basic::ifilestream
 golden_audio (const basic::uri & uri)
 {
-	std::string file = os::load_file (find_data_file ("filetype/audio.wrl"));
+	std::string file = os::load_file (os::find_data_file ("titania/filetype/audio.wrl"));
 
 	Name        .GlobalReplace (get_name (uri), &file);
-	Description .GlobalReplace (X3D::SFString (uri .basename (false)) .toString (), &file);
-	URL         .GlobalReplace (X3D::MFString ({ uri .basename (), uri .str () }) .toString (), &file);
+	Description .GlobalReplace (SFString (uri .basename (false)) .toString (), &file);
+	URL         .GlobalReplace (MFString ({ uri .basename (), uri .str () }) .toString (), &file);
 
-	return file;
+	return basic::ifilestream (basic::http::GET, "data:model/vrml;charset=UTF-8," + file);
 }
 
 static
-std::string
+basic::ifilestream
 golden_video (const basic::uri & uri)
 {
-	X3D::MediaStream mediaStream;
+	MediaStream mediaStream;
 
 	mediaStream .setUri (uri);
 	mediaStream .sync ();
 
-	std::string file = os::load_file (find_data_file ("filetype/video.wrl"));
+	std::string file = os::load_file (os::find_data_file ("titania/filetype/video.wrl"));
 
 	float width  = 1;
 	float height = 1;
@@ -155,38 +157,37 @@ golden_video (const basic::uri & uri)
 	auto locale = std::locale::global (std::locale::classic ());
 
 	Name        .GlobalReplace (get_name (uri), &file);
-	Description .GlobalReplace (X3D::SFString (uri .basename (false)) .toString (), &file);
+	Description .GlobalReplace (SFString (uri .basename (false)) .toString (), &file);
 	Width       .GlobalReplace (std::to_string (width),  &file);
 	Height      .GlobalReplace (std::to_string (height), &file);
-	URL         .GlobalReplace (X3D::MFString ({ uri .basename (), uri .str () }) .toString (), &file);
+	URL         .GlobalReplace (MFString ({ uri .basename (), uri .str () }) .toString (), &file);
 
 	std::locale::global (locale);
-	return file;
+
+	return basic::ifilestream (basic::http::GET, "data:model/vrml;charset=UTF-8," + file);
 }
 
-std::string
-golden_gate (const basic::uri & uri)
-throw (std::invalid_argument)
+basic::ifilestream
+golden_gate (const basic::uri & uri, basic::ifilestream && istream)
 {
 	try
 	{
-		basic::ifilestream stream (basic::http::method::GET, uri);
-		stream .send ();
-
-		if (Gio::content_type_is_a (stream .response_headers () .at ("Content-Type"), "image/*"))
+		if (Gio::content_type_is_a (istream .response_headers () .at ("Content-Type"), "image/*"))
 			return golden_image (uri);
 
-		else if (Gio::content_type_is_a (stream .response_headers () .at ("Content-Type"), "audio/*"))
+		else if (Gio::content_type_is_a (istream .response_headers () .at ("Content-Type"), "audio/*"))
 			return golden_audio (uri);
 
-		else if (Gio::content_type_is_a (stream .response_headers () .at ("Content-Type"), "video/*"))
+		else if (Gio::content_type_is_a (istream .response_headers () .at ("Content-Type"), "video/*"))
 			return golden_video (uri);
 	}
 	catch (...)
 	{ }
 
-	throw std::invalid_argument ("Couldn't convert file '" + uri + "'");
+	return std::move (istream);
 }
 
-} // puck
+	
+
+} // X3D
 } // titania

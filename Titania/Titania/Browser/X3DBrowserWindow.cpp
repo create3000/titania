@@ -51,7 +51,6 @@
 #include "X3DBrowserWindow.h"
 
 #include "../Browser/Image.h"
-#include "../Browser/GoldenGate.h"
 #include "../Configuration/config.h"
 
 #include <Titania/String.h>
@@ -68,8 +67,7 @@ X3DBrowserWindow::X3DBrowserWindow (const basic::uri & worldURL) :
 	                  browser (X3D::createBrowser ()),
 	                  save_as (false)
 {
-	if (worldURL .size ())
-		getConfig () .setItem ("worldURL", worldURL);
+	getConfig () .setItem ("url", worldURL);
 
 	// User interface
 
@@ -113,11 +111,14 @@ X3DBrowserWindow::set_initialized ()
 	getBrowser () -> initialized .removeInterest (this, &X3DBrowserWindow::set_initialized);
 	getBrowser () -> initialized .addInterest (this, &X3DBrowserWindow::set_world);
 
-	if (getConfig () .hasItem ("worldURL"))
+	if (getConfig () .string ("url") .size ())
+		open (getConfig () .string ("url") .raw ());
+
+	else if (getConfig () .string ("worldURL") .size ())
 		open (getConfig () .string ("worldURL") .raw ());
 
 	else
-		open ("about:home");
+		open (get_page ("about/home.wrl"));
 }
 
 //void
@@ -271,28 +272,12 @@ X3DBrowserWindow::open (const basic::uri & worldURL)
 {
 	try
 	{
-		std::istringstream istream (golden_gate (worldURL));
+		loadTime = chrono::now ();
 
-		auto scene = getBrowser () -> createScene ();
-		scene -> fromStream (worldURL, istream);
-
-		getBrowser () -> replaceWorld (scene);
-
-		set_save_as (true);
+		getBrowser () -> loadURL ({ worldURL .str () });
 	}
-	catch (...)
-	{
-		try
-		{
-			loadTime = chrono::now ();
-
-			getBrowser () -> loadURL ({ worldURL .str () });
-
-			set_save_as (false);
-		}
-		catch (const X3D::X3DError &)
-		{ }
-	}
+	catch (const X3D::X3DError &)
+	{ }
 }
 
 void

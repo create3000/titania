@@ -565,6 +565,7 @@
     <None Include="Titania\X3D\Debug.h" />
     <None Include="Titania\X3D\Parser\Filter.h" />
     <None Include="Titania\X3D\Types\MediaStream.h" />
+    <None Include="Titania\X3D\Bits\GoldenGate.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -999,6 +1000,7 @@
     <Compile Include="Titania\X3D\Browser\Geometry3D\X3DSphereOptionNode.cpp" />
     <Compile Include="Titania\X3D\Parser\Filter.cpp" />
     <Compile Include="Titania\X3D\Types\MediaStream.cpp" />
+    <Compile Include="Titania\X3D\Bits\GoldenGate.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1052,5 +1054,17 @@
     <Content Include="share\titania\pages\about\splash.wrl" />
     <Content Include="share\titania\pages\Library\Colors.wrl" />
     <Content Include="share\titania\pages\Library\Logo.wrl" />
+    <Content Include="share\titania\filetype\image.wrl">
+      <DeployService-TargetDirectoryId>ProgramFilesRoot</DeployService-TargetDirectoryId>
+      <DeployService-UseProjectRelativePath>true</DeployService-UseProjectRelativePath>
+    </Content>
+    <Content Include="share\titania\filetype\audio.wrl">
+      <DeployService-TargetDirectoryId>ProgramFilesRoot</DeployService-TargetDirectoryId>
+      <DeployService-UseProjectRelativePath>true</DeployService-UseProjectRelativePath>
+    </Content>
+    <Content Include="share\titania\filetype\video.wrl">
+      <DeployService-TargetDirectoryId>ProgramFilesRoot</DeployService-TargetDirectoryId>
+      <DeployService-UseProjectRelativePath>true</DeployService-UseProjectRelativePath>
+    </Content>
   </ItemGroup>
 </Project>

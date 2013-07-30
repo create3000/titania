@@ -99,46 +99,29 @@ World::initialize ()
 void
 World::set_rootNodes ()
 {
-__LOG__ << this << std::endl;
-
-__LOG__ << *layerSet << std::endl;
 	X3DSFNode <LayerSet> oldLayerSet = layerSet;
-__LOG__ << *defaultLayerSet << std::endl;
 	layerSet = defaultLayerSet;
 
-__LOG__ << *layer0 << " : " << *scene << std::endl;
 	layer0 -> children () = scene -> getRootNodes ();
 
-__LOG__ << std::endl;
 	for (const auto & rootNode : scene -> getRootNodes ())
 	{
-__LOG__ << *rootNode << std::endl;
 		LayerSet* rootLayerSet = x3d_cast <LayerSet*> (rootNode);
 
-__LOG__ << rootLayerSet << std::endl;
 		if (rootLayerSet)
 		{
-__LOG__ << *layer0 << std::endl;
 			rootLayerSet -> setLayer0 (layer0);
-__LOG__ << std::endl;
 			layerSet = rootLayerSet;
-__LOG__ << std::endl;
 		}
 	}
 
-__LOG__ << std::endl;
 	if (layerSet not_eq oldLayerSet)
 	{
-__LOG__ << *oldLayerSet << std::endl;
 		oldLayerSet -> getActiveLayer () .removeInterest (this, &World::set_activeLayer);
-__LOG__ << *layerSet << std::endl;
 		layerSet    -> getActiveLayer () .addInterest    (this, &World::set_activeLayer);
 
-__LOG__ << std::endl;
 		set_activeLayer ();
-__LOG__ << std::endl;
 	}
-__LOG__ << std::endl;
 }
 
 void
@@ -181,8 +164,6 @@ World::bind ()
 void
 World::dispose ()
 {
-__LOG__ << this << std::endl;
-
 	scene           .dispose ();
 	layerSet        .dispose ();
 	defaultLayerSet .dispose ();

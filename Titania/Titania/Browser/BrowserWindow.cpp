@@ -418,7 +418,7 @@ BrowserWindow::on_motion_blur_editor_activate ()
 void
 BrowserWindow::on_info ()
 {
-	open ("about:info");
+	open (get_page ("about/info.wrl"));
 }
 
 void

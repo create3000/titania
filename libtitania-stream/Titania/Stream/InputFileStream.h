@@ -72,7 +72,7 @@ public:
 
 	ifilestream ();
 
-	ifilestream (const http::method, const basic::uri &);
+	ifilestream (const http::method, const basic::uri &, size_t = 60000);
 
 	ifilestream (ifilestream &&);
 
@@ -80,13 +80,13 @@ public:
 	operator = (ifilestream &&);
 
 	const basic::uri &
-	url ()
+	url () const
 	{ return m_url; }
 
 	/// @name Connection handling
 
 	void
-	open (const http::method, const basic::uri &);
+	open (const http::method, const basic::uri &, size_t = 60000);
 
 	void
 	send ();
@@ -100,27 +100,33 @@ public:
 	request_header (const std::string &, const std::string &);
 
 	const headers_type &
-	request_headers ();
+	request_headers () const;
 
 	const headers_type &
-	response_headers ();
+	response_headers () const;
 
 	/// @name Element access
 
 	const std::string &
-	http_version ();
+	http_version () const;
 
 	ihttpstream::status_type
 	status () const
 	{ return m_status; }
 
 	const std::string &
-	reason ();
+	reason () const;
+
+	size_t
+	timeout () const;
+
+	void
+	timeout (size_t);
 
 	/// @name Buffer
 
 	std::streambuf*
-	rdbuf ();
+	rdbuf () const;
 
 	/// @name Destructor
 
@@ -130,6 +136,11 @@ public:
 
 private:
 
+	ifilestream (const ifilestream &) = delete;
+
+	ifilestream &
+	operator = (const ifilestream &) = delete;
+
 	void
 	url (const basic::uri & value)
 	{ m_url = value; }
@@ -137,11 +148,6 @@ private:
 	void
 	status (size_t value)
 	{ m_status = value; }
-
-	ifilestream (const ifilestream &) = delete;
-
-	ifilestream &
-	operator = (const ifilestream &) = delete;
 
 	static const std::string reasons [2];
 	static const std::string empty_string;

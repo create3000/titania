@@ -159,9 +159,12 @@ X3DViewpointNode::unbindFromLayer (X3DLayerNode* const layer)
 void
 X3DViewpointNode::resetUserOffsets ()
 {
-	positionOffset ()         = Vector3f ();
-	orientationOffset ()      = Rotation4f ();
-	centerOfRotationOffset () = Vector3f ();
+	if (jump ())
+	{
+		positionOffset ()         = Vector3f ();
+		orientationOffset ()      = Rotation4f ();
+		centerOfRotationOffset () = Vector3f ();
+	}
 }
 
 void
