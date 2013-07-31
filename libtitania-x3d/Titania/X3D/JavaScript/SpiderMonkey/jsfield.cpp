@@ -59,8 +59,6 @@ namespace X3D {
 JSBool
 JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 {
-	__LOG__ << field -> getTypeName () << std::endl;
-
 	switch (field -> getType ())
 	{
 		case X3DConstants::SFBool:

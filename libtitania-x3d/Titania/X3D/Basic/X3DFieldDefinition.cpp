@@ -57,7 +57,7 @@ namespace X3D {
 
 X3DFieldDefinition::X3DFieldDefinition () :
 	X3DChildObject (),
-	     reference (NULL),
+	    references (),
 	    accessType (initializeOnly),
 	     aliasName (),
 	   inputRoutes (),
@@ -73,75 +73,6 @@ X3DFieldDefinition::operator = (const X3DFieldDefinition & value)
 	return *this;
 }
 
-void
-X3DFieldDefinition::setReference (X3DFieldDefinition* const value)
-{
-	reference = value;
-
-	// create IS relationship
-	switch (getAccessType () & reference -> getAccessType ())
-	{
-		case initializeOnly:
-			break;
-		case inputOnly:
-			reference -> addInterest (this);
-			break;
-		case outputOnly:
-			addInterest (reference);
-			break;
-		case inputOutput:
-			reference -> addInterest (this);
-			addInterest (reference);
-			break;
-	}
-
-	updateReference ();
-}
-
-void
-X3DFieldDefinition::updateReference ()
-{
-	if (reference)
-	{
-		switch (getAccessType () & reference -> getAccessType ())
-		{
-			case inputOnly:
-			case outputOnly:
-				break;
-			case initializeOnly:
-			case inputOutput:
-				write (*reference);
-				break;
-		}
-	}
-}
-
-void
-X3DFieldDefinition::removeReference ()
-{
-	if (reference)
-	{
-		// remove IS relationship
-		switch (getAccessType () & reference -> getAccessType ())
-		{
-			case initializeOnly:
-				break;
-			case inputOnly:
-				reference -> removeInterest (this);
-				break;
-			case outputOnly:
-				removeInterest (reference);
-				break;
-			case inputOutput:
-				reference -> removeInterest (this);
-				removeInterest (reference);
-				break;
-		}
-
-		reference = NULL;
-	}
-}
-
 bool
 X3DFieldDefinition::hasRoots (ChildObjectSet & seen)
 {
@@ -153,6 +84,80 @@ X3DFieldDefinition::hasRoots (ChildObjectSet & seen)
 			return true;
 
 	return false;
+}
+
+void
+X3DFieldDefinition::addReference (X3DFieldDefinition* const reference)
+{
+	if (references .insert (reference) .second)
+	{
+		// Create IS relationship
+
+		switch (getAccessType () & reference -> getAccessType ())
+		{
+			case initializeOnly:
+				break;
+			case inputOnly:
+				reference -> addInterest (this);
+				break;
+			case outputOnly:
+				addInterest (reference);
+				break;
+			case inputOutput:
+				reference -> addInterest (this);
+				addInterest (reference);
+				break;
+		}
+
+		updateReference (reference);
+	}
+}
+
+void
+X3DFieldDefinition::removeReference (X3DFieldDefinition* const reference)
+{
+	if (references .erase (reference))
+	{
+		// Remove IS relationship
+
+		switch (getAccessType () & reference -> getAccessType ())
+		{
+			case initializeOnly:
+				break;
+			case inputOnly:
+				reference -> removeInterest (this);
+				break;
+			case outputOnly:
+				removeInterest (reference);
+				break;
+			case inputOutput:
+				reference -> removeInterest (this);
+				removeInterest (reference);
+				break;
+		}
+	}
+}
+
+void
+X3DFieldDefinition::updateReferences ()
+{
+	for (auto & reference : references)
+		updateReference (reference);
+}
+
+void
+X3DFieldDefinition::updateReference (X3DFieldDefinition* const reference)
+{
+	switch (getAccessType () & reference -> getAccessType ())
+	{
+		case inputOnly:
+		case outputOnly:
+			break;
+		case initializeOnly:
+		case inputOutput:
+			write (*reference);
+			break;
+	}
 }
 
 void
@@ -175,7 +180,7 @@ X3DFieldDefinition::processEvent (Event & event)
 void
 X3DFieldDefinition::dispose ()
 {
-	// removeReference ();
+	references .clear ();
 
 	for (const auto & route : RouteSet (std::move (inputRoutes)))
 		route -> remove ();

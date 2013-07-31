@@ -1,0 +1,36 @@
+#VRML V2.0 utf8
+
+META "title" "PROTO References"
+
+PROTO References [
+  eventIn SFBool set_loop
+  field   SFBool loop FALSE
+]
+{
+  DEF References Script {
+    exposedField loop1 IS set_loop
+    exposedField loop1 IS loop
+    exposedField loop2 IS set_loop
+    exposedField loop2 IS loop
+
+    url "vrmlscript:
+
+function initialize()
+{
+	eventsProcessed ();
+}
+
+function eventsProcessed ()
+{
+	print ('References .eventsProcessed:');
+	print ('loop1: ' + loop1);
+	print ('loop2: ' + loop2);
+}
+"
+    directOutput TRUE
+  }
+}
+
+References {
+  loop TRUE
+}

@@ -1,3 +1,11 @@
+2013-07-31  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Parser.cpp:
+	* X3DBaseNode.cpp:
+	* X3DFieldDefinition.h:
+	* X3DFieldDefinition.cpp:
+	* jsfield.cpp: 
+
 2013-07-30  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

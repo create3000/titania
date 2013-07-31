@@ -1411,7 +1411,7 @@ Parser::scriptBodyElement (X3DBaseNode* const _basicNode)
 									{
 										X3DFieldDefinition* _field = _supportedField -> clone ();
 
-										_field -> setReference (_reference);
+										_field -> addReference (_reference);
 										_field -> addComments (getComments ());
 
 										_basicNode -> addUserDefinedField (_accessType -> second,
@@ -1514,7 +1514,7 @@ Parser::nodeBodyElement (X3DBaseNode* const _basicNode)
 					{
 						if (_field -> getAccessType () == _reference -> getAccessType () or _field -> getAccessType () == inputOutput)
 						{
-							_field -> setReference (_reference);
+							_field -> addReference (_reference);
 							_field -> addComments (getComments ());
 							return true;
 						}

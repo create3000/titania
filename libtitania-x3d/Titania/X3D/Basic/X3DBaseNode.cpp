@@ -153,25 +153,24 @@ X3DBaseNode::copy (X3DExecutionContext* const executionContext) const
 	{
 		try
 		{
+			// Default fields
+
 			X3DFieldDefinition* field = copy -> getField (fieldDefinition -> getName ());
 
-			// default fields
-			if (fieldDefinition -> getReference ())
+			if (fieldDefinition -> getReferences () .size ())
 			{
 				// IS relationship
 
-				try
+				for (const auto & originalReference : fieldDefinition -> getReferences ())
 				{
-					X3DFieldDefinition* reference = executionContext -> getField (fieldDefinition -> getReference () -> getName ());
-
-					// Field is also defined in prototype definiton head.
-
-					// create IS relationship
-					field -> setReference (reference);
-				}
-				catch (const Error <INVALID_NAME> &)
-				{
-					throw Error <INVALID_NAME> ("No such event or field '" + fieldDefinition -> getReference () -> getName () + ".");
+					try
+					{
+						field -> addReference (executionContext -> getField (originalReference -> getName ()));
+					}
+					catch (const Error <INVALID_NAME> &)
+					{
+						throw Error <INVALID_NAME> ("No such event or field '" + originalReference -> getName () + ".");
+					}
 				}
 			}
 			else
@@ -180,32 +179,37 @@ X3DBaseNode::copy (X3DExecutionContext* const executionContext) const
 					fieldDefinition -> clone (executionContext, field);
 			}
 		}
-		catch (const Error <INVALID_NAME> &)       // user defined fields (Script and Shader)
+		catch (const Error <INVALID_NAME> &)
 		{
-			if (fieldDefinition -> getReference ()) // IS relationship
+			// User defined fields from Script and Shader
+
+			if (fieldDefinition -> getReferences () .size ())
 			{
+				// IS relationship
+
 				X3DFieldDefinition* field = fieldDefinition -> clone ();
 
-				copy -> addUserDefinedField (fieldDefinition -> getAccessType (), fieldDefinition -> getName (), field);
+				copy -> addUserDefinedField (fieldDefinition -> getAccessType (),
+				                             fieldDefinition -> getName (),
+				                             field);
 
-				try
+				for (const auto & originalReference : fieldDefinition -> getReferences ())
 				{
-					// field is also defined in EXTERNPROTO
-					X3DFieldDefinition* reference = executionContext -> getField (fieldDefinition -> getReference () -> getName ());
-
-					// create IS relationship
-					field -> setReference (reference);
-				}
-				catch (const Error <INVALID_NAME> &)
-				{
-					throw Error <INVALID_NAME> ("No such event or field '" + fieldDefinition -> getReference () -> getName () + " inside node.");
+					try
+					{
+						field -> addReference (executionContext -> getField (originalReference -> getName ()));
+					}
+					catch (const Error <INVALID_NAME> &)
+					{
+						throw Error <INVALID_NAME> ("No such event or field '" + originalReference -> getName () + " inside node.");
+					}
 				}
 			}
 			else
 			{
-				X3DFieldDefinition* field = fieldDefinition -> clone (executionContext);
-
-				copy -> addUserDefinedField (fieldDefinition -> getAccessType (), fieldDefinition -> getName (), field);
+				copy -> addUserDefinedField (fieldDefinition -> getAccessType (), 
+				                             fieldDefinition -> getName (),
+				                             fieldDefinition -> clone (executionContext));
 			}
 		}
 	}
@@ -509,7 +513,7 @@ X3DBaseNode::getInitializeableFields (const bool all) const
 
 	for (const auto & field : basic::adapter (fieldDefinitions .begin (), fieldDefinitions .end () - numUserDefinedFields))
 	{
-		if (not field -> getReference ())
+		if (field -> getReferences () .empty ())
 		{
 			if (not field -> isInitializeable ())
 				continue;
@@ -552,8 +556,8 @@ X3DBaseNode::setup ()
 
 	for (const auto & field : fieldDefinitions)
 	{
+		field -> updateReferences ();
 		field -> isTainted (false);
-		field -> updateReference ();
 	}
 
 	initialize ();
@@ -746,13 +750,16 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 			else
 				ostream << field -> getAliasName ();
 
-			if (field -> getReference ())
+			if (field -> getReferences () .size ())
 			{
-				ostream
-					<< Generator::Space
-					<< "IS"
-					<< Generator::Space
-					<< field -> getReference () -> getName ();
+				for (const auto & reference : field -> getReferences ())
+				{
+					ostream
+						<< Generator::Space
+						<< "IS"
+						<< Generator::Space
+						<< reference -> getName ();
+				}
 			}
 			else
 			{
@@ -801,12 +808,15 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 
 			ostream << Generator::Space;
 
-			if (field -> getReference ())
+			if (field -> getReferences () .size ())
 			{
-				ostream
-					<< "IS"
-					<< Generator::Space
-					<< field -> getReference () -> getName ();
+				for (const auto & reference : field -> getReferences ())
+				{
+					ostream
+						<< "IS"
+						<< Generator::Space
+						<< reference -> getName ();
+				}
 			}
 			else
 			{

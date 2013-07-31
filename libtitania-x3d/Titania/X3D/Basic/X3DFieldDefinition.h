@@ -102,17 +102,17 @@ public:
 	hasRoots (ChildObjectSet &) override;
 
 	void
-	setReference (X3DFieldDefinition* const);
+	addReference (X3DFieldDefinition* const);
 
 	void
-	updateReference ();
+	removeReference (X3DFieldDefinition* const);
 
 	void
-	removeReference ();
+	updateReferences ();
 
-	X3DFieldDefinition*
-	getReference () const
-	{ return reference; }
+	const FieldDefinitionSet &
+	getReferences () const
+	{ return references; }
 
 	void
 	setAliasName (const std::string & value)
@@ -211,7 +211,10 @@ protected:
 
 private:
 
-	X3DFieldDefinition* reference;
+	void
+	updateReference (X3DFieldDefinition* const);
+
+	FieldDefinitionSet references;
 
 	AccessType  accessType;
 	std::string aliasName;
