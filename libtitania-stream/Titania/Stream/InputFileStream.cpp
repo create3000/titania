@@ -41,7 +41,7 @@
 namespace titania {
 namespace basic {
 
-const std::string ifilestream::reasons [2] = { "OK", "Could not establish connection." };
+const std::string ifilestream::reasons [2] = { "OK", "File not found." };
 const std::string ifilestream::empty_string;
 
 static

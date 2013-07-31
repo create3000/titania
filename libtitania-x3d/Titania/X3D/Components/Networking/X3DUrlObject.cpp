@@ -252,12 +252,12 @@ throw (Error <INVALID_URL>,
 	basic::uri transformedURL = transformUri (uri);
 	std::clog << "\tResolved URL is '" << transformedURL << "'" << std::endl;
 
-	basic::ifilestream stream (basic::http::GET, transformedURL, 10000);
+	basic::ifilestream stream (basic::http::GET, transformedURL, 15000);
 
 	if (stream)
 	{
 		stream .request_header ("User-Agent", userAgent);
-		stream .request_header ("Referer",    getReferer ());
+		stream .request_header ("Referer",    getReferer () .filename ());
 		stream .send ();
 
 		if (stream)

@@ -93,7 +93,7 @@ ihttpstream::send ()
 	std::ostringstream request;
 
 	request
-		<< methods [http_method] << " " << url () << " HTTP/1.0\r\n"
+		<< methods [http_method] << " " << url () .filename () << " HTTP/1.0\r\n"
 		<< "Host: " << url () .host () << "\r\n";
 
 	for (const auto & request_header : request_headers_map)
