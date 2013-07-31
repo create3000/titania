@@ -7,11 +7,18 @@ PROTO References [
   field   SFBool loop FALSE
 ]
 {
+  TimeSensor {
+    loop IS set_loop
+    loop IS loop
+  }
+
   DEF References Script {
     exposedField SFBool loop1 IS set_loop
     exposedField SFBool loop1 IS loop
     exposedField SFBool loop2 IS set_loop
     exposedField SFBool loop2 IS loop
+    exposedField SFBool loop3 IS set_loop
+    exposedField SFBool loop3 TRUE
 
     url "vrmlscript:
 
@@ -25,9 +32,11 @@ function eventsProcessed ()
 	print ('References .eventsProcessed:');
 	print ('loop1: ' + loop1);
 	print ('loop2: ' + loop2);
+	print ('loop2: ' + loop3);
 }
 "
     directOutput TRUE
+    mustEvaluate IS loop
   }
 }
 

@@ -1449,13 +1449,32 @@ Parser::scriptBodyElement (X3DBaseNode* const _basicNode)
 		}
 	}
 
-	istream .setstate (state);
+	istream .clear (state);
 	istream .seekg (pos - istream .tellg (), std::ios_base::cur);
 
 	X3DFieldDefinition* _field = interfaceDeclaration ();
 
 	if (_field)
 	{
+		try
+		{
+			if (_field -> getAccessType () == inputOutput)
+			{
+				X3DFieldDefinition* _existingField = _basicNode -> getField (_field -> getName ());
+
+				if (_existingField -> getAccessType () == inputOutput)
+				{
+					_existingField -> write (*_field);
+
+					getGarbageCollector () .addObject (_field);
+
+					return true;
+				}
+			}
+		}
+		catch (const Error <INVALID_NAME> &)
+		{ }
+
 		_basicNode -> addUserDefinedField (_field -> getAccessType (),
 		                                   _field -> getName (),
 		                                   _field);

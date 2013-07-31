@@ -733,45 +733,102 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 					<< Generator::Break;
 			}
 
-			ostream
-				<< Generator::Indent
-				<< std::setiosflags (std::ios::left)
-				<< std::setw (accessTypeLength);
-
-			ostream << Generator::AccessTypes [field];
-
-			ostream
-				<< Generator::Space
-				<< std::setiosflags (std::ios::left) << std::setw (fieldTypeLength) << field -> getTypeName ()
-				<< Generator::Space;
-
-			if (Generator::X3DFieldNames ())
-				ostream << field -> getName ();
-			else
-				ostream << field -> getAliasName ();
-
 			if (field -> getReferences () .size ())
 			{
+				bool initializableReference = false;
+			
 				for (const auto & reference : field -> getReferences ())
 				{
+					initializableReference |= reference -> isInitializeable ();
+	
+					// Output user defined reference field
+
+					ostream
+						<< Generator::Indent
+						<< std::setiosflags (std::ios::left)
+						<< std::setw (accessTypeLength);
+
+					ostream << Generator::AccessTypes [field];
+
+					ostream
+						<< Generator::Space
+						<< std::setiosflags (std::ios::left) << std::setw (fieldTypeLength) << field -> getTypeName ()
+						<< Generator::Space;
+
+					if (Generator::X3DFieldNames ())
+						ostream << field -> getName ();
+					else
+						ostream << field -> getAliasName ();
+
 					ostream
 						<< Generator::Space
 						<< "IS"
 						<< Generator::Space
-						<< reference -> getName ();
+						<< reference -> getName ()
+						<< Generator::Break;
+				}
+				
+				if (field -> getAccessType () == inputOutput and not initializableReference)
+				{
+					// Output user defined field
+				
+					ostream
+						<< Generator::Indent
+						<< std::setiosflags (std::ios::left)
+						<< std::setw (accessTypeLength);
+
+					ostream << Generator::AccessTypes [field];
+
+					ostream
+						<< Generator::Space
+						<< std::setiosflags (std::ios::left) << std::setw (fieldTypeLength) << field -> getTypeName ()
+						<< Generator::Space;
+
+					if (Generator::X3DFieldNames ())
+						ostream << field -> getName ();
+					else
+						ostream << field -> getAliasName ();
+
+					if (field -> isInitializeable ())
+					{
+						ostream
+							<< Generator::Space
+							<< *field;
+					}
+
+					ostream << Generator::Break;
 				}
 			}
 			else
 			{
+				// Output user defined field
+
+				ostream
+					<< Generator::Indent
+					<< std::setiosflags (std::ios::left)
+					<< std::setw (accessTypeLength);
+
+				ostream << Generator::AccessTypes [field];
+
+				ostream
+					<< Generator::Space
+					<< std::setiosflags (std::ios::left) << std::setw (fieldTypeLength) << field -> getTypeName ()
+					<< Generator::Space;
+
+				if (Generator::X3DFieldNames ())
+					ostream << field -> getName ();
+				else
+					ostream << field -> getAliasName ();
+
 				if (field -> isInitializeable ())
 				{
 					ostream
 						<< Generator::Space
 						<< *field;
 				}
-			}
 
-			ostream << Generator::Break;
+				ostream << Generator::Break;
+			}
 		}
 
 		ostream
@@ -799,31 +856,43 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 					<< Generator::Break;
 			}
 
-			ostream << Generator::Indent;
-
-			if (Generator::X3DFieldNames ())
-				ostream << field -> getName ();
-			else
-				ostream << field -> getAliasName ();
-
-			ostream << Generator::Space;
-
 			if (field -> getReferences () .size ())
 			{
 				for (const auto & reference : field -> getReferences ())
 				{
+					// Output build in reference
+
+					ostream << Generator::Indent;
+
+					if (Generator::X3DFieldNames ())
+						ostream << field -> getName ();
+					else
+						ostream << field -> getAliasName ();
+
 					ostream
+						<< Generator::Space
 						<< "IS"
 						<< Generator::Space
-						<< reference -> getName ();
+						<< reference -> getName ()
+						<< Generator::Break;
 				}
 			}
 			else
 			{
-				ostream << *field;
-			}
+				// Output build field
 
-			ostream << Generator::Break;
+				ostream << Generator::Indent;
+
+				if (Generator::X3DFieldNames ())
+					ostream << field -> getName ();
+				else
+					ostream << field -> getAliasName ();
+
+				ostream
+					<< Generator::Space
+					<< *field
+					<< Generator::Break;
+			}
 		}
 
 		ostream
