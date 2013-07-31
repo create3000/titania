@@ -8,10 +8,10 @@ PROTO References [
 ]
 {
   DEF References Script {
-    exposedField loop1 IS set_loop
-    exposedField loop1 IS loop
-    exposedField loop2 IS set_loop
-    exposedField loop2 IS loop
+    exposedField SFBool loop1 IS set_loop
+    exposedField SFBool loop1 IS loop
+    exposedField SFBool loop2 IS set_loop
+    exposedField SFBool loop2 IS loop
 
     url "vrmlscript:
 

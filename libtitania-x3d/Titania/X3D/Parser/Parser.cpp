@@ -417,7 +417,7 @@ Parser::componentStatement ()
 			throw Error <INVALID_X3D> ("Expected a component name.");
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 bool
@@ -689,7 +689,7 @@ Parser::nodeStatement (SFNode & _node)
 
 	if (Grammar::_null (istream))
 	{
-		_node = NULL;
+		_node = nullptr;
 
 		return true;
 	}
@@ -1188,7 +1188,7 @@ Parser::routeStatement ()
 
 				if (outputOnlyId (_eventOutId))
 				{
-					X3DFieldDefinition* _eventOut = NULL;
+					X3DFieldDefinition* _eventOut = nullptr;
 
 					try
 					{
@@ -1217,7 +1217,7 @@ Parser::routeStatement ()
 
 								if (inputOnlyId (_eventInId))
 								{
-									X3DFieldDefinition* _eventIn = NULL;
+									X3DFieldDefinition* _eventIn = nullptr;
 
 									try
 									{
@@ -1392,7 +1392,7 @@ Parser::scriptBodyElement (X3DBaseNode* const _basicNode)
 
 							if (Id (_isId))
 							{
-								X3DFieldDefinition* _reference = NULL;
+								X3DFieldDefinition* _reference = nullptr;
 
 								try
 								{
@@ -1409,14 +1409,26 @@ Parser::scriptBodyElement (X3DBaseNode* const _basicNode)
 								{
 									if (_accessType -> second == _reference -> getAccessType () or _accessType -> second == inputOutput)
 									{
-										X3DFieldDefinition* _field = _supportedField -> clone ();
+										X3DFieldDefinition* _field = nullptr;
+										
+										try
+										{
+											_field = _basicNode -> getField (_fieldId);
+											
+											if (_field -> getAccessType () not_eq _accessType -> second)
+												throw Error <INVALID_X3D> ("Field '" + _fieldId + "' must have access type " + Generator::AccessTypes [_field] + ".");
+										}
+										catch (const Error <INVALID_NAME> &)
+										{
+											_field = _supportedField -> clone ();
+
+											_basicNode -> addUserDefinedField (_accessType -> second,
+											                                   _fieldId,
+											                                   _field);
+										}
 
 										_field -> addReference (_reference);
 										_field -> addComments (getComments ());
-
-										_basicNode -> addUserDefinedField (_accessType -> second,
-										                                   _fieldId,
-										                                   _field);
 
 										return true;
 									}
@@ -1478,7 +1490,7 @@ Parser::nodeBodyElement (X3DBaseNode* const _basicNode)
 
 	if (Id (_fieldId))
 	{
-		X3DFieldDefinition* _field = NULL;
+		X3DFieldDefinition* _field = nullptr;
 
 		try
 		{
@@ -1499,7 +1511,7 @@ Parser::nodeBodyElement (X3DBaseNode* const _basicNode)
 
 				if (Id (_isId))
 				{
-					X3DFieldDefinition* _reference = NULL;
+					X3DFieldDefinition* _reference = nullptr;
 
 					try
 					{
