@@ -1,0 +1,565 @@
+#VRML V2.0 utf8
+EXTERNPROTO LABEL
+    [
+    field   SFVec3f  trn
+    field   MFString stg
+    field SFColor txtColor
+    eventIn SFString setStg
+    ] "label.wrl#LABEL"
+PROTO MFACTORY
+    [
+    field SFBool initially_running TRUE
+    eventIn SFBool start
+    field    MFString name         "mover factory"
+    field    SFVec3f  position     0 0 0
+    field    SFInt32  howMany      1
+    field    SFTime   interval     1.0
+    field    SFInt32  vizMode      1
+    field    SFNode   viz          NULL
+    field    SFInt32  basenum      0
+    eventIn  SFTime   setMoverPace
+    eventOut SFNode   aMover
+    eventOut SFBool   stop
+    field SFNode vizprotostgnode NULL
+    ]
+  {
+  DEF mfXform Transform
+    {
+    translation IS position
+    children
+      [
+      Shape
+        {
+        geometry Sphere { radius 0.4 }
+        appearance Appearance
+          {
+          material Material
+            {
+            ambientIntensity 1.0
+            diffuseColor     0.2 0.5 1.0
+            emissiveColor    0.2 0.5 1.0
+            specularColor    0.2 0.5 1.0
+            shininess        1.0
+            transparency     0.1
+            }
+          } # end appearance
+        } # end shape
+      LABEL {stg IS name trn 0 -0.7 0  txtColor 0.7 0.7 1}
+      DEF mfClock TimeSensor
+        {
+        cycleInterval IS interval,
+        loop IS initially_running, set_loop IS start
+        }
+      DEF mfScript Script
+        {
+        directOutput   TRUE
+        field SFString quot        "'"
+        field SFBool   dbg         FALSE
+        field SFInt32  verw        0
+        field SFInt32  verf        4
+        field SFNode   mfXform USE mfXform
+        field SFNode   mfScript USE mfScript
+        field SFInt32 howMany  IS howMany
+        field SFTime  interval IS interval
+        field SFInt32 vizMode  IS vizMode
+        field SFNode  viz      IS viz
+        field MFString mfname IS name
+        field SFInt32  basenum IS basenum
+        field SFNode vizprotostgnode IS vizprotostgnode
+        eventIn  SFTime setMoverPace IS setMoverPace
+        eventOut SFNode aMover IS aMover
+        eventOut SFBool stop   IS stop
+
+        eventIn  SFTime genMvr
+        field    SFTime moverPace 2
+        field SFBool   firstOne    TRUE
+        field SFInt32  serialNumba 0
+        field SFInt32  genCount    0
+        field SFString theString   ""
+        field SFBool   pluginIsBlaxxun FALSE
+        field SFBool   pluginIsCosmo   FALSE
+
+        url "javascript:
+
+            function initialize()
+              {
+              print('=====================================');
+              vpin = Browser.getName();
+              vpiv = Browser.getVersion();
+              print('MFACTORY '+verw+'.'+verf+' running under');
+              print('  VRML plug-in: '+vpin+' '+vpiv);
+              if (vpin == 'blaxxunCC3D')
+                pluginIsBlaxxun = true;
+              else
+              if (Browser.getName() == 'CosmoPlayer')
+                pluginIsCosmo = true;
+              else
+                print('UNKNOWN PLUG-IN, MAY NOT WORK');
+              serialNumba = basenum;
+              print('  '+mfname[0]+' initialized');
+              }
+
+            function genMvr(sftime, ts)
+              {
+              print(mfname[0]+' genMvr');
+              print('  '+genCount+' alrdy gen-d');
+              if (firstOne)
+                {
+                firstOne = false;
+                print('ignore 1st');
+                return;
+                }
+              if (genCount >= howMany)
+                {
+                print('stop src clok after gen-ing '+genCount+' MOVERS');
+                print('with final s/n '+serialNumba);
+                stop = false;
+                return;
+                }
+              genCount++;
+              serialNumba++;
+              print('  s/n '+serialNumba);
+              formString(serialNumba);
+              nuChild = Browser.createVrmlFromString(theString);
+              if (nuChild.length < 1)
+                {
+                print('FAIL to create VRML MOVER From string');
+                print('genMvr nuChild.length: ' + nuChild.length);
+                print(theString);
+                return;
+                }
+              mfXform.addChildren = nuChild;
+
+              showViz = (viz!=null);
+              if (showViz) // passed in as node
+                {
+                nuChilv = new MFNode();
+                nuChilv[0] = viz;
+                nuChild[0].setViz = nuChilv[0];
+                if (vizMode <= 1) // no evt, ok to add viz now
+                  {
+                  nuChild[0].addChildren = nuChilv;
+                  print('MOVER got viz');
+                  }
+                }
+              if (showViz && false) // passed in as string
+                {
+                if(dbg) print('vizprotostgnode:'+vizprotostgnode);
+                if(dbg) print('vizprotostgnode string:'+vizprotostgnode.vizprotostg);
+                instance = new MFString();
+                instance[0] = ' DEF mviznode' + serialNumba + ' MVIZNODE { }';
+                theVrml = new MFString();
+                theVrml[0] = vizprotostgnode.vizprotostg[0] + instance[0];
+                nuChilv = Browser.createVrmlFromString(theVrml[0]);
+                if (nuChilv.length < 1)
+                  {
+                  print('FAIL to create VRML MOVER viz node From string');
+                  print(theVrml);
+                  return;
+                  }
+                nuChild[0].setViz = nuChilv[0];
+                if (vizMode <= 1) // no evt, ok to add viz now
+                  {
+                  nuChild[0].addChildren = nuChilv;
+                  print('added viz to MOVER');
+                  }
+                }
+
+              aMover = nuChild[0];
+              print('leave mover factory genMvr');
+              }
+
+            function formString(ii)
+              {
+              if(dbg) print('form String');
+              posx=posy=posz=0; // mover initial posn is at factory
+              label = ' ' + ii;
+              if (viz!=null || vizMode>1) label = '=' + ii;
+
+              if (pluginIsBlaxxun)
+                blaxxunBoolStg = new String('TRUE');
+              else
+                blaxxunBoolStg = new String('FALSE');
+
+              if (pluginIsCosmo)
+                cosmoBoolStg = new String('TRUE');
+              else
+                cosmoBoolStg = new String('FALSE');
+
+              if (viz!=null)
+                vizExistStg = new String('TRUE');
+              else
+                vizExistStg = new String('FALSE');
+
+              vrmlTop =
+                'PROTO MOVER '+
+                '    [ '+
+                '    exposedField SFString name \"' + label + '\" '+
+                '    field        SFVec3f  position '+posx+' '+posy+' '+posz+' '+
+                '    eventIn SFNode setViz '+
+                '    eventOut SFNode vizAvail '+
+                '    eventIn      MFNode   addChildren    '+ // handled by mvrX
+                '    eventIn      SFInt32  setCookie        '+ // handled by mvrScript
+                '    eventOut     SFInt32     cookieChanged '+
+                '    eventIn      MFVec3f  startAnimation '+ // ''
+                '    eventIn      MFVec3f  setKeyValue    '+ // ''
+                '    eventIn      SFNode   setPath '+
+                '    eventOut     MFVec3f  atEnd          '+
+                '    eventIn      SFTime   setMoverPace '+
+                '    field SFBool pluginIsBlaxxun '+blaxxunBoolStg+' '+
+                '    field SFBool pluginIsCosmo   '+  cosmoBoolStg+' '+
+                '    eventIn      SFNode   setEvt           '+
+                '    eventOut     SFNode      evtAvail      '+
+                '    ] '+
+                '  { '+
+                '  DEF mvrX Transform '+
+                '    { '+
+                '    translation IS position '+ // initial posn of MOVER is at factory
+                '    addChildren IS addChildren '+
+                '    children '+
+                '      [ '+
+                '      DEF timer TimeSensor '+
+                '        { '+
+                '        cycleInterval ' + moverPace + ' '+
+                '        enabled FALSE '+
+                '        loop TRUE '+
+                '        } '+
+                '      DEF posInt PositionInterpolator '+
+                '        { '+
+                '        key[0 1] '+
+                '        keyValue[0 0 0, 0 0 0] '+
+                '        } ';
+
+              // all the other (sub)strings go here when the strings are
+              // concatenated (see below).
+
+              vrmlBottom =
+                '      ] '+ // end children
+                '    } '+ // end transform
+
+                '  ROUTE mvrScript.keyValueOut     TO posInt.set_keyValue  '+ //MFVec3f
+                '  ROUTE mvrScript.griddedFracOut  TO posInt.set_fraction  '+ //SFFloat
+                '  ROUTE posInt.value_changed      TO mvrScript.animPosn   '+ //SFVec3f
+                '  ROUTE mvrScript.animPosnOut     TO mvrX.set_translation '+ //SFVec3f
+
+                '  ROUTE mvrScript.timerOnOff   TO timer.set_enabled       '+ //SFBool
+                '  ROUTE mvrScript.paceToTimer  TO timer.set_cycleInterval '+ //MFVec3f
+                '  ROUTE mvrScript.timeStampOut TO timer.set_startTime     '+
+                '  ROUTE timer.fraction_changed TO mvrScript.tick          '+ //SFFloat
+
+                '  } '+ // end proto
+                'DEF mvr' + ii + ' MOVER { } '+
+                ' ';
+
+
+              scriptTop =
+                '      DEF mvrScript Script '+
+                '        { '+
+                '        directOutput TRUE '+
+                '        field SFString name \"'  +  label  +  '\" '+
+                '        field SFInt32 vizmode '  +  vizMode  +  ' '+
+                '        field SFBool vizExist '  +  vizExistStg  +  ' '+
+                '        field SFBool vizHasBeenSet FALSE '+
+                '        field SFNode mvrX USE mvrX '+
+
+                '        eventIn SFNode setViz IS setViz '+
+                '        field SFNode theViz NULL '+
+                '        eventOut SFNode vizAvail IS vizAvail '+
+
+                '        eventIn SFNode setEvt IS setEvt   '+
+                '        field SFNode theEvt NULL        '+
+                '        eventOut SFNode evtAvail IS evtAvail '+
+                '        field SFBool evtHasBeenSet FALSE '+
+
+                '        eventIn  MFVec3f  setKeyValue    IS setKeyValue '+
+                '        field    MFVec3f     keyValue    [ ] '+
+                '        eventOut MFVec3f     keyValueOut     '+
+
+                '        field    MFVec3f  pathp1p2       [ ] '+
+                '        eventIn  SFInt32  setCookie        IS setCookie '+
+                '        field    SFInt32     cookie        -1 '+
+                '        eventOut SFInt32     cookieChanged IS cookieChanged '+
+                '        eventIn  SFNode   setPath        IS setPath '+
+                '        field    SFNode   thePath        NULL       '+
+                '        eventIn  MFVec3f  startAnimation IS startAnimation '+
+                '        eventOut SFBool   timerOnOff        '+
+                '        eventOut SFTime   timeStampOut      '+
+                '        field    SFInt32  animCount      -1 '+
+                '        field    SFFloat  previousFrac    0 '+
+                '        field    SFFloat  griddedFrac     0 '+
+                '        eventOut SFFloat  griddedFracOut    '+
+                '        eventIn  SFFloat  tick              '+
+                '        eventIn  SFVec3f  animPosn          '+
+                '        field    SFInt32  btwnPrintCount -1 '+
+                '        eventOut MFVec3f  atEnd          IS atEnd   '+
+                '        field    SFInt32  regime         1 '+
+                '        eventIn  SFTime   setMoverPace IS setMoverPace '+
+                '        field    SFTime   moverPace 2 '+
+                '        eventOut SFTime   paceToTimer '+
+                '        field    SFBool   pluginIsBlaxxun    IS pluginIsBlaxxun    '+
+                '        field    SFBool   pluginIsCosmo      IS pluginIsCosmo      '+
+                '        eventOut SFVec3f  animPosnOut '+
+                '        url \"javascript: '
+                ;
+              // the Script node ECMAscript code goes here when the (sub)strings are
+              // concatenated (see below).  In effect, it's like having the ECMAscript
+              // in a 'mvrScript.js' file.
+              scriptBottom =
+                '            \" '+ // end url
+                '        } '; // end script
+
+              posx = mfXform.translation.x;
+              posy = mfXform.translation.y;
+              posz = mfXform.translation.z;
+
+              mvrScriptDotJS =
+                'function initialize() '+
+                '  { '+
+                '  if(false) print('+quot+' '+quot+'); '+
+                '  print('+quot+'MOVER'+quot+' + name + '+quot+' init'+quot+'); '+
+                '  theViz = null; '+
+                '  vizAvail = theViz; '+
+                '  evtAvail = theEvt; '+
+                '  } '+
+                'function setViz(aViz) '+
+                '  { '+
+                '  if(false) print('  +  quot+' '+quot+'); '+
+                '  print('  +  quot+'mvrScript '+quot+'  +  name  +  '+quot+' setViz: '+quot+'  +  aViz); '+
+                '  theViz = aViz; '+
+                '  vizHasBeenSet = true; '+
+                '  vizAvail = aViz; '+
+                '  if (aViz==null) '+
+                '    { '+
+                '    print('  +  quot+'ERROR: VIZ NULL'+quot  +  '); '+
+                '    return; '+
+                '    } '+
+                '  if (vizmode >= 1 && theEvt==null) '+
+                '    return; '+
+                '  if (vizmode >= 1 && !evtHasBeenSet) '+
+                '    { '+
+                '    print('  +  quot+'  EVT exist but not set yet'+quot  +  '); '+
+                '    return; '+
+                '    } '+
+                '  print('  +  quot+'setViz will add VIZ and/or EVT'+quot  +  '); '+
+                '  if (vizmode <= 1 && aViz==null) '+
+                '    return; '+
+                '  nuChilds = new MFNode(); '+
+                '  if (vizmode >= 2 && theViz==null) '+
+                '    { '+
+                '    nuChilds[0] = theEvt; '+
+                '    } '+
+                '  if (vizmode <= 1 && theViz!=null) '+
+                '    { '+
+                '    nuChilds[0] = aViz; '+
+                '    } '+
+                '  if (vizmode >= 2 && theViz!=null) '+
+                '    { '+
+                '    nuChilds[0] = theEvt; '+
+                '    nuChilds[1] = aViz; '+
+                '    } '+
+                '  mvrX.addChildren = nuChilds; '+
+                '  } '+
+                'function setEvt(anEvt) '+
+                '  { '+
+                '  if(false) print('  +  quot+' '+quot+'); '+
+                '  print('  +  quot+'mvrScript '+quot+'  +  name  +  '+quot+' setEvt: '+quot+'  +  anEvt); '+
+                '  theEvt = anEvt; '+
+                '  evtHasBeenSet = true; '+
+                '  evtAvail = anEvt; '+
+                '  if (anEvt==null) '+
+                '    { '+
+                '    print('  +  quot+'ERROR: EVT NULL'+quot  +  '); '+
+                '    return; '+
+                '    } '+
+                '  print('  +  quot+'vizExist:'+quot  +  '+vizExist'  +  '); '+
+                '  if (vizExist) '+
+                '    { '+
+                '    print('  +  quot+'  vizExist'+quot  +  '); '+
+                '    } '+
+                '  if (theViz == null) '+
+                '    { '+
+                '    print('  +  quot+'  theViz is NULL'+quot  +  '); '+
+                '    } '+
+                '  print('  +  quot+'theViz:'+quot  +  '+theViz'  +  '); '+
+                '  if (vizExist && (theViz==null)) '+
+                '    { '+
+                '    print('  +  quot+'  vizExist but not here yet'+quot  +  '); '+
+                '    return; '+
+                '    } '+
+                '  if (vizExist && !vizHasBeenSet) '+
+                '    { '+
+                '    print('  +  quot+'  vizExist but not set yet'+quot  +  '); '+
+                '    return; '+
+                '    } '+
+                '  print('  +  quot+'setEvt will add VIZ and/or EVT'+quot  +  '); '+
+                '  if (vizmode <= 1 && theViz==null) '+
+                '    return; '+
+                '  nuChilds = new MFNode(); '+
+                '  if (vizmode >= 2 && theViz==null) '+
+                '    { '+
+                '    nuChilds[0] = anEvt; '+
+                '    print('  +  quot+'  EVT only'+quot  +  '); '+
+                '    } '+
+                '  if (vizmode <= 1 && theViz!=null) '+
+                '    { '+
+                '    nuChilds[0] = theViz; '+
+                '    print('  +  quot+'  VIZ only'+quot  +  '); '+
+                '    } '+
+                '  if (vizmode >= 2 && theViz!=null) '+
+                '    { '+
+                '    nuChilds[0] = anEvt; '+
+                '    nuChilds[1] = theViz; '+
+                '    print('  +  quot+'  both EVT & VIZ'+quot  +  '); '+
+                '    } '+
+                '  mvrX.addChildren = nuChilds; '+
+                '  } '+
+                'function setMoverPace(atime, ts) '+
+                '  { '+
+                '  if(false) print('+quot+' '+quot+'); '+
+                '  if(false) print('+quot+'mvrScript '+quot+' + name + '+quot+' setMoverPace: '+quot+' + atime); '+
+                '  moverPace = atime; '+
+                '  paceToTimer = moverPace; '+
+                '  } '+
+                'function setPath(apath, ts) '+
+                '  { '+
+                '  if(false) print('+quot+' '+quot+'); '+
+                '  print('+quot+'enter mvrScript '+quot+' + name + '+quot+' setPath with: '+quot+' + apath); '+
+                '  thePath = apath; '+
+                '  } '+
+                'function setCookie(ivalue, ts) '+
+                '  { '+
+                '  if(false) print('+quot+' '+quot+'); '+
+                '  if(false) print('+quot+'enter mvrScript '+quot+' + name + '+quot+' setCookie with: '+quot+' + ivalue); '+
+                '  cookie = ivalue; '+
+                '  cookieChanged = ivalue; '+
+                '  } '+
+                'function startAnimation(mfv3f, ts) '+
+                '  { '+
+                '  if(false) print('+quot+' '+quot+'); '+
+                '  if(false) print('  +  quot+'MOVER'+quot  +  '+name+'  +  quot+' enters mvrScript startAnimation'+quot  +  '); '+
+                '  animCount = 0; '+
+                '  } '+
+                'function setKeyValue(kvalue, ts) '+
+                '  { '+
+                '  if(false) print('+quot+' '+quot+'); '+
+                '  if(false) print('  +  quot+'MOVER'+quot  +  '+name+'  +  quot+' enters mvrScript setKeyValue with: '+quot  +  '+kvalue); '+
+                '  pathp1p2 = kvalue; '+
+                '  mfXformPosn = new SFVec3f('+posx+','+posy+','+posz+'); '+
+                '  keyValue[0] = kvalue[0].subtract(mfXformPosn); '+
+                '  keyValue[1] = kvalue[1].subtract(mfXformPosn); '+
+                '  if(regime==1) '+
+                '    regime=2; '+
+                '  previousFrac = 0; '+
+                '  btwnPrintCount = 0; '+
+                '  timeStampOut = ts; '+
+                '  timerOnOff = true; '+
+                '  } '+
+                'function tick(fvalue, ts) '+
+                '  { '+
+                '  animCount++; '+
+
+                '  if(regime==1)'+
+                '    { '+
+                '    if(false) print('+quot+'regime 1'+quot+'); '+
+                '    return; '+
+                '    } '+
+
+                '  if(regime==2 && fvalue > previousFrac) '+
+                '    { '+
+                '    if(false) print('+quot+' '+quot+'); '+
+                '    if(false) print('  +  quot+'MOVER'+quot  +  '+name+'  +  quot+' in mvrScript tick with regime=2 and fvalue > previousFrac'+quot  +  '); '+
+                '    if(false) print('  +  quot+'end MOVER regime 2'+quot  +  '); '+
+                '    if(false) print('  +  quot+'keyValue:'+quot  +  '+keyValue); '+
+                '    if(false) print('  +  quot+'  x'+quot  +  '); '+
+                '    if(false) print('  +  quot+'    x'+quot  +  '); '+
+                '    if(false) print('  +  quot+'      x'+quot  +  '); '+
+                '    regime=0; '+
+                '    keyValueOut = keyValue; '+
+                '    return; '+
+                '    } '+
+                // regime 0:
+                '  if (fvalue >= previousFrac) '+
+                '    { '+
+                '    previousFrac = fvalue; '+
+                '    griddedFrac = fvalue; '+
+                '    } '+
+                '  else '+ // wrapped, stop
+                '    { '+
+                '    timerOnOff = false; '+
+                '    griddedFrac = 1; '+
+                '    if(false) print('+quot+' '+quot+'); '+
+                '    if(false) print('+quot+'mover '+quot+' + name + '+quot+' in mvrScript tick'+quot+'); '+
+                '    if(false) print('+quot+'  fvalue:       '+quot+' + fvalue); '+
+                '    if(false) print('+quot+'  previousFrac: '+quot+' + previousFrac); '+
+                '    if(false) print('+quot+'  animCount:    '+quot+' + animCount); '+
+                '    if(false) print('+quot+'eventOut atEnd gets cookie: '+quot+' + cookie); '+
+                '    if(false) print('+quot+'mover will be frozen now'+quot+'); '+
+                '    if(false) print('  +  quot+'keyValue:'+quot  +  '+keyValue); '+
+                '    regime = 1; '+ // frozen
+                '    if (pluginIsCosmo || pluginIsBlaxxun) '+
+                '      { '+
+                '      identity = new MFVec3f(); '+
+                '      identity[0] = pathp1p2[0]; '+
+                '      identity[1] = pathp1p2[1]; '+
+                '      identity[2] = new SFVec3f(cookie,0,0); '+
+                '      atEnd = identity; '+
+                '      } '+
+                '    } '+
+                '  griddedFracOut = griddedFrac; '+
+                '  } '+
+                'function animPosn(sfv3f, ts) '+
+                '  { '+
+                '  onceinawhile = 99; '+ // -1 means every time
+                '  if(++btwnPrintCount >= onceinawhile) '+
+                '    { '+
+                '    btwnPrintCount = 0; '+
+                '    print('  +  quot+'MOVER'+quot+'  +  name  +  '+quot+' mvrScript animPosn'+quot  +  '); '+
+                '    print('  +  quot+'=animCount:'+quot  +  '+animCount); '+
+                '    print('  +  quot+'=griddedFrac:'+quot  +  '+griddedFrac); '+
+                '    print('  +  quot+'=regime:'+quot  +  '+regime); '+
+                '    print('  +  quot+'=keyValue:'+quot  +  '+keyValue); '+
+                '    } '+
+                '  if (regime == 0) '+ // needed for cosmo but not blaxxun
+                '    animPosnOut = sfv3f; '+
+                '  } ';
+
+              showSerNum = vizMode & 1;
+              serNum = ' ';
+              if (showSerNum) serNum =
+                '      Shape '+
+                '        { '+
+                '        geometry Text '+
+                '          { '+
+                '          string [ \"' + label + '\" ] '+
+                '          fontStyle FontStyle{} '+
+                '          } '+
+                '        appearance Appearance{} '+
+                '        } ';
+              theString = new String(
+                vrmlTop + serNum +
+                scriptTop + mvrScriptDotJS + scriptBottom +
+                vrmlBottom
+                );
+              if (dbg && ii==1) print(' ');
+              if (dbg && ii==1) print('----------------------------------');
+              if (dbg && ii==1) print('formString theString: ');
+              if (dbg && ii==1) print('----------------------------------');
+              if (dbg && ii==1) print(theString);
+              if (dbg && ii==1) print('----------------------------------');
+              if (dbg && ii==1) print(' ');
+              }
+
+            function setMoverPace(atime, ts)
+              {
+              if(dbg) print('mover factory set mover pace');
+              if (atime <= 0) return;
+              if(dbg) print('new mover pace: ' + atime);
+              moverPace = atime;
+              }
+            " # end url
+        }#end sourceScript
+      ]#end children
+    }#end transform
+  ROUTE mfClock.cycleTime  TO mfScript.genMvr     #SFTime
+  ROUTE mfScript.stop      TO mfClock.set_enabled #SFBool
+  }#end proto

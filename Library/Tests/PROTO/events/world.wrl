@@ -1,0 +1,73 @@
+#VRML V2.0 utf8
+EXTERNPROTO BLUEMAN
+    [
+    field SFVec3f toledo
+    ] "forms.wrl#BLUEMAN"
+EXTERNPROTO MFACTORY
+    [
+    field SFBool initially_running
+    eventIn SFBool start
+    field    MFString name
+    field    SFVec3f  position
+    field    SFInt32  howMany
+    field    SFTime   interval
+    field    SFInt32  vizMode
+    field    SFNode   viz
+    field    SFInt32  basenum
+    eventIn  SFTime   setMoverPace
+    eventOut SFNode   aMover
+    eventOut SFBool   stop
+    field SFNode vizprotostgnode
+    ] "mfactory.wrl#MFACTORY"
+EXTERNPROTO BOOLNODE
+    [
+    exposedField SFString protoStg
+    ] "boolnode.wrl"
+EXTERNPROTO EFACTORY
+    [
+    field MFString name
+    field SFVec3f position
+    field SFNode objProtoStgNode
+    eventIn  SFInt32  aValue # 1=true, 0=false, -1=end sim
+    eventIn  SFNode   doorBell # in: MOVER in
+    eventOut SFNode   output   # out: MOVER carrying EVT
+    ] "efactory.wrl#EFACTORY"
+EXTERNPROTO SYNC
+    [
+    field MFString name
+    eventIn SFNode arrive
+    eventOut SFNode depart
+    field SFTime delay1 # delay before starting timer
+    field SFTime delay2 # timer cycle interval
+    ] "sync.wrl#SYNC"
+Transform
+  {
+  children
+    [
+    DEF msrc1 MFACTORY
+      {
+      name ["mfactory1"], basenum 100
+      position -11 6 5
+      howMany 4, interval 2
+      vizMode 3, viz BLUEMAN {toledo 1 1 1 }
+      }
+    DEF aBoolnode BOOLNODE { }
+    DEF esrc1 EFACTORY
+      {
+      name [ "efactory1" ]
+      position -11 4.5 7
+      objProtoStgNode USE aBoolnode
+      }
+    DEF sync1 SYNC { }
+#    Viewpoint
+#      {
+#      position    -0.25 6 34
+#      orientation 0 -1 0 0
+#      fieldOfView 0.9
+#      description "1"
+#      }
+    NavigationInfo {type "EXAMINE"}
+    ] # end children
+  } # end transform
+ROUTE  msrc1.aMover  TO  esrc1.doorBell # SFNode MOVER (fbm traces)
+ROUTE  esrc1.output  TO  sync1.arrive   # SFNode MOVER

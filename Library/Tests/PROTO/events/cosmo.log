@@ -1,0 +1,110 @@
+Welcome to Cosmo Player 2.1.1.
+  Current Graphics Renderer
+   Name: SGI
+   Description: Generic/MMX 1.1.2 SGI
+  =====================================
+  MFACTORY 0.4 running under
+    VRML plug-in: CosmoPlayer 2.1.1
+    mfactory1 initialized
+  EFACTORY 0.4 "efactory1"
+  SYNC "node" init
+    delay1: 0.01 delay2: 0.00099968
+  mfactory1 genMvr
+    0 alrdy gen-d
+  ignore 1st
+  mfactory1 genMvr
+    0 alrdy gen-d
+    s/n 101
+  leave mover factory genMvr
+  EFACTORY "efactory1" doorbell: =101
+  object proto string node: >>>BOOLNODE { }<<<
+  SYNC arrive, mover=101, ts: 950279958.010896
+  **** evt null ****
+  mover=101 inserted at cursor: 0
+  MOVER=101 init
+  mvrScript =101 setEvt: EVT { }
+  vizExist:true
+    vizExist
+  theViz:NULL
+    vizExist but not set yet
+  EVT init
+  EVT setObj with obj:EVTOBJ { }
+  mvrScript =101 setViz: BLUEMAN { }
+  setViz will add VIZ and/or EVT
+  BOOLNODE init: false
+  SYNC "node" isActive true, ts: 950279958.1420089
+  ======= ALARM CLOCK RINGS =======
+  maxqsiz: 1
+  mfactory1 genMvr
+    1 alrdy gen-d
+    s/n 102
+  leave mover factory genMvr
+  EFACTORY "efactory1" doorbell: =102
+  object proto string node: >>>BOOLNODE { }<<<
+  SYNC arrive, mover=102, ts: 950279960.0514963
+  **** evt null ****
+  mover=102 inserted at cursor: 0
+  MOVER=102 init
+  mvrScript =102 setEvt: EVT { }
+  vizExist:true
+    vizExist
+  theViz:NULL
+    vizExist but not set yet
+  EVT init
+  EVT setObj with obj:EVTOBJ { }
+  mvrScript =102 setViz: BLUEMAN { }
+  setViz will add VIZ and/or EVT
+  BOOLNODE init: false
+  SYNC "node" isActive true, ts: 950279960.3762528
+  ======= ALARM CLOCK RINGS =======
+  maxqsiz: 1
+  mfactory1 genMvr
+    2 alrdy gen-d
+    s/n 103
+  leave mover factory genMvr
+  EFACTORY "efactory1" doorbell: =103
+  object proto string node: >>>BOOLNODE { }<<<
+  SYNC arrive, mover=103, ts: 950279962.0317811
+  **** evt null ****
+  mover=103 inserted at cursor: 0
+  MOVER=103 init
+  mvrScript =103 setEvt: EVT { }
+  vizExist:true
+    vizExist
+  theViz:NULL
+    vizExist but not set yet
+  EVT init
+  EVT setObj with obj:EVTOBJ { }
+  mvrScript =103 setViz: BLUEMAN { }
+  setViz will add VIZ and/or EVT
+  BOOLNODE init: false
+  SYNC "node" isActive true, ts: 950279962.4004711
+  ======= ALARM CLOCK RINGS =======
+  maxqsiz: 1
+  mfactory1 genMvr
+    3 alrdy gen-d
+    s/n 104
+  leave mover factory genMvr
+  EFACTORY "efactory1" doorbell: =104
+  object proto string node: >>>BOOLNODE { }<<<
+  SYNC arrive, mover=104, ts: 950279964.059255
+  **** evt null ****
+  mover=104 inserted at cursor: 0
+  MOVER=104 init
+  mvrScript =104 setEvt: EVT { }
+  vizExist:true
+    vizExist
+  theViz:NULL
+    vizExist but not set yet
+  EVT init
+  EVT setObj with obj:EVTOBJ { }
+  mvrScript =104 setViz: BLUEMAN { }
+  setViz will add VIZ and/or EVT
+  BOOLNODE init: false
+  SYNC "node" isActive true, ts: 950279964.4141351
+  ======= ALARM CLOCK RINGS =======
+  maxqsiz: 1
+  mfactory1 genMvr
+    4 alrdy gen-d
+  stop src clok after gen-ing 4 MOVERS
+  with final s/n 104

@@ -1,0 +1,74 @@
+#VRML V2.0 utf8
+PROTO LABEL
+    [
+    field   SFVec3f  trn    0 0 0
+    field   MFString stg    [ "-" ]
+    field SFColor txtColor 0 1 0
+    eventIn SFString setStg
+    ]
+  {
+  Transform
+    {
+    translation IS trn
+    children
+      [
+      Shape
+        {
+        geometry DEF theTxt Text
+          {
+          fontStyle FontStyle
+            {
+            family "SANS"
+            justify "MIDDLE"
+            size 0.77
+            spacing 1.2
+            style "BOLD"
+            } # end font style
+          } # end geometry
+        appearance Appearance
+          {
+          material DEF theMat Material {diffuseColor 0.9412 0.9725 1.0000}
+          } # end appearance
+        } # end shape
+      Script
+        {
+        directOutput TRUE
+        field MFString initialStg IS stg
+
+        field SFNode theTxt USE theTxt
+        field SFNode theMat USE theMat
+        field SFColor txtColor IS txtColor
+        eventIn SFString setStg IS setStg
+        field SFString theStg "*?*"
+        eventOut SFString stgAvail
+        url "javascript:
+
+        function initialize()
+          {
+          if(false) print('label initialize: >>>' + initialStg[0] + '<<<');
+          theStg = initialStg[0];
+          stgAvail = initialStg[0];
+          anMfstg = new MFString();
+          anMfstg[0] = initialStg[0];
+          theTxt.string = anMfstg;
+          aColor = new SFColor();
+          aColor = txtColor;
+          if(false) print('aColor: ' + aColor);
+          theMat.diffuseColor = aColor;
+          } // end fn
+
+        function setStg(aStg)
+          {
+          if(false) print('LABEL setStg: ' + aStg);
+          theStg = aStg;
+          stgAvail = aStg;
+          anMfstg = new MFString();
+          anMfstg[0] = aStg;
+          theTxt.string = anMfstg;
+          } // end fn
+
+            " # end url
+        } # end script
+      ] # end children
+    } # end transform
+  } # end proto

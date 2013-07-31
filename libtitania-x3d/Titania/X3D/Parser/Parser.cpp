@@ -1415,8 +1415,18 @@ Parser::scriptBodyElement (X3DBaseNode* const _basicNode)
 										{
 											_field = _basicNode -> getField (_fieldId);
 											
-											if (_field -> getAccessType () not_eq _accessType -> second)
-												throw Error <INVALID_X3D> ("Field '" + _fieldId + "' must have access type " + Generator::AccessTypes [_field] + ".");
+											if (_supportedField -> getType () == _field -> getType ())
+											{
+												if (_accessType -> second == _field -> getAccessType () or _field -> getAccessType () == inputOutput)
+												{
+												   if (_accessType -> second not_eq _field -> getAccessType ())
+												      throw Error <INVALID_NAME> ("");
+												}
+												else
+													throw Error <INVALID_X3D> ("Field '" + _fieldId + "' must have access type " + Generator::AccessTypes [_field] + ".");
+											}
+											else
+												throw Error <INVALID_NAME> ("");
 										}
 										catch (const Error <INVALID_NAME> &)
 										{

@@ -24,7 +24,8 @@ sub save {
 
 	# Load Time
 	my $line = <>;
-	print $line;
+	print $line; $| = 1;
+
 	$line =~ m/Load Time:\s*([\d.]+)/; my $value = $1;
 	return unless $value;
 	my $message = "id=d1880b304f26c14a40be0fc0cd3273d76aa6634c"
@@ -36,7 +37,8 @@ sub save {
 
 	# FPS
 	my $line = <>;
-	print $line;
+	print $line; $| = 1;
+
 	$line =~ m/FPS:\s*([\d.]+)/; my $value = $1;
 	return unless $value;
 	my $message = "id=d1880b304f26c14a40be0fc0cd3273d76aa6634c"

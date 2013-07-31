@@ -157,27 +157,32 @@ X3DBaseNode::copy (X3DExecutionContext* const executionContext) const
 
 			X3DFieldDefinition* field = copy -> getField (fieldDefinition -> getName ());
 
-			if (fieldDefinition -> getReferences () .size ())
+			if (field -> getAccessType () == fieldDefinition -> getAccessType () and field -> getType () == fieldDefinition -> getType ())
 			{
-				// IS relationship
-
-				for (const auto & originalReference : fieldDefinition -> getReferences ())
+				if (fieldDefinition -> getReferences () .size ())
 				{
-					try
+					// IS relationship
+
+					for (const auto & originalReference : fieldDefinition -> getReferences ())
 					{
-						field -> addReference (executionContext -> getField (originalReference -> getName ()));
+						try
+						{
+							field -> addReference (executionContext -> getField (originalReference -> getName ()));
+						}
+						catch (const Error <INVALID_NAME> &)
+						{
+							throw Error <INVALID_NAME> ("No such event or field '" + originalReference -> getName () + ".");
+						}
 					}
-					catch (const Error <INVALID_NAME> &)
-					{
-						throw Error <INVALID_NAME> ("No such event or field '" + originalReference -> getName () + ".");
-					}
+				}
+				else
+				{
+					if (fieldDefinition -> isInitializeable ())
+						fieldDefinition -> clone (executionContext, field);
 				}
 			}
 			else
-			{
-				if (fieldDefinition -> isInitializeable ())
-					fieldDefinition -> clone (executionContext, field);
-			}
+				throw Error <INVALID_NAME> ("");
 		}
 		catch (const Error <INVALID_NAME> &)
 		{
@@ -388,7 +393,6 @@ X3DBaseNode::addField (const AccessType accessType, const std::string & name, X3
 	if (fields .find (name) not_eq fields .end ())
 	{
 		removeField (name);
-
 		__LOG__ << " field " << getTypeName () << "." << name << " already exists in this node'." << std::endl;
 	}
 

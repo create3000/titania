@@ -108,7 +108,7 @@ X3DSoundSourceNode::getDuration () const
 void
 X3DSoundSourceNode::setVolume (float value)
 {
-	return mediaStream -> setVolume (value);
+	mediaStream -> setVolume (value);
 }
 
 const Glib::RefPtr <Gst::XImageSink> &

@@ -1,0 +1,296 @@
+#VRML V2.0 utf8
+EXTERNPROTO LABEL
+    [
+    field   SFVec3f  trn
+    field   MFString stg
+    field SFColor txtColor
+    eventIn SFString setStg
+    ] "label.wrl"
+PROTO EFACTORY
+    [
+    field MFString name          [ "eFactory" ]
+    field SFVec3f position       0 0 0
+    field SFNode objProtoStgNode NULL
+    eventIn  SFInt32  aValue   # (not used) 1=true, 0=false, -1=end sim
+    eventIn  SFNode   doorBell # MOVER
+    eventOut SFNode   output   # MOVER carrying EVT
+    ]
+  {
+  Transform
+    {
+    translation IS position
+    children
+      [
+      Shape
+        {
+        geometry Cone {bottomRadius 0.25, height 0.5}
+        appearance Appearance
+          {
+          material Material
+            {
+            ambientIntensity 1.0
+            diffuseColor     1.0 1.0 0.1
+            emissiveColor    1.0 1.0 0.1
+            shininess        1.0
+            specularColor    1.0 1.0 0.1
+            transparency     0.3
+            }
+          } # end appearance
+        } # end shape
+      LABEL {stg IS name trn 0 -0.7 0  txtColor 0.8 0.8 0}
+      Script
+        {
+        directOutput TRUE
+        field SFBool dbg FALSE
+        field SFInt32 vi 0
+        field SFInt32 vf 4
+        field SFString quot "'"
+        field SFString qq "\""
+
+        field MFString name IS name
+        field SFNode objProtoStgNode IS objProtoStgNode
+        eventIn SFInt32 aValue IS aValue
+        eventIn SFNode doorBell IS doorBell
+        eventOut SFNode output IS output
+
+        field SFInt32 serialNumba 0
+        field SFString theString   ""
+        field MFNode   nuChilb     []
+
+        url "javascript:
+
+            function initialize()
+              {
+              print('EFACTORY '+vi+'.'+vf+' '+name);
+
+              if(false)
+                {
+                print('object proto string node: >>>' + objProtoStgNode+'<<<');
+                theVrml = new MFString();
+                theVrml[0] = objProtoStgNode.protoStg;
+                theVrml[1] = ' DEF evtobj' + serialNumba + ' EVTOBJ { }';
+                theVrml[2] = theVrml[0] + theVrml[1];
+                nuChilx = Browser.createVrmlFromString(theVrml[2]);
+                if (nuChilx.length == 1)
+                  print('created VRML evt obj from string');
+                else
+                  {
+                  print('FAIL to create VRML evt obj from string');
+                  print('nuChilx.length: ' + nuChilx.length);
+                  print(objProtoStgNode.theVrml[2]);
+                  return;
+                  } // end else
+                } // end if
+
+              } // end fn
+
+            function doorBell(mvr)
+              {
+              print('EFACTORY '+name+' doorbell: '+mvr.name);
+              serialNumba++;
+              formString();
+              nuChild = Browser.createVrmlFromString(theString);
+              if (nuChild.length < 1)
+                {
+                print('FAIL to create VRML EVT From string');
+                print('doorBell nuChild.length: ' + nuChild.length);
+                print(theString);
+                return;
+                }
+///           mvr.addChildren = nuChild;
+              nuEvt = nuChild[0];
+              mvr.setEvt = nuEvt;
+              if(dbg) print('mvr.evt: '+mvr.evtAvail);
+              formObject(); // returns nuChilb
+              if (nuChilb.length < 1)
+                {
+                print('FAIL to create VRML evt obj from string');
+                print('nuChilb.length: ' + nuChilb.length);
+                print('objProtoStg: ' + objProtoStgNode.protoStg);
+                return;
+                }
+              theObj = nuChilb[0];
+              nuEvt.setObj = theObj;
+              output = mvr; // send MOVER, now carrying EVT, on its way
+              } // end fn
+
+
+            function formString()
+              {
+              ii = serialNumba;
+              if(dbg) print('form String for EVT ' + ii);
+
+              vrmlTop =
+                'PROTO EVT '+
+                '    [ '+
+                '    eventIn      SFVec3f set_trn   '+
+                '    field        SFVec3f     trn   0.17 -0.04 0.12 '+ // in movers hand
+                '    eventIn      SFColor set_color '+
+                '    exposedField SFTime  vtime     0 '+
+
+                '    eventIn      SFNode   setObj           '+
+                '    eventOut     SFNode      objAvail      '+
+
+                '    exposedField SFVec3f offset    0 0 0 '+
+                '    field        SFFloat size      0.5 '+
+                '    ] '+
+                '  { '+
+                '  DEF evtX Transform '+
+                '    { '+
+                '    set_translation IS set_trn '+
+                '    translation IS trn '+
+                '    children '+
+                '      [ '+
+                ' '
+                ;
+
+              // all other (sub)strings go here when strings are
+              // concatenated (see below).
+
+              vrmlBottom =
+                '      ] '+ // end children
+                '    } '+ // end transform
+                   // ROUTEs go here
+                '  } '+ // end proto
+                'DEF evt' + ii + ' EVT { } '+
+                ' '
+                ;
+
+              trn = new SFVec3f(0.3, 1.2, 0);
+              clr = new SFColor(0.9, 0.9, 0.4);
+              xpr = 0.4;
+              rad = 0.2;
+              part =
+                '      Transform '+
+                '        { '+
+                '        translation ' + trn + ' '+
+                '        children '+
+                '          [ '+
+                '          Shape '+
+                '            { '+
+                '            geometry Sphere {radius ' + rad + '} '+
+                '            appearance Appearance '+
+                '              { '+
+                '              material DEF matl Material '+
+                '                { '+
+                '                diffuseColor  ' + clr + ' '+
+                '                emissiveColor ' + clr + ' '+
+                '                specularColor ' + clr + ' '+
+                '                transparency  ' + xpr + ' '+
+                '                shininess 0.7 '+
+                '                } '+ // end material
+                '              } '+ // end appearance
+                '            } '+ // end shape
+                '          ] '+ // end children
+                '        } '+ // end transform
+                ' '
+                ;
+
+              stg = 'evt' + ii;
+              trn = trn.add(new SFVec3f(0, -0.17, 0.50));
+              label =
+                '      Transform '+
+                '        { '+
+                '        translation ' + trn + ' '+
+                '        children '+
+                '          [ '+
+                '          Shape '+
+                '            { '+
+                '            geometry Text '+
+                '              { '+
+                '              string ' + qq+stg+qq + ' '+
+                '              fontStyle FontStyle '+
+                '                { '+
+                '                family ' + qq+'SANS'+qq+ ' '+
+                '                justify ' + qq+'MIDDLE'+qq + ' '+
+                '                size 0.6 '+
+                '                spacing 1.2 '+
+                '                style ' + qq+'BOLD'+qq + ' '+
+                '                } '+ // end font style
+                '              } '+ // end geometry
+                '            appearance Appearance '+
+                '              { '+
+                '              material Material {diffuseColor 0.9412 0.9725 1.0000} '+
+                '              } '+ // end appearance
+                '            } '+ // end shape
+                '          ] '+ // end children
+                '        } '+ // end transform
+                ' '
+                ;
+
+
+
+              scriptTop =
+                '      DEF evtScr Script '+
+                '        { '+
+                '        directOutput TRUE '+
+
+                '        eventIn  SFNode   setObj      IS setObj   '+
+                '        field    SFNode   theObj      NULL        '+
+                '        eventOut SFNode      objAvail IS objAvail '+
+
+                '        url \"javascript: '
+                ;
+
+              // ECMAscript code goes here when (sub)strings are concatenated
+              // below; in effect, like ECMAscript in .js file.
+
+              scriptBottom =
+                '            \" '+ // end url
+                '        } ' // # end script
+                ;
+
+
+
+              scriptDotJS =
+
+                'function initialize() '+
+                '  { '+
+                '  if(false) print('+quot+' '+quot+'); '+
+                '  print('  +  quot+'EVT '+quot  +  '+'  +  quot+'init'+quot+'); '+
+                '  objAvail = theObj; '+
+                '  } '+
+
+                'function setObj(obj, ts) '+
+                '  { '+
+                '  if(false) print('  +  quot+' '+quot  +  '); '+
+                '  theObj = obj; '+
+                '  if (theObj == null) '+
+                '    print('  +  quot+'EVT setObj with obj: null'+quot  +  '); '+
+                '  else '+
+                '    print('  +  quot+'EVT setObj with obj:'+quot  +  '+theObj); '+
+                '  objAvail = obj; '+
+                '  } '+
+
+                ' '
+                ;
+
+              theString = new String(
+                vrmlTop +
+                scriptTop + scriptDotJS + scriptBottom +
+                part + label +
+                vrmlBottom
+                );
+              if (dbg && ii==1) print(' ');
+              if (dbg && ii==1) print('----------------------------------');
+              if (dbg && ii==1) print('EVT formString theString: ');
+              if (dbg && ii==1) print('----------------------------------');
+              if (dbg && ii==1) print(theString);
+              if (dbg && ii==1) print('----------------------------------');
+              if (dbg && ii==1) print(' ');
+              } // end fn
+
+            function formObject() // returns nuChilb
+              {
+              if(true) print('object proto string node: >>>' + objProtoStgNode+'<<<');
+              theVrml = new MFString();
+              theVrml[0] = objProtoStgNode.protoStg;
+              theVrml[1] = ' DEF evtobj' + serialNumba + ' EVTOBJ { }';
+              theVrml[2] = theVrml[0] + theVrml[1];
+              nuChilb = Browser.createVrmlFromString(theVrml[2]);
+              } // end fn
+            " # end url
+        } # end script
+      ] # end children
+    } # end transform
+  } # end proto

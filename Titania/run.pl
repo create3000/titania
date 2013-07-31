@@ -19,7 +19,7 @@ if ($min > 15 and $min < 20)
 
 $ENV {XDG_DATA_DIRS} = "/home/holger/Projekte/Titania/Titania/share:/home/holger/Projekte/Titania/libtitania-x3d/share:$ENV{XDG_DATA_DIRS}";
 
-system "./titania", "file:///home/holger/Arbeitsfl%C3%A4che/events/world.wrl";
+system "./titania";
 
 if (-d "/home/holger/.config/Titania.O")
 {

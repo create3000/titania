@@ -1,0 +1,285 @@
+#VRML V2.0 utf8
+PROTO SYNC
+    [
+    field MFString name [ "node" ]
+    eventIn SFNode arrive
+    eventOut SFNode depart
+    field SFTime delay1 0.010 # delay before starting timer
+    field SFTime delay2 0.001 # timer cycle interval
+    ]
+  {
+  Transform
+    {
+    children
+      [
+      DEF theTimer TimeSensor { cycleInterval IS delay2 }
+      DEF syncScript Script
+        {
+        directOutput TRUE
+        field MFString name IS name
+        eventIn SFNode arrive IS arrive
+        eventOut SFNode depart IS depart
+
+        field SFNode theTimer USE theTimer
+
+        eventIn SFBool isActive
+#       eventIn SFTime cycleTime
+#       eventIn SFFloat fraction_changed
+#       eventIn SFTime time
+
+        field MFNode queue [ ]
+        field MFInt32 inuse [ ]
+        field MFTime timeq [ ]
+        field SFInt32 maxqsiz 0
+
+#       field SFInt32 fcount 0
+        field SFInt32 safetyCount 0
+        field SFInt32 safetyMax   11
+        field SFTime delay1 IS delay1 # til timer starts
+        field SFTime delay2 IS delay2 # timer cycle interval
+        field SFBool vbose FALSE
+
+        url "javascript:
+
+            /**** 000209-10
+
+              Change the protocol because of problem with Cosmo plug-in.  If
+              times are too close together for the machine, then blaxxun will
+              give the isActive 1 and the isActive 0 events, in the right
+              order, and with the same VRMl time stamp.  In similar
+              circumstance, Cosmo gives isActive 1 event, but no isActive 0
+              event!  Due to this, use isActive 1 event and discard isActive 0
+              event.
+
+              BUT must be careful with this new strategy:
+
+                *  set_startTime events to an active tdn are IGNORED
+                   (see above and cb.318).
+
+              so cannot set_startTime while a timer is running.  Old strategy
+              used falling edge of isActive, so this was not a problem.  But
+              new approach uses rising edge of isActive.  Timer is just
+              starting to run.  True, delay2 is short, typically 0.01 sec, so
+              the likelihood of problem is low, but we would like it to be
+              excluded by construction.
+
+              When a mover leaves a sync, he is either the only mover in the
+              sync queue, or there are other movers in the sync queue.
+
+              If he is the only mover, then he does not schedule the timer.  If
+              there are other movers in the sync queue, then he does schedule
+              the timer.  The rising edge of isActive then generates an event
+              delay1 seconds later (typically 10 msec), which is faster than
+              can be supported on any pc i have used.  In udda wor, the event
+              occurs as quickly as the machine can execute it, and the only
+              evidence of delay is the advance of vrml time stamp, which is the
+              reason for the existence of the sync node.
+
+              When mover departure does schedule the timer, it is because there
+              is at least 1 mover in sync queue.  If no mover arrives at the
+              sync until the timer expires, then no problem.
+
+              If some mover does arrive at the sync while the timer is active,
+              then the new mover is enqueued and the timer is not scheduled.
+
+              Hence all works as required and we can use rising edge of
+              isActive in order to accommodate Cosmo.
+
+            ****/
+
+
+
+
+
+            function initialize()
+              {
+              print('SYNC '+name+' init');
+              if(true) print('  delay1: '+delay1+' delay2: '+delay2);
+              } // end fn
+
+
+
+
+
+            function arrive(mover, ts)
+              {
+              print('SYNC arrive, mover'+mover.name+', ts: '+ts);
+
+              evt = mover.evtAvail;
+              if(evt != null)
+                {
+                obj = evt.objAvail;
+                if (obj != null)
+                  {
+                  val = obj.valueOut;
+                  if(vbose) print('  with EVT obj val: '+val);
+                  }
+                else
+                  print('**** obj null ****');
+                }
+              else
+                print('**** evt null ****');
+
+              qsiz = queue.length;
+              pending = false;
+              for (ii=0; ii < qsiz; ii++)
+                if (inuse[ii] == 1) { pending = true; break; }
+
+              // Enqueue movers who arrive while alarm is pending
+              // but such movers do NOT schedule the timer
+              // Timer is scheduled iff sync q was empty when mover arrived
+
+              if (pending)
+                {
+                print('------- NOTE: ALARM PENDING -------');
+                if(false)
+                  for (ii=0; ii < qsiz; ii++)
+                    {
+                    print('  '+ii+'. ['+queue[ii].name+', '+timeq[ii]+', '+inuse[ii]+']');
+                    }
+                }
+              else
+                {
+//              fcount = 0;
+                theTimer.startTime = ts + delay1;
+                }
+
+              vacant = -1;
+              for (ii=0; ii < qsiz; ii++)
+                {
+                if (inuse[ii] > 0) continue;
+                vacant = ii;
+                break;
+                }
+              if (vacant != -1)
+                cursor = vacant;
+              else
+                cursor = qsiz;
+
+              print('mover'+mover.name+' inserted at cursor: '+cursor);
+              queue[cursor] = mover;
+              inuse[cursor] = 1;
+              timeq[cursor] = ts;
+
+              qsiz = queue.length;
+              if (qsiz > maxqsiz) maxqsiz = qsiz;
+
+              } // end fn
+
+            // DISCRETE (cb.318):
+
+
+
+
+            function isActive(abool, ts)
+              {
+              // cb.317: becomes TRUE when TimeSensor begins running and FALSE
+              // when it stops running.
+              print('SYNC '+name+' isActive '+abool+', ts: '+ts);
+              if ( ! abool) return; // see notes, use rising edge of isActive
+              print('======= ALARM CLOCK RINGS =======');
+//            print('fcount: '+fcount);
+              qsiz = queue.length;
+              if (qsiz > maxqsiz) maxqsiz = qsiz;
+              print('maxqsiz: '+maxqsiz);
+              if (qsiz < 1)
+                {
+                print('******* ERROR: SYNC QUEUE EMPTY! *******');
+                return;
+                }
+              cursor = -1;
+              for (ii=0; ii < qsiz; ii++)
+                {
+                if (inuse[ii] == 0) continue; // no, vacant
+                timei = timeq[ii];
+                if (cursor < 0 || timei < mints) // relies on L2r eval
+                  {
+                  mints = timei;
+                  cursor = ii;
+                  }
+                }
+              depart = queue[cursor];
+              inuse[cursor] = 0; // now vacant
+
+              // decide whether to propagate the chain
+
+              propagate = false;
+              for (ii=0; ii < qsiz; ii++)
+                {
+                if (inuse[ii] != 0)
+                  {
+                  print('qsiz: '+qsiz+', propagate due to:');
+                  print('  '+ii+'. ['+queue[ii].name+', '+timeq[ii]+', '+inuse[ii]+']');
+                  propagate = true;
+                  break;
+                  }
+                }
+
+              if(false)
+                {
+                print('Queue contents:');
+                for (ii=0; ii < qsiz; ii++)
+                  {
+                  print('  '+ii+'. ['+queue[ii].name+', '+timeq[ii]+', '+inuse[ii]+']');
+                  }
+                }
+
+              if (++safetyCount > safetyMax)
+                {
+                propagate = false;
+                print('SHUTDOWN DUE TO SAFETYCOUNT > SAFETYMAX');
+                }
+
+              if ( ! propagate) return;
+
+//            fcount = 0;
+              theTimer.startTime = ts + delay1;
+
+              } // end fn
+
+/**** uncomment to experiment with dif's in bhvr btwn blaxxun and cosmo
+
+            function cycleTime(atime, ts)
+              {
+              // cb.317: a time event at startTime and at the beginning of each
+              // new cycle.
+              print('SYNC cycleTime, time: '+atime+', ts: '+ts);
+              print('fcount: '+fcount);
+              } // end fn
+
+            // CONTINUOUS (cb.318):
+
+            function fraction_changed(afloat, ts)
+              {
+              // cb.317: an SFFloat in the closed interval [0,1] representing
+              // the completed fraction of the current cycle.
+              fcount++;
+              if (fcount < 4)
+                {
+                print('SYNC fraction_changed, float: '+afloat+', ts: '+ts);
+                print('fcount: '+fcount);
+                }
+              } // end fn
+
+            function time(atime, ts)
+              {
+              // cb.317: an SFTime event specifying the absolute time for a
+              // given simulation tick (what simulation?)
+              if (fcount < 4)
+                {
+                print('SYNC time, time: '+atime+', ts: '+ts);
+                print('fcount: '+fcount);
+                }
+              } // end fn
+****/
+            " # end url
+        } # end script
+      ] # end children
+    } # end transform
+
+# ROUTE theTimer.cycleTime        TO syncScript.cycleTime        # SFTime
+# ROUTE theTimer.fraction_changed TO syncScript.fraction_changed # SFFloat
+  ROUTE theTimer.isActive         TO syncScript.isActive         # SFBool
+# ROUTE theTimer.time             TO syncScript.time             # SFTime
+
+  } # end proto

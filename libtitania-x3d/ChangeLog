@@ -1,5 +1,18 @@
 2013-07-31  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* SFVec3.h:
+	* SFVec2.h:
+	* SFVec4.h:
+	* Parser.cpp:
+	* SFMatrix4.h:
+	* SFMatrix3.h:
+	* SFRotation4.h:
+	* X3DBaseNode.cpp:
+	* X3DArrayField.h:
+	* X3DSoundSourceNode.cpp: 
+
+2013-07-31  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Parser.cpp:
 	* X3DBaseNode.cpp: 
 

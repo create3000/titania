@@ -2287,6 +2287,16 @@
     <None Include="Examples\Terrain\index.wrl" />
     <None Include="Tests\Scripting\Normal.wrl" />
     <None Include="Tests\PROTO\References.wrl" />
+    <None Include="Tests\PROTO\events\blaxxun.log" />
+    <None Include="Tests\PROTO\events\boolnode.wrl" />
+    <None Include="Tests\PROTO\events\cosmo.log" />
+    <None Include="Tests\PROTO\events\efactory.wrl" />
+    <None Include="Tests\PROTO\events\forms.wrl" />
+    <None Include="Tests\PROTO\events\label.wrl" />
+    <None Include="Tests\PROTO\events\mfactory.wrl" />
+    <None Include="Tests\PROTO\events\readme.txt" />
+    <None Include="Tests\PROTO\events\sync.wrl" />
+    <None Include="Tests\PROTO\events\world.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
@@ -2408,6 +2418,7 @@
     <Folder Include="Tests\Handles\" />
     <Folder Include="Examples\Terrain\" />
     <Folder Include="Examples\Terrain\stage\" />
+    <Folder Include="Tests\PROTO\events\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Navigation\Rotor.wrl" />

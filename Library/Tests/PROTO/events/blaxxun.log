@@ -1,0 +1,110 @@
+=====================================
+MFACTORY 0.4 running under
+  VRML plug-in: blaxxunCC3D 4.200
+  mfactory1 initialized
+EFACTORY 0.4 efactory1
+SYNC node init
+  delay1: 0.01 delay2: 0.001
+mfactory1 genMvr
+  0 alrdy gen-d
+ignore 1st
+mfactory1 genMvr
+  0 alrdy gen-d
+  s/n 101
+mvrScript =101 setViz: BLUEMAN{ }
+  EVT exist but not set yet
+EFACTORY efactory1 doorbell: =101
+mvrScript =101 setEvt: EVT{ }
+vizExist:1
+  vizExist
+theViz:BLUEMAN{ }
+setEvt will add VIZ and/or EVT
+  both EVT & VIZ
+object proto string node: >>>BOOLNODE{ }<<<
+EVT setObj with obj:EVTOBJ{ }
+SYNC arrive, mover=101, ts: 950279884.0091509
+mover=101 inserted at cursor: 0
+leave mover factory genMvr
+BOOLNODE init: 0
+EVT init
+MOVER=101 init
+SYNC node isActive 1, ts: 950279884.3830737
+======= ALARM CLOCK RINGS =======
+maxqsiz: 1
+SYNC node isActive 0, ts: 950279884.3830737
+mfactory1 genMvr
+  1 alrdy gen-d
+  s/n 102
+mvrScript =102 setViz: BLUEMAN{ }
+  EVT exist but not set yet
+EFACTORY efactory1 doorbell: =102
+mvrScript =102 setEvt: EVT{ }
+vizExist:1
+  vizExist
+theViz:BLUEMAN{ }
+setEvt will add VIZ and/or EVT
+  both EVT & VIZ
+object proto string node: >>>BOOLNODE{ }<<<
+EVT setObj with obj:EVTOBJ{ }
+SYNC arrive, mover=102, ts: 950279886.005289
+mover=102 inserted at cursor: 0
+leave mover factory genMvr
+BOOLNODE init: 0
+EVT init
+MOVER=102 init
+SYNC node isActive 1, ts: 950279886.4167794
+======= ALARM CLOCK RINGS =======
+maxqsiz: 1
+SYNC node isActive 0, ts: 950279886.4167794
+mfactory1 genMvr
+  2 alrdy gen-d
+  s/n 103
+mvrScript =103 setViz: BLUEMAN{ }
+  EVT exist but not set yet
+EFACTORY efactory1 doorbell: =103
+mvrScript =103 setEvt: EVT{ }
+vizExist:1
+  vizExist
+theViz:BLUEMAN{ }
+setEvt will add VIZ and/or EVT
+  both EVT & VIZ
+object proto string node: >>>BOOLNODE{ }<<<
+EVT setObj with obj:EVTOBJ{ }
+SYNC arrive, mover=103, ts: 950279888.0188309
+mover=103 inserted at cursor: 0
+leave mover factory genMvr
+BOOLNODE init: 0
+EVT init
+MOVER=103 init
+SYNC node isActive 1, ts: 950279888.4691888
+======= ALARM CLOCK RINGS =======
+maxqsiz: 1
+SYNC node isActive 0, ts: 950279888.4691888
+mfactory1 genMvr
+  3 alrdy gen-d
+  s/n 104
+mvrScript =104 setViz: BLUEMAN{ }
+  EVT exist but not set yet
+EFACTORY efactory1 doorbell: =104
+mvrScript =104 setEvt: EVT{ }
+vizExist:1
+  vizExist
+theViz:BLUEMAN{ }
+setEvt will add VIZ and/or EVT
+  both EVT & VIZ
+object proto string node: >>>BOOLNODE{ }<<<
+EVT setObj with obj:EVTOBJ{ }
+SYNC arrive, mover=104, ts: 950279890.0212102
+mover=104 inserted at cursor: 0
+leave mover factory genMvr
+BOOLNODE init: 0
+EVT init
+MOVER=104 init
+SYNC node isActive 1, ts: 950279890.4314427
+======= ALARM CLOCK RINGS =======
+maxqsiz: 1
+SYNC node isActive 0, ts: 950279890.4314427
+mfactory1 genMvr
+  4 alrdy gen-d
+stop src clok after gen-ing 4 MOVERS
+with final s/n 104

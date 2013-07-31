@@ -3,8 +3,10 @@
 META "title" "PROTO References"
 
 PROTO References [
-  eventIn SFBool set_loop
-  field   SFBool loop FALSE
+  eventIn  SFBool   set_loop
+  eventOut SFBool   loop_changed
+  field    SFBool   loop FALSE
+  eventIn  MFString set_url
 ]
 {
   TimeSensor {
@@ -13,18 +15,27 @@ PROTO References [
   }
 
   DEF References Script {
-    exposedField SFBool loop1 IS set_loop
-    exposedField SFBool loop1 IS loop
-    exposedField SFBool loop2 IS set_loop
-    exposedField SFBool loop2 IS loop
-    exposedField SFBool loop3 IS set_loop
-    exposedField SFBool loop3 TRUE
+    exposedField SFBool   loop1 IS set_loop
+    exposedField SFBool   loop1 IS loop_changed
+    exposedField SFBool   loop1 IS loop
+    exposedField SFBool   loop2 IS set_loop
+    exposedField SFBool   loop2 IS loop_changed
+    exposedField SFBool   loop2 IS loop
+    exposedField SFBool   loop3 IS set_loop
+    exposedField SFBool   loop3 IS loop_changed
+    exposedField SFBool   loop3 TRUE
+    eventIn      MFString set_url IS set_url
 
     url "vrmlscript:
 
-function initialize()
+function initialize ()
 {
 	eventsProcessed ();
+}
+
+function set_url (value)
+{
+	print (value);
 }
 
 function eventsProcessed ()
@@ -42,4 +53,16 @@ function eventsProcessed ()
 
 References {
   loop TRUE
+}
+
+DEF References Script {
+  eventIn SFTime set_url
+
+  url "vrmlscript:
+
+function set_url (value)
+{
+	print (value);
+}
+"
 }

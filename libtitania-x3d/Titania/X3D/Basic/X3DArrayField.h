@@ -80,6 +80,7 @@ public:
 	typedef typename value_type::size_type       size_type;
 
 	using X3DField <value_type>::addInterest;
+	using X3DField <value_type>::addEvent;
 	using X3DField <value_type>::getType;
 	using X3DField <value_type>::getValue;
 	using X3DField <value_type>::operator =;
@@ -397,8 +398,6 @@ protected:
 
 
 private:
-
-	using X3DField <value_type>::addEvent;
 
 	void
 	addChildren (typename iterator::iterator_type,

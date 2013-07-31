@@ -1,0 +1,77 @@
+#VRML V2.0 utf8
+PROTO BLUEMAN
+    [
+    field SFVec3f toledo 1 1 1
+    ]
+  {
+  Transform
+    {
+    scale IS toledo
+    children
+      [
+      Transform
+        {
+        translation 0 1 0
+        children Shape
+          {
+          appearance Appearance
+            {
+            material DEF Skin Material
+              {
+              ambientIntensity 0.242105
+              diffuseColor     0.22 0.32 0.77
+              specularColor    0.11 0.22 0.77
+              emissiveColor    0.11 0.22 0.55
+              shininess        0.22
+              transparency     0.11
+              }
+            }
+          geometry Cylinder
+            {
+            radius 0.33
+            height 1.7
+            }
+          }
+        } # end transform
+
+      Transform
+        {
+        translation -3.72529e-009 2.10732 -1.48452e-007
+        scale       2.13862 2.13862 2.13862
+        children
+          Shape
+            {
+            appearance Appearance { material USE Skin }
+            geometry Sphere { radius 0.12 }
+            }
+        } # end transform
+
+      Transform
+        {
+        translation 0.422919 1.39515 0
+        children Shape
+          {
+          appearance Appearance { material USE Skin }
+          geometry DEF Arm Cylinder
+            {
+            radius 0.1
+            height 0.9
+            }
+          }
+        } # end transform
+
+      Transform
+        {
+        translation -0.422572 1.39767 0
+        children
+          Shape
+            {
+            appearance Appearance { material USE Skin }
+            geometry USE Arm
+            }
+        } # end transform
+
+      ] # end children
+    } # end transform
+
+  } # end proto
