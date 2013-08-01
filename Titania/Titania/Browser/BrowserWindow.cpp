@@ -130,14 +130,15 @@ BrowserWindow::initialize ()
 
 	getSurfaceBox () .drag_dest_set (targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
 	
-	// Toolbar
-	getViewerButton () .set_menu (getViewerTypeMenu ());
+	// Dashboard
+	getBrowser () -> getBrowserOptions () -> dashboard () .addInterest (this, &BrowserWindow::set_dashboard);
 	getBrowser () -> getViewer ()        .addInterest (this, &BrowserWindow::set_viewer);
 	getBrowser () -> getExamineViewer () .addInterest (this, &BrowserWindow::set_examine_viewer);
 	getBrowser () -> getWalkViewer ()    .addInterest (this, &BrowserWindow::set_walk_viewer);
 	getBrowser () -> getFlyViewer ()     .addInterest (this, &BrowserWindow::set_fly_viewer);
 	getBrowser () -> getNoneViewer ()    .addInterest (this, &BrowserWindow::set_none_viewer);
 	getBrowser () -> getLookAt ()        .addInterest (this, &BrowserWindow::set_look_at);
+	getViewerButton () .set_menu (getViewerTypeMenu ());
 
 	// Window
 	getWindow () .grab_focus ();
@@ -436,7 +437,13 @@ BrowserWindow::on_standard_size ()
 	getWindow () .resize (960, 600);
 }
 
-// Browser toolbar handling
+// Browser dashboard handling
+
+void
+BrowserWindow::set_dashboard (const bool & value)
+{
+	getDashboard () .set_visible (value);
+}
 
 void
 BrowserWindow::on_hand_button_toggled ()

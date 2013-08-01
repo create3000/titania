@@ -262,6 +262,50 @@
       </object>
     </child>
   </object>
+  <object class="GtkMenu" id="ViewerTypeMenu">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkImageMenuItem" id="ExamineViewerMenuItem">
+        <property name="label" translatable="yes">Examine Viewer</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">image7</property>
+        <property name="use_stock">False</property>
+        <signal name="activate" handler="on_examine_viewer_activate" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="WalkViewerMenuItem">
+        <property name="label" translatable="yes">Walk Viewer</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">image6</property>
+        <property name="use_stock">False</property>
+        <signal name="activate" handler="on_walk_viewer_activate" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="FlyViewerMenuItem">
+        <property name="label" translatable="yes">Fly Viewer</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">image5</property>
+        <property name="use_stock">False</property>
+        <signal name="activate" handler="on_fly_viewer_activate" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="NoneViewerMenuItem">
+        <property name="label" translatable="yes">None Viewer</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">image8</property>
+        <property name="use_stock">False</property>
+        <signal name="activate" handler="on_none_viewer_activate" swapped="no"/>
+      </object>
+    </child>
+  </object>
   <object class="GtkWindow" id="Window">
     <property name="width_request">1000</property>
     <property name="height_request">618</property>
@@ -888,7 +932,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkBox" id="box2">
+                          <object class="GtkBox" id="Dashboard">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="orientation">vertical</property>
@@ -1290,49 +1334,5 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-cancel</property>
-  </object>
-  <object class="GtkMenu" id="ViewerTypeMenu">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <child>
-      <object class="GtkImageMenuItem" id="ExamineViewerMenuItem">
-        <property name="label" translatable="yes">Examine Viewer</property>
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="image">image7</property>
-        <property name="use_stock">False</property>
-        <signal name="activate" handler="on_examine_viewer_activate" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="WalkViewerMenuItem">
-        <property name="label" translatable="yes">Walk Viewer</property>
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="image">image6</property>
-        <property name="use_stock">False</property>
-        <signal name="activate" handler="on_walk_viewer_activate" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="FlyViewerMenuItem">
-        <property name="label" translatable="yes">Fly Viewer</property>
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="image">image5</property>
-        <property name="use_stock">False</property>
-        <signal name="activate" handler="on_fly_viewer_activate" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="NoneViewerMenuItem">
-        <property name="label" translatable="yes">None Viewer</property>
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="image">image8</property>
-        <property name="use_stock">False</property>
-        <signal name="activate" handler="on_none_viewer_activate" swapped="no"/>
-      </object>
-    </child>
   </object>
 </interface>

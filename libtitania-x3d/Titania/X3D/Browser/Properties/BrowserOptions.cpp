@@ -63,7 +63,7 @@ extern "C"
 namespace titania {
 namespace X3D {
 
-// Table 9.2 � Browser options
+// Table 9.2 — Browser options
 // Name                    Type/valid range                         Default                      Description
 // SplashScreen            Boolean                                  Implementation-dependent     Display browser splash screen on startup
 // Dashboard               Boolean                                  False                        Specified by bound NavigationInfo in content. Display browser navigation user interface.
@@ -80,8 +80,8 @@ namespace X3D {
 // Gravity                 Number                                   g                            Gravitational acceleration. The standard value is the acceleration of the earth.
 
 BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
-	splashScreen (new SFBool (false)),
-	dashboard (new SFBool ()),
+	splashScreen (new SFBool ()),
+	dashboard (new SFBool (true)),
 	rubberBand (new SFBool (true)),
 	enableInlineViewpoints (new SFBool (true)),
 	antialiased (new SFBool ()),

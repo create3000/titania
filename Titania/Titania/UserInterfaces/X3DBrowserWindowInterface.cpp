@@ -86,6 +86,16 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_openLocationDialog -> set_name ("OpenLocationDialog");
 	m_builder -> get_widget ("OpenLocationEntry", m_openLocationEntry);
 	m_openLocationEntry -> set_name ("OpenLocationEntry");
+	m_builder -> get_widget ("ViewerTypeMenu", m_viewerTypeMenu);
+	m_viewerTypeMenu -> set_name ("ViewerTypeMenu");
+	m_builder -> get_widget ("ExamineViewerMenuItem", m_examineViewerMenuItem);
+	m_examineViewerMenuItem -> set_name ("ExamineViewerMenuItem");
+	m_builder -> get_widget ("WalkViewerMenuItem", m_walkViewerMenuItem);
+	m_walkViewerMenuItem -> set_name ("WalkViewerMenuItem");
+	m_builder -> get_widget ("FlyViewerMenuItem", m_flyViewerMenuItem);
+	m_flyViewerMenuItem -> set_name ("FlyViewerMenuItem");
+	m_builder -> get_widget ("NoneViewerMenuItem", m_noneViewerMenuItem);
+	m_noneViewerMenuItem -> set_name ("NoneViewerMenuItem");
 	m_builder -> get_widget ("Window", m_window);
 	m_window -> set_name ("Window");
 	m_builder -> get_widget ("Widget", m_widget);
@@ -178,6 +188,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_hPaned -> set_name ("HPaned");
 	m_builder -> get_widget ("SurfaceBox", m_surfaceBox);
 	m_surfaceBox -> set_name ("SurfaceBox");
+	m_builder -> get_widget ("Dashboard", m_dashboard);
+	m_dashboard -> set_name ("Dashboard");
 	m_builder -> get_widget ("HandButton", m_handButton);
 	m_handButton -> set_name ("HandButton");
 	m_builder -> get_widget ("ArrowButton", m_arrowButton);
@@ -208,16 +220,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_viewpointEditorBox -> set_name ("ViewpointEditorBox");
 	m_builder -> get_widget ("OutlineEditorBox", m_outlineEditorBox);
 	m_outlineEditorBox -> set_name ("OutlineEditorBox");
-	m_builder -> get_widget ("ViewerTypeMenu", m_viewerTypeMenu);
-	m_viewerTypeMenu -> set_name ("ViewerTypeMenu");
-	m_builder -> get_widget ("ExamineViewerMenuItem", m_examineViewerMenuItem);
-	m_examineViewerMenuItem -> set_name ("ExamineViewerMenuItem");
-	m_builder -> get_widget ("WalkViewerMenuItem", m_walkViewerMenuItem);
-	m_walkViewerMenuItem -> set_name ("WalkViewerMenuItem");
-	m_builder -> get_widget ("FlyViewerMenuItem", m_flyViewerMenuItem);
-	m_flyViewerMenuItem -> set_name ("FlyViewerMenuItem");
-	m_builder -> get_widget ("NoneViewerMenuItem", m_noneViewerMenuItem);
-	m_noneViewerMenuItem -> set_name ("NoneViewerMenuItem");
 
 	// Connect object Gtk::Action with id 'NewAction'.
 	connections .emplace_back (m_newAction -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_new)));
@@ -237,6 +239,12 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 
 	// Connect object Gtk::Entry with id 'OpenLocationEntry'.
 	connections .emplace_back (m_openLocationEntry -> signal_key_release_event () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_openLocationEntry_key_release_event)));
+
+	// Connect object Gtk::ImageMenuItem with id 'ExamineViewerMenuItem'.
+	connections .emplace_back (m_examineViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_examine_viewer_activate)));
+	connections .emplace_back (m_walkViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_walk_viewer_activate)));
+	connections .emplace_back (m_flyViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_fly_viewer_activate)));
+	connections .emplace_back (m_noneViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_none_viewer_activate)));
 
 	// Connect object Gtk::Window with id 'Window'.
 	connections .emplace_back (m_window -> signal_key_release_event () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_key_release_event)));
@@ -296,12 +304,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 
 	// Connect object Gtk::ToggleToolButton with id 'LookAtButton'.
 	connections .emplace_back (m_lookAtButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_look_at_toggled)));
-
-	// Connect object Gtk::ImageMenuItem with id 'ExamineViewerMenuItem'.
-	connections .emplace_back (m_examineViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_examine_viewer_activate)));
-	connections .emplace_back (m_walkViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_walk_viewer_activate)));
-	connections .emplace_back (m_flyViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_fly_viewer_activate)));
-	connections .emplace_back (m_noneViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_none_viewer_activate)));
 
 	// Call construct handler of base class.
 	construct ();

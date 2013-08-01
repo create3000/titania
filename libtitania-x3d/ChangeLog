@@ -1,5 +1,9 @@
 2013-08-01  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* BrowserOptions.cpp: 
+
+2013-08-01  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Browser.h:
 	* Browser.cpp:
 	* X3DRenderer.cpp:

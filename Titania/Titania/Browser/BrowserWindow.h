@@ -254,8 +254,11 @@ private:
 	void
 	on_standard_size () final;
 
-	///  @name Browser toolbar handling
+	///  @name Browser dashboard handling
 
+	void
+	set_dashboard (const bool &);
+	
 	virtual
 	void
 	on_hand_button_toggled () final;
