@@ -82,6 +82,12 @@ X3DBrowserContext::X3DBrowserContext () :
 	        textureUnits (),
 	         activeLayer (),
 	activeNavigationInfo (),
+	              viewer (ViewerType::NONE),
+	       examineViewer (),
+	          walkViewer (),
+	           flyViewer (),
+	          noneViewer (),
+	              lookAt (),
 	     activeViewpoint (),
 	                   x (0),
 	                   y (0),
@@ -104,6 +110,12 @@ X3DBrowserContext::X3DBrowserContext () :
 	             javaScriptEngine,
 	             activeLayer,
 	             activeNavigationInfo,
+	             viewer,
+	             examineViewer,
+	             walkViewer,
+	             flyViewer,
+	             noneViewer,
+	             lookAt,
 	             activeViewpoint,
 	             overSensors,
 	             activeSensors,
@@ -287,41 +299,78 @@ X3DBrowserContext::set_navigationInfo_type ()
 		{
 			if (type == "NONE")
 			{
-				setViewer (ViewerType::NONE, nullptr);
+				viewer = ViewerType::NONE;
 				goto END;
 			}
-
 			else if (type == "WALK")
 			{
-				setViewer (ViewerType::WALK, activeNavigationInfo);
+				viewer = ViewerType::WALK;
 				goto END;
 			}
-
 			else if (type == "FLY")
 			{
-				setViewer (ViewerType::FLY, activeNavigationInfo);
+				viewer = ViewerType::FLY;
 				goto END;
 			}
-
 			else if (type == "LOOKAT")
-			{ }
-
+				;
 			else if (type == "ANY")
-			{ }
-
+				;
 			else
 			{
-				setViewer (ViewerType::EXAMINE, activeNavigationInfo);
+				viewer = ViewerType::EXAMINE;
 				goto END;
 			}
 		}
 
-		setViewer (ViewerType::EXAMINE, activeNavigationInfo);
+		viewer = ViewerType::EXAMINE;
 
 END:;
+
+		examineViewer = activeNavigationInfo -> type () .empty ();
+		walkViewer    = false;
+		flyViewer     = false;
+		noneViewer    = false;
+		lookAt        = false;
+
+		for (const auto & type : activeNavigationInfo -> type ())
+		{
+			if (type == "NONE")
+				noneViewer = true;
+
+			else if (type == "EXAMINE")
+				examineViewer = true;
+
+			else if (type == "WALK")
+				walkViewer = true;
+
+			else if (type == "FLY")
+				flyViewer = true;
+
+			else if (type == "LOOKAT")
+				lookAt = true;
+
+			else if (type == "ANY")
+			{
+				examineViewer = true;
+				walkViewer    = true;
+				flyViewer     = true;
+				lookAt        = true;
+				noneViewer    = true;
+			}
+			else
+				examineViewer = true;
+		}
 	}
 	else
-		setViewer (ViewerType::NONE, nullptr);
+	{
+		viewer        = ViewerType::NONE;
+		examineViewer = false;
+		walkViewer    = false;
+		flyViewer     = false;
+		noneViewer    = false;
+		lookAt        = false;
+	}
 }
 
 // Selection

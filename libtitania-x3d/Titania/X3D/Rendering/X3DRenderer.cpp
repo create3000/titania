@@ -505,7 +505,7 @@ X3DRenderer::gravite ()
 {
 	// Terrain following and gravitation
 
-	if (getBrowser () -> getViewerType () not_eq ViewerType::WALK)
+	if (getBrowser () -> getViewer () not_eq ViewerType::WALK)
 		return;
 
 	// Bind buffer

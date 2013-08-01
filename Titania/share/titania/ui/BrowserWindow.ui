@@ -39,16 +39,18 @@
   </object>
   <object class="GtkIconFactory" id="IconFactory">
     <sources>
-      <source stock-id="Icon" filename="icons/icon.svg"/>
       <source stock-id="BlankIcon" filename="icons/blank-icon.svg"/>
+      <source stock-id="FlyViewer" filename="icons/fly-viewer.svg"/>
       <source stock-id="IconBlackWhite" filename="icons/icon-bw.svg"/>
+      <source stock-id="WalkViewer" filename="icons/walk-viewer.svg"/>
+      <source stock-id="Icon" filename="icons/icon.svg"/>
       <source stock-id="OutlineEditor" filename="icons/OutlineEditor.png"/>
       <source stock-id="ViewpointEditor" filename="icons/ViewpointEditor.png"/>
-      <source stock-id="Arrow" filename="icons/arrow.png"/>
+      <source stock-id="ExamineViewer" filename="icons/examine-viewer.svg"/>
       <source stock-id="Hand" filename="icons/hand.png"/>
+      <source stock-id="Arrow" filename="icons/arrow.png"/>
     </sources>
   </object>
-  <object class="GtkAccelGroup" id="MenuAccelGroup"/>
   <object class="GtkAction" id="NewAction">
     <signal name="activate" handler="on_new" swapped="no"/>
   </object>
@@ -155,6 +157,7 @@
       </object>
     </child>
   </object>
+  <object class="GtkAccelGroup" id="MenuAccelGroup"/>
   <object class="GtkMessageDialog" id="MessageDialog">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
@@ -796,7 +799,6 @@
               </object>
               <packing>
                 <property name="expand">False</property>
-                <property name="homogeneous">True</property>
               </packing>
             </child>
             <child>
@@ -825,7 +827,6 @@
               </object>
               <packing>
                 <property name="expand">False</property>
-                <property name="homogeneous">True</property>
               </packing>
             </child>
             <child>
@@ -840,7 +841,6 @@
               </object>
               <packing>
                 <property name="expand">False</property>
-                <property name="homogeneous">True</property>
               </packing>
             </child>
           </object>
@@ -902,7 +902,7 @@
                                   <object class="GtkRadioToolButton" id="HandButton">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="label" translatable="yes">toolbutton6</property>
+                                    <property name="label" translatable="yes">Hand Tool</property>
                                     <property name="use_underline">True</property>
                                     <property name="stock_id">Hand</property>
                                     <property name="active">True</property>
@@ -910,13 +910,12 @@
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
-                                    <property name="homogeneous">True</property>
                                   </packing>
                                 </child>
                                 <child>
                                   <object class="GtkRadioToolButton" id="ArrowButton">
                                     <property name="can_focus">False</property>
-                                    <property name="label" translatable="yes">toolbutton2</property>
+                                    <property name="label" translatable="yes">Arrow Tool</property>
                                     <property name="use_underline">True</property>
                                     <property name="stock_id">Arrow</property>
                                     <property name="group">HandButton</property>
@@ -924,7 +923,28 @@
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
-                                    <property name="homogeneous">True</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkSeparatorToolItem" id="separatortoolitem1">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkMenuToolButton" id="ViewerButton">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="events">GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_STRUCTURE_MASK</property>
+                                    <property name="label" translatable="yes">Viewer Type</property>
+                                    <property name="use_underline">True</property>
+                                    <property name="stock_id">ExamineViewer</property>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -950,7 +970,6 @@
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
-                                    <property name="homogeneous">True</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -966,7 +985,6 @@
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
-                                    <property name="homogeneous">True</property>
                                   </packing>
                                 </child>
                               </object>
@@ -1250,6 +1268,70 @@
             <property name="position">2</property>
           </packing>
         </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkImage" id="image5">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">FlyViewer</property>
+  </object>
+  <object class="GtkImage" id="image6">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">WalkViewer</property>
+  </object>
+  <object class="GtkImage" id="image7">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">ExamineViewer</property>
+  </object>
+  <object class="GtkImage" id="image8">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-cancel</property>
+  </object>
+  <object class="GtkMenu" id="ViewerTypeMenu">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkImageMenuItem" id="ExamineViewerMenuItem">
+        <property name="label" translatable="yes">Examine Viewer</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">image7</property>
+        <property name="use_stock">False</property>
+        <signal name="activate" handler="on_examine_viewer_activate" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="WalkViewerMenuItem">
+        <property name="label" translatable="yes">Walk Viewer</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">image6</property>
+        <property name="use_stock">False</property>
+        <signal name="activate" handler="on_walk_viewer_activate" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="FlyViewerMenuItem">
+        <property name="label" translatable="yes">Fly Viewer</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">image5</property>
+        <property name="use_stock">False</property>
+        <signal name="activate" handler="on_fly_viewer_activate" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="NoneViewerMenuItem">
+        <property name="label" translatable="yes">None Viewer</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">image8</property>
+        <property name="use_stock">False</property>
+        <signal name="activate" handler="on_none_viewer_activate" swapped="no"/>
       </object>
     </child>
   </object>

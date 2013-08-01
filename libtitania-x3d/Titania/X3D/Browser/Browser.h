@@ -67,11 +67,6 @@ public:
 
 	Browser ();
 
-	virtual
-	ViewerType
-	getViewerType () const final
-	{ return viewer -> getType (); }
-
 	void
 	setCursor (Gdk::CursorType cursor_type)
 	{ get_window () -> set_cursor (Gdk::Cursor::create (cursor_type)); }
@@ -99,9 +94,8 @@ private:
 	void
 	initialize () final;
 
-	virtual
 	void
-	setViewer (ViewerType, NavigationInfo*) final;
+	set_viewer (const X3DScalar <ViewerType> &);
 
 	virtual
 	void

@@ -51,6 +51,8 @@
 #ifndef __TITANIA_BASIC_URI_H__
 #define __TITANIA_BASIC_URI_H__
 
+#include "Path.h"
+
 #include <map>
 #include <sstream>
 #include <stdexcept>
@@ -260,9 +262,8 @@ public:
 	well_known_port () const;
 
 	///  Returns the path of this URI.
-	const string_type &
-	path () const
-	{ return value .path; }
+	string_type
+	path (bool = false) const;
 
 	///  Set the query of this URI.
 	void
@@ -339,7 +340,7 @@ public:
 
 	///  Returns the full basename of this URI.
 	basic_uri
-	filename () const;
+	filename (bool = false) const;
 
 	///  Returns the full basename of this URI.
 	string_type
@@ -366,6 +367,10 @@ private:
 
 	///  Component constructor.
 	basic_uri (Value && value);
+
+	///  Remove dot segments from path.
+	string_type
+	remove_dot_segments (const string_type &) const;
 
 	///  Composes a string from all values.
 	string_type
@@ -562,6 +567,20 @@ basic_uri <StringT>::well_known_port () const
 
 	return 0;
 }
+template <class StringT>
+typename basic_uri <StringT>::string_type
+basic_uri <StringT>::path (bool q) const
+{
+	string_type string = value .path;
+	
+	if (q and query () .length ())
+	{
+		string += Signs::QuestionMark
+		          + query ();
+	}
+
+	return string;
+}
 
 template <class StringT>
 basic_uri <StringT>
@@ -604,7 +623,7 @@ basic_uri <StringT>::transform (const basic_uri & reference) const
 		T_authority = reference .authority ();
 		T_host      = reference .host ();
 		T_port      = reference .port ();
-		T_path      = reference .path ();    // remove_dot_segments(reference .path);
+		T_path      = reference .path ();
 		T_query     = reference .query ();
 	}
 	else
@@ -616,7 +635,7 @@ basic_uri <StringT>::transform (const basic_uri & reference) const
 			T_authority = reference .authority ();
 			T_host      = reference .host ();
 			T_port      = reference .port ();
-			T_path      = reference .path (); // remove_doT_segments(reference .path);
+			T_path      = reference .path ();
 			T_query     = reference .query ();
 		}
 		else
@@ -634,7 +653,7 @@ basic_uri <StringT>::transform (const basic_uri & reference) const
 			{
 				if (reference .path () .front () == Signs::Slash)
 				{
-					T_path = reference .path (); // remove_dot_segments (reference .path ());
+					T_path = reference .path ();
 				}
 				else
 				{
@@ -648,8 +667,6 @@ basic_uri <StringT>::transform (const basic_uri & reference) const
 						T_path += Base .path ();
 
 					T_path += reference .path ();
-
-					// T_path = remove_dot_segments (T_path);
 				}
 
 				T_query = reference .query ();
@@ -675,9 +692,16 @@ basic_uri <StringT>::transform (const basic_uri & reference) const
 	                    T_authority,
 	                    T_host,
 	                    T_port,
-	                    T_path,
+	                    remove_dot_segments (T_path),
 	                    T_query,
 	                    T_fragment });
+}
+
+template <class StringT>
+typename basic_uri <StringT>::string_type
+basic_uri <StringT>::remove_dot_segments (const string_type & path) const
+{
+	return basic_path <string_type> (path, string_type (1, Signs::Slash)) .remove_dot_segments () .str ();
 }
 
 template <class StringT>
@@ -725,7 +749,7 @@ basic_uri <StringT>::relative_path (const basic_uri & descendant) const
 
 template <class StringT>
 basic_uri <StringT>
-basic_uri <StringT>::filename () const
+basic_uri <StringT>::filename (bool q) const
 {
 	return basic_uri ({ is_local (),
 	                    is_absolute (),
@@ -734,7 +758,8 @@ basic_uri <StringT>::filename () const
 	                    authority (),
 	                    host (),
 	                    port (),
-	                    path () });
+	                    path (),
+	                    q ? query () : string_type () });
 }
 
 template <class StringT>

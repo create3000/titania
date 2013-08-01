@@ -229,12 +229,9 @@ main (int argc, char** argv)
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
 
-	basic::uri uri ("/home/holger/Videos/Kino/Priscilla - Königin der Wüste.avi");
+	basic::uri path ("http://www.vrinternal.com/monastery/vrml/terrain/xxx.wrl", "../../../lib/models/add_proto.wrl");
 	
-	std::clog << "1: " << uri .basename () << std::endl;
-	std::clog << "2: " << uri .suffix () << std::endl;
-	std::clog << "3: " << uri .basename (uri .suffix ()) << std::endl;
-	std::clog << "4: " << uri .basename (false) << std::endl;
+	std::clog << "1: " << path << std::endl;
 
 	std::clog << "Function main done." << std::endl;
 	exit (0);

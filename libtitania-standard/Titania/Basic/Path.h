@@ -53,12 +53,21 @@
 
 #include "../String/Split.h"
 #include "../Utility/Adapter.h"
+#include "../LOG.h"
 #include <algorithm>
 #include <iterator>
 #include <list>
+#include <sstream>
 
 namespace titania {
 namespace basic {
+
+template <class StringT>
+class basic_path;
+
+template <class StringT, class Traits>
+std::basic_ostream <typename StringT::value_type, Traits> &
+operator << (std::basic_ostream <typename StringT::value_type, Traits> &, const basic_path <StringT> &);
 
 /**
  *  Template to represent paths.
@@ -88,12 +97,12 @@ public:
 	///  @name Constructors
 
 	explicit
-	basic_path (const StringT & separator) :
+	basic_path (const string_type & separator) :
 		std::list <StringT> (),
 		value ({ separator, false, false })
 	{ }
 
-	basic_path (const StringT & path, const StringT & separator);
+	basic_path (const string_type & path, const StringT & separator);
 
 	///  @name Element access
 
@@ -122,6 +131,10 @@ public:
 	basic_path
 	remove_dot_segments () const;
 
+	///  Returns the string representation of this Path.
+	string_type
+	str () const;
+
 
 private:
 
@@ -133,17 +146,17 @@ private:
 	};
 
 	basic_path (const Value & value) :
-		std::list <StringT> (),
+		std::list <string_type> (),
 		value (value)
 	{ }
 
 	basic_path (array_type && array, const Value & value) :
-		std::list <StringT> (array),
+		std::list <string_type> (array),
 		value (value)
 	{ }
 
 	basic_path (const_iterator first, const_iterator last, const Value & value) :
-		std::list <StringT> (first, last),
+		std::list <string_type> (first, last),
 		value (value)
 	{ }
 
@@ -162,7 +175,7 @@ const StringT basic_path <StringT>::dots = "..";
 
 template <class StringT>
 basic_path <StringT>::basic_path (const StringT & path, const StringT & separator) :
-	std::list <StringT> (std::move (basic_split <StringT, std::list> (path, separator))),
+	std::list <string_type> (basic_split <StringT, std::list> (path, separator)),
 	value ({ separator, false, false })
 {
 	if (size ())
@@ -263,10 +276,20 @@ basic_path <StringT>::remove_dot_segments () const
 	return path;
 }
 
+template <class StringT>
+typename basic_path <StringT>::string_type
+basic_path <StringT>::str () const
+{
+	std::basic_ostringstream <char_type> osstream;
+
+	osstream << *this;
+
+	return osstream .str ();
+}
+
 ///  @relates basic_path
 ///  @name Input/Output operations
 
-///@{
 ///  Insertion operator for URI values.
 template <class StringT, class Traits>
 inline
@@ -292,8 +315,6 @@ operator << (std::basic_ostream <typename StringT::value_type, Traits> & ostream
 
 	return ostream;
 }
-
-///@}
 
 typedef basic_path <std::string>  path;
 typedef basic_path <std::wstring> wpath;

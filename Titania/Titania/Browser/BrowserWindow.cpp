@@ -129,6 +129,15 @@ BrowserWindow::initialize ()
 	};
 
 	getSurfaceBox () .drag_dest_set (targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
+	
+	// Toolbar
+	getViewerButton () .set_menu (getViewerTypeMenu ());
+	getBrowser () -> getViewer ()        .addInterest (this, &BrowserWindow::set_viewer);
+	getBrowser () -> getExamineViewer () .addInterest (this, &BrowserWindow::set_examine_viewer);
+	getBrowser () -> getWalkViewer ()    .addInterest (this, &BrowserWindow::set_walk_viewer);
+	getBrowser () -> getFlyViewer ()     .addInterest (this, &BrowserWindow::set_fly_viewer);
+	getBrowser () -> getNoneViewer ()    .addInterest (this, &BrowserWindow::set_none_viewer);
+	getBrowser () -> getLookAt ()        .addInterest (this, &BrowserWindow::set_look_at);
 
 	// Window
 	getWindow () .grab_focus ();
@@ -451,11 +460,99 @@ BrowserWindow::on_arrow_button_toggled ()
 	}
 }
 
+// Viewer
+
+void
+BrowserWindow::set_viewer (const X3D::X3DScalar <X3D::ViewerType> & type)
+{
+	__LOG__ << std::endl;
+	
+	switch (type)
+	{
+		case X3D::ViewerType::NONE:
+		{
+			getViewerButton () .set_stock_id (Gtk::StockID ("gtk-cancel"));
+			break;
+		}
+		case X3D::ViewerType::EXAMINE:
+		{
+			getViewerButton () .set_stock_id (Gtk::StockID ("ExamineViewer"));
+			break;
+		}
+		case X3D::ViewerType::WALK:
+		{
+			getViewerButton () .set_stock_id (Gtk::StockID ("WalkViewer"));
+			break;
+		}
+		case X3D::ViewerType::FLY:
+		{
+			getViewerButton () .set_stock_id (Gtk::StockID ("FlyViewer"));
+			break;
+		}
+	}
+}
+
+void
+BrowserWindow::set_examine_viewer (const bool & value)
+{
+	getExamineViewerMenuItem () .set_visible (value);
+}
+
+void
+BrowserWindow::set_walk_viewer (const bool & value)
+{
+	getWalkViewerMenuItem () .set_visible (value);
+}
+
+void
+BrowserWindow::set_fly_viewer (const bool & value)
+{
+	getFlyViewerMenuItem () .set_visible (value);
+}
+
+void
+BrowserWindow::set_none_viewer (const bool & value)
+{
+	getNoneViewerMenuItem () .set_visible (value);
+}
+
+void
+BrowserWindow::on_examine_viewer_activate ()
+{
+	getBrowser () -> setViewer (X3D::ViewerType::EXAMINE);
+}
+
+void
+BrowserWindow::on_walk_viewer_activate ()
+{
+	getBrowser () -> setViewer (X3D::ViewerType::WALK);
+}
+
+void
+BrowserWindow::on_fly_viewer_activate ()
+{
+	getBrowser () -> setViewer (X3D::ViewerType::FLY);
+}
+
+void
+BrowserWindow::on_none_viewer_activate ()
+{
+	getBrowser () -> setViewer (X3D::ViewerType::NONE);
+}
+
+// Look at
+
 void
 BrowserWindow::on_look_at_all_clicked ()
 {
 	if (getBrowser () -> getActiveLayer ())
 		getBrowser () -> getActiveLayer () -> lookAt ();
+}
+
+void
+BrowserWindow::set_look_at (const bool & value)
+{
+	getLookAtButton () .set_visible (value);
 }
 
 void

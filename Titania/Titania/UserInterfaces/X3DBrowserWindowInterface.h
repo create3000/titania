@@ -73,18 +73,6 @@ public:
 	const std::string &
 	getWidgetName () const { return m_widgetName; }
 
-	const Glib::RefPtr <Gtk::Action> &
-	getNewAction () const { return m_newAction; }
-
-	const Glib::RefPtr <Gtk::Action> &
-	getOpenAction () const { return m_openAction; }
-
-	const Glib::RefPtr <Gtk::Action> &
-	getRevertAction () const { return m_revertAction; }
-
-	const Glib::RefPtr <Gtk::Action> &
-	getSaveAction () const { return m_saveAction; }
-
 	const Glib::RefPtr <Gtk::FileFilter> &
 	getFileFilterAllFiles () const { return m_fileFilterAllFiles; }
 
@@ -102,6 +90,18 @@ public:
 
 	const Glib::RefPtr <Gtk::IconFactory> &
 	getIconFactory () const { return m_iconFactory; }
+
+	const Glib::RefPtr <Gtk::Action> &
+	getNewAction () const { return m_newAction; }
+
+	const Glib::RefPtr <Gtk::Action> &
+	getOpenAction () const { return m_openAction; }
+
+	const Glib::RefPtr <Gtk::Action> &
+	getRevertAction () const { return m_revertAction; }
+
+	const Glib::RefPtr <Gtk::Action> &
+	getSaveAction () const { return m_saveAction; }
 
 	const Glib::RefPtr <Gtk::AccelGroup> &
 	getMenuAccelGroup () const { return m_menuAccelGroup; }
@@ -268,6 +268,9 @@ public:
 	Gtk::RadioToolButton &
 	getArrowButton () const { return *m_arrowButton; }
 
+	Gtk::MenuToolButton &
+	getViewerButton () const { return *m_viewerButton; }
+
 	Gtk::ToolButton &
 	getLookAtAllButton () const { return *m_lookAtAllButton; }
 
@@ -303,6 +306,21 @@ public:
 
 	Gtk::Box &
 	getOutlineEditorBox () const { return *m_outlineEditorBox; }
+
+	Gtk::Menu &
+	getViewerTypeMenu () const { return *m_viewerTypeMenu; }
+
+	Gtk::ImageMenuItem &
+	getExamineViewerMenuItem () const { return *m_examineViewerMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getWalkViewerMenuItem () const { return *m_walkViewerMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getFlyViewerMenuItem () const { return *m_flyViewerMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getNoneViewerMenuItem () const { return *m_noneViewerMenuItem; }
 
 	virtual
 	void
@@ -460,6 +478,22 @@ public:
 	void
 	on_look_at_toggled () = 0;
 
+	virtual
+	void
+	on_examine_viewer_activate () = 0;
+
+	virtual
+	void
+	on_walk_viewer_activate () = 0;
+
+	virtual
+	void
+	on_fly_viewer_activate () = 0;
+
+	virtual
+	void
+	on_none_viewer_activate () = 0;
+
 
 private:
 
@@ -470,16 +504,16 @@ private:
 
 	std::deque <sigc::connection>   connections;
 	Glib::RefPtr <Gtk::Builder>     m_builder;
-	Glib::RefPtr <Gtk::Action>      m_newAction;
-	Glib::RefPtr <Gtk::Action>      m_openAction;
-	Glib::RefPtr <Gtk::Action>      m_revertAction;
-	Glib::RefPtr <Gtk::Action>      m_saveAction;
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterAllFiles;
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterAudio;
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterImage;
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterVideo;
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterX3D;
 	Glib::RefPtr <Gtk::IconFactory> m_iconFactory;
+	Glib::RefPtr <Gtk::Action>      m_newAction;
+	Glib::RefPtr <Gtk::Action>      m_openAction;
+	Glib::RefPtr <Gtk::Action>      m_revertAction;
+	Glib::RefPtr <Gtk::Action>      m_saveAction;
 	Glib::RefPtr <Gtk::AccelGroup>  m_menuAccelGroup;
 	Gtk::FileChooserDialog*         m_fileOpenDialog;
 	Gtk::FileChooserDialog*         m_fileSaveDialog;
@@ -535,6 +569,7 @@ private:
 	Gtk::HBox*                      m_surfaceBox;
 	Gtk::RadioToolButton*           m_handButton;
 	Gtk::RadioToolButton*           m_arrowButton;
+	Gtk::MenuToolButton*            m_viewerButton;
 	Gtk::ToolButton*                m_lookAtAllButton;
 	Gtk::ToggleToolButton*          m_lookAtButton;
 	Gtk::Box*                       m_footer;
@@ -547,6 +582,11 @@ private:
 	Gtk::Box*                       m_historyEditorBox;
 	Gtk::Box*                       m_viewpointEditorBox;
 	Gtk::Box*                       m_outlineEditorBox;
+	Gtk::Menu*                      m_viewerTypeMenu;
+	Gtk::ImageMenuItem*             m_examineViewerMenuItem;
+	Gtk::ImageMenuItem*             m_walkViewerMenuItem;
+	Gtk::ImageMenuItem*             m_flyViewerMenuItem;
+	Gtk::ImageMenuItem*             m_noneViewerMenuItem;
 
 };
 

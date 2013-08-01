@@ -263,10 +263,44 @@ private:
 	virtual
 	void
 	on_arrow_button_toggled () final;
+	
+	void
+	set_viewer (const X3D::X3DScalar <X3D::ViewerType> &);
+
+	void
+	set_examine_viewer (const bool &);
+	
+	void
+	set_walk_viewer (const bool &);
+	
+	void
+	set_fly_viewer (const bool &);
+	
+	void
+	set_none_viewer (const bool &);
+
+	virtual
+	void
+	on_examine_viewer_activate () final;
+
+	virtual
+	void
+	on_walk_viewer_activate () final;
+
+	virtual
+	void
+	on_fly_viewer_activate () final;
+
+	virtual
+	void
+	on_none_viewer_activate () final;
 
 	virtual
 	void
 	on_look_at_all_clicked () final;
+
+	void
+	set_look_at (const bool &);
 
 	virtual
 	void

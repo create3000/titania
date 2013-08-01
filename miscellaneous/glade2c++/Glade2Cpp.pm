@@ -566,3 +566,5 @@ key_release_event
   virtual bool on_key_release_event(GdkEventKey* event);
 drag_data_received
   virtual void on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, const SelectionData& selection_data, guint info, guint time);
+button_release_event
+  virtual bool on_button_release_event(GdkEventButton* event);

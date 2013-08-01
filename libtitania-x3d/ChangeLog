@@ -1,3 +1,12 @@
+2013-08-01  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Browser.h:
+	* Browser.cpp:
+	* X3DRenderer.cpp:
+	* X3DBrowserContext.h:
+	* BrowserApplication.h:
+	* X3DBrowserContext.cpp: 
+
 2013-07-31  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DUrlObject.cpp: 

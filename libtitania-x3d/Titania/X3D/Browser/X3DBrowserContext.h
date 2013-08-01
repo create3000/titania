@@ -154,11 +154,36 @@ public:
 	getLayers ()
 	{ return layers; }
 
-	///  @name Light stack handling
+	///  @name Navigation handling
 
 	virtual
-	ViewerType
-	getViewerType () const = 0;
+	void
+	setViewer (ViewerType value)
+	{ viewer = value; }
+
+	const X3DScalar <ViewerType> &
+	getViewer () const
+	{ return viewer; }
+	
+	const SFBool &
+	getExamineViewer () const
+	{ return examineViewer; }
+	
+	const SFBool &
+	getWalkViewer () const
+	{ return walkViewer; }
+	
+	const SFBool &
+	getFlyViewer () const
+	{ return flyViewer; }
+
+	const SFBool &
+	getNoneViewer () const
+	{ return noneViewer; }
+	
+	const SFBool &
+	getLookAt () const
+	{ return lookAt; }
 
 	///  @name Light stack handling
 
@@ -253,11 +278,6 @@ protected:
 
 	virtual
 	void
-	setViewer (ViewerType, NavigationInfo*)
-	{ }
-
-	virtual
-	void
 	update ();
 
 
@@ -290,6 +310,12 @@ private:
 
 	X3DSFNode <X3DLayerNode>     activeLayer;
 	X3DSFNode <NavigationInfo>   activeNavigationInfo;
+	X3DScalar <ViewerType>       viewer;
+	SFBool                       examineViewer;
+	SFBool                       walkViewer;
+	SFBool                       flyViewer;
+	SFBool                       noneViewer;
+	SFBool                       lookAt;
 	X3DSFNode <X3DViewpointNode> activeViewpoint;
 
 	double                x;

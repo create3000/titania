@@ -67,17 +67,24 @@ public:
 	{ }
 
 	virtual
-	ViewerType
-	getViewerType () const
-	{ return ViewerType::NONE; }
+	void
+	setViewer (ViewerType)
+	{ }
+
+	virtual
+	const X3DScalar <ViewerType> &
+	getViewer () const final
+	{ return viewer; }
 
 
 private:
 
 	virtual
 	X3DBaseNode*
-	create (X3DExecutionContext* const) const
+	create (X3DExecutionContext* const) const final
 	{ return new BrowserApplication (); }
+	
+	X3DScalar <ViewerType> viewer;
 
 };
 

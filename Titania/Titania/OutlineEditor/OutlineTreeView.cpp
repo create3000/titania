@@ -295,7 +295,7 @@ OutlineTreeView::on_button_press_event (GdkEventButton* event)
 {
 	if (event -> button == 3)
 	{
-		getPopupMenu () .popup (event -> button, event -> time);
+		//getPopupMenu () .popup (event -> button, event -> time);
 		return true;
 	}
 

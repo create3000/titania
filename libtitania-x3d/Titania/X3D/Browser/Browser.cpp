@@ -104,15 +104,16 @@ Browser::initialize ()
 
 	pointingDevice .setup ();
 
+	getViewer () .addInterest (this, &Browser::set_viewer);
 	changed .addInterest (static_cast <Gtk::Widget*> (this), &Browser::queue_draw);
 
 	setCursor (Gdk::ARROW);
 }
 
 void
-Browser::setViewer (ViewerType type, NavigationInfo* navigationInfo)
+Browser::set_viewer (const X3DScalar <ViewerType> & type)
 {
-	if (viewer -> getType () not_eq type or viewer -> getNavigationInfo () not_eq navigationInfo)
+	if (viewer -> getType () not_eq type or viewer -> getNavigationInfo () not_eq getActiveNavigationInfo ())
 	{
 		switch (type)
 		{
@@ -121,19 +122,19 @@ Browser::setViewer (ViewerType type, NavigationInfo* navigationInfo)
 				viewer .reset (new NoneViewer (this));
 				break;
 			}
-			case ViewerType::FLY:
-			{
-				viewer .reset (new FlyViewer (this, navigationInfo));
-				break;
-			}
 			case ViewerType::EXAMINE:
 			{
-				viewer .reset (new ExamineViewer (this, navigationInfo));
+				viewer .reset (new ExamineViewer (this, getActiveNavigationInfo ()));
 				break;
 			}
 			case ViewerType::WALK:
 			{
-				viewer .reset (new WalkViewer (this, navigationInfo));
+				viewer .reset (new WalkViewer (this, getActiveNavigationInfo ()));
+				break;
+			}
+			case ViewerType::FLY:
+			{
+				viewer .reset (new FlyViewer (this, getActiveNavigationInfo ()));
 				break;
 			}
 		}
