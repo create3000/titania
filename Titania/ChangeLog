@@ -1,3 +1,11 @@
+2013-08-03  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* BrowserWindow.h:
+	* BrowserWindow.cpp:
+	* fly-viewer.svg:
+	* walk-viewer.svg:
+	* examine-viewer.svg: 
+
 2013-08-01  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* BrowserWindow.h:

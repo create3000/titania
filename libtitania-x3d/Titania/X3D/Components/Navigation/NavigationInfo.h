@@ -130,6 +130,14 @@ public:
 	{ return *fields .transitionTime; }
 
 	SFBool &
+	transitionStart ()
+	{ return fields .transitionStart; }
+
+	const SFBool &
+	transitionStart () const
+	{ return fields .transitionStart; }
+
+	SFBool &
 	transitionComplete ()
 	{ return *fields .transitionComplete; }
 
@@ -195,6 +203,7 @@ private:
 		SFFloat* const visibilityLimit;
 		MFString* const transitionType;
 		SFTime* const transitionTime;
+		SFBool transitionStart;
 		SFBool* const transitionComplete;
 	};
 

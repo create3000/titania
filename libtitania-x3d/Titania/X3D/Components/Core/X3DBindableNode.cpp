@@ -60,8 +60,8 @@ namespace X3D {
 
 X3DBindableNode::Fields::Fields () :
 	set_bind (new SFBool ()),
-	bindTime (new SFTime ()),
-	isBound (new SFBool ())
+	isBound (new SFBool ()),
+	bindTime (new SFTime ())
 { }
 
 X3DBindableNode::X3DBindableNode () :

@@ -173,7 +173,7 @@ X3DFlyViewer::on_motion_notify_event (GdkEventMotion* event)
 bool
 X3DFlyViewer::on_scroll_event (GdkEventScroll* event)
 {
-	auto viewpoint = getBrowser () -> getActiveViewpoint ();
+	const auto & viewpoint = getBrowser () -> getActiveViewpoint ();
 
 	if (event -> direction == GDK_SCROLL_UP)
 	{
@@ -212,7 +212,7 @@ X3DFlyViewer::fly ()
 	time_type now = chrono::now ();
 	float     dt  = now - startTime;
 
-	auto viewpoint = getBrowser () -> getActiveViewpoint ();
+	const auto & viewpoint = getBrowser () -> getActiveViewpoint ();
 
 	// Orientation offset
 
@@ -263,7 +263,7 @@ X3DFlyViewer::roll ()
 	if (elapsedTime > ROLL_TIME)
 		return false;
 
-	auto viewpoint = getBrowser () -> getActiveViewpoint ();
+	const auto & viewpoint = getBrowser () -> getActiveViewpoint ();
 
 	viewpoint -> orientationOffset () = math::slerp <float> (sourceRotation, destinationRotation, elapsedTime / ROLL_TIME);
 
@@ -275,7 +275,6 @@ X3DFlyViewer::getTranslation (const Vector3f & translation) const
 {
 	// Get position offset
 
-	auto  navigationInfo  = getBrowser () -> getActiveNavigationInfo ();
 	float collisionRadius = navigationInfo -> getCollisionRadius ();
 	float positionOffset  = (collisionRadius + navigationInfo -> getAvatarHeight () - navigationInfo -> getStepHeight ()) / 2 - collisionRadius;
 

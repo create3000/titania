@@ -257,7 +257,7 @@ private:
 	///  @name Browser dashboard handling
 
 	void
-	set_dashboard (const bool &);
+	set_dashboard (bool);
 	
 	virtual
 	void
@@ -268,19 +268,19 @@ private:
 	on_arrow_button_toggled () final;
 	
 	void
-	set_viewer (const X3D::X3DScalar <X3D::ViewerType> &);
+	set_viewer (X3D::ViewerType);
 
 	void
-	set_examine_viewer (const bool &);
+	set_examine_viewer (bool);
 	
 	void
-	set_walk_viewer (const bool &);
+	set_walk_viewer (bool);
 	
 	void
-	set_fly_viewer (const bool &);
+	set_fly_viewer (bool);
 	
 	void
-	set_none_viewer (const bool &);
+	set_none_viewer (bool);
 
 	virtual
 	void
@@ -303,7 +303,7 @@ private:
 	on_look_at_all_clicked () final;
 
 	void
-	set_look_at (const bool &);
+	set_look_at (bool);
 
 	virtual
 	void

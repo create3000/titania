@@ -213,11 +213,10 @@ intersect (const Plane3f & p1, const Plane3f & p2, Line3f & line)
 	return false;
 }
 
-template <class Type>
 void
-test (Type & a, const Type & b)
+test (bool b)
 {
-	a = b;
+	__LOG__ << b << std::endl;
 }
 
 int
@@ -229,9 +228,21 @@ main (int argc, char** argv)
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
 
-	basic::uri path ("http://www.vrinternal.com/monastery/vrml/terrain/xxx.wrl", "../../../lib/models/add_proto.wrl");
+
+	bool b = false;
 	
-	std::clog << "1: " << path << std::endl;
+	auto f = std::bind (test, std::cref (b));
+			
+	f ();
+
+	b = true;
+	f ();
+
+	b = false;
+	f ();
+
+	b = true;
+	f ();
 
 	std::clog << "Function main done." << std::endl;
 	exit (0);

@@ -71,14 +71,6 @@ public:
 	set_bind () const
 	{ return *fields .set_bind; }
 
-	SFTime &
-	bindTime ()
-	{ return *fields .bindTime; }
-
-	const SFTime &
-	bindTime () const
-	{ return *fields .bindTime; }
-
 	SFBool &
 	isBound ()
 	{ return *fields .isBound; }
@@ -86,6 +78,14 @@ public:
 	const SFBool &
 	isBound () const
 	{ return *fields .isBound; }
+
+	SFTime &
+	bindTime ()
+	{ return *fields .bindTime; }
+
+	const SFTime &
+	bindTime () const
+	{ return *fields .bindTime; }
 
 
 protected:
@@ -121,8 +121,8 @@ private:
 		Fields ();
 
 		SFBool* const set_bind;
-		SFTime* const bindTime;
 		SFBool* const isBound;
+		SFTime* const bindTime;
 	};
 
 	Fields fields;

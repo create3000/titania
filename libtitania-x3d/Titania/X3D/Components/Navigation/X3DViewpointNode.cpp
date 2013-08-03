@@ -176,6 +176,9 @@ X3DViewpointNode::lookAt (Box3f bbox)
 
 		bbox *= ~getParentMatrix ();
 
+		for (const auto & layer : getLayers ())
+			layer -> getNavigationInfo () -> transitionStart () = true;
+
 		timeSensor -> startTime ()          = getCurrentTime ();
 		positionInterpolator -> keyValue () = { positionOffset (), lookAtPositionOffset (bbox) };
 
@@ -200,7 +203,7 @@ X3DViewpointNode::set_isActive (const bool & value)
 	if (not value)
 	{
 		for (const auto & layer : getLayers ())
-			layer -> getNavigationInfo () -> transitionComplete () = getCurrentTime ();
+			layer -> getNavigationInfo () -> transitionComplete () = true;
 
 		timeSensor -> isActive () .removeInterest (this, &X3DViewpointNode::set_isActive);
 	}

@@ -69,6 +69,7 @@ NavigationInfo::Fields::Fields () :
 	visibilityLimit (new SFFloat ()),
 	transitionType (new MFString ({ "LINEAR" })),
 	transitionTime (new SFTime (1)),
+	transitionStart (),
 	transitionComplete (new SFBool ())
 { }
 
@@ -91,11 +92,11 @@ NavigationInfo::NavigationInfo (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "visibilityLimit",    visibilityLimit ());
 	addField (inputOutput, "transitionType",     transitionType ());
 	addField (inputOutput, "transitionTime",     transitionTime ());
-	addField (outputOnly,  "transitionComplete", transitionComplete ());
-	addField (outputOnly,  "bindTime",           bindTime ());
 	addField (outputOnly,  "isBound",            isBound ());
+	addField (outputOnly,  "bindTime",           bindTime ());
+	addField (outputOnly,  "transitionComplete", transitionComplete ());
 
-	addChildren (directionalLight);
+	addChildren (transitionStart (), directionalLight);
 }
 
 X3DBaseNode*

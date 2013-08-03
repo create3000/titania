@@ -76,23 +76,23 @@ GeoViewpoint::GeoViewpoint (X3DExecutionContext* const executionContext) :
 	setTypeName ("GeoViewpoint");
 
 	addField (inputOutput,    "metadata",          metadata ());
+	addField (inputOutput,    "description",       description ());
 	addField (inputOnly,      "set_bind",          set_bind ());
+	addField (inputOnly,      "set_position",      set_position ());
+	addField (inputOnly,      "set_orientation",   set_orientation ());
+	addField (inputOutput,    "centerOfRotation",  centerOfRotation ());
+	addField (inputOutput,    "fieldOfView",       fieldOfView ());
 	addField (inputOutput,    "jump",              jump ());
 	addField (inputOutput,    "retainUserOffsets", retainUserOffsets ());
-	addField (inputOutput,    "centerOfRotation",  centerOfRotation ());
-	addField (inputOutput,    "description",       description ());
-	addField (outputOnly,     "bindTime",          bindTime ());
-	addField (outputOnly,     "isBound",           isBound ());
-	addField (inputOnly,      "set_orientation",   set_orientation ());
-	addField (inputOnly,      "set_position",      set_position ());
-	addField (inputOutput,    "fieldOfView",       fieldOfView ());
 	addField (inputOutput,    "headlight",         headlight ());
 	addField (inputOutput,    "navType",           navType ());
-	addField (initializeOnly, "geoOrigin",         geoOrigin ());
 	addField (initializeOnly, "geoSystem",         geoSystem ());
+	addField (initializeOnly, "geoOrigin",         geoOrigin ());
 	addField (initializeOnly, "position",          position ());
 	addField (initializeOnly, "orientation",       orientation ());
 	addField (initializeOnly, "speedFactor",       speedFactor ());
+	addField (outputOnly,     "isBound",           isBound ());
+	addField (outputOnly,     "bindTime",          bindTime ());
 }
 
 X3DBaseNode*

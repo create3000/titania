@@ -86,6 +86,9 @@ private:
 	initialize () final;
 
 	void
+	set_transitionStart ();
+
+	void
 	set_viewpoint ();
 
 	bool

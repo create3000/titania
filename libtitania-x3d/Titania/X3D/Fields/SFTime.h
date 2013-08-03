@@ -105,6 +105,16 @@ public:
 	addInterest (Class & object, void (Class::* memberFunction) (const SFTime &)) const
 	{ addInterest (object, memberFunction, std::cref (*this)); }
 
+	template <class Class>
+	void
+	addInterest (Class* object, void (Class::* memberFunction) (time_type)) const
+	{ addInterest (object, memberFunction, std::cref (this -> getValue ())); }
+
+	template <class Class>
+	void
+	addInterest (Class & object, void (Class::* memberFunction) (time_type)) const
+	{ addInterest (object, memberFunction, std::cref (this -> getValue ())); }
+
 	///  @name Input operator.
 	virtual
 	void

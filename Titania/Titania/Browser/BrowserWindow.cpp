@@ -440,7 +440,7 @@ BrowserWindow::on_standard_size ()
 // Browser dashboard handling
 
 void
-BrowserWindow::set_dashboard (const bool & value)
+BrowserWindow::set_dashboard (bool value)
 {
 	getDashboard () .set_visible (value);
 }
@@ -470,10 +470,8 @@ BrowserWindow::on_arrow_button_toggled ()
 // Viewer
 
 void
-BrowserWindow::set_viewer (const X3D::X3DScalar <X3D::ViewerType> & type)
+BrowserWindow::set_viewer (X3D::ViewerType type)
 {
-	__LOG__ << std::endl;
-	
 	switch (type)
 	{
 		case X3D::ViewerType::NONE:
@@ -500,25 +498,25 @@ BrowserWindow::set_viewer (const X3D::X3DScalar <X3D::ViewerType> & type)
 }
 
 void
-BrowserWindow::set_examine_viewer (const bool & value)
+BrowserWindow::set_examine_viewer (bool value)
 {
 	getExamineViewerMenuItem () .set_visible (value);
 }
 
 void
-BrowserWindow::set_walk_viewer (const bool & value)
+BrowserWindow::set_walk_viewer (bool value)
 {
 	getWalkViewerMenuItem () .set_visible (value);
 }
 
 void
-BrowserWindow::set_fly_viewer (const bool & value)
+BrowserWindow::set_fly_viewer (bool value)
 {
 	getFlyViewerMenuItem () .set_visible (value);
 }
 
 void
-BrowserWindow::set_none_viewer (const bool & value)
+BrowserWindow::set_none_viewer (bool value)
 {
 	getNoneViewerMenuItem () .set_visible (value);
 }
@@ -557,9 +555,10 @@ BrowserWindow::on_look_at_all_clicked ()
 }
 
 void
-BrowserWindow::set_look_at (const bool & value)
+BrowserWindow::set_look_at (bool value)
 {
-	getLookAtButton () .set_visible (value);
+	getLookAtAllButton () .set_visible (value);
+	getLookAtButton ()    .set_visible (value);
 }
 
 void

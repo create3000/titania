@@ -84,7 +84,14 @@ ExamineViewer::initialize ()
 	getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &ExamineViewer::on_motion_notify_event), false);
 	getBrowser () -> signal_scroll_event         () .connect (sigc::mem_fun (*this, &ExamineViewer::on_scroll_event));
 
+	getNavigationInfo () -> transitionStart () .addInterest (this, &ExamineViewer::set_transitionStart);
 	getBrowser () -> getActiveViewpoint () .addInterest (this, &ExamineViewer::set_viewpoint);
+}
+
+void
+ExamineViewer::set_transitionStart ()
+{
+	spin_id .disconnect ();
 }
 
 void
@@ -94,7 +101,7 @@ ExamineViewer::set_viewpoint ()
 
 	spin_id .disconnect ();
 
-	auto viewpoint = getBrowser () -> getActiveViewpoint ();
+	const auto & viewpoint = getBrowser () -> getActiveViewpoint ();
 
 	orientation = viewpoint -> getUserOrientation ();
 	distance    = getDistance ();
@@ -147,7 +154,7 @@ ExamineViewer::on_motion_notify_event (GdkEventMotion* event)
 {
 	if (button == 1)
 	{
-		auto viewpoint = getBrowser () -> getActiveViewpoint ();
+		const auto & viewpoint = getBrowser () -> getActiveViewpoint ();
 
 		Vector3f toVector = trackballProjectToSphere (event -> x, event -> y);
 
@@ -163,7 +170,7 @@ ExamineViewer::on_motion_notify_event (GdkEventMotion* event)
 
 	else if (button == 2)
 	{
-		auto viewpoint = getBrowser () -> getActiveViewpoint ();
+		const auto & viewpoint = getBrowser () -> getActiveViewpoint ();
 
 		Vector3f toPoint     = getPoint (event -> x, event -> y);
 		Vector3f translation = viewpoint -> getUserOrientation () * (toPoint - fromPoint);
@@ -182,7 +189,7 @@ ExamineViewer::on_motion_notify_event (GdkEventMotion* event)
 bool
 ExamineViewer::on_scroll_event (GdkEventScroll* event)
 {
-	auto viewpoint = getBrowser () -> getActiveViewpoint ();
+	const auto & viewpoint = getBrowser () -> getActiveViewpoint ();
 
 	Vector3f step           = distance * SCOLL_FACTOR;
 	Vector3f positionOffset = viewpoint -> getUserOrientation () * Vector3f (0, 0, abs (step));
@@ -205,7 +212,7 @@ ExamineViewer::on_scroll_event (GdkEventScroll* event)
 bool
 ExamineViewer::spin ()
 {
-	auto viewpoint = getBrowser () -> getActiveViewpoint ();
+	const auto & viewpoint = getBrowser () -> getActiveViewpoint ();
 
 	viewpoint -> orientationOffset () = getOrientationOffset ();
 	viewpoint -> positionOffset ()    = getPositionOffset ();
@@ -223,7 +230,7 @@ ExamineViewer::addSpinning ()
 Vector3f
 ExamineViewer::getDistance () const
 {
-	auto viewpoint = getBrowser () -> getActiveViewpoint ();
+	const auto & viewpoint = getBrowser () -> getActiveViewpoint ();
 
 	return ~viewpoint -> orientationOffset () * (viewpoint -> getUserPosition ()
 	                                             - viewpoint -> getUserCenterOfRotation ());
@@ -232,7 +239,7 @@ ExamineViewer::getDistance () const
 Vector3f
 ExamineViewer::getPositionOffset () const
 {
-	auto viewpoint = getBrowser () -> getActiveViewpoint ();
+	const auto & viewpoint = getBrowser () -> getActiveViewpoint ();
 
 	// The new positionOffset is calculated here by calculating the new position and
 	// then subtracting the viewpoints position to get the new positionOffset.
@@ -245,7 +252,7 @@ ExamineViewer::getPositionOffset () const
 Rotation4f
 ExamineViewer::getOrientationOffset ()
 {
-	auto viewpoint = getBrowser () -> getActiveViewpoint ();
+	const auto & viewpoint = getBrowser () -> getActiveViewpoint ();
 
 	orientation = rotation * orientation;
 	return ~viewpoint -> orientation () * orientation;
@@ -257,8 +264,7 @@ ExamineViewer::getPoint (const double x, const double y)
 {
 	try
 	{
-		auto viewpoint      = getBrowser () -> getActiveViewpoint ();
-		auto navigationInfo = getBrowser () -> getActiveNavigationInfo ();
+		const auto & viewpoint = getBrowser () -> getActiveViewpoint ();
 
 		viewpoint -> reshape (navigationInfo -> getNearPlane (), navigationInfo -> getFarPlane ());
 

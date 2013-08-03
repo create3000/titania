@@ -111,7 +111,7 @@ Browser::initialize ()
 }
 
 void
-Browser::set_viewer (const X3DScalar <ViewerType> & type)
+Browser::set_viewer (ViewerType type)
 {
 	if (viewer -> getType () not_eq type or viewer -> getNavigationInfo () not_eq getActiveNavigationInfo ())
 	{

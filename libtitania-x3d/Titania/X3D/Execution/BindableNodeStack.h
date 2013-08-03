@@ -119,7 +119,7 @@ public:
 			if (not node -> isBound ())
 			{
 				node -> isBound ()  = true;
-				node -> bindTime () = node -> getCurrentTime ();
+				node -> bindTime () = getCurrentTime ();
 			}
 
 			if (stack .push (node))
@@ -145,7 +145,7 @@ public:
 			{
 				stack .top () -> set_bind () = true;
 				stack .top () -> isBound ()  = true;
-				stack .top () -> bindTime () = stack .top () -> getCurrentTime ();
+				stack .top () -> bindTime () = getCurrentTime ();
 			}
 
 			*fields .bindTime = getCurrentTime ();

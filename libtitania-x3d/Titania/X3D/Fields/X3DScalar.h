@@ -101,6 +101,16 @@ public:
 	addInterest (Class & object, void (Class::* memberFunction) (const X3DScalar &)) const
 	{ addInterest (object, memberFunction, std::cref (*this)); }
 
+	template <class Class>
+	void
+	addInterest (Class* object, void (Class::* memberFunction) (ValueType)) const
+	{ addInterest (object, memberFunction, std::cref (this -> getValue ())); }
+
+	template <class Class>
+	void
+	addInterest (Class & object, void (Class::* memberFunction) (ValueType)) const
+	{ addInterest (object, memberFunction, std::cref (this -> getValue ())); }
+
 	///  @name Input/Output
 
 	virtual

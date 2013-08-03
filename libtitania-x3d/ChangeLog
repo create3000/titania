@@ -1,3 +1,23 @@
+2013-08-03  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* SFTime.h:
+	* Browser.h:
+	* X3DScalar.h:
+	* Browser.cpp:
+	* X3DBrowser.cpp:
+	* BindableNodeStack.h:
+	* ExamineViewer.h:
+	* X3DFlyViewer.cpp:
+	* ExamineViewer.cpp:
+	* X3DBindableNode.h:
+	* Viewpoint.cpp:
+	* X3DBindableNode.cpp:
+	* NavigationInfo.h:
+	* GeoViewpoint.cpp:
+	* OrthoViewpoint.cpp:
+	* NavigationInfo.cpp:
+	* X3DViewpointNode.cpp: 
+
 2013-08-01  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* BrowserOptions.cpp: 

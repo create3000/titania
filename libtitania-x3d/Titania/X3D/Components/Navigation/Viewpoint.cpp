@@ -79,8 +79,8 @@ Viewpoint::Viewpoint (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "fieldOfView",       fieldOfView ());
 	addField (inputOutput, "jump",              jump ());
 	addField (inputOutput, "retainUserOffsets", retainUserOffsets ());
-	addField (outputOnly,  "bindTime",          bindTime ());
 	addField (outputOnly,  "isBound",           isBound ());
+	addField (outputOnly,  "bindTime",          bindTime ());
 }
 
 X3DBaseNode*

@@ -95,7 +95,7 @@ private:
 	initialize () final;
 
 	void
-	set_viewer (const X3DScalar <ViewerType> &);
+	set_viewer (ViewerType);
 
 	virtual
 	void
