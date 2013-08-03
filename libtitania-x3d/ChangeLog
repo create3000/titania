@@ -1,5 +1,25 @@
 2013-08-03  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* BindableNodeStack.h:
+	* X3DFlyViewer.cpp:
+	* ExamineViewer.cpp:
+	* Viewpoint.h:
+	* Viewpoint.cpp:
+	* GeoViewpoint.h:
+	* Fog.h:
+	* OrthoViewpoint.h:
+	* X3DTimeDependentNode.h:
+	* GeoViewpoint.cpp:
+	* NavigationInfo.h:
+	* X3DViewpointNode.h:
+	* X3DTimeDependentNode.cpp:
+	* NavigationInfo.cpp:
+	* OrthoViewpoint.cpp:
+	* X3DViewpointNode.cpp:
+	* X3DBackgroundNode.h: 
+
+2013-08-03  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* SFTime.h:
 	* Browser.h:
 	* X3DScalar.h:

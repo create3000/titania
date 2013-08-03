@@ -2,6 +2,11 @@
 
 META "title" "ProximitySensor"
 
+NavigationInfo {
+  transitionType "ANIMATE"
+  transitionTime 10
+}
+
 Background {
   skyColor 1 1 1
 }

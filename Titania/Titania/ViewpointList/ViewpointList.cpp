@@ -48,7 +48,7 @@
  *
  ******************************************************************************/
 
-#include "ViewpointEditor.h"
+#include "ViewpointList.h"
 
 #include "../Browser/BrowserWindow.h"
 #include "../Configuration/config.h"
@@ -71,57 +71,57 @@ constexpr int Bold   = 700;
 
 };
 
-ViewpointEditor::ViewpointEditor (BrowserWindow* const browserWindow) :
-	           X3DBaseInterface (browserWindow),
-	X3DViewpointEditorInterface (get_ui ("ViewpointEditor.ui"), gconf_dir ()),
-	                activeLayer ()
+ViewpointList::ViewpointList (BrowserWindow* const browserWindow) :
+	         X3DBaseInterface (browserWindow),
+	X3DViewpointListInterface (get_ui ("ViewpointList.ui"), gconf_dir ()),
+	              activeLayer ()
 { }
 
 void
-ViewpointEditor::initialize ()
+ViewpointList::initialize ()
 {
-	X3DViewpointEditorInterface::initialize ();
+	X3DViewpointListInterface::initialize ();
 
 	getCellRendererDescription () -> property_weight_set () = true;
 
-	getBrowser () -> getActiveLayer () .addInterest (this, &ViewpointEditor::set_activeLayer);
+	getBrowser () -> getActiveLayer () .addInterest (this, &ViewpointList::set_activeLayer);
 
 	set_activeLayer ();
 }
 
 const X3D::X3DSFNode <X3D::ViewpointStack> &
-ViewpointEditor::getViewpointStack ()
+ViewpointList::getViewpointStack ()
 {
 	return activeLayer -> getViewpointStack ();
 }
 
 const X3D::X3DSFNode <X3D::ViewpointList> &
-ViewpointEditor::getViewpoints () const
+ViewpointList::getViewpoints () const
 {
 	return activeLayer -> getViewpoints ();
 }
 
 X3D::UserViewpointList
-ViewpointEditor::getUserViewpoints ()
+ViewpointList::getUserViewpoints ()
 {
 	return activeLayer -> getUserViewpoints ();
 }
 
 void
-ViewpointEditor::set_activeLayer ()
+ViewpointList::set_activeLayer ()
 {
 	if (activeLayer)
 	{
-		getViewpoints ()     -> bindTime () .removeInterest (this, &ViewpointEditor::set_viewpoints);
-		getViewpointStack () -> bindTime () .removeInterest (this, &ViewpointEditor::set_currentViewpoint);
+		getViewpoints ()     -> bindTime () .removeInterest (this, &ViewpointList::set_viewpoints);
+		getViewpointStack () -> bindTime () .removeInterest (this, &ViewpointList::set_currentViewpoint);
 	}
 
 	activeLayer = getBrowser () -> getActiveLayer ();
 
 	if (activeLayer)
 	{
-		getViewpoints ()     -> bindTime () .addInterest (this, &ViewpointEditor::set_viewpoints);
-		getViewpointStack () -> bindTime () .addInterest (this, &ViewpointEditor::set_currentViewpoint);
+		getViewpoints ()     -> bindTime () .addInterest (this, &ViewpointList::set_viewpoints);
+		getViewpointStack () -> bindTime () .addInterest (this, &ViewpointList::set_currentViewpoint);
 
 		set_viewpoints ();
 		set_currentViewpoint ();
@@ -131,7 +131,7 @@ ViewpointEditor::set_activeLayer ()
 }
 
 void
-ViewpointEditor::set_viewpoints ()
+ViewpointList::set_viewpoints ()
 {
 	// Clear
 	getListStore () -> clear ();
@@ -154,7 +154,7 @@ ViewpointEditor::set_viewpoints ()
 }
 
 void
-ViewpointEditor::set_currentViewpoint ()
+ViewpointList::set_currentViewpoint ()
 {
 	// Update list store
 
@@ -173,13 +173,13 @@ ViewpointEditor::set_currentViewpoint ()
 }
 
 void
-ViewpointEditor::on_map ()
+ViewpointList::on_map ()
 {
-	getBrowserWindow () -> getSideBarLabel () .set_text ("ViewpointEditor");
+	getBrowserWindow () -> getSideBarLabel () .set_text ("ViewpointList");
 }
 
 void
-ViewpointEditor::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn*)
+ViewpointList::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn*)
 {
 	guint index;
 
@@ -187,13 +187,16 @@ ViewpointEditor::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeV
 
 	auto viewpoint = getViewpoints () -> at (index);
 
-	viewpoint -> resetUserOffsets ();
+	if (viewpoint -> isBound ())
+		viewpoint -> transitionStart (viewpoint);
 
-	viewpoint -> set_bind () = true;
+	else
+		viewpoint -> set_bind () = true;
+
 }
 
 void
-ViewpointEditor::on_fieldOfView_changed ()
+ViewpointList::on_fieldOfView_changed ()
 {
 	auto viewpoint = dynamic_cast <X3D::Viewpoint*> (getBrowser () -> getActiveViewpoint () .getValue ());
 
@@ -201,7 +204,7 @@ ViewpointEditor::on_fieldOfView_changed ()
 		viewpoint -> fieldOfView () = getFieldOfView () .get_value ();
 }
 
-ViewpointEditor::~ViewpointEditor ()
+ViewpointList::~ViewpointList ()
 { }
 
 } // puck

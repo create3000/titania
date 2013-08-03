@@ -92,9 +92,9 @@ NavigationInfo::NavigationInfo (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "visibilityLimit",    visibilityLimit ());
 	addField (inputOutput, "transitionType",     transitionType ());
 	addField (inputOutput, "transitionTime",     transitionTime ());
+	addField (outputOnly,  "transitionComplete", transitionComplete ());
 	addField (outputOnly,  "isBound",            isBound ());
 	addField (outputOnly,  "bindTime",           bindTime ());
-	addField (outputOnly,  "transitionComplete", transitionComplete ());
 
 	addChildren (transitionStart (), directionalLight);
 }
@@ -172,6 +172,24 @@ float
 NavigationInfo::getFarPlane () const
 {
 	return visibilityLimit () ? visibilityLimit () : 100000;
+}
+
+TransitionType
+NavigationInfo::getTransitionType () const
+{
+	for (const auto & type : transitionType ())
+	{
+		if (type == "TELEPORT")
+			return TransitionType::TELEPORT;
+
+		if (type == "LINEAR")
+			return TransitionType::LINEAR;
+
+		if (type == "ANIMATE")
+			return TransitionType::ANIMATE;
+	}
+
+	return TransitionType::LINEAR;
 }
 
 void

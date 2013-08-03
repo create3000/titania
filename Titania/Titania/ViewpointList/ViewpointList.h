@@ -51,21 +51,21 @@
 #ifndef __TITANIA_VIEWPOINT_EDITOR_VIEWPOINT_EDITOR_H__
 #define __TITANIA_VIEWPOINT_EDITOR_VIEWPOINT_EDITOR_H__
 
-#include "../UserInterfaces/X3DViewpointEditorInterface.h"
+#include "../UserInterfaces/X3DViewpointListInterface.h"
 #include <Titania/X3D.h>
 #include <gtkmm.h>
 
 namespace titania {
 namespace puck {
 
-class ViewpointEditor :
-	public X3DViewpointEditorInterface
+class ViewpointList :
+	public X3DViewpointListInterface
 {
 public:
 
-	ViewpointEditor (BrowserWindow* const);
+	ViewpointList (BrowserWindow* const);
 
-	~ViewpointEditor ();
+	~ViewpointList ();
 
 
 private:

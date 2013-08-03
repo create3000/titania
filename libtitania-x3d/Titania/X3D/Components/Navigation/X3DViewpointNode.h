@@ -55,7 +55,9 @@
 #include "../Core/X3DBindableNode.h"
 #include "../Navigation/X3DViewpointObject.h"
 
+#include "../Interpolation/EaseInEaseOut.h"
 #include "../Interpolation/PositionInterpolator.h"
+#include "../Interpolation/OrientationInterpolator.h"
 #include "../Time/TimeSensor.h"
 
 namespace titania {
@@ -145,9 +147,18 @@ public:
 	void
 	resetUserOffsets ();
 
+	void
+	straighten ();
+
 	virtual
 	void
 	lookAt (Box3f);
+
+	void
+	transitionStart (X3DViewpointNode*);
+
+	void
+	transitionStop ();
 
 	void
 	reshape ();
@@ -173,19 +184,38 @@ protected:
 	X3DViewpointNode ();
 
 	void
-	setModelViewMatrix (const Matrix4f & value)
+	setParentMatrix (const Matrix4f & value)
 	{ parentMatrix = value; }
 
 
 private:
 
+	SFVec3f &
+	scaleOffset ()
+	{ return fields .scaleOffset; }
+
+	const SFVec3f &
+	scaleOffset () const
+	{ return fields .scaleOffset; }
+
+	SFRotation &
+	scaleOrientationOffset ()
+	{ return fields .scaleOrientationOffset; }
+
+	const SFRotation &
+	scaleOrientationOffset () const
+	{ return fields .scaleOrientationOffset; }
+
 	virtual
 	void
 	initialize () override;
 
+	void
+	getRelativeTransformation (X3DViewpointNode*, Vector3f &, Rotation4f &, Vector3f &, Rotation4f &) const;
+
 	virtual
 	Vector3f
-	lookAtPositionOffset (Box3f) = 0;
+	getLookAtPositionOffset (Box3f) = 0;
 
 	virtual
 	void
@@ -196,7 +226,7 @@ private:
 	unbindFromLayer (X3DLayerNode* const) override;
 
 	void
-	set_isActive (const bool &);
+	set_isActive (bool);
 
 	void
 	_set_bind ();
@@ -216,6 +246,8 @@ private:
 		SFBool* const jump;
 		SFVec3f positionOffset;
 		SFRotation orientationOffset;
+		SFVec3f scaleOffset;
+		SFRotation scaleOrientationOffset;
 		SFVec3f centerOfRotationOffset;
 	};
 
@@ -224,10 +256,13 @@ private:
 	Matrix4f parentMatrix;
 	Matrix4f transformationMatrix;
 	Matrix4f inverseTransformationMatrix;
-	Matrix4f differenceMatrix;
 
-	X3DSFNode <TimeSensor>           timeSensor;
-	X3DSFNode <PositionInterpolator> positionInterpolator;
+	X3DSFNode <TimeSensor>              timeSensor;
+	X3DSFNode <EaseInEaseOut>           easeInEaseOut;
+	X3DSFNode <PositionInterpolator>    positionInterpolator;
+	X3DSFNode <OrientationInterpolator> orientationInterpolator;
+	X3DSFNode <PositionInterpolator>    scaleInterpolator;
+	X3DSFNode <OrientationInterpolator> scaleOrientationInterpolator;
 
 };
 

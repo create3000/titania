@@ -127,39 +127,53 @@ public:
 			map .erase (map_iter);
 		}
 	}
+	
+	void
+	clear ()
+	{
+		list .clear ();
+		map .clear ();
+	}
 
 	// Element access:
 
 	const Type &
-	top () const { return list .front (); }
+	top () const
+	{ return list .front (); }
 
 	const Type &
-	bottom () const { return list .back (); }
+	bottom () const
+	{ return list .back (); }
 
 	// Iterators:
 
-	//@{
 	///  begin
 	const_iterator
-	begin () const { return list .begin (); }
+	begin () const
+	{ return list .begin (); }
 
 	const_iterator
-	cbegin () const { return list .cbegin (); }
-	//@}
+	cbegin () const
+	{ return list .cbegin (); }
 
-	//@{
 	///  begin
 	const_iterator
-	end () const { return list .end (); }
+	end () const
+	{ return list .end (); }
 
 	const_iterator
-	cend () const { return list .cend (); }
-	//@}
+	cend () const
+	{ return list .cend (); }
 
 	// Capacity:
 
+	bool
+	empty () const
+	{ return list .empty (); }
+
 	size_type
-	size () const { return list .size (); }
+	size () const
+	{ return list .size (); }
 
 
 private:

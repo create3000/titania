@@ -250,6 +250,11 @@ private:
 	};
 
 	Fields fields;
+	
+	time_type startTimeValue;
+	time_type pauseTimeValue;
+	time_type resumeTimeValue;
+	time_type stopTimeValue;
 
 	time_type start;
 	time_type pause;

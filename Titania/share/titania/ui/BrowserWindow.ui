@@ -45,7 +45,7 @@
       <source stock-id="WalkViewer" filename="icons/walk-viewer.svg"/>
       <source stock-id="Icon" filename="icons/icon.svg"/>
       <source stock-id="OutlineEditor" filename="icons/OutlineEditor.png"/>
-      <source stock-id="ViewpointEditor" filename="icons/ViewpointEditor.png"/>
+      <source stock-id="ViewpointList" filename="icons/ViewpointList.png"/>
       <source stock-id="ExamineViewer" filename="icons/examine-viewer.svg"/>
       <source stock-id="Hand" filename="icons/hand.png"/>
       <source stock-id="Arrow" filename="icons/arrow.png"/>
@@ -1234,7 +1234,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkBox" id="ViewpointEditorBox">
+                          <object class="GtkBox" id="ViewpointListBox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="orientation">vertical</property>
@@ -1251,7 +1251,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="tooltip_text" translatable="yes">Outline Editor</property>
-                            <property name="stock">ViewpointEditor</property>
+                            <property name="stock">ViewpointList</property>
                             <property name="icon-size">2</property>
                           </object>
                           <packing>

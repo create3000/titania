@@ -55,7 +55,7 @@
 #include "../HistoryEditor/HistoryEditor.h"
 #include "../MotionBlurEditor/MotionBlurEditor.h"
 #include "../OutlineEditor/OutlineEditor.h"
-#include "../ViewpointEditor/ViewpointEditor.h"
+#include "../ViewpointList/ViewpointList.h"
 
 namespace titania {
 namespace puck {
@@ -87,13 +87,13 @@ private:
 	getMotionBlurEditor () const
 	{ return motionBlurEditor; }
 
-	ViewpointEditor &
-	getViewpointEditor ()
-	{ return viewpointEditor; }
+	ViewpointList &
+	getViewpointList ()
+	{ return viewpointList; }
 
-	const ViewpointEditor &
-	getViewpointEditor () const
-	{ return viewpointEditor; }
+	const ViewpointList &
+	getViewpointList () const
+	{ return viewpointList; }
 
 	HistoryEditor &
 	getHistoryEditor ()
@@ -331,7 +331,7 @@ private:
 	///  @name Properties
 
 	MotionBlurEditor motionBlurEditor;
-	ViewpointEditor  viewpointEditor;
+	ViewpointList  viewpointList;
 	HistoryEditor    historyEditor;
 	OutlineEditor    outlineEditor;
 	X3D::Keys        keys;

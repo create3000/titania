@@ -1,5 +1,27 @@
 2013-08-03  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* BrowserWindow.h:
+	* ViewpointList.ui:
+	* BrowserWindow.ui:
+	* BrowserWindow.cpp:
+	* ViewpointEditor.ui:
+	* ViewpointList.h:
+	* HistoryEditor.cpp:
+	* ViewpointList.cpp:
+	* ViewpointList.png:
+	* ViewpointEditor.h:
+	* ViewpointEditor.png:
+	* ViewpointEditor.cpp:
+	* X3DBrowserWindowInterface.h:
+	* X3DViewpointListInterface.h:
+	* X3DViewpointListInterface.cpp:
+	* X3DBrowserWindowInterface.cpp:
+	* X3DViewpointEditorInterface.h:
+	* X3DViewpointEditorInterface.cpp: 
+
+2013-08-03  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* BrowserWindow.h:
 	* BrowserWindow.cpp:
 	* fly-viewer.svg:

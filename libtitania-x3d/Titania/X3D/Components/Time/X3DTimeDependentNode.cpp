@@ -70,15 +70,19 @@ X3DTimeDependentNode::Fields::Fields () :
 { }
 
 X3DTimeDependentNode::X3DTimeDependentNode () :
-	 X3DChildNode (),
-	       fields (),
-	        start (0),
-	        pause (0),
-	pauseInterval (0),
-	 startTimeout (),
-	 pauseTimeout (),
-	resumeTimeout (),
-	  stopTimeout ()
+	   X3DChildNode (),
+	         fields (),
+	 startTimeValue (0),
+	 pauseTimeValue (0),
+	resumeTimeValue (0),
+	  stopTimeValue (0),
+	          start (0),
+	          pause (0),
+	  pauseInterval (0),
+	   startTimeout (),
+	   pauseTimeout (),
+	  resumeTimeout (),
+	    stopTimeout ()
 {
 	addNodeType (X3DConstants::X3DTimeDependentNode);
 }
@@ -96,6 +100,11 @@ X3DTimeDependentNode::initialize ()
 	pauseTime ()  .addInterest (this, &X3DTimeDependentNode::set_pauseTime);
 	resumeTime () .addInterest (this, &X3DTimeDependentNode::set_resumeTime);
 	stopTime ()   .addInterest (this, &X3DTimeDependentNode::set_stopTime);
+
+	startTimeValue  = startTime ();
+	pauseTimeValue  = pauseTime ();
+	resumeTimeValue = resumeTime ();
+	stopTimeValue   = stopTime ();
 }
 
 void
@@ -116,16 +125,10 @@ void
 X3DTimeDependentNode::set_enabled ()
 {
 	if (enabled ())
-	{
-		if (loop () and stopTime () <= startTime ())
-			do_start ();
-	}
-	else
-	{
-		removeTimeouts ();
+		set_loop ();
 
-		do_stop ();
-	}
+	else
+		stop ();
 }
 
 void
@@ -133,61 +136,92 @@ X3DTimeDependentNode::set_loop ()
 {
 	if (enabled ())
 	{
-		if (loop () and stopTime () <= startTime ())
-			do_start ();
+		if (loop ())
+		{
+			if (stopTimeValue <= startTimeValue)
+			{
+				if (startTimeValue <= getCurrentTime ())
+					do_start ();
+			}
+		}
 	}
 }
 
 void
 X3DTimeDependentNode::set_startTime ()
 {
+	startTimeValue = startTime ();
+
 	if (not enabled ())
 		return;
+		
+	startTimeout .disconnect ();
 
-	if (startTime () <= getCurrentTime ())
+	if (startTimeValue <= getCurrentTime ())
 		do_start ();
 
 	else
-		addTimeout (startTimeout, &TimeSensor::do_start, startTime ());
+		addTimeout (startTimeout, &TimeSensor::do_start, startTimeValue);
 }
 
 void
 X3DTimeDependentNode::set_pauseTime ()
 {
+	pauseTimeValue = pauseTime ();
+
 	if (not enabled ())
 		return;
+		
+	pauseTimeout .disconnect ();
 
-	if (pauseTime () <= getCurrentTime ())
+	if (pauseTimeValue <= resumeTimeValue)
+		return;
+
+	if (pauseTimeValue <= getCurrentTime ())
 		do_pause ();
 
 	else
-		addTimeout (pauseTimeout, &TimeSensor::do_pause, pauseTime ());
+		addTimeout (pauseTimeout, &TimeSensor::do_pause, pauseTimeValue);
 }
 
 void
 X3DTimeDependentNode::set_resumeTime ()
 {
+	resumeTimeValue = resumeTime ();
+
 	if (not enabled ())
 		return;
+		
+	resumeTimeout .disconnect ();
 
-	if (resumeTime () <= getCurrentTime ())
+	if (resumeTimeValue <= pauseTimeValue)
+		return;
+
+	if (resumeTimeValue <= getCurrentTime ())
 		do_resume ();
 
 	else
-		addTimeout (resumeTimeout, &TimeSensor::do_resume, resumeTime ());
+		addTimeout (resumeTimeout, &TimeSensor::do_resume, resumeTimeValue);
 }
 
 void
 X3DTimeDependentNode::set_stopTime ()
 {
+	stopTimeValue = stopTime ();
+
 	if (not enabled ())
 		return;
+		
+	stopTimeout .disconnect ();
 
-	if (stopTime () <= getCurrentTime ())
+	if (stopTimeValue <= startTimeValue)
+		return;
+
+	if (stopTimeValue <= getCurrentTime ())
 		do_stop ();
 
 	else
-		addTimeout (stopTimeout, &TimeSensor::do_stop, stopTime ());
+		addTimeout (stopTimeout, &TimeSensor::do_stop, stopTimeValue);
 }
 
 // Wrapper functions
@@ -216,16 +250,13 @@ X3DTimeDependentNode::do_start ()
 void
 X3DTimeDependentNode::do_pause ()
 {
-	if (pauseTime () <= resumeTime ())
-		return;
-
 	if (isActive () and not isPaused ())
 	{
 		isPaused () = true;
 		pause       = getCurrentTime ();
-		
-		if (pauseTime () not_eq getCurrentTime ())
-			pauseTime () = getCurrentTime ();
+
+		if (pauseTimeValue not_eq getCurrentTime ())
+			pauseTimeValue = getCurrentTime ();
 
 		set_pause ();
 
@@ -236,15 +267,12 @@ X3DTimeDependentNode::do_pause ()
 void
 X3DTimeDependentNode::do_resume ()
 {
-	if (resumeTime () <= pauseTime ())
-		return;
-
 	if (isActive () and isPaused ())
 	{
 		isPaused () = false;
-	
-		if (resumeTime () not_eq getCurrentTime ())
-			resumeTime () = getCurrentTime ();
+
+		if (resumeTimeValue not_eq getCurrentTime ())
+			resumeTimeValue = getCurrentTime ();
 
 		float interval = getCurrentTime () - pause;
 		pauseInterval += interval;
@@ -258,9 +286,6 @@ X3DTimeDependentNode::do_resume ()
 void
 X3DTimeDependentNode::do_stop ()
 {
-	if (stopTime () <= startTime () and enabled ())
-		return;
-
 	stop ();
 }
 
@@ -272,7 +297,7 @@ X3DTimeDependentNode::stop ()
 		// The event order below is very important.
 
 		set_stop ();
-		
+
 		elapsedTime () = getElapsedTime ();
 
 		if (isPaused ())
@@ -289,8 +314,13 @@ X3DTimeDependentNode::stop ()
 bool
 X3DTimeDependentNode::timeout (TimeoutHandler handler)
 {
-	getBrowser () -> advanceClock ();
-	(this ->* handler) ();
+	if (enabled ())
+	{
+		getBrowser () -> advanceClock ();
+
+		(this ->* handler)();
+	}
+
 	return false;
 }
 

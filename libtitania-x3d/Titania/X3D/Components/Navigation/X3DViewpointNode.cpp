@@ -65,27 +65,36 @@ X3DViewpointNode::Fields::Fields () :
 	jump (new SFBool (true)),
 	positionOffset (),
 	orientationOffset (),
+	scaleOffset (1, 1, 1),
+	scaleOrientationOffset (),
 	centerOfRotationOffset ()
 { }
 
 X3DViewpointNode::X3DViewpointNode () :
-	            X3DBindableNode (),
-	         X3DViewpointObject (),
-	                     fields (),
-	               parentMatrix (),
-	       transformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 10, 1),
-	inverseTransformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, -10, 1),
-	           differenceMatrix (),
-	                 timeSensor (new TimeSensor (getExecutionContext ())),
-	       positionInterpolator (new PositionInterpolator (getExecutionContext ()))
+	             X3DBindableNode (),
+	          X3DViewpointObject (),
+	                      fields (),
+	                parentMatrix (),
+	        transformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 10, 1),
+	 inverseTransformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, -10, 1),
+	                  timeSensor (new TimeSensor (getExecutionContext ())),
+	               easeInEaseOut (new EaseInEaseOut (getExecutionContext ())),
+	        positionInterpolator (new PositionInterpolator (getExecutionContext ())),
+	     orientationInterpolator (new OrientationInterpolator (getExecutionContext ())),
+	           scaleInterpolator (new PositionInterpolator (getExecutionContext ())),
+	scaleOrientationInterpolator (new OrientationInterpolator (getExecutionContext ()))
 {
 	addNodeType (X3DConstants::X3DViewpointNode);
 
 	addChildren (positionOffset (),
 	             orientationOffset (),
+	             scaleOffset (),
+	             scaleOrientationOffset (),
 	             centerOfRotationOffset (),
 	             timeSensor,
-	             positionInterpolator);
+	             easeInEaseOut,
+	             positionInterpolator,
+	             orientationInterpolator);
 }
 
 void
@@ -94,15 +103,29 @@ X3DViewpointNode::initialize ()
 	X3DBindableNode::initialize ();
 	X3DViewpointObject::initialize ();
 
-	timeSensor -> stopTime ()      = 1;
-	timeSensor -> cycleInterval () = 0.2;
+	timeSensor -> stopTime () = 1;
 	timeSensor -> setup ();
 
-	positionInterpolator -> key () = { 0, 1 };
-	positionInterpolator -> setup ();
+   easeInEaseOut -> key ()           = { 0, 1 };
+   easeInEaseOut -> easeInEaseOut () = { SFVec2f (0, 0), SFVec2f (0, 0) };
+	easeInEaseOut -> setup ();
 
-	timeSensor           -> fraction_changed () .addInterest (positionInterpolator -> set_fraction ());
-	positionInterpolator -> value_changed ()    .addInterest (positionOffset ());
+	positionInterpolator         -> key () = { 0, 1 };
+	orientationInterpolator      -> key () = { 0, 1 };
+	scaleInterpolator            -> key () = { 0, 1 };
+	scaleOrientationInterpolator -> key () = { 0, 1 };
+
+	positionInterpolator         -> setup ();
+	orientationInterpolator      -> setup ();
+	scaleInterpolator            -> setup ();
+	scaleOrientationInterpolator -> setup ();
+
+	timeSensor -> fraction_changed () .addInterest (easeInEaseOut -> set_fraction ());
+
+	easeInEaseOut -> modifiedFraction_changed () .addInterest (positionInterpolator         -> set_fraction ());
+	easeInEaseOut -> modifiedFraction_changed () .addInterest (orientationInterpolator      -> set_fraction ());
+	easeInEaseOut -> modifiedFraction_changed () .addInterest (scaleInterpolator            -> set_fraction ());
+	easeInEaseOut -> modifiedFraction_changed () .addInterest (scaleOrientationInterpolator -> set_fraction ());
 
 	isBound () .addInterest (this, &X3DViewpointNode::_set_bind);
 }
@@ -123,6 +146,25 @@ Vector3f
 X3DViewpointNode::getUserCenterOfRotation () const
 {
 	return centerOfRotation () + centerOfRotationOffset ();
+}
+
+void
+X3DViewpointNode::getRelativeTransformation (X3DViewpointNode* fromViewpoint,
+                                             Vector3f & relativePosition,
+                                             Rotation4f & relativeOrientation,
+                                             Vector3f & relativeScale,
+                                             Rotation4f & relativeScaleOrientation) const
+{
+	Matrix4f differenceMatrix = getParentMatrix () * fromViewpoint -> getInverseTransformationMatrix ();
+
+	differenceMatrix .translate (getPosition ());
+	differenceMatrix .inverse ();
+
+	// Get relative transformations from viewpoint.
+	Rotation4f rotation;
+	differenceMatrix .get (relativePosition, rotation, relativeScale, relativeScaleOrientation);
+
+	relativeOrientation = ~orientation () * rotation;
 }
 
 void
@@ -159,77 +201,195 @@ X3DViewpointNode::unbindFromLayer (X3DLayerNode* const layer)
 void
 X3DViewpointNode::resetUserOffsets ()
 {
-	if (jump ())
+	if (not retainUserOffsets () and jump ())
 	{
 		positionOffset ()         = Vector3f ();
 		orientationOffset ()      = Rotation4f ();
+		scaleOffset ()            = Vector3f (1, 1, 1);
+		scaleOrientationOffset () = Rotation4f ();
 		centerOfRotationOffset () = Vector3f ();
 	}
 }
+
+void
+X3DViewpointNode::straighten ()
+{ }
 
 void
 X3DViewpointNode::lookAt (Box3f bbox)
 {
 	try
 	{
-		std::clog << "Look at using viewpoint: " << description () << "." << std::endl;
+		std::clog
+			<< "Look at using viewpoint: " << description () << "." << std::endl
+			<< getTypeName () << " {" << std::endl
+			<< "  position " << getUserPosition () << std::endl
+			<< "  orientation " << getUserOrientation () << std::endl
+			<< "  centerOfRotation " << getUserCenterOfRotation () << std::endl
+			<< "}" << std::endl;
 
 		bbox *= ~getParentMatrix ();
 
 		for (const auto & layer : getLayers ())
 			layer -> getNavigationInfo () -> transitionStart () = true;
 
-		timeSensor -> startTime ()          = getCurrentTime ();
-		positionInterpolator -> keyValue () = { positionOffset (), lookAtPositionOffset (bbox) };
+		timeSensor -> cycleInterval () = 0.2;
+		timeSensor -> stopTime ()      = getCurrentTime ();
+		timeSensor -> startTime ()     = getCurrentTime ();
+		timeSensor -> isActive () .addInterest (this, &X3DViewpointNode::set_isActive);
+
+		positionInterpolator         -> keyValue () = { positionOffset (), getLookAtPositionOffset (bbox) };
+		orientationInterpolator      -> keyValue () = { orientationOffset (), orientationOffset () };
+		scaleInterpolator            -> keyValue () = { scaleOffset (), scaleOffset () };
+		scaleOrientationInterpolator -> keyValue () = { scaleOrientationOffset (), scaleOrientationOffset () };
+
+		positionInterpolator         -> value_changed () .addInterest (positionOffset ());
+		orientationInterpolator      -> value_changed () .addInterest (orientationOffset ());
+		scaleInterpolator            -> value_changed () .addInterest (scaleOffset ());
+		scaleOrientationInterpolator -> value_changed () .addInterest (scaleOrientationOffset ());
 
 		centerOfRotation ()       = bbox .center ();
 		centerOfRotationOffset () = Vector3f ();
 		set_bind ()               = true;
-
-		std::clog << getTypeName () << " {" << std::endl;
-		std::clog << "  position " << getUserPosition () << std::endl;
-		std::clog << "  orientation " << getUserOrientation () << std::endl;
-		std::clog << "  centerOfRotation " << getUserCenterOfRotation () << std::endl;
-		std::clog << "}" << std::endl;
 	}
 	catch (const std::domain_error &)
-	{ }
+	{
+		// Catch error from ~getParentMatrix ()
+	}
+}
+
+void
+X3DViewpointNode::transitionStart (X3DViewpointNode* fromViewpoint)
+{
+	try
+	{
+		resetUserOffsets ();
+
+		if (jump ())
+		{
+			//
+
+			TransitionType transitionType = TransitionType::LINEAR;
+			time_type      transitionTime = 1;
+
+			for (const auto & layer : getLayers ())
+			{
+				layer -> getNavigationInfo () -> transitionStart () = true;
+				transitionType                                      = layer -> getNavigationInfo () -> getTransitionType ();
+				transitionTime                                      = layer -> getNavigationInfo () -> transitionTime ();
+			}
+			
+			switch (transitionType)
+			{
+				case TransitionType::TELEPORT:
+					break;
+				case TransitionType::LINEAR:
+					easeInEaseOut -> easeInEaseOut () = { SFVec2f (0, 0), SFVec2f (0, 0) };
+					break;
+				case TransitionType::ANIMATE:
+					easeInEaseOut -> easeInEaseOut () = { SFVec2f (0, 1), SFVec2f (1, 0) };
+					break;
+			}
+
+			switch (transitionType)
+			{
+				case TransitionType::TELEPORT:
+					break;
+
+				case TransitionType::LINEAR:
+				case TransitionType::ANIMATE:
+				{
+					timeSensor -> cycleInterval () = transitionTime;
+					timeSensor -> stopTime ()      = getCurrentTime ();
+					timeSensor -> startTime ()     = getCurrentTime ();
+					timeSensor -> isActive () .addInterest (this, &X3DViewpointNode::set_isActive);
+
+					Vector3f   relativePosition, relativeScale;
+					Rotation4f relativeOrientation, relativeScaleOrientation;
+					getRelativeTransformation (fromViewpoint, relativePosition, relativeOrientation, relativeScale, relativeScaleOrientation);
+
+					Vector3f   startPosition         = relativePosition;
+					Rotation4f startOrientation      = relativeOrientation;
+					Vector3f   startScale            = relativeScale;
+					Rotation4f startScaleOrientation = relativeScaleOrientation;
+
+					Vector3f   endPosition         = positionOffset ();
+					Rotation4f endOrientation      = orientationOffset ();
+					Vector3f   endScale            = scaleOffset ();
+					Rotation4f endScaleOrientation = scaleOrientationOffset ();
+
+					positionOffset ()         = startPosition;
+					orientationOffset ()      = startOrientation;
+					scaleOffset ()            = startScale;
+					scaleOrientationOffset () = startScaleOrientation;
+
+					positionInterpolator         -> keyValue () = { startPosition, endPosition };
+					orientationInterpolator      -> keyValue () = { startOrientation, endOrientation };
+					scaleInterpolator            -> keyValue () = { startScale, endScale };
+					scaleOrientationInterpolator -> keyValue () = { startScaleOrientation, endScaleOrientation };
+
+					positionInterpolator         -> value_changed () .addInterest (positionOffset ());
+					orientationInterpolator      -> value_changed () .addInterest (orientationOffset ());
+					scaleInterpolator            -> value_changed () .addInterest (scaleOffset ());
+					scaleOrientationInterpolator -> value_changed () .addInterest (scaleOrientationOffset ());
+
+					break;
+				}
+			}
+		}
+		else
+		{
+			Vector3f   relativePosition, relativeScale;
+			Rotation4f relativeOrientation, relativeScaleOrientation;
+			getRelativeTransformation (fromViewpoint, relativePosition, relativeOrientation, relativeScale, relativeScaleOrientation);
+
+			positionOffset ()         = relativePosition;
+			orientationOffset ()      = relativeOrientation;
+			scaleOffset ()            = relativeScale;
+			scaleOrientationOffset () = relativeScaleOrientation;
+		}
+	}
+	catch (const std::domain_error &)
+	{
+		// Catch error from differenceMatrix .inverse ()
+	}
+}
+
+void
+X3DViewpointNode::transitionStop ()
+{
+	timeSensor -> stopTime () = getCurrentTime ();
+	timeSensor -> isActive () .removeInterest (this, &X3DViewpointNode::set_isActive);
 }
 
 // Notify NavigationInfos when transitions are complete.
 void
-X3DViewpointNode::set_isActive (const bool & value)
+X3DViewpointNode::set_isActive (bool value)
 {
 	if (not value)
 	{
 		for (const auto & layer : getLayers ())
 			layer -> getNavigationInfo () -> transitionComplete () = true;
 
-		timeSensor -> isActive () .removeInterest (this, &X3DViewpointNode::set_isActive);
+		positionInterpolator         -> value_changed () .removeInterest (positionOffset ());
+		orientationInterpolator      -> value_changed () .removeInterest (orientationOffset ());
+		scaleInterpolator            -> value_changed () .removeInterest (scaleOffset ());
+		scaleOrientationInterpolator -> value_changed () .removeInterest (scaleOrientationOffset ());
+		
+		positionOffset ()         = positionInterpolator         -> keyValue () [1];
+		orientationOffset ()      = orientationInterpolator      -> keyValue () [1];
+		scaleOffset ()            = scaleInterpolator            -> keyValue () [1];
+		scaleOrientationOffset () = scaleOrientationInterpolator -> keyValue () [1];
 	}
 }
 
 void
 X3DViewpointNode::_set_bind ()
 {
-	if (isBound ())
-	{
-		if (jump ())
-		{
-			if (not retainUserOffsets ())
-				resetUserOffsets ();
-		}
-		else
-		{
-			// Apply relative transformations from previous viewpoint.
-			Vector3f   position;
-			Rotation4f orientation;
-			differenceMatrix .get (position, orientation);
-
-			positionOffset ()    = position;
-			orientationOffset () = orientation;
-		}
-	}
+	if (set_bind ())
+		;
+	else
+		timeSensor -> stopTime () = getCurrentTime ();
 }
 
 void
@@ -255,16 +415,14 @@ X3DViewpointNode::traverse (TraverseType type)
 void
 X3DViewpointNode::camera ()
 {
-	setModelViewMatrix (ModelViewMatrix4f ());
+	setParentMatrix (ModelViewMatrix4f ());
 
 	if (isBound ())
 	{
-		Matrix4f transformationMatrix = ModelViewMatrix4f ();
-
-		transformationMatrix .translate (getUserPosition ());
-		transformationMatrix .rotate (getUserOrientation ());
-
-		setTransformationMatrix (transformationMatrix);
+		Matrix4f matrix;
+		matrix .set (getUserPosition (), getUserOrientation (), scaleOffset (), scaleOrientationOffset ());
+		
+		setTransformationMatrix (matrix * ModelViewMatrix4f ());
 	}
 }
 
@@ -272,18 +430,6 @@ void
 X3DViewpointNode::collect ()
 {
 	getCurrentLayer () -> getViewpoints () -> push_back (this);
-
-	if (not isBound ())
-	{
-		if (not jump ())
-		{
-			differenceMatrix = ModelViewMatrix4f ();
-
-			differenceMatrix .translate (getPosition ());
-			differenceMatrix .rotate (orientation ());
-			differenceMatrix .inverse ();
-		}
-	}
 }
 
 void
@@ -303,8 +449,12 @@ X3DViewpointNode::transform ()
 void
 X3DViewpointNode::dispose ()
 {
-	timeSensor           .dispose ();
-	positionInterpolator .dispose ();
+	timeSensor                   .dispose ();
+	easeInEaseOut                .dispose ();
+	positionInterpolator         .dispose ();
+	orientationInterpolator      .dispose ();
+	scaleInterpolator            .dispose ();
+	scaleOrientationInterpolator .dispose ();
 
 	X3DViewpointObject::dispose ();
 	X3DBindableNode::dispose ();

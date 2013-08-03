@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -78,6 +78,8 @@ public:
 		setTypeName ("X3DBindableNodeList");
 
 		addField (outputOnly, "bindTime", *fields .bindTime);
+
+		node -> shutdown .addInterest (this, &X3DBindableNodeStack::erase, node);
 	}
 
 	virtual
@@ -108,6 +110,9 @@ public:
 	void
 	push (const pointer_type & node)
 	{
+		if (stack .empty ())
+			return;
+
 		if (stack .top () not_eq node)
 		{
 			if (stack .top () -> isBound ())
@@ -120,6 +125,7 @@ public:
 			{
 				node -> isBound ()  = true;
 				node -> bindTime () = getCurrentTime ();
+				node -> transitionStart (stack .top ());
 			}
 
 			if (stack .push (node))
@@ -132,6 +138,9 @@ public:
 	bool
 	pop (const pointer_type & node)
 	{
+		if (stack .empty ())
+			return false;
+
 		if (stack .top () == node)
 		{
 			if (node -> isBound ())
@@ -141,11 +150,15 @@ public:
 
 			stack .pop ();
 
+			if (stack .empty ())
+				return true;
+
 			if (not stack .top () -> isBound ())
 			{
 				stack .top () -> set_bind () = true;
 				stack .top () -> isBound ()  = true;
 				stack .top () -> bindTime () = getCurrentTime ();
+				stack .top () -> transitionStart (node);
 			}
 
 			*fields .bindTime = getCurrentTime ();
@@ -154,6 +167,18 @@ public:
 		}
 
 		return false;
+	}
+	
+	virtual
+	void
+	dispose () final
+	{
+		for (const auto & node : stack)
+			node -> shutdown .removeInterest (this, &X3DBindableNodeStack::erase);
+	
+		stack .clear ();
+
+		X3DBaseNode::dispose ();
 	}
 
 private:

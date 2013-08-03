@@ -57,10 +57,10 @@ namespace titania {
 namespace puck {
 
 BrowserWindow::BrowserWindow (const basic::uri & worldURL) :
-   X3DBaseInterface (this),
+	X3DBaseInterface (this),
 	X3DBrowserWindow (worldURL),
 	motionBlurEditor (this),
-	 viewpointEditor (this),
+	   viewpointList (this),
 	   historyEditor (this),
 	   outlineEditor (this),
 	            keys ()
@@ -82,7 +82,7 @@ BrowserWindow::initialize ()
 	getFileOpenDialog () .set_default_response (Gtk::RESPONSE_OK);
 	getFileOpenDialog () .add_button ("gtk-cancel", Gtk::RESPONSE_CANCEL);
 	getFileOpenDialog () .add_button ("gtk-open", Gtk::RESPONSE_OK);
-	
+
 	getFileFilterX3D   () -> set_name ("X3D");
 	getFileFilterImage () -> set_name ("Images");
 	getFileFilterAudio () -> set_name ("Audio");
@@ -94,7 +94,7 @@ BrowserWindow::initialize ()
 	getFileOpenDialog () .add_filter (getFileFilterVideo ());
 
 	getFileOpenDialog () .set_filter (getFileFilterX3D ());
-	
+
 	// OpenLocationDialog
 	getOpenLocationDialog () .set_default_response (Gtk::RESPONSE_OK);
 	getOpenLocationDialog () .add_button ("gtk-cancel", Gtk::RESPONSE_CANCEL);
@@ -108,8 +108,8 @@ BrowserWindow::initialize ()
 	// MotionBlurEditor
 	getMotionBlurEditor () .getWindow () .set_transient_for (getWindow ());
 
-	// ViewpointEditor
-	getViewpointEditor () .reparent (getViewpointEditorBox (), getWindow ());
+	// ViewpointList
+	getViewpointList () .reparent (getViewpointListBox (), getWindow ());
 
 	// HistoryEditor
 	getHistoryEditor () .reparent (getHistoryEditorBox (), getWindow ());
@@ -123,13 +123,13 @@ BrowserWindow::initialize ()
 	Gtk::StyleContext::add_provider_for_screen (Gdk::Screen::get_default (), cssProvider, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 
 	// Drag & drop targets
-	std::vector<Gtk::TargetEntry> targets = {
+	std::vector <Gtk::TargetEntry> targets = {
 		Gtk::TargetEntry ("STRING"),
 		Gtk::TargetEntry ("text/plain")
 	};
 
 	getSurfaceBox () .drag_dest_set (targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
-	
+
 	// Dashboard
 	getBrowser () -> getBrowserOptions () -> dashboard () .addInterest (this, &BrowserWindow::set_dashboard);
 	getBrowser () -> getViewer ()        .addInterest (this, &BrowserWindow::set_viewer);
@@ -161,7 +161,7 @@ BrowserWindow::on_open ()
 void
 BrowserWindow::on_open_location_dialog ()
 {
-	Glib::RefPtr<Gtk::Clipboard> clipboard = Gtk::Clipboard::get();
+	Glib::RefPtr <Gtk::Clipboard> clipboard = Gtk::Clipboard::get ();
 
 	if (clipboard -> wait_is_text_available ())
 	{
@@ -170,7 +170,7 @@ BrowserWindow::on_open_location_dialog ()
 		if (uri .is_network ())
 			getOpenLocationEntry () .set_text (uri .str ());
 	}
-	
+
 	getOpenLocationDialog () .set_response_sensitive (Gtk::RESPONSE_OK, getOpenLocationEntry () .get_text () .size ());
 	getOpenLocationDialog () .present ();
 }
@@ -592,7 +592,7 @@ BrowserWindow::on_key_release_event (GdkEventKey* event)
 }
 
 void
-BrowserWindow::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context, 
+BrowserWindow::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context,
                                       int x, int y,
                                       const Gtk::SelectionData & selection_data,
                                       guint info,

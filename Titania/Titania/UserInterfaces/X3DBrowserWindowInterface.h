@@ -320,7 +320,7 @@ public:
 	getHistoryEditorBox () const { return *m_historyEditorBox; }
 
 	Gtk::Box &
-	getViewpointEditorBox () const { return *m_viewpointEditorBox; }
+	getViewpointListBox () const { return *m_viewpointListBox; }
 
 	Gtk::Box &
 	getOutlineEditorBox () const { return *m_outlineEditorBox; }
@@ -589,7 +589,7 @@ private:
 	Gtk::Label*                     m_sideBarLabel;
 	Gtk::Notebook*                  m_sideBarNotebook;
 	Gtk::Box*                       m_historyEditorBox;
-	Gtk::Box*                       m_viewpointEditorBox;
+	Gtk::Box*                       m_viewpointListBox;
 	Gtk::Box*                       m_outlineEditorBox;
 
 };

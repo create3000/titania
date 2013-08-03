@@ -114,6 +114,8 @@ ExamineViewer::on_button_press_event (GdkEventButton* event)
 
 	if (button == 1)
 	{
+		getBrowser () -> getActiveViewpoint () -> transitionStop ();
+
 		set_viewpoint ();
 
 		fromVector = trackballProjectToSphere (event -> x, event -> y);
@@ -122,6 +124,8 @@ ExamineViewer::on_button_press_event (GdkEventButton* event)
 
 	else if (button == 2)
 	{
+		getBrowser () -> getActiveViewpoint () -> transitionStop ();
+
 		set_viewpoint ();
 
 		fromPoint = getPoint (event -> x, event -> y);
@@ -190,6 +194,8 @@ bool
 ExamineViewer::on_scroll_event (GdkEventScroll* event)
 {
 	const auto & viewpoint = getBrowser () -> getActiveViewpoint ();
+
+	viewpoint -> transitionStop ();
 
 	Vector3f step           = distance * SCOLL_FACTOR;
 	Vector3f positionOffset = viewpoint -> getUserOrientation () * Vector3f (0, 0, abs (step));

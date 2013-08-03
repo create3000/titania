@@ -108,6 +108,8 @@ X3DFlyViewer::on_button_press_event (GdkEventButton* event)
 
 	if (button == 1)
 	{
+		getBrowser () -> getActiveViewpoint () -> transitionStop ();
+
 		fromVector = toVector = Vector3f (event -> x, 0, event -> y);
 
 		if (getBrowser () -> getBrowserOptions () -> rubberBand ())
@@ -116,6 +118,8 @@ X3DFlyViewer::on_button_press_event (GdkEventButton* event)
 
 	else if (button == 2)
 	{
+		getBrowser () -> getActiveViewpoint () -> transitionStop ();
+
 		fromVector = toVector = Vector3f (event -> x, -event -> y, 0);
 	}
 
@@ -174,6 +178,8 @@ bool
 X3DFlyViewer::on_scroll_event (GdkEventScroll* event)
 {
 	const auto & viewpoint = getBrowser () -> getActiveViewpoint ();
+	
+	viewpoint  -> transitionStop ();
 
 	if (event -> direction == GDK_SCROLL_UP)
 	{

@@ -216,8 +216,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_sideBarNotebook -> set_name ("SideBarNotebook");
 	m_builder -> get_widget ("HistoryEditorBox", m_historyEditorBox);
 	m_historyEditorBox -> set_name ("HistoryEditorBox");
-	m_builder -> get_widget ("ViewpointEditorBox", m_viewpointEditorBox);
-	m_viewpointEditorBox -> set_name ("ViewpointEditorBox");
+	m_builder -> get_widget ("ViewpointListBox", m_viewpointListBox);
+	m_viewpointListBox -> set_name ("ViewpointListBox");
 	m_builder -> get_widget ("OutlineEditorBox", m_outlineEditorBox);
 	m_outlineEditorBox -> set_name ("OutlineEditorBox");
 

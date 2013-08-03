@@ -28,8 +28,8 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DMotionBlurEditorInterface.cpp \
 	Titania/UserInterfaces/X3DOutlineEditorInterface.cpp \
 	Titania/UserInterfaces/X3DOutlineTreeViewInterface.cpp \
-	Titania/UserInterfaces/X3DViewpointEditorInterface.cpp \
-	Titania/ViewpointEditor/ViewpointEditor.cpp
+	Titania/UserInterfaces/X3DViewpointListInterface.cpp \
+	Titania/ViewpointList/ViewpointList.cpp
 
 titania_LDADD = $(TITANIA_LIBS) \
 	$(TITANIA_GZSTREAM_LIBS) \

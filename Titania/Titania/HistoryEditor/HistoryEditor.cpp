@@ -139,7 +139,7 @@ HistoryEditor::set_world ()
 void
 HistoryEditor::on_map ()
 {
-	getBrowserWindow () -> getSideBarLabel () .set_text ("HistoryEditor");
+	getBrowserWindow () -> getSideBarLabel () .set_text ("History");
 }
 
 void

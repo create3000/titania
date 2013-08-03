@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -108,7 +108,7 @@ GeoViewpoint::getPosition () const
 }
 
 Vector3f
-GeoViewpoint::lookAtPositionOffset (Box3f bbox)
+GeoViewpoint::getLookAtPositionOffset (Box3f bbox)
 {
 	return bbox .center ()
 	       + getUserOrientation () * (Vector3f (0, 0, (math::abs (bbox .size ()) * 0.5f) / std::tan (fieldOfView () * 0.5f)))
