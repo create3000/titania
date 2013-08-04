@@ -154,6 +154,7 @@ DEF _2 Switch {
           avatarSize [ 0.1, 1.6, 0.75 ]
           headlight FALSE
           type "NONE"
+          transitionType "TELEPORT"
         }
         DEF VP1 Viewpoint {
           fieldOfView 1.2

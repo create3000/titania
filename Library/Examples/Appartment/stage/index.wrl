@@ -9,12 +9,16 @@ DEF viewing Transform {
     DEF _top NavigationInfo {
       headlight	TRUE
       type	"EXAMINE"
+      transitionType "ANIMATE"
+      transitionTime 2
     }
     DEF _inside NavigationInfo {
       headlight	FALSE
       speed	0.3
       type	[ "ANY",
 	        "WALK" ]
+      transitionType "ANIMATE"
+      transitionTime 2
     }
     DEF VP2 Viewpoint {
       position	-1.58774 10.891 2.33508

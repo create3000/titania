@@ -45,6 +45,7 @@ DEF VP2 Viewpoint {
 DEF _NoNameNavInfo2 NavigationInfo {
   headlight	FALSE
   type	"NONE"
+  transitionType "TELEPORT"
 }
 DEF HUDWorld Transform {
   children	World {

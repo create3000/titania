@@ -86,6 +86,16 @@ public:
 	const SFTime &
 	bindTime () const
 	{ return *fields .bindTime; }
+	
+	///  @name Element access
+	
+	void
+	doTransition (bool value)
+	{ transition = value; }
+
+	bool
+	doTransition ()
+	{ return transition; }
 
 
 protected:
@@ -97,7 +107,7 @@ protected:
 	virtual
 	void
 	initialize () override;
-
+	
 	///  @name Layer handling
 
 	virtual
@@ -126,6 +136,8 @@ private:
 	};
 
 	Fields fields;
+	
+	bool transition;
 
 };
 

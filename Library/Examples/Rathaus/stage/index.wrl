@@ -404,7 +404,9 @@ Transform {
 }
 DEF _NoNameNavInfo1 NavigationInfo {
   headlight FALSE
-  type [ "ANY", "EXAMINE" ]
+  type [ "NONE" ]
+  transitionType "ANIMATE"
+  transitionTime 4
 }
 DEF enterWorldTimeSensor TimeSensor {
   loop TRUE

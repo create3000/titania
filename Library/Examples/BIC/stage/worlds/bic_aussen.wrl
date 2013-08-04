@@ -37,8 +37,6 @@ Group {
 		    children	DEF Time TimeSensor {
 		      cycleInterval	200
 		      loop	TRUE
-		      startTime	0
-		      stopTime	1
 		    }
 
 		  }

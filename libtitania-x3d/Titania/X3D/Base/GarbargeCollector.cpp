@@ -86,21 +86,24 @@ GarbageCollector::addObject (X3DObject* object)
 void
 GarbageCollector::dispose ()
 {
-	while (disposedObjects .size ())
-	{
-		for (const auto & object : ObjectArray (std::move (disposedObjects)))
-		{
-			// __LOG__ << (X3DChildObject*) object << " " << object -> getName () << std::endl;
+	std::thread (&GarbageCollector::deleteObjects, std::move (disposedObjects)) .detach ();
+}
 
-			delete object;
-		}
+void
+GarbageCollector::deleteObjects (ObjectArray && objects)
+{
+	for (const auto & object : objects)
+	{
+		// __LOG__ << (X3DChildObject*) object << " " << object -> getName () << std::endl;
+
+		delete object;
 	}
 }
 
 void
-GarbageCollector::trimFreeMemory () const
+GarbageCollector::trimFreeMemory ()
 {
-	std::thread (malloc_trim, 0) .detach ();
+	malloc_trim (0);
 }
 
 size_t

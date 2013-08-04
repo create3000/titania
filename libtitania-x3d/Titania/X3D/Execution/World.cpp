@@ -139,18 +139,30 @@ World::bind ()
 	for (auto & layer : layerSet -> getLayers ())
 	{
 		if (layer -> getNavigationInfos () -> size ())
+		{
+			layer -> getNavigationInfos () -> at (0) -> doTransition (false);
 			layer -> getNavigationInfos () -> at (0) -> set_bind () = true;
+		}
 
 		if (layer -> getBackgrounds () -> size ())
+		{
+			layer -> getBackgrounds () -> at (0) -> doTransition (false);
 			layer -> getBackgrounds () -> at (0) -> set_bind () = true;
+		}
 
 		if (layer -> getFogs () -> size ())
+		{
+			layer -> getFogs () -> at (0) -> doTransition (false);
 			layer -> getFogs () -> at (0) -> set_bind () = true;
+		}
 
 		// Bind first viewpoint in viewpoint stack.
 
 		if (layer -> getViewpoints () -> size ())
+		{
+			layer -> getViewpoints () -> at (0) -> doTransition (false);
 			layer -> getViewpoints () -> at (0) -> set_bind () = true;
+		}
 	}
 
 	// Bind viewpoint from URL.

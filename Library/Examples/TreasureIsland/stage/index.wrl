@@ -18,16 +18,18 @@ Group {
     }
     DEF Game-Level-0 Transform {
       children [
+        DEF _WorldAnimNavInfo2 NavigationInfo {
+          avatarSize [ 0.1, 1.6, 0.75 ]
+          type "NONE"
+          visibilityLimit 300
+          transitionType "TELEPORT"
+        }
         DEF _WorldWalkNavInfo1 NavigationInfo {
           avatarSize [ 0.1, 1.6, 0.75 ]
           headlight FALSE
           type "WALK"
           visibilityLimit 300
-        }
-        DEF _WorldAnimNavInfo2 NavigationInfo {
-          avatarSize [ 0.1, 1.6, 0.75 ]
-          type "NONE"
-          visibilityLimit 300
+          transitionType "TELEPORT"
         }
         DEF _navInfo Script {
           eventOut SFBool isBoundWalk

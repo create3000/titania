@@ -2,6 +2,6 @@
 
 META "title" "BIC Info"
 
-Inline {
+DEF _0 Inline {
   url "stage/worlds/bic-wegweiser.T.wrl"
 }

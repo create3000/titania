@@ -66,7 +66,8 @@ X3DBindableNode::Fields::Fields () :
 
 X3DBindableNode::X3DBindableNode () :
 	X3DChildNode (),
-	      fields ()
+	      fields (),
+	  transition (true)
 {
 	addNodeType (X3DConstants::X3DBindableNode);
 }

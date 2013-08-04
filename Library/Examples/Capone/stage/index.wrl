@@ -78,6 +78,7 @@ Transform {
       avatarSize [ 0.1, 1.2, 0.6 ]
       headlight FALSE
       type "NONE"
+      transitionType "TELEPORT"
     }
     DEF MainVP Viewpoint {
       position 0 0 0

@@ -117,9 +117,9 @@ public:
 	void
 	addInterest (Class & object, Function && memberFunction, Arguments && ... arguments) const
 	{
-		insertInput (object, reinterpret_cast <void*> (object .* memberFunction));
+		insertInput (&object, reinterpret_cast <void*> (object .* memberFunction));
 		insertInterest (std::bind (std::mem_fn (memberFunction), object, std::forward <Arguments> (arguments) ...),
-		                (X3DInput*) object, reinterpret_cast <void*> (object .* memberFunction));
+		                (X3DInput*) &object, reinterpret_cast <void*> (object .* memberFunction));
 	}
 
 	template <class Class>
@@ -159,15 +159,12 @@ public:
 	void
 	removeInterest (Class & object, Function && memberFunction) const
 	{
-		eraseInput (object);
+		eraseInput (&object);
 		eraseInterest ((X3DInput*) &object, reinterpret_cast <void*> (object .* memberFunction));
 	}
 
 	void
 	removeInterest (const Requester &) const;
-
-	void
-	eraseInterest (const void*, const void*) const;
 
 	///  @name Process interests service
 
@@ -206,6 +203,9 @@ private:
 	void
 	insertInput (const void*, const void*) const
 	{ }
+
+	void
+	eraseInterest (const void*, const void*) const;
 
 	void
 	eraseInput (const X3DInput*) const;

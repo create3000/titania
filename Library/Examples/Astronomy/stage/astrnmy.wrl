@@ -46,6 +46,8 @@ Group {
 	  type	[ "EXAMINE",
 		    "ANY" ]
 	  visibilityLimit	1e+007
+     transitionType "ANIMATE"
+     transitionTime 3
 	}
 	Group {
 	  children	[

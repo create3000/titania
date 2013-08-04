@@ -3408,6 +3408,7 @@ Group {
 	DEF _examiner NavigationInfo {
 	  headlight	FALSE
 	  type	"NONE"
+	  transitionType "TELEPORT"
 	}
 	DEF background Transform {
 	  children	Background {

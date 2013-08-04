@@ -58,6 +58,8 @@ Group {
               headlight FALSE
               speed 3
               type "WALK"
+              transitionType "ANIMATE"
+              transitionTime 6
             }
             DEF _bind Script {
               eventOut SFBool bind_changed
@@ -26388,6 +26390,8 @@ function set_startTime(value, time)
               DEF _fly NavigationInfo {
                 headlight FALSE
                 type "EXAMINE"
+                transitionType "ANIMATE"
+                transitionTime 6
               }
               DEF enterWorldScript_28 Script {
                 eventOut SFTime startTime

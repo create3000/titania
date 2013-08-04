@@ -74,8 +74,9 @@ public:
 	void
 	dispose ();
 
+	static
 	void
-	trimFreeMemory () const;
+	trimFreeMemory ();
 
 	size_t
 	size () const;
@@ -85,12 +86,16 @@ public:
 
 private:
 
+	typedef std::deque <X3DObject*> ObjectArray;
+
 	GarbageCollector (const GarbageCollector &) = delete;
 
 	GarbageCollector &
 	operator = (const GarbageCollector &) = delete;
 
-	typedef std::deque <X3DObject*> ObjectArray;
+	static
+	void
+	deleteObjects (ObjectArray &&);
 
 	ObjectArray disposedObjects;
 
