@@ -72,7 +72,6 @@ JSClass jsContext::global_class = {
 jsContext::jsContext (Script* script, const std::string & ecmascript, const basic::uri & uri, size_t index) :
 	         X3DBaseNode (script -> getBrowser (), script -> getExecutionContext ()),
 	X3DJavaScriptContext (),
-	        X3DUrlObject (),
 	             runtime (NULL),
 	             context (NULL),
 	              global (NULL),
@@ -90,10 +89,6 @@ jsContext::jsContext (Script* script, const std::string & ecmascript, const basi
 {
 	setComponent ("Browser");
 	setTypeName ("jsContext");
-
-	addField (inputOutput, "url", url ());
-
-	setWorldURL (uri);
 
 	// Get a JS runtime.
 	runtime = JS_NewRuntime (64 * 1024 * 1024); // 64 MB runtime memory
@@ -144,7 +139,6 @@ void
 jsContext::initialize ()
 {
 	X3DJavaScriptContext::initialize ();
-	X3DUrlObject::initialize ();
 
 	set_initialized ();
 }
@@ -379,7 +373,7 @@ jsContext::require (const basic::uri & uri, jsval & rval)
 	{
 		// Resolve uri
 
-		basic::uri resolvedURL = transformUri (worldURL .back (), uri);
+		basic::uri resolvedURL = script -> transformUri (worldURL .back (), uri);
 
 		// Get cached result
 
@@ -393,7 +387,7 @@ jsContext::require (const basic::uri & uri, jsval & rval)
 
 		// Load document
 
-		std::string document = loadDocument (resolvedURL);
+		std::string document = script -> loadDocument (resolvedURL);
 
 		// Evaluate script
 
@@ -643,7 +637,6 @@ jsContext::dispose ()
 
 	assert (objects .size () == 0);
 
-	X3DUrlObject::dispose ();
 	X3DJavaScriptContext::dispose ();
 }
 

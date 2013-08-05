@@ -188,8 +188,6 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	clear ();
-
 	setWorldURL (worldURL);
 
 	fromStream (istream);
@@ -202,8 +200,6 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	clear ();
-
 	Parser (istream, this) .parseIntoScene ();
 
 	setupNodes ();
@@ -297,16 +293,6 @@ X3DScene::toStream (std::ostream & ostream) const
 	Generator::PopContext ();
 
 	ostream << std::flush;
-}
-
-void
-X3DScene::clear ()
-{
-	metadatas     .clear ();
-	exportedNodes .clear ();
-	exportedNames .clear ();
-
-	X3DExecutionContext::clear ();
 }
 
 void

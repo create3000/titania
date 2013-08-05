@@ -63,39 +63,26 @@ namespace X3D {
 
 X3DUrlObject::Fields::Fields () :
 	url (new MFString ()),
-	loadTime (new SFTime ()),
-	urlError (new MFString ())
+	loadState (NOT_STARTED_STATE),
+	urlError ()
 { }
 
 X3DUrlObject::X3DUrlObject () :
-	X3DBaseNode (),
-	     fields (),
-	  loadState (NOT_STARTED_STATE),
-	  userAgent (),
-	   worldURL ()
+  	X3DBaseNode (),
+	       fields (),
+	    userAgent (),
+	     worldURL (),
+	        mutex ()
 {
 	addNodeType (X3DConstants::X3DUrlObject);
 
-	addChildren (loadTime (), urlError ());
+	addChildren (loadState (), urlError ());
 }
 
 void
 X3DUrlObject::initialize ()
 {
 	userAgent = getBrowser () -> getName () + "/" + getBrowser () -> getVersion () + " (X3D Browser; +http://titania.create3000.de)";
-}
-
-//  Element Access
-
-void
-X3DUrlObject::setLoadState (LoadState value)
-{
-	loadState = value;
-
-	if (loadState == COMPLETE_STATE)
-	{
-		loadTime () = getCurrentTime ();
-	}
 }
 
 //  X3D Creation Handling
@@ -244,13 +231,15 @@ X3DUrlObject::loadStream (const basic::uri & uri)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>)
 {
+	std::lock_guard <std::mutex> lock (mutex);
+
 	if (uri .empty ())
 		throw Error <INVALID_URL> ("Couldn't load URL '" + uri + "'");
 
 	std::clog << "Trying to load URI '" << uri << "': " << std::endl;
 
 	basic::uri transformedURL = transformUri (uri);
-	std::clog << "\tResolved URL is '" << transformedURL << "'" << std::endl;
+	std::clog << "\tTransformed URL is '" << transformedURL << "'" << std::endl;
 
 	basic::ifilestream stream (basic::http::GET, transformedURL, 15000);
 
@@ -262,9 +251,9 @@ throw (Error <INVALID_URL>,
 
 		if (stream)
 		{
-			worldURL = stream .url ();
+			setWorldURL (stream .url ());
 
-			std::clog << "\tLoaded URL is '" << worldURL << "': " << std::endl;
+			std::clog << "\tLoaded URL is '" << getWorldURL () << "': " << std::endl;
 			std::clog << "Done." << std::endl;
 
 			return stream;
@@ -311,9 +300,7 @@ X3DUrlObject::transformUri (const basic::uri & base, const basic::uri & uri)
 
 void
 X3DUrlObject::dispose ()
-{
-	removeChildren (loadTime (), urlError ());
-}
+{ }
 
 } // X3D
 } // titania

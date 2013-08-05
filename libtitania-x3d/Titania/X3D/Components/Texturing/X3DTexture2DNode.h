@@ -91,6 +91,9 @@ public:
 	isTransparent () const override
 	{ return transparent; }
 
+	const TextureProperties*
+	getTextureProperties () const;
+
 	virtual
 	void
 	notify () final;
@@ -127,9 +130,6 @@ private:
 	GLenum
 	getInternalFormat () const
 	{ return getTextureProperties () -> getInternalFormat (components); }
-
-	const TextureProperties*
-	getTextureProperties () const;
 
 	void
 	addBorder (Magick::Image &);

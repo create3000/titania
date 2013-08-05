@@ -150,13 +150,6 @@ public:
 	dispose () override;
 
 
-protected:
-
-	virtual
-	void
-	clear () override;
-
-
 private:
 
 	typedef std::map <X3DBaseNode*, std::string> ExportedNamesIndex;

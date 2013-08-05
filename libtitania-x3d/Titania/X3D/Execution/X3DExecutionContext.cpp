@@ -147,6 +147,13 @@ X3DExecutionContext::assign2 (const X3DExecutionContext* const executionContext)
 }
 
 void
+X3DExecutionContext::setWorldURL (const basic::uri & value)
+{
+	if (worldURL .empty ())
+		worldURL = value;
+}
+
+void
 X3DExecutionContext::addComponents (const ComponentInfoArray & value)
 {
 	for (const auto & component : value)
@@ -764,22 +771,6 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 	}
 
 	Generator::PopContext ();
-}
-
-void
-X3DExecutionContext::clear ()
-{
-	profile = NULL;
-	components .clear ();
-
-	namedNodes    .clear ();
-	importedNodes .clear ();
-	importedNames .clear ();
-	protos        .clear ();
-	externProtos  .clear ();
-	routes        .clear ();
-
-	rootNodes .clear ();
 }
 
 void

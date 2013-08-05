@@ -62,6 +62,7 @@
 
 #include <Titania/Basic/URI.h>
 #include <map>
+#include <mutex>
 
 namespace titania {
 namespace X3D {
@@ -393,8 +394,7 @@ protected:
 	X3DExecutionContext ();
 
 	void
-	setWorldURL (const basic::uri & value)
-	{ worldURL = value; }
+	setWorldURL (const basic::uri & value);
 
 	void
 	assign1 (const X3DExecutionContext* const);
@@ -404,10 +404,6 @@ protected:
 
 	void
 	setupNodes ();
-
-	virtual
-	void
-	clear ();
 
 
 private:
@@ -457,7 +453,6 @@ private:
 	MFNode             rootNodes;
 
 	MFNode nodes;
-
 };
 
 } // X3D

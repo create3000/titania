@@ -2297,6 +2297,7 @@
     <None Include="Tests\PROTO\events\readme.txt" />
     <None Include="Tests\PROTO\events\sync.wrl" />
     <None Include="Tests\PROTO\events\world.wrl" />
+    <None Include="Tests\Texturing\Border.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

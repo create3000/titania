@@ -63,7 +63,7 @@ namespace titania {
 namespace X3D {
 
 class jsContext :
-	public X3DJavaScriptContext, public X3DUrlObject
+	public X3DJavaScriptContext
 {
 public:
 

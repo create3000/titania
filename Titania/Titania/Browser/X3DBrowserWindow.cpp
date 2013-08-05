@@ -373,7 +373,7 @@ X3DBrowserWindow::set_urlError ()
 void
 X3DBrowserWindow::loadIcon ()
 {
-	const auto & worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
+	const basic::uri & worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
 
 	Gtk::StockID stockId = Gtk::StockID (worldURL .str ());
 

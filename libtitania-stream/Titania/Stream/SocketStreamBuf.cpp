@@ -29,7 +29,6 @@
 #include "SocketStreamBuf.h"
 
 #include <cstring>
-#include <curl/curl.h>
 #include <istream>
 
 #include <Titania/LOG.h>
@@ -55,6 +54,8 @@ socketstreambuf::socketstreambuf () :
 	setg (buffer + bufferSize,  // beginning of putback area
 	      buffer + bufferSize,  // read position
 	      buffer + bufferSize); // end position
+
+	//curl_global_init (CURL_GLOBAL_ALL); // Not thread save
 }
 
 socketstreambuf*
@@ -82,11 +83,12 @@ socketstreambuf::open (const basic::uri & URL)
 	// Connect.
 
 	curl_easy_setopt (curl, CURLOPT_URL,               url () .root () .str () .c_str ());
-	curl_easy_setopt (curl, CURLOPT_CONNECT_ONLY,      1L);
+	curl_easy_setopt (curl, CURLOPT_CONNECT_ONLY,      true);
 	curl_easy_setopt (curl, CURLOPT_CONNECTTIMEOUT_MS, timeout ());
 	curl_easy_setopt (curl, CURLOPT_TIMEOUT_MS,        timeout ());
 	curl_easy_setopt (curl, CURLOPT_ACCEPTTIMEOUT_MS,  timeout ());
-
+	curl_easy_setopt (curl, CURLOPT_NOSIGNAL,          true);
+ 
 	retcode = curl_easy_perform (curl);
 
 	if (retcode not_eq CURLE_OK)

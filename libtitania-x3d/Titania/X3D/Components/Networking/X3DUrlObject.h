@@ -60,6 +60,7 @@
 #include <Titania/Stream/InputFileStream.h>
 #include <map>
 #include <memory>
+#include <mutex>
 
 namespace titania {
 namespace X3D {
@@ -81,32 +82,28 @@ public:
 	url () const
 	{ return *fields .url; }
 
-	SFTime &
-	loadTime ()
-	{ return *fields .loadTime; }
-
-	const SFTime &
-	loadTime () const
-	{ return *fields .loadTime; }
-
 	MFString &
 	urlError ()
-	{ return *fields .urlError; }
+	{ return fields .urlError; }
 
 	const MFString &
 	urlError () const
-	{ return *fields .urlError; }
+	{ return fields .urlError; }
+
+	///  @name Element access
 
 	virtual
 	const basic::uri &
 	getWorldURL () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
 	{ return worldURL; }
 
-	LoadState
+	const X3DScalar <LoadState> &
 	checkLoadState () const
-	{ return loadState; }
+	{ return loadState (); }
 
-	///  @name File operations
+	///  @name Operations
 
 	virtual
 	void
@@ -208,13 +205,9 @@ protected:
 	getReferer () const
 	{ return getExecutionContext () -> getWorldURL (); }
 
-	virtual
 	void
-	setWorldURL (const basic::uri & value)
-	{ worldURL = value; }
-
-	void
-	setLoadState (LoadState);
+	setLoadState (LoadState value)
+	{ loadState () = value; }
 
 	void
 	parseIntoScene (X3DScene* const, const MFString &)
@@ -228,20 +221,34 @@ protected:
 
 private:
 
+	X3DScalar <LoadState> &
+	loadState ()
+	{ return fields .loadState; }
+
+	const X3DScalar <LoadState> &
+	loadState () const
+	{ return fields .loadState; }
+
+	virtual
+	void
+	setWorldURL (const basic::uri & value)
+	{ worldURL = value; }
+
 	struct Fields
 	{
 		Fields ();
 
 		MFString* const url;
-		SFTime* const loadTime;
-		MFString* const urlError;
+		X3DScalar <LoadState> loadState;
+		MFString urlError;
 	};
 
 	Fields fields;
 
-	LoadState   loadState;
 	std::string userAgent;
 	basic::uri  worldURL;
+
+	mutable std::mutex mutex;
 
 };
 

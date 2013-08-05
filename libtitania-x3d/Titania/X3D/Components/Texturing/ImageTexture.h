@@ -57,6 +57,10 @@
 namespace titania {
 namespace X3D {
 
+class Texture;
+
+typedef std::unique_ptr <Texture> TexturePtr;
+
 class ImageTexture :
 	public X3DTexture2DNode, public X3DUrlObject
 {
@@ -79,11 +83,16 @@ public:
 
 private:
 
+	class Thread;
+
 	using X3DTexture2DNode::setImage;
 
 	virtual
 	void
 	initialize () final;
+
+	void
+	set_image (const TexturePtr &);
 
 	virtual
 	void
@@ -91,6 +100,8 @@ private:
 
 	void
 	setImage (const std::string &);
+
+	std::unique_ptr <Thread> thread;
 
 };
 

@@ -185,9 +185,8 @@ X3DTexture2DNode::getImageFormat (Magick::Image & image, GLenum & format)
 			{
 				image .colorSpace (Magick::GRAYColorspace);
 				image .magick ("GRAY");
-				format      = GL_LUMINANCE;
-				components  = 1;
-				transparent = false;
+				format     = GL_LUMINANCE;
+				components = 1;
 				break;
 			}
 		}
@@ -196,9 +195,8 @@ X3DTexture2DNode::getImageFormat (Magick::Image & image, GLenum & format)
 			image .colorSpace (Magick::GRAYColorspace);
 			image .type (Magick::TrueColorMatteType);
 			image .magick ("RGBA");
-			format      = GL_RGBA;
-			components  = 2;
-			transparent = true;
+			format     = GL_RGBA;
+			components = 2;
 			break;
 		}
 		case Magick::TrueColorType:
@@ -207,9 +205,8 @@ X3DTexture2DNode::getImageFormat (Magick::Image & image, GLenum & format)
 			{
 				image .colorSpace (Magick::RGBColorspace);
 				image .magick ("RGB");
-				format      = GL_RGB;
-				components  = 3;
-				transparent = false;
+				format     = GL_RGB;
+				components = 3;
 				break;
 			}
 		}
@@ -217,9 +214,8 @@ X3DTexture2DNode::getImageFormat (Magick::Image & image, GLenum & format)
 		{
 			image .colorSpace (Magick::RGBColorspace);
 			image .magick ("RGBA");
-			format      = GL_RGBA;
-			components  = 4;
-			transparent = true;
+			format     = GL_RGBA;
+			components = 4;
 			break;
 		}
 		default:
@@ -280,11 +276,10 @@ X3DTexture2DNode::setImage (size_t comp, GLenum format, GLint w, GLint h, const 
 {
 	// transfer image
 
-	components = comp;
-	width      = w;
-	height     = h;
-
-	GLint level = 0;     // This texture is level 0 in mimpap generation.
+	width       = w;
+	height      = h;
+	components  = comp;
+	transparent = not (comp & 1);
 
 	glBindTexture (GL_TEXTURE_2D, getTextureId ());
 
@@ -292,7 +287,9 @@ X3DTexture2DNode::setImage (size_t comp, GLenum format, GLint w, GLint h, const 
 
 	glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
 
-	glTexImage2D (GL_TEXTURE_2D, level, getInternalFormat (),
+	glTexImage2D (GL_TEXTURE_2D,
+	              0,     // This texture is level 0 in mimpap generation.
+	              getInternalFormat (),
 	              width, height,
 	              false, // border
 	              format, GL_UNSIGNED_BYTE,
@@ -348,7 +345,6 @@ X3DTexture2DNode::updateTextureProperties () const
 	glTexParameterfv (GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR,       textureProperties -> borderColor () .getValue () .data ());
 	glTexParameterf  (GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, textureProperties -> anisotropicDegree ());
 	glTexParameterf  (GL_TEXTURE_2D, GL_TEXTURE_PRIORITY,           textureProperties -> texturePriority ());
-
 }
 
 void
