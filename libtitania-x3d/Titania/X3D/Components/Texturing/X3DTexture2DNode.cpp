@@ -68,8 +68,6 @@ namespace X3D {
 //constant[2] = 0.5f + 0.5f * BLUE_SATURATION_WEIGHT;
 //constant[3] = 1.0;
 
-constexpr size_t MIN_SCALE_SIZE = 8;
-
 const GLint X3DTexture2DNode::wrapTypes [2] = { GL_CLAMP, GL_REPEAT };
 
 X3DTexture2DNode::Fields::Fields () :
@@ -111,167 +109,6 @@ X3DTexture2DNode::getTextureProperties () const
 }
 
 void
-X3DTexture2DNode::addBorder (Magick::Image & image)
-{
-	const TextureProperties* textureProperties = getTextureProperties ();
-
-	if (textureProperties -> borderWidth () > 0)
-	{
-		std::ostringstream color;
-
-		color
-			<< std::hex
-			<< '#'
-			<< std::setfill ('0')
-			<< std::setw (2) << (int) (uint8_t) (textureProperties -> borderColor () .getR () * 255)
-			<< std::setw (2) << (int) (uint8_t) (textureProperties -> borderColor () .getG () * 255)
-			<< std::setw (2) << (int) (uint8_t) (textureProperties -> borderColor () .getB () * 255)
-			<< std::setw (2) << (int) (uint8_t) (textureProperties -> borderColor () .getA () * 255);
-
-		image .borderColor (Magick::Color (color .str ()));
-
-		image .border (Magick::Geometry (textureProperties -> borderWidth (),
-		                                 textureProperties -> borderWidth ()));
-	}
-}
-
-void
-X3DTexture2DNode::scaleImage (Magick::Image & image)
-{
-	if (std::max (width, height) < MIN_SCALE_SIZE)
-		return;
-
-	bool needsScaling = false;
-
-	size_t width  = this -> width;
-	size_t height = this -> height;
-
-	GLint max_texture_size;
-
-	glGetIntegerv (GL_MAX_TEXTURE_SIZE, &max_texture_size);
-
-	if (not math::is_power_of_two (width))
-	{
-		width        = std::min (math::next_power_of_two (width), (size_t) max_texture_size);
-		needsScaling = true;
-	}
-
-	if (not math::is_power_of_two (height))
-	{
-		height       = std::min (math::next_power_of_two (height), (size_t) max_texture_size);
-		needsScaling = true;
-	}
-
-	if (needsScaling)
-	{
-		std::clog
-			<< "Warning: Texture needs scaling: scaling texture from "
-			<< this -> width << " × " << this -> height
-			<< " to " << width << " × " << height << " pixel."
-			<< std::endl;
-
-		X3DTextureNode::scaleImage (image, width, height);
-	}
-}
-
-void
-X3DTexture2DNode::getImageFormat (Magick::Image & image, GLenum & format)
-{
-	switch (image .type ())
-	{
-		case Magick::GrayscaleType:
-		{
-			if (not image .matte ())
-			{
-				image .colorSpace (Magick::GRAYColorspace);
-				image .magick ("GRAY");
-				format     = GL_LUMINANCE;
-				components = 1;
-				break;
-			}
-		}
-		case Magick::GrayscaleMatteType:
-		{
-			image .colorSpace (Magick::GRAYColorspace);
-			image .type (Magick::TrueColorMatteType);
-			image .magick ("RGBA");
-			format     = GL_RGBA;
-			components = 2;
-			break;
-		}
-		case Magick::TrueColorType:
-		{
-			if (not image .matte ())
-			{
-				image .colorSpace (Magick::RGBColorspace);
-				image .magick ("RGB");
-				format     = GL_RGB;
-				components = 3;
-				break;
-			}
-		}
-		case Magick::TrueColorMatteType:
-		{
-			image .colorSpace (Magick::RGBColorspace);
-			image .magick ("RGBA");
-			format     = GL_RGBA;
-			components = 4;
-			break;
-		}
-		default:
-		{
-			if (image .matte ())
-			{
-				image .type (Magick::TrueColorMatteType);
-				return getImageFormat (image, format);
-			}
-			else
-			{
-				image .type (Magick::TrueColorType);
-				return getImageFormat (image, format);
-			}
-		}
-	}
-}
-
-void
-X3DTexture2DNode::setImage (Magick::Image & image)
-{
-	// TextureProperties
-
-	width  = image .size () .width ();
-	height = image .size () .height ();
-
-	// Flip image in vertical direction
-
-	//image .flip ();
-
-	// Process image
-
-	addBorder (image);
-	scaleImage (image);
-
-	// get image properties
-
-	GLenum      format;
-	std::string magick;
-	getImageFormat (image, format);
-
-	// convert to blob
-
-	Magick::Blob blob;
-
-	image .interlaceType (Magick::NoInterlace);
-	image .endian (Magick::LSBEndian);
-	image .depth (8);
-	image .write (&blob);
-
-	// transfer image
-
-	setImage (components, format, image .size () .width (), image .size () .height (), blob .data ());
-}
-
-void
 X3DTexture2DNode::setImage (size_t comp, GLenum format, GLint w, GLint h, const void* data)
 {
 	// transfer image
@@ -279,7 +116,7 @@ X3DTexture2DNode::setImage (size_t comp, GLenum format, GLint w, GLint h, const 
 	width       = w;
 	height      = h;
 	components  = comp;
-	transparent = not (comp & 1);
+	transparent = math::is_even (comp);
 
 	glBindTexture (GL_TEXTURE_2D, getTextureId ());
 
@@ -315,7 +152,8 @@ X3DTexture2DNode::updateTextureProperties () const
 
 	glBindTexture (GL_TEXTURE_2D, getTextureId ());
 
-	if (std::max (width, height) < MIN_SCALE_SIZE and textureProperties == x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties ()))
+	if (std::max (width, height) < getBrowser () -> getBrowserOptions () -> minTextureSize ()
+	    and textureProperties == x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties ()))
 	{
 		glTexParameteri (GL_TEXTURE_2D, GL_GENERATE_MIPMAP, false);
 		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);

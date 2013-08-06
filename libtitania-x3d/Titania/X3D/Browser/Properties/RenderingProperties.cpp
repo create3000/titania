@@ -57,7 +57,7 @@
 
 #include <iomanip>
 #include <iostream>
-
+#include <omp.h>
 #include <malloc.h>
 
 namespace titania {
@@ -77,6 +77,7 @@ RenderingProperties::Fields::Fields () :
 	vendor (new SFString ()),
 	renderer (new SFString ()),
 	version (new SFString ()),
+	maxThreads (new SFInt32 (1)),
 	maxTextureSize (new SFInt32 ()),
 	textureUnits (new SFInt32 ()),
 	maxLights (new SFInt32 ()),
@@ -108,6 +109,7 @@ RenderingProperties::RenderingProperties (X3DExecutionContext* const executionCo
 	addField (outputOnly, "MaxLights",      maxLights ());
 	addField (outputOnly, "ColorDepth",     colorDepth ());
 	addField (outputOnly, "TextureMemory",  textureMemory ());
+	addField (outputOnly, "MaxThreads",     maxThreads ());
 }
 
 RenderingProperties*
@@ -155,12 +157,13 @@ RenderingProperties::initialize ()
 		if (hasExtension ("GL_NVX_gpu_memory_info"))
 			glGetIntegerv (GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &glTextureMemory);                                                                                                                                                                                                                                                                                                                                                                                                                                           // in KBytes
 
+		maxThreads ()     = omp_get_max_threads ();
 		textureUnits ()   = glTextureUnits;
 		maxTextureSize () = glMaxTextureSize;
-		textureMemory ()  = glTextureMemory * 1024;
 		maxLights ()      = glMaxLights;
 		antialiased ()    = glPolygonSmooth;
 		colorDepth ()     = glRedBits + glGreen + glBlueBits + glAlphaBits;
+		textureMemory ()  = glTextureMemory * 1024;
 
 		// Display
 
@@ -378,6 +381,9 @@ RenderingProperties::update ()
 	stringstream .str (""); stringstream << "Rendering properties";
 	string .emplace_back (stringstream .str ());
 
+	stringstream .str (""); stringstream << "Max threads:               " << maxThreads ();
+	string .emplace_back (stringstream .str ());
+
 	stringstream .str (""); stringstream << "Texture units:             " << textureUnits ();
 	string .emplace_back (stringstream .str ());
 
@@ -385,6 +391,9 @@ RenderingProperties::update ()
 	string .emplace_back (stringstream .str ());
 
 	stringstream .str (""); stringstream << "Antialiased:               " << antialiased ();
+	string .emplace_back (stringstream .str ());
+
+	stringstream .str (""); stringstream << "Max lights:                " << maxLights ();
 	string .emplace_back (stringstream .str ());
 
 	stringstream .str (""); stringstream << "Color depth:               " << colorDepth () << " bits";
@@ -421,6 +430,7 @@ RenderingProperties::toStream (std::ostream & stream) const
 		<< "\tOpenGL extension version: " << version () .getValue () << std::endl
 
 		<< "\tRendering properties" << std::endl
+		<< "\t\tMax threads: " << maxThreads () << std::endl
 		<< "\t\tTexture units: " << textureUnits () << std::endl
 		<< "\t\tMax texture size: " << maxTextureSize () << " × " << maxTextureSize () << " pixel" << std::endl
 		<< "\t\tMax lights: " << maxLights () << std::endl

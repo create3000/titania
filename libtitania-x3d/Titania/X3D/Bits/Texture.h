@@ -48,141 +48,82 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_CUBE_MAP_TEXTURING_COMPOSED_CUBE_MAP_TEXTURE_H__
-#define __TITANIA_X3D_COMPONENTS_CUBE_MAP_TEXTURING_COMPOSED_CUBE_MAP_TEXTURE_H__
+#ifndef __TITANIA_X3D_BITS_TEXTURE_H__
+#define __TITANIA_X3D_BITS_TEXTURE_H__
 
-#include "../CubeMapTexturing/X3DEnvironmentTextureNode.h"
-#include "../Texturing/X3DTexture2DNode.h"
+#include "../Rendering/OpenGL.h"
+#include "../Types/Numbers.h"
+#include <Magick++.h>
+#include <string>
 
 namespace titania {
 namespace X3D {
 
-class ComposedCubeMapTexture :
-	public X3DEnvironmentTextureNode
+class Texture
 {
 public:
 
-	ComposedCubeMapTexture (X3DExecutionContext* const);
+	typedef int32_t size_type;
 
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final;
+	Texture (const Magick::Image &);
 
-	///  @name Fields
+	Texture (const std::string &);
 
-	SFNode &
-	front ()
-	{ return *fields .front; }
+	GLenum
+	getFormat ()
+	{ return format; }
 
-	const SFNode &
-	front () const
-	{ return *fields .front; }
+	size_type
+	getWidth () const
+	{ return image .size () .width (); }
 
-	SFNode &
-	back ()
-	{ return *fields .back; }
+	size_type
+	getHeight () const
+	{ return image .size () .height (); }
 
-	const SFNode &
-	back () const
-	{ return *fields .back; }
+	size_type
+	getComponents () const
+	{ return components; }
 
-	SFNode &
-	left ()
-	{ return *fields .left; }
+	const void*
+	getData ()
+	{ return blob .data (); }
 
-	const SFNode &
-	left () const
-	{ return *fields .left; }
-
-	SFNode &
-	right ()
-	{ return *fields .right; }
-
-	const SFNode &
-	right () const
-	{ return *fields .right; }
-
-	SFNode &
-	bottom ()
-	{ return *fields .bottom; }
-
-	const SFNode &
-	bottom () const
-	{ return *fields .bottom; }
-
-	SFNode &
-	top ()
-	{ return *fields .top; }
-
-	const SFNode &
-	top () const
-	{ return *fields .top; }
-
-	virtual
-	bool
-	isTransparent () const
-	{ return transparent; }
-
-	virtual
 	void
-	draw ();
+	process (const Color4f &, size_type, size_type, size_type);
+
+	virtual
+	~Texture ()
+	{ }
 
 
 private:
 
-	virtual
-	void
-	initialize ();
+	static
+	Magick::Image
+	getImage (const std::string &);
 
 	void
-	set_front ();
+	addBorder (const Color4f &, size_type);
 
 	void
-	set_back ();
+	tryScaleImage (size_type, size_type);
 
 	void
-	set_right ();
+	scaleImage (size_type, size_type);
 
 	void
-	set_left ();
+	refineImageFormat ();
 
 	void
-	set_bottom ();
+	writeBlob ();
 
-	void
-	set_top ();
+	///  @name Properties
 
-	void
-	set_texture (GLenum, X3DTexture2DNode * &, const SFNode &);
-
-	void
-	set_loadState (GLenum, X3DTexture2DNode*);
-
-	void
-	setImage (GLenum, const X3DTexture2DNode * const);
-
-	struct Fields
-	{
-		Fields ();
-
-		SFNode* const front;
-		SFNode* const back;
-		SFNode* const left;
-		SFNode* const right;
-		SFNode* const bottom;
-		SFNode* const top;
-	};
-
-	Fields fields;
-
-	X3DTexture2DNode* _front;
-	X3DTexture2DNode* _back;
-	X3DTexture2DNode* _left;
-	X3DTexture2DNode* _right;
-	X3DTexture2DNode* _bottom;
-	X3DTexture2DNode* _top;
-
-	bool transparent;
+	Magick::Image image;
+	GLenum        format;
+	size_type     components;
+	Magick::Blob  blob;
 
 };
 

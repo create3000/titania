@@ -78,6 +78,7 @@ namespace X3D {
 // MotionBlurIntesity      Number                                   0.25                         Motion blur intesity in the range (0, 1)
 // AnimateStairWalks       Boolean                                  False                        Animate stair walks. This can give unexpected results when the floor is animated.
 // Gravity                 Number                                   g                            Gravitational acceleration. The standard value is the acceleration of the earth.
+// MinTextureSize          Number                                   8                            Default minumum texture size when scaling and filtering is applied.
 
 BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
 	splashScreen (new SFBool ()),
@@ -91,6 +92,7 @@ BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
 	shading (new SFString ("GOURAUD")),
 	animateStairWalks (new SFBool ()),
 	gravity (new SFFloat (P_GN)),
+	minTextureSize (new SFInt32 (8)),
 	motionBlurOptions (new MotionBlur (executionContext)),
 	textureProperties (new TextureProperties (executionContext)),
 	arc2DOptions (new Arc2DOptions (executionContext)),
@@ -124,6 +126,7 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "MotionBlurIntensity",    motionBlurIntensity ());
 	addField (inputOutput, "AnimateStairWalks",      animateStairWalks ());
 	addField (inputOutput, "Gravity",                gravity ());
+	addField (inputOutput, "MinTextureSize",         minTextureSize ());
 
 	addField ("AntiAliased", "Antialiased");
 
@@ -151,7 +154,7 @@ BrowserOptions::initialize ()
 	X3DPropertyNode::initialize ();
 
 	motionBlurOptions ()  -> setup ();
-	textureProperties ()     -> setup ();
+	textureProperties ()  -> setup ();
 	arc2DOptions ()       -> setup ();
 	arcClose2DOptions ()  -> setup ();
 	circle2DOptions ()    -> setup ();
@@ -290,7 +293,7 @@ void
 BrowserOptions::dispose ()
 {
 	motionBlurOptions ()  .dispose ();
-	textureProperties ()     .dispose ();
+	textureProperties ()  .dispose ();
 	arc2DOptions ()       .dispose ();
 	arcClose2DOptions ()  .dispose ();
 	circle2DOptions ()    .dispose ();
@@ -298,7 +301,7 @@ BrowserOptions::dispose ()
 	rectangle2DOptions () .dispose ();
 	boxOptions ()         .dispose ();
 	sphereOptions ()      .dispose ();
-	fontStyle ()           .dispose ();
+	fontStyle ()          .dispose ();
 }
 
 } // X3D

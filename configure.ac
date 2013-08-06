@@ -80,14 +80,14 @@ dnl ***************************************************************************
 dnl Compile options
 dnl ***************************************************************************
 
-CXXFLAGS="-Wall -std=c++11 -Wno-pmf-conversions -Wno-narrowing"
+CXXFLAGS="-Wall -std=c++11 -fopenmp -Wno-pmf-conversions -Wno-narrowing"
 
 if test "x$enable_release" = "xyes" ; then
 	CXXFLAGS=$CXXFLAGS" -O3"
 fi
 
 if test "x$enable_parallel" = "xyes" ; then
-	CXXFLAGS=$CXXFLAGS" -floop-parallelize-all -ftree-parallelize-loops=4 -fopenmp -D_GLIBCXX_PARALLEL"
+	CXXFLAGS=$CXXFLAGS" -floop-parallelize-all -ftree-parallelize-loops=4  -D_GLIBCXX_PARALLEL"
 fi
 
 

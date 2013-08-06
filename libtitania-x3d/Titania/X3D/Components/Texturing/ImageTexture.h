@@ -51,6 +51,7 @@
 #ifndef __TITANIA_X3D_COMPONENTS_TEXTURING_IMAGE_TEXTURE_H__
 #define __TITANIA_X3D_COMPONENTS_TEXTURING_IMAGE_TEXTURE_H__
 
+#include "../../Bits/TexturePtr.h"
 #include "../Networking/X3DUrlObject.h"
 #include "../Texturing/X3DTexture2DNode.h"
 
@@ -58,8 +59,6 @@ namespace titania {
 namespace X3D {
 
 class Texture;
-
-typedef std::unique_ptr <Texture> TexturePtr;
 
 class ImageTexture :
 	public X3DTexture2DNode, public X3DUrlObject
@@ -73,8 +72,17 @@ public:
 	create (X3DExecutionContext* const) const final;
 
 	virtual
+	const X3DScalar <LoadState> &
+	checkLoadState () const final
+	{ return X3DUrlObject::checkLoadState (); }
+
+	virtual
 	void
 	requestImmediateLoad () final;
+
+	virtual
+	void
+	requestAsyncLoad () final;
 
 	virtual
 	void
@@ -83,7 +91,7 @@ public:
 
 private:
 
-	class Thread;
+	class Future;
 
 	using X3DTexture2DNode::setImage;
 
@@ -92,16 +100,13 @@ private:
 	initialize () final;
 
 	void
-	set_image (const TexturePtr &);
+	set_texture (const TexturePtr &);
 
 	virtual
 	void
 	update () final;
 
-	void
-	setImage (const std::string &);
-
-	std::unique_ptr <Thread> thread;
+	std::unique_ptr <Future> future;
 
 };
 

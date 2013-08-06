@@ -60,6 +60,22 @@ namespace math {
 
 using std::abs;
 
+template <class Type>
+inline
+constexpr bool
+is_odd (const Type & value)
+{
+	return value & 1;
+}
+
+template <class Type>
+inline
+constexpr bool
+is_even (const Type & value)
+{
+	return not is_odd (value);
+}
+
 ///  Calculate the square of @a value.
 template <class Type>
 inline

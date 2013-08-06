@@ -71,6 +71,7 @@
 #include <Titania/Chrono/ClockBase.h>
 
 #include <memory>
+#include <mutex>
 #include <stack>
 
 namespace titania {
@@ -196,6 +197,11 @@ public:
 	TextureUnitStack &
 	getTextureUnits ()
 	{ return textureUnits; }
+
+	///  @name Thread handling	
+
+	std::mutex &
+	getThread ();
 
 	///  @name Console handling
 
@@ -331,8 +337,12 @@ private:
 	time_type           changedTime;
 	Speed <double>      currentSpeed;
 	double              currentFrameRate;
-	X3DSFNode <Console> console;
 
+	size_t                  threadIndex;
+	std::deque <std::mutex> threads;
+	std::mutex              threadMutex;
+
+	X3DSFNode <Console> console;
 };
 
 } // X3D

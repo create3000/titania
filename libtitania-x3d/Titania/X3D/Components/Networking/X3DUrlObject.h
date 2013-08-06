@@ -99,6 +99,7 @@ public:
 	       Error <DISPOSED>)
 	{ return worldURL; }
 
+	virtual
 	const X3DScalar <LoadState> &
 	checkLoadState () const
 	{ return loadState (); }

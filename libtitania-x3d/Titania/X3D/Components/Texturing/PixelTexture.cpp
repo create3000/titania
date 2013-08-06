@@ -50,13 +50,16 @@
 
 #include "PixelTexture.h"
 
+#include "../../Bits/Texture.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {
 
 PixelTexture::Fields::Fields () :
-	image (new SFImage (0, 0, 0, MFInt32 ()))
+	image (new SFImage (0, 0, 0, MFInt32 ())),
+	loadState (NOT_STARTED_STATE)
 { }
 
 PixelTexture::PixelTexture (X3DExecutionContext* const executionContext) :
@@ -72,6 +75,8 @@ PixelTexture::PixelTexture (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "repeatS",           repeatS ());
 	addField (initializeOnly, "repeatT",           repeatT ());
 	addField (initializeOnly, "textureProperties", textureProperties ());
+	
+	addChildren (fields .loadState);
 }
 
 X3DBaseNode*
@@ -136,6 +141,8 @@ PixelTexture::update ()
 			mimage .magick ("RGBA");
 			mimage .read (blob);
 
+			mimage .type (Magick::GrayscaleMatteType);
+
 			break;
 		}
 		case 3:
@@ -180,7 +187,20 @@ PixelTexture::update ()
 	}
 
 	mimage .flip ();
-	setImage (mimage);
+
+	Texture texture (mimage);
+
+	texture .process (getTextureProperties () -> borderColor (),
+		               getTextureProperties () -> borderWidth (),
+		               getBrowser () -> getBrowserOptions () -> minTextureSize (),
+		               getBrowser () -> getRenderingProperties () -> maxTextureSize ());
+
+	setImage (texture .getComponents (),
+	          texture .getFormat (),
+	          texture .getWidth (), texture .getHeight (),
+	          texture .getData ());
+
+	setLoadState (COMPLETE_STATE);
 }
 
 } // X3D

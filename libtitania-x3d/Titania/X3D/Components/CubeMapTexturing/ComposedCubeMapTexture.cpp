@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -69,6 +69,12 @@ ComposedCubeMapTexture::ComposedCubeMapTexture (X3DExecutionContext* const execu
 	              X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DEnvironmentTextureNode (),
 	                   fields (),
+	                   _front (nullptr),
+	                    _back (nullptr),
+	                    _left (nullptr),
+	                   _right (nullptr),
+	                  _bottom (nullptr),
+	                     _top (nullptr),
 	              transparent (false)
 {
 	setComponent ("CubeMapTexturing");
@@ -95,54 +101,105 @@ ComposedCubeMapTexture::initialize ()
 	X3DEnvironmentTextureNode::initialize ();
 
 	if (glXGetCurrentContext ())
-		set_children ();
+	{
+		glBindTexture (GL_TEXTURE_CUBE_MAP, getTextureId ());
+
+		glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_REPEAT);
+		glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+		front ()  .addInterest (this, &ComposedCubeMapTexture::set_front);
+		back ()   .addInterest (this, &ComposedCubeMapTexture::set_back);
+		left ()   .addInterest (this, &ComposedCubeMapTexture::set_left);
+		right ()  .addInterest (this, &ComposedCubeMapTexture::set_right);
+		bottom () .addInterest (this, &ComposedCubeMapTexture::set_bottom);
+		top ()    .addInterest (this, &ComposedCubeMapTexture::set_top);
+
+		set_front ();
+		set_back ();
+		set_left ();
+		set_right ();
+		set_bottom ();
+		set_top ();
+	}
 }
 
 void
-ComposedCubeMapTexture::set_children ()
+ComposedCubeMapTexture::set_front ()
 {
-	glBindTexture (GL_TEXTURE_CUBE_MAP, getTextureId ());
-
-	glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_REPEAT);
-	glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-
-	auto _front  = x3d_cast <X3DTexture2DNode*> (front ());
-	auto _back   = x3d_cast <X3DTexture2DNode*> (back ());
-	auto _left   = x3d_cast <X3DTexture2DNode*> (left ());
-	auto _right  = x3d_cast <X3DTexture2DNode*> (right ());
-	auto _bottom = x3d_cast <X3DTexture2DNode*> (bottom ());
-	auto _top    = x3d_cast <X3DTexture2DNode*> (top ());
-
-	size_t width = 0, height = 0;
-
-	if (_front)
-		setTexture (GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, _back, width, height, true);
-
-	if (_back)
-		setTexture (GL_TEXTURE_CUBE_MAP_POSITIVE_Z, _front, width, height, false);
-
-	if (_left)
-		setTexture (GL_TEXTURE_CUBE_MAP_NEGATIVE_X, _right, width, height, false);
-
-	if (_right)
-		setTexture (GL_TEXTURE_CUBE_MAP_POSITIVE_X, _left, width, height, false);
-
-	if (_bottom)
-		setTexture (GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, _bottom, width, height, false);
-
-	if (_top)
-		setTexture (GL_TEXTURE_CUBE_MAP_POSITIVE_Y, _top, width, height, false);
-
-	glBindTexture (GL_TEXTURE_CUBE_MAP, 0);
+	set_texture (GL_TEXTURE_CUBE_MAP_POSITIVE_Z, _front, front ());
 }
 
 void
-ComposedCubeMapTexture::setTexture (GLenum target, const X3DTexture2DNode* const texture, size_t & w, size_t & h, bool store)
+ComposedCubeMapTexture::set_back ()
+{
+	set_texture (GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, _back, back ());
+}
+
+void
+ComposedCubeMapTexture::set_right ()
+{
+	set_texture (GL_TEXTURE_CUBE_MAP_NEGATIVE_X, _right, right ());
+}
+
+void
+ComposedCubeMapTexture::set_left ()
+{
+	set_texture (GL_TEXTURE_CUBE_MAP_POSITIVE_X, _left, left ());
+}
+
+void
+ComposedCubeMapTexture::set_bottom ()
+{
+	set_texture (GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, _bottom, bottom ());
+}
+
+void
+ComposedCubeMapTexture::set_top ()
+{
+	set_texture (GL_TEXTURE_CUBE_MAP_POSITIVE_Y, _top, top ());
+}
+
+void
+ComposedCubeMapTexture::set_texture (GLenum target, X3DTexture2DNode* & texture, const SFNode & field)
+{
+	if (texture)
+		texture -> checkLoadState () .removeInterest (this, &ComposedCubeMapTexture::set_loadState);
+
+	texture = x3d_cast <X3DTexture2DNode*> (field);
+
+	if (texture)
+	{
+		texture -> checkLoadState () .addInterest (this, &ComposedCubeMapTexture::set_loadState, target, texture);
+
+		set_loadState (target, texture);
+	}
+}
+
+void
+ComposedCubeMapTexture::set_loadState (GLenum target, X3DTexture2DNode* texture)
+{
+	switch (texture -> checkLoadState ())
+	{
+		case COMPLETE_STATE:
+		case FAILED_STATE:
+		{
+			setImage (target, texture);
+			break;
+		}
+		default:
+			break;
+	}
+}
+
+void
+ComposedCubeMapTexture::setImage (GLenum target, const X3DTexture2DNode* const texture)
 {
 	// Get texture 2d data
+	
+	transparent = texture -> isTransparent ();
 
 	GLint width = 0, height = 0;
 
@@ -156,61 +213,12 @@ ComposedCubeMapTexture::setTexture (GLenum target, const X3DTexture2DNode* const
 	glGetTexImage (GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, image .data ());
 	glBindTexture (GL_TEXTURE_2D, 0);
 
-	// Flip image verticaly and scale if needed
-
-	Magick::Blob blob (image .data (), image .size ());
-	{
-		Magick::Image mimage;
-		mimage .magick ("RGBA");
-		mimage .depth (8);
-		mimage .size (Magick::Geometry (width, height));
-		mimage .read (blob);
-
-		if (store)
-		{
-			w = width;
-			h = height;
-		}
-		else
-		{
-			scaleImage (mimage, w, h);
-		}
-
-		//mimage .flip ();
-		//mimage .flop ();
-		mimage .write (&blob);
-	}
-
 	// Transfer image
-
-	//applyTextureProperties (textureProperties);
 
 	glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
 
-	glTexImage2D (target, 0, GL_RGBA, w, h, false, GL_RGBA, GL_UNSIGNED_BYTE, blob .data ());
+	glTexImage2D (target, 0, GL_RGBA, width, height, false, GL_RGBA, GL_UNSIGNED_BYTE, image .data ());
 }
-
-//void
-//ComposedCubeMapTexture::applyTextureProperties (const TextureProperties* textureProperties) const
-//{
-//	glTexParameteri (GL_TEXTURE_2D, GL_GENERATE_MIPMAP,    textureProperties -> generateMipMaps);
-//	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, textureProperties -> getMinificationFilter ());
-//	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, textureProperties -> getMagnificationFilter ());
-//
-//	if (this -> textureProperties)
-//	{
-//		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, textureProperties -> getBoundaryModeS ());
-//		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, textureProperties -> getBoundaryModeT ());
-//	}
-//	else
-//	{
-//		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapTypes [repeatS]);
-//		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapTypes [repeatT]);
-//	}
-//
-//	glTexParameterfv (GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, textureProperties -> borderColor .getValue () .data ());
-//	glTexParameterf  (GL_TEXTURE_2D, GL_TEXTURE_PRIORITY,     textureProperties -> texturePriority);
-//}
 
 void
 ComposedCubeMapTexture::draw ()

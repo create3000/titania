@@ -95,6 +95,10 @@ public:
 	getTextureProperties () const;
 
 	virtual
+	const X3DScalar <LoadState> &
+	checkLoadState () const = 0;
+
+	virtual
 	void
 	notify () final;
 
@@ -116,9 +120,6 @@ protected:
 	update () = 0;
 
 	void
-	setImage (Magick::Image &);
-
-	void
 	setImage (size_t, GLenum, GLint, GLint, const void*);
 
 	void
@@ -130,15 +131,6 @@ private:
 	GLenum
 	getInternalFormat () const
 	{ return getTextureProperties () -> getInternalFormat (components); }
-
-	void
-	addBorder (Magick::Image &);
-
-	void
-	scaleImage (Magick::Image &);
-
-	void
-	getImageFormat (Magick::Image &, GLenum &);
 
 	void
 	updateTextureProperties () const;
@@ -156,8 +148,8 @@ private:
 
 	static const GLint wrapTypes [2];
 
-	size_t width;
-	size_t height;
+	int32_t width;
+	int32_t height;
 	size_t components;
 	bool   transparent;
 

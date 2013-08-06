@@ -1,3 +1,30 @@
+2013-08-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Texture.h:
+	* Texture.cpp:
+	* TexturePtr.h:
+	* OpenGL.h:
+	* X3DBrowserContext.h:
+	* X3DBrowserContext.cpp:
+	* ImageTexture.h:
+	* BrowserOptions.h:
+	* PixelTexture.h:
+	* MovieTexture.h:
+	* X3DUrlObject.h:
+	* PixelTexture.cpp:
+	* ImageTexture.cpp:
+	* BrowserOptions.cpp:
+	* X3DTextureNode.h:
+	* X3DTexture2DNode.h:
+	* X3DTextureNode.cpp:
+	* RenderingProperties.h:
+	* X3DTexture2DNode.cpp:
+	* RenderingProperties.cpp:
+	* ComposedCubeMapTexture.h:
+	* ComposedCubeMapTexture.cpp: 
+
 2013-08-05  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DScene.h:

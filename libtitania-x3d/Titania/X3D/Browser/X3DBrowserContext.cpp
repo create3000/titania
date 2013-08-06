@@ -101,6 +101,9 @@ X3DBrowserContext::X3DBrowserContext () :
 	         changedTime (clock -> cycle ()),
 	        currentSpeed (0),
 	    currentFrameRate (0),
+	         threadIndex (0),
+	             threads (1),
+	         threadMutex (),
 	             console (new Console (this))                       // SFNode  [ ]   console    NULL  [Console]
 {
 	addChildren (select,
@@ -150,6 +153,8 @@ X3DBrowserContext::initialize ()
 
 	for (int32_t i = 1; i < renderingProperties -> textureUnits (); ++ i)
 		textureUnits .push (i);
+	
+	threads .resize (renderingProperties -> maxThreads ());
 
 	// Initialize OpenGL context
 
@@ -229,6 +234,14 @@ throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	return currentFrameRate;
+}
+
+std::mutex &
+X3DBrowserContext::getThread ()
+{
+	std::lock_guard <std::mutex> lock (threadMutex);
+	threadIndex = (threadIndex + 1) % threads .size ();
+	return threads [threadIndex];
 }
 
 void

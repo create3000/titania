@@ -79,6 +79,11 @@ public:
 	{ return false; }
 
 	virtual
+	const X3DScalar <LoadState> &
+	checkLoadState () const final
+	{ return X3DUrlObject::checkLoadState (); }
+
+	virtual
 	void
 	requestImmediateLoad () final;
 

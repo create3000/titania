@@ -25,6 +25,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Bits/Error.cpp \
 	Titania/X3D/Bits/GoldenGate.cpp \
 	Titania/X3D/Bits/Keys.cpp \
+	Titania/X3D/Bits/Texture.cpp \
 	Titania/X3D/Browser/Browser.cpp \
 	Titania/X3D/Browser/Console.cpp \
 	Titania/X3D/Browser/Geometry2D/Arc2DOptions.cpp \
