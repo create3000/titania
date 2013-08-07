@@ -76,7 +76,7 @@ public:
 		                    imageTexture -> getBrowser () -> getRenderingProperties () -> maxTextureSize ()))
 	{
 		imageTexture -> getBrowser () -> prepareEvents .addInterest (this, &Future::prepareEvents);
-		imageTexture -> getBrowser () -> notify ();
+		imageTexture -> getBrowser () -> addEvent ();
 	}
 	
 	void
@@ -101,7 +101,7 @@ private:
 	void
 	prepareEvents ()
 	{
-		imageTexture -> getBrowser () -> notify ();
+		imageTexture -> getBrowser () -> addEvent ();
 
 		if (future .valid ())
 		{
@@ -120,10 +120,10 @@ private:
 	           const Color4f & borderColor, size_type borderWidth,
 	           size_type minTextureSize, size_type maxTextureSize)
 	{
-		std::lock_guard <std::mutex> lock (imageTexture -> getBrowser () -> getThread ());
-
 		for (const auto & URL : url)
 		{
+			std::lock_guard <std::mutex> lock (imageTexture -> getBrowser () -> getThread ());
+
 			try
 			{
 				TexturePtr texture (new Texture (imageTexture -> loadDocument (URL)));
@@ -204,8 +204,6 @@ ImageTexture::requestAsyncLoad ()
 void
 ImageTexture::set_texture (const TexturePtr & texture)
 {
-	__LOG__ << texture .get () << " : " << url () << std::endl;
-
 	if (texture)
 	{
 		setImage (texture -> getComponents (),

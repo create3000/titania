@@ -367,7 +367,7 @@ jsBrowser::createX3DFromURL (JSContext* context, uintN argc, jsval* vp)
 
 					jsval argv [2];
 
-					jsX3DScene::create (context, *scene, &argv [0]);
+					jsX3DScene::create (context, scene, &argv [0]);
 					JS_NewNumberValue (context, script -> getCurrentTime (), &argv [1]);
 
 					jsval rval;
@@ -395,7 +395,7 @@ jsBrowser::createX3DFromURL (JSContext* context, uintN argc, jsval* vp)
 			{
 				X3DSFNode <Scene> scene = script -> createX3DFromURL (*url);
 
-				return jsX3DScene::create (context, *scene, vp);
+				return jsX3DScene::create (context, scene, vp);
 			}
 			catch (const X3DError & error)
 			{

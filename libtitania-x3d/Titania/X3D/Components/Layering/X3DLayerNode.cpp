@@ -79,10 +79,10 @@ X3DLayerNode::X3DLayerNode () :
 	           defaultFog (new Fog (getExecutionContext ())),
 	     defaultViewpoint (new Viewpoint (getExecutionContext ())),
 	      currentViewport (defaultViewport),
-	  navigationInfoStack (new NavigationInfoStack (getExecutionContext (), *defaultNavigationInfo)),
-	      backgroundStack (new BackgroundStack (getExecutionContext (), *defaultBackground)),
-	             fogStack (new FogStack (getExecutionContext (), *defaultFog)),
-	       viewpointStack (new ViewpointStack (getExecutionContext (), *defaultViewpoint)),
+	  navigationInfoStack (new NavigationInfoStack (getExecutionContext (), defaultNavigationInfo)),
+	      backgroundStack (new BackgroundStack (getExecutionContext (), defaultBackground)),
+	             fogStack (new FogStack (getExecutionContext (), defaultFog)),
+	       viewpointStack (new ViewpointStack (getExecutionContext (), defaultViewpoint)),
 	      navigationInfos (new NavigationInfoList (getExecutionContext ())),
 	          backgrounds (new BackgroundList (getExecutionContext ())),
 	                 fogs (new FogList (getExecutionContext ())),
@@ -256,7 +256,7 @@ X3DLayerNode::getUserViewpoints () const
 {
 	UserViewpointList userViewpoints;
 
-	for (const auto & viewpoint :** getViewpoints ())
+	for (const auto & viewpoint : *getViewpoints ())
 	{
 		if (viewpoint -> description () .length ())
 			userViewpoints .emplace_back (viewpoint);

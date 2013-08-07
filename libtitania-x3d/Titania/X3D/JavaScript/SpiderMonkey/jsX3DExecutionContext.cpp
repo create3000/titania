@@ -279,7 +279,7 @@ jsX3DExecutionContext::createProto (JSContext* context, uintN argc, jsval* vp)
 
 			node -> setup ();
 
-			return jsSFNode::create (context, new SFNode (*node), &JS_RVAL (context, vp));
+			return jsSFNode::create (context, new SFNode (node), &JS_RVAL (context, vp));
 		}
 		catch (const X3DError & exception)
 		{

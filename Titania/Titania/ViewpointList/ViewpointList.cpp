@@ -139,7 +139,7 @@ ViewpointList::set_viewpoints ()
 	guint index = 0;
 
 	// Fill the TreeView's model
-	for (const auto & viewpoint :** getViewpoints ())
+	for (const auto & viewpoint : *getViewpoints ())
 	{
 		if (viewpoint -> description () .length ())
 		{

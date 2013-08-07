@@ -92,7 +92,7 @@ Route::clone (X3DExecutionContext* const executionContext) const
 		const SFNode & sourceNode      = executionContext -> getNode (getExecutionContext () -> getLocalName (getSourceNode ()));
 		const SFNode & destinationNode = executionContext -> getNode (getExecutionContext () -> getLocalName (getDestinationNode ()));
 
-		return *executionContext -> addRoute (sourceNode, getSourceField (), destinationNode, getDestinationField ());
+		return executionContext -> addRoute (sourceNode, getSourceField (), destinationNode, getDestinationField ()) .getValue ();
 	}
 	catch (const X3DError & error)
 	{

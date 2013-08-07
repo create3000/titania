@@ -784,7 +784,7 @@ Parser::proto ()
 					{
 						const X3DSFNode <Proto> & _proto = getExecutionContext () -> addProtoDeclaration (_nodeTypeId, _interfaceDeclarations);
 
-						pushExecutionContext (*_proto);
+						pushExecutionContext (_proto);
 
 						protoBody ();
 

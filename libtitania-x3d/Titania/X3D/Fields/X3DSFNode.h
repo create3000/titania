@@ -146,9 +146,9 @@ public:
 	operator -> () const
 	{ return getValue (); }
 
-	ValueType*
+	ValueType &
 	operator * () const
-	{ return getValue (); }
+	{ return *getValue (); }
 
 	///  @name 6.7.7 Add field interest.
 

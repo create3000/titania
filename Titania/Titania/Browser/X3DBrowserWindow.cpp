@@ -96,7 +96,7 @@ X3DBrowserWindow::initialize ()
 	getBrowser () -> initialized .addInterest (this, &X3DBrowserWindow::set_initialized);
 
 	// Insert Surface, this will initialize the Browser.
-	getSurfaceBox () .pack_start (**getBrowser (), true, true, 0);
+	getSurfaceBox () .pack_start (*getBrowser (), true, true, 0);
 
 	// Show Surface and start the X3D Main Loop.
 	getBrowser () -> show ();

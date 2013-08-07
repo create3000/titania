@@ -133,12 +133,12 @@ Background::initialize ()
 	topTexture    -> url () = topUrl ();
 	bottomTexture -> url () = bottomUrl ();
 
-	frontTexture  -> textureProperties () = *textureProperties;
-	backTexture   -> textureProperties () = *textureProperties;
-	leftTexture   -> textureProperties () = *textureProperties;
-	rightTexture  -> textureProperties () = *textureProperties;
-	topTexture    -> textureProperties () = *textureProperties;
-	bottomTexture -> textureProperties () = *textureProperties;
+	frontTexture  -> textureProperties () = textureProperties .getValue ();
+	backTexture   -> textureProperties () = textureProperties .getValue ();
+	leftTexture   -> textureProperties () = textureProperties .getValue ();
+	rightTexture  -> textureProperties () = textureProperties .getValue ();
+	topTexture    -> textureProperties () = textureProperties .getValue ();
+	bottomTexture -> textureProperties () = textureProperties .getValue ();
 
 	textureProperties -> setup ();
 	frontTexture      -> setup ();

@@ -461,7 +461,7 @@ X3DBrowserContext::motionNotifyEvent ()
 
 		for (const auto & node : overSensors)
 		{
-			auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (*node);
+			auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node .getValue ());
 
 			if (pointingDeviceSensorNode)
 				pointingDeviceSensorNode -> set_over (getHits () .front (), true);
@@ -474,7 +474,7 @@ X3DBrowserContext::motionNotifyEvent ()
 
 	for (const auto & node : activeSensors)
 	{
-		auto dragSensorNode = dynamic_cast <X3DDragSensorNode*> (*node);
+		auto dragSensorNode = dynamic_cast <X3DDragSensorNode*> (node .getValue ());
 
 		if (dragSensorNode)
 		{
@@ -495,14 +495,14 @@ X3DBrowserContext::buttonPressEvent ()
 
 	for (const auto & node : activeSensors)
 	{
-		auto anchor = dynamic_cast <Anchor*> (*node);
+		auto anchor = dynamic_cast <Anchor*> (node .getValue ());
 
 		if (anchor)
 			anchor -> set_active (true);
 
 		else
 		{
-			auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (*node);
+			auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node .getValue ());
 
 			if (pointingDeviceSensorNode)
 				pointingDeviceSensorNode -> set_active (getHits () .front (), true);
@@ -515,14 +515,14 @@ X3DBrowserContext::buttonReleaseEvent ()
 {
 	for (const auto & node : activeSensors)
 	{
-		auto anchor = dynamic_cast <Anchor*> (*node);
+		auto anchor = dynamic_cast <Anchor*> (node .getValue ());
 
 		if (anchor)
 			anchor -> set_active (false);
 
 		else
 		{
-			auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (*node);
+			auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node .getValue ());
 
 			if (pointingDeviceSensorNode)
 				pointingDeviceSensorNode -> set_active (
