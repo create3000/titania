@@ -104,6 +104,11 @@ private:
 
 	virtual
 	void
+	setLoadState (LoadState value)
+	{ X3DUrlObject::setLoadState (value); }
+
+	virtual
+	void
 	update () final;
 
 };

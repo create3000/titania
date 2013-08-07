@@ -53,6 +53,7 @@
 
 #include "../Texturing/TextureProperties.h"
 #include "../Texturing/X3DTextureNode.h"
+#include "../../Bits/TexturePtr.h"
 
 namespace titania {
 namespace X3D {
@@ -117,7 +118,14 @@ protected:
 
 	virtual
 	void
+	setLoadState (LoadState) = 0;
+
+	virtual
+	void
 	update () = 0;
+
+	void
+	setTexture (const TexturePtr &);
 
 	void
 	setImage (size_t, GLenum, GLint, GLint, const void*);

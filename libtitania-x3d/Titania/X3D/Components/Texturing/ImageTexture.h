@@ -51,7 +51,6 @@
 #ifndef __TITANIA_X3D_COMPONENTS_TEXTURING_IMAGE_TEXTURE_H__
 #define __TITANIA_X3D_COMPONENTS_TEXTURING_IMAGE_TEXTURE_H__
 
-#include "../../Bits/TexturePtr.h"
 #include "../Networking/X3DUrlObject.h"
 #include "../Texturing/X3DTexture2DNode.h"
 
@@ -99,8 +98,10 @@ private:
 	void
 	initialize () final;
 
+	virtual
 	void
-	set_texture (const TexturePtr &);
+	setLoadState (LoadState value)
+	{ X3DUrlObject::setLoadState (value); }
 
 	virtual
 	void

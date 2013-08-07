@@ -89,6 +89,7 @@ private:
 	void
 	initialize () final;
 
+	virtual
 	void
 	setLoadState (LoadState value)
 	{ fields .loadState = value; }

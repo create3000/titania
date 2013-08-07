@@ -151,6 +151,9 @@ MovieTexture::requestImmediateLoad ()
 	if (checkLoadState () not_eq COMPLETE_STATE)
 	{
 		duration_changed () = -1;
+	
+		setImage (3, GL_BGRA, 0, 0, nullptr);
+
 		setLoadState (FAILED_STATE);
 	}
 }

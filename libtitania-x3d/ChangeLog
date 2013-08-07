@@ -1,5 +1,18 @@
 2013-08-07  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* QuadSet.cpp:
+	* ImageTexture.h:
+	* MovieTexture.h:
+	* PixelTexture.h:
+	* TriangleSet.cpp:
+	* PixelTexture.cpp:
+	* ImageTexture.cpp:
+	* MovieTexture.cpp:
+	* X3DTexture2DNode.h:
+	* X3DTexture2DNode.cpp: 
+
+2013-08-07  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Parser.cpp:
 	* Route.cpp:
 	* X3DSFNode.h:

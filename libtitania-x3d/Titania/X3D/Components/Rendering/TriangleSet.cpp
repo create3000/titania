@@ -92,7 +92,8 @@ TriangleSet::build ()
 {
 	auto _coord = x3d_cast <Coordinate*> (coord ());
 
-	buildPolygons (3, _coord -> point () .size ());
+	if (_coord)
+		buildPolygons (3, _coord -> point () .size ());
 }
 
 void

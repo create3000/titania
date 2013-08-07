@@ -1,0 +1,75 @@
+#VRML V2.0 utf8
+
+Script {
+  url "vrmlscript:
+
+function initialize ()
+{
+	print ('+ Browser +++++++++++++++++++++++++++++++++++++++++++++');	
+	print ('Hello Wörld!');	
+	
+	print (Browser);	
+	print ('Name: '                + Browser .name);	
+	print ('Version: '             + Browser .version);
+	print ('CurrentSpeed: '        + Browser .currentSpeed);
+	print ('CurrentFrameRate: '    + Browser .currentFrameRate);
+	print ('Description: '         + Browser .description);
+	print ('SupportedComponents: ' + Browser .supportedComponents);
+	print ('SupportedProfiles: '   + Browser .supportedProfiles);
+	print ('CurrentScene: '        + Browser .currentScene);
+
+	// VRML  
+	print (Browser .getWorldURL ());
+	
+	print ('+ Globals +++++++++++++++++++++++++++++++++++++++++++++');	
+
+	print (FALSE);	
+	print (TRUE);	
+
+	print ('+ X3DFields +++++++++++++++++++++++++++++++++++++++++++');	
+
+	print (new SFColor     ());
+	print (new SFColorRGBA ());
+	print (new SFImage     ());
+	print (new SFMatrix3d  ());
+	print (new SFMatrix3f  ());
+	print (new SFMatrix4d  ());
+	print (new SFMatrix4f  ());
+	print (new SFNode      ());
+	print (new SFRotation  ());
+	print (new SFVec2d     ());
+	print (new SFVec2f     ());
+	print (new SFVec3d     ());
+	print (new SFVec3f     ());
+	print (new SFVec4d     ());
+	print (new SFVec4f     ());
+	print (new VrmlMatrix  ());
+
+	print ('+ X3DArrayFields ++++++++++++++++++++++++++++++++++++++');	
+	
+   print (new MFBool      ());
+   print (new MFColor     ());
+   print (new MFColorRGBA ());
+   print (new MFDouble    ());
+   print (new MFFloat     ());
+   print (new MFImage     ());
+   print (new MFInt32     ());
+   print (new MFMatrix3d  ());
+   print (new MFMatrix3f  ());
+   print (new MFMatrix4d  ());
+   print (new MFMatrix4f  ());
+   print (new MFNode      ());
+   print (new MFRotation  ());
+   print (new MFString    ());
+   print (new MFTime      ());
+   print (new MFVec2d     ());
+   print (new MFVec2f     ());
+   print (new MFVec3d     ());
+   print (new MFVec3f     ());
+   print (new MFVec4d     ());
+   print (new MFVec4f     ());
+
+	print ('+++++++++++++++++++++++++++++++++++++++++++++++++++++++');	
+}
+"
+}

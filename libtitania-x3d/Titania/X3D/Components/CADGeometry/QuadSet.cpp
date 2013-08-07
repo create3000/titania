@@ -91,8 +91,9 @@ void
 QuadSet::build ()
 {
 	auto _coord = x3d_cast <Coordinate*> (coord ());
-
-	buildPolygons (4, _coord -> point () .size ());
+	
+	if (_coord)
+		buildPolygons (4, _coord -> point () .size ());
 }
 
 void

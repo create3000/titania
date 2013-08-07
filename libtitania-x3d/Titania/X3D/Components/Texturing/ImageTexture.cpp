@@ -68,17 +68,12 @@ public:
 
 	Future (ImageTexture* const imageTexture) :
 		imageTexture (imageTexture),
-		future (std::async (std::launch::async, std::mem_fn (&Future::loadAsync), this,
-		                    imageTexture -> url (),
-		                    imageTexture -> getTextureProperties () -> borderColor (),
-		                    imageTexture -> getTextureProperties () -> borderWidth (),
-		                    imageTexture -> getBrowser () -> getBrowserOptions () -> minTextureSize (),
-		                    imageTexture -> getBrowser () -> getRenderingProperties () -> maxTextureSize ()))
+		future (getFuture ())
 	{
 		imageTexture -> getBrowser () -> prepareEvents .addInterest (this, &Future::prepareEvents);
 		imageTexture -> getBrowser () -> addEvent ();
 	}
-	
+
 	void
 	get ()
 	{
@@ -98,21 +93,18 @@ public:
 
 private:
 
-	void
-	prepareEvents ()
+	std::future <TexturePtr>
+	getFuture ()
 	{
-		imageTexture -> getBrowser () -> addEvent ();
+		if (imageTexture -> url () .empty ())
+			std::async (std::launch::deferred, [] () { return nullptr; });
 
-		if (future .valid ())
-		{
-			auto status = future .wait_for (std::chrono::milliseconds (0));
-
-			if (status == std::future_status::ready)
-			{
-				imageTexture -> getBrowser () -> prepareEvents .removeInterest (this, &Future::prepareEvents);
-				imageTexture -> set_texture (future .get ());
-			}
-		}
+		return std::async (std::launch::async, std::mem_fn (&Future::loadAsync), this,
+		                   imageTexture -> url (),
+		                   imageTexture -> getTextureProperties () -> borderColor (),
+		                   imageTexture -> getTextureProperties () -> borderWidth (),
+		                   imageTexture -> getBrowser () -> getBrowserOptions () -> minTextureSize (),
+		                   imageTexture -> getBrowser () -> getRenderingProperties () -> maxTextureSize ());
 	}
 
 	TexturePtr
@@ -143,6 +135,23 @@ private:
 		}
 
 		return nullptr;
+	}
+
+	void
+	prepareEvents ()
+	{
+		imageTexture -> getBrowser () -> addEvent ();
+
+		if (future .valid ())
+		{
+			auto status = future .wait_for (std::chrono::milliseconds (0));
+
+			if (status == std::future_status::ready)
+			{
+				imageTexture -> getBrowser () -> prepareEvents .removeInterest (this, &Future::prepareEvents);
+				imageTexture -> setTexture (future .get ());
+			}
+		}
 	}
 
 	ImageTexture* const      imageTexture;
@@ -202,25 +211,10 @@ ImageTexture::requestAsyncLoad ()
 }
 
 void
-ImageTexture::set_texture (const TexturePtr & texture)
-{
-	if (texture)
-	{
-		setImage (texture -> getComponents (),
-		          texture -> getFormat (),
-		          texture -> getWidth (), texture -> getHeight (),
-		          texture -> getData ());
-
-		setLoadState (COMPLETE_STATE);
-	}
-	else
-		setLoadState (FAILED_STATE);
-}
-
-void
 ImageTexture::update ()
 {
 	setLoadState (NOT_STARTED_STATE);
+
 	requestAsyncLoad ();
 }
 

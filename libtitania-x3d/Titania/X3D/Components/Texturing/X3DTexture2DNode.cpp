@@ -52,6 +52,8 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Browser/X3DBrowser.h"
+#include "../../Bits/Texture.h"
+
 #include <Titania/Math/Functional.h>
 #include <Titania/Utility/Adapter.h>
 
@@ -106,6 +108,26 @@ X3DTexture2DNode::getTextureProperties () const
 		return _textureProperties;
 
 	return x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties ());
+}
+
+void
+X3DTexture2DNode::setTexture (const TexturePtr & texture)
+{
+	if (texture)
+	{
+		setImage (texture -> getComponents (),
+		          texture -> getFormat (),
+		          texture -> getWidth (), texture -> getHeight (),
+		          texture -> getData ());
+
+		setLoadState (COMPLETE_STATE);
+	}
+	else
+	{
+		setImage (3, GL_RGB, 0, 0, nullptr);
+
+		setLoadState (FAILED_STATE);
+	}
 }
 
 void

@@ -1,75 +1,78 @@
 #VRML V2.0 utf8
 
-Script {
+DEF Timer TimeSensor {
+  loop TRUE
+}
+
+DEF Debug Script {
+  eventIn SFTime set_time
+
   url "vrmlscript:
 
-function initialize ()
+function set_time ()
 {
-	print ('+ Browser +++++++++++++++++++++++++++++++++++++++++++++');	
-	print ('Hello Wörld!');	
-	
-	print (Browser);	
-	print ('Name: '                + Browser .name);	
-	print ('Version: '             + Browser .version);
-	print ('CurrentSpeed: '        + Browser .currentSpeed);
-	print ('CurrentFrameRate: '    + Browser .currentFrameRate);
-	print ('Description: '         + Browser .description);
-	print ('SupportedComponents: ' + Browser .supportedComponents);
-	print ('SupportedProfiles: '   + Browser .supportedProfiles);
-	print ('CurrentScene: '        + Browser .currentScene);
+	var f01 = new SFColor     ();
+	var f02 = new SFColorRGBA ();
+	var f03 = new SFImage     ();
+	var f04 = new SFMatrix3d  ();
+	var f05 = new SFMatrix3f  ();
+	var f06 = new SFMatrix4d  ();
+	var f07 = new SFMatrix4f  ();
+	var f08 = new SFNode      ();
+	var f09 = new SFRotation  ();
+	var f10 = new SFVec2d     ();
+	var f11 = new SFVec2f     ();
+	var f12 = new SFVec3d     ();
+	var f13 = new SFVec3f     ();
+	var f14 = new SFVec4d     ();
+	var f15 = new SFVec4f     ();
+	var f16 = new VrmlMatrix  ();
 
-	// VRML  
-	print (Browser .getWorldURL ());
-	
-	print ('+ Globals +++++++++++++++++++++++++++++++++++++++++++++');	
-
-	print (FALSE);	
-	print (TRUE);	
-
-	print ('+ X3DFields +++++++++++++++++++++++++++++++++++++++++++');	
-
-	print (new SFColor     ());
-	print (new SFColorRGBA ());
-	print (new SFImage     ());
-	print (new SFMatrix3d  ());
-	print (new SFMatrix3f  ());
-	print (new SFMatrix4d  ());
-	print (new SFMatrix4f  ());
-	print (new SFNode      ());
-	print (new SFRotation  ());
-	print (new SFVec2d     ());
-	print (new SFVec2f     ());
-	print (new SFVec3d     ());
-	print (new SFVec3f     ());
-	print (new SFVec4d     ());
-	print (new SFVec4f     ());
-	print (new VrmlMatrix  ());
-
-	print ('+ X3DArrayFields ++++++++++++++++++++++++++++++++++++++');	
-	
-   print (new MFBool      ());
-   print (new MFColor     ());
-   print (new MFColorRGBA ());
-   print (new MFDouble    ());
-   print (new MFFloat     ());
-   print (new MFImage     ());
-   print (new MFInt32     ());
-   print (new MFMatrix3d  ());
-   print (new MFMatrix3f  ());
-   print (new MFMatrix4d  ());
-   print (new MFMatrix4f  ());
-   print (new MFNode      ());
-   print (new MFRotation  ());
-   print (new MFString    ());
-   print (new MFTime      ());
-   print (new MFVec2d     ());
-   print (new MFVec2f     ());
-   print (new MFVec3d     ());
-   print (new MFVec3f     ());
-   print (new MFVec4d     ());
-   print (new MFVec4f     ());
-
-	print ('+++++++++++++++++++++++++++++++++++++++++++++++++++++++');	
+   var f17 = new MFBool      ();
+   var f18 = new MFColor     ();
+   var f19 = new MFColorRGBA ();
+   var f20 = new MFDouble    ();
+   var f21 = new MFFloat     ();
+   var f22 = new MFImage     ();
+   var f23 = new MFInt32     ();
+   var f24 = new MFMatrix3d  ();
+   var f25 = new MFMatrix3f  ();
+   var f26 = new MFMatrix4d  ();
+   var f27 = new MFMatrix4f  ();
+   var f28 = new MFNode      ();
+   var f29 = new MFRotation  ();
+   var f30 = new MFString    ();
+   var f31 = new MFTime      ();
+   var f32 = new MFVec2d     ();
+   var f33 = new MFVec2f     ();
+   var f34 = new MFVec3d     ();
+   var f35 = new MFVec3f     ();
+   var f36 = new MFVec4d     ();
+   var f37 = new MFVec4f     ();
+ 
+   f17 .length = 10;
+   f18 .length = 10;
+   f19 .length = 10;
+   f20 .length = 10;
+   f21 .length = 10;
+   f22 .length = 10;
+   f23 .length = 10;
+   f24 .length = 10;
+   f25 .length = 10;
+   f26 .length = 10;
+   f27 .length = 10;
+   f28 .length = 10;
+   f29 .length = 10;
+   f30 .length = 10;
+   f31 .length = 10;
+   f32 .length = 10;
+   f33 .length = 10;
+   f34 .length = 10;
+   f35 .length = 10;
+   f36 .length = 10;
+   f37 .length = 10;
 }
 "
 }
+
+ROUTE Timer.time TO Debug.set_time

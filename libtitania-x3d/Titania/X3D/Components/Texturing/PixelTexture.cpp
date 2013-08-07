@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -75,7 +75,7 @@ PixelTexture::PixelTexture (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "repeatS",           repeatS ());
 	addField (initializeOnly, "repeatT",           repeatT ());
 	addField (initializeOnly, "textureProperties", textureProperties ());
-	
+
 	addChildren (fields .loadState);
 }
 
@@ -188,19 +188,14 @@ PixelTexture::update ()
 
 	mimage .flip ();
 
-	Texture texture (mimage);
+	TexturePtr texture (new Texture (mimage));
 
-	texture .process (getTextureProperties () -> borderColor (),
-		               getTextureProperties () -> borderWidth (),
-		               getBrowser () -> getBrowserOptions () -> minTextureSize (),
-		               getBrowser () -> getRenderingProperties () -> maxTextureSize ());
+	texture -> process (getTextureProperties () -> borderColor (),
+	                    getTextureProperties () -> borderWidth (),
+	                    getBrowser () -> getBrowserOptions () -> minTextureSize (),
+	                    getBrowser () -> getRenderingProperties () -> maxTextureSize ());
 
-	setImage (texture .getComponents (),
-	          texture .getFormat (),
-	          texture .getWidth (), texture .getHeight (),
-	          texture .getData ());
-
-	setLoadState (COMPLETE_STATE);
+	setTexture (texture);
 }
 
 } // X3D
