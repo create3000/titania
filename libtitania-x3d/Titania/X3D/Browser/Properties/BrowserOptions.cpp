@@ -55,10 +55,7 @@
 #include <Titania/Physics/Constants.h>
 #include <Titania/String/Join.h>
 
-extern "C"
-{
-#include <GL/gl.h>
-}
+#include "../../Rendering/OpenGL.h"
 
 namespace titania {
 namespace X3D {

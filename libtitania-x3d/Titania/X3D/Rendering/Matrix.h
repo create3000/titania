@@ -51,12 +51,7 @@
 #ifndef __TITANIA_X3D_RENDERING_MATRIX_H__
 #define __TITANIA_X3D_RENDERING_MATRIX_H__
 
-extern "C"
-{
-#include <GL/glew.h>
-
-#include <GL/gl.h>
-}
+#include "../Rendering/OpenGL.h"
 
 #include "../Types/Numbers.h"
 

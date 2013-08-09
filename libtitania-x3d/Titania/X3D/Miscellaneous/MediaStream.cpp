@@ -50,10 +50,7 @@
 
 #include "MediaStream.h"
 
-extern "C"
-{
-#include <GL/glx.h>
-}
+#include "../Rendering/OpenGL.h"
 
 namespace titania {
 namespace X3D {

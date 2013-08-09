@@ -72,12 +72,9 @@ Text::Text (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DGeometryNode (),
 	         fields (),
-	           font (),
-	     lineHeight (),
 	   charSpacings (),
 	 minorAlignment (),
-	    translation (),
-	          scale ()
+	    translation ()
 {
 	setComponent ("Text");
 	setTypeName ("Text");
@@ -119,31 +116,6 @@ Text::getFontStyle () const
 	return getBrowser () -> getBrowserOptions () -> fontStyle ();
 }
 
-void
-Text::updateFont ()
-{
-	const X3DFontStyleNode* fontStyle = getFontStyle ();
-
-	// Create a pixmap font from a TrueType file.
-	font .reset (new FTPolygonFont (fontStyle -> getFilename () .c_str ()));
-
-	// If something went wrong, bail out.
-	if (font -> Error ())
-		return;
-
-	font -> CharMap (ft_encoding_unicode);
-	font -> UseDisplayList (true);
-
-	// Set the font size to large text.
-	font -> FaceSize (100);
-
-	// Calculate lineHeight.
-	lineHeight = font -> LineHeight () * fontStyle -> spacing ();
-
-	// Calculate scale.
-	scale = fontStyle -> getSize () / font -> LineHeight ();
-}
-
 Box3f
 Text::createBBox ()
 {
@@ -151,7 +123,9 @@ Text::createBBox ()
 
 	Box2f bbox;
 
-	float y1 = 0;
+	float y1         = 0;
+	float lineHeight = fontStyle -> getLineHeight ();
+	float scale      = fontStyle -> getScale ();
 
 	charSpacings  .clear ();
 	lineBounds () .clear ();
@@ -250,7 +224,7 @@ Text::createBBox ()
 Box2f
 Text::getLineBBox (const X3DFontStyleNode* fontStyle, const std::string & line)
 {
-	FTBBox  ftbbox = font -> BBox (line .c_str ());
+	FTBBox  ftbbox = fontStyle -> getFont () -> BBox (line .c_str ());
 	FTPoint min    = ftbbox .Lower ();
 	FTPoint max    = ftbbox .Upper ();
 
@@ -272,8 +246,6 @@ Text::getLineBBox (const X3DFontStyleNode* fontStyle, const std::string & line)
 void
 Text::build ()
 {
-	updateFont ();
-
 	// We cannot access the geometry thus we add a simple rectangle to the geometry to enable picking.
 
 	Box3f    bbox = getBBox ();
@@ -302,6 +274,10 @@ Text::build ()
 void
 Text::draw ()
 {
+	const X3DFontStyleNode* fontStyle = getFontStyle ();
+
+	float scale = fontStyle -> getScale ();
+
 	if (solid ())
 		glEnable (GL_CULL_FACE);
 
@@ -319,22 +295,14 @@ Text::draw ()
 
 	for (const auto & line : string ())
 	{
-		font -> Render (line .getValue () .c_str (),
-		                -1,
-		                FTPoint (translation [i] .x (), translation [i] .y (), 0),
-		                FTPoint (charSpacings [i], 0, 0),
-		                FTGL::RENDER_ALL);
+		fontStyle -> getFont () -> Render (line .getValue () .c_str (),
+		                                   -1,
+		                                   FTPoint (translation [i] .x (), translation [i] .y (), 0),
+		                                   FTPoint (charSpacings [i], 0, 0),
+		                                   FTGL::RENDER_ALL);
 
 		++ i;
 	}
-}
-
-void
-Text::dispose ()
-{
-	font .reset (NULL);
-
-	X3DGeometryNode::dispose ();
 }
 
 } // X3D

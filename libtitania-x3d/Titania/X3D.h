@@ -62,10 +62,10 @@
 #include "X3D/Execution/BindableNodeList.h"
 #include "X3D/Execution/BindableNodeStack.h"
 
-#include "X3D/Bits/Keys.h"
+#include "X3D/Miscellaneous/Keys.h"
+#include "X3D/Miscellaneous/MediaStream.h"
 #include "X3D/Parser/Filter.h"
 #include "X3D/Parser/RegEx.h"
-#include "X3D/Types/MediaStream.h"
 
 namespace titania {
 namespace X3D {

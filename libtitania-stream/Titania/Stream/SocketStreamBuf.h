@@ -52,8 +52,12 @@
 #define __TITANIA_STREAM_SOCKET_STREAM_BUF_H__
 
 #include <Titania/Basic/URI.h>
-#include <curl/curl.h>
 #include <streambuf>
+
+extern "C" 
+{
+#include <curl/curl.h>
+}
 
 namespace titania {
 namespace basic {

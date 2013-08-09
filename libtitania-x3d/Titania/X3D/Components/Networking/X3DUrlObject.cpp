@@ -50,7 +50,7 @@
 
 #include "X3DUrlObject.h"
 
-#include "../../Bits/GoldenGate.h"
+#include "../../Miscellaneous/GoldenGate.h"
 #include "../../Browser/X3DBrowser.h"
 #include <Titania/Basic/URI.h>
 

@@ -551,7 +551,6 @@
     <None Include="Titania\X3D\Fields\X3DSFNode.h" />
     <None Include="Titania\X3D\Fields\SFNode.h" />
     <None Include="Titania\X3D\Types\Set.h" />
-    <None Include="Titania\X3D\Bits\Keys.h" />
     <None Include="Titania\X3D\Browser\Properties\X3DOptionNode.h" />
     <None Include="Titania\X3D\Browser\Geometry2D\X3DGeometricOptionNode.h" />
     <None Include="Titania\X3D\Browser\Geometry2D\Rectangle2DOptions.h" />
@@ -564,12 +563,14 @@
     <None Include="Titania\X3D\Browser\Geometry3D\X3DSphereOptionNode.h" />
     <None Include="Titania\X3D\Debug.h" />
     <None Include="Titania\X3D\Parser\Filter.h" />
-    <None Include="Titania\X3D\Types\MediaStream.h" />
-    <None Include="Titania\X3D\Bits\GoldenGate.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsError.h" />
-    <None Include="Titania\X3D\Bits\Texture.h" />
     <None Include="Titania\X3D\Rendering\OpenGL.h" />
-    <None Include="Titania\X3D\Bits\TexturePtr.h" />
+    <None Include="Titania\X3D\Miscellaneous\GoldenGate.h" />
+    <None Include="Titania\X3D\Miscellaneous\Keys.h" />
+    <None Include="Titania\X3D\Miscellaneous\Texture.h" />
+    <None Include="Titania\X3D\Miscellaneous\TexturePtr.h" />
+    <None Include="Titania\X3D\Miscellaneous\FontConfig.h" />
+    <None Include="Titania\X3D\Miscellaneous\MediaStream.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -991,7 +992,6 @@
     <Compile Include="Titania\X3D\Rendering\DepthBuffer.cpp" />
     <Compile Include="Titania\X3D\Handles\X3DHandleObject.cpp" />
     <Compile Include="Titania\X3D\Fields\SFNode.cpp" />
-    <Compile Include="Titania\X3D\Bits\Keys.cpp" />
     <Compile Include="Titania\X3D\Browser\Properties\X3DOptionNode.cpp" />
     <Compile Include="Titania\X3D\Browser\Geometry2D\X3DGeometricOptionNode.cpp" />
     <Compile Include="Titania\X3D\Browser\Geometry2D\Rectangle2DOptions.cpp" />
@@ -1003,10 +1003,12 @@
     <Compile Include="Titania\X3D\Browser\Geometry3D\QuadSphereOptions.cpp" />
     <Compile Include="Titania\X3D\Browser\Geometry3D\X3DSphereOptionNode.cpp" />
     <Compile Include="Titania\X3D\Parser\Filter.cpp" />
-    <Compile Include="Titania\X3D\Types\MediaStream.cpp" />
-    <Compile Include="Titania\X3D\Bits\GoldenGate.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\jsError.cpp" />
-    <Compile Include="Titania\X3D\Bits\Texture.cpp" />
+    <Compile Include="Titania\X3D\Miscellaneous\GoldenGate.cpp" />
+    <Compile Include="Titania\X3D\Miscellaneous\Keys.cpp" />
+    <Compile Include="Titania\X3D\Miscellaneous\Texture.cpp" />
+    <Compile Include="Titania\X3D\Miscellaneous\FontConfig.cpp" />
+    <Compile Include="Titania\X3D\Miscellaneous\MediaStream.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1036,6 +1038,7 @@
     <Folder Include="share\titania\pages\" />
     <Folder Include="share\titania\pages\about\" />
     <Folder Include="share\titania\pages\Library\" />
+    <Folder Include="Titania\X3D\Miscellaneous\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

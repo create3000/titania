@@ -56,7 +56,7 @@
 #include "../../Components/Navigation/Viewpoint.h"
 #include "../../Components/Navigation/X3DViewpointNode.h"
 #include "../../Fields/SFNode.h"
-#include "../../Bits/Keys.h"
+#include "../../Miscellaneous/Keys.h"
 #include "../Viewer/X3DViewer.h"
 
 namespace titania {

@@ -53,7 +53,7 @@
 #include "X3DSoundSourceNode.h"
 
 #include "../../Browser/X3DBrowser.h"
-#include "../../Types/MediaStream.h"
+#include "../../Miscellaneous/MediaStream.h"
 
 namespace titania {
 namespace X3D {

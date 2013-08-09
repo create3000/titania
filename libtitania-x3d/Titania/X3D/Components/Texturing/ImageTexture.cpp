@@ -50,7 +50,7 @@
 
 #include "ImageTexture.h"
 
-#include "../../Bits/Texture.h"
+#include "../../Miscellaneous/Texture.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 

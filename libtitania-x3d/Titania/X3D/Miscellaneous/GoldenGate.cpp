@@ -52,7 +52,7 @@
 
 #include "../Fields.h"
 #include "../Parser/Filter.h"
-#include "../Types/MediaStream.h"
+#include "../Miscellaneous/MediaStream.h"
 
 #include <Titania/OS.h>
 #include <Titania/Physics/Constants.h>

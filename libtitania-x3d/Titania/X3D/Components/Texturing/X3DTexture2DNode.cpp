@@ -52,7 +52,7 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Browser/X3DBrowser.h"
-#include "../../Bits/Texture.h"
+#include "../../Miscellaneous/Texture.h"
 
 #include <Titania/Math/Functional.h>
 #include <Titania/Utility/Adapter.h>

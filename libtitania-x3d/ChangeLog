@@ -1,5 +1,52 @@
 2013-08-09  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* X3D.h:
+	* libtitania-x3d.cproj:
+	* Keys.h:
+	* Keys.cpp:
+	* Texture.h:
+	* Texture.cpp:
+	* GoldenGate.h:
+	* TexturePtr.h:
+	* Matrix.h:
+	* MediaStream.h:
+	* GoldenGate.cpp:
+	* Keys.h:
+	* MediaStream.cpp:
+	* Tesselator.h:
+	* Keys.cpp:
+	* Text.h:
+	* DepthBuffer.h:
+	* Texture.h:
+	* ViewVolume.cpp:
+	* Text.cpp:
+	* Texture.cpp:
+	* X3DNode.h:
+	* TexturePtr.h:
+	* GoldenGate.h:
+	* FontConfig.h:
+	* MediaStream.h:
+	* FontStyle.h:
+	* GoldenGate.cpp:
+	* FontConfig.cpp:
+	* MediaStream.cpp:
+	* X3DFlyViewer.h:
+	* X3DFontStyleNode.h:
+	* ScreenFontStyle.h:
+	* X3DFontStyleNode.cpp:
+	* ImageTexture.cpp:
+	* BrowserOptions.cpp:
+	* PixelTexture.cpp:
+	* X3DUrlObject.cpp:
+	* X3DSoundSourceNode.cpp:
+	* X3DTexture2DNode.h:
+	* X3DTexture2DNode.cpp:
+	* X3DGeometricOptionNode.h:
+	* X3DFogObject.h: 
+
+2013-08-09  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Text.cpp:
 	* NurbsCurve.h:
 	* NurbsCurve.cpp:

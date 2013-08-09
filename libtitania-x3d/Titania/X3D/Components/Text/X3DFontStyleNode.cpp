@@ -50,7 +50,7 @@
 
 #include "X3DFontStyleNode.h"
 
-#include <fontconfig/fontconfig.h>
+#include "../../Miscellaneous/FontConfig.h"
 
 namespace titania {
 namespace X3D {
@@ -69,6 +69,9 @@ X3DFontStyleNode::Fields::Fields () :
 X3DFontStyleNode::X3DFontStyleNode () :
 	X3DPropertyNode (),
 	         fields (),
+	           font (),
+	     lineHeight (1),
+	          scale (1),
 	     alignments ({ Alignment::BEGIN, Alignment::BEGIN })
 {
 	addNodeType (X3DConstants::X3DFontStyleNode);
@@ -79,21 +82,13 @@ X3DFontStyleNode::initialize ()
 {
 	X3DPropertyNode::initialize ();
 
+	family  () .addInterest (this, &X3DFontStyleNode::set_font);
+	style   () .addInterest (this, &X3DFontStyleNode::set_font);
+	spacing () .addInterest (this, &X3DFontStyleNode::set_font);
 	justify () .addInterest (this, &X3DFontStyleNode::set_justify);
 
+	set_font ();
 	set_justify ();
-}
-
-void
-X3DFontStyleNode::set_justify ()
-{
-	alignments [0] = justify () .size () > 0
-	                 ? getAlignment (0)
-						  : Alignment::BEGIN;
-
-	alignments [1] = justify () .size () > 1
-	                 ? getAlignment (1)
-						  : Alignment::FIRST;
 }
 
 X3DFontStyleNode::Alignment
@@ -114,40 +109,91 @@ X3DFontStyleNode::getAlignment (const size_t index) const
 	return index ? Alignment::FIRST : Alignment::BEGIN;
 }
 
-X3DFontStyleNode::Alignment
-X3DFontStyleNode::getMajorAlignment () const
-{
-	return alignments [0];
-}
-
-X3DFontStyleNode::Alignment
-X3DFontStyleNode::getMinorAlignment () const
-{
-	return alignments [1];
-}
-
 std::string
 X3DFontStyleNode::getFilename () const
 {
-	FcPattern* pattern = family () .size ()
-	                     ? FcNameParse ((FcChar8*) (family () [0] .getValue () .c_str ()))
-								: FcPatternCreate ();
+	bool isExactMatch = false;
+
+	for (const auto & familyName : family ())
+	{
+		std::string filename = getFilename (familyName, isExactMatch);
+
+		if (isExactMatch)
+			return filename;
+	}
+
+	return getFilename ("SERIF", isExactMatch);
+}
+
+std::string
+X3DFontStyleNode::getFilename (const String & familyName, bool & isExactMatch) const
+{
+	FcPattern* pattern = FcNameParse ((FcChar8*) familyName .c_str ());
 
 	FcPatternAddString (pattern, "style", (FcChar8*) (style () == "BOLDITALIC" ? "bold italic" : style () .getValue () .c_str ()));
 
-	FcConfigSubstitute (NULL, pattern, FcMatchPattern);
+	FcConfigSubstitute (nullptr, pattern, FcMatchPattern);
 	FcDefaultSubstitute (pattern);
 
+	String familyNameAfterConfiguration = get_family_name (pattern);
+
 	FcResult   result;
-	FcPattern* match = FcFontMatch (NULL, pattern, &result);
+	FcPattern* match = FcFontMatch (nullptr, pattern, &result);
 
-	FcChar8* file;
+	String familyNameAfterMatching = get_family_name (match);
 
-	FcPatternGetString (match, FC_FILE, 0, &file);
+	isExactMatch = familyNameAfterConfiguration .lowercase () == familyNameAfterMatching .lowercase ();
+
+	std::string filename = get_filename (match);
 
 	FcPatternDestroy (pattern);
+	FcPatternDestroy (match);
 
-	return std::string ((char*) file);
+	return filename;
+}
+
+void
+X3DFontStyleNode::set_font ()
+{
+	// Create a pixmap font from a TrueType file.
+	font .reset (new FTPolygonFont (getFilename () .c_str ()));
+	//font .reset (new FTPolygonFont ("/home/holger/.fonts/A/Aachen D/AachenD-Medium.pfa"));
+
+	// If something went wrong, bail out.
+	if (font -> Error ())
+		return;
+
+	font -> CharMap (ft_encoding_unicode);
+	font -> UseDisplayList (true);
+
+	// Set the font size to large text.
+	font -> FaceSize (100);
+
+	// Calculate lineHeight.
+	lineHeight = font -> LineHeight () * spacing ();
+
+	// Calculate scale.
+	scale = getSize () / font -> LineHeight ();
+}
+
+void
+X3DFontStyleNode::set_justify ()
+{
+	alignments [0] = justify () .size () > 0
+	                 ? getAlignment (0)
+						  : Alignment::BEGIN;
+
+	alignments [1] = justify () .size () > 1
+	                 ? getAlignment (1)
+						  : Alignment::FIRST;
+}
+
+void
+X3DFontStyleNode::dispose ()
+{
+	font .reset ();
+
+	X3DPropertyNode::dispose ();
 }
 
 } // X3D

@@ -53,16 +53,7 @@
 
 #include <vector>
 
-extern "C"
-{
-#include <GL/glew.h>
-
-#include <GL/glu.h>
-
-#include <GL/gl.h>
-
-#include <GL/glx.h>
-}
+#include "../Rendering/OpenGL.h"
 
 namespace titania {
 namespace X3D {

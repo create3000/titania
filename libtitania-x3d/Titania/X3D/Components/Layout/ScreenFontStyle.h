@@ -77,12 +77,12 @@ public:
 	pointSize () const
 	{ return *fields .pointSize; }
 
-	virtual
-	float
-	getSize () const;
-
 
 private:
+
+	virtual
+	float
+	getSize () const final;
 
 	struct Fields
 	{

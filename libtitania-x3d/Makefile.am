@@ -23,9 +23,6 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Basic/X3DFieldDefinition.cpp \
 	Titania/X3D/Bits/config.cpp \
 	Titania/X3D/Bits/Error.cpp \
-	Titania/X3D/Bits/GoldenGate.cpp \
-	Titania/X3D/Bits/Keys.cpp \
-	Titania/X3D/Bits/Texture.cpp \
 	Titania/X3D/Browser/Browser.cpp \
 	Titania/X3D/Browser/Console.cpp \
 	Titania/X3D/Browser/Geometry2D/Arc2DOptions.cpp \
@@ -418,6 +415,11 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/JavaScript/SpiderMonkey/jsX3DScene.cpp \
 	Titania/X3D/JavaScript/X3DJavaScriptContext.cpp \
 	Titania/X3D/JavaScript/X3DJavaScriptEngine.cpp \
+	Titania/X3D/Miscellaneous/FontConfig.cpp \
+	Titania/X3D/Miscellaneous/GoldenGate.cpp \
+	Titania/X3D/Miscellaneous/Keys.cpp \
+	Titania/X3D/Miscellaneous/MediaStream.cpp \
+	Titania/X3D/Miscellaneous/Texture.cpp \
 	Titania/X3D/Parser/Filter.cpp \
 	Titania/X3D/Parser/Grammar.cpp \
 	Titania/X3D/Parser/Parser.cpp \
@@ -438,8 +440,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Routing/RouteArray.cpp \
 	Titania/X3D/Routing/Router.cpp \
 	Titania/X3D/Routing/RouteSet.cpp \
-	Titania/X3D/Types/Image.cpp \
-	Titania/X3D/Types/MediaStream.cpp
+	Titania/X3D/Types/Image.cpp
 
 libtitania_x3d_la_LIBADD = $(TITANIA_X3D_LIBS)  \
 	$(TITANIA_GZSTREAM_LIBS) \

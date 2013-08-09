@@ -52,9 +52,7 @@
 
 #include "../Rendering/Matrix.h"
 
-#include <GL/glu.h>
-
-#include <GL/gl.h>
+#include "../Rendering/OpenGL.h"
 
 #include <Titania/LOG.h>
 

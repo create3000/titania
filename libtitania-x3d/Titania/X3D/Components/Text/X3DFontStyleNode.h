@@ -52,9 +52,13 @@
 #define __TITANIA_X3D_COMPONENTS_TEXT_X3DFONT_STYLE_NODE_H__
 
 #include "../Core/X3DPropertyNode.h"
+#include <FTGL/ftgl.h>
+#include <memory>
 
 namespace titania {
 namespace X3D {
+
+typedef std::unique_ptr <FTPolygonFont> FontPtr;
 
 class X3DFontStyleNode :
 	public X3DPropertyNode
@@ -134,28 +138,53 @@ public:
 	{ return *fields .language; }
 
 	Alignment
-	getMajorAlignment () const;
+	getMajorAlignment () const
+	{ return alignments [0]; }
 
 	Alignment
-	getMinorAlignment () const;
+	getMinorAlignment () const
+	{ return alignments [1]; }
+
+	const FontPtr &
+	getFont () const
+	{ return font; }
+	
+	float
+	getLineHeight () const
+	{ return lineHeight; }
+
+	float
+	getScale () const
+	{ return scale; }
 
 	virtual
-	float
-	getSize () const = 0;
-
-	std::string
-	getFilename () const;
+	void
+	dispose () final;
 
 
 protected:
 
 	X3DFontStyleNode ();
 
+	virtual
+	float
+	getSize () const = 0;
+
 
 private:
 
+	virtual
 	void
-	initialize ();
+	initialize () override;
+
+	std::string
+	getFilename () const;
+
+	std::string
+	getFilename (const String &, bool &) const;
+
+	void
+	set_font ();
 
 	void
 	set_justify ();
@@ -179,7 +208,10 @@ private:
 	Alignment
 	getAlignment (const size_t) const;
 
-	Alignment alignments [2];
+	std::unique_ptr <FTPolygonFont> font;
+	float                           lineHeight;
+	float                           scale;
+	Alignment                       alignments [2];
 
 };
 

@@ -53,8 +53,6 @@
 
 #include "../Rendering/X3DGeometryNode.h"
 #include "../Text/X3DFontStyleNode.h"
-#include <FTGL/ftgl.h>
-#include <memory>
 
 namespace titania {
 namespace X3D {
@@ -140,10 +138,6 @@ public:
 	void
 	draw () final;
 
-	virtual
-	void
-	dispose () final;
-
 
 private:
 
@@ -152,9 +146,6 @@ private:
 
 	const X3DFontStyleNode*
 	getFontStyle () const;
-
-	void
-	updateFont ();
 
 	virtual
 	Box3f
@@ -183,12 +174,9 @@ private:
 
 	Fields fields;
 
-	std::unique_ptr <FTPolygonFont> font;
-	float                           lineHeight;
-	std::deque <float>              charSpacings;
-	Vector2f                        minorAlignment;
-	std::deque <Vector2f>           translation;
-	float                           scale;
+	std::deque <float>    charSpacings;
+	Vector2f              minorAlignment;
+	std::deque <Vector2f> translation;
 
 };
 

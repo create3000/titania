@@ -48,108 +48,28 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_ENVIRONMENTAL_EFFECTS_X3DFOG_OBJECT_H__
-#define __TITANIA_X3D_COMPONENTS_ENVIRONMENTAL_EFFECTS_X3DFOG_OBJECT_H__
-
-#include "../../Basic/X3DBaseNode.h"
-#include "../../Bits/X3DConstants.h"
-#include "../../Fields.h"
-
-#include "../../Rendering/OpenGL.h"
+#include "FontConfig.h"
 
 namespace titania {
 namespace X3D {
 
-class X3DFogObject :
-	virtual public X3DBaseNode
+std::string
+get_family_name (FcPattern* pattern)
 {
-public:
+	FcChar8* familyName;
 
-	SFColor &
-	color ()
-	{ return *fields .color; }
+	FcPatternGetString (pattern, FC_FAMILY, 0, &familyName);
+	return (char*) familyName;
+}
 
-	const SFColor &
-	color () const
-	{ return *fields .color; }
+std::string
+get_filename (FcPattern* pattern)
+{
+	FcChar8* filename = nullptr;
 
-	SFString &
-	fogType ()
-	{ return *fields .fogType; }
-
-	const SFString &
-	fogType () const
-	{ return *fields .fogType; }
-
-	SFFloat &
-	visibilityRange ()
-	{ return *fields .visibilityRange; }
-
-	const SFFloat &
-	visibilityRange () const
-	{ return *fields .visibilityRange; }
-
-	SFFloat &
-	transparency ()
-	{ return fields .transparency; }
-
-	const SFFloat &
-	transparency () const
-	{ return fields .transparency; }
-
-	virtual
-	void
-	enable ();
-
-
-protected:
-
-	X3DFogObject ();
-
-	virtual
-	void
-	initialize ();
-
-	virtual
-	void
-	dispose ();
-
-
-private:
-
-	float
-	getVisibilityRange ();
-
-	float
-	getDensitiy (float);
-
-	void
-	set_color ();
-
-	void
-	set_transparency ();
-
-	void
-	set_fogType ();
-
-	struct Fields
-	{
-		Fields ();
-
-		SFColor* const color;
-		SFString* const fogType;
-		SFFloat* const visibilityRange;
-		SFFloat transparency;
-	};
-
-	Fields fields;
-
-	GLenum  glMode;
-	GLfloat glColor [4];
-
-};
+	FcPatternGetString (pattern, FC_FILE, 0, &filename);
+	return (char*) filename;
+}
 
 } // X3D
-} // titania
-
-#endif
+} // titania/
