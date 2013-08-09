@@ -87,5 +87,9 @@ NurbsCurve::create (X3DExecutionContext* const executionContext) const
 	return new NurbsCurve (executionContext);
 }
 
+void
+NurbsCurve::build ()
+{ }
+
 } // X3D
 } // titania

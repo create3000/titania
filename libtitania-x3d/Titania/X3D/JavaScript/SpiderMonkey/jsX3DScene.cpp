@@ -69,7 +69,6 @@ JSClass jsX3DScene::static_class = {
 JSPropertySpec jsX3DScene::properties [ ] = {
 	{ "rootNodes", ROOT_NODES, JSPROP_ENUMERATE | JSPROP_SHARED | JSPROP_PERMANENT, rootNodes, rootNodes },
 	{ 0 }
-
 };
 
 JSFunctionSpec jsX3DScene::functions [ ] = {
@@ -81,19 +80,15 @@ JSFunctionSpec jsX3DScene::functions [ ] = {
 	{ "updateExportedNode", updateExportedNode, 2, 0 },
 	{ "getExportedNode",    getExportedNode,    1, 0 },
 
-	{ 0, 0, 0, 0 }
+	{ 0 }
 
 };
 
 void
-jsX3DScene::initObject (JSContext* context, JSObject* object)
+jsX3DScene::init (JSContext* context, JSObject* global, JSObject* executionContext)
 {
-	jsX3DExecutionContext::initObject (context, object);
-
-	JS_DeleteProperty (context, object, "rootNodes");
-
-	JS_DefineProperties (context, object, properties);
-	JS_DefineFunctions (context, object, functions);
+	JS_InitClass (context, global, executionContext, &static_class, NULL,
+	              0, properties, functions, NULL, NULL);
 }
 
 JSBool
@@ -104,14 +99,12 @@ jsX3DScene::create (JSContext* context, X3DScene* scene, jsval* vp, const bool s
 	if (result == NULL)
 		return JS_FALSE;
 
-	initObject (context, result);
-
-	JS_SetPrivate (context, result, scene);
-
 	auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
 
 	if (scene not_eq javaScript -> getExecutionContext ())
 		scene -> addParent (javaScript);
+
+	JS_SetPrivate (context, result, scene);
 
 	//if (seal)
 	//	JS_SealObject (context, result, JS_FALSE);
@@ -124,6 +117,8 @@ jsX3DScene::create (JSContext* context, X3DScene* scene, jsval* vp, const bool s
 JSBool
 jsX3DScene::rootNodes (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
+	// Differs from X3DExecutionContext rootNodes!!!
+
 	auto scene = static_cast <X3DScene*> (JS_GetPrivate (context, obj));
 
 	return jsMFNode::create (context, &scene -> getRootNodes (), vp, true);
@@ -350,13 +345,16 @@ jsX3DScene::getExportedNode (JSContext* context, uintN argc, jsval* vp)
 }
 
 void
-jsX3DScene:: finalize (JSContext* context, JSObject* obj)
+jsX3DScene::finalize (JSContext* context, JSObject* obj)
 {
 	auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
 	auto scene      = static_cast <X3DScene*> (JS_GetPrivate (context, obj));
 
-	if (scene not_eq javaScript -> getExecutionContext ())
-		scene -> removeParent (javaScript);
+	if (scene)
+	{
+		if (scene not_eq javaScript -> getExecutionContext ())
+			scene -> removeParent (javaScript);
+	}
 }
 
 } // X3D

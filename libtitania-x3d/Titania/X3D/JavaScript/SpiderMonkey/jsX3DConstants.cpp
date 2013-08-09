@@ -224,13 +224,13 @@ JSFunctionSpec jsX3DConstants::functions [ ] = {
 };
 
 void
-jsX3DConstants::defineObject (JSContext* context, JSObject* global)
+jsX3DConstants::init (JSContext* context, JSObject* global)
 {
-	JSObject* obj = JS_DefineObject (context, global, "X3DConstants", &static_class, NULL,
-	                                 JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT);
+	JS_InitClass (context, global, NULL, &static_class, NULL,
+	              0, properties, functions, NULL, NULL);
 
-	JS_DefineProperties (context, obj, properties);
-	JS_DefineFunctions (context, obj, functions);
+	JS_DefineObject (context, global, "X3DConstants", &static_class, NULL,
+	                 JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT);
 }
 
 // Event types

@@ -72,9 +72,10 @@ JSPropertySpec jsX3DFieldDefinition::properties [ ] = {
 };
 
 void
-jsX3DFieldDefinition::initObject (JSContext* context, JSObject* object)
+jsX3DFieldDefinition::init (JSContext* context, JSObject* global)
 {
-	JS_DefineProperties (context, object, properties);
+	JS_InitClass (context, global, NULL, &static_class, NULL,
+	              0, properties, NULL, NULL, NULL);
 }
 
 JSBool
@@ -86,8 +87,6 @@ jsX3DFieldDefinition::create (JSContext* context, X3DFieldDefinition* field, jsv
 		return JS_FALSE;
 
 	JS_SetPrivate (context, result, field);
-
-	initObject (context, result);
 
 	//if (seal)
 	//	JS_SealObject (context, result, JS_FALSE);
@@ -127,10 +126,10 @@ jsX3DFieldDefinition:: finalize (JSContext* context, JSObject* obj)
 	auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
 	auto field      = static_cast <X3DFieldDefinition*> (JS_GetPrivate (context, obj));
 
-	if (field) // XXX there are sometimes objects without field
-	{
+	// Proto objects have no private
+
+	if (field)
 		javaScript -> removeObject (field);
-	}
 }
 
 } // X3D

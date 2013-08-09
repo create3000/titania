@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,11 +51,31 @@
 #include "jsContext.h"
 
 #include "../../Browser/X3DBrowser.h"
-#include "jsBrowser.h"
-#include "jsFields.h"
+
 #include "jsGlobals.h"
-#include "jsString.h"
 #include "jsX3DConstants.h"
+
+#include "jsBrowser.h"
+#include "jsX3DExecutionContext.h"
+#include "jsX3DScene.h"
+
+#include "jsComponentInfo.h"
+#include "jsProfileInfo.h"
+#include "jsX3DExternProtoDeclaration.h"
+#include "jsX3DFieldDefinition.h"
+#include "jsX3DProtoDeclaration.h"
+#include "jsX3DRoute.h"
+
+#include "jsComponentInfoArray.h"
+#include "jsExternProtoDeclarationArray.h"
+#include "jsFieldDefinitionArray.h"
+#include "jsProfileInfoArray.h"
+#include "jsProtoDeclarationArray.h"
+#include "jsRouteArray.h"
+
+#include "jsFields.h"
+
+#include "jsString.h"
 #include "jsfield.h"
 
 namespace titania {
@@ -152,8 +172,25 @@ jsContext::initContext ()
 
 	JS_SetContextPrivate (context, this);
 
-	jsBrowser::defineObject (context, global);
-	jsX3DConstants::defineObject (context, global);
+	jsBrowser::init (context, global);
+	jsX3DConstants::init (context, global);
+
+	JSObject* executionContext = jsX3DExecutionContext::init (context, global);
+	jsX3DScene::init (context, global, executionContext);
+
+	jsComponentInfo::init             (context, global);
+	jsProfileInfo::init               (context, global);
+	jsX3DFieldDefinition::init        (context, global);
+	jsX3DExternProtoDeclaration::init (context, global);
+	jsX3DProtoDeclaration::init       (context, global);
+	jsX3DRoute::init                  (context, global);
+
+	jsFieldDefinitionArray::init        (context, global);
+	jsComponentInfoArray::init          (context, global);
+	jsProfileInfoArray::init            (context, global);
+	jsExternProtoDeclarationArray::init (context, global);
+	jsProtoDeclarationArray::init       (context, global);
+	jsRouteArray::init                  (context, global);
 
 	jsSFColor::init     (context, global);
 	jsSFColorRGBA::init (context, global);

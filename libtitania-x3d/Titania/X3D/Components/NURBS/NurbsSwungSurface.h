@@ -106,7 +106,7 @@ private:
 
 	virtual
 	void
-	initialize ();
+	build () final;
 
 	struct Fields
 	{

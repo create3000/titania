@@ -116,11 +116,11 @@ JSFunctionSpec jsX3DExecutionContext::functions [ ] = {
 
 };
 
-void
-jsX3DExecutionContext::initObject (JSContext* context, JSObject* object)
+JSObject*
+jsX3DExecutionContext::init (JSContext* context, JSObject* global)
 {
-	JS_DefineProperties (context, object, properties);
-	JS_DefineFunctions (context, object, functions);
+	return JS_InitClass (context, global, NULL, &static_class, NULL,
+	                     0, properties, functions, NULL, NULL);
 }
 
 JSBool
@@ -132,8 +132,6 @@ jsX3DExecutionContext::create (JSContext* context, X3DExecutionContext* executio
 		return JS_FALSE;
 
 	JS_SetPrivate (context, result, executionContext);
-
-	initObject (context, result);
 
 	//if (seal)
 	//	JS_SealObject (context, result, JS_FALSE);

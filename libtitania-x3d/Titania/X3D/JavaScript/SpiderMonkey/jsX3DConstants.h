@@ -61,10 +61,12 @@ class jsX3DConstants
 {
 public:
 
-	static void
-	defineObject (JSContext*, JSObject*);
+	static
+	void
+	init (JSContext*, JSObject*);
 
-	static JSClass*
+	static
+	JSClass*
 	getClass () { return &static_class; }
 
 

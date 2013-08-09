@@ -62,6 +62,10 @@ class jsX3DExternProtoDeclaration
 public:
 
 	static
+	void
+	init (JSContext*, JSObject*);
+
+	static
 	JSBool
 	create (JSContext*, const X3DSFNode <ExternProto> &, jsval*, const bool = false);
 
@@ -81,10 +85,6 @@ private:
 		IS_EXTERNPROTO,
 		LOAD_STATE
 	};
-
-	static
-	void
-	initObject (JSContext*, JSObject*);
 
 	static JSBool name          (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool fields        (JSContext *, JSObject *, jsid, jsval*);

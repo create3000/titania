@@ -1,3 +1,44 @@
+2013-08-09  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Text.cpp:
+	* NurbsCurve.h:
+	* NurbsCurve.cpp:
+	* jsBrowser.h:
+	* NurbsSwungSurface.h:
+	* jsString.cpp:
+	* jsX3DRoute.h:
+	* NurbsSweptSurface.h:
+	* NurbsPatchSurface.h:
+	* jsX3DScene.h:
+	* jsBrowser.cpp:
+	* jsContext.cpp:
+	* jsX3DScene.cpp:
+	* jsX3DRoute.cpp:
+	* jsConstArray.h:
+	* NurbsSweptSurface.cpp:
+	* NurbsTrimmedSurface.h:
+	* X3DGeometryNode.h:
+	* NurbsPatchSurface.cpp:
+	* NurbsSwungSurface.cpp:
+	* jsProfileInfo.h:
+	* jsX3DConstants.h:
+	* GeoElevationGrid.h:
+	* NurbsTrimmedSurface.cpp:
+	* X3DGeometryNode.cpp:
+	* jsProfileInfo.cpp:
+	* jsComponentInfo.h:
+	* jsX3DConstants.cpp:
+	* GeoElevationGrid.cpp:
+	* jsComponentInfo.cpp:
+	* jsX3DFieldDefinition.h:
+	* jsX3DProtoDeclaration.h:
+	* jsX3DExecutionContext.h:
+	* jsX3DFieldDefinition.cpp:
+	* jsX3DExecutionContext.cpp:
+	* jsX3DProtoDeclaration.cpp:
+	* jsX3DExternProtoDeclaration.h:
+	* jsX3DExternProtoDeclaration.cpp: 
+
 2013-08-07  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* QuadSet.cpp:

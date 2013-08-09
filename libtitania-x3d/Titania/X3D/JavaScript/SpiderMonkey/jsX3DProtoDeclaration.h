@@ -62,6 +62,10 @@ class jsX3DProtoDeclaration
 public:
 
 	static
+	void
+	init (JSContext*, JSObject*);
+
+	static
 	JSBool
 	create (JSContext*, const X3DSFNode <Proto> &, jsval*, const bool = false);
 
@@ -79,10 +83,6 @@ private:
 		FIELDS,
 		IS_EXTERNPROTO
 	};
-
-	static
-	void
-	initObject (JSContext*, JSObject*);
 
 	static JSBool name          (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool fields        (JSContext *, JSObject *, jsid, jsval*);

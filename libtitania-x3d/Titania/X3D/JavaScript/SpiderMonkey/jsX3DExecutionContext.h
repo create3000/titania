@@ -62,6 +62,10 @@ class jsX3DExecutionContext
 public:
 
 	static
+	JSObject*
+	init (JSContext*, JSObject*);
+
+	static
 	JSBool
 	create (JSContext*, X3DExecutionContext*, jsval*, const bool = false);
 
@@ -74,12 +78,6 @@ public:
 
 
 protected:
-
-	static void
-	initObject (JSContext*, JSObject*);
-
-
-private:
 
 	enum Property
 	{
@@ -94,20 +92,11 @@ private:
 		ROUTES
 	};
 
-	static JSBool
-	specificationVersion (JSContext* context, JSObject* obj, jsid id, jsval* vp);
-
-	static JSBool
-	encoding (JSContext* context, JSObject* obj, jsid id, jsval* vp);
-
-	static JSBool
-	worldURL (JSContext* context, JSObject* obj, jsid id, jsval* vp);
-
-	static JSBool
-	profile    (JSContext* context, JSObject* obj, jsid id, jsval* vp);
-
-	static JSBool
-	components (JSContext* context, JSObject* obj, jsid id, jsval* vp);
+	static JSBool specificationVersion (JSContext* context, JSObject* obj, jsid id, jsval* vp);
+	static JSBool encoding             (JSContext* context, JSObject* obj, jsid id, jsval* vp);
+	static JSBool worldURL             (JSContext* context, JSObject* obj, jsid id, jsval* vp);
+	static JSBool profile              (JSContext* context, JSObject* obj, jsid id, jsval* vp);
+	static JSBool components           (JSContext* context, JSObject* obj, jsid id, jsval* vp);
 
 	static JSBool externprotos (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool protos       (JSContext *, JSObject *, jsid, jsval*);
@@ -131,6 +120,8 @@ private:
 
 	static JSBool toVRMLString (JSContext *, uintN, jsval*);
 	static JSBool toXMLString  (JSContext *, uintN, jsval*);
+
+private:
 
 	static JSClass        static_class;
 	static JSPropertySpec properties [ ];

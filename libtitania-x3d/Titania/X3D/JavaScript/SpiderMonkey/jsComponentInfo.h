@@ -62,6 +62,10 @@ class jsComponentInfo
 public:
 
 	static
+	void
+	init (JSContext*, JSObject*);
+
+	static
 	JSBool
 	create (JSContext*, const ComponentInfo*, jsval*, const bool = false);
 
@@ -80,10 +84,6 @@ private:
 		TITLE,
 		PROVIDER_URL
 	};
-
-	static
-	void
-	initObject (JSContext*, JSObject*);
 
 	static JSBool name        (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool level       (JSContext *, JSObject *, jsid, jsval*);

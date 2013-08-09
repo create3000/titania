@@ -85,5 +85,9 @@ NurbsPatchSurface::create (X3DExecutionContext* const executionContext) const
 	return new NurbsPatchSurface (executionContext);
 }
 
+void
+NurbsPatchSurface::build ()
+{ }
+
 } // X3D
 } // titania

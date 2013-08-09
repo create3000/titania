@@ -76,7 +76,7 @@ public:
 
 	virtual
 	void
-	setup ();
+	setup () final;
 
 	bool
 	intersect (const Line3f &, std::deque <std::shared_ptr <Intersection>> &) const;
@@ -92,12 +92,9 @@ public:
 	void
 	draw ();
 
+	// Used in CollisionShape
 	void
 	draw (bool, bool, bool);
-
-	virtual
-	void
-	dispose ();
 
 
 protected:
@@ -180,11 +177,11 @@ protected:
 
 	virtual
 	void
-	build ();
+	build () = 0;
 
 	virtual
 	void
-	eventsProcessed ();
+	eventsProcessed () override;
 
 
 private:
@@ -204,9 +201,6 @@ private:
 	void
 	clear ();
 
-	void
-	transfer ();
-
 	Box3f                       bbox;
 	std::vector <Vector3f>      texCoords;
 	TextureCoordinateGenerator* textureCoordinateGenerator;
@@ -217,12 +211,6 @@ private:
 	bool                        solid;
 	GLenum                      ccw;
 	std::deque <Element>        elements;
-
-	GLenum bufferUsage;
-	GLuint texCoordBufferId;
-	GLuint colorBufferId;
-	GLuint normalBufferId;
-	GLuint pointBufferId;
 
 };
 

@@ -63,6 +63,10 @@ class jsX3DFieldDefinition :
 public:
 
 	static
+	void
+	init (JSContext*, JSObject*);
+
+	static
 	JSBool
 	create (JSContext*, X3DFieldDefinition*, jsval*, const bool = false);
 
@@ -91,10 +95,6 @@ private:
 
 	static
 	JSPropertySpec properties [ ];
-
-	static
-	void
-	initObject (JSContext*, JSObject*);
 
 };
 

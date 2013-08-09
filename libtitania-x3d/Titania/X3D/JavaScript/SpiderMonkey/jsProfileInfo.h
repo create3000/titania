@@ -62,6 +62,10 @@ class jsProfileInfo
 public:
 
 	static
+	void
+	init (JSContext*, JSObject*);
+
+	static
 	JSBool
 	create (JSContext*, const ProfileInfo*, jsval*, const bool = false);
 
@@ -80,10 +84,6 @@ private:
 		PROVIDER_URL,
 		COMPONENTS
 	};
-
-	static
-	void
-	initObject (JSContext*, JSObject*);
 
 	static JSBool name        (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool title       (JSContext *, JSObject *, jsid, jsval*);

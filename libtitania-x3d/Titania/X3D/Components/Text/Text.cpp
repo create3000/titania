@@ -272,8 +272,6 @@ Text::getLineBBox (const X3DFontStyleNode* fontStyle, const std::string & line)
 void
 Text::build ()
 {
-	X3DGeometryNode::build ();
-	
 	updateFont ();
 
 	// We cannot access the geometry thus we add a simple rectangle to the geometry to enable picking.

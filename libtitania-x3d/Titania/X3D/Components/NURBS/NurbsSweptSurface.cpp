@@ -84,10 +84,8 @@ NurbsSweptSurface::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-NurbsSweptSurface::initialize ()
-{
-	X3DParametricGeometryNode::initialize ();
-}
+NurbsSweptSurface::build ()
+{ }
 
 } // X3D
 } // titania

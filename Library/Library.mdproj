@@ -2300,6 +2300,7 @@
     <None Include="Tests\Texturing\Border.wrl" />
     <None Include="Tests\Scripting\Fields2.wrl" />
     <None Include="Tests\Basic\Delay.wrl" />
+    <None Include="Tests\Basic\NodeIndex2.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

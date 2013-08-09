@@ -62,6 +62,10 @@ class jsX3DRoute
 public:
 
 	static
+	void
+	init (JSContext*, JSObject*);
+
+	static
 	JSBool
 	create (JSContext*, const X3DSFNode <Route> &, jsval*, const bool = false);
 
@@ -81,21 +85,15 @@ private:
 		DESTINATION_FIELD
 	};
 
-	static
-	void
-	initObject (JSContext*, JSObject*);
-
 	static JSBool sourceNode       (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool sourceField      (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool destinationNode  (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool destinationField (JSContext *, JSObject *, jsid, jsval*);
 
-	static void
-	finalize (JSContext*, JSObject*);
+	static void finalize (JSContext*, JSObject*);
 
 	static JSClass        static_class;
 	static JSPropertySpec properties [ ];
-	static JSFunctionSpec functions [ ];
 
 };
 

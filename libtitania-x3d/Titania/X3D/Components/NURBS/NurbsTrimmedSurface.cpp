@@ -95,5 +95,9 @@ NurbsTrimmedSurface::create (X3DExecutionContext* const executionContext) const
 	return new NurbsTrimmedSurface (executionContext);
 }
 
+void
+NurbsTrimmedSurface::build () 
+{ }
+
 } // X3D
 } // titania

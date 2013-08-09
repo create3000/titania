@@ -65,7 +65,7 @@ public:
 
 	static
 	void
-	init (JSContext*, JSObject*) { }
+	init (JSContext*, JSObject*, JSObject*);
 
 	static
 	JSBool
@@ -79,14 +79,6 @@ public:
 
 private:
 
-	enum Property
-	{
-		ROOT_NODES
-	};
-
-	static void
-	initObject (JSContext*, JSObject*);
-
 	static JSBool rootNodes (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool rootNodes (JSContext *, JSObject *, jsid, JSBool, jsval*);
 
@@ -98,8 +90,7 @@ private:
 	static JSBool updateExportedNode (JSContext *, uintN, jsval*);
 	static JSBool getExportedNode    (JSContext *, uintN, jsval*);
 
-	static void
-	finalize (JSContext*, JSObject*);
+	static void finalize (JSContext*, JSObject*);
 
 	static JSClass        static_class;
 	static JSPropertySpec properties [ ];

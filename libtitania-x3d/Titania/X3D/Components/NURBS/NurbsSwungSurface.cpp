@@ -84,10 +84,8 @@ NurbsSwungSurface::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-NurbsSwungSurface::initialize ()
-{
-	X3DParametricGeometryNode::initialize ();
-}
+NurbsSwungSurface::build ()
+{ }
 
 } // X3D
 } // titania

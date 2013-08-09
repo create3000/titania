@@ -112,10 +112,8 @@ GeoElevationGrid::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-GeoElevationGrid::initialize ()
-{
-	X3DGeometryNode::initialize ();
-}
+GeoElevationGrid::build ()
+{ }
 
 } // X3D
 } // titania

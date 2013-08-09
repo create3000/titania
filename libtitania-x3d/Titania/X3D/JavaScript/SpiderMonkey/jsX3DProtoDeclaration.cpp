@@ -83,10 +83,10 @@ JSFunctionSpec jsX3DProtoDeclaration::functions [ ] = {
 };
 
 void
-jsX3DProtoDeclaration::initObject (JSContext* context, JSObject* object)
+jsX3DProtoDeclaration::init (JSContext* context, JSObject* global)
 {
-	JS_DefineProperties (context, object, properties);
-	JS_DefineFunctions (context, object, functions);
+	JS_InitClass (context, global, NULL, &static_class, NULL,
+	              0, properties, functions, NULL, NULL);
 }
 
 JSBool
@@ -96,8 +96,6 @@ jsX3DProtoDeclaration::create (JSContext* context, const X3DSFNode <Proto> & pro
 
 	if (result == NULL)
 		return JS_FALSE;
-
-	initObject (context, result);
 
 	auto field = new X3DSFNode <Proto> (proto);
 
@@ -160,7 +158,8 @@ jsX3DProtoDeclaration:: finalize (JSContext* context, JSObject* obj)
 {
 	auto proto = static_cast <X3DSFNode <Proto>*> (JS_GetPrivate (context, obj));
 
-	static_cast <jsContext*> (JS_GetContextPrivate (context)) -> removeObject (proto);
+	if (proto)
+		static_cast <jsContext*> (JS_GetContextPrivate (context)) -> removeObject (proto);
 }
 
 } // X3D

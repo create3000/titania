@@ -75,16 +75,11 @@ JSPropertySpec jsX3DRoute::properties [ ] = {
 
 };
 
-JSFunctionSpec jsX3DRoute::functions [ ] = {
-	{ 0, 0, 0, 0 }
-
-};
-
 void
-jsX3DRoute::initObject (JSContext* context, JSObject* object)
+jsX3DRoute::init (JSContext* context, JSObject* global)
 {
-	JS_DefineProperties (context, object, properties);
-	JS_DefineFunctions (context, object, functions);
+	JS_InitClass (context, global, NULL, &static_class, NULL,
+	              0, properties, NULL, NULL, NULL);
 }
 
 JSBool
@@ -94,8 +89,6 @@ jsX3DRoute::create (JSContext* context, const X3DSFNode <Route> & route, jsval* 
 
 	if (result == NULL)
 		return JS_FALSE;
-
-	initObject (context, result);
 
 	auto field = new X3DSFNode <Route> (route);
 
@@ -150,7 +143,8 @@ jsX3DRoute:: finalize (JSContext* context, JSObject* obj)
 {
 	auto route = static_cast <X3DSFNode <Route>*> (JS_GetPrivate (context, obj));
 
-	static_cast <jsContext*> (JS_GetContextPrivate (context)) -> removeObject (route);
+	if (route)
+		static_cast <jsContext*> (JS_GetContextPrivate (context)) -> removeObject (route);
 }
 
 } // X3D

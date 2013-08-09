@@ -79,10 +79,10 @@ JSFunctionSpec jsProfileInfo::functions [ ] = {
 };
 
 void
-jsProfileInfo::initObject (JSContext* context, JSObject* object)
+jsProfileInfo::init (JSContext* context, JSObject* global)
 {
-	JS_DefineProperties (context, object, properties);
-	JS_DefineFunctions (context, object, functions);
+	JS_InitClass (context, global, NULL, &static_class, NULL,
+	              0, properties, functions, NULL, NULL);
 }
 
 JSBool
@@ -92,8 +92,6 @@ jsProfileInfo::create (JSContext* context, const ProfileInfo* profileInfo, jsval
 
 	if (result == NULL)
 		return JS_FALSE;
-
-	initObject (context, result);
 
 	JS_SetPrivate (context, result, const_cast <ProfileInfo*> (profileInfo));
 

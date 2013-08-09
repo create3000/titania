@@ -119,13 +119,13 @@ JSFunctionSpec jsBrowser::functions [ ] = {
 };
 
 void
-jsBrowser::defineObject (JSContext* context, JSObject* global)
+jsBrowser::init (JSContext* context, JSObject* global)
 {
-	JSObject* obj = JS_DefineObject (context, global, "Browser", &static_class, NULL,
-	                                 JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT);
+	JS_InitClass (context, global, NULL, &static_class, NULL,
+	              0, properties, functions, NULL, NULL);
 
-	JS_DefineProperties (context, obj, properties);
-	JS_DefineFunctions (context, obj, functions);
+	JS_DefineObject (context, global, "Browser", &static_class, NULL,
+	                 JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT);
 }
 
 // X3D properties

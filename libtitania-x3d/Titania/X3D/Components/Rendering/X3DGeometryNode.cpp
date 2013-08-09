@@ -66,12 +66,7 @@ X3DGeometryNode::X3DGeometryNode () :
 	                  vertices (),
 	                     solid (true),
 	                       ccw (GL_CCW),
-	                  elements (),
-	               bufferUsage (GL_STATIC_DRAW),
-	          texCoordBufferId (0),
-	             colorBufferId (0),
-	            normalBufferId (0),
-	             pointBufferId (0)
+	                  elements ()
 {
 	addNodeType (X3DConstants::X3DGeometryNode);
 }
@@ -81,17 +76,9 @@ X3DGeometryNode::setup ()
 {
 	X3DNode::setup ();
 
-	if (GLEW_ARB_vertex_buffer_object)
-	{
-		glGenBuffers (1, &texCoordBufferId);
-		glGenBuffers (1, &colorBufferId);
-		glGenBuffers (1, &normalBufferId);
-		glGenBuffers (1, &pointBufferId);
-
-		// Update only initalized nodes
-		if (not getExecutionContext () -> isProto ())
-			update ();
-	}
+	// Update only initalized nodes
+	if (not getExecutionContext () -> isProto ())
+		update ();
 }
 
 void
@@ -477,7 +464,6 @@ X3DGeometryNode::update ()
 {
 	clear ();
 	build ();
-	transfer ();
 }
 
 void
@@ -492,38 +478,6 @@ X3DGeometryNode::clear ()
 	normals    .clear ();
 	vertices   .clear ();
 	elements   .clear ();
-}
-
-void
-X3DGeometryNode::build ()
-{ }
-
-void
-X3DGeometryNode::transfer ()
-{
-	glBindBuffer (GL_ARRAY_BUFFER, texCoordBufferId);
-	glBufferData (GL_ARRAY_BUFFER, sizeof (Vector3f) * texCoords .size (), texCoords .data (), bufferUsage);
-
-	if (colors .size ())
-	{
-		glBindBuffer (GL_ARRAY_BUFFER, colorBufferId);
-		glBufferData (GL_ARRAY_BUFFER, sizeof (Color3f) * colors .size (), colors .data (), bufferUsage);
-	}
-	else if (colorsRGBA .size ())
-	{
-		glBindBuffer (GL_ARRAY_BUFFER, colorBufferId);
-		glBufferData (GL_ARRAY_BUFFER, sizeof (Color4f) * colorsRGBA .size (), colorsRGBA .data (), bufferUsage);
-	}
-
-	glBindBuffer (GL_ARRAY_BUFFER, normalBufferId);
-	glBufferData (GL_ARRAY_BUFFER, sizeof (Vector3f) * normals .size (), normals .data (), bufferUsage);
-
-	glBindBuffer (GL_ARRAY_BUFFER, pointBufferId);
-	glBufferData (GL_ARRAY_BUFFER, sizeof (Vector3f) * vertices .size (), vertices .data (), bufferUsage);
-
-	glBindBuffer (GL_ARRAY_BUFFER, 0);
-
-	bufferUsage = GL_DYNAMIC_DRAW;
 }
 
 void
@@ -553,35 +507,39 @@ X3DGeometryNode::draw (bool solid, bool texture, bool lighting)
 
 		else if (texCoords .size ())
 		{
-			glBindBuffer (GL_ARRAY_BUFFER, texCoordBufferId);
 			glEnableClientState (GL_TEXTURE_COORD_ARRAY);
-			glTexCoordPointer (3, GL_FLOAT, 0, 0);
+			glTexCoordPointer (3, GL_FLOAT, 0, texCoords .data ());
 		}
 	}
 
-	if (colors .size () or colorsRGBA .size ())
+	if (colors .size ())
 	{
 		if (lighting)
 			glEnable (GL_COLOR_MATERIAL);
 
-		glBindBuffer (GL_ARRAY_BUFFER, colorBufferId);
 		glEnableClientState (GL_COLOR_ARRAY);
-		glColorPointer (colors .size () ? 3 : 4, GL_FLOAT, 0, 0);
+		glColorPointer (3, GL_FLOAT, 0, colors .data ());
+	}
+	else if (colorsRGBA .size ())
+	{
+		if (lighting)
+			glEnable (GL_COLOR_MATERIAL);
+
+		glEnableClientState (GL_COLOR_ARRAY);
+		glColorPointer (4, GL_FLOAT, 0, colorsRGBA .data ());
 	}
 
 	if (lighting)
 	{
 		if (normals .size ())
 		{
-			glBindBuffer (GL_ARRAY_BUFFER, normalBufferId);
 			glEnableClientState (GL_NORMAL_ARRAY);
-			glNormalPointer (GL_FLOAT, 0, 0);
+			glNormalPointer (GL_FLOAT, 0, normals .data ());
 		}
 	}
 
-	glBindBuffer (GL_ARRAY_BUFFER, pointBufferId);
 	glEnableClientState (GL_VERTEX_ARRAY);
-	glVertexPointer (3, GL_FLOAT, 0, 0);
+	glVertexPointer (3, GL_FLOAT, 0, vertices .data ());
 
 	size_t first = 0;
 
@@ -598,26 +556,6 @@ X3DGeometryNode::draw (bool solid, bool texture, bool lighting)
 	glDisableClientState (GL_COLOR_ARRAY);
 	glDisableClientState (GL_NORMAL_ARRAY);
 	glDisableClientState (GL_VERTEX_ARRAY);
-
-	glBindBuffer (GL_ARRAY_BUFFER, 0);
-}
-
-void
-X3DGeometryNode::dispose ()
-{
-	if (texCoordBufferId)
-		glDeleteBuffers (1, &texCoordBufferId);
-
-	if (colorBufferId)
-		glDeleteBuffers (1, &colorBufferId);
-
-	if (normalBufferId)
-		glDeleteBuffers (1, &normalBufferId);
-
-	if (pointBufferId)
-		glDeleteBuffers (1, &pointBufferId);
-
-	X3DNode::dispose ();
 }
 
 } // X3D

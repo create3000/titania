@@ -96,6 +96,10 @@ public:
 
 private:
 
+	virtual
+	void
+	build () final;
+
 	struct Fields
 	{
 		Fields ();

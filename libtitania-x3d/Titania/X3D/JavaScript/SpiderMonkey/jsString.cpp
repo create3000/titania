@@ -58,36 +58,33 @@ namespace X3D {
 JSBool
 JS_NewStringValue (JSContext* context, const std::string & string, jsval* vp)
 {
-	char* chars = (char*) JS_malloc (context, sizeof (char) * (string .length () + 1));
-
-	if (not chars)
-		return JS_FALSE;
-
-	(void) memmove (chars, string .c_str (), sizeof (char) * (string .length () + 1));
-
-	JSString* result = JS_NewStringCopyN (context, chars, string .length ());
-
-	if (not result)
+	JSString* result = JS_NewStringCopyN (context, string .c_str (), string .length ());
+	
+	if (result)
 	{
-		JS_free (context, chars);
-		return JS_FALSE;
+		*vp = STRING_TO_JSVAL (result);
+
+		return JS_TRUE;
 	}
-
-	JS_SET_RVAL (context, vp, STRING_TO_JSVAL (result));
-
-	return JS_TRUE;
+	
+	return JS_FALSE;
 }
 
 std::string
 JS_GetString (JSContext* context, JSString* jsstring)
 {
-	char* chars = jsstring ? JS_EncodeString (context, jsstring) : nullptr;
+	if (jsstring)
+	{
+		char* chars = JS_EncodeString (context, jsstring);
 
-	std::string string = chars ? chars : "";
+		std::string string = chars;
 
-	JS_free (context, chars);
+		JS_free (context, chars);
 
-	return string;
+		return string;
+	}
+
+	return "";
 }
 
 } // X3D

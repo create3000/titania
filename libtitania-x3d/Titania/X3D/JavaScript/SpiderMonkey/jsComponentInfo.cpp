@@ -79,10 +79,10 @@ JSFunctionSpec jsComponentInfo::functions [ ] = {
 };
 
 void
-jsComponentInfo::initObject (JSContext* context, JSObject* object)
+jsComponentInfo::init (JSContext* context, JSObject* global)
 {
-	JS_DefineProperties (context, object, properties);
-	JS_DefineFunctions (context, object, functions);
+	JS_InitClass (context, global, NULL, &static_class, NULL,
+	              0, properties, functions, NULL, NULL);
 }
 
 JSBool
@@ -92,8 +92,6 @@ jsComponentInfo::create (JSContext* context, const ComponentInfo* componentInfo,
 
 	if (result == NULL)
 		return JS_FALSE;
-
-	initObject (context, result);
 
 	JS_SetPrivate (context, result, const_cast <ComponentInfo*> (componentInfo));
 

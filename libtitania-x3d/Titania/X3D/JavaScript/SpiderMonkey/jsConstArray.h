@@ -62,6 +62,10 @@ class jsConstArray
 public:
 
 	static
+	void
+	init (JSContext*, JSObject*);
+
+	static
 	JSBool
 	create (JSContext*, const Type*, jsval*, const bool = false);
 
@@ -73,10 +77,6 @@ public:
 private:
 
 	enum Property {LENGTH};
-
-	static
-	void
-	initObject (JSContext*, JSObject*);
 
 	static
 	JSBool
@@ -116,10 +116,10 @@ JSFunctionSpec jsConstArray <Type, ValueType>::functions [ ] = {
 
 template <class Type, class ValueType>
 void
-jsConstArray <Type, ValueType>::initObject (JSContext* context, JSObject* object)
+jsConstArray <Type, ValueType>::init (JSContext* context, JSObject* global)
 {
-	JS_DefineProperties (context, object, properties);
-	JS_DefineFunctions (context, object, functions);
+	JS_InitClass (context, global, NULL, &static_class, NULL,
+	              0, properties, functions, NULL, NULL);
 }
 
 template <class Type, class ValueType>
@@ -130,8 +130,6 @@ jsConstArray <Type, ValueType>::create (JSContext* context, const Type* array, j
 
 	if (result == NULL)
 		return JS_FALSE;
-
-	initObject (context, result);
 
 	JS_SetPrivate (context, result, const_cast <Type*> (array));
 

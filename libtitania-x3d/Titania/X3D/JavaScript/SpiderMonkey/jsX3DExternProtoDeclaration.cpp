@@ -86,10 +86,10 @@ JSFunctionSpec jsX3DExternProtoDeclaration::functions [ ] = {
 };
 
 void
-jsX3DExternProtoDeclaration::initObject (JSContext* context, JSObject* object)
+jsX3DExternProtoDeclaration::init (JSContext* context, JSObject* global)
 {
-	JS_DefineProperties (context, object, properties);
-	JS_DefineFunctions (context, object, functions);
+	JS_InitClass (context, global, NULL, &static_class, NULL,
+	              0, properties, functions, NULL, NULL);
 }
 
 JSBool
@@ -99,8 +99,6 @@ jsX3DExternProtoDeclaration::create (JSContext* context, const X3DSFNode <Extern
 
 	if (result == NULL)
 		return JS_FALSE;
-
-	initObject (context, result);
 
 	auto field = new X3DSFNode <ExternProto> (externproto);
 
@@ -187,11 +185,12 @@ jsX3DExternProtoDeclaration::loadNow (JSContext* context, uintN argc, jsval* vp)
 }
 
 void
-jsX3DExternProtoDeclaration:: finalize (JSContext* context, JSObject* obj)
+jsX3DExternProtoDeclaration::finalize (JSContext* context, JSObject* obj)
 {
 	auto externproto = static_cast <X3DSFNode <ExternProto>*> (JS_GetPrivate (context, obj));
 
-	static_cast <jsContext*> (JS_GetContextPrivate (context)) -> removeObject (externproto);
+	if (externproto)
+		static_cast <jsContext*> (JS_GetContextPrivate (context)) -> removeObject (externproto);
 }
 
 } // X3D
