@@ -113,7 +113,6 @@ private:
 
 	Glib::RefPtr <Gst::PlayBin>    player;
 	Glib::RefPtr <Gst::XImageSink> vsink;
-	sigc::connection               message;
 
 	Pixmap   pixmap;
 	Display* display;

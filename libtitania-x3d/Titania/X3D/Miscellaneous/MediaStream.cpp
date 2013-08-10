@@ -65,21 +65,21 @@ namespace X3D {
 
 MediaStream::MediaStream () :
 	 player (),
-	message (),
+	  vsink (),
 	 pixmap (0),
-	display (NULL)
+	display (nullptr)
 {
 	// Static init
 
 	int    argc = 0;
-	char** argv = NULL;
+	char** argv = nullptr;
 
 	Gst::init_check (argc, argv);
 
 	// X11
 
 	if (glXGetCurrentContext ())
-		display = XOpenDisplay (NULL);
+		display = XOpenDisplay (nullptr);
 
 	if (display)
 		pixmap = XCreatePixmap (display, 0, 0, 0, 0);
@@ -228,19 +228,17 @@ MediaStream::on_bus_message_sync (const Glib::RefPtr <Gst::Message> & message)
 		return;
 
 	auto element  = Glib::RefPtr <Gst::Element>::cast_dynamic (message -> get_source ());
-	auto xoverlay = Gst::Interface::cast <Gst::XOverlay> (element);
+	auto xOverlay = Gst::Interface::cast <Gst::XOverlay> (element);
 
-	if (xoverlay)
+	if (xOverlay)
 	{
 		if (pixmap)
-			xoverlay -> set_xwindow_id (pixmap);
+			xOverlay -> set_xwindow_id (pixmap);
 	}
 }
 
 MediaStream::~MediaStream ()
 {
-	message .disconnect ();
-
 	player -> set_state (Gst::STATE_NULL);
 
 	if (pixmap)

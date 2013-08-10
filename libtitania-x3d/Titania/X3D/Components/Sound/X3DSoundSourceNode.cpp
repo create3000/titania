@@ -74,7 +74,7 @@ X3DSoundSourceNode::X3DSoundSourceNode () :
 	         mediaStream (new MediaStream ())
 {
 	addNodeType (X3DConstants::X3DSoundSourceNode);
-	
+
 	addChildren (end);
 }
 
@@ -87,10 +87,7 @@ X3DSoundSourceNode::initialize ()
 	pitch () .addInterest (this, &X3DSoundSourceNode::set_pitch);
 	end      .addInterest (this, &X3DSoundSourceNode::set_end);
 
-	auto bus = mediaStream -> getPlayer () -> get_bus ();
-
-	bus -> add_signal_watch ();
-	bus -> signal_message () .connect (sigc::mem_fun (*this, &X3DSoundSourceNode::on_message));
+	add_signal_watch ();
 }
 
 void
@@ -198,8 +195,8 @@ X3DSoundSourceNode::set_end ()
 		if (speed ())
 			mediaStream -> start (speed (), 0);
 
-      // The event order below is very important.
- 
+		// The event order below is very important.
+
 		elapsedTime () = getElapsedTime ();
 		cycleTime ()   = getCurrentTime ();
 	}
@@ -208,9 +205,28 @@ X3DSoundSourceNode::set_end ()
 }
 
 void
+X3DSoundSourceNode::add_signal_watch ()
+{
+	auto bus = mediaStream -> getPlayer () -> get_bus ();
+
+	bus -> add_signal_watch ();
+	bus -> signal_message () .connect (sigc::mem_fun (*this, &X3DSoundSourceNode::on_message));
+}
+
+void
+X3DSoundSourceNode::remove_signal_watch ()
+{
+	// Signal watch must be removed or there will be a memory leak.
+
+	auto bus = mediaStream -> getPlayer () -> get_bus ();
+
+	bus -> remove_signal_watch ();
+}
+
+void
 X3DSoundSourceNode::dispose ()
 {
-	mediaStream .reset ();
+	remove_signal_watch ();
 
 	X3DTimeDependentNode::dispose ();
 }

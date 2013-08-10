@@ -193,6 +193,12 @@ private:
 	void
 	set_end ();
 
+	void
+	add_signal_watch ();
+
+	void
+	remove_signal_watch ();
+
 	struct Fields
 	{
 		Fields ();
