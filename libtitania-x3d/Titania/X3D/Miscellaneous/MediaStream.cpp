@@ -92,6 +92,8 @@ MediaStream::MediaStream () :
 	player -> set_property ("video-sink", vsink);
 	player -> set_property ("volume", 0.0);
 	//player -> set_property ("mute", false);
+	
+	//vsink -> set_last_buffer_enabled (true);
 
 	auto bus = player -> get_bus ();
 

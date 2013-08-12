@@ -1,0 +1,29 @@
+#VRML V2.0 utf8 Titania
+
+META "title" "replaceWorld 2"
+
+DEF Touch TouchSensor { }
+
+Shape {
+  appearance Appearance {
+    material Material { }
+  }
+  geometry Box { }
+}
+
+DEF Timer TimeSensor { }
+
+DEF Debug Script {
+  eventIn SFTime set_time
+
+  url "vrmlscript:
+
+function set_time (value)
+{
+	Browser .replaceWorld (Browser .currentScene);
+}
+"
+}
+
+ROUTE Touch.touchTime TO Timer.set_startTime
+ROUTE Timer.time TO Debug.set_time

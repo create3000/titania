@@ -348,12 +348,25 @@ X3DBrowserWindow::set_console ()
 {
 	auto buffer = getConsole () .get_buffer ();
 
+	// Insert
+
 	for (const auto & string : getBrowser () -> getConsole () -> string_changed ())
 		buffer -> insert (buffer -> end (), string .getValue ());
 
 	buffer -> place_cursor (buffer -> end ());
 
 	getConsole () .scroll_to (buffer -> get_insert ());
+	
+	// Erase
+	
+	static const int CONSOLE_LIMIT = std::pow (2, 20);
+
+	if (buffer -> size () > CONSOLE_LIMIT)
+	{
+		int char_offset = buffer -> size () - CONSOLE_LIMIT;
+
+		buffer -> erase (buffer -> begin (), buffer -> get_iter_at_offset (char_offset));
+	}
 }
 
 void

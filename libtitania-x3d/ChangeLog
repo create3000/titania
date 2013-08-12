@@ -1,3 +1,8 @@
+2013-08-12  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* MediaStream.cpp:
+	* MovieTexture.cpp: 
+
 2013-08-10  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* MediaStream.h:

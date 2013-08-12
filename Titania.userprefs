@@ -1,18 +1,11 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Texturing/X3DTexture2DNode.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Library/Tests/Basic/NodeIndex2.wrl">
     <Files>
       <File FileName="experimental/main.cpp" Line="246" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/ImageTexture.h" Line="78" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/ImageTexture.cpp" Line="216" Column="31" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/X3DTexture2DNode.h" Line="152" Column="9" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/X3DTexture2DNode.cpp" Line="62" Column="5" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/X3DTextureNode.h" Line="55" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/X3DTextureNode.cpp" Line="70" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/PixelTexture.cpp" Line="202" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/PixelTexture.h" Line="94" Column="21" />
-      <File FileName="libtitania-x3d/Titania/X3D/Bits/Texture.cpp" Line="132" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Bits/Texture.h" Line="66" Column="17" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/ImageTexture.h" Line="105" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/ImageTexture.cpp" Line="53" Column="30" />
+      <File FileName="Library/Tests/Basic/NodeIndex2.wrl" Line="28" Column="8" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -22,7 +15,15 @@
           </Node>
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
+            <Node name="Prototypes" expanded="True">
+              <Node name="Time" expanded="True">
+                <Node name="Delay" expanded="True" />
+              </Node>
+            </Node>
             <Node name="Tests" expanded="True">
+              <Node name="Basic" expanded="True">
+                <Node name="NodeIndex2.wrl" selected="True" />
+              </Node>
               <Node name="CubeMapTexturing" expanded="True">
                 <Node name="images" expanded="True" />
               </Node>
@@ -39,6 +40,11 @@
                   <Node name="colors" expanded="True" />
                 </Node>
               </Node>
+            </Node>
+          </Node>
+          <Node name="libtitania-sqlite" expanded="True">
+            <Node name="Titania" expanded="True">
+              <Node name="SQL" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-standard" expanded="True">
@@ -61,26 +67,22 @@
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
-                <Node name="Base" expanded="True" />
-                <Node name="Basic" expanded="True" />
                 <Node name="Bits" expanded="True" />
-                <Node name="Browser" expanded="True" />
+                <Node name="Browser" expanded="True">
+                  <Node name="Geometry2D" expanded="True" />
+                  <Node name="Properties" expanded="True" />
+                  <Node name="Viewer" expanded="True" />
+                </Node>
                 <Node name="Components" expanded="True">
-                  <Node name="Navigation" expanded="True" />
+                  <Node name="Core" expanded="True" />
+                  <Node name="EnvironmentalEffects" expanded="True" />
                   <Node name="Networking" expanded="True" />
-                  <Node name="Scripting" expanded="True" />
                   <Node name="Sound" expanded="True" />
-                  <Node name="Texturing" expanded="True">
-                    <Node name="X3DTexture2DNode.cpp" selected="True" />
-                  </Node>
-                  <Node name="Time" expanded="True" />
+                  <Node name="Texturing" expanded="True" />
                 </Node>
                 <Node name="Execution" expanded="True" />
-                <Node name="JavaScript" expanded="True">
-                  <Node name="SpiderMonkey" expanded="True" />
-                </Node>
-                <Node name="Parser" expanded="True" />
-                <Node name="Prototype" expanded="True" />
+                <Node name="Fields" expanded="True" />
+                <Node name="Miscellaneous" expanded="True" />
                 <Node name="Rendering" expanded="True" />
                 <Node name="Types" expanded="True" />
               </Node>

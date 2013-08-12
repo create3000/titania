@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -132,15 +132,21 @@ MovieTexture::requestImmediateLoad ()
 			continue;
 
 		// Set image
+		
+		// We use the c versions of this functions here because get_last_buffer has a memory leak.
 
-		if (getVideoSink () -> get_last_buffer ())
+		GstBuffer* buffer = gst_base_sink_get_last_buffer (Glib::RefPtr <Gst::BaseSink>::cast_static (getVideoSink ()) -> gobj ());
+
+		if (buffer)
 		{
 			duration_changed () = getDuration ();
 
 			setImage (3, GL_BGRA,
 			          getVideoSink () -> get_width (),
 			          getVideoSink () -> get_height (),
-			          getVideoSink () -> get_last_buffer () -> get_data ());
+			          GST_BUFFER_DATA (buffer));
+
+			gst_buffer_unref (buffer);
 
 			setLoadState (COMPLETE_STATE);
 
@@ -151,7 +157,7 @@ MovieTexture::requestImmediateLoad ()
 	if (checkLoadState () not_eq COMPLETE_STATE)
 	{
 		duration_changed () = -1;
-	
+
 		setImage (3, GL_BGRA, 0, 0, nullptr);
 
 		setLoadState (FAILED_STATE);
@@ -169,15 +175,21 @@ MovieTexture::update ()
 void
 MovieTexture::draw ()
 {
-	if (getVideoSink () -> get_last_buffer ())
+	// We use the c versions of this functions here because get_last_buffer has a memory leak.
+
+	GstBuffer* buffer = gst_base_sink_get_last_buffer (Glib::RefPtr <Gst::BaseSink>::cast_static (getVideoSink ()) -> gobj ());
+
+	if (buffer)
 	{
 		updateImage (GL_BGRA,
 		             getVideoSink () -> get_width (),
 		             getVideoSink () -> get_height (),
-		             getVideoSink () -> get_last_buffer () -> get_data ());
+		             GST_BUFFER_DATA (buffer));
 
-		X3DTexture2DNode::draw ();
+		gst_buffer_unref (buffer);
 	}
+
+	X3DTexture2DNode::draw ();
 }
 
 void
