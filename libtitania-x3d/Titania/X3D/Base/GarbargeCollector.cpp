@@ -114,7 +114,7 @@ GarbageCollector::size () const
 
 GarbageCollector::~GarbageCollector ()
 {
-	dispose ();
+	deleteObjects (std::move (disposedObjects));
 }
 
 } // X3D
