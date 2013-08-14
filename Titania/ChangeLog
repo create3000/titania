@@ -1,3 +1,11 @@
+2013-08-14  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* BrowserWindow.cpp:
+	* X3DBrowserWindow.cpp:
+	* ViewpointList.cpp:
+	* HistoryEditor.cpp:
+	* OutlineTreeView.cpp: 
+
 2013-08-12  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBrowserWindow.cpp: 

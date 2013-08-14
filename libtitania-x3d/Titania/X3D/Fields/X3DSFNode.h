@@ -206,7 +206,7 @@ const std::string X3DSFNode <ValueType>::typeName ("SFNode");
 
 template <class ValueType>
 X3DSFNode <ValueType>::X3DSFNode () :
-	X3DField <ValueType*> ()
+	X3DField <ValueType*> (nullptr)
 { }
 
 template <class ValueType>

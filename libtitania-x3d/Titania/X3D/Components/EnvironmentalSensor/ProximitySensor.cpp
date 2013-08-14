@@ -108,10 +108,10 @@ void
 ProximitySensor::set_enabled ()
 {
 	if (enabled ())
-		getBrowser () -> sensors .addInterest (this, &ProximitySensor::update);
+		getBrowser () -> sensors () .addInterest (this, &ProximitySensor::update);
 
 	else
-		getBrowser () -> sensors .removeInterest (this, &ProximitySensor::update);
+		getBrowser () -> sensors () .removeInterest (this, &ProximitySensor::update);
 }
 
 void

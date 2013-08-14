@@ -188,9 +188,6 @@ private:
 	typedef void (X3DTimeDependentNode::* TimeoutHandler)();
 
 	void
-	set_initialized ();
-
-	void
 	set_enabled ();
 
 	void

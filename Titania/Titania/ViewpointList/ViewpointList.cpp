@@ -147,6 +147,8 @@ ViewpointList::set_viewpoints ()
 			row -> set_value (Columns::Index,       index);
 			row -> set_value (Columns::Description, Glib::Markup::escape_text (viewpoint -> description ()));
 			row -> set_value (Columns::Weight,      viewpoint -> isBound () .getValue () ? Weight::Bold : Weight::Normal);
+
+			getListStore () -> row_changed (getListStore () -> get_path (row), row);
 		}
 
 		++ index;
@@ -162,7 +164,11 @@ ViewpointList::set_currentViewpoint ()
 	auto rows           = getListStore () -> children ();
 
 	for (size_t i = 0, size = rows .size (); i < size; ++ i)
+	{
 		rows [i] -> set_value (Columns::Weight, userViewpoints [i] -> isBound () ? Weight::Bold : Weight::Normal);
+
+		getListStore () -> row_changed (getListStore () -> get_path (rows [i]), rows [i]);
+	}
 
 	// Update fieldOfView widget
 

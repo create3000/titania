@@ -64,17 +64,17 @@ namespace X3D {
 
 X3DBrowserContext::X3DBrowserContext () :
 	 X3DExecutionContext (),
-	             sensors (),                                        // [out]  sensors
-	            reshaped (),                                        // [out]  reshape
-	       prepareEvents (),                                        // [out]  prepareEvents
-	           displayed (),                                        // [out]  displayed
-	            finished (),                                        // [out]  finished
-	             changed (),                                        // [out]  changed
-	              select (false),                                   // SFBool  [in,out]  select              FALSE
 	 renderingProperties (new RenderingProperties (this)),          // SFNode  [ ]       renderingProperties NULL   [RenderingProperties]
 	   browserProperties (new BrowserProperties   (this)),          // SFNode  [ ]       browserProperties   NULL   [BrowserProperties]
 	      browserOptions (new BrowserOptions      (this)),          // SFNode  [ ]       browserOptions      NULL   [BrowserOptions]
 	    javaScriptEngine (new SpiderMonkey        (this)),          // SFNode  [ ]       javaScriptEngine    NULL   [JavaScriptEngine]
+	   initializedOutput (),                                        // SFTime [out]  initialized
+	      reshapedOutput (),                                        // [out]  reshaped
+	       sensorsOutput (),                                        // [out]  sensors
+	 prepareEventsOutput (),                                        // [out]  prepareEvents
+	     displayedOutput (),                                        // [out]  displayed
+	      finishedOutput (),                                        // [out]  finished
+	       changedOutput (),                                        // [out]  changed
 	               clock (new chrono::system_clock <time_type> ()),
 	              router (),
 	              layers (),
@@ -106,7 +106,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	         threadMutex (),
 	             console (new Console (this))                       // SFNode  [ ]   console    NULL  [Console]
 {
-	addChildren (select,
+	addChildren (initialized (),
 	             renderingProperties,
 	             browserProperties,
 	             browserOptions,
@@ -153,7 +153,7 @@ X3DBrowserContext::initialize ()
 
 	for (int32_t i = 1; i < renderingProperties -> textureUnits (); ++ i)
 		textureUnits .push (i);
-	
+
 	threads .resize (renderingProperties -> maxThreads ());
 
 	// Initialize OpenGL context
@@ -193,7 +193,7 @@ X3DBrowserContext::initialize ()
 		//	glEnable (GL_POLYGON_SMOOTH);
 	}
 
-	initialized .addInterest (this, &X3DBrowserContext::set_initialized);
+	initialized () .addInterest (this, &X3DBrowserContext::set_initialized);
 }
 
 void
@@ -544,7 +544,7 @@ X3DBrowserContext::addEvent ()
 		return;
 
 	changedTime = getCurrentTime ();
-	changed .processInterests ();
+	changed () .processInterests ();
 }
 
 /*
@@ -565,17 +565,21 @@ X3DBrowserContext::update ()
 
 		advanceClock ();
 
-		prepareEvents .processInterests ();
+		prepareEvents () .processInterests ();
 		router .processEvents ();
 
 		getWorld () -> traverse (TraverseType::CAMERA);
 		getWorld () -> traverse (TraverseType::COLLISION);
 
-		sensors .processInterests ();
+		sensors () .processInterests ();
 		router .processEvents ();
 
 		getGarbageCollector () .dispose ();
+
+		// Debug
+		router .debug ();
 		assert (router .size () == 0);
+		assert (getGarbageCollector () .size () == 0);
 
 		// Display
 
@@ -584,13 +588,13 @@ X3DBrowserContext::update ()
 
 		getWorld () -> traverse (TraverseType::COLLECT);
 
-		displayed .processInterests ();
+		displayed () .processInterests ();
 
 		swapBuffers ();
 
 		// Finish
 
-		finished .processInterests ();
+		finished () .processInterests ();
 
 		GLenum errorNum = glGetError ();
 
@@ -609,13 +613,12 @@ X3DBrowserContext::update ()
 void
 X3DBrowserContext::dispose ()
 {
-	initialized   .dispose ();
-	reshaped      .dispose ();
-	prepareEvents .dispose ();
-	displayed     .dispose ();
-	finished      .dispose ();
-	shutdown      .dispose ();
-	changed       .dispose ();
+	initializedOutput   .dispose ();
+	reshapedOutput      .dispose ();
+	prepareEventsOutput .dispose ();
+	displayedOutput     .dispose ();
+	finishedOutput      .dispose ();
+	changedOutput       .dispose ();
 
 	renderingProperties  .dispose ();
 	browserProperties    .dispose ();

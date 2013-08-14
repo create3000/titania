@@ -108,7 +108,7 @@ public:
 	addInterest (Class* object, Function && memberFunction, Arguments && ... arguments) const
 	{
 		insertInput (object, reinterpret_cast <void*> (object ->* memberFunction));
-		insertInterest (std::bind (std::mem_fn (memberFunction), object, std::forward <Arguments> (arguments) ...),
+		insertInterest (std::bind (memberFunction, object, std::forward <Arguments> (arguments) ...),
 		                (X3DInput*) object, reinterpret_cast <void*> (object ->* memberFunction));
 	}
 
@@ -118,7 +118,7 @@ public:
 	addInterest (Class & object, Function && memberFunction, Arguments && ... arguments) const
 	{
 		insertInput (&object, reinterpret_cast <void*> (object .* memberFunction));
-		insertInterest (std::bind (std::mem_fn (memberFunction), object, std::forward <Arguments> (arguments) ...),
+		insertInterest (std::bind (memberFunction, object, std::forward <Arguments> (arguments) ...),
 		                (X3DInput*) &object, reinterpret_cast <void*> (object .* memberFunction));
 	}
 
@@ -127,7 +127,7 @@ public:
 	addInterest (Class* object, void (Class::* memberFunction) (void)) const
 	{
 		insertInput (object, reinterpret_cast <void*> (object ->* memberFunction));
-		insertInterest (std::bind (std::mem_fn (memberFunction), object),
+		insertInterest (std::bind (memberFunction, object),
 		                (X3DInput*) object, reinterpret_cast <void*> (object ->* memberFunction));
 	}
 
@@ -136,7 +136,7 @@ public:
 	addInterest (Class & object, void (Class::* memberFunction) (void)) const
 	{
 		insertInput (&object, reinterpret_cast <void*> (object ->* memberFunction));
-		insertInterest (std::bind (std::mem_fn (memberFunction), object),
+		insertInterest (std::bind (memberFunction, object),
 		                (X3DInput*) &object, reinterpret_cast <void*> (object .* memberFunction));
 	}
 

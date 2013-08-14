@@ -81,6 +81,9 @@ public:
 	void
 	setup ();
 
+	void
+	realize ();
+
 	///  @name Tests
 
 	virtual
@@ -401,9 +404,6 @@ protected:
 
 	void
 	assign2 (const X3DExecutionContext* const);
-
-	void
-	setupNodes ();
 
 
 private:

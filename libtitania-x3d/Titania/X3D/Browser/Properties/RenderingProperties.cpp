@@ -246,17 +246,17 @@ RenderingProperties::set_enabled ()
 {
 	if (enabled ())
 	{
-		getBrowser () -> initialized   .addInterest (this, &RenderingProperties::reset);
-		getBrowser () -> prepareEvents .addInterest (this, &RenderingProperties::prepare);
-		getBrowser () -> displayed     .addInterest (this, &RenderingProperties::display);
+		getBrowser () -> initialized ()   .addInterest (this, &RenderingProperties::reset);
+		getBrowser () -> prepareEvents () .addInterest (this, &RenderingProperties::prepare);
+		getBrowser () -> displayed ()     .addInterest (this, &RenderingProperties::display);
 
 		reset ();
 	}
 	else
 	{
-		getBrowser () -> initialized   .removeInterest (this, &RenderingProperties::reset);
-		getBrowser () -> prepareEvents .removeInterest (this, &RenderingProperties::prepare);
-		getBrowser () -> displayed     .removeInterest (this, &RenderingProperties::display);
+		getBrowser () -> initialized ()   .removeInterest (this, &RenderingProperties::reset);
+		getBrowser () -> prepareEvents () .removeInterest (this, &RenderingProperties::prepare);
+		getBrowser () -> displayed ()     .removeInterest (this, &RenderingProperties::display);
 	}
 }
 
@@ -417,7 +417,7 @@ RenderingProperties::update ()
 	stringstream .str (""); stringstream << "Display:                   " << std::setprecision (2) << std::fixed << renderClock .average () / clock .average () * 100 << " %";
 	string .emplace_back (stringstream .str ());
 
-	stringstream .str (""); stringstream << "Sensors:                   " << getBrowser () -> sensors .getRequesters () .size () + getBrowser () -> prepareEvents .getRequesters () .size () - 1; // remove self
+	stringstream .str (""); stringstream << "Sensors:                   " << getBrowser () -> sensors () .getRequesters () .size () + getBrowser () -> prepareEvents () .getRequesters () .size () - 1; // remove self
 	string .emplace_back (stringstream .str ());
 }
 

@@ -92,8 +92,6 @@ X3DTimeDependentNode::initialize ()
 {
 	X3DChildNode::initialize ();
 
-	initialized .addInterest (this, &TimeSensor::set_initialized);
-
 	enabled ()    .addInterest (this, &TimeSensor::set_enabled);
 	loop ()       .addInterest (this, &X3DTimeDependentNode::set_loop);
 	startTime ()  .addInterest (this, &X3DTimeDependentNode::set_startTime);
@@ -105,11 +103,7 @@ X3DTimeDependentNode::initialize ()
 	pauseTimeValue  = pauseTime ();
 	resumeTimeValue = resumeTime ();
 	stopTimeValue   = stopTime ();
-}
 
-void
-X3DTimeDependentNode::set_initialized ()
-{
 	set_loop ();
 }
 
@@ -243,7 +237,7 @@ X3DTimeDependentNode::do_start ()
 		elapsedTime () = 0;
 		cycleTime ()   = getCurrentTime ();
 
-		getBrowser () -> prepareEvents .addInterest (this, &X3DTimeDependentNode::prepareEvents);
+		getBrowser () -> prepareEvents () .addInterest (this, &X3DTimeDependentNode::prepareEvents);
 	}
 }
 
@@ -260,7 +254,7 @@ X3DTimeDependentNode::do_pause ()
 
 		set_pause ();
 
-		getBrowser () -> prepareEvents .removeInterest (this, &X3DTimeDependentNode::prepareEvents);
+		getBrowser () -> prepareEvents () .removeInterest (this, &X3DTimeDependentNode::prepareEvents);
 	}
 }
 
@@ -279,7 +273,7 @@ X3DTimeDependentNode::do_resume ()
 
 		set_resume (interval);
 
-		getBrowser () -> prepareEvents .addInterest (this, &X3DTimeDependentNode::prepareEvents);
+		getBrowser () -> prepareEvents () .addInterest (this, &X3DTimeDependentNode::prepareEvents);
 	}
 }
 
@@ -305,7 +299,7 @@ X3DTimeDependentNode::stop ()
 
 		isActive () = false;
 
-		getBrowser () -> prepareEvents .removeInterest (this, &X3DTimeDependentNode::prepareEvents);
+		getBrowser () -> prepareEvents () .removeInterest (this, &X3DTimeDependentNode::prepareEvents);
 	}
 }
 

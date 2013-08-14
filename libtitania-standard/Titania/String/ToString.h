@@ -48,70 +48,28 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_ROUTING_ROUTER_H__
-#define __TITANIA_X3D_ROUTING_ROUTER_H__
-
-#include "../Basic/NodeSet.h"
-#include "../Basic/X3DBaseNode.h"
-#include "../Routing/EventList.h"
-#include "../Routing/NodeList.h"
+#ifndef __TITANIA_STRING_TO_STRING_H__
+#define __TITANIA_STRING_TO_STRING_H__
 
 namespace titania {
-namespace X3D {
+namespace basic {
 
-class Router
+template <
+   class CharT,
+   class Traits    = std::char_traits <CharT>,
+   class Allocator = std::allocator <CharT>
+   >
+std::basic_string <CharT, Traits, Allocator>
+to_string (std::basic_istream <CharT, Traits> & istream)
 {
-public:
+	std::basic_ostringstream <CharT, Traits, Allocator> ostringstream;
 
-	Router ();
+	ostringstream << istream .rdbuf ();
 
-	void
-	addEvent (X3DChildObject* const object, const Event & event)
-	{ events .emplace_back (object, event); }
+	return ostringstream .str ();
+}
 
-	NodeId
-	addNode (X3DBaseNode* node)
-	{
-		nodes .emplace_back (node);
-		return -- nodes .end ();
-	}
-
-	void
-	removeNode (const NodeId & node)
-	{
-		if (nodes .empty ())
-			return;
-
-		nodes .erase (node);
-	}
-
-	void
-	processEvents ();
-
-	size_t
-	size ()
-	{ return events .size (); }
-
-	void
-	debug ();
-
-
-private:
-
-	Router (const Router &) = delete;
-
-	Router &
-	operator = (const Router &) = delete;
-
-	void
-	eventsProcessed ();
-
-	EventList events;
-	NodeList  nodes;
-
-};
-
-} // X3D
+} // basic
 } // titania
 
 #endif

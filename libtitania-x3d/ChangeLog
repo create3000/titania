@@ -1,3 +1,38 @@
+2013-08-14  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Router.h:
+	* X3DOutput.h:
+	* Parser.cpp:
+	* Router.cpp:
+	* X3DSFNode.h:
+	* X3DBaseNode.h:
+	* Browser.cpp:
+	* X3DBaseNode.cpp:
+	* X3DScene.cpp:
+	* X3DBrowser.cpp:
+	* X3DBrowserContext.h:
+	* BindableNodeList.h:
+	* BindableNodeStack.h:
+	* X3DBrowserContext.cpp:
+	* TimeSensor.cpp:
+	* X3DExecutionContext.h:
+	* X3DFlyViewer.cpp:
+	* Inline.cpp:
+	* MotionBlur.cpp:
+	* X3DExecutionContext.cpp:
+	* X3DScriptNode.h:
+	* X3DUrlObject.h:
+	* jsContext.cpp:
+	* X3DSoundSourceNode.h:
+	* ImageTexture.cpp:
+	* X3DTimeDependentNode.h:
+	* X3DUrlObject.cpp:
+	* X3DSoundSourceNode.cpp:
+	* X3DTimeDependentNode.cpp:
+	* RenderingProperties.cpp:
+	* ProximitySensor.cpp:
+	* VisibilitySensor.cpp: 
+
 2013-08-13  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* GarbargeCollector.cpp: 

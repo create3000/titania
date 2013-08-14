@@ -120,6 +120,7 @@
     <None Include="Titania\OS\LoadFile.h" />
     <None Include="Titania\Chrono.h" />
     <None Include="Titania\OS\FileExists.h" />
+    <None Include="Titania\String\ToString.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />

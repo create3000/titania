@@ -84,6 +84,9 @@ X3DExecutionContext::X3DExecutionContext () :
 	           rootNodes (),
 	               nodes ()
 {
+	rootNodes .isTainted (true);
+	nodes     .isTainted (true);
+
 	addChildren (rootNodes, nodes);
 }
 
@@ -94,8 +97,11 @@ X3DExecutionContext::setup ()
 }
 
 void
-X3DExecutionContext::setupNodes ()
+X3DExecutionContext::realize ()
 {
+	rootNodes .isTainted (false);
+	nodes     .isTainted (false);
+
 	for (auto & node : nodes)
 		node -> setup ();
 
@@ -137,7 +143,7 @@ X3DExecutionContext::assign1 (const X3DExecutionContext* const executionContext)
 void
 X3DExecutionContext::assign2 (const X3DExecutionContext* const executionContext)
 {
-	setupNodes ();
+	realize ();
 
 	for (const auto & importedNode : executionContext -> getImportedNodes ())
 		importedNode -> clone (this);

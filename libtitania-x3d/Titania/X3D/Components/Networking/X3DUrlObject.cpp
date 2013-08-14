@@ -50,16 +50,104 @@
 
 #include "X3DUrlObject.h"
 
-#include "../../Miscellaneous/GoldenGate.h"
 #include "../../Browser/X3DBrowser.h"
+#include "../../Miscellaneous/GoldenGate.h"
 #include <Titania/Basic/URI.h>
 
-#include <atomic>
-#include <glibmm/dispatcher.h>
-#include <glibmm/thread.h>
+#include <future>
 
 namespace titania {
 namespace X3D {
+
+class X3DUrlObject::Future :
+	public X3DInput
+{
+public:
+
+	Future (X3DUrlObject* const urlObject, const MFString & url, const SceneCallback & callback) :
+		urlObject (urlObject),
+		future (getFuture (url)),
+		callback (callback)
+	{
+		urlObject -> getBrowser () -> prepareEvents () .addInterest (this, &Future::prepareEvents);
+		urlObject -> getBrowser () -> addEvent ();
+	}
+
+	void
+	get ()
+	{
+		if (future .valid ())
+		{
+			future .wait ();
+			prepareEvents ();
+		}
+	}
+
+	virtual
+	~Future ()
+	{
+		if (future .valid ())
+			future .wait ();
+	}
+
+private:
+
+	std::future <X3DSFNode <Scene>>
+	getFuture (const MFString & url)
+	{
+		return std::async (std::launch::async, std::mem_fn (&Future::loadAsync), this, url);
+	}
+
+	X3DSFNode <Scene>
+	loadAsync (const MFString & url)
+	{
+		std::lock_guard <std::mutex> lock (urlObject -> getBrowser () -> getThread ());
+
+		X3DSFNode <Scene> scene = urlObject -> getBrowser () -> createScene ();
+
+		try
+		{
+			__LOG__ << url << std::endl;
+
+			urlObject -> parseIntoScene (scene, url);
+			
+			__LOG__ << url << std::endl;
+		}
+		catch (const std::exception & error)
+		{
+			__LOG__ << error .what () << std::endl;
+		}
+
+		return scene;
+	}
+
+	void
+	prepareEvents ()
+	{
+		urlObject -> getBrowser () -> addEvent ();
+
+		if (future .valid ())
+		{
+			auto status = future .wait_for (std::chrono::milliseconds (0));
+
+			if (status == std::future_status::ready)
+			{
+				urlObject -> getBrowser () -> prepareEvents () .removeInterest (this, &Future::prepareEvents);
+				
+				X3DSFNode <Scene> scene = future .get ();
+				
+				scene -> realize ();
+
+				callback (scene);
+			}
+		}
+	}
+
+	X3DUrlObject* const             urlObject;
+	std::future <X3DSFNode <Scene>> future;
+	const SceneCallback             callback;
+
+};
 
 X3DUrlObject::Fields::Fields () :
 	url (new MFString ()),
@@ -68,11 +156,12 @@ X3DUrlObject::Fields::Fields () :
 { }
 
 X3DUrlObject::X3DUrlObject () :
-  	X3DBaseNode (),
-	       fields (),
-	    userAgent (),
-	     worldURL (),
-	        mutex ()
+	X3DBaseNode (),
+	     fields (),
+	  userAgent (),
+	   worldURL (),
+	     future (),
+	      mutex ()
 {
 	addNodeType (X3DConstants::X3DUrlObject);
 
@@ -106,11 +195,7 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	X3DSFNode <Scene> scene = getBrowser () -> createScene ();
-
-	scene -> fromStream (getReferer (), istream);
-
-	return scene;
+	return createX3DFromStream (getReferer (), istream);
 }
 
 X3DSFNode <Scene>
@@ -124,7 +209,15 @@ throw (Error <INVALID_X3D>,
 
 	scene -> fromStream (worldURL, istream);
 
+	scene -> realize ();
+
 	return scene;
+}
+
+void
+X3DUrlObject::createX3DFromURL (const MFString & url, const SceneCallback & callback)
+{
+	future .reset (new Future (this, url, callback));
 }
 
 void
@@ -141,6 +234,8 @@ throw (Error <INVALID_URL>,
 	X3DSFNode <Scene> scene = getBrowser () -> createScene ();
 
 	parseIntoScene (scene, url);
+
+	scene -> realize ();
 
 	return scene;
 }
@@ -183,8 +278,8 @@ throw (Error <INVALID_URL>,
 			try
 			{
 				basic::uri uri = URL .str ();
-			
-				basic::ifilestream istream  = golden_gate (URL .str (), loadStream (uri));
+
+				basic::ifilestream istream = golden_gate (URL .str (), loadStream (uri));
 
 				scene -> fromStream (worldURL, istream);
 
@@ -300,6 +395,13 @@ X3DUrlObject::transformUri (const basic::uri & base, const basic::uri & uri)
 
 void
 X3DUrlObject::dispose ()
+{
+	future .reset ();
+
+	// Don't call base version of this function as we are a object.
+}
+
+X3DUrlObject::~X3DUrlObject ()
 { }
 
 } // X3D

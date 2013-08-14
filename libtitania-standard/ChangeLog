@@ -1,3 +1,8 @@
+2013-08-14  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-standard.cproj:
+	* ToString.h: 
+
 2013-08-06  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Functional.h: 

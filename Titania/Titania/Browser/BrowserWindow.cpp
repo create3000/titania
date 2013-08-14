@@ -452,7 +452,7 @@ BrowserWindow::on_hand_button_toggled ()
 	{
 		std::clog << "Hand button clicked." << std::endl;
 
-		getBrowser () -> select = false;
+		//getBrowser () -> select = false;
 	}
 }
 
@@ -463,7 +463,7 @@ BrowserWindow::on_arrow_button_toggled ()
 	{
 		std::clog << "Arrow button clicked." << std::endl;
 
-		getBrowser () -> select = true;
+		//getBrowser () -> select = true;
 	}
 }
 

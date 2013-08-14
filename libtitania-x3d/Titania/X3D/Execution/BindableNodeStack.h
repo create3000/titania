@@ -79,7 +79,7 @@ public:
 
 		addField (outputOnly, "bindTime", *fields .bindTime);
 
-		node -> shutdown .addInterest (this, &X3DBindableNodeStack::erase, node);
+		node -> shutdown () .addInterest (this, &X3DBindableNodeStack::erase, node);
 	}
 
 	virtual
@@ -129,7 +129,7 @@ public:
 			}
 
 			if (stack .push (node))
-				node -> shutdown .addInterest (this, &X3DBindableNodeStack::erase, node);
+				node -> shutdown () .addInterest (this, &X3DBindableNodeStack::erase, node);
 
 			*fields .bindTime = getCurrentTime ();
 		}
@@ -146,7 +146,7 @@ public:
 			if (node -> isBound ())
 				node -> isBound () = false;
 
-			node -> shutdown .removeInterest (this, &X3DBindableNodeStack::erase);
+			node -> shutdown () .removeInterest (this, &X3DBindableNodeStack::erase);
 
 			stack .pop ();
 
@@ -174,7 +174,7 @@ public:
 	dispose () final
 	{
 		for (const auto & node : stack)
-			node -> shutdown .removeInterest (this, &X3DBindableNodeStack::erase);
+			node -> shutdown () .removeInterest (this, &X3DBindableNodeStack::erase);
 	
 		stack .clear ();
 

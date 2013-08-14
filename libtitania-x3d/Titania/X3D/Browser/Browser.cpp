@@ -105,7 +105,7 @@ Browser::initialize ()
 	pointingDevice .setup ();
 
 	getViewer () .addInterest (this, &Browser::set_viewer);
-	changed .addInterest (static_cast <Gtk::Widget*> (this), &Browser::queue_draw);
+	changed () .addInterest (static_cast <Gtk::Widget*> (this), &Browser::queue_draw);
 
 	setCursor (Gdk::ARROW);
 }
@@ -146,7 +146,7 @@ Browser::set_viewer (ViewerType type)
 void
 Browser::reshape ()
 {
-	reshaped .processInterests ();
+	reshaped () .processInterests ();
 }
 
 void

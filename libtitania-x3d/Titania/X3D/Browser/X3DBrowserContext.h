@@ -88,13 +88,39 @@ class X3DBrowserContext :
 {
 public:
 
-	Output sensors;
-	Output reshaped;
-	Output prepareEvents;
-	Output displayed;
-	Output finished;
-	Output changed;
-	SFBool select;
+	///  @name Outputs
+
+	SFTime &
+	initialized ()
+	{ return initializedOutput; }
+
+	const SFTime &
+	initialized () const
+	{ return initializedOutput; }
+
+	const Output &
+	reshaped () const
+	{ return reshapedOutput; }
+	
+	const Output &
+	sensors () const
+	{ return sensorsOutput; }
+	
+	const Output &
+	prepareEvents () const
+	{ return prepareEventsOutput; }
+	
+	const Output &
+	displayed () const
+	{ return displayedOutput; }
+	
+	const Output &
+	finished () const
+	{ return finishedOutput; }
+	
+	const Output &
+	changed () const
+	{ return changedOutput; }
 
 	///  @name Time handling
 
@@ -305,6 +331,14 @@ private:
 	set_navigationInfo_type ();
 
 	// Members
+
+	SFTime initializedOutput;
+	Output reshapedOutput;
+	Output sensorsOutput;
+	Output prepareEventsOutput;
+	Output displayedOutput;
+	Output finishedOutput;
+	Output changedOutput;
 
 	std::shared_ptr <X3DClock> clock;
 

@@ -99,7 +99,7 @@ OutlineTreeView::OutlineTreeView (BrowserWindow* const browserWindow) :
 
 	// Register browser interest
 
-	getBrowser () -> initialized .addInterest (this, &OutlineTreeView::set_world);
+	getBrowser () -> initialized () .addInterest (this, &OutlineTreeView::set_world);
 }
 
 void

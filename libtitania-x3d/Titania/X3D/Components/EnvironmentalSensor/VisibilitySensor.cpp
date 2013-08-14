@@ -93,9 +93,10 @@ void
 VisibilitySensor::set_enabled ()
 {
 	if (enabled ())
-		getBrowser () -> sensors .addInterest (this, &VisibilitySensor::update);
+		getBrowser () -> sensors () .addInterest (this, &VisibilitySensor::update);
+
 	else
-		getBrowser () -> sensors .removeInterest (this, &VisibilitySensor::update);
+		getBrowser () -> sensors () .removeInterest (this, &VisibilitySensor::update);
 }
 
 void

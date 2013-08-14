@@ -231,5 +231,8 @@ X3DSoundSourceNode::dispose ()
 	X3DTimeDependentNode::dispose ();
 }
 
+X3DSoundSourceNode::~X3DSoundSourceNode ()
+{ }
+
 } // X3D
 } // titania

@@ -93,7 +93,7 @@ X3DBrowserWindow::initialize ()
 	getBrowser () -> urlError () .addInterest (this, &X3DBrowserWindow::set_urlError);
 
 	// Initialized
-	getBrowser () -> initialized .addInterest (this, &X3DBrowserWindow::set_initialized);
+	getBrowser () -> initialized () .addInterest (this, &X3DBrowserWindow::set_initialized);
 
 	// Insert Surface, this will initialize the Browser.
 	getSurfaceBox () .pack_start (*getBrowser (), true, true, 0);
@@ -108,8 +108,8 @@ void
 X3DBrowserWindow::set_initialized ()
 {
 	// Initialized
-	getBrowser () -> initialized .removeInterest (this, &X3DBrowserWindow::set_initialized);
-	getBrowser () -> initialized .addInterest (this, &X3DBrowserWindow::set_world);
+	getBrowser () -> initialized () .removeInterest (this, &X3DBrowserWindow::set_initialized);
+	getBrowser () -> initialized () .addInterest (this, &X3DBrowserWindow::set_world);
 
 	if (getConfig () .string ("url") .size ())
 		open (getConfig () .string ("url") .raw ());

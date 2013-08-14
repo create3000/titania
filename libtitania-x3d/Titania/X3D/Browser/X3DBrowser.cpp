@@ -68,7 +68,6 @@ X3DBrowser::initialize ()
 {
 	std::clog << "Initializing Browser ..." << std::endl;
 
-	initialized .isTainted (true);
 	X3DBrowserContext::initialize ();
 	X3DUrlObject::initialize ();
 	
@@ -116,8 +115,7 @@ X3DBrowser::initialize ()
 		<< "\tDone initializing Browser." << std::endl
 		<< std::endl;
 
-	initialized .isTainted (false);
-	initialized = getCurrentTime ();
+	initialized () = getCurrentTime ();
 }
 
 X3DBrowser*
@@ -219,8 +217,8 @@ throw (Error <INVALID_SCENE>)
 
 	advanceClock ();
 
-	if (initialized)
-		shutdown .processInterests ();
+	if (initialized ())
+		shutdown () .processInterests ();
 
 	if (value)
 		scene = value;
@@ -235,7 +233,7 @@ throw (Error <INVALID_SCENE>)
 
 	// Generate initialized event immediately upon receiving this service.
 
-	initialized = getCurrentTime ();
+	initialized () = getCurrentTime ();
 
 	print ("*** The browser is requested to replace the world with '", scene -> getWorldURL (), "'.\n");
 }
@@ -264,6 +262,8 @@ throw (Error <INVALID_URL>,
 	X3DSFNode <Scene> scene = createScene ();
 
 	parseIntoScene (scene, url);
+	
+	scene -> realize ();
 
 	replaceWorld (scene);
 

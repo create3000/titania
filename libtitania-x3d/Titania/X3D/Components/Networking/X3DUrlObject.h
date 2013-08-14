@@ -65,7 +65,7 @@
 namespace titania {
 namespace X3D {
 
-typedef std::map <basic::uri, basic::uri> URNIndex;
+typedef std::function <void (const X3DSFNode <Scene> &)> SceneCallback;
 
 class X3DUrlObject :
 	virtual public X3DBaseNode
@@ -138,6 +138,9 @@ public:
 
 	///
 	void
+	createX3DFromURL (const MFString &, const SceneCallback &);
+
+	void
 	createX3DFromURL (const MFString &, const SFNode &, const std::string &)
 	throw (Error <INVALID_URL>,
 	       Error <URL_UNAVAILABLE>);
@@ -190,6 +193,7 @@ public:
 	basic::uri
 	transformUri (const basic::uri &, const basic::uri &);
 
+	~X3DUrlObject ();
 
 protected:
 
@@ -222,6 +226,8 @@ protected:
 
 private:
 
+	class Future;
+
 	X3DScalar <LoadState> &
 	loadState ()
 	{ return fields .loadState; }
@@ -248,6 +254,8 @@ private:
 
 	std::string userAgent;
 	basic::uri  worldURL;
+
+	std::unique_ptr <Future> future;
 
 	mutable std::mutex mutex;
 

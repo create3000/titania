@@ -137,6 +137,7 @@ public:
 	void
 	dispose () override;
 
+	~X3DSoundSourceNode ();
 
 protected:
 
@@ -214,7 +215,7 @@ private:
 	Fields fields;
 
 	SFTime                        end;
-	std::shared_ptr <MediaStream> mediaStream;
+	std::unique_ptr <MediaStream> mediaStream;
 
 };
 

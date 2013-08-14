@@ -98,5 +98,24 @@ Router::eventsProcessed ()
 		node -> processEvents ();
 }
 
+void
+Router::debug ()
+{
+	for (auto & event : events)
+	{
+		__LOG__ << event .first -> getName () << std::endl;
+		
+		for (const auto & parent : event .first -> getParents ())
+		{
+			auto node = dynamic_cast <X3DBaseNode*> (parent);
+			
+			if (node)
+			{
+				__LOG__ << "\t" << node -> getTypeName () << std::endl;
+			}
+		}
+	}
+}
+
 } // X3D
 } // titania

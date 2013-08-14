@@ -80,9 +80,6 @@ class X3DBaseNode :
 {
 public:
 
-	SFTime initialized;
-	Output shutdown;
-
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const = 0;
@@ -233,6 +230,10 @@ public:
 
 	///  @name Dispose
 
+	const Output &
+	shutdown () const
+	{ return shutdownOutput; }
+
 	virtual
 	void
 	dispose () override;
@@ -320,6 +321,8 @@ private:
 
 	X3DBaseNode*             handle;
 	std::deque <std::string> comments;
+
+	Output shutdownOutput;
 
 };
 

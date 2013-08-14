@@ -106,7 +106,7 @@ TimeSensor::prepareEvents ()
 	{
 		if (loop ())
 		{
-			cycle              += interval;
+			cycle              += interval * size_t ((getCurrentTime () - cycle) / interval);
 			fraction_changed () = 1;
 			elapsedTime ()      = getElapsedTime ();
 			cycleTime ()        = getCurrentTime ();

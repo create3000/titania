@@ -70,7 +70,7 @@ public:
 		imageTexture (imageTexture),
 		future (getFuture ())
 	{
-		imageTexture -> getBrowser () -> prepareEvents .addInterest (this, &Future::prepareEvents);
+		imageTexture -> getBrowser () -> prepareEvents () .addInterest (this, &Future::prepareEvents);
 		imageTexture -> getBrowser () -> addEvent ();
 	}
 
@@ -130,7 +130,7 @@ private:
 			}
 			catch (const std::exception & error)
 			{
-				std::clog << "Bad Image: " << error .what () << ", in URL '" << imageTexture -> getWorldURL () << "'" << std::endl;
+				std::clog << "Bad Image: " << error .what () << ", in URL '" << URL << "'" << std::endl;
 			}
 		}
 
@@ -148,7 +148,7 @@ private:
 
 			if (status == std::future_status::ready)
 			{
-				imageTexture -> getBrowser () -> prepareEvents .removeInterest (this, &Future::prepareEvents);
+				imageTexture -> getBrowser () -> prepareEvents () .removeInterest (this, &Future::prepareEvents);
 				imageTexture -> setTexture (future .get ());
 			}
 		}

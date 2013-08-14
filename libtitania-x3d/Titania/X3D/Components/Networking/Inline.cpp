@@ -59,6 +59,8 @@
 namespace titania {
 namespace X3D {
 
+static constexpr bool PARALLEL = false;
+
 Inline::Fields::Fields () :
 	load (new SFBool (true))
 { }
@@ -100,11 +102,21 @@ Inline::initialize ()
 	load () .addInterest (this, &Inline::set_load);
 	url ()  .addInterest (this, &Inline::set_url);
 
-	if (load ())
-		requestLoad ();
-
-	else
+	if (PARALLEL)
+	{
 		setScene (getBrowser () -> createScene ());
+
+		if (load ())
+			requestLoad ();
+	}
+	else
+	{
+		if (load ())
+			requestLoad ();
+	
+		else
+			setScene (getBrowser () -> createScene ());
+	}
 
 	group -> setup ();
 }
@@ -146,7 +158,17 @@ throw (Error <INVALID_NAME>,
 void
 Inline::requestLoad ()
 {
-	requestImmediateLoad ();
+	if (PARALLEL)
+	{
+		if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)
+			return;
+
+		setLoadState (IN_PROGRESS_STATE);
+
+		createX3DFromURL (url (), std::bind (&Inline::setScene, this, std::placeholders::_1));
+	}
+	else
+		requestImmediateLoad ();
 }
 
 void

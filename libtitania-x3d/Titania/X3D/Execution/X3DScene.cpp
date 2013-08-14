@@ -201,8 +201,6 @@ throw (Error <INVALID_X3D>,
        Error <DISPOSED>)
 {
 	Parser (istream, this) .parseIntoScene ();
-
-	setupNodes ();
 }
 
 void

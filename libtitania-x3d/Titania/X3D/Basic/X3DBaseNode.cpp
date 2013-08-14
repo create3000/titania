@@ -126,13 +126,10 @@ X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const 
 	extendedEventHandling (true),
 	               nodeId (),
 	               handle (NULL),
-	             comments ()
+	             comments (),
+	       shutdownOutput ()
 {
 	assert (executionContext);
-
-	initialized .setName ("initialized");
-
-	addChildren (initialized);
 }
 
 X3DBaseNode*
@@ -550,9 +547,6 @@ X3DBaseNode::isDefaultValue (const X3DFieldDefinition* const field) const
 void
 X3DBaseNode::setup ()
 {
-	if (initialized)
-		return;
-
 	executionContext -> addParent (this);
 
 	if (executionContext -> isProto ())
@@ -565,8 +559,6 @@ X3DBaseNode::setup ()
 	}
 
 	initialize ();
-
-	initialized = getCurrentTime ();
 }
 
 void
@@ -941,8 +933,7 @@ X3DBaseNode::dispose ()
 {
 	X3DChildObject::dispose ();
 
-	shutdown .processInterests ();
-	initialized .dispose ();
+	shutdownOutput .processInterests ();
 
 	removeEvents ();
 

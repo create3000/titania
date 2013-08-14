@@ -78,16 +78,20 @@ HistoryEditor::initialize ()
 		row -> set_value (ICON_COLUMN,      std::string ("BlankIcon"));
 		row -> set_value (TITLE_COLUMN,     item .at ("title"));
 		row -> set_value (WORLD_URL_COLUMN, item .at ("worldURL"));
+
+		getListStore () -> row_changed (getListStore () -> get_path (row), row);
 	}
 
-	getBrowser () -> initialized .addInterest (this, &HistoryEditor::set_initialized);
+	getTreeView () .queue_draw ();
+
+	getBrowser () -> initialized () .addInterest (this, &HistoryEditor::set_initialized);
 }
 
 void
 HistoryEditor::set_initialized ()
 {
-	getBrowser () -> initialized .removeInterest (this, &HistoryEditor::set_initialized);
-	getBrowser () -> initialized .addInterest    (this, &HistoryEditor::set_world);
+	getBrowser () -> initialized () .removeInterest (this, &HistoryEditor::set_initialized);
+	getBrowser () -> initialized () .addInterest    (this, &HistoryEditor::set_world);
 }
 
 std::string
@@ -111,29 +115,32 @@ void
 HistoryEditor::set_world ()
 {
 	__LOG__ << std::endl;
+	__LOG__ << std::endl;
 
 	const basic::uri & worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
 
 	if (not worldURL .str () .size ())
 		return;
 
-	std::string title = getTitle (worldURL);
-
 	try
 	{
 		getListStore () -> erase (getListStore () -> get_iter (history .getIndex (worldURL)));
 	}
 	catch (const std::out_of_range &)
-	{ }
+	{
+		__LOG__ << std::endl;	
+	}
+
+	std::string title = getTitle (worldURL);
 
 	auto row = getListStore () -> prepend ();
 	row -> set_value (ICON_COLUMN,      worldURL .str ());
 	row -> set_value (TITLE_COLUMN,     title);
 	row -> set_value (WORLD_URL_COLUMN, worldURL .str ());
 
-	history .setItem (title, worldURL);
+	getListStore () -> row_changed (getListStore () -> get_path (row), row);
 
-	getTreeView () .queue_draw ();
+	history .setItem (title, worldURL);
 }
 
 void
