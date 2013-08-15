@@ -65,12 +65,8 @@ public:
 
 	basic_sequence (const std::basic_string <CharT> &);
 
-	const std::basic_string <CharT> &
-	match ()
-	{ return string; }
-
 	bool
-	operator () (std::basic_istream <CharT, Traits> &);
+	operator () (std::basic_istream <CharT, Traits> &, std::basic_string <CharT> &);
 
 
 private:
@@ -78,7 +74,6 @@ private:
 	typedef typename std::basic_istream <CharT, Traits>::int_type int_type;
 
 	std::set <CharT>          value;
-	std::basic_string <CharT> string;
 
 };
 
@@ -89,10 +84,8 @@ basic_sequence <CharT, Traits>::basic_sequence (const std::basic_string <CharT> 
 
 template <class CharT, class Traits>
 bool
-basic_sequence <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> & istream)
+basic_sequence <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> & istream, std::basic_string <CharT> & string)
 {
-	string .clear ();
-
 	while (istream)
 	{
 		int_type c = istream .peek ();

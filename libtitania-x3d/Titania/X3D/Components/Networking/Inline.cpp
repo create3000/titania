@@ -59,7 +59,7 @@
 namespace titania {
 namespace X3D {
 
-static constexpr bool PARALLEL = false;
+static constexpr bool PARALLEL = true;
 
 Inline::Fields::Fields () :
 	load (new SFBool (true))
@@ -189,10 +189,7 @@ Inline::requestImmediateLoad ()
 	{
 		setLoadState (FAILED_STATE);
 
-		std::clog << error .what () << std::endl;
-
-		std::copy (urlError () .cbegin (), urlError () .cend (),
-		           std::ostream_iterator <SFString> (std::clog, "\n"));
+		getBrowser () -> println (error .what ());
 	}
 }
 

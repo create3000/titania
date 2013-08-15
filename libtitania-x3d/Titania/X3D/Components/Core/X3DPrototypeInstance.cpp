@@ -66,6 +66,8 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 	X3DExecutionContext (),
 	              proto (prototype)
 {
+	setComponent ("Core");
+	setTypeName ("X3DPrototypeInstance");
 	addNodeType (X3DConstants::X3DPrototypeInstance);
 
 	addField (inputOutput, "metadata", metadata ());

@@ -76,14 +76,6 @@ MediaStream::MediaStream () :
 
 	Gst::init_check (argc, argv);
 
-	// X11
-
-	if (glXGetCurrentContext ())
-		display = XOpenDisplay (nullptr);
-
-	if (display)
-		pixmap = XCreatePixmap (display, 0, 0, 0, 0);
-
 	// Construct
 
 	player = Gst::PlayBin::create ("player");
@@ -92,13 +84,34 @@ MediaStream::MediaStream () :
 	player -> set_property ("video-sink", vsink);
 	player -> set_property ("volume", 0.0);
 	//player -> set_property ("mute", false);
-	
-	//vsink -> set_last_buffer_enabled (true);
 
-	auto bus = player -> get_bus ();
+	//auto bus = player -> get_bus ();
 
-	bus -> enable_sync_message_emission ();
-	bus -> signal_sync_message ().connect (sigc::mem_fun (*this, &MediaStream::on_bus_message_sync));
+	//bus -> enable_sync_message_emission ();
+	//bus -> signal_sync_message ().connect (sigc::mem_fun (*this, &MediaStream::on_bus_message_sync));
+}
+
+void
+MediaStream::setup ()
+{
+	// X11
+
+	if (glXGetCurrentContext ())
+		display = XOpenDisplay (nullptr);
+
+	if (display)
+		pixmap = XCreatePixmap (display, 0, 0, 0, 0);
+
+	__LOG__ << std::string (80, '#') << std::endl;
+	__LOG__ << std::string (80, '#') << std::endl;
+	__LOG__ << std::string (80, '#') << std::endl;
+	__LOG__ << pixmap << std::endl;
+	__LOG__ << std::string (80, '#') << std::endl;
+	__LOG__ << std::string (80, '#') << std::endl;
+	__LOG__ << std::string (80, '#') << std::endl;
+
+	if (pixmap)
+		vsink -> set_xwindow_id (pixmap);
 }
 
 bool

@@ -167,18 +167,20 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
+	std::string whitespaces;
+	
 	size_type width, height, components;
 	MFInt32   array;
 
-	Grammar::whitespaces (istream);
+	Grammar::whitespaces (istream, whitespaces);
 	
 	if (istream >> width)
 	{
-		if (Grammar::whitespaces (istream))
+		if (Grammar::whitespaces (istream, whitespaces))
 		{
 			if (istream >> height)
 			{
-				if (Grammar::whitespaces (istream))
+				if (Grammar::whitespaces (istream, whitespaces))
 				{
 					if (istream >> components)
 					{
@@ -186,7 +188,7 @@ throw (Error <INVALID_X3D>,
 						{
 							int32_t pixel;
 							
-							if (Grammar::whitespaces (istream) and Grammar::Int32 (istream, pixel))
+							if (Grammar::whitespaces (istream, whitespaces) and Grammar::Int32 (istream, pixel))
 								array .emplace_back (pixel);
 
 							else

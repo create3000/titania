@@ -1,11 +1,19 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Library/Tests/Basic/NodeIndex2.wrl">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Base/GarbargeCollector.cpp">
     <Files>
       <File FileName="experimental/main.cpp" Line="246" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/ImageTexture.h" Line="105" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/ImageTexture.cpp" Line="53" Column="30" />
-      <File FileName="Library/Tests/Basic/NodeIndex2.wrl" Line="28" Column="8" />
+      <File FileName="libtitania-x3d/Titania/X3D/Base/GarbargeCollector.cpp" Line="122" Column="7" />
+      <File FileName="libtitania-x3d/Titania/X3D/Base/GarbageCollector.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Networking/X3DUrlObject.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Networking/X3DUrlObject.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Networking/Inline.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DBaseNode.cpp" Line="950" Column="3" />
+      <File FileName="libtitania-x3d/Titania/X3D/Execution/Scene.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DScene.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DExecutionContext.h" Line="423" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Configuration/SupportedNodes.cpp" Line="321" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Configuration/SupportedNodes.h" Line="61" Column="2" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -21,9 +29,7 @@
               </Node>
             </Node>
             <Node name="Tests" expanded="True">
-              <Node name="Basic" expanded="True">
-                <Node name="NodeIndex2.wrl" selected="True" />
-              </Node>
+              <Node name="Basic" expanded="True" />
               <Node name="CubeMapTexturing" expanded="True">
                 <Node name="images" expanded="True" />
               </Node>
@@ -67,19 +73,19 @@
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
-                <Node name="Bits" expanded="True" />
-                <Node name="Browser" expanded="True">
-                  <Node name="Geometry2D" expanded="True" />
-                  <Node name="Properties" expanded="True" />
-                  <Node name="Viewer" expanded="True" />
+                <Node name="Base" expanded="True">
+                  <Node name="GarbargeCollector.cpp" selected="True" />
                 </Node>
+                <Node name="Basic" expanded="True" />
+                <Node name="Bits" expanded="True" />
+                <Node name="Browser" expanded="True" />
                 <Node name="Components" expanded="True">
-                  <Node name="Core" expanded="True" />
                   <Node name="EnvironmentalEffects" expanded="True" />
                   <Node name="Networking" expanded="True" />
                   <Node name="Sound" expanded="True" />
                   <Node name="Texturing" expanded="True" />
                 </Node>
+                <Node name="Configuration" expanded="True" />
                 <Node name="Execution" expanded="True" />
                 <Node name="Fields" expanded="True" />
                 <Node name="Miscellaneous" expanded="True" />

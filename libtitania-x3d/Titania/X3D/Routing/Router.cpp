@@ -55,66 +55,72 @@ namespace X3D {
 
 Router::Router () :
 	events (),
-	 nodes ()
+	 nodes (),
+	 mutex ()
 { }
+
+EventList
+Router::getEvents ()
+{
+	std::lock_guard <std::mutex> lock (mutex);
+
+	return std::move (events);
+}
+
+NodeList
+Router::getNodes ()
+{
+	std::lock_guard <std::mutex> lock (mutex);
+
+	return std::move (nodes);
+}
 
 void
 Router::processEvents ()
 {
-	while (events .size ())
-	{
-		for (auto & event : events)
-		{
-			// __LOG__ << event .first -> getName () << std::endl;
-			event .first -> processEvent (event .second);
-		}
-
-		events .clear ();
-
-		eventsProcessed ();
-	}
-
-	// std::vector is probaly faster
-	//
 	//	while (events .size ())
 	//	{
-	//		do
+	//		for (auto & event : events)
 	//		{
-	//			for (auto & event : EventList (std::move (events)))
-	//			{
-	//				event .first -> processEvent (event .second);
-	//			}
+	//			// __LOG__ << event .first -> getName () << std::endl;
+	//			event .first -> processEvent (event .second);
 	//		}
-	//		while (events .size ());
+	//
+	//		events .clear ();
 	//
 	//		eventsProcessed ();
 	//	}
+
+	// std::vector is probaly faster
+
+	while (size ())
+	{
+		do
+		{
+			for (auto & event : getEvents ())
+			{
+				event .first -> processEvent (event .second);
+			}
+		}
+		while (size ());
+
+		eventsProcessed ();
+	}
 }
 
 void
 Router::eventsProcessed ()
 {
-	for (const auto & node : NodeList (std::move (nodes)))
+	for (const auto & node : getNodes ())
 		node -> processEvents ();
 }
 
-void
-Router::debug ()
+size_t
+Router::size () const
 {
-	for (auto & event : events)
-	{
-		__LOG__ << event .first -> getName () << std::endl;
-		
-		for (const auto & parent : event .first -> getParents ())
-		{
-			auto node = dynamic_cast <X3DBaseNode*> (parent);
-			
-			if (node)
-			{
-				__LOG__ << "\t" << node -> getTypeName () << std::endl;
-			}
-		}
-	}
+	std::lock_guard <std::mutex> lock (mutex);
+
+	return events .size ();
 }
 
 } // X3D

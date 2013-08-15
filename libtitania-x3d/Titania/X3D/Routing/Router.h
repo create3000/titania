@@ -56,6 +56,8 @@
 #include "../Routing/EventList.h"
 #include "../Routing/NodeList.h"
 
+#include <mutex>
+
 namespace titania {
 namespace X3D {
 
@@ -89,11 +91,7 @@ public:
 	processEvents ();
 
 	size_t
-	size ()
-	{ return events .size (); }
-
-	void
-	debug ();
+	size () const;
 
 
 private:
@@ -103,11 +101,18 @@ private:
 	Router &
 	operator = (const Router &) = delete;
 
+	EventList
+	getEvents ();
+
+	NodeList
+	getNodes ();
+
 	void
 	eventsProcessed ();
 
-	EventList events;
-	NodeList  nodes;
+	EventList          events;
+	NodeList           nodes;
+	mutable std::mutex mutex;
 
 };
 

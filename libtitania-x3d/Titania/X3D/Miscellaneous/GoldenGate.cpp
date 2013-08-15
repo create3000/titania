@@ -139,7 +139,8 @@ basic::ifilestream
 golden_video (const basic::uri & uri)
 {
 	MediaStream mediaStream;
-
+	
+	mediaStream .setup ();
 	mediaStream .setUri (uri);
 	mediaStream .sync ();
 

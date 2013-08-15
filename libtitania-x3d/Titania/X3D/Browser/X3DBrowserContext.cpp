@@ -240,7 +240,9 @@ std::mutex &
 X3DBrowserContext::getThread ()
 {
 	std::lock_guard <std::mutex> lock (threadMutex);
+	
 	threadIndex = (threadIndex + 1) % threads .size ();
+	
 	return threads [threadIndex];
 }
 
@@ -577,9 +579,9 @@ X3DBrowserContext::update ()
 		getGarbageCollector () .dispose ();
 
 		// Debug
-		router .debug ();
-		assert (router .size () == 0);
-		assert (getGarbageCollector () .size () == 0);
+		//router .debug ();
+		//assert (router .size () == 0);
+		//assert (getGarbageCollector () .size () == 0);
 
 		// Display
 

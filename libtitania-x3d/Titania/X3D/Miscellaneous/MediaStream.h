@@ -67,6 +67,9 @@ class MediaStream
 public:
 
 	MediaStream ();
+	
+	void
+	setup ();
 
 	const Glib::RefPtr <Gst::PlayBin> &
 	getPlayer () const

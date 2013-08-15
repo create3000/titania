@@ -1,0 +1,17 @@
+#VRML V2.0 utf8 Comment
+
+Background {
+  skyColor 0.4 0.4 0.4
+}
+
+    Transform {
+      children Shape {
+        appearance Appearance {
+          material Material { }
+          texture ImageTexture {
+            url "images/hellpit/iron.gif"
+          }
+        }
+        geometry DEF Box Box { }
+      }
+    }

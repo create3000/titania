@@ -71,6 +71,7 @@
 #include <set>
 #include <unordered_set>
 #include <vector>
+#include <thread>
 
 using namespace titania;
 using namespace titania::basic;
@@ -213,10 +214,39 @@ intersect (const Plane3f & p1, const Plane3f & p2, Line3f & line)
 	return false;
 }
 
-void
-test (bool b)
+
+class Test 
 {
-	__LOG__ << b << std::endl;
+public:
+
+	Test ()
+	{
+		__LOG__ << std::endl;
+	}
+
+	Test (const Test &)
+	{
+		__LOG__ << std::endl;
+	}
+
+	Test (Test &&)
+	{
+		__LOG__ << std::endl;
+	}
+
+};
+
+Test
+get ()
+{
+	__LOG__ << std::endl;
+	return Test ();
+}
+
+void
+test (Test &&)
+{
+	__LOG__ << std::endl;
 }
 
 int
@@ -228,21 +258,7 @@ main (int argc, char** argv)
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
 
-
-	bool b = false;
-	
-	auto f = std::bind (test, std::cref (b));
-			
-	f ();
-
-	b = true;
-	f ();
-
-	b = false;
-	f ();
-
-	b = true;
-	f ();
+	std::thread (test, std::move (Test ())) .join ();
 
 	std::clog << "Function main done." << std::endl;
 	exit (0);

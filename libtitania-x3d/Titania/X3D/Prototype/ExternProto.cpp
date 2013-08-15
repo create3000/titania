@@ -51,6 +51,7 @@
 #include "ExternProto.h"
 
 #include "../Bits/Error.h"
+#include "../Browser/X3DBrowser.h"
 #include "../Components/Core/X3DPrototypeInstance.h"
 #include "../Parser/RegEx.h"
 
@@ -71,6 +72,8 @@ ExternProto::ExternProto (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "metadata", metadata ());
 
 	addChildren (url (), scene, proto);
+	
+	url () .isTainted (true);
 }
 
 X3DBaseNode*
@@ -101,7 +104,9 @@ ExternProto::createInstance (X3DExecutionContext* const executionContext)
 {
 	requestImmediateLoad ();
 
-	return new X3DPrototypeInstance (executionContext, proto);
+	auto instance = new X3DPrototypeInstance (executionContext, proto);
+
+	return instance;
 }
 
 void
@@ -114,7 +119,9 @@ ExternProto::requestImmediateLoad ()
 
 	try
 	{
-		scene = createX3DFromURL (url ());
+		scene = getBrowser () -> createScene ();
+
+		parseIntoScene (scene, url ());
 	}
 	catch (const Error <INVALID_URL> & error)
 	{

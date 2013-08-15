@@ -103,22 +103,20 @@ private:
 	{
 		std::lock_guard <std::mutex> lock (urlObject -> getBrowser () -> getThread ());
 
-		X3DSFNode <Scene> scene = urlObject -> getBrowser () -> createScene ();
-
 		try
 		{
-			__LOG__ << url << std::endl;
-
+			X3DSFNode <Scene> scene = urlObject -> getBrowser () -> createScene ();
+			
 			urlObject -> parseIntoScene (scene, url);
 			
-			__LOG__ << url << std::endl;
+			return scene;
 		}
 		catch (const std::exception & error)
 		{
-			__LOG__ << error .what () << std::endl;
+			urlObject -> getBrowser () -> println (error .what ());
+			
+			return urlObject -> getBrowser () -> createScene ();
 		}
-
-		return scene;
 	}
 
 	void
@@ -288,6 +286,8 @@ throw (Error <INVALID_URL>,
 			catch (const X3DError & error)
 			{
 				urlError () .emplace_back (error .what ());
+
+				getBrowser () -> println (error .what ());
 			}
 		}
 
@@ -357,7 +357,7 @@ throw (Error <INVALID_URL>,
 
 	std::clog << "Failed." << std::endl;
 
-	throw Error <URL_UNAVAILABLE> ("Couldn't load URL '" + transformedURL + "'\nStatus: " + std::to_string (stream .status ()) + " " + stream .reason ());
+	throw Error <URL_UNAVAILABLE> ("Couldn't load URL '" + transformedURL + "'\nStatus: " + std::to_string (stream .status ()) + ". " + stream .reason ());
 }
 
 //  URI Handling

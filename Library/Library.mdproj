@@ -2302,6 +2302,10 @@
     <None Include="Tests\Basic\Delay.wrl" />
     <None Include="Tests\Basic\NodeIndex2.wrl" />
     <None Include="Tests\Scripting\replaceWorld2.wrl" />
+    <None Include="Tests\Texturing\images\hellpit\iron.gif" />
+    <None Include="Tests\Texturing\images\hellpit\metal.gif" />
+    <None Include="Tests\Texturing\images\hellpit\water.gif" />
+    <None Include="Tests\Texturing\hellpit.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
@@ -2424,6 +2428,7 @@
     <Folder Include="Examples\Terrain\" />
     <Folder Include="Examples\Terrain\stage\" />
     <Folder Include="Tests\PROTO\events\" />
+    <Folder Include="Tests\Texturing\images\hellpit\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Navigation\Rotor.wrl" />

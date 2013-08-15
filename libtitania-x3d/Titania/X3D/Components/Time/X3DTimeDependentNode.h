@@ -145,6 +145,10 @@ public:
 
 	virtual
 	void
+	setup () final;
+
+	virtual
+	void
 	dispose () override;
 
 

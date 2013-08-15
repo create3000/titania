@@ -53,11 +53,14 @@
 
 #include <cstddef>
 #include <deque>
+#include <mutex>
 
 namespace titania {
 namespace X3D {
 
 class X3DObject;
+
+typedef std::deque <X3DObject*> ObjectArray;
 
 class GarbageCollector
 {
@@ -65,18 +68,19 @@ public:
 
 	GarbageCollector ();
 
+	static
 	size_t
-	getMemoryUsage () const;
+	getMemoryUsage ();
+
+	static
+	void
+	trimFreeMemory ();
 
 	void
 	addObject (X3DObject*);
 
 	void
 	dispose ();
-
-	static
-	void
-	trimFreeMemory ();
 
 	size_t
 	size () const;
@@ -86,18 +90,20 @@ public:
 
 private:
 
-	typedef std::deque <X3DObject*> ObjectArray;
-
 	GarbageCollector (const GarbageCollector &) = delete;
 
 	GarbageCollector &
 	operator = (const GarbageCollector &) = delete;
 
+	ObjectArray
+	getObjects ();
+
 	static
 	void
 	deleteObjects (ObjectArray &&);
 
-	ObjectArray disposedObjects;
+	ObjectArray         objects;
+	mutable std::mutex  mutex;
 
 };
 

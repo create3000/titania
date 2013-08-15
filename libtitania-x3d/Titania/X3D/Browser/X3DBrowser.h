@@ -195,24 +195,14 @@ public:
 
 	template <typename ... Args>
 	void
-	print (const Args & ... args)
-	throw (Error <DISPOSED>)
-	{
-		std::ostringstream stream;
-
-		print (stream, args ...);
-
-		getConsole () -> set_string () .emplace_back (stream .str ());
-		std::clog << stream .str ();
-	}
+	print (Args && ... args)
+	throw (Error <DISPOSED>);
 
 	template <typename ... Args>
 	void
-	println (const Args & ... args)
+	println (Args && ... args)
 	throw (Error <DISPOSED>)
-	{
-		print (args ..., '\n');
-	}
+	{ print (args ..., '\n'); }
 
 	///  @name Destruction
 
@@ -240,13 +230,9 @@ private:
 	getWorld () const final
 	{ return world; }
 
-	template <typename Arg, typename ... Args>
+	template <typename First, typename ... Args>
 	void
-	print (std::ostringstream & stream, const Arg & first, const Args & ... args)
-	{
-		stream << first;
-		print (stream, args ...);
-	}
+	print (std::ostringstream & stream, First && first, Args && ... args);
 
 	void
 	print (std::ostringstream &)
@@ -270,6 +256,31 @@ private:
 	X3DSFNode <World> world;
 
 };
+
+template <typename ... Args>
+inline
+void
+X3DBrowser::print (Args && ... args)
+throw (Error <DISPOSED>)
+{
+	std::ostringstream ostream;
+
+	print (ostream, args ...);
+
+	getConsole () -> set_string () .emplace_back (ostream .str ());
+
+	std::clog << ostream .str ();
+}
+
+template <typename First, typename ... Args>
+inline
+void
+X3DBrowser::print (std::ostringstream & ostream, First && first, Args && ... args)
+{
+	ostream << first;
+
+	print (ostream, args ...);
+}
 
 } // X3D
 } // titania

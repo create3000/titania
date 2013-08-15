@@ -88,6 +88,15 @@ X3DTimeDependentNode::X3DTimeDependentNode () :
 }
 
 void
+X3DTimeDependentNode::setup ()
+{
+	X3DChildNode::setup ();
+
+	if (not getExecutionContext () -> isProto ())
+		set_loop ();
+}
+
+void
 X3DTimeDependentNode::initialize ()
 {
 	X3DChildNode::initialize ();
@@ -103,8 +112,6 @@ X3DTimeDependentNode::initialize ()
 	pauseTimeValue  = pauseTime ();
 	resumeTimeValue = resumeTime ();
 	stopTimeValue   = stopTime ();
-
-	set_loop ();
 }
 
 time_type

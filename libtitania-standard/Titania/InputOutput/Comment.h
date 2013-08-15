@@ -63,20 +63,15 @@ public:
 
 	basic_comment (const CharT &);
 
-	const std::basic_string <CharT> &
-	match ()
-	{ return string; }
-
 	bool
-	operator () (std::basic_istream <CharT, Traits> &);
+	operator () (std::basic_istream <CharT, Traits> &, std::basic_string <CharT> &);
 
 
 private:
 
 	typedef typename std::basic_istream <CharT, Traits>::int_type int_type;
 
-	CharT                     start;
-	std::basic_string <CharT> string;
+	CharT start;
 
 };
 
@@ -87,10 +82,8 @@ basic_comment <CharT, Traits>::basic_comment (const CharT & start) :
 
 template <class CharT, class Traits>
 bool
-basic_comment <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> & istream)
+basic_comment <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> & istream, std::basic_string <CharT> & string)
 {
-	string .clear ();
-
 	if (istream .peek () == (int_type) start)
 	{
 		istream .get ();

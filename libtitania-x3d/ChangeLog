@@ -1,3 +1,39 @@
+2013-08-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* SFVec4.h:
+	* SFVec3.h:
+	* SFVec2.h:
+	* Router.h:
+	* SFTime.cpp:
+	* Parser.cpp:
+	* Console.h:
+	* SFImage.cpp:
+	* SFColor.cpp:
+	* SFMatrix3.h:
+	* Router.cpp:
+	* SFMatrix4.h:
+	* SFString.cpp:
+	* Console.cpp:
+	* SFRotation4.h:
+	* X3DScalar.cpp:
+	* X3DBrowser.h:
+	* X3DArrayField.h:
+	* SFColorRGBA.cpp:
+	* X3DBrowser.cpp:
+	* GarbageCollector.h:
+	* ExternProto.cpp:
+	* GarbargeCollector.cpp:
+	* MediaStream.h:
+	* GoldenGate.cpp:
+	* X3DBrowserContext.cpp:
+	* MediaStream.cpp:
+	* Inline.cpp:
+	* X3DTimeDependentNode.h:
+	* X3DUrlObject.cpp:
+	* X3DSoundSourceNode.cpp:
+	* X3DPrototypeInstance.cpp:
+	* X3DTimeDependentNode.cpp: 
+
 2013-08-14  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Router.h:

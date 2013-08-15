@@ -111,10 +111,6 @@ X3DBrowser::initialize ()
 	       std::string (80, '*'), '\n',
 	       '\n');
 
-	std::clog
-		<< "\tDone initializing Browser." << std::endl
-		<< std::endl;
-
 	initialized () = getCurrentTime ();
 }
 

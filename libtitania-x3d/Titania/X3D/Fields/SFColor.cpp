@@ -167,7 +167,9 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	Grammar::whitespaces (istream);
+	std::string whitespaces;
+	
+	Grammar::whitespaces (istream, whitespaces);
 
 	istream >> get ();
 

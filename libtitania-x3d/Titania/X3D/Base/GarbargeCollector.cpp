@@ -46,7 +46,7 @@
  *
  * For Silvio, Joy and Adi.
  *
- ****************#include <glibtop/mem.h>**************************************************************/
+ ******************************************************************************/
 
 #include "GarbageCollector.h"
 
@@ -55,49 +55,28 @@
 #include <glibtop.h>
 #include <glibtop/procmem.h>
 
-#include <unistd.h>
 #include <malloc.h>
 #include <thread>
+#include <unistd.h>
 
 namespace titania {
 namespace X3D {
 
-GarbageCollector::GarbageCollector ()
+GarbageCollector::GarbageCollector () :
+	objects (),
+	  mutex ()
 {
 	glibtop_init ();
 }
 
 size_t
-GarbageCollector::getMemoryUsage () const
+GarbageCollector::getMemoryUsage ()
 {
-	static glibtop_proc_mem memory;
+	glibtop_proc_mem memory;
 
 	glibtop_get_proc_mem (&memory, getpid ());
 
 	return memory .rss;
-}
-
-void
-GarbageCollector::addObject (X3DObject* object)
-{
-	disposedObjects .emplace_back (object);
-}
-
-void
-GarbageCollector::dispose ()
-{
-	std::thread (&GarbageCollector::deleteObjects, std::move (disposedObjects)) .detach ();
-}
-
-void
-GarbageCollector::deleteObjects (ObjectArray && objects)
-{
-	for (const auto & object : objects)
-	{
-		// __LOG__ << (X3DChildObject*) object << " " << object -> getName () << std::endl;
-
-		delete object;
-	}
 }
 
 void
@@ -106,15 +85,47 @@ GarbageCollector::trimFreeMemory ()
 	malloc_trim (0);
 }
 
+void
+GarbageCollector::addObject (X3DObject* object)
+{
+	std::lock_guard <std::mutex> lock (mutex);
+
+	objects .emplace_back (object);
+}
+
+ObjectArray
+GarbageCollector::getObjects ()
+{
+	std::lock_guard <std::mutex> lock (mutex);
+
+	return std::move (objects);
+}
+
+void
+GarbageCollector::deleteObjects (ObjectArray && objects)
+{
+	for (const auto & object : objects)
+		delete object;
+}
+
+void
+GarbageCollector::dispose ()
+{
+	if (size ())
+		std::thread (&GarbageCollector::deleteObjects, getObjects ()) .detach ();
+}
+
 size_t
 GarbageCollector::size () const
 {
-	return disposedObjects .size ();
+	std::lock_guard <std::mutex> lock (mutex);
+
+	return objects .size ();
 }
 
 GarbageCollector::~GarbageCollector ()
 {
-	deleteObjects (std::move (disposedObjects));
+	deleteObjects (getObjects ());
 }
 
 } // X3D

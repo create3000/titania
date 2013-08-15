@@ -87,6 +87,8 @@ X3DSoundSourceNode::initialize ()
 	pitch () .addInterest (this, &X3DSoundSourceNode::set_pitch);
 	end      .addInterest (this, &X3DSoundSourceNode::set_end);
 
+	mediaStream -> setup ();
+
 	add_signal_watch ();
 }
 
