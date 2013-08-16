@@ -48,16 +48,16 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_ROUTING_EVENT_LIST_H__
-#define __TITANIA_X3D_ROUTING_EVENT_LIST_H__
+#ifndef __TITANIA_X3D_ROUTING_EVENT_ARRAY_H__
+#define __TITANIA_X3D_ROUTING_EVENT_ARRAY_H__
 
 #include "../Base/X3DChildObject.h"
-#include <list>
+#include <deque>
 
 namespace titania {
 namespace X3D {
 
-typedef std::list <std::pair <X3DChildObject*, Event>> EventList;
+typedef std::deque <std::pair <X3DChildObject*, Event>> EventArray;
 
 } // X3D
 } // titania

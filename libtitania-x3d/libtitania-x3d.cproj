@@ -543,7 +543,6 @@
     <None Include="Titania\X3D\Execution\ImportedNode.h" />
     <None Include="Titania\X3D\Execution\ExportedNode.h" />
     <None Include="Titania\X3D\Execution\World.h" />
-    <None Include="Titania\X3D\Routing\EventList.h" />
     <None Include="Titania\X3D\Routing\NodeList.h" />
     <None Include="Titania\X3D\Rendering\DepthBuffer.h" />
     <None Include="Titania\X3D\Base\Event.h" />
@@ -571,6 +570,7 @@
     <None Include="Titania\X3D\Miscellaneous\TexturePtr.h" />
     <None Include="Titania\X3D\Miscellaneous\FontConfig.h" />
     <None Include="Titania\X3D\Miscellaneous\MediaStream.h" />
+    <None Include="Titania\X3D\Routing\EventArray.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

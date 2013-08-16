@@ -1,3 +1,7 @@
+2013-08-16  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* InputHTTPStream.cpp: 
+
 2013-08-09  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* SocketStreamBuf.h: 

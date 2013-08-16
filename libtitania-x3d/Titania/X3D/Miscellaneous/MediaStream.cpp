@@ -102,14 +102,6 @@ MediaStream::setup ()
 	if (display)
 		pixmap = XCreatePixmap (display, 0, 0, 0, 0);
 
-	__LOG__ << std::string (80, '#') << std::endl;
-	__LOG__ << std::string (80, '#') << std::endl;
-	__LOG__ << std::string (80, '#') << std::endl;
-	__LOG__ << pixmap << std::endl;
-	__LOG__ << std::string (80, '#') << std::endl;
-	__LOG__ << std::string (80, '#') << std::endl;
-	__LOG__ << std::string (80, '#') << std::endl;
-
 	if (pixmap)
 		vsink -> set_xwindow_id (pixmap);
 }

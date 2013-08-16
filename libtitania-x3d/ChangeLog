@@ -1,3 +1,25 @@
+2013-08-16  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-x3d.cproj:
+	* MFNode.h:
+	* SFVec4.h:
+	* Router.h:
+	* X3DField.h:
+	* X3DSFNode.h:
+	* Router.cpp:
+	* EventList.h:
+	* X3DBaseNode.h:
+	* EventArray.h:
+	* X3DArrayField.h:
+	* X3DBrowser.cpp:
+	* X3DBrowserContext.h:
+	* MediaStream.cpp:
+	* X3DBrowserContext.cpp:
+	* BrowserOptions.cpp:
+	* X3DUrlObject.cpp:
+	* X3DTimeDependentNode.h:
+	* X3DTimeDependentNode.cpp: 
+
 2013-08-15  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* SFVec4.h:

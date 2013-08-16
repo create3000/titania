@@ -59,7 +59,7 @@ Router::Router () :
 	 mutex ()
 { }
 
-EventList
+EventArray
 Router::getEvents ()
 {
 	std::lock_guard <std::mutex> lock (mutex);

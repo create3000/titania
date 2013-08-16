@@ -78,7 +78,7 @@ namespace X3D {
 // MinTextureSize          Number                                   8                            Default minumum texture size when scaling and filtering is applied.
 
 BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
-	splashScreen (new SFBool ()),
+	splashScreen (new SFBool (true)),
 	dashboard (new SFBool (true)),
 	rubberBand (new SFBool (true)),
 	enableInlineViewpoints (new SFBool (true)),

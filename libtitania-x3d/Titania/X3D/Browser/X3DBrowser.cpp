@@ -111,6 +111,7 @@ X3DBrowser::initialize ()
 	       std::string (80, '*'), '\n',
 	       '\n');
 
+	initialized () .isTainted (false);
 	initialized () = getCurrentTime ();
 }
 

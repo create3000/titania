@@ -375,6 +375,7 @@ private:
 	size_t                  threadIndex;
 	std::deque <std::mutex> threads;
 	std::mutex              threadMutex;
+	std::mutex              mutex;
 
 	X3DSFNode <Console> console;
 };

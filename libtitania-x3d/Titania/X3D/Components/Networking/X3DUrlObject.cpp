@@ -342,6 +342,7 @@ throw (Error <INVALID_URL>,
 	{
 		stream .request_header ("User-Agent", userAgent);
 		stream .request_header ("Referer",    getReferer () .filename ());
+		stream .request_header ("Accept-Encoding", "gzip, deflate");
 		stream .send ();
 
 		if (stream)

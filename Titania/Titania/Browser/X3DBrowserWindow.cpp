@@ -72,9 +72,6 @@ X3DBrowserWindow::X3DBrowserWindow (const basic::uri & worldURL) :
 	// User interface
 
 	setTransparent (true);
-
-	// Browser
-	X3D::getBrowser () -> getBrowserOptions () -> splashScreen () = true;
 }
 
 void

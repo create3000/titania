@@ -74,6 +74,7 @@ private:
 
 public:
 
+	using X3DArrayField <SFNode>::operator =;
 	using X3DArrayField <SFNode>::addInterest;
 
 	MFNode () :
@@ -82,6 +83,10 @@ public:
 
 	MFNode (const MFNode & field) :
 		ArrayField (field)
+	{ }
+
+	MFNode (MFNode && field) :
+		ArrayField (std::move (field))
 	{ }
 
 	explicit
@@ -111,6 +116,20 @@ public:
 	virtual
 	void
 	clone (X3DExecutionContext* const, X3DFieldDefinition*) const final;
+
+	MFNode &
+	operator = (const MFNode & field)
+	{
+		ArrayField::operator = (field);
+		return *this;
+	}
+
+	MFNode &
+	operator = (MFNode && field)
+	{
+		ArrayField::operator = (std::move (field));
+		return *this;
+	}
 
 	virtual
 	X3DConstants::FieldType

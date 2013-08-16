@@ -145,10 +145,6 @@ public:
 
 	virtual
 	void
-	setup () final;
-
-	virtual
-	void
 	dispose () override;
 
 
@@ -252,6 +248,7 @@ private:
 
 	Fields fields;
 	
+	SFTime    initialized;
 	time_type startTimeValue;
 	time_type pauseTimeValue;
 	time_type resumeTimeValue;

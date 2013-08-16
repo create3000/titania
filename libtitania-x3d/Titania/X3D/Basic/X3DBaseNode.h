@@ -61,7 +61,6 @@
 #include "../Bits/TraverseType.h"
 #include "../Bits/X3DConstants.h"
 #include "../Fields/SFTime.h"
-#include "../Routing/EventList.h"
 #include "../Routing/NodeList.h"
 #include "../Types/Time.h"
 

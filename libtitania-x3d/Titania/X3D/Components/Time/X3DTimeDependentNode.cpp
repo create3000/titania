@@ -72,6 +72,7 @@ X3DTimeDependentNode::Fields::Fields () :
 X3DTimeDependentNode::X3DTimeDependentNode () :
 	   X3DChildNode (),
 	         fields (),
+	    initialized (),
 	 startTimeValue (0),
 	 pauseTimeValue (0),
 	resumeTimeValue (0),
@@ -85,15 +86,8 @@ X3DTimeDependentNode::X3DTimeDependentNode () :
 	    stopTimeout ()
 {
 	addNodeType (X3DConstants::X3DTimeDependentNode);
-}
-
-void
-X3DTimeDependentNode::setup ()
-{
-	X3DChildNode::setup ();
-
-	if (not getExecutionContext () -> isProto ())
-		set_loop ();
+	
+	addChildren (initialized);
 }
 
 void
@@ -101,6 +95,7 @@ X3DTimeDependentNode::initialize ()
 {
 	X3DChildNode::initialize ();
 
+	initialized   .addInterest (this, &TimeSensor::set_loop);
 	enabled ()    .addInterest (this, &TimeSensor::set_enabled);
 	loop ()       .addInterest (this, &X3DTimeDependentNode::set_loop);
 	startTime ()  .addInterest (this, &X3DTimeDependentNode::set_startTime);
@@ -112,6 +107,8 @@ X3DTimeDependentNode::initialize ()
 	pauseTimeValue  = pauseTime ();
 	resumeTimeValue = resumeTime ();
 	stopTimeValue   = stopTime ();
+	
+	initialized = getCurrentTime ();
 }
 
 time_type

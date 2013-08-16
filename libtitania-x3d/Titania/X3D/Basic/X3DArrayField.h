@@ -96,6 +96,13 @@ public:
 		X3DArrayField <ValueType> (field .begin (), field .end ())
 	{ }
 
+	///  Move constructor.
+	X3DArrayField (X3DArrayField && field) :
+		X3DField <value_type> ()
+	{
+		*this = std::move (field);
+	}
+
 	//	///  Move constructor.
 	//	X3DArrayField (X3DArrayField && field) :
 	//		X3DArray (),
@@ -159,6 +166,32 @@ public:
 	X3DArrayField*
 	clone (X3DExecutionContext* const) const override
 	{ return clone (); }
+
+	X3DArrayField &
+	operator = (const X3DArrayField & field)
+	{
+		X3DField <value_type>::operator = (field);
+		return *this;
+	}
+
+	X3DArrayField &
+	operator = (X3DArrayField && field)
+	{
+		if (&field == this)
+			return *this;
+			
+		clear ();
+
+		get () = field .get ();
+		
+		addChildren (get () .begin (), get () .end ());
+		
+		field .clear ();
+		
+		addEvent ();
+
+		return *this;
+	}
 
 	template <const size_t Size>
 	X3DArrayField &

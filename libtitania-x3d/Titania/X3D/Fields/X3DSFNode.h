@@ -66,18 +66,34 @@ public:
 	typedef ValueType* value_type;
 	typedef ValueType* scalar_type;
 
+	using X3DField <ValueType*>::operator =;
 	using X3DField <ValueType*>::addInterest;
 	using X3DField <ValueType*>::setValue;
 	using X3DField <ValueType*>::getValue;
 
 	///  @name Constructors
 
-	X3DSFNode ();
+	X3DSFNode () :
+		X3DField <ValueType*> (nullptr)
+	{ }
 
-	X3DSFNode (const X3DSFNode &);
+	X3DSFNode (const X3DSFNode & field) :
+		X3DSFNode (field .getValue ())
+	{ }
+
+	X3DSFNode (X3DSFNode && field) :
+		X3DSFNode (field .getValue ())
+	{
+		field = nullptr;
+	}
 
 	//explicit
-	X3DSFNode (ValueType* const);
+	X3DSFNode (ValueType* const value) :
+		X3DField <ValueType*> (value)
+	{
+		if (getValue ())
+			getValue () -> addParent (this);
+	}
 
 	///  @name Copy
 
@@ -93,6 +109,16 @@ public:
 	virtual
 	void
 	clone (X3DExecutionContext* const, X3DFieldDefinition*) const final;
+
+	/// @name Assignment operators
+
+	///  Default assignment operator.  Behaves the same as the 6.7.6 setValue service.
+	X3DSFNode &
+	operator = (const X3DSFNode &);
+
+	///  Move assignment operator.  Behaves the same as the 6.7.6 setValue service.
+	X3DSFNode &
+	operator = (X3DSFNode &&);
 
 	///  @name Field services
 
@@ -205,27 +231,6 @@ template <class ValueType>
 const std::string X3DSFNode <ValueType>::typeName ("SFNode");
 
 template <class ValueType>
-X3DSFNode <ValueType>::X3DSFNode () :
-	X3DField <ValueType*> (nullptr)
-{ }
-
-template <class ValueType>
-X3DSFNode <ValueType>::X3DSFNode (const X3DSFNode & field) :
-	X3DField <ValueType*> (field)
-{
-	if (getValue ())
-		getValue () -> addParent (this);
-}
-
-template <class ValueType>
-X3DSFNode <ValueType>::X3DSFNode (ValueType* const value) :
-	X3DField <ValueType*> (value)
-{
-	if (getValue ())
-		getValue () -> addParent (this);
-}
-
-template <class ValueType>
 X3DSFNode <ValueType>*
 X3DSFNode <ValueType>::clone (X3DExecutionContext* const executionContext) const
 {
@@ -258,6 +263,28 @@ X3DSFNode <ValueType>::clone (X3DExecutionContext* const executionContext, X3DFi
 }
 
 template <class ValueType>
+inline
+X3DSFNode <ValueType> &
+X3DSFNode <ValueType>::operator = (const X3DSFNode & field)
+{
+	X3DField <ValueType*>::operator = (field);
+	return *this;
+}
+
+template <class ValueType>
+inline
+X3DSFNode <ValueType> &
+X3DSFNode <ValueType>::operator = (X3DSFNode && field)
+{
+	X3DField <ValueType*>::operator = (field);
+
+	field = nullptr;
+
+	return *this;
+}
+
+template <class ValueType>
+inline
 const std::string &
 X3DSFNode <ValueType>::getNodeTypeName () const
 {
@@ -265,6 +292,7 @@ X3DSFNode <ValueType>::getNodeTypeName () const
 }
 
 template <class ValueType>
+inline
 const X3DBaseNode*
 X3DSFNode <ValueType>::getNodeType () const
 {
@@ -272,6 +300,7 @@ X3DSFNode <ValueType>::getNodeType () const
 }
 
 template <class ValueType>
+inline
 void
 X3DSFNode <ValueType>::setNodeName (const std::string & name) const
 {
@@ -279,6 +308,7 @@ X3DSFNode <ValueType>::setNodeName (const std::string & name) const
 }
 
 template <class ValueType>
+inline
 const std::string &
 X3DSFNode <ValueType>::getNodeName () const
 {
@@ -286,6 +316,7 @@ X3DSFNode <ValueType>::getNodeName () const
 }
 
 template <class ValueType>
+inline
 const FieldDefinitionArray &
 X3DSFNode <ValueType>::getFieldDefinitions () const
 {
@@ -293,6 +324,7 @@ X3DSFNode <ValueType>::getFieldDefinitions () const
 }
 
 template <class ValueType>
+inline
 X3DFieldDefinition*
 X3DSFNode <ValueType>::getField (const std::string & name) const
 throw (Error <INVALID_NAME>,
@@ -367,6 +399,7 @@ X3DSFNode <ValueType>::dispose ()
 }
 
 template <class ValueType>
+inline
 X3DSFNode <ValueType>::~X3DSFNode ()
 {
 	removeNode (getValue ());

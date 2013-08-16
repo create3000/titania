@@ -79,14 +79,22 @@ public:
 	 * These constructors are all trival and therefore made inline.
 	 */
 
-	SFVec4 ();
+	SFVec4 () :
+		X3DField <ValueType> ()
+	{ }
 
-	SFVec4 (const SFVec4 &);
+	SFVec4 (const SFVec4 & field) :
+		X3DField <ValueType> (field)
+	{ }
 
 	explicit
-	SFVec4 (const ValueType &);
+	SFVec4 (const ValueType & value) :
+		X3DField <ValueType> (value)
+	{ }
 
-	SFVec4 (const scalar_type &, const scalar_type &, const scalar_type &, const scalar_type &);
+	SFVec4 (const scalar_type & x, const scalar_type & y, const scalar_type & z, const scalar_type & w) :
+		X3DField <ValueType> (ValueType (x, y, z, w))
+	{ }
 
 	/*
 	 * These function are all trival and therefore made inline.
@@ -210,26 +218,7 @@ private:
 };
 
 template <class ValueType>
-SFVec4 <ValueType>::SFVec4 () :
-	X3DField <ValueType> ()
-{ }
-
-template <class ValueType>
-SFVec4 <ValueType>::SFVec4 (const SFVec4 & field) :
-	X3DField <ValueType> (field)
-{ }
-
-template <class ValueType>
-SFVec4 <ValueType>::SFVec4 (const ValueType & value) :
-	X3DField <ValueType> (value)
-{ }
-
-template <class ValueType>
-SFVec4 <ValueType>::SFVec4 (const scalar_type & x, const scalar_type & y, const scalar_type & z, const scalar_type & w) :
-	X3DField <ValueType> (ValueType (x, y, z, w))
-{ }
-
-template <class ValueType>
+inline
 SFVec4 <ValueType>*
 SFVec4 <ValueType>::clone () const
 {

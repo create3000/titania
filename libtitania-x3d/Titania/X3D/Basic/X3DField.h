@@ -76,7 +76,7 @@ public:
 
 	/// @name Assignment operators
 
-	///  Default assignment opeator.  Behaves the same as the 6.7.6 setValue service.
+	///  Default assignment operator.  Behaves the same as the 6.7.6 setValue service.
 	X3DField &
 	operator = (const X3DField &);
 
