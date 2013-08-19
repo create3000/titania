@@ -183,8 +183,13 @@ public:
 	/// Add uninitialized node
 	virtual
 	void
-	addNode (X3DBaseNode* node)
-	{ nodes .emplace_back (node); }
+	addUninitializedNode (X3DBaseNode* const uninitializedNode)
+	{ uninitializedNodes .emplace_back (uninitializedNode); }
+
+	/// Get uninitialized nodes
+	MFNode
+	getUninitializedNodes ()
+	{ return std::move (uninitializedNodes); }
 
 	///  @name Named/Imported node handling
 
@@ -452,7 +457,7 @@ private:
 	RouteArray         routes;
 	MFNode             rootNodes;
 
-	MFNode nodes;
+	MFNode uninitializedNodes;
 };
 
 } // X3D

@@ -68,24 +68,13 @@ public:
 	Router ();
 
 	void
-	addEvent (X3DChildObject* const object, const Event & event)
-	{ events .emplace_back (object, event); }
+	addEvent (X3DChildObject* const, const Event &);
 
 	NodeId
-	addNode (X3DBaseNode* node)
-	{
-		nodes .emplace_back (node);
-		return -- nodes .end ();
-	}
+	addNode (X3DBaseNode*);
 
 	void
-	removeNode (const NodeId & node)
-	{
-		if (nodes .empty ())
-			return;
-
-		nodes .erase (node);
-	}
+	removeNode (const NodeId &);
 
 	void
 	processEvents ();

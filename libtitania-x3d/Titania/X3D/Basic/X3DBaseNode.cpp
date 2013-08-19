@@ -216,7 +216,7 @@ X3DBaseNode::copy (X3DExecutionContext* const executionContext) const
 		}
 	}
 
-	executionContext -> addNode (copy);
+	executionContext -> addUninitializedNode (copy);
 
 	return copy;
 }

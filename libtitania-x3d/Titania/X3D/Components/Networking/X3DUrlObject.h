@@ -93,13 +93,6 @@ public:
 	///  @name Element access
 
 	virtual
-	const basic::uri &
-	getWorldURL () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
-	{ return worldURL; }
-
-	virtual
 	const X3DScalar <LoadState> &
 	checkLoadState () const
 	{ return loadState (); }
@@ -204,6 +197,13 @@ protected:
 	initialize () override;
 
 	///  @name Element Access
+
+	virtual
+	const basic::uri &
+	getWorldURL () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
+	{ return worldURL; }
 
 	virtual
 	const basic::uri &

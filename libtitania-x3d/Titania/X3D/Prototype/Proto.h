@@ -105,7 +105,7 @@ private:
 
 	virtual
 	void
-	addNode (X3DBaseNode* node) final
+	addUninitializedNode (X3DBaseNode* node) final
 	{ }
 
 };

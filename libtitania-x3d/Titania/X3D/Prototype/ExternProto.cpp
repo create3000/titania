@@ -122,10 +122,13 @@ ExternProto::requestImmediateLoad ()
 		scene = getBrowser () -> createScene ();
 
 		parseIntoScene (scene, url ());
+		
+		for (const auto & uninitializedNode : scene -> getUninitializedNodes ())
+			getExecutionContext () -> addUninitializedNode (uninitializedNode);
 	}
 	catch (const Error <INVALID_URL> & error)
 	{
-		scene .setValue (NULL);
+		scene = nullptr;
 
 		setLoadState (FAILED_STATE);
 

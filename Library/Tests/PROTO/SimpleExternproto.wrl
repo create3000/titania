@@ -5,7 +5,6 @@ META "title" "Simple EXTERNPROTO"
 EXTERNPROTO Cube [ ]
 "Simple.wrl"
 
-Shape {
-  geometry Cube { }
+Transform {
+  children Cube { }
 }
-

@@ -1331,7 +1331,7 @@ Parser::node (SFNode & _node, const std::string & _nodeNameId)
 
 				_basicNode -> addInnerComments (getComments ());
 
-				getExecutionContext () -> addNode (_basicNode);
+				getExecutionContext () -> addUninitializedNode (_basicNode);
 
 				//__LOG__ << this << " " << _nodeTypeId << std::endl;
 				return true;

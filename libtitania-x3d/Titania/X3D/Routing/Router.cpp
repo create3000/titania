@@ -59,12 +59,35 @@ Router::Router () :
 	 mutex ()
 { }
 
+void
+Router::addEvent (X3DChildObject* const object, const Event & event)
+{
+	events .emplace_back (object, event);
+}
+
 EventArray
 Router::getEvents ()
 {
 	std::lock_guard <std::mutex> lock (mutex);
 
 	return std::move (events);
+}
+
+NodeId
+Router::addNode (X3DBaseNode* node)
+{
+	nodes .emplace_back (node);
+
+	return -- nodes .end ();
+}
+
+void
+Router::removeNode (const NodeId & node)
+{
+	if (nodes .empty ())
+		return;
+
+	nodes .erase (node);
 }
 
 NodeList

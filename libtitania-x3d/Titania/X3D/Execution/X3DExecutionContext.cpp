@@ -82,12 +82,12 @@ X3DExecutionContext::X3DExecutionContext () :
 	        externProtos (),
 	              routes (),
 	           rootNodes (),
-	               nodes ()
+	  uninitializedNodes ()
 {
-	rootNodes .isTainted (true);
-	nodes     .isTainted (true);
+	rootNodes          .isTainted (true);
+	uninitializedNodes .isTainted (true);
 
-	addChildren (rootNodes, nodes);
+	addChildren (rootNodes, uninitializedNodes);
 }
 
 void
@@ -99,13 +99,13 @@ X3DExecutionContext::setup ()
 void
 X3DExecutionContext::realize ()
 {
-	rootNodes .isTainted (false);
-	nodes     .isTainted (false);
+	rootNodes          .isTainted (false);
+	uninitializedNodes .isTainted (false);
 
-	for (auto & node : nodes)
-		node -> setup ();
+	for (auto & uninitializedNode : uninitializedNodes)
+		uninitializedNode -> setup ();
 
-	nodes .clear (); // XXX Slows down TreasureIsland
+	uninitializedNodes .clear (); // XXX Slows down TreasureIsland
 }
 
 void
@@ -792,8 +792,8 @@ X3DExecutionContext::dispose ()
 	externProtos  .clear ();
 	routes        .clear ();
 
-	rootNodes .dispose ();
-	nodes     .dispose ();
+	rootNodes          .dispose ();
+	uninitializedNodes .dispose ();
 
 	X3DNode::dispose ();
 }
