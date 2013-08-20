@@ -18,7 +18,7 @@ Transform {
 
         language "GLSL"
         parts [
-          ShaderPart {
+          DEF VertexShader ShaderPart {
             url "data:text/plain,
 void main (void)
 {
@@ -42,7 +42,7 @@ void main (void)
       }
     }
     geometry Sphere { }
-  } 
+  }
 }
 
 Transform {
@@ -50,21 +50,16 @@ Transform {
   children Shape {
     appearance Appearance {
       shaders ComposedShader {
-        inputOutput SFNode myTexture ImageTexture {
-            url "../images/image.png"
-          }
+        inputOutput SFNode myTexture MovieTexture {
+          url "../../Examples/Vattenfall/stage/film6.mpv"
+          loop TRUE
+          repeatS FALSE
+          repeatT FALSE
+        }
 
         language "GLSL"
         parts [
-          ShaderPart {
-            url "data:text/plain,
-void main (void)
-{
-	gl_Position     = ftransform ();
-	gl_TexCoord [0] = gl_TextureMatrix [0] * gl_MultiTexCoord0;
-}
-"
-          }
+          USE VertexShader
           ShaderPart {
             type "FRAGMENT"
             url "data:text/plain,
@@ -80,5 +75,5 @@ void main (void)
       }
     }
     geometry Sphere { }
-  } 
+  }
 }

@@ -2306,6 +2306,7 @@
     <None Include="Tests\Texturing\images\hellpit\metal.gif" />
     <None Include="Tests\Texturing\images\hellpit\water.gif" />
     <None Include="Tests\Texturing\hellpit.wrl" />
+    <None Include="Tests\Shaders\Texture.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

@@ -159,12 +159,12 @@ protected:
 	bool
 	sync () const;
 
-
-private:
-
 	virtual
 	void
-	prepareEvents () final;
+	prepareEvents () override;
+
+
+private:
 
 	void
 	on_message (const Glib::RefPtr <Gst::Message> &);

@@ -100,7 +100,7 @@ private:
 	remove_parts ();
 
 	void
-	set_field (X3DFieldDefinition*);
+	set_field (X3DFieldDefinition* const);
 
 	struct Fields
 	{

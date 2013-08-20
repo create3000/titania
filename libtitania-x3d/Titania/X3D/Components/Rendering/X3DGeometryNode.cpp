@@ -454,12 +454,6 @@ X3DGeometryNode::addMirrorVertices (GLenum vertexMode, const bool convex)
 }
 
 void
-X3DGeometryNode::notify ()
-{
-	update ();
-}
-
-void
 X3DGeometryNode::update ()
 {
 	clear ();

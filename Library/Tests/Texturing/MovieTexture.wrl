@@ -16,7 +16,7 @@ DEF _2 Transform {
       material Material { }
       texture DEF Movie MovieTexture {
         url [
-          "file:///home/holger/Projekte/Titania/Library/Examples/Vattenfall/stage/film6.mpv",
+          "../../Examples/Vattenfall/stage/film6.mpv",
           "http://www.visionbakery.com/content/dynamic/videos/project_574_video_1350486246_mod.mp4"
         ]
         loop TRUE

@@ -101,10 +101,6 @@ public:
 
 	virtual
 	void
-	notify () final;
-
-	virtual
-	void
 	draw ();
 
 
@@ -141,7 +137,7 @@ private:
 	{ return getTextureProperties () -> getInternalFormat (components); }
 
 	void
-	updateTextureProperties () const;
+	updateTextureProperties ();
 
 	struct Fields
 	{

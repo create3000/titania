@@ -89,10 +89,6 @@ public:
 
 	virtual
 	void
-	draw () final;
-
-	virtual
-	void
 	dispose () final;
 
 
@@ -106,6 +102,10 @@ private:
 	void
 	setLoadState (LoadState value)
 	{ X3DUrlObject::setLoadState (value); }
+
+	virtual
+	void
+	prepareEvents () final;
 
 	virtual
 	void

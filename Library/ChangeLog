@@ -1,3 +1,12 @@
+2013-08-20  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Library.mdproj:
+	* Test.wrl:
+	* Water2.wrl:
+	* Texture.wrl:
+	* MovieTexture.wrl:
+	* ComposedCubeMapTexture.wrl: 
+
 2013-08-19  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Simple.wrl:

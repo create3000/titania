@@ -69,12 +69,6 @@ ComposedCubeMapTexture::ComposedCubeMapTexture (X3DExecutionContext* const execu
 	              X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DEnvironmentTextureNode (),
 	                   fields (),
-	                   _front (nullptr),
-	                    _back (nullptr),
-	                    _left (nullptr),
-	                   _right (nullptr),
-	                  _bottom (nullptr),
-	                     _top (nullptr),
 	              transparent (false)
 {
 	setComponent ("CubeMapTexturing");
@@ -110,6 +104,8 @@ ComposedCubeMapTexture::initialize ()
 		glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
+		glBindTexture (GL_TEXTURE_CUBE_MAP, 0);
+
 		front ()  .addInterest (this, &ComposedCubeMapTexture::set_front);
 		back ()   .addInterest (this, &ComposedCubeMapTexture::set_back);
 		left ()   .addInterest (this, &ComposedCubeMapTexture::set_left);
@@ -129,95 +125,82 @@ ComposedCubeMapTexture::initialize ()
 void
 ComposedCubeMapTexture::set_front ()
 {
-	set_texture (GL_TEXTURE_CUBE_MAP_POSITIVE_Z, _front, front ());
+	setTexture (GL_TEXTURE_CUBE_MAP_POSITIVE_Z, front ());
 }
 
 void
 ComposedCubeMapTexture::set_back ()
 {
-	set_texture (GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, _back, back ());
+	setTexture (GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, back ());
 }
 
 void
 ComposedCubeMapTexture::set_right ()
 {
-	set_texture (GL_TEXTURE_CUBE_MAP_NEGATIVE_X, _right, right ());
+	setTexture (GL_TEXTURE_CUBE_MAP_NEGATIVE_X, right ());
 }
 
 void
 ComposedCubeMapTexture::set_left ()
 {
-	set_texture (GL_TEXTURE_CUBE_MAP_POSITIVE_X, _left, left ());
+	setTexture (GL_TEXTURE_CUBE_MAP_POSITIVE_X, left ());
 }
 
 void
 ComposedCubeMapTexture::set_bottom ()
 {
-	set_texture (GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, _bottom, bottom ());
+	setTexture (GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, bottom ());
 }
 
 void
 ComposedCubeMapTexture::set_top ()
 {
-	set_texture (GL_TEXTURE_CUBE_MAP_POSITIVE_Y, _top, top ());
+	setTexture (GL_TEXTURE_CUBE_MAP_POSITIVE_Y, top ());
 }
 
 void
-ComposedCubeMapTexture::set_texture (GLenum target, X3DTexture2DNode* & texture, const SFNode & field)
+ComposedCubeMapTexture::setTexture (GLenum target, const SFNode & field)
+{
+	setTexture (target, x3d_cast <X3DTexture2DNode*> (field));
+}
+
+void
+ComposedCubeMapTexture::setTexture (GLenum target, const X3DTexture2DNode* const texture)
 {
 	if (texture)
-		texture -> checkLoadState () .removeInterest (this, &ComposedCubeMapTexture::set_loadState);
-
-	texture = x3d_cast <X3DTexture2DNode*> (field);
-
-	if (texture)
 	{
-		texture -> checkLoadState () .addInterest (this, &ComposedCubeMapTexture::set_loadState, target, texture);
+		// Get texture 2d data
+		
+		transparent = texture -> isTransparent ();
 
-		set_loadState (target, texture);
+		GLint width = 0, height = 0;
+
+		glBindTexture (GL_TEXTURE_2D, texture -> getTextureId ());
+
+		glGetTexLevelParameteriv (GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH,  &width);
+		glGetTexLevelParameteriv (GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &height);
+
+		std::vector <char> image (width * height * 4);
+
+		glGetTexImage (GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, image .data ());
+		glBindTexture (GL_TEXTURE_2D, 0);
+
+		// Transfer image
+
+		glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
+
+		glBindTexture (GL_TEXTURE_CUBE_MAP, getTextureId ());
+		glTexImage2D (target, 0, GL_RGBA, width, height, false, GL_RGBA, GL_UNSIGNED_BYTE, image .data ());
+		glBindTexture (GL_TEXTURE_CUBE_MAP, 0);
 	}
-}
-
-void
-ComposedCubeMapTexture::set_loadState (GLenum target, X3DTexture2DNode* texture)
-{
-	switch (texture -> checkLoadState ())
+	else
 	{
-		case COMPLETE_STATE:
-		case FAILED_STATE:
-		{
-			setImage (target, texture);
-			break;
-		}
-		default:
-			break;
+		transparent = false;
+
+		glBindTexture (GL_TEXTURE_CUBE_MAP, getTextureId ());
+		glTexImage2D (target, 0, GL_RGBA, 0, 0, false, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);	
+		glBindTexture (GL_TEXTURE_CUBE_MAP, 0);
 	}
-}
-
-void
-ComposedCubeMapTexture::setImage (GLenum target, const X3DTexture2DNode* const texture)
-{
-	// Get texture 2d data
-	
-	transparent = texture -> isTransparent ();
-
-	GLint width = 0, height = 0;
-
-	glBindTexture (GL_TEXTURE_2D, texture -> getTextureId ());
-
-	glGetTexLevelParameteriv (GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH,  &width);
-	glGetTexLevelParameteriv (GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &height);
-
-	std::vector <char> image (width * height * 4);
-
-	glGetTexImage (GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, image .data ());
-	glBindTexture (GL_TEXTURE_2D, 0);
-
-	// Transfer image
-
-	glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
-
-	glTexImage2D (target, 0, GL_RGBA, width, height, false, GL_RGBA, GL_UNSIGNED_BYTE, image .data ());
 }
 
 void

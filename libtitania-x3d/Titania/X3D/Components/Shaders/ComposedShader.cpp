@@ -142,7 +142,7 @@ ComposedShader::remove_parts ()
 }
 
 void
-ComposedShader::set_field (X3DFieldDefinition* field)
+ComposedShader::set_field (X3DFieldDefinition* const field)
 {
 	glUseProgram (shaderProgram);
 
@@ -214,34 +214,34 @@ ComposedShader::set_field (X3DFieldDefinition* field)
 			{
 				auto node = static_cast <SFNode*> (field);
 
+				GLint textureUnit = 0;
+				glGetUniformiv (shaderProgram, location, &textureUnit);
+
+				if (not textureUnit)
+				{
+					if (getBrowser () -> getTextureUnits () .size ())
+					{
+						textureUnit = getBrowser () -> getTextureUnits () .top ();
+						getBrowser () -> getTextureUnits () .pop ();
+						textureUnits .emplace_back (textureUnit);
+					}
+				}
+
+				glActiveTexture (GL_TEXTURE0 + textureUnit);
+
 				auto texture = x3d_cast <X3DTextureNode*> (*node);
 
-				if (texture)
-				{
-					GLint textureUnit = 0;
-					glGetUniformiv (shaderProgram, location, &textureUnit);
+				if (x3d_cast <X3DTexture2DNode*> (texture))
+					glBindTexture (GL_TEXTURE_2D, texture -> getTextureId ());
 
-					if (not textureUnit)
-					{
-						if (getBrowser () -> getTextureUnits () .size ())
-						{
-							textureUnit = getBrowser () -> getTextureUnits () .top ();
-							getBrowser () -> getTextureUnits () .pop ();
-							textureUnits .emplace_back (textureUnit);
-						}
-					}
+				else if (x3d_cast <X3DEnvironmentTextureNode*> (texture))
+					glBindTexture (GL_TEXTURE_CUBE_MAP, texture -> getTextureId ());
+					
+				else
+					glBindTexture (GL_TEXTURE_2D, 0);
 
-					glActiveTexture (GL_TEXTURE0 + textureUnit);
-
-					if (x3d_cast <X3DTexture2DNode*> (texture))
-						glBindTexture (GL_TEXTURE_2D, texture -> getTextureId ());
-
-					else if (x3d_cast <X3DEnvironmentTextureNode*> (texture))
-						glBindTexture (GL_TEXTURE_CUBE_MAP, texture -> getTextureId ());
-
-					glUniform1i (location, textureUnit);
-					glActiveTexture (GL_TEXTURE0);
-				}
+				glUniform1i (location, textureUnit);
+				glActiveTexture (GL_TEXTURE0);
 
 				break;
 			}
@@ -434,29 +434,29 @@ ComposedShader::set_field (X3DFieldDefinition* field)
 
 				for (const auto & node :* array)
 				{
+					GLint textureUnit = 0;
+
+					if (getBrowser () -> getTextureUnits () .size ())
+					{
+						textureUnit = getBrowser () -> getTextureUnits () .top ();
+						getBrowser () -> getTextureUnits () .pop ();
+						textureUnits .emplace_back (textureUnit);
+					}
+
+					glActiveTexture (GL_TEXTURE0 + textureUnit);
+
 					auto texture = x3d_cast <X3DTextureNode*> (node);
 
-					if (texture)
-					{
-						GLint textureUnit = 0;
+					if (x3d_cast <X3DTexture2DNode*> (texture))
+						glBindTexture (GL_TEXTURE_2D, texture -> getTextureId ());
 
-						if (getBrowser () -> getTextureUnits () .size ())
-						{
-							textureUnit = getBrowser () -> getTextureUnits () .top ();
-							getBrowser () -> getTextureUnits () .pop ();
-							textureUnits .emplace_back (textureUnit);
-						}
+					else if (x3d_cast <X3DEnvironmentTextureNode*> (texture))
+						glBindTexture (GL_TEXTURE_CUBE_MAP, texture -> getTextureId ());
+						
+					else
+						glBindTexture (GL_TEXTURE_2D, 0);
 
-						glActiveTexture (GL_TEXTURE0 + textureUnit);
-
-						if (x3d_cast <X3DTexture2DNode*> (texture))
-							glBindTexture (GL_TEXTURE_2D, texture -> getTextureId ());
-
-						else if (x3d_cast <X3DEnvironmentTextureNode*> (texture))
-							glBindTexture (GL_TEXTURE_CUBE_MAP, texture -> getTextureId ());
-
-						vector .emplace_back (textureUnit);
-					}
+					vector .emplace_back (textureUnit);
 				}
 
 				glUniform1iv (location, vector .size (), vector .data ());

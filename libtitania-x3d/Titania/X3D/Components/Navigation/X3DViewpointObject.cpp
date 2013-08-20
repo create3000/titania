@@ -74,7 +74,7 @@ X3DViewpointObject::initialize ()
 void
 X3DViewpointObject::set_description ()
 {
-	//X3DChildObject::notify ();
+	//X3DChildObject::addEvent ();
 }
 
 void

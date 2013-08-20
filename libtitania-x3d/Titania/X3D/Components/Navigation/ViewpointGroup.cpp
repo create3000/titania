@@ -126,7 +126,7 @@ ViewpointGroup::getViewpointObjects () const
 void
 ViewpointGroup::set_displayed ()
 {
-	//X3DChildObject::notify ();
+	//X3DChildObject::addEvent ();
 }
 
 void
@@ -156,13 +156,13 @@ ViewpointGroup::set_children ()
 			viewpointObjects .emplace_back (viewpointObject);
 	}
 
-	//X3DChildObject::notify ();
+	//X3DChildObject::addEvent ();
 }
 
 void
 ViewpointGroup::set_isActive ()
 {
-	//X3DChildObject::notify ();
+	//X3DChildObject::addEvent ();
 }
 
 void

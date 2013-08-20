@@ -165,16 +165,10 @@ MovieTexture::requestImmediateLoad ()
 }
 
 void
-MovieTexture::update ()
+MovieTexture::prepareEvents ()
 {
-	setLoadState (NOT_STARTED_STATE);
+	X3DSoundSourceNode::prepareEvents ();
 
-	requestImmediateLoad ();
-}
-
-void
-MovieTexture::draw ()
-{
 	// We use the c versions of this functions here because get_last_buffer has a memory leak.
 
 	GstBuffer* buffer = gst_base_sink_get_last_buffer (Glib::RefPtr <Gst::BaseSink>::cast_static (getVideoSink ()) -> gobj ());
@@ -187,9 +181,15 @@ MovieTexture::draw ()
 		             GST_BUFFER_DATA (buffer));
 
 		gst_buffer_unref (buffer);
-	}
+	}	
+}
 
-	X3DTexture2DNode::draw ();
+void
+MovieTexture::update ()
+{
+	setLoadState (NOT_STARTED_STATE);
+
+	requestImmediateLoad ();
 }
 
 void

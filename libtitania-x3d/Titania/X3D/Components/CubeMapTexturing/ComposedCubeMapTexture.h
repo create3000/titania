@@ -153,13 +153,10 @@ private:
 	set_top ();
 
 	void
-	set_texture (GLenum, X3DTexture2DNode * &, const SFNode &);
+	setTexture (GLenum, const SFNode &);
 
 	void
-	set_loadState (GLenum, X3DTexture2DNode*);
-
-	void
-	setImage (GLenum, const X3DTexture2DNode * const);
+	setTexture (GLenum, const X3DTexture2DNode* const);
 
 	struct Fields
 	{
@@ -174,13 +171,6 @@ private:
 	};
 
 	Fields fields;
-
-	X3DTexture2DNode* _front;
-	X3DTexture2DNode* _back;
-	X3DTexture2DNode* _left;
-	X3DTexture2DNode* _right;
-	X3DTexture2DNode* _bottom;
-	X3DTexture2DNode* _top;
 
 	bool transparent;
 
