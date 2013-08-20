@@ -71,11 +71,6 @@ public:
 	create (X3DExecutionContext* const) const final;
 
 	virtual
-	const X3DScalar <LoadState> &
-	checkLoadState () const final
-	{ return X3DUrlObject::checkLoadState (); }
-
-	virtual
 	void
 	requestImmediateLoad () final;
 
@@ -100,8 +95,7 @@ private:
 
 	virtual
 	void
-	setLoadState (LoadState value)
-	{ X3DUrlObject::setLoadState (value); }
+	setTexture (const TexturePtr &) final;
 
 	virtual
 	void

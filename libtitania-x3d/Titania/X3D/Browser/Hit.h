@@ -52,10 +52,9 @@
 #define __TITANIA_X3D_BROWSER_HIT_H__
 
 #include "../Basic/NodeSet.h"
-#include "../Browser/Intersection.h"
+#include "../Browser/IntersectionPtr.h"
 #include "../Fields.h"
 #include "../Types/Geometry.h"
-#include <memory>
 
 namespace titania {
 namespace X3D {
@@ -66,7 +65,7 @@ public:
 
 	Hit (const Matrix4f &,
 	     const Line3f &,
-	     const std::shared_ptr <Intersection> &,
+	     const IntersectionPtr &,
 	     const NodeSet &,
 	     X3DBaseNode* const);
 
@@ -78,18 +77,6 @@ public:
 	const float        distance;
 	const NodeSet      sensors;
 	const X3DBaseNode* node;
-
-};
-
-class HitComp
-{
-public:
-
-	bool
-	operator () (const std::shared_ptr <Hit> & lhs, const std::shared_ptr <Hit> & rhs) const
-	{
-		return lhs -> distance < rhs -> distance;
-	}
 
 };
 

@@ -127,14 +127,14 @@ public:
 
 	virtual
 	void
-	draw ();
+	draw () final;
 
 
 private:
 
 	virtual
 	void
-	initialize ();
+	initialize () final;
 
 	void
 	set_coordIndex ();
@@ -144,7 +144,7 @@ private:
 
 	virtual
 	void
-	build ();
+	build () final;
 
 	struct Fields
 	{

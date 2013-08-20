@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -119,7 +119,7 @@ X3DGeometryNode::createBBox ()
 }
 
 bool
-X3DGeometryNode::intersect (const Line3f & line, std::deque <std::shared_ptr <Intersection>> & intersections) const
+X3DGeometryNode::intersect (const Line3f & line, std::deque <IntersectionPtr> & intersections) const
 {
 	bool     intersected = false;
 	Vector3f temp;

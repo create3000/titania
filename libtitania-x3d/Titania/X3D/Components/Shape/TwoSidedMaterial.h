@@ -175,23 +175,23 @@ public:
 
 	virtual
 	bool
-	isTransparent () const
+	isTransparent () const final
 	{ return transparency () or backTransparency (); }
 
 	virtual
 	void
-	draw ();
+	draw () final;
 
 
 private:
 
 	virtual
 	void
-	initialize ();
+	initialize () final;
 
 	virtual
 	void
-	eventsProcessed ();
+	eventsProcessed () final;
 
 	struct Fields
 	{

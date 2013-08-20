@@ -77,22 +77,12 @@ public:
 	image () const
 	{ return *fields .image; }
 
-	virtual
-	const X3DScalar <LoadState> &
-	checkLoadState () const final
-	{ return fields .loadState; }
-
 
 private:
 
 	virtual
 	void
 	initialize () final;
-
-	virtual
-	void
-	setLoadState (LoadState value)
-	{ fields .loadState = value; }
 
 	virtual
 	void
@@ -103,7 +93,6 @@ private:
 		Fields ();
 
 		SFImage* const image;
-		X3DScalar <LoadState> loadState;
 	};
 
 	Fields fields;

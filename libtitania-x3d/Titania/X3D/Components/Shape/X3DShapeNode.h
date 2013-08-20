@@ -83,7 +83,7 @@ public:
 
 	virtual
 	Box3f
-	getBBox ();
+	getBBox () final;
 
 	bool
 	isTransparent () const;
@@ -94,15 +94,15 @@ public:
 
 	virtual
 	void
-	traverse (TraverseType);
+	traverse (TraverseType) final;
 
 	virtual
 	void
-	draw ();
+	draw () final;
 
 	virtual
 	void
-	dispose ();
+	dispose () final;
 
 
 protected:
@@ -111,7 +111,7 @@ protected:
 
 	virtual
 	void
-	initialize ();
+	initialize () final;
 
 
 private:

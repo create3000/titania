@@ -95,7 +95,7 @@ public:
 
 	virtual
 	void
-	draw ();
+	draw () override;
 
 
 protected:

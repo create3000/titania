@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,13 +51,12 @@
 #ifndef __TITANIA_X3D_COMPONENTS_RENDERING_X3DGEOMETRY_NODE_H__
 #define __TITANIA_X3D_COMPONENTS_RENDERING_X3DGEOMETRY_NODE_H__
 
-#include "../../Browser/Intersection.h"
+#include "../../Browser/IntersectionPtr.h"
 #include "../../Types/Geometry.h"
 #include "../Core/X3DNode.h"
 #include "../Texturing/TextureCoordinateGenerator.h"
 
 #include <map>
-#include <memory>
 
 namespace titania {
 namespace X3D {
@@ -79,7 +78,7 @@ public:
 	setup () final;
 
 	bool
-	intersect (const Line3f &, std::deque <std::shared_ptr <Intersection>> &) const;
+	intersect (const Line3f &, std::deque <IntersectionPtr> &) const;
 
 	bool
 	intersect (const Matrix4f &, const Sphere3f &) const;

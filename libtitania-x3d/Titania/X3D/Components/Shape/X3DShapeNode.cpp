@@ -173,7 +173,7 @@ X3DShapeNode::pick ()
 		{
 			Line3f hitRay = getBrowser () -> getHitRay ();
 
-			std::deque <std::shared_ptr <Intersection>> itersections;
+			std::deque <IntersectionPtr> itersections;
 
 			if (_geometry -> intersect (hitRay, itersections))
 			{
@@ -181,18 +181,15 @@ X3DShapeNode::pick ()
 					itersection -> hitPoint = itersection -> hitPoint * ModelViewMatrix4f ();
 
 				// Sort desc
-				std::sort (itersections .begin (),
-				           itersections .end (),
-				           [ ] (const std::shared_ptr <Intersection>&lhs, const std::shared_ptr <Intersection>&rhs) -> bool
+				std::sort (itersections .begin (), itersections .end (),
+				           [ ] (const IntersectionPtr & lhs, const IntersectionPtr & rhs) -> bool
 				           {
 				              return lhs -> hitPoint .z () > rhs -> hitPoint .z ();
 							  });
 
 				// Find first point that is not greater than near plane;
-				auto itersection = std::lower_bound (itersections .cbegin (),
-				                                     itersections .cend (),
-				                                     -getCurrentNavigationInfo () -> getNearPlane (),
-				                                     [ ] (const std::shared_ptr <Intersection>&lhs, const float & rhs) -> bool
+				auto itersection = std::lower_bound (itersections .cbegin (), itersections .cend (), -getCurrentNavigationInfo () -> getNearPlane (),
+				                                     [ ] (const IntersectionPtr & lhs, const float & rhs) -> bool
 				                                     {
 				                                        return lhs -> hitPoint .z () > rhs;
 																 });

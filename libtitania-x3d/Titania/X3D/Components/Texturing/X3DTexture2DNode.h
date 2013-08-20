@@ -92,16 +92,9 @@ public:
 	isTransparent () const override
 	{ return transparent; }
 
-	const TextureProperties*
-	getTextureProperties () const;
-
-	virtual
-	const X3DScalar <LoadState> &
-	checkLoadState () const = 0;
-
 	virtual
 	void
-	draw ();
+	draw () override;
 
 
 protected:
@@ -112,14 +105,10 @@ protected:
 	void
 	initialize () override;
 
-	virtual
-	void
-	setLoadState (LoadState) = 0;
+	const TextureProperties*
+	getTextureProperties () const;
 
 	virtual
-	void
-	update () = 0;
-
 	void
 	setTexture (const TexturePtr &);
 
@@ -128,6 +117,10 @@ protected:
 
 	void
 	updateImage (GLenum, GLint, GLint, const void*);
+
+	virtual
+	void
+	update () = 0;
 
 
 private:

@@ -86,7 +86,7 @@ private:
 
 	virtual
 	size_t
-	getIndex (size_t i)
+	getIndex (size_t i) final
 	{ return index () [i]; }
 
 	virtual

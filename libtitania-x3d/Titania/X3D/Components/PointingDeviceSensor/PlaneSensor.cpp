@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -96,7 +96,7 @@ PlaneSensor::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-PlaneSensor::set_active (const std::shared_ptr <Hit> & hit, bool active)
+PlaneSensor::set_active (const HitPtr & hit, bool active)
 {
 	try
 	{
@@ -130,7 +130,7 @@ PlaneSensor::set_active (const std::shared_ptr <Hit> & hit, bool active)
 }
 
 void
-PlaneSensor::set_motion (const std::shared_ptr <Hit> & hit)
+PlaneSensor::set_motion (const HitPtr & hit)
 {
 	auto hitRay = hit -> ray * inverseModelViewMatrix;
 

@@ -243,9 +243,9 @@ std::mutex &
 X3DBrowserContext::getThread ()
 {
 	std::lock_guard <std::mutex> lock (threadMutex);
-	
+
 	threadIndex = (threadIndex + 1) % threads .size ();
-	
+
 	return threads [threadIndex];
 }
 
@@ -428,7 +428,7 @@ X3DBrowserContext::getHitRay () const
 }
 
 void
-X3DBrowserContext::addHit (const Matrix4f & transformationMatrix, const std::shared_ptr <Intersection> & intersection, X3DBaseNode* const node)
+X3DBrowserContext::addHit (const Matrix4f & transformationMatrix, const IntersectionPtr & intersection, X3DBaseNode* const node)
 {
 	hits .emplace_back (new Hit (transformationMatrix, hitRay, intersection, enabledSensors .back (), node));
 }
@@ -483,11 +483,9 @@ X3DBrowserContext::motionNotifyEvent ()
 
 		if (dragSensorNode)
 		{
-			dragSensorNode -> set_motion (
-			   getHits () .size ()
-			   ? getHits () .front ()
-				: std::make_shared <Hit> (Matrix4f (), hitRay, std::make_shared <Intersection> (), NodeSet (), nullptr)
-			   );
+			dragSensorNode -> set_motion (getHits () .size ()
+			                              ? getHits () .front ()
+													: std::make_shared <Hit> (Matrix4f (), hitRay, std::make_shared <Intersection> (), NodeSet (), nullptr));
 		}
 	}
 }
@@ -530,10 +528,8 @@ X3DBrowserContext::buttonReleaseEvent ()
 			auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node .getValue ());
 
 			if (pointingDeviceSensorNode)
-				pointingDeviceSensorNode -> set_active (
-				   std::make_shared <Hit> (Matrix4f (), hitRay, std::make_shared <Intersection> (), NodeSet (), nullptr),
-				   false
-				   );
+				pointingDeviceSensorNode -> set_active (std::make_shared <Hit> (Matrix4f (), hitRay, std::make_shared <Intersection> (), NodeSet (), nullptr),
+				                                        false);
 		}
 	}
 

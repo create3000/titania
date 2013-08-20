@@ -88,11 +88,11 @@ public:
 
 	virtual
 	void
-	requestImmediateLoad ();
+	requestImmediateLoad () final;
 
 	virtual
 	void
-	dispose ();
+	dispose () final;
 
 
 private:

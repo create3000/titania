@@ -103,7 +103,7 @@ public:
 
 	virtual
 	void
-	draw ();
+	draw () final;
 
 
 private:

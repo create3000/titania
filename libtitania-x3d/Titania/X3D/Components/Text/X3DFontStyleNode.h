@@ -52,13 +52,10 @@
 #define __TITANIA_X3D_COMPONENTS_TEXT_X3DFONT_STYLE_NODE_H__
 
 #include "../Core/X3DPropertyNode.h"
-#include <FTGL/ftgl.h>
-#include <memory>
+#include "../../Miscellaneous/FontPtr.h"
 
 namespace titania {
 namespace X3D {
-
-typedef std::unique_ptr <FTPolygonFont> FontPtr;
 
 class X3DFontStyleNode :
 	public X3DPropertyNode
@@ -208,10 +205,10 @@ private:
 	Alignment
 	getAlignment (const size_t) const;
 
-	std::unique_ptr <FTPolygonFont> font;
-	float                           lineHeight;
-	float                           scale;
-	Alignment                       alignments [2];
+	FontPtr   font;
+	float     lineHeight;
+	float     scale;
+	Alignment alignments [2];
 
 };
 

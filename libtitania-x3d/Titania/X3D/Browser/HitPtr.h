@@ -48,72 +48,26 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_SHADERS_COMPOSED_SHADER_H__
-#define __TITANIA_X3D_COMPONENTS_SHADERS_COMPOSED_SHADER_H__
+#ifndef __TITANIA_X3D_BROWSER_HIT_PTR_H__
+#define __TITANIA_X3D_BROWSER_HIT_PTR_H__
 
-#include "../Shaders/X3DProgrammableShaderObject.h"
-#include "../Shaders/X3DShaderNode.h"
+#include "../Browser/Hit.h"
+#include <memory>
 
 namespace titania {
 namespace X3D {
 
-class ComposedShader :
-	public X3DShaderNode, public X3DProgrammableShaderObject
+typedef std::shared_ptr <Hit> HitPtr;
+
+class HitComp
 {
 public:
 
-	ComposedShader (X3DExecutionContext* const);
-
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final;
-
-	///  @name Fields
-
-	MFNode &
-	parts ()
-	{ return *fields .parts; }
-
-	const MFNode &
-	parts () const
-	{ return *fields .parts; }
-
-	virtual
-	void
-	draw () final;
-
-	virtual
-	void
-	dispose () final;
-
-
-private:
-
-	virtual
-	void
-	initialize () final;
-
-	void
-	set_parts ();
-
-	void
-	remove_parts ();
-
-	void
-	set_field (X3DFieldDefinition* const);
-
-	struct Fields
+	bool
+	operator () (const HitPtr & lhs, const HitPtr & rhs) const
 	{
-		Fields ();
-
-		MFNode* const parts;
-	};
-
-	Fields fields;
-
-	GLuint              shaderProgram;
-	std::deque <GLuint> shaderParts;
-	std::deque <size_t> textureUnits;
+		return lhs -> distance < rhs -> distance;
+	}
 
 };
 

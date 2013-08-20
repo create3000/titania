@@ -79,11 +79,6 @@ public:
 	{ return false; }
 
 	virtual
-	const X3DScalar <LoadState> &
-	checkLoadState () const final
-	{ return X3DUrlObject::checkLoadState (); }
-
-	virtual
 	void
 	requestImmediateLoad () final;
 
@@ -97,11 +92,6 @@ private:
 	virtual
 	void
 	initialize () final;
-
-	virtual
-	void
-	setLoadState (LoadState value)
-	{ X3DUrlObject::setLoadState (value); }
 
 	virtual
 	void

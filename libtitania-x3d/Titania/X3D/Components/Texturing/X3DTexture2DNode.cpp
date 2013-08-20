@@ -119,15 +119,9 @@ X3DTexture2DNode::setTexture (const TexturePtr & texture)
 		          texture -> getFormat (),
 		          texture -> getWidth (), texture -> getHeight (),
 		          texture -> getData ());
-
-		setLoadState (COMPLETE_STATE);
 	}
 	else
-	{
 		setImage (3, GL_RGB, 0, 0, nullptr);
-
-		setLoadState (FAILED_STATE);
-	}
 }
 
 void

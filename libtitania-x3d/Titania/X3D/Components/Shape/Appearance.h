@@ -130,14 +130,14 @@ public:
 
 	virtual
 	void
-	draw ();
+	draw () final;
 
 
 private:
 
 	virtual
 	void
-	initialize ();
+	initialize () final;
 
 	void
 	set_lineProperties ();

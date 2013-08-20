@@ -92,8 +92,9 @@ private:
 	void
 	set_fanCount ();
 
+	virtual
 	void
-	build ();
+	build () final;
 
 	struct Fields
 	{

@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_COMPONENTS_POINTING_DEVICE_SENSOR_X3DPOINTING_DEVICE_SENSOR_NODE_H__
 #define __TITANIA_X3D_COMPONENTS_POINTING_DEVICE_SENSOR_X3DPOINTING_DEVICE_SENSOR_NODE_H__
 
-#include "../../Browser/Hit.h"
+#include "../../Browser/HitPtr.h"
 #include "../Core/X3DSensorNode.h"
 
 namespace titania {
@@ -80,15 +80,16 @@ public:
 
 	virtual
 	void
-	set_touch () { }
+	set_touch ()
+	{ }
 
 	virtual
 	void
-	set_over (const std::shared_ptr <Hit> &, bool);
+	set_over (const HitPtr &, bool);
 
 	virtual
 	void
-	set_active (const std::shared_ptr <Hit> &, bool);
+	set_active (const HitPtr &, bool);
 
 	void
 	push ();

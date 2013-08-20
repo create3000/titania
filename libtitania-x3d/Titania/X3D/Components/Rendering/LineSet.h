@@ -111,11 +111,11 @@ public:
 
 	virtual
 	void
-	build ();
+	build () final;
 
 	virtual
 	void
-	draw ();
+	draw () final;
 
 
 private:

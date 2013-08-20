@@ -193,6 +193,18 @@ ImageTexture::initialize ()
 }
 
 void
+ImageTexture::setTexture (const TexturePtr & texture)
+{
+	X3DTexture2DNode::setTexture (texture);
+	
+	if (texture)
+		setLoadState (COMPLETE_STATE);
+
+	else
+		setLoadState (FAILED_STATE);
+}
+
+void
 ImageTexture::requestImmediateLoad ()
 {
 	requestAsyncLoad ();

@@ -58,8 +58,7 @@ namespace titania {
 namespace X3D {
 
 PixelTexture::Fields::Fields () :
-	image (new SFImage (0, 0, 0, MFInt32 ())),
-	loadState (NOT_STARTED_STATE)
+	image (new SFImage (0, 0, 0, MFInt32 ()))
 { }
 
 PixelTexture::PixelTexture (X3DExecutionContext* const executionContext) :
@@ -75,8 +74,6 @@ PixelTexture::PixelTexture (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "repeatS",           repeatS ());
 	addField (initializeOnly, "repeatT",           repeatT ());
 	addField (initializeOnly, "textureProperties", textureProperties ());
-
-	addChildren (fields .loadState);
 }
 
 X3DBaseNode*
@@ -99,7 +96,10 @@ void
 PixelTexture::update ()
 {
 	if (image () .getComponents () < 1 or image () .getComponents () > 4 or image () .getWidth () <= 0 or image () .getHeight () <= 0)
+	{
+		setTexture (TexturePtr ());
 		return;
+	}
 
 	size_t pixels = image () .getWidth () * image () .getHeight ();
 

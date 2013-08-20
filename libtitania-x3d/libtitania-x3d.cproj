@@ -571,6 +571,9 @@
     <None Include="Titania\X3D\Miscellaneous\FontConfig.h" />
     <None Include="Titania\X3D\Miscellaneous\MediaStream.h" />
     <None Include="Titania\X3D\Routing\EventArray.h" />
+    <None Include="Titania\X3D\Browser\HitPtr.h" />
+    <None Include="Titania\X3D\Browser\IntersectionPtr.h" />
+    <None Include="Titania\X3D\Miscellaneous\FontPtr.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

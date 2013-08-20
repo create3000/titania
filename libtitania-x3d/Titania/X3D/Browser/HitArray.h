@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,19 +51,17 @@
 #ifndef __TITANIA_X3D_BROWSER_HIT_ARRAY_H__
 #define __TITANIA_X3D_BROWSER_HIT_ARRAY_H__
 
-#include "Hit.h"
+#include "HitPtr.h"
 #include <deque>
-#include <deque>
-#include <memory>
 
 namespace titania {
 namespace X3D {
 
-typedef std::deque <std::shared_ptr <Hit>> HitArray;
+typedef std::deque <HitPtr> HitArray;
 
 } // X3D
 } // titania
 
-extern template class std::deque <std::shared_ptr <titania::X3D::Hit>>;
+extern template class std::deque <titania::X3D::HitPtr>;
 
 #endif

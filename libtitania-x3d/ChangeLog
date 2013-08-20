@@ -1,5 +1,56 @@
 2013-08-20  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* libtitania-x3d.cproj:
+	* Hit.h:
+	* Hit.cpp:
+	* HitPtr.h:
+	* HitArray.h:
+	* HitArray.cpp:
+	* FontPtr.h:
+	* IntersectionPtr.h:
+	* X3DBrowserContext.h:
+	* Material.h:
+	* Appearance.h:
+	* X3DBrowserContext.cpp:
+	* LineSet.h:
+	* ShaderPart.h:
+	* X3DShapeNode.h:
+	* X3DShapeNode.cpp:
+	* FillProperties.h:
+	* LineProperties.h:
+	* X3DFontStyleNode.h:
+	* ComposedShader.h:
+	* TwoSidedMaterial.h:
+	* ImageTexture.h:
+	* MovieTexture.h:
+	* PixelTexture.h:
+	* PixelTexture.cpp:
+	* TriangleFanSet.h:
+	* IndexedLineSet.h:
+	* ImageTexture.cpp:
+	* X3DGeometryNode.h:
+	* TriangleStripSet.h:
+	* X3DTexture2DNode.h:
+	* X3DGeometryNode.cpp:
+	* X3DTexture3DNode.h:
+	* X3DTexture2DNode.cpp:
+	* IndexedTriangleSet.h:
+	* TouchSensor.h:
+	* PlaneSensor.h:
+	* SphereSensor.h:
+	* TouchSensor.cpp:
+	* PlaneSensor.cpp:
+	* CylinderSensor.h:
+	* SphereSensor.cpp:
+	* CylinderSensor.cpp:
+	* X3DDragSensorNode.h:
+	* X3DTouchSensorNode.h:
+	* X3DTouchSensorNode.cpp:
+	* X3DPointingDeviceSensorNode.h:
+	* X3DPointingDeviceSensorNode.cpp: 
+
+2013-08-20  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* MovieTexture.h:
 	* ComposedShader.h:
 	* X3DPropertyNode.cpp:

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -109,7 +109,7 @@ SphereSensor::getTrackPoint (const Line3f & hitRay, Vector3f & trackPoint, bool 
 }
 
 void
-SphereSensor::set_active (const std::shared_ptr <Hit> & hit, bool active)
+SphereSensor::set_active (const HitPtr & hit, bool active)
 {
 	try
 	{
@@ -143,7 +143,7 @@ SphereSensor::set_active (const std::shared_ptr <Hit> & hit, bool active)
 }
 
 void
-SphereSensor::set_motion (const std::shared_ptr <Hit> & hit)
+SphereSensor::set_motion (const HitPtr & hit)
 {
 	auto hitRay = hit -> ray * inverseModelViewMatrix;
 

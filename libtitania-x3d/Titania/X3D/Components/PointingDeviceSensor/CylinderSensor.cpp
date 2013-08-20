@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -141,7 +141,7 @@ CylinderSensor::getAngle (const Rotation4f & rotation) const
 }
 
 void
-CylinderSensor::set_active (const std::shared_ptr <Hit> & hit, bool active)
+CylinderSensor::set_active (const HitPtr & hit, bool active)
 {
 	try
 	{
@@ -188,7 +188,7 @@ CylinderSensor::set_active (const std::shared_ptr <Hit> & hit, bool active)
 }
 
 void
-CylinderSensor::set_motion (const std::shared_ptr <Hit> & hit)
+CylinderSensor::set_motion (const HitPtr & hit)
 {
 	auto hitRay = hit -> ray * inverseModelViewMatrix;
 
