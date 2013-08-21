@@ -1,3 +1,9 @@
+2013-08-21  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Router.cpp:
+	* X3DBrowserContext.h:
+	* X3DBrowserContext.cpp: 
+
 2013-08-20  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* libtitania-x3d.cproj:

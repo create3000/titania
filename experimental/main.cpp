@@ -249,6 +249,58 @@ test (Test &&)
 	__LOG__ << std::endl;
 }
 
+Matrix4f
+multRight1 (const Matrix4f & self, const Matrix4f & matrix)
+{
+	#define MULT_RIGHT(i, j) \
+	   (self [i] [0] * matrix [0] [j] +   \
+	    self [i] [1] * matrix [1] [j] +   \
+	    self [i] [2] * matrix [2] [j] +   \
+	    self [i] [3] * matrix [3] [j])
+
+	return Matrix4f (MULT_RIGHT (0, 0),
+	                 MULT_RIGHT (0, 1),
+	                 MULT_RIGHT (0, 2),
+	                 MULT_RIGHT (0, 3),
+
+	                 MULT_RIGHT (1, 0),
+	                 MULT_RIGHT (1, 1),
+	                 MULT_RIGHT (1, 2),
+	                 MULT_RIGHT (1, 3),
+
+	                 MULT_RIGHT (2, 0),
+	                 MULT_RIGHT (2, 1),
+	                 MULT_RIGHT (2, 2),
+	                 MULT_RIGHT (2, 3),
+
+	                 MULT_RIGHT (3, 0),
+	                 MULT_RIGHT (3, 1),
+	                 MULT_RIGHT (3, 2),
+	                 MULT_RIGHT (3, 3));
+
+	#undef MULT_RIGHT
+}
+
+Matrix4f
+multRight2 (const Matrix4f & self, const Matrix4f & matrix)
+{
+	Matrix4f result (0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+
+	#pragma omp parallel for default(none), shared(result,self,matrix)
+	for (size_t i = 0; i < 4; ++ i)
+	{
+		for (size_t j = 0; j < 4; ++ j)
+		{
+			for (size_t k = 0; k < 4; ++ k)
+			{
+				result [i] [j] += self [i] [k] * matrix [k] [j];
+			}
+		}
+	}
+
+	return result;
+}
+
 int
 main (int argc, char** argv)
 {
@@ -258,7 +310,35 @@ main (int argc, char** argv)
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
 
-	std::thread (test, std::move (Test ())) .join ();
+	constexpr size_t N = 1000000;
+
+	{
+		double t0 = chrono::now ();
+	
+		Matrix4f m1 (0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,0.0,0.1,0.2,0.3,0.4,0.5,0.6);
+		Matrix4f m2 (0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7);
+
+		for (size_t i = 0; i < N; ++ i)
+			m1 = multRight1 (m1, m2);
+		
+		__LOG__ << m1 << std::endl;
+
+		__LOG__ << chrono::now () - t0 << std::endl;
+	}
+
+	{
+		double t0 = chrono::now ();
+	
+		Matrix4f m1 (0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,0.0,0.1,0.2,0.3,0.4,0.5,0.6);
+		Matrix4f m2 (0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7);
+
+		for (size_t i = 0; i < N; ++ i)
+			m1 = multRight2 (m1, m2);
+		
+		__LOG__ << m1 << std::endl;
+
+		__LOG__ << chrono::now () - t0 << std::endl;
+	}
 
 	std::clog << "Function main done." << std::endl;
 	exit (0);

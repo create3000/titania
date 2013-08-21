@@ -68,7 +68,7 @@ Router::addEvent (X3DChildObject* const object, const Event & event)
 EventArray
 Router::getEvents ()
 {
-	std::lock_guard <std::mutex> lock (mutex);
+	//std::lock_guard <std::mutex> lock (mutex);
 
 	return std::move (events);
 }
@@ -93,7 +93,7 @@ Router::removeNode (const NodeId & node)
 NodeList
 Router::getNodes ()
 {
-	std::lock_guard <std::mutex> lock (mutex);
+	//std::lock_guard <std::mutex> lock (mutex);
 
 	return std::move (nodes);
 }
@@ -141,7 +141,7 @@ Router::eventsProcessed ()
 size_t
 Router::size () const
 {
-	std::lock_guard <std::mutex> lock (mutex);
+	//std::lock_guard <std::mutex> lock (mutex);
 
 	return events .size ();
 }

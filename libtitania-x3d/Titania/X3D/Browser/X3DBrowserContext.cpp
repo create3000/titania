@@ -104,7 +104,6 @@ X3DBrowserContext::X3DBrowserContext () :
 	         threadIndex (0),
 	             threads (1),
 	         threadMutex (),
-	               mutex (),
 	             console (new Console (this))                       // SFNode  [ ]   console    NULL  [Console]
 {
 	addChildren (initialized (),
@@ -541,8 +540,6 @@ X3DBrowserContext::buttonReleaseEvent ()
 void
 X3DBrowserContext::addEvent ()
 {
-	std::lock_guard <std::mutex> lock (mutex);
-
 	if (changedTime == getCurrentTime ())
 		return;
 
