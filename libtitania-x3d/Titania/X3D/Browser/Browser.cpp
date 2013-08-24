@@ -72,6 +72,7 @@ Browser::Browser () :
 	opengl::Surface (),
 	     X3DBrowser (),
 	        viewer  (new NoneViewer (this)),
+	      keyDevice (this),
 	pointingDevice  (this)
 {
 	add_events (Gdk::BUTTON_PRESS_MASK |
@@ -102,6 +103,7 @@ Browser::initialize ()
 {
 	X3DBrowser::initialize ();
 
+	keyDevice      .setup ();
 	pointingDevice .setup ();
 
 	getViewer () .addInterest (this, &Browser::set_viewer);

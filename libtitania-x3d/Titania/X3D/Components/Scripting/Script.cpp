@@ -51,6 +51,7 @@
 #include "Script.h"
 
 #include "../../Browser/X3DBrowser.h"
+#include "../../InputOutput/Loader.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Parser/RegEx.h"
 
@@ -102,14 +103,15 @@ Script::loadDocument (const SFString & URL, std::string & ecmascript)
 {
 	if (RegEx::ECMAScript .FullMatch (URL .str (), &ecmascript))
 	{
-		setReferer (getExecutionContext () -> getWorldURL ());
+		setWorldURL (getExecutionContext () -> getWorldURL ());
 		return true;
 	}
 
 	try
 	{
-		ecmascript = std::move (loadDocument (URL));
-		setReferer (getWorldURL ());
+		Loader loader (getExecutionContext ());
+		ecmascript = std::move (loader .loadDocument (URL));
+		setWorldURL (loader .getWorldURL ());
 		return true;
 	}
 	catch (const X3DError &)

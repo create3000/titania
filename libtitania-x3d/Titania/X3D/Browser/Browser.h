@@ -53,7 +53,8 @@
 
 #include <Titania/OpenGL/Surface.h>
 
-#include "../Browser/PointingDevice.h"
+#include "../Browser/Devices/KeyDevice.h"
+#include "../Browser/Devices/PointingDevice.h"
 #include "../Browser/Viewer/X3DViewer.h"
 #include "../Browser/X3DBrowser.h"
 
@@ -107,6 +108,7 @@ private:
 	{ X3DBrowser::update (); }
 
 	std::unique_ptr <X3DViewer> viewer;
+	KeyDevice                   keyDevice;
 	PointingDevice              pointingDevice;
 
 };

@@ -51,6 +51,7 @@
 #include "jsContext.h"
 
 #include "../../Browser/X3DBrowser.h"
+#include "../../InputOutput/Loader.h"
 
 #include "jsGlobals.h"
 #include "jsX3DConstants.h"
@@ -410,7 +411,7 @@ jsContext::require (const basic::uri & uri, jsval & rval)
 	{
 		// Resolve uri
 
-		basic::uri resolvedURL = script -> transformUri (worldURL .back (), uri);
+		basic::uri resolvedURL = worldURL .back () .transform (uri);
 
 		// Get cached result
 
@@ -424,7 +425,7 @@ jsContext::require (const basic::uri & uri, jsval & rval)
 
 		// Load document
 
-		std::string document = script -> loadDocument (resolvedURL);
+		std::string document = Loader (getExecutionContext ()) .loadDocument (resolvedURL);
 
 		// Evaluate script
 
@@ -462,11 +463,27 @@ jsContext::evaluate (const std::string & string, const std::string & filename)
 JSBool
 jsContext::evaluate (const std::string & string, const std::string & filename, jsval & rval)
 {
-	return JS_EvaluateScript (context, global,
-	                          string .c_str (), string .length (),
-	                          filename .size () ? filename .c_str () : NULL,
-	                          1,
-	                          &rval);
+	glong   items_read    = 0;
+	glong   items_written = 0;
+	GError* error         = nullptr;
+
+	gunichar2* utf16_string = g_utf8_to_utf16 (string .c_str (), string .length (), &items_read, &items_written, &error);
+
+	if (error)
+	{
+		JS_ReportError (context, "jsContext::evaluate: %s: %d: %s.", g_quark_to_string (error -> domain), error -> code, error -> message);
+		return JS_FALSE;
+	}
+
+	JSBool retval = JS_EvaluateUCScript (context, global,
+	                                     utf16_string, items_written,
+	                                     filename .size () ? filename .c_str () : nullptr,
+	                                     1,
+	                                     &rval);
+
+	g_free (utf16_string);
+
+	return retval;
 }
 
 void
@@ -606,7 +623,8 @@ jsContext::error (JSContext* context, const char* message, JSErrorReport* report
 	{
 		try
 		{
-			ecmascript = script -> loadDocument (report -> filename);
+			ecmascript = Loader (script -> getExecutionContext (),
+			                     script -> getWorldURL ()) .loadDocument (report -> filename);
 		}
 		catch (const X3DError &)
 		{ }

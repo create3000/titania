@@ -124,7 +124,7 @@ MovieTexture::requestImmediateLoad ()
 
 	for (const auto & URL : url ())
 	{
-		setUri (transformUri (URL .getValue () .raw ()));
+		setUri (getExecutionContext () -> getWorldURL () .transform (URL .str ()));
 
 		// Sync stream
 

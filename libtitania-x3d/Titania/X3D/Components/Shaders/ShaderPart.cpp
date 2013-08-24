@@ -51,6 +51,7 @@
 #include "ShaderPart.h"
 
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../InputOutput/Loader.h"
 
 namespace titania {
 namespace X3D {
@@ -121,7 +122,7 @@ ShaderPart::requestImmediateLoad ()
 	{
 		try
 		{
-			std::string shaderSource = loadDocument (URL);
+			std::string shaderSource = Loader (getExecutionContext ()) .loadDocument (URL);
 			const char* string       = shaderSource .c_str ();
 
 			glShaderSource  (shaderId, 1, &string, NULL);

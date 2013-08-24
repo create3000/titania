@@ -103,10 +103,12 @@ throw (Error <INVALID_X3D>)
 	}
 	catch (const X3DError & error)
 	{
+		std::clog << "Failed parsing into scene: " << scene -> getWorldURL () << "." << std::endl;
 		throw Error <INVALID_X3D> (getMessageFromError (error));
 	}
 	catch (...)
 	{
+		std::clog << "Failed parsing into scene: " << scene -> getWorldURL () << "." << std::endl;
 		throw Error <INVALID_X3D> ("Unkown parser error.");
 	}
 

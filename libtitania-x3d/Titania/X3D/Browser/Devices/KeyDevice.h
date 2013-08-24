@@ -48,122 +48,47 @@
  *
  ******************************************************************************/
 
-#include "Router.h"
+#ifndef __TITANIA_X3D_BROWSER_DEVICES_KEY_DEVICE_H__
+#define __TITANIA_X3D_BROWSER_DEVICES_KEY_DEVICE_H__
+
+#include "../../Fields.h"
+#include "../X3DWidget.h"
+#include <gdkmm.h>
 
 namespace titania {
 namespace X3D {
 
-Router::Router () :
-	events (),
-	 nodes (),
-	 mutex ()
-{ }
+class Browser;
 
-void
-Router::addEvent (X3DChildObject* const object, const Event & event)
+class KeyDevice :
+	public X3DWidget
 {
-	events .emplace_back (object, event);
-}
+public:
 
-EventArray
-Router::getEvents ()
-{
-	//std::lock_guard <std::mutex> lock (mutex);
+	KeyDevice (Browser* const);
 
-	return std::move (events);
-}
 
-NodeId
-Router::addNode (X3DBaseNode* node)
-{
-	nodes .emplace_back (node);
+private:
 
-	return -- nodes .end ();
-}
+	virtual
+	void
+	initialize () final;
 
-void
-Router::removeNode (const NodeId & node)
-{
-	if (nodes .empty ())
-		return;
+	void
+	set_keyDeviceSensorNodeEvent ();
 
-	nodes .erase (node);
-}
+	bool
+	on_key_press_event (GdkEventKey*);
 
-NodeList
-Router::getNodes ()
-{
-	//std::lock_guard <std::mutex> lock (mutex);
+	bool
+	on_key_release_event (GdkEventKey*);
 
-	return std::move (nodes);
-}
+	sigc::connection key_press_connection;
+	sigc::connection key_release_connection;
 
-void
-Router::processEvents ()
-{
-	//	while (events .size ())
-	//	{
-	//		for (auto & event : events)
-	//		{
-	//			// __LOG__ << event .first -> getName () << std::endl;
-	//			event .first -> processEvent (event .second);
-	//		}
-	//
-	//		events .clear ();
-	//
-	//		eventsProcessed ();
-	//	}
-
-	// std::vector is probaly faster
-
-	while (size ())
-	{
-		do
-		{
-			for (auto & event : getEvents ())
-			{
-				event .first -> processEvent (event .second);
-			}
-		}
-		while (size ());
-
-		eventsProcessed ();
-	}
-}
-
-void
-Router::eventsProcessed ()
-{
-	for (const auto & node : getNodes ())
-		node -> processEvents ();
-}
-
-size_t
-Router::size () const
-{
-	//std::lock_guard <std::mutex> lock (mutex);
-
-	return events .size ();
-}
-
-void
-Router::debug ()
-{
-	for (auto & event : events)
-	{
-		__LOG__ << event .first -> getName () << " : " << event .first -> getTypeName () << std::endl;
-		
-		for (const auto & parent : event .first -> getParents ())
-		{
-			auto node = dynamic_cast <X3DBaseNode*> (parent);
-			
-			if (node)
-			{
-				__LOG__ << "\t" << node -> getTypeName () << std::endl;
-			}
-		}
-	}
-}
+};
 
 } // X3D
 } // titania
+
+#endif

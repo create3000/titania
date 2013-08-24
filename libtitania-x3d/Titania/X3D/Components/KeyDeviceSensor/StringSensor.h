@@ -93,6 +93,14 @@ public:
 	finalText () const
 	{ return *fields . finalText; }
 
+	virtual
+	void
+	set_keyPressEvent (int) final;
+
+	virtual
+	void
+	set_keyReleaseEvent (int) final;
+
 
 private:
 

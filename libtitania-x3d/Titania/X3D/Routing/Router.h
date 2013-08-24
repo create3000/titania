@@ -82,6 +82,9 @@ public:
 	size_t
 	size () const;
 
+	void
+	debug ();
+
 
 private:
 

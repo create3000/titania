@@ -48,127 +48,50 @@
  *
  ******************************************************************************/
 
-#include "PointingDevice.h"
+#ifndef __TITANIA_X3D_BROWSER_POINTING_DEVICE_H__
+#define __TITANIA_X3D_BROWSER_POINTING_DEVICE_H__
 
-#include "../Browser/Browser.h"
+#include "../X3DWidget.h"
+#include "../../Fields.h"
+#include <gdkmm.h>
 
 namespace titania {
 namespace X3D {
 
-PointingDevice::PointingDevice (Browser* const browser) :
-	X3DWidget (browser),
-	   button (0),
-	   isOver (false)
-{ }
+class Browser;
 
-void
-PointingDevice::initialize ()
+class PointingDevice :
+	public X3DWidget
 {
-	X3DWidget::initialize ();
+public:
 
-	getBrowser () -> signal_button_press_event   () .connect (sigc::mem_fun (*this, &PointingDevice::on_button_press_event),   false);
-	getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &PointingDevice::on_button_release_event), false);
-	getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &PointingDevice::on_motion_notify_event));
-}
+	PointingDevice (Browser* const);
 
-bool
-PointingDevice::on_button_press_event (GdkEventButton* event)
-{
-	button = event -> button;
+private:
 
-	getBrowser () -> grab_focus ();
+	virtual
+	void
+	initialize () final;
 
-	if (button == 1)
-	{
-		if (pick (event -> x, getBrowser () -> get_height () - event -> y))
-		{
-			getBrowser () -> buttonPressEvent ();
+	bool
+	on_motion_notify_event (GdkEventMotion*);
 
-			getBrowser () -> setCursor (Gdk::HAND1);
+	bool
+	on_button_press_event (GdkEventButton*);
 
-			return true;
-		}
-		else
-			getBrowser () -> setCursor (Gdk::FLEUR);
-	}
+	bool
+	on_button_release_event (GdkEventButton*);
 
-	else if (button == 2)
-	{
-		getBrowser () -> setCursor (Gdk::FLEUR);
-	}
+	bool
+	pick (const double, const double);
 
-	return false;
-}
+	size_t button;
+	bool   isOver;
+	MFNode hitNodes;
 
-bool
-PointingDevice::on_button_release_event (GdkEventButton* event)
-{
-	button = 0;
-
-	if (event -> button == 1)
-	{
-		if (isOver)
-			getBrowser () -> setCursor (Gdk::HAND2);
-
-		else
-			getBrowser () -> setCursor (Gdk::ARROW);
-
-		getBrowser () -> buttonReleaseEvent ();
-	}
-
-	else if (event -> button == 2)
-	{
-		if (isOver)
-			getBrowser () -> setCursor (Gdk::HAND2);
-
-		else
-			getBrowser () -> setCursor (Gdk::ARROW);
-	}
-
-	return false;
-}
-
-bool
-PointingDevice::on_motion_notify_event (GdkEventMotion* event)
-{
-	if (button == 0 or button == 1)
-	{
-		if (pick (event -> x, getBrowser () -> get_height () - event -> y))
-		{
-			if (not isOver)
-			{
-				getBrowser () -> setCursor (Gdk::HAND2);
-				isOver = true;
-			}
-
-			//return true;
-		}
-		else
-		{
-			if (isOver)
-			{
-				getBrowser () -> setCursor (Gdk::ARROW);
-				isOver = false;
-			}
-		}
-
-		getBrowser () -> motionNotifyEvent ();
-	}
-
-	return false;
-}
-
-bool
-PointingDevice::pick (const double x, const double y)
-{
-	if (not getBrowser () -> makeCurrent ())
-		return false;
-
-	getBrowser () -> pick (x, y);
-
-	return getBrowser () -> getHits () .size () and
-	       getBrowser () -> getHits () .front () -> sensors .size ();
-}
+};
 
 } // X3D
 } // titania
+
+#endif

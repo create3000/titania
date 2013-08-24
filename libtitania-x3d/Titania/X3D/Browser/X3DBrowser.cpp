@@ -31,6 +31,8 @@
 #include "X3DBrowser.h"
 
 #include "../Bits/config.h"
+#include "../InputOutput/Loader.h"
+
 #include <Titania/Backtrace.h>
 
 namespace titania {
@@ -40,14 +42,15 @@ const std::string X3DBrowser::version ("0.4.1");
 
 X3DBrowser::X3DBrowser () :
 	  X3DBrowserContext (),
-	       X3DUrlObject (),
 	    supportedFields (this),
 	     supportedNodes (this),
 	supportedComponents (this),
 	  supportedProfiles (this, supportedComponents),
+	          userAgent (),
 	        description (),                          // SFString  [in,out] description ""
 	              scene (),                          // SFNode    [in,out] scene       NULL
-	              world ()                           // SFNode    [in,out] world       NULL
+	              world (),                          // SFNode    [in,out] world       NULL
+	           urlError ()
 {
 	std::clog << "Constructing Browser:" << std::endl;
 	
@@ -56,9 +59,12 @@ X3DBrowser::X3DBrowser () :
 	setComponent ("Browser");
 	setTypeName ("Browser");
 	setName ("Titania");
+	setUserAgent (getName () + "/" + getVersion () + " (X3D Browser; +http://titania.create3000.de)");
 
-	addField (outputOnly, "url", url ());
-	addChildren (description, scene, world);
+	addChildren (description,
+	             scene,
+	             world,
+	             urlError);
 
 	std::clog << "\tDone constructing Browser." << std::endl;
 }
@@ -69,7 +75,6 @@ X3DBrowser::initialize ()
 	std::clog << "Initializing Browser ..." << std::endl;
 
 	X3DBrowserContext::initialize ();
-	X3DUrlObject::initialize ();
 	
 	// Initialize scene
 
@@ -241,6 +246,17 @@ X3DBrowser::set_scene ()
 	std::clog << "Replacing world done." << std::endl;
 }
 
+X3DSFNode <Scene>
+X3DBrowser::importDocument (/*const XML DOMNode &*/)
+throw (Error <INVALID_DOCUMENT>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>,
+       Error <NOT_SUPPORTED>)
+{
+	throw Error <NOT_SUPPORTED> ("");
+	//return createScene ();
+}
+
 void
 X3DBrowser::loadURL (const MFString & url)
 throw (Error <INVALID_URL>,
@@ -256,28 +272,76 @@ throw (Error <INVALID_URL>,
 {
 	// where parameter is "target=nameOfFrame"
 
-	X3DSFNode <Scene> scene = createScene ();
+	Loader loader (this);
+		
+	try
+	{
+		X3DSFNode <Scene> scene = createScene ();
 
-	parseIntoScene (scene, url);
-	
-	scene -> realize ();
+		loader .parseIntoScene (scene, url);
 
-	replaceWorld (scene);
+		scene -> realize ();
 
-	world -> bind ();
+		replaceWorld (scene);
 
-	advanceClock ();
+		world -> bind ();
+
+		advanceClock ();
+	}
+	catch (const X3DError &)
+	{
+		urlError = loader .getUrlError ();	
+
+		for (const auto & string : urlError)
+			getBrowser () -> println (string .str ());
+
+		throw;
+	}
 }
 
 X3DSFNode <Scene>
-X3DBrowser::importDocument (/*const XML DOMNode &*/)
-throw (Error <INVALID_DOCUMENT>,
+X3DBrowser::createX3DFromString (const std::string & string)
+throw (Error <INVALID_X3D>,
+       Error <NOT_SUPPORTED>,
        Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>,
-       Error <NOT_SUPPORTED>)
+       Error <DISPOSED>)
 {
-	throw Error <NOT_SUPPORTED> ("");
-	//return createScene ();
+	return Loader (this) .createX3DFromString (string);
+}
+
+X3DSFNode <Scene>
+X3DBrowser::createX3DFromStream (std::istream & istream)
+throw (Error <INVALID_X3D>,
+       Error <NOT_SUPPORTED>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	return Loader (this) .createX3DFromStream (istream);
+}
+
+X3DSFNode <Scene>
+X3DBrowser::createX3DFromStream (const basic::uri & worldURL, std::istream & istream)
+throw (Error <INVALID_X3D>,
+       Error <NOT_SUPPORTED>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	return Loader (this) .createX3DFromStream (worldURL, istream);
+}
+
+X3DSFNode <Scene>
+X3DBrowser::createX3DFromURL (const MFString & url)
+throw (Error <INVALID_URL>,
+       Error <URL_UNAVAILABLE>)
+{
+	Loader loader (this);
+
+	X3DSFNode <Scene> scene = loader .createX3DFromURL (url);
+	
+	if (loader .getUrlError () .size ())
+		urlError = loader .getUrlError ();
+	
+	return scene;
 }
 
 void

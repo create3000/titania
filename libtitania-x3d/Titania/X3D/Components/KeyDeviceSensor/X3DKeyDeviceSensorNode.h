@@ -59,9 +59,27 @@ namespace X3D {
 class X3DKeyDeviceSensorNode :
 	public X3DSensorNode
 {
+public:
+
+	virtual
+	void
+	set_keyPressEvent (int) = 0;
+
+	virtual
+	void
+	set_keyReleaseEvent (int) = 0;
+
+
 protected:
 
 	X3DKeyDeviceSensorNode ();
+
+	virtual
+	void
+	initialize () final;
+
+	void
+	set_enabled ();
 
 };
 

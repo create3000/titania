@@ -48,50 +48,53 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_POINTING_DEVICE_H__
-#define __TITANIA_X3D_BROWSER_POINTING_DEVICE_H__
+#include "KeyDevice.h"
 
-#include "../Browser/X3DWidget.h"
-#include "../Fields.h"
-#include <gdkmm.h>
+#include "../Browser.h"
 
 namespace titania {
 namespace X3D {
 
-class Browser;
+KeyDevice::KeyDevice (Browser* const browser) :
+	             X3DWidget (browser),
+	  key_press_connection (),
+	key_release_connection ()
+{ }
 
-class PointingDevice :
-	public X3DWidget
+void
+KeyDevice::initialize ()
 {
-public:
+	X3DWidget::initialize ();
 
-	PointingDevice (Browser* const);
+	getBrowser () -> keyDeviceSensorNodeEvent () .addInterest (this, &KeyDevice::set_keyDeviceSensorNodeEvent);
+}
 
-private:
+void
+KeyDevice::set_keyDeviceSensorNodeEvent ()
+{
+	key_press_connection   .disconnect ();
+	key_release_connection .disconnect ();
 
-	virtual
-	void
-	initialize () final;
+	if (getBrowser () -> getKeyDeviceSensorNode ())
+	{
+		key_press_connection   = getBrowser () -> signal_key_press_event   () .connect (sigc::mem_fun (*this, &KeyDevice::on_key_press_event),   false);
+		key_release_connection = getBrowser () -> signal_key_release_event () .connect (sigc::mem_fun (*this, &KeyDevice::on_key_release_event), false);
+	}
+}
 
-	bool
-	on_motion_notify_event (GdkEventMotion*);
+bool
+KeyDevice::on_key_press_event (GdkEventKey* event)
+{
+	getBrowser () -> getKeyDeviceSensorNode () -> set_keyPressEvent (event -> keyval);
+	return true;
+}
 
-	bool
-	on_button_press_event (GdkEventButton*);
-
-	bool
-	on_button_release_event (GdkEventButton*);
-
-	bool
-	pick (const double, const double);
-
-	size_t button;
-	bool   isOver;
-	MFNode hitNodes;
-
-};
+bool
+KeyDevice::on_key_release_event (GdkEventKey* event)
+{
+	getBrowser () -> getKeyDeviceSensorNode () -> set_keyReleaseEvent (event -> keyval);
+	return true;
+}
 
 } // X3D
 } // titania
-
-#endif

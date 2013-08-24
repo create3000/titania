@@ -169,8 +169,6 @@ Surface::makeCurrent ()
 void
 Surface::swapBuffers ()
 {
-	glFinish ();
-
 	context -> swapBuffers ();
 }
 

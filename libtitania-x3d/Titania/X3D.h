@@ -62,6 +62,7 @@
 #include "X3D/Execution/BindableNodeList.h"
 #include "X3D/Execution/BindableNodeStack.h"
 
+#include "X3D/InputOutput/Loader.h"
 #include "X3D/Miscellaneous/Keys.h"
 #include "X3D/Miscellaneous/MediaStream.h"
 #include "X3D/Parser/Filter.h"

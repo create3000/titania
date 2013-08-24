@@ -62,8 +62,6 @@ class Script :
 {
 public:
 
-	using X3DScriptNode::loadDocument;
-
 	Script (X3DExecutionContext* const);
 
 	virtual

@@ -48,103 +48,113 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_NETWORKING_INLINE_H__
-#define __TITANIA_X3D_COMPONENTS_NETWORKING_INLINE_H__
+#ifndef __TITANIA_X3D_INPUT_OUTPUT_LOADER_H__
+#define __TITANIA_X3D_INPUT_OUTPUT_LOADER_H__
 
-#include "../../Execution/Scene.h"
-#include "../Grouping/Group.h"
-#include "../Networking/X3DUrlObject.h"
+#include "../Execution/X3DScene.h"
 
-#include <memory>
+#include <Titania/Stream/InputFileStream.h>
 
 namespace titania {
 namespace X3D {
 
-class Inline :
-	public X3DChildNode, public X3DBoundedObject, public X3DUrlObject
+class Loader
 {
 public:
 
-	Inline (X3DExecutionContext* const);
+	Loader (X3DExecutionContext* const);
 
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final;
+	Loader (X3DExecutionContext* const, const basic::uri &);
 
-	///  @name Fields
+	///  @name Member access
 
-	SFBool &
-	load ()
-	{ return *fields .load; }
+	X3DBrowser*
+	getBrowser () const
+	{ return executionContext -> getBrowser (); }
 
-	const SFBool &
-	load () const
-	{ return *fields .load; }
+	X3DExecutionContext*
+	getExecutionContext () const
+	{ return executionContext; }
 
-	virtual
-	Box3f
-	getBBox () final;
+	const basic::uri &
+	getReferer () const
+	{ return referer; }
 
-	virtual
-	void
-	requestImmediateLoad () final;
+	const basic::uri &
+	getWorldURL () const
+	{ return worldURL; }
 
-	const SFNode &
-	getExportedNode (const std::string &) const
-	throw (Error <INVALID_NAME>,
+	const MFString &
+	getUrlError () const
+	{ return urlError; }
+
+	///  @name X3D Creation Handling
+
+	X3DSFNode <Scene>
+	createX3DFromString (const std::string & string)
+	throw (Error <INVALID_X3D>,
+	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	virtual
-	void
-	traverse (TraverseType) final;
+	X3DSFNode <Scene>
+	createX3DFromStream (std::istream & istream)
+	throw (Error <INVALID_X3D>,
+	       Error <NOT_SUPPORTED>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
 
-	virtual
-	void
-	toStream (std::ostream & ostream) const final
-	{ X3DBaseNode::toStream (ostream); }
+	X3DSFNode <Scene>
+	createX3DFromStream (const basic::uri & worldURL, std::istream & istream)
+	throw (Error <INVALID_X3D>,
+	       Error <NOT_SUPPORTED>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
 
-	virtual
+	X3DSFNode <Scene>
+	createX3DFromURL (const MFString & url)
+	throw (Error <INVALID_URL>,
+	       Error <URL_UNAVAILABLE>);
+
 	void
-	dispose () final;
+	loadURL (const MFString & url, const MFString & parameter)
+	throw (Error <INVALID_URL>,
+	       Error <URL_UNAVAILABLE>);
+
+	void
+	parseIntoScene (X3DScene* const scene, const MFString & url)
+	throw (Error <INVALID_URL>,
+	       Error <URL_UNAVAILABLE>);
+
+	//  Stream Handling
+
+	std::string
+	loadDocument (const SFString & URL)
+	throw (Error <INVALID_URL>,
+	       Error <URL_UNAVAILABLE>);
+
+	std::string
+	loadDocument (const basic::uri & uri)
+	throw (Error <INVALID_URL>,
+	       Error <URL_UNAVAILABLE>);
+
+	basic::ifilestream
+	loadStream (const SFString & URL)
+	throw (Error <INVALID_URL>,
+	       Error <URL_UNAVAILABLE>);
+
+	basic::ifilestream
+	loadStream (const basic::uri & uri)
+	throw (Error <INVALID_URL>,
+	       Error <URL_UNAVAILABLE>);
 
 
 private:
 
-	class Future;
-
-	virtual
-	void
-	initialize () final;
-
-	void
-	setScene (const X3DSFNode <Scene> &);
-
-	void
-	requestAsyncLoad ();
-
-	void
-	requestUnload ();
-
-	void
-	set_load ();
-
-	void
-	set_url ();
-
-	struct Fields
-	{
-		Fields ();
-
-		SFBool* const load;
-	};
-
-	Fields fields;
-
-	X3DSFNode <Scene> scene;
-	X3DSFNode <Group> group;
-
-	std::unique_ptr <Future> future;
+	X3DExecutionContext* const executionContext;
+	const basic::uri           referer;
+	basic::uri                 worldURL;
+	MFString                   urlError;
 
 };
 

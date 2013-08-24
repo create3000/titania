@@ -124,7 +124,7 @@ AudioClip::requestImmediateLoad ()
 
 	for (const auto & URL : url ())
 	{
-		setUri (transformUri (URL .getValue () .raw ()));
+		setUri (getExecutionContext () -> getWorldURL () .transform (URL .str ()));
 
 		// Sync stream
 
@@ -133,14 +133,11 @@ AudioClip::requestImmediateLoad ()
 
 		// Get audio
 
-		//if (getVideoSink () -> get_last_buffer ())
-		//{
 		duration_changed () = getDuration ();
 
 		setLoadState (COMPLETE_STATE);
 
 		break;
-		//}
 	}
 
 	if (checkLoadState () not_eq COMPLETE_STATE)

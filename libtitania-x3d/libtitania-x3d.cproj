@@ -503,7 +503,6 @@
     <None Include="Titania\X3D\Browser\BrowserApplication.h" />
     <None Include="Titania\X3D\Components\Navigation\X3DViewpointObject.h" />
     <None Include="Titania\X3D\Bits\Cast.h" />
-    <None Include="Titania\X3D\Browser\PointingDevice.h" />
     <None Include="Titania\X3D\Browser\X3DWidget.h" />
     <None Include="Titania\X3D\Browser\Viewer\ExamineViewer.h" />
     <None Include="Titania\X3D\Browser\Viewer\FlyViewer.h" />
@@ -574,6 +573,9 @@
     <None Include="Titania\X3D\Browser\HitPtr.h" />
     <None Include="Titania\X3D\Browser\IntersectionPtr.h" />
     <None Include="Titania\X3D\Miscellaneous\FontPtr.h" />
+    <None Include="Titania\X3D\InputOutput\Loader.h" />
+    <None Include="Titania\X3D\Browser\Devices\PointingDevice.h" />
+    <None Include="Titania\X3D\Browser\Devices\KeyDevice.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -956,7 +958,6 @@
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsArrayFields.cpp" />
     <Compile Include="Titania\X3D\Browser\Properties\MotionBlur.cpp" />
     <Compile Include="Titania\X3D\Components\Navigation\X3DViewpointObject.cpp" />
-    <Compile Include="Titania\X3D\Browser\PointingDevice.cpp" />
     <Compile Include="Titania\X3D\Browser\X3DWidget.cpp" />
     <Compile Include="Titania\X3D\Rendering\LightContainer.cpp" />
     <Compile Include="Titania\X3D\Browser\Viewer\ExamineViewer.cpp" />
@@ -1012,6 +1013,9 @@
     <Compile Include="Titania\X3D\Miscellaneous\Texture.cpp" />
     <Compile Include="Titania\X3D\Miscellaneous\FontConfig.cpp" />
     <Compile Include="Titania\X3D\Miscellaneous\MediaStream.cpp" />
+    <Compile Include="Titania\X3D\InputOutput\Loader.cpp" />
+    <Compile Include="Titania\X3D\Browser\Devices\PointingDevice.cpp" />
+    <Compile Include="Titania\X3D\Browser\Devices\KeyDevice.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1042,6 +1046,7 @@
     <Folder Include="share\titania\pages\about\" />
     <Folder Include="share\titania\pages\Library\" />
     <Folder Include="Titania\X3D\Miscellaneous\" />
+    <Folder Include="Titania\X3D\Browser\Devices\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

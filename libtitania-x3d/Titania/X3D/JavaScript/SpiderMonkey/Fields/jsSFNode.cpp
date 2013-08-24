@@ -52,6 +52,7 @@
 
 #include "../../../Browser/X3DBrowser.h"
 #include "../../../Components/Scripting/Script.h"
+#include "../../../InputOutput/Loader.h"
 #include "../jsContext.h"
 #include "../jsFieldDefinitionArray.h"
 #include "../jsFields.h"
@@ -144,7 +145,8 @@ jsSFNode::construct (JSContext* context, uintN argc, jsval* vp)
 		{
 			Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
-			X3DSFNode <Scene> scene = script -> createX3DFromString (JS_GetString (context, vrmlSyntax));
+			X3DSFNode <Scene> scene = Loader (script -> getExecutionContext (),
+			                                  script -> getWorldURL ()) .createX3DFromString (JS_GetString (context, vrmlSyntax));
 
 			return create (context,
 			               scene and scene -> getRootNodes () .size ()

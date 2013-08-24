@@ -52,43 +52,376 @@
 
 #include "../../Execution/X3DExecutionContext.h"
 
+#include <gdk/gdk.h>
+
 namespace titania {
 namespace X3D {
 
+static constexpr int32_t X3D_KEY_HOME  = 13;
+static constexpr int32_t X3D_KEY_END   = 14;
+static constexpr int32_t X3D_KEY_PGUP  = 15;
+static constexpr int32_t X3D_KEY_PGDN  = 16;
+static constexpr int32_t X3D_KEY_UP    = 17;
+static constexpr int32_t X3D_KEY_DOWN  = 18;
+static constexpr int32_t X3D_KEY_LEFT  = 19;
+static constexpr int32_t X3D_KEY_RIGHT = 20;
+
+static constexpr int32_t X3D_KEY_F1  = 1;
+static constexpr int32_t X3D_KEY_F2  = 2;
+static constexpr int32_t X3D_KEY_F3  = 3;
+static constexpr int32_t X3D_KEY_F4  = 4;
+static constexpr int32_t X3D_KEY_F5  = 5;
+static constexpr int32_t X3D_KEY_F6  = 6;
+static constexpr int32_t X3D_KEY_F7  = 7;
+static constexpr int32_t X3D_KEY_F8  = 8;
+static constexpr int32_t X3D_KEY_F9  = 9;
+static constexpr int32_t X3D_KEY_F10 = 10;
+static constexpr int32_t X3D_KEY_F11 = 11;
+static constexpr int32_t X3D_KEY_F12 = 12;
+
 KeySensor::Fields::Fields () :
-	actionKeyPress (new SFInt32 ()),
+	        shiftKey (new SFBool ()),
+	      controlKey (new SFBool ()),
+	          altKey (new SFBool ()),
+	  actionKeyPress (new SFInt32 ()),
 	actionKeyRelease (new SFInt32 ()),
-	altKey (new SFBool ()),
-	controlKey (new SFBool ()),
-	keyPress (new SFString ()),
-	keyRelease (new SFString ()),
-	shiftKey (new SFBool ())
+	        keyPress (new SFString ()),
+	      keyRelease (new SFString ())
 { }
 
 KeySensor::KeySensor (X3DExecutionContext* const executionContext) :
 	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DKeyDeviceSensorNode (),
-	                fields ()
+	                fields (),
+	             shiftKeys (),
+	           controlKeys ()
 {
 	setComponent ("KeyDeviceSensor");
 	setTypeName ("KeySensor");
 
 	addField (inputOutput, "metadata",         metadata ());
 	addField (inputOutput, "enabled",          enabled ());
-	addField (outputOnly,  "isActive",         isActive ());
+	addField (outputOnly,  "shiftKey",         shiftKey ());
+	addField (outputOnly,  "controlKey",       controlKey ());
+	addField (outputOnly,  "altKey",           altKey ());
 	addField (outputOnly,  "actionKeyPress",   actionKeyPress ());
 	addField (outputOnly,  "actionKeyRelease", actionKeyRelease ());
-	addField (outputOnly,  "altKey",           altKey ());
-	addField (outputOnly,  "controlKey",       controlKey ());
 	addField (outputOnly,  "keyPress",         keyPress ());
 	addField (outputOnly,  "keyRelease",       keyRelease ());
-	addField (outputOnly,  "shiftKey",         shiftKey ());
+	addField (outputOnly,  "isActive",         isActive ());
 }
 
 X3DBaseNode*
 KeySensor::create (X3DExecutionContext* const executionContext) const
 {
 	return new KeySensor (executionContext);
+}
+
+void
+KeySensor::set_keyPressEvent (int keyval)
+{
+	__LOG__ << keyval << std::endl;
+
+	switch (keyval)
+	{
+		// Special keys
+
+		case GDK_KEY_Shift_L:
+		{
+			shiftKeys |= Shift_L;
+
+			if (not shiftKey ())
+				shiftKey () = true;
+
+			break;
+		}
+		case GDK_KEY_Shift_R:
+		{
+			shiftKeys |= Shift_R;
+
+			if (not shiftKey ())
+				shiftKey () = true;
+
+			break;
+		}
+		case GDK_KEY_Control_L:
+		{
+			controlKeys |= Control_L;
+
+			if (not controlKey ())
+				controlKey () = true;
+
+			break;
+		}
+		case GDK_KEY_Control_R:
+		{
+			controlKeys |= Control_R;
+
+			if (not controlKey ())
+				controlKey () = true;
+
+			break;
+		}
+		case GDK_KEY_Meta_L:
+		case GDK_KEY_Alt_L:
+		{
+			altKey () = true;
+			break;
+		}
+
+		// Action keys
+
+		case GDK_KEY_Home:
+		case GDK_KEY_KP_Home:
+			actionKeyPress () = X3D_KEY_HOME;
+			break;
+
+		case GDK_KEY_End:
+		case GDK_KEY_KP_End:
+			actionKeyPress () = X3D_KEY_END;
+			break;
+
+		case GDK_KEY_Page_Up:
+		case GDK_KEY_KP_Page_Up:
+			actionKeyPress () = X3D_KEY_PGUP;
+			break;
+
+		case GDK_KEY_Page_Down:
+		case GDK_KEY_KP_Page_Down:
+			actionKeyPress () = X3D_KEY_PGDN;
+			break;
+
+		case GDK_KEY_Up:
+		case GDK_KEY_KP_Up:
+			actionKeyPress () = X3D_KEY_UP;
+			break;
+
+		case GDK_KEY_Down:
+		case GDK_KEY_KP_Down:
+			actionKeyPress () = X3D_KEY_DOWN;
+			break;
+
+		case GDK_KEY_Left:
+		case GDK_KEY_KP_Left:
+			actionKeyPress () = X3D_KEY_LEFT;
+			break;
+
+		case GDK_KEY_Right:
+		case GDK_KEY_KP_Right:
+			actionKeyPress () = X3D_KEY_RIGHT;
+			break;
+
+		case GDK_KEY_F1:
+			actionKeyPress () = X3D_KEY_F1;
+			break;
+
+		case GDK_KEY_F2:
+			actionKeyPress () = X3D_KEY_F2;
+			break;
+
+		case GDK_KEY_F3:
+			actionKeyPress () = X3D_KEY_F3;
+			break;
+
+		case GDK_KEY_F4:
+			actionKeyPress () = X3D_KEY_F4;
+			break;
+
+		case GDK_KEY_F5:
+			actionKeyPress () = X3D_KEY_F5;
+			break;
+
+		case GDK_KEY_F6:
+			actionKeyPress () = X3D_KEY_F6;
+			break;
+
+		case GDK_KEY_F7:
+			actionKeyPress () = X3D_KEY_F7;
+			break;
+
+		case GDK_KEY_F8:
+			actionKeyPress () = X3D_KEY_F8;
+			break;
+
+		case GDK_KEY_F9:
+			actionKeyPress () = X3D_KEY_F9;
+			break;
+
+		case GDK_KEY_F10:
+			actionKeyPress () = X3D_KEY_F10;
+			break;
+
+		case GDK_KEY_F11:
+			actionKeyPress () = X3D_KEY_F11;
+			break;
+
+		case GDK_KEY_F12:
+			actionKeyPress () = X3D_KEY_F12;
+			break;
+
+		// Keys
+
+		case GDK_KEY_KP_Enter:
+			keyPress () = "\n";
+			break;
+
+		default:
+		{
+			auto character = gdk_keyval_to_unicode (keyval);
+
+			if (character)
+				keyPress () = String (1, character);
+
+			break;
+		}
+	}
+}
+
+void
+KeySensor::set_keyReleaseEvent (int keyval)
+{
+	__LOG__ << keyval << std::endl;
+
+	switch (keyval)
+	{
+		// Special keys
+
+		case GDK_KEY_Shift_L:
+		{
+			shiftKeys &= ~Shift_L;
+
+			if (not shiftKeys and shiftKey ())
+				shiftKey () = false;
+
+			break;
+		}
+		case GDK_KEY_Shift_R:
+		{
+			shiftKeys &= ~Shift_R;
+
+			if (not shiftKeys and shiftKey ())
+				shiftKey () = false;
+
+			break;
+		}
+		case GDK_KEY_Control_L:
+		{
+			controlKeys &= ~Control_L;
+
+			if (not controlKeys and controlKey ())
+				controlKey () = false;
+
+			break;
+		}
+		case GDK_KEY_Control_R:
+		{
+			controlKeys &= ~Control_R;
+
+			if (not controlKeys and controlKey ())
+				controlKey () = false;
+
+			break;
+		}
+		case GDK_KEY_Meta_L:
+		case GDK_KEY_Alt_L:
+		{
+			altKey () = false;
+			break;
+		}
+
+		// Action keys
+
+		case GDK_KEY_Home:
+		case GDK_KEY_KP_Home:
+			actionKeyRelease () = X3D_KEY_HOME;
+			break;
+
+		case GDK_KEY_End:
+		case GDK_KEY_KP_End:
+			actionKeyRelease () = X3D_KEY_END;
+			break;
+
+		case GDK_KEY_Page_Up:
+		case GDK_KEY_KP_Page_Up:
+			actionKeyRelease () = X3D_KEY_PGUP;
+			break;
+
+		case GDK_KEY_Page_Down:
+		case GDK_KEY_KP_Page_Down:
+			actionKeyRelease () = X3D_KEY_PGDN;
+			break;
+
+		case GDK_KEY_Up:
+		case GDK_KEY_KP_Up:
+			actionKeyRelease () = X3D_KEY_UP;
+			break;
+
+		case GDK_KEY_Down:
+		case GDK_KEY_KP_Down:
+			actionKeyRelease () = X3D_KEY_DOWN;
+			break;
+
+		case GDK_KEY_Left:
+		case GDK_KEY_KP_Left:
+			actionKeyRelease () = X3D_KEY_LEFT;
+			break;
+
+		case GDK_KEY_Right:
+		case GDK_KEY_KP_Right:
+			actionKeyRelease () = X3D_KEY_RIGHT;
+			break;
+
+		case GDK_KEY_F1:
+			actionKeyRelease () = X3D_KEY_F1;
+			break;
+
+		case GDK_KEY_F2:
+			actionKeyRelease () = X3D_KEY_F2;
+			break;
+
+		case GDK_KEY_F3:
+			actionKeyRelease () = X3D_KEY_F3;
+			break;
+
+		case GDK_KEY_F4:
+			actionKeyRelease () = X3D_KEY_F4;
+			break;
+
+		case GDK_KEY_F5:
+			actionKeyRelease () = X3D_KEY_F5;
+			break;
+
+		case GDK_KEY_F6:
+			actionKeyRelease () = X3D_KEY_F6;
+			break;
+
+		case GDK_KEY_F7:
+			actionKeyRelease () = X3D_KEY_F7;
+			break;
+
+		case GDK_KEY_F8:
+			actionKeyRelease () = X3D_KEY_F8;
+			break;
+
+		case GDK_KEY_F9:
+			actionKeyRelease () = X3D_KEY_F9;
+			break;
+
+		case GDK_KEY_F10:
+			actionKeyRelease () = X3D_KEY_F10;
+			break;
+
+		case GDK_KEY_F11:
+			actionKeyRelease () = X3D_KEY_F11;
+			break;
+
+		case GDK_KEY_F12:
+			actionKeyRelease () = X3D_KEY_F12;
+			break;
+
+		default:
+			break;
+	}
 }
 
 } // X3D

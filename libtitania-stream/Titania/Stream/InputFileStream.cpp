@@ -162,7 +162,14 @@ ifilestream::open (const http::method method, const basic::uri & URL, size_t tim
 	{
 		istream = file_istream = new std::ifstream ();
 
-		file_istream -> open (url () .path ());
+		if (os::is_file (url () .path ()))
+			file_istream -> open (url () .path ());
+
+		else
+		{
+			status (404);
+			setstate (std::ios::failbit);
+		}
 	}
 	else
 	{
@@ -185,28 +192,20 @@ ifilestream::send ()
 	}
 	else if (file_istream)
 	{
-		if (*file_istream)
-		{
-			// Guess content type
+		// Guess content type
 
-			char   data [64];
-			size_t data_size = file_istream -> rdbuf () -> sgetn (data, 64);
+		char   data [64];
+		size_t data_size = file_istream -> rdbuf () -> sgetn (data, 64);
 
-			bool        result_uncertain;
-			std::string content_type = Gio::content_type_guess (url () .path (), (guchar*) data, data_size, result_uncertain);
+		bool        result_uncertain;
+		std::string content_type = Gio::content_type_guess (url () .path (), (guchar*) data, data_size, result_uncertain);
 
-			file_response_headers .insert (std::make_pair ("Content-Type",   content_type));
-			file_response_headers .insert (std::make_pair ("Content-Length", std::to_string (os::file_size (url () .path ()))));
+		file_response_headers .insert (std::make_pair ("Content-Type",   content_type));
+		file_response_headers .insert (std::make_pair ("Content-Length", std::to_string (os::file_size (url () .path ()))));
 
-			// Reset stream
+		// Reset stream
 
-			file_istream -> seekg (0, std::ios_base::beg);
-		}
-		else
-		{
-			status (404);
-			setstate (std::ios::failbit);
-		}
+		file_istream -> seekg (0, std::ios_base::beg);
 	}
 
 	setstate (istream -> rdstate ());

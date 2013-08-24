@@ -25,6 +25,8 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Bits/Error.cpp \
 	Titania/X3D/Browser/Browser.cpp \
 	Titania/X3D/Browser/Console.cpp \
+	Titania/X3D/Browser/Devices/KeyDevice.cpp \
+	Titania/X3D/Browser/Devices/PointingDevice.cpp \
 	Titania/X3D/Browser/Geometry2D/Arc2DOptions.cpp \
 	Titania/X3D/Browser/Geometry2D/ArcClose2DOptions.cpp \
 	Titania/X3D/Browser/Geometry2D/Circle2DOptions.cpp \
@@ -36,7 +38,6 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/Geometry3D/X3DSphereOptionNode.cpp \
 	Titania/X3D/Browser/Hit.cpp \
 	Titania/X3D/Browser/HitArray.cpp \
-	Titania/X3D/Browser/PointingDevice.cpp \
 	Titania/X3D/Browser/Properties/BrowserOptions.cpp \
 	Titania/X3D/Browser/Properties/BrowserProperties.cpp \
 	Titania/X3D/Browser/Properties/MotionBlur.cpp \
@@ -370,6 +371,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Handles/TransformHandle.cpp \
 	Titania/X3D/Handles/X3DHandleObject.cpp \
 	Titania/X3D/InputOutput/Generator.cpp \
+	Titania/X3D/InputOutput/Loader.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/jsArrayFields.cpp \
 	Titania/X3D/JavaScript/SpiderMonkey/Fields/jsMFBool.cpp \

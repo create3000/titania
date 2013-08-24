@@ -48,121 +48,126 @@
  *
  ******************************************************************************/
 
-#include "Router.h"
+#include "PointingDevice.h"
+
+#include "../Browser.h"
 
 namespace titania {
 namespace X3D {
 
-Router::Router () :
-	events (),
-	 nodes (),
-	 mutex ()
+PointingDevice::PointingDevice (Browser* const browser) :
+	X3DWidget (browser),
+	   button (0),
+	   isOver (false)
 { }
 
 void
-Router::addEvent (X3DChildObject* const object, const Event & event)
+PointingDevice::initialize ()
 {
-	events .emplace_back (object, event);
+	X3DWidget::initialize ();
+
+	getBrowser () -> signal_button_press_event   () .connect (sigc::mem_fun (*this, &PointingDevice::on_button_press_event),   false);
+	getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &PointingDevice::on_button_release_event), false);
+	getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &PointingDevice::on_motion_notify_event));
 }
 
-EventArray
-Router::getEvents ()
+bool
+PointingDevice::on_button_press_event (GdkEventButton* event)
 {
-	//std::lock_guard <std::mutex> lock (mutex);
+	button = event -> button;
 
-	return std::move (events);
-}
+	getBrowser () -> grab_focus ();
 
-NodeId
-Router::addNode (X3DBaseNode* node)
-{
-	nodes .emplace_back (node);
-
-	return -- nodes .end ();
-}
-
-void
-Router::removeNode (const NodeId & node)
-{
-	if (nodes .empty ())
-		return;
-
-	nodes .erase (node);
-}
-
-NodeList
-Router::getNodes ()
-{
-	//std::lock_guard <std::mutex> lock (mutex);
-
-	return std::move (nodes);
-}
-
-void
-Router::processEvents ()
-{
-	//	while (events .size ())
-	//	{
-	//		for (auto & event : events)
-	//		{
-	//			// __LOG__ << event .first -> getName () << std::endl;
-	//			event .first -> processEvent (event .second);
-	//		}
-	//
-	//		events .clear ();
-	//
-	//		eventsProcessed ();
-	//	}
-
-	// std::vector is probaly faster
-
-	while (size ())
+	if (button == 1)
 	{
-		do
+		if (pick (event -> x, getBrowser () -> get_height () - event -> y))
 		{
-			for (auto & event : getEvents ())
+			getBrowser () -> buttonPressEvent ();
+
+			getBrowser () -> setCursor (Gdk::HAND1);
+
+			return true;
+		}
+		else
+			getBrowser () -> setCursor (Gdk::FLEUR);
+	}
+
+	else if (button == 2)
+	{
+		getBrowser () -> setCursor (Gdk::FLEUR);
+	}
+
+	return false;
+}
+
+bool
+PointingDevice::on_button_release_event (GdkEventButton* event)
+{
+	button = 0;
+
+	if (event -> button == 1)
+	{
+		if (isOver)
+			getBrowser () -> setCursor (Gdk::HAND2);
+
+		else
+			getBrowser () -> setCursor (Gdk::ARROW);
+
+		getBrowser () -> buttonReleaseEvent ();
+	}
+
+	else if (event -> button == 2)
+	{
+		if (isOver)
+			getBrowser () -> setCursor (Gdk::HAND2);
+
+		else
+			getBrowser () -> setCursor (Gdk::ARROW);
+	}
+
+	return false;
+}
+
+bool
+PointingDevice::on_motion_notify_event (GdkEventMotion* event)
+{
+	if (button == 0 or button == 1)
+	{
+		if (pick (event -> x, getBrowser () -> get_height () - event -> y))
+		{
+			if (not isOver)
 			{
-				event .first -> processEvent (event .second);
+				getBrowser () -> setCursor (Gdk::HAND2);
+				isOver = true;
+			}
+
+			//return true;
+		}
+		else
+		{
+			if (isOver)
+			{
+				getBrowser () -> setCursor (Gdk::ARROW);
+				isOver = false;
 			}
 		}
-		while (size ());
 
-		eventsProcessed ();
+		getBrowser () -> motionNotifyEvent ();
 	}
+
+	return false;
 }
 
-void
-Router::eventsProcessed ()
+bool
+PointingDevice::pick (const double x, const double y)
 {
-	for (const auto & node : getNodes ())
-		node -> processEvents ();
-}
+	if (not getBrowser () -> makeCurrent ())
+		return false;
 
-size_t
-Router::size () const
-{
-	//std::lock_guard <std::mutex> lock (mutex);
+	getBrowser () -> pick (x, y);
 
-	return events .size ();
-}
-
-void
-Router::debug ()
-{
-	for (auto & event : events)
-	{
-		__LOG__ << event .first -> getName () << " : " << event .first -> getTypeName () << std::endl;
-		
-		for (const auto & parent : event .first -> getParents ())
-		{
-			auto node = dynamic_cast <X3DBaseNode*> (parent);
-			
-			if (node)
-			{
-				__LOG__ << "\t" << node -> getTypeName () << std::endl;
-			}
-		}
-	}
+	return getBrowser () -> getHits () .size () and
+	       getBrowser () -> getHits () .front () -> sensors .size ();
 }
 
 } // X3D

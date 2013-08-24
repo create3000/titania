@@ -53,13 +53,105 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/Scene.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include <iostream>
-#include <iterator>
+#include "../../InputOutput/Loader.h"
+
+#include <future>
 
 namespace titania {
 namespace X3D {
 
 static constexpr bool X3D_PARALLEL = false;
+
+class Inline::Future :
+	public X3DInput
+{
+public:
+
+	Future (Inline* const inlineNode) :
+		inlineNode (inlineNode),
+		future (getFuture ()),
+		loader (inlineNode -> getExecutionContext ())
+	{
+		inlineNode -> getBrowser () -> prepareEvents () .addInterest (this, &Future::prepareEvents);
+		inlineNode -> getBrowser () -> addEvent ();
+	}
+
+	void
+	get ()
+	{
+		if (future .valid ())
+		{
+			future .wait ();
+			prepareEvents ();
+		}
+	}
+
+	virtual
+	~Future ()
+	{
+		if (future .valid ())
+			future .wait ();
+	}
+
+private:
+
+	std::future <X3DSFNode <Scene>>
+	getFuture ()
+	{
+		return std::async (std::launch::async, std::mem_fn (&Future::loadAsync), this, inlineNode -> url ());
+	}
+
+	X3DSFNode <Scene>
+	loadAsync (const MFString & url)
+	{
+		std::lock_guard <std::mutex> lock (inlineNode -> getBrowser () -> getThread ());
+		
+		X3DSFNode <Scene> scene = inlineNode -> getBrowser () -> createScene ();
+
+		loader .parseIntoScene (scene, url);
+
+		return scene;
+	}
+
+	void
+	prepareEvents ()
+	{
+		inlineNode -> getBrowser () -> addEvent ();
+
+		if (future .valid ())
+		{
+			auto status = future .wait_for (std::chrono::milliseconds (0));
+
+			if (status == std::future_status::ready)
+			{
+				inlineNode -> getBrowser () -> prepareEvents () .removeInterest (this, &Future::prepareEvents);
+
+				try
+				{
+					X3DSFNode <Scene> scene = future .get ();
+
+					scene -> realize ();
+
+					inlineNode -> setScene (scene);
+				}
+				catch (const X3DError & error)
+				{
+					inlineNode -> getBrowser () -> println (error .what ());
+
+					for (const auto & string : loader .getUrlError ())
+						inlineNode -> getBrowser () -> println (string .str ());
+
+					inlineNode -> setScene (inlineNode -> getBrowser () -> createScene ());
+				}
+			}
+		}
+	}
+
+	Inline* const                    inlineNode;
+	std::future <X3DSFNode <Scene>> future;
+	Loader                           loader;
+
+};
 
 Inline::Fields::Fields () :
 	load (new SFBool (true))
@@ -72,7 +164,8 @@ Inline::Inline (X3DExecutionContext* const executionContext) :
 	    X3DUrlObject (),
 	          fields (),
 	           scene (),
-	           group (new Group (executionContext))
+	           group (new Group (executionContext)),
+	          future ()
 {
 	setComponent ("Networking");
 	setTypeName ("Inline");
@@ -107,13 +200,13 @@ Inline::initialize ()
 		setScene (getBrowser () -> createScene ());
 
 		if (load ())
-			requestLoad ();
+			requestAsyncLoad ();
 	}
 	else
 	{
 		if (load ())
-			requestLoad ();
-	
+			requestAsyncLoad ();
+
 		else
 			setScene (getBrowser () -> createScene ());
 	}
@@ -156,7 +249,7 @@ throw (Error <INVALID_NAME>,
 }
 
 void
-Inline::requestLoad ()
+Inline::requestAsyncLoad ()
 {
 	if (X3D_PARALLEL)
 	{
@@ -165,7 +258,7 @@ Inline::requestLoad ()
 
 		setLoadState (IN_PROGRESS_STATE);
 
-		createX3DFromURL (url (), std::bind (&Inline::setScene, this, std::placeholders::_1));
+		future .reset (new Future (this));
 	}
 	else
 		requestImmediateLoad ();
@@ -179,15 +272,20 @@ Inline::requestImmediateLoad ()
 
 	setLoadState (IN_PROGRESS_STATE);
 
+	Loader loader (getExecutionContext ());
+
 	try
 	{
-		setScene (createX3DFromURL (url ()));
+		setScene (loader .createX3DFromURL (url ()));
 
 		setLoadState (COMPLETE_STATE);
 	}
 	catch (const X3DError & error)
 	{
 		setLoadState (FAILED_STATE);
+
+		for (const auto & string : loader .getUrlError ())
+			getBrowser () -> println (string .str ());
 
 		getBrowser () -> println (error .what ());
 	}
@@ -211,7 +309,7 @@ Inline::set_load ()
 	{
 		setLoadState (NOT_STARTED_STATE);
 
-		requestLoad ();
+		requestAsyncLoad ();
 	}
 	else
 		requestUnload ();
@@ -224,7 +322,7 @@ Inline::set_url ()
 	{
 		setLoadState (NOT_STARTED_STATE);
 
-		requestLoad ();
+		requestAsyncLoad ();
 	}
 }
 
@@ -237,6 +335,8 @@ Inline::traverse (TraverseType type)
 void
 Inline::dispose ()
 {
+	future .reset ();
+
 	scene .dispose ();
 	group .dispose ();
 

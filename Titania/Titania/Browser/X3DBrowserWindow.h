@@ -132,7 +132,7 @@ private:
 	set_console ();
 
 	void
-	set_urlError ();
+	set_urlError (const X3D::MFString &);
 
 	void
 	loadIcon ();

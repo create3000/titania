@@ -1,3 +1,51 @@
+2013-08-24  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* X3D.h:
+	* libtitania-x3d.cproj:
+	* Router.h:
+	* Parser.cpp:
+	* Browser.h:
+	* Router.cpp:
+	* Browser.cpp:
+	* X3DBrowser.h:
+	* Loader.h:
+	* X3DBrowser.cpp:
+	* Loader.cpp:
+	* PointingDevice.h:
+	* ExternProto.cpp:
+	* PointingDevice.cpp:
+	* X3DBrowserContext.h:
+	* KeyDevice.h:
+	* Script.h:
+	* KeyDevice.cpp:
+	* X3DBrowserContext.cpp:
+	* Inline.h:
+	* AudioClip.cpp:
+	* Script.cpp:
+	* Inline.cpp:
+	* PointingDevice.h:
+	* Anchor.cpp:
+	* ShaderPart.cpp:
+	* PointingDevice.cpp:
+	* X3DScriptNode.h:
+	* X3DUrlObject.h:
+	* jsString.cpp:
+	* MovieTexture.cpp:
+	* jsBrowser.cpp:
+	* jsContext.cpp:
+	* ImageTexture.cpp:
+	* X3DScriptNode.cpp:
+	* X3DUrlObject.cpp:
+	* KeySensor.h:
+	* X3DSoundSourceNode.cpp:
+	* KeySensor.cpp:
+	* StringSensor.h:
+	* jsSFNode.cpp:
+	* StringSensor.cpp:
+	* X3DKeyDeviceSensorNode.h:
+	* X3DKeyDeviceSensorNode.cpp: 
+
 2013-08-21  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Router.cpp:

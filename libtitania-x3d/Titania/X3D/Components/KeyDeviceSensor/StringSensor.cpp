@@ -57,8 +57,8 @@ namespace X3D {
 
 StringSensor::Fields::Fields () :
 	deletionAllowed (new SFBool (true)),
-	enteredText (new SFString ()),
-	finalText (new SFString ())
+	    enteredText (new SFString ()),
+	      finalText (new SFString ())
 { }
 
 StringSensor::StringSensor (X3DExecutionContext* const executionContext) :
@@ -71,16 +71,28 @@ StringSensor::StringSensor (X3DExecutionContext* const executionContext) :
 
 	addField (inputOutput, "metadata",        metadata ());
 	addField (inputOutput, "enabled",         enabled ());
-	addField (outputOnly,  "isActive",        isActive ());
 	addField (inputOutput, "deletionAllowed", deletionAllowed ());
 	addField (outputOnly,  "enteredText",     enteredText ());
-	addField (outputOnly,  " finalText",       finalText ());
+	addField (outputOnly,  "finalText",       finalText ());
+	addField (outputOnly,  "isActive",        isActive ());
 }
 
 X3DBaseNode*
 StringSensor::create (X3DExecutionContext* const executionContext) const
 {
 	return new StringSensor (executionContext);
+}
+
+void
+StringSensor::set_keyPressEvent (int keyval)
+{
+
+}
+
+void
+StringSensor::set_keyReleaseEvent (int keyval)
+{
+
 }
 
 } // X3D

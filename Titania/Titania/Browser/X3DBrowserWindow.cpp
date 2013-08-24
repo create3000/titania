@@ -90,7 +90,7 @@ X3DBrowserWindow::initialize ()
 	getBrowser () -> getConsole () -> string_changed () .addInterest (this, &X3DBrowserWindow::set_console);
 
 	// UrlError
-	getBrowser () -> urlError () .addInterest (this, &X3DBrowserWindow::set_urlError);
+	getBrowser () -> getUrlError () .addInterest (this, &X3DBrowserWindow::set_urlError);
 
 	// Initialized
 	getBrowser () -> initialized () .addInterest (this, &X3DBrowserWindow::set_initialized);
@@ -370,14 +370,12 @@ X3DBrowserWindow::set_console ()
 }
 
 void
-X3DBrowserWindow::set_urlError ()
+X3DBrowserWindow::set_urlError (const X3D::MFString & urlError)
 {
-	if (getBrowser () -> urlError () .empty ())
-		return;
-
 	getMessageDialog () .set_message ("Invalid X3D");
+
 	getMessageDialog () .set_secondary_text ("<span font_desc=\"mono\">"
-	                                         + Glib::Markup::escape_text (basic::join (getBrowser () -> urlError (), "\n"))
+	                                         + Glib::Markup::escape_text (basic::join (urlError, "\n"))
 	                                         + "</span>",
 	                                         true);
 	getMessageDialog () .show ();
@@ -407,7 +405,7 @@ X3DBrowserWindow::loadIcon ()
 			uri = "/favicon.ico";
 		}
 
-		titania::Image icon (getBrowser () -> loadDocument (uri));
+		titania::Image icon (X3D::Loader (getBrowser ()) .loadDocument (uri));
 
 		iconSet = Gtk::IconSet::create (Gdk::Pixbuf::create_from_data (icon .getData (),
 		                                                               Gdk::COLORSPACE_RGB,

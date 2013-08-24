@@ -52,20 +52,11 @@
 #define __TITANIA_X3D_COMPONENTS_NETWORKING_X3DURL_OBJECT_H__
 
 #include "../../Basic/X3DBaseNode.h"
-#include "../../Bits/Error.h"
 #include "../../Bits/X3DConstants.h"
-#include "../../Execution/Scene.h"
 #include "../../Fields.h"
-
-#include <Titania/Stream/InputFileStream.h>
-#include <map>
-#include <memory>
-#include <mutex>
 
 namespace titania {
 namespace X3D {
-
-typedef std::function <void (const X3DSFNode <Scene> &)> SceneCallback;
 
 class X3DUrlObject :
 	virtual public X3DBaseNode
@@ -82,20 +73,11 @@ public:
 	url () const
 	{ return *fields .url; }
 
-	MFString &
-	urlError ()
-	{ return fields .urlError; }
-
-	const MFString &
-	urlError () const
-	{ return fields .urlError; }
-
 	///  @name Element access
 
-	virtual
 	const X3DScalar <LoadState> &
 	checkLoadState () const
-	{ return loadState (); }
+	{ return loadState; }
 
 	///  @name Operations
 
@@ -103,88 +85,6 @@ public:
 	void
 	requestImmediateLoad ()
 	{ }
-
-	///  @name X3D Creation Handling
-
-	///
-	X3DSFNode <Scene>
-	createX3DFromString (const std::string &)
-	throw (Error <INVALID_X3D>,
-	       Error <NOT_SUPPORTED>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
-
-	///
-	X3DSFNode <Scene>
-	createX3DFromStream (std::istream &)
-	throw (Error <INVALID_X3D>,
-	       Error <NOT_SUPPORTED>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
-
-	X3DSFNode <Scene>
-	createX3DFromStream (const basic::uri &, std::istream &)
-	throw (Error <INVALID_X3D>,
-	       Error <NOT_SUPPORTED>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
-
-	///
-	void
-	createX3DFromURL (const MFString &, const SceneCallback &);
-
-	void
-	createX3DFromURL (const MFString &, const SFNode &, const std::string &)
-	throw (Error <INVALID_URL>,
-	       Error <URL_UNAVAILABLE>);
-
-	///
-	X3DSFNode <Scene>
-	createX3DFromURL (const MFString &)
-	throw (Error <INVALID_URL>,
-	       Error <URL_UNAVAILABLE>);
-
-	///
-	virtual
-	void
-	loadURL (const MFString &, const MFString &)
-	throw (Error <INVALID_URL>,
-	       Error <URL_UNAVAILABLE>);
-
-	///  @name Stream Handling
-
-	///  Returns the contents of @a URL
-	std::string
-	loadDocument (const SFString &)
-	throw (Error <INVALID_URL>,
-	       Error <URL_UNAVAILABLE>);
-
-	///  Returns the contents of @a uri
-	std::string
-	loadDocument (const basic::uri &)
-	throw (Error <INVALID_URL>,
-	       Error <URL_UNAVAILABLE>);
-
-	///  Returns a stream for @a URL
-	basic::ifilestream
-	loadStream (const basic::uri &)
-	throw (Error <INVALID_URL>,
-	       Error <URL_UNAVAILABLE>);
-
-	/// URI Handling
-
-	MFString
-	transformUri (const MFString &);
-
-	MFString
-	transformUri (const basic::uri &, const MFString &);
-
-	basic::uri
-	transformUri (const basic::uri &);
-
-	static
-	basic::uri
-	transformUri (const basic::uri &, const basic::uri &);
 
 	~X3DUrlObject ();
 
@@ -194,70 +94,31 @@ protected:
 
 	virtual
 	void
-	initialize () override;
-
-	///  @name Element Access
-
-	virtual
-	const basic::uri &
-	getWorldURL () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
-	{ return worldURL; }
-
-	virtual
-	const basic::uri &
-	getReferer () const
-	{ return getExecutionContext () -> getWorldURL (); }
+	initialize () override
+	{ }
 
 	void
 	setLoadState (LoadState value)
-	{ loadState () = value; }
-
-	void
-	parseIntoScene (X3DScene* const, const MFString &)
-	throw (Error <INVALID_URL>,
-	       Error <URL_UNAVAILABLE>);
+	{ loadState = value; }
 
 	virtual
 	void
-	dispose () override;
+	dispose () override
+	{ }
 
 
 private:
-
-	class Future;
-
-	X3DScalar <LoadState> &
-	loadState ()
-	{ return fields .loadState; }
-
-	const X3DScalar <LoadState> &
-	loadState () const
-	{ return fields .loadState; }
-
-	virtual
-	void
-	setWorldURL (const basic::uri & value)
-	{ worldURL = value; }
 
 	struct Fields
 	{
 		Fields ();
 
 		MFString* const url;
-		X3DScalar <LoadState> loadState;
-		MFString urlError;
 	};
 
 	Fields fields;
-
-	std::string userAgent;
-	basic::uri  worldURL;
-
-	std::unique_ptr <Future> future;
-
-	mutable std::mutex mutex;
+	
+	X3DScalar <LoadState> loadState;
 
 };
 

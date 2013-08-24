@@ -53,6 +53,7 @@
 #include "../../Miscellaneous/Texture.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../InputOutput/Loader.h"
 
 #include <future>
 
@@ -118,7 +119,7 @@ private:
 
 			try
 			{
-				TexturePtr texture (new Texture (imageTexture -> loadDocument (URL)));
+				TexturePtr texture (new Texture (Loader (imageTexture -> getExecutionContext ()) .loadDocument (URL)));
 
 				texture -> process (borderColor, borderWidth, minTextureSize, maxTextureSize);
 
@@ -130,7 +131,10 @@ private:
 			}
 			catch (const std::exception & error)
 			{
-				std::clog << "Bad Image: " << error .what () << ", in URL '" << URL << "'" << std::endl;
+				std::clog
+					<< "Bad Image: " << error .what () << ", "
+					<< "in URL '" << imageTexture -> getExecutionContext () -> getWorldURL () .transform (URL .str ()) << "'"
+					<< std::endl;
 			}
 		}
 

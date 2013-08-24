@@ -76,6 +76,8 @@ X3DSoundSourceNode::X3DSoundSourceNode () :
 	addNodeType (X3DConstants::X3DSoundSourceNode);
 
 	addChildren (end);
+
+	add_signal_watch ();
 }
 
 void
@@ -88,8 +90,6 @@ X3DSoundSourceNode::initialize ()
 	end      .addInterest (this, &X3DSoundSourceNode::set_end);
 
 	mediaStream -> setup ();
-
-	add_signal_watch ();
 }
 
 void

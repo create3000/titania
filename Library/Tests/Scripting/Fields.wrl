@@ -5,11 +5,13 @@ DEF Timer TimeSensor {
 }
 
 DEF Debug Script {
-  field SFString    fSFString "abcdefghijklmnopqrstuvwxyzäöü"
+  field SFString    fSFString "abcdefghijklmnopqrstuvwxyzäöü@ł€¶ŧ←↓→øþſðđŋħł|»«¢„“”µ·…–"
 
   eventIn SFTime set_time
 
   url "vrmlscript:
+ 
+var utf8_string = 'abcdefghijklmnopqrstuvwxyzäöü@ł€¶ŧ←↓→øþſðđŋħł|»«¢„“”µ·…–';
 
 function set_time ()
 {
@@ -73,8 +75,8 @@ function set_time ()
    f35 .length = 10;
    f36 .length = 10;
    f37 .length = 10;
- 
-   fSFString;
+
+   fSFString = fSFString;
 }
 "
 }

@@ -54,6 +54,8 @@
 #include "../Core/X3DChildNode.h"
 #include "../Networking/X3DUrlObject.h"
 
+#include <Titania/Basic/URI.h>
+
 namespace titania {
 namespace X3D {
 
@@ -61,6 +63,10 @@ class X3DScriptNode :
 	virtual public X3DChildNode, public X3DUrlObject
 {
 public:
+
+	const basic::uri &
+	getWorldURL () const
+	{ return worldURL; }
 
 	virtual
 	void
@@ -76,15 +82,10 @@ protected:
 	initialize () override;
 
 	void
-	setReferer (const basic::uri & value)
-	{ referer = value; }
+	setWorldURL (const basic::uri & value)
+	{ worldURL = value; }
 
-	virtual
-	const basic::uri &
-	getReferer () const final
-	{ return referer; }
-
-	basic::uri referer;
+	basic::uri worldURL;
 
 };
 

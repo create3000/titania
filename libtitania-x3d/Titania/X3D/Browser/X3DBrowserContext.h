@@ -58,6 +58,7 @@
 #include "../Browser/Selection.h"
 #include "../Browser/Viewer/ViewerType.h"
 #include "../Components/Core/X3DSensorNode.h"
+#include "../Components/KeyDeviceSensor/X3DKeyDeviceSensorNode.h"
 #include "../Execution/BindableNodeStack.h"
 #include "../Execution/World.h"
 #include "../Execution/X3DExecutionContext.h"
@@ -121,6 +122,14 @@ public:
 	const Output &
 	changed () const
 	{ return changedOutput; }
+
+	SFTime &
+	keyDeviceSensorNodeEvent ()
+	{ return keyDeviceSensorNodeOutput; }
+
+	const SFTime &
+	keyDeviceSensorNodeEvent () const
+	{ return keyDeviceSensorNodeOutput; }
 
 	///  @name Time handling
 
@@ -229,11 +238,14 @@ public:
 	std::mutex &
 	getThread ();
 
-	///  @name Console handling
+	///  @name Key device handling
 
-	const X3DSFNode <Console> &
-	getConsole () const
-	{ return console; }
+	void
+	setKeyDeviceSensorNode (X3DKeyDeviceSensorNode* const);
+
+	X3DKeyDeviceSensorNode*
+	getKeyDeviceSensorNode () const
+	{ return keyDeviceSensorNode; }
 
 	///  @name Picking
 
@@ -270,6 +282,12 @@ public:
 	const X3DSFNode <Selection> &
 	getSelection ()
 	{ return selection; }
+
+	///  @name Console handling
+
+	const X3DSFNode <Console> &
+	getConsole () const
+	{ return console; }
 
 	///  @name Event handling
 
@@ -317,6 +335,9 @@ private:
 
 	void
 	set_initialized ();
+	
+	void
+	set_shutdown ();
 
 	void
 	set_activeLayer ();
@@ -357,6 +378,9 @@ private:
 	SFBool                       noneViewer;
 	SFBool                       lookAt;
 	X3DSFNode <X3DViewpointNode> activeViewpoint;
+
+	X3DKeyDeviceSensorNode* keyDeviceSensorNode;
+	SFTime                  keyDeviceSensorNodeOutput;
 
 	double                x;
 	double                y;

@@ -1,0 +1,51 @@
+#VRML V2.0 utf8
+
+META "title" "KeySensor"
+
+Transform {
+	children Shape {
+		appearance Appearance {
+			material Material { }
+		}
+		geometry DEF Text Text { }
+	}
+}
+
+DEF KeySensor KeySensor { }
+
+DEF Debug Script {
+  eventIn SFBool set_shiftKey
+  eventIn SFBool set_controlKey
+  eventIn SFBool set_altKey
+  eventIn SFString set_keyPress
+  field SFNode text USE Text
+
+  url "vrmlscript:
+
+function set_shiftKey (value)
+{
+	print ('shiftKey: ' + value);
+}
+
+function set_controlKey (value)
+{
+	print ('controlKey: ' + value);
+}
+
+function set_altKey (value)
+{
+	print ('altKey: ' + value);
+}
+
+function set_keyPress (value)
+{
+	text .string = new MFString (value, value .charCodeAt (0), value .length);
+}
+"
+	directOutput TRUE
+}
+
+ROUTE KeySensor.shiftKey TO Debug.set_shiftKey
+ROUTE KeySensor.controlKey TO Debug.set_controlKey
+ROUTE KeySensor.altKey TO Debug.set_altKey
+ROUTE KeySensor.keyPress TO Debug.set_keyPress

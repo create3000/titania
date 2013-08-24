@@ -69,6 +69,30 @@ public:
 
 	///  @name Fields
 
+	SFBool &
+	shiftKey ()
+	{ return *fields .shiftKey; }
+
+	const SFBool &
+	shiftKey () const
+	{ return *fields .shiftKey; }
+
+	SFBool &
+	controlKey ()
+	{ return *fields .controlKey; }
+
+	const SFBool &
+	controlKey () const
+	{ return *fields .controlKey; }
+
+	SFBool &
+	altKey ()
+	{ return *fields .altKey; }
+
+	const SFBool &
+	altKey () const
+	{ return *fields .altKey; }
+
 	SFInt32 &
 	actionKeyPress ()
 	{ return *fields .actionKeyPress; }
@@ -84,22 +108,6 @@ public:
 	const SFInt32 &
 	actionKeyRelease () const
 	{ return *fields .actionKeyRelease; }
-
-	SFBool &
-	altKey ()
-	{ return *fields .altKey; }
-
-	const SFBool &
-	altKey () const
-	{ return *fields .altKey; }
-
-	SFBool &
-	controlKey ()
-	{ return *fields .controlKey; }
-
-	const SFBool &
-	controlKey () const
-	{ return *fields .controlKey; }
 
 	SFString &
 	keyPress ()
@@ -117,31 +125,39 @@ public:
 	keyRelease () const
 	{ return *fields .keyRelease; }
 
-	SFBool &
-	shiftKey ()
-	{ return *fields .shiftKey; }
+	virtual
+	void
+	set_keyPressEvent (int) final;
 
-	const SFBool &
-	shiftKey () const
-	{ return *fields .shiftKey; }
+	virtual
+	void
+	set_keyReleaseEvent (int) final;
 
 
 private:
+
+	static constexpr int Shift_R   = 1;
+	static constexpr int Shift_L   = 2;
+	static constexpr int Control_R = 1;
+	static constexpr int Control_L = 2;
 
 	struct Fields
 	{
 		Fields ();
 
+		SFBool* const shiftKey;
+		SFBool* const controlKey;
+		SFBool* const altKey;
 		SFInt32* const actionKeyPress;
 		SFInt32* const actionKeyRelease;
-		SFBool* const altKey;
-		SFBool* const controlKey;
 		SFString* const keyPress;
 		SFString* const keyRelease;
-		SFBool* const shiftKey;
 	};
 
 	Fields fields;
+
+	int shiftKeys;
+	int controlKeys;
 
 };
 

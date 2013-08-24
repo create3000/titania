@@ -52,6 +52,7 @@
 
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../InputOutput/Loader.h"
 
 namespace titania {
 namespace X3D {
@@ -97,7 +98,7 @@ Anchor::initialize ()
 void
 Anchor::requestImmediateLoad ()
 {
-	loadURL (url (), parameter ());
+	Loader (getExecutionContext ()) .loadURL (url (), parameter ());
 }
 
 void

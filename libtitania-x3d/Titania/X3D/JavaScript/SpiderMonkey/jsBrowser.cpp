@@ -53,6 +53,7 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Components/Scripting/Script.h"
 #include "../../InputOutput/Generator.h"
+#include "../../InputOutput/Loader.h"
 #include "Fields/jsMFNode.h"
 #include "Fields/jsMFString.h"
 #include "Fields/jsSFNode.h"
@@ -263,7 +264,8 @@ jsBrowser::createX3DFromString (JSContext* context, uintN argc, jsval* vp)
 
 		try
 		{
-			X3DSFNode <Scene> scene = script -> createX3DFromString (JS_GetString (context, x3dSyntax));
+			X3DSFNode <Scene> scene = Loader (script -> getExecutionContext (),
+			                                  script -> getWorldURL ()) .createX3DFromString (JS_GetString (context, x3dSyntax));
 
 			return jsX3DScene::create (context, scene, vp);
 		}
@@ -319,7 +321,8 @@ jsBrowser::createX3DFromURL (JSContext* context, uintN argc, jsval* vp)
 							{
 								try
 								{
-									X3DSFNode <Scene> scene = script -> createX3DFromURL (*url);
+									X3DSFNode <Scene> scene = Loader (script -> getExecutionContext (),
+			                                                    script -> getWorldURL ()) .createX3DFromURL (*url);
 
 									if (scene)
 									{
@@ -360,7 +363,8 @@ jsBrowser::createX3DFromURL (JSContext* context, uintN argc, jsval* vp)
 			{
 				try
 				{
-					X3DSFNode <Scene> scene = script -> createX3DFromURL (*url);
+					X3DSFNode <Scene> scene = Loader (script -> getExecutionContext (),
+			                                        script -> getWorldURL ()) .createX3DFromURL (*url);
 
 					if (argc == 2)
 						onode = javaScript -> getGlobal ();
@@ -393,7 +397,8 @@ jsBrowser::createX3DFromURL (JSContext* context, uintN argc, jsval* vp)
 		{
 			try
 			{
-				X3DSFNode <Scene> scene = script -> createX3DFromURL (*url);
+				X3DSFNode <Scene> scene = Loader (script -> getExecutionContext (),
+			                                     script -> getWorldURL ()) .createX3DFromURL (*url);
 
 				return jsX3DScene::create (context, scene, vp);
 			}
@@ -437,7 +442,8 @@ jsBrowser::loadURL (JSContext* context, uintN argc, jsval* vp)
 
 		try
 		{
-			script -> loadURL (*url, *parameter);
+			Loader (script -> getExecutionContext (),
+			        script -> getWorldURL ()) .loadURL (*url, *parameter);
 		}
 		catch (const X3DError & error)
 		{
@@ -727,7 +733,8 @@ jsBrowser::createVrmlFromString (JSContext* context, uintN argc, jsval* vp)
 
 		try
 		{
-			X3DSFNode <Scene> scene = script -> createX3DFromString (JS_GetString (context, vrmlSyntax));
+			X3DSFNode <Scene> scene = Loader (script -> getExecutionContext (),
+			                                  script -> getWorldURL ()) .createX3DFromString (JS_GetString (context, vrmlSyntax));
 
 			return jsMFNode::create (context, new MFNode (scene -> getRootNodes ()), &JS_RVAL (context, vp));
 		}
@@ -783,7 +790,8 @@ jsBrowser::createVrmlFromURL (JSContext* context, uintN argc, jsval* vp)
 					{
 						try
 						{
-							X3DSFNode <Scene> scene = script -> createX3DFromURL (*url);
+							X3DSFNode <Scene> scene = Loader (script -> getExecutionContext (),
+			                                              script -> getWorldURL ()) .createX3DFromURL (*url);
 
 							if (scene)
 							{

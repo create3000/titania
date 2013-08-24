@@ -87,6 +87,7 @@ socketstreambuf::open (const basic::uri & URL)
 	curl_easy_setopt (curl, CURLOPT_CONNECTTIMEOUT_MS, timeout ());
 	curl_easy_setopt (curl, CURLOPT_TIMEOUT_MS,        timeout ());
 	curl_easy_setopt (curl, CURLOPT_ACCEPTTIMEOUT_MS,  timeout ());
+	curl_easy_setopt (curl, CURLOPT_ACCEPT_ENCODING,   "");
 	curl_easy_setopt (curl, CURLOPT_NOSIGNAL,          true);
  
 	retcode = curl_easy_perform (curl);

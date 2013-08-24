@@ -89,6 +89,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	          noneViewer (),
 	              lookAt (),
 	     activeViewpoint (),
+	 keyDeviceSensorNode (nullptr),
 	                   x (0),
 	                   y (0),
 	              hitRay (),
@@ -120,6 +121,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	             noneViewer,
 	             lookAt,
 	             activeViewpoint,
+	             keyDeviceSensorNodeOutput,
 	             overSensors,
 	             activeSensors,
 	             selection,
@@ -196,6 +198,26 @@ X3DBrowserContext::initialize ()
 	}
 
 	initialized () .addInterest (this, &X3DBrowserContext::set_initialized);
+	shutdown () .addInterest (this, &X3DBrowserContext::set_shutdown);
+}
+
+void
+X3DBrowserContext::set_initialized ()
+{
+	__LOG__ << std::endl;
+
+	getWorld () -> getActiveLayer () .addInterest (this, &X3DBrowserContext::set_activeLayer);
+
+	set_activeLayer ();
+}
+
+void
+X3DBrowserContext::set_shutdown ()
+{
+	hits .clear ();
+
+	overSensors   .clear ();
+	activeSensors .clear ();
 }
 
 void
@@ -246,21 +268,6 @@ X3DBrowserContext::getThread ()
 	threadIndex = (threadIndex + 1) % threads .size ();
 
 	return threads [threadIndex];
-}
-
-void
-X3DBrowserContext::set_initialized ()
-{
-	__LOG__ << std::endl;
-
-	hits .clear ();
-
-	overSensors   .clear ();
-	activeSensors .clear ();
-
-	getWorld () -> getActiveLayer () .addInterest (this, &X3DBrowserContext::set_activeLayer);
-
-	set_activeLayer ();
 }
 
 void
@@ -390,7 +397,22 @@ END:;
 	}
 }
 
-// Selection
+// Key device
+
+void
+X3DBrowserContext::setKeyDeviceSensorNode (X3DKeyDeviceSensorNode* const value)
+{
+	if (keyDeviceSensorNode)
+		keyDeviceSensorNode -> shutdown () .removeInterest (this, &X3DBrowserContext::setKeyDeviceSensorNode);
+
+	keyDeviceSensorNode         = value;
+	keyDeviceSensorNodeEvent () = getCurrentTime ();
+
+	if (keyDeviceSensorNode)
+		keyDeviceSensorNode -> shutdown () .addInterest (this, &X3DBrowserContext::setKeyDeviceSensorNode, nullptr);
+}
+
+// Picking
 
 void
 X3DBrowserContext::pick (const double _x, const double _y)
@@ -577,9 +599,8 @@ X3DBrowserContext::update ()
 		getGarbageCollector () .dispose ();
 
 		// Debug
-		//router .debug ();
-		//assert (router .size () == 0);
-		//assert (getGarbageCollector () .size () == 0);
+		router .debug ();
+		assert (router .size () == 0);
 
 		// Display
 

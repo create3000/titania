@@ -53,6 +53,7 @@
 #include "../Bits/Error.h"
 #include "../Browser/X3DBrowser.h"
 #include "../Components/Core/X3DPrototypeInstance.h"
+#include "../InputOutput/Loader.h"
 #include "../Parser/RegEx.h"
 
 #include <iomanip>
@@ -72,8 +73,11 @@ ExternProto::ExternProto (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "metadata", metadata ());
 
 	addChildren (url (), scene, proto);
-	
+
+	//checkLoadState () .isTainted (true);
 	url () .isTainted (true);
+	scene .isTainted (true);
+	proto .isTainted (true);
 }
 
 X3DBaseNode*
@@ -97,6 +101,9 @@ ExternProto::initialize ()
 {
 	X3DProto::initialize ();
 	X3DUrlObject::initialize ();
+	
+	for (const auto & field : getFieldDefinitions ())
+		field -> isTainted (true);
 }
 
 X3DPrototypeInstance*
@@ -116,17 +123,19 @@ ExternProto::requestImmediateLoad ()
 		return;
 
 	setLoadState (IN_PROGRESS_STATE);
+	
+	Loader loader (getExecutionContext ());
 
 	try
 	{
 		scene = getBrowser () -> createScene ();
 
-		parseIntoScene (scene, url ());
+		loader .parseIntoScene (scene, url ());
 		
 		for (const auto & uninitializedNode : scene -> getUninitializedNodes ())
 			getExecutionContext () -> addUninitializedNode (uninitializedNode);
 	}
-	catch (const Error <INVALID_URL> & error)
+	catch (const X3DError & error)
 	{
 		scene = nullptr;
 
@@ -135,8 +144,8 @@ ExternProto::requestImmediateLoad ()
 		throw Error <URL_UNAVAILABLE> ("Couldn't load any URL specified for EXTERNPROTO '" + getName () + "'\n" + error .what ());
 	}
 
-	std::string protoName = getWorldURL () .fragment () .length ()
-	                        ? getWorldURL () .fragment ()
+	std::string protoName = loader .getWorldURL () .fragment () .length ()
+	                        ? loader .getWorldURL () .fragment ()
 									: getName ();
 
 	proto = scene -> getProtoDeclaration (protoName);
@@ -175,15 +184,13 @@ ExternProto::requestImmediateLoad ()
 		}
 
 		setLoadState (COMPLETE_STATE);
-
 		return;
 	}
 	else
 	{
 		setLoadState (FAILED_STATE);
-		throw Error <INVALID_NAME> ("No PROTO '" + protoName + "' found for EXTERNPROTO '" + getName () + "' in url '" + getWorldURL () + "'");
+		throw Error <INVALID_NAME> ("No PROTO '" + protoName + "' found for EXTERNPROTO '" + getName () + "' in url '" + loader .getWorldURL () + "'");
 	}
-
 }
 
 void

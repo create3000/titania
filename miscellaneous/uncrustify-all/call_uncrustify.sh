@@ -19,22 +19,22 @@ perl -p -e '
 uncrustify -q -l CPP -c "$HOME/bin/uncrustify.cfg" \
 	| \
 perl -p -e '
-	s/^(\t+\<\<)/\t$1/o;                                                     # add a tab before stream operator <<
-	s/^(\t+\>\>)/\t$1/o;                                                     # add a tab before stream operator >>
-	s/\[\]/[ ]/go;                                                           # add space between [ ]
-	s/\!=/not_eq/go;                                                         # change != to not_eq
-	s/\|\|/or/go;                                                            # change || to or
-	s/>\s+(?=>)/>/go;                                                        # change > > to >>
-	s/></> </go;                                                             # add space between ><
-	s/(\s+-\>)\s*/$1 /go;                                                    # change variable->member to variable -> member
-	s/([\w\d\)\]])(-\>)\s*/$1 $2 /go;                                        # change variable->member to variable -> member
-	s/-\>\s*\*/->*/go;                                                       # change variable -> * member to variable ->* member
-	s/([\w\d]+\:\:)(\s+)/$1/sgo;                                             # remove space after CLASS::
-	s/\)\((\w)/) ($1/sgo;                                                    # add space between )(
+	s/^(\t+\<\<)/\t$1/o;                                                    # add a tab before stream operator <<
+	s/^(\t+\>\>)/\t$1/o;                                                    # add a tab before stream operator >>
+	s/\[\]/[ ]/go;                                                          # add space between [ ]
+	s/\!=/not_eq/go;                                                        # change != to not_eq
+	s/\|\|/or/go;                                                           # change || to or
+	s/>\s+(?=>)/>/go;                                                       # change > > to >>
+	s/></> </go;                                                            # add space between ><
+	s/(\s+-\>)\s*/$1 /go;                                                   # change variable->member to variable -> member
+	s/([\w\d\)\]])(-\>)\s*/$1 $2 /go;                                       # change variable->member to variable -> member
+	s/-\>\s*\*/->*/go;                                                      # change variable -> * member to variable ->* member
+	s/([\w\d]+\:\:)(\s+)/$1/sgo;                                            # remove space after CLASS::
+	s/\)\((\w)/) ($1/sgo;                                                   # add space between )(
 	s/(\s[\w\d\)\]]+)\.([a-zA-Z])/$1 .$2/go
-		unless /\w\.\w+?[\>"]/ or /^\s*(\/?\*|\/\/)/go;                                   # change variable.member to variable .member
+		unless /\w\.\w+?[\>"]/ or /^\s*(\/?\*|\/\/)/go;                      # change variable.member to variable .member
    s/\)and/) and/sgo;
-   s/([^\s])(override|final)/$1 $2/;                                        # add space before final or override
+   s/([)])(override|final)/$1 $2/;                                         # add space before final or override
 ' | \
 perl -e '
 	@lines = <>;
@@ -46,50 +46,50 @@ perl -e '
 	# indent constuctor bases and member initialization
 	sub max { return $_[0] > $_[1] ? $_[0] : $_[1]; }
 
-	@lines = <>;
-	@_ = @lines;
-	
-	#print  @_;
-	#return;
-
-	while ($_ = shift @_)
-	{
-		if (/^(\w+)\:\:(\w+)\s\(/so)  # find class Constructor "Name::Name ("
-		{
-			if ($1 eq $2) # Constructor begin found
-			{
-				goto LENGTH if /\)\s\:\n/so;
-
-				while ($_ = shift @_) # find Constructor end ") :"
-				{
-					goto LENGTH if /\)\s\:\n/so;
-				}
-			}
-		}
-	}
-
-	LENGTH: # find length of indent for each member
-
+	$constructor_rx  = qr/(\w+)\:\:(\w+)\s\(/so;
 	$member_value_rx = qr/\((?:[^()]*|(?0))*\)|\{(?:[^{}]*|(?0))*\}/so;
 	$member_rx       = qr/^(\t+)([\w:\s<>]+)\s*((??{$member_value_rx}),?)(\n|\s*)(.*?)$/so;
 
-	$lm = 0;
-	$lc = 0;
-	while ($_ = shift @_) {
-		last unless $_ =~ $member_rx;
-		$lm = max ($lm, length ($2));
-		$lc = max ($lc, length ($3));
-	}
+	@lines = <>;
 
-	# print file
-
-	@_ = @lines;
-
-	while (@_)
+	while (@lines)
 	{
+		@_ = @lines;
+		
+		#print  @_;
+		#return;
+
 		while ($_ = shift @_)
 		{
-			if (/^(\w+)\:\:(\w+)\s\(/so)  # find class Constructor "Name::Name ("
+			if (constructor_rx)  # find class Constructor "Name::Name ("
+			{
+				if ($1 eq $2) # Constructor begin found
+				{
+					goto LENGTH if /\)\s\:\n/so;
+
+					while ($_ = shift @_) # find Constructor end ") :"
+					{
+						goto LENGTH if /\)\s\:\n/so;
+					}
+				}
+			}
+		}
+
+		LENGTH: # find length of indent for each member
+
+		$lm = 0;
+		$lc = 0;
+		while ($_ = shift @_) {
+			last unless $_ =~ $member_rx;
+			$lm = max ($lm, length ($2));
+			$lc = max ($lc, length ($3));
+		}
+
+		# print file
+
+		while ($_ = shift @lines)
+		{
+			if (constructor_rx)  # find class Constructor "Name::Name ("
 			{
 				if ($1 eq $2) # Constructor begin found
 				{
@@ -97,7 +97,7 @@ perl -e '
 
 					print $_;
 
-					while ($_ = shift @_) # find Constructor end ") :"
+					while ($_ = shift @lines) # find Constructor end ") :"
 					{
 						goto MEMBERS if /\)\s\:\n/so;
 
@@ -108,12 +108,13 @@ perl -e '
 			print $_;
 		}
 
+		last unless @lines;
+
 		MEMBERS:
 
 		print $_;
-		last unless @_;
 
-		while ($_ = shift @_) {
+		while ($_ = shift @lines) {
 			last unless $_ =~ $member_rx;
 			$pad1 = $lm - length ($2);
 			$pad2 = $lc - length ($3) + 1;
@@ -122,10 +123,9 @@ perl -e '
 			$line =~ s/(.*?)\s*$/$1\n/o;
 			print $line;
 		}
+
 		print $_;
 	}
-
-	print $_ while $_ = shift @_;
 ' | \
 perl -e '
 	# multiline replacements

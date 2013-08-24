@@ -50,6 +50,8 @@
 
 #include "X3DKeyDeviceSensorNode.h"
 
+#include "../../Browser/X3DBrowser.h"
+
 namespace titania {
 namespace X3D {
 
@@ -57,6 +59,47 @@ X3DKeyDeviceSensorNode::X3DKeyDeviceSensorNode () :
 	X3DSensorNode ()
 {
 	addNodeType (X3DConstants::X3DKeyDeviceSensorNode);
+}
+
+void
+X3DKeyDeviceSensorNode::initialize ()
+{
+	X3DSensorNode::initialize ();
+	
+	enabled () .addInterest (this, &X3DKeyDeviceSensorNode::set_enabled);
+	
+	set_enabled ();
+}
+
+void
+X3DKeyDeviceSensorNode::set_enabled ()
+{
+	if (enabled ())
+	{
+		if (isActive ())
+			return;
+
+		X3DKeyDeviceSensorNode* keyDeviceSensorNode = getBrowser () -> getKeyDeviceSensorNode ();
+
+		if (keyDeviceSensorNode)
+		{
+			keyDeviceSensorNode -> enabled ()  = false;
+			keyDeviceSensorNode -> isActive () = false;
+		}
+
+		getBrowser () -> setKeyDeviceSensorNode (this);
+
+		isActive () = true;
+	}
+	else
+	{
+		if (not isActive ())
+			return;
+
+		getBrowser () -> setKeyDeviceSensorNode (nullptr);
+
+		isActive () = false;
+	}
 }
 
 } // X3D

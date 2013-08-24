@@ -31,7 +31,6 @@
 
 #include "../Browser/X3DBrowserContext.h"
 
-#include "../Components/Networking/X3DUrlObject.h"
 #include "../Configuration/SupportedComponents.h"
 #include "../Configuration/SupportedFields.h"
 #include "../Configuration/SupportedNodes.h"
@@ -44,7 +43,7 @@ namespace titania {
 namespace X3D {
 
 class X3DBrowser :
-	public X3DBrowserContext, public X3DUrlObject
+	public X3DBrowserContext
 {
 public:
 
@@ -56,6 +55,11 @@ public:
 	getVersion () const
 	throw (Error <DISPOSED>)
 	{ return version; }
+
+	const std::string &
+	getUserAgent () const
+	throw (Error <DISPOSED>)
+	{ return userAgent; }
 
 	void
 	setDescription (const std::string & value)
@@ -113,6 +117,8 @@ public:
 	       Error <DISPOSED>)
 	{ return scene; }
 
+	///  @name X3D Creation Handling
+
 	X3DSFNode <Scene>
 	createScene () const
 	throw (Error <INVALID_OPERATION_TIMING>,
@@ -127,17 +133,6 @@ public:
 	replaceWorld (const X3DSFNode <Scene> &)
 	throw (Error <INVALID_SCENE>);
 
-	void
-	loadURL (const MFString &)
-	throw (Error <INVALID_URL>,
-	       Error <URL_UNAVAILABLE>);
-
-	virtual
-	void
-	loadURL (const MFString &, const MFString &)
-	throw (Error <INVALID_URL>,
-	       Error <URL_UNAVAILABLE>) final;
-
 	X3DSFNode <Scene>
 	importDocument (/*const XML DOMNode &*/)
 	throw (Error <INVALID_DOCUMENT>,
@@ -146,12 +141,52 @@ public:
 	       Error <NOT_SUPPORTED>);
 
 	void
+	loadURL (const MFString &)
+	throw (Error <INVALID_URL>,
+	       Error <URL_UNAVAILABLE>);
+
+	void
+	loadURL (const MFString &, const MFString &)
+	throw (Error <INVALID_URL>,
+	       Error <URL_UNAVAILABLE>);
+
+	X3DSFNode <Scene>
+	createX3DFromString (const std::string &)
+	throw (Error <INVALID_X3D>,
+	       Error <NOT_SUPPORTED>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	X3DSFNode <Scene>
+	createX3DFromStream (std::istream &)
+	throw (Error <INVALID_X3D>,
+	       Error <NOT_SUPPORTED>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	X3DSFNode <Scene>
+	createX3DFromStream (const basic::uri &, std::istream &)
+	throw (Error <INVALID_X3D>,
+	       Error <NOT_SUPPORTED>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	X3DSFNode <Scene>
+	createX3DFromURL (const MFString &)
+	throw (Error <INVALID_URL>,
+	       Error <URL_UNAVAILABLE>);
+
+	///
+	
+	void
 	beginUpdate ()
 	throw (Error <DISPOSED>);
 
 	void
 	endUpdate ()
 	throw (Error <DISPOSED>);
+	
+	///
 
 	const X3DSFNode <RenderingProperties> &
 	getRenderingProperties () const
@@ -204,6 +239,12 @@ public:
 	throw (Error <DISPOSED>)
 	{ print (args ..., '\n'); }
 
+	///  @name Error handling
+	
+	const MFString &
+	getUrlError () const
+	{ return urlError; }
+
 	///  @name Destruction
 
 	virtual
@@ -225,6 +266,10 @@ protected:
 
 private:
 
+	void
+	setUserAgent (const std::string & value)
+	{ userAgent = value; }
+
 	virtual
 	const X3DSFNode <World> &
 	getWorld () const final
@@ -238,8 +283,6 @@ private:
 	print (std::ostringstream &)
 	{ }
 
-	using X3DUrlObject::url;
-
 	void
 	set_scene ();
 
@@ -250,10 +293,12 @@ private:
 	SupportedComponents supportedComponents;
 	SupportedProfiles   supportedProfiles;
 
-	SFString description;
+	std::string userAgent;
+	SFString    description;
 
 	X3DSFNode <Scene> scene;
 	X3DSFNode <World> world;
+	MFString          urlError;
 
 };
 
