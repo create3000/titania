@@ -127,11 +127,19 @@ public:
 
 	virtual
 	void
-	set_keyPressEvent (int) final;
+	set_actionKeyPressEvent (int) final;
 
 	virtual
 	void
-	set_keyReleaseEvent (int) final;
+	set_actionKeyReleaseEvent (int) final;
+
+	virtual
+	void
+	set_keyPressEvent (const String &) final;
+
+	virtual
+	void
+	set_keyReleaseEvent (const String &) final;
 
 
 private:

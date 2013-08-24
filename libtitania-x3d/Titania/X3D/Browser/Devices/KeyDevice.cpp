@@ -57,9 +57,14 @@ namespace X3D {
 
 KeyDevice::KeyDevice (Browser* const browser) :
 	             X3DWidget (browser),
+	        imContextPress (gtk_im_context_simple_new ()),
+	      imContextRelease (gtk_im_context_simple_new ()),
+	              keyPress (),
+	            keyRelease (),
 	  key_press_connection (),
 	key_release_connection ()
-{ }
+{
+}
 
 void
 KeyDevice::initialize ()
@@ -67,11 +72,17 @@ KeyDevice::initialize ()
 	X3DWidget::initialize ();
 
 	getBrowser () -> keyDeviceSensorNodeEvent () .addInterest (this, &KeyDevice::set_keyDeviceSensorNodeEvent);
+	
+	g_signal_connect (imContextPress,   "commit", G_CALLBACK (&KeyDevice::on_commit), &this -> keyPress);
+	g_signal_connect (imContextRelease, "commit", G_CALLBACK (&KeyDevice::on_commit), &this -> keyRelease);
 }
 
 void
 KeyDevice::set_keyDeviceSensorNodeEvent ()
 {
+	gtk_im_context_reset (imContextPress);
+	gtk_im_context_reset (imContextRelease);
+
 	key_press_connection   .disconnect ();
 	key_release_connection .disconnect ();
 
@@ -85,15 +96,55 @@ KeyDevice::set_keyDeviceSensorNodeEvent ()
 bool
 KeyDevice::on_key_press_event (GdkEventKey* event)
 {
-	getBrowser () -> getKeyDeviceSensorNode () -> set_keyPressEvent (event -> keyval);
+	if (gtk_im_context_filter_keypress (imContextPress, event))
+	{
+		if (keyPress .size ())
+		{
+			getBrowser () -> getKeyDeviceSensorNode () -> set_keyPressEvent (keyPress);
+
+			keyPress .clear ();
+
+			return true;
+		}
+	}
+	
+	getBrowser () -> getKeyDeviceSensorNode () -> set_actionKeyPressEvent (event -> keyval);
 	return true;
 }
 
 bool
 KeyDevice::on_key_release_event (GdkEventKey* event)
 {
-	getBrowser () -> getKeyDeviceSensorNode () -> set_keyReleaseEvent (event -> keyval);
+	event -> type = GDK_KEY_PRESS;
+
+	if (gtk_im_context_filter_keypress (imContextRelease, event))
+	{
+		if (keyRelease .size ())
+		{
+			getBrowser () -> getKeyDeviceSensorNode () -> set_keyReleaseEvent (keyRelease);
+
+			keyRelease .clear ();
+
+			return true;
+		}
+	}
+	
+	getBrowser () -> getKeyDeviceSensorNode () -> set_actionKeyReleaseEvent (event -> keyval);
 	return true;
+}
+
+void
+KeyDevice::on_commit (GtkIMContext*, gchar* string, gpointer user_data)
+{
+	String* key = static_cast <String*> (user_data);
+
+	*key = string;
+}
+
+KeyDevice::~KeyDevice ()
+{
+	g_object_unref (imContextPress);
+	g_object_unref (imContextRelease);
 }
 
 } // X3D

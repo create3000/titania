@@ -63,11 +63,19 @@ public:
 
 	virtual
 	void
-	set_keyPressEvent (int) = 0;
+	set_actionKeyPressEvent (int) = 0;
 
 	virtual
 	void
-	set_keyReleaseEvent (int) = 0;
+	set_actionKeyReleaseEvent (int) = 0;
+
+	virtual
+	void
+	set_keyPressEvent (const String &) = 0;
+
+	virtual
+	void
+	set_keyReleaseEvent (const String &) = 0;
 
 
 protected:

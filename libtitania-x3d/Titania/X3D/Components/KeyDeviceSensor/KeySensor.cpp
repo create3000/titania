@@ -118,7 +118,7 @@ KeySensor::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-KeySensor::set_keyPressEvent (int keyval)
+KeySensor::set_actionKeyPressEvent (int keyval)
 {
 	__LOG__ << keyval << std::endl;
 
@@ -262,7 +262,7 @@ KeySensor::set_keyPressEvent (int keyval)
 		// Keys
 
 		case GDK_KEY_KP_Enter:
-			keyPress () = "\n";
+			keyPress () = String (1, gdk_keyval_to_unicode (GDK_KEY_Return));
 			break;
 
 		default:
@@ -278,7 +278,7 @@ KeySensor::set_keyPressEvent (int keyval)
 }
 
 void
-KeySensor::set_keyReleaseEvent (int keyval)
+KeySensor::set_actionKeyReleaseEvent (int keyval)
 {
 	__LOG__ << keyval << std::endl;
 
@@ -419,9 +419,38 @@ KeySensor::set_keyReleaseEvent (int keyval)
 			actionKeyRelease () = X3D_KEY_F12;
 			break;
 
-		default:
+		// Keys
+
+		case GDK_KEY_KP_Enter:
+			keyRelease () = String (1, gdk_keyval_to_unicode (GDK_KEY_Return));
 			break;
+
+		default:
+		{
+			auto character = gdk_keyval_to_unicode (keyval);
+
+			if (character)
+				keyRelease () = String (1, character);
+
+			break;
+		}
 	}
+}
+
+void
+KeySensor::set_keyPressEvent (const String & key)
+{
+	__LOG__ << key << std::endl;
+
+	keyPress () = key;
+}
+
+void
+KeySensor::set_keyReleaseEvent (const String & key)
+{
+	__LOG__ << key << std::endl;
+
+	keyRelease () = key;
 }
 
 } // X3D

@@ -53,7 +53,9 @@
 
 #include "../../Fields.h"
 #include "../X3DWidget.h"
+
 #include <gdkmm.h>
+#include <gtk/gtk.h>
 
 namespace titania {
 namespace X3D {
@@ -66,6 +68,8 @@ class KeyDevice :
 public:
 
 	KeyDevice (Browser* const);
+
+	~KeyDevice ();
 
 
 private:
@@ -83,9 +87,18 @@ private:
 	bool
 	on_key_release_event (GdkEventKey*);
 
+	static
+	void
+	on_commit (GtkIMContext*, gchar*, gpointer);
+
+	GtkIMContext* imContextPress;
+	GtkIMContext* imContextRelease;
+	String        keyPress;
+	String        keyRelease;
+
 	sigc::connection key_press_connection;
 	sigc::connection key_release_connection;
-
+	
 };
 
 } // X3D

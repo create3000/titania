@@ -1,5 +1,15 @@
 2013-08-24  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* KeyDevice.h:
+	* KeyDevice.cpp:
+	* KeySensor.h:
+	* KeySensor.cpp:
+	* StringSensor.h:
+	* StringSensor.cpp:
+	* X3DKeyDeviceSensorNode.h: 
+
+2013-08-24  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* X3D.h:
 	* libtitania-x3d.cproj:
