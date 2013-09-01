@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -85,14 +85,6 @@ public:
 	set_value () const
 	{ return *fields .set_value; }
 
-	SFBool &
-	isActive ()
-	{ return *fields .isActive; }
-
-	const SFBool &
-	isActive () const
-	{ return *fields .isActive; }
-
 	SFVec2f &
 	value_changed ()
 	{ return *fields .value_changed; }
@@ -100,14 +92,6 @@ public:
 	const SFVec2f &
 	value_changed () const
 	{ return *fields .value_changed; }
-
-	SFTime &
-	duration ()
-	{ return *fields .duration; }
-
-	const SFTime &
-	duration () const
-	{ return *fields .duration; }
 
 	SFVec2f &
 	initialDestination ()
@@ -118,15 +102,19 @@ public:
 	{ return *fields .initialDestination; }
 
 	SFVec2f &
-	defaultValue ()
-	{ return *fields .defaultValue; }
+	initialValue ()
+	{ return *fields .initialValue; }
 
 	const SFVec2f &
-	defaultValue () const
-	{ return *fields .defaultValue; }
+	initialValue () const
+	{ return *fields .initialValue; }
 
 
 private:
+
+	virtual
+	void
+	set_fraction ();
 
 	struct Fields
 	{
@@ -134,11 +122,9 @@ private:
 
 		SFVec2f* const set_destination;
 		SFVec2f* const set_value;
-		SFBool* const isActive;
 		SFVec2f* const value_changed;
-		SFTime* const duration;
 		SFVec2f* const initialDestination;
-		SFVec2f* const defaultValue;
+		SFVec2f* const initialValue;
 	};
 
 	Fields fields;

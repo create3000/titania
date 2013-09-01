@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -60,10 +60,9 @@ OrientationDamper::Fields::Fields () :
 	set_value (new SFRotation ()),
 	tau (new SFTime ()),
 	tolerance (new SFFloat (-1)),
-	isActive (new SFBool ()),
 	value_changed (new SFRotation ()),
 	initialDestination (new SFRotation (0, 1, 0, 0)),
-	defaultValue (new SFRotation (0, 1, 0, 0)),
+	initialValue (new SFRotation (0, 1, 0, 0)),
 	order (new SFInt32 ())
 { }
 
@@ -83,7 +82,7 @@ OrientationDamper::OrientationDamper (X3DExecutionContext* const executionContex
 	addField (outputOnly,     "isActive",           isActive ());
 	addField (outputOnly,     "value_changed",      value_changed ());
 	addField (initializeOnly, "initialDestination", initialDestination ());
-	addField (initializeOnly, "defaultValue",       defaultValue ());
+	addField (initializeOnly, "initialValue",       initialValue ());
 	addField (initializeOnly, "order",              order ());
 }
 

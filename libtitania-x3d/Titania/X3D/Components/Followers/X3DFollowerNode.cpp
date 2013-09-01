@@ -53,8 +53,13 @@
 namespace titania {
 namespace X3D {
 
+X3DFollowerNode::Fields::Fields () :
+	isActive (new SFBool ())
+{ }
+
 X3DFollowerNode::X3DFollowerNode () :
-	X3DChildNode ()
+	X3DChildNode (),
+	      fields ()
 {
 	addNodeType (X3DConstants::X3DFollowerNode);
 }

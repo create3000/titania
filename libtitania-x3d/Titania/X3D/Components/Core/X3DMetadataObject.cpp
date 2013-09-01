@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 X3DMetadataObject::Fields::Fields () :
-	name (new SFString ()),
+	     name (new SFString ()),
 	reference (new SFString ())
 { }
 

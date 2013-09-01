@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -60,10 +60,9 @@ PositionDamper::Fields::Fields () :
 	set_value (new SFVec3f ()),
 	tau (new SFTime ()),
 	tolerance (new SFFloat (-1)),
-	isActive (new SFBool ()),
 	value_changed (new SFVec3f ()),
 	initialDestination (new SFVec3f ()),
-	defaultValue (new SFVec3f ()),
+	initialValue (new SFVec3f ()),
 	order (new SFInt32 ())
 { }
 
@@ -83,7 +82,7 @@ PositionDamper::PositionDamper (X3DExecutionContext* const executionContext) :
 	addField (outputOnly,     "isActive",           isActive ());
 	addField (outputOnly,     "value_changed",      value_changed ());
 	addField (initializeOnly, "initialDestination", initialDestination ());
-	addField (initializeOnly, "defaultValue",       defaultValue ());
+	addField (initializeOnly, "initialValue",       initialValue ());
 	addField (initializeOnly, "order",              order ());
 }
 

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -101,14 +101,6 @@ public:
 	tolerance () const
 	{ return *fields .tolerance; }
 
-	SFBool &
-	isActive ()
-	{ return *fields .isActive; }
-
-	const SFBool &
-	isActive () const
-	{ return *fields .isActive; }
-
 	SFVec2f &
 	value_changed ()
 	{ return *fields .value_changed; }
@@ -126,12 +118,12 @@ public:
 	{ return *fields .initialDestination; }
 
 	SFVec2f &
-	defaultValue ()
-	{ return *fields .defaultValue; }
+	initialValue ()
+	{ return *fields .initialValue; }
 
 	const SFVec2f &
-	defaultValue () const
-	{ return *fields .defaultValue; }
+	initialValue () const
+	{ return *fields .initialValue; }
 
 	SFInt32 &
 	order ()
@@ -152,10 +144,9 @@ private:
 		SFVec2f* const set_value;
 		SFTime* const tau;
 		SFFloat* const tolerance;
-		SFBool* const isActive;
 		SFVec2f* const value_changed;
 		SFVec2f* const initialDestination;
-		SFVec2f* const defaultValue;
+		SFVec2f* const initialValue;
 		SFInt32* const order;
 	};
 

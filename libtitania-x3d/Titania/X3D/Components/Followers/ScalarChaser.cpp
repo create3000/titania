@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -58,11 +58,9 @@ namespace X3D {
 ScalarChaser::Fields::Fields () :
 	set_destination (new SFFloat ()),
 	set_value (new SFFloat ()),
-	isActive (new SFBool ()),
 	value_changed (new SFFloat ()),
-	duration (new SFTime ()),
 	initialDestination (new SFFloat ()),
-	defaultValue (new SFFloat ())
+	initialValue (new SFFloat ())
 { }
 
 ScalarChaser::ScalarChaser (X3DExecutionContext* const executionContext) :
@@ -80,13 +78,19 @@ ScalarChaser::ScalarChaser (X3DExecutionContext* const executionContext) :
 	addField (outputOnly,     "value_changed",      value_changed ());
 	addField (initializeOnly, "duration",           duration ());
 	addField (initializeOnly, "initialDestination", initialDestination ());
-	addField (initializeOnly, "defaultValue",       defaultValue ());
+	addField (initializeOnly, "initialValue",       initialValue ());
 }
 
 X3DBaseNode*
 ScalarChaser::create (X3DExecutionContext* const executionContext) const
 {
 	return new ScalarChaser (executionContext);
+}
+
+void
+ScalarChaser::set_fraction ()
+{
+
 }
 
 } // X3D

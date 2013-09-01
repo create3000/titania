@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -166,7 +166,7 @@ SupportedNodes::SupportedNodes (X3DExecutionContext* const executionContext)
 	add ("Material",                     new Material                     (executionContext));
 	add ("Matrix3VertexAttribute",       new Matrix3VertexAttribute       (executionContext));
 	add ("Matrix4VertexAttribute",       new Matrix4VertexAttribute       (executionContext));
-	add ("MetadataBool",                 new MetadataBool                 (executionContext));
+	add ("MetadataBoolean",              new MetadataBoolean              (executionContext));
 	add ("MetadataDouble",               new MetadataDouble               (executionContext));
 	add ("MetadataFloat",                new MetadataFloat                (executionContext));
 	add ("MetadataInteger",              new MetadataInteger              (executionContext));

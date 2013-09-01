@@ -57,15 +57,6 @@
 namespace titania {
 namespace X3D {
 
-static constexpr int32_t X3D_KEY_HOME  = 13;
-static constexpr int32_t X3D_KEY_END   = 14;
-static constexpr int32_t X3D_KEY_PGUP  = 15;
-static constexpr int32_t X3D_KEY_PGDN  = 16;
-static constexpr int32_t X3D_KEY_UP    = 17;
-static constexpr int32_t X3D_KEY_DOWN  = 18;
-static constexpr int32_t X3D_KEY_LEFT  = 19;
-static constexpr int32_t X3D_KEY_RIGHT = 20;
-
 static constexpr int32_t X3D_KEY_F1  = 1;
 static constexpr int32_t X3D_KEY_F2  = 2;
 static constexpr int32_t X3D_KEY_F3  = 3;
@@ -78,6 +69,15 @@ static constexpr int32_t X3D_KEY_F9  = 9;
 static constexpr int32_t X3D_KEY_F10 = 10;
 static constexpr int32_t X3D_KEY_F11 = 11;
 static constexpr int32_t X3D_KEY_F12 = 12;
+
+static constexpr int32_t X3D_KEY_HOME  = 13;
+static constexpr int32_t X3D_KEY_END   = 14;
+static constexpr int32_t X3D_KEY_PGUP  = 15;
+static constexpr int32_t X3D_KEY_PGDN  = 16;
+static constexpr int32_t X3D_KEY_UP    = 17;
+static constexpr int32_t X3D_KEY_DOWN  = 18;
+static constexpr int32_t X3D_KEY_LEFT  = 19;
+static constexpr int32_t X3D_KEY_RIGHT = 20;
 
 KeySensor::Fields::Fields () :
 	        shiftKey (new SFBool ()),
@@ -120,8 +120,6 @@ KeySensor::create (X3DExecutionContext* const executionContext) const
 void
 KeySensor::set_actionKeyPressEvent (int keyval)
 {
-	__LOG__ << keyval << std::endl;
-
 	switch (keyval)
 	{
 		// Special keys
@@ -171,46 +169,6 @@ KeySensor::set_actionKeyPressEvent (int keyval)
 
 		// Action keys
 
-		case GDK_KEY_Home:
-		case GDK_KEY_KP_Home:
-			actionKeyPress () = X3D_KEY_HOME;
-			break;
-
-		case GDK_KEY_End:
-		case GDK_KEY_KP_End:
-			actionKeyPress () = X3D_KEY_END;
-			break;
-
-		case GDK_KEY_Page_Up:
-		case GDK_KEY_KP_Page_Up:
-			actionKeyPress () = X3D_KEY_PGUP;
-			break;
-
-		case GDK_KEY_Page_Down:
-		case GDK_KEY_KP_Page_Down:
-			actionKeyPress () = X3D_KEY_PGDN;
-			break;
-
-		case GDK_KEY_Up:
-		case GDK_KEY_KP_Up:
-			actionKeyPress () = X3D_KEY_UP;
-			break;
-
-		case GDK_KEY_Down:
-		case GDK_KEY_KP_Down:
-			actionKeyPress () = X3D_KEY_DOWN;
-			break;
-
-		case GDK_KEY_Left:
-		case GDK_KEY_KP_Left:
-			actionKeyPress () = X3D_KEY_LEFT;
-			break;
-
-		case GDK_KEY_Right:
-		case GDK_KEY_KP_Right:
-			actionKeyPress () = X3D_KEY_RIGHT;
-			break;
-
 		case GDK_KEY_F1:
 			actionKeyPress () = X3D_KEY_F1;
 			break;
@@ -259,6 +217,46 @@ KeySensor::set_actionKeyPressEvent (int keyval)
 			actionKeyPress () = X3D_KEY_F12;
 			break;
 
+		case GDK_KEY_Home:
+		case GDK_KEY_KP_Home:
+			actionKeyPress () = X3D_KEY_HOME;
+			break;
+
+		case GDK_KEY_End:
+		case GDK_KEY_KP_End:
+			actionKeyPress () = X3D_KEY_END;
+			break;
+
+		case GDK_KEY_Page_Up:
+		case GDK_KEY_KP_Page_Up:
+			actionKeyPress () = X3D_KEY_PGUP;
+			break;
+
+		case GDK_KEY_Page_Down:
+		case GDK_KEY_KP_Page_Down:
+			actionKeyPress () = X3D_KEY_PGDN;
+			break;
+
+		case GDK_KEY_Up:
+		case GDK_KEY_KP_Up:
+			actionKeyPress () = X3D_KEY_UP;
+			break;
+
+		case GDK_KEY_Down:
+		case GDK_KEY_KP_Down:
+			actionKeyPress () = X3D_KEY_DOWN;
+			break;
+
+		case GDK_KEY_Left:
+		case GDK_KEY_KP_Left:
+			actionKeyPress () = X3D_KEY_LEFT;
+			break;
+
+		case GDK_KEY_Right:
+		case GDK_KEY_KP_Right:
+			actionKeyPress () = X3D_KEY_RIGHT;
+			break;
+
 		// Keys
 
 		case GDK_KEY_KP_Enter:
@@ -280,8 +278,6 @@ KeySensor::set_actionKeyPressEvent (int keyval)
 void
 KeySensor::set_actionKeyReleaseEvent (int keyval)
 {
-	__LOG__ << keyval << std::endl;
-
 	switch (keyval)
 	{
 		// Special keys
@@ -331,46 +327,6 @@ KeySensor::set_actionKeyReleaseEvent (int keyval)
 
 		// Action keys
 
-		case GDK_KEY_Home:
-		case GDK_KEY_KP_Home:
-			actionKeyRelease () = X3D_KEY_HOME;
-			break;
-
-		case GDK_KEY_End:
-		case GDK_KEY_KP_End:
-			actionKeyRelease () = X3D_KEY_END;
-			break;
-
-		case GDK_KEY_Page_Up:
-		case GDK_KEY_KP_Page_Up:
-			actionKeyRelease () = X3D_KEY_PGUP;
-			break;
-
-		case GDK_KEY_Page_Down:
-		case GDK_KEY_KP_Page_Down:
-			actionKeyRelease () = X3D_KEY_PGDN;
-			break;
-
-		case GDK_KEY_Up:
-		case GDK_KEY_KP_Up:
-			actionKeyRelease () = X3D_KEY_UP;
-			break;
-
-		case GDK_KEY_Down:
-		case GDK_KEY_KP_Down:
-			actionKeyRelease () = X3D_KEY_DOWN;
-			break;
-
-		case GDK_KEY_Left:
-		case GDK_KEY_KP_Left:
-			actionKeyRelease () = X3D_KEY_LEFT;
-			break;
-
-		case GDK_KEY_Right:
-		case GDK_KEY_KP_Right:
-			actionKeyRelease () = X3D_KEY_RIGHT;
-			break;
-
 		case GDK_KEY_F1:
 			actionKeyRelease () = X3D_KEY_F1;
 			break;
@@ -419,6 +375,46 @@ KeySensor::set_actionKeyReleaseEvent (int keyval)
 			actionKeyRelease () = X3D_KEY_F12;
 			break;
 
+		case GDK_KEY_Home:
+		case GDK_KEY_KP_Home:
+			actionKeyRelease () = X3D_KEY_HOME;
+			break;
+
+		case GDK_KEY_End:
+		case GDK_KEY_KP_End:
+			actionKeyRelease () = X3D_KEY_END;
+			break;
+
+		case GDK_KEY_Page_Up:
+		case GDK_KEY_KP_Page_Up:
+			actionKeyRelease () = X3D_KEY_PGUP;
+			break;
+
+		case GDK_KEY_Page_Down:
+		case GDK_KEY_KP_Page_Down:
+			actionKeyRelease () = X3D_KEY_PGDN;
+			break;
+
+		case GDK_KEY_Up:
+		case GDK_KEY_KP_Up:
+			actionKeyRelease () = X3D_KEY_UP;
+			break;
+
+		case GDK_KEY_Down:
+		case GDK_KEY_KP_Down:
+			actionKeyRelease () = X3D_KEY_DOWN;
+			break;
+
+		case GDK_KEY_Left:
+		case GDK_KEY_KP_Left:
+			actionKeyRelease () = X3D_KEY_LEFT;
+			break;
+
+		case GDK_KEY_Right:
+		case GDK_KEY_KP_Right:
+			actionKeyRelease () = X3D_KEY_RIGHT;
+			break;
+
 		// Keys
 
 		case GDK_KEY_KP_Enter:
@@ -440,16 +436,12 @@ KeySensor::set_actionKeyReleaseEvent (int keyval)
 void
 KeySensor::set_keyPressEvent (const String & key)
 {
-	__LOG__ << key << std::endl;
-
 	keyPress () = key;
 }
 
 void
 KeySensor::set_keyReleaseEvent (const String & key)
 {
-	__LOG__ << key << std::endl;
-
 	keyRelease () = key;
 }
 

@@ -53,10 +53,51 @@
 namespace titania {
 namespace X3D {
 
+X3DChaserNode::Fields::Fields () :
+	duration (new SFTime ())
+{ }
+
 X3DChaserNode::X3DChaserNode () :
-	X3DFollowerNode ()
+	X3DFollowerNode (),
+	         fields (),
+	     timeSensor (new TimeSensor (getExecutionContext ()))
 {
 	addNodeType (X3DConstants::X3DChaserNode);
+	
+	addChildren (timeSensor);
+}
+
+void
+X3DChaserNode::initialize ()
+{
+	X3DFollowerNode::initialize ();
+	
+	duration () .addInterest (timeSensor -> cycleInterval ());
+
+	timeSensor -> cycleInterval () = duration ();
+	timeSensor -> isActive () .addInterest (isActive ());
+	timeSensor -> fraction_changed () .addInterest (this, &X3DChaserNode::set_fraction);
+	timeSensor -> setup ();
+}
+
+void
+X3DChaserNode::start ()
+{
+	timeSensor -> startTime () = getCurrentTime ();
+}
+
+void
+X3DChaserNode::stop ()
+{
+	timeSensor -> stopTime () = getCurrentTime ();
+}
+
+void
+X3DChaserNode::dispose ()
+{
+	timeSensor .dispose ();
+
+	X3DFollowerNode::dispose ();
 }
 
 } // X3D

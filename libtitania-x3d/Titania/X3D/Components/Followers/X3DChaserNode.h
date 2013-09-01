@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_COMPONENTS_FOLLOWERS_X3DCHASER_NODE_H__
 
 #include "../Followers/X3DFollowerNode.h"
+#include "../Time/TimeSensor.h"
 
 namespace titania {
 namespace X3D {
@@ -59,9 +60,51 @@ namespace X3D {
 class X3DChaserNode :
 	public X3DFollowerNode
 {
+public:
+
+	SFTime &
+	duration ()
+	{ return *fields .duration; }
+
+	const SFTime &
+	duration () const
+	{ return *fields .duration; }
+
+	virtual
+	void
+	dispose () override;
+
+
 protected:
 
 	X3DChaserNode ();
+
+	virtual
+	void
+	initialize () override;
+
+	void
+	start ();
+
+	void
+	stop ();
+
+private:
+
+	virtual
+	void
+	set_fraction () = 0;
+
+	struct Fields
+	{
+		Fields ();
+
+		SFTime* const duration;
+	};
+
+	Fields fields;
+	
+	X3DSFNode <TimeSensor> timeSensor;
 
 };
 

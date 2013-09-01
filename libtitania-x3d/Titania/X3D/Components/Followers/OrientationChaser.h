@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -85,14 +85,6 @@ public:
 	set_value () const
 	{ return *fields .set_value; }
 
-	SFBool &
-	isActive ()
-	{ return *fields .isActive; }
-
-	const SFBool &
-	isActive () const
-	{ return *fields .isActive; }
-
 	SFRotation &
 	value_changed ()
 	{ return *fields .value_changed; }
@@ -100,14 +92,6 @@ public:
 	const SFRotation &
 	value_changed () const
 	{ return *fields .value_changed; }
-
-	SFTime &
-	duration ()
-	{ return *fields .duration; }
-
-	const SFTime &
-	duration () const
-	{ return *fields .duration; }
 
 	SFRotation &
 	initialDestination ()
@@ -118,15 +102,19 @@ public:
 	{ return *fields .initialDestination; }
 
 	SFRotation &
-	defaultValue ()
-	{ return *fields .defaultValue; }
+	initialValue ()
+	{ return *fields .initialValue; }
 
 	const SFRotation &
-	defaultValue () const
-	{ return *fields .defaultValue; }
+	initialValue () const
+	{ return *fields .initialValue; }
 
 
 private:
+
+	virtual
+	void
+	set_fraction ();
 
 	struct Fields
 	{
@@ -134,11 +122,9 @@ private:
 
 		SFRotation* const set_destination;
 		SFRotation* const set_value;
-		SFBool* const isActive;
 		SFRotation* const value_changed;
-		SFTime* const duration;
 		SFRotation* const initialDestination;
-		SFRotation* const defaultValue;
+		SFRotation* const initialValue;
 	};
 
 	Fields fields;

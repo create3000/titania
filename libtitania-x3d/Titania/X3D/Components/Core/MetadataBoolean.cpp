@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,25 +48,25 @@
  *
  ******************************************************************************/
 
-#include "MetadataBool.h"
+#include "MetadataBoolean.h"
 
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {
 
-MetadataBool::Fields::Fields () :
+MetadataBoolean::Fields::Fields () :
 	value (new MFBool ())
 { }
 
-MetadataBool::MetadataBool (X3DExecutionContext* const executionContext) :
+MetadataBoolean::MetadataBoolean (X3DExecutionContext* const executionContext) :
 	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	          X3DNode (),
 	X3DMetadataObject (),
 	           fields ()
 {
 	setComponent ("Core");
-	setTypeName ("MetadataBool");
+	setTypeName ("MetadataBoolean");
 
 	addField (inputOutput, "metadata",  metadata ());
 	addField (inputOutput, "name",      name ());
@@ -75,20 +75,20 @@ MetadataBool::MetadataBool (X3DExecutionContext* const executionContext) :
 }
 
 X3DBaseNode*
-MetadataBool::create (X3DExecutionContext* const executionContext) const
+MetadataBoolean::create (X3DExecutionContext* const executionContext) const
 {
-	return new MetadataBool (executionContext);
+	return new MetadataBoolean (executionContext);
 }
 
 void
-MetadataBool::initialize ()
+MetadataBoolean::initialize ()
 {
 	X3DNode::initialize ();
 	X3DMetadataObject::initialize ();
 }
 
 void
-MetadataBool::dispose ()
+MetadataBoolean::dispose ()
 {
 	X3DMetadataObject::dispose ();
 	X3DNode::dispose ();

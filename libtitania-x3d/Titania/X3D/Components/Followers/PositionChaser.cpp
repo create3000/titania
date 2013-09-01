@@ -56,13 +56,11 @@ namespace titania {
 namespace X3D {
 
 PositionChaser::Fields::Fields () :
-	set_destination (new SFVec3f ()),
-	set_value (new SFVec3f ()),
-	isActive (new SFBool ()),
-	value_changed (new SFVec3f ()),
-	duration (new SFTime ()),
+	      initialValue (new SFVec3f ()),
 	initialDestination (new SFVec3f ()),
-	defaultValue (new SFVec3f ())
+	         set_value (new SFVec3f ()),
+	   set_destination (new SFVec3f ()),
+	     value_changed (new SFVec3f ())
 { }
 
 PositionChaser::PositionChaser (X3DExecutionContext* const executionContext) :
@@ -74,19 +72,58 @@ PositionChaser::PositionChaser (X3DExecutionContext* const executionContext) :
 	setTypeName ("PositionChaser");
 
 	addField (inputOutput,    "metadata",           metadata ());
-	addField (inputOnly,      "set_destination",    set_destination ());
+	addField (initializeOnly, "duration",           duration ());
+	addField (initializeOnly, "initialValue",       initialValue ());
+	addField (initializeOnly, "initialDestination", initialDestination ());
 	addField (inputOnly,      "set_value",          set_value ());
+	addField (inputOnly,      "set_destination",    set_destination ());
 	addField (outputOnly,     "isActive",           isActive ());
 	addField (outputOnly,     "value_changed",      value_changed ());
-	addField (initializeOnly, "duration",           duration ());
-	addField (initializeOnly, "initialDestination", initialDestination ());
-	addField (initializeOnly, "defaultValue",       defaultValue ());
+
+	addField ("defaultValue", "initialValue");
 }
 
 X3DBaseNode*
 PositionChaser::create (X3DExecutionContext* const executionContext) const
 {
 	return new PositionChaser (executionContext);
+}
+
+void
+PositionChaser::initialize ()
+{
+	X3DChaserNode::initialize ();
+	
+	set_value ()       .addInterest (this, &PositionChaser::_set_value);
+	set_destination () .addInterest (this, &PositionChaser::_set_destination);
+
+	value_changed () = initialValue ();
+
+	if (initialValue () not_eq initialDestination ())
+		set_destination () = initialDestination ();
+}
+
+void
+PositionChaser::_set_value ()
+{
+	stop ();
+
+	value_changed () = set_value ();
+	
+	start ();
+}
+
+void
+PositionChaser::_set_destination ()
+{
+	stop ();
+	start ();
+}
+
+void
+PositionChaser::set_fraction ()
+{
+
 }
 
 } // X3D

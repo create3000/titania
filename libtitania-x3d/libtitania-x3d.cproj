@@ -378,7 +378,6 @@
     <None Include="Titania\X3D\Fields\ArrayFields.h" />
     <None Include="Titania\X3D\Fields\MFNode.h" />
     <None Include="Titania\X3D\Fields\MFInt32.h" />
-    <None Include="Titania\X3D\Components\Core\MetadataBool.h" />
     <None Include="Titania\X3D\Components\H-Anim\HAnimDisplacer.h" />
     <None Include="Titania\X3D\Components\H-Anim\HAnimHumanoid.h" />
     <None Include="Titania\X3D\Components\H-Anim\HAnimJoint.h" />
@@ -576,6 +575,7 @@
     <None Include="Titania\X3D\InputOutput\Loader.h" />
     <None Include="Titania\X3D\Browser\Devices\PointingDevice.h" />
     <None Include="Titania\X3D\Browser\Devices\KeyDevice.h" />
+    <None Include="Titania\X3D\Components\Core\MetadataBoolean.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -638,7 +638,6 @@
     <Compile Include="Titania\X3D\Components\CADGeometry\IndexedQuadSet.cpp" />
     <Compile Include="Titania\X3D\Components\CADGeometry\QuadSet.cpp" />
     <Compile Include="Titania\X3D\Components\CADGeometry\X3DProductStructureChildNode.cpp" />
-    <Compile Include="Titania\X3D\Components\Core\MetadataBool.cpp" />
     <Compile Include="Titania\X3D\Components\Core\MetadataDouble.cpp" />
     <Compile Include="Titania\X3D\Components\Core\MetadataFloat.cpp" />
     <Compile Include="Titania\X3D\Components\Core\MetadataInteger.cpp" />
@@ -1016,6 +1015,7 @@
     <Compile Include="Titania\X3D\InputOutput\Loader.cpp" />
     <Compile Include="Titania\X3D\Browser\Devices\PointingDevice.cpp" />
     <Compile Include="Titania\X3D\Browser\Devices\KeyDevice.cpp" />
+    <Compile Include="Titania\X3D\Components\Core\MetadataBoolean.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

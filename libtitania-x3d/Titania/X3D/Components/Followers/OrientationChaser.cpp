@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -58,11 +58,9 @@ namespace X3D {
 OrientationChaser::Fields::Fields () :
 	set_destination (new SFRotation ()),
 	set_value (new SFRotation ()),
-	isActive (new SFBool ()),
 	value_changed (new SFRotation ()),
-	duration (new SFTime ()),
 	initialDestination (new SFRotation (0, 1, 0, 0)),
-	defaultValue (new SFRotation (0, 1, 0, 0))
+	initialValue (new SFRotation (0, 1, 0, 0))
 { }
 
 OrientationChaser::OrientationChaser (X3DExecutionContext* const executionContext) :
@@ -80,13 +78,19 @@ OrientationChaser::OrientationChaser (X3DExecutionContext* const executionContex
 	addField (outputOnly,     "value_changed",      value_changed ());
 	addField (initializeOnly, "duration",           duration ());
 	addField (initializeOnly, "initialDestination", initialDestination ());
-	addField (initializeOnly, "defaultValue",       defaultValue ());
+	addField (initializeOnly, "initialValue",       initialValue ());
 }
 
 X3DBaseNode*
 OrientationChaser::create (X3DExecutionContext* const executionContext) const
 {
 	return new OrientationChaser (executionContext);
+}
+
+void
+OrientationChaser::set_fraction ()
+{
+
 }
 
 } // X3D

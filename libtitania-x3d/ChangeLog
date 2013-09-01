@@ -1,3 +1,41 @@
+2013-09-01  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Core.h:
+	* MetadataBool.h:
+	* MetadataBool.cpp:
+	* SupportedNodes.cpp:
+	* MetadataBoolean.h:
+	* ColorDamper.h:
+	* MetadataBoolean.cpp:
+	* X3DBindableNode.cpp:
+	* ScalarChaser.h:
+	* X3DChaserNode.h:
+	* ColorDamper.cpp:
+	* ScalarChaser.cpp:
+	* PositionDamper.h:
+	* PositionChaser.h:
+	* X3DMetadataObject.cpp:
+	* X3DFollowerNode.h:
+	* X3DChaserNode.cpp:
+	* PositionDamper2D.h:
+	* TexCoordDamper2D.h:
+	* PositionChaser2D.h:
+	* PositionChaser.cpp:
+	* CoordinateDamper.h:
+	* PositionDamper.cpp:
+	* X3DFollowerNode.cpp:
+	* OrientationChaser.h:
+	* KeySensor.cpp:
+	* OrientationDamper.h:
+	* PositionDamper2D.cpp:
+	* CoordinateDamper.cpp:
+	* TexCoordDamper2D.cpp:
+	* PositionChaser2D.cpp:
+	* OrientationDamper.cpp:
+	* OrientationChaser.cpp: 
+
 2013-08-24  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* KeyDevice.h:

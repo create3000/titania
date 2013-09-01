@@ -57,12 +57,12 @@
 namespace titania {
 namespace X3D {
 
-class MetadataBool :
+class MetadataBoolean :
 	virtual public X3DNode, public X3DMetadataObject
 {
 public:
 
-	MetadataBool (X3DExecutionContext* const);
+	MetadataBoolean (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*

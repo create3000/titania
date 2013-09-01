@@ -12,6 +12,7 @@ Transform {
 }
 
 DEF KeySensor KeySensor { }
+KeySensor { }
 
 DEF Debug Script {
   eventIn SFBool set_shiftKey

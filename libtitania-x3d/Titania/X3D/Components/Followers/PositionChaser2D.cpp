@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -58,11 +58,9 @@ namespace X3D {
 PositionChaser2D::Fields::Fields () :
 	set_destination (new SFVec2f ()),
 	set_value (new SFVec2f ()),
-	isActive (new SFBool ()),
 	value_changed (new SFVec2f ()),
-	duration (new SFTime ()),
 	initialDestination (new SFVec2f ()),
-	defaultValue (new SFVec2f ())
+	initialValue (new SFVec2f ())
 { }
 
 PositionChaser2D::PositionChaser2D (X3DExecutionContext* const executionContext) :
@@ -80,13 +78,19 @@ PositionChaser2D::PositionChaser2D (X3DExecutionContext* const executionContext)
 	addField (outputOnly,     "value_changed",      value_changed ());
 	addField (initializeOnly, "duration",           duration ());
 	addField (initializeOnly, "initialDestination", initialDestination ());
-	addField (initializeOnly, "defaultValue",       defaultValue ());
+	addField (initializeOnly, "initialValue",       initialValue ());
 }
 
 X3DBaseNode*
 PositionChaser2D::create (X3DExecutionContext* const executionContext) const
 {
 	return new PositionChaser2D (executionContext);
+}
+
+void
+PositionChaser2D::set_fraction ()
+{
+
 }
 
 } // X3D

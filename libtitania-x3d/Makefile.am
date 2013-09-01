@@ -60,7 +60,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Components/CADGeometry/IndexedQuadSet.cpp \
 	Titania/X3D/Components/CADGeometry/QuadSet.cpp \
 	Titania/X3D/Components/CADGeometry/X3DProductStructureChildNode.cpp \
-	Titania/X3D/Components/Core/MetadataBool.cpp \
+	Titania/X3D/Components/Core/MetadataBoolean.cpp \
 	Titania/X3D/Components/Core/MetadataDouble.cpp \
 	Titania/X3D/Components/Core/MetadataFloat.cpp \
 	Titania/X3D/Components/Core/MetadataInteger.cpp \

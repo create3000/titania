@@ -70,44 +70,12 @@ public:
 	///  @name Fields
 
 	SFVec3f &
-	set_destination ()
-	{ return *fields .set_destination; }
+	initialValue ()
+	{ return *fields .initialValue; }
 
 	const SFVec3f &
-	set_destination () const
-	{ return *fields .set_destination; }
-
-	SFVec3f &
-	set_value ()
-	{ return *fields .set_value; }
-
-	const SFVec3f &
-	set_value () const
-	{ return *fields .set_value; }
-
-	SFBool &
-	isActive ()
-	{ return *fields .isActive; }
-
-	const SFBool &
-	isActive () const
-	{ return *fields .isActive; }
-
-	SFVec3f &
-	value_changed ()
-	{ return *fields .value_changed; }
-
-	const SFVec3f &
-	value_changed () const
-	{ return *fields .value_changed; }
-
-	SFTime &
-	duration ()
-	{ return *fields .duration; }
-
-	const SFTime &
-	duration () const
-	{ return *fields .duration; }
+	initialValue () const
+	{ return *fields .initialValue; }
 
 	SFVec3f &
 	initialDestination ()
@@ -118,27 +86,55 @@ public:
 	{ return *fields .initialDestination; }
 
 	SFVec3f &
-	defaultValue ()
-	{ return *fields .defaultValue; }
+	set_value ()
+	{ return *fields .set_value; }
 
 	const SFVec3f &
-	defaultValue () const
-	{ return *fields .defaultValue; }
+	set_value () const
+	{ return *fields .set_value; }
+
+	SFVec3f &
+	set_destination ()
+	{ return *fields .set_destination; }
+
+	const SFVec3f &
+	set_destination () const
+	{ return *fields .set_destination; }
+
+	SFVec3f &
+	value_changed ()
+	{ return *fields .value_changed; }
+
+	const SFVec3f &
+	value_changed () const
+	{ return *fields .value_changed; }
 
 
 private:
+
+	virtual
+	void
+	initialize () final;
+
+	void
+	_set_value ();
+
+	void
+	_set_destination ();
+
+	virtual
+	void
+	set_fraction ();
 
 	struct Fields
 	{
 		Fields ();
 
-		SFVec3f* const set_destination;
-		SFVec3f* const set_value;
-		SFBool* const isActive;
-		SFVec3f* const value_changed;
-		SFTime* const duration;
+		SFVec3f* const initialValue;
 		SFVec3f* const initialDestination;
-		SFVec3f* const defaultValue;
+		SFVec3f* const set_value;
+		SFVec3f* const set_destination;
+		SFVec3f* const value_changed;
 	};
 
 	Fields fields;

@@ -59,9 +59,32 @@ namespace X3D {
 class X3DFollowerNode :
 	virtual public X3DChildNode
 {
+public:
+
+	SFBool &
+	isActive ()
+	{ return *fields .isActive; }
+
+	const SFBool &
+	isActive () const
+	{ return *fields .isActive; }
+
+
 protected:
 
 	X3DFollowerNode ();
+
+
+private:
+
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const isActive;
+	};
+
+	Fields fields;
 
 };
 
