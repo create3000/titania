@@ -193,7 +193,8 @@ Extrusion::createRotations ()
 	if (closedSpine)
 	{
 		SCPyAxis = normalize (spine () [1] - spine () [spine () .size () - 2]);
-		SCPzAxis = normalize (cross (spine () [1] - spine () [0], spine () [spine () .size () - 2] - spine () [0]));
+		SCPzAxis = normalize (cross (spine () [1] - spine () [0],
+		                             spine () [spine () .size () - 2] - spine () [0]));
 	}
 	else
 	{
@@ -202,7 +203,8 @@ Extrusion::createRotations ()
 		// Find first defined Z-axis.
 		for (size_t i = 1, size = spine () .size () - 1; i < size; i ++)
 		{
-			SCPzAxis = normalize (cross (spine () [i + 1] - spine () [i], spine () [i - 1] - spine () [i]));
+			SCPzAxis = normalize (cross (spine () [i + 1] - spine () [i], 
+			                             spine () [i - 1] - spine () [i]));
 
 			if (SCPzAxis not_eq Vector3f ())
 				break;
@@ -227,7 +229,8 @@ Extrusion::createRotations ()
 	for (size_t i = 1, size = spine () .size () - 1; i < size; i ++)
 	{
 		SCPyAxis = normalize (spine () [i + 1] - spine () [i - 1]);
-		SCPzAxis = normalize (cross (spine () [i + 1] - spine () [i], spine () [i - 1] - spine () [i]));
+		SCPzAxis = normalize (cross (spine () [i + 1] - spine () [i], 
+		                             spine () [i - 1] - spine () [i]));
 
 		// d.
 		if (dot (SCPzAxisPrevious, SCPzAxis) < 0)
@@ -258,7 +261,8 @@ Extrusion::createRotations ()
 		SCPyAxis = normalize (spine () [spine () .size () - 1] - spine () [spine () .size () - 2]);
 
 		if (spine () .size () > 2)
-			SCPzAxis = normalize (cross (spine () [spine () .size () - 1] - spine () [spine () .size () - 2], spine () [spine () .size () - 3] - spine () [spine () .size () - 2]));
+			SCPzAxis = normalize (cross (spine () [spine () .size () - 1] - spine () [spine () .size () - 2], 
+			                             spine () [spine () .size () - 3] - spine () [spine () .size () - 2]));
 
 		// d.
 		if (dot (SCPzAxisPrevious, SCPzAxis) < 0)
