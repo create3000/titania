@@ -119,9 +119,13 @@ ShaderPart::getShaderType () const
 	if (type () == "FRAGMENT")
 		return GL_FRAGMENT_SHADER;
 
+	#ifdef GL_COMPUTE_SHADER
+
 	// Requires GL 4.3 or ARB_compute_shader
-	//if (type () == "COMPUTE")
-	//	return GL_COMPUTE_SHADER;
+	if (type () == "COMPUTE")
+		return GL_COMPUTE_SHADER;
+
+	#endif
 
 	return GL_VERTEX_SHADER;
 }
@@ -174,9 +178,9 @@ ShaderPart::printShaderInfoLog () const
 		glGetShaderInfoLog (shaderId, infoLogLength, 0, infoLog);
 
 		getBrowser () -> print (std::string (80, '#'), '\n',
-										"ShaderPart InfoLog (", type (), "):\n",
-										std::string (infoLog),
-										std::string (80, '#'), '\n');
+		                        "ShaderPart InfoLog (", type (), "):\n",
+		                        std::string (infoLog),
+		                        std::string (80, '#'), '\n');
 	}
 }
 

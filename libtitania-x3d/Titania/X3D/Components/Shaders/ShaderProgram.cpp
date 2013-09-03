@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -98,8 +98,6 @@ ShaderProgram::initialize ()
 		url () .addInterest (this, &ShaderProgram::set_url);
 
 		requestImmediateLoad ();
-		
-		setFields ();
 	}
 }
 
@@ -123,9 +121,13 @@ ShaderProgram::getShaderType () const
 	if (type () == "FRAGMENT")
 		return GL_FRAGMENT_SHADER;
 
+	#ifdef GL_COMPUTE_SHADER
+
 	// Requires GL 4.3 or ARB_compute_shader
-	//if (type () == "COMPUTE")
-	//	return GL_COMPUTE_SHADER;
+	if (type () == "COMPUTE")
+		return GL_COMPUTE_SHADER;
+
+	#endif
 
 	return GL_VERTEX_SHADER;
 }
@@ -139,7 +141,11 @@ ShaderProgram::requestImmediateLoad ()
 	setLoadState (IN_PROGRESS_STATE);
 
 	if (shaderProgramId)
+	{
 		glDeleteProgram (shaderProgramId);
+
+		shaderProgramId = 0;
+	}
 
 	for (const auto & URL : url ())
 	{
@@ -157,15 +163,19 @@ ShaderProgram::requestImmediateLoad ()
 			GLint linkStatus;
 
 			glGetProgramiv (shaderProgramId, GL_LINK_STATUS, &linkStatus);
-			
+
 			valid = linkStatus;
-			
+
 			// Print info log
-			
+
 			printProgramInfoLog ();
-			
+
 			if (valid)
+			{
+				// Initialize uniform variables
+				setFields ();
 				break;
+			}
 		}
 		catch (const X3DError & error)
 		{
@@ -192,9 +202,9 @@ ShaderProgram::printProgramInfoLog () const
 			glGetProgramInfoLog (shaderProgramId, infoLogLength, 0, infoLog);
 
 			getBrowser () -> print (std::string (80, '#'), '\n',
-											"ShaderProgram InfoLog (", type (), "):\n",
-											std::string (infoLog),
-											std::string (80, '#'), '\n');
+			                        "ShaderProgram InfoLog (", type (), "):\n",
+			                        std::string (infoLog),
+			                        std::string (80, '#'), '\n');
 		}
 	}
 }

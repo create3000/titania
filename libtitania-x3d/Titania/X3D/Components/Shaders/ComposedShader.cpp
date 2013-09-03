@@ -94,21 +94,22 @@ ComposedShader::initialize ()
 
 	if (glXGetCurrentContext ())
 	{
-		shaderProgramId = glCreateProgram ();
-
 		activate () .addInterest (this, &ComposedShader::set_activate);
 
-		set_activate ();
-
-		setFields ();
+		requestExplicitRelink ();
 	}
 }
 
 void
-ComposedShader::set_activate ()
+ComposedShader::requestExplicitRelink ()
 {
 	if (language () == "GLSL")
 	{
+		if (shaderProgramId)
+			glDeleteProgram (shaderProgramId);		
+
+		shaderProgramId = glCreateProgram ();
+
 		// Attach shader
 
 		for (const auto & part : parts ())
@@ -131,6 +132,11 @@ ComposedShader::set_activate ()
 		
 		isValid () = linkStatus;
 
+		// Initialize uniform variables
+
+		if (isValid ())
+			setFields ();
+
 		// Print info log
 
 		printProgramInfoLog ();
@@ -148,6 +154,11 @@ ComposedShader::set_activate ()
 				glDetachShader (shaderProgramId, _part -> getShaderId ());
 		}
 	}
+	else
+		isValid () = false;
+		
+	if (not isValid () and isSelected ())
+		isSelected () = false;
 }
 
 void
@@ -171,6 +182,15 @@ ComposedShader::printProgramInfoLog () const
 											std::string (80, '#'), '\n');
 		}
 	}
+}
+
+void
+ComposedShader::set_activate ()
+{
+	if (not activate ())
+		return;
+		
+	requestExplicitRelink ();
 }
 
 void

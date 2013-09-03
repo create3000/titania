@@ -1,5 +1,16 @@
 2013-09-03  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Appearance.h:
+	* Appearance.cpp:
+	* ShaderPart.cpp:
+	* ProgramShader.h:
+	* ComposedShader.h:
+	* ShaderProgram.cpp:
+	* ProgramShader.cpp:
+	* ComposedShader.cpp: 
+
+2013-09-03  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* ProgramShader.h:
 	* ComposedShader.h:
 	* ProgramShader.cpp:

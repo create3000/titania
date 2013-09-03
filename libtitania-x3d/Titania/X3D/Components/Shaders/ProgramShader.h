@@ -96,6 +96,9 @@ private:
 	getProgramStageBit (const String &);
 
 	void
+	requestExplicitRelink ();
+
+	void
 	set_activate ();
 
 	struct Fields

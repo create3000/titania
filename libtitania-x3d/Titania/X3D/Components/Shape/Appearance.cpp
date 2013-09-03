@@ -75,11 +75,12 @@ Appearance::Appearance (X3DExecutionContext* const executionContext) :
 	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DAppearanceNode (),
 	           fields (),
-	  _lineProperties (NULL),
-	  _fillProperties (NULL),
-	        _material (NULL),
-	         _texture (NULL),
-	_textureTransform (NULL)
+	  _lineProperties (nullptr),
+	  _fillProperties (nullptr),
+	        _material (nullptr),
+	         _texture (nullptr),
+	_textureTransform (nullptr),
+	          _shader (nullptr)
 {
 	setComponent ("Shape");
 	setTypeName ("Appearance");
@@ -128,7 +129,7 @@ Appearance::isTransparent () const
 	if (_texture and _texture -> isTransparent ())
 		return true;
 
-	if (_shaders .size ())
+	if (_shader)
 		return true;
 
 	return false;
@@ -167,14 +168,17 @@ Appearance::set_textureTransform ()
 void
 Appearance::set_shaders ()
 {
-	_shaders .clear ();
+	_shader = nullptr;
 
 	for (const auto & shader : shaders ())
 	{
-		auto _shader = x3d_cast <X3DShaderNode*> (shader);
+		_shader = x3d_cast <X3DShaderNode*> (shader);
 
-		if (_shader)
-			_shaders .emplace_back (_shader);
+		if (_shader and _shader -> isValid ())
+		{
+			_shader -> isSelected () = true;
+			break;
+		}
 	}
 }
 
@@ -196,8 +200,8 @@ Appearance::draw ()
 	if (_textureTransform)
 		_textureTransform -> draw ();
 
-	for (const auto & shader : _shaders)
-		shader -> draw ();
+	if (_shader)
+		_shader -> draw ();
 }
 
 } // X3D

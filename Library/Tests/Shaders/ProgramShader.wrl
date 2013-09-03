@@ -20,6 +20,7 @@ Transform {
   children Shape {
     appearance Appearance {
       shaders ProgramShader {
+        language "GLSL"
         programs [
           ShaderProgram {
             url "data:text/plain,

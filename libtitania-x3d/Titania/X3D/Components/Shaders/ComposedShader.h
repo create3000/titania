@@ -102,6 +102,9 @@ private:
 	initialize () final;
 
 	void
+	requestExplicitRelink ();
+
+	void
 	printProgramInfoLog () const;
 
 	void

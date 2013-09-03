@@ -171,12 +171,12 @@ private:
 
 	Fields fields;
 
-	LineProperties*             _lineProperties;
-	FillProperties*             _fillProperties;
-	X3DMaterialNode*            _material;
-	X3DTextureNode*             _texture;
-	X3DTextureTransformNode*    _textureTransform;
-	std::deque <X3DShaderNode*> _shaders;
+	LineProperties*          _lineProperties;
+	FillProperties*          _fillProperties;
+	X3DMaterialNode*         _material;
+	X3DTextureNode*          _texture;
+	X3DTextureTransformNode* _textureTransform;
+	X3DShaderNode*           _shader;
 
 };
 

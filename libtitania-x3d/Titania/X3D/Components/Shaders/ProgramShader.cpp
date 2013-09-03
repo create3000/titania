@@ -91,14 +91,12 @@ void
 ProgramShader::initialize ()
 {
 	X3DShaderNode::initialize ();
-	
+
 	if (glXGetCurrentContext ())
 	{
-		glGenProgramPipelines (1, &pipelineId);
-		
 		activate () .addInterest (this, &ProgramShader::set_activate);
-		
-		set_activate ();
+
+		requestExplicitRelink ();
 	}
 }
 
@@ -120,27 +118,58 @@ ProgramShader::getProgramStageBit (const String & type)
 	if (type == "FRAGMENT")
 		return GL_FRAGMENT_SHADER_BIT;
 
+	#ifdef GL_COMPUTE_SHADER_BIT
+
 	// Requires GL 4.3 or ARB_compute_shader
-	//if (type == "COMPUTE")
-	//	return GL_COMPUTE_SHADER_BIT;
+	if (type == "COMPUTE")
+		return GL_COMPUTE_SHADER_BIT;
+
+	#endif
 
 	return GL_VERTEX_SHADER_BIT;
 }
 
 void
-ProgramShader::set_activate ()
+ProgramShader::requestExplicitRelink ()
 {
-	glBindProgramPipeline (pipelineId);
-
-	for (const auto & program : programs ())
+	if (pipelineId)
 	{
-		auto _program = x3d_cast <ShaderProgram*> (program);
-		
-		if (_program)
-			glUseProgramStages (pipelineId, getProgramStageBit (_program -> type ()), _program -> getShaderProgramId ());
+		glDeleteProgramPipelines (1, &pipelineId);
+		pipelineId = 0;
 	}
 
-	isValid () = true;
+	if (language () == "GLSL")
+	{
+		glGenProgramPipelines (1, &pipelineId);
+
+		glBindProgramPipeline (pipelineId);
+
+		for (const auto & program : programs ())
+		{
+			auto _program = x3d_cast <ShaderProgram*> (program);
+
+			if (_program)
+				glUseProgramStages (pipelineId, getProgramStageBit (_program -> type ()), _program -> getShaderProgramId ());
+		}
+
+		isValid () = true;
+
+		glBindProgramPipeline (0);
+	}
+	else
+		isValid () = false;
+
+	if (not isValid () and isSelected ())
+		isSelected () = false;
+}
+
+void
+ProgramShader::set_activate ()
+{
+	if (not activate ())
+		return;
+
+	requestExplicitRelink ();
 }
 
 void
