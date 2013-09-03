@@ -78,21 +78,43 @@ public:
 	const SFString &
 	type () const
 	{ return *fields .type; }
+	
+	///  @name Element access
+	
+	virtual
+	GLuint
+	getShaderProgramId () final
+	{ return shaderProgramId; }
+
+	bool
+	isValid () const
+	{ return valid; }
+
+	///  @name Operations
 
 	virtual
 	void
-	requestImmediateLoad ();
+	requestImmediateLoad () final;
 
 	virtual
 	void
-	dispose ();
+	dispose () final;
 
 
 private:
 
 	virtual
 	void
-	initialize ();
+	initialize () final;
+
+	GLenum
+	getShaderType () const;
+
+	void
+	printProgramInfoLog () const;
+
+	void
+	set_url ();
 
 	struct Fields
 	{
@@ -102,6 +124,9 @@ private:
 	};
 
 	Fields fields;
+	
+	GLuint shaderProgramId;
+	bool   valid;
 
 };
 

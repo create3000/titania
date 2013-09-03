@@ -61,6 +61,8 @@ class X3DShaderNode :
 {
 public:
 
+	///  @name Fields
+
 	SFBool &
 	activate ()
 	{ return *fields .activate; }

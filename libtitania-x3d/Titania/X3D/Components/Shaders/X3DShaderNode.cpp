@@ -54,10 +54,10 @@ namespace titania {
 namespace X3D {
 
 X3DShaderNode::Fields::Fields () :
-	activate (new SFBool ()),
+	  activate (new SFBool ()),
 	isSelected (new SFBool ()),
-	isValid (new SFBool ()),
-	language (new SFString ())
+	   isValid (new SFBool ()),
+	  language (new SFString ())
 { }
 
 X3DShaderNode::X3DShaderNode () :

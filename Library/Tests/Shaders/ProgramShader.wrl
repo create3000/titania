@@ -1,0 +1,53 @@
+#X3D V3.0 utf8
+
+META "title" "ProgramShader"
+
+Background {
+  skyColor 0.2 0.2 0.2
+}
+
+DEF Timer TimeSensor {
+  cycleInterval 10
+  loop TRUE
+}
+
+DEF Interpolator ColorInterpolator {
+  key [ 0, 1 ]
+  keyValue [ 1 0 0, 0 0 1 ]
+}
+
+Transform {
+  children Shape {
+    appearance Appearance {
+      shaders ProgramShader {
+        programs [
+          ShaderProgram {
+            url "data:text/plain,
+void main (void)
+{
+	gl_Position = ftransform ();
+}
+"
+          }
+          DEF FragmentShader ShaderProgram {
+            inputOutput SFColor color 1 0 0
+
+            type "FRAGMENT"
+            url "data:text/plain,
+uniform vec3 color;
+
+void main (void)
+{
+	gl_FragColor = vec4 (color, 0.5);
+}
+"
+          }
+        ]
+      }
+    }
+    geometry Sphere { }
+  }
+}
+
+ROUTE Timer.fraction_changed TO Interpolator.set_fraction
+ROUTE Interpolator.value_changed TO FragmentShader.set_color

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -50,10 +50,14 @@
 
 #include "ShaderProgram.h"
 
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../InputOutput/Loader.h"
 
 namespace titania {
 namespace X3D {
+
+// http://www.opengl.org/wiki/GLAPI/glCreateShaderProgramv
 
 ShaderProgram::Fields::Fields () :
 	type (new SFString ("VERTEX"))
@@ -64,14 +68,16 @@ ShaderProgram::ShaderProgram (X3DExecutionContext* const executionContext) :
 	                    X3DNode (),
 	               X3DUrlObject (),
 	X3DProgrammableShaderObject (),
-	                     fields ()
+	                     fields (),
+	            shaderProgramId (0),
+	                      valid (false)
 {
 	setComponent ("Shaders");
 	setTypeName ("ShaderProgram");
 
 	addField (inputOutput,    "metadata", metadata ());
-	addField (inputOutput,    "url",      url ());
 	addField (initializeOnly, "type",     type ());
+	addField (inputOutput,    "url",      url ());
 }
 
 X3DBaseNode*
@@ -86,15 +92,127 @@ ShaderProgram::initialize ()
 	X3DNode::initialize ();
 	X3DUrlObject::initialize ();
 	X3DProgrammableShaderObject::initialize ();
+
+	if (glXGetCurrentContext ())
+	{
+		url () .addInterest (this, &ShaderProgram::set_url);
+
+		requestImmediateLoad ();
+		
+		setFields ();
+	}
+}
+
+GLenum
+ShaderProgram::getShaderType () const
+{
+	// http://www.opengl.org/wiki/Shader
+
+	if (type () == "VERTEX")
+		return GL_VERTEX_SHADER;
+
+	if (type () == "TESS_CONTROL")
+		return GL_TESS_CONTROL_SHADER;
+
+	if (type () == "TESS_EVALUATION")
+		return GL_TESS_EVALUATION_SHADER;
+
+	if (type () == "GEOMETRY")
+		return GL_GEOMETRY_SHADER;
+
+	if (type () == "FRAGMENT")
+		return GL_FRAGMENT_SHADER;
+
+	// Requires GL 4.3 or ARB_compute_shader
+	//if (type () == "COMPUTE")
+	//	return GL_COMPUTE_SHADER;
+
+	return GL_VERTEX_SHADER;
 }
 
 void
 ShaderProgram::requestImmediateLoad ()
-{ }
+{
+	if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)
+		return;
+
+	setLoadState (IN_PROGRESS_STATE);
+
+	if (shaderProgramId)
+		glDeleteProgram (shaderProgramId);
+
+	for (const auto & URL : url ())
+	{
+		try
+		{
+			// Create shader program
+
+			std::string shaderSource = Loader (getExecutionContext ()) .loadDocument (URL);
+			const char* string       = shaderSource .c_str ();
+
+			shaderProgramId = glCreateShaderProgramv (getShaderType (), 1, &string);
+
+			// Check for link status
+
+			GLint linkStatus;
+
+			glGetProgramiv (shaderProgramId, GL_LINK_STATUS, &linkStatus);
+			
+			valid = linkStatus;
+			
+			// Print info log
+			
+			printProgramInfoLog ();
+			
+			if (valid)
+				break;
+		}
+		catch (const X3DError & error)
+		{
+			std::clog << error .what () << std::endl;
+		}
+	}
+
+	setLoadState (valid ? COMPLETE_STATE : FAILED_STATE);
+}
+
+void
+ShaderProgram::printProgramInfoLog () const
+{
+	if (not valid or 1)
+	{
+		GLint infoLogLength;
+
+		glGetProgramiv (shaderProgramId, GL_INFO_LOG_LENGTH, &infoLogLength);
+
+		if (infoLogLength > 1)
+		{
+			char infoLog [infoLogLength];
+
+			glGetProgramInfoLog (shaderProgramId, infoLogLength, 0, infoLog);
+
+			getBrowser () -> print (std::string (80, '#'), '\n',
+											"ShaderProgram InfoLog (", type (), "):\n",
+											std::string (infoLog),
+											std::string (80, '#'), '\n');
+		}
+	}
+}
+
+void
+ShaderProgram::set_url ()
+{
+	setLoadState (NOT_STARTED_STATE);
+
+	requestImmediateLoad ();
+}
 
 void
 ShaderProgram::dispose ()
 {
+	if (shaderProgramId)
+		glDeleteProgram (shaderProgramId);
+
 	X3DProgrammableShaderObject::dispose ();
 	X3DUrlObject::dispose ();
 	X3DNode::dispose ();

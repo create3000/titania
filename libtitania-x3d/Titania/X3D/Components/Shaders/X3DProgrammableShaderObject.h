@@ -55,6 +55,8 @@
 #include "../../Bits/X3DConstants.h"
 #include "../../Fields.h"
 
+#include "../../Rendering/OpenGL.h"
+
 namespace titania {
 namespace X3D {
 
@@ -67,11 +69,29 @@ protected:
 
 	virtual
 	void
-	initialize ();
+	initialize () override;
+
+	virtual
+	GLuint
+	getShaderProgramId () = 0;
 
 	virtual
 	void
-	dispose ();
+	dispose () override;
+
+
+protected:
+
+	void
+	setFields ();
+
+
+private:
+
+	void
+	set_field (X3DFieldDefinition* const);
+
+	std::deque <size_t> textureUnits;
 
 };
 

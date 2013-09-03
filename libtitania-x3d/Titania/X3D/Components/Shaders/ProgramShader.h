@@ -79,10 +79,24 @@ public:
 
 	virtual
 	void
-	draw ();
+	draw () final;
+
+	virtual
+	void
+	dispose () final;
 
 
 private:
+
+	virtual
+	void
+	initialize () final;
+
+	GLint
+	getProgramStageBit (const String &);
+
+	void
+	set_programs ();
 
 	struct Fields
 	{
@@ -92,6 +106,8 @@ private:
 	};
 
 	Fields fields;
+
+	GLuint pipelineId;
 
 };
 

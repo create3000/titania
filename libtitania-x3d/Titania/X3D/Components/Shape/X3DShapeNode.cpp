@@ -219,6 +219,7 @@ X3DShapeNode::draw ()
 	_geometry -> draw ();
 
 	glUseProgram (0);
+	glBindProgramPipeline (0);
 	glDisable (GL_FOG);
 	glDisable (GL_LIGHTING);
 	glDisable (GL_TEXTURE_2D);

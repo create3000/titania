@@ -87,6 +87,14 @@ public:
 	dispose () final;
 
 
+protected:
+
+	virtual
+	GLuint
+	getShaderProgramId () final
+	{ return shaderProgramId; }
+
+
 private:
 
 	virtual
@@ -94,13 +102,10 @@ private:
 	initialize () final;
 
 	void
+	printProgramInfoLog () const;
+
+	void
 	set_parts ();
-
-	void
-	remove_parts ();
-
-	void
-	set_field (X3DFieldDefinition* const);
 
 	struct Fields
 	{
@@ -111,9 +116,7 @@ private:
 
 	Fields fields;
 
-	GLuint              shaderProgram;
-	std::deque <GLuint> shaderParts;
-	std::deque <size_t> textureUnits;
+	GLuint shaderProgramId;
 
 };
 

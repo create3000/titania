@@ -50,6 +50,7 @@
 
 #include "ShaderPart.h"
 
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../InputOutput/Loader.h"
 
@@ -88,11 +89,11 @@ ShaderPart::initialize ()
 	X3DNode::initialize ();
 	X3DUrlObject::initialize ();
 
-	url () .addInterest (this, &ShaderPart::set_url);
-
 	if (glXGetCurrentContext ())
 	{
 		shaderId = glCreateShader (getShaderType ());
+
+		url () .addInterest (this, &ShaderPart::set_url);
 
 		requestImmediateLoad ();
 	}
@@ -101,11 +102,26 @@ ShaderPart::initialize ()
 GLenum
 ShaderPart::getShaderType () const
 {
-	if (type () == "FRAGMENT")
-		return GL_FRAGMENT_SHADER;
+	// http://www.opengl.org/wiki/Shader
 
 	if (type () == "VERTEX")
 		return GL_VERTEX_SHADER;
+
+	if (type () == "TESS_CONTROL")
+		return GL_TESS_CONTROL_SHADER;
+
+	if (type () == "TESS_EVALUATION")
+		return GL_TESS_EVALUATION_SHADER;
+
+	if (type () == "GEOMETRY")
+		return GL_GEOMETRY_SHADER;
+
+	if (type () == "FRAGMENT")
+		return GL_FRAGMENT_SHADER;
+
+	// Requires GL 4.3 or ARB_compute_shader
+	//if (type () == "COMPUTE")
+	//	return GL_COMPUTE_SHADER;
 
 	return GL_VERTEX_SHADER;
 }
@@ -130,7 +146,7 @@ ShaderPart::requestImmediateLoad ()
 
 			glGetShaderiv (shaderId, GL_COMPILE_STATUS, &valid);
 
-			std::clog << getInfoLog ();
+			printShaderInfoLog ();
 
 			if (not valid)
 				continue;
@@ -144,22 +160,24 @@ ShaderPart::requestImmediateLoad ()
 	setLoadState (valid ? COMPLETE_STATE : FAILED_STATE);
 }
 
-std::string
-ShaderPart::getInfoLog () const
+void
+ShaderPart::printShaderInfoLog () const
 {
 	GLint infoLogLength;
 
 	glGetShaderiv (shaderId, GL_INFO_LOG_LENGTH, &infoLogLength);
 
-	if (infoLogLength)
+	if (infoLogLength > 1)
 	{
 		char infoLog [infoLogLength];
+
 		glGetShaderInfoLog (shaderId, infoLogLength, 0, infoLog);
 
-		return infoLog;
+		getBrowser () -> print (std::string (80, '#'), '\n',
+										"ShaderPart InfoLog (", type (), "):\n",
+										std::string (infoLog),
+										std::string (80, '#'), '\n');
 	}
-
-	return std::string ();
 }
 
 void

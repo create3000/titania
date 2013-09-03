@@ -50,10 +50,15 @@
 
 #include "ProgramShader.h"
 
+#include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Shaders/ShaderProgram.h"
 
 namespace titania {
 namespace X3D {
+
+// http://www.opengl.org/wiki/GLSL_Object#Program_separation
+// http://www.opengl.org/wiki/GLAPI/glGenProgramPipelines
 
 ProgramShader::Fields::Fields () :
 	programs (new MFNode ())
@@ -62,7 +67,8 @@ ProgramShader::Fields::Fields () :
 ProgramShader::ProgramShader (X3DExecutionContext* const executionContext) :
 	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DShaderNode (),
-	       fields ()
+	       fields (),
+	   pipelineId (0)
 {
 	setComponent ("Shaders");
 	setTypeName ("ProgramShader");
@@ -82,8 +88,75 @@ ProgramShader::create (X3DExecutionContext* const executionContext) const
 }
 
 void
+ProgramShader::initialize ()
+{
+	X3DShaderNode::initialize ();
+	
+	if (glXGetCurrentContext ())
+	{
+		glGenProgramPipelines (1, &pipelineId);
+		
+		programs () .addInterest (this, &ProgramShader::set_programs);
+		
+		set_programs ();
+	}
+}
+
+GLint
+ProgramShader::getProgramStageBit (const String & type)
+{
+	if (type == "VERTEX")
+		return GL_VERTEX_SHADER_BIT;
+
+	if (type == "TESS_CONTROL")
+		return GL_TESS_CONTROL_SHADER_BIT;
+
+	if (type == "TESS_EVALUATION")
+		return GL_TESS_EVALUATION_SHADER_BIT;
+
+	if (type == "GEOMETRY")
+		return GL_GEOMETRY_SHADER_BIT;
+
+	if (type == "FRAGMENT")
+		return GL_FRAGMENT_SHADER_BIT;
+
+	// Requires GL 4.3 or ARB_compute_shader
+	//if (type == "COMPUTE")
+	//	return GL_COMPUTE_SHADER_BIT;
+
+	return GL_VERTEX_SHADER_BIT;
+}
+
+void
+ProgramShader::set_programs ()
+{
+	glBindProgramPipeline (pipelineId);
+
+	for (const auto & program : programs ())
+	{
+		auto _program = x3d_cast <ShaderProgram*> (program);
+		
+		if (_program)
+			glUseProgramStages (pipelineId, getProgramStageBit (_program -> type ()), _program -> getShaderProgramId ());
+	}
+
+	isValid () = true;
+}
+
+void
 ProgramShader::draw ()
-{ }
+{
+	glBindProgramPipeline (pipelineId);
+}
+
+void
+ProgramShader::dispose ()
+{
+	if (pipelineId)
+		glDeleteProgramPipelines (1, &pipelineId);
+
+	X3DShaderNode::dispose ();
+}
 
 } // X3D
 } // titania

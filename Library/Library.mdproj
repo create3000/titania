@@ -2308,6 +2308,7 @@
     <None Include="Tests\Texturing\hellpit.wrl" />
     <None Include="Tests\Shaders\Texture.wrl" />
     <None Include="Tests\KeyDeviceSensor\KeySensor.wrl" />
+    <None Include="Tests\Shaders\ProgramShader.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

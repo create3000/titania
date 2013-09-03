@@ -103,8 +103,8 @@ private:
 	GLenum
 	getShaderType () const;
 
-	std::string
-	getInfoLog () const;
+	void
+	printShaderInfoLog () const;
 
 	void
 	set_url ();

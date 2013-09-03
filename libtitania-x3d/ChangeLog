@@ -1,3 +1,24 @@
+2013-09-03  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Loader.cpp:
+	* X3DBrowser.cpp:
+	* ShaderPart.h:
+	* ShaderPart.cpp:
+	* X3DShapeNode.cpp:
+	* ShaderProgram.h:
+	* X3DShaderNode.h:
+	* ProgramShader.h:
+	* PackagedShader.h:
+	* ComposedShader.h:
+	* X3DShaderNode.cpp:
+	* ProgramShader.cpp:
+	* ShaderProgram.cpp:
+	* PackagedShader.cpp:
+	* ComposedShader.cpp:
+	* FloatVertexAttribute.cpp:
+	* X3DProgrammableShaderObject.h:
+	* X3DProgrammableShaderObject.cpp: 
+
 2013-09-02  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Loader.cpp:

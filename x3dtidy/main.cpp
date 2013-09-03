@@ -52,6 +52,7 @@
 
 #include <Titania/X3D.h>
 #include <gtkmm.h>
+#include <unistd.h>
 
 #include "anyoption.h"
 
@@ -132,25 +133,32 @@ main (int argc, char** argv)
 
 	try
 	{
-
 		auto browser = X3D::getBrowser ();
 
 		X3D::MFString url (options .getArgv (), options .getArgv () + options .getArgc ());
 
-		if (options .getArgc () > 1)
+		if (options .getArgc ())
 		{
-			std::ofstream file ("/tmp/x3dtidy.wrl");
+			std::string tmpFilename = "/tmp/x3dtidy." + std::to_string (getpid ()) + ".wrl";
+			
+			try
+			{
+				std::ofstream file (tmpFilename);
 
-			if (options .getArgc ())
+				// Create temp file
+
 				file << browser -> createX3DFromURL (url);
-			else
-				file << browser -> createX3DFromStream (std::cin);
+					
+				// Replace original
 
-			rename ("/tmp/x3dtidy.wrl", options .getArgv (1));
+				rename (tmpFilename .c_str (), options .getArgv (0));
+			}
+			catch (...)
+			{
+				unlink (tmpFilename .c_str ());
+				throw;
+			}
 		}
-		else if (options .getArgc ())
-			std::cout << browser -> createX3DFromURL (url);
-
 		else
 			std::cout << browser -> createX3DFromStream (std::cin);
 	}

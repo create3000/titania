@@ -334,14 +334,20 @@ X3DBrowser::createX3DFromURL (const MFString & url)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>)
 {
-	Loader loader (this);
+	try
+	{
+		Loader loader (this);
 
-	X3DSFNode <Scene> scene = loader .createX3DFromURL (url);
-	
-	if (loader .getUrlError () .size ())
-		urlError = loader .getUrlError ();
-	
-	return scene;
+		X3DSFNode <Scene> scene = loader .createX3DFromURL (url);
+
+		return scene;
+	}
+	catch (const X3DError & error)
+	{
+		urlError = MFString ({ error .what () });
+
+		throw;
+	}
 }
 
 void

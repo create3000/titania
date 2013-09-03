@@ -171,7 +171,12 @@ throw (Error <INVALID_URL>,
 		}
 	}
 
-	throw Error <URL_UNAVAILABLE> ("Couldn't load any URL of " + url .toString () + ".");
+	std::ostringstream error;
+	
+	for (const auto & string : urlError)
+		error << string .str ();
+
+	throw Error <URL_UNAVAILABLE> ("Couldn't load any URL of " + url .toString () + ":\n" + error .str ());
 }
 
 //  Stream Handling

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -59,7 +59,8 @@ PackagedShader::PackagedShader (X3DExecutionContext* const executionContext) :
 	                X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	              X3DShaderNode (),
 	               X3DUrlObject (),
-	X3DProgrammableShaderObject ()
+	X3DProgrammableShaderObject (),
+	              shaderProgramId (0)
 {
 	setComponent ("Shaders");
 	setTypeName ("PackagedShader");
