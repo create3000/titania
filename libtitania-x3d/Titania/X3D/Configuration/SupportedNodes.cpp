@@ -59,7 +59,13 @@ namespace X3D {
 SupportedNodes::SupportedNodes (X3DExecutionContext* const executionContext)
 {
 	//std::clog << "Creating node index:" << std::endl;
+	
+	// Specification version 3.2
+	
+	add ("MetadataBool", new MetadataBoolean (executionContext));
 
+	// Specification version 3.3
+	
 	add ("Anchor",                       new Anchor                       (executionContext));
 	add ("Appearance",                   new Appearance                   (executionContext));
 	add ("Arc2D",                        new Arc2D                        (executionContext));

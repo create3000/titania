@@ -26,33 +26,31 @@ perl -p -e '
 
 		for (0 ... (@parts - 1))
 		{
-			if ($_ % 2)
-			{
-				$parts [$_] =~ $expression;
-			}
+			$expression -> ($parts [$_]) unless $_ % 2;
+		}
 
-			print $parts [$_];
-		}	
+		$_ = join "\"", @parts;
 	}
 
-	s/^(\t+\<\<)/\t$1/o;                                                    # add a tab before stream operator <<
-	s/^(\t+\>\>)/\t$1/o;                                                    # add a tab before stream operator >>
-	s/\[\]/[ ]/go;                                                          # add space between [ ]
-	s/\!=/not_eq/go;                                                        # change != to not_eq
-	s/\|\|/or/go;                                                           # change || to or
-	s/>\s+(?=>)/>/go;                                                       # change > > to >>
-	s/></> </go;                                                            # add space between ><
-	s/(\s+-\>)\s*/$1 /go;                                                   # change variable->member to variable -> member
-	s/([\w\d\)\]])(-\>)\s*/$1 $2 /go;                                       # change variable->member to variable -> member
-	s/-\>\s*\*/->*/go;                                                      # change variable -> * member to variable ->* member
-	s/([\w\d]+\:\:)(\s+)/$1/sgo;                                            # remove space after CLASS::
-	s/\)\((\w)/) ($1/sgo;                                                   # add space between )(
-	replace (s/(\s[\w\d\)\]]+)\.([a-zA-Z])/$1 .$2/go)
-		unless /\w\.\w+?[\>"]/ or /^\s*(\/?\*|\/\/)/go;                      # change variable.member to variable .member
-   s/\)and/) and/sgo;
-   s/([)])(override|final)/$1 $2/;                                         # add space before final or override
+	replace (sub { $_ [0] =~ s/^(\t+\<\<)/\t$1/o });                                                    # add a tab before stream operator <<
+	replace (sub { $_ [0] =~ s/^(\t+\>\>)/\t$1/o });                                                    # add a tab before stream operator >>
+	replace (sub { $_ [0] =~ s/\[\]/[ ]/go });                                                          # add space between [ ]
+	replace (sub { $_ [0] =~ s/\!=/not_eq/go });                                                        # change != to not_eq
+	replace (sub { $_ [0] =~ s/\|\|/or/go });                                                           # change || to or
+	replace (sub { $_ [0] =~ s/>\s+(?=>)/>/go });                                                       # change > > to >>
+	replace (sub { $_ [0] =~ s/></> </go });                                                            # add space between ><
+	replace (sub { $_ [0] =~ s/(\s+-\>)\s*/$1 /go });                                                   # change variable->member to variable -> member
+	replace (sub { $_ [0] =~ s/([\w\d\)\]])(-\>)\s*/$1 $2 /go });                                       # change variable->member to variable -> member
+	replace (sub { $_ [0] =~ s/-\>\s*\*/->*/go });                                                      # change variable -> * member to variable ->* member
+	replace (sub { $_ [0] =~ s/([\w\d]+\:\:)(\s+)/$1/sgo });                                            # remove space after CLASS::
+	replace (sub { $_ [0] =~ s/\)\((\w)/) ($1/sgo });                                                   # add space between )(
+	replace (sub { $_ [0] =~ s/(\s[\w\d\)\]]+)\.([a-zA-Z])/$1 .$2/go })
+		unless /\w\.\w+?[\>"]/ or /^\s*(\/?\*|\/\/)/go;                                        # change variable.member to variable .member
+   replace (sub { $_ [0] =~ s/\)and/) and/sgo });
+   replace (sub { $_ [0] =~ s/([)])(override|final)/$1 $2/ });                                         # add space before final or override
 ' | \
 perl -e '
+	# Remove \n in template argument one liner
 	@lines = <>;
 	$file = join "", @lines;
    $file =~ s/\<(\w+.*?)\n\s+\>\s\(/<$1> (/sgo;

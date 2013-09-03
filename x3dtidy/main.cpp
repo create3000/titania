@@ -143,7 +143,7 @@ main (int argc, char** argv)
 		if (options .getArgc ())
 		{
 			std::string tmpFilename = "/tmp/x3dtidy." + std::to_string (getpid ()) + ".wrl";
-			
+
 			try
 			{
 				std::ofstream file (tmpFilename);
@@ -151,7 +151,7 @@ main (int argc, char** argv)
 				// Create temp file
 
 				file << browser -> createX3DFromURL (url);
-					
+
 				// Replace original
 
 				rename (tmpFilename .c_str (), options .getArgv (0));
