@@ -96,16 +96,16 @@ ComposedShader::initialize ()
 	{
 		shaderProgramId = glCreateProgram ();
 
-		parts () .addInterest (this, &ComposedShader::set_parts);
+		activate () .addInterest (this, &ComposedShader::set_activate);
 
-		set_parts ();
+		set_activate ();
 
 		setFields ();
 	}
 }
 
 void
-ComposedShader::set_parts ()
+ComposedShader::set_activate ()
 {
 	if (language () == "GLSL")
 	{

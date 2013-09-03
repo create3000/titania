@@ -96,7 +96,7 @@ private:
 	getProgramStageBit (const String &);
 
 	void
-	set_programs ();
+	set_activate ();
 
 	struct Fields
 	{

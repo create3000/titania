@@ -105,7 +105,7 @@ private:
 	printProgramInfoLog () const;
 
 	void
-	set_parts ();
+	set_activate ();
 
 	struct Fields
 	{

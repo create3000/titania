@@ -1,5 +1,12 @@
 2013-09-03  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* ProgramShader.h:
+	* ComposedShader.h:
+	* ProgramShader.cpp:
+	* ComposedShader.cpp: 
+
+2013-09-03  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Loader.cpp:
 	* X3DBrowser.cpp:
 	* ShaderPart.h:

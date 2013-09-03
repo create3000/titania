@@ -96,9 +96,9 @@ ProgramShader::initialize ()
 	{
 		glGenProgramPipelines (1, &pipelineId);
 		
-		programs () .addInterest (this, &ProgramShader::set_programs);
+		activate () .addInterest (this, &ProgramShader::set_activate);
 		
-		set_programs ();
+		set_activate ();
 	}
 }
 
@@ -128,7 +128,7 @@ ProgramShader::getProgramStageBit (const String & type)
 }
 
 void
-ProgramShader::set_programs ()
+ProgramShader::set_activate ()
 {
 	glBindProgramPipeline (pipelineId);
 
