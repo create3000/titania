@@ -63,11 +63,14 @@ main (int argc, char** argv)
 {
 	AnyOption options;
 
+	options .addUsage ("NAME");
+	options .addUsage ("       x3dtidy - X3D/VRML beautifer");
+	options .addUsage ("");
 	options .addUsage ("SYNOPSIS");
 	options .addUsage ("       x3dtidy [OPTIONS] [FILE]");
 	options .addUsage ("");
 	options .addUsage ("DESCRIPTION");
-	options .addUsage ("       Format FILE, or standard input, to standard output");
+	options .addUsage ("       Format FILE, or standard input, to standard output.");
 	options .addUsage ("");
 	options .addUsage ("VRML2 field names and access types are printed when the encoding is VRML,");
 	options .addUsage ("otherwise X3D field names and access types are printed.");
@@ -80,28 +83,28 @@ main (int argc, char** argv)
 	options .addUsage ("              output in compact style");
 	options .addUsage ("");
 	options .addUsage ("       -e, --expanded");
-	options .addUsage ("              expands all nodes so all fields are visible");
+	options .addUsage ("              expands nodes, this means all printable fields are printed");
 	options .addUsage ("");
 	options .addUsage ("       -h, --help");
 	options .addUsage ("              prints usage");
 	options .addUsage ("");
 	options .addUsage ("       -s=mode, --style=mode");
-	options .addUsage ("              mode can be 'clean', 'compact', 'tidy'");
+	options .addUsage ("              mode can be 'clean', 'compact', or 'tidy'");
 	options .addUsage ("              tidy is the default mode");
 	options .addUsage ("");
 	options .addUsage ("       With no FILE given, or when FILE is -, read from standard input.");
 	options .addUsage ("");
 	options .addUsage ("EXAMPLES");
-	options .addUsage ("       x3dtidy -s=compact file .wrl");
-	options .addUsage ("              Formats file .wrl's contents in compact style mode to standard");
+	options .addUsage ("       x3dtidy -s=compact file.wrl");
+	options .addUsage ("              Formats file.wrl's contents in compact style mode to standard");
 	options .addUsage ("              output.");
 	options .addUsage ("");
-	options .addUsage ("       x3dtidy file .wrl");
-	options .addUsage ("              Formats file .wrl's contents to standard output.");
+	options .addUsage ("       x3dtidy file.wrl");
+	options .addUsage ("              Formats file.wrl's contents to standard output.");
 	options .addUsage ("");
 	options .addUsage ("COPYRIGHT");
-	options .addUsage ("       Copyright \xc2\xa9 2009 Free Software Foundation, Inc.  License GPLv3+:");
-	options .addUsage ("       GNU GPL version 3 or later <http://gnu .org/licenses/gpl .html>.");
+	options .addUsage ("       Copyright \xc2\xa9 2010 Holger Seelig.  License GPLv3+:");
+	options .addUsage ("       GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.");
 	options .addUsage ("       This is free software: you are free to change and redistribute it.");
 	options .addUsage ("       There is NO WARRANTY, to the extent permitted by law.");
 

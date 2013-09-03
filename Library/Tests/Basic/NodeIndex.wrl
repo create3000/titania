@@ -222,7 +222,7 @@ Matrix3VertexAttribute { }
 
 Matrix4VertexAttribute { }
 
-MetadataBool { }
+MetadataBoolean { }
 
 MetadataDouble { }
 

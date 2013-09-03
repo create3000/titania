@@ -35,12 +35,36 @@
     <None Include="CosmoWorlds\OutlineEditor1.rgb" />
     <None Include="CosmoWorlds\OutlineEditor2.rgb" />
     <None Include="CosmoWorlds\OutlineEditor3.rgb" />
+    <None Include="Modern OpenGL.html" />
+    <None Include="Modern OpenGL-Dateien\Blocks2.svg" />
+    <None Include="Modern OpenGL-Dateien\Deprecated-GLSL.svg" />
+    <None Include="Modern OpenGL-Dateien\Modern-GLSL.svg" />
+    <None Include="Modern OpenGL-Dateien\Pipeline4.svg" />
+    <None Include="Modern OpenGL-Dateien\Pipeline5.svg" />
+    <None Include="Modern OpenGL-Dateien\Pipeline6.svg" />
+    <None Include="Modern OpenGL-Dateien\PublishedLogo.svg" />
+    <None Include="Modern OpenGL-Dateien\SphereTessPlain.svg" />
+    <None Include="Modern OpenGL-Dateien\TypesTable2.svg" />
+    <None Include="Modern OpenGL-Dateien\cpp.js" />
+    <None Include="Modern OpenGL-Dateien\dodo-bird.gif" />
+    <None Include="Modern OpenGL-Dateien\expandlist.html" />
+    <None Include="Modern OpenGL-Dateien\glsl.js" />
+    <None Include="Modern OpenGL-Dateien\highlight.js" />
+    <None Include="Modern OpenGL-Dateien\hinclude.js" />
+    <None Include="Modern OpenGL-Dateien\jquery-1.js" />
+    <None Include="Modern OpenGL-Dateien\modernizr-2.js" />
+    <None Include="Modern OpenGL-Dateien\monokai.css" />
+    <None Include="Modern OpenGL-Dateien\no-smoking-plain.svg" />
+    <None Include="Modern OpenGL-Dateien\script.js" />
+    <None Include="Modern OpenGL-Dateien\style.css" />
+    <None Include="Modern OpenGL-Dateien\xhp5ioy.asc" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Quaternion\" />
     <Folder Include="Intersection\" />
     <Folder Include="xxx\" />
     <Folder Include="CosmoWorlds\" />
+    <Folder Include="Modern OpenGL-Dateien\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="xxx\ImageTexture.cpp" />

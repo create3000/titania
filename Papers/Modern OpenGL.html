@@ -1,0 +1,2048 @@
+<!DOCTYPE html>
+<html class=" js no-flexbox canvas canvastext webgl no-touch geolocation postmessage no-websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients no-cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths" xmlns:hx="http://purl.org/NET/hinclude" lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>Modern OpenGL</title>
+    <meta name="description" content="Modern OpenGL">
+    <meta name="author" content="Philip Rideout">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="Modern%20OpenGL-Dateien/style.css">
+
+    <link rel="stylesheet" title="Solarized - Dark" href="Modern%20OpenGL-Dateien/monokai.css">
+    <!--link rel="stylesheet" title="Solarized - Dark" href="highlight/styles/sunburst.css"-->
+    <!--link rel="stylesheet" title="Solarized - Dark" href="highlight/styles/arta.css"-->
+
+    <script type="text/javascript" src="Modern%20OpenGL-Dateien/hinclude.js"></script>
+    <script type="text/javascript" src="Modern%20OpenGL-Dateien/xhp5ioy.asc"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+    <script type="text/javascript" src="Modern%20OpenGL-Dateien/modernizr-2.js"></script>
+    <script type="text/javascript" src="Modern%20OpenGL-Dateien/jquery-1.js"></script>
+    <script type="text/javascript" src="Modern%20OpenGL-Dateien/highlight.js"></script>
+    <script type="text/javascript" src="Modern%20OpenGL-Dateien/cpp.js"></script>
+    <script type="text/javascript" src="Modern%20OpenGL-Dateien/glsl.js"></script>
+    <script type="text/javascript" src="Modern%20OpenGL-Dateien/expandlist.html"></script>
+  </head>
+  <body>
+    <header>
+    </header>
+
+    <div class="noprint tk-museo-sans" style="font-size:100%;font-weight:800;margin:20px">
+      <style>
+        A:link { color : #007fff }
+        A:active { color : #007fff }
+        A:visited { color : #007fff }
+        A:hover { color : #0000ff }
+      </style>
+      <a href="http://github.prideout.net/modern-opengl-prezo/modern-opengl.pdf">Download PDF</a>
+    </div>
+
+    <hx:include class="include_200" src="intro.html"><!--
+   Target Audience: You used OpenGL back in the day and want to catch up.
+   Disclaimer: won't go through everything.  Not necessarily focused on GLSL or on techniques.  This isn't comprehensive either.
+   If this goes well then I might give more talks (GLSL for shading TD's, OpenGL Techniques)
+  -->
+<div class="slide">
+  <!-- Sweet hot-pink Gradient stolen from @mojombo's prezos
+       Alas, Chrome's print-to-pdf shows a grid artifact. :( 
+       style="color:#fff; background-image:
+              -webkit-radial-gradient(center center, circle cover, #dd2e72, #d22854)" -->
+  <!--div style="height:200px;display:block">&nbsp;</div-->
+  <div class="tk-museo-sans" style="text-align:center;
+              color:#272;
+              line-height:1;
+              font-weight:300;
+              font-size:200%;">
+    <object type="image/svg+xml" data="Modern%20OpenGL-Dateien/PublishedLogo.svg" height="98" width="400">
+      <span>
+    </span></object>
+    <br>
+    presents
+  </div>
+  <div class="sans" style="font-size:1250%;
+              text-align:center;
+              color:#222;
+              margin-top:60px;
+              line-height:1;
+              font-weight:900;">
+    MODERN
+  </div>
+  <div class="tk-museo-sans" style="font-size:830%;
+              text-align:center;
+              line-height:1;
+              margin-top: -30px;
+              color:#222;
+              font-weight:300;">
+    OPENGL
+  </div>
+  <div class="tk-museo-sans" style="font-size:400%;
+              text-align:center;
+              color:#222;
+              font-weight:200;">
+    A P R I L &nbsp; &nbsp; 2 0 1 2
+  </div>
+  <div style="position:absolute; display: block;
+              width:525px;
+              height:4px;
+              left:256px;
+              background-color: #222;
+              top:500px;"></div>
+</div>
+
+<!-- Summary -->
+<!--div class="slide">
+  <ul class="items tk-museo-sans">
+    <li>1  Evolution of the OpenGL Pipe</li>
+    <li>2  Whirlwind Tour of OpenGL 4.2</li>
+    <li>3  Demos & Code Walkthroughs</li>
+  </ul>
+</div--
+<div class="slide">
+  <ul class="longitems tk-museo-sans">
+    <li>Evolution of the OpenGL Pipe</li>
+    <li>GLSL, Shader Interfaces</li>
+    <li>Vertex Submission</li>
+    <li>Demo: Instancing, Layered FBOs</li>
+    <li>Demo: Tessellation Shaders</li>
+    <li>Transform Feedback</li>
+    <li>Textures, Buffer Objects</li>
+    <li>Misc 4.2 Features / Extensions</li>
+  </ul>
+</div>
+
+<!-- Pipeline diagram VS FS --
+<div class="slide">
+  <table style="width:100%;height:100%">
+    <tr>
+      <td>
+        <div class="codewrapper">
+          <pre><code class="glsl"
+                     style="font-size:150%;">// Vertex Shader
+varying vec4 vPosition;
+varying vec2 vTexCoord;
+varying vec3 vNormal;
+void main() {
+    vPosition = gl_ModelViewMatrix * gl_Vertex;
+    vNormal = gl_NormalMatrix * gl_Normal;
+    vTexCoord = gl_MultiTexCoord0.st;
+    gl_Position = ftransform();
+}</code></pre>
+        </div>
+        <div class="codewrapper">
+          <pre><code class="glsl"
+                     style="font-size:150%;">// Fragment Shader
+uniform sampler2D Baboon;
+uniform vec3 LightDir;
+varying vec2 vTexCoord;
+varying vec3 vNormal;
+void main() {
+    float df = dot(LightDir,vNormal);
+    vec4 c = df * texture2D(Baboon, vTexCoord);
+    gl_FragColor = vec4(c.rgb, 1);
+}</code></pre>
+        </div>
+        <div class="codewrapper">
+          <pre><code class="cpp"
+                     style="font-size:150%;">// Application
+glTexCoordPointer(2, GL_FLOAT, sizeof(float)*2, &coords[0]);
+glMatrixMode(GL_MODELVIEW);</code></pre>
+        </div>
+      </td>
+      <td style="width:30%">
+        <object type="image/svg+xml" class="figure"
+                data="images/Pipeline1.svg">
+        </object>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<!-- Pipeline diagram VS GS FS >
+<div class="slide">
+  <table style="width:100%;height:100%">
+    <tr>
+      <td style="width:40%">
+        <div class="codewrapper">
+          <pre><code class="glsl">// Vertex Shader
+<b>in</b> vec4 Position;
+in vec2 TexCoord;
+<b>out</b> vec4 vPosition;
+out vec2 vTexCoord;
+uniform mat4 ModelViewMatrix, MVP;
+void main() {
+    vPosition = ModelViewMatrix * Position;
+    vTexCoord = TexCoord;
+    gl_Position = MVP * Position;
+}</code></pre>
+        </div>
+        <div class="codewrapper">
+          <pre><code class="glsl">// Geometry Shader
+<b>layout</b>(triangles) in;
+layout(triangle_strip, max_vertices = 3) out;
+in vec3 vPosition[3];
+in vec2 vTexCoord[3];
+out vec3 gNormal;
+out vec2 gTexCoord;
+
+void main() {
+    vec3 A = vPosition[2] - vPosition[0];
+    vec3 B = vPosition[1] - vPosition[0];
+    gNormal = normalize(cross(A, B));
+
+    for (int j = 0; j &lt; 3; j++) {
+        gTexCoord = vTexCoord[j];
+        gl_Position = gl_in[j].gl_Position;
+        EmitVertex();
+    }
+    EndPrimitive();
+}</code></pre>
+        </div>
+      </td>
+      <td style="width:40%">
+        <div class="codewrapper">
+          <pre><code class="glsl">// Fragment Shader
+uniform sampler2D Baboon;
+uniform vec3 LightDir <b>= vec3(0,0,1)</b>;
+in vec2 gTexCoord;
+in vec3 gNormal;
+void main() {
+    float df = dot(LightDir,gNormal);
+    vec3 c = df * texture2D(Baboon, gTexCoord);
+    gl_FragColor = vec4(c.rgb, 1);
+}</code></pre>
+        </div>
+      </td>
+      <td>
+        <object type="image/svg+xml" class="figure"
+                data="images/Pipeline2.svg">
+        </object>
+      </td>
+    </tr>
+  </table>
+</div> -->
+
+<!-- Pipeline diagram VS TCS TESS TES GS FS -->
+<!-- Not going to get this functionality on Lion! --
+<div class="slide">
+  <table style="width:100%;height:100%">
+    <tr>
+      <td style="width:40%">
+        <div class="codewrapper">
+          <pre><code class="glsl">// Vertex Shader
+layout(location<b> = 0</b>) in vec4 Position;
+layout(location = 1) in vec2 TexCoord;
+
+<b>out VSOut {
+    vec4 Position;
+    vec2 TexCoord;
+} Out;</b>
+
+uniform mat4 ModelViewMatrix, MVP;
+
+void main() {
+    Out.Position = ModelViewMatrix * Position;
+    Out.TexCoord = TexCoord;
+    gl_Position = MVP * Out.Position;
+}</code></pre>
+        </div>
+        <div class="codewrapper">
+          <pre><code class="glsl">// Tessellation Control Shader
+...
+</code></pre>
+        </div>
+        <div class="codewrapper">
+          <pre><code class="glsl">// Tessellation Evaluation Shader
+...
+</code></pre>
+        </div>
+        <div class="codewrapper">
+          <pre><code class="glsl">// Fragment Shader
+uniform sampler2D Baboon;
+uniform vec3 LightDir = vec3(0,0,1);
+out vec4 CrazyColorChannel;
+
+in GSOut {
+    vec3 Normal;
+    vec2 TexCoord;
+} In;
+
+void main() {
+    float df = dot(LightDir, In.Normal);
+    vec4 c = df * texture(Baboon, In.TexCoord);
+    CrazyColorChannel = vec4(c.rgb, 1);
+}</code></pre>
+        </div>
+      </td>
+      <td style="width:40%">
+        <div class="codewrapper">
+          <pre><code class="glsl">// Geometry Shader
+layout(triangles) in;
+layout(triangle_strip, max_vertices = 3) out;
+
+in TEOut {
+    vec2 TexCoord;
+    vec3 Normal;
+    float Luminance[2];
+} In[3];
+
+out GSOut {
+    vec3 Normal;
+    vec2 TexCoord;
+} Out;
+
+subroutine vec3 NormFunc(vec3, vec3);
+subroutine uniform NormFunc NormVar;
+
+subroutine(NormFunc)
+vec3 RobustNormal(vec3 A, vec3 B) {
+    return normalize(cross(A, B));
+}
+
+subroutine(NormFunc)
+vec3 CheapNormal(vec3 A, vec3 B) {
+    return cross(A, B);
+}
+
+void main() {
+    vec3 A = In[2].Position - In[0].Position;
+    vec3 B = In[1].Position - In[0].Position;
+    Out.Normal = NormVar(A, B);
+
+    for (int j = 0; j &lt; 3; j++) {
+        Out.TexCoord = In[j].TexCoord;
+        gl_Position = gl_in[j].gl_Position;
+        EmitVertex();
+    }
+    EndPrimitive();
+}</code></pre>
+        </div>
+      </td>
+      <td>
+        <object type="image/svg+xml" class="figure"
+                data="images/Pipeline3.svg">
+        </object>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<!-- Forward Compatible -->
+<div class="slide">
+  <table style="width:100%;height:100%">
+    <tbody><tr><td align="center">
+
+        <p class="tk-museo-sans">
+        A <i>profile</i> is a subset of OpenGL that you choose to work in when you create a context.
+        The <b>core</b> profile restricts you to the modern API.
+        There's even an <b>ES</b> profile if you want your code to be portable to mobile platforms!
+        Here's how you select a profile with <b>Qt</b> or <b>X</b>.
+        </p>
+
+        <div class="codewrapper" style="font-size:120%;width:90%;text-align:left;margin-top:50px">
+          <pre><code class="cpp">QGLFormat format;
+format.setVersion(<span class="number">4</span>,<span class="number">2</span>);
+format.setProfile(QGLFormat::CoreProfile);
+QGLWidget *myWidget = <span class="keyword">new</span> QGLWidget(format);</code></pre>
+        </div>
+        <div class="codewrapper" style="font-size:120%;width:90%;text-align:left;margin-top:50px">
+          <pre><code class="cpp"><span class="keyword">int</span> attribs[] = {
+    GLX_CONTEXT_MAJOR_VERSION_ARB, <span class="number">4</span>,
+    GLX_CONTEXT_MINOR_VERSION_ARB, <span class="number">2</span>,
+    GLX_CONTEXT_PROFILE_MASK_ARB, GLX_CONTEXT_CORE_PROFILE_BIT_ARB,
+    NULL
+};
+GLXContext glc = glXCreateContextAttribs(diplay, config, NULL, True, attribs);</code></pre>
+        </div>
+        <div class="tk-museo-sans" style="font-size:800%;
+                     font-weight:900;
+                     color:#333;
+                     margin-top:100px;
+                     text-align:center">
+          Core Profile
+        </div>
+    </td></tr>
+  </tbody></table>
+</div>
+
+<!-- This is a bit of a religious debate -->
+<div class="slide">
+
+        <p class="tk-museo-sans" style="text-align:center">
+        These word clouds depict how deprecated GLSL functions and built-in variables have changed.
+        </p>
+
+  <a href="http://www.wordle.net/show/wrdl/5094008/Deprecated_GLSL" style="position:absolute; display: block;
+            left:25px; top:20px;" title="Wordle: Deprecated GLSL"><object type="image/svg+xml" data="Modern%20OpenGL-Dateien/Deprecated-GLSL.svg">
+    </object></a>
+  <div class="tk-museo-sans" style="position:absolute; display: block;
+              font-size:800%;
+              font-weight:900;
+              left:800px; top:90px;
+              -webkit-transform-origin: 800 90;
+              -webkit-transform: rotate(90deg);">
+    OLD
+  </div>
+  <div style="position:absolute; display: block;
+              width:100%;
+              height:4px;
+              background-color: #333;                  
+              left:0px; top:360px;">
+    &nbsp;
+  </div>
+  <a href="http://www.wordle.net/show/wrdl/5094039/Modern_GLSL" style="position:absolute; display: block;
+            left:25px; bottom:50px;" title="Wordle: Modern GLSL"><object type="image/svg+xml" data="Modern%20OpenGL-Dateien/Modern-GLSL.svg">
+    </object>
+  </a>
+  <div class="tk-museo-sans" style="position:absolute; display: block;
+              font-size:800%;
+              font-weight:900;
+              left:780px; top:480px;
+              -webkit-transform-origin: 780 480;
+              -webkit-transform: rotate(90deg);">
+    NEW
+  </div>
+</div>
+</hx:include>
+    <hx:include class="include_200" src="vertex-submission.html"><!-- Ancient Vertex Submission -->
+<div class="slide">
+  <div class="slidetitle">
+    Jurassic Vertices
+  </div>
+  <pre class="simplewrapper150"><code class="cpp">glBegin(GL_TRIANGLES);
+glColor4f(<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0.5</span>);
+glVertex3f(<span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>);
+glVertex3f(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>);
+glVertex3f(<span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>);
+glEnd();</code></pre>
+  <br>
+  <pre class="simplewrapper150"><code class="cpp">glVertexPointer
+glColorPointer
+glNormalPointer</code></pre>
+  <br>
+  <pre class="simplewrapper150"><code class="cpp">glNewList
+glCallList</code></pre>
+  <br>
+  <pre class="simplewrapper150"><code class="cpp">GL_QUAD_STRIP, GL_QUADS, GL_POLYGON</code></pre>
+  <div style="position:absolute;width:100%;height:100%;top:0px;left:0px">
+    <object type="image/svg+xml" style="margin:auto; margin-top:150px; width:70%; display:block" data="Modern%20OpenGL-Dateien/no-smoking-plain.svg">
+    </object>
+  </div>
+  <p class="tk-museo-sans" style="text-align:center">
+    Don't use any of this stuff -- it's old!
+  </p>
+</div>
+
+<!-- Newer Vertex Submission -->
+<div class="slide">
+  <div class="slidetitle">
+    Modern Vertices
+  </div>
+  <br>
+  <pre class="simplewrapper150"><code class="cpp">glVertexAttrib3d
+glVertexAttrib4i
+glVertexAttribI4i
+glVertexAttribL2d
+etc...</code></pre>
+  <br>
+  <pre class="simplewrapper150"><code class="cpp">glVertexAttribPointer
+glVertexAttribIPointer
+glVertexAttribLPointer</code></pre>
+  <br>
+  <!--
+      GL_POINTS, GL_LINE_STRIP, GL_LINE_LOOP, GL_LINES, GL_TRIANGLE_STRIP, GL_TRIANGLE_FAN, GL_TRIANGLES
+      GL_LINE_STRIP_ADJACENCY, GL_LINES_ADJACENCY, GL_TRIANGLE_STRIP_ADJACENCY, GL_TRIANGLES_ADJACENCY
+    -->
+  <pre class="simplewrapper150"><code class="cpp">GL_PATCHES</code></pre>
+  <p class="tk-museo-sans" style="width:50%;margin:auto;margin-top:25px">
+    Note the optional capital letters (<b>I</b> and <b>L</b>) in the function signatures.
+    The capital letter denotes the width of stored data, while the small letter indicates the type of data you're passing in.
+    <br><br><b>GL_PATCHES</b> is used in lieu of GL_TRIANGLES when tessellation shaders are attached to the current program.
+  </p>
+</div>
+
+<!-- Vertex Array Objects -->
+<div class="slide">
+  <div class="slidetitle">
+    Vertex Array Objects
+  </div>
+  <p class="tk-museo-sans" style="width:75%;margin-left:auto;margin-right:auto;margin-top:5px;">
+    VAO's encapsulate the vertex attribute state that you need to change when rendering new geometry.
+    The default VAO has a handle of 0, which isn't valid in the core profile.
+    You <b>must</b> create a VAO in the core profile!
+  </p>
+  <pre class="simplewrapper150"><code class="cpp"><span class="keyword">const</span> <span class="keyword">GLuint</span> PositionSlot = <span class="number">0</span>;
+<span class="keyword">const</span> <span class="keyword">GLuint</span> NormalSlot = <span class="number">1</span>;
+
+<span class="keyword">GLuint</span> vao;
+glGenVertexArrays(<span class="number">1</span>, &amp;vao);
+glBindVertexArray(vao);
+
+glEnableVertexAttribArray(PositionSlot);
+glEnableVertexAttribArray(NormalSlot);
+
+glBindBuffer(GL_ARRAY_BUFFER, positionsVbo);
+glVertexAttribPointer(PositionSlot, <span class="number">3</span>, GL_FLOAT, GL_FALSE,
+                      <span class="keyword">sizeof</span>(<span class="keyword">float</span>)*<span class="number">3</span>, <span class="number">0</span>);
+glBindBuffer(GL_ARRAY_BUFFER, normalsVbo);
+glVertexAttribPointer(NormalSlot, <span class="number">3</span>, GL_FLOAT, GL_FALSE,
+                      <span class="keyword">sizeof</span>(<span class="keyword">float</span>)*<span class="number">3</span>, <span class="number">0</span>);</code></pre>
+</div>
+
+<!-- Buffer Objects -->
+<div class="slide">
+  <style>
+    .brow > td {
+       border: solid 1px #000;
+       padding-right: 10px;
+    }
+    ul { list-style-type: none }
+    table#bufferobj {
+       background-color: #ccc;
+       border: solid 10px #000;
+       margin: auto;
+    }
+  </style>
+  <div class="slidetitle" style="font-size:400%">
+    Buffer Objects
+  </div>
+  <table id="bufferobj" class="tk-museo-sans">
+    <tbody><tr class="brow">
+      <td>
+        <h2 class="tk-museo-sans smallheader">
+          All Buffer Targets
+        </h2>
+        <ul>
+          <li>glBufferData</li>
+          <li>glBufferSubData</li>
+          <li>glMapBufferRange​</li>
+          <li>glCopyBufferSubData</li>
+        </ul>
+      </td>
+      <td>
+        <h2 class="tk-museo-sans smallheader">
+          GL_PIXEL_PACK_BUFFER​
+        </h2>
+        <ul>
+          <li>glTexImage*</li>
+          <li>glTexSubImage*​</li>
+          <li>glDrawPixels</li>
+        </ul>
+      </td>
+    </tr>
+    <tr class="brow">
+      <td>
+        <h2 class="tk-museo-sans smallheader">
+          GL_PIXEL_UNPACK_BUFFER​
+        </h2>
+        <ul>
+          <li>glGetTexImage*</li>
+          <li>glGetTexSubImage*</li>
+          <li>glReadPixels​</li>
+        </ul>
+      </td>
+      <td>
+        <h2 class="tk-museo-sans smallheader">
+          GL_ARRAY_BUFFER
+        </h2>
+        <ul>
+          <li>glVertexAttrib*</li>
+        </ul>
+      </td>
+    </tr>
+    <tr class="brow">
+      <td>
+        <h2 class="tk-museo-sans smallheader">
+          GL_ELEMENT_ARRAY_BUFFER
+        </h2>
+        <ul>
+          <li>glDrawElements (etc)</li>
+        </ul>
+      </td>
+      <td>
+        <h2 class="tk-museo-sans smallheader">
+          GL_DRAW_INDIRECT_BUFFER​
+        </h2>
+        <ul>
+          <li>glDrawArraysIndirect</li>
+          <li>glDrawElementsIndirect</li>
+        </ul>
+      </td>
+    </tr>
+    <tr class="brow">
+      <td>
+        <h2 class="tk-museo-sans smallheader">
+          GL_UNIFORM_BUFFER​
+        </h2>
+        <ul>
+          <li>glUniformBlockBinding</li>
+        </ul>
+      </td>
+      <td>
+        <h2 class="tk-museo-sans smallheader">
+          GL_TEXTURE_BUFFER​
+        </h2>
+        <ul>
+          <li>glTexBuffer</li>
+        </ul>
+      </td>
+    </tr>
+  </tbody></table>
+  <p class="tk-museo-sans" style="width:75%;margin:auto;margin-top:5px;font-size:80%;margin-bottom:0px">
+    In OpenGL, a <b>buffer object</b> is an unstructured blob of data.
+    The above categories are various <b>targets</b> to which you can bind a buffer.
+    For example, binding a buffer to <b>GL_ARRAY_BUFFER</b> effects subsequent calls to <b>glVertexAttrib*</b>.
+    Even though it contains vertex data, you can also bind that same buffer object to <b>GL_TEXTURE_BUFFER</b>.  Remember, buffers are just blobs!
+  </p>
+  <hr style="margin-top:0px;margin-bottom:0px">
+  <p class="tk-museo-sans" style="width:75%;margin:auto;margin-top:0px;font-size:80%">
+    Most buffers are bound using <b>glBindBuffer</b>. However, some targets, like <b>GL_UNIFORM_BUFFER</b>, have multiple binding points; these are called <b>indexed buffers</b>.
+    They're bound using <b>glBindBufferBase</b> or <b>glBindBufferRange</b> instead of glBindBuffer.
+  </p>
+</div>
+
+<!-- Primitive Restart -->
+<div class="slide">
+  <div class="slidetitle">
+    Primitive Restart
+  </div>
+  <object type="image/svg+xml" style="margin:auto; margin-top:50px; display:block" data="Modern%20OpenGL-Dateien/SphereTessPlain.svg">
+  </object>
+  <br>
+  <pre class="simplewrapper150"><code class="cpp">glEnable(GL_PRIMITIVE_RESTART);
+glPrimitiveRestartIndex(<span class="number">1200</span>);</code></pre>
+  <br>
+  <br>
+  <pre class="smallwrapper"><code class="cpp"><span class="comment">// somewhat similar:</span>
+<span class="keyword">GLint</span> starts[<span class="number">3</span>] = ...;
+<span class="keyword">GLint</span> counts[<span class="number">3</span>] = ...;
+glMultiDrawArrays(GL_TRIANGLE_STRIP, starts, counts, <span class="number">3</span>);</code></pre>
+</div>
+
+<!-- glDraw* -->
+<div class="slide">
+  <div class="slidetitle">
+    glDraw*
+  </div>
+  <pre class="tinywrapper"><code class="cpp"><span class="draw-c">glDrawArrays</span>(<span class="keyword">enum</span> mode, <span class="keyword">int</span> first, <span class="keyword">sizei</span> count)
+<span class="draw-c">glDrawElements</span>(<span class="keyword">enum</span> mode, <span class="keyword">sizei</span> count, <span class="keyword">enum</span> type, <span class="keyword">const</span> <span class="keyword">void</span> *indices)
+
+<span class="draw-m">glDrawRangeElements</span>(<span class="keyword">enum</span> mode, <span class="keyword">uint</span> start, <span class="keyword">uint</span> end, <span class="keyword">sizei</span> count, <span class="keyword">enum</span> type, <span class="keyword">const</span> <span class="keyword">void</span> *indices)
+<span class="draw-i">glDrawArraysInstanced</span>(<span class="keyword">enum</span> mode, <span class="keyword">int</span> first, <span class="keyword">sizei</span> count, <span class="keyword">sizei</span> primcount)
+<span class="draw-i">glDrawElementsInstanced</span>(<span class="keyword">enum</span> mode, <span class="keyword">sizei</span> count, <span class="keyword">enum</span> type, <span class="keyword">const</span> <span class="keyword">void</span> *indices, <span class="keyword">sizei</span> primcount)
+<span class="draw-m">glDrawElementsBaseVertex</span>(<span class="keyword">enum</span> mode, <span class="keyword">sizei</span> count, <span class="keyword">enum</span> type, <span class="keyword">const</span> <span class="keyword">void</span> *indices, <span class="keyword">int</span> basevertex)
+<span class="draw-m">glDrawRangeElementsBaseVertex</span>(<span class="keyword">enum</span> mode, <span class="keyword">uint</span> start, <span class="keyword">uint</span> end, <span class="keyword">sizei</span> count, <span class="keyword">enum</span> type, ...
+
+<span class="draw-itf">glDrawArraysInstancedBaseInstance</span>(<span class="keyword">enum</span> mode, <span class="keyword">int</span> first, <span class="keyword">sizei</span> count, <span class="keyword">sizei</span> primcount, <span class="keyword">uint</span> baseinstance)
+<span class="draw-itf">glDrawArraysIndirect</span>(<span class="keyword">enum</span> mode, <span class="keyword">const</span> <span class="keyword">void</span> *indirect) <span class="comment">// GL_DRAW_INDIRECT_BUFFER</span>
+
+<span class="draw-itf">glDrawElementsInstancedBaseVertex</span>(<span class="keyword">enum</span> mode, <span class="keyword">sizei</span> count, <span class="keyword">enum</span> type, <span class="keyword">const</span> <span class="keyword">void</span> *indices, ...
+<span class="draw-i">glDrawElementsInstancedBaseInstance</span>(<span class="keyword">enum</span> mode, <span class="keyword">sizei</span> count, <span class="keyword">enum</span> type, <span class="keyword">const</span> <span class="keyword">void</span> *indices, ...
+<span class="draw-i">glDrawElementsInstancedBaseVertexBaseInstance</span>(<span class="keyword">enum</span> mode, <span class="keyword">sizei</span> count, <span class="keyword">enum</span> type, ...
+<span class="draw-itf">glDrawElementsIndirect</span>(<span class="keyword">enum</span> mode, <span class="keyword">enum</span> type, <span class="keyword">const</span> <span class="keyword">void</span> *indirect) <span class="comment">// GL_DRAW_INDIRECT_BUFFER</span>
+
+<span class="draw-tf">glDrawTransformFeedback</span>(<span class="keyword">enum</span> mode, <span class="keyword">uint</span> id)
+<span class="draw-tf">glDrawTransformFeedbackStream</span>(<span class="keyword">enum</span> mode, <span class="keyword">uint</span> id, <span class="keyword">uint</span> stream)
+<span class="draw-itf">glDrawTransformFeedbackInstanced</span>(<span class="keyword">enum</span> mode, <span class="keyword">uint</span> id, <span class="keyword">sizei</span> primcount)
+<span class="draw-itf">glDrawTransformFeedbackStreamInstanced</span>(<span class="keyword">enum</span> mode, <span class="keyword">uint</span> id, <span class="keyword">uint</span> stream, <span class="keyword">sizei</span> primcount)</code></pre>
+
+</div>
+
+<!-- Indirect Draw Calls -->
+<div class="slide">
+  <div class="slidetitle">
+    Indirect Drawing
+  </div>
+  <pre class="simplewrapper"><code class="cpp"><span class="keyword">GLuint</span> mydrawcall[] = {
+    <span class="number">62</span>, <span class="comment">/* count */</span>
+    <span class="number">12</span>, <span class="comment">/* primcount */</span>
+    <span class="number">0</span>,  <span class="comment">/* first */</span>
+    <span class="number">0</span>,  <span class="comment">/* baseInstance */</span>
+};
+
+<span class="comment">// Get parameters from GPU memory:</span>
+<span class="keyword">GLuint</span> bufObj;
+glGenBuffers(<span class="number">1</span>, &amp;bufObj);
+glBindBuffer(GL_DRAW_INDIRECT_BUFFER, bufObj);
+glBufferData(GL_DRAW_INDIRECT_BUFFER, <span class="keyword">sizeof</span>(mydrawcall), mydrawcall, GL_STATIC_DRAW);
+glDrawArraysIndirect(GL_TRIANGLES, <span class="number">0</span>);
+
+<span class="comment">// Generate parameters from OpenCL:</span>
+glGenBuffers(<span class="number">1</span>, &amp;bufObj);
+glBindBuffer(GL_DRAW_INDIRECT_BUFFER, bufObj);
+glBufferData(GL_DRAW_INDIRECT_BUFFER, <span class="keyword">sizeof</span>(mydrawcall), NULL, GL_STATIC_DRAW);
+clCreateFromGLBuffer(context, CL_MEM_READ_WRITE, bufObj, &amp;err); 
+</code></pre>
+</div>
+</hx:include>
+    <hx:include class="include_200" src="types-table.html"><div class="slide">
+  <p class="tk-museo-sans" style="width:90%;margin:auto;margin-top:10px">
+    This is Christophe Riccio's categorization of all GLSL types; you'll see this in the forthcoming book <i>OpenGL Insights</i>.
+  </p>
+  <table style="width:100%;height:100%"><tbody><tr><td style="align:center">
+  <table class="bordered tk-museo-sans">
+    <thead>
+      <tr>
+        <th></th>
+        <th>vert in</th>
+        <th>varying</th>
+        <th>frag out</th>
+        <th>uniform</th>
+      </tr>
+    </thead>
+    <tbody><tr>
+      <td>scalar</td>
+      <td style="color:#007000">✔</td> <!-- yes -->
+      <td style="color:#007000">✔</td> <!-- yes -->
+      <td style="color:#007000">✔</td> <!-- yes -->
+      <td style="color:#007000">✔</td> <!-- yes -->
+    </tr>
+    <tr>
+      <td>vector</td>
+      <td style="color:#007000">✔</td> <!-- yes -->
+      <td style="color:#007000">✔</td> <!-- yes -->
+      <td style="color:#007000">✔</td> <!-- yes -->
+      <td style="color:#007000">✔</td> <!-- yes -->
+    </tr>
+    <tr>
+      <td>matrix</td>
+      <td style="color:#007000">✔</td> <!-- yes -->
+      <td style="color:#007000">✔</td> <!-- yes -->
+      <td style="color:#700000">✖</td> <!-- no  -->
+      <td style="color:#007000">✔</td> <!-- yes -->
+    </tr>
+    <tr>
+      <td>array</td>
+      <td style="color:#007000">✔</td> <!-- yes -->
+      <td style="color:#007000">✔</td> <!-- yes -->
+      <td style="color:#007000">✔</td> <!-- yes -->
+      <td style="color:#007000">✔</td> <!-- yes -->
+    </tr>
+    <tr>
+      <td>structure</td>
+      <td style="color:#700000">✖</td> <!-- no  -->
+      <td style="color:#007000">✔</td> <!-- yes -->
+      <td style="color:#700000">✖</td> <!-- no  -->
+      <td style="color:#007000">✔</td> <!-- yes -->
+    </tr>
+    <tr style="background-color:#fbf8e9">
+      <td>samplers</td>
+      <td style="color:#700000">✖</td> <!-- no  -->
+      <td style="color:#700000">✖</td> <!-- no  -->
+      <td style="color:#700000">✖</td> <!-- no  -->
+      <td style="color:#007000">✔</td> <!-- yes -->
+    </tr>
+    <tr style="background-color:#fbf8e9">
+      <td>images</td>
+      <td style="color:#700000">✖</td> <!-- no  -->
+      <td style="color:#700000">✖</td> <!-- no  -->
+      <td style="color:#700000">✖</td> <!-- no  -->
+      <td style="color:#007000">✔</td> <!-- yes -->
+    </tr>
+    <tr style="background-color:#fbf8e9">
+      <td>atomic counters</td>
+      <td style="color:#700000">✖</td> <!-- no  -->
+      <td style="color:#700000">✖</td> <!-- no  -->
+      <td style="color:#700000">✖</td> <!-- no  -->
+      <td style="color:#007000">✔</td> <!-- yes -->
+    </tr>
+    <tr>
+      <td>block</td>
+      <td style="color:#700000">✖</td> <!-- no  -->
+      <td style="color:#007000">✔</td> <!-- yes -->
+      <td style="color:#700000">✖</td> <!-- no  -->
+      <td style="color:#007000">✔</td> <!-- yes -->
+    </tr>
+  </tbody></table>
+  <!-- Cool Mac fonts in inkscape: nanum pen script, STHeiti -->
+  <!-- Cool Mac Fonts Avaiable in Inkscape: nanum pen script, STHeiti -->
+  <img src="Modern%20OpenGL-Dateien/TypesTable2.svg" alt="Notes" style="position:absolute;
+              left:0px;
+              top:40px;
+              display:block">
+  </td></tr></tbody></table>
+
+</div>
+</hx:include>
+    <hx:include class="include_200" src="shader-interfaces.html"><!-- BLOCKS -->
+<div class="slide">
+  <div class="slidetitle400 tk-museo-sans" style="font-size:200%">
+    Anatomy of a Block
+  </div>
+  <p class="tk-museo-sans" style="width:75%;margin:auto;margin-top:0px;font-size:80%">
+    blocks are not structs!
+  </p>
+  <object type="image/svg+xml" class="figure" data="Modern%20OpenGL-Dateien/Blocks2.svg">
+  </object>
+  <table style="width:90%;margin:auto">
+    <tbody><tr>
+      <td style="width:40%;padding-right:20px">
+        <div class="codewrapper">
+          <pre><code class="glsl"><span class="DIVIDER">-- Vertex Shader</span>
+
+<span class="keyword">out</span> MyBlock {
+    <span class="keyword">vec3</span> Position;
+    <span class="keyword">vec3</span> Color[<span class="number">2</span>];
+    <span class="keyword">float</span> Opacity;
+} Out;
+
+<span class="DIVIDER">-- Geometry Shader</span>
+
+<span class="keyword">in</span> MyBlock {
+    <span class="keyword">vec3</span> Position;
+    <span class="keyword">vec3</span> Color[<span class="number">2</span>];
+    <span class="keyword">float</span> Opacity;
+} In[];</code></pre></div>
+      </td>
+      <td>
+        <div class="codewrapper">
+          <pre><code class="glsl"><span class="DIVIDER">-- Vertex Shader</span>
+
+<span class="comment">// Built-ins:</span>
+<span class="keyword">out</span> gl_PerVertex {
+    <span class="keyword">vec4</span> gl_Position;
+    <span class="keyword">float</span> gl_PointSize;
+    <span class="keyword">float</span> gl_ClipDistance[];
+};
+
+<span class="comment">// User-defined:</span>
+<span class="keyword">in</span> MyBlock {
+    <span class="keyword">float</span> w; <span class="comment">// glGetAttribLocation(program, "MyBlock.w");</span>
+} In;
+
+<span class="keyword">void</span> main()
+{
+    gl_Position = <span class="keyword">vec4</span>(<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, In.w);
+}
+</code></pre></div>
+      </td>
+    </tr>
+    <!--tr>
+      <td colspan="2">
+        <div class="codewrapper">
+          <pre><code class="cpp">GLuint i = glGetAttribLocation(program, "MyBlock.w");
+</code></pre></div>
+      </td>
+    </tr-->
+  </tbody></table>
+</div>
+
+<!-- Uniform Blocks -->
+<div class="slide">
+  <div class="slidetitle">
+    Uniform Blocks
+  </div>
+  <pre class="simplewrapper"><code class="glsl"><span class="keyword">uniform</span> <span class="keyword">float</span> Deformation;
+
+<span class="keyword">uniform</span> Crazy80s {
+    <span class="keyword">float</span> Madonna;
+    <span class="keyword">int</span> DuranDuran;
+};
+
+<span class="keyword">uniform</span> Transform {
+    <span class="keyword">mat4</span> ModelViewMatrix;
+    <span class="keyword">float</span> Scale;
+} transforms[<span class="number">4</span>];
+
+...
+
+<span class="keyword">float</span> a = Deformation;
+<span class="keyword">float</span> b = Madonna;
+<span class="keyword">float</span> c = transforms[<span class="number">2</span>].Scale;</code></pre>
+  <br>
+  <pre class="simplewrapper"><code class="cpp"><span class="keyword">GLuint</span> loc = glGetUniformLocation(prog, <span class="string">"Deformation"</span>);
+glUniform1f(loc, <span class="number">3.14159</span>f);
+
+<span class="keyword">GLuint</span> idx = glGetUniformBlockIndex(prog, <span class="string">"Transform[2]"</span>);</code></pre>
+</div>
+
+<!-- Uniform Buffers -->
+<div class="slide">
+  <div class="slidetitle">
+    Uniform Buffers
+  </div>
+  <dl class="tk-museo-sans">
+
+    <dt>UBO handle (aka name)</dt>
+    <dd>passed to <tt>glBindBufferBase</tt> to affect subsequent <tt>glBufferData</tt>, <tt>glMapBuffer</tt>, etc</dd>
+
+    <dt>block index</dt>
+    <dd>queried from the shader via <tt>glGetUniformBlockIndex</tt></dd>
+
+    <dt>binding point</dt>
+    <dd>passed to <tt>glBindBufferBase</tt> to affect subsequent <tt>glBufferData</tt>, <tt>glMapBuffer</tt>, etc</dd>
+    <dd>passed to <tt>glUniformBlockBinding</tt> to "link" the UBO to the uniform block</dd>
+    <dd><b>note:</b>this can now be specified in GLSL using <b>layout</b> rather than <tt>glUniformBlockBinding</tt></dd>
+
+  </dl>
+  <pre class="smallwrapper"><code class="glsl"><span class="keyword">layout</span>(std140) <span class="keyword">uniform</span> Crazy80s { <span class="keyword">float</span> Madonna[<span class="number">2</span>]; };</code></pre>
+  <br>
+  <pre class="smallwrapper"><code class="cpp"><span class="keyword">GLuint</span> ubo;
+glGenBuffers(<span class="number">1</span>, &amp;ubo);
+
+<span class="comment">// Choose a binding point in the UBO; must be &lt; GL_MAX_UNIFORM_BUFFER_BINDINGS</span>
+<span class="keyword">GLuint</span> bp = <span class="number">7</span>;
+
+<span class="comment">// Fill the buffer with data at the chosen binding point</span>
+glBindBufferBase(GL_UNIFORM_BUFFER, bp, ubo);
+<span class="keyword">float</span> data[<span class="number">2</span>] = { <span class="number">3.142</span>f, <span class="number">2.712</span>f }
+glBufferData(GL_UNIFORM_BUFFER, <span class="keyword">sizeof</span>(data), data, GL_STATIC_DRAW);
+
+<span class="comment">// Query the shader for block index of 'Crazy80s' and hook it up</span>
+<span class="keyword">GLuint</span> idx = glGetUniformBlockIndex(prog, <span class="string">"Crazy80s"</span>);
+glUniformBlockBinding(prog, idx, bp);</code></pre>
+</div>
+
+<!-- ******************************************** -->
+<!-- ******************************************** -->
+<!-- BINDING VERTEX ATTRIBS -->
+<div class="slide">
+  <br>
+  <div class="tk-museo-sans" style="font-size:240%;
+               font-weight:900;
+               color:#333;
+               text-align:center">
+    Binding Vertex Attributes
+  </div>
+  <table style="width:90%;margin:auto">
+    <tbody><tr>
+      <td style="width:50%">
+        <div class="centerwrapper">
+          <pre><code class="cpp" style="font-size:110%"><span class="comment">// Worst: let the compiler decide</span>
+<span class="keyword">GLuint</span> foo = glGetAttribLocation(program, <span class="string">"MyBlock.w"</span>);              </code></pre>
+        </div></td></tr>
+  </tbody></table>
+  <table style="width:90%;margin:auto">
+    <tbody><tr>
+      <td style="width:50%">
+        <div class="centerwrapper">
+          <pre><code class="cpp" style="font-size:110%"><span class="comment">// Better: Specify in application code</span>
+<span class="keyword">GLuint</span> foo = <span class="number">3</span>;
+
+glCompileShader(vsHandle);
+glAttachShader(programHandle, vsHandle);
+glBindAttribLocation(programHandle, foo, <span class="string">"MyBlock.w"</span>);
+glLinkProgram(programHandle);              </code></pre>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+  <table style="width:90%;margin:auto">
+    <tbody><tr>
+      <td style="width:50%">
+        <div class="centerwrapper">
+          <pre><code class="glsl" style="font-size:110%"><span class="comment">// Best: Declare in GLSL</span>
+<span class="keyword">in</span> MyBlock {
+    <span class="keyword">layout</span>(location = <span class="number">3</span>) <span class="keyword">vec3</span> w;
+}              </code></pre>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+  <table style="width:90%;margin:auto">
+    <tbody><tr>
+      <td style="width:50%">
+        <div class="centerwrapper">
+          <pre><code class="cpp"><span class="keyword">GLuint</span> vao;
+glGenVertexArrays(<span class="number">1</span>, &amp;vao);
+glBindVertexArray(vao);
+glBindBuffer(GL_ARRAY_BUFFER, vbo);
+glVertexAttribPointer(foo, <span class="number">1</span>, GL_FLOAT, GL_FALSE, stride, <span class="number">0</span>);
+glEnableVertexAttribArray(foo);</code></pre></div>
+      </td>
+    </tr>
+  </tbody></table>
+</div>
+
+<!-- DODO BIRD -->
+<div class="slide tk-museo-sans">
+  <br>
+  <p class="tk-museo-sans" style="width:70%;margin:auto">
+    Don't use these built-ins; they're extinct!  Provide custom names 
+&amp; types for your fragment shader outputs according to what's 
+actually being stored in your FBO.
+  </p>
+  <div style="font-size:500%;
+              font-weight:900;
+              text-align:center;
+              color:#333;">
+  <br>
+  vec4 gl_FragColor
+  <br>
+  vec4 gl_FragData[<i>n</i>]
+  <br><br> 
+  <img src="Modern%20OpenGL-Dateien/dodo-bird.gif" alt="extinct">
+  </div>
+  <!--
+  gl_SampleMask
+  layout(early_fragment_tests) in;
+  layout (depth_greater) out float gl_FragDepth; // relates to gl_FragCoord.z
+                                                 // assume it may be modified such that its value will only increase
+    -->
+</div>
+
+<!-- ******************************************** -->
+<!-- ******************************************** -->
+<!-- Fragment Outputs -->
+<div class="slide" style="font-size:120%">
+  <br>
+  <div class="tk-museo-sans" style="font-size:240%;
+               font-weight:900;
+               color:#333;
+               text-align:center">
+    Binding Fragment Outputs
+  </div>
+  <table style="width:90%;margin:auto">
+    <tbody><tr>
+      <td style="width:50%">
+        <div class="centerwrapper">
+          <pre><code class="cpp"><span class="comment">// Let the compiler decide (not recommended)</span>
+<span class="keyword">GLuint</span> colorNumber = glGetFragDataLocation(program, <span class="string">"MyColorVariable"</span>);
+</code></pre>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+  <table style="width:90%;margin:auto">
+    <tbody><tr>
+      <td style="width:50%">
+        <div class="centerwrapper">
+          <pre><code class="cpp"><span class="comment">// Specify in application code</span>
+<span class="keyword">GLuint</span> colorNumber = <span class="number">3</span>;
+glBindFragDataLocation(programHandle, colorNumber, <span class="string">"MyColorVariable"</span>);
+</code></pre>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+  <table style="width:90%;margin:auto">
+    <tbody><tr>
+      <td style="width:50%">
+        <div class="centerwrapper">
+          <pre><code class="glsl"><span class="comment">// Declare in GLSL</span>
+<span class="keyword">layout</span>(location = <span class="number">3</span>) <span class="keyword">out</span> <span class="keyword">vec4</span> factor;</code></pre>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+  <table style="width:90%;margin:auto">
+    <tbody><tr>
+      <td style="width:50%">
+        <div class="centerwrapper">
+          <pre><code class="cpp"> <span class="comment">// Beware, a level of indirection!</span>
+glBindFramebuffer(GL_DRAW_FRAMEBUFFER, myFbo);
+
+<span class="keyword">GLenum</span> buffers[] = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1};
+glDrawBuffers(<span class="number">2</span>, &amp;buffers[<span class="number">0</span>]);</code></pre>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+</div>
+
+<!-- Depth -->
+<div class="slide tk-museo-sans" style="color:#333;">
+  <br>
+  <p class="tk-museo-sans" style="width:70%;margin:auto">
+    OpenGL lets you manipulate depth in your fragment shader.
+    However, for best performance you might want to let OpenGL perform depth testing earlier by using the <b>early_fragment_tests</b> flag.
+    You can also give it hints about how you're manipulating Z, e.g., <b>depth_greater</b>.
+  </p>
+  <table style="font-size:200%;font-weight:900;margin-left:150px;margin-top:170px"><tbody><tr><td>
+  <br>
+  in vec4 gl_FragCoord; <i>// has a valid <b>z</b> value</i>
+  <br>
+  <br>
+  out float gl_FragDepth;
+  <br>
+  <div style="display:block;width:90%;height:5px;background-color:#333333;margin-top:40px;margin-bottom:40px"></div>
+  layout(early_fragment_tests) in;
+  <br>
+  <br>
+  layout (depth_greater) out float gl_FragDepth;
+  </td></tr></tbody></table>
+</div>
+
+<!-- ******************************************** -->
+<!-- ******************************************** -->
+<!-- Subroutines -->
+<div class="slide">
+  <div class="tk-museo-sans" style="font-size:300%;
+               font-weight:900;
+               color:#333;
+               text-align:center">
+    Subroutines
+  </div>
+  <p class="tk-museo-sans" style="width:70%;margin:auto">
+    Subroutines act like function pointers, allowing you to hot-swap pieces of shader in and out.
+  </p>
+  <table style="width:95%">
+    <tbody><tr>
+      <td style="width:45%">
+        <div class="codewrapper" style="font-size:75%">
+          <pre><code class="glsl"><span class="DIVIDER">-- Vertex Shader</span>
+
+<span class="keyword">subroutine</span> <span class="keyword">vec3</span> IlluminationFunc(<span class="keyword">vec3</span> N, <span class="keyword">vec3</span> L);
+
+<span class="keyword">subroutine</span>(IlluminationFunc)
+<span class="keyword">vec3</span> diffuse(<span class="keyword">vec3</span> N, <span class="keyword">vec3</span> L)
+{
+    <span class="keyword">return</span> max(<span class="number">0</span>, dot(N, L));
+}
+
+<span class="keyword">subroutine</span>(IlluminationFunc)
+<span class="keyword">vec3</span> specular(<span class="keyword">vec3</span> N, <span class="keyword">vec3</span> L)
+{
+    <span class="keyword">vec3</span> E = <span class="keyword">vec3</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>);
+    <span class="keyword">vec3</span> H = normalize(L + E);
+    <span class="keyword">return</span> pow(dot(N, H), Shininess);
+}
+
+<span class="keyword">uniform</span> <span class="keyword">float</span> Shininess = <span class="number">1.0</span>;
+<span class="keyword">subroutine</span> <span class="keyword">uniform</span> IlluminationFunc IlluminationVar;
+
+<span class="keyword">out</span> <span class="keyword">vec4</span> vColor;
+<span class="keyword">void</span> main()
+{
+    <span class="keyword">vec3</span> n = <span class="keyword">vec3</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>);
+    <span class="keyword">vec3</span> p = <span class="keyword">vec3</span>(<span class="number">3</span>, <span class="number">1</span>, <span class="number">4</span>);
+    <span class="keyword">vec3</span> c = IlluminationVar(n, p);
+    vColor = <span class="keyword">vec4</span>(c, <span class="number">1</span>);
+}
+
+<span class="DIVIDER">-- Geometry Shader</span>
+
+<span class="comment">// normal uniforms are scoped to the program object:</span>
+<span class="keyword">uniform</span> <span class="keyword">float</span> Shininess = <span class="number">1.0</span>;
+
+<span class="comment">// subroutines are scoped to the shader stage:</span>
+<span class="keyword">subroutine</span> <span class="keyword">vec3</span> IlluminationFunc(<span class="keyword">float</span> foo);
+<span class="keyword">subroutine</span> <span class="keyword">uniform</span> IlluminationFunc IlluminationVar;</code></pre></div></td>
+      <td>
+        <div class="codewrapper">
+          <pre><code class="cpp"><span class="keyword">GLuint</span> prog;
+glGetIntegerv(GL_CURRENT_PROGRAM, &amp;prog);
+
+<span class="keyword">GLenum</span> vs = GL_VERTEX_SHADER;
+
+<span class="keyword">GLuint</span> illum = glGetSubroutineUniformLocation(prog, vs,
+                                              <span class="string">"IlluminationVar"</span>);
+
+<span class="keyword">GLuint</span> diffuse = glGetSubroutineIndex(prog, vs, <span class="string">"diffuse"</span>);
+<span class="keyword">GLuint</span> specular = glGetSubroutineIndex(prog, vs, <span class="string">"specular"</span>);
+
+<span class="comment">// This sets per-context state:</span>
+<span class="keyword">GLuint</span> indices[MAX_SUBROUTINE_VARIABLES];
+indices[illum] = diffuse;
+glUniformSubroutinesuiv(GL_VERTEX_SHADER, <span class="number">1</span>, indices);
+
+<span class="comment">// This sets per-program state:</span>
+<span class="keyword">GLuint</span> shiny = glGetUniformLocation(prog, <span class="string">"Shininess"</span>);
+glUniform1f(prog, shiny, <span class="number">1.0</span>);</code></pre></div>
+      </td>
+    </tr>
+  </tbody></table>
+
+</div>
+
+<!-- ******************************************** -->
+<!-- ******************************************** -->
+<!-- Old-School Linking --
+<div class="slide">
+  <div class="codewrapper" style="width:90%;font-size:105%;margin:auto">
+    <pre><code class="cpp">static GLuint LoadProgram(const char* vsSource,
+                           const char* gsSource,
+                           const char* fsSource)
+{
+    GLuint programHandle = glCreateProgram();
+    GLuint vsHandle = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(vsHandle, 1, &vsSource, 0);
+    glCompileShader(vsHandle);
+    glAttachShader(programHandle, vsHandle);
+    if (gsSource != NULL) {
+        GLuint gsHandle = glCreateShader(GL_GEOMETRY_SHADER);
+        glShaderSource(gsHandle, 1, &gsSource, 0);
+        glCompileShader(gsHandle);
+        glAttachShader(programHandle, gsHandle);
+    }
+    GLuint fsHandle = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fsHandle, 1, &fsSource, 0);
+    glCompileShader(fsHandle);
+    glAttachShader(programHandle, fsHandle);
+    glLinkProgram(programHandle);
+    GLint linkSuccess;
+    glGetProgramiv(programHandle, GL_LINK_STATUS, &linkSuccess);
+    if (!linkSuccess) {
+        GLchar spew[256];
+        glGetProgramInfoLog(programHandle, sizeof(spew), 0, spew);
+        fprintf(stderr, "Can't link shaders:\n%s", spew);
+        return 0;
+    }
+    glUseProgram(programHandle);
+    return programHandle;
+}</code>
+    </pre>
+  </div>
+  <div class="tk-museo-sans"
+       style="position:absolute; display: block;
+              font-size:750%;
+              color:#ccc;
+              font-weight:900;
+              left:570px; top:200px;
+              -webkit-transform-origin: 570 200;
+              -webkit-transform: rotate(90deg);">
+    OLD SCHOOL
+  </div>
+</div-->
+
+
+<!-- ******************************************** -->
+<!-- ******************************************** -->
+<!-- New but Verbose --
+<div class="slide">
+  <div class="codewrapper" style="width:90%;font-size:100%;margin:auto">
+    <pre><code class="cpp">static GLuint LoadProgram(const char* vsSource, const char* gsSource, const char* fsSource)
+{
+    GLuint programHandle = glCreateProgram();
+    <b>if (vsSource != NULL) {</b>
+        GLuint vsHandle = glCreateShader(GL_VERTEX_SHADER);
+        glShaderSource(vsHandle, 1, &vsSource, 0);
+        glCompileShader(vsHandle);
+        glAttachShader(programHandle, vsHandle);
+    }
+    if (gsSource != NULL) {
+        GLuint gsHandle = glCreateShader(GL_GEOMETRY_SHADER);
+        glShaderSource(gsHandle, 1, &gsSource, 0);
+        glCompileShader(gsHandle);
+        glAttachShader(programHandle, gsHandle);
+    }
+    <b>if (fsSource != NULL) {</b>
+        GLuint fsHandle = glCreateShader(GL_FRAGMENT_SHADER);
+        glShaderSource(fsHandle, 1, &fsSource, 0);
+        glCompileShader(fsHandle);
+        glAttachShader(programHandle, fsHandle);
+    }
+    <span class="DIVIDER">glProgramParameteri(programHandle, GL_PROGRAM_SEPARABLE, GL_TRUE);</span>
+    glLinkProgram(programHandle);
+    GLint linkSuccess;
+    glGetProgramiv(programHandle, GL_LINK_STATUS, &linkSuccess);
+    if (!linkSuccess) {
+        GLchar spew[256];
+        glGetProgramInfoLog(programHandle, sizeof(spew), 0, spew);
+        fprintf(stderr, "Can't link shaders:\n%s", spew);
+        return 0;
+    }
+    glUseProgram(programHandle);
+    return programHandle;
+}</code>
+    </pre>
+  </div>
+  <div class="tk-museo-sans"
+       style="position:absolute; display: block;
+              font-size:750%;
+              color:#ccc;
+              font-weight:900;
+              left:570px; top:280px;
+              -webkit-transform-origin: 570 280;
+              -webkit-transform: rotate(90deg);">
+  </div>
+</div-->
+
+<!-- ******************************************** -->
+<!-- ******************************************** -->
+<!-- New-School Linking -->
+<div class="slide">
+  <p class="tk-museo-sans" style="width:70%;margin:auto;margin-top:10px">
+    Separable programs also allow you to hot-swap shaders, but at a higher level of granularity than subroutines.
+  </p>
+  <div class="codewrapper" style="width:96%;font-size:115%;margin:auto">
+    <pre><code class="cpp"><span class="keyword">static</span> <span class="keyword">GLuint</span> LoadPipeline(
+        <span class="keyword">const</span> <span class="keyword">char</span>* vsSource,
+        <span class="keyword">const</span> <span class="keyword">char</span>* gsSource,
+        <span class="keyword">const</span> <span class="keyword">char</span>* fsSource)
+{
+    <span class="keyword">GLuint</span> vsProgram = glCreateShaderProgramv(GL_VERTEX_SHADER, <span class="number">1</span>, &amp;vsSource);
+    <span class="keyword">GLuint</span> gsProgram = glCreateShaderProgramv(GL_GEOMETRY_SHADER, <span class="number">1</span>, &amp;gsSource);
+    <span class="keyword">GLuint</span> fsProgram = glCreateShaderProgramv(GL_FRAGMENT_SHADER, <span class="number">1</span>, &amp;fsSource);
+
+    <span class="keyword">GLuint</span> pipeline;
+    glGenProgramPipelines(<span class="number">1</span>, &amp;pipeline);
+    glBindProgramPipeline(pipeline);
+
+    glUseProgramStages(pipeline, GL_VERTEX_SHADER_BIT, vsProgram);
+    glUseProgramStages(pipeline, GL_GEOMETRY_SHADER_BIT, gsProgram);
+    glUseProgramStages(pipeline, GL_FRAGMENT_SHADER_BIT, fsProgram);
+
+    <span class="comment">// glUniform* now heed the "active" shader program rather than glUseProgram</span>
+    glActiveShaderProgram(pipeline, vsProgram);
+    glUniform1f(fooLocation, <span class="number">1.0</span>f);
+
+    <span class="keyword">return</span> pipeline;
+}</code></pre></div>
+  <div class="tk-museo-sans" style="font-size:450%;
+               font-weight:900;
+               color:#333;
+               text-align:center">
+    Separable Programs
+  </div>
+</div>
+
+<!-- Binaries -->
+<div class="slide">
+  <div class="codewrapper" style="width:90%;font-size:110%;margin:auto">
+    <pre>      <code class="cpp">...
+
+glProgramParameteri(programHandle, GL_PROGRAM_BINARY_RETRIEVABLE_HINT, GL_TRUE);
+glLinkProgram(programHandle);
+
+<span class="keyword">GLuint</span> bufSize;
+glGetProgramiv(programHandle, GL_PROGRAM_BINARY_LENGTH, &amp;bufSize);
+
+<span class="built_in">std</span>::<span class="built_in">vector</span><char> buffer(bufSize);
+
+<span class="keyword">GLenum</span> binaryFormat;
+glGetProgramBinary(programHandle, bufSize, NULL, &amp;binaryFormat, &amp;buffer[<span class="number">0</span>]);
+    </char></code></pre>
+  </div>
+  <div class="codewrapper" style="width:90%;font-size:125%;margin:auto">
+    <pre>      <code class="cpp"><span class="comment">// use a cached program on subsequent runs:</span>
+glProgramBinary(programHandle, binaryFormat, &amp;buffer[<span class="number">0</span>], bufSize);</code></pre></div>
+  <div class="tk-museo-sans" style="font-size:700%;
+               font-weight:900;
+               color:#333;
+               text-align:center">
+    Shader Binaries
+  </div>
+  <p class="tk-museo-sans" style="width:70%;margin:auto;margin-top:10px">
+    Desktop OpenGL inherited this feature from OpenGL ES.  Beware however; the binary format isn't portable at all.
+    My personal preference is to avoid this feature unless I desperately need it.
+  </p>
+</div>
+</hx:include>
+    <hx:include class="include_200" src="transform-feedback.html"><div class="slide">
+  <table>
+    <tbody><tr>
+      <td>
+        <div class="tk-museo-sans" style="font-size:500%;
+                    margin-top:100px;
+                    font-weight:800;
+                    text-align:center">
+          Transform Feedback
+        </div>
+        <ul class="listitems tk-museo-sans">
+          <li>1  Old-Style: query objects</li>
+          <li>2  Ditto, with multiple VBOs</li>
+          <li>3  New-Style: trans feedback objects</li>
+          <li>4  Multistream and Pause/Resume</li>
+          <li>5  Getting data back to the CPU</li>
+        </ul>
+      </td>
+    </tr>
+  </tbody></table>
+</div>
+
+<!-- OLD Transform Feedback, Interleaved (known as stream-out to game devs) -->
+<div class="slide">
+  <table>
+    <tbody><tr style="width:100%;height:100%">
+      <td>
+        <div class="codewrapper" style="font-size:80%;width:95%">
+          <pre><code class="glsl"><span class="comment">// This goes after glCompileShader but before glLinkProgram...</span>
+<span class="keyword">const</span> <span class="keyword">char</span>* varyings[<span class="number">3</span>] = { <span class="string">"vPosition"</span>, <span class="string">"vBirthTime"</span>, <span class="string">"vVelocity"</span> };
+glTransformFeedbackVaryings(programHandle, <span class="number">3</span>, varyings,
+                        GL_INTERLEAVED_ATTRIBS);
+
+<span class="comment">// Create a query object for transform feedback:</span>
+glGenQueries(<span class="number">1</span>, &amp;PrimsWritten);
+
+<span class="comment">// Create VBO for input on even frames and output on odd frames:</span>
+glGenBuffers(<span class="number">1</span>, &amp;BufferA);
+glBindBuffer(GL_ARRAY_BUFFER, BufferA);
+glBufferData(GL_ARRAY_BUFFER, <span class="keyword">sizeof</span>(seed_data), &amp;seed_data[<span class="number">0</span>], GL_STREAM_DRAW);
+
+<span class="comment">// Create VBO for output on even frames and input on odd frames:</span>
+glGenBuffers(<span class="number">1</span>, &amp;BufferB);
+glBindBuffer(GL_ARRAY_BUFFER, BufferB);
+glBufferData(GL_ARRAY_BUFFER, <span class="keyword">sizeof</span>(seed_data), <span class="number">0</span>, GL_STREAM_DRAW);</code></pre>
+        </div>
+        <div class="codewrapper" style="font-size:80%;width:95%">
+          <pre><code class="glsl">glEnable(GL_RASTERIZER_DISCARD);
+glBindBuffer(GL_ARRAY_BUFFER, BufferA);                     <span class="comment">// Source VBO</span>
+glVertexAttribPointer(...);
+glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, <span class="number">0</span>, BufferB); <span class="comment">// Dest VBO</span>
+glBeginTransformFeedback(GL_POINTS);
+glBeginQuery(GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN, PrimsWritten);
+glDrawArrays(GL_POINTS, <span class="number">0</span>, inCount);
+glEndTransformFeedback();
+glEndQuery(GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN);
+glGetQueryObjectuiv(Query, GL_QUERY_RESULT, &amp;outCount);
+
+swap(BufferA, BufferB);
+
+glDisable(GL_RASTERIZER_DISCARD);
+glBindBuffer(GL_ARRAY_BUFFER, BufferA);
+glVertexAttribPointer(...);
+glDrawArrays(GL_POINTS, <span class="number">0</span>, outCount);</code></pre></div>
+      </td>
+      <td style="width:10%"></td>
+      <td rowspan="2">
+        <object type="image/svg+xml" class="figure" data="Modern%20OpenGL-Dateien/Pipeline4.svg">
+        </object>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div class="tk-museo-sans" style="font-size:200%;font-weight:800;margin:auto;margin-left:50px">
+          <span>Old</span> Transform Feedback (Interleaved VBO)
+        </div>
+      </td>
+      <td></td>
+    </tr>
+  </tbody></table>
+</div>
+
+<!-- OLD Transform Feedback, Separate  -->
+<div class="slide">
+  <table>
+    <tbody><tr style="width:100%;height:100%">
+      <td>
+        <div class="codewrapper" style="font-size:75%;width:100%">
+          <pre><code class="glsl"><span class="comment">// This goes after glCompileShader but before glLinkProgram...</span>
+<span class="keyword">const</span> <span class="keyword">char</span>* varyings[<span class="number">2</span>] = { <span class="string">"vPosition"</span>, <span class="string">"vBirthTime"</span> };
+glTransformFeedbackVaryings(programHandle, <span class="number">2</span>, varyings,
+                        <b>GL_SEPARATE_ATTRIBS</b>);
+
+<span class="comment">// Create a query object for transform feedback:</span>
+glGenQueries(<span class="number">1</span>, &amp;PrimsWritten);
+
+<span class="comment">// Create VBOs for input on even frames and output on odd frames:</span>
+glGenBuffers(<span class="number">1</span>, &amp;Buffer0A);
+glBindBuffer(GL_ARRAY_BUFFER, Buffer0A);
+glGenBuffers(<span class="number">1</span>, &amp;Buffer1A);
+glBindBuffer(GL_ARRAY_BUFFER, Buffer1A);
+
+<span class="comment">// Create VBOs for output on even frames and input on odd frames:</span>
+glGenBuffers(<span class="number">1</span>, &amp;Buffer0B);
+glBindBuffer(GL_ARRAY_BUFFER, Buffer0B);
+glGenBuffers(<span class="number">1</span>, &amp;Buffer1B);
+glBindBuffer(GL_ARRAY_BUFFER, Buffer1B);</code></pre>
+        </div>
+        <div class="codewrapper" style="font-size:75%;width:100%">
+          <pre><code class="glsl">glEnable(GL_RASTERIZER_DISCARD);
+
+glBindBuffer(GL_ARRAY_BUFFER, Buffer0A);                     <span class="comment">// Source VBO</span>
+glVertexAttribPointer(...);
+glBindBuffer(GL_ARRAY_BUFFER, Buffer1A);                     <span class="comment">// Source VBO</span>
+glVertexAttribPointer(...);
+glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, <span class="number">0</span>, Buffer0B); <span class="comment">// Dest VBO</span>
+glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, <span class="number">1</span>, Buffer1B); <span class="comment">// Dest VBO</span>
+glBeginTransformFeedback(GL_POINTS);
+glBeginQuery(GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN, PrimsWritten);
+glDrawArrays(GL_POINTS, <span class="number">0</span>, inCount);
+glEndTransformFeedback();
+glEndQuery(GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN);
+glGetQueryObjectuiv(Query, GL_QUERY_RESULT, &amp;outCount);
+
+swap(Buffer0A, Buffer0B);
+swap(Buffer1A, Buffer1B);
+
+glDisable(GL_RASTERIZER_DISCARD);
+glBindBuffer(GL_ARRAY_BUFFER, Buffer0A);
+glVertexAttribPointer(...);
+glBindBuffer(GL_ARRAY_BUFFER, Buffer1A);
+glVertexAttribPointer(...);
+glDrawArrays(GL_POINTS, <span class="number">0</span>, outCount);
+</code></pre></div>
+      </td>
+      <td style="width:10%"></td>
+      <td rowspan="2">
+        <object type="image/svg+xml" class="figure" data="Modern%20OpenGL-Dateien/Pipeline4.svg">
+        </object>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div class="tk-museo-sans" style="position:absolute; display: block;
+                    left:600px; bottom:50px;
+                    font-size:200%;
+                    font-weight:800;">
+          <span>Old</span> Transform Feedback (Separate VBOs)
+        </div>
+      </td>
+      <td></td>
+    </tr>
+  </tbody></table>
+</div>
+
+<!-- NEW Transform Feedback: TF objects instead of Query objects -->
+<div class="slide">
+  <table>
+    <tbody><tr style="width:100%;height:100%">
+      <td>
+        <div class="codewrapper" style="font-size:80%;width:100%">
+          <pre><code class="cpp"><span class="comment">// This goes after glCompileShader but before glLinkProgram...</span>
+<span class="keyword">const</span> <span class="keyword">char</span>* varyings[<span class="number">4</span>] = { <span class="string">"vPosition"</span>, <span class="string">"<b>gl_NextBuffer</b>"</span>, <span class="string">"vBirthTime"</span>, <span class="string">"vVelocity"</span> };
+glTransformFeedbackVaryings(programHandle, <span class="number">4</span>, varyings, GL_INTERLEAVED_ATTRIBS);
+
+<span class="comment">// Create VBO for input on even frames and output on odd frames:</span>
+glGenBuffers(<span class="number">1</span>, &amp;BufferA);
+glBindBuffer(GL_ARRAY_BUFFER, BufferA);
+glBufferData(GL_ARRAY_BUFFER, <span class="keyword">sizeof</span>(seed_data), &amp;seed_data[<span class="number">0</span>], GL_STREAM_DRAW);
+
+<span class="comment">// Create VBO for output on even frames and input on odd frames:</span>
+glGenBuffers(<span class="number">1</span>, &amp;BufferB);
+glBindBuffer(GL_ARRAY_BUFFER, BufferB);
+glBufferData(GL_ARRAY_BUFFER, <span class="keyword">sizeof</span>(seed_data), <span class="number">0</span>, GL_STREAM_DRAW);
+
+<span class="comment">// Create a transform feedback object:</span>
+<span class="keyword">GLuint</span> Feedback = <span class="number">0</span>;
+glGenTransformFeedbacks(<span class="number">1</span>, &amp;Feedback);
+glBindTransformFeedback(GL_TRANSFORM_FEEDBACK, Feedback);
+glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, <span class="number">0</span>, BufferA);
+glBindTransformFeedback(GL_TRANSFORM_FEEDBACK, <span class="number">0</span>);</code></pre>
+        </div>
+        <div class="codewrapper" style="font-size:80%;width:100%">
+          <pre><code class="cpp">glEnable(GL_RASTERIZER_DISCARD);
+glBindBuffer(GL_ARRAY_BUFFER, BufferA);
+glVertexAttribPointer(...);
+glBindTransformFeedback(GL_TRANSFORM_FEEDBACK, TransformFeedback);
+glBeginTransformFeedback(GL_POINTS);
+glDrawArrays(GL_POINTS, <span class="number">0</span>, inCount);
+glEndTransformFeedback();
+glBindTransformFeedback(GL_TRANSFORM_FEEDBACK, <span class="number">0</span>);
+
+swap(BufferA, BufferB);
+
+glDisable(GL_RASTERIZER_DISCARD);
+glBindBuffer(GL_ARRAY_BUFFER, BufferA);
+glVertexAttribPointer(...);
+glDrawTransformFeedback(GL_POINTS, TransformFeedback); <span class="comment">// similar to glDrawArrays</span></code></pre></div>
+      </td>
+      <td style="width:10%"></td>
+      <td rowspan="2">
+        <object type="image/svg+xml" class="figure" data="Modern%20OpenGL-Dateien/Pipeline5.svg">
+        </object>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div class="tk-museo-sans" style="font-size:300%;font-weight:800;text-align:center">
+          <span>New</span> Transform Feedback
+        </div>
+      </td>
+      <td></td>
+    </tr>
+  </tbody></table>
+</div>
+
+<!-- Streams -->
+<div class="slide">
+  <table>
+    <tbody><tr style="width:100%;height:100%">
+      <td>
+        <div class="codewrapper" style="font-size:120%;width:100%">
+          <pre><code class="glsl"><span class="comment">// Assign streams in geometry shader</span>
+(<span class="keyword">layout</span> <span class="keyword">out</span> = <span class="number">0</span>) <span class="keyword">out</span> <span class="keyword">vec4</span> vPosition;
+(<span class="keyword">layout</span> <span class="keyword">out</span> = <span class="number">1</span>) <span class="keyword">out</span> <span class="keyword">vec4</span> vBirthTime;
+(<span class="keyword">layout</span> <span class="keyword">out</span> = <span class="number">1</span>) <span class="keyword">out</span> <span class="keyword">vec4</span> vVelocity;
+...
+EmitStreamVertex(<span class="number">0</span>);
+EmitStreamPrimitive(<span class="number">0</span>);</code></pre>
+        </div>
+        <div class="codewrapper" style="font-size:120%;width:100%">
+          <pre><code class="cpp"><span class="comment">// Assign varyings to "record" during initialization</span>
+<span class="keyword">const</span> <span class="keyword">char</span>* varyings[<span class="number">4</span>] = { <span class="string">"vBirthTime"</span>, <span class="string">"vVelocity"</span> };
+glTransformFeedbackVaryings(programHandle, <span class="number">2</span>, varyings,
+                            GL_INTERLEAVED_ATTRIBS);</code></pre></div>
+        <div class="codewrapper" style="font-size:120%;width:100%">
+          <pre><code class="cpp"><span class="comment">// This time, don't discard rasterization</span>
+glBindTransformFeedback(GL_TRANSFORM_FEEDBACK, TransformFeedback);
+glBeginTransformFeedback(GL_POINTS);
+glDrawArrays(GL_POINTS, offset0, count0);
+glPauseTransformFeedback();
+glDrawArrays(GL_POINTS, offset1, count1);
+glResumeTransformFeedback();
+glDrawArrays(GL_POINTS, offset2, count2);
+glEndTransformFeedback();
+glBindTransformFeedback(GL_TRANSFORM_FEEDBACK, <span class="number">0</span>);</code></pre></div>
+      </td>
+      <td style="width:10%"></td>
+      <td rowspan="2">
+        <object type="image/svg+xml" class="figure" data="Modern%20OpenGL-Dateien/Pipeline5.svg">
+        </object>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div class="tk-museo-sans" style="font-size:150%;font-weight:800;text-align:center">
+          Multiple Streams / Pause / Resume
+        </div>
+      </td>
+      <td></td>
+    </tr>
+  </tbody></table>
+</div>
+
+<!-- Send to CPU -->
+<div class="slide">
+  <table>
+    <tbody><tr style="width:100%;height:100%">
+      <td>
+        <div class="codewrapper" style="font-size:110%;width:100%">
+          <pre><code class="cpp"><span class="keyword">GLuint</span> RecordBuffer, DrawBuffer; <span class="comment">// VBOs</span>
+<span class="keyword">GLuint</span> Feedback;                 <span class="comment">// TFO</span>
+
+<span class="comment">// ...</span>
+
+glGenTransformFeedbacks(<span class="number">1</span>, &amp;Feedback);
+glBindTransformFeedback(GL_TRANSFORM_FEEDBACK, Feedback);
+glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, <span class="number">0</span>, RecordBuffer);
+glBindTransformFeedback(GL_TRANSFORM_FEEDBACK, <span class="number">0</span>);</code></pre></div>
+        <div class="codewrapper" style="font-size:110%;width:100%">
+          <pre><code class="cpp">glBindBuffer(GL_ARRAY_BUFFER, DrawBuffer);
+glVertexAttribPointer(...);
+glBindTransformFeedback(GL_TRANSFORM_FEEDBACK, TransformFeedback);
+glBeginTransformFeedback(GL_POINTS);
+glDrawArrays(GL_POINTS, offset, count);
+glEndTransformFeedback();
+glBindTransformFeedback(GL_TRANSFORM_FEEDBACK, <span class="number">0</span>);</code></pre></div>
+        <div class="codewrapper" style="font-size:110%;width:100%">
+          <pre><code class="cpp">glBindBuffer(GL_ARRAY_BUFFER, RecordBuffer);
+<span class="keyword">void</span>* rawdata = glMapBuffer( GL_ARRAY_BUFFER, GL_READ_ONLY);
+<span class="comment">// ...do stuff here...</span>
+glUnmapBuffer(rawData);
+glBindBuffer(GL_ARRAY_BUFFER, <span class="number">0</span>);</code></pre></div>
+      </td>
+      <td style="width:10%"></td>
+      <td rowspan="2">
+        <object type="image/svg+xml" class="figure" data="Modern%20OpenGL-Dateien/Pipeline6.svg">
+        </object>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div class="tk-museo-sans" style="font-size:200%;font-weight:800;text-align:center">
+          Send back to CPU
+        </div>
+      </td>
+      <td></td>
+    </tr>
+  </tbody></table>
+</div>
+</hx:include>
+    <hx:include class="include_200" src="textures.html"><!-- Texture Formats -->
+<div class="slide">
+  <style scoped="scoped">
+    #unsized > span {
+    font-weight:800;
+    width:120px;
+    background-color:#89cfeb;
+    }
+    .wrap-items > span {
+    display:inline-block;
+    width:100px;
+    background-color:#eee;
+    font-size:70%;
+    margin:0px;
+    }
+    #easy-formats > span {
+    font-weight:800;
+    width:120px;
+    background-color:#89cfeb;
+    }
+    #formats-list > span { width:150px; }
+    #types-list > span {
+    width:200px;
+    }
+  </style>
+  <div class="slidetitle400 tk-museo-sans">
+    Texture Formats
+  </div>
+  <pre class="simplewrapper"><code class="cpp"><span class="comment">// LUMINANCE and LUMINANCE_ALPHA et al are gone!</span>
+<span class="keyword">GLenum</span> internalFormat = GL_RGB;
+<span class="keyword">GLenum</span> format = GL_RGB;
+<span class="keyword">GLenum</span> type = GL_UNSIGNED_BYTE;
+glTexImage2D(GL_TEXTURE_2D, <span class="number">0</span>, internalFormat, width, height, <span class="number">0</span>, format, type, data);</code></pre>
+  <h2 class="tk-museo-sans smallheader">
+    INTERNAL FORMATS
+  </h2>
+  <div id="unsized" class="wrap-items" style="margin-left:20px"><span>
+    DEPTH_COMPONENT</span>
+<span>    DEPTH_STENCIL</span>
+<span>    RED</span>
+<span>    RG</span>
+<span>    RGB</span>
+<span>    RGBA</span>
+  </div>
+  <div class="wrap-items" style="margin-left:20px"><span>
+    R8</span>
+<span>    R8_SNORM</span>
+<span>    R16</span>
+<span>    R16_SNORM</span>
+<span>    RG8</span>
+<span>    RG8_SNORM</span>
+<span>    RG16</span>
+<span>    RG16_SNORM</span>
+<span>    R3_G3_B2</span>
+<span>    RGB4</span>
+<span>    RGB5</span>
+<span>    RGB8</span>
+<span>    RGB8_SNORM</span>
+<span>    RGB10</span>
+<span>    RGB12</span>
+<span>    RGB16</span>
+<span>    RGB16_SNORM</span>
+<span>    RGBA2</span>
+<span>    RGBA4</span>
+<span>    RGB5_A1</span>
+<span>    RGBA8</span>
+<span>    RGBA8_SNORM</span>
+<span>    RGB10_A2</span>
+<span>    RGB10_A2UI</span>
+<span>    RGBA12</span>
+<span>    RGBA16</span>
+<span>    RGBA16_SNORM</span>
+<span>    SRGB8</span>
+<span>    SRGB8_ALPHA8</span>
+<span>    RGBA</span>
+<span>    R16F</span>
+<span>    RG16F</span>
+<span>    RGB16F</span>
+<span>    RGBA16F</span>
+<span>    R32F</span>
+<span>    RG32F</span>
+<span>    RGB32F</span>
+<span>    RGBA32F</span>
+<span>    R11F_G11F_B10F</span>
+<span>    RGB9_E5</span>
+<span>    R8I</span>
+<span>    R8UI</span>
+<span>    R16I</span>
+<span>    R16UI</span>
+<span>    R32I</span>
+<span>    R32UI</span>
+<span>    RG8I</span>
+<span>    RG8UI</span>
+<span>    RG16I</span>
+<span>    RG16UI</span>
+<span>    RG32I</span>
+<span>    RG32UI</span>
+<span>    RGB8I</span>
+<span>    RGB8UI</span>
+<span>    RGB16I</span>
+<span>    RGB16UI</span>
+<span>    RGB32I</span>
+<span>    RGB32UI</span>
+<span>    RGBA8I</span>
+<span>    RGBA8UI</span>
+<span>    RGBA16I</span>
+<span>    RGBA16UI</span>
+<span>    RGBA32I</span>
+<span>    RGBA32UI</span>
+  </div>
+  <h2 class="tk-museo-sans smallheader">
+    FORMATS
+  </h2>
+  <div id="easy-formats" class="wrap-items" style="margin-left:20px"><span>
+    DEPTH_COMPONENT</span>
+<span>    DEPTH_STENCIL</span>
+<span>    RED</span>
+<span>    RG</span>
+<span>    RGB</span>
+<span>    RGBA</span>
+  </div>
+  <div id="formats-list" class="wrap-items" style="margin-left:20px"><span>
+    STENCIL_INDEX</span>
+<span>    GREEN</span>
+<span>    BLUE</span>
+<span>    BGR</span>
+<span>    BGRA</span>
+<span>    RED_INTEGER</span>
+<span>    GREEN_INTEGER</span>
+<span>    BLUE_INTEGER</span>
+<span>    RG_INTEGER</span>
+<span>    RGB_INTEGER</span>
+<span>    RGBA_INTEGER</span>
+<span>    BGR_INTEGER</span>
+<span>    BGRA_INTEGER</span>
+  </div>
+  <h2 class="tk-museo-sans smallheader">
+    TYPES
+  </h2>
+  <div id="types-list" class="wrap-items" style="margin-left:20px"><span>
+    UNSIGNED_BYTE</span>
+<span>    BYTE</span>
+<span>    UNSIGNED_SHORT</span>
+<span>    SHORT</span>
+<span>    UNSIGNED_INT</span>
+<span>    INT</span>
+<span>    HALF_FLOAT</span>
+<span>    FLOAT</span>
+<span>    UNSIGNED_SHORT_4_4_4_4</span>
+<span>    UNSIGNED_INT_8_8_8_8</span>
+<span>    UNSIGNED_INT_8_8_8_8_REV</span>
+<span>    UNSIGNED_INT_10_10_10_2</span>
+    etc...
+  </div>
+</div>
+
+<!-- Block Compression -->
+<div class="slide">
+  <div class="slidetitle400 tk-museo-sans">
+    Compressed Textures
+  </div>
+  <pre class="smallwrapper"><code class="cpp"><span class="preprocessor">#define GL_COMPRESSED_RED_RGTC1           0x8DBB // Also known as: DXT_BC5, LATC, RGTC, 3Dc, ATI2</span>
+<span class="preprocessor">#define GL_COMPRESSED_SIGNED_RED_RGTC1    0x8DBC</span>
+<span class="preprocessor">#define GL_COMPRESSED_RG_RGTC2            0x8DBD</span>
+<span class="preprocessor">#define GL_COMPRESSED_SIGNED_RG_RGTC2     0x8DBE</span>
+
+<span class="preprocessor">#define GL_COMPRESSED_RGBA_BPTC_UNORM         0x8E8C // Also known as: DXT_BC7</span>
+<span class="preprocessor">#define GL_COMPRESSED_SRGB_ALPHA_BPTC_UNORM   0x8E8D</span>
+<span class="preprocessor">#define GL_COMPRESSED_RGB_BPTC_SIGNED_FLOAT   0x8E8E</span>
+<span class="preprocessor">#define GL_COMPRESSED_RGB_BPTC_UNSIGNED_FLOAT 0x8E8F</span>
+
+glCompressedTexImage3D (<span class="keyword">enum</span> target, <span class="keyword">int</span> level, <span class="keyword">enum</span> internalformat, <span class="keyword">sizei</span> width, <span class="keyword">sizei</span> height,
+                        <span class="keyword">sizei</span> depth, <span class="keyword">int</span> border, <span class="keyword">sizei</span> imageSize, <span class="keyword">const</span> <span class="keyword">void</span> *data)
+
+glCompressedTexImage2D (<span class="keyword">enum</span> target, <span class="keyword">int</span> level, <span class="keyword">enum</span> internalformat, <span class="keyword">sizei</span> width, <span class="keyword">sizei</span> height,
+                        <span class="keyword">int</span> border, <span class="keyword">sizei</span> imageSize, <span class="keyword">const</span> <span class="keyword">void</span> *data)
+
+glCompressedTexImage1D (<span class="keyword">enum</span> target, <span class="keyword">int</span> level, <span class="keyword">enum</span> internalformat, <span class="keyword">sizei</span> width, <span class="keyword">int</span> border,
+                        <span class="keyword">sizei</span> imageSize, <span class="keyword">const</span> <span class="keyword">void</span> *data)
+
+glCompressedTexSubImage3D (<span class="keyword">enum</span> target, <span class="keyword">int</span> level, <span class="keyword">int</span> xoffset, <span class="keyword">int</span> yoffset, <span class="keyword">int</span> zoffset,
+                           <span class="keyword">sizei</span> width, <span class="keyword">sizei</span> height, <span class="keyword">sizei</span> depth, <span class="keyword">enum</span> format, <span class="keyword">sizei</span> imageSize,
+                           <span class="keyword">const</span> <span class="keyword">void</span> *data)
+
+glCompressedTexSubImage2D (<span class="keyword">enum</span> target, <span class="keyword">int</span> level, <span class="keyword">int</span> xoffset, <span class="keyword">int</span> yoffset, <span class="keyword">sizei</span> width,
+                           <span class="keyword">sizei</span> height, <span class="keyword">enum</span> format, <span class="keyword">sizei</span> imageSize, <span class="keyword">const</span> <span class="keyword">void</span> *data)
+
+glCompressedTexSubImage1D (<span class="keyword">enum</span> target, <span class="keyword">int</span> level, <span class="keyword">int</span> xoffset, <span class="keyword">sizei</span> width, <span class="keyword">enum</span> format,
+                           <span class="keyword">sizei</span> imageSize, <span class="keyword">const</span> <span class="keyword">void</span> *data)</code></pre>
+</div>
+
+<!-- Texture Buffers --> 
+<div class="slide">
+  <div class="slidetitle">
+    Texture Buffers
+  </div>
+  <pre class="simplewrapper"><code class="cpp"><span class="keyword">GLuint</span> bufObj;
+glGenBuffers(<span class="number">1</span>, &amp;bufObj);
+glBindBuffer(GL_TEXTURE_BUFFER, bufObj);
+glBufferData(GL_TEXTURE_BUFFER, <span class="keyword">sizeof</span>(data), data, GL_STREAM_DRAW);
+
+<span class="keyword">GLenum</span> sizedFormat = GL_RGBA32F;
+glTexBuffer(GL_TEXTURE_BUFFER, sizedFormat, bufObj);</code></pre>
+  <br>
+  <pre class="simplewrapper"><code class="glsl"><span class="keyword">uniform</span> samplerBuffer Foo;
+...
+<span class="keyword">int</span> coord = ...;
+<span class="keyword">vec4</span> color = texelFetch(Foo, coord);</code></pre>
+  <br>
+  <pre class="simplewrapper"><code class="cpp">glBindBuffer(GL_ARRAY_BUFFER, vbo);   <span class="comment">// source</span>
+glBindBuffer(GL_TEXTURE_BUFFER, tbo); <span class="comment">// destination</span>
+glBufferData(GL_TEXTURE_BUFFER, <span class="number">16384</span>, <span class="number">0</span>, GL_STREAM); <span class="comment">// give it a size</span>
+
+GLintptr readoffset = <span class="number">0</span>, writeoffset = <span class="number">0</span>;
+glCopyBufferSubData(GL_ARRAY_BUFFER, GL_TEXTURE_BUFFER,
+                    readoffset, writeoffset, <span class="number">16384</span>);</code></pre>
+</div>
+
+<!-- Pixel Buffers -->
+<div class="slide">
+  <div class="slidetitle">
+    Pixel Buffers
+  </div>
+  <pre class="smallwrapper"><code class="cpp"><span class="keyword">GLuint</span> bufObj, texObj;
+
+glGenBuffers(<span class="number">1</span>, &amp;bufObj);
+glBindBuffer(GL_PIXEL_UNPACK_BUFFER, bufObj);
+glBufferData(GL_PIXEL_UNPACK_BUFFER, <span class="keyword">sizeof</span>(data), data, GL_STREAM_DRAW);
+
+glGenTextures(<span class="number">1</span>, &amp;texObj);
+glBindTexture(GL_TEXTURE_2D, texObj);
+glTexImage2D(..., NULL);</code></pre>
+  <br>
+  <pre class="smallwrapper"><code class="cpp"><span class="comment">// Render with PBO 'A' while uploading PBO 'B'</span>
+glBindTexture(GL_TEXTURE_2D, texObj);
+glBindBuffer(GL_PIXEL_UNPACK_BUFFER, pboA);
+glTexSubImage2D(GL_TEXTURE_2D, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, w, h, GL_RGBA, GL_UNSIGNED_BYTE, <span class="number">0</span>);
+
+glBindBuffer(GL_PIXEL_UNPACK_BUFFER, pboB);
+glBufferData(GL_PIXEL_UNPACK_BUFFER, byteCount, <span class="number">0</span>, GL_STREAM_DRAW);
+
+<span class="keyword">GLubyte</span>* data = glMapBufferRange(GL_PIXEL_UNPACK_BUFFER, <span class="number">0</span>, byteCount, GL_MAP_WRITE_BIT);
+<span class="comment">// write stuff to 'data' here...</span>
+glUnmapBuffer(GL_PIXEL_UNPACK_BUFFER); <span class="comment">// see also: glFlushMappedBufferRange</span>
+
+glBindBuffer(GL_PIXEL_UNPACK_BUFFER, <span class="number">0</span>);
+<span class="built_in">std</span>::swap(pboA, pboB);
+
+<span class="comment">// render here...</span></code></pre>
+</div>
+
+<!-- Indexed Buffer Objects
+<div class="slide">
+  <div class="slidetitle">
+    Indexed Buffer Objects
+  </div>
+  <!-- TODO
+</div-->
+</hx:include>
+    <hx:include class="include_200" src="misc.html"><!-- Direct State Access -->
+<div class="slide">
+  <div class="slidetitle">
+    Direct State Access
+  </div>
+  <pre class="simplewrapper150"><code class="glsl"><span class="keyword">uniform</span> <span class="keyword">vec3</span> foo = <span class="keyword">vec3</span>(<span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>);
+<span class="keyword">uniform</span> <span class="keyword">vec3</span> bar = <span class="keyword">vec3</span>(<span class="number">3</span>, <span class="number">5</span>, <span class="number">8</span>);</code></pre>
+  <br>
+  <pre class="simplewrapper150"><code class="cpp"><span class="comment">// Old way</span>
+glUseProgram(prog1);
+glGetUniformLocation(<span class="string">"foo"</span>, &amp;loc1);
+glUniform3f(loc1, <span class="number">3.14</span>, <span class="number">2.72</span>, <span class="number">1.62</span>);
+glUseProgram(prog2);
+glGetUniformLocation(<span class="string">"bar"</span>, &amp;loc2);
+glUniform3f(loc2, <span class="number">3.14</span>, <span class="number">2.72</span>, <span class="number">1.62</span>);
+
+<span class="comment">// New way</span>
+glProgramUniform3f(prog1, loc1, <span class="number">3.14</span>, <span class="number">2.72</span>, <span class="number">1.62</span>);
+glProgramUniform3f(prog2, loc2, <span class="number">3.14</span>, <span class="number">2.72</span>, <span class="number">1.62</span>);</code></pre>
+  <br>
+  <div class="slidenote">
+    also check out
+    <a href="http://www.opengl.org/registry/specs/EXT/direct_state_access.txt">
+      EXT_direct_state_access
+    </a>
+  </div>
+</div>
+
+<!-- Conditional Rendering -->
+<div class="slide">
+  <style scoped="true">
+    ul { list-style-type: none }
+  </style>
+  <div class="slidetitle400 tk-museo-sans">
+    Conditional Rendering
+  </div>
+  <pre class="simplewrapper150"><code class="cpp"><span class="keyword">GLuint</span> query;
+glGenQueries(<span class="number">1</span>, &amp;query);
+...
+glColorMaski(<span class="number">0</span>, GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+glDepthMask(GL_FALSE);
+glBeginQuery(GL_ANY_SAMPLES_PASSED, query);
+<span class="comment">// ...render bounding box...</span>
+glEndQuery(...);
+glEndQuery(GL_ANY_SAMPLES_PASSED);
+glColorMaski(<span class="number">0</span>, GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+glDepthMask(GL_TRUE);
+
+<span class="comment">// ...render various stuff while waiting for results...</span>
+
+glBeginConditionalRender(query, GL_QUERY_WAIT);
+<span class="comment">// ...render full geometry...</span>
+glEndConditionalRender();</code></pre>
+  <ul class="tk-museo-sans">
+    <li>GL_QUERY_NO_WAIT</li>
+    <li>GL_QUERY_BY_REGION_WAIT, GL_QUERY_BY_REGION_NO_WAIT</li>
+  </ul>
+</div>
+
+<!-- Image Objects -->
+<div class="slide">
+  <div class="slidetitle400 tk-museo-sans">
+    Image Load / Store
+  </div>
+  <pre class="simplewrapper150"><code class="glsl"><span class="keyword">uniform</span> image2D alphaImage;
+<span class="keyword">uniform</span> iimage1D betaImage;
+...
+<span class="keyword">vec4</span> color = ...;
+<span class="keyword">ivec2</span> coord = ...;
+imageStore(alphaImage, coord, color);
+...
+color = imageLoad(alphaImage, coord); 
+...
+<span class="keyword">int</span> i = ...; <span class="comment">// 1D coordinate</span>
+<span class="keyword">int</span> foo = imageAtomicAdd(betaImage, i, <span class="number">17</span>)</code></pre>
+  <br>
+  <!-- p 263 of spec (and p101)-->
+  <pre class="simplewrapper"><code class="cpp"><span class="keyword">GLuint</span> imageLoc = glGetUniformLocation(prog, <span class="string">"alphaImage"</span>);
+glUniform1i(imageLoc, <span class="number">3</span>); <span class="comment">// must be &lt; GL_MAX_IMAGE_UNITS</span>
+
+glBindImageTexture(<span class="number">3</span>, texObj, miplevel,
+                   GL_FALSE, <span class="number">0</span>, <span class="comment">// &lt;-- for layered textures</span>
+                   GL_READ_WRITE, GL_RGBA8);</code></pre>
+  <ul class="tk-museo-sans">
+    <li>see also: coherent volatile restrict readonly writeonly memoryBarrier()</li>
+  </ul>
+</div>
+
+<!-- Sorry Folks -->
+<div class="slide tk-museo-sans">
+  <div class="slidetitle400">
+    That's all folks!
+  </div>
+  <div class="slidenote tk-museo-sans">
+    ...lots of stuff we didn't cover...
+  </div>
+  <ul>
+    <li style="font-size:250%">Tessellation Shaders (stay tuned)</li>
+    <hr>
+    <li style="font-size:150%">Atomic Counters</li>
+    <li style="font-size:150%">GL_ARB_debug_output</li>
+    <li style="font-size:150%">Viewport Arrays</li>
+    <li style="font-size:150%">Dual Source Blending</li>
+    <hr>
+    <li>
+      <span style="font-size:200%">
+        Bindless Graphics
+      </span>
+      <a href="http://developer.download.nvidia.com/opengl/tutorials/bindless_graphics.pdf">
+        nv prezo
+      </a>
+      <ul>
+        <li>
+          <a href="http://developer.download.nvidia.com/opengl/specs/GL_NV_bindless_texture.txt">
+            NV_bindless_texture
+          </a>
+        </li>
+        <li>
+          NV_shader_buffer_load
+        </li>
+        <li>
+          NV_vertex_buffer_unified_memory
+        </li>
+      </ul>
+    </li>
+  </ul>
+  <pre class="simplewrapper"><code class="glsl"><span class="keyword">uniform</span> <span class="keyword">sampler2D</span>* foo; <span class="comment">// oo la la !</span></code></pre>
+  <br>
+  <pre class="simplewrapper"><code class="cpp">glMakeTextureHandleResidentNV(...);</code></pre>
+  <div style="color:#06f;font-size:30px;font-weight:800;text-align:center;margin-top:10px">
+    <a href="http://www.opengl.org/sdk/docs/">
+      http://www.opengl.org/sdk/docs/
+    </a>
+  </div>
+</div>
+</hx:include>
+
+    <!--hx:include src="wordle.html"></hx:include>
+    <hx:include src="notes.html"></hx:include-->
+
+    <script>
+      var spanify = function() { $(function(){
+      $('.wrap-items').
+          each(function(){
+              var spans = $(this).html().replace(/^(\s*[A-Z].*)/mg, '<span>$1</span>');
+              $(this).html(spans);
+          });
+      }); }
+
+      setTimeout("hljs.tabReplace = '    ';hljs.initHighlighting();", 1000);
+      setTimeout("spanify()", 2000);
+    </script>
+
+    <footer>
+    </footer>
+    <script src="Modern%20OpenGL-Dateien/script.js"></script>
+  
+
+</body></html>

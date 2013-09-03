@@ -19,6 +19,22 @@ perl -p -e '
 uncrustify -q -l CPP -c "$HOME/bin/uncrustify.cfg" \
 	| \
 perl -p -e '
+	sub replace {
+		my $expression = shift;
+		
+		my @parts = split "\"", $_;
+
+		for (0 ... (@parts - 1))
+		{
+			if ($_ % 2)
+			{
+				$parts [$_] =~ $expression;
+			}
+
+			print $parts [$_];
+		}	
+	}
+
 	s/^(\t+\<\<)/\t$1/o;                                                    # add a tab before stream operator <<
 	s/^(\t+\>\>)/\t$1/o;                                                    # add a tab before stream operator >>
 	s/\[\]/[ ]/go;                                                          # add space between [ ]
@@ -31,7 +47,7 @@ perl -p -e '
 	s/-\>\s*\*/->*/go;                                                      # change variable -> * member to variable ->* member
 	s/([\w\d]+\:\:)(\s+)/$1/sgo;                                            # remove space after CLASS::
 	s/\)\((\w)/) ($1/sgo;                                                   # add space between )(
-	s/(\s[\w\d\)\]]+)\.([a-zA-Z])/$1 .$2/go
+	replace (s/(\s[\w\d\)\]]+)\.([a-zA-Z])/$1 .$2/go)
 		unless /\w\.\w+?[\>"]/ or /^\s*(\/?\*|\/\/)/go;                      # change variable.member to variable .member
    s/\)and/) and/sgo;
    s/([)])(override|final)/$1 $2/;                                         # add space before final or override

@@ -117,7 +117,7 @@ var nodeTypes = [
 'Material',
 'Matrix3VertexAttribute',
 'Matrix4VertexAttribute',
-'MetadataBool',
+'MetadataBoolean',
 'MetadataDouble',
 'MetadataFloat',
 'MetadataInteger',
