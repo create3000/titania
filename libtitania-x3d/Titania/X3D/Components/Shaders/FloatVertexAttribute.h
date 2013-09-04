@@ -69,14 +69,6 @@ public:
 
 	///  @name Fields
 
-	MFFloat &
-	value ()
-	{ return *fields .value; }
-
-	const MFFloat &
-	value () const
-	{ return *fields .value; }
-
 	SFInt32 &
 	numComponents ()
 	{ return *fields .numComponents; }
@@ -85,6 +77,14 @@ public:
 	numComponents () const
 	{ return *fields .numComponents; }
 
+	MFFloat &
+	value ()
+	{ return *fields .value; }
+
+	const MFFloat &
+	value () const
+	{ return *fields .value; }
+
 
 private:
 
@@ -92,8 +92,8 @@ private:
 	{
 		Fields ();
 
-		MFFloat* const value;
 		SFInt32* const numComponents;
+		MFFloat* const value;
 	};
 
 	Fields fields;

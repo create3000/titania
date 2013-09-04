@@ -1,6 +1,13 @@
 2013-09-04  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Library.mdproj:
+	* Texture.wrl:
+	* LineProperties.wrl:
+	* sobel-ComposedShader.wrl: 
+
+2013-09-04  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Library.mdproj:
 	* lena.jpg:
 	* Toon.wrl:
 	* Test.wrl:

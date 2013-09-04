@@ -101,6 +101,8 @@ public:
 	hatchColor () const
 	{ return *fields .hatchColor; }
 
+	///  @name Operations
+
 	virtual
 	void
 	draw () final;

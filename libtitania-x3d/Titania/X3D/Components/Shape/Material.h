@@ -117,6 +117,8 @@ public:
 	transparency () const
 	{ return *fields .transparency; }
 
+	///  @name Operations
+
 	virtual
 	bool
 	isTransparent () const final

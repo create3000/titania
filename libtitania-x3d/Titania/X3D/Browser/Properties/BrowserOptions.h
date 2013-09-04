@@ -53,6 +53,8 @@
 
 #include "../../Components/Core/X3DPropertyNode.h"
 #include "../../Components/Shape/Appearance.h"
+#include "../../Components/Shape/LineProperties.h"
+#include "../../Components/Shape/FillProperties.h"
 #include "../../Components/Text/FontStyle.h"
 #include "../../Components/Texturing/TextureProperties.h"
 #include "../../Execution/X3DExecutionContext.h"
@@ -218,6 +220,22 @@ public:
 	appearance () const
 	{ return fields .appearance; }
 
+	X3DSFNode <LineProperties> &
+	lineProperties ()
+	{ return fields .lineProperties; }
+
+	const X3DSFNode <LineProperties> &
+	lineProperties () const
+	{ return fields .lineProperties; }
+
+	X3DSFNode <FillProperties> &
+	fillProperties ()
+	{ return fields .fillProperties; }
+
+	const X3DSFNode <FillProperties> &
+	fillProperties () const
+	{ return fields .fillProperties; }
+
 	X3DSFNode <TextureProperties> &
 	textureProperties ()
 	{ return fields .textureProperties; }
@@ -332,6 +350,8 @@ private:
 		SFInt32* const minTextureSize;
 		X3DSFNode <MotionBlur> motionBlurOptions;
 		X3DSFNode <Appearance> appearance;
+		X3DSFNode <LineProperties> lineProperties;
+		X3DSFNode <FillProperties> fillProperties;
 		X3DSFNode <TextureProperties> textureProperties;
 		X3DSFNode <Arc2DOptions> arc2DOptions;
 		X3DSFNode <ArcClose2DOptions> arcClose2DOptions;

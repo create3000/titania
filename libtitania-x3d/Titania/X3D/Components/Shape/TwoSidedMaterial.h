@@ -173,6 +173,8 @@ public:
 	backTransparency () const
 	{ return *fields .backTransparency; }
 
+	///  @name Operations
+
 	virtual
 	bool
 	isTransparent () const final

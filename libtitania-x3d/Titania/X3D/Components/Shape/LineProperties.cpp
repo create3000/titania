@@ -55,9 +55,42 @@
 namespace titania {
 namespace X3D {
 
+inline
+long int
+strtol (const char* str, int base)
+{
+	char* endptr;
+
+	return ::strtol (str, &endptr, base);
+}
+
+static std::vector <GLushort> linetypes = {
+	strtol ("0000000000000000", 2), // 0 None
+	strtol ("1111111111111111", 2), // 1 Solid
+	strtol ("1111111110000000", 2), // 2 Dashed
+	strtol ("1010101010101010", 2), // 3 Dotted
+	strtol ("1111111110001000", 2), // 4 Dashed-dotted
+	strtol ("1111100010001000", 2), // 5 Dash-dot-dot
+
+	strtol ("1111111111111111", 2), // 6 (single arrow)
+	strtol ("1111111111111111", 2), // 7 (single dot)
+	strtol ("1111111111111111", 2), // 8 (double arrow)
+
+	strtol ("1111111100000000", 2), // 9 (stitch line)
+	strtol ("1111111000111000", 2), // 10 (chain line)
+	strtol ("1111111110011100", 2), // 11 (center line)
+	strtol ("1111111111100000", 2), // 12 (hidden line)
+	strtol ("1111111011101110", 2)  // 13 (phantom line)
+
+	// 14 (break line - style 1)
+	// 15 (break line - style 2)
+	// 16 User - specified dash pattern
+
+};
+
 LineProperties::Fields::Fields () :
-	applied (new SFBool (true)),
-	linetype (new SFInt32 (1)),
+	             applied (new SFBool (true)),
+	            linetype (new SFInt32 (1)),
 	linewidthScaleFactor (new SFFloat ())
 { }
 
@@ -83,7 +116,25 @@ LineProperties::create (X3DExecutionContext* const executionContext) const
 
 void
 LineProperties::draw ()
-{ }
+{
+	if (applied ())
+	{
+		glEnable (GL_LINE_STIPPLE);
+
+		if (linetype () > 0 and linetype () < (int32_t) linetypes .size ())
+			glLineStipple (1, linetypes [linetype ()]);
+
+		else
+			glLineStipple (1, linetypes [1]);
+
+		glLineWidth (linewidthScaleFactor ());
+	}
+	else
+	{
+		glDisable (GL_LINE_STIPPLE);
+		glLineWidth (1);
+	}
+}
 
 } // X3D
 } // titania

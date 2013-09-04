@@ -61,12 +61,6 @@
 namespace titania {
 namespace X3D {
 
-static
-const Matrix4f textureMatrix = { 1,  0, 0, 0,
-	                              0, -1, 0, 0,
-	                              0,  0, 1, 0,
-	                              0,  1, 0, 1 };
-
 X3DShapeNode::Fields::Fields () :
 	appearance (new SFNode ()),
 	geometry (new SFNode ())
@@ -98,7 +92,7 @@ X3DShapeNode::initialize ()
 bool
 X3DShapeNode::isTransparent () const
 {
-	if (_appearance and _appearance -> isTransparent ())
+	if (_appearance -> isTransparent ())
 		return true;
 
 	if (_geometry and _geometry -> isTransparent ())
@@ -216,27 +210,8 @@ X3DShapeNode::pick ()
 void
 X3DShapeNode::draw ()
 {
-	glColor4f (1, 1, 1, 1);
-
-	glMatrixMode (GL_TEXTURE);
-	glLoadMatrixf (textureMatrix .data ());
-	glMatrixMode (GL_MODELVIEW);
-
-	glBindTexture (GL_TEXTURE_2D, 0);
-	glBindTexture (GL_TEXTURE_CUBE_MAP, 0);
-
 	_appearance -> draw ();
 	_geometry   -> draw ();
-
-	glDisable (GL_FOG);
-	glDisable (GL_LIGHTING);
-	glDisable (GL_COLOR_MATERIAL);
-
-	glDisable (GL_TEXTURE_2D);
-	glDisable (GL_TEXTURE_CUBE_MAP);
-
-	glUseProgram (0);
-	glBindProgramPipeline (0);
 }
 
 void

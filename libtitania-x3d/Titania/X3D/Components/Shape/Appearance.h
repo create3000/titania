@@ -124,6 +124,8 @@ public:
 	shaders () const
 	{ return *fields .shaders; }
 
+	///  @name Operations
+
 	virtual
 	bool
 	isTransparent () const;

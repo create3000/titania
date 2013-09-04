@@ -51,6 +51,7 @@
 #include "Appearance.h"
 
 #include "../../Bits/Cast.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Shaders/X3DShaderNode.h"
 #include "../Shape/FillProperties.h"
@@ -61,6 +62,12 @@
 
 namespace titania {
 namespace X3D {
+
+static
+const Matrix4f textureMatrix = { 1,  0, 0, 0,
+	                              0, -1, 0, 0,
+	                              0,  0, 1, 0,
+	                              0,  1, 0, 1 };
 
 Appearance::Fields::Fields () :
 	lineProperties (new SFNode ()),
@@ -139,6 +146,11 @@ void
 Appearance::set_lineProperties ()
 {
 	_lineProperties = x3d_cast <LineProperties*> (lineProperties ());
+
+	if (_lineProperties)
+		return;
+
+	_lineProperties = getBrowser () -> getBrowserOptions () -> lineProperties ();
 }
 
 void
@@ -185,25 +197,53 @@ Appearance::set_shaders ()
 void
 Appearance::draw ()
 {
-	if (_lineProperties)
-		_lineProperties -> draw ();
+	glDisable (GL_FOG);
+	glDisable (GL_COLOR_MATERIAL);
+
+	glDisable (GL_TEXTURE_2D);
+	glDisable (GL_TEXTURE_CUBE_MAP);
+
+	glMatrixMode (GL_TEXTURE);
+	glLoadMatrixf (textureMatrix .data ());
+	glMatrixMode (GL_MODELVIEW);
+
+	glUseProgram (0);
+	glBindProgramPipeline (0);
+
+	// LineProperties
+
+	_lineProperties -> draw ();
+
+	// FillProperties
 
 	if (_fillProperties)
 		_fillProperties -> draw ();
+		
+	// Material
 
 	if (_material)
 		_material -> draw ();
+	
+	else
+	{
+		glDisable (GL_LIGHTING);
+		glColor4f (1, 1, 1, 1);
+	}
+
+	// Texture
 
 	if (_texture)
 		_texture -> draw ();
 
+	// TextureTransform
+
 	if (_textureTransform)
 		_textureTransform -> draw ();
 
+	// Shader
+
 	if (_shader)
 		_shader -> draw ();
-
-	//@todo check if shader becomes invalid
 }
 
 } // X3D

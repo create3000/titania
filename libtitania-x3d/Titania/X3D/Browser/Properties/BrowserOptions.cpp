@@ -92,6 +92,8 @@ BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
 	minTextureSize (new SFInt32 (8)),
 	motionBlurOptions (new MotionBlur (executionContext)),
 	appearance (new Appearance (executionContext)),
+	lineProperties (new LineProperties (executionContext)),
+	fillProperties (new FillProperties (executionContext)),
 	textureProperties (new TextureProperties (executionContext)),
 	arc2DOptions (new Arc2DOptions (executionContext)),
 	arcClose2DOptions (new ArcClose2DOptions (executionContext)),
@@ -130,6 +132,8 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 
 	addChildren (motionBlurOptions (),
 	             appearance (),
+	             lineProperties (),
+	             fillProperties (),
 	             textureProperties (),
 	             arc2DOptions (),
 	             arcClose2DOptions (),
@@ -154,6 +158,8 @@ BrowserOptions::initialize ()
 
 	motionBlurOptions ()  -> setup ();
 	appearance ()         -> setup ();
+	lineProperties ()     -> setup ();
+	fillProperties ()     -> setup ();
 	textureProperties ()  -> setup ();
 	arc2DOptions ()       -> setup ();
 	arcClose2DOptions ()  -> setup ();
@@ -163,6 +169,8 @@ BrowserOptions::initialize ()
 	boxOptions ()         -> setup ();
 	sphereOptions ()      -> setup ();
 	fontStyle ()          -> setup ();
+	
+	lineProperties () -> applied () = false;
 
 	primitiveQuality () .addInterest (this, &BrowserOptions::set_primitiveQuality);
 	shading ()          .addInterest (this, &BrowserOptions::set_shading);
@@ -294,6 +302,8 @@ BrowserOptions::dispose ()
 {
 	motionBlurOptions ()  .dispose ();
 	appearance ()         .dispose ();
+	lineProperties ()     .dispose ();
+	fillProperties ()     .dispose ();
 	textureProperties ()  .dispose ();
 	arc2DOptions ()       .dispose ();
 	arcClose2DOptions ()  .dispose ();

@@ -56,8 +56,8 @@ namespace titania {
 namespace X3D {
 
 FloatVertexAttribute::Fields::Fields () :
-	        value (new MFFloat ()),
-	numComponents (new SFInt32 (4))
+	numComponents (new SFInt32 (4)),
+	        value (new MFFloat ())
 { }
 
 FloatVertexAttribute::FloatVertexAttribute (X3DExecutionContext* const executionContext) :
@@ -70,8 +70,8 @@ FloatVertexAttribute::FloatVertexAttribute (X3DExecutionContext* const execution
 
 	addField (inputOutput,    "metadata",      metadata ());
 	addField (initializeOnly, "name",          name ());
-	addField (inputOutput,    "value",         value ());
 	addField (initializeOnly, "numComponents", numComponents ());
+	addField (inputOutput,    "value",         value ());
 }
 
 X3DBaseNode*

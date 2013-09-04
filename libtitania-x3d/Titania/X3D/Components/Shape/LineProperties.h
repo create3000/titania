@@ -93,6 +93,8 @@ public:
 	linewidthScaleFactor () const
 	{ return *fields .linewidthScaleFactor; }
 
+	///  @name Operations
+
 	virtual
 	void
 	draw () final;

@@ -2312,6 +2312,7 @@
     <None Include="Tests\Shaders\TwoCylinders.wrl" />
     <None Include="Tests\Shaders\sobel-ComposedShader.wrl" />
     <None Include="Tests\images\lena.jpg" />
+    <None Include="Tests\Shape\LineProperties.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

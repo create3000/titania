@@ -1,5 +1,24 @@
 2013-09-04  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBrowser.cpp:
+	* X3DRenderer.cpp:
+	* Material.h:
+	* Appearance.h:
+	* Appearance.cpp:
+	* LineProperties.h:
+	* FillProperties.h:
+	* X3DShapeNode.cpp:
+	* TwoSidedMaterial.h:
+	* BrowserOptions.h:
+	* LineProperties.cpp:
+	* ProgramShader.cpp:
+	* BrowserOptions.cpp:
+	* ComposedShader.cpp:
+	* FloatVertexAttribute.h:
+	* FloatVertexAttribute.cpp: 
+
+2013-09-04  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Text.h:
 	* X3DBrowserContext.cpp:
 	* Appearance.cpp:

@@ -275,6 +275,10 @@ X3DRenderer::draw ()
 		light -> disable ();
 
 	glPopMatrix ();
+	
+	// Reset to default OpenGL appearance
+
+	getBrowser () -> getBrowserOptions () -> appearance () -> draw ();
 }
 
 void

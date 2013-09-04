@@ -161,6 +161,8 @@ ProgramShader::requestExplicitRelink ()
 
 	if (not isValid () and isSelected ())
 		isSelected () = false;
+
+	X3DChildObject::addEvent ();
 }
 
 void

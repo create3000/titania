@@ -7,7 +7,7 @@ Transform {
   children Shape {
     appearance Appearance {
       shaders ComposedShader {
-        inputOutput MFNode myTexture [
+        inputOutput MFNode textures [
           ImageTexture {
             url "../images/image.png"
           }
@@ -34,11 +34,11 @@ void main (void)
             url "data:text/plain,
 #version 120
 
-uniform sampler2D myTexture [2];
+uniform sampler2D textures [2];
 
 void main (void)
 {
-	gl_FragColor = texture2D (myTexture [1], gl_TexCoord [0] .st);
+	gl_FragColor = texture2D (textures [1], gl_TexCoord [0] .st);
 }
 "
           }
@@ -54,7 +54,7 @@ Transform {
   children Shape {
     appearance Appearance {
       shaders ComposedShader {
-        inputOutput SFNode myTexture MovieTexture {
+        inputOutput SFNode texture MovieTexture {
           url "../../Examples/Vattenfall/stage/film6.mpv"
           loop TRUE
           repeatS FALSE
@@ -67,11 +67,11 @@ Transform {
           ShaderPart {
             type "FRAGMENT"
             url "data:text/plain,
-uniform sampler2D myTexture;
+uniform sampler2D texture;
 
 void main (void)
 {
-	gl_FragColor = texture2D (myTexture, gl_TexCoord [0] .st);
+	gl_FragColor = texture2D (texture, gl_TexCoord [0] .st);
 }
 "
           }
@@ -79,5 +79,17 @@ void main (void)
       }
     }
     geometry Sphere { }
+  }
+}
+
+Transform {
+  translation -4 0 0
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry Box {
+      size 1 1 1
+    }
   }
 }

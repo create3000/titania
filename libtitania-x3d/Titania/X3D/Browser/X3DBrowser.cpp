@@ -90,8 +90,11 @@ X3DBrowser::initialize ()
 		std::clog << error .what () << std::endl;
 	}
 
-	world -> bind ();
-	update ();
+	if (glXGetCurrentContext ())
+	{
+		world -> bind ();
+		update ();
+	}
 
 	// Replace world service.
 
