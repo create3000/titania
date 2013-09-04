@@ -175,6 +175,8 @@ ProgramShader::set_activate ()
 void
 ProgramShader::draw ()
 {
+	X3DShaderNode::draw ();
+
 	glBindProgramPipeline (pipelineId);
 }
 

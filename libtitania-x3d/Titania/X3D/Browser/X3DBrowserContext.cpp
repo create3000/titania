@@ -62,6 +62,8 @@
 namespace titania {
 namespace X3D {
 
+static constexpr int32_t MAX_DOWNLOAD_THREADS = 8;
+
 X3DBrowserContext::X3DBrowserContext () :
 	 X3DExecutionContext (),
 	 renderingProperties (new RenderingProperties (this)),          // SFNode  [ ]       renderingProperties NULL   [RenderingProperties]
@@ -158,7 +160,7 @@ X3DBrowserContext::initialize ()
 	for (int32_t i = 1; i < renderingProperties -> textureUnits (); ++ i)
 		textureUnits .push (i);
 
-	threads .resize (renderingProperties -> maxThreads ());
+	threads .resize (std::min <int32_t> (renderingProperties -> maxThreads (), MAX_DOWNLOAD_THREADS));
 
 	// Initialize OpenGL context
 

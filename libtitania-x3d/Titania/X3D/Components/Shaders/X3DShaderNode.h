@@ -95,6 +95,12 @@ public:
 	language () const
 	{ return *fields .language; }
 
+	///  @name Operations
+
+	virtual
+	void
+	draw () override;
+
 
 protected:
 

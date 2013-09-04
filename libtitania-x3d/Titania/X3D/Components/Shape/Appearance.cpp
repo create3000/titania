@@ -202,6 +202,8 @@ Appearance::draw ()
 
 	if (_shader)
 		_shader -> draw ();
+
+	//@todo check if shader becomes invalid
 }
 
 } // X3D

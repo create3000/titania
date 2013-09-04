@@ -1,0 +1,182 @@
+#VRML V2.0 utf8
+
+DEF BOX Transform {
+  children [
+    Transform {
+      translation 0 0 1.7
+      children Shape {
+        appearance Appearance {
+          shaders ComposedShader {
+            language "GLSL"
+            parts [
+              ShaderPart {
+                url "data:text/plain,
+#version 120
+
+varying vec3 Norm;
+varying vec4 Pos;
+
+void main ()
+{
+	Pos  = gl_ModelViewMatrix * gl_Vertex;
+	Norm = normalize (gl_NormalMatrix * gl_Normal);
+
+	gl_Position = ftransform ();
+}
+"
+              }
+              ShaderPart {
+                type "FRAGMENT"
+                #url "phong/phong2.fs"
+                url "data:text/plain,
+#version 120
+
+varying vec3 Norm; 
+varying vec4 Pos; 
+				 
+vec4 ADSLightModel(in vec3 myNormal, in vec4 myPosition)
+{ 
+	int i; 
+
+	/* the group of variables below would normally be taken from 
+	   gl_FrontMaterial components */
+	vec4  myMaterialDiffuse   = vec4 (1., .5, 0., 1.); 
+	vec4  myMaterialAmbient   = vec4 (1., .5, 0., 1.); 
+	vec4  myMaterialSpecular  = vec4 (0.6, 0.6, 0.6, 1.); 
+	float myMaterialShininess = 80.; 
+
+	vec3 norm     = normalize (myNormal); 
+	vec3 viewv    = -normalize (myPosition .xyz); 
+	vec4 ambient  = vec4 (0., 0., 0., 0.); 
+	vec4 specular = vec4 (0.0, 0.0, 0.0, 1.0); 
+	vec4 diffuse  = vec4 (0., 0., 0., 1.); 
+
+	vec4 myLightDiffuse  = vec4 (1.0, 1.0, 1.0, 1.); 
+	vec4 myLightAmbient  = vec4 (0.0, 0.0, 0.0, 1.); 
+	vec4 myLightSpecular = vec4 (0.8, 0.8, 0.8, 1.); 
+	vec4 myLightPosition = vec4 (0., 0., 1., 0.); 
+
+	/* normal, light, view, and light reflection vectors */
+	vec3 lightv = normalize (myLightPosition .xyz - myPosition .xyz); 
+	vec3 refl   = reflect (-lightv, norm); 
+
+	/* diffuse light computation */
+	diffuse += max (0.0, dot (lightv, norm)) * myMaterialDiffuse * myLightDiffuse; 
+
+	/* ambient light computation */
+	ambient = myMaterialAmbient * myLightAmbient; 
+
+	/* Specular light computation */
+	if (dot (lightv, viewv) > 0.0)
+	{ 
+		specular += pow (max (0.0, dot (viewv, refl)), myMaterialShininess)
+		            * myMaterialSpecular * myLightSpecular; 
+	} 
+
+	return clamp (ambient + diffuse + specular, 0.0, 1.0); 
+}
+
+void main ()
+{ 
+	gl_FragColor = ADSLightModel (Norm, Pos); 
+} 
+"
+              }
+            ]
+          }
+        }
+        geometry Cylinder {
+          radius 0.6
+        }
+      }
+    }
+    Transform {
+      translation 0 0 -1.7
+      children Shape {
+        appearance Appearance {
+          shaders ComposedShader {
+            language "GLSL"
+            parts [
+              ShaderPart {
+                url "data:text/plain,
+varying vec3 colour;
+
+vec3 ADSLightModel (in vec3 myNormal, in vec4 myPosition)
+{
+	vec4 myLightDiffuse  = vec4 (1., 1., 1., 1.);
+	vec4 myLightAmbient  = vec4 (0.2, 0.2, 0.2, 0.2);
+	vec4 myLightSpecular = vec4 (1., 1., 1., 1.);
+	vec4 myLightPosition = vec4 (1., 0.5, 0., 1.);
+
+	vec4  myMaterialDiffuse   = vec4 (1., .5, 0., 1.);
+	vec4  myMaterialAmbient   = vec4 (1., .5, 0., 1.);
+	vec4  myMaterialSpecular  = vec4 (0.6, 0.6, 0.6, 1.);
+	float myMaterialShininess = 80.;
+
+	vec3 norm   = normalize (myNormal);
+	vec3 lightv = normalize (myLightPosition .xyz - myPosition .xyz);
+	vec3 viewv  = -normalize (myPosition.xyz);
+	vec3 refl   = reflect (-lightv, norm);
+
+	vec4 diffuse = max (0.0, dot (lightv, norm)) * myMaterialDiffuse * myLightDiffuse;
+
+	vec4 ambient = myMaterialAmbient * myLightAmbient;
+
+	vec4 specular = vec4 (0.0, 0.0, 0.0, 1.0);
+	if (dot (lightv, viewv) > 0.0)
+	{
+		specular = pow (max (0.0, dot (viewv, refl)), myMaterialShininess)
+		           * myMaterialSpecular*myLightSpecular;
+	}
+
+	return clamp (vec3 (ambient + diffuse + specular), 0.0, 1.0);
+}
+
+void main ()
+{
+	vec3 transNorm = normalize (gl_NormalMatrix * gl_Normal);
+	vec4 pos       = gl_ModelViewMatrix * gl_Vertex;
+
+	colour = ADSLightModel (transNorm, pos);
+
+	gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
+}
+				"
+              }
+              ShaderPart {
+                type "FRAGMENT"
+                url "data:text/plain,
+varying vec3 colour;
+
+void main ()
+{
+	gl_FragColor = vec4 (colour.rgb, 1.);
+}
+				"
+              }
+            ]
+          }
+        }
+        geometry Cylinder {
+          radius 0.6
+        }
+      }
+    }
+  ]
+}
+
+# Animation clock
+DEF Clock TimeSensor {
+  cycleInterval 10
+  loop TRUE
+}
+
+# Animation path
+DEF ColumnPath OrientationInterpolator {
+  key [ 0, 0.5, 1 ]
+  keyValue [ 0 1 0 6.28002, 0 1 0 3.14, 0 0 1 0 ]
+}
+
+ROUTE Clock.fraction_changed TO ColumnPath.set_fraction
+ROUTE ColumnPath.value_changed TO BOX.set_rotation
+

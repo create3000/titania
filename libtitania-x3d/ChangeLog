@@ -1,3 +1,17 @@
+2013-09-04  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Text.h:
+	* X3DBrowserContext.cpp:
+	* Appearance.cpp:
+	* X3DShapeNode.h:
+	* X3DShapeNode.cpp:
+	* X3DShaderNode.h:
+	* BrowserOptions.h:
+	* ProgramShader.cpp:
+	* X3DShaderNode.cpp:
+	* BrowserOptions.cpp:
+	* ComposedShader.cpp: 
+
 2013-09-03  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* SupportedNodes.cpp: 

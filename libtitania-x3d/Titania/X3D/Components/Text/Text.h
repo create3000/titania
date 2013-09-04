@@ -134,6 +134,8 @@ public:
 	fontStyle () const
 	{ return *fields .fontStyle; }
 
+	///  @name Operations
+
 	virtual
 	void
 	draw () final;

@@ -95,6 +95,18 @@ X3DShapeNode::initialize ()
 	set_geometry ();
 }
 
+bool
+X3DShapeNode::isTransparent () const
+{
+	if (_appearance and _appearance -> isTransparent ())
+		return true;
+
+	if (_geometry and _geometry -> isTransparent ())
+		return true;
+
+	return false;
+}
+
 Box3f
 X3DShapeNode::getBBox ()
 {
@@ -110,22 +122,22 @@ X3DShapeNode::getBBox ()
 	return Box3f (bboxSize (), bboxCenter ());
 }
 
-bool
-X3DShapeNode::isTransparent () const
+X3DAppearanceNode*
+X3DShapeNode::getAppearance () const
 {
-	if (_appearance and _appearance -> isTransparent ())
-		return true;
+	auto _appearance = x3d_cast <X3DAppearanceNode*> (appearance ());
 
-	if (_geometry and _geometry -> isTransparent ())
-		return true;
+	if (_appearance)
+		return _appearance;
 
-	return false;
+	return getBrowser () -> getBrowserOptions () -> appearance ();
+
 }
 
 void
 X3DShapeNode::set_appearance ()
 {
-	_appearance = x3d_cast <X3DAppearanceNode*> (appearance ());
+	_appearance = getAppearance ();
 }
 
 void
@@ -213,18 +225,18 @@ X3DShapeNode::draw ()
 	glBindTexture (GL_TEXTURE_2D, 0);
 	glBindTexture (GL_TEXTURE_CUBE_MAP, 0);
 
-	if (_appearance)
-		_appearance -> draw ();
+	_appearance -> draw ();
+	_geometry   -> draw ();
 
-	_geometry -> draw ();
+	glDisable (GL_FOG);
+	glDisable (GL_LIGHTING);
+	glDisable (GL_COLOR_MATERIAL);
+
+	glDisable (GL_TEXTURE_2D);
+	glDisable (GL_TEXTURE_CUBE_MAP);
 
 	glUseProgram (0);
 	glBindProgramPipeline (0);
-	glDisable (GL_FOG);
-	glDisable (GL_LIGHTING);
-	glDisable (GL_TEXTURE_2D);
-	glDisable (GL_TEXTURE_CUBE_MAP);
-	glDisable (GL_COLOR_MATERIAL);
 }
 
 void

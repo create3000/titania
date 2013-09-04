@@ -67,5 +67,13 @@ X3DShaderNode::X3DShaderNode () :
 	addNodeType (X3DConstants::X3DShaderNode);
 }
 
+void
+X3DShaderNode::draw ()
+{
+	glEnable (GL_LIGHTING);
+	glEnable (GL_TEXTURE_2D);
+	glEnable (GL_TEXTURE_CUBE_MAP);
+}
+
 } // X3D
 } // titania

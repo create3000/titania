@@ -91,6 +91,7 @@ BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
 	gravity (new SFFloat (P_GN)),
 	minTextureSize (new SFInt32 (8)),
 	motionBlurOptions (new MotionBlur (executionContext)),
+	appearance (new Appearance (executionContext)),
 	textureProperties (new TextureProperties (executionContext)),
 	arc2DOptions (new Arc2DOptions (executionContext)),
 	arcClose2DOptions (new ArcClose2DOptions (executionContext)),
@@ -128,6 +129,7 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 	addField ("AntiAliased", "Antialiased");
 
 	addChildren (motionBlurOptions (),
+	             appearance (),
 	             textureProperties (),
 	             arc2DOptions (),
 	             arcClose2DOptions (),
@@ -151,6 +153,7 @@ BrowserOptions::initialize ()
 	X3DPropertyNode::initialize ();
 
 	motionBlurOptions ()  -> setup ();
+	appearance ()         -> setup ();
 	textureProperties ()  -> setup ();
 	arc2DOptions ()       -> setup ();
 	arcClose2DOptions ()  -> setup ();
@@ -290,6 +293,7 @@ void
 BrowserOptions::dispose ()
 {
 	motionBlurOptions ()  .dispose ();
+	appearance ()         .dispose ();
 	textureProperties ()  .dispose ();
 	arc2DOptions ()       .dispose ();
 	arcClose2DOptions ()  .dispose ();

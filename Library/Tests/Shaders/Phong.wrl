@@ -15,6 +15,8 @@ Transform {
         parts [
           ShaderPart {
             url "data:text/plain,
+#version 120
+
 varying vec3 N;
 varying vec3 v;
 
@@ -30,6 +32,8 @@ void main(void)
           ShaderPart {
             type "FRAGMENT"
             url "data:text/plain,
+#version 120
+
 varying vec3 N;
 varying vec3 v;
 
@@ -42,7 +46,7 @@ void main (void)
 	for (int i = 0; i < MAX_LIGHTS; ++ i)
 	{
 		vec3 L = normalize (gl_LightSource [i] .position .xyz - v);
-		vec3 E = v .x && v .y && v .z ? normalize (-v) : vec3 (0, 0, 0); // we are in Eye Coordinates, so EyePos is (0, 0, 0)
+		vec3 E = normalize (-v);                                      // we are in Eye Coordinates, so EyePos is (0, 0, 0)
 		vec3 R = normalize (-reflect (L, N));
 
 		// Calculate Ambient Term:

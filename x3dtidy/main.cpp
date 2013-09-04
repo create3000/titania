@@ -67,10 +67,10 @@ main (int argc, char** argv)
 	options .addUsage ("       x3dtidy - X3D/VRML beautifer");
 	options .addUsage ("");
 	options .addUsage ("SYNOPSIS");
-	options .addUsage ("       x3dtidy [OPTIONS] [FILE]");
+	options .addUsage ("       x3dtidy [OPTIONS] [FILE] [OUTFILE]");
 	options .addUsage ("");
 	options .addUsage ("DESCRIPTION");
-	options .addUsage ("       Format FILE, or standard input, to standard output.");
+	options .addUsage ("       Format FILE, or standard input, to standard output or to OUTFILE.");
 	options .addUsage ("");
 	options .addUsage ("VRML2 field names and access types are printed when the encoding is VRML,");
 	options .addUsage ("otherwise X3D field names and access types are printed.");
@@ -99,8 +99,9 @@ main (int argc, char** argv)
 	options .addUsage ("              Formats file.wrl's contents in compact style mode to standard");
 	options .addUsage ("              output.");
 	options .addUsage ("");
-	options .addUsage ("       x3dtidy file.wrl");
-	options .addUsage ("              Formats file.wrl's contents to standard output.");
+	options .addUsage ("       x3dtidy file.wrl beautified.wrl");
+	options .addUsage ("              Formats file.wrl's contents and saves the output in");
+   options .addUsage ("              beautified.wrl.");
 	options .addUsage ("");
 	options .addUsage ("COPYRIGHT");
 	options .addUsage ("       Copyright \xc2\xa9 2010 Holger Seelig.  License GPLv3+:");
@@ -138,28 +139,35 @@ main (int argc, char** argv)
 	{
 		auto browser = X3D::getBrowser ();
 
-		X3D::MFString url (options .getArgv (), options .getArgv () + options .getArgc ());
-
 		if (options .getArgc ())
 		{
-			std::string tmpFilename = "/tmp/x3dtidy." + std::to_string (getpid ()) + ".wrl";
-
-			try
+			X3D::MFString url ({ options .getArgv (0) });
+		
+			if (options .getArgc () > 1)
 			{
-				std::ofstream file (tmpFilename);
+				std::string tmpFilename = "/tmp/x3dtidy." + std::to_string (getpid ()) + ".wrl";
 
-				// Create temp file
+				try
+				{
+					std::ofstream file (tmpFilename);
 
-				file << browser -> createX3DFromURL (url);
+					// Create temp file
 
-				// Replace original
+					file << browser -> createX3DFromURL (url);
 
-				rename (tmpFilename .c_str (), options .getArgv (0));
+					// Replace original
+
+					rename (tmpFilename .c_str (), options .getArgv (1));
+				}
+				catch (...)
+				{
+					unlink (tmpFilename .c_str ());
+					throw;
+				}
 			}
-			catch (...)
+			else
 			{
-				unlink (tmpFilename .c_str ());
-				throw;
+				std::cout << browser -> createX3DFromURL (url);
 			}
 		}
 		else

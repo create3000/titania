@@ -24,6 +24,8 @@ Transform {
         programs [
           ShaderProgram {
             url "data:text/plain,
+#version 120
+
 void main (void)
 {
 	gl_Position = ftransform ();
@@ -35,6 +37,8 @@ void main (void)
 
             type "FRAGMENT"
             url "data:text/plain,
+#version 120
+
 uniform vec3 color;
 
 void main (void)

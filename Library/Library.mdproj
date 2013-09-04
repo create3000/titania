@@ -2309,6 +2309,9 @@
     <None Include="Tests\Shaders\Texture.wrl" />
     <None Include="Tests\KeyDeviceSensor\KeySensor.wrl" />
     <None Include="Tests\Shaders\ProgramShader.wrl" />
+    <None Include="Tests\Shaders\TwoCylinders.wrl" />
+    <None Include="Tests\Shaders\sobel-ComposedShader.wrl" />
+    <None Include="Tests\images\lena.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

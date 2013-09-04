@@ -20,6 +20,8 @@ Transform {
         parts [
           DEF VertexShader ShaderPart {
             url "data:text/plain,
+#version 120
+
 void main (void)
 {
 	gl_Position     = ftransform ();
@@ -30,6 +32,8 @@ void main (void)
           ShaderPart {
             type "FRAGMENT"
             url "data:text/plain,
+#version 120
+
 uniform sampler2D myTexture [2];
 
 void main (void)

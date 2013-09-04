@@ -13,6 +13,8 @@ Transform {
         parts ShaderPart {
           type "FRAGMENT"
           url "data:text/plain,
+#version 120
+
 uniform vec4 color [2];
 
 void main (void)  
@@ -40,6 +42,8 @@ Transform {
         parts [
           ShaderPart {
             url "data:text/plain,
+#version 120
+
 void main (void)
 {
 	gl_Position     = ftransform ();
@@ -50,11 +54,13 @@ void main (void)
           ShaderPart {
             type "FRAGMENT"
             url "data:text/plain,
+#version 120
+
 uniform sampler2D myTexture;
 
 void main (void)
 {
-	gl_FragColor = textureProj (myTexture, gl_TexCoord [0]);
+	gl_FragColor = texture2D (myTexture, gl_TexCoord [0] .st);
 }
 "
           }

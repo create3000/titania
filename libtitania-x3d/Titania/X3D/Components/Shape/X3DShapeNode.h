@@ -81,16 +81,20 @@ public:
 	geometry () const
 	{ return *fields .geometry; }
 
-	virtual
-	Box3f
-	getBBox () final;
+	///  @name Member access
 
 	bool
 	isTransparent () const;
 
+	virtual
+	Box3f
+	getBBox () final;
+
 	X3DGeometryNode*
 	getGeometry () const
 	{ return _geometry; }
+	
+	///  @name Operations
 
 	virtual
 	void
@@ -115,6 +119,9 @@ protected:
 
 
 private:
+
+	X3DAppearanceNode*
+	getAppearance () const;
 
 	void
 	set_appearance ();

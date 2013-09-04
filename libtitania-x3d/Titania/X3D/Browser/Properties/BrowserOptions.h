@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_BROWSER_PROPERTIES_BROWSER_OPTIONS_H__
 
 #include "../../Components/Core/X3DPropertyNode.h"
+#include "../../Components/Shape/Appearance.h"
 #include "../../Components/Text/FontStyle.h"
 #include "../../Components/Texturing/TextureProperties.h"
 #include "../../Execution/X3DExecutionContext.h"
@@ -209,6 +210,14 @@ public:
 	motionBlurOptions () const
 	{ return fields .motionBlurOptions; }
 
+	X3DSFNode <Appearance> &
+	appearance ()
+	{ return fields .appearance; }
+
+	const X3DSFNode <Appearance> &
+	appearance () const
+	{ return fields .appearance; }
+
 	X3DSFNode <TextureProperties> &
 	textureProperties ()
 	{ return fields .textureProperties; }
@@ -322,6 +331,7 @@ private:
 		SFFloat* const gravity;
 		SFInt32* const minTextureSize;
 		X3DSFNode <MotionBlur> motionBlurOptions;
+		X3DSFNode <Appearance> appearance;
 		X3DSFNode <TextureProperties> textureProperties;
 		X3DSFNode <Arc2DOptions> arc2DOptions;
 		X3DSFNode <ArcClose2DOptions> arcClose2DOptions;

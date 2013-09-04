@@ -14,6 +14,8 @@ Transform {
         parts [
           ShaderPart {
             url "data:text/plain,
+#version 120
+
 void main (void)
 {
 	gl_Position = ftransform ();
@@ -23,6 +25,8 @@ void main (void)
           ShaderPart {
             type "FRAGMENT"
             url "data:text/plain,
+#version 120
+
 void main (void)
 {
 	gl_FragColor = vec4 (1, 0, 0, 0.5);

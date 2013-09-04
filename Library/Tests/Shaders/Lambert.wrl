@@ -15,6 +15,8 @@ Transform {
         parts [
           ShaderPart {
             url "data:text/plain,
+#version 120
+
 void main ()
 {
 	vec3 normal, lightDir;
@@ -48,6 +50,8 @@ void main ()
           ShaderPart {
             type "FRAGMENT"
             url "data:text/plain,
+#version 120
+
 void main ()
 {
 	gl_FragColor = gl_Color;

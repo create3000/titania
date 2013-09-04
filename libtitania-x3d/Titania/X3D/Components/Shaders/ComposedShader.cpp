@@ -196,8 +196,8 @@ ComposedShader::set_activate ()
 void
 ComposedShader::draw ()
 {
-	glEnable (GL_TEXTURE_2D);
-	glEnable (GL_TEXTURE_CUBE_MAP);
+	X3DShaderNode::draw ();
+
 	glUseProgram (shaderProgramId);
 }
 

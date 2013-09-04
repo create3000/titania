@@ -1,0 +1,66 @@
+#VRML V2.0 utf8
+
+Shape {
+  appearance Appearance {
+    texture DEF Lena ImageTexture {
+      url "../images/lena.jpg"
+    }
+    shaders ComposedShader {
+      field MFVec2f offsets [ -1 1, -2 0, -1 -1, 0 2, 0 0, 0 -2, 1 1, 2 0, 1 -1 ]
+      field SFNode image USE Lena
+
+      language "GLSL"
+      parts [
+        ShaderPart {
+          url "data:text/plain,
+#version 120
+
+varying vec3 texCoord;
+
+void main ()
+{  
+	gl_Position = ftransform ();
+	texCoord = vec3 (vec4 (gl_TextureMatrix [0] * vec4 (gl_MultiTexCoord0 .st, 0, 0))) .stp;
+}
+"
+        }
+        ShaderPart {
+          type "FRAGMENT"
+          url "data:text/plain,
+#version 120
+
+uniform vec2 offsets [9];
+uniform sampler2D image;
+
+varying vec3 texCoord;
+
+void main()
+{
+	vec4 sample [9];
+
+	for (int i = 0; i < 9; i++)                  
+		sample[i] = texture2D (image, texCoord .st + (offsets [i] / 512.0));
+
+	vec4 horizEdge = sample [2] + (2.0 * sample [5]) + sample [8] - (sample [0] + (2.0 * sample [3]) + sample [6]);
+	vec4 vertEdge  = sample [0] + (2.0 * sample [1]) + sample [2] - (sample [6] + (2.0 * sample [7]) + sample [8]);
+
+	gl_FragColor .rgb = sqrt ((horizEdge .rgb * horizEdge .rgb) + (vertEdge .rgb * vertEdge .rgb));
+	gl_FragColor .a   = 1.0;
+}
+				"
+        }
+      ]
+    }
+  }
+  geometry IndexedFaceSet {
+    solid FALSE
+    texCoordIndex [ 0, 1, 2, 3, -1 ]
+    coordIndex [ 0, 1, 2, 3, -1 ]
+    texCoord TextureCoordinate {
+      point [ 0 0, 1 0, 1 1, 0 1 ]
+    }
+    coord DEF BK Coordinate {
+      point [ -1.8 -2 0, 1.8 -2 0, 1.8 2 0, -1.8 2 0 ]
+    }
+  }
+}

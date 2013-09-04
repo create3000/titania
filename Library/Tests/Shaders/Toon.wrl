@@ -11,12 +11,16 @@ Viewpoint {
 DEF Diamond Transform {
   children Shape {
     appearance Appearance {
-      material Material { }
+      material Material {
+        emissiveColor 0.8 0 0
+      }
       shaders ComposedShader {
         language "GLSL"
         parts [
           ShaderPart {
             url "data:text/plain,
+#version 120
+
 varying vec3 normal;
 
 void main ()
@@ -31,14 +35,15 @@ void main ()
           ShaderPart {
             type "FRAGMENT"
             url "data:text/plain,
+#version 120
+
 varying vec3 normal;
 
 void main (void)
 {
 	vec4 color = gl_Color;
-	color = vec4 (0.8, 0.8, 0.8, 1.0);
 
-	vec3 light_dir = normalize (gl_LightSource [0] .position .xyz);
+	vec3  light_dir = normalize (gl_LightSource [0] .position .xyz);
 	float intensity = dot (light_dir, normal);
 
 	if (intensity > 0.95)
