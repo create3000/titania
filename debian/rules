@@ -32,8 +32,6 @@ binary-arch: build
 	find . -maxdepth 2 -mindepth 2 -name share -print0 | \
 		xargs -0 -r -i cp -a {} debian/$(PACKAGE)/usr/
 
-	update-mime-database /usr/share/mime
-
 	dh_compress
 	dh_makeshlibs
 	dh_installdeb
