@@ -1,0 +1,47 @@
+#VRML V2.0 utf8
+
+COMPONENT CADGeometry:1
+COMPONENT Core:1
+COMPONENT CubeMapTexturing:1
+COMPONENT DIS:1
+COMPONENT EnvironmentalEffects:1
+COMPONENT EnvironmentalSensor:1
+COMPONENT EventUtilities:1
+COMPONENT Followers:1
+COMPONENT Geometry2D:1
+COMPONENT Geometry3D:1
+COMPONENT Geospatial:1
+COMPONENT Grouping:1
+COMPONENT H-Anim:1
+COMPONENT Interpolation:1
+COMPONENT KeyDeviceSensor:1
+COMPONENT Layering:1
+COMPONENT Layout:1
+COMPONENT Lighting:1
+COMPONENT NURBS:1
+COMPONENT Navigation:1
+COMPONENT Networking:1
+COMPONENT ParticleSystems:1
+COMPONENT Picking:1
+COMPONENT PointingDeviceSensor:1
+COMPONENT Rendering:1
+COMPONENT RigidBodyPhysics:1
+COMPONENT Scripting:1
+COMPONENT Shaders:1
+COMPONENT Shape:1
+COMPONENT Sound:1
+COMPONENT Text:1
+COMPONENT Texturing:1
+COMPONENT Texturing3D:1
+COMPONENT Time:1
+
+META "title" "Components"
+
+DEF Cube Transform {
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry Box { }
+  }
+}

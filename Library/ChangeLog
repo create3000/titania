@@ -1,6 +1,11 @@
 2013-09-06  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Library.mdproj:
+	* Components.wrl: 
+
+2013-09-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Library.mdproj:
 	* Fields.wrl:
 	* PointSet.wrl:
 	* CADLayer.wrl:

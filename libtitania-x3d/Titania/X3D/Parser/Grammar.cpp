@@ -108,6 +108,8 @@ io::string Grammar::HEX ("0X");
 
 io::quoted_string Grammar::string ('\"');
 
+io::sequence Grammar::ComponentName ("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-");
+
 bool
 Grammar::Int32 (std::istream & istream, int32_t & _value)
 {

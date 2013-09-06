@@ -2317,6 +2317,7 @@
     <None Include="Tests\Shape\Connectors.wrl" />
     <None Include="Tests\Shape\FillProperties.wrl" />
     <None Include="Tests\CADGeometry\CADLayer.wrl" />
+    <None Include="Tests\Basic\Components.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

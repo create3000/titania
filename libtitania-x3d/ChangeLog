@@ -1,5 +1,12 @@
 2013-09-06  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Parser.h:
+	* Grammar.h:
+	* Parser.cpp:
+	* Grammar.cpp: 
+
+2013-09-06  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DScalar.cpp:
 	* Transform.h:
 	* CADFace.h:

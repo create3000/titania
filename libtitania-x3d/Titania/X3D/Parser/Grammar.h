@@ -114,7 +114,7 @@ public:
 	static io::character Colon;
 
 	static io::quoted_string string;
-
+	static io::sequence      ComponentName;
 
 private:
 

@@ -259,8 +259,7 @@ private:
 	{ return Id (id); }
 
 	bool
-	componentNameId (std::string & id)
-	{ return Id (id); }
+	componentNameId (std::string &);
 
 	bool
 	categoryNameId (std::string & id)

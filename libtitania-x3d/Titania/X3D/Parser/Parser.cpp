@@ -421,6 +421,14 @@ Parser::componentStatement ()
 }
 
 bool
+Parser::componentNameId (std::string & id)
+{
+	comments ();
+
+	return Grammar::ComponentName (istream, id);
+}
+
+bool
 Parser::componentSupportLevel (int32_t & _value)
 {
 	//__LOG__ << this << " " << std::endl;
