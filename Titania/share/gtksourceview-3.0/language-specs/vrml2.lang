@@ -21,8 +21,8 @@
 -->
 <language id="vrml" _name="VRML2" version="2.0" _section="Sources">
     <metadata>
-      <property name="globs">*.wrl</property>
-		<property name="mimetypes">model/vrml;model/x3d+vrml;x-world/x-vrml</property>
+      <property name="globs">*.x3dv,*.wrl</property>
+		<property name="mimetypes">model/x3d+vrml;model/vrml;x-world/x-vrml</property>
       <property name="line-comment-start">#</property>
     </metadata>
 
