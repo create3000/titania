@@ -33,6 +33,7 @@
 #include <Titania/Basic/Path.h>
 #include <Titania/Basic/URI.h>
 #include <Titania/Chrono/Now.h>
+#include <Titania/InputOutput.h>
 #include <Titania/Math/Functional.h>
 #include <Titania/Math/Geometry/Box2.h>
 #include <Titania/Math/Geometry/Box3.h>
@@ -48,8 +49,8 @@
 #include <Titania/OS.h>
 #include <Titania/Stream/IGZFilter.h>
 #include <Titania/Stream/InputFileStream.h>
+#include <Titania/Stream/InputUrlStream.h>
 #include <Titania/Utility/Pass.h>
-#include <Titania/InputOutput.h>
 //#include <Titania/Stream/InputHTTPStream.h>
 
 #include <Titania/Algorithm.h>
@@ -69,9 +70,9 @@
 #include <queue>
 #include <regex>
 #include <set>
+#include <thread>
 #include <unordered_set>
 #include <vector>
-#include <thread>
 
 using namespace titania;
 using namespace titania::basic;
@@ -214,93 +215,6 @@ intersect (const Plane3f & p1, const Plane3f & p2, Line3f & line)
 	return false;
 }
 
-
-class Test 
-{
-public:
-
-	Test ()
-	{
-		__LOG__ << std::endl;
-	}
-
-	Test (const Test &)
-	{
-		__LOG__ << std::endl;
-	}
-
-	Test (Test &&)
-	{
-		__LOG__ << std::endl;
-	}
-
-};
-
-Test
-get ()
-{
-	__LOG__ << std::endl;
-	return Test ();
-}
-
-void
-test (Test &&)
-{
-	__LOG__ << std::endl;
-}
-
-Matrix4f
-multRight1 (const Matrix4f & self, const Matrix4f & matrix)
-{
-	#define MULT_RIGHT(i, j) \
-	   (self [i] [0] * matrix [0] [j] +   \
-	    self [i] [1] * matrix [1] [j] +   \
-	    self [i] [2] * matrix [2] [j] +   \
-	    self [i] [3] * matrix [3] [j])
-
-	return Matrix4f (MULT_RIGHT (0, 0),
-	                 MULT_RIGHT (0, 1),
-	                 MULT_RIGHT (0, 2),
-	                 MULT_RIGHT (0, 3),
-
-	                 MULT_RIGHT (1, 0),
-	                 MULT_RIGHT (1, 1),
-	                 MULT_RIGHT (1, 2),
-	                 MULT_RIGHT (1, 3),
-
-	                 MULT_RIGHT (2, 0),
-	                 MULT_RIGHT (2, 1),
-	                 MULT_RIGHT (2, 2),
-	                 MULT_RIGHT (2, 3),
-
-	                 MULT_RIGHT (3, 0),
-	                 MULT_RIGHT (3, 1),
-	                 MULT_RIGHT (3, 2),
-	                 MULT_RIGHT (3, 3));
-
-	#undef MULT_RIGHT
-}
-
-Matrix4f
-multRight2 (const Matrix4f & self, const Matrix4f & matrix)
-{
-	Matrix4f result (0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
-
-	#pragma omp parallel for default(none), shared(result,self,matrix)
-	for (size_t i = 0; i < 4; ++ i)
-	{
-		for (size_t j = 0; j < 4; ++ j)
-		{
-			for (size_t k = 0; k < 4; ++ k)
-			{
-				result [i] [j] += self [i] [k] * matrix [k] [j];
-			}
-		}
-	}
-
-	return result;
-}
-
 int
 main (int argc, char** argv)
 {
@@ -310,35 +224,16 @@ main (int argc, char** argv)
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
 
-	constexpr size_t N = 1000000;
+	basic::iurlstream istream;
 
-	{
-		double t0 = chrono::now ();
-	
-		Matrix4f m1 (0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,0.0,0.1,0.2,0.3,0.4,0.5,0.6);
-		Matrix4f m2 (0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7);
+	istream .open ("http://x3dgraphics.com/examples/X3dForWebAuthors/Chapter03-Grouping/CoordinateAxesInlineExample.x3dv");
+	istream .send ();
 
-		for (size_t i = 0; i < N; ++ i)
-			m1 = multRight1 (m1, m2);
-		
-		__LOG__ << m1 << std::endl;
+	for (const auto & header : istream .response_headers ())
+		__LOG__ << header .first << " : " << header .second << std::endl;
 
-		__LOG__ << chrono::now () - t0 << std::endl;
-	}
-
-	{
-		double t0 = chrono::now ();
-	
-		Matrix4f m1 (0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,0.0,0.1,0.2,0.3,0.4,0.5,0.6);
-		Matrix4f m2 (0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7);
-
-		for (size_t i = 0; i < N; ++ i)
-			m1 = multRight2 (m1, m2);
-		
-		__LOG__ << m1 << std::endl;
-
-		__LOG__ << chrono::now () - t0 << std::endl;
-	}
+	__LOG__ << istream .url () << std::endl;
+	__LOG__ << istream .rdbuf () << std::endl;
 
 	std::clog << "Function main done." << std::endl;
 	exit (0);

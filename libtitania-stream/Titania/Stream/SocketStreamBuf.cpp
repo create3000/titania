@@ -84,11 +84,13 @@ socketstreambuf::open (const basic::uri & URL)
 
 	curl_easy_setopt (curl, CURLOPT_URL,               url () .root () .str () .c_str ());
 	curl_easy_setopt (curl, CURLOPT_CONNECT_ONLY,      true);
+	curl_easy_setopt (curl, CURLOPT_USE_SSL,           CURLUSESSL_TRY);
 	curl_easy_setopt (curl, CURLOPT_CONNECTTIMEOUT_MS, timeout ());
 	curl_easy_setopt (curl, CURLOPT_TIMEOUT_MS,        timeout ());
 	curl_easy_setopt (curl, CURLOPT_ACCEPTTIMEOUT_MS,  timeout ());
 	curl_easy_setopt (curl, CURLOPT_ACCEPT_ENCODING,   "");
 	curl_easy_setopt (curl, CURLOPT_NOSIGNAL,          true);
+	curl_easy_setopt (curl, CURLOPT_VERBOSE,           true);
  
 	retcode = curl_easy_perform (curl);
 

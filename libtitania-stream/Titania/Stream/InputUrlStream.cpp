@@ -26,21 +26,16 @@
 //  *
 //  ************************************************************************/
 
-#include "InputHTTPStream.h"
-
-#include <utility>
+#include "InputUrlStream.h"
 
 #include <Titania/LOG.h>
 
 namespace titania {
 namespace basic {
 
-const ihttpstream::method_array ihttpstream::methods { { "HEAD", "GET", "POST" } };
-
-ihttpstream::ihttpstream () :
+iurlstream::iurlstream () :
 	         std::istream (),
-	                  buf (new socketstreambuf ()),
-	          http_method (http::method::GET),
+	                  buf (new urlstreambuf ()),
 	  request_headers_map (),
 	 response_headers_map (),
 	response_http_version (),
@@ -51,16 +46,15 @@ ihttpstream::ihttpstream () :
 	clear ();
 }
 
-ihttpstream::ihttpstream (const http::method method, const basic::uri & url, size_t timeout) :
-	          ihttpstream ()
+iurlstream::iurlstream (const basic::uri & url, size_t timeout) :
+	          iurlstream ()
 {
-	open (method, url, timeout);
+	open (url, timeout);
 }
 
-ihttpstream::ihttpstream (ihttpstream && other) :
+iurlstream::iurlstream (iurlstream && other) :
 	         std::istream (),
 	                  buf (std::move (other .buf)),
-	          http_method (other .http_method),
 	  request_headers_map (std::move (other .request_headers_map)),
 	 response_headers_map (std::move (other .response_headers_map)),
 	response_http_version (std::move (other .response_http_version)),
@@ -74,12 +68,9 @@ ihttpstream::ihttpstream (ihttpstream && other) :
 }
 
 void
-ihttpstream::open (const http::method method, const basic::uri & url, size_t timeout)
+iurlstream::open (const basic::uri & url, size_t timeout)
 {
-	http_method = method;
-
 	clear ();
-	buf -> close ();
 
 	buf -> timeout (timeout);
 
@@ -88,77 +79,72 @@ ihttpstream::open (const http::method method, const basic::uri & url, size_t tim
 }
 
 void
-ihttpstream::send ()
+iurlstream::send ()
 {
-	std::ostringstream request;
-
-	request
-		<< methods [http_method] << " " << url () .path (true) << " HTTP/1.0\r\n"
-		<< "Host: " << url () .host () << "\r\n";
-
-	for (const auto & request_header : request_headers_map)
-		request << request_header .first << ": " << request_header .second << "\r\n";
-
-	request << "\r\n";
-
-	if (buf -> send (request .str ()))
+	if (buf -> send (request_headers_map))
 	{
-		parse_status_line ();
-		parse_response_headers ();
-
-		process_status ();
-		
+		while (parse_status_line ())
+			parse_response_headers ();
+			
 		return;
 	}
 
 	setstate (std::ios::failbit);
 }
 
-void
-ihttpstream::parse_status_line ()
+bool
+iurlstream::parse_status_line ()
 {
 	std::stringstream line;
 
-	get (*line .rdbuf (), widen ('\n'));
+	rdbuf () -> headers () .get (*line .rdbuf (), widen ('\n'));
 
-	line
-		>> response_http_version
-		>> response_status;
-	
-	sentry s (line);
+	if (rdbuf () -> headers ())
+	{
+		line
+			>> response_http_version
+			>> response_status;
+		
+		if (line)
+		{
+			sentry s (line);
 
-	std::ostringstream oss_reason;
-	oss_reason << line .rdbuf ();
+			std::ostringstream oss_reason;
+			oss_reason << line .rdbuf ();
 
-	response_reason = oss_reason .str ();
-	if (response_reason .size ())
-		response_reason .resize (response_reason .size () - 1);
+			response_reason = oss_reason .str ();
+			if (response_reason .size ())
+				response_reason .resize (response_reason .size () - 1);
 
-	if (get () not_eq '\n')
-		return close ();
+			if (rdbuf () -> headers () .get () == '\n')
+				return true;
+		}
+	}
+
+	return false;
 }
 
 void
-ihttpstream::parse_response_headers ()
+iurlstream::parse_response_headers ()
 {
-	while (peek () not_eq '\r' and peek () not_eq socketstreambuf::traits_type::eof ())
+	while (rdbuf () -> headers () .peek () not_eq '\r' and rdbuf () -> headers () .peek () not_eq urlstreambuf::traits_type::eof ())
 		parse_response_header ();
 
-	if (get () not_eq '\r')
+	if (rdbuf () -> headers () .get () not_eq '\r')
 		return close ();
 
-	if (get () not_eq '\n')
+	if (rdbuf () -> headers () .get () not_eq '\n')
 		return close ();
 }
 
 void
-ihttpstream::parse_response_header ()
+iurlstream::parse_response_header ()
 {
 	std::stringstream line;
 	std::string       header;
 	std::stringstream value;
 
-	get (*line .rdbuf (), widen ('\n'));
+	rdbuf () -> headers () .get (*line .rdbuf (), widen ('\n'));
 
 	// Header:
 	line >> header;
@@ -174,62 +160,17 @@ ihttpstream::parse_response_header ()
 	// Value
 	line .get (*value .rdbuf (), widen ('\r'));
 
-	if (get () not_eq '\n')
+	if (rdbuf () -> headers () .get () not_eq '\n')
 		return close ();
 
 	response_headers_map .insert (std::make_pair (header, value .str ()));
 }
 
 void
-ihttpstream::process_status ()
-{
-	// http://de.wikipedia.org/wiki/HTTP-Statuscode
-
-	try
-	{
-		switch (status ())
-		{
-			case 302: // Found
-			case 303: // See Other
-			{
-				headers_type headers = request_headers ();
-				open (http::method::GET, response_headers () .at ("Location"), timeout ());
-				request_headers (headers);
-				send ();
-				break;
-			}
-			case 300: // Multiple Choices
-			case 301: // Moved Permanently
-			case 307: // Temporary Redirect
-			case 308: // Permanent Redirect
-			{
-				headers_type headers = request_headers ();
-				open (http_method, response_headers () .at ("Location"), timeout ());
-				request_headers (headers);
-				send ();
-				break;
-			}
-			default:
-			{
-				if (status () >= 400 and status () <= 599)
-					setstate (std::ios::failbit);
-
-				break;
-			}
-		}
-	}
-	catch (const std::out_of_range &)
-	{
-		setstate (std::ios::failbit);
-	}
-}
-
-void
-ihttpstream::close ()
+iurlstream::close ()
 {
 	buf -> close ();
 
-	http_method = http::method::GET;
 	request_headers_map   .clear ();
 	response_headers_map  .clear ();
 	response_http_version .clear ();
@@ -240,12 +181,12 @@ ihttpstream::close ()
 }
 
 void
-ihttpstream::request_header (const std::string & header, const std::string & value)
+iurlstream::request_header (const std::string & header, const std::string & value)
 {
 	request_headers_map .insert (std::make_pair (header, value));
 }
 
-ihttpstream::~ihttpstream ()
+iurlstream::~iurlstream ()
 { }
 
 } // basic

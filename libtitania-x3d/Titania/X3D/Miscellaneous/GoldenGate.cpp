@@ -112,7 +112,7 @@ golden_image (const basic::uri & uri)
 
 		std::locale::global (locale);
 
-		return basic::ifilestream (basic::http::GET, "data:model/vrml;charset=UTF-8," + file);
+		return basic::ifilestream ("data:model/vrml;charset=UTF-8," + file);
 	}
 	catch (...)
 	{
@@ -131,7 +131,7 @@ golden_audio (const basic::uri & uri)
 	Description .GlobalReplace (SFString (uri .basename (false)) .toString (), &file);
 	URL         .GlobalReplace (MFString ({ uri .basename (), uri .str () }) .toString (), &file);
 
-	return basic::ifilestream (basic::http::GET, "data:model/vrml;charset=UTF-8," + file);
+	return basic::ifilestream ("data:model/vrml;charset=UTF-8," + file);
 }
 
 static
@@ -165,7 +165,7 @@ golden_video (const basic::uri & uri)
 
 	std::locale::global (locale);
 
-	return basic::ifilestream (basic::http::GET, "data:model/vrml;charset=UTF-8," + file);
+	return basic::ifilestream ("data:model/vrml;charset=UTF-8," + file);
 }
 
 basic::ifilestream
@@ -187,8 +187,6 @@ golden_gate (const basic::uri & uri, basic::ifilestream && istream)
 
 	return std::move (istream);
 }
-
-	
 
 } // X3D
 } // titania

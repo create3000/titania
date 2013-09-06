@@ -133,7 +133,7 @@ SFString::toStream (std::ostream & ostream) const
 
 	for (const auto & c : getValue () .raw ())
 	{
-		if (c == '"')
+		if (c == '"' or c == '\\')
 			ostream << '\\';
 
 		ostream << c;

@@ -227,7 +227,7 @@ throw (Error <INVALID_URL>,
 	if (transformedURL .scheme () not_eq "data")
 		std::clog << "\tTransformed URL is '" << transformedURL << "'" << std::endl;
 
-	basic::ifilestream istream (basic::http::GET, transformedURL, 15000);
+	basic::ifilestream istream (transformedURL, 15000);
 
 	if (istream)
 	{

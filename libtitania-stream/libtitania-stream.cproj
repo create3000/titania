@@ -46,6 +46,8 @@
     <None Include="Titania\Stream\InputHTTPStream.h" />
     <None Include="libtitania-stream.md.pc" />
     <None Include="Makefile.am" />
+    <None Include="Titania\Stream\InputUrlStream.h" />
+    <None Include="Titania\Stream\UrlStreamBuf.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -55,6 +57,8 @@
     <Compile Include="Titania\Stream\SocketStreamBuf.cpp" />
     <Compile Include="Titania\Stream\InputFileStream.cpp" />
     <Compile Include="Titania\Stream\InputHTTPStream.cpp" />
+    <Compile Include="Titania\Stream\InputUrlStream.cpp" />
+    <Compile Include="Titania\Stream\UrlStreamBuf.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

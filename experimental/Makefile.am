@@ -8,7 +8,7 @@ AM_CPPFLAGS = -I$(top_builddir)/libtitania-standard \
 	-I$(top_builddir)/libtitania-stream \
 	-I$(top_builddir)/libtitania-gzstream
 
-AM_LDFLAGS = -lv8
+AM_LDFLAGS = -lv8 -lcurl
 
 titania_experimental_LDADD = $(top_builddir)/libtitania-standard/libtitania-standard.la \
 	$(top_builddir)/libtitania-stream/libtitania-stream.la \

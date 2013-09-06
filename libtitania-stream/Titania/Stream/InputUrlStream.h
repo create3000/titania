@@ -48,98 +48,130 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_INPUT_OUTPUT_QUOTED_STRING_H__
-#define __TITANIA_INPUT_OUTPUT_QUOTED_STRING_H__
+#ifndef __TITANIA_STREAM_INPUT_URL_STREAM_H__
+#define __TITANIA_STREAM_INPUT_URL_STREAM_H__
 
-#include <istream>
-#include <string>
-#include <Titania/LOG.h>
+#include "../Stream/UrlStreamBuf.h"
+
+#include <memory>
 
 namespace titania {
-namespace io {
+namespace basic {
 
-template <class CharT, class Traits = std::char_traits <CharT>>
-class basic_quoted_string
+class iurlstream :
+	public std::istream
 {
 public:
 
-	basic_quoted_string (const CharT &);
+	typedef urlstreambuf::headers_type headers_type;
+	typedef size_t                     status_type;
 
-	bool
-	operator () (std::basic_istream <CharT, Traits> &, std::basic_string <CharT> &);
+	/// @name Constructors
+
+	iurlstream ();
+
+	iurlstream (const basic::uri &, size_t = 60000);
+
+	iurlstream (iurlstream &&);
+
+	/// @name Properties
+
+	const basic::uri &
+	url () const
+	{ return buf -> url (); }
+
+	/// @name Connection handling
+
+	void
+	open (const basic::uri &, size_t = 60000);
+
+	void
+	send ();
+
+	void
+	close ();
+
+	/// @name Header handling
+
+	void
+	request_header (const std::string &, const std::string &);
+
+	void
+	request_headers (const headers_type & value)
+	{ request_headers_map = value; }
+
+	const headers_type &
+	request_headers () const
+	{ return request_headers_map; }
+
+	const headers_type &
+	response_headers () const
+	{ return response_headers_map; }
+
+	/// @name Element access
+
+	const std::string &
+	http_version ()
+	{ return response_http_version; }
+
+	status_type
+	status () const
+	{ return response_status; }
+
+	const std::string &
+	reason () const
+	{ return response_reason; }
+
+	size_t
+	timeout () const
+	{ return rdbuf () -> timeout (); }
+
+	void
+	timeout (size_t value)
+	{ return rdbuf () -> timeout (value); }
+
+	/// @name SocketStreamBuffer
+
+	urlstreambuf*
+	rdbuf () const
+	{ return buf .get (); }
+
+	/// @name Destructor
+
+	virtual
+	~iurlstream ();
 
 
 private:
 
-	typedef typename std::basic_istream <CharT, Traits>::int_type int_type;
+	iurlstream (const iurlstream &) = delete;
 
-	CharT delimiter;
+	iurlstream &
+	operator = (const iurlstream &) = delete;
+
+	bool
+	parse_status_line ();
+
+	void
+	parse_response_headers ();
+
+	void
+	parse_response_header ();
+
+	///  @name Members
+
+	std::unique_ptr <urlstreambuf> buf;
+
+	headers_type request_headers_map;
+	headers_type response_headers_map;
+
+	std::string response_http_version;
+	status_type response_status;
+	std::string response_reason;
 
 };
 
-template <class CharT, class Traits>
-basic_quoted_string <CharT, Traits>::basic_quoted_string (const CharT & delimiter) :
-	delimiter (delimiter)
-{ }
-
-template <class CharT, class Traits>
-bool
-basic_quoted_string <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> & istream, std::basic_string <CharT> & string)
-{
-	std::basic_string <CharT> parsed;
-
-	if (istream .peek () == (int_type) delimiter)
-	{
-		istream .get ();
-
-		while (istream)
-		{
-			int_type c = istream .peek ();
-	
-			if (istream .eof ())
-			{
-				istream .setstate (std::ios_base::failbit);
-				return false;
-			}
-
-			if (c == '\\')
-			{
-				istream .get ();
-
-				c = istream .peek ();
-
-				if (istream .eof ())
-				{
-					istream .setstate (std::ios_base::failbit);
-					return false;
-				}
-
-				if (not (c == (int_type) delimiter or c == (int_type) '\\'))
-					parsed .push_back ('\\');
-			}
-			else if (c == (int_type) delimiter)
-			{
-				istream .get ();
-				string = std::move (parsed);
-				return true;
-			}
-
-			parsed .push_back (istream .get ());
-		}
-	}
-
-	istream .setstate (std::ios_base::failbit);
-
-	return false;
-}
-
-typedef basic_quoted_string <char>    quoted_string;
-typedef basic_quoted_string <wchar_t> wquoted_string;
-
-extern template class basic_quoted_string <char>;
-extern template class basic_quoted_string <wchar_t>;
-
-} // io
+} // basic
 } // titania
 
 #endif

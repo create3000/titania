@@ -1,5 +1,11 @@
 2013-09-06  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* SFString.cpp:
+	* Loader.cpp:
+	* GoldenGate.cpp: 
+
+2013-09-06  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Parser.h:
 	* Grammar.h:
 	* Parser.cpp:

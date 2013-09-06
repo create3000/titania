@@ -51,7 +51,7 @@
 #ifndef __TITANIA_STREAM_INPUT_FILE_STREAM_H__
 #define __TITANIA_STREAM_INPUT_FILE_STREAM_H__
 
-#include "../Stream/InputHTTPStream.h"
+#include "../Stream/InputUrlStream.h"
 
 #include <fstream>
 #include <map>
@@ -65,34 +65,19 @@ class ifilestream :
 {
 public:
 
-	typedef basic::ihttpstream::headers_type headers_type;
-	typedef basic::ihttpstream::status_type  status_type;
+	typedef basic::iurlstream::headers_type headers_type;
+	typedef basic::iurlstream::status_type  status_type;
 
 	/// @name Constructors
 
 	ifilestream ();
 
-	ifilestream (const http::method, const basic::uri &, size_t = 60000);
+	ifilestream (const basic::uri &, size_t = 60000);
 
 	ifilestream (ifilestream &&);
 
 	ifilestream &
 	operator = (ifilestream &&);
-
-	const basic::uri &
-	url () const
-	{ return m_url; }
-
-	/// @name Connection handling
-
-	void
-	open (const http::method, const basic::uri &, size_t = 60000);
-
-	void
-	send ();
-
-	void
-	close ();
 
 	/// @name Header handling
 
@@ -107,10 +92,14 @@ public:
 
 	/// @name Element access
 
+	const basic::uri &
+	url () const
+	{ return m_url; }
+
 	const std::string &
 	http_version () const;
 
-	ihttpstream::status_type
+	iurlstream::status_type
 	status () const
 	{ return m_status; }
 
@@ -122,6 +111,17 @@ public:
 
 	void
 	timeout (size_t);
+
+	/// @name Connection handling
+
+	void
+	open (const basic::uri &, size_t = 60000);
+
+	void
+	send ();
+
+	void
+	close ();
 
 	/// @name Buffer
 
@@ -154,14 +154,14 @@ private:
 
 	std::istringstream* data_istream;
 	std::ifstream*      file_istream;
-	ihttpstream*        http_istream;
+	iurlstream*         url_stream;
 	std::istream*       istream;
 
 	headers_type file_request_headers;
 	headers_type file_response_headers;
 
-	basic::uri               m_url;
-	ihttpstream::status_type m_status;
+	basic::uri              m_url;
+	iurlstream::status_type m_status;
 
 };
 

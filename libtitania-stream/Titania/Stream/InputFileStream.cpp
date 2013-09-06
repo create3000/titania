@@ -62,7 +62,7 @@ ifilestream::ifilestream () :
 	         std::istream (),
 	         data_istream (nullptr),
 	         file_istream (nullptr),
-	         http_istream (nullptr),
+	           url_stream (nullptr),
 	              istream (nullptr),
 	 file_request_headers (),
 	file_response_headers (),
@@ -70,14 +70,14 @@ ifilestream::ifilestream () :
 	             m_status ()
 { }
 
-ifilestream::ifilestream (const http::method method, const basic::uri & url, size_t timeout) :
-	          ifilestream ()
+ifilestream::ifilestream (const basic::uri & url, size_t timeout) :
+	ifilestream ()
 {
-	open (method, url, timeout);
+	open (url, timeout);
 }
 
 ifilestream::ifilestream (ifilestream && other) :
-	          ifilestream ()
+	ifilestream ()
 {
 	*this = std::move (other);
 }
@@ -87,7 +87,7 @@ ifilestream::operator = (ifilestream && other)
 {
 	data_istream          = other .data_istream;
 	file_istream          = other .file_istream;
-	http_istream          = other .http_istream;
+	url_stream            = other .url_stream;
 	istream               = other .istream;
 	file_request_headers  = std::move (other .file_request_headers);
 	file_response_headers = std::move (other .file_response_headers);
@@ -95,7 +95,7 @@ ifilestream::operator = (ifilestream && other)
 
 	other .data_istream = nullptr;
 	other .file_istream = nullptr;
-	other .http_istream = nullptr;
+	other .url_stream   = nullptr;
 	other .istream      = nullptr;
 
 	init (istream -> rdbuf ());
@@ -109,7 +109,7 @@ ifilestream::operator = (ifilestream && other)
 // Connection handling
 
 void
-ifilestream::open (const http::method method, const basic::uri & URL, size_t timeout)
+ifilestream::open (const basic::uri & URL, size_t timeout)
 {
 	url (URL);
 
@@ -173,8 +173,8 @@ ifilestream::open (const http::method method, const basic::uri & URL, size_t tim
 	}
 	else
 	{
-		istream = http_istream = new ihttpstream ();
-		http_istream -> open (method, url (), timeout);
+		istream = url_stream = new iurlstream ();
+		url_stream -> open (url (), timeout);
 	}
 
 	init (istream -> rdbuf ());
@@ -184,11 +184,11 @@ ifilestream::open (const http::method method, const basic::uri & URL, size_t tim
 void
 ifilestream::send ()
 {
-	if (http_istream and * http_istream)
+	if (url_stream and * url_stream)
 	{
-		http_istream -> send ();
-		url (http_istream -> url ());
-		status (http_istream -> status ());
+		url_stream -> send ();
+		url (url_stream -> url ());
+		status (url_stream -> status ());
 	}
 	else if (file_istream)
 	{
@@ -214,9 +214,9 @@ ifilestream::send ()
 void
 ifilestream::close ()
 {
-	if (http_istream)
+	if (url_stream)
 	{
-		http_istream = nullptr;
+		url_stream = nullptr;
 	}
 	else if (file_istream)
 	{
@@ -234,8 +234,8 @@ ifilestream::close ()
 void
 ifilestream::request_header (const std::string & header, const std::string & value)
 {
-	if (http_istream)
-		return http_istream -> request_header (header, value);
+	if (url_stream)
+		return url_stream -> request_header (header, value);
 
 	file_request_headers .insert (std::make_pair (header, value));
 }
@@ -243,8 +243,8 @@ ifilestream::request_header (const std::string & header, const std::string & val
 const ifilestream::headers_type &
 ifilestream::request_headers () const
 {
-	if (http_istream)
-		return http_istream -> request_headers ();
+	if (url_stream)
+		return url_stream -> request_headers ();
 
 	return file_request_headers;
 }
@@ -252,8 +252,8 @@ ifilestream::request_headers () const
 const ifilestream::headers_type &
 ifilestream::response_headers () const
 {
-	if (http_istream)
-		return http_istream -> response_headers ();
+	if (url_stream)
+		return url_stream -> response_headers ();
 
 	return file_response_headers;
 }
@@ -263,8 +263,8 @@ ifilestream::response_headers () const
 const std::string &
 ifilestream::http_version () const
 {
-	if (http_istream)
-		return http_istream -> http_version ();
+	if (url_stream)
+		return url_stream -> http_version ();
 
 	return empty_string;
 }
@@ -272,8 +272,8 @@ ifilestream::http_version () const
 const std::string &
 ifilestream::reason () const
 {
-	if (http_istream)
-		return http_istream -> reason ();
+	if (url_stream)
+		return url_stream -> reason ();
 
 	return *istream ? reasons [0] : reasons [1];
 }
@@ -281,8 +281,8 @@ ifilestream::reason () const
 size_t
 ifilestream::timeout () const
 {
-	if (http_istream)
-		return http_istream -> timeout ();
+	if (url_stream)
+		return url_stream -> timeout ();
 
 	return 0;
 }
@@ -290,8 +290,8 @@ ifilestream::timeout () const
 void
 ifilestream::timeout (size_t value)
 {
-	if (http_istream)
-		http_istream -> timeout (value);
+	if (url_stream)
+		url_stream -> timeout (value);
 }
 
 // Buffer

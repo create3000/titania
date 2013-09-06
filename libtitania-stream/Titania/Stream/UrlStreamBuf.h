@@ -48,98 +48,88 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_INPUT_OUTPUT_QUOTED_STRING_H__
-#define __TITANIA_INPUT_OUTPUT_QUOTED_STRING_H__
+#ifndef __TITANIA_STREAM_URL_STREAM_BUF_H__
+#define __TITANIA_STREAM_URL_STREAM_BUF_H__
 
-#include <istream>
-#include <string>
-#include <Titania/LOG.h>
+#include <Titania/Basic/URI.h>
+#include <sstream>
+
+extern "C"
+{
+#include <curl/curl.h>
+}
 
 namespace titania {
-namespace io {
+namespace basic {
 
-template <class CharT, class Traits = std::char_traits <CharT>>
-class basic_quoted_string
+class urlstreambuf :
+	public std::stringbuf
 {
 public:
 
-	basic_quoted_string (const CharT &);
+	typedef std::map <std::string, std::string> headers_type;
+	typedef size_t                              size_type;
+
+	urlstreambuf ();
 
 	bool
-	operator () (std::basic_istream <CharT, Traits> &, std::basic_string <CharT> &);
+	is_open ()
+	{ return opened; }
+
+	urlstreambuf*
+	open (const basic::uri &);
+
+	urlstreambuf*
+	send (const headers_type & = { });
+
+	urlstreambuf*
+	close ();
+
+	const basic::uri &
+	url () const
+	{ return m_url; }
+
+	size_type
+	timeout () const
+	{ return m_timeout; }
+
+	void
+	timeout (size_type value)
+	{ m_timeout = value; }
+
+	std::stringstream &
+	headers ()
+	{ return m_headers; }
+
+	virtual
+	~urlstreambuf ()
+	{ close (); }
 
 
 private:
 
-	typedef typename std::basic_istream <CharT, Traits>::int_type int_type;
+	void
+	url (const basic::uri & value)
+	{ m_url = value; }
 
-	CharT delimiter;
+	static
+	int
+	write_header (char* data, size_t, size_t, std::stringstream*);
+
+	static
+	int
+	write_data (char* data, size_t, size_t, urlstreambuf*);
+
+	CURL* curl;                  // CURL handle
+	bool  opened;                // Open/close state of stream
+
+	basic::uri        m_url;     // The URL
+	size_type         m_timeout; // in ms
+	std::stringstream m_headers; // Header data
 
 };
 
-template <class CharT, class Traits>
-basic_quoted_string <CharT, Traits>::basic_quoted_string (const CharT & delimiter) :
-	delimiter (delimiter)
-{ }
-
-template <class CharT, class Traits>
-bool
-basic_quoted_string <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> & istream, std::basic_string <CharT> & string)
-{
-	std::basic_string <CharT> parsed;
-
-	if (istream .peek () == (int_type) delimiter)
-	{
-		istream .get ();
-
-		while (istream)
-		{
-			int_type c = istream .peek ();
-	
-			if (istream .eof ())
-			{
-				istream .setstate (std::ios_base::failbit);
-				return false;
-			}
-
-			if (c == '\\')
-			{
-				istream .get ();
-
-				c = istream .peek ();
-
-				if (istream .eof ())
-				{
-					istream .setstate (std::ios_base::failbit);
-					return false;
-				}
-
-				if (not (c == (int_type) delimiter or c == (int_type) '\\'))
-					parsed .push_back ('\\');
-			}
-			else if (c == (int_type) delimiter)
-			{
-				istream .get ();
-				string = std::move (parsed);
-				return true;
-			}
-
-			parsed .push_back (istream .get ());
-		}
-	}
-
-	istream .setstate (std::ios_base::failbit);
-
-	return false;
-}
-
-typedef basic_quoted_string <char>    quoted_string;
-typedef basic_quoted_string <wchar_t> wquoted_string;
-
-extern template class basic_quoted_string <char>;
-extern template class basic_quoted_string <wchar_t>;
-
-} // io
+} // basic
 } // titania
 
 #endif

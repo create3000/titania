@@ -21,7 +21,7 @@ EXTERNPROTO Rotor [
 
 PROTO Test [
   # Field Comment 
-  exposedField SFString test ""
+  exposedField SFString test "\\\"äöüáóúâôû"
   # Interface Comment 
 ]
 {
