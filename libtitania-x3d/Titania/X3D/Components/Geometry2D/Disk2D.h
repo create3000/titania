@@ -93,6 +93,15 @@ public:
 	solid () const
 	{ return *fields .solid; }
 
+	///  @name Tests
+
+	virtual
+	bool
+	isLineGeometry () const final
+	{ return lineGeometry; }
+
+	///  @name Operations
+
 	virtual
 	void
 	draw () final;
@@ -125,6 +134,8 @@ private:
 	};
 
 	Fields fields;
+	
+	bool lineGeometry;
 
 };
 

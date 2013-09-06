@@ -56,19 +56,19 @@ namespace titania {
 namespace X3D {
 
 TwoSidedMaterial::Fields::Fields () :
-	ambientIntensity (new SFFloat (0.2)),
-	diffuseColor (new SFColor (0.8, 0.8, 0.8)),
-	emissiveColor (new SFColor ()),
-	shininess (new SFFloat (0.2)),
-	separateBackColor (new SFBool ()),
-	specularColor (new SFColor ()),
-	transparency (new SFFloat ()),
+	    ambientIntensity (new SFFloat (0.2)),
+	        diffuseColor (new SFColor (0.8, 0.8, 0.8)),
+	       emissiveColor (new SFColor ()),
+	           shininess (new SFFloat (0.2)),
+	   separateBackColor (new SFBool ()),
+	       specularColor (new SFColor ()),
+	        transparency (new SFFloat ()),
 	backAmbientIntensity (new SFFloat (0.2)),
-	backDiffuseColor (new SFColor (0.8, 0.8, 0.8)),
-	backEmissiveColor (new SFColor ()),
-	backShininess (new SFFloat (0.2)),
-	backSpecularColor (new SFColor ()),
-	backTransparency (new SFFloat ())
+	    backDiffuseColor (new SFColor (0.8, 0.8, 0.8)),
+	   backEmissiveColor (new SFColor ()),
+	       backShininess (new SFFloat (0.2)),
+	   backSpecularColor (new SFColor ()),
+	    backTransparency (new SFFloat ())
 { }
 
 TwoSidedMaterial::TwoSidedMaterial (X3DExecutionContext* const executionContext) :

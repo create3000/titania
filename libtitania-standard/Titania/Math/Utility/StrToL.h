@@ -48,63 +48,24 @@
  *
  ******************************************************************************/
 
-#include "LineProperties.h"
+#ifndef __TITANIA_MATH_UTILITY_NORMAL_H__
+#define __TITANIA_MATH_UTILITY_NORMAL_H__
 
-#include "../../Bits/Linetypes.h"
-#include "../../Execution/X3DExecutionContext.h"
+#include <cstdlib>
 
 namespace titania {
-namespace X3D {
+namespace math {
 
-LineProperties::Fields::Fields () :
-	             applied (new SFBool (true)),
-	            linetype (new SFInt32 (1)),
-	linewidthScaleFactor (new SFFloat ())
-{ }
-
-LineProperties::LineProperties (X3DExecutionContext* const executionContext) :
-	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DAppearanceChildNode (),
-	                fields ()
+inline
+long int
+strtol (const char* str, int base)
 {
-	setComponent ("Shape");
-	setTypeName ("LineProperties");
+	char* endptr;
 
-	addField (inputOutput, "metadata",             metadata ());
-	addField (inputOutput, "applied",              applied ());
-	addField (inputOutput, "linetype",             linetype ());
-	addField (inputOutput, "linewidthScaleFactor", linewidthScaleFactor ());
+	return ::strtol (str, &endptr, base);
 }
 
-X3DBaseNode*
-LineProperties::create (X3DExecutionContext* const executionContext) const
-{
-	return new LineProperties (executionContext);
-}
-
-void
-LineProperties::draw ()
-{
-	if (applied ())
-	{
-		glEnable (GL_LINE_STIPPLE);
-
-		if (linetype () > 0 and linetype () < (int32_t) linetypes .size ())
-			glLineStipple (1, linetypes [linetype ()]);
-
-		else
-			glLineStipple (1, linetypes [1]);
-
-		glLineWidth (linewidthScaleFactor ());
-		glPointSize (linewidthScaleFactor ());
-	}
-	else
-	{
-		glDisable (GL_LINE_STIPPLE);
-		glLineWidth (1);
-		glPointSize (1);
-	}
-}
-
-} // X3D
+} // math
 } // titania
+
+#endif

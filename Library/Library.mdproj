@@ -2313,6 +2313,9 @@
     <None Include="Tests\Shaders\sobel-ComposedShader.wrl" />
     <None Include="Tests\images\lena.jpg" />
     <None Include="Tests\Shape\LineProperties.wrl" />
+    <None Include="Tests\Shaders\IndexedLineSet.wrl" />
+    <None Include="Tests\Shape\Connectors.wrl" />
+    <None Include="Tests\Shape\FillProperties.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

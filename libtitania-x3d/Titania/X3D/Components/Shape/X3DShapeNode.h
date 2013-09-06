@@ -120,9 +120,6 @@ protected:
 
 private:
 
-	X3DAppearanceNode*
-	getAppearance () const;
-
 	void
 	set_appearance ();
 

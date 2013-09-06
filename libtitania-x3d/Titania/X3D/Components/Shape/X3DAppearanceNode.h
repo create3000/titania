@@ -56,14 +56,31 @@
 namespace titania {
 namespace X3D {
 
+class FillProperties;
+class LineProperties;
+
 class X3DAppearanceNode :
 	virtual public X3DNode
 {
 public:
 
+	///  @name Tests
+
 	virtual
 	bool
 	isTransparent () const = 0;
+
+	///  @name Member access
+
+	virtual
+	FillProperties*
+	getFillProperties () const = 0;
+
+	virtual
+	LineProperties*
+	getLineProperties () const = 0;
+
+	///  @name Operations
 
 	virtual
 	void

@@ -66,17 +66,29 @@ class X3DGeometryNode :
 {
 public:
 
-	const Box3f
-	getBBox ();
+	///  @name Construction
+
+	virtual
+	void
+	setup () final;
+
+	///  @name Tests
 
 	bool
 	isTransparent () const
 	{ return colorsRGBA .size (); }
 
 	virtual
-	void
-	setup () final;
+	bool
+	isLineGeometry () const = 0;
 
+	///  @name Member access
+
+	const Box3f
+	getBBox ();
+	
+	///  @name Operations
+	
 	bool
 	intersect (const Line3f &, std::deque <IntersectionPtr> &) const;
 
@@ -96,9 +108,11 @@ protected:
 
 	typedef std::map <size_t, std::deque <size_t>> NormalIndex;
 
+	///  @name Construction
+
 	X3DGeometryNode ();
 
-	///  @name Properties
+	///  @name Member access
 
 	std::vector <Vector3f> &
 	getTexCoord ()
@@ -151,6 +165,8 @@ protected:
 	addElements (const GLenum count, size_t vertexCount)
 	{ elements .emplace_back (count, vertexCount); }
 
+	///  @name Operations
+
 	virtual
 	Box3f
 	createBBox ();
@@ -193,8 +209,12 @@ private:
 
 	};
 
+	///  @name Operations
+
 	void
 	clear ();
+	
+	///  @name Members
 
 	Box3f                       bbox;
 	std::vector <Vector3f>      texCoords;

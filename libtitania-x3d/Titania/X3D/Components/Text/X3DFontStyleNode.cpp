@@ -56,14 +56,14 @@ namespace titania {
 namespace X3D {
 
 X3DFontStyleNode::Fields::Fields () :
-	family (new MFString ({ "SERIF" })),
-	style (new SFString ("PLAIN")),
-	spacing (new SFFloat (1)),
-	horizontal (new SFBool (true)),
-	justify (new MFString ({ "BEGIN" })),
+	     family (new MFString ({ "SERIF" })),
+	      style (new SFString ("PLAIN")),
+	    spacing (new SFFloat (1)),
+	 horizontal (new SFBool (true)),
+	    justify (new MFString ({ "BEGIN" })),
 	topToBottom (new SFBool (true)),
 	leftToRight (new SFBool (true)),
-	language (new SFString ())
+	   language (new SFString ())
 { }
 
 X3DFontStyleNode::X3DFontStyleNode () :

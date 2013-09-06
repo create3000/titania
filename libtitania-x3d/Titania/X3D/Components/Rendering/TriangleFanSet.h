@@ -77,6 +77,13 @@ public:
 	fanCount () const
 	{ return *fields .fanCount; }
 
+	///  @name Tests
+
+	virtual
+	bool
+	isLineGeometry () const final
+	{ return false; }
+
 
 private:
 

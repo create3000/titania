@@ -56,8 +56,6 @@
 namespace titania {
 namespace X3D {
 
-class LineProperties;
-class FillProperties;
 class X3DMaterialNode;
 class X3DTextureNode;
 class X3DTextureTransformNode;
@@ -130,6 +128,20 @@ public:
 	bool
 	isTransparent () const;
 
+	///  @name MemberAccess
+
+	virtual
+	FillProperties*
+	getFillProperties () const final
+	{ return _fillProperties; }
+
+	virtual
+	LineProperties*
+	getLineProperties () const final
+	{ return _lineProperties; }
+
+	///  @name Tests
+
 	virtual
 	void
 	draw () final;
@@ -163,8 +175,8 @@ private:
 	{
 		Fields ();
 
-		SFNode* const lineProperties;
 		SFNode* const fillProperties;
+		SFNode* const lineProperties;
 		SFNode* const material;
 		SFNode* const texture;
 		SFNode* const textureTransform;
@@ -173,8 +185,8 @@ private:
 
 	Fields fields;
 
-	LineProperties*          _lineProperties;
 	FillProperties*          _fillProperties;
+	LineProperties*          _lineProperties;
 	X3DMaterialNode*         _material;
 	X3DTextureNode*          _texture;
 	X3DTextureTransformNode* _textureTransform;

@@ -93,6 +93,13 @@ public:
 	trimmingContour () const
 	{ return *fields .trimmingContour; }
 
+	///  @name Tests
+
+	virtual
+	bool
+	isLineGeometry () const final
+	{ return false; }
+
 
 private:
 

@@ -81,6 +81,13 @@ public:
 	void
 	draw () final;
 
+	///  @name Tests
+
+	virtual
+	bool
+	isLineGeometry () const final
+	{ return true; }
+
 
 private:
 

@@ -1,0 +1,308 @@
+#VRML V2.0 utf8 Comment
+
+META "title" "Connectors"
+
+PROTO RoundedRectangle2D [
+  field SFFloat cornerRadius 1
+  field SFVec2f size 2 2
+  field SFBool  solid TRUE
+]
+{
+  DEF Geometry IndexedFaceSet {
+    solid IS solid
+    coord Coordinate { }
+  }
+
+  DEF RoundedRectangle2D Script {
+    field SFFloat cornerDimension 10
+    field SFFloat cornerRadius IS cornerRadius
+    field SFVec2f size IS size
+    field SFNode  geometry USE Geometry
+
+    url "vrmlscript:
+
+function initialize ()
+{
+	var point         = new SFVec3f (cornerRadius, 0, 0);
+	var startRotation = new SFRotation (0, 0, 1, 0);
+	var endRotation   = new SFRotation (0, 0, 1, Math .PI / 2);
+	var corner        = new MFVec3f ();
+	var coordIndex    = new MFInt32 ();
+	var points        = new MFVec3f ();
+
+	for (var i = 0; i < cornerDimension * 4; ++ i)
+		coordIndex [coordIndex .length] = i;
+		
+	geometry .coordIndex = coordIndex;
+
+	for (var i = 0; i < cornerDimension; ++i)
+		corner [i] = startRotation .slerp (endRotation, i / (cornerDimension - 1)) .multVec (point);
+	
+	var translation = new SFVec3f (size .x / 2 - cornerRadius, size .y / 2 - cornerRadius, 0);
+
+	for (var i = 0; i < cornerDimension; ++ i)
+		points [points .length] = corner [i] .add (translation);
+
+	var translation = new SFVec3f (-size .x / 2 + cornerRadius, size .y / 2 - cornerRadius, 0);
+	var rotation    = new SFRotation (0, 0, 1, Math .PI * 0.5);
+
+	for (var i = 0; i < cornerDimension; ++ i)
+		points [points .length] = rotation .multVec (corner [i]) .add (translation);
+
+	var translation = new SFVec3f (-size .x / 2 + cornerRadius, -size .y / 2 + cornerRadius, 0);
+	var rotation    = new SFRotation (0, 0, 1, Math .PI);
+
+	for (var i = 0; i < cornerDimension; ++ i)
+		points [points .length] = rotation .multVec (corner [i]) .add (translation);
+
+	var translation = new SFVec3f (size .x / 2 - cornerRadius, -size .y / 2 + cornerRadius, 0);
+	var rotation    = new SFRotation (0, 0, 1, Math .PI * 1.5);
+
+	for (var i = 0; i < cornerDimension; ++ i)
+		points [points .length] = rotation .multVec (corner [i]) .add (translation);
+
+	geometry .coord .point = points;
+}
+"
+    directOutput TRUE
+  }
+}
+
+PROTO Widget [
+  exposedField SFColor fillColor 0.1 0.1 0.1
+  exposedField SFColor lineColor 0.4 0.4 0.4
+  exposedField SFFloat linewidthScaleFactor 1
+  exposedField SFNode  geometry NULL
+]
+{
+  DEF Shape Transform {
+    children [
+      Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor IS fillColor
+          }
+        }
+        geometry IS geometry
+      }
+      Shape {
+        appearance Appearance {
+          fillProperties FillProperties {
+            filled FALSE
+            hatched FALSE
+          }
+          lineProperties LineProperties {
+            linewidthScaleFactor IS linewidthScaleFactor
+          }
+          material Material {
+            diffuseColor 0 0 0
+            emissiveColor IS lineColor
+          }
+        }
+        geometry IS geometry
+      }
+    ]
+  }
+}
+
+PROTO Node [
+  exposedField SFVec3f translation 0 0 0
+]
+{
+  Group {
+    children [
+      DEF PlaneSensor PlaneSensor {
+        offset IS translation
+      }
+      DEF Node Transform {
+        translation IS translation
+        children [
+          Widget {
+            geometry DEF Shape RoundedRectangle2D {
+              cornerRadius 0.12
+              size 2 1
+            }
+          }
+          DEF Input Transform {
+            translation -1 0 0
+            children Widget {
+              lineColor 0.72 0.14 0.23
+              geometry DEF Connector Disk2D {
+                outerRadius 0.2
+              }
+            }
+          }
+          DEF Output Transform {
+            translation 1 0 0
+            children Widget {
+              lineColor 0.44 0.5 0.72
+              geometry USE Connector
+            }
+          }
+        ]
+      }
+    ]
+  }
+
+  ROUTE PlaneSensor.translation_changed TO Node.set_translation
+}
+
+PROTO Route [
+  exposedField SFColor lineColor 0.43 0.43 0.98
+  exposedField SFFloat linewidthScaleFactor 2
+  field        SFNode  output NULL
+  field        SFNode  input NULL
+]
+{
+  Shape {
+    appearance Appearance {
+      lineProperties LineProperties {
+        linewidthScaleFactor IS linewidthScaleFactor
+      }
+      material Material {
+        diffuseColor 0 0 0
+        emissiveColor IS lineColor
+      }
+    }
+    geometry DEF Geometry LineSet {
+      vertexCount 2
+      coord Coordinate {
+        point [ -1 0 0, 1 0 0 ]
+      }
+    }
+  }
+
+  DEF Route Script {
+    eventIn SFVec3f set_translation
+    field   SFInt32 routeDimension 21
+    field   SFNode  output IS output
+    field   SFNode  input IS input
+    field   SFNode  geometry USE Geometry
+    field   SFNode  self USE Route
+
+    url "vrmlscript:
+function initialize ()
+{
+	Browser .addRoute (output, 'translation_changed', self, 'set_translation');
+	Browser .addRoute (input,  'translation_changed', self, 'set_translation');
+	
+	set_translation ();
+}
+
+function set_translation ()
+{
+	geometry .vertexCount [0] = routeDimension;
+
+	var outPoint = output .translation .add (new SFVec3f ( 1, 0, 0));
+	var inPoint  = input  .translation .add (new SFVec3f (-1, 0, 0));
+
+	var w = inPoint .x - outPoint .x;
+	var h = outPoint .y - inPoint .y;
+
+	for (var i = 0; i < routeDimension; ++ i)
+	{
+		var t = i / (routeDimension - 1);
+		var y = h / 2 * (Math .cos (t * Math .PI) - 1);
+	
+		geometry .coord .point [i] = outPoint .add (new SFVec3f (t * w, y, 0));
+	}
+}
+"
+    directOutput TRUE
+  }
+}
+
+NavigationInfo {
+	type [ "NONE", "EXAMINE" ]
+}
+
+DEF _0 Background {
+  skyColor 0.2 0.2 0.2
+}
+
+DEF _1 Viewpoint {
+	description "Front view"
+}
+
+DEF _2 Route {
+  output DEF N1 Node {
+    translation -5.75227 2.86491 0
+  }
+  input DEF N2 Node {
+    translation -1.37751 2.5 0
+  }
+}
+
+DEF _3 Route {
+  output USE N1
+  input DEF N3 Node {
+    translation -1.37751 1 0
+  }
+}
+
+DEF _4 Route {
+  output USE N1
+  input DEF N4 Node {
+    translation -1.37751 -0.5 0
+  }
+}
+
+DEF _5 Route {
+  output USE N1
+  input DEF N5 Node {
+    translation -1.37751 -2 0
+  }
+}
+
+DEF _6 Route {
+  output USE N2
+  input DEF N6 Node {
+    translation 2 1 0
+  }
+}
+
+DEF _7 Route {
+  output USE N3
+  input USE N6
+}
+
+DEF _8 Route {
+  output USE N4
+  input DEF N7 Node {
+    translation 2 -0.5 0
+  }
+}
+
+DEF _9 Route {
+  output USE N5
+  input USE N7
+}
+
+DEF _10 Route {
+  output USE N6
+  input DEF N8 Node {
+    translation 5.22887 0.156809 0
+  }
+}
+
+Route {
+  output USE N7
+  input USE N8
+}
+
+
+USE N1
+
+USE N2
+
+USE N3
+
+USE N4
+
+USE N5
+
+USE N6
+
+USE N7
+
+USE N8

@@ -59,6 +59,15 @@ namespace X3D {
 class PointSet :
 	public X3DGeometryNode
 {
+	///  @name Tests
+
+	virtual
+	bool
+	isLineGeometry () const final
+	{ return true; }
+
+	///  @name Operations
+
 	void
 	build ();
 

@@ -48,63 +48,41 @@
  *
  ******************************************************************************/
 
-#include "LineProperties.h"
+#ifndef __TITANIA_X3D_BITS_CAST_H__
+#define __TITANIA_X3D_BITS_CAST_H__
 
-#include "../../Bits/Linetypes.h"
-#include "../../Execution/X3DExecutionContext.h"
+#include "../Rendering/OpenGL.h"
+
+#include <Titania/Math/Utility/StrToL.h>
 
 namespace titania {
 namespace X3D {
 
-LineProperties::Fields::Fields () :
-	             applied (new SFBool (true)),
-	            linetype (new SFInt32 (1)),
-	linewidthScaleFactor (new SFFloat ())
-{ }
+static std::vector <GLushort> linetypes = {
+	math::strtol ("0000000000000000", 2), // 0 None
+	math::strtol ("1111111111111111", 2), // 1 Solid
+	math::strtol ("1111111110000000", 2), // 2 Dashed
+	math::strtol ("1000100010001000", 2), // 3 Dotted
+	math::strtol ("1111111110001000", 2), // 4 Dashed-dotted
+	math::strtol ("1111100010001000", 2), // 5 Dash-dot-dot
 
-LineProperties::LineProperties (X3DExecutionContext* const executionContext) :
-	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DAppearanceChildNode (),
-	                fields ()
-{
-	setComponent ("Shape");
-	setTypeName ("LineProperties");
+	math::strtol ("1111111111111111", 2), // 6 (single arrow)
+	math::strtol ("1111111111111111", 2), // 7 (single dot)
+	math::strtol ("1111111111111111", 2), // 8 (double arrow)
 
-	addField (inputOutput, "metadata",             metadata ());
-	addField (inputOutput, "applied",              applied ());
-	addField (inputOutput, "linetype",             linetype ());
-	addField (inputOutput, "linewidthScaleFactor", linewidthScaleFactor ());
-}
+	math::strtol ("1111111100000000", 2), // 9 (stitch line)
+	math::strtol ("1111111000111000", 2), // 10 (chain line)
+	math::strtol ("1111111110011100", 2), // 11 (center line)
+	math::strtol ("1111111111100000", 2), // 12 (hidden line)
+	math::strtol ("1111111011101110", 2)  // 13 (phantom line)
 
-X3DBaseNode*
-LineProperties::create (X3DExecutionContext* const executionContext) const
-{
-	return new LineProperties (executionContext);
-}
+	// 14 (break line - style 1)
+	// 15 (break line - style 2)
+	// 16 User - specified dash pattern
 
-void
-LineProperties::draw ()
-{
-	if (applied ())
-	{
-		glEnable (GL_LINE_STIPPLE);
-
-		if (linetype () > 0 and linetype () < (int32_t) linetypes .size ())
-			glLineStipple (1, linetypes [linetype ()]);
-
-		else
-			glLineStipple (1, linetypes [1]);
-
-		glLineWidth (linewidthScaleFactor ());
-		glPointSize (linewidthScaleFactor ());
-	}
-	else
-	{
-		glDisable (GL_LINE_STIPPLE);
-		glLineWidth (1);
-		glPointSize (1);
-	}
-}
+};
 
 } // X3D
 } // titania
+
+#endif

@@ -121,6 +121,7 @@
     <None Include="Titania\Chrono.h" />
     <None Include="Titania\OS\FileExists.h" />
     <None Include="Titania\String\ToString.h" />
+    <None Include="Titania\Math\Utility\StrToL.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />

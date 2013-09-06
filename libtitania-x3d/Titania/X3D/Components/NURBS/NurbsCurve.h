@@ -117,6 +117,13 @@ public:
 	order () const
 	{ return *fields .order; }
 
+	///  @name Tests
+
+	virtual
+	bool
+	isLineGeometry () const final
+	{ return true; }
+
 
 private:
 

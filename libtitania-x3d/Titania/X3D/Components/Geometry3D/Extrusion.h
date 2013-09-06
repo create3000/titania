@@ -154,6 +154,13 @@ public:
 	void
 	dispose () final;
 
+	///  @name Tests
+
+	virtual
+	bool
+	isLineGeometry () const final
+	{ return false; }
+
 
 private:
 

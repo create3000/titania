@@ -55,10 +55,15 @@
 namespace titania {
 namespace X3D {
 
+static
+const Matrix3f textureMatrix = { 1,  0, 0,
+	                              0, -1, 0,
+	                              0,  1, 1 };
+
 TextureTransform::Fields::Fields () :
-	center (new SFVec2f ()),
-	rotation (new SFFloat ()),
-	scale (new SFVec2f (1, 1)),
+	     center (new SFVec2f ()),
+	   rotation (new SFFloat ()),
+	      scale (new SFVec2f (1, 1)),
 	translation (new SFVec2f ())
 { }
 
@@ -97,7 +102,7 @@ TextureTransform::eventsProcessed ()
 
 	// Tc' = -C × S × R × C × T × Tc
 
-	Matrix3f m;
+	Matrix3f m = textureMatrix;
 
 	if (center () not_eq Vector2f (0, 0))
 		m .translate (-center ());
@@ -122,10 +127,11 @@ TextureTransform::draw ()
 {
 	glMatrixMode (GL_TEXTURE);
 
-	glMultMatrixf (matrix .data ());
+	glLoadMatrixf (matrix .data ());
 
 	glMatrixMode (GL_MODELVIEW);
 }
+
 
 } // X3D
 } // titania

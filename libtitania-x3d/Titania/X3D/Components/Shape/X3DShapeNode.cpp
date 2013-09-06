@@ -56,14 +56,16 @@
 #include "../../Rendering/ViewVolume.h"
 #include "../../Types/Geometry.h"
 #include "../Rendering/X3DGeometryNode.h"
-#include "../Shape/X3DAppearanceNode.h"
+#include "../Shape/Appearance.h"
+#include "../Shape/LineProperties.h"
+#include "../Shape/FillProperties.h"
 
 namespace titania {
 namespace X3D {
 
 X3DShapeNode::Fields::Fields () :
 	appearance (new SFNode ()),
-	geometry (new SFNode ())
+	  geometry (new SFNode ())
 { }
 
 X3DShapeNode::X3DShapeNode () :
@@ -116,22 +118,15 @@ X3DShapeNode::getBBox ()
 	return Box3f (bboxSize (), bboxCenter ());
 }
 
-X3DAppearanceNode*
-X3DShapeNode::getAppearance () const
-{
-	auto _appearance = x3d_cast <X3DAppearanceNode*> (appearance ());
-
-	if (_appearance)
-		return _appearance;
-
-	return getBrowser () -> getBrowserOptions () -> appearance ();
-
-}
-
 void
 X3DShapeNode::set_appearance ()
 {
-	_appearance = getAppearance ();
+	_appearance = x3d_cast <X3DAppearanceNode*> (appearance ());
+
+	if (_appearance)
+		return;
+
+	_appearance = getBrowser () -> getBrowserOptions () -> appearance ();
 }
 
 void
@@ -188,14 +183,14 @@ X3DShapeNode::pick ()
 
 				// Sort desc
 				std::sort (itersections .begin (), itersections .end (),
-				           [ ] (const IntersectionPtr & lhs, const IntersectionPtr & rhs) -> bool
+				           [ ] (const IntersectionPtr &lhs, const IntersectionPtr &rhs) -> bool
 				           {
 				              return lhs -> hitPoint .z () > rhs -> hitPoint .z ();
 							  });
 
 				// Find first point that is not greater than near plane;
 				auto itersection = std::lower_bound (itersections .cbegin (), itersections .cend (), -getCurrentNavigationInfo () -> getNearPlane (),
-				                                     [ ] (const IntersectionPtr & lhs, const float & rhs) -> bool
+				                                     [ ] (const IntersectionPtr &lhs, const float & rhs) -> bool
 				                                     {
 				                                        return lhs -> hitPoint .z () > rhs;
 																 });
@@ -211,7 +206,51 @@ void
 X3DShapeNode::draw ()
 {
 	_appearance -> draw ();
-	_geometry   -> draw ();
+
+	if (_geometry -> isLineGeometry ())
+	{
+		_appearance -> getLineProperties () -> draw ();
+		_geometry -> draw ();
+	}
+	else
+	{
+		if (_appearance -> getFillProperties () -> filled ())
+			_geometry -> draw ();
+			
+		glDisable (GL_TEXTURE_2D);
+		glDisable (GL_TEXTURE_CUBE_MAP);
+
+		// Draw hatch on top of whatever appearance is specified.
+
+		GLint polygonMode [2] = { 0, 0 }; // Front and back value.
+		glGetIntegerv (GL_POLYGON_MODE, polygonMode);
+
+		if (polygonMode [0] == GL_FILL)
+		{
+			if (_appearance -> getFillProperties () -> hatched ())
+			{
+				_appearance -> getFillProperties () -> enable ();
+				_geometry -> draw ();
+				_appearance -> getFillProperties () -> disable ();
+			}
+		}
+
+		// Draw line geometry on top of whatever appearance is specified.
+
+		if (_appearance -> getLineProperties () -> applied ())
+		{
+			if (polygonMode [0] == GL_FILL)
+				glPolygonMode (GL_FRONT_AND_BACK, GL_LINE);
+
+			_appearance -> getLineProperties () -> draw ();
+			_geometry   -> draw ();
+
+			glPolygonMode (GL_FRONT_AND_BACK, polygonMode [0]);
+		}
+	}
+
+	glDisable (GL_FOG);
+	glDisable (GL_COLOR_MATERIAL);
 }
 
 void

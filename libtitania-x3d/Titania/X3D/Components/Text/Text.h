@@ -134,6 +134,13 @@ public:
 	fontStyle () const
 	{ return *fields .fontStyle; }
 
+	///  @name Tests
+
+	virtual
+	bool
+	isLineGeometry () const final
+	{ return false; }
+
 	///  @name Operations
 
 	virtual

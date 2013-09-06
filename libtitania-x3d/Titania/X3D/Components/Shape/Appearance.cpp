@@ -58,32 +58,26 @@
 #include "../Shape/LineProperties.h"
 #include "../Shape/X3DMaterialNode.h"
 #include "../Texturing/X3DTextureNode.h"
-#include "../Texturing/X3DTextureTransformNode.h"
+#include "../Texturing/TextureTransform.h"
 
 namespace titania {
 namespace X3D {
 
-static
-const Matrix4f textureMatrix = { 1,  0, 0, 0,
-	                              0, -1, 0, 0,
-	                              0,  0, 1, 0,
-	                              0,  1, 0, 1 };
-
 Appearance::Fields::Fields () :
-	lineProperties (new SFNode ()),
-	fillProperties (new SFNode ()),
-	material (new SFNode ()),
-	texture (new SFNode ()),
+	  fillProperties (new SFNode ()),
+	  lineProperties (new SFNode ()),
+	        material (new SFNode ()),
+	         texture (new SFNode ()),
 	textureTransform (new SFNode ()),
-	shaders (new MFNode ())
+	         shaders (new MFNode ())
 { }
 
 Appearance::Appearance (X3DExecutionContext* const executionContext) :
 	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DAppearanceNode (),
 	           fields (),
-	  _lineProperties (nullptr),
 	  _fillProperties (nullptr),
+	  _lineProperties (nullptr),
 	        _material (nullptr),
 	         _texture (nullptr),
 	_textureTransform (nullptr),
@@ -143,6 +137,17 @@ Appearance::isTransparent () const
 }
 
 void
+Appearance::set_fillProperties ()
+{
+	_fillProperties = x3d_cast <FillProperties*> (fillProperties ());
+
+	if (_fillProperties)
+		return;
+
+	_fillProperties = getBrowser () -> getBrowserOptions () -> fillProperties ();
+}
+
+void
 Appearance::set_lineProperties ()
 {
 	_lineProperties = x3d_cast <LineProperties*> (lineProperties ());
@@ -151,12 +156,6 @@ Appearance::set_lineProperties ()
 		return;
 
 	_lineProperties = getBrowser () -> getBrowserOptions () -> lineProperties ();
-}
-
-void
-Appearance::set_fillProperties ()
-{
-	_fillProperties = x3d_cast <FillProperties*> (fillProperties ());
 }
 
 void
@@ -175,6 +174,11 @@ void
 Appearance::set_textureTransform ()
 {
 	_textureTransform = x3d_cast <X3DTextureTransformNode*> (textureTransform ());
+
+	if (_textureTransform)
+		return;
+
+	_textureTransform = getBrowser () -> getBrowserOptions () -> textureTransform ();
 }
 
 void
@@ -197,33 +201,14 @@ Appearance::set_shaders ()
 void
 Appearance::draw ()
 {
-	glDisable (GL_FOG);
-	glDisable (GL_COLOR_MATERIAL);
-
-	glDisable (GL_TEXTURE_2D);
-	glDisable (GL_TEXTURE_CUBE_MAP);
-
-	glMatrixMode (GL_TEXTURE);
-	glLoadMatrixf (textureMatrix .data ());
-	glMatrixMode (GL_MODELVIEW);
-
 	glUseProgram (0);
 	glBindProgramPipeline (0);
 
-	// LineProperties
-
-	_lineProperties -> draw ();
-
-	// FillProperties
-
-	if (_fillProperties)
-		_fillProperties -> draw ();
-		
 	// Material
 
 	if (_material)
 		_material -> draw ();
-	
+
 	else
 	{
 		glDisable (GL_LIGHTING);
@@ -237,8 +222,7 @@ Appearance::draw ()
 
 	// TextureTransform
 
-	if (_textureTransform)
-		_textureTransform -> draw ();
+	_textureTransform -> draw ();
 
 	// Shader
 

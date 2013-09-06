@@ -50,12 +50,27 @@
 
 #include "BrowserOptions.h"
 
+#include "../../Components/Shape/Appearance.h"
+#include "../../Components/Shape/FillProperties.h"
+#include "../../Components/Shape/LineProperties.h"
+#include "../../Components/Text/FontStyle.h"
+#include "../../Components/Texturing/TextureProperties.h"
+#include "../../Components/Texturing/TextureTransform.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Geometry2D/Arc2DOptions.h"
+#include "../Geometry2D/ArcClose2DOptions.h"
+#include "../Geometry2D/Circle2DOptions.h"
+#include "../Geometry2D/Disk2DOptions.h"
+#include "../Geometry2D/Rectangle2DOptions.h"
+#include "../Geometry3D/BoxOptions.h"
 #include "../Geometry3D/QuadSphereOptions.h"
-#include <Titania/Physics/Constants.h>
-#include <Titania/String/Join.h>
+#include "../Geometry3D/X3DSphereOptionNode.h"
+#include "../Properties/MotionBlur.h"
 
 #include "../../Rendering/OpenGL.h"
+
+#include <Titania/Physics/Constants.h>
+#include <Titania/String/Join.h>
 
 namespace titania {
 namespace X3D {
@@ -78,31 +93,32 @@ namespace X3D {
 // MinTextureSize          Number                                   8                            Default minumum texture size when scaling and filtering is applied.
 
 BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
-	splashScreen (new SFBool (false)),
-	dashboard (new SFBool (true)),
-	rubberBand (new SFBool (true)),
+	          splashScreen (new SFBool (false)),
+	             dashboard (new SFBool (true)),
+	            rubberBand (new SFBool (true)),
 	enableInlineViewpoints (new SFBool (true)),
-	antialiased (new SFBool ()),
-	textureQuality (new SFString ("MEDIUM")),
-	primitiveQuality (new SFString ("MEDIUM")),
-	qualityWhenMoving (new SFString ("MEDIUM")),
-	shading (new SFString ("GOURAUD")),
-	animateStairWalks (new SFBool ()),
-	gravity (new SFFloat (P_GN)),
-	minTextureSize (new SFInt32 (8)),
-	motionBlurOptions (new MotionBlur (executionContext)),
-	appearance (new Appearance (executionContext)),
-	lineProperties (new LineProperties (executionContext)),
-	fillProperties (new FillProperties (executionContext)),
-	textureProperties (new TextureProperties (executionContext)),
-	arc2DOptions (new Arc2DOptions (executionContext)),
-	arcClose2DOptions (new ArcClose2DOptions (executionContext)),
-	circle2DOptions (new Circle2DOptions (executionContext)),
-	disc2DOptions (new Disk2DOptions (executionContext)),
-	rectangle2DOptions (new Rectangle2DOptions (executionContext)),
-	boxOptions (new BoxOptions (executionContext)),
-	sphereOptions (new QuadSphereOptions (executionContext)),
-	fontStyle (new FontStyle (executionContext))
+	           antialiased (new SFBool ()),
+	        textureQuality (new SFString ("MEDIUM")),
+	      primitiveQuality (new SFString ("MEDIUM")),
+	     qualityWhenMoving (new SFString ("MEDIUM")),
+	               shading (new SFString ("GOURAUD")),
+	     animateStairWalks (new SFBool ()),
+	               gravity (new SFFloat (P_GN)),
+	        minTextureSize (new SFInt32 (8)),
+	     motionBlurOptions (new MotionBlur (executionContext)),
+	            appearance (new Appearance (executionContext)),
+	        lineProperties (new LineProperties (executionContext)),
+	        fillProperties (new FillProperties (executionContext)),
+	     textureProperties (new TextureProperties (executionContext)),
+	      textureTransform (new TextureTransform (executionContext)),
+	          arc2DOptions (new Arc2DOptions (executionContext)),
+	     arcClose2DOptions (new ArcClose2DOptions (executionContext)),
+	       circle2DOptions (new Circle2DOptions (executionContext)),
+	         disc2DOptions (new Disk2DOptions (executionContext)),
+	    rectangle2DOptions (new Rectangle2DOptions (executionContext)),
+	            boxOptions (new BoxOptions (executionContext)),
+	         sphereOptions (new QuadSphereOptions (executionContext)),
+	             fontStyle (new FontStyle (executionContext))
 { }
 
 BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
@@ -135,6 +151,7 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 	             lineProperties (),
 	             fillProperties (),
 	             textureProperties (),
+	             textureTransform (),
 	             arc2DOptions (),
 	             arcClose2DOptions (),
 	             circle2DOptions (),
@@ -161,6 +178,7 @@ BrowserOptions::initialize ()
 	lineProperties ()     -> setup ();
 	fillProperties ()     -> setup ();
 	textureProperties ()  -> setup ();
+	textureTransform ()   -> setup ();
 	arc2DOptions ()       -> setup ();
 	arcClose2DOptions ()  -> setup ();
 	circle2DOptions ()    -> setup ();
@@ -169,8 +187,9 @@ BrowserOptions::initialize ()
 	boxOptions ()         -> setup ();
 	sphereOptions ()      -> setup ();
 	fontStyle ()          -> setup ();
-	
+
 	lineProperties () -> applied () = false;
+	fillProperties () -> hatched () = false;
 
 	primitiveQuality () .addInterest (this, &BrowserOptions::set_primitiveQuality);
 	shading ()          .addInterest (this, &BrowserOptions::set_shading);
@@ -305,6 +324,7 @@ BrowserOptions::dispose ()
 	lineProperties ()     .dispose ();
 	fillProperties ()     .dispose ();
 	textureProperties ()  .dispose ();
+	textureTransform ()   .dispose ();
 	arc2DOptions ()       .dispose ();
 	arcClose2DOptions ()  .dispose ();
 	circle2DOptions ()    .dispose ();

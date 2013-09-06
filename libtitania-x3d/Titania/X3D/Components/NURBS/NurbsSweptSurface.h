@@ -101,6 +101,13 @@ public:
 	ccw () const
 	{ return *fields .ccw; }
 
+	///  @name Member access
+
+	virtual
+	bool
+	isLineGeometry () const final
+	{ return false; }
+
 
 private:
 

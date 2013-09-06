@@ -52,20 +52,6 @@
 #define __TITANIA_X3D_BROWSER_PROPERTIES_BROWSER_OPTIONS_H__
 
 #include "../../Components/Core/X3DPropertyNode.h"
-#include "../../Components/Shape/Appearance.h"
-#include "../../Components/Shape/LineProperties.h"
-#include "../../Components/Shape/FillProperties.h"
-#include "../../Components/Text/FontStyle.h"
-#include "../../Components/Texturing/TextureProperties.h"
-#include "../../Execution/X3DExecutionContext.h"
-#include "../Geometry2D/Arc2DOptions.h"
-#include "../Geometry2D/ArcClose2DOptions.h"
-#include "../Geometry2D/Circle2DOptions.h"
-#include "../Geometry2D/Disk2DOptions.h"
-#include "../Geometry2D/Rectangle2DOptions.h"
-#include "../Geometry3D/BoxOptions.h"
-#include "../Geometry3D/X3DSphereOptionNode.h"
-#include "../Properties/MotionBlur.h"
 
 namespace titania {
 namespace X3D {
@@ -86,6 +72,21 @@ namespace X3D {
 // AnimateStairWalks       Boolean                                  False                        Animate stair walks. This can give unexpected results when the floor is animated.
 // Gravity                 Number                                   g                            Gravitational acceleration. The standard value is the acceleration of the earth.
 // MinTextureSize          Number                                   8                            Default minumum texture size when scaling and filtering is applied.
+
+class Appearance;
+class LineProperties;
+class FillProperties;
+class X3DFontStyleNode;
+class TextureProperties;
+class TextureTransform;
+class Arc2DOptions;
+class ArcClose2DOptions;
+class Circle2DOptions;
+class Disk2DOptions;
+class Rectangle2DOptions;
+class BoxOptions;
+class X3DSphereOptionNode;
+class MotionBlur;
 
 class BrowserOptions :
 	public X3DPropertyNode
@@ -244,6 +245,14 @@ public:
 	textureProperties () const
 	{ return fields .textureProperties; }
 
+	X3DSFNode <TextureTransform> &
+	textureTransform ()
+	{ return fields .textureTransform; }
+
+	const X3DSFNode <TextureTransform> &
+	textureTransform () const
+	{ return fields .textureTransform; }
+
 	X3DSFNode <Arc2DOptions> &
 	arc2DOptions ()
 	{ return fields .arc2DOptions; }
@@ -353,6 +362,7 @@ private:
 		X3DSFNode <LineProperties> lineProperties;
 		X3DSFNode <FillProperties> fillProperties;
 		X3DSFNode <TextureProperties> textureProperties;
+		X3DSFNode <TextureTransform> textureTransform;
 		X3DSFNode <Arc2DOptions> arc2DOptions;
 		X3DSFNode <ArcClose2DOptions> arcClose2DOptions;
 		X3DSFNode <Circle2DOptions> circle2DOptions;

@@ -432,7 +432,7 @@ X3DBrowserContext::pick (const double _x, const double _y)
 
 	// Selection end.
 
-	std::sort (hits .begin (), hits .end (), hitComp);
+	std::stable_sort (hits .begin (), hits .end (), hitComp);
 
 	enabledSensors = { NodeSet () };
 }
@@ -453,7 +453,7 @@ X3DBrowserContext::getHitRay () const
 void
 X3DBrowserContext::addHit (const Matrix4f & transformationMatrix, const IntersectionPtr & intersection, X3DBaseNode* const node)
 {
-	hits .emplace_back (new Hit (transformationMatrix, hitRay, intersection, enabledSensors .back (), node));
+	hits .emplace_front (new Hit (transformationMatrix, hitRay, intersection, enabledSensors .back (), node));
 }
 
 void

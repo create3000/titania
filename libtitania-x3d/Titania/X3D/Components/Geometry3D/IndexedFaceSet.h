@@ -118,6 +118,13 @@ public:
 	coordIndex () const
 	{ return *fields .coordIndex; }
 
+	///  @name Tests
+
+	virtual
+	bool
+	isLineGeometry () const final
+	{ return false; }
+
 
 private:
 

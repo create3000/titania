@@ -103,6 +103,12 @@ public:
 
 	///  @name Operations
 
+	void
+	enable ();
+
+	void
+	disable ();
+
 	virtual
 	void
 	draw () final;
@@ -121,6 +127,10 @@ private:
 	};
 
 	Fields fields;
+	
+	bool    lighting;
+	GLfloat color [4];
+
 
 };
 

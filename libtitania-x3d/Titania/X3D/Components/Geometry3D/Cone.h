@@ -109,6 +109,13 @@ public:
 	solid () const
 	{ return *fields .solid; }
 
+	///  @name Tests
+
+	virtual
+	bool
+	isLineGeometry () const final
+	{ return false; }
+
 
 private:
 

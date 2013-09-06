@@ -58,14 +58,14 @@ namespace titania {
 namespace X3D {
 
 Text::Fields::Fields () :
-	string (new MFString ()),
-	length (new MFFloat ()),
-	maxExtent (new SFFloat ()),
-	solid (new SFBool ()),
-	origin (new SFVec3f ()),
+	    string (new MFString ()),
+	    length (new MFFloat ()),
+	 maxExtent (new SFFloat ()),
+	     solid (new SFBool ()),
+	    origin (new SFVec3f ()),
 	textBounds (new SFVec2f ()),
 	lineBounds (new MFVec2f ()),
-	fontStyle (new SFNode ())
+	 fontStyle (new SFNode ())
 { }
 
 Text::Text (X3DExecutionContext* const executionContext) :
@@ -165,14 +165,14 @@ Text::createBBox ()
 
 		switch (fontStyle -> getMajorAlignment ())
 		{
-			case FontStyle::Alignment::BEGIN:
-			case FontStyle::Alignment::FIRST:
+			case X3DFontStyleNode::Alignment::BEGIN:
+			case X3DFontStyleNode::Alignment::FIRST:
 				translation .emplace_back (0, -(i * lineHeight));
 				break;
-			case FontStyle::Alignment::MIDDLE:
+			case X3DFontStyleNode::Alignment::MIDDLE:
 				translation .emplace_back (-min .x () - size .x () / 2, -(i * lineHeight));
 				break;
-			case FontStyle::Alignment::END:
+			case X3DFontStyleNode::Alignment::END:
 				translation .emplace_back (-min .x () - size .x (), -(i * lineHeight));
 				break;
 		}
@@ -198,16 +198,16 @@ Text::createBBox ()
 
 	switch (fontStyle -> getMinorAlignment ())
 	{
-		case FontStyle::Alignment::BEGIN:
+		case X3DFontStyleNode::Alignment::BEGIN:
 			minorAlignment = Vector2f (0, -bbox .max () .y ());
 			break;
-		case FontStyle::Alignment::FIRST:
+		case X3DFontStyleNode::Alignment::FIRST:
 			minorAlignment = Vector2f ();
 			break;
-		case FontStyle::Alignment::MIDDLE:
+		case X3DFontStyleNode::Alignment::MIDDLE:
 			minorAlignment = Vector2f (0, textBounds () .getY () / 2 - bbox .max () .y ());
 			break;
-		case FontStyle::Alignment::END:
+		case X3DFontStyleNode::Alignment::END:
 			minorAlignment = Vector2f  (0, textBounds () .getY () - bbox .max () .y ());
 			break;
 	}
@@ -230,12 +230,12 @@ Text::getLineBBox (const X3DFontStyleNode* fontStyle, const std::string & line)
 
 	switch (fontStyle -> getMajorAlignment ())
 	{
-		case FontStyle::Alignment::BEGIN:
-		case FontStyle::Alignment::FIRST:
+		case X3DFontStyleNode::Alignment::BEGIN:
+		case X3DFontStyleNode::Alignment::FIRST:
 			return Box2f (Vector2f (0, min .Y ()), Vector2f (max .X (), max .Y ()), true);
 
-		case FontStyle::Alignment::MIDDLE:
-		case FontStyle::Alignment::END:
+		case X3DFontStyleNode::Alignment::MIDDLE:
+		case X3DFontStyleNode::Alignment::END:
 			return Box2f (Vector2f (min .X (), min .Y ()), Vector2f (max .X (), max .Y ()), true);
 	}
 
@@ -287,22 +287,26 @@ Text::draw ()
 	// Calculate translations and lineBounds if needed.
 	getBBox ();
 
-	glTranslatef (minorAlignment .x (), minorAlignment .y (), 0);
-	glScalef (scale, scale, scale);
-
-	// Render lines.
-	size_t i = 0;
-
-	for (const auto & line : string ())
+	glPushMatrix ();
 	{
-		fontStyle -> getFont () -> Render (line .getValue () .c_str (),
-		                                   -1,
-		                                   FTPoint (translation [i] .x (), translation [i] .y (), 0),
-		                                   FTPoint (charSpacings [i], 0, 0),
-		                                   FTGL::RENDER_ALL);
+		glTranslatef (minorAlignment .x (), minorAlignment .y (), 0);
+		glScalef (scale, scale, scale);
 
-		++ i;
+		// Render lines.
+		size_t i = 0;
+
+		for (const auto & line : string ())
+		{
+			fontStyle -> getFont () -> Render (line .getValue () .c_str (),
+			                                   -1,
+			                                   FTPoint (translation [i] .x (), translation [i] .y (), 0),
+			                                   FTPoint (charSpacings [i], 0, 0),
+			                                   FTGL::RENDER_ALL);
+
+			++ i;
+		}
 	}
+	glPopMatrix ();
 }
 
 } // X3D

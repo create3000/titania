@@ -66,7 +66,8 @@ Disk2D::Fields::Fields () :
 Disk2D::Disk2D (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DGeometryNode (),
-	         fields ()
+	         fields (),
+	   lineGeometry (false)
 {
 	setComponent ("Geometry2D");
 	setTypeName ("Disk2D");
@@ -112,9 +113,9 @@ Disk2D::build ()
 
 	if (innerRadius () == outerRadius ())
 	{
-		auto radius = std::abs (outerRadius ());
-
 		// Circle
+
+		auto radius = std::abs (outerRadius ());
 
 		if (radius == 1.0f)
 			getVertices () = properties -> getVertices ();
@@ -129,15 +130,17 @@ Disk2D::build ()
 
 		addElements (GL_LINE_LOOP, getVertices () .size ());
 		setSolid (false);
+		
+		lineGeometry = true;
 
 		return;
 	}
 
 	if (innerRadius () == 0.0f or outerRadius () == 0.0f)
 	{
-		auto radius = std::abs (std::max (innerRadius (), outerRadius ()));
-
 		// Disk
+
+		auto radius = std::abs (std::max (innerRadius (), outerRadius ()));
 
 		size_t elements = solid () ? 1 : 2;
 
@@ -164,6 +167,8 @@ Disk2D::build ()
 
 		if (not solid ())
 			addMirrorVertices (properties -> getVertexMode (), true);
+
+		lineGeometry = false;
 
 		return;
 	}
@@ -217,6 +222,8 @@ Disk2D::build ()
 
 	if (not solid ())
 		addMirrorVertices (GL_QUAD_STRIP, true);
+
+	lineGeometry = false;
 }
 
 void

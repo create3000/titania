@@ -67,6 +67,13 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const final;
 
+	///  @name Tests
+
+	virtual
+	bool
+	isLineGeometry () const final
+	{ return false; }
+
 
 private:
 

@@ -77,6 +77,15 @@ public:
 	lineSegments () const
 	{ return *fields .lineSegments; }
 
+	///  @name Tests
+
+	virtual
+	bool
+	isLineGeometry () const final
+	{ return true; }
+
+	///  @name Operations
+
 	virtual
 	void
 	draw () final;

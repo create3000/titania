@@ -1,3 +1,64 @@
+2013-09-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3D.h:
+	* libtitania-x3d.cproj:
+	* Linetypes.h:
+	* LineStyles.h:
+	* HatchStyles.h:
+	* Text.h:
+	* Text.cpp:
+	* X3DRenderer.cpp:
+	* Box.h:
+	* X3DBrowserContext.h:
+	* Cone.h:
+	* NurbsCurve.h:
+	* Appearance.h:
+	* X3DBrowserContext.cpp:
+	* Material.cpp:
+	* Arc2D.h:
+	* Disk2D.h:
+	* LineSet.h:
+	* Sphere.h:
+	* X3DShapeNode.h:
+	* PointSet.h:
+	* Appearance.cpp:
+	* Disk2D.cpp:
+	* QuadSet.h:
+	* Cylinder.h:
+	* Circle2D.h:
+	* FillProperties.h:
+	* X3DShapeNode.cpp:
+	* Extrusion.h:
+	* Polyline2D.h:
+	* TriangleSet.h:
+	* ArcClose2D.h:
+	* Rectangle2D.h:
+	* Polypoint2D.h:
+	* LineProperties.cpp:
+	* BrowserOptions.h:
+	* FillProperties.cpp:
+	* X3DAppearanceNode.h:
+	* X3DFontStyleNode.cpp:
+	* NurbsPatchSurface.h:
+	* NurbsSweptSurface.h:
+	* NurbsSwungSurface.h:
+	* TwoSidedMaterial.cpp:
+	* BrowserOptions.cpp:
+	* ElevationGrid.h:
+	* TriangleSet2D.h:
+	* TriangleFanSet.h:
+	* IndexedLineSet.h:
+	* X3DGeometryNode.h:
+	* IndexedFaceSet.h:
+	* NurbsTrimmedSurface.h:
+	* IndexedQuadSet.h:
+	* TriangleStripSet.h:
+	* GeoElevationGrid.h:
+	* IndexedTriangleSet.h:
+	* TextureTransform.cpp:
+	* IndexedTriangleFanSet.h:
+	* IndexedTriangleStripSet.h: 
+
 2013-09-04  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBrowser.cpp:

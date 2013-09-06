@@ -190,6 +190,13 @@ public:
 	height () const
 	{ return *fields .height; }
 
+	///  @name Tests
+
+	virtual
+	bool
+	isLineGeometry () const final
+	{ return false; }
+
 
 private:
 

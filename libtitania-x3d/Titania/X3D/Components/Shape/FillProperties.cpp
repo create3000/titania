@@ -50,14 +50,15 @@
 
 #include "FillProperties.h"
 
+#include "../../Bits/HatchStyles.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {
 
 FillProperties::Fields::Fields () :
-	filled (new SFBool (true)),
-	hatched (new SFBool (true)),
+	    filled (new SFBool (true)),
+	   hatched (new SFBool (true)),
 	hatchStyle (new SFInt32 (1)),
 	hatchColor (new SFColor (1, 1, 1))
 { }
@@ -65,7 +66,8 @@ FillProperties::Fields::Fields () :
 FillProperties::FillProperties (X3DExecutionContext* const executionContext) :
 	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DAppearanceChildNode (),
-	                fields ()
+	                fields (),
+	              lighting (false)
 {
 	setComponent ("Shape");
 	setTypeName ("FillProperties");
@@ -84,8 +86,43 @@ FillProperties::create (X3DExecutionContext* const executionContext) const
 }
 
 void
+FillProperties::enable ()
+{
+	lighting = glIsEnabled (GL_LIGHTING);
+
+	glDisable (GL_LIGHTING);
+
+	draw ();
+}
+
+void
+FillProperties::disable ()
+{
+	if (lighting)
+		glEnable (GL_LIGHTING);
+
+	else
+		glColor3f (1, 1, 1);
+
+	glDisable (GL_POLYGON_STIPPLE);
+}
+
+void
 FillProperties::draw ()
-{ }
+{
+	if (hatched ())
+	{
+		glColor3fv (hatchColor () .getValue () .data ());
+
+		glEnable (GL_POLYGON_STIPPLE);
+
+		if (hatchStyle () > 0 and hatchStyle () < (int32_t) hatchStyles .size ())
+			glPolygonStipple (hatchStyles [hatchStyle ()] .data ());
+
+		else
+			glPolygonStipple (hatchStyles [0] .data ());
+	}
+}
 
 } // X3D
 } // titania

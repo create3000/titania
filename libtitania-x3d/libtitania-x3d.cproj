@@ -576,6 +576,8 @@
     <None Include="Titania\X3D\Browser\Devices\PointingDevice.h" />
     <None Include="Titania\X3D\Browser\Devices\KeyDevice.h" />
     <None Include="Titania\X3D\Components\Core\MetadataBoolean.h" />
+    <None Include="Titania\X3D\Bits\HatchStyles.h" />
+    <None Include="Titania\X3D\Bits\Linetypes.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

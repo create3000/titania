@@ -52,6 +52,7 @@
 
 #include "../Browser/X3DBrowser.h"
 #include "../Components/Navigation/X3DViewpointNode.h"
+#include "../Components/Shape/Appearance.h"
 #include "../Rendering/ViewVolume.h"
 
 #include <Titania/Utility/Adapter.h>

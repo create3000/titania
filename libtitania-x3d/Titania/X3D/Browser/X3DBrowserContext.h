@@ -51,6 +51,8 @@
 #ifndef __TITANIA_X3D_BROWSER_X3DBROWSER_CONTEXT_H__
 #define __TITANIA_X3D_BROWSER_X3DBROWSER_CONTEXT_H__
 
+#include "../Execution/X3DExecutionContext.h"
+
 #include "../Browser/Console.h"
 #include "../Browser/Properties/BrowserOptions.h"
 #include "../Browser/Properties/BrowserProperties.h"
@@ -61,7 +63,6 @@
 #include "../Components/KeyDeviceSensor/X3DKeyDeviceSensorNode.h"
 #include "../Execution/BindableNodeStack.h"
 #include "../Execution/World.h"
-#include "../Execution/X3DExecutionContext.h"
 #include "../JavaScript/X3DJavaScriptEngine.h"
 
 #include "../Browser/HitArray.h"

@@ -77,6 +77,13 @@ public:
 	stripCount () const
 	{ return *fields .stripCount; }
 
+	///  @name Tests
+
+	virtual
+	bool
+	isLineGeometry () const final
+	{ return false; }
+
 
 private:
 

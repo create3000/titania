@@ -77,6 +77,13 @@ public:
 	index () const
 	{ return *fields .index; }
 
+	///  @name Tests
+
+	virtual
+	bool
+	isLineGeometry () const final
+	{ return false; }
+
 
 private:
 

@@ -58,11 +58,11 @@ namespace X3D {
 
 Material::Fields::Fields () :
 	ambientIntensity (new SFFloat (0.2)),
-	diffuseColor (new SFColor (0.8, 0.8, 0.8)),
-	emissiveColor (new SFColor ()),
-	shininess (new SFFloat (0.2)),
-	specularColor (new SFColor ()),
-	transparency (new SFFloat ())
+	    diffuseColor (new SFColor (0.8, 0.8, 0.8)),
+	   emissiveColor (new SFColor ()),
+	       shininess (new SFFloat (0.2)),
+	   specularColor (new SFColor ()),
+	    transparency (new SFFloat ())
 { }
 
 Material::Material (X3DExecutionContext* const executionContext) :

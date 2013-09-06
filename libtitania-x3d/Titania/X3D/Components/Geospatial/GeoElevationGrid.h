@@ -213,6 +213,13 @@ public:
 	zSpacing () const
 	{ return *fields .zSpacing; }
 
+	///  @name Tests
+
+	virtual
+	bool
+	isLineGeometry () const final
+	{ return false; }
+
 
 private:
 
