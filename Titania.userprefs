@@ -1,19 +1,11 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Shape/Appearance.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="experimental/main.cpp">
     <Files>
       <File FileName="experimental/main.cpp" Line="246" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Shape/X3DShapeNode.h" Line="123" Column="2" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Shape/X3DShapeNode.cpp" Line="128" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Shape/Appearance.h" Line="80" Column="16" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Shape/Appearance.cpp" Line="214" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Shape/LineProperties.h" Line="96" Column="23" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Shape/LineProperties.cpp" Line="118" Column="15" />
-      <File FileName="Library/Tests/Shape/LineProperties.wrl" Line="32" Column="30" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Shape/FillProperties.cpp" Line="96" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Properties/BrowserOptions.cpp" Line="174" Column="16" />
-      <File FileName="Library/Tests/Shape/FillProperties.wrl" Line="25" Column="12" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Devices/PointingDevice.cpp" Line="102" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Shape/Appearance.h" Line="80" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -24,7 +16,9 @@
           <Node name="build" expanded="True">
             <Node name="debian" expanded="True" />
           </Node>
-          <Node name="experimental" expanded="True" />
+          <Node name="experimental" expanded="True">
+            <Node name="main.cpp" selected="True" />
+          </Node>
           <Node name="Library" expanded="True">
             <Node name="Tests" expanded="True">
               <Node name="Basic" expanded="True" />
@@ -58,9 +52,7 @@
                   <Node name="Followers" expanded="True" />
                   <Node name="Geometry3D" expanded="True" />
                   <Node name="Layering" expanded="True" />
-                  <Node name="Shape" expanded="True">
-                    <Node name="Appearance.cpp" selected="True" />
-                  </Node>
+                  <Node name="Shape" expanded="True" />
                   <Node name="Text" expanded="True" />
                   <Node name="Texturing" expanded="True" />
                 </Node>

@@ -59,17 +59,20 @@ namespace titania {
 namespace X3D {
 
 X3DGroupingNode::Fields::Fields () :
-	addChildren (new MFNode ()),
+	   addChildren (new MFNode ()),
 	removeChildren (new MFNode ()),
-	children (new MFNode ())
+	      children (new MFNode ())
 { }
 
 X3DGroupingNode::X3DGroupingNode () :
 	    X3DChildNode (),
 	X3DBoundedObject (),
-	          fields ()
+	          fields (),
+	         visible ()
 {
 	addNodeType (X3DConstants::X3DGroupingNode);
+
+	addChildren (visible);
 }
 
 void
@@ -95,6 +98,14 @@ X3DGroupingNode::getBBox ()
 }
 
 void
+X3DGroupingNode::setVisible (const MFBool & value)
+{
+	visible = value;
+
+	set_children ();
+}
+
+void
 X3DGroupingNode::notify ()
 {
 	set_children ();
@@ -108,9 +119,6 @@ X3DGroupingNode::set_addChildren ()
 		add (addChildren ());
 
 		children () .insert (children () .end (), addChildren () .begin (), addChildren () .end ());
-
-		//children .removeInterest (this, &X3DGroupingNode::set_children);
-		//children .addInterest    (this, &X3DGroupingNode::set_endChildren);
 	}
 }
 
@@ -122,19 +130,9 @@ X3DGroupingNode::set_removeChildren ()
 		auto new_end = basic::remove (children () .begin (), children () .end (), removeChildren () .begin (), removeChildren () .end ());
 		children () .erase (new_end, children () .end ());
 
-		//children .removeInterest (this, &X3DGroupingNode::set_children);
-		//children .addInterest    (this, &X3DGroupingNode::set_endChildren);
-
 		set_children ();
 	}
 }
-
-//void
-//X3DGroupingNode::set_endChildren ()
-//{
-//	children () .removeInterest (this, &X3DGroupingNode::set_endChildren);
-//	children () .addInterest    (this, &X3DGroupingNode::set_children);
-//}
 
 void
 X3DGroupingNode::set_children ()
@@ -150,6 +148,8 @@ X3DGroupingNode::set_children ()
 void
 X3DGroupingNode::add (const MFNode & children)
 {
+	size_t i = 0;
+
 	for (const auto & child : children)
 	{
 		auto pointingDeviceSensorNode = x3d_cast <X3DPointingDeviceSensorNode*> (child);
@@ -176,10 +176,15 @@ X3DGroupingNode::add (const MFNode & children)
 					auto childNode = x3d_cast <X3DChildNode*> (child);
 
 					if (childNode)
-						childNodes .emplace_back (childNode);
+					{
+						if (i >= visible .size () or visible [i])
+							childNodes .emplace_back (childNode);
+					}
 				}
 			}
 		}
+
+		++ i;
 	}
 }
 

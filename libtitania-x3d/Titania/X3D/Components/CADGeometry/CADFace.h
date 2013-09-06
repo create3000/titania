@@ -62,6 +62,8 @@ class CADFace :
 {
 public:
 
+	///  @name Construction
+
 	CADFace (X3DExecutionContext* const);
 
 	virtual
@@ -78,8 +80,15 @@ public:
 	shape () const
 	{ return *fields .shape; }
 
+	///  @name Member access
+
 	Box3f
 	getBBox ();
+
+	///  @name Operations
+
+	void
+	traverse (TraverseType);
 
 	virtual
 	void
@@ -88,9 +97,13 @@ public:
 
 private:
 
+	///  @name Construction
+
 	virtual
 	void
 	initialize ();
+
+	///  @name Members
 
 	struct Fields
 	{

@@ -56,18 +56,19 @@ namespace titania {
 namespace X3D {
 
 CADPart::Fields::Fields () :
-	translation (new SFVec3f ()),
-	rotation (new SFRotation ()),
-	scale (new SFVec3f (1, 1, 1)),
+	     translation (new SFVec3f ()),
+	        rotation (new SFRotation ()),
+	           scale (new SFVec3f (1, 1, 1)),
 	scaleOrientation (new SFRotation ()),
-	center (new SFVec3f ())
+	          center (new SFVec3f ())
 { }
 
 CADPart::CADPart (X3DExecutionContext* const executionContext) :
 	                 X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	             X3DGroupingNode (),
 	X3DProductStructureChildNode (),
-	                      fields ()
+	                      fields (),
+	                      matrix ()
 {
 	setComponent ("CADGeometry");
 	setTypeName ("CADPart");
@@ -90,6 +91,46 @@ X3DBaseNode*
 CADPart::create (X3DExecutionContext* const executionContext) const
 {
 	return new CADPart (executionContext);
+}
+
+void
+CADPart::initialize ()
+{
+	X3DGroupingNode::initialize ();
+	// Don't initialize X3DProductStructureChildNode
+
+	eventsProcessed ();
+}
+
+Box3f
+CADPart::getBBox ()
+{
+	return X3DGroupingNode::getBBox () * matrix;
+}
+
+void
+CADPart::eventsProcessed ()
+{
+	X3DGroupingNode::eventsProcessed ();
+	// Don't eventsProcessed X3DProductStructureChildNode
+
+	matrix .set (translation (),
+	             rotation (),
+	             scale (),
+	             scaleOrientation (),
+	             center ());
+}
+
+void
+CADPart::traverse (TraverseType type)
+{
+	glPushMatrix ();
+
+	glMultMatrixf (matrix .data ());
+
+	X3DGroupingNode::traverse (type);
+
+	glPopMatrix ();
 }
 
 } // X3D

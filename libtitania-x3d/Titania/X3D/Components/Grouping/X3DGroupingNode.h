@@ -66,6 +66,8 @@ class X3DGroupingNode :
 {
 public:
 
+	///  @name Fields
+
 	MFNode &
 	children ()
 	{ return *fields .children; }
@@ -91,9 +93,20 @@ public:
 	removeChildren () const
 	{ return *fields .removeChildren; }
 
+	///  @name Member access
+
 	virtual
 	Box3f
 	getBBox () override;
+	
+	void
+	setVisible (const MFBool &);
+
+	const MFBool &
+	getVisible () const
+	{ return visible; }
+
+	///  @name Operations
 
 	virtual
 	void
@@ -113,6 +126,8 @@ protected:
 	using X3DChildNode::addChildren;
 	using X3DChildNode::removeChildren;
 
+	///  @name Creation
+
 	X3DGroupingNode ();
 
 	virtual
@@ -127,9 +142,6 @@ private:
 
 	void
 	set_removeChildren ();
-
-	//void
-	//set_endChildren ();
 
 	void
 	set_children ();
@@ -154,6 +166,7 @@ private:
 
 	Fields fields;
 
+	MFBool                                     visible;
 	std::vector <X3DPointingDeviceSensorNode*> pointingDeviceSensors;
 	std::vector <X3DLightNode*>                lights;
 	std::vector <LocalFog*>                    localFogs;

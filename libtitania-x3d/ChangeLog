@@ -1,5 +1,22 @@
 2013-09-06  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DScalar.cpp:
+	* Transform.h:
+	* CADFace.h:
+	* CADPart.h:
+	* CADLayer.h:
+	* Transform.cpp:
+	* CADPart.cpp:
+	* CADFace.cpp:
+	* CADLayer.cpp:
+	* CADAssembly.h:
+	* X3DGroupingNode.h:
+	* CADAssembly.cpp:
+	* X3DGroupingNode.cpp:
+	* X3DBoundedObject.cpp: 
+
+2013-09-06  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* LineStyles.h: 
 
 2013-09-06  Holger Seelig  <holger.seelig@yahoo.de>

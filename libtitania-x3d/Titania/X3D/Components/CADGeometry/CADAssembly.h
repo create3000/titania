@@ -62,6 +62,8 @@ class CADAssembly :
 {
 public:
 
+	///  @name Construction
+
 	CADAssembly (X3DExecutionContext* const);
 
 	virtual

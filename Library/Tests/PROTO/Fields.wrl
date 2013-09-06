@@ -97,6 +97,25 @@ PROTO Proto [
   }
 }
 
-Proto {
+DEF _3 Proto {
   SFImage 2 2 0 0 0 0 0
+  MFColor 0 0 0
+  MFColorRGBA 0 0 0 0
+  MFDouble [ 0, 0, 0, 0 ]
+  MFFloat [ 0, 0, 0 ]
+  MFImage 0 0 0
+  MFInt32 [ 0, 0, 0, 0 ]
+  MFMatrix3d 0 0 0 0 0 0 0 0 0
+  MFMatrix3f 0 0 0 0 0 0 0 0 0
+  MFMatrix4d 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+  MFMatrix4f 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+  MFRotation 0 0 1 0
+  MFString [ "", "" ]
+  MFTime 1
+  MFVec2d 0 0
+  MFVec2f 0 0
+  MFVec3d 0 0 0
+  MFVec3f 0 0 0
+  MFVec4d 0 0 0 0
+  MFVec4f 0 0 0 0
 }

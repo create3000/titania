@@ -50,6 +50,7 @@
 
 #include "CADFace.h"
 
+#include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -69,9 +70,9 @@ CADFace::CADFace (X3DExecutionContext* const executionContext) :
 	setTypeName ("CADFace");
 
 	addField (inputOutput,    "metadata",   metadata ());
+	addField (inputOutput,    "name",       name ());
 	addField (initializeOnly, "bboxSize",   bboxSize ());
 	addField (initializeOnly, "bboxCenter", bboxCenter ());
-	addField (inputOutput,    "name",       name ());
 	addField (inputOutput,    "shape",      shape ());
 }
 
@@ -91,7 +92,24 @@ CADFace::initialize ()
 Box3f
 CADFace::getBBox ()
 {
-	return Box3f ();
+	if (bboxSize () == Vector3f (-1, -1, -1))
+	{
+		auto boundedObject = x3d_cast <X3DBoundedObject*> (shape ());
+
+		if (boundedObject)
+			return boundedObject -> getBBox ();
+
+		return Box3f ();
+	}
+
+	return Box3f (bboxSize (), bboxCenter ());
+}
+
+void
+CADFace::traverse (TraverseType type)
+{
+	if (shape ())
+		shape () -> traverse (type);
 }
 
 void

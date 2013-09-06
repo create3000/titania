@@ -58,11 +58,11 @@ namespace titania {
 namespace X3D {
 
 Transform::Fields::Fields () :
-	translation (new SFVec3f ()),
-	rotation (new SFRotation ()),
-	scale (new SFVec3f (1, 1, 1)),
+	     translation (new SFVec3f ()),
+	        rotation (new SFRotation ()),
+	           scale (new SFVec3f (1, 1, 1)),
 	scaleOrientation (new SFRotation ()),
-	center (new SFVec3f ())
+	          center (new SFVec3f ())
 { }
 
 Transform::Transform (X3DExecutionContext* const executionContext) :
@@ -100,6 +100,7 @@ void
 Transform::initialize ()
 {
 	X3DGroupingNode::initialize ();
+
 	eventsProcessed ();
 }
 

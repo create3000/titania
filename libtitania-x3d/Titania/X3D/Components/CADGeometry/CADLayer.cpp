@@ -56,7 +56,7 @@ namespace titania {
 namespace X3D {
 
 CADLayer::Fields::Fields () :
-	name (new SFString ()),
+	   name (new SFString ()),
 	visible (new MFBool ())
 { }
 
@@ -69,19 +69,29 @@ CADLayer::CADLayer (X3DExecutionContext* const executionContext) :
 	setTypeName ("CADLayer");
 
 	addField (inputOutput,    "metadata",       metadata ());
+	addField (inputOutput,    "name",           name ());
+	addField (inputOutput,    "visible",        visible ());
 	addField (initializeOnly, "bboxSize",       bboxSize ());
 	addField (initializeOnly, "bboxCenter",     bboxCenter ());
 	addField (inputOnly,      "addChildren",    addChildren ());
 	addField (inputOnly,      "removeChildren", removeChildren ());
 	addField (inputOutput,    "children",       children ());
-	addField (inputOutput,    "name",           name ());
-	addField (inputOutput,    "visible",        visible ());
 }
 
 X3DBaseNode*
 CADLayer::create (X3DExecutionContext* const executionContext) const
 {
 	return new CADLayer (executionContext);
+}
+
+void
+CADLayer::initialize ()
+{
+	X3DGroupingNode::initialize ();
+
+	visible () .addInterest (static_cast <X3DGroupingNode*> (this), &X3DGroupingNode::setVisible);
+
+	setVisible (visible ());
 }
 
 } // X3D

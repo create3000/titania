@@ -63,6 +63,8 @@ class Transform :
 {
 public:
 
+	///  @name Construction
+
 	Transform (X3DExecutionContext* const);
 
 	virtual
@@ -111,7 +113,7 @@ public:
 	center () const
 	{ return *fields .center; }
 
-	///  @name Properties
+	///  @name Member access
 
 	virtual
 	Box3f
@@ -120,6 +122,8 @@ public:
 	Matrix4f
 	getMatrix ()
 	{ return matrix; }
+
+	///  @name Operations
 
 	virtual
 	void
@@ -138,9 +142,13 @@ protected:
 
 	using X3DGroupingNode::addHandle;
 
+	///  @name Construction
+
 	virtual
 	void
 	initialize () override;
+
+	///  @name Operations
 
 	virtual
 	void
@@ -148,6 +156,8 @@ protected:
 
 
 private:
+
+	///  @name Members
 
 	struct Fields
 	{

@@ -64,12 +64,12 @@ CADAssembly::CADAssembly (X3DExecutionContext* const executionContext) :
 	setTypeName ("CADAssembly");
 
 	addField (inputOutput,    "metadata",       metadata ());
+	addField (inputOutput,    "name",           name ());
 	addField (initializeOnly, "bboxSize",       bboxSize ());
 	addField (initializeOnly, "bboxCenter",     bboxCenter ());
 	addField (inputOnly,      "addChildren",    addChildren ());
 	addField (inputOnly,      "removeChildren", removeChildren ());
 	addField (inputOutput,    "children",       children ());
-	addField (inputOutput,    "name",           name ());
 }
 
 X3DBaseNode*

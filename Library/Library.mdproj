@@ -2316,6 +2316,7 @@
     <None Include="Tests\Shaders\IndexedLineSet.wrl" />
     <None Include="Tests\Shape\Connectors.wrl" />
     <None Include="Tests\Shape\FillProperties.wrl" />
+    <None Include="Tests\CADGeometry\CADLayer.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

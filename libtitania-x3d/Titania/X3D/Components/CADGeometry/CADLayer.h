@@ -61,6 +61,8 @@ class CADLayer :
 {
 public:
 
+	///  @name Construction
+
 	CADLayer (X3DExecutionContext* const);
 
 	virtual
@@ -87,6 +89,14 @@ public:
 
 
 private:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final;
+
+	///  @name Members
 
 	struct Fields
 	{

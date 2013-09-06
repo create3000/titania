@@ -62,6 +62,8 @@ class CADPart :
 {
 public:
 
+	///  @name Construction
+
 	CADPart (X3DExecutionContext* const);
 
 	virtual
@@ -110,8 +112,41 @@ public:
 	center () const
 	{ return *fields .center; }
 
+	///  @name Member access
+
+	virtual
+	Box3f
+	getBBox () override;
+
+	Matrix4f
+	getMatrix ()
+	{ return matrix; }
+
+	///  @name Operations
+
+	virtual
+	void
+	traverse (TraverseType) override;
+
+
+protected:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () override;
+
+	///  @name Operations
+
+	virtual
+	void
+	eventsProcessed () final;
+
 
 private:
+
+	///  @name Members
 
 	struct Fields
 	{
@@ -125,6 +160,8 @@ private:
 	};
 
 	Fields fields;
+
+	Matrix4f matrix;
 
 };
 

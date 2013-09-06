@@ -102,6 +102,8 @@ throw (Error <INVALID_X3D>,
 		setValue (false);
 		return;
 	}
+
+	istream .setstate (std::ios_base::failbit);
 }
 
 template <>

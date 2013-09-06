@@ -57,7 +57,7 @@ namespace X3D {
 
 X3DBoundedObject::Fields::Fields () :
 	bboxCenter (new SFVec3f ()),
-	bboxSize (new SFVec3f (-1, -1, -1))
+	  bboxSize (new SFVec3f (-1, -1, -1))
 { }
 
 X3DBoundedObject::X3DBoundedObject () :

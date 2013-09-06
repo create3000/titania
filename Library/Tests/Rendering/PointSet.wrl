@@ -3,6 +3,9 @@
 Transform {
   children Shape {
     appearance Appearance {
+      lineProperties LineProperties {
+        linewidthScaleFactor 20
+      }
       material Material {
         emissiveColor 1 0 0
 		  transparency 0.5
@@ -19,6 +22,9 @@ Transform {
   rotation 0.267261 0.534522 0.801784 4
   children Shape {
     appearance Appearance {
+      lineProperties LineProperties {
+        linewidthScaleFactor 10
+      }
       material Material {
         emissiveColor 1 0 0
       }
@@ -37,6 +43,9 @@ Transform {
   rotation 4 3 2 1
   children Shape {
     appearance Appearance {
+      lineProperties LineProperties {
+        linewidthScaleFactor 5
+      }
       material Material {
         emissiveColor 0 0 1
       }
