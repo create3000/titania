@@ -93,6 +93,25 @@ x3d ()
 }
 
 int
+fields ()
+{
+	X3D::Generator::Style ("compact");
+
+	for (const auto & field : X3D::getBrowser () -> getSupportedFields ())
+	{
+		std::cout
+			<< '[' << field -> getTypeName () << ']' << std::endl
+			<< '\t'
+			<< "value" << " = "
+			<< *field
+			<< std::endl
+			<< std::endl;
+	}
+
+	return 0;
+}
+
+int
 main (int argc, char** argv)
 {
 	AnyOption options;
@@ -106,19 +125,24 @@ main (int argc, char** argv)
 	options .addUsage ("       -i=index, --index=index");
 	options .addUsage ("              index can be 'profile', 'component' or 'node'");
 	options .addUsage ("              node is the default index");
-	options .addUsage ("              profile: get a list of all supported profiles");
+	options .addUsage ("              profile:   get a list of all supported profiles");
 	options .addUsage ("              component: get a list of all supported components");
-	options .addUsage ("              node: get a list of all supported nodes with it's associated fields");
+	options .addUsage ("              node:      get a list of all supported nodes with it's");
+	options .addUsage ("                         associated fields in key file style");
 	options .addUsage ("");
 	options .addUsage ("       -x, --x3d");
 	options .addUsage ("              get a list of all supported nodes in VRML style");
 	options .addUsage ("");
+	options .addUsage ("       -f, --fields");
+	options .addUsage ("              get a list of all supported fields in key file style");
+	options .addUsage ("");
 	options .addUsage ("       -h, --help");
 	options .addUsage ("              prints usage");
 
-	options .setFlag   ("x3d",   'x');
-	options .setFlag   ("index", 'i');
-	options .setOption ("index", 'i');
+	options .setFlag   ("x3d",    'x');
+	options .setFlag   ("index",  'i');
+	options .setFlag   ("fields", 'f');
+	options .setOption ("index",  'i');
 
 	options .processCommandArgs (argc, argv);
 
@@ -143,6 +167,9 @@ main (int argc, char** argv)
 
 		if (options .getFlag ("x3d") or options .getFlag ('x'))
 			return x3d ();
+
+		if (options .getFlag ("fields") or options .getFlag ('f'))
+			return fields ();
 
 		options .printUsage ();
 
