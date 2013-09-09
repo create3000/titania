@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mime-type xmlns="http://www.freedesktop.org/standards/shared-mime-info" type="model/x3d+vrml">
+  <!--Created automatically by update-mime-database. DO NOT EDIT!-->
+  <comment>X3D document</comment>
+  <comment xml:lang="ar">مستند X3D</comment>
+  <comment xml:lang="ast">documentu X3D</comment>
+  <comment xml:lang="be">Dakument X3D</comment>
+  <comment xml:lang="be@latin">Dakument X3D</comment>
+  <comment xml:lang="bg">Документ — X3D</comment>
+  <comment xml:lang="bo">X3D ཡིག་ཆ</comment>
+  <comment xml:lang="bs">X3D dokument</comment>
+  <comment xml:lang="ca">document X3D</comment>
+  <comment xml:lang="cs">Dokument X3D</comment>
+  <comment xml:lang="cy">Dogfen X3D</comment>
+  <comment xml:lang="da">X3D-dokument</comment>
+  <comment xml:lang="de">X3D-Dokument</comment>
+  <comment xml:lang="el">έγγραφο X3D</comment>
+  <comment xml:lang="en_AU">X3D document</comment>
+  <comment xml:lang="en_GB">X3D document</comment>
+  <comment xml:lang="eo">X3D-dokumento</comment>
+  <comment xml:lang="es">documento X3D</comment>
+  <comment xml:lang="eu">X3D dokumentua</comment>
+  <comment xml:lang="fi">X3D-asiakirja</comment>
+  <comment xml:lang="fo">X3D skjal</comment>
+  <comment xml:lang="fr">document X3D</comment>
+  <comment xml:lang="ga">cáipéis X3D</comment>
+  <comment xml:lang="gl">documento X3D</comment>
+  <comment xml:lang="he">מסמך X3D</comment>
+  <comment xml:lang="hu">X3D-dokumentum</comment>
+  <comment xml:lang="id">Dokumen X3D</comment>
+  <comment xml:lang="it">Documento X3D</comment>
+  <comment xml:lang="ja">X3D ドキュメント</comment>
+  <comment xml:lang="kk">X3D құжаты</comment>
+  <comment xml:lang="ko">X3D 문서</comment>
+  <comment xml:lang="lt">X3D dokumentas</comment>
+  <comment xml:lang="lv">X3D dokuments</comment>
+  <comment xml:lang="ms">Dokumen X3D</comment>
+  <comment xml:lang="nb">X3D-dokument</comment>
+  <comment xml:lang="nl">X3D-document</comment>
+  <comment xml:lang="nn">X3D-dokument</comment>
+  <comment xml:lang="no">X3D-dokument</comment>
+  <comment xml:lang="oc">Document X3D</comment>
+  <comment xml:lang="pl">Dokument X3D</comment>
+  <comment xml:lang="pt">documento X3D</comment>
+  <comment xml:lang="pt_BR">Documento X3D</comment>
+  <comment xml:lang="ro">Document X3D</comment>
+  <comment xml:lang="ru">документ X3D</comment>
+  <comment xml:lang="sk">Dokument X3D</comment>
+  <comment xml:lang="sl">Dokument X3D</comment>
+  <comment xml:lang="sq">Dokument X3D</comment>
+  <comment xml:lang="sr">X3D документ</comment>
+  <comment xml:lang="sv">X3D-dokument</comment>
+  <comment xml:lang="tr">X3D belgesi</comment>
+  <comment xml:lang="ug">X3D پۈتۈكى</comment>
+  <comment xml:lang="uk">документ X3D</comment>
+  <comment xml:lang="vi">Tài liệu X3D</comment>
+  <comment xml:lang="zh_CN">X3D 文档</comment>
+  <comment xml:lang="zh_TW">X3D 文件</comment>
+  <acronym>X3D</acronym>
+  <expanded-acronym>Extensible 3D (X3D)</expanded-acronym>
+  <sub-class-of type="application/xml"/>
+  <generic-icon name="text-x-generic"/>
+  <glob pattern="*.x3d"/>
+</mime-type>

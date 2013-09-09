@@ -52,6 +52,8 @@ Project("{9344bdbb-3e7f-41fc-a0dd-8665d75ee146}") = "build", "build\build.mdproj
 EndProject
 Project("{2857B73E-F847-4B02-9238-064979017E93}") = "libtitania-mozilla", "libtitania-mozilla\libtitania-mozilla.cproj", "{B12F32C0-6190-4AC2-A6D3-1E2C6DE9657C}"
 EndProject
+Project("{9344bdbb-3e7f-41fc-a0dd-8665d75ee146}") = "x3d2vrml", "x3d2vrml\x3d2vrml.mdproj", "{9F720446-7CC1-4B8B-AD37-4029FB79949D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -136,6 +138,14 @@ Global
 		{8DD96774-C8E5-4420-9D28-D4C96646EBE6}.Parallel|Any CPU.Build.0 = Parallel|Any CPU
 		{8DD96774-C8E5-4420-9D28-D4C96646EBE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8DD96774-C8E5-4420-9D28-D4C96646EBE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F720446-7CC1-4B8B-AD37-4029FB79949D}.Debug|Any CPU.ActiveCfg = Default|Any CPU
+		{9F720446-7CC1-4B8B-AD37-4029FB79949D}.Debug|Any CPU.Build.0 = Default|Any CPU
+		{9F720446-7CC1-4B8B-AD37-4029FB79949D}.Default|Any CPU.ActiveCfg = Default|Any CPU
+		{9F720446-7CC1-4B8B-AD37-4029FB79949D}.Default|Any CPU.Build.0 = Default|Any CPU
+		{9F720446-7CC1-4B8B-AD37-4029FB79949D}.Parallel|Any CPU.ActiveCfg = Default|Any CPU
+		{9F720446-7CC1-4B8B-AD37-4029FB79949D}.Parallel|Any CPU.Build.0 = Default|Any CPU
+		{9F720446-7CC1-4B8B-AD37-4029FB79949D}.Release|Any CPU.ActiveCfg = Default|Any CPU
+		{9F720446-7CC1-4B8B-AD37-4029FB79949D}.Release|Any CPU.Build.0 = Default|Any CPU
 		{A85C33CB-A43E-4501-BBCC-029E5BEFB98C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A85C33CB-A43E-4501-BBCC-029E5BEFB98C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A85C33CB-A43E-4501-BBCC-029E5BEFB98C}.Default|Any CPU.ActiveCfg = Debug|Any CPU

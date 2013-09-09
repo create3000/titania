@@ -439,6 +439,7 @@ private:
 		static const char_type QuestionNumber [2];
 	};
 
+	static const string_type                 DataSchemeId;
 	static const string_type                 FileSchemeId;
 	static std::map <string_type, size_type> well_known_ports;
 
@@ -898,6 +899,13 @@ basic_uri <StringT>::parser::uriString (size_type first) const
 	{
 		++ first;
 		uri .value .absolute = true;
+		
+		if (uri .value .scheme == DataSchemeId)
+		{
+			uri .value .local = true;
+			uri .value .path  = std::move (string .substr (first));
+			return;
+		}
 	}
 
 	size_type begin = first;

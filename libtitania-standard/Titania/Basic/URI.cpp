@@ -54,6 +54,9 @@ namespace titania {
 namespace basic {
 
 template <>
+const std::string basic_uri <std::string>::DataSchemeId = "data";
+
+template <>
 const std::string basic_uri <std::string>::FileSchemeId = "file";
 
 template <>
@@ -68,6 +71,9 @@ template <>
 const char basic_uri <std::string>::Signs::NumberSign = '#';
 template <>
 const char basic_uri <std::string>::Signs::Dot = '.';
+
+template <>
+const std::wstring basic_uri <std::wstring>::DataSchemeId = L"data";
 
 template <>
 const std::wstring basic_uri <std::wstring>::FileSchemeId = L"file";

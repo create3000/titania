@@ -51,15 +51,27 @@
 #include "GoldenGate.h"
 
 #include "../Fields.h"
-#include "../Parser/Filter.h"
 #include "../Miscellaneous/MediaStream.h"
+#include "../Parser/Filter.h"
 
 #include <Titania/OS.h>
 #include <Titania/Physics/Constants.h>
+#include <Titania/String/ToString.h>
 
 #include <Magick++.h>
 #include <giomm.h>
 #include <pcrecpp.h>
+
+//
+
+#include <fcntl.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <unistd.h>
+
+#define READ 0
+#define WRITE 1
 
 namespace titania {
 namespace X3D {
@@ -69,6 +81,49 @@ static const pcrecpp::RE Description ("__DESCRIPTION__");
 static const pcrecpp::RE Width       ("__WIDTH__");
 static const pcrecpp::RE Height      ("__HEIGHT__");
 static const pcrecpp::RE URL         ("__URL__");
+
+pid_t
+popen2 (const char* command, int* infp, int* outfp)
+{
+	int   p_stdin [2], p_stdout [2];
+	pid_t pid;
+
+	if (pipe (p_stdin) not_eq 0 or pipe (p_stdout) not_eq 0)
+		return -1;
+
+	pid = fork ();
+
+	if (pid < 0)
+		return pid;
+
+	if (pid == 0)
+	{
+		close (p_stdin [WRITE]);
+		dup2 (p_stdin [READ], READ);
+		close (p_stdout [READ]);
+		dup2 (p_stdout [WRITE], WRITE);
+
+		execl ("/bin/sh", "sh", "-c", command, NULL);
+		perror ("execl");
+		exit (1);
+	}
+
+	close (p_stdin [READ]);
+
+	if (infp == NULL)
+		close (p_stdin [WRITE]);
+	else
+		*infp = p_stdin [WRITE];
+
+	close (p_stdout [WRITE]);
+
+	if (outfp == NULL)
+		close (p_stdout [READ]);
+	else
+		*outfp = p_stdout [READ];
+
+	return pid;
+}
 
 static
 std::string
@@ -86,6 +141,32 @@ get_name (const basic::uri & uri)
 		return name;
 
 	return "unnamed";
+}
+
+static
+basic::ifilestream
+golden_x3d (basic::ifilestream && istream)
+{
+	static std::string x3d2vrml = "/home/holger/Projekte/Titania/x3d2vrml/bin/x3d2vrml";
+
+	int    outHandle = 0;
+	int    inHandle  = 0;
+	size_t bytesRead = 0;
+	char   buffer [1024];
+
+	if (popen2 (x3d2vrml .c_str (), &outHandle, &inHandle) <= 0)
+		throw false;
+
+	std::string x3d = basic::to_string (istream);
+	(void) write (outHandle, x3d .c_str (), x3d .size ());
+	close (outHandle);
+
+	std::string string;
+
+	while ((bytesRead = read (inHandle, buffer, sizeof (buffer))) > 0)
+		string .append (buffer, bytesRead);
+
+	return basic::ifilestream ("data:model/vrml;charset=UTF-8," + Glib::uri_escape_string (string));
 }
 
 static
@@ -139,7 +220,7 @@ basic::ifilestream
 golden_video (const basic::uri & uri)
 {
 	MediaStream mediaStream;
-	
+
 	mediaStream .setup ();
 	mediaStream .setUri (uri);
 	mediaStream .sync ();
@@ -173,13 +254,21 @@ golden_gate (const basic::uri & uri, basic::ifilestream && istream)
 {
 	try
 	{
+		//__LOG__ << istream .response_headers () .at ("Content-Type") << " : " << uri << std::endl;
+
+		if (istream .response_headers () .at ("Content-Type") == "model/x3d+xml")
+			return golden_x3d (std::move (istream));
+
+		if (istream .response_headers () .at ("Content-Type") == "application/xml")
+			return golden_x3d (std::move (istream));
+
 		if (Gio::content_type_is_a (istream .response_headers () .at ("Content-Type"), "image/*"))
 			return golden_image (uri);
 
-		else if (Gio::content_type_is_a (istream .response_headers () .at ("Content-Type"), "audio/*"))
+		if (Gio::content_type_is_a (istream .response_headers () .at ("Content-Type"), "audio/*"))
 			return golden_audio (uri);
 
-		else if (Gio::content_type_is_a (istream .response_headers () .at ("Content-Type"), "video/*"))
+		if (Gio::content_type_is_a (istream .response_headers () .at ("Content-Type"), "video/*"))
 			return golden_video (uri);
 	}
 	catch (...)

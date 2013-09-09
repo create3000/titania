@@ -122,41 +122,43 @@ ifilestream::open (const basic::uri & URL, size_t timeout)
 		std::string::size_type first  = std::string::npos;
 		std::string::size_type length = 0;
 		std::string::size_type comma  = url () .path () .find (',');
-
-		std::string header = url () .path () .substr (0, comma);
-		std::string content_type;
-		bool        base64 = false;
-
-		if (header .size () >= 6)
-		{
-			if (header .substr (header .size () - 6, 6) == "base64")
-			{
-				base64 = true;
-				header .resize (header .size () - 6);
-
-				if (header .size () and header [header .size () - 1] == ';')
-					header .resize (header .size () - 1);
-			}
-		}
-
-		content_type = header;
-
-		// data
-
+	
 		if (comma not_eq std::string::npos)
 		{
-			first  = 5 + comma + 1;
+			std::string header = url () .path () .substr (0, comma);
+			std::string content_type;
+			bool        base64 = false;
+
+			if (header .size () >= 6)
+			{
+				if (header .substr (header .size () - 6, 6) == "base64")
+				{
+					base64 = true;
+					header .resize (header .size () - 6);
+
+					if (header .size () and header [header .size () - 1] == ';')
+						header .resize (header .size () - 1);
+				}
+			}
+
+			content_type = header;
+
+			// data
+
+			first  = comma + 1;
 			length = url () .path () .size () - first;
+
+			// header
+
+			file_response_headers .insert (std::make_pair ("Content-Type",   content_type));
+			file_response_headers .insert (std::make_pair ("Content-Length", std::to_string (length)));
+		
+			istream = data_istream = new std::istringstream (base64
+			                                                 ? base64_decode (url () .path () .substr (first))
+																			 : Glib::uri_unescape_string (url () .path () .substr (first)));
 		}
-
-		// header
-
-		file_response_headers .insert (std::make_pair ("Content-Type",   content_type));
-		file_response_headers .insert (std::make_pair ("Content-Length", std::to_string (length)));
-
-		istream = data_istream = new std::istringstream (base64
-		                                                 ? base64_decode (url () .str () .substr (first))
-																		 : Glib::uri_unescape_string (url () .str () .substr (first)));
+		else
+			istream = data_istream = new std::istringstream ();
 	}
 	else if (url () .is_local ())
 	{
@@ -178,7 +180,7 @@ ifilestream::open (const basic::uri & URL, size_t timeout)
 	}
 
 	init (istream -> rdbuf ());
-	setstate (istream -> rdstate ());
+	clear (istream -> rdstate ());
 }
 
 void

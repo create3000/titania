@@ -104,7 +104,7 @@ BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
 	               shading (new SFString ("GOURAUD")),
 	     animateStairWalks (new SFBool ()),
 	               gravity (new SFFloat (P_GN)),
-	        minTextureSize (new SFInt32 (8)),
+	        minTextureSize (new SFInt32 (16)),
 	     motionBlurOptions (new MotionBlur (executionContext)),
 	            appearance (new Appearance (executionContext)),
 	        lineProperties (new LineProperties (executionContext)),

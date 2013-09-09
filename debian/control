@@ -43,7 +43,10 @@ Depends: ${shlibs:Depends},
          libsqlite3-0, 
          libgstreamermm-0.10-2,
          zlib1g,
-         libgtop2-common
+         libgtop2-common,
+         perl,
+         libxml-libxml-perl,
+         libglib-perl
 Conflicts:
 Replaces:
 Provides: titania
