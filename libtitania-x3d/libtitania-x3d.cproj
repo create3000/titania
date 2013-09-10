@@ -578,8 +578,8 @@
     <None Include="Titania\X3D\Components\Core\MetadataBoolean.h" />
     <None Include="Titania\X3D\Bits\HatchStyles.h" />
     <None Include="Titania\X3D\Bits\Linetypes.h" />
-    <None Include="share\mime\application\x3d+vrml.xml" />
-    <None Include="share\mime\application\x3d+xml.xml" />
+    <None Include="share\mime\model\x3d+vrml.xml" />
+    <None Include="share\mime\model\x3d+xml.xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

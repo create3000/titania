@@ -48,46 +48,21 @@
  *
  ******************************************************************************/
 
-#include "X3DLightNode.h"
+#ifndef __TITANIA_OS_POPEN2_H__
+#define __TITANIA_OS_POPEN2_H__
 
-#include "../../Browser/X3DBrowser.h"
+#include <unistd.h>
 
 namespace titania {
-namespace X3D {
+namespace os {
 
-X3DLightNode::Fields::Fields () :
-	global (new SFBool (true)),
-	on (new SFBool (true)),
-	color (new SFColor (1, 1, 1)),
-	intensity (new SFFloat (1)),
-	ambientIntensity (new SFFloat ())
-{ }
+pid_t
+popen2 (const char*, int*, int*);
 
-X3DLightNode::X3DLightNode () :
-	X3DChildNode (),
-	      fields ()
-{
-	addNodeType (X3DConstants::X3DLightNode);
-}
+pid_t
+popen3 (const char*, int*, int*, int*);
 
-void
-X3DLightNode::push ()
-{
-	if (on ())
-	{
-		if (global ())
-			getCurrentLayer () -> addGlobalLight (this);
-		else
-			getCurrentLayer () -> pushLocalLight (this);
-	}
-}
-
-void
-X3DLightNode::pop ()
-{
-	if (not global () and on ())
-		getCurrentLayer () -> popLocalLight ();
-}
-
-} // X3D
+} // os
 } // titania
+
+#endif

@@ -47,6 +47,7 @@ libtitania_standard_la_SOURCES =  \
 	Titania/OS/IsFile.cpp \
 	Titania/OS/LoadFile.cpp \
 	Titania/OS/Mkdir.cpp \
+	Titania/OS/Popen2.cpp \
 	Titania/OS/System.cpp \
 	Titania/String/Split.cpp \
 	Titania/String/strfsize.cpp \

@@ -48,46 +48,78 @@
  *
  ******************************************************************************/
 
-#include "X3DLightNode.h"
+#include "Popen2.h"
 
-#include "../../Browser/X3DBrowser.h"
+#include <fcntl.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
 
 namespace titania {
-namespace X3D {
+namespace os {
 
-X3DLightNode::Fields::Fields () :
-	global (new SFBool (true)),
-	on (new SFBool (true)),
-	color (new SFColor (1, 1, 1)),
-	intensity (new SFFloat (1)),
-	ambientIntensity (new SFFloat ())
-{ }
+static constexpr size_t READ  = 0;
+static constexpr size_t WRITE = 1;
 
-X3DLightNode::X3DLightNode () :
-	X3DChildNode (),
-	      fields ()
+pid_t
+popen2 (const char* command, int* stdin, int* stdout)
 {
-	addNodeType (X3DConstants::X3DLightNode);
+	return popen3 (command, stdin, stdout, nullptr);
 }
 
-void
-X3DLightNode::push ()
+pid_t
+popen3 (const char* command, int* stdin, int* stdout, int* stderr)
 {
-	if (on ())
+	int   input [2], output [2], error [2];
+	pid_t pid;
+
+	if (pipe (output) not_eq 0 or pipe (input) not_eq 0 or pipe (error) not_eq 0)
+		return -1;
+
+	pid = fork ();
+
+	if (pid < 0)
+		return pid;
+
+	if (pid == 0)
 	{
-		if (global ())
-			getCurrentLayer () -> addGlobalLight (this);
-		else
-			getCurrentLayer () -> pushLocalLight (this);
+		close (output [WRITE]);
+		dup2 (output [READ], STDIN_FILENO);
+
+		close (input [READ]);
+		dup2 (input [WRITE], STDOUT_FILENO);
+		
+		close (error [READ]);
+		dup2 (error [WRITE], STDERR_FILENO);
+
+		execl ("/bin/sh", "sh", "-c", command, nullptr);
+		perror ("execl");
+		exit (1);
 	}
+
+	close (output [READ]);
+
+	if (stdin)
+		*stdin = output [WRITE];
+	else
+		close (output [WRITE]);
+
+	close (input [WRITE]);
+
+	if (stdout)
+		*stdout = input [READ];
+	else
+		close (input [READ]);
+
+	close (error [WRITE]);
+
+	if (stderr)
+		*stderr = error [READ];
+	else
+		close (error [READ]);
+
+	return pid;
 }
 
-void
-X3DLightNode::pop ()
-{
-	if (not global () and on ())
-		getCurrentLayer () -> popLocalLight ();
-}
-
-} // X3D
+} // os
 } // titania

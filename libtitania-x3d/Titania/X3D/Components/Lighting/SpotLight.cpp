@@ -74,8 +74,8 @@ SpotLight::SpotLight (X3DExecutionContext* const executionContext) :
 	setTypeName ("SpotLight");
 
 	addField (inputOutput, "metadata",         metadata ());
-	addField (inputOutput, "on",               on ());
 	addField (inputOutput, "global",           global ());
+	addField (inputOutput, "on",               on ());
 	addField (inputOutput, "color",            color ());
 	addField (inputOutput, "location",         location ());
 	addField (inputOutput, "direction",        direction ());

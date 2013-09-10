@@ -1,3 +1,11 @@
+2013-09-10  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* OS.h:
+	* Popen2.h:
+	* Popen2.cpp:
+	* libtitania-standard.cproj: 
+
 2013-09-09  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* URI.h:

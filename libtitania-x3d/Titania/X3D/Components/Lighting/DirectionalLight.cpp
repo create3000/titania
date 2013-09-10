@@ -69,8 +69,8 @@ DirectionalLight::DirectionalLight (X3DExecutionContext* const executionContext)
 	setTypeName ("DirectionalLight");
 
 	addField (inputOutput, "metadata",         metadata ());
-	addField (inputOutput, "on",               on ());
 	addField (inputOutput, "global",           global ());
+	addField (inputOutput, "on",               on ());
 	addField (inputOutput, "color",            color ());
 	addField (inputOutput, "intensity",        intensity ());
 	addField (inputOutput, "ambientIntensity", ambientIntensity ());

@@ -71,8 +71,8 @@ PointLight::PointLight (X3DExecutionContext* const executionContext) :
 	setTypeName ("PointLight");
 
 	addField (inputOutput, "metadata",         metadata ());
-	addField (inputOutput, "on",               on ());
 	addField (inputOutput, "global",           global ());
+	addField (inputOutput, "on",               on ());
 	addField (inputOutput, "color",            color ());
 	addField (inputOutput, "location",         location ());
 	addField (inputOutput, "radius",           radius ());

@@ -63,20 +63,20 @@ class X3DLightNode :
 public:
 
 	SFBool &
-	on ()
-	{ return *fields .on; }
-
-	const SFBool &
-	on () const
-	{ return *fields .on; }
-
-	SFBool &
 	global ()
 	{ return *fields .global; }
 
 	const SFBool &
 	global () const
 	{ return *fields .global; }
+
+	SFBool &
+	on ()
+	{ return *fields .on; }
+
+	const SFBool &
+	on () const
+	{ return *fields .on; }
 
 	SFColor &
 	color ()
@@ -124,8 +124,8 @@ private:
 	{
 		Fields ();
 
-		SFBool* const on;
 		SFBool* const global;
+		SFBool* const on;
 		SFColor* const color;
 		SFFloat* const intensity;
 		SFFloat* const ambientIntensity;

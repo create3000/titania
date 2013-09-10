@@ -1,3 +1,17 @@
+2013-09-10  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-x3d.cproj:
+	* x3d+xml.xml:
+	* x3d+vrml.xml:
+	* x3d+xml.xml:
+	* x3d+vrml.xml:
+	* GoldenGate.cpp:
+	* SpotLight.cpp:
+	* PointLight.cpp:
+	* X3DLightNode.h:
+	* X3DLightNode.cpp:
+	* DirectionalLight.cpp: 
+
 2013-09-09  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* libtitania-x3d.cproj:

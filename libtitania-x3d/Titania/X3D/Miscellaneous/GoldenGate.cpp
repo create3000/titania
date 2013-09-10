@@ -64,15 +64,6 @@
 
 //
 
-#include <fcntl.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#include <unistd.h>
-
-#define READ 0
-#define WRITE 1
-
 namespace titania {
 namespace X3D {
 
@@ -81,49 +72,6 @@ static const pcrecpp::RE Description ("__DESCRIPTION__");
 static const pcrecpp::RE Width       ("__WIDTH__");
 static const pcrecpp::RE Height      ("__HEIGHT__");
 static const pcrecpp::RE URL         ("__URL__");
-
-pid_t
-popen2 (const char* command, int* infp, int* outfp)
-{
-	int   p_stdin [2], p_stdout [2];
-	pid_t pid;
-
-	if (pipe (p_stdin) not_eq 0 or pipe (p_stdout) not_eq 0)
-		return -1;
-
-	pid = fork ();
-
-	if (pid < 0)
-		return pid;
-
-	if (pid == 0)
-	{
-		close (p_stdin [WRITE]);
-		dup2 (p_stdin [READ], READ);
-		close (p_stdout [READ]);
-		dup2 (p_stdout [WRITE], WRITE);
-
-		execl ("/bin/sh", "sh", "-c", command, NULL);
-		perror ("execl");
-		exit (1);
-	}
-
-	close (p_stdin [READ]);
-
-	if (infp == NULL)
-		close (p_stdin [WRITE]);
-	else
-		*infp = p_stdin [WRITE];
-
-	close (p_stdout [WRITE]);
-
-	if (outfp == NULL)
-		close (p_stdout [READ]);
-	else
-		*outfp = p_stdout [READ];
-
-	return pid;
-}
 
 static
 std::string
@@ -149,22 +97,40 @@ golden_x3d (basic::ifilestream && istream)
 {
 	static std::string x3d2vrml = "/home/holger/Projekte/Titania/x3d2vrml/bin/x3d2vrml";
 
-	int    outHandle = 0;
-	int    inHandle  = 0;
+	int    stdin     = 0;
+	int    stdout    = 0;
+	int    stderr    = 0;
 	size_t bytesRead = 0;
 	char   buffer [1024];
 
-	if (popen2 (x3d2vrml .c_str (), &outHandle, &inHandle) <= 0)
+	// Open pipe
+
+	if (os::popen3 (x3d2vrml .c_str (), &stdin, &stdout, &stderr) <= 0)
 		throw false;
 
+	// Write to pipe
+
 	std::string x3d = basic::to_string (istream);
-	(void) write (outHandle, x3d .c_str (), x3d .size ());
-	close (outHandle);
+	(void) write (stdin, x3d .c_str (), x3d .size ());
+	close (stdin);
+
+	// Read from pipe
 
 	std::string string;
 
-	while ((bytesRead = read (inHandle, buffer, sizeof (buffer))) > 0)
+	while ((bytesRead = read (stdout, buffer, sizeof (buffer))) > 0)
 		string .append (buffer, bytesRead);
+
+	close (stdout);
+
+	// Read error from pipe
+
+	while ((bytesRead = read (stderr, buffer, sizeof (buffer))) > 0)
+		std::clog .write (buffer, bytesRead);
+
+	close (stderr);
+
+	// Return stream
 
 	return basic::ifilestream ("data:model/vrml;charset=UTF-8," + Glib::uri_escape_string (string));
 }

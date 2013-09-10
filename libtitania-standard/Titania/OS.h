@@ -61,6 +61,7 @@
 #include "OS/IsFile.h"
 #include "OS/LoadFile.h"
 #include "OS/Mkdir.h"
+#include "OS/Popen2.h"
 #include "OS/System.h"
 
 #endif

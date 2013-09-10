@@ -43,7 +43,7 @@ sub new
 		parents              => [ ]
 	};
 
-	$self -> {nodes} -> load_from_data (join ("", `$titania_info -i`), "none");
+	$self -> {nodes} -> load_from_data (join ("", `$titania_info -i 2>/dev/null`), "none");
 
 	unshift @{$self -> {contexts}}, $self;
 
@@ -559,28 +559,10 @@ sub new
 		indent   => 0
 	};
 
-	$self -> {fields} -> load_from_data (join ("", `$titania_info -f`), "none");
+	$self -> {fields} -> load_from_data (join ("", `$titania_info -f 2>/dev/null`), "none");
 
 	bless $self, $class;
 	return $self;
-}
-
-# Other Symbols
-#our $NonIdFirstChar = qr/[\x30-\x39\x00-\x20\x22\x23\x27\x2b\x2c\x2d\x2e\x5b\x5c\x5d\x7b\x7d\x7f]/so; 
-#our $NonIdRestChars = qr/[\x00-\x20\x22\x23\x27\x2c\x2e\x5b\x5c\x5d\x7b\x7d\x7f]/so; 
-
-sub id {
-	return $_ [0];
-
-#	my ($id) = @_;
-#
-#	my $_first = substr $id, 0, 1;
-#	$_first =~ s/$NonIdFirstChar/_/sgo;
-#
-#	my $_rest = substr $id, 1;
-#	$_rest =~ s/$NonIdRestChars/_/sgo;
-#
-#	return $_first . $_rest;
 }
 
 sub getPrototype {
@@ -657,7 +639,7 @@ sub externProtos {
 sub externProto {
 	my ($self, $externProto) = @_;
 
-	print "EXTERNPROTO ", id ($externProto -> {name}), " [";
+	print "EXTERNPROTO ", $externProto -> {name}, " [";
 	
 	if (@{$externProto -> {interface}})
 	{
@@ -699,7 +681,7 @@ sub restrictedInterfaceDeclaration {
 		" ",
 		$field -> {type},
 		" ",
-		id ($field -> {name}),
+		$field -> {name},
 		"\n";
 }
 
@@ -737,7 +719,7 @@ sub proto {
 
 	$self -> documentation ($proto);
 
-	print "PROTO ", id ($proto -> {name}), " [";
+	print "PROTO ", $proto -> {name}, " [";
 
 	if (@{$proto -> {interface}})
 	{
@@ -790,7 +772,7 @@ sub interfaceDeclaration {
 		" ",
 		$field -> {type},
 		" ",
-		id ($field -> {name});
+		$field -> {name};
 	
 	if ($field -> {accessType} =~ /initializeOnly|inputOutput/sgo)
 	{
@@ -819,13 +801,13 @@ sub node {
 	
 	if ($node -> {reference})
 	{
-		print "USE ", id ($node -> {reference});
+		print "USE ", $node -> {reference};
 		return;
 	}
 
 	if ($self -> {nodes} -> has_group ($node -> {typeName}) or $node -> {userDefined})
 	{
-		print "DEF ", id ($node -> {name}), " " if $node -> {name};
+		print "DEF ", $node -> {name}, " " if $node -> {name};
 		print $node -> {typeName}, " {";
 
 		if (%{$node -> {fields}})
@@ -855,11 +837,11 @@ sub fields {
 		next if $_ -> {userDefined};
 	
 		print "  " x $self -> {indent};
-		print id ($_ -> {name}), " ";
+		print $_ -> {name}, " ";
 
 		if ($_ -> {reference})
 		{
-			print "IS ", id ($_ -> {reference});
+			print "IS ", $_ -> {reference};
 		}
 		else
 		{
@@ -891,7 +873,7 @@ sub userDefinedFields {
 		print "  " x $self -> {indent};
 		print $_ -> {accessType}, " ";
 		print $_ -> {type}, " ";
-		print id ($_ -> {name});
+		print $_ -> {name};
 
 		if ($_ -> {reference})
 		{
@@ -1031,12 +1013,12 @@ sub import {
 	my ($self, $import) = @_;
 	
 	print "IMPORT ";
-	print id ($import -> {inline}), ".", id ($import -> {exportedName});
+	print $import -> {inline}, ".", $import -> {exportedName};
 	
 	if ($import -> {localName})
 	{
 		print " AS ";
-		print id ($import -> {localName});
+		print $import -> {localName};
 	}
 }
 
@@ -1057,9 +1039,9 @@ sub route {
 	my ($self, $route) = @_;
 	
 	print "ROUTE ";
-	print id ($route -> {fromNode}), ".", id ($route -> {fromField});
+	print $route -> {fromNode}, ".", $route -> {fromField};
 	print " TO ";
-	print id ($route -> {toNode}), ".", id ($route -> {toField});
+	print $route -> {toNode}, ".", $route -> {toField};
 }
 
 sub exports {
@@ -1079,12 +1061,12 @@ sub export {
 	my ($self, $export) = @_;
 
 	print "EXPORT ";
-	print id ($export -> {localName});
+	print $export -> {localName};
 
 	if ($export -> {exportedName})
 	{
 		print " AS ";
-		print id ($export -> {exportedName});
+		print $export -> {exportedName};
 	}
 }
 

@@ -122,6 +122,7 @@
     <None Include="Titania\OS\FileExists.h" />
     <None Include="Titania\String\ToString.h" />
     <None Include="Titania\Math\Utility\StrToL.h" />
+    <None Include="Titania\OS\Popen2.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />
@@ -170,6 +171,7 @@
     <Compile Include="Titania\OS\LoadFile.cpp" />
     <Compile Include="Titania\OS\FileExists.cpp" />
     <Compile Include="Titania\String\Trim.cpp" />
+    <Compile Include="Titania\OS\Popen2.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
