@@ -38,7 +38,7 @@
 namespace titania {
 namespace X3D {
 
-const std::string X3DBrowser::version ("0.4.1");
+const std::string X3DBrowser::version ("0.5.0");
 
 X3DBrowser::X3DBrowser () :
 	  X3DBrowserContext (),
