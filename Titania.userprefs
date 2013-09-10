@@ -1,24 +1,31 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="experimental/main.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="debian/rules">
     <Files>
-      <File FileName="experimental/main.cpp" Line="246" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Shape/X3DShapeNode.h" Line="123" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Shape/X3DShapeNode.cpp" Line="128" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Shape/Appearance.h" Line="80" Column="1" />
+      <File FileName="experimental/main.cpp" Line="217" Column="1" />
+      <File FileName="titania-info/main.cpp" Line="52" Column="4" />
+      <File FileName="libtitania-x3d/Titania/X3D/Miscellaneous/GoldenGate.cpp" Line="116" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/CADGeometry/QuadSet.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/CADGeometry/QuadSet.cpp" Line="70" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Parser/RegEx.cpp" Line="57" Column="42" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Properties/RenderingProperties.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-standard/Titania/OS/Popen2.cpp" Line="85" Column="3" />
+      <File FileName="libtitania-standard/Titania/OS/Popen2.h" Line="54" Column="19" />
+      <File FileName="debian/rules" Line="29" Column="14" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="miscellaneous" expanded="True">
             <Node name="uncrustify-all" expanded="True" />
+            <Node name="x3d2wrl" expanded="True" />
           </Node>
           <Node name="build" expanded="True">
-            <Node name="debian" expanded="True" />
+            <Node name="debian" expanded="True">
+              <Node name="rules" selected="True" />
+            </Node>
           </Node>
-          <Node name="experimental" expanded="True">
-            <Node name="main.cpp" selected="True" />
-          </Node>
+          <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
             <Node name="Tests" expanded="True">
               <Node name="Basic" expanded="True" />
@@ -35,8 +42,22 @@
               <Node name="OpenGL" expanded="True" />
             </Node>
           </Node>
+          <Node name="libtitania-standard" expanded="True">
+            <Node name="Titania" expanded="True">
+              <Node name="OS" expanded="True" />
+              <Node name="String" expanded="True" />
+            </Node>
+          </Node>
+          <Node name="libtitania-stream" expanded="True">
+            <Node name="Titania" expanded="True">
+              <Node name="Stream" expanded="True" />
+            </Node>
+          </Node>
           <Node name="libtitania-x3d" expanded="True">
             <Node name="share" expanded="True">
+              <Node name="mime" expanded="True">
+                <Node name="model" expanded="True" />
+              </Node>
               <Node name="titania" expanded="True" />
             </Node>
             <Node name="Titania" expanded="True">
@@ -48,29 +69,26 @@
                   <Node name="Properties" expanded="True" />
                 </Node>
                 <Node name="Components" expanded="True">
+                  <Node name="CADGeometry" expanded="True" />
                   <Node name="Core" expanded="True" />
                   <Node name="Followers" expanded="True" />
                   <Node name="Geometry3D" expanded="True" />
                   <Node name="Layering" expanded="True" />
+                  <Node name="Lighting" expanded="True" />
+                  <Node name="Networking" expanded="True" />
                   <Node name="Shape" expanded="True" />
                   <Node name="Text" expanded="True" />
                   <Node name="Texturing" expanded="True" />
                 </Node>
-                <Node name="Configuration" expanded="True" />
-                <Node name="Execution" expanded="True" />
                 <Node name="InputOutput" expanded="True" />
                 <Node name="Miscellaneous" expanded="True" />
                 <Node name="Parser" expanded="True" />
-                <Node name="Rendering" expanded="True" />
               </Node>
             </Node>
           </Node>
           <Node name="Papers" expanded="True" />
           <Node name="Titania" expanded="True">
             <Node name="share" expanded="True">
-              <Node name="gtksourceview-3.0" expanded="True">
-                <Node name="language-specs" expanded="True" />
-              </Node>
               <Node name="titania" expanded="True">
                 <Node name="pages" expanded="True">
                   <Node name="Library" expanded="True" />
@@ -82,6 +100,15 @@
               <Node name="Configuration" expanded="True" />
               <Node name="HistoryEditor" expanded="True" />
               <Node name="ViewpointList" expanded="True" />
+            </Node>
+          </Node>
+          <Node name="titania-info" expanded="True" />
+          <Node name="x3d2vrml" expanded="True">
+            <Node name="bin" expanded="True" />
+            <Node name="share" expanded="True">
+              <Node name="titania" expanded="True">
+                <Node name="dtd" expanded="True" />
+              </Node>
             </Node>
           </Node>
           <Node name="x3dtidy" expanded="True" />

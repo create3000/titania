@@ -588,7 +588,8 @@ sub scene {
 	
 	print "#X3D V", $self -> {document} -> {specificationVersion}, " utf8\n\n";
 	
-	print "PROFILE ", $self -> {document} -> {profile}, "\n\n" if $self -> {document} -> {profile};
+	print "PROFILE ", $self -> {document} -> {profile}, "\n\n"
+		if $self -> {document} -> {profile};
 
 	$self -> components ($self -> {document} -> {components});
 	$self -> metaData ($self -> {document} -> {metaData});

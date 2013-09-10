@@ -36,5 +36,6 @@
     <None Include="icon32.png" />
     <None Include="icon128.png" />
     <None Include="logo.x3d" />
+    <None Include="x3d.svg" />
   </ItemGroup>
 </Project>
