@@ -55,7 +55,7 @@ sub new {
 
 sub escape {
 	my ($value) = @_;
-	$value =~ s/(\A|[^\\](?:(?<!\\)|(?<!\\\\\\)))?(["])/$1\\$2/sgo;  # Escape "
+	$value =~ s/(\A|[^\\])((?:\\\\)*["])/$1\\$2/sgo;  # Escape "
 	return $value;
 }
 
