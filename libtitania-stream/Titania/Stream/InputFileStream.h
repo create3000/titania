@@ -76,8 +76,13 @@ public:
 
 	ifilestream (ifilestream &&);
 
+	ifilestream (std::istream &&);
+
 	ifilestream &
 	operator = (ifilestream &&);
+
+	ifilestream &
+	operator = (std::istream &&);
 
 	/// @name Header handling
 
@@ -148,6 +153,9 @@ private:
 	void
 	status (size_t value)
 	{ m_status = value; }
+
+	void
+	guess_content_type (std::istream*);
 
 	static const std::string reasons [2];
 	static const std::string empty_string;

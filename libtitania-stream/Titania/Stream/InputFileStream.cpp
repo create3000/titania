@@ -82,6 +82,12 @@ ifilestream::ifilestream (ifilestream && other) :
 	*this = std::move (other);
 }
 
+ifilestream::ifilestream (std::istream && other) :
+	ifilestream ()
+{
+	*this = std::move (other);
+}
+
 ifilestream &
 ifilestream::operator = (ifilestream && other)
 {
@@ -99,9 +105,28 @@ ifilestream::operator = (ifilestream && other)
 	other .istream      = nullptr;
 
 	init (istream -> rdbuf ());
-
 	clear (other .rdstate ());
+
 	other .clear (std::ios::badbit);
+
+	return *this;
+}
+
+ifilestream &
+ifilestream::operator = (std::istream && other)
+{
+	data_istream = nullptr;
+	file_istream = nullptr;
+	url_stream   = nullptr;
+	istream      = new std::istream (other .rdbuf ());
+	m_url        = "";
+
+	init (istream -> rdbuf ());
+	clear (other .rdstate ());
+
+	other .rdbuf (nullptr);
+
+	guess_content_type (istream);
 
 	return *this;
 }
@@ -194,23 +219,36 @@ ifilestream::send ()
 	}
 	else if (file_istream)
 	{
-		// Guess content type
+		guess_content_type (file_istream);
 
-		char   data [64];
-		size_t data_size = file_istream -> rdbuf () -> sgetn (data, 64);
-
-		bool        result_uncertain;
-		std::string content_type = Gio::content_type_guess (url () .path (), (guchar*) data, data_size, result_uncertain);
-
-		file_response_headers .insert (std::make_pair ("Content-Type",   content_type));
 		file_response_headers .insert (std::make_pair ("Content-Length", std::to_string (os::file_size (url () .path ()))));
-
-		// Reset stream
-
-		file_istream -> seekg (0, std::ios_base::beg);
 	}
 
 	setstate (istream -> rdstate ());
+}
+
+void
+ifilestream::guess_content_type (std::istream* istream)
+{
+	static constexpr size_t BUFFER_SIZE = 128;
+
+	auto state = istream -> rdstate ();
+	auto pos   = istream -> tellg ();
+
+	// Guess content type.
+
+	char   data [BUFFER_SIZE];
+	size_t data_size = istream -> rdbuf () -> sgetn (data, BUFFER_SIZE);
+
+	bool        result_uncertain;
+	std::string content_type = Gio::content_type_guess (url () .path (), (guchar*) data, data_size, result_uncertain);
+
+	file_response_headers .insert (std::make_pair ("Content-Type", content_type));
+
+	// Reset stream.
+
+	istream -> clear (state);
+	istream -> seekg (pos - istream -> tellg (), std::ios_base::cur);
 }
 
 void
@@ -229,7 +267,12 @@ ifilestream::close ()
 		data_istream = nullptr;
 	}
 
-	delete istream;
+	if (istream)
+	{
+		delete istream;
+		istream = nullptr;
+	}
+
 	clear (std::ios::badbit);
 }
 

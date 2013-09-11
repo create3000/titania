@@ -8,21 +8,23 @@ use XML::LibXML;
 #libxml-libxml-perl
 
 use Glib;
+#libglib-perl
 
-my $x3d_catalog  = "/home/holger/Projekte/Titania/x3d2vrml/share/titania/dtd/x3d-catalog.xml";
-my $titania_info = "/home/holger/Projekte/Titania/titania-info/titania-info";
+my $DTDDirectory = "/home/holger/Projekte/Titania/x3d2vrml/share/titania/dtd";
+my $X3DCatalog   = "$DTDDirectory/x3d-catalog.xml";
 
-XML::LibXML -> load_catalog ($x3d_catalog);
+my $RecommendedPublicId = "ISO//Web3D//DTD X3D 3.2//EN";
+my $RecomemndedSystemId = "$DTDDirectory/x3d-3.2.dtd";
+
+my $TitaniaInfo = "/home/holger/Projekte/Titania/titania-info/titania-info";
+
+XML::LibXML -> load_catalog ($X3DCatalog);
 
 
-sub new
-{
+sub new {
 	my ($class, %options) = @_;
 
 	my $document = new XML::LibXML -> load_xml (%options);
-
-	#say $document -> internalSubset () -> publicId ();
-	#say $document -> internalSubset () -> systemId ();
 
 	my $self = {
 		nodes                => new Glib::KeyFile (),
@@ -43,12 +45,18 @@ sub new
 		parents              => [ ]
 	};
 
-	$self -> {nodes} -> load_from_data (join ("", `$titania_info -i 2>/dev/null`), "none");
+	$self -> {nodes} -> load_from_data (join ("", `$TitaniaInfo -i 2>/dev/null`), "none");
 
 	unshift @{$self -> {contexts}}, $self;
 
 	bless $self, $class;
 	return $self;
+}
+
+sub escape {
+	my ($value) = @_;
+	$value =~ s/(\A|[^\\](?:(?<!\\)|(?<!\\\\\\)))?(["])/$1\\$2/sgo;  # Escape "
+	return $value;
 }
 
 sub parse {
@@ -59,9 +67,11 @@ sub parse {
 
 sub x3d {
 	my ($self, $xml) = @_;
-	
+
 	$self -> {specificationVersion} = $xml -> getAttribute ("version");
 	$self -> {profile}              = $xml -> getAttribute ("profile");
+
+	$self -> validate ($xml);
 
 	foreach my $child ($xml -> getChildnodes ())
 	{
@@ -76,6 +86,29 @@ sub x3d {
 			$self -> scene ($child);
 			next;
 		}
+	}
+}
+
+sub validate {
+	my ($self, $xml) = @_;
+
+	#say STDERR $self -> {dom} -> internalSubset () -> publicId ();
+	#say STDERR $self -> {dom} -> internalSubset () -> systemId ();
+
+	if (not $self -> {dom} -> internalSubset ())
+	{
+		my $publicId = "ISO//Web3D//DTD X3D " . $self -> {specificationVersion} . "//EN";
+		my $systemId = "$DTDDirectory/x3d-" . $self -> {specificationVersion} . ".dtd";
+
+		unless (-e $systemId)
+		{
+			$publicId = $RecommendedPublicId;
+			$systemId = $RecomemndedSystemId;
+		}
+
+		$self -> {dom} -> createInternalSubset ($xml, $publicId, $systemId);
+
+		eval { $self -> {dom} -> validate (); };
 	}
 }
 
@@ -451,9 +484,8 @@ sub cdata {
 
 	$value =~ s/\A\s*//sgo;      # Remove spaces from beginning
 	$value =~ s/\s*$//sgo;       # Remove spaces from end
-	$value =~ s/(["\\])/\$1/sgo; # Escape " and \
 
-	$fields -> {url} -> {value} .= " \"" . $value . "\"";
+	$fields -> {url} -> {value} .= " \"" . escape ($value) . "\"";
 }
 
 sub addNode {
@@ -545,11 +577,11 @@ use warnings;
 use v5.10.0;
 
 use Glib;
+#libglib-perl
 
 binmode STDOUT, ":utf8";
 
-sub new
-{
+sub new {
 	my ($class, $document) = @_;
 
 	my $self = {
@@ -559,10 +591,14 @@ sub new
 		indent   => 0
 	};
 
-	$self -> {fields} -> load_from_data (join ("", `$titania_info -f 2>/dev/null`), "none");
+	$self -> {fields} -> load_from_data (join ("", `$TitaniaInfo -f 2>/dev/null`), "none");
 
 	bless $self, $class;
 	return $self;
+}
+
+sub escape {
+	return X3D::Parser::escape (@_);
 }
 
 sub getPrototype {
@@ -618,7 +654,7 @@ sub metaData {
 	
 	foreach (@$metaData)
 	{
-		print "META \"", $_ -> {name}, "\" \"", $_ -> {value}, "\"\n";
+		print "META \"", escape ($_ -> {name}), "\" \"", escape ($_ -> {value}), "\"\n";
 	}
 	
 	print "\n" if @$metaData;
@@ -913,7 +949,7 @@ sub field {
 	elsif ($typeName eq "SFString")
 	{
 		$field -> {value}
-		? print "\"", $field -> {value}, "\""
+		? print "\"", escape ($field -> {value}), "\""
 		: print "\"\"";
 	}
 	elsif ($typeName eq "MFBool")
@@ -988,7 +1024,7 @@ sub MFString {
 		}
 		else
 		{
-			print "[ \"", $value , "\" ]";
+			print "[ \"", escape ($value) , "\" ]";
 		}
 	}
 	else

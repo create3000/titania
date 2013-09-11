@@ -137,6 +137,35 @@ golden_x3d (basic::ifilestream && istream)
 
 static
 basic::ifilestream
+golden_text (basic::ifilestream && istream)
+{
+	std::string X3D_XML = "<X3D ";
+
+	// Save current state of stream.
+
+	auto state = istream .rdstate ();
+	auto pos   = istream .tellg ();
+
+	// Read indentifer.
+
+	char   data [X3D_XML .size ()];
+	istream .read (data, X3D_XML .size ());
+
+	// Reset stream.
+
+	istream .clear (state);
+	istream .seekg (pos - istream .tellg (), std::ios_base::cur);
+
+	// Test
+	
+	if (std::string (data, istream .gcount ()) == "<X3D ")
+		return golden_x3d (std::move (istream));
+
+	throw false;
+}
+
+static
+basic::ifilestream
 golden_image (const basic::uri & uri)
 {
 	auto locale = std::locale::global (std::locale::classic ());
@@ -221,12 +250,21 @@ golden_gate (const basic::uri & uri, basic::ifilestream && istream)
 	try
 	{
 		//__LOG__ << istream .response_headers () .at ("Content-Type") << " : " << uri << std::endl;
+	
+		if (istream .response_headers () .at ("Content-Type") == "model/vrml")
+			return std::move (istream);
+
+		if (istream .response_headers () .at ("Content-Type") == "model/x3d+vrml")
+			return std::move (istream);
 
 		if (istream .response_headers () .at ("Content-Type") == "model/x3d+xml")
 			return golden_x3d (std::move (istream));
 
 		if (istream .response_headers () .at ("Content-Type") == "application/xml")
 			return golden_x3d (std::move (istream));
+
+		if (istream .response_headers () .at ("Content-Type") == "text/plain")
+			return golden_text (std::move (istream));
 
 		if (Gio::content_type_is_a (istream .response_headers () .at ("Content-Type"), "image/*"))
 			return golden_image (uri);

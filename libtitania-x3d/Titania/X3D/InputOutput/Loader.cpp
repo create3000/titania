@@ -100,7 +100,9 @@ throw (Error <INVALID_X3D>,
 {
 	X3DSFNode <Scene> scene = getBrowser () -> createScene ();
 
-	scene -> fromStream (worldURL, istream);
+	basic::ifilestream goldenistream = golden_gate ("<stream>", std::move (istream));
+
+	scene -> fromStream (worldURL, goldenistream);
 
 	scene -> realize ();
 
@@ -159,9 +161,9 @@ throw (Error <INVALID_URL>,
 		{
 			basic::uri uri = URL .str ();
 
-			basic::ifilestream istream = golden_gate (URL .str (), loadStream (uri));
+			basic::ifilestream goldenistream = golden_gate (URL .str (), loadStream (uri));
 
-			scene -> fromStream (worldURL, istream);
+			scene -> fromStream (worldURL, goldenistream);
 
 			return;
 		}
