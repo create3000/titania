@@ -61,6 +61,8 @@ class GeoViewpoint :
 {
 public:
 
+	///  @name Construction
+
 	GeoViewpoint (X3DExecutionContext* const);
 
 	virtual
@@ -141,9 +143,17 @@ public:
 	speedFactor () const
 	{ return *fields .speedFactor; }
 
+	///  @name Member access
+
 	virtual
 	Vector3f
 	getPosition () const;
+
+	virtual
+	Vector3f
+	getScreenScale (float) const final;
+
+	///  @name Operations
 
 	virtual
 	void
@@ -156,8 +166,12 @@ public:
 
 private:
 
+	///  @name Member access
+
 	Vector3f
-	getLookAtPositionOffset (Box3f);
+	getLookAtPositionOffset (Box3f) const;
+
+	///  @name Members
 
 	struct Fields
 	{

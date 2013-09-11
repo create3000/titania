@@ -22,12 +22,12 @@ PROTO Delay [
     eventIn  SFTime set_startTime
     eventIn  SFTime set_stopTime
     eventIn  SFBool set_isActive
-    eventOut SFBool isActive IS isActive
     eventOut SFTime exitTime IS exitTime
     field    SFNode timeSensor DEF TimeSensor TimeSensor {
       enabled IS enabled
       loop TRUE
       stopTime 1
+      isActive IS isActive
     }
     field    SFNode fields DEF Fields Fields {
       cycleInterval IS cycleInterval
@@ -44,18 +44,12 @@ function initialize ()
 
 function set_startTime (value, time)
 {
-	if (!isActive)
-		isActive = TRUE;
-
 	timeSensor .startTime = time;
 	timeSensor .stopTime  = time + fields .cycleInterval;
 }
 
 function set_stopTime (value, time)
 {
-	if (isActive)
-		isActive = FALSE;
-
 	timeSensor .startTime = 0;
 	timeSensor .stopTime  = time;
 }
@@ -63,19 +57,10 @@ function set_stopTime (value, time)
 function set_isActive (value, time)
 {
 	if (!value)
-	{
-		if (isActive)
-		{
-			isActive = FALSE;
-
-			if (timeSensor.enabled)
-				exitTime = time;
-		}
-	}
+		exitTime = time;
 }
 "
     directOutput TRUE
-    mustEvaluate TRUE
   }
 
   ROUTE TimeSensor.isActive TO Delay.set_isActive

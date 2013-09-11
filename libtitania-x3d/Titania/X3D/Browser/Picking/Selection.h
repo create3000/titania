@@ -48,76 +48,57 @@
  *
  ******************************************************************************/
 
-#include "Selection.h"
+#ifndef __TITANIA_X3D_BROWSER_PICKING_SELECTION_H__
+#define __TITANIA_X3D_BROWSER_PICKING_SELECTION_H__
 
-#include "../Browser/X3DBrowser.h"
-#include "../Execution/X3DExecutionContext.h"
-
-#include "../Components/Grouping/Transform.h"
+#include "../../Components/Core/X3DNode.h"
 
 namespace titania {
 namespace X3D {
 
-Selection::Fields::Fields () :
-	children ()
-{ }
-
-Selection::Selection (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	     fields ()
+class Selection :
+	virtual public X3DBaseNode
 {
-	setComponent ("Browser");
-	setTypeName ("Selection");
+public:
 
-	addChildren (fields .children);
-}
+	Selection (X3DExecutionContext* const);
 
-X3DBaseNode*
-Selection::create (X3DExecutionContext* const executionContext) const
-{
-	return new Selection (executionContext);
-}
+	virtual
+	X3DBaseNode*
+	create (X3DExecutionContext* const) const final;
 
-void
-Selection::addChild (const SFNode & child)
-{
-	if (not child)
-		return;
+	void
+	addChild (const SFNode &);
 
-	fields .children .emplace_back (child);
+	void
+	removeChild (const SFNode &);
 
-	child -> addHandle ();
-}
+	const MFNode &
+	children () const
+	{ return fields .children; }
 
-void
-Selection::removeChild (const SFNode & child)
-{
-	fields .children .erase (std::remove (fields .children .begin (),
-	                                      fields .children .end (),
-	                                      child),
-	                         fields .children .end ());
+	void
+	clear ();
 
-	// Handle
+	virtual
+	void
+	dispose () final;
 
-	child -> removeHandle ();
-}
 
-void
-Selection::clear ()
-{
-	for (const auto & child : children ())
-		child -> removeHandle ();
+private:
 
-	fields .children .clear ();
-}
+	struct Fields
+	{
+		Fields ();
 
-void
-Selection::dispose ()
-{
-	fields .children .dispose ();
+		MFNode children;
+	};
 
-	X3DBaseNode::dispose ();
-}
+	Fields fields;
+
+};
 
 } // X3D
 } // titania
+
+#endif

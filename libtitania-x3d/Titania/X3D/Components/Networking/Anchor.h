@@ -70,14 +70,6 @@ public:
 
 	///  @name Fields
 
-	MFString &
-	parameter ()
-	{ return *fields .parameter; }
-
-	const MFString &
-	parameter () const
-	{ return *fields .parameter; }
-
 	SFString &
 	description ()
 	{ return *fields .description; }
@@ -86,9 +78,20 @@ public:
 	description () const
 	{ return *fields .description; }
 
+	MFString &
+	parameter ()
+	{ return *fields .parameter; }
+
+	const MFString &
+	parameter () const
+	{ return *fields .parameter; }
+
 	virtual
 	void
 	requestImmediateLoad ();
+
+	void
+	set_over (bool);
 
 	void
 	set_active (bool);
@@ -111,11 +114,13 @@ private:
 	{
 		Fields ();
 
-		MFString* const parameter;
 		SFString* const description;
+		MFString* const parameter;
 	};
 
 	Fields fields;
+
+	bool   isOver;
 
 };
 

@@ -62,22 +62,34 @@ class PickableGroup :
 {
 public:
 
+	///  @name Construction
+
 	PickableGroup (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const final;
 
+	///  @name Operations
+
 	virtual
 	void
-	dispose ();
+	traverse (TraverseType) final;
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final;
 
 
 private:
 
+	///  @name Construction
+
 	virtual
 	void
-	initialize ();
+	initialize () final;
 
 };
 

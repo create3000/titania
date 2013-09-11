@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -56,11 +56,11 @@ namespace titania {
 namespace X3D {
 
 CylinderSensor::Fields::Fields () :
-	axisRotation (new SFRotation (0, 1, 0, 0)),
-	diskAngle (new SFFloat (M_PI / 12)),
-	minAngle (new SFFloat ()),
-	maxAngle (new SFFloat (-1)),
-	offset (new SFFloat ()),
+	    axisRotation (new SFRotation (0, 1, 0, 0)),
+	       diskAngle (new SFFloat (M_PI / 12)),
+	        minAngle (new SFFloat ()),
+	        maxAngle (new SFFloat (-1)),
+	          offset (new SFFloat ()),
 	rotation_changed (new SFRotation ())
 { }
 

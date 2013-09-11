@@ -64,13 +64,13 @@ PickableGroup::PickableGroup (X3DExecutionContext* const executionContext) :
 	setTypeName ("PickableGroup");
 
 	addField (inputOutput,    "metadata",       metadata ());
+	addField (inputOutput,    "objectType",     objectType ());
+	addField (inputOutput,    "pickable",       pickable ());
 	addField (initializeOnly, "bboxSize",       bboxSize ());
 	addField (initializeOnly, "bboxCenter",     bboxCenter ());
 	addField (inputOnly,      "addChildren",    addChildren ());
 	addField (inputOnly,      "removeChildren", removeChildren ());
 	addField (inputOutput,    "children",       children ());
-	addField (inputOutput,    "objectType",     objectType ());
-	addField (inputOutput,    "pickable",       pickable ());
 }
 
 X3DBaseNode*
@@ -84,6 +84,12 @@ PickableGroup::initialize ()
 {
 	X3DGroupingNode::initialize ();
 	X3DPickableObject::initialize ();
+}
+
+void
+PickableGroup::traverse (TraverseType type)
+{
+	X3DGroupingNode::traverse (type);
 }
 
 void

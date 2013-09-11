@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_COMPONENTS_RENDERING_X3DGEOMETRY_NODE_H__
 #define __TITANIA_X3D_COMPONENTS_RENDERING_X3DGEOMETRY_NODE_H__
 
-#include "../../Browser/IntersectionPtr.h"
+#include "../../Browser/Picking/IntersectionPtr.h"
 #include "../../Types/Geometry.h"
 #include "../Core/X3DNode.h"
 #include "../Texturing/TextureCoordinateGenerator.h"

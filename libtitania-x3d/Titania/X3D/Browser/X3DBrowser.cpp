@@ -48,7 +48,7 @@ X3DBrowser::X3DBrowser () :
 	  supportedProfiles (this, supportedComponents),
 	          userAgent (),
 	        description (),                          // SFString  [in,out] description ""
-	              scene (),                          // SFNode    [in,out] scene       NULL
+	              scene (createScene ()),            // SFNode    [in,out] scene       NULL
 	              world (),                          // SFNode    [in,out] world       NULL
 	           urlError ()
 {
@@ -78,20 +78,20 @@ X3DBrowser::initialize ()
 	
 	// Initialize scene
 
-	replaceWorld (scene = createScene ());
+	replaceWorld (scene);
 	
-	try
-	{
-		if (browserOptions -> splashScreen ())
-			replaceWorld (createX3DFromURL ({ get_page ("about/splash.wrl") .str () }));
-	}
-	catch (const X3DError & error)
-	{
-		std::clog << error .what () << std::endl;
-	}
-
 	if (glXGetCurrentContext ())
 	{
+		try
+		{
+			if (browserOptions -> splashScreen ())
+				replaceWorld (createX3DFromURL ({ get_page ("about/splash.wrl") .str () }));
+		}
+		catch (const X3DError & error)
+		{
+			std::clog << error .what () << std::endl;
+		}
+
 		world -> bind ();
 		update ();
 	}

@@ -2318,6 +2318,7 @@
     <None Include="Tests\Shape\FillProperties.wrl" />
     <None Include="Tests\CADGeometry\CADLayer.wrl" />
     <None Include="Tests\Basic\Components.wrl" />
+    <None Include="Tests\Layout\ScreenGroup.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
@@ -2442,6 +2443,7 @@
     <Folder Include="Tests\PROTO\events\" />
     <Folder Include="Tests\Texturing\images\hellpit\" />
     <Folder Include="Tests\KeyDeviceSensor\" />
+    <Folder Include="Tests\Layout\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Navigation\Rotor.wrl" />

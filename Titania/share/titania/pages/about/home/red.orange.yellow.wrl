@@ -7,22 +7,22 @@ EXTERNPROTO Rotor [
   inputOutput SFBool     loop
   outputOnly  SFRotation value_changed
 ]
-"../../Library/Rotor.wrl"
+"../../../library/Rotor.wrl"
 
 EXTERNPROTO Red [
   inputOutput SFFloat transparency
 ]
-"../../Library/Colors.wrl"
+"../../../library/Colors.wrl"
 
 EXTERNPROTO Orange [
   inputOutput SFFloat transparency
 ]
-"../../Library/Colors.wrl"
+"../../../library/Colors.wrl"
 
 EXTERNPROTO Yellow [
   inputOutput SFFloat transparency
 ]
-"../../Library/Colors.wrl"
+"../../../library/Colors.wrl"
 
 DEF NavigationInfo NavigationInfo {
   headlight FALSE

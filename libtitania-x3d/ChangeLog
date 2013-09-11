@@ -1,5 +1,80 @@
 2013-09-11  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Hit.h:
+	* Hit.cpp:
+	* HitPtr.h:
+	* Parser.cpp:
+	* HitArray.h:
+	* Logo.wrl:
+	* Selection.h:
+	* HitArray.cpp:
+	* Colors.wrl:
+	* Hit.h:
+	* Selection.cpp:
+	* X3DBrowser.cpp:
+	* Notification.h:
+	* Intersection.h:
+	* Hit.cpp:
+	* splash.wrl:
+	* Notification.cpp:
+	* Logo.wrl:
+	* HitPtr.h:
+	* IntersectionPtr.h:
+	* Colors.wrl:
+	* Layout.h:
+	* HitArray.h:
+	* Notification.wrl:
+	* TransformHandle.cpp:
+	* LOD.h:
+	* X3DBrowserContext.h:
+	* Selection.h:
+	* HitArray.cpp:
+	* Layout.cpp:
+	* GoldenGate.cpp:
+	* LOD.cpp:
+	* Layer.cpp:
+	* X3DBrowserContext.cpp:
+	* Selection.cpp:
+	* Anchor.h:
+	* Intersection.h:
+	* ScreenGroup.h:
+	* LayoutLayer.h:
+	* LayoutGroup.h:
+	* RoundedRectangle2D.wrl:
+	* Anchor.cpp:
+	* X3DShapeNode.cpp:
+	* ScreenGroup.cpp:
+	* LayoutGroup.cpp:
+	* IntersectionPtr.h:
+	* X3DLayoutNode.h:
+	* LayoutLayer.cpp:
+	* Viewpoint.h:
+	* PickableGroup.h:
+	* X3DLayerNode.h:
+	* Viewpoint.cpp:
+	* ScreenFontStyle.h:
+	* PickableGroup.cpp:
+	* GeoViewpoint.h:
+	* X3DLayerNode.cpp:
+	* GeoViewpoint.cpp:
+	* OrthoViewpoint.h:
+	* X3DGeometryNode.h:
+	* X3DViewpointNode.h:
+	* OrthoViewpoint.cpp:
+	* RenderingProperties.cpp:
+	* PlaneSensor.cpp:
+	* TouchSensor.cpp:
+	* SphereSensor.cpp:
+	* CylinderSensor.cpp:
+	* X3DDragSensorNode.cpp:
+	* X3DTouchSensorNode.cpp:
+	* X3DPointingDeviceSensorNode.h:
+	* X3DPointingDeviceSensorNode.cpp: 
+
+2013-09-11  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Loader.cpp:
 	* GoldenGate.cpp: 
 

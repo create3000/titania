@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,20 +48,39 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_HIT_ARRAY_H__
-#define __TITANIA_X3D_BROWSER_HIT_ARRAY_H__
+#ifndef __TITANIA_X3D_BROWSER_PICKING_HIT_H__
+#define __TITANIA_X3D_BROWSER_PICKING_HIT_H__
 
-#include "HitPtr.h"
-#include <deque>
+#include "../../Basic/NodeSet.h"
+#include "../../Fields.h"
+#include "../../Types/Geometry.h"
+#include "../Picking/IntersectionPtr.h"
 
 namespace titania {
 namespace X3D {
 
-typedef std::deque <HitPtr> HitArray;
+class Hit
+{
+public:
+
+	Hit (const Matrix4f &,
+	     const Line3f &,
+	     const IntersectionPtr &,
+	     const NodeSet &,
+	     X3DBaseNode* const);
+
+	const Matrix4f     transformationMatrix;
+	const Line3f       ray;
+	const Vector3f     texCoord;
+	const Vector3f     normal;
+	const Vector3f     point;
+	const float        distance;
+	const NodeSet      sensors;
+	const X3DBaseNode* node;
+
+};
 
 } // X3D
 } // titania
-
-extern template class std::deque <titania::X3D::HitPtr>;
 
 #endif

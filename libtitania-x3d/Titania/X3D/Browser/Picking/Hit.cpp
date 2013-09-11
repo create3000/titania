@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,18 +48,27 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_INTERSECTION_PTR_H__
-#define __TITANIA_X3D_BROWSER_INTERSECTION_PTR_H__
+#include "Hit.h"
 
-#include "../Browser/Intersection.h"
-#include <memory>
+#include "../../Rendering/Matrix.h"
 
 namespace titania {
 namespace X3D {
 
-typedef std::shared_ptr <Intersection> IntersectionPtr;
+Hit::Hit (const Matrix4f & transformationMatrix,
+          const Line3f & hitRay,
+          const IntersectionPtr & intersection,
+          const NodeSet & sensors,
+          X3DBaseNode* const node) :
+	transformationMatrix (transformationMatrix),
+	                 ray (hitRay),
+	            texCoord (intersection -> hitTexCoord),
+	              normal (intersection -> hitNormal),
+	               point (intersection -> hitPoint),
+	            distance (std::abs (point .z ())),
+	             sensors (sensors),
+	                node (node)
+{ }
 
 } // X3D
 } // titania
-
-#endif

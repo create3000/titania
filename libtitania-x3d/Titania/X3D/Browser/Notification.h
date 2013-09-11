@@ -48,35 +48,71 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_HIT_H__
-#define __TITANIA_X3D_BROWSER_HIT_H__
+#ifndef __TITANIA_X3D_BROWSER_NOTIFICATION_H__
+#define __TITANIA_X3D_BROWSER_NOTIFICATION_H__
 
-#include "../Basic/NodeSet.h"
-#include "../Browser/IntersectionPtr.h"
-#include "../Fields.h"
-#include "../Types/Geometry.h"
+#include "../Components/Core/X3DNode.h"
+#include "../Execution/World.h"
 
 namespace titania {
 namespace X3D {
 
-class Hit
+class Notification :
+	virtual public X3DBaseNode
 {
 public:
 
-	Hit (const Matrix4f &,
-	     const Line3f &,
-	     const IntersectionPtr &,
-	     const NodeSet &,
-	     X3DBaseNode* const);
+	///  @name Construction
 
-	const Matrix4f     transformationMatrix;
-	const Line3f       ray;
-	const Vector3f     texCoord;
-	const Vector3f     normal;
-	const Vector3f     point;
-	const float        distance;
-	const NodeSet      sensors;
-	const X3DBaseNode* node;
+	Notification (X3DExecutionContext* const);
+
+	virtual
+	X3DBaseNode*
+	create (X3DExecutionContext* const) const final;
+
+	///  @name Fields
+	
+	SFString &
+	string ()
+	{ return *fields .string; }
+
+	const SFString &
+	string () const
+	{ return *fields .string; }
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final;
+
+
+private:
+
+	virtual
+	void
+	initialize () final;
+	
+	void
+	set_string ();
+
+	void
+	set_active (const bool &);
+
+	void
+	display ();
+
+	struct Fields
+	{
+		Fields ();
+		
+		SFString* const string;
+	};
+
+	Fields fields;
+
+	X3DSFNode <World> world;
+	X3DSFNode <Scene> scene;
 
 };
 

@@ -2,7 +2,7 @@
 
 META "title" "TouchSensor"
 
-Transform {
+DEF _0 Transform {
   translation 2 4 54
   rotation 0.0961869 0.964997 0.243986 0.601776
   scale 0.234 234 12.23
@@ -17,7 +17,9 @@ Transform {
     }
     Group {
       children [
-        DEF Touch2 TouchSensor { }
+        DEF Touch2 TouchSensor {
+          description "Box"
+        }
         Transform {
           translation 0 1 0
           children Shape {
@@ -56,7 +58,9 @@ Transform {
     }
     Group {
       children [
-        DEF Touch1 TouchSensor { }
+        DEF Touch1 TouchSensor {
+          description "Sphere"
+        }
         Transform {
           translation 0 0 4
           children [
@@ -111,6 +115,8 @@ Transform {
       }
     }
     DEF Cursor Transform {
+      translation 1 -0.972768 -0.174012
+      rotation 0 1 0 1.5708
       scale 0.1 0.1 0.1
       children Shape {
         appearance Appearance {
@@ -126,15 +132,15 @@ Transform {
 }
 
 DEF Debug Script {
-  eventIn SFVec3f set_hitNormal
-  eventIn SFVec3f set_hitPoint1
-  eventIn SFBool  set_isOver1
-  eventIn SFBool  set_isActive1
-  eventIn SFTime  set_touchTime1
-  eventIn SFVec3f set_hitPoint2
-  eventIn SFBool  set_isOver2
-  eventIn SFBool  set_isActive2
-  eventIn SFTime  set_touchTime2
+  eventIn  SFVec3f    set_hitNormal
+  eventIn  SFVec3f    set_hitPoint1
+  eventIn  SFBool     set_isOver1
+  eventIn  SFBool     set_isActive1
+  eventIn  SFTime     set_touchTime1
+  eventIn  SFVec3f    set_hitPoint2
+  eventIn  SFBool     set_isOver2
+  eventIn  SFBool     set_isActive2
+  eventIn  SFTime     set_touchTime2
   eventOut SFRotation rotation_changed
 
   url "vrmlscript:

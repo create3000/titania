@@ -36,14 +36,15 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/Geometry3D/BoxOptions.cpp \
 	Titania/X3D/Browser/Geometry3D/QuadSphereOptions.cpp \
 	Titania/X3D/Browser/Geometry3D/X3DSphereOptionNode.cpp \
-	Titania/X3D/Browser/Hit.cpp \
-	Titania/X3D/Browser/HitArray.cpp \
+	Titania/X3D/Browser/Notification.cpp \
+	Titania/X3D/Browser/Picking/Hit.cpp \
+	Titania/X3D/Browser/Picking/HitArray.cpp \
+	Titania/X3D/Browser/Picking/Selection.cpp \
 	Titania/X3D/Browser/Properties/BrowserOptions.cpp \
 	Titania/X3D/Browser/Properties/BrowserProperties.cpp \
 	Titania/X3D/Browser/Properties/MotionBlur.cpp \
 	Titania/X3D/Browser/Properties/RenderingProperties.cpp \
 	Titania/X3D/Browser/Properties/X3DOptionNode.cpp \
-	Titania/X3D/Browser/Selection.cpp \
 	Titania/X3D/Browser/Viewer/ExamineViewer.cpp \
 	Titania/X3D/Browser/Viewer/FlyViewer.cpp \
 	Titania/X3D/Browser/Viewer/NoneViewer.cpp \

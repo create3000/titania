@@ -48,76 +48,25 @@
  *
  ******************************************************************************/
 
-#include "X3DPointingDeviceSensorNode.h"
+#ifndef __TITANIA_X3D_BROWSER_PICKING_INTERSECTION_H__
+#define __TITANIA_X3D_BROWSER_PICKING_INTERSECTION_H__
 
-#include "../../Browser/X3DBrowser.h"
+#include "../../Types/Numbers.h"
 
 namespace titania {
 namespace X3D {
 
-X3DPointingDeviceSensorNode::Fields::Fields () :
-	description (new SFString ()),
-	     isOver (new SFBool ())
-{ }
-
-X3DPointingDeviceSensorNode::X3DPointingDeviceSensorNode () :
-	  X3DSensorNode (),
-	         fields (),
-	modelViewMatrix ()
+class Intersection
 {
-	addNodeType (X3DConstants::X3DPointingDeviceSensorNode);
-}
+public:
 
-void
-X3DPointingDeviceSensorNode::initialize ()
-{
-	X3DSensorNode::initialize ();
+	Vector3f hitTexCoord;
+	Vector3f hitNormal;
+	Vector3f hitPoint;
 
-	enabled () .addInterest (this, &X3DPointingDeviceSensorNode::set_enabled);
-}
-
-void
-X3DPointingDeviceSensorNode::set_enabled ()
-{
-	if (not enabled ())
-	{
-		if (isActive ())
-			isActive () = false;
-
-		if (isOver ())
-			isOver () = false;
-	}
-}
-
-void
-X3DPointingDeviceSensorNode::set_over (const HitPtr &, bool value)
-{
-	if (value not_eq isOver ())
-	{
-		isOver () = value;
-		
-		if (isOver ())
-			getBrowser () -> getNotification () -> string () = description ();
-	}
-}
-
-void
-X3DPointingDeviceSensorNode::set_active (const HitPtr &, bool value)
-{
-	if (value not_eq isActive ())
-		isActive () = value;
-}
-
-void
-X3DPointingDeviceSensorNode::push ()
-{
-	if (enabled ())
-	{
-		getBrowser () -> getSensors () .back () .insert (this);
-
-		modelViewMatrix = ModelViewMatrix4f ();
-	}
-}
+};
 
 } // X3D
 } // titania
+
+#endif

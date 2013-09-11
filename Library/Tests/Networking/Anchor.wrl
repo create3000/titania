@@ -2,12 +2,13 @@
 
 META "title" "Anchor"
 
-Viewpoint {
+DEF _0 Viewpoint {
   description "Home"
 }
 
-Anchor {
+DEF _1 Anchor {
   url [ "", "this-world-does-not-exists.wrl", "Anchor/Viewpoint.wrl" ]
+  description "Click box to load new world!"
   children Transform {
     children Shape {
       appearance Appearance {

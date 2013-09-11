@@ -115,7 +115,17 @@ LOD::getBBox ()
 }
 
 size_t
-LOD::getLevel (TraverseType type)
+LOD::getLevel (TraverseType type) const
+{
+	float distance = getDistance (type);
+
+	auto iter = std::upper_bound (range () .cbegin (), range () .cend (), distance);
+
+	return iter - range () .cbegin ();
+}
+
+float
+LOD::getDistance (TraverseType type) const
 {
 	Matrix4f matrix = ModelViewMatrix4f ();
 
@@ -124,11 +134,7 @@ LOD::getLevel (TraverseType type)
 
 	matrix .translate (center ());
 
-	float distance = math::abs (matrix .translation ());
-
-	auto iter = std::upper_bound (range () .cbegin (), range () .cend (), distance);
-
-	return iter - range () .cbegin ();
+	return math::abs (matrix .translation ());
 }
 
 void

@@ -61,6 +61,8 @@ class LayoutGroup :
 {
 public:
 
+	///  @name Construction
+
 	LayoutGroup (X3DExecutionContext* const);
 
 	virtual
@@ -70,14 +72,6 @@ public:
 	///  @name Fields
 
 	SFNode &
-	layout ()
-	{ return *fields .layout; }
-
-	const SFNode &
-	layout () const
-	{ return *fields .layout; }
-
-	SFNode &
 	viewport ()
 	{ return *fields .viewport; }
 
@@ -85,15 +79,25 @@ public:
 	viewport () const
 	{ return *fields .viewport; }
 
+	SFNode &
+	layout ()
+	{ return *fields .layout; }
+
+	const SFNode &
+	layout () const
+	{ return *fields .layout; }
+
 
 private:
+
+	///  @name Members
 
 	struct Fields
 	{
 		Fields ();
 
-		SFNode* const layout;
 		SFNode* const viewport;
+		SFNode* const layout;
 	};
 
 	Fields fields;

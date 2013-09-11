@@ -817,10 +817,10 @@ Parser::proto ()
 						throw Error <INVALID_X3D> ("Expected a '{' at the beginning of PROTO body.");
 				}
 				else
-					throw Error <INVALID_X3D> ("Expected a ']' at the end of PROTO head.");
+					throw Error <INVALID_X3D> ("Expected a ']' at the end of PROTO interface declaration.");
 			}
 			else
-				throw Error <INVALID_X3D> ("Expected a '[' at the beginning of PROTO head.");
+				throw Error <INVALID_X3D> ("Expected a '[' at the beginning of PROTO interface declaration.");
 		}
 		else
 			throw Error <INVALID_X3D> ("Invalid PROTO definition name.");
@@ -1042,10 +1042,10 @@ Parser::externproto ()
 						throw Error <INVALID_X3D> ("Expected a URL list after EXTERNPROTO '" + _nodeTypeId + "'.");
 				}
 				else
-					throw Error <INVALID_X3D> ("Expected a ']' at the end of EXTERNPROTO head.");
+					throw Error <INVALID_X3D> ("Expected a ']' at the end of EXTERNPROTO interface declaration.");
 			}
 			else
-				throw Error <INVALID_X3D> ("Expected a '[' at the beginning of EXTERNPROTO head.");
+				throw Error <INVALID_X3D> ("Expected a '[' at the beginning of EXTERNPROTO interface declaration.");
 		}
 		else
 			throw Error <INVALID_X3D> ("Invalid EXTERNPROTO definition name.");
@@ -1408,7 +1408,7 @@ Parser::scriptBodyElement (X3DBaseNode* const _basicNode)
 								}
 								catch (const Error <INVALID_NAME> &)
 								{
-									throw Error <INVALID_X3D> ("No such event or field '" + _isId + "' inside PROTO " + getExecutionContext () -> getName () + " head.");
+									throw Error <INVALID_X3D> ("No such event or field '" + _isId + "' inside PROTO " + getExecutionContext () -> getName () + " interface declaration.");
 								}
 
 								const X3DFieldDefinition* _supportedField = getBrowser () -> getFieldType (_fieldType);

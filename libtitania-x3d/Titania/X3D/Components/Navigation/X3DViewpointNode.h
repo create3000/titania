@@ -68,6 +68,8 @@ class X3DViewpointNode :
 {
 public:
 
+	///  @name Fields
+
 	SFRotation &
 	orientation ()
 	{ return *fields .orientation; }
@@ -116,6 +118,8 @@ public:
 	centerOfRotationOffset () const
 	{ return fields .centerOfRotationOffset; }
 
+	///  @name Member access
+
 	virtual
 	Vector3f
 	getPosition () const = 0;
@@ -143,6 +147,12 @@ public:
 	const Matrix4f &
 	getParentMatrix () const
 	{ return parentMatrix; }
+
+	virtual
+	Vector3f
+	getScreenScale (float) const = 0;
+
+	///  @name Operations
 
 	void
 	resetUserOffsets ();
@@ -174,6 +184,8 @@ public:
 	void
 	traverse (TraverseType) override;
 
+	///  @name Destruction
+
 	virtual
 	void
 	dispose () override;
@@ -181,7 +193,11 @@ public:
 
 protected:
 
+	///  @name Construction
+
 	X3DViewpointNode ();
+
+	///  @name Member access
 
 	void
 	setParentMatrix (const Matrix4f & value)
@@ -189,6 +205,8 @@ protected:
 
 
 private:
+
+	///  @name Private fields
 
 	SFVec3f &
 	scaleOffset ()
@@ -206,16 +224,20 @@ private:
 	scaleOrientationOffset () const
 	{ return fields .scaleOrientationOffset; }
 
+	///  @name Construction
+
 	virtual
 	void
 	initialize () override;
+
+	///  @name Operations
 
 	void
 	getRelativeTransformation (X3DViewpointNode*, Vector3f &, Rotation4f &, Vector3f &, Rotation4f &) const;
 
 	virtual
 	Vector3f
-	getLookAtPositionOffset (Box3f) = 0;
+	getLookAtPositionOffset (Box3f) const = 0;
 
 	virtual
 	void
@@ -236,6 +258,8 @@ private:
 
 	void
 	collect ();
+
+	///  @name Members
 
 	struct Fields
 	{

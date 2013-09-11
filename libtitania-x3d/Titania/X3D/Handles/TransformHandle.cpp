@@ -85,8 +85,10 @@ TransformHandle::initialize ()
 
 		static_cast <SFNode*> (field) -> setValue (transform .getValue ());
 	}
-	catch (const X3DError &)
+	catch (const X3DError & error)
 	{
+		std::clog << error .what () << std::endl;
+
 		scene = getBrowser () -> createScene ();
 	}
 }

@@ -48,30 +48,125 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_HIT_PTR_H__
-#define __TITANIA_X3D_BROWSER_HIT_PTR_H__
+#include "Notification.h"
 
-#include "../Browser/Hit.h"
-#include <memory>
+#include "../Bits/config.h"
+#include "../Execution/X3DExecutionContext.h"
+#include "../Browser/X3DBrowser.h"
 
 namespace titania {
 namespace X3D {
 
-typedef std::shared_ptr <Hit> HitPtr;
+Notification::Fields::Fields () :
+	string (new SFString ())
+{ }
 
-class HitComp
+Notification::Notification (X3DExecutionContext* const executionContext) :
+	X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	     fields (),
+	      world (),
+	      scene ()
 {
-public:
+	setComponent ("Browser");
+	setTypeName ("Notification");
+	
+	addField (inputOutput, "string", string ());
+	
+	addChildren (world, scene);
+}
 
-	bool
-	operator () (const HitPtr & lhs, const HitPtr & rhs) const
+X3DBaseNode*
+Notification::create (X3DExecutionContext* const executionContext) const
+{
+	return new Notification (executionContext);
+}
+
+void
+Notification::initialize ()
+{
+	X3DBaseNode::initialize ();
+
+	try
 	{
-		return lhs -> distance < rhs -> distance;
-	}
+		scene = getBrowser () -> createX3DFromURL ({ get_handle ("Notification.wrl") .str () });
 
-};
+		try
+		{
+			auto notification = scene -> getNamedNode ("Notification");
+
+			SFBool & field = *static_cast <SFBool*> (notification -> getField ("isActive"));
+
+			field .addInterest (this, &Notification::set_active);
+		}
+		catch (const X3DError &)
+		{ }
+	}
+	catch (const X3DError & error)
+	{
+		std::clog << error .what () << std::endl;
+
+		scene = getBrowser () -> createScene ();
+	}
+	
+	world = new World (scene);
+	world -> setup ();
+	world -> bind ();
+
+	string () .addInterest (this, &Notification::set_string);
+}
+	
+void
+Notification::set_string ()
+{
+	if (string () .length ())
+	{
+		try
+		{
+			auto notification = scene -> getNamedNode ("Notification");
+
+			try
+			{
+				SFString & field = *static_cast <SFString*> (notification -> getField ("set_string"));
+
+				field = string ();
+			}
+			catch (const X3DError &)
+			{ }
+		}
+		catch (const X3DError &)
+		{
+			// catch error from getNamedNode
+		}
+	}
+}
+
+void
+Notification::set_active (const bool & value)
+{
+	if (value)
+	{
+		getBrowser () -> displayed () .addInterest (this, &Notification::display);
+	}
+	else
+	{
+		getBrowser () -> displayed () .removeInterest (this, &Notification::display);
+	}
+}
+
+void
+Notification::display ()
+{
+	world -> traverse (TraverseType::COLLECT);
+}
+
+void
+Notification::dispose ()
+{
+	world .dispose ();
+	scene .dispose ();
+
+	X3DBaseNode::dispose ();
+}
 
 } // X3D
 } // titania
-
-#endif

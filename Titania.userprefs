@@ -1,29 +1,33 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="debian/rules">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Browser/Notification.cpp">
     <Files>
       <File FileName="experimental/main.cpp" Line="217" Column="1" />
-      <File FileName="titania-info/main.cpp" Line="52" Column="4" />
-      <File FileName="libtitania-x3d/Titania/X3D/Miscellaneous/GoldenGate.cpp" Line="116" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/CADGeometry/QuadSet.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/CADGeometry/QuadSet.cpp" Line="70" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Parser/RegEx.cpp" Line="57" Column="42" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Properties/RenderingProperties.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-standard/Titania/OS/Popen2.cpp" Line="85" Column="3" />
-      <File FileName="libtitania-standard/Titania/OS/Popen2.h" Line="54" Column="19" />
-      <File FileName="debian/rules" Line="29" Column="14" />
+      <File FileName="libtitania-x3d/Titania/X3D/Parser/Parser.cpp" Line="1472" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/InputOutput/Loader.cpp" Line="103" Column="81" />
+      <File FileName="libtitania-stream/Titania/Stream/InputFileStream.h" Line="158" Column="35" />
+      <File FileName="libtitania-stream/Titania/Stream/InputFileStream.cpp" Line="221" Column="3" />
+      <File FileName="libtitania-x3d/Titania/X3D/Miscellaneous/GoldenGate.cpp" Line="124" Column="17" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="59" Column="27" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.h" Line="59" Column="4" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.cpp" Line="658" Column="14" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Notification.h" Line="99" Column="14" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Notification.cpp" Line="106" Column="2" />
+      <File FileName="libtitania-x3d/Titania/X3D/Handles/TransformHandle.h" Line="118" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Handles/TransformHandle.cpp" Line="198" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Properties/RenderingProperties.cpp" Line="303" Column="1" />
+      <File FileName="libtitania-x3d/share/titania/handles/Notification.wrl" Line="20" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="miscellaneous" expanded="True">
+            <Node name="logo" expanded="True" />
             <Node name="uncrustify-all" expanded="True" />
             <Node name="x3d2wrl" expanded="True" />
           </Node>
           <Node name="build" expanded="True">
-            <Node name="debian" expanded="True">
-              <Node name="rules" selected="True" />
-            </Node>
+            <Node name="debian" expanded="True" />
           </Node>
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
@@ -58,28 +62,22 @@
               <Node name="mime" expanded="True">
                 <Node name="model" expanded="True" />
               </Node>
-              <Node name="titania" expanded="True" />
+              <Node name="titania" expanded="True">
+                <Node name="handles" expanded="True" />
+              </Node>
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
                 <Node name="Base" expanded="True" />
                 <Node name="Basic" expanded="True" />
                 <Node name="Browser" expanded="True">
-                  <Node name="Devices" expanded="True" />
                   <Node name="Properties" expanded="True" />
+                  <Node name="Viewer" expanded="True" />
                 </Node>
                 <Node name="Components" expanded="True">
-                  <Node name="CADGeometry" expanded="True" />
-                  <Node name="Core" expanded="True" />
-                  <Node name="Followers" expanded="True" />
-                  <Node name="Geometry3D" expanded="True" />
-                  <Node name="Layering" expanded="True" />
-                  <Node name="Lighting" expanded="True" />
-                  <Node name="Networking" expanded="True" />
                   <Node name="Shape" expanded="True" />
-                  <Node name="Text" expanded="True" />
-                  <Node name="Texturing" expanded="True" />
                 </Node>
+                <Node name="Handles" expanded="True" />
                 <Node name="InputOutput" expanded="True" />
                 <Node name="Miscellaneous" expanded="True" />
                 <Node name="Parser" expanded="True" />
@@ -111,7 +109,7 @@
               </Node>
             </Node>
           </Node>
-          <Node name="x3dtidy" expanded="True" />
+          <Node name="x3dtidy" expanded="True" selected="True" />
         </State>
       </Pad>
       <Pad Id="ClassPad">

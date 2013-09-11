@@ -61,6 +61,8 @@ class LayoutLayer :
 {
 public:
 
+	///  @name Construction
+
 	LayoutLayer (X3DExecutionContext* const);
 
 	virtual
@@ -79,6 +81,8 @@ public:
 
 
 private:
+
+	///  @name Members
 
 	struct Fields
 	{

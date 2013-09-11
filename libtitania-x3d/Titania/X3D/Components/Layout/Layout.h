@@ -61,6 +61,8 @@ class Layout :
 {
 public:
 
+	///  @name Construction
+
 	Layout (X3DExecutionContext* const);
 
 	virtual
@@ -77,6 +79,14 @@ public:
 	align () const
 	{ return *fields .align; }
 
+	MFString &
+	offsetUnits ()
+	{ return *fields .offsetUnits; }
+
+	const MFString &
+	offsetUnits () const
+	{ return *fields .offsetUnits; }
+
 	MFFloat &
 	offset ()
 	{ return *fields .offset; }
@@ -86,28 +96,12 @@ public:
 	{ return *fields .offset; }
 
 	MFString &
-	offsetUnits ()
-	{ return *fields .offsetUnits; }
-
-	const MFString &
-	offsetUnits () const
-	{ return *fields .offsetUnits; }
-
-	MFString &
 	scaleMode ()
 	{ return *fields .scaleMode; }
 
 	const MFString &
 	scaleMode () const
 	{ return *fields .scaleMode; }
-
-	MFFloat &
-	size ()
-	{ return *fields .size; }
-
-	const MFFloat &
-	size () const
-	{ return *fields .size; }
 
 	MFString &
 	sizeUnits ()
@@ -117,19 +111,29 @@ public:
 	sizeUnits () const
 	{ return *fields .sizeUnits; }
 
+	MFFloat &
+	size ()
+	{ return *fields .size; }
+
+	const MFFloat &
+	size () const
+	{ return *fields .size; }
+
 
 private:
+
+	///  @name Members
 
 	struct Fields
 	{
 		Fields ();
 
 		MFString* const align;
-		MFFloat* const offset;
 		MFString* const offsetUnits;
+		MFFloat* const offset;
 		MFString* const scaleMode;
-		MFFloat* const size;
 		MFString* const sizeUnits;
+		MFFloat* const size;
 	};
 
 	Fields fields;

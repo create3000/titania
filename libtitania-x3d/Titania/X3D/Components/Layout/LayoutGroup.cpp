@@ -56,8 +56,8 @@ namespace titania {
 namespace X3D {
 
 LayoutGroup::Fields::Fields () :
-	layout (new SFNode ()),
-	viewport (new SFNode ())
+	viewport (new SFNode ()),
+	layout (new SFNode ())
 { }
 
 LayoutGroup::LayoutGroup (X3DExecutionContext* const executionContext) :
@@ -69,13 +69,13 @@ LayoutGroup::LayoutGroup (X3DExecutionContext* const executionContext) :
 	setTypeName ("LayoutGroup");
 
 	addField (inputOutput,    "metadata",       metadata ());
+	addField (inputOutput,    "viewport",       viewport ());
+	addField (inputOutput,    "layout",         layout ());
 	addField (initializeOnly, "bboxSize",       bboxSize ());
 	addField (initializeOnly, "bboxCenter",     bboxCenter ());
 	addField (inputOnly,      "addChildren",    addChildren ());
 	addField (inputOnly,      "removeChildren", removeChildren ());
 	addField (inputOutput,    "children",       children ());
-	addField (inputOutput,    "layout",         layout ());
-	addField (inputOutput,    "viewport",       viewport ());
 }
 
 X3DBaseNode*

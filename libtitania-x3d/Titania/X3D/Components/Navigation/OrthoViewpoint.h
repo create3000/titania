@@ -61,6 +61,8 @@ class OrthoViewpoint :
 {
 public:
 
+	///  @name Construction
+
 	OrthoViewpoint (X3DExecutionContext* const);
 
 	virtual
@@ -85,32 +87,44 @@ public:
 	fieldOfView () const
 	{ return *fields .fieldOfView; }
 
+	///  @name Member access
+
 	virtual
 	Vector3f
-	getPosition () const;
+	getPosition () const final;
+
+	virtual
+	Vector3f
+	getScreenScale (float) const final;
+
+	///  @name Operations
 
 	virtual
 	void
-	reshape (const float, const float);
+	reshape (const float, const float) final;
 
 
 private:
 
-	float
-	getMinimumX ();
+	///  @name Member access
 
 	float
-	getMinumumY ();
+	getMinimumX () const;
 
 	float
-	getMaximumX ();
+	getMinumumY () const;
 
 	float
-	getMaximumY ();
+	getMaximumX () const;
+
+	float
+	getMaximumY () const;
 
 	virtual
 	Vector3f
-	getLookAtPositionOffset (Box3f);
+	getLookAtPositionOffset (Box3f) const final;
+
+	///  @name Members
 
 	struct Fields
 	{

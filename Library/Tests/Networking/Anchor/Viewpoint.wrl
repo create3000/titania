@@ -1,10 +1,12 @@
 #VRML V2.0 utf8
 
 PROTO Button [
+  exposedField SFString description ""
   exposedField MFString url ""
 ]
 {
   Anchor {
+    description IS description
     url IS url
     children Transform {
       children Shape {
@@ -17,7 +19,7 @@ PROTO Button [
   }
 }
 
-Transform {
+DEF _0 Transform {
   translation 4 0 0
   rotation 0.267261 0.534522 0.801784 4
   scale 2 2 2
@@ -32,9 +34,11 @@ Transform {
       position -4 0 20
     }
     Button {
+      description "Change viewpoint!"
       url [ "#bah", "#Anchor" ]
     }
     Anchor {
+      description "Load textured cube!"
       url "Anchor.wrl"
       children Transform {
         translation -4 0 0

@@ -1,0 +1,44 @@
+#VRML V2.0 utf8
+
+META "title" "ScreenGroup"
+
+Background {
+  skyColor 0.2 0.2 0.2
+}
+
+OrthoViewpoint { }
+Viewpoint { }
+
+ScreenGroup {
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 1 0 0
+        }
+      }
+      geometry Text {
+        string [ "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz", "0123456789", "äöüß.?!,;:" ]
+        fontStyle FontStyle {
+          family "Ubuntu Mono"
+          style "-NORMAL"
+          size 12
+          justify [ "BEGIN", "BEGIN" ]
+        }
+      }
+    }
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 1 1 1
+        }
+        texture ImageTexture {
+          url "../images/image.png"
+        }
+      }
+      geometry Rectangle2D {
+        size 1 1
+      }
+    }
+  ]
+}

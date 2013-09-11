@@ -3,7 +3,7 @@
 META "title" "about:splash"
 
 EXTERNPROTO LogoBlackAndWhite [ ]
-"../Library/Logo.wrl"
+"../../library/Logo.wrl"
 
 DEF _0 Background {
   skyColor 1 1 1

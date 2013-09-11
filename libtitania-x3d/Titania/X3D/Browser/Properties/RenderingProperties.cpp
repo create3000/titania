@@ -316,12 +316,10 @@ RenderingProperties::build ()
 
 	for (const auto & line : string)
 	{
-		glPushMatrix ();
 		glLoadIdentity ();
 		glRasterPos2f (10, 10 + (string .size () - i - 1) * fontHeigth);
 		glListBase (fontListBase);
 		glCallLists (line .length (), GL_UNSIGNED_BYTE, line .c_str ());
-		glPopMatrix ();
 		++ i;
 	}
 

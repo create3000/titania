@@ -6,14 +6,14 @@ META "title" "about:url_error"
 EXTERNPROTO Red [
   inputOutput SFFloat transparency
 ]
-"../Library/Colors.wrl"
+"../../library/Colors.wrl"
 
 NavigationInfo {
   type "NONE"
 }
 
 Inline {
-  url "../Library/background.wrl"
+  url "../../library/background.wrl"
 }
 
 Viewpoint { }

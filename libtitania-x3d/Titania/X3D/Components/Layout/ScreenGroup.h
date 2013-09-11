@@ -61,11 +61,27 @@ class ScreenGroup :
 {
 public:
 
+	///  @name Construction
+
 	ScreenGroup (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const final;
+
+	///  @name Operations
+
+	virtual
+	void
+	traverse (TraverseType) final;
+
+
+private:
+
+	///  @name Operations
+
+	float
+	getDistance (TraverseType) const;
 
 };
 

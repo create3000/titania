@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 X3DDragSensorNode::Fields::Fields () :
-	autoOffset (new SFBool (true)),
+	        autoOffset (new SFBool (true)),
 	trackPoint_changed (new SFVec3f ())
 { }
 

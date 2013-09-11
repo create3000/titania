@@ -61,6 +61,8 @@ class Viewpoint :
 {
 public:
 
+	///  @name Construction
+
 	Viewpoint (X3DExecutionContext* const);
 
 	virtual
@@ -90,6 +92,14 @@ public:
 	getPosition () const
 	{ return position (); }
 
+	///  @name Member access
+
+	virtual
+	Vector3f
+	getScreenScale (float) const final;
+
+	///  @name Operations
+
 	virtual
 	void
 	reshape (const float, const float);
@@ -97,8 +107,12 @@ public:
 
 private:
 
+	///  @name Member access
+
 	Vector3f
-	getLookAtPositionOffset (Box3f);
+	getLookAtPositionOffset (Box3f) const;
+
+	///  @name Members
 
 	struct Fields
 	{

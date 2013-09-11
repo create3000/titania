@@ -56,13 +56,14 @@
 #include "../../Execution/BindableNodeStack.h"
 #include "../Grouping/X3DBoundedObject.h"
 #include "../Layering/Viewport.h"
+#include "../Navigation/Viewpoint.h"
 
 namespace titania {
 namespace X3D {
 
 Layer::Layer (X3DExecutionContext* const executionContext) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DLayerNode ()
+	X3DLayerNode (new Viewpoint (executionContext))
 {
 	setComponent ("Layering");
 	setTypeName ("Layer");

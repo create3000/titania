@@ -139,7 +139,7 @@ static
 basic::ifilestream
 golden_text (basic::ifilestream && istream)
 {
-	std::string X3D_XML = "<X3D ";
+	static const std::string X3D_XML = "<X3D ";
 
 	// Save current state of stream.
 

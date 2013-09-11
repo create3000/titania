@@ -58,23 +58,24 @@ namespace titania {
 namespace X3D {
 
 Anchor::Fields::Fields () :
-	parameter (new MFString ()),
-	description (new SFString ())
+	description (new SFString ()),
+	parameter (new MFString ())
 { }
 
 Anchor::Anchor (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DGroupingNode (),
 	   X3DUrlObject (),
-	         fields ()
+	         fields (),
+	         isOver (false)
 {
 	setComponent ("Networking");
 	setTypeName ("Anchor");
 
 	addField (inputOutput,    "metadata",       metadata ());
+	addField (inputOutput,    "description",    description ());
 	addField (inputOutput,    "url",            url ());
 	addField (inputOutput,    "parameter",      parameter ());
-	addField (inputOutput,    "description",    description ());
 	addField (initializeOnly, "bboxSize",       bboxSize ());
 	addField (initializeOnly, "bboxCenter",     bboxCenter ());
 	addField (inputOnly,      "addChildren",    addChildren ());
@@ -99,6 +100,18 @@ void
 Anchor::requestImmediateLoad ()
 {
 	Loader (getExecutionContext ()) .loadURL (url (), parameter ());
+}
+
+void
+Anchor::set_over (bool value)
+{
+	if (value not_eq isOver)
+	{
+		isOver = value;
+		
+		if (isOver)
+			getBrowser () -> getNotification () -> string () = description ();
+	}
 }
 
 void

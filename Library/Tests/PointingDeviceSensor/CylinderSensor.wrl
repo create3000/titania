@@ -2,7 +2,7 @@
 
 META "title" "CylinderSensor"
 
-Transform {
+DEF _0 Transform {
   translation 3.65468 0.0348776 2.6975
   rotation -0.57735 0.57735 0.577351 2.09439
   scale 26.825 26.8249 26.825
@@ -40,6 +40,8 @@ Transform {
     DEF Button1 Transform {
       children [
         DEF Touch1 CylinderSensor {
+          description "CylinderSensor Test"
+        
           #minAngle -1
           #maxAngle 1
           #diskAngle 2.8

@@ -54,6 +54,7 @@
 
 #include "../../Execution/BindableNodeList.h"
 #include "../../Execution/BindableNodeStack.h"
+#include "../Navigation/OrthoViewpoint.h"
 
 namespace titania {
 namespace X3D {
@@ -64,7 +65,7 @@ LayoutLayer::Fields::Fields () :
 
 LayoutLayer::LayoutLayer (X3DExecutionContext* const executionContext) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DLayerNode (),
+	X3DLayerNode (new OrthoViewpoint (executionContext)),
 	      fields ()
 {
 	setComponent ("Layout");

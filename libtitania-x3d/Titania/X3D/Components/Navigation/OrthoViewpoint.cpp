@@ -95,31 +95,47 @@ OrthoViewpoint::getPosition () const
 }
 
 float
-OrthoViewpoint::getMinimumX ()
+OrthoViewpoint::getMinimumX () const
 {
 	return fieldOfView () .size () > 0 ? fieldOfView () [0] : -1;
 }
 
 float
-OrthoViewpoint::getMinumumY ()
+OrthoViewpoint::getMinumumY () const
 {
 	return fieldOfView () .size () > 1 ? fieldOfView () [1] : -1;
 }
 
 float
-OrthoViewpoint::getMaximumX ()
+OrthoViewpoint::getMaximumX () const
 {
 	return fieldOfView () .size () > 2 ? fieldOfView () [2] : 1;
 }
 
 float
-OrthoViewpoint::getMaximumY ()
+OrthoViewpoint::getMaximumY () const
 {
 	return fieldOfView () .size () > 3 ? fieldOfView () [3] : 1;
 }
 
 Vector3f
-OrthoViewpoint::getLookAtPositionOffset (Box3f bbox)
+OrthoViewpoint::getScreenScale (float) const
+{
+	Vector4i viewport = Viewport4i ();
+	int      width    = viewport [2];
+	int      height   = viewport [3];
+
+	float size_x = getMaximumX () - getMinimumX ();
+	float size_y = getMaximumY () - getMinumumY ();
+
+	if (width > height)
+		return Vector3f (size_x / height, size_y / height, 1);
+		
+	return Vector3f (size_x / width, size_y / width, 1);
+}
+
+Vector3f
+OrthoViewpoint::getLookAtPositionOffset (Box3f bbox) const
 {
 	return bbox .center ()
 	       + getUserOrientation () * (Vector3f (0, 0, abs (bbox .size ()) * 0.5 + 10))
@@ -137,13 +153,8 @@ OrthoViewpoint::reshape (const float zNear, const float zFar)
 	size_t width  = viewport [2];
 	size_t height = viewport [3];
 
-	float minimum_x = getMinimumX ();
-	float minimum_y = getMinumumY ();
-	float maximum_x = getMaximumX ();
-	float maximum_y = getMaximumY ();
-
-	float size_x = (maximum_x - minimum_x) * 0.5;
-	float size_y = (maximum_y - minimum_y) * 0.5;
+	float size_x = (getMaximumX () - getMinimumX ()) * 0.5;
+	float size_y = (getMaximumY () - getMinumumY ()) * 0.5;
 
 	if (width > height)
 	{

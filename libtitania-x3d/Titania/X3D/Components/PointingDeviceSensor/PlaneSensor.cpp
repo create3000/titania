@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -56,21 +56,21 @@ namespace titania {
 namespace X3D {
 
 PlaneSensor::Fields::Fields () :
-	axisRotation (new SFRotation ()),
-	offset (new SFVec3f ()),
-	maxPosition (new SFVec2f (-1, -1)),
-	minPosition (new SFVec2f ()),
+	       axisRotation (new SFRotation ()),
+	             offset (new SFVec3f ()),
+	        maxPosition (new SFVec2f (-1, -1)),
+	        minPosition (new SFVec2f ()),
 	translation_changed (new SFVec3f ())
 { }
 
 PlaneSensor::PlaneSensor (X3DExecutionContext* const executionContext) :
-	                X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	          X3DDragSensorNode (),
-	                     fields (),
-	                      plane (),
-	                startOffset (),
-	                 startPoint (),
-	     inverseModelViewMatrix ()
+	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	     X3DDragSensorNode (),
+	                fields (),
+	                 plane (),
+	           startOffset (),
+	            startPoint (),
+	inverseModelViewMatrix ()
 {
 	setComponent ("PointingDeviceSensor");
 	setTypeName ("PlaneSensor");

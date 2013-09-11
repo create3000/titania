@@ -51,7 +51,7 @@
 #include "X3DShapeNode.h"
 
 #include "../../Bits/Cast.h"
-#include "../../Browser/Hit.h"
+#include "../../Browser/Picking/Hit.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Rendering/ViewVolume.h"
 #include "../../Types/Geometry.h"

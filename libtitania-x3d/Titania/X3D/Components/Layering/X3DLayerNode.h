@@ -253,7 +253,7 @@ protected:
 	using X3DNode::addChildren;
 	using X3DNode::removeChildren;
 
-	X3DLayerNode ();
+	X3DLayerNode (X3DViewpointNode*);
 
 	virtual
 	void

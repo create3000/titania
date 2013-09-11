@@ -56,7 +56,6 @@
 #include "../../Execution/BindableNodeStack.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../EnvironmentalEffects/Background.h"
-#include "../Navigation/Viewpoint.h"
 
 namespace titania {
 namespace X3D {
@@ -69,7 +68,7 @@ X3DLayerNode::Fields::Fields () :
 	children (new MFNode ())
 { }
 
-X3DLayerNode::X3DLayerNode () :
+X3DLayerNode::X3DLayerNode (X3DViewpointNode* viewpoint) :
 	              X3DNode (),
 	          X3DRenderer (),
 	               fields (),
@@ -77,7 +76,7 @@ X3DLayerNode::X3DLayerNode () :
 	defaultNavigationInfo (new NavigationInfo (getExecutionContext ())),
 	    defaultBackground (new Background (getExecutionContext ())),
 	           defaultFog (new Fog (getExecutionContext ())),
-	     defaultViewpoint (new Viewpoint (getExecutionContext ())),
+	     defaultViewpoint (viewpoint),
 	      currentViewport (defaultViewport),
 	  navigationInfoStack (new NavigationInfoStack (getExecutionContext (), defaultNavigationInfo)),
 	      backgroundStack (new BackgroundStack (getExecutionContext (), defaultBackground)),

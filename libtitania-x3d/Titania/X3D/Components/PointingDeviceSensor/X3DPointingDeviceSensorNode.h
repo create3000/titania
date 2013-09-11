@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_COMPONENTS_POINTING_DEVICE_SENSOR_X3DPOINTING_DEVICE_SENSOR_NODE_H__
 #define __TITANIA_X3D_COMPONENTS_POINTING_DEVICE_SENSOR_X3DPOINTING_DEVICE_SENSOR_NODE_H__
 
-#include "../../Browser/HitPtr.h"
+#include "../../Browser/Picking/HitPtr.h"
 #include "../Core/X3DSensorNode.h"
 
 namespace titania {

@@ -51,6 +51,8 @@
 #include "ScreenGroup.h"
 
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Rendering/Matrix.h"
+#include "../Navigation/Viewpoint.h"
 
 namespace titania {
 namespace X3D {
@@ -74,6 +76,32 @@ X3DBaseNode*
 ScreenGroup::create (X3DExecutionContext* const executionContext) const
 {
 	return new ScreenGroup (executionContext);
+}
+
+float
+ScreenGroup::getDistance (TraverseType type) const
+{
+	Matrix4f matrix = ModelViewMatrix4f ();
+
+	if (type == TraverseType::CAMERA)
+		matrix *= getInverseCameraSpaceMatrix ();
+
+	return math::abs (matrix .translation ());
+}
+
+void
+ScreenGroup::traverse (TraverseType type)
+{
+	glPushMatrix ();
+	
+	Matrix4f matrix;
+	matrix .scale (getCurrentViewpoint () -> getScreenScale (getDistance (type)));
+
+	glMultMatrixf (matrix .data ());
+
+	X3DGroupingNode::traverse (type);
+
+	glPopMatrix ();
 }
 
 } // X3D

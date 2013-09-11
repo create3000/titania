@@ -61,6 +61,8 @@ class ScreenFontStyle :
 {
 public:
 
+	///  @name Construction
+
 	ScreenFontStyle (X3DExecutionContext* const);
 
 	virtual
@@ -80,9 +82,13 @@ public:
 
 private:
 
+	///  @name Member access
+
 	virtual
 	float
 	getSize () const final;
+
+	///  @name Members
 
 	struct Fields
 	{

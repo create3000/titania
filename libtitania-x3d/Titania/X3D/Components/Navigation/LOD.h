@@ -113,7 +113,10 @@ public:
 private:
 
 	size_t
-	getLevel (TraverseType);
+	getLevel (TraverseType) const;
+
+	float
+	getDistance (TraverseType) const;
 
 	struct Fields
 	{

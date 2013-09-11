@@ -387,8 +387,6 @@
     <None Include="info.h" />
     <None Include="Titania\X3D\Browser\Browser.h" />
     <None Include="Titania\X3D\InputOutput\Generator.h" />
-    <None Include="Titania\X3D\Browser\Hit.h" />
-    <None Include="Titania\X3D\Browser\HitArray.h" />
     <None Include="Titania\X3D\Rendering\LightContainer.h" />
     <None Include="Titania\X3D\Rendering\LightContainerArray.h" />
     <None Include="Titania\X3D\Rendering\ShapeContainer.h" />
@@ -514,10 +512,8 @@
     <None Include="Titania\X3D\Types\Speed.h" />
     <None Include="Titania\X3D\Rendering\CollisionShape.h" />
     <None Include="Titania\X3D\Rendering\CollisionArray.h" />
-    <None Include="Titania\X3D\Browser\Intersection.h" />
     <None Include="Titania\X3D\Base\X3DBase.h" />
     <None Include="Titania\X3D\Browser\Console.h" />
-    <None Include="Titania\X3D\Browser\Selection.h" />
     <None Include="Titania\X3D\Handles\TransformHandle.h" />
     <None Include="Titania\X3D\Bits\config.h" />
     <None Include="share\titania\handles\TransformHandle.wrl" />
@@ -569,8 +565,6 @@
     <None Include="Titania\X3D\Miscellaneous\FontConfig.h" />
     <None Include="Titania\X3D\Miscellaneous\MediaStream.h" />
     <None Include="Titania\X3D\Routing\EventArray.h" />
-    <None Include="Titania\X3D\Browser\HitPtr.h" />
-    <None Include="Titania\X3D\Browser\IntersectionPtr.h" />
     <None Include="Titania\X3D\Miscellaneous\FontPtr.h" />
     <None Include="Titania\X3D\InputOutput\Loader.h" />
     <None Include="Titania\X3D\Browser\Devices\PointingDevice.h" />
@@ -580,6 +574,15 @@
     <None Include="Titania\X3D\Bits\Linetypes.h" />
     <None Include="share\mime\model\x3d+vrml.xml" />
     <None Include="share\mime\model\x3d+xml.xml" />
+    <None Include="Titania\X3D\Browser\Notification.h" />
+    <None Include="Titania\X3D\Browser\Picking\Hit.h" />
+    <None Include="Titania\X3D\Browser\Picking\HitArray.h" />
+    <None Include="Titania\X3D\Browser\Picking\HitPtr.h" />
+    <None Include="Titania\X3D\Browser\Picking\Intersection.h" />
+    <None Include="Titania\X3D\Browser\Picking\IntersectionPtr.h" />
+    <None Include="Titania\X3D\Browser\Picking\Selection.h" />
+    <None Include="share\titania\handles\Notification.wrl" />
+    <None Include="share\titania\library\RoundedRectangle2D.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -609,7 +612,6 @@
     <Compile Include="Titania\X3D\Basic\X3DFieldDefinition.cpp" />
     <Compile Include="Titania\X3D\Bits\Error.cpp" />
     <Compile Include="Titania\X3D\Browser\Browser.cpp" />
-    <Compile Include="Titania\X3D\Browser\HitArray.cpp" />
     <Compile Include="Titania\X3D\Browser\X3DBrowser.cpp" />
     <Compile Include="Titania\X3D\Configuration\ComponentInfo.cpp" />
     <Compile Include="Titania\X3D\Configuration\ProfileInfo.cpp" />
@@ -970,9 +972,7 @@
     <Compile Include="Titania\X3D\Browser\Viewer\X3DFlyViewer.cpp" />
     <Compile Include="Titania\X3D\Browser\Viewer\X3DViewer.cpp" />
     <Compile Include="Titania\X3D\Rendering\CollisionShape.cpp" />
-    <Compile Include="Titania\X3D\Browser\Hit.cpp" />
     <Compile Include="Titania\X3D\Browser\Console.cpp" />
-    <Compile Include="Titania\X3D\Browser\Selection.cpp" />
     <Compile Include="Titania\X3D\Handles\TransformHandle.cpp" />
     <Compile Include="Titania\X3D\Bits\config.cpp" />
     <Compile Include="Titania\X3D\Parser\Grammar.cpp" />
@@ -1020,6 +1020,10 @@
     <Compile Include="Titania\X3D\Browser\Devices\PointingDevice.cpp" />
     <Compile Include="Titania\X3D\Browser\Devices\KeyDevice.cpp" />
     <Compile Include="Titania\X3D\Components\Core\MetadataBoolean.cpp" />
+    <Compile Include="Titania\X3D\Browser\Notification.cpp" />
+    <Compile Include="Titania\X3D\Browser\Picking\Hit.cpp" />
+    <Compile Include="Titania\X3D\Browser\Picking\HitArray.cpp" />
+    <Compile Include="Titania\X3D\Browser\Picking\Selection.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1048,9 +1052,10 @@
     <Folder Include="share\titania\handles\" />
     <Folder Include="share\titania\pages\" />
     <Folder Include="share\titania\pages\about\" />
-    <Folder Include="share\titania\pages\Library\" />
     <Folder Include="Titania\X3D\Miscellaneous\" />
     <Folder Include="Titania\X3D\Browser\Devices\" />
+    <Folder Include="Titania\X3D\Browser\Picking\" />
+    <Folder Include="share\titania\library\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
@@ -1073,8 +1078,6 @@
   </ProjectExtensions>
   <ItemGroup>
     <Content Include="share\titania\pages\about\splash.wrl" />
-    <Content Include="share\titania\pages\Library\Colors.wrl" />
-    <Content Include="share\titania\pages\Library\Logo.wrl" />
     <Content Include="share\titania\filetype\image.wrl">
       <DeployService-TargetDirectoryId>ProgramFilesRoot</DeployService-TargetDirectoryId>
       <DeployService-UseProjectRelativePath>true</DeployService-UseProjectRelativePath>
@@ -1087,5 +1090,7 @@
       <DeployService-TargetDirectoryId>ProgramFilesRoot</DeployService-TargetDirectoryId>
       <DeployService-UseProjectRelativePath>true</DeployService-UseProjectRelativePath>
     </Content>
+    <Content Include="share\titania\library\Logo.wrl" />
+    <Content Include="share\titania\library\Colors.wrl" />
   </ItemGroup>
 </Project>

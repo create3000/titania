@@ -48,25 +48,20 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_INTERSECTION_H__
-#define __TITANIA_X3D_BROWSER_INTERSECTION_H__
+#ifndef __TITANIA_X3D_BROWSER_PICKING_HIT_ARRAY_H__
+#define __TITANIA_X3D_BROWSER_PICKING_HIT_ARRAY_H__
 
-#include "../Types/Numbers.h"
+#include "HitPtr.h"
+#include <deque>
 
 namespace titania {
 namespace X3D {
 
-class Intersection
-{
-public:
-
-	Vector3f hitTexCoord;
-	Vector3f hitNormal;
-	Vector3f hitPoint;
-
-};
+typedef std::deque <HitPtr> HitArray;
 
 } // X3D
 } // titania
+
+extern template class std::deque <titania::X3D::HitPtr>;
 
 #endif

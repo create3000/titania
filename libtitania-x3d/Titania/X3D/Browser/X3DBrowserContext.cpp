@@ -107,6 +107,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	         threadIndex (0),
 	             threads (1),
 	         threadMutex (),
+	        notification (new Notification (this)),
 	             console (new Console (this))                       // SFNode  [ ]   console    NULL  [Console]
 {
 	addChildren (initialized (),
@@ -127,6 +128,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	             overSensors,
 	             activeSensors,
 	             selection,
+	             notification,
 	             console);
 
 	initialized () .isTainted (true);
@@ -197,6 +199,8 @@ X3DBrowserContext::initialize ()
 		//	glEnable (GL_POINT_SMOOTH);
 		//	glEnable (GL_LINE_SMOOTH);
 		//	glEnable (GL_POLYGON_SMOOTH);
+
+		notification -> setup ();
 	}
 
 	initialized () .addInterest (this, &X3DBrowserContext::set_initialized);
@@ -478,6 +482,14 @@ X3DBrowserContext::motionNotifyEvent ()
 
 		if (pointingDeviceSensorNode)
 			pointingDeviceSensorNode -> set_over (getHits () .front (), false);
+
+		else
+		{
+			auto anchor = dynamic_cast <Anchor*> (node);
+
+			if (anchor)
+				anchor -> set_over (false);
+		}
 	}
 
 	// Set isOver to TRUE for appropriate nodes
@@ -493,6 +505,14 @@ X3DBrowserContext::motionNotifyEvent ()
 
 			if (pointingDeviceSensorNode)
 				pointingDeviceSensorNode -> set_over (getHits () .front (), true);
+
+			else
+			{
+				auto anchor = dynamic_cast <Anchor*> (node .getValue ());
+
+				if (anchor)
+					anchor -> set_over (true);
+			}
 		}
 	}
 	else
@@ -521,17 +541,17 @@ X3DBrowserContext::buttonPressEvent ()
 
 	for (const auto & node : activeSensors)
 	{
-		auto anchor = dynamic_cast <Anchor*> (node .getValue ());
+		auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node .getValue ());
 
-		if (anchor)
-			anchor -> set_active (true);
+		if (pointingDeviceSensorNode)
+			pointingDeviceSensorNode -> set_active (getHits () .front (), true);
 
 		else
 		{
-			auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node .getValue ());
+			auto anchor = dynamic_cast <Anchor*> (node .getValue ());
 
-			if (pointingDeviceSensorNode)
-				pointingDeviceSensorNode -> set_active (getHits () .front (), true);
+			if (anchor)
+				anchor -> set_active (true);
 		}
 	}
 }
@@ -541,18 +561,18 @@ X3DBrowserContext::buttonReleaseEvent ()
 {
 	for (const auto & node : activeSensors)
 	{
-		auto anchor = dynamic_cast <Anchor*> (node .getValue ());
+		auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node .getValue ());
 
-		if (anchor)
-			anchor -> set_active (false);
+		if (pointingDeviceSensorNode)
+			pointingDeviceSensorNode -> set_active (std::make_shared <Hit> (Matrix4f (), hitRay, std::make_shared <Intersection> (), NodeSet (), nullptr),
+			                                        false);
 
 		else
 		{
-			auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node .getValue ());
+			auto anchor = dynamic_cast <Anchor*> (node .getValue ());
 
-			if (pointingDeviceSensorNode)
-				pointingDeviceSensorNode -> set_active (std::make_shared <Hit> (Matrix4f (), hitRay, std::make_shared <Intersection> (), NodeSet (), nullptr),
-				                                        false);
+			if (anchor)
+				anchor -> set_active (false);
 		}
 	}
 
@@ -652,6 +672,7 @@ X3DBrowserContext::dispose ()
 	overSensors          .clear ();
 	activeSensors        .clear ();
 	selection            .dispose ();
+	notification         .dispose ();
 	console              .dispose ();
 
 	javaScriptEngine .dispose ();

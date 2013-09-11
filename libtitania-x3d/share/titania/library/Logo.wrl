@@ -13,7 +13,7 @@ PROTO Leafs [ ]
 EXTERNPROTO Black [
   exposedField SFFloat transparency
 ]
-"../Library/Colors.wrl"
+"Colors.wrl"
 
 PROTO LogoBlackAndWhite [ ]
 {

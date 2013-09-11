@@ -1,0 +1,166 @@
+#VRML V2.0 utf8
+
+EXTERNPROTO RoundedRectangle2D [
+  exposedField SFFloat cornerRadius
+  exposedField SFVec2f size
+  field        SFBool  solid
+]
+"../library/RoundedRectangle2D.wrl"
+
+PROTO Notification [
+  # Custom fields
+  exposedField SFTime   cycleInterval 3
+  exposedField SFVec2f  borderWidth 0.1 0.05
+  exposedField SFFloat  linewidthScaleFactor 1
+  # Required fields
+  eventIn      SFString set_string
+  eventOut     SFBool   isActive
+]
+{
+  PROTO Fields [
+    exposedField SFTime  cycleInterval 1
+    exposedField SFVec2f borderWidth 1 1
+  ]
+  {
+    MetadataSet { }
+  }
+
+  Collision {
+    collide FALSE
+    children Transform {
+      translation 0 -0.8 0
+      children [
+        Shape {
+          appearance Appearance {
+            material DEF BackgroundMaterial Material {
+              diffuseColor 0 0 0
+            }
+          }
+          geometry DEF BackgroundGeometry RoundedRectangle2D {
+            cornerRadius 0.02
+            size 1 0.1
+          }
+        }
+        Shape {
+          appearance Appearance {
+            fillProperties FillProperties {
+              filled FALSE
+              hatched FALSE
+            }
+            lineProperties LineProperties {
+              linewidthScaleFactor IS linewidthScaleFactor
+            }
+            material DEF BorderMaterial Material {
+              diffuseColor 1 1 1
+            }
+          }
+          geometry USE BackgroundGeometry
+        }
+        Shape {
+          appearance Appearance {
+            material DEF TextMaterial Material {
+              diffuseColor 1 1 1
+            }
+          }
+          geometry DEF Text Text {
+            string "CylinderSensor"
+            fontStyle FontStyle {
+              family "sans"
+              style "BOLD"
+              size 0.08
+              justify [ "MIDDLE", "MIDDLE" ]
+            }
+          }
+        }
+      ]
+    }
+  }
+
+  DEF FadeIn ScalarInterpolator {
+    key [ 0, 1 ]
+    keyValue [ 1, 0 ]
+  }
+
+  DEF FadeOut ScalarInterpolator {
+    key [ 0, 1 ]
+    keyValue [ 0, 1 ]
+  }
+
+  DEF Notification Script {
+    eventIn  SFString set_string IS set_string
+    eventIn  SFVec2f  set_textBounds
+    eventIn  SFBool   set_start
+    eventIn  SFBool   set_end
+    eventOut SFBool   isActive IS isActive
+    field    SFNode   background USE BackgroundGeometry
+    field    SFNode   text USE Text
+    field    SFNode   startTimer DEF StartTimer TimeSensor { }
+    field    SFNode   endTimer DEF EndTimer TimeSensor {
+      cycleInterval 2
+    }
+    field    SFNode   fields Fields {
+      cycleInterval IS cycleInterval
+      borderWidth IS borderWidth
+    }
+
+    url "vrmlscript:
+
+function set_string (value, time)
+{
+	text .string = new MFString (value);
+
+	if (!isActive || endTimer .isActive)
+		startTimer .startTime = time;
+
+	endTimer .stopTime  = time;
+	endTimer .startTime = time + startTimer .cycleInterval + fields .cycleInterval;
+}
+
+function set_textBounds (value, time)
+{
+	background .size = value .add (fields .borderWidth);
+}
+
+function set_start (value, time)
+{
+	if (value)
+		isActive = true;
+}
+
+function set_end (value, time)
+{
+	if (!value && !startTimer .isActive)
+		isActive = false;
+}
+"
+    directOutput TRUE
+  }
+
+  # String
+
+  ROUTE Text.textBounds TO Notification.set_textBounds
+  ROUTE StartTimer.isActive TO Notification.set_start
+  ROUTE EndTimer.isActive TO Notification.set_end
+
+  # FadeIn
+
+  ROUTE StartTimer.fraction_changed TO FadeIn.set_fraction
+  ROUTE FadeIn.value_changed TO BackgroundMaterial.set_transparency
+  ROUTE FadeIn.value_changed TO BorderMaterial.set_transparency
+  ROUTE FadeIn.value_changed TO TextMaterial.set_transparency
+
+  # FadeOut
+
+  ROUTE EndTimer.fraction_changed TO FadeOut.set_fraction
+  ROUTE FadeOut.value_changed TO BackgroundMaterial.set_transparency
+  ROUTE FadeOut.value_changed TO BorderMaterial.set_transparency
+  ROUTE FadeOut.value_changed TO TextMaterial.set_transparency
+}
+
+Background {
+  transparency 1
+}
+
+OrthoViewpoint { }
+
+DEF Notification Notification { }

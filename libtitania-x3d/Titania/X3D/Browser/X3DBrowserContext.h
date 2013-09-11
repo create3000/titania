@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -54,10 +54,12 @@
 #include "../Execution/X3DExecutionContext.h"
 
 #include "../Browser/Console.h"
+#include "../Browser/Notification.h"
+#include "../Browser/Picking/HitArray.h"
+#include "../Browser/Picking/Selection.h"
 #include "../Browser/Properties/BrowserOptions.h"
 #include "../Browser/Properties/BrowserProperties.h"
 #include "../Browser/Properties/RenderingProperties.h"
-#include "../Browser/Selection.h"
 #include "../Browser/Viewer/ViewerType.h"
 #include "../Components/Core/X3DSensorNode.h"
 #include "../Components/KeyDeviceSensor/X3DKeyDeviceSensorNode.h"
@@ -65,7 +67,6 @@
 #include "../Execution/World.h"
 #include "../JavaScript/X3DJavaScriptEngine.h"
 
-#include "../Browser/HitArray.h"
 #include "../Rendering/X3DRenderer.h"
 #include "../Routing/Router.h"
 #include "../Types/Speed.h"
@@ -103,23 +104,23 @@ public:
 	const Output &
 	reshaped () const
 	{ return reshapedOutput; }
-	
+
 	const Output &
 	sensors () const
 	{ return sensorsOutput; }
-	
+
 	const Output &
 	prepareEvents () const
 	{ return prepareEventsOutput; }
-	
+
 	const Output &
 	displayed () const
 	{ return displayedOutput; }
-	
+
 	const Output &
 	finished () const
 	{ return finishedOutput; }
-	
+
 	const Output &
 	changed () const
 	{ return changedOutput; }
@@ -201,15 +202,15 @@ public:
 	const X3DScalar <ViewerType> &
 	getViewer () const
 	{ return viewer; }
-	
+
 	const SFBool &
 	getExamineViewer () const
 	{ return examineViewer; }
-	
+
 	const SFBool &
 	getWalkViewer () const
 	{ return walkViewer; }
-	
+
 	const SFBool &
 	getFlyViewer () const
 	{ return flyViewer; }
@@ -217,7 +218,7 @@ public:
 	const SFBool &
 	getNoneViewer () const
 	{ return noneViewer; }
-	
+
 	const SFBool &
 	getLookAt () const
 	{ return lookAt; }
@@ -234,7 +235,7 @@ public:
 	getTextureUnits ()
 	{ return textureUnits; }
 
-	///  @name Thread handling	
+	///  @name Thread handling
 
 	std::mutex &
 	getThread ();
@@ -283,6 +284,12 @@ public:
 	const X3DSFNode <Selection> &
 	getSelection ()
 	{ return selection; }
+
+	///  @name Notification handling
+
+	const X3DSFNode <Notification> &
+	getNotification () const
+	{ return notification; }
 
 	///  @name Console handling
 
@@ -336,7 +343,7 @@ private:
 
 	void
 	set_initialized ();
-	
+
 	void
 	set_shutdown ();
 
@@ -393,15 +400,17 @@ private:
 	MFNode                activeSensors;
 	X3DSFNode <Selection> selection;
 
-	time_type           changedTime;
-	Speed <double>      currentSpeed;
-	double              currentFrameRate;
+	time_type      changedTime;
+	Speed <double> currentSpeed;
+	double         currentFrameRate;
 
 	size_t                  threadIndex;
 	std::deque <std::mutex> threads;
 	std::mutex              threadMutex;
 
-	X3DSFNode <Console> console;
+	X3DSFNode <Notification> notification;
+	X3DSFNode <Console>      console;
+
 };
 
 } // X3D

@@ -8,7 +8,7 @@ EXTERNPROTO Rotor [
   inputOutput SFBool     loop
   outputOnly  SFRotation value_changed
 ]
-"../Library/Rotor.wrl"
+"../../library/Rotor.wrl"
 
 DEF NavigationInfo NavigationInfo {
   headlight TRUE

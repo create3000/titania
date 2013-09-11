@@ -61,6 +61,8 @@ class X3DLayoutNode :
 {
 protected:
 
+	///  @name Construction
+
 	X3DLayoutNode ();
 
 };

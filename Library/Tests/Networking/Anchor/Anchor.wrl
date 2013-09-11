@@ -4,11 +4,9 @@ DEF VP Viewpoint {
   description "Viewpoint1"
 }
 
-Anchor {
-  url [
-    "this-world-does-not-exists.wrl",
-    "Viewpoint.wrl"
-  ]
+DEF _0 Anchor {
+  description "Go back!"
+  url [ "this-world-does-not-exists.wrl", "../Anchor.wrl" ]
   children Transform {
     translation 1 0 0
     rotation 0.267261 0.534522 0.801784 4
@@ -29,4 +27,3 @@ Anchor {
     }
   }
 }
-

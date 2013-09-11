@@ -56,12 +56,12 @@ namespace titania {
 namespace X3D {
 
 Layout::Fields::Fields () :
-	align (new MFString ({ "CENTER", "CENTER" })),
-	offset (new MFFloat ()),
+	      align (new MFString ({ "CENTER", "CENTER" })),
 	offsetUnits (new MFString ()),
-	scaleMode (new MFString ()),
-	size (new MFFloat ()),
-	sizeUnits (new MFString ())
+	     offset (new MFFloat ()),
+	  scaleMode (new MFString ()),
+	  sizeUnits (new MFString ()),
+	       size (new MFFloat ())
 { }
 
 Layout::Layout (X3DExecutionContext* const executionContext) :
@@ -74,11 +74,11 @@ Layout::Layout (X3DExecutionContext* const executionContext) :
 
 	addField (inputOutput, "metadata",    metadata ());
 	addField (inputOutput, "align",       align ());
-	addField (inputOutput, "offset",      offset ());
 	addField (inputOutput, "offsetUnits", offsetUnits ());
+	addField (inputOutput, "offset",      offset ());
 	addField (inputOutput, "scaleMode",   scaleMode ());
-	addField (inputOutput, "size",        size ());
 	addField (inputOutput, "sizeUnits",   sizeUnits ());
+	addField (inputOutput, "size",        size ());
 }
 
 X3DBaseNode*
