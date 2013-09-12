@@ -96,14 +96,6 @@ public:
 	{ return *fields .offset; }
 
 	MFString &
-	scaleMode ()
-	{ return *fields .scaleMode; }
-
-	const MFString &
-	scaleMode () const
-	{ return *fields .scaleMode; }
-
-	MFString &
 	sizeUnits ()
 	{ return *fields .sizeUnits; }
 
@@ -119,8 +111,108 @@ public:
 	size () const
 	{ return *fields .size; }
 
+	MFString &
+	scaleMode ()
+	{ return *fields .scaleMode; }
+
+	const MFString &
+	scaleMode () const
+	{ return *fields .scaleMode; }
+
+	///  @name Member access
+
+	virtual
+	HorizontalAlignType
+	getAlignX () const final
+	{ return alignX; }
+
+	virtual
+	VerticalAlignType
+	getAlignY () const final
+	{ return alignY; }
+
+	virtual
+	SizeUnitType
+	getOffsetUnitX () const final;
+
+	virtual
+	SizeUnitType
+	getOffsetUnitY () const final;
+
+	float
+	getOffsetX () const
+	{ return offsetX; }
+
+	float
+	getOffsetY () const
+	{ return offsetY; }
+
+	virtual
+	SizeUnitType
+	getSizeUnitX () const final;
+
+	virtual
+	SizeUnitType
+	getSizeUnitY () const final;
+
+	float
+	getSizeX () const
+	{ return sizeX; }
+
+	float
+	getSizeY () const
+	{ return sizeY; }
+
+	virtual
+	ScaleModeType
+	getScaleModeX () const final;
+
+	virtual
+	ScaleModeType
+	getScaleModeY () const final;
+
+	virtual
+	Vector2f
+	getRectanglePosition () const final;
+
+	virtual
+	Vector2f
+	getRectangleSize () const final;
+
+	///  @name Operations
+
+	virtual
+	void
+	transform (const TraverseType type) final;
+
 
 private:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final;
+
+	///  @name Event handler
+
+	void
+	set_align ();
+
+	void
+	set_offsetUnits ();
+
+	void
+	set_offset ();
+
+	void
+	set_scaleMode ();
+
+	void
+	set_sizeUnits ();
+
+	void
+	set_size ();
 
 	///  @name Members
 
@@ -131,12 +223,30 @@ private:
 		MFString* const align;
 		MFString* const offsetUnits;
 		MFFloat* const offset;
-		MFString* const scaleMode;
 		MFString* const sizeUnits;
 		MFFloat* const size;
+		MFString* const scaleMode;
 	};
 
 	Fields fields;
+
+	HorizontalAlignType alignX;
+	VerticalAlignType   alignY;
+	SizeUnitType        offsetUnitX;
+	SizeUnitType        offsetUnitY;
+	float               offsetX;
+	float               offsetY;
+	SizeUnitType        sizeUnitX;
+	SizeUnitType        sizeUnitY;
+	float               sizeX;
+	float               sizeY;
+	ScaleModeType       scaleModeX;
+	ScaleModeType       scaleModeY;
+
+	X3DLayoutNode* parent;
+	Vector4i       viewport;
+	Vector2f       rectanglePosition; // In m
+	Vector2f       rectangleSize;     // In m
 
 };
 

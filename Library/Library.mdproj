@@ -2319,6 +2319,8 @@
     <None Include="Tests\CADGeometry\CADLayer.wrl" />
     <None Include="Tests\Basic\Components.wrl" />
     <None Include="Tests\Layout\ScreenGroup.wrl" />
+    <None Include="Tests\Layout\LayoutGroup.wrl" />
+    <None Include="Tests\Layout\LayoutLayer.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

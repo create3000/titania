@@ -148,7 +148,8 @@ golden_text (basic::ifilestream && istream)
 
 	// Read indentifer.
 
-	char   data [X3D_XML .size ()];
+	char data [X3D_XML .size ()];
+
 	istream .read (data, X3D_XML .size ());
 
 	// Reset stream.
@@ -157,7 +158,7 @@ golden_text (basic::ifilestream && istream)
 	istream .seekg (pos - istream .tellg (), std::ios_base::cur);
 
 	// Test
-	
+
 	if (std::string (data, istream .gcount ()) == "<X3D ")
 		return golden_x3d (std::move (istream));
 
@@ -249,8 +250,8 @@ golden_gate (const basic::uri & uri, basic::ifilestream && istream)
 {
 	try
 	{
-		//__LOG__ << istream .response_headers () .at ("Content-Type") << " : " << uri << std::endl;
-	
+		__LOG__ << istream .response_headers () .at ("Content-Type") << " : " << uri << std::endl;
+
 		if (istream .response_headers () .at ("Content-Type") == "model/vrml")
 			return std::move (istream);
 

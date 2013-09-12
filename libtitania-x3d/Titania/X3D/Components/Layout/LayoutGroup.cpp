@@ -50,7 +50,10 @@
 
 #include "LayoutGroup.h"
 
+#include "../../Bits/Cast.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Layout/Layout.h"
 
 namespace titania {
 namespace X3D {
@@ -63,7 +66,9 @@ LayoutGroup::Fields::Fields () :
 LayoutGroup::LayoutGroup (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DGroupingNode (),
-	         fields ()
+	         fields (),
+	currentViewport (nullptr),
+	  currentLayout (nullptr)
 {
 	setComponent ("Layout");
 	setTypeName ("LayoutGroup");
@@ -82,6 +87,67 @@ X3DBaseNode*
 LayoutGroup::create (X3DExecutionContext* const executionContext) const
 {
 	return new LayoutGroup (executionContext);
+}
+
+void
+LayoutGroup::initialize ()
+{
+	X3DGroupingNode::initialize ();
+
+	viewport () .addInterest (this, &LayoutGroup::set_viewport);
+	layout ()   .addInterest (this, &LayoutGroup::set_layout);
+
+	set_viewport ();
+	set_layout ();
+}
+
+Box3f
+LayoutGroup::getBBox ()
+{
+	return Box3f ();
+}
+
+void
+LayoutGroup::set_viewport ()
+{
+	currentViewport = x3d_cast <X3DViewportNode*> (viewport ());
+}
+
+void
+LayoutGroup::set_layout ()
+{
+	currentLayout = x3d_cast <X3DLayoutNode*> (layout ());
+
+	if (not currentLayout)
+		currentLayout = getBrowser () -> getBrowserOptions () -> layout ();
+}
+
+void
+LayoutGroup::traverse (const TraverseType type)
+{
+	switch (type)
+	{
+		case TraverseType::CAMERA:
+		case TraverseType::PICKING:
+		case TraverseType::COLLECT:
+		{
+			glPushMatrix ();
+
+			currentLayout -> transform (type);
+
+			getBrowser () -> getLayouts () .push (currentLayout);
+
+			X3DGroupingNode::traverse (type);
+
+			getBrowser () -> getLayouts () .pop ();
+
+			glPopMatrix ();
+			
+			break;
+		}
+		default:
+			break;
+	}
 }
 
 } // X3D

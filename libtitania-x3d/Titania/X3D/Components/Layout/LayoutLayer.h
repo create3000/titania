@@ -82,6 +82,12 @@ public:
 
 private:
 
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final;
+
 	///  @name Members
 
 	struct Fields

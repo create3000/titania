@@ -61,8 +61,8 @@
 #include "../Browser/Properties/BrowserProperties.h"
 #include "../Browser/Properties/RenderingProperties.h"
 #include "../Browser/Viewer/ViewerType.h"
-#include "../Components/Core/X3DSensorNode.h"
 #include "../Components/KeyDeviceSensor/X3DKeyDeviceSensorNode.h"
+#include "../Components/Layout/X3DLayoutNode.h"
 #include "../Execution/BindableNodeStack.h"
 #include "../Execution/World.h"
 #include "../JavaScript/X3DJavaScriptEngine.h"
@@ -83,6 +83,7 @@ namespace X3D {
 typedef chrono::clock_base <time_type> X3DClock;
 typedef std::stack <X3DRenderer*>      RendererStack;
 typedef std::stack <X3DLayerNode*>     LayerStack;
+typedef std::stack <X3DLayoutNode*>    LayoutStack;
 typedef std::stack <GLenum>            LightStack;
 typedef std::stack <size_t>            TextureUnitStack;
 
@@ -191,6 +192,10 @@ public:
 	LayerStack &
 	getLayers ()
 	{ return layers; }
+
+	LayoutStack &
+	getLayouts ()
+	{ return layouts; }
 
 	///  @name Navigation handling
 
@@ -371,11 +376,12 @@ private:
 
 	std::shared_ptr <X3DClock> clock;
 
-	Router           router;
-	RendererStack    renderers;
-	LayerStack       layers;
-	LightStack       lights;
-	TextureUnitStack textureUnits;
+	Router             router;
+	RendererStack      renderers;
+	LayerStack         layers;
+	LayoutStack        layouts;
+	LightStack         lights;
+	TextureUnitStack   textureUnits;
 
 	X3DSFNode <X3DLayerNode>     activeLayer;
 	X3DSFNode <NavigationInfo>   activeNavigationInfo;

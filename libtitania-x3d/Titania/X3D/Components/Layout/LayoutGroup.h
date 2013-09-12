@@ -52,6 +52,8 @@
 #define __TITANIA_X3D_COMPONENTS_LAYOUT_LAYOUT_GROUP_H__
 
 #include "../Grouping/X3DGroupingNode.h"
+#include "../Layering/X3DViewportNode.h"
+#include "../Layout/X3DLayoutNode.h"
 
 namespace titania {
 namespace X3D {
@@ -87,8 +89,32 @@ public:
 	layout () const
 	{ return *fields .layout; }
 
+	///  @name Member access
+
+	virtual
+	Box3f
+	getBBox () final;
+
+	///  @name Operations
+
+	virtual
+	void
+	traverse (const TraverseType) final;
+
 
 private:
+
+	virtual
+	void
+	initialize () final;
+
+	///  @name Event handler
+
+	void
+	set_viewport ();
+
+	void
+	set_layout ();
 
 	///  @name Members
 
@@ -101,6 +127,9 @@ private:
 	};
 
 	Fields fields;
+
+	X3DViewportNode* currentViewport;
+	X3DLayoutNode*   currentLayout;
 
 };
 

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -56,28 +56,28 @@
 #include "../../Execution/BindableNodeStack.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../EnvironmentalEffects/Background.h"
+#include "../Layering/Viewport.h"
 
 namespace titania {
 namespace X3D {
 
 X3DLayerNode::Fields::Fields () :
-	isPickable (new SFBool (true)),
-	viewport (new SFNode ()),
-	addChildren (new MFNode ()),
+	    isPickable (new SFBool (true)),
+	      viewport (new SFNode ()),
+	   addChildren (new MFNode ()),
 	removeChildren (new MFNode ()),
-	children (new MFNode ())
+	      children (new MFNode ())
 { }
 
-X3DLayerNode::X3DLayerNode (X3DViewpointNode* viewpoint) :
+X3DLayerNode::X3DLayerNode (X3DViewpointNode* _defaultViewpoint, X3DGroupingNode* _layerGroup) :
 	              X3DNode (),
 	          X3DRenderer (),
 	               fields (),
-	      defaultViewport (new Viewport (getExecutionContext ())),
 	defaultNavigationInfo (new NavigationInfo (getExecutionContext ())),
 	    defaultBackground (new Background (getExecutionContext ())),
 	           defaultFog (new Fog (getExecutionContext ())),
-	     defaultViewpoint (viewpoint),
-	      currentViewport (defaultViewport),
+	     defaultViewpoint (_defaultViewpoint),
+	      currentViewport (nullptr),
 	  navigationInfoStack (new NavigationInfoStack (getExecutionContext (), defaultNavigationInfo)),
 	      backgroundStack (new BackgroundStack (getExecutionContext (), defaultBackground)),
 	             fogStack (new FogStack (getExecutionContext (), defaultFog)),
@@ -90,12 +90,11 @@ X3DLayerNode::X3DLayerNode (X3DViewpointNode* viewpoint) :
 	          localLights (),
 	    cachedLocalLights (),
 	         globalLights (),
-	                group (new Group (getExecutionContext ()))
+	                group (_layerGroup)
 {
 	addNodeType (X3DConstants::X3DLayerNode);
 
-	addChildren (defaultViewport,
-	             defaultNavigationInfo,
+	addChildren (defaultNavigationInfo,
 	             defaultBackground,
 	             defaultFog,
 	             defaultViewpoint,
@@ -118,7 +117,6 @@ X3DLayerNode::initialize ()
 	X3DNode::initialize ();
 	X3DRenderer::initialize ();
 
-	defaultViewport       -> setup ();
 	defaultNavigationInfo -> setup ();
 	defaultBackground     -> setup ();
 	defaultFog            -> setup ();
@@ -255,7 +253,7 @@ X3DLayerNode::getUserViewpoints () const
 {
 	UserViewpointList userViewpoints;
 
-	for (const auto & viewpoint : *getViewpoints ())
+	for (const auto & viewpoint :* getViewpoints ())
 	{
 		if (viewpoint -> description () .length ())
 			userViewpoints .emplace_back (viewpoint);
@@ -299,7 +297,7 @@ X3DLayerNode::set_viewport ()
 	currentViewport = x3d_cast <X3DViewportNode*> (viewport ());
 
 	if (not currentViewport)
-		currentViewport = defaultViewport;
+		currentViewport = getBrowser () -> getBrowserOptions () -> viewport ();
 }
 
 void
@@ -454,7 +452,6 @@ X3DLayerNode::collect (const TraverseType type)
 void
 X3DLayerNode::dispose ()
 {
-	defaultViewport       .dispose ();
 	defaultNavigationInfo .dispose ();
 	defaultBackground     .dispose ();
 	defaultFog            .dispose ();

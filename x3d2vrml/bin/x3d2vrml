@@ -24,9 +24,9 @@ XML::LibXML -> load_catalog ($X3DCatalog);
 
 
 sub new {
-	my ($class, %options) = @_;
+	my ($class, $options) = @_;
 
-	my $document = new XML::LibXML -> load_xml (%options);
+	my $document = new XML::LibXML ($options) -> load_xml ($options);
 
 	my $self = {
 		nodes                => new Glib::KeyFile (),
@@ -1115,18 +1115,18 @@ use strict;
 use warnings;
 use v5.10.0;
 
-my %options;
+my $options = { recover => 2 };
 
 if (@ARGV)
 {
-	$options {location} = shift @ARGV;
+	$options -> {location} = shift @ARGV;
 }
 else
 {
-	$options {string} = join '', <STDIN>;
+	$options -> {string} = join '', <STDIN>;
 }
 
-my $parser = new X3D::Parser (%options);
+my $parser = new X3D::Parser ($options);
 $parser -> parse ();
 
 my $generator = new X3D::Generator ($parser);

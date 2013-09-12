@@ -1,5 +1,32 @@
 2013-09-12  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Layout.h:
+	* Notification.wrl:
+	* X3DBrowserContext.h:
+	* Layout.cpp:
+	* GoldenGate.cpp:
+	* Layer.cpp:
+	* X3DBrowserContext.cpp:
+	* LayoutLayer.h:
+	* LayoutGroup.h:
+	* LayoutLayer.cpp:
+	* X3DLayoutNode.h:
+	* ScreenGroup.cpp:
+	* Viewpoint.h:
+	* LayoutGroup.cpp:
+	* X3DLayerNode.h:
+	* BrowserOptions.h:
+	* Viewpoint.cpp:
+	* X3DLayerNode.cpp:
+	* GeoViewpoint.h:
+	* BrowserOptions.cpp:
+	* GeoViewpoint.cpp:
+	* OrthoViewpoint.h:
+	* OrthoViewpoint.cpp:
+	* X3DViewpointNode.h: 
+
+2013-09-12  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* libtitania-x3d.cproj:
 	* World.h:
 	* Matrix.h:

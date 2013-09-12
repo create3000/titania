@@ -54,7 +54,7 @@
 
 #include "../../Execution/BindableNodeList.h"
 #include "../../Execution/BindableNodeStack.h"
-#include "../Grouping/X3DBoundedObject.h"
+#include "../Grouping/Group.h"
 #include "../Layering/Viewport.h"
 #include "../Navigation/Viewpoint.h"
 
@@ -63,7 +63,7 @@ namespace X3D {
 
 Layer::Layer (X3DExecutionContext* const executionContext) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DLayerNode (new Viewpoint (executionContext))
+	X3DLayerNode (new Viewpoint (executionContext), new Group (executionContext))
 {
 	setComponent ("Layering");
 	setTypeName ("Layer");

@@ -150,7 +150,7 @@ public:
 
 	virtual
 	Vector3f
-	getScreenScale (float) const = 0;
+	getScreenScale (float, const Vector4i &) const = 0;
 
 	///  @name Operations
 

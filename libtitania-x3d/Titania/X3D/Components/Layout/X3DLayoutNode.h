@@ -59,6 +59,90 @@ namespace X3D {
 class X3DLayoutNode :
 	virtual public X3DChildNode
 {
+public:
+
+	enum class HorizontalAlignType
+	{
+		LEFT,
+		CENTER,
+		RIGHT
+
+	};
+
+	enum class VerticalAlignType
+	{
+		BOTTOM,
+		CENTER,
+		TOP
+
+	};
+
+	enum class SizeUnitType
+	{
+		WORLD,
+		FRACTION,
+		PIXEL
+
+	};
+
+	enum class ScaleModeType
+	{
+		NONE,
+		FRACTION,
+		STRETCH,
+		PIXEL
+
+	};
+
+	///  @name Member access
+
+	virtual
+	HorizontalAlignType
+	getAlignX () const = 0;
+
+	virtual
+	VerticalAlignType
+	getAlignY () const = 0;
+
+	virtual
+	SizeUnitType
+	getOffsetUnitX () const = 0;
+
+	virtual
+	SizeUnitType
+	getOffsetUnitY () const = 0;
+
+	virtual
+	SizeUnitType
+	getSizeUnitX () const = 0;
+
+	virtual
+	SizeUnitType
+	getSizeUnitY () const = 0;
+
+	virtual
+	ScaleModeType
+	getScaleModeX () const = 0;
+
+	virtual
+	ScaleModeType
+	getScaleModeY () const = 0;
+
+	virtual
+	Vector2f
+	getRectanglePosition () const = 0;
+
+	virtual
+	Vector2f
+	getRectangleSize () const = 0;
+
+	///  @name Operations
+
+	virtual
+	void
+	transform (const TraverseType) = 0;
+
+
 protected:
 
 	///  @name Construction

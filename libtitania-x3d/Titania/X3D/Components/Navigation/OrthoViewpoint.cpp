@@ -118,19 +118,33 @@ OrthoViewpoint::getMaximumY () const
 }
 
 Vector3f
-OrthoViewpoint::getScreenScale (float) const
+OrthoViewpoint::getScreenScale (float, const Vector4i & viewport) const
 {
-	Vector4i viewport = Viewport4i ();
-	int      width    = viewport [2];
-	int      height   = viewport [3];
-
-	float sizeX = getSizeX ();
-	float sizeY = getSizeY ();
+	int width    = viewport [2];
+	int height   = viewport [3];
 
 	if (width > height)
-		return Vector3f (sizeX / height, sizeY / height, 1);
+		return Vector3f (getSizeX () / height, getSizeY () / height, 1);
 
-	return Vector3f (sizeX / width, sizeY / width, 1);
+	return Vector3f (getSizeX () / width, getSizeY () / width, 1);
+}
+
+Vector2f
+OrthoViewpoint::getViewportSize (const Vector4i & viewport) const
+{
+	int width  = viewport [2];
+	int height = viewport [3];
+
+	if (width > height)
+	{
+		return Vector2f (width * getSizeX () / height,
+		                 getSizeY ());
+	}
+	else
+	{
+		return Vector2f (getSizeX (),
+		                 height * getSizeY () / width);
+	}
 }
 
 Vector3f
@@ -147,28 +161,9 @@ OrthoViewpoint::reshape (const float zNear, const float zFar)
 	glMatrixMode (GL_PROJECTION);
 	glLoadIdentity ();
 
-	Vector4i viewport = Viewport4i ();
+	Vector2f size_2 = getViewportSize (Viewport4i ()) * 0.5f;
 
-	int width  = viewport [2];
-	int height = viewport [3];
-
-	float sizeX_2 = getSizeX () * 0.5;
-	float sizeY_2 = getSizeY () * 0.5;
-
-	if (width > height)
-	{
-		float x = width * sizeX_2 / height;
-		float y = sizeY_2;
-
-		glOrtho (-x, x, -y, y, zNear, zFar);
-	}
-	else
-	{
-		float x = sizeX_2;
-		float y = height * sizeY_2 / width;
-
-		glOrtho (-x, x, -y, y, zNear, zFar);
-	}
+	glOrtho (-size_2 .x (), size_2 .x (), -size_2 .y (), size_2 .y (), zNear, zFar);
 
 	glMatrixMode (GL_MODELVIEW);
 }

@@ -95,7 +95,10 @@ public:
 
 	virtual
 	Vector3f
-	getScreenScale (float) const final;
+	getScreenScale (float, const Vector4i &) const final;
+
+	Vector2f
+	getViewportSize (const Vector4i &) const;
 
 	///  @name Operations
 

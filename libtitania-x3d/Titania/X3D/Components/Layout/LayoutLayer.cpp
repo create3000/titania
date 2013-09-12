@@ -55,6 +55,7 @@
 #include "../../Execution/BindableNodeList.h"
 #include "../../Execution/BindableNodeStack.h"
 #include "../Navigation/OrthoViewpoint.h"
+#include "../Layout/LayoutGroup.h"
 
 namespace titania {
 namespace X3D {
@@ -65,7 +66,7 @@ LayoutLayer::Fields::Fields () :
 
 LayoutLayer::LayoutLayer (X3DExecutionContext* const executionContext) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DLayerNode (new OrthoViewpoint (executionContext)),
+	X3DLayerNode (new OrthoViewpoint (executionContext), new LayoutGroup (executionContext)),
 	      fields ()
 {
 	setComponent ("Layout");
@@ -84,6 +85,18 @@ X3DBaseNode*
 LayoutLayer::create (X3DExecutionContext* const executionContext) const
 {
 	return new LayoutLayer (executionContext);
+}
+
+void
+LayoutLayer::initialize ()
+{
+	X3DLayerNode::initialize ();
+
+	LayoutGroup* group = dynamic_cast <LayoutGroup*> (getGroup () .getValue ());
+
+	layout () .addInterest (group -> layout ());
+
+	group -> layout () = layout ();
 }
 
 } // X3D

@@ -80,6 +80,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	               clock (new chrono::system_clock <time_type> ()),
 	              router (),
 	              layers (),
+	             layouts (),
 	              lights (),
 	        textureUnits (),
 	         activeLayer (),
@@ -666,6 +667,7 @@ X3DBrowserContext::dispose ()
 	renderingProperties  .dispose ();
 	browserProperties    .dispose ();
 	browserOptions       .dispose ();
+	javaScriptEngine     .dispose ();
 	activeLayer          .dispose ();
 	activeNavigationInfo .dispose ();
 	activeViewpoint      .dispose ();

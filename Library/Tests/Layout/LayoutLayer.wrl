@@ -1,0 +1,74 @@
+#X3D V3.2 utf8
+
+PROFILE Immersive
+
+COMPONENT Layering : 1
+COMPONENT Layout : 2
+
+LayerSet {
+  order [ 1, 2 ]
+  layers [
+    Layer { }
+    LayoutLayer {
+      layout Layout {
+        align [ "CENTER", "BOTTOM" ]
+        offsetUnits [ "FRACTION", "PIXEL" ]
+        scaleMode [ "FRACTION", "PIXEL" ]
+        sizeUnits [ "FRACTION", "PIXEL" ]
+        size [ 1, 48 ]
+      }
+      children [
+        DEF _0 Transform {
+          translation 0 0 -10
+          children Shape {
+            appearance Appearance {
+              material Material {
+                diffuseColor 0.77 0.77 0.77
+              }
+            }
+            geometry Rectangle2D {
+              size 1 48
+            }
+          }
+        }
+        DEF _1 LayoutGroup {
+          layout Layout {
+            align [ "CENTER", "TOP" ]
+            offsetUnits [ "PIXEL", "PIXEL" ]
+            scaleMode [ "PIXEL", "PIXEL" ]
+            sizeUnits [ "PIXEL", "PIXEL" ]
+            size [ 200, 48 ]
+          }
+          children [
+            Transform {
+              translation -54 -24 2
+              children Shape {
+                appearance Appearance {
+                  texture ImageTexture {
+                    url "buttons.png"
+                  }
+                }
+                geometry Rectangle2D {
+                  size 48 48
+                }
+              }
+            }
+            Transform {
+              translation 6 -24 2
+              children Shape {
+                appearance Appearance {
+                  texture ImageTexture {
+                    url "buttons.png"
+                  }
+                }
+                geometry Rectangle2D {
+                  size 48 48
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

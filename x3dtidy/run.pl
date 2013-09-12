@@ -5,6 +5,10 @@ use strict;
 use warnings;
 use v5.10.0;
 
+use File::Basename qw (dirname);
+
+chdir dirname $0;
+
 $ENV {XDG_DATA_DIRS} = "/home/holger/Projekte/Titania/Titania/share:/home/holger/Projekte/Titania/libtitania-x3d/share:$ENV{XDG_DATA_DIRS}";
 
 system "./x3dtidy", @ARGV;

@@ -87,6 +87,8 @@ class Rectangle2DOptions;
 class BoxOptions;
 class X3DSphereOptionNode;
 class MotionBlur;
+class Viewport;
+class Layout;
 
 class BrowserOptions :
 	public X3DPropertyNode
@@ -317,6 +319,22 @@ public:
 	fontStyle () const
 	{ return fields .fontStyle; }
 
+	X3DSFNode <Viewport> &
+	viewport ()
+	{ return fields .viewport; }
+
+	const X3DSFNode <Viewport> &
+	viewport () const
+	{ return fields .viewport; }
+
+	X3DSFNode <Layout> &
+	layout ()
+	{ return fields .layout; }
+
+	const X3DSFNode <Layout> &
+	layout () const
+	{ return fields .layout; }
+
 	virtual
 	void
 	dispose () final;
@@ -371,6 +389,8 @@ private:
 		X3DSFNode <BoxOptions> boxOptions;
 		X3DSFNode <X3DSphereOptionNode> sphereOptions;
 		X3DSFNode <X3DFontStyleNode> fontStyle;
+		X3DSFNode <Viewport> viewport;
+		X3DSFNode <Layout> layout;
 	};
 
 	Fields fields;

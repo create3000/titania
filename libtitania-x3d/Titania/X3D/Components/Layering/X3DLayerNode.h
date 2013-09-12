@@ -55,9 +55,8 @@
 #include "../../Rendering/LightContainerArray.h"
 #include "../../Rendering/X3DRenderer.h"
 #include "../EnvironmentalEffects/LocalFog.h"
-#include "../Grouping/Group.h"
 #include "../Grouping/X3DGroupingNode.h"
-#include "../Layering/Viewport.h"
+#include "../Layering/X3DViewportNode.h"
 
 #include "../EnvironmentalEffects/Fog.h"
 #include "../EnvironmentalEffects/X3DBackgroundNode.h"
@@ -134,12 +133,6 @@ public:
 	const MFNode &
 	children () const
 	{ return *fields .children; }
-
-	///  @name Children handling
-
-	const X3DSFNode <Group>
-	getGroup () const
-	{ return group; }
 
 	///  @name Bindable node stack handling
 
@@ -258,11 +251,17 @@ protected:
 
 	///  @name Construction
 
-	X3DLayerNode (X3DViewpointNode*);
+	X3DLayerNode (X3DViewpointNode*, X3DGroupingNode*);
 
 	virtual
 	void
 	initialize () override;
+
+	///  @name Member access
+
+	const X3DSFNode <X3DGroupingNode>
+	getGroup () const
+	{ return group; }
 
 
 private:
@@ -314,7 +313,6 @@ private:
 
 	Fields fields;
 
-	X3DSFNode <Viewport>          defaultViewport;
 	X3DSFNode <NavigationInfo>    defaultNavigationInfo;
 	X3DSFNode <X3DBackgroundNode> defaultBackground;
 	X3DSFNode <Fog>               defaultFog;
@@ -338,7 +336,7 @@ private:
 	LightContainerArray globalLights;
 	CollisionArray      collisions;
 
-	X3DSFNode <Group> group;
+	X3DSFNode <X3DGroupingNode> group;
 
 };
 

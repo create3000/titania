@@ -95,7 +95,7 @@ ScreenGroup::scale (const TraverseType type) const
 	float distance = math::abs (modelViewMatrix .translation ());
 
 	Matrix4f matrix;
-	matrix .set (translation, rotation, getCurrentViewpoint () -> getScreenScale (distance));
+	matrix .set (translation, rotation, getCurrentViewpoint () -> getScreenScale (distance, Viewport4i ()));
 
 	glLoadMatrixf (matrix .data ());
 }

@@ -10,11 +10,13 @@ EXTERNPROTO RoundedRectangle2D [
 PROTO Notification [
   # Custom fields
   exposedField SFTime   cycleInterval 3
-  exposedField SFVec2f  borderWidth 0.1 0.05
+  exposedField SFFloat  cornerRadius 4
   exposedField SFFloat  linewidthScaleFactor 1
+  exposedField SFVec2f  borderWidth 20 10
   # Required fields
   eventIn      SFString set_string
   eventOut     SFBool   isActive
+  exposedField SFNode   fontStyle NULL
 ]
 {
   PROTO Fields [
@@ -25,10 +27,9 @@ PROTO Notification [
     MetadataSet { }
   }
 
-  Collision {
-    collide FALSE
-    children Transform {
-      translation 0 -0.8 0
+  Transform {
+    translation 0 -0.8 0
+    children ScreenGroup {
       children [
         Shape {
           appearance Appearance {
@@ -37,8 +38,7 @@ PROTO Notification [
             }
           }
           geometry DEF BackgroundGeometry RoundedRectangle2D {
-            cornerRadius 0.02
-            size 1 0.1
+            cornerRadius IS cornerRadius
           }
         }
         Shape {
@@ -63,13 +63,7 @@ PROTO Notification [
             }
           }
           geometry DEF Text Text {
-            string "CylinderSensor"
-            fontStyle FontStyle {
-              family "sans"
-              style "BOLD"
-              size 0.08
-              justify [ "MIDDLE", "MIDDLE" ]
-            }
+            fontStyle IS fontStyle
           }
         }
       ]
@@ -136,6 +130,7 @@ function set_end (value, time)
     directOutput TRUE
   }
 
+
   # String
 
   ROUTE Text.textBounds TO Notification.set_textBounds
@@ -163,4 +158,11 @@ Background {
 
 OrthoViewpoint { }
 
-DEF Notification Notification { }
+DEF Notification Notification {
+  fontStyle FontStyle {
+    family "sans"
+    style "BOLD"
+    size 16
+    justify [ "MIDDLE", "MIDDLE" ]
+  }
+}

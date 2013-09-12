@@ -89,15 +89,15 @@ Viewpoint::create (X3DExecutionContext* const executionContext) const
 }
 
 Vector3f
-Viewpoint::getScreenScale (float distance) const
+Viewpoint::getScreenScale (float distance, const Vector4i & viewport) const
 {
-	Vector4i viewport = Viewport4i ();
-	int      width    = viewport [2];
-	int      height   = viewport [3];
-	float    size     = distance * std::tan (fieldOfView () * 0.5f) * 2;
+	int   width  = viewport [2];
+	int   height = viewport [3];
+	float size   = distance * std::tan (fieldOfView () * 0.5f) * 2;
 
 	if (width > height)
 		size /= height;
+
 	else
 		size /= width;
 
