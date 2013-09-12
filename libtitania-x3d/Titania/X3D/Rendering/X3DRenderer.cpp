@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -151,7 +151,7 @@ X3DRenderer::getDistance (X3DShapeNode* shape, const Matrix4f & matrix)
 }
 
 void
-X3DRenderer::render (TraverseType type)
+X3DRenderer::render (const TraverseType type)
 {
 	numOpaqueShapes      = 0;
 	numTransparentShapes = 0;

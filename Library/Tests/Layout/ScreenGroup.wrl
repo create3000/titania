@@ -2,43 +2,48 @@
 
 META "title" "ScreenGroup"
 
-Background {
+DEF _0 Background {
   skyColor 0.2 0.2 0.2
 }
 
-OrthoViewpoint { }
-Viewpoint { }
+DEF _1 OrthoViewpoint { }
 
-ScreenGroup {
-  children [
-    Shape {
-      appearance Appearance {
-        material Material {
-          diffuseColor 1 0 0
+DEF _2 Viewpoint { }
+
+DEF _3 Transform {
+  scale 2 1 1
+  scaleOrientation 0 0 1 0.785398
+  children ScreenGroup {
+    children [
+      Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 1 0 0
+          }
+        }
+        geometry Text {
+          string [ "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz", "0123456789", "äöüß.?!,;:" ]
+          fontStyle FontStyle {
+            family "Ubuntu Mono"
+            style "-NORMAL"
+            size 12
+            justify [ "BEGIN", "BEGIN" ]
+          }
         }
       }
-      geometry Text {
-        string [ "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz", "0123456789", "äöüß.?!,;:" ]
-        fontStyle FontStyle {
-          family "Ubuntu Mono"
-          style "-NORMAL"
-          size 12
-          justify [ "BEGIN", "BEGIN" ]
+      Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 1 1 1
+          }
+          texture ImageTexture {
+            url "../images/image.png"
+          }
+        }
+        geometry Rectangle2D {
+          size 1 1
         }
       }
-    }
-    Shape {
-      appearance Appearance {
-        material Material {
-          diffuseColor 1 1 1
-        }
-        texture ImageTexture {
-          url "../images/image.png"
-        }
-      }
-      geometry Rectangle2D {
-        size 1 1
-      }
-    }
-  ]
+    ]
+  }
 }

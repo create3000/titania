@@ -62,4 +62,62 @@ extern "C"
 #include <GL/glx.h>
 }
 
+#include "../Types/Numbers.h"
+
+namespace titania {
+namespace X3D {
+
+inline
+Vector4i
+Viewport4i ()
+{
+	Vector4i viewport;
+
+	glGetIntegerv (GL_VIEWPORT, viewport .data ());
+	return viewport;
+}
+
+inline
+Matrix4d
+ModelViewMatrix4d ()
+{
+	Matrix4d matrix;
+
+	glGetDoublev (GL_MODELVIEW_MATRIX, matrix .data ());
+	return matrix;
+}
+
+inline
+Matrix4f
+ModelViewMatrix4f ()
+{
+	Matrix4f matrix;
+
+	glGetFloatv (GL_MODELVIEW_MATRIX, matrix .data ());
+	return matrix;
+}
+
+inline
+Matrix4d
+ProjectionMatrix4d ()
+{
+	Matrix4d matrix;
+
+	glGetDoublev (GL_PROJECTION_MATRIX, matrix .data ());
+	return matrix;
+}
+
+inline
+Matrix4f
+ProjectionMatrix4f ()
+{
+	Matrix4f matrix;
+
+	glGetFloatv (GL_PROJECTION_MATRIX, matrix .data ());
+	return matrix;
+}
+
+} // X3D
+} // titania
+
 #endif

@@ -120,6 +120,14 @@ private:
 	float
 	getMaximumY () const;
 
+	float
+	getSizeX () const
+	{ return getMaximumX () - getMinimumX (); }
+
+	float
+	getSizeY () const
+	{ return getMaximumY () - getMinumumY (); }
+
 	virtual
 	Vector3f
 	getLookAtPositionOffset (Box3f) const final;

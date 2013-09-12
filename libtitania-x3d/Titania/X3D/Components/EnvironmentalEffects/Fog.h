@@ -78,7 +78,7 @@ public:
 
 	virtual
 	void
-	traverse (TraverseType);
+	traverse (const TraverseType);
 
 	virtual
 	void

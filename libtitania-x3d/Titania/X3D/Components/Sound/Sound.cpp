@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -52,8 +52,6 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
-
-#include "../../Rendering/Matrix.h"
 #include "../../Types/Geometry.h"
 
 namespace titania {
@@ -117,7 +115,7 @@ Sound::set_source ()
 }
 
 void
-Sound::traverse (TraverseType type)
+Sound::traverse (const TraverseType type)
 {
 	if (type == TraverseType::COLLECT)
 	{

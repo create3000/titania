@@ -126,7 +126,7 @@ GeoViewpoint::reshape (const float zNear, const float zFar)
 { }
 
 void
-GeoViewpoint::traverse (TraverseType)
+GeoViewpoint::traverse (const TraverseType)
 { }
 
 } // X3D

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -111,6 +111,17 @@ const Matrix4f &
 X3DNode::getInverseCameraSpaceMatrix () const
 {
 	return getCurrentViewpoint () -> getInverseTransformationMatrix ();
+}
+
+Matrix4f
+X3DNode::getModelViewMatrix (const TraverseType type) const
+{
+	Matrix4f modelViewMatrix = ModelViewMatrix4f ();
+
+	if (type == TraverseType::CAMERA)
+		modelViewMatrix *= getInverseCameraSpaceMatrix ();
+	
+	return modelViewMatrix;
 }
 
 } // X3D

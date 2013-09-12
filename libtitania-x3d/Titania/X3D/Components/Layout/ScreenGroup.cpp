@@ -51,15 +51,14 @@
 #include "ScreenGroup.h"
 
 #include "../../Execution/X3DExecutionContext.h"
-#include "../../Rendering/Matrix.h"
 #include "../Navigation/Viewpoint.h"
 
 namespace titania {
 namespace X3D {
 
 ScreenGroup::ScreenGroup (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DGroupingNode ()
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	 X3DGroupingNode ()
 {
 	setComponent ("Layout");
 	setTypeName ("ScreenGroup");
@@ -78,26 +77,35 @@ ScreenGroup::create (X3DExecutionContext* const executionContext) const
 	return new ScreenGroup (executionContext);
 }
 
-float
-ScreenGroup::getDistance (TraverseType type) const
+Box3f
+ScreenGroup::getBBox ()
 {
-	Matrix4f matrix = ModelViewMatrix4f ();
-
-	if (type == TraverseType::CAMERA)
-		matrix *= getInverseCameraSpaceMatrix ();
-
-	return math::abs (matrix .translation ());
+	return Box3f ();
 }
 
 void
-ScreenGroup::traverse (TraverseType type)
+ScreenGroup::scale (const TraverseType type) const
+{
+	Matrix4f modelViewMatrix = getModelViewMatrix (type);
+
+	Vector3f translation;
+	Rotation4f rotation;
+	modelViewMatrix .get (translation, rotation);
+
+	float distance = math::abs (modelViewMatrix .translation ());
+
+	Matrix4f matrix;
+	matrix .set (translation, rotation, getCurrentViewpoint () -> getScreenScale (distance));
+
+	glLoadMatrixf (matrix .data ());
+}
+
+void
+ScreenGroup::traverse (const TraverseType type)
 {
 	glPushMatrix ();
-	
-	Matrix4f matrix;
-	matrix .scale (getCurrentViewpoint () -> getScreenScale (getDistance (type)));
 
-	glMultMatrixf (matrix .data ());
+	scale (type);
 
 	X3DGroupingNode::traverse (type);
 

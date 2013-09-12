@@ -88,5 +88,6 @@
   </ProjectExtensions>
   <ItemGroup>
     <None Include="Makefile.am" />
+    <None Include="run.pl" />
   </ItemGroup>
 </Project>

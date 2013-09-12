@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -62,6 +62,8 @@ class Viewport :
 {
 public:
 
+	///  @name Construction
+
 	Viewport (X3DExecutionContext* const);
 
 	virtual
@@ -78,9 +80,11 @@ public:
 	clipBoundary () const
 	{ return *fields .clipBoundary; }
 
+	///  @name Operations
+
 	virtual
 	void
-	traverse (TraverseType);
+	traverse (const TraverseType);
 
 	virtual
 	void
@@ -90,6 +94,8 @@ public:
 	void
 	pop () final;
 
+	///  @name Destruction
+
 	virtual
 	void
 	dispose () final;
@@ -97,9 +103,13 @@ public:
 
 private:
 
+	///  @name Construction
+
 	virtual
 	void
 	initialize () final;
+
+	///  @name Member access
 
 	float
 	getLeft ();
@@ -113,9 +123,13 @@ private:
 	float
 	getTop ();
 
+	///  @name Destruction
+
 	virtual
 	void
-	collect (TraverseType) final;
+	collect (const TraverseType) final;
+
+	///  @name Members
 
 	struct Fields
 	{

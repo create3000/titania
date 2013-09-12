@@ -56,7 +56,7 @@ namespace titania {
 namespace X3D {
 
 WorldInfo::Fields::Fields () :
-	info (new MFString ()),
+	 info (new MFString ()),
 	title (new SFString ())
 { }
 

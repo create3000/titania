@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 X3DSensorNode::Fields::Fields () :
-	enabled (new SFBool (true)),
+	 enabled (new SFBool (true)),
 	isActive (new SFBool ())
 { }
 

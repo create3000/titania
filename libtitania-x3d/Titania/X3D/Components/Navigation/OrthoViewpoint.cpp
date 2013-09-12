@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,13 +51,12 @@
 #include "OrthoViewpoint.h"
 
 #include "../../Execution/X3DExecutionContext.h"
-#include "../../Rendering/Matrix.h"
 
 namespace titania {
 namespace X3D {
 
 OrthoViewpoint::Fields::Fields () :
-	position (new SFVec3f (0, 0, 10)),
+	   position (new SFVec3f (0, 0, 10)),
 	fieldOfView (new MFFloat ({ -1 }))
 { }
 
@@ -125,13 +124,13 @@ OrthoViewpoint::getScreenScale (float) const
 	int      width    = viewport [2];
 	int      height   = viewport [3];
 
-	float size_x = getMaximumX () - getMinimumX ();
-	float size_y = getMaximumY () - getMinumumY ();
+	float sizeX = getSizeX ();
+	float sizeY = getSizeY ();
 
 	if (width > height)
-		return Vector3f (size_x / height, size_y / height, 1);
-		
-	return Vector3f (size_x / width, size_y / width, 1);
+		return Vector3f (sizeX / height, sizeY / height, 1);
+
+	return Vector3f (sizeX / width, sizeY / width, 1);
 }
 
 Vector3f
@@ -150,23 +149,23 @@ OrthoViewpoint::reshape (const float zNear, const float zFar)
 
 	Vector4i viewport = Viewport4i ();
 
-	size_t width  = viewport [2];
-	size_t height = viewport [3];
+	int width  = viewport [2];
+	int height = viewport [3];
 
-	float size_x = (getMaximumX () - getMinimumX ()) * 0.5;
-	float size_y = (getMaximumY () - getMinumumY ()) * 0.5;
+	float sizeX_2 = getSizeX () * 0.5;
+	float sizeY_2 = getSizeY () * 0.5;
 
 	if (width > height)
 	{
-		float x = width * size_x / height;
-		float y = size_y;
+		float x = width * sizeX_2 / height;
+		float y = sizeY_2;
 
 		glOrtho (-x, x, -y, y, zNear, zFar);
 	}
 	else
 	{
-		float x = size_x;
-		float y = height * size_y / width;
+		float x = sizeX_2;
+		float y = height * sizeY_2 / width;
 
 		glOrtho (-x, x, -y, y, zNear, zFar);
 	}

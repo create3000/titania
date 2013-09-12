@@ -50,8 +50,6 @@
 
 #include "Hit.h"
 
-#include "../../Rendering/Matrix.h"
-
 namespace titania {
 namespace X3D {
 

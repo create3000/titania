@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -61,6 +61,8 @@ class LOD :
 {
 public:
 
+	///  @name Construction
+
 	LOD (X3DExecutionContext* const);
 
 	virtual
@@ -101,22 +103,30 @@ public:
 	level_changed () const
 	{ return *fields .level_changed; }
 
+	///  @name Member access
+
 	virtual
 	Box3f
 	getBBox () final;
 
+	///  @name Operations
+
 	virtual
 	void
-	traverse (TraverseType) final;
+	traverse (const TraverseType) final;
 
 
 private:
 
+	///  @name Member access
+
 	size_t
-	getLevel (TraverseType) const;
+	getLevel (const TraverseType) const;
 
 	float
-	getDistance (TraverseType) const;
+	getDistance (const TraverseType) const;
+
+	///  @name Members
 
 	struct Fields
 	{

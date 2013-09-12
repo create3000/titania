@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -117,7 +117,7 @@ Viewport::getTop ()
 }
 
 void
-Viewport::traverse (TraverseType type)
+Viewport::traverse (const TraverseType type)
 {
 	switch (type)
 	{
@@ -153,7 +153,7 @@ Viewport::traverse (TraverseType type)
 }
 
 void
-Viewport::collect (TraverseType type)
+Viewport::collect (const TraverseType type)
 {
 	for (const auto & child : children ())
 		child -> traverse (type);

@@ -166,7 +166,7 @@ ViewpointGroup::set_isActive ()
 }
 
 void
-ViewpointGroup::traverse (TraverseType type)
+ViewpointGroup::traverse (const TraverseType type)
 {
 	proximitySensor -> traverse (type);
 

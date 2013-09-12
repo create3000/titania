@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -249,8 +249,7 @@ X3DViewpointNode::lookAt (Box3f bbox)
 		scaleInterpolator            -> value_changed () .addInterest (scaleOffset ());
 		scaleOrientationInterpolator -> value_changed () .addInterest (scaleOrientationOffset ());
 
-		centerOfRotation ()       = bbox .center ();
-		centerOfRotationOffset () = Vector3f ();
+		centerOfRotationOffset () = bbox .center () - centerOfRotation ();
 		set_bind ()               = true;
 	}
 	catch (const std::domain_error &)
@@ -398,7 +397,7 @@ X3DViewpointNode::_set_bind ()
 }
 
 void
-X3DViewpointNode::traverse (TraverseType type)
+X3DViewpointNode::traverse (const TraverseType type)
 {
 	switch (type)
 	{

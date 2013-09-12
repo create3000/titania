@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -53,7 +53,6 @@
 
 #include "../../Rendering/CollisionArray.h"
 #include "../../Rendering/LightContainerArray.h"
-#include "../../Rendering/Matrix.h"
 #include "../../Rendering/X3DRenderer.h"
 #include "../EnvironmentalEffects/LocalFog.h"
 #include "../Grouping/Group.h"
@@ -228,7 +227,7 @@ public:
 	getCollisions ()
 	{ return collisions; }
 
-	///  @name ...
+	///  @name Member access
 
 	Box3f
 	getBBox ();
@@ -239,9 +238,13 @@ public:
 	void
 	lookAt ();
 
+	///  @name Operations
+
 	virtual
 	void
-	traverse (TraverseType) override;
+	traverse (const TraverseType) override;
+
+	///  @name Destruction
 
 	virtual
 	void
@@ -253,6 +256,8 @@ protected:
 	using X3DNode::addChildren;
 	using X3DNode::removeChildren;
 
+	///  @name Construction
+
 	X3DLayerNode (X3DViewpointNode*);
 
 	virtual
@@ -262,8 +267,12 @@ protected:
 
 private:
 
+	///  @name Member access
+
 	float
 	getDistance (const Vector3f &, float, float, const Vector3f &);
+
+	///  @name Operations
 
 	void
 	clearLights ();
@@ -288,7 +297,9 @@ private:
 
 	virtual
 	void
-	collect (TraverseType) override;
+	collect (const TraverseType) override;
+
+	///  @name Members
 
 	struct Fields
 	{

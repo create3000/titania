@@ -104,6 +104,9 @@ protected:
 	const Matrix4f &
 	getInverseCameraSpaceMatrix () const;
 
+	Matrix4f
+	getModelViewMatrix (const TraverseType) const;
+
 	friend class X3DExecutionContext;
 
 

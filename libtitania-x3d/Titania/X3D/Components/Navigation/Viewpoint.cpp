@@ -52,7 +52,6 @@
 
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "../../Rendering/Matrix.h"
 
 namespace titania {
 namespace X3D {

@@ -78,7 +78,7 @@ public:
 	addCollision (X3DShapeNode*);
 
 	void
-	render (TraverseType);
+	render (const TraverseType);
 
 	void
 	gravite ();
@@ -111,7 +111,7 @@ private:
 
 	virtual
 	void
-	collect (TraverseType) = 0;
+	collect (const TraverseType) = 0;
 
 	void
 	draw ();

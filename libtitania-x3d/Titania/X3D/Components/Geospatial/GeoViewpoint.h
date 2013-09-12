@@ -161,7 +161,7 @@ public:
 
 	virtual
 	void
-	traverse (TraverseType);
+	traverse (const TraverseType);
 
 
 private:

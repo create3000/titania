@@ -343,8 +343,8 @@ X3DFlyViewer::display ()
 
 		Vector4i viewport = Viewport4i ();
 
-		size_t width  = viewport [2];
-		size_t height = viewport [3];
+		int width  = viewport [2];
+		int height = viewport [3];
 
 		glMatrixMode (GL_PROJECTION);
 		glLoadIdentity ();

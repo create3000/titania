@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -303,7 +303,7 @@ X3DLayerNode::set_viewport ()
 }
 
 void
-X3DLayerNode::traverse (TraverseType type)
+X3DLayerNode::traverse (const TraverseType type)
 {
 	getBrowser () -> getLayers () .push (this);
 
@@ -446,7 +446,7 @@ X3DLayerNode::collect ()
 }
 
 void
-X3DLayerNode::collect (TraverseType type)
+X3DLayerNode::collect (const TraverseType type)
 {
 	group -> traverse (type);
 }

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -53,7 +53,6 @@
 #include "../../Bits/Cast.h"
 #include "../../Components/Layering/X3DLayerNode.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "../../Rendering/Matrix.h"
 
 namespace titania {
 namespace X3D {
@@ -115,7 +114,7 @@ LOD::getBBox ()
 }
 
 size_t
-LOD::getLevel (TraverseType type) const
+LOD::getLevel (const TraverseType type) const
 {
 	float distance = getDistance (type);
 
@@ -125,20 +124,17 @@ LOD::getLevel (TraverseType type) const
 }
 
 float
-LOD::getDistance (TraverseType type) const
+LOD::getDistance (const TraverseType type) const
 {
-	Matrix4f matrix = ModelViewMatrix4f ();
+	Matrix4f modelViewMatrix = getModelViewMatrix (type);
 
-	if (type == TraverseType::CAMERA)
-		matrix *= getInverseCameraSpaceMatrix ();
+	modelViewMatrix .translate (center ());
 
-	matrix .translate (center ());
-
-	return math::abs (matrix .translation ());
+	return math::abs (modelViewMatrix .translation ());
 }
 
 void
-LOD::traverse (TraverseType type)
+LOD::traverse (const TraverseType type)
 {
 	size_t level = getLevel (type);
 

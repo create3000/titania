@@ -50,8 +50,6 @@
 
 #include "ViewVolume.h"
 
-#include "../Rendering/Matrix.h"
-
 #include "../Rendering/OpenGL.h"
 
 #include <Titania/LOG.h>

@@ -69,19 +69,25 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const final;
 
+	///  @name Member access
+
+	virtual
+	Box3f
+	getBBox () final;
+
 	///  @name Operations
 
 	virtual
 	void
-	traverse (TraverseType) final;
+	traverse (const TraverseType) final;
 
 
 private:
 
 	///  @name Operations
 
-	float
-	getDistance (TraverseType) const;
+	void
+	scale (const TraverseType) const;	
 
 };
 
