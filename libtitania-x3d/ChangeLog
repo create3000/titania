@@ -1,5 +1,12 @@
 2013-09-13  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Grammar.h:
+	* Grammar.cpp:
+	* SFColor.cpp:
+	* Layout.cpp: 
+
+2013-09-13  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Notification.wrl:
 	* Layout.h:
 	* Layout.cpp:

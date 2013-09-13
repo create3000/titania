@@ -521,10 +521,10 @@ Layout::transform (const TraverseType type)
 		switch (getOffsetUnitY ())
 		{
 			case SizeUnitType::FRACTION:
-				offset .y (offsetY * parentRectangleSize .x ());
+				offset .y (offsetY * parentRectangleSize .y ());
 				break;
 			case SizeUnitType::PIXEL:
-				offset .y (offsetY * viewportSize .x () / viewportWidth);
+				offset .y (offsetY * viewportSize .y () / viewportHeight);
 				break;
 			default:
 				break;

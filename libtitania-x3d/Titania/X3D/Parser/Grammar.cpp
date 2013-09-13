@@ -113,8 +113,8 @@ io::sequence Grammar::ComponentName ("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnop
 bool
 Grammar::Int32 (std::istream & istream, int32_t & _value)
 {
-	if (hex (istream) or HEX (istream))
-		return Hex (istream, (uint32_t &)_value);
+	if (Hex (istream, (uint32_t &)_value))
+		return true;
 
 	return istream >> std::dec >> _value;
 }
@@ -122,7 +122,8 @@ Grammar::Int32 (std::istream & istream, int32_t & _value)
 bool
 Grammar::Hex (std::istream & istream, uint32_t & value)
 {
-	return istream >> std::hex >> value;
+	if (hex (istream) or HEX (istream))
+		return istream >> std::hex >> value;
 }
 
 std::set <std::string>

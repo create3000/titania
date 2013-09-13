@@ -171,10 +171,25 @@ throw (Error <INVALID_X3D>,
 	
 	Grammar::whitespaces (istream, whitespaces);
 
-	istream >> get ();
+	uint32_t value;
 
-	if (istream)
+	if (Grammar::Hex (istream, value))
+	{
+		float r = (value >> 16 & 0xff) / 255.0f;
+		float g = (value >> 8  & 0xff) / 255.0f;
+		float b = (value       & 0xff) / 255.0f;
+
+		get () .set (r, g, b);
+
 		addEvent ();
+	}
+	else
+	{
+		istream >> get ();
+
+		if (istream)
+			addEvent ();
+	}
 }
 
 void

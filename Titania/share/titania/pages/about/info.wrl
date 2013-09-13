@@ -8,13 +8,11 @@ DEF _2 LayerSet {
   order 1
   layers LayoutLayer {
     layout DEF _0 Layout { }
-    children DEF _1 Transform {
-      children Shape {
+    children [
+      DEF Background Shape {
         appearance Appearance {
-          texture ImageTexture {
-            url "info/info.png"
-            repeatS FALSE
-            repeatT FALSE
+          material Material {
+            diffuseColor 0 0 0
           }
         }
         geometry Rectangle2D {
@@ -22,6 +20,83 @@ DEF _2 LayerSet {
           solid FALSE
         }
       }
-    }
+      DEF _4 LayoutGroup {
+        layout DEF _0 Layout {
+          scaleMode [ "STRETCH", "NONE" ]
+        }
+        children DEF Page Transform {
+          scale 1.01 1 1
+          children [
+            DEF Image Switch {
+              whichChoice 0
+              children Shape {
+                appearance Appearance {
+                  texture ImageTexture {
+                    url "info/info.png"
+                    repeatS FALSE
+                    repeatT FALSE
+                  }
+                }
+                geometry Rectangle2D {
+                  size 1 1
+                  solid FALSE
+                }
+              }
+            }
+            DEF VerticalGrey Transform {
+              translation 0.34 0.245 0
+              scale 0.2 0.51 1
+              children Shape {
+                appearance Appearance {
+                  material Material {
+                    diffuseColor 0.247059 0.247059 0.247059
+                    transparency 0.5
+                  }
+                }
+                geometry Rectangle2D {
+                  size 1 1
+                  solid FALSE
+                }
+              }
+            }
+            DEF VerticalYellow Transform {
+              translation 0.34 -0.255 0
+              scale 0.2 0.49 1
+              children Shape {
+                appearance Appearance {
+                  material Material {
+                    diffuseColor 1 0.890196 0.176471
+                    transparency 0.5
+                  }
+                }
+                geometry Rectangle2D {
+                  size 1 1
+                  solid FALSE
+                }
+              }
+            }
+          ]
+        }
+      }
+      DEF Support LayoutGroup {
+        layout DEF _0 Layout {
+          align [ "CENTER", "TOP" ]
+          offset [ 0, -0.32 ]
+          size [ 1, 0.19 ]
+          scaleMode "FRACTION"
+        }
+        children DEF HorizontalGrey Shape {
+          appearance Appearance {
+            material Material {
+              diffuseColor 0.760784 0.760784 0.760784
+            }
+          }
+          geometry Rectangle2D {
+            size 1 1
+            solid FALSE
+          }
+        }
+      }
+    ]
   }
 }

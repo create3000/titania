@@ -10,8 +10,8 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="752"
-   height="608"
+   width="1010"
+   height="1000"
    id="svg2"
    version="1.1"
    inkscape:version="0.48.4 r9939"
@@ -82,18 +82,18 @@
      borderopacity="1.0"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4142136"
-     inkscape:cx="316.60613"
-     inkscape:cy="383.98193"
+     inkscape:zoom="0.5"
+     inkscape:cx="573.83658"
+     inkscape:cy="426.80526"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     showgrid="true"
+     showgrid="false"
      inkscape:snap-page="true"
-     inkscape:window-width="1350"
-     inkscape:window-height="777"
-     inkscape:window-x="233"
-     inkscape:window-y="209"
-     inkscape:window-maximized="0"
+     inkscape:window-width="1861"
+     inkscape:window-height="1056"
+     inkscape:window-x="59"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1"
      showguides="false"
      inkscape:guide-bbox="true"
      inkscape:snap-nodes="true"
@@ -113,110 +113,90 @@
     <inkscape:grid
        type="xygrid"
        id="grid3015"
-       empspacing="8"
+       empspacing="10"
        visible="true"
        enabled="true"
        snapvisiblegridlinesonly="true"
        spacingx="1px"
        spacingy="1px"
-       originx="-7.1054274e-14px"
-       originy="2.6171874e-06px" />
+       originx="-1.4210855e-13px"
+       originy="380.00001px" />
     <sodipodi:guide
        orientation="1,0"
-       position="128,688"
+       position="260,1040"
        id="guide3021" />
     <sodipodi:guide
        orientation="0,1"
-       position="64,16.000003"
+       position="-40,490.00001"
        id="guide3031" />
     <sodipodi:guide
-       orientation="0,1"
-       position="-96,272"
-       id="guide3033" />
-    <sodipodi:guide
-       orientation="0,1"
-       position="64,144"
-       id="guide3035" />
-    <sodipodi:guide
        orientation="1,0"
-       position="-16,688"
-       id="guide3039" />
-    <sodipodi:guide
-       orientation="1,0"
-       position="240,688"
-       id="guide3041" />
-    <sodipodi:guide
-       orientation="1,0"
-       position="272,688"
+       position="290,1050"
        id="guide3043" />
     <sodipodi:guide
        orientation="1,0"
-       position="560,688"
-       id="guide3045" />
-    <sodipodi:guide
-       orientation="1,0"
-       position="416,688"
+       position="520,1060"
        id="guide3047" />
     <sodipodi:guide
        orientation="1,0"
-       position="384,688"
+       position="490,1070"
        id="guide3049" />
     <sodipodi:guide
        orientation="1,0"
-       position="96,688"
+       position="60,1010"
        id="guide3051" />
     <sodipodi:guide
-       orientation="0,1"
-       position="64,112"
-       id="guide3951" />
-    <sodipodi:guide
        orientation="1,0"
-       position="-64,688"
+       position="-1.4210855e-13,790"
        id="guide3830" />
     <sodipodi:guide
        orientation="0,1"
-       position="-112,368"
-       id="guide3832" />
-    <sodipodi:guide
-       orientation="1,0"
-       position="528,688"
-       id="guide3834" />
-    <sodipodi:guide
-       orientation="0,1"
-       position="-112,496"
+       position="-50,680.00001"
        id="guide3840" />
     <sodipodi:guide
        orientation="1,0"
-       position="848,688"
+       position="1010,1070"
        id="guide3842" />
     <sodipodi:guide
-       orientation="1,0"
-       position="672,688"
-       id="guide3850" />
-    <sodipodi:guide
        orientation="0,1"
-       position="48,240"
+       position="48,620"
        id="guide3971" />
     <sodipodi:guide
        orientation="1,0"
-       position="704,688"
-       id="guide3989" />
-    <sodipodi:guide
-       orientation="1,0"
-       position="1504,608"
+       position="1504,988"
        id="guide3876" />
     <sodipodi:guide
        orientation="1,0"
-       position="816,688"
+       position="950,1060"
        id="guide3880" />
     <sodipodi:guide
        orientation="1,0"
-       position="-752,336"
+       position="-752,716"
        id="guide3882" />
     <sodipodi:guide
        orientation="1,0"
-       position="541.5,416.75"
+       position="720,1050"
        id="guide4373" />
+    <sodipodi:guide
+       orientation="1,0"
+       position="750,1040"
+       id="guide4427" />
+    <sodipodi:guide
+       orientation="1,0"
+       position="780,780.00001"
+       id="guide4429" />
+    <sodipodi:guide
+       orientation="1,0"
+       position="910,850.00001"
+       id="guide4431" />
+    <sodipodi:guide
+       orientation="0,1"
+       position="30,940.00001"
+       id="guide4433" />
+    <sodipodi:guide
+       orientation="1,0"
+       position="285.13207,147.78532"
+       id="guide4435" />
   </sodipodi:namedview>
   <metadata
      id="metadata7">
@@ -235,7 +215,7 @@
      id="layer3"
      inkscape:label="Schatten"
      style="display:none"
-     transform="translate(0,95.999997)"
+     transform="translate(0,107.99999)"
      sodipodi:insensitive="true">
     <rect
        style="fill:#000000;fill-opacity:1;stroke:none"
@@ -250,7 +230,7 @@
      id="layer4"
      inkscape:label="Hintergrund"
      style="display:none"
-     transform="translate(0,95.999997)">
+     transform="translate(0,107.99999)">
     <rect
        style="fill:#3d4150;fill-opacity:1;stroke:none;display:inline"
        id="rect3055"
@@ -278,7 +258,7 @@
      inkscape:groupmode="layer"
      id="layer5"
      inkscape:label="Streifen"
-     transform="translate(0,95.999997)"
+     transform="translate(0,107.99999)"
      style="display:inline">
     <g
        id="g4251"
@@ -466,46 +446,36 @@
      inkscape:label="Ebene 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-444.36218)"
+     transform="translate(0,-432.36218)"
      style="display:inline">
     <rect
        style="fill:#000000;fill-opacity:1;stroke:none;display:inline"
        id="rect3874"
-       width="752"
-       height="263.22394"
+       width="1010"
+       height="1000"
        x="7.1054274e-14"
-       y="-707.58612"
+       y="-1432.3622"
        transform="scale(1,-1)"
-       inkscape:export-filename="/home/holger/Projekte/Titania/Titania/share/titania/pages/about/info/info.png"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90" />
-    <rect
-       y="780.36218"
-       x="7.1054274e-14"
-       height="272.00003"
-       width="752"
-       id="rect3870"
-       style="fill:#000000;fill-opacity:1;stroke:none;display:inline"
        inkscape:export-filename="/home/holger/Projekte/Titania/Titania/share/titania/pages/about/info/info.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <rect
        style="fill:#c2c2c2;fill-opacity:1;stroke:none;display:inline"
        id="rect3953"
-       width="752"
-       height="87.868271"
-       x="7.1054274e-14"
-       y="700.36218"
+       width="1010"
+       height="189.99998"
+       x="-1.4210855e-13"
+       y="752.36218"
        inkscape:export-filename="/home/holger/Projekte/Titania/Titania/share/titania/pages/about/info/info.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <rect
        style="fill:#3f3f3f;fill-opacity:1;stroke:none"
        id="rect3872"
-       width="112"
-       height="344"
-       x="560"
-       y="444.36218" />
+       width="200"
+       height="510"
+       x="750"
+       y="432.36218" />
     <rect
        style="fill:#222222;fill-opacity:1;stroke:none"
        id="rect3863"
@@ -515,10 +485,10 @@
        y="1228.3622" />
     <g
        id="g3881"
-       transform="matrix(1.8681454,0,0,1.8681454,-707.01575,-151.74909)">
+       transform="matrix(1.9430251,0,0,1.9430251,-775.20267,-177.26238)">
       <path
          id="path4499-6"
-         style="fill:none;stroke:#d71f1f;stroke-width:6.4000001;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline"
+         style="fill:none;stroke:#d71f1f;stroke-width:6.15335894;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline"
          d="m 448.04354,350.3632 c -2.69797,4.62842 -4.22125,10.0099 -4.22125,15.75354 0,17.28815 14.00686,31.30934 31.28947,31.33299 0.0146,2e-5 0.0289,0 0.0435,0 2.69797,-4.62841 4.22125,-10.0099 4.22125,-15.75353 0,-17.28816 -14.00685,-31.30935 -31.28947,-31.333 -0.004,0.006 -0.0399,-0.006 -0.0435,0 z m 27.06822,47.04301 c -17.30275,0 -31.33299,14.03024 -31.33299,31.33299 0,5.69498 1.52201,11.02113 4.17773,15.62298 0.0146,2e-5 0.0289,0 0.0435,0 17.30276,0 31.33299,-14.03023 31.33299,-31.33299 0,-5.69498 -1.522,-11.02113 -4.17773,-15.62298 -0.0146,-10e-6 -0.0289,0 -0.0435,0 z m 27.15526,-15.62297 c -11.58641,0 -21.69133,6.27181 -27.11174,15.62297 5.41303,9.37972 15.54748,15.71002 27.15526,15.71002 11.58641,0 21.69133,-6.31534 27.11174,-15.6665 -5.41303,-9.37972 -15.54748,-15.66649 -27.15526,-15.66649 z"
          inkscape:connector-curvature="0"
          inkscape:transform-center-x="-11.445248" />
@@ -526,13 +496,13 @@
          inkscape:transform-center-x="-8.299429"
          inkscape:connector-curvature="0"
          d="m 456.61665,346.36931 c -3.4607,4.08961 -5.89532,9.12482 -6.89269,14.7812 -3.00206,17.0255 8.35724,33.26595 25.37319,36.29033 0.0144,0.003 0.0285,0.005 0.0429,0.008 3.4607,-4.0896 5.89532,-9.12481 6.89269,-14.78119 3.00206,-17.02551 -8.35724,-33.26595 -25.37319,-36.29034 -0.005,0.006 -0.0382,-0.0131 -0.0429,-0.008 z m 18.48806,51.02867 c -17.03989,-3.00459 -33.2933,8.37617 -36.29789,25.41606 -0.98892,5.60845 -0.41492,11.11798 1.40136,16.11108 0.0144,0.003 0.0285,0.005 0.0429,0.008 17.0399,3.0046 33.2933,-8.37617 36.29789,-25.41605 0.98892,-5.60846 0.41492,-11.11799 -1.40136,-16.11109 -0.0144,-0.003 -0.0285,-0.005 -0.0429,-0.008 z m 29.45561,-10.67017 c -11.41038,-2.01195 -22.45088,2.40988 -29.41275,10.67773 3.70202,10.17718 12.58326,18.17113 24.01469,20.1868 11.41039,2.01196 22.45844,-2.45273 29.42031,-10.72058 -3.70202,-10.17718 -12.59081,-18.12827 -24.02225,-20.14395 z"
-         style="fill:none;stroke:#ff9f2e;stroke-width:6.4000001;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline"
+         style="fill:none;stroke:#ff9f2e;stroke-width:6.15335894;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline"
          id="path4501-8"
          inkscape:transform-center-y="-4.4707217" />
       <path
          inkscape:transform-center-y="-8.3307845"
          id="path4503-3"
-         style="fill:none;stroke:#ffe32d;stroke-width:6.4000001;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline"
+         style="fill:none;stroke:#ffe32d;stroke-width:6.15335894;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline"
          d="m 465.75304,343.9248 c -4.11828,3.42653 -7.39027,7.96248 -9.3547,13.35973 -5.9129,16.24555 2.45371,34.21179 18.68597,40.14502 0.0137,0.005 0.0272,0.01 0.0409,0.0149 4.11828,-3.42653 7.39026,-7.96248 9.3547,-13.35973 5.9129,-16.24556 -2.45371,-34.21179 -18.68597,-40.14502 -0.005,0.005 -0.0353,-0.0195 -0.0409,-0.0149 z m 9.34615,53.46385 c -16.25927,-5.91789 -34.242,2.46759 -40.15989,18.72687 -1.9478,5.35152 -2.33923,10.87703 -1.41759,16.10966 0.0137,0.005 0.0272,0.01 0.0409,0.0149 16.25928,5.91789 34.242,-2.4676 40.15989,-18.72687 1.9478,-5.35152 2.33923,-10.87703 1.41759,-16.10966 -0.0137,-0.005 -0.0272,-0.01 -0.0409,-0.0149 z m 30.86097,-5.39315 c -10.88766,-3.96278 -22.52827,-1.52529 -30.82007,5.40804 1.87853,10.66541 9.23671,20.08013 20.14445,24.05022 10.88767,3.96279 22.54316,1.4844 30.83497,-5.44892 -1.87854,-10.66542 -9.2516,-20.03924 -20.15935,-24.00934 z"
          inkscape:connector-curvature="0"
          inkscape:transform-center-x="-4.4277608" />
@@ -577,16 +547,16 @@
        width="15.999996" />
     <text
        xml:space="preserve"
-       style="font-size:50.21743393px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;text-align:start;line-height:129.99999523%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Univers Condensed;-inkscape-font-specification:'Univers Condensed, Bold Condensed'"
-       x="573.13965"
-       y="651.91022"
+       style="font-size:361.95623779px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;text-align:start;line-height:129.99999523%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Univers Condensed;-inkscape-font-specification:'Univers Condensed, Bold Condensed'"
+       x="62.760872"
+       y="1321.9138"
        id="text3936"
        sodipodi:linespacing="130%"><tspan
          sodipodi:role="line"
          id="tspan3938"
-         x="573.13965"
-         y="651.91022"
-         style="font-size:50.21743393px;text-align:start;text-anchor:start">0.4.1</tspan></text>
+         x="62.760872"
+         y="1321.9138"
+         style="font-size:361.95623779px;text-align:start;text-anchor:start;fill:#ffffff;fill-opacity:1">0.4.1</tspan></text>
     <rect
        y="1276.3622"
        x="-608.00012"
@@ -602,28 +572,16 @@
        x="-576.00012"
        y="1276.3622" />
     <text
-       sodipodi:linespacing="124%"
-       id="text3852"
-       y="884.36218"
-       x="128"
-       style="font-size:18.55106544px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;text-align:start;line-height:124.00000095%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Univers Condensed;-inkscape-font-specification:'Univers Condensed, Bold Condensed'"
-       xml:space="preserve"><tspan
-         y="884.36218"
-         x="128"
-         sodipodi:role="line"
-         id="tspan3880"
-         style="font-size:24px;line-height:124.00000095%;fill:#ffffff;fill-opacity:1">X3D Specifications</tspan></text>
-    <text
        xml:space="preserve"
-       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;text-align:start;line-height:142.99999475%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Univers Condensed;-inkscape-font-specification:'Univers Condensed, Bold Condensed'"
-       x="576"
-       y="702.63818"
+       style="font-size:24.44276428px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;text-align:start;line-height:142.99999475%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Univers Condensed;-inkscape-font-specification:'Univers Condensed, Bold Condensed'"
+       x="778.94897"
+       y="742.06885"
        id="text3866"
        sodipodi:linespacing="142.99999%"><tspan
          id="tspan3870"
          sodipodi:role="line"
-         x="576"
-         y="702.63818">© 2010 - 2012</tspan></text>
+         x="778.94897"
+         y="742.06885">© 2010 - 2012</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:18.55106544px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;text-align:start;line-height:124.00000095%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Univers Condensed;-inkscape-font-specification:'Univers Condensed, Bold Condensed'"
@@ -668,88 +626,28 @@
          id="tspan3983">http://www.web3d.org/files/specifications/19777-1/V3.0/Part1/X3D_ECMAScript.html</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:18.55106544px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;text-align:start;line-height:133.00000429%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Univers Condensed;-inkscape-font-specification:'Univers Condensed, Bold Condensed'"
-       x="128"
-       y="916.36218"
-       id="text3904"
-       sodipodi:linespacing="133%"><tspan
-         style="font-size:18px;line-height:133.00000429%;fill:#ffffff;fill-opacity:1"
-         id="tspan3910"
-         sodipodi:role="line"
-         x="128"
-         y="916.36218">‣ Part 1: Architecture and base components</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:18.55106544px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;text-align:start;line-height:124.00000095%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Univers Condensed;-inkscape-font-specification:'Univers Condensed, Bold Condensed'"
-       x="128"
-       y="988.36218"
-       id="text3918"
-       sodipodi:linespacing="124%"><tspan
-         style="font-size:24px;line-height:124.00000095%;fill:#ffffff;fill-opacity:1"
-         id="tspan3920"
-         sodipodi:role="line"
-         x="128"
-         y="988.36218">Language bindings</tspan></text>
-    <text
-       sodipodi:linespacing="133%"
-       id="text3922"
-       y="1020.3622"
-       x="128"
-       style="font-size:18.55106544px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;text-align:start;line-height:133.00000429%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Univers Condensed;-inkscape-font-specification:'Univers Condensed, Bold Condensed'"
-       xml:space="preserve"><tspan
-         y="1020.3622"
-         x="128"
-         sodipodi:role="line"
-         id="tspan3926"
-         style="font-size:18px;line-height:133.00000429%;fill:#ffffff;fill-opacity:1">‣ Part 1:  ECMAScript</tspan></text>
-    <text
-       sodipodi:linespacing="133%"
-       id="text3930"
-       y="940.36218"
-       x="128"
-       style="font-size:18.55106544px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;text-align:start;line-height:133.00000429%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Univers Condensed;-inkscape-font-specification:'Univers Condensed, Bold Condensed'"
-       xml:space="preserve"><tspan
-         y="940.36218"
-         x="128"
-         sodipodi:role="line"
-         id="tspan3934"
-         style="font-size:18px;line-height:133.00000429%;fill:#ffffff;fill-opacity:1">‣ Part 2: Scene access interface (SAI)</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:18.55106544px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;text-align:start;line-height:124.00000095%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Univers Condensed;-inkscape-font-specification:'Univers Condensed, Bold Condensed'"
-       x="128"
-       y="733.97815"
+       style="font-size:56px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;text-align:start;line-height:124.00000095%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Univers Condensed;-inkscape-font-specification:'Univers Condensed, Bold Condensed'"
+       x="57.647999"
+       y="823.46619"
        id="text3941"
        sodipodi:linespacing="124%"><tspan
-         style="font-size:24px;line-height:124.00000095%"
+         style="font-size:56px;line-height:124.00000095%"
          id="tspan3943"
          sodipodi:role="line"
-         x="128"
-         y="733.97815">Support</tspan></text>
+         x="57.647999"
+         y="823.46619">Support</tspan></text>
     <text
        sodipodi:linespacing="133%"
        id="text3945"
-       y="765.97815"
-       x="128"
-       style="font-size:18.55106544px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;text-align:start;line-height:133.00000429%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Univers Condensed;-inkscape-font-specification:'Univers Condensed, Bold Condensed'"
+       y="892.36218"
+       x="60"
+       style="font-size:36px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;text-align:start;line-height:133.00000429%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Univers Condensed;-inkscape-font-specification:'Univers Condensed, Bold Condensed'"
        xml:space="preserve"><tspan
-         y="765.97815"
-         x="128"
+         y="892.36218"
+         x="60"
          sodipodi:role="line"
          id="tspan3947"
-         style="font-size:18px;line-height:133.00000429%">‣ Titania-Homepage</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:28px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;text-align:start;line-height:124.00000095%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Univers Condensed;-inkscape-font-specification:'Univers Condensed, Bold Condensed'"
-       x="128"
-       y="836.36218"
-       id="text3949"
-       sodipodi:linespacing="124%"><tspan
-         style="font-size:32px;line-height:124.00000095%;fill:#ffffff;fill-opacity:1"
-         id="tspan3951"
-         sodipodi:role="line"
-         x="128"
-         y="836.36218">X3D International Standards</tspan></text>
+         style="font-size:36px;line-height:133.00000429%">‣ visit titania.create3000.de</tspan></text>
     <text
        sodipodi:linespacing="142.99999%"
        id="text3953"
@@ -772,45 +670,46 @@
     <text
        sodipodi:linespacing="130%"
        id="text3967"
-       y="604.16217"
-       x="575.90002"
-       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;text-align:start;line-height:129.99999523%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Univers Condensed;-inkscape-font-specification:'Univers Condensed, Bold Condensed'"
-       xml:space="preserve"><tspan
-         style="font-size:20px;text-align:start;text-anchor:start"
-         y="604.16217"
-         x="575.90002"
+       y="284.62924"
+       x="-1217.7769"
+       style="font-size:62.85417557px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;text-align:start;line-height:129.99999523%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Univers Condensed;-inkscape-font-specification:'Univers Condensed, Bold Condensed'"
+       xml:space="preserve"
+       transform="matrix(0,-1,1,0,0,0)"><tspan
+         style="font-size:50.28334427px;text-align:start;text-anchor:start;fill:#ffffff;fill-opacity:1"
+         y="284.62924"
+         x="-1217.7769"
          id="tspan3969"
          sodipodi:role="line">Version</tspan></text>
     <text
        sodipodi:linespacing="142.99999%"
        id="text3975"
-       y="684.19415"
-       x="575.216"
-       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;text-align:start;line-height:142.99999475%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Univers Condensed;-inkscape-font-specification:'Univers Condensed, Bold Condensed'"
+       y="712.03418"
+       x="778.46948"
+       style="font-size:27.33030128px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;text-align:start;line-height:142.99999475%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Univers Condensed;-inkscape-font-specification:'Univers Condensed, Bold Condensed'"
        xml:space="preserve"><tspan
-         y="684.19415"
-         x="575.216"
+         y="712.03418"
+         x="778.46948"
          sodipodi:role="line"
          id="tspan3979">GNU GPL v3</tspan></text>
     <rect
-       y="788.23047"
-       x="560"
-       height="264.13171"
-       width="112"
+       y="942.36218"
+       x="750"
+       height="490"
+       width="200"
        id="rect3895"
        style="fill:#ffe32d;fill-opacity:1;stroke:none" />
     <text
        xml:space="preserve"
-       style="font-size:18.55106544px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;text-align:end;line-height:133.00000429%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Univers Condensed;-inkscape-font-specification:'Univers Condensed, Bold Condensed'"
-       x="542"
-       y="684.36218"
+       style="font-size:36.44514847px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;text-align:end;line-height:133.00000429%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Univers Condensed;-inkscape-font-specification:'Univers Condensed, Bold Condensed'"
+       x="720"
+       y="712.00854"
        id="text3902"
        sodipodi:linespacing="133%"><tspan
-         style="font-size:18px;text-align:end;line-height:133.00000429%;text-anchor:end;fill:#ffffff;fill-opacity:1"
+         style="font-size:35.36253357px;text-align:end;line-height:133.00000429%;text-anchor:end;fill:#ffffff;fill-opacity:1"
          id="tspan3904"
          sodipodi:role="line"
-         x="542"
-         y="684.36218">Be interactive</tspan></text>
+         x="720"
+         y="712.00854">Be interactive</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:72px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;text-align:start;line-height:129.99999523%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;display:inline;font-family:Univers Condensed;-inkscape-font-specification:'Univers Condensed, Bold Condensed'"
@@ -877,9 +776,9 @@
    id="tspan4656-0" /></tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:45.34222412px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;text-align:start;line-height:129.99999523%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;display:inline;font-family:Univers Condensed;-inkscape-font-specification:'Univers Condensed, Bold Condensed'"
-       x="302.9921"
-       y="651.68207"
+       style="font-size:81.76025391px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;text-align:start;line-height:129.99999523%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;display:inline;font-family:Univers Condensed;-inkscape-font-specification:'Univers Condensed, Bold Condensed'"
+       x="290"
+       y="662.36218"
        id="text3152-8"
        sodipodi:linespacing="130%"
        inkscape:export-filename="/run/user/holger/gvfs/ftp:host=create3000.de/html/create3000.de/titania/htdocs/fileadmin/images/X3D-Browser.png"
@@ -887,15 +786,15 @@
        inkscape:export-ydpi="90"><tspan
          sodipodi:role="line"
          id="tspan3154-4"
-         x="302.9921"
-         y="651.68207"><tspan
+         x="290"
+         y="662.36218"><tspan
            style="font-weight:normal;fill:#ffffff;fill-opacity:1;-inkscape-font-specification:'Univers Condensed, Condensed'"
            id="tspan4656-5">X3D Browser</tspan></tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:45.34222412px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;text-align:start;line-height:129.99999523%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;display:inline;font-family:Univers Condensed;-inkscape-font-specification:'Univers Condensed, Bold Condensed'"
-       x="302.9921"
-       y="603.90875"
+       style="font-size:81.76025391px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;text-align:start;line-height:129.99999523%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;display:inline;font-family:Univers Condensed;-inkscape-font-specification:'Univers Condensed, Bold Condensed'"
+       x="290"
+       y="572.36218"
        id="text3152-93-3"
        sodipodi:linespacing="130%"
        inkscape:export-filename="/run/user/holger/gvfs/ftp:host=create3000.de/html/create3000.de/titania/htdocs/fileadmin/images/X3D-Browser.png"
@@ -903,17 +802,82 @@
        inkscape:export-ydpi="90"><tspan
          sodipodi:role="line"
          id="tspan3154-45-9"
-         x="302.9921"
-         y="603.90875">Titania<tspan
+         x="290"
+         y="572.36218">Titania<tspan
    style="font-weight:normal;fill:#ffffff;fill-opacity:1;-inkscape-font-specification:'Univers Condensed, Condensed'"
    id="tspan4656-0-1" /></tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:condensed;text-align:start;line-height:129.99999523%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Univers Condensed;-inkscape-font-specification:'Univers Condensed, Condensed'"
+       x="-128.42"
+       y="572.06219"
+       id="text4399"
+       sodipodi:linespacing="130%"><tspan
+         sodipodi:role="line"
+         id="tspan4401"
+         x="-128.42"
+         y="572.06219">32</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:condensed;text-align:start;line-height:129.99999523%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Univers Condensed;-inkscape-font-specification:'Univers Condensed, Condensed'"
+       x="-129.86"
+       y="748.36218"
+       id="text4403"
+       sodipodi:linespacing="130%"><tspan
+         sodipodi:role="line"
+         id="tspan4405"
+         x="-129.86"
+         y="748.36218">11</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:condensed;text-align:start;line-height:129.99999523%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Univers Condensed;-inkscape-font-specification:'Univers Condensed, Condensed'"
+       x="-129.06718"
+       y="940.06219"
+       id="text4407"
+       sodipodi:linespacing="130%"><tspan
+         sodipodi:role="line"
+         id="tspan4409"
+         x="-129.06718"
+         y="940.06219">33 </tspan></text>
+    <text
+       sodipodi:linespacing="130%"
+       id="text4411"
+       y="1100.0621"
+       x="-129.06718"
+       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:condensed;text-align:start;line-height:129.99999523%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Univers Condensed;-inkscape-font-specification:'Univers Condensed, Condensed'"
+       xml:space="preserve"><tspan
+         y="1100.0621"
+         x="-129.06718"
+         id="tspan4413"
+         sodipodi:role="line">76</tspan></text>
+    <rect
+       style="fill:#000000;fill-opacity:1;stroke:none"
+       id="rect4421"
+       width="60"
+       height="59.999989"
+       x="-270"
+       y="692.36218" />
+    <rect
+       y="432.36218"
+       x="-200"
+       height="320"
+       width="200"
+       id="rect4423"
+       style="fill:#000000;fill-opacity:1;stroke:none" />
+    <rect
+       y="402.36218"
+       x="950"
+       height="30"
+       width="30"
+       id="rect4425"
+       style="fill:#000000;fill-opacity:1;stroke:none" />
   </g>
   <g
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="Abdeckung"
      style="display:none"
-     transform="translate(0,95.999997)">
+     transform="translate(0,107.99999)">
     <path
        style="fill:#dcdcdc;fill-opacity:1;stroke:none"
        d="m -64.00014,-128.00004 0,704.00006 864.00014,0 0,-704.00006 z M 0,-64 l 736,0 0,576 -736,0 z"

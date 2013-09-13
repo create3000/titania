@@ -67,6 +67,10 @@ public:
 	bool
 	Int32 (std::istream &, int32_t &);
 
+	static
+	bool
+	Hex (std::istream &, uint32_t &);
+
 	///  @name General
 	static io::sequence whitespaces;
 	static io::comment  comment;
@@ -117,10 +121,6 @@ public:
 	static io::sequence      ComponentName;
 
 private:
-
-	static
-	bool
-	Hex (std::istream &, uint32_t &);
 
 	static
 	std::set <std::string>

@@ -34,9 +34,11 @@ DEF _2 LayerSet {
         }
         DEF _1 LayoutGroup {
           layout Layout {
-            align [ "CENTER", "BOTTOM" ]
+            align [ "LEFT", "TOP" ]
             offsetUnits [ "PIXEL", "PIXEL" ]
             sizeUnits [ "PIXEL", "PIXEL" ]
+            size [ 20, 10 ]
+            scaleMode [ "STRETCH", "STRETCH" ]
           }
           children Transform {
             children Shape {
