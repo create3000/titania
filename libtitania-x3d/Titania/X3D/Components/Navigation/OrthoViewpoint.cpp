@@ -57,7 +57,7 @@ namespace X3D {
 
 OrthoViewpoint::Fields::Fields () :
 	   position (new SFVec3f (0, 0, 10)),
-	fieldOfView (new MFFloat ({ -1 }))
+	fieldOfView (new MFFloat ({ -1, -1, 1, 1 }))
 { }
 
 OrthoViewpoint::OrthoViewpoint (X3DExecutionContext* const executionContext) :
@@ -100,7 +100,7 @@ OrthoViewpoint::getMinimumX () const
 }
 
 float
-OrthoViewpoint::getMinumumY () const
+OrthoViewpoint::getMinimumY () const
 {
 	return fieldOfView () .size () > 1 ? fieldOfView () [1] : -1;
 }
@@ -120,8 +120,8 @@ OrthoViewpoint::getMaximumY () const
 Vector3f
 OrthoViewpoint::getScreenScale (float, const Vector4i & viewport) const
 {
-	int width    = viewport [2];
-	int height   = viewport [3];
+	int width  = viewport [2];
+	int height = viewport [3];
 
 	if (width > height)
 		return Vector3f (getSizeX () / height, getSizeY () / height, 1);
@@ -158,12 +158,37 @@ OrthoViewpoint::getLookAtPositionOffset (Box3f bbox) const
 void
 OrthoViewpoint::reshape (const float zNear, const float zFar)
 {
+	//	glMatrixMode (GL_PROJECTION);
+	//	glLoadIdentity ();
+	//
+	//	Vector2f size_2 = getViewportSize (Viewport4i ()) * 0.5f;
+	//
+	//	glOrtho (-size_2 .x (), size_2 .x (), -size_2 .y (), size_2 .y (), zNear, zFar);
+	//
+	//	glMatrixMode (GL_MODELVIEW);
+
 	glMatrixMode (GL_PROJECTION);
 	glLoadIdentity ();
+	
+	Vector4i viewport = Viewport4i ();
 
-	Vector2f size_2 = getViewportSize (Viewport4i ()) * 0.5f;
+	int width  = viewport [2];
+	int height = viewport [3];
 
-	glOrtho (-size_2 .x (), size_2 .x (), -size_2 .y (), size_2 .y (), zNear, zFar);
+	Vector2f size = getViewportSize (viewport);
+
+	if (width > height)
+	{
+		float left = getMinimumX () + (getMaximumX () - getMinimumX ()) / 2 - size .x () / 2;
+
+		glOrtho (left, left + size .x (), getMinimumY (), getMaximumY (), zNear, zFar);
+	}
+	else
+	{
+		float bottom = getMinimumY () + (getMaximumY () - getMinimumY ()) / 2 - size .y () / 2;
+
+		glOrtho (getMinimumX (), getMaximumX (), bottom, bottom + size .y (), zNear, zFar);
+	}
 
 	glMatrixMode (GL_MODELVIEW);
 }

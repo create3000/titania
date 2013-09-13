@@ -84,7 +84,7 @@ Layout::Layout (X3DExecutionContext* const executionContext) :
 	       scaleModeY (ScaleModeType::NONE),
 	           parent (nullptr),
 	         viewport (),
-	rectanglePosition (),
+	rectangleCenter (),
 	    rectangleSize ()
 {
 	setComponent ("Layout");
@@ -210,9 +210,9 @@ Layout::getScaleModeY () const
 }
 
 Vector2f
-Layout::getRectanglePosition () const
+Layout::getRectangleCenter () const
 {
-	return rectanglePosition;
+	return rectangleCenter;
 }
 
 Vector2f
@@ -477,64 +477,131 @@ Layout::transform (const TraverseType type)
 		// Calculate translation
 
 		Vector3f translation;
+		
+		switch (getAlignX ())
+		{
+			case HorizontalAlignType::LEFT:
+				translation .x (-(parentRectangleSize .x () - rectangleSize .x ()) / 2);
+				break;
+			case HorizontalAlignType::CENTER:
+				break;
+			case HorizontalAlignType::RIGHT:
+				translation .x ((parentRectangleSize .x () - rectangleSize .x ()) / 2);
+				break;
+		}
 
-		Matrix4f modelViewMatrix = getModelViewMatrix (type);
+		switch (getAlignY ())
+		{
+			case VerticalAlignType::BOTTOM:
+				translation .y (-(parentRectangleSize .y () - rectangleSize .y ()) / 2);
+				break;
+			case VerticalAlignType::CENTER:
+				break;
+			case VerticalAlignType::TOP:
+				translation .y ((parentRectangleSize .y () - rectangleSize .y ()) / 2);
+				break;
+		}
 
-		Vector3f   t, s;
-		Rotation4f r;
-		modelViewMatrix .get (t, r, s);
+		// Calculate offset
+
+		Vector3f offset;	
+
+		switch (getOffsetUnitX ())
+		{
+			case SizeUnitType::FRACTION:
+				offset .x (offsetX * parentRectangleSize .x ());
+				break;
+			case SizeUnitType::PIXEL:
+				offset .x (offsetX * viewportSize .x () / viewportWidth);
+				break;
+			default:
+				break;
+		}
+
+		switch (getOffsetUnitY ())
+		{
+			case SizeUnitType::FRACTION:
+				offset .y (offsetY * parentRectangleSize .x ());
+				break;
+			case SizeUnitType::PIXEL:
+				offset .y (offsetY * viewportSize .x () / viewportWidth);
+				break;
+			default:
+				break;
+		}
 
 		// Calculate scale
 
 		Vector3f scale (1, 1, 1);
 	
+		Vector3f   currentTranslation, currentScale;
+		Rotation4f currentRotation, currentScaleOrientation;
+
+		Matrix4f modelViewMatrix = getModelViewMatrix (type);
+		modelViewMatrix .get (currentTranslation, currentRotation, currentScale);
+
 		switch (getScaleModeX ())
 		{
 			case ScaleModeType::NONE:
+				scale .x (currentScale .x ());
 				break;
 			case ScaleModeType::FRACTION:
-			{
-				if (parent)
-					scale .x (getSizeX ());
-				else
-					scale .x (rectangleSize .x ());
+				scale .x (rectangleSize .x ());
 				break;
-			}
 			case ScaleModeType::STRETCH:
 				break;
 			case ScaleModeType::PIXEL:
-				scale .x (viewportSize .x () / viewportWidth / s .x ());
+				scale .x (viewportSize .x () / viewportWidth);
 				break;
 		}
 
 		switch (getScaleModeY ())
 		{
 			case ScaleModeType::NONE:
+				scale .y (currentScale .y ());
 				break;
 			case ScaleModeType::FRACTION:
-			{
-				if (parent)
-					scale .y (getSizeY ());
-				else
-					scale .y (rectangleSize .y ());
+				scale .y (rectangleSize .y ());
 				break;
-			}
 			case ScaleModeType::STRETCH:
 				break;
 			case ScaleModeType::PIXEL:
-				scale .y (viewportSize .y () / viewportHeight / s .y ());
+				scale .y (viewportSize .y () / viewportHeight);
 				break;
 		}
 
-		//__LOG__ << scale << std::endl;
+		// Calculate scale for scaleMode STRETCH
+
+		if (getScaleModeX () == ScaleModeType::STRETCH)
+		{
+			if (getScaleModeY () == ScaleModeType::STRETCH)
+			{
+				if (rectangleSize .x () > rectangleSize .y ())
+				{
+					scale .x (rectangleSize .x ());
+					scale .y (scale .x ());
+				}
+				else
+				{
+					scale .y (rectangleSize .y ());
+					scale .x (scale .y ());
+				}
+			}
+			else
+				scale .x (scale .y ());
+		}
+		else if (getScaleModeY () == ScaleModeType::STRETCH)
+			scale .y (scale .x ());
 
 		// Transform
 
 		Matrix4f matrix;
-		matrix .translate (translation);
-		matrix .scale (scale);
+		matrix .set (currentTranslation + translation + offset, currentRotation, scale, currentScaleOrientation);
 		
-		glMultMatrixf (matrix .data ());
+		glLoadMatrixf (matrix .data ());
+
+		//__LOG__ << this << " : " << rectangleSize << std::endl;
+		//__LOG__ << this << " : " << scale << std::endl;
 	}
 }
 

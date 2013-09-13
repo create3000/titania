@@ -3,27 +3,25 @@
 META "icon" "about:icon"
 META "title" "about:info"
 
-DEF White Background {
-  skyColor 1 1 1
-}
-
-Viewpoint {
-  description "Home"
-  position 0 0 1.39431
-}
-
-Transform {
-  scale 0.752 0.576 1
-  children Shape {
-    appearance Appearance {
-      texture ImageTexture {
-        url "info/info.svg"
-        repeatS FALSE
-        repeatT FALSE
+DEF _2 LayerSet {
+  activeLayer 1
+  order 1
+  layers LayoutLayer {
+    layout DEF _0 Layout { }
+    children DEF _1 Transform {
+      children Shape {
+        appearance Appearance {
+          texture ImageTexture {
+            url "info/info.png"
+            repeatS FALSE
+            repeatT FALSE
+          }
+        }
+        geometry Rectangle2D {
+          size 1 1
+          solid FALSE
+        }
       }
-    }
-    geometry Rectangle2D {
-      solid FALSE
     }
   }
 }

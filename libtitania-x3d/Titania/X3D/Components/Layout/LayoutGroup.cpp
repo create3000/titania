@@ -117,9 +117,6 @@ void
 LayoutGroup::set_layout ()
 {
 	currentLayout = x3d_cast <X3DLayoutNode*> (layout ());
-
-	if (not currentLayout)
-		currentLayout = getBrowser () -> getBrowserOptions () -> layout ();
 }
 
 void
@@ -131,18 +128,23 @@ LayoutGroup::traverse (const TraverseType type)
 		case TraverseType::PICKING:
 		case TraverseType::COLLECT:
 		{
-			glPushMatrix ();
+			if (currentLayout)
+			{
+				glPushMatrix ();
+				
+				currentLayout -> transform (type);
 
-			currentLayout -> transform (type);
+				getBrowser () -> getLayouts () .push (currentLayout);
 
-			getBrowser () -> getLayouts () .push (currentLayout);
+				X3DGroupingNode::traverse (type);
 
-			X3DGroupingNode::traverse (type);
+				getBrowser () -> getLayouts () .pop ();
 
-			getBrowser () -> getLayouts () .pop ();
+				glPopMatrix ();
+			}
+			else
+				X3DGroupingNode::traverse (type);
 
-			glPopMatrix ();
-			
 			break;
 		}
 		default:

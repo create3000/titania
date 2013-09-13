@@ -27,47 +27,44 @@ PROTO Notification [
     MetadataSet { }
   }
 
-  Transform {
-    translation 0 -0.8 0
-    children ScreenGroup {
-      children [
-        Shape {
-          appearance Appearance {
-            material DEF BackgroundMaterial Material {
-              diffuseColor 0 0 0
-            }
-          }
-          geometry DEF BackgroundGeometry RoundedRectangle2D {
-            cornerRadius IS cornerRadius
+  Group {
+    children [
+      Shape {
+        appearance Appearance {
+          material DEF BackgroundMaterial Material {
+            diffuseColor 0 0 0
           }
         }
-        Shape {
-          appearance Appearance {
-            fillProperties FillProperties {
-              filled FALSE
-              hatched FALSE
-            }
-            lineProperties LineProperties {
-              linewidthScaleFactor IS linewidthScaleFactor
-            }
-            material DEF BorderMaterial Material {
-              diffuseColor 1 1 1
-            }
-          }
-          geometry USE BackgroundGeometry
+        geometry DEF BackgroundGeometry RoundedRectangle2D {
+          cornerRadius IS cornerRadius
         }
-        Shape {
-          appearance Appearance {
-            material DEF TextMaterial Material {
-              diffuseColor 1 1 1
-            }
+      }
+      Shape {
+        appearance Appearance {
+          fillProperties FillProperties {
+            filled FALSE
+            hatched FALSE
           }
-          geometry DEF Text Text {
-            fontStyle IS fontStyle
+          lineProperties LineProperties {
+            linewidthScaleFactor IS linewidthScaleFactor
+          }
+          material DEF BorderMaterial Material {
+            diffuseColor 1 1 1
           }
         }
-      ]
-    }
+        geometry USE BackgroundGeometry
+      }
+      Shape {
+        appearance Appearance {
+          material DEF TextMaterial Material {
+            diffuseColor 1 1 1
+          }
+        }
+        geometry DEF Text Text {
+          fontStyle IS fontStyle
+        }
+      }
+    ]
   }
 
   DEF FadeIn ScalarInterpolator {
@@ -158,11 +155,21 @@ Background {
 
 OrthoViewpoint { }
 
-DEF Notification Notification {
-  fontStyle FontStyle {
-    family "sans"
-    style "BOLD"
-    size 16
-    justify [ "MIDDLE", "MIDDLE" ]
+LayoutGroup {
+  layout Layout {
+    align [ "CENTER", "BOTTOM" ]
+    offsetUnits "PIXEL"
+    offset [ 0, 50.5 ]
+    sizeUnits "PIXEL"
+    size [ 200, 26 ]
+    scaleMode "PIXEL"
+  }
+  children DEF Notification Notification {
+    fontStyle FontStyle {
+      family "sans"
+      style "BOLD"
+      size 16
+      justify [ "MIDDLE", "MIDDLE" ]
+    }
   }
 }

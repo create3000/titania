@@ -1,3 +1,13 @@
+2013-09-13  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Notification.wrl:
+	* Layout.h:
+	* Layout.cpp:
+	* X3DLayoutNode.h:
+	* LayoutGroup.cpp:
+	* OrthoViewpoint.h:
+	* OrthoViewpoint.cpp: 
+
 2013-09-12  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Layout.h:

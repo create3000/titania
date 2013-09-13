@@ -115,7 +115,7 @@ private:
 	getMinimumX () const;
 
 	float
-	getMinumumY () const;
+	getMinimumY () const;
 
 	float
 	getMaximumX () const;
@@ -129,7 +129,7 @@ private:
 
 	float
 	getSizeY () const
-	{ return getMaximumY () - getMinumumY (); }
+	{ return getMaximumY () - getMinimumY (); }
 
 	virtual
 	Vector3f

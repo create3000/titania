@@ -163,17 +163,15 @@ public:
 	getSizeY () const
 	{ return sizeY; }
 
-	virtual
 	ScaleModeType
-	getScaleModeX () const final;
+	getScaleModeX () const;
 
-	virtual
 	ScaleModeType
-	getScaleModeY () const final;
+	getScaleModeY () const;
 
 	virtual
 	Vector2f
-	getRectanglePosition () const final;
+	getRectangleCenter () const final;
 
 	virtual
 	Vector2f
@@ -245,7 +243,7 @@ private:
 
 	X3DLayoutNode* parent;
 	Vector4i       viewport;
-	Vector2f       rectanglePosition; // In m
+	Vector2f       rectangleCenter;   // In m
 	Vector2f       rectangleSize;     // In m
 
 };

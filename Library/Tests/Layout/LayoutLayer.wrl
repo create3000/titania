@@ -5,17 +5,18 @@ PROFILE Immersive
 COMPONENT Layering : 1
 COMPONENT Layout : 2
 
-LayerSet {
+DEF _2 LayerSet {
+  activeLayer 2
   order [ 1, 2 ]
   layers [
     Layer { }
     LayoutLayer {
-      layout Layout {
+      layout DEF _3 Layout {
         align [ "CENTER", "BOTTOM" ]
         offsetUnits [ "FRACTION", "PIXEL" ]
-        scaleMode [ "FRACTION", "PIXEL" ]
         sizeUnits [ "FRACTION", "PIXEL" ]
-        size [ 1, 48 ]
+        size [ 0.5, 48 ]
+        scaleMode [ "FRACTION", "PIXEL" ]
       }
       children [
         DEF _0 Transform {
@@ -33,40 +34,22 @@ LayerSet {
         }
         DEF _1 LayoutGroup {
           layout Layout {
-            align [ "CENTER", "TOP" ]
+            align [ "CENTER", "BOTTOM" ]
             offsetUnits [ "PIXEL", "PIXEL" ]
-            scaleMode [ "PIXEL", "PIXEL" ]
             sizeUnits [ "PIXEL", "PIXEL" ]
-            size [ 200, 48 ]
           }
-          children [
-            Transform {
-              translation -54 -24 2
-              children Shape {
-                appearance Appearance {
-                  texture ImageTexture {
-                    url "buttons.png"
-                  }
-                }
-                geometry Rectangle2D {
-                  size 48 48
+          children Transform {
+            children Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 1 0 0
                 }
               }
-            }
-            Transform {
-              translation 6 -24 2
-              children Shape {
-                appearance Appearance {
-                  texture ImageTexture {
-                    url "buttons.png"
-                  }
-                }
-                geometry Rectangle2D {
-                  size 48 48
-                }
+              geometry Rectangle2D {
+                size 1 1
               }
             }
-          ]
+          }
         }
       ]
     }

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -121,16 +121,8 @@ public:
 	getSizeUnitY () const = 0;
 
 	virtual
-	ScaleModeType
-	getScaleModeX () const = 0;
-
-	virtual
-	ScaleModeType
-	getScaleModeY () const = 0;
-
-	virtual
 	Vector2f
-	getRectanglePosition () const = 0;
+	getRectangleCenter () const = 0;
 
 	virtual
 	Vector2f
