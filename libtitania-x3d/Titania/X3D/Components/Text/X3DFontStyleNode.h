@@ -69,6 +69,8 @@ public:
 		MIDDLE,
 		END
 	};
+	
+	///  @name Fields
 
 	MFString &
 	family ()
@@ -134,6 +136,8 @@ public:
 	language () const
 	{ return *fields .language; }
 
+	///  @name Member access
+
 	Alignment
 	getMajorAlignment () const
 	{ return alignments [0]; }
@@ -161,18 +165,29 @@ public:
 
 protected:
 
+	///  @name Construction
+
 	X3DFontStyleNode ();
+
+	virtual
+	void
+	initialize () override;
+
+	///  @name Member access
 
 	virtual
 	float
 	getSize () const = 0;
 
+	///  @name Event handlers
+
+	void
+	set_font ();
+
 
 private:
 
-	virtual
-	void
-	initialize () override;
+	///  @name Member access
 
 	std::string
 	getFilename () const;
@@ -180,11 +195,12 @@ private:
 	std::string
 	getFilename (const String &, bool &) const;
 
-	void
-	set_font ();
+	///  @name Event handlers
 
 	void
 	set_justify ();
+
+	///  @name Members
 
 	struct Fields
 	{

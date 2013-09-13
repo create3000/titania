@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -181,13 +181,29 @@ throw (Error <INVALID_X3D>,
        Error <DISPOSED>)
 {
 	std::string whitespaces;
-	
+
 	Grammar::whitespaces (istream, whitespaces);
 
-	istream >> get ();
+	uint32_t value;
 
-	if (istream)
+	if (Grammar::Hex (istream, value))
+	{
+		float r = (value >> 24 & 0xff) / 255.0f;
+		float g = (value >> 16 & 0xff) / 255.0f;
+		float b = (value >> 8 & 0xff) / 255.0f;
+		float a = (value & 0xff) / 255.0f;
+
+		get () .set (r, g, b, a);
+
 		addEvent ();
+	}
+	else
+	{
+		istream >> get ();
+
+		if (istream)
+			addEvent ();
+	}
 }
 
 void

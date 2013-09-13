@@ -124,6 +124,8 @@ Grammar::Hex (std::istream & istream, uint32_t & value)
 {
 	if (hex (istream) or HEX (istream))
 		return istream >> std::hex >> value;
+
+	return false;
 }
 
 std::set <std::string>

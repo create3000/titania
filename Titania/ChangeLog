@@ -1,5 +1,23 @@
 2013-09-13  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* BrowserWindow.h:
+	* BrowserWindow.cpp:
+	* BrowserWindow.ui:
+	* info.wrl:
+	* info.png:
+	* logo.wrl:
+	* info.svg:
+	* X3DConsoleInterface.h:
+	* X3DViewpointListInterface.h:
+	* X3DHistoryEditorInterface.h:
+	* X3DBrowserWindowInterface.h:
+	* X3DOutlineEditorInterface.h:
+	* X3DBrowserWindowInterface.cpp:
+	* X3DOutlineTreeViewInterface.h:
+	* X3DMotionBlurEditorInterface.h: 
+
+2013-09-13  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* info.wrl:
 	* info.svg:
 	* info.png: 

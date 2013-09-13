@@ -132,6 +132,7 @@ X3DLayerNode::initialize ()
 	viewpoints      -> setup ();
 	fogs            -> setup ();
 
+	group -> setInternal (true);
 	group -> children () = children ();
 	group -> setup ();
 

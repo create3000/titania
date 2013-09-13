@@ -65,8 +65,12 @@ class BrowserWindow :
 {
 public:
 
+	/// @name Construction
+
 	BrowserWindow (const basic::uri &);
-	
+
+	/// @name Member access
+
 	const X3D::Keys &
 	getKeys () const
 	{ return keys; }
@@ -74,8 +78,13 @@ public:
 
 private:
 
+	/// @name Construction
+
 	void
 	initialize ();
+
+	void
+	buildLibrary ();
 
 	/// @name Widgets
 
@@ -120,7 +129,7 @@ private:
 	virtual
 	void
 	on_open () final;
-	
+
 	virtual
 	void
 	on_open_location_dialog () final;
@@ -258,7 +267,7 @@ private:
 
 	void
 	set_dashboard (bool);
-	
+
 	virtual
 	void
 	on_hand_button_toggled () final;
@@ -266,19 +275,19 @@ private:
 	virtual
 	void
 	on_arrow_button_toggled () final;
-	
+
 	void
 	set_viewer (X3D::ViewerType);
 
 	void
 	set_examine_viewer (bool);
-	
+
 	void
 	set_walk_viewer (bool);
-	
+
 	void
 	set_fly_viewer (bool);
-	
+
 	void
 	set_none_viewer (bool);
 
@@ -326,12 +335,23 @@ private:
 
 	virtual
 	void
-	on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> &, int, int, const Gtk::SelectionData &, guint info, guint) final;
+	on_drag_data_received (const Glib::RefPtr <Gdk::DragContext>&, int, int, const Gtk::SelectionData &, guint info, guint) final;
+	
+	///  @Editing facilities
+	
+	void
+	on_add_node (const std::string &);
 
-	///  @name Properties
+	void
+	on_group_selected_nodes_activate ();
+
+	void
+	on_add_to_group_activate ();
+
+	///  @name Members
 
 	MotionBlurEditor motionBlurEditor;
-	ViewpointList  viewpointList;
+	ViewpointList    viewpointList;
 	HistoryEditor    historyEditor;
 	OutlineEditor    outlineEditor;
 	X3D::Keys        keys;

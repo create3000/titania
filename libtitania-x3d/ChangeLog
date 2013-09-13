@@ -1,5 +1,22 @@
 2013-09-13  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Grammar.cpp:
+	* SFColor.cpp:
+	* World.cpp:
+	* X3DBaseNode.h:
+	* X3DBaseNode.cpp:
+	* SFColorRGBA.cpp:
+	* FontStyle.h:
+	* FontStyle.cpp:
+	* LayerSet.cpp:
+	* Inline.cpp:
+	* X3DFontStyleNode.h:
+	* BrowserOptions.h:
+	* X3DLayerNode.cpp:
+	* BrowserOptions.cpp: 
+
+2013-09-13  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Grammar.h:
 	* Grammar.cpp:
 	* SFColor.cpp:

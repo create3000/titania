@@ -57,7 +57,6 @@
 #include "../../Components/Texturing/TextureProperties.h"
 #include "../../Components/Texturing/TextureTransform.h"
 #include "../../Components/Layering/Viewport.h"
-#include "../../Components/Layout/Layout.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Geometry2D/Arc2DOptions.h"
 #include "../Geometry2D/ArcClose2DOptions.h"
@@ -121,8 +120,7 @@ BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
 	            boxOptions (new BoxOptions (executionContext)),
 	         sphereOptions (new QuadSphereOptions (executionContext)),
 	             fontStyle (new FontStyle (executionContext)),
-	              viewport (new Viewport (executionContext)),
-	                layout (new Layout (executionContext))
+	              viewport (new Viewport (executionContext))
 { }
 
 BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
@@ -164,8 +162,7 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 	             boxOptions (),
 	             sphereOptions (),
 	             fontStyle (),
-	             viewport (),
-	             layout ());
+	             viewport ());
 }
 
 BrowserOptions*
@@ -194,7 +191,6 @@ BrowserOptions::initialize ()
 	sphereOptions ()      -> setup ();
 	fontStyle ()          -> setup ();
 	viewport ()           -> setup ();
-	layout ()             -> setup ();
 
 	lineProperties () -> applied () = false;
 	fillProperties () -> hatched () = false;
@@ -342,7 +338,6 @@ BrowserOptions::dispose ()
 	sphereOptions ()      .dispose ();
 	fontStyle ()          .dispose ();
 	viewport ()           .dispose ();
-	layout ()             .dispose ();
 }
 
 } // X3D

@@ -95,6 +95,7 @@ LayerSet::initialize ()
 {
 	X3DNode::initialize ();
 
+	layer0 -> setInternal (true);
 	layer0 -> setup ();
 	layer0 -> getBackgroundStack () -> bottom () -> transparency () = 0;
 

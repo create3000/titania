@@ -85,6 +85,14 @@ FontStyle::create (X3DExecutionContext* const executionContext) const
 	return new FontStyle (executionContext);
 }
 
+void
+FontStyle::initialize ()
+{
+	X3DFontStyleNode::initialize ();
+
+	size () .addInterest (this, &FontStyle::set_font);
+}
+
 float
 FontStyle::getSize () const
 {

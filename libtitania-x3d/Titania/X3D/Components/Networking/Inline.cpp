@@ -223,6 +223,7 @@ Inline::setScene (const X3DSFNode <Scene> & value)
 	scene = value;
 	scene -> getRootNodes () .addInterest (group -> children ());
 
+	group -> setInternal (true);
 	group -> children () = scene -> getRootNodes ();
 }
 

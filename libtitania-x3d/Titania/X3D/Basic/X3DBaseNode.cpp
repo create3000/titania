@@ -234,56 +234,6 @@ X3DBaseNode::replace (X3DBaseNode* const node)
 
 	setUserData (node -> getUserData ());
 
-	//	// Copy fields
-	//
-	//	for (auto & field : getFieldDefinitions ())
-	//	{
-	//		X3DFieldDefinition* original = node -> getField (field -> getName ());
-	//
-	//		// Steal UserData
-	//
-	//		field -> setUserData (original -> getUserData ());
-	//		original -> setUserData (NULL);
-	//
-	//		// Copy value
-	//
-	//		field -> write (*original);
-	//
-	//		// Replace routes
-	//
-	//		auto inputRoutes = original -> getInputRoutes ();
-	//
-	//		for (const auto & route : inputRoutes)
-	//		{
-	//			auto inputRoute = static_cast <Route*> (route);
-	//			auto sourceNode = inputRoute -> getSourceNode () .getValue ();
-	//
-	//			if (sourceNode == node)
-	//				sourceNode = this;
-	//
-	//			getExecutionContext () -> addRoute (sourceNode, inputRoute -> getSourceField (), this, field -> getName ());
-	//
-	//			node -> getExecutionContext () -> deleteRoute (inputRoute -> getSourceNode (),      inputRoute -> getSourceField (),
-	//			                                               inputRoute -> getDestinationNode (), inputRoute -> getDestinationField ());
-	//		}
-	//
-	//		auto outputRoutes = original -> getOutputRoutes ();
-	//
-	//		for (const auto & route : outputRoutes)
-	//		{
-	//			auto outputRoute     = static_cast <Route*> (route);
-	//			auto destinationNode = outputRoute -> getDestinationNode () .getValue ();
-	//
-	//			if (destinationNode == node)
-	//				destinationNode = this;
-	//
-	//			getExecutionContext () -> addRoute (this, field -> getName (), destinationNode, outputRoute -> getDestinationField ());
-	//
-	//			node -> getExecutionContext () -> deleteRoute (outputRoute -> getSourceNode (),      outputRoute -> getSourceField (),
-	//			                                               outputRoute -> getDestinationNode (), outputRoute -> getDestinationField ());
-	//		}
-	//	}
-
 	// Parents
 
 	auto parents = node -> getParents ();
@@ -375,6 +325,21 @@ X3DBaseNode::getNumClones () const
 	}
 
 	return numClones;
+}
+
+void
+X3DBaseNode::setInternal (bool value)
+{
+	if (value)
+	{
+		for (const auto & field : fieldDefinitions)
+			field -> setName ("");
+	}
+	else
+	{
+		for (const auto & field : fields)
+			field .second -> setName (field .first);
+	}
 }
 
 const X3DBaseNode*

@@ -61,6 +61,8 @@ class FontStyle :
 {
 public:
 
+	///  @name Construction
+
 	FontStyle (X3DExecutionContext* const);
 
 	virtual
@@ -80,9 +82,19 @@ public:
 
 private:
 
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final;
+
+	///  @name Member access
+
 	virtual
 	float
 	getSize () const final;
+
+	///  @name Members
 
 	struct Fields
 	{

@@ -61,16 +61,16 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
-	m_fileFilterAllFiles = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterAllFiles"));
-	m_fileFilterAudio    = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterAudio"));
-	m_fileFilterImage    = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterImage"));
-	m_fileFilterVideo    = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterVideo"));
-	m_fileFilterX3D      = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterX3D"));
 	m_iconFactory        = Glib::RefPtr <Gtk::IconFactory>::cast_dynamic (m_builder -> get_object ("IconFactory"));
 	m_newAction          = Glib::RefPtr <Gtk::Action>::cast_dynamic (m_builder -> get_object ("NewAction"));
 	m_openAction         = Glib::RefPtr <Gtk::Action>::cast_dynamic (m_builder -> get_object ("OpenAction"));
 	m_revertAction       = Glib::RefPtr <Gtk::Action>::cast_dynamic (m_builder -> get_object ("RevertAction"));
 	m_saveAction         = Glib::RefPtr <Gtk::Action>::cast_dynamic (m_builder -> get_object ("SaveAction"));
+	m_fileFilterAllFiles = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterAllFiles"));
+	m_fileFilterAudio    = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterAudio"));
+	m_fileFilterImage    = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterImage"));
+	m_fileFilterVideo    = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterVideo"));
+	m_fileFilterX3D      = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterX3D"));
 	m_menuAccelGroup     = Glib::RefPtr <Gtk::AccelGroup>::cast_dynamic (m_builder -> get_object ("MenuAccelGroup"));
 
 	// Get widgets.
@@ -120,6 +120,10 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_quitMenuItem -> set_name ("QuitMenuItem");
 	m_builder -> get_widget ("EditMenuItem", m_editMenuItem);
 	m_editMenuItem -> set_name ("EditMenuItem");
+	m_builder -> get_widget ("GroupSelectedNodesMenuItem", m_groupSelectedNodesMenuItem);
+	m_groupSelectedNodesMenuItem -> set_name ("GroupSelectedNodesMenuItem");
+	m_builder -> get_widget ("AddToGroupMenuItem", m_addToGroupMenuItem);
+	m_addToGroupMenuItem -> set_name ("AddToGroupMenuItem");
 	m_builder -> get_widget ("ViewMenuItem", m_viewMenuItem);
 	m_viewMenuItem -> set_name ("ViewMenuItem");
 	m_builder -> get_widget ("ToolBarMenuItem", m_toolBarMenuItem);
@@ -166,6 +170,10 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_toolsMenuItem -> set_name ("ToolsMenuItem");
 	m_builder -> get_widget ("MotionBlurMenuItem", m_motionBlurMenuItem);
 	m_motionBlurMenuItem -> set_name ("MotionBlurMenuItem");
+	m_builder -> get_widget ("LibraryMenuItem", m_libraryMenuItem);
+	m_libraryMenuItem -> set_name ("LibraryMenuItem");
+	m_builder -> get_widget ("LibraryMenu", m_libraryMenu);
+	m_libraryMenu -> set_name ("LibraryMenu");
 	m_builder -> get_widget ("HelpMenuItem", m_helpMenuItem);
 	m_helpMenuItem -> set_name ("HelpMenuItem");
 	m_builder -> get_widget ("InfoMenuItem", m_infoMenuItem);
@@ -257,6 +265,10 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	connections .emplace_back (m_saveMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_save)));
 	connections .emplace_back (m_saveAsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_save_as)));
 	connections .emplace_back (m_quitMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_close)));
+
+	// Connect object Gtk::MenuItem with id 'GroupSelectedNodesMenuItem'.
+	connections .emplace_back (m_groupSelectedNodesMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_group_selected_nodes_activate)));
+	connections .emplace_back (m_addToGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_add_to_group_activate)));
 
 	// Connect object Gtk::CheckMenuItem with id 'ToolBarMenuItem'.
 	connections .emplace_back (m_toolBarMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_toolBar_toggled)));

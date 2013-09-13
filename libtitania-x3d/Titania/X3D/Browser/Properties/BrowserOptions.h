@@ -88,7 +88,6 @@ class BoxOptions;
 class X3DSphereOptionNode;
 class MotionBlur;
 class Viewport;
-class Layout;
 
 class BrowserOptions :
 	public X3DPropertyNode
@@ -327,14 +326,6 @@ public:
 	viewport () const
 	{ return fields .viewport; }
 
-	X3DSFNode <Layout> &
-	layout ()
-	{ return fields .layout; }
-
-	const X3DSFNode <Layout> &
-	layout () const
-	{ return fields .layout; }
-
 	virtual
 	void
 	dispose () final;
@@ -390,7 +381,6 @@ private:
 		X3DSFNode <X3DSphereOptionNode> sphereOptions;
 		X3DSFNode <X3DFontStyleNode> fontStyle;
 		X3DSFNode <Viewport> viewport;
-		X3DSFNode <Layout> layout;
 	};
 
 	Fields fields;

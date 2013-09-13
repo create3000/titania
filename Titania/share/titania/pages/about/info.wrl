@@ -3,11 +3,19 @@
 META "icon" "about:icon"
 META "title" "about:info"
 
-DEF _2 LayerSet {
-  activeLayer 1
+EXTERNPROTO Rotor [
+  inputOutput SFTime     cycleInterval
+  inputOutput SFBool     loop
+  inputOutput SFTime     startTime
+  inputOutput SFTime     stopTime
+  outputOnly  SFRotation value_changed
+]
+"../../library/Rotor.wrl"
+
+LayerSet {
   order 1
   layers LayoutLayer {
-    layout DEF _0 Layout { }
+    layout Layout { }
     children [
       DEF Background Shape {
         appearance Appearance {
@@ -17,18 +25,17 @@ DEF _2 LayerSet {
         }
         geometry Rectangle2D {
           size 1 1
-          solid FALSE
         }
       }
-      DEF _4 LayoutGroup {
-        layout DEF _0 Layout {
+      DEF Page LayoutGroup {
+        layout Layout {
           scaleMode [ "STRETCH", "NONE" ]
         }
-        children DEF Page Transform {
+        children Transform {
           scale 1.01 1 1
           children [
             DEF Image Switch {
-              whichChoice 0
+              whichChoice 1
               children Shape {
                 appearance Appearance {
                   texture ImageTexture {
@@ -39,7 +46,6 @@ DEF _2 LayerSet {
                 }
                 geometry Rectangle2D {
                   size 1 1
-                  solid FALSE
                 }
               }
             }
@@ -50,12 +56,10 @@ DEF _2 LayerSet {
                 appearance Appearance {
                   material Material {
                     diffuseColor 0.247059 0.247059 0.247059
-                    transparency 0.5
                   }
                 }
                 geometry Rectangle2D {
                   size 1 1
-                  solid FALSE
                 }
               }
             }
@@ -66,20 +70,179 @@ DEF _2 LayerSet {
                 appearance Appearance {
                   material Material {
                     diffuseColor 1 0.890196 0.176471
-                    transparency 0.5
                   }
                 }
                 geometry Rectangle2D {
                   size 1 1
-                  solid FALSE
                 }
               }
+            }
+            LayoutGroup {
+              layout Layout {
+                size [ 0.1, 1 ]
+                scaleMode [ "STRETCH", "STRETCH" ]
+              }
+              children [
+                Transform {
+                  translation -0.480889 0.469111 1
+                  scale 0.022 0.022 0.022
+                  children [
+                    DEF LogoRotor Rotor {
+                      cycleInterval 10
+                      loop TRUE
+                    }
+                    DEF Logo Transform {
+                      rotation 0 0 1 0.783685
+                      center 5.5 -5.6 0
+                      children Inline {
+                        url "home/logo.wrl"
+                      }
+                    }
+                  ]
+                }
+                DEF Titania Transform {
+                  translation -0.219 0.3611 0
+                  children Shape {
+                    appearance Appearance {
+                      material Material {
+                        diffuseColor 1 1 1
+                      }
+                    }
+                    geometry Text {
+                      string "Titania"
+                      fontStyle FontStyle {
+                        family [ "Ubuntu", "sans" ]
+                        style "BOLD"
+                        size 0.1
+                      }
+                    }
+                  }
+                }
+                DEF X3DBrowser Transform {
+                  translation -0.214884 0.26855 0
+                  children Shape {
+                    appearance Appearance {
+                      material Material {
+                        diffuseColor 1 1 1
+                      }
+                    }
+                    geometry Text {
+                      string "X3D Browser"
+                      fontStyle FontStyle {
+                        family [ "Ubuntu Condensed", "sans" ]
+                        style "BOLD"
+                        size 0.1
+                      }
+                    }
+                  }
+                }
+                DEF BeInteractive Transform {
+                  translation 0.017 0.219 0
+                  children Shape {
+                    appearance Appearance {
+                      material Material {
+                        diffuseColor 1 1 1
+                      }
+                    }
+                    geometry Text {
+                      string "Be interactive!"
+                      fontStyle FontStyle {
+                        family [ "Ubuntu Condensed", "sans" ]
+                        style "BOLD"
+                        size 0.04
+                      }
+                    }
+                  }
+                }
+                DEF Support Transform {
+                  translation -0.421689 0.1 1
+                  children Shape {
+                    appearance Appearance {
+                      material Material {
+                        diffuseColor 0 0 0
+                      }
+                    }
+                    geometry Text {
+                      string [ "For additional support please visit", "titania.create3000.de." ]
+                      fontStyle FontStyle {
+                        family [ "Ubuntu Condensed", "sans" ]
+                        style "BOLD"
+                        size 0.06
+                      }
+                    }
+                  }
+                }
+                DEF License Transform {
+                  translation 0.262 0.267 1
+                  children Shape {
+                    appearance Appearance {
+                      material Material {
+                        diffuseColor 0 0 0
+                      }
+                    }
+                    geometry Text {
+                      string "GNU GPL v3"
+                      fontStyle FontStyle {
+                        family [ "Ubuntu", "sans" ]
+                        style "BOLD"
+                        size 0.03
+                      }
+                    }
+                  }
+                }
+                DEF Copyright Transform {
+                  translation 0.262 0.217 1
+                  children Shape {
+                    appearance Appearance {
+                      material Material {
+                        diffuseColor 0 0 0
+                      }
+                    }
+                    geometry Text {
+                      string "© 2010 - 2012"
+                      fontStyle FontStyle {
+                        family [ "Ubuntu", "sans" ]
+                        style "BOLD"
+                        size 0.03
+                      }
+                    }
+                  }
+                }
+                DEF VersionNumber Transform {
+                  translation -0.438782 -0.385263 0
+                  children Shape {
+                    appearance Appearance {
+                      material Material {
+                        diffuseColor 1 1 1
+                      }
+                    }
+                    geometry DEF VersionNumberText Text {
+                      string "0.5.0"
+                      fontStyle FontStyle {
+                        family [ "Ubuntu Condensed", "sans" ]
+                        style "BOLD"
+                        size 0.41
+                      }
+                    }
+                  }
+                }
+                DEF VersionNumberScript Script {
+                  initializeOnly SFNode text USE VersionNumberText
+
+                  url "vrmlscript:
+function initialize ()
+{
+	text .string = new MFString (Browser .version);
+}
+"
+                }
+              ]
             }
           ]
         }
       }
       DEF Support LayoutGroup {
-        layout DEF _0 Layout {
+        layout Layout {
           align [ "CENTER", "TOP" ]
           offset [ 0, -0.32 ]
           size [ 1, 0.19 ]
@@ -93,10 +256,11 @@ DEF _2 LayerSet {
           }
           geometry Rectangle2D {
             size 1 1
-            solid FALSE
           }
         }
       }
     ]
   }
 }
+
+ROUTE LogoRotor.value_changed TO Logo.set_rotation

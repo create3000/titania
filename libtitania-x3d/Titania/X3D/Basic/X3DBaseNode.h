@@ -109,9 +109,6 @@ public:
 	getExecutionContext () const
 	{ return executionContext; }
 
-	size_t
-	getNumClones () const;
-
 	const std::string &
 	getComponentName () const
 	{ return component; }
@@ -134,7 +131,13 @@ public:
 	virtual
 	X3DBaseNode*
 	getLocalNode ()
+
 	{ return this; }
+	size_t
+	getNumClones () const;
+	
+	void
+	setInternal (bool);
 
 	///  @name Field handling
 

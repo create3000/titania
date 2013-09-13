@@ -140,8 +140,43 @@ BrowserWindow::initialize ()
 	getBrowser () -> getLookAt ()        .addInterest (this, &BrowserWindow::set_look_at);
 	getViewerButton () .set_menu (getViewerTypeMenu ());
 
+	// Library
+	buildLibrary ();
+
 	// Window
 	getWindow () .grab_focus ();
+}
+
+void
+BrowserWindow::buildLibrary ()
+{
+	auto componentsMenuItem = Gtk::manage (new Gtk::MenuItem ("Components"));
+	auto componentsMenu     = Gtk::manage (new Gtk::Menu ());
+	componentsMenuItem -> set_submenu (*componentsMenu);
+
+	std::map <std::string, Gtk::Menu*> componentsMenus;
+
+	for (const auto & component : getBrowser () -> getSupportedComponents ())
+	{
+		auto menuItem = Gtk::manage (new Gtk::MenuItem (component -> getName ()));
+		auto menu     = Gtk::manage (new Gtk::Menu ());
+		menuItem -> set_submenu (*menu);
+
+		componentsMenu -> append (*menuItem);
+		componentsMenus .insert (std::make_pair (component -> getName (), menu));
+	}
+
+	for (const auto & node : getBrowser () -> getSupportedNodes ())
+	{
+		auto menuItem = Gtk::manage (new Gtk::MenuItem (node -> getTypeName ()));
+		
+		menuItem -> signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &BrowserWindow::on_add_node), node -> getTypeName ()));
+		
+		componentsMenus [node -> getComponentName ()] -> append (*menuItem);
+	}
+
+	getLibraryMenu () .append (*componentsMenuItem);
+	getLibraryMenu () .show_all ();
 }
 
 // File menu
@@ -607,6 +642,37 @@ BrowserWindow::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & co
 	}
 
 	context -> drag_finish (false, false, time);
+}
+
+// Editing facilities
+
+void
+BrowserWindow::on_add_node (const std::string & typeName)
+{
+	auto scene = getBrowser () -> getExecutionContext ();
+	auto node  = scene -> createNode (typeName);
+
+	node -> setup ();
+	scene -> getRootNodes () .emplace_back (node);
+}
+
+void
+BrowserWindow::on_group_selected_nodes_activate ()
+{
+	__LOG__ << std::endl;
+	
+	auto scene     = getBrowser () -> getExecutionContext ();
+	auto node      = scene -> createNode ("Transform");
+	//auto transform = dynamic_cast <X3D::Transform*> (node .getValue ());
+		
+	node -> setup ();
+	scene -> getRootNodes () .emplace_back (node);
+}
+
+void
+BrowserWindow::on_add_to_group_activate ()
+{
+	__LOG__ << std::endl;
 }
 
 } // puck

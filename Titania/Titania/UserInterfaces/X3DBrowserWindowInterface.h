@@ -67,26 +67,11 @@ public:
 	template <class ... Arguments>
 	X3DBrowserWindowInterface (const std::string & filename, const Arguments & ... arguments) :
 		X3DUserInterface (m_widgetName, arguments ...),
-		connections ()
+		     connections ()
 	{ create (filename); }
 
 	const std::string &
 	getWidgetName () const { return m_widgetName; }
-
-	const Glib::RefPtr <Gtk::FileFilter> &
-	getFileFilterAllFiles () const { return m_fileFilterAllFiles; }
-
-	const Glib::RefPtr <Gtk::FileFilter> &
-	getFileFilterAudio () const { return m_fileFilterAudio; }
-
-	const Glib::RefPtr <Gtk::FileFilter> &
-	getFileFilterImage () const { return m_fileFilterImage; }
-
-	const Glib::RefPtr <Gtk::FileFilter> &
-	getFileFilterVideo () const { return m_fileFilterVideo; }
-
-	const Glib::RefPtr <Gtk::FileFilter> &
-	getFileFilterX3D () const { return m_fileFilterX3D; }
 
 	const Glib::RefPtr <Gtk::IconFactory> &
 	getIconFactory () const { return m_iconFactory; }
@@ -102,6 +87,21 @@ public:
 
 	const Glib::RefPtr <Gtk::Action> &
 	getSaveAction () const { return m_saveAction; }
+
+	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilterAllFiles () const { return m_fileFilterAllFiles; }
+
+	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilterAudio () const { return m_fileFilterAudio; }
+
+	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilterImage () const { return m_fileFilterImage; }
+
+	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilterVideo () const { return m_fileFilterVideo; }
+
+	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilterX3D () const { return m_fileFilterX3D; }
 
 	const Glib::RefPtr <Gtk::AccelGroup> &
 	getMenuAccelGroup () const { return m_menuAccelGroup; }
@@ -176,6 +176,12 @@ public:
 	getEditMenuItem () const { return *m_editMenuItem; }
 
 	Gtk::MenuItem &
+	getGroupSelectedNodesMenuItem () const { return *m_groupSelectedNodesMenuItem; }
+
+	Gtk::MenuItem &
+	getAddToGroupMenuItem () const { return *m_addToGroupMenuItem; }
+
+	Gtk::MenuItem &
 	getViewMenuItem () const { return *m_viewMenuItem; }
 
 	Gtk::CheckMenuItem &
@@ -243,6 +249,12 @@ public:
 
 	Gtk::MenuItem &
 	getMotionBlurMenuItem () const { return *m_motionBlurMenuItem; }
+
+	Gtk::MenuItem &
+	getLibraryMenuItem () const { return *m_libraryMenuItem; }
+
+	Gtk::Menu &
+	getLibraryMenu () const { return *m_libraryMenu; }
 
 	Gtk::MenuItem &
 	getHelpMenuItem () const { return *m_helpMenuItem; }
@@ -399,6 +411,14 @@ public:
 
 	virtual
 	void
+	on_group_selected_nodes_activate () = 0;
+
+	virtual
+	void
+	on_add_to_group_activate () = 0;
+
+	virtual
+	void
 	on_toolBar_toggled () = 0;
 
 	virtual
@@ -507,16 +527,16 @@ private:
 
 	std::deque <sigc::connection>   connections;
 	Glib::RefPtr <Gtk::Builder>     m_builder;
-	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterAllFiles;
-	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterAudio;
-	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterImage;
-	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterVideo;
-	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterX3D;
 	Glib::RefPtr <Gtk::IconFactory> m_iconFactory;
 	Glib::RefPtr <Gtk::Action>      m_newAction;
 	Glib::RefPtr <Gtk::Action>      m_openAction;
 	Glib::RefPtr <Gtk::Action>      m_revertAction;
 	Glib::RefPtr <Gtk::Action>      m_saveAction;
+	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterAllFiles;
+	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterAudio;
+	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterImage;
+	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterVideo;
+	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterX3D;
 	Glib::RefPtr <Gtk::AccelGroup>  m_menuAccelGroup;
 	Gtk::FileChooserDialog*         m_fileOpenDialog;
 	Gtk::FileChooserDialog*         m_fileSaveDialog;
@@ -541,6 +561,8 @@ private:
 	Gtk::ImageMenuItem*             m_revertMenuItem;
 	Gtk::ImageMenuItem*             m_quitMenuItem;
 	Gtk::MenuItem*                  m_editMenuItem;
+	Gtk::MenuItem*                  m_groupSelectedNodesMenuItem;
+	Gtk::MenuItem*                  m_addToGroupMenuItem;
 	Gtk::MenuItem*                  m_viewMenuItem;
 	Gtk::CheckMenuItem*             m_toolBarMenuItem;
 	Gtk::CheckMenuItem*             m_sideBarMenuItem;
@@ -564,6 +586,8 @@ private:
 	Gtk::CheckMenuItem*             m_enableInlineViewpointsMenuItem;
 	Gtk::MenuItem*                  m_toolsMenuItem;
 	Gtk::MenuItem*                  m_motionBlurMenuItem;
+	Gtk::MenuItem*                  m_libraryMenuItem;
+	Gtk::Menu*                      m_libraryMenu;
 	Gtk::MenuItem*                  m_helpMenuItem;
 	Gtk::ImageMenuItem*             m_infoMenuItem;
 	Gtk::ImageMenuItem*             m_standardSizeMenuItem;

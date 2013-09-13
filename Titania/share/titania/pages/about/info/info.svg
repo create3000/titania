@@ -82,9 +82,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.5"
-     inkscape:cx="573.83658"
-     inkscape:cy="426.80526"
+     inkscape:zoom="0.70710678"
+     inkscape:cx="434.21369"
+     inkscape:cy="320.40961"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -626,28 +626,21 @@
          id="tspan3983">http://www.web3d.org/files/specifications/19777-1/V3.0/Part1/X3D_ECMAScript.html</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:56px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;text-align:start;line-height:124.00000095%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Univers Condensed;-inkscape-font-specification:'Univers Condensed, Bold Condensed'"
+       style="font-size:40px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;text-align:start;line-height:124.00000095%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Univers Condensed;-inkscape-font-specification:'Univers Condensed, Bold Condensed'"
        x="57.647999"
        y="823.46619"
        id="text3941"
        sodipodi:linespacing="124%"><tspan
-         style="font-size:56px;line-height:124.00000095%"
+         style="font-size:40px;line-height:124.00000095%"
          id="tspan3943"
          sodipodi:role="line"
          x="57.647999"
-         y="823.46619">Support</tspan></text>
-    <text
-       sodipodi:linespacing="133%"
-       id="text3945"
-       y="892.36218"
-       x="60"
-       style="font-size:36px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;text-align:start;line-height:133.00000429%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Univers Condensed;-inkscape-font-specification:'Univers Condensed, Bold Condensed'"
-       xml:space="preserve"><tspan
-         y="892.36218"
-         x="60"
+         y="823.46619">For additional support please visit</tspan><tspan
+         style="font-size:40px;line-height:124.00000095%"
          sodipodi:role="line"
-         id="tspan3947"
-         style="font-size:36px;line-height:133.00000429%">‣ visit titania.create3000.de</tspan></text>
+         x="57.647999"
+         y="875.90033"
+         id="tspan4437">‣ titania.create3000.de.</tspan></text>
     <text
        sodipodi:linespacing="142.99999%"
        id="text3953"
@@ -670,13 +663,13 @@
     <text
        sodipodi:linespacing="130%"
        id="text3967"
-       y="284.62924"
+       y="283.62924"
        x="-1217.7769"
        style="font-size:62.85417557px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;text-align:start;line-height:129.99999523%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Univers Condensed;-inkscape-font-specification:'Univers Condensed, Bold Condensed'"
        xml:space="preserve"
        transform="matrix(0,-1,1,0,0,0)"><tspan
          style="font-size:50.28334427px;text-align:start;text-anchor:start;fill:#ffffff;fill-opacity:1"
-         y="284.62924"
+         y="283.62924"
          x="-1217.7769"
          id="tspan3969"
          sodipodi:role="line">Version</tspan></text>
