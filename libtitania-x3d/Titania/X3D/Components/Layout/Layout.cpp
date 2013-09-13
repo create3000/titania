@@ -535,7 +535,7 @@ Layout::transform (const TraverseType type)
 		Vector3f scale (1, 1, 1);
 	
 		Vector3f   currentTranslation, currentScale;
-		Rotation4f currentRotation, currentScaleOrientation;
+		Rotation4f currentRotation;
 
 		Matrix4f modelViewMatrix = getModelViewMatrix (type);
 		modelViewMatrix .get (currentTranslation, currentRotation, currentScale);
@@ -596,8 +596,10 @@ Layout::transform (const TraverseType type)
 		// Transform
 
 		Matrix4f matrix;
-		matrix .set (currentTranslation + translation + offset, currentRotation, scale, currentScaleOrientation);
-		
+		matrix .set (currentTranslation, currentRotation);
+		matrix .translate (translation + offset);
+		matrix .scale (scale);
+
 		glLoadMatrixf (matrix .data ());
 
 		//__LOG__ << this << " : " << rectangleSize << std::endl;

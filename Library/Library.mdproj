@@ -2452,5 +2452,6 @@
     <Content Include="Tests\Layering\LayerSet.wrl" />
     <Content Include="Tests\Layering\Inline.wrl" />
     <Content Include="Prototypes\Engines\Rotor\Rotor.wrl" />
+    <Content Include="Tests\Layout\test.wrl" />
   </ItemGroup>
 </Project>

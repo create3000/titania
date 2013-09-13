@@ -12,13 +12,13 @@ use XML::LibXML;
 use Glib;
 #libglib-perl
 
-my $DTDDirectory = "/home/holger/Projekte/Titania/x3d2vrml/share/titania/dtd";
+my $DTDDirectory = "/usr/share/titania/dtd";
 my $X3DCatalog   = "$DTDDirectory/x3d-catalog.xml";
 
 my $RecommendedPublicId = "ISO//Web3D//DTD X3D 3.2//EN";
 my $RecomemndedSystemId = "$DTDDirectory/x3d-3.2.dtd";
 
-my $TitaniaInfo = "/home/holger/Projekte/Titania/titania-info/titania-info";
+my $TitaniaInfo = "titania-info";
 
 XML::LibXML -> load_catalog ($X3DCatalog);
 

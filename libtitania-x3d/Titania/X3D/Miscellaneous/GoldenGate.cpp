@@ -95,7 +95,7 @@ static
 basic::ifilestream
 golden_x3d (basic::ifilestream && istream)
 {
-	static std::string x3d2vrml = "/home/holger/Projekte/Titania/x3d2vrml/bin/x3d2vrml";
+	static std::string x3d2vrml = "x3d2vrml";
 
 	int    stdin     = 0;
 	int    stdout    = 0;

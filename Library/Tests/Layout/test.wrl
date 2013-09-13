@@ -1,0 +1,34 @@
+#X3D V3.0 utf8 Titania
+
+META "title" "Layout Test"
+
+LayerSet {
+  activeLayer 1
+  order 1
+  layers LayoutLayer {
+    layout Layout { }
+    children   [    DEF Page LayoutGroup {
+        layout Layout {
+          scaleMode [ "STRETCH", "NONE" ]
+        }
+        }
+DEF Support LayoutGroup {
+      layout Layout {
+        align [ "CENTER", "TOP" ]
+        offset [ 0, -0.32 ]
+        size [ 1, 0.19 ]
+        scaleMode "FRACTION"
+      }
+      children DEF HorizontalGrey Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 0.760784 0.760784 0.760784
+          }
+        }
+        geometry Rectangle2D {
+          size 1 1
+        }
+      }
+    }]
+  }
+}

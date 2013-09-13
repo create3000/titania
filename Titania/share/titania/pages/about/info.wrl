@@ -17,14 +17,35 @@ LayerSet {
   layers LayoutLayer {
     layout Layout { }
     children [
-      DEF Background Shape {
-        appearance Appearance {
-          material Material {
-            diffuseColor 0 0 0
+      DEF Background Transform {
+        translation 0 0 -1
+        children Shape {
+          appearance Appearance {
+            material Material {
+              diffuseColor 0 0 0
+            }
+          }
+          geometry Rectangle2D {
+            size 1 1
           }
         }
-        geometry Rectangle2D {
-          size 1 1
+      }
+      DEF SupportBox LayoutGroup {
+        layout Layout {
+          align [ "CENTER", "TOP" ]
+          offset [ 0, -0.32 ]
+          size [ 1, 0.19 ]
+          scaleMode "FRACTION"
+        }
+        children DEF HorizontalGrey Shape {
+          appearance Appearance {
+            material Material {
+              diffuseColor 0.760784 0.760784 0.760784
+            }
+          }
+          geometry Rectangle2D {
+            size 1 1
+          }
         }
       }
       DEF Page LayoutGroup {
@@ -92,7 +113,7 @@ LayerSet {
                       loop TRUE
                     }
                     DEF Logo Transform {
-                      rotation 0 0 1 0.783685
+                      rotation 0 0 1 4.18848
                       center 5.5 -5.6 0
                       children Inline {
                         url "home/logo.wrl"
@@ -101,7 +122,7 @@ LayerSet {
                   ]
                 }
                 DEF Titania Transform {
-                  translation -0.219 0.3611 0
+                  translation -0.219 0.3611 1
                   children Shape {
                     appearance Appearance {
                       material Material {
@@ -119,7 +140,7 @@ LayerSet {
                   }
                 }
                 DEF X3DBrowser Transform {
-                  translation -0.214884 0.26855 0
+                  translation -0.214884 0.26855 1
                   children Shape {
                     appearance Appearance {
                       material Material {
@@ -137,7 +158,7 @@ LayerSet {
                   }
                 }
                 DEF BeInteractive Transform {
-                  translation 0.017 0.219 0
+                  translation 0.019 0.219 1
                   children Shape {
                     appearance Appearance {
                       material Material {
@@ -145,7 +166,7 @@ LayerSet {
                       }
                     }
                     geometry Text {
-                      string "Be interactive!"
+                      string "Stay interactive!"
                       fontStyle FontStyle {
                         family [ "Ubuntu Condensed", "sans" ]
                         style "BOLD"
@@ -209,7 +230,7 @@ LayerSet {
                   }
                 }
                 DEF VersionNumber Transform {
-                  translation -0.438782 -0.385263 0
+                  translation -0.438782 -0.385263 1
                   children Shape {
                     appearance Appearance {
                       material Material {
@@ -239,24 +260,6 @@ function initialize ()
               ]
             }
           ]
-        }
-      }
-      DEF Support LayoutGroup {
-        layout Layout {
-          align [ "CENTER", "TOP" ]
-          offset [ 0, -0.32 ]
-          size [ 1, 0.19 ]
-          scaleMode "FRACTION"
-        }
-        children DEF HorizontalGrey Shape {
-          appearance Appearance {
-            material Material {
-              diffuseColor 0.760784 0.760784 0.760784
-            }
-          }
-          geometry Rectangle2D {
-            size 1 1
-          }
         }
       }
     ]
