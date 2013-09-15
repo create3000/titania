@@ -222,18 +222,8 @@ X3DBaseNode::copy (X3DExecutionContext* const executionContext) const
 }
 
 void
-X3DBaseNode::replace (X3DBaseNode* const node)
+X3DBaseNode::replace (X3DBaseNode* const node, const std::set <const X3D::X3DFieldDefinition*> & exclude)
 {
-	assert (node -> getType () == getType ());
-
-	// Copy name
-
-	setName (node -> getName ());
-
-	// Copy UserData
-
-	setUserData (node -> getUserData ());
-
 	// Parents
 
 	auto parents = node -> getParents ();
@@ -242,17 +232,76 @@ X3DBaseNode::replace (X3DBaseNode* const node)
 	{
 		//__LOG__ << parent -> getTypeName () << std::endl;
 
-		auto field = dynamic_cast <SFNode*> (parent);
+		auto sfnode = dynamic_cast <SFNode*> (parent);
 
-		if (field)
+		if (sfnode)
 		{
-			field -> set (this);
-			field -> notify ();
+			if (exclude .find (sfnode) == exclude .end ())
+			{
+				bool insert = true;
+
+				for (auto & secondParent : sfnode -> getParents ())
+				{
+					auto mfnode = dynamic_cast <X3D::MFNode*> (secondParent);
+		
+					if (mfnode)
+						insert = exclude .find (mfnode) == exclude .end ();
+				}
+
+				if (insert)
+				{
+					sfnode -> set (this);
+					sfnode -> notify ();
+				}
+			}
 		}
 
 		//else
 		//	__LOG__ << parent -> getTypeName () << std::endl;
 	}
+}
+
+
+void
+X3DBaseNode::remove (const std::set <const X3D::X3DFieldDefinition*> & exclude)
+{
+	std::set <SFNode*> sfnodes;
+	std::set <MFNode*> mfnodes;
+
+	for (auto & parent : getParents ())
+	{
+		auto sfnode = dynamic_cast <X3D::SFNode*> (parent);
+	
+		if (sfnode)
+		{
+			if (exclude .find (sfnode) == exclude .end ())
+			{
+				bool fieldValue = false;
+			
+				for (auto & secondParent : sfnode -> getParents ())
+				{
+					auto mfnode = dynamic_cast <X3D::MFNode*> (secondParent);
+		
+					if (mfnode)
+					{
+						fieldValue = true;
+						
+						if (exclude .find (mfnode) == exclude .end ())
+							mfnodes .insert (mfnode);
+					}
+				}
+
+				if (not fieldValue)
+					sfnodes .insert (sfnode);
+			}
+		}
+	}
+
+	for (auto & sfnode : sfnodes)
+		sfnode -> setValue (nullptr);
+
+	for (auto & mfnode : mfnodes)
+		mfnode -> erase (std::remove (mfnode -> begin (), mfnode -> end (), this), mfnode -> end ());
 }
 
 void
@@ -580,6 +629,8 @@ X3DBaseNode::addHandle (X3DBaseNode* const node)
 {
 	handle = node;
 	handle -> addParent (this);
+	handle -> setName (getName ());
+	handle -> setUserData (getUserData ());
 	handle -> setup ();
 	handle -> replace (this);
 }

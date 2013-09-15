@@ -91,7 +91,10 @@ public:
 	copy (X3DExecutionContext* const) const;
 
 	void
-	replace (X3DBaseNode* const);
+	replace (X3DBaseNode* const, const std::set <const X3D::X3DFieldDefinition*> & = { });
+
+	void
+	remove (const std::set <const X3D::X3DFieldDefinition*> & = { });
 
 	void
 	assign (const X3DBaseNode*);

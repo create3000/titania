@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_BROWSER_VIEWER_X3DVIEWER_H__
 
 #include "../../Components/Navigation/NavigationInfo.h"
+#include "../../Components/Navigation/X3DViewpointNode.h"
 #include "../X3DWidget.h"
 #include "ViewerType.h"
 
@@ -74,6 +75,12 @@ public:
 	virtual
 	NavigationInfo*
 	getNavigationInfo () const = 0;
+	
+
+protected:
+
+	X3DViewpointNode*
+	getActiveViewpoint () const;
 
 };
 

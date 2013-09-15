@@ -71,6 +71,14 @@ public:
 
 	/// @name Member access
 
+	void
+	setEdited (bool value)
+	{ edited = value; }
+
+	bool
+	getEdited () const
+	{ return edited; }
+
 	const X3D::Keys &
 	getKeys () const
 	{ return keys; }
@@ -84,7 +92,7 @@ private:
 	initialize ();
 
 	void
-	buildLibrary ();
+	buildLibraryMenu ();
 
 	/// @name Widgets
 
@@ -119,6 +127,14 @@ private:
 	const OutlineEditor &
 	getOutlineEditor () const
 	{ return outlineEditor; }
+
+	OutlineTreeView &
+	getOutlineTreeView ()
+	{ return outlineEditor .getTreeView (); }
+
+	const OutlineTreeView &
+	getOutlineTreeView () const
+	{ return outlineEditor .getTreeView (); }
 
 	/// @name File menu
 
@@ -338,15 +354,33 @@ private:
 	on_drag_data_received (const Glib::RefPtr <Gdk::DragContext>&, int, int, const Gtk::SelectionData &, guint info, guint) final;
 	
 	///  @Editing facilities
-	
+
+	OutlineUserDataPtr
+	getUserData (X3D::X3DChildObject*) const;
+
+	X3D::MFNode*
+	getGroupingField (const X3D::SFNode &) const;
+
 	void
 	on_add_node (const std::string &);
+
+	void
+	on_delete_nodes_activate ();
 
 	void
 	on_group_selected_nodes_activate ();
 
 	void
+	on_ungroup_node_activate ();
+
+	void
 	on_add_to_group_activate ();
+
+	void
+	on_detach_from_group_activate ();
+
+	void
+	on_create_parent_group_activate ();
 
 	///  @name Members
 
@@ -354,6 +388,7 @@ private:
 	ViewpointList    viewpointList;
 	HistoryEditor    historyEditor;
 	OutlineEditor    outlineEditor;
+	bool             edited;
 	X3D::Keys        keys;
 
 };

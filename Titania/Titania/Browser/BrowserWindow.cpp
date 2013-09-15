@@ -51,6 +51,7 @@
 #include "BrowserWindow.h"
 
 #include "../Configuration/config.h"
+#include "../OutlineEditor/OutlineTreeModel.h"
 #include <Titania/String/Trim.h>
 
 namespace titania {
@@ -63,6 +64,7 @@ BrowserWindow::BrowserWindow (const basic::uri & worldURL) :
 	   viewpointList (this),
 	   historyEditor (this),
 	   outlineEditor (this),
+	          edited (false),
 	            keys ()
 { }
 
@@ -141,19 +143,15 @@ BrowserWindow::initialize ()
 	getViewerButton () .set_menu (getViewerTypeMenu ());
 
 	// Library
-	buildLibrary ();
+	buildLibraryMenu ();
 
 	// Window
 	getWindow () .grab_focus ();
 }
 
 void
-BrowserWindow::buildLibrary ()
+BrowserWindow::buildLibraryMenu ()
 {
-	auto componentsMenuItem = Gtk::manage (new Gtk::MenuItem ("Components"));
-	auto componentsMenu     = Gtk::manage (new Gtk::Menu ());
-	componentsMenuItem -> set_submenu (*componentsMenu);
-
 	std::map <std::string, Gtk::Menu*> componentsMenus;
 
 	for (const auto & component : getBrowser () -> getSupportedComponents ())
@@ -162,20 +160,18 @@ BrowserWindow::buildLibrary ()
 		auto menu     = Gtk::manage (new Gtk::Menu ());
 		menuItem -> set_submenu (*menu);
 
-		componentsMenu -> append (*menuItem);
+		getLibraryMenu () .append (*menuItem);
 		componentsMenus .insert (std::make_pair (component -> getName (), menu));
 	}
 
 	for (const auto & node : getBrowser () -> getSupportedNodes ())
 	{
 		auto menuItem = Gtk::manage (new Gtk::MenuItem (node -> getTypeName ()));
-		
 		menuItem -> signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &BrowserWindow::on_add_node), node -> getTypeName ()));
 		
 		componentsMenus [node -> getComponentName ()] -> append (*menuItem);
 	}
 
-	getLibraryMenu () .append (*componentsMenuItem);
 	getLibraryMenu () .show_all ();
 }
 
@@ -425,10 +421,10 @@ BrowserWindow::on_fullscreen_toggled ()
 void
 BrowserWindow::on_headlight_toggled ()
 {
-	auto navigationInfo = getBrowser () -> getActiveNavigationInfo ();
+	auto activeLayer = getBrowser () -> getActiveLayer ();
 
-	if (navigationInfo)
-		navigationInfo -> headlight () = getHeadlightMenuItem () .get_active ();
+	if (activeLayer)
+		activeLayer -> getNavigationInfo () -> headlight () = getHeadlightMenuItem () .get_active ();
 }
 
 void
@@ -646,14 +642,95 @@ BrowserWindow::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & co
 
 // Editing facilities
 
+static
+void
+printParentNodes (const X3D::X3DChildObject* object)
+{
+	for (auto & parent : object -> getParents ())
+	{
+		auto node = dynamic_cast <X3D::X3DBaseNode*> (parent);
+	
+		if (node)
+			__LOG__ << "\t" << node -> getTypeName () << std::endl;
+
+		else
+			printParentNodes (parent);
+	}
+}
+
+OutlineUserDataPtr
+BrowserWindow::getUserData (X3D::X3DChildObject* object) const
+{
+	return getOutlineEditor () .getTreeView () .get_user_data (object);
+}
+
+X3D::MFNode*
+BrowserWindow::getGroupingField (const X3D::SFNode & node) const
+{
+	X3D::X3DFieldDefinition* field = nullptr;
+
+	try
+	{
+		field = node -> getField ("children");
+	}
+	catch (const X3D::Error <X3D::INVALID_NAME> &)
+	{
+		try
+		{
+			field = node -> getField ("layers");
+		}
+		catch (const X3D::Error <X3D::INVALID_NAME> &)
+		{ }
+	}
+
+	return dynamic_cast <X3D::MFNode*> (field);
+}
+
 void
 BrowserWindow::on_add_node (const std::string & typeName)
 {
-	auto scene = getBrowser () -> getExecutionContext ();
-	auto node  = scene -> createNode (typeName);
+	try
+	{
+		auto scene = getBrowser () -> getExecutionContext ();
+		auto node  = scene -> createNode (typeName);
 
-	node -> setup ();
-	scene -> getRootNodes () .emplace_back (node);
+		node -> setup ();
+		scene -> getRootNodes () .emplace_back (node);
+			
+		setEdited (true);
+	}
+	catch (const X3D::X3DError &)
+	{ }
+}
+
+void
+BrowserWindow::on_delete_nodes_activate ()
+{
+	__LOG__ << std::endl;
+	
+	auto selection = getBrowser () -> getSelection () -> getChildren ();
+
+	if (selection .size ())
+	{
+	//	for (const auto & child : getBrowser () -> getSelection () -> children ())
+	//		__LOG__ << child -> getTypeName () << std::endl;
+
+		auto model = getOutlineTreeView () .get_model ();
+			
+		for (const auto & child : selection)
+		{
+			// Remove selected child
+		
+			child -> remove ({ &selection });
+
+			// Inform model
+
+			for (const auto & iter : getOutlineTreeView () .get_iters (child))
+				model -> row_deleted (model -> get_path (iter));
+		}
+				
+		setEdited (true);
+	}
 }
 
 void
@@ -661,18 +738,175 @@ BrowserWindow::on_group_selected_nodes_activate ()
 {
 	__LOG__ << std::endl;
 	
-	auto scene     = getBrowser () -> getExecutionContext ();
-	auto node      = scene -> createNode ("Transform");
-	//auto transform = dynamic_cast <X3D::Transform*> (node .getValue ());
+	const auto & selection = getBrowser () -> getSelection () -> getChildren ();
+	
+	if (selection .size ())
+	{
+		auto scene     = getBrowser () -> getExecutionContext ();
+		auto node      = scene -> createNode ("Transform");
+		auto transform = dynamic_cast <X3D::Transform*> (node .getValue ());
+
+		for (const auto & child : selection)
+		{
+			getUserData (child) -> path .clear ();
+
+			child -> remove ({ &selection });
+			
+			transform -> children () .emplace_back (child);
+		}
+
+		node -> setup ();
+		scene -> getRootNodes () .emplace_back (node);
 		
-	node -> setup ();
-	scene -> getRootNodes () .emplace_back (node);
+		getBrowser () -> getSelection () -> clear ();
+		getBrowser () -> getSelection () -> addChild (node);
+			
+		setEdited (true);
+	}
+}
+
+void
+BrowserWindow::on_ungroup_node_activate ()
+{
+	__LOG__ << std::endl;
+
+	const auto & selection = getBrowser () -> getSelection () -> getChildren ();
+	
+	if (selection .size ())
+	{
+		auto leader   = selection .back ();
+		auto children = getGroupingField (leader);
+
+		if (children)
+		{
+			getOutlineTreeView () .get_selection () .select (leader);
+
+			for (const auto & child : *children)
+			{
+				getUserData (child) -> path .clear ();
+				getBrowser () -> getExecutionContext () -> getRootNodes () .emplace_back (child);
+			}
+
+			leader -> remove ();
+			
+			setEdited (true);
+		}		
+	}
 }
 
 void
 BrowserWindow::on_add_to_group_activate ()
 {
 	__LOG__ << std::endl;
+	
+	const auto & selection = getBrowser () -> getSelection () -> getChildren ();
+	
+	if (selection .size () > 1)
+	{
+		auto leader   = selection .back ();
+		auto children = getGroupingField (leader);
+
+		if (children)
+		{
+			for (const auto & child : selection)
+			{
+				if (child == leader)
+					continue;
+
+				getUserData (child) -> path .clear ();
+
+				child -> remove ({ &selection, children });
+
+				children -> emplace_back (child);
+			}
+			
+			setEdited (true);
+		}
+	}
+}
+
+void
+BrowserWindow::on_detach_from_group_activate ()
+{
+	__LOG__ << std::endl;
+	
+	const auto & selection = getBrowser () -> getSelection () -> getChildren ();
+	
+	if (selection .size ())
+	{
+		for (const auto & child : selection)
+		{
+			getUserData (child) -> path .clear ();
+
+			child -> remove ({ &selection });
+		}
+
+		for (const auto & child : selection)
+			getBrowser () -> getExecutionContext () -> getRootNodes () .emplace_back (child);
+			
+		setEdited (true);
+	}
+}
+
+void
+BrowserWindow::on_create_parent_group_activate ()
+{
+	__LOG__ << std::endl;
+	
+	auto selection = getBrowser () -> getSelection () -> getChildren ();
+	
+	if (selection .size ())
+	{
+		auto model = getOutlineTreeView () .get_model ();
+
+		getBrowser () -> getSelection () -> clear ();
+
+		for (const auto & child : selection)
+		{
+			// Collapse open path
+			
+			auto userData = getUserData (child);
+
+			__LOG__ << userData -> path .to_string () << std::endl;
+
+			bool expanded     = userData -> expanded;
+			bool all_expanded = userData -> all_expanded;
+
+			getOutlineTreeView () .collapse_row (userData -> path);
+
+			userData -> expanded     = expanded;
+			userData -> all_expanded = all_expanded;
+
+			// Replace node with Transform
+		
+			auto node      = getBrowser () -> getExecutionContext () -> createNode ("Transform");
+			auto transform = dynamic_cast <X3D::Transform*> (node .getValue ());
+
+			getUserData (transform);
+
+			transform -> children () .emplace_back (child);
+			transform -> setup ();
+
+			transform -> replace (child, { &selection, &transform -> children () });
+
+			// Select Transform
+		
+			getBrowser () -> getSelection () -> addChild (node);
+
+			// Inform model about change
+		
+			for (const auto & iter : getOutlineTreeView () .get_iters (node))
+			{
+				auto path = model -> get_path (iter);
+			
+				model -> row_changed (path, iter);
+
+				getOutlineTreeView () .expand_row (path, false);
+			}
+		}
+
+		setEdited (true);
+	}
 }
 
 } // puck

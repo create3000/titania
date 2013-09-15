@@ -74,7 +74,14 @@ public:
 
 	using Gtk::TreeView::expand_row;
 
+	///  @name Construction
+
 	OutlineTreeView (BrowserWindow* const);
+
+	///  @name Iter access
+
+	std::deque <Gtk::TreeModel::iterator>
+	get_iters (X3D::X3DChildObject* const) const;
 
 	OutlineIterType
 	get_data_type (const Gtk::TreeModel::iterator &) const;
@@ -86,7 +93,28 @@ public:
 	get_user_data (const Gtk::TreeModel::iterator &) const;
 
 	OutlineUserDataPtr
-	get_user_data (X3D::X3DChildObject*) const;
+	get_user_data (X3D::X3DChildObject* const) const;
+
+	///  @name Member access
+
+	const Glib::RefPtr <OutlineTreeModel> &
+	get_model () const
+	{ return model; }
+
+	OutlineSelection &
+	get_selection ()
+	{ return selection; }
+
+	const OutlineSelection &
+	get_selection () const
+	{ return selection; }
+
+	///  @name Operations
+
+	void
+	collapse_row (const Gtk::TreeModel::Path &);
+
+	///  @name Destruction
 
 	virtual
 	~OutlineTreeView ();
@@ -96,10 +124,6 @@ private:
 
 	void
 	set_model (const Glib::RefPtr <OutlineTreeModel> &);
-
-	const Glib::RefPtr <OutlineTreeModel> &
-	get_model () const
-	{ return model; }
 
 	void
 	set_path (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
@@ -189,10 +213,10 @@ private:
 	unwatch (const Gtk::TreeModel::iterator &, bool);
 
 	void
-	row_has_child_toggled (const Gtk::TreeModel::Path &);
+	on_row_has_child_toggled (const Gtk::TreeModel::Path &);
 
 	void
-	row_changed (const Gtk::TreeModel::Path &);
+	on_row_changed (const Gtk::TreeModel::Path &);
 
 	void
 	collapse_field (const Gtk::TreeModel::Path &);

@@ -5,6 +5,10 @@ use strict;
 use warnings;
 use v5.10.0;
 
+use File::Basename qw (dirname);
+
+chdir dirname $0;
+
 my $min = `date +'%M'`; chomp $min;
 
 if ($min > 15 and $min < 20)

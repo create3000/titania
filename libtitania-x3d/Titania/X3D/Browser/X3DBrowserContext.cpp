@@ -84,14 +84,15 @@ X3DBrowserContext::X3DBrowserContext () :
 	              lights (),
 	        textureUnits (),
 	         activeLayer (),
-	activeNavigationInfo (),
+	activeNavigationInfo (nullptr),
+	activeNavigationInfoChanged (),
 	              viewer (ViewerType::NONE),
 	       examineViewer (),
 	          walkViewer (),
 	           flyViewer (),
 	          noneViewer (),
 	              lookAt (),
-	     activeViewpoint (),
+ activeViewpointChanged (),
 	 keyDeviceSensorNode (nullptr),
 	                   x (0),
 	                   y (0),
@@ -117,14 +118,14 @@ X3DBrowserContext::X3DBrowserContext () :
 	             browserOptions,
 	             javaScriptEngine,
 	             activeLayer,
-	             activeNavigationInfo,
+	             activeNavigationInfoChanged,
 	             viewer,
 	             examineViewer,
 	             walkViewer,
 	             flyViewer,
 	             noneViewer,
 	             lookAt,
-	             activeViewpoint,
+	             activeViewpointChanged,
 	             keyDeviceSensorNodeOutput,
 	             overSensors,
 	             activeSensors,
@@ -232,10 +233,8 @@ X3DBrowserContext::advanceClock ()
 {
 	clock -> advance ();
 
-	auto activeViewpoint = getActiveViewpoint ();
-
-	if (activeViewpoint)
-		currentSpeed .setPosition (activeViewpoint -> getTransformationMatrix () .translation (), currentFrameRate);
+	if (getActiveLayer ())
+		currentSpeed .setPosition (getActiveLayer () -> getViewpoint () -> getTransformationMatrix () .translation (), currentFrameRate);
 
 	else
 		currentSpeed .setPosition (Vector3f (), 0);
@@ -307,18 +306,30 @@ X3DBrowserContext::set_navigationInfo ()
 	if (activeNavigationInfo)
 		activeNavigationInfo -> type () .removeInterest (this, &X3DBrowserContext::set_navigationInfo_type);
 
-	activeNavigationInfo = activeLayer ? activeLayer -> getNavigationInfo () : nullptr;
+	activeNavigationInfo        = activeLayer ? activeLayer -> getNavigationInfo () : nullptr;
+	activeNavigationInfoChanged = getCurrentTime ();
 
 	if (activeNavigationInfo)
+	{
+		activeNavigationInfo -> shutdown () .addInterest (this, &X3DBrowserContext::remove_navigationInfo);
 		activeNavigationInfo -> type () .addInterest (this, &X3DBrowserContext::set_navigationInfo_type);
+	}
 
+	set_navigationInfo_type ();
+}
+
+void
+X3DBrowserContext::remove_navigationInfo ()
+{
+	activeNavigationInfo        = nullptr;
+	activeNavigationInfoChanged = getCurrentTime ();
 	set_navigationInfo_type ();
 }
 
 void
 X3DBrowserContext::set_viewpoint ()
 {
-	activeViewpoint = activeLayer ? activeLayer -> getViewpoint () : nullptr;
+	activeViewpointChanged = getCurrentTime ();
 }
 
 void
@@ -669,8 +680,6 @@ X3DBrowserContext::dispose ()
 	browserOptions       .dispose ();
 	javaScriptEngine     .dispose ();
 	activeLayer          .dispose ();
-	activeNavigationInfo .dispose ();
-	activeViewpoint      .dispose ();
 	overSensors          .clear ();
 	activeSensors        .clear ();
 	selection            .dispose ();

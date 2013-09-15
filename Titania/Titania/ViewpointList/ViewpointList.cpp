@@ -169,13 +169,6 @@ ViewpointList::set_currentViewpoint ()
 
 		getListStore () -> row_changed (getListStore () -> get_path (rows [i]), rows [i]);
 	}
-
-	// Update fieldOfView widget
-
-	auto viewpoint = dynamic_cast <X3D::Viewpoint*> (getBrowser () -> getActiveViewpoint () .getValue ());
-
-	if (viewpoint)
-		getFieldOfView () .set_value (viewpoint -> fieldOfView ());
 }
 
 void
@@ -199,15 +192,6 @@ ViewpointList::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeVie
 	else
 		viewpoint -> set_bind () = true;
 
-}
-
-void
-ViewpointList::on_fieldOfView_changed ()
-{
-	auto viewpoint = dynamic_cast <X3D::Viewpoint*> (getBrowser () -> getActiveViewpoint () .getValue ());
-
-	if (viewpoint)
-		viewpoint -> fieldOfView () = getFieldOfView () .get_value ();
 }
 
 ViewpointList::~ViewpointList ()

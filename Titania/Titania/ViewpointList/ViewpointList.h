@@ -100,10 +100,6 @@ private:
 	void
 	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final;
 
-	virtual
-	void
-	on_fieldOfView_changed () final;
-
 	X3D::X3DSFNode <X3D::X3DLayerNode> activeLayer;
 
 };

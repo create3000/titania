@@ -1,3 +1,19 @@
+2013-09-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DBaseNode.h:
+	* X3DArrayField.h:
+	* X3DBaseNode.cpp:
+	* X3DViewer.h:
+	* X3DBrowserContext.h:
+	* Selection.h:
+	* X3DViewer.cpp:
+	* Selection.cpp:
+	* X3DBrowserContext.cpp:
+	* X3DFlyViewer.cpp:
+	* ExamineViewer.cpp:
+	* Viewpoint.cpp:
+	* X3DGroupingNode.cpp: 
+
 2013-09-13  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* GoldenGate.cpp:

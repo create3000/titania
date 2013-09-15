@@ -119,6 +119,8 @@ X3DGroupingNode::set_addChildren ()
 		add (addChildren ());
 
 		children () .insert (children () .end (), addChildren () .begin (), addChildren () .end ());
+		
+		addChildren () .set ({ });
 	}
 }
 
@@ -128,9 +130,12 @@ X3DGroupingNode::set_removeChildren ()
 	if (removeChildren () .size ())
 	{
 		auto new_end = basic::remove (children () .begin (), children () .end (), removeChildren () .begin (), removeChildren () .end ());
+
 		children () .erase (new_end, children () .end ());
 
 		set_children ();
+
+		removeChildren () .set ({ });
 	}
 }
 

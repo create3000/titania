@@ -85,7 +85,7 @@ ExamineViewer::initialize ()
 	getBrowser () -> signal_scroll_event         () .connect (sigc::mem_fun (*this, &ExamineViewer::on_scroll_event));
 
 	getNavigationInfo () -> transitionStart () .addInterest (this, &ExamineViewer::set_transitionStart);
-	getBrowser () -> getActiveViewpoint () .addInterest (this, &ExamineViewer::set_viewpoint);
+	getBrowser () -> getActiveViewpointChanged () .addInterest (this, &ExamineViewer::set_viewpoint);
 }
 
 void
@@ -101,7 +101,7 @@ ExamineViewer::set_viewpoint ()
 
 	spin_id .disconnect ();
 
-	const auto & viewpoint = getBrowser () -> getActiveViewpoint ();
+	auto viewpoint = getActiveViewpoint ();
 
 	orientation = viewpoint -> getUserOrientation ();
 	distance    = getDistance ();
@@ -114,7 +114,7 @@ ExamineViewer::on_button_press_event (GdkEventButton* event)
 
 	if (button == 1)
 	{
-		getBrowser () -> getActiveViewpoint () -> transitionStop ();
+		getActiveViewpoint () -> transitionStop ();
 
 		set_viewpoint ();
 
@@ -124,7 +124,7 @@ ExamineViewer::on_button_press_event (GdkEventButton* event)
 
 	else if (button == 2)
 	{
-		getBrowser () -> getActiveViewpoint () -> transitionStop ();
+		getActiveViewpoint () -> transitionStop ();
 
 		set_viewpoint ();
 
@@ -158,7 +158,7 @@ ExamineViewer::on_motion_notify_event (GdkEventMotion* event)
 {
 	if (button == 1)
 	{
-		const auto & viewpoint = getBrowser () -> getActiveViewpoint ();
+		const auto & viewpoint = getActiveViewpoint ();
 
 		Vector3f toVector = trackballProjectToSphere (event -> x, event -> y);
 
@@ -174,7 +174,7 @@ ExamineViewer::on_motion_notify_event (GdkEventMotion* event)
 
 	else if (button == 2)
 	{
-		const auto & viewpoint = getBrowser () -> getActiveViewpoint ();
+		const auto & viewpoint = getActiveViewpoint ();
 
 		Vector3f toPoint     = getPoint (event -> x, event -> y);
 		Vector3f translation = viewpoint -> getUserOrientation () * (toPoint - fromPoint);
@@ -193,7 +193,7 @@ ExamineViewer::on_motion_notify_event (GdkEventMotion* event)
 bool
 ExamineViewer::on_scroll_event (GdkEventScroll* event)
 {
-	const auto & viewpoint = getBrowser () -> getActiveViewpoint ();
+	auto viewpoint = getActiveViewpoint ();
 
 	viewpoint -> transitionStop ();
 
@@ -218,7 +218,7 @@ ExamineViewer::on_scroll_event (GdkEventScroll* event)
 bool
 ExamineViewer::spin ()
 {
-	const auto & viewpoint = getBrowser () -> getActiveViewpoint ();
+	auto viewpoint = getActiveViewpoint ();
 
 	viewpoint -> orientationOffset () = getOrientationOffset ();
 	viewpoint -> positionOffset ()    = getPositionOffset ();
@@ -236,7 +236,7 @@ ExamineViewer::addSpinning ()
 Vector3f
 ExamineViewer::getDistance () const
 {
-	const auto & viewpoint = getBrowser () -> getActiveViewpoint ();
+	auto viewpoint = getActiveViewpoint ();
 
 	return ~viewpoint -> orientationOffset () * (viewpoint -> getUserPosition ()
 	                                             - viewpoint -> getUserCenterOfRotation ());
@@ -245,7 +245,7 @@ ExamineViewer::getDistance () const
 Vector3f
 ExamineViewer::getPositionOffset () const
 {
-	const auto & viewpoint = getBrowser () -> getActiveViewpoint ();
+	auto viewpoint = getActiveViewpoint ();
 
 	// The new positionOffset is calculated here by calculating the new position and
 	// then subtracting the viewpoints position to get the new positionOffset.
@@ -258,7 +258,7 @@ ExamineViewer::getPositionOffset () const
 Rotation4f
 ExamineViewer::getOrientationOffset ()
 {
-	const auto & viewpoint = getBrowser () -> getActiveViewpoint ();
+	auto viewpoint = getActiveViewpoint ();
 
 	orientation = rotation * orientation;
 	return ~viewpoint -> orientation () * orientation;
@@ -270,7 +270,7 @@ ExamineViewer::getPoint (const double x, const double y)
 {
 	try
 	{
-		const auto & viewpoint = getBrowser () -> getActiveViewpoint ();
+		auto viewpoint = getActiveViewpoint ();
 
 		viewpoint -> reshape (navigationInfo -> getNearPlane (), navigationInfo -> getFarPlane ());
 
@@ -281,7 +281,7 @@ ExamineViewer::getPoint (const double x, const double y)
 		// Far plane point
 		Vector3d far = ViewVolume::unProjectPoint (x, y, 0.9, modelview, projection, viewport);
 
-		if (dynamic_cast <OrthoViewpoint*> (viewpoint .getValue ()))
+		if (dynamic_cast <OrthoViewpoint*> (viewpoint))
 			return Vector3f (-far .x (), far .y (), -abs (distance));
 
 		Vector3f direction = normalize (Vector3f (-far .x (), far .y (), far .z ()));

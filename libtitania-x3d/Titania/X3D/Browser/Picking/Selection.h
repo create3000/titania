@@ -74,8 +74,8 @@ public:
 	removeChild (const SFNode &);
 
 	const MFNode &
-	children () const
-	{ return fields .children; }
+	getChildren () const
+	{ return children; }
 
 	void
 	clear ();
@@ -87,14 +87,7 @@ public:
 
 private:
 
-	struct Fields
-	{
-		Fields ();
-
-		MFNode children;
-	};
-
-	Fields fields;
+	MFNode children;
 
 };
 

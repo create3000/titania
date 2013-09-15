@@ -120,10 +120,18 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_quitMenuItem -> set_name ("QuitMenuItem");
 	m_builder -> get_widget ("EditMenuItem", m_editMenuItem);
 	m_editMenuItem -> set_name ("EditMenuItem");
+	m_builder -> get_widget ("DeleteMenuItem", m_deleteMenuItem);
+	m_deleteMenuItem -> set_name ("DeleteMenuItem");
 	m_builder -> get_widget ("GroupSelectedNodesMenuItem", m_groupSelectedNodesMenuItem);
 	m_groupSelectedNodesMenuItem -> set_name ("GroupSelectedNodesMenuItem");
+	m_builder -> get_widget ("UngroupMenuItem", m_ungroupMenuItem);
+	m_ungroupMenuItem -> set_name ("UngroupMenuItem");
 	m_builder -> get_widget ("AddToGroupMenuItem", m_addToGroupMenuItem);
 	m_addToGroupMenuItem -> set_name ("AddToGroupMenuItem");
+	m_builder -> get_widget ("DetachFromGroupMenuItem", m_detachFromGroupMenuItem);
+	m_detachFromGroupMenuItem -> set_name ("DetachFromGroupMenuItem");
+	m_builder -> get_widget ("CreateParentGroupMenuItem", m_createParentGroupMenuItem);
+	m_createParentGroupMenuItem -> set_name ("CreateParentGroupMenuItem");
 	m_builder -> get_widget ("ViewMenuItem", m_viewMenuItem);
 	m_viewMenuItem -> set_name ("ViewMenuItem");
 	m_builder -> get_widget ("ToolBarMenuItem", m_toolBarMenuItem);
@@ -174,12 +182,14 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_libraryMenuItem -> set_name ("LibraryMenuItem");
 	m_builder -> get_widget ("LibraryMenu", m_libraryMenu);
 	m_libraryMenu -> set_name ("LibraryMenu");
+	m_builder -> get_widget ("ComponentsMenuItem", m_componentsMenuItem);
+	m_componentsMenuItem -> set_name ("ComponentsMenuItem");
 	m_builder -> get_widget ("HelpMenuItem", m_helpMenuItem);
 	m_helpMenuItem -> set_name ("HelpMenuItem");
-	m_builder -> get_widget ("InfoMenuItem", m_infoMenuItem);
-	m_infoMenuItem -> set_name ("InfoMenuItem");
 	m_builder -> get_widget ("StandardSizeMenuItem", m_standardSizeMenuItem);
 	m_standardSizeMenuItem -> set_name ("StandardSizeMenuItem");
+	m_builder -> get_widget ("InfoMenuItem", m_infoMenuItem);
+	m_infoMenuItem -> set_name ("InfoMenuItem");
 	m_builder -> get_widget ("ToolBar", m_toolBar);
 	m_toolBar -> set_name ("ToolBar");
 	m_builder -> get_widget ("NewButton", m_newButton);
@@ -265,10 +275,14 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	connections .emplace_back (m_saveMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_save)));
 	connections .emplace_back (m_saveAsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_save_as)));
 	connections .emplace_back (m_quitMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_close)));
+	connections .emplace_back (m_deleteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_delete_nodes_activate)));
 
 	// Connect object Gtk::MenuItem with id 'GroupSelectedNodesMenuItem'.
 	connections .emplace_back (m_groupSelectedNodesMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_group_selected_nodes_activate)));
+	connections .emplace_back (m_ungroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_ungroup_node_activate)));
 	connections .emplace_back (m_addToGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_add_to_group_activate)));
+	connections .emplace_back (m_detachFromGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_detach_from_group_activate)));
+	connections .emplace_back (m_createParentGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_group_activate)));
 
 	// Connect object Gtk::CheckMenuItem with id 'ToolBarMenuItem'.
 	connections .emplace_back (m_toolBarMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_toolBar_toggled)));
@@ -300,9 +314,9 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	// Connect object Gtk::MenuItem with id 'MotionBlurMenuItem'.
 	connections .emplace_back (m_motionBlurMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_motion_blur_editor_activate)));
 
-	// Connect object Gtk::ImageMenuItem with id 'InfoMenuItem'.
-	connections .emplace_back (m_infoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_info)));
+	// Connect object Gtk::ImageMenuItem with id 'StandardSizeMenuItem'.
 	connections .emplace_back (m_standardSizeMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_standard_size)));
+	connections .emplace_back (m_infoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_info)));
 
 	// Connect object Gtk::HBox with id 'SurfaceBox'.
 	connections .emplace_back (m_surfaceBox -> signal_drag_data_received () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_drag_data_received)));

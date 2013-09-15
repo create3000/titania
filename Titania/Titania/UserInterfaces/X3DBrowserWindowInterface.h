@@ -175,11 +175,23 @@ public:
 	Gtk::MenuItem &
 	getEditMenuItem () const { return *m_editMenuItem; }
 
+	Gtk::ImageMenuItem &
+	getDeleteMenuItem () const { return *m_deleteMenuItem; }
+
 	Gtk::MenuItem &
 	getGroupSelectedNodesMenuItem () const { return *m_groupSelectedNodesMenuItem; }
 
 	Gtk::MenuItem &
+	getUngroupMenuItem () const { return *m_ungroupMenuItem; }
+
+	Gtk::MenuItem &
 	getAddToGroupMenuItem () const { return *m_addToGroupMenuItem; }
+
+	Gtk::MenuItem &
+	getDetachFromGroupMenuItem () const { return *m_detachFromGroupMenuItem; }
+
+	Gtk::MenuItem &
+	getCreateParentGroupMenuItem () const { return *m_createParentGroupMenuItem; }
 
 	Gtk::MenuItem &
 	getViewMenuItem () const { return *m_viewMenuItem; }
@@ -257,13 +269,16 @@ public:
 	getLibraryMenu () const { return *m_libraryMenu; }
 
 	Gtk::MenuItem &
+	getComponentsMenuItem () const { return *m_componentsMenuItem; }
+
+	Gtk::MenuItem &
 	getHelpMenuItem () const { return *m_helpMenuItem; }
 
 	Gtk::ImageMenuItem &
-	getInfoMenuItem () const { return *m_infoMenuItem; }
+	getStandardSizeMenuItem () const { return *m_standardSizeMenuItem; }
 
 	Gtk::ImageMenuItem &
-	getStandardSizeMenuItem () const { return *m_standardSizeMenuItem; }
+	getInfoMenuItem () const { return *m_infoMenuItem; }
 
 	Gtk::Toolbar &
 	getToolBar () const { return *m_toolBar; }
@@ -411,11 +426,27 @@ public:
 
 	virtual
 	void
+	on_delete_nodes_activate () = 0;
+
+	virtual
+	void
 	on_group_selected_nodes_activate () = 0;
 
 	virtual
 	void
+	on_ungroup_node_activate () = 0;
+
+	virtual
+	void
 	on_add_to_group_activate () = 0;
+
+	virtual
+	void
+	on_detach_from_group_activate () = 0;
+
+	virtual
+	void
+	on_create_parent_group_activate () = 0;
 
 	virtual
 	void
@@ -491,11 +522,11 @@ public:
 
 	virtual
 	void
-	on_info () = 0;
+	on_standard_size () = 0;
 
 	virtual
 	void
-	on_standard_size () = 0;
+	on_info () = 0;
 
 	virtual
 	void
@@ -561,8 +592,12 @@ private:
 	Gtk::ImageMenuItem*             m_revertMenuItem;
 	Gtk::ImageMenuItem*             m_quitMenuItem;
 	Gtk::MenuItem*                  m_editMenuItem;
+	Gtk::ImageMenuItem*             m_deleteMenuItem;
 	Gtk::MenuItem*                  m_groupSelectedNodesMenuItem;
+	Gtk::MenuItem*                  m_ungroupMenuItem;
 	Gtk::MenuItem*                  m_addToGroupMenuItem;
+	Gtk::MenuItem*                  m_detachFromGroupMenuItem;
+	Gtk::MenuItem*                  m_createParentGroupMenuItem;
 	Gtk::MenuItem*                  m_viewMenuItem;
 	Gtk::CheckMenuItem*             m_toolBarMenuItem;
 	Gtk::CheckMenuItem*             m_sideBarMenuItem;
@@ -588,9 +623,10 @@ private:
 	Gtk::MenuItem*                  m_motionBlurMenuItem;
 	Gtk::MenuItem*                  m_libraryMenuItem;
 	Gtk::Menu*                      m_libraryMenu;
+	Gtk::MenuItem*                  m_componentsMenuItem;
 	Gtk::MenuItem*                  m_helpMenuItem;
-	Gtk::ImageMenuItem*             m_infoMenuItem;
 	Gtk::ImageMenuItem*             m_standardSizeMenuItem;
+	Gtk::ImageMenuItem*             m_infoMenuItem;
 	Gtk::Toolbar*                   m_toolBar;
 	Gtk::ToolButton*                m_newButton;
 	Gtk::MenuToolButton*            m_openButton;

@@ -74,17 +74,12 @@ X3DViewpointListInterface::create (const std::string & filename)
 	m_scrolledWindow -> set_name ("ScrolledWindow");
 	m_builder -> get_widget ("TreeView", m_treeView);
 	m_treeView -> set_name ("TreeView");
-	m_builder -> get_widget ("FieldOfView", m_fieldOfView);
-	m_fieldOfView -> set_name ("FieldOfView");
 
 	// Connect object Gtk::Box with id 'Widget'.
 	connections .emplace_back (m_widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DViewpointListInterface::on_map)));
 
 	// Connect object Gtk::TreeView with id 'TreeView'.
 	connections .emplace_back (m_treeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DViewpointListInterface::on_row_activated)));
-
-	// Connect object Gtk::HScale with id 'FieldOfView'.
-	connections .emplace_back (m_fieldOfView -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DViewpointListInterface::on_fieldOfView_changed)));
 
 	// Call construct handler of base class.
 	construct ();

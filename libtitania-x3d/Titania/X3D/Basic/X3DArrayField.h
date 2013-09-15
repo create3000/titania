@@ -304,7 +304,9 @@ public:
 	cbegin () const
 	{ return const_iterator (getValue () .cbegin ()); }
 
-	//size_type capacity () const { return getValue () .capacity (); };
+	//size_type
+	//capacity () const
+	//{ return getValue () .capacity (); }
 
 	void
 	clear ();

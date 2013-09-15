@@ -97,6 +97,18 @@ public:
 	{ }
 
 
+protected:
+
+	void
+	find (X3D::X3DChildObject* const object, std::deque <const OutlineNode*> & nodes) const
+	{
+		if (data and data  -> is (object))
+			nodes .emplace_back (this);
+
+		for (const auto & child : children)
+			child .find (object, nodes);
+	}
+
 private:
 
 	std::unique_ptr <OutlineTreeData> data;
@@ -158,6 +170,16 @@ public:
 		return const_cast <OutlineTree*> (this) -> get_node (path, false);
 	}
 
+	std::deque <const OutlineNode*>
+	find (X3D::X3DChildObject* const object) const
+	{
+		std::deque <const OutlineNode*> nodes;
+
+		find (object, nodes);
+
+		return nodes;
+	}
+
 	void
 	clear (const Gtk::TreePath & path)
 	{
@@ -170,6 +192,8 @@ public:
 	}
 
 private:
+
+	using OutlineNode::find;
 
 	OutlineNode &
 	get_child (OutlineNode* parent, size_t index, bool create)

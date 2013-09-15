@@ -322,7 +322,6 @@
     <None Include="Tests\Geometry3D\three.wrl" />
     <None Include="Tests\Geometry3D\Beethoven.N.wrl" />
     <None Include="Tests\Geometry3D\Beethoven.wrl" />
-    <None Include="RegularPolygon.py" />
     <None Include="Tests\Scripting\test.wrl" />
     <None Include="Tests\Scripting\Browser.wrl" />
     <None Include="Tests\Scripting\Globals.wrl" />
@@ -2321,6 +2320,7 @@
     <None Include="Tests\Layout\ScreenGroup.wrl" />
     <None Include="Tests\Layout\LayoutGroup.wrl" />
     <None Include="Tests\Layout\LayoutLayer.wrl" />
+    <None Include="Tests\Handles\OutlineEditor.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

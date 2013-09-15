@@ -69,6 +69,14 @@ public:
 
 	OutlineEditor (BrowserWindow* const);
 
+	OutlineTreeView &
+	getTreeView ()
+	{ return treeview; }
+	
+	const OutlineTreeView &
+	getTreeView () const
+	{ return treeview; }
+	
 
 private:
 

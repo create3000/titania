@@ -161,13 +161,13 @@ public:
 	getActiveLayer () const
 	{ return activeLayer; }
 
-	const X3DSFNode <NavigationInfo> &
-	getActiveNavigationInfo () const
-	{ return activeNavigationInfo; }
+	const SFTime &
+	getActiveNavigationInfoChanged () const
+	{ return activeNavigationInfoChanged; }
 
-	const X3DSFNode <X3DViewpointNode> &
-	getActiveViewpoint () const
-	{ return activeViewpoint; }
+	const SFTime &
+	getActiveViewpointChanged () const
+	{ return activeViewpointChanged; }
 
 	///  @name Event handling
 
@@ -339,6 +339,10 @@ protected:
 	const X3DSFNode <World> &
 	getWorld () const = 0;
 
+	NavigationInfo*
+	getActiveNavigationInfo () const
+	{ return activeNavigationInfo; }
+
 	virtual
 	void
 	update ();
@@ -357,6 +361,9 @@ private:
 
 	void
 	set_navigationInfo ();
+
+	void
+	remove_navigationInfo ();
 
 	void
 	set_viewpoint ();
@@ -384,14 +391,15 @@ private:
 	TextureUnitStack   textureUnits;
 
 	X3DSFNode <X3DLayerNode>     activeLayer;
-	X3DSFNode <NavigationInfo>   activeNavigationInfo;
+	NavigationInfo*              activeNavigationInfo;
+	SFTime                       activeNavigationInfoChanged;
 	X3DScalar <ViewerType>       viewer;
 	SFBool                       examineViewer;
 	SFBool                       walkViewer;
 	SFBool                       flyViewer;
 	SFBool                       noneViewer;
 	SFBool                       lookAt;
-	X3DSFNode <X3DViewpointNode> activeViewpoint;
+	SFTime                       activeViewpointChanged;
 
 	X3DKeyDeviceSensorNode* keyDeviceSensorNode;
 	SFTime                  keyDeviceSensorNodeOutput;

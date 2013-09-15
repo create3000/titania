@@ -96,7 +96,7 @@ X3DFlyViewer::initialize ()
 	getBrowser () -> signal_key_press_event      () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_key_press_event));
 	getBrowser () -> signal_key_release_event    () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_key_release_event));
 
-	getBrowser () -> getActiveViewpoint () -> straighten ();
+	getActiveViewpoint () -> straighten ();
 }
 
 bool
@@ -110,7 +110,7 @@ X3DFlyViewer::on_button_press_event (GdkEventButton* event)
 
 	if (button == 1)
 	{
-		getBrowser () -> getActiveViewpoint () -> transitionStop ();
+		getActiveViewpoint () -> transitionStop ();
 
 		fromVector = toVector = Vector3f (event -> x, 0, event -> y);
 
@@ -120,7 +120,7 @@ X3DFlyViewer::on_button_press_event (GdkEventButton* event)
 
 	else if (button == 2)
 	{
-		getBrowser () -> getActiveViewpoint () -> transitionStop ();
+		getActiveViewpoint () -> transitionStop ();
 
 		fromVector = toVector = Vector3f (event -> x, -event -> y, 0);
 	}
@@ -179,7 +179,7 @@ X3DFlyViewer::on_motion_notify_event (GdkEventMotion* event)
 bool
 X3DFlyViewer::on_scroll_event (GdkEventScroll* event)
 {
-	const auto & viewpoint = getBrowser () -> getActiveViewpoint ();
+	auto viewpoint = getActiveViewpoint ();
 	
 	viewpoint  -> transitionStop ();
 
@@ -220,7 +220,7 @@ X3DFlyViewer::fly ()
 	time_type now = chrono::now ();
 	float     dt  = now - startTime;
 
-	const auto & viewpoint = getBrowser () -> getActiveViewpoint ();
+	auto viewpoint = getActiveViewpoint ();
 
 	// Orientation offset
 
@@ -250,7 +250,7 @@ X3DFlyViewer::pan ()
 	time_type now = chrono::now ();
 	float     dt  = now - startTime;
 
-	auto viewpoint = getBrowser () -> getActiveViewpoint ();
+	auto viewpoint = getActiveViewpoint ();
 
 	float speed_factor = keys .shift () ? PAN_SHIFT_SPEED_FACTOR : 1;
 
@@ -271,7 +271,7 @@ X3DFlyViewer::roll ()
 	if (elapsedTime > ROLL_TIME)
 		return false;
 
-	const auto & viewpoint = getBrowser () -> getActiveViewpoint ();
+	auto viewpoint = getActiveViewpoint ();
 
 	viewpoint -> orientationOffset () = math::slerp <float> (sourceRotation, destinationRotation, elapsedTime / ROLL_TIME);
 

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -59,28 +59,21 @@ namespace puck {
 OutlineSelection::OutlineSelection (BrowserWindow* const browserWindow, OutlineTreeView* const treeView) :
 	X3DBaseInterface (browserWindow),
 	        treeView (treeView),
-	  selectMultiple (false),
-	  forceSelection (false)
+	  selectMultiple (false)
 {
-	getBrowser () -> getSelection () -> children () .addInterest (this, &OutlineSelection::set_children);
+	getBrowser () -> getSelection () -> getChildren () .addInterest (this, &OutlineSelection::set_children);
 }
 
 void
 OutlineSelection::set_select_multiple (bool value)
 {
-	if (value not_eq selectMultiple)
-	{
-		selectMultiple = value;
-
-		if (not value)
-			forceSelection = true;
-	}
+	selectMultiple = value;
 }
-	
+
 const X3D::MFNode &
 OutlineSelection::get_children () const
 {
-	return getBrowser () -> getSelection () -> children ();
+	return getBrowser () -> getSelection () -> getChildren ();
 }
 
 void
@@ -107,11 +100,8 @@ OutlineSelection::select (const X3D::SFNode & sfnode)
 		else
 			clear ();
 
-		if (not selected or forceSelection)
-		{
-			forceSelection = false;
+		if (not selected)
 			getBrowser () -> getSelection () -> addChild (sfnode);
-		}
 	}
 }
 
@@ -149,7 +139,7 @@ OutlineSelection::select (X3D::X3DBaseNode* const node, bool value, X3D::ChildOb
 			return;
 
 		// Select node
-			
+
 		treeView -> get_user_data (node) -> selected = value;
 
 		// Select children

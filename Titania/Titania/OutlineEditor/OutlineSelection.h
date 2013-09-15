@@ -101,7 +101,6 @@ private:
 
 	OutlineTreeView* const treeView;
 	bool                   selectMultiple;
-	bool                   forceSelection;
 
 };
 

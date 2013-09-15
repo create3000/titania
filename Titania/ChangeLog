@@ -1,3 +1,29 @@
+2013-09-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* run.pl:
+	* Makefile.am:
+	* BrowserWindow.h:
+	* BrowserWindow.cpp:
+	* ViewpointList.ui:
+	* BrowserWindow.ui:
+	* OutlineTree.h:
+	* ViewpointMenuItem.h:
+	* ViewpointList.h:
+	* OutlineEditor.h:
+	* ViewpointMenuItem.cpp:
+	* ViewpointList.cpp:
+	* OutlineTreeData.h:
+	* OutlineTreeView.h:
+	* OutlineTreeModel.h:
+	* OutlineSelection.h:
+	* OutlineTreeView.cpp:
+	* OutlineTreeModel.cpp:
+	* OutlineSelection.cpp:
+	* X3DViewpointListInterface.h:
+	* X3DBrowserWindowInterface.h:
+	* X3DViewpointListInterface.cpp:
+	* X3DBrowserWindowInterface.cpp: 
+
 2013-09-13  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* info.wrl: 

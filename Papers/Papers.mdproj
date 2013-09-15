@@ -58,6 +58,7 @@
     <None Include="Modern OpenGL-Dateien\script.js" />
     <None Include="Modern OpenGL-Dateien\style.css" />
     <None Include="Modern OpenGL-Dateien\xhp5ioy.asc" />
+    <None Include="CosmoWorlds\CosmoWorldDoc.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Quaternion\" />

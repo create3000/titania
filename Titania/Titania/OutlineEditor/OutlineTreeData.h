@@ -87,6 +87,15 @@ public:
 		OutlineTreeData (value .type, value .object, value .path)
 	{ }
 
+	bool
+	is (X3D::X3DChildObject* const value) const
+	{
+		if (type == OutlineIterType::X3DBaseNode)
+			return static_cast <X3D::SFNode*> (object) -> getValue () == value;
+
+		return object == value;
+	}
+
 	X3D::X3DChildObject*
 	get_object () const
 	{ return object; }

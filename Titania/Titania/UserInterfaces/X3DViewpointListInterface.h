@@ -94,9 +94,6 @@ public:
 	Gtk::TreeView &
 	getTreeView () const { return *m_treeView; }
 
-	Gtk::HScale &
-	getFieldOfView () const { return *m_fieldOfView; }
-
 	virtual
 	void
 	on_map () = 0;
@@ -104,10 +101,6 @@ public:
 	virtual
 	void
 	on_row_activated (const TreeModel::Path & path, TreeViewColumn* column) = 0;
-
-	virtual
-	void
-	on_fieldOfView_changed () = 0;
 
 
 private:
@@ -126,7 +119,6 @@ private:
 	Gtk::Box*                            m_widget;
 	Gtk::ScrolledWindow*                 m_scrolledWindow;
 	Gtk::TreeView*                       m_treeView;
-	Gtk::HScale*                         m_fieldOfView;
 
 };
 

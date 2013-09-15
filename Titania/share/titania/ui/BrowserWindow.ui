@@ -1,6 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <!-- interface-requires gtk+ 3.0 -->
+  <object class="GtkAction" id="OpenAction">
+    <signal name="activate" handler="on_open" swapped="no"/>
+  </object>
+  <object class="GtkAction" id="RevertAction">
+    <signal name="activate" handler="on_revert_to_saved" swapped="no"/>
+  </object>
+  <object class="GtkAction" id="SaveAction">
+    <signal name="activate" handler="on_save" swapped="no"/>
+  </object>
+  <object class="GtkFileFilter" id="FileFilterAllFiles">
+    <patterns>
+      <pattern>*</pattern>
+    </patterns>
+  </object>
+  <object class="GtkFileFilter" id="FileFilterAudio">
+    <mime-types>
+      <mime-type>audio/*</mime-type>
+    </mime-types>
+  </object>
+  <object class="GtkFileFilter" id="FileFilterImage">
+    <mime-types>
+      <mime-type>image/*</mime-type>
+    </mime-types>
+  </object>
+  <object class="GtkFileFilter" id="FileFilterVideo">
+    <mime-types>
+      <mime-type>video/*</mime-type>
+    </mime-types>
+  </object>
   <object class="GtkFileFilter" id="FileFilterX3D">
     <mime-types>
       <mime-type>model/vrml</mime-type>
@@ -33,35 +62,6 @@
   </object>
   <object class="GtkAction" id="NewAction">
     <signal name="activate" handler="on_new" swapped="no"/>
-  </object>
-  <object class="GtkAction" id="OpenAction">
-    <signal name="activate" handler="on_open" swapped="no"/>
-  </object>
-  <object class="GtkAction" id="RevertAction">
-    <signal name="activate" handler="on_revert_to_saved" swapped="no"/>
-  </object>
-  <object class="GtkAction" id="SaveAction">
-    <signal name="activate" handler="on_save" swapped="no"/>
-  </object>
-  <object class="GtkFileFilter" id="FileFilterAllFiles">
-    <patterns>
-      <pattern>*</pattern>
-    </patterns>
-  </object>
-  <object class="GtkFileFilter" id="FileFilterAudio">
-    <mime-types>
-      <mime-type>audio/*</mime-type>
-    </mime-types>
-  </object>
-  <object class="GtkFileFilter" id="FileFilterImage">
-    <mime-types>
-      <mime-type>image/*</mime-type>
-    </mime-types>
-  </object>
-  <object class="GtkFileFilter" id="FileFilterVideo">
-    <mime-types>
-      <mime-type>video/*</mime-type>
-    </mime-types>
   </object>
   <object class="GtkFileChooserDialog" id="FileOpenDialog">
     <property name="can_focus">False</property>
@@ -334,7 +334,7 @@
               <object class="GtkMenuItem" id="FileMenuItem">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">_Datei</property>
+                <property name="label" translatable="yes">_File</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
                   <object class="GtkMenu" id="menu1">
@@ -446,7 +446,7 @@
               <object class="GtkMenuItem" id="EditMenuItem">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">_Bearbeiten</property>
+                <property name="label" translatable="yes">_Edit</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
                   <object class="GtkMenu" id="menu2">
@@ -480,16 +480,20 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem9">
+                      <object class="GtkImageMenuItem" id="DeleteMenuItem">
                         <property name="label">gtk-delete</property>
+                        <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">MenuAccelGroup</property>
+                        <accelerator key="Delete" signal="activate"/>
+                        <signal name="activate" handler="on_delete_nodes_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>
                       <object class="GtkSeparatorMenuItem" id="separatormenuitem9">
+                        <property name="visible">True</property>
                         <property name="can_focus">False</property>
                       </object>
                     </child>
@@ -497,10 +501,20 @@
                       <object class="GtkMenuItem" id="GroupSelectedNodesMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Group Selected Nodes</property>
+                        <property name="label" translatable="yes">Group</property>
                         <property name="use_underline">True</property>
                         <accelerator key="g" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                         <signal name="activate" handler="on_group_selected_nodes_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="UngroupMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Ungroup</property>
+                        <property name="use_underline">True</property>
+                        <accelerator key="g" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
+                        <signal name="activate" handler="on_ungroup_node_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -512,6 +526,24 @@
                         <signal name="activate" handler="on_add_to_group_activate" swapped="no"/>
                       </object>
                     </child>
+                    <child>
+                      <object class="GtkMenuItem" id="DetachFromGroupMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Detach From Group</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_detach_from_group_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="CreateParentGroupMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Create Parent Group</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_create_parent_group_activate" swapped="no"/>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>
@@ -520,7 +552,7 @@
               <object class="GtkMenuItem" id="ViewMenuItem">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">_Ansicht</property>
+                <property name="label" translatable="yes">_View</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
                   <object class="GtkMenu" id="menu5">
@@ -530,7 +562,7 @@
                       <object class="GtkCheckMenuItem" id="ToolBarMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Werkzeugleiste</property>
+                        <property name="label" translatable="yes">Toolbar</property>
                         <property name="use_underline">True</property>
                         <signal name="toggled" handler="on_toolBar_toggled" swapped="no"/>
                       </object>
@@ -539,7 +571,7 @@
                       <object class="GtkCheckMenuItem" id="SideBarMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Seitenleiste</property>
+                        <property name="label" translatable="yes">Sidebar</property>
                         <signal name="toggled" handler="on_sideBar_toggled" swapped="no"/>
                       </object>
                     </child>
@@ -547,7 +579,7 @@
                       <object class="GtkCheckMenuItem" id="FooterMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Fußleiste</property>
+                        <property name="label" translatable="yes">Console</property>
                         <property name="use_underline">True</property>
                         <signal name="toggled" handler="on_footer_toggled" swapped="no"/>
                       </object>
@@ -708,7 +740,7 @@
                       <object class="GtkCheckMenuItem" id="FullScreenMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">_Vollbild</property>
+                        <property name="label" translatable="yes">Fullscreen</property>
                         <property name="use_underline">True</property>
                         <accelerator key="F11" signal="activate"/>
                         <signal name="toggled" handler="on_fullscreen_toggled" swapped="no"/>
@@ -722,7 +754,7 @@
               <object class="GtkMenuItem" id="NavigationMenuItem">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Navigation</property>
+                <property name="label" translatable="yes">_Navigation</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
                   <object class="GtkMenu" id="menu10">
@@ -785,9 +817,8 @@
             </child>
             <child>
               <object class="GtkMenuItem" id="ToolsMenuItem">
-                <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">W_erkzeuge</property>
+                <property name="label" translatable="yes">_Tools</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
                   <object class="GtkMenu" id="menu4">
@@ -810,12 +841,20 @@
               <object class="GtkMenuItem" id="LibraryMenuItem">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Library</property>
+                <property name="label" translatable="yes">_Library</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
                   <object class="GtkMenu" id="LibraryMenu">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkMenuItem" id="ComponentsMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Components</property>
+                        <property name="use_underline">True</property>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>
@@ -824,12 +863,22 @@
               <object class="GtkMenuItem" id="HelpMenuItem">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">_Hilfe</property>
+                <property name="label" translatable="yes">_Help</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
                   <object class="GtkMenu" id="menu3">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkImageMenuItem" id="StandardSizeMenuItem">
+                        <property name="label">gtk-zoom-100</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
+                        <property name="accel_group">MenuAccelGroup</property>
+                        <signal name="activate" handler="on_standard_size" swapped="no"/>
+                      </object>
+                    </child>
                     <child>
                       <object class="GtkImageMenuItem" id="InfoMenuItem">
                         <property name="label">gtk-about</property>
@@ -839,17 +888,6 @@
                         <property name="use_stock">True</property>
                         <property name="accel_group">MenuAccelGroup</property>
                         <signal name="activate" handler="on_info" swapped="no"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="StandardSizeMenuItem">
-                        <property name="label">gtk-zoom-100</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                        <property name="accel_group">MenuAccelGroup</property>
-                        <signal name="activate" handler="on_standard_size" swapped="no"/>
                       </object>
                     </child>
                   </object>

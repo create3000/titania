@@ -122,6 +122,9 @@ public:
 	X3D::X3DChildObject*
 	get_object (const iterator &);
 
+	std::deque <Gtk::TreeModel::iterator>
+	get_iters (X3D::X3DChildObject* const) const;
+
 	iterator
 	append (OutlineIterType type, X3D::X3DChildObject*);
 

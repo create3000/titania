@@ -58,18 +58,14 @@
 namespace titania {
 namespace X3D {
 
-Selection::Fields::Fields () :
-	children ()
-{ }
-
 Selection::Selection (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	     fields ()
+	   children ()
 {
 	setComponent ("Browser");
 	setTypeName ("Selection");
 
-	addChildren (fields .children);
+	addChildren (children);
 }
 
 X3DBaseNode*
@@ -84,7 +80,7 @@ Selection::addChild (const SFNode & child)
 	if (not child)
 		return;
 
-	fields .children .emplace_back (child);
+	children .emplace_back (child);
 
 	child -> addHandle ();
 }
@@ -92,10 +88,13 @@ Selection::addChild (const SFNode & child)
 void
 Selection::removeChild (const SFNode & child)
 {
-	fields .children .erase (std::remove (fields .children .begin (),
-	                                      fields .children .end (),
-	                                      child),
-	                         fields .children .end ());
+	if (not child)
+		return;
+
+	children .erase (std::remove (children .begin (),
+	                              children .end (),
+	                              child),
+	                 children .end ());
 
 	// Handle
 
@@ -105,16 +104,19 @@ Selection::removeChild (const SFNode & child)
 void
 Selection::clear ()
 {
-	for (const auto & child : children ())
-		child -> removeHandle ();
+	for (const auto & child : children)
+	{
+		if (child)
+			child -> removeHandle ();
+	}
 
-	fields .children .clear ();
+	children .clear ();
 }
 
 void
 Selection::dispose ()
 {
-	fields .children .dispose ();
+	children .dispose ();
 
 	X3DBaseNode::dispose ();
 }

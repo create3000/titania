@@ -1,0 +1,34 @@
+#VRML V2.0 utf8
+
+META "title" "OutlineEditor"
+
+NavigationInfo {
+  type [ "NONE", "ANY" ]
+}
+
+Viewpoint {
+  position 2.37398 0.256043 5.7671
+  centerOfRotation 2.37398 0.256043 0
+}
+
+DEF Text Transform {
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry DEF Text Text {
+      string "OutlineEditor"
+    }
+  }
+}
+
+Transform {
+  children [
+    DEF _0 ProximitySensor { }
+    VisibilitySensor { }
+  ]
+}
+
+Group {
+  children USE _0
+}
