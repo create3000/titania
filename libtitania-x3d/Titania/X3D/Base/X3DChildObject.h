@@ -101,10 +101,6 @@ public:
 	write (const X3DChildObject &)
 	{ }
 
-	virtual
-	void
-	notify ();
-
 	void
 	addEvent ();
 

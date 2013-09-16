@@ -48,6 +48,7 @@ perl -p -e '
 		unless /\w\.\w+?[\>"]/ or /^\s*(\/?\*|\/\/)/go;                                        # change variable.member to variable .member
    replace (sub { $_ [0] =~ s/\)and/) and/sgo });
    replace (sub { $_ [0] =~ s/([)])(override|final)/$1 $2/ });                                         # add space before final or override
+   replace (sub { $_ [0] =~ s/<\:\:/< ::/ });                                                          # add space :: in template argument list
 ' | \
 perl -e '
 	# Remove \n in template argument one liner

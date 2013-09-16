@@ -74,10 +74,6 @@ public:
 
 private:
 
-	virtual
-	void
-	initialize () final;
-
 	void
 	set_initialized ();
 

@@ -153,9 +153,7 @@ Surface::set_draw (const Cairo::RefPtr <Cairo::Context> & cairo)
 	//		Gtk::Main::iteration ();
 
 	if (makeCurrent ())
-	{
 		update (cairo);
-	}
 
 	return false; // Propagate the event further.
 }

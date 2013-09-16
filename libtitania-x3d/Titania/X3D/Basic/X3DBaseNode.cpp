@@ -249,10 +249,7 @@ X3DBaseNode::replace (X3DBaseNode* const node, const std::set <const X3D::X3DFie
 				}
 
 				if (insert)
-				{
-					sfnode -> set (this);
-					sfnode -> notify ();
-				}
+					sfnode -> setValue (this);
 			}
 		}
 

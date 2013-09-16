@@ -568,3 +568,5 @@ drag_data_received
   virtual void on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, const SelectionData& selection_data, guint info, guint time);
 button_release_event
   virtual bool on_button_release_event(GdkEventButton* event);
+draw
+  virtual bool on_draw(const ::Cairo::RefPtr< ::Cairo::Context>& cr);

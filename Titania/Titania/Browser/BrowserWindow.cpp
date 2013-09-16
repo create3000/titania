@@ -1028,31 +1028,17 @@ void
 BrowserWindow::on_create_parent_group_activate ()
 {
 	__LOG__ << std::endl;
-
+	
 	const auto selection = getBrowser () -> getSelection () -> getChildren ();
 
 	if (selection .size ())
 	{
-		auto model = getOutlineTreeView () .get_model ();
-
 		getBrowser () -> getSelection () -> clear ();
 
 		for (const auto & child : selection)
 		{
-			// Collapse open path
-
-			auto userData = getUserData (child);
-
-			__LOG__ << userData -> path .to_string () << std::endl;
-
-			bool expanded     = userData -> expanded;
-			bool all_expanded = userData -> all_expanded;
-
-			getOutlineTreeView () .collapse_row (userData -> path);
-
-			userData -> expanded     = expanded;
-			userData -> all_expanded = all_expanded;
-
+			getUserData (child) -> path .clear ();
+	
 			// Replace node with Transform
 
 			auto node      = getBrowser () -> getExecutionContext () -> createNode ("Transform");
@@ -1067,16 +1053,8 @@ BrowserWindow::on_create_parent_group_activate ()
 
 			getBrowser () -> getSelection () -> addChild (node);
 
-			// Inform model about change
-
-			for (const auto & iter : getOutlineTreeView () .get_iters (node))
-			{
-				auto path = model -> get_path (iter);
-
-				model -> row_changed (path, iter);
-
-				getOutlineTreeView () .expand_row (path, false);
-			}
+			getUserData (node) -> expanded     = true;
+			getUserData (node) -> all_expanded = false;
 		}
 
 		setEdited (true);

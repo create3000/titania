@@ -65,13 +65,7 @@ HistoryEditor::HistoryEditor (BrowserWindow* const browserWindow) :
 	         X3DBaseInterface (browserWindow),
 	X3DHistoryEditorInterface (get_ui ("HistoryEditor.ui"), gconf_dir ()),
 	                  history ()
-{ }
-
-void
-HistoryEditor::initialize ()
 {
-	X3DHistoryEditorInterface::initialize ();
-
 	for (const auto & item : history .getItems ())
 	{
 		auto row = getListStore () -> append ();
@@ -81,8 +75,6 @@ HistoryEditor::initialize ()
 
 		getListStore () -> row_changed (getListStore () -> get_path (row), row);
 	}
-
-	getTreeView () .queue_draw ();
 
 	getBrowser () -> initialized () .addInterest (this, &HistoryEditor::set_initialized);
 }
@@ -114,9 +106,6 @@ HistoryEditor::getTitle (const basic::uri & worldURL)
 void
 HistoryEditor::set_world ()
 {
-	__LOG__ << std::endl;
-	__LOG__ << std::endl;
-
 	const basic::uri & worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
 
 	if (not worldURL .str () .size ())

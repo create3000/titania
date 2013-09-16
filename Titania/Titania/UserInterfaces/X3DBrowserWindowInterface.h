@@ -73,15 +73,6 @@ public:
 	const std::string &
 	getWidgetName () const { return m_widgetName; }
 
-	const Glib::RefPtr <Gtk::Action> &
-	getOpenAction () const { return m_openAction; }
-
-	const Glib::RefPtr <Gtk::Action> &
-	getRevertAction () const { return m_revertAction; }
-
-	const Glib::RefPtr <Gtk::Action> &
-	getSaveAction () const { return m_saveAction; }
-
 	const Glib::RefPtr <Gtk::FileFilter> &
 	getFileFilterAllFiles () const { return m_fileFilterAllFiles; }
 
@@ -102,6 +93,15 @@ public:
 
 	const Glib::RefPtr <Gtk::Action> &
 	getNewAction () const { return m_newAction; }
+
+	const Glib::RefPtr <Gtk::Action> &
+	getOpenAction () const { return m_openAction; }
+
+	const Glib::RefPtr <Gtk::Action> &
+	getRevertAction () const { return m_revertAction; }
+
+	const Glib::RefPtr <Gtk::Action> &
+	getSaveAction () const { return m_saveAction; }
 
 	const Glib::RefPtr <Gtk::AccelGroup> &
 	getMenuAccelGroup () const { return m_menuAccelGroup; }
@@ -354,6 +354,10 @@ public:
 
 	virtual
 	void
+	on_new () = 0;
+
+	virtual
+	void
 	on_open () = 0;
 
 	virtual
@@ -363,10 +367,6 @@ public:
 	virtual
 	void
 	on_save () = 0;
-
-	virtual
-	void
-	on_new () = 0;
 
 	virtual
 	void
@@ -558,9 +558,6 @@ private:
 
 	std::deque <sigc::connection>   connections;
 	Glib::RefPtr <Gtk::Builder>     m_builder;
-	Glib::RefPtr <Gtk::Action>      m_openAction;
-	Glib::RefPtr <Gtk::Action>      m_revertAction;
-	Glib::RefPtr <Gtk::Action>      m_saveAction;
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterAllFiles;
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterAudio;
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterImage;
@@ -568,6 +565,9 @@ private:
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterX3D;
 	Glib::RefPtr <Gtk::IconFactory> m_iconFactory;
 	Glib::RefPtr <Gtk::Action>      m_newAction;
+	Glib::RefPtr <Gtk::Action>      m_openAction;
+	Glib::RefPtr <Gtk::Action>      m_revertAction;
+	Glib::RefPtr <Gtk::Action>      m_saveAction;
 	Glib::RefPtr <Gtk::AccelGroup>  m_menuAccelGroup;
 	Gtk::FileChooserDialog*         m_fileOpenDialog;
 	Gtk::FileChooserDialog*         m_fileSaveDialog;

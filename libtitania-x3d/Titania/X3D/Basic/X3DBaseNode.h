@@ -178,11 +178,6 @@ public:
 
 	virtual
 	void
-	notify () override
-	{ }
-
-	virtual
-	void
 	addEvent (X3DChildObject* const) override;
 
 	virtual

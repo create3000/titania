@@ -1,5 +1,17 @@
 2013-09-16  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Browser.h:
+	* X3DBaseNode.h:
+	* Browser.cpp:
+	* X3DChildObject.h:
+	* X3DBaseNode.cpp:
+	* X3DChildObject.cpp:
+	* TransformHandle.h:
+	* X3DGroupingNode.h:
+	* X3DGroupingNode.cpp: 
+
+2013-09-16  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DObject.h:
 	* TransformHandle.h:
 	* TransformHandle.cpp:

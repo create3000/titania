@@ -18,6 +18,7 @@ DEF Text Transform {
     }
     geometry DEF Text Text {
       string "OutlineEditor"
+      fontStyle FontStyle {}
     }
   }
 }

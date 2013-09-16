@@ -152,6 +152,13 @@ Browser::reshape ()
 }
 
 void
+Browser::update ()
+{
+	if (makeCurrent ())
+		X3DBrowser::update ();
+}
+
+void
 Browser::dispose ()
 {
 	viewer .reset ();

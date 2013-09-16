@@ -106,12 +106,6 @@ X3DGroupingNode::setVisible (const MFBool & value)
 }
 
 void
-X3DGroupingNode::notify ()
-{
-	set_children ();
-}
-
-void
 X3DGroupingNode::set_addChildren ()
 {
 	if (addChildren () .size ())

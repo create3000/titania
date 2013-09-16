@@ -203,11 +203,6 @@ public:
 
 	virtual
 	void
-	notify () final
-	{ }
-
-	virtual
-	void
 	addEvent (X3DChildObject* const) final
 	{ }
 

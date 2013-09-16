@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <!-- interface-requires gtk+ 3.0 -->
+  <object class="GtkFileFilter" id="FileFilterAllFiles">
+    <patterns>
+      <pattern>*</pattern>
+    </patterns>
+  </object>
   <object class="GtkFileFilter" id="FileFilterAudio">
     <mime-types>
       <mime-type>audio/*</mime-type>
@@ -57,11 +62,6 @@
   </object>
   <object class="GtkAction" id="SaveAction">
     <signal name="activate" handler="on_save" swapped="no"/>
-  </object>
-  <object class="GtkFileFilter" id="FileFilterAllFiles">
-    <patterns>
-      <pattern>*</pattern>
-    </patterns>
   </object>
   <object class="GtkFileChooserDialog" id="FileOpenDialog">
     <property name="can_focus">False</property>

@@ -84,15 +84,9 @@ X3DBrowserWindow::initialize ()
 
 	__LOG__ << std::endl;
 
-	// Start with file from options or home page.
-
-	// Console
+	// Connect event handler.
 	getBrowser () -> getConsole () -> string_changed () .addInterest (this, &X3DBrowserWindow::set_console);
-
-	// UrlError
 	getBrowser () -> getUrlError () .addInterest (this, &X3DBrowserWindow::set_urlError);
-
-	// Initialized
 	getBrowser () -> initialized () .addInterest (this, &X3DBrowserWindow::set_initialized);
 
 	// Insert Surface, this will initialize the Browser.

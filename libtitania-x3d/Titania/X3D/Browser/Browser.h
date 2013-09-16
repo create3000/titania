@@ -74,6 +74,10 @@ public:
 
 	virtual
 	void
+	update () final;
+
+	virtual
+	void
 	swapBuffers () final
 	{ opengl::Surface::swapBuffers (); }
 

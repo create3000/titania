@@ -220,7 +220,15 @@ OutlineTreeModel::clear ()
 void
 OutlineTreeModel::clear (const iterator & iter)
 {
-	tree .clear (get_path (iter));
+	Path   path = get_path (iter);
+	size_t size = tree .get_node (path) .get_children () .size ();
+
+	tree .clear (path);
+
+	path .push_back (0);
+
+	for (size_t i = 0; i < size; ++ i)
+		row_deleted (path);
 }
 
 Gtk::TreeModelFlags

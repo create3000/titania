@@ -223,7 +223,7 @@ private:
 	on_row_changed (const Gtk::TreeModel::Path &);
 
 	void
-	collapse_field (const Gtk::TreeModel::Path &);
+	update_field (const Gtk::TreeModel::Path &);
 
 	void
 	toggle_field (const Gtk::TreeModel::Path &);

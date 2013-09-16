@@ -254,15 +254,24 @@ OutlineTreeView::set_world ()
 void
 OutlineTreeView::set_rootNodes ()
 {
+	//__LOG__ << std::endl;
+
+	for (const auto & column : get_columns ())
+		column -> set_visible (false);
+
 	for (const auto & child : get_model () -> children ())
 		unwatch_tree (child);
 
+	unset_model ();
 	get_model () -> clear ();
 
 	for (auto & rootNode : getBrowser () -> getExecutionContext () -> getRootNodes ())
-	{
-		Gtk::TreeModel::iterator iter = get_model () -> append (OutlineIterType::X3DBaseNode, &rootNode);
+		get_model () -> append (OutlineIterType::X3DBaseNode, &rootNode);
 
+	set_model (get_model ());
+
+	for (auto & iter : get_model () -> children ())
+	{
 		// Expand row again if it was previously expanded.
 
 		if (get_expanded (iter))
@@ -272,12 +281,16 @@ OutlineTreeView::set_rootNodes ()
 			expand_row (get_model () -> get_path (iter), false);
 		}
 	}
+
+	for (const auto & column : get_columns ())
+		column -> set_visible (true);
 }
 
 void
 OutlineTreeView::on_rename_node_activate ()
 {
-//	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
+
 //
 //	Gtk::TreeModel::Path path;
 //	Gtk::TreeViewColumn* column = nullptr;
@@ -420,12 +433,12 @@ OutlineTreeView::watch_expanded (const Gtk::TreeModel::iterator & iter, const Gt
 			{
 				case X3D::X3DConstants::SFNode:
 				{
-					field -> addInterest (this, &OutlineTreeView::collapse_field, path);
+					field -> addInterest (this, &OutlineTreeView::update_field, path);
 					break;
 				}
 				case X3D::X3DConstants::MFNode:
 				{
-					field -> addInterest (this, &OutlineTreeView::collapse_field, path);
+					field -> addInterest (this, &OutlineTreeView::update_field, path);
 					break;
 				}
 				default:
@@ -527,12 +540,12 @@ OutlineTreeView::unwatch (const Gtk::TreeModel::iterator & iter, bool root)
 			{
 				case X3D::X3DConstants::SFNode:
 				{
-					field -> removeInterest (this, &OutlineTreeView::collapse_field);
+					field -> removeInterest (this, &OutlineTreeView::update_field);
 					break;
 				}
 				case X3D::X3DConstants::MFNode:
 				{
-					field -> removeInterest (this, &OutlineTreeView::collapse_field);
+					field -> removeInterest (this, &OutlineTreeView::update_field);
 
 					if (not root)
 						field -> removeInterest (this, &OutlineTreeView::on_row_has_child_toggled);
@@ -568,20 +581,23 @@ OutlineTreeView::on_row_changed (const Gtk::TreeModel::Path & path)
 }
 
 void
-OutlineTreeView::collapse_field (const Gtk::TreeModel::Path & path)
+OutlineTreeView::update_field (const Gtk::TreeModel::Path & path)
 {
+	//__LOG__ << std::endl;
+
 	Gtk::TreeModel::iterator iter = get_model () -> get_iter (path);
 
-	set_animated (iter, true);
-	set_expanded (iter, false);
-
-	// Collapse row
-
-	Gtk::TreeView::collapse_row (path);
-
-	// Add or remove expander if not children or watch for children
+	for (const auto & column : get_columns ())
+		column -> set_visible (false);
+	
+	collapse_row (path);
 
 	get_model () -> row_has_child_toggled (path, iter);
+	
+	expand_row (path, false);
+
+	for (const auto & column : get_columns ())
+		column -> set_visible (true);
 }
 
 void
