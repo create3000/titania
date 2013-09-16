@@ -275,6 +275,30 @@ OutlineTreeView::set_rootNodes ()
 }
 
 void
+OutlineTreeView::on_rename_node_activate ()
+{
+//	__LOG__ << std::endl;
+//
+//	Gtk::TreeModel::Path path;
+//	Gtk::TreeViewColumn* column = nullptr;
+//	int                  cell_x = 0;
+//	int                  cell_y = 0;
+//
+//	get_path_at_pos (x, y, path, column, cell_x, cell_y);
+//
+//	if (path .size ())
+//	{
+//		Gtk::TreeModel::iterator iter = get_model () -> get_iter (path);
+//
+//		if (get_data_type (iter) == OutlineIterType::X3DBaseNode)
+//		{
+//			set_cursor (path, *column, true);
+//			return;
+//		}
+//	}
+}
+
+void
 OutlineTreeView::on_edited (const Glib::ustring & string_path, const Glib::ustring & text)
 {
 	Gtk::TreeModel::Path     path (string_path);
@@ -299,14 +323,23 @@ OutlineTreeView::on_key_release_event (GdkEventKey* event)
 bool
 OutlineTreeView::on_button_press_event (GdkEventButton* event)
 {
-	if (event -> button == 3)
+	switch (event -> button)
 	{
-		//getPopupMenu () .popup (event -> button, event -> time);
-		return true;
+		case 1:
+		{
+			if (select_field (event -> x, event -> y))
+				return true;
+			break;
+		}
+		case 3:
+		{
+//			getPopupMenu () .popup (event -> button, event -> time);
+//			return true; 
+			break;
+		}
+		default:
+			break;
 	}
-
-	if (select_field (event -> x, event -> y))
-		return true;
 
 	return Gtk::TreeView::on_button_press_event (event);
 }

@@ -73,12 +73,6 @@ public:
 	const std::string &
 	getWidgetName () const { return m_widgetName; }
 
-	const Glib::RefPtr <Gtk::IconFactory> &
-	getIconFactory () const { return m_iconFactory; }
-
-	const Glib::RefPtr <Gtk::Action> &
-	getNewAction () const { return m_newAction; }
-
 	const Glib::RefPtr <Gtk::Action> &
 	getOpenAction () const { return m_openAction; }
 
@@ -102,6 +96,12 @@ public:
 
 	const Glib::RefPtr <Gtk::FileFilter> &
 	getFileFilterX3D () const { return m_fileFilterX3D; }
+
+	const Glib::RefPtr <Gtk::IconFactory> &
+	getIconFactory () const { return m_iconFactory; }
+
+	const Glib::RefPtr <Gtk::Action> &
+	getNewAction () const { return m_newAction; }
 
 	const Glib::RefPtr <Gtk::AccelGroup> &
 	getMenuAccelGroup () const { return m_menuAccelGroup; }
@@ -354,10 +354,6 @@ public:
 
 	virtual
 	void
-	on_new () = 0;
-
-	virtual
-	void
 	on_open () = 0;
 
 	virtual
@@ -367,6 +363,10 @@ public:
 	virtual
 	void
 	on_save () = 0;
+
+	virtual
+	void
+	on_new () = 0;
 
 	virtual
 	void
@@ -558,8 +558,6 @@ private:
 
 	std::deque <sigc::connection>   connections;
 	Glib::RefPtr <Gtk::Builder>     m_builder;
-	Glib::RefPtr <Gtk::IconFactory> m_iconFactory;
-	Glib::RefPtr <Gtk::Action>      m_newAction;
 	Glib::RefPtr <Gtk::Action>      m_openAction;
 	Glib::RefPtr <Gtk::Action>      m_revertAction;
 	Glib::RefPtr <Gtk::Action>      m_saveAction;
@@ -568,6 +566,8 @@ private:
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterImage;
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterVideo;
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterX3D;
+	Glib::RefPtr <Gtk::IconFactory> m_iconFactory;
+	Glib::RefPtr <Gtk::Action>      m_newAction;
 	Glib::RefPtr <Gtk::AccelGroup>  m_menuAccelGroup;
 	Gtk::FileChooserDialog*         m_fileOpenDialog;
 	Gtk::FileChooserDialog*         m_fileSaveDialog;

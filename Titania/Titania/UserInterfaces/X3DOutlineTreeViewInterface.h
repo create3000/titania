@@ -76,14 +76,21 @@ public:
 	Gtk::Menu &
 	getPopupMenu () const { return *m_popupMenu; }
 
+	Gtk::MenuItem &
+	getRenameNodeMenuItem () const { return *m_renameNodeMenuItem; }
+
 	Gtk::ImageMenuItem &
-	getEditMenuItem () const { return *m_editMenuItem; }
+	getEditNodeMenuItem () const { return *m_editNodeMenuItem; }
 
 	Gtk::Window &
 	getWindow () const { return *m_window; }
 
 	Gtk::Box &
 	getWidget () const { return *m_widget; }
+
+	virtual
+	void
+	on_rename_node_activate () = 0;
 
 
 private:
@@ -96,7 +103,8 @@ private:
 	std::deque <sigc::connection> connections;
 	Glib::RefPtr <Gtk::Builder>   m_builder;
 	Gtk::Menu*                    m_popupMenu;
-	Gtk::ImageMenuItem*           m_editMenuItem;
+	Gtk::MenuItem*                m_renameNodeMenuItem;
+	Gtk::ImageMenuItem*           m_editNodeMenuItem;
 	Gtk::Window*                  m_window;
 	Gtk::Box*                     m_widget;
 

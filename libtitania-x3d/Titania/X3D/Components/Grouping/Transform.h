@@ -73,42 +73,52 @@ public:
 
 	///  @name Fields
 
+	virtual
 	SFVec3f &
 	translation ()
 	{ return *fields .translation; }
 
-	SFRotation &
-	rotation ()
-	{ return *fields .rotation; }
-
-	const SFRotation &
-	rotation () const
-	{ return *fields .rotation; }
-
+	virtual
 	const SFVec3f &
 	translation () const
 	{ return *fields .translation; }
 
+	virtual
+	SFRotation &
+	rotation ()
+	{ return *fields .rotation; }
+
+	virtual
+	const SFRotation &
+	rotation () const
+	{ return *fields .rotation; }
+
+	virtual
 	SFVec3f &
 	scale ()
 	{ return *fields .scale; }
 
+	virtual
 	const SFVec3f &
 	scale () const
 	{ return *fields .scale; }
 
+	virtual
 	SFRotation &
 	scaleOrientation ()
 	{ return *fields .scaleOrientation; }
 
+	virtual
 	const SFRotation &
 	scaleOrientation () const
 	{ return *fields .scaleOrientation; }
 
+	virtual
 	SFVec3f &
 	center ()
 	{ return *fields .center; }
 
+	virtual
 	const SFVec3f &
 	center () const
 	{ return *fields .center; }
@@ -119,6 +129,11 @@ public:
 	Box3f
 	getBBox () override;
 
+	virtual
+	void
+	setMatrix (const Matrix4f &);
+
+	virtual
 	Matrix4f
 	getMatrix ()
 	{ return matrix; }

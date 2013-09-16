@@ -361,6 +361,15 @@ private:
 	X3D::MFNode*
 	getGroupingField (const X3D::SFNode &) const;
 
+	std::deque <X3D::X3DBaseNode*>
+	getParentNodes (X3D::X3DBaseNode* const);
+
+	X3D::Matrix4f
+	findModelViewMatrix (X3D::X3DBaseNode* const);
+
+	bool
+	findModelViewMatrix (X3D::X3DBaseNode* const, X3D::Matrix4f &, std::set <X3D::X3DBaseNode*> &);
+
 	void
 	on_add_node (const std::string &);
 

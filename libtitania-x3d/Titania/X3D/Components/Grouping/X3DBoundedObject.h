@@ -64,18 +64,22 @@ class X3DBoundedObject :
 {
 public:
 
+	virtual
 	SFVec3f &
 	bboxCenter ()
 	{ return *fields .bboxCenter; }
 
+	virtual
 	const SFVec3f &
 	bboxCenter () const
 	{ return *fields .bboxCenter; }
 
+	virtual
 	SFVec3f &
 	bboxSize ()
 	{ return *fields .bboxSize; }
 
+	virtual
 	const SFVec3f &
 	bboxSize () const
 	{ return *fields .bboxSize; }

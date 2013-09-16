@@ -104,7 +104,7 @@ OutlineUserDataPtr
 OutlineTreeModel::get_user_data (X3D::X3DChildObject* object)
 {
 	if (not object -> getUserData ())
-		object -> setUserData (X3D::UserData (new OutlineUserData ()));
+		object -> setUserData (X3D::UserDataPtr (new OutlineUserData ()));
 
 	return std::static_pointer_cast <OutlineUserData> (object -> getUserData ());
 }

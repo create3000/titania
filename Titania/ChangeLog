@@ -1,3 +1,17 @@
+2013-09-16  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* BrowserWindow.h:
+	* BrowserWindow.ui:
+	* BrowserWindow.cpp:
+	* OutlineTreeView.ui:
+	* OutlineTreeView.h:
+	* OutlineTreeView.cpp:
+	* OutlineTreeModel.cpp:
+	* X3DBrowserWindowInterface.h:
+	* X3DOutlineTreeViewInterface.h:
+	* X3DBrowserWindowInterface.cpp:
+	* X3DOutlineTreeViewInterface.cpp: 
+
 2013-09-15  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* run.pl:

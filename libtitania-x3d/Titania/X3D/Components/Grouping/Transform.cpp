@@ -111,6 +111,20 @@ Transform::getBBox ()
 }
 
 void
+Transform::setMatrix (const Matrix4f & value)
+{
+	Vector3f   t, s;
+	Rotation4f r, so;
+
+	value .get (t, r, s, so);
+
+	translation ()      = t;
+	rotation ()         = r;
+	scale ()            = s;
+	scaleOrientation () = so;
+}
+
+void
 Transform::addHandle ()
 {
 	addHandle (new TransformHandle (this, getExecutionContext ()));

@@ -64,7 +64,7 @@
 namespace titania {
 namespace X3D {
 
-typedef std::shared_ptr <X3DBase> UserData;
+typedef std::shared_ptr <X3DBase> UserDataPtr;
 
 class X3DObject :
 	public X3DInput, public X3DOutput
@@ -73,6 +73,7 @@ public:
 
 	///  @name Type Information
 
+	virtual
 	void
 	setName (const std::string & value)
 	{ name = value; }
@@ -97,11 +98,12 @@ public:
 
 	///  @name User data handling
 
+	virtual
 	void
-	setUserData (const UserData & value)
+	setUserData (const UserDataPtr & value)
 	{ userData = value; }
 
-	const UserData &
+	const UserDataPtr &
 	getUserData () const
 	{ return userData; }
 
@@ -154,7 +156,7 @@ private:
 
 	std::string              name;
 	std::deque <std::string> comments;
-	UserData                 userData;
+	UserDataPtr              userData;
 
 };
 

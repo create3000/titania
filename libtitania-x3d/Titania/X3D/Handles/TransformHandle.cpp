@@ -68,7 +68,7 @@ TransformHandle::TransformHandle (Transform* const node, X3DExecutionContext* co
 	for (auto & field : transform -> getFieldDefinitions ())
 		addField (field -> getAccessType (), field -> getName (), *field);
 
-	addChildren (transform, scene);
+	X3DChildObject::addChildren (transform, scene);
 }
 
 void
@@ -91,6 +91,22 @@ TransformHandle::initialize ()
 
 		scene = getBrowser () -> createScene ();
 	}
+}
+
+void
+TransformHandle::setName (const std::string & value)
+{
+	transform -> setName (value);
+
+	X3DHandleObject::setName (value);
+}
+
+void
+TransformHandle::setUserData (const UserDataPtr & value)
+{
+	transform -> setUserData (value);
+	
+	X3DHandleObject::setUserData (value);
 }
 
 Box3f

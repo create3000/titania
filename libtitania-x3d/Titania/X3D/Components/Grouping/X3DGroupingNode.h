@@ -68,30 +68,35 @@ public:
 
 	///  @name Fields
 
-	MFNode &
-	children ()
-	{ return *fields .children; }
-
-	const MFNode &
-	children () const
-	{ return *fields .children; }
-
-	// Declare this before add and remove, to get a lower address.
+	virtual
 	MFNode &
 	addChildren ()
 	{ return *fields .addChildren; }
 
+	virtual
 	const MFNode &
 	addChildren () const
 	{ return *fields .addChildren; }
 
+	virtual
 	MFNode &
 	removeChildren ()
 	{ return *fields .removeChildren; }
 
+	virtual
 	const MFNode &
 	removeChildren () const
 	{ return *fields .removeChildren; }
+
+	virtual
+	MFNode &
+	children ()
+	{ return *fields .children; }
+
+	virtual
+	const MFNode &
+	children () const
+	{ return *fields .children; }
 
 	///  @name Member access
 

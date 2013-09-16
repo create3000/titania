@@ -65,12 +65,17 @@ X3DOutlineTreeViewInterface::create (const std::string & filename)
 	// Get widgets.
 	m_builder -> get_widget ("PopupMenu", m_popupMenu);
 	m_popupMenu -> set_name ("PopupMenu");
-	m_builder -> get_widget ("EditMenuItem", m_editMenuItem);
-	m_editMenuItem -> set_name ("EditMenuItem");
+	m_builder -> get_widget ("RenameNodeMenuItem", m_renameNodeMenuItem);
+	m_renameNodeMenuItem -> set_name ("RenameNodeMenuItem");
+	m_builder -> get_widget ("EditNodeMenuItem", m_editNodeMenuItem);
+	m_editNodeMenuItem -> set_name ("EditNodeMenuItem");
 	m_builder -> get_widget ("Window", m_window);
 	m_window -> set_name ("Window");
 	m_builder -> get_widget ("Widget", m_widget);
 	m_widget -> set_name ("Widget");
+
+	// Connect object Gtk::MenuItem with id 'RenameNodeMenuItem'.
+	connections .emplace_back (m_renameNodeMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineTreeViewInterface::on_rename_node_activate)));
 
 	// Call construct handler of base class.
 	construct ();

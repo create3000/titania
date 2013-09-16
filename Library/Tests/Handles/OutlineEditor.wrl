@@ -32,3 +32,48 @@ Transform {
 Group {
   children USE _0
 }
+
+DEF Box Transform {
+  translation 1.41298 -0.894935 0
+  scale 0.2 0.2 0.2
+  children Transform {
+    children Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0.8 0 0
+        }
+      }
+      geometry Box { }
+    }
+  }
+}
+
+DEF Sphere Transform {
+  translation 2.29171 -0.606878 0
+  scale 0.2 0.2 0.2
+  children Transform {
+    children Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0.8 0
+        }
+      }
+      geometry Sphere { }
+    }
+  }
+}
+
+DEF Cone Transform {
+  translation 3.05759 -0.785617 0
+  scale 0.2 0.2 0.2
+  children Transform {
+    children Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 0.8
+        }
+      }
+      geometry Cone { }
+    }
+  }
+}

@@ -163,6 +163,10 @@ private:
 
 	virtual
 	void
+	on_rename_node_activate () final;
+
+	virtual
+	void
 	on_edited (const Glib::ustring &, const Glib::ustring &) final;
 
 	virtual

@@ -66,10 +66,131 @@ class TransformHandle :
 public:
 
 	TransformHandle (Transform* const, X3DExecutionContext* const);
+	///  @name Fields
+
+	virtual
+	const SFVec3f &
+	translation () const final
+	{ return transform -> translation (); }
+
+	virtual
+	SFVec3f &
+	translation () final
+	{ return transform -> translation (); }
+
+	virtual
+	SFRotation &
+	rotation () final
+	{ return transform -> rotation (); }
+
+	virtual
+	const SFRotation &
+	rotation () const final
+	{ return transform -> rotation (); }
+
+	virtual
+	SFVec3f &
+	scale () final
+	{ return transform -> scale (); }
+
+	virtual
+	const SFVec3f &
+	scale () const final
+	{ return transform -> scale (); }
+
+	virtual
+	SFRotation &
+	scaleOrientation () final
+	{ return transform -> scaleOrientation (); }
+
+	virtual
+	const SFRotation &
+	scaleOrientation () const final
+	{ return transform -> scaleOrientation (); }
+
+	virtual
+	SFVec3f &
+	center () final
+	{ return transform -> center (); }
+
+	virtual
+	const SFVec3f &
+	center () const final
+	{ return transform -> center (); }
+
+	virtual
+	SFVec3f &
+	bboxCenter () final
+	{ return transform -> bboxCenter (); }
+
+	virtual
+	const SFVec3f &
+	bboxCenter () const final
+	{ return transform -> bboxCenter (); }
+
+	virtual
+	SFVec3f &
+	bboxSize () final
+	{ return transform -> bboxSize (); }
+
+	virtual
+	const SFVec3f &
+	bboxSize () const final
+	{ return transform -> bboxSize (); }
+
+	virtual
+	MFNode &
+	addChildren () final
+	{ return transform -> addChildren (); }
+
+	virtual
+	const MFNode &
+	addChildren () const final
+	{ return transform -> addChildren (); }
+
+	virtual
+	MFNode &
+	removeChildren () final
+	{ return transform -> removeChildren (); }
+
+	virtual
+	const MFNode &
+	removeChildren () const final
+	{ return transform -> removeChildren (); }
+
+	virtual
+	MFNode &
+	children () final
+	{ return transform -> children (); }
+
+	virtual
+	const MFNode &
+	children () const final
+	{ return transform -> children (); }
+
+	///  @name Member access
+
+	virtual
+	void
+	setName (const std::string &) final;
+
+	virtual
+	void
+	setUserData (const UserDataPtr &) final;
 
 	virtual
 	Box3f
 	getBBox () final;
+
+	virtual
+	void
+	setMatrix (const Matrix4f & value) final
+	{ transform -> setMatrix (value);  }
+
+	virtual
+	Matrix4f
+	getMatrix ()
+	{ return transform -> getMatrix (); }
 
 	virtual
 	void

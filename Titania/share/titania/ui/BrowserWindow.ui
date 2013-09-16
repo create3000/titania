@@ -1,20 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <!-- interface-requires gtk+ 3.0 -->
-  <object class="GtkAction" id="OpenAction">
-    <signal name="activate" handler="on_open" swapped="no"/>
-  </object>
-  <object class="GtkAction" id="RevertAction">
-    <signal name="activate" handler="on_revert_to_saved" swapped="no"/>
-  </object>
-  <object class="GtkAction" id="SaveAction">
-    <signal name="activate" handler="on_save" swapped="no"/>
-  </object>
-  <object class="GtkFileFilter" id="FileFilterAllFiles">
-    <patterns>
-      <pattern>*</pattern>
-    </patterns>
-  </object>
   <object class="GtkFileFilter" id="FileFilterAudio">
     <mime-types>
       <mime-type>audio/*</mime-type>
@@ -62,6 +48,20 @@
   </object>
   <object class="GtkAction" id="NewAction">
     <signal name="activate" handler="on_new" swapped="no"/>
+  </object>
+  <object class="GtkAction" id="OpenAction">
+    <signal name="activate" handler="on_open" swapped="no"/>
+  </object>
+  <object class="GtkAction" id="RevertAction">
+    <signal name="activate" handler="on_revert_to_saved" swapped="no"/>
+  </object>
+  <object class="GtkAction" id="SaveAction">
+    <signal name="activate" handler="on_save" swapped="no"/>
+  </object>
+  <object class="GtkFileFilter" id="FileFilterAllFiles">
+    <patterns>
+      <pattern>*</pattern>
+    </patterns>
   </object>
   <object class="GtkFileChooserDialog" id="FileOpenDialog">
     <property name="can_focus">False</property>
@@ -234,7 +234,7 @@
                 <property name="label" translatable="yes">Please insert the adress of the file:</property>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="fill">True</property>
                 <property name="position">0</property>
               </packing>
@@ -254,7 +254,7 @@
             </child>
           </object>
           <packing>
-            <property name="expand">False</property>
+            <property name="expand">True</property>
             <property name="fill">True</property>
             <property name="position">1</property>
           </packing>
