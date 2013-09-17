@@ -141,19 +141,10 @@ private:
 	set_all_expanded (const Gtk::TreeModel::iterator &, bool);
 
 	bool
-	get_expand_all (const Gtk::TreeModel::iterator &) const;
-
-	void
-	set_expand_all (const Gtk::TreeModel::iterator &, bool);
-
-	bool
 	get_all_expanded (const Gtk::TreeModel::iterator &) const;
-
-	void
-	set_animated (const Gtk::TreeModel::iterator &, bool);
-
+	
 	bool
-	get_animated (const Gtk::TreeModel::iterator &) const;
+	get_shift_key ();
 
 	void
 	set_world ();
@@ -254,6 +245,7 @@ private:
 
 	Glib::RefPtr <OutlineTreeModel> model;
 	OutlineSelection                selection;
+	size_t                          expandLevel;
 
 };
 

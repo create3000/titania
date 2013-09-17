@@ -65,19 +65,15 @@ public:
 	OutlineUserData () :
 		path (),
 		expanded (false),
-		all_expanded (true),
-		expand_all (false),
-		selected (false),
-		animated (false)
+		all_expanded (false),
+		selected (false)
 	{ }
 
 	Gtk::TreeModel::Path path; // Path of expanded node/clone
 
 	bool expanded;             // Expanded state
 	bool all_expanded;         // Expanded mode
-	bool expand_all;           // Force expand all for fields
 	bool selected;             // Selected state
-	bool animated;             // Prevent expansion
 
 };
 

@@ -990,8 +990,21 @@ BrowserWindow::on_detach_from_group_activate ()
 			getUserData (child) -> path .clear ();
 
 			child -> remove ({ &selection });
+			
+			if (getKeys () .shift ())
+				getBrowser () -> getExecutionContext () -> getRootNodes () .emplace_back (child);
 
-			getBrowser () -> getExecutionContext () -> getRootNodes () .emplace_back (child);
+			else
+			{
+				for (const auto & layer : layers)
+				{
+					if (layer -> isLayer0 ())
+						getBrowser () -> getExecutionContext () -> getRootNodes () .emplace_back (child);
+					
+					else
+						layer -> children () .emplace_back (child);
+				}
+			}
 		}
 
 		setEdited (true);

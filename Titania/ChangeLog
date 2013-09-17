@@ -1,6 +1,13 @@
 2013-09-17  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* BrowserWindow.cpp:
+	* OutlineTreeView.h:
+	* OutlineUserData.h:
+	* OutlineTreeView.cpp: 
+
+2013-09-17  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* BrowserWindow.cpp:
 	* OutlineSelection.cpp: 
 
 2013-09-17  Holger Seelig  <holger.seelig@yahoo.de>
