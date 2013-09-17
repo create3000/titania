@@ -54,6 +54,7 @@
 namespace titania {
 namespace X3D {
 
+static
 void
 debug_roots (X3DChildObject* node, std::set <X3DChildObject*> & seen)
 {
@@ -77,6 +78,23 @@ debug_roots (X3DChildObject* node, std::set <X3DChildObject*> & seen)
 	}
 
 	__LOG__ << node -> getTypeName () << " : " << node -> getName () << std::endl;
+}
+
+// prints all parent nodes of a nodes parent fields
+static
+void
+debug_print_parent_nodes (const X3D::X3DChildObject* object)
+{
+	for (auto & parent : object -> getParents ())
+	{
+		auto node = dynamic_cast <X3D::X3DBaseNode*> (parent);
+
+		if (node)
+			__LOG__ << "\t" << node -> getName () << " : " << node -> getTypeName () << std::endl;
+
+		else
+			debug_print_parent_nodes (parent);
+	}
 }
 
 } // X3D

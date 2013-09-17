@@ -54,6 +54,7 @@
 #include "../OutlineEditor/OutlineTreeModel.h"
 #include <Titania/String/Trim.h>
 
+#include <Titania/X3D/Debug.h>
 #include <Titania/X3D/Handles/TransformHandle.h>
 
 namespace titania {
@@ -643,22 +644,6 @@ BrowserWindow::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & co
 }
 
 // Editing facilities
-
-static
-void
-printParentNodes (const X3D::X3DChildObject* object)
-{
-	for (auto & parent : object -> getParents ())
-	{
-		auto node = dynamic_cast <X3D::X3DBaseNode*> (parent);
-
-		if (node)
-			__LOG__ << "\t" << node -> getName () << " : " << node -> getTypeName () << std::endl;
-
-		else
-			printParentNodes (parent);
-	}
-}
 
 OutlineUserDataPtr
 BrowserWindow::getUserData (X3D::X3DChildObject* object) const

@@ -442,6 +442,9 @@ X3DBrowserContext::pick (const double _x, const double _y)
 
 	// Pick.
 
+	prepareEvents () .processInterests ();
+	router .processEvents ();
+
 	getWorld () -> traverse (TraverseType::PICKING);
 
 	// Selection end.

@@ -198,7 +198,10 @@ TransformHandle::traverse (const TraverseType type)
 			glMultMatrixf (transform -> getMatrix () .data ());
 
 			for (const auto & rootNode : scene -> getRootNodes ())
-				rootNode -> traverse (type);
+			{
+				if (rootNode)
+					rootNode -> traverse (type);
+			}
 
 			glPopMatrix ();
 			break;
@@ -212,7 +215,10 @@ TransformHandle::traverse (const TraverseType type)
 			reshape ();
 
 			for (const auto & rootNode : scene -> getRootNodes ())
-				rootNode -> traverse (type);
+			{
+				if (rootNode)
+					rootNode -> traverse (type);
+			}
 
 			glPopMatrix ();
 			break;

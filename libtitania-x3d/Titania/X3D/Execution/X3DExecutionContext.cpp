@@ -129,14 +129,19 @@ X3DExecutionContext::assign1 (const X3DExecutionContext* const executionContext)
 
 	for (const auto & rootNode : executionContext -> getRootNodes ())
 	{
-		try
+		if (rootNode)
 		{
-			getRootNodes () .emplace_back (rootNode -> clone (this));
+			try
+			{
+				getRootNodes () .emplace_back (rootNode -> clone (this));
+			}
+			catch (const Error <INVALID_NAME> &)
+			{
+				getRootNodes () .emplace_back (rootNode -> copy (this));
+			}
 		}
-		catch (const Error <INVALID_NAME> &)
-		{
-			getRootNodes () .emplace_back (rootNode -> copy (this));
-		}
+		else
+			getRootNodes () .emplace_back (rootNode);
 	}
 }
 

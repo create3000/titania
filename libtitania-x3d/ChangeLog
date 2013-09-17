@@ -1,5 +1,12 @@
 2013-09-17  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Debug.h:
+	* TransformHandle.cpp:
+	* X3DBrowserContext.cpp:
+	* X3DExecutionContext.cpp: 
+
+2013-09-17  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBaseNode.cpp:
 	* X3DNode.h:
 	* TransformHandle.h:
