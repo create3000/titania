@@ -212,8 +212,6 @@ X3DBrowserContext::initialize ()
 void
 X3DBrowserContext::set_initialized ()
 {
-	__LOG__ << std::endl;
-
 	getWorld () -> getActiveLayer () .addInterest (this, &X3DBrowserContext::set_activeLayer);
 
 	set_activeLayer ();

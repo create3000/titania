@@ -319,6 +319,8 @@ OutlineTreeView::on_edited (const Glib::ustring & string_path, const Glib::ustri
 
 	get_model () -> row_changed (path, iter);
 	watch (iter, path);
+
+	getBrowserWindow () -> setEdited (true);
 }
 
 bool

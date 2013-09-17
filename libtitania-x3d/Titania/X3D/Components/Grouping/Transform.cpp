@@ -127,7 +127,7 @@ Transform::setMatrix (const Matrix4f & value)
 void
 Transform::addHandle ()
 {
-	addHandle (new TransformHandle (this, getExecutionContext ()));
+	X3DGroupingNode::addHandle (new TransformHandle (this, getExecutionContext ()));
 }
 
 void

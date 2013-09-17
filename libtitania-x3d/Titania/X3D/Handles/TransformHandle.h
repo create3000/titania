@@ -66,6 +66,7 @@ class TransformHandle :
 public:
 
 	TransformHandle (Transform* const, X3DExecutionContext* const);
+
 	///  @name Fields
 
 	virtual
@@ -229,8 +230,8 @@ private:
 	void
 	reshape ();
 
-	X3DSFNode <Transform> transform;
-	X3DSFNode <Scene>     scene;
+	Transform*         transform;
+	X3DSFNode <Scene>  scene;
 
 };
 

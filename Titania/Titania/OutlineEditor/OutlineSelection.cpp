@@ -81,8 +81,6 @@ OutlineSelection::set_children ()
 {
 	for (const auto & sfnode : get_children ())
 		select (sfnode .getValue (), true);
-
-	treeView -> queue_draw ();
 }
 
 void

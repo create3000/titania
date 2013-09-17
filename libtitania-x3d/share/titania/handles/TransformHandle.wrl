@@ -281,7 +281,6 @@ function set_time (value, time)
     exposedField SFMatrix4f modelViewMatrix IS modelViewMatrix
     exposedField SFVec3f    bboxSize IS bboxSize
     exposedField SFVec3f    bboxCenter IS bboxCenter
-    exposedField SFNode     transform IS transform
     field        SFFloat    offset 0.01
     field        SFNode     front USE Front
     field        SFNode     right USE Right
@@ -333,7 +332,6 @@ function eventsProcessed ()
     exposedField SFMatrix4f modelViewMatrix IS modelViewMatrix
     exposedField SFVec3f    bboxSize IS bboxSize
     exposedField SFVec3f    bboxCenter IS bboxCenter
-    exposedField SFNode     transform IS transform
     field        SFNode     x USE X
     field        SFNode     y USE Y
     field        SFNode     z USE Z
@@ -472,10 +470,10 @@ function add_with_bbox (value)
 
 function add (value)
 {
-	var scale = new SFVec3f ();
-	modelViewMatrix .multRight (cameraSpaceMatrix) .getTransform (null, null, scale);
+	//var scale = new SFVec3f ();
+	//modelViewMatrix .multRight (cameraSpaceMatrix) .getTransform (null, null, scale);
 
-	var offset = transform .rotation .multVec (multVec (value, scale));
+	var offset = transform .rotation .multVec (multVec (value, transform .scale));
 
 	transform .translation = translation .add (offset);
 }

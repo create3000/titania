@@ -54,6 +54,8 @@
 #include "../OutlineEditor/OutlineTreeModel.h"
 #include <Titania/String/Trim.h>
 
+#include <Titania/X3D/Handles/TransformHandle.h>
+
 namespace titania {
 namespace puck {
 
@@ -651,7 +653,7 @@ printParentNodes (const X3D::X3DChildObject* object)
 		auto node = dynamic_cast <X3D::X3DBaseNode*> (parent);
 
 		if (node)
-			__LOG__ << "\t" << node -> getTypeName () << std::endl;
+			__LOG__ << "\t" << node -> getName () << " : " << node -> getTypeName () << std::endl;
 
 		else
 			printParentNodes (parent);
@@ -807,22 +809,8 @@ BrowserWindow::on_delete_nodes_activate ()
 
 	if (selection .size ())
 	{
-		//	for (const auto & child : getBrowser () -> getSelection () -> children ())
-		//		__LOG__ << child -> getTypeName () << std::endl;
-
-		auto model = getOutlineTreeView () .get_model ();
-
 		for (const auto & child : selection)
-		{
-			// Remove selected child
-
 			child -> remove ({ &selection });
-
-			// Inform model
-
-			for (const auto & iter : getOutlineTreeView () .get_iters (child))
-				model -> row_deleted (model -> get_path (iter));
-		}
 
 		setEdited (true);
 	}
@@ -998,6 +986,8 @@ BrowserWindow::on_detach_from_group_activate ()
 	{
 		for (const auto & child : selection)
 		{
+			auto layers = dynamic_cast <X3D::X3DNode*> (child .getValue ()) -> getLayers ();
+
 			// Adjust transformation
 
 			X3D::Matrix4f   childModelViewMatrix = findModelViewMatrix (child .getValue ());
@@ -1010,15 +1000,14 @@ BrowserWindow::on_detach_from_group_activate ()
 				transform -> setMatrix (childModelViewMatrix);
 			}
 
-			// Add to group
+			// Add to layers
 
 			getUserData (child) -> path .clear ();
 
 			child -> remove ({ &selection });
-		}
 
-		for (const auto & child : selection)
 			getBrowser () -> getExecutionContext () -> getRootNodes () .emplace_back (child);
+		}
 
 		setEdited (true);
 	}

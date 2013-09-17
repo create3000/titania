@@ -1,3 +1,14 @@
+2013-09-17  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DBaseNode.cpp:
+	* X3DNode.h:
+	* TransformHandle.h:
+	* TransformHandle.cpp:
+	* X3DNode.cpp:
+	* TransformHandle.wrl:
+	* X3DBrowserContext.cpp:
+	* Transform.cpp: 
+
 2013-09-16  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Browser.h:

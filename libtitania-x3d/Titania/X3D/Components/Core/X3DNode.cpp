@@ -77,16 +77,16 @@ X3DNode::getScene () const
 	return static_cast <Scene*> (executionContext);
 }
 
-X3DLayerNode*
-X3DNode::getCurrentLayer () const
-{
-	return getBrowser () -> getLayers () .top ();
-}
-
 std::deque <X3DLayerNode*>
 X3DNode::getLayers () const
 {
 	return findParents <Scene, X3DLayerNode> ();
+}
+
+X3DLayerNode*
+X3DNode::getCurrentLayer () const
+{
+	return getBrowser () -> getLayers () .top ();
 }
 
 NavigationInfo*

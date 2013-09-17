@@ -230,7 +230,7 @@ X3DBaseNode::replace (X3DBaseNode* const node, const std::set <const X3D::X3DFie
 
 	for (auto & parent : parents)
 	{
-		//__LOG__ << parent -> getTypeName () << std::endl;
+		//__LOG__ << parent -> getName () << " : " << parent -> getTypeName () << std::endl;
 
 		auto sfnode = dynamic_cast <SFNode*> (parent);
 
@@ -622,14 +622,14 @@ X3DBaseNode::removeEvents ()
 }
 
 void
-X3DBaseNode::addHandle (X3DBaseNode* const node)
+X3DBaseNode::addHandle (X3DBaseNode* const value)
 {
-	handle = node;
+	handle = value;
 	handle -> addParent (this);
 	handle -> setName (getName ());
 	handle -> setUserData (getUserData ());
-	handle -> setup ();
 	handle -> replace (this);
+	handle -> setup ();
 }
 
 void
@@ -639,7 +639,7 @@ X3DBaseNode::removeHandle ()
 	{
 		replace (handle);
 		handle -> removeParent (this);
-		handle = NULL;
+		handle = nullptr;
 	}
 }
 

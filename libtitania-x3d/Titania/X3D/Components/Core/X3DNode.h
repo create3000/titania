@@ -70,6 +70,8 @@ class X3DNode :
 {
 public:
 
+	///  @name Fields
+
 	SFNode &
 	metadata ()
 	{ return *fields .metadata; }
@@ -78,19 +80,25 @@ public:
 	metadata () const
 	{ return *fields .metadata; }
 
-
-protected:
-
-	X3DNode ();
+	///  @name Member access
 
 	Scene*
 	getScene () const;
 
-	X3DLayerNode*
-	getCurrentLayer () const;
-
 	std::deque <X3DLayerNode*>
 	getLayers () const;
+
+
+protected:
+
+	///  @name Construction
+
+	X3DNode ();
+
+	///  @name Member access
+
+	X3DLayerNode*
+	getCurrentLayer () const;
 
 	NavigationInfo*
 	getCurrentNavigationInfo () const;
@@ -107,10 +115,10 @@ protected:
 	Matrix4f
 	getModelViewMatrix (const TraverseType) const;
 
-	friend class X3DExecutionContext;
-
 
 private:
+
+	///  @name Members
 
 	struct Fields
 	{

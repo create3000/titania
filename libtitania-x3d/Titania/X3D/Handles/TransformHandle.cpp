@@ -58,17 +58,17 @@
 namespace titania {
 namespace X3D {
 
-TransformHandle::TransformHandle (Transform* const node, X3DExecutionContext* const executionContext) :
+TransformHandle::TransformHandle (Transform* const transform, X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	      Transform (executionContext),
 	X3DHandleObject (),
-	      transform (node),
+	      transform (transform),
 	          scene ()
 {
 	for (auto & field : transform -> getFieldDefinitions ())
 		addField (field -> getAccessType (), field -> getName (), *field);
 
-	X3DChildObject::addChildren (transform, scene);
+	X3DChildObject::addChildren (*transform, scene);
 }
 
 void
@@ -83,7 +83,7 @@ TransformHandle::initialize ()
 
 		X3DFieldDefinition* field = scene -> getNamedNode ("Handle") -> getField ("transform");
 
-		static_cast <SFNode*> (field) -> setValue (transform .getValue ());
+		static_cast <SFNode*> (field) -> setValue (transform);
 	}
 	catch (const X3DError & error)
 	{
@@ -223,8 +223,8 @@ TransformHandle::traverse (const TraverseType type)
 void
 TransformHandle::dispose ()
 {
-	transform .dispose ();
-	scene     .dispose ();
+	X3DChildObject::removeChildren (*transform);
+	scene .dispose ();
 
 	X3DHandleObject::dispose ();
 	Transform::dispose ();
