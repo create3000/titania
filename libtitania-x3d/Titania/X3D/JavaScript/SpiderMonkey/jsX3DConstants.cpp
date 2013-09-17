@@ -122,6 +122,7 @@ JSPropertySpec jsX3DConstants::properties [ ] = {
 	{ "SFVec3f",     SFVEC3F,     JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, SFVec3f,     NULL },
 	{ "SFVec4d",     SFVEC4D,     JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, SFVec4d,     NULL },
 	{ "SFVec4f",     SFVEC4F,     JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, SFVec4f,     NULL },
+
 	{ "MFBool",      MFBOOL,      JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, MFBool,      NULL },
 	{ "MFColor",     MFCOLOR,     JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, MFColor,     NULL },
 	{ "MFColorRGBA", MFCOLORRGBA, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, MFColorRGBA, NULL },
@@ -193,7 +194,7 @@ JSPropertySpec jsX3DConstants::properties [ ] = {
 	{ "X3DPropertyNode",              X3D_PROPERTY_NODE,              JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DPropertyNode,              NULL },
 	{ "X3DPrototypeInstance",         X3D_PROTOTYPE_INSTANCE,         JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DPrototypeInstance,         NULL },
 	{ "X3DRigidJointNode",            X3D_RIGIDJOINT_NODE,            JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DRigidJointNode,            NULL },
-	{ "Script",                X3D_SCRIPT_NODE,                JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Script,                NULL },
+	{ "X3DScriptNode",                X3D_SCRIPT_NODE,                JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DScriptNode,                NULL },
 	{ "X3DSensorNode",                X3D_SENSOR_NODE,                JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DSensorNode,                NULL },
 	{ "X3DSequencerNode",             X3D_SEQUENCER_NODE,             JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DSequencerNode,             NULL },
 	{ "X3DShaderNode",                X3D_SHADER_NODE,                JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DShaderNode,                NULL },
@@ -207,6 +208,7 @@ JSPropertySpec jsX3DConstants::properties [ ] = {
 	{ "X3DTextureTransformNode",      X3D_TEXTURETRANSFORM_NODE,      JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DTextureTransformNode,      NULL },
 	{ "X3DTimeDependentNode",         X3D_TIMEDEPENDENT_NODE,         JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DTimeDependentNode,         NULL },
 	{ "X3DTouchSensorNode",           X3D_TOUCHSENSOR_NODE,           JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DTouchSensorNode,           NULL },
+	{ "X3DTransformNode",             X3D_TRANSFORM_NODE,             JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DTransformNode,             NULL },
 	{ "X3DTriggerNode",               X3D_TRIGGER_NODE,               JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DTriggerNode,               NULL },
 	{ "X3DUrlObject",                 X3D_URL_OBJECT,                 JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DUrlObject,                 NULL },
 	{ "X3DVertexAttributeNode",       X3D_VERTEXATTRIBUTE_NODE,       JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DVertexAttributeNode,       NULL },
@@ -852,7 +854,7 @@ jsX3DConstants::X3DRigidJointNode (JSContext* context, JSObject* obj, jsid id, j
 }
 
 JSBool
-jsX3DConstants::Script (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+jsX3DConstants::X3DScriptNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	return JS_NewNumberValue (context, X3DConstants::X3DScriptNode, vp);
 }
@@ -933,6 +935,12 @@ JSBool
 jsX3DConstants::X3DTouchSensorNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	return JS_NewNumberValue (context, X3DConstants::X3DTouchSensorNode, vp);
+}
+
+JSBool
+jsX3DConstants::X3DTransformNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+{
+	return JS_NewNumberValue (context, X3DConstants::X3DTransformNode, vp);
 }
 
 JSBool

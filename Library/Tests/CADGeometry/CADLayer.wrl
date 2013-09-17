@@ -6,34 +6,42 @@ Background {
   skyColor 0.2 0.2 0.2
 }
 
-CADLayer {
-  visible [ TRUE, FALSE, TRUE ]
-  children [
-    Transform {
-      translation -2 0 0
-      children Shape {
-        appearance Appearance {
-          material Material { }
+CADAssembly {
+  children CADLayer {
+    visible [ TRUE, FALSE, TRUE ]
+    children [
+      CADPart {
+        translation -2 0 0
+        children CADFace {
+          shape Shape {
+            appearance Appearance {
+              material Material { }
+            }
+            geometry Box { }
+          }
         }
-        geometry Box { }
       }
-    }
-    Transform {
-      children Shape {
-        appearance Appearance {
-          material Material { }
+      CADPart {
+        children CADFace {
+          shape Shape {
+            appearance Appearance {
+              material Material { }
+            }
+            geometry Sphere { }
+          }
         }
-        geometry Sphere { }
       }
-    }
-    Transform {
-      translation 2 0 0
-      children Shape {
-        appearance Appearance {
-          material Material { }
+      CADPart {
+        translation 2 0 0
+        children CADFace {
+          shape Shape {
+            appearance Appearance {
+              material Material { }
+            }
+            geometry Cone { }
+          }
         }
-        geometry Cone { }
       }
-    }
-  ]
+    ]
+  }
 }

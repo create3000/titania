@@ -57,20 +57,10 @@
 namespace titania {
 namespace X3D {
 
-Transform::Fields::Fields () :
-	     translation (new SFVec3f ()),
-	        rotation (new SFRotation ()),
-	           scale (new SFVec3f (1, 1, 1)),
-	scaleOrientation (new SFRotation ()),
-	          center (new SFVec3f ())
-{ }
-
 Transform::Transform (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DGroupingNode (),
-	         fields (),
-	         matrix (),
-	         handle ()
+	X3DTransformNode (),
+	          handle ()
 {
 	setComponent ("Grouping");
 	setTypeName ("Transform");
@@ -97,61 +87,9 @@ Transform::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-Transform::initialize ()
-{
-	X3DGroupingNode::initialize ();
-
-	eventsProcessed ();
-}
-
-Box3f
-Transform::getBBox ()
-{
-	return X3DGroupingNode::getBBox () * matrix;
-}
-
-void
-Transform::setMatrix (const Matrix4f & value)
-{
-	Vector3f   t, s;
-	Rotation4f r, so;
-
-	value .get (t, r, s, so);
-
-	translation ()      = t;
-	rotation ()         = r;
-	scale ()            = s;
-	scaleOrientation () = so;
-}
-
-void
 Transform::addHandle ()
 {
-	X3DGroupingNode::addHandle (new TransformHandle (this, getExecutionContext ()));
-}
-
-void
-Transform::eventsProcessed ()
-{
-	X3DGroupingNode::eventsProcessed ();
-
-	matrix .set (translation (),
-	             rotation (),
-	             scale (),
-	             scaleOrientation (),
-	             center ());
-}
-
-void
-Transform::traverse (const TraverseType type)
-{
-	glPushMatrix ();
-
-	glMultMatrixf (matrix .data ());
-
-	X3DGroupingNode::traverse (type);
-
-	glPopMatrix ();
+	X3DTransformNode::addHandle (new TransformHandle (this, getExecutionContext ()));
 }
 
 void
@@ -159,7 +97,7 @@ Transform::dispose ()
 {
 	handle .dispose ();
 
-	X3DGroupingNode::dispose ();
+	X3DTransformNode::dispose ();
 }
 
 } // X3D

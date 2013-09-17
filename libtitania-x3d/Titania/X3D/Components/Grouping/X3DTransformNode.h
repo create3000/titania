@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,48 +48,128 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_GROUPING_TRANSFORM_H__
-#define __TITANIA_X3D_COMPONENTS_GROUPING_TRANSFORM_H__
+#ifndef __TITANIA_X3D_COMPONENTS_GROUPING_X3DTRANSFORM_NODE_H__
+#define __TITANIA_X3D_COMPONENTS_GROUPING_X3DTRANSFORM_NODE_H__
 
-#include "../Grouping/X3DTransformNode.h"
+#include "../Grouping/X3DGroupingNode.h"
 
 namespace titania {
 namespace X3D {
 
-class TransformHandle;
-
-class Transform :
-	public X3DTransformNode
+class X3DTransformNode :
+	public X3DGroupingNode
 {
 public:
 
-	///  @name Construction
-
-	Transform (X3DExecutionContext* const);
+	///  @name Fields
 
 	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final;
+	SFVec3f &
+	translation ()
+	{ return *fields .translation; }
+
+	virtual
+	const SFVec3f &
+	translation () const
+	{ return *fields .translation; }
+
+	virtual
+	SFRotation &
+	rotation ()
+	{ return *fields .rotation; }
+
+	virtual
+	const SFRotation &
+	rotation () const
+	{ return *fields .rotation; }
+
+	virtual
+	SFVec3f &
+	scale ()
+	{ return *fields .scale; }
+
+	virtual
+	const SFVec3f &
+	scale () const
+	{ return *fields .scale; }
+
+	virtual
+	SFRotation &
+	scaleOrientation ()
+	{ return *fields .scaleOrientation; }
+
+	virtual
+	const SFRotation &
+	scaleOrientation () const
+	{ return *fields .scaleOrientation; }
+
+	virtual
+	SFVec3f &
+	center ()
+	{ return *fields .center; }
+
+	virtual
+	const SFVec3f &
+	center () const
+	{ return *fields .center; }
+
+	///  @name Member access
+
+	virtual
+	Box3f
+	getBBox () override;
+
+	virtual
+	void
+	setMatrix (const Matrix4f &);
+
+	virtual
+	Matrix4f
+	getMatrix ()
+	{ return matrix; }
 
 	///  @name Operations
 
 	virtual
 	void
-	addHandle () override;
-
-	virtual
-	void
-	dispose () override;
+	traverse (const TraverseType) override;
 
 
 protected:
 
-	using X3DGroupingNode::addHandle;
+	///  @name Construction
+
+	X3DTransformNode ();
+
+	virtual
+	void
+	initialize () override;
+
+	///  @name Operations
+
+	virtual
+	void
+	eventsProcessed () override;
 
 
 private:
 
-	X3DSFNode <TransformHandle> handle;
+	///  @name Members
+
+	struct Fields
+	{
+		Fields ();
+
+		SFVec3f* const translation;
+		SFRotation* const rotation;
+		SFVec3f* const scale;
+		SFRotation* const scaleOrientation;
+		SFVec3f* const center;
+	};
+
+	Fields fields;
+
+	Matrix4f matrix;
 
 };
 

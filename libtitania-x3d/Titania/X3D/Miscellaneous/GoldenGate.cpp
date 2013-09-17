@@ -111,7 +111,10 @@ golden_x3d (basic::ifilestream && istream)
 	// Write to pipe
 
 	std::string x3d = basic::to_string (istream);
-	(void) write (stdin, x3d .c_str (), x3d .size ());
+
+	if (write (stdin, x3d .c_str (), x3d .size ()) not_eq (int) x3d .size ())
+		__LOG__ << "write to pipe failed." << std::endl;
+
 	close (stdin);
 
 	// Read from pipe

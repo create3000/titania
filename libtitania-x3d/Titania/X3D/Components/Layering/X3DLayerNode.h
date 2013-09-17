@@ -134,6 +134,19 @@ public:
 	children () const
 	{ return *fields .children; }
 
+	///  @name Member access
+
+	void
+	isLayer0 (bool value)
+	{ layer0 = value; }
+
+	bool
+	isLayer0 () const
+	{ return layer0; }
+
+	Box3f
+	getBBox ();
+
 	///  @name Bindable node stack handling
 
 	NavigationInfo*
@@ -220,18 +233,13 @@ public:
 	getCollisions ()
 	{ return collisions; }
 
-	///  @name Member access
-
-	Box3f
-	getBBox ();
+	///  @name Operations
 
 	Vector3f
 	getTranslation (const Vector3f &, float, float, const Vector3f &);
 
 	void
 	lookAt ();
-
-	///  @name Operations
 
 	virtual
 	void
@@ -312,6 +320,8 @@ private:
 	};
 
 	Fields fields;
+	
+	bool layer0;
 
 	X3DSFNode <NavigationInfo>    defaultNavigationInfo;
 	X3DSFNode <X3DBackgroundNode> defaultBackground;

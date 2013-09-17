@@ -1,5 +1,23 @@
 2013-09-17  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* World.cpp:
+	* X3DConstants.h:
+	* GoldenGate.cpp:
+	* Transform.h:
+	* CADPart.h:
+	* Transform.cpp:
+	* CADPart.cpp:
+	* X3DLayerNode.h:
+	* X3DLayerNode.cpp:
+	* X3DTransformNode.h:
+	* X3DTransformNode.cpp:
+	* jsX3DConstants.h:
+	* jsX3DConstants.cpp: 
+
+2013-09-17  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Debug.h:
 	* TransformHandle.cpp:
 	* X3DBrowserContext.cpp:

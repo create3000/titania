@@ -582,6 +582,7 @@
     <None Include="Titania\X3D\Browser\Picking\Selection.h" />
     <None Include="share\titania\handles\Notification.wrl" />
     <None Include="share\titania\library\RoundedRectangle2D.wrl" />
+    <None Include="Titania\X3D\Components\Grouping\X3DTransformNode.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1023,6 +1024,7 @@
     <Compile Include="Titania\X3D\Browser\Picking\Hit.cpp" />
     <Compile Include="Titania\X3D\Browser\Picking\HitArray.cpp" />
     <Compile Include="Titania\X3D\Browser\Picking\Selection.cpp" />
+    <Compile Include="Titania\X3D\Components\Grouping\X3DTransformNode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

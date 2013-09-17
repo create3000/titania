@@ -756,7 +756,7 @@ BrowserWindow::findModelViewMatrix (X3D::X3DBaseNode* const node, X3D::Matrix4f 
 	{
 		if (findModelViewMatrix (parentNode, modelViewMatix, seen))
 		{
-			auto transform = dynamic_cast <X3D::Transform*> (node);
+			auto transform = dynamic_cast <X3D::X3DTransformNode*> (node);
 
 			if (transform)
 				modelViewMatix .multLeft (transform -> getMatrix ());
@@ -820,8 +820,8 @@ BrowserWindow::on_group_selected_nodes_activate ()
 		{
 			// Adjust transformation
 			{
-				X3D::Matrix4f   childModelViewMatrix = findModelViewMatrix (child .getValue ());
-				X3D::Transform* transform            = dynamic_cast <X3D::Transform*> (child .getValue ());
+				X3D::Matrix4f          childModelViewMatrix = findModelViewMatrix (child .getValue ());
+				X3D::X3DTransformNode* transform            = dynamic_cast <X3D::X3DTransformNode*> (child .getValue ());
 
 				if (transform)
 				{
@@ -870,8 +870,8 @@ BrowserWindow::on_ungroup_node_activate ()
 				{
 					// Adjust transformation
 
-					X3D::Matrix4f   childModelViewMatrix = findModelViewMatrix (child .getValue ());
-					X3D::Transform* transform            = dynamic_cast <X3D::Transform*> (child .getValue ());
+					X3D::Matrix4f          childModelViewMatrix = findModelViewMatrix (child .getValue ());
+					X3D::X3DTransformNode* transform            = dynamic_cast <X3D::X3DTransformNode*> (child .getValue ());
 
 					if (transform)
 					{
@@ -881,7 +881,7 @@ BrowserWindow::on_ungroup_node_activate ()
 					}
 
 					// Add to layer
-				
+
 					getUserData (child) -> path .clear ();
 					getBrowser () -> getExecutionContext () -> getRootNodes () .emplace_back (child);
 					getBrowser () -> getSelection () -> addChild (child);
@@ -913,8 +913,8 @@ BrowserWindow::on_add_to_group_activate ()
 
 			// Get leader modelview matrix
 
-			X3D::Matrix4f   leaderModelViewMatrix = findModelViewMatrix (leader .getValue ());
-			X3D::Transform* transform             = dynamic_cast <X3D::Transform*> (leader .getValue ());
+			X3D::Matrix4f          leaderModelViewMatrix = findModelViewMatrix (leader .getValue ());
+			X3D::X3DTransformNode* transform             = dynamic_cast <X3D::X3DTransformNode*> (leader .getValue ());
 
 			if (transform)
 				leaderModelViewMatrix .multLeft (transform -> getMatrix ());
@@ -928,8 +928,8 @@ BrowserWindow::on_add_to_group_activate ()
 
 				// Adjust transformation
 
-				X3D::Matrix4f   childModelViewMatrix = findModelViewMatrix (child .getValue ());
-				X3D::Transform* transform            = dynamic_cast <X3D::Transform*> (child .getValue ());
+				X3D::Matrix4f          childModelViewMatrix = findModelViewMatrix (child .getValue ());
+				X3D::X3DTransformNode* transform            = dynamic_cast <X3D::X3DTransformNode*> (child .getValue ());
 
 				if (transform)
 				{
@@ -952,7 +952,7 @@ BrowserWindow::on_add_to_group_activate ()
 
 				children -> emplace_back (child);
 			}
-	
+
 			getBrowser () -> getSelection () -> addChild (leader);
 
 			setEdited (true);
@@ -975,8 +975,8 @@ BrowserWindow::on_detach_from_group_activate ()
 
 			// Adjust transformation
 
-			X3D::Matrix4f   childModelViewMatrix = findModelViewMatrix (child .getValue ());
-			X3D::Transform* transform            = dynamic_cast <X3D::Transform*> (child .getValue ());
+			X3D::Matrix4f          childModelViewMatrix = findModelViewMatrix (child .getValue ());
+			X3D::X3DTransformNode* transform            = dynamic_cast <X3D::X3DTransformNode*> (child .getValue ());
 
 			if (transform)
 			{
@@ -1002,7 +1002,7 @@ void
 BrowserWindow::on_create_parent_group_activate ()
 {
 	__LOG__ << std::endl;
-	
+
 	const auto selection = getBrowser () -> getSelection () -> getChildren ();
 
 	if (selection .size ())
@@ -1012,7 +1012,7 @@ BrowserWindow::on_create_parent_group_activate ()
 		for (const auto & child : selection)
 		{
 			getUserData (child) -> path .clear ();
-	
+
 			// Replace node with Transform
 
 			auto node      = getBrowser () -> getExecutionContext () -> createNode ("Transform");

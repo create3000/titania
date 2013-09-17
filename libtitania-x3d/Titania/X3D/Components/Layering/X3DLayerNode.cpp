@@ -73,6 +73,7 @@ X3DLayerNode::X3DLayerNode (X3DViewpointNode* _defaultViewpoint, X3DGroupingNode
 	              X3DNode (),
 	          X3DRenderer (),
 	               fields (),
+	               layer0 (false),
 	defaultNavigationInfo (new NavigationInfo (getExecutionContext ())),
 	    defaultBackground (new Background (getExecutionContext ())),
 	           defaultFog (new Fog (getExecutionContext ())),

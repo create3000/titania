@@ -48,52 +48,78 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_GROUPING_TRANSFORM_H__
-#define __TITANIA_X3D_COMPONENTS_GROUPING_TRANSFORM_H__
-
-#include "../Grouping/X3DTransformNode.h"
+#include "X3DTransformNode.h"
 
 namespace titania {
 namespace X3D {
 
-class TransformHandle;
+X3DTransformNode::Fields::Fields () :
+	     translation (new SFVec3f ()),
+	        rotation (new SFRotation ()),
+	           scale (new SFVec3f (1, 1, 1)),
+	scaleOrientation (new SFRotation ()),
+	          center (new SFVec3f ())
+{ }
 
-class Transform :
-	public X3DTransformNode
+X3DTransformNode::X3DTransformNode () :
+	X3DGroupingNode (),
+	         fields (),
+	         matrix ()
 {
-public:
+	addNodeType (X3DConstants::X3DTransformNode);
+}
 
-	///  @name Construction
+void
+X3DTransformNode::initialize ()
+{
+	X3DGroupingNode::initialize ();
 
-	Transform (X3DExecutionContext* const);
+	eventsProcessed ();
+}
 
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final;
+Box3f
+X3DTransformNode::getBBox ()
+{
+	return X3DGroupingNode::getBBox () * matrix;
+}
 
-	///  @name Operations
+void
+X3DTransformNode::setMatrix (const Matrix4f & value)
+{
+	Vector3f   t, s;
+	Rotation4f r, so;
 
-	virtual
-	void
-	addHandle () override;
+	value .get (t, r, s, so);
 
-	virtual
-	void
-	dispose () override;
+	translation ()      = t;
+	rotation ()         = r;
+	scale ()            = s;
+	scaleOrientation () = so;
+}
 
+void
+X3DTransformNode::eventsProcessed ()
+{
+	X3DGroupingNode::eventsProcessed ();
 
-protected:
+	matrix .set (translation (),
+	             rotation (),
+	             scale (),
+	             scaleOrientation (),
+	             center ());
+}
 
-	using X3DGroupingNode::addHandle;
+void
+X3DTransformNode::traverse (const TraverseType type)
+{
+	glPushMatrix ();
 
+	glMultMatrixf (matrix .data ());
 
-private:
+	X3DGroupingNode::traverse (type);
 
-	X3DSFNode <TransformHandle> handle;
-
-};
+	glPopMatrix ();
+}
 
 } // X3D
 } // titania
-
-#endif

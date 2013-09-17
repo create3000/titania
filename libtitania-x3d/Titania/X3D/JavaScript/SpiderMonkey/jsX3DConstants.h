@@ -121,6 +121,7 @@ private:
 		SFVEC3F,
 		SFVEC4D,
 		SFVEC4F,
+
 		MFBOOL,
 		MFCOLOR,
 		MFCOLORRGBA,
@@ -206,6 +207,7 @@ private:
 		X3D_TEXTURETRANSFORM_NODE,
 		X3D_TIMEDEPENDENT_NODE,
 		X3D_TOUCHSENSOR_NODE,
+		X3D_TRANSFORM_NODE,
 		X3D_TRIGGER_NODE,
 		X3D_URL_OBJECT,
 		X3D_VERTEXATTRIBUTE_NODE,
@@ -332,7 +334,7 @@ private:
 	static JSBool X3DPropertyNode              (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool X3DPrototypeInstance         (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool X3DRigidJointNode            (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool Script                (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool X3DScriptNode                (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool X3DSensorNode                (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool X3DSequencerNode             (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool X3DShaderNode                (JSContext *, JSObject *, jsid, jsval*);
@@ -346,6 +348,7 @@ private:
 	static JSBool X3DTextureTransformNode      (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool X3DTimeDependentNode         (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool X3DTouchSensorNode           (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool X3DTransformNode             (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool X3DTriggerNode               (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool X3DUrlObject                 (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool X3DVertexAttributeNode       (JSContext *, JSObject *, jsid, jsval*);

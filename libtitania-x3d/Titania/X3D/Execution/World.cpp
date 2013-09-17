@@ -93,6 +93,7 @@ World::initialize ()
 
 	set_rootNodes (); // This can happen twice when rootNodes is tainted
 
+	layer0 -> isLayer0 (true);
 	layer0 -> setInternal (true);
 	layer0 -> setup ();
 	layer0 -> getBackgroundStack () -> bottom () -> transparency () = 0;

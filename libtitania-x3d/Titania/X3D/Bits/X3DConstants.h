@@ -218,6 +218,7 @@ enum NodeType
 	X3DTextureTransformNode,
 	X3DTimeDependentNode,
 	X3DTouchSensorNode,
+	X3DTransformNode,
 	X3DTriggerNode,
 	X3DUrlObject,
 	X3DVertexAttributeNode,

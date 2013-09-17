@@ -52,13 +52,13 @@
 #define __TITANIA_X3D_COMPONENTS_CADGEOMETRY_CADPART_H__
 
 #include "../CADGeometry/X3DProductStructureChildNode.h"
-#include "../Grouping/X3DGroupingNode.h"
+#include "../Grouping/X3DTransformNode.h"
 
 namespace titania {
 namespace X3D {
 
 class CADPart :
-	public X3DGroupingNode, public X3DProductStructureChildNode
+	public X3DTransformNode, public X3DProductStructureChildNode
 {
 public:
 
@@ -69,99 +69,6 @@ public:
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const final;
-
-	///  @name Fields
-
-	SFVec3f &
-	translation ()
-	{ return *fields .translation; }
-
-	const SFVec3f &
-	translation () const
-	{ return *fields .translation; }
-
-	SFRotation &
-	rotation ()
-	{ return *fields .rotation; }
-
-	const SFRotation &
-	rotation () const
-	{ return *fields .rotation; }
-
-	SFVec3f &
-	scale ()
-	{ return *fields .scale; }
-
-	const SFVec3f &
-	scale () const
-	{ return *fields .scale; }
-
-	SFRotation &
-	scaleOrientation ()
-	{ return *fields .scaleOrientation; }
-
-	const SFRotation &
-	scaleOrientation () const
-	{ return *fields .scaleOrientation; }
-
-	SFVec3f &
-	center ()
-	{ return *fields .center; }
-
-	const SFVec3f &
-	center () const
-	{ return *fields .center; }
-
-	///  @name Member access
-
-	virtual
-	Box3f
-	getBBox () override;
-
-	Matrix4f
-	getMatrix ()
-	{ return matrix; }
-
-	///  @name Operations
-
-	virtual
-	void
-	traverse (const TraverseType) override;
-
-
-protected:
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () override;
-
-	///  @name Operations
-
-	virtual
-	void
-	eventsProcessed () final;
-
-
-private:
-
-	///  @name Members
-
-	struct Fields
-	{
-		Fields ();
-
-		SFVec3f* const translation;
-		SFRotation* const rotation;
-		SFVec3f* const scale;
-		SFRotation* const scaleOrientation;
-		SFVec3f* const center;
-	};
-
-	Fields fields;
-
-	Matrix4f matrix;
 
 };
 
