@@ -51,9 +51,9 @@
 #ifndef __TITANIA_BASIC_PATH_H__
 #define __TITANIA_BASIC_PATH_H__
 
+#include "../LOG.h"
 #include "../String/Split.h"
 #include "../Utility/Adapter.h"
-#include "../LOG.h"
 #include <algorithm>
 #include <iterator>
 #include <list>
@@ -99,7 +99,7 @@ public:
 	explicit
 	basic_path (const string_type & separator) :
 		std::list <StringT> (),
-		value ({ separator, false, false })
+		              value ({ separator, false, false })
 	{ }
 
 	basic_path (const string_type & path, const StringT & separator);
@@ -147,17 +147,17 @@ private:
 
 	basic_path (const Value & value) :
 		std::list <string_type> (),
-		value (value)
+		                  value (value)
 	{ }
 
 	basic_path (array_type && array, const Value & value) :
 		std::list <string_type> (array),
-		value (value)
+		                  value (value)
 	{ }
 
 	basic_path (const_iterator first, const_iterator last, const Value & value) :
 		std::list <string_type> (first, last),
-		value (value)
+		                  value (value)
 	{ }
 
 	Value value;
@@ -176,7 +176,7 @@ const StringT basic_path <StringT>::dots = "..";
 template <class StringT>
 basic_path <StringT>::basic_path (const StringT & path, const StringT & separator) :
 	std::list <string_type> (basic_split <StringT, std::list> (path, separator)),
-	value ({ separator, false, false })
+	                  value ({ separator, false, false })
 {
 	if (size ())
 	{

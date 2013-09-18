@@ -75,8 +75,6 @@ void
 X3DBrowserEditor::removeNode (const X3D::SFNode & node)
 throw (X3D::Error <X3D::INVALID_NODE>)
 {
-	__LOG__ << node -> getTypeName () << std::endl;
-
 	if (not node)
 		throw X3D::Error <X3D::INVALID_NODE> ("Node is empty.");
 
@@ -85,8 +83,6 @@ throw (X3D::Error <X3D::INVALID_NODE>)
 	// Remove node
 
 	removeNode (scene, node);
-
-	__LOG__ << node -> getTypeName () << std::endl;
 
 	// Delete children of node
 
@@ -100,69 +96,51 @@ throw (X3D::Error <X3D::INVALID_NODE>)
 	             return false;
 				 });
 
-	__LOG__ << children .size () << std::endl;
-
 	for (const auto & child : children)
 	{
-		if (not traverse (scene, [&child] (const X3D::SFNode &, X3D::MFNode* const, X3D::SFNode* const sfnode, size_t)
+		if (not traverse (scene, [child] (const X3D::SFNode &, X3D::MFNode* const, X3D::SFNode* const sfnode, size_t)
 		                  {
 		                     return child == *sfnode;
 								}))
 		{
-			removeExportedNode (scene, child);
 			removeNamedNode (scene, child);
+			removeExportedNodes (scene, child);
+			removeImportedNodes (scene, child);
 			deleteRoutes (scene, child);
 		}
 	}
 
 	setEdited (true);
-
-	__LOG__ << std::endl;
 }
 
 void
-X3DBrowserEditor::removeNode (const X3D::X3DSFNode <X3D::Scene> & scene, const X3D::SFNode & node)
+X3DBrowserEditor::removeNode (const X3D::X3DSFNode <X3D::Scene> & scene, const X3D::SFNode & node) const
 {
-	__LOG__ << node -> getTypeName () << std::endl;
-
 	removeNode (scene .getValue (), node);
 
 	// Remove exported node
 
-	removeExportedNode (scene, node);
-
-	__LOG__ << std::endl;
+	removeExportedNodes (scene, node);
 }
 
 void
-X3DBrowserEditor::removeExportedNode (const X3D::X3DSFNode <X3D::Scene> & scene, const X3D::SFNode & node)
+X3DBrowserEditor::removeExportedNodes (const X3D::X3DSFNode <X3D::Scene> & scene, const X3D::SFNode & node) const
 {
-	__LOG__ << node -> getTypeName () << std::endl;
-
-	std::deque <std::string> exportedNames;
-
-	for (const auto & exportedNode : scene -> getExportedNodes ())
+	for (const auto & exportedNode : X3D::ExportedNodeArray (scene -> getExportedNodes ()))
 	{
-		if (exportedNode -> getNode () -> getName () == node -> getName ())
-			exportedNames .emplace_back (exportedNode -> getExportedName ());
+		if (exportedNode -> getNode () == node)
+			scene -> removeExportedNode (exportedNode -> getExportedName ());
 	}
-
-	for (const auto & exportedName : exportedNames)
-		scene -> removeExportedNode (exportedName);
-
-	__LOG__ << std::endl;
 }
 
 void
-X3DBrowserEditor::removeNode (X3D::X3DExecutionContext* const executionContext, const X3D::SFNode & node)
+X3DBrowserEditor::removeNode (X3D::X3DExecutionContext* const executionContext, const X3D::SFNode & node) const
 {
-	__LOG__ << node -> getTypeName () << std::endl;
-
 	// Delete node in scene graph
 
-	traverse (executionContext, [&node] (const X3D::SFNode &, X3D::MFNode* const mfnode, X3D::SFNode* const sfnode, size_t)
+	traverse (executionContext, [node] (const X3D::SFNode &, X3D::MFNode* const mfnode, X3D::SFNode* const sfnode, size_t)
 	          {
-	             if (node not_eq * sfnode)
+	             if (node not_eq *sfnode)
 						 return false;
 
 	             if (mfnode)
@@ -178,19 +156,18 @@ X3DBrowserEditor::removeNode (X3D::X3DExecutionContext* const executionContext, 
 
 	removeNamedNode (executionContext, node);
 
+	// Remove nodes imported from node
+
+	removeImportedNodes (executionContext, node);
+
 	// Delete routes from and to node
 
 	deleteRoutes (executionContext, node);
-
-	__LOG__ << std::endl;
 }
 
 void
-X3DBrowserEditor::removeNamedNode (X3D::X3DExecutionContext* const executionContext, const X3D::SFNode & node)
+X3DBrowserEditor::removeNamedNode (X3D::X3DExecutionContext* const executionContext, const X3D::SFNode & node) const
 {
-	__LOG__ << node .getValue () << std::endl;
-	__LOG__ << node -> getTypeName () << std::endl;
-
 	try
 	{
 		if (executionContext -> getNamedNode (node -> getName ()) == node)
@@ -198,31 +175,39 @@ X3DBrowserEditor::removeNamedNode (X3D::X3DExecutionContext* const executionCont
 	}
 	catch (const X3D::X3DError &)
 	{ }
-
-	__LOG__ << std::endl;
 }
 
 void
-X3DBrowserEditor::deleteRoutes (X3D::X3DExecutionContext* const executionContext, const X3D::SFNode & node)
+X3DBrowserEditor::removeImportedNodes (X3D::X3DExecutionContext* const executionContext, const X3D::SFNode & node) const
 {
-	__LOG__ << node -> getTypeName () << std::endl;
+	auto inlineNode = dynamic_cast <X3D::Inline*> (node .getValue ());
 
-	std::deque <X3D::X3DSFNode <X3D::Route>> routes;
+	if (inlineNode)
+	{
+		for (const auto & importedNode : X3D::ImportedNodeArray (executionContext -> getImportedNodes ()))
+		{
+			if (inlineNode == importedNode -> getInlineNode ())
+			{
+				deleteRoutes (executionContext, importedNode -> getExportedNode ());
 
-	for (const auto & route : executionContext -> getRoutes ())
+				executionContext -> removeImportedNode (importedNode -> getImportedName ());
+			}
+		}
+	}
+}
+
+void
+X3DBrowserEditor::deleteRoutes (X3D::X3DExecutionContext* const executionContext, const X3D::SFNode & node) const
+{
+	for (const auto & route : X3D::RouteArray (executionContext -> getRoutes ()))
 	{
 		if (route -> getSourceNode () == node or route -> getDestinationNode () == node)
-			routes .emplace_back (route);
+			executionContext -> deleteRoute (route);
 	}
-
-	for (const auto & route : routes)
-		executionContext -> deleteRoute (route);
-
-	__LOG__ << std::endl;
 }
 
 bool
-X3DBrowserEditor::traverse (X3D::X3DExecutionContext* const executionContext, const TraverseCallback & callback)
+X3DBrowserEditor::traverse (X3D::X3DExecutionContext* const executionContext, const TraverseCallback & callback) const
 {
 	X3D::ChildObjectSet seen;
 	size_t              index = 0;
@@ -245,7 +230,7 @@ X3DBrowserEditor::traverse (X3D::X3DExecutionContext* const executionContext, co
 }
 
 bool
-X3DBrowserEditor::traverse (const X3D::SFNode & node, const TraverseCallback & callback)
+X3DBrowserEditor::traverse (const X3D::SFNode & node, const TraverseCallback & callback) const
 {
 	X3D::ChildObjectSet seen;
 
@@ -253,7 +238,7 @@ X3DBrowserEditor::traverse (const X3D::SFNode & node, const TraverseCallback & c
 }
 
 bool
-X3DBrowserEditor::traverse (const X3D::SFNode & node, const TraverseCallback & callback, X3D::ChildObjectSet & seen)
+X3DBrowserEditor::traverse (const X3D::SFNode & node, const TraverseCallback & callback, X3D::ChildObjectSet & seen) const
 {
 	if (not node)
 		return false;

@@ -112,28 +112,31 @@ private:
 	typedef std::function <bool (const X3D::SFNode &, X3D::MFNode*, X3D::SFNode*, size_t)> TraverseCallback;
 
 	void
-	removeNode (const X3D::X3DSFNode <X3D::Scene> &, const X3D::SFNode &);
+	removeNode (const X3D::X3DSFNode <X3D::Scene> &, const X3D::SFNode &) const;
 
 	void
-	removeExportedNode (const X3D::X3DSFNode <X3D::Scene> &, const X3D::SFNode &);
+	removeExportedNodes (const X3D::X3DSFNode <X3D::Scene> &, const X3D::SFNode &) const;
 
 	void
-	removeNode (X3D::X3DExecutionContext* const, const X3D::SFNode &);
+	removeNode (X3D::X3DExecutionContext* const, const X3D::SFNode &) const;
 
 	void
-	removeNamedNode (X3D::X3DExecutionContext* const, const X3D::SFNode &);
+	removeNamedNode (X3D::X3DExecutionContext* const, const X3D::SFNode &) const;
 
 	void
-	deleteRoutes (X3D::X3DExecutionContext* const, const X3D::SFNode &);
+	removeImportedNodes (X3D::X3DExecutionContext* const, const X3D::SFNode &) const;
+
+	void
+	deleteRoutes (X3D::X3DExecutionContext* const, const X3D::SFNode &) const;
 
 	bool
-	traverse (X3D::X3DExecutionContext* const, const TraverseCallback &);
+	traverse (X3D::X3DExecutionContext* const, const TraverseCallback &) const;
 
 	bool
-	traverse (const X3D::SFNode &, const TraverseCallback &);
+	traverse (const X3D::SFNode &, const TraverseCallback &) const;
 
 	bool
-	traverse (const X3D::SFNode &, const TraverseCallback &, X3D::ChildObjectSet &);
+	traverse (const X3D::SFNode &, const TraverseCallback &, X3D::ChildObjectSet &) const;
 
 	X3D::Matrix4f
 	findModelViewMatrix (X3D::X3DBaseNode* const) const;

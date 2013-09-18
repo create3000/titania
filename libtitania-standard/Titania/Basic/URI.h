@@ -391,9 +391,9 @@ private:
 
 		constexpr
 		parser (basic_uri & uri, const string_type & string) :
-			uri (uri),
+			   uri (uri),
 			string (string)
-		{ }
+	      	{ }
 
 		void
 		uriString (size_type first) const;
@@ -568,12 +568,13 @@ basic_uri <StringT>::well_known_port () const
 
 	return 0;
 }
+
 template <class StringT>
 typename basic_uri <StringT>::string_type
 basic_uri <StringT>::path (bool q) const
 {
 	string_type string = value .path;
-	
+
 	if (q and query () .length ())
 	{
 		string += Signs::QuestionMark
@@ -899,7 +900,7 @@ basic_uri <StringT>::parser::uriString (size_type first) const
 	{
 		++ first;
 		uri .value .absolute = true;
-		
+
 		if (uri .value .scheme == DataSchemeId)
 		{
 			uri .value .local = true;

@@ -76,7 +76,7 @@ public:
 	///  Default constructor.
 	unique_list () :
 		list (),
-		map ()
+		 map ()
 	{ }
 
 	/// @name Iterators

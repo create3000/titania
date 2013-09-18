@@ -84,22 +84,22 @@ public:
 	///  Default constructor
 	indexed_multimap () :
 		array (),
-		map ()
+		  map ()
 	{ }
 
 	///  Copy constructor
 	indexed_multimap (const indexed_multimap & value) :
 		array (),
-		map ()
+		  map ()
 	{
-		for (const auto & pair : map)
+		for (const auto & pair : value .map)
 			push_back (pair .first, *pair .second);
 	}
 
 	///  Move constructor
 	indexed_multimap (indexed_multimap && value) :
 		array (std::move (value .array)),
-		map (std::move (value .map))
+		  map (std::move (value .map))
 	{ }
 
 	///  Assignment operator
@@ -108,7 +108,7 @@ public:
 	{
 		clear ();
 
-		for (const auto & pair : map)
+		for (const auto & pair : value .map)
 			push_back (pair .first, *pair .second);
 
 		return *this;

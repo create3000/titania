@@ -77,12 +77,12 @@ public:
 	///  Standard constructor.
 	bind_stack () :
 		list (),
-		map ()
+		 map ()
 	{ }
 
 	bind_stack (std::initializer_list <Type> list) :
 		list (),
-		map ()
+		 map ()
 	{
 		for (const auto & value : list)
 			push_back (value);
@@ -127,7 +127,7 @@ public:
 			map .erase (map_iter);
 		}
 	}
-	
+
 	void
 	clear ()
 	{
