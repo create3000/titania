@@ -65,7 +65,7 @@ OutlineTreeView::OutlineTreeView (BrowserWindow* const browserWindow) :
 	X3DOutlineTreeViewInterface (get_ui ("OutlineTreeView.ui"), gconf_dir ()),
 	                      model (),
 	                  selection (browserWindow, this),
-	                      expandLevel (0)
+	                expandLevel (0)
 {
 	// Options
 
@@ -222,7 +222,7 @@ void
 OutlineTreeView::set_rootNodes ()
 {
 	//__LOG__ << std::endl;
-	
+
 	for (const auto & column : get_columns ())
 		column -> set_visible (false);
 
@@ -237,7 +237,7 @@ OutlineTreeView::set_rootNodes ()
 
 	set_model (get_model ());
 
-	++ expandLevel;
+	++ expandLevel; // Disable shift key
 
 	for (auto & iter : get_model () -> children ())
 	{
@@ -246,8 +246,8 @@ OutlineTreeView::set_rootNodes ()
 		if (get_expanded (iter))
 			expand_row (get_model () -> get_path (iter), false);
 	}
-	
-	--expandLevel;
+
+	-- expandLevel; // Enable shift key
 
 	for (const auto & column : get_columns ())
 		column -> set_visible (true);
@@ -549,7 +549,7 @@ void
 OutlineTreeView::update_field (const Gtk::TreeModel::Path & path)
 {
 	//__LOG__ << std::endl;
-	
+
 	Gtk::TreeModel::iterator iter         = get_model () -> get_iter (path);
 	bool                     all_expanded = get_all_expanded (iter);
 
@@ -560,12 +560,12 @@ OutlineTreeView::update_field (const Gtk::TreeModel::Path & path)
 
 	get_model () -> row_has_child_toggled (path, iter);
 
-	++ expandLevel;
+	++ expandLevel; // Disable shift key
 
 	set_all_expanded (iter, all_expanded);
 	expand_row (path, false);
 
-	-- expandLevel;
+	-- expandLevel; // Enable shift key
 
 	for (const auto & column : get_columns ())
 		column -> set_visible (true);
@@ -581,12 +581,12 @@ OutlineTreeView::toggle_field (const Gtk::TreeModel::Path & path)
 	Gtk::TreeView::collapse_row (path);
 	get_model () -> row_has_child_toggled (path, iter);
 
-	++ expandLevel;
+	++ expandLevel; // Disable shift key
 
 	set_all_expanded (iter, true);
 	expand_row (path, false);
 
-	-- expandLevel;
+	-- expandLevel; // Enable shift key
 }
 
 void

@@ -61,9 +61,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
-	m_fileFilterAllFiles = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterAllFiles"));
-	m_fileFilterAudio    = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterAudio"));
-	m_fileFilterImage    = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterImage"));
 	m_fileFilterVideo    = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterVideo"));
 	m_fileFilterX3D      = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterX3D"));
 	m_iconFactory        = Glib::RefPtr <Gtk::IconFactory>::cast_dynamic (m_builder -> get_object ("IconFactory"));
@@ -71,9 +68,14 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_openAction         = Glib::RefPtr <Gtk::Action>::cast_dynamic (m_builder -> get_object ("OpenAction"));
 	m_revertAction       = Glib::RefPtr <Gtk::Action>::cast_dynamic (m_builder -> get_object ("RevertAction"));
 	m_saveAction         = Glib::RefPtr <Gtk::Action>::cast_dynamic (m_builder -> get_object ("SaveAction"));
+	m_fileFilterAllFiles = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterAllFiles"));
+	m_fileFilterAudio    = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterAudio"));
+	m_fileFilterImage    = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterImage"));
 	m_menuAccelGroup     = Glib::RefPtr <Gtk::AccelGroup>::cast_dynamic (m_builder -> get_object ("MenuAccelGroup"));
 
 	// Get widgets.
+	m_builder -> get_widget ("FileImportDialog", m_fileImportDialog);
+	m_fileImportDialog -> set_name ("FileImportDialog");
 	m_builder -> get_widget ("FileOpenDialog", m_fileOpenDialog);
 	m_fileOpenDialog -> set_name ("FileOpenDialog");
 	m_builder -> get_widget ("FileSaveDialog", m_fileSaveDialog);
@@ -110,6 +112,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_openMenuItem -> set_name ("OpenMenuItem");
 	m_builder -> get_widget ("OpenLocationMenuItem", m_openLocationMenuItem);
 	m_openLocationMenuItem -> set_name ("OpenLocationMenuItem");
+	m_builder -> get_widget ("ImportMenuItem", m_importMenuItem);
+	m_importMenuItem -> set_name ("ImportMenuItem");
 	m_builder -> get_widget ("SaveMenuItem", m_saveMenuItem);
 	m_saveMenuItem -> set_name ("SaveMenuItem");
 	m_builder -> get_widget ("SaveAsMenuItem", m_saveAsMenuItem);
@@ -245,7 +249,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	connections .emplace_back (m_revertAction -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_revert_to_saved)));
 	connections .emplace_back (m_saveAction -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_save)));
 
-	// Connect object Gtk::FileChooserDialog with id 'FileOpenDialog'.
+	// Connect object Gtk::FileChooserDialog with id 'FileImportDialog'.
+	connections .emplace_back (m_fileImportDialog -> signal_response () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_fileImportDialog_response)));
 	connections .emplace_back (m_fileOpenDialog -> signal_response () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_fileOpenDialog_response)));
 	connections .emplace_back (m_fileSaveDialog -> signal_response () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_fileSaveDialog_response)));
 
@@ -268,10 +273,9 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	connections .emplace_back (m_window -> signal_key_release_event () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_key_release_event)));
 	connections .emplace_back (m_window -> signal_key_press_event () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_key_press_event)));
 
-	// Connect object Gtk::MenuItem with id 'OpenLocationMenuItem'.
-	connections .emplace_back (m_openLocationMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_open_location_dialog)));
-
-	// Connect object Gtk::ImageMenuItem with id 'SaveMenuItem'.
+	// Connect object Gtk::ImageMenuItem with id 'OpenLocationMenuItem'.
+	connections .emplace_back (m_openLocationMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_open_location)));
+	connections .emplace_back (m_importMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_import)));
 	connections .emplace_back (m_saveMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_save)));
 	connections .emplace_back (m_saveAsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_save_as)));
 	connections .emplace_back (m_quitMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_close)));

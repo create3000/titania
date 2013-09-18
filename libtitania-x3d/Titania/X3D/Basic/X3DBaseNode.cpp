@@ -222,52 +222,21 @@ X3DBaseNode::copy (X3DExecutionContext* const executionContext) const
 }
 
 void
-X3DBaseNode::replace (X3DBaseNode* const node, const std::set <const X3D::X3DFieldDefinition*> & exclude)
+X3DBaseNode::replace (X3DBaseNode* const node, const std::set <const X3DFieldDefinition*> & exclude)
 {
-	// Parents
-
-	auto parents = node -> getParents ();
-
-	for (auto & parent : parents)
-	{
-		//__LOG__ << parent -> getName () << " : " << parent -> getTypeName () << std::endl;
-
-		auto sfnode = dynamic_cast <SFNode*> (parent);
-
-		if (sfnode)
-		{
-			if (exclude .find (sfnode) == exclude .end ())
-			{
-				bool insert = true;
-
-				for (auto & secondParent : sfnode -> getParents ())
-				{
-					auto mfnode = dynamic_cast <X3D::MFNode*> (secondParent);
-		
-					if (mfnode)
-						insert = exclude .find (mfnode) == exclude .end ();
-				}
-
-				if (insert)
-					sfnode -> setValue (this);
-			}
-		}
-
-		//else
-		//	__LOG__ << parent -> getTypeName () << std::endl;
-	}
+	for (auto & parent : node -> getParentFields (exclude))
+		parent -> setValue (this);
 }
 
-
 void
-X3DBaseNode::remove (const std::set <const X3D::X3DFieldDefinition*> & exclude)
+X3DBaseNode::remove (const std::set <const X3DFieldDefinition*> & exclude)
 {
 	std::set <SFNode*> sfnodes;
 	std::set <MFNode*> mfnodes;
 
 	for (auto & parent : getParents ())
 	{
-		auto sfnode = dynamic_cast <X3D::SFNode*> (parent);
+		auto sfnode = dynamic_cast <SFNode*> (parent);
 	
 		if (sfnode)
 		{
@@ -277,7 +246,7 @@ X3DBaseNode::remove (const std::set <const X3D::X3DFieldDefinition*> & exclude)
 			
 				for (auto & secondParent : sfnode -> getParents ())
 				{
-					auto mfnode = dynamic_cast <X3D::MFNode*> (secondParent);
+					auto mfnode = dynamic_cast <MFNode*> (secondParent);
 		
 					if (mfnode)
 					{
@@ -393,6 +362,38 @@ X3DBaseNode::getType () const
 throw (Error <DISPOSED>)
 {
 	return getBrowser () -> getNode (getTypeName ());
+}
+
+std::vector <SFNode*>
+X3DBaseNode::getParentFields (const std::set <const X3DFieldDefinition*> & exclude) const
+{
+	std::vector <SFNode*> fields;
+
+	for (auto & parent : getParents ())
+	{
+		auto sfnode = dynamic_cast <SFNode*> (parent);
+
+		if (sfnode)
+		{
+			if (exclude .find (sfnode) == exclude .end ())
+			{
+				bool insert = true;
+
+				for (auto & secondParent : sfnode -> getParents ())
+				{
+					auto mfnode = dynamic_cast <MFNode*> (secondParent);
+
+					if (mfnode)
+						insert = exclude .find (mfnode) == exclude .end ();
+				}
+
+				if (insert)
+					fields .emplace_back (sfnode);
+			}
+		}
+	}
+
+	return fields;
 }
 
 void

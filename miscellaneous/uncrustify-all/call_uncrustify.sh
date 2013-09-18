@@ -47,8 +47,10 @@ perl -p -e '
 	replace (sub { $_ [0] =~ s/(\s[\w\d\)\]]+)\.([a-zA-Z])/$1 .$2/go })
 		unless /\w\.\w+?[\>"]/ or /^\s*(\/?\*|\/\/)/go;                                        # change variable.member to variable .member
    replace (sub { $_ [0] =~ s/\)and/) and/sgo });
-   replace (sub { $_ [0] =~ s/([)])(override|final)/$1 $2/ });                                         # add space before final or override
-   replace (sub { $_ [0] =~ s/<\:\:/< ::/ });                                                          # add space :: in template argument list
+   replace (sub { $_ [0] =~ s/([)])(override|final)/$1 $2/so });                                         # add space before final or override
+   replace (sub { $_ [0] =~ s/<\:\:/< ::/so });                                                          # add space :: in template argument list
+   replace (sub { $_ [0] =~ s/(\w)\s+\*\s+const/$1* const/sgo });                                        # remove space befor *
+   replace (sub { $_ [0] =~ s/(\w)\s*:\*\s*(\w)/$1 : *$2/so });                                          # remove :* in for loops
 ' | \
 perl -e '
 	# Remove \n in template argument one liner

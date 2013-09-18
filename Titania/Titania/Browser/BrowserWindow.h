@@ -51,7 +51,7 @@
 #ifndef __TITANIA_BROWSER_BROWSER_WINDOW_H__
 #define __TITANIA_BROWSER_BROWSER_WINDOW_H__
 
-#include "../Browser/X3DBrowserWindow.h"
+#include "../Browser/X3DBrowserEditor.h"
 #include "../HistoryEditor/HistoryEditor.h"
 #include "../MotionBlurEditor/MotionBlurEditor.h"
 #include "../OutlineEditor/OutlineEditor.h"
@@ -61,7 +61,7 @@ namespace titania {
 namespace puck {
 
 class BrowserWindow :
-	public X3DBrowserWindow
+	public X3DBrowserEditor
 {
 public:
 
@@ -70,14 +70,6 @@ public:
 	BrowserWindow (const basic::uri &);
 
 	/// @name Member access
-
-	void
-	setEdited (bool value)
-	{ edited = value; }
-
-	bool
-	getEdited () const
-	{ return edited; }
 
 	const X3D::Keys &
 	getKeys () const
@@ -136,6 +128,11 @@ private:
 	getOutlineTreeView () const
 	{ return outlineEditor .getTreeView (); }
 
+	virtual
+	OutlineUserDataPtr
+	getUserData (X3D::X3DChildObject* object) const
+	{ return getOutlineEditor () .getTreeView () .get_user_data (object); }
+
 	/// @name File menu
 
 	virtual
@@ -148,7 +145,11 @@ private:
 
 	virtual
 	void
-	on_open_location_dialog () final;
+	on_import () final;
+
+	virtual
+	void
+	on_open_location () final;
 
 	virtual
 	void
@@ -171,6 +172,10 @@ private:
 	virtual
 	void
 	on_fileOpenDialog_response (int) final;
+
+	virtual
+	void
+	on_fileImportDialog_response (int) final;
 
 	virtual
 	bool
@@ -355,21 +360,6 @@ private:
 	
 	///  @Editing facilities
 
-	OutlineUserDataPtr
-	getUserData (X3D::X3DChildObject*) const;
-
-	X3D::MFNode*
-	getGroupingField (const X3D::SFNode &) const;
-
-	std::deque <X3D::X3DBaseNode*>
-	getParentNodes (X3D::X3DBaseNode* const);
-
-	X3D::Matrix4f
-	findModelViewMatrix (X3D::X3DBaseNode* const);
-
-	bool
-	findModelViewMatrix (X3D::X3DBaseNode* const, X3D::Matrix4f &, std::set <X3D::X3DBaseNode*> &);
-
 	void
 	on_add_node (const std::string &);
 
@@ -397,7 +387,6 @@ private:
 	ViewpointList    viewpointList;
 	HistoryEditor    historyEditor;
 	OutlineEditor    outlineEditor;
-	bool             edited;
 	X3D::Keys        keys;
 
 };

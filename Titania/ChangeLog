@@ -1,3 +1,25 @@
+2013-09-18  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* BrowserWindow.h:
+	* Rotor.wrl:
+	* BrowserWindow.cpp:
+	* BrowserWindow.ui:
+	* X3DBrowserWindow.h:
+	* home.wrl:
+	* X3DBrowserWidget.h:
+	* X3DBrowserEditor.h:
+	* X3DBrowserEditor.cpp:
+	* X3DBrowserWindow.cpp:
+	* X3DBrowserWidget.cpp:
+	* OutlineTreeView.h:
+	* OutlineSelection.h:
+	* OutlineTreeView.cpp:
+	* OutlineSelection.cpp:
+	* MotionBlurEditor.h:
+	* X3DBrowserWindowInterface.h:
+	* X3DBrowserWindowInterface.cpp: 
+
 2013-09-17  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* OutlineTreeView.cpp: 

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,54 +48,106 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_SELECTION_H__
-#define __TITANIA_OUTLINE_EDITOR_OUTLINE_SELECTION_H__
+#ifndef __TITANIA_BROWSER_X3DBROWSER_EDITOR_H__
+#define __TITANIA_BROWSER_X3DBROWSER_EDITOR_H__
 
-#include "../Base/X3DBaseInterface.h"
-
-#include <gtkmm.h>
-
-#include <Titania/X3D.h>
+#include "../Browser/X3DBrowserWidget.h"
 
 namespace titania {
 namespace puck {
 
-class OutlineTreeView;
-
-class OutlineSelection :
-	public X3DBaseInterface
+class X3DBrowserEditor :
+	public X3DBrowserWidget
 {
 public:
 
-	OutlineSelection (BrowserWindow* const browserWindow, OutlineTreeView* const);
+	/// @name Member access
 
 	void
-	set_select_multiple (bool);
+	setEdited (bool value)
+	{ edited = value; }
+
+	bool
+	getEdited () const
+	{ return edited; }
+
+
+protected:
+
+	/// @name Construction
+
+	X3DBrowserEditor (const basic::uri &);
 
 	void
-	select (const X3D::SFNode &);
+	addNode (const std::string &)
+	throw (X3D::Error <X3D::INVALID_NAME>);
 
 	void
-	clear ();
+	removeNode (const X3D::SFNode &)
+	throw (X3D::Error <X3D::INVALID_NODE>);
+
+	X3D::SFNode
+	groupNodes (const X3D::MFNode &)
+	throw (X3D::Error <X3D::INVALID_NODE>);
+
+	X3D::MFNode
+	ungroupNode (const X3D::SFNode &)
+	throw (X3D::Error <X3D::INVALID_NODE>);
+
+	void
+	addToGroup (const X3D::SFNode &, const X3D::MFNode &)
+	throw (X3D::Error <X3D::INVALID_NODE>);
+
+	void
+	detachFromGroup (const X3D::SFNode &, bool)
+	throw (X3D::Error <X3D::INVALID_NODE>);
+
+	X3D::SFNode
+	createParentGroup (const X3D::SFNode &)
+	throw (X3D::Error <X3D::INVALID_NODE>);
 
 
 private:
 
-	void
-	set_children (const X3D::MFNode &);
+	typedef std::function <bool (const X3D::SFNode &, X3D::MFNode*, X3D::SFNode*, size_t)> TraverseCallback;
 
 	void
-	select (X3D::X3DBaseNode* const, bool) const;
+	removeNode (const X3D::X3DSFNode <X3D::Scene> &, const X3D::SFNode &);
 
 	void
-	select (X3D::X3DBaseNode* const, bool, X3D::ChildObjectSet &) const;
+	removeExportedNode (const X3D::X3DSFNode <X3D::Scene> &, const X3D::SFNode &);
 
 	void
-	select (X3D::X3DFieldDefinition* const, bool, X3D::ChildObjectSet &) const;
+	removeNode (X3D::X3DExecutionContext* const, const X3D::SFNode &);
 
-	OutlineTreeView* const treeView;
-	bool                   selectMultiple;
-	X3D::MFNode            children;
+	void
+	removeNamedNode (X3D::X3DExecutionContext* const, const X3D::SFNode &);
+
+	void
+	deleteRoutes (X3D::X3DExecutionContext* const, const X3D::SFNode &);
+
+	bool
+	traverse (X3D::X3DExecutionContext* const, const TraverseCallback &);
+
+	bool
+	traverse (const X3D::SFNode &, const TraverseCallback &);
+
+	bool
+	traverse (const X3D::SFNode &, const TraverseCallback &, X3D::ChildObjectSet &);
+
+	X3D::Matrix4f
+	findModelViewMatrix (X3D::X3DBaseNode* const) const;
+
+	bool
+	findModelViewMatrix (X3D::X3DBaseNode* const, X3D::Matrix4f &, std::set <X3D::X3DBaseNode*> &) const;
+
+	std::deque <X3D::X3DBaseNode*>
+	getParentNodes (X3D::X3DBaseNode* const) const;
+
+	X3D::MFNode*
+	getGroupingField (const X3D::SFNode &) const;
+
+	bool edited;
 
 };
 

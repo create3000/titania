@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,7 +48,7 @@
  *
  ******************************************************************************/
 
-#include "X3DBrowserWindow.h"
+#include "X3DBrowserWidget.h"
 
 #include "../Browser/Image.h"
 #include "../Configuration/config.h"
@@ -62,7 +62,7 @@
 namespace titania {
 namespace puck {
 
-X3DBrowserWindow::X3DBrowserWindow (const basic::uri & worldURL) :
+X3DBrowserWidget::X3DBrowserWidget (const basic::uri & worldURL) :
 	X3DBrowserWindowInterface (get_ui ("BrowserWindow.ui"), gconf_dir ()),
 	                  browser (X3D::createBrowser ()),
 	                  save_as (false)
@@ -78,16 +78,16 @@ X3DBrowserWindow::X3DBrowserWindow (const basic::uri & worldURL) :
 }
 
 void
-X3DBrowserWindow::initialize ()
+X3DBrowserWidget::initialize ()
 {
 	X3DBrowserWindowInterface::initialize ();
 
 	__LOG__ << std::endl;
 
 	// Connect event handler.
-	getBrowser () -> getConsole () -> string_changed () .addInterest (this, &X3DBrowserWindow::set_console);
-	getBrowser () -> getUrlError () .addInterest (this, &X3DBrowserWindow::set_urlError);
-	getBrowser () -> initialized () .addInterest (this, &X3DBrowserWindow::set_initialized);
+	getBrowser () -> getConsole () -> string_changed () .addInterest (this, &X3DBrowserWidget::set_console);
+	getBrowser () -> getUrlError () .addInterest (this, &X3DBrowserWidget::set_urlError);
+	getBrowser () -> initialized () .addInterest (this, &X3DBrowserWidget::set_initialized);
 
 	// Insert Surface, this will initialize the Browser.
 	getSurfaceBox () .pack_start (*getBrowser (), true, true, 0);
@@ -99,11 +99,11 @@ X3DBrowserWindow::initialize ()
 }
 
 void
-X3DBrowserWindow::set_initialized ()
+X3DBrowserWidget::set_initialized ()
 {
 	// Initialized
-	getBrowser () -> initialized () .removeInterest (this, &X3DBrowserWindow::set_initialized);
-	getBrowser () -> initialized () .addInterest (this, &X3DBrowserWindow::set_world);
+	getBrowser () -> initialized () .removeInterest (this, &X3DBrowserWidget::set_initialized);
+	getBrowser () -> initialized () .addInterest (this, &X3DBrowserWidget::set_world);
 
 	if (getConfig () .string ("url") .size ())
 		open (getConfig () .string ("url") .raw ());
@@ -116,7 +116,7 @@ X3DBrowserWindow::set_initialized ()
 }
 
 //void
-//X3DBrowserWindow::parseOptions (int & argc, char** & argv)
+//X3DBrowserWidget::parseOptions (int & argc, char** & argv)
 //{
 //	// Create and intialize option parser.
 //
@@ -150,7 +150,7 @@ X3DBrowserWindow::set_initialized ()
 //}
 
 void
-X3DBrowserWindow::restoreSession ()
+X3DBrowserWidget::restoreSession ()
 {
 	// Restore Menu Configuration
 	// from Config
@@ -218,7 +218,7 @@ X3DBrowserWindow::restoreSession ()
 }
 
 void
-X3DBrowserWindow::saveSession ()
+X3DBrowserWidget::saveSession ()
 {
 	getConfig () .setItem ("toolBar", getToolBarMenuItem () .get_active ());
 	getConfig () .setItem ("sideBar", getSideBarMenuItem () .get_active ());
@@ -242,7 +242,7 @@ X3DBrowserWindow::saveSession ()
 }
 
 void
-X3DBrowserWindow::blank ()
+X3DBrowserWidget::blank ()
 {
 	if (not getBrowser () -> makeCurrent ())
 		return;
@@ -251,18 +251,7 @@ X3DBrowserWindow::blank ()
 }
 
 void
-X3DBrowserWindow::open ()
-{
-	const basic::uri & worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
-
-	if (worldURL .length () and worldURL .is_local ())
-		getFileOpenDialog () .set_current_folder_uri (worldURL .base () .str ());
-
-	getFileOpenDialog () .present ();
-}
-
-void
-X3DBrowserWindow::open (const basic::uri & worldURL)
+X3DBrowserWidget::open (const basic::uri & worldURL)
 {
 	try
 	{
@@ -275,9 +264,22 @@ X3DBrowserWindow::open (const basic::uri & worldURL)
 }
 
 void
-X3DBrowserWindow::save (const basic::uri & worldURL)
+X3DBrowserWidget::import (const basic::uri & worldURL)
 {
-	if (getSaveCompressedButton () .get_active ())
+	try
+	{
+		loadTime = chrono::now ();
+
+		getBrowser () -> loadURL ({ worldURL .str () });
+	}
+	catch (const X3D::X3DError &)
+	{ }
+}
+
+void
+X3DBrowserWidget::save (const basic::uri & worldURL, bool compressed)
+{
+	if (compressed)
 	{
 		ogzstream file (worldURL .path ());
 		file << X3D::SmallestStyle << getBrowser () -> getExecutionContext () << std::flush;
@@ -294,13 +296,13 @@ X3DBrowserWindow::save (const basic::uri & worldURL)
 }
 
 void
-X3DBrowserWindow::reload ()
+X3DBrowserWidget::reload ()
 {
 	open (getBrowser () -> getExecutionContext () -> getWorldURL ());
 }
 
 bool
-X3DBrowserWindow::close ()
+X3DBrowserWidget::close ()
 {
 	X3DBrowserWindowInterface::close ();
 
@@ -308,18 +310,18 @@ X3DBrowserWindow::close ()
 }
 
 void
-X3DBrowserWindow::set_world ()
+X3DBrowserWidget::set_world ()
 {
 	loadTime = chrono::now () - loadTime;
 
 	timeout .disconnect ();
-	timeout = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &X3DBrowserWindow::statistics), 10 * 1000);
+	timeout = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &X3DBrowserWidget::statistics), 10 * 1000);
 
 	loadIcon ();
 }
 
 bool
-X3DBrowserWindow::statistics ()
+X3DBrowserWidget::statistics ()
 {
 	std::string title = getBrowser () -> getExecutionContext () -> getWorldURL ();
 
@@ -338,7 +340,7 @@ X3DBrowserWindow::statistics ()
 }
 
 void
-X3DBrowserWindow::set_console ()
+X3DBrowserWidget::set_console ()
 {
 	auto buffer = getConsole () .get_buffer ();
 
@@ -364,7 +366,7 @@ X3DBrowserWindow::set_console ()
 }
 
 void
-X3DBrowserWindow::set_urlError (const X3D::MFString & urlError)
+X3DBrowserWidget::set_urlError (const X3D::MFString & urlError)
 {
 	getMessageDialog () .set_message ("Invalid X3D");
 
@@ -376,7 +378,7 @@ X3DBrowserWindow::set_urlError (const X3D::MFString & urlError)
 }
 
 void
-X3DBrowserWindow::loadIcon ()
+X3DBrowserWidget::loadIcon ()
 {
 	const basic::uri & worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
 
@@ -419,7 +421,7 @@ X3DBrowserWindow::loadIcon ()
 }
 
 void
-X3DBrowserWindow::setTransparent (bool value)
+X3DBrowserWidget::setTransparent (bool value)
 {
 	if (value)
 	{
@@ -430,7 +432,7 @@ X3DBrowserWindow::setTransparent (bool value)
 	}
 }
 
-X3DBrowserWindow::~X3DBrowserWindow ()
+X3DBrowserWidget::~X3DBrowserWidget ()
 { }
 
 } // puck

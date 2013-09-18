@@ -62,19 +62,18 @@ namespace puck {
 
 BrowserWindow::BrowserWindow (const basic::uri & worldURL) :
 	X3DBaseInterface (this),
-	X3DBrowserWindow (worldURL),
+	X3DBrowserEditor (worldURL),
 	motionBlurEditor (this),
 	   viewpointList (this),
 	   historyEditor (this),
 	   outlineEditor (this),
-	          edited (false),
 	            keys ()
 { }
 
 void
 BrowserWindow::initialize ()
 {
-	X3DBrowserWindow::initialize ();
+	X3DBrowserWidget::initialize ();
 
 	// User interface
 
@@ -83,15 +82,16 @@ BrowserWindow::initialize ()
 	Gtk::Settings::get_default () -> property_gtk_toolbar_style ()     = Gtk::TOOLBAR_ICONS;
 	Gtk::Settings::get_default () -> property_gtk_toolbar_icon_size () = Gtk::ICON_SIZE_SMALL_TOOLBAR;
 
-	// FileOpenDialog
-	getFileOpenDialog () .set_default_response (Gtk::RESPONSE_OK);
-	getFileOpenDialog () .add_button ("gtk-cancel", Gtk::RESPONSE_CANCEL);
-	getFileOpenDialog () .add_button ("gtk-open", Gtk::RESPONSE_OK);
-
+	// FileFilter
 	getFileFilterX3D   () -> set_name ("X3D");
 	getFileFilterImage () -> set_name ("Images");
 	getFileFilterAudio () -> set_name ("Audio");
 	getFileFilterVideo () -> set_name ("Videos");
+
+	// FileOpenDialog
+	getFileOpenDialog () .set_default_response (Gtk::RESPONSE_OK);
+	getFileOpenDialog () .add_button ("gtk-cancel", Gtk::RESPONSE_CANCEL);
+	getFileOpenDialog () .add_button ("gtk-open", Gtk::RESPONSE_OK);
 
 	getFileOpenDialog () .add_filter (getFileFilterX3D ());
 	getFileOpenDialog () .add_filter (getFileFilterImage ());
@@ -99,6 +99,18 @@ BrowserWindow::initialize ()
 	getFileOpenDialog () .add_filter (getFileFilterVideo ());
 
 	getFileOpenDialog () .set_filter (getFileFilterX3D ());
+
+	// FileOpenDialog
+	getFileImportDialog () .set_default_response (Gtk::RESPONSE_OK);
+	getFileImportDialog () .add_button ("gtk-cancel", Gtk::RESPONSE_CANCEL);
+	getFileImportDialog () .add_button ("gtk-open", Gtk::RESPONSE_OK);
+
+	getFileImportDialog () .add_filter (getFileFilterX3D ());
+	getFileImportDialog () .add_filter (getFileFilterImage ());
+	getFileImportDialog () .add_filter (getFileFilterAudio ());
+	getFileImportDialog () .add_filter (getFileFilterVideo ());
+
+	getFileImportDialog () .set_filter (getFileFilterX3D ());
 
 	// OpenLocationDialog
 	getOpenLocationDialog () .set_default_response (Gtk::RESPONSE_OK);
@@ -189,11 +201,27 @@ BrowserWindow::on_new ()
 void
 BrowserWindow::on_open ()
 {
-	open ();
+	const basic::uri & worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
+
+	if (worldURL .length () and worldURL .is_local ())
+		getFileOpenDialog () .set_current_folder_uri (worldURL .base () .str ());
+
+	getFileOpenDialog () .present ();
 }
 
 void
-BrowserWindow::on_open_location_dialog ()
+BrowserWindow::on_import ()
+{
+	const basic::uri & worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
+
+	if (worldURL .length () and worldURL .is_local ())
+		getFileImportDialog () .set_current_folder_uri (worldURL .base () .str ());
+
+	getFileImportDialog () .present ();
+}
+
+void
+BrowserWindow::on_open_location ()
 {
 	Glib::RefPtr <Gtk::Clipboard> clipboard = Gtk::Clipboard::get ();
 
@@ -218,7 +246,7 @@ BrowserWindow::on_save ()
 		on_save_as ();
 
 	else
-		save (worldURL);
+		save (worldURL, false);
 }
 
 void
@@ -263,6 +291,23 @@ BrowserWindow::on_fileOpenDialog_response (int response_id)
 	}
 }
 
+void
+BrowserWindow::on_fileImportDialog_response (int response_id)
+{
+	getFileImportDialog () .hide ();
+
+	if (response_id == Gtk::RESPONSE_OK)
+		import (Glib::uri_unescape_string (getFileImportDialog () .get_uri ()));
+
+	else
+	{
+		const basic::uri & worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
+
+		if (worldURL .is_local ())
+			getFileImportDialog () .set_current_folder_uri (worldURL .base () .str ());
+	}
+}
+
 bool
 BrowserWindow::on_openLocationEntry_key_release_event (GdkEventKey* event)
 {
@@ -292,7 +337,7 @@ BrowserWindow::on_fileSaveDialog_response (int response_id)
 	getFileSaveDialog () .hide ();
 
 	if (response_id == Gtk::RESPONSE_OK)
-		save (Glib::uri_unescape_string (getFileSaveDialog () .get_filename ()));
+		save (Glib::uri_unescape_string (getFileSaveDialog () .get_filename ()), getSaveCompressedButton () .get_active ());
 
 	else
 	{
@@ -645,143 +690,14 @@ BrowserWindow::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & co
 
 // Editing facilities
 
-OutlineUserDataPtr
-BrowserWindow::getUserData (X3D::X3DChildObject* object) const
-{
-	return getOutlineEditor () .getTreeView () .get_user_data (object);
-}
-
-X3D::MFNode*
-BrowserWindow::getGroupingField (const X3D::SFNode & node) const
-{
-	X3D::X3DFieldDefinition* field = nullptr;
-
-	try
-	{
-		field = node -> getField ("children");
-	}
-	catch (const X3D::Error <X3D::INVALID_NAME> &)
-	{
-		try
-		{
-			field = node -> getField ("layers");
-		}
-		catch (const X3D::Error <X3D::INVALID_NAME> &)
-		{ }
-	}
-
-	return dynamic_cast <X3D::MFNode*> (field);
-}
-
-std::deque <X3D::X3DBaseNode*>
-BrowserWindow::getParentNodes (X3D::X3DBaseNode* const node)
-{
-	std::deque <X3D::X3DBaseNode*> parentNodes;
-
-	for (const auto & parent : node -> getParents ())
-	{
-		auto sfnode = dynamic_cast <X3D::SFNode*> (parent);
-
-		if (sfnode)
-		{
-			for (const auto & secondParent : sfnode -> getParents ())
-			{
-				auto mfnode = dynamic_cast <X3D::MFNode*> (secondParent);
-
-				if (mfnode)
-				{
-					for (const auto & thirdParent : mfnode -> getParents ())
-					{
-						auto baseNode = dynamic_cast <X3D::X3DBaseNode*> (thirdParent);
-
-						if (baseNode)
-							parentNodes .emplace_back (baseNode);
-					}
-
-					continue;
-				}
-
-				auto baseNode = dynamic_cast <X3D::X3DBaseNode*> (secondParent);
-
-				if (baseNode)
-				{
-					parentNodes .emplace_back (baseNode);
-					continue;
-				}
-			}
-		}
-	}
-
-	return parentNodes;
-}
-
-X3D::Matrix4f
-BrowserWindow::findModelViewMatrix (X3D::X3DBaseNode* const node)
-{
-	X3D::Matrix4f modelViewMatix;
-
-	std::set <X3D::X3DBaseNode*> seen;
-
-	for (const auto & parentNode : getParentNodes (node))
-	{
-		if (findModelViewMatrix (parentNode, modelViewMatix, seen))
-			break;
-	}
-
-	return modelViewMatix;
-}
-
-bool
-BrowserWindow::findModelViewMatrix (X3D::X3DBaseNode* const node, X3D::Matrix4f & modelViewMatix, std::set <X3D::X3DBaseNode*> & seen)
-{
-	if (not seen .insert (node) .second)
-		return false;
-
-	auto browser = dynamic_cast <X3D::X3DBrowser*> (node);
-
-	if (browser)
-		return false;
-
-	auto scene = dynamic_cast <X3D::X3DScene*> (node);
-
-	if (scene)
-		return false;
-
-	auto layer = dynamic_cast <X3D::X3DLayerNode*> (node);
-
-	if (layer)
-		return true;
-
-	for (const auto & parentNode : getParentNodes (node))
-	{
-		if (findModelViewMatrix (parentNode, modelViewMatix, seen))
-		{
-			auto transform = dynamic_cast <X3D::X3DTransformNode*> (node);
-
-			if (transform)
-				modelViewMatix .multLeft (transform -> getMatrix ());
-
-			return true;
-		}
-	}
-
-	return false;
-}
-
 void
 BrowserWindow::on_add_node (const std::string & typeName)
 {
 	try
 	{
-		auto scene = getBrowser () -> getExecutionContext ();
-		auto node  = scene -> createNode (typeName);
-
-		node -> setup ();
-		scene -> getRootNodes () .emplace_back (node);
-
-		setEdited (true);
+		addNode (typeName);
 	}
-	catch (const X3D::X3DError &)
+	catch (const X3D::Error <X3D::INVALID_NAME> &)
 	{ }
 }
 
@@ -790,14 +706,21 @@ BrowserWindow::on_delete_nodes_activate ()
 {
 	__LOG__ << std::endl;
 
-	auto selection = getBrowser () -> getSelection () -> getChildren ();
+	const auto selection = getBrowser () -> getSelection () -> getChildren ();
 
 	if (selection .size ())
 	{
-		for (const auto & child : selection)
-			child -> remove ({ &selection });
+		getBrowser () -> getSelection () -> clear ();
 
-		setEdited (true);
+		for (const auto & child : selection)
+		{
+			try
+			{
+				removeNode (child);
+			}
+			catch (const X3D::Error <X3D::INVALID_NODE> &)
+			{ }
+		}
 	}
 }
 
@@ -809,43 +732,12 @@ BrowserWindow::on_group_selected_nodes_activate ()
 	const auto selection = getBrowser () -> getSelection () -> getChildren ();
 
 	if (selection .size ())
-	{
-		getBrowser () -> getSelection () -> clear ();
-
-		auto scene     = getBrowser () -> getExecutionContext ();
-		auto node      = scene -> createNode ("Transform");
-		auto transform = dynamic_cast <X3D::Transform*> (node .getValue ());
-
+	{	
 		for (const auto & child : selection)
-		{
-			// Adjust transformation
-			{
-				X3D::Matrix4f          childModelViewMatrix = findModelViewMatrix (child .getValue ());
-				X3D::X3DTransformNode* transform            = dynamic_cast <X3D::X3DTransformNode*> (child .getValue ());
-
-				if (transform)
-				{
-					childModelViewMatrix .multLeft (transform -> getMatrix ());
-
-					transform -> setMatrix (childModelViewMatrix);
-				}
-			}
-
-			// Add to group
-
 			getUserData (child) -> path .clear ();
 
-			child -> remove ({ &selection });
-
-			transform -> children () .emplace_back (child);
-		}
-
-		node -> setup ();
-		scene -> getRootNodes () .emplace_back (node);
-
-		getBrowser () -> getSelection () -> addChild (node);
-
-		setEdited (true);
+		getBrowser () -> getSelection () -> clear ();
+		getBrowser () -> getSelection () -> addChild (groupNodes (selection));
 	}
 }
 
@@ -862,35 +754,17 @@ BrowserWindow::on_ungroup_node_activate ()
 
 		for (const auto & group : selection)
 		{
-			auto children = getGroupingField (group);
-
-			if (children)
+			try
 			{
-				for (const auto & child :* children)
+				for (const auto & child : ungroupNode (group))
 				{
-					// Adjust transformation
-
-					X3D::Matrix4f          childModelViewMatrix = findModelViewMatrix (child .getValue ());
-					X3D::X3DTransformNode* transform            = dynamic_cast <X3D::X3DTransformNode*> (child .getValue ());
-
-					if (transform)
-					{
-						childModelViewMatrix .multLeft (transform -> getMatrix ());
-
-						transform -> setMatrix (childModelViewMatrix);
-					}
-
-					// Add to layer
-
 					getUserData (child) -> path .clear ();
-					getBrowser () -> getExecutionContext () -> getRootNodes () .emplace_back (child);
+
 					getBrowser () -> getSelection () -> addChild (child);
 				}
-
-				group -> remove ({ &selection });
-
-				setEdited (true);
 			}
+			catch (const X3D::Error <X3D::INVALID_NODE> &)
+			{ }
 		}
 	}
 }
@@ -900,63 +774,25 @@ BrowserWindow::on_add_to_group_activate ()
 {
 	__LOG__ << std::endl;
 
-	const auto selection = getBrowser () -> getSelection () -> getChildren ();
+	auto selection = getBrowser () -> getSelection () -> getChildren ();
 
 	if (selection .size () > 1)
 	{
-		auto leader   = selection .back ();
-		auto children = getGroupingField (leader);
-
-		if (children)
+		try
 		{
-			getBrowser () -> getSelection () -> clear ();
+			auto group = selection .back ();
+			selection .pop_back ();
 
-			// Get leader modelview matrix
-
-			X3D::Matrix4f          leaderModelViewMatrix = findModelViewMatrix (leader .getValue ());
-			X3D::X3DTransformNode* transform             = dynamic_cast <X3D::X3DTransformNode*> (leader .getValue ());
-
-			if (transform)
-				leaderModelViewMatrix .multLeft (transform -> getMatrix ());
-
-			// Add to group selected children
+			addToGroup (group, selection);
 
 			for (const auto & child : selection)
-			{
-				if (child == leader)
-					continue;
-
-				// Adjust transformation
-
-				X3D::Matrix4f          childModelViewMatrix = findModelViewMatrix (child .getValue ());
-				X3D::X3DTransformNode* transform            = dynamic_cast <X3D::X3DTransformNode*> (child .getValue ());
-
-				if (transform)
-				{
-					try
-					{
-						childModelViewMatrix .multLeft (transform -> getMatrix ());
-						childModelViewMatrix .multRight (~leaderModelViewMatrix);
-
-						transform -> setMatrix (childModelViewMatrix);
-					}
-					catch (const std::domain_error & error)
-					{ }
-				}
-
-				// Add to group
-
 				getUserData (child) -> path .clear ();
 
-				child -> remove ({ &selection, children });
-
-				children -> emplace_back (child);
-			}
-
-			getBrowser () -> getSelection () -> addChild (leader);
-
-			setEdited (true);
+			getBrowser () -> getSelection () -> clear ();
+			getBrowser () -> getSelection () -> addChild (group);
 		}
+		catch (const X3D::Error <X3D::INVALID_NODE> &)
+		{ }
 	}
 }
 
@@ -971,43 +807,15 @@ BrowserWindow::on_detach_from_group_activate ()
 	{
 		for (const auto & child : selection)
 		{
-			auto layers = dynamic_cast <X3D::X3DNode*> (child .getValue ()) -> getLayers ();
-
-			// Adjust transformation
-
-			X3D::Matrix4f          childModelViewMatrix = findModelViewMatrix (child .getValue ());
-			X3D::X3DTransformNode* transform            = dynamic_cast <X3D::X3DTransformNode*> (child .getValue ());
-
-			if (transform)
+			try
 			{
-				childModelViewMatrix .multLeft (transform -> getMatrix ());
+				detachFromGroup (child, getKeys () .shift ());
 
-				transform -> setMatrix (childModelViewMatrix);
+				getUserData (child) -> path .clear ();
 			}
-
-			// Add to layers
-
-			getUserData (child) -> path .clear ();
-
-			child -> remove ({ &selection });
-			
-			if (getKeys () .shift ())
-				getBrowser () -> getExecutionContext () -> getRootNodes () .emplace_back (child);
-
-			else
-			{
-				for (const auto & layer : layers)
-				{
-					if (layer -> isLayer0 ())
-						getBrowser () -> getExecutionContext () -> getRootNodes () .emplace_back (child);
-					
-					else
-						layer -> children () .emplace_back (child);
-				}
-			}
+			catch (const X3D::Error <X3D::INVALID_NODE> &)
+			{ }	
 		}
-
-		setEdited (true);
 	}
 }
 
@@ -1024,27 +832,23 @@ BrowserWindow::on_create_parent_group_activate ()
 
 		for (const auto & child : selection)
 		{
-			getUserData (child) -> path .clear ();
+			try
+			{
+				bool expanded = getOutlineTreeView () .get_iters (child) .size ();
 
-			// Replace node with Transform
+				auto group = createParentGroup (child);
+	
+				getUserData (child) -> path .clear ();
 
-			auto node      = getBrowser () -> getExecutionContext () -> createNode ("Transform");
-			auto transform = dynamic_cast <X3D::Transform*> (node .getValue ());
+				// Select Transform
 
-			transform -> children () .emplace_back (child);
-			transform -> setup ();
+				getBrowser () -> getSelection () -> addChild (group);
 
-			transform -> replace (child, { &selection, &transform -> children () });
-
-			// Select Transform
-
-			getBrowser () -> getSelection () -> addChild (node);
-
-			getUserData (node) -> expanded     = true;
-			getUserData (node) -> all_expanded = false;
+				getUserData (group) -> expanded = expanded;
+			}
+			catch (const X3D::Error <X3D::INVALID_NODE> &)
+			{ }	
 		}
-
-		setEdited (true);
 	}
 }
 

@@ -73,6 +73,7 @@ typedef std::map <std::string, X3DFieldDefinition*> FieldsMap;
 
 class X3DBrowser;
 class X3DExecutionContext;
+template <class Type> class X3DSFNode;
 
 class X3DBaseNode :
 	public X3DChildObject
@@ -91,10 +92,10 @@ public:
 	copy (X3DExecutionContext* const) const;
 
 	void
-	replace (X3DBaseNode* const, const std::set <const X3D::X3DFieldDefinition*> & = { });
+	replace (X3DBaseNode* const, const std::set <const X3DFieldDefinition*> & = { });
 
 	void
-	remove (const std::set <const X3D::X3DFieldDefinition*> & = { });
+	remove (const std::set <const X3DFieldDefinition*> & = { });
 
 	void
 	assign (const X3DBaseNode*);
@@ -143,6 +144,9 @@ public:
 	setInternal (bool);
 
 	///  @name Field handling
+
+	std::vector <X3DSFNode <X3DBaseNode>*>
+	getParentFields (const std::set <const X3DFieldDefinition*> &) const;
 
 	X3DFieldDefinition*
 	getField (const std::string &) const

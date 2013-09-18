@@ -58,7 +58,7 @@
 namespace titania {
 namespace puck {
 
-class X3DBrowserWindow :
+class X3DBrowserWidget :
 	public X3DBrowserWindowInterface
 {
 public:
@@ -80,13 +80,13 @@ public:
 	blank ();
 
 	void
-	open ();
-
-	void
 	open (const basic::uri &);
 
 	void
-	save (const basic::uri &);
+	import (const basic::uri &);
+
+	void
+	save (const basic::uri &, bool);
 
 	void
 	reload ();
@@ -96,12 +96,12 @@ public:
 	close ();
 
 	virtual
-	~X3DBrowserWindow ();
+	~X3DBrowserWidget ();
 
 
 protected:
 
-	X3DBrowserWindow (const basic::uri &);
+	X3DBrowserWidget (const basic::uri &);
 
 	virtual
 	void

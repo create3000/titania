@@ -8,7 +8,8 @@ titania_SOURCES =  \
 	Titania/Base/X3DBaseInterface.cpp \
 	Titania/Base/X3DUserInterface.cpp \
 	Titania/Browser/BrowserWindow.cpp \
-	Titania/Browser/X3DBrowserWindow.cpp \
+	Titania/Browser/X3DBrowserEditor.cpp \
+	Titania/Browser/X3DBrowserWidget.cpp \
 	Titania/Configuration/config.cpp \
 	Titania/Configuration/Configuration.cpp \
 	Titania/HistoryEditor/History.cpp \

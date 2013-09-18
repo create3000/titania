@@ -2,6 +2,16 @@
 
 META "title" "OutlineEditor"
 
+EXTERNPROTO Rotor [
+  exposedField SFBool     enabled
+  exposedField SFTime     cycleInterval
+  exposedField SFBool     loop
+  exposedField SFTime     startTime
+  exposedField SFTime     stopTime
+  eventOut     SFRotation value_changed
+]
+"Rotor.wrl"
+
 NavigationInfo {
   type [ "NONE", "ANY" ]
 }
@@ -18,7 +28,7 @@ DEF Text Transform {
     }
     geometry DEF Text Text {
       string "OutlineEditor"
-      fontStyle FontStyle {}
+      fontStyle FontStyle { }
     }
   }
 }
@@ -34,8 +44,13 @@ Group {
   children USE _0
 }
 
+DEF Rotor Rotor {
+  loop TRUE
+}
+
 DEF Box Transform {
   translation 1.41298 -0.894935 0
+  rotation 0 0 1 1.49779
   scale 0.2 0.2 0.2
   children Transform {
     children Shape {
@@ -78,3 +93,5 @@ DEF Cone Transform {
     }
   }
 }
+
+ROUTE Rotor.value_changed TO Box.set_rotation

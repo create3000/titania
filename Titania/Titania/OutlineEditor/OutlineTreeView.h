@@ -95,7 +95,18 @@ public:
 	OutlineUserDataPtr
 	get_user_data (X3D::X3DChildObject* const) const;
 
+	///  @name Destruction
+
+	virtual
+	~OutlineTreeView ();
+
+
+private:
+
 	///  @name Member access
+
+	void
+	set_model (const Glib::RefPtr <OutlineTreeModel> &);
 
 	const Glib::RefPtr <OutlineTreeModel> &
 	get_model () const
@@ -108,22 +119,6 @@ public:
 	const OutlineSelection &
 	get_selection () const
 	{ return selection; }
-
-	///  @name Operations
-
-	void
-	collapse_row (const Gtk::TreeModel::Path &);
-
-	///  @name Destruction
-
-	virtual
-	~OutlineTreeView ();
-
-
-private:
-
-	void
-	set_model (const Glib::RefPtr <OutlineTreeModel> &);
 
 	void
 	set_path (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
@@ -221,6 +216,9 @@ private:
 
 	void
 	collapse_clone (const Gtk::TreeModel::iterator &);
+
+	void
+	collapse_row (const Gtk::TreeModel::Path &);
 
 	void
 	expand_row (const Gtk::TreeModel::iterator &);

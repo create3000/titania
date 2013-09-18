@@ -51,6 +51,9 @@
       <source stock-id="Arrow" filename="icons/arrow.png"/>
     </sources>
   </object>
+  <object class="GtkAction" id="ImportAction">
+    <signal name="activate" handler="on_import" swapped="no"/>
+  </object>
   <object class="GtkAction" id="NewAction">
     <signal name="activate" handler="on_new" swapped="no"/>
   </object>
@@ -62,6 +65,47 @@
   </object>
   <object class="GtkAction" id="SaveAction">
     <signal name="activate" handler="on_save" swapped="no"/>
+  </object>
+  <object class="GtkFileChooserDialog" id="FileImportDialog">
+    <property name="can_focus">False</property>
+    <property name="border_width">5</property>
+    <property name="title" translatable="yes">Import ...</property>
+    <property name="role">GtkFileChooserDialog</property>
+    <property name="destroy_with_parent">True</property>
+    <property name="hide_titlebar_when_maximized">True</property>
+    <property name="type_hint">dialog</property>
+    <property name="skip_taskbar_hint">True</property>
+    <property name="transient_for">Window</property>
+    <property name="local_only">False</property>
+    <signal name="response" handler="on_fileImportDialog_response" swapped="no"/>
+    <child internal-child="vbox">
+      <object class="GtkBox" id="filechooserdialog-vbox4">
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox" id="filechooserdialog-action_area4">
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+    </child>
   </object>
   <object class="GtkFileChooserDialog" id="FileOpenDialog">
     <property name="can_focus">False</property>
@@ -306,6 +350,36 @@
       </object>
     </child>
   </object>
+  <object class="GtkImage" id="image10">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="icon_name">network-server-symbolic</property>
+  </object>
+  <object class="GtkImage" id="image5">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">FlyViewer</property>
+  </object>
+  <object class="GtkImage" id="image6">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">WalkViewer</property>
+  </object>
+  <object class="GtkImage" id="image7">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">ExamineViewer</property>
+  </object>
+  <object class="GtkImage" id="image8">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-cancel</property>
+  </object>
+  <object class="GtkImage" id="image9">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="icon_name">document-import</property>
+  </object>
   <object class="GtkWindow" id="Window">
     <property name="width_request">1000</property>
     <property name="height_request">618</property>
@@ -365,13 +439,27 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkMenuItem" id="OpenLocationMenuItem">
+                      <object class="GtkImageMenuItem" id="OpenLocationMenuItem">
+                        <property name="label" translatable="yes">Open _Location ...</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Open location...</property>
                         <property name="use_underline">True</property>
+                        <property name="image">image10</property>
+                        <property name="use_stock">False</property>
                         <accelerator key="l" signal="activate" modifiers="GDK_CONTROL_MASK"/>
-                        <signal name="activate" handler="on_open_location_dialog" swapped="no"/>
+                        <signal name="activate" handler="on_open_location" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="ImportMenuItem">
+                        <property name="label" translatable="yes">_Import ...</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="related_action">ImportAction</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_underline">True</property>
+                        <property name="image">image9</property>
+                        <property name="use_stock">False</property>
                       </object>
                     </child>
                     <child>
@@ -934,6 +1022,21 @@
               </packing>
             </child>
             <child>
+              <object class="GtkToolButton" id="ImportButton">
+                <property name="use_action_appearance">False</property>
+                <property name="related_action">ImportAction</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Import file.</property>
+                <property name="use_underline">True</property>
+                <property name="icon_name">document-import</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkToolButton" id="SaveButton">
                 <property name="use_action_appearance">False</property>
                 <property name="related_action">SaveAction</property>
@@ -1394,25 +1497,5 @@
         </child>
       </object>
     </child>
-  </object>
-  <object class="GtkImage" id="image5">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">FlyViewer</property>
-  </object>
-  <object class="GtkImage" id="image6">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">WalkViewer</property>
-  </object>
-  <object class="GtkImage" id="image7">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">ExamineViewer</property>
-  </object>
-  <object class="GtkImage" id="image8">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-cancel</property>
   </object>
 </interface>

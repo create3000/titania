@@ -4,15 +4,16 @@ META "icon" "about:icon"
 META "title" "about:home"
 
 EXTERNPROTO Rotor [
+  inputOutput SFBool     enabled
   inputOutput SFTime     cycleInterval
   inputOutput SFBool     loop
+  inputOutput SFTime     startTime
+  inputOutput SFTime     stopTime
   outputOnly  SFRotation value_changed
 ]
 "../../library/Rotor.wrl"
 
-DEF NavigationInfo NavigationInfo {
-  headlight TRUE
-}
+DEF NavigationInfo NavigationInfo { }
 
 DEF Home Viewpoint {
   description "Home"
@@ -26,7 +27,6 @@ DEF Far Viewpoint {
 
 DEF White Background {
   skyColor 1 1 1
-  transparency 0
 }
 
 DEF Blue Background {
@@ -65,7 +65,7 @@ LayerSet {
         USE Home
         USE Far
         DEF Lesser Transform {
-          scale 0.23606798 0.23606798 1
+          scale 0.236068 0.236068 1
           children USE loops
         }
       ]
@@ -73,4 +73,4 @@ LayerSet {
   ]
 }
 
-ROUTE Fastener.value_changed TO Lesser .set_rotation
+ROUTE Fastener.value_changed TO Lesser.set_rotation

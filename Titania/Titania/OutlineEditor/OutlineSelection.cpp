@@ -59,7 +59,8 @@ namespace puck {
 OutlineSelection::OutlineSelection (BrowserWindow* const browserWindow, OutlineTreeView* const treeView) :
 	X3DBaseInterface (browserWindow),
 	        treeView (treeView),
-	  selectMultiple (false)
+	  selectMultiple (false),
+	        children ()
 {
 	getBrowser () -> getSelection () -> getChildren () .addInterest (this, &OutlineSelection::set_children);
 }
@@ -70,16 +71,15 @@ OutlineSelection::set_select_multiple (bool value)
 	selectMultiple = value;
 }
 
-const X3D::MFNode &
-OutlineSelection::get_children () const
-{
-	return getBrowser () -> getSelection () -> getChildren ();
-}
-
 void
-OutlineSelection::set_children ()
+OutlineSelection::set_children (const X3D::MFNode & value)
 {
-	for (const auto & sfnode : get_children ())
+	for (const auto & sfnode : children)
+		select (sfnode .getValue (), false);
+
+	children = value;
+
+	for (const auto & sfnode : children)
 		select (sfnode .getValue (), true);
 
 	treeView -> queue_draw ();
@@ -90,12 +90,12 @@ OutlineSelection::select (const X3D::SFNode & sfnode)
 {
 	if (sfnode)
 	{
-		bool selected = std::find (get_children () .begin (), get_children () .end (), sfnode) not_eq get_children () .end ();
+		bool selected = std::find (children .begin (), children .end (), sfnode) not_eq children .end ();
 
 		if (selectMultiple)
 		{
 			if (selected)
-				remove (sfnode);
+				getBrowser () -> getSelection () -> removeChild (sfnode);
 		}
 		else
 			clear ();
@@ -106,19 +106,8 @@ OutlineSelection::select (const X3D::SFNode & sfnode)
 }
 
 void
-OutlineSelection::remove (const X3D::SFNode & sfnode) const
-{
-	select (sfnode .getValue (), false);
-
-	getBrowser () -> getSelection () -> removeChild (sfnode);
-}
-
-void
 OutlineSelection::clear ()
 {
-	for (const auto & sfnode : get_children ())
-		select (sfnode .getValue (), false);
-
 	getBrowser () -> getSelection () -> clear ();
 }
 
