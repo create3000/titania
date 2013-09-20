@@ -131,7 +131,8 @@ public:
 
 	void
 	replaceWorld (const X3DSFNode <Scene> &)
-	throw (Error <INVALID_SCENE>);
+	throw (Error <INVALID_SCENE>,
+	       Error <INVALID_OPERATION_TIMING>);
 
 	X3DSFNode <Scene>
 	importDocument (/*const XML DOMNode &*/)
@@ -143,12 +144,14 @@ public:
 	void
 	loadURL (const MFString &)
 	throw (Error <INVALID_URL>,
-	       Error <URL_UNAVAILABLE>);
+	       Error <URL_UNAVAILABLE>,
+	       Error <INVALID_OPERATION_TIMING>);
 
 	void
 	loadURL (const MFString &, const MFString &)
 	throw (Error <INVALID_URL>,
-	       Error <URL_UNAVAILABLE>);
+	       Error <URL_UNAVAILABLE>,
+	       Error <INVALID_OPERATION_TIMING>);
 
 	X3DSFNode <Scene>
 	createX3DFromString (const std::string &)
@@ -174,7 +177,8 @@ public:
 	X3DSFNode <Scene>
 	createX3DFromURL (const MFString &)
 	throw (Error <INVALID_URL>,
-	       Error <URL_UNAVAILABLE>);
+	       Error <URL_UNAVAILABLE>,
+	       Error <INVALID_OPERATION_TIMING>);
 
 	///
 	

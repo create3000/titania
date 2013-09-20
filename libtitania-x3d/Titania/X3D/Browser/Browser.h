@@ -77,8 +77,13 @@ public:
 	update () final;
 
 	virtual
+	bool
+	makeCurrent () const final
+	{ return opengl::Surface::makeCurrent (); }
+
+	virtual
 	void
-	swapBuffers () final
+	swapBuffers () const final
 	{ opengl::Surface::swapBuffers (); }
 
 	virtual

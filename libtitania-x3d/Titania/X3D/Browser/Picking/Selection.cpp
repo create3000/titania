@@ -79,10 +79,13 @@ Selection::addChild (const SFNode & child)
 {
 	if (not child)
 		return;
+		
+	if (getBrowser () -> makeCurrent ())
+	{
+		child -> addHandle ();
 
-	child -> addHandle ();
-
-	children .emplace_back (child);
+		children .emplace_back (child);
+	}
 }
 
 void
@@ -91,26 +94,32 @@ Selection::removeChild (const SFNode & child)
 	if (not child)
 		return;
 
-	children .erase (std::remove (children .begin (),
-	                              children .end (),
-	                              child),
-	                 children .end ());
+	if (getBrowser () -> makeCurrent ())
+	{
+		children .erase (std::remove (children .begin (),
+		                              children .end (),
+		                              child),
+		                 children .end ());
 
-	// Handle
+		// Handle
 
-	child -> removeHandle ();
+		child -> removeHandle ();
+	}
 }
 
 void
 Selection::clear ()
 {
-	MFNode copy = children;
-	children .clear ();
-
-	for (const auto & child : copy)
+	if (getBrowser () -> makeCurrent ())
 	{
-		if (child)
-			child -> removeHandle ();
+		MFNode copy = children;
+		children .clear ();
+
+		for (const auto & child : copy)
+		{
+			if (child)
+				child -> removeHandle ();
+		}
 	}
 }
 

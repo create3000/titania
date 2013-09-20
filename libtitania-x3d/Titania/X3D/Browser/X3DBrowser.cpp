@@ -198,9 +198,14 @@ X3DBrowser::createScene () const
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	X3DSFNode <Scene> scene = new Scene (const_cast <X3DBrowser*> (this));
-	scene -> setup ();
-	return scene;
+	if (makeCurrent ())
+	{
+		X3DSFNode <Scene> scene = new Scene (const_cast <X3DBrowser*> (this));
+		scene -> setup ();
+		return scene;
+	}
+
+	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
 }
 
 X3DSFNode <Scene>
@@ -216,31 +221,39 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 void
 X3DBrowser::replaceWorld (const X3DSFNode <Scene> & value)
-throw (Error <INVALID_SCENE>)
+throw (Error <INVALID_SCENE>,
+       Error <INVALID_OPERATION_TIMING>)
 {
-	// Replace world.
+	if (makeCurrent ())
+	{
+		// Replace world.
 
-	advanceClock ();
+		advanceClock ();
 
-	if (initialized ())
-		shutdown () .processInterests ();
+		if (initialized ())
+			shutdown () .processInterests ();
 
-	if (value)
-		scene = value;
+		if (value)
+			scene = value;
 
-	else
-		scene = createScene ();
+		else
+			scene = createScene ();
 
-	world = new World (scene);
-	world -> setup ();
+		world = new World (scene);
+		world -> setup ();
 
-	browserOptions -> assign (X3D::getBrowser () -> getBrowserOptions ());
+		browserOptions -> assign (X3D::getBrowser () -> getBrowserOptions ());
 
-	// Generate initialized event immediately upon receiving this service.
+		// Generate initialized event immediately upon receiving this service.
 
-	initialized () = getCurrentTime ();
+		initialized () = getCurrentTime ();
 
-	print ("*** The browser is requested to replace the world with '", scene -> getWorldURL (), "'.\n");
+		print ("*** The browser is requested to replace the world with '", scene -> getWorldURL (), "'.\n");
+		
+		return;
+	}
+
+	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
 }
 
 void
@@ -263,7 +276,8 @@ throw (Error <INVALID_DOCUMENT>,
 void
 X3DBrowser::loadURL (const MFString & url)
 throw (Error <INVALID_URL>,
-       Error <URL_UNAVAILABLE>)
+       Error <URL_UNAVAILABLE>,
+	    Error <INVALID_OPERATION_TIMING>)
 {
 	loadURL (url, { });
 }
@@ -271,35 +285,43 @@ throw (Error <INVALID_URL>,
 void
 X3DBrowser::loadURL (const MFString & url, const MFString & parameter)
 throw (Error <INVALID_URL>,
-       Error <URL_UNAVAILABLE>)
+       Error <URL_UNAVAILABLE>,
+	    Error <INVALID_OPERATION_TIMING>)
 {
-	// where parameter is "target=nameOfFrame"
-
-	Loader loader (this);
-		
-	try
+	if (makeCurrent ())
 	{
-		X3DSFNode <Scene> scene = createScene ();
+		// where parameter is "target=nameOfFrame"
 
-		loader .parseIntoScene (scene, url);
+		Loader loader (this);
+			
+		try
+		{
+			X3DSFNode <Scene> scene = createScene ();
 
-		scene -> realize ();
+			loader .parseIntoScene (scene, url);
 
-		replaceWorld (scene);
+			scene -> realize ();
 
-		world -> bind ();
+			replaceWorld (scene);
 
-		advanceClock ();
+			world -> bind ();
+
+			advanceClock ();
+			
+			return;
+		}
+		catch (const X3DError &)
+		{
+			urlError = loader .getUrlError ();	
+
+			for (const auto & string : urlError)
+				getBrowser () -> println (string .str ());
+
+			throw;
+		}
 	}
-	catch (const X3DError &)
-	{
-		urlError = loader .getUrlError ();	
 
-		for (const auto & string : urlError)
-			getBrowser () -> println (string .str ());
-
-		throw;
-	}
+	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
 }
 
 X3DSFNode <Scene>
@@ -309,7 +331,10 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	return Loader (this) .createX3DFromString (string);
+	if (makeCurrent ())
+		return Loader (this) .createX3DFromString (string);
+
+	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
 }
 
 X3DSFNode <Scene>
@@ -319,7 +344,10 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	return Loader (this) .createX3DFromStream (istream);
+	if (makeCurrent ())
+		return Loader (this) .createX3DFromStream (istream);
+
+	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
 }
 
 X3DSFNode <Scene>
@@ -329,28 +357,37 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	return Loader (this) .createX3DFromStream (worldURL, istream);
+	if (makeCurrent ())
+		return Loader (this) .createX3DFromStream (worldURL, istream);
+	
+	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
 }
 
 X3DSFNode <Scene>
 X3DBrowser::createX3DFromURL (const MFString & url)
 throw (Error <INVALID_URL>,
-       Error <URL_UNAVAILABLE>)
+       Error <URL_UNAVAILABLE>,
+       Error <INVALID_OPERATION_TIMING>)
 {
-	try
+	if (makeCurrent ())
 	{
-		Loader loader (this);
+		try
+		{
+			Loader loader (this);
 
-		X3DSFNode <Scene> scene = loader .createX3DFromURL (url);
+			X3DSFNode <Scene> scene = loader .createX3DFromURL (url);
 
-		return scene;
+			return scene;
+		}
+		catch (const X3DError & error)
+		{
+			urlError = MFString ({ error .what () });
+
+			throw;
+		}
 	}
-	catch (const X3DError & error)
-	{
-		urlError = MFString ({ error .what () });
 
-		throw;
-	}
+	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
 }
 
 void
@@ -392,6 +429,8 @@ void
 X3DBrowser::dispose ()
 {
 	__LOG__ << this << std::endl;
+
+	makeCurrent ();
 
 	scene .dispose ();
 	world .dispose ();

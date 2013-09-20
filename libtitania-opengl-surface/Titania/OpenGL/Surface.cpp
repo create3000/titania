@@ -159,13 +159,13 @@ Surface::set_draw (const Cairo::RefPtr <Cairo::Context> & cairo)
 }
 
 bool
-Surface::makeCurrent ()
+Surface::makeCurrent () const
 {
 	return context and context -> makeCurrent ();
 }
 
 void
-Surface::swapBuffers ()
+Surface::swapBuffers () const
 {
 	context -> swapBuffers ();
 }

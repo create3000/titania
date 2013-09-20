@@ -75,9 +75,9 @@ public:
 
 	OutlineTreeData (OutlineIterType type, X3D::X3DChildObject* object, const Gtk::TreeModel::Path & path) :
 		Glib::Object (),
-		object (object),
-		type (type),
-		path (path)
+		      object (object),
+		        type (type),
+		        path (path)
 	{
 		if (type == OutlineIterType::X3DBaseNode)
 			this -> object = new X3D::SFNode (static_cast <X3D::SFNode*> (object) -> getValue ());

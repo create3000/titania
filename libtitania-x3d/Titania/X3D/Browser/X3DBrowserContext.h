@@ -310,8 +310,13 @@ public:
 	///  @name Rendering
 
 	virtual
+	bool
+	makeCurrent () const
+	{ return true; }
+
+	virtual
 	void
-	swapBuffers ()
+	swapBuffers () const
 	{ }
 
 	///  @name Destruction

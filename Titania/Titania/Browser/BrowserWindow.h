@@ -128,11 +128,6 @@ private:
 	getOutlineTreeView () const
 	{ return outlineEditor .getTreeView (); }
 
-	virtual
-	OutlineUserDataPtr
-	getUserData (X3D::X3DChildObject* object) const
-	{ return getOutlineEditor () .getTreeView () .get_user_data (object); }
-
 	/// @name File menu
 
 	virtual

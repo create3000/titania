@@ -696,6 +696,7 @@ BrowserWindow::on_add_node (const std::string & typeName)
 	try
 	{
 		addNode (typeName);
+		getBrowser () -> update ();
 	}
 	catch (const X3D::Error <X3D::INVALID_NAME> &)
 	{ }
@@ -721,6 +722,8 @@ BrowserWindow::on_delete_nodes_activate ()
 			catch (const X3D::Error <X3D::INVALID_NODE> &)
 			{ }
 		}
+
+		getBrowser () -> update ();
 	}
 }
 
@@ -733,11 +736,9 @@ BrowserWindow::on_group_selected_nodes_activate ()
 
 	if (selection .size ())
 	{	
-		for (const auto & child : selection)
-			getUserData (child) -> path .clear ();
-
 		getBrowser () -> getSelection () -> clear ();
 		getBrowser () -> getSelection () -> addChild (groupNodes (selection));
+		getBrowser () -> update ();
 	}
 }
 
@@ -757,15 +758,13 @@ BrowserWindow::on_ungroup_node_activate ()
 			try
 			{
 				for (const auto & child : ungroupNode (group))
-				{
-					getUserData (child) -> path .clear ();
-
 					getBrowser () -> getSelection () -> addChild (child);
-				}
 			}
 			catch (const X3D::Error <X3D::INVALID_NODE> &)
 			{ }
 		}
+
+		getBrowser () -> update ();
 	}
 }
 
@@ -785,11 +784,9 @@ BrowserWindow::on_add_to_group_activate ()
 
 			addToGroup (group, selection);
 
-			for (const auto & child : selection)
-				getUserData (child) -> path .clear ();
-
 			getBrowser () -> getSelection () -> clear ();
 			getBrowser () -> getSelection () -> addChild (group);
+			getBrowser () -> update ();
 		}
 		catch (const X3D::Error <X3D::INVALID_NODE> &)
 		{ }
@@ -810,12 +807,12 @@ BrowserWindow::on_detach_from_group_activate ()
 			try
 			{
 				detachFromGroup (child, getKeys () .shift ());
-
-				getUserData (child) -> path .clear ();
 			}
 			catch (const X3D::Error <X3D::INVALID_NODE> &)
 			{ }	
 		}
+
+		getBrowser () -> update ();
 	}
 }
 
@@ -834,24 +831,25 @@ BrowserWindow::on_create_parent_group_activate ()
 		{
 			try
 			{
-				bool expanded = getOutlineTreeView () .get_iters (child) .size ();
-
 				auto groups = createParentGroup (child);
-	
-				getUserData (child) -> path .clear ();
 
-				// Select Transform
+				// Select Transform and expand
 
 				for (const auto & group : groups)
 				{
 					getBrowser () -> getSelection () -> addChild (group);
+					
+					// After changing the selection, the tree view is rebuild immediately and we can get the iters.
 
-					getUserData (group) -> expanded = expanded;
+					for (const auto & iter : getOutlineTreeView () .get_iters (group))
+						getOutlineTreeView () .set_expanded (iter, true);
 				}
 			}
 			catch (const X3D::Error <X3D::INVALID_NODE> &)
 			{ }	
 		}
+
+		getBrowser () -> update ();
 	}
 }
 

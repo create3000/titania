@@ -70,10 +70,10 @@ public:
 	~Surface ();
 
 	bool
-	makeCurrent ();
+	makeCurrent () const;
 
 	void
-	swapBuffers ();
+	swapBuffers () const;
 
 	void
 	dispose ();

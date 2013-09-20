@@ -1,5 +1,14 @@
 2013-09-20  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Browser.h:
+	* X3DBrowser.h:
+	* X3DBrowser.cpp:
+	* X3DBrowserContext.h:
+	* X3DBrowserContext.cpp:
+	* Selection.cpp: 
+
+2013-09-20  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Event.h:
 	* Router.h:
 	* Router.cpp:

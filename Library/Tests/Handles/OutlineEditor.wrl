@@ -62,11 +62,13 @@ Group {
   children USE _0
 }
 
-DEF Rotor Rotor { }
+DEF Rotor Rotor {
+  loop TRUE
+}
 
 DEF Box Transform {
   translation 1.41298 -0.894935 0
-  rotation 0 0 1 0
+  rotation 0 0 1 0.779997
   scale 0.2 0.2 0.2
   children Transform {
     children Shape {

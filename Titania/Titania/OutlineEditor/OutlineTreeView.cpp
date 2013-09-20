@@ -141,21 +141,21 @@ OutlineTreeView::get_object (const Gtk::TreeModel::iterator & iter) const
 }
 
 void
-OutlineTreeView::set_path (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & value)
+OutlineTreeView::set_open_path (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & value)
 {
 	auto userData = get_user_data (iter);
 
 	if (userData)
-		userData -> path = value;
+		userData -> open_path = value;
 }
 
 Gtk::TreeModel::Path
-OutlineTreeView::get_path (const Gtk::TreeModel::iterator & iter) const
+OutlineTreeView::get_open_path (const Gtk::TreeModel::iterator & iter) const
 {
 	auto userData = get_user_data (iter);
 
 	if (userData)
-		return userData -> path;
+		return userData -> open_path;
 
 	return Gtk::TreeModel::Path ();
 }
@@ -223,9 +223,6 @@ OutlineTreeView::set_rootNodes ()
 {
 	//__LOG__ << std::endl;
 
-	for (const auto & column : get_columns ())
-		column -> set_visible (false);
-
 	for (const auto & child : get_model () -> children ())
 		unwatch_tree (child);
 
@@ -248,9 +245,6 @@ OutlineTreeView::set_rootNodes ()
 	}
 
 	-- expandLevel; // Enable shift key
-
-	for (const auto & column : get_columns ())
-		column -> set_visible (true);
 }
 
 void
@@ -351,7 +345,7 @@ OutlineTreeView::on_row_expanded (const Gtk::TreeModel::iterator & iter, const G
 {
 	// Set expanded first to prevent loop with clones.
 	set_expanded (iter, true);
-	set_path (iter, path);
+	set_open_path (iter, path);
 
 	watch_expanded (iter, path);
 
@@ -525,7 +519,11 @@ OutlineTreeView::unwatch (const Gtk::TreeModel::iterator & iter, bool root)
 		}
 		case OutlineIterType::X3DBaseNode:
 		{
-			set_path (iter, Gtk::TreeModel::Path ());
+			auto open_path = get_open_path (iter);
+
+			if (open_path .size () and open_path == get_model () -> get_path (iter))
+				set_open_path (iter, Gtk::TreeModel::Path ());
+
 			break;
 		}
 	}
@@ -553,9 +551,6 @@ OutlineTreeView::update_field (const Gtk::TreeModel::Path & path)
 	Gtk::TreeModel::iterator iter         = get_model () -> get_iter (path);
 	bool                     all_expanded = get_all_expanded (iter);
 
-	for (const auto & column : get_columns ())
-		column -> set_visible (false);
-
 	collapse_row (path);
 
 	get_model () -> row_has_child_toggled (path, iter);
@@ -566,9 +561,6 @@ OutlineTreeView::update_field (const Gtk::TreeModel::Path & path)
 	expand_row (path, false);
 
 	-- expandLevel; // Enable shift key
-
-	for (const auto & column : get_columns ())
-		column -> set_visible (true);
 }
 
 void
@@ -593,7 +585,7 @@ void
 OutlineTreeView::collapse_clone (const Gtk::TreeModel::iterator & iter)
 {
 	if (get_data_type (iter) == OutlineIterType::X3DBaseNode)
-		collapse_row (get_path (iter));
+		collapse_row (get_open_path (iter));
 }
 
 void
@@ -768,7 +760,7 @@ OutlineTreeView::auto_expand (const Gtk::TreeModel::iterator & parent)
 						{
 							if (get_expanded (child))
 							{
-								if (get_path (child) .empty () or not get_path (child) .is_ancestor (get_model () -> get_path (child)))
+								if (get_open_path (child) .empty () or not get_open_path (child) .is_ancestor (get_model () -> get_path (child)))
 								{
 									expand_row (Gtk::TreePath (child), false);
 								}

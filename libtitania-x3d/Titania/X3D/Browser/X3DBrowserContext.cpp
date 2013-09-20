@@ -433,25 +433,28 @@ X3DBrowserContext::setKeyDeviceSensorNode (X3DKeyDeviceSensorNode* const value)
 void
 X3DBrowserContext::pick (const double _x, const double _y)
 {
-	x = _x;
-	y = _y;
+	if (makeCurrent ())
+	{
+		x = _x;
+		y = _y;
 
-	// Clear hits.
+		// Clear hits.
 
-	hits .clear ();
+		hits .clear ();
 
-	// Pick.
+		// Pick.
 
-	prepareEvents () .processInterests ();
-	router .processEvents ();
+		prepareEvents () .processInterests ();
+		router .processEvents ();
 
-	getWorld () -> traverse (TraverseType::PICKING);
+		getWorld () -> traverse (TraverseType::PICKING);
 
-	// Selection end.
+		// Selection end.
 
-	std::stable_sort (hits .begin (), hits .end (), hitComp);
+		std::stable_sort (hits .begin (), hits .end (), hitComp);
 
-	enabledSensors = { NodeSet () };
+		enabledSensors = { NodeSet () };
+	}
 }
 
 Line3f

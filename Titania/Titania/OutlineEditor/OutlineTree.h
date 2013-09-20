@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -53,8 +53,8 @@
 
 #include "../OutlineEditor/OutlineTreeData.h"
 #include <deque>
-#include <memory>
 #include <gtkmm.h>
+#include <memory>
 
 namespace titania {
 namespace puck {
@@ -64,10 +64,10 @@ class OutlineNode
 public:
 
 	OutlineNode () :
-		data (),
+		    data (),
 		children ()
 	{ }
-	
+
 	void
 	set_data (OutlineTreeData* value)
 	{ data .reset (value); }
@@ -126,7 +126,7 @@ public:
 	OutlineTree () :
 		OutlineNode ()
 	{ }
-	
+
 	std::deque <OutlineTreeData*>
 	get_parents (const Gtk::TreePath & path) const
 	throw (std::out_of_range)
@@ -134,7 +134,7 @@ public:
 		std::deque <OutlineTreeData*> parents;
 
 		const OutlineNode* node = this;
-		
+
 		for (const size_t index : path)
 		{
 			if (index < node -> get_children () .size ())
@@ -143,9 +143,9 @@ public:
 				parents .emplace_back (node -> get_data ());
 			}
 			else
-				throw std::out_of_range ("OutlineTree::getParents: path '" + path .to_string () + "' does not exists.");	
+				throw std::out_of_range ("OutlineTree::getParents: path '" + path .to_string () + "' does not exists.");
 		}
-		
+
 		parents .pop_back ();
 
 		return parents;

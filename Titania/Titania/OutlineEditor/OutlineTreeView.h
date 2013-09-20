@@ -83,17 +83,23 @@ public:
 	std::deque <Gtk::TreeModel::iterator>
 	get_iters (X3D::X3DChildObject* const) const;
 
+	OutlineUserDataPtr
+	get_user_data (const Gtk::TreeModel::iterator &) const;
+
+	OutlineUserDataPtr
+	get_user_data (X3D::X3DChildObject* const) const;
+
 	OutlineIterType
 	get_data_type (const Gtk::TreeModel::iterator &) const;
 
 	X3D::X3DChildObject*
 	get_object (const Gtk::TreeModel::iterator &) const;
 
-	OutlineUserDataPtr
-	get_user_data (const Gtk::TreeModel::iterator &) const;
+	void
+	set_expanded (const Gtk::TreeModel::iterator &, bool);
 
-	OutlineUserDataPtr
-	get_user_data (X3D::X3DChildObject* const) const;
+	bool
+	get_expanded (const Gtk::TreeModel::iterator &) const;
 
 	///  @name Destruction
 
@@ -112,6 +118,12 @@ private:
 	get_model () const
 	{ return model; }
 
+	void
+	set_all_expanded (const Gtk::TreeModel::iterator &, bool);
+
+	bool
+	get_all_expanded (const Gtk::TreeModel::iterator &) const;
+
 	OutlineSelection &
 	get_selection ()
 	{ return selection; }
@@ -121,22 +133,10 @@ private:
 	{ return selection; }
 
 	void
-	set_path (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
+	set_open_path (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
 
 	Gtk::TreeModel::Path
-	get_path (const Gtk::TreeModel::iterator &) const;
-
-	void
-	set_expanded (const Gtk::TreeModel::iterator &, bool);
-
-	bool
-	get_expanded (const Gtk::TreeModel::iterator &) const;
-
-	void
-	set_all_expanded (const Gtk::TreeModel::iterator &, bool);
-
-	bool
-	get_all_expanded (const Gtk::TreeModel::iterator &) const;
+	get_open_path (const Gtk::TreeModel::iterator &) const;
 	
 	bool
 	get_shift_key ();
