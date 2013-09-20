@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -124,7 +124,7 @@ X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const 
 	         fieldAliases (),
 	 numUserDefinedFields (0),
 	extendedEventHandling (true),
-	               nodeId (),
+	               nodeId ({ 0 }),
 	   receivedInputEvent (false),
 	               handle (NULL),
 	             comments (),
@@ -210,7 +210,7 @@ X3DBaseNode::copy (X3DExecutionContext* const executionContext) const
 			}
 			else
 			{
-				copy -> addUserDefinedField (fieldDefinition -> getAccessType (), 
+				copy -> addUserDefinedField (fieldDefinition -> getAccessType (),
 				                             fieldDefinition -> getName (),
 				                             fieldDefinition -> clone (executionContext));
 			}
@@ -560,7 +560,7 @@ X3DBaseNode::addEvent (X3DChildObject* const object, const EventPtr & event)
 
 	receivedInputEvent |= object -> isInput () or (extendedEventHandling and not object -> isOutput ());
 
-	if (isNotValid (nodeId))
+	if (not nodeId .time)
 		nodeId = getBrowser () -> getRouter () .addNode (this);
 }
 
@@ -568,7 +568,7 @@ void
 X3DBaseNode::processEvents ()
 {
 	events .clear ();
-	reset (nodeId);
+	nodeId .time = 0;
 
 	if (receivedInputEvent)
 	{
@@ -585,10 +585,10 @@ X3DBaseNode::removeEvents ()
 
 	events .clear ();
 
-	if (isValid (nodeId))
+	if (nodeId .time)
 	{
 		getBrowser () -> getRouter () .removeNode (nodeId);
-		reset (nodeId);
+		nodeId .time = 0;
 	}
 }
 
@@ -716,11 +716,11 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 			if (field -> getReferences () .size ())
 			{
 				bool initializableReference = false;
-			
+
 				for (const auto & reference : field -> getReferences ())
 				{
 					initializableReference |= reference -> isInitializeable ();
-	
+
 					// Output user defined reference field
 
 					ostream
@@ -747,11 +747,11 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 						<< reference -> getName ()
 						<< Generator::Break;
 				}
-				
+
 				if (field -> getAccessType () == inputOutput and not initializableReference)
 				{
 					// Output user defined field
-				
+
 					ostream
 						<< Generator::Indent
 						<< std::setiosflags (std::ios::left)

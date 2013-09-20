@@ -107,6 +107,8 @@ private:
 
 	EventList          events;
 	NodeList           nodes;
+	time_type          eventTime;
+	time_type          nodeTime;
 	mutable std::mutex mutex;
 
 };

@@ -50,13 +50,17 @@
 
 #include "Router.h"
 
+#include <Titania/Chrono.h>
+
 namespace titania {
 namespace X3D {
 
 Router::Router () :
-	    events (),
-	     nodes (),
-	     mutex ()
+	   events (),
+	    nodes (),
+	eventTime (chrono::now ()),
+	 nodeTime (chrono::now ()),
+	    mutex ()
 { }
 
 EventId
@@ -64,20 +68,22 @@ Router::addEvent (X3DChildObject* const object, const EventPtr & event)
 {
 	events .emplace_back (object, event);
 
-	return -- events .end ();
+	return { eventTime, -- events .end () };
 }
 
 void
 Router::removeEvent (const EventId & event)
 {
-	// test if iter is valid and use process version with getEvents
-	events .erase (event);
+	if (event .time == eventTime)
+		events .erase (event .iter);
 }
 
 EventList
 Router::getEvents ()
 {
 	//std::lock_guard <std::mutex> lock (mutex);
+
+	eventTime = chrono::now (); // Invalidate all iterators
 
 	return std::move (events);
 }
@@ -87,14 +93,14 @@ Router::addNode (X3DBaseNode* node)
 {
 	nodes .emplace_back (node);
 
-	return -- nodes .end ();
+	return { nodeTime, -- nodes .end () };
 }
 
 void
 Router::removeNode (const NodeId & node)
 {
-	// test if iter is valid
-	nodes .erase (node);
+	if (node .time == nodeTime)
+		nodes .erase (node .iter);
 }
 
 NodeList
@@ -102,39 +108,39 @@ Router::getNodes ()
 {
 	//std::lock_guard <std::mutex> lock (mutex);
 
+	nodeTime = chrono::now (); // Invalidate all iterators
+
 	return std::move (nodes);
 }
 
 void
 Router::processEvents ()
 {
-	while (events .size ())
-	{
-		for (auto & event : events)
-		{
-			event .first -> processEvent (event .second);
-		}
-
-		events .clear ();
-
-		eventsProcessed ();
-	}
-
-	//	// maybe std::vector is faster
-	//
-	//	while (size ())
+	//	while (events .size ())
 	//	{
-	//		do
+	//		for (auto & event : events)
 	//		{
-	//			for (auto & event : getEvents ())
-	//			{
-	//				event .first -> processEvent (event .second);
-	//			}
+	//			event .first -> processEvent (event .second);
 	//		}
-	//		while (size ());
+	//
+	//		events .clear ();
 	//
 	//		eventsProcessed ();
 	//	}
+
+	while (size ())
+	{
+		do
+		{
+			for (auto & event : getEvents ())
+			{
+				event .first -> processEvent (event .second);
+			}
+		}
+		while (size ());
+
+		eventsProcessed ();
+	}
 }
 
 void

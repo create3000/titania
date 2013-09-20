@@ -51,44 +51,18 @@
 #ifndef __TITANIA_BACKTRACE_H__
 #define __TITANIA_BACKTRACE_H__
 
-#include <execinfo.h>
-#include <iostream>
-
-#include <csignal>
 #include <cstdlib>
 
 namespace titania {
 
-static
 void
-backtrace_fn (size_t size = 30)
-{
-	void* array [size];
+backtrace_fn (size_t = 30);
 
-	// get void*'s for all entries on the stack
-	size = ::backtrace (array, size);
-
-	// print out all the frames to stderr
-	backtrace_symbols_fd (array, size, 2);
-}
-
-static
 void
-backtrace_signal_handler (int sig)
-{
-	// print out all the frames to stderr
-	std::clog << "Error: signal " << sig << ":" << std::endl;
-	backtrace_fn (100);
-	exit (1);
-}
+backtrace_signal_handler (int);
 
-static
 void
-enable_backtrace ()
-{
-	// install our handler
-	std::signal (SIGSEGV, backtrace_signal_handler);
-}
+enable_backtrace ();
 
 } // titania
 

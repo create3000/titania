@@ -1,5 +1,13 @@
 2013-09-20  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Router.h:
+	* Router.cpp:
+	* NodeList.h:
+	* EventList.h:
+	* X3DBaseNode.cpp: 
+
+2013-09-20  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* libtitania-x3d.cproj:
 	* Router.h:
 	* Parser.cpp:

@@ -172,6 +172,7 @@
     <Compile Include="Titania\OS\FileExists.cpp" />
     <Compile Include="Titania\String\Trim.cpp" />
     <Compile Include="Titania\OS\Popen2.cpp" />
+    <Compile Include="Titania\Backtrace.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

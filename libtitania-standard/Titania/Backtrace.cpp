@@ -48,25 +48,40 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_ROUTING_EVENT_LIST_H__
-#define __TITANIA_X3D_ROUTING_EVENT_LIST_H__
+#include "Backtrace.h"
 
-#include "../Base/X3DChildObject.h"
-#include <deque>
+#include <csignal>
+#include <execinfo.h>
+#include <iostream>
 
 namespace titania {
-namespace X3D {
 
-typedef std::list <std::pair <X3DChildObject*, EventPtr>> EventList;
-
-struct EventId
+void
+backtrace_fn (size_t size)
 {
-	time_type time;
-	EventList::iterator iter;
+	void* array [size];
 
-};
+	// get void*'s for all entries on the stack
+	size = ::backtrace (array, size);
 
-} // X3D
+	// print out all the frames to stderr
+	backtrace_symbols_fd (array, size, 2);
+}
+
+void
+backtrace_signal_handler (int sig)
+{
+	// print out all the frames to stderr
+	std::clog << "Error: signal " << sig << ":" << std::endl;
+	backtrace_fn (100);
+	exit (1);
+}
+
+void
+enable_backtrace ()
+{
+	// install our handler
+	std::signal (SIGSEGV, backtrace_signal_handler);
+}
+
 } // titania
-
-#endif

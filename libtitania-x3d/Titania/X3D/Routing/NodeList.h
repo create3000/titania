@@ -59,30 +59,13 @@ namespace X3D {
 class X3DBaseNode;
 
 typedef std::list <X3DBaseNode*> NodeList;
-typedef NodeList::iterator       NodeId;
 
-static const NodeId NODE_ID_NULL;
-
-inline
-bool
-isValid (const NodeId & nodeId)
+struct NodeId
 {
-	return nodeId not_eq NODE_ID_NULL;
-}
+	time_type time;
+	NodeList::iterator iter;
 
-inline
-bool
-isNotValid (const NodeId & nodeId)
-{
-	return nodeId == NODE_ID_NULL;
-}
-
-inline
-void
-reset (NodeId & nodeId)
-{
-	nodeId = NODE_ID_NULL;
-}
+};
 
 } // X3D
 } // titania
