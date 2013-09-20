@@ -54,18 +54,27 @@ namespace titania {
 namespace X3D {
 
 Router::Router () :
-	events (),
-	 nodes (),
-	 mutex ()
+	    events (),
+	     nodes (),
+	     mutex ()
 { }
 
-void
+EventId
 Router::addEvent (X3DChildObject* const object, const EventPtr & event)
 {
 	events .emplace_back (object, event);
+
+	return -- events .end ();
 }
 
-EventArray
+void
+Router::removeEvent (const EventId & event)
+{
+	// test if iter is valid and use process version with getEvents
+	events .erase (event);
+}
+
+EventList
 Router::getEvents ()
 {
 	//std::lock_guard <std::mutex> lock (mutex);
@@ -84,9 +93,7 @@ Router::addNode (X3DBaseNode* node)
 void
 Router::removeNode (const NodeId & node)
 {
-	if (nodes .empty ())
-		return;
-
+	// test if iter is valid
 	nodes .erase (node);
 }
 
@@ -101,34 +108,33 @@ Router::getNodes ()
 void
 Router::processEvents ()
 {
-	//	while (events .size ())
-	//	{
-	//		for (auto & event : events)
-	//		{
-	//			// __LOG__ << event .first -> getName () << std::endl;
-	//			event .first -> processEvent (event .second);
-	//		}
-	//
-	//		events .clear ();
-	//
-	//		eventsProcessed ();
-	//	}
-
-	// maybe std::vector is faster
-
-	while (size ())
+	while (events .size ())
 	{
-		do
+		for (auto & event : events)
 		{
-			for (auto & event : getEvents ())
-			{
-				event .first -> processEvent (std::move (event .second));
-			}
+			event .first -> processEvent (event .second);
 		}
-		while (size ());
+
+		events .clear ();
 
 		eventsProcessed ();
 	}
+
+	//	// maybe std::vector is faster
+	//
+	//	while (size ())
+	//	{
+	//		do
+	//		{
+	//			for (auto & event : getEvents ())
+	//			{
+	//				event .first -> processEvent (event .second);
+	//			}
+	//		}
+	//		while (size ());
+	//
+	//		eventsProcessed ();
+	//	}
 }
 
 void
@@ -152,11 +158,11 @@ Router::debug ()
 	for (auto & event : events)
 	{
 		__LOG__ << event .first -> getName () << " : " << event .first -> getTypeName () << std::endl;
-		
+
 		for (const auto & parent : event .first -> getParents ())
 		{
 			auto node = dynamic_cast <X3DBaseNode*> (parent);
-			
+
 			if (node)
 			{
 				__LOG__ << "\t" << node -> getTypeName () << std::endl;

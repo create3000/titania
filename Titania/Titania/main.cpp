@@ -142,9 +142,9 @@ main (int argc, char** argv)
 
 	try
 	{
-		BrowserApplication browserWindow (argc, argv);
+		BrowserApplication browserApplication (argc, argv);
 
-		browserWindow .run ();
+		browserApplication .run ();
 	}
 	catch (const std::exception & error)
 	{

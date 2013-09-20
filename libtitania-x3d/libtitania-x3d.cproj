@@ -563,7 +563,6 @@
     <None Include="Titania\X3D\Miscellaneous\TexturePtr.h" />
     <None Include="Titania\X3D\Miscellaneous\FontConfig.h" />
     <None Include="Titania\X3D\Miscellaneous\MediaStream.h" />
-    <None Include="Titania\X3D\Routing\EventArray.h" />
     <None Include="Titania\X3D\Miscellaneous\FontPtr.h" />
     <None Include="Titania\X3D\InputOutput\Loader.h" />
     <None Include="Titania\X3D\Browser\Devices\PointingDevice.h" />
@@ -583,6 +582,7 @@
     <None Include="share\titania\handles\Notification.wrl" />
     <None Include="share\titania\library\RoundedRectangle2D.wrl" />
     <None Include="Titania\X3D\Components\Grouping\X3DTransformNode.h" />
+    <None Include="Titania\X3D\Routing\EventList.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -61,6 +61,7 @@
 #include "../Bits/TraverseType.h"
 #include "../Bits/X3DConstants.h"
 #include "../Fields/SFTime.h"
+#include "../Routing/EventList.h"
 #include "../Routing/NodeList.h"
 #include "../Types/Time.h"
 
@@ -130,9 +131,10 @@ public:
 	getLocalNode ()
 
 	{ return this; }
+
 	size_t
 	getNumClones () const;
-	
+
 	void
 	setInternal (bool);
 
@@ -262,7 +264,7 @@ protected:
 
 	void
 	addField (const std::string &, const std::string &);
-	
+
 	void
 	setExtendedEventHandling (bool value)
 	{ extendedEventHandling = value; }
@@ -308,13 +310,15 @@ private:
 	std::string   typeName;
 	NodeTypeArray nodeType;
 
-	FieldDefinitionArray fieldDefinitions;     // Pre-defined and user-defined field definitions
-	FieldsMap            fields;               // Pre-defined and user-defined fields
-	FieldAliasesMap      fieldAliases;         // VRML names
-	size_t               numUserDefinedFields; // Number of user defined fields
+	FieldDefinitionArray fieldDefinitions;      // Pre-defined and user-defined field definitions
+	FieldsMap            fields;                // Pre-defined and user-defined fields
+	FieldAliasesMap      fieldAliases;          // VRML names
+	size_t               numUserDefinedFields;  // Number of user defined fields
 
-	bool   extendedEventHandling;              // Handle initializeOnlys as input events
-	NodeId nodeId;                             // Router eventsProcessed id
+	bool                 extendedEventHandling; // Handle initializeOnlys as input events
+	NodeId               nodeId;                // Router eventsProcessed id
+	std::deque <EventId> events;
+	bool                 receivedInputEvent;
 
 	X3DBaseNode*             handle;
 	std::deque <std::string> comments;

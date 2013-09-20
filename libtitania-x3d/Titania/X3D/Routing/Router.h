@@ -53,7 +53,7 @@
 
 #include "../Basic/NodeSet.h"
 #include "../Basic/X3DBaseNode.h"
-#include "../Routing/EventArray.h"
+#include "../Routing/EventList.h"
 #include "../Routing/NodeList.h"
 
 #include <mutex>
@@ -67,8 +67,11 @@ public:
 
 	Router ();
 
-	void
+	EventId
 	addEvent (X3DChildObject* const, const EventPtr &);
+	
+	void
+	removeEvent (const EventId &);
 
 	NodeId
 	addNode (X3DBaseNode*);
@@ -93,7 +96,7 @@ private:
 	Router &
 	operator = (const Router &) = delete;
 
-	EventArray
+	EventList
 	getEvents ();
 
 	NodeList
@@ -102,7 +105,7 @@ private:
 	void
 	eventsProcessed ();
 
-	EventArray         events;
+	EventList          events;
 	NodeList           nodes;
 	mutable std::mutex mutex;
 

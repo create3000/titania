@@ -300,7 +300,7 @@ void
 Parser::comments ()
 {
 	//__LOG__ << this << " " << std::endl;
-	
+
 	Grammar::whitespaces (istream, whitespaces);
 
 	while (comment ())
@@ -311,7 +311,7 @@ bool
 Parser::comment ()
 {
 	//__LOG__ << this << " " << std::endl;
-	
+
 	std::string _comment;
 
 	if (Grammar::comment (istream, _comment))
@@ -329,7 +329,7 @@ bool
 Parser::headerStatement (std::string & _encoding, std::string & _specificationVersion, std::string & _characterEncoding, std::string & _comment)
 {
 	//__LOG__ << this << " " << std::endl;
-	
+
 	std::string _header;
 
 	if (Grammar::comment (istream, _header))
@@ -1418,23 +1418,29 @@ Parser::scriptBodyElement (X3DBaseNode* const _basicNode)
 									if (_accessType -> second == _reference -> getAccessType () or _accessType -> second == inputOutput)
 									{
 										X3DFieldDefinition* _field = nullptr;
-										
+
 										try
 										{
 											_field = _basicNode -> getField (_fieldId);
-											
-											if (_supportedField -> getType () == _field -> getType ())
+
+											//if (_field -> getAccessType () not_eq _accessType -> second)
+											//	throw Error <INVALID_X3D> ("Field '" + _fieldId + "' must have access type " + Generator::AccessTypes [_field] + ".");
+
+											// experimental see events test and vrml logo test
 											{
-												if (_accessType -> second == _field -> getAccessType () or _field -> getAccessType () == inputOutput)
+												if (_supportedField -> getType () == _field -> getType ())
 												{
-												   if (_accessType -> second not_eq _field -> getAccessType ())
-												      throw Error <INVALID_NAME> ("");
+													if (_accessType -> second == _field -> getAccessType () or _field -> getAccessType () == inputOutput)
+													{
+														if (_accessType -> second not_eq _field -> getAccessType ())
+															throw Error <INVALID_NAME> ("");
+													}
+													else
+														throw Error <INVALID_X3D> ("Field '" + _fieldId + "' must have access type " + Generator::AccessTypes [_field] + ".");
 												}
 												else
-													throw Error <INVALID_X3D> ("Field '" + _fieldId + "' must have access type " + Generator::AccessTypes [_field] + ".");
+													throw Error <INVALID_NAME> ("");
 											}
-											else
-												throw Error <INVALID_NAME> ("");
 										}
 										catch (const Error <INVALID_NAME> &)
 										{

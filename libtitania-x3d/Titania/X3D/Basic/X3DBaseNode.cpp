@@ -125,6 +125,7 @@ X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const 
 	 numUserDefinedFields (0),
 	extendedEventHandling (true),
 	               nodeId (),
+	   receivedInputEvent (false),
 	               handle (NULL),
 	             comments (),
 	       shutdownOutput ()
@@ -553,28 +554,37 @@ X3DBaseNode::addEvent (X3DChildObject* const object, const EventPtr & event)
 
 	// Register for processEvents
 
-	getBrowser () -> getRouter () .addEvent (object, event);
+	events .emplace_back (getBrowser () -> getRouter () .addEvent (object, event));
 
-	// Register for eventsProcessed
+	// Register for processEvents
 
-	if (object -> isInput () or (extendedEventHandling and not object -> isOutput ()))
-	{
-		if (isNotValid (nodeId))
-			nodeId = getBrowser () -> getRouter () .addNode (this);
-	}
+	receivedInputEvent |= object -> isInput () or (extendedEventHandling and not object -> isOutput ());
+
+	if (isNotValid (nodeId))
+		nodeId = getBrowser () -> getRouter () .addNode (this);
 }
 
 void
 X3DBaseNode::processEvents ()
 {
+	events .clear ();
 	reset (nodeId);
 
-	eventsProcessed ();
+	if (receivedInputEvent)
+	{
+		receivedInputEvent = false;
+		eventsProcessed ();
+	}
 }
 
 void
 X3DBaseNode::removeEvents ()
 {
+	for (const auto & event : events)
+		getBrowser () -> getRouter () .removeEvent (event);
+
+	events .clear ();
+
 	if (isValid (nodeId))
 	{
 		getBrowser () -> getRouter () .removeNode (nodeId);

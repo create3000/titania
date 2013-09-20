@@ -1,5 +1,17 @@
 2013-09-20  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* libtitania-x3d.cproj:
+	* Router.h:
+	* Parser.cpp:
+	* Router.cpp:
+	* EventList.h:
+	* X3DBaseNode.h:
+	* EventArray.h:
+	* X3DBaseNode.cpp:
+	* X3DPrototypeInstance.cpp: 
+
+2013-09-20  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Browser.h:
 	* X3DBrowser.h:
 	* X3DBrowser.cpp:

@@ -58,6 +58,8 @@
 #include <cassert>
 #include <iostream>
 
+#include <Titania/Backtrace.h>
+
 namespace titania {
 namespace X3D {
 
@@ -112,6 +114,8 @@ throw (Error <DISPOSED>)
 	if (proto)
 		return proto -> getName ();
 
+	backtrace_fn ();
+
 	throw Error <DISPOSED> ("Error: X3DPrototypeInstance::getTypeName: node is already disposed.");
 }
 
@@ -121,6 +125,8 @@ throw (Error <DISPOSED>)
 {
 	if (proto)
 		return proto .getValue ();
+
+	backtrace_fn ();
 
 	throw Error <DISPOSED> ("Error: X3DPrototypeInstance::getType: node is already disposed.");
 }
