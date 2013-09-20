@@ -118,7 +118,7 @@ X3DBrowserEditor::removeNode (const X3D::X3DSFNode <X3D::Scene> & scene, const X
 {
 	removeNode (scene .getValue (), node);
 
-	// Remove exported node
+	// Remove exported nodes
 
 	removeExportedNodes (scene, node);
 }
@@ -126,6 +126,8 @@ X3DBrowserEditor::removeNode (const X3D::X3DSFNode <X3D::Scene> & scene, const X
 void
 X3DBrowserEditor::removeExportedNodes (const X3D::X3DSFNode <X3D::Scene> & scene, const X3D::SFNode & node) const
 {
+	// Remove exported nodes
+
 	for (const auto & exportedNode : X3D::ExportedNodeArray (scene -> getExportedNodes ()))
 	{
 		if (exportedNode -> getNode () == node)
@@ -135,6 +137,26 @@ X3DBrowserEditor::removeExportedNodes (const X3D::X3DSFNode <X3D::Scene> & scene
 
 void
 X3DBrowserEditor::removeNode (X3D::X3DExecutionContext* const executionContext, const X3D::SFNode & node) const
+{
+	// Delete node in scene graph
+
+	removeNodeFromSceneGraph (executionContext, node);
+
+	// Remove named node
+
+	removeNamedNode (executionContext, node);
+
+	// Remove nodes imported from node
+
+	removeImportedNodes (executionContext, node);
+
+	// Delete routes from and to node
+
+	deleteRoutes (executionContext, node);
+}
+
+void
+X3DBrowserEditor::removeNodeFromSceneGraph (X3D::X3DExecutionContext* const executionContext, const X3D::SFNode & node) const
 {
 	// Delete node in scene graph
 
@@ -151,23 +173,13 @@ X3DBrowserEditor::removeNode (X3D::X3DExecutionContext* const executionContext, 
 
 	             return false;
 				 });
-
-	// Remove named node
-
-	removeNamedNode (executionContext, node);
-
-	// Remove nodes imported from node
-
-	removeImportedNodes (executionContext, node);
-
-	// Delete routes from and to node
-
-	deleteRoutes (executionContext, node);
 }
 
 void
 X3DBrowserEditor::removeNamedNode (X3D::X3DExecutionContext* const executionContext, const X3D::SFNode & node) const
 {
+	// Remove named node
+
 	try
 	{
 		if (executionContext -> getNamedNode (node -> getName ()) == node)
@@ -180,6 +192,8 @@ X3DBrowserEditor::removeNamedNode (X3D::X3DExecutionContext* const executionCont
 void
 X3DBrowserEditor::removeImportedNodes (X3D::X3DExecutionContext* const executionContext, const X3D::SFNode & node) const
 {
+	// Remove nodes imported from node
+
 	auto inlineNode = dynamic_cast <X3D::Inline*> (node .getValue ());
 
 	if (inlineNode)
@@ -199,11 +213,253 @@ X3DBrowserEditor::removeImportedNodes (X3D::X3DExecutionContext* const execution
 void
 X3DBrowserEditor::deleteRoutes (X3D::X3DExecutionContext* const executionContext, const X3D::SFNode & node) const
 {
+	// Delete routes from and to node
+
 	for (const auto & route : X3D::RouteArray (executionContext -> getRoutes ()))
 	{
 		if (route -> getSourceNode () == node or route -> getDestinationNode () == node)
 			executionContext -> deleteRoute (route);
 	}
+}
+
+X3D::SFNode
+X3DBrowserEditor::groupNodes (const X3D::MFNode & nodes)
+throw (X3D::Error <X3D::INVALID_NODE>)
+{
+	__LOG__ << std::endl;
+
+	if (nodes .empty ())
+		throw X3D::Error <X3D::INVALID_NODE> ("Nodes are empty.");
+
+	auto scene  = getBrowser () -> getExecutionContext ();
+	auto parent = scene -> createNode ("Transform");
+	auto group  = dynamic_cast <X3D::Transform*> (parent .getValue ());
+
+	for (const auto & child : nodes)
+	{
+		if (not child)
+			continue;
+
+		// Adjust transformation
+		X3D::Matrix4f          childModelViewMatrix = findModelViewMatrix (child .getValue ());
+		X3D::X3DTransformNode* transform            = dynamic_cast <X3D::X3DTransformNode*> (child .getValue ());
+
+		if (transform)
+		{
+			childModelViewMatrix .multLeft (transform -> getMatrix ());
+
+			transform -> setMatrix (childModelViewMatrix);
+		}
+
+		// Remove child from scene graph
+
+		removeNodeFromSceneGraph (getBrowser () -> getExecutionContext (), child);
+
+		// Add to group
+
+		group -> children () .emplace_back (child);
+	}
+
+	group -> setup ();
+	scene -> getRootNodes () .emplace_back (parent);
+
+	setEdited (true);
+
+	return parent;
+}
+
+X3D::MFNode
+X3DBrowserEditor::ungroupNode (const X3D::SFNode & group)
+throw (X3D::Error <X3D::INVALID_NODE>)
+{
+	if (not group)
+		throw X3D::Error <X3D::INVALID_NODE> ("Group node is emtpy.");
+
+	auto children = getGroupingField (group);
+
+	if (not children)
+		throw X3D::Error <X3D::INVALID_NODE> ("Not a grouping node.");
+
+	X3D::MFNode result;
+
+	for (const auto & child : *children)
+	{
+		if (not child)
+			continue;
+
+		// Adjust transformation
+
+		X3D::Matrix4f          childModelViewMatrix = findModelViewMatrix (child .getValue ());
+		X3D::X3DTransformNode* transform            = dynamic_cast <X3D::X3DTransformNode*> (child .getValue ());
+
+		if (transform)
+		{
+			childModelViewMatrix .multLeft (transform -> getMatrix ());
+
+			transform -> setMatrix (childModelViewMatrix);
+		}
+
+		// Add to layer
+
+		getBrowser () -> getExecutionContext () -> getRootNodes () .emplace_back (child);
+
+		result .emplace_back (child);
+	}
+
+	// Remove group from scene
+
+	removeNode (getBrowser () -> getExecutionContext (), group);
+
+	setEdited (true);
+
+	return result;
+}
+
+void
+X3DBrowserEditor::addToGroup (const X3D::SFNode & group, const X3D::MFNode & nodes)
+throw (X3D::Error <X3D::INVALID_NODE>)
+{
+	__LOG__ << std::endl;
+
+	if (not group)
+		throw X3D::Error <X3D::INVALID_NODE> ("Group node is emtpy.");
+
+	auto children = getGroupingField (group);
+
+	if (not children)
+		throw X3D::Error <X3D::INVALID_NODE> ("Not a grouping node.");
+
+	// Get group modelview matrix
+
+	X3D::Matrix4f          groupModelViewMatrix = findModelViewMatrix (group .getValue ());
+	X3D::X3DTransformNode* transform            = dynamic_cast <X3D::X3DTransformNode*> (group .getValue ());
+
+	if (transform)
+		groupModelViewMatrix .multLeft (transform -> getMatrix ());
+
+	// Add children to group
+
+	for (const auto & child : nodes)
+	{
+		if (not child)
+			continue;
+
+		if (child == group)
+			continue;
+
+		// Adjust transformation
+
+		X3D::Matrix4f          childModelViewMatrix = findModelViewMatrix (child .getValue ());
+		X3D::X3DTransformNode* transform            = dynamic_cast <X3D::X3DTransformNode*> (child .getValue ());
+
+		if (transform)
+		{
+			try
+			{
+				childModelViewMatrix .multLeft (transform -> getMatrix ());
+				childModelViewMatrix .multRight (~groupModelViewMatrix);
+
+				transform -> setMatrix (childModelViewMatrix);
+			}
+			catch (const std::domain_error & error)
+			{ }
+		}
+
+		// Remove child from scene graph
+
+		removeNodeFromSceneGraph (getBrowser () -> getExecutionContext (), child);
+
+		// Add to group
+
+		children -> emplace_back (child);
+	}
+
+	setEdited (true);
+}
+
+void
+X3DBrowserEditor::detachFromGroup (const X3D::SFNode & child, bool detachToLayer0)
+throw (X3D::Error <X3D::INVALID_NODE>)
+{
+	__LOG__ << std::endl;
+
+	if (not child)
+		throw X3D::Error <X3D::INVALID_NODE> ("Node is empty.");
+
+	auto layers = dynamic_cast <X3D::X3DNode*> (child .getValue ()) -> getLayers ();
+
+	// Adjust transformation
+
+	X3D::Matrix4f          childModelViewMatrix = findModelViewMatrix (child .getValue ());
+	X3D::X3DTransformNode* transform            = dynamic_cast <X3D::X3DTransformNode*> (child .getValue ());
+
+	if (transform)
+	{
+		childModelViewMatrix .multLeft (transform -> getMatrix ());
+
+		transform -> setMatrix (childModelViewMatrix);
+	}
+
+	// Remove child from scene graph
+
+	removeNodeFromSceneGraph (getBrowser () -> getExecutionContext (), child);
+
+	// Add to layers
+
+	if (detachToLayer0)
+		getBrowser () -> getExecutionContext () -> getRootNodes () .emplace_back (child);
+
+	else
+	{
+		for (const auto & layer : layers)
+		{
+			if (layer -> isLayer0 ())
+				getBrowser () -> getExecutionContext () -> getRootNodes () .emplace_back (child);
+
+			else
+				layer -> children () .emplace_back (child);
+		}
+	}
+
+	setEdited (true);
+}
+
+X3D::MFNode
+X3DBrowserEditor::createParentGroup (const X3D::SFNode & child)
+throw (X3D::Error <X3D::INVALID_NODE>)
+{
+	__LOG__ << std::endl;
+
+	if (not child)
+		throw X3D::Error <X3D::INVALID_NODE> ("Node is empty.");
+		
+	X3D::MFNode groups;
+
+	auto scene = getBrowser () -> getExecutionContext ();
+
+	traverse (scene, [scene, child, &groups] (const X3D::SFNode &, X3D::MFNode* const mfnode, X3D::SFNode* const sfnode, size_t)
+	          {
+	             if (child not_eq *sfnode)
+						 return false;
+
+	             // Replace node with Transform
+
+	             auto parent = scene -> createNode ("Transform");
+	             auto group  = dynamic_cast <X3D::Transform*> (parent .getValue ());
+
+	             group -> children () .emplace_back (child);
+	             group -> setup ();
+
+	             sfnode -> setValue (parent);
+
+	             groups .emplace_back (parent);
+
+	             return false;
+				 });
+
+	setEdited (true);
+
+	return groups;
 }
 
 bool
@@ -287,226 +543,6 @@ X3DBrowserEditor::traverse (const X3D::SFNode & node, const TraverseCallback & c
 	}
 
 	return false;
-}
-
-X3D::SFNode
-X3DBrowserEditor::groupNodes (const X3D::MFNode & nodes)
-throw (X3D::Error <X3D::INVALID_NODE>)
-{
-	__LOG__ << std::endl;
-
-	if (nodes .empty ())
-		throw X3D::Error <X3D::INVALID_NODE> ("Nodes are empty.");
-
-	auto scene     = getBrowser () -> getExecutionContext ();
-	auto node      = scene -> createNode ("Transform");
-	auto transform = dynamic_cast <X3D::Transform*> (node .getValue ());
-
-	for (const auto & child : nodes)
-	{
-		if (not child)
-			continue;
-
-		// Adjust transformation
-		{
-			X3D::Matrix4f          childModelViewMatrix = findModelViewMatrix (child .getValue ());
-			X3D::X3DTransformNode* transform            = dynamic_cast <X3D::X3DTransformNode*> (child .getValue ());
-
-			if (transform)
-			{
-				childModelViewMatrix .multLeft (transform -> getMatrix ());
-
-				transform -> setMatrix (childModelViewMatrix);
-			}
-		}
-
-		// Add to group
-
-		child -> remove ({ &nodes });
-
-		transform -> children () .emplace_back (child);
-	}
-
-	node -> setup ();
-	scene -> getRootNodes () .emplace_back (node);
-
-	setEdited (true);
-
-	return node;
-}
-
-X3D::MFNode
-X3DBrowserEditor::ungroupNode (const X3D::SFNode & group)
-throw (X3D::Error <X3D::INVALID_NODE>)
-{
-	if (not group)
-		throw X3D::Error <X3D::INVALID_NODE> ("Group node is emtpy.");
-
-	auto children = getGroupingField (group);
-
-	if (not children)
-		throw X3D::Error <X3D::INVALID_NODE> ("Not a grouping node.");
-
-	X3D::MFNode result;
-
-	for (const auto & child : *children)
-	{
-		if (not child)
-			continue;
-
-		// Adjust transformation
-
-		X3D::Matrix4f          childModelViewMatrix = findModelViewMatrix (child .getValue ());
-		X3D::X3DTransformNode* transform            = dynamic_cast <X3D::X3DTransformNode*> (child .getValue ());
-
-		if (transform)
-		{
-			childModelViewMatrix .multLeft (transform -> getMatrix ());
-
-			transform -> setMatrix (childModelViewMatrix);
-		}
-
-		// Add to layer
-
-		getBrowser () -> getExecutionContext () -> getRootNodes () .emplace_back (child);
-
-		result .emplace_back (child);
-	}
-
-	group -> remove ({ &group });
-
-	setEdited (true);
-
-	return result;
-}
-
-void
-X3DBrowserEditor::addToGroup (const X3D::SFNode & group, const X3D::MFNode & nodes)
-throw (X3D::Error <X3D::INVALID_NODE>)
-{
-	__LOG__ << std::endl;
-
-	if (not group)
-		throw X3D::Error <X3D::INVALID_NODE> ("Group node is emtpy.");
-
-	auto children = getGroupingField (group);
-
-	if (not children)
-		throw X3D::Error <X3D::INVALID_NODE> ("Not a grouping node.");
-
-	// Get group modelview matrix
-
-	X3D::Matrix4f          groupModelViewMatrix = findModelViewMatrix (group .getValue ());
-	X3D::X3DTransformNode* transform            = dynamic_cast <X3D::X3DTransformNode*> (group .getValue ());
-
-	if (transform)
-		groupModelViewMatrix .multLeft (transform -> getMatrix ());
-
-	// Add children to group
-
-	for (const auto & child : nodes)
-	{
-		if (not child)
-			continue;
-
-		if (child == group)
-			continue;
-
-		// Adjust transformation
-
-		X3D::Matrix4f          childModelViewMatrix = findModelViewMatrix (child .getValue ());
-		X3D::X3DTransformNode* transform            = dynamic_cast <X3D::X3DTransformNode*> (child .getValue ());
-
-		if (transform)
-		{
-			try
-			{
-				childModelViewMatrix .multLeft (transform -> getMatrix ());
-				childModelViewMatrix .multRight (~groupModelViewMatrix);
-
-				transform -> setMatrix (childModelViewMatrix);
-			}
-			catch (const std::domain_error & error)
-			{ }
-		}
-
-		// Add to group
-
-		child -> remove ({ &group, &nodes, children });
-
-		children -> emplace_back (child);
-	}
-
-	setEdited (true);
-}
-
-void
-X3DBrowserEditor::detachFromGroup (const X3D::SFNode & node, bool detachToLayer0)
-throw (X3D::Error <X3D::INVALID_NODE>)
-{
-	__LOG__ << std::endl;
-
-	if (not node)
-		throw X3D::Error <X3D::INVALID_NODE> ("Node is empty.");
-
-	auto layers = dynamic_cast <X3D::X3DNode*> (node .getValue ()) -> getLayers ();
-
-	// Adjust transformation
-
-	X3D::Matrix4f          nodeModelViewMatrix = findModelViewMatrix (node .getValue ());
-	X3D::X3DTransformNode* transform           = dynamic_cast <X3D::X3DTransformNode*> (node .getValue ());
-
-	if (transform)
-	{
-		nodeModelViewMatrix .multLeft (transform -> getMatrix ());
-
-		transform -> setMatrix (nodeModelViewMatrix);
-	}
-
-	// Add to layers
-
-	node -> remove ({ &node });
-
-	if (detachToLayer0)
-		getBrowser () -> getExecutionContext () -> getRootNodes () .emplace_back (node);
-
-	else
-	{
-		for (const auto & layer : layers)
-		{
-			if (layer -> isLayer0 ())
-				getBrowser () -> getExecutionContext () -> getRootNodes () .emplace_back (node);
-
-			else
-				layer -> children () .emplace_back (node);
-		}
-	}
-
-	setEdited (true);
-}
-
-X3D::SFNode
-X3DBrowserEditor::createParentGroup (const X3D::SFNode & child)
-throw (X3D::Error <X3D::INVALID_NODE>)
-{
-	__LOG__ << std::endl;
-
-	if (not child)
-		throw X3D::Error <X3D::INVALID_NODE> ("Node is empty.");
-
-	// Replace node with Transform
-
-	auto group     = getBrowser () -> getExecutionContext () -> createNode ("Transform");
-	auto transform = dynamic_cast <X3D::Transform*> (group .getValue ());
-
-	transform -> children () .emplace_back (child);
-	transform -> setup ();
-
-	transform -> replace (child, { &child, &transform -> children () });
-
-	setEdited (true);
-
-	return group;
 }
 
 X3D::Matrix4f

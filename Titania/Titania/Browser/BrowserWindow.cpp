@@ -836,15 +836,18 @@ BrowserWindow::on_create_parent_group_activate ()
 			{
 				bool expanded = getOutlineTreeView () .get_iters (child) .size ();
 
-				auto group = createParentGroup (child);
+				auto groups = createParentGroup (child);
 	
 				getUserData (child) -> path .clear ();
 
 				// Select Transform
 
-				getBrowser () -> getSelection () -> addChild (group);
+				for (const auto & group : groups)
+				{
+					getBrowser () -> getSelection () -> addChild (group);
 
-				getUserData (group) -> expanded = expanded;
+					getUserData (group) -> expanded = expanded;
+				}
 			}
 			catch (const X3D::Error <X3D::INVALID_NODE> &)
 			{ }	

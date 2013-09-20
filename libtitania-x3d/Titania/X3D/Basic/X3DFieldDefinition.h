@@ -194,7 +194,7 @@ public:
 
 	virtual
 	void
-	processEvent (Event &) override;
+	processEvent (const EventPtr &) override;
 
 	virtual
 	void

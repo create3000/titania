@@ -173,7 +173,7 @@ private:
 
 	virtual
 	void
-	addEvent (X3DChildObject* const, const Event &) final
+	addEvent (X3DChildObject* const, const EventPtr &) final
 	{ }
 
 	static JSClass global_class;

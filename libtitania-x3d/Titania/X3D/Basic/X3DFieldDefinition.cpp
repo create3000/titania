@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -161,20 +161,30 @@ X3DFieldDefinition::updateReference (X3DFieldDefinition* const reference)
 }
 
 void
-X3DFieldDefinition::processEvent (Event & event)
+X3DFieldDefinition::processEvent (const EventPtr & event)
 {
-	if (not event .sources .insert (this) .second)
+	if (not event -> sources .insert (this) .second)
 		return;
-
+		
 	isTainted (false);
 
-	if (event .object not_eq this)
-		write (*event .object);
+	if (event -> object not_eq this)
+		write (*event -> object);
 
 	processInterests ();
+	
+	size_t i = 0;
 
 	for (const auto & fieldDefinition : interests)
-		fieldDefinition -> addEvent (fieldDefinition, event);
+	{
+		if (i == 0)
+			fieldDefinition -> addEvent (fieldDefinition, event);
+
+		else
+			fieldDefinition -> addEvent (fieldDefinition, EventPtr (new Event (*event)));
+		
+		++ i;
+	}
 }
 
 void

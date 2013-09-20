@@ -68,7 +68,7 @@ public:
 	Router ();
 
 	void
-	addEvent (X3DChildObject* const, const Event &);
+	addEvent (X3DChildObject* const, const EventPtr &);
 
 	NodeId
 	addNode (X3DBaseNode*);

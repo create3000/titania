@@ -80,9 +80,9 @@ Selection::addChild (const SFNode & child)
 	if (not child)
 		return;
 
-	children .emplace_back (child);
-
 	child -> addHandle ();
+
+	children .emplace_back (child);
 }
 
 void
@@ -104,13 +104,14 @@ Selection::removeChild (const SFNode & child)
 void
 Selection::clear ()
 {
-	for (const auto & child : children)
+	MFNode copy = children;
+	children .clear ();
+
+	for (const auto & child : copy)
 	{
 		if (child)
 			child -> removeHandle ();
 	}
-
-	children .clear ();
 }
 
 void

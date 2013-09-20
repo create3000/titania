@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_BASE_EVENT_H__
 
 #include "../Base/ChildObjectSet.h"
+#include <memory>
 
 namespace titania {
 namespace X3D {
@@ -68,6 +69,8 @@ public:
 	ChildObjectSet  sources;
 
 };
+
+typedef std::shared_ptr <Event> EventPtr;
 
 } // X3D
 } // titania

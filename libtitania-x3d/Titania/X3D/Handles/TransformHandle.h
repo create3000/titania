@@ -209,7 +209,7 @@ public:
 
 	virtual
 	void
-	addEvent (X3DChildObject* const, const Event &) final
+	addEvent (X3DChildObject* const, const EventPtr &) final
 	{ }
 
 	virtual

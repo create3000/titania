@@ -12,6 +12,24 @@ EXTERNPROTO Rotor [
 ]
 "Rotor.wrl"
 
+PROTO Children1 [
+  exposedField MFNode children1 [ ]
+]
+{
+  PROTO Children2 [
+    exposedField MFNode children2 [ ]
+  ]
+  {
+    Transform {
+      children IS children2
+    }
+  }
+
+  Children2 {
+    children2 IS children1
+  }
+}
+
 NavigationInfo {
   type [ "NONE", "ANY" ]
 }
@@ -44,13 +62,11 @@ Group {
   children USE _0
 }
 
-DEF Rotor Rotor {
-  loop TRUE
-}
+DEF Rotor Rotor { }
 
 DEF Box Transform {
   translation 1.41298 -0.894935 0
-  rotation 0 0 1 1.49779
+  rotation 0 0 1 0
   scale 0.2 0.2 0.2
   children Transform {
     children Shape {
@@ -92,6 +108,13 @@ DEF Cone Transform {
       geometry Cone { }
     }
   }
+}
+
+Children1 {
+  children1 [
+    Transform { }
+    Transform { }
+  ]
 }
 
 ROUTE Rotor.value_changed TO Box.set_rotation

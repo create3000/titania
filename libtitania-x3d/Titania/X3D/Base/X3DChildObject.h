@@ -107,7 +107,7 @@ public:
 	// Only used in X3DFieldDefinition.
 	virtual
 	void
-	processEvent (Event &)
+	processEvent (const EventPtr &)
 	{ }
 
 	///  @name Destruction
@@ -153,7 +153,7 @@ protected:
 
 	virtual
 	void
-	addEvent (X3DChildObject* const, const Event &);
+	addEvent (X3DChildObject* const, const EventPtr &);
 
 
 private:

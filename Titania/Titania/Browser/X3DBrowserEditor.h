@@ -102,7 +102,7 @@ protected:
 	detachFromGroup (const X3D::SFNode &, bool)
 	throw (X3D::Error <X3D::INVALID_NODE>);
 
-	X3D::SFNode
+	X3D::MFNode
 	createParentGroup (const X3D::SFNode &)
 	throw (X3D::Error <X3D::INVALID_NODE>);
 
@@ -121,6 +121,9 @@ private:
 	removeNode (X3D::X3DExecutionContext* const, const X3D::SFNode &) const;
 
 	void
+	removeNodeFromSceneGraph (X3D::X3DExecutionContext* const, const X3D::SFNode &) const;
+
+	void
 	removeNamedNode (X3D::X3DExecutionContext* const, const X3D::SFNode &) const;
 
 	void
@@ -128,6 +131,10 @@ private:
 
 	void
 	deleteRoutes (X3D::X3DExecutionContext* const, const X3D::SFNode &) const;
+
+	bool
+	traverse (const X3D::X3DSFNode <X3D::Scene> & scene, const TraverseCallback & callback) const
+	{ return traverse (scene .getValue (), callback); }
 
 	bool
 	traverse (X3D::X3DExecutionContext* const, const TraverseCallback &) const;

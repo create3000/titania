@@ -224,50 +224,46 @@ X3DBaseNode::copy (X3DExecutionContext* const executionContext) const
 void
 X3DBaseNode::replace (X3DBaseNode* const node, const std::set <const X3DFieldDefinition*> & exclude)
 {
-	for (auto & parent : node -> getParentFields (exclude))
-		parent -> setValue (this);
-}
+	std::vector <SFNode*> sfnodes;
+	std::vector <MFNode*> mfnodes;
 
-void
-X3DBaseNode::remove (const std::set <const X3DFieldDefinition*> & exclude)
-{
-	std::set <SFNode*> sfnodes;
-	std::set <MFNode*> mfnodes;
-
-	for (auto & parent : getParents ())
+	for (auto & parent : node -> getParents ())
 	{
 		auto sfnode = dynamic_cast <SFNode*> (parent);
-	
+
 		if (sfnode)
 		{
 			if (exclude .find (sfnode) == exclude .end ())
 			{
-				bool fieldValue = false;
-			
+				bool insert = true;
+
 				for (auto & secondParent : sfnode -> getParents ())
 				{
 					auto mfnode = dynamic_cast <MFNode*> (secondParent);
-		
+
 					if (mfnode)
 					{
-						fieldValue = true;
-						
-						if (exclude .find (mfnode) == exclude .end ())
-							mfnodes .insert (mfnode);
+						insert = exclude .find (mfnode) == exclude .end ();
+
+						if (insert)
+							mfnodes .emplace_back (mfnode);
 					}
 				}
 
-				if (not fieldValue)
-					sfnodes .insert (sfnode);
+				if (insert)
+					sfnodes .emplace_back (sfnode);
 			}
 		}
 	}
 
-	for (auto & sfnode : sfnodes)
-		sfnode -> setValue (nullptr);
+	for (auto & parent : sfnodes)
+	{
+		parent -> set (this);
+		parent -> processInterests ();
+	}
 
-	for (auto & mfnode : mfnodes)
-		mfnode -> erase (std::remove (mfnode -> begin (), mfnode -> end (), this), mfnode -> end ());
+	for (auto & parent : mfnodes)
+		parent -> processInterests ();
 }
 
 void
@@ -292,7 +288,7 @@ X3DBaseNode::getNumClones () const
 	{
 		if (dynamic_cast <X3DFieldDefinition*> (parentField))
 		{
-			if (parentField -> getTypeName () == "SFNode")
+			if (dynamic_cast <SFNode*> (parentField))
 			{
 				// Only X3DNodes, ie nodes in the scene graph, have field names
 
@@ -311,14 +307,13 @@ X3DBaseNode::getNumClones () const
 						}
 					}
 				}
-
 				else
 				{
 					for (const auto & parent : parentField -> getParents ())
 					{
 						// Only X3DNodes, ie nodes in the scene graph, have field names
 
-						if (parent -> getTypeName () == "MFNode" and parent -> getName () .length ())
+						if (dynamic_cast <MFNode*> (parent) and parent -> getName () .length ())
 						{
 							// If any of the fields parents is in a scene add count.
 
@@ -364,46 +359,11 @@ throw (Error <DISPOSED>)
 	return getBrowser () -> getNode (getTypeName ());
 }
 
-std::vector <SFNode*>
-X3DBaseNode::getParentFields (const std::set <const X3DFieldDefinition*> & exclude) const
-{
-	std::vector <SFNode*> fields;
-
-	for (auto & parent : getParents ())
-	{
-		auto sfnode = dynamic_cast <SFNode*> (parent);
-
-		if (sfnode)
-		{
-			if (exclude .find (sfnode) == exclude .end ())
-			{
-				bool insert = true;
-
-				for (auto & secondParent : sfnode -> getParents ())
-				{
-					auto mfnode = dynamic_cast <MFNode*> (secondParent);
-
-					if (mfnode)
-						insert = exclude .find (mfnode) == exclude .end ();
-				}
-
-				if (insert)
-					fields .emplace_back (sfnode);
-			}
-		}
-	}
-
-	return fields;
-}
-
 void
 X3DBaseNode::addField (const AccessType accessType, const std::string & name, X3DFieldDefinition & field)
 {
 	if (fields .find (name) not_eq fields .end ())
-	{
 		removeField (name);
-		__LOG__ << " field " << getTypeName () << "." << name << " already exists in this node'." << std::endl;
-	}
 
 	field .isTainted (true);
 	field .addParent (this);
@@ -581,13 +541,13 @@ X3DBaseNode::addEvent (X3DChildObject* const object)
 
 	object -> isTainted (true);
 
-	addEvent (object, Event (object));
+	addEvent (object, EventPtr (new Event (object)));
 }
 
 void
-X3DBaseNode::addEvent (X3DChildObject* const object, const Event & event)
+X3DBaseNode::addEvent (X3DChildObject* const object, const EventPtr & event)
 {
-	// __LOG__ << object << " : " << object -> getName () << " : " << object -> getTypeName () << " : " << getName () << " : " << getTypeName () << " : " << this << std::endl;
+	//__LOG__ << object << " : " << object -> getName () << " : " << object -> getTypeName () << " : " << getName () << " : " << getTypeName () << " : " << this << std::endl;
 
 	getBrowser () -> addEvent ();
 

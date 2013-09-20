@@ -60,7 +60,7 @@ Router::Router () :
 { }
 
 void
-Router::addEvent (X3DChildObject* const object, const Event & event)
+Router::addEvent (X3DChildObject* const object, const EventPtr & event)
 {
 	events .emplace_back (object, event);
 }
@@ -114,7 +114,7 @@ Router::processEvents ()
 	//		eventsProcessed ();
 	//	}
 
-	// std::vector is probaly faster
+	// maybe std::vector is faster
 
 	while (size ())
 	{
@@ -122,7 +122,7 @@ Router::processEvents ()
 		{
 			for (auto & event : getEvents ())
 			{
-				event .first -> processEvent (event .second);
+				event .first -> processEvent (std::move (event .second));
 			}
 		}
 		while (size ());

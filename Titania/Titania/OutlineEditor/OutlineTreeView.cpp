@@ -837,7 +837,7 @@ OutlineTreeView::select_node (const Gtk::TreeModel::iterator & iter, const Gtk::
 	{
 		selection .set_select_multiple (get_shift_key ());
 
-		selection .select (*static_cast <X3D::SFNode*> (get_object (iter)));
+		selection .select (X3D::SFNode (*static_cast <X3D::SFNode*> (get_object (iter))));
 	}
 }
 

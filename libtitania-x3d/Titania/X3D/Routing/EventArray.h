@@ -57,7 +57,7 @@
 namespace titania {
 namespace X3D {
 
-typedef std::deque <std::pair <X3DChildObject*, Event>> EventArray;
+typedef std::deque <std::pair <X3DChildObject*, EventPtr>> EventArray;
 
 } // X3D
 } // titania
