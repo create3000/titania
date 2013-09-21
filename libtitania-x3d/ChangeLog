@@ -1,5 +1,9 @@
 2013-09-21  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBrowserContext.cpp: 
+
+2013-09-21  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Scene.h:
 	* Scene.cpp:
 	* X3DScene.h:
