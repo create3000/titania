@@ -79,6 +79,10 @@ private:
 
 	virtual
 	void
+	on_drag_data_get (const Glib::RefPtr <Gdk::DragContext> &, Gtk::SelectionData &, guint, guint);
+
+	virtual
+	void
 	on_drag_data_received (const Glib::RefPtr <Gdk::DragContext>&, int, int, const Gtk::SelectionData &, guint info, guint) final;
 
 	virtual

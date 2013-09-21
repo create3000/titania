@@ -111,55 +111,6 @@ X3DExecutionContext::realize ()
 }
 
 void
-X3DExecutionContext::assign1 (const X3DExecutionContext* const executionContext)
-{
-	setEncoding             (executionContext -> getEncoding ());
-	setSpecificationVersion (executionContext -> getSpecificationVersion ());
-	setCharacterEncoding    (executionContext -> getCharacterEncoding ());
-	setComment              (executionContext -> getComment ());
-
-	setWorldURL (executionContext -> getWorldURL ());
-
-	addComponents (components);
-	setProfile (profile);
-
-	for (const auto & externProto : executionContext -> getExternProtoDeclarations ())
-		updateExternProtoDeclaration (externProto .getNodeName (), externProto);
-
-	for (const auto & proto : executionContext -> getProtoDeclarations ())
-		updateProtoDeclaration (proto .getNodeName (), proto);
-
-	for (const auto & rootNode : executionContext -> getRootNodes ())
-	{
-		if (rootNode)
-		{
-			try
-			{
-				getRootNodes () .emplace_back (rootNode -> clone (this));
-			}
-			catch (const Error <INVALID_NAME> &)
-			{
-				getRootNodes () .emplace_back (rootNode -> copy (this));
-			}
-		}
-		else
-			getRootNodes () .emplace_back (rootNode);
-	}
-}
-
-void
-X3DExecutionContext::assign2 (const X3DExecutionContext* const executionContext)
-{
-	realize ();
-
-	for (const auto & importedNode : executionContext -> getImportedNodes ())
-		importedNode -> clone (this);
-
-	for (const auto & route : executionContext -> getRoutes ())
-		route -> clone (this);
-}
-
-void
 X3DExecutionContext::setWorldURL (const basic::uri & value)
 {
 	if (worldURL .empty ())
@@ -167,10 +118,19 @@ X3DExecutionContext::setWorldURL (const basic::uri & value)
 }
 
 void
-X3DExecutionContext::addComponents (const ComponentInfoArray & value)
+X3DExecutionContext::addComponents (const ComponentInfoArray & componentInfoArray)
 {
-	for (const auto & component : value)
-		components .push_back (component -> getName (), component);
+	for (const auto & component : componentInfoArray)
+	{
+		try
+		{
+			components .rfind (component -> getName ());
+		}
+		catch (const std::out_of_range &)
+		{
+			components .push_back (component -> getName (), component);
+		}
+	}
 }
 
 SFNode
@@ -688,6 +648,57 @@ throw (Error <INVALID_NODE>,
 	}
 
 	return std::make_pair (sourceField, destinationField);
+}
+
+// Import handling
+
+void
+X3DExecutionContext::importExternProtos (const X3DExecutionContext* const executionContext)
+{
+	for (const auto & externProto : executionContext -> getExternProtoDeclarations ())
+		updateExternProtoDeclaration (externProto .getNodeName (), externProto);
+}
+
+void
+X3DExecutionContext::importProtos (const X3DExecutionContext* const executionContext)
+{
+	for (const auto & proto : executionContext -> getProtoDeclarations ())
+		updateProtoDeclaration (proto .getNodeName (), proto);
+}
+
+void
+X3DExecutionContext::importRootNodes (const X3DExecutionContext* const executionContext)
+{
+	for (const auto & rootNode : executionContext -> getRootNodes ())
+	{
+		if (rootNode)
+		{
+			try
+			{
+				getRootNodes () .emplace_back (rootNode -> clone (this));
+			}
+			catch (const Error <INVALID_NAME> &)
+			{
+				getRootNodes () .emplace_back (rootNode -> copy (this));
+			}
+		}
+		else
+			getRootNodes () .emplace_back (rootNode);
+	}
+}
+
+void
+X3DExecutionContext::importImportedNodes (const X3DExecutionContext* const executionContext)
+{
+	for (const auto & importedNode : executionContext -> getImportedNodes ())
+		importedNode -> clone (this);
+}
+
+void
+X3DExecutionContext::importRoutes (const X3DExecutionContext* const executionContext)
+{
+	for (const auto & route : executionContext -> getRoutes ())
+		route -> clone (this);
 }
 
 void

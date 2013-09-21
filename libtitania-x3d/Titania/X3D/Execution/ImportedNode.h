@@ -69,16 +69,19 @@ public:
 
 	virtual
 	ImportedNode*
-	clone (X3DExecutionContext* const) const;
+	clone (X3DExecutionContext* const) const final;
 
 	const X3DSFNode <Inline> &
-	getInlineNode () const;
+	getInlineNode () const
+	{ return inlineNode; }
 
 	const std::string &
-	getExportedName () const;
+	getExportedName () const
+	{ return exportedName; }
 
 	const std::string &
-	getImportedName () const;
+	getImportedName () const
+	{ return importedName; }
 
 	const SFNode &
 	getExportedNode () const

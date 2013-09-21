@@ -86,7 +86,21 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 	// Assign protos and root nodes
 
 	if (not executionContext -> isProto ())
-		assign1 (proto);
+	{
+		setEncoding             (proto -> getEncoding ());
+		setSpecificationVersion (proto -> getSpecificationVersion ());
+		setCharacterEncoding    (proto -> getCharacterEncoding ());
+		setComment              (proto -> getComment ());
+
+		setWorldURL (proto -> getWorldURL ());
+
+		addComponents (proto -> getComponents ());
+		setProfile (proto -> getProfile ());
+
+		importExternProtos (proto);
+		importProtos (proto);
+		importRootNodes (proto);
+	}
 
 	setExtendedEventHandling (false);
 }
@@ -104,7 +118,10 @@ X3DPrototypeInstance::initialize ()
 
 	// Defer assigning imports and routes until now
 
-	assign2 (proto);
+	realize ();
+
+	importImportedNodes (proto);
+	importRoutes (proto);
 }
 
 const std::string &

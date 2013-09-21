@@ -54,13 +54,13 @@
 #include "../Components/Networking/Inline.h"
 #include "../Execution/X3DExecutionContext.h"
 
-#include <iostream>
-
 namespace titania {
 namespace X3D {
 
 ImportedNode::ImportedNode (X3DExecutionContext* const executionContext,
-                            const X3DSFNode <Inline> & inlineNode, const std::string & exportedName, const std::string & importedName) :
+                            const X3DSFNode <Inline> & inlineNode,
+                            const std::string & exportedName,
+                            const std::string & importedName) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	  inlineNode (inlineNode),
 	exportedName (exportedName),
@@ -93,24 +93,6 @@ ImportedNode::clone (X3DExecutionContext* const executionContext) const
 	{
 		throw Error <INVALID_NAME> ("Bad IMPORT specification in copy: " + std::string (error .what ()));
 	}
-}
-
-const X3DSFNode <Inline> &
-ImportedNode::getInlineNode () const
-{
-	return inlineNode;
-}
-
-const std::string &
-ImportedNode::getExportedName () const
-{
-	return exportedName;
-}
-
-const std::string &
-ImportedNode::getImportedName () const
-{
-	return importedName;
 }
 
 const SFNode &

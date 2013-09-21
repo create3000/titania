@@ -12,6 +12,17 @@ EXTERNPROTO Rotor [
 ]
 "Rotor.wrl"
 
+EXTERNPROTO Grid [
+  exposedField SFInt32 xDimension
+  exposedField SFFloat xSpacing
+  exposedField SFInt32 zDimension
+  exposedField SFFloat zSpacing
+  exposedField SFColor color
+  exposedField SFFloat transparency
+  field        SFBool  solid
+]
+"Grid.wrl"
+
 PROTO Children1 [
   exposedField MFNode children1 [ ]
 ]
@@ -67,8 +78,8 @@ DEF Rotor Rotor {
 }
 
 DEF Box Transform {
-  translation 1.41298 -0.894935 0
-  rotation 0 0 1 0.779997
+  translation 1.40843 1.10727 0.193803
+  rotation 0 0 1 0.378658
   scale 0.2 0.2 0.2
   children Transform {
     children Shape {
@@ -83,7 +94,7 @@ DEF Box Transform {
 }
 
 DEF Sphere Transform {
-  translation 2.29171 -0.606878 0
+  translation 2.31518 0.867383 0
   scale 0.2 0.2 0.2
   children Transform {
     children Shape {
@@ -98,7 +109,7 @@ DEF Sphere Transform {
 }
 
 DEF Cone Transform {
-  translation 3.05759 -0.785617 0
+  translation 3.05759 1.14098 0
   scale 0.2 0.2 0.2
   children Transform {
     children Shape {
@@ -117,6 +128,11 @@ Children1 {
     Transform { }
     Transform { }
   ]
+}
+
+Grid {
+  xDimension 100
+  zDimension 100
 }
 
 ROUTE Rotor.value_changed TO Box.set_rotation

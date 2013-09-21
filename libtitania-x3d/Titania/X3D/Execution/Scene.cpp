@@ -50,7 +50,7 @@
 
 #include "Scene.h"
 
-#include <malloc.h>
+#include "../Parser/RegEx.h"
 
 namespace titania {
 namespace X3D {
@@ -69,6 +69,73 @@ Scene*
 Scene::create (X3DExecutionContext* const executionContext) const
 {
 	return new Scene (executionContext -> getBrowser ());
+}
+
+void
+Scene::importScene (const X3DSFNode <Scene> & scene)
+{
+__LOG__ << std::endl;
+__LOG__ << scene -> getRootNodes () .size () << std::endl;
+
+	if (getProfile ())
+		addComponents (scene -> getProfile () -> getComponents ());
+
+	else
+		setProfile (scene -> getProfile ());
+
+	addComponents (scene -> getComponents ());
+
+	importMetaData (scene);
+
+	importExternProtos (scene);
+	importProtos (scene);
+
+	updateNamedNodes (scene);
+	importRootNodes (scene);
+
+	realize ();
+
+	importImportedNodes (scene);
+	importRoutes (scene);
+	importExportedNodes (scene);
+}
+
+void
+Scene::updateNamedNodes (const X3DSFNode <Scene> & scene)
+{
+	for (const auto & node : NamedNodeIndex (scene -> getNamedNodes ()))
+	{
+		std::string name   = node .first;
+		std::string number = "_0";
+		size_t      i      = 0;
+
+		RegEx::_Number .Replace ("", &name);
+
+		for ( ; ;)
+		{
+			try
+			{
+				getNamedNode (name + number);
+
+				number = "_" + std::to_string (i ++);
+			}
+			catch (const Error <INVALID_NAME> &)
+			{
+				try
+				{
+					scene -> getNamedNode (name + number);
+
+					number = "_" + std::to_string (i ++);
+				}
+				catch (const Error <INVALID_NAME> &)
+				{
+					break;
+				}
+			}
+		}
+
+		scene -> updateNamedNode (name + number, node .second);
+	}
 }
 
 Scene::~Scene ()

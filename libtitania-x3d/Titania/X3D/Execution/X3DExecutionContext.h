@@ -72,6 +72,8 @@ class X3DProto;
 class X3DBrowser;
 class X3DPrototypeInstance;
 
+typedef std::map <std::string, SFNode> NamedNodeIndex;
+
 class X3DExecutionContext :
 	virtual public X3DNode, public X3DContext
 {
@@ -83,7 +85,6 @@ public:
 	void
 	setup ();
 
-	virtual
 	void
 	realize ();
 
@@ -238,6 +239,12 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
+	const NamedNodeIndex &
+	getNamedNodes () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
+	{ return namedNodes; }
+
 	///  @name Imported nodes handling
 
 	const X3DSFNode <ImportedNode> &
@@ -379,6 +386,8 @@ public:
 	       Error <DISPOSED>)
 	{ return routes; }
 
+	///  @name Viewpoint handling
+
 	void
 	changeViewpoint (const std::string &)
 	throw (Error <INVALID_NAME>,
@@ -407,11 +416,22 @@ protected:
 	void
 	setWorldURL (const basic::uri & value);
 
-	void
-	assign1 (const X3DExecutionContext* const);
+	///  @name Import handling
 
 	void
-	assign2 (const X3DExecutionContext* const);
+	importExternProtos (const X3DExecutionContext* const);
+
+	void
+	importProtos (const X3DExecutionContext* const);
+
+	void
+	importRootNodes (const X3DExecutionContext* const);
+
+	void
+	importImportedNodes (const X3DExecutionContext* const);
+
+	void
+	importRoutes (const X3DExecutionContext* const);
 
 
 private:
@@ -440,7 +460,6 @@ private:
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_FIELD>);
 
-	typedef std::map <std::string, SFNode>       NamedNodeIndex;
 	typedef std::map <X3DBaseNode*, std::string> ImportedNamesIndex;
 
 	basic::uri  worldURL;

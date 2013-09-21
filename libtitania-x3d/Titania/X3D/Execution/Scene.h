@@ -76,10 +76,21 @@ public:
 	isScene () const final
 	{ return true; }
 
+	///  @name Import handling
+
+	void
+	importScene (const X3DSFNode <Scene> &);
+
 	///  @name Destruction
 
 	virtual
 	~Scene ();
+
+
+private:
+
+	void
+	updateNamedNodes (const X3DSFNode <Scene> &);
 
 };
 

@@ -1,5 +1,21 @@
 2013-09-21  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Scene.h:
+	* Scene.cpp:
+	* X3DScene.h:
+	* X3DBrowser.h:
+	* X3DBrowser.cpp:
+	* X3DScene.cpp:
+	* ImportedNode.h:
+	* ExportedNode.h:
+	* ExportedNode.cpp:
+	* ImportedNode.cpp:
+	* X3DExecutionContext.h:
+	* X3DExecutionContext.cpp:
+	* X3DPrototypeInstance.cpp: 
+
+2013-09-21  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DScene.h:
 	* X3DBrowser.h:
 	* X3DScene.cpp:

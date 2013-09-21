@@ -50,16 +50,15 @@
 
 #include "ExportedNode.h"
 
-#include "../Components/Networking/Inline.h"
 #include "../Execution/X3DExecutionContext.h"
-
-#include <iostream>
+#include "../Execution/X3DScene.h"
 
 namespace titania {
 namespace X3D {
 
 ExportedNode::ExportedNode (X3DExecutionContext* const executionContext,
-                            const std::string & exportedName, const SFNode & node) :
+                            const std::string & exportedName,
+                            const SFNode & node) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	exportedName (exportedName),
 	        node (node)
@@ -73,21 +72,30 @@ ExportedNode::ExportedNode (X3DExecutionContext* const executionContext,
 }
 
 X3DBaseNode*
-ExportedNode::create (X3DExecutionContext* const executionConstext) const
+ExportedNode::create (X3DExecutionContext* const executionContext) const
 {
-	return new ExportedNode (executionConstext, exportedName, node);
+	return new ExportedNode (executionContext, exportedName, node);
 }
 
-const std::string &
-ExportedNode::getExportedName () const
+ExportedNode*
+ExportedNode::clone (X3DScene* const scene) const
 {
-	return exportedName;
+	try
+	{
+		auto node = scene -> getNamedNode (getNode () -> getName ());
+
+		return scene -> addExportedNode (exportedName, node) .getValue ();
+	}
+	catch (const X3DError & error)
+	{
+		throw Error <INVALID_NAME> ("Bad EXPORT specification in copy: " + std::string (error .what ()));
+	}
 }
 
-const SFNode &
-ExportedNode::getNode () const
+ExportedNode*
+ExportedNode::clone (X3DExecutionContext* const scene) const
 {
-	return node;
+	throw Error <NOT_SUPPORTED> ("Cloning exported nodes to executionContext is not supported.");
 }
 
 void

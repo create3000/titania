@@ -59,6 +59,8 @@
 namespace titania {
 namespace puck {
 
+static const std::string DND_OUTLINE_TREE_ROW = "titania/outline-tree/row";
+
 OutlineTreeViewEditor::OutlineTreeViewEditor (BrowserWindow* const browserWindow) :
 	  Glib::ObjectBase (typeid (OutlineTreeViewEditor)),
 	  X3DBaseInterface (browserWindow),
@@ -70,13 +72,32 @@ OutlineTreeViewEditor::OutlineTreeViewEditor (BrowserWindow* const browserWindow
 	get_cellrenderer () -> signal_edited () .connect (sigc::mem_fun (this, &OutlineTreeViewEditor::on_edited));
 
 	// Drag & drop targets
-	std::vector <Gtk::TargetEntry> targets = {
-		Gtk::TargetEntry ("STRING"),
-		Gtk::TargetEntry ("text/plain"),
-		Gtk::TargetEntry ("text/uri-list")
+	std::vector <Gtk::TargetEntry> source_targets = {
+		Gtk::TargetEntry (DND_OUTLINE_TREE_ROW, Gtk::TARGET_SAME_WIDGET)
 	};
 
-	drag_dest_set (targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
+	drag_source_set (source_targets, Gdk::BUTTON1_MASK, Gdk::ACTION_COPY | Gdk::ACTION_MOVE | Gdk::ACTION_LINK);
+
+	// Drag & drop targets
+	std::vector <Gtk::TargetEntry> dest_targets = {
+		Gtk::TargetEntry ("STRING"),
+		Gtk::TargetEntry ("text/plain"),
+		Gtk::TargetEntry ("text/uri-list"),
+		Gtk::TargetEntry (DND_OUTLINE_TREE_ROW, Gtk::TARGET_SAME_WIDGET)
+	};
+
+	drag_dest_set (dest_targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
+}
+
+void
+OutlineTreeViewEditor::on_drag_data_get (const Glib::RefPtr <Gdk::DragContext> & context,
+                                         Gtk::SelectionData & selection_data,
+                                         guint info,
+                                         guint time)
+{
+	__LOG__ << std::endl;
+
+	selection_data .set (DND_OUTLINE_TREE_ROW, "1:2:3");
 }
 
 void
@@ -86,6 +107,16 @@ OutlineTreeViewEditor::on_drag_data_received (const Glib::RefPtr <Gdk::DragConte
                                               guint info,
                                               guint time)
 {
+	__LOG__ << selection_data .get_data_type () << std::endl;
+
+	if (selection_data .get_data_type () == DND_OUTLINE_TREE_ROW)
+	{
+		__LOG__ << selection_data .get_data_as_string () << std::endl;
+
+		context -> drag_finish (true, false, time);
+		return;
+	}
+
 	auto uri = selection_data .get_uris ();
 	
 	if (uri .size ())

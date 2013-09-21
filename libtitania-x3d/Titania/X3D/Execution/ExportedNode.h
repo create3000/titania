@@ -57,7 +57,7 @@
 namespace titania {
 namespace X3D {
 
-class Inline;
+class X3DScene;
 
 class ExportedNode :
 	virtual public X3DBaseNode
@@ -71,11 +71,20 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const final;
 
+	ExportedNode*
+	clone (X3DScene* const) const;
+
+	virtual
+	ExportedNode*
+	clone (X3DExecutionContext* const) const final;
+
 	const std::string &
-	getExportedName () const;
+	getExportedName () const
+	{ return exportedName; }
 
 	const SFNode &
-	getNode () const;
+	getNode () const
+	{ return node; }
 
 	virtual
 	void

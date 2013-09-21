@@ -268,12 +268,14 @@ X3DBrowserWidget::import (const basic::uri & worldURL)
 {
 	try
 	{
-		loadTime = chrono::now ();
+		auto scene = getBrowser () -> createX3DFromURL ({ worldURL .str () });
 
-		getBrowser () -> importURL ({ worldURL .str () });
+		getBrowser () -> getExecutionContext () -> importScene (scene);
 	}
-	catch (const X3D::X3DError &)
-	{ }
+	catch (const X3D::X3DError & error)
+	{
+		std::clog << error .what () << std::endl;
+	}
 }
 
 void

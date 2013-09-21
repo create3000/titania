@@ -61,18 +61,8 @@ X3DScene::X3DScene () :
 	X3DExecutionContext (),
 	          metadatas (),
 	      exportedNodes (),
-	      exportedNames (),
-	      firstWorldURL ()
+	      exportedNames ()
 { }
-
-void
-X3DScene::realize ()
-{
-	X3DExecutionContext::realize ();
-
-	if (firstWorldURL .size ())
-		setWorldURL (firstWorldURL);
-}
 
 // MetaData handling
 
@@ -189,6 +179,22 @@ throw (Error <INVALID_NAME>,
 	}
 }
 
+// Import handling
+
+void
+X3DScene::importMetaData (const X3DScene* const scene)
+{
+	for (const auto & metaData : scene -> getMetaDatas ())
+		addMetaData (metaData .first, metaData .second);
+}
+
+void
+X3DScene::importExportedNodes (const X3DScene* const scene)
+{
+	for (const auto & exportedNode : scene -> getExportedNodes ())
+		exportedNode -> clone (this);
+}
+
 // Input/Output
 
 void
@@ -198,7 +204,6 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	firstWorldURL = getWorldURL ();
 	setWorldURL (worldURL);
 
 	fromStream (istream);

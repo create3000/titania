@@ -68,10 +68,6 @@ public:
 	///  @name Construction
 
 	X3DScene ();
-	
-	virtual
-	void
-	realize () final;
 
 	///  @name MetaData handling
 
@@ -157,6 +153,17 @@ public:
 	void
 	dispose () override;
 
+	///  @name Import handling
+
+
+protected:
+
+	void
+	importMetaData (const X3DScene* const);
+
+	void
+	importExportedNodes (const X3DScene* const);
+
 
 private:
 
@@ -167,7 +174,6 @@ private:
 	MetaDataIndex      metadatas;
 	ExportedNodeArray  exportedNodes;
 	ExportedNamesIndex exportedNames;
-	basic::uri         firstWorldURL;
 
 };
 
