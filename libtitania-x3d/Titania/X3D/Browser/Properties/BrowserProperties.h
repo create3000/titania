@@ -51,7 +51,8 @@
 #ifndef __TITANIA_X3D_BROWSER_PROPERTIES_BROWSER_PROPERTIES_H__
 #define __TITANIA_X3D_BROWSER_PROPERTIES_BROWSER_PROPERTIES_H__
 
-#include "../../Components/Core/X3DPropertyNode.h"
+#include "../../Basic/X3DBaseNode.h"
+#include "../../Fields.h"
 
 namespace titania {
 namespace X3D {
@@ -67,7 +68,7 @@ namespace X3D {
 //	BINARY_ENCODING         Boolean              The browser supports the binary file format encoding.
 
 class BrowserProperties :
-	public X3DPropertyNode
+	virtual public X3DBaseNode
 {
 public:
 

@@ -1,3 +1,29 @@
+2013-09-21  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Browser.h:
+	* X3DBaseNode.h:
+	* Browser.cpp:
+	* X3DChildObject.h:
+	* X3DBaseNode.cpp:
+	* X3DChildObject.cpp:
+	* X3DBrowserContext.h:
+	* LOD.h:
+	* Switch.h:
+	* X3DBrowserContext.cpp:
+	* X3DJavaScriptEngine.h:
+	* StaticGroup.h:
+	* X3DJavaScriptEngine.cpp:
+	* X3DPropertyNode.cpp:
+	* BrowserOptions.h:
+	* BrowserOptions.cpp:
+	* X3DGeometryNode.h:
+	* BrowserProperties.h:
+	* X3DTexture2DNode.h:
+	* X3DGroupingNode.cpp:
+	* BrowserProperties.cpp:
+	* X3DGeometryNode.cpp:
+	* X3DTexture2DNode.cpp: 
+
 2013-09-20  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Router.h:

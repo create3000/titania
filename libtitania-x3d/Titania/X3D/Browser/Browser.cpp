@@ -93,12 +93,6 @@ Browser::create (X3DExecutionContext* const) const
 }
 
 void
-Browser::construct ()
-{
-	setup ();
-}
-
-void
 Browser::initialize ()
 {
 	X3DBrowser::initialize ();
@@ -143,19 +137,6 @@ Browser::set_viewer (ViewerType type)
 
 		viewer -> setup ();
 	}
-}
-
-void
-Browser::reshape ()
-{
-	reshaped () .processInterests ();
-}
-
-void
-Browser::update ()
-{
-	if (makeCurrent ())
-		X3DBrowser::update ();
 }
 
 void

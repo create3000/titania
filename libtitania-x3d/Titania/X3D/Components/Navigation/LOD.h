@@ -113,6 +113,11 @@ public:
 
 	virtual
 	void
+	notify () final
+	{ }
+
+	virtual
+	void
 	traverse (const TraverseType) final;
 
 

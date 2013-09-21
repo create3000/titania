@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 X3DJavaScriptEngine::X3DJavaScriptEngine () :
-	X3DPropertyNode ()
+	X3DBaseNode ()
 { }
 
 } // X3D

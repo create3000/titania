@@ -82,6 +82,14 @@ X3DGeometryNode::setup ()
 }
 
 void
+X3DGeometryNode::initialize ()
+{
+	X3DNode::initialize ();
+
+	notified () .addInterest (this, &X3DGeometryNode::update);
+}
+
+void
 X3DGeometryNode::eventsProcessed ()
 {
 	X3DNode::eventsProcessed ();

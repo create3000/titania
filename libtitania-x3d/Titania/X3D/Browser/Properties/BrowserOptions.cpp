@@ -50,13 +50,13 @@
 
 #include "BrowserOptions.h"
 
+#include "../../Components/Layering/Viewport.h"
 #include "../../Components/Shape/Appearance.h"
 #include "../../Components/Shape/FillProperties.h"
 #include "../../Components/Shape/LineProperties.h"
 #include "../../Components/Text/FontStyle.h"
 #include "../../Components/Texturing/TextureProperties.h"
 #include "../../Components/Texturing/TextureTransform.h"
-#include "../../Components/Layering/Viewport.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Geometry2D/Arc2DOptions.h"
 #include "../Geometry2D/ArcClose2DOptions.h"
@@ -124,9 +124,8 @@ BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
 { }
 
 BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DPropertyNode (),
-	         fields (executionContext)
+	X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	     fields (executionContext)
 {
 	setComponent ("Browser"),
 	setTypeName ("BrowserOptions");
@@ -174,7 +173,7 @@ BrowserOptions::create (X3DExecutionContext* const executionContext)  const
 void
 BrowserOptions::initialize ()
 {
-	X3DPropertyNode::initialize ();
+	X3DBaseNode::initialize ();
 
 	motionBlurOptions ()  -> setup ();
 	appearance ()         -> setup ();

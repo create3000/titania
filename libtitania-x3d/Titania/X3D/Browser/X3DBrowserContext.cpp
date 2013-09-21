@@ -621,44 +621,47 @@ X3DBrowserContext::update ()
 {
 	try
 	{
-		// Prepare
+		if (makeCurrent ())
+		{
+			// Prepare
 
-		advanceClock ();
+			advanceClock ();
 
-		prepareEvents () .processInterests ();
-		router .processEvents ();
+			prepareEvents () .processInterests ();
+			router .processEvents ();
 
-		getWorld () -> traverse (TraverseType::CAMERA);
-		getWorld () -> traverse (TraverseType::COLLISION);
+			getWorld () -> traverse (TraverseType::CAMERA);
+			getWorld () -> traverse (TraverseType::COLLISION);
 
-		sensors () .processInterests ();
-		router .processEvents ();
+			sensors () .processInterests ();
+			router .processEvents ();
 
-		getGarbageCollector () .dispose ();
+			getGarbageCollector () .dispose ();
 
-		// Debug
-		router .debug ();
-		assert (router .size () == 0);
+			// Debug
+			router .debug ();
+			assert (router .size () == 0);
 
-		// Display
+			// Display
 
-		glClearColor (0, 0, 0, 0);
-		glClear (GL_COLOR_BUFFER_BIT);
+			glClearColor (0, 0, 0, 0);
+			glClear (GL_COLOR_BUFFER_BIT);
 
-		getWorld () -> traverse (TraverseType::COLLECT);
+			getWorld () -> traverse (TraverseType::COLLECT);
 
-		displayed () .processInterests ();
+			displayed () .processInterests ();
 
-		swapBuffers ();
+			swapBuffers ();
 
-		// Finish
+			// Finish
 
-		finished () .processInterests ();
+			finished () .processInterests ();
 
-		GLenum errorNum = glGetError ();
+			GLenum errorNum = glGetError ();
 
-		if (errorNum not_eq GL_NO_ERROR)
-			std::clog << "OpenGL Error at " << SFTime (getCurrentTime ()) .toLocaleString () << ": " << gluErrorString (errorNum) << std::endl;
+			if (errorNum not_eq GL_NO_ERROR)
+				std::clog << "OpenGL Error at " << SFTime (getCurrentTime ()) .toLocaleString () << ": " << gluErrorString (errorNum) << std::endl;
+		}
 
 	}
 	catch (const std::exception & exception)

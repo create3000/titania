@@ -66,15 +66,19 @@ class Browser :
 {
 public:
 
+	using X3DBrowser::update;
+
+	///  @name Construction
+
 	Browser ();
+
+	///  @name Member access
 
 	void
 	setCursor (Gdk::CursorType cursor_type)
 	{ get_window () -> set_cursor (Gdk::Cursor::create (cursor_type)); }
 
-	virtual
-	void
-	update () final;
+	///  @name Operations
 
 	virtual
 	bool
@@ -86,6 +90,8 @@ public:
 	swapBuffers () const final
 	{ opengl::Surface::swapBuffers (); }
 
+	///  @name Destruction
+
 	virtual
 	void
 	dispose () final;
@@ -93,28 +99,34 @@ public:
 
 private:
 
+	///  @name Construction
+
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const final;
 
 	virtual
 	void
-	construct () final;
+	construct () final
+	{ setup (); }
 
 	void
 	initialize () final;
+
+	///  @name Construction
 
 	void
 	set_viewer (ViewerType);
 
 	virtual
 	void
-	reshape () final;
+	reshape () final
+	{ reshaped () .processInterests (); }
 
 	virtual
 	void
 	update (const Cairo::RefPtr <Cairo::Context> &) final
-	{ X3DBrowser::update (); }
+	{ update (); }
 
 	std::unique_ptr <X3DViewer> viewer;
 	KeyDevice                   keyDevice;

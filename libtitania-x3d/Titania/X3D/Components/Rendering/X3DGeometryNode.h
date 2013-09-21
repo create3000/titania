@@ -112,6 +112,10 @@ protected:
 
 	X3DGeometryNode ();
 
+	virtual
+	void
+	initialize () override;
+
 	///  @name Member access
 
 	std::vector <Vector3f> &

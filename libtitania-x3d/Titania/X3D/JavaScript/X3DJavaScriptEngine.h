@@ -51,7 +51,8 @@
 #ifndef __TITANIA_X3D_JAVA_SCRIPT_X3DJAVA_SCRIPT_ENGINE_H__
 #define __TITANIA_X3D_JAVA_SCRIPT_X3DJAVA_SCRIPT_ENGINE_H__
 
-#include "../Components/Core/X3DPropertyNode.h"
+#include "../Basic/X3DBaseNode.h"
+#include "../Fields.h"
 #include "../Components/Scripting/Script.h"
 #include "../JavaScript/X3DJavaScriptContext.h"
 
@@ -59,7 +60,7 @@ namespace titania {
 namespace X3D {
 
 class X3DJavaScriptEngine :
-	public X3DPropertyNode
+	virtual public X3DBaseNode
 {
 public:
 

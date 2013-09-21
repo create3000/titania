@@ -77,9 +77,18 @@ public:
 	whichChoice () const
 	{ return *fields .whichChoice; }
 
+	///  @name Member access
+
 	virtual
 	Box3f
 	getBBox () final;
+
+	///  @name Operations
+
+	virtual
+	void
+	notify () final
+	{ }
 
 	virtual
 	void
@@ -87,6 +96,8 @@ public:
 
 
 private:
+
+	///  @name Members
 
 	struct Fields
 	{

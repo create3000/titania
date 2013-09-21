@@ -62,6 +62,8 @@ class StaticGroup :
 {
 public:
 
+	///  @name Construction
+
 	StaticGroup (X3DExecutionContext* const);
 
 	virtual
@@ -78,9 +80,13 @@ public:
 	children () const
 	{ return *fields .children; }
 
+	///  @name Member access
+
 	virtual
 	Box3f
 	getBBox () final;
+
+	///  @name Operations
 
 	virtual
 	void
@@ -89,9 +95,13 @@ public:
 
 private:
 
+	///  @name Construction
+
 	virtual
 	void
 	initialize () final;
+
+	///  @name Members
 
 	struct Fields
 	{

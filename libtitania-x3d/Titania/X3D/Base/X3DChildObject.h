@@ -68,16 +68,20 @@ public:
 
 	///  @name Parent handling
 
+	///  Add a parent to this object.
 	void
 	addParent (X3DChildObject* const);
 
+	///  Remove a parent from this object.
 	void
 	removeParent (X3DChildObject* const);
 
+	///  Get all parents of this object.
 	const ChildObjectSet &
 	getParents () const
 	{ return parents; }
 
+	///  Returns to if this object has root objects and collects in @a seen all objects seen.
 	virtual
 	bool
 	hasRoots (ChildObjectSet &);
@@ -92,15 +96,23 @@ public:
 	isTainted (bool value)
 	{ tainted = value; }
 
+	///  Returns true if this objects has unprocessed events otherwise false.
 	bool
 	isTainted ()
 	{ return tainted; }
 
+	///  Set the value of this object without adding an event.
 	virtual
 	void
 	write (const X3DChildObject &)
 	{ }
 
+	///  Notify object about a change without adding an event.
+	virtual
+	void
+	notify ();
+
+	///  Notify object about a change and add an event.
 	void
 	addEvent ();
 

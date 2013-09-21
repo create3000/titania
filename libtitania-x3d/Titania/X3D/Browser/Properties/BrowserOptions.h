@@ -51,7 +51,8 @@
 #ifndef __TITANIA_X3D_BROWSER_PROPERTIES_BROWSER_OPTIONS_H__
 #define __TITANIA_X3D_BROWSER_PROPERTIES_BROWSER_OPTIONS_H__
 
-#include "../../Components/Core/X3DPropertyNode.h"
+#include "../../Basic/X3DBaseNode.h"
+#include "../../Fields.h"
 
 namespace titania {
 namespace X3D {
@@ -90,7 +91,7 @@ class MotionBlur;
 class Viewport;
 
 class BrowserOptions :
-	public X3DPropertyNode
+	virtual public X3DBaseNode
 {
 public:
 

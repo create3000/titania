@@ -128,6 +128,7 @@ X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const 
 	   receivedInputEvent (false),
 	               handle (NULL),
 	             comments (),
+	         notifyOutput (),
 	       shutdownOutput ()
 {
 	assert (executionContext);
@@ -225,8 +226,7 @@ X3DBaseNode::copy (X3DExecutionContext* const executionContext) const
 void
 X3DBaseNode::replace (X3DBaseNode* const node, const std::set <const X3DFieldDefinition*> & exclude)
 {
-	std::vector <SFNode*> sfnodes;
-	std::vector <MFNode*> mfnodes;
+	std::vector <SFNode*> parents;
 
 	for (auto & parent : node -> getParents ())
 	{
@@ -243,28 +243,20 @@ X3DBaseNode::replace (X3DBaseNode* const node, const std::set <const X3DFieldDef
 					auto mfnode = dynamic_cast <MFNode*> (secondParent);
 
 					if (mfnode)
-					{
 						insert = exclude .find (mfnode) == exclude .end ();
-
-						if (insert)
-							mfnodes .emplace_back (mfnode);
-					}
 				}
 
 				if (insert)
-					sfnodes .emplace_back (sfnode);
+					parents .emplace_back (sfnode);
 			}
 		}
 	}
 
-	for (auto & parent : sfnodes)
+	for (auto & parent : parents)
 	{
 		parent -> set (this);
-		parent -> processInterests ();
+		parent -> notify ();
 	}
-
-	for (auto & parent : mfnodes)
-		parent -> processInterests ();
 }
 
 void
@@ -530,6 +522,8 @@ X3DBaseNode::setup ()
 		field -> updateReferences ();
 		field -> isTainted (false);
 	}
+
+	addChildren (notifyOutput);
 
 	initialize ();
 }

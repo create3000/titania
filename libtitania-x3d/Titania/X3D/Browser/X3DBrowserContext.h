@@ -309,6 +309,9 @@ public:
 
 	///  @name Rendering
 
+	void
+	update ();
+
 	virtual
 	bool
 	makeCurrent () const
@@ -347,10 +350,6 @@ protected:
 	NavigationInfo*
 	getActiveNavigationInfo () const
 	{ return activeNavigationInfo; }
-
-	virtual
-	void
-	update ();
 
 
 private:

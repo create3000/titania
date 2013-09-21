@@ -94,6 +94,7 @@ X3DTexture2DNode::initialize ()
 {
 	X3DTextureNode::initialize ();
 
+	notified ()          .addInterest (this, &X3DTexture2DNode::update);
 	repeatS ()           .addInterest (this, &X3DTexture2DNode::updateTextureProperties);
 	repeatT ()           .addInterest (this, &X3DTexture2DNode::updateTextureProperties);
 	textureProperties () .addInterest (this, &X3DTexture2DNode::update);

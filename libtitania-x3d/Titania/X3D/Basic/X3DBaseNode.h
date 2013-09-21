@@ -171,6 +171,15 @@ public:
 	setup ();
 
 	///  @name Event handling
+	
+	virtual
+	void
+	notify () override
+	{ notifyOutput = getCurrentTime (); }
+
+	const SFTime &
+	notified () const
+	{ return notifyOutput; }
 
 	virtual
 	void
@@ -323,6 +332,7 @@ private:
 	X3DBaseNode*             handle;
 	std::deque <std::string> comments;
 
+	SFTime notifyOutput;
 	Output shutdownOutput;
 
 };

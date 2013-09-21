@@ -63,6 +63,8 @@ class X3DTexture2DNode :
 {
 public:
 
+	///  @name Fields
+
 	SFBool &
 	repeatS ()
 	{ return *fields .repeatS; }
@@ -87,10 +89,14 @@ public:
 	textureProperties () const
 	{ return *fields .textureProperties; }
 
+	///  @name Member access
+
 	virtual
 	bool
 	isTransparent () const override
 	{ return transparent; }
+
+	///  @name Operations
 
 	virtual
 	void
@@ -99,14 +105,20 @@ public:
 
 protected:
 
+	///  @name Construction
+
 	X3DTexture2DNode ();
 
 	virtual
 	void
 	initialize () override;
 
+	///  @name Member access
+
 	const TextureProperties*
 	getTextureProperties () const;
+
+	///  @name Operations
 
 	virtual
 	void
@@ -118,6 +130,8 @@ protected:
 	void
 	updateImage (GLenum, GLint, GLint, const void*);
 
+	///  @name Operations
+
 	virtual
 	void
 	update () = 0;
@@ -125,12 +139,18 @@ protected:
 
 private:
 
+	///  @name Member access
+
 	GLenum
 	getInternalFormat () const
 	{ return getTextureProperties () -> getInternalFormat (components); }
 
+	///  @name Operations
+
 	void
 	updateTextureProperties ();
+
+	///  @name Members
 
 	struct Fields
 	{

@@ -56,7 +56,7 @@ namespace titania {
 namespace X3D {
 
 //	Property Name           Value data type      Description
-//	ABSTRACT_NODES          Boolean              The browser implementation supports the ability to describe each node type with interfaces that correspond to the abstract node types as defined in ISO/IEC 19775-1 in addition to the basic requirement to support the X3DNode abstract type. This indicates that the browser supports at least Conformance Level 2.
+//	ABSTRACT_NODES          Boolean              The browser implementation supports the ability to describe each node type with interfaces that correspond to the abstract node types as defined in ISO/IEC 19775-1 in addition to the basic requirement to support the X3DBaseNode abstract type. This indicates that the browser supports at least Conformance Level 2.
 //	CONCRETE_NODES          Boolean              The browser implementation supports the ability to describe each node type with interfaces that correspond to the concrete node types as defined in ISO/IEC 19775-1 in addition to the requirement to support all of the abstract types. This indicates that the browser supports at least Conformance Level 3.
 //	EXTERNAL_INTERACTIONS   Boolean              This SAIBrowserRef supports the additional services required by external interfaces. A SAIBrowserRef provided to user code in internal interactions shall not set this property.
 //	PROTOTYPE_CREATE        Boolean              The browser implementation supports the ability to dynamically create PROTO and EXTERNPROTO representations through service requests. The basic service capability only allows the ability to create instances of predefined PROTO structures read from a file format.
@@ -66,20 +66,19 @@ namespace X3D {
 //	BINARY_ENCODING         Boolean              The browser supports the binary file format encoding.
 
 BrowserProperties::Fields::Fields () :
-	abstractNodes (new SFBool (true)),
-	concreteNodes (new SFBool (true)),
+	       abstractNodes (new SFBool (true)),
+	       concreteNodes (new SFBool (true)),
 	externalInteractions (new SFBool ()),
-	prototypeCreate (new SFBool (true)),
-	domImport (new SFBool ()),
-	xmlEncoding (new SFBool ()),
-	classicVrmlEncoding (new SFBool (true)),
-	binaryEncoding (new SFBool ())
+	     prototypeCreate (new SFBool (true)),
+	           domImport (new SFBool ()),
+	         xmlEncoding (new SFBool ()),
+	 classicVrmlEncoding (new SFBool (true)),
+	      binaryEncoding (new SFBool ())
 { }
 
 BrowserProperties::BrowserProperties (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DPropertyNode (),
-	         fields ()
+	X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	     fields ()
 {
 	setComponent ("Browser"),
 	setTypeName ("BrowserProperties");

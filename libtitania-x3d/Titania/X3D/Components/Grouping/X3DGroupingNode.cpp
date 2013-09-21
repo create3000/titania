@@ -81,6 +81,7 @@ X3DGroupingNode::initialize ()
 	X3DChildNode::initialize ();
 	X3DBoundedObject::initialize ();
 
+	notified ()       .addInterest (this, &X3DGroupingNode::set_children);
 	addChildren ()    .addInterest (this, &X3DGroupingNode::set_addChildren);
 	removeChildren () .addInterest (this, &X3DGroupingNode::set_removeChildren);
 	children ()       .addInterest (this, &X3DGroupingNode::set_children);
