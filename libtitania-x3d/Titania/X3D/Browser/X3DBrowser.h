@@ -142,6 +142,12 @@ public:
 	       Error <NOT_SUPPORTED>);
 
 	void
+	importURL (const MFString &)
+	throw (Error <INVALID_URL>,
+	       Error <URL_UNAVAILABLE>,
+	       Error <INVALID_OPERATION_TIMING>);
+
+	void
 	loadURL (const MFString &)
 	throw (Error <INVALID_URL>,
 	       Error <URL_UNAVAILABLE>,

@@ -65,7 +65,15 @@ class X3DScene :
 {
 public:
 
+	///  @name Construction
+
 	X3DScene ();
+	
+	virtual
+	void
+	realize () final;
+
+	///  @name MetaData handling
 
 	void
 	addMetaData (const std::string &, const std::string &)
@@ -152,11 +160,14 @@ public:
 
 private:
 
+	///  @name Members
+
 	typedef std::map <X3DBaseNode*, std::string> ExportedNamesIndex;
 
 	MetaDataIndex      metadatas;
 	ExportedNodeArray  exportedNodes;
 	ExportedNamesIndex exportedNames;
+	basic::uri         firstWorldURL;
 
 };
 

@@ -77,10 +77,13 @@ class X3DExecutionContext :
 {
 public:
 
+	///  @name Construction
+
 	virtual
 	void
 	setup ();
 
+	virtual
 	void
 	realize ();
 

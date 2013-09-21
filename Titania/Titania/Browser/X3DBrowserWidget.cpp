@@ -270,7 +270,7 @@ X3DBrowserWidget::import (const basic::uri & worldURL)
 	{
 		loadTime = chrono::now ();
 
-		getBrowser () -> loadURL ({ worldURL .str () });
+		getBrowser () -> importURL ({ worldURL .str () });
 	}
 	catch (const X3D::X3DError &)
 	{ }

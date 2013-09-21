@@ -54,6 +54,8 @@
 #include "CellRenderer/OutlineCellRenderer.h"
 #include "OutlineTreeModel.h"
 
+#include <Titania/String/Trim.h>
+
 namespace titania {
 namespace puck {
 
@@ -66,6 +68,43 @@ OutlineTreeViewEditor::OutlineTreeViewEditor (BrowserWindow* const browserWindow
 	set_name ("OutlineTreeViewEditor");
 
 	get_cellrenderer () -> signal_edited () .connect (sigc::mem_fun (this, &OutlineTreeViewEditor::on_edited));
+
+	// Drag & drop targets
+	std::vector <Gtk::TargetEntry> targets = {
+		Gtk::TargetEntry ("STRING"),
+		Gtk::TargetEntry ("text/plain"),
+		Gtk::TargetEntry ("text/uri-list")
+	};
+
+	drag_dest_set (targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
+}
+
+void
+OutlineTreeViewEditor::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context,
+                                              int x, int y,
+                                              const Gtk::SelectionData & selection_data,
+                                              guint info,
+                                              guint time)
+{
+	auto uri = selection_data .get_uris ();
+	
+	if (uri .size ())
+	{
+		getBrowserWindow () -> import (Glib::uri_unescape_string (uri [0]));
+
+		context -> drag_finish (true, false, time);
+		return;
+	}
+
+	if (selection_data .get_format () == 8)
+	{
+		getBrowserWindow () -> import (Glib::uri_unescape_string (basic::trim (selection_data .get_data_as_string ())));
+
+		context -> drag_finish (true, false, time);
+		return;
+	}
+
+	context -> drag_finish (false, false, time);
 }
 
 void

@@ -142,7 +142,8 @@ BrowserWindow::initialize ()
 	// Drag & drop targets
 	std::vector <Gtk::TargetEntry> targets = {
 		Gtk::TargetEntry ("STRING"),
-		Gtk::TargetEntry ("text/plain")
+		Gtk::TargetEntry ("text/plain"),
+		Gtk::TargetEntry ("text/uri-list")
 	};
 
 	getSurfaceBox () .drag_dest_set (targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
@@ -190,6 +191,24 @@ BrowserWindow::buildLibraryMenu ()
 	getLibraryMenu () .show_all ();
 }
 
+// Keys
+
+bool
+BrowserWindow::on_key_press_event (GdkEventKey* event)
+{
+	keys .press (event);
+
+	return false;
+}
+
+bool
+BrowserWindow::on_key_release_event (GdkEventKey* event)
+{
+	keys .release (event);
+
+	return false;
+}
+
 // File menu
 
 void
@@ -207,6 +226,34 @@ BrowserWindow::on_open ()
 		getFileOpenDialog () .set_current_folder_uri (worldURL .base () .str ());
 
 	getFileOpenDialog () .present ();
+}
+
+void
+BrowserWindow::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context,
+                                      int x, int y,
+                                      const Gtk::SelectionData & selection_data,
+                                      guint info,
+                                      guint time)
+{
+	auto uri = selection_data .get_uris ();
+	
+	if (uri .size ())
+	{
+		open (Glib::uri_unescape_string (uri [0]));
+
+		context -> drag_finish (true, false, time);
+		return;
+	}
+
+	if (selection_data .get_format () == 8)
+	{
+		open (Glib::uri_unescape_string (basic::trim (selection_data .get_data_as_string ())));
+
+		context -> drag_finish (true, false, time);
+		return;
+	}
+
+	context -> drag_finish (false, false, time);
 }
 
 void
@@ -652,40 +699,6 @@ void
 BrowserWindow::on_messageDialog_response (int response_id)
 {
 	getMessageDialog () .hide ();
-}
-
-bool
-BrowserWindow::on_key_press_event (GdkEventKey* event)
-{
-	keys .press (event);
-
-	return false;
-}
-
-bool
-BrowserWindow::on_key_release_event (GdkEventKey* event)
-{
-	keys .release (event);
-
-	return false;
-}
-
-void
-BrowserWindow::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context,
-                                      int x, int y,
-                                      const Gtk::SelectionData & selection_data,
-                                      guint info,
-                                      guint time)
-{
-	if (selection_data .get_format () == 8)
-	{
-		open (Glib::uri_unescape_string (basic::trim (selection_data .get_data_as_string ())));
-
-		context -> drag_finish (true, false, time);
-		return;
-	}
-
-	context -> drag_finish (false, false, time);
 }
 
 // Editing facilities

@@ -1,5 +1,13 @@
 2013-09-21  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DScene.h:
+	* X3DBrowser.h:
+	* X3DScene.cpp:
+	* X3DBrowser.cpp:
+	* X3DExecutionContext.h: 
+
+2013-09-21  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DSFNode.h:
 	* X3DGeometryNode.h:
 	* X3DGeometryNode.cpp: 

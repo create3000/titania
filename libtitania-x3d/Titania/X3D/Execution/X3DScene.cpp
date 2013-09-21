@@ -61,8 +61,18 @@ X3DScene::X3DScene () :
 	X3DExecutionContext (),
 	          metadatas (),
 	      exportedNodes (),
-	      exportedNames ()
+	      exportedNames (),
+	      firstWorldURL ()
 { }
+
+void
+X3DScene::realize ()
+{
+	X3DExecutionContext::realize ();
+
+	if (firstWorldURL .size ())
+		setWorldURL (firstWorldURL);
+}
 
 // MetaData handling
 
@@ -188,6 +198,7 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
+	firstWorldURL = getWorldURL ();
 	setWorldURL (worldURL);
 
 	fromStream (istream);

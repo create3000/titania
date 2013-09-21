@@ -274,6 +274,42 @@ throw (Error <INVALID_DOCUMENT>,
 }
 
 void
+X3DBrowser::importURL (const MFString & url)
+throw (Error <INVALID_URL>,
+       Error <URL_UNAVAILABLE>,
+	    Error <INVALID_OPERATION_TIMING>)
+{
+	if (makeCurrent ())
+	{
+		// where parameter is "target=nameOfFrame"
+
+		Loader loader (this);
+			
+		try
+		{
+			loader .parseIntoScene (scene, url);
+
+			scene -> realize ();
+
+			advanceClock ();
+
+			return;
+		}
+		catch (const X3DError &)
+		{
+			urlError = loader .getUrlError ();	
+
+			for (const auto & string : urlError)
+				getBrowser () -> println (string .str ());
+
+			throw;
+		}
+	}
+
+	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
+}
+
+void
 X3DBrowser::loadURL (const MFString & url)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>,

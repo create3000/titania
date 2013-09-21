@@ -128,6 +128,16 @@ private:
 	getOutlineTreeView () const
 	{ return outlineEditor .getTreeView (); }
 
+	///  @name Key events
+
+	virtual
+	bool
+	on_key_press_event (GdkEventKey*) final;
+
+	virtual
+	bool
+	on_key_release_event (GdkEventKey*) final;
+	
 	/// @name File menu
 
 	virtual
@@ -137,6 +147,10 @@ private:
 	virtual
 	void
 	on_open () final;
+
+	virtual
+	void
+	on_drag_data_received (const Glib::RefPtr <Gdk::DragContext>&, int, int, const Gtk::SelectionData &, guint info, guint) final;
 
 	virtual
 	void
@@ -339,20 +353,6 @@ private:
 	void
 	on_messageDialog_response (int);
 
-	///  @name Key events
-
-	virtual
-	bool
-	on_key_press_event (GdkEventKey*) final;
-
-	virtual
-	bool
-	on_key_release_event (GdkEventKey*) final;
-
-	virtual
-	void
-	on_drag_data_received (const Glib::RefPtr <Gdk::DragContext>&, int, int, const Gtk::SelectionData &, guint info, guint) final;
-	
 	///  @Editing facilities
 
 	void
