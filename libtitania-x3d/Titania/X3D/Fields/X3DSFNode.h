@@ -81,8 +81,20 @@ public:
 		X3DSFNode (field .getValue ())
 	{ }
 
+	template <class Up>
+	X3DSFNode (const X3DSFNode <Up> & field) :
+		X3DSFNode (dynamic_cast <ValueType*> (field .getValue ()))
+	{ }
+
 	X3DSFNode (X3DSFNode && field) :
 		X3DSFNode (field .getValue ())
+	{
+		field = nullptr;
+	}
+
+	template <class Up>
+	X3DSFNode (X3DSFNode <Up> && field) :
+		X3DSFNode (dynamic_cast <ValueType*> (field .getValue ()))
 	{
 		field = nullptr;
 	}
@@ -116,9 +128,17 @@ public:
 	X3DSFNode &
 	operator = (const X3DSFNode &);
 
+	template <class Up>
+	X3DSFNode &
+	operator = (const X3DSFNode <Up> &);
+
 	///  Move assignment operator.  Behaves the same as the 6.7.6 setValue service.
 	X3DSFNode &
 	operator = (X3DSFNode &&);
+
+	template <class Up>
+	X3DSFNode &
+	operator = (X3DSFNode <Up> &&);
 
 	///  @name Field services
 
@@ -272,14 +292,33 @@ X3DSFNode <ValueType>::operator = (const X3DSFNode & field)
 }
 
 template <class ValueType>
+template <class Up>
+inline
+X3DSFNode <ValueType> &
+X3DSFNode <ValueType>::operator = (const X3DSFNode <Up> & field)
+{
+	X3DField <ValueType*>::operator = (dynamic_cast <ValueType*> (field .getValue ()));
+	return *this;
+}
+
+template <class ValueType>
 inline
 X3DSFNode <ValueType> &
 X3DSFNode <ValueType>::operator = (X3DSFNode && field)
 {
 	X3DField <ValueType*>::operator = (field);
-
 	field = nullptr;
+	return *this;
+}
 
+template <class ValueType>
+template <class Up>
+inline
+X3DSFNode <ValueType> &
+X3DSFNode <ValueType>::operator = (X3DSFNode <Up> && field)
+{
+	X3DField <ValueType*>::operator = (dynamic_cast <ValueType*> (field .getValue ()));
+	field = nullptr;
 	return *this;
 }
 

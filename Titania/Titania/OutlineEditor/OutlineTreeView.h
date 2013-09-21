@@ -77,6 +77,12 @@ public:
 	///  @name Construction
 
 	OutlineTreeView (BrowserWindow* const);
+	
+	///  @name Element access
+	
+	const Glib::RefPtr <OutlineTreeModel> &
+	get_model () const
+	{ return model; }
 
 	///  @name Iter access
 
@@ -113,10 +119,6 @@ private:
 
 	void
 	set_model (const Glib::RefPtr <OutlineTreeModel> &);
-
-	const Glib::RefPtr <OutlineTreeModel> &
-	get_model () const
-	{ return model; }
 
 	void
 	set_all_expanded (const Gtk::TreeModel::iterator &, bool);

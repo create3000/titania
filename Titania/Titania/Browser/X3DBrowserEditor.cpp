@@ -194,7 +194,7 @@ X3DBrowserEditor::removeImportedNodes (X3D::X3DExecutionContext* const execution
 {
 	// Remove nodes imported from node
 
-	auto inlineNode = dynamic_cast <X3D::Inline*> (node .getValue ());
+	X3D::X3DSFNode <X3D::Inline> inlineNode = node;
 
 	if (inlineNode)
 	{
@@ -222,7 +222,7 @@ X3DBrowserEditor::deleteRoutes (X3D::X3DExecutionContext* const executionContext
 	}
 }
 
-X3D::SFNode
+X3D::X3DSFNode <X3D::X3DGroupingNode>
 X3DBrowserEditor::groupNodes (const X3D::MFNode & nodes)
 throw (X3D::Error <X3D::INVALID_NODE>)
 {
@@ -231,9 +231,9 @@ throw (X3D::Error <X3D::INVALID_NODE>)
 	if (nodes .empty ())
 		throw X3D::Error <X3D::INVALID_NODE> ("Nodes are empty.");
 
-	auto scene  = getBrowser () -> getExecutionContext ();
-	auto parent = scene -> createNode ("Transform");
-	auto group  = dynamic_cast <X3D::Transform*> (parent .getValue ());
+	auto scene = getBrowser () -> getExecutionContext ();
+
+	X3D::X3DSFNode <X3D::X3DGroupingNode> group = scene -> createNode ("Transform");
 
 	for (const auto & child : nodes)
 	{
@@ -241,13 +241,12 @@ throw (X3D::Error <X3D::INVALID_NODE>)
 			continue;
 
 		// Adjust transformation
-		X3D::Matrix4f          childModelViewMatrix = findModelViewMatrix (child .getValue ());
-		X3D::X3DTransformNode* transform            = dynamic_cast <X3D::X3DTransformNode*> (child .getValue ());
+		X3D::Matrix4f                          childModelViewMatrix = findModelViewMatrix (child);
+		X3D::X3DSFNode <X3D::X3DTransformNode> transform            = child;
 
 		if (transform)
 		{
 			childModelViewMatrix .multLeft (transform -> getMatrix ());
-
 			transform -> setMatrix (childModelViewMatrix);
 		}
 
@@ -261,11 +260,11 @@ throw (X3D::Error <X3D::INVALID_NODE>)
 	}
 
 	group -> setup ();
-	scene -> getRootNodes () .emplace_back (parent);
+	scene -> getRootNodes () .emplace_back (group);
 
 	setEdited (true);
 
-	return parent;
+	return group;
 }
 
 X3D::MFNode
@@ -289,13 +288,12 @@ throw (X3D::Error <X3D::INVALID_NODE>)
 
 		// Adjust transformation
 
-		X3D::Matrix4f          childModelViewMatrix = findModelViewMatrix (child .getValue ());
-		X3D::X3DTransformNode* transform            = dynamic_cast <X3D::X3DTransformNode*> (child .getValue ());
+		X3D::Matrix4f                          childModelViewMatrix = findModelViewMatrix (child);
+		X3D::X3DSFNode <X3D::X3DTransformNode> transform            = child;
 
 		if (transform)
 		{
 			childModelViewMatrix .multLeft (transform -> getMatrix ());
-
 			transform -> setMatrix (childModelViewMatrix);
 		}
 
@@ -331,8 +329,8 @@ throw (X3D::Error <X3D::INVALID_NODE>)
 
 	// Get group modelview matrix
 
-	X3D::Matrix4f          groupModelViewMatrix = findModelViewMatrix (group .getValue ());
-	X3D::X3DTransformNode* transform            = dynamic_cast <X3D::X3DTransformNode*> (group .getValue ());
+	X3D::Matrix4f                          groupModelViewMatrix = findModelViewMatrix (group);
+	X3D::X3DSFNode <X3D::X3DTransformNode> transform            = group;
 
 	if (transform)
 		groupModelViewMatrix .multLeft (transform -> getMatrix ());
@@ -349,8 +347,8 @@ throw (X3D::Error <X3D::INVALID_NODE>)
 
 		// Adjust transformation
 
-		X3D::Matrix4f          childModelViewMatrix = findModelViewMatrix (child .getValue ());
-		X3D::X3DTransformNode* transform            = dynamic_cast <X3D::X3DTransformNode*> (child .getValue ());
+		X3D::Matrix4f                          childModelViewMatrix = findModelViewMatrix (child);
+		X3D::X3DSFNode <X3D::X3DTransformNode> transform            = child;
 
 		if (transform)
 		{
@@ -378,7 +376,7 @@ throw (X3D::Error <X3D::INVALID_NODE>)
 }
 
 void
-X3DBrowserEditor::detachFromGroup (const X3D::SFNode & child, bool detachToLayer0)
+X3DBrowserEditor::detachFromGroup (const X3D::X3DSFNode <X3D::X3DNode> & child, bool detachToLayer0)
 throw (X3D::Error <X3D::INVALID_NODE>)
 {
 	__LOG__ << std::endl;
@@ -386,17 +384,16 @@ throw (X3D::Error <X3D::INVALID_NODE>)
 	if (not child)
 		throw X3D::Error <X3D::INVALID_NODE> ("Node is empty.");
 
-	auto layers = dynamic_cast <X3D::X3DNode*> (child .getValue ()) -> getLayers ();
+	auto layers = child -> getLayers ();
 
 	// Adjust transformation
 
-	X3D::Matrix4f          childModelViewMatrix = findModelViewMatrix (child .getValue ());
-	X3D::X3DTransformNode* transform            = dynamic_cast <X3D::X3DTransformNode*> (child .getValue ());
+	X3D::Matrix4f                          childModelViewMatrix = findModelViewMatrix (child);
+	X3D::X3DSFNode <X3D::X3DTransformNode> transform            = child;
 
 	if (transform)
 	{
 		childModelViewMatrix .multLeft (transform -> getMatrix ());
-
 		transform -> setMatrix (childModelViewMatrix);
 	}
 
@@ -432,7 +429,7 @@ throw (X3D::Error <X3D::INVALID_NODE>)
 
 	if (not child)
 		throw X3D::Error <X3D::INVALID_NODE> ("Node is empty.");
-		
+
 	X3D::MFNode groups;
 
 	auto scene = getBrowser () -> getExecutionContext ();
@@ -444,15 +441,14 @@ throw (X3D::Error <X3D::INVALID_NODE>)
 
 	             // Replace node with Transform
 
-	             auto parent = scene -> createNode ("Transform");
-	             auto group  = dynamic_cast <X3D::Transform*> (parent .getValue ());
+	             X3D::X3DSFNode <X3D::X3DGroupingNode> group = scene -> createNode ("Transform");
 
 	             group -> children () .emplace_back (child);
 	             group -> setup ();
 
-	             sfnode -> setValue (parent);
+	             sfnode -> setValue (group);
 
-	             groups .emplace_back (parent);
+	             groups .emplace_back (group);
 
 	             return false;
 				 });

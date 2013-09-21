@@ -827,22 +827,19 @@ BrowserWindow::on_create_parent_group_activate ()
 	{
 		getBrowser () -> getSelection () -> clear ();
 
+		X3D::MFNode groups;
+
 		for (const auto & child : selection)
 		{
 			try
 			{
-				auto groups = createParentGroup (child);
-
 				// Select Transform and expand
 
-				for (const auto & group : groups)
+				for (const auto & group : createParentGroup (child))
 				{
+					groups .emplace_back (group);
+				
 					getBrowser () -> getSelection () -> addChild (group);
-					
-					// After changing the selection, the tree view is rebuild immediately and we can get the iters.
-
-					for (const auto & iter : getOutlineTreeView () .get_iters (group))
-						getOutlineTreeView () .set_expanded (iter, true);
 				}
 			}
 			catch (const X3D::Error <X3D::INVALID_NODE> &)
@@ -850,6 +847,14 @@ BrowserWindow::on_create_parent_group_activate ()
 		}
 
 		getBrowser () -> update ();
+
+		// Expand groups
+
+		for (const auto & group : groups)
+		{
+			for (const auto & iter : getOutlineTreeView () .get_iters (group))
+				getOutlineTreeView () .expand_row (getOutlineTreeView () .get_model () -> get_path (iter), false);
+		}
 	}
 }
 

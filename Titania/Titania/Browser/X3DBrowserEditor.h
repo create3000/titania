@@ -86,7 +86,7 @@ protected:
 	removeNode (const X3D::SFNode &)
 	throw (X3D::Error <X3D::INVALID_NODE>);
 
-	X3D::SFNode
+	X3D::X3DSFNode <X3D::X3DGroupingNode>
 	groupNodes (const X3D::MFNode &)
 	throw (X3D::Error <X3D::INVALID_NODE>);
 
@@ -99,7 +99,7 @@ protected:
 	throw (X3D::Error <X3D::INVALID_NODE>);
 
 	void
-	detachFromGroup (const X3D::SFNode &, bool)
+	detachFromGroup (const X3D::X3DSFNode <X3D::X3DNode> &, bool)
 	throw (X3D::Error <X3D::INVALID_NODE>);
 
 	X3D::MFNode

@@ -215,6 +215,29 @@ intersect (const Plane3f & p1, const Plane3f & p2, Line3f & line)
 	return false;
 }
 
+template <class Type>
+class A
+{
+public:
+
+	A ()
+	{
+		__LOG__ << std::endl;
+	}
+
+	A (const A &)
+	{
+		__LOG__ << std::endl;
+	}
+
+	template <class Up>
+	A (const A <Up> &)
+	{
+		__LOG__ << std::endl;
+	}
+
+};
+
 int
 main (int argc, char** argv)
 {
@@ -224,16 +247,10 @@ main (int argc, char** argv)
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
 
-	basic::iurlstream istream;
+	A <int> a1;
+	A <int> a2 = a1;
+	A <short> a3 = a1;
 
-	istream .open ("http://x3dgraphics.com/examples/X3dForWebAuthors/Chapter03-Grouping/CoordinateAxesInlineExample.x3dv");
-	istream .send ();
-
-	for (const auto & header : istream .response_headers ())
-		__LOG__ << header .first << " : " << header .second << std::endl;
-
-	__LOG__ << istream .url () << std::endl;
-	__LOG__ << istream .rdbuf () << std::endl;
 
 	std::clog << "Function main done." << std::endl;
 	exit (0);

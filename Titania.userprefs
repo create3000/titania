@@ -1,35 +1,18 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Routing/Router.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/OutlineEditor/OutlineTreeView.cpp">
     <Files>
       <File FileName="Library/Tests/Handles/OutlineEditor.wrl" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DBaseNode.h" Line="319" Column="8" />
-      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DBaseNode.cpp" Line="566" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="137" Column="10" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="448" Column="67" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="89" Column="39" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="225" Column="38" />
       <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="130" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="727" Column="1" />
-      <File FileName="Titania/Titania/OutlineEditor/OutlineTreeView.cpp" Line="565" Column="1" />
-      <File FileName="Titania/Titania/OutlineEditor/OutlineTreeView.h" Line="127" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Picking/Selection.cpp" Line="106" Column="28" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="433" Column="17" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.h" Line="139" Column="33" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.cpp" Line="436" Column="20" />
-      <File FileName="libtitania-x3d/Titania/X3D/Routing/Router.h" Line="111" Column="30" />
-      <File FileName="libtitania-x3d/Titania/X3D/Routing/EventList.h" Line="64" Column="16" />
-      <File FileName="libtitania-x3d/Titania/X3D/Routing/NodeList.h" Line="55" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Routing/Router.cpp" Line="88" Column="28" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="850" Column="1" />
+      <File FileName="Titania/Titania/OutlineEditor/OutlineTreeView.cpp" Line="812" Column="6" />
+      <File FileName="Titania/Titania/OutlineEditor/OutlineTreeView.h" Line="81" Column="20" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="miscellaneous" expanded="True">
-            <Node name="glade2c++" expanded="True" />
-            <Node name="uncrustify-all" expanded="True" />
-          </Node>
-          <Node name="build" expanded="True">
-            <Node name="debian" expanded="True" />
-          </Node>
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
             <Node name="Examples" expanded="True">
@@ -50,24 +33,33 @@
               <Node name="Layout" expanded="True" />
             </Node>
           </Node>
+          <Node name="libtitania-opengl-surface" expanded="True">
+            <Node name="Titania" expanded="True">
+              <Node name="OpenGL" expanded="True" />
+            </Node>
+          </Node>
           <Node name="libtitania-standard" expanded="True">
             <Node name="Titania" expanded="True" />
           </Node>
           <Node name="libtitania-x3d" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
+                <Node name="Base" expanded="True" />
                 <Node name="Basic" expanded="True" />
-                <Node name="Browser" expanded="True">
-                  <Node name="Picking" expanded="True" />
-                </Node>
+                <Node name="Browser" expanded="True" />
                 <Node name="Components" expanded="True">
                   <Node name="Core" expanded="True" />
                   <Node name="Grouping" expanded="True" />
                   <Node name="Navigation" expanded="True" />
+                  <Node name="Rendering" expanded="True" />
+                  <Node name="Shape" expanded="True" />
+                  <Node name="Text" expanded="True" />
+                  <Node name="Texturing" expanded="True" />
                 </Node>
-                <Node name="Routing" expanded="True">
-                  <Node name="Router.cpp" selected="True" />
-                </Node>
+                <Node name="Fields" expanded="True" />
+                <Node name="Handles" expanded="True" />
+                <Node name="JavaScript" expanded="True" />
+                <Node name="Routing" expanded="True" />
               </Node>
             </Node>
           </Node>
@@ -88,7 +80,9 @@
               <Node name="HistoryEditor" expanded="True" />
               <Node name="OutlineEditor" expanded="True">
                 <Node name="CellRenderer" expanded="True" />
+                <Node name="OutlineTreeView.cpp" selected="True" />
               </Node>
+              <Node name="UserInterfaces" expanded="True" />
               <Node name="ViewpointList" expanded="True" />
             </Node>
           </Node>
