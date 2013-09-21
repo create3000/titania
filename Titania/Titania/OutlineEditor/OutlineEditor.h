@@ -51,8 +51,8 @@
 #ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_EDITOR_H__
 #define __TITANIA_OUTLINE_EDITOR_OUTLINE_EDITOR_H__
 
-#include "../OutlineEditor/OutlineTreeView.h"
 #include "../UserInterfaces/X3DOutlineEditorInterface.h"
+#include "OutlineTreeViewEditor.h"
 
 #include <Titania/X3D.h>
 
@@ -69,14 +69,14 @@ public:
 
 	OutlineEditor (BrowserWindow* const);
 
-	OutlineTreeView &
+	OutlineTreeViewEditor &
 	getTreeView ()
 	{ return treeview; }
-	
-	const OutlineTreeView &
+
+	const OutlineTreeViewEditor &
 	getTreeView () const
 	{ return treeview; }
-	
+
 
 private:
 
@@ -88,7 +88,7 @@ private:
 	void
 	on_map () final;
 
-	OutlineTreeView treeview;
+	OutlineTreeViewEditor treeview;
 
 };
 

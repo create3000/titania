@@ -48,17 +48,16 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_TREE_VIEW_H__
-#define __TITANIA_OUTLINE_EDITOR_OUTLINE_TREE_VIEW_H__
+#ifndef __TITANIA_OUTLINE_EDITOR_X3DOUTLINE_TREE_VIEW_H__
+#define __TITANIA_OUTLINE_EDITOR_X3DOUTLINE_TREE_VIEW_H__
 
 #include <gtkmm.h>
 #include <iostream>
 
-#include "../OutlineEditor/OutlineSelection.h"
-#include "../OutlineEditor/OutlineTree.h"
-#include "../OutlineEditor/OutlineTreeData.h"
-#include "../OutlineEditor/OutlineUserData.h"
 #include "../UserInterfaces/X3DOutlineTreeViewInterface.h"
+#include "OutlineTree.h"
+#include "OutlineTreeData.h"
+#include "OutlineUserData.h"
 #include <Titania/X3D.h>
 
 namespace titania {
@@ -67,19 +66,13 @@ namespace puck {
 class OutlineTreeModel;
 class OutlineCellRenderer;
 
-class OutlineTreeView :
+class X3DOutlineTreeView :
 	public Gtk::TreeView, public X3DOutlineTreeViewInterface
 {
 public:
 
-	using Gtk::TreeView::expand_row;
-
-	///  @name Construction
-
-	OutlineTreeView (BrowserWindow* const);
-	
 	///  @name Element access
-	
+
 	const Glib::RefPtr <OutlineTreeModel> &
 	get_model () const
 	{ return model; }
@@ -107,10 +100,35 @@ public:
 	bool
 	get_expanded (const Gtk::TreeModel::iterator &) const;
 
+	///  @name Operations
+
+	void
+	collapse_row (const Gtk::TreeModel::Path &);
+
 	///  @name Destruction
 
 	virtual
-	~OutlineTreeView ();
+	~X3DOutlineTreeView ();
+
+
+protected:
+
+	///  @name Construction
+
+	X3DOutlineTreeView ();
+
+	OutlineCellRenderer*
+	get_cellrenderer () const
+	{ return cellrenderer; }
+
+	bool
+	get_shift_key ();
+
+	void
+	watch (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
+
+	void
+	unwatch_tree (const Gtk::TreeModel::iterator &, bool = true);
 
 
 private:
@@ -126,52 +144,17 @@ private:
 	bool
 	get_all_expanded (const Gtk::TreeModel::iterator &) const;
 
-	OutlineSelection &
-	get_selection ()
-	{ return selection; }
-
-	const OutlineSelection &
-	get_selection () const
-	{ return selection; }
-
 	void
 	set_open_path (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
 
 	Gtk::TreeModel::Path
 	get_open_path (const Gtk::TreeModel::iterator &) const;
-	
-	bool
-	get_shift_key ();
 
 	void
 	set_world ();
 
 	void
 	set_rootNodes ();
-
-	virtual
-	void
-	on_rename_node_activate () final;
-
-	virtual
-	void
-	on_edited (const Glib::ustring &, const Glib::ustring &) final;
-
-	virtual
-	bool
-	on_key_press_event (GdkEventKey*) final;
-
-	virtual
-	bool
-	on_key_release_event (GdkEventKey*) final;
-
-	virtual
-	bool
-	on_button_press_event (GdkEventButton*) final;
-
-	virtual
-	void
-	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final;
 
 	virtual
 	bool
@@ -196,12 +179,6 @@ private:
 	watch_children (const Gtk::TreeModel::iterator &);
 
 	void
-	watch (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
-
-	void
-	unwatch_tree (const Gtk::TreeModel::iterator &, bool = true);
-
-	void
 	unwatch (const Gtk::TreeModel::iterator &, bool);
 
 	void
@@ -220,10 +197,7 @@ private:
 	collapse_clone (const Gtk::TreeModel::iterator &);
 
 	void
-	collapse_row (const Gtk::TreeModel::Path &);
-
-	void
-	expand_row (const Gtk::TreeModel::iterator &);
+	model_expand_row (const Gtk::TreeModel::iterator &);
 
 	X3D::FieldDefinitionArray
 	get_fields (X3D::X3DBaseNode* const) const;
@@ -237,14 +211,8 @@ private:
 	void
 	auto_expand (const Gtk::TreeModel::iterator &);
 
-	void
-	select_node (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
-
-	bool
-	select_field (int x, int y);
-
 	Glib::RefPtr <OutlineTreeModel> model;
-	OutlineSelection                selection;
+	OutlineCellRenderer*            cellrenderer;
 	size_t                          expandLevel;
 
 };

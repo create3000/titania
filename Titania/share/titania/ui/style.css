@@ -1,10 +1,10 @@
 
 
-#OutlineTreeView .textview-editable {
+#OutlineTreeViewEditor .textview-editable {
 	background-color: mix (@selected_bg_color, @bg_color, 0.9);
 }
 
-#OutlineTreeView .textview-editable:selected {
+#OutlineTreeViewEditor .textview-editable:selected {
 	color: @selected_fg_color;
 	background-color: @selected_bg_color;
 }

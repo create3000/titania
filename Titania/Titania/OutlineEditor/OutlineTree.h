@@ -51,7 +51,7 @@
 #ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_TREE_H__
 #define __TITANIA_OUTLINE_EDITOR_OUTLINE_TREE_H__
 
-#include "../OutlineEditor/OutlineTreeData.h"
+#include "OutlineTreeData.h"
 #include <deque>
 #include <gtkmm.h>
 #include <memory>

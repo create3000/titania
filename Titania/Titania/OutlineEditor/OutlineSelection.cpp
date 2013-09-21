@@ -50,18 +50,21 @@
 
 #include "OutlineSelection.h"
 
-#include "../OutlineEditor/OutlineTreeModel.h"
-#include "../OutlineEditor/OutlineTreeView.h"
+#include "OutlineTreeModel.h"
+#include "OutlineTreeViewEditor.h"
 
 namespace titania {
 namespace puck {
 
-OutlineSelection::OutlineSelection (BrowserWindow* const browserWindow, OutlineTreeView* const treeView) :
+OutlineSelection::OutlineSelection (BrowserWindow* const browserWindow, OutlineTreeViewEditor* const treeView) :
 	X3DBaseInterface (browserWindow),
 	        treeView (treeView),
 	  selectMultiple (false),
 	        children ()
 {
+	// Register browser interest
+
+	getBrowser () -> initialized () .addInterest (this, &OutlineSelection::clear);
 	getBrowser () -> getSelection () -> getChildren () .addInterest (this, &OutlineSelection::set_children);
 }
 
@@ -159,7 +162,7 @@ OutlineSelection::select (X3D::X3DFieldDefinition* const field, bool value, X3D:
 		{
 			auto mfnode = static_cast <X3D::MFNode*> (field);
 
-			for (auto & sfnode :* mfnode)
+			for (auto & sfnode : *mfnode)
 			{
 				treeView -> get_user_data (&sfnode) -> selected = value;
 

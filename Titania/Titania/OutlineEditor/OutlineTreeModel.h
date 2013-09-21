@@ -52,9 +52,10 @@
 #define __TITANIA_OUTLINE_EDITOR_OUTLINE_TREE_MODEL_H__
 
 #include "../Base/X3DBaseInterface.h"
-#include "../OutlineEditor/OutlineTree.h"
-#include "../OutlineEditor/OutlineTreeData.h"
-#include "../OutlineEditor/OutlineUserData.h"
+#include "OutlineTree.h"
+#include "OutlineTreeData.h"
+#include "OutlineUserData.h"
+
 #include <Titania/X3D.h>
 
 #include <deque>
@@ -76,32 +77,32 @@ public:
 		SELECTED_COLUMN,
 	};
 
-//	class Columns :
-//		public Gtk::TreeModel::ColumnRecord
-//	{
-//	public:
-//
-//		Columns ()
-//		{
-//			add (col_id);
-//			add (col_name);
-//			add (col_price);
-//			add (col_stock);
-//		}
-//
-//		~Columns () { }
-//
-//		typedef Gtk::TreeModelColumn <OutlineTreeData*> DataColumn;
-//		typedef Gtk::TreeModelColumn <bool>             SelectedColumn;
-//
-//		Gtk::TreeModelColumn <unsigned>      col_id;
-//		Gtk::TreeModelColumn <Glib::ustring> col_name;
-//		Gtk::TreeModelColumn <float>         col_price;
-//		Gtk::TreeModelColumn <bool>          col_stock;
-//
-//		DataColumn     data_column;
-//		SelectedColumn selected_column;
-//	};
+	//	class Columns :
+	//		public Gtk::TreeModel::ColumnRecord
+	//	{
+	//	public:
+	//
+	//		Columns ()
+	//		{
+	//			add (col_id);
+	//			add (col_name);
+	//			add (col_price);
+	//			add (col_stock);
+	//		}
+	//
+	//		~Columns () { }
+	//
+	//		typedef Gtk::TreeModelColumn <OutlineTreeData*> DataColumn;
+	//		typedef Gtk::TreeModelColumn <bool>             SelectedColumn;
+	//
+	//		Gtk::TreeModelColumn <unsigned>      col_id;
+	//		Gtk::TreeModelColumn <Glib::ustring> col_name;
+	//		Gtk::TreeModelColumn <float>         col_price;
+	//		Gtk::TreeModelColumn <bool>          col_stock;
+	//
+	//		DataColumn     data_column;
+	//		SelectedColumn selected_column;
+	//	};
 
 	static
 	Glib::RefPtr <OutlineTreeModel>

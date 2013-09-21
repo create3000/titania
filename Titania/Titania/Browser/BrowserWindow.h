@@ -120,11 +120,11 @@ private:
 	getOutlineEditor () const
 	{ return outlineEditor; }
 
-	OutlineTreeView &
+	OutlineTreeViewEditor &
 	getOutlineTreeView ()
 	{ return outlineEditor .getTreeView (); }
 
-	const OutlineTreeView &
+	const OutlineTreeViewEditor &
 	getOutlineTreeView () const
 	{ return outlineEditor .getTreeView (); }
 

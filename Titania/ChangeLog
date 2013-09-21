@@ -1,5 +1,24 @@
 2013-09-21  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* style.css:
+	* BrowserWindow.h:
+	* OutlineTree.h:
+	* OutlineEditor.h:
+	* ViewpointList.h:
+	* OutlineTreeView.h:
+	* OutlineSelection.h:
+	* OutlineTreeModel.h:
+	* OutlineTreeView.cpp:
+	* OutlineTreeModel.cpp:
+	* X3DOutlineTreeView.h:
+	* OutlineSelection.cpp:
+	* X3DOutlineTreeView.cpp:
+	* OutlineTreeViewEditor.h:
+	* OutlineTreeViewEditor.cpp: 
+
+2013-09-21  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* BrowserWindow.cpp:
 	* X3DBrowserEditor.h:
 	* X3DBrowserEditor.cpp:

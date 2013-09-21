@@ -21,7 +21,8 @@ titania_SOURCES =  \
 	Titania/OutlineEditor/OutlineEditor.cpp \
 	Titania/OutlineEditor/OutlineSelection.cpp \
 	Titania/OutlineEditor/OutlineTreeModel.cpp \
-	Titania/OutlineEditor/OutlineTreeView.cpp \
+	Titania/OutlineEditor/OutlineTreeViewEditor.cpp \
+	Titania/OutlineEditor/X3DOutlineTreeView.cpp \
 	Titania/UserInterfaces/X3DBrowserWindowInterface.cpp \
 	Titania/UserInterfaces/X3DConsoleInterface.cpp \
 	Titania/UserInterfaces/X3DHistoryEditorInterface.cpp \

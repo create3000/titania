@@ -157,7 +157,7 @@ std::deque <Gtk::TreeModel::iterator>
 OutlineTreeModel::get_iters (X3D::X3DChildObject* const object) const
 {
 	std::deque <Gtk::TreeModel::iterator> iters;
-	
+
 	for (const auto & node : tree .find (object))
 	{
 		iters .emplace_back ();
@@ -173,6 +173,7 @@ OutlineTreeModel::append (OutlineIterType type, X3D::X3DChildObject* object)
 	//__LOG__ << std::endl;
 
 	Path path;
+
 	path .push_back (tree .size ());
 
 	iterator iter;
@@ -180,7 +181,7 @@ OutlineTreeModel::append (OutlineIterType type, X3D::X3DChildObject* object)
 
 	row_inserted (path, iter);
 	row_has_child_toggled (path, iter);
-	
+
 	return iter;
 }
 
@@ -190,6 +191,7 @@ OutlineTreeModel::append (const iterator & parent, OutlineIterType type, X3D::X3
 	//__LOG__ << std::endl;
 
 	Path path = get_path (parent);
+
 	path .push_back (tree .get_node (path) .size ());
 
 	iterator iter;
@@ -197,7 +199,7 @@ OutlineTreeModel::append (const iterator & parent, OutlineIterType type, X3D::X3
 
 	row_inserted (path, iter);
 	row_has_child_toggled (path, iter);
-	
+
 	return iter;
 }
 
@@ -358,7 +360,7 @@ bool
 OutlineTreeModel::iter_has_child_vfunc (const iterator & iter) const
 {
 	//__LOG__ << std::endl;
-	
+
 	switch (get_data_type (iter))
 	{
 		case OutlineIterType::X3DInputRoute:
@@ -395,7 +397,7 @@ OutlineTreeModel::iter_has_child_vfunc (const iterator & iter) const
 			auto sfnode = static_cast <X3D::SFNode*> (get_object (iter));
 
 			// Prevent self referencing traversal
-			
+
 			for (const auto & parent : get_parents (iter))
 			{
 				if (parent -> get_type () == OutlineIterType::X3DBaseNode)
@@ -468,7 +470,7 @@ OutlineTreeModel::iter_next_vfunc (const iterator & iter, iterator & iter_next) 
 
 	try
 	{
-		Path path  = get_path (iter);
+		Path path = get_path (iter);
 		path .next ();
 
 		set_data (iter_next, tree .get_node (path) .get_data ());
@@ -486,7 +488,7 @@ OutlineTreeModel::iter_parent_vfunc (const iterator & child, iterator & iter) co
 	//__LOG__ << std::endl;
 
 	auto path = get_path (child);
-	
+
 	if (path .up ())
 	{
 		set_data (iter, tree .get_node (path) .get_data ());

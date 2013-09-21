@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -60,14 +60,14 @@
 namespace titania {
 namespace puck {
 
-class OutlineTreeView;
+class OutlineTreeViewEditor;
 
 class OutlineSelection :
 	public X3DBaseInterface
 {
 public:
 
-	OutlineSelection (BrowserWindow* const browserWindow, OutlineTreeView* const);
+	OutlineSelection (BrowserWindow* const browserWindow, OutlineTreeViewEditor* const);
 
 	void
 	set_select_multiple (bool);
@@ -93,9 +93,9 @@ private:
 	void
 	select (X3D::X3DFieldDefinition* const, bool, X3D::ChildObjectSet &) const;
 
-	OutlineTreeView* const treeView;
-	bool                   selectMultiple;
-	X3D::MFNode            children;
+	OutlineTreeViewEditor* const treeView;
+	bool                         selectMultiple;
+	X3D::MFNode                  children;
 
 };
 

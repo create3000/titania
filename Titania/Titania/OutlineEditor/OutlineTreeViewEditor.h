@@ -48,59 +48,58 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_VIEWPOINT_LIST_VIEWPOINT_LIST_H__
-#define __TITANIA_VIEWPOINT_LIST_VIEWPOINT_LIST_H__
+#ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_TREE_VIEW_EDITOR_H__
+#define __TITANIA_OUTLINE_EDITOR_OUTLINE_TREE_VIEW_EDITOR_H__
 
-#include "../UserInterfaces/X3DViewpointListInterface.h"
-#include <Titania/X3D.h>
-#include <gtkmm.h>
+#include "X3DOutlineTreeView.h"
+
+#include "OutlineSelection.h"
 
 namespace titania {
 namespace puck {
 
-class ViewpointList :
-	public X3DViewpointListInterface
+class OutlineTreeViewEditor :
+	public X3DOutlineTreeView
 {
 public:
 
-	ViewpointList (BrowserWindow* const);
+	///  @name Construction
 
-	~ViewpointList ();
-
+	OutlineTreeViewEditor (BrowserWindow* const);
 
 private:
 
-	virtual
-	void
-	initialize () final;
+	OutlineSelection &
+	get_selection ()
+	{ return selection; }
 
-	const X3D::X3DSFNode <X3D::ViewpointStack> &
-	getViewpointStack ();
-
-	const X3D::X3DSFNode <X3D::ViewpointList> &
-	getViewpoints () const;
-
-	X3D::UserViewpointList
-	getUserViewpoints ();
-
-	void
-	set_activeLayer ();
-
-	void
-	set_viewpoints ();
-
-	void
-	set_currentViewpoint ();
+	const OutlineSelection &
+	get_selection () const
+	{ return selection; }
 
 	virtual
 	void
-	on_map () final;
+	on_edited (const Glib::ustring &, const Glib::ustring &) final;
+
+	virtual
+	void
+	on_rename_node_activate () final;
 
 	virtual
 	void
 	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final;
 
-	X3D::X3DSFNode <X3D::X3DLayerNode> activeLayer;
+	virtual
+	bool
+	on_button_press_event (GdkEventButton*) final;
+
+	void
+	select_node (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
+
+	bool
+	select_field (int x, int y);
+
+	OutlineSelection selection;
 
 };
 
