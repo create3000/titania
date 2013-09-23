@@ -1,3 +1,18 @@
+2013-09-23  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* X3DBrowser.cpp:
+	* X3DBrowserContext.h:
+	* ParticleSystems.h:
+	* X3DBrowserContext.cpp:
+	* SupportedNodes.cpp:
+	* X3DTimeDependentNode.cpp:
+	* ForcePhysicsModel.h:
+	* GravityPhysicsModel.h:
+	* ForcePhysicsModel.cpp:
+	* GravityPhysicsModel.cpp: 
+
 2013-09-21  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBrowserContext.cpp: 

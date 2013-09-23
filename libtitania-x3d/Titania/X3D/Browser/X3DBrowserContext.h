@@ -342,6 +342,10 @@ protected:
 	virtual
 	void
 	initialize () override;
+	
+	void
+	setEnabled (bool value)
+	{ enabled = value; }
 
 	virtual
 	const X3DSFNode <World> &
@@ -376,6 +380,8 @@ private:
 	set_navigationInfo_type ();
 
 	// Members
+	
+	bool enabled;
 
 	SFTime initializedOutput;
 	Output reshapedOutput;

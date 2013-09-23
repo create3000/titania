@@ -65,7 +65,9 @@ namespace titania {
 namespace puck {
 
 class OutlineTreeModel :
-	public Glib::Object, public Gtk::TreeModel, public X3DBaseInterface
+	public Glib::Object,
+	public Gtk::TreeModel,
+	public X3DBaseInterface
 {
 public:
 
@@ -164,22 +166,22 @@ private:
 
 	virtual
 	Gtk::TreeModelFlags
-	get_flags_vfunc () const;
+	get_flags_vfunc () const final;
 
 	virtual
 	int
-	get_n_columns_vfunc () const;
+	get_n_columns_vfunc () const final;
 
 	virtual GType
-	get_column_type_vfunc (int index) const;
+	get_column_type_vfunc (int index) const final;
 
 	virtual
 	void
-	get_value_vfunc (const iterator & iter, int column, Glib::ValueBase & value) const;
+	get_value_vfunc (const iterator & iter, int column, Glib::ValueBase & value) const final;
 
 	virtual
 	Path
-	get_path_vfunc (const iterator & iter) const;
+	get_path_vfunc (const iterator & iter) const final;
 
 	virtual
 	bool
@@ -187,63 +189,63 @@ private:
 
 	virtual
 	int
-	iter_n_root_children_vfunc () const;
+	iter_n_root_children_vfunc () const final;
 
 	virtual
 	bool
-	iter_nth_root_child_vfunc (int n, iterator & iter) const;
+	iter_nth_root_child_vfunc (int n, iterator & iter) const final;
 
 	virtual
 	bool
-	iter_has_child_vfunc (const iterator & iter) const;
+	iter_has_child_vfunc (const iterator & iter) const final;
 
 	virtual
 	int
-	iter_n_children_vfunc (const iterator & iter) const;
+	iter_n_children_vfunc (const iterator & iter) const final;
 
 	virtual
 	bool
-	iter_children_vfunc (const iterator & parent, iterator & iter) const;
+	iter_children_vfunc (const iterator & parent, iterator & iter) const final;
 
 	virtual
 	bool
-	iter_nth_child_vfunc (const iterator & parent, int n, iterator & iter) const;
+	iter_nth_child_vfunc (const iterator & parent, int n, iterator & iter) const final;
 
 	virtual
 	bool
-	iter_next_vfunc (const iterator & iter, iterator & iter_next) const;
+	iter_next_vfunc (const iterator & iter, iterator & iter_next) const final;
 
 	virtual
 	bool
-	iter_parent_vfunc (const iterator & child, iterator & iter) const;
+	iter_parent_vfunc (const iterator & child, iterator & iter) const final;
 
 	virtual
 	void
-	ref_node_vfunc (const iterator &) const;
+	ref_node_vfunc (const iterator &) const final;
 
 	virtual
 	void
-	unref_node_vfunc (const iterator &) const;
+	unref_node_vfunc (const iterator &) const final;
 
 	virtual
 	void
-	on_row_changed (const Path &, const iterator &);
+	on_row_changed (const Path &, const iterator &) final;
 
 	virtual
 	void
-	on_row_inserted (const Path & path, const iterator &);
+	on_row_inserted (const Path & path, const iterator &) final;
 
 	virtual
 	void
-	on_row_has_child_toggled (const Path &, const iterator &);
+	on_row_has_child_toggled (const Path &, const iterator &) final;
 
 	virtual
 	void
-	on_row_deleted (const Path &);
+	on_row_deleted (const Path &) final;
 
 	virtual
 	void
-	on_rows_reordered (const Path &, const iterator &, int*);
+	on_rows_reordered (const Path &, const iterator &, int*) final;
 
 	typedef Gtk::TreeModelColumn <OutlineTreeData*> DataColumn;
 	typedef Gtk::TreeModelColumn <bool>             SelectedColumn;

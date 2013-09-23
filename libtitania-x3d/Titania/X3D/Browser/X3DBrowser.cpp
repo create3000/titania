@@ -395,8 +395,8 @@ X3DBrowser::beginUpdate ()
 throw (Error <DISPOSED>)
 {
 	std::clog << "Browser begin update." << std::endl;
-
-	// add parents to fields
+	setEnabled (true);
+	addEvent ();
 }
 
 void
@@ -404,8 +404,7 @@ X3DBrowser::endUpdate ()
 throw (Error <DISPOSED>)
 {
 	std::clog << "Browser end update." << std::endl;
-
-	// remove parents from
+	setEnabled (false);
 }
 
 void

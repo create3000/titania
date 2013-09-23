@@ -65,52 +65,53 @@ namespace X3D {
 static constexpr int32_t MAX_DOWNLOAD_THREADS = 8;
 
 X3DBrowserContext::X3DBrowserContext () :
-	 X3DExecutionContext (),
-	 renderingProperties (new RenderingProperties (this)),          // SFNode  [ ]       renderingProperties NULL   [RenderingProperties]
-	   browserProperties (new BrowserProperties   (this)),          // SFNode  [ ]       browserProperties   NULL   [BrowserProperties]
-	      browserOptions (new BrowserOptions      (this)),          // SFNode  [ ]       browserOptions      NULL   [BrowserOptions]
-	    javaScriptEngine (new SpiderMonkey        (this)),          // SFNode  [ ]       javaScriptEngine    NULL   [JavaScriptEngine]
-	   initializedOutput (),                                        // SFTime [out]  initialized
-	      reshapedOutput (),                                        // [out]  reshaped
-	       sensorsOutput (),                                        // [out]  sensors
-	 prepareEventsOutput (),                                        // [out]  prepareEvents
-	     displayedOutput (),                                        // [out]  displayed
-	      finishedOutput (),                                        // [out]  finished
-	       changedOutput (),                                        // [out]  changed
-	               clock (new chrono::system_clock <time_type> ()),
-	              router (),
-	              layers (),
-	             layouts (),
-	              lights (),
-	        textureUnits (),
-	         activeLayer (),
-	activeNavigationInfo (nullptr),
+	        X3DExecutionContext (),
+	        renderingProperties (new RenderingProperties (this)),          // SFNode  [ ]       renderingProperties NULL   [RenderingProperties]
+	          browserProperties (new BrowserProperties   (this)),          // SFNode  [ ]       browserProperties   NULL   [BrowserProperties]
+	             browserOptions (new BrowserOptions      (this)),          // SFNode  [ ]       browserOptions      NULL   [BrowserOptions]
+	           javaScriptEngine (new SpiderMonkey        (this)),          // SFNode  [ ]       javaScriptEngine    NULL   [JavaScriptEngine]
+	                    enabled (true),
+	          initializedOutput (),                                        // SFTime [out]  initialized
+	             reshapedOutput (),                                        // [out]  reshaped
+	              sensorsOutput (),                                        // [out]  sensors
+	        prepareEventsOutput (),                                        // [out]  prepareEvents
+	            displayedOutput (),                                        // [out]  displayed
+	             finishedOutput (),                                        // [out]  finished
+	              changedOutput (),                                        // [out]  changed
+	                      clock (new chrono::system_clock <time_type> ()),
+	                     router (),
+	                     layers (),
+	                    layouts (),
+	                     lights (),
+	               textureUnits (),
+	                activeLayer (),
+	       activeNavigationInfo (nullptr),
 	activeNavigationInfoChanged (),
-	              viewer (ViewerType::NONE),
-	       examineViewer (),
-	          walkViewer (),
-	           flyViewer (),
-	          noneViewer (),
-	              lookAt (),
- activeViewpointChanged (),
-	 keyDeviceSensorNode (nullptr),
-	                   x (0),
-	                   y (0),
-	              hitRay (),
-	                hits (),
-	             hitComp (),
-	      enabledSensors ({ NodeSet () }),
-	         overSensors (),
-	       activeSensors (),
-	           selection (new Selection (this)),                    // SFNode  [ ]   selection    NULL  [Selection]
-	         changedTime (clock -> cycle ()),
-	        currentSpeed (0),
-	    currentFrameRate (0),
-	         threadIndex (0),
-	             threads (1),
-	         threadMutex (),
-	        notification (new Notification (this)),
-	             console (new Console (this))                       // SFNode  [ ]   console    NULL  [Console]
+	                     viewer (ViewerType::NONE),
+	              examineViewer (),
+	                 walkViewer (),
+	                  flyViewer (),
+	                 noneViewer (),
+	                     lookAt (),
+	     activeViewpointChanged (),
+	        keyDeviceSensorNode (nullptr),
+	                          x (0),
+	                          y (0),
+	                     hitRay (),
+	                       hits (),
+	                    hitComp (),
+	             enabledSensors ({ NodeSet () }),
+	                overSensors (),
+	              activeSensors (),
+	                  selection (new Selection (this)),                    // SFNode  [ ]   selection    NULL  [Selection]
+	                changedTime (clock -> cycle ()),
+	               currentSpeed (0),
+	           currentFrameRate (0),
+	                threadIndex (0),
+	                    threads (1),
+	                threadMutex (),
+	               notification (new Notification (this)),
+	                    console (new Console (this))                       // SFNode  [ ]   console    NULL  [Console]
 {
 	addChildren (initialized (),
 	             renderingProperties,
@@ -621,7 +622,9 @@ X3DBrowserContext::update ()
 
 			advanceClock ();
 
-			prepareEvents () .processInterests ();
+			if (enabled)
+				prepareEvents () .processInterests ();
+
 			router .processEvents ();
 
 			getWorld () -> traverse (TraverseType::CAMERA);

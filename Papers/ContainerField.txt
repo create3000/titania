@@ -1,0 +1,648 @@
+[Anchor]
+	containerField = children
+
+[Appearance]
+	containerField = appearance
+
+[Arc2D]
+	containerField = geometry
+
+[ArcClose2D]
+	containerField = geometry
+
+[AudioClip]
+	containerField = source
+
+[Background]
+	containerField = children
+
+[BallJoint]
+	containerField = joints
+
+[Billboard]
+	containerField = children
+
+[BooleanFilter]
+	containerField = children
+
+[BooleanSequencer]
+	containerField = children
+
+[BooleanToggle]
+	containerField = children
+
+[BooleanTrigger]
+	containerField = children
+
+[BoundedPhysicsModel]
+	containerField = physics
+
+[Box]
+	containerField = geometry
+
+[CADAssembly]
+	containerField = children
+
+[CADFace]
+	containerField = children
+
+[CADLayer]
+	containerField = children
+
+[CADPart]
+	containerField = children
+
+[Circle2D]
+	containerField = geometry
+
+[ClipPlane]
+	containerField = children
+
+[CollidableOffset]
+	containerField = children
+
+[CollidableShape]
+	containerField = children
+
+[Collision]
+	containerField = children
+
+[CollisionCollection]
+	containerField = collidables
+
+[CollisionSensor]
+	containerField = children
+
+[CollisionSpace]
+	containerField = children
+
+[Color]
+	containerField = color
+
+[ColorDamper]
+	containerField = children
+
+[ColorInterpolator]
+	containerField = children
+
+[ColorRGBA]
+	containerField = color
+
+[ComposedCubeMapTexture]
+	containerField = texture
+
+[ComposedShader]
+	containerField = shaders
+
+[ComposedTexture3D]
+	containerField = texture
+
+[Cone]
+	containerField = geometry
+
+[ConeEmitter]
+	containerField = emitter
+
+[Contact]
+	containerField = children
+
+[Contour2D]
+	containerField = trimmingContour
+
+[ContourPolyline2D]
+	containerField = children
+
+[Coordinate]
+	containerField = coord
+
+[CoordinateDamper]
+	containerField = children
+
+[CoordinateDouble]
+	containerField = coord
+
+[CoordinateInterpolator]
+	containerField = children
+
+[CoordinateInterpolator2D]
+	containerField = children
+
+[Cylinder]
+	containerField = geometry
+
+[CylinderSensor]
+	containerField = children
+
+[DISEntityManager]
+	containerField = children
+
+[DISEntityTypeMapping]
+	containerField = mapping
+
+[DirectionalLight]
+	containerField = children
+
+[Disk2D]
+	containerField = geometry
+
+[DoubleAxisHingeJoint]
+	containerField = joints
+
+[EaseInEaseOut]
+	containerField = children
+
+[ElevationGrid]
+	containerField = geometry
+
+[EspduTransform]
+	containerField = children
+
+[ExplosionEmitter]
+	containerField = emitter
+
+[Extrusion]
+	containerField = geometry
+
+[FillProperties]
+	containerField = fillProperties
+
+[FloatVertexAttribute]
+	containerField = attrib
+
+[Fog]
+	containerField = children
+
+[FogCoordinate]
+	containerField = fogCoord
+
+[FontStyle]
+	containerField = fontStyle
+
+[GeneratedCubeMapTexture]
+	containerField = texture
+
+[GeoCoordinate]
+	containerField = coord
+
+[GeoElevationGrid]
+	containerField = geometry
+
+[GeoLOD]
+	containerField = children
+
+[GeoLocation]
+	containerField = children
+
+[GeoMetadata]
+	containerField = children
+
+[GeoOrigin]
+	containerField = geoOrigin
+
+[GeoPositionInterpolator]
+	containerField = children
+
+[GeoProximitySensor]
+	containerField = children
+
+[GeoTouchSensor]
+	containerField = children
+
+[GeoTransform]
+	containerField = children
+
+[GeoViewpoint]
+	containerField = children
+
+[ForcePhysicsModel]
+	containerField = physics
+
+[Group]
+	containerField = children
+
+[HAnimDisplacer]
+	containerField = displacers
+
+[HAnimHumanoid]
+	containerField = children
+
+[HAnimJoint]
+	containerField = children
+
+[HAnimSegment]
+	containerField = children
+
+[HAnimSite]
+	containerField = children
+
+[ImageCubeMapTexture]
+	containerField = texture
+
+[ImageTexture]
+	containerField = texture
+
+[ImageTexture3D]
+	containerField = texture
+
+[IndexedFaceSet]
+	containerField = geometry
+
+[IndexedLineSet]
+	containerField = geometry
+
+[IndexedQuadSet]
+	containerField = geometry
+
+[IndexedTriangleFanSet]
+	containerField = geometry
+
+[IndexedTriangleSet]
+	containerField = geometry
+
+[IndexedTriangleStripSet]
+	containerField = geometry
+
+[Inline]
+	containerField = children
+
+[IntegerSequencer]
+	containerField = children
+
+[IntegerTrigger]
+	containerField = children
+
+[KeySensor]
+	containerField = children
+
+[LOD]
+	containerField = children
+
+[Layer]
+	containerField = layers
+
+[LayerSet]
+	containerField = children
+
+[Layout]
+	containerField = layout
+
+[LayoutGroup]
+	containerField = children
+
+[LayoutLayer]
+	containerField = layers
+
+[LinePickSensor]
+	containerField = children
+
+[LineProperties]
+	containerField = lineProperties
+
+[LineSet]
+	containerField = geometry
+
+[LoadSensor]
+	containerField = children
+
+[LocalFog]
+	containerField = children
+
+[Material]
+	containerField = material
+
+[Matrix3VertexAttribute]
+	containerField = attrib
+
+[Matrix4VertexAttribute]
+	containerField = attrib
+
+[MetadataBoolean]
+	containerField = metadata
+
+[MetadataDouble]
+	containerField = metadata
+
+[MetadataFloat]
+	containerField = metadata
+
+[MetadataInteger]
+	containerField = metadata
+
+[MetadataSet]
+	containerField = metadata
+
+[MetadataString]
+	containerField = metadata
+
+[MotorJoint]
+	containerField = joints
+
+[MovieTexture]
+	containerField = texture
+
+[MultiTexture]
+	containerField = texture
+
+[MultiTextureCoordinate]
+	containerField = texCoord
+
+[MultiTextureTransform]
+	containerField = textureTransform
+
+[NavigationInfo]
+	containerField = children
+
+[Normal]
+	containerField = normal
+
+[NormalInterpolator]
+	containerField = children
+
+[NurbsCurve]
+	containerField = geometry
+
+[NurbsCurve2D]
+	containerField = children
+
+[NurbsOrientationInterpolator]
+	containerField = children
+
+[NurbsPatchSurface]
+	containerField = geometry
+
+[NurbsPositionInterpolator]
+	containerField = children
+
+[NurbsSet]
+	containerField = children
+
+[NurbsSurfaceInterpolator]
+	containerField = children
+
+[NurbsSweptSurface]
+	containerField = geometry
+
+[NurbsSwungSurface]
+	containerField = geometry
+
+[NurbsTextureCoordinate]
+	containerField = texCoord
+
+[NurbsTrimmedSurface]
+	containerField = geometry
+
+[OrientationChaser]
+	containerField = children
+
+[OrientationDamper]
+	containerField = children
+
+[OrientationInterpolator]
+	containerField = children
+
+[OrthoViewpoint]
+	containerField = children
+
+[PackagedShader]
+	containerField = shaders
+
+[ParticleSystem]
+	containerField = children
+
+[PickableGroup]
+	containerField = children
+
+[PixelTexture]
+	containerField = texture
+
+[PixelTexture3D]
+	containerField = texture
+
+[PlaneSensor]
+	containerField = children
+
+[PointEmitter]
+	containerField = emitter
+
+[PointLight]
+	containerField = children
+
+[PointPickSensor]
+	containerField = children
+
+[PointSet]
+	containerField = geometry
+
+[Polyline2D]
+	containerField = geometry
+
+[PolylineEmitter]
+	containerField = emitter
+
+[Polypoint2D]
+	containerField = geometry
+
+[PositionChaser]
+	containerField = children
+
+[PositionChaser2D]
+	containerField = children
+
+[PositionDamper]
+	containerField = children
+
+[PositionDamper2D]
+	containerField = children
+
+[PositionInterpolator]
+	containerField = children
+
+[PositionInterpolator2D]
+	containerField = children
+
+[PrimitivePickSensor]
+	containerField = children
+
+[ProgramShader]
+	containerField = shaders
+
+[ProximitySensor]
+	containerField = children
+
+[QuadSet]
+	containerField = geometry
+
+[ReceiverPdu]
+	containerField = children
+
+[Rectangle2D]
+	containerField = geometry
+
+[RigidBody]
+	containerField = bodies
+
+[RigidBodyCollection]
+	containerField = children
+
+[ScalarChaser]
+	containerField = children
+
+[ScalarInterpolator]
+	containerField = children
+
+[ScreenFontStyle]
+	containerField = fontStyle
+
+[ScreenGroup]
+	containerField = children
+
+[Script]
+	containerField = children
+
+[ShaderPart]
+	containerField = parts
+
+[ShaderProgram]
+	containerField = programs
+
+[Shape]
+	containerField = children
+
+[SignalPdu]
+	containerField = children
+
+[SingleAxisHingeJoint]
+	containerField = joints
+
+[SliderJoint]
+	containerField = joints
+
+[Sound]
+	containerField = children
+
+[Sphere]
+	containerField = geometry
+
+[SphereSensor]
+	containerField = children
+
+[SplinePositionInterpolator]
+	containerField = children
+
+[SplinePositionInterpolator2D]
+	containerField = children
+
+[SplineScalarInterpolator]
+	containerField = children
+
+[SpotLight]
+	containerField = children
+
+[SquadOrientationInterpolator]
+	containerField = children
+
+[StaticGroup]
+	containerField = children
+
+[StringSensor]
+	containerField = children
+
+[SurfaceEmitter]
+	containerField = emitter
+
+[Switch]
+	containerField = children
+
+[TexCoordDamper2D]
+	containerField = children
+
+[Text]
+	containerField = geometry
+
+[TextureBackground]
+	containerField = children
+
+[TextureCoordinate]
+	containerField = texCoord
+
+[TextureCoordinate3D]
+	containerField = texCoord
+
+[TextureCoordinate4D]
+	containerField = texCoord
+
+[TextureCoordinateGenerator]
+	containerField = texCoord
+
+[TextureProperties]
+	containerField = textureProperties
+
+[TextureTransform]
+	containerField = textureTransform
+
+[TextureTransform3D]
+	containerField = textureTransform
+
+[TextureTransformMatrix3D]
+	containerField = textureTransform
+
+[TimeSensor]
+	containerField = children
+
+[TimeTrigger]
+	containerField = children
+
+[TouchSensor]
+	containerField = children
+
+[Transform]
+	containerField = children
+
+[TransformSensor]
+	containerField = children
+
+[TransmitterPdu]
+	containerField = children
+
+[TriangleFanSet]
+	containerField = geometry
+
+[TriangleSet]
+	containerField = geometry
+
+[TriangleSet2D]
+	containerField = geometry
+
+[TriangleStripSet]
+	containerField = geometry
+
+[TwoSidedMaterial]
+	containerField = material
+
+[UniversalJoint]
+	containerField = joints
+
+[Viewpoint]
+	containerField = children
+
+[ViewpointGroup]
+	containerField = children
+
+[Viewport]
+	containerField = viewport
+
+[VisibilitySensor]
+	containerField = children
+
+[VolumeEmitter]
+	containerField = emitter
+
+[VolumePickSensor]
+	containerField = children
+
+[WindPhysicsModel]
+	containerField = physics
+
+[WorldInfo]
+	containerField = children
+

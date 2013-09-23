@@ -235,22 +235,28 @@ BrowserWindow::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & co
                                       guint info,
                                       guint time)
 {
-	auto uri = selection_data .get_uris ();
-	
-	if (uri .size ())
+	if (selection_data .get_format () == 8 and selection_data .get_length ()) // 8 bit format
 	{
-		open (Glib::uri_unescape_string (uri [0]));
+		if (selection_data .get_data_type () == "text/uri-list")
+		{
+			auto uri = selection_data .get_uris ();
+			
+			if (uri .size ())
+			{
+				open (Glib::uri_unescape_string (uri [0]));
 
-		context -> drag_finish (true, false, time);
-		return;
-	}
+				context -> drag_finish (true, false, time);
+				return;
+			}
+		}
 
-	if (selection_data .get_format () == 8)
-	{
-		open (Glib::uri_unescape_string (basic::trim (selection_data .get_data_as_string ())));
+		if (selection_data .get_data_type () == "STRING")
+		{
+			import (Glib::uri_unescape_string (basic::trim (selection_data .get_data_as_string ())));
 
-		context -> drag_finish (true, false, time);
-		return;
+			context -> drag_finish (true, false, time);
+			return;
+		}
 	}
 
 	context -> drag_finish (false, false, time);

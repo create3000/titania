@@ -82,7 +82,7 @@ var nodeTypes = [
 'GeoTouchSensor',
 'GeoTransform',
 'GeoViewpoint',
-'GravityPhysicsModel',
+'ForcePhysicsModel',
 'Group',
 'HAnimDisplacer',
 'HAnimHumanoid',

@@ -223,7 +223,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Components/ParticleSystems/BoundedPhysicsModel.cpp \
 	Titania/X3D/Components/ParticleSystems/ConeEmitter.cpp \
 	Titania/X3D/Components/ParticleSystems/ExplosionEmitter.cpp \
-	Titania/X3D/Components/ParticleSystems/GravityPhysicsModel.cpp \
+	Titania/X3D/Components/ParticleSystems/ForcePhysicsModel.cpp \
 	Titania/X3D/Components/ParticleSystems/ParticleSystem.cpp \
 	Titania/X3D/Components/ParticleSystems/PointEmitter.cpp \
 	Titania/X3D/Components/ParticleSystems/PolylineEmitter.cpp \

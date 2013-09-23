@@ -154,7 +154,7 @@ GeoTransform { }
 
 GeoViewpoint { }
 
-GravityPhysicsModel { }
+ForcePhysicsModel { }
 
 Group { }
 

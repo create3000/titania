@@ -138,7 +138,7 @@ SupportedNodes::SupportedNodes (X3DExecutionContext* const executionContext)
 	add ("GeoTouchSensor",               new GeoTouchSensor               (executionContext));
 	add ("GeoTransform",                 new GeoTransform                 (executionContext));
 	add ("GeoViewpoint",                 new GeoViewpoint                 (executionContext));
-	add ("GravityPhysicsModel",          new GravityPhysicsModel          (executionContext));
+	add ("ForcePhysicsModel",            new ForcePhysicsModel            (executionContext));
 	add ("Group",                        new Group                        (executionContext));
 	add ("HAnimDisplacer",               new HAnimDisplacer               (executionContext));
 	add ("HAnimHumanoid",                new HAnimHumanoid                (executionContext));

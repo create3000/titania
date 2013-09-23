@@ -345,16 +345,6 @@
     <property name="can_focus">False</property>
     <property name="icon_name">visualization</property>
   </object>
-  <object class="GtkImage" id="image12">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="icon_name">gtk-properties</property>
-  </object>
-  <object class="GtkImage" id="image13">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="icon_name">window_new</property>
-  </object>
   <object class="GtkWindow" id="Window">
     <property name="width_request">1000</property>
     <property name="height_request">618</property>
@@ -618,6 +608,45 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
+                      <object class="GtkImageMenuItem" id="WorkspacesMenuItem">
+                        <property name="label" translatable="yes">Workspaces</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="image">image11</property>
+                        <property name="use_stock">False</property>
+                        <child type="submenu">
+                          <object class="GtkMenu" id="menu6">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <child>
+                              <object class="GtkRadioMenuItem" id="BrowserMenuItem">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">Browser</property>
+                                <property name="draw_as_radio">True</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkRadioMenuItem" id="EditorMenuItem">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">Editor</property>
+                                <property name="active">True</property>
+                                <property name="draw_as_radio">True</property>
+                                <property name="group">BrowserMenuItem</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="separatormenuitem3">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                    </child>
+                    <child>
                       <object class="GtkCheckMenuItem" id="ToolBarMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
@@ -641,45 +670,6 @@
                         <property name="label" translatable="yes">Console</property>
                         <property name="use_underline">True</property>
                         <signal name="toggled" handler="on_footer_toggled" swapped="no"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkSeparatorMenuItem" id="separatormenuitem3">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="WorkspacesMenuItem">
-                        <property name="label" translatable="yes">Workspaces</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="image">image11</property>
-                        <property name="use_stock">False</property>
-                        <child type="submenu">
-                          <object class="GtkMenu" id="menu6">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <child>
-                              <object class="GtkImageMenuItem" id="BrowserMenuItem">
-                                <property name="label" translatable="yes">Browser</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="image">image13</property>
-                                <property name="use_stock">False</property>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkImageMenuItem" id="EditorMenuItem">
-                                <property name="label" translatable="yes">Editor</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="image">image12</property>
-                                <property name="use_stock">False</property>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
                       </object>
                     </child>
                     <child>
@@ -1400,28 +1390,6 @@
                         <property name="show_border">False</property>
                         <property name="group_name">SideBar</property>
                         <child>
-                          <object class="GtkBox" id="HistoryEditorBox">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="orientation">vertical</property>
-                            <child>
-                              <placeholder/>
-                            </child>
-                          </object>
-                        </child>
-                        <child type="tab">
-                          <object class="GtkImage" id="image4">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">History Editor</property>
-                            <property name="stock">gtk-sort-ascending</property>
-                            <property name="icon-size">2</property>
-                          </object>
-                          <packing>
-                            <property name="tab_fill">False</property>
-                          </packing>
-                        </child>
-                        <child>
                           <object class="GtkBox" id="ViewpointListBox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
@@ -1430,9 +1398,6 @@
                               <placeholder/>
                             </child>
                           </object>
-                          <packing>
-                            <property name="position">1</property>
-                          </packing>
                         </child>
                         <child type="tab">
                           <object class="GtkImage" id="image1">
@@ -1443,7 +1408,6 @@
                             <property name="icon-size">2</property>
                           </object>
                           <packing>
-                            <property name="position">1</property>
                             <property name="tab_fill">False</property>
                           </packing>
                         </child>
@@ -1457,7 +1421,7 @@
                             </child>
                           </object>
                           <packing>
-                            <property name="position">2</property>
+                            <property name="position">1</property>
                           </packing>
                         </child>
                         <child type="tab">
@@ -1466,6 +1430,32 @@
                             <property name="can_focus">False</property>
                             <property name="tooltip_text" translatable="yes">Viewpoint Editor</property>
                             <property name="stock">OutlineEditor</property>
+                            <property name="icon-size">2</property>
+                          </object>
+                          <packing>
+                            <property name="position">1</property>
+                            <property name="tab_fill">False</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkBox" id="HistoryEditorBox">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="position">2</property>
+                          </packing>
+                        </child>
+                        <child type="tab">
+                          <object class="GtkImage" id="image12">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="tooltip_text" translatable="yes">History Editor</property>
+                            <property name="stock">gtk-sort-ascending</property>
                             <property name="icon-size">2</property>
                           </object>
                           <packing>

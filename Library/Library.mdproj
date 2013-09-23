@@ -2321,6 +2321,7 @@
     <None Include="Tests\Layout\LayoutGroup.wrl" />
     <None Include="Tests\Layout\LayoutLayer.wrl" />
     <None Include="Tests\Handles\OutlineEditor.wrl" />
+    <None Include="Tests\Basic\NodeIndex.x3d" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

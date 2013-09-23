@@ -256,7 +256,6 @@
     <None Include="Titania\X3D\Components\ParticleSystems\BoundedPhysicsModel.h" />
     <None Include="Titania\X3D\Components\ParticleSystems\ConeEmitter.h" />
     <None Include="Titania\X3D\Components\ParticleSystems\ExplosionEmitter.h" />
-    <None Include="Titania\X3D\Components\ParticleSystems\GravityPhysicsModel.h" />
     <None Include="Titania\X3D\Components\ParticleSystems\ParticleSystem.h" />
     <None Include="Titania\X3D\Components\ParticleSystems\PointEmitter.h" />
     <None Include="Titania\X3D\Components\ParticleSystems\PolylineEmitter.h" />
@@ -583,6 +582,7 @@
     <None Include="share\titania\library\RoundedRectangle2D.wrl" />
     <None Include="Titania\X3D\Components\Grouping\X3DTransformNode.h" />
     <None Include="Titania\X3D\Routing\EventList.h" />
+    <None Include="Titania\X3D\Components\ParticleSystems\ForcePhysicsModel.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -803,7 +803,6 @@
     <Compile Include="Titania\X3D\Components\ParticleSystems\BoundedPhysicsModel.cpp" />
     <Compile Include="Titania\X3D\Components\ParticleSystems\ConeEmitter.cpp" />
     <Compile Include="Titania\X3D\Components\ParticleSystems\ExplosionEmitter.cpp" />
-    <Compile Include="Titania\X3D\Components\ParticleSystems\GravityPhysicsModel.cpp" />
     <Compile Include="Titania\X3D\Components\ParticleSystems\ParticleSystem.cpp" />
     <Compile Include="Titania\X3D\Components\ParticleSystems\PointEmitter.cpp" />
     <Compile Include="Titania\X3D\Components\ParticleSystems\PolylineEmitter.cpp" />
@@ -1025,6 +1024,7 @@
     <Compile Include="Titania\X3D\Browser\Picking\HitArray.cpp" />
     <Compile Include="Titania\X3D\Browser\Picking\Selection.cpp" />
     <Compile Include="Titania\X3D\Components\Grouping\X3DTransformNode.cpp" />
+    <Compile Include="Titania\X3D\Components\ParticleSystems\ForcePhysicsModel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

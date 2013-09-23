@@ -67,6 +67,7 @@ public:
 
 	OutlineTreeViewEditor (BrowserWindow* const);
 
+
 private:
 
 	OutlineSelection &
@@ -76,10 +77,23 @@ private:
 	const OutlineSelection &
 	get_selection () const
 	{ return selection; }
+	
+	static
+	const std::string &
+	get_drag_data_type ()
+	{ return dragDataType; }
 
 	virtual
 	void
-	on_drag_data_get (const Glib::RefPtr <Gdk::DragContext> &, Gtk::SelectionData &, guint, guint);
+	on_drag_begin (const Glib::RefPtr <Gdk::DragContext> &) final;
+
+	virtual
+	void
+	on_drag_end (const Glib::RefPtr <Gdk::DragContext> &) final;
+
+	virtual
+	void
+	on_drag_data_delete (const Glib::RefPtr <Gdk::DragContext> &) final;
 
 	virtual
 	void
@@ -106,6 +120,8 @@ private:
 
 	bool
 	select_field (int x, int y);
+
+	static const std::string dragDataType;
 
 	OutlineSelection selection;
 

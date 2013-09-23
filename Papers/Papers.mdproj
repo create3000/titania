@@ -59,6 +59,8 @@
     <None Include="Modern OpenGL-Dateien\style.css" />
     <None Include="Modern OpenGL-Dateien\xhp5ioy.asc" />
     <None Include="CosmoWorlds\CosmoWorldDoc.pdf" />
+    <None Include="ContainerField.pl" />
+    <None Include="ContainerField.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Quaternion\" />
