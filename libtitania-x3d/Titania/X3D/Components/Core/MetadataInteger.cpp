@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string MetadataInteger::componentName  = "Core";
+const std::string MetadataInteger::typeName       = "MetadataInteger";
+const std::string MetadataInteger::containerField = "metadata";
+
 MetadataInteger::Fields::Fields () :
 	value (new MFInt32 ())
 { }
@@ -65,9 +69,6 @@ MetadataInteger::MetadataInteger (X3DExecutionContext* const executionContext) :
 	X3DMetadataObject (),
 	           fields ()
 {
-	setComponent ("Core");
-	setTypeName ("MetadataInteger");
-
 	addField (inputOutput, "metadata",  metadata ());
 	addField (inputOutput, "name",      name ());
 	addField (inputOutput, "reference", reference ());

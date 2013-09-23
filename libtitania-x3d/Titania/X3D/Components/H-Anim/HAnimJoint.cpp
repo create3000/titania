@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string HAnimJoint::componentName  = "H-Anim";
+const std::string HAnimJoint::typeName       = "HAnimJoint";
+const std::string HAnimJoint::containerField = "children";
+
 HAnimJoint::Fields::Fields () :
 	center (new SFVec3f ()),
 	displacers (new MFNode ()),
@@ -76,9 +80,6 @@ HAnimJoint::HAnimJoint (X3DExecutionContext* const executionContext) :
 	X3DGroupingNode (),
 	         fields ()
 {
-	setComponent ("H-Anim");
-	setTypeName ("HAnimJoint");
-
 	addField (inputOutput,    "metadata",         metadata ());
 	addField (initializeOnly, "bboxSize",         bboxSize ());
 	addField (initializeOnly, "bboxCenter",       bboxCenter ());

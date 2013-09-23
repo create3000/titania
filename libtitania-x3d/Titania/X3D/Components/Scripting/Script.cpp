@@ -58,6 +58,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string Script::componentName  = "Scripting";
+const std::string Script::typeName       = "Script";
+const std::string Script::containerField = "children";
+
 Script::Fields::Fields () :
 	directOutput (new SFBool ()),
 	mustEvaluate (new SFBool ())
@@ -69,9 +73,6 @@ Script::Script (X3DExecutionContext* const executionContext) :
 	       fields (),
 	   javaScript ()
 {
-	setComponent ("Scripting");
-	setTypeName ("Script");
-
 	addField (inputOutput,    "metadata",     metadata ());
 	addField (inputOutput,    "url",          url ());
 	addField (initializeOnly, "directOutput", directOutput ());

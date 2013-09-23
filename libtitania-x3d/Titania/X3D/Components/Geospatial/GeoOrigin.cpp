@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string GeoOrigin::componentName  = "Geospatial";
+const std::string GeoOrigin::typeName       = "GeoOrigin";
+const std::string GeoOrigin::containerField = "geoOrigin";
+
 GeoOrigin::Fields::Fields () :
 	geoCoords (new SFVec3d ()),
 	geoSystem (new MFString ({ "GD", "WE" })),
@@ -66,9 +70,6 @@ GeoOrigin::GeoOrigin (X3DExecutionContext* const executionContext) :
 	    X3DNode (),
 	     fields ()
 {
-	setComponent ("Geospatial");
-	setTypeName ("GeoOrigin");
-
 	addField (inputOutput,    "metadata",  metadata ());
 	addField (inputOutput,    "geoCoords", geoCoords ());
 	addField (initializeOnly, "geoSystem", geoSystem ());

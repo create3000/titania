@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string GeoPositionInterpolator::componentName  = "Geospatial";
+const std::string GeoPositionInterpolator::typeName       = "GeoPositionInterpolator";
+const std::string GeoPositionInterpolator::containerField = "children";
+
 GeoPositionInterpolator::Fields::Fields () :
 	keyValue (new MFVec3d ()),
 	geovalue_changed (new SFVec3d ()),
@@ -68,9 +72,6 @@ GeoPositionInterpolator::GeoPositionInterpolator (X3DExecutionContext* const exe
 	X3DInterpolatorNode (),
 	             fields ()
 {
-	setComponent ("Geospatial");
-	setTypeName ("GeoPositionInterpolator");
-
 	addField (inputOutput,    "metadata",         metadata ());
 	addField (inputOnly,      "set_fraction",     set_fraction ());
 	addField (inputOutput,    "key",              key ());

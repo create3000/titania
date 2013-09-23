@@ -47,6 +47,26 @@ class X3DBrowser :
 {
 public:
 
+	///  @name Common members
+
+	virtual
+	const std::string &
+	getComponentName () const final
+	{ return componentName; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const final
+	{ return containerField; }
+
+	///  @name Member access
+
 	virtual
 	X3DBrowser*
 	getBrowser () const;
@@ -290,7 +310,14 @@ private:
 	void
 	set_scene ();
 
+	///  @name Static members
+
 	static const std::string version;
+	static const std::string componentName;
+	static const std::string typeName;
+	static const std::string containerField;
+
+	///  @name Members
 
 	SupportedFields     supportedFields;
 	SupportedNodes      supportedNodes;

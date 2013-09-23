@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string HAnimDisplacer::componentName  = "H-Anim";
+const std::string HAnimDisplacer::typeName       = "HAnimDisplacer";
+const std::string HAnimDisplacer::containerField = "displacers";
+
 HAnimDisplacer::Fields::Fields () :
 	coordIndex (new MFInt32 ()),
 	displacements (new MFVec3f ()),
@@ -67,9 +71,6 @@ HAnimDisplacer::HAnimDisplacer (X3DExecutionContext* const executionContext) :
 	X3DGeometricPropertyNode (),
 	                  fields ()
 {
-	setComponent ("H-Anim");
-	setTypeName ("HAnimDisplacer");
-
 	addField (inputOutput, "metadata",      metadata ());
 	addField (inputOutput, "coordIndex",    coordIndex ());
 	addField (inputOutput, "displacements", displacements ());

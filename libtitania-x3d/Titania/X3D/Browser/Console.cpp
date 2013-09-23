@@ -56,6 +56,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string Console::componentName  = "Browser";
+const std::string Console::typeName       = "Console";
+const std::string Console::containerField = "console";
+
 Console::Fields::Fields () :
 	set_string (new MFString ()),
 	string_changed (new MFString ())
@@ -66,9 +70,6 @@ Console::Console (X3DExecutionContext* const executionContext) :
 	     fields (),
 	     string ()
 {
-	setComponent ("Browser");
-	setTypeName ("Console");
-
 	addField (inputOnly,   "set_string",     set_string ());
 	addField (outputOnly,  "string_changed", string_changed ());
 }

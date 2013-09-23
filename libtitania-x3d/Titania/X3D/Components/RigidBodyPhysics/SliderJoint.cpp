@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string SliderJoint::componentName  = "RigidBodyPhysics";
+const std::string SliderJoint::typeName       = "SliderJoint";
+const std::string SliderJoint::containerField = "joints";
+
 SliderJoint::Fields::Fields () :
 	axis (new SFVec3f (0, 1, 0)),
 	maxSeparation (new SFFloat (1)),
@@ -70,9 +74,6 @@ SliderJoint::SliderJoint (X3DExecutionContext* const executionContext) :
 	X3DRigidJointNode (),
 	           fields ()
 {
-	setComponent ("RigidBodyPhysics");
-	setTypeName ("SliderJoint");
-
 	addField (inputOutput, "metadata",            metadata ());
 	addField (inputOutput, "body1",               body1 ());
 	addField (inputOutput, "body2",               body2 ());

@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string CADLayer::componentName  = "CADGeometry";
+const std::string CADLayer::typeName       = "CADLayer";
+const std::string CADLayer::containerField = "children";
+
 CADLayer::Fields::Fields () :
 	   name (new SFString ()),
 	visible (new MFBool ())
@@ -65,9 +69,6 @@ CADLayer::CADLayer (X3DExecutionContext* const executionContext) :
 	X3DGroupingNode (),
 	         fields ()
 {
-	setComponent ("CADGeometry");
-	setTypeName ("CADLayer");
-
 	addField (inputOutput,    "metadata",       metadata ());
 	addField (inputOutput,    "name",           name ());
 	addField (inputOutput,    "visible",        visible ());

@@ -230,6 +230,8 @@ private:
 	void
 	reshape ();
 
+	///  @name Members
+
 	Transform*         transform;
 	X3DSFNode <Scene>  scene;
 

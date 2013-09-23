@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string GeneratedCubeMapTexture::componentName  = "CubeMapTexturing";
+const std::string GeneratedCubeMapTexture::typeName       = "GeneratedCubeMapTexture";
+const std::string GeneratedCubeMapTexture::containerField = "texture";
+
 GeneratedCubeMapTexture::Fields::Fields () :
 	update (new SFString ("NONE")),
 	size (new SFInt32 (128)),
@@ -66,9 +70,6 @@ GeneratedCubeMapTexture::GeneratedCubeMapTexture (X3DExecutionContext* const exe
 	X3DEnvironmentTextureNode (),
 	                   fields ()
 {
-	setComponent ("CubeMapTexturing");
-	setTypeName ("GeneratedCubeMapTexture");
-
 	addField (inputOutput,    "metadata",          metadata ());
 	addField (inputOutput,    "update",            update ());
 	addField (initializeOnly, "size",              size ());

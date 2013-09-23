@@ -57,6 +57,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string IndexedQuadSet::componentName  = "CADGeometry";
+const std::string IndexedQuadSet::typeName       = "IndexedQuadSet";
+const std::string IndexedQuadSet::containerField = "geometry";
+
 IndexedQuadSet::Fields::Fields () :
 	index (new MFInt32 ())
 { }
@@ -66,9 +70,6 @@ IndexedQuadSet::IndexedQuadSet (X3DExecutionContext* const executionContext) :
 	X3DComposedGeometryNode (),
 	                 fields ()
 {
-	setComponent ("CADGeometry");
-	setTypeName ("IndexedQuadSet");
-
 	addField (inputOutput,    "metadata",        metadata ());
 
 	addField (initializeOnly, "solid",           solid ());

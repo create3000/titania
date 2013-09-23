@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string SphereSensor::componentName  = "PointingDeviceSensor";
+const std::string SphereSensor::typeName       = "SphereSensor";
+const std::string SphereSensor::containerField = "children";
+
 SphereSensor::Fields::Fields () :
 	          offset (new SFRotation (0, 1, 0, 0)),
 	rotation_changed (new SFRotation ())
@@ -72,9 +76,6 @@ SphereSensor::SphereSensor (X3DExecutionContext* const executionContext) :
 	            startPoint (),
 	inverseModelViewMatrix ()
 {
-	setComponent ("PointingDeviceSensor");
-	setTypeName ("SphereSensor");
-
 	addField (inputOutput, "metadata",           metadata ());
 	addField (inputOutput, "enabled",            enabled ());
 	addField (inputOutput, "description",        description ());

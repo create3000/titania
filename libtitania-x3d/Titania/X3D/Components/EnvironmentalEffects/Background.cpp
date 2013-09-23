@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string Background::componentName  = "EnvironmentalEffects";
+const std::string Background::typeName       = "Background";
+const std::string Background::containerField = "children";
+
 Background::Fields::Fields () :
 	frontUrl (new MFString ()),
 	backUrl (new MFString ()),
@@ -76,9 +80,6 @@ Background::Background (X3DExecutionContext* const executionContext) :
 	    bottomTexture (new ImageTexture (executionContext)),
 	textureProperties (new TextureProperties (executionContext))
 {
-	setComponent ("EnvironmentalEffects");
-	setTypeName ("Background");
-
 	addField (inputOutput, "metadata",     metadata ());
 	addField (inputOnly,   "set_bind",     set_bind ());
 	addField (inputOutput, "frontUrl",     frontUrl ());

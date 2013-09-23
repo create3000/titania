@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string BooleanSequencer::componentName  = "EventUtilities";
+const std::string BooleanSequencer::typeName       = "BooleanSequencer";
+const std::string BooleanSequencer::containerField = "children";
+
 BooleanSequencer::Fields::Fields () :
 	keyValue (new MFBool ()),
 	value_changed (new SFBool ())
@@ -65,9 +69,6 @@ BooleanSequencer::BooleanSequencer (X3DExecutionContext* const executionContext)
 	X3DSequencerNode (),
 	          fields ()
 {
-	setComponent ("EventUtilities");
-	setTypeName ("BooleanSequencer");
-
 	addField (inputOutput, "metadata",      metadata ());
 	addField (inputOnly,   "set_fraction",  set_fraction ());
 	addField (inputOnly,   "previous",      previous ());

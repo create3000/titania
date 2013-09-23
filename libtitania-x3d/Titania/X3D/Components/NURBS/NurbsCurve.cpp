@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string NurbsCurve::componentName  = "NURBS";
+const std::string NurbsCurve::typeName       = "NurbsCurve";
+const std::string NurbsCurve::containerField = "geometry";
+
 NurbsCurve::Fields::Fields () :
 	controlPoint (new SFNode ()),
 	tessellation (new SFInt32 ()),
@@ -69,9 +73,6 @@ NurbsCurve::NurbsCurve (X3DExecutionContext* const executionContext) :
 	X3DParametricGeometryNode (),
 	                   fields ()
 {
-	setComponent ("NURBS");
-	setTypeName ("NurbsCurve");
-
 	addField (inputOutput,    "metadata",     metadata ());
 	addField (inputOutput,    "controlPoint", controlPoint ());
 	addField (inputOutput,    "tessellation", tessellation ());

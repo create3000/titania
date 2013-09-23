@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string WorldInfo::componentName  = "Core";
+const std::string WorldInfo::typeName       = "WorldInfo";
+const std::string WorldInfo::containerField = "children";
+
 WorldInfo::Fields::Fields () :
 	 info (new MFString ()),
 	title (new SFString ())
@@ -65,9 +69,6 @@ WorldInfo::WorldInfo (X3DExecutionContext* const executionContext) :
 	X3DInfoNode (),
 	     fields ()
 {
-	setComponent ("Core");
-	setTypeName ("WorldInfo");
-
 	addField (inputOutput,    "metadata", metadata ());
 	addField (initializeOnly, "info",     info ());
 	addField (initializeOnly, "title",    title ());

@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string NurbsTextureCoordinate::componentName  = "NURBS";
+const std::string NurbsTextureCoordinate::typeName       = "NurbsTextureCoordinate";
+const std::string NurbsTextureCoordinate::containerField = "texCoord";
+
 NurbsTextureCoordinate::Fields::Fields () :
 	controlPoint (new MFVec2f ()),
 	weight (new MFFloat ()),
@@ -71,9 +75,6 @@ NurbsTextureCoordinate::NurbsTextureCoordinate (X3DExecutionContext* const execu
 	    X3DNode (),
 	     fields ()
 {
-	setComponent ("NURBS");
-	setTypeName ("NurbsTextureCoordinate");
-
 	addField (inputOutput,    "metadata",     metadata ());
 	addField (inputOutput,    "controlPoint", controlPoint ());
 	addField (inputOutput,    "weight",       weight ());

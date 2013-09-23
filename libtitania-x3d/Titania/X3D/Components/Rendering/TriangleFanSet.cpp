@@ -57,6 +57,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string TriangleFanSet::componentName  = "Rendering";
+const std::string TriangleFanSet::typeName       = "TriangleFanSet";
+const std::string TriangleFanSet::containerField = "geometry";
+
 TriangleFanSet::Fields::Fields () :
 	fanCount (new MFInt32 ())
 { }
@@ -67,9 +71,6 @@ TriangleFanSet::TriangleFanSet (X3DExecutionContext* const executionContext) :
 	                 fields (),
 	             coordIndex ()
 {
-	setComponent ("Rendering");
-	setTypeName ("TriangleFanSet");
-
 	addField (inputOutput,    "metadata",        metadata ());
 
 	addField (inputOutput,    "fanCount",        fanCount ());

@@ -56,6 +56,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string OrientationInterpolator::componentName  = "Interpolation";
+const std::string OrientationInterpolator::typeName       = "OrientationInterpolator";
+const std::string OrientationInterpolator::containerField = "children";
+
 OrientationInterpolator::Fields::Fields () :
 	keyValue (new MFRotation ()),
 	value_changed (new SFRotation ())
@@ -66,9 +70,6 @@ OrientationInterpolator::OrientationInterpolator (X3DExecutionContext* const exe
 	X3DInterpolatorNode (),
 	             fields ()
 {
-	setComponent ("Interpolation");
-	setTypeName ("OrientationInterpolator");
-
 	addField (inputOutput, "metadata",      metadata ());
 	addField (inputOnly,   "set_fraction",  set_fraction ());
 	addField (inputOutput, "key",           key ());

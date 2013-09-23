@@ -93,6 +93,26 @@ public:
 
 	Parser (std::istream & istream, X3DScene*);
 
+	///  @name Common members
+
+	virtual
+	const std::string &
+	getComponentName () const final
+	{ return componentName; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const final
+	{ return containerField; }
+
+	///  @name Operations
+
 	void
 	parseIntoScene ()
 	throw (Error <INVALID_X3D>);
@@ -510,6 +530,14 @@ private:
 
 	X3DFieldDefinition*
 	createField (const std::type_info &);
+
+	///  @name Static members
+
+	static const std::string componentName;
+	static const std::string typeName;
+	static const std::string containerField;
+
+	///  @name Members
 
 	basic::igzfilter         istream;
 	X3DScene*                scene;

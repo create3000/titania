@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string ClipPlane::componentName  = "Rendering";
+const std::string ClipPlane::typeName       = "ClipPlane";
+const std::string ClipPlane::containerField = "children";
+
 ClipPlane::Fields::Fields () :
 	enabled (new SFBool (true)),
 	plane (new SFVec4f (0, 1, 0, 0))
@@ -65,9 +69,6 @@ ClipPlane::ClipPlane (X3DExecutionContext* const executionContext) :
 	X3DChildNode (),
 	      fields ()
 {
-	setComponent ("Rendering");
-	setTypeName ("ClipPlane");
-
 	addField (inputOutput, "metadata", metadata ());
 	addField (inputOutput, "enabled",  enabled ());
 	addField (inputOutput, "plane",    plane ());

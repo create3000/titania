@@ -57,6 +57,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string Box::componentName  = "Geometry3D";
+const std::string Box::typeName       = "Box";
+const std::string Box::containerField = "geometry";
+
 Box::Fields::Fields () :
 	size (new SFVec3f (2, 2, 2)),
 	solid (new SFBool (true))
@@ -67,9 +71,6 @@ Box::Box (X3DExecutionContext* const executionContext) :
 	X3DGeometryNode (),
 	         fields ()
 {
-	setComponent ("Geometry3D");
-	setTypeName ("Box");
-
 	addField (inputOutput,    "metadata", metadata ());
 	addField (initializeOnly, "size",     size ());
 	addField (initializeOnly, "solid",    solid ());

@@ -57,6 +57,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string LOD::componentName  = "Navigation";
+const std::string LOD::typeName       = "LOD";
+const std::string LOD::containerField = "children";
+
 LOD::Fields::Fields () :
 	forceTransitions (new SFBool ()),
 	center (new SFVec3f ()),
@@ -69,9 +73,6 @@ LOD::LOD (X3DExecutionContext* const executionContext) :
 	X3DGroupingNode (),
 	         fields ()
 {
-	setComponent ("Navigation");
-	setTypeName ("LOD");
-
 	addField (inputOutput,    "metadata",         metadata ());
 	addField (initializeOnly, "forceTransitions", forceTransitions ());
 	addField (initializeOnly, "center",           center ());

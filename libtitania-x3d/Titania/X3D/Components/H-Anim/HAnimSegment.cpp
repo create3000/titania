@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string HAnimSegment::componentName  = "H-Anim";
+const std::string HAnimSegment::typeName       = "HAnimSegment";
+const std::string HAnimSegment::containerField = "children";
+
 HAnimSegment::Fields::Fields () :
 	centerOfMass (new SFVec3f ()),
 	coord (new SFNode ()),
@@ -69,9 +73,6 @@ HAnimSegment::HAnimSegment (X3DExecutionContext* const executionContext) :
 	X3DGroupingNode (),
 	         fields ()
 {
-	setComponent ("H-Anim");
-	setTypeName ("HAnimSegment");
-
 	addField (inputOutput,    "metadata",         metadata ());
 	addField (initializeOnly, "bboxSize",         bboxSize ());
 	addField (initializeOnly, "bboxCenter",       bboxCenter ());

@@ -57,6 +57,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string TextureProperties::componentName  = "Texturing";
+const std::string TextureProperties::typeName       = "TextureProperties";
+const std::string TextureProperties::containerField = "textureProperties";
+
 // http://new.web3d.org/files/specifications/19775-1/V3.2/Part01/components/texturing.html#TextureProperties
 
 TextureProperties::Fields::Fields () :
@@ -78,9 +82,6 @@ TextureProperties::TextureProperties (X3DExecutionContext* const executionContex
 	X3DPropertyNode (),
 	         fields ()
 {
-	setComponent ("Texturing");
-	setTypeName ("TextureProperties");
-
 	addField (inputOutput,    "metadata",            metadata ());
 	addField (inputOutput,    "borderColor",         borderColor ());
 	addField (inputOutput,    "borderWidth",         borderWidth ());

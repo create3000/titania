@@ -56,6 +56,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string LineProperties::componentName  = "Shape";
+const std::string LineProperties::typeName       = "LineProperties";
+const std::string LineProperties::containerField = "lineProperties";
+
 LineProperties::Fields::Fields () :
 	             applied (new SFBool (true)),
 	            linetype (new SFInt32 (1)),
@@ -67,9 +71,6 @@ LineProperties::LineProperties (X3DExecutionContext* const executionContext) :
 	X3DAppearanceChildNode (),
 	                fields ()
 {
-	setComponent ("Shape");
-	setTypeName ("LineProperties");
-
 	addField (inputOutput, "metadata",             metadata ());
 	addField (inputOutput, "applied",              applied ());
 	addField (inputOutput, "linetype",             linetype ());

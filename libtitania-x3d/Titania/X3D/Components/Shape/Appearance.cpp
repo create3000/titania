@@ -63,6 +63,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string Appearance::componentName  = "Shape";
+const std::string Appearance::typeName       = "Appearance";
+const std::string Appearance::containerField = "appearance";
+
 Appearance::Fields::Fields () :
 	  fillProperties (new SFNode ()),
 	  lineProperties (new SFNode ()),
@@ -83,9 +87,6 @@ Appearance::Appearance (X3DExecutionContext* const executionContext) :
 	_textureTransform (nullptr),
 	          _shader (nullptr)
 {
-	setComponent ("Shape");
-	setTypeName ("Appearance");
-
 	addField (inputOutput, "metadata",         metadata ());
 	addField (inputOutput, "fillProperties",   fillProperties ());
 	addField (inputOutput, "lineProperties",   lineProperties ());

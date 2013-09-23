@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string ScalarInterpolator::componentName  = "Interpolation";
+const std::string ScalarInterpolator::typeName       = "ScalarInterpolator";
+const std::string ScalarInterpolator::containerField = "children";
+
 ScalarInterpolator::Fields::Fields () :
 	keyValue (new MFFloat ()),
 	value_changed (new SFFloat ())
@@ -65,9 +69,6 @@ ScalarInterpolator::ScalarInterpolator (X3DExecutionContext* const executionCont
 	X3DInterpolatorNode (),
 	             fields ()
 {
-	setComponent ("Interpolation");
-	setTypeName ("ScalarInterpolator");
-
 	addField (inputOutput, "metadata",      metadata ());
 	addField (inputOnly,   "set_fraction",  set_fraction ());
 	addField (inputOutput, "key",           key ());

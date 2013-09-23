@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string CollisionCollection::componentName  = "RigidBodyPhysics";
+const std::string CollisionCollection::typeName       = "CollisionCollection";
+const std::string CollisionCollection::containerField = "collidables";
+
 CollisionCollection::Fields::Fields () :
 	appliedParameters (new MFString ({ "BOUNCE" })),
 	bounce (new SFFloat ()),
@@ -73,9 +77,6 @@ CollisionCollection::CollisionCollection (X3DExecutionContext* const executionCo
 	X3DChildNode (),
 	      fields ()
 {
-	setComponent ("RigidBodyPhysics");
-	setTypeName ("CollisionCollection");
-
 	addField (inputOutput, "metadata",                 metadata ());
 	addField (inputOutput, "appliedParameters",        appliedParameters ());
 	addField (inputOutput, "bounce",                   bounce ());

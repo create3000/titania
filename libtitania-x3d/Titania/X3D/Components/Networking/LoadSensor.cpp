@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string LoadSensor::componentName  = "Networking";
+const std::string LoadSensor::typeName       = "LoadSensor";
+const std::string LoadSensor::containerField = "children";
+
 LoadSensor::Fields::Fields () :
 	timeOut (new SFTime ()),
 	watchList (new MFNode ()),
@@ -68,9 +72,6 @@ LoadSensor::LoadSensor (X3DExecutionContext* const executionContext) :
 	X3DNetworkSensorNode (),
 	              fields ()
 {
-	setComponent ("Networking");
-	setTypeName ("LoadSensor");
-
 	addField (inputOutput, "metadata",  metadata ());
 	addField (inputOutput, "enabled",   enabled ());
 	addField (outputOnly,  "isActive",  isActive ());

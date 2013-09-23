@@ -59,6 +59,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string PointSet::componentName  = "Rendering";
+const std::string PointSet::typeName       = "PointSet";
+const std::string PointSet::containerField = "geometry";
+
 PointSet::Fields::Fields () :
 	attrib (new MFNode ()),
 	color (new SFNode ()),
@@ -71,9 +75,6 @@ PointSet::PointSet (X3DExecutionContext* const executionContext) :
 	X3DGeometryNode (),
 	         fields ()
 {
-	setComponent ("Rendering");
-	setTypeName ("PointSet");
-
 	addField (inputOutput, "metadata", metadata ());
 	addField (inputOutput, "attrib",   attrib ());
 	addField (inputOutput, "color",    color ());

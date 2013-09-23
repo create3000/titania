@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string ReceiverPdu::componentName  = "DIS";
+const std::string ReceiverPdu::typeName       = "ReceiverPdu";
+const std::string ReceiverPdu::containerField = "children";
+
 ReceiverPdu::Fields::Fields () :
 	address (new SFString ("localhost")),
 	applicationID (new SFInt32 (1)),
@@ -88,9 +92,6 @@ ReceiverPdu::ReceiverPdu (X3DExecutionContext* const executionContext) :
 	X3DBoundedObject (),
 	          fields ()
 {
-	setComponent ("DIS");
-	setTypeName ("ReceiverPdu");
-
 	addField (inputOutput,    "metadata",                 metadata ());
 	addField (initializeOnly, "bboxSize",                 bboxSize ());
 	addField (initializeOnly, "bboxCenter",               bboxCenter ());

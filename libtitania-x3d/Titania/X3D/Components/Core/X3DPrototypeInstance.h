@@ -64,7 +64,16 @@ class X3DPrototypeInstance :
 {
 public:
 
+	///  @name Construction
+
 	X3DPrototypeInstance (X3DExecutionContext* const, const X3DSFNode <Proto> &);
+
+	///  @name Common members
+
+	virtual
+	const std::string &
+	getComponentName () const final
+	{ return componentName; }
 
 	virtual
 	const std::string &
@@ -80,16 +89,29 @@ public:
 	X3DBaseNode*
 	getLocalNode () final;
 
+	virtual
+	const std::string &
+	getContainerField () const final
+	{ return containerField; }
+
+	///  @name Members
+
 	X3DBaseNode*
 	getRootNode () const;
+
+	///  @name Operatins
 
 	virtual
 	void
 	traverse (const TraverseType) final;
 
+	///  @name Input/Output
+
 	virtual
 	void
 	toStream (std::ostream &) const final;
+
+	///  @name Destruction
 
 	virtual
 	void
@@ -108,6 +130,13 @@ private:
 	virtual
 	void
 	initialize () final;
+
+	///  @name Static members
+
+	static const std::string componentName;
+	static const std::string containerField;
+
+	///  @name Members
 
 	X3DSFNode <Proto> proto;
 

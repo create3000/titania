@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string CollisionSpace::componentName  = "RigidBodyPhysics";
+const std::string CollisionSpace::typeName       = "CollisionSpace";
+const std::string CollisionSpace::containerField = "children";
+
 CollisionSpace::Fields::Fields () :
 	useGeometry (new SFBool ()),
 	collidables (new MFNode ())
@@ -65,9 +69,6 @@ CollisionSpace::CollisionSpace (X3DExecutionContext* const executionContext) :
 	X3DNBodyCollisionSpaceNode (),
 	                    fields ()
 {
-	setComponent ("RigidBodyPhysics");
-	setTypeName ("CollisionSpace");
-
 	addField (inputOutput,    "metadata",    metadata ());
 	addField (inputOutput,    "enabled",     enabled ());
 	addField (inputOutput,    "useGeometry", useGeometry ());

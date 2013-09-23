@@ -64,6 +64,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string IndexedFaceSet::componentName  = "Geometry3D";
+const std::string IndexedFaceSet::typeName       = "IndexedFaceSet";
+const std::string IndexedFaceSet::containerField = "geometry";
+
 IndexedFaceSet::Fields::Fields () :
 	convex (new SFBool (true)),
 	creaseAngle (new SFFloat ()),
@@ -79,9 +83,6 @@ IndexedFaceSet::IndexedFaceSet (X3DExecutionContext* const executionContext) :
 	                 fields (),
 	            numPolygons ()
 {
-	setComponent ("Geometry3D");
-	setTypeName ("IndexedFaceSet");
-
 	addField (inputOutput,    "metadata",          metadata ());
 
 	addField (initializeOnly, "solid",             solid ());

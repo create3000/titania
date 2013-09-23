@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string SurfaceEmitter::componentName  = "ParticleSystems";
+const std::string SurfaceEmitter::typeName       = "SurfaceEmitter";
+const std::string SurfaceEmitter::containerField = "emitter";
+
 SurfaceEmitter::Fields::Fields () :
 	set_coordinate (new SFInt32 ()),
 	coordIndex (new MFInt32 ({ -1 })),
@@ -66,9 +70,6 @@ SurfaceEmitter::SurfaceEmitter (X3DExecutionContext* const executionContext) :
 	X3DParticleEmitterNode (),
 	                fields ()
 {
-	setComponent ("ParticleSystems");
-	setTypeName ("SurfaceEmitter");
-
 	addField (inputOutput,    "metadata",       metadata ());
 	addField (inputOutput,    "speed",          speed ());
 	addField (inputOutput,    "variation",      variation ());

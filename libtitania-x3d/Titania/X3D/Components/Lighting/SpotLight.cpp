@@ -56,6 +56,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string SpotLight::componentName  = "Lighting";
+const std::string SpotLight::typeName       = "SpotLight";
+const std::string SpotLight::containerField = "children";
+
 SpotLight::Fields::Fields () :
 	attenuation (new SFVec3f (1, 0, 0)),
 	beamWidth (new SFFloat ()),
@@ -70,9 +74,6 @@ SpotLight::SpotLight (X3DExecutionContext* const executionContext) :
 	X3DLightNode (),
 	      fields ()
 {
-	setComponent ("Lighting");
-	setTypeName ("SpotLight");
-
 	addField (inputOutput, "metadata",         metadata ());
 	addField (inputOutput, "global",           global ());
 	addField (inputOutput, "on",               on ());

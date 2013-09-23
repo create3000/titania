@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string CoordinateInterpolator2D::componentName  = "Interpolation";
+const std::string CoordinateInterpolator2D::typeName       = "CoordinateInterpolator2D";
+const std::string CoordinateInterpolator2D::containerField = "children";
+
 CoordinateInterpolator2D::Fields::Fields () :
 	keyValue (new MFVec2f ()),
 	value_changed (new MFVec2f ())
@@ -65,9 +69,6 @@ CoordinateInterpolator2D::CoordinateInterpolator2D (X3DExecutionContext* const e
 	X3DInterpolatorNode (),
 	             fields ()
 {
-	setComponent ("Interpolation");
-	setTypeName ("CoordinateInterpolator2D");
-
 	addField (inputOutput, "metadata",      metadata ());
 	addField (inputOnly,   "set_fraction",  set_fraction ());
 	addField (inputOutput, "key",           key ());

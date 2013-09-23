@@ -59,6 +59,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string ProximitySensor::componentName  = "EnvironmentalSensor";
+const std::string ProximitySensor::typeName       = "ProximitySensor";
+const std::string ProximitySensor::containerField = "children";
+
 ProximitySensor::Fields::Fields () :
 	centerOfRotation_changed (new SFVec3f ()),
 	orientation_changed (new SFRotation ()),
@@ -73,9 +77,6 @@ ProximitySensor::ProximitySensor (X3DExecutionContext* const executionContext) :
 	           modelViewMatrix (),
 	                    inside (false)
 {
-	setComponent ("EnvironmentalSensor");
-	setTypeName ("ProximitySensor");
-
 	addField (inputOutput, "metadata",                 metadata ());
 	addField (inputOutput, "enabled",                  enabled ());
 	addField (inputOutput, "size",                     size ());

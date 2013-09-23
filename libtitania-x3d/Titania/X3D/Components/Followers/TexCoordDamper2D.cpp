@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string TexCoordDamper2D::componentName  = "Followers";
+const std::string TexCoordDamper2D::typeName       = "TexCoordDamper2D";
+const std::string TexCoordDamper2D::containerField = "children";
+
 TexCoordDamper2D::Fields::Fields () :
 	set_destination (new MFVec2f ()),
 	set_value (new MFVec2f ()),
@@ -71,9 +75,6 @@ TexCoordDamper2D::TexCoordDamper2D (X3DExecutionContext* const executionContext)
 	X3DDamperNode (),
 	       fields ()
 {
-	setComponent ("Followers");
-	setTypeName ("TexCoordDamper2D");
-
 	addField (inputOutput,    "metadata",           metadata ());
 	addField (inputOnly,      "set_destination",    set_destination ());
 	addField (inputOnly,      "set_value",          set_value ());

@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string MotorJoint::componentName  = "RigidBodyPhysics";
+const std::string MotorJoint::typeName       = "MotorJoint";
+const std::string MotorJoint::containerField = "joints";
+
 MotorJoint::Fields::Fields () :
 	axis1Angle (new SFFloat ()),
 	axis1Torque (new SFFloat ()),
@@ -86,9 +90,6 @@ MotorJoint::MotorJoint (X3DExecutionContext* const executionContext) :
 	X3DRigidJointNode (),
 	           fields ()
 {
-	setComponent ("RigidBodyPhysics");
-	setTypeName ("MotorJoint");
-
 	addField (inputOutput,    "metadata",             metadata ());
 	addField (inputOutput,    "body1",                body1 ());
 	addField (inputOutput,    "body2",                body2 ());

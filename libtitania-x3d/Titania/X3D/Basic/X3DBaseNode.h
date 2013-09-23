@@ -107,15 +107,9 @@ public:
 	getExecutionContext () const
 	{ return executionContext; }
 
-	const std::string &
-	getComponentName () const
-	{ return component; }
-
 	virtual
 	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) override
-	{ return typeName; }
+	getComponentName () const = 0;
 
 	virtual
 	const X3DBaseNode*
@@ -127,9 +121,12 @@ public:
 	{ return nodeType; }
 
 	virtual
+	const std::string &
+	getContainerField () const = 0;
+
+	virtual
 	X3DBaseNode*
 	getLocalNode ()
-
 	{ return this; }
 
 	size_t
@@ -254,14 +251,6 @@ protected:
 	X3DBaseNode (X3DBrowser* const = nullptr, X3DExecutionContext* const = nullptr);
 
 	void
-	setComponent (const std::string & value)
-	{ component = value; }
-
-	void
-	setTypeName (const std::string & value)
-	{ typeName = value; }
-
-	void
 	addNodeType (const X3DConstants::NodeType value)
 	{ nodeType .push_back (value); }
 
@@ -315,8 +304,6 @@ private:
 	X3DBrowser* const          browser;
 	X3DExecutionContext* const executionContext;
 
-	std::string   component;
-	std::string   typeName;
 	NodeTypeArray nodeType;
 
 	FieldDefinitionArray fieldDefinitions;      // Pre-defined and user-defined field definitions

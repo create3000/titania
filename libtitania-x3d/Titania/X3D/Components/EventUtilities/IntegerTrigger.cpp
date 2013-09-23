@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string IntegerTrigger::componentName  = "EventUtilities";
+const std::string IntegerTrigger::typeName       = "IntegerTrigger";
+const std::string IntegerTrigger::containerField = "children";
+
 IntegerTrigger::Fields::Fields () :
 	set_boolean (new SFBool ()),
 	integerKey (new SFInt32 ()),
@@ -66,9 +70,6 @@ IntegerTrigger::IntegerTrigger (X3DExecutionContext* const executionContext) :
 	X3DTriggerNode (),
 	        fields ()
 {
-	setComponent ("EventUtilities");
-	setTypeName ("IntegerTrigger");
-
 	addField (inputOutput, "metadata",     metadata ());
 	addField (inputOnly,   "set_boolean",  set_boolean ());
 	addField (inputOutput, "integerKey",   integerKey ());

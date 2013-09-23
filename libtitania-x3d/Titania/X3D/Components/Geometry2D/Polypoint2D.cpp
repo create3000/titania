@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string Polypoint2D::componentName  = "Geometry2D";
+const std::string Polypoint2D::typeName       = "Polypoint2D";
+const std::string Polypoint2D::containerField = "geometry";
+
 Polypoint2D::Fields::Fields () :
 	point (new MFVec2f ())
 { }
@@ -64,9 +68,6 @@ Polypoint2D::Polypoint2D (X3DExecutionContext* const executionContext) :
 	X3DGeometryNode (),
 	         fields ()
 {
-	setComponent ("Geometry2D");
-	setTypeName ("Polypoint2D");
-
 	addField (inputOutput, "metadata", metadata ());
 	addField (inputOutput, "point",    point ());
 }

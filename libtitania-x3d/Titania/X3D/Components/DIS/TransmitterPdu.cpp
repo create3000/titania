@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string TransmitterPdu::componentName  = "DIS";
+const std::string TransmitterPdu::typeName       = "TransmitterPdu";
+const std::string TransmitterPdu::containerField = "children";
+
 TransmitterPdu::Fields::Fields () :
 	address (new SFString ("localhost")),
 	antennaLocation (new SFVec3f ()),
@@ -104,9 +108,6 @@ TransmitterPdu::TransmitterPdu (X3DExecutionContext* const executionContext) :
 	X3DBoundedObject (),
 	          fields ()
 {
-	setComponent ("DIS");
-	setTypeName ("TransmitterPdu");
-
 	addField (inputOutput,    "metadata",                           metadata ());
 	addField (initializeOnly, "bboxSize",                           bboxSize ());
 	addField (initializeOnly, "bboxCenter",                         bboxCenter ());

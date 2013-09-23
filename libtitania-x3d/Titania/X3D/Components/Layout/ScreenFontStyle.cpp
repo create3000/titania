@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string ScreenFontStyle::componentName  = "Layout";
+const std::string ScreenFontStyle::typeName       = "ScreenFontStyle";
+const std::string ScreenFontStyle::containerField = "fontStyle";
+
 ScreenFontStyle::Fields::Fields () :
 	pointSize (new SFFloat (12))
 { }
@@ -64,9 +68,6 @@ ScreenFontStyle::ScreenFontStyle (X3DExecutionContext* const executionContext) :
 	X3DFontStyleNode (),
 	          fields ()
 {
-	setComponent ("Layout");
-	setTypeName ("ScreenFontStyle");
-
 	addField (inputOutput,    "metadata",    metadata ());
 	addField (initializeOnly, "family",      family ());
 	addField (initializeOnly, "style",       style ());

@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string GeoCoordinate::componentName  = "Geospatial";
+const std::string GeoCoordinate::typeName       = "GeoCoordinate";
+const std::string GeoCoordinate::containerField = "coord";
+
 GeoCoordinate::Fields::Fields () :
 	point (new MFVec3d ()),
 	geoOrigin (new SFNode ()),
@@ -66,9 +70,6 @@ GeoCoordinate::GeoCoordinate (X3DExecutionContext* const executionContext) :
 	X3DCoordinateNode (),
 	           fields ()
 {
-	setComponent ("Geospatial");
-	setTypeName ("GeoCoordinate");
-
 	addField (inputOutput,    "metadata",  metadata ());
 	addField (inputOutput,    "point",     point ());
 	addField (initializeOnly, "geoOrigin", geoOrigin ());

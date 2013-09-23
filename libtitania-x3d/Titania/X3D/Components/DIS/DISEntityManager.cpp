@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string DISEntityManager::componentName  = "DIS";
+const std::string DISEntityManager::typeName       = "DISEntityManager";
+const std::string DISEntityManager::containerField = "children";
+
 DISEntityManager::Fields::Fields () :
 	address (new SFString ("localhost")),
 	applicationID (new SFInt32 (1)),
@@ -70,9 +74,6 @@ DISEntityManager::DISEntityManager (X3DExecutionContext* const executionContext)
 	X3DChildNode (),
 	      fields ()
 {
-	setComponent ("DIS");
-	setTypeName ("DISEntityManager");
-
 	addField (inputOutput, "metadata",        metadata ());
 	addField (inputOutput, "address",         address ());
 	addField (inputOutput, "applicationID",   applicationID ());

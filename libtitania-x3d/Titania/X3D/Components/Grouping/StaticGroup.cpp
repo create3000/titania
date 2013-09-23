@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string StaticGroup::componentName  = "Grouping";
+const std::string StaticGroup::typeName       = "StaticGroup";
+const std::string StaticGroup::containerField = "children";
+
 StaticGroup::Fields::Fields () :
 	children (new MFNode ())
 { }
@@ -65,9 +69,6 @@ StaticGroup::StaticGroup (X3DExecutionContext* const executionContext) :
 	X3DBoundedObject (),
 	          fields ()
 {
-	setComponent ("Grouping");
-	setTypeName ("StaticGroup");
-
 	addField (inputOutput,    "metadata",   metadata ());
 	addField (initializeOnly, "bboxSize",   bboxSize ());
 	addField (initializeOnly, "bboxCenter", bboxCenter ());

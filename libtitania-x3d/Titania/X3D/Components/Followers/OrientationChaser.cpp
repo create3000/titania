@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string OrientationChaser::componentName  = "Followers";
+const std::string OrientationChaser::typeName       = "OrientationChaser";
+const std::string OrientationChaser::containerField = "children";
+
 OrientationChaser::Fields::Fields () :
 	set_destination (new SFRotation ()),
 	set_value (new SFRotation ()),
@@ -68,9 +72,6 @@ OrientationChaser::OrientationChaser (X3DExecutionContext* const executionContex
 	X3DChaserNode (),
 	       fields ()
 {
-	setComponent ("Followers");
-	setTypeName ("OrientationChaser");
-
 	addField (inputOutput,    "metadata",           metadata ());
 	addField (inputOnly,      "set_destination",    set_destination ());
 	addField (inputOnly,      "set_value",          set_value ());

@@ -93,6 +93,10 @@ namespace X3D {
 // Gravity                 Number                                   g                            Gravitational acceleration. The standard value is the acceleration of the earth.
 // MinTextureSize          Number                                   8                            Default minumum texture size when scaling and filtering is applied.
 
+const std::string BrowserOptions::componentName  = "Browser";
+const std::string BrowserOptions::typeName       = "BrowserOptions";
+const std::string BrowserOptions::containerField = "browserOptions";
+
 BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
 	          splashScreen (new SFBool (false)),
 	             dashboard (new SFBool (true)),
@@ -127,9 +131,6 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	     fields (executionContext)
 {
-	setComponent ("Browser"),
-	setTypeName ("BrowserOptions");
-
 	addField (inputOutput, "SplashScreen",           splashScreen ());
 	addField (inputOutput, "Dashboard",              dashboard ());
 	addField (inputOutput, "Rubberband",             rubberBand ());

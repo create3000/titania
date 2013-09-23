@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string NurbsSweptSurface::componentName  = "NURBS";
+const std::string NurbsSweptSurface::typeName       = "NurbsSweptSurface";
+const std::string NurbsSweptSurface::containerField = "geometry";
+
 NurbsSweptSurface::Fields::Fields () :
 	crossSectionCurve (new SFNode ()),
 	trajectoryCurve (new SFNode ()),
@@ -67,9 +71,6 @@ NurbsSweptSurface::NurbsSweptSurface (X3DExecutionContext* const executionContex
 	X3DParametricGeometryNode (),
 	                   fields ()
 {
-	setComponent ("NURBS");
-	setTypeName ("NurbsSweptSurface");
-
 	addField (inputOutput,    "metadata",          metadata ());
 	addField (inputOutput,    "crossSectionCurve", crossSectionCurve ());
 	addField (inputOutput,    "trajectoryCurve",   trajectoryCurve ());

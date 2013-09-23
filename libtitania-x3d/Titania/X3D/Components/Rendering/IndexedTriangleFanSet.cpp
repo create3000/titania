@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string IndexedTriangleFanSet::componentName  = "Rendering";
+const std::string IndexedTriangleFanSet::typeName       = "IndexedTriangleFanSet";
+const std::string IndexedTriangleFanSet::containerField = "geometry";
+
 IndexedTriangleFanSet::Fields::Fields () :
 	index (new MFInt32 ())
 { }
@@ -65,9 +69,6 @@ IndexedTriangleFanSet::IndexedTriangleFanSet (X3DExecutionContext* const executi
 	                 fields (),
 	             coordIndex ()
 {
-	setComponent ("Rendering");
-	setTypeName ("IndexedTriangleFanSet");
-
 	addField (inputOutput,    "metadata",        metadata ());
 
 	addField (initializeOnly, "solid",           solid ());

@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string DISEntityTypeMapping::componentName  = "DIS";
+const std::string DISEntityTypeMapping::typeName       = "DISEntityTypeMapping";
+const std::string DISEntityTypeMapping::containerField = "mapping";
+
 DISEntityTypeMapping::Fields::Fields () :
 	url (new MFString ()),
 	category (new SFInt32 ()),
@@ -71,9 +75,6 @@ DISEntityTypeMapping::DISEntityTypeMapping (X3DExecutionContext* const execution
 	X3DInfoNode (),
 	     fields ()
 {
-	setComponent ("DIS");
-	setTypeName ("DISEntityTypeMapping");
-
 	addField (inputOutput,    "metadata",    metadata ());
 	addField (inputOutput,    "url",         url ());
 	addField (initializeOnly, "category",    category ());

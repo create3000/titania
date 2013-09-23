@@ -163,15 +163,16 @@ private:
 
 };
 
+const std::string ImageTexture::componentName  = "Texturing";
+const std::string ImageTexture::typeName       = "ImageTexture";
+const std::string ImageTexture::containerField = "texture";
+
 ImageTexture::ImageTexture (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DTexture2DNode (),
 	    X3DUrlObject (),
 	          future ()
 {
-	setComponent ("Texturing");
-	setTypeName ("ImageTexture");
-
 	addField (inputOutput,    "metadata",          metadata ());
 	addField (inputOutput,    "url",               url ());
 	addField (initializeOnly, "repeatS",           repeatS ());

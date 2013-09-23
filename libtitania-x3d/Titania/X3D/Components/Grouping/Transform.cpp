@@ -57,14 +57,15 @@
 namespace titania {
 namespace X3D {
 
+const std::string Transform::componentName  = "Grouping";
+const std::string Transform::typeName       = "Transform";
+const std::string Transform::containerField = "children";
+
 Transform::Transform (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DTransformNode (),
 	          handle ()
 {
-	setComponent ("Grouping");
-	setTypeName ("Transform");
-
 	addField (inputOutput,    "metadata",         metadata ());
 	addField (inputOutput,    "translation",      translation ());
 	addField (inputOutput,    "rotation",         rotation ());

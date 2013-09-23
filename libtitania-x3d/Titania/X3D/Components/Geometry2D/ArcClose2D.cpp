@@ -59,6 +59,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string ArcClose2D::componentName  = "Geometry2D";
+const std::string ArcClose2D::typeName       = "ArcClose2D";
+const std::string ArcClose2D::containerField = "geometry";
+
 ArcClose2D::Fields::Fields () :
 	closureType (new SFString ("PIE")),
 	startAngle (new SFFloat ()),
@@ -72,9 +76,6 @@ ArcClose2D::ArcClose2D (X3DExecutionContext* const executionContext) :
 	X3DGeometryNode (),
 	         fields ()
 {
-	setComponent ("Geometry2D");
-	setTypeName ("ArcClose2D");
-
 	addField (inputOutput,    "metadata",    metadata ());
 	addField (inputOutput,    "closureType", closureType ());
 	addField (inputOutput,    "startAngle",  startAngle ());

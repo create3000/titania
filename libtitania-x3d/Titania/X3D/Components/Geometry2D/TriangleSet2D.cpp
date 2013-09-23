@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string TriangleSet2D::componentName  = "Geometry2D";
+const std::string TriangleSet2D::typeName       = "TriangleSet2D";
+const std::string TriangleSet2D::containerField = "geometry";
+
 TriangleSet2D::Fields::Fields () :
 	vertices (new MFVec2f ()),
 	solid (new SFBool (true))
@@ -65,9 +69,6 @@ TriangleSet2D::TriangleSet2D (X3DExecutionContext* const executionContext) :
 	X3DGeometryNode (),
 	         fields ()
 {
-	setComponent ("Geometry2D");
-	setTypeName ("TriangleSet2D");
-
 	addField (inputOutput,    "metadata", metadata ());
 	addField (inputOutput,    "vertices", vertices ());
 	addField (initializeOnly, "solid",    solid ());

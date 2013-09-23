@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string FogCoordinate::componentName  = "EnvironmentalEffects";
+const std::string FogCoordinate::typeName       = "FogCoordinate";
+const std::string FogCoordinate::containerField = "fogCoord";
+
 FogCoordinate::Fields::Fields () :
 	depth (new MFFloat ())
 { }
@@ -64,9 +68,6 @@ FogCoordinate::FogCoordinate (X3DExecutionContext* const executionContext) :
 	X3DGeometricPropertyNode (),
 	                  fields ()
 {
-	setComponent ("EnvironmentalEffects");
-	setTypeName ("FogCoordinate");
-
 	addField (inputOutput, "metadata", metadata ());
 	addField (inputOutput, "depth",    depth ());
 }

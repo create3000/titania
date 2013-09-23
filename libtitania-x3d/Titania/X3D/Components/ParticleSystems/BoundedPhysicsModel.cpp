@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string BoundedPhysicsModel::componentName  = "ParticleSystems";
+const std::string BoundedPhysicsModel::typeName       = "BoundedPhysicsModel";
+const std::string BoundedPhysicsModel::containerField = "physics";
+
 BoundedPhysicsModel::Fields::Fields () :
 	geometry (new SFNode ())
 { }
@@ -64,9 +68,6 @@ BoundedPhysicsModel::BoundedPhysicsModel (X3DExecutionContext* const executionCo
 	X3DParticlePhysicsModelNode (),
 	                     fields ()
 {
-	setComponent ("ParticleSystems");
-	setTypeName ("BoundedPhysicsModel");
-
 	addField (inputOutput, "metadata", metadata ());
 	addField (inputOutput, "enabled",  enabled ());
 	addField (inputOutput, "geometry", geometry ());

@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string FontStyle::componentName  = "Text";
+const std::string FontStyle::typeName       = "FontStyle";
+const std::string FontStyle::containerField = "fontStyle";
+
 FontStyle::Fields::Fields () :
 	size (new SFFloat (1))
 { }
@@ -64,9 +68,6 @@ FontStyle::FontStyle (X3DExecutionContext* const executionContext) :
 	X3DFontStyleNode (),
 	          fields ()
 {
-	setComponent ("Text");
-	setTypeName ("FontStyle");
-
 	addField (inputOutput,    "metadata",    metadata ());
 	addField (initializeOnly, "family",      family ());
 	addField (initializeOnly, "style",       style ());

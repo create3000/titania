@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string GeoLOD::componentName  = "Geospatial";
+const std::string GeoLOD::typeName       = "GeoLOD";
+const std::string GeoLOD::containerField = "children";
+
 GeoLOD::Fields::Fields () :
 	children (new MFNode ()),
 	level_changed (new SFInt32 ()),
@@ -76,9 +80,6 @@ GeoLOD::GeoLOD (X3DExecutionContext* const executionContext) :
 	X3DBoundedObject (),
 	          fields ()
 {
-	setComponent ("Geospatial");
-	setTypeName ("GeoLOD");
-
 	addField (inputOutput,    "metadata",      metadata ());
 	addField (initializeOnly, "bboxSize",      bboxSize ());
 	addField (initializeOnly, "bboxCenter",    bboxCenter ());

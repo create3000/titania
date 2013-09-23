@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string ParticleSystem::componentName  = "ParticleSystems";
+const std::string ParticleSystem::typeName       = "ParticleSystem";
+const std::string ParticleSystem::containerField = "children";
+
 ParticleSystem::Fields::Fields () :
 	createParticles (new SFBool (true)),
 	enabled (new SFBool (true)),
@@ -77,9 +81,6 @@ ParticleSystem::ParticleSystem (X3DExecutionContext* const executionContext) :
 	X3DShapeNode (),
 	      fields ()
 {
-	setComponent ("ParticleSystems");
-	setTypeName ("ParticleSystem");
-
 	addField (inputOutput,    "metadata",          metadata ());
 	addField (initializeOnly, "bboxSize",          bboxSize ());
 	addField (initializeOnly, "bboxCenter",        bboxCenter ());

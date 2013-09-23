@@ -60,6 +60,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string ElevationGrid::componentName  = "Geometry3D";
+const std::string ElevationGrid::typeName       = "ElevationGrid";
+const std::string ElevationGrid::containerField = "geometry";
+
 ElevationGrid::Fields::Fields () :
 	xDimension (new SFInt32 ()),
 	xSpacing (new SFFloat (1)),
@@ -83,9 +87,6 @@ ElevationGrid::ElevationGrid (X3DExecutionContext* const executionContext) :
 	X3DGeometryNode (),
 	         fields ()
 {
-	setComponent ("Geometry3D");
-	setTypeName ("ElevationGrid");
-
 	addField (inputOutput,    "metadata",        metadata ());
 
 	addField (initializeOnly, "xDimension",      xDimension ());

@@ -57,6 +57,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string ProgramShader::componentName  = "Shaders";
+const std::string ProgramShader::typeName       = "ProgramShader";
+const std::string ProgramShader::containerField = "shaders";
+
 // http://www.opengl.org/wiki/GLSL_Object#Program_separation
 // http://www.opengl.org/wiki/GLAPI/glGenProgramPipelines
 
@@ -70,9 +74,6 @@ ProgramShader::ProgramShader (X3DExecutionContext* const executionContext) :
 	       fields (),
 	   pipelineId (0)
 {
-	setComponent ("Shaders");
-	setTypeName ("ProgramShader");
-
 	addField (inputOutput,    "metadata",   metadata ());
 	addField (inputOnly,      "activate",   activate ());
 	addField (outputOnly,     "isSelected", isSelected ());

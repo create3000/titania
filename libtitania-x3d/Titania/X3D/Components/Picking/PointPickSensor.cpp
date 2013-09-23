@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string PointPickSensor::componentName  = "Picking";
+const std::string PointPickSensor::typeName       = "PointPickSensor";
+const std::string PointPickSensor::containerField = "children";
+
 PointPickSensor::Fields::Fields () :
 	pickedPoint (new MFVec3f ())
 { }
@@ -64,9 +68,6 @@ PointPickSensor::PointPickSensor (X3DExecutionContext* const executionContext) :
 	X3DPickSensorNode (),
 	           fields ()
 {
-	setComponent ("Picking");
-	setTypeName ("PointPickSensor");
-
 	addField (inputOutput,    "metadata",         metadata ());
 	addField (inputOutput,    "enabled",          enabled ());
 	addField (outputOnly,     "isActive",         isActive ());

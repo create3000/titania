@@ -55,14 +55,15 @@
 namespace titania {
 namespace X3D {
 
+const std::string PickableGroup::componentName  = "Picking";
+const std::string PickableGroup::typeName       = "PickableGroup";
+const std::string PickableGroup::containerField = "children";
+
 PickableGroup::PickableGroup (X3DExecutionContext* const executionContext) :
 	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	  X3DGroupingNode (),
 	X3DPickableObject ()
 {
-	setComponent ("Picking");
-	setTypeName ("PickableGroup");
-
 	addField (inputOutput,    "metadata",       metadata ());
 	addField (inputOutput,    "objectType",     objectType ());
 	addField (inputOutput,    "pickable",       pickable ());

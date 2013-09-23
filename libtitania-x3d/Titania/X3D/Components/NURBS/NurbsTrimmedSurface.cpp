@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string NurbsTrimmedSurface::componentName  = "NURBS";
+const std::string NurbsTrimmedSurface::typeName       = "NurbsTrimmedSurface";
+const std::string NurbsTrimmedSurface::containerField = "geometry";
+
 NurbsTrimmedSurface::Fields::Fields () :
 	addTrimmingContour (new MFNode ()),
 	removeTrimmingContour (new MFNode ()),
@@ -66,9 +70,6 @@ NurbsTrimmedSurface::NurbsTrimmedSurface (X3DExecutionContext* const executionCo
 	X3DNurbsSurfaceGeometryNode (),
 	                     fields ()
 {
-	setComponent ("NURBS");
-	setTypeName ("NurbsTrimmedSurface");
-
 	addField (inputOutput,    "metadata",              metadata ());
 	addField (inputOutput,    "controlPoint",          controlPoint ());
 	addField (inputOutput,    "texCoord",              texCoord ());

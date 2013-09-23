@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string PlaneSensor::componentName  = "PointingDeviceSensor";
+const std::string PlaneSensor::typeName       = "PlaneSensor";
+const std::string PlaneSensor::containerField = "children";
+
 PlaneSensor::Fields::Fields () :
 	       axisRotation (new SFRotation ()),
 	             offset (new SFVec3f ()),
@@ -72,9 +76,6 @@ PlaneSensor::PlaneSensor (X3DExecutionContext* const executionContext) :
 	            startPoint (),
 	inverseModelViewMatrix ()
 {
-	setComponent ("PointingDeviceSensor");
-	setTypeName ("PlaneSensor");
-
 	addField (inputOutput, "metadata",            metadata ());
 	addField (inputOutput, "enabled",             enabled ());
 	addField (inputOutput, "description",         description ());

@@ -59,14 +59,15 @@
 namespace titania {
 namespace X3D {
 
+const std::string Fog::componentName  = "EnvironmentalEffects";
+const std::string Fog::typeName       = "Fog";
+const std::string Fog::containerField = "children";
+
 Fog::Fog (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DBindableNode (),
 	   X3DFogObject ()
 {
-	setComponent ("EnvironmentalEffects");
-	setTypeName ("Fog");
-
 	addField (inputOutput, "metadata",        metadata ());
 	addField (inputOnly,   "set_bind",        set_bind ());
 	addField (inputOutput, "fogType",         fogType ());

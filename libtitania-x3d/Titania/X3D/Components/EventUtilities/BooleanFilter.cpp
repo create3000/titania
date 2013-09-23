@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string BooleanFilter::componentName  = "EventUtilities";
+const std::string BooleanFilter::typeName       = "BooleanFilter";
+const std::string BooleanFilter::containerField = "children";
+
 BooleanFilter::Fields::Fields () :
 	set_boolean (new SFBool ()),
 	inputTrue (new SFBool ()),
@@ -67,9 +71,6 @@ BooleanFilter::BooleanFilter (X3DExecutionContext* const executionContext) :
 	X3DChildNode (),
 	      fields ()
 {
-	setComponent ("EventUtilities");
-	setTypeName ("BooleanFilter");
-
 	addField (inputOutput, "metadata",    metadata ());
 	addField (inputOnly,   "set_boolean", set_boolean ());
 	addField (outputOnly,  "inputTrue",   inputTrue ());

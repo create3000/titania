@@ -61,13 +61,14 @@
 namespace titania {
 namespace X3D {
 
+const std::string Layer::componentName  = "Layering";
+const std::string Layer::typeName       = "Layer";
+const std::string Layer::containerField = "layers";
+
 Layer::Layer (X3DExecutionContext* const executionContext) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DLayerNode (new Viewpoint (executionContext), new Group (executionContext))
 {
-	setComponent ("Layering");
-	setTypeName ("Layer");
-
 	addField (inputOutput, "metadata",       metadata ());
 	addField (inputOutput, "isPickable",     isPickable ());
 	addField (inputOutput, "viewport",       viewport ());

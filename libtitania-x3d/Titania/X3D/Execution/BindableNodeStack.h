@@ -74,9 +74,6 @@ public:
 		fields (),
 		stack ({ node })
 	{
-		setComponent ("Browser");
-		setTypeName ("X3DBindableNodeList");
-
 		addField (outputOnly, "bindTime", *fields .bindTime);
 
 		node -> shutdown () .addInterest (this, &X3DBindableNodeStack::erase, node);
@@ -86,6 +83,24 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const executionContext) const final
 	{ return new X3DBindableNodeStack (executionContext, bottom ()); }
+
+	///  @name Common members
+
+	virtual
+	const std::string &
+	getComponentName () const final
+	{ return componentName; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const final
+	{ return containerField; }
 
 	/// @name Fields
 
@@ -190,6 +205,14 @@ private:
 			stack .erase (node);
 	}
 
+	///  @name Static members
+
+	static const std::string componentName;
+	static const std::string typeName;
+	static const std::string containerField;
+
+	///  @name Members
+
 	struct Fields
 	{
 		Fields ();
@@ -203,6 +226,15 @@ private:
 	stack_type stack;
 
 };
+
+template <class Type>
+const std::string X3DBindableNodeStack <Type>::componentName = "Browser";
+
+template <class Type>
+const std::string X3DBindableNodeStack <Type>::typeName = "X3DBindableNodeList";
+
+template <class Type>
+const std::string X3DBindableNodeStack <Type>::containerField = "bindableNodeList";
 
 template <class Type>
 X3DBindableNodeStack <Type>::Fields::Fields () :

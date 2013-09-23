@@ -56,6 +56,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string Switch::componentName  = "Grouping";
+const std::string Switch::typeName       = "Switch";
+const std::string Switch::containerField = "children";
+
 Switch::Fields::Fields () :
 	whichChoice (new SFInt32 (-1))
 { }
@@ -65,9 +69,6 @@ Switch::Switch (X3DExecutionContext* const executionContext) :
 	X3DGroupingNode (),
 	         fields ()
 {
-	setComponent ("Grouping");
-	setTypeName ("Switch");
-
 	addField (inputOutput,    "metadata",       metadata ());
 	addField (inputOutput,    "whichChoice",    whichChoice ());
 	addField (initializeOnly, "bboxSize",       bboxSize ());

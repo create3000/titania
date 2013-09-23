@@ -57,6 +57,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string KeySensor::componentName  = "KeyDeviceSensor";
+const std::string KeySensor::typeName       = "KeySensor";
+const std::string KeySensor::containerField = "children";
+
 static constexpr int32_t X3D_KEY_F1  = 1;
 static constexpr int32_t X3D_KEY_F2  = 2;
 static constexpr int32_t X3D_KEY_F3  = 3;
@@ -96,9 +100,6 @@ KeySensor::KeySensor (X3DExecutionContext* const executionContext) :
 	             shiftKeys (),
 	           controlKeys ()
 {
-	setComponent ("KeyDeviceSensor");
-	setTypeName ("KeySensor");
-
 	addField (inputOutput, "metadata",         metadata ());
 	addField (inputOutput, "enabled",          enabled ());
 	addField (outputOnly,  "shiftKey",         shiftKey ());

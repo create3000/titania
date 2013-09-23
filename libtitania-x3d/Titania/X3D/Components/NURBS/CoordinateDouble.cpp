@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string CoordinateDouble::componentName  = "NURBS";
+const std::string CoordinateDouble::typeName       = "CoordinateDouble";
+const std::string CoordinateDouble::containerField = "coord";
+
 CoordinateDouble::Fields::Fields () :
 	point (new MFVec3d ())
 { }
@@ -64,9 +68,6 @@ CoordinateDouble::CoordinateDouble (X3DExecutionContext* const executionContext)
 	X3DCoordinateNode (),
 	           fields ()
 {
-	setComponent ("NURBS");
-	setTypeName ("CoordinateDouble");
-
 	addField (inputOutput, "metadata", metadata ());
 	addField (inputOutput, "point",    point ());
 }

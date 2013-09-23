@@ -57,6 +57,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string Layout::componentName  = "Layout";
+const std::string Layout::typeName       = "Layout";
+const std::string Layout::containerField = "layout";
+
 Layout::Fields::Fields () :
 	      align (new MFString ({ "CENTER", "CENTER" })),
 	offsetUnits (new MFString ({ "WORLD", "WORLD" })),
@@ -87,9 +91,6 @@ Layout::Layout (X3DExecutionContext* const executionContext) :
 	rectangleCenter (),
 	    rectangleSize ()
 {
-	setComponent ("Layout");
-	setTypeName ("Layout");
-
 	addField (inputOutput, "metadata",    metadata ());
 	addField (inputOutput, "align",       align ());
 	addField (inputOutput, "offsetUnits", offsetUnits ());

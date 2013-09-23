@@ -57,6 +57,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string Cylinder::componentName  = "Geometry3D";
+const std::string Cylinder::typeName       = "Cylinder";
+const std::string Cylinder::containerField = "geometry";
+
 Cylinder::Fields::Fields () :
 	bottom (new SFBool (true)),
 	height (new SFFloat (2)),
@@ -71,9 +75,6 @@ Cylinder::Cylinder (X3DExecutionContext* const executionContext) :
 	X3DGeometryNode (),
 	         fields ()
 {
-	setComponent ("Geometry3D");
-	setTypeName ("Cylinder");
-
 	addField (inputOutput,    "metadata", metadata ());
 	addField (initializeOnly, "top",      top ());
 	addField (initializeOnly, "bottom",   bottom ());

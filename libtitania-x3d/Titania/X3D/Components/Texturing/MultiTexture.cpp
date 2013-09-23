@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string MultiTexture::componentName  = "Texturing";
+const std::string MultiTexture::typeName       = "MultiTexture";
+const std::string MultiTexture::containerField = "texture";
+
 MultiTexture::Fields::Fields () :
 	alpha (new SFFloat (1)),
 	color (new SFColor (1, 1, 1)),
@@ -69,9 +73,6 @@ MultiTexture::MultiTexture (X3DExecutionContext* const executionContext) :
 	X3DTextureNode (),
 	        fields ()
 {
-	setComponent ("Texturing");
-	setTypeName ("MultiTexture");
-
 	addField (inputOutput, "metadata", metadata ());
 	addField (inputOutput, "alpha",    alpha ());
 	addField (inputOutput, "color",    color ());

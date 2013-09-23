@@ -58,6 +58,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string LayoutGroup::componentName  = "Layout";
+const std::string LayoutGroup::typeName       = "LayoutGroup";
+const std::string LayoutGroup::containerField = "children";
+
 LayoutGroup::Fields::Fields () :
 	viewport (new SFNode ()),
 	layout (new SFNode ())
@@ -70,9 +74,6 @@ LayoutGroup::LayoutGroup (X3DExecutionContext* const executionContext) :
 	currentViewport (nullptr),
 	  currentLayout (nullptr)
 {
-	setComponent ("Layout");
-	setTypeName ("LayoutGroup");
-
 	addField (inputOutput,    "metadata",       metadata ());
 	addField (inputOutput,    "viewport",       viewport ());
 	addField (inputOutput,    "layout",         layout ());

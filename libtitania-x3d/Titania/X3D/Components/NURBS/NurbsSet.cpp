@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string NurbsSet::componentName  = "NURBS";
+const std::string NurbsSet::typeName       = "NurbsSet";
+const std::string NurbsSet::containerField = "children";
+
 NurbsSet::Fields::Fields () :
 	addGeometry (new MFNode ()),
 	removeGeometry (new MFNode ()),
@@ -68,9 +72,6 @@ NurbsSet::NurbsSet (X3DExecutionContext* const executionContext) :
 	X3DBoundedObject (),
 	          fields ()
 {
-	setComponent ("NURBS");
-	setTypeName ("NurbsSet");
-
 	addField (inputOutput,    "metadata",          metadata ());
 	addField (initializeOnly, "bboxSize",          bboxSize ());
 	addField (initializeOnly, "bboxCenter",        bboxCenter ());

@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string SignalPdu::componentName  = "DIS";
+const std::string SignalPdu::typeName       = "SignalPdu";
+const std::string SignalPdu::containerField = "children";
+
 SignalPdu::Fields::Fields () :
 	address (new SFString ("localhost")),
 	applicationID (new SFInt32 (1)),
@@ -88,9 +92,6 @@ SignalPdu::SignalPdu (X3DExecutionContext* const executionContext) :
 	X3DBoundedObject (),
 	          fields ()
 {
-	setComponent ("DIS");
-	setTypeName ("SignalPdu");
-
 	addField (inputOutput,    "metadata",           metadata ());
 	addField (initializeOnly, "bboxSize",           bboxSize ());
 	addField (initializeOnly, "bboxCenter",         bboxCenter ());

@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string TextureTransform3D::componentName  = "Texturing3D";
+const std::string TextureTransform3D::typeName       = "TextureTransform3D";
+const std::string TextureTransform3D::containerField = "textureTransform";
+
 TextureTransform3D::Fields::Fields () :
 	center (new SFVec3f ()),
 	rotation (new SFRotation ()),
@@ -67,9 +71,6 @@ TextureTransform3D::TextureTransform3D (X3DExecutionContext* const executionCont
 	X3DTextureTransformNode (),
 	                 fields ()
 {
-	setComponent ("Texturing3D");
-	setTypeName ("TextureTransform3D");
-
 	addField (inputOutput, "metadata",    metadata ());
 	addField (inputOutput, "center",      center ());
 	addField (inputOutput, "rotation",    rotation ());

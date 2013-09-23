@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string ConeEmitter::componentName  = "ParticleSystems";
+const std::string ConeEmitter::typeName       = "ConeEmitter";
+const std::string ConeEmitter::containerField = "emitter";
+
 ConeEmitter::Fields::Fields () :
 	angle (new SFFloat (0.785398)),
 	direction (new SFVec3f (0, 1, 0)),
@@ -66,9 +70,6 @@ ConeEmitter::ConeEmitter (X3DExecutionContext* const executionContext) :
 	X3DParticleEmitterNode (),
 	                fields ()
 {
-	setComponent ("ParticleSystems");
-	setTypeName ("ConeEmitter");
-
 	addField (inputOutput,    "metadata",    metadata ());
 	addField (inputOutput,    "speed",       speed ());
 	addField (inputOutput,    "variation",   variation ());

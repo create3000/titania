@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string GeoTransform::componentName  = "Geospatial";
+const std::string GeoTransform::typeName       = "GeoTransform";
+const std::string GeoTransform::containerField = "children";
+
 GeoTransform::Fields::Fields () :
 	geoCenter (new SFVec3d ()),
 	rotation (new SFRotation ()),
@@ -70,9 +74,6 @@ GeoTransform::GeoTransform (X3DExecutionContext* const executionContext) :
 	X3DGroupingNode (),
 	         fields ()
 {
-	setComponent ("Geospatial");
-	setTypeName ("GeoTransform");
-
 	addField (inputOutput,    "metadata",         metadata ());
 	addField (initializeOnly, "bboxSize",         bboxSize ());
 	addField (initializeOnly, "bboxCenter",       bboxCenter ());

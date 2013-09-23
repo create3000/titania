@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string StringSensor::componentName  = "KeyDeviceSensor";
+const std::string StringSensor::typeName       = "StringSensor";
+const std::string StringSensor::containerField = "children";
+
 StringSensor::Fields::Fields () :
 	deletionAllowed (new SFBool (true)),
 	    enteredText (new SFString ()),
@@ -66,9 +70,6 @@ StringSensor::StringSensor (X3DExecutionContext* const executionContext) :
 	X3DKeyDeviceSensorNode (),
 	                fields ()
 {
-	setComponent ("KeyDeviceSensor");
-	setTypeName ("StringSensor");
-
 	addField (inputOutput, "metadata",        metadata ());
 	addField (inputOutput, "enabled",         enabled ());
 	addField (inputOutput, "deletionAllowed", deletionAllowed ());

@@ -59,6 +59,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string World::componentName  = "Browser";
+const std::string World::typeName       = "World";
+const std::string World::containerField = "world";
+
 World::World (const X3DSFNode <Scene> & _scene) :
 	    X3DBaseNode (_scene -> getBrowser (), _scene),
 	          scene (_scene),
@@ -67,9 +71,6 @@ World::World (const X3DSFNode <Scene> & _scene) :
 	         layer0 (new Layer (_scene)),
 	    activeLayer (layer0)
 {
-	setComponent ("Browser");
-	setTypeName ("World");
-
 	addChildren (scene, layerSet, defaultLayerSet, layer0, activeLayer);
 }
 

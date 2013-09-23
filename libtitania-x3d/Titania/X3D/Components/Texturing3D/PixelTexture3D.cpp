@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string PixelTexture3D::componentName  = "Texturing3D";
+const std::string PixelTexture3D::typeName       = "PixelTexture3D";
+const std::string PixelTexture3D::containerField = "texture";
+
 PixelTexture3D::Fields::Fields () :
 	image (new MFInt32 ({ 0, 0, 0, 0 }))
 { }
@@ -64,9 +68,6 @@ PixelTexture3D::PixelTexture3D (X3DExecutionContext* const executionContext) :
 	X3DTexture3DNode (),
 	          fields ()
 {
-	setComponent ("Texturing3D");
-	setTypeName ("PixelTexture3D");
-
 	addField (inputOutput,    "metadata",          metadata ());
 	addField (initializeOnly, "repeatS",           repeatS ());
 	addField (initializeOnly, "repeatT",           repeatT ());

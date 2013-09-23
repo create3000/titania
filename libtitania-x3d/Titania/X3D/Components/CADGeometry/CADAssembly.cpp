@@ -55,14 +55,15 @@
 namespace titania {
 namespace X3D {
 
+const std::string CADAssembly::componentName  = "CADGeometry";
+const std::string CADAssembly::typeName       = "CADAssembly";
+const std::string CADAssembly::containerField = "children";
+
 CADAssembly::CADAssembly (X3DExecutionContext* const executionContext) :
 	                 X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	             X3DGroupingNode (),
 	X3DProductStructureChildNode ()
 {
-	setComponent ("CADGeometry");
-	setTypeName ("CADAssembly");
-
 	addField (inputOutput,    "metadata",       metadata ());
 	addField (inputOutput,    "name",           name ());
 	addField (initializeOnly, "bboxSize",       bboxSize ());

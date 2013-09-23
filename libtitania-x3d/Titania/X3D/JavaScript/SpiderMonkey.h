@@ -68,11 +68,35 @@ public:
 	SFString description;
 	SFString version;
 
+	///  @name Construction
+
 	SpiderMonkey (X3DExecutionContext* const);
+
+	///  @name Common members
+
+	virtual
+	const std::string &
+	getComponentName () const final
+	{ return componentName; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const final
+	{ return containerField; }
+
+	///  @name Operations
 
 	virtual
 	X3DSFNode <X3DJavaScriptContext>
 	createContext (Script *, const std::string &, const basic::uri &, size_t) final;
+
+	///  @name Input/Output
 
 	virtual
 	void
@@ -88,6 +112,12 @@ private:
 	virtual
 	void
 	initialize ();
+
+	///  @name Static members
+
+	static const std::string componentName;
+	static const std::string typeName;
+	static const std::string containerField;
 
 };
 

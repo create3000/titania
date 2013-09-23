@@ -57,6 +57,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string Arc2D::componentName  = "Geometry2D";
+const std::string Arc2D::typeName       = "Arc2D";
+const std::string Arc2D::containerField = "geometry";
+
 Arc2D::Fields::Fields () :
 	startAngle (new SFFloat ()),
 	endAngle (new SFFloat (1.570796)),
@@ -68,9 +72,6 @@ Arc2D::Arc2D (X3DExecutionContext* const executionContext) :
 	X3DGeometryNode (),
 	         fields ()
 {
-	setComponent ("Geometry2D");
-	setTypeName ("Arc2D");
-
 	addField (inputOutput,    "metadata",   metadata ());
 	addField (inputOutput,    "startAngle", startAngle ());
 	addField (inputOutput,    "endAngle",   endAngle ());

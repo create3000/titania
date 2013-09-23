@@ -153,6 +153,10 @@ private:
 
 };
 
+const std::string Inline::componentName  = "Networking";
+const std::string Inline::typeName       = "Inline";
+const std::string Inline::containerField = "children";
+
 Inline::Fields::Fields () :
 	load (new SFBool (true))
 { }
@@ -167,9 +171,6 @@ Inline::Inline (X3DExecutionContext* const executionContext) :
 	           group (new Group (executionContext)),
 	          future ()
 {
-	setComponent ("Networking");
-	setTypeName ("Inline");
-
 	addField (inputOutput,    "metadata",   metadata ());
 	addField (inputOutput,    "load",       load ());
 	addField (inputOutput,    "url",        url ());

@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string PositionInterpolator::componentName  = "Interpolation";
+const std::string PositionInterpolator::typeName       = "PositionInterpolator";
+const std::string PositionInterpolator::containerField = "children";
+
 PositionInterpolator::Fields::Fields () :
 	keyValue (new MFVec3f ()),
 	value_changed (new SFVec3f ())
@@ -65,9 +69,6 @@ PositionInterpolator::PositionInterpolator (X3DExecutionContext* const execution
 	X3DInterpolatorNode (),
 	             fields ()
 {
-	setComponent ("Interpolation");
-	setTypeName ("PositionInterpolator");
-
 	addField (inputOutput, "metadata",      metadata ());
 	addField (inputOnly,   "set_fraction",  set_fraction ());
 	addField (inputOutput, "key",           key ());

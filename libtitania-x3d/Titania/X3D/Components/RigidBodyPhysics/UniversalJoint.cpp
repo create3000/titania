@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string UniversalJoint::componentName  = "RigidBodyPhysics";
+const std::string UniversalJoint::typeName       = "UniversalJoint";
+const std::string UniversalJoint::containerField = "joints";
+
 UniversalJoint::Fields::Fields () :
 	anchorPoint (new SFVec3f ()),
 	axis1 (new SFVec3f ()),
@@ -74,9 +78,6 @@ UniversalJoint::UniversalJoint (X3DExecutionContext* const executionContext) :
 	X3DRigidJointNode (),
 	           fields ()
 {
-	setComponent ("RigidBodyPhysics");
-	setTypeName ("UniversalJoint");
-
 	addField (inputOutput, "metadata",             metadata ());
 	addField (inputOutput, "body1",                body1 ());
 	addField (inputOutput, "body2",                body2 ());

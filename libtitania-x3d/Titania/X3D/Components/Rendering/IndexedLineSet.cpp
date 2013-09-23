@@ -59,6 +59,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string IndexedLineSet::componentName  = "Rendering";
+const std::string IndexedLineSet::typeName       = "IndexedLineSet";
+const std::string IndexedLineSet::containerField = "geometry";
+
 IndexedLineSet::Fields::Fields () :
 	colorPerVertex (new SFBool (true)),
 	colorIndex (new MFInt32 ()),
@@ -75,9 +79,6 @@ IndexedLineSet::IndexedLineSet (X3DExecutionContext* const executionContext) :
 	         fields (),
 	      polylines ()
 {
-	setComponent ("Rendering");
-	setTypeName ("IndexedLineSet");
-
 	addField (inputOutput,    "metadata",       metadata ());
 	addField (initializeOnly, "colorPerVertex", colorPerVertex ());
 	addField (inputOutput,    "colorIndex",     colorIndex ());

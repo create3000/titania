@@ -64,6 +64,8 @@ class Route :
 {
 public:
 
+	///  @name Construction
+
 	Route (X3DExecutionContext* const,
 	       const SFNode &, X3DFieldDefinition* const,
 	       const SFNode &, X3DFieldDefinition* const);
@@ -71,6 +73,26 @@ public:
 	virtual
 	Route*
 	clone (X3DExecutionContext* const) const final;
+
+	///  @name Common members
+
+	virtual
+	const std::string &
+	getComponentName () const final
+	{ return componentName; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const final
+	{ return containerField; }
+
+	///  @name Member access
 
 	bool
 	isConnected ();
@@ -90,15 +112,21 @@ public:
 	const std::string &
 	getDestinationField () const;
 
+	///  @name Operations
+
 	void
 	disconnect ();
 
 	void
 	remove ();
 
+	///  @name Input/Output
+
 	virtual
 	void
 	toStream (std::ostream &) const final;
+
+	///  @name Desctuction
 
 	virtual
 	void
@@ -117,6 +145,14 @@ private:
 
 	void
 	connect ();
+
+	///  @name Static members
+
+	static const std::string componentName;
+	static const std::string typeName;
+	static const std::string containerField;
+
+	///  @name Members
 
 	SFNode sourceNode;
 	SFNode destinationNode;

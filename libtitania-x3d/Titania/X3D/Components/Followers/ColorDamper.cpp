@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string ColorDamper::componentName  = "Followers";
+const std::string ColorDamper::typeName       = "ColorDamper";
+const std::string ColorDamper::containerField = "children";
+
 ColorDamper::Fields::Fields () :
 	set_destination (new SFColor ()),
 	set_value (new SFColor ()),
@@ -71,9 +75,6 @@ ColorDamper::ColorDamper (X3DExecutionContext* const executionContext) :
 	X3DDamperNode (),
 	       fields ()
 {
-	setComponent ("Followers");
-	setTypeName ("ColorDamper");
-
 	addField (inputOutput,    "metadata",           metadata ());
 	addField (inputOnly,      "set_destination",    set_destination ());
 	addField (inputOnly,      "set_value",          set_value ());

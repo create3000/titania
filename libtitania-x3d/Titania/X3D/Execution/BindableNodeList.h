@@ -74,12 +74,9 @@ public:
 	///  Default constructor.
 	X3DBindableNodeList (X3DExecutionContext* const executionContext) :
 		X3DBaseNode (executionContext -> getBrowser (), executionContext),
-		fields (),
-		list ()
+		     fields (),
+		       list ()
 	{
-		setComponent ("Browser");
-		setTypeName ("X3DBindableNodeList");
-
 		addField (outputOnly, "bindTime", *fields .bindTime);
 	}
 
@@ -87,6 +84,24 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const executionContext) const final
 	{ return new X3DBindableNodeList (executionContext); }
+
+	///  @name Common members
+
+	virtual
+	const std::string &
+	getComponentName () const final
+	{ return componentName; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const final
+	{ return containerField; }
 
 	/// @name Fields
 
@@ -186,6 +201,14 @@ public:
 
 private:
 
+	///  @name Static members
+
+	static const std::string componentName;
+	static const std::string typeName;
+	static const std::string containerField;
+
+	///  @name Members
+
 	struct Fields
 	{
 		Fields ();
@@ -200,6 +223,15 @@ private:
 	list_type list;
 
 };
+
+template <class Type>
+const std::string X3DBindableNodeList <Type>::componentName = "Browser";
+
+template <class Type>
+const std::string X3DBindableNodeList <Type>::typeName = "X3DBindableNodeList";
+
+template <class Type>
+const std::string X3DBindableNodeList <Type>::containerField = "bindableNodeList";
 
 template <class Type>
 X3DBindableNodeList <Type>::Fields::Fields () :

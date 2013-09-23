@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string TextureCoordinateGenerator::componentName  = "Texturing";
+const std::string TextureCoordinateGenerator::typeName       = "TextureCoordinateGenerator";
+const std::string TextureCoordinateGenerator::containerField = "texCoord";
+
 TextureCoordinateGenerator::Fields::Fields () :
 	mode (new SFString ("SPHERE")),
 	parameter (new MFFloat ())
@@ -66,9 +70,6 @@ TextureCoordinateGenerator::TextureCoordinateGenerator (X3DExecutionContext* con
 	                  fields (),
 	          textureGenMode (GL_SPHERE_MAP)
 {
-	setComponent ("Texturing");
-	setTypeName ("TextureCoordinateGenerator");
-
 	addField (inputOutput, "metadata",  metadata ());
 	addField (inputOutput, "mode",      mode ());
 	addField (inputOutput, "parameter", parameter ());

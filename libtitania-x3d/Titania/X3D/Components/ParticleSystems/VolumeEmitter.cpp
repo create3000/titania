@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string VolumeEmitter::componentName  = "ParticleSystems";
+const std::string VolumeEmitter::typeName       = "VolumeEmitter";
+const std::string VolumeEmitter::containerField = "emitter";
+
 VolumeEmitter::Fields::Fields () :
 	set_coordinate (new SFInt32 ()),
 	coord (new SFNode ()),
@@ -68,9 +72,6 @@ VolumeEmitter::VolumeEmitter (X3DExecutionContext* const executionContext) :
 	X3DParticleEmitterNode (),
 	                fields ()
 {
-	setComponent ("ParticleSystems");
-	setTypeName ("VolumeEmitter");
-
 	addField (inputOutput,    "metadata",       metadata ());
 	addField (inputOutput,    "speed",          speed ());
 	addField (inputOutput,    "variation",      variation ());

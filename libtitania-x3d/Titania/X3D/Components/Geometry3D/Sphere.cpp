@@ -57,6 +57,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string Sphere::componentName  = "Geometry3D";
+const std::string Sphere::typeName       = "Sphere";
+const std::string Sphere::containerField = "geometry";
+
 Sphere::Fields::Fields () :
 	radius (new SFFloat (1)),
 	solid (new SFBool (true))
@@ -67,9 +71,6 @@ Sphere::Sphere (X3DExecutionContext* const executionContext) :
 	X3DGeometryNode (),
 	         fields ()
 {
-	setComponent ("Geometry3D");
-	setTypeName ("Sphere");
-
 	addField (inputOutput,    "metadata", metadata ());
 	addField (initializeOnly, "radius",   radius ());
 	addField (initializeOnly, "solid",    solid ());

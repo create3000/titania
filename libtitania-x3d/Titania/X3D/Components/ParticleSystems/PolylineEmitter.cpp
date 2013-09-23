@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string PolylineEmitter::componentName  = "ParticleSystems";
+const std::string PolylineEmitter::typeName       = "PolylineEmitter";
+const std::string PolylineEmitter::containerField = "emitter";
+
 PolylineEmitter::Fields::Fields () :
 	set_coordinate (new SFInt32 ()),
 	coord (new SFNode ()),
@@ -67,9 +71,6 @@ PolylineEmitter::PolylineEmitter (X3DExecutionContext* const executionContext) :
 	X3DParticleEmitterNode (),
 	                fields ()
 {
-	setComponent ("ParticleSystems");
-	setTypeName ("PolylineEmitter");
-
 	addField (inputOutput,    "metadata",       metadata ());
 	addField (inputOutput,    "speed",          speed ());
 	addField (inputOutput,    "variation",      variation ());

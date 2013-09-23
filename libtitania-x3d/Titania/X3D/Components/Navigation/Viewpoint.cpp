@@ -56,6 +56,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string Viewpoint::componentName  = "Navigation";
+const std::string Viewpoint::typeName       = "Viewpoint";
+const std::string Viewpoint::containerField = "children";
+
 Viewpoint::Fields::Fields () :
 	position (new SFVec3f (0, 0, 10)),
 	fieldOfView (new SFFloat (0.785398))
@@ -66,9 +70,6 @@ Viewpoint::Viewpoint (X3DExecutionContext* const executionContext) :
 	X3DViewpointNode (),
 	          fields ()
 {
-	setComponent ("Navigation");
-	setTypeName ("Viewpoint");
-
 	addField (inputOutput, "metadata",          metadata ());
 	addField (inputOutput, "description",       description ());
 	addField (inputOnly,   "set_bind",          set_bind ());

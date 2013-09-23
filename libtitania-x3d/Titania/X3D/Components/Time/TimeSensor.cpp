@@ -58,6 +58,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string TimeSensor::componentName  = "Time";
+const std::string TimeSensor::typeName       = "TimeSensor";
+const std::string TimeSensor::containerField = "children";
+
 TimeSensor::Fields::Fields () :
 	cycleInterval (new SFTime (1)),
 	fraction_changed (new SFFloat ()),
@@ -72,9 +76,6 @@ TimeSensor::TimeSensor (X3DExecutionContext* const executionContext) :
 	               cycle (),
 	            interval ()
 {
-	setComponent ("Time");
-	setTypeName ("TimeSensor");
-
 	addField (inputOutput, "metadata",         metadata ());
 	addField (inputOutput, "enabled",          enabled ());
 	addField (inputOutput, "cycleInterval",    cycleInterval ());

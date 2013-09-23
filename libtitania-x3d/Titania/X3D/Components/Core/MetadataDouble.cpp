@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string MetadataDouble::componentName  = "Core";
+const std::string MetadataDouble::typeName       = "MetadataDouble";
+const std::string MetadataDouble::containerField = "metadata";
+
 MetadataDouble::Fields::Fields () :
 	value (new MFDouble ())
 { }
@@ -65,9 +69,6 @@ MetadataDouble::MetadataDouble (X3DExecutionContext* const executionContext) :
 	X3DMetadataObject (),
 	           fields ()
 {
-	setComponent ("Core");
-	setTypeName ("MetadataDouble");
-
 	addField (inputOutput, "metadata",  metadata ());
 	addField (inputOutput, "name",      name ());
 	addField (inputOutput, "reference", reference ());

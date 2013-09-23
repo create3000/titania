@@ -57,6 +57,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string Circle2D::componentName  = "Geometry2D";
+const std::string Circle2D::typeName       = "Circle2D";
+const std::string Circle2D::containerField = "geometry";
+
 Circle2D::Fields::Fields () :
 	radius (new SFFloat (1))
 { }
@@ -66,9 +70,6 @@ Circle2D::Circle2D (X3DExecutionContext* const executionContext) :
 	X3DGeometryNode (),
 	         fields ()
 {
-	setComponent ("Geometry2D");
-	setTypeName ("Circle2D");
-
 	addField (inputOutput,    "metadata", metadata ());
 	addField (initializeOnly, "radius",   radius ());
 }

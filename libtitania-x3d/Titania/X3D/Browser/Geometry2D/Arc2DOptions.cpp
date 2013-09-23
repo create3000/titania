@@ -56,6 +56,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string Arc2DOptions::componentName  = "Browser";
+const std::string Arc2DOptions::typeName       = "Arc2DOptions";
+const std::string Arc2DOptions::containerField = "arc2DOptions";
+
 Arc2DOptions::Fields::Fields () :
 	minAngle (new SFFloat (M_PI / 20))
 { }
@@ -65,9 +69,6 @@ Arc2DOptions::Arc2DOptions (X3DExecutionContext* const executionContext) :
 	X3DOptionNode (),
 	       fields ()
 {
-	setComponent ("Browser"),
-	setTypeName ("Arc2DOptions");
-
 	addField (inputOutput, "minAngle", minAngle ());
 }
 

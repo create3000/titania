@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string Matrix4VertexAttribute::componentName  = "Shaders";
+const std::string Matrix4VertexAttribute::typeName       = "Matrix4VertexAttribute";
+const std::string Matrix4VertexAttribute::containerField = "attrib";
+
 Matrix4VertexAttribute::Fields::Fields () :
 	value (new MFMatrix4f ())
 { }
@@ -64,9 +68,6 @@ Matrix4VertexAttribute::Matrix4VertexAttribute (X3DExecutionContext* const execu
 	X3DVertexAttributeNode (),
 	                fields ()
 {
-	setComponent ("Shaders");
-	setTypeName ("Matrix4VertexAttribute");
-
 	addField (inputOutput,    "metadata", metadata ());
 	addField (initializeOnly, "name",     name ());
 	addField (inputOutput,    "value",    value ());

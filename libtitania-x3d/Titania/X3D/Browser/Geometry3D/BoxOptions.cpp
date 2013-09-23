@@ -55,13 +55,14 @@
 namespace titania {
 namespace X3D {
 
+const std::string BoxOptions::componentName  = "Browser";
+const std::string BoxOptions::typeName       = "BoxOptions";
+const std::string BoxOptions::containerField = "boxOptions";
+
 BoxOptions::BoxOptions (X3DExecutionContext* const executionContext) :
 	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DGeometricOptionNode ()
-{
-	setComponent ("Browser"),
-	setTypeName ("BoxOptions");
-}
+{ }
 
 BoxOptions*
 BoxOptions::create (X3DExecutionContext* const executionContext) const

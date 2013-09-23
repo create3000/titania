@@ -59,6 +59,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string LayerSet::componentName  = "Layering";
+const std::string LayerSet::typeName       = "LayerSet";
+const std::string LayerSet::containerField = "children";
+
 LayerSet::Fields::Fields () :
 	activeLayer (new SFInt32 ()),
 	order (new MFInt32 ({ 0 })),
@@ -73,9 +77,6 @@ LayerSet::LayerSet (X3DExecutionContext* const executionContext) :
 	         layer0 (children [0]),
 	activeLayerNode ()
 {
-	setComponent ("Layering");
-	setTypeName ("LayerSet");
-
 	addField (inputOutput, "metadata",    metadata ());
 	addField (inputOutput, "activeLayer", activeLayer ());
 	addField (inputOutput, "order",       order ());

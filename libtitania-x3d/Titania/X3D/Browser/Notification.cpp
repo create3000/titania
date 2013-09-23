@@ -57,6 +57,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string Notification::componentName  = "Browser";
+const std::string Notification::typeName       = "Notification";
+const std::string Notification::containerField = "notification";
+
 Notification::Fields::Fields () :
 	string (new SFString ())
 { }
@@ -67,9 +71,6 @@ Notification::Notification (X3DExecutionContext* const executionContext) :
 	      world (),
 	      scene ()
 {
-	setComponent ("Browser");
-	setTypeName ("Notification");
-	
 	addField (inputOutput, "string", string ());
 	
 	addChildren (world, scene);

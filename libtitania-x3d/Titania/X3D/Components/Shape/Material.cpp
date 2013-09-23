@@ -56,6 +56,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string Material::componentName  = "Shape";
+const std::string Material::typeName       = "Material";
+const std::string Material::containerField = "material";
+
 Material::Fields::Fields () :
 	ambientIntensity (new SFFloat (0.2)),
 	    diffuseColor (new SFColor (0.8, 0.8, 0.8)),
@@ -76,9 +80,6 @@ Material::Material (X3DExecutionContext* const executionContext) :
 	glEmissiveColor (),
 	    glShininess ()
 {
-	setComponent ("Shape");
-	setTypeName ("Material");
-
 	addField (inputOutput, "metadata",         metadata ());
 	addField (inputOutput, "ambientIntensity", ambientIntensity ());
 	addField (inputOutput, "diffuseColor",     diffuseColor ());

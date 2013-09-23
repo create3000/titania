@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string NurbsOrientationInterpolator::componentName  = "NURBS";
+const std::string NurbsOrientationInterpolator::typeName       = "NurbsOrientationInterpolator";
+const std::string NurbsOrientationInterpolator::containerField = "children";
+
 NurbsOrientationInterpolator::Fields::Fields () :
 	set_fraction (new SFFloat ()),
 	controlPoint (new SFNode ()),
@@ -69,9 +73,6 @@ NurbsOrientationInterpolator::NurbsOrientationInterpolator (X3DExecutionContext*
 	X3DChildNode (),
 	      fields ()
 {
-	setComponent ("NURBS");
-	setTypeName ("NurbsOrientationInterpolator");
-
 	addField (inputOutput, "metadata",      metadata ());
 	addField (inputOnly,   "set_fraction",  set_fraction ());
 	addField (inputOutput, "controlPoint",  controlPoint ());

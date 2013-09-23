@@ -56,6 +56,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string FillProperties::componentName  = "Shape";
+const std::string FillProperties::typeName       = "FillProperties";
+const std::string FillProperties::containerField = "fillProperties";
+
 FillProperties::Fields::Fields () :
 	    filled (new SFBool (true)),
 	   hatched (new SFBool (true)),
@@ -69,9 +73,6 @@ FillProperties::FillProperties (X3DExecutionContext* const executionContext) :
 	                fields (),
 	              lighting (false)
 {
-	setComponent ("Shape");
-	setTypeName ("FillProperties");
-
 	addField (inputOutput, "metadata",   metadata ());
 	addField (inputOutput, "filled",     filled ());
 	addField (inputOutput, "hatched",    hatched ());

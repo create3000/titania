@@ -58,6 +58,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string Route::componentName  = "Browser";
+const std::string Route::typeName       = "Route";
+const std::string Route::containerField = "route";
+
 Route::Route (X3DExecutionContext* const executionContext,
               const SFNode & _sourceNode,      X3DFieldDefinition* const sourceField,
               const SFNode & _destinationNode, X3DFieldDefinition* const destinationField) :
@@ -68,9 +72,6 @@ Route::Route (X3DExecutionContext* const executionContext,
 	destinationField (destinationField),
 	       connected (false)
 {
-	setComponent ("Browser");
-	setTypeName ("Route");
-
 	addChildren (sourceNode, destinationNode);
 
 	setup ();

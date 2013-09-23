@@ -57,13 +57,15 @@
 namespace titania {
 namespace X3D {
 
+const std::string Proto::componentName  = "Browser";
+const std::string Proto::typeName       = "Proto";
+const std::string Proto::containerField = "proto";
+
 Proto::Proto (X3DExecutionContext* const executionContext) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	           X3DProto (),
 	X3DExecutionContext ()
 {
-	setTypeName ("Proto");
-
 	addField (inputOutput, "metadata", metadata ());
 
 	setWorldURL (executionContext -> getWorldURL ());

@@ -57,6 +57,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string Rectangle2D::componentName  = "Geometry2D";
+const std::string Rectangle2D::typeName       = "Rectangle2D";
+const std::string Rectangle2D::containerField = "geometry";
+
 Rectangle2D::Fields::Fields () :
 	size (new SFVec2f (2, 2)),
 	solid (new SFBool (true))
@@ -67,9 +71,6 @@ Rectangle2D::Rectangle2D (X3DExecutionContext* const executionContext) :
 	X3DGeometryNode (),
 	         fields ()
 {
-	setComponent ("Geometry2D");
-	setTypeName ("Rectangle2D");
-
 	addField (inputOutput,    "metadata", metadata ());
 	addField (initializeOnly, "size",     size ());
 	addField (initializeOnly, "solid",    solid ());

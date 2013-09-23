@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string TimeTrigger::componentName  = "EventUtilities";
+const std::string TimeTrigger::typeName       = "TimeTrigger";
+const std::string TimeTrigger::containerField = "children";
+
 TimeTrigger::Fields::Fields () :
 	set_boolean (new SFBool ()),
 	triggerTime (new SFTime ())
@@ -65,9 +69,6 @@ TimeTrigger::TimeTrigger (X3DExecutionContext* const executionContext) :
 	X3DTriggerNode (),
 	        fields ()
 {
-	setComponent ("EventUtilities");
-	setTypeName ("TimeTrigger");
-
 	addField (inputOutput, "metadata",    metadata ());
 	addField (inputOnly,   "set_boolean", set_boolean ());
 	addField (outputOnly,  "triggerTime", triggerTime ());

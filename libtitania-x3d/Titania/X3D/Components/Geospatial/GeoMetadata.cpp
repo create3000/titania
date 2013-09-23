@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string GeoMetadata::componentName  = "Geospatial";
+const std::string GeoMetadata::typeName       = "GeoMetadata";
+const std::string GeoMetadata::containerField = "children";
+
 GeoMetadata::Fields::Fields () :
 	data (new MFNode ()),
 	summary (new MFString ()),
@@ -66,9 +70,6 @@ GeoMetadata::GeoMetadata (X3DExecutionContext* const executionContext) :
 	X3DInfoNode (),
 	     fields ()
 {
-	setComponent ("Geospatial");
-	setTypeName ("GeoMetadata");
-
 	addField (inputOutput, "metadata", metadata ());
 	addField (inputOutput, "data",     data ());
 	addField (inputOutput, "summary",  summary ());

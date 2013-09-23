@@ -57,6 +57,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string ImportedNode::componentName  = "Browser";
+const std::string ImportedNode::typeName       = "ImportedNode";
+const std::string ImportedNode::containerField = "importedNode";
+
 ImportedNode::ImportedNode (X3DExecutionContext* const executionContext,
                             const X3DSFNode <Inline> & inlineNode,
                             const std::string & exportedName,
@@ -66,9 +70,6 @@ ImportedNode::ImportedNode (X3DExecutionContext* const executionContext,
 	exportedName (exportedName),
 	importedName (importedName)
 {
-	setComponent ("Browser");
-	setTypeName ("ImportedNode");
-
 	addChildren (this -> inlineNode);
 
 	setup ();

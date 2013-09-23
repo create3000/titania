@@ -74,6 +74,26 @@ public:
 
 	BrowserProperties (X3DExecutionContext* const executionContext);
 
+	///  @name Common members
+
+	virtual
+	const std::string &
+	getComponentName () const final
+	{ return componentName; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const final
+	{ return containerField; }
+
+	///  @name Fields
+
 	SFBool &
 	abstractNodes ()
 	{ return *fields .abstractNodes; }
@@ -144,6 +164,14 @@ private:
 	virtual
 	BrowserProperties*
 	create (X3DExecutionContext* const executionContext) const final;
+
+	///  @name Static members
+
+	static const std::string componentName;
+	static const std::string typeName;
+	static const std::string containerField;
+
+	///  @name Members
 
 	struct Fields
 	{

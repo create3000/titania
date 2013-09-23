@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string TwoSidedMaterial::componentName  = "Shape";
+const std::string TwoSidedMaterial::typeName       = "TwoSidedMaterial";
+const std::string TwoSidedMaterial::containerField = "material";
+
 TwoSidedMaterial::Fields::Fields () :
 	    ambientIntensity (new SFFloat (0.2)),
 	        diffuseColor (new SFColor (0.8, 0.8, 0.8)),
@@ -88,9 +92,6 @@ TwoSidedMaterial::TwoSidedMaterial (X3DExecutionContext* const executionContext)
 	glBackEmissiveColor (),
 	    glBackShininess ()
 {
-	setComponent ("Shape");
-	setTypeName ("TwoSidedMaterial");
-
 	addField (inputOutput, "metadata",             metadata ());
 	addField (inputOutput, "ambientIntensity",     ambientIntensity ());
 	addField (inputOutput, "backAmbientIntensity", backAmbientIntensity ());

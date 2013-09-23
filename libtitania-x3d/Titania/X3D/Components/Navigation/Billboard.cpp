@@ -56,6 +56,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string Billboard::componentName  = "Navigation";
+const std::string Billboard::typeName       = "Billboard";
+const std::string Billboard::containerField = "children";
+
 // https://bitbucket.org/Coin3D/coin/src/abc9f50968c9/src/vrml97/Billboard.cpp
 
 static constexpr Vector3f xAxis (1, 0, 0);
@@ -71,9 +75,6 @@ Billboard::Billboard (X3DExecutionContext* const executionContext) :
 	X3DGroupingNode (),
 	         fields ()
 {
-	setComponent ("Navigation");
-	setTypeName ("Billboard");
-
 	addField (inputOutput,    "metadata",       metadata ());
 	addField (inputOutput,    "axisOfRotation", axisOfRotation ());
 	addField (initializeOnly, "bboxSize",       bboxSize ());

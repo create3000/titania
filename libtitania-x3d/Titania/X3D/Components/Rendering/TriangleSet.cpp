@@ -57,15 +57,16 @@
 namespace titania {
 namespace X3D {
 
+const std::string TriangleSet::componentName  = "Rendering";
+const std::string TriangleSet::typeName       = "TriangleSet";
+const std::string TriangleSet::containerField = "geometry";
+
 static constexpr size_t VERTEX_COUNT = 3;
 
 TriangleSet::TriangleSet (X3DExecutionContext* const executionContext) :
 	            X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DComposedGeometryNode ()
 {
-	setComponent ("Rendering");
-	setTypeName ("TriangleSet");
-
 	addField (inputOutput,    "metadata",        metadata ());
 
 	addField (initializeOnly, "solid",           solid ());

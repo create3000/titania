@@ -56,6 +56,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string ExportedNode::componentName  = "Browser";
+const std::string ExportedNode::typeName       = "ExportedNode";
+const std::string ExportedNode::containerField = "exportedNode";
+
 ExportedNode::ExportedNode (X3DExecutionContext* const executionContext,
                             const std::string & exportedName,
                             const SFNode & node) :
@@ -63,9 +67,6 @@ ExportedNode::ExportedNode (X3DExecutionContext* const executionContext,
 	exportedName (exportedName),
 	        node (node)
 {
-	setComponent ("Browser");
-	setTypeName ("ExportedNode");
-
 	addChildren (this -> node);
 
 	setup ();

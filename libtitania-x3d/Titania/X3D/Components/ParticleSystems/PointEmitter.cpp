@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string PointEmitter::componentName  = "ParticleSystems";
+const std::string PointEmitter::typeName       = "PointEmitter";
+const std::string PointEmitter::containerField = "emitter";
+
 PointEmitter::Fields::Fields () :
 	direction (new SFVec3f (0, 1, 0)),
 	position (new SFVec3f ())
@@ -65,9 +69,6 @@ PointEmitter::PointEmitter (X3DExecutionContext* const executionContext) :
 	X3DParticleEmitterNode (),
 	                fields ()
 {
-	setComponent ("ParticleSystems");
-	setTypeName ("PointEmitter");
-
 	addField (inputOutput,    "metadata",    metadata ());
 	addField (inputOutput,    "speed",       speed ());
 	addField (inputOutput,    "variation",   variation ());

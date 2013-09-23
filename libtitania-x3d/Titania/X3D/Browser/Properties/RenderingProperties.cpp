@@ -71,6 +71,10 @@ namespace X3D {
 // ColorDepth        Integer              The number of bits of colour depth supported by the screen. Allows for optimized selection of textures, particularly for lower colour depth screen capabilities.
 // TextureMemory     Float                The amount of memory in megabytes available for textures to be placed on the video card.
 
+const std::string RenderingProperties::componentName  = "Browser";
+const std::string RenderingProperties::typeName       = "RenderingProperties";
+const std::string RenderingProperties::containerField = "renderingProperties";
+
 RenderingProperties::Fields::Fields () :
 	enabled (),
 	cycleInterval (1),
@@ -96,9 +100,6 @@ RenderingProperties::RenderingProperties (X3DExecutionContext* const executionCo
 	     listId (0),
 	     string ()
 {
-	setComponent ("Browser"),
-	setTypeName ("RenderingProperties");
-
 	addChildren (enabled (), cycleInterval ());
 
 	addField (outputOnly, "Vendor",         vendor ());

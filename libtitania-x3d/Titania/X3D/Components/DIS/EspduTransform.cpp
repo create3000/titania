@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string EspduTransform::componentName  = "DIS";
+const std::string EspduTransform::typeName       = "EspduTransform";
+const std::string EspduTransform::containerField = "children";
+
 EspduTransform::Fields::Fields () :
 	set_articulationParameterValue0 (new SFFloat ()),
 	set_articulationParameterValue1 (new SFFloat ()),
@@ -145,9 +149,6 @@ EspduTransform::EspduTransform (X3DExecutionContext* const executionContext) :
 	  X3DSensorNode (),
 	         fields ()
 {
-	setComponent ("DIS");
-	setTypeName ("EspduTransform");
-
 	addField (inputOutput,    "metadata",                                   metadata ());
 	addField (inputOutput,    "enabled",                                    enabled ());
 	addField (initializeOnly, "bboxSize",                                   bboxSize ());

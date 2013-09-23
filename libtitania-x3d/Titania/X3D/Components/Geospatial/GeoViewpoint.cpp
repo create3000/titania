@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string GeoViewpoint::componentName  = "Geospatial";
+const std::string GeoViewpoint::typeName       = "GeoViewpoint";
+const std::string GeoViewpoint::containerField = "children";
+
 GeoViewpoint::Fields::Fields () :
 	set_orientation (new SFRotation ()),
 	set_position (new SFVec3d ()),
@@ -72,9 +76,6 @@ GeoViewpoint::GeoViewpoint (X3DExecutionContext* const executionContext) :
 	X3DViewpointNode (),
 	          fields ()
 {
-	setComponent ("Geospatial");
-	setTypeName ("GeoViewpoint");
-
 	addField (inputOutput,    "metadata",          metadata ());
 	addField (inputOutput,    "description",       description ());
 	addField (inputOnly,      "set_bind",          set_bind ());

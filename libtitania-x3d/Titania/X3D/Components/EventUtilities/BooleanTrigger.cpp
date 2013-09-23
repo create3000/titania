@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string BooleanTrigger::componentName  = "EventUtilities";
+const std::string BooleanTrigger::typeName       = "BooleanTrigger";
+const std::string BooleanTrigger::containerField = "children";
+
 BooleanTrigger::Fields::Fields () :
 	set_triggerTime (new SFTime ()),
 	triggerTrue (new SFBool ())
@@ -65,9 +69,6 @@ BooleanTrigger::BooleanTrigger (X3DExecutionContext* const executionContext) :
 	X3DTriggerNode (),
 	        fields ()
 {
-	setComponent ("EventUtilities");
-	setTypeName ("BooleanTrigger");
-
 	addField (inputOutput, "metadata",        metadata ());
 	addField (inputOnly,   "set_triggerTime", set_triggerTime ());
 	addField (outputOnly,  "triggerTrue",     triggerTrue ());

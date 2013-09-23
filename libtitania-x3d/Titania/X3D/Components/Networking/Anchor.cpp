@@ -57,6 +57,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string Anchor::componentName  = "Networking";
+const std::string Anchor::typeName       = "Anchor";
+const std::string Anchor::containerField = "children";
+
 Anchor::Fields::Fields () :
 	description (new SFString ()),
 	parameter (new MFString ())
@@ -69,9 +73,6 @@ Anchor::Anchor (X3DExecutionContext* const executionContext) :
 	         fields (),
 	         isOver (false)
 {
-	setComponent ("Networking");
-	setTypeName ("Anchor");
-
 	addField (inputOutput,    "metadata",       metadata ());
 	addField (inputOutput,    "description",    description ());
 	addField (inputOutput,    "url",            url ());

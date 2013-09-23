@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string PackagedShader::componentName  = "Shaders";
+const std::string PackagedShader::typeName       = "PackagedShader";
+const std::string PackagedShader::containerField = "shaders";
+
 PackagedShader::PackagedShader (X3DExecutionContext* const executionContext) :
 	                X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	              X3DShaderNode (),
@@ -62,9 +66,6 @@ PackagedShader::PackagedShader (X3DExecutionContext* const executionContext) :
 	X3DProgrammableShaderObject (),
 	              shaderProgramId (0)
 {
-	setComponent ("Shaders");
-	setTypeName ("PackagedShader");
-
 	addField (inputOutput,    "metadata",   metadata ());
 	addField (inputOutput,    "url",        url ());
 	addField (inputOnly,      "activate",   activate ());

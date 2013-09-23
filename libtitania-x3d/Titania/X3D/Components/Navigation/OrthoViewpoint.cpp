@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string OrthoViewpoint::componentName  = "Navigation";
+const std::string OrthoViewpoint::typeName       = "OrthoViewpoint";
+const std::string OrthoViewpoint::containerField = "children";
+
 OrthoViewpoint::Fields::Fields () :
 	   position (new SFVec3f (0, 0, 10)),
 	fieldOfView (new MFFloat ({ -1, -1, 1, 1 }))
@@ -65,9 +69,6 @@ OrthoViewpoint::OrthoViewpoint (X3DExecutionContext* const executionContext) :
 	X3DViewpointNode (),
 	          fields ()
 {
-	setComponent ("Navigation");
-	setTypeName ("OrthoViewpoint");
-
 	addField (inputOutput, "metadata",          metadata ());
 	addField (inputOutput, "description",       description ());
 	addField (inputOnly,   "set_bind",          set_bind ());

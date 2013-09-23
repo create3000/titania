@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string DoubleAxisHingeJoint::componentName  = "RigidBodyPhysics";
+const std::string DoubleAxisHingeJoint::typeName       = "DoubleAxisHingeJoint";
+const std::string DoubleAxisHingeJoint::containerField = "joints";
+
 DoubleAxisHingeJoint::Fields::Fields () :
 	anchorPoint (new SFVec3f ()),
 	axis1 (new SFVec3f ()),
@@ -85,9 +89,6 @@ DoubleAxisHingeJoint::DoubleAxisHingeJoint (X3DExecutionContext* const execution
 	X3DRigidJointNode (),
 	           fields ()
 {
-	setComponent ("RigidBodyPhysics");
-	setTypeName ("DoubleAxisHingeJoint");
-
 	addField (inputOutput, "metadata",                  metadata ());
 	addField (inputOutput, "body1",                     body1 ());
 	addField (inputOutput, "body2",                     body2 ());

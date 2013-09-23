@@ -57,6 +57,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string Cone::componentName  = "Geometry3D";
+const std::string Cone::typeName       = "Cone";
+const std::string Cone::containerField = "geometry";
+
 Cone::Fields::Fields () :
 	bottom (new SFBool (true)),
 	bottomRadius (new SFFloat (1)),
@@ -70,9 +74,6 @@ Cone::Cone (X3DExecutionContext* const executionContext) :
 	X3DGeometryNode (),
 	         fields ()
 {
-	setComponent ("Geometry3D");
-	setTypeName ("Cone");
-
 	addField (inputOutput,    "metadata",     metadata ());
 	addField (initializeOnly, "side",         side ());
 	addField (initializeOnly, "bottom",       bottom ());

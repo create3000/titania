@@ -57,15 +57,16 @@
 namespace titania {
 namespace X3D {
 
+const std::string QuadSet::componentName  = "CADGeometry";
+const std::string QuadSet::typeName       = "QuadSet";
+const std::string QuadSet::containerField = "geometry";
+
 static constexpr size_t VERTEX_COUNT = 4;
 
 QuadSet::QuadSet (X3DExecutionContext* const executionContext) :
 	            X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DComposedGeometryNode ()
 {
-	setComponent ("CADGeometry");
-	setTypeName ("QuadSet");
-
 	addField (inputOutput,    "metadata",        metadata ());
 
 	addField (initializeOnly, "solid",           solid ());

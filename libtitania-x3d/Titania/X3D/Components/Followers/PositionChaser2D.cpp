@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string PositionChaser2D::componentName  = "Followers";
+const std::string PositionChaser2D::typeName       = "PositionChaser2D";
+const std::string PositionChaser2D::containerField = "children";
+
 PositionChaser2D::Fields::Fields () :
 	set_destination (new SFVec2f ()),
 	set_value (new SFVec2f ()),
@@ -68,9 +72,6 @@ PositionChaser2D::PositionChaser2D (X3DExecutionContext* const executionContext)
 	X3DChaserNode (),
 	       fields ()
 {
-	setComponent ("Followers");
-	setTypeName ("PositionChaser2D");
-
 	addField (inputOutput,    "metadata",           metadata ());
 	addField (inputOnly,      "set_destination",    set_destination ());
 	addField (inputOnly,      "set_value",          set_value ());

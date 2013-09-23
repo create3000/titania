@@ -73,6 +73,24 @@ public:
 	X3DPrototypeInstance*
 	createInstance (X3DExecutionContext* const) final;
 
+	///  @name Common members
+
+	virtual
+	const std::string &
+	getComponentName () const final
+	{ return componentName; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const final
+	{ return containerField; }
+
 	///  @name Tests
 
 	virtual
@@ -107,6 +125,12 @@ private:
 	void
 	addUninitializedNode (X3DBaseNode* node) final
 	{ }
+
+	///  @name Static members
+
+	static const std::string componentName;
+	static const std::string typeName;
+	static const std::string containerField;
 
 };
 

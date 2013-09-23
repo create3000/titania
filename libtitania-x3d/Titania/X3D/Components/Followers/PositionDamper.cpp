@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string PositionDamper::componentName  = "Followers";
+const std::string PositionDamper::typeName       = "PositionDamper";
+const std::string PositionDamper::containerField = "children";
+
 PositionDamper::Fields::Fields () :
 	set_destination (new SFVec3f ()),
 	set_value (new SFVec3f ()),
@@ -71,9 +75,6 @@ PositionDamper::PositionDamper (X3DExecutionContext* const executionContext) :
 	X3DDamperNode (),
 	       fields ()
 {
-	setComponent ("Followers");
-	setTypeName ("PositionDamper");
-
 	addField (inputOutput,    "metadata",           metadata ());
 	addField (inputOnly,      "set_destination",    set_destination ());
 	addField (inputOnly,      "set_value",          set_value ());

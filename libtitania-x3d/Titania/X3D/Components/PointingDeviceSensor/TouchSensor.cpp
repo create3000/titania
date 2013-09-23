@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string TouchSensor::componentName  = "PointingDeviceSensor";
+const std::string TouchSensor::typeName       = "TouchSensor";
+const std::string TouchSensor::containerField = "children";
+
 // http://stackoverflow.com/questions/7207422/setting-up-opengl-multiple-render-targets
 
 TouchSensor::Fields::Fields () :
@@ -68,9 +72,6 @@ TouchSensor::TouchSensor (X3DExecutionContext* const executionContext) :
 	X3DTouchSensorNode (),
 	            fields ()
 {
-	setComponent ("PointingDeviceSensor");
-	setTypeName ("TouchSensor");
-
 	addField (inputOutput, "metadata",            metadata ());
 	addField (inputOutput, "enabled",             enabled ());
 	addField (inputOutput, "description",         description ());

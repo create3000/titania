@@ -57,6 +57,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string ShaderProgram::componentName  = "Shaders";
+const std::string ShaderProgram::typeName       = "ShaderProgram";
+const std::string ShaderProgram::containerField = "programs";
+
 // http://www.opengl.org/wiki/GLAPI/glCreateShaderProgramv
 
 ShaderProgram::Fields::Fields () :
@@ -72,9 +76,6 @@ ShaderProgram::ShaderProgram (X3DExecutionContext* const executionContext) :
 	            shaderProgramId (0),
 	                      valid (false)
 {
-	setComponent ("Shaders");
-	setTypeName ("ShaderProgram");
-
 	addField (inputOutput,    "metadata", metadata ());
 	addField (initializeOnly, "type",     type ());
 	addField (inputOutput,    "url",      url ());

@@ -57,6 +57,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string Text::componentName  = "Text";
+const std::string Text::typeName       = "Text";
+const std::string Text::containerField = "geometry";
+
 Text::Fields::Fields () :
 	    string (new MFString ()),
 	    length (new MFFloat ()),
@@ -76,9 +80,6 @@ Text::Text (X3DExecutionContext* const executionContext) :
 	 minorAlignment (),
 	    translation ()
 {
-	setComponent ("Text");
-	setTypeName ("Text");
-
 	addField (inputOutput,    "metadata",   metadata ());
 	addField (inputOutput,    "string",     string ());
 	addField (inputOutput,    "length",     length ());

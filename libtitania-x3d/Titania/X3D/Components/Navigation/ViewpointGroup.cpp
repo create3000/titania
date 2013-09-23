@@ -56,6 +56,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string ViewpointGroup::componentName  = "Navigation";
+const std::string ViewpointGroup::typeName       = "ViewpointGroup";
+const std::string ViewpointGroup::containerField = "children";
+
 ViewpointGroup::Fields::Fields () :
 	displayed (new SFBool (true)),
 	size (new SFVec3f ()),
@@ -72,9 +76,6 @@ ViewpointGroup::ViewpointGroup (X3DExecutionContext* const executionContext) :
 	  proximitySensor (new ProximitySensor (executionContext)),
 	  viewpointObjects ()
 {
-	setComponent ("Navigation");
-	setTypeName ("ViewpointGroup");
-
 	addField (inputOutput, "metadata",          metadata ());
 	addField (inputOutput, "displayed",         displayed ());
 	addField (inputOutput, "description",       description ());

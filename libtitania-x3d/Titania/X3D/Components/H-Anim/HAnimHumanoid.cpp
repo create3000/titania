@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string HAnimHumanoid::componentName  = "H-Anim";
+const std::string HAnimHumanoid::typeName       = "HAnimHumanoid";
+const std::string HAnimHumanoid::containerField = "children";
+
 HAnimHumanoid::Fields::Fields () :
 	center (new SFVec3f ()),
 	info (new MFString ()),
@@ -80,9 +84,6 @@ HAnimHumanoid::HAnimHumanoid (X3DExecutionContext* const executionContext) :
 	X3DBoundedObject (),
 	          fields ()
 {
-	setComponent ("H-Anim");
-	setTypeName ("HAnimHumanoid");
-
 	addField (inputOutput,    "metadata",         metadata ());
 	addField (initializeOnly, "bboxSize",         bboxSize ());
 	addField (initializeOnly, "bboxCenter",       bboxCenter ());

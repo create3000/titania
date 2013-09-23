@@ -55,13 +55,14 @@
 namespace titania {
 namespace X3D {
 
+const std::string PrimitivePickSensor::componentName  = "Picking";
+const std::string PrimitivePickSensor::typeName       = "PrimitivePickSensor";
+const std::string PrimitivePickSensor::containerField = "children";
+
 PrimitivePickSensor::PrimitivePickSensor (X3DExecutionContext* const executionContext) :
 	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DPickSensorNode ()
 {
-	setComponent ("Picking");
-	setTypeName ("PrimitivePickSensor");
-
 	addField (inputOutput,    "metadata",         metadata ());
 	addField (inputOutput,    "enabled",          enabled ());
 	addField (outputOnly,     "isActive",         isActive ());

@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string EaseInEaseOut::componentName  = "Interpolation";
+const std::string EaseInEaseOut::typeName       = "EaseInEaseOut";
+const std::string EaseInEaseOut::containerField = "children";
+
 EaseInEaseOut::Fields::Fields () :
 	easeInEaseOut (new MFVec2f ()),
 	modifiedFraction_changed (new SFFloat ())
@@ -65,9 +69,6 @@ EaseInEaseOut::EaseInEaseOut (X3DExecutionContext* const executionContext) :
 	X3DInterpolatorNode (),
 	             fields ()
 {
-	setComponent ("Interpolation");
-	setTypeName ("EaseInEaseOut");
-
 	addField (inputOutput, "metadata",                 metadata ());
 	addField (inputOnly,   "set_fraction",             set_fraction ());
 	addField (inputOutput, "key",                      key ());

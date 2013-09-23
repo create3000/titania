@@ -56,6 +56,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string Disk2DOptions::componentName  = "Browser";
+const std::string Disk2DOptions::typeName       = "Disk2DOptions";
+const std::string Disk2DOptions::containerField = "disk2DOptions";
+
 Disk2DOptions::Fields::Fields () :
 	segments (new SFInt32 (60))
 { }
@@ -65,9 +69,6 @@ Disk2DOptions::Disk2DOptions (X3DExecutionContext* const executionContext) :
 	X3DGeometricOptionNode (),
 	                fields ()
 {
-	setComponent ("Browser"),
-	setTypeName ("Disk2DOptions");
-
 	addField (inputOutput, "segments", segments ());
 }
 

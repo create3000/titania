@@ -56,6 +56,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string Circle2DOptions::componentName  = "Browser";
+const std::string Circle2DOptions::typeName       = "Circle2DOptions";
+const std::string Circle2DOptions::containerField = "circle2DOptions";
+
 Circle2DOptions::Fields::Fields () :
 	segments (new SFInt32 (60))
 { }
@@ -65,9 +69,6 @@ Circle2DOptions::Circle2DOptions (X3DExecutionContext* const executionContext) :
 	X3DGeometricOptionNode (),
 	                fields ()
 {
-	setComponent ("Browser"),
-	setTypeName ("Circle2DOptions");
-
 	addField (inputOutput, "segments", segments ());
 }
 

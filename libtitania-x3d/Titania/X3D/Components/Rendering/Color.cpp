@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string Color::componentName  = "Rendering";
+const std::string Color::typeName       = "Color";
+const std::string Color::containerField = "color";
+
 Color::Fields::Fields () :
 	color (new MFColor ())
 { }
@@ -64,9 +68,6 @@ Color::Color (X3DExecutionContext* const executionContext) :
 	X3DColorNode (),
 	      fields ()
 {
-	setComponent ("Rendering");
-	setTypeName ("Color");
-
 	addField (inputOutput, "metadata", metadata ());
 	addField (inputOutput, "color",    color ());
 }

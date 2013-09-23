@@ -190,6 +190,15 @@ public:
 	Gtk::MenuItem &
 	getViewMenuItem () const { return *m_viewMenuItem; }
 
+	Gtk::ImageMenuItem &
+	getWorkspacesMenuItem () const { return *m_workspacesMenuItem; }
+
+	Gtk::RadioMenuItem &
+	getBrowserMenuItem () const { return *m_browserMenuItem; }
+
+	Gtk::RadioMenuItem &
+	getEditorMenuItem () const { return *m_editorMenuItem; }
+
 	Gtk::CheckMenuItem &
 	getToolBarMenuItem () const { return *m_toolBarMenuItem; }
 
@@ -261,9 +270,6 @@ public:
 
 	Gtk::Menu &
 	getLibraryMenu () const { return *m_libraryMenu; }
-
-	Gtk::MenuItem &
-	getComponentsMenuItem () const { return *m_componentsMenuItem; }
 
 	Gtk::MenuItem &
 	getHelpMenuItem () const { return *m_helpMenuItem; }
@@ -341,13 +347,13 @@ public:
 	getSideBarNotebook () const { return *m_sideBarNotebook; }
 
 	Gtk::Box &
-	getHistoryEditorBox () const { return *m_historyEditorBox; }
-
-	Gtk::Box &
 	getViewpointListBox () const { return *m_viewpointListBox; }
 
 	Gtk::Box &
 	getOutlineEditorBox () const { return *m_outlineEditorBox; }
+
+	Gtk::Box &
+	getHistoryEditorBox () const { return *m_historyEditorBox; }
 
 	virtual
 	void
@@ -602,6 +608,9 @@ private:
 	Gtk::MenuItem*                  m_detachFromGroupMenuItem;
 	Gtk::MenuItem*                  m_createParentGroupMenuItem;
 	Gtk::MenuItem*                  m_viewMenuItem;
+	Gtk::ImageMenuItem*             m_workspacesMenuItem;
+	Gtk::RadioMenuItem*             m_browserMenuItem;
+	Gtk::RadioMenuItem*             m_editorMenuItem;
 	Gtk::CheckMenuItem*             m_toolBarMenuItem;
 	Gtk::CheckMenuItem*             m_sideBarMenuItem;
 	Gtk::CheckMenuItem*             m_footerMenuItem;
@@ -626,7 +635,6 @@ private:
 	Gtk::MenuItem*                  m_motionBlurMenuItem;
 	Gtk::MenuItem*                  m_libraryMenuItem;
 	Gtk::Menu*                      m_libraryMenu;
-	Gtk::MenuItem*                  m_componentsMenuItem;
 	Gtk::MenuItem*                  m_helpMenuItem;
 	Gtk::ImageMenuItem*             m_standardSizeMenuItem;
 	Gtk::ImageMenuItem*             m_infoMenuItem;
@@ -652,9 +660,9 @@ private:
 	Gtk::Box*                       m_sideBar;
 	Gtk::Label*                     m_sideBarLabel;
 	Gtk::Notebook*                  m_sideBarNotebook;
-	Gtk::Box*                       m_historyEditorBox;
 	Gtk::Box*                       m_viewpointListBox;
 	Gtk::Box*                       m_outlineEditorBox;
+	Gtk::Box*                       m_historyEditorBox;
 
 };
 

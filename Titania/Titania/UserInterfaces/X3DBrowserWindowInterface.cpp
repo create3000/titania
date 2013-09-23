@@ -134,6 +134,12 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_createParentGroupMenuItem -> set_name ("CreateParentGroupMenuItem");
 	m_builder -> get_widget ("ViewMenuItem", m_viewMenuItem);
 	m_viewMenuItem -> set_name ("ViewMenuItem");
+	m_builder -> get_widget ("WorkspacesMenuItem", m_workspacesMenuItem);
+	m_workspacesMenuItem -> set_name ("WorkspacesMenuItem");
+	m_builder -> get_widget ("BrowserMenuItem", m_browserMenuItem);
+	m_browserMenuItem -> set_name ("BrowserMenuItem");
+	m_builder -> get_widget ("EditorMenuItem", m_editorMenuItem);
+	m_editorMenuItem -> set_name ("EditorMenuItem");
 	m_builder -> get_widget ("ToolBarMenuItem", m_toolBarMenuItem);
 	m_toolBarMenuItem -> set_name ("ToolBarMenuItem");
 	m_builder -> get_widget ("SideBarMenuItem", m_sideBarMenuItem);
@@ -182,8 +188,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_libraryMenuItem -> set_name ("LibraryMenuItem");
 	m_builder -> get_widget ("LibraryMenu", m_libraryMenu);
 	m_libraryMenu -> set_name ("LibraryMenu");
-	m_builder -> get_widget ("ComponentsMenuItem", m_componentsMenuItem);
-	m_componentsMenuItem -> set_name ("ComponentsMenuItem");
 	m_builder -> get_widget ("HelpMenuItem", m_helpMenuItem);
 	m_helpMenuItem -> set_name ("HelpMenuItem");
 	m_builder -> get_widget ("StandardSizeMenuItem", m_standardSizeMenuItem);
@@ -234,12 +238,12 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_sideBarLabel -> set_name ("SideBarLabel");
 	m_builder -> get_widget ("SideBarNotebook", m_sideBarNotebook);
 	m_sideBarNotebook -> set_name ("SideBarNotebook");
-	m_builder -> get_widget ("HistoryEditorBox", m_historyEditorBox);
-	m_historyEditorBox -> set_name ("HistoryEditorBox");
 	m_builder -> get_widget ("ViewpointListBox", m_viewpointListBox);
 	m_viewpointListBox -> set_name ("ViewpointListBox");
 	m_builder -> get_widget ("OutlineEditorBox", m_outlineEditorBox);
 	m_outlineEditorBox -> set_name ("OutlineEditorBox");
+	m_builder -> get_widget ("HistoryEditorBox", m_historyEditorBox);
+	m_historyEditorBox -> set_name ("HistoryEditorBox");
 
 	// Connect object Gtk::FileChooserDialog with id 'FileImportDialog'.
 	connections .emplace_back (m_fileImportDialog -> signal_response () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_fileImportDialog_response)));

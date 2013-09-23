@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string Contact::componentName  = "RigidBodyPhysics";
+const std::string Contact::typeName       = "Contact";
+const std::string Contact::containerField = "children";
+
 Contact::Fields::Fields () :
 	appliedParameters (new MFString ({ "BOUNCE" })),
 	body1 (new SFNode ()),
@@ -79,9 +83,6 @@ Contact::Contact (X3DExecutionContext* const executionContext) :
 	    X3DNode (),
 	     fields ()
 {
-	setComponent ("RigidBodyPhysics");
-	setTypeName ("Contact");
-
 	addField (inputOutput, "metadata",                 metadata ());
 	addField (inputOutput, "appliedParameters",        appliedParameters ());
 	addField (inputOutput, "body1",                    body1 ());

@@ -66,6 +66,24 @@ public:
 
 	World (const X3DSFNode <Scene> &);
 
+	///  @name Common members
+
+	virtual
+	const std::string &
+	getComponentName () const final
+	{ return componentName; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const final
+	{ return containerField; }
+
 	///  @name Scene handling
 
 	const X3DSFNode <Scene> &
@@ -115,6 +133,14 @@ private:
 
 	void
 	set_rootNodes ();
+
+	///  @name Static members
+
+	static const std::string componentName;
+	static const std::string typeName;
+	static const std::string containerField;
+
+	///  @name Members
 
 	X3DSFNode <Scene>        scene;
 	X3DSFNode <LayerSet>     layerSet;

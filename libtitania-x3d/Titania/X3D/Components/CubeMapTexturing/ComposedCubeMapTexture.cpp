@@ -56,6 +56,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string ComposedCubeMapTexture::componentName  = "CubeMapTexturing";
+const std::string ComposedCubeMapTexture::typeName       = "ComposedCubeMapTexture";
+const std::string ComposedCubeMapTexture::containerField = "texture";
+
 ComposedCubeMapTexture::Fields::Fields () :
 	front (new SFNode ()),
 	back (new SFNode ()),
@@ -71,9 +75,6 @@ ComposedCubeMapTexture::ComposedCubeMapTexture (X3DExecutionContext* const execu
 	                   fields (),
 	              transparent (false)
 {
-	setComponent ("CubeMapTexturing");
-	setTypeName ("ComposedCubeMapTexture");
-
 	addField (inputOutput, "metadata", metadata ());
 	addField (inputOutput, "front",    front ());
 	addField (inputOutput, "back",     back ());

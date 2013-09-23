@@ -60,6 +60,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string LayoutLayer::componentName  = "Layout";
+const std::string LayoutLayer::typeName       = "LayoutLayer";
+const std::string LayoutLayer::containerField = "layers";
+
 LayoutLayer::Fields::Fields () :
 	layout (new SFNode ())
 { }
@@ -69,9 +73,6 @@ LayoutLayer::LayoutLayer (X3DExecutionContext* const executionContext) :
 	X3DLayerNode (new OrthoViewpoint (executionContext), new LayoutGroup (executionContext)),
 	      fields ()
 {
-	setComponent ("Layout");
-	setTypeName ("LayoutLayer");
-
 	addField (inputOutput, "metadata",       metadata ());
 	addField (inputOutput, "isPickable",     isPickable ());
 	addField (inputOutput, "viewport",       viewport ());

@@ -82,6 +82,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string jsContext::componentName  = "Browser";
+const std::string jsContext::typeName       = "jsContext";
+const std::string jsContext::containerField = "context";
+
 JSClass jsContext::global_class = {
 	"global", JSCLASS_GLOBAL_FLAGS,
 	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
@@ -108,9 +112,6 @@ jsContext::jsContext (Script* script, const std::string & ecmascript, const basi
 	             objects (),
 	               files ()
 {
-	setComponent ("Browser");
-	setTypeName ("jsContext");
-
 	// Get a JS runtime.
 	runtime = JS_NewRuntime (64 * 1024 * 1024); // 64 MB runtime memory
 

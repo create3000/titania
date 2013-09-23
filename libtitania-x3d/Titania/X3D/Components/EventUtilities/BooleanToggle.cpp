@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string BooleanToggle::componentName  = "EventUtilities";
+const std::string BooleanToggle::typeName       = "BooleanToggle";
+const std::string BooleanToggle::containerField = "children";
+
 BooleanToggle::Fields::Fields () :
 	set_boolean (new SFBool ()),
 	toggle (new SFBool ())
@@ -65,9 +69,6 @@ BooleanToggle::BooleanToggle (X3DExecutionContext* const executionContext) :
 	X3DChildNode (),
 	      fields ()
 {
-	setComponent ("EventUtilities");
-	setTypeName ("BooleanToggle");
-
 	addField (inputOutput, "metadata",    metadata ());
 	addField (inputOnly,   "set_boolean", set_boolean ());
 	addField (inputOutput, "toggle",      toggle ());

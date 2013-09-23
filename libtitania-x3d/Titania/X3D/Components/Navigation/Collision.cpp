@@ -57,6 +57,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string Collision::componentName  = "Navigation";
+const std::string Collision::typeName       = "Collision";
+const std::string Collision::containerField = "children";
+
 Collision::Fields::Fields () :
 	collideTime (new SFTime ()),
 	proxy (new SFNode ())
@@ -69,9 +73,6 @@ Collision::Collision (X3DExecutionContext* const executionContext) :
 	         fields (),
 	         _proxy (NULL)
 {
-	setComponent ("Navigation");
-	setTypeName ("Collision");
-
 	addField (inputOutput,    "metadata",       metadata ());
 	addField (inputOutput,    "enabled",        enabled ());
 	addField (outputOnly,     "isActive",       isActive ());

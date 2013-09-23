@@ -61,6 +61,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string NavigationInfo::componentName  = "Navigation";
+const std::string NavigationInfo::typeName       = "NavigationInfo";
+const std::string NavigationInfo::containerField = "children";
+
 NavigationInfo::Fields::Fields () :
 	type (new MFString ({ "EXAMINE", "ANY" })),
 	avatarSize (new MFFloat ({ 0.25, 1.6, 0.75 })),
@@ -80,9 +84,6 @@ NavigationInfo::NavigationInfo (X3DExecutionContext* const executionContext) :
 	directionalLight (new DirectionalLight (executionContext)),
 	           light ()
 {
-	setComponent ("Navigation");
-	setTypeName ("NavigationInfo");
-
 	addField (inputOutput, "metadata",           metadata ());
 	addField (inputOnly,   "set_bind",           set_bind ());
 	addField (inputOutput, "type",               type ());

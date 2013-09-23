@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string GeoElevationGrid::componentName  = "Geospatial";
+const std::string GeoElevationGrid::typeName       = "GeoElevationGrid";
+const std::string GeoElevationGrid::containerField = "geometry";
+
 GeoElevationGrid::Fields::Fields () :
 	set_height (new MFDouble ()),
 	color (new SFNode ()),
@@ -81,9 +85,6 @@ GeoElevationGrid::GeoElevationGrid (X3DExecutionContext* const executionContext)
 	X3DGeometryNode (),
 	         fields ()
 {
-	setComponent ("Geospatial");
-	setTypeName ("GeoElevationGrid");
-
 	addField (inputOutput,    "metadata",        metadata ());
 	addField (inputOnly,      "set_height",      set_height ());
 	addField (inputOutput,    "color",           color ());

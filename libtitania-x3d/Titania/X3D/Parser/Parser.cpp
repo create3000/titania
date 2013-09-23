@@ -63,6 +63,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string Parser::componentName  = "Browser";
+const std::string Parser::typeName       = "Parser";
+const std::string Parser::containerField = "parser";
+
 Parser::AccessTypes::AccessTypes ()
 {
 	(*this) ["field"]        = initializeOnly;
@@ -86,10 +90,7 @@ Parser::Parser (std::istream & istream, X3DScene* scene) :
 	executionContextStack (),
 	      currentComments (),
 	          whitespaces ()
-{
-	setComponent ("Browser");
-	setTypeName ("Parser");
-}
+{ }
 
 void
 Parser::parseIntoScene ()

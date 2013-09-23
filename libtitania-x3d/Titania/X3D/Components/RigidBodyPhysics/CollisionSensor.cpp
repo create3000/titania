@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string CollisionSensor::componentName  = "RigidBodyPhysics";
+const std::string CollisionSensor::typeName       = "CollisionSensor";
+const std::string CollisionSensor::containerField = "children";
+
 CollisionSensor::Fields::Fields () :
 	collider (new SFNode ()),
 	intersections (new MFNode ()),
@@ -66,9 +70,6 @@ CollisionSensor::CollisionSensor (X3DExecutionContext* const executionContext) :
 	X3DSensorNode (),
 	       fields ()
 {
-	setComponent ("RigidBodyPhysics");
-	setTypeName ("CollisionSensor");
-
 	addField (inputOutput, "metadata",      metadata ());
 	addField (inputOutput, "enabled",       enabled ());
 	addField (outputOnly,  "isActive",      isActive ());

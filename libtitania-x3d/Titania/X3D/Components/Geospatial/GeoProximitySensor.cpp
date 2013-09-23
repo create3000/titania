@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string GeoProximitySensor::componentName  = "Geospatial";
+const std::string GeoProximitySensor::typeName       = "GeoProximitySensor";
+const std::string GeoProximitySensor::containerField = "children";
+
 GeoProximitySensor::Fields::Fields () :
 	geoCenter (new SFVec3d ()),
 	centerOfRotation_changed (new SFVec3f ()),
@@ -70,9 +74,6 @@ GeoProximitySensor::GeoProximitySensor (X3DExecutionContext* const executionCont
 	X3DEnvironmentalSensorNode (),
 	                    fields ()
 {
-	setComponent ("Geospatial");
-	setTypeName ("GeoProximitySensor");
-
 	addField (inputOutput,    "metadata",                 metadata ());
 	addField (inputOutput,    "enabled",                  enabled ());
 	addField (inputOutput,    "size",                     size ());

@@ -62,14 +62,15 @@ extern "C"
 namespace titania {
 namespace X3D {
 
+const std::string AudioClip::componentName  = "Sound";
+const std::string AudioClip::typeName       = "AudioClip";
+const std::string AudioClip::containerField = "source";
+
 AudioClip::AudioClip (X3DExecutionContext* const executionContext) :
 	       X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DSoundSourceNode (),
 	      X3DUrlObject ()
 {
-	setComponent ("Sound");
-	setTypeName ("AudioClip");
-
 	addField (inputOutput, "metadata",         metadata ());
 	addField (inputOutput, "enabled",          enabled ());             // non standard
 	addField (inputOutput, "description",      description ());

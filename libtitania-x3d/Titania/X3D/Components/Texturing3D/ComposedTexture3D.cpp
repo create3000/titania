@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string ComposedTexture3D::componentName  = "Texturing3D";
+const std::string ComposedTexture3D::typeName       = "ComposedTexture3D";
+const std::string ComposedTexture3D::containerField = "texture";
+
 ComposedTexture3D::Fields::Fields () :
 	texture (new MFNode ())
 { }
@@ -64,9 +68,6 @@ ComposedTexture3D::ComposedTexture3D (X3DExecutionContext* const executionContex
 	X3DTexture3DNode (),
 	          fields ()
 {
-	setComponent ("Texturing3D");
-	setTypeName ("ComposedTexture3D");
-
 	addField (inputOutput,    "metadata",          metadata ());
 	addField (initializeOnly, "repeatS",           repeatS ());
 	addField (initializeOnly, "repeatT",           repeatT ());

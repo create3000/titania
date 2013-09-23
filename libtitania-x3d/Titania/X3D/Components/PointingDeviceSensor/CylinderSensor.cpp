@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string CylinderSensor::componentName  = "PointingDeviceSensor";
+const std::string CylinderSensor::typeName       = "CylinderSensor";
+const std::string CylinderSensor::containerField = "children";
+
 CylinderSensor::Fields::Fields () :
 	    axisRotation (new SFRotation (0, 1, 0, 0)),
 	       diskAngle (new SFFloat (M_PI / 12)),
@@ -69,9 +73,6 @@ CylinderSensor::CylinderSensor (X3DExecutionContext* const executionContext) :
 	X3DDragSensorNode (),
 	           fields ()
 {
-	setComponent ("PointingDeviceSensor");
-	setTypeName ("CylinderSensor");
-
 	addField (inputOutput, "metadata",           metadata ());
 	addField (inputOutput, "enabled",            enabled ());
 	addField (inputOutput, "description",        description ());

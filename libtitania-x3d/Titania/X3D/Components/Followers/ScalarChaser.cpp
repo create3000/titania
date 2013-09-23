@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string ScalarChaser::componentName  = "Followers";
+const std::string ScalarChaser::typeName       = "ScalarChaser";
+const std::string ScalarChaser::containerField = "children";
+
 ScalarChaser::Fields::Fields () :
 	set_destination (new SFFloat ()),
 	set_value (new SFFloat ()),
@@ -68,9 +72,6 @@ ScalarChaser::ScalarChaser (X3DExecutionContext* const executionContext) :
 	X3DChaserNode (),
 	       fields ()
 {
-	setComponent ("Followers");
-	setTypeName ("ScalarChaser");
-
 	addField (inputOutput,    "metadata",           metadata ());
 	addField (inputOnly,      "set_destination",    set_destination ());
 	addField (inputOnly,      "set_value",          set_value ());

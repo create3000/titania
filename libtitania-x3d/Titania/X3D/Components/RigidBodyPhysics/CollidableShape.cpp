@@ -55,6 +55,10 @@
 namespace titania {
 namespace X3D {
 
+const std::string CollidableShape::componentName  = "RigidBodyPhysics";
+const std::string CollidableShape::typeName       = "CollidableShape";
+const std::string CollidableShape::containerField = "children";
+
 CollidableShape::Fields::Fields () :
 	shape (new SFNode ())
 { }
@@ -64,9 +68,6 @@ CollidableShape::CollidableShape (X3DExecutionContext* const executionContext) :
 	X3DNBodyCollidableNode (),
 	                fields ()
 {
-	setComponent ("RigidBodyPhysics");
-	setTypeName ("CollidableShape");
-
 	addField (inputOutput,    "metadata",    metadata ());
 	addField (initializeOnly, "bboxSize",    bboxSize ());
 	addField (initializeOnly, "bboxCenter",  bboxCenter ());
