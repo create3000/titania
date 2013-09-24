@@ -8,8 +8,7 @@ libtitania_opengl_surface_la_SOURCES =  \
 	Titania/OpenGL/Context/Context.cpp \
 	Titania/OpenGL/Context/WindowContext.cpp \
 	Titania/OpenGL/DrawingArea.cpp \
-	Titania/OpenGL/Surface.cpp \
-	Titania/OpenGL/SurfaceN.cpp
+	Titania/OpenGL/Surface.cpp
 
 libtitania_opengl_surface_la_LIBADD =  \
 	$(TITANIA_OPENGL_SURFACE_LIBS) \

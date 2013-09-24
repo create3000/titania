@@ -78,6 +78,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_fileSaveDialog -> set_name ("FileSaveDialog");
 	m_builder -> get_widget ("SaveCompressedButton", m_saveCompressedButton);
 	m_saveCompressedButton -> set_name ("SaveCompressedButton");
+	m_builder -> get_widget ("FileSaveWarningDialog", m_fileSaveWarningDialog);
+	m_fileSaveWarningDialog -> set_name ("FileSaveWarningDialog");
 	m_builder -> get_widget ("MessageDialog", m_messageDialog);
 	m_messageDialog -> set_name ("MessageDialog");
 	m_builder -> get_widget ("OpenLocationDialog", m_openLocationDialog);
@@ -244,17 +246,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_outlineEditorBox -> set_name ("OutlineEditorBox");
 	m_builder -> get_widget ("HistoryEditorBox", m_historyEditorBox);
 	m_historyEditorBox -> set_name ("HistoryEditorBox");
-
-	// Connect object Gtk::FileChooserDialog with id 'FileImportDialog'.
-	connections .emplace_back (m_fileImportDialog -> signal_response () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_fileImportDialog_response)));
-	connections .emplace_back (m_fileOpenDialog -> signal_response () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_fileOpenDialog_response)));
-	connections .emplace_back (m_fileSaveDialog -> signal_response () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_fileSaveDialog_response)));
-
-	// Connect object Gtk::MessageDialog with id 'MessageDialog'.
-	connections .emplace_back (m_messageDialog -> signal_response () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_messageDialog_response)));
-
-	// Connect object Gtk::Dialog with id 'OpenLocationDialog'.
-	connections .emplace_back (m_openLocationDialog -> signal_response () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_openLocationDialog_response)));
 
 	// Connect object Gtk::Entry with id 'OpenLocationEntry'.
 	connections .emplace_back (m_openLocationEntry -> signal_key_release_event () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_openLocationEntry_key_release_event)));

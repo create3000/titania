@@ -79,15 +79,6 @@ class X3DExecutionContext :
 {
 public:
 
-	///  @name Construction
-
-	virtual
-	void
-	setup ();
-
-	void
-	realize ();
-
 	///  @name Tests
 
 	virtual
@@ -100,7 +91,10 @@ public:
 	isProto () const
 	{ return false; }
 
-	///  @name Element access
+	///  @name Member access
+
+	void
+	setWorldURL (const basic::uri & value);
 
 	virtual
 	const basic::uri &
@@ -411,10 +405,13 @@ public:
 
 protected:
 
+	///  @name Construction
+
 	X3DExecutionContext ();
 
+	virtual
 	void
-	setWorldURL (const basic::uri & value);
+	initialize () override;
 
 	///  @name Import handling
 

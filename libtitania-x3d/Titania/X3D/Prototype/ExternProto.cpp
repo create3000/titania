@@ -136,6 +136,8 @@ ExternProto::requestImmediateLoad ()
 		
 		for (const auto & uninitializedNode : scene -> getUninitializedNodes ())
 			getExecutionContext () -> addUninitializedNode (uninitializedNode);
+
+		scene -> setup ();
 	}
 	catch (const X3DError & error)
 	{

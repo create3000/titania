@@ -90,6 +90,7 @@ TransformHandle::initialize ()
 		std::clog << error .what () << std::endl;
 
 		scene = getBrowser () -> createScene ();
+		scene -> setup ();
 	}
 }
 

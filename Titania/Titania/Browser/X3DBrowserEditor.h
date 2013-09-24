@@ -61,6 +61,11 @@ class X3DBrowserEditor :
 {
 public:
 
+	/// @name Tests
+
+	bool
+	isSaved ();
+
 	/// @name Member access
 
 	void
@@ -71,10 +76,23 @@ public:
 	getEdited () const
 	{ return edited; }
 
+	/// @name File operations
+
+	void
+	import (const basic::uri &);
+
+	virtual
+	void
+	save (const basic::uri &, bool) final;
+
+	virtual
+	bool
+	close () final;
+
 
 protected:
 
-	/// @name Construction
+	/// @name Edit operations
 
 	X3DBrowserEditor (const basic::uri &);
 
@@ -92,11 +110,13 @@ protected:
 
 	X3D::MFNode
 	ungroupNode (const X3D::SFNode &)
-	throw (X3D::Error <X3D::INVALID_NODE>);
+	throw (X3D::Error <X3D::INVALID_NODE>,
+          X3D::Error <X3D::INVALID_NAME>);
 
 	void
-	addToGroup (const X3D::SFNode &, const X3D::MFNode &)
-	throw (X3D::Error <X3D::INVALID_NODE>);
+	addToGroup (const X3D::SFNode &, const X3D::SFNode &)
+	throw (X3D::Error <X3D::INVALID_NODE>,
+          X3D::Error <X3D::INVALID_NAME>);
 
 	void
 	detachFromGroup (const X3D::X3DSFNode <X3D::X3DNode> &, bool)
@@ -154,8 +174,15 @@ private:
 	std::deque <X3D::X3DBaseNode*>
 	getParentNodes (X3D::X3DBaseNode* const) const;
 
+	X3D::X3DFieldDefinition*
+	getContainerField (const X3D::SFNode &, const X3D::SFNode &) const
+	throw (X3D::Error <X3D::INVALID_NAME>);
+
 	X3D::MFNode*
-	getGroupingField (const X3D::SFNode &) const;
+	getGroupingField (const X3D::SFNode & node) const
+	throw (X3D::Error <X3D::INVALID_NAME>);
+	
+	///  @name Members
 
 	bool edited;
 

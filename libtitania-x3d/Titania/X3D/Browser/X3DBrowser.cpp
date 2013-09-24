@@ -78,6 +78,8 @@ X3DBrowser::initialize ()
 	X3DBrowserContext::initialize ();
 	
 	// Initialize scene
+	
+	scene -> setup ();
 
 	replaceWorld (scene);
 	
@@ -202,7 +204,6 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	if (makeCurrent ())
 	{
 		X3DSFNode <Scene> scene = new Scene (const_cast <X3DBrowser*> (this));
-		scene -> setup ();
 		return scene;
 	}
 
@@ -238,7 +239,10 @@ throw (Error <INVALID_SCENE>,
 			scene = value;
 
 		else
+		{
 			scene = createScene ();
+			scene -> setup ();
+		}
 
 		world = new World (scene);
 		world -> setup ();
@@ -297,11 +301,11 @@ throw (Error <INVALID_URL>,
 			
 		try
 		{
-			X3DSFNode <Scene> scene = createScene ();
+			X3DSFNode <Scene> scene = createScene ();	
 
 			loader .parseIntoScene (scene, url);
 
-			scene -> realize ();
+			scene -> setup ();
 
 			replaceWorld (scene);
 

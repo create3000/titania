@@ -128,11 +128,6 @@ public:
 	void
 	close ();
 
-	/// @name Buffer
-
-	std::streambuf*
-	rdbuf () const;
-
 	/// @name Destructor
 
 	virtual
@@ -161,7 +156,6 @@ private:
 	static const std::string empty_string;
 
 	std::istringstream* data_istream;
-	std::ifstream*      file_istream;
 	iurlstream*         url_stream;
 	std::istream*       istream;
 

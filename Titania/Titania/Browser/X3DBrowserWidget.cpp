@@ -64,8 +64,7 @@ namespace puck {
 
 X3DBrowserWidget::X3DBrowserWidget (const basic::uri & worldURL) :
 	X3DBrowserWindowInterface (get_ui ("BrowserWindow.ui"), gconf_dir ()),
-	                  browser (X3D::createBrowser ()),
-	                  save_as (false)
+	                  browser (X3D::createBrowser ())
 {
 	getConfig () .setItem ("url", worldURL);
 
@@ -244,19 +243,16 @@ X3DBrowserWidget::saveSession ()
 void
 X3DBrowserWidget::blank ()
 {
-	if (not getBrowser () -> makeCurrent ())
-		return;
-
 	getBrowser () -> replaceWorld (nullptr);
 }
 
 void
 X3DBrowserWidget::open (const basic::uri & worldURL)
 {
+	loadTime = chrono::now ();
+
 	try
 	{
-		loadTime = chrono::now ();
-
 		getBrowser () -> loadURL ({ worldURL .str () });
 	}
 	catch (const X3D::X3DError &)
@@ -264,34 +260,19 @@ X3DBrowserWidget::open (const basic::uri & worldURL)
 }
 
 void
-X3DBrowserWidget::import (const basic::uri & worldURL)
-{
-	try
-	{
-		auto scene = getBrowser () -> createX3DFromURL ({ worldURL .str () });
-
-		getBrowser () -> getExecutionContext () -> importScene (scene);
-	}
-	catch (const X3D::X3DError & error)
-	{
-		std::clog << error .what () << std::endl;
-	}
-}
-
-void
 X3DBrowserWidget::save (const basic::uri & worldURL, bool compressed)
 {
+	getBrowser () -> getExecutionContext () -> isCompressed (compressed);
+
 	if (compressed)
 	{
 		ogzstream file (worldURL .path ());
-		file << X3D::SmallestStyle << getBrowser () -> getExecutionContext () << std::flush;
-		file .close ();
+		file << X3D::SmallestStyle << getBrowser () -> getExecutionContext ();
 	}
 	else
 	{
 		std::ofstream file (worldURL .path ());
-		file << X3D::CompactStyle << getBrowser () -> getExecutionContext () << std::flush;
-		file .close ();
+		file << X3D::CompactStyle << getBrowser () -> getExecutionContext ();
 	}
 
 	//update_location ();
@@ -301,14 +282,6 @@ void
 X3DBrowserWidget::reload ()
 {
 	open (getBrowser () -> getExecutionContext () -> getWorldURL ());
-}
-
-bool
-X3DBrowserWidget::close ()
-{
-	X3DBrowserWindowInterface::close ();
-
-	return false;
 }
 
 void
@@ -371,12 +344,12 @@ void
 X3DBrowserWidget::set_urlError (const X3D::MFString & urlError)
 {
 	getMessageDialog () .set_message ("Invalid X3D");
-
 	getMessageDialog () .set_secondary_text ("<span font_desc=\"mono\">"
 	                                         + Glib::Markup::escape_text (basic::join (urlError, "\n"))
 	                                         + "</span>",
 	                                         true);
-	getMessageDialog () .show ();
+	getMessageDialog () .run ();
+	getMessageDialog () .hide ();
 }
 
 void

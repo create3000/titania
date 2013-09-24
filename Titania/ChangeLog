@@ -1,3 +1,19 @@
+2013-09-24  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* BrowserWindow.h:
+	* BrowserWindow.ui:
+	* BrowserWindow.cpp:
+	* X3DBrowserWidget.h:
+	* home.wrl:
+	* X3DBrowserEditor.h:
+	* X3DBrowserEditor.cpp:
+	* X3DBrowserWidget.cpp:
+	* HistoryEditor.cpp:
+	* X3DOutlineTreeView.h:
+	* X3DOutlineTreeView.cpp:
+	* X3DBrowserWindowInterface.h:
+	* X3DBrowserWindowInterface.cpp: 
+
 2013-09-23  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* BrowserWindow.ui:

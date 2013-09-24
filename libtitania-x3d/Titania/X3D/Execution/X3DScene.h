@@ -68,6 +68,16 @@ public:
 	///  @name Construction
 
 	X3DScene ();
+	
+	///  @name Member access
+	
+	void
+	isCompressed (bool value)
+	{ compressed = value; }
+	
+	bool
+	isCompressed () const
+	{ return compressed; }
 
 	///  @name MetaData handling
 
@@ -171,6 +181,7 @@ private:
 
 	typedef std::map <X3DBaseNode*, std::string> ExportedNamesIndex;
 
+	bool               compressed;
 	MetaDataIndex      metadatas;
 	ExportedNodeArray  exportedNodes;
 	ExportedNamesIndex exportedNames;

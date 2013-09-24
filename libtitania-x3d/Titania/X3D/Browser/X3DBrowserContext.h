@@ -342,7 +342,7 @@ protected:
 	virtual
 	void
 	initialize () override;
-	
+
 	void
 	setEnabled (bool value)
 	{ enabled = value; }

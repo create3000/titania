@@ -227,7 +227,8 @@ ihttpstream::process_status ()
 void
 ihttpstream::close ()
 {
-	buf -> close ();
+	if (rdbuf ())
+		buf -> close ();
 
 	http_method = http::method::GET;
 	request_headers_map   .clear ();
@@ -246,7 +247,9 @@ ihttpstream::request_header (const std::string & header, const std::string & val
 }
 
 ihttpstream::~ihttpstream ()
-{ }
+{
+	close ();
+}
 
 } // basic
 } // titania

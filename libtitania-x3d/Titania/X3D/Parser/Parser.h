@@ -56,7 +56,8 @@
 #include "../Parser/X3DParser.h"
 #include "../Prototype/Proto.h"
 
-#include <Titania/Stream/IGZFilter.h>
+#include <Titania/Stream/InputFileStream.h>
+
 #include <ios>
 #include <map>
 
@@ -539,7 +540,7 @@ private:
 
 	///  @name Members
 
-	basic::igzfilter         istream;
+	std::istream &           istream;
 	X3DScene*                scene;
 	ExecutionContextStack    executionContextStack;
 	std::deque <std::string> currentComments;

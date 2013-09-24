@@ -85,7 +85,7 @@ Parser::AccessTypes Parser::accessTypes;
 Parser::Parser (std::istream & istream, X3DScene* scene) :
 	          X3DBaseNode (scene -> getBrowser (), scene),
 	            X3DParser (),
-	              istream (basic::gunzip (istream)),
+	              istream (istream),
 	                scene (scene),
 	executionContextStack (),
 	      currentComments (),

@@ -93,14 +93,10 @@ X3DExecutionContext::X3DExecutionContext () :
 }
 
 void
-X3DExecutionContext::setup ()
+X3DExecutionContext::initialize ()
 {
-	X3DNode::setup ();
-}
+	X3DNode::initialize ();
 
-void
-X3DExecutionContext::realize ()
-{
 	rootNodes          .isTainted (false);
 	uninitializedNodes .isTainted (false);
 

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -53,7 +53,7 @@
 
 #include "../Execution/X3DScene.h"
 
-#include <Titania/Stream/InputFileStream.h>
+#include <Titania/Stream/IGZFilter.h>
 
 namespace titania {
 namespace X3D {
@@ -138,12 +138,12 @@ public:
 	throw (Error <INVALID_URL>,
 	       Error <URL_UNAVAILABLE>);
 
-	basic::ifilestream
+	basic::igzfilter
 	loadStream (const SFString & URL)
 	throw (Error <INVALID_URL>,
 	       Error <URL_UNAVAILABLE>);
 
-	basic::ifilestream
+	basic::igzfilter
 	loadStream (const basic::uri & uri)
 	throw (Error <INVALID_URL>,
 	       Error <URL_UNAVAILABLE>);

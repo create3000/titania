@@ -108,7 +108,7 @@ public:
 	bindTime () const
 	{ return *fields .bindTime; }
 
-	///  @name Element access
+	///  @name Member access
 
 	const pointer_type &
 	top () const

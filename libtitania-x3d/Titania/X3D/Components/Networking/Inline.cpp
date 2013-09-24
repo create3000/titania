@@ -130,8 +130,6 @@ private:
 				{
 					X3DSFNode <Scene> scene = future .get ();
 
-					scene -> realize ();
-
 					inlineNode -> setScene (scene);
 				}
 				catch (const X3DError & error)
@@ -222,6 +220,8 @@ Inline::setScene (const X3DSFNode <Scene> & value)
 		scene -> getRootNodes () .removeInterest (group -> children ());
 
 	scene = value;
+
+	scene -> setup ();			
 	scene -> getRootNodes () .addInterest (group -> children ());
 
 	group -> setInternal (true);

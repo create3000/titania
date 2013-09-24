@@ -1,3 +1,16 @@
+2013-09-24  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-stream.cproj:
+	* InputUrlStream.h:
+	* SocketStreamBuf.h:
+	* InputHTTPStream.h:
+	* InputFileStream.h:
+	* InputUrlStream.cpp:
+	* SocketStreamBuf.cpp:
+	* InputFileStream.cpp:
+	* InputHTTPStream.cpp: 
+
 2013-09-11  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* InputFileStream.h:

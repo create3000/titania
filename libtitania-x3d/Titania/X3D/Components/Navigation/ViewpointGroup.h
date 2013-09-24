@@ -133,7 +133,7 @@ public:
 	isActive () const
 	{ return fields .isActive; }
 
-	///  @name Element accesss
+	///  @name Member accesss
 
 	const std::deque <X3DViewpointObject*>
 	getViewpointObjects () const;

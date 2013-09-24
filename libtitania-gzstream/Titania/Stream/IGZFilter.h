@@ -74,13 +74,19 @@ class basic_igzfilter :
 {
 public:
 
+	using std::basic_istream <CharT, Traits>::init;
+	using std::basic_istream <CharT, Traits>::setstate;
 	using std::basic_istream <CharT, Traits>::rdbuf;
 
 	/// @name Constructors
 
 	basic_igzfilter (basic_igzfilter &&);
 
-	basic_igzfilter (const std::basic_istream <CharT, Traits> &);
+	basic_igzfilter (std::basic_istream <CharT, Traits>&&);
+
+	bool
+	is_compressed ()
+	{ return buf -> is_open (); }
 
 	/// @name Destructor
 
@@ -90,30 +96,49 @@ public:
 
 private:
 
+	basic_igzfilter (const basic_igzfilter &) = delete;
+
+	basic_igzfilter &
+	operator = (const basic_igzfilter &) = delete;
+
 	void
 	close ();
+
+	basic_gzfilterbuf <CharT, Traits>* buf;
 
 };
 
 template <class CharT, class Traits>
 basic_igzfilter <CharT, Traits>::basic_igzfilter (basic_igzfilter <CharT, Traits>&& gzstream) :
-	std::basic_istream <CharT, Traits> (gzstream .rdbuf (NULL))
-{ }
+	std::basic_istream <CharT, Traits> (),
+	buf (gzstream .buf)
+{
+	init (buf);
+	gzstream .rdbuf (nullptr);
+	gzstream .setstate (std::ios::badbit);
+}
 
 template <class CharT, class Traits>
-basic_igzfilter <CharT, Traits>::basic_igzfilter (const std::basic_istream <CharT, Traits> & istream) :
-	std::basic_istream <CharT, Traits> (new basic_gzfilterbuf <CharT, Traits> (istream .rdbuf ()))
-{ }
+basic_igzfilter <CharT, Traits>::basic_igzfilter (std::basic_istream <CharT, Traits>&& istream) :
+	std::basic_istream <CharT, Traits> (),
+	buf (new basic_gzfilterbuf <CharT, Traits> (istream .rdbuf (nullptr)))
+{
+	init (buf);
+	istream .setstate (std::ios::badbit);
+}
 
 template <class CharT, class Traits>
 void
 basic_igzfilter <CharT, Traits>::close ()
 {
+	setstate (std::ios::badbit);
+
 	if (rdbuf ())
 		delete rdbuf ();
 }
 
 template <class CharT, class Traits>
+inline
 basic_igzfilter <CharT, Traits>::~basic_igzfilter ()
 {
 	close ();
@@ -137,9 +162,9 @@ template <class CharT,
           class Traits = std::char_traits <CharT>>
 inline
 basic_igzfilter <CharT, Traits>
-gunzip (std::basic_istream <CharT, Traits> & istream)
+gunzip (std::basic_istream <CharT, Traits>&& istream)
 {
-	return igzfilter (istream);
+	return igzfilter (std::move (istream));
 }
 
 } // basic

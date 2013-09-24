@@ -231,7 +231,7 @@ sub cpp_signals
 
 	if (exists $attributes {after})
 	{
-		my $after = $attributes {after} eq "yes" ? "true" : "false";
+		my $after = $attributes {after} eq "yes" ? "false" : "true";
 		say $file "connections .emplace_back ($signal .connect (sigc::mem_fun (*this, &$self->{class_name}\:\:$attributes{handler}), $after));";
 	}
 	else

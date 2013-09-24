@@ -1,3 +1,51 @@
+2013-09-24  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Route.h:
+	* Parser.h:
+	* X3DField.h:
+	* Parser.cpp:
+	* Browser.h:
+	* X3DWidget.h:
+	* Scene.cpp:
+	* X3DScene.h:
+	* Loader.h:
+	* Loader.cpp:
+	* X3DBrowser.cpp:
+	* X3DScene.cpp:
+	* ExportedNode.h:
+	* Notification.cpp:
+	* ImportedNode.h:
+	* X3DNode.h:
+	* ExternProto.cpp:
+	* Layout.h:
+	* Selection.h:
+	* FontStyle.h:
+	* ProfileInfo.h:
+	* TransformHandle.cpp:
+	* X3DBrowserContext.h:
+	* BindableNodeList.h:
+	* ComponentInfo.h:
+	* BindableNodeStack.h:
+	* ScreenGroup.h:
+	* BoxOptions.h:
+	* LayoutGroup.h:
+	* X3DExecutionContext.h:
+	* Inline.cpp:
+	* X3DBindableNode.h:
+	* StaticGroup.h:
+	* X3DExecutionContext.cpp:
+	* ShaderProgram.h:
+	* X3DFontStyleNode.h:
+	* ScreenFontStyle.h:
+	* NurbsSweptSurface.h:
+	* X3DUrlObject.h:
+	* X3DAppearanceNode.h:
+	* X3DTransformNode.h:
+	* ViewpointGroup.h:
+	* Rectangle2DOptions.h:
+	* X3DPrototypeInstance.cpp:
+	* X3DTimeDependentNode.cpp: 
+
 2013-09-23  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Route.h:

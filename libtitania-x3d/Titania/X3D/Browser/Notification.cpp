@@ -107,8 +107,9 @@ Notification::initialize ()
 		std::clog << error .what () << std::endl;
 
 		scene = getBrowser () -> createScene ();
+		scene -> setup ();
 	}
-	
+
 	world = new World (scene);
 	world -> setup ();
 	world -> bind ();

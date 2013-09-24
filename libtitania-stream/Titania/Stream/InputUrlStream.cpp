@@ -42,7 +42,7 @@ iurlstream::iurlstream () :
 	      response_status (0),
 	      response_reason ("Could not establish connection.")
 {
-	init (buf .get ());
+	init (buf);
 	clear ();
 }
 
@@ -54,14 +54,17 @@ iurlstream::iurlstream (const basic::uri & url, size_t timeout) :
 
 iurlstream::iurlstream (iurlstream && other) :
 	         std::istream (),
-	                  buf (std::move (other .buf)),
+	                  buf (other .buf),
 	  request_headers_map (std::move (other .request_headers_map)),
 	 response_headers_map (std::move (other .response_headers_map)),
 	response_http_version (std::move (other .response_http_version)),
 	      response_status (other .response_status),
 	      response_reason (std::move (other .response_reason))
 {
-	init (buf .get ());
+	init (buf);
+	
+	other .buf = nullptr;
+	other .rdbuf (nullptr);
 
 	clear (other .rdstate ());
 	other .clear (std::ios::badbit);
@@ -97,9 +100,9 @@ iurlstream::parse_status_line ()
 {
 	std::stringstream line;
 
-	rdbuf () -> headers () .get (*line .rdbuf (), widen ('\n'));
+	buf -> headers () .get (*line .rdbuf (), widen ('\n'));
 
-	if (rdbuf () -> headers ())
+	if (buf -> headers ())
 	{
 		line
 			>> response_http_version
@@ -116,7 +119,7 @@ iurlstream::parse_status_line ()
 			if (response_reason .size ())
 				response_reason .resize (response_reason .size () - 1);
 
-			if (rdbuf () -> headers () .get () == '\n')
+			if (buf -> headers () .get () == '\n')
 				return true;
 		}
 	}
@@ -127,13 +130,13 @@ iurlstream::parse_status_line ()
 void
 iurlstream::parse_response_headers ()
 {
-	while (rdbuf () -> headers () .peek () not_eq '\r' and rdbuf () -> headers () .peek () not_eq urlstreambuf::traits_type::eof ())
+	while (buf -> headers () .peek () not_eq '\r' and buf -> headers () .peek () not_eq urlstreambuf::traits_type::eof ())
 		parse_response_header ();
 
-	if (rdbuf () -> headers () .get () not_eq '\r')
+	if (buf -> headers () .get () not_eq '\r')
 		return close ();
 
-	if (rdbuf () -> headers () .get () not_eq '\n')
+	if (buf -> headers () .get () not_eq '\n')
 		return close ();
 }
 
@@ -144,7 +147,7 @@ iurlstream::parse_response_header ()
 	std::string       header;
 	std::stringstream value;
 
-	rdbuf () -> headers () .get (*line .rdbuf (), widen ('\n'));
+	buf -> headers () .get (*line .rdbuf (), widen ('\n'));
 
 	// Header:
 	line >> header;
@@ -160,7 +163,7 @@ iurlstream::parse_response_header ()
 	// Value
 	line .get (*value .rdbuf (), widen ('\r'));
 
-	if (rdbuf () -> headers () .get () not_eq '\n')
+	if (buf -> headers () .get () not_eq '\n')
 		return close ();
 
 	response_headers_map .insert (std::make_pair (header, value .str ()));
@@ -169,7 +172,8 @@ iurlstream::parse_response_header ()
 void
 iurlstream::close ()
 {
-	buf -> close ();
+	if (rdbuf ())
+		buf -> close ();
 
 	request_headers_map   .clear ();
 	response_headers_map  .clear ();
@@ -187,7 +191,12 @@ iurlstream::request_header (const std::string & header, const std::string & valu
 }
 
 iurlstream::~iurlstream ()
-{ }
+{
+	close ();
+
+	if (rdbuf ())
+		delete rdbuf ();
+}
 
 } // basic
 } // titania

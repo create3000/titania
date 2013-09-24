@@ -58,6 +58,74 @@ X3DBrowserEditor::X3DBrowserEditor (const basic::uri & worldURL) :
 	          edited (false)
 { }
 
+bool
+X3DBrowserEditor::isSaved ()
+{
+	if (getEdited ())
+	{
+		auto response_id = getFileSaveWarningDialog () .run ();
+
+		getFileSaveWarningDialog () .hide ();
+
+		switch (response_id)
+		{
+			case Gtk::RESPONSE_OK:
+			{
+				on_save ();
+				return getEdited ();
+			}
+			case Gtk::RESPONSE_CANCEL:
+			case Gtk::RESPONSE_DELETE_EVENT:
+			{
+				return false;
+			}
+			default:
+				break;
+		}
+	}
+
+	setEdited (false);
+	return true;
+}
+
+// File operations
+
+void
+X3DBrowserEditor::import (const basic::uri & worldURL)
+{
+	try
+	{
+		auto scene = getBrowser () -> createX3DFromURL ({ worldURL .str () });
+
+		getBrowser () -> getExecutionContext () -> importScene (scene);
+
+		setEdited (true);
+	}
+	catch (const X3D::X3DError & error)
+	{
+		std::clog << error .what () << std::endl;
+	}
+}
+
+void
+X3DBrowserEditor::save (const basic::uri & worldURL, bool compressed)
+{
+	X3DBrowserWidget::save (worldURL, compressed);
+	
+	setEdited (false);
+}
+
+bool
+X3DBrowserEditor::close ()
+{
+	if (isSaved ())
+		return X3DBrowserWindowInterface::close ();
+
+	return true;
+}
+
+// Edit operations
+
 void
 X3DBrowserEditor::addNode (const std::string & typeName)
 throw (X3D::Error <X3D::INVALID_NAME>)
@@ -78,11 +146,19 @@ throw (X3D::Error <X3D::INVALID_NODE>)
 	if (not node)
 		throw X3D::Error <X3D::INVALID_NODE> ("Node is empty.");
 
-	auto scene = getBrowser () -> getExecutionContext ();
+	removeNode (getBrowser () -> getExecutionContext (), node);
 
-	// Remove node
+	setEdited (true);
+}
 
-	removeNode (scene, node);
+void
+X3DBrowserEditor::removeNode (const X3D::X3DSFNode <X3D::Scene> & scene, const X3D::SFNode & node) const
+{
+	removeNode (scene .getValue (), node);
+
+	// Remove exported nodes
+
+	removeExportedNodes (scene, node);
 
 	// Delete children of node
 
@@ -109,18 +185,6 @@ throw (X3D::Error <X3D::INVALID_NODE>)
 			deleteRoutes (scene, child);
 		}
 	}
-
-	setEdited (true);
-}
-
-void
-X3DBrowserEditor::removeNode (const X3D::X3DSFNode <X3D::Scene> & scene, const X3D::SFNode & node) const
-{
-	removeNode (scene .getValue (), node);
-
-	// Remove exported nodes
-
-	removeExportedNodes (scene, node);
 }
 
 void
@@ -269,19 +333,17 @@ throw (X3D::Error <X3D::INVALID_NODE>)
 
 X3D::MFNode
 X3DBrowserEditor::ungroupNode (const X3D::SFNode & group)
-throw (X3D::Error <X3D::INVALID_NODE>)
+throw (X3D::Error <X3D::INVALID_NODE>,
+       X3D::Error <X3D::INVALID_NAME>)
 {
 	if (not group)
 		throw X3D::Error <X3D::INVALID_NODE> ("Group node is emtpy.");
 
-	auto children = getGroupingField (group);
+	auto groupingField = getGroupingField (group);
 
-	if (not children)
-		throw X3D::Error <X3D::INVALID_NODE> ("Not a grouping node.");
+	X3D::MFNode children;
 
-	X3D::MFNode result;
-
-	for (const auto & child : *children)
+	for (const auto & child : *groupingField)
 	{
 		if (not child)
 			continue;
@@ -301,7 +363,7 @@ throw (X3D::Error <X3D::INVALID_NODE>)
 
 		getBrowser () -> getExecutionContext () -> getRootNodes () .emplace_back (child);
 
-		result .emplace_back (child);
+		children .emplace_back (child);
 	}
 
 	// Remove group from scene
@@ -310,22 +372,26 @@ throw (X3D::Error <X3D::INVALID_NODE>)
 
 	setEdited (true);
 
-	return result;
+	return children;
 }
 
 void
-X3DBrowserEditor::addToGroup (const X3D::SFNode & group, const X3D::MFNode & nodes)
-throw (X3D::Error <X3D::INVALID_NODE>)
+X3DBrowserEditor::addToGroup (const X3D::SFNode & group, const X3D::SFNode & child)
+throw (X3D::Error <X3D::INVALID_NODE>,
+       X3D::Error <X3D::INVALID_NAME>)
 {
 	__LOG__ << std::endl;
 
 	if (not group)
 		throw X3D::Error <X3D::INVALID_NODE> ("Group node is emtpy.");
 
-	auto children = getGroupingField (group);
+	if (not child)
+		throw X3D::Error <X3D::INVALID_NODE> ("Child node is emtpy.");
 
-	if (not children)
-		throw X3D::Error <X3D::INVALID_NODE> ("Not a grouping node.");
+	if (child == group)
+		throw X3D::Error <X3D::INVALID_NODE> ("Group and child node are equal.");
+
+	auto containerField = getContainerField (group, child);
 
 	// Get group modelview matrix
 
@@ -335,18 +401,9 @@ throw (X3D::Error <X3D::INVALID_NODE>)
 	if (transform)
 		groupModelViewMatrix .multLeft (transform -> getMatrix ());
 
-	// Add children to group
+	// Adjust child transformation
 
-	for (const auto & child : nodes)
 	{
-		if (not child)
-			continue;
-
-		if (child == group)
-			continue;
-
-		// Adjust transformation
-
 		X3D::Matrix4f                          childModelViewMatrix = findModelViewMatrix (child);
 		X3D::X3DSFNode <X3D::X3DTransformNode> transform            = child;
 
@@ -362,14 +419,25 @@ throw (X3D::Error <X3D::INVALID_NODE>)
 			catch (const std::domain_error & error)
 			{ }
 		}
+	}
 
-		// Remove child from scene graph
+	// Remove child from scene graph
 
-		removeNodeFromSceneGraph (getBrowser () -> getExecutionContext (), child);
+	removeNodeFromSceneGraph (getBrowser () -> getExecutionContext (), child);
 
-		// Add to group
+	// Add child to group
 
-		children -> emplace_back (child);
+	auto sfnode = dynamic_cast <X3D::SFNode*> (containerField);
+
+	if (sfnode)
+		sfnode -> setValue (child);
+	
+	else
+	{
+		auto mfnode = dynamic_cast <X3D::MFNode*> (containerField);
+
+		if (mfnode)
+			mfnode -> emplace_back (child);
 	}
 
 	setEdited (true);
@@ -457,6 +525,8 @@ throw (X3D::Error <X3D::INVALID_NODE>)
 
 	return groups;
 }
+
+// Scene opeations
 
 bool
 X3DBrowserEditor::traverse (X3D::X3DExecutionContext* const executionContext, const TraverseCallback & callback) const
@@ -636,23 +706,56 @@ X3DBrowserEditor::getParentNodes (X3D::X3DBaseNode* const node) const
 	return parentNodes;
 }
 
+X3D::X3DFieldDefinition*
+X3DBrowserEditor::getContainerField (const X3D::SFNode & parent, const X3D::SFNode & child) const
+throw (X3D::Error <X3D::INVALID_NAME>)
+{
+	X3D::X3DFieldDefinition* field = nullptr;
+
+	try
+	{
+		field = parent -> getField (child -> getContainerField ());
+
+		if (field -> getType () not_eq X3D::X3DConstants::SFNode and field -> getType () not_eq X3D::X3DConstants::MFNode)
+			throw X3D::Error <X3D::INVALID_NAME> ("No appropriate container field found.");
+	}
+	catch (const X3D::Error <X3D::INVALID_NAME> &)
+	{
+		try
+		{
+			field = getGroupingField (parent);
+		}
+		catch (const X3D::Error <X3D::INVALID_NAME> &)
+		{
+			field = parent -> getField ("shape");
+
+			if (field -> getType () not_eq X3D::X3DConstants::SFNode)
+				throw X3D::Error <X3D::INVALID_NAME> ("No appropriate container field found.");
+		}
+	}
+
+	return field;
+}
+
 X3D::MFNode*
 X3DBrowserEditor::getGroupingField (const X3D::SFNode & node) const
+throw (X3D::Error <X3D::INVALID_NAME>)
 {
 	X3D::X3DFieldDefinition* field = nullptr;
 
 	try
 	{
 		field = node -> getField ("children");
+
+		if (field -> getType () not_eq X3D::X3DConstants::MFNode)
+			throw X3D::Error <X3D::INVALID_NAME> ("No appropriate container field found.");
 	}
 	catch (const X3D::Error <X3D::INVALID_NAME> &)
 	{
-		try
-		{
-			field = node -> getField ("layers");
-		}
-		catch (const X3D::Error <X3D::INVALID_NAME> &)
-		{ }
+		field = node -> getField ("layers");
+
+		if (field -> getType () not_eq X3D::X3DConstants::MFNode)
+			throw X3D::Error <X3D::INVALID_NAME> ("No appropriate container field found.");
 	}
 
 	return dynamic_cast <X3D::MFNode*> (field);

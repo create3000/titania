@@ -41,9 +41,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="info.h" />
-    <None Include="Titania\Stream\SocketStreamBuf.h" />
     <None Include="Titania\Stream\InputFileStream.h" />
-    <None Include="Titania\Stream\InputHTTPStream.h" />
     <None Include="libtitania-stream.md.pc" />
     <None Include="Makefile.am" />
     <None Include="Titania\Stream\InputUrlStream.h" />
@@ -54,9 +52,7 @@
     <Folder Include="Titania\Stream\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Titania\Stream\SocketStreamBuf.cpp" />
     <Compile Include="Titania\Stream\InputFileStream.cpp" />
-    <Compile Include="Titania\Stream\InputHTTPStream.cpp" />
     <Compile Include="Titania\Stream\InputUrlStream.cpp" />
     <Compile Include="Titania\Stream\UrlStreamBuf.cpp" />
   </ItemGroup>

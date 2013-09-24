@@ -59,6 +59,7 @@ namespace X3D {
 
 X3DScene::X3DScene () :
 	X3DExecutionContext (),
+	         compressed (false),
 	          metadatas (),
 	      exportedNodes (),
 	      exportedNames ()

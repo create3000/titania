@@ -142,7 +142,7 @@ basic_gzfilterbuf <CharT, Traits>*
 basic_gzfilterbuf <CharT, Traits>::open ()
 {
 	if (is_open ())
-		return NULL;
+		return nullptr;
 
 	// Test for the magic two-byte gzip header.
 

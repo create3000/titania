@@ -63,18 +63,14 @@ class X3DBrowserWidget :
 {
 public:
 
-	///  @name Application Handling
+	///  @name Member access
 
 	virtual
 	const X3D::X3DSFNode <X3D::Browser> &
 	getBrowser () const final
 	{ return browser; }
 
-	void
-	restoreSession ();
-
-	void
-	saveSession ();
+	///  @name Operations
 
 	void
 	blank ();
@@ -82,18 +78,12 @@ public:
 	void
 	open (const basic::uri &);
 
-	void
-	import (const basic::uri &);
-
+	virtual
 	void
 	save (const basic::uri &, bool);
 
 	void
 	reload ();
-
-	virtual
-	bool
-	close ();
 
 	virtual
 	~X3DBrowserWidget ();
@@ -107,20 +97,18 @@ protected:
 	void
 	initialize ();
 
-	void
-	set_save_as (bool value)
-	{ save_as = value; }
-
-	bool
-	get_save_as ()
-	{ return save_as; }
-
 
 private:
 
 	//	void
 	//	parseOptions (int &, char** &);
 	// Glib::OptionGroup::vecustrings remainingOptions;
+
+	void
+	restoreSession ();
+
+	void
+	saveSession ();
 
 	void
 	set_initialized ();
@@ -143,9 +131,9 @@ private:
 	bool
 	statistics ();
 
-	X3D::X3DSFNode <X3D::Browser> browser;
+	///  @name Members
 
-	bool save_as;
+	X3D::X3DSFNode <X3D::Browser> browser;
 
 	double           loadTime;
 	sigc::connection timeout;

@@ -119,8 +119,6 @@ X3DPrototypeInstance::initialize ()
 
 	// Defer assigning imports and routes until now
 
-	realize ();
-
 	importImportedNodes (proto);
 	importRoutes (proto);
 }

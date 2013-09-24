@@ -143,7 +143,8 @@ HistoryEditor::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeVie
 {
 	// Open worldURL.
 
-	getBrowserWindow () -> open ({ history .getItemFromIndex (path .to_string ()) .at ("worldURL") });
+	if (getBrowserWindow () -> isSaved ())
+		getBrowserWindow () -> open ({ history .getItemFromIndex (path .to_string ()) .at ("worldURL") });
 }
 
 HistoryEditor::~HistoryEditor ()

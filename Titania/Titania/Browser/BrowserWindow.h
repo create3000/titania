@@ -179,24 +179,8 @@ private:
 	/// @name Dialog response
 
 	virtual
-	void
-	on_fileOpenDialog_response (int) final;
-
-	virtual
-	void
-	on_fileImportDialog_response (int) final;
-
-	virtual
 	bool
 	on_openLocationEntry_key_release_event (GdkEventKey*) final;
-
-	virtual
-	void
-	on_openLocationDialog_response (int) final;
-
-	virtual
-	void
-	on_fileSaveDialog_response (int) final;
 
 	/// @name Bar view handling
 
@@ -347,11 +331,6 @@ private:
 	virtual
 	void
 	on_look_at_toggled () final;
-
-	///  @name Dialog response handling
-
-	void
-	on_messageDialog_response (int);
 
 	///  @Editing facilities
 

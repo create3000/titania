@@ -53,8 +53,6 @@
 
 #include "../Stream/UrlStreamBuf.h"
 
-#include <memory>
-
 namespace titania {
 namespace basic {
 
@@ -124,17 +122,11 @@ public:
 
 	size_t
 	timeout () const
-	{ return rdbuf () -> timeout (); }
+	{ return buf -> timeout (); }
 
 	void
 	timeout (size_t value)
-	{ return rdbuf () -> timeout (value); }
-
-	/// @name SocketStreamBuffer
-
-	urlstreambuf*
-	rdbuf () const
-	{ return buf .get (); }
+	{ return buf -> timeout (value); }
 
 	/// @name Destructor
 
@@ -160,7 +152,7 @@ private:
 
 	///  @name Members
 
-	std::unique_ptr <urlstreambuf> buf;
+	urlstreambuf* buf;
 
 	headers_type request_headers_map;
 	headers_type response_headers_map;

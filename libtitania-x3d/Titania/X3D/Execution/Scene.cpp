@@ -75,9 +75,6 @@ Scene::create (X3DExecutionContext* const executionContext) const
 void
 Scene::importScene (const X3DSFNode <Scene> & scene)
 {
-__LOG__ << std::endl;
-__LOG__ << scene -> getRootNodes () .size () << std::endl;
-
 	if (getProfile ())
 		addComponents (scene -> getProfile () -> getComponents ());
 
@@ -94,7 +91,7 @@ __LOG__ << scene -> getRootNodes () .size () << std::endl;
 	updateNamedNodes (scene);
 	importRootNodes (scene);
 
-	realize ();
+	initialize ();
 
 	importImportedNodes (scene);
 	importRoutes (scene);

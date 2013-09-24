@@ -61,6 +61,9 @@
     <None Include="CosmoWorlds\CosmoWorldDoc.pdf" />
     <None Include="ContainerField.pl" />
     <None Include="ContainerField.txt" />
+    <None Include="SocketStreamBuf.h" />
+    <None Include="SurfaceN.h" />
+    <None Include="InputHTTPStream.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Quaternion\" />
@@ -72,5 +75,8 @@
   <ItemGroup>
     <Compile Include="xxx\ImageTexture.cpp" />
     <Compile Include="xxx\X3DUrlObject.cpp" />
+    <Compile Include="SocketStreamBuf.cpp" />
+    <Compile Include="SurfaceN.cpp" />
+    <Compile Include="InputHTTPStream.cpp" />
   </ItemGroup>
 </Project>

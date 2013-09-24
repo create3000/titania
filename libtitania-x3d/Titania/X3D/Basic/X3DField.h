@@ -84,7 +84,7 @@ public:
 	X3DField &
 	operator = (const ValueType &);
 
-	/// @name Elements access
+	/// @name Member access
 
 	virtual
 	X3DConstants::FieldType
@@ -95,6 +95,8 @@ public:
 	const std::string &
 	getTypeName () const override
 	{ return typeName; }
+
+	/// @name Element access
 
 	///  6.7.5 getValue service.
 	const ValueType &
@@ -172,7 +174,7 @@ protected:
 		value (value)
 	{ }
 
-	/// @name Element access
+	/// @name Member access
 
 	///  Get a non const value.
 	ValueType &

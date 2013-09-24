@@ -61,7 +61,6 @@ base64_decode (const std::string & string)
 ifilestream::ifilestream () :
 	         std::istream (),
 	         data_istream (nullptr),
-	         file_istream (nullptr),
 	           url_stream (nullptr),
 	              istream (nullptr),
 	 file_request_headers (),
@@ -91,40 +90,41 @@ ifilestream::ifilestream (std::istream && other) :
 ifilestream &
 ifilestream::operator = (ifilestream && other)
 {
-	data_istream          = other .data_istream;
-	file_istream          = other .file_istream;
-	url_stream            = other .url_stream;
+	close ();
+
 	istream               = other .istream;
 	file_request_headers  = std::move (other .file_request_headers);
 	file_response_headers = std::move (other .file_response_headers);
 	m_url                 = std::move (other .m_url);
 
 	other .data_istream = nullptr;
-	other .file_istream = nullptr;
 	other .url_stream   = nullptr;
 	other .istream      = nullptr;
 
-	init (istream -> rdbuf ());
+	rdbuf (istream -> rdbuf ());
 	clear (other .rdstate ());
 
+	other .rdbuf (nullptr);
 	other .clear (std::ios::badbit);
 
 	return *this;
 }
 
+// Does not realy work with std::istream, thus std::istream is not movable
+
 ifilestream &
 ifilestream::operator = (std::istream && other)
 {
-	data_istream = nullptr;
-	file_istream = nullptr;
-	url_stream   = nullptr;
-	istream      = new std::istream (other .rdbuf ());
-	m_url        = "";
+	close ();
 
-	init (istream -> rdbuf ());
+	istream = new std::istream (other .rdbuf ());
+	m_url   = "";
+
+	rdbuf (istream -> rdbuf ());
 	clear (other .rdstate ());
 
 	other .rdbuf (nullptr);
+	other .clear (std::ios::badbit);
 
 	guess_content_type (istream);
 
@@ -185,26 +185,16 @@ ifilestream::open (const basic::uri & URL, size_t timeout)
 		else
 			istream = data_istream = new std::istringstream ();
 	}
-	else if (url () .is_local ())
-	{
-		istream = file_istream = new std::ifstream ();
-
-		if (os::is_file (url () .path ()))
-			file_istream -> open (url () .path ());
-
-		else
-		{
-			status (404);
-			setstate (std::ios::failbit);
-		}
-	}
 	else
 	{
+		if (url () .is_local ())
+			url () .add_file_scheme ();
+
 		istream = url_stream = new iurlstream ();
 		url_stream -> open (url (), timeout);
 	}
 
-	init (istream -> rdbuf ());
+	rdbuf (istream -> rdbuf ());
 	clear (istream -> rdstate ());
 }
 
@@ -217,12 +207,12 @@ ifilestream::send ()
 		url (url_stream -> url ());
 		status (url_stream -> status ());
 	}
-	else if (file_istream)
-	{
-		guess_content_type (file_istream);
-
-		file_response_headers .insert (std::make_pair ("Content-Length", std::to_string (os::file_size (url () .path ()))));
-	}
+//	else if (file_istream)
+//	{
+//		guess_content_type (file_istream);
+//
+//		file_response_headers .insert (std::make_pair ("Content-Length", std::to_string (os::file_size (url () .path ()))));
+//	}
 
 	setstate (istream -> rdstate ());
 }
@@ -254,25 +244,18 @@ ifilestream::guess_content_type (std::istream* istream)
 void
 ifilestream::close ()
 {
-	if (url_stream)
-	{
-		url_stream = nullptr;
-	}
-	else if (file_istream)
-	{
-		file_istream = nullptr;
-	}
-	else if (data_istream)
-	{
-		data_istream = nullptr;
-	}
+	url_stream   = nullptr;
+	data_istream = nullptr;
 
 	if (istream)
 	{
+		istream -> rdbuf (rdbuf ());
+		istream -> clear (std::ios::badbit);
 		delete istream;
 		istream = nullptr;
 	}
 
+	rdbuf (nullptr);
 	clear (std::ios::badbit);
 }
 
@@ -337,17 +320,6 @@ ifilestream::timeout (size_t value)
 {
 	if (url_stream)
 		url_stream -> timeout (value);
-}
-
-// Buffer
-
-std::streambuf*
-ifilestream::rdbuf () const
-{
-	if (istream)
-		return istream -> rdbuf ();
-
-	return nullptr;
 }
 
 ifilestream::~ifilestream ()

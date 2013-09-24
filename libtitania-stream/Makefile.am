@@ -6,9 +6,7 @@ lib_LTLIBRARIES =  \
 
 libtitania_stream_la_SOURCES =  \
 	Titania/Stream/InputFileStream.cpp \
-	Titania/Stream/InputHTTPStream.cpp \
 	Titania/Stream/InputUrlStream.cpp \
-	Titania/Stream/SocketStreamBuf.cpp \
 	Titania/Stream/UrlStreamBuf.cpp
 
 libtitania_stream_la_LIBADD = $(TITANIA_STREAM_LIBS) \

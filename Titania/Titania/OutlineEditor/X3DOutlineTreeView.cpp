@@ -61,7 +61,7 @@ namespace puck {
 X3DOutlineTreeView::X3DOutlineTreeView () :
 	              Gtk::TreeView (),
 	X3DOutlineTreeViewInterface (get_ui ("OutlineTreeView.ui"), gconf_dir ()),
-	                      model (),
+	                      model (OutlineTreeModel::create (getBrowserWindow ())),
 	               cellrenderer (Gtk::manage (new OutlineCellRenderer (getBrowser ()))),
 	                expandLevel (0)
 {
@@ -204,6 +204,13 @@ X3DOutlineTreeView::get_shift_key ()
 void
 X3DOutlineTreeView::set_world ()
 {
+	//__LOG__ << std::endl;
+
+	for (const auto & child : get_model () -> children ())
+		unwatch_tree (child);
+		
+	//getBrowser () -> getExecutionContext () -> getRootNodes () .removeInterest (this, &X3DOutlineTreeView::set_rootNodes);
+
 	set_model (OutlineTreeModel::create (getBrowserWindow ()));
 
 	getBrowser () -> getExecutionContext () -> getRootNodes () .addInterest (this, &X3DOutlineTreeView::set_rootNodes);

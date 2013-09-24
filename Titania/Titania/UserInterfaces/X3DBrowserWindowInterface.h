@@ -106,6 +106,9 @@ public:
 	Gtk::CheckButton &
 	getSaveCompressedButton () const { return *m_saveCompressedButton; }
 
+	Gtk::Dialog &
+	getFileSaveWarningDialog () const { return *m_fileSaveWarningDialog; }
+
 	Gtk::MessageDialog &
 	getMessageDialog () const { return *m_messageDialog; }
 
@@ -356,26 +359,6 @@ public:
 	getHistoryEditorBox () const { return *m_historyEditorBox; }
 
 	virtual
-	void
-	on_fileImportDialog_response (int response_id) = 0;
-
-	virtual
-	void
-	on_fileOpenDialog_response (int response_id) = 0;
-
-	virtual
-	void
-	on_fileSaveDialog_response (int response_id) = 0;
-
-	virtual
-	void
-	on_messageDialog_response (int response_id) = 0;
-
-	virtual
-	void
-	on_openLocationDialog_response (int response_id) = 0;
-
-	virtual
 	bool
 	on_openLocationEntry_key_release_event (GdkEventKey* event) = 0;
 
@@ -580,6 +563,7 @@ private:
 	Gtk::FileChooserDialog*         m_fileOpenDialog;
 	Gtk::FileChooserDialog*         m_fileSaveDialog;
 	Gtk::CheckButton*               m_saveCompressedButton;
+	Gtk::Dialog*                    m_fileSaveWarningDialog;
 	Gtk::MessageDialog*             m_messageDialog;
 	Gtk::Dialog*                    m_openLocationDialog;
 	Gtk::Entry*                     m_openLocationEntry;
