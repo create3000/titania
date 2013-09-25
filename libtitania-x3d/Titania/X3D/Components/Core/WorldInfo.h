@@ -87,14 +87,6 @@ public:
 
 	///  @name Fields
 
-	MFString &
-	info ()
-	{ return *fields .info; }
-
-	const MFString &
-	info () const
-	{ return *fields .info; }
-
 	SFString &
 	title ()
 	{ return *fields .title; }
@@ -102,6 +94,14 @@ public:
 	const SFString &
 	title () const
 	{ return *fields .title; }
+
+	MFString &
+	info ()
+	{ return *fields .info; }
+
+	const MFString &
+	info () const
+	{ return *fields .info; }
 
 
 private:
@@ -119,8 +119,8 @@ private:
 	{
 		Fields ();
 
-		MFString* const info;
 		SFString* const title;
+		MFString* const info;
 	};
 
 	Fields fields;

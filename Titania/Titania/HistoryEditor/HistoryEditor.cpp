@@ -86,27 +86,11 @@ HistoryEditor::set_initialized ()
 	getBrowser () -> initialized () .addInterest    (this, &HistoryEditor::set_world);
 }
 
-std::string
-HistoryEditor::getTitle (const basic::uri & worldURL)
-{
-	std::string title;
-
-	try
-	{
-		title = getBrowser () -> getExecutionContext () -> getMetaData ("title");
-	}
-	catch (const X3D::Error <X3D::INVALID_NAME> &)
-	{
-		title = worldURL .basename ();
-	}
-
-	return title;
-}
-
 void
 HistoryEditor::set_world ()
 {
-	const basic::uri & worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
+	std::string title    = getBrowser () -> getExecutionContext () -> getTitle ();
+	basic::uri  worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
 
 	if (not worldURL .str () .size ())
 		return;
@@ -119,8 +103,6 @@ HistoryEditor::set_world ()
 	{
 		__LOG__ << std::endl;	
 	}
-
-	std::string title = getTitle (worldURL);
 
 	auto row = getListStore () -> prepend ();
 	row -> set_value (ICON_COLUMN,      worldURL .str ());

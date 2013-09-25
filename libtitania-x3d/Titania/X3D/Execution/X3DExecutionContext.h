@@ -51,7 +51,6 @@
 #ifndef __TITANIA_X3D_EXECUTION_X3DEXECUTION_CONTEXT_H__
 #define __TITANIA_X3D_EXECUTION_X3DEXECUTION_CONTEXT_H__
 
-#include "../Basic/X3DContext.h"
 #include "../Components/Core/X3DNode.h"
 #include "../Configuration/ComponentInfoArray.h"
 #include "../Configuration/ProfileInfo.h"
@@ -75,7 +74,7 @@ class X3DPrototypeInstance;
 typedef std::map <std::string, SFNode> NamedNodeIndex;
 
 class X3DExecutionContext :
-	virtual public X3DNode, public X3DContext
+	virtual public X3DNode
 {
 public:
 
@@ -94,7 +93,8 @@ public:
 	///  @name Member access
 
 	void
-	setWorldURL (const basic::uri & value);
+	setWorldURL (const basic::uri & value)
+	{ worldURL = value; }
 
 	virtual
 	const basic::uri &

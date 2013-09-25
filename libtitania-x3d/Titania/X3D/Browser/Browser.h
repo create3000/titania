@@ -51,50 +51,19 @@
 #ifndef __TITANIA_X3D_BROWSER_BROWSER_H__
 #define __TITANIA_X3D_BROWSER_BROWSER_H__
 
-#include <Titania/OpenGL/Surface.h>
-
-#include "../Browser/Devices/KeyDevice.h"
-#include "../Browser/Devices/PointingDevice.h"
-#include "../Browser/Viewer/X3DViewer.h"
-#include "../Browser/X3DBrowser.h"
+#include "../Browser/X3DBrowserSurface.h"
 
 namespace titania {
 namespace X3D {
 
 class Browser :
-	public opengl::Surface, public X3DBrowser
+	public X3DBrowserSurface
 {
 public:
-
-	using X3DBrowser::update;
 
 	///  @name Construction
 
 	Browser ();
-
-	///  @name Member access
-
-	void
-	setCursor (Gdk::CursorType cursor_type)
-	{ get_window () -> set_cursor (Gdk::Cursor::create (cursor_type)); }
-
-	///  @name Operations
-
-	virtual
-	bool
-	makeCurrent () const final
-	{ return opengl::Surface::makeCurrent (); }
-
-	virtual
-	void
-	swapBuffers () const final
-	{ opengl::Surface::swapBuffers (); }
-
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () final;
 
 
 private:
@@ -104,33 +73,6 @@ private:
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const final;
-
-	virtual
-	void
-	construct () final
-	{ setup (); }
-
-	void
-	initialize () final;
-
-	///  @name Construction
-
-	void
-	set_viewer (ViewerType);
-
-	virtual
-	void
-	reshape () final
-	{ reshaped () .processInterests (); }
-
-	virtual
-	void
-	update (const Cairo::RefPtr <Cairo::Context> &) final
-	{ update (); }
-
-	std::unique_ptr <X3DViewer> viewer;
-	KeyDevice                   keyDevice;
-	PointingDevice              pointingDevice;
 
 };
 

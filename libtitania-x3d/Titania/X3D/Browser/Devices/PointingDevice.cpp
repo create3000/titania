@@ -50,12 +50,12 @@
 
 #include "PointingDevice.h"
 
-#include "../Browser.h"
+#include "../X3DBrowserSurface.h"
 
 namespace titania {
 namespace X3D {
 
-PointingDevice::PointingDevice (Browser* const browser) :
+PointingDevice::PointingDevice (X3DBrowserSurface* const browser) :
 	X3DWidget (browser),
 	   button (0),
 	   isOver (false)

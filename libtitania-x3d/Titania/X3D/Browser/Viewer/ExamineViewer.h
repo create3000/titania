@@ -66,7 +66,7 @@ class ExamineViewer :
 {
 public:
 
-	ExamineViewer (Browser* const, NavigationInfo*);
+	ExamineViewer (X3DBrowserSurface* const, NavigationInfo*);
 
 	virtual
 	ViewerType

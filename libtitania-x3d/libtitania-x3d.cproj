@@ -408,7 +408,6 @@
     <None Include="Titania\X3D\Basic\X3DField.h" />
     <None Include="Titania\X3D\Basic\X3DFieldDefinition.h" />
     <None Include="Titania\X3D\Basic\NodeTypeArray.h" />
-    <None Include="Titania\X3D\Basic\X3DContext.h" />
     <None Include="Titania\X3D\Bits\Error.h" />
     <None Include="Titania\X3D\Base\X3DInput.h" />
     <None Include="Titania\X3D\Basic\FieldDefinitionSet.h" />
@@ -583,6 +582,7 @@
     <None Include="Titania\X3D\Components\Grouping\X3DTransformNode.h" />
     <None Include="Titania\X3D\Routing\EventList.h" />
     <None Include="Titania\X3D\Components\ParticleSystems\ForcePhysicsModel.h" />
+    <None Include="Titania\X3D\Browser\X3DBrowserSurface.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -608,7 +608,6 @@
     <Compile Include="Titania\X3D\Basic\FieldDefinitionArray.cpp" />
     <Compile Include="Titania\X3D\Basic\FieldDefinitionSet.cpp" />
     <Compile Include="Titania\X3D\Basic\NodeTypeArray.cpp" />
-    <Compile Include="Titania\X3D\Basic\X3DContext.cpp" />
     <Compile Include="Titania\X3D\Basic\X3DFieldDefinition.cpp" />
     <Compile Include="Titania\X3D\Bits\Error.cpp" />
     <Compile Include="Titania\X3D\Browser\Browser.cpp" />
@@ -1025,6 +1024,7 @@
     <Compile Include="Titania\X3D\Browser\Picking\Selection.cpp" />
     <Compile Include="Titania\X3D\Components\Grouping\X3DTransformNode.cpp" />
     <Compile Include="Titania\X3D\Components\ParticleSystems\ForcePhysicsModel.cpp" />
+    <Compile Include="Titania\X3D\Browser\X3DBrowserSurface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

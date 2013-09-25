@@ -1,3 +1,42 @@
+2013-09-25  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Browser.h:
+	* X3DContext.h:
+	* X3DWidget.h:
+	* Browser.cpp:
+	* Scene.cpp:
+	* X3DBaseNode.h:
+	* X3DScene.h:
+	* X3DContext.cpp:
+	* X3DBaseNode.cpp:
+	* X3DWidget.cpp:
+	* X3DBrowser.cpp:
+	* X3DScene.cpp:
+	* X3DViewer.h:
+	* FlyViewer.h:
+	* X3DBrowserSurface.h:
+	* KeyDevice.h:
+	* WalkViewer.h:
+	* WorldInfo.h:
+	* NoneViewer.h:
+	* FlyViewer.cpp:
+	* X3DViewer.cpp:
+	* WorldInfo.cpp:
+	* NoneViewer.cpp:
+	* X3DBrowserSurface.cpp:
+	* WalkViewer.cpp:
+	* X3DFlyViewer.h:
+	* KeyDevice.cpp:
+	* ExamineViewer.h:
+	* X3DFlyViewer.cpp:
+	* X3DExecutionContext.h:
+	* PointingDevice.h:
+	* ExamineViewer.cpp:
+	* X3DExecutionContext.cpp:
+	* PointingDevice.cpp: 
+
 2013-09-24  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Route.h:

@@ -70,7 +70,7 @@ static constexpr double    FRAME_RATE             = 100;
 
 Vector3f X3DFlyViewer::upVector (0, 1, 0);
 
-X3DFlyViewer::X3DFlyViewer (Browser* const browser, NavigationInfo* navigationInfo) :
+X3DFlyViewer::X3DFlyViewer (X3DBrowserSurface* const browser, NavigationInfo* navigationInfo) :
 	          X3DViewer (browser),
 	     navigationInfo (navigationInfo),
 	         fromVector (),

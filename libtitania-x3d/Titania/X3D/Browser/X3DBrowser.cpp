@@ -249,6 +249,8 @@ throw (Error <INVALID_SCENE>,
 
 		browserOptions -> assign (X3D::getBrowser () -> getBrowserOptions ());
 
+		description = "";
+
 		// Generate initialized event immediately upon receiving this service.
 
 		initialized () = getCurrentTime ();

@@ -19,7 +19,6 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Basic/NodeSet.cpp \
 	Titania/X3D/Basic/NodeTypeArray.cpp \
 	Titania/X3D/Basic/X3DBaseNode.cpp \
-	Titania/X3D/Basic/X3DContext.cpp \
 	Titania/X3D/Basic/X3DFieldDefinition.cpp \
 	Titania/X3D/Bits/config.cpp \
 	Titania/X3D/Bits/Error.cpp \
@@ -53,6 +52,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/Viewer/X3DViewer.cpp \
 	Titania/X3D/Browser/X3DBrowser.cpp \
 	Titania/X3D/Browser/X3DBrowserContext.cpp \
+	Titania/X3D/Browser/X3DBrowserSurface.cpp \
 	Titania/X3D/Browser/X3DWidget.cpp \
 	Titania/X3D/Components/CADGeometry/CADAssembly.cpp \
 	Titania/X3D/Components/CADGeometry/CADFace.cpp \

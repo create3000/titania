@@ -55,6 +55,7 @@ namespace puck {
 
 X3DBrowserEditor::X3DBrowserEditor (const basic::uri & worldURL) :
 	X3DBrowserWidget (worldURL),
+	executionContext (),
 	          edited (false)
 { }
 

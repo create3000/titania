@@ -70,6 +70,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_menuAccelGroup     = Glib::RefPtr <Gtk::AccelGroup>::cast_dynamic (m_builder -> get_object ("MenuAccelGroup"));
 
 	// Get widgets.
+	m_builder -> get_widget ("ExamineViewerImage", m_examineViewerImage);
+	m_examineViewerImage -> set_name ("ExamineViewerImage");
 	m_builder -> get_widget ("FileImportDialog", m_fileImportDialog);
 	m_fileImportDialog -> set_name ("FileImportDialog");
 	m_builder -> get_widget ("FileOpenDialog", m_fileOpenDialog);
@@ -80,12 +82,22 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_saveCompressedButton -> set_name ("SaveCompressedButton");
 	m_builder -> get_widget ("FileSaveWarningDialog", m_fileSaveWarningDialog);
 	m_fileSaveWarningDialog -> set_name ("FileSaveWarningDialog");
+	m_builder -> get_widget ("FlyViewerImage", m_flyViewerImage);
+	m_flyViewerImage -> set_name ("FlyViewerImage");
+	m_builder -> get_widget ("ImportImage", m_importImage);
+	m_importImage -> set_name ("ImportImage");
 	m_builder -> get_widget ("MessageDialog", m_messageDialog);
 	m_messageDialog -> set_name ("MessageDialog");
+	m_builder -> get_widget ("NoneViewerImage", m_noneViewerImage);
+	m_noneViewerImage -> set_name ("NoneViewerImage");
 	m_builder -> get_widget ("OpenLocationDialog", m_openLocationDialog);
 	m_openLocationDialog -> set_name ("OpenLocationDialog");
 	m_builder -> get_widget ("OpenLocationEntry", m_openLocationEntry);
 	m_openLocationEntry -> set_name ("OpenLocationEntry");
+	m_builder -> get_widget ("OpenLocationImage", m_openLocationImage);
+	m_openLocationImage -> set_name ("OpenLocationImage");
+	m_builder -> get_widget ("WalkViewerImage", m_walkViewerImage);
+	m_walkViewerImage -> set_name ("WalkViewerImage");
 	m_builder -> get_widget ("ViewerTypeMenu", m_viewerTypeMenu);
 	m_viewerTypeMenu -> set_name ("ViewerTypeMenu");
 	m_builder -> get_widget ("ExamineViewerMenuItem", m_examineViewerMenuItem);
@@ -246,6 +258,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_outlineEditorBox -> set_name ("OutlineEditorBox");
 	m_builder -> get_widget ("HistoryEditorBox", m_historyEditorBox);
 	m_historyEditorBox -> set_name ("HistoryEditorBox");
+	m_builder -> get_widget ("WorkspacesImage", m_workspacesImage);
+	m_workspacesImage -> set_name ("WorkspacesImage");
 
 	// Connect object Gtk::MessageDialog with id 'MessageDialog'.
 	connections .emplace_back (m_messageDialog -> signal_response () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_messageDialog_response)));

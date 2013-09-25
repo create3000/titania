@@ -75,11 +75,14 @@ Scene::create (X3DExecutionContext* const executionContext) const
 void
 Scene::importScene (const X3DSFNode <Scene> & scene)
 {
-	if (getProfile ())
-		addComponents (scene -> getProfile () -> getComponents ());
+	if (scene -> getProfile ())
+	{
+		if (getProfile ())
+			addComponents (scene -> getProfile () -> getComponents ());
 
-	else
-		setProfile (scene -> getProfile ());
+		else
+			setProfile (scene -> getProfile ());
+	}
 
 	addComponents (scene -> getComponents ());
 

@@ -48,25 +48,88 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BASIC_X3DCONTEXT_H__
-#define __TITANIA_X3D_BASIC_X3DCONTEXT_H__
+#ifndef __TITANIA_X3D_BROWSER_X3DBROWSER_SURFACE_H__
+#define __TITANIA_X3D_BROWSER_X3DBROWSER_SURFACE_H__
 
-#include "../Base/X3DBase.h"
+#include <Titania/OpenGL/Surface.h>
+
+#include "../Browser/Devices/KeyDevice.h"
+#include "../Browser/Devices/PointingDevice.h"
+#include "../Browser/Viewer/X3DViewer.h"
+#include "../Browser/X3DBrowser.h"
 
 namespace titania {
 namespace X3D {
 
-class X3DContext :
-	virtual public X3DBase
+class X3DBrowserSurface :
+	public opengl::Surface, public X3DBrowser
 {
 public:
 
-protected:
+	using X3DBrowser::update;
 
-	X3DContext ();
+	///  @name Member access
+
+	void
+	setCursor (Gdk::CursorType cursor_type)
+	{ get_window () -> set_cursor (Gdk::Cursor::create (cursor_type)); }
+
+	///  @name Operations
 
 	virtual
-	~X3DContext ();
+	bool
+	makeCurrent () const final
+	{ return opengl::Surface::makeCurrent (); }
+
+	virtual
+	void
+	swapBuffers () const final
+	{ opengl::Surface::swapBuffers (); }
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final;
+
+protected:
+
+	///  @name Construction
+
+	X3DBrowserSurface ();
+
+	virtual
+	void
+	initialize () override;
+
+
+private:
+
+	///  @name Construction
+
+	virtual
+	void
+	construct () final
+	{ setup (); }
+
+	///  @name Construction
+
+	void
+	set_viewer (ViewerType);
+
+	virtual
+	void
+	reshape () final
+	{ reshaped () .processInterests (); }
+
+	virtual
+	void
+	update (const Cairo::RefPtr <Cairo::Context> &) final
+	{ update (); }
+
+	std::unique_ptr <X3DViewer> viewer;
+	KeyDevice                   keyDevice;
+	PointingDevice              pointingDevice;
 
 };
 

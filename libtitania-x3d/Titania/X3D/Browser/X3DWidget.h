@@ -57,7 +57,7 @@
 namespace titania {
 namespace X3D {
 
-class Browser;
+class X3DBrowserSurface;
 
 class X3DWidget :
 	public X3DInput, public sigc::trackable
@@ -66,12 +66,12 @@ public:
 
 	///  @name Constructors
 
-	X3DWidget (Browser* const);
+	X3DWidget (X3DBrowserSurface* const);
 
 	///  @name Member access
 
 	virtual
-	Browser*
+	X3DBrowserSurface*
 	getBrowser () const
 	{ return browser; }
 
@@ -97,7 +97,7 @@ protected:
 
 private:
 
-	Browser* browser;
+	X3DBrowserSurface* browser;
 
 };
 

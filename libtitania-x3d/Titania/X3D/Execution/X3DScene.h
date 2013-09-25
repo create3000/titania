@@ -71,6 +71,9 @@ public:
 	
 	///  @name Member access
 	
+	std::string
+	getTitle () const;
+
 	void
 	isCompressed (bool value)
 	{ compressed = value; }

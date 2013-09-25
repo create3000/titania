@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BROWSER_X3DBROWSER_WINDOW_H__
-#define __TITANIA_BROWSER_X3DBROWSER_WINDOW_H__
+#ifndef __TITANIA_BROWSER_X3DBROWSER_WIDGET_H__
+#define __TITANIA_BROWSER_X3DBROWSER_WIDGET_H__
 
 #include "../UserInterfaces/X3DBrowserWindowInterface.h"
 #include <gtkmm.h>
@@ -96,7 +96,10 @@ protected:
 
 	virtual
 	void
-	initialize ();
+	initialize () override;
+
+	void
+	updateTitle (bool) const;
 
 
 private:

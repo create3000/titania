@@ -60,14 +60,14 @@
 namespace titania {
 namespace X3D {
 
-class Browser;
+class X3DBrowserSurface;
 
 class KeyDevice :
 	public X3DWidget
 {
 public:
 
-	KeyDevice (Browser* const);
+	KeyDevice (X3DBrowserSurface* const);
 
 	~KeyDevice ();
 

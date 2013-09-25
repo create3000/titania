@@ -77,9 +77,6 @@ private:
 	void
 	set_initialized ();
 
-	std::string
-	getTitle (const basic::uri &);
-
 	void
 	set_world ();
 

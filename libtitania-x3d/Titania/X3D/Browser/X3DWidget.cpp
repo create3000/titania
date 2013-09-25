@@ -50,12 +50,10 @@
 
 #include "X3DWidget.h"
 
-#include "../Browser/Browser.h"
-
 namespace titania {
 namespace X3D {
 
-X3DWidget::X3DWidget (Browser* const browser) :
+X3DWidget::X3DWidget (X3DBrowserSurface* const browser) :
 	       X3DInput (),
 	sigc::trackable (),
 	        browser (browser)

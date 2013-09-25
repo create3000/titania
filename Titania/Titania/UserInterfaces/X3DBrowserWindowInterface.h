@@ -120,6 +120,10 @@ public:
 	getMenuAccelGroup () const
 	{ return m_menuAccelGroup; }
 
+	Gtk::Image &
+	getExamineViewerImage () const
+	{ return *m_examineViewerImage; }
+
 	Gtk::FileChooserDialog &
 	getFileImportDialog () const
 	{ return *m_fileImportDialog; }
@@ -140,9 +144,21 @@ public:
 	getFileSaveWarningDialog () const
 	{ return *m_fileSaveWarningDialog; }
 
+	Gtk::Image &
+	getFlyViewerImage () const
+	{ return *m_flyViewerImage; }
+
+	Gtk::Image &
+	getImportImage () const
+	{ return *m_importImage; }
+
 	Gtk::MessageDialog &
 	getMessageDialog () const
 	{ return *m_messageDialog; }
+
+	Gtk::Image &
+	getNoneViewerImage () const
+	{ return *m_noneViewerImage; }
 
 	Gtk::Dialog &
 	getOpenLocationDialog () const
@@ -151,6 +167,14 @@ public:
 	Gtk::Entry &
 	getOpenLocationEntry () const
 	{ return *m_openLocationEntry; }
+
+	Gtk::Image &
+	getOpenLocationImage () const
+	{ return *m_openLocationImage; }
+
+	Gtk::Image &
+	getWalkViewerImage () const
+	{ return *m_walkViewerImage; }
 
 	Gtk::Menu &
 	getViewerTypeMenu () const
@@ -472,6 +496,10 @@ public:
 	getHistoryEditorBox () const
 	{ return *m_historyEditorBox; }
 
+	Gtk::Image &
+	getWorkspacesImage () const
+	{ return *m_workspacesImage; }
+
 	virtual
 	void
 	on_messageDialog_response (int response_id) = 0;
@@ -682,14 +710,20 @@ private:
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterX3D;
 	Glib::RefPtr <Gtk::IconFactory> m_iconFactory;
 	Glib::RefPtr <Gtk::AccelGroup>  m_menuAccelGroup;
+	Gtk::Image*                     m_examineViewerImage;
 	Gtk::FileChooserDialog*         m_fileImportDialog;
 	Gtk::FileChooserDialog*         m_fileOpenDialog;
 	Gtk::FileChooserDialog*         m_fileSaveDialog;
 	Gtk::CheckButton*               m_saveCompressedButton;
 	Gtk::Dialog*                    m_fileSaveWarningDialog;
+	Gtk::Image*                     m_flyViewerImage;
+	Gtk::Image*                     m_importImage;
 	Gtk::MessageDialog*             m_messageDialog;
+	Gtk::Image*                     m_noneViewerImage;
 	Gtk::Dialog*                    m_openLocationDialog;
 	Gtk::Entry*                     m_openLocationEntry;
+	Gtk::Image*                     m_openLocationImage;
+	Gtk::Image*                     m_walkViewerImage;
 	Gtk::Menu*                      m_viewerTypeMenu;
 	Gtk::ImageMenuItem*             m_examineViewerMenuItem;
 	Gtk::ImageMenuItem*             m_walkViewerMenuItem;
@@ -770,6 +804,7 @@ private:
 	Gtk::Box*                       m_viewpointListBox;
 	Gtk::Box*                       m_outlineEditorBox;
 	Gtk::Box*                       m_historyEditorBox;
+	Gtk::Image*                     m_workspacesImage;
 
 };
 

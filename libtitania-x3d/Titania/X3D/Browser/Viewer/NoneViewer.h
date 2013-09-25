@@ -63,7 +63,7 @@ class NoneViewer :
 {
 public:
 
-	NoneViewer (Browser* const);
+	NoneViewer (X3DBrowserSurface* const);
 
 	virtual
 	ViewerType

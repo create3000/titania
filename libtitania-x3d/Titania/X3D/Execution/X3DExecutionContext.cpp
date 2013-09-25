@@ -107,13 +107,6 @@ X3DExecutionContext::initialize ()
 }
 
 void
-X3DExecutionContext::setWorldURL (const basic::uri & value)
-{
-	if (worldURL .empty ())
-		worldURL = value;
-}
-
-void
 X3DExecutionContext::addComponents (const ComponentInfoArray & componentInfoArray)
 {
 	for (const auto & component : componentInfoArray)

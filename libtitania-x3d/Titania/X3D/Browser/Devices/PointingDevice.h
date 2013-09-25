@@ -58,14 +58,14 @@
 namespace titania {
 namespace X3D {
 
-class Browser;
+class X3DBrowserSurface;
 
 class PointingDevice :
 	public X3DWidget
 {
 public:
 
-	PointingDevice (Browser* const);
+	PointingDevice (X3DBrowserSurface* const);
 
 private:
 

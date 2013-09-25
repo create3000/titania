@@ -70,7 +70,7 @@ public:
 
 	void
 	setEdited (bool value)
-	{ edited = value; }
+	{ edited = value; updateTitle (value); }
 
 	bool
 	getEdited () const
@@ -96,9 +96,11 @@ public:
 
 protected:
 
-	/// @name Edit operations
+	/// @name Construction
 
 	X3DBrowserEditor (const basic::uri &);
+
+	/// @name Edit operations
 
 	void
 	addNode (const std::string &)
@@ -187,6 +189,8 @@ private:
 	throw (X3D::Error <X3D::INVALID_NAME>);
 	
 	///  @name Members
+
+	X3D::X3DSFNode <X3D::Scene> executionContext;
 
 	bool edited;
 

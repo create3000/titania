@@ -341,7 +341,6 @@ sub generate
 	# Public section
 	say OUT "public:";
 
-
 	# Constructor
 	say OUT "  template <class ... Arguments>";
 	say OUT "  $self->{class_name} (const std::string & filename, const Arguments & ... arguments) :";

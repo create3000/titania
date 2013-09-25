@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra�e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -241,6 +241,17 @@ X3DBrowserWidget::saveSession ()
 }
 
 void
+X3DBrowserWidget::updateTitle (bool edited) const
+{
+	getWindow () .set_title (getBrowser () -> getExecutionContext () -> getTitle ()
+	                         + " · "                        
+	                         + getBrowser () -> getExecutionContext () -> getWorldURL ()
+	                         + (edited ? "*" : "")
+	                         + " · "
+	                         + getBrowser () -> getName ());
+}
+
+void
 X3DBrowserWidget::blank ()
 {
 	getBrowser () -> replaceWorld (nullptr);
@@ -266,6 +277,7 @@ void
 X3DBrowserWidget::save (const basic::uri & worldURL, bool compressed)
 {
 	getBrowser () -> getExecutionContext () -> isCompressed (compressed);
+	getBrowser () -> getExecutionContext () -> setWorldURL (worldURL);
 
 	if (compressed)
 	{
@@ -296,6 +308,7 @@ X3DBrowserWidget::set_world ()
 	timeout = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &X3DBrowserWidget::statistics), 10 * 1000);
 
 	loadIcon ();
+	updateTitle (false);
 }
 
 bool
@@ -330,9 +343,9 @@ X3DBrowserWidget::set_console ()
 	buffer -> place_cursor (buffer -> end ());
 
 	getConsole () .scroll_to (buffer -> get_insert ());
-	
+
 	// Erase
-	
+
 	static const int CONSOLE_LIMIT = std::pow (2, 20);
 
 	if (buffer -> size () > CONSOLE_LIMIT)

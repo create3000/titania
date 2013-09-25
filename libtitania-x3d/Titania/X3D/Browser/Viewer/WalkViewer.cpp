@@ -53,7 +53,7 @@
 namespace titania {
 namespace X3D {
 
-WalkViewer::WalkViewer (Browser* const browser, NavigationInfo* navigationInfo) :
+WalkViewer::WalkViewer (X3DBrowserSurface* const browser, NavigationInfo* navigationInfo) :
 	X3DFlyViewer (browser, navigationInfo)
 { }
 

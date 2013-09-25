@@ -64,7 +64,7 @@ static constexpr float SPIN_ANGLE   = 0.006;
 static constexpr float SCOLL_FACTOR = 1.0f / 50.0f;
 static constexpr float FRAME_RATE   = 100;
 
-ExamineViewer::ExamineViewer (Browser* const browser, NavigationInfo* navigationInfo) :
+ExamineViewer::ExamineViewer (X3DBrowserSurface* const browser, NavigationInfo* navigationInfo) :
 	     X3DViewer (browser),
 	navigationInfo (navigationInfo),
 	      distance (),

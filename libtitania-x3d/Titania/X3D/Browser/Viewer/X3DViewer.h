@@ -66,7 +66,7 @@ public:
 
 	///  @name Constructors
 
-	X3DViewer (Browser* const);
+	X3DViewer (X3DBrowserSurface* const);
 
 	virtual
 	ViewerType

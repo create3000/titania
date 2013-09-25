@@ -74,7 +74,7 @@ BrowserWindow::BrowserWindow (const basic::uri & worldURL) :
 void
 BrowserWindow::initialize ()
 {
-	X3DBrowserWidget::initialize ();
+	X3DBrowserEditor::initialize ();
 
 	// User interface
 
@@ -329,7 +329,7 @@ BrowserWindow::on_save_as ()
 	auto response_id = fileSaveDialog -> run ();
 
 	if (response_id == Gtk::RESPONSE_OK)
-		save (Glib::uri_unescape_string (fileSaveDialog -> get_filename ()), saveCompressedButton -> get_active ());
+		save (Glib::uri_unescape_string (fileSaveDialog -> get_uri ()), saveCompressedButton -> get_active ());
 
 	delete fileSaveDialog;
 }

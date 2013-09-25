@@ -80,6 +80,7 @@ private:
 
 	/// @name Construction
 
+	virtual
 	void
 	initialize ();
 

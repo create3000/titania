@@ -50,103 +50,18 @@
 
 #include "Browser.h"
 
-#include "../Browser/Viewer/ExamineViewer.h"
-#include "../Browser/Viewer/FlyViewer.h"
-#include "../Browser/Viewer/NoneViewer.h"
-#include "../Browser/Viewer/WalkViewer.h"
-#include "../Components/EnvironmentalEffects/Fog.h"
-#include "../Components/EnvironmentalEffects/X3DBackgroundNode.h"
-#include "../Components/Layering/X3DLayerNode.h"
-#include "../Components/Navigation/NavigationInfo.h"
-
-#include <algorithm>
-#include <iomanip>
-#include <iostream>
-#include <limits>
-
 namespace titania {
 namespace X3D {
 
 Browser::Browser () :
-	    X3DBaseNode (this, this),
-	opengl::Surface (),
-	     X3DBrowser (),
-	        viewer  (new NoneViewer (this)),
-	      keyDevice (this),
-	pointingDevice  (this)
-{
-	add_events (Gdk::BUTTON_PRESS_MASK |
-	            Gdk::POINTER_MOTION_MASK |
-	            Gdk::POINTER_MOTION_HINT_MASK |
-	            Gdk::BUTTON_RELEASE_MASK |
-	            Gdk::SCROLL_MASK |
-	            Gdk::KEY_PRESS_MASK |
-	            Gdk::KEY_RELEASE_MASK);
-
-	set_can_focus (true);
-}
+	      X3DBaseNode (this, this),
+	X3DBrowserSurface ()
+{ }
 
 X3DBaseNode*
 Browser::create (X3DExecutionContext* const) const
 {
 	return new Browser ();
-}
-
-void
-Browser::initialize ()
-{
-	X3DBrowser::initialize ();
-
-	keyDevice      .setup ();
-	pointingDevice .setup ();
-
-	getViewer () .addInterest (this, &Browser::set_viewer);
-	changed () .addInterest (static_cast <Gtk::Widget*> (this), &Browser::queue_draw);
-
-	setCursor (Gdk::ARROW);
-}
-
-void
-Browser::set_viewer (ViewerType type)
-{
-	if (viewer -> getType () not_eq type or viewer -> getNavigationInfo () not_eq getActiveNavigationInfo ())
-	{
-		switch (type)
-		{
-			case ViewerType::NONE:
-			{
-				viewer .reset (new NoneViewer (this));
-				break;
-			}
-			case ViewerType::EXAMINE:
-			{
-				viewer .reset (new ExamineViewer (this, getActiveNavigationInfo ()));
-				break;
-			}
-			case ViewerType::WALK:
-			{
-				viewer .reset (new WalkViewer (this, getActiveNavigationInfo ()));
-				break;
-			}
-			case ViewerType::FLY:
-			{
-				viewer .reset (new FlyViewer (this, getActiveNavigationInfo ()));
-				break;
-			}
-		}
-
-		viewer -> setup ();
-	}
-}
-
-void
-Browser::dispose ()
-{
-	viewer .reset ();
-	pointingDevice .dispose ();
-
-	opengl::Surface::dispose ();
-	X3DBrowser::dispose ();
 }
 
 } // X3D

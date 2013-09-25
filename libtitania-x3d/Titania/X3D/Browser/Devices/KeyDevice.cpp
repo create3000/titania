@@ -50,12 +50,12 @@
 
 #include "KeyDevice.h"
 
-#include "../Browser.h"
+#include "../X3DBrowserSurface.h"
 
 namespace titania {
 namespace X3D {
 
-KeyDevice::KeyDevice (Browser* const browser) :
+KeyDevice::KeyDevice (X3DBrowserSurface* const browser) :
 	             X3DWidget (browser),
 	        imContextPress (gtk_im_context_simple_new ()),
 	      imContextRelease (gtk_im_context_simple_new ()),

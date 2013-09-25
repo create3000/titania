@@ -55,7 +55,6 @@
 #include "../Base/X3DChildObject.h"
 #include "../Basic/FieldDefinitionArray.h"
 #include "../Basic/NodeTypeArray.h"
-#include "../Basic/X3DContext.h"
 #include "../Basic/X3DFieldDefinition.h"
 #include "../Bits/Error.h"
 #include "../Bits/TraverseType.h"

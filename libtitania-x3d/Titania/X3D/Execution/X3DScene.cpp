@@ -65,6 +65,19 @@ X3DScene::X3DScene () :
 	      exportedNames ()
 { }
 
+std::string
+X3DScene::getTitle () const
+{
+	try
+	{
+		return getMetaData ("title");
+	}
+	catch (const X3D::Error <X3D::INVALID_NAME> &)
+	{
+		return getWorldURL () .basename ();
+	}
+}
+
 // MetaData handling
 
 void
