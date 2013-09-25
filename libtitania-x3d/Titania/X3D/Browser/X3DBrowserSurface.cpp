@@ -59,6 +59,8 @@
 #include "../Components/Layering/X3DLayerNode.h"
 #include "../Components/Navigation/NavigationInfo.h"
 
+#include <glibmm/main.h>
+
 #include <algorithm>
 #include <iomanip>
 #include <iostream>
@@ -94,9 +96,16 @@ X3DBrowserSurface::initialize ()
 	pointingDevice .setup ();
 
 	getViewer () .addInterest (this, &X3DBrowserSurface::set_viewer);
-	changed () .addInterest (static_cast <Gtk::Widget*> (this), &X3DBrowserSurface::queue_draw);
+	changed () .addInterest (this, &Gtk::Widget::queue_draw);
+	//changed () .addInterest (this, &X3DBrowserSurface::set_changed);
 
 	setCursor (Gdk::ARROW);
+}
+
+void
+X3DBrowserSurface::set_changed ()
+{
+	Glib::signal_idle () .connect_once (sigc::mem_fun (*this, &X3DBrowser::update), Glib::PRIORITY_LOW - 300); // Glib::PRIORITY_LOW = 300
 }
 
 void

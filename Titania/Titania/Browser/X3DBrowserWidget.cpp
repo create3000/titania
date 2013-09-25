@@ -276,8 +276,8 @@ X3DBrowserWidget::open (const basic::uri & worldURL)
 void
 X3DBrowserWidget::save (const basic::uri & worldURL, bool compressed)
 {
-	getBrowser () -> getExecutionContext () -> isCompressed (compressed);
 	getBrowser () -> getExecutionContext () -> setWorldURL (worldURL);
+	getBrowser () -> getExecutionContext () -> isCompressed (compressed);
 
 	if (compressed)
 	{

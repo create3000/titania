@@ -844,7 +844,7 @@ Group {
           ]
         }
         Anchor {
-          url "../bicman.wrl"
+          url "../../index.wrl"
           parameter ""
           children Transform {
             translation 0.00204858 0.0202137 -0.133272

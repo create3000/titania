@@ -100,6 +100,10 @@ protected:
 
 	X3DBrowserEditor (const basic::uri &);
 
+	virtual
+	void
+	initialize () override;
+
 	/// @name Edit operations
 
 	void
@@ -136,6 +140,12 @@ protected:
 private:
 
 	typedef std::function <bool (const X3D::SFNode &, X3D::MFNode*, X3D::SFNode*, size_t)> TraverseCallback;
+
+	void
+	set_initialized ();
+
+	void
+	set_shutdown ();
 
 	void
 	removeNode (const X3D::X3DSFNode <X3D::Scene> &, const X3D::SFNode &) const;

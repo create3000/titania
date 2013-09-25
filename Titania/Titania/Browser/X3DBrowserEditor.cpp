@@ -59,6 +59,33 @@ X3DBrowserEditor::X3DBrowserEditor (const basic::uri & worldURL) :
 	          edited (false)
 { }
 
+void
+X3DBrowserEditor::initialize ()
+{
+	X3DBrowserWidget::initialize ();
+
+	getBrowser () -> initialized () .addInterest (this, &X3DBrowserEditor::set_initialized);
+	getBrowser () -> shutdown ()    .addInterest (this, &X3DBrowserEditor::set_shutdown);
+}
+
+void
+X3DBrowserEditor::set_initialized ()
+{
+}
+
+void
+X3DBrowserEditor::set_shutdown ()
+{
+//	if (getBrowser () -> getExecutionContext () not_eq executionContext)
+//	{
+//		if (isSaved ())
+//			executionContext = getBrowser () -> getExecutionContext ();
+//
+//		else
+//			getBrowser () -> replaceWorld (executionContext);
+//	}
+}
+
 bool
 X3DBrowserEditor::isSaved ()
 {

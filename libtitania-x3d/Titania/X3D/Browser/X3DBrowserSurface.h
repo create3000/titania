@@ -112,10 +112,15 @@ private:
 	construct () final
 	{ setup (); }
 
-	///  @name Construction
+	///  @name Event handler
+
+	void
+	set_changed ();
 
 	void
 	set_viewer (ViewerType);
+	
+	///  @name Operations
 
 	virtual
 	void
@@ -126,6 +131,8 @@ private:
 	void
 	update (const Cairo::RefPtr <Cairo::Context> &) final
 	{ update (); }
+
+	///  @name Members
 
 	std::unique_ptr <X3DViewer> viewer;
 	KeyDevice                   keyDevice;

@@ -1,31 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <!-- interface-requires gtk+ 3.0 -->
-  <object class="GtkImage" id="ExamineViewerImage">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">ExamineViewer</property>
-  </object>
-  <object class="GtkFileFilter" id="FileFilterAllFiles">
-    <patterns>
-      <pattern>*</pattern>
-    </patterns>
-  </object>
-  <object class="GtkFileFilter" id="FileFilterAudio">
-    <mime-types>
-      <mime-type>audio/*</mime-type>
-    </mime-types>
-  </object>
-  <object class="GtkFileFilter" id="FileFilterImage">
-    <mime-types>
-      <mime-type>image/*</mime-type>
-    </mime-types>
-  </object>
-  <object class="GtkFileFilter" id="FileFilterVideo">
-    <mime-types>
-      <mime-type>video/*</mime-type>
-    </mime-types>
-  </object>
   <object class="GtkFileFilter" id="FileFilterX3D">
     <mime-types>
       <mime-type>model/vrml</mime-type>
@@ -55,6 +30,36 @@
       <source stock-id="Hand" filename="icons/hand.png"/>
       <source stock-id="Arrow" filename="icons/arrow.png"/>
     </sources>
+  </object>
+  <object class="GtkImage" id="ExamineViewerImage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">ExamineViewer</property>
+  </object>
+  <object class="GtkFileFilter" id="FileFilterAllFiles">
+    <patterns>
+      <pattern>*</pattern>
+    </patterns>
+  </object>
+  <object class="GtkFileFilter" id="FileFilterAudio">
+    <mime-types>
+      <mime-type>audio/*</mime-type>
+    </mime-types>
+  </object>
+  <object class="GtkFileFilter" id="FileFilterImage">
+    <mime-types>
+      <mime-type>image/*</mime-type>
+    </mime-types>
+  </object>
+  <object class="GtkFileFilter" id="FileFilterVideo">
+    <mime-types>
+      <mime-type>video/*</mime-type>
+    </mime-types>
+  </object>
+  <object class="GtkImage" id="ImportImage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="icon_name">document-import</property>
   </object>
   <object class="GtkFileChooserDialog" id="FileImportDialog">
     <property name="can_focus">False</property>
@@ -282,6 +287,7 @@
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
     <property name="resizable">False</property>
+    <property name="modal">True</property>
     <property name="window_position">center</property>
     <property name="destroy_with_parent">True</property>
     <property name="hide_titlebar_when_maximized">True</property>
@@ -440,17 +446,7 @@
     <property name="can_focus">False</property>
     <property name="stock">FlyViewer</property>
   </object>
-  <object class="GtkImage" id="ImportImage">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="icon_name">document-import</property>
-  </object>
   <object class="GtkAccelGroup" id="MenuAccelGroup"/>
-  <object class="GtkImage" id="OpenLocationImage">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="icon_name">network-server-symbolic</property>
-  </object>
   <object class="GtkMessageDialog" id="MessageDialog">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
@@ -492,7 +488,7 @@
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Open location</property>
     <property name="window_position">center</property>
-    <property name="default_width">380</property>
+    <property name="destroy_with_parent">True</property>
     <property name="type_hint">dialog</property>
     <property name="transient_for">Window</property>
     <child internal-child="vbox">
@@ -609,6 +605,11 @@
       <action-widget response="-5">button11</action-widget>
     </action-widgets>
   </object>
+  <object class="GtkImage" id="OpenLocationImage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="icon_name">network-server-symbolic</property>
+  </object>
   <object class="GtkImage" id="WalkViewerImage">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -657,6 +658,11 @@
         <signal name="activate" handler="on_none_viewer_activate" swapped="no"/>
       </object>
     </child>
+  </object>
+  <object class="GtkImage" id="WorkspacesImage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="icon_name">visualization</property>
   </object>
   <object class="GtkWindow" id="Window">
     <property name="width_request">1000</property>
@@ -1716,7 +1722,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkBox" id="OutlineEditorBox">
+                          <object class="GtkBox" id="HistoryEditorBox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="orientation">vertical</property>
@@ -1729,11 +1735,11 @@
                           </packing>
                         </child>
                         <child type="tab">
-                          <object class="GtkImage" id="image3">
+                          <object class="GtkImage" id="image12">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Viewpoint Editor</property>
-                            <property name="stock">OutlineEditor</property>
+                            <property name="tooltip_text" translatable="yes">History Editor</property>
+                            <property name="stock">gtk-sort-ascending</property>
                             <property name="icon-size">2</property>
                           </object>
                           <packing>
@@ -1742,7 +1748,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkBox" id="HistoryEditorBox">
+                          <object class="GtkBox" id="OutlineEditorBox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="orientation">vertical</property>
@@ -1755,11 +1761,11 @@
                           </packing>
                         </child>
                         <child type="tab">
-                          <object class="GtkImage" id="image12">
+                          <object class="GtkImage" id="image3">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">History Editor</property>
-                            <property name="stock">gtk-sort-ascending</property>
+                            <property name="tooltip_text" translatable="yes">Viewpoint Editor</property>
+                            <property name="stock">OutlineEditor</property>
                             <property name="icon-size">2</property>
                           </object>
                           <packing>
@@ -1796,10 +1802,5 @@
         </child>
       </object>
     </child>
-  </object>
-  <object class="GtkImage" id="WorkspacesImage">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="icon_name">visualization</property>
   </object>
 </interface>

@@ -283,7 +283,7 @@ X3DBrowserContext::set_activeLayer ()
 		if (activeLayer)
 		{
 			activeLayer -> getNavigationInfoStack () -> bindTime () .removeInterest (this, &X3DBrowserContext::set_navigationInfo);
-			activeLayer -> getViewpointStack () -> bindTime () .removeInterest (this, &X3DBrowserContext::set_viewpoint);
+			activeLayer -> getViewpointStack ()      -> bindTime () .removeInterest (this, &X3DBrowserContext::set_viewpoint);
 		}
 
 		activeLayer = getWorld () -> getActiveLayer ();
@@ -291,7 +291,7 @@ X3DBrowserContext::set_activeLayer ()
 		if (activeLayer)
 		{
 			activeLayer -> getNavigationInfoStack () -> bindTime () .addInterest (this, &X3DBrowserContext::set_navigationInfo);
-			activeLayer -> getViewpointStack () -> bindTime () .addInterest (this, &X3DBrowserContext::set_viewpoint);
+			activeLayer -> getViewpointStack ()      -> bindTime () .addInterest (this, &X3DBrowserContext::set_viewpoint);
 		}
 
 		set_navigationInfo ();
@@ -303,7 +303,10 @@ void
 X3DBrowserContext::set_navigationInfo ()
 {
 	if (activeNavigationInfo)
-		activeNavigationInfo -> type () .removeInterest (this, &X3DBrowserContext::set_navigationInfo_type);
+	{
+		activeNavigationInfo -> shutdown () .removeInterest (this, &X3DBrowserContext::remove_navigationInfo);
+		activeNavigationInfo -> type ()     .removeInterest (this, &X3DBrowserContext::set_navigationInfo_type);
+	}
 
 	activeNavigationInfo        = activeLayer ? activeLayer -> getNavigationInfo () : nullptr;
 	activeNavigationInfoChanged = getCurrentTime ();
@@ -311,7 +314,7 @@ X3DBrowserContext::set_navigationInfo ()
 	if (activeNavigationInfo)
 	{
 		activeNavigationInfo -> shutdown () .addInterest (this, &X3DBrowserContext::remove_navigationInfo);
-		activeNavigationInfo -> type () .addInterest (this, &X3DBrowserContext::set_navigationInfo_type);
+		activeNavigationInfo -> type ()     .addInterest (this, &X3DBrowserContext::set_navigationInfo_type);
 	}
 
 	set_navigationInfo_type ();
