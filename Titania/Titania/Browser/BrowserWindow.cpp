@@ -67,7 +67,8 @@ BrowserWindow::BrowserWindow (const basic::uri & worldURL) :
 	   viewpointList (this),
 	   historyEditor (this),
 	   outlineEditor (this),
-	            keys ()
+	            keys (),
+	       importURL ()
 { }
 
 void
@@ -88,50 +89,12 @@ BrowserWindow::initialize ()
 	getFileFilterAudio () -> set_name ("Audio");
 	getFileFilterVideo () -> set_name ("Videos");
 
-	// FileOpenDialog
-	getFileOpenDialog () .set_default_response (Gtk::RESPONSE_OK);
-	getFileOpenDialog () .add_button ("gtk-cancel", Gtk::RESPONSE_CANCEL);
-	getFileOpenDialog () .add_button ("gtk-open",   Gtk::RESPONSE_OK);
-
-	getFileOpenDialog () .add_filter (getFileFilterX3D ());
-	getFileOpenDialog () .add_filter (getFileFilterImage ());
-	getFileOpenDialog () .add_filter (getFileFilterAudio ());
-	getFileOpenDialog () .add_filter (getFileFilterVideo ());
-
-	getFileOpenDialog () .set_filter (getFileFilterX3D ());
-
-	// FileOpenDialog
-	getFileImportDialog () .set_default_response (Gtk::RESPONSE_OK);
-	getFileImportDialog () .add_button ("gtk-cancel", Gtk::RESPONSE_CANCEL);
-	getFileImportDialog () .add_button ("gtk-open",   Gtk::RESPONSE_OK);
-
-	getFileImportDialog () .add_filter (getFileFilterX3D ());
-	getFileImportDialog () .add_filter (getFileFilterImage ());
-	getFileImportDialog () .add_filter (getFileFilterAudio ());
-	getFileImportDialog () .add_filter (getFileFilterVideo ());
-
-	getFileImportDialog () .set_filter (getFileFilterX3D ());
-
-	// OpenLocationDialog
-	getOpenLocationDialog () .set_default_response (Gtk::RESPONSE_OK);
-	getOpenLocationDialog () .add_button ("gtk-cancel", Gtk::RESPONSE_CANCEL);
-	getOpenLocationDialog () .add_button ("gtk-open",   Gtk::RESPONSE_OK);
-
-	// FileSaveDialog
-	getFileSaveDialog () .set_default_response (Gtk::RESPONSE_OK);
-	getFileSaveDialog () .add_button ("gtk-cancel", Gtk::RESPONSE_CANCEL);
-	getFileSaveDialog () .add_button ("gtk-save",   Gtk::RESPONSE_OK);
-
 	// MotionBlurEditor
 	getMotionBlurEditor () .getWindow () .set_transient_for (getWindow ());
 
-	// ViewpointList
+	// Sidebar
 	getViewpointList () .reparent (getViewpointListBox (), getWindow ());
-
-	// HistoryEditor
 	getHistoryEditor () .reparent (getHistoryEditorBox (), getWindow ());
-
-	// OutlineEditor
 	getOutlineEditor () .reparent (getOutlineEditorBox (), getWindow ());
 
 	// CSS
@@ -223,21 +186,84 @@ BrowserWindow::on_open ()
 {
 	if (isSaved ())
 	{
-		const basic::uri & worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
+		updateWidget ("FileOpenDialog");
+		auto fileOpenDialog = getWidget <Gtk::FileChooserDialog> ("FileOpenDialog");
 
-		if (worldURL .length () and worldURL .is_local ())
-		{
-			getFileOpenDialog () .set_current_folder_uri (worldURL .base () .str ());
-			getFileOpenDialog () .set_uri (worldURL .filename () .str ());
-		}
+		fileOpenDialog -> add_filter (getFileFilterX3D ());
+		fileOpenDialog -> add_filter (getFileFilterImage ());
+		fileOpenDialog -> add_filter (getFileFilterAudio ());
+		fileOpenDialog -> add_filter (getFileFilterVideo ());
+		fileOpenDialog -> set_filter (getFileFilterX3D ());
 
-		auto response_id = getFileOpenDialog () .run ();
+		basic::uri worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
 
-		getFileOpenDialog () .hide ();
+		if (worldURL .size () and worldURL .is_local ())
+			fileOpenDialog -> set_uri (worldURL .filename () .str ());
+
+		auto response_id = fileOpenDialog -> run ();
 
 		if (response_id == Gtk::RESPONSE_OK)
-			open (Glib::uri_unescape_string (getFileOpenDialog () .get_uri ()));
+			open (Glib::uri_unescape_string (fileOpenDialog -> get_uri ()));
+
+		delete fileOpenDialog;
 	}
+}
+
+void
+BrowserWindow::on_open_location ()
+{
+	if (isSaved ())
+	{
+		Glib::RefPtr <Gtk::Clipboard> clipboard = Gtk::Clipboard::get ();
+
+		if (clipboard -> wait_is_text_available ())
+		{
+			basic::uri uri (clipboard -> wait_for_text ());
+
+			if (uri .scheme () == "http" or uri .scheme () == "ftp" or uri .scheme () == "file")
+				getOpenLocationEntry () .set_text (uri .str ());
+		}
+
+		getOpenLocationDialog () .set_response_sensitive (Gtk::RESPONSE_OK, getOpenLocationEntry () .get_text () .size ());
+
+		auto response_id = getOpenLocationDialog () .run ();
+
+		getOpenLocationDialog () .hide ();
+
+		if (response_id == Gtk::RESPONSE_OK)
+			open (Glib::uri_unescape_string (getOpenLocationEntry () .get_text ()));
+	}
+}
+
+void
+BrowserWindow::on_import ()
+{
+	updateWidget ("FileImportDialog");
+	auto fileImportDialog = getWidget <Gtk::FileChooserDialog> ("FileImportDialog");
+
+	fileImportDialog -> add_filter (getFileFilterX3D ());
+	fileImportDialog -> add_filter (getFileFilterImage ());
+	fileImportDialog -> add_filter (getFileFilterAudio ());
+	fileImportDialog -> add_filter (getFileFilterVideo ());
+	fileImportDialog -> set_filter (getFileFilterX3D ());
+
+	if (importURL .size () and importURL .is_local ())
+		fileImportDialog -> set_uri (importURL .filename () .str ());
+
+	else
+	{
+		basic::uri worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
+
+		if (worldURL .size () and worldURL .is_local ())
+			fileImportDialog -> set_uri (worldURL .filename () .str ());
+	}
+
+	auto response_id = fileImportDialog -> run ();
+
+	if (response_id == Gtk::RESPONSE_OK)
+		import (importURL = Glib::uri_unescape_string (fileImportDialog -> get_uri ()));
+
+	delete fileImportDialog;
 }
 
 void
@@ -252,7 +278,7 @@ BrowserWindow::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & co
 		if (selection_data .get_data_type () == "text/uri-list")
 		{
 			auto uri = selection_data .get_uris ();
-			
+
 			if (uri .size ())
 			{
 				open (Glib::uri_unescape_string (uri [0]));
@@ -275,51 +301,6 @@ BrowserWindow::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & co
 }
 
 void
-BrowserWindow::on_import ()
-{
-	basic::uri worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
-
-	if (worldURL .length () and worldURL .is_local ())
-	{
-		getFileImportDialog () .set_current_folder_uri (worldURL .base () .str ());
-		getFileImportDialog () .set_uri (worldURL .filename () .str ());
-	}
-
-	auto response_id = getFileImportDialog () .run ();
-
-	getFileImportDialog () .hide ();
-
-	if (response_id == Gtk::RESPONSE_OK)
-		import (Glib::uri_unescape_string (getFileImportDialog () .get_uri ()));
-}
-
-void
-BrowserWindow::on_open_location ()
-{
-	if (isSaved ())
-	{
-		Glib::RefPtr <Gtk::Clipboard> clipboard = Gtk::Clipboard::get ();
-
-		if (clipboard -> wait_is_text_available ())
-		{
-			basic::uri uri (clipboard -> wait_for_text ());
-
-			if (uri .is_network ())
-				getOpenLocationEntry () .set_text (uri .str ());
-		}
-
-		getOpenLocationDialog () .set_response_sensitive (Gtk::RESPONSE_OK, getOpenLocationEntry () .get_text () .size ());
-
-		auto response_id = getOpenLocationDialog () .run ();
-
-		getOpenLocationDialog () .hide ();
-
-		if (response_id == Gtk::RESPONSE_OK)
-			open (Glib::uri_unescape_string (getOpenLocationEntry () .get_text ()));
-	}
-}
-
-void
 BrowserWindow::on_save ()
 {
 	basic::uri worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
@@ -334,29 +315,23 @@ BrowserWindow::on_save ()
 void
 BrowserWindow::on_save_as ()
 {
+	updateWidget ("FileSaveDialog");
+	auto fileSaveDialog = getWidget <Gtk::FileChooserDialog> ("FileSaveDialog");
+
 	basic::uri worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
 
-	__LOG__ << worldURL .filename () << std::endl;
+	if (worldURL .size () and worldURL .is_local ())
+		fileSaveDialog -> set_uri (worldURL .filename () .str ());
 
-	getFileSaveDialog () .present ();
+	auto saveCompressedButton = getWidget <Gtk::CheckButton> ("SaveCompressedButton");
+	saveCompressedButton -> set_active (getBrowser () -> getExecutionContext () -> isCompressed ());
 
-	if (worldURL .length () and worldURL .is_local ())
-	{
-		getFileSaveDialog () .set_current_folder_uri (worldURL .base () .str ());
-		getFileSaveDialog () .set_current_name (worldURL .basename ());
-		getFileSaveDialog () .set_uri (worldURL .filename () .str ());
-	}
-
-	getSaveCompressedButton () .set_active (getBrowser () -> getExecutionContext () -> isCompressed ());
-
-	auto response_id = getFileSaveDialog () .run ();
-
-	__LOG__ << response_id << std::endl;
-
-	getFileSaveDialog () .hide ();
+	auto response_id = fileSaveDialog -> run ();
 
 	if (response_id == Gtk::RESPONSE_OK)
-		save (Glib::uri_unescape_string (getFileSaveDialog () .get_filename ()), getSaveCompressedButton () .get_active ());
+		save (Glib::uri_unescape_string (fileSaveDialog -> get_filename ()), saveCompressedButton -> get_active ());
+
+	delete fileSaveDialog;
 }
 
 void
@@ -374,11 +349,15 @@ BrowserWindow::on_revert_to_saved ()
 
 // Dialog response handling
 
+void
+BrowserWindow::on_openLocationEntry_changed ()
+{
+	getOpenLocationDialog () .set_response_sensitive (Gtk::RESPONSE_OK, getOpenLocationEntry () .get_text () .size ());
+}
+
 bool
 BrowserWindow::on_openLocationEntry_key_release_event (GdkEventKey* event)
 {
-	getOpenLocationDialog () .set_response_sensitive (Gtk::RESPONSE_OK, getOpenLocationEntry () .get_text () .size ());
-
 	if (event -> keyval == GDK_KEY_Return or event -> keyval == GDK_KEY_KP_Enter)
 	{
 		getOpenLocationDialog () .response (Gtk::RESPONSE_OK);
@@ -686,6 +665,14 @@ BrowserWindow::on_look_at_toggled ()
 	__LOG__ << std::endl;
 }
 
+// Dialog response handling
+
+void
+BrowserWindow::on_messageDialog_response (int)
+{
+	getMessageDialog () .hide ();
+}
+
 // Editing facilities
 
 void
@@ -733,7 +720,7 @@ BrowserWindow::on_group_selected_nodes_activate ()
 	const auto selection = getBrowser () -> getSelection () -> getChildren ();
 
 	if (selection .size ())
-	{	
+	{
 		getBrowser () -> getSelection () -> clear ();
 		getBrowser () -> getSelection () -> addChild (groupNodes (selection));
 		getBrowser () -> update ();
@@ -808,7 +795,7 @@ BrowserWindow::on_detach_from_group_activate ()
 				detachFromGroup (child, getKeys () .shift ());
 			}
 			catch (const X3D::X3DError &)
-			{ }	
+			{ }
 		}
 
 		getBrowser () -> update ();
@@ -837,12 +824,12 @@ BrowserWindow::on_create_parent_group_activate ()
 				for (const auto & group : createParentGroup (child))
 				{
 					groups .emplace_back (group);
-				
+
 					getBrowser () -> getSelection () -> addChild (group);
 				}
 			}
 			catch (const X3D::X3DError &)
-			{ }	
+			{ }
 		}
 
 		getBrowser () -> update ();

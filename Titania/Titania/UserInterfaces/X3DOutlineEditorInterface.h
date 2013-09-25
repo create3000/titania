@@ -67,23 +67,46 @@ public:
 	template <class ... Arguments>
 	X3DOutlineEditorInterface (const std::string & filename, const Arguments & ... arguments) :
 		X3DUserInterface (m_widgetName, arguments ...),
+		        filename (filename),
 		     connections ()
 	{ create (filename); }
+
+	const Glib::RefPtr <Gtk::Builder> &
+	getBuilder () const { return m_builder; }
 
 	const std::string &
 	getWidgetName () const { return m_widgetName; }
 
+	void
+	updateWidget (const std::string & name) const
+	{ getBuilder () -> add_from_file (filename, name); }
+
+	template <class Type>
+	Type*
+	getWidget (const std::string & name) const
+	{
+		Type* widget = nullptr;
+
+		m_builder -> get_widget (name, widget);
+		widget -> set_name (name);
+		return widget;
+	}
+
 	Gtk::Window &
-	getWindow () const { return *m_window; }
+	getWindow () const
+	{ return *m_window; }
 
 	Gtk::Box &
-	getWidget () const { return *m_widget; }
+	getWidget () const
+	{ return *m_widget; }
 
 	Gtk::ScrolledWindow &
-	getScrolledWindow () const { return *m_scrolledWindow; }
+	getScrolledWindow () const
+	{ return *m_scrolledWindow; }
 
 	Gtk::Viewport &
-	getViewport () const { return *m_viewport; }
+	getViewport () const
+	{ return *m_viewport; }
 
 	virtual
 	void
@@ -97,6 +120,7 @@ private:
 
 	static const std::string m_widgetName;
 
+	std::string                   filename;
 	std::deque <sigc::connection> connections;
 	Glib::RefPtr <Gtk::Builder>   m_builder;
 	Gtk::Window*                  m_window;

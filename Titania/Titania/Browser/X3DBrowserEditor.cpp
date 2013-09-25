@@ -72,7 +72,7 @@ X3DBrowserEditor::isSaved ()
 			case Gtk::RESPONSE_OK:
 			{
 				on_save ();
-				return getEdited ();
+				return not getEdited ();
 			}
 			case Gtk::RESPONSE_CANCEL:
 			case Gtk::RESPONSE_DELETE_EVENT:
@@ -84,7 +84,6 @@ X3DBrowserEditor::isSaved ()
 		}
 	}
 
-	setEdited (false);
 	return true;
 }
 
@@ -105,6 +104,18 @@ X3DBrowserEditor::import (const basic::uri & worldURL)
 	{
 		std::clog << error .what () << std::endl;
 	}
+}
+
+bool
+X3DBrowserEditor::open (const basic::uri & worldURL)
+{
+	if (X3DBrowserWidget::open (worldURL))
+	{
+		setEdited (false);
+		return true;
+	}
+
+	return false;
 }
 
 void

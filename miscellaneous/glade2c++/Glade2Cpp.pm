@@ -99,7 +99,7 @@ sub h_object_getters
 	return if not isObject ($attributes {class});
 
 	say $file "const Glib::RefPtr <$attributes{class}> &";
-	say $file "get$attributes{id} () const { return m_" . lcfirst ($attributes {id}) . "; }";
+	say $file "get$attributes{id} () const\n{ return m_" . lcfirst ($attributes {id}) . "; }";
 }
 
 sub h_widget_getters
@@ -114,7 +114,7 @@ sub h_widget_getters
 	return if not isWidget ($attributes {class});
 
 	say $file "$attributes{class} &";
-	say $file "get$attributes{id} () const { return *m_" . lcfirst ($attributes {id}) . "; }";
+	say $file "get$attributes{id} () const\n{ return *m_" . lcfirst ($attributes {id}) . "; }";
 }
 
 sub h_objects
@@ -351,14 +351,35 @@ sub generate
 		say OUT "   $base_class_name (m_widgetName, arguments ...),";
 	}
 	
+	say OUT "filename (filename),";
 	say OUT "connections ()";
 
 	# Constructor end begin body
 	say OUT "{ create (filename); }";
 	say OUT "";
 
+	# Builder
+	say OUT "  const Glib::RefPtr <Gtk::Builder> & getBuilder () const { return m_builder; }";
+	say OUT "";
+
 	# Name
 	say OUT "  const std::string & getWidgetName () const { return m_widgetName; }";
+	say OUT "";
+	
+	# updateWidget
+	say OUT "  void updateWidget (const std::string & name) const";
+	say OUT "  { getBuilder () -> add_from_file (filename, name); }";
+	say OUT "";
+
+	# getWidget
+	say OUT "  template <class Type>";
+	say OUT "  Type* getWidget (const std::string & name) const";
+	say OUT "  {";
+	say OUT "      Type* widget = nullptr;";
+	say OUT "      m_builder -> get_widget (name, widget);";
+	say OUT "      widget -> set_name (name);";
+	say OUT "      return widget;";
+	say OUT "  }";
 	say OUT "";
 
 	# Object getters
@@ -395,6 +416,7 @@ sub generate
 	say OUT "  static const std::string m_widgetName;";
 	say OUT "";
 
+	say OUT "  std::string filename;";
 	say OUT "  std::deque <sigc::connection> connections;";
 	say OUT "  Glib::RefPtr <Gtk::Builder> m_builder;";
 
@@ -570,3 +592,5 @@ button_release_event
   virtual bool on_button_release_event(GdkEventButton* event);
 draw
   virtual bool on_draw(const ::Cairo::RefPtr< ::Cairo::Context>& cr);
+changed
+  virtual void on_changed();

@@ -150,7 +150,7 @@ private:
 
 	virtual
 	void
-	on_drag_data_received (const Glib::RefPtr <Gdk::DragContext>&, int, int, const Gtk::SelectionData &, guint info, guint) final;
+	on_open_location () final;
 
 	virtual
 	void
@@ -158,7 +158,7 @@ private:
 
 	virtual
 	void
-	on_open_location () final;
+	on_drag_data_received (const Glib::RefPtr <Gdk::DragContext>&, int, int, const Gtk::SelectionData &, guint info, guint) final;
 
 	virtual
 	void
@@ -177,6 +177,10 @@ private:
 	on_close () final;
 
 	/// @name Dialog response
+
+	virtual
+	void
+	on_openLocationEntry_changed () final;
 
 	virtual
 	bool
@@ -332,6 +336,11 @@ private:
 	void
 	on_look_at_toggled () final;
 
+	///  @name Dialog response handling
+
+	void
+	on_messageDialog_response (int);
+
 	///  @Editing facilities
 
 	void
@@ -362,6 +371,7 @@ private:
 	HistoryEditor    historyEditor;
 	OutlineEditor    outlineEditor;
 	X3D::Keys        keys;
+	basic::uri       importURL;
 
 };
 

@@ -82,6 +82,10 @@ public:
 	import (const basic::uri &);
 
 	virtual
+	bool
+	open (const basic::uri &) final;
+
+	virtual
 	void
 	save (const basic::uri &, bool) final;
 

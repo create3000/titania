@@ -246,7 +246,7 @@ X3DBrowserWidget::blank ()
 	getBrowser () -> replaceWorld (nullptr);
 }
 
-void
+bool
 X3DBrowserWidget::open (const basic::uri & worldURL)
 {
 	loadTime = chrono::now ();
@@ -254,9 +254,12 @@ X3DBrowserWidget::open (const basic::uri & worldURL)
 	try
 	{
 		getBrowser () -> loadURL ({ worldURL .str () });
+		return true;
 	}
 	catch (const X3D::X3DError &)
-	{ }
+	{
+		return false;
+	}
 }
 
 void
@@ -348,8 +351,7 @@ X3DBrowserWidget::set_urlError (const X3D::MFString & urlError)
 	                                         + Glib::Markup::escape_text (basic::join (urlError, "\n"))
 	                                         + "</span>",
 	                                         true);
-	getMessageDialog () .run ();
-	getMessageDialog () .hide ();
+	getMessageDialog () .present ();
 }
 
 void

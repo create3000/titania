@@ -75,7 +75,8 @@ public:
 	void
 	blank ();
 
-	void
+	virtual
+	bool
 	open (const basic::uri &);
 
 	virtual

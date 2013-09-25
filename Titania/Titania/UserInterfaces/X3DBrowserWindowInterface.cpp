@@ -247,7 +247,11 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("HistoryEditorBox", m_historyEditorBox);
 	m_historyEditorBox -> set_name ("HistoryEditorBox");
 
+	// Connect object Gtk::MessageDialog with id 'MessageDialog'.
+	connections .emplace_back (m_messageDialog -> signal_response () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_messageDialog_response)));
+
 	// Connect object Gtk::Entry with id 'OpenLocationEntry'.
+	connections .emplace_back (m_openLocationEntry -> signal_changed () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_openLocationEntry_changed)));
 	connections .emplace_back (m_openLocationEntry -> signal_key_release_event () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_openLocationEntry_key_release_event)));
 
 	// Connect object Gtk::ImageMenuItem with id 'ExamineViewerMenuItem'.

@@ -67,44 +67,74 @@ public:
 	template <class ... Arguments>
 	X3DHistoryEditorInterface (const std::string & filename, const Arguments & ... arguments) :
 		X3DUserInterface (m_widgetName, arguments ...),
+		        filename (filename),
 		     connections ()
 	{ create (filename); }
+
+	const Glib::RefPtr <Gtk::Builder> &
+	getBuilder () const { return m_builder; }
 
 	const std::string &
 	getWidgetName () const { return m_widgetName; }
 
+	void
+	updateWidget (const std::string & name) const
+	{ getBuilder () -> add_from_file (filename, name); }
+
+	template <class Type>
+	Type*
+	getWidget (const std::string & name) const
+	{
+		Type* widget = nullptr;
+
+		m_builder -> get_widget (name, widget);
+		widget -> set_name (name);
+		return widget;
+	}
+
 	const Glib::RefPtr <Gtk::ListStore> &
-	getListStore () const { return m_listStore; }
+	getListStore () const
+	{ return m_listStore; }
 
 	const Glib::RefPtr <Gtk::TreeViewColumn> &
-	getIcon () const { return m_icon; }
+	getIcon () const
+	{ return m_icon; }
 
 	const Glib::RefPtr <Gtk::CellRendererPixbuf> &
-	getIconRenderer () const { return m_iconRenderer; }
+	getIconRenderer () const
+	{ return m_iconRenderer; }
 
 	const Glib::RefPtr <Gtk::TreeViewColumn> &
-	getTitleColumn () const { return m_titleColumn; }
+	getTitleColumn () const
+	{ return m_titleColumn; }
 
 	const Glib::RefPtr <Gtk::CellRendererText> &
-	getTitleRenderer () const { return m_titleRenderer; }
+	getTitleRenderer () const
+	{ return m_titleRenderer; }
 
 	const Glib::RefPtr <Gtk::TreeViewColumn> &
-	getLocationColumn () const { return m_locationColumn; }
+	getLocationColumn () const
+	{ return m_locationColumn; }
 
 	const Glib::RefPtr <Gtk::CellRendererText> &
-	getLocationRenderer () const { return m_locationRenderer; }
+	getLocationRenderer () const
+	{ return m_locationRenderer; }
 
 	Gtk::Window &
-	getWindow () const { return *m_window; }
+	getWindow () const
+	{ return *m_window; }
 
 	Gtk::Box &
-	getWidget () const { return *m_widget; }
+	getWidget () const
+	{ return *m_widget; }
 
 	Gtk::ScrolledWindow &
-	getScrolledWindow () const { return *m_scrolledWindow; }
+	getScrolledWindow () const
+	{ return *m_scrolledWindow; }
 
 	Gtk::TreeView &
-	getTreeView () const { return *m_treeView; }
+	getTreeView () const
+	{ return *m_treeView; }
 
 	virtual
 	void
@@ -122,6 +152,7 @@ private:
 
 	static const std::string m_widgetName;
 
+	std::string                            filename;
 	std::deque <sigc::connection>          connections;
 	Glib::RefPtr <Gtk::Builder>            m_builder;
 	Glib::RefPtr <Gtk::ListStore>          m_listStore;

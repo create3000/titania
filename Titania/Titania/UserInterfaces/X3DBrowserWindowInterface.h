@@ -67,296 +67,418 @@ public:
 	template <class ... Arguments>
 	X3DBrowserWindowInterface (const std::string & filename, const Arguments & ... arguments) :
 		X3DUserInterface (m_widgetName, arguments ...),
+		        filename (filename),
 		     connections ()
 	{ create (filename); }
+
+	const Glib::RefPtr <Gtk::Builder> &
+	getBuilder () const { return m_builder; }
 
 	const std::string &
 	getWidgetName () const { return m_widgetName; }
 
-	const Glib::RefPtr <Gtk::FileFilter> &
-	getFileFilterAllFiles () const { return m_fileFilterAllFiles; }
+	void
+	updateWidget (const std::string & name) const
+	{ getBuilder () -> add_from_file (filename, name); }
+
+	template <class Type>
+	Type*
+	getWidget (const std::string & name) const
+	{
+		Type* widget = nullptr;
+
+		m_builder -> get_widget (name, widget);
+		widget -> set_name (name);
+		return widget;
+	}
 
 	const Glib::RefPtr <Gtk::FileFilter> &
-	getFileFilterAudio () const { return m_fileFilterAudio; }
+	getFileFilterAllFiles () const
+	{ return m_fileFilterAllFiles; }
 
 	const Glib::RefPtr <Gtk::FileFilter> &
-	getFileFilterImage () const { return m_fileFilterImage; }
+	getFileFilterAudio () const
+	{ return m_fileFilterAudio; }
 
 	const Glib::RefPtr <Gtk::FileFilter> &
-	getFileFilterVideo () const { return m_fileFilterVideo; }
+	getFileFilterImage () const
+	{ return m_fileFilterImage; }
 
 	const Glib::RefPtr <Gtk::FileFilter> &
-	getFileFilterX3D () const { return m_fileFilterX3D; }
+	getFileFilterVideo () const
+	{ return m_fileFilterVideo; }
+
+	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilterX3D () const
+	{ return m_fileFilterX3D; }
 
 	const Glib::RefPtr <Gtk::IconFactory> &
-	getIconFactory () const { return m_iconFactory; }
+	getIconFactory () const
+	{ return m_iconFactory; }
 
 	const Glib::RefPtr <Gtk::AccelGroup> &
-	getMenuAccelGroup () const { return m_menuAccelGroup; }
+	getMenuAccelGroup () const
+	{ return m_menuAccelGroup; }
 
 	Gtk::FileChooserDialog &
-	getFileImportDialog () const { return *m_fileImportDialog; }
+	getFileImportDialog () const
+	{ return *m_fileImportDialog; }
 
 	Gtk::FileChooserDialog &
-	getFileOpenDialog () const { return *m_fileOpenDialog; }
+	getFileOpenDialog () const
+	{ return *m_fileOpenDialog; }
 
 	Gtk::FileChooserDialog &
-	getFileSaveDialog () const { return *m_fileSaveDialog; }
+	getFileSaveDialog () const
+	{ return *m_fileSaveDialog; }
 
 	Gtk::CheckButton &
-	getSaveCompressedButton () const { return *m_saveCompressedButton; }
+	getSaveCompressedButton () const
+	{ return *m_saveCompressedButton; }
 
 	Gtk::Dialog &
-	getFileSaveWarningDialog () const { return *m_fileSaveWarningDialog; }
+	getFileSaveWarningDialog () const
+	{ return *m_fileSaveWarningDialog; }
 
 	Gtk::MessageDialog &
-	getMessageDialog () const { return *m_messageDialog; }
+	getMessageDialog () const
+	{ return *m_messageDialog; }
 
 	Gtk::Dialog &
-	getOpenLocationDialog () const { return *m_openLocationDialog; }
+	getOpenLocationDialog () const
+	{ return *m_openLocationDialog; }
 
 	Gtk::Entry &
-	getOpenLocationEntry () const { return *m_openLocationEntry; }
+	getOpenLocationEntry () const
+	{ return *m_openLocationEntry; }
 
 	Gtk::Menu &
-	getViewerTypeMenu () const { return *m_viewerTypeMenu; }
+	getViewerTypeMenu () const
+	{ return *m_viewerTypeMenu; }
 
 	Gtk::ImageMenuItem &
-	getExamineViewerMenuItem () const { return *m_examineViewerMenuItem; }
+	getExamineViewerMenuItem () const
+	{ return *m_examineViewerMenuItem; }
 
 	Gtk::ImageMenuItem &
-	getWalkViewerMenuItem () const { return *m_walkViewerMenuItem; }
+	getWalkViewerMenuItem () const
+	{ return *m_walkViewerMenuItem; }
 
 	Gtk::ImageMenuItem &
-	getFlyViewerMenuItem () const { return *m_flyViewerMenuItem; }
+	getFlyViewerMenuItem () const
+	{ return *m_flyViewerMenuItem; }
 
 	Gtk::ImageMenuItem &
-	getNoneViewerMenuItem () const { return *m_noneViewerMenuItem; }
+	getNoneViewerMenuItem () const
+	{ return *m_noneViewerMenuItem; }
 
 	Gtk::Window &
-	getWindow () const { return *m_window; }
+	getWindow () const
+	{ return *m_window; }
 
 	Gtk::VBox &
-	getWidget () const { return *m_widget; }
+	getWidget () const
+	{ return *m_widget; }
 
 	Gtk::MenuBar &
-	getMenuBar () const { return *m_menuBar; }
+	getMenuBar () const
+	{ return *m_menuBar; }
 
 	Gtk::MenuItem &
-	getFileMenuItem () const { return *m_fileMenuItem; }
+	getFileMenuItem () const
+	{ return *m_fileMenuItem; }
 
 	Gtk::ImageMenuItem &
-	getNewMenuItem () const { return *m_newMenuItem; }
+	getNewMenuItem () const
+	{ return *m_newMenuItem; }
 
 	Gtk::ImageMenuItem &
-	getOpenMenuItem () const { return *m_openMenuItem; }
+	getOpenMenuItem () const
+	{ return *m_openMenuItem; }
 
 	Gtk::ImageMenuItem &
-	getOpenLocationMenuItem () const { return *m_openLocationMenuItem; }
+	getOpenLocationMenuItem () const
+	{ return *m_openLocationMenuItem; }
 
 	Gtk::ImageMenuItem &
-	getImportMenuItem () const { return *m_importMenuItem; }
+	getImportMenuItem () const
+	{ return *m_importMenuItem; }
 
 	Gtk::ImageMenuItem &
-	getSaveMenuItem () const { return *m_saveMenuItem; }
+	getSaveMenuItem () const
+	{ return *m_saveMenuItem; }
 
 	Gtk::ImageMenuItem &
-	getSaveAsMenuItem () const { return *m_saveAsMenuItem; }
+	getSaveAsMenuItem () const
+	{ return *m_saveAsMenuItem; }
 
 	Gtk::ImageMenuItem &
-	getRevertMenuItem () const { return *m_revertMenuItem; }
+	getRevertMenuItem () const
+	{ return *m_revertMenuItem; }
 
 	Gtk::ImageMenuItem &
-	getQuitMenuItem () const { return *m_quitMenuItem; }
+	getQuitMenuItem () const
+	{ return *m_quitMenuItem; }
 
 	Gtk::MenuItem &
-	getEditMenuItem () const { return *m_editMenuItem; }
+	getEditMenuItem () const
+	{ return *m_editMenuItem; }
 
 	Gtk::ImageMenuItem &
-	getDeleteMenuItem () const { return *m_deleteMenuItem; }
+	getDeleteMenuItem () const
+	{ return *m_deleteMenuItem; }
 
 	Gtk::MenuItem &
-	getGroupSelectedNodesMenuItem () const { return *m_groupSelectedNodesMenuItem; }
+	getGroupSelectedNodesMenuItem () const
+	{ return *m_groupSelectedNodesMenuItem; }
 
 	Gtk::MenuItem &
-	getUngroupMenuItem () const { return *m_ungroupMenuItem; }
+	getUngroupMenuItem () const
+	{ return *m_ungroupMenuItem; }
 
 	Gtk::MenuItem &
-	getAddToGroupMenuItem () const { return *m_addToGroupMenuItem; }
+	getAddToGroupMenuItem () const
+	{ return *m_addToGroupMenuItem; }
 
 	Gtk::MenuItem &
-	getDetachFromGroupMenuItem () const { return *m_detachFromGroupMenuItem; }
+	getDetachFromGroupMenuItem () const
+	{ return *m_detachFromGroupMenuItem; }
 
 	Gtk::MenuItem &
-	getCreateParentGroupMenuItem () const { return *m_createParentGroupMenuItem; }
+	getCreateParentGroupMenuItem () const
+	{ return *m_createParentGroupMenuItem; }
 
 	Gtk::MenuItem &
-	getViewMenuItem () const { return *m_viewMenuItem; }
+	getViewMenuItem () const
+	{ return *m_viewMenuItem; }
 
 	Gtk::ImageMenuItem &
-	getWorkspacesMenuItem () const { return *m_workspacesMenuItem; }
+	getWorkspacesMenuItem () const
+	{ return *m_workspacesMenuItem; }
 
 	Gtk::RadioMenuItem &
-	getBrowserMenuItem () const { return *m_browserMenuItem; }
+	getBrowserMenuItem () const
+	{ return *m_browserMenuItem; }
 
 	Gtk::RadioMenuItem &
-	getEditorMenuItem () const { return *m_editorMenuItem; }
+	getEditorMenuItem () const
+	{ return *m_editorMenuItem; }
 
 	Gtk::CheckMenuItem &
-	getToolBarMenuItem () const { return *m_toolBarMenuItem; }
+	getToolBarMenuItem () const
+	{ return *m_toolBarMenuItem; }
 
 	Gtk::CheckMenuItem &
-	getSideBarMenuItem () const { return *m_sideBarMenuItem; }
+	getSideBarMenuItem () const
+	{ return *m_sideBarMenuItem; }
 
 	Gtk::CheckMenuItem &
-	getFooterMenuItem () const { return *m_footerMenuItem; }
+	getFooterMenuItem () const
+	{ return *m_footerMenuItem; }
 
 	Gtk::MenuItem &
-	getShadingMenuItem () const { return *m_shadingMenuItem; }
+	getShadingMenuItem () const
+	{ return *m_shadingMenuItem; }
 
 	Gtk::RadioMenuItem &
-	getPhongMenuItem () const { return *m_phongMenuItem; }
+	getPhongMenuItem () const
+	{ return *m_phongMenuItem; }
 
 	Gtk::RadioMenuItem &
-	getGouraudMenuItem () const { return *m_gouraudMenuItem; }
+	getGouraudMenuItem () const
+	{ return *m_gouraudMenuItem; }
 
 	Gtk::RadioMenuItem &
-	getFlatMenuItem () const { return *m_flatMenuItem; }
+	getFlatMenuItem () const
+	{ return *m_flatMenuItem; }
 
 	Gtk::RadioMenuItem &
-	getWireFrameMenuItem () const { return *m_wireFrameMenuItem; }
+	getWireFrameMenuItem () const
+	{ return *m_wireFrameMenuItem; }
 
 	Gtk::RadioMenuItem &
-	getPointSetMenuItem () const { return *m_pointSetMenuItem; }
+	getPointSetMenuItem () const
+	{ return *m_pointSetMenuItem; }
 
 	Gtk::MenuItem &
-	getPrimitiveQualtityMenuItem () const { return *m_primitiveQualtityMenuItem; }
+	getPrimitiveQualtityMenuItem () const
+	{ return *m_primitiveQualtityMenuItem; }
 
 	Gtk::RadioMenuItem &
-	getHighQualityMenuItem () const { return *m_highQualityMenuItem; }
+	getHighQualityMenuItem () const
+	{ return *m_highQualityMenuItem; }
 
 	Gtk::RadioMenuItem &
-	getMediumQualityMenuItem () const { return *m_mediumQualityMenuItem; }
+	getMediumQualityMenuItem () const
+	{ return *m_mediumQualityMenuItem; }
 
 	Gtk::RadioMenuItem &
-	getLowQualityMenuItem () const { return *m_lowQualityMenuItem; }
+	getLowQualityMenuItem () const
+	{ return *m_lowQualityMenuItem; }
 
 	Gtk::CheckMenuItem &
-	getRenderingPropertiesMenuItem () const { return *m_renderingPropertiesMenuItem; }
+	getRenderingPropertiesMenuItem () const
+	{ return *m_renderingPropertiesMenuItem; }
 
 	Gtk::CheckMenuItem &
-	getFullScreenMenuItem () const { return *m_fullScreenMenuItem; }
+	getFullScreenMenuItem () const
+	{ return *m_fullScreenMenuItem; }
 
 	Gtk::MenuItem &
-	getNavigationMenuItem () const { return *m_navigationMenuItem; }
+	getNavigationMenuItem () const
+	{ return *m_navigationMenuItem; }
 
 	Gtk::CheckMenuItem &
-	getHeadlightMenuItem () const { return *m_headlightMenuItem; }
+	getHeadlightMenuItem () const
+	{ return *m_headlightMenuItem; }
 
 	Gtk::CheckMenuItem &
-	getRubberbandMenuItem () const { return *m_rubberbandMenuItem; }
+	getRubberbandMenuItem () const
+	{ return *m_rubberbandMenuItem; }
 
 	Gtk::MenuItem &
-	getLookAtAllMenuItem () const { return *m_lookAtAllMenuItem; }
+	getLookAtAllMenuItem () const
+	{ return *m_lookAtAllMenuItem; }
 
 	Gtk::CheckMenuItem &
-	getEnableInlineViewpointsMenuItem () const { return *m_enableInlineViewpointsMenuItem; }
+	getEnableInlineViewpointsMenuItem () const
+	{ return *m_enableInlineViewpointsMenuItem; }
 
 	Gtk::MenuItem &
-	getToolsMenuItem () const { return *m_toolsMenuItem; }
+	getToolsMenuItem () const
+	{ return *m_toolsMenuItem; }
 
 	Gtk::MenuItem &
-	getMotionBlurMenuItem () const { return *m_motionBlurMenuItem; }
+	getMotionBlurMenuItem () const
+	{ return *m_motionBlurMenuItem; }
 
 	Gtk::MenuItem &
-	getLibraryMenuItem () const { return *m_libraryMenuItem; }
+	getLibraryMenuItem () const
+	{ return *m_libraryMenuItem; }
 
 	Gtk::Menu &
-	getLibraryMenu () const { return *m_libraryMenu; }
+	getLibraryMenu () const
+	{ return *m_libraryMenu; }
 
 	Gtk::MenuItem &
-	getHelpMenuItem () const { return *m_helpMenuItem; }
+	getHelpMenuItem () const
+	{ return *m_helpMenuItem; }
 
 	Gtk::ImageMenuItem &
-	getStandardSizeMenuItem () const { return *m_standardSizeMenuItem; }
+	getStandardSizeMenuItem () const
+	{ return *m_standardSizeMenuItem; }
 
 	Gtk::ImageMenuItem &
-	getInfoMenuItem () const { return *m_infoMenuItem; }
+	getInfoMenuItem () const
+	{ return *m_infoMenuItem; }
 
 	Gtk::Toolbar &
-	getToolBar () const { return *m_toolBar; }
+	getToolBar () const
+	{ return *m_toolBar; }
 
 	Gtk::ToolButton &
-	getNewButton () const { return *m_newButton; }
+	getNewButton () const
+	{ return *m_newButton; }
 
 	Gtk::MenuToolButton &
-	getOpenButton () const { return *m_openButton; }
+	getOpenButton () const
+	{ return *m_openButton; }
 
 	Gtk::ToolButton &
-	getImportButton () const { return *m_importButton; }
+	getImportButton () const
+	{ return *m_importButton; }
 
 	Gtk::ToolButton &
-	getSaveButton () const { return *m_saveButton; }
+	getSaveButton () const
+	{ return *m_saveButton; }
 
 	Gtk::ToolButton &
-	getRefreshButton () const { return *m_refreshButton; }
+	getRefreshButton () const
+	{ return *m_refreshButton; }
 
 	Gtk::Paned &
-	getVPaned () const { return *m_vPaned; }
+	getVPaned () const
+	{ return *m_vPaned; }
 
 	Gtk::Paned &
-	getHPaned () const { return *m_hPaned; }
+	getHPaned () const
+	{ return *m_hPaned; }
 
 	Gtk::HBox &
-	getSurfaceBox () const { return *m_surfaceBox; }
+	getSurfaceBox () const
+	{ return *m_surfaceBox; }
 
 	Gtk::Box &
-	getDashboard () const { return *m_dashboard; }
+	getDashboard () const
+	{ return *m_dashboard; }
 
 	Gtk::RadioToolButton &
-	getHandButton () const { return *m_handButton; }
+	getHandButton () const
+	{ return *m_handButton; }
 
 	Gtk::RadioToolButton &
-	getArrowButton () const { return *m_arrowButton; }
+	getArrowButton () const
+	{ return *m_arrowButton; }
 
 	Gtk::MenuToolButton &
-	getViewerButton () const { return *m_viewerButton; }
+	getViewerButton () const
+	{ return *m_viewerButton; }
 
 	Gtk::ToolButton &
-	getLookAtAllButton () const { return *m_lookAtAllButton; }
+	getLookAtAllButton () const
+	{ return *m_lookAtAllButton; }
 
 	Gtk::ToggleToolButton &
-	getLookAtButton () const { return *m_lookAtButton; }
+	getLookAtButton () const
+	{ return *m_lookAtButton; }
 
 	Gtk::Box &
-	getFooter () const { return *m_footer; }
+	getFooter () const
+	{ return *m_footer; }
 
 	Gtk::Notebook &
-	getFooterNotebook () const { return *m_footerNotebook; }
+	getFooterNotebook () const
+	{ return *m_footerNotebook; }
 
 	Gtk::Box &
-	getConsoleBox () const { return *m_consoleBox; }
+	getConsoleBox () const
+	{ return *m_consoleBox; }
 
 	Gtk::TextView &
-	getConsole () const { return *m_console; }
+	getConsole () const
+	{ return *m_console; }
 
 	Gtk::Box &
-	getSideBar () const { return *m_sideBar; }
+	getSideBar () const
+	{ return *m_sideBar; }
 
 	Gtk::Label &
-	getSideBarLabel () const { return *m_sideBarLabel; }
+	getSideBarLabel () const
+	{ return *m_sideBarLabel; }
 
 	Gtk::Notebook &
-	getSideBarNotebook () const { return *m_sideBarNotebook; }
+	getSideBarNotebook () const
+	{ return *m_sideBarNotebook; }
 
 	Gtk::Box &
-	getViewpointListBox () const { return *m_viewpointListBox; }
+	getViewpointListBox () const
+	{ return *m_viewpointListBox; }
 
 	Gtk::Box &
-	getOutlineEditorBox () const { return *m_outlineEditorBox; }
+	getOutlineEditorBox () const
+	{ return *m_outlineEditorBox; }
 
 	Gtk::Box &
-	getHistoryEditorBox () const { return *m_historyEditorBox; }
+	getHistoryEditorBox () const
+	{ return *m_historyEditorBox; }
+
+	virtual
+	void
+	on_messageDialog_response (int response_id) = 0;
+
+	virtual
+	void
+	on_openLocationEntry_changed () = 0;
 
 	virtual
 	bool
@@ -550,6 +672,7 @@ private:
 
 	static const std::string m_widgetName;
 
+	std::string                     filename;
 	std::deque <sigc::connection>   connections;
 	Glib::RefPtr <Gtk::Builder>     m_builder;
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterAllFiles;

@@ -65,7 +65,7 @@ LayerSet {
         USE Home
         USE Far
         DEF Lesser Transform {
-          rotation 0 0 1 1.96377
+          rotation 0 0 1 1.04659
           scale 0.236068 0.236068 1
           children USE loops
         }
