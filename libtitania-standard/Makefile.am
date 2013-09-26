@@ -51,6 +51,7 @@ libtitania_standard_la_SOURCES =  \
 	Titania/OS/Popen2.cpp \
 	Titania/OS/System.cpp \
 	Titania/String/Split.cpp \
+	Titania/String/sprintf.cpp \
 	Titania/String/strfsize.cpp \
 	Titania/String/Trim.cpp
 

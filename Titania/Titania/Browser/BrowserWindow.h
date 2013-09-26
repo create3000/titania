@@ -69,24 +69,6 @@ public:
 
 	BrowserWindow (const basic::uri &);
 
-	/// @name Member access
-
-	const X3D::Keys &
-	getKeys () const
-	{ return keys; }
-
-
-private:
-
-	/// @name Construction
-
-	virtual
-	void
-	initialize ();
-
-	void
-	buildLibraryMenu ();
-
 	/// @name Widgets
 
 	MotionBlurEditor &
@@ -128,6 +110,32 @@ private:
 	const OutlineTreeViewEditor &
 	getOutlineTreeView () const
 	{ return outlineEditor .getTreeView (); }
+
+	/// @name Member access
+
+	const X3D::Keys &
+	getKeys () const
+	{ return keys; }
+	
+	/// @name Menu
+
+	void
+	enableMenu () const;
+	
+	void
+	disableMenu () const;
+
+
+private:
+
+	/// @name Construction
+
+	virtual
+	void
+	initialize ();
+
+	void
+	buildLibraryMenu ();
 
 	///  @name Key events
 

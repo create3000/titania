@@ -181,18 +181,6 @@ OutlineTreeViewEditor::on_drag_data_received (const Glib::RefPtr <Gdk::DragConte
 }
 
 void
-OutlineTreeViewEditor::on_edited (const Glib::ustring & string_path, const Glib::ustring & text)
-{
-	Gtk::TreeModel::Path     path (string_path);
-	Gtk::TreeModel::iterator iter = get_model () -> get_iter (path);
-
-	get_model () -> row_changed (path, iter);
-	watch (iter, path);
-
-	getBrowserWindow () -> setEdited (true);
-}
-
-void
 OutlineTreeViewEditor::on_rename_node_activate ()
 {
 	//__LOG__ << std::endl;
@@ -277,6 +265,7 @@ OutlineTreeViewEditor::select_field (int x, int y)
 
 		if (get_data_type (iter) == OutlineIterType::X3DFieldValue)
 		{
+			getBrowserWindow () -> disableMenu ();
 			unwatch_tree (iter);
 			set_cursor (path, *column, true);
 			return true;
@@ -284,6 +273,19 @@ OutlineTreeViewEditor::select_field (int x, int y)
 	}
 
 	return false;
+}
+
+void
+OutlineTreeViewEditor::on_edited (const Glib::ustring & string_path, const Glib::ustring & text)
+{
+	Gtk::TreeModel::Path     path (string_path);
+	Gtk::TreeModel::iterator iter = get_model () -> get_iter (path);
+
+	get_model () -> row_changed (path, iter);
+	watch (iter, path);
+
+	getBrowserWindow () -> setEdited (true);
+	getBrowserWindow () -> enableMenu ();
 }
 
 } // puck

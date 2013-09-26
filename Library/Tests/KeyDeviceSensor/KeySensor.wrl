@@ -3,25 +3,33 @@
 META "title" "KeySensor"
 
 Transform {
-	children Shape {
-		appearance Appearance {
-			material Material { }
-		}
-		geometry DEF Text Text { }
-	}
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry DEF Text Text { }
+  }
 }
 
 DEF KeySensor KeySensor { }
-KeySensor { }
+
+KeySensor {
+  enabled FALSE
+}
 
 DEF Debug Script {
-  eventIn SFBool set_shiftKey
-  eventIn SFBool set_controlKey
-  eventIn SFBool set_altKey
+  eventIn SFBool   set_shiftKey
+  eventIn SFBool   set_controlKey
+  eventIn SFBool   set_altKey
   eventIn SFString set_keyPress
-  field SFNode text USE Text
+  field   SFNode   text USE Text
 
   url "vrmlscript:
+
+function initialize ()
+{
+	text .string .length = 0;
+}
 
 function set_shiftKey (value)
 {
@@ -43,7 +51,7 @@ function set_keyPress (value)
 	text .string = new MFString (value, value .charCodeAt (0), value .length);
 }
 "
-	directOutput TRUE
+  directOutput TRUE
 }
 
 ROUTE KeySensor.shiftKey TO Debug.set_shiftKey

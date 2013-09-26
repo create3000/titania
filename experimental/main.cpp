@@ -265,7 +265,7 @@ main (int argc, char** argv)
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
 
-	__LOG__ << sprintf ("bah %d %x", 12, 34) << std::endl;
+	__LOG__ << sprintf ("bah %d %x %d", 12, 34, 12345) << std::endl;
 
 	std::clog << "Function main done." << std::endl;
 	exit (0);

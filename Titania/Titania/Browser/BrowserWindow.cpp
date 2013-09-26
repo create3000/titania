@@ -154,6 +154,42 @@ BrowserWindow::buildLibraryMenu ()
 	getLibraryMenu () .show_all ();
 }
 
+// Menu
+
+void
+BrowserWindow::enableMenu () const
+{
+	for (const auto & child : getMenuBar () .get_children ())
+	{
+		auto menuItem = dynamic_cast <Gtk::MenuItem*> (child);
+		
+		if (menuItem)
+		{
+			auto menu = menuItem -> get_submenu ();
+
+			if (menu)
+				menu -> set_sensitive (true);
+		}
+	}
+}
+
+void
+BrowserWindow::disableMenu () const
+{
+	for (const auto & child : getMenuBar () .get_children ())
+	{
+		auto menuItem = dynamic_cast <Gtk::MenuItem*> (child);
+		
+		if (menuItem)
+		{
+			auto menu = menuItem -> get_submenu ();
+
+			if (menu)
+				menu -> set_sensitive (false);
+		}
+	}
+}
+
 // Keys
 
 bool

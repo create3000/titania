@@ -1,5 +1,13 @@
 2013-09-26  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* BrowserWindow.h:
+	* BrowserWindow.ui:
+	* BrowserWindow.cpp:
+	* OutlineTreeViewEditor.h:
+	* OutlineTreeViewEditor.cpp: 
+
+2013-09-26  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* main.cpp:
 	* BrowserWindow.cpp:
 	* X3DBrowserWidget.cpp:

@@ -52,3 +52,4 @@
 #include "String/Split.h"
 #include "String/Trim.h"
 #include "String/strfsize.h"
+#include "String/sprintf.h"

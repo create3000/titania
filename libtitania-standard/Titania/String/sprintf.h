@@ -48,89 +48,18 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_TREE_VIEW_EDITOR_H__
-#define __TITANIA_OUTLINE_EDITOR_OUTLINE_TREE_VIEW_EDITOR_H__
+#ifndef __TITANIA_STRING_SPRINT_F_H__
+#define __TITANIA_STRING_SPRINT_F_H__
 
-#include "X3DOutlineTreeView.h"
-
-#include "OutlineSelection.h"
+#include <string>
 
 namespace titania {
-namespace puck {
+namespace basic {
 
-class OutlineTreeViewEditor :
-	public X3DOutlineTreeView
-{
-public:
+std::string
+sprintf (const char*, ...);
 
-	///  @name Construction
-
-	OutlineTreeViewEditor (BrowserWindow* const);
-
-
-private:
-
-	OutlineSelection &
-	get_selection ()
-	{ return selection; }
-
-	const OutlineSelection &
-	get_selection () const
-	{ return selection; }
-	
-	static
-	const std::string &
-	get_drag_data_type ()
-	{ return dragDataType; }
-
-	virtual
-	void
-	on_drag_begin (const Glib::RefPtr <Gdk::DragContext> &) final;
-
-	virtual
-	void
-	on_drag_end (const Glib::RefPtr <Gdk::DragContext> &) final;
-
-	virtual
-	void
-	on_drag_data_delete (const Glib::RefPtr <Gdk::DragContext> &) final;
-
-	virtual
-	void
-	on_drag_data_received (const Glib::RefPtr <Gdk::DragContext>&, int, int, const Gtk::SelectionData &, guint info, guint) final;
-
-	virtual
-	void
-	on_rename_node_activate () final;
-
-	virtual
-	void
-	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final;
-
-	virtual
-	bool
-	on_button_press_event (GdkEventButton*) final;
-
-	void
-	select_node (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
-
-	bool
-	select_field (int x, int y);
-
-	void
-	on_edited (const Glib::ustring &, const Glib::ustring &);
-
-	///  @name Static members
-
-	static const std::string dragDataType;
-
-	///  @name Members
-
-	OutlineSelection selection;
-
-};
-
-} // puck
+} // basic
 } // titania
 
 #endif

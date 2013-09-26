@@ -1,5 +1,13 @@
 2013-09-26  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* String.h:
+	* sprintf.h:
+	* libtitania-standard.cproj:
+	* sprintf.cpp: 
+
+2013-09-26  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* URI.h:
 	* libtitania-standard.md.pc:
 	* Generator.h:
