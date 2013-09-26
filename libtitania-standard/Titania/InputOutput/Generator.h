@@ -84,6 +84,10 @@ public:
 	{ return ostream << tidySpace; }
 
 	static std::basic_ostream <CharT, Traits> &
+	ForceBreak (std::basic_ostream <CharT, Traits> & ostream)
+	{ return ostream << forceBreak; }
+
+	static std::basic_ostream <CharT, Traits> &
 	Break (std::basic_ostream <CharT, Traits> & ostream)
 	{ return ostream << endl; }
 
@@ -222,6 +226,10 @@ protected:
 		static size_t digits10;
 	};
 
+private:
+
+	static std::string forceBreak;
+
 };
 
 template <class CharT, class Traits>
@@ -230,6 +238,8 @@ template <class CharT, class Traits>
 std::string basic_generator <CharT, Traits>::space = " ";
 template <class CharT, class Traits>
 std::string basic_generator <CharT, Traits>::tidySpace = " ";
+template <class CharT, class Traits>
+std::string basic_generator <CharT, Traits>::forceBreak = "\n";
 template <class CharT, class Traits>
 std::string basic_generator <CharT, Traits>::endl = "\n";
 template <class CharT, class Traits>
@@ -256,10 +266,10 @@ basic_generator <CharT, Traits>::OpenBracket (std::basic_ostream <CharT, Traits>
 {
 	stream .put (stream .widen ('['));
 
-	stream << ListBreak << IncIndent;
-
-	if (HasListBreak ())
-		stream << Indent;
+	stream 
+		<< TidyBreak
+		<< IncIndent
+		<< Indent;
 
 	return stream;
 }
@@ -268,10 +278,10 @@ template <class CharT, class Traits>
 std::basic_ostream <CharT, Traits> &
 basic_generator <CharT, Traits>::CloseBracket (std::basic_ostream <CharT, Traits> & stream)
 {
-	stream << ListBreak << DecIndent;
-
-	if (HasListBreak ())
-		stream << Indent;
+	stream
+		<< TidyBreak
+		<< DecIndent
+		<< Indent;
 
 	stream .put (stream .widen (']'));
 	return stream;

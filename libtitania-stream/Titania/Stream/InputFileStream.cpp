@@ -187,9 +187,6 @@ ifilestream::open (const basic::uri & URL, size_t timeout)
 	}
 	else
 	{
-		if (url () .is_local ())
-			url () .add_file_scheme ();
-
 		istream = url_stream = new iurlstream ();
 		url_stream -> open (url (), timeout);
 	}

@@ -84,10 +84,10 @@ BrowserWindow::initialize ()
 	Gtk::Settings::get_default () -> property_gtk_toolbar_icon_size () = Gtk::ICON_SIZE_SMALL_TOOLBAR;
 
 	// FileFilter
-	getFileFilterX3D   () -> set_name ("X3D");
-	getFileFilterImage () -> set_name ("Images");
-	getFileFilterAudio () -> set_name ("Audio");
-	getFileFilterVideo () -> set_name ("Videos");
+	getFileFilterX3D   () -> set_name (_("X3D"));
+	getFileFilterImage () -> set_name (_("Images"));
+	getFileFilterAudio () -> set_name (_("Audio"));
+	getFileFilterVideo () -> set_name (_("Videos"));
 
 	// MotionBlurEditor
 	getMotionBlurEditor () .getWindow () .set_transient_for (getWindow ());

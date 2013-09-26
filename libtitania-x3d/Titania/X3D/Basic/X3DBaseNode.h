@@ -247,7 +247,11 @@ public:
 
 protected:
 
+	///  @name Construction
+
 	X3DBaseNode (X3DBrowser* const = nullptr, X3DExecutionContext* const = nullptr);
+
+	///  @name Misc
 
 	void
 	addNodeType (const X3DConstants::NodeType value)
@@ -288,6 +292,8 @@ private:
 
 	typedef std::map <std::string, std::string> FieldAliasesMap;
 
+	///  @name Misc
+
 	void
 	replace (X3DBaseNode* const, const std::set <const X3DFieldDefinition*> & = { });
 
@@ -299,6 +305,16 @@ private:
 
 	void
 	removeEvents ();
+
+	///  @name Input/Output
+
+	void
+	toStreamUserDefinedField (std::ostream &, X3DFieldDefinition* const, size_t, size_t) const;
+
+	void
+	toStreamField (std::ostream &, X3DFieldDefinition* const, size_t, size_t) const;
+
+	///  @name Members
 
 	X3DBrowser* const          browser;
 	X3DExecutionContext* const executionContext;

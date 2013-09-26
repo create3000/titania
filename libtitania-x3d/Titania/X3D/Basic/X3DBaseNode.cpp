@@ -652,7 +652,7 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 				<< Generator::Indent
 				<< Generator::Comment
 				<< comment
-				<< Generator::Break;
+				<< Generator::ForceBreak;
 		}
 
 		ostream << Generator::Indent;
@@ -679,13 +679,23 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 	size_t fieldTypeLength  = 0;
 	size_t accessTypeLength = 0;
 
-	if (Generator::Style () not_eq Generator::SMALLEST)
+	switch (Generator::Style ())
 	{
-		for (const auto & field : userDefinedFields)
+		case Generator::SMALLEST:
+		case Generator::SMALL:
 		{
-			fieldTypeLength = std::max (fieldTypeLength, field -> getTypeName () .length ());
+			break;
+		}
+		default:
+		{
+			for (const auto & field : userDefinedFields)
+			{
+				fieldTypeLength = std::max (fieldTypeLength, field -> getTypeName () .length ());
 
-			accessTypeLength = std::max (accessTypeLength, Generator::AccessTypes [field] .length ());
+				accessTypeLength = std::max (accessTypeLength, Generator::AccessTypes [field] .length ());
+			}
+
+			break;
 		}
 	}
 
@@ -695,114 +705,14 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 			<< Generator::TidyBreak
 			<< Generator::IncIndent;
 
-		for (const auto & field : userDefinedFields)
+		for (const auto & field : basic::adapter (userDefinedFields .begin (), userDefinedFields .end () - 1))
 		{
-			for (const auto & comment : field -> getComments ())
-			{
-				ostream
-					<< Generator::Indent
-					<< Generator::Comment
-					<< comment
-					<< Generator::Break;
-			}
-
-			if (field -> getReferences () .size ())
-			{
-				bool initializableReference = false;
-
-				for (const auto & reference : field -> getReferences ())
-				{
-					initializableReference |= reference -> isInitializeable ();
-
-					// Output user defined reference field
-
-					ostream
-						<< Generator::Indent
-						<< std::setiosflags (std::ios::left)
-						<< std::setw (accessTypeLength);
-
-					ostream << Generator::AccessTypes [field];
-
-					ostream
-						<< Generator::Space
-						<< std::setiosflags (std::ios::left) << std::setw (fieldTypeLength) << field -> getTypeName ()
-						<< Generator::Space;
-
-					if (Generator::X3DFieldNames ())
-						ostream << field -> getName ();
-					else
-						ostream << field -> getAliasName ();
-
-					ostream
-						<< Generator::Space
-						<< "IS"
-						<< Generator::Space
-						<< reference -> getName ()
-						<< Generator::Break;
-				}
-
-				if (field -> getAccessType () == inputOutput and not initializableReference)
-				{
-					// Output user defined field
-
-					ostream
-						<< Generator::Indent
-						<< std::setiosflags (std::ios::left)
-						<< std::setw (accessTypeLength);
-
-					ostream << Generator::AccessTypes [field];
-
-					ostream
-						<< Generator::Space
-						<< std::setiosflags (std::ios::left) << std::setw (fieldTypeLength) << field -> getTypeName ()
-						<< Generator::Space;
-
-					if (Generator::X3DFieldNames ())
-						ostream << field -> getName ();
-					else
-						ostream << field -> getAliasName ();
-
-					if (field -> isInitializeable ())
-					{
-						ostream
-							<< Generator::Space
-							<< *field;
-					}
-
-					ostream << Generator::Break;
-				}
-			}
-			else
-			{
-				// Output user defined field
-
-				ostream
-					<< Generator::Indent
-					<< std::setiosflags (std::ios::left)
-					<< std::setw (accessTypeLength);
-
-				ostream << Generator::AccessTypes [field];
-
-				ostream
-					<< Generator::Space
-					<< std::setiosflags (std::ios::left) << std::setw (fieldTypeLength) << field -> getTypeName ()
-					<< Generator::Space;
-
-				if (Generator::X3DFieldNames ())
-					ostream << field -> getName ();
-				else
-					ostream << field -> getAliasName ();
-
-				if (field -> isInitializeable ())
-				{
-					ostream
-						<< Generator::Space
-						<< *field;
-				}
-
-				ostream << Generator::Break;
-			}
+			toStreamUserDefinedField (ostream, field, fieldTypeLength, accessTypeLength);
+			ostream << Generator::Break;
 		}
+
+		toStreamUserDefinedField (ostream, userDefinedFields .back (), fieldTypeLength, accessTypeLength);
+		ostream << Generator::TidyBreak;
 
 		ostream
 			<< Generator::DecIndent
@@ -818,55 +728,14 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 
 		ostream << Generator::IncIndent;
 
-		for (const auto & field : fields)
+		for (const auto & field : basic::adapter (fields .begin (), fields .end () - 1))
 		{
-			for (const auto & comment : field -> getComments ())
-			{
-				ostream
-					<< Generator::Indent
-					<< Generator::Comment
-					<< comment
-					<< Generator::Break;
-			}
-
-			if (field -> getReferences () .size ())
-			{
-				for (const auto & reference : field -> getReferences ())
-				{
-					// Output build in reference
-
-					ostream << Generator::Indent;
-
-					if (Generator::X3DFieldNames ())
-						ostream << field -> getName ();
-					else
-						ostream << field -> getAliasName ();
-
-					ostream
-						<< Generator::Space
-						<< "IS"
-						<< Generator::Space
-						<< reference -> getName ()
-						<< Generator::Break;
-				}
-			}
-			else
-			{
-				// Output build field
-
-				ostream << Generator::Indent;
-
-				if (Generator::X3DFieldNames ())
-					ostream << field -> getName ();
-				else
-					ostream << field -> getAliasName ();
-
-				ostream
-					<< Generator::Space
-					<< *field
-					<< Generator::Break;
-			}
+			toStreamField (ostream, field, fieldTypeLength, accessTypeLength);
+			ostream << Generator::Break;
 		}
+
+		toStreamField (ostream, fields .back (), fieldTypeLength, accessTypeLength);
+		ostream << Generator::TidyBreak;
 
 		ostream
 			<< Generator::DecIndent
@@ -903,6 +772,160 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 	ostream << '}';
 
 	Generator::PopContext ();
+}
+
+void
+X3DBaseNode::toStreamField (std::ostream & ostream, X3DFieldDefinition* const field, size_t fieldTypeLength, size_t accessTypeLength) const
+{
+	for (const auto & comment : field -> getComments ())
+	{
+		ostream
+			<< Generator::Indent
+			<< Generator::Comment
+			<< comment
+			<< Generator::Break;
+	}
+
+	if (field -> getReferences () .size ())
+	{
+		for (const auto & reference : field -> getReferences ())
+		{
+			// Output build in reference
+
+			ostream << Generator::Indent;
+
+			if (Generator::X3DFieldNames ())
+				ostream << field -> getName ();
+			else
+				ostream << field -> getAliasName ();
+
+			ostream
+				<< Generator::Space
+				<< "IS"
+				<< Generator::Space
+				<< reference -> getName ();
+		}
+	}
+	else
+	{
+		// Output build field
+
+		ostream << Generator::Indent;
+
+		if (Generator::X3DFieldNames ())
+			ostream << field -> getName ();
+		else
+			ostream << field -> getAliasName ();
+
+		ostream
+			<< Generator::Space
+			<< *field;
+	}
+}
+
+void
+X3DBaseNode::toStreamUserDefinedField (std::ostream & ostream, X3DFieldDefinition* const field, size_t fieldTypeLength, size_t accessTypeLength) const
+{
+	for (const auto & comment : field -> getComments ())
+	{
+		ostream
+			<< Generator::Indent
+			<< Generator::Comment
+			<< comment
+			<< Generator::Break;
+	}
+
+	if (field -> getReferences () .size ())
+	{
+		bool initializableReference = false;
+
+		for (const auto & reference : field -> getReferences ())
+		{
+			initializableReference |= reference -> isInitializeable ();
+
+			// Output user defined reference field
+
+			ostream
+				<< Generator::Indent
+				<< std::setiosflags (std::ios::left)
+				<< std::setw (accessTypeLength);
+
+			ostream << Generator::AccessTypes [field];
+
+			ostream
+				<< Generator::Space
+				<< std::setiosflags (std::ios::left) << std::setw (fieldTypeLength) << field -> getTypeName ()
+				<< Generator::Space;
+
+			if (Generator::X3DFieldNames ())
+				ostream << field -> getName ();
+			else
+				ostream << field -> getAliasName ();
+
+			ostream
+				<< Generator::Space
+				<< "IS"
+				<< Generator::Space
+				<< reference -> getName ();
+		}
+
+		if (field -> getAccessType () == inputOutput and not initializableReference)
+		{
+			// Output user defined field
+
+			ostream
+				<< Generator::Indent
+				<< std::setiosflags (std::ios::left)
+				<< std::setw (accessTypeLength);
+
+			ostream << Generator::AccessTypes [field];
+
+			ostream
+				<< Generator::Space
+				<< std::setiosflags (std::ios::left) << std::setw (fieldTypeLength) << field -> getTypeName ()
+				<< Generator::Space;
+
+			if (Generator::X3DFieldNames ())
+				ostream << field -> getName ();
+			else
+				ostream << field -> getAliasName ();
+
+			if (field -> isInitializeable ())
+			{
+				ostream
+					<< Generator::Space
+					<< *field;
+			}
+		}
+	}
+	else
+	{
+		// Output user defined field
+
+		ostream
+			<< Generator::Indent
+			<< std::setiosflags (std::ios::left)
+			<< std::setw (accessTypeLength);
+
+		ostream << Generator::AccessTypes [field];
+
+		ostream
+			<< Generator::Space
+			<< std::setiosflags (std::ios::left) << std::setw (fieldTypeLength) << field -> getTypeName ()
+			<< Generator::Space;
+
+		if (Generator::X3DFieldNames ())
+			ostream << field -> getName ();
+		else
+			ostream << field -> getAliasName ();
+
+		if (field -> isInitializeable ())
+		{
+			ostream
+				<< Generator::Space
+				<< *field;
+		}
+	}
 }
 
 void

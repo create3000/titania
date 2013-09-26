@@ -46,10 +46,9 @@ urlstreambuf::urlstreambuf () :
 urlstreambuf*
 urlstreambuf::open (const basic::uri & URL)
 {
-	url (URL);
+	url (URL .add_file_scheme ());
 
-	if (is_open ())
-		close ();
+	close ();
 
 	// Init CURL.
 
@@ -99,10 +98,9 @@ urlstreambuf::send (const headers_type & headers)
 
 	// Did we succeed?
 	if (retcode == CURLE_OK)
-	{
 		return this;
-	}
 
+	std::clog << "CURL Error: " << url () << std::endl;
 	std::clog << "CURL Error: " << "Can't send Request: " << std::strerror (retcode) << std::endl;
 
 	close ();

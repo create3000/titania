@@ -117,7 +117,7 @@ HistoryEditor::set_world ()
 void
 HistoryEditor::on_map ()
 {
-	getBrowserWindow () -> getSideBarLabel () .set_text ("History");
+	getBrowserWindow () -> getSideBarLabel () .set_text (_("History"));
 }
 
 void

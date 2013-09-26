@@ -102,7 +102,7 @@ Proto::toStream (std::ostream & ostream) const
 				<< Generator::Indent
 				<< Generator::Comment
 				<< comment
-				<< Generator::Break;
+				<< Generator::ForceBreak;
 		}
 
 		ostream << Generator::TidyBreak;
@@ -124,52 +124,37 @@ Proto::toStream (std::ostream & ostream) const
 			<< Generator::TidyBreak
 			<< Generator::IncIndent;
 
-		size_t fieldTypeLength  = 0;
+		size_t typeLength       = 0;
 		size_t accessTypeLength = 0;
 
-		if (Generator::Style () not_eq Generator::SMALLEST)
+		switch (Generator::Style ())
 		{
-			for (const auto & field : fields)
+			case Generator::SMALLEST:
+			case Generator::SMALL:
 			{
-				fieldTypeLength = std::max (fieldTypeLength, field -> getTypeName () .length ());
+				break;
+			}
+			default:
+			{
+				for (const auto & field : fields)
+				{
+					typeLength = std::max (typeLength, field -> getTypeName () .length ());
 
-				accessTypeLength = std::max (accessTypeLength, Generator::AccessTypes [field] .length ());
+					accessTypeLength = std::max (accessTypeLength, Generator::AccessTypes [field] .length ());
+				}
+
+				break;
 			}
 		}
 
-		for (const auto & field : fields)
+		for (const auto & field : basic::adapter (fields .begin (), fields .end () - 1))
 		{
-			for (const auto & comment : field -> getComments ())
-			{
-				ostream
-					<< Generator::Indent
-					<< Generator::Comment
-					<< comment
-					<< Generator::Break;
-			}
-
-			ostream
-				<< Generator::Indent
-				<< std::setiosflags (std::ios::left)
-				<< std::setw (accessTypeLength);
-
-			ostream << Generator::AccessTypes [field];
-
-			ostream
-				<< Generator::Space
-				<< std::setiosflags (std::ios::left) << std::setw (fieldTypeLength) << field -> getTypeName ()
-				<< Generator::Space
-				<< field -> getName ();
-
-			if (field -> isInitializeable ())
-			{
-				ostream
-					<< Generator::Space
-					<< *field;
-			}
-
-			ostream << Generator::Break;
+			toStreamField (ostream, field, accessTypeLength, typeLength);
+			ostream << Generator::Break;			
 		}
+
+		toStreamField (ostream, fields .back (), accessTypeLength, typeLength);
+		ostream << Generator::TidyBreak;			
 
 		for (const auto & comment : getInterfaceComments ())
 		{
@@ -229,6 +214,39 @@ Proto::toStream (std::ostream & ostream) const
 		<< Generator::Indent
 		<< '}';
 }
+void
+Proto::toStreamField (std::ostream & ostream, X3DFieldDefinition* const field, size_t accessTypeLength, size_t typeLength) const
+{
+	for (const auto & comment : field -> getComments ())
+	{
+		ostream
+			<< Generator::Indent
+			<< Generator::Comment
+			<< comment
+			<< Generator::Break;
+	}
+
+	ostream
+		<< Generator::Indent
+		<< std::setiosflags (std::ios::left)
+		<< std::setw (accessTypeLength);
+
+	ostream << Generator::AccessTypes [field];
+
+	ostream
+		<< Generator::Space
+		<< std::setiosflags (std::ios::left) << std::setw (typeLength) << field -> getTypeName ()
+		<< Generator::Space
+		<< field -> getName ();
+
+	if (field -> isInitializeable ())
+	{
+		ostream
+			<< Generator::Space
+			<< *field;
+	}
+}
+
 
 } // X3D
 } // titania

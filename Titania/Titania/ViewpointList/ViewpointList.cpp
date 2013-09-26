@@ -174,7 +174,7 @@ ViewpointList::set_currentViewpoint ()
 void
 ViewpointList::on_map ()
 {
-	getBrowserWindow () -> getSideBarLabel () .set_text ("ViewpointList");
+	getBrowserWindow () -> getSideBarLabel () .set_text (_("ViewpointList"));
 }
 
 void

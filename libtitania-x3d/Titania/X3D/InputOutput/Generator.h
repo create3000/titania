@@ -73,6 +73,7 @@ public:
 	enum StyleType
 	{
 		SMALLEST,
+		SMALL,
 		COMPACT,
 		NICEST
 	};
@@ -122,11 +123,16 @@ public:
 
 	static
 	StyleType
-	Style () { return style; }
+	Style ()
+	{ return style; }
 
 	static
 	void
 	SmallestStyle ();
+
+	static
+	void
+	SmallStyle ();
 
 	static
 	void
@@ -138,27 +144,33 @@ public:
 
 	static
 	void
-	ExpandNodes (const bool value) { expandNodes = value; }
+	ExpandNodes (const bool value)
+	{ expandNodes = value; }
 
 	static
 	bool
-	ExpandNodes () { return expandNodes; }
+	ExpandNodes ()
+	{ return expandNodes; }
 
 	static
 	void
-	X3DFieldNames (const bool value) { x3dFieldNames = value; }
+	X3DFieldNames (const bool value)
+	{ x3dFieldNames = value; }
 
 	static
 	bool
-	X3DFieldNames () { return x3dFieldNames; }
+	X3DFieldNames ()
+	{ return x3dFieldNames; }
 
 	static
 	void
-	X3DAccessTypes (const bool value) { x3dAccessTypes = value; }
+	X3DAccessTypes (const bool value)
+	{ x3dAccessTypes = value; }
 
 	static
 	bool
-	X3DAccessTypes () { return x3dAccessTypes; }
+	X3DAccessTypes ()
+	{ return x3dAccessTypes; }
 
 	static
 	void
@@ -217,6 +229,14 @@ std::basic_ostream <CharT, Traits> &
 SmallestStyle (std::basic_ostream <CharT, Traits> & ostream)
 {
 	Generator::SmallestStyle ();
+	return ostream;
+}
+
+template <class CharT, class Traits>
+std::basic_ostream <CharT, Traits> &
+SmallStyle (std::basic_ostream <CharT, Traits> & ostream)
+{
+	Generator::SmallStyle ();
 	return ostream;
 }
 

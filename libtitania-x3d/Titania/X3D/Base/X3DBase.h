@@ -51,6 +51,8 @@
 #ifndef __TITANIA_X3D_BASE_X3DBASE_H__
 #define __TITANIA_X3D_BASE_X3DBASE_H__
 
+#include "../Miscellaneous/International.h"
+
 namespace titania {
 namespace X3D {
 

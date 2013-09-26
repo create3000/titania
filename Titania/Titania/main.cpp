@@ -52,7 +52,6 @@
 #include "Configuration/config.h"
 #include <Titania/OS/Env.h>
 #include <iostream>
-#include <libintl.h>
 
 using namespace titania;
 using namespace titania::puck;

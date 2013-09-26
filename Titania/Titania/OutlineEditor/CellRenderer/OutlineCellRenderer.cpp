@@ -121,10 +121,10 @@ OutlineCellRenderer::on_data ()
 
 			const std::string name = route -> getSourceNode () -> getName () .size ()
 			                         ? route -> getSourceNode () -> getName ()
-											 : "<unnamed>";
+											 : _("<unnamed>");
 
 			property_editable ()                              = false;
-			property_markup ()                                = "Route from " + name + "." + route -> getSourceField ();
+			property_markup ()                                = _("Route from ") + name + "." + route -> getSourceField ();
 			cellrenderer_access_type_icon .property_pixbuf () = accessTypeImages [X3D::inputOnly] [1];
 			set_alignment (0, 0.5);
 			break;
@@ -135,10 +135,10 @@ OutlineCellRenderer::on_data ()
 
 			const std::string name = route -> getDestinationNode () -> getName () .size ()
 			                         ? route -> getDestinationNode () -> getName ()
-											 : "<unnamed>";
+											 : _("<unnamed>");
 
 			property_editable ()                              = false;
-			property_markup ()                                = "Route to " + name + "." + route -> getDestinationField ();
+			property_markup ()                                = _("Route to ") + name + "." + route -> getDestinationField ();
 			cellrenderer_access_type_icon .property_pixbuf () = accessTypeImages [X3D::outputOnly] [1];
 			set_alignment (0, 0.5);
 			break;

@@ -48,100 +48,11 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PROTOTYPE_PROTO_H__
-#define __TITANIA_X3D_PROTOTYPE_PROTO_H__
+#ifndef __TITANIA_X3D_MISCELLANEOUS_INTERNATIONAL_H__
+#define __TITANIA_X3D_MISCELLANEOUS_INTERNATIONAL_H__
 
-#include "../Execution/X3DExecutionContext.h"
-#include "../Prototype/X3DProto.h"
+#include <libintl.h>
 
-namespace titania {
-namespace X3D {
-
-class Proto :
-	public X3DProto, public X3DExecutionContext
-{
-public:
-
-	using X3DProto::createInstance;
-	using X3DExecutionContext::dispose;
-
-	///  @name Creation
-
-	Proto (X3DExecutionContext* const);
-
-	virtual
-	X3DPrototypeInstance*
-	createInstance (X3DExecutionContext* const) final;
-
-	///  @name Common members
-
-	virtual
-	const std::string &
-	getComponentName () const final
-	{ return componentName; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final
-	{ return containerField; }
-
-	///  @name Tests
-
-	virtual
-	bool
-	isProto () const final
-	{ return true; }
-
-	virtual
-	bool
-	isExternproto () const final
-	{ return false; }
-
-	///  @name RootNodes handling
-
-	X3DBaseNode*
-	getRootNode () const;
-
-	///  @name Input/Output
-
-	virtual
-	void
-	toStream (std::ostream &) const final;
-
-
-private:
-
-	///  @name Construction
-
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final;
-
-	virtual
-	void
-	addUninitializedNode (X3DBaseNode* node) final
-	{ }
-
-	///  @name Input/Output
-
-	void
-	toStreamField (std::ostream &, X3DFieldDefinition* const, size_t, size_t) const;
-
-	///  @name Static members
-
-	static const std::string componentName;
-	static const std::string typeName;
-	static const std::string containerField;
-
-};
-
-} // X3D
-} // titania
+#define _(msgid) gettext(msgid)
 
 #endif

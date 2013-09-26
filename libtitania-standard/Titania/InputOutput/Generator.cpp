@@ -62,6 +62,7 @@ namespace io {
 template std::ostream & titania::io::Generator::Comment       (std::ostream &);
 template std::ostream & titania::io::Generator::Space         (std::ostream &);
 template std::ostream & titania::io::Generator::TidySpace     (std::ostream &);
+template std::ostream & titania::io::Generator::ForceBreak    (std::ostream &);
 template std::ostream & titania::io::Generator::Break         (std::ostream &);
 template std::ostream & titania::io::Generator::TidyBreak     (std::ostream &);
 template std::ostream & titania::io::Generator::ListBreak     (std::ostream &);

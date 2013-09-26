@@ -257,7 +257,9 @@ X3DScene::toStream (std::ostream & ostream) const
 			<< getComment ();
 	}
 
-	ostream << std::endl << std::endl;
+	ostream
+		<< Generator::ForceBreak
+		<< Generator::ForceBreak;
 
 	if (getComments () .size ())
 	{
@@ -266,7 +268,7 @@ X3DScene::toStream (std::ostream & ostream) const
 			ostream
 				<< Generator::Comment
 				<< comment
-				<< Generator::Break;
+				<< Generator::ForceBreak;
 		}
 
 		ostream << Generator::TidyBreak;

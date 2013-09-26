@@ -359,7 +359,7 @@ X3DBrowserWidget::set_console ()
 void
 X3DBrowserWidget::set_urlError (const X3D::MFString & urlError)
 {
-	getMessageDialog () .set_message ("Invalid X3D");
+	getMessageDialog () .set_message (_("Invalid X3D"));
 	getMessageDialog () .set_secondary_text ("<span font_desc=\"mono\">"
 	                                         + Glib::Markup::escape_text (basic::join (urlError, "\n"))
 	                                         + "</span>",

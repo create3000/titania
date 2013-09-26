@@ -123,6 +123,8 @@ public:
 
 private:
 
+	///  @name Construction
+
 	virtual
 	void
 	initialize () final;
@@ -130,6 +132,11 @@ private:
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const final;
+
+	///  @name Input/Output
+
+	void
+	toStreamField (std::ostream &, X3DFieldDefinition* const, size_t, size_t) const;
 
 	///  @name Static members
 

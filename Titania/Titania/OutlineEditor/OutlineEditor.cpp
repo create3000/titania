@@ -75,7 +75,7 @@ OutlineEditor::initialize ()
 void
 OutlineEditor::on_map ()
 {
-	getBrowserWindow () -> getSideBarLabel () .set_text ("OutlineEditor");
+	getBrowserWindow () -> getSideBarLabel () .set_text (_("OutlineEditor"));
 }
 
 } // puck

@@ -74,6 +74,8 @@
 #include <unordered_set>
 #include <vector>
 
+#include <cstdarg>
+
 using namespace titania;
 using namespace titania::basic;
 
@@ -238,6 +240,22 @@ public:
 
 };
 
+std::string
+sprintf (const char* fmt, ...)
+{
+	char*   ret = nullptr;
+	va_list ap;
+
+	va_start (ap, fmt);
+	int n = vasprintf (&ret, fmt, ap);
+	va_end (ap);
+
+	std::string str (ret, n);
+	free (ret);
+
+	return str;
+}
+
 int
 main (int argc, char** argv)
 {
@@ -247,10 +265,7 @@ main (int argc, char** argv)
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
 
-	A <int> a1;
-	A <int> a2 = a1;
-	A <short> a3 = a1;
-
+	__LOG__ << sprintf ("bah %d %x", 12, 34) << std::endl;
 
 	std::clog << "Function main done." << std::endl;
 	exit (0);

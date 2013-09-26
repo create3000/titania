@@ -57,9 +57,9 @@
 namespace titania {
 namespace X3D {
 
-template std::ostream & SmallestStyle   (std::ostream &);
-template std::ostream & CompactStyle (std::ostream &);
-template std::ostream & NicestStyle    (std::ostream &);
+template std::ostream & SmallestStyle (std::ostream &);
+template std::ostream & CompactStyle  (std::ostream &);
+template std::ostream & NicestStyle   (std::ostream &);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -167,6 +167,7 @@ Generator::NodeTypesIndex::NodeTypesIndex ()
 	emplace_back ("X3DTextureTransformNode");
 	emplace_back ("X3DTimeDependentNode");
 	emplace_back ("X3DTouchSensorNode");
+	emplace_back ("X3DTransformNode");
 	emplace_back ("X3DTriggerNode");
 	emplace_back ("X3DUrlObject");
 	emplace_back ("X3DVertexAttributeNode");
@@ -199,8 +200,11 @@ bool Generator::x3dAccessTypes = true;
 void
 Generator::Style (const std::string & value)
 {
-	if (value == "clean")
+	if (value == "smallest")
 		SmallestStyle ();
+
+	if (value == "small")
+		SmallStyle ();
 
 	else if (value == "compact")
 		CompactStyle ();
@@ -216,6 +220,27 @@ Generator::SmallestStyle ()
 		return;
 
 	style = SMALLEST;
+
+	space     = " ";
+	tidySpace = "";
+	endl      = " ";
+	tidyBreak = "";
+	listBreak = " ";
+	comma     = "";
+
+	indent     = "";
+	indentChar = "";
+
+	hasListBreak = false;
+}
+
+void
+Generator::SmallStyle ()
+{
+	if (style == SMALL)
+		return;
+
+	style = SMALL;
 
 	space     = " ";
 	tidySpace = "";

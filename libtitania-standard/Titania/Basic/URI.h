@@ -675,7 +675,7 @@ basic_uri <StringT>::transform (const basic_uri & reference) const
 			}
 
 			T_local     = is_local ();
-			T_absolute  = is_absolute ();
+			T_absolute  = is_absolute () or reference .is_absolute ();
 			T_authority = authority ();
 			T_host      = host ();
 			T_port      = port ();

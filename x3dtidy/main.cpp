@@ -89,8 +89,8 @@ main (int argc, char** argv)
 	options .addUsage ("              prints usage");
 	options .addUsage ("");
 	options .addUsage ("       -s=mode, --style=mode");
-	options .addUsage ("              mode can be 'clean', 'compact', or 'tidy'");
-	options .addUsage ("              tidy is the default mode");
+	options .addUsage ("              mode can be 'smallest', 'small ', 'compact', or 'nicest'");
+	options .addUsage ("              nicest is the default mode");
 	options .addUsage ("");
 	options .addUsage ("       With no FILE given, or when FILE is -, read from standard input.");
 	options .addUsage ("");
@@ -109,7 +109,7 @@ main (int argc, char** argv)
 	options .addUsage ("       This is free software: you are free to change and redistribute it.");
 	options .addUsage ("       There is NO WARRANTY, to the extent permitted by law.");
 
-	options .setFlag ("compact", 'c');
+	options .setFlag ("compact",  'c');
 	options .setFlag ("expanded", 'e');
 	options .setOption ("style", 's');
 
@@ -129,11 +129,11 @@ main (int argc, char** argv)
 	if (options .getFlag ("compact") or options .getFlag ('c'))
 		X3D::Generator::Style ("compact");
 
-	if (options .getValue ("style"))
-		X3D::Generator::Style (options .getValue ("style"));
-
 	if (options .getValue ('s'))
 		X3D::Generator::Style (options .getValue ('s'));
+
+	if (options .getValue ("style"))
+		X3D::Generator::Style (options .getValue ("style"));
 
 	try
 	{

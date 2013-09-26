@@ -82,7 +82,7 @@ ComponentInfo::toStream (std::ostream & ostream) const
 		<< "COMPONENT"
 		<< Generator::Space
 		<< getName ()
-		<< Generator::Space
+		<< Generator::TidySpace
 		<< ':'
 		<< Generator::TidySpace
 		<< getLevel ();
