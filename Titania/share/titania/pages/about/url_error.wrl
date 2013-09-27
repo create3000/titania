@@ -1,19 +1,19 @@
 #X3D V3.0 utf8 Titania
 
-META "icon" "about:icon"
+META "icon" "../../ui/icons/icon-bw.svg"
 META "title" "about:url_error"
 
 EXTERNPROTO Red [
   inputOutput SFFloat transparency
 ]
-"../../library/Colors.wrl"
+"library/Colors.wrl"
 
 NavigationInfo {
   type "NONE"
 }
 
 Inline {
-  url "../../library/background.wrl"
+  url "library/background.wrl"
 }
 
 Viewpoint { }

@@ -578,12 +578,12 @@
     <None Include="Titania\X3D\Browser\Picking\IntersectionPtr.h" />
     <None Include="Titania\X3D\Browser\Picking\Selection.h" />
     <None Include="share\titania\handles\Notification.wrl" />
-    <None Include="share\titania\library\RoundedRectangle2D.wrl" />
     <None Include="Titania\X3D\Components\Grouping\X3DTransformNode.h" />
     <None Include="Titania\X3D\Routing\EventList.h" />
     <None Include="Titania\X3D\Components\ParticleSystems\ForcePhysicsModel.h" />
     <None Include="Titania\X3D\Browser\X3DBrowserSurface.h" />
     <None Include="Titania\X3D\Miscellaneous\International.h" />
+    <None Include="share\titania\handles\library\RoundedRectangle2D.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1057,7 +1057,7 @@
     <Folder Include="Titania\X3D\Miscellaneous\" />
     <Folder Include="Titania\X3D\Browser\Devices\" />
     <Folder Include="Titania\X3D\Browser\Picking\" />
-    <Folder Include="share\titania\library\" />
+    <Folder Include="share\titania\handles\library\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
@@ -1092,7 +1092,7 @@
       <DeployService-TargetDirectoryId>ProgramFilesRoot</DeployService-TargetDirectoryId>
       <DeployService-UseProjectRelativePath>true</DeployService-UseProjectRelativePath>
     </Content>
-    <Content Include="share\titania\library\Logo.wrl" />
-    <Content Include="share\titania\library\Colors.wrl" />
+    <Content Include="share\titania\pages\about\library\Logo.wrl" />
+    <Content Include="share\titania\pages\about\library\Colors.wrl" />
   </ItemGroup>
 </Project>

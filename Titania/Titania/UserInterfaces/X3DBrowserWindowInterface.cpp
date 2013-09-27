@@ -72,8 +72,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	// Get widgets.
 	m_builder -> get_widget ("ExamineViewerImage", m_examineViewerImage);
 	m_examineViewerImage -> set_name ("ExamineViewerImage");
-	m_builder -> get_widget ("FileImportDialog", m_fileImportDialog);
-	m_fileImportDialog -> set_name ("FileImportDialog");
 	m_builder -> get_widget ("FileOpenDialog", m_fileOpenDialog);
 	m_fileOpenDialog -> set_name ("FileOpenDialog");
 	m_builder -> get_widget ("FileSaveDialog", m_fileSaveDialog);
@@ -86,6 +84,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_flyViewerImage -> set_name ("FlyViewerImage");
 	m_builder -> get_widget ("ImportImage", m_importImage);
 	m_importImage -> set_name ("ImportImage");
+	m_builder -> get_widget ("FileImportDialog", m_fileImportDialog);
+	m_fileImportDialog -> set_name ("FileImportDialog");
 	m_builder -> get_widget ("MessageDialog", m_messageDialog);
 	m_messageDialog -> set_name ("MessageDialog");
 	m_builder -> get_widget ("NoneViewerImage", m_noneViewerImage);
@@ -96,8 +96,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_openLocationEntry -> set_name ("OpenLocationEntry");
 	m_builder -> get_widget ("OpenLocationImage", m_openLocationImage);
 	m_openLocationImage -> set_name ("OpenLocationImage");
-	m_builder -> get_widget ("WalkViewerImage", m_walkViewerImage);
-	m_walkViewerImage -> set_name ("WalkViewerImage");
 	m_builder -> get_widget ("ViewerTypeMenu", m_viewerTypeMenu);
 	m_viewerTypeMenu -> set_name ("ViewerTypeMenu");
 	m_builder -> get_widget ("ExamineViewerMenuItem", m_examineViewerMenuItem);
@@ -108,6 +106,10 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_flyViewerMenuItem -> set_name ("FlyViewerMenuItem");
 	m_builder -> get_widget ("NoneViewerMenuItem", m_noneViewerMenuItem);
 	m_noneViewerMenuItem -> set_name ("NoneViewerMenuItem");
+	m_builder -> get_widget ("WalkViewerImage", m_walkViewerImage);
+	m_walkViewerImage -> set_name ("WalkViewerImage");
+	m_builder -> get_widget ("WorkspacesImage", m_workspacesImage);
+	m_workspacesImage -> set_name ("WorkspacesImage");
 	m_builder -> get_widget ("Window", m_window);
 	m_window -> set_name ("Window");
 	m_builder -> get_widget ("Widget", m_widget);
@@ -220,6 +222,16 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_saveButton -> set_name ("SaveButton");
 	m_builder -> get_widget ("RefreshButton", m_refreshButton);
 	m_refreshButton -> set_name ("RefreshButton");
+	m_builder -> get_widget ("BoxToolButton", m_boxToolButton);
+	m_boxToolButton -> set_name ("BoxToolButton");
+	m_builder -> get_widget ("SphereToolButton", m_sphereToolButton);
+	m_sphereToolButton -> set_name ("SphereToolButton");
+	m_builder -> get_widget ("CylinderToolButton", m_cylinderToolButton);
+	m_cylinderToolButton -> set_name ("CylinderToolButton");
+	m_builder -> get_widget ("ConeToolButton", m_coneToolButton);
+	m_coneToolButton -> set_name ("ConeToolButton");
+	m_builder -> get_widget ("TextToolButton", m_textToolButton);
+	m_textToolButton -> set_name ("TextToolButton");
 	m_builder -> get_widget ("VPaned", m_vPaned);
 	m_vPaned -> set_name ("VPaned");
 	m_builder -> get_widget ("HPaned", m_hPaned);
@@ -254,19 +266,17 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_sideBarNotebook -> set_name ("SideBarNotebook");
 	m_builder -> get_widget ("ViewpointListBox", m_viewpointListBox);
 	m_viewpointListBox -> set_name ("ViewpointListBox");
-	m_builder -> get_widget ("OutlineEditorBox", m_outlineEditorBox);
-	m_outlineEditorBox -> set_name ("OutlineEditorBox");
 	m_builder -> get_widget ("HistoryEditorBox", m_historyEditorBox);
 	m_historyEditorBox -> set_name ("HistoryEditorBox");
-	m_builder -> get_widget ("WorkspacesImage", m_workspacesImage);
-	m_workspacesImage -> set_name ("WorkspacesImage");
+	m_builder -> get_widget ("OutlineEditorBox", m_outlineEditorBox);
+	m_outlineEditorBox -> set_name ("OutlineEditorBox");
 
 	// Connect object Gtk::MessageDialog with id 'MessageDialog'.
 	connections .emplace_back (m_messageDialog -> signal_response () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_messageDialog_response)));
 
 	// Connect object Gtk::Entry with id 'OpenLocationEntry'.
-	connections .emplace_back (m_openLocationEntry -> signal_changed () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_openLocationEntry_changed)));
-	connections .emplace_back (m_openLocationEntry -> signal_key_release_event () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_openLocationEntry_key_release_event)));
+	connections .emplace_back (m_openLocationEntry -> signal_changed () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_open_location_entry_changed)));
+	connections .emplace_back (m_openLocationEntry -> signal_key_release_event () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_open_location_entry_key_release_event)));
 
 	// Connect object Gtk::ImageMenuItem with id 'ExamineViewerMenuItem'.
 	connections .emplace_back (m_examineViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_examine_viewer_activate)));
@@ -321,7 +331,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	connections .emplace_back (m_lookAtAllMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_look_at_all_activate)));
 
 	// Connect object Gtk::CheckMenuItem with id 'EnableInlineViewpointsMenuItem'.
-	connections .emplace_back (m_enableInlineViewpointsMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_enableInlineViewpoints_toggled)));
+	connections .emplace_back (m_enableInlineViewpointsMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_enable_inline_viewpoints_toggled)));
 
 	// Connect object Gtk::MenuItem with id 'MotionBlurMenuItem'.
 	connections .emplace_back (m_motionBlurMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_motion_blur_editor_activate)));

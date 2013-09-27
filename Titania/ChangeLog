@@ -1,3 +1,40 @@
+2013-09-27  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* BrowserWindow.h:
+	* Rotor.wrl:
+	* Colors.wrl:
+	* BrowserWindow.ui:
+	* BrowserWindow.cpp:
+	* home.wrl:
+	* date.wrl:
+	* info.wrl:
+	* gears.wrl:
+	* blank.wrl:
+	* background.wrl:
+	* fly-viewer.svg:
+	* walk-viewer.svg:
+	* logo.wrl:
+	* url_error.wrl:
+	* info.png:
+	* info.svg:
+	* Box.wrl:
+	* Text.wrl:
+	* Cone.wrl:
+	* examine-viewer.svg:
+	* info.svg:
+	* logo.wrl:
+	* info.png:
+	* Sphere.wrl:
+	* Rotor.wrl:
+	* Colors.wrl:
+	* Cylinder.wrl:
+	* OutlineTreeViewEditor.cpp:
+	* background.wrl:
+	* X3DBrowserWindowInterface.h:
+	* X3DBrowserWindowInterface.cpp:
+	* red.orange.yellow.wrl:
+	* red.orange.yellow.wrl: 
+
 2013-09-26  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* BrowserWindow.h:

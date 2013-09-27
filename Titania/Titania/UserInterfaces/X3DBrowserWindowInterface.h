@@ -125,10 +125,6 @@ public:
 	{ return *m_examineViewerImage; }
 
 	Gtk::FileChooserDialog &
-	getFileImportDialog () const
-	{ return *m_fileImportDialog; }
-
-	Gtk::FileChooserDialog &
 	getFileOpenDialog () const
 	{ return *m_fileOpenDialog; }
 
@@ -152,6 +148,10 @@ public:
 	getImportImage () const
 	{ return *m_importImage; }
 
+	Gtk::FileChooserDialog &
+	getFileImportDialog () const
+	{ return *m_fileImportDialog; }
+
 	Gtk::MessageDialog &
 	getMessageDialog () const
 	{ return *m_messageDialog; }
@@ -172,10 +172,6 @@ public:
 	getOpenLocationImage () const
 	{ return *m_openLocationImage; }
 
-	Gtk::Image &
-	getWalkViewerImage () const
-	{ return *m_walkViewerImage; }
-
 	Gtk::Menu &
 	getViewerTypeMenu () const
 	{ return *m_viewerTypeMenu; }
@@ -195,6 +191,14 @@ public:
 	Gtk::ImageMenuItem &
 	getNoneViewerMenuItem () const
 	{ return *m_noneViewerMenuItem; }
+
+	Gtk::Image &
+	getWalkViewerImage () const
+	{ return *m_walkViewerImage; }
+
+	Gtk::Image &
+	getWorkspacesImage () const
+	{ return *m_workspacesImage; }
 
 	Gtk::Window &
 	getWindow () const
@@ -420,6 +424,26 @@ public:
 	getRefreshButton () const
 	{ return *m_refreshButton; }
 
+	Gtk::ToolButton &
+	getBoxToolButton () const
+	{ return *m_boxToolButton; }
+
+	Gtk::ToolButton &
+	getSphereToolButton () const
+	{ return *m_sphereToolButton; }
+
+	Gtk::ToolButton &
+	getCylinderToolButton () const
+	{ return *m_cylinderToolButton; }
+
+	Gtk::ToolButton &
+	getConeToolButton () const
+	{ return *m_coneToolButton; }
+
+	Gtk::ToolButton &
+	getTextToolButton () const
+	{ return *m_textToolButton; }
+
 	Gtk::Paned &
 	getVPaned () const
 	{ return *m_vPaned; }
@@ -489,16 +513,12 @@ public:
 	{ return *m_viewpointListBox; }
 
 	Gtk::Box &
-	getOutlineEditorBox () const
-	{ return *m_outlineEditorBox; }
-
-	Gtk::Box &
 	getHistoryEditorBox () const
 	{ return *m_historyEditorBox; }
 
-	Gtk::Image &
-	getWorkspacesImage () const
-	{ return *m_workspacesImage; }
+	Gtk::Box &
+	getOutlineEditorBox () const
+	{ return *m_outlineEditorBox; }
 
 	virtual
 	void
@@ -506,11 +526,11 @@ public:
 
 	virtual
 	void
-	on_openLocationEntry_changed () = 0;
+	on_open_location_entry_changed () = 0;
 
 	virtual
 	bool
-	on_openLocationEntry_key_release_event (GdkEventKey* event) = 0;
+	on_open_location_entry_key_release_event (GdkEventKey* event) = 0;
 
 	virtual
 	void
@@ -658,7 +678,7 @@ public:
 
 	virtual
 	void
-	on_enableInlineViewpoints_toggled () = 0;
+	on_enable_inline_viewpoints_toggled () = 0;
 
 	virtual
 	void
@@ -711,24 +731,25 @@ private:
 	Glib::RefPtr <Gtk::IconFactory> m_iconFactory;
 	Glib::RefPtr <Gtk::AccelGroup>  m_menuAccelGroup;
 	Gtk::Image*                     m_examineViewerImage;
-	Gtk::FileChooserDialog*         m_fileImportDialog;
 	Gtk::FileChooserDialog*         m_fileOpenDialog;
 	Gtk::FileChooserDialog*         m_fileSaveDialog;
 	Gtk::CheckButton*               m_saveCompressedButton;
 	Gtk::Dialog*                    m_fileSaveWarningDialog;
 	Gtk::Image*                     m_flyViewerImage;
 	Gtk::Image*                     m_importImage;
+	Gtk::FileChooserDialog*         m_fileImportDialog;
 	Gtk::MessageDialog*             m_messageDialog;
 	Gtk::Image*                     m_noneViewerImage;
 	Gtk::Dialog*                    m_openLocationDialog;
 	Gtk::Entry*                     m_openLocationEntry;
 	Gtk::Image*                     m_openLocationImage;
-	Gtk::Image*                     m_walkViewerImage;
 	Gtk::Menu*                      m_viewerTypeMenu;
 	Gtk::ImageMenuItem*             m_examineViewerMenuItem;
 	Gtk::ImageMenuItem*             m_walkViewerMenuItem;
 	Gtk::ImageMenuItem*             m_flyViewerMenuItem;
 	Gtk::ImageMenuItem*             m_noneViewerMenuItem;
+	Gtk::Image*                     m_walkViewerImage;
+	Gtk::Image*                     m_workspacesImage;
 	Gtk::Window*                    m_window;
 	Gtk::VBox*                      m_widget;
 	Gtk::MenuBar*                   m_menuBar;
@@ -785,6 +806,11 @@ private:
 	Gtk::ToolButton*                m_importButton;
 	Gtk::ToolButton*                m_saveButton;
 	Gtk::ToolButton*                m_refreshButton;
+	Gtk::ToolButton*                m_boxToolButton;
+	Gtk::ToolButton*                m_sphereToolButton;
+	Gtk::ToolButton*                m_cylinderToolButton;
+	Gtk::ToolButton*                m_coneToolButton;
+	Gtk::ToolButton*                m_textToolButton;
 	Gtk::Paned*                     m_vPaned;
 	Gtk::Paned*                     m_hPaned;
 	Gtk::HBox*                      m_surfaceBox;
@@ -802,9 +828,8 @@ private:
 	Gtk::Label*                     m_sideBarLabel;
 	Gtk::Notebook*                  m_sideBarNotebook;
 	Gtk::Box*                       m_viewpointListBox;
-	Gtk::Box*                       m_outlineEditorBox;
 	Gtk::Box*                       m_historyEditorBox;
-	Gtk::Image*                     m_workspacesImage;
+	Gtk::Box*                       m_outlineEditorBox;
 
 };
 

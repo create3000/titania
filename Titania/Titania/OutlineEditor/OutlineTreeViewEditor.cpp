@@ -265,7 +265,7 @@ OutlineTreeViewEditor::select_field (int x, int y)
 
 		if (get_data_type (iter) == OutlineIterType::X3DFieldValue)
 		{
-			getBrowserWindow () -> disableMenu ();
+			getBrowserWindow () -> setEnableMenus (false);
 			unwatch_tree (iter);
 			set_cursor (path, *column, true);
 			return true;
@@ -285,7 +285,7 @@ OutlineTreeViewEditor::on_edited (const Glib::ustring & string_path, const Glib:
 	watch (iter, path);
 
 	getBrowserWindow () -> setEdited (true);
-	getBrowserWindow () -> enableMenu ();
+	getBrowserWindow () -> setEnableMenus (true);
 }
 
 } // puck

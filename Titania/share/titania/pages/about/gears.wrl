@@ -1,6 +1,6 @@
 #X3D V3.0 utf8 Titania
 
-META "icon" "about:icon"
+META "icon" "../../ui/icons/icon-bw.svg"
 META "title" "about:gears"
 
 EXTERNPROTO Rotor [
@@ -8,7 +8,7 @@ EXTERNPROTO Rotor [
   inputOutput SFBool     loop
   outputOnly  SFRotation value_changed
 ]
-"../../library/Rotor.wrl"
+"library/Rotor.wrl"
 
 PROTO Gear [
   inputOutput    SFFloat teeth 10

@@ -125,6 +125,7 @@ BrowserWindow::initialize ()
 	buildLibraryMenu ();
 
 	// Window
+	getWindow () .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::ARROW));
 	getWindow () .grab_focus ();
 }
 
@@ -157,35 +158,18 @@ BrowserWindow::buildLibraryMenu ()
 // Menu
 
 void
-BrowserWindow::enableMenu () const
+BrowserWindow::setEnableMenus (bool enable) const
 {
 	for (const auto & child : getMenuBar () .get_children ())
 	{
 		auto menuItem = dynamic_cast <Gtk::MenuItem*> (child);
 		
-		if (menuItem)
+		if (menuItem and menuItem -> get_visible ())
 		{
 			auto menu = menuItem -> get_submenu ();
 
 			if (menu)
-				menu -> set_sensitive (true);
-		}
-	}
-}
-
-void
-BrowserWindow::disableMenu () const
-{
-	for (const auto & child : getMenuBar () .get_children ())
-	{
-		auto menuItem = dynamic_cast <Gtk::MenuItem*> (child);
-		
-		if (menuItem)
-		{
-			auto menu = menuItem -> get_submenu ();
-
-			if (menu)
-				menu -> set_sensitive (false);
+				menu -> set_sensitive (enable);
 		}
 	}
 }
@@ -386,13 +370,13 @@ BrowserWindow::on_revert_to_saved ()
 // Dialog response handling
 
 void
-BrowserWindow::on_openLocationEntry_changed ()
+BrowserWindow::on_open_location_entry_changed ()
 {
 	getOpenLocationDialog () .set_response_sensitive (Gtk::RESPONSE_OK, getOpenLocationEntry () .get_text () .size ());
 }
 
 bool
-BrowserWindow::on_openLocationEntry_key_release_event (GdkEventKey* event)
+BrowserWindow::on_open_location_entry_key_release_event (GdkEventKey* event)
 {
 	if (event -> keyval == GDK_KEY_Return or event -> keyval == GDK_KEY_KP_Enter)
 	{
@@ -544,7 +528,7 @@ BrowserWindow::on_look_at_all_activate ()
 }
 
 void
-BrowserWindow::on_enableInlineViewpoints_toggled ()
+BrowserWindow::on_enable_inline_viewpoints_toggled ()
 {
 	getBrowser () -> getBrowserOptions () -> enableInlineViewpoints () = getEnableInlineViewpointsMenuItem () .get_active ();
 }
@@ -586,6 +570,8 @@ BrowserWindow::on_hand_button_toggled ()
 	{
 		std::clog << "Hand button clicked." << std::endl;
 
+		getBrowser () -> beginUpdate ();
+
 		//getBrowser () -> select = false;
 	}
 }
@@ -596,6 +582,8 @@ BrowserWindow::on_arrow_button_toggled ()
 	if (getArrowButton () .get_active ())
 	{
 		std::clog << "Arrow button clicked." << std::endl;
+
+		getBrowser () -> endUpdate ();
 
 		//getBrowser () -> select = true;
 	}

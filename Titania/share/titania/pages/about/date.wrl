@@ -1,10 +1,10 @@
 #VRML V2.0 utf8
 
-META "icon" "about:icon"
+META "icon" "../../ui/icons/icon-bw.svg"
 META "title" "about:date"
 
 Inline {
-  url "../../library/background.wrl"
+  url "library/background.wrl"
 }
 
 Transform {

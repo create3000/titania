@@ -120,10 +120,7 @@ public:
 	/// @name Menu
 
 	void
-	enableMenu () const;
-	
-	void
-	disableMenu () const;
+	setEnableMenus (bool) const;
 
 
 private:
@@ -146,7 +143,7 @@ private:
 	virtual
 	bool
 	on_key_release_event (GdkEventKey*) final;
-	
+
 	/// @name File menu
 
 	virtual
@@ -189,11 +186,11 @@ private:
 
 	virtual
 	void
-	on_openLocationEntry_changed () final;
+	on_open_location_entry_changed () final;
 
 	virtual
 	bool
-	on_openLocationEntry_key_release_event (GdkEventKey*) final;
+	on_open_location_entry_key_release_event (GdkEventKey*) final;
 
 	/// @name Bar view handling
 
@@ -272,7 +269,7 @@ private:
 	on_look_at_all_activate () final;
 
 	void
-	on_enableInlineViewpoints_toggled () final;
+	on_enable_inline_viewpoints_toggled () final;
 
 	///  @name Editor handling
 

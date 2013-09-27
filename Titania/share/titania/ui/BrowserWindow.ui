@@ -1,20 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <!-- interface-requires gtk+ 3.0 -->
-  <object class="GtkIconFactory" id="IconFactory">
-    <sources>
-      <source stock-id="BlankIcon" filename="icons/blank-icon.svg"/>
-      <source stock-id="FlyViewer" filename="icons/fly-viewer.svg"/>
-      <source stock-id="IconBlackWhite" filename="icons/icon-bw.svg"/>
-      <source stock-id="WalkViewer" filename="icons/walk-viewer.svg"/>
-      <source stock-id="Icon" filename="icons/icon.svg"/>
-      <source stock-id="OutlineEditor" filename="icons/OutlineEditor.png"/>
-      <source stock-id="ViewpointList" filename="icons/ViewpointList.png"/>
-      <source stock-id="ExamineViewer" filename="icons/examine-viewer.svg"/>
-      <source stock-id="Hand" filename="icons/hand.png"/>
-      <source stock-id="Arrow" filename="icons/arrow.png"/>
-    </sources>
-  </object>
   <object class="GtkImage" id="ExamineViewerImage">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -55,6 +41,25 @@
       <pattern>*.wrl.gz</pattern>
       <pattern>*.wrz</pattern>
     </patterns>
+  </object>
+  <object class="GtkIconFactory" id="IconFactory">
+    <sources>
+      <source stock-id="BlankIcon" filename="icons/blank-icon.svg"/>
+      <source stock-id="Cone" filename="icons/Cone.svg"/>
+      <source stock-id="Box" filename="icons/Box.svg"/>
+      <source stock-id="FlyViewer" filename="icons/fly-viewer.svg"/>
+      <source stock-id="IconBlackWhite" filename="icons/icon-bw.svg"/>
+      <source stock-id="Cylinder" filename="icons/Cylinder.svg"/>
+      <source stock-id="Sphere" filename="icons/Sphere.svg"/>
+      <source stock-id="Text" filename="icons/Text.svg"/>
+      <source stock-id="WalkViewer" filename="icons/walk-viewer.svg"/>
+      <source stock-id="Icon" filename="icons/icon.svg"/>
+      <source stock-id="OutlineEditor" filename="icons/OutlineEditor.png"/>
+      <source stock-id="ViewpointList" filename="icons/ViewpointList.png"/>
+      <source stock-id="ExamineViewer" filename="icons/examine-viewer.svg"/>
+      <source stock-id="Hand" filename="icons/hand.png"/>
+      <source stock-id="Arrow" filename="icons/arrow.png"/>
+    </sources>
   </object>
   <object class="GtkFileChooserDialog" id="FileOpenDialog">
     <property name="can_focus">False</property>
@@ -582,8 +587,8 @@
                 <property name="can_focus">True</property>
                 <property name="invisible_char">•</property>
                 <property name="invisible_char_set">True</property>
-                <signal name="changed" handler="on_openLocationEntry_changed" swapped="no"/>
-                <signal name="key-release-event" handler="on_openLocationEntry_key_release_event" swapped="no"/>
+                <signal name="changed" handler="on_open_location_entry_changed" swapped="no"/>
+                <signal name="key-release-event" handler="on_open_location_entry_key_release_event" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -609,11 +614,6 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="icon_name">network-server-symbolic</property>
-  </object>
-  <object class="GtkImage" id="WalkViewerImage">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">WalkViewer</property>
   </object>
   <object class="GtkMenu" id="ViewerTypeMenu">
     <property name="visible">True</property>
@@ -658,6 +658,16 @@
         <signal name="activate" handler="on_none_viewer_activate" swapped="no"/>
       </object>
     </child>
+  </object>
+  <object class="GtkImage" id="WalkViewerImage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">WalkViewer</property>
+  </object>
+  <object class="GtkImage" id="WorkspacesImage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="icon_name">visualization</property>
   </object>
   <object class="GtkWindow" id="Window">
     <property name="width_request">1000</property>
@@ -1212,7 +1222,7 @@
                         <property name="label" translatable="yes">Enable Inline Viewpoints</property>
                         <property name="use_underline">True</property>
                         <property name="active">True</property>
-                        <signal name="toggled" handler="on_enableInlineViewpoints_toggled" swapped="no"/>
+                        <signal name="toggled" handler="on_enable_inline_viewpoints_toggled" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -1303,7 +1313,7 @@
             <child>
               <object class="GtkToolButton" id="NewButton">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can_focus">True</property>
                 <property name="label" translatable="yes">New file.</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-new</property>
@@ -1317,7 +1327,7 @@
             <child>
               <object class="GtkMenuToolButton" id="OpenButton">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can_focus">True</property>
                 <property name="label" translatable="yes">Open file.</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-open</property>
@@ -1330,7 +1340,7 @@
             <child>
               <object class="GtkToolButton" id="ImportButton">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can_focus">True</property>
                 <property name="label" translatable="yes">Import file.</property>
                 <property name="use_underline">True</property>
                 <property name="icon_name">document-import</property>
@@ -1344,7 +1354,7 @@
             <child>
               <object class="GtkToolButton" id="SaveButton">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can_focus">True</property>
                 <property name="label" translatable="yes">Save file.</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-save</property>
@@ -1358,11 +1368,79 @@
             <child>
               <object class="GtkToolButton" id="RefreshButton">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can_focus">True</property>
                 <property name="label" translatable="yes">Reload file.</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-refresh</property>
                 <signal name="clicked" handler="on_revert_to_saved" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkSeparatorToolItem" id="separatortoolitem3">
+                <property name="can_focus">False</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="BoxToolButton">
+                <property name="can_focus">True</property>
+                <property name="label" translatable="yes">Box</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">Box</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="SphereToolButton">
+                <property name="can_focus">True</property>
+                <property name="label" translatable="yes">Sphere</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">Sphere</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="CylinderToolButton">
+                <property name="can_focus">True</property>
+                <property name="label" translatable="yes">Cylinder</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">Cylinder</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="ConeToolButton">
+                <property name="can_focus">True</property>
+                <property name="label" translatable="yes">Cone</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">Cone</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="TextToolButton">
+                <property name="can_focus">True</property>
+                <property name="label" translatable="yes">Text</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">Text</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -1427,7 +1505,7 @@
                                 <child>
                                   <object class="GtkRadioToolButton" id="HandButton">
                                     <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
+                                    <property name="can_focus">True</property>
                                     <property name="label" translatable="yes">Hand Tool</property>
                                     <property name="use_underline">True</property>
                                     <property name="stock_id">Hand</property>
@@ -1441,7 +1519,8 @@
                                 </child>
                                 <child>
                                   <object class="GtkRadioToolButton" id="ArrowButton">
-                                    <property name="can_focus">False</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
                                     <property name="label" translatable="yes">Arrow Tool</property>
                                     <property name="use_underline">True</property>
                                     <property name="stock_id">Arrow</property>
@@ -1465,7 +1544,7 @@
                                 <child>
                                   <object class="GtkMenuToolButton" id="ViewerButton">
                                     <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
+                                    <property name="can_focus">True</property>
                                     <property name="events">GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_STRUCTURE_MASK</property>
                                     <property name="label" translatable="yes">Viewer Type</property>
                                     <property name="use_underline">True</property>
@@ -1487,7 +1566,7 @@
                                 <child>
                                   <object class="GtkToolButton" id="LookAtAllButton">
                                     <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
+                                    <property name="can_focus">True</property>
                                     <property name="has_tooltip">True</property>
                                     <property name="tooltip_markup" translatable="yes">Look at all objects in active layer.</property>
                                     <property name="tooltip_text" translatable="yes">Look at all objects in active layer.</property>
@@ -1503,7 +1582,7 @@
                                 </child>
                                 <child>
                                   <object class="GtkToggleToolButton" id="LookAtButton">
-                                    <property name="can_focus">False</property>
+                                    <property name="can_focus">True</property>
                                     <property name="has_tooltip">True</property>
                                     <property name="tooltip_markup" translatable="yes">Look at.</property>
                                     <property name="tooltip_text" translatable="yes">Look at.</property>
@@ -1800,10 +1879,5 @@
         </child>
       </object>
     </child>
-  </object>
-  <object class="GtkImage" id="WorkspacesImage">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="icon_name">visualization</property>
   </object>
 </interface>

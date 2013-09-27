@@ -31,10 +31,6 @@
     <None Include="xxx\ImageTexture.h" />
     <None Include="xxx\X3DUrlObject.h" />
     <None Include="xxx\Type.h" />
-    <None Include="CosmoWorlds\Cosmo.rgb" />
-    <None Include="CosmoWorlds\OutlineEditor1.rgb" />
-    <None Include="CosmoWorlds\OutlineEditor2.rgb" />
-    <None Include="CosmoWorlds\OutlineEditor3.rgb" />
     <None Include="Modern OpenGL.html" />
     <None Include="Modern OpenGL-Dateien\Blocks2.svg" />
     <None Include="Modern OpenGL-Dateien\Deprecated-GLSL.svg" />
@@ -64,6 +60,10 @@
     <None Include="SocketStreamBuf.h" />
     <None Include="SurfaceN.h" />
     <None Include="InputHTTPStream.h" />
+    <None Include="CosmoWorlds\Cosmo.png" />
+    <None Include="CosmoWorlds\OutlineEditor1.png" />
+    <None Include="CosmoWorlds\OutlineEditor2.png" />
+    <None Include="CosmoWorlds\OutlineEditor3.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Quaternion\" />
