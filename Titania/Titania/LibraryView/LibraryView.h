@@ -48,27 +48,25 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_HISTORY_EDITOR_HISTORY_EDITOR_H__
-#define __TITANIA_HISTORY_EDITOR_HISTORY_EDITOR_H__
+#ifndef __TITANIA_LIBRARY_LIBRARY_VIEW_H__
+#define __TITANIA_LIBRARY_LIBRARY_VIEW_H__
 
-#include "../HistoryEditor/History.h"
-#include "../UserInterfaces/X3DHistoryEditorInterface.h"
-#include <Titania/X3D.h>
+#include "../UserInterfaces/X3DLibraryViewInterface.h"
 
 namespace titania {
 namespace puck {
 
 class BrowserWindow;
 
-class HistoryEditor :
-	public X3DHistoryEditorInterface
+class LibraryView :
+	public X3DLibraryViewInterface
 {
 public:
 
-	HistoryEditor (BrowserWindow* const);
+	LibraryView (BrowserWindow* const);
 
 	virtual
-	~HistoryEditor ();
+	~LibraryView ();
 
 
 private:
@@ -77,17 +75,28 @@ private:
 	void
 	on_map () final;
 
+	virtual
 	void
-	set_splashScreen ();
+	initialize () final;
+
+	std::string
+	getRoot () const;
+
+	std::string
+	getFilename (Gtk::TreeModel::Path path) const;
+
+	std::deque <Glib::RefPtr <Gio::FileInfo>>
+	children (const Glib::RefPtr <Gio::File> &) const;
 
 	void
-	set_initialized ();
+	append (const std::string &) const;
+
+	void
+	append (Gtk::TreeModel::iterator &, const Glib::RefPtr <Gio::File> &) const;
 
 	virtual
 	void
 	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final;
-
-	History history;
 
 };
 

@@ -231,6 +231,7 @@ Generator::SmallestStyle ()
 	indent     = "";
 	indentChar = "";
 
+	listSpace    = false;
 	hasListBreak = false;
 }
 
@@ -252,6 +253,7 @@ Generator::SmallStyle ()
 	indent     = "";
 	indentChar = "";
 
+	listSpace    = false;
 	hasListBreak = false;
 }
 
@@ -273,6 +275,7 @@ Generator::CompactStyle ()
 	indent     = "";
 	indentChar = "  ";
 
+	listSpace    = true;
 	hasListBreak = false;
 }
 
@@ -294,6 +297,7 @@ Generator::NicestStyle ()
 	indent     = "";
 	indentChar = "  ";
 
+	listSpace    = true;
 	hasListBreak = true;
 }
 

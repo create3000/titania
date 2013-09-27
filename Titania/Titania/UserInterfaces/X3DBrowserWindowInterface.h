@@ -172,6 +172,10 @@ public:
 	getOpenLocationImage () const
 	{ return *m_openLocationImage; }
 
+	Gtk::Image &
+	getWalkViewerImage () const
+	{ return *m_walkViewerImage; }
+
 	Gtk::Menu &
 	getViewerTypeMenu () const
 	{ return *m_viewerTypeMenu; }
@@ -191,14 +195,6 @@ public:
 	Gtk::ImageMenuItem &
 	getNoneViewerMenuItem () const
 	{ return *m_noneViewerMenuItem; }
-
-	Gtk::Image &
-	getWalkViewerImage () const
-	{ return *m_walkViewerImage; }
-
-	Gtk::Image &
-	getWorkspacesImage () const
-	{ return *m_workspacesImage; }
 
 	Gtk::Window &
 	getWindow () const
@@ -280,18 +276,6 @@ public:
 	getViewMenuItem () const
 	{ return *m_viewMenuItem; }
 
-	Gtk::ImageMenuItem &
-	getWorkspacesMenuItem () const
-	{ return *m_workspacesMenuItem; }
-
-	Gtk::RadioMenuItem &
-	getBrowserMenuItem () const
-	{ return *m_browserMenuItem; }
-
-	Gtk::RadioMenuItem &
-	getEditorMenuItem () const
-	{ return *m_editorMenuItem; }
-
 	Gtk::CheckMenuItem &
 	getToolBarMenuItem () const
 	{ return *m_toolBarMenuItem; }
@@ -303,6 +287,18 @@ public:
 	Gtk::CheckMenuItem &
 	getFooterMenuItem () const
 	{ return *m_footerMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getWorkspacesMenuItem () const
+	{ return *m_workspacesMenuItem; }
+
+	Gtk::RadioMenuItem &
+	getBrowserMenuItem () const
+	{ return *m_browserMenuItem; }
+
+	Gtk::RadioMenuItem &
+	getEditorMenuItem () const
+	{ return *m_editorMenuItem; }
 
 	Gtk::MenuItem &
 	getShadingMenuItem () const
@@ -381,14 +377,6 @@ public:
 	{ return *m_motionBlurMenuItem; }
 
 	Gtk::MenuItem &
-	getLibraryMenuItem () const
-	{ return *m_libraryMenuItem; }
-
-	Gtk::Menu &
-	getLibraryMenu () const
-	{ return *m_libraryMenu; }
-
-	Gtk::MenuItem &
 	getHelpMenuItem () const
 	{ return *m_helpMenuItem; }
 
@@ -460,6 +448,10 @@ public:
 	getDashboard () const
 	{ return *m_dashboard; }
 
+	Gtk::Toolbar &
+	getDashboardToolBar () const
+	{ return *m_dashboardToolBar; }
+
 	Gtk::RadioToolButton &
 	getHandButton () const
 	{ return *m_handButton; }
@@ -517,8 +509,16 @@ public:
 	{ return *m_historyEditorBox; }
 
 	Gtk::Box &
+	getLibraryViewBox () const
+	{ return *m_libraryViewBox; }
+
+	Gtk::Box &
 	getOutlineEditorBox () const
 	{ return *m_outlineEditorBox; }
+
+	Gtk::Image &
+	getWorkspacesImage () const
+	{ return *m_workspacesImage; }
 
 	virtual
 	void
@@ -623,6 +623,14 @@ public:
 	virtual
 	void
 	on_footer_toggled () = 0;
+
+	virtual
+	void
+	on_browser_toggled () = 0;
+
+	virtual
+	void
+	on_editor_toggled () = 0;
 
 	virtual
 	void
@@ -743,13 +751,12 @@ private:
 	Gtk::Dialog*                    m_openLocationDialog;
 	Gtk::Entry*                     m_openLocationEntry;
 	Gtk::Image*                     m_openLocationImage;
+	Gtk::Image*                     m_walkViewerImage;
 	Gtk::Menu*                      m_viewerTypeMenu;
 	Gtk::ImageMenuItem*             m_examineViewerMenuItem;
 	Gtk::ImageMenuItem*             m_walkViewerMenuItem;
 	Gtk::ImageMenuItem*             m_flyViewerMenuItem;
 	Gtk::ImageMenuItem*             m_noneViewerMenuItem;
-	Gtk::Image*                     m_walkViewerImage;
-	Gtk::Image*                     m_workspacesImage;
 	Gtk::Window*                    m_window;
 	Gtk::VBox*                      m_widget;
 	Gtk::MenuBar*                   m_menuBar;
@@ -770,12 +777,12 @@ private:
 	Gtk::MenuItem*                  m_detachFromGroupMenuItem;
 	Gtk::MenuItem*                  m_createParentGroupMenuItem;
 	Gtk::MenuItem*                  m_viewMenuItem;
-	Gtk::ImageMenuItem*             m_workspacesMenuItem;
-	Gtk::RadioMenuItem*             m_browserMenuItem;
-	Gtk::RadioMenuItem*             m_editorMenuItem;
 	Gtk::CheckMenuItem*             m_toolBarMenuItem;
 	Gtk::CheckMenuItem*             m_sideBarMenuItem;
 	Gtk::CheckMenuItem*             m_footerMenuItem;
+	Gtk::ImageMenuItem*             m_workspacesMenuItem;
+	Gtk::RadioMenuItem*             m_browserMenuItem;
+	Gtk::RadioMenuItem*             m_editorMenuItem;
 	Gtk::MenuItem*                  m_shadingMenuItem;
 	Gtk::RadioMenuItem*             m_phongMenuItem;
 	Gtk::RadioMenuItem*             m_gouraudMenuItem;
@@ -795,8 +802,6 @@ private:
 	Gtk::CheckMenuItem*             m_enableInlineViewpointsMenuItem;
 	Gtk::MenuItem*                  m_toolsMenuItem;
 	Gtk::MenuItem*                  m_motionBlurMenuItem;
-	Gtk::MenuItem*                  m_libraryMenuItem;
-	Gtk::Menu*                      m_libraryMenu;
 	Gtk::MenuItem*                  m_helpMenuItem;
 	Gtk::ImageMenuItem*             m_standardSizeMenuItem;
 	Gtk::ImageMenuItem*             m_infoMenuItem;
@@ -815,6 +820,7 @@ private:
 	Gtk::Paned*                     m_hPaned;
 	Gtk::HBox*                      m_surfaceBox;
 	Gtk::Box*                       m_dashboard;
+	Gtk::Toolbar*                   m_dashboardToolBar;
 	Gtk::RadioToolButton*           m_handButton;
 	Gtk::RadioToolButton*           m_arrowButton;
 	Gtk::MenuToolButton*            m_viewerButton;
@@ -829,7 +835,9 @@ private:
 	Gtk::Notebook*                  m_sideBarNotebook;
 	Gtk::Box*                       m_viewpointListBox;
 	Gtk::Box*                       m_historyEditorBox;
+	Gtk::Box*                       m_libraryViewBox;
 	Gtk::Box*                       m_outlineEditorBox;
+	Gtk::Image*                     m_workspacesImage;
 
 };
 

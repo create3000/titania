@@ -53,6 +53,7 @@
 
 #include "../Browser/X3DBrowserEditor.h"
 #include "../HistoryEditor/HistoryEditor.h"
+#include "../LibraryView/LibraryView.h"
 #include "../MotionBlurEditor/MotionBlurEditor.h"
 #include "../OutlineEditor/OutlineEditor.h"
 #include "../ViewpointList/ViewpointList.h"
@@ -78,6 +79,14 @@ public:
 	const MotionBlurEditor &
 	getMotionBlurEditor () const
 	{ return motionBlurEditor; }
+
+	LibraryView &
+	getLibraryView ()
+	{ return libraryView; }
+
+	const LibraryView &
+	getLibraryView () const
+	{ return libraryView; }
 
 	ViewpointList &
 	getViewpointList ()
@@ -116,11 +125,11 @@ public:
 	const X3D::Keys &
 	getKeys () const
 	{ return keys; }
-	
+
 	/// @name Menu
 
 	void
-	setEnableMenus (bool) const;
+	enableMenus (bool) const;
 
 
 private:
@@ -130,9 +139,6 @@ private:
 	virtual
 	void
 	initialize ();
-
-	void
-	buildLibraryMenu ();
 
 	///  @name Key events
 
@@ -205,6 +211,17 @@ private:
 	virtual
 	void
 	on_footer_toggled () final;
+
+	virtual
+	void
+	on_browser_toggled () final;
+
+	virtual
+	void
+	on_editor_toggled () final;
+
+	void
+	enableEditor (bool);
 
 	/// @name Shading
 
@@ -373,6 +390,7 @@ private:
 	///  @name Members
 
 	MotionBlurEditor motionBlurEditor;
+	LibraryView      libraryView;
 	ViewpointList    viewpointList;
 	HistoryEditor    historyEditor;
 	OutlineEditor    outlineEditor;

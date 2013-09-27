@@ -52,7 +52,6 @@
 
 #include "../Browser/BrowserWindow.h"
 #include "../Configuration/config.h"
-#include <iostream>
 
 namespace titania {
 namespace puck {
@@ -76,18 +75,24 @@ HistoryEditor::HistoryEditor (BrowserWindow* const browserWindow) :
 		getListStore () -> row_changed (getListStore () -> get_path (row), row);
 	}
 
-	getBrowser () -> initialized () .addInterest (this, &HistoryEditor::set_initialized);
+	getBrowser () -> initialized () .addInterest (this, &HistoryEditor::set_splashScreen);
+}
+
+void
+HistoryEditor::on_map ()
+{
+	getBrowserWindow () -> getSideBarLabel () .set_text (_("History"));
+}
+
+void
+HistoryEditor::set_splashScreen ()
+{
+	getBrowser () -> initialized () .removeInterest (this, &HistoryEditor::set_splashScreen);
+	getBrowser () -> initialized () .addInterest    (this, &HistoryEditor::set_initialized);
 }
 
 void
 HistoryEditor::set_initialized ()
-{
-	getBrowser () -> initialized () .removeInterest (this, &HistoryEditor::set_initialized);
-	getBrowser () -> initialized () .addInterest    (this, &HistoryEditor::set_world);
-}
-
-void
-HistoryEditor::set_world ()
 {
 	std::string title    = getBrowser () -> getExecutionContext () -> getTitle ();
 	basic::uri  worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
@@ -104,20 +109,14 @@ HistoryEditor::set_world ()
 		__LOG__ << std::endl;	
 	}
 
-	auto row = getListStore () -> prepend ();
-	row -> set_value (ICON_COLUMN,      worldURL .str ());
-	row -> set_value (TITLE_COLUMN,     title);
-	row -> set_value (WORLD_URL_COLUMN, worldURL .str ());
+	auto iter = getListStore () -> prepend ();
+	iter -> set_value (ICON_COLUMN,      worldURL .str ());
+	iter -> set_value (TITLE_COLUMN,     title);
+	iter -> set_value (WORLD_URL_COLUMN, worldURL .str ());
 
-	getListStore () -> row_changed (getListStore () -> get_path (row), row);
+	getListStore () -> row_changed (getListStore () -> get_path (iter), iter);
 
 	history .setItem (title, worldURL);
-}
-
-void
-HistoryEditor::on_map ()
-{
-	getBrowserWindow () -> getSideBarLabel () .set_text (_("History"));
 }
 
 void

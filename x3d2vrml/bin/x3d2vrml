@@ -47,7 +47,7 @@ sub new {
 		parents              => [ ]
 	};
 
-	$self -> {nodes} -> load_from_data (join ("", `$TitaniaInfo -i 2>/dev/null`), "none");
+	$self -> {nodes} -> load_from_data (join ("", `$TitaniaInfo -i=nodes 2>/dev/null`), "none");
 
 	unshift @{$self -> {contexts}}, $self;
 

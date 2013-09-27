@@ -47,60 +47,110 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+#ifndef __TMP_GLAD2CPP_LIBRARY_VIEW_H__
+#define __TMP_GLAD2CPP_LIBRARY_VIEW_H__
 
-#ifndef __TITANIA_VIEWPOINT_LIST_VIEWPOINT_LIST_H__
-#define __TITANIA_VIEWPOINT_LIST_VIEWPOINT_LIST_H__
-
-#include "../UserInterfaces/X3DViewpointListInterface.h"
-#include <Titania/X3D.h>
+#include "../Base/X3DUserInterface.h"
 #include <gtkmm.h>
+#include <string>
 
 namespace titania {
 namespace puck {
 
-class ViewpointList :
-	public X3DViewpointListInterface
+using namespace Gtk;
+
+class X3DLibraryViewInterface :
+	public X3DUserInterface
 {
 public:
 
-	ViewpointList (BrowserWindow* const);
+	template <class ... Arguments>
+	X3DLibraryViewInterface (const std::string & filename, const Arguments & ... arguments) :
+		X3DUserInterface (m_widgetName, arguments ...),
+		        filename (filename),
+		     connections ()
+	{ create (filename); }
 
-	~ViewpointList ();
+	const Glib::RefPtr <Gtk::Builder> &
+	getBuilder () const { return m_builder; }
+
+	const std::string &
+	getWidgetName () const { return m_widgetName; }
+
+	void
+	updateWidget (const std::string & name) const
+	{ getBuilder () -> add_from_file (filename, name); }
+
+	template <class Type>
+	Type*
+	getWidget (const std::string & name) const
+	{
+		Type* widget = nullptr;
+
+		m_builder -> get_widget (name, widget);
+		widget -> set_name (name);
+		return widget;
+	}
+
+	const Glib::RefPtr <Gtk::TreeStore> &
+	getTreeStore () const
+	{ return m_treeStore; }
+
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getFile () const
+	{ return m_file; }
+
+	const Glib::RefPtr <Gtk::CellRendererPixbuf> &
+	getIconRenderer () const
+	{ return m_iconRenderer; }
+
+	const Glib::RefPtr <Gtk::CellRendererText> &
+	getNameRenderer () const
+	{ return m_nameRenderer; }
+
+	Gtk::Window &
+	getWindow () const
+	{ return *m_window; }
+
+	Gtk::Box &
+	getWidget () const
+	{ return *m_widget; }
+
+	Gtk::ScrolledWindow &
+	getScrolledWindow () const
+	{ return *m_scrolledWindow; }
+
+	Gtk::TreeView &
+	getTreeView () const
+	{ return *m_treeView; }
+
+	virtual
+	void
+	on_map () = 0;
+
+	virtual
+	void
+	on_row_activated (const TreeModel::Path & path, TreeViewColumn* column) = 0;
 
 
 private:
 
-	virtual
 	void
-	on_map () final;
+	create (const std::string &);
 
-	virtual
-	void
-	initialize () final;
+	static const std::string m_widgetName;
 
-	const X3D::X3DSFNode <X3D::ViewpointStack> &
-	getViewpointStack ();
-
-	const X3D::X3DSFNode <X3D::ViewpointList> &
-	getViewpoints () const;
-
-	X3D::UserViewpointList
-	getUserViewpoints ();
-
-	void
-	set_activeLayer ();
-
-	void
-	set_viewpoints ();
-
-	void
-	set_currentViewpoint ();
-
-	virtual
-	void
-	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final;
-
-	X3D::X3DSFNode <X3D::X3DLayerNode> activeLayer;
+	std::string                            filename;
+	std::deque <sigc::connection>          connections;
+	Glib::RefPtr <Gtk::Builder>            m_builder;
+	Glib::RefPtr <Gtk::TreeStore>          m_treeStore;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_file;
+	Glib::RefPtr <Gtk::CellRendererPixbuf> m_iconRenderer;
+	Glib::RefPtr <Gtk::CellRendererText>   m_nameRenderer;
+	Gtk::Window*                           m_window;
+	Gtk::Box*                              m_widget;
+	Gtk::ScrolledWindow*                   m_scrolledWindow;
+	Gtk::TreeView*                         m_treeView;
 
 };
 

@@ -98,6 +98,10 @@ protected:
 	void
 	initialize () override;
 
+	virtual
+	void
+	restoreSession ();
+
 	void
 	updateTitle (bool) const;
 
@@ -107,9 +111,6 @@ private:
 	//	void
 	//	parseOptions (int &, char** &);
 	// Glib::OptionGroup::vecustrings remainingOptions;
-
-	void
-	restoreSession ();
 
 	void
 	saveSession ();

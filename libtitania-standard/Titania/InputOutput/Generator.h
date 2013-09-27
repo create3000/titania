@@ -108,6 +108,11 @@ public:
 
 	static
 	const bool &
+	ListSpace ()
+	{ return listSpace; }
+
+	static
+	const bool &
 	HasListBreak ()
 	{ return hasListBreak; }
 
@@ -215,6 +220,7 @@ protected:
 	static std::string tidyBreak;
 	static std::string listBreak;
 	static std::string comma;
+	static bool        listSpace;
 	static bool        hasListBreak;
 
 	static std::string indent;
@@ -249,6 +255,8 @@ std::string basic_generator <CharT, Traits>::listBreak = "\n";
 template <class CharT, class Traits>
 std::string basic_generator <CharT, Traits>::comma = ",";
 template <class CharT, class Traits>
+bool basic_generator <CharT, Traits>::listSpace = true;
+template <class CharT, class Traits>
 bool basic_generator <CharT, Traits>::hasListBreak = true;
 
 template <class CharT, class Traits>
@@ -266,10 +274,13 @@ basic_generator <CharT, Traits>::OpenBracket (std::basic_ostream <CharT, Traits>
 {
 	stream .put (stream .widen ('['));
 
-	stream 
-		<< TidyBreak
-		<< IncIndent
-		<< Indent;
+	if (ListSpace ())
+		stream << ListBreak;
+
+	stream << IncIndent;
+
+	if (HasListBreak ())
+		stream << Indent;
 
 	return stream;
 }
@@ -278,10 +289,13 @@ template <class CharT, class Traits>
 std::basic_ostream <CharT, Traits> &
 basic_generator <CharT, Traits>::CloseBracket (std::basic_ostream <CharT, Traits> & stream)
 {
-	stream
-		<< TidyBreak
-		<< DecIndent
-		<< Indent;
+	if (ListSpace ())
+		stream << ListBreak;
+		
+	stream << DecIndent;
+
+	if (HasListBreak ())
+		stream << Indent;
 
 	stream .put (stream .widen (']'));
 	return stream;

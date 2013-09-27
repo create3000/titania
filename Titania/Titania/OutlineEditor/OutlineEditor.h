@@ -82,11 +82,11 @@ private:
 
 	virtual
 	void
-	initialize () final;
+	on_map () final;
 
 	virtual
 	void
-	on_map () final;
+	initialize () final;
 
 	OutlineTreeViewEditor treeview;
 

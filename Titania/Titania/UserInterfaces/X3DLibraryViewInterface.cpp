@@ -47,51 +47,44 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-
-#ifndef __TITANIA_HISTORY_EDITOR_HISTORY_EDITOR_H__
-#define __TITANIA_HISTORY_EDITOR_HISTORY_EDITOR_H__
-
-#include "../HistoryEditor/History.h"
-#include "../UserInterfaces/X3DHistoryEditorInterface.h"
-#include <Titania/X3D.h>
+#include "X3DLibraryViewInterface.h"
 
 namespace titania {
 namespace puck {
 
-class BrowserWindow;
+const std::string X3DLibraryViewInterface::m_widgetName = "LibraryView";
 
-class HistoryEditor :
-	public X3DHistoryEditorInterface
+void
+X3DLibraryViewInterface::create (const std::string & filename)
 {
-public:
+	// Create Builder.
+	m_builder = Gtk::Builder::create_from_file (filename);
 
-	HistoryEditor (BrowserWindow* const);
+	// Get objects.
+	m_treeStore    = Glib::RefPtr <Gtk::TreeStore>::cast_dynamic (m_builder -> get_object ("TreeStore"));
+	m_file         = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("File"));
+	m_iconRenderer = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("IconRenderer"));
+	m_nameRenderer = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("NameRenderer"));
 
-	virtual
-	~HistoryEditor ();
+	// Get widgets.
+	m_builder -> get_widget ("Window", m_window);
+	m_window -> set_name ("Window");
+	m_builder -> get_widget ("Widget", m_widget);
+	m_widget -> set_name ("Widget");
+	m_builder -> get_widget ("ScrolledWindow", m_scrolledWindow);
+	m_scrolledWindow -> set_name ("ScrolledWindow");
+	m_builder -> get_widget ("TreeView", m_treeView);
+	m_treeView -> set_name ("TreeView");
 
+	// Connect object Gtk::Box with id 'Widget'.
+	connections .emplace_back (m_widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DLibraryViewInterface::on_map)));
 
-private:
+	// Connect object Gtk::TreeView with id 'TreeView'.
+	connections .emplace_back (m_treeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DLibraryViewInterface::on_row_activated)));
 
-	virtual
-	void
-	on_map () final;
-
-	void
-	set_splashScreen ();
-
-	void
-	set_initialized ();
-
-	virtual
-	void
-	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final;
-
-	History history;
-
-};
+	// Call construct handler of base class.
+	construct ();
+}
 
 } // puck
 } // titania
-
-#endif

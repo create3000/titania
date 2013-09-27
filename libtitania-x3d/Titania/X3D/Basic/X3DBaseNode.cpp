@@ -589,7 +589,6 @@ void
 X3DBaseNode::addHandle (X3DBaseNode* const value)
 {
 	handle = value;
-	handle -> addParent (this);
 	handle -> setName (getName ());
 	handle -> setUserData (getUserData ());
 	handle -> replace (this);
@@ -931,6 +930,13 @@ X3DBaseNode::toStreamUserDefinedField (std::ostream & ostream, X3DFieldDefinitio
 void
 X3DBaseNode::dispose ()
 {
+	//	try
+	//	{
+	//		__LOG__ << getTypeName () << std::endl;
+	//	}
+	//	catch (...)
+	//	{ }
+
 	X3DChildObject::dispose ();
 
 	shutdownOutput .processInterests ();

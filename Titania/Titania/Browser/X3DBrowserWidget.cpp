@@ -81,8 +81,6 @@ X3DBrowserWidget::initialize ()
 {
 	X3DBrowserWindowInterface::initialize ();
 
-	__LOG__ << std::endl;
-
 	// Connect event handler.
 	getBrowser () -> getConsole () -> string_changed () .addInterest (this, &X3DBrowserWidget::set_console);
 	getBrowser () -> getUrlError () .addInterest (this, &X3DBrowserWidget::set_urlError);
@@ -95,23 +93,6 @@ X3DBrowserWidget::initialize ()
 	getBrowser () -> show ();
 
 	restoreSession ();
-}
-
-void
-X3DBrowserWidget::set_initialized ()
-{
-	// Initialized
-	getBrowser () -> initialized () .removeInterest (this, &X3DBrowserWidget::set_initialized);
-	getBrowser () -> initialized () .addInterest (this, &X3DBrowserWidget::set_world);
-
-	if (getConfig () .string ("url") .size ())
-		open (getConfig () .string ("url") .raw ());
-
-	else if (getConfig () .string ("worldURL") .size ())
-		open (getConfig () .string ("worldURL") .raw ());
-
-	else
-		open (get_page ("about/home.wrl"));
 }
 
 //void
@@ -212,32 +193,38 @@ X3DBrowserWidget::restoreSession ()
 	if (getConfig () .hasItem ("hPaned"))
 		getHPaned () .set_position (getConfig () .integer ("hPaned"));
 
-	getSideBarNotebook () .set_current_page (getConfig () .integer ("sidebarCurrentPage"));
+	getSideBarNotebook () .set_current_page (getConfig () .integer ("sideBarCurrentPage"));
 	getFooterNotebook ()  .set_current_page (getConfig () .integer ("footerCurrentPage"));
 }
 
 void
 X3DBrowserWidget::saveSession ()
 {
-	getConfig () .setItem ("toolBar", getToolBarMenuItem () .get_active ());
-	getConfig () .setItem ("sideBar", getSideBarMenuItem () .get_active ());
-	getConfig () .setItem ("footer",  getFooterMenuItem  () .get_active ());
-
-	getConfig () .setItem ("shading",          getBrowser () -> getBrowserOptions () -> shading ());
-	getConfig () .setItem ("primitiveQuality", getBrowser () -> getBrowserOptions () -> primitiveQuality ());
-	getConfig () .setItem ("renderingProperties", getRenderingPropertiesMenuItem () .get_active ());
-
-	getConfig () .setItem ("rubberBand",             getRubberbandMenuItem ()             .get_active ());
-	getConfig () .setItem ("enableInlineViewpoints", getEnableInlineViewpointsMenuItem () .get_active ());
-
 	getConfig () .setItem ("vPaned", getVPaned () .get_position ());
 	getConfig () .setItem ("hPaned", getHPaned () .get_position ());
 
-	getConfig () .setItem ("sidebarCurrentPage", getSideBarNotebook () .get_current_page ());
-	getConfig () .setItem ("footerCurrentPage",  getFooterNotebook  () .get_current_page ());
+	getConfig () .setItem ("sideBarCurrentPage", getSideBarNotebook () .get_current_page ());
+	getConfig () .setItem ("footerCurrentPage",  getFooterNotebook ()  .get_current_page ());
 
 	if (getBrowser () -> getExecutionContext () -> getWorldURL () .size ())
 		getConfig () .setItem ("worldURL", getBrowser () -> getExecutionContext () -> getWorldURL ());
+}
+
+void
+X3DBrowserWidget::set_initialized ()
+{
+	// Initialized
+	getBrowser () -> initialized () .removeInterest (this, &X3DBrowserWidget::set_initialized);
+	getBrowser () -> initialized () .addInterest (this, &X3DBrowserWidget::set_world);
+
+	if (getConfig () .string ("url") .size ())
+		open (getConfig () .string ("url") .raw ());
+
+	else if (getConfig () .string ("worldURL") .size ())
+		open (getConfig () .string ("worldURL") .raw ());
+
+	else
+		open (get_page ("about/home.wrl"));
 }
 
 void

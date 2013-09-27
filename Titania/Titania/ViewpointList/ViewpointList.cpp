@@ -78,6 +78,12 @@ ViewpointList::ViewpointList (BrowserWindow* const browserWindow) :
 { }
 
 void
+ViewpointList::on_map ()
+{
+	getBrowserWindow () -> getSideBarLabel () .set_text (_("ViewpointList"));
+}
+
+void
 ViewpointList::initialize ()
 {
 	X3DViewpointListInterface::initialize ();
@@ -169,12 +175,6 @@ ViewpointList::set_currentViewpoint ()
 
 		getListStore () -> row_changed (getListStore () -> get_path (rows [i]), rows [i]);
 	}
-}
-
-void
-ViewpointList::on_map ()
-{
-	getBrowserWindow () -> getSideBarLabel () .set_text (_("ViewpointList"));
 }
 
 void

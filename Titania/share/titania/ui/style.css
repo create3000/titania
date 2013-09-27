@@ -1,4 +1,6 @@
-
+/*
+ * Titania Styles CSS
+ */
 
 #OutlineTreeViewEditor .textview-editable {
 	background-color: mix (@selected_bg_color, @bg_color, 0.9);

@@ -1,5 +1,47 @@
 2013-09-27  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* generate_components.pl:
+	* style.css:
+	* LibraryView.h:
+	* LibraryView.cpp:
+	* BrowserWindow.h:
+	* LibraryView.ui:
+	* X3DUserInterface.cpp:
+	* BrowserWindow.cpp:
+	* LibraryView.h:
+	* BrowserWindow.ui:
+	* X3DBrowserWidget.h:
+	* X3DBrowserEditor.h:
+	* LibraryView.cpp:
+	* X3DBrowserEditor.cpp:
+	* X3DBrowserWidget.cpp:
+	* HistoryEditor.h:
+	* Configuration.h:
+	* ViewpointList.h:
+	* OutlineEditor.h:
+	* HistoryEditor.cpp:
+	* OutlineEditor.cpp:
+	* ViewpointList.cpp:
+	* Configuration.cpp:
+	* Box.wrl:
+	* Text.wrl:
+	* Box.x3dv:
+	* Cone.wrl:
+	* Text.x3dv:
+	* Cone.x3dv:
+	* Sphere.wrl:
+	* Sphere.x3dv:
+	* Cylinder.wrl:
+	* Cylinder.x3dv:
+	* OutlineTreeViewEditor.cpp:
+	* X3DLibraryViewInterface.h:
+	* X3DBrowserWindowInterface.h:
+	* X3DLibraryViewInterface.cpp:
+	* X3DBrowserWindowInterface.cpp: 
+
+2013-09-27  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Box.svg:
 	* Text.svg:
 	* Hand.png:

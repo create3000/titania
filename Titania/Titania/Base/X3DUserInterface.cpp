@@ -84,9 +84,11 @@ X3DUserInterface::set_initialized ()
 {
 	initialized_connection .disconnect ();
 
+	std::clog << "Initializing " << getWidgetName () << "." << std::endl;
+
 	initialize ();
 
-	std::clog << "Done Initializing " << getWidgetName () << "." << std::endl;
+	std::clog << "Done initializing " << getWidgetName () << "." << std::endl;
 }
 
 void

@@ -77,6 +77,18 @@ nodeIndex ()
 			std::cout << std::endl;
 		}
 
+		std::cout
+			<< '\t'
+			<< "containerField = "
+			<< node -> getContainerField ()
+			<< std::endl;
+
+		std::cout
+			<< '\t'
+			<< "componentName = "
+			<< node -> getComponentName ()
+			<< std::endl;
+
 		std::cout << std::endl;
 	}
 
@@ -124,11 +136,11 @@ main (int argc, char** argv)
 	options .addUsage ("");
 	options .addUsage ("       -i=index, --index=index");
 	options .addUsage ("              index can be 'profile', 'component' or 'node'");
-	options .addUsage ("              node is the default index");
-	options .addUsage ("              profile:   get a list of all supported profiles");
-	options .addUsage ("              component: get a list of all supported components");
-	options .addUsage ("              node:      get a list of all supported nodes with it's");
-	options .addUsage ("                         associated fields in key file style");
+	options .addUsage ("              nodes is the default index");
+	options .addUsage ("              profiles:   get a list of all supported profiles");
+	options .addUsage ("              components: get a list of all supported components");
+	options .addUsage ("              nodes:      get a list of all supported nodes with it's");
+	options .addUsage ("                          associated fields in key file style");
 	options .addUsage ("");
 	options .addUsage ("       -x, --x3d");
 	options .addUsage ("              get a list of all supported nodes in VRML style");
@@ -140,7 +152,6 @@ main (int argc, char** argv)
 	options .addUsage ("              prints usage");
 
 	options .setFlag   ("x3d",    'x');
-	options .setFlag   ("index",  'i');
 	options .setFlag   ("fields", 'f');
 	options .setOption ("index",  'i');
 
@@ -152,18 +163,15 @@ main (int argc, char** argv)
 		{
 			std::string index = options .getValue ("index") ? options .getValue ("index") : options .getValue ('i');
 
-			if (index == "profile")
+			if (index == "profiles")
 				return componentIndex ();
 
-			if (index == "component")
+			if (index == "components")
 				return componentIndex ();
 
-			if (index == "node")
+			if (index == "nodes")
 				return nodeIndex ();
 		}
-
-		if (options .getFlag ("index") or options .getFlag ('i'))
-			return nodeIndex ();
 
 		if (options .getFlag ("x3d") or options .getFlag ('x'))
 			return x3d ();

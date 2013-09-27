@@ -69,6 +69,19 @@ X3DBrowserEditor::initialize ()
 }
 
 void
+X3DBrowserEditor::restoreSession ()
+{
+	// Workspace
+	if (getConfig () .string ("workspace") == "BROWSER")
+		getBrowserMenuItem () .activate ();
+
+	else if (getConfig () .string ("workspace") == "EDITOR")
+		getEditorMenuItem () .activate ();
+
+	X3DBrowserWidget::restoreSession ();
+}
+
+void
 X3DBrowserEditor::set_initialized ()
 {
 }
@@ -122,9 +135,19 @@ X3DBrowserEditor::import (const basic::uri & worldURL)
 {
 	try
 	{
-		auto scene = getBrowser () -> createX3DFromURL ({ worldURL .str () });
+		auto & rootNodes    = getBrowser () -> getExecutionContext () -> getRootNodes ();
+		size_t numRootNodes = rootNodes .size ();
+	
+		// Imported scene
 
-		getBrowser () -> getExecutionContext () -> importScene (scene);
+		getBrowser () -> importURL ({ worldURL .str () });
+
+		// Select imported nodes
+
+		getBrowser () -> getSelection () -> clear ();
+
+		for (const auto & rootNode : basic::adapter (rootNodes .begin () + numRootNodes, rootNodes .end ()))
+			getBrowser () -> getSelection () -> addChild (rootNode);
 
 		setEdited (true);
 	}

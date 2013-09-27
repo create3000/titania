@@ -1,5 +1,12 @@
 2013-09-27  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBrowser.h:
+	* X3DBaseNode.cpp:
+	* X3DBrowser.cpp:
+	* Generator.cpp: 
+
+2013-09-27  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* libtitania-x3d.cproj:
 	* Logo.wrl:
 	* Colors.wrl:

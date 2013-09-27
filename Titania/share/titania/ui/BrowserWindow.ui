@@ -615,6 +615,11 @@
     <property name="can_focus">False</property>
     <property name="icon_name">network-server-symbolic</property>
   </object>
+  <object class="GtkImage" id="WalkViewerImage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">WalkViewer</property>
+  </object>
   <object class="GtkMenu" id="ViewerTypeMenu">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -658,16 +663,6 @@
         <signal name="activate" handler="on_none_viewer_activate" swapped="no"/>
       </object>
     </child>
-  </object>
-  <object class="GtkImage" id="WalkViewerImage">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">WalkViewer</property>
-  </object>
-  <object class="GtkImage" id="WorkspacesImage">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="icon_name">visualization</property>
   </object>
   <object class="GtkWindow" id="Window">
     <property name="width_request">1000</property>
@@ -742,7 +737,6 @@
                     <child>
                       <object class="GtkImageMenuItem" id="ImportMenuItem">
                         <property name="label" translatable="yes">_Import ...</property>
-                        <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">False</property>
@@ -819,7 +813,6 @@
             </child>
             <child>
               <object class="GtkMenuItem" id="EditMenuItem">
-                <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">_Edit</property>
                 <property name="use_underline">True</property>
@@ -934,45 +927,6 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
-                      <object class="GtkImageMenuItem" id="WorkspacesMenuItem">
-                        <property name="label" translatable="yes">Workspaces</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="image">WorkspacesImage</property>
-                        <property name="use_stock">False</property>
-                        <child type="submenu">
-                          <object class="GtkMenu" id="menu6">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <child>
-                              <object class="GtkRadioMenuItem" id="BrowserMenuItem">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">Browser</property>
-                                <property name="draw_as_radio">True</property>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkRadioMenuItem" id="EditorMenuItem">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">Editor</property>
-                                <property name="active">True</property>
-                                <property name="draw_as_radio">True</property>
-                                <property name="group">BrowserMenuItem</property>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkSeparatorMenuItem" id="separatormenuitem3">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                      </object>
-                    </child>
-                    <child>
                       <object class="GtkCheckMenuItem" id="ToolBarMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
@@ -996,6 +950,47 @@
                         <property name="label" translatable="yes">Console</property>
                         <property name="use_underline">True</property>
                         <signal name="toggled" handler="on_footer_toggled" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="separatormenuitem3">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="WorkspacesMenuItem">
+                        <property name="label" translatable="yes">Workspaces</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="image">WorkspacesImage</property>
+                        <property name="use_stock">False</property>
+                        <child type="submenu">
+                          <object class="GtkMenu" id="menu6">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <child>
+                              <object class="GtkRadioMenuItem" id="BrowserMenuItem">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">Browser</property>
+                                <property name="active">True</property>
+                                <property name="draw_as_radio">True</property>
+                                <signal name="toggled" handler="on_browser_toggled" swapped="no"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkRadioMenuItem" id="EditorMenuItem">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">Editor</property>
+                                <property name="draw_as_radio">True</property>
+                                <property name="group">BrowserMenuItem</property>
+                                <signal name="toggled" handler="on_editor_toggled" swapped="no"/>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
                       </object>
                     </child>
                     <child>
@@ -1252,20 +1247,6 @@
               </object>
             </child>
             <child>
-              <object class="GtkMenuItem" id="LibraryMenuItem">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">_Library</property>
-                <property name="use_underline">True</property>
-                <child type="submenu">
-                  <object class="GtkMenu" id="LibraryMenu">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child>
               <object class="GtkMenuItem" id="HelpMenuItem">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -1339,7 +1320,6 @@
             </child>
             <child>
               <object class="GtkToolButton" id="ImportButton">
-                <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="label" translatable="yes">Import file.</property>
                 <property name="use_underline">True</property>
@@ -1497,7 +1477,7 @@
                             <property name="can_focus">False</property>
                             <property name="orientation">vertical</property>
                             <child>
-                              <object class="GtkToolbar" id="toolbar2">
+                              <object class="GtkToolbar" id="DashboardToolBar">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="orientation">vertical</property>
@@ -1519,7 +1499,6 @@
                                 </child>
                                 <child>
                                   <object class="GtkRadioToolButton" id="ArrowButton">
-                                    <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="label" translatable="yes">Arrow Tool</property>
                                     <property name="use_underline">True</property>
@@ -1825,8 +1804,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkBox" id="OutlineEditorBox">
-                            <property name="visible">True</property>
+                          <object class="GtkBox" id="LibraryViewBox">
                             <property name="can_focus">False</property>
                             <property name="orientation">vertical</property>
                             <child>
@@ -1838,6 +1816,31 @@
                           </packing>
                         </child>
                         <child type="tab">
+                          <object class="GtkImage" id="image5">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="tooltip_text" translatable="yes">History Editor</property>
+                            <property name="stock">gtk-index</property>
+                            <property name="icon-size">2</property>
+                          </object>
+                          <packing>
+                            <property name="position">2</property>
+                            <property name="tab_fill">False</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkBox" id="OutlineEditorBox">
+                            <property name="can_focus">False</property>
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="position">3</property>
+                          </packing>
+                        </child>
+                        <child type="tab">
                           <object class="GtkImage" id="image3">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
@@ -1846,7 +1849,7 @@
                             <property name="icon-size">2</property>
                           </object>
                           <packing>
-                            <property name="position">2</property>
+                            <property name="position">3</property>
                             <property name="tab_fill">False</property>
                           </packing>
                         </child>
@@ -1879,5 +1882,10 @@
         </child>
       </object>
     </child>
+  </object>
+  <object class="GtkImage" id="WorkspacesImage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="icon_name">visualization</property>
   </object>
 </interface>

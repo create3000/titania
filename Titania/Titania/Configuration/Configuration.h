@@ -91,6 +91,9 @@ public:
 	setItem (const std::string &, const size_t);
 
 	void
+	setItem (const std::string &, const char*);
+
+	void
 	setItem (const std::string &, const std::string &);
 
 	/// @name Get configuration value

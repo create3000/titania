@@ -276,8 +276,25 @@ throw (Error <INVALID_DOCUMENT>,
        Error <DISPOSED>,
        Error <NOT_SUPPORTED>)
 {
-	throw Error <NOT_SUPPORTED> ("");
+	throw Error <NOT_SUPPORTED> ("XML DOM import is not supported.");
 	//return createScene ();
+}
+
+void
+X3DBrowser::importURL (const MFString & url)
+throw (Error <INVALID_NAME>,
+       Error <INVALID_X3D>,
+       Error <NOT_SUPPORTED>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	if (makeCurrent ())
+	{
+		getExecutionContext () -> importScene (createX3DFromURL (url));
+		return;
+	}
+
+	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
 }
 
 void

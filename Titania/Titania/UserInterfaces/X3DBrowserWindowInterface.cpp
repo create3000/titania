@@ -96,6 +96,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_openLocationEntry -> set_name ("OpenLocationEntry");
 	m_builder -> get_widget ("OpenLocationImage", m_openLocationImage);
 	m_openLocationImage -> set_name ("OpenLocationImage");
+	m_builder -> get_widget ("WalkViewerImage", m_walkViewerImage);
+	m_walkViewerImage -> set_name ("WalkViewerImage");
 	m_builder -> get_widget ("ViewerTypeMenu", m_viewerTypeMenu);
 	m_viewerTypeMenu -> set_name ("ViewerTypeMenu");
 	m_builder -> get_widget ("ExamineViewerMenuItem", m_examineViewerMenuItem);
@@ -106,10 +108,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_flyViewerMenuItem -> set_name ("FlyViewerMenuItem");
 	m_builder -> get_widget ("NoneViewerMenuItem", m_noneViewerMenuItem);
 	m_noneViewerMenuItem -> set_name ("NoneViewerMenuItem");
-	m_builder -> get_widget ("WalkViewerImage", m_walkViewerImage);
-	m_walkViewerImage -> set_name ("WalkViewerImage");
-	m_builder -> get_widget ("WorkspacesImage", m_workspacesImage);
-	m_workspacesImage -> set_name ("WorkspacesImage");
 	m_builder -> get_widget ("Window", m_window);
 	m_window -> set_name ("Window");
 	m_builder -> get_widget ("Widget", m_widget);
@@ -150,18 +148,18 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_createParentGroupMenuItem -> set_name ("CreateParentGroupMenuItem");
 	m_builder -> get_widget ("ViewMenuItem", m_viewMenuItem);
 	m_viewMenuItem -> set_name ("ViewMenuItem");
-	m_builder -> get_widget ("WorkspacesMenuItem", m_workspacesMenuItem);
-	m_workspacesMenuItem -> set_name ("WorkspacesMenuItem");
-	m_builder -> get_widget ("BrowserMenuItem", m_browserMenuItem);
-	m_browserMenuItem -> set_name ("BrowserMenuItem");
-	m_builder -> get_widget ("EditorMenuItem", m_editorMenuItem);
-	m_editorMenuItem -> set_name ("EditorMenuItem");
 	m_builder -> get_widget ("ToolBarMenuItem", m_toolBarMenuItem);
 	m_toolBarMenuItem -> set_name ("ToolBarMenuItem");
 	m_builder -> get_widget ("SideBarMenuItem", m_sideBarMenuItem);
 	m_sideBarMenuItem -> set_name ("SideBarMenuItem");
 	m_builder -> get_widget ("FooterMenuItem", m_footerMenuItem);
 	m_footerMenuItem -> set_name ("FooterMenuItem");
+	m_builder -> get_widget ("WorkspacesMenuItem", m_workspacesMenuItem);
+	m_workspacesMenuItem -> set_name ("WorkspacesMenuItem");
+	m_builder -> get_widget ("BrowserMenuItem", m_browserMenuItem);
+	m_browserMenuItem -> set_name ("BrowserMenuItem");
+	m_builder -> get_widget ("EditorMenuItem", m_editorMenuItem);
+	m_editorMenuItem -> set_name ("EditorMenuItem");
 	m_builder -> get_widget ("ShadingMenuItem", m_shadingMenuItem);
 	m_shadingMenuItem -> set_name ("ShadingMenuItem");
 	m_builder -> get_widget ("PhongMenuItem", m_phongMenuItem);
@@ -200,10 +198,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_toolsMenuItem -> set_name ("ToolsMenuItem");
 	m_builder -> get_widget ("MotionBlurMenuItem", m_motionBlurMenuItem);
 	m_motionBlurMenuItem -> set_name ("MotionBlurMenuItem");
-	m_builder -> get_widget ("LibraryMenuItem", m_libraryMenuItem);
-	m_libraryMenuItem -> set_name ("LibraryMenuItem");
-	m_builder -> get_widget ("LibraryMenu", m_libraryMenu);
-	m_libraryMenu -> set_name ("LibraryMenu");
 	m_builder -> get_widget ("HelpMenuItem", m_helpMenuItem);
 	m_helpMenuItem -> set_name ("HelpMenuItem");
 	m_builder -> get_widget ("StandardSizeMenuItem", m_standardSizeMenuItem);
@@ -240,6 +234,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_surfaceBox -> set_name ("SurfaceBox");
 	m_builder -> get_widget ("Dashboard", m_dashboard);
 	m_dashboard -> set_name ("Dashboard");
+	m_builder -> get_widget ("DashboardToolBar", m_dashboardToolBar);
+	m_dashboardToolBar -> set_name ("DashboardToolBar");
 	m_builder -> get_widget ("HandButton", m_handButton);
 	m_handButton -> set_name ("HandButton");
 	m_builder -> get_widget ("ArrowButton", m_arrowButton);
@@ -268,8 +264,12 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_viewpointListBox -> set_name ("ViewpointListBox");
 	m_builder -> get_widget ("HistoryEditorBox", m_historyEditorBox);
 	m_historyEditorBox -> set_name ("HistoryEditorBox");
+	m_builder -> get_widget ("LibraryViewBox", m_libraryViewBox);
+	m_libraryViewBox -> set_name ("LibraryViewBox");
 	m_builder -> get_widget ("OutlineEditorBox", m_outlineEditorBox);
 	m_outlineEditorBox -> set_name ("OutlineEditorBox");
+	m_builder -> get_widget ("WorkspacesImage", m_workspacesImage);
+	m_workspacesImage -> set_name ("WorkspacesImage");
 
 	// Connect object Gtk::MessageDialog with id 'MessageDialog'.
 	connections .emplace_back (m_messageDialog -> signal_response () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_messageDialog_response)));
@@ -311,7 +311,9 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	connections .emplace_back (m_sideBarMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_sideBar_toggled)));
 	connections .emplace_back (m_footerMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_footer_toggled)));
 
-	// Connect object Gtk::RadioMenuItem with id 'PhongMenuItem'.
+	// Connect object Gtk::RadioMenuItem with id 'BrowserMenuItem'.
+	connections .emplace_back (m_browserMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_browser_toggled)));
+	connections .emplace_back (m_editorMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_editor_toggled)));
 	connections .emplace_back (m_phongMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::phong_activate)));
 	connections .emplace_back (m_gouraudMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::gouraud_activate)));
 	connections .emplace_back (m_flatMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::flat_activate)));

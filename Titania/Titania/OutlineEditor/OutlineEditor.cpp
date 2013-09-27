@@ -63,6 +63,12 @@ OutlineEditor::OutlineEditor (BrowserWindow* const browserWindow) :
 { }
 
 void
+OutlineEditor::on_map ()
+{
+	getBrowserWindow () -> getSideBarLabel () .set_text (_("OutlineEditor"));
+}
+
+void
 OutlineEditor::initialize ()
 {
 	X3DOutlineEditorInterface::initialize ();
@@ -70,12 +76,6 @@ OutlineEditor::initialize ()
 	getViewport () .add (treeview);
 
 	treeview .show ();
-}
-
-void
-OutlineEditor::on_map ()
-{
-	getBrowserWindow () -> getSideBarLabel () .set_text (_("OutlineEditor"));
 }
 
 } // puck

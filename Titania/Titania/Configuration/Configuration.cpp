@@ -111,6 +111,12 @@ Configuration::setItem (const std::string & name, const size_t value)
 }
 
 void
+Configuration::setItem (const std::string & name, const char* value)
+{
+	client -> set (getKey (name), std::string (value));
+}
+
+void
 Configuration::setItem (const std::string & name, const std::string & value)
 {
 	client -> set (getKey (name), value);

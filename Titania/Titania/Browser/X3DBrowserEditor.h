@@ -104,6 +104,10 @@ protected:
 	void
 	initialize () override;
 
+	virtual
+	void
+	restoreSession () final;
+
 	/// @name Edit operations
 
 	void
