@@ -56,7 +56,7 @@
 
 #include <Titania/OS.h>
 #include <Titania/Physics/Constants.h>
-#include <Titania/String/ToString.h>
+#include <Titania/String/to_string.h>
 
 #include <Magick++.h>
 #include <giomm.h>

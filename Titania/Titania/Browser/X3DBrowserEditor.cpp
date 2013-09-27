@@ -140,7 +140,8 @@ X3DBrowserEditor::import (const basic::uri & worldURL)
 	
 		// Imported scene
 
-		getBrowser () -> importURL ({ worldURL .str () });
+		auto scene = getBrowser () -> createX3DFromURL ({ worldURL .str () });
+		getBrowser () -> getExecutionContext () -> importScene (scene);
 
 		// Select imported nodes
 

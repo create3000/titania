@@ -1,5 +1,14 @@
 2013-09-27  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Scene.h:
+	* Scene.cpp:
+	* X3DBrowser.h:
+	* X3DBrowser.cpp:
+	* GoldenGate.cpp:
+	* BrowserOptions.cpp: 
+
+2013-09-27  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBrowser.h:
 	* X3DBaseNode.cpp:
 	* X3DBrowser.cpp:

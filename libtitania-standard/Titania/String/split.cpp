@@ -48,81 +48,26 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_EXECUTION_SCENE_H__
-#define __TITANIA_X3D_EXECUTION_SCENE_H__
-
-#include "../Execution/X3DScene.h"
+#include "split.h"
 
 namespace titania {
-namespace X3D {
+namespace basic {
 
-class Scene :
-	public X3DScene
-{
-public:
+template
+std::deque <std::string>
+basic_split (const std::string &, const std::string  &);
 
-	///  @name Construction
+template
+std::deque <std::wstring>
+basic_split (const std::wstring &, const std::wstring  &);
 
-	Scene (X3DBrowser* const);
+template
+std::set <std::string>
+basic_ssplit (const std::string &, const std::string  &);
 
-	virtual
-	Scene*
-	create (X3DExecutionContext* const) const final;
-
-	///  @name Common members
-
-	virtual
-	const std::string &
-	getComponentName () const final
-	{ return componentName; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final
-	{ return containerField; }
-
-	///  @name Tests
-
-	virtual
-	bool
-	isScene () const final
-	{ return true; }
-
-	///  @name Import handling
-
-	void
-	importScene (const X3DSFNode <Scene> &)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
-
-	///  @name Destruction
-
-	virtual
-	~Scene ();
-
-
-private:
-
-	///  @name Static members
-
-	static const std::string componentName;
-	static const std::string typeName;
-	static const std::string containerField;
-
-	///  @name Members
-
-	void
-	updateNamedNodes (const X3DSFNode <Scene> &);
-
-};
+template
+std::set <std::wstring>
+basic_ssplit (const std::wstring &, const std::wstring  &);
 
 } // X3D
 } // titania
-
-#endif

@@ -1,5 +1,12 @@
 2013-09-27  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* BrowserWindow.cpp:
+	* LibraryView.cpp:
+	* X3DBrowserEditor.cpp:
+	* OutlineTreeViewEditor.cpp: 
+
+2013-09-27  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* generate_components.pl:
 	* style.css:

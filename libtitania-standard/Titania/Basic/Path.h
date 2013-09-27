@@ -52,7 +52,7 @@
 #define __TITANIA_BASIC_PATH_H__
 
 #include "../LOG.h"
-#include "../String/Split.h"
+#include "../String/split.h"
 #include "../Utility/Adapter.h"
 #include <algorithm>
 #include <iterator>

@@ -52,8 +52,8 @@
 
 #include "../Configuration/config.h"
 #include "../OutlineEditor/OutlineTreeModel.h"
-#include <Titania/String/Trim.h>
 
+#include <Titania/String.h>
 #include <Titania/X3D/Debug.h>
 #include <Titania/X3D/Handles/TransformHandle.h>
 
@@ -85,10 +85,10 @@ BrowserWindow::initialize ()
 	Gtk::Settings::get_default () -> property_gtk_toolbar_icon_size () = Gtk::ICON_SIZE_SMALL_TOOLBAR;
 
 	// FileFilter
-	getFileFilterX3D   () -> set_name (_("X3D"));
-	getFileFilterImage () -> set_name (_("Images"));
-	getFileFilterAudio () -> set_name (_("Audio"));
-	getFileFilterVideo () -> set_name (_("Videos"));
+	getFileFilterX3D   () -> set_name (_ ("X3D"));
+	getFileFilterImage () -> set_name (_ ("Images"));
+	getFileFilterAudio () -> set_name (_ ("Audio"));
+	getFileFilterVideo () -> set_name (_ ("Videos"));
 
 	// MotionBlurEditor
 	getMotionBlurEditor () .getWindow () .set_transient_for (getWindow ());
@@ -136,7 +136,7 @@ BrowserWindow::enableMenus (bool enable) const
 	for (const auto & child : getMenuBar () .get_children ())
 	{
 		auto menuItem = dynamic_cast <Gtk::MenuItem*> (child);
-		
+
 		if (menuItem and menuItem -> get_visible ())
 		{
 			auto menu = menuItem -> get_submenu ();
@@ -275,10 +275,10 @@ BrowserWindow::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & co
 			if (uris .size ())
 			{
 				auto uri = Glib::uri_unescape_string (uris [0]);
-			
+
 				if (getBrowserMenuItem () .get_active ())
 					open (uri);
-					
+
 				else
 					import (uri);
 
@@ -290,10 +290,10 @@ BrowserWindow::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & co
 		if (selection_data .get_data_type () == "STRING")
 		{
 			auto uri = Glib::uri_unescape_string (basic::trim (selection_data .get_data_as_string ()));
-			
+
 			if (getBrowserMenuItem () .get_active ())
 				open (uri);
-					
+
 			else
 				import (uri);
 
@@ -401,7 +401,7 @@ BrowserWindow::on_browser_toggled ()
 	if (getBrowserMenuItem () .get_active ())
 	{
 		getConfig () .setItem ("workspace", "BROWSER");
-		
+
 		enableEditor (false);
 	}
 }

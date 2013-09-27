@@ -162,14 +162,6 @@ public:
 	       Error <NOT_SUPPORTED>);
 
 	void
-	importURL (const MFString &)
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_X3D>,
-	       Error <NOT_SUPPORTED>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
-
-	void
 	loadURL (const MFString &)
 	throw (Error <INVALID_URL>,
 	       Error <URL_UNAVAILABLE>,

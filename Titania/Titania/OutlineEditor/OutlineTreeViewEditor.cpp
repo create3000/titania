@@ -54,7 +54,7 @@
 #include "CellRenderer/OutlineCellRenderer.h"
 #include "OutlineTreeModel.h"
 
-#include <Titania/String/Trim.h>
+#include <Titania/String.h>
 
 namespace titania {
 namespace puck {

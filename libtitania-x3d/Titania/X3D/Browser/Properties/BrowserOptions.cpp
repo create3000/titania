@@ -71,7 +71,7 @@
 #include "../../Rendering/OpenGL.h"
 
 #include <Titania/Physics/Constants.h>
-#include <Titania/String/Join.h>
+#include <Titania/String/join.h>
 
 namespace titania {
 namespace X3D {

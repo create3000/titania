@@ -51,6 +51,7 @@
 #include "Scene.h"
 
 #include "../Parser/RegEx.h"
+#include "../Browser/X3DBrowser.h"
 
 namespace titania {
 namespace X3D {
@@ -74,31 +75,42 @@ Scene::create (X3DExecutionContext* const executionContext) const
 
 void
 Scene::importScene (const X3DSFNode <Scene> & scene)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
 {
-	if (scene -> getProfile ())
+	if (getBrowser () -> makeCurrent ())
 	{
-		if (getProfile ())
-			addComponents (scene -> getProfile () -> getComponents ());
+		if (scene -> getProfile () or scene -> getComponents () .size ())
+		{
+			if (getProfile ())
+			{
+				if (scene -> getProfile ())
+					addComponents (scene -> getProfile () -> getComponents ());
 
-		else
-			setProfile (scene -> getProfile ());
+				addComponents (scene -> getComponents ());		
+			}
+			else
+				setProfile (getBrowser () -> getProfile ("Full"));
+		}
+
+		importMetaData (scene);
+
+		importExternProtos (scene);
+		importProtos (scene);
+
+		updateNamedNodes (scene);
+		importRootNodes (scene);
+
+		initialize ();
+
+		importImportedNodes (scene);
+		importRoutes (scene);
+		importExportedNodes (scene);
+		
+		return;
 	}
 
-	addComponents (scene -> getComponents ());
-
-	importMetaData (scene);
-
-	importExternProtos (scene);
-	importProtos (scene);
-
-	updateNamedNodes (scene);
-	importRootNodes (scene);
-
-	initialize ();
-
-	importImportedNodes (scene);
-	importRoutes (scene);
-	importExportedNodes (scene);
+	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
 }
 
 void

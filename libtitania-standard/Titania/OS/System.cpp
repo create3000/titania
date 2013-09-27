@@ -50,8 +50,8 @@
 
 #include "System.h"
 
-#include "../String/Join.h"
-#include "../String/Split.h"
+#include "../String/join.h"
+#include "../String/split.h"
 
 namespace titania {
 namespace os {

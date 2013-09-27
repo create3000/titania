@@ -48,22 +48,18 @@
  *
  ******************************************************************************/
 
-#include "Trim.h"
+#ifndef __TITANIA_STRING_NATURALY_COMPARE_H__
+#define __TITANIA_STRING_NATURALY_COMPARE_H__
+
+#include <string>
 
 namespace titania {
 namespace basic {
 
-std::string
-trim (const std::string & string, const std::string::value_type* charlist)
-{
-	std::string::size_type first = string .find_first_not_of (charlist);
-	std::string::size_type last  = string .find_last_not_of  (charlist);
+bool
+naturally_compare (const std::string &, const std::string &);
 
-	if (first == std::string::npos or last == std::string::npos)
-		return std::string ();
-
-	return string .substr (first, last - first + 1);
-}
-
-} // X3D
+} // basic
 } // titania
+
+#endif

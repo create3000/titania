@@ -281,23 +281,6 @@ throw (Error <INVALID_DOCUMENT>,
 }
 
 void
-X3DBrowser::importURL (const MFString & url)
-throw (Error <INVALID_NAME>,
-       Error <INVALID_X3D>,
-       Error <NOT_SUPPORTED>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	if (makeCurrent ())
-	{
-		getExecutionContext () -> importScene (createX3DFromURL (url));
-		return;
-	}
-
-	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
-}
-
-void
 X3DBrowser::loadURL (const MFString & url)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>,

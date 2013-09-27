@@ -53,6 +53,8 @@
 #include "../Browser/BrowserWindow.h"
 #include "../Configuration/config.h"
 
+#include <Titania/String/naturally_compare.h>
+
 namespace titania {
 namespace puck {
 
@@ -123,7 +125,7 @@ LibraryView::children (const Glib::RefPtr <Gio::File> & directory) const
 
 	std::sort (fileInfos .begin (), fileInfos .end (), [ ] (const Glib::RefPtr <Gio::FileInfo> & lhs, const Glib::RefPtr <Gio::FileInfo> & rhs)
 	{
-		return lhs -> get_name () < rhs -> get_name ();
+		return basic::naturally_compare (lhs -> get_name (), rhs -> get_name ());
 	});
 
 	std::stable_sort (fileInfos .begin (), fileInfos .end (), [ ] (const Glib::RefPtr <Gio::FileInfo> & lhs, const Glib::RefPtr <Gio::FileInfo> & rhs)

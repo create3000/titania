@@ -48,8 +48,9 @@
  *
  ******************************************************************************/
 
-#include "String/Join.h"
-#include "String/Split.h"
-#include "String/Trim.h"
+#include "String/join.h"
+#include "String/split.h"
+#include "String/trim.h"
 #include "String/strfsize.h"
 #include "String/sprintf.h"
+#include "String/naturally_compare.h"

@@ -48,26 +48,22 @@
  *
  ******************************************************************************/
 
-#include "Split.h"
+#include "trim.h"
 
 namespace titania {
 namespace basic {
 
-template
-std::deque <std::string>
-basic_split (const std::string &, const std::string  &);
+std::string
+trim (const std::string & string, const std::string::value_type* charlist)
+{
+	std::string::size_type first = string .find_first_not_of (charlist);
+	std::string::size_type last  = string .find_last_not_of  (charlist);
 
-template
-std::deque <std::wstring>
-basic_split (const std::wstring &, const std::wstring  &);
+	if (first == std::string::npos or last == std::string::npos)
+		return std::string ();
 
-template
-std::set <std::string>
-basic_ssplit (const std::string &, const std::string  &);
-
-template
-std::set <std::wstring>
-basic_ssplit (const std::wstring &, const std::wstring  &);
+	return string .substr (first, last - first + 1);
+}
 
 } // X3D
 } // titania

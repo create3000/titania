@@ -1,5 +1,27 @@
 2013-09-27  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* String.h:
+	* Path.h:
+	* join.h:
+	* System.cpp:
+	* Trim.h:
+	* Join.h:
+	* trim.h:
+	* split.h:
+	* Split.h:
+	* Trim.cpp:
+	* trim.cpp:
+	* Split.cpp:
+	* split.cpp:
+	* ToString.h:
+	* libtitania-standard.cproj:
+	* to_string.h:
+	* naturally_compare.h:
+	* naturally_compare.cpp: 
+
+2013-09-27  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Generator.h: 
 
 2013-09-26  Holger Seelig  <holger.seelig@yahoo.de>

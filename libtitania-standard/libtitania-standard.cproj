@@ -82,8 +82,6 @@
     <None Include="Titania\Math\Algorithms\EigenDecomposition.h" />
     <None Include="Makefile.am" />
     <None Include="Titania\Algorithm\Remove.h" />
-    <None Include="Titania\String\Join.h" />
-    <None Include="Titania\String\Split.h" />
     <None Include="Titania\String\strfsize.h" />
     <None Include="Titania\Utility\Value.h" />
     <None Include="Titania\Utility\MemberValue.h" />
@@ -115,15 +113,18 @@
     <None Include="Titania\Math\Algorithms\SquadInterpolator.h" />
     <None Include="Titania\Basic\ReferenceIterator.h" />
     <None Include="Titania\Backtrace.h" />
-    <None Include="Titania\String\Trim.h" />
     <None Include="Titania\OS\FileSize.h" />
     <None Include="Titania\OS\LoadFile.h" />
     <None Include="Titania\Chrono.h" />
     <None Include="Titania\OS\FileExists.h" />
-    <None Include="Titania\String\ToString.h" />
     <None Include="Titania\Math\Utility\StrToL.h" />
     <None Include="Titania\OS\Popen2.h" />
     <None Include="Titania\String\sprintf.h" />
+    <None Include="Titania\String\join.h" />
+    <None Include="Titania\String\split.h" />
+    <None Include="Titania\String\to_string.h" />
+    <None Include="Titania\String\trim.h" />
+    <None Include="Titania\String\naturally_compare.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />
@@ -151,7 +152,6 @@
     <Compile Include="Titania\Chrono\Now.cpp" />
     <Compile Include="Titania\Basic\IndexedMultiMap.cpp" />
     <Compile Include="Titania\Basic\Path.cpp" />
-    <Compile Include="Titania\String\Split.cpp" />
     <Compile Include="Titania\String\strfsize.cpp" />
     <Compile Include="Titania\Chrono\StopWatch.cpp" />
     <Compile Include="Titania\Math\Geometry\Box2.cpp" />
@@ -171,10 +171,12 @@
     <Compile Include="Titania\OS\FileSize.cpp" />
     <Compile Include="Titania\OS\LoadFile.cpp" />
     <Compile Include="Titania\OS\FileExists.cpp" />
-    <Compile Include="Titania\String\Trim.cpp" />
     <Compile Include="Titania\OS\Popen2.cpp" />
     <Compile Include="Titania\Backtrace.cpp" />
     <Compile Include="Titania\String\sprintf.cpp" />
+    <Compile Include="Titania\String\split.cpp" />
+    <Compile Include="Titania\String\trim.cpp" />
+    <Compile Include="Titania\String\naturally_compare.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
