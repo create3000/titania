@@ -47,18 +47,18 @@
       <source stock-id="BlankIcon" filename="icons/blank-icon.svg"/>
       <source stock-id="Cone" filename="icons/Cone.svg"/>
       <source stock-id="Box" filename="icons/Box.svg"/>
-      <source stock-id="FlyViewer" filename="icons/fly-viewer.svg"/>
+      <source stock-id="FlyViewer" filename="icons/FlyViewer.svg"/>
       <source stock-id="IconBlackWhite" filename="icons/icon-bw.svg"/>
       <source stock-id="Cylinder" filename="icons/Cylinder.svg"/>
       <source stock-id="Sphere" filename="icons/Sphere.svg"/>
       <source stock-id="Text" filename="icons/Text.svg"/>
-      <source stock-id="WalkViewer" filename="icons/walk-viewer.svg"/>
+      <source stock-id="WalkViewer" filename="icons/WalkViewer.svg"/>
       <source stock-id="Icon" filename="icons/icon.svg"/>
       <source stock-id="OutlineEditor" filename="icons/OutlineEditor.png"/>
       <source stock-id="ViewpointList" filename="icons/ViewpointList.png"/>
-      <source stock-id="ExamineViewer" filename="icons/examine-viewer.svg"/>
-      <source stock-id="Hand" filename="icons/hand.png"/>
-      <source stock-id="Arrow" filename="icons/arrow.png"/>
+      <source stock-id="ExamineViewer" filename="icons/ExamineViewer.svg"/>
+      <source stock-id="Hand" filename="icons/Hand.png"/>
+      <source stock-id="Arrow" filename="icons/Arrow.png"/>
     </sources>
   </object>
   <object class="GtkFileChooserDialog" id="FileOpenDialog">

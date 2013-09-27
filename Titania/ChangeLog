@@ -1,5 +1,26 @@
 2013-09-27  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Box.svg:
+	* Text.svg:
+	* Hand.png:
+	* play.png:
+	* hand.png:
+	* stop.png:
+	* Cone.svg:
+	* arrow.png:
+	* Arrow.png:
+	* BrowserWindow.ui:
+	* Sphere.svg:
+	* Cylinder.svg:
+	* FlyViewer.svg:
+	* fly-viewer.svg:
+	* WalkViewer.svg:
+	* walk-viewer.svg:
+	* ExamineViewer.svg:
+	* examine-viewer.svg: 
+
+2013-09-27  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* BrowserWindow.h:
 	* Rotor.wrl:
 	* Colors.wrl:
