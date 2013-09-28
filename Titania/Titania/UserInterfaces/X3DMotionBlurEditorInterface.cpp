@@ -82,5 +82,10 @@ X3DMotionBlurEditorInterface::create (const std::string & filename)
 	construct ();
 }
 
+X3DMotionBlurEditorInterface::~X3DMotionBlurEditorInterface ()
+{
+	delete m_window;
+}
+
 } // puck
 } // titania

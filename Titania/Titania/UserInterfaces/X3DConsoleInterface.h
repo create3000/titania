@@ -104,6 +104,8 @@ public:
 	getWidget () const
 	{ return *m_widget; }
 
+	~X3DConsoleInterface ();
+
 
 private:
 

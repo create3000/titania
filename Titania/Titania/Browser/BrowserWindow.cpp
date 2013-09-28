@@ -68,7 +68,6 @@ BrowserWindow::BrowserWindow (const basic::uri & worldURL) :
 	       viewpointList (this),
 	       historyEditor (this),
 	       outlineEditor (this),
-	nodePropertiesEditor (this),
 	                keys (),
 	           importURL ()
 { }
@@ -90,9 +89,6 @@ BrowserWindow::initialize ()
 	getFileFilterImage () -> set_name (_ ("Images"));
 	getFileFilterAudio () -> set_name (_ ("Audio"));
 	getFileFilterVideo () -> set_name (_ ("Videos"));
-
-	// MotionBlurEditor
-	getMotionBlurEditor () .getWindow () .set_transient_for (getWindow ());
 
 	// Sidebar
 	getLibraryView ()   .reparent (getLibraryViewBox (),   getWindow ());
@@ -128,6 +124,7 @@ BrowserWindow::initialize ()
 	// Window
 	getWindow () .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::ARROW));
 	getWindow () .grab_focus ();
+	
 }
 
 // Menu
@@ -393,367 +390,7 @@ BrowserWindow::on_open_location_entry_key_release_event (GdkEventKey* event)
 	return false;
 }
 
-// View menu
-
-void
-BrowserWindow::on_toolBar_toggled ()
-{
-	getConfig () .setItem ("toolBar", getToolBarMenuItem () .get_active ());
-	toggleWidget (getToolBar (), getToolBarMenuItem () .get_active ());
-}
-
-void
-BrowserWindow::on_sideBar_toggled ()
-{
-	getConfig () .setItem ("sideBar", getSideBarMenuItem () .get_active ());
-	toggleWidget (getSideBar (), getSideBarMenuItem () .get_active ());
-}
-
-void
-BrowserWindow::on_footer_toggled ()
-{
-	getConfig () .setItem ("footer", getFooterMenuItem  () .get_active ());
-	toggleWidget (getFooter (), getFooterMenuItem () .get_active ());
-}
-
-void
-BrowserWindow::on_browser_toggled ()
-{
-	if (getBrowserMenuItem () .get_active ())
-	{
-		getConfig () .setItem ("workspace", "BROWSER");
-
-		enableEditor (false);
-	}
-}
-
-void
-BrowserWindow::on_editor_toggled ()
-{
-	if (getEditorMenuItem () .get_active ())
-	{
-		getConfig () .setItem ("workspace", "EDITOR");
-
-		enableEditor (true);
-	}
-}
-
-void
-BrowserWindow::enableEditor (bool enabled)
-{
-	if (not enabled)
-		getBrowser () -> beginUpdate ();
-
-	getImportMenuItem ()   .set_visible (enabled);
-	getEditMenuItem ()     .set_visible (enabled);
-	getImportButton ()     .set_visible (enabled);
-	getArrowButton ()      .set_visible (enabled);
-	getLibraryViewBox ()   .set_visible (enabled);
-	getOutlineEditorBox () .set_visible (enabled);
-}
-
-// Shading menu
-
-void
-BrowserWindow::phong_activate ()
-{
-	if (getPhongMenuItem () .get_active ())
-	{
-		getConfig () .setItem ("shading", "PHONG");
-		getBrowser () -> getBrowserOptions () -> shading () = "PHONG";
-	}
-}
-
-void
-BrowserWindow::gouraud_activate ()
-{
-	if (getGouraudMenuItem () .get_active ())
-	{
-		getConfig () .setItem ("shading", "GOURAUD");
-		getBrowser () -> getBrowserOptions () -> shading () = "GOURAUD";
-	}
-}
-
-void
-BrowserWindow::flat_activate ()
-{
-	if (getFlatMenuItem () .get_active ())
-	{
-		getConfig () .setItem ("shading", "FLAT");
-		getBrowser () -> getBrowserOptions () -> shading () = "FLAT";
-	}
-}
-
-void
-BrowserWindow::wireframe_activate ()
-{
-	if (getWireFrameMenuItem () .get_active ())
-	{
-		getConfig () .setItem ("shading", "WIREFRAME");
-		getBrowser () -> getBrowserOptions () -> shading () = "WIREFRAME";
-	}
-}
-
-void
-BrowserWindow::pointset_activate ()
-{
-	if (getPointSetMenuItem () .get_active ())
-	{
-		getConfig () .setItem ("shading", "POINTSET");
-		getBrowser () -> getBrowserOptions () -> shading () = "POINTSET";
-	}
-}
-
-// Primitive Quality
-
-void
-BrowserWindow::on_low_quality_activate ()
-{
-	if (getLowQualityMenuItem () .get_active ())
-	{
-		getConfig () .setItem ("primitiveQuality", "LOW");
-		getBrowser () -> getBrowserOptions () -> primitiveQuality () = "LOW";
-	}
-}
-
-void
-BrowserWindow::on_medium_quality_activate ()
-{
-	if (getMediumQualityMenuItem () .get_active ())
-	{
-		getConfig () .setItem ("primitiveQuality", "MEDIUM");
-		getBrowser () -> getBrowserOptions () -> primitiveQuality () = "MEDIUM";
-	}
-}
-
-void
-BrowserWindow::on_high_quality_activate ()
-{
-	if (getHighQualityMenuItem () .get_active ())
-	{
-		getConfig () .setItem ("primitiveQuality", "HIGH");
-		getBrowser () -> getBrowserOptions () -> primitiveQuality () = "HIGH";
-	}
-}
-
-// RenderingProperties
-
-void
-BrowserWindow::on_rendering_properties_toggled ()
-{
-	getConfig () .setItem ("renderingProperties", getRenderingPropertiesMenuItem () .get_active ());
-	getBrowser () -> getRenderingProperties () -> enabled () = getRenderingPropertiesMenuItem () .get_active ();
-}
-
-// Fullscreen
-
-void
-BrowserWindow::on_fullscreen_toggled ()
-{
-	if (getFullScreenMenuItem () .get_active ())
-		getWindow () .fullscreen ();
-
-	else
-		getWindow () .unfullscreen ();
-}
-
-// Navigation menu
-
-void
-BrowserWindow::on_headlight_toggled ()
-{
-	auto activeLayer = getBrowser () -> getActiveLayer ();
-
-	if (activeLayer)
-		activeLayer -> getNavigationInfo () -> headlight () = getHeadlightMenuItem () .get_active ();
-}
-
-void
-BrowserWindow::on_rubberband_toggled ()
-{
-	getConfig () .setItem ("rubberBand", getRubberbandMenuItem () .get_active ());
-	getBrowser () -> getBrowserOptions () -> rubberBand () = getRubberbandMenuItem () .get_active ();
-}
-
-void
-BrowserWindow::on_look_at_all_activate ()
-{
-	if (getBrowser () -> getActiveLayer ())
-		getBrowser () -> getActiveLayer () -> lookAt ();
-}
-
-void
-BrowserWindow::on_enable_inline_viewpoints_toggled ()
-{
-	getConfig () .setItem ("enableInlineViewpoints", getEnableInlineViewpointsMenuItem () .get_active ());
-	getBrowser () -> getBrowserOptions () -> enableInlineViewpoints () = getEnableInlineViewpointsMenuItem () .get_active ();
-}
-
-// Editor handling
-
-void
-BrowserWindow::on_motion_blur_editor_activate ()
-{
-	getMotionBlurEditor () .getWindow () .present ();
-}
-
-// Help menu
-
-void
-BrowserWindow::on_info ()
-{
-	open (get_page ("about/info.wrl"));
-}
-
-void
-BrowserWindow::on_standard_size ()
-{
-	getWindow () .resize (960, 600);
-}
-
-// Browser dashboard handling
-
-void
-BrowserWindow::set_dashboard (bool value)
-{
-	getDashboard () .set_visible (value);
-}
-
-void
-BrowserWindow::on_hand_button_toggled ()
-{
-	if (getHandButton () .get_active ())
-	{
-		std::clog << "Hand button clicked." << std::endl;
-
-		getBrowser () -> beginUpdate ();
-
-		//getBrowser () -> select = false;
-	}
-}
-
-void
-BrowserWindow::on_arrow_button_toggled ()
-{
-	if (getArrowButton () .get_active ())
-	{
-		std::clog << "Arrow button clicked." << std::endl;
-
-		getBrowser () -> endUpdate ();
-
-		//getBrowser () -> select = true;
-	}
-}
-
-// Viewer
-
-void
-BrowserWindow::set_viewer (X3D::ViewerType type)
-{
-	switch (type)
-	{
-		case X3D::ViewerType::NONE:
-		{
-			getViewerButton () .set_stock_id (Gtk::StockID ("gtk-cancel"));
-			break;
-		}
-		case X3D::ViewerType::EXAMINE:
-		{
-			getViewerButton () .set_stock_id (Gtk::StockID ("ExamineViewer"));
-			break;
-		}
-		case X3D::ViewerType::WALK:
-		{
-			getViewerButton () .set_stock_id (Gtk::StockID ("WalkViewer"));
-			break;
-		}
-		case X3D::ViewerType::FLY:
-		{
-			getViewerButton () .set_stock_id (Gtk::StockID ("FlyViewer"));
-			break;
-		}
-	}
-}
-
-void
-BrowserWindow::set_examine_viewer (bool value)
-{
-	getExamineViewerMenuItem () .set_visible (value);
-}
-
-void
-BrowserWindow::set_walk_viewer (bool value)
-{
-	getWalkViewerMenuItem () .set_visible (value);
-}
-
-void
-BrowserWindow::set_fly_viewer (bool value)
-{
-	getFlyViewerMenuItem () .set_visible (value);
-}
-
-void
-BrowserWindow::set_none_viewer (bool value)
-{
-	getNoneViewerMenuItem () .set_visible (value);
-}
-
-void
-BrowserWindow::on_examine_viewer_activate ()
-{
-	getBrowser () -> setViewer (X3D::ViewerType::EXAMINE);
-}
-
-void
-BrowserWindow::on_walk_viewer_activate ()
-{
-	getBrowser () -> setViewer (X3D::ViewerType::WALK);
-}
-
-void
-BrowserWindow::on_fly_viewer_activate ()
-{
-	getBrowser () -> setViewer (X3D::ViewerType::FLY);
-}
-
-void
-BrowserWindow::on_none_viewer_activate ()
-{
-	getBrowser () -> setViewer (X3D::ViewerType::NONE);
-}
-
-// Look at
-
-void
-BrowserWindow::on_look_at_all_clicked ()
-{
-	if (getBrowser () -> getActiveLayer ())
-		getBrowser () -> getActiveLayer () -> lookAt ();
-}
-
-void
-BrowserWindow::set_look_at (bool value)
-{
-	getLookAtAllButton () .set_visible (value);
-	getLookAtButton ()    .set_visible (value);
-}
-
-void
-BrowserWindow::on_look_at_toggled ()
-{
-	__LOG__ << std::endl;
-}
-
-// Dialog response handling
-
-void
-BrowserWindow::on_messageDialog_response (int)
-{
-	getMessageDialog () .hide ();
-}
-
-// Editing facilities
+// Edit menu
 
 void
 BrowserWindow::on_add_node (const std::string & typeName)
@@ -922,6 +559,378 @@ BrowserWindow::on_create_parent_group_activate ()
 				getOutlineTreeView () .expand_row (getOutlineTreeView () .get_model () -> get_path (iter), false);
 		}
 	}
+}
+
+// View menu
+
+void
+BrowserWindow::on_toolBar_toggled ()
+{
+	getConfig () .setItem ("toolBar", getToolBarMenuItem () .get_active ());
+	toggleWidget (getToolBar (), getToolBarMenuItem () .get_active ());
+}
+
+void
+BrowserWindow::on_sideBar_toggled ()
+{
+	getConfig () .setItem ("sideBar", getSideBarMenuItem () .get_active ());
+	toggleWidget (getSideBar (), getSideBarMenuItem () .get_active ());
+}
+
+void
+BrowserWindow::on_footer_toggled ()
+{
+	getConfig () .setItem ("footer", getFooterMenuItem  () .get_active ());
+	toggleWidget (getFooter (), getFooterMenuItem () .get_active ());
+}
+
+void
+BrowserWindow::on_browser_toggled ()
+{
+	if (getBrowserMenuItem () .get_active ())
+	{
+		getConfig () .setItem ("workspace", "BROWSER");
+
+		enableEditor (false);
+	}
+}
+
+void
+BrowserWindow::on_editor_toggled ()
+{
+	if (getEditorMenuItem () .get_active ())
+	{
+		getConfig () .setItem ("workspace", "EDITOR");
+
+		enableEditor (true);
+	}
+}
+
+void
+BrowserWindow::enableEditor (bool enabled)
+{
+	if (not enabled)
+		getBrowser () -> beginUpdate ();
+
+	getImportMenuItem ()       .set_visible (enabled);
+	getEditMenuItem ()         .set_visible (enabled);
+	getImportButton ()         .set_visible (enabled);
+	getNodePropertiesButton () .set_visible (enabled);
+	getArrowButton ()          .set_visible (enabled);
+	getLibraryViewBox ()       .set_visible (enabled);
+	getOutlineEditorBox ()     .set_visible (enabled);
+}
+
+// Shading menu
+
+void
+BrowserWindow::phong_activate ()
+{
+	if (getPhongMenuItem () .get_active ())
+	{
+		getConfig () .setItem ("shading", "PHONG");
+		getBrowser () -> getBrowserOptions () -> shading () = "PHONG";
+	}
+}
+
+void
+BrowserWindow::gouraud_activate ()
+{
+	if (getGouraudMenuItem () .get_active ())
+	{
+		getConfig () .setItem ("shading", "GOURAUD");
+		getBrowser () -> getBrowserOptions () -> shading () = "GOURAUD";
+	}
+}
+
+void
+BrowserWindow::flat_activate ()
+{
+	if (getFlatMenuItem () .get_active ())
+	{
+		getConfig () .setItem ("shading", "FLAT");
+		getBrowser () -> getBrowserOptions () -> shading () = "FLAT";
+	}
+}
+
+void
+BrowserWindow::wireframe_activate ()
+{
+	if (getWireFrameMenuItem () .get_active ())
+	{
+		getConfig () .setItem ("shading", "WIREFRAME");
+		getBrowser () -> getBrowserOptions () -> shading () = "WIREFRAME";
+	}
+}
+
+void
+BrowserWindow::pointset_activate ()
+{
+	if (getPointSetMenuItem () .get_active ())
+	{
+		getConfig () .setItem ("shading", "POINTSET");
+		getBrowser () -> getBrowserOptions () -> shading () = "POINTSET";
+	}
+}
+
+// Primitive Quality
+
+void
+BrowserWindow::on_low_quality_activate ()
+{
+	if (getLowQualityMenuItem () .get_active ())
+	{
+		getConfig () .setItem ("primitiveQuality", "LOW");
+		getBrowser () -> getBrowserOptions () -> primitiveQuality () = "LOW";
+	}
+}
+
+void
+BrowserWindow::on_medium_quality_activate ()
+{
+	if (getMediumQualityMenuItem () .get_active ())
+	{
+		getConfig () .setItem ("primitiveQuality", "MEDIUM");
+		getBrowser () -> getBrowserOptions () -> primitiveQuality () = "MEDIUM";
+	}
+}
+
+void
+BrowserWindow::on_high_quality_activate ()
+{
+	if (getHighQualityMenuItem () .get_active ())
+	{
+		getConfig () .setItem ("primitiveQuality", "HIGH");
+		getBrowser () -> getBrowserOptions () -> primitiveQuality () = "HIGH";
+	}
+}
+
+// RenderingProperties
+
+void
+BrowserWindow::on_rendering_properties_toggled ()
+{
+	getConfig () .setItem ("renderingProperties", getRenderingPropertiesMenuItem () .get_active ());
+	getBrowser () -> getRenderingProperties () -> enabled () = getRenderingPropertiesMenuItem () .get_active ();
+}
+
+// Fullscreen
+
+void
+BrowserWindow::on_fullscreen_toggled ()
+{
+	if (getFullScreenMenuItem () .get_active ())
+		getWindow () .fullscreen ();
+
+	else
+		getWindow () .unfullscreen ();
+}
+
+// Navigation menu
+
+void
+BrowserWindow::on_headlight_toggled ()
+{
+	auto activeLayer = getBrowser () -> getActiveLayer ();
+
+	if (activeLayer)
+		activeLayer -> getNavigationInfo () -> headlight () = getHeadlightMenuItem () .get_active ();
+}
+
+void
+BrowserWindow::on_rubberband_toggled ()
+{
+	getConfig () .setItem ("rubberBand", getRubberbandMenuItem () .get_active ());
+	getBrowser () -> getBrowserOptions () -> rubberBand () = getRubberbandMenuItem () .get_active ();
+}
+
+void
+BrowserWindow::on_look_at_all_activate ()
+{
+	if (getBrowser () -> getActiveLayer ())
+		getBrowser () -> getActiveLayer () -> lookAt ();
+}
+
+void
+BrowserWindow::on_enable_inline_viewpoints_toggled ()
+{
+	getConfig () .setItem ("enableInlineViewpoints", getEnableInlineViewpointsMenuItem () .get_active ());
+	getBrowser () -> getBrowserOptions () -> enableInlineViewpoints () = getEnableInlineViewpointsMenuItem () .get_active ();
+}
+
+// Editor handling
+
+void
+BrowserWindow::on_motion_blur_editor_activate ()
+{
+	getMotionBlurEditor () .getWindow () .present ();
+}
+
+// Help menu
+
+void
+BrowserWindow::on_info ()
+{
+	open (get_page ("about/info.wrl"));
+}
+
+void
+BrowserWindow::on_standard_size ()
+{
+	getWindow () .resize (960, 600);
+}
+
+/// Toolbar
+
+void
+BrowserWindow::on_node_properties ()
+{
+	if (getBrowser () -> getSelection () -> getChildren () .size ())
+		openNodePropertiesEditor (getBrowser () -> getSelection () -> getChildren () .back ());
+}
+
+
+
+// Browser dashboard handling
+
+void
+BrowserWindow::set_dashboard (bool value)
+{
+	getDashboard () .set_visible (value);
+}
+
+void
+BrowserWindow::on_hand_button_toggled ()
+{
+	if (getHandButton () .get_active ())
+	{
+		std::clog << "Hand button clicked." << std::endl;
+
+		getBrowser () -> beginUpdate ();
+
+		//getBrowser () -> select = false;
+	}
+}
+
+void
+BrowserWindow::on_arrow_button_toggled ()
+{
+	if (getArrowButton () .get_active ())
+	{
+		std::clog << "Arrow button clicked." << std::endl;
+
+		getBrowser () -> endUpdate ();
+
+		//getBrowser () -> select = true;
+	}
+}
+
+// Viewer
+
+void
+BrowserWindow::set_viewer (X3D::ViewerType type)
+{
+	switch (type)
+	{
+		case X3D::ViewerType::NONE:
+		{
+			getViewerButton () .set_stock_id (Gtk::StockID ("gtk-cancel"));
+			break;
+		}
+		case X3D::ViewerType::EXAMINE:
+		{
+			getViewerButton () .set_stock_id (Gtk::StockID ("ExamineViewer"));
+			break;
+		}
+		case X3D::ViewerType::WALK:
+		{
+			getViewerButton () .set_stock_id (Gtk::StockID ("WalkViewer"));
+			break;
+		}
+		case X3D::ViewerType::FLY:
+		{
+			getViewerButton () .set_stock_id (Gtk::StockID ("FlyViewer"));
+			break;
+		}
+	}
+}
+
+void
+BrowserWindow::set_examine_viewer (bool value)
+{
+	getExamineViewerMenuItem () .set_visible (value);
+}
+
+void
+BrowserWindow::set_walk_viewer (bool value)
+{
+	getWalkViewerMenuItem () .set_visible (value);
+}
+
+void
+BrowserWindow::set_fly_viewer (bool value)
+{
+	getFlyViewerMenuItem () .set_visible (value);
+}
+
+void
+BrowserWindow::set_none_viewer (bool value)
+{
+	getNoneViewerMenuItem () .set_visible (value);
+}
+
+void
+BrowserWindow::on_examine_viewer_activate ()
+{
+	getBrowser () -> setViewer (X3D::ViewerType::EXAMINE);
+}
+
+void
+BrowserWindow::on_walk_viewer_activate ()
+{
+	getBrowser () -> setViewer (X3D::ViewerType::WALK);
+}
+
+void
+BrowserWindow::on_fly_viewer_activate ()
+{
+	getBrowser () -> setViewer (X3D::ViewerType::FLY);
+}
+
+void
+BrowserWindow::on_none_viewer_activate ()
+{
+	getBrowser () -> setViewer (X3D::ViewerType::NONE);
+}
+
+// Look at
+
+void
+BrowserWindow::on_look_at_all_clicked ()
+{
+	if (getBrowser () -> getActiveLayer ())
+		getBrowser () -> getActiveLayer () -> lookAt ();
+}
+
+void
+BrowserWindow::set_look_at (bool value)
+{
+	getLookAtAllButton () .set_visible (value);
+	getLookAtButton ()    .set_visible (value);
+}
+
+void
+BrowserWindow::on_look_at_toggled ()
+{
+	__LOG__ << std::endl;
+}
+
+// Dialog response handling
+
+void
+BrowserWindow::on_messageDialog_response (int)
+{
+	getMessageDialog () .hide ();
 }
 
 } // puck

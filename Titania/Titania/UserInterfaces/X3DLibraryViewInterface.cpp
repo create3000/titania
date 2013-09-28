@@ -86,5 +86,10 @@ X3DLibraryViewInterface::create (const std::string & filename)
 	construct ();
 }
 
+X3DLibraryViewInterface::~X3DLibraryViewInterface ()
+{
+	delete m_window;
+}
+
 } // puck
 } // titania

@@ -55,7 +55,6 @@
 #include "../HistoryEditor/HistoryEditor.h"
 #include "../LibraryView/LibraryView.h"
 #include "../MotionBlurEditor/MotionBlurEditor.h"
-#include "../NodePropertiesEditor/NodePropertiesEditor.h"
 #include "../OutlineEditor/OutlineEditor.h"
 #include "../ViewpointList/ViewpointList.h"
 
@@ -121,14 +120,6 @@ public:
 	getOutlineTreeView () const
 	{ return outlineEditor .getTreeView (); }
 
-	NodePropertiesEditor &
-	getNodePropertiesEditor ()
-	{ return nodePropertiesEditor; }
-
-	const NodePropertiesEditor &
-	getNodePropertiesEditor () const
-	{ return nodePropertiesEditor; }
-
 	/// @name Member access
 
 	const X3D::Keys &
@@ -186,7 +177,7 @@ private:
 	on_surface_box_drag_data_received (const Glib::RefPtr <Gdk::DragContext>&, int, int, const Gtk::SelectionData &, guint info, guint) final;
 
 	void
-	dragDataHandling (const Glib::RefPtr <Gdk::DragContext> &, const Gtk::SelectionData &, guint, bool);
+	dragDataHandling (const Glib::RefPtr <Gdk::DragContext>&, const Gtk::SelectionData &, guint, bool);
 
 	virtual
 	void
@@ -213,6 +204,29 @@ private:
 	virtual
 	bool
 	on_open_location_entry_key_release_event (GdkEventKey*) final;
+
+	///  @name Edit menu 
+
+	void
+	on_add_node (const std::string &);
+
+	void
+	on_delete_nodes_activate ();
+
+	void
+	on_group_selected_nodes_activate ();
+
+	void
+	on_ungroup_node_activate ();
+
+	void
+	on_add_to_group_activate ();
+
+	void
+	on_detach_from_group_activate ();
+
+	void
+	on_create_parent_group_activate ();
 
 	/// @name Bar view handling
 
@@ -320,6 +334,12 @@ private:
 	void
 	on_standard_size () final;
 
+	/// Toolbar
+	
+	virtual
+	void
+	on_node_properties () final;
+
 	///  @name Browser dashboard handling
 
 	void
@@ -380,37 +400,13 @@ private:
 	void
 	on_messageDialog_response (int);
 
-	///  @Editing facilities
-
-	void
-	on_add_node (const std::string &);
-
-	void
-	on_delete_nodes_activate ();
-
-	void
-	on_group_selected_nodes_activate ();
-
-	void
-	on_ungroup_node_activate ();
-
-	void
-	on_add_to_group_activate ();
-
-	void
-	on_detach_from_group_activate ();
-
-	void
-	on_create_parent_group_activate ();
-
 	///  @name Members
 
-	MotionBlurEditor     motionBlurEditor;
-	LibraryView          libraryView;
-	ViewpointList        viewpointList;
-	HistoryEditor        historyEditor;
-	OutlineEditor        outlineEditor;
-	NodePropertiesEditor nodePropertiesEditor;
+	MotionBlurEditor motionBlurEditor;
+	LibraryView      libraryView;
+	ViewpointList    viewpointList;
+	HistoryEditor    historyEditor;
+	OutlineEditor    outlineEditor;
 
 	X3D::Keys  keys;
 	basic::uri importURL;

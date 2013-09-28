@@ -85,5 +85,10 @@ X3DViewpointListInterface::create (const std::string & filename)
 	construct ();
 }
 
+X3DViewpointListInterface::~X3DViewpointListInterface ()
+{
+	delete m_window;
+}
+
 } // puck
 } // titania

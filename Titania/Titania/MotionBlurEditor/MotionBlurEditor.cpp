@@ -50,8 +50,8 @@
 
 #include "MotionBlurEditor.h"
 
+#include "../Browser/BrowserWindow.h"
 #include "../Configuration/config.h"
-#include <iostream>
 
 namespace titania {
 namespace puck {
@@ -59,7 +59,9 @@ namespace puck {
 MotionBlurEditor::MotionBlurEditor (BrowserWindow* const browserWindow) :
 	            X3DBaseInterface (browserWindow),
 	X3DMotionBlurEditorInterface (get_ui ("MotionBlurEditor.ui"), gconf_dir ())
-{ }
+{
+	getWindow () .set_transient_for (getBrowserWindow () -> getWindow ());
+}
 
 void
 MotionBlurEditor::initialize ()

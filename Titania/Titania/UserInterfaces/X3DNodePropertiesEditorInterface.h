@@ -104,6 +104,8 @@ public:
 	getNodePropertiesExpander () const
 	{ return *m_nodePropertiesExpander; }
 
+	~X3DNodePropertiesEditorInterface ();
+
 
 private:
 

@@ -11,6 +11,15 @@ use File::Spec;
 use constant true  => 1;
 use constant false => 0;
 
+my %windows = ();
+
+$windows {$_} = true foreach qw(
+	Gtk::Window
+	Gtk::FileChooserDialog
+	Gtk::MessageDialog
+	Gtk::Dialog
+);
+
 my %objects = ();
 
 $objects {$_} = true foreach qw(
@@ -46,6 +55,7 @@ sub new
 		object             => "",
 		id                 => "",
 		prototypes         => { grep { not /^\s*$/ } map { chomp; $_ } <DATA> },
+		windows            => { },
 	};
 	bless $self, $class;
 	return $self;
@@ -72,6 +82,12 @@ sub getPrototype
 	close THIS;
 	
 	return $handler;
+}
+
+sub isWindow
+{
+	my $class = shift;
+	return exists $windows {$class};
 }
 
 sub isObject
@@ -112,6 +128,9 @@ sub h_widget_getters
 
 	$attributes {class} =~ s/Gtk/Gtk::/;
 	return if not isWidget ($attributes {class});
+
+	$self -> {windows} -> {"m_" . lcfirst ($attributes {id})} = 1
+		if isWindow ($attributes {class});
 
 	say $file "$attributes{class} &";
 	say $file "get$attributes{id} () const\n{ return *m_" . lcfirst ($attributes {id}) . "; }";
@@ -161,7 +180,7 @@ sub h_signal_handler
 	
 	unless ($prototype)
 	{
-		say "\t missing prototype for", $attributes {name};
+		say "\t missing prototype for '", $attributes {name} . "'.";
 		return;
 	}
 
@@ -399,6 +418,9 @@ sub generate
 	#say OUT "  void";
 	#say OUT "  dispose ();";
 
+	# Destructor
+	say OUT "  ~$self->{class_name} ();";
+	say OUT "";
 
 #	say OUT "protected:";
 #	say OUT "Glib::RefPtr <Gtk::Builder> &";
@@ -518,6 +540,12 @@ sub generate
 	#$self -> cpp_disconnect_signals ();	
 	#say OUT "}";
 
+	# Destructor
+	say OUT "$self->{class_name}\::~$self->{class_name} ()";
+	say OUT "{";
+	say OUT "delete $_;" foreach keys %{$self->{windows}};
+	say OUT "}";
+
 	# Namespaces end
 	say OUT "";
 	say OUT "} // $_ " foreach reverse @{$self -> {namespaces}};
@@ -593,3 +621,4 @@ draw
   virtual bool on_draw(const ::Cairo::RefPtr< ::Cairo::Context>& cr);
 changed
   virtual void on_changed();
+

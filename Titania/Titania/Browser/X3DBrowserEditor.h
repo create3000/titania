@@ -93,6 +93,9 @@ public:
 	bool
 	close () final;
 
+	void
+	openNodePropertiesEditor (const X3D::SFNode &);
+
 
 protected:
 
@@ -107,6 +110,14 @@ protected:
 	virtual
 	void
 	restoreSession () final;
+
+	/// @name Editor handling
+
+	void
+	addEditor (X3DUserInterface* const);
+
+	void
+	removeEditor (X3DUserInterface* const);
 
 	/// @name Edit operations
 
@@ -203,8 +214,8 @@ private:
 	throw (X3D::Error <X3D::INVALID_NAME>);
 	
 	///  @name Members
-
-	X3D::X3DSFNode <X3D::Scene> executionContext;
+	
+	std::set <X3DUserInterface*> editors;
 
 	bool edited;
 

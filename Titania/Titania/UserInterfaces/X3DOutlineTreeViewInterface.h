@@ -116,6 +116,8 @@ public:
 	void
 	on_rename_node_activate () = 0;
 
+	~X3DOutlineTreeViewInterface ();
+
 
 private:
 

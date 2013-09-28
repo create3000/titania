@@ -81,5 +81,10 @@ X3DOutlineTreeViewInterface::create (const std::string & filename)
 	construct ();
 }
 
+X3DOutlineTreeViewInterface::~X3DOutlineTreeViewInterface ()
+{
+	delete m_window;
+}
+
 } // puck
 } // titania

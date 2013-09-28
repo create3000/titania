@@ -63,7 +63,7 @@ class NodePropertiesEditor :
 {
 public:
 
-	NodePropertiesEditor (BrowserWindow* const);
+	NodePropertiesEditor (BrowserWindow* const, const X3D::SFNode &);
 
 	virtual
 	~NodePropertiesEditor ();
@@ -74,6 +74,10 @@ private:
 	virtual
 	void
 	initialize () final;
+
+	///  @name Members
+	
+	const X3D::SFNode node;
 
 };
 

@@ -152,6 +152,10 @@ public:
 	getImportImage () const
 	{ return *m_importImage; }
 
+	Gtk::Image &
+	getOpenLocationImage () const
+	{ return *m_openLocationImage; }
+
 	Gtk::MessageDialog &
 	getMessageDialog () const
 	{ return *m_messageDialog; }
@@ -167,14 +171,6 @@ public:
 	Gtk::Entry &
 	getOpenLocationEntry () const
 	{ return *m_openLocationEntry; }
-
-	Gtk::Image &
-	getOpenLocationImage () const
-	{ return *m_openLocationImage; }
-
-	Gtk::Image &
-	getWalkViewerImage () const
-	{ return *m_walkViewerImage; }
 
 	Gtk::Menu &
 	getViewerTypeMenu () const
@@ -195,6 +191,10 @@ public:
 	Gtk::ImageMenuItem &
 	getNoneViewerMenuItem () const
 	{ return *m_noneViewerMenuItem; }
+
+	Gtk::Image &
+	getWalkViewerImage () const
+	{ return *m_walkViewerImage; }
 
 	Gtk::Window &
 	getWindow () const
@@ -413,24 +413,8 @@ public:
 	{ return *m_refreshButton; }
 
 	Gtk::ToolButton &
-	getBoxToolButton () const
-	{ return *m_boxToolButton; }
-
-	Gtk::ToolButton &
-	getSphereToolButton () const
-	{ return *m_sphereToolButton; }
-
-	Gtk::ToolButton &
-	getCylinderToolButton () const
-	{ return *m_cylinderToolButton; }
-
-	Gtk::ToolButton &
-	getConeToolButton () const
-	{ return *m_coneToolButton; }
-
-	Gtk::ToolButton &
-	getTextToolButton () const
-	{ return *m_textToolButton; }
+	getNodePropertiesButton () const
+	{ return *m_nodePropertiesButton; }
 
 	Gtk::Paned &
 	getVPaned () const
@@ -706,6 +690,10 @@ public:
 
 	virtual
 	void
+	on_node_properties () = 0;
+
+	virtual
+	void
 	on_surface_box_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y, const SelectionData & selection_data, guint info, guint time) = 0;
 
 	virtual
@@ -723,6 +711,8 @@ public:
 	virtual
 	void
 	on_look_at_toggled () = 0;
+
+	~X3DBrowserWindowInterface ();
 
 
 private:
@@ -750,17 +740,17 @@ private:
 	Gtk::Dialog*                    m_fileSaveWarningDialog;
 	Gtk::Image*                     m_flyViewerImage;
 	Gtk::Image*                     m_importImage;
+	Gtk::Image*                     m_openLocationImage;
 	Gtk::MessageDialog*             m_messageDialog;
 	Gtk::Image*                     m_noneViewerImage;
 	Gtk::Dialog*                    m_openLocationDialog;
 	Gtk::Entry*                     m_openLocationEntry;
-	Gtk::Image*                     m_openLocationImage;
-	Gtk::Image*                     m_walkViewerImage;
 	Gtk::Menu*                      m_viewerTypeMenu;
 	Gtk::ImageMenuItem*             m_examineViewerMenuItem;
 	Gtk::ImageMenuItem*             m_walkViewerMenuItem;
 	Gtk::ImageMenuItem*             m_flyViewerMenuItem;
 	Gtk::ImageMenuItem*             m_noneViewerMenuItem;
+	Gtk::Image*                     m_walkViewerImage;
 	Gtk::Window*                    m_window;
 	Gtk::VBox*                      m_widget;
 	Gtk::MenuBar*                   m_menuBar;
@@ -815,11 +805,7 @@ private:
 	Gtk::ToolButton*                m_importButton;
 	Gtk::ToolButton*                m_saveButton;
 	Gtk::ToolButton*                m_refreshButton;
-	Gtk::ToolButton*                m_boxToolButton;
-	Gtk::ToolButton*                m_sphereToolButton;
-	Gtk::ToolButton*                m_cylinderToolButton;
-	Gtk::ToolButton*                m_coneToolButton;
-	Gtk::ToolButton*                m_textToolButton;
+	Gtk::ToolButton*                m_nodePropertiesButton;
 	Gtk::Paned*                     m_vPaned;
 	Gtk::Paned*                     m_hPaned;
 	Gtk::HBox*                      m_surfaceBox;

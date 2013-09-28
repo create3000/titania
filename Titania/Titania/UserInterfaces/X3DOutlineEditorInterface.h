@@ -112,6 +112,8 @@ public:
 	void
 	on_map () = 0;
 
+	~X3DOutlineEditorInterface ();
+
 
 private:
 

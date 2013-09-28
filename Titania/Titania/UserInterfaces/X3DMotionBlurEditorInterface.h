@@ -116,6 +116,8 @@ public:
 	void
 	on_enabled_toggled () = 0;
 
+	~X3DMotionBlurEditorInterface ();
+
 
 private:
 

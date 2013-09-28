@@ -89,5 +89,10 @@ X3DHistoryEditorInterface::create (const std::string & filename)
 	construct ();
 }
 
+X3DHistoryEditorInterface::~X3DHistoryEditorInterface ()
+{
+	delete m_window;
+}
+
 } // puck
 } // titania

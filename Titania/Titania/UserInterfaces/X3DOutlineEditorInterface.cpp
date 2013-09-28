@@ -79,5 +79,10 @@ X3DOutlineEditorInterface::create (const std::string & filename)
 	construct ();
 }
 
+X3DOutlineEditorInterface::~X3DOutlineEditorInterface ()
+{
+	delete m_window;
+}
+
 } // puck
 } // titania

@@ -86,6 +86,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_flyViewerImage -> set_name ("FlyViewerImage");
 	m_builder -> get_widget ("ImportImage", m_importImage);
 	m_importImage -> set_name ("ImportImage");
+	m_builder -> get_widget ("OpenLocationImage", m_openLocationImage);
+	m_openLocationImage -> set_name ("OpenLocationImage");
 	m_builder -> get_widget ("MessageDialog", m_messageDialog);
 	m_messageDialog -> set_name ("MessageDialog");
 	m_builder -> get_widget ("NoneViewerImage", m_noneViewerImage);
@@ -94,10 +96,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_openLocationDialog -> set_name ("OpenLocationDialog");
 	m_builder -> get_widget ("OpenLocationEntry", m_openLocationEntry);
 	m_openLocationEntry -> set_name ("OpenLocationEntry");
-	m_builder -> get_widget ("OpenLocationImage", m_openLocationImage);
-	m_openLocationImage -> set_name ("OpenLocationImage");
-	m_builder -> get_widget ("WalkViewerImage", m_walkViewerImage);
-	m_walkViewerImage -> set_name ("WalkViewerImage");
 	m_builder -> get_widget ("ViewerTypeMenu", m_viewerTypeMenu);
 	m_viewerTypeMenu -> set_name ("ViewerTypeMenu");
 	m_builder -> get_widget ("ExamineViewerMenuItem", m_examineViewerMenuItem);
@@ -108,6 +106,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_flyViewerMenuItem -> set_name ("FlyViewerMenuItem");
 	m_builder -> get_widget ("NoneViewerMenuItem", m_noneViewerMenuItem);
 	m_noneViewerMenuItem -> set_name ("NoneViewerMenuItem");
+	m_builder -> get_widget ("WalkViewerImage", m_walkViewerImage);
+	m_walkViewerImage -> set_name ("WalkViewerImage");
 	m_builder -> get_widget ("Window", m_window);
 	m_window -> set_name ("Window");
 	m_builder -> get_widget ("Widget", m_widget);
@@ -216,16 +216,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_saveButton -> set_name ("SaveButton");
 	m_builder -> get_widget ("RefreshButton", m_refreshButton);
 	m_refreshButton -> set_name ("RefreshButton");
-	m_builder -> get_widget ("BoxToolButton", m_boxToolButton);
-	m_boxToolButton -> set_name ("BoxToolButton");
-	m_builder -> get_widget ("SphereToolButton", m_sphereToolButton);
-	m_sphereToolButton -> set_name ("SphereToolButton");
-	m_builder -> get_widget ("CylinderToolButton", m_cylinderToolButton);
-	m_cylinderToolButton -> set_name ("CylinderToolButton");
-	m_builder -> get_widget ("ConeToolButton", m_coneToolButton);
-	m_coneToolButton -> set_name ("ConeToolButton");
-	m_builder -> get_widget ("TextToolButton", m_textToolButton);
-	m_textToolButton -> set_name ("TextToolButton");
+	m_builder -> get_widget ("NodePropertiesButton", m_nodePropertiesButton);
+	m_nodePropertiesButton -> set_name ("NodePropertiesButton");
 	m_builder -> get_widget ("VPaned", m_vPaned);
 	m_vPaned -> set_name ("VPaned");
 	m_builder -> get_widget ("HPaned", m_hPaned);
@@ -355,6 +347,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	connections .emplace_back (m_importButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_import)));
 	connections .emplace_back (m_saveButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_save)));
 	connections .emplace_back (m_refreshButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_revert_to_saved)));
+	connections .emplace_back (m_nodePropertiesButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_node_properties)));
 
 	// Connect object Gtk::HBox with id 'SurfaceBox'.
 	connections .emplace_back (m_surfaceBox -> signal_drag_data_received () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_surface_box_drag_data_received)));
@@ -371,6 +364,17 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 
 	// Call construct handler of base class.
 	construct ();
+}
+
+X3DBrowserWindowInterface::~X3DBrowserWindowInterface ()
+{
+	delete m_window;
+	delete m_openLocationDialog;
+	delete m_fileOpenDialog;
+	delete m_fileImportDialog;
+	delete m_messageDialog;
+	delete m_fileSaveDialog;
+	delete m_fileSaveWarningDialog;
 }
 
 } // puck

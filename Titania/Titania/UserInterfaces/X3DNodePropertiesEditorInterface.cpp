@@ -74,5 +74,10 @@ X3DNodePropertiesEditorInterface::create (const std::string & filename)
 	construct ();
 }
 
+X3DNodePropertiesEditorInterface::~X3DNodePropertiesEditorInterface ()
+{
+	delete m_window;
+}
+
 } // puck
 } // titania

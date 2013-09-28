@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <!-- interface-requires gtk+ 3.0 -->
+  <object class="GtkImage" id="ExamineViewerImage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">ExamineViewer</property>
+  </object>
   <object class="GtkFileFilter" id="FileFilterAllFiles">
     <patterns>
       <pattern>*</pattern>
@@ -55,11 +60,6 @@
       <source stock-id="Hand" filename="icons/Hand.png"/>
       <source stock-id="Arrow" filename="icons/Arrow.png"/>
     </sources>
-  </object>
-  <object class="GtkImage" id="ExamineViewerImage">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">ExamineViewer</property>
   </object>
   <object class="GtkFileChooserDialog" id="FileImportDialog">
     <property name="can_focus">False</property>
@@ -129,6 +129,11 @@
       <action-widget response="-6">button9</action-widget>
       <action-widget response="-5">button8</action-widget>
     </action-widgets>
+  </object>
+  <object class="GtkImage" id="FileImportImage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="icon_name">document-import</property>
   </object>
   <object class="GtkFileChooserDialog" id="FileOpenDialog">
     <property name="can_focus">False</property>
@@ -612,7 +617,7 @@
   <object class="GtkImage" id="OpenLocationImage">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="icon_name">network-server-symbolic</property>
+    <property name="stock">gtk-network</property>
   </object>
   <object class="GtkImage" id="WalkViewerImage">
     <property name="visible">True</property>
@@ -738,6 +743,7 @@
                         <property name="label" translatable="yes">_Import ...</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
+                        <property name="image">FileImportImage</property>
                         <property name="use_stock">False</property>
                         <signal name="activate" handler="on_import" swapped="no"/>
                       </object>
@@ -1368,59 +1374,12 @@
               </packing>
             </child>
             <child>
-              <object class="GtkToolButton" id="BoxToolButton">
+              <object class="GtkToolButton" id="NodePropertiesButton">
                 <property name="can_focus">True</property>
                 <property name="label" translatable="yes">Box</property>
                 <property name="use_underline">True</property>
-                <property name="stock_id">Box</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkToolButton" id="SphereToolButton">
-                <property name="can_focus">True</property>
-                <property name="label" translatable="yes">Sphere</property>
-                <property name="use_underline">True</property>
-                <property name="stock_id">Sphere</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkToolButton" id="CylinderToolButton">
-                <property name="can_focus">True</property>
-                <property name="label" translatable="yes">Cylinder</property>
-                <property name="use_underline">True</property>
-                <property name="stock_id">Cylinder</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkToolButton" id="ConeToolButton">
-                <property name="can_focus">True</property>
-                <property name="label" translatable="yes">Cone</property>
-                <property name="use_underline">True</property>
-                <property name="stock_id">Cone</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkToolButton" id="TextToolButton">
-                <property name="can_focus">True</property>
-                <property name="label" translatable="yes">Text</property>
-                <property name="use_underline">True</property>
-                <property name="stock_id">Text</property>
+                <property name="stock_id">gtk-edit</property>
+                <signal name="clicked" handler="on_node_properties" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>

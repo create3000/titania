@@ -73,5 +73,10 @@ X3DConsoleInterface::create (const std::string & filename)
 	construct ();
 }
 
+X3DConsoleInterface::~X3DConsoleInterface ()
+{
+	delete m_window;
+}
+
 } // puck
 } // titania
