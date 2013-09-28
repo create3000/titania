@@ -62,16 +62,16 @@ namespace titania {
 namespace X3D {
 
 X3DComposedGeometryNode::Fields::Fields () :
-	colorPerVertex (new SFBool (true)),
+	 colorPerVertex (new SFBool (true)),
 	normalPerVertex (new SFBool (true)),
-	solid (new SFBool (true)),
-	ccw (new SFBool (true)),
-	attrib (new MFNode ()),
-	fogCoord (new SFNode ()),
-	texCoord (new SFNode ()),
-	color (new SFNode ()),
-	normal (new SFNode ()),
-	coord (new SFNode ())
+	          solid (new SFBool (true)),
+	            ccw (new SFBool (true)),
+	         attrib (new MFNode ()),
+	       fogCoord (new SFNode ()),
+	       texCoord (new SFNode ()),
+	          color (new SFNode ()),
+	         normal (new SFNode ()),
+	          coord (new SFNode ())
 { }
 
 X3DComposedGeometryNode::X3DComposedGeometryNode () :

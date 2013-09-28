@@ -221,22 +221,25 @@ private:
 	virtual
 	void
 	initialize () final;
+	
+	float
+	getHeight (size_t) const;
 
 	virtual
 	Box3f
 	createBBox () final;
 
 	std::vector <Vector3f>
-	createTexCoord ();
+	createTexCoord () const;
 
 	std::vector <Vector3f>
-	createNormals (const std::vector <Vector3f> &, const std::vector <size_t> &);
+	createNormals (const std::vector <Vector3f> &, const std::vector <size_t> &) const;
 
 	std::vector <size_t>
-	createCoordIndex ();
+	createCoordIndex () const;
 
 	std::vector <Vector3f>
-	createPoints ();
+	createPoints () const;
 
 	virtual
 	void

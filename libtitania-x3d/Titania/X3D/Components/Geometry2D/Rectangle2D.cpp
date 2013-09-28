@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -62,7 +62,7 @@ const std::string Rectangle2D::typeName       = "Rectangle2D";
 const std::string Rectangle2D::containerField = "geometry";
 
 Rectangle2D::Fields::Fields () :
-	size (new SFVec2f (2, 2)),
+	 size (new SFVec2f (2, 2)),
 	solid (new SFBool (true))
 { }
 

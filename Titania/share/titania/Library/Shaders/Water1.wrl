@@ -1,7 +1,6 @@
 #X3D V3.0 utf8 Titania 0.1
 
-DEF Water Transform {
-  translation -14.6163 -7.70808 -54
+DEF Water1 Transform {
   children [
     DEF Timer TimeSensor {
       cycleInterval 31104000
@@ -14,7 +13,7 @@ DEF Water Transform {
     Transform {
       children Shape {
         appearance Appearance {
-          shaders DEF WaterShader ComposedShader {
+          shaders DEF Water1Shader ComposedShader {
             inputOutput SFFloat time 3.15187
             inputOutput SFInt32 numWaves 5
             inputOutput MFFloat amplitude [ 0.1, 0.2, 0.1, 0.1, 0.1 ]
@@ -112,4 +111,4 @@ void main ()
 }
 
 ROUTE Timer.fraction_changed TO ElapsedTime.set_fraction
-ROUTE ElapsedTime.value_changed TO WaterShader.set_time
+ROUTE ElapsedTime.value_changed TO Water1Shader.set_time

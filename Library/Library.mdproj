@@ -2322,7 +2322,8 @@
     <None Include="Tests\Layout\LayoutLayer.wrl" />
     <None Include="Tests\Handles\OutlineEditor.wrl" />
     <None Include="Tests\Basic\NodeIndex.x3d" />
-    <None Include="Tests\Shaders\ElapsedTime.wrl" />
+    <None Include="Prototypes\Geometry2D\RoundedRectangle2D.wrl" />
+    <None Include="Prototypes\Time\ElapsedTime.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

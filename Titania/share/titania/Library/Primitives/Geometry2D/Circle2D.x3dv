@@ -1,0 +1,12 @@
+#X3D V3.3 utf8 Titania
+
+DEF Circle2D Transform {
+  children Shape {
+    appearance Appearance {
+      material Material {
+        emissiveColor 0.8 0.8 0.8
+      }
+    }
+    geometry Circle2D { }
+  }
+}

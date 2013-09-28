@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -91,7 +91,9 @@ Circle2D::initialize ()
 Box3f
 Circle2D::createBBox ()
 {
-	return Box3f (Vector3f (std::abs (radius ()), std::abs (radius ()), 0), Vector3f ());
+	float diameter = std::abs (radius ()) * 2;
+
+	return Box3f (Vector3f (diameter, diameter, 0), Vector3f ());
 }
 
 void

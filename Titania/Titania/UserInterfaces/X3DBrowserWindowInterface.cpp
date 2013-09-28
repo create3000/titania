@@ -61,17 +61,19 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
+	m_iconFactory        = Glib::RefPtr <Gtk::IconFactory>::cast_dynamic (m_builder -> get_object ("IconFactory"));
 	m_fileFilterAllFiles = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterAllFiles"));
 	m_fileFilterAudio    = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterAudio"));
 	m_fileFilterImage    = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterImage"));
 	m_fileFilterVideo    = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterVideo"));
 	m_fileFilterX3D      = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterX3D"));
-	m_iconFactory        = Glib::RefPtr <Gtk::IconFactory>::cast_dynamic (m_builder -> get_object ("IconFactory"));
 	m_menuAccelGroup     = Glib::RefPtr <Gtk::AccelGroup>::cast_dynamic (m_builder -> get_object ("MenuAccelGroup"));
 
 	// Get widgets.
 	m_builder -> get_widget ("ExamineViewerImage", m_examineViewerImage);
 	m_examineViewerImage -> set_name ("ExamineViewerImage");
+	m_builder -> get_widget ("FileImportDialog", m_fileImportDialog);
+	m_fileImportDialog -> set_name ("FileImportDialog");
 	m_builder -> get_widget ("FileOpenDialog", m_fileOpenDialog);
 	m_fileOpenDialog -> set_name ("FileOpenDialog");
 	m_builder -> get_widget ("FileSaveDialog", m_fileSaveDialog);
@@ -84,8 +86,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_flyViewerImage -> set_name ("FlyViewerImage");
 	m_builder -> get_widget ("ImportImage", m_importImage);
 	m_importImage -> set_name ("ImportImage");
-	m_builder -> get_widget ("FileImportDialog", m_fileImportDialog);
-	m_fileImportDialog -> set_name ("FileImportDialog");
 	m_builder -> get_widget ("MessageDialog", m_messageDialog);
 	m_messageDialog -> set_name ("MessageDialog");
 	m_builder -> get_widget ("NoneViewerImage", m_noneViewerImage);

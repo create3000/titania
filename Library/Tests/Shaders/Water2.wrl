@@ -2,44 +2,6 @@
 
 META "title" "Water 2 Shader"
 
-PROTO ElapsedTime [
-  outputOnly SFTime time
-]
-{
-  DEF Timer TimeSensor {
-    cycleInterval 10
-    loop TRUE
-  }
-
-  DEF ElapsedTime Script {
-    inputOnly      SFTime set_time
-    outputOnly     SFTime time_changed IS time
-    inputOnly      SFTime set_startTime
-    initializeOnly SFTime startTime 0
-    inputOutput    SFTime start 0
-
-    url "vrmlscript:
-function initialize ()
-{
-	start = 0;
-}
-  
-function set_time (value)
-{
-	time_changed = value - startTime;
-}
-
-function set_startTime (value, time)
-{
-	startTime = time;
-}
-"
-  }
-
-  ROUTE Timer.time TO ElapsedTime.set_time
-  ROUTE ElapsedTime.start_changed TO ElapsedTime.set_startTime
-}
-
 Background {
   skyColor 0.2 0.2 0.2
 }
@@ -48,6 +10,16 @@ Viewpoint {
   position 64.713 28.5504 95.758
   orientation -0.573877 0.817501 0.048552 0.639998
   centerOfRotation 29.5 0 29.5
+}
+
+DEF Timer TimeSensor {
+  cycleInterval 31104000
+  loop TRUE
+}
+
+DEF ElapsedTime ScalarInterpolator {
+  key [ 0, 1 ]
+  keyValue [ 0, 3.1104e+07 ]
 }
 
 Transform {
@@ -89,13 +61,11 @@ Transform {
   }
 }
 
-DEF Timer ElapsedTime { }
-
 Transform {
   children Shape {
     appearance Appearance {
       shaders DEF Water ComposedShader {
-        inputOutput SFTime  time 0
+        inputOutput SFFloat time 0
         inputOutput SFVec3f eyePos 0 0 0
         inputOutput SFInt32 numWaves 5
         inputOutput MFFloat amplitude [ 0.2, 0.2, 0.1, 0.1, 0.1 ]
@@ -212,7 +182,8 @@ void main ()
   }
 }
 
-ROUTE Timer.time TO Water.set_time
+ROUTE Timer.fraction_changed TO ElapsedTime.set_fraction
+ROUTE ElapsedTime.value_changed TO Water.set_time
 
 #DEF Proxy ProximitySensor { size 1000 1000 1000 }
 

@@ -92,6 +92,10 @@ public:
 		return widget;
 	}
 
+	const Glib::RefPtr <Gtk::IconFactory> &
+	getIconFactory () const
+	{ return m_iconFactory; }
+
 	const Glib::RefPtr <Gtk::FileFilter> &
 	getFileFilterAllFiles () const
 	{ return m_fileFilterAllFiles; }
@@ -112,10 +116,6 @@ public:
 	getFileFilterX3D () const
 	{ return m_fileFilterX3D; }
 
-	const Glib::RefPtr <Gtk::IconFactory> &
-	getIconFactory () const
-	{ return m_iconFactory; }
-
 	const Glib::RefPtr <Gtk::AccelGroup> &
 	getMenuAccelGroup () const
 	{ return m_menuAccelGroup; }
@@ -123,6 +123,10 @@ public:
 	Gtk::Image &
 	getExamineViewerImage () const
 	{ return *m_examineViewerImage; }
+
+	Gtk::FileChooserDialog &
+	getFileImportDialog () const
+	{ return *m_fileImportDialog; }
 
 	Gtk::FileChooserDialog &
 	getFileOpenDialog () const
@@ -147,10 +151,6 @@ public:
 	Gtk::Image &
 	getImportImage () const
 	{ return *m_importImage; }
-
-	Gtk::FileChooserDialog &
-	getFileImportDialog () const
-	{ return *m_fileImportDialog; }
 
 	Gtk::MessageDialog &
 	getMessageDialog () const
@@ -731,21 +731,21 @@ private:
 	std::string                     filename;
 	std::deque <sigc::connection>   connections;
 	Glib::RefPtr <Gtk::Builder>     m_builder;
+	Glib::RefPtr <Gtk::IconFactory> m_iconFactory;
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterAllFiles;
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterAudio;
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterImage;
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterVideo;
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterX3D;
-	Glib::RefPtr <Gtk::IconFactory> m_iconFactory;
 	Glib::RefPtr <Gtk::AccelGroup>  m_menuAccelGroup;
 	Gtk::Image*                     m_examineViewerImage;
+	Gtk::FileChooserDialog*         m_fileImportDialog;
 	Gtk::FileChooserDialog*         m_fileOpenDialog;
 	Gtk::FileChooserDialog*         m_fileSaveDialog;
 	Gtk::CheckButton*               m_saveCompressedButton;
 	Gtk::Dialog*                    m_fileSaveWarningDialog;
 	Gtk::Image*                     m_flyViewerImage;
 	Gtk::Image*                     m_importImage;
-	Gtk::FileChooserDialog*         m_fileImportDialog;
 	Gtk::MessageDialog*             m_messageDialog;
 	Gtk::Image*                     m_noneViewerImage;
 	Gtk::Dialog*                    m_openLocationDialog;

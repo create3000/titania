@@ -1,0 +1,6 @@
+#X3D V3.3 utf8 Titania
+
+EaseInEaseOut {
+  key [ 0, 1 ]
+  easeInEaseOut [ 0 0, 0 0 ]
+}

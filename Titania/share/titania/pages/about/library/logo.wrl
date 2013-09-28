@@ -5,17 +5,17 @@ META "title" "Logo"
 EXTERNPROTO Red [
   inputOutput SFFloat transparency
 ]
-"library/Colors.wrl"
+"Colors.wrl"
 
 EXTERNPROTO Orange [
   inputOutput SFFloat transparency
 ]
-"library/Colors.wrl"
+"Colors.wrl"
 
 EXTERNPROTO Yellow [
   inputOutput SFFloat transparency
 ]
-"library/Colors.wrl"
+"Colors.wrl"
 
 DEF Red Transform {
   children Shape {

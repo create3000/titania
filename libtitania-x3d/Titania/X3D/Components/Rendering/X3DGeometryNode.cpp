@@ -360,7 +360,7 @@ X3DGeometryNode::getTexCoordParams (Vector3f & min, float & Ssize, int & Sindex,
  */
 
 void
-X3DGeometryNode::refineNormals (const NormalIndex & normalIndex, std::vector <Vector3f> & normals, float creaseAngle, bool ccw)
+X3DGeometryNode::refineNormals (const NormalIndex & normalIndex, std::vector <Vector3f> & normals, float creaseAngle, bool ccw) const
 {
 	if (not ccw)
 	{

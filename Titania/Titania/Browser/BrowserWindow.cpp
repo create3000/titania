@@ -61,15 +61,16 @@ namespace titania {
 namespace puck {
 
 BrowserWindow::BrowserWindow (const basic::uri & worldURL) :
-	X3DBaseInterface (this),
-	X3DBrowserEditor (worldURL),
-	motionBlurEditor (this),
-	     libraryView (this),
-	   viewpointList (this),
-	   historyEditor (this),
-	   outlineEditor (this),
-	            keys (),
-	       importURL ()
+	    X3DBaseInterface (this),
+	    X3DBrowserEditor (worldURL),
+	    motionBlurEditor (this),
+	         libraryView (this),
+	       viewpointList (this),
+	       historyEditor (this),
+	       outlineEditor (this),
+	nodePropertiesEditor (this),
+	                keys (),
+	           importURL ()
 { }
 
 void

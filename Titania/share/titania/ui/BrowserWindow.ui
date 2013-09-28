@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <!-- interface-requires gtk+ 3.0 -->
+  <object class="GtkIconFactory" id="IconFactory">
+    <sources>
+      <source stock-id="BlankIcon" filename="icons/blank-icon.svg"/>
+      <source stock-id="Cone" filename="icons/Cone.svg"/>
+      <source stock-id="Box" filename="icons/Box.svg"/>
+      <source stock-id="FlyViewer" filename="icons/FlyViewer.svg"/>
+      <source stock-id="IconBlackWhite" filename="icons/icon-bw.svg"/>
+      <source stock-id="Cylinder" filename="icons/Cylinder.svg"/>
+      <source stock-id="Sphere" filename="icons/Sphere.svg"/>
+      <source stock-id="Text" filename="icons/Text.svg"/>
+      <source stock-id="WalkViewer" filename="icons/WalkViewer.svg"/>
+      <source stock-id="Icon" filename="icons/icon.svg"/>
+      <source stock-id="OutlineEditor" filename="icons/OutlineEditor.png"/>
+      <source stock-id="ViewpointList" filename="icons/ViewpointList.png"/>
+      <source stock-id="ExamineViewer" filename="icons/ExamineViewer.svg"/>
+      <source stock-id="Hand" filename="icons/Hand.png"/>
+      <source stock-id="Arrow" filename="icons/Arrow.png"/>
+    </sources>
+  </object>
   <object class="GtkImage" id="ExamineViewerImage">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -42,24 +61,74 @@
       <pattern>*.wrz</pattern>
     </patterns>
   </object>
-  <object class="GtkIconFactory" id="IconFactory">
-    <sources>
-      <source stock-id="BlankIcon" filename="icons/blank-icon.svg"/>
-      <source stock-id="Cone" filename="icons/Cone.svg"/>
-      <source stock-id="Box" filename="icons/Box.svg"/>
-      <source stock-id="FlyViewer" filename="icons/FlyViewer.svg"/>
-      <source stock-id="IconBlackWhite" filename="icons/icon-bw.svg"/>
-      <source stock-id="Cylinder" filename="icons/Cylinder.svg"/>
-      <source stock-id="Sphere" filename="icons/Sphere.svg"/>
-      <source stock-id="Text" filename="icons/Text.svg"/>
-      <source stock-id="WalkViewer" filename="icons/WalkViewer.svg"/>
-      <source stock-id="Icon" filename="icons/icon.svg"/>
-      <source stock-id="OutlineEditor" filename="icons/OutlineEditor.png"/>
-      <source stock-id="ViewpointList" filename="icons/ViewpointList.png"/>
-      <source stock-id="ExamineViewer" filename="icons/ExamineViewer.svg"/>
-      <source stock-id="Hand" filename="icons/Hand.png"/>
-      <source stock-id="Arrow" filename="icons/Arrow.png"/>
-    </sources>
+  <object class="GtkFileChooserDialog" id="FileImportDialog">
+    <property name="can_focus">False</property>
+    <property name="border_width">5</property>
+    <property name="title" translatable="yes">Import ...</property>
+    <property name="role">GtkFileChooserDialog</property>
+    <property name="destroy_with_parent">True</property>
+    <property name="hide_titlebar_when_maximized">True</property>
+    <property name="type_hint">dialog</property>
+    <property name="skip_taskbar_hint">True</property>
+    <property name="transient_for">Window</property>
+    <property name="local_only">False</property>
+    <child internal-child="vbox">
+      <object class="GtkBox" id="filechooserdialog-vbox4">
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox" id="filechooserdialog-action_area4">
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkButton" id="button9">
+                <property name="label">gtk-cancel</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="can_default">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="button8">
+                <property name="label">Import</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="can_default">True</property>
+                <property name="has_default">True</property>
+                <property name="receives_default">True</property>
+                <property name="image">ImportImage</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+    </child>
+    <action-widgets>
+      <action-widget response="-6">button9</action-widget>
+      <action-widget response="-5">button8</action-widget>
+    </action-widgets>
   </object>
   <object class="GtkFileChooserDialog" id="FileOpenDialog">
     <property name="can_focus">False</property>
@@ -311,7 +380,6 @@
             </child>
             <child>
               <object class="GtkBox" id="box8">
-                <property name="width_request">0</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="orientation">vertical</property>
@@ -381,75 +449,6 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="icon_name">document-import</property>
-  </object>
-  <object class="GtkFileChooserDialog" id="FileImportDialog">
-    <property name="can_focus">False</property>
-    <property name="border_width">5</property>
-    <property name="title" translatable="yes">Import ...</property>
-    <property name="role">GtkFileChooserDialog</property>
-    <property name="destroy_with_parent">True</property>
-    <property name="hide_titlebar_when_maximized">True</property>
-    <property name="type_hint">dialog</property>
-    <property name="skip_taskbar_hint">True</property>
-    <property name="transient_for">Window</property>
-    <property name="local_only">False</property>
-    <child internal-child="vbox">
-      <object class="GtkBox" id="filechooserdialog-vbox4">
-        <property name="can_focus">False</property>
-        <property name="orientation">vertical</property>
-        <property name="spacing">2</property>
-        <child internal-child="action_area">
-          <object class="GtkButtonBox" id="filechooserdialog-action_area4">
-            <property name="can_focus">False</property>
-            <property name="layout_style">end</property>
-            <child>
-              <object class="GtkButton" id="button9">
-                <property name="label">gtk-cancel</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="can_default">True</property>
-                <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="button8">
-                <property name="label">Import</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="can_default">True</property>
-                <property name="has_default">True</property>
-                <property name="receives_default">True</property>
-                <property name="image">ImportImage</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="pack_type">end</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-      </object>
-    </child>
-    <action-widgets>
-      <action-widget response="-6">button9</action-widget>
-      <action-widget response="-5">button8</action-widget>
-    </action-widgets>
   </object>
   <object class="GtkAccelGroup" id="MenuAccelGroup"/>
   <object class="GtkMessageDialog" id="MessageDialog">

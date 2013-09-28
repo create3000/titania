@@ -62,11 +62,11 @@ const std::string Cone::typeName       = "Cone";
 const std::string Cone::containerField = "geometry";
 
 Cone::Fields::Fields () :
-	bottom (new SFBool (true)),
+	      bottom (new SFBool (true)),
 	bottomRadius (new SFFloat (1)),
-	height (new SFFloat (2)),
-	side (new SFBool (true)),
-	solid (new SFBool (true))
+	      height (new SFFloat (2)),
+	        side (new SFBool (true)),
+	       solid (new SFBool (true))
 { }
 
 Cone::Cone (X3DExecutionContext* const executionContext) :

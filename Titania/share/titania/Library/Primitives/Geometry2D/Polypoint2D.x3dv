@@ -1,0 +1,17 @@
+#X3D V3.3 utf8 Titania
+
+DEF Polypoint2D Transform {
+  children Shape {
+    appearance Appearance {
+      lineProperties LineProperties {
+        linewidthScaleFactor 10
+      }
+      material Material {
+        emissiveColor 0.8 0.8 0.8
+      }
+    }
+    geometry Polypoint2D {
+      point [ 0 0, 1 0, 0 1, -1 0, 0 -1 ]
+    }
+  }
+}

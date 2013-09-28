@@ -178,7 +178,7 @@ protected:
 	getTexCoordParams (Vector3f &, float &, int &, int &);
 
 	void
-	refineNormals (const NormalIndex &, std::vector <Vector3f> &, float, bool);
+	refineNormals (const NormalIndex &, std::vector <Vector3f> &, float, bool) const;
 
 	void
 	addMirrorVertices (GLenum, const bool);

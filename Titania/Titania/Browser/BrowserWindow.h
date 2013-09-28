@@ -55,6 +55,7 @@
 #include "../HistoryEditor/HistoryEditor.h"
 #include "../LibraryView/LibraryView.h"
 #include "../MotionBlurEditor/MotionBlurEditor.h"
+#include "../NodePropertiesEditor/NodePropertiesEditor.h"
 #include "../OutlineEditor/OutlineEditor.h"
 #include "../ViewpointList/ViewpointList.h"
 
@@ -119,6 +120,14 @@ public:
 	const OutlineTreeViewEditor &
 	getOutlineTreeView () const
 	{ return outlineEditor .getTreeView (); }
+
+	NodePropertiesEditor &
+	getNodePropertiesEditor ()
+	{ return nodePropertiesEditor; }
+
+	const NodePropertiesEditor &
+	getNodePropertiesEditor () const
+	{ return nodePropertiesEditor; }
 
 	/// @name Member access
 
@@ -389,13 +398,15 @@ private:
 
 	///  @name Members
 
-	MotionBlurEditor motionBlurEditor;
-	LibraryView      libraryView;
-	ViewpointList    viewpointList;
-	HistoryEditor    historyEditor;
-	OutlineEditor    outlineEditor;
-	X3D::Keys        keys;
-	basic::uri       importURL;
+	MotionBlurEditor     motionBlurEditor;
+	LibraryView          libraryView;
+	ViewpointList        viewpointList;
+	HistoryEditor        historyEditor;
+	OutlineEditor        outlineEditor;
+	NodePropertiesEditor nodePropertiesEditor;
+
+	X3D::Keys  keys;
+	basic::uri importURL;
 
 };
 

@@ -1,0 +1,18 @@
+#X3D V3.3 utf8 Titania
+
+DEF Polyline2D Transform {
+  children Shape {
+    appearance Appearance {
+      lineProperties LineProperties {
+        linetype 4
+        linewidthScaleFactor 4
+      }
+      material Material {
+        emissiveColor 0.8 0.8 0.8
+      }
+    }
+    geometry Polyline2D {
+      lineSegments [ 0 0, 1 2, 2 1, 4 3, 10 0 ]
+    }
+  }
+}

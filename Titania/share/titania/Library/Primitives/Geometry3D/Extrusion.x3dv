@@ -1,0 +1,10 @@
+#X3D V3.3 utf8 Titania
+
+DEF Extrusion Transform {
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry Extrusion { }
+  }
+}

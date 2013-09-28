@@ -1,0 +1,15 @@
+#X3D V3.3 utf8 Titania
+
+Transform {
+  children Shape {
+    appearance Appearance {
+      material Material {
+        ambientIntensity 0.25
+        diffuseColor 0.279501 0.00514168 0.845907
+        specularColor 0.0522777 0.0312975 0.0955906
+        shininess 0.078125
+      }
+    }
+    geometry Sphere { }
+  }
+}

@@ -69,12 +69,12 @@ const std::string IndexedFaceSet::typeName       = "IndexedFaceSet";
 const std::string IndexedFaceSet::containerField = "geometry";
 
 IndexedFaceSet::Fields::Fields () :
-	convex (new SFBool (true)),
-	creaseAngle (new SFFloat ()),
+	       convex (new SFBool (true)),
+	  creaseAngle (new SFFloat ()),
 	texCoordIndex (new MFInt32 ()),
-	colorIndex (new MFInt32 ()),
-	normalIndex (new MFInt32 ()),
-	coordIndex (new MFInt32 ())
+	   colorIndex (new MFInt32 ()),
+	  normalIndex (new MFInt32 ()),
+	   coordIndex (new MFInt32 ())
 { }
 
 IndexedFaceSet::IndexedFaceSet (X3DExecutionContext* const executionContext) :

@@ -1,0 +1,10 @@
+#X3D V3.3 utf8 Titania
+
+DEF ArcClose2D Transform {
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry ArcClose2D { }
+  }
+}

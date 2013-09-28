@@ -1,5 +1,25 @@
 2013-09-28  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Box.cpp:
+	* Cone.cpp:
+	* Arc2D.cpp:
+	* Sphere.cpp:
+	* Disk2D.cpp:
+	* Cylinder.cpp:
+	* Circle2D.cpp:
+	* Extrusion.cpp:
+	* ArcClose2D.cpp:
+	* ElevationGrid.h:
+	* Rectangle2D.cpp:
+	* X3DGeometryNode.h:
+	* ElevationGrid.cpp:
+	* TriangleSet2D.cpp:
+	* X3DGeometryNode.cpp:
+	* IndexedFaceSet.cpp:
+	* X3DComposedGeometryNode.cpp: 
+
+2013-09-28  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DProgrammableShaderObject.cpp: 
 
 2013-09-28  Holger Seelig  <holger.seelig@yahoo.de>

@@ -65,9 +65,9 @@ Cylinder::Fields::Fields () :
 	bottom (new SFBool (true)),
 	height (new SFFloat (2)),
 	radius (new SFFloat (1)),
-	side (new SFBool (true)),
-	top (new SFBool (true)),
-	solid (new SFBool (true))
+	  side (new SFBool (true)),
+	   top (new SFBool (true)),
+	 solid (new SFBool (true))
 { }
 
 Cylinder::Cylinder (X3DExecutionContext* const executionContext) :

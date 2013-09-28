@@ -61,16 +61,16 @@ const std::string Extrusion::typeName       = "Extrusion";
 const std::string Extrusion::containerField = "geometry";
 
 Extrusion::Fields::Fields () :
-	beginCap (new SFBool (true)),
-	endCap (new SFBool (true)),
-	solid (new SFBool (true)),
-	ccw (new SFBool (true)),
-	convex (new SFBool (true)),
-	creaseAngle (new SFFloat ()),
+	    beginCap (new SFBool (true)),
+	      endCap (new SFBool (true)),
+	       solid (new SFBool (true)),
+	         ccw (new SFBool (true)),
+	      convex (new SFBool (true)),
+	 creaseAngle (new SFFloat ()),
 	crossSection (new MFVec2f ({ SFVec2f (1, 1), SFVec2f (1, -1), SFVec2f (-1, -1), SFVec2f (-1, 1), SFVec2f (1, 1) })),
-	orientation (new MFRotation ({ SFRotation () })),
-	scale (new MFVec2f ({ SFVec2f (1, 1) })),
-	spine (new MFVec3f ({ SFVec3f (0, 0, 0), SFVec3f (0, 1, 0) }))
+	 orientation (new MFRotation ({ SFRotation () })),
+	       scale (new MFVec2f ({ SFVec2f (1, 1) })),
+	       spine (new MFVec3f ({ SFVec3f (0, 0, 0), SFVec3f (0, 1, 0) }))
 { }
 
 Extrusion::Extrusion (X3DExecutionContext* const executionContext) :
@@ -204,7 +204,7 @@ Extrusion::createRotations ()
 		// Find first defined Z-axis.
 		for (size_t i = 1, size = spine () .size () - 1; i < size; i ++)
 		{
-			SCPzAxis = normalize (cross (spine () [i + 1] - spine () [i], 
+			SCPzAxis = normalize (cross (spine () [i + 1] - spine () [i],
 			                             spine () [i - 1] - spine () [i]));
 
 			if (SCPzAxis not_eq Vector3f ())
@@ -230,7 +230,7 @@ Extrusion::createRotations ()
 	for (size_t i = 1, size = spine () .size () - 1; i < size; i ++)
 	{
 		SCPyAxis = normalize (spine () [i + 1] - spine () [i - 1]);
-		SCPzAxis = normalize (cross (spine () [i + 1] - spine () [i], 
+		SCPzAxis = normalize (cross (spine () [i + 1] - spine () [i],
 		                             spine () [i - 1] - spine () [i]));
 
 		// d.
@@ -262,7 +262,7 @@ Extrusion::createRotations ()
 		SCPyAxis = normalize (spine () [spine () .size () - 1] - spine () [spine () .size () - 2]);
 
 		if (spine () .size () > 2)
-			SCPzAxis = normalize (cross (spine () [spine () .size () - 1] - spine () [spine () .size () - 2], 
+			SCPzAxis = normalize (cross (spine () [spine () .size () - 1] - spine () [spine () .size () - 2],
 			                             spine () [spine () .size () - 3] - spine () [spine () .size () - 2]));
 
 		// d.

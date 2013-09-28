@@ -65,21 +65,21 @@ const std::string ElevationGrid::typeName       = "ElevationGrid";
 const std::string ElevationGrid::containerField = "geometry";
 
 ElevationGrid::Fields::Fields () :
-	xDimension (new SFInt32 ()),
-	xSpacing (new SFFloat (1)),
-	zDimension (new SFInt32 ()),
-	zSpacing (new SFFloat (1)),
-	solid (new SFBool (true)),
-	ccw (new SFBool (true)),
-	creaseAngle (new SFFloat ()),
-	colorPerVertex (new SFBool (true)),
+	     xDimension (new SFInt32 ()),
+	       xSpacing (new SFFloat (1)),
+	     zDimension (new SFInt32 ()),
+	       zSpacing (new SFFloat (1)),
+	          solid (new SFBool (true)),
+	            ccw (new SFBool (true)),
+	    creaseAngle (new SFFloat ()),
+	 colorPerVertex (new SFBool (true)),
 	normalPerVertex (new SFBool (true)),
-	attrib (new MFNode ()),
-	fogCoord (new SFNode ()),
-	texCoord (new SFNode ()),
-	color (new SFNode ()),
-	normal (new SFNode ()),
-	height (new MFFloat ())
+	         attrib (new MFNode ()),
+	       fogCoord (new SFNode ()),
+	       texCoord (new SFNode ()),
+	          color (new SFNode ()),
+	         normal (new SFNode ()),
+	         height (new MFFloat ())
 { }
 
 ElevationGrid::ElevationGrid (X3DExecutionContext* const executionContext) :
@@ -120,6 +120,15 @@ ElevationGrid::initialize ()
 	X3DGeometryNode::initialize ();
 }
 
+float
+ElevationGrid::getHeight (size_t index) const
+{
+	if (index < height () .size ())
+		return height () [index];
+
+	return 0;
+}
+
 Box3f
 ElevationGrid::createBBox ()
 {
@@ -128,19 +137,16 @@ ElevationGrid::createBBox ()
 
 	size_t vertices = xDimension () * zDimension ();
 
-	if (height () .size () < vertices)
-		height () .resize (vertices);
-
 	float x = xSpacing () * (xDimension () - 1);
 	float z = zSpacing () * (zDimension () - 1);
 
-	float miny = height () [0];
-	float maxy = height () [0];
+	float miny = getHeight (0);
+	float maxy = getHeight (0);
 
 	for (size_t i = 1; i < vertices; ++ i)
 	{
-		miny = std::min <float> (miny, height () [i]);
-		maxy = std::max <float> (maxy, height () [i]);
+		miny = std::min <float> (miny, getHeight (i));
+		maxy = std::max <float> (maxy, getHeight (i));
 	}
 
 	float y = maxy - miny;
@@ -152,7 +158,7 @@ ElevationGrid::createBBox ()
 }
 
 std::vector <Vector3f>
-ElevationGrid::createTexCoord ()
+ElevationGrid::createTexCoord () const
 {
 	std::vector <Vector3f> texCoord;
 	texCoord .reserve (xDimension () * zDimension ());
@@ -171,7 +177,7 @@ ElevationGrid::createTexCoord ()
 }
 
 std::vector <Vector3f>
-ElevationGrid::createNormals (const std::vector <Vector3f> & points, const std::vector <size_t> & coordIndex)
+ElevationGrid::createNormals (const std::vector <Vector3f> & points, const std::vector <size_t> & coordIndex) const
 {
 	std::vector <Vector3f> normals;
 	normals .reserve (coordIndex .size ());
@@ -201,7 +207,7 @@ ElevationGrid::createNormals (const std::vector <Vector3f> & points, const std::
 }
 
 std::vector <size_t>
-ElevationGrid::createCoordIndex ()
+ElevationGrid::createCoordIndex () const
 {
 	std::vector <size_t> _coordIndex;
 	_coordIndex .reserve ((xDimension () - 1) * (zDimension () - 1) * 6);
@@ -239,7 +245,7 @@ ElevationGrid::createCoordIndex ()
 }
 
 std::vector <Vector3f>
-ElevationGrid::createPoints ()
+ElevationGrid::createPoints () const
 {
 	std::vector <Vector3f> points;
 	points .reserve (xDimension () * zDimension ());
@@ -249,7 +255,7 @@ ElevationGrid::createPoints ()
 		for (int32_t i = 0; i < xDimension (); ++ i)
 		{
 			points .push_back (Vector3f (xSpacing () * i,
-			                             height () [i + j * xDimension ()],
+			                             getHeight (i + j * xDimension ()),
 			                             zSpacing () * j));
 		}
 	}
@@ -265,9 +271,6 @@ ElevationGrid::build ()
 
 	size_t vertices = xDimension () * zDimension ();
 	size_t faces    = (xDimension () - 1) * (zDimension () - 1);
-
-	if (height () .size () < vertices)
-		height () .resize (vertices);
 
 	std::vector <size_t>   coordIndex = createCoordIndex ();
 	std::vector <Vector3f> points     = createPoints ();

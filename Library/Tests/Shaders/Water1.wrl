@@ -12,12 +12,12 @@ Viewpoint {
   centerOfRotation 14.5 0 14.5
 }
 
-DEF Timer1 TimeSensor {
+DEF Timer TimeSensor {
   cycleInterval 31104000
   loop TRUE
 }
 
-DEF ElapsedTime1 ScalarInterpolator {
+DEF ElapsedTime ScalarInterpolator {
   key [ 0, 1 ]
   keyValue [ 0, 3.1104e+07 ]
 }
@@ -120,5 +120,5 @@ void main ()
   }
 }
 
-ROUTE Timer1.fraction_changed TO ElapsedTime1.set_fraction
-ROUTE ElapsedTime1.value_changed TO Water.set_time
+ROUTE Timer.fraction_changed TO ElapsedTime.set_fraction
+ROUTE ElapsedTime.value_changed TO Water.set_time

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -64,7 +64,7 @@ const std::string Disk2D::containerField = "geometry";
 Disk2D::Fields::Fields () :
 	innerRadius (new SFFloat ()),
 	outerRadius (new SFFloat (1)),
-	solid (new SFBool (true))
+	      solid (new SFBool (true))
 { }
 
 Disk2D::Disk2D (X3DExecutionContext* const executionContext) :
@@ -96,9 +96,9 @@ Disk2D::initialize ()
 Box3f
 Disk2D::createBBox ()
 {
-	auto radius = std::max (innerRadius (), outerRadius ());
+	auto diameter = std::abs (std::max (innerRadius (), outerRadius ())) * 2;
 
-	return Box3f (Vector3f (std::abs (radius), std::abs (radius), 0), Vector3f ());
+	return Box3f (Vector3f (diameter, diameter, 0), Vector3f ());
 }
 
 void
@@ -131,7 +131,7 @@ Disk2D::build ()
 
 		addElements (GL_LINE_LOOP, getVertices () .size ());
 		setSolid (false);
-		
+
 		lineGeometry = true;
 
 		return;

@@ -1,0 +1,12 @@
+#X3D V3.3 utf8 Titania
+
+Transform {
+  children Shape {
+    appearance Appearance {
+      material Material {
+        ambientIntensity 0.25
+      }
+    }
+    geometry Sphere { }
+  }
+}

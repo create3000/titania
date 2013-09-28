@@ -1,0 +1,11 @@
+#X3D V3.3 utf8 Titania
+
+DEF Sphere Transform {
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry Sphere { }
+  }
+}
+
