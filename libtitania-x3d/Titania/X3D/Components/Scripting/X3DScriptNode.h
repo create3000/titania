@@ -69,6 +69,11 @@ public:
 	{ return worldURL; }
 
 	virtual
+	bool
+	hasUserDefinedFields () const final
+	{ return true; }
+
+	virtual
 	void
 	dispose () override;
 

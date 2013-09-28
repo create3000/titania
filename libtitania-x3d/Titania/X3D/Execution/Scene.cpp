@@ -50,8 +50,8 @@
 
 #include "Scene.h"
 
-#include "../Parser/RegEx.h"
 #include "../Browser/X3DBrowser.h"
+#include "../Parser/RegEx.h"
 
 namespace titania {
 namespace X3D {
@@ -87,7 +87,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 				if (scene -> getProfile ())
 					addComponents (scene -> getProfile () -> getComponents ());
 
-				addComponents (scene -> getComponents ());		
+				addComponents (scene -> getComponents ());
 			}
 			else
 				setProfile (getBrowser () -> getProfile ("Full"));
@@ -106,7 +106,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		importImportedNodes (scene);
 		importRoutes (scene);
 		importExportedNodes (scene);
-		
+
 		return;
 	}
 
@@ -117,38 +117,82 @@ void
 Scene::updateNamedNodes (const X3DSFNode <Scene> & scene)
 {
 	for (const auto & node : NamedNodeIndex (scene -> getNamedNodes ()))
-	{
-		std::string name   = node .first;
-		std::string number = "_0";
-		size_t      i      = 0;
+		scene -> updateNamedNode (getUniqueName (scene, node .first), node .second);
+}
 
-		RegEx::_Number .Replace ("", &name);
+std::string
+Scene::getUniqueName (const X3DSFNode <Scene> & scene, std::string name) const
+{
+	__LOG__ << name << std::endl;
+
+	RegEx::_LastNumber .Replace ("", &name);
+	RegEx::LastNumber .Replace ("", &name);
+
+	if (name .empty ())
+		return getUniqueName (scene);
+
+	else
+	{
+		std::string newName = name;
+		size_t      i       = 0;
 
 		for ( ; ;)
 		{
 			try
 			{
-				getNamedNode (name + number);
-
-				number = "_" + std::to_string (i ++);
+				getNamedNode (newName);
 			}
 			catch (const Error <INVALID_NAME> &)
 			{
 				try
 				{
-					scene -> getNamedNode (name + number);
-
-					number = "_" + std::to_string (i ++);
+					scene -> getNamedNode (newName);
 				}
 				catch (const Error <INVALID_NAME> &)
 				{
 					break;
 				}
 			}
+
+			newName = name + std::to_string (++ i);
+
+			__LOG__ << "\t" << newName << std::endl;
 		}
 
-		scene -> updateNamedNode (name + number, node .second);
+		__LOG__ << "\t" << newName << std::endl;
+
+		return newName;
 	}
+}
+
+std::string
+Scene::getUniqueName (const X3DSFNode <Scene> & scene) const
+{
+	std::string name;
+	size_t      i = 0;
+
+	for ( ; ;)
+	{
+		name = '_' + std::to_string (++ i);
+
+		try
+		{
+			getNamedNode (name);
+		}
+		catch (const Error <INVALID_NAME> &)
+		{
+			try
+			{
+				scene -> getNamedNode (name);
+			}
+			catch (const Error <INVALID_NAME> &)
+			{
+				break;
+			}
+		}
+	}
+
+	return name;
 }
 
 Scene::~Scene ()

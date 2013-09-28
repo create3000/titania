@@ -263,7 +263,7 @@ OutlineCellRenderer::get_node_name () const
 		std::string name      = Glib::Markup::escape_text (node -> getName ());
 		size_t      numClones = node -> getNumClones ();
 
-		X3D::RegEx::_Number .Replace ("", &name);
+		X3D::RegEx::_LastNumber .Replace ("", &name);
 
 		std::string string = "<b>" + typeName + "</b> " + name;
 

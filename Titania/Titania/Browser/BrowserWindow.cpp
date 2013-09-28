@@ -420,6 +420,9 @@ BrowserWindow::on_editor_toggled ()
 void
 BrowserWindow::enableEditor (bool enabled)
 {
+	if (not enabled)
+		getBrowser () -> beginUpdate ();
+
 	getImportMenuItem ()   .set_visible (enabled);
 	getEditMenuItem ()     .set_visible (enabled);
 	getImportButton ()     .set_visible (enabled);

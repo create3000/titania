@@ -120,6 +120,12 @@ private:
 	void
 	updateNamedNodes (const X3DSFNode <Scene> &);
 
+	std::string
+	getUniqueName (const X3DSFNode <Scene> &, std::string) const;
+
+	std::string
+	getUniqueName (const X3DSFNode <Scene> &) const;
+
 };
 
 } // X3D

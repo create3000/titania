@@ -353,7 +353,7 @@ Generator::GetName (const X3DBaseNode* basicNode)
 			{
 				for ( ; ;)
 				{
-					name = '_' + std::to_string (newName ++);
+					name = '_' + std::to_string (++ newName);
 
 					basicNode -> getExecutionContext () -> getNamedNode (name);
 				}

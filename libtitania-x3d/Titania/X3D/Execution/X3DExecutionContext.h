@@ -239,6 +239,12 @@ public:
 	       Error <DISPOSED>)
 	{ return namedNodes; }
 
+	std::string
+	getUniqueName (std::string) const;
+
+	std::string
+	getUniqueName () const;
+
 	///  @name Imported nodes handling
 
 	const X3DSFNode <ImportedNode> &
@@ -279,7 +285,8 @@ public:
 
 	const X3DSFNode <Proto> &
 	addProtoDeclaration (const std::string &, const FieldDefinitionArray &)
-	throw (Error <INVALID_OPERATION_TIMING>,
+	throw (Error <INVALID_NAME>,
+          Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
 	void
@@ -290,7 +297,8 @@ public:
 
 	void
 	updateProtoDeclaration (const std::string &, const X3DSFNode <Proto> &)
-	throw (Error <INVALID_OPERATION_TIMING>,
+	throw (Error <INVALID_NAME>,
+          Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
 	const X3DSFNode <Proto> &
@@ -309,7 +317,8 @@ public:
 
 	const X3DSFNode <ExternProto> &
 	addExternProtoDeclaration (const std::string &, const FieldDefinitionArray &, const MFString &)
-	throw (Error <INVALID_OPERATION_TIMING>,
+	throw (Error <INVALID_NAME>,
+          Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
 	void
@@ -320,7 +329,8 @@ public:
 
 	void
 	updateExternProtoDeclaration (const std::string &, const X3DSFNode <ExternProto> &)
-	throw (Error <INVALID_OPERATION_TIMING>,
+	throw (Error <INVALID_NAME>,
+          Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
 	const X3DSFNode <ExternProto> &

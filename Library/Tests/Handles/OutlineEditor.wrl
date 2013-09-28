@@ -1,6 +1,7 @@
 #VRML V2.0 utf8
 
 META "title" "OutlineEditor"
+META "title" "OutlineEditor"
 
 EXTERNPROTO Rotor [
   exposedField SFBool     enabled
@@ -51,7 +52,7 @@ Viewpoint {
   centerOfRotation 2.37398 0.256043 0
 }
 
-DEF Text Transform {
+DEF Text_1 Transform {
   children Shape {
     appearance Appearance {
       material Material { }
@@ -63,10 +64,10 @@ DEF Text Transform {
   }
 }
 
-Transform {
+DEF Sensors Transform {
   children [
     DEF _0 ProximitySensor { }
-    VisibilitySensor { }
+    DEF _1 VisibilitySensor { }
   ]
 }
 
@@ -80,7 +81,7 @@ DEF Rotor Rotor {
 
 DEF Box Transform {
   translation 1.40843 1.10727 0.193803
-  rotation 0 0 1 2.37935
+  rotation 0 0 1 5.29934
   scale 0.2 0.2 0.2
   children Transform {
     children Shape {

@@ -72,6 +72,11 @@ protected:
 	initialize () override;
 
 	virtual
+	bool
+	hasUserDefinedFields () const final
+	{ return true; }
+
+	virtual
 	GLuint
 	getShaderProgramId () = 0;
 

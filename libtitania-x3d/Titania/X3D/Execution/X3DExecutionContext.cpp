@@ -55,6 +55,7 @@
 #include "../Components/Core/X3DPrototypeInstance.h"
 #include "../Components/Navigation/X3DViewpointNode.h"
 #include "../Components/Networking/Inline.h"
+#include "../Parser/RegEx.h"
 #include "../Prototype/ExternProto.h"
 #include "../Prototype/Proto.h"
 
@@ -255,18 +256,17 @@ throw (Error <IMPORTED_NODE>,
 	if (node -> getExecutionContext () not_eq this)
 		throw Error <IMPORTED_NODE> ("Couldn't update named node: the node does not belong to this execution context.");
 
-	if (name .length ())
-	{
-		namedNodes .erase (node -> getName ());
-
-		namedNodes [name] = node;
-		namedNodes [name] .isTainted (true);
-		namedNodes [name] .addParent (this);
-
-		node -> setName (name);
-	}
-	else
+	if (name .empty ())
 		throw Error <INVALID_NAME> ("Couldn't update named node: node name is empty.");
+
+	removeNamedNode (node -> getName ());
+	removeNamedNode (name);
+
+	namedNodes [name] = node;
+	namedNodes [name] .isTainted (true);
+	namedNodes [name] .addParent (this);
+
+	node -> setName (name);
 }
 
 void
@@ -274,12 +274,14 @@ X3DExecutionContext::removeNamedNode (const std::string & name)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
+	if (name .empty ())
+		return;
+
 	const auto namedNode = namedNodes .find (name);
 
 	if (namedNode not_eq namedNodes .end ())
 	{
 		namedNode -> second -> setName ("");
-
 		namedNodes .erase (namedNode);
 	}
 }
@@ -296,6 +298,56 @@ throw (Error <INVALID_NAME>,
 		return namedNode -> second;
 
 	throw Error <INVALID_NAME> ("Named node '" + name + "' not found.");
+}
+
+std::string
+X3DExecutionContext::getUniqueName (std::string name) const
+{
+	RegEx::_LastNumber .Replace ("", &name);
+
+	if (name .empty ())
+		return getUniqueName ();
+
+	else
+	{
+		std::string newName = name;
+		size_t      i       = 0;
+
+		try
+		{
+			for ( ; ;)
+			{
+				getNamedNode (newName);
+
+				newName = name + '_' + std::to_string (++ i);
+			}
+		}
+		catch (const Error <INVALID_NAME> &)
+		{
+			return newName;
+		}
+	}
+}
+
+std::string
+X3DExecutionContext::getUniqueName () const
+{
+	std::string name;
+	size_t      i = 0;
+
+	try
+	{
+		for ( ; ;)
+		{
+			name = '_' + std::to_string (++ i);
+
+			getNamedNode (name);
+		}
+	}
+	catch (const Error <INVALID_NAME> &)
+	{ }
+
+	return name;
 }
 
 // Imported nodes handling
@@ -410,9 +462,13 @@ throw (Error <INVALID_NODE>,
 
 const X3DSFNode <Proto> &
 X3DExecutionContext::addProtoDeclaration (const std::string & name, const FieldDefinitionArray & interfaceDeclarations)
-throw (Error <INVALID_OPERATION_TIMING>,
+throw (Error <INVALID_NAME>,
+       Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
+	if (name .empty ())
+		throw Error <INVALID_NAME> ("Couldn't add proto declaration: proto name is empty.");
+	
 	protos .push_back (name, createProtoDeclaration (name, interfaceDeclarations));
 	protos .back () .isTainted (true);
 	protos .back () .addParent (this);
@@ -422,9 +478,13 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 void
 X3DExecutionContext::updateProtoDeclaration (const std::string & name, const X3DSFNode <Proto> & protoDeclaration)
-throw (Error <INVALID_OPERATION_TIMING>,
+throw (Error <INVALID_NAME>,
+       Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
+	if (name .empty ())
+		throw Error <INVALID_NAME> ("Couldn't update proto declaration: proto name is empty.");
+	
 	protos .erase (protoDeclaration -> getName ());
 	protos .push_back (name, protoDeclaration);
 	protos .back () .isTainted (true);
@@ -454,6 +514,9 @@ X3DExecutionContext::createProtoDeclaration (const std::string & name, const Fie
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
+	if (name .empty ())
+		throw Error <INVALID_NAME> ("Couldn't create proto declaration: proto name is empty.");
+	
 	X3DSFNode <Proto> proto = new Proto (this);
 
 	proto -> setName (name);
@@ -474,9 +537,13 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 const X3DSFNode <ExternProto> &
 X3DExecutionContext::addExternProtoDeclaration (const std::string & name, const FieldDefinitionArray & externInterfaceDeclarations, const MFString & URLList)
-throw (Error <INVALID_OPERATION_TIMING>,
+throw (Error <INVALID_NAME>,
+       Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
+	if (name .empty ())
+		throw Error <INVALID_NAME> ("Couldn't add proto declaration: proto name is empty.");
+	
 	externProtos .push_back (name, createExternProtoDeclaration (name, externInterfaceDeclarations, URLList));
 	externProtos .back () .isTainted (true);
 	externProtos .back () .addParent (this);
@@ -486,9 +553,13 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 void
 X3DExecutionContext::updateExternProtoDeclaration (const std::string & name, const X3DSFNode <ExternProto> & externProtoDeclaration)
-throw (Error <INVALID_OPERATION_TIMING>,
+throw (Error <INVALID_NAME>,
+       Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
+	if (name .empty ())
+		throw Error <INVALID_NAME> ("Couldn't update proto declaration: proto name is empty.");
+	
 	externProtos .erase (externProtoDeclaration -> getName ());
 	externProtos .push_back (name, externProtoDeclaration);
 	externProtos .back () .isTainted (true);

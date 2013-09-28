@@ -150,6 +150,8 @@ X3DBrowserEditor::import (const basic::uri & worldURL)
 		for (const auto & rootNode : basic::adapter (rootNodes .begin () + numRootNodes, rootNodes .end ()))
 			getBrowser () -> getSelection () -> addChild (rootNode);
 
+		getBrowser () -> update ();
+
 		setEdited (true);
 	}
 	catch (const X3D::X3DError & error)

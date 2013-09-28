@@ -54,8 +54,6 @@
 #include "../Browser/X3DBrowser.h"
 #include "../Components/Core/X3DPrototypeInstance.h"
 #include "../Components/Networking/Inline.h"
-#include "../Components/Scripting/Script.h"
-#include "../Components/Shaders/X3DProgrammableShaderObject.h"
 #include "../Parser/Filter.h"
 #include "../Parser/Grammar.h"
 #include "../Prototype/ExternProto.h"
@@ -1317,7 +1315,18 @@ Parser::node (SFNode & _node, const std::string & _nodeNameId)
 		//__LOG__ << this << " " << _nodeTypeId << " " << (void*) _node << std::endl;
 
 		if (_nodeNameId .length ())
+		{
+			try
+			{
+				SFNode namedNode = getExecutionContext () -> getNamedNode (_nodeNameId); // Create copy!
+
+				getExecutionContext () -> updateNamedNode (getExecutionContext () -> getUniqueName (_nodeNameId), namedNode);
+			}
+			catch (const Error <INVALID_NAME> &)
+			{ }
+
 			getExecutionContext () -> updateNamedNode (_nodeNameId, _node);
+		}
 
 		comments ();
 
@@ -1325,10 +1334,7 @@ Parser::node (SFNode & _node, const std::string & _nodeNameId)
 		{
 			_basicNode -> addComments (getComments ());
 
-			if (dynamic_cast <Script*> (_basicNode))
-				scriptBody (_basicNode);
-
-			else if (dynamic_cast <X3DProgrammableShaderObject*> (_basicNode))
+			if (_basicNode -> hasUserDefinedFields ())
 				scriptBody (_basicNode);
 
 			else

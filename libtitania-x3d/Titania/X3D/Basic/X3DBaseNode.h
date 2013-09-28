@@ -157,6 +157,11 @@ public:
 	FieldDefinitionArray
 	getUserDefinedFields () const;
 
+	virtual
+	bool
+	hasUserDefinedFields () const
+	{ return false; }
+
 	bool
 	isDefaultValue (const X3DFieldDefinition* const) const;
 
