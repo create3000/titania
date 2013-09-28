@@ -1,0 +1,41 @@
+#X3D V3.0 utf8
+
+META "title" "ElapsedTime PROTO"
+
+PROTO ElapsedTime [
+  outputOnly SFTime time
+]
+{
+  DEF Timer TimeSensor {
+    cycleInterval 10
+    loop TRUE
+  }
+
+  DEF ElapsedTime Script {
+    inputOnly      SFTime set_time
+    outputOnly     SFTime time_changed IS time
+    inputOnly      SFTime set_startTime
+    initializeOnly SFTime startTime 0
+    inputOutput    SFTime start 0
+
+    url "vrmlscript:
+function initialize ()
+{
+	start = 0;
+}
+  
+function set_time (value)
+{
+	time_changed = value - startTime;
+}
+
+function set_startTime (value, time)
+{
+	startTime = time;
+}
+"
+  }
+
+  ROUTE Timer.time TO ElapsedTime.set_time
+  ROUTE ElapsedTime.start_changed TO ElapsedTime.set_startTime
+}

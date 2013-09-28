@@ -190,6 +190,8 @@ basic_gzfilterbuf <CharT, Traits>::close ()
 
 		// Cleanup.
 		(void) inflateEnd (&zstream);
+
+		delete streambuf;
 	}
 
 	return this;

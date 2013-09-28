@@ -1,7 +1,6 @@
 #VRML V2.0 utf8
 
 META "title" "OutlineEditor"
-META "title" "OutlineEditor"
 
 EXTERNPROTO Rotor [
   exposedField SFBool     enabled

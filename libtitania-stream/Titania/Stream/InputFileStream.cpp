@@ -117,8 +117,12 @@ ifilestream::operator = (std::istream && other)
 {
 	close ();
 
-	istream = new std::istream (other .rdbuf ());
-	m_url   = "";
+	auto sstream = new std::stringstream ();
+	*sstream << other .rdbuf ();
+
+	istream = sstream;
+
+	url ("");
 
 	rdbuf (istream -> rdbuf ());
 	clear (other .rdstate ());
@@ -246,8 +250,6 @@ ifilestream::close ()
 
 	if (istream)
 	{
-		istream -> rdbuf (rdbuf ());
-		istream -> clear (std::ios::badbit);
 		delete istream;
 		istream = nullptr;
 	}

@@ -53,6 +53,7 @@
 
 #include "GZFilterBuf.h"
 #include <istream>
+#include <sstream>
 
 namespace titania {
 namespace basic {
@@ -121,8 +122,13 @@ basic_igzfilter <CharT, Traits>::basic_igzfilter (basic_igzfilter <CharT, Traits
 template <class CharT, class Traits>
 basic_igzfilter <CharT, Traits>::basic_igzfilter (std::basic_istream <CharT, Traits>&& istream) :
 	std::basic_istream <CharT, Traits> (),
-	buf (new basic_gzfilterbuf <CharT, Traits> (istream .rdbuf (nullptr)))
+	buf ()
 {
+	std::basic_ostringstream <CharT, Traits> osstring;
+	osstring << istream .rdbuf ();
+
+	buf = new basic_gzfilterbuf <CharT, Traits> (new std::basic_stringbuf <CharT, Traits> (osstring .str ()));
+
 	init (buf);
 	istream .setstate (std::ios::badbit);
 }
