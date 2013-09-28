@@ -112,6 +112,7 @@ BrowserWindow::initialize ()
 		Gtk::TargetEntry ("text/uri-list")
 	};
 
+	getToolBar ()    .drag_dest_set (targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
 	getSurfaceBox () .drag_dest_set (targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
 
 	// Dashboard
@@ -230,6 +231,16 @@ BrowserWindow::on_open_location ()
 }
 
 void
+BrowserWindow::on_toolbar_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context,
+                                              int x, int y,
+                                              const Gtk::SelectionData & selection_data,
+                                              guint info,
+                                              guint time)
+{
+	dragDataHandling (context, selection_data, time, true);
+}
+
+void
 BrowserWindow::on_import ()
 {
 	updateWidget ("FileImportDialog");
@@ -261,11 +272,20 @@ BrowserWindow::on_import ()
 }
 
 void
-BrowserWindow::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context,
-                                      int x, int y,
-                                      const Gtk::SelectionData & selection_data,
-                                      guint info,
-                                      guint time)
+BrowserWindow::on_surface_box_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context,
+                                                  int x, int y,
+                                                  const Gtk::SelectionData & selection_data,
+                                                  guint info,
+                                                  guint time)
+{
+	dragDataHandling (context, selection_data, time, getBrowserMenuItem () .get_active ());
+}
+
+void
+BrowserWindow::dragDataHandling (const Glib::RefPtr <Gdk::DragContext> & context,
+                                 const Gtk::SelectionData & selection_data,
+                                 guint time,
+                                 bool do_open)
 {
 	if (selection_data .get_format () == 8 and selection_data .get_length ()) // 8 bit format
 	{
@@ -277,7 +297,7 @@ BrowserWindow::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & co
 			{
 				auto uri = Glib::uri_unescape_string (uris [0]);
 
-				if (getBrowserMenuItem () .get_active ())
+				if (do_open and isSaved ())
 					open (uri);
 
 				else
@@ -292,7 +312,7 @@ BrowserWindow::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & co
 		{
 			auto uri = Glib::uri_unescape_string (basic::trim (selection_data .get_data_as_string ()));
 
-			if (getBrowserMenuItem () .get_active ())
+			if (do_open and isSaved ())
 				open (uri);
 
 			else

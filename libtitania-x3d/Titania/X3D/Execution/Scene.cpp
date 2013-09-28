@@ -117,7 +117,10 @@ void
 Scene::updateNamedNodes (const X3DSFNode <Scene> & scene)
 {
 	for (const auto & node : NamedNodeIndex (scene -> getNamedNodes ()))
+	{
+		scene -> removeNamedNode (node .first);
 		scene -> updateNamedNode (getUniqueName (scene, node .first), node .second);
+	}
 }
 
 std::string

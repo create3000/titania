@@ -1,30 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <!-- interface-requires gtk+ 3.0 -->
-  <object class="GtkIconFactory" id="IconFactory">
-    <sources>
-      <source stock-id="BlankIcon" filename="icons/blank-icon.svg"/>
-      <source stock-id="Cone" filename="icons/Cone.svg"/>
-      <source stock-id="Box" filename="icons/Box.svg"/>
-      <source stock-id="FlyViewer" filename="icons/FlyViewer.svg"/>
-      <source stock-id="IconBlackWhite" filename="icons/icon-bw.svg"/>
-      <source stock-id="Cylinder" filename="icons/Cylinder.svg"/>
-      <source stock-id="Sphere" filename="icons/Sphere.svg"/>
-      <source stock-id="Text" filename="icons/Text.svg"/>
-      <source stock-id="WalkViewer" filename="icons/WalkViewer.svg"/>
-      <source stock-id="Icon" filename="icons/icon.svg"/>
-      <source stock-id="OutlineEditor" filename="icons/OutlineEditor.png"/>
-      <source stock-id="ViewpointList" filename="icons/ViewpointList.png"/>
-      <source stock-id="ExamineViewer" filename="icons/ExamineViewer.svg"/>
-      <source stock-id="Hand" filename="icons/Hand.png"/>
-      <source stock-id="Arrow" filename="icons/Arrow.png"/>
-    </sources>
-  </object>
-  <object class="GtkImage" id="ExamineViewerImage">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">ExamineViewer</property>
-  </object>
   <object class="GtkFileFilter" id="FileFilterAllFiles">
     <patterns>
       <pattern>*</pattern>
@@ -60,6 +36,30 @@
       <pattern>*.wrl.gz</pattern>
       <pattern>*.wrz</pattern>
     </patterns>
+  </object>
+  <object class="GtkIconFactory" id="IconFactory">
+    <sources>
+      <source stock-id="BlankIcon" filename="icons/blank-icon.svg"/>
+      <source stock-id="Cone" filename="icons/Cone.svg"/>
+      <source stock-id="Box" filename="icons/Box.svg"/>
+      <source stock-id="FlyViewer" filename="icons/FlyViewer.svg"/>
+      <source stock-id="IconBlackWhite" filename="icons/icon-bw.svg"/>
+      <source stock-id="Cylinder" filename="icons/Cylinder.svg"/>
+      <source stock-id="Sphere" filename="icons/Sphere.svg"/>
+      <source stock-id="Text" filename="icons/Text.svg"/>
+      <source stock-id="WalkViewer" filename="icons/WalkViewer.svg"/>
+      <source stock-id="Icon" filename="icons/icon.svg"/>
+      <source stock-id="OutlineEditor" filename="icons/OutlineEditor.png"/>
+      <source stock-id="ViewpointList" filename="icons/ViewpointList.png"/>
+      <source stock-id="ExamineViewer" filename="icons/ExamineViewer.svg"/>
+      <source stock-id="Hand" filename="icons/Hand.png"/>
+      <source stock-id="Arrow" filename="icons/Arrow.png"/>
+    </sources>
+  </object>
+  <object class="GtkImage" id="ExamineViewerImage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">ExamineViewer</property>
   </object>
   <object class="GtkFileChooserDialog" id="FileImportDialog">
     <property name="can_focus">False</property>
@@ -1290,6 +1290,7 @@
         <child>
           <object class="GtkToolbar" id="ToolBar">
             <property name="can_focus">False</property>
+            <signal name="drag-data-received" handler="on_toolbar_drag_data_received" swapped="no"/>
             <child>
               <object class="GtkToolButton" id="NewButton">
                 <property name="visible">True</property>
@@ -1459,7 +1460,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="double_buffered">False</property>
-                            <signal name="drag-data-received" handler="on_drag_data_received" swapped="no"/>
+                            <signal name="drag-data-received" handler="on_surface_box_drag_data_received" swapped="no"/>
                             <child>
                               <placeholder/>
                             </child>

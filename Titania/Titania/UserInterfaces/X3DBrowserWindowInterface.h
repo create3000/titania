@@ -92,10 +92,6 @@ public:
 		return widget;
 	}
 
-	const Glib::RefPtr <Gtk::IconFactory> &
-	getIconFactory () const
-	{ return m_iconFactory; }
-
 	const Glib::RefPtr <Gtk::FileFilter> &
 	getFileFilterAllFiles () const
 	{ return m_fileFilterAllFiles; }
@@ -115,6 +111,10 @@ public:
 	const Glib::RefPtr <Gtk::FileFilter> &
 	getFileFilterX3D () const
 	{ return m_fileFilterX3D; }
+
+	const Glib::RefPtr <Gtk::IconFactory> &
+	getIconFactory () const
+	{ return m_iconFactory; }
 
 	const Glib::RefPtr <Gtk::AccelGroup> &
 	getMenuAccelGroup () const
@@ -702,7 +702,11 @@ public:
 
 	virtual
 	void
-	on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y, const SelectionData & selection_data, guint info, guint time) = 0;
+	on_toolbar_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y, const SelectionData & selection_data, guint info, guint time) = 0;
+
+	virtual
+	void
+	on_surface_box_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y, const SelectionData & selection_data, guint info, guint time) = 0;
 
 	virtual
 	void
@@ -731,12 +735,12 @@ private:
 	std::string                     filename;
 	std::deque <sigc::connection>   connections;
 	Glib::RefPtr <Gtk::Builder>     m_builder;
-	Glib::RefPtr <Gtk::IconFactory> m_iconFactory;
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterAllFiles;
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterAudio;
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterImage;
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterVideo;
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterX3D;
+	Glib::RefPtr <Gtk::IconFactory> m_iconFactory;
 	Glib::RefPtr <Gtk::AccelGroup>  m_menuAccelGroup;
 	Gtk::Image*                     m_examineViewerImage;
 	Gtk::FileChooserDialog*         m_fileImportDialog;

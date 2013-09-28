@@ -2,16 +2,6 @@
 
 META "title" "OutlineEditor"
 
-EXTERNPROTO Rotor [
-  exposedField SFBool     enabled
-  exposedField SFTime     cycleInterval
-  exposedField SFBool     loop
-  exposedField SFTime     startTime
-  exposedField SFTime     stopTime
-  eventOut     SFRotation value_changed
-]
-"Rotor.wrl"
-
 EXTERNPROTO Grid [
   exposedField SFInt32 xDimension
   exposedField SFFloat xSpacing
@@ -22,6 +12,18 @@ EXTERNPROTO Grid [
   field        SFBool  solid
 ]
 "Grid.wrl"
+
+EXTERNPROTO Rotor [
+  exposedField SFBool     enabled
+  exposedField SFTime     cycleInterval
+  exposedField SFVec3f    axis
+  exposedField SFFloat    angle
+  exposedField SFBool     loop
+  exposedField SFTime     startTime
+  exposedField SFTime     stopTime
+  eventOut     SFRotation value_changed
+]
+"Rotor.wrl"
 
 PROTO Children1 [
   exposedField MFNode children1 [ ]
@@ -80,7 +82,7 @@ DEF Rotor Rotor {
 
 DEF Box Transform {
   translation 1.40843 1.10727 0.193803
-  rotation 0 0 1 5.29934
+  rotation 0 0 1 3.10154
   scale 0.2 0.2 0.2
   children Transform {
     children Shape {
@@ -135,5 +137,7 @@ Grid {
   xDimension 100
   zDimension 100
 }
+
+Rotor { }
 
 ROUTE Rotor.value_changed TO Box.set_rotation

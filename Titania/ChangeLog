@@ -1,5 +1,18 @@
 2013-09-28  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* BrowserWindow.h:
+	* BrowserWindow.cpp:
+	* BrowserWindow.ui:
+	* X3DBrowserWindowInterface.h:
+	* X3DBrowserWindowInterface.cpp:
+	* Rotor.x3dv:
+	* Background.wrl:
+	* ExternProto.x3dv:
+	* Background.x3dv:
+	* ComposedCubeMapTexture.x3dv: 
+
+2013-09-28  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Background.wrl:
 	* lostvalley_up.jpg:
 	* lostvalley_up.png:

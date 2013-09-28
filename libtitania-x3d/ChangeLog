@@ -1,5 +1,9 @@
 2013-09-28  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Scene.cpp: 
+
+2013-09-28  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Box.cpp:
 	* Cone.cpp:
 	* Arc2D.cpp:

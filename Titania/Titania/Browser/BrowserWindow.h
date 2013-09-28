@@ -175,11 +175,18 @@ private:
 
 	virtual
 	void
+	on_toolbar_drag_data_received (const Glib::RefPtr <Gdk::DragContext>&, int, int, const Gtk::SelectionData &, guint info, guint) final;
+
+	virtual
+	void
 	on_import () final;
 
 	virtual
 	void
-	on_drag_data_received (const Glib::RefPtr <Gdk::DragContext>&, int, int, const Gtk::SelectionData &, guint info, guint) final;
+	on_surface_box_drag_data_received (const Glib::RefPtr <Gdk::DragContext>&, int, int, const Gtk::SelectionData &, guint info, guint) final;
+
+	void
+	dragDataHandling (const Glib::RefPtr <Gdk::DragContext> &, const Gtk::SelectionData &, guint, bool);
 
 	virtual
 	void
