@@ -1,0 +1,10 @@
+#X3D V3.3 utf8 Titania
+
+DEF LostValley Background {
+  frontUrl "lostvalley_south.jpg"
+  backUrl "lostvalley_north.jpg"
+  leftUrl "lostvalley_east.jpg"
+  rightUrl "lostvalley_west.jpg"
+  topUrl "lostvalley_up.jpg"
+  bottomUrl "lostvalley_down.jpg"
+}

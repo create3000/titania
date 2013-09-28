@@ -1,5 +1,21 @@
 2013-09-28  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Background.wrl:
+	* lostvalley_up.jpg:
+	* lostvalley_up.png:
+	* lostvalley_west.png:
+	* lostvalley_down.png:
+	* lostvalley_east.png:
+	* lostvalley_west.jpg:
+	* lostvalley_east.jpg:
+	* lostvalley_down.jpg:
+	* lostvalley_south.png:
+	* lostvalley_south.jpg:
+	* lostvalley_north.jpg:
+	* lostvalley_north.png: 
+
+2013-09-28  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* run.pl:
 	* Makefile.am:
 	* BrowserWindow.h:
