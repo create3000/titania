@@ -1,6 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <!-- interface-requires gtk+ 3.0 -->
+  <object class="GtkFileFilter" id="FileFilterX3D">
+    <mime-types>
+      <mime-type>model/vrml</mime-type>
+      <mime-type>model/x3d+vrml</mime-type>
+      <mime-type>x-world/x-vrml</mime-type>
+    </mime-types>
+    <patterns>
+      <pattern>*.x3d</pattern>
+      <pattern>*.x3d.gz</pattern>
+      <pattern>*.x3dv</pattern>
+      <pattern>*.x3dvz</pattern>
+      <pattern>*.wrl</pattern>
+      <pattern>*.wrl.gz</pattern>
+      <pattern>*.wrz</pattern>
+    </patterns>
+  </object>
+  <object class="GtkIconFactory" id="IconFactory">
+    <sources>
+      <source stock-id="BlankIcon" filename="icons/blank-icon.svg"/>
+      <source stock-id="FlyViewer" filename="icons/FlyViewer.svg"/>
+      <source stock-id="IconBlackWhite" filename="icons/icon-bw.svg"/>
+      <source stock-id="WalkViewer" filename="icons/WalkViewer.svg"/>
+      <source stock-id="Icon" filename="icons/icon.svg"/>
+      <source stock-id="OutlineEditor" filename="icons/OutlineEditor.png"/>
+      <source stock-id="ViewpointList" filename="icons/ViewpointList.png"/>
+      <source stock-id="ExamineViewer" filename="icons/ExamineViewer.svg"/>
+      <source stock-id="Hand" filename="icons/Hand.png"/>
+      <source stock-id="Arrow" filename="icons/Arrow.png"/>
+    </sources>
+  </object>
   <object class="GtkImage" id="ExamineViewerImage">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -25,41 +55,6 @@
     <mime-types>
       <mime-type>video/*</mime-type>
     </mime-types>
-  </object>
-  <object class="GtkFileFilter" id="FileFilterX3D">
-    <mime-types>
-      <mime-type>model/vrml</mime-type>
-      <mime-type>model/x3d+vrml</mime-type>
-      <mime-type>x-world/x-vrml</mime-type>
-    </mime-types>
-    <patterns>
-      <pattern>*.x3d</pattern>
-      <pattern>*.x3d.gz</pattern>
-      <pattern>*.x3dv</pattern>
-      <pattern>*.x3dvz</pattern>
-      <pattern>*.wrl</pattern>
-      <pattern>*.wrl.gz</pattern>
-      <pattern>*.wrz</pattern>
-    </patterns>
-  </object>
-  <object class="GtkIconFactory" id="IconFactory">
-    <sources>
-      <source stock-id="BlankIcon" filename="icons/blank-icon.svg"/>
-      <source stock-id="Cone" filename="icons/Cone.svg"/>
-      <source stock-id="Box" filename="icons/Box.svg"/>
-      <source stock-id="FlyViewer" filename="icons/FlyViewer.svg"/>
-      <source stock-id="IconBlackWhite" filename="icons/icon-bw.svg"/>
-      <source stock-id="Cylinder" filename="icons/Cylinder.svg"/>
-      <source stock-id="Sphere" filename="icons/Sphere.svg"/>
-      <source stock-id="Text" filename="icons/Text.svg"/>
-      <source stock-id="WalkViewer" filename="icons/WalkViewer.svg"/>
-      <source stock-id="Icon" filename="icons/icon.svg"/>
-      <source stock-id="OutlineEditor" filename="icons/OutlineEditor.png"/>
-      <source stock-id="ViewpointList" filename="icons/ViewpointList.png"/>
-      <source stock-id="ExamineViewer" filename="icons/ExamineViewer.svg"/>
-      <source stock-id="Hand" filename="icons/Hand.png"/>
-      <source stock-id="Arrow" filename="icons/Arrow.png"/>
-    </sources>
   </object>
   <object class="GtkFileChooserDialog" id="FileImportDialog">
     <property name="can_focus">False</property>
@@ -456,6 +451,60 @@
     <property name="icon_name">document-import</property>
   </object>
   <object class="GtkAccelGroup" id="MenuAccelGroup"/>
+  <object class="GtkImage" id="WalkViewerImage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">WalkViewer</property>
+  </object>
+  <object class="GtkMenu" id="ViewerTypeMenu">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkImageMenuItem" id="ExamineViewerMenuItem">
+        <property name="label" translatable="yes">Examine Viewer</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">ExamineViewerImage</property>
+        <property name="use_stock">False</property>
+        <signal name="activate" handler="on_examine_viewer_activate" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="WalkViewerMenuItem">
+        <property name="label" translatable="yes">Walk Viewer</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">WalkViewerImage</property>
+        <property name="use_stock">False</property>
+        <signal name="activate" handler="on_walk_viewer_activate" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="FlyViewerMenuItem">
+        <property name="label" translatable="yes">Fly Viewer</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">FlyViewerImage</property>
+        <property name="use_stock">False</property>
+        <signal name="activate" handler="on_fly_viewer_activate" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="NoneViewerMenuItem">
+        <property name="label" translatable="yes">None Viewer</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">NoneViewerImage</property>
+        <property name="use_stock">False</property>
+        <signal name="activate" handler="on_none_viewer_activate" swapped="no"/>
+      </object>
+    </child>
+  </object>
+  <object class="GtkImage" id="image6">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-find</property>
+  </object>
   <object class="GtkMessageDialog" id="MessageDialog">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
@@ -618,55 +667,6 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-network</property>
-  </object>
-  <object class="GtkImage" id="WalkViewerImage">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">WalkViewer</property>
-  </object>
-  <object class="GtkMenu" id="ViewerTypeMenu">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <child>
-      <object class="GtkImageMenuItem" id="ExamineViewerMenuItem">
-        <property name="label" translatable="yes">Examine Viewer</property>
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="image">ExamineViewerImage</property>
-        <property name="use_stock">False</property>
-        <signal name="activate" handler="on_examine_viewer_activate" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="WalkViewerMenuItem">
-        <property name="label" translatable="yes">Walk Viewer</property>
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="image">WalkViewerImage</property>
-        <property name="use_stock">False</property>
-        <signal name="activate" handler="on_walk_viewer_activate" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="FlyViewerMenuItem">
-        <property name="label" translatable="yes">Fly Viewer</property>
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="image">FlyViewerImage</property>
-        <property name="use_stock">False</property>
-        <signal name="activate" handler="on_fly_viewer_activate" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="NoneViewerMenuItem">
-        <property name="label" translatable="yes">None Viewer</property>
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="image">NoneViewerImage</property>
-        <property name="use_stock">False</property>
-        <signal name="activate" handler="on_none_viewer_activate" swapped="no"/>
-      </object>
-    </child>
   </object>
   <object class="GtkWindow" id="Window">
     <property name="width_request">1000</property>
@@ -1151,13 +1151,26 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkCheckMenuItem" id="FullScreenMenuItem">
+                      <object class="GtkImageMenuItem" id="FullScreenMenuItem">
+                        <property name="label">gtk-fullscreen</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Fullscreen</property>
                         <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
+                        <property name="accel_group">MenuAccelGroup</property>
                         <accelerator key="F11" signal="activate"/>
-                        <signal name="toggled" handler="on_fullscreen_toggled" swapped="no"/>
+                        <signal name="activate" handler="on_fullscreen" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="UnFullScreenMenuItem">
+                        <property name="label">gtk-leave-fullscreen</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
+                        <property name="accel_group">MenuAccelGroup</property>
+                        <accelerator key="F11" signal="activate"/>
+                        <signal name="activate" handler="on_unfullscreen" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -1201,15 +1214,6 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkMenuItem" id="LookAtAllMenuItem">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Look At All Objects</property>
-                        <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_look_at_all_activate" swapped="no"/>
-                      </object>
-                    </child>
-                    <child>
                       <object class="GtkSeparatorMenuItem" id="separatormenuitem7">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
@@ -1223,6 +1227,16 @@
                         <property name="use_underline">True</property>
                         <property name="active">True</property>
                         <signal name="toggled" handler="on_enable_inline_viewpoints_toggled" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="LookAtAllMenuItem">
+                        <property name="label" translatable="yes">Look At All Objects</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="image">image6</property>
+                        <property name="use_stock">False</property>
+                        <signal name="activate" handler="on_look_at_all_activate" swapped="no"/>
                       </object>
                     </child>
                   </object>

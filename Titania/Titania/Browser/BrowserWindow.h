@@ -299,7 +299,11 @@ private:
 
 	virtual
 	void
-	on_fullscreen_toggled () final;
+	on_fullscreen () final;
+
+	virtual
+	void
+	on_unfullscreen () final;
 
 	///  @name Navigation
 

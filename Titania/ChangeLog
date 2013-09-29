@@ -1,3 +1,16 @@
+2013-09-29  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* BrowserWindow.h:
+	* BrowserWindow.cpp:
+	* BrowserWindow.ui:
+	* Oswald-Bold.otf:
+	* Oswald-Light.otf:
+	* Oswald-Regular.otf:
+	* Oswald-Stencil.otf:
+	* X3DBrowserWindowInterface.h:
+	* SIL Open Font License.txt:
+	* X3DBrowserWindowInterface.cpp: 
+
 2013-09-28  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* BrowserWindow.h:

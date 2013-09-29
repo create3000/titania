@@ -717,13 +717,19 @@ BrowserWindow::on_rendering_properties_toggled ()
 // Fullscreen
 
 void
-BrowserWindow::on_fullscreen_toggled ()
+BrowserWindow::on_fullscreen ()
 {
-	if (getFullScreenMenuItem () .get_active ())
-		getWindow () .fullscreen ();
+	getFullScreenMenuItem ()   .set_visible (false);
+	getUnFullScreenMenuItem () .set_visible (true);
+	getWindow () .fullscreen ();
+}
 
-	else
-		getWindow () .unfullscreen ();
+void
+BrowserWindow::on_unfullscreen ()
+{
+	getFullScreenMenuItem ()   .set_visible (true);
+	getUnFullScreenMenuItem () .set_visible (false);
+	getWindow () .unfullscreen ();
 }
 
 // Navigation menu

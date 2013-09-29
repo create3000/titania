@@ -93,6 +93,14 @@ public:
 	}
 
 	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilterX3D () const
+	{ return m_fileFilterX3D; }
+
+	const Glib::RefPtr <Gtk::IconFactory> &
+	getIconFactory () const
+	{ return m_iconFactory; }
+
+	const Glib::RefPtr <Gtk::FileFilter> &
 	getFileFilterAllFiles () const
 	{ return m_fileFilterAllFiles; }
 
@@ -108,14 +116,6 @@ public:
 	getFileFilterVideo () const
 	{ return m_fileFilterVideo; }
 
-	const Glib::RefPtr <Gtk::FileFilter> &
-	getFileFilterX3D () const
-	{ return m_fileFilterX3D; }
-
-	const Glib::RefPtr <Gtk::IconFactory> &
-	getIconFactory () const
-	{ return m_iconFactory; }
-
 	const Glib::RefPtr <Gtk::AccelGroup> &
 	getMenuAccelGroup () const
 	{ return m_menuAccelGroup; }
@@ -127,6 +127,10 @@ public:
 	Gtk::FileChooserDialog &
 	getFileImportDialog () const
 	{ return *m_fileImportDialog; }
+
+	Gtk::Image &
+	getFileImportImage () const
+	{ return *m_fileImportImage; }
 
 	Gtk::FileChooserDialog &
 	getFileOpenDialog () const
@@ -153,24 +157,8 @@ public:
 	{ return *m_importImage; }
 
 	Gtk::Image &
-	getOpenLocationImage () const
-	{ return *m_openLocationImage; }
-
-	Gtk::MessageDialog &
-	getMessageDialog () const
-	{ return *m_messageDialog; }
-
-	Gtk::Image &
-	getNoneViewerImage () const
-	{ return *m_noneViewerImage; }
-
-	Gtk::Dialog &
-	getOpenLocationDialog () const
-	{ return *m_openLocationDialog; }
-
-	Gtk::Entry &
-	getOpenLocationEntry () const
-	{ return *m_openLocationEntry; }
+	getWalkViewerImage () const
+	{ return *m_walkViewerImage; }
 
 	Gtk::Menu &
 	getViewerTypeMenu () const
@@ -192,9 +180,25 @@ public:
 	getNoneViewerMenuItem () const
 	{ return *m_noneViewerMenuItem; }
 
+	Gtk::MessageDialog &
+	getMessageDialog () const
+	{ return *m_messageDialog; }
+
 	Gtk::Image &
-	getWalkViewerImage () const
-	{ return *m_walkViewerImage; }
+	getNoneViewerImage () const
+	{ return *m_noneViewerImage; }
+
+	Gtk::Dialog &
+	getOpenLocationDialog () const
+	{ return *m_openLocationDialog; }
+
+	Gtk::Entry &
+	getOpenLocationEntry () const
+	{ return *m_openLocationEntry; }
+
+	Gtk::Image &
+	getOpenLocationImage () const
+	{ return *m_openLocationImage; }
 
 	Gtk::Window &
 	getWindow () const
@@ -344,9 +348,13 @@ public:
 	getRenderingPropertiesMenuItem () const
 	{ return *m_renderingPropertiesMenuItem; }
 
-	Gtk::CheckMenuItem &
+	Gtk::ImageMenuItem &
 	getFullScreenMenuItem () const
 	{ return *m_fullScreenMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getUnFullScreenMenuItem () const
+	{ return *m_unFullScreenMenuItem; }
 
 	Gtk::MenuItem &
 	getNavigationMenuItem () const
@@ -360,13 +368,13 @@ public:
 	getRubberbandMenuItem () const
 	{ return *m_rubberbandMenuItem; }
 
-	Gtk::MenuItem &
-	getLookAtAllMenuItem () const
-	{ return *m_lookAtAllMenuItem; }
-
 	Gtk::CheckMenuItem &
 	getEnableInlineViewpointsMenuItem () const
 	{ return *m_enableInlineViewpointsMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getLookAtAllMenuItem () const
+	{ return *m_lookAtAllMenuItem; }
 
 	Gtk::MenuItem &
 	getToolsMenuItem () const
@@ -506,18 +514,6 @@ public:
 
 	virtual
 	void
-	on_messageDialog_response (int response_id) = 0;
-
-	virtual
-	void
-	on_open_location_entry_changed () = 0;
-
-	virtual
-	bool
-	on_open_location_entry_key_release_event (GdkEventKey* event) = 0;
-
-	virtual
-	void
 	on_examine_viewer_activate () = 0;
 
 	virtual
@@ -531,6 +527,18 @@ public:
 	virtual
 	void
 	on_none_viewer_activate () = 0;
+
+	virtual
+	void
+	on_messageDialog_response (int response_id) = 0;
+
+	virtual
+	void
+	on_open_location_entry_changed () = 0;
+
+	virtual
+	bool
+	on_open_location_entry_key_release_event (GdkEventKey* event) = 0;
 
 	virtual
 	bool
@@ -654,7 +662,11 @@ public:
 
 	virtual
 	void
-	on_fullscreen_toggled () = 0;
+	on_fullscreen () = 0;
+
+	virtual
+	void
+	on_unfullscreen () = 0;
 
 	virtual
 	void
@@ -666,11 +678,11 @@ public:
 
 	virtual
 	void
-	on_look_at_all_activate () = 0;
+	on_enable_inline_viewpoints_toggled () = 0;
 
 	virtual
 	void
-	on_enable_inline_viewpoints_toggled () = 0;
+	on_look_at_all_activate () = 0;
 
 	virtual
 	void
@@ -725,32 +737,33 @@ private:
 	std::string                     filename;
 	std::deque <sigc::connection>   connections;
 	Glib::RefPtr <Gtk::Builder>     m_builder;
+	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterX3D;
+	Glib::RefPtr <Gtk::IconFactory> m_iconFactory;
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterAllFiles;
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterAudio;
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterImage;
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterVideo;
-	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterX3D;
-	Glib::RefPtr <Gtk::IconFactory> m_iconFactory;
 	Glib::RefPtr <Gtk::AccelGroup>  m_menuAccelGroup;
 	Gtk::Image*                     m_examineViewerImage;
 	Gtk::FileChooserDialog*         m_fileImportDialog;
+	Gtk::Image*                     m_fileImportImage;
 	Gtk::FileChooserDialog*         m_fileOpenDialog;
 	Gtk::FileChooserDialog*         m_fileSaveDialog;
 	Gtk::CheckButton*               m_saveCompressedButton;
 	Gtk::Dialog*                    m_fileSaveWarningDialog;
 	Gtk::Image*                     m_flyViewerImage;
 	Gtk::Image*                     m_importImage;
-	Gtk::Image*                     m_openLocationImage;
-	Gtk::MessageDialog*             m_messageDialog;
-	Gtk::Image*                     m_noneViewerImage;
-	Gtk::Dialog*                    m_openLocationDialog;
-	Gtk::Entry*                     m_openLocationEntry;
+	Gtk::Image*                     m_walkViewerImage;
 	Gtk::Menu*                      m_viewerTypeMenu;
 	Gtk::ImageMenuItem*             m_examineViewerMenuItem;
 	Gtk::ImageMenuItem*             m_walkViewerMenuItem;
 	Gtk::ImageMenuItem*             m_flyViewerMenuItem;
 	Gtk::ImageMenuItem*             m_noneViewerMenuItem;
-	Gtk::Image*                     m_walkViewerImage;
+	Gtk::MessageDialog*             m_messageDialog;
+	Gtk::Image*                     m_noneViewerImage;
+	Gtk::Dialog*                    m_openLocationDialog;
+	Gtk::Entry*                     m_openLocationEntry;
+	Gtk::Image*                     m_openLocationImage;
 	Gtk::Window*                    m_window;
 	Gtk::VBox*                      m_widget;
 	Gtk::MenuBar*                   m_menuBar;
@@ -788,12 +801,13 @@ private:
 	Gtk::RadioMenuItem*             m_mediumQualityMenuItem;
 	Gtk::RadioMenuItem*             m_lowQualityMenuItem;
 	Gtk::CheckMenuItem*             m_renderingPropertiesMenuItem;
-	Gtk::CheckMenuItem*             m_fullScreenMenuItem;
+	Gtk::ImageMenuItem*             m_fullScreenMenuItem;
+	Gtk::ImageMenuItem*             m_unFullScreenMenuItem;
 	Gtk::MenuItem*                  m_navigationMenuItem;
 	Gtk::CheckMenuItem*             m_headlightMenuItem;
 	Gtk::CheckMenuItem*             m_rubberbandMenuItem;
-	Gtk::MenuItem*                  m_lookAtAllMenuItem;
 	Gtk::CheckMenuItem*             m_enableInlineViewpointsMenuItem;
+	Gtk::ImageMenuItem*             m_lookAtAllMenuItem;
 	Gtk::MenuItem*                  m_toolsMenuItem;
 	Gtk::MenuItem*                  m_motionBlurMenuItem;
 	Gtk::MenuItem*                  m_helpMenuItem;
