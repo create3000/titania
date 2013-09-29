@@ -85,7 +85,7 @@ get_name (const basic::uri & uri)
 
 	filter_non_id_characters (name);
 
-	if (name .size ())
+	if (not name .empty ())
 		return name;
 
 	return "unnamed";

@@ -345,7 +345,7 @@ Generator::GetName (const X3DBaseNode* basicNode)
 		if (iter not_eq newNames .end ())
 			return iter -> second;
 
-		if (basicNode -> getNumClones () > 1)
+		if (basicNode -> getNumClones () > 1 or basicNode -> hasRoutes ())
 		{
 			std::string name;
 

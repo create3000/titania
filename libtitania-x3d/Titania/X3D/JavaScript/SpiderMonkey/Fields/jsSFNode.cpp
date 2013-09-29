@@ -149,7 +149,7 @@ jsSFNode::construct (JSContext* context, uintN argc, jsval* vp)
 			                                  script -> getWorldURL ()) .createX3DFromString (JS_GetString (context, vrmlSyntax));
 
 			return create (context,
-			               scene and scene -> getRootNodes () .size ()
+			               scene and not scene -> getRootNodes () .empty ()
 			               ? new SFNode (scene -> getRootNodes () [0])
 								: new SFNode (),
 			               &JS_RVAL (context, vp));
@@ -171,7 +171,7 @@ jsSFNode::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op, jsv
 {
 	SFNode* sfnode = (SFNode*) JS_GetPrivate (context, obj);
 
-	if (not sfnode or not * sfnode or not sfnode -> getValue () -> getFieldDefinitions () .size ())
+	if (not sfnode or not * sfnode or sfnode -> getValue () -> getFieldDefinitions () .empty ())
 	{
 		*statep = JSVAL_NULL;
 		return JS_TRUE;
@@ -314,9 +314,7 @@ jsSFNode::getNodeType (JSContext* context, uintN argc, jsval* vp)
 
 			jsval array [node -> getNodeType () .size ()];
 
-			NodeTypeArray::size_type i;
-
-			for (i = 0; i < node -> getNodeType () .size (); ++ i)
+			for (size_t i = 0, size = node -> getNodeType () .size (); i < size; ++ i)
 				if (not JS_NewNumberValue (context, (size_t) node -> getNodeType () [i], &array [i]))
 					return JS_FALSE;
 

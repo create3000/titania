@@ -109,7 +109,7 @@ SquadOrientationInterpolator::set_keyValue ()
 //void
 //SquadOrientationInterpolator::set_keyVelocity ()
 //{
-//	if (keyVelocity () .size ())
+//	if (not keyVelocity () .empty ())
 //	{
 //		if (keyVelocity () .size () < key () .size ())
 //			keyVelocity () .resize (key () .size ());

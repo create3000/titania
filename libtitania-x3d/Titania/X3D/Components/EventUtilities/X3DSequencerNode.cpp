@@ -94,7 +94,7 @@ X3DSequencerNode::initialize ()
 void
 X3DSequencerNode::_set_fraction ()
 {
-	if (key () .size () == 0)
+	if (key () .empty ())
 		return;
 
 	size_t i = 0;

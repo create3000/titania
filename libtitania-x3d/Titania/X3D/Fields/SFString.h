@@ -107,6 +107,9 @@ public:
 	const std::string &
 	str () const;
 
+	bool
+	empty () const;
+
 	size_type
 	length () const;
 

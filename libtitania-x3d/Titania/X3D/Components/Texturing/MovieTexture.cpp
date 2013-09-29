@@ -117,7 +117,7 @@ MovieTexture::requestImmediateLoad ()
 
 	setLoadState (IN_PROGRESS_STATE);
 
-	if (not url () .size ())
+	if (url () .empty ())
 	{
 		setLoadState (FAILED_STATE);
 		return;

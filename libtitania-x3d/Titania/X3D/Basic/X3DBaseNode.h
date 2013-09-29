@@ -79,6 +79,8 @@ class X3DBaseNode :
 {
 public:
 
+	///  @name Construction
+
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const = 0;
@@ -92,6 +94,12 @@ public:
 
 	void
 	assign (const X3DBaseNode*);
+
+	virtual
+	void
+	setup ();
+
+	///  @name Commons members
 
 	virtual
 	time_type
@@ -128,12 +136,6 @@ public:
 	getLocalNode ()
 	{ return this; }
 
-	size_t
-	getNumClones () const;
-
-	void
-	setInternal (bool);
-
 	///  @name Field handling
 
 	X3DFieldDefinition*
@@ -165,11 +167,16 @@ public:
 	bool
 	isDefaultValue (const X3DFieldDefinition* const) const;
 
-	///  @name Initialization
+	///  @name Special functions
 
-	virtual
+	size_t
+	getNumClones () const;
+
+	bool
+	hasRoutes () const;
+
 	void
-	setup ();
+	setInternal (bool);
 
 	///  @name Event handling
 	
@@ -234,7 +241,7 @@ public:
 	void
 	toStream (std::ostream &) const override;
 
-	///  @name Dispose
+	///  @name Destruction
 
 	const Output &
 	shutdown () const
@@ -243,8 +250,6 @@ public:
 	virtual
 	void
 	dispose () override;
-
-	///  @name Destructor
 
 	virtual
 	~X3DBaseNode ();

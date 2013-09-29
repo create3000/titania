@@ -1314,7 +1314,7 @@ Parser::node (SFNode & _node, const std::string & _nodeNameId)
 
 		//__LOG__ << this << " " << _nodeTypeId << " " << (void*) _node << std::endl;
 
-		if (_nodeNameId .length ())
+		if (not _nodeNameId .empty ())
 		{
 			try
 			{

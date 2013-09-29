@@ -250,7 +250,7 @@ X3DScene::toStream (std::ostream & ostream) const
 		<< Generator::Space
 		<< getCharacterEncoding ();
 
-	if (getComment () .length ())
+	if (not getComment () .empty ())
 	{
 		ostream
 			<< Generator::Space
@@ -261,7 +261,7 @@ X3DScene::toStream (std::ostream & ostream) const
 		<< Generator::ForceBreak
 		<< Generator::ForceBreak;
 
-	if (getComments () .size ())
+	if (not getComments () .empty ())
 	{
 		for (const auto & comment : getComments ())
 		{
@@ -282,7 +282,7 @@ X3DScene::toStream (std::ostream & ostream) const
 			<< Generator::TidyBreak;
 	}
 
-	if (getComponents () .size ())
+	if (not getComponents () .empty ())
 	{
 		for (const auto & component : getComponents ())
 		{
@@ -294,7 +294,7 @@ X3DScene::toStream (std::ostream & ostream) const
 		ostream << Generator::TidyBreak;
 	}
 
-	if (getMetaDatas () .size ())
+	if (not getMetaDatas () .empty ())
 	{
 		for (const auto & metaData : getMetaDatas ())
 		{
@@ -314,7 +314,7 @@ X3DScene::toStream (std::ostream & ostream) const
 
 	X3DExecutionContext::toStream (ostream);
 
-	if (getExportedNodes () .size ())
+	if (not getExportedNodes () .empty ())
 		ostream << Generator::TidyBreak;
 
 	for (const auto & exportedNode : getExportedNodes ())

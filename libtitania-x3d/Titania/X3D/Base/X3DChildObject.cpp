@@ -82,29 +82,29 @@ X3DChildObject::removeParent (X3DChildObject* const parent)
 		if (root == parent)
 			root = nullptr;
 
-		if (parents .size ())
+		if (parents .empty ())
 		{
-			ChildObjectSet circle;
+			dispose ();
 
-			if (hasRoots (circle))
-				return;
-
-			for (auto & child : circle)
-				child -> parents .clear ();
-
-			for (auto & child : circle)
-			{
-				child -> dispose ();
-
-				getGarbageCollector () .addObject (child);
-			}
+			getGarbageCollector () .addObject (this);
 
 			return;
 		}
 
-		dispose ();
+		ChildObjectSet circle;
 
-		getGarbageCollector () .addObject (this);
+		if (hasRoots (circle))
+			return;
+
+		for (auto & child : circle)
+			child -> parents .clear ();
+
+		for (auto & child : circle)
+		{
+			child -> dispose ();
+
+			getGarbageCollector () .addObject (child);
+		}
 	}
 }
 

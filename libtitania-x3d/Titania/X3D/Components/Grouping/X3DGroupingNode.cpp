@@ -109,7 +109,7 @@ X3DGroupingNode::setVisible (const MFBool & value)
 void
 X3DGroupingNode::set_addChildren ()
 {
-	if (addChildren () .size ())
+	if (not addChildren () .empty ())
 	{
 		add (addChildren ());
 
@@ -122,7 +122,7 @@ X3DGroupingNode::set_addChildren ()
 void
 X3DGroupingNode::set_removeChildren ()
 {
-	if (removeChildren () .size ())
+	if (not removeChildren () .empty ())
 	{
 		auto new_end = basic::remove (children () .begin (), children () .end (), removeChildren () .begin (), removeChildren () .end ());
 
@@ -218,7 +218,7 @@ X3DGroupingNode::traverse (const TraverseType type)
 void
 X3DGroupingNode::pick ()
 {
-	if (pointingDeviceSensors .size ())
+	if (not pointingDeviceSensors .empty ())
 	{
 		getBrowser () -> getSensors () .emplace_back ();
 
@@ -229,7 +229,7 @@ X3DGroupingNode::pick ()
 	for (const auto & child : childNodes)
 		child -> traverse (TraverseType::PICKING);
 
-	if (pointingDeviceSensors .size ())
+	if (not pointingDeviceSensors .empty ())
 		getBrowser () -> getSensors () .pop_back ();
 }
 
@@ -239,13 +239,13 @@ X3DGroupingNode::collect ()
 	for (const auto & child : lights)
 		child -> push ();
 
-	if (localFogs .size ())
+	if (not localFogs .empty ())
 		localFogs .front () -> push ();
 
 	for (const auto & child : childNodes)
 		child -> traverse (TraverseType::COLLECT);
 
-	if (localFogs .size ())
+	if (not localFogs .empty ())
 		localFogs .front () -> pop ();
 
 	for (const auto & child : basic::adapter (lights .crbegin (), lights .crend ()))

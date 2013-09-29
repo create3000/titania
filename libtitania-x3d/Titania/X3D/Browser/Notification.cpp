@@ -120,7 +120,7 @@ Notification::initialize ()
 void
 Notification::set_string ()
 {
-	if (string () .length ())
+	if (not string () .empty ())
 	{
 		try
 		{

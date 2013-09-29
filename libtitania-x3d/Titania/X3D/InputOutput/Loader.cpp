@@ -136,11 +136,11 @@ throw (Error <INVALID_URL>,
 		{
 			basic::uri uri = URL .str ();
 
-			if (uri .filename () .length ())
-				getBrowser () -> loadURL ({ getReferer () .transform (uri) .str () }, parameter);
+			if (uri .filename () .empty ())
+				getExecutionContext () -> changeViewpoint (uri .fragment ());
 
 			else
-				getExecutionContext () -> changeViewpoint (uri .fragment ());
+				getBrowser () -> loadURL ({ getReferer () .transform (uri) .str () }, parameter);
 
 			break;
 		}

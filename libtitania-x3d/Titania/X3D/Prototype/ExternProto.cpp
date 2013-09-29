@@ -148,9 +148,9 @@ ExternProto::requestImmediateLoad ()
 		throw Error <URL_UNAVAILABLE> ("Couldn't load any URL specified for EXTERNPROTO '" + getName () + "'\n" + error .what ());
 	}
 
-	std::string protoName = loader .getWorldURL () .fragment () .length ()
-	                        ? loader .getWorldURL () .fragment ()
-									: getName ();
+	std::string protoName = loader .getWorldURL () .fragment () .empty ()
+	                        ? getName ()
+									: loader .getWorldURL () .fragment ();
 
 	proto = scene -> getProtoDeclaration (protoName);
 
@@ -200,7 +200,7 @@ ExternProto::requestImmediateLoad ()
 void
 ExternProto::toStream (std::ostream & ostream) const
 {
-	if (getComments () .size ())
+	if (not getComments () .empty ())
 	{
 		for (const auto & comment : getComments ())
 		{
@@ -227,7 +227,32 @@ ExternProto::toStream (std::ostream & ostream) const
 
 	FieldDefinitionArray fields = getUserDefinedFields ();
 
-	if (fields .size ())
+	if (fields .empty ())
+	{
+		if (not getInterfaceComments () .empty ())
+		{
+			ostream
+				<< Generator::TidyBreak
+				<< Generator::IncIndent;
+
+			for (const auto & comment : getInterfaceComments ())
+			{
+				ostream
+					<< Generator::Indent
+					<< Generator::Comment
+					<< comment
+					<< Generator::Break;
+			}
+
+			ostream
+				<< Generator::DecIndent
+				<< Generator::Indent;
+		}
+
+		else
+			ostream << Generator::TidySpace;
+	}
+	else
 	{
 		switch (Generator::Style ())
 		{
@@ -274,31 +299,6 @@ ExternProto::toStream (std::ostream & ostream) const
 		ostream
 			<< Generator::DecIndent
 			<< Generator::Indent;
-	}
-	else
-	{
-		if (getInterfaceComments () .size ())
-		{
-			ostream
-				<< Generator::TidyBreak
-				<< Generator::IncIndent;
-
-			for (const auto & comment : getInterfaceComments ())
-			{
-				ostream
-					<< Generator::Indent
-					<< Generator::Comment
-					<< comment
-					<< Generator::Break;
-			}
-
-			ostream
-				<< Generator::DecIndent
-				<< Generator::Indent;
-		}
-
-		else
-			ostream << Generator::TidySpace;
 	}
 
 	ostream

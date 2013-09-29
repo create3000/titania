@@ -130,7 +130,7 @@ X3DBackgroundNode::build (float radius, const MFFloat & vangle, const MFFloat & 
 
 	float useg1 = SPHERE_USEG - 1;
 
-	for (size_t v = 0; v < vangle .size () - 1; ++ v)
+	for (size_t v = 0, size = vangle .size () - 1; v < size; ++ v)
 	{
 		float theta  = math::clamp <float> (vangle [v], 0, M_PI);
 		float theta1 = math::clamp <float> (vangle [v + 1], 0, M_PI);
@@ -215,7 +215,7 @@ X3DBackgroundNode::build ()
 
 	float opacity = 1 - math::clamp <float> (transparency (), 0, 1);
 
-	if (groundColor () .size () == 0 and skyColor () .size () == 1)
+	if (groundColor () .empty () and skyColor () .size () == 1)
 	{
 		// Draw cube
 

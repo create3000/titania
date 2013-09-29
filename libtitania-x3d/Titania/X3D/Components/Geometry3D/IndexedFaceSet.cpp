@@ -135,7 +135,7 @@ IndexedFaceSet::set_coordIndex ()
 	{
 		int32_t numPoints = -1;
 
-		if (coordIndex () .size ())
+		if (not coordIndex () .empty ())
 		{
 			// Determine number of points and polygons.
 
@@ -170,7 +170,7 @@ IndexedFaceSet::set_texCoordIndex ()
 	if (_textureCoordinate)
 	{
 		// Fill up texCoordIndex if to small.
-		for (size_t i = texCoordIndex () .size (); i < coordIndex () .size (); ++ i)
+		for (size_t i = texCoordIndex () .size (), size = coordIndex () .size (); i < size; ++ i)
 		{
 			texCoordIndex () .emplace_back (coordIndex () [i]);
 		}
@@ -202,7 +202,7 @@ IndexedFaceSet::set_colorIndex ()
 		// Fill up colorIndex if to small.
 		if (colorPerVertex ())
 		{
-			for (size_t i = colorIndex () .size (); i < coordIndex () .size (); ++ i)
+			for (size_t i = colorIndex () .size (), size = coordIndex () .size (); i < size; ++ i)
 			{
 				colorIndex () .emplace_back (coordIndex () [i]);
 			}
@@ -248,7 +248,7 @@ IndexedFaceSet::set_normalIndex ()
 		// Fill up normalIndex if to small.
 		if (normalPerVertex ())
 		{
-			for (size_t i = normalIndex () .size (); i < coordIndex () .size (); ++ i)
+			for (size_t i = normalIndex () .size (), size = coordIndex () .size (); i < size; ++ i)
 			{
 				normalIndex () .emplace_back (coordIndex () [i]);
 			}
@@ -291,7 +291,7 @@ IndexedFaceSet::build ()
 
 	// Build arrays
 
-	if (not _coord or not polygons .size ())
+	if (not _coord or polygons .empty ())
 		return;
 
 	// Color
@@ -484,7 +484,7 @@ IndexedFaceSet::tesselate (PolygonArray & polygons, size_t & numVertices)
 	if (not _coord)
 		return;
 
-	if (coordIndex () .size ())
+	if (not coordIndex () .empty ())
 	{
 		// Add -1 (polygon end marker) to coordIndex if not present.
 		if (coordIndex () .back () > -1)
@@ -505,7 +505,7 @@ IndexedFaceSet::tesselate (PolygonArray & polygons, size_t & numVertices)
 			{
 				// Negativ index.
 
-				if (vertices .size ())
+				if (not vertices .empty ())
 				{
 					// Closed polygon.
 					if (vertices .front () == vertices .back ())

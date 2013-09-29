@@ -94,7 +94,7 @@ Proto::toStream (std::ostream & ostream) const
 {
 	Generator::PushContext ();
 
-	if (getComments () .size ())
+	if (not getComments () .empty ())
 	{
 		for (const auto & comment : getComments ())
 		{
@@ -118,7 +118,32 @@ Proto::toStream (std::ostream & ostream) const
 
 	FieldDefinitionArray fields = getUserDefinedFields ();
 
-	if (fields .size ())
+	if (fields .empty ())
+	{
+		if (not getInterfaceComments () .empty ())
+		{
+			ostream
+				<< Generator::TidyBreak
+				<< Generator::IncIndent;
+
+			for (const auto & comment : getInterfaceComments ())
+			{
+				ostream
+					<< Generator::Indent
+					<< Generator::Comment
+					<< comment
+					<< Generator::Break;
+			}
+
+			ostream
+				<< Generator::DecIndent
+				<< Generator::Indent;
+		}
+
+		else
+			ostream << Generator::TidySpace;
+	}
+	else
 	{
 		ostream
 			<< Generator::TidyBreak
@@ -168,31 +193,6 @@ Proto::toStream (std::ostream & ostream) const
 		ostream
 			<< Generator::DecIndent
 			<< Generator::Indent;
-	}
-	else
-	{
-		if (getInterfaceComments () .size ())
-		{
-			ostream
-				<< Generator::TidyBreak
-				<< Generator::IncIndent;
-
-			for (const auto & comment : getInterfaceComments ())
-			{
-				ostream
-					<< Generator::Indent
-					<< Generator::Comment
-					<< comment
-					<< Generator::Break;
-			}
-
-			ostream
-				<< Generator::DecIndent
-				<< Generator::Indent;
-		}
-
-		else
-			ostream << Generator::TidySpace;
 	}
 
 	ostream << ']';

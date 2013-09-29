@@ -88,7 +88,7 @@ X3DComposedGeometryNode::set_index (const MFInt32 & index)
 
 	int32_t numPoints = -1;
 
-	if (index .size ())
+	if (not index .empty ())
 	{
 		// Determine number of points and polygons.
 
@@ -109,7 +109,7 @@ X3DComposedGeometryNode::buildPolygons (size_t vertexCount, size_t size)
 {
 	auto _coord = x3d_cast <Coordinate*> (coord ());
 
-	if (not _coord or not _coord -> point () .size ())
+	if (not _coord or _coord -> point () .empty ())
 		return;
 
 	size_t faces = size / vertexCount; // Integer division

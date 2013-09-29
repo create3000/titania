@@ -371,7 +371,7 @@ Extrusion::build ()
 
 	refineNormals (normalIndex, getNormals (), creaseAngle (), ccw ());
 
-	for (size_t i = 0; i < coordIndex .size (); i += 4)
+	for (size_t i = 0, size = coordIndex .size (); i < size; i += 4)
 	{
 		getVertices () .emplace_back (points [coordIndex [i]]);
 		getVertices () .emplace_back (points [coordIndex [i + 1]]);

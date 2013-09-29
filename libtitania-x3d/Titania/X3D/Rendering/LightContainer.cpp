@@ -66,7 +66,7 @@ LightContainer::enable ()
 {
 	auto & lights = node -> getBrowser () -> getLights ();
 
-	if (lights .size ())
+	if (not lights .empty ())
 	{
 		lightId = lights .top ();
 		lights .pop ();

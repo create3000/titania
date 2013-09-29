@@ -477,7 +477,10 @@ X3DRenderer::collide ()
 
 	std::deque <Collision*> difference;
 
-	if (collisions .size ())
+	if (collisions .empty ())
+		difference .assign (activeCollisions .begin (), activeCollisions .end ());
+
+	else
 	{
 		std::sort (collisions .begin (), collisions .end ());
 
@@ -485,8 +488,6 @@ X3DRenderer::collide ()
 		                     collisions .begin (), collisions .end (),
 		                     std::back_inserter (difference));
 	}
-	else
-		difference .assign (activeCollisions .begin (), activeCollisions .end ());
 
 	for (const auto & collision : difference)
 	{

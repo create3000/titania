@@ -123,6 +123,7 @@ NodePropertiesEditor::on_ok ()
 		node -> getExecutionContext () -> removeNamedNode (node -> getName ());
 
 	getWindow () .hide ();
+	getBrowserWindow () -> setEdited (true);
 }
 
 void

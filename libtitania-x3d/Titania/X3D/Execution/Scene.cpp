@@ -80,7 +80,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 {
 	if (getBrowser () -> makeCurrent ())
 	{
-		if (scene -> getProfile () or scene -> getComponents () .size ())
+		if (scene -> getProfile () or not scene -> getComponents () .empty ())
 		{
 			if (getProfile ())
 			{

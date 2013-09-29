@@ -478,7 +478,7 @@ jsContext::evaluate (const std::string & string, const std::string & filename, j
 
 	JSBool retval = JS_EvaluateUCScript (context, global,
 	                                     utf16_string, items_written,
-	                                     filename .size () ? filename .c_str () : nullptr,
+	                                     filename .empty () ? nullptr : filename .c_str (),
 	                                     1,
 	                                     &rval);
 
@@ -638,7 +638,7 @@ jsContext::error (JSContext* context, const char* message, JSErrorReport* report
 
 	std::string line = "Couldn't load file!";
 
-	if (ecmascript .size ())
+	if (not ecmascript .empty ())
 	{
 		char nl = ecmascript .find ('\n', 0) == std::string::npos ? '\r' : '\n';
 
@@ -690,7 +690,7 @@ jsContext::dispose ()
 	JS_DestroyContext (context);
 	JS_DestroyRuntime (runtime);
 
-	assert (objects .size () == 0);
+	assert (objects .empty ());
 
 	X3DJavaScriptContext::dispose ();
 }

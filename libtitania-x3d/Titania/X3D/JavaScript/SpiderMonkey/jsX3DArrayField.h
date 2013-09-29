@@ -385,18 +385,18 @@ jsX3DArrayField <Type, FieldType>::shift (JSContext* context, uintN argc, jsval*
 	{
 		FieldType* field = (FieldType*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
-		if (field -> size ())
+		if (field -> empty ())
 		{
-			auto value = new field_value_type (field -> front ());
+			*vp = JSVAL_VOID;
 
-			field -> pop_front ();
-
-			return value_type::create (context, value, vp);
+			return JS_TRUE;
 		}
 
-		*vp = JSVAL_VOID;
+		auto value = new field_value_type (field -> front ());
 
-		return JS_TRUE;
+		field -> pop_front ();
+
+		return value_type::create (context, value, vp);
 	}
 
 	JS_ReportError (context, "wrong number of arguments");
@@ -412,18 +412,18 @@ jsX3DArrayField <Type, FieldType>::pop (JSContext* context, uintN argc, jsval* v
 	{
 		FieldType* field = (FieldType*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
-		if (field -> size ())
+		if (field -> empty ())
 		{
-			auto value = new field_value_type (field -> back ());
+			*vp = JSVAL_VOID;
 
-			field -> pop_back ();
-
-			return value_type::create (context, value, vp);
+			return JS_TRUE;
 		}
 
-		*vp = JSVAL_VOID;
+		auto value = new field_value_type (field -> back ());
 
-		return JS_TRUE;
+		field -> pop_back ();
+
+		return value_type::create (context, value, vp);
 	}
 
 	JS_ReportError (context, "wrong number of arguments");

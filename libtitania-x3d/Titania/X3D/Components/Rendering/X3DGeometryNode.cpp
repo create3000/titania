@@ -101,21 +101,19 @@ X3DGeometryNode::getBBox ()
 Box3f
 X3DGeometryNode::createBBox ()
 {
-	if (vertices .size ())
+	if (vertices .empty ())
+		return Box3f ();
+
+	Vector3f min = vertices [0];
+	Vector3f max = min;
+
+	for (const auto & vertex : vertices)
 	{
-		Vector3f min = vertices [0];
-		Vector3f max = min;
-
-		for (const auto & vertex : vertices)
-		{
-			min = math::min (min, vertex);
-			max = math::max (max, vertex);
-		}
-
-		return Box3f (min, max, true);
+		min = math::min (min, vertex);
+		max = math::max (max, vertex);
 	}
 
-	return Box3f ();
+	return Box3f (min, max, true);
 }
 
 bool
@@ -127,8 +125,9 @@ X3DGeometryNode::intersect (const Line3f & line, std::deque <IntersectionPtr> & 
 	if (bbox .intersect (line, temp))
 	{
 		float u, v, t;
-
-		size_t first = 0;
+		
+		size_t texCoordsSize = texCoords .size ();
+		size_t first         = 0;
 
 		for (const auto & element : elements)
 		{
@@ -140,7 +139,7 @@ X3DGeometryNode::intersect (const Line3f & line, std::deque <IntersectionPtr> & 
 						{
 							if (line .intersect (vertices [i], vertices [i + 1], vertices [i + 2], u, v, t))
 							{
-								Vector3f texCoord = i < texCoords .size () ? (1 - u - v) * texCoords [i] + u * texCoords [i + 1] + v * texCoords [i + 2] : Vector3f ();
+								Vector3f texCoord = i < texCoordsSize ? (1 - u - v) * texCoords [i] + u * texCoords [i + 1] + v * texCoords [i + 2] : Vector3f ();
 
 								intersections .emplace_back (new Intersection { texCoord,
 								                                                (1 - u - v) * normals  [i] + u * normals  [i + 1] + v * normals  [i + 2],
@@ -157,7 +156,7 @@ X3DGeometryNode::intersect (const Line3f & line, std::deque <IntersectionPtr> & 
 					{
 						if (line .intersect (vertices [i], vertices [i + 1], vertices [i + 2], u, v, t))
 						{
-							Vector3f texCoord = i < texCoords .size () ? (1 - u - v) * texCoords [i] + u * texCoords [i + 1] + v * texCoords [i + 2] : Vector3f ();
+							Vector3f texCoord = i < texCoordsSize ? (1 - u - v) * texCoords [i] + u * texCoords [i + 1] + v * texCoords [i + 2] : Vector3f ();
 
 							intersections .emplace_back (new Intersection { texCoord,
 							                                                (1 - u - v) * normals  [i] + u * normals  [i + 1] + v * normals  [i + 2],
@@ -167,7 +166,7 @@ X3DGeometryNode::intersect (const Line3f & line, std::deque <IntersectionPtr> & 
 
 						if (line .intersect (vertices [i], vertices [i + 2], vertices [i + 3], u, v, t))
 						{
-							Vector3f texCoord = i < texCoords .size () ? (1 - u - v) * texCoords [i] + u * texCoords [i + 2] + v * texCoords [i + 3] : Vector3f ();
+							Vector3f texCoord = i < texCoordsSize ? (1 - u - v) * texCoords [i] + u * texCoords [i + 2] + v * texCoords [i + 3] : Vector3f ();
 
 							intersections .emplace_back (new Intersection { texCoord,
 							                                                (1 - u - v) * normals  [i] + u * normals  [i + 2] + v * normals  [i + 3],
@@ -184,7 +183,7 @@ X3DGeometryNode::intersect (const Line3f & line, std::deque <IntersectionPtr> & 
 					{
 						if (line .intersect (vertices [first], vertices [i], vertices [i + 1], u, v, t))
 						{
-							Vector3f texCoord = (size_t) i < texCoords .size () ? (1 - u - v) * texCoords [first] + u * texCoords [i] + v * texCoords [i + 1] : Vector3f ();
+							Vector3f texCoord = (size_t) i < texCoordsSize ? (1 - u - v) * texCoords [first] + u * texCoords [i] + v * texCoords [i + 1] : Vector3f ();
 
 							intersections .emplace_back (new Intersection { texCoord,
 							                                                (1 - u - v) * normals  [first] + u * normals  [i] + v * normals  [i + 1],
@@ -483,7 +482,7 @@ X3DGeometryNode::draw ()
 void
 X3DGeometryNode::draw (bool solid, bool texture, bool lighting)
 {
-	if (not vertices .size ())
+	if (vertices .empty ())
 		return;
 
 	if (solid)
@@ -499,14 +498,14 @@ X3DGeometryNode::draw (bool solid, bool texture, bool lighting)
 		if (textureCoordinateGenerator)
 			textureCoordinateGenerator -> enable ();
 
-		else if (texCoords .size ())
+		else if (not texCoords .empty ())
 		{
 			glEnableClientState (GL_TEXTURE_COORD_ARRAY);
 			glTexCoordPointer (3, GL_FLOAT, 0, texCoords .data ());
 		}
 	}
 
-	if (colors .size ())
+	if (not colors .empty ())
 	{
 		if (lighting)
 			glEnable (GL_COLOR_MATERIAL);
@@ -514,7 +513,7 @@ X3DGeometryNode::draw (bool solid, bool texture, bool lighting)
 		glEnableClientState (GL_COLOR_ARRAY);
 		glColorPointer (3, GL_FLOAT, 0, colors .data ());
 	}
-	else if (colorsRGBA .size ())
+	else if (not colorsRGBA .empty ())
 	{
 		if (lighting)
 			glEnable (GL_COLOR_MATERIAL);
@@ -525,7 +524,7 @@ X3DGeometryNode::draw (bool solid, bool texture, bool lighting)
 
 	if (lighting)
 	{
-		if (normals .size ())
+		if (not normals .empty ())
 		{
 			glEnableClientState (GL_NORMAL_ARRAY);
 			glNormalPointer (GL_FLOAT, 0, normals .data ());

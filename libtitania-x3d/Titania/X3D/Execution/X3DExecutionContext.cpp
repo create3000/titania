@@ -131,7 +131,7 @@ throw (Error <INVALID_NAME>,
 {
 	const X3DBaseNode* declaration = getBrowser () -> getNode (name);
 
-	if (getProfile () or getComponents () .size ())
+	if (getProfile () or not getComponents () .empty ())
 	{
 		if (getProfile ())
 		{
@@ -807,7 +807,7 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 			<< Generator::TidyBreak;
 	}
 
-	if (getRootNodes () .size ())
+	if (not getRootNodes () .empty ())
 	{
 		for (const auto & child : basic::adapter (getRootNodes () .cbegin (), getRootNodes () .cend () - 1))
 		{
@@ -824,13 +824,13 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 			<< Generator::TidyBreak;
 	}
 
-	if (getImportedNodes () .size ())
+	if (not getImportedNodes () .empty ())
 		ostream << Generator::TidyBreak;
 
 	for (const auto & importedNode : getImportedNodes ())
 		ostream << importedNode;
 
-	if (getRoutes () .size ())
+	if (not getRoutes () .empty ())
 		ostream << Generator::TidyBreak;
 
 	for (const auto & route : getRoutes ())
@@ -840,7 +840,7 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 			<< Generator::Break;
 	}
 
-	if (getInnerComments () .size ())
+	if (not getInnerComments () .empty ())
 	{
 		ostream << Generator::TidyBreak;
 

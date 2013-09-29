@@ -144,7 +144,7 @@ X3DBaseNode::copy (X3DExecutionContext* const executionContext) const
 {
 	X3DBaseNode* copy = create (executionContext);
 
-	if (getName () .size ())
+	if (not getName () .empty ())
 		executionContext -> updateNamedNode (getName (), copy);
 
 	for (const auto & fieldDefinition : fieldDefinitions)
@@ -157,7 +157,12 @@ X3DBaseNode::copy (X3DExecutionContext* const executionContext) const
 
 			if (field -> getAccessType () == fieldDefinition -> getAccessType () and field -> getType () == fieldDefinition -> getType ())
 			{
-				if (fieldDefinition -> getReferences () .size ())
+				if (fieldDefinition -> getReferences () .empty ())
+				{
+					if (fieldDefinition -> isInitializeable ())
+						fieldDefinition -> clone (executionContext, field);
+				}
+				else
 				{
 					// IS relationship
 
@@ -173,11 +178,6 @@ X3DBaseNode::copy (X3DExecutionContext* const executionContext) const
 						}
 					}
 				}
-				else
-				{
-					if (fieldDefinition -> isInitializeable ())
-						fieldDefinition -> clone (executionContext, field);
-				}
 			}
 			else
 				throw Error <INVALID_NAME> ("");
@@ -186,7 +186,13 @@ X3DBaseNode::copy (X3DExecutionContext* const executionContext) const
 		{
 			// User defined fields from Script and Shader
 
-			if (fieldDefinition -> getReferences () .size ())
+			if (fieldDefinition -> getReferences () .empty ())
+			{
+				copy -> addUserDefinedField (fieldDefinition -> getAccessType (),
+				                             fieldDefinition -> getName (),
+				                             fieldDefinition -> clone (executionContext));
+			}
+			else
 			{
 				// IS relationship
 
@@ -207,12 +213,6 @@ X3DBaseNode::copy (X3DExecutionContext* const executionContext) const
 						throw Error <INVALID_NAME> ("No such event or field '" + originalReference -> getName () + " inside node.");
 					}
 				}
-			}
-			else
-			{
-				copy -> addUserDefinedField (fieldDefinition -> getAccessType (),
-				                             fieldDefinition -> getName (),
-				                             fieldDefinition -> clone (executionContext));
 			}
 		}
 	}
@@ -265,83 +265,29 @@ X3DBaseNode::assign (const X3DBaseNode* value)
 		*field = *value -> getField (field -> getName ());
 }
 
+void
+X3DBaseNode::setup ()
+{
+	executionContext -> addParent (this);
+
+	if (executionContext -> isProto ())
+		return;
+
+	for (const auto & field : fieldDefinitions)
+	{
+		field -> updateReferences ();
+		field -> isTainted (false);
+	}
+
+	addChildren (notifyOutput);
+
+	initialize ();
+}
+
 time_type
 X3DBaseNode::getCurrentTime () const
 {
 	return getBrowser () -> getCurrentTime ();
-}
-
-size_t
-X3DBaseNode::getNumClones () const
-{
-	size_t numClones = 0;
-
-	for (const auto & parentField : getParents ())
-	{
-		if (dynamic_cast <X3DFieldDefinition*> (parentField))
-		{
-			if (dynamic_cast <SFNode*> (parentField))
-			{
-				// Only X3DNodes, ie nodes in the scene graph, have field names
-
-				if (parentField -> getName () .length ())
-				{
-					// If any of the fields parents is in a scene add count.
-
-					for (const auto & fparent : parentField -> getParents ())
-					{
-						auto node = dynamic_cast <X3DBaseNode*> (fparent);
-
-						if (node and node -> getExecutionContext () -> isScene ())
-						{
-							++ numClones;
-							break;
-						}
-					}
-				}
-				else
-				{
-					for (const auto & parent : parentField -> getParents ())
-					{
-						// Only X3DNodes, ie nodes in the scene graph, have field names
-
-						if (dynamic_cast <MFNode*> (parent) and parent -> getName () .length ())
-						{
-							// If any of the fields parents is in a scene add count.
-
-							for (const auto & fparent : parent -> getParents ())
-							{
-								auto node = dynamic_cast <X3DBaseNode*> (fparent);
-
-								if (node and node -> getExecutionContext () -> isScene ())
-								{
-									++ numClones;
-									break;
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-
-	return numClones;
-}
-
-void
-X3DBaseNode::setInternal (bool value)
-{
-	if (value)
-	{
-		for (const auto & field : fieldDefinitions)
-			field -> setName ("");
-	}
-	else
-	{
-		for (const auto & field : fields)
-			field .second -> setName (field .first);
-	}
 }
 
 const X3DBaseNode*
@@ -508,23 +454,91 @@ X3DBaseNode::isDefaultValue (const X3DFieldDefinition* const field) const
 	}
 }
 
-void
-X3DBaseNode::setup ()
+size_t
+X3DBaseNode::getNumClones () const
 {
-	executionContext -> addParent (this);
+	size_t numClones = 0;
 
-	if (executionContext -> isProto ())
-		return;
-
-	for (const auto & field : fieldDefinitions)
+	for (const auto & parentField : getParents ())
 	{
-		field -> updateReferences ();
-		field -> isTainted (false);
+		if (dynamic_cast <X3DFieldDefinition*> (parentField))
+		{
+			if (dynamic_cast <SFNode*> (parentField))
+			{
+				// Only X3DNodes, ie nodes in the scene graph, have field names
+
+				if (parentField -> getName () .empty ())
+				{
+					for (const auto & parent : parentField -> getParents ())
+					{
+						// Only X3DNodes, ie nodes in the scene graph, have field names
+
+						if (dynamic_cast <MFNode*> (parent) and not parent -> getName () .empty ())
+						{
+							// If any of the fields parents is in a scene add count.
+
+							for (const auto & fparent : parent -> getParents ())
+							{
+								auto node = dynamic_cast <X3DBaseNode*> (fparent);
+
+								if (node and node -> getExecutionContext () -> isScene ())
+								{
+									++ numClones;
+									break;
+								}
+							}
+						}
+					}
+				}
+				else
+				{
+					// If any of the fields parents is in a scene add count.
+
+					for (const auto & fparent : parentField -> getParents ())
+					{
+						auto node = dynamic_cast <X3DBaseNode*> (fparent);
+
+						if (node and node -> getExecutionContext () -> isScene ())
+						{
+							++ numClones;
+							break;
+						}
+					}
+				}
+			}
+		}
 	}
 
-	addChildren (notifyOutput);
+	return numClones;
+}
 
-	initialize ();
+bool
+X3DBaseNode::hasRoutes () const
+{
+	for (const auto & field : fieldDefinitions)
+	{
+		if (field -> getInputRoutes () .empty () and field -> getOutputRoutes () .empty ())
+			continue;
+
+		return true;
+	}
+
+	return false;
+}
+
+void
+X3DBaseNode::setInternal (bool value)
+{
+	if (value)
+	{
+		for (const auto & field : fieldDefinitions)
+			field -> setName ("");
+	}
+	else
+	{
+		for (const auto & field : fields)
+			field .second -> setName (field .first);
+	}
 }
 
 void
@@ -623,7 +637,7 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 
 	std::string name = Generator::GetName (this);
 
-	if (name .length ())
+	if (not name .empty ())
 	{
 		if (Generator::ExistsNode (this))
 		{
@@ -638,7 +652,7 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 		}
 	}
 
-	if (getComments () .size ())
+	if (not getComments () .empty ())
 	{
 		ostream
 			<< Generator::Comment
@@ -657,7 +671,7 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 		ostream << Generator::Indent;
 	}
 
-	if (name .length ())
+	if (not name .empty ())
 	{
 		Generator::AddNode (this);
 
@@ -698,7 +712,7 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 		}
 	}
 
-	if (userDefinedFields .size ())
+	if (not userDefinedFields .empty ())
 	{
 		ostream
 			<< Generator::TidyBreak
@@ -720,9 +734,16 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 
 	FieldDefinitionArray fields = getInitializeableFields (Generator::ExpandNodes ());
 
-	if (fields .size ())
+	if (fields .empty ())
 	{
-		if (not userDefinedFields .size ())
+		if (userDefinedFields .empty ())
+			ostream << Generator::TidySpace;
+		else
+			ostream << Generator::Indent;
+	}
+	else
+	{
+		if (userDefinedFields .empty ())
 			ostream << Generator::TidyBreak;
 
 		ostream << Generator::IncIndent;
@@ -740,15 +761,8 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 			<< Generator::DecIndent
 			<< Generator::Indent;
 	}
-	else
-	{
-		if (userDefinedFields .size ())
-			ostream << Generator::Indent;
-		else
-			ostream << Generator::TidySpace;
-	}
 
-	if (getInnerComments () .size ())
+	if (not getInnerComments () .empty ())
 	{
 		ostream
 			<< Generator::TidyBreak
@@ -785,7 +799,22 @@ X3DBaseNode::toStreamField (std::ostream & ostream, X3DFieldDefinition* const fi
 			<< Generator::Break;
 	}
 
-	if (field -> getReferences () .size ())
+	if (field -> getReferences () .empty ())
+	{
+		// Output build field
+
+		ostream << Generator::Indent;
+
+		if (Generator::X3DFieldNames ())
+			ostream << field -> getName ();
+		else
+			ostream << field -> getAliasName ();
+
+		ostream
+			<< Generator::Space
+			<< *field;
+	}
+	else
 	{
 		for (const auto & reference : field -> getReferences ())
 		{
@@ -805,21 +834,6 @@ X3DBaseNode::toStreamField (std::ostream & ostream, X3DFieldDefinition* const fi
 				<< reference -> getName ();
 		}
 	}
-	else
-	{
-		// Output build field
-
-		ostream << Generator::Indent;
-
-		if (Generator::X3DFieldNames ())
-			ostream << field -> getName ();
-		else
-			ostream << field -> getAliasName ();
-
-		ostream
-			<< Generator::Space
-			<< *field;
-	}
 }
 
 void
@@ -834,7 +848,35 @@ X3DBaseNode::toStreamUserDefinedField (std::ostream & ostream, X3DFieldDefinitio
 			<< Generator::Break;
 	}
 
-	if (field -> getReferences () .size ())
+	if (field -> getReferences () .empty ())
+	{
+		// Output user defined field
+
+		ostream
+			<< Generator::Indent
+			<< std::setiosflags (std::ios::left)
+			<< std::setw (accessTypeLength);
+
+		ostream << Generator::AccessTypes [field];
+
+		ostream
+			<< Generator::Space
+			<< std::setiosflags (std::ios::left) << std::setw (fieldTypeLength) << field -> getTypeName ()
+			<< Generator::Space;
+
+		if (Generator::X3DFieldNames ())
+			ostream << field -> getName ();
+		else
+			ostream << field -> getAliasName ();
+
+		if (field -> isInitializeable ())
+		{
+			ostream
+				<< Generator::Space
+				<< *field;
+		}
+	}
+	else
 	{
 		bool initializableReference = false;
 
@@ -895,34 +937,6 @@ X3DBaseNode::toStreamUserDefinedField (std::ostream & ostream, X3DFieldDefinitio
 					<< Generator::Space
 					<< *field;
 			}
-		}
-	}
-	else
-	{
-		// Output user defined field
-
-		ostream
-			<< Generator::Indent
-			<< std::setiosflags (std::ios::left)
-			<< std::setw (accessTypeLength);
-
-		ostream << Generator::AccessTypes [field];
-
-		ostream
-			<< Generator::Space
-			<< std::setiosflags (std::ios::left) << std::setw (fieldTypeLength) << field -> getTypeName ()
-			<< Generator::Space;
-
-		if (Generator::X3DFieldNames ())
-			ostream << field -> getName ();
-		else
-			ostream << field -> getAliasName ();
-
-		if (field -> isInitializeable ())
-		{
-			ostream
-				<< Generator::Space
-				<< *field;
 		}
 	}
 }

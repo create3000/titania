@@ -142,19 +142,19 @@ World::bind ()
 
 	for (auto & layer : layerSet -> getLayers ())
 	{
-		if (layer -> getNavigationInfos () -> size ())
+		if (not layer -> getNavigationInfos () -> empty ())
 		{
 			layer -> getNavigationInfos () -> at (0) -> doTransition (false);
 			layer -> getNavigationInfos () -> at (0) -> set_bind () = true;
 		}
 
-		if (layer -> getBackgrounds () -> size ())
+		if (not layer -> getBackgrounds () -> empty ())
 		{
 			layer -> getBackgrounds () -> at (0) -> doTransition (false);
 			layer -> getBackgrounds () -> at (0) -> set_bind () = true;
 		}
 
-		if (layer -> getFogs () -> size ())
+		if (not layer -> getFogs () -> empty ())
 		{
 			layer -> getFogs () -> at (0) -> doTransition (false);
 			layer -> getFogs () -> at (0) -> set_bind () = true;
@@ -162,7 +162,7 @@ World::bind ()
 
 		// Bind first viewpoint in viewpoint stack.
 
-		if (layer -> getViewpoints () -> size ())
+		if (not layer -> getViewpoints () -> empty ())
 		{
 			layer -> getViewpoints () -> at (0) -> doTransition (false);
 			layer -> getViewpoints () -> at (0) -> set_bind () = true;
@@ -171,7 +171,7 @@ World::bind ()
 
 	// Bind viewpoint from URL.
 
-	if (scene -> getWorldURL () .fragment () .length ())
+	if (not scene -> getWorldURL () .fragment () .empty ())
 		scene -> changeViewpoint (scene -> getWorldURL () .fragment ());
 }
 

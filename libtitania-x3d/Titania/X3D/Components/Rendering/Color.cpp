@@ -81,13 +81,14 @@ Color::create (X3DExecutionContext* const executionContext) const
 void
 Color::resize (size_t size)
 {
-	if (color () .size ())
+	if (color () .empty ())
+		color () .resize (size, SFColor (1, 1, 1));
+
+	else
 	{
 		if (color () .size () < size)
 			color () .resize (size, color () .back ());
 	}
-	else
-		color () .resize (size, SFColor (1, 1, 1));
 }
 
 } // X3D

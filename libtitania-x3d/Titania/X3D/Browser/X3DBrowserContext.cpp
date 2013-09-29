@@ -481,14 +481,15 @@ X3DBrowserContext::motionNotifyEvent ()
 
 	std::deque <X3DBaseNode*> difference;
 
-	if (getHits () .size ())
+	if (getHits () .empty ())
+		difference .assign (overSensors .begin (), overSensors .end ());
+
+	else
 	{
 		std::set_difference (overSensors .begin (), overSensors .end (),
 		                     getHits () .front () -> sensors .begin (), getHits () .front () -> sensors .end (),
 		                     std::back_inserter (difference));
 	}
-	else
-		difference .assign (overSensors .begin (), overSensors .end ());
 
 	for (const auto & node : difference)
 	{
@@ -508,7 +509,10 @@ X3DBrowserContext::motionNotifyEvent ()
 
 	// Set isOver to TRUE for appropriate nodes
 
-	if (getHits () .size ())
+	if (getHits () .empty ())
+		overSensors .clear ();
+
+	else
 	{
 		overSensors .assign (getHits () .front () -> sensors .begin (),
 		                     getHits () .front () -> sensors .end ());
@@ -529,8 +533,6 @@ X3DBrowserContext::motionNotifyEvent ()
 			}
 		}
 	}
-	else
-		overSensors .clear ();
 
 	// Forward motion event to active drag sensor nodes
 
@@ -540,9 +542,9 @@ X3DBrowserContext::motionNotifyEvent ()
 
 		if (dragSensorNode)
 		{
-			dragSensorNode -> set_motion (getHits () .size ()
-			                              ? getHits () .front ()
-													: std::make_shared <Hit> (Matrix4f (), hitRay, std::make_shared <Intersection> (), NodeSet (), nullptr));
+			dragSensorNode -> set_motion (getHits () .empty ()
+			                              ? std::make_shared <Hit> (Matrix4f (), hitRay, std::make_shared <Intersection> (), NodeSet (), nullptr)
+													: getHits () .front ());
 		}
 	}
 }
@@ -640,7 +642,7 @@ X3DBrowserContext::update ()
 
 			// Debug
 			router .debug ();
-			assert (router .size () == 0);
+			assert (router .size () == 0); // assert (router .empty ());
 
 			// Display
 

@@ -95,7 +95,7 @@ LineSet::build ()
 {
 	auto _coord = x3d_cast <Coordinate*> (coord ());
 
-	if (not _coord or not _coord -> point () .size ())
+	if (not _coord or _coord -> point () .empty ())
 		return;
 
 	// Color

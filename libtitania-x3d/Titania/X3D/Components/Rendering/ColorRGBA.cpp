@@ -81,13 +81,14 @@ ColorRGBA::create (X3DExecutionContext* const executionContext) const
 void
 ColorRGBA::resize (size_t size)
 {
-	if (color () .size ())
+	if (color () .empty ())
+		color () .resize (size, SFColorRGBA (1, 1, 1, 1));
+
+	else
 	{
 		if (color () .size () < size)
 			color () .resize (size, color () .back ());
 	}
-	else
-		color () .resize (size, SFColorRGBA (1, 1, 1, 1));
 }
 
 } // X3D

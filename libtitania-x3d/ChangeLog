@@ -1,5 +1,57 @@
 2013-09-29  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* SFString.h:
+	* Parser.cpp:
+	* Route.cpp:
+	* Proto.cpp:
+	* World.cpp:
+	* SFString.cpp:
+	* X3DBaseNode.h:
+	* Scene.cpp:
+	* X3DBaseNode.cpp:
+	* Loader.cpp:
+	* X3DScene.cpp:
+	* X3DChildObject.cpp:
+	* Notification.cpp:
+	* Generator.cpp:
+	* ExternProto.cpp:
+	* X3DRenderer.cpp:
+	* GoldenGate.cpp:
+	* LightContainer.cpp:
+	* X3DBrowserContext.cpp:
+	* KeyDevice.cpp:
+	* AudioClip.cpp:
+	* Color.cpp:
+	* Normal.cpp:
+	* LineSet.cpp:
+	* X3DExecutionContext.cpp:
+	* ColorRGBA.cpp:
+	* PointingDevice.cpp:
+	* Extrusion.cpp:
+	* X3DLayerNode.cpp:
+	* jsContext.cpp:
+	* MovieTexture.cpp:
+	* IndexedLineSet.cpp:
+	* TriangleFanSet.cpp:
+	* X3DGroupingNode.cpp:
+	* X3DGeometryNode.cpp:
+	* IndexedFaceSet.cpp:
+	* jsX3DArrayField.h:
+	* TriangleStripSet.cpp:
+	* TextureCoordinate.cpp:
+	* jsSFNode.cpp:
+	* X3DSequencerNode.cpp:
+	* X3DInterpolatorNode.cpp:
+	* X3DComposedGeometryNode.cpp:
+	* X3DProgrammableShaderObject.cpp:
+	* SplineScalarInterpolator.cpp:
+	* X3DBackgroundNode.cpp:
+	* SplinePositionInterpolator.cpp:
+	* SquadOrientationInterpolator.cpp:
+	* SplinePositionInterpolator2D.cpp: 
+
+2013-09-29  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* RegEx.h:
 	* RegEx.cpp: 
 

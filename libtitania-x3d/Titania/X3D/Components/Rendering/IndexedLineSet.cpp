@@ -118,11 +118,11 @@ IndexedLineSet::set_coordIndex ()
 		// Fill up coordIndex if there are no indices.
 		if (coordIndex () .empty ())
 		{
-			for (size_t i = 0; i < _coord -> point () .size (); ++ i)
+			for (size_t i = 0, size = _coord -> point () .size (); i < size; ++ i)
 				coordIndex () .emplace_back (i);
 		}
 
-		if (coordIndex () .size ())
+		if (not coordIndex () .empty ())
 		{
 			// Add -1 (polylines end marker) to coordIndex if not present.
 			if (coordIndex () .back () >= 0)
@@ -146,7 +146,7 @@ IndexedLineSet::set_coordIndex ()
 				{
 					// Negativ index.
 
-					if (polyline .size ())
+					if (not polyline .empty ())
 					{
 						if (polyline .size () > 1)
 						{
@@ -163,7 +163,7 @@ IndexedLineSet::set_coordIndex ()
 
 			++ numPoints;
 
-			if (polylines .size ())
+			if (not polylines .empty ())
 			{
 				// Resize coord .point if to small
 				_coord -> resize (numPoints);
@@ -185,14 +185,14 @@ IndexedLineSet::set_colorIndex ()
 		// Fill up colorIndex if to small.
 		if (colorPerVertex ())
 		{
-			for (size_t i = colorIndex () .size (); i < coordIndex () .size (); ++ i)
+			for (size_t i = colorIndex () .size (), size = coordIndex () .size (); i < size; ++ i)
 			{
 				colorIndex () .emplace_back (coordIndex () [i]);
 			}
 		}
 		else
 		{
-			for (size_t i = colorIndex () .size (); i < polylines .size (); ++ i)
+			for (size_t i = colorIndex () .size (), size = polylines .size (); i < size; ++ i)
 			{
 				colorIndex () .emplace_back (i);
 			}
@@ -226,7 +226,7 @@ IndexedLineSet::build ()
 {
 	auto _coord = x3d_cast <Coordinate*> (coord ());
 
-	if (not _coord or not _coord -> point () .size ())
+	if (not _coord or _coord -> point () .empty ())
 		return;
 
 	// Color

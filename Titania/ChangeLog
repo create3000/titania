@@ -1,5 +1,9 @@
 2013-09-29  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* NodePropertiesEditor.cpp: 
+
+2013-09-29  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* info.wrl:
 	* NodePropertiesEditor.ui:
 	* NodePropertiesEditor.h:

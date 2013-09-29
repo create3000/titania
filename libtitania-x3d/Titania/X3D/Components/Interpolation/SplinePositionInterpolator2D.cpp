@@ -109,7 +109,7 @@ SplinePositionInterpolator2D::set_keyValue ()
 void
 SplinePositionInterpolator2D::set_keyVelocity ()
 {
-	if (keyVelocity () .size ())
+	if (not keyVelocity () .empty ())
 	{
 		if (keyVelocity () .size () < key () .size ())
 			keyVelocity () .resize (key () .size ());

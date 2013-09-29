@@ -103,6 +103,12 @@ SFString::str () const
 	return getValue () .raw ();
 }
 
+bool
+SFString::empty () const
+{
+	return getValue () .empty ();
+}
+
 SFString::size_type
 SFString::length () const
 {

@@ -161,13 +161,10 @@ PointingDevice::on_motion_notify_event (GdkEventMotion* event)
 bool
 PointingDevice::pick (const double x, const double y)
 {
-	if (not getBrowser () -> makeCurrent ())
-		return false;
-
 	getBrowser () -> pick (x, y);
 
-	return getBrowser () -> getHits () .size () and
-	       getBrowser () -> getHits () .front () -> sensors .size ();
+	return not (getBrowser () -> getHits () .empty () or
+	            getBrowser () -> getHits () .front () -> sensors .empty ());
 }
 
 } // X3D

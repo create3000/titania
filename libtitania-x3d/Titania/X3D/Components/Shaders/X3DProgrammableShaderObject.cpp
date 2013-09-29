@@ -159,7 +159,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 
 				if (not textureUnit)
 				{
-					if (getBrowser () -> getTextureUnits () .size ())
+					if (not getBrowser () -> getTextureUnits () .empty ())
 					{
 						textureUnit = getBrowser () -> getTextureUnits () .top ();
 						getBrowser () -> getTextureUnits () .pop ();

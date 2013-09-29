@@ -74,7 +74,7 @@ X3DInterpolatorNode::setup ()
 
 	set_key ();
 
-	if (key () .size ())
+	if (not key () .empty ())
 		interpolate (0, 0, 0);
 
 	X3DChildNode::setup ();
@@ -92,7 +92,7 @@ X3DInterpolatorNode::initialize ()
 void
 X3DInterpolatorNode::_set_fraction ()
 {
-	if (key () .size () == 0)
+	if (key () .empty ())
 		return;
 
 	if (key () .size () == 1 or set_fraction () <= key () [0])

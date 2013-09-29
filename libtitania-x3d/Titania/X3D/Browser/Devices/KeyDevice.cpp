@@ -98,7 +98,7 @@ KeyDevice::on_key_press_event (GdkEventKey* event)
 {
 	if (gtk_im_context_filter_keypress (imContextPress, event))
 	{
-		if (keyPress .size ())
+		if (not keyPress .empty ())
 		{
 			getBrowser () -> getKeyDeviceSensorNode () -> set_keyPressEvent (keyPress);
 
@@ -119,7 +119,7 @@ KeyDevice::on_key_release_event (GdkEventKey* event)
 
 	if (gtk_im_context_filter_keypress (imContextRelease, event))
 	{
-		if (keyRelease .size ())
+		if (not keyRelease .empty ())
 		{
 			getBrowser () -> getKeyDeviceSensorNode () -> set_keyReleaseEvent (keyRelease);
 

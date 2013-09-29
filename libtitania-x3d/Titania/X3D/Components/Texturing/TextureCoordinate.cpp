@@ -81,13 +81,14 @@ TextureCoordinate::create (X3DExecutionContext* const executionContext) const
 void
 TextureCoordinate::resize (size_t size)
 {
-	if (point () .size ())
+	if (point () .empty ())
+		point () .resize (size);
+
+	else
 	{
 		if (point () .size () < size)
 			point () .resize (size, point () .back ());
 	}
-	else
-		point () .resize (size);
 }
 
 } // X3D

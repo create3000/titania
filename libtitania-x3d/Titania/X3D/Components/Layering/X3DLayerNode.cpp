@@ -238,10 +238,10 @@ X3DLayerNode::getBackground () const
 X3DFogObject*
 X3DLayerNode::getFog () const
 {
-	if (localFogs .size ())
-		return localFogs .top ();
+	if (localFogs .empty ())
+		return fogStack -> top ();
 
-	return fogStack -> top ();
+	return localFogs .top ();
 }
 
 X3DViewpointNode*
@@ -257,7 +257,7 @@ X3DLayerNode::getUserViewpoints () const
 
 	for (const auto & viewpoint :* getViewpoints ())
 	{
-		if (viewpoint -> description () .length ())
+		if (not viewpoint -> description () .empty ())
 			userViewpoints .emplace_back (viewpoint);
 	}
 
