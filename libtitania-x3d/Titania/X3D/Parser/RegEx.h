@@ -60,6 +60,9 @@ class RegEx
 {
 public:
 
+	// Other Symbols
+	static const pcrecpp::RE Id;
+
 	// Execution
 
 	static const pcrecpp::RE _LastNumber;

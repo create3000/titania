@@ -71,9 +71,35 @@ public:
 
 private:
 
+	void
+	validateInsertId (Gtk::Entry &, const Glib::ustring &, int);
+
+	void
+	validateDeleteId (Gtk::Entry &, int, int);
+
 	virtual
 	void
-	initialize () final;
+	on_type_name_insert_text (const Glib::ustring &, int*) final;
+
+	virtual
+	void
+	on_type_name_delete_text (int, int) final;
+
+	virtual
+	void
+	on_name_insert_text (const Glib::ustring &, int*) final;
+
+	virtual
+	void
+	on_name_delete_text (int, int) final;
+
+	virtual
+	void
+	on_ok () final;
+
+	virtual
+	void
+	on_cancel () final;
 
 	///  @name Members
 	

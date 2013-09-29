@@ -65,10 +65,34 @@ X3DNodePropertiesEditorInterface::create (const std::string & filename)
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_window);
 	m_window -> set_name ("Window");
+	m_builder -> get_widget ("CancelButton", m_cancelButton);
+	m_cancelButton -> set_name ("CancelButton");
+	m_builder -> get_widget ("OkButton", m_okButton);
+	m_okButton -> set_name ("OkButton");
 	m_builder -> get_widget ("Widget", m_widget);
 	m_widget -> set_name ("Widget");
+	m_builder -> get_widget ("HeaderLabel", m_headerLabel);
+	m_headerLabel -> set_name ("HeaderLabel");
 	m_builder -> get_widget ("NodePropertiesExpander", m_nodePropertiesExpander);
 	m_nodePropertiesExpander -> set_name ("NodePropertiesExpander");
+	m_builder -> get_widget ("TypeNameLabel", m_typeNameLabel);
+	m_typeNameLabel -> set_name ("TypeNameLabel");
+	m_builder -> get_widget ("NameLabel", m_nameLabel);
+	m_nameLabel -> set_name ("NameLabel");
+	m_builder -> get_widget ("TypeNameEntry", m_typeNameEntry);
+	m_typeNameEntry -> set_name ("TypeNameEntry");
+	m_builder -> get_widget ("NameEntry", m_nameEntry);
+	m_nameEntry -> set_name ("NameEntry");
+
+	// Connect object Gtk::Button with id 'CancelButton'.
+	connections .emplace_back (m_cancelButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_cancel)));
+	connections .emplace_back (m_okButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_ok)));
+
+	// Connect object Gtk::Entry with id 'TypeNameEntry'.
+	connections .emplace_back (m_typeNameEntry -> signal_insert_text () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_type_name_insert_text), false));
+	connections .emplace_back (m_typeNameEntry -> signal_delete_text () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_type_name_delete_text), false));
+	connections .emplace_back (m_nameEntry -> signal_insert_text () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_name_insert_text), false));
+	connections .emplace_back (m_nameEntry -> signal_delete_text () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_name_delete_text), false));
 
 	// Call construct handler of base class.
 	construct ();

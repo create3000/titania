@@ -621,4 +621,9 @@ draw
   virtual bool on_draw(const ::Cairo::RefPtr< ::Cairo::Context>& cr);
 changed
   virtual void on_changed();
-
+insert_at_cursor
+  virtual void on_insert_at_cursor(const Glib::ustring& str);
+insert_text
+  virtual void on_insert_text(const Glib::ustring& text, int* position);
+delete_text
+  virtual void on_delete_text(int start_pos, int end_pos);

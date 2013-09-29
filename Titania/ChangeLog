@@ -1,5 +1,14 @@
 2013-09-29  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* info.wrl:
+	* NodePropertiesEditor.ui:
+	* NodePropertiesEditor.h:
+	* NodePropertiesEditor.cpp:
+	* X3DNodePropertiesEditorInterface.h:
+	* X3DNodePropertiesEditorInterface.cpp: 
+
+2013-09-29  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* BrowserWindow.h:
 	* BrowserWindow.cpp:
 	* BrowserWindow.ui:

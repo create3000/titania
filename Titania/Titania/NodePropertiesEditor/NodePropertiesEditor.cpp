@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra�e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -62,11 +62,74 @@ NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow, 
 	                            node (node)
 {
 	getWindow () .set_transient_for (getBrowserWindow () -> getWindow ());
+
+	getHeaderLabel () .set_text (node -> getTypeName () + " »" + node -> getName () + "«");
+
+	getTypeNameEntry () .set_text (node -> getTypeName ());
+	getNameEntry ()     .set_text (node -> getName ());
 }
 
 void
-NodePropertiesEditor::initialize ()
-{ }
+NodePropertiesEditor::validateInsertId (Gtk::Entry & entry, const Glib::ustring & insert, int position)
+{
+	std::string text = entry .get_text () .insert (position, insert);
+
+	if (not X3D::RegEx::Id .FullMatch (text))
+		entry .signal_insert_text () .emission_stop ();
+}
+
+void
+NodePropertiesEditor::validateDeleteId (Gtk::Entry & entry, int start_pos, int end_pos)
+{
+	std::string text = entry .get_text () .erase (start_pos, end_pos - start_pos);
+
+	if (text .length () and not X3D::RegEx::Id .FullMatch (text))
+		entry .signal_delete_text () .emission_stop ();
+}
+
+void
+NodePropertiesEditor::on_type_name_insert_text (const Glib::ustring & text, int* position)
+{
+	validateInsertId (getTypeNameEntry (), text, *position);
+}
+
+void
+NodePropertiesEditor::on_type_name_delete_text (int start_pos, int end_pos)
+{
+	validateDeleteId (getTypeNameEntry (), start_pos, end_pos);
+}
+
+void
+NodePropertiesEditor::on_name_insert_text (const Glib::ustring & text, int* position)
+{
+	validateInsertId (getNameEntry (), text, *position);
+}
+
+void
+NodePropertiesEditor::on_name_delete_text (int start_pos, int end_pos)
+{
+	validateDeleteId (getNameEntry (), start_pos, end_pos);
+}
+
+void
+NodePropertiesEditor::on_ok ()
+{
+	std::string name = getNameEntry () .get_text ();
+
+	if (name .length ())
+		node -> getExecutionContext () -> updateNamedNode (node -> getExecutionContext () -> getUniqueName (name), node);
+
+	else
+		node -> getExecutionContext () -> removeNamedNode (node -> getName ());
+
+	getWindow () .hide ();
+}
+
+void
+NodePropertiesEditor::on_cancel ()
+{
+	getWindow () .hide ();
+}
 
 NodePropertiesEditor::~NodePropertiesEditor ()
 {

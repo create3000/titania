@@ -12,7 +12,7 @@ EXTERNPROTO Rotor [
 ]
 "library/Rotor.wrl"
 
-LayerSet {
+DEF about:info LayerSet {
   order 1
   layers LayoutLayer {
     layout Layout { }
@@ -98,13 +98,13 @@ LayerSet {
                 }
               }
             }
-            LayoutGroup {
+            DEF Content LayoutGroup {
               layout Layout {
                 size [ 0.1, 1 ]
                 scaleMode [ "STRETCH", "STRETCH" ]
               }
               children [
-                Transform {
+                DEF RotatingLogo Transform {
                   translation -0.480889 0.469111 1
                   scale 0.022 0.022 0.022
                   children [
@@ -113,7 +113,7 @@ LayerSet {
                       loop TRUE
                     }
                     DEF Logo Transform {
-                      rotation 0 0 1 0.601724
+                      rotation 0 0 1 1.70171
                       center 5.5 -5.6 0
                       children Inline {
                         url "library/logo.wrl"
@@ -231,31 +231,33 @@ LayerSet {
                 }
                 DEF VersionNumber Transform {
                   translation -0.438782 -0.385263 1
-                  children Shape {
-                    appearance Appearance {
-                      material Material {
-                        diffuseColor 1 1 1
+                  children [
+                    Shape {
+                      appearance Appearance {
+                        material Material {
+                          diffuseColor 1 1 1
+                        }
+                      }
+                      geometry DEF VersionNumberText Text {
+                        string "0.5.0"
+                        fontStyle FontStyle {
+                          family [ "Ubuntu Condensed", "sans" ]
+                          style "BOLD"
+                          size 0.41
+                        }
                       }
                     }
-                    geometry DEF VersionNumberText Text {
-                      string "0.5.0"
-                      fontStyle FontStyle {
-                        family [ "Ubuntu Condensed", "sans" ]
-                        style "BOLD"
-                        size 0.41
-                      }
-                    }
-                  }
-                }
-                DEF VersionNumberScript Script {
-                  initializeOnly SFNode text USE VersionNumberText
+                    DEF VersionNumberScript Script {
+                      initializeOnly SFNode text USE VersionNumberText
 
-                  url "vrmlscript:
+                      url "vrmlscript:
 function initialize ()
 {
 	text .string = new MFString (Browser .version);
 }
 "
+                    }
+                  ]
                 }
               ]
             }

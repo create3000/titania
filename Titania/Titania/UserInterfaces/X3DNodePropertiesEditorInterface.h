@@ -96,13 +96,65 @@ public:
 	getWindow () const
 	{ return *m_window; }
 
+	Gtk::Button &
+	getCancelButton () const
+	{ return *m_cancelButton; }
+
+	Gtk::Button &
+	getOkButton () const
+	{ return *m_okButton; }
+
 	Gtk::Box &
 	getWidget () const
 	{ return *m_widget; }
 
+	Gtk::Label &
+	getHeaderLabel () const
+	{ return *m_headerLabel; }
+
 	Gtk::Expander &
 	getNodePropertiesExpander () const
 	{ return *m_nodePropertiesExpander; }
+
+	Gtk::Label &
+	getTypeNameLabel () const
+	{ return *m_typeNameLabel; }
+
+	Gtk::Label &
+	getNameLabel () const
+	{ return *m_nameLabel; }
+
+	Gtk::Entry &
+	getTypeNameEntry () const
+	{ return *m_typeNameEntry; }
+
+	Gtk::Entry &
+	getNameEntry () const
+	{ return *m_nameEntry; }
+
+	virtual
+	void
+	on_cancel () = 0;
+
+	virtual
+	void
+	on_ok () = 0;
+
+	virtual
+	void
+	on_type_name_insert_text (const Glib::ustring & text, int* position) = 0;
+
+	virtual
+	void
+	on_type_name_delete_text (int start_pos, int end_pos) = 0;
+
+	virtual
+	void
+	on_name_insert_text (const Glib::ustring & text, int* position) = 0;
+
+	virtual
+	void
+	on_name_delete_text (int start_pos, int end_pos) = 0;
 
 	~X3DNodePropertiesEditorInterface ();
 
@@ -118,8 +170,15 @@ private:
 	std::deque <sigc::connection> connections;
 	Glib::RefPtr <Gtk::Builder>   m_builder;
 	Gtk::Dialog*                  m_window;
+	Gtk::Button*                  m_cancelButton;
+	Gtk::Button*                  m_okButton;
 	Gtk::Box*                     m_widget;
+	Gtk::Label*                   m_headerLabel;
 	Gtk::Expander*                m_nodePropertiesExpander;
+	Gtk::Label*                   m_typeNameLabel;
+	Gtk::Label*                   m_nameLabel;
+	Gtk::Entry*                   m_typeNameEntry;
+	Gtk::Entry*                   m_nameEntry;
 
 };
 
