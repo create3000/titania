@@ -63,6 +63,7 @@ const std::string OutlineTreeViewEditor::dragDataType = "titania/outline-tree/ro
 
 OutlineTreeViewEditor::OutlineTreeViewEditor (BrowserWindow* const browserWindow) :
 	  Glib::ObjectBase (typeid (OutlineTreeViewEditor)),
+	  X3D::X3DBaseNode (browserWindow -> getBrowser (), browserWindow -> getExecutionContext ()),
 	  X3DBaseInterface (browserWindow),
 	X3DOutlineTreeView (),
 	         selection (browserWindow, this)
@@ -145,39 +146,39 @@ OutlineTreeViewEditor::on_drag_data_received (const Glib::RefPtr <Gdk::DragConte
 	X3DOutlineTreeView::on_drag_data_received (context, x, y, selection_data, info, time);
 	return;
 
-//	if (selection_data .get_format () == 8 and selection_data .get_length ()) // 8 bit format
-//	{
-//		if (selection_data .get_data_type () == DND_OUTLINE_TREE_ROW)
-//		{
-//			__LOG__ << selection_data .get_data_as_string () << std::endl;
-//
-//			context -> drag_finish (true, false, time);
-//			return;
-//		}
-//
-//		if (selection_data .get_data_type () == "text/uri-list")
-//		{
-//			auto uri = selection_data .get_uris ();
-//			
-//			if (uri .size ())
-//			{
-//				getBrowserWindow () -> import (Glib::uri_unescape_string (uri [0]));
-//
-//				context -> drag_finish (true, false, time);
-//				return;
-//			}
-//		}
-//
-//		if (selection_data .get_data_type () == "text/plain" or selection_data .get_data_type () == "STRING")
-//		{
-//			getBrowserWindow () -> import (Glib::uri_unescape_string (basic::trim (selection_data .get_data_as_string ())));
-//
-//			context -> drag_finish (true, false, time);
-//			return;
-//		}
-//	}
-//
-//	context -> drag_finish (false, false, time);
+	//	if (selection_data .get_format () == 8 and selection_data .get_length ()) // 8 bit format
+	//	{
+	//		if (selection_data .get_data_type () == DND_OUTLINE_TREE_ROW)
+	//		{
+	//			__LOG__ << selection_data .get_data_as_string () << std::endl;
+	//
+	//			context -> drag_finish (true, false, time);
+	//			return;
+	//		}
+	//
+	//		if (selection_data .get_data_type () == "text/uri-list")
+	//		{
+	//			auto uri = selection_data .get_uris ();
+	//
+	//			if (uri .size ())
+	//			{
+	//				getBrowserWindow () -> import (Glib::uri_unescape_string (uri [0]));
+	//
+	//				context -> drag_finish (true, false, time);
+	//				return;
+	//			}
+	//		}
+	//
+	//		if (selection_data .get_data_type () == "text/plain" or selection_data .get_data_type () == "STRING")
+	//		{
+	//			getBrowserWindow () -> import (Glib::uri_unescape_string (basic::trim (selection_data .get_data_as_string ())));
+	//
+	//			context -> drag_finish (true, false, time);
+	//			return;
+	//		}
+	//	}
+	//
+	//	context -> drag_finish (false, false, time);
 }
 
 void

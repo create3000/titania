@@ -56,13 +56,17 @@
 namespace titania {
 namespace puck {
 
+const std::string X3DUserInterface::componentName  = "BrowserWindow";
+const std::string X3DUserInterface::containerField = "widgets";
+
 X3DUserInterface::Array X3DUserInterface::userInterfaces;
 
 X3DUserInterface::X3DUserInterface (const std::string & widgetName, const std::string & configKey) :
          X3DBaseInterface (),
 	                 gconf (configKey, widgetName),
 	initialized_connection (),
-	         userInterface ()
+	         userInterface (),
+	               dialogs ()
 { }
 
 void
@@ -117,6 +121,20 @@ bool
 X3DUserInterface::is_initialized ()
 {
 	return not initialized_connection .connected ();
+}
+
+void
+X3DUserInterface::addDialog (X3DUserInterface* const dialog)
+{
+	dialog -> getWindow () .signal_hide () .connect (sigc::bind (sigc::mem_fun (*this, &X3DUserInterface::removeDialog), dialog));
+	dialog -> getWindow () .present ();
+	dialogs .insert (std::make_pair (dialog, dialog));
+}
+
+void
+X3DUserInterface::removeDialog (X3DUserInterface* const dialog)
+{
+	dialogs .erase (dialog);
 }
 
 void

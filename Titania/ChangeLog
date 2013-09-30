@@ -1,5 +1,45 @@
 2013-09-30  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* main.cpp:
+	* X3DBaseInterface.h:
+	* X3DUserInterface.h:
+	* BrowserWindow.h:
+	* BrowserWindow.cpp:
+	* X3DUserInterface.cpp:
+	* X3DBaseInterface.cpp:
+	* X3DBrowserEditor.h:
+	* info.wrl:
+	* X3DBrowserWidget.h:
+	* LibraryView.cpp:
+	* X3DBrowserWidget.cpp:
+	* X3DBrowserEditor.cpp:
+	* PTN57F.ttf:
+	* PTN77F.ttf:
+	* OutlineEditor.cpp:
+	* ViewpointList.cpp:
+	* HistoryEditor.cpp:
+	* OutlineSelection.h:
+	* OutlineTreeModel.h:
+	* OutlineTreeModel.cpp:
+	* Oswald-Bold.ttf:
+	* OutlineSelection.cpp:
+	* Oswald-Light.ttf:
+	* Oswald-Regular.ttf:
+	* MotionBlurEditor.cpp:
+	* Oswald-Stencil.ttf:
+	* OutlineTreeViewEditor.cpp:
+	* PT Free Font License.txt:
+	* SIL Open Font License.txt:
+	* NodePropertiesEditor.cpp:
+	* OutlineCellRenderer.h:
+	* Apache License.txt:
+	* OutlineCellRenderer.cpp:
+	* OpenSans-CondBold.ttf:
+	* OpenSans-CondLight.ttf:
+	* OpenSans-CondLightItalic.ttf: 
+
+2013-09-30  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBaseInterface.h: 
 
 2013-09-30  Holger Seelig  <holger.seelig@yahoo.de>

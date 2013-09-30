@@ -50,13 +50,19 @@
 
 #include "OutlineSelection.h"
 
+#include "../Browser/BrowserWindow.h"
 #include "OutlineTreeModel.h"
 #include "OutlineTreeViewEditor.h"
 
 namespace titania {
 namespace puck {
 
+const std::string OutlineSelection::componentName  = "BrowserWindow";
+const std::string OutlineSelection::typeName       = "OutlineSelection";
+const std::string OutlineSelection::containerField = "selection";
+
 OutlineSelection::OutlineSelection (BrowserWindow* const browserWindow, OutlineTreeViewEditor* const treeView) :
+	X3D::X3DBaseNode (browserWindow -> getBrowser (), browserWindow -> getExecutionContext ()),
 	X3DBaseInterface (browserWindow),
 	        treeView (treeView),
 	  selectMultiple (false),

@@ -111,14 +111,6 @@ protected:
 	void
 	restoreSession () final;
 
-	/// @name Editor handling
-
-	void
-	addEditor (X3DUserInterface* const);
-
-	void
-	removeEditor (X3DUserInterface* const);
-
 	/// @name Edit operations
 
 	void
@@ -214,8 +206,6 @@ private:
 	throw (X3D::Error <X3D::INVALID_NAME>);
 	
 	///  @name Members
-	
-	std::set <X3DUserInterface*> editors;
 
 	bool edited;
 

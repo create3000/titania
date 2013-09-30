@@ -69,6 +69,26 @@ public:
 
 	OutlineSelection (BrowserWindow* const browserWindow, OutlineTreeViewEditor* const);
 
+	///  @name Common members
+
+	virtual
+	const std::string &
+	getComponentName () const final
+	{ return componentName; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (X3D::Error <X3D::DISPOSED>) final
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const final
+	{ return containerField; }
+
+	///  @name Operations
+
 	void
 	set_select_multiple (bool);
 
@@ -81,6 +101,8 @@ public:
 
 private:
 
+	///  @name Operations
+
 	void
 	set_children (const X3D::MFNode &);
 
@@ -92,6 +114,14 @@ private:
 
 	void
 	select (X3D::X3DFieldDefinition* const, bool, X3D::ChildObjectSet &) const;
+
+	///  @name Static members
+
+	static const std::string componentName;
+	static const std::string typeName;
+	static const std::string containerField;
+
+	///  @name Members
 
 	OutlineTreeViewEditor* const treeView;
 	bool                         selectMultiple;

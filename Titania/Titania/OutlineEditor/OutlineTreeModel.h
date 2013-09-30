@@ -65,9 +65,9 @@ namespace titania {
 namespace puck {
 
 class OutlineTreeModel :
+	public X3DBaseInterface,
 	public Glib::Object,
-	public Gtk::TreeModel,
-	public X3DBaseInterface
+	public Gtk::TreeModel
 {
 public:
 
@@ -106,9 +106,31 @@ public:
 	//		SelectedColumn selected_column;
 	//	};
 
+	///  @name Construction
+
 	static
 	Glib::RefPtr <OutlineTreeModel>
 	create (BrowserWindow* const);
+
+	///  @name Common members
+
+	virtual
+	const std::string &
+	getComponentName () const final
+	{ return componentName; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (X3D::Error <X3D::DISPOSED>) final
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const final
+	{ return containerField; }
+
+	///  @name Tree node
 
 	OutlineUserDataPtr
 	get_user_data (const iterator &) const;
@@ -125,6 +147,8 @@ public:
 	X3D::X3DChildObject*
 	get_object (const iterator &);
 
+	///  @name Operations
+
 	std::deque <Gtk::TreeModel::iterator>
 	get_iters (X3D::X3DChildObject* const) const;
 
@@ -139,6 +163,8 @@ public:
 
 	void
 	clear (const iterator &);
+
+	///  @name Destruction
 
 	virtual
 	~OutlineTreeModel ();
@@ -246,6 +272,14 @@ private:
 	virtual
 	void
 	on_rows_reordered (const Path &, const iterator &, int*) final;
+
+	///  @name Static members
+
+	static const std::string componentName;
+	static const std::string typeName;
+	static const std::string containerField;
+
+	///  @name Members
 
 	typedef Gtk::TreeModelColumn <OutlineTreeData*> DataColumn;
 	typedef Gtk::TreeModelColumn <bool>             SelectedColumn;

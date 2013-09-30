@@ -12,7 +12,7 @@ EXTERNPROTO Rotor [
 ]
 "library/Rotor.wrl"
 
-DEF about:info LayerSet {
+DEF about:info_1 LayerSet {
   order 1
   layers LayoutLayer {
     layout Layout { }
@@ -48,7 +48,7 @@ DEF about:info LayerSet {
           }
         }
       }
-      DEF Page LayoutGroup {
+      DEF Page_1 LayoutGroup {
         layout Layout {
           scaleMode [ "STRETCH", "NONE" ]
         }
@@ -113,7 +113,7 @@ DEF about:info LayerSet {
                       loop TRUE
                     }
                     DEF Logo Transform {
-                      rotation 0 0 1 0.080146
+                      rotation 0 0 1 1.44107
                       center 5.5 -5.6 0
                       children Inline {
                         url "library/logo.wrl"
@@ -132,14 +132,14 @@ DEF about:info LayerSet {
                     geometry Text {
                       string "Titania"
                       fontStyle FontStyle {
-                        family [ "../../fonts/oswald/Oswald-Bold.ttf", "sans" ]
+                        family [ "../../fonts/pt-sans/PTN77F.ttf", "sans" ]
                         style "BOLD"
-                        size 0.14
+                        size 0.16
                       }
                     }
                   }
                 }
-                DEF X3DBrowser Transform {
+                DEF X3D-Browser Transform {
                   translation -0.214884 0.26855 1
                   children Shape {
                     appearance Appearance {
@@ -150,14 +150,14 @@ DEF about:info LayerSet {
                     geometry Text {
                       string "X3D Browser"
                       fontStyle FontStyle {
-                        family [ "../../fonts/oswald/Oswald-Regular.ttf", "sans" ]
+                        family [ "../../fonts/pt-sans/PTN57F.ttf", "sans" ]
                         style "BOLD"
                         size 0.1
                       }
                     }
                   }
                 }
-                DEF BeInteractive Transform {
+                DEF StayInteractive Transform {
                   translation 0.0368572 0.219 1
                   children Shape {
                     appearance Appearance {
@@ -168,7 +168,7 @@ DEF about:info LayerSet {
                     geometry Text {
                       string "Stay interactive!"
                       fontStyle FontStyle {
-                        family [ "../../fonts/oswald/Oswald-Regular.ttf", "sans" ]
+                        family [ "../../fonts/pt-sans/PTN57F.ttf", "sans" ]
                         style "BOLD"
                         size 0.04
                       }
@@ -186,7 +186,7 @@ DEF about:info LayerSet {
                     geometry Text {
                       string [ "For additional support please visit", "titania.create3000.de." ]
                       fontStyle FontStyle {
-                        family [ "../../fonts/oswald/Oswald-Regular.ttf", "sans" ]
+                        family [ "../../fonts/pt-sans/PTN57F.ttf", "sans" ]
                         style "NORMAL"
                         size 0.06
                       }
@@ -204,7 +204,7 @@ DEF about:info LayerSet {
                     geometry Text {
                       string "GNU GPL v3"
                       fontStyle FontStyle {
-                        family [ "../../fonts/oswald/Oswald-Bold.ttf", "sans" ]
+                        family [ "../../fonts/pt-sans/PTN77F.ttf", "sans" ]
                         style "BOLD"
                         size 0.03
                       }
@@ -221,8 +221,9 @@ DEF about:info LayerSet {
                     }
                     geometry Text {
                       string "© 2010 - 2012"
+                      length 0.11
                       fontStyle FontStyle {
-                        family [ "../../fonts/oswald/Oswald-Bold.ttf", "sans" ]
+                        family [ "../../fonts/pt-sans/PTN77F.ttf", "sans" ]
                         style "BOLD"
                         size 0.03
                       }
@@ -241,7 +242,7 @@ DEF about:info LayerSet {
                       geometry DEF VersionNumberText Text {
                         string "0.5.0"
                         fontStyle FontStyle {
-                          family [ "../../fonts/oswald/Oswald-Bold.ttf", "sans" ]
+                          family [ "../../fonts/pt-sans/PTN77F.ttf", "sans" ]
                           style "BOLD"
                           size 0.41
                         }

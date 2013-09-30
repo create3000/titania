@@ -66,7 +66,7 @@ class OutlineCellRenderer :
 {
 public:
 
-	OutlineCellRenderer (const X3D::X3DSFNode <X3D::Browser> &);
+	OutlineCellRenderer (X3D::X3DBrowser* const);
 
 	// Properties
 	Glib::Property <OutlineTreeData*> &

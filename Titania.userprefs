@@ -1,6 +1,6 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Base/X3DBaseInterface.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Base/X3DBaseInterface.h">
     <Files>
       <File FileName="Library/Tests/Handles/OutlineEditor.wrl" Line="106" Column="28" />
       <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="114" Column="27" />
@@ -11,7 +11,7 @@
       <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="192" Column="11" />
       <File FileName="Titania/Titania/NodePropertiesEditor/NodePropertiesEditor.h" Line="79" Column="1" />
       <File FileName="Titania/Titania/NodePropertiesEditor/NodePropertiesEditor.cpp" Line="125" Column="20" />
-      <File FileName="Titania/Titania/Base/X3DBaseInterface.h" Line="63" Column="30" />
+      <File FileName="Titania/Titania/Base/X3DBaseInterface.h" Line="64" Column="2" />
       <File FileName="Titania/Titania/Base/X3DBaseInterface.cpp" Line="57" Column="1" />
     </Files>
     <Pads>
@@ -91,7 +91,7 @@
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="Base" expanded="True">
-                <Node name="X3DBaseInterface.cpp" selected="True" />
+                <Node name="X3DBaseInterface.h" selected="True" />
               </Node>
               <Node name="Browser" expanded="True" />
               <Node name="Configuration" expanded="True" />

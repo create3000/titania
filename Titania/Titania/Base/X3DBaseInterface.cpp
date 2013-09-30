@@ -56,17 +56,11 @@ namespace titania {
 namespace puck {
 
 X3DBaseInterface::X3DBaseInterface (BrowserWindow* const browserWindow) :
-	  X3D::X3DInput (),
-	sigc::trackable (),
-	  browserWindow (browserWindow)
+	X3D::X3DBaseNode (),
+	 sigc::trackable (),
+	   browserWindow (browserWindow)
 {
 	assert (browserWindow);
-}
-
-const X3D::X3DSFNode <X3D::Browser> &
-X3DBaseInterface::getBrowser () const
-{
-	return browserWindow -> getBrowser ();
 }
 
 } // puck

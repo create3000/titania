@@ -64,6 +64,26 @@ class X3DUserInterface :
 {
 public:
 
+	///  @name Common members
+
+	virtual
+	const std::string &
+	getComponentName () const final
+	{ return componentName; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (X3D::Error <X3D::DISPOSED>) final
+	{ return getWidgetName (); }
+
+	virtual
+	const std::string &
+	getContainerField () const final
+	{ return containerField; }
+
+	///  @name Widget members
+
 	virtual
 	const std::string &
 	getWidgetName () const = 0;
@@ -76,11 +96,15 @@ public:
 	Gtk::Widget &
 	getWidget () const = 0;
 
+	///  @name Operations
+
 	void
 	reparent (Gtk::Widget &, Gtk::Window &);
 
 	void
 	toggleWidget (Gtk::Widget &, bool);
+
+	///  @name Destruction
 
 	void
 	saveSession (const std::string &);
@@ -95,6 +119,8 @@ public:
 
 protected:
 
+	/// @name Construction
+
 	X3DUserInterface (const std::string &, const std::string &);
 
 	void
@@ -107,13 +133,25 @@ protected:
 	bool
 	is_initialized ();
 
-	virtual
-	bool
-	close ();
+	/// @name Member access
 
 	Configuration &
 	getConfig ()
 	{ return gconf; }
+
+	/// @name Dialog handling
+
+	void
+	addDialog (X3DUserInterface* const);
+
+	void
+	removeDialog (X3DUserInterface* const);
+
+	/// @name Destruction
+
+	virtual
+	bool
+	close ();
 
 
 private:
@@ -140,11 +178,21 @@ private:
 	void
 	saveInterface ();
 
+	///  @name Static members
+
+	static const std::string componentName;
+	static const std::string containerField;
+
+	static Array userInterfaces;
+
+	///  @name Members
+
 	Configuration    gconf;
 	sigc::connection initialized_connection;
 	Array::iterator  userInterface;
+	
+	std::map <X3DUserInterface*, X3D::X3DSFNode <X3DUserInterface>> dialogs;
 
-	static Array userInterfaces;
 
 };
 

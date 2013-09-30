@@ -59,7 +59,7 @@ namespace puck {
 constexpr int NAME_PAD_X        = 1;
 constexpr int ACCESS_TYPE_PAD_X = 8;
 
-OutlineCellRenderer::OutlineCellRenderer (const X3D::X3DSFNode <X3D::Browser> & browser) :
+OutlineCellRenderer::OutlineCellRenderer (X3D::X3DBrowser* const browser) :
 	             Glib::ObjectBase (typeid (OutlineCellRenderer)),
 	        Gtk::CellRendererText (),
 	                data_property (*this, "tree-data", nullptr),

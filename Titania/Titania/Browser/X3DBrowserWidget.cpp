@@ -50,6 +50,7 @@
 
 #include "X3DBrowserWidget.h"
 
+#include "../Browser/BrowserWindow.h"
 #include "../Browser/Image.h"
 #include "../Configuration/config.h"
 
@@ -63,8 +64,7 @@ namespace titania {
 namespace puck {
 
 X3DBrowserWidget::X3DBrowserWidget (const basic::uri & worldURL) :
-	X3DBrowserWindowInterface (get_ui ("BrowserWindow.ui"), gconf_dir ()),
-	                  browser (X3D::createBrowser ())
+	X3DBrowserWindowInterface (get_ui ("BrowserWindow.ui"), gconf_dir ())
 {
 	getConfig () .setItem ("url", worldURL);
 
@@ -87,10 +87,10 @@ X3DBrowserWidget::initialize ()
 	getBrowser () -> initialized () .addInterest (this, &X3DBrowserWidget::set_initialized);
 
 	// Insert Surface, this will initialize the Browser.
-	getSurfaceBox () .pack_start (*getBrowser (), true, true, 0);
+	getSurfaceBox () .pack_start (*getBrowserWindow () -> getBrowserSurface (), true, true, 0);
 
 	// Show Surface and start the X3D Main Loop.
-	getBrowser () -> show ();
+	getBrowserWindow () -> getBrowserSurface () -> show ();
 
 	restoreSession ();
 }

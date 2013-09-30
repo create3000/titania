@@ -63,13 +63,6 @@ class X3DBrowserWidget :
 {
 public:
 
-	///  @name Member access
-
-	virtual
-	const X3D::X3DSFNode <X3D::Browser> &
-	getBrowser () const final
-	{ return browser; }
-
 	///  @name Operations
 
 	void
@@ -137,8 +130,6 @@ private:
 	statistics ();
 
 	///  @name Members
-
-	X3D::X3DSFNode <X3D::Browser> browser;
 
 	double           loadTime;
 	sigc::connection timeout;

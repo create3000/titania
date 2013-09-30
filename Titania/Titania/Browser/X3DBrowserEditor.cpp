@@ -57,7 +57,6 @@ namespace puck {
 
 X3DBrowserEditor::X3DBrowserEditor (const basic::uri & worldURL) :
 	X3DBrowserWidget (worldURL),
-	         editors (),
 	          edited (false)
 { }
 
@@ -99,20 +98,6 @@ X3DBrowserEditor::set_shutdown ()
 //		else
 //			getBrowser () -> replaceWorld (executionContext);
 //	}
-}
-
-void
-X3DBrowserEditor::addEditor (X3DUserInterface* const editor)
-{
-	editor -> getWindow () .signal_hide () .connect (sigc::bind (sigc::mem_fun (*this, &X3DBrowserEditor::removeEditor), editor));
-	editors .insert (editor);
-}
-
-void
-X3DBrowserEditor::removeEditor (X3DUserInterface* const editor)
-{
-	editors .erase (editor);
-	delete editor;
 }
 
 bool
@@ -610,7 +595,7 @@ throw (X3D::Error <X3D::INVALID_NODE>)
 void
 X3DBrowserEditor::openNodePropertiesEditor (const X3D::SFNode & node)
 {
-	addEditor (new NodePropertiesEditor (getBrowserWindow (), node));
+	addDialog (new NodePropertiesEditor (getBrowserWindow (), node));
 }
 
 // Scene opeations

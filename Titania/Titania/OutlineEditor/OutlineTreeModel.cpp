@@ -50,19 +50,25 @@
 
 #include "OutlineTreeModel.h"
 
+#include "../Browser/BrowserWindow.h"
 #include "../Configuration/config.h"
 
 namespace titania {
 namespace puck {
 
+const std::string OutlineTreeModel::componentName  = "BrowserWindow";
+const std::string OutlineTreeModel::typeName       = "OutlineTreeModel";
+const std::string OutlineTreeModel::containerField = "model";
+
 OutlineTreeModel::OutlineTreeModel (BrowserWindow* const browserWindow) :
-	   Glib::ObjectBase (typeid (OutlineTreeModel)),
-	       Glib::Object (),
-	     Gtk::TreeModel (),
-	   X3DBaseInterface (browserWindow),
-	   executionContext (getBrowser () -> getExecutionContext ()),
-	               tree (),
-	              stamp (reinterpret_cast <long int> (this))
+	X3D::X3DBaseNode (browserWindow -> getBrowser (), browserWindow -> getExecutionContext ()),
+	Glib::ObjectBase (typeid (OutlineTreeModel)),
+	X3DBaseInterface (browserWindow),
+	    Glib::Object (),
+	  Gtk::TreeModel (),
+	executionContext (getBrowser () -> getExecutionContext ()),
+	            tree (),
+	           stamp (reinterpret_cast <long int> (this))
 {
 	//__LOG__ << std::endl;
 }

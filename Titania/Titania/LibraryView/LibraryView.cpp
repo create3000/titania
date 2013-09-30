@@ -62,6 +62,7 @@ static constexpr int ICON_COLUMN = 0;
 static constexpr int NAME_COLUMN = 1;
 
 LibraryView::LibraryView (BrowserWindow* const browserWindow) :
+	       X3D::X3DBaseNode (browserWindow -> getBrowser (), browserWindow -> getExecutionContext ()),
 	       X3DBaseInterface (browserWindow),
 	X3DLibraryViewInterface (get_ui ("LibraryView.ui"), gconf_dir ())
 { }
@@ -95,13 +96,13 @@ LibraryView::getFilename (Gtk::TreeModel::Path path) const
 
 		std::string name;
 		iter -> get_value (NAME_COLUMN, name);
-		
+
 		filename = name + '/' + filename;
 
 		path .up ();
 	}
 
-	return getRoot () + '/' + filename .substr (0, filename .size () - 1) ;
+	return getRoot () + '/' + filename .substr (0, filename .size () - 1);
 }
 
 std::deque <Glib::RefPtr <Gio::FileInfo>>
@@ -110,7 +111,7 @@ LibraryView::children (const Glib::RefPtr <Gio::File> & directory) const
 	std::deque <Glib::RefPtr <Gio::FileInfo>> fileInfos;
 
 	try
-	{	
+	{
 		Glib::RefPtr <Gio::FileEnumerator> enumerator = directory -> enumerate_children ();
 		Glib::RefPtr <Gio::FileInfo>       fileInfo   = enumerator -> next_file ();
 
@@ -123,15 +124,15 @@ LibraryView::children (const Glib::RefPtr <Gio::File> & directory) const
 	catch (...)
 	{ }
 
-	std::sort (fileInfos .begin (), fileInfos .end (), [ ] (const Glib::RefPtr <Gio::FileInfo> & lhs, const Glib::RefPtr <Gio::FileInfo> & rhs)
-	{
-		return basic::naturally_compare (lhs -> get_name (), rhs -> get_name ());
-	});
+	std::sort (fileInfos .begin (), fileInfos .end (), [ ] (const Glib::RefPtr <Gio::FileInfo>&lhs, const Glib::RefPtr <Gio::FileInfo>&rhs)
+	           {
+	              return basic::naturally_compare (lhs -> get_name (), rhs -> get_name ());
+				  });
 
-	std::stable_sort (fileInfos .begin (), fileInfos .end (), [ ] (const Glib::RefPtr <Gio::FileInfo> & lhs, const Glib::RefPtr <Gio::FileInfo> & rhs)
-	{
-		return (lhs -> get_file_type () == Gio::FILE_TYPE_DIRECTORY) > (rhs -> get_file_type () == Gio::FILE_TYPE_DIRECTORY);
-	});
+	std::stable_sort (fileInfos .begin (), fileInfos .end (), [ ] (const Glib::RefPtr <Gio::FileInfo>&lhs, const Glib::RefPtr <Gio::FileInfo>&rhs)
+	                  {
+	                     return (lhs -> get_file_type () == Gio::FILE_TYPE_DIRECTORY) > (rhs -> get_file_type () == Gio::FILE_TYPE_DIRECTORY);
+							});
 
 	return fileInfos;
 }
@@ -147,14 +148,14 @@ LibraryView::append (const std::string & path) const
 		{
 			switch (fileInfo -> get_file_type ())
 			{
-				case Gio::FILE_TYPE_DIRECTORY:
-				{
-					auto iter = getTreeStore () -> append ();
-					iter -> set_value (ICON_COLUMN, std::string ("gtk-directory"));
-					iter -> set_value (NAME_COLUMN, fileInfo -> get_name ());
-					append (iter, directory -> get_child (fileInfo -> get_name ()));
-					break;
-				}
+				case Gio::FILE_TYPE_DIRECTORY :
+					{
+						auto iter = getTreeStore () -> append ();
+						iter -> set_value (ICON_COLUMN, std::string ("gtk-directory"));
+						iter -> set_value (NAME_COLUMN, fileInfo -> get_name ());
+						append (iter, directory -> get_child (fileInfo -> get_name ()));
+						break;
+					}
 				case Gio::FILE_TYPE_REGULAR:
 				case Gio::FILE_TYPE_SYMBOLIC_LINK:
 				{
@@ -181,14 +182,14 @@ LibraryView::append (Gtk::TreeModel::iterator & parent, const Glib::RefPtr <Gio:
 		{
 			switch (fileInfo -> get_file_type ())
 			{
-				case Gio::FILE_TYPE_DIRECTORY:
-				{
-					auto iter = getTreeStore () -> append (parent -> children ());
-					iter -> set_value (ICON_COLUMN, std::string ("gtk-directory"));
-					iter -> set_value (NAME_COLUMN, fileInfo -> get_name ());
-					append (iter, directory -> get_child (fileInfo -> get_name ()));
-					break;
-				}
+				case Gio::FILE_TYPE_DIRECTORY :
+					{
+						auto iter = getTreeStore () -> append (parent -> children ());
+						iter -> set_value (ICON_COLUMN, std::string ("gtk-directory"));
+						iter -> set_value (NAME_COLUMN, fileInfo -> get_name ());
+						append (iter, directory -> get_child (fileInfo -> get_name ()));
+						break;
+					}
 				case Gio::FILE_TYPE_REGULAR:
 				case Gio::FILE_TYPE_SYMBOLIC_LINK:
 				{

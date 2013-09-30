@@ -72,6 +72,7 @@ constexpr int Bold   = 700;
 };
 
 ViewpointList::ViewpointList (BrowserWindow* const browserWindow) :
+	         X3D::X3DBaseNode (browserWindow -> getBrowser (), browserWindow -> getExecutionContext ()),
 	         X3DBaseInterface (browserWindow),
 	X3DViewpointListInterface (get_ui ("ViewpointList.ui"), gconf_dir ()),
 	              activeLayer ()
@@ -80,7 +81,7 @@ ViewpointList::ViewpointList (BrowserWindow* const browserWindow) :
 void
 ViewpointList::on_map ()
 {
-	getBrowserWindow () -> getSideBarLabel () .set_text (_("ViewpointList"));
+	getBrowserWindow () -> getSideBarLabel () .set_text (_ ("ViewpointList"));
 }
 
 void

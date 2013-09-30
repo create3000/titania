@@ -68,9 +68,13 @@ public:
 
 	/// @name Construction
 
-	BrowserWindow (const basic::uri &);
+	BrowserWindow (const X3D::X3DSFNode <X3D::X3DBrowserSurface> &, const basic::uri &);
 
 	/// @name Widgets
+	
+	const X3D::X3DSFNode <X3D::X3DBrowserSurface> &
+	getBrowserSurface () const
+	{ return browserSurface; }
 
 	MotionBlurEditor &
 	getMotionBlurEditor ()
@@ -405,6 +409,8 @@ private:
 	on_messageDialog_response (int);
 
 	///  @name Members
+
+	const X3D::X3DSFNode <X3D::X3DBrowserSurface> browserSurface;
 
 	MotionBlurEditor motionBlurEditor;
 	LibraryView      libraryView;

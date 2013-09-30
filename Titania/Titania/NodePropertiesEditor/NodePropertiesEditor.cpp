@@ -57,6 +57,7 @@ namespace titania {
 namespace puck {
 
 NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow, const X3D::SFNode & node) :
+	                X3D::X3DBaseNode (browserWindow -> getBrowser (), browserWindow -> getExecutionContext ()),
 	                X3DBaseInterface (browserWindow),
 	X3DNodePropertiesEditorInterface (get_ui ("NodePropertiesEditor.ui"), gconf_dir ()),
 	                            node (node)

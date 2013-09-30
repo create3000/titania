@@ -61,6 +61,7 @@ static constexpr int TITLE_COLUMN     = 1;
 static constexpr int WORLD_URL_COLUMN = 2;
 
 HistoryEditor::HistoryEditor (BrowserWindow* const browserWindow) :
+	         X3D::X3DBaseNode (browserWindow -> getBrowser (), browserWindow -> getExecutionContext ()),
 	         X3DBaseInterface (browserWindow),
 	X3DHistoryEditorInterface (get_ui ("HistoryEditor.ui"), gconf_dir ()),
 	                  history ()
@@ -81,7 +82,7 @@ HistoryEditor::HistoryEditor (BrowserWindow* const browserWindow) :
 void
 HistoryEditor::on_map ()
 {
-	getBrowserWindow () -> getSideBarLabel () .set_text (_("History"));
+	getBrowserWindow () -> getSideBarLabel () .set_text (_ ("History"));
 }
 
 void
@@ -106,7 +107,7 @@ HistoryEditor::set_initialized ()
 	}
 	catch (const std::out_of_range &)
 	{
-		__LOG__ << std::endl;	
+		__LOG__ << std::endl;
 	}
 
 	auto iter = getListStore () -> prepend ();
