@@ -122,6 +122,9 @@ Text::createBBox ()
 {
 	const X3DFontStyleNode* fontStyle = getFontStyle ();
 
+	if (not fontStyle -> getFont ())
+		return Box3f ();
+
 	Box2f bbox;
 
 	float y1         = 0;
@@ -276,6 +279,9 @@ void
 Text::draw ()
 {
 	const X3DFontStyleNode* fontStyle = getFontStyle ();
+	
+	if (not fontStyle -> getFont ())
+		return;
 
 	float scale = fontStyle -> getScale ();
 

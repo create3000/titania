@@ -189,8 +189,8 @@ private:
 
 	///  @name Member access
 
-	std::string
-	getFilename () const;
+	int
+	loadFont ();
 
 	std::string
 	getFilename (const String &, bool &) const;

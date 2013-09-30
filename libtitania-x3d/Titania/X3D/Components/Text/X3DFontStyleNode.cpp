@@ -112,8 +112,8 @@ X3DFontStyleNode::getAlignment (const size_t index) const
 	return index ? Alignment::FIRST : Alignment::BEGIN;
 }
 
-std::string
-X3DFontStyleNode::getFilename () const
+int
+X3DFontStyleNode::loadFont ()
 {
 	bool isExactMatch = false;
 
@@ -122,10 +122,19 @@ X3DFontStyleNode::getFilename () const
 		std::string filename = getFilename (familyName, isExactMatch);
 
 		if (isExactMatch)
-			return filename;
+		{
+			// Create a pixmap font from a TrueType file.
+			font .reset (new FTPolygonFont (filename .c_str ()));
+
+			// Check for errors	
+			if (font -> Error () == 0)
+				return 0;
+		}
 	}
 
-	return getFilename ("SERIF", isExactMatch);
+	font .reset (new FTPolygonFont (getFilename ("SERIF", isExactMatch) .c_str ()));
+	
+	return font -> Error ();
 }
 
 std::string
@@ -173,25 +182,25 @@ X3DFontStyleNode::getFilename (const String & familyName, bool & isExactMatch) c
 void
 X3DFontStyleNode::set_font ()
 {
-	// Create a pixmap font from a TrueType file.
-	font .reset (new FTPolygonFont (getFilename () .c_str ()));
-	//font .reset (new FTPolygonFont ("/home/holger/.fonts/A/Aachen D/AachenD-Medium.pfa"));
+	// Create a polygon font from a TrueType file.
+	loadFont ();
+	
+	if (font -> Error () == 0)
+	{
+		font -> CharMap (ft_encoding_unicode);
+		font -> UseDisplayList (true);
 
-	// If something went wrong, bail out.
-	if (font -> Error ())
-		return;
+		// Set the font size to large text.
+		font -> FaceSize (100);
 
-	font -> CharMap (ft_encoding_unicode);
-	font -> UseDisplayList (true);
+		// Calculate lineHeight.
+		lineHeight = font -> LineHeight () * spacing ();
 
-	// Set the font size to large text.
-	font -> FaceSize (100);
-
-	// Calculate lineHeight.
-	lineHeight = font -> LineHeight () * spacing ();
-
-	// Calculate scale.
-	scale = getSize () / font -> LineHeight ();
+		// Calculate scale.
+		scale = getSize () / font -> LineHeight ();
+	}
+	else
+		font .reset ();
 }
 
 void

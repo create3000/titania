@@ -60,7 +60,10 @@ DEF Text_1 Transform {
     }
     geometry DEF Text Text {
       string "OutlineEditor"
-      fontStyle FontStyle { }
+      fontStyle FontStyle {
+        family "PT Sans Narrow"
+        style "BOLD"
+      }
     }
   }
 }
@@ -82,7 +85,7 @@ DEF Rotor Rotor {
 
 DEF Box Transform {
   translation 1.40843 1.10727 0.193803
-  rotation 0 0 1 3.83054
+  rotation 0 0 1 5.44475
   scale 0.2 0.2 0.2
   children Transform {
     children Shape {
