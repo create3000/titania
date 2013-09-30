@@ -50,7 +50,10 @@
 
 #include "X3DFontStyleNode.h"
 
+#include "../../Execution/X3DExecutionContext.h"
 #include "../../Miscellaneous/FontConfig.h"
+
+#include <Titania/OS/FileExists.h>
 
 namespace titania {
 namespace X3D {
@@ -128,6 +131,21 @@ X3DFontStyleNode::getFilename () const
 std::string
 X3DFontStyleNode::getFilename (const String & familyName, bool & isExactMatch) const
 {
+	// Test if familyName is a valid path
+
+	basic::uri uri = getExecutionContext () -> getWorldURL () .transform (familyName .raw ());
+	
+	if (uri .is_local ())
+	{
+		if (os::file_exists (uri .path ()))
+		{
+			isExactMatch = true;
+			return uri .path ();
+		}
+	}
+
+	// Get a filename from font server
+
 	FcPattern* pattern = FcNameParse ((FcChar8*) familyName .c_str ());
 
 	FcPatternAddString (pattern, "style", (FcChar8*) (style () == "BOLDITALIC" ? "bold italic" : style () .getValue () .c_str ()));

@@ -47,8 +47,7 @@ Depends: ${shlibs:Depends},
          gettext,
          perl,
          libxml-libxml-perl,
-         libglib-perl,
-         ttf-ubuntu-font-family
+         libglib-perl
 Conflicts:
 Replaces:
 Provides: titania

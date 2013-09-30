@@ -1,3 +1,20 @@
+2013-09-30  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DBaseInterface.h:
+	* info.wrl:
+	* Oswald-Bold.ttf:
+	* Oswald-Bold.otf:
+	* Oswald-Light.ttf:
+	* Oswald-Light.otf:
+	* Oswald-Stencil.otf:
+	* Oswald-Regular.otf:
+	* Oswald-Regular.ttf:
+	* Oswald-Stencil.ttf:
+	* Apache License.txt:
+	* OpenSans-CondBold.ttf:
+	* OpenSans-CondLight.ttf:
+	* OpenSans-CondLightItalic.ttf: 
+
 2013-09-29  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* NodePropertiesEditor.cpp: 

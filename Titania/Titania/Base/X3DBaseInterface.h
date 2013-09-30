@@ -60,7 +60,7 @@ namespace puck {
 class BrowserWindow;
 
 class X3DBaseInterface :
-	virtual public X3D::X3DInput, virtual public sigc::trackable
+	virtual public X3D::X3DBaseNode, virtual public sigc::trackable
 {
 public:
 

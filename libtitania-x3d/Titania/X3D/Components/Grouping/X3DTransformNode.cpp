@@ -89,7 +89,7 @@ X3DTransformNode::setMatrix (const Matrix4f & value)
 	Vector3f   t, s;
 	Rotation4f r, so;
 
-	value .get (t, r, s, so);
+	value .get (t, r, s, so, center () .getValue ());
 
 	translation ()      = t;
 	rotation ()         = r;
