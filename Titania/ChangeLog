@@ -1,5 +1,10 @@
 2013-09-30  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DUserInterface.cpp:
+	* NodePropertiesEditor.cpp: 
+
+2013-09-30  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DConsoleInterface.h:
 	* X3DConsoleInterface.cpp:
 	* X3DLibraryViewInterface.h:

@@ -122,14 +122,14 @@ NodePropertiesEditor::on_ok ()
 	if (name .size ())
 		node -> getExecutionContext () -> updateNamedNode (node -> getExecutionContext () -> getUniqueName (name), node);
 
-	getWindow () .hide ();
 	getBrowserWindow () -> setEdited (true);
+	close ();
 }
 
 void
 NodePropertiesEditor::on_cancel ()
 {
-	getWindow () .hide ();
+	close ();
 }
 
 NodePropertiesEditor::~NodePropertiesEditor ()

@@ -105,11 +105,6 @@ X3DUserInterface::on_map ()
 bool
 X3DUserInterface::on_delete_event (GdkEventAny*)
 {
-	if (this == userInterfaces .front ())
-		saveInterfaces ();
-	else
-		saveInterface ();
-
 	return close ();
 }
 
@@ -205,6 +200,11 @@ X3DUserInterface::saveSession ()
 bool
 X3DUserInterface::close ()
 {
+	if (this == userInterfaces .front ())
+		saveInterfaces ();
+	else
+		saveInterface ();
+
 	saveSession ();
 
 	getWindow () .hide ();

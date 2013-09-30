@@ -304,6 +304,9 @@ std::string
 X3DExecutionContext::getUniqueName (std::string name, bool hidden) const
 {
 	RegEx::_LastNumber .Replace ("", &name);
+	
+	if (not hidden)
+		RegEx::LastNumber .Replace ("", &name);
 
 	if (name .empty ())
 		return getUniqueName ();

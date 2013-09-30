@@ -1,5 +1,9 @@
 2013-09-30  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DExecutionContext.cpp: 
+
+2013-09-30  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Text.cpp:
 	* X3DFontStyleNode.h:
 	* X3DFontStyleNode.cpp: 
