@@ -67,8 +67,7 @@ public:
 	template <class ... Arguments>
 	X3DViewpointListInterface (const std::string & filename, const Arguments & ... arguments) :
 		X3DUserInterface (m_widgetName, arguments ...),
-		        filename (filename),
-		     connections ()
+		        filename (filename)
 	{ create (filename); }
 
 	const Glib::RefPtr <Gtk::Builder> &
@@ -136,11 +135,15 @@ private:
 	void
 	create (const std::string &);
 
+	static
+	void
+	deleteWidgets (const Glib::RefPtr <Gtk::Builder> &, const std::deque <Gtk::Widget*> &);
+
 	static const std::string m_widgetName;
 
 	std::string                          filename;
-	std::deque <sigc::connection>        connections;
 	Glib::RefPtr <Gtk::Builder>          m_builder;
+	std::deque <Gtk::Widget*>            m_widgets;
 	Glib::RefPtr <Gtk::ListStore>        m_listStore;
 	Glib::RefPtr <Gtk::TreeViewColumn>   m_descriptionColumn;
 	Glib::RefPtr <Gtk::CellRendererText> m_cellRendererDescription;

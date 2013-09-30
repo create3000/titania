@@ -85,22 +85,32 @@ X3DNodePropertiesEditorInterface::create (const std::string & filename)
 	m_nameEntry -> set_name ("NameEntry");
 
 	// Connect object Gtk::Button with id 'CancelButton'.
-	connections .emplace_back (m_cancelButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_cancel)));
-	connections .emplace_back (m_okButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_ok)));
+	m_cancelButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_cancel));
+	m_okButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_ok));
 
 	// Connect object Gtk::Entry with id 'TypeNameEntry'.
-	connections .emplace_back (m_typeNameEntry -> signal_insert_text () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_type_name_insert_text), false));
-	connections .emplace_back (m_typeNameEntry -> signal_delete_text () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_type_name_delete_text), false));
-	connections .emplace_back (m_nameEntry -> signal_insert_text () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_name_insert_text), false));
-	connections .emplace_back (m_nameEntry -> signal_delete_text () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_name_delete_text), false));
+	m_typeNameEntry -> signal_insert_text () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_type_name_insert_text), false);
+	m_typeNameEntry -> signal_delete_text () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_type_name_delete_text), false);
+	m_nameEntry -> signal_insert_text () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_name_insert_text), false);
+	m_nameEntry -> signal_delete_text () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_name_delete_text), false);
+
+	// Collect deletable widgets
+	m_widgets .emplace_back (m_window);
 
 	// Call construct handler of base class.
 	construct ();
 }
 
+void
+X3DNodePropertiesEditorInterface::deleteWidgets (const Glib::RefPtr <Gtk::Builder> &, const std::deque <Gtk::Widget*> & widgets)
+{
+	for (const auto & widget : widgets)
+		delete widget;
+}
+
 X3DNodePropertiesEditorInterface::~X3DNodePropertiesEditorInterface ()
 {
-	delete m_window;
+	Glib::signal_idle () .connect_once (sigc::bind (sigc::ptr_fun (&X3DNodePropertiesEditorInterface::deleteWidgets), m_builder, m_widgets));
 }
 
 } // puck

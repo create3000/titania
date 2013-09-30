@@ -76,18 +76,28 @@ X3DViewpointListInterface::create (const std::string & filename)
 	m_treeView -> set_name ("TreeView");
 
 	// Connect object Gtk::Box with id 'Widget'.
-	connections .emplace_back (m_widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DViewpointListInterface::on_map)));
+	m_widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DViewpointListInterface::on_map));
 
 	// Connect object Gtk::TreeView with id 'TreeView'.
-	connections .emplace_back (m_treeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DViewpointListInterface::on_row_activated)));
+	m_treeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DViewpointListInterface::on_row_activated));
+
+	// Collect deletable widgets
+	m_widgets .emplace_back (m_window);
 
 	// Call construct handler of base class.
 	construct ();
 }
 
+void
+X3DViewpointListInterface::deleteWidgets (const Glib::RefPtr <Gtk::Builder> &, const std::deque <Gtk::Widget*> & widgets)
+{
+	for (const auto & widget : widgets)
+		delete widget;
+}
+
 X3DViewpointListInterface::~X3DViewpointListInterface ()
 {
-	delete m_window;
+	Glib::signal_idle () .connect_once (sigc::bind (sigc::ptr_fun (&X3DViewpointListInterface::deleteWidgets), m_builder, m_widgets));
 }
 
 } // puck

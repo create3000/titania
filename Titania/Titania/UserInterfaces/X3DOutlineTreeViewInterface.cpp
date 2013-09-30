@@ -75,15 +75,25 @@ X3DOutlineTreeViewInterface::create (const std::string & filename)
 	m_widget -> set_name ("Widget");
 
 	// Connect object Gtk::MenuItem with id 'RenameNodeMenuItem'.
-	connections .emplace_back (m_renameNodeMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineTreeViewInterface::on_rename_node_activate)));
+	m_renameNodeMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineTreeViewInterface::on_rename_node_activate));
+
+	// Collect deletable widgets
+	m_widgets .emplace_back (m_window);
 
 	// Call construct handler of base class.
 	construct ();
 }
 
+void
+X3DOutlineTreeViewInterface::deleteWidgets (const Glib::RefPtr <Gtk::Builder> &, const std::deque <Gtk::Widget*> & widgets)
+{
+	for (const auto & widget : widgets)
+		delete widget;
+}
+
 X3DOutlineTreeViewInterface::~X3DOutlineTreeViewInterface ()
 {
-	delete m_window;
+	Glib::signal_idle () .connect_once (sigc::bind (sigc::ptr_fun (&X3DOutlineTreeViewInterface::deleteWidgets), m_builder, m_widgets));
 }
 
 } // puck

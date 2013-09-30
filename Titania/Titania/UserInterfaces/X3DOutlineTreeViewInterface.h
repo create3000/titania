@@ -67,8 +67,7 @@ public:
 	template <class ... Arguments>
 	X3DOutlineTreeViewInterface (const std::string & filename, const Arguments & ... arguments) :
 		X3DUserInterface (m_widgetName, arguments ...),
-		        filename (filename),
-		     connections ()
+		        filename (filename)
 	{ create (filename); }
 
 	const Glib::RefPtr <Gtk::Builder> &
@@ -124,16 +123,20 @@ private:
 	void
 	create (const std::string &);
 
+	static
+	void
+	deleteWidgets (const Glib::RefPtr <Gtk::Builder> &, const std::deque <Gtk::Widget*> &);
+
 	static const std::string m_widgetName;
 
-	std::string                   filename;
-	std::deque <sigc::connection> connections;
-	Glib::RefPtr <Gtk::Builder>   m_builder;
-	Gtk::Menu*                    m_popupMenu;
-	Gtk::MenuItem*                m_renameNodeMenuItem;
-	Gtk::ImageMenuItem*           m_editNodeMenuItem;
-	Gtk::Window*                  m_window;
-	Gtk::Box*                     m_widget;
+	std::string                 filename;
+	Glib::RefPtr <Gtk::Builder> m_builder;
+	std::deque <Gtk::Widget*>   m_widgets;
+	Gtk::Menu*                  m_popupMenu;
+	Gtk::MenuItem*              m_renameNodeMenuItem;
+	Gtk::ImageMenuItem*         m_editNodeMenuItem;
+	Gtk::Window*                m_window;
+	Gtk::Box*                   m_widget;
 
 };
 

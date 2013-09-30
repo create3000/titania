@@ -301,7 +301,7 @@ throw (Error <INVALID_NAME>,
 }
 
 std::string
-X3DExecutionContext::getUniqueName (std::string name) const
+X3DExecutionContext::getUniqueName (std::string name, bool hidden) const
 {
 	RegEx::_LastNumber .Replace ("", &name);
 
@@ -319,7 +319,12 @@ X3DExecutionContext::getUniqueName (std::string name) const
 			{
 				getNamedNode (newName);
 
-				newName = name + '_' + std::to_string (++ i);
+				newName = name;
+				
+				if (hidden)
+					newName += '_';
+
+				newName += std::to_string (++ i);
 			}
 		}
 		catch (const Error <INVALID_NAME> &)

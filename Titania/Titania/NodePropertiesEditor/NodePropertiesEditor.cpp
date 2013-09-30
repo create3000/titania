@@ -117,11 +117,10 @@ NodePropertiesEditor::on_ok ()
 {
 	std::string name = getNameEntry () .get_text ();
 
-	if (name .length ())
-		node -> getExecutionContext () -> updateNamedNode (node -> getExecutionContext () -> getUniqueName (name), node);
+	node -> getExecutionContext () -> removeNamedNode (node -> getName ());
 
-	else
-		node -> getExecutionContext () -> removeNamedNode (node -> getName ());
+	if (name .size ())
+		node -> getExecutionContext () -> updateNamedNode (node -> getExecutionContext () -> getUniqueName (name), node);
 
 	getWindow () .hide ();
 	getBrowserWindow () -> setEdited (true);

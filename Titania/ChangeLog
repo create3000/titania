@@ -1,5 +1,27 @@
 2013-09-30  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DConsoleInterface.h:
+	* X3DConsoleInterface.cpp:
+	* X3DLibraryViewInterface.h:
+	* X3DLibraryViewInterface.cpp:
+	* X3DOutlineEditorInterface.h:
+	* X3DViewpointListInterface.h:
+	* X3DHistoryEditorInterface.h:
+	* X3DBrowserWindowInterface.h:
+	* X3DViewpointListInterface.cpp:
+	* X3DOutlineTreeViewInterface.h:
+	* X3DOutlineEditorInterface.cpp:
+	* X3DHistoryEditorInterface.cpp:
+	* X3DBrowserWindowInterface.cpp:
+	* NodePropertiesEditor.cpp:
+	* X3DMotionBlurEditorInterface.h:
+	* X3DOutlineTreeViewInterface.cpp:
+	* X3DMotionBlurEditorInterface.cpp:
+	* X3DNodePropertiesEditorInterface.h:
+	* X3DNodePropertiesEditorInterface.cpp: 
+
+2013-09-30  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* main.cpp:
 	* X3DBaseInterface.h:
 	* X3DUserInterface.h:

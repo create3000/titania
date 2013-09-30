@@ -67,8 +67,7 @@ public:
 	template <class ... Arguments>
 	X3DMotionBlurEditorInterface (const std::string & filename, const Arguments & ... arguments) :
 		X3DUserInterface (m_widgetName, arguments ...),
-		        filename (filename),
-		     connections ()
+		        filename (filename)
 	{ create (filename); }
 
 	const Glib::RefPtr <Gtk::Builder> &
@@ -124,15 +123,19 @@ private:
 	void
 	create (const std::string &);
 
+	static
+	void
+	deleteWidgets (const Glib::RefPtr <Gtk::Builder> &, const std::deque <Gtk::Widget*> &);
+
 	static const std::string m_widgetName;
 
-	std::string                   filename;
-	std::deque <sigc::connection> connections;
-	Glib::RefPtr <Gtk::Builder>   m_builder;
-	Gtk::Window*                  m_window;
-	Gtk::Table*                   m_widget;
-	Gtk::HScale*                  m_intensity;
-	Gtk::CheckButton*             m_enabled;
+	std::string                 filename;
+	Glib::RefPtr <Gtk::Builder> m_builder;
+	std::deque <Gtk::Widget*>   m_widgets;
+	Gtk::Window*                m_window;
+	Gtk::Table*                 m_widget;
+	Gtk::HScale*                m_intensity;
+	Gtk::CheckButton*           m_enabled;
 
 };
 

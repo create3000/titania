@@ -67,8 +67,7 @@ public:
 	template <class ... Arguments>
 	X3DNodePropertiesEditorInterface (const std::string & filename, const Arguments & ... arguments) :
 		X3DUserInterface (m_widgetName, arguments ...),
-		        filename (filename),
-		     connections ()
+		        filename (filename)
 	{ create (filename); }
 
 	const Glib::RefPtr <Gtk::Builder> &
@@ -164,21 +163,25 @@ private:
 	void
 	create (const std::string &);
 
+	static
+	void
+	deleteWidgets (const Glib::RefPtr <Gtk::Builder> &, const std::deque <Gtk::Widget*> &);
+
 	static const std::string m_widgetName;
 
-	std::string                   filename;
-	std::deque <sigc::connection> connections;
-	Glib::RefPtr <Gtk::Builder>   m_builder;
-	Gtk::Dialog*                  m_window;
-	Gtk::Button*                  m_cancelButton;
-	Gtk::Button*                  m_okButton;
-	Gtk::Box*                     m_widget;
-	Gtk::Label*                   m_headerLabel;
-	Gtk::Expander*                m_nodePropertiesExpander;
-	Gtk::Label*                   m_typeNameLabel;
-	Gtk::Label*                   m_nameLabel;
-	Gtk::Entry*                   m_typeNameEntry;
-	Gtk::Entry*                   m_nameEntry;
+	std::string                 filename;
+	Glib::RefPtr <Gtk::Builder> m_builder;
+	std::deque <Gtk::Widget*>   m_widgets;
+	Gtk::Dialog*                m_window;
+	Gtk::Button*                m_cancelButton;
+	Gtk::Button*                m_okButton;
+	Gtk::Box*                   m_widget;
+	Gtk::Label*                 m_headerLabel;
+	Gtk::Expander*              m_nodePropertiesExpander;
+	Gtk::Label*                 m_typeNameLabel;
+	Gtk::Label*                 m_nameLabel;
+	Gtk::Entry*                 m_typeNameEntry;
+	Gtk::Entry*                 m_nameEntry;
 
 };
 

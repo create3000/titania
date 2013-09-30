@@ -240,7 +240,7 @@ public:
 	{ return namedNodes; }
 
 	std::string
-	getUniqueName (std::string) const;
+	getUniqueName (std::string, bool = false) const;
 
 	std::string
 	getUniqueName () const;
