@@ -779,7 +779,8 @@ BrowserWindow::on_motion_blur_editor_activate ()
 void
 BrowserWindow::on_info ()
 {
-	open (get_page ("about/info.wrl"));
+	if (isSaved ())
+		open (get_page ("about/info.wrl"));
 }
 
 void

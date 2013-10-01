@@ -1,6 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <!-- interface-requires gtk+ 3.0 -->
+  <object class="GtkImage" id="ExamineViewerImage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">ExamineViewer</property>
+  </object>
+  <object class="GtkFileFilter" id="FileFilterAllFiles">
+    <patterns>
+      <pattern>*</pattern>
+    </patterns>
+  </object>
+  <object class="GtkFileFilter" id="FileFilterAudio">
+    <mime-types>
+      <mime-type>audio/*</mime-type>
+    </mime-types>
+  </object>
+  <object class="GtkFileFilter" id="FileFilterImage">
+    <mime-types>
+      <mime-type>image/*</mime-type>
+    </mime-types>
+  </object>
+  <object class="GtkFileFilter" id="FileFilterVideo">
+    <mime-types>
+      <mime-type>video/*</mime-type>
+    </mime-types>
+  </object>
   <object class="GtkFileFilter" id="FileFilterX3D">
     <mime-types>
       <mime-type>model/vrml</mime-type>
@@ -31,36 +56,12 @@
       <source stock-id="Arrow" filename="icons/Arrow.png"/>
     </sources>
   </object>
-  <object class="GtkImage" id="ExamineViewerImage">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">ExamineViewer</property>
-  </object>
-  <object class="GtkFileFilter" id="FileFilterAllFiles">
-    <patterns>
-      <pattern>*</pattern>
-    </patterns>
-  </object>
-  <object class="GtkFileFilter" id="FileFilterAudio">
-    <mime-types>
-      <mime-type>audio/*</mime-type>
-    </mime-types>
-  </object>
-  <object class="GtkFileFilter" id="FileFilterImage">
-    <mime-types>
-      <mime-type>image/*</mime-type>
-    </mime-types>
-  </object>
-  <object class="GtkFileFilter" id="FileFilterVideo">
-    <mime-types>
-      <mime-type>video/*</mime-type>
-    </mime-types>
-  </object>
   <object class="GtkFileChooserDialog" id="FileImportDialog">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Import ...</property>
     <property name="role">GtkFileChooserDialog</property>
+    <property name="window_position">center-on-parent</property>
     <property name="destroy_with_parent">True</property>
     <property name="hide_titlebar_when_maximized">True</property>
     <property name="type_hint">dialog</property>
@@ -135,6 +136,7 @@
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Open ...</property>
     <property name="role">GtkFileChooserDialog</property>
+    <property name="window_position">center-on-parent</property>
     <property name="destroy_with_parent">True</property>
     <property name="hide_titlebar_when_maximized">True</property>
     <property name="type_hint">dialog</property>
@@ -204,6 +206,7 @@
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Save as ...</property>
     <property name="role">GtkFileChooserDialog</property>
+    <property name="window_position">center-on-parent</property>
     <property name="destroy_with_parent">True</property>
     <property name="hide_titlebar_when_maximized">True</property>
     <property name="type_hint">dialog</property>
@@ -288,7 +291,7 @@
     <property name="border_width">5</property>
     <property name="resizable">False</property>
     <property name="modal">True</property>
-    <property name="window_position">center</property>
+    <property name="window_position">center-on-parent</property>
     <property name="destroy_with_parent">True</property>
     <property name="hide_titlebar_when_maximized">True</property>
     <property name="type_hint">dialog</property>
@@ -451,64 +454,16 @@
     <property name="icon_name">document-import</property>
   </object>
   <object class="GtkAccelGroup" id="MenuAccelGroup"/>
-  <object class="GtkImage" id="WalkViewerImage">
+  <object class="GtkImage" id="OpenLocationImage">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="stock">WalkViewer</property>
-  </object>
-  <object class="GtkMenu" id="ViewerTypeMenu">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <child>
-      <object class="GtkImageMenuItem" id="ExamineViewerMenuItem">
-        <property name="label" translatable="yes">Examine Viewer</property>
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="image">ExamineViewerImage</property>
-        <property name="use_stock">False</property>
-        <signal name="activate" handler="on_examine_viewer_activate" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="WalkViewerMenuItem">
-        <property name="label" translatable="yes">Walk Viewer</property>
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="image">WalkViewerImage</property>
-        <property name="use_stock">False</property>
-        <signal name="activate" handler="on_walk_viewer_activate" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="FlyViewerMenuItem">
-        <property name="label" translatable="yes">Fly Viewer</property>
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="image">FlyViewerImage</property>
-        <property name="use_stock">False</property>
-        <signal name="activate" handler="on_fly_viewer_activate" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="NoneViewerMenuItem">
-        <property name="label" translatable="yes">None Viewer</property>
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="image">NoneViewerImage</property>
-        <property name="use_stock">False</property>
-        <signal name="activate" handler="on_none_viewer_activate" swapped="no"/>
-      </object>
-    </child>
-  </object>
-  <object class="GtkImage" id="image6">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-find</property>
+    <property name="stock">gtk-network</property>
   </object>
   <object class="GtkMessageDialog" id="MessageDialog">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Messgage</property>
+    <property name="window_position">center-on-parent</property>
     <property name="destroy_with_parent">True</property>
     <property name="hide_titlebar_when_maximized">True</property>
     <property name="type_hint">dialog</property>
@@ -545,7 +500,7 @@
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Open location</property>
-    <property name="window_position">center</property>
+    <property name="window_position">center-on-parent</property>
     <property name="destroy_with_parent">True</property>
     <property name="type_hint">dialog</property>
     <property name="transient_for">Window</property>
@@ -663,16 +618,66 @@
       <action-widget response="-5">button11</action-widget>
     </action-widgets>
   </object>
-  <object class="GtkImage" id="OpenLocationImage">
+  <object class="GtkMenu" id="ViewerTypeMenu">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="stock">gtk-network</property>
+    <child>
+      <object class="GtkImageMenuItem" id="ExamineViewerMenuItem">
+        <property name="label" translatable="yes">Examine Viewer</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">ExamineViewerImage</property>
+        <property name="use_stock">False</property>
+        <signal name="activate" handler="on_examine_viewer_activate" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="WalkViewerMenuItem">
+        <property name="label" translatable="yes">Walk Viewer</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">WalkViewerImage</property>
+        <property name="use_stock">False</property>
+        <signal name="activate" handler="on_walk_viewer_activate" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="FlyViewerMenuItem">
+        <property name="label" translatable="yes">Fly Viewer</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">FlyViewerImage</property>
+        <property name="use_stock">False</property>
+        <signal name="activate" handler="on_fly_viewer_activate" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="NoneViewerMenuItem">
+        <property name="label" translatable="yes">None Viewer</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">NoneViewerImage</property>
+        <property name="use_stock">False</property>
+        <signal name="activate" handler="on_none_viewer_activate" swapped="no"/>
+      </object>
+    </child>
+  </object>
+  <object class="GtkImage" id="WalkViewerImage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">WalkViewer</property>
+  </object>
+  <object class="GtkImage" id="WorkspacesImage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="icon_name">visualization</property>
   </object>
   <object class="GtkWindow" id="Window">
     <property name="width_request">1000</property>
     <property name="height_request">618</property>
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Titania</property>
+    <property name="window_position">center</property>
     <property name="default_width">1000</property>
     <property name="default_height">618</property>
     <property name="has_resize_grip">False</property>
@@ -1856,9 +1861,9 @@
       </object>
     </child>
   </object>
-  <object class="GtkImage" id="WorkspacesImage">
+  <object class="GtkImage" id="image6">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="icon_name">visualization</property>
+    <property name="stock">gtk-find</property>
   </object>
 </interface>

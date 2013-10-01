@@ -3,12 +3,11 @@
   <!-- interface-requires gtk+ 3.0 -->
   <object class="GtkDialog" id="Window">
     <property name="width_request">500</property>
-    <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
     <property name="title" translatable="yes">NodePropertiesEditor</property>
     <property name="resizable">False</property>
-    <property name="window_position">center</property>
+    <property name="window_position">center-on-parent</property>
     <property name="destroy_with_parent">True</property>
     <property name="hide_titlebar_when_maximized">True</property>
     <property name="type_hint">dialog</property>

@@ -123,6 +123,7 @@ NodePropertiesEditor::on_ok ()
 		node -> getExecutionContext () -> updateNamedNode (node -> getExecutionContext () -> getUniqueName (name), node);
 
 	getBrowserWindow () -> setEdited (true);
+
 	close ();
 }
 

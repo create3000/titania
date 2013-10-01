@@ -152,10 +152,13 @@ X3DUserInterface::toggleWidget (Gtk::Widget & widget, bool active)
 void
 X3DUserInterface::restoreInterface ()
 {
-	getWindow () .move (getConfig ().integer ("x"),
-	                    getConfig ().integer ("y"));
+	if (getConfig () .hasItem ("x") and getConfig () .hasItem ("y"))
+	{
+		getWindow () .move (getConfig ().integer ("x"),
+		                    getConfig ().integer ("y"));
+	}
 
-	if (getConfig ().integer ("width") > 0 and getConfig ().integer ("height") > 0)
+	if (getConfig () .hasItem ("width") and getConfig () .hasItem ("height"))
 	{
 		getWindow () .resize (getConfig ().integer ("width"),
 		                      getConfig ().integer ("height"));

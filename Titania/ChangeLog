@@ -1,3 +1,11 @@
+2013-10-01  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* BrowserWindow.ui:
+	* BrowserWindow.cpp:
+	* X3DUserInterface.cpp:
+	* NodePropertiesEditor.ui:
+	* NodePropertiesEditor.cpp: 
+
 2013-09-30  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DUserInterface.cpp:
