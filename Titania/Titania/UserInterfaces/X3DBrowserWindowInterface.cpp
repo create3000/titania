@@ -61,12 +61,12 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
-	m_fileFilterX3D      = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterX3D"));
-	m_iconFactory        = Glib::RefPtr <Gtk::IconFactory>::cast_dynamic (m_builder -> get_object ("IconFactory"));
 	m_fileFilterAllFiles = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterAllFiles"));
 	m_fileFilterAudio    = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterAudio"));
 	m_fileFilterImage    = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterImage"));
 	m_fileFilterVideo    = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterVideo"));
+	m_fileFilterX3D      = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterX3D"));
+	m_iconFactory        = Glib::RefPtr <Gtk::IconFactory>::cast_dynamic (m_builder -> get_object ("IconFactory"));
 	m_menuAccelGroup     = Glib::RefPtr <Gtk::AccelGroup>::cast_dynamic (m_builder -> get_object ("MenuAccelGroup"));
 
 	// Get widgets.
@@ -88,6 +88,16 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_flyViewerImage -> set_name ("FlyViewerImage");
 	m_builder -> get_widget ("ImportImage", m_importImage);
 	m_importImage -> set_name ("ImportImage");
+	m_builder -> get_widget ("MessageDialog", m_messageDialog);
+	m_messageDialog -> set_name ("MessageDialog");
+	m_builder -> get_widget ("NoneViewerImage", m_noneViewerImage);
+	m_noneViewerImage -> set_name ("NoneViewerImage");
+	m_builder -> get_widget ("OpenLocationDialog", m_openLocationDialog);
+	m_openLocationDialog -> set_name ("OpenLocationDialog");
+	m_builder -> get_widget ("OpenLocationEntry", m_openLocationEntry);
+	m_openLocationEntry -> set_name ("OpenLocationEntry");
+	m_builder -> get_widget ("OpenLocationImage", m_openLocationImage);
+	m_openLocationImage -> set_name ("OpenLocationImage");
 	m_builder -> get_widget ("WalkViewerImage", m_walkViewerImage);
 	m_walkViewerImage -> set_name ("WalkViewerImage");
 	m_builder -> get_widget ("ViewerTypeMenu", m_viewerTypeMenu);
@@ -100,16 +110,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_flyViewerMenuItem -> set_name ("FlyViewerMenuItem");
 	m_builder -> get_widget ("NoneViewerMenuItem", m_noneViewerMenuItem);
 	m_noneViewerMenuItem -> set_name ("NoneViewerMenuItem");
-	m_builder -> get_widget ("MessageDialog", m_messageDialog);
-	m_messageDialog -> set_name ("MessageDialog");
-	m_builder -> get_widget ("NoneViewerImage", m_noneViewerImage);
-	m_noneViewerImage -> set_name ("NoneViewerImage");
-	m_builder -> get_widget ("OpenLocationDialog", m_openLocationDialog);
-	m_openLocationDialog -> set_name ("OpenLocationDialog");
-	m_builder -> get_widget ("OpenLocationEntry", m_openLocationEntry);
-	m_openLocationEntry -> set_name ("OpenLocationEntry");
-	m_builder -> get_widget ("OpenLocationImage", m_openLocationImage);
-	m_openLocationImage -> set_name ("OpenLocationImage");
+	m_builder -> get_widget ("WorkspacesImage", m_workspacesImage);
+	m_workspacesImage -> set_name ("WorkspacesImage");
 	m_builder -> get_widget ("Window", m_window);
 	m_window -> set_name ("Window");
 	m_builder -> get_widget ("Widget", m_widget);
@@ -136,6 +138,12 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_quitMenuItem -> set_name ("QuitMenuItem");
 	m_builder -> get_widget ("EditMenuItem", m_editMenuItem);
 	m_editMenuItem -> set_name ("EditMenuItem");
+	m_builder -> get_widget ("CutMenuItem", m_cutMenuItem);
+	m_cutMenuItem -> set_name ("CutMenuItem");
+	m_builder -> get_widget ("CopyMenuItem", m_copyMenuItem);
+	m_copyMenuItem -> set_name ("CopyMenuItem");
+	m_builder -> get_widget ("PasteMenuItem", m_pasteMenuItem);
+	m_pasteMenuItem -> set_name ("PasteMenuItem");
 	m_builder -> get_widget ("DeleteMenuItem", m_deleteMenuItem);
 	m_deleteMenuItem -> set_name ("DeleteMenuItem");
 	m_builder -> get_widget ("GroupSelectedNodesMenuItem", m_groupSelectedNodesMenuItem);
@@ -162,6 +170,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_browserMenuItem -> set_name ("BrowserMenuItem");
 	m_builder -> get_widget ("EditorMenuItem", m_editorMenuItem);
 	m_editorMenuItem -> set_name ("EditorMenuItem");
+	m_builder -> get_widget ("BrowserOptionsSeparator", m_browserOptionsSeparator);
+	m_browserOptionsSeparator -> set_name ("BrowserOptionsSeparator");
 	m_builder -> get_widget ("ShadingMenuItem", m_shadingMenuItem);
 	m_shadingMenuItem -> set_name ("ShadingMenuItem");
 	m_builder -> get_widget ("PhongMenuItem", m_phongMenuItem);
@@ -174,8 +184,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_wireFrameMenuItem -> set_name ("WireFrameMenuItem");
 	m_builder -> get_widget ("PointSetMenuItem", m_pointSetMenuItem);
 	m_pointSetMenuItem -> set_name ("PointSetMenuItem");
-	m_builder -> get_widget ("PrimitiveQualtityMenuItem", m_primitiveQualtityMenuItem);
-	m_primitiveQualtityMenuItem -> set_name ("PrimitiveQualtityMenuItem");
+	m_builder -> get_widget ("PrimitiveQualityMenuItem", m_primitiveQualityMenuItem);
+	m_primitiveQualityMenuItem -> set_name ("PrimitiveQualityMenuItem");
 	m_builder -> get_widget ("HighQualityMenuItem", m_highQualityMenuItem);
 	m_highQualityMenuItem -> set_name ("HighQualityMenuItem");
 	m_builder -> get_widget ("MediumQualityMenuItem", m_mediumQualityMenuItem);
@@ -190,14 +200,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_unFullScreenMenuItem -> set_name ("UnFullScreenMenuItem");
 	m_builder -> get_widget ("NavigationMenuItem", m_navigationMenuItem);
 	m_navigationMenuItem -> set_name ("NavigationMenuItem");
-	m_builder -> get_widget ("HeadlightMenuItem", m_headlightMenuItem);
-	m_headlightMenuItem -> set_name ("HeadlightMenuItem");
 	m_builder -> get_widget ("RubberbandMenuItem", m_rubberbandMenuItem);
 	m_rubberbandMenuItem -> set_name ("RubberbandMenuItem");
-	m_builder -> get_widget ("EnableInlineViewpointsMenuItem", m_enableInlineViewpointsMenuItem);
-	m_enableInlineViewpointsMenuItem -> set_name ("EnableInlineViewpointsMenuItem");
-	m_builder -> get_widget ("LookAtAllMenuItem", m_lookAtAllMenuItem);
-	m_lookAtAllMenuItem -> set_name ("LookAtAllMenuItem");
 	m_builder -> get_widget ("ToolsMenuItem", m_toolsMenuItem);
 	m_toolsMenuItem -> set_name ("ToolsMenuItem");
 	m_builder -> get_widget ("MotionBlurMenuItem", m_motionBlurMenuItem);
@@ -264,14 +268,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_libraryViewBox -> set_name ("LibraryViewBox");
 	m_builder -> get_widget ("OutlineEditorBox", m_outlineEditorBox);
 	m_outlineEditorBox -> set_name ("OutlineEditorBox");
-	m_builder -> get_widget ("WorkspacesImage", m_workspacesImage);
-	m_workspacesImage -> set_name ("WorkspacesImage");
-
-	// Connect object Gtk::ImageMenuItem with id 'ExamineViewerMenuItem'.
-	m_examineViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_examine_viewer_activate));
-	m_walkViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_walk_viewer_activate));
-	m_flyViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_fly_viewer_activate));
-	m_noneViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_none_viewer_activate));
 
 	// Connect object Gtk::MessageDialog with id 'MessageDialog'.
 	m_messageDialog -> signal_response () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_messageDialog_response));
@@ -279,6 +275,12 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	// Connect object Gtk::Entry with id 'OpenLocationEntry'.
 	m_openLocationEntry -> signal_changed () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_open_location_entry_changed));
 	m_openLocationEntry -> signal_key_release_event () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_open_location_entry_key_release_event));
+
+	// Connect object Gtk::ImageMenuItem with id 'ExamineViewerMenuItem'.
+	m_examineViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_examine_viewer_activate));
+	m_walkViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_walk_viewer_activate));
+	m_flyViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_fly_viewer_activate));
+	m_noneViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_none_viewer_activate));
 
 	// Connect object Gtk::Window with id 'Window'.
 	m_window -> signal_key_release_event () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_key_release_event));
@@ -326,13 +328,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_fullScreenMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_fullscreen));
 	m_unFullScreenMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_unfullscreen));
 
-	// Connect object Gtk::CheckMenuItem with id 'HeadlightMenuItem'.
-	m_headlightMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_headlight_toggled));
+	// Connect object Gtk::CheckMenuItem with id 'RubberbandMenuItem'.
 	m_rubberbandMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_rubberband_toggled));
-	m_enableInlineViewpointsMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_enable_inline_viewpoints_toggled));
-
-	// Connect object Gtk::ImageMenuItem with id 'LookAtAllMenuItem'.
-	m_lookAtAllMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_look_at_all_activate));
 
 	// Connect object Gtk::MenuItem with id 'MotionBlurMenuItem'.
 	m_motionBlurMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_motion_blur_editor_activate));

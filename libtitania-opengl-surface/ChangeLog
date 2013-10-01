@@ -1,3 +1,10 @@
+2013-10-01  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* DrawingArea.h:
+	* DrawingArea.cpp:
+	* WindowContext.cpp: 
+
 2013-09-26  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* libtitania-opengl-surface.md.pc: 

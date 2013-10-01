@@ -103,4 +103,5 @@ WindowContext::~WindowContext ()
 { }
 
 } // opengl
+
 } // titania

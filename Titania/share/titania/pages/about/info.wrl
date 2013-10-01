@@ -113,7 +113,7 @@ DEF about:info_1 LayerSet {
                       loop TRUE
                     }
                     DEF Logo Transform {
-                      rotation 0 0 1 1.44107
+                      rotation 0 0 1 5.66373
                       center 5.5 -5.6 0
                       children Inline {
                         url "library/logo.wrl"

@@ -50,9 +50,10 @@ X3DBrowser::X3DBrowser () :
 	supportedComponents (this),
 	  supportedProfiles (this, supportedComponents),
 	          userAgent (),
-	        description (),                          // SFString  [in,out] description ""
-	              scene (createScene ()),            // SFNode    [in,out] scene       NULL
-	              world (),                          // SFNode    [in,out] world       NULL
+	        description (),
+	           newScene (),
+	              scene (createScene ()),
+	              world (),
 	           urlError ()
 {
 	std::clog << "Constructing Browser:" << std::endl;
@@ -63,6 +64,7 @@ X3DBrowser::X3DBrowser () :
 	setUserAgent (getName () + "/" + getVersion () + " (X3D Browser; +http://titania.create3000.de)");
 
 	addChildren (description,
+	             newScene,
 	             scene,
 	             world,
 	             urlError);
@@ -78,11 +80,12 @@ X3DBrowser::initialize ()
 	X3DBrowserContext::initialize ();
 	
 	// Initialize scene
-	
+
+	auto scene = createScene ();
 	scene -> setup ();
 
 	replaceWorld (scene);
-	
+
 	if (glXGetCurrentContext ())
 	{
 		try
@@ -226,30 +229,42 @@ X3DBrowser::replaceWorld (const X3DSFNode <Scene> & value)
 throw (Error <INVALID_SCENE>,
        Error <INVALID_OPERATION_TIMING>)
 {
+	newScene = value;
+
 	if (makeCurrent ())
 	{
-		// Replace world.
+		// Process shutdown.
 
 		advanceClock ();
 
 		if (initialized ())
 			shutdown () .processInterests ();
+		
+		// Cancel replaceWorld if another replaceWorld is call in shutdown.
 
-		if (value)
-			scene = value;
+		if (newScene not_eq value)
+			return;
 
-		else
+		// Process as normal.
+		
+		if (value not_eq scene)
 		{
-			scene = createScene ();
-			scene -> setup ();
+			if (value)
+				scene = value;
+
+			else
+			{
+				scene = createScene ();
+				scene -> setup ();
+			}
+
+			world = new World (scene);
+			world -> setup ();
+
+			browserOptions -> assign (X3D::getBrowser () -> getBrowserOptions ());
+
+			description = "";
 		}
-
-		world = new World (scene);
-		world -> setup ();
-
-		browserOptions -> assign (X3D::getBrowser () -> getBrowserOptions ());
-
-		description = "";
 
 		// Generate initialized event immediately upon receiving this service.
 
@@ -438,6 +453,7 @@ X3DBrowser::dispose ()
 
 	makeCurrent ();
 
+	newScene .dispose ();
 	scene .dispose ();
 	world .dispose ();
 

@@ -91,6 +91,14 @@ BrowserWindow::initialize ()
 	getFileFilterImage () -> set_name (_ ("Images"));
 	getFileFilterAudio () -> set_name (_ ("Audio"));
 	getFileFilterVideo () -> set_name (_ ("Videos"));
+	
+	// Dialogs
+	getFileOpenDialog ()        .set_transient_for (getWindow ());
+	getOpenLocationDialog ()    .set_transient_for (getWindow ());
+	getFileImportDialog ()      .set_transient_for (getWindow ());
+	getFileSaveWarningDialog () .set_transient_for (getWindow ());
+	getFileSaveDialog ()        .set_transient_for (getWindow ());
+	getMessageDialog ()         .set_transient_for (getWindow ());
 
 	// Sidebar
 	getLibraryView ()   .reparent (getLibraryViewBox (),   getWindow ());
@@ -113,6 +121,10 @@ BrowserWindow::initialize ()
 	getToolBar ()    .drag_dest_set (targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
 	getSurfaceBox () .drag_dest_set (targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
 
+	// Selection
+	getBrowser () -> getSelection () -> getChildren () .addInterest (this, &BrowserWindow::set_selection);
+	set_selection (getBrowser () -> getSelection () -> getChildren ());
+
 	// Dashboard
 	getBrowser () -> getBrowserOptions () -> dashboard () .addInterest (this, &BrowserWindow::set_dashboard);
 	getBrowser () -> getViewer ()        .addInterest (this, &BrowserWindow::set_viewer);
@@ -126,7 +138,6 @@ BrowserWindow::initialize ()
 	// Window
 	getWindow () .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::ARROW));
 	getWindow () .grab_focus ();
-	
 }
 
 // Menu
@@ -146,6 +157,25 @@ BrowserWindow::enableMenus (bool enable) const
 				menu -> set_sensitive (enable);
 		}
 	}
+}
+
+// Selection
+
+void
+BrowserWindow::set_selection (const X3D::MFNode & children)
+{
+	bool haveSelection  = children .size ();
+	bool haveSelections = children .size () > 1;
+
+	getDeleteMenuItem () .set_sensitive (haveSelection);
+
+	getGroupSelectedNodesMenuItem () .set_sensitive (haveSelection);
+	getUngroupMenuItem ()            .set_sensitive (haveSelection);
+	getAddToGroupMenuItem ()         .set_sensitive (haveSelections);
+	getDetachFromGroupMenuItem ()    .set_sensitive (haveSelection);
+	getCreateParentGroupMenuItem ()  .set_sensitive (haveSelection);
+
+	getNodePropertiesButton () .set_sensitive (haveSelection);
 }
 
 // Keys
@@ -296,9 +326,11 @@ BrowserWindow::dragDataHandling (const Glib::RefPtr <Gdk::DragContext> & context
 			{
 				auto uri = Glib::uri_unescape_string (uris [0]);
 
-				if (do_open and isSaved ())
-					open (uri);
-
+				if (do_open)
+				{
+					if (isSaved ())
+						open (uri);
+				}
 				else
 					import (uri);
 
@@ -311,9 +343,11 @@ BrowserWindow::dragDataHandling (const Glib::RefPtr <Gdk::DragContext> & context
 		{
 			auto uri = Glib::uri_unescape_string (basic::trim (selection_data .get_data_as_string ()));
 
-			if (do_open and isSaved ())
-				open (uri);
-
+			if (do_open)
+			{
+				if (isSaved ())
+					open (uri);
+			}
 			else
 				import (uri);
 
@@ -614,13 +648,18 @@ BrowserWindow::enableEditor (bool enabled)
 	if (not enabled)
 		getBrowser () -> beginUpdate ();
 
-	getImportMenuItem ()       .set_visible (enabled);
-	getEditMenuItem ()         .set_visible (enabled);
+	getImportMenuItem ()           .set_visible (enabled);
+	getEditMenuItem ()             .set_visible (enabled);
+	getBrowserOptionsSeparator ()  .set_visible (enabled);
+	getShadingMenuItem ()          .set_visible (enabled);
+	getPrimitiveQualityMenuItem () .set_visible (enabled);
+
 	getImportButton ()         .set_visible (enabled);
 	getNodePropertiesButton () .set_visible (enabled);
 	getArrowButton ()          .set_visible (enabled);
-	getLibraryViewBox ()       .set_visible (enabled);
-	getOutlineEditorBox ()     .set_visible (enabled);
+
+	getLibraryViewBox ()   .set_visible (enabled);
+	getOutlineEditorBox () .set_visible (enabled);
 }
 
 // Shading menu
@@ -737,33 +776,10 @@ BrowserWindow::on_unfullscreen ()
 // Navigation menu
 
 void
-BrowserWindow::on_headlight_toggled ()
-{
-	auto activeLayer = getBrowser () -> getActiveLayer ();
-
-	if (activeLayer)
-		activeLayer -> getNavigationInfo () -> headlight () = getHeadlightMenuItem () .get_active ();
-}
-
-void
 BrowserWindow::on_rubberband_toggled ()
 {
 	getConfig () .setItem ("rubberBand", getRubberbandMenuItem () .get_active ());
 	getBrowser () -> getBrowserOptions () -> rubberBand () = getRubberbandMenuItem () .get_active ();
-}
-
-void
-BrowserWindow::on_look_at_all_activate ()
-{
-	if (getBrowser () -> getActiveLayer ())
-		getBrowser () -> getActiveLayer () -> lookAt ();
-}
-
-void
-BrowserWindow::on_enable_inline_viewpoints_toggled ()
-{
-	getConfig () .setItem ("enableInlineViewpoints", getEnableInlineViewpointsMenuItem () .get_active ());
-	getBrowser () -> getBrowserOptions () -> enableInlineViewpoints () = getEnableInlineViewpointsMenuItem () .get_active ();
 }
 
 // Editor handling

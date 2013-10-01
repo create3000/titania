@@ -57,7 +57,9 @@ namespace puck {
 
 X3DBrowserEditor::X3DBrowserEditor (const basic::uri & worldURL) :
 	X3DBrowserWidget (worldURL),
-	          edited (false)
+	          edited (false),
+	   saveConfirmed (false),
+	           scene ()
 { }
 
 void
@@ -85,24 +87,39 @@ X3DBrowserEditor::restoreSession ()
 void
 X3DBrowserEditor::set_initialized ()
 {
+	if (getBrowser () -> getExecutionContext () not_eq scene)
+		setEdited (false);
+
+	scene = getBrowser () -> getExecutionContext ();
 }
 
 void
 X3DBrowserEditor::set_shutdown ()
 {
-//	if (getBrowser () -> getExecutionContext () not_eq executionContext)
-//	{
-//		if (isSaved ())
-//			executionContext = getBrowser () -> getExecutionContext ();
-//
-//		else
-//			getBrowser () -> replaceWorld (executionContext);
-//	}
+	if (isSaved ())
+		return;
+
+	// Cancel shutdown
+
+	getBrowser () -> shutdown () .removeInterest (this, &X3DBrowserEditor::set_shutdown);
+	getBrowser () -> shutdown () .addInterest    (this, &X3DBrowserEditor::set_cancel_shutdown);
+
+	getBrowser () -> replaceWorld (getBrowser () -> getExecutionContext ());
+}
+
+void
+X3DBrowserEditor::set_cancel_shutdown ()
+{
+	getBrowser () -> shutdown () .removeInterest (this, &X3DBrowserEditor::set_cancel_shutdown);
+	getBrowser () -> shutdown () .addInterest    (this, &X3DBrowserEditor::set_shutdown);
 }
 
 bool
 X3DBrowserEditor::isSaved ()
 {
+	if (saveConfirmed)
+		return true;
+
 	if (getEdited ())
 	{
 		auto response_id = getFileSaveWarningDialog () .run ();
@@ -114,7 +131,8 @@ X3DBrowserEditor::isSaved ()
 			case Gtk::RESPONSE_OK:
 			{
 				on_save ();
-				return not getEdited ();
+				saveConfirmed = not getEdited ();
+				return saveConfirmed;
 			}
 			case Gtk::RESPONSE_CANCEL:
 			case Gtk::RESPONSE_DELETE_EVENT:
@@ -126,7 +144,16 @@ X3DBrowserEditor::isSaved ()
 		}
 	}
 
+	saveConfirmed = true;
 	return true;
+}
+
+void
+X3DBrowserEditor::setEdited (bool value)
+{
+	edited        = value;
+	saveConfirmed = false;
+	updateTitle (value);
 }
 
 // File operations
@@ -159,18 +186,6 @@ X3DBrowserEditor::import (const basic::uri & worldURL)
 	{
 		std::clog << error .what () << std::endl;
 	}
-}
-
-bool
-X3DBrowserEditor::open (const basic::uri & worldURL)
-{
-	if (X3DBrowserWidget::open (worldURL))
-	{
-		setEdited (false);
-		return true;
-	}
-
-	return false;
 }
 
 void

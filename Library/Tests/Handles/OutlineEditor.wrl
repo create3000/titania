@@ -86,7 +86,7 @@ DEF Rotor Rotor {
 
 DEF Box Transform {
   translation 1.40843 1.10727 0.193803
-  rotation 0 0 1 1.63958
+  rotation 0 0 1 5.67683
   scale 0.2 0.2 0.2
   children Transform {
     children Shape {
@@ -143,5 +143,25 @@ Grid {
 }
 
 DEF Rotor1 Rotor { }
+
+Anchor {
+  description "Reload"
+  url "OutlineEditor.wrl"
+  children Transform {
+    translation 4.41306 2.06142 0
+    scale 0.1 0.1 0.1
+    children Shape {
+      appearance Appearance {
+        material Material {
+          ambientIntensity 0.25
+          diffuseColor 0.282435 0.0851587 0.134462
+          specularColor 0.276305 0.11431 0.139857
+          shininess 0.127273
+        }
+      }
+      geometry Sphere { }
+    }
+  }
+}
 
 ROUTE Rotor.value_changed TO Box.set_rotation

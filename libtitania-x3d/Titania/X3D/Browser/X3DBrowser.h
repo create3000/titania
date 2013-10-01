@@ -327,6 +327,7 @@ private:
 	std::string userAgent;
 	SFString    description;
 
+	X3DSFNode <Scene> newScene;
 	X3DSFNode <Scene> scene;
 	X3DSFNode <World> world;
 	MFString          urlError;

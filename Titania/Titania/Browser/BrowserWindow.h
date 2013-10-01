@@ -144,6 +144,11 @@ private:
 	void
 	initialize ();
 
+	///  @name Selection handling
+
+	void
+	set_selection (const X3D::MFNode & children);
+
 	///  @name Key events
 
 	virtual
@@ -313,18 +318,7 @@ private:
 
 	virtual
 	void
-	on_headlight_toggled () final;
-
-	virtual
-	void
 	on_rubberband_toggled () final;
-
-	virtual
-	void
-	on_look_at_all_activate () final;
-
-	void
-	on_enable_inline_viewpoints_toggled () final;
 
 	///  @name Editor handling
 

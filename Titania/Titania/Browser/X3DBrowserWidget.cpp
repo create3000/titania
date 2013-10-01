@@ -84,7 +84,7 @@ X3DBrowserWidget::initialize ()
 	// Connect event handler.
 	getBrowser () -> getConsole () -> string_changed () .addInterest (this, &X3DBrowserWidget::set_console);
 	getBrowser () -> getUrlError () .addInterest (this, &X3DBrowserWidget::set_urlError);
-	getBrowser () -> initialized () .addInterest (this, &X3DBrowserWidget::set_initialized);
+	getBrowser () -> initialized () .addInterest (this, &X3DBrowserWidget::set_splashScreen);
 
 	// Insert Surface, this will initialize the Browser.
 	getSurfaceBox () .pack_start (*getBrowserWindow () -> getBrowserSurface (), true, true, 0);
@@ -93,6 +93,23 @@ X3DBrowserWidget::initialize ()
 	getBrowserWindow () -> getBrowserSurface () -> show ();
 
 	restoreSession ();
+}
+
+void
+X3DBrowserWidget::set_splashScreen ()
+{
+	// Initialized
+	getBrowser () -> initialized () .removeInterest (this, &X3DBrowserWidget::set_splashScreen);
+	getBrowser () -> initialized () .addInterest (this, &X3DBrowserWidget::set_initialized);
+
+	if (getConfig () .string ("url") .size ())
+		open (getConfig () .string ("url") .raw ());
+
+	else if (getConfig () .string ("worldURL") .size ())
+		open (getConfig () .string ("worldURL") .raw ());
+
+	else
+		open (get_page ("about/home.wrl"));
 }
 
 //void
@@ -181,10 +198,6 @@ X3DBrowserWidget::restoreSession ()
 	if (getConfig () .hasItem ("rubberBand"))
 		getRubberbandMenuItem () .set_active (getConfig () .boolean ("rubberBand"));
 
-	// EnableInlineViewpoints
-	if (getConfig () .hasItem ("enableInlineViewpoints"))
-		getEnableInlineViewpointsMenuItem () .set_active (getConfig () .boolean ("enableInlineViewpoints"));
-
 	// VPaned
 	if (getConfig () .hasItem ("vPaned"))
 		getVPaned () .set_position (getConfig () .integer ("vPaned"));
@@ -211,23 +224,6 @@ X3DBrowserWidget::saveSession ()
 }
 
 void
-X3DBrowserWidget::set_initialized ()
-{
-	// Initialized
-	getBrowser () -> initialized () .removeInterest (this, &X3DBrowserWidget::set_initialized);
-	getBrowser () -> initialized () .addInterest (this, &X3DBrowserWidget::set_world);
-
-	if (getConfig () .string ("url") .size ())
-		open (getConfig () .string ("url") .raw ());
-
-	else if (getConfig () .string ("worldURL") .size ())
-		open (getConfig () .string ("worldURL") .raw ());
-
-	else
-		open (get_page ("about/home.wrl"));
-}
-
-void
 X3DBrowserWidget::updateTitle (bool edited) const
 {
 	getWindow () .set_title (getBrowser () -> getExecutionContext () -> getTitle ()
@@ -244,7 +240,7 @@ X3DBrowserWidget::blank ()
 	getBrowser () -> replaceWorld (nullptr);
 }
 
-bool
+void
 X3DBrowserWidget::open (const basic::uri & worldURL)
 {
 	loadTime = chrono::now ();
@@ -252,12 +248,9 @@ X3DBrowserWidget::open (const basic::uri & worldURL)
 	try
 	{
 		getBrowser () -> loadURL ({ worldURL .str () });
-		return true;
 	}
 	catch (const X3D::X3DError &)
-	{
-		return false;
-	}
+	{ }
 }
 
 void
@@ -276,8 +269,6 @@ X3DBrowserWidget::save (const basic::uri & worldURL, bool compressed)
 		std::ofstream file (worldURL .path ());
 		file << X3D::CompactStyle << getBrowser () -> getExecutionContext ();
 	}
-
-	//update_location ();
 }
 
 void
@@ -287,7 +278,7 @@ X3DBrowserWidget::reload ()
 }
 
 void
-X3DBrowserWidget::set_world ()
+X3DBrowserWidget::set_initialized ()
 {
 	loadTime = chrono::now () - loadTime;
 

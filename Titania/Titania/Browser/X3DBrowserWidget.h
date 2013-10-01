@@ -69,7 +69,7 @@ public:
 	blank ();
 
 	virtual
-	bool
+	void
 	open (const basic::uri &);
 
 	virtual
@@ -106,13 +106,13 @@ private:
 	// Glib::OptionGroup::vecustrings remainingOptions;
 
 	void
+	set_splashScreen ();
+
+	void
 	saveSession ();
 
 	void
 	set_initialized ();
-
-	void
-	set_world ();
 
 	void
 	set_console ();

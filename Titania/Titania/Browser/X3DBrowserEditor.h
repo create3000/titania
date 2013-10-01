@@ -69,8 +69,7 @@ public:
 	/// @name Member access
 
 	void
-	setEdited (bool value)
-	{ edited = value; updateTitle (value); }
+	setEdited (bool);
 
 	bool
 	getEdited () const
@@ -80,10 +79,6 @@ public:
 
 	void
 	import (const basic::uri &);
-
-	virtual
-	bool
-	open (const basic::uri &) final;
 
 	virtual
 	void
@@ -155,6 +150,9 @@ private:
 	set_shutdown ();
 
 	void
+	set_cancel_shutdown ();
+
+	void
 	removeNode (const X3D::X3DSFNode <X3D::Scene> &, const X3D::SFNode &) const;
 
 	void
@@ -208,6 +206,9 @@ private:
 	///  @name Members
 
 	bool edited;
+	bool saveConfirmed;
+
+	X3D::X3DSFNode <X3D::Scene> scene;
 
 };
 

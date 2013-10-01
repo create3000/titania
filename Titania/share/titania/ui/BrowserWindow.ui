@@ -454,11 +454,6 @@
     <property name="icon_name">document-import</property>
   </object>
   <object class="GtkAccelGroup" id="MenuAccelGroup"/>
-  <object class="GtkImage" id="OpenLocationImage">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-network</property>
-  </object>
   <object class="GtkMessageDialog" id="MessageDialog">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
@@ -618,6 +613,16 @@
       <action-widget response="-5">button11</action-widget>
     </action-widgets>
   </object>
+  <object class="GtkImage" id="OpenLocationImage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-network</property>
+  </object>
+  <object class="GtkImage" id="WalkViewerImage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">WalkViewer</property>
+  </object>
   <object class="GtkMenu" id="ViewerTypeMenu">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -661,11 +666,6 @@
         <signal name="activate" handler="on_none_viewer_activate" swapped="no"/>
       </object>
     </child>
-  </object>
-  <object class="GtkImage" id="WalkViewerImage">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">WalkViewer</property>
   </object>
   <object class="GtkImage" id="WorkspacesImage">
     <property name="visible">True</property>
@@ -831,7 +831,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem6">
+                      <object class="GtkImageMenuItem" id="CutMenuItem">
                         <property name="label">gtk-cut</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
@@ -840,7 +840,7 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem7">
+                      <object class="GtkImageMenuItem" id="CopyMenuItem">
                         <property name="label">gtk-copy</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
@@ -849,7 +849,7 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem8">
+                      <object class="GtkImageMenuItem" id="PasteMenuItem">
                         <property name="label">gtk-paste</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
@@ -1004,14 +1004,13 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkSeparatorMenuItem" id="separatormenuitem10">
+                      <object class="GtkSeparatorMenuItem" id="BrowserOptionsSeparator">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="ShadingMenuItem">
-                        <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Shading</property>
                         <property name="use_underline">True</property>
@@ -1084,8 +1083,7 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkMenuItem" id="PrimitiveQualtityMenuItem">
-                        <property name="visible">True</property>
+                      <object class="GtkMenuItem" id="PrimitiveQualityMenuItem">
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Primitive Quality</property>
                         <property name="use_underline">True</property>
@@ -1193,16 +1191,6 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
-                      <object class="GtkCheckMenuItem" id="HeadlightMenuItem">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Toggle Headlight</property>
-                        <property name="use_underline">True</property>
-                        <property name="active">True</property>
-                        <signal name="toggled" handler="on_headlight_toggled" swapped="no"/>
-                      </object>
-                    </child>
-                    <child>
                       <object class="GtkCheckMenuItem" id="RubberbandMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
@@ -1210,38 +1198,6 @@
                         <property name="use_underline">True</property>
                         <property name="active">True</property>
                         <signal name="toggled" handler="on_rubberband_toggled" swapped="no"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkSeparatorMenuItem" id="separatormenuitem8">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkSeparatorMenuItem" id="separatormenuitem7">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkCheckMenuItem" id="EnableInlineViewpointsMenuItem">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Enable Inline Viewpoints</property>
-                        <property name="use_underline">True</property>
-                        <property name="active">True</property>
-                        <signal name="toggled" handler="on_enable_inline_viewpoints_toggled" swapped="no"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="LookAtAllMenuItem">
-                        <property name="label" translatable="yes">Look At All Objects</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="image">image6</property>
-                        <property name="use_stock">False</property>
-                        <signal name="activate" handler="on_look_at_all_activate" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -1860,10 +1816,5 @@
         </child>
       </object>
     </child>
-  </object>
-  <object class="GtkImage" id="image6">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-find</property>
   </object>
 </interface>
