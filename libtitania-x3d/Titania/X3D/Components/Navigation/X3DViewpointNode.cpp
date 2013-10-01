@@ -278,12 +278,6 @@ X3DViewpointNode::transitionStart (X3DViewpointNode* fromViewpoint)
 				transitionType = layer -> getNavigationInfo () -> getTransitionType ();
 				transitionTime = layer -> getNavigationInfo () -> transitionTime ();
 			}
-			
-			if (not doTransition ())
-			{
-				doTransition (true);
-				transitionType = TransitionType::TELEPORT;
-			}
 
 			switch (transitionType)
 			{

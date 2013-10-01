@@ -1,5 +1,17 @@
 2013-10-01  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* World.h:
+	* World.cpp:
+	* X3DBrowser.cpp:
+	* Notification.cpp:
+	* BindableNodeList.h:
+	* BindableNodeStack.h:
+	* X3DBindableNode.h:
+	* X3DBindableNode.cpp:
+	* X3DViewpointNode.cpp: 
+
+2013-10-01  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBrowser.h:
 	* X3DBrowser.cpp: 
 

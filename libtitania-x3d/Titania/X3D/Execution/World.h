@@ -100,9 +100,6 @@ public:
 
 	///  @name Display
 
-	void
-	bind ();
-
 	virtual
 	void
 	traverse (const TraverseType type) final
@@ -133,6 +130,9 @@ private:
 
 	void
 	set_rootNodes ();
+
+	void
+	bind ();
 
 	///  @name Static members
 

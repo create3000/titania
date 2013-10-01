@@ -153,6 +153,18 @@ public:
 
 	/// @name Modifiers
 
+	value_type
+	bound () const
+	{
+		for (const auto & node : list)
+		{
+			if (node -> isBound ())
+				return node;
+		}
+
+		return at (0);
+	}
+
 	void
 	push_back (value_type node)
 	{ temp .emplace_back (node); }

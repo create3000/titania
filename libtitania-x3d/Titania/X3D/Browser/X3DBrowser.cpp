@@ -80,8 +80,7 @@ X3DBrowser::initialize ()
 	X3DBrowserContext::initialize ();
 	
 	// Initialize scene
-
-	auto scene = createScene ();
+	
 	scene -> setup ();
 
 	replaceWorld (scene);
@@ -98,7 +97,6 @@ X3DBrowser::initialize ()
 			std::clog << error .what () << std::endl;
 		}
 
-		world -> bind ();
 		update ();
 	}
 
@@ -229,8 +227,6 @@ X3DBrowser::replaceWorld (const X3DSFNode <Scene> & value)
 throw (Error <INVALID_SCENE>,
        Error <INVALID_OPERATION_TIMING>)
 {
-	newScene = value;
-
 	if (makeCurrent ())
 	{
 		// Process shutdown.
@@ -238,16 +234,20 @@ throw (Error <INVALID_SCENE>,
 		advanceClock ();
 
 		if (initialized ())
+		{
+			newScene = value;
+
 			shutdown () .processInterests ();
 		
-		// Cancel replaceWorld if another replaceWorld is call in shutdown.
+			// Cancel replaceWorld if another replaceWorld was called in shutdown.
 
-		if (newScene not_eq value)
-			return;
+			if (newScene not_eq value)
+				return;
+		}
 
 		// Process as normal.
 		
-		if (value not_eq scene)
+		if (not initialized () or value not_eq scene)
 		{
 			if (value)
 				scene = value;
@@ -325,8 +325,6 @@ throw (Error <INVALID_URL>,
 			scene -> setup ();
 
 			replaceWorld (scene);
-
-			world -> bind ();
 
 			advanceClock ();
 			

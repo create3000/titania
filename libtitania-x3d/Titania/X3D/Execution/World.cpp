@@ -98,6 +98,9 @@ World::initialize ()
 	layer0 -> setInternal (true);
 	layer0 -> setup ();
 	layer0 -> getBackgroundStack () -> bottom () -> transparency () = 0;
+
+	if (glXGetCurrentContext ())
+		bind ();
 }
 
 void
@@ -144,28 +147,28 @@ World::bind ()
 	{
 		if (not layer -> getNavigationInfos () -> empty ())
 		{
-			layer -> getNavigationInfos () -> at (0) -> doTransition (false);
-			layer -> getNavigationInfos () -> at (0) -> set_bind () = true;
+			auto navigationInfo = layer -> getNavigationInfos () -> bound ();
+			layer -> getNavigationInfoStack () -> force_push (navigationInfo);
 		}
 
 		if (not layer -> getBackgrounds () -> empty ())
 		{
-			layer -> getBackgrounds () -> at (0) -> doTransition (false);
-			layer -> getBackgrounds () -> at (0) -> set_bind () = true;
+			auto background = layer -> getBackgrounds () -> bound ();
+			layer -> getBackgroundStack () -> force_push (background);
 		}
 
 		if (not layer -> getFogs () -> empty ())
 		{
-			layer -> getFogs () -> at (0) -> doTransition (false);
-			layer -> getFogs () -> at (0) -> set_bind () = true;
+			auto fog = layer -> getFogs () -> bound ();
+			layer -> getFogStack () -> force_push (fog);
 		}
 
 		// Bind first viewpoint in viewpoint stack.
 
 		if (not layer -> getViewpoints () -> empty ())
 		{
-			layer -> getViewpoints () -> at (0) -> doTransition (false);
-			layer -> getViewpoints () -> at (0) -> set_bind () = true;
+			auto viewpoint = layer -> getViewpoints () -> bound ();
+			layer -> getViewpointStack () -> force_push (viewpoint);
 		}
 	}
 

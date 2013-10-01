@@ -121,6 +121,14 @@ public:
 	size_type
 	size () const
 	{ return stack .size (); }
+		
+	void
+	force_push (const pointer_type & node)
+	{
+		node -> isBound ()  = true;
+		node -> bindTime () = getCurrentTime ();
+		push (node);
+	}
 
 	void
 	push (const pointer_type & node)

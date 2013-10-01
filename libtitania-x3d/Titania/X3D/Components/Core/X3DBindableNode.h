@@ -86,16 +86,6 @@ public:
 	const SFTime &
 	bindTime () const
 	{ return *fields .bindTime; }
-	
-	///  @name Member access
-	
-	void
-	doTransition (bool value)
-	{ transition = value; }
-
-	bool
-	doTransition ()
-	{ return transition; }
 
 
 protected:
@@ -136,8 +126,6 @@ private:
 	};
 
 	Fields fields;
-	
-	bool transition;
 
 };
 

@@ -112,7 +112,6 @@ Notification::initialize ()
 
 	world = new World (scene);
 	world -> setup ();
-	world -> bind ();
 
 	string () .addInterest (this, &Notification::set_string);
 }
