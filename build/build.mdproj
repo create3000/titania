@@ -70,6 +70,12 @@
     <None Include="..\Titania.sln">
       <Link>Titania.sln</Link>
     </None>
+    <None Include="..\debian\postinst">
+      <Link>debian\postinst</Link>
+    </None>
+    <None Include="..\debian\postrm">
+      <Link>debian\postrm</Link>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="debian\" />
