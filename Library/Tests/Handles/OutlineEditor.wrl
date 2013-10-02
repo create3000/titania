@@ -71,14 +71,20 @@ DEF Text1 Transform {
     appearance Appearance {
       material Material { }
     }
-    geometry USE Text
+    geometry DEF Text Text {
+      string "OutlineEditor"
+      fontStyle FontStyle {
+        family "PT Sans Narrow"
+        style "BOLD"
+      }
+    }
   }
 }
 
 DEF Sensors Transform {
   children [
-    USE _0
-    USE _1
+    DEF _0 ProximitySensor { }
+    DEF _1 VisibilitySensor { }
   ]
 }
 
