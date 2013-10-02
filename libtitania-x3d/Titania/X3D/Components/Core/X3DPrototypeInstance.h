@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -68,6 +68,14 @@ public:
 
 	X3DPrototypeInstance (X3DExecutionContext* const, const X3DSFNode <Proto> &);
 
+	virtual
+	X3DPrototypeInstance*
+	create (X3DExecutionContext* const) const final;
+
+	virtual
+	X3DPrototypeInstance*
+	copy (X3DExecutionContext* const) const final;
+
 	///  @name Common members
 
 	virtual
@@ -123,9 +131,7 @@ public:
 
 private:
 
-	virtual
-	X3DPrototypeInstance*
-	create (X3DExecutionContext* const) const final;
+	///  @name Construction
 
 	virtual
 	void

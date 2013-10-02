@@ -50,6 +50,8 @@
 
 #include "X3DUrlObject.h"
 
+#include "../../Execution/X3DExecutionContext.h"
+
 namespace titania {
 namespace X3D {
 
@@ -65,6 +67,32 @@ X3DUrlObject::X3DUrlObject () :
 	addNodeType (X3DConstants::X3DUrlObject);
 
 	addChildren (loadState);
+}
+
+X3DUrlObject*
+X3DUrlObject::copy (X3DExecutionContext* const executionContext) const
+{
+	X3DUrlObject* copy = dynamic_cast <X3DUrlObject*> (X3DBaseNode::copy (executionContext));
+
+	transform (copy -> url (), getExecutionContext (), executionContext);
+
+	return copy;
+}
+
+void
+X3DUrlObject::transform (MFString & url, X3DExecutionContext* const oldExecutionContext, X3DExecutionContext* const newExecutionContext)
+{
+	for (auto & value : url)
+	{
+		basic::uri URL = value .str ();
+	
+		if (URL .is_relative ())
+		{
+			auto transformed = oldExecutionContext -> getWorldURL () .transform (URL);
+
+			value = newExecutionContext -> getWorldURL () .relative_path (transformed) .str ();
+		}
+	}
 }
 
 //void

@@ -89,6 +89,7 @@ public:
 	X3DBaseNode*
 	clone (X3DExecutionContext* const) const;
 
+	virtual
 	X3DBaseNode*
 	copy (X3DExecutionContext* const) const;
 

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,6 +51,7 @@
 #include "Background.h"
 
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Networking/X3DUrlObject.h"
 
 namespace titania {
 namespace X3D {
@@ -60,11 +61,11 @@ const std::string Background::typeName       = "Background";
 const std::string Background::containerField = "children";
 
 Background::Fields::Fields () :
-	frontUrl (new MFString ()),
-	backUrl (new MFString ()),
-	leftUrl (new MFString ()),
-	rightUrl (new MFString ()),
-	topUrl (new MFString ()),
+	 frontUrl (new MFString ()),
+	  backUrl (new MFString ()),
+	  leftUrl (new MFString ()),
+	 rightUrl (new MFString ()),
+	   topUrl (new MFString ()),
 	bottomUrl (new MFString ())
 { }
 
@@ -109,6 +110,21 @@ X3DBaseNode*
 Background::create (X3DExecutionContext* const executionContext) const
 {
 	return new Background (executionContext);
+}
+
+Background*
+Background::copy (X3DExecutionContext* const executionContext) const
+{
+	Background* copy = dynamic_cast <Background*> (X3DBaseNode::copy (executionContext));
+
+	X3DUrlObject::transform (copy -> frontUrl (),  getExecutionContext (), executionContext);
+	X3DUrlObject::transform (copy -> backUrl (),   getExecutionContext (), executionContext);
+	X3DUrlObject::transform (copy -> leftUrl (),   getExecutionContext (), executionContext);
+	X3DUrlObject::transform (copy -> rightUrl (),  getExecutionContext (), executionContext);
+	X3DUrlObject::transform (copy -> topUrl (),    getExecutionContext (), executionContext);
+	X3DUrlObject::transform (copy -> bottomUrl (), getExecutionContext (), executionContext);
+
+	return copy;
 }
 
 void

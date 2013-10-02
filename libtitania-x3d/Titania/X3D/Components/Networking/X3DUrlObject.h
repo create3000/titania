@@ -72,6 +72,12 @@ public:
 	const MFString &
 	url () const
 	{ return *fields .url; }
+	
+	///  @name Construction
+
+	virtual
+	X3DUrlObject*
+	copy (X3DExecutionContext* const) const final;
 
 	///  @name Member access
 
@@ -85,6 +91,10 @@ public:
 	void
 	requestImmediateLoad ()
 	{ }
+
+	static
+	void
+	transform (MFString &, X3DExecutionContext* const, X3DExecutionContext* const);
 
 	~X3DUrlObject ();
 

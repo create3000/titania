@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -63,11 +63,17 @@ class Background :
 {
 public:
 
+	///  @name Construction
+
 	Background (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const final;
+
+	virtual
+	Background*
+	copy (X3DExecutionContext* const) const final;
 
 	///  @name Common members
 
@@ -137,6 +143,8 @@ public:
 	bottomUrl () const
 	{ return *fields .bottomUrl; }
 
+	///  @name Operations
+
 	virtual
 	void
 	draw ();
@@ -148,10 +156,11 @@ public:
 
 private:
 
+	///  @name Construction
+
 	virtual
 	void
 	initialize () final;
-
 
 	///  @name Static members
 

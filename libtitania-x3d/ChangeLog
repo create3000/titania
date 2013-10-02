@@ -1,3 +1,13 @@
+2013-10-02  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DBaseNode.h:
+	* X3DUrlObject.h:
+	* X3DUrlObject.cpp:
+	* X3DPrototypeInstance.h:
+	* X3DPrototypeInstance.cpp:
+	* Background.h:
+	* Background.cpp: 
+
 2013-10-01  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* World.h:

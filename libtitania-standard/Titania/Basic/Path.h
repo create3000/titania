@@ -55,8 +55,8 @@
 #include "../String/split.h"
 #include "../Utility/Adapter.h"
 #include <algorithm>
+#include <deque>
 #include <iterator>
-#include <list>
 #include <sstream>
 
 namespace titania {
@@ -75,14 +75,14 @@ operator << (std::basic_ostream <typename StringT::value_type, Traits> &, const 
  */
 template <class StringT>
 class basic_path :
-	public std::list <StringT>
+	public std::deque <StringT>
 {
 public:
 
 	typedef StringT                      string_type;
 	typedef typename StringT::value_type char_type;
 	typedef typename StringT::size_type  size_type;
-	typedef std::list <StringT>          array_type;
+	typedef std::deque <StringT>         array_type;
 
 	typedef typename array_type::const_iterator const_iterator;
 
@@ -98,8 +98,8 @@ public:
 
 	explicit
 	basic_path (const string_type & separator) :
-		std::list <StringT> (),
-		              value ({ separator, false, false })
+		std::deque <StringT> (),
+		               value ({ separator, false, false })
 	{ }
 
 	basic_path (const string_type & path, const StringT & separator);
@@ -107,13 +107,16 @@ public:
 	///  @name Element access
 
 	const string_type &
-	separator () const { return value .separator; }
+	separator () const
+	{ return value .separator; }
 
 	bool
-	leading_separator () const { return value .leading_separator; }
+	leading_separator () const
+	{ return value .leading_separator; }
 
 	bool
-	trailing_separator () const { return value .trailing_separator; }
+	trailing_separator () const
+	{ return value .trailing_separator; }
 
 	///  Returns the root directory of this Path.
 	basic_path
@@ -127,7 +130,11 @@ public:
 	basic_path
 	parent () const;
 
-	///  Transforms @a reference to this Path's base.
+	///  Return relative path form this path to descendant.
+	basic_path
+	relative_path (const basic_path &) const;
+
+	///  Remove dot segments.
 	basic_path
 	remove_dot_segments () const;
 
@@ -146,18 +153,18 @@ private:
 	};
 
 	basic_path (const Value & value) :
-		std::list <string_type> (),
-		                  value (value)
+		std::deque <string_type> (),
+		                   value (value)
 	{ }
 
 	basic_path (array_type && array, const Value & value) :
-		std::list <string_type> (array),
-		                  value (value)
+		std::deque <string_type> (array),
+		                   value (value)
 	{ }
 
 	basic_path (const_iterator first, const_iterator last, const Value & value) :
-		std::list <string_type> (first, last),
-		                  value (value)
+		std::deque <string_type> (first, last),
+		                   value (value)
 	{ }
 
 	Value value;
@@ -175,8 +182,8 @@ const StringT basic_path <StringT>::dots = "..";
 
 template <class StringT>
 basic_path <StringT>::basic_path (const StringT & path, const StringT & separator) :
-	std::list <string_type> (basic_split <StringT, std::list> (path, separator)),
-	                  value ({ separator, false, false })
+	std::deque <string_type> (basic_split <StringT, std::deque> (path, separator)),
+	                   value ({ separator, false, false })
 {
 	if (size ())
 	{
@@ -233,6 +240,32 @@ basic_path <StringT>::parent () const
 			return basic_path (begin (), -- end (), { separator (), leading_separator (), true });
 	}
 
+}
+
+template <class StringT>
+basic_path <StringT>
+basic_path <StringT>::relative_path (const basic_path & descendant) const
+{
+	basic_path path (separator ());
+
+	auto base_path       = remove_dot_segments () .base ();
+	auto descendant_path = descendant .remove_dot_segments ();
+
+	size_t i, j;
+
+	for (i = 0; i < base_path .size () and i < descendant_path .size (); ++ i)
+	{
+		if (base_path [i] not_eq descendant_path [i])
+			break;
+	}
+
+	for (j = i; j < base_path .size (); ++ j)
+		path .emplace_back (dots);
+
+	for (j = i; j < descendant_path .size (); ++ j)
+		path .emplace_back (descendant_path [j]);
+
+	return path;
 }
 
 template <class StringT>

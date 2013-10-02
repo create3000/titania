@@ -333,7 +333,7 @@ public:
 	transform (const basic_uri &) const;
 
 	///  Returns a relative path, relative from base path.
-	string_type
+	basic_uri <StringT>
 	relative_path (const basic_uri &) const;
 
 	/// @name Filename Operations
@@ -707,44 +707,28 @@ basic_uri <StringT>::remove_dot_segments (const string_type & path) const
 }
 
 template <class StringT>
-typename basic_uri <StringT>::string_type
+basic_uri <StringT>
 basic_uri <StringT>::relative_path (const basic_uri & descendant) const
 {
-	//		path = array ();
-	//
-	//		basic_uri baseURI = base ();
-	//
-	//		if (baseURI .scheme () not_eq descendant .scheme ())
-	//			return "";
-	//
-	//		if (baseURI .host () not_eq descendant .host ())
-	//			return "";
-	//
-	//		baseURI       = explode ('/', baseURI       -> path ());
-	//
-	//		baseURI .pop_back ();
-	//
-	//		descendant = explode ('/', descendant -> path ());
-	//
-	//		size_type i; j;
-	//
-	//		for (i = 0; i < count (baseURI) and i < count (descendant); ++ i)
-	//		{
-	//			if (baseURI [i] not_eq descendant [i])
-	//				break;
-	//		}
-	//
-	//		for (j = i; j < count (baseURI); ++ j)
-	//			array_push (path, '..');
-	//
-	//		for (j = i; j < count (descendant); ++ j)
-	//			array_push (path, descendant [j]);
-	//
-	//		path = implode ('/', path);
-	//
-	//		return path ? path : './';
-	//
-	return string_type ();
+	if (scheme () not_eq descendant .scheme ())
+		return descendant;
+
+	if (authority () not_eq descendant .authority ())
+		return descendant;
+
+	basic_path <string_type> uri_path        (path (),             string_type (1, Signs::Slash));
+	basic_path <string_type> descendant_path (descendant .path (), string_type (1, Signs::Slash));
+
+	return basic_uri ({ true,
+	                    false,
+	                    StringT (),
+	                    StringT (),
+	                    StringT (),
+	                    StringT (),
+	                    0,
+	                    uri_path .relative_path (descendant_path) .str (),
+	                    descendant .query (),
+	                    descendant .fragment () });
 }
 
 // Filename operations

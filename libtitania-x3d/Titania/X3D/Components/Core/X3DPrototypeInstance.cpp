@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -54,6 +54,7 @@
 #include "../../Execution/Scene.h"
 #include "../../Prototype/ExternProto.h"
 #include "../../Prototype/Proto.h"
+#include "../Networking/X3DUrlObject.h"
 
 #include <cassert>
 #include <iostream>
@@ -110,6 +111,24 @@ X3DPrototypeInstance*
 X3DPrototypeInstance::create (X3DExecutionContext* const executionContext) const
 {
 	return new X3DPrototypeInstance (executionContext, proto);
+}
+
+X3DPrototypeInstance*
+X3DPrototypeInstance::copy (X3DExecutionContext* const executionContext) const
+{
+	X3DPrototypeInstance* copy = dynamic_cast <X3DPrototypeInstance*> (X3DBaseNode::copy (executionContext));
+
+	try
+	{
+		X3DFieldDefinition* field = copy -> getField ("url");
+
+		if (field -> getType () == X3DConstants::MFString)
+			X3DUrlObject::transform (*static_cast <MFString*> (field),  getExecutionContext (), executionContext);
+	}
+	catch (const Error <INVALID_NAME> &)
+	{ }
+
+	return copy;
 }
 
 void

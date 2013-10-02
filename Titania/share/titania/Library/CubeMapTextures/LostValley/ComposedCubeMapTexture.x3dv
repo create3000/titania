@@ -1,6 +1,6 @@
 #VRML V2.0 utf8 Comment
 
-Transform {
+DEF LostValley Transform {
   children Shape {
     appearance Appearance {
       material Material { }

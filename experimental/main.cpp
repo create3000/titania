@@ -265,7 +265,8 @@ main (int argc, char** argv)
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
 
-	__LOG__ << sprintf ("bah %d %x %d", 12, 34, 12345) << std::endl;
+	std::clog << "resolve: " << basic::uri ("/1/2/3/A.wrl") .relative_path ("/1/2/B.wrl") << std::endl;
+	std::clog << "resolve: " << basic::uri ("/1/2/B.wrl") .relative_path ("/1/2/3/A.wrl") << std::endl;
 
 	std::clog << "Function main done." << std::endl;
 	exit (0);
