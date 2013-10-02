@@ -2324,6 +2324,8 @@
     <None Include="Tests\Basic\NodeIndex.x3d" />
     <None Include="Prototypes\Geometry2D\RoundedRectangle2D.wrl" />
     <None Include="Prototypes\Time\ElapsedTime.wrl" />
+    <None Include="Tests\CubeMapTexturing\ComposedCubeMapMovieTexture.wrl" />
+    <None Include="Tests\CubeMapTexturing\movie.avi" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

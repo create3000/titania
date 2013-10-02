@@ -201,7 +201,7 @@ public:
 	       Error <INVALID_OPERATION_TIMING>);
 
 	///
-	
+
 	void
 	beginUpdate ()
 	throw (Error <DISPOSED>);
@@ -209,7 +209,7 @@ public:
 	void
 	endUpdate ()
 	throw (Error <DISPOSED>);
-	
+
 	///
 
 	const X3DSFNode <RenderingProperties> &
@@ -264,7 +264,7 @@ public:
 	{ print (args ..., '\n'); }
 
 	///  @name Error handling
-	
+
 	const MFString &
 	getUrlError () const
 	{ return urlError; }
@@ -327,10 +327,10 @@ private:
 	std::string userAgent;
 	SFString    description;
 
-	X3DSFNode <Scene> newScene;
 	X3DSFNode <Scene> scene;
 	X3DSFNode <World> world;
 	MFString          urlError;
+	size_t            inShutdown;
 
 };
 

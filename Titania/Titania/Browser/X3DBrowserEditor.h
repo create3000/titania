@@ -150,9 +150,6 @@ private:
 	set_shutdown ();
 
 	void
-	set_cancel_shutdown ();
-
-	void
 	removeNode (const X3D::X3DSFNode <X3D::Scene> &, const X3D::SFNode &) const;
 
 	void

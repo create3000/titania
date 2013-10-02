@@ -153,29 +153,10 @@ private:
 	initialize ();
 
 	void
-	set_front ();
-
-	void
-	set_back ();
-
-	void
-	set_right ();
-
-	void
-	set_left ();
-
-	void
-	set_bottom ();
-
-	void
-	set_top ();
+	set_texture ();
 
 	void
 	setTexture (GLenum, const SFNode &);
-
-	void
-	setTexture (GLenum, const X3DTexture2DNode* const);
-
 
 	///  @name Static members
 

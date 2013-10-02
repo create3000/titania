@@ -51,20 +51,19 @@ X3DBrowser::X3DBrowser () :
 	  supportedProfiles (this, supportedComponents),
 	          userAgent (),
 	        description (),
-	           newScene (),
 	              scene (createScene ()),
 	              world (),
-	           urlError ()
+	           urlError (),
+	         inShutdown ()
 {
 	std::clog << "Constructing Browser:" << std::endl;
-	
+
 	enable_backtrace ();
 
 	setName ("Titania");
 	setUserAgent (getName () + "/" + getVersion () + " (X3D Browser; +http://titania.create3000.de)");
 
 	addChildren (description,
-	             newScene,
 	             scene,
 	             world,
 	             urlError);
@@ -78,9 +77,9 @@ X3DBrowser::initialize ()
 	std::clog << "Initializing Browser ..." << std::endl;
 
 	X3DBrowserContext::initialize ();
-	
+
 	// Initialize scene
-	
+
 	scene -> setup ();
 
 	replaceWorld (scene);
@@ -231,22 +230,32 @@ throw (Error <INVALID_SCENE>,
 	{
 		// Process shutdown.
 
-		advanceClock ();
-
 		if (initialized ())
 		{
-			newScene = value;
+			if (not inShutdown)
+			{
+				++ inShutdown;
 
-			shutdown () .processInterests ();
-		
-			// Cancel replaceWorld if another replaceWorld was called in shutdown.
+				//advanceClock ();
 
-			if (newScene not_eq value)
-				return;
+				shutdown () .processInterests ();
+
+				// Cancel replaceWorld if another replaceWorld was called in shutdown.
+
+				if (inShutdown > 1)
+				{
+					inShutdown = 0;
+					return;
+				}
+
+				inShutdown = 0;
+			}
+			else
+				++ inShutdown;
 		}
 
 		// Process as normal.
-		
+
 		if (not initialized () or value not_eq scene)
 		{
 			if (value)
@@ -271,7 +280,7 @@ throw (Error <INVALID_SCENE>,
 		initialized () = getCurrentTime ();
 
 		print ("*** The browser is requested to replace the world with '", scene -> getWorldURL (), "'.\n");
-		
+
 		return;
 	}
 
@@ -299,7 +308,7 @@ void
 X3DBrowser::loadURL (const MFString & url)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>,
-	    Error <INVALID_OPERATION_TIMING>)
+       Error <INVALID_OPERATION_TIMING>)
 {
 	loadURL (url, { });
 }
@@ -308,17 +317,17 @@ void
 X3DBrowser::loadURL (const MFString & url, const MFString & parameter)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>,
-	    Error <INVALID_OPERATION_TIMING>)
+       Error <INVALID_OPERATION_TIMING>)
 {
 	if (makeCurrent ())
 	{
 		// where parameter is "target=nameOfFrame"
 
 		Loader loader (this);
-			
+
 		try
 		{
-			X3DSFNode <Scene> scene = createScene ();	
+			X3DSFNode <Scene> scene = createScene ();
 
 			loader .parseIntoScene (scene, url);
 
@@ -327,12 +336,12 @@ throw (Error <INVALID_URL>,
 			replaceWorld (scene);
 
 			advanceClock ();
-			
+
 			return;
 		}
 		catch (const X3DError &)
 		{
-			urlError = loader .getUrlError ();	
+			urlError = loader .getUrlError ();
 
 			for (const auto & string : urlError)
 				getBrowser () -> println (string .str ());
@@ -379,7 +388,7 @@ throw (Error <INVALID_X3D>,
 {
 	if (makeCurrent ())
 		return Loader (this) .createX3DFromStream (worldURL, istream);
-	
+
 	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
 }
 
@@ -451,7 +460,6 @@ X3DBrowser::dispose ()
 
 	makeCurrent ();
 
-	newScene .dispose ();
 	scene .dispose ();
 	world .dispose ();
 

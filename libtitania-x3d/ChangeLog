@@ -1,5 +1,14 @@
 2013-10-02  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBrowser.h:
+	* X3DBrowser.cpp:
+	* X3DBrowserContext.cpp:
+	* X3DTexture2DNode.cpp:
+	* ComposedCubeMapTexture.h:
+	* ComposedCubeMapTexture.cpp: 
+
+2013-10-02  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBaseNode.h:
 	* X3DUrlObject.h:
 	* X3DUrlObject.cpp:

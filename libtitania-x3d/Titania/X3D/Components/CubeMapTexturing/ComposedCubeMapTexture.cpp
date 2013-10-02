@@ -61,12 +61,12 @@ const std::string ComposedCubeMapTexture::typeName       = "ComposedCubeMapTextu
 const std::string ComposedCubeMapTexture::containerField = "texture";
 
 ComposedCubeMapTexture::Fields::Fields () :
-	front (new SFNode ()),
-	back (new SFNode ()),
-	left (new SFNode ()),
-	right (new SFNode ()),
+	 front (new SFNode ()),
+	  back (new SFNode ()),
+	  left (new SFNode ()),
+	 right (new SFNode ()),
 	bottom (new SFNode ()),
-	top (new SFNode ())
+	   top (new SFNode ())
 { }
 
 ComposedCubeMapTexture::ComposedCubeMapTexture (X3DExecutionContext* const executionContext) :
@@ -107,71 +107,38 @@ ComposedCubeMapTexture::initialize ()
 
 		glBindTexture (GL_TEXTURE_CUBE_MAP, 0);
 
-		front ()  .addInterest (this, &ComposedCubeMapTexture::set_front);
-		back ()   .addInterest (this, &ComposedCubeMapTexture::set_back);
-		left ()   .addInterest (this, &ComposedCubeMapTexture::set_left);
-		right ()  .addInterest (this, &ComposedCubeMapTexture::set_right);
-		bottom () .addInterest (this, &ComposedCubeMapTexture::set_bottom);
-		top ()    .addInterest (this, &ComposedCubeMapTexture::set_top);
-
-		set_front ();
-		set_back ();
-		set_left ();
-		set_right ();
-		set_bottom ();
-		set_top ();
+		front ()    .addInterest (this, &ComposedCubeMapTexture::set_texture);
+		back ()     .addInterest (this, &ComposedCubeMapTexture::set_texture);
+		left ()     .addInterest (this, &ComposedCubeMapTexture::set_texture);
+		right ()    .addInterest (this, &ComposedCubeMapTexture::set_texture);
+		bottom ()   .addInterest (this, &ComposedCubeMapTexture::set_texture);
+		top ()      .addInterest (this, &ComposedCubeMapTexture::set_texture);
+		notified () .addInterest (this, &ComposedCubeMapTexture::set_texture);
+	
+		set_texture ();
 	}
 }
 
 void
-ComposedCubeMapTexture::set_front ()
+ComposedCubeMapTexture::set_texture ()
 {
 	setTexture (GL_TEXTURE_CUBE_MAP_POSITIVE_Z, front ());
-}
-
-void
-ComposedCubeMapTexture::set_back ()
-{
 	setTexture (GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, back ());
-}
-
-void
-ComposedCubeMapTexture::set_right ()
-{
 	setTexture (GL_TEXTURE_CUBE_MAP_NEGATIVE_X, right ());
-}
-
-void
-ComposedCubeMapTexture::set_left ()
-{
 	setTexture (GL_TEXTURE_CUBE_MAP_POSITIVE_X, left ());
-}
-
-void
-ComposedCubeMapTexture::set_bottom ()
-{
 	setTexture (GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, bottom ());
-}
-
-void
-ComposedCubeMapTexture::set_top ()
-{
 	setTexture (GL_TEXTURE_CUBE_MAP_POSITIVE_Y, top ());
 }
 
 void
 ComposedCubeMapTexture::setTexture (GLenum target, const SFNode & field)
 {
-	setTexture (target, x3d_cast <X3DTexture2DNode*> (field));
-}
+	auto texture = x3d_cast <X3DTexture2DNode*> (field .getValue ());
 
-void
-ComposedCubeMapTexture::setTexture (GLenum target, const X3DTexture2DNode* const texture)
-{
 	if (texture)
 	{
 		// Get texture 2d data
-		
+
 		transparent = texture -> isTransparent ();
 
 		GLint width = 0, height = 0;
@@ -187,8 +154,7 @@ ComposedCubeMapTexture::setTexture (GLenum target, const X3DTexture2DNode* const
 		glBindTexture (GL_TEXTURE_2D, 0);
 
 		// Transfer image
-
-		glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
+		// Important: width and height must be equal, and all images must be of the same size!!!
 
 		glBindTexture (GL_TEXTURE_CUBE_MAP, getTextureId ());
 		glTexImage2D (target, 0, GL_RGBA, width, height, false, GL_RGBA, GL_UNSIGNED_BYTE, image .data ());
@@ -199,7 +165,7 @@ ComposedCubeMapTexture::setTexture (GLenum target, const X3DTexture2DNode* const
 		transparent = false;
 
 		glBindTexture (GL_TEXTURE_CUBE_MAP, getTextureId ());
-		glTexImage2D (target, 0, GL_RGBA, 0, 0, false, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);	
+		glTexImage2D (target, 0, GL_RGBA, 0, 0, false, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
 		glBindTexture (GL_TEXTURE_CUBE_MAP, 0);
 	}
 }

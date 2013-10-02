@@ -1,6 +1,6 @@
 #VRML V2.0 utf8 Comment
 
-META "title" "ComposedCubeMapTexture"
+META "title" "ComposedCubeMapMovieTexture"
 
 Background {
   skyColor 0.2 0.2 0.2
@@ -12,28 +12,38 @@ Viewpoint {
 }
 
 Transform {
+  translation 0 2.5 0
+  children Shape {
+    appearance Appearance {
+      material Material { }
+      texture DEF Movie MovieTexture {
+        url "movie.avi"
+        loop TRUE
+        repeatS FALSE
+        repeatT FALSE
+      }
+    }
+    geometry Rectangle2D {
+      solid FALSE
+    }
+  }
+}
+
+Transform {
+  metadata MetadataString {
+    name "Comment"
+    value "Important: width and height must be equal, and all images must be of the same size!!!"
+  }
   children Shape {
     appearance Appearance {
       material Material { }
       texture ComposedCubeMapTexture {
-        front ImageTexture {
-          url "images/lostvalley_south.png"
-        }
-        back ImageTexture {
-          url "images/lostvalley_north.png"
-        }
-        left ImageTexture {
-          url "images/lostvalley_west.png"
-        }
-        right ImageTexture {
-          url "images/lostvalley_east.png"
-        }
-        bottom ImageTexture {
-          url "images/lostvalley_down.png"
-        }
-        top ImageTexture {
-          url "images/lostvalley_up.png"
-        }
+        front USE Movie
+        back USE Movie
+        left USE Movie
+        right USE Movie
+        bottom USE Movie
+        top USE Movie
       }
     }
     geometry IndexedFaceSet {

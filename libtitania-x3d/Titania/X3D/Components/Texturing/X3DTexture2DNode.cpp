@@ -139,8 +139,6 @@ X3DTexture2DNode::setImage (size_t comp, GLenum format, GLint w, GLint h, const 
 
 	updateTextureProperties ();
 
-	glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
-
 	glTexImage2D (GL_TEXTURE_2D,
 	              0,     // This texture is level 0 in mimpap generation.
 	              getInternalFormat (),
@@ -151,7 +149,7 @@ X3DTexture2DNode::setImage (size_t comp, GLenum format, GLint w, GLint h, const 
 
 	glBindTexture (GL_TEXTURE_2D, 0);
 
-	X3DChildObject::addEvent ();
+	X3DChildObject::notify ();
 }
 
 void
@@ -163,7 +161,7 @@ X3DTexture2DNode::updateImage (GLenum format, GLint width, GLint height, const v
 	glTexSubImage2D (GL_TEXTURE_2D, 0, 0, 0, width, height, format, GL_UNSIGNED_BYTE, data);
 	glBindTexture (GL_TEXTURE_2D, 0);
 
-	X3DChildObject::addEvent ();
+	X3DChildObject::notify ();
 }
 
 void
@@ -205,7 +203,7 @@ X3DTexture2DNode::updateTextureProperties ()
 	glTexParameterf  (GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, textureProperties -> anisotropicDegree ());
 	glTexParameterf  (GL_TEXTURE_2D, GL_TEXTURE_PRIORITY,           textureProperties -> texturePriority ());
 
-	X3DChildObject::addEvent ();
+	X3DChildObject::notify ();
 }
 
 void

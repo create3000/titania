@@ -101,17 +101,7 @@ X3DBrowserEditor::set_shutdown ()
 
 	// Cancel shutdown
 
-	getBrowser () -> shutdown () .removeInterest (this, &X3DBrowserEditor::set_shutdown);
-	getBrowser () -> shutdown () .addInterest    (this, &X3DBrowserEditor::set_cancel_shutdown);
-
 	getBrowser () -> replaceWorld (getBrowser () -> getExecutionContext ());
-}
-
-void
-X3DBrowserEditor::set_cancel_shutdown ()
-{
-	getBrowser () -> shutdown () .removeInterest (this, &X3DBrowserEditor::set_cancel_shutdown);
-	getBrowser () -> shutdown () .addInterest    (this, &X3DBrowserEditor::set_shutdown);
 }
 
 bool
