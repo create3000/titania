@@ -10,6 +10,9 @@ EXTERNPROTO Rotor [
   exposedField SFTime     stopTime
   eventOut     SFRotation value_changed
 ]
-"Rotor.x3dv"
+[
+  "Rotor.x3dv",
+  "file:///usr/share/titania/Library/Prototypes/Engines/Rotor/Rotor.x3dv"
+]
 
 Rotor { }

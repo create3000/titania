@@ -3,10 +3,20 @@
 META "title" "RoundedRectangle2D Prototype"
 
 EXTERNPROTO RoundedRectangle2D [
-  exposedField SFFloat cornerRadius
-  exposedField SFVec2f size
-  field        SFBool  solid
+  inputOutput    SFFloat cornerRadius
+  inputOutput    SFVec2f size
+  initializeOnly SFBool  solid
 ]
-"RoundedRectangle2D.x3dv"
+[
+  "RoundedRectangle2D.x3dv",
+  "file:///usr/share/titania/Library/Prototypes/Geometry2D/RoundedRectangle2D/RoundedRectangle2D.x3dv"
+]
 
-RoundedRectangle2D { }
+DEF RoundedRectangle2D Transform {
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry RoundedRectangle2D { }
+  }
+}

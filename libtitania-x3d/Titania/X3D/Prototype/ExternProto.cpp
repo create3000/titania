@@ -76,8 +76,7 @@ ExternProto::ExternProto (X3DExecutionContext* const executionContext) :
 
 	addChildren (url (), scene, proto);
 
-	//checkLoadState () .isTainted (true);
-	url () .isTainted (true);
+	disableEvents ();
 	scene .isTainted (true);
 	proto .isTainted (true);
 }
@@ -181,7 +180,7 @@ ExternProto::requestImmediateLoad ()
 
 	if (proto)
 	{
-		for (const auto & fieldDefinition : getUserDefinedFields ())
+		for (const auto & fieldDefinition : getFieldDefinitions ())
 		{
 			try
 			{

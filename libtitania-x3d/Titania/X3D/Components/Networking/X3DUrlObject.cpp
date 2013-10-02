@@ -97,9 +97,12 @@ X3DUrlObject::transform (MFString & url, X3DExecutionContext* const oldExecution
 	}
 }
 
-//void
-//X3DUrlObject::createX3DFromURL (const MFString & url, const SFNode & node, const std::string & fieldName)
-//{ }
+void
+X3DUrlObject::disableEvents ()
+{
+	url () .isTainted (true);
+	loadState .isTainted (true);
+}
 
 } // X3D
 } // titania
