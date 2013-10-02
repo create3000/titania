@@ -64,19 +64,28 @@ class ExportedNode :
 {
 public:
 
+	///  @name Construction
+
 	ExportedNode (X3DExecutionContext* const,
 	              const std::string &, const SFNode &);
 
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final;
-
 	ExportedNode*
-	clone (X3DScene* const) const;
+	copy (X3DScene* const) const
+	throw (Error <INVALID_NAME>);
+
+	///  @name Construction (NOT SUPPORTED)
 
 	virtual
 	ExportedNode*
-	clone (X3DExecutionContext* const) const final;
+	clone (X3DExecutionContext* const) const
+	throw (Error <INVALID_NAME>,
+          Error <NOT_SUPPORTED>) final;
+
+	virtual
+	ExportedNode*
+	copy (X3DExecutionContext* const) const
+	throw (Error <INVALID_NAME>,
+          Error <NOT_SUPPORTED>) final;
 
 	///  @name Common members
 
@@ -106,9 +115,13 @@ public:
 	getNode () const
 	{ return node; }
 
+	///  @name Input/Output
+
 	virtual
 	void
 	toStream (std::ostream &) const final;
+
+	///  @name Destruction
 
 	virtual
 	void
@@ -116,6 +129,10 @@ public:
 
 
 private:
+
+	virtual
+	X3DBaseNode*
+	create (X3DExecutionContext* const) const final;
 
 	///  @name Static members
 

@@ -79,12 +79,6 @@ SFString::SFString (const char_type* value) :
 	X3DField <String> (value)
 { }
 
-SFString*
-SFString::clone () const
-{
-	return new SFString (*this);
-}
-
 SFString &
 SFString::operator = (const char_type* value)
 {

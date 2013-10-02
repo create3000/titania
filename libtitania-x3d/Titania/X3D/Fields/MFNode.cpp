@@ -65,6 +65,8 @@ template class X3DArrayField <SFNode>;
 
 MFNode*
 MFNode::clone (X3DExecutionContext* const executionContext) const
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>)
 {
 	MFNode* field = new MFNode ();
 
@@ -75,6 +77,8 @@ MFNode::clone (X3DExecutionContext* const executionContext) const
 
 void
 MFNode::clone (X3DExecutionContext* const executionContext, X3DFieldDefinition* fieldDefinition) const
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>)
 {
 	MFNode* field = static_cast <MFNode*> (fieldDefinition);
 
@@ -82,13 +86,19 @@ MFNode::clone (X3DExecutionContext* const executionContext, X3DFieldDefinition* 
 	{
 		if (value)
 		{
-			try
-			{
-				field -> emplace_back (value -> clone (executionContext));
-			}
-			catch (const Error <INVALID_NAME> &)
-			{
+			if (value -> getName () .empty ())
 				field -> emplace_back (value -> copy (executionContext));
+	
+			else
+			{
+				try
+				{
+					field -> emplace_back (value -> clone (executionContext));
+				}
+				catch (const Error <INVALID_NAME> &)
+				{
+					field -> emplace_back (value -> copy (executionContext));
+				}
 			}
 		}
 		else

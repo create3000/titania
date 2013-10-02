@@ -25,6 +25,18 @@ EXTERNPROTO Rotor [
 ]
 "Rotor.wrl"
 
+EXTERNPROTO Rotor2 [
+  exposedField SFBool     enabled
+  exposedField SFTime     cycleInterval
+  exposedField SFVec3f    axis
+  exposedField SFFloat    angle
+  exposedField SFBool     loop
+  exposedField SFTime     startTime
+  exposedField SFTime     stopTime
+  eventOut     SFRotation value_changed
+]
+"Rotor.wrl#Rotor"
+
 PROTO Children1 [
   exposedField MFNode children1 [ ]
 ]
@@ -59,20 +71,14 @@ DEF Text1 Transform {
     appearance Appearance {
       material Material { }
     }
-    geometry DEF Text Text {
-      string "OutlineEditor"
-      fontStyle FontStyle {
-        family "PT Sans Narrow"
-        style "BOLD"
-      }
-    }
+    geometry USE Text
   }
 }
 
 DEF Sensors Transform {
   children [
-    DEF _0 ProximitySensor { }
-    DEF _1 VisibilitySensor { }
+    USE _0
+    USE _1
   ]
 }
 
@@ -86,7 +92,7 @@ DEF Rotor Rotor {
 
 DEF Box Transform {
   translation 1.40843 1.10727 0.193803
-  rotation 0 0 1 6.2168
+  rotation 0 0 1 2.80381
   scale 0.2 0.2 0.2
   children Transform {
     children Shape {
@@ -142,7 +148,7 @@ Grid {
   zDimension 100
 }
 
-DEF Rotor1 Rotor { }
+DEF Rotor2 Rotor2 { }
 
 Anchor {
   description "Reload"

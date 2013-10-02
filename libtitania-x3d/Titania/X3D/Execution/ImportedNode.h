@@ -64,12 +64,22 @@ class ImportedNode :
 {
 public:
 
+	///  @name Construction
+
 	ImportedNode (X3DExecutionContext* const,
 	              const X3DSFNode <Inline> &, const std::string &, const std::string &);
 
 	virtual
 	ImportedNode*
-	clone (X3DExecutionContext* const) const final;
+	clone (X3DExecutionContext* const) const
+	throw (Error <INVALID_NAME>,
+          Error <NOT_SUPPORTED>) final;
+
+	virtual
+	ImportedNode*
+	copy (X3DExecutionContext* const) const
+	throw (Error <INVALID_NAME>,
+          Error <NOT_SUPPORTED>) final;
 
 	///  @name Common members
 
@@ -109,9 +119,13 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
+	///  @name Input/Output
+
 	virtual
 	void
 	toStream (std::ostream &) const final;
+
+	///  @name Destruction
 
 	virtual
 	void
@@ -120,11 +134,11 @@ public:
 
 private:
 
+	///  @name Construction
+
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const final;
-
-	X3DSFNode <Inline> inlineNode;
 
 	///  @name Static members
 
@@ -133,6 +147,8 @@ private:
 	static const std::string containerField;
 
 	///  @name Members
+
+	X3DSFNode <Inline> inlineNode;
 
 	const std::string exportedName;
 	const std::string importedName;

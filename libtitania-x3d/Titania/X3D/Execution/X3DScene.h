@@ -172,10 +172,10 @@ public:
 protected:
 
 	void
-	importMetaData (const X3DScene* const);
+	copyMetaData (const X3DScene* const);
 
 	void
-	importExportedNodes (const X3DScene* const);
+	copyExportedNodes (const X3DScene* const);
 
 
 private:

@@ -10,6 +10,6 @@ EXTERNPROTO Rotor [
   exposedField SFTime     stopTime
   eventOut     SFRotation value_changed
 ]
-"Rotor.wrl"
+"Rotor.x3dv"
 
 Rotor { }

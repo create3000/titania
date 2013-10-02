@@ -77,12 +77,6 @@ SFColorRGBA::SFColorRGBA (const scalar_type & r, const scalar_type & g, const sc
 	X3DField <Color4f> (Color4f (r, g, b, a))
 { }
 
-SFColorRGBA*
-SFColorRGBA::clone () const
-{
-	return new SFColorRGBA (*this);
-}
-
 void
 SFColorRGBA::setR (const scalar_type & r)
 {

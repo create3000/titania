@@ -84,7 +84,8 @@ public:
 
 	virtual
 	const std::string &
-	getTypeName () const = 0;
+	getTypeName () const
+	throw (Error <DISPOSED>) = 0;
 
 	///  @name Comment handling
 

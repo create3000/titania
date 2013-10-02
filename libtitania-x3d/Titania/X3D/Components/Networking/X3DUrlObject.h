@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -72,12 +72,14 @@ public:
 	const MFString &
 	url () const
 	{ return *fields .url; }
-	
+
 	///  @name Construction
 
 	virtual
 	X3DUrlObject*
-	copy (X3DExecutionContext* const) const final;
+	copy (X3DExecutionContext* const) const
+	throw (Error <INVALID_NAME>,
+          Error <NOT_SUPPORTED>) override;
 
 	///  @name Member access
 
@@ -96,9 +98,10 @@ public:
 	void
 	transform (MFString &, X3DExecutionContext* const, X3DExecutionContext* const);
 
-	~X3DUrlObject ();
 
 protected:
+
+	///  @name Construction
 
 	X3DUrlObject ();
 
@@ -107,9 +110,13 @@ protected:
 	initialize () override
 	{ }
 
+	///  @name Member access
+
 	void
 	setLoadState (LoadState value)
 	{ loadState = value; }
+
+	///  @name Destruction
 
 	virtual
 	void
@@ -119,6 +126,8 @@ protected:
 
 private:
 
+	///  @name Members
+
 	struct Fields
 	{
 		Fields ();
@@ -127,7 +136,7 @@ private:
 	};
 
 	Fields fields;
-	
+
 	X3DScalar <LoadState> loadState;
 
 };

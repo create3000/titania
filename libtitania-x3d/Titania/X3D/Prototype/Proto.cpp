@@ -71,10 +71,49 @@ Proto::Proto (X3DExecutionContext* const executionContext) :
 	setWorldURL (executionContext -> getWorldURL ());
 }
 
-X3DBaseNode*
+Proto*
 Proto::create (X3DExecutionContext* const executionContext) const
 {
 	return new Proto (executionContext);
+}
+
+Proto*
+Proto::clone (X3DExecutionContext* const executionContext) const
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>)
+{
+	executionContext -> updateProtoDeclaration (this -> getName (), const_cast <Proto*> (this));
+
+	return const_cast <Proto*> (this);
+}
+
+Proto*
+Proto::copy (X3DExecutionContext* const executionContext) const
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>)
+{
+	Proto* copy = create (executionContext);
+
+	copy -> setName (getName ());
+
+	for (const auto & field : getUserDefinedFields ())
+	{
+		copy -> addUserDefinedField (field -> getAccessType (),
+		                             field -> getName (),
+		                             field -> clone (executionContext));
+	}
+	
+	copy -> setup ();
+
+	executionContext -> updateProtoDeclaration (copy -> getName (), copy);
+
+	copy -> copyExternProtos (this);
+	copy -> copyProtos (this);
+	copy -> copyRootNodes (this);
+	copy -> copyImportedNodes (this);
+	copy -> copyRoutes (this);
+
+	return copy;
 }
 
 X3DPrototypeInstance*

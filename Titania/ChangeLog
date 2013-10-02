@@ -1,5 +1,13 @@
 2013-10-02  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBrowserEditor.cpp:
+	* Rotor.x3dv:
+	* ExternProto.x3dv:
+	* Externproto.x3dv:
+	* RoundedRectangle2D.x3dv: 
+
+2013-10-02  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBrowserEditor.h:
 	* X3DBrowserEditor.cpp: 
 

@@ -71,6 +71,8 @@ X3DUrlObject::X3DUrlObject () :
 
 X3DUrlObject*
 X3DUrlObject::copy (X3DExecutionContext* const executionContext) const
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>)
 {
 	X3DUrlObject* copy = dynamic_cast <X3DUrlObject*> (X3DBaseNode::copy (executionContext));
 
@@ -98,9 +100,6 @@ X3DUrlObject::transform (MFString & url, X3DExecutionContext* const oldExecution
 //void
 //X3DUrlObject::createX3DFromURL (const MFString & url, const SFNode & node, const std::string & fieldName)
 //{ }
-
-X3DUrlObject::~X3DUrlObject ()
-{ }
 
 } // X3D
 } // titania

@@ -313,6 +313,14 @@ public:
 	       Error <DISPOSED>)
 	{ return protos; }
 
+	X3DProto*
+	findProtoDeclaration (const std::string &) const
+	throw (Error <INVALID_NAME>,
+	       Error <INVALID_X3D>,
+	       Error <URL_UNAVAILABLE>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
 	///  @name Exterproto declaration handling
 
 	const X3DSFNode <ExternProto> &
@@ -426,30 +434,32 @@ protected:
 	///  @name Import handling
 
 	void
-	importExternProtos (const X3DExecutionContext* const);
+	cloneExternProtos (const X3DExecutionContext* const);
 
 	void
-	importProtos (const X3DExecutionContext* const);
+	copyExternProtos (const X3DExecutionContext* const);
 
 	void
-	importRootNodes (const X3DExecutionContext* const);
+	cloneProtos (const X3DExecutionContext* const);
 
 	void
-	importImportedNodes (const X3DExecutionContext* const);
+	copyProtos (const X3DExecutionContext* const)
+	throw (Error <INVALID_NAME>,
+	       Error <NOT_SUPPORTED>);
 
 	void
-	importRoutes (const X3DExecutionContext* const);
+	copyRootNodes (const X3DExecutionContext* const)
+	throw (Error <INVALID_NAME>,
+	       Error <NOT_SUPPORTED>);
+
+	void
+	copyImportedNodes (const X3DExecutionContext* const);
+
+	void
+	copyRoutes (const X3DExecutionContext* const);
 
 
 private:
-
-	X3DProto*
-	getX3DProtoDeclaration (const std::string & name)
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_X3D>,
-	       Error <URL_UNAVAILABLE>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
 
 	X3DSFNode <Proto>
 	createProtoDeclaration (const std::string &, const FieldDefinitionArray &)

@@ -102,7 +102,8 @@ public:
 
 	virtual
 	SFMatrix4*
-	clone () const final;
+	clone () const
+	throw (Error <NOT_SUPPORTED>) final;
 
 	///  6.7.7 Add field interest.
 
@@ -238,6 +239,7 @@ template <class ValueType>
 inline
 SFMatrix4 <ValueType>*
 SFMatrix4 <ValueType>::clone () const
+throw (Error <NOT_SUPPORTED>)
 {
 	return new SFMatrix4 (*this);
 }

@@ -1,5 +1,57 @@
 2013-10-02  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* SFVec2.h:
+	* SFTime.h:
+	* MFNode.h:
+	* Route.h:
+	* SFVec4.h:
+	* SFVec3.h:
+	* SFColor.h:
+	* SFImage.h:
+	* X3DObject.h:
+	* X3DField.h:
+	* SFString.h:
+	* MFNode.cpp:
+	* Proto.h:
+	* Route.cpp:
+	* SFTime.cpp:
+	* SFColor.cpp:
+	* X3DScalar.h:
+	* X3DSFNode.h:
+	* SFMatrix4.h:
+	* SFMatrix3.h:
+	* SFImage.cpp:
+	* X3DBaseNode.h:
+	* Scene.cpp:
+	* SFString.cpp:
+	* Proto.cpp:
+	* X3DScene.h:
+	* SFRotation4.h:
+	* X3DProto.h:
+	* SFColorRGBA.h:
+	* X3DBaseNode.cpp:
+	* X3DArrayField.h:
+	* SFColorRGBA.cpp:
+	* X3DScene.cpp:
+	* ExternProto.h:
+	* splash.wrl:
+	* ImportedNode.h:
+	* ExportedNode.h:
+	* ExternProto.cpp:
+	* ImportedNode.cpp:
+	* ExportedNode.cpp:
+	* X3DFieldDefinition.h:
+	* X3DExecutionContext.h:
+	* X3DExecutionContext.cpp:
+	* X3DUrlObject.h:
+	* X3DUrlObject.cpp:
+	* X3DPrototypeInstance.h:
+	* X3DPrototypeInstance.cpp:
+	* Background.h:
+	* Background.cpp: 
+
+2013-10-02  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBrowser.h:
 	* X3DBrowser.cpp:
 	* X3DBrowserContext.cpp:

@@ -57,7 +57,7 @@
 namespace titania {
 namespace X3D {
 
-class Proto;
+class X3DProto;
 
 class X3DPrototypeInstance :
 	public X3DExecutionContext
@@ -66,7 +66,7 @@ public:
 
 	///  @name Construction
 
-	X3DPrototypeInstance (X3DExecutionContext* const, const X3DSFNode <Proto> &);
+	X3DPrototypeInstance (X3DExecutionContext* const, const X3DSFNode <X3DProto> &);
 
 	virtual
 	X3DPrototypeInstance*
@@ -74,7 +74,9 @@ public:
 
 	virtual
 	X3DPrototypeInstance*
-	copy (X3DExecutionContext* const) const final;
+	copy (X3DExecutionContext* const) const
+	throw (Error <INVALID_NAME>,
+          Error <NOT_SUPPORTED>) final;
 
 	///  @name Common members
 
@@ -125,9 +127,6 @@ public:
 	void
 	dispose () final;
 
-	virtual
-	~X3DPrototypeInstance ();
-
 
 private:
 
@@ -144,7 +143,7 @@ private:
 
 	///  @name Members
 
-	X3DSFNode <Proto> proto;
+	X3DSFNode <X3DProto> protoDeclaration;
 
 };
 

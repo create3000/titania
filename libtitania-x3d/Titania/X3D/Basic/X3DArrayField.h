@@ -86,6 +86,8 @@ public:
 	using X3DField <value_type>::operator =;
 	using X3DField <value_type>::getGarbageCollector;
 
+	///  @name Construction
+
 	///  Default constructor.
 	X3DArrayField () :
 		X3DField <value_type> ()
@@ -102,14 +104,6 @@ public:
 	{
 		*this = std::move (field);
 	}
-
-	//	///  Move constructor.
-	//	X3DArrayField (X3DArrayField && field) :
-	//		X3DArray (),
-	//		X3DField <value_type> (field)
-	//	{
-	//		addChildren (begin (), end ());
-	//	}
 
 	///  Construct an X3DArrayField from basic type @a value.
 	explicit
@@ -159,13 +153,19 @@ public:
 
 	virtual
 	X3DArrayField*
-	clone () const override
+	clone () const
+	throw (Error <INVALID_NAME>,
+          Error <NOT_SUPPORTED>) override
 	{ return new X3DArrayField (*this); }
 
 	virtual
 	X3DArrayField*
-	clone (X3DExecutionContext* const) const override
+	clone (X3DExecutionContext* const) const
+	throw (Error <INVALID_NAME>,
+          Error <NOT_SUPPORTED>) override
 	{ return clone (); }
+
+	///  @name Assignment operators
 
 	X3DArrayField &
 	operator = (const X3DArrayField & field)
@@ -222,6 +222,8 @@ public:
 		assign (list .begin (), list .end ());
 		return *this;
 	}
+	
+	///  @name Tests
 
 	virtual
 	bool
@@ -231,6 +233,8 @@ public:
 	virtual
 	bool
 	operator == (const X3DFieldDefinition &) const final;
+
+	///  @name Event handling
 
 	///  6.7.7 Add field interest.
 
@@ -244,7 +248,7 @@ public:
 	addInterest (Class & object, void (Class::* memberFunction) (const X3DArrayField &)) const
 	{ addInterest (object, memberFunction, std::cref (*this)); }
 
-	///  Functions
+	///  @name Element access
 
 	void
 	set1Value (const size_type index, const ValueType &);
@@ -405,7 +409,8 @@ public:
 	size () const
 	{ return getValue () .size (); }
 
-	///  @name Input operator.
+	///  @name Input/Output
+
 	virtual
 	void
 	fromStream (std::istream &)
@@ -414,10 +419,11 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) override;
 
-	///  @name Output operator.
 	virtual
 	void
 	toStream (std::ostream &) const override;
+
+	///  @name Destruction
 
 	virtual
 	~X3DArrayField ();
@@ -427,12 +433,16 @@ protected:
 
 	using X3DField <value_type>::get;
 
+	///  @name Element access
+
 	virtual
 	void
 	reset () override;
 
 
 private:
+
+	///  @name Element handling
 
 	void
 	addChildren (typename iterator::iterator_type,

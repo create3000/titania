@@ -64,6 +64,8 @@
 #include <algorithm>
 #include <iostream>
 
+#include <Titania/Backtrace.h>
+
 namespace titania {
 namespace X3D {
 
@@ -170,35 +172,7 @@ throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	return getX3DProtoDeclaration (name) -> createInstance (this);
-}
-
-X3DProto*
-X3DExecutionContext::getX3DProtoDeclaration (const std::string & name)
-throw (Error <INVALID_NAME>,
-       Error <INVALID_X3D>,
-       Error <URL_UNAVAILABLE>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	try
-	{
-		return protos .rfind (name) .getValue ();
-	}
-	catch (const std::out_of_range &)
-	{
-		try
-		{
-			return externProtos .rfind (name) .getValue ();
-		}
-		catch (const std::out_of_range &)
-		{
-			if (not isScene ())
-				return getExecutionContext () -> getX3DProtoDeclaration (name);
-
-			throw Error <INVALID_NAME> ("Unknown proto or externproto type '" + name + "'.");
-		}
-	}
+	return findProtoDeclaration (name) -> createInstance (this);
 }
 
 // Named node handling
@@ -541,6 +515,34 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	return proto;
 }
 
+X3DProto*
+X3DExecutionContext::findProtoDeclaration (const std::string & name) const
+throw (Error <INVALID_NAME>,
+       Error <INVALID_X3D>,
+       Error <URL_UNAVAILABLE>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	try
+	{
+		return protos .rfind (name) .getValue ();
+	}
+	catch (const std::out_of_range &)
+	{
+		try
+		{
+			return externProtos .rfind (name) .getValue ();
+		}
+		catch (const std::out_of_range &)
+		{
+			if (not isScene ())
+				return getExecutionContext () -> findProtoDeclaration (name);
+
+			throw Error <INVALID_NAME> ("Unknown proto or externproto type '" + name + "'.");
+		}
+	}
+}
+
 //	externprotoDeclarationHandling
 
 const X3DSFNode <ExternProto> &
@@ -610,9 +612,9 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		                                    field);
 	}
 
-	externProto -> url () = URLList;
-
 	externProto -> setup ();
+
+	externProto -> url () = URLList;
 
 	return externProto;
 }
@@ -721,52 +723,76 @@ throw (Error <INVALID_NODE>,
 // Import handling
 
 void
-X3DExecutionContext::importExternProtos (const X3DExecutionContext* const executionContext)
+X3DExecutionContext::cloneExternProtos (const X3DExecutionContext* const executionContext)
 {
 	for (const auto & externProto : executionContext -> getExternProtoDeclarations ())
-		updateExternProtoDeclaration (externProto .getNodeName (), externProto);
+		externProto -> clone (this);
 }
 
 void
-X3DExecutionContext::importProtos (const X3DExecutionContext* const executionContext)
+X3DExecutionContext::copyExternProtos (const X3DExecutionContext* const executionContext)
+{
+	for (const auto & externProto : executionContext -> getExternProtoDeclarations ())
+		externProto -> copy (this);
+}
+
+void
+X3DExecutionContext::cloneProtos (const X3DExecutionContext* const executionContext)
 {
 	for (const auto & proto : executionContext -> getProtoDeclarations ())
-		updateProtoDeclaration (proto .getNodeName (), proto);
+		proto -> clone (this);
 }
 
 void
-X3DExecutionContext::importRootNodes (const X3DExecutionContext* const executionContext)
+X3DExecutionContext::copyProtos (const X3DExecutionContext* const executionContext)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>)
+{
+	for (const auto & proto : executionContext -> getProtoDeclarations ())
+		proto -> copy (this);
+}
+
+void
+X3DExecutionContext::copyRootNodes (const X3DExecutionContext* const executionContext)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>)
 {
 	for (const auto & rootNode : executionContext -> getRootNodes ())
 	{
 		if (rootNode)
 		{
-			try
-			{
-				getRootNodes () .emplace_back (rootNode -> clone (this));
-			}
-			catch (const Error <INVALID_NAME> &)
-			{
+			if (rootNode -> getName () .empty ())
 				getRootNodes () .emplace_back (rootNode -> copy (this));
+
+			else
+			{
+				try
+				{
+					getRootNodes () .emplace_back (rootNode -> clone (this));
+				}
+				catch (const Error <INVALID_NAME> &)
+				{
+					getRootNodes () .emplace_back (rootNode -> copy (this));
+				}
 			}
 		}
 		else
-			getRootNodes () .emplace_back (rootNode);
+			getRootNodes () .emplace_back (nullptr);
 	}
 }
 
 void
-X3DExecutionContext::importImportedNodes (const X3DExecutionContext* const executionContext)
+X3DExecutionContext::copyImportedNodes (const X3DExecutionContext* const executionContext)
 {
 	for (const auto & importedNode : executionContext -> getImportedNodes ())
-		importedNode -> clone (this);
+		importedNode -> copy (this);
 }
 
 void
-X3DExecutionContext::importRoutes (const X3DExecutionContext* const executionContext)
+X3DExecutionContext::copyRoutes (const X3DExecutionContext* const executionContext)
 {
 	for (const auto & route : executionContext -> getRoutes ())
-		route -> clone (this);
+		route -> copy (this);
 }
 
 void

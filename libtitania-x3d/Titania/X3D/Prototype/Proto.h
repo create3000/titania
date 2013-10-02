@@ -65,9 +65,27 @@ public:
 	using X3DProto::createInstance;
 	using X3DExecutionContext::dispose;
 
-	///  @name Creation
+	///  @name Construction
 
 	Proto (X3DExecutionContext* const);
+
+	virtual
+	Proto*
+	create (X3DExecutionContext* const) const final;
+
+	virtual
+	Proto*
+	clone (X3DExecutionContext* const) const
+	throw (Error <INVALID_NAME>,
+          Error <NOT_SUPPORTED>) final;
+
+	virtual
+	Proto*
+	copy (X3DExecutionContext* const) const
+	throw (Error <INVALID_NAME>,
+          Error <NOT_SUPPORTED>) final;
+
+	///  @name Instance construction
 
 	virtual
 	X3DPrototypeInstance*
@@ -103,6 +121,13 @@ public:
 	isExternproto () const final
 	{ return false; }
 
+	///  @name Member access
+
+	virtual
+	Proto*
+	getProto () final
+	{ return this; }
+
 	///  @name RootNodes handling
 
 	X3DBaseNode*
@@ -118,10 +143,6 @@ public:
 private:
 
 	///  @name Construction
-
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final;
 
 	virtual
 	void

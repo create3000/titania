@@ -67,14 +67,16 @@ namespace X3D {
 const std::string X3DPrototypeInstance::componentName  = "Core";
 const std::string X3DPrototypeInstance::containerField = "children";
 
-X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const executionContext, const X3DSFNode <Proto> & prototype) :
+X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const executionContext, const X3DSFNode <X3DProto> & prototype) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DExecutionContext (),
-	              proto (prototype)
+	   protoDeclaration (prototype)
 {
 	addNodeType (X3DConstants::X3DPrototypeInstance);
 
 	addField (inputOutput, "metadata", metadata ());
+	
+	Proto* proto = protoDeclaration -> getProto ();
 
 	for (const auto & userDefinedField : proto -> getUserDefinedFields ())
 	{
@@ -83,7 +85,7 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 		          *userDefinedField -> clone ());
 	}
 
-	addChildren (proto);
+	addChildren (protoDeclaration);
 
 	// Assign protos and root nodes
 
@@ -99,9 +101,9 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 		addComponents (proto -> getComponents ());
 		setProfile (proto -> getProfile ());
 
-		importExternProtos (proto);
-		importProtos (proto);
-		importRootNodes (proto);
+		cloneExternProtos (proto);
+		cloneProtos (proto);
+		copyRootNodes (proto);
 	}
 
 	setExtendedEventHandling (false);
@@ -110,11 +112,22 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 X3DPrototypeInstance*
 X3DPrototypeInstance::create (X3DExecutionContext* const executionContext) const
 {
-	return new X3DPrototypeInstance (executionContext, proto);
+	if (executionContext -> isScene ())
+	{
+		X3DProto* protoDeclaration = executionContext -> findProtoDeclaration (getTypeName ());
+		
+		protoDeclaration -> requestImmediateLoad ();
+		
+		return new X3DPrototypeInstance (executionContext, protoDeclaration);
+	}
+
+	return new X3DPrototypeInstance (executionContext, protoDeclaration);
 }
 
 X3DPrototypeInstance*
 X3DPrototypeInstance::copy (X3DExecutionContext* const executionContext) const
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>)
 {
 	X3DPrototypeInstance* copy = dynamic_cast <X3DPrototypeInstance*> (X3DBaseNode::copy (executionContext));
 
@@ -123,7 +136,7 @@ X3DPrototypeInstance::copy (X3DExecutionContext* const executionContext) const
 		X3DFieldDefinition* field = copy -> getField ("url");
 
 		if (field -> getType () == X3DConstants::MFString)
-			X3DUrlObject::transform (*static_cast <MFString*> (field),  getExecutionContext (), executionContext);
+			X3DUrlObject::transform (*static_cast <MFString*> (field), getExecutionContext (), executionContext);
 	}
 	catch (const Error <INVALID_NAME> &)
 	{ }
@@ -136,18 +149,23 @@ X3DPrototypeInstance::initialize ()
 {
 	X3DExecutionContext::initialize ();
 
-	// Defer assigning imports and routes until now
+	if (not getExecutionContext () -> isProto ())
+	{
+		// Defer assigning imports and routes until now
 
-	importImportedNodes (proto);
-	importRoutes (proto);
+		Proto* proto = protoDeclaration -> getProto ();
+
+		copyImportedNodes (proto);
+		copyRoutes (proto);
+	}
 }
 
 const std::string &
 X3DPrototypeInstance::getTypeName () const
 throw (Error <DISPOSED>)
 {
-	if (proto)
-		return proto -> getName ();
+	if (protoDeclaration)
+		return protoDeclaration -> getName ();
 
 	backtrace_fn ();
 
@@ -158,8 +176,8 @@ const X3DBaseNode*
 X3DPrototypeInstance::getType () const
 throw (Error <DISPOSED>)
 {
-	if (proto)
-		return proto .getValue ();
+	if (protoDeclaration)
+		return protoDeclaration .getValue ();
 
 	backtrace_fn ();
 
@@ -197,11 +215,8 @@ X3DPrototypeInstance::dispose ()
 {
 	X3DExecutionContext::dispose ();
 
-	proto .dispose ();
+	protoDeclaration .dispose ();
 }
-
-X3DPrototypeInstance::~X3DPrototypeInstance ()
-{ }
 
 } // X3D
 } // titania

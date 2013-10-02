@@ -1,5 +1,10 @@
 2013-10-02  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Backtrace.h:
+	* Backtrace.cpp: 
+
+2013-10-02  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* URI.h:
 	* Path.h: 
 

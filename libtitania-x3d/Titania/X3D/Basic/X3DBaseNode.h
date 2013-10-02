@@ -87,11 +87,15 @@ public:
 
 	virtual
 	X3DBaseNode*
-	clone (X3DExecutionContext* const) const;
+	clone (X3DExecutionContext* const) const
+	throw (Error <INVALID_NAME>,
+          Error <NOT_SUPPORTED>);
 
 	virtual
 	X3DBaseNode*
-	copy (X3DExecutionContext* const) const;
+	copy (X3DExecutionContext* const) const
+	throw (Error <INVALID_NAME>,
+          Error <NOT_SUPPORTED>);
 
 	void
 	assign (const X3DBaseNode*);

@@ -57,8 +57,17 @@
 namespace titania {
 
 void
-backtrace_fn (size_t size)
+backtrace_fn (size_t size, int sig)
 {
+	std::clog
+		<< std::string (80, '#') << std::endl
+		<< "#" << std::endl
+		<< "# Backtrace" << std::endl
+		<< "#" << std::endl
+		<< "# Error: signal " << sig << std::endl
+		<< "#" << std::endl
+		<< std::string (80, '#') << std::endl;
+
 	void* array [size];
 
 	// get void*'s for all entries on the stack
@@ -66,14 +75,16 @@ backtrace_fn (size_t size)
 
 	// print out all the frames to stderr
 	backtrace_symbols_fd (array, size, 2);
+
+	std::clog << std::endl;
 }
 
+static
 void
 backtrace_signal_handler (int sig)
 {
 	// print out all the frames to stderr
-	std::clog << "Error: signal " << sig << ":" << std::endl;
-	backtrace_fn (100);
+	backtrace_fn (100, sig);
 	exit (1);
 }
 

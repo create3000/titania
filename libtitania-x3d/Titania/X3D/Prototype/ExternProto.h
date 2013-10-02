@@ -72,7 +72,19 @@ public:
 
 	virtual
 	ExternProto*
-	clone (X3DExecutionContext* const) const final;
+	create (X3DExecutionContext* const) const final;
+
+	virtual
+	ExternProto*
+	clone (X3DExecutionContext* const) const
+	throw (Error <INVALID_NAME>,
+          Error <NOT_SUPPORTED>) final;
+
+	virtual
+	ExternProto*
+	copy (X3DExecutionContext* const) const
+	throw (Error <INVALID_NAME>,
+          Error <NOT_SUPPORTED>) final;
 
 	///  @name Common members
 
@@ -92,12 +104,21 @@ public:
 	getContainerField () const final
 	{ return containerField; }
 
-	///  @name Operations
+	///  @name Test
 
 	virtual
 	bool
 	isExternproto () const final
 	{ return true; }
+
+	///  @name Member access
+
+	virtual
+	Proto*
+	getProto () final
+	{ return proto; }
+
+	///  @name Operations
 
 	virtual
 	X3DPrototypeInstance*
@@ -106,6 +127,8 @@ public:
 	virtual
 	void
 	requestImmediateLoad () final;
+
+	///  @name Input/Output
 
 	virtual
 	void
@@ -128,10 +151,6 @@ private:
 	virtual
 	void
 	initialize () final;
-
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final;
 
 	///  @name Input/Output
 

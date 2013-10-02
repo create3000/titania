@@ -1,0 +1,93 @@
+#X3D V3.3 utf8 Titania
+
+META "title" "RoundedRectangle2D Prototype"
+
+PROTO RoundedRectangle2D [
+  exposedField SFFloat cornerRadius 1
+  exposedField SFVec2f size 2 2
+  field        SFBool  solid TRUE
+]
+{
+  PROTO Fields [
+    exposedField SFFloat cornerRadius 1
+    exposedField SFVec2f size 2 2
+  ]
+  {
+    MetadataBool { }
+  }
+
+  DEF Geometry IndexedFaceSet {
+    solid IS solid
+    coord Coordinate { }
+  }
+
+  DEF RoundedRectangle2D Script {
+    eventIn SFFloat set_cornerRadius
+    eventIn SFVec2f set_size
+    field   SFFloat cornerDimension 10
+    field   SFNode  geometry USE Geometry
+    field   SFNode  fields DEF Fields Fields {
+      cornerRadius IS cornerRadius
+      size IS size
+    }
+
+    url "vrmlscript:
+
+function initialize ()
+{
+	eventsProcessed ();
+}
+
+function eventsProcessed ()
+{
+	var size         = fields .size;
+	var cornerRadius = Math .min (Math .min (fields .cornerRadius, size .x / 2), size .y / 2);
+
+	var point         = new SFVec3f (cornerRadius, 0, 0);
+	var startRotation = new SFRotation (0, 0, 1, 0);
+	var endRotation   = new SFRotation (0, 0, 1, Math .PI / 2);
+	var corner        = new MFVec3f ();
+	var coordIndex    = new MFInt32 ();
+	var points        = new MFVec3f ();
+
+	for (var i = 0; i < cornerDimension * 4; ++ i)
+		coordIndex [coordIndex .length] = i;
+		
+	geometry .coordIndex = coordIndex;
+
+	for (var i = 0; i < cornerDimension; ++i)
+		corner [i] = startRotation .slerp (endRotation, i / (cornerDimension - 1)) .multVec (point);
+	
+	var translation = new SFVec3f (size .x / 2 - cornerRadius, size .y / 2 - cornerRadius, 0);
+
+	for (var i = 0; i < cornerDimension; ++ i)
+		points [points .length] = corner [i] .add (translation);
+
+	var translation = new SFVec3f (-size .x / 2 + cornerRadius, size .y / 2 - cornerRadius, 0);
+	var rotation    = new SFRotation (0, 0, 1, Math .PI * 0.5);
+
+	for (var i = 0; i < cornerDimension; ++ i)
+		points [points .length] = rotation .multVec (corner [i]) .add (translation);
+
+	var translation = new SFVec3f (-size .x / 2 + cornerRadius, -size .y / 2 + cornerRadius, 0);
+	var rotation    = new SFRotation (0, 0, 1, Math .PI);
+
+	for (var i = 0; i < cornerDimension; ++ i)
+		points [points .length] = rotation .multVec (corner [i]) .add (translation);
+
+	var translation = new SFVec3f (size .x / 2 - cornerRadius, -size .y / 2 + cornerRadius, 0);
+	var rotation    = new SFRotation (0, 0, 1, Math .PI * 1.5);
+
+	for (var i = 0; i < cornerDimension; ++ i)
+		points [points .length] = rotation .multVec (corner [i]) .add (translation);
+
+	geometry .coord .point = points;
+}
+"
+    directOutput TRUE
+  }
+
+  ROUTE Fields.cornerRadius_changed TO RoundedRectangle2D.set_cornerRadius
+  ROUTE Fields.size_changed TO RoundedRectangle2D.set_size
+}
+

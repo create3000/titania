@@ -85,12 +85,6 @@ SFImage::SFImage (const size_type width, const size_type height, const size_type
 	get () .array () .addParent (this);
 }
 
-SFImage*
-SFImage::clone () const
-{
-	return new SFImage (*this);
-}
-
 void
 SFImage::setWidth (const size_type value)
 {

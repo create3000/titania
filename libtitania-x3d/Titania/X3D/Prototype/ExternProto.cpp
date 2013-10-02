@@ -82,7 +82,7 @@ ExternProto::ExternProto (X3DExecutionContext* const executionContext) :
 	proto .isTainted (true);
 }
 
-X3DBaseNode*
+ExternProto*
 ExternProto::create (X3DExecutionContext* const executionContext) const
 {
 	return new ExternProto (executionContext);
@@ -90,10 +90,37 @@ ExternProto::create (X3DExecutionContext* const executionContext) const
 
 ExternProto*
 ExternProto::clone (X3DExecutionContext* const executionContext) const
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>)
 {
-	ExternProto* copy = dynamic_cast <ExternProto*> (X3DProto::clone (executionContext));
+	executionContext -> updateExternProtoDeclaration (this -> getName (), const_cast <ExternProto*> (this));
+
+	return const_cast <ExternProto*> (this);
+}
+
+ExternProto*
+ExternProto::copy (X3DExecutionContext* const executionContext) const
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>)
+{
+	ExternProto* copy = create (executionContext);
+
+	copy -> setName (getName ());
+
+	for (const auto & field : getUserDefinedFields ())
+	{
+		copy -> addUserDefinedField (field -> getAccessType (),
+		                             field -> getName (),
+		                             field -> clone (executionContext));
+	}
+
+	copy -> setup ();
 
 	copy -> url () = url ();
+	
+	transform (copy -> url (), getExecutionContext (), executionContext);
+	
+	executionContext -> updateExternProtoDeclaration (copy -> getName (), copy);
 
 	return copy;
 }
@@ -113,9 +140,7 @@ ExternProto::createInstance (X3DExecutionContext* const executionContext)
 {
 	requestImmediateLoad ();
 
-	auto instance = new X3DPrototypeInstance (executionContext, proto);
-
-	return instance;
+	return new X3DPrototypeInstance (executionContext, this);
 }
 
 void

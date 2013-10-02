@@ -111,16 +111,22 @@ public:
 
 	virtual
 	X3DSFNode*
-	clone () const final
+	clone () const
+	throw (Error <INVALID_NAME>,
+          Error <NOT_SUPPORTED>) final
 	{ return new X3DSFNode (*this); }
 
 	virtual
 	X3DSFNode*
-	clone (X3DExecutionContext* const) const final;
+	clone (X3DExecutionContext* const) const
+	throw (Error <INVALID_NAME>,
+          Error <NOT_SUPPORTED>) final;
 
 	virtual
 	void
-	clone (X3DExecutionContext* const, X3DFieldDefinition*) const final;
+	clone (X3DExecutionContext* const, X3DFieldDefinition*) const
+	throw (Error <INVALID_NAME>,
+          Error <NOT_SUPPORTED>) final;
 
 	/// @name Assignment operators
 
@@ -149,7 +155,8 @@ public:
 
 	virtual
 	const std::string &
-	getTypeName () const final
+	getTypeName () const
+	throw (Error <DISPOSED>) final
 	{ return typeName; }
 
 	///  @name Node services
@@ -253,6 +260,8 @@ const std::string X3DSFNode <ValueType>::typeName ("SFNode");
 template <class ValueType>
 X3DSFNode <ValueType>*
 X3DSFNode <ValueType>::clone (X3DExecutionContext* const executionContext) const
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>)
 {
 	X3DSFNode* field = new X3DSFNode ();
 
@@ -264,18 +273,26 @@ X3DSFNode <ValueType>::clone (X3DExecutionContext* const executionContext) const
 template <class ValueType>
 void
 X3DSFNode <ValueType>::clone (X3DExecutionContext* const executionContext, X3DFieldDefinition* fieldDefinition) const
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>)
 {
 	X3DSFNode* field = static_cast <X3DSFNode*> (fieldDefinition);
 
 	if (getValue ())
 	{
-		try
-		{
-			field -> set (dynamic_cast <ValueType*> (getValue () -> clone (executionContext)));
-		}
-		catch (const Error <INVALID_NAME> &)
-		{
+		if (getValue () -> getName () .empty ())
 			field -> set (dynamic_cast <ValueType*> (getValue () -> copy (executionContext)));
+
+		else
+		{
+			try
+			{
+				field -> set (dynamic_cast <ValueType*> (getValue () -> clone (executionContext)));
+			}
+			catch (const Error <INVALID_NAME> &)
+			{
+				field -> set (dynamic_cast <ValueType*> (getValue () -> copy (executionContext)));
+			}
 		}
 	}
 	else

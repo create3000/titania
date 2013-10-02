@@ -135,12 +135,16 @@ X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const 
 
 X3DBaseNode*
 X3DBaseNode::clone (X3DExecutionContext* const executionContext) const
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>)
 {
 	return executionContext -> getNamedNode (getName ());
 }
 
 X3DBaseNode*
 X3DBaseNode::copy (X3DExecutionContext* const executionContext) const
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>)
 {
 	X3DBaseNode* copy = create (executionContext);
 
@@ -210,7 +214,7 @@ X3DBaseNode::copy (X3DExecutionContext* const executionContext) const
 					}
 					catch (const Error <INVALID_NAME> &)
 					{
-						throw Error <INVALID_NAME> ("No such event or field '" + originalReference -> getName () + " inside node.");
+						throw Error <INVALID_NAME> ("No reference '" + originalReference -> getName () + "' inside execution context " + executionContext -> getTypeName () + " '" + executionContext -> getName ()  + "'.");
 					}
 				}
 			}
@@ -446,10 +450,13 @@ X3DBaseNode::isDefaultValue (const X3DFieldDefinition* const field) const
 	{
 		const X3DFieldDefinition* declarationField = getType () -> getField (field -> getName ());
 
+		__LOG__ << field -> getName () << " : " << *field << " : " << *declarationField << std::endl;
+
 		return *field == *declarationField;
 	}
 	catch (const Error <INVALID_NAME> &)
 	{
+		__LOG__ << std::endl;
 		return false;
 	}
 }

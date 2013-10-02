@@ -77,12 +77,6 @@ SFColor::SFColor (const scalar_type & r, const scalar_type & g, const scalar_typ
 	X3DField <Color3f> (Color3f (r, g, b))
 { }
 
-SFColor*
-SFColor::clone () const
-{
-	return new SFColor (*this);
-}
-
 void
 SFColor::setR (const scalar_type & r)
 {

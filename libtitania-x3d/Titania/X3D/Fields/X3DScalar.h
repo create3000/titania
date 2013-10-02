@@ -86,7 +86,8 @@ public:
 
 	virtual
 	X3DScalar*
-	clone () const final
+	clone () const
+	throw (Error <NOT_SUPPORTED>) final
 	{ return new X3DScalar <ValueType> (*this); }
 
 	///  6.7.7 Add field interest.

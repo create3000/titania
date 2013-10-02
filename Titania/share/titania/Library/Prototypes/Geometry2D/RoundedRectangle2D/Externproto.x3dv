@@ -1,0 +1,12 @@
+#X3D V3.3 utf8 Titania
+
+META "title" "RoundedRectangle2D Prototype"
+
+EXTERNPROTO RoundedRectangle2D [
+  exposedField SFFloat cornerRadius
+  exposedField SFVec2f size
+  field        SFBool  solid
+]
+"RoundedRectangle2D.x3dv"
+
+RoundedRectangle2D { }

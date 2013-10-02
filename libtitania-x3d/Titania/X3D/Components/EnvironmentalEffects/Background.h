@@ -73,7 +73,9 @@ public:
 
 	virtual
 	Background*
-	copy (X3DExecutionContext* const) const final;
+	copy (X3DExecutionContext* const) const
+	throw (Error <INVALID_NAME>,
+          Error <NOT_SUPPORTED>) final;
 
 	///  @name Common members
 

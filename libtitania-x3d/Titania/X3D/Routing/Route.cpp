@@ -77,17 +77,25 @@ Route::Route (X3DExecutionContext* const executionContext,
 	setup ();
 }
 
-X3DBaseNode*
+Route*
 Route::create (X3DExecutionContext* const) const
 {
 	throw Error <NOT_SUPPORTED> ("Fabricating routes is not supported.");
 }
 
 Route*
-Route::clone (X3DExecutionContext* const executionContext) const
+Route::clone (X3DExecutionContext* const) const
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>)
 {
-	//	std::clog << __func__ << ": " << getTypeName () << " " << getName () << std::endl;
+	throw Error <NOT_SUPPORTED> ("Cloning routes is not supported.");
+}
 
+Route*
+Route::copy (X3DExecutionContext* const executionContext) const
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>)
+{
 	try
 	{
 		const SFNode & sourceNode      = executionContext -> getNode (getExecutionContext () -> getLocalName (getSourceNode ()));

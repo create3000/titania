@@ -106,16 +106,22 @@ public:
 
 	virtual
 	MFNode*
-	clone () const final
+	clone () const
+	throw (Error <INVALID_NAME>,
+          Error <NOT_SUPPORTED>) final
 	{ return new MFNode (*this); }
 
 	virtual
 	MFNode*
-	clone (X3DExecutionContext* const executionContext) const final;
+	clone (X3DExecutionContext* const executionContext) const
+	throw (Error <INVALID_NAME>,
+          Error <NOT_SUPPORTED>) final;
 
 	virtual
 	void
-	clone (X3DExecutionContext* const, X3DFieldDefinition*) const final;
+	clone (X3DExecutionContext* const, X3DFieldDefinition*) const
+	throw (Error <INVALID_NAME>,
+          Error <NOT_SUPPORTED>) final;
 
 	MFNode &
 	operator = (const MFNode & field)

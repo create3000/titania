@@ -83,7 +83,9 @@ public:
 
 	virtual
 	SFImage*
-	clone () const final;
+	clone () const
+	throw (Error <NOT_SUPPORTED>) final
+	{ return new SFImage (*this); }
 
 	///  6.7.7 Add field interest.
 

@@ -97,7 +97,9 @@ public:
 
 	virtual
 	SFColorRGBA*
-	clone () const final;
+	clone () const
+	throw (Error <NOT_SUPPORTED>) final
+	{ return new SFColorRGBA (*this); }
 
 	void
 	setR (const scalar_type &);

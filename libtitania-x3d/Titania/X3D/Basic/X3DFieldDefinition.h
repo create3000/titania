@@ -74,16 +74,22 @@ public:
 
 	virtual
 	X3DFieldDefinition*
-	clone () const = 0;
+	clone () const
+	throw (Error <INVALID_NAME>,
+          Error <NOT_SUPPORTED>) = 0;
 
 	virtual
 	X3DFieldDefinition*
 	clone (X3DExecutionContext* const) const
+	throw (Error <INVALID_NAME>,
+          Error <NOT_SUPPORTED>)
 	{ return clone (); }
 
 	virtual
 	void
-	clone (X3DExecutionContext* const, X3DFieldDefinition*) const = 0;
+	clone (X3DExecutionContext* const, X3DFieldDefinition*) const
+	throw (Error <INVALID_NAME>,
+          Error <NOT_SUPPORTED>) = 0;
 
 	X3DFieldDefinition &
 	operator = (const X3DFieldDefinition &);

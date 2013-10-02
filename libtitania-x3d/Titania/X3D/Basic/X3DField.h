@@ -69,12 +69,16 @@ public:
 
 	using X3DFieldDefinition::addInterest;
 
+	///  @name Construction
+
 	virtual
 	void
-	clone (X3DExecutionContext* const, X3DFieldDefinition* field) const override
+	clone (X3DExecutionContext* const, X3DFieldDefinition* field) const
+	throw (Error <INVALID_NAME>,
+          Error <NOT_SUPPORTED>) override
 	{ static_cast <X3DField*> (field) -> set (value); }
 
-	/// @name Assignment operators
+	///  @name Assignment operators
 
 	///  Default assignment operator.  Behaves the same as the 6.7.6 setValue service.
 	X3DField &
@@ -84,7 +88,7 @@ public:
 	X3DField &
 	operator = (const ValueType &);
 
-	/// @name Member access
+	/// @name Common members
 
 	virtual
 	X3DConstants::FieldType
@@ -93,10 +97,11 @@ public:
 
 	virtual
 	const std::string &
-	getTypeName () const override
+	getTypeName () const
+	throw (Error <DISPOSED>) override
 	{ return typeName; }
 
-	/// @name Element access
+	///  @name Element access
 
 	///  6.7.5 getValue service.
 	const ValueType &
@@ -116,6 +121,8 @@ public:
 	operator const ValueType & () const
 	{ return value; }
 
+	///  @name Logical operators
+
 	///  Returns true if the type and the value of both fields are equal.
 	virtual
 	bool
@@ -126,6 +133,8 @@ public:
 	bool
 	operator not_eq (const X3DFieldDefinition & field) const override
 	{ return not (*this == field); }
+
+	///  @name Event handling
 
 	///  6.7.7 Add field interest.
 	template <class Class>
@@ -138,6 +147,8 @@ public:
 	addInterest (Class & object, void (Class::* memberFunction) (const ValueType &)) const
 	{ addInterest (object, memberFunction, std::cref (value)); }
 
+	///  @name Destruction
+
 	///  6.7.8 dispose
 	virtual
 	void
@@ -146,7 +157,7 @@ public:
 
 protected:
 
-	/// @name Constructors
+	/// @name Construction
 
 	///  Default constructor.
 	X3DField () :
@@ -193,14 +204,19 @@ protected:
 
 private:
 
-	///  The value for this field.
-	ValueType value;
+
+	/// @name Static members
 
 	///  TypeName identifer for X3DFields.
 	static const std::string typeName;
 
 	///  Type identifer for X3DFields.
 	static const X3DConstants::FieldType type;
+
+	/// @name Members
+
+	///  The value for this field.
+	ValueType value;
 
 };
 

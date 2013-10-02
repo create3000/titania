@@ -56,6 +56,7 @@
 namespace titania {
 namespace X3D {
 
+class Proto;
 class X3DPrototypeInstance;
 
 class X3DProto :
@@ -63,9 +64,19 @@ class X3DProto :
 {
 public:
 
+	///  @name Tests
+
 	virtual
 	bool
 	isExternproto () const = 0;
+
+	///  @name Member access
+
+	virtual
+	Proto*
+	getProto () = 0;
+
+	///  @name Operations
 
 	X3DPrototypeInstance*
 	createInstance ()
@@ -74,6 +85,11 @@ public:
 	virtual
 	X3DPrototypeInstance*
 	createInstance (X3DExecutionContext* const) = 0;
+
+	virtual
+	void
+	requestImmediateLoad ()
+	{ }
 
 	///  @name Comment handling
 
@@ -88,7 +104,14 @@ public:
 
 protected:
 
+	///  @name Construction
+
 	X3DProto ();
+
+
+private:
+
+	///  @name Members
 
 	std::deque <std::string> comments;
 

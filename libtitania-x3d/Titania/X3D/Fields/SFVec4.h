@@ -102,7 +102,8 @@ public:
 
 	virtual
 	SFVec4*
-	clone () const final;
+	clone () const
+	throw (Error <NOT_SUPPORTED>) final;
 
 	///  6.7.7 Add field interest.
 
@@ -221,6 +222,7 @@ template <class ValueType>
 inline
 SFVec4 <ValueType>*
 SFVec4 <ValueType>::clone () const
+throw (Error <NOT_SUPPORTED>)
 {
 	return new SFVec4 (*this);
 }

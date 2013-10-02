@@ -83,7 +83,9 @@ public:
 
 	virtual
 	SFColor*
-	clone () const final;
+	clone () const
+	throw (Error <NOT_SUPPORTED>) final
+	{ return new SFColor (*this); }
 
 	///  6.7.7 Add field interest.
 

@@ -75,17 +75,21 @@ public:
 	explicit
 	SFTime (const time_type);
 
-	virtual
 	SFTime*
-	clone () const final;
+	clone () const
+	throw (Error <NOT_SUPPORTED>)
+	{ return new SFTime (*this); }
 
 	virtual
 	const std::string &
-	getTypeName () const final;
+	getTypeName () const
+	throw (Error <DISPOSED>) final
+	{ return typeName; }
 
 	virtual
 	X3DConstants::FieldType
-	getType () const final;
+	getType () const final
+	{ return type; }
 
 	std::string
 	toLocaleString () const;

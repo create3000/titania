@@ -196,17 +196,17 @@ throw (Error <INVALID_NAME>,
 // Import handling
 
 void
-X3DScene::importMetaData (const X3DScene* const scene)
+X3DScene::copyMetaData (const X3DScene* const scene)
 {
 	for (const auto & metaData : scene -> getMetaDatas ())
 		addMetaData (metaData .first, metaData .second);
 }
 
 void
-X3DScene::importExportedNodes (const X3DScene* const scene)
+X3DScene::copyExportedNodes (const X3DScene* const scene)
 {
 	for (const auto & exportedNode : scene -> getExportedNodes ())
-		exportedNode -> clone (this);
+		exportedNode -> copy (this);
 }
 
 // Input/Output

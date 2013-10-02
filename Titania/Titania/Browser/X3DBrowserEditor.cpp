@@ -791,7 +791,7 @@ throw (X3D::Error <X3D::INVALID_NAME>)
 
 	try
 	{
-		field = parent -> getField (child -> getContainerField ());
+		field = parent -> getField (child -> getLocalNode () -> getContainerField ());
 
 		if (field -> getType () not_eq X3D::X3DConstants::SFNode and field -> getType () not_eq X3D::X3DConstants::MFNode)
 			throw X3D::Error <X3D::INVALID_NAME> ("No appropriate container field found.");

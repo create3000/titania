@@ -83,7 +83,9 @@ public:
 
 	virtual
 	SFString*
-	clone () const final;
+	clone () const
+	throw (Error <NOT_SUPPORTED>) final
+	{ return new SFString (*this); }
 
 	///  6.7.7 Add field interest.
 

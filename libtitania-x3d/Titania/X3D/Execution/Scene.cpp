@@ -93,19 +93,19 @@ throw (Error <INVALID_OPERATION_TIMING>,
 				setProfile (getBrowser () -> getProfile ("Full"));
 		}
 
-		importMetaData (scene);
+		//importMetaData (scene);
 
-		importExternProtos (scene);
-		importProtos (scene);
+		copyExternProtos (scene);
+		copyProtos (scene);
 
 		updateNamedNodes (scene);
-		importRootNodes (scene);
+		copyRootNodes (scene);
 
 		initialize ();
 
-		importImportedNodes (scene);
-		importRoutes (scene);
-		importExportedNodes (scene);
+		copyImportedNodes (scene);
+		copyRoutes (scene);
+		copyExportedNodes (scene);
 
 		return;
 	}

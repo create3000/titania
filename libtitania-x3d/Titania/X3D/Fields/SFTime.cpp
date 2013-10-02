@@ -68,24 +68,6 @@ SFTime::SFTime (const time_type value) :
 	X3DField <time_type> (value)
 { }
 
-SFTime*
-SFTime::clone () const
-{
-	return new SFTime (*this);
-}
-
-const std::string &
-SFTime::getTypeName () const
-{
-	return typeName;
-}
-
-X3DConstants::FieldType
-SFTime::getType () const
-{
-	return type;
-}
-
 std::string
 SFTime::toLocaleString () const
 {

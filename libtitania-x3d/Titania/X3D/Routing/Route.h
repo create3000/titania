@@ -72,7 +72,15 @@ public:
 
 	virtual
 	Route*
-	clone (X3DExecutionContext* const) const final;
+	clone (X3DExecutionContext* const) const
+	throw (Error <INVALID_NAME>,
+          Error <NOT_SUPPORTED>) final;
+
+	virtual
+	Route*
+	copy (X3DExecutionContext* const) const
+	throw (Error <INVALID_NAME>,
+          Error <NOT_SUPPORTED>) final;
 
 	///  @name Common members
 
@@ -92,10 +100,12 @@ public:
 	getContainerField () const final
 	{ return containerField; }
 
-	///  @name Member access
+	///  @name Tests
 
 	bool
 	isConnected ();
+
+	///  @name Member access
 
 	RouteId
 	getId () const;
@@ -135,13 +145,17 @@ public:
 
 private:
 
+	///  @name Construction
+
 	virtual
-	X3DBaseNode*
+	Route*
 	create (X3DExecutionContext* const) const final;
 
 	virtual
 	void
 	initialize () final;
+
+	///  @name Operations
 
 	void
 	connect ();

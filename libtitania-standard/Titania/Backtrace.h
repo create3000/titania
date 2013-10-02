@@ -56,10 +56,7 @@
 namespace titania {
 
 void
-backtrace_fn (size_t = 30);
-
-void
-backtrace_signal_handler (int);
+backtrace_fn (size_t = 30, int = 0);
 
 void
 enable_backtrace ();
