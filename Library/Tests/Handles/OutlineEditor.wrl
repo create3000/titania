@@ -37,6 +37,13 @@ EXTERNPROTO Rotor2 [
 ]
 "Rotor.wrl#Rotor"
 
+EXTERNPROTO RoundedRectangle2D [
+  exposedField SFFloat cornerRadius
+  exposedField SFVec2f size
+  field        SFBool  solid
+]
+"../../../Titania/share/titania/Library/Prototypes/Geometry2D/RoundedRectangle2D/RoundedRectangle2D.x3dv"
+
 PROTO Children1 [
   exposedField MFNode children1 [ ]
 ]
@@ -98,7 +105,7 @@ DEF Rotor Rotor {
 
 DEF Box Transform {
   translation 1.40843 1.10727 0.193803
-  rotation 0 0 1 2.80381
+  rotation 0 0 1 4.31117
   scale 0.2 0.2 0.2
   children Transform {
     children Shape {
@@ -137,7 +144,9 @@ DEF Cone Transform {
           diffuseColor 0 0 0.8
         }
       }
-      geometry Cone { }
+      geometry RoundedRectangle2D {
+        size 4 2
+      }
     }
   }
 }

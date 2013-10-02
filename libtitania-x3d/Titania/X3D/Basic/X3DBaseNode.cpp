@@ -450,13 +450,10 @@ X3DBaseNode::isDefaultValue (const X3DFieldDefinition* const field) const
 	{
 		const X3DFieldDefinition* declarationField = getType () -> getField (field -> getName ());
 
-		__LOG__ << field -> getName () << " : " << *field << " : " << *declarationField << std::endl;
-
 		return *field == *declarationField;
 	}
 	catch (const Error <INVALID_NAME> &)
 	{
-		__LOG__ << std::endl;
 		return false;
 	}
 }
