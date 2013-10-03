@@ -80,8 +80,6 @@ X3DBrowser::initialize ()
 
 	// Initialize scene
 
-	scene -> setup ();
-
 	replaceWorld (scene);
 
 	if (glXGetCurrentContext ())
@@ -201,13 +199,7 @@ X3DBrowser::createScene () const
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	if (makeCurrent ())
-	{
-		X3DSFNode <Scene> scene = new Scene (const_cast <X3DBrowser*> (this));
-		return scene;
-	}
-
-	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
+	return new Scene (const_cast <X3DBrowser*> (this));
 }
 
 X3DSFNode <Scene>
@@ -258,21 +250,14 @@ throw (Error <INVALID_SCENE>,
 
 		if (not initialized () or value not_eq scene)
 		{
-			if (value)
-				scene = value;
+			setDescription ("");
+			browserOptions -> assign (X3D::getBrowser () -> getBrowserOptions ());
 
-			else
-			{
-				scene = createScene ();
-				scene -> setup ();
-			}
+			scene = value ? value : createScene ();
+			scene -> setup ();
 
 			world = new World (scene);
 			world -> setup ();
-
-			browserOptions -> assign (X3D::getBrowser () -> getBrowserOptions ());
-
-			description = "";
 		}
 
 		// Generate initialized event immediately upon receiving this service.
@@ -330,8 +315,6 @@ throw (Error <INVALID_URL>,
 			X3DSFNode <Scene> scene = createScene ();
 
 			loader .parseIntoScene (scene, url);
-
-			scene -> setup ();
 
 			replaceWorld (scene);
 

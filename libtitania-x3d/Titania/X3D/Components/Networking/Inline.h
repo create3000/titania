@@ -172,6 +172,7 @@ private:
 	X3DSFNode <Group> group;
 
 	std::unique_ptr <Future> future;
+	bool                     initialized;
 
 };
 

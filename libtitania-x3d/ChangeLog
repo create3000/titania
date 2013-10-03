@@ -1,3 +1,14 @@
+2013-10-03  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Router.cpp:
+	* X3DBrowser.cpp:
+	* ExternProto.cpp:
+	* Inline.h:
+	* X3DExecutionContext.h:
+	* Inline.cpp:
+	* X3DExecutionContext.cpp:
+	* ImageTexture.cpp: 
+
 2013-10-02  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* ExternProto.cpp:

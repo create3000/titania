@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -57,10 +57,12 @@
 
 #include <future>
 
+#include <Titania/Backtrace.h>
+
 namespace titania {
 namespace X3D {
 
-static constexpr bool X3D_PARALLEL = false;
+static constexpr bool X3D_PARALLEL = true;
 
 class Inline::Future :
 	public X3DInput
@@ -69,15 +71,15 @@ public:
 
 	Future (Inline* const inlineNode) :
 		inlineNode (inlineNode),
-		future (getFuture ()),
-		loader (inlineNode -> getExecutionContext ())
+		    future (getFuture ()),
+		    loader (inlineNode -> getExecutionContext ())
 	{
 		inlineNode -> getBrowser () -> prepareEvents () .addInterest (this, &Future::prepareEvents);
 		inlineNode -> getBrowser () -> addEvent ();
 	}
 
 	void
-	get ()
+	wait ()
 	{
 		if (future .valid ())
 		{
@@ -105,7 +107,7 @@ private:
 	loadAsync (const MFString & url)
 	{
 		std::lock_guard <std::mutex> lock (inlineNode -> getBrowser () -> getThread ());
-		
+
 		X3DSFNode <Scene> scene = inlineNode -> getBrowser () -> createScene ();
 
 		loader .parseIntoScene (scene, url);
@@ -131,15 +133,17 @@ private:
 					X3DSFNode <Scene> scene = future .get ();
 
 					inlineNode -> setScene (scene);
+					inlineNode -> setLoadState (COMPLETE_STATE);
 				}
 				catch (const X3DError & error)
 				{
+					inlineNode -> setScene (inlineNode -> getBrowser () -> createScene ());
+					inlineNode -> setLoadState (FAILED_STATE);
+	
 					inlineNode -> getBrowser () -> println (error .what ());
 
 					for (const auto & string : loader .getUrlError ())
 						inlineNode -> getBrowser () -> println (string .str ());
-
-					inlineNode -> setScene (inlineNode -> getBrowser () -> createScene ());
 				}
 			}
 		}
@@ -167,7 +171,8 @@ Inline::Inline (X3DExecutionContext* const executionContext) :
 	          fields (),
 	           scene (),
 	           group (new Group (executionContext)),
-	          future ()
+	          future (),
+	     initialized (false)
 {
 	addField (inputOutput,    "metadata",   metadata ());
 	addField (inputOutput,    "load",       load ());
@@ -190,13 +195,16 @@ Inline::initialize ()
 	X3DChildNode::initialize ();
 	X3DBoundedObject::initialize ();
 	X3DUrlObject::initialize ();
+	
+	initialized = true;
 
 	load () .addInterest (this, &Inline::set_load);
 	url ()  .addInterest (this, &Inline::set_url);
 
 	if (X3D_PARALLEL)
 	{
-		setScene (getBrowser () -> createScene ());
+		if (checkLoadState () == NOT_STARTED_STATE)
+			setScene (getBrowser () -> createScene ());
 
 		if (load ())
 			requestAsyncLoad ();
@@ -204,12 +212,13 @@ Inline::initialize ()
 	else
 	{
 		if (load ())
-			requestAsyncLoad ();
+			requestImmediateLoad ();
 
 		else
 			setScene (getBrowser () -> createScene ());
 	}
 
+	group -> setInternal (true);
 	group -> setup ();
 }
 
@@ -221,10 +230,13 @@ Inline::setScene (const X3DSFNode <Scene> & value)
 
 	scene = value;
 
-	scene -> setup ();			
-	scene -> getRootNodes () .addInterest (group -> children ());
+	if (initialized)
+		scene -> setup ();
+	
+	else
+		getExecutionContext () -> addUninitializedNode (scene);
 
-	group -> setInternal (true);
+	scene -> getRootNodes () .addInterest (group -> children ());
 	group -> children () = scene -> getRootNodes ();
 }
 
@@ -243,32 +255,38 @@ throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
+	if (load ())
+		const_cast <Inline*> (this) -> requestImmediateLoad ();
+
 	if (checkLoadState () == COMPLETE_STATE)
 		return scene -> getExportedNode (exportedName);
 
-	else
-		throw Error <INVALID_NAME> ("Imported node error: Inline node '" + getName () + "' is not loaded.");
+	throw Error <INVALID_NAME> ("Imported node error: Inline node '" + getName () + "' is not loaded.");
 }
 
 void
 Inline::requestAsyncLoad ()
 {
-	if (X3D_PARALLEL)
-	{
-		if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)
-			return;
+	if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)
+		return;
 
-		setLoadState (IN_PROGRESS_STATE);
+	setLoadState (IN_PROGRESS_STATE);
 
-		future .reset (new Future (this));
-	}
-	else
-		requestImmediateLoad ();
+	future .reset (new Future (this));
 }
 
 void
 Inline::requestImmediateLoad ()
 {
+	if (X3D_PARALLEL)
+	{
+		if (checkLoadState () == IN_PROGRESS_STATE)
+		{
+			future -> wait ();
+			return;
+		}
+	}
+
 	if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)
 		return;
 
@@ -311,7 +329,11 @@ Inline::set_load ()
 	{
 		setLoadState (NOT_STARTED_STATE);
 
-		requestAsyncLoad ();
+		if (X3D_PARALLEL)
+			requestAsyncLoad ();
+		
+		else
+			requestImmediateLoad ();
 	}
 	else
 		requestUnload ();
@@ -324,7 +346,11 @@ Inline::set_url ()
 	{
 		setLoadState (NOT_STARTED_STATE);
 
-		requestAsyncLoad ();
+		if (X3D_PARALLEL)
+			requestAsyncLoad ();
+		
+		else
+			requestImmediateLoad ();
 	}
 }
 

@@ -116,7 +116,7 @@ Router::getNodes ()
 void
 Router::processEvents ()
 {
-	//	while (events .size ())
+	//	while (not events .empty ())
 	//	{
 	//		for (auto & event : events)
 	//		{
@@ -128,7 +128,7 @@ Router::processEvents ()
 	//		eventsProcessed ();
 	//	}
 
-	while (size ())
+	while (not events .empty ())
 	{
 		do
 		{
@@ -137,7 +137,7 @@ Router::processEvents ()
 				event .first -> processEvent (event .second);
 			}
 		}
-		while (size ());
+		while (not events .empty ());
 
 		eventsProcessed ();
 	}

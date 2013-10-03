@@ -76,7 +76,7 @@ public:
 	}
 
 	void
-	get ()
+	wait ()
 	{
 		if (future .valid ())
 		{

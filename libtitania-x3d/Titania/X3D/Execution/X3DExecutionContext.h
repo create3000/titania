@@ -184,11 +184,6 @@ public:
 	addUninitializedNode (X3DBaseNode* const uninitializedNode)
 	{ uninitializedNodes .emplace_back (uninitializedNode); }
 
-	/// Get uninitialized nodes
-	MFNode
-	getUninitializedNodes ()
-	{ return std::move (uninitializedNodes); }
-
 	///  @name Named/Imported node handling
 
 	const SFNode &

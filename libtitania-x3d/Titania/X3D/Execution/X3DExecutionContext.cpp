@@ -103,10 +103,11 @@ X3DExecutionContext::initialize ()
 	rootNodes          .isTainted (false);
 	uninitializedNodes .isTainted (false);
 
-	for (auto & uninitializedNode : uninitializedNodes)
-		uninitializedNode -> setup ();
-
-	uninitializedNodes .clear (); // XXX Slows down TreasureIsland
+	while (not uninitializedNodes .empty ())
+	{
+		for (auto & uninitializedNode : MFNode (std::move (uninitializedNodes)))
+			uninitializedNode -> setup ();
+	}
 }
 
 void
@@ -359,8 +360,6 @@ throw (Error <INVALID_NODE>,
 	}
 	catch (const std::out_of_range &)
 	{
-		inlineNode -> setup ();
-
 		importedNodes .push_back (importedName, new ImportedNode (this, inlineNode, exportedName, importedName));
 		importedNodes .back () .isTainted (true);
 		importedNodes .back () .addParent (this);

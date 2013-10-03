@@ -158,10 +158,7 @@ ExternProto::requestImmediateLoad ()
 
 		loader .parseIntoScene (scene, url ());
 		
-		for (const auto & uninitializedNode : scene -> getUninitializedNodes ())
-			getExecutionContext () -> addUninitializedNode (uninitializedNode);
-
-		scene -> setup ();
+		getExecutionContext () -> addUninitializedNode (scene);
 	}
 	catch (const X3DError & error)
 	{
