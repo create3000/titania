@@ -1452,6 +1452,10 @@ Transform {
   }
 }
 
+NavigationInfo {
+  type [ "WALK", "ANY" ]
+}
+
 ROUTE Touch_12.touchTime TO Time_6.set_startTime
 ROUTE Time_6.fraction_changed TO UnnamedTransformTranslationInterp_7.set_fraction
 ROUTE Time_6.fraction_changed TO UnnamedTransformRotationInterp_8.set_fraction

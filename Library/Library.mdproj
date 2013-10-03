@@ -1619,7 +1619,6 @@
     <None Include="Examples\Mushrooms\stage\plantT.wrl" />
     <None Include="Examples\NIST-Logo\stage\nistlogo.wrl" />
     <None Include="Examples\NIST-Logo\index.wrl" />
-    <None Include="Examples\Primacom\index.x3dv" />
     <None Include="Examples\Primacom\stage\aussenkachel1.jpg" />
     <None Include="Examples\Primacom\stage\baum_02-n.png" />
     <None Include="Examples\Primacom\stage\baum_03-n.png" />

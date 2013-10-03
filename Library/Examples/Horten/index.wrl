@@ -1,17 +1,10 @@
 #VRML V2.0 utf8
 
-META "title" "Horten"
+META "title" "Horten Entry"
 
 DEF Setup Script {
-  eventIn SFTime set_triggerTime
-
   url "vrmlscript:
 function initialize ()
-{
-	Browser .currentScene .getNamedNode ('Setup') .set_triggerTime = 1;
-}
-
-function set_triggerTime ()
 {
 	try
 	{
