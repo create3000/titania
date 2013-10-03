@@ -143,11 +143,7 @@ private:
 				{
 					inlineNode -> setScene (inlineNode -> getBrowser () -> createScene ());
 					inlineNode -> setLoadState (FAILED_STATE);
-
 					inlineNode -> getBrowser () -> println (error .what ());
-
-					for (const auto & string : loader .getUrlError ())
-						inlineNode -> getBrowser () -> println (string .str ());
 				}
 			}
 		}

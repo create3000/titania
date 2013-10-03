@@ -1,5 +1,10 @@
 2013-10-03  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Proto.h:
+	* Inline.cpp: 
+
+2013-10-03  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DChildObject.cpp:
 	* Inline.cpp:
 	* ImageTexture.cpp: 

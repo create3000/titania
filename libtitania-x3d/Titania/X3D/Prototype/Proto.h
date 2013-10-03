@@ -146,6 +146,11 @@ private:
 
 	virtual
 	void
+	initialize () final
+	{ }
+
+	virtual
+	void
 	addUninitializedNode (X3DBaseNode* node) final
 	{ }
 
