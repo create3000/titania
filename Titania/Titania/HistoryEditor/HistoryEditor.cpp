@@ -66,6 +66,11 @@ HistoryEditor::HistoryEditor (BrowserWindow* const browserWindow) :
 	X3DHistoryEditorInterface (get_ui ("HistoryEditor.ui"), gconf_dir ()),
 	                  history ()
 {
+	// Fill model
+
+	//auto model = getTreeView () .get_model ();
+	//getTreeView () .unset_model ();
+
 	for (const auto & item : history .getItems ())
 	{
 		auto row = getListStore () -> append ();
@@ -75,6 +80,10 @@ HistoryEditor::HistoryEditor (BrowserWindow* const browserWindow) :
 
 		getListStore () -> row_changed (getListStore () -> get_path (row), row);
 	}
+	
+	//getTreeView () .set_model (model);
+
+	// Add browser interest
 
 	getBrowser () -> initialized () .addInterest (this, &HistoryEditor::set_splashScreen);
 }
@@ -98,8 +107,10 @@ HistoryEditor::set_initialized ()
 	std::string title    = getBrowser () -> getExecutionContext () -> getTitle ();
 	basic::uri  worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
 
-	if (not worldURL .str () .size ())
+	if (worldURL .empty ())
 		return;
+		
+	// Move row
 
 	try
 	{
@@ -116,6 +127,8 @@ HistoryEditor::set_initialized ()
 	iter -> set_value (WORLD_URL_COLUMN, worldURL .str ());
 
 	getListStore () -> row_changed (getListStore () -> get_path (iter), iter);
+
+	// Update history
 
 	history .setItem (title, worldURL);
 }

@@ -50,11 +50,12 @@
 
 #include "ImageTexture.h"
 
-#include "../../Miscellaneous/Texture.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../InputOutput/Loader.h"
+#include "../../Miscellaneous/Texture.h"
 
+#include <atomic>
 #include <future>
 
 namespace titania {
@@ -69,7 +70,8 @@ public:
 
 	Future (ImageTexture* const imageTexture) :
 		imageTexture (imageTexture),
-		future (getFuture ())
+		     running (true),
+		      future (getFuture ())
 	{
 		imageTexture -> getBrowser () -> prepareEvents () .addInterest (this, &Future::prepareEvents);
 		imageTexture -> getBrowser () -> addEvent ();
@@ -88,6 +90,8 @@ public:
 	virtual
 	~Future ()
 	{
+		running = false;
+
 		if (future .valid ())
 			future .wait ();
 	}
@@ -98,7 +102,7 @@ private:
 	getFuture ()
 	{
 		if (imageTexture -> url () .empty ())
-			std::async (std::launch::deferred, [] () { return nullptr; });
+			std::async (std::launch::deferred, [ ] (){ return nullptr; });
 
 		return std::async (std::launch::async, std::mem_fn (&Future::loadAsync), this,
 		                   imageTexture -> url (),
@@ -119,9 +123,13 @@ private:
 
 			try
 			{
-				TexturePtr texture (new Texture (Loader (imageTexture -> getExecutionContext ()) .loadDocument (URL)));
+				TexturePtr texture;
 
-				texture -> process (borderColor, borderWidth, minTextureSize, maxTextureSize);
+				if (running)
+					texture .reset (new Texture (Loader (imageTexture -> getExecutionContext ()) .loadDocument (URL)));
+
+				if (running)
+					texture -> process (borderColor, borderWidth, minTextureSize, maxTextureSize);
 
 				return texture;
 			}
@@ -159,6 +167,7 @@ private:
 	}
 
 	ImageTexture* const      imageTexture;
+	std::atomic <bool>       running;
 	std::future <TexturePtr> future;
 
 };
@@ -201,7 +210,7 @@ void
 ImageTexture::setTexture (const TexturePtr & texture)
 {
 	X3DTexture2DNode::setTexture (texture);
-	
+
 	if (texture)
 		setLoadState (COMPLETE_STATE);
 

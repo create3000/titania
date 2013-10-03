@@ -55,6 +55,7 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../InputOutput/Loader.h"
 
+#include <atomic>
 #include <future>
 
 #include <Titania/Backtrace.h>
@@ -71,8 +72,8 @@ public:
 
 	Future (Inline* const inlineNode) :
 		inlineNode (inlineNode),
-		    future (getFuture ()),
-		    loader (inlineNode -> getExecutionContext ())
+		   running (true),
+		    future (getFuture ())
 	{
 		inlineNode -> getBrowser () -> prepareEvents () .addInterest (this, &Future::prepareEvents);
 		inlineNode -> getBrowser () -> addEvent ();
@@ -91,13 +92,15 @@ public:
 	virtual
 	~Future ()
 	{
+		running = false;
+
 		if (future .valid ())
 			future .wait ();
 	}
 
 private:
 
-	std::future <X3DSFNode <Scene>>
+	std::future <X3DSFNode <Scene>> 
 	getFuture ()
 	{
 		return std::async (std::launch::async, std::mem_fn (&Future::loadAsync), this, inlineNode -> url ());
@@ -110,7 +113,8 @@ private:
 
 		X3DSFNode <Scene> scene = inlineNode -> getBrowser () -> createScene ();
 
-		loader .parseIntoScene (scene, url);
+		if (running)
+			Loader (inlineNode -> getExecutionContext ()) .parseIntoScene (scene, url);
 
 		return scene;
 	}
@@ -139,7 +143,7 @@ private:
 				{
 					inlineNode -> setScene (inlineNode -> getBrowser () -> createScene ());
 					inlineNode -> setLoadState (FAILED_STATE);
-	
+
 					inlineNode -> getBrowser () -> println (error .what ());
 
 					for (const auto & string : loader .getUrlError ())
@@ -150,8 +154,8 @@ private:
 	}
 
 	Inline* const                    inlineNode;
-	std::future <X3DSFNode <Scene>> future;
-	Loader                           loader;
+	std::atomic <bool>               running;
+	std::future <X3DSFNode <Scene>>  future;
 
 };
 
@@ -195,7 +199,7 @@ Inline::initialize ()
 	X3DChildNode::initialize ();
 	X3DBoundedObject::initialize ();
 	X3DUrlObject::initialize ();
-	
+
 	initialized = true;
 
 	load () .addInterest (this, &Inline::set_load);
@@ -232,7 +236,7 @@ Inline::setScene (const X3DSFNode <Scene> & value)
 
 	if (initialized)
 		scene -> setup ();
-	
+
 	else
 		getExecutionContext () -> addUninitializedNode (scene);
 
@@ -331,7 +335,7 @@ Inline::set_load ()
 
 		if (X3D_PARALLEL)
 			requestAsyncLoad ();
-		
+
 		else
 			requestImmediateLoad ();
 	}
@@ -348,7 +352,7 @@ Inline::set_url ()
 
 		if (X3D_PARALLEL)
 			requestAsyncLoad ();
-		
+
 		else
 			requestImmediateLoad ();
 	}
