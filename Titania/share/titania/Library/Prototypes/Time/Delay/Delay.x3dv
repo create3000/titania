@@ -1,0 +1,70 @@
+#X3D V3.3 utf8 Titania
+
+PROTO Delay [
+  inputOutput SFTime cycleInterval 1
+  inputOutput SFBool enabled TRUE
+  inputOutput SFTime startTime 0
+  inputOutput SFTime stopTime 0
+  outputOnly  SFBool isActive
+  outputOnly  SFTime exitTime
+]
+{
+  PROTO Fields [
+    inputOutput SFTime cycleInterval 1
+    inputOutput SFTime startTime 0
+    inputOutput SFTime stopTime 0
+  ]
+  {
+    Group { }
+  }
+
+  DEF Delay Script {
+    inputOnly      SFTime set_startTime
+    inputOnly      SFTime set_stopTime
+    inputOnly      SFBool set_isActive
+    outputOnly     SFTime exitTime IS exitTime
+    initializeOnly SFNode timeSensor DEF TimeSensor TimeSensor {
+      enabled IS enabled
+      loop TRUE
+      stopTime 1
+      isActive IS isActive
+    }
+    initializeOnly SFNode fields DEF Fields Fields {
+      cycleInterval IS cycleInterval
+      startTime IS startTime
+      stopTime IS stopTime
+    }
+
+    url "vrmlscript:
+function initialize ()
+{
+	if (timeSensor .enabled && fields .startTime)
+		fields .startTime = 1;
+}
+
+function set_startTime (value, time)
+{
+	timeSensor .startTime = time;
+	timeSensor .stopTime  = time + fields .cycleInterval;
+}
+
+function set_stopTime (value, time)
+{
+	timeSensor .startTime = 0;
+	timeSensor .stopTime  = time;
+}
+
+function set_isActive (value, time)
+{
+	if (!value)
+		exitTime = time;
+}
+"
+    directOutput TRUE
+  }
+
+  ROUTE TimeSensor.isActive TO Delay.set_isActive
+  ROUTE Fields.startTime_changed TO Delay.set_startTime
+  ROUTE Fields.stopTime_changed TO Delay.set_stopTime
+}
+
