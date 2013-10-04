@@ -25,6 +25,10 @@ titania_SOURCES =  \
 	Titania/OutlineEditor/OutlineTreeModel.cpp \
 	Titania/OutlineEditor/OutlineTreeViewEditor.cpp \
 	Titania/OutlineEditor/X3DOutlineTreeView.cpp \
+	Titania/Undo/UndoFunction.cpp \
+	Titania/Undo/UndoGroup.cpp \
+	Titania/Undo/UndoHistory.cpp \
+	Titania/Undo/UndoStep.cpp \
 	Titania/UserInterfaces/X3DBrowserWindowInterface.cpp \
 	Titania/UserInterfaces/X3DConsoleInterface.cpp \
 	Titania/UserInterfaces/X3DHistoryEditorInterface.cpp \

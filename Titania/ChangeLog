@@ -1,5 +1,16 @@
 2013-10-04  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* UndoStep.cpp:
+	* UndoHistory.h:
+	* UndoGroup.cpp:
+	* UndoFunction.h:
+	* UndoHistory.cpp:
+	* UndoFunction.cpp:
+	* UndoFunction (Kopie).h: 
+
+2013-10-04  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* BrowserWindow.h:
 	* BrowserWindow.ui:
 	* BrowserWindow.cpp:
