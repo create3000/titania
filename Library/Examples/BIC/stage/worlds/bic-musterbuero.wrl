@@ -1,5 +1,7 @@
 #VRML V2.0 utf8
 
+META "title" "BIC Buero"
+
 DEF VP1 Viewpoint {
   description "viewpoint2"
   position -33.5441 5.45531 -19.045

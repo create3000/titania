@@ -1,5 +1,7 @@
 #VRML V2.0 utf8
 
+META "title" "Leipziger Rathaus"
+
 WorldInfo {
   info [ "Created in CosmoWorlds", "Packaged by CosmoPackage" ]
 }

@@ -1,5 +1,7 @@
 #VRML V2.0 utf8
 
+META "title" "Pong"
+
 PROTO X [
   exposedField SFVec3f    T 0 0 0
   exposedField SFVec3f    S 1 1 1

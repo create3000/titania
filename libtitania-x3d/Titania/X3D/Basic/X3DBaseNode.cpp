@@ -59,6 +59,8 @@
 #include <iomanip>
 #include <iostream>
 
+#include <Titania/Backtrace.h>
+
 namespace titania {
 namespace X3D {
 
@@ -149,11 +151,7 @@ throw (Error <INVALID_NAME>,
 		}
 		catch (const Error <INVALID_NAME> &)
 		{
-			X3DBaseNode* node = copy (executionContext);
-
-			executionContext -> updateNamedNode (getName (), node);
-			
-			return node;
+			return copy (executionContext);
 		}
 	}
 }
@@ -164,6 +162,9 @@ throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>)
 {
 	X3DBaseNode* copy = create (executionContext);
+
+	if (not getName () .empty ())
+		executionContext -> updateNamedNode (getName (), copy); // executionContext -> getUniqueName (getName (), true)
 
 	for (const auto & fieldDefinition : fieldDefinitions)
 	{

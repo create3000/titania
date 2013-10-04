@@ -1,5 +1,7 @@
 #VRML V2.0 utf8
 
+META "title" "ICTS World"
+
 Transform {
   translation 17.3897 3.33585 -45.9588
   scale 3.00776 0.3 1.55423

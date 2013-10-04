@@ -381,8 +381,6 @@
     <None Include="Examples\BIC\stage\worlds\aussenwand1.png" />
     <None Include="Examples\BIC\stage\worlds\baum.wrl" />
     <None Include="Examples\BIC\stage\worlds\bic-musterbuero.wrl" />
-    <None Include="Examples\BIC\stage\worlds\bic-wegweiser.T.wrl" />
-    <None Include="Examples\BIC\stage\worlds\bic-wegweiser.wrl" />
     <None Include="Examples\BIC\stage\worlds\bic_aussen.wrl" />
     <None Include="Examples\BIC\stage\worlds\bichorst.wrl" />
     <None Include="Examples\BIC\stage\worlds\biclogo.png" />
@@ -656,13 +654,11 @@
     <None Include="Examples\Mikroben\stage\game.php" />
     <None Include="Examples\Mikroben\stage\gameover01.mp2" />
     <None Include="Examples\Mikroben\stage\haut256.jpg" />
-    <None Include="Examples\Mikroben\stage\index.wrl" />
     <None Include="Examples\Mikroben\stage\intro.wrl" />
     <None Include="Examples\Mikroben\stage\mikrobe.wrl" />
     <None Include="Examples\Mikroben\stage\start01.mp2" />
     <None Include="Examples\Mikroben\preview.gif" />
     <None Include="Examples\Mikroben\index.wrl" />
-    <None Include="Examples\Mikroben\stage\indexT.wrl" />
     <None Include="Tests\Basic\test.wrl" />
     <None Include="Tests\Interpolation\PositionInterpolator.wrl" />
     <None Include="Tests\Networking\Anchor.wrl" />
@@ -2325,6 +2321,10 @@
     <None Include="Prototypes\Time\ElapsedTime.wrl" />
     <None Include="Tests\CubeMapTexturing\ComposedCubeMapMovieTexture.wrl" />
     <None Include="Tests\CubeMapTexturing\movie.avi" />
+    <None Include="Examples\BIC\stage\worlds\bic-wegweiser.wrl.gz" />
+    <None Include="Examples\BIC\stage\worlds\bic-wegweiser.wrl" />
+    <None Include="Examples\Mikroben\stage\index.wrl.gz" />
+    <None Include="Examples\Mikroben\stage\index.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

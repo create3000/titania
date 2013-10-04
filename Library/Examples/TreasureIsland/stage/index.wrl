@@ -1,5 +1,7 @@
 #VRML V2.0 utf8
 
+META "title" "Treasure Island"
+
 EXTERNPROTO Bonus [
   eventIn      SFTime  startTime
   eventOut     SFTime  enterTime

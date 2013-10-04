@@ -1,5 +1,7 @@
 #VRML V2.0 utf8
 
+META "title" "Dolphin"
+
 EXTERNPROTO Dolphin [
   eventIn      SFFloat set_fraction
   exposedField SFBool  collide
