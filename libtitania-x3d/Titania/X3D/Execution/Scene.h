@@ -61,6 +61,8 @@ class Scene :
 {
 public:
 
+	using X3DScene::getUniqueName;
+
 	///  @name Construction
 
 	Scene (X3DBrowser* const);

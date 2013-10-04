@@ -219,23 +219,41 @@ private:
 	void
 	on_add_node (const std::string &);
 
+	virtual
 	void
-	on_delete_nodes_activate ();
+	on_cut_nodes_activate () final;
 
+	virtual
 	void
-	on_group_selected_nodes_activate ();
+	on_copy_nodes_activate () final;
 
+	virtual
 	void
-	on_ungroup_node_activate ();
+	on_paste_nodes_activate () final;
 
+	virtual
 	void
-	on_add_to_group_activate ();
+	on_delete_nodes_activate () final;
 
+	virtual
 	void
-	on_detach_from_group_activate ();
+	on_group_selected_nodes_activate () final;
 
+	virtual
 	void
-	on_create_parent_group_activate ();
+	on_ungroup_node_activate () final;
+
+	virtual
+	void
+	on_add_to_group_activate () final;
+
+	virtual
+	void
+	on_detach_from_group_activate () final;
+
+	virtual
+	void
+	on_create_parent_group_activate () final;
 
 	/// @name Bar view handling
 

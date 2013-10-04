@@ -52,6 +52,8 @@
 
 #include "../NodePropertiesEditor/NodePropertiesEditor.h"
 
+#include <Titania/X3D/Prototype/X3DProto.h>
+
 namespace titania {
 namespace puck {
 
@@ -153,12 +155,26 @@ X3DBrowserEditor::import (const basic::uri & worldURL)
 {
 	try
 	{
-		auto & rootNodes    = getBrowser () -> getExecutionContext () -> getRootNodes ();
-		size_t numRootNodes = rootNodes .size ();
-	
 		// Imported scene
 
-		auto scene = getBrowser () -> createX3DFromURL ({ worldURL .str () });
+		import (getBrowser () -> createX3DFromURL ({ worldURL .str () }));
+	}
+	catch (const X3D::X3DError & error)
+	{
+		std::clog << error .what () << std::endl;
+	}
+}
+
+void
+X3DBrowserEditor::import (const X3D::X3DSFNode <X3D::Scene> & scene)
+{
+	try
+	{
+		auto & rootNodes    = getBrowser () -> getExecutionContext () -> getRootNodes ();
+		size_t numRootNodes = rootNodes .size ();
+
+		// Imported scene
+
 		getBrowser () -> getExecutionContext () -> importScene (scene);
 
 		// Select imported nodes
@@ -182,7 +198,7 @@ void
 X3DBrowserEditor::save (const basic::uri & worldURL, bool compressed)
 {
 	X3DBrowserWidget::save (worldURL, compressed);
-	
+
 	setEdited (false);
 }
 
@@ -211,6 +227,175 @@ throw (X3D::Error <X3D::INVALID_NAME>)
 }
 
 void
+X3DBrowserEditor::cutNodes (const X3D::MFNode & nodes)
+{
+	// Detach from group
+
+	for (const auto & node : nodes)
+	{
+		try
+		{
+			detachFromGroup (node, true);
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
+	// Set clipboard text
+
+	Gtk::Clipboard::get () -> set_text (toString (nodes));
+
+	// Remove nodes
+
+	for (const auto & node : nodes)
+	{
+		try
+		{
+			removeNode (node);
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+}
+
+void
+X3DBrowserEditor::copyNodes (const X3D::MFNode & nodes)
+{
+	// Detach from group
+
+	for (const auto & node : nodes)
+	{
+		try
+		{
+			detachFromGroup (node, true);
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
+	// Set clipboard text
+
+	Gtk::Clipboard::get () -> set_text (toString (nodes));
+
+	// Undo detach from group
+}
+
+std::string
+X3DBrowserEditor::toString (const X3D::MFNode & nodes) const
+{
+	// Find proto declarations
+
+	std::set <X3D::X3DSFNode <X3D::X3DProto>>  protoDeclarations;
+
+	for (const auto & node : nodes)
+	{
+		traverse (node, [&protoDeclarations] (const X3D::SFNode & node, X3D::MFNode* const, X3D::SFNode* const, size_t)
+		          {
+		             auto protoInstance = dynamic_cast <X3D::X3DPrototypeInstance*> (node .getValue ());
+
+		             if (protoInstance)
+							 protoDeclarations .insert (protoInstance -> getProtoDeclaration ());
+
+		             return false;
+					 });
+	}
+
+	// Find connected routes
+
+	std::set <X3D::SFNode>   nodeIndex;
+	std::deque <X3D::Route*> routes;
+
+	for (const auto & node : nodes)
+	{
+		traverse (node, [&nodeIndex] (const X3D::SFNode & node, X3D::MFNode* const, X3D::SFNode* const, size_t)
+		          {
+		             nodeIndex .insert (node);
+		             return false;
+					 });
+	}
+
+	for (const auto & node : nodes)
+	{
+		traverse (node, [&nodeIndex, &routes] (const X3D::SFNode & node, X3D::MFNode* const, X3D::SFNode* const, size_t)
+		          {
+		             for (const auto & field : node -> getFieldDefinitions ())
+		             {
+		                for (const auto & route : field -> getOutputRoutes ())
+		                {
+		                   if (nodeIndex .find (route -> getDestinationNode ()) not_eq nodeIndex .end ())
+									 routes .emplace_back (route);
+							 }
+						 }
+
+		             return false;
+					 });
+	}
+
+	// Generate text
+
+	std::ostringstream text;
+
+	text
+		<< '#' << getBrowser () -> getExecutionContext () -> getWorldURL ()
+		<< std::endl
+		<< std::endl;
+
+	X3D::Generator::CompactStyle ();
+	X3D::Generator::PushContext ();
+
+	if (not protoDeclarations .empty ())
+	{
+		for (const auto & protoDeclaration : protoDeclarations)
+			text << protoDeclaration << std::endl;
+
+		text << std::endl;
+	}
+
+	for (const auto & node : nodes)
+		text << node << std::endl;
+
+	if (not routes .empty ())
+	{
+		text << std::endl;
+
+		for (const auto & route : routes)
+			text << *route << std::endl;
+	}
+
+	X3D::Generator::PopContext ();
+
+	return text .str ();
+}
+
+void
+X3DBrowserEditor::pasteNodes (const X3D::MFNode & nodes)
+{
+	try
+	{
+		Glib::RefPtr <Gtk::Clipboard> clipboard = Gtk::Clipboard::get ();
+
+		if (clipboard -> wait_is_text_available ())
+		{
+			std::istringstream text (clipboard -> wait_for_text ());
+
+			std::string whitespaces;
+			X3D::Grammar::whitespaces (text, whitespaces);
+
+			std::string worldURL;
+
+			if (X3D::Grammar::comment (text, worldURL))
+			{
+				import (getBrowser () -> createX3DFromStream (worldURL, text));
+			}
+		}
+	}
+	catch (const X3D::X3DError & error)
+	{
+		std::clog << error .what () << std::endl;
+	}
+}
+
+void
 X3DBrowserEditor::removeNode (const X3D::SFNode & node)
 throw (X3D::Error <X3D::INVALID_NODE>)
 {
@@ -231,7 +416,7 @@ X3DBrowserEditor::removeNode (const X3D::X3DSFNode <X3D::Scene> & scene, const X
 
 	removeExportedNodes (scene, node);
 
-	// Delete children of node
+	// Delete children of node if not in scene
 
 	std::set <X3D::SFNode> children;
 
@@ -502,7 +687,7 @@ throw (X3D::Error <X3D::INVALID_NODE>,
 
 	if (sfnode)
 		sfnode -> setValue (child);
-	
+
 	else
 	{
 		auto mfnode = dynamic_cast <X3D::MFNode*> (containerField);
@@ -527,11 +712,12 @@ throw (X3D::Error <X3D::INVALID_NODE>)
 
 	// Adjust transformation
 
-	X3D::Matrix4f                          childModelViewMatrix = findModelViewMatrix (child);
-	X3D::X3DSFNode <X3D::X3DTransformNode> transform            = child;
+	X3D::X3DSFNode <X3D::X3DTransformNode> transform = child;
 
 	if (transform)
 	{
+		X3D::Matrix4f childModelViewMatrix = findModelViewMatrix (child);
+
 		childModelViewMatrix .multLeft (transform -> getMatrix ());
 		transform -> setMatrix (childModelViewMatrix);
 	}

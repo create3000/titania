@@ -109,6 +109,10 @@ public:
 	X3DBaseNode*
 	getRootNode () const;
 
+	const X3DSFNode <X3DProto> &
+	getProtoDeclaration () const
+	{ return protoDeclaration; }
+
 	///  @name Operatins
 
 	virtual

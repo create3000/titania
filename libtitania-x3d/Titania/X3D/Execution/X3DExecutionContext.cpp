@@ -759,24 +759,10 @@ throw (Error <INVALID_NAME>,
 	for (const auto & rootNode : executionContext -> getRootNodes ())
 	{
 		if (rootNode)
-		{
-			if (rootNode -> getName () .empty ())
-				getRootNodes () .emplace_back (rootNode -> copy (this));
+			getRootNodes () .emplace_back (rootNode -> clone (this));
 
-			else
-			{
-				try
-				{
-					getRootNodes () .emplace_back (rootNode -> clone (this));
-				}
-				catch (const Error <INVALID_NAME> &)
-				{
-					getRootNodes () .emplace_back (rootNode -> copy (this));
-				}
-			}
-		}
 		else
-			getRootNodes () .emplace_back (nullptr);
+			getRootNodes () .emplace_back ();
 	}
 }
 

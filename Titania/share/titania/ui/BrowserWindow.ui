@@ -618,11 +618,6 @@
     <property name="can_focus">False</property>
     <property name="stock">gtk-network</property>
   </object>
-  <object class="GtkImage" id="WalkViewerImage">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">WalkViewer</property>
-  </object>
   <object class="GtkMenu" id="ViewerTypeMenu">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -666,6 +661,11 @@
         <signal name="activate" handler="on_none_viewer_activate" swapped="no"/>
       </object>
     </child>
+  </object>
+  <object class="GtkImage" id="WalkViewerImage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">WalkViewer</property>
   </object>
   <object class="GtkImage" id="WorkspacesImage">
     <property name="visible">True</property>
@@ -833,28 +833,37 @@
                     <child>
                       <object class="GtkImageMenuItem" id="CutMenuItem">
                         <property name="label">gtk-cut</property>
+                        <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">MenuAccelGroup</property>
+                        <accelerator key="x" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                        <signal name="activate" handler="on_cut_nodes_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>
                       <object class="GtkImageMenuItem" id="CopyMenuItem">
                         <property name="label">gtk-copy</property>
+                        <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">MenuAccelGroup</property>
+                        <accelerator key="c" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                        <signal name="activate" handler="on_copy_nodes_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>
                       <object class="GtkImageMenuItem" id="PasteMenuItem">
                         <property name="label">gtk-paste</property>
+                        <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">MenuAccelGroup</property>
+                        <accelerator key="v" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                        <signal name="activate" handler="on_paste_nodes_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>

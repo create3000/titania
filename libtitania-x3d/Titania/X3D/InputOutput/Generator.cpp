@@ -200,13 +200,16 @@ bool Generator::x3dAccessTypes = true;
 void
 Generator::Style (const std::string & value)
 {
-	if (value == "smallest")
+	std::string style = value;
+	std::transform (style .begin (), style .end (), style .begin (), ::toupper);
+
+	if (style == "SMALLEST")
 		SmallestStyle ();
 
-	if (value == "small")
+	if (style == "SMALL")
 		SmallStyle ();
 
-	else if (value == "compact")
+	else if (style == "COMPACT")
 		CompactStyle ();
 
 	else

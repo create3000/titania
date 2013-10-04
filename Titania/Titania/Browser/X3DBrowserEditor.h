@@ -80,6 +80,9 @@ public:
 	void
 	import (const basic::uri &);
 
+	void
+	import (const X3D::X3DSFNode <X3D::Scene> &);
+
 	virtual
 	void
 	save (const basic::uri &, bool) final;
@@ -111,6 +114,15 @@ protected:
 	void
 	addNode (const std::string &)
 	throw (X3D::Error <X3D::INVALID_NAME>);
+
+	void
+	cutNodes (const X3D::MFNode &);
+
+	void
+	copyNodes (const X3D::MFNode &);
+
+	void
+	pasteNodes (const X3D::MFNode &);
 
 	void
 	removeNode (const X3D::SFNode &)
@@ -148,6 +160,9 @@ private:
 
 	void
 	set_shutdown ();
+
+	std::string
+	toString (const X3D::MFNode &) const;
 
 	void
 	removeNode (const X3D::X3DSFNode <X3D::Scene> &, const X3D::SFNode &) const;

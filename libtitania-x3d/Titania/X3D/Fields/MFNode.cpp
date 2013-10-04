@@ -85,22 +85,8 @@ throw (Error <INVALID_NAME>,
 	for (const auto & value :* this)
 	{
 		if (value)
-		{
-			if (value -> getName () .empty ())
-				field -> emplace_back (value -> copy (executionContext));
-	
-			else
-			{
-				try
-				{
-					field -> emplace_back (value -> clone (executionContext));
-				}
-				catch (const Error <INVALID_NAME> &)
-				{
-					field -> emplace_back (value -> copy (executionContext));
-				}
-			}
-		}
+			field -> emplace_back (value -> clone (executionContext));
+
 		else
 			field -> emplace_back ();
 	}

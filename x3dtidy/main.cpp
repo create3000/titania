@@ -111,9 +111,9 @@ main (int argc, char** argv)
 
 	options .setFlag ("compact",  'c');
 	options .setFlag ("expanded", 'e');
-	options .setOption ("style", 's');
+	options .setFlag ("help",     'h');
 
-	options .setFlag ("help", 'h');
+	options .setOption ("style", 's');
 
 	options .processCommandArgs (argc, argv);
 
@@ -127,7 +127,7 @@ main (int argc, char** argv)
 		X3D::Generator::ExpandNodes (true);
 
 	if (options .getFlag ("compact") or options .getFlag ('c'))
-		X3D::Generator::Style ("compact");
+		X3D::Generator::CompactStyle ();
 
 	if (options .getValue ('s'))
 		X3D::Generator::Style (options .getValue ('s'));

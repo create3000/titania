@@ -585,6 +585,18 @@ public:
 
 	virtual
 	void
+	on_cut_nodes_activate () = 0;
+
+	virtual
+	void
+	on_copy_nodes_activate () = 0;
+
+	virtual
+	void
+	on_paste_nodes_activate () = 0;
+
+	virtual
+	void
 	on_delete_nodes_activate () = 0;
 
 	virtual

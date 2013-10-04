@@ -167,6 +167,8 @@ BrowserWindow::set_selection (const X3D::MFNode & children)
 	bool haveSelection  = children .size ();
 	bool haveSelections = children .size () > 1;
 
+	getCutMenuItem ()    .set_sensitive (haveSelection);
+	getCopyMenuItem ()   .set_sensitive (haveSelection);
 	getDeleteMenuItem () .set_sensitive (haveSelection);
 
 	getGroupSelectedNodesMenuItem () .set_sensitive (haveSelection);
@@ -441,28 +443,71 @@ BrowserWindow::on_add_node (const std::string & typeName)
 }
 
 void
+BrowserWindow::on_cut_nodes_activate ()
+{
+	__LOG__ << std::endl;
+
+	const auto selection = getBrowser () -> getSelection () -> getChildren ();
+
+	if (selection .empty ())
+		return;
+
+	cutNodes (selection);
+	
+	getBrowser () -> getSelection () -> clear ();
+	getBrowser () -> update ();
+}
+
+void
+BrowserWindow::on_copy_nodes_activate ()
+{
+	__LOG__ << std::endl;
+
+	const auto selection = getBrowser () -> getSelection () -> getChildren ();
+
+	if (selection .empty ())
+		return;
+
+	copyNodes (selection);
+
+	getBrowser () -> update ();
+}
+
+void
+BrowserWindow::on_paste_nodes_activate ()
+{
+	__LOG__ << std::endl;
+
+	const auto selection = getBrowser () -> getSelection () -> getChildren ();
+
+	pasteNodes (selection);
+
+	getBrowser () -> update ();
+}
+
+void
 BrowserWindow::on_delete_nodes_activate ()
 {
 	__LOG__ << std::endl;
 
 	const auto selection = getBrowser () -> getSelection () -> getChildren ();
 
-	if (selection .size ())
+	if (selection .empty ())
+		return;
+
+	getBrowser () -> getSelection () -> clear ();
+
+	for (const auto & child : selection)
 	{
-		getBrowser () -> getSelection () -> clear ();
-
-		for (const auto & child : selection)
+		try
 		{
-			try
-			{
-				removeNode (child);
-			}
-			catch (const X3D::X3DError &)
-			{ }
+			removeNode (child);
 		}
-
-		getBrowser () -> update ();
+		catch (const X3D::X3DError &)
+		{ }
 	}
+
+	getBrowser () -> update ();
 }
 
 void
@@ -472,12 +517,12 @@ BrowserWindow::on_group_selected_nodes_activate ()
 
 	const auto selection = getBrowser () -> getSelection () -> getChildren ();
 
-	if (selection .size ())
-	{
-		getBrowser () -> getSelection () -> clear ();
-		getBrowser () -> getSelection () -> addChild (groupNodes (selection));
-		getBrowser () -> update ();
-	}
+	if (selection .empty ())
+		return;
+
+	getBrowser () -> getSelection () -> clear ();
+	getBrowser () -> getSelection () -> addChild (groupNodes (selection));
+	getBrowser () -> update ();
 }
 
 void
@@ -487,23 +532,23 @@ BrowserWindow::on_ungroup_node_activate ()
 
 	const auto selection = getBrowser () -> getSelection () -> getChildren ();
 
-	if (selection .size ())
+	if (selection .empty ())
+		return;
+
+	getBrowser () -> getSelection () -> clear ();
+
+	for (const auto & group : selection)
 	{
-		getBrowser () -> getSelection () -> clear ();
-
-		for (const auto & group : selection)
+		try
 		{
-			try
-			{
-				for (const auto & child : ungroupNode (group))
-					getBrowser () -> getSelection () -> addChild (child);
-			}
-			catch (const X3D::X3DError &)
-			{ }
+			for (const auto & child : ungroupNode (group))
+				getBrowser () -> getSelection () -> addChild (child);
 		}
-
-		getBrowser () -> update ();
+		catch (const X3D::X3DError &)
+		{ }
 	}
+
+	getBrowser () -> update ();
 }
 
 void
@@ -513,23 +558,23 @@ BrowserWindow::on_add_to_group_activate ()
 
 	auto selection = getBrowser () -> getSelection () -> getChildren ();
 
-	if (selection .size () > 1)
+	if (selection .size () < 2)
+		return;
+
+	auto group = selection .back ();
+	selection .pop_back ();
+
+	try
 	{
-		auto group = selection .back ();
-		selection .pop_back ();
-
-		try
-		{
-			for (const auto & child : selection)
-				addToGroup (group, child);
-		}
-		catch (const X3D::X3DError &)
-		{ }
-
-		getBrowser () -> getSelection () -> clear ();
-		getBrowser () -> getSelection () -> addChild (group);
-		getBrowser () -> update ();
+		for (const auto & child : selection)
+			addToGroup (group, child);
 	}
+	catch (const X3D::X3DError &)
+	{ }
+
+	getBrowser () -> getSelection () -> clear ();
+	getBrowser () -> getSelection () -> addChild (group);
+	getBrowser () -> update ();
 }
 
 void
@@ -537,22 +582,22 @@ BrowserWindow::on_detach_from_group_activate ()
 {
 	__LOG__ << std::endl;
 
-	const auto & selection = getBrowser () -> getSelection () -> getChildren ();
+	const auto selection = getBrowser () -> getSelection () -> getChildren ();
 
-	if (selection .size ())
+	if (selection .empty ())
+		return;
+
+	for (const auto & child : selection)
 	{
-		for (const auto & child : selection)
+		try
 		{
-			try
-			{
-				detachFromGroup (child, getKeys () .shift ());
-			}
-			catch (const X3D::X3DError &)
-			{ }
+			detachFromGroup (child, getKeys () .shift ());
 		}
-
-		getBrowser () -> update ();
+		catch (const X3D::X3DError &)
+		{ }
 	}
+
+	getBrowser () -> update ();
 }
 
 void
@@ -562,38 +607,38 @@ BrowserWindow::on_create_parent_group_activate ()
 
 	const auto selection = getBrowser () -> getSelection () -> getChildren ();
 
-	if (selection .size ())
+	if (selection .empty ())
+		return;
+
+	getBrowser () -> getSelection () -> clear ();
+
+	X3D::MFNode groups;
+
+	for (const auto & child : selection)
 	{
-		getBrowser () -> getSelection () -> clear ();
-
-		X3D::MFNode groups;
-
-		for (const auto & child : selection)
+		try
 		{
-			try
+			// Select Transform and expand
+
+			for (const auto & group : createParentGroup (child))
 			{
-				// Select Transform and expand
+				groups .emplace_back (group);
 
-				for (const auto & group : createParentGroup (child))
-				{
-					groups .emplace_back (group);
-
-					getBrowser () -> getSelection () -> addChild (group);
-				}
+				getBrowser () -> getSelection () -> addChild (group);
 			}
-			catch (const X3D::X3DError &)
-			{ }
 		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
 
-		getBrowser () -> update ();
+	getBrowser () -> update ();
 
-		// Expand groups
+	// Expand groups
 
-		for (const auto & group : groups)
-		{
-			for (const auto & iter : getOutlineTreeView () .get_iters (group))
-				getOutlineTreeView () .expand_row (getOutlineTreeView () .get_model () -> get_path (iter), false);
-		}
+	for (const auto & group : groups)
+	{
+		for (const auto & iter : getOutlineTreeView () .get_iters (group))
+			getOutlineTreeView () .expand_row (getOutlineTreeView () .get_model () -> get_path (iter), false);
 	}
 }
 

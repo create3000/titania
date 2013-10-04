@@ -138,7 +138,24 @@ X3DBaseNode::clone (X3DExecutionContext* const executionContext) const
 throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>)
 {
-	return executionContext -> getNamedNode (getName ());
+	if (getName () .empty ())
+		return copy (executionContext);
+
+	else
+	{
+		try
+		{
+			return executionContext -> getNamedNode (getName ());
+		}
+		catch (const Error <INVALID_NAME> &)
+		{
+			X3DBaseNode* node = copy (executionContext);
+
+			executionContext -> updateNamedNode (getName (), node);
+			
+			return node;
+		}
+	}
 }
 
 X3DBaseNode*
@@ -147,9 +164,6 @@ throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>)
 {
 	X3DBaseNode* copy = create (executionContext);
-
-	if (not getName () .empty ())
-		executionContext -> updateNamedNode (getName (), copy);
 
 	for (const auto & fieldDefinition : fieldDefinitions)
 	{

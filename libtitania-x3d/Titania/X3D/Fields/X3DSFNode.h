@@ -279,22 +279,8 @@ throw (Error <INVALID_NAME>,
 	X3DSFNode* field = static_cast <X3DSFNode*> (fieldDefinition);
 
 	if (getValue ())
-	{
-		if (getValue () -> getName () .empty ())
-			field -> set (dynamic_cast <ValueType*> (getValue () -> copy (executionContext)));
+		field -> set (dynamic_cast <ValueType*> (getValue () -> clone (executionContext)));
 
-		else
-		{
-			try
-			{
-				field -> set (dynamic_cast <ValueType*> (getValue () -> clone (executionContext)));
-			}
-			catch (const Error <INVALID_NAME> &)
-			{
-				field -> set (dynamic_cast <ValueType*> (getValue () -> copy (executionContext)));
-			}
-		}
-	}
 	else
 		field -> set (nullptr);
 }

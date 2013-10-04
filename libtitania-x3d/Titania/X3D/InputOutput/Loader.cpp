@@ -99,7 +99,6 @@ throw (Error <INVALID_X3D>,
        Error <DISPOSED>)
 {
 	X3DSFNode <Scene> scene = getBrowser () -> createScene ();
-
 	
 	basic::igzfilter   gzistream     = basic::gunzip (std::move (istream));
 	basic::ifilestream goldenistream = golden_gate ("<stream>", std::move (gzistream));
