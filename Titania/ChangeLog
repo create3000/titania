@@ -1,5 +1,13 @@
 2013-10-05  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* main.cpp:
+	* BrowserWindow.h:
+	* BrowserWindow.cpp:
+	* X3DBrowserEditor.h:
+	* X3DBrowserEditor.cpp: 
+
+2013-10-05  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* UndoStep.cpp:
 	* UndoGroup.cpp:

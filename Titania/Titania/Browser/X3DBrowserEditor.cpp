@@ -52,8 +52,6 @@
 
 #include "../NodePropertiesEditor/NodePropertiesEditor.h"
 
-#include <Titania/X3D/Prototype/X3DProto.h>
-
 namespace titania {
 namespace puck {
 
@@ -222,8 +220,6 @@ void
 X3DBrowserEditor::addNode (const std::string & typeName, const UndoStepPtr & undoStep)
 throw (X3D::Error <X3D::INVALID_NAME>)
 {
-	__LOG__ << std::endl;
-
 	auto scene = getBrowser () -> getExecutionContext ();
 	auto node  = scene -> createNode (typeName);
 
@@ -234,10 +230,8 @@ throw (X3D::Error <X3D::INVALID_NAME>)
 }
 
 void
-X3DBrowserEditor::cutNodes (const X3D::MFNode & nodes, const UndoStepPtr & undoStep)
+X3DBrowserEditor::cutNodes (X3D::MFNode nodes, const UndoStepPtr & undoStep)
 {
-	__LOG__ << std::endl;
-
 	// Detach from group
 
 	for (const auto & node : nodes)
@@ -268,10 +262,8 @@ X3DBrowserEditor::cutNodes (const X3D::MFNode & nodes, const UndoStepPtr & undoS
 }
 
 void
-X3DBrowserEditor::copyNodes (const X3D::MFNode & nodes)
+X3DBrowserEditor::copyNodes (X3D::MFNode nodes)
 {
-	__LOG__ << std::endl;
-
 	// Detach from group
 
 	auto undoDetachFromGroup = std::make_shared <UndoStep> ("");
@@ -296,15 +288,15 @@ X3DBrowserEditor::copyNodes (const X3D::MFNode & nodes)
 }
 
 std::string
-X3DBrowserEditor::toString (const X3D::MFNode & nodes) const
+X3DBrowserEditor::toString (X3D::MFNode & nodes) const
 {
 	// Find proto declarations
 
 	std::set <X3D::X3DSFNode <X3D::X3DProto>>  protoDeclarations;
 
-	for (const auto & node : nodes)
+	for (auto & node : nodes)
 	{
-		traverse (node, [&protoDeclarations] (const X3D::SFNode & node, X3D::MFNode* const, X3D::SFNode* const, size_t)
+		traverse (node, [&protoDeclarations] (X3D::SFNode & node)
 		          {
 		             auto protoInstance = dynamic_cast <X3D::X3DPrototypeInstance*> (node .getValue ());
 
@@ -315,23 +307,26 @@ X3DBrowserEditor::toString (const X3D::MFNode & nodes) const
 					 });
 	}
 
-	// Find connected routes
+	// Create node index
 
-	std::set <X3D::SFNode>   nodeIndex;
-	std::deque <X3D::Route*> routes;
+	std::set <X3D::SFNode> nodeIndex;
 
-	for (const auto & node : nodes)
+	for (auto & node : nodes)
 	{
-		traverse (node, [&nodeIndex] (const X3D::SFNode & node, X3D::MFNode* const, X3D::SFNode* const, size_t)
+		traverse (node, [&nodeIndex] (X3D::SFNode & node)
 		          {
 		             nodeIndex .insert (node);
 		             return false;
 					 });
 	}
 
-	for (const auto & node : nodes)
+	// Find connected routes
+
+	std::deque <X3D::Route*> routes;
+
+	for (auto & node : nodes)
 	{
-		traverse (node, [&nodeIndex, &routes] (const X3D::SFNode & node, X3D::MFNode* const, X3D::SFNode* const, size_t)
+		traverse (node, [&nodeIndex, &routes] (X3D::SFNode & node)
 		          {
 		             for (const auto & field : node -> getFieldDefinitions ())
 		             {
@@ -385,8 +380,6 @@ X3DBrowserEditor::toString (const X3D::MFNode & nodes) const
 void
 X3DBrowserEditor::pasteNodes (const X3D::MFNode & nodes, const UndoStepPtr & undoStep)
 {
-	__LOG__ << std::endl;
-
 	try
 	{
 		Glib::RefPtr <Gtk::Clipboard> clipboard = Gtk::Clipboard::get ();
@@ -416,8 +409,6 @@ void
 X3DBrowserEditor::removeNode (const X3D::SFNode & node, const UndoStepPtr & undoStep)
 throw (X3D::Error <X3D::INVALID_NODE>)
 {
-	__LOG__ << std::endl;
-
 	if (not node)
 		throw X3D::Error <X3D::INVALID_NODE> ("Node is empty.");
 
@@ -427,7 +418,7 @@ throw (X3D::Error <X3D::INVALID_NODE>)
 }
 
 void
-X3DBrowserEditor::removeNode (const X3D::X3DSFNode <X3D::Scene> & scene, const X3D::SFNode & node, const UndoStepPtr & undoStep)
+X3DBrowserEditor::removeNode (const X3D::X3DSFNode <X3D::Scene> & scene, X3D::SFNode node, const UndoStepPtr & undoStep)
 {
 	removeNode (scene .getValue (), node, undoStep);
 
@@ -439,19 +430,19 @@ X3DBrowserEditor::removeNode (const X3D::X3DSFNode <X3D::Scene> & scene, const X
 
 	std::set <X3D::SFNode> children;
 
-	traverse (node, [&children] (const X3D::SFNode & node, X3D::MFNode* const mfnode, X3D::SFNode* const sfnode, size_t)
+	traverse (node, [&node, &children] (X3D::SFNode & child)
 	          {
-	             if (*sfnode)
-						 children .insert (*sfnode);
+	             if (child not_eq node)
+						 children .insert (child);
 
 	             return false;
 				 });
 
 	for (const auto & child : children)
 	{
-		if (not traverse (scene, [child] (const X3D::SFNode &, X3D::MFNode* const, X3D::SFNode* const sfnode, size_t)
+		if (not traverse (scene, [&child] (X3D::SFNode & node)
 		                  {
-		                     return child == *sfnode;
+		                     return child == node;
 								}))
 		{
 			removeNamedNode (scene, child);
@@ -494,59 +485,67 @@ X3DBrowserEditor::removeNode (X3D::X3DExecutionContext* const executionContext, 
 	deleteRoutes (executionContext, node);
 }
 
-static
-std::vector <size_t>
-indices_of (const X3D::MFNode & field, const X3D::SFNode & value)
-{
-	std::vector <size_t> indices;
-
-	auto first = field .begin ();
-	auto last  = field .end ();
-
-	first = std::find (first, last, value);
-
-	while (first not_eq last)
-	{
-		indices .emplace_back (first - field .begin ());
-
-		first = std::find (++ first, last, value);
-	}
-
-	return indices;
-}
-
 void
 X3DBrowserEditor::removeNodeFromSceneGraph (X3D::X3DExecutionContext* const executionContext, const X3D::SFNode & node, const UndoStepPtr & undoStep)
 {
+	removeNode (executionContext, executionContext -> getRootNodes (), node, undoStep);
+
 	// Remove node from scene graph
 
-	traverse (executionContext, [this, &node, &undoStep] (const X3D::SFNode & parent, X3D::MFNode* const mfnode, X3D::SFNode* const sfnode, size_t)
+	traverse (executionContext, [this, &node, &undoStep] (X3D::SFNode & parent)
 	          {
-	             if (node not_eq *sfnode)
-						 return false;
-
-	             if (mfnode)
+	             for (auto & field: parent -> getFieldDefinitions ())
 	             {
-	                undoStep -> addFunction (std::bind (std::mem_fn (&X3DBrowserEditor::undoEraseNode), this,
-	                                                    parent,
-	                                                    std::ref (*mfnode),
-	                                                    *sfnode,
-	                                                    indices_of (*mfnode, *sfnode)));
+	                switch (field -> getType ())
+	                {
+							 case X3D::X3DConstants::SFNode:
+								 {
+								    auto sfnode = static_cast <X3D::SFNode*> (field);
 
-	                mfnode -> erase (std::remove (mfnode -> begin (), mfnode -> end (), *sfnode), mfnode -> end ());
-					 }
-	             else
-	             {
-	                undoStep -> addFunction (std::bind (std::mem_fn (&X3DBrowserEditor::undoSetValue), this,
-	                                                    parent,
-	                                                    std::ref (*sfnode),
-	                                                    *sfnode));
+								    if (*sfnode == node)
+								    {
+								       undoStep -> addFunction (std::mem_fn (&X3DBrowserEditor::undoSetValue), this,
+								                                parent,
+								                                std::ref (*sfnode),
+								                                node);
 
-	                sfnode -> setValue (nullptr);
+								       sfnode -> setValue (nullptr);
+									 }
+
+								    break;
+								 }
+							 case X3D::X3DConstants::MFNode:
+								 {
+								    auto mfnode = static_cast <X3D::MFNode*> (field);
+
+								    removeNode (parent, *mfnode, node, undoStep);
+
+								    break;
+								 }
+							 default:
+								 break;
+						 }
 					 }
 
 	             return false;
 				 });
+}
+
+void
+X3DBrowserEditor::removeNode (const X3D::SFNode & parent, X3D::MFNode & mfnode, const X3D::SFNode & node, const UndoStepPtr & undoStep)
+{
+	auto indices = mfnode .indices_of (node);
+
+	if (not indices .empty ())
+	{
+		undoStep -> addFunction (std::mem_fn (&X3DBrowserEditor::undoEraseNode), this,
+		                         parent,
+		                         std::ref (mfnode),
+		                         node,
+		                         indices);
+
+		mfnode .erase (std::remove (mfnode .begin (), mfnode .end (), node), mfnode .end ());
+	}
 }
 
 void
@@ -568,7 +567,7 @@ X3DBrowserEditor::removeImportedNodes (X3D::X3DExecutionContext* const execution
 {
 	// Remove nodes imported from node
 
-	X3D::X3DSFNode <X3D::Inline> inlineNode = node;
+	X3D::X3DSFNode <X3D::Inline> inlineNode (node);
 
 	if (inlineNode)
 	{
@@ -596,18 +595,16 @@ X3DBrowserEditor::deleteRoutes (X3D::X3DExecutionContext* const executionContext
 	}
 }
 
-X3D::X3DSFNode <X3D::X3DGroupingNode>
+X3D::SFNode
 X3DBrowserEditor::groupNodes (const X3D::MFNode & nodes, const UndoStepPtr & undoStep)
 throw (X3D::Error <X3D::INVALID_NODE>)
 {
-	__LOG__ << std::endl;
-
 	if (nodes .empty ())
 		throw X3D::Error <X3D::INVALID_NODE> ("Nodes are empty.");
 
 	auto scene = getBrowser () -> getExecutionContext ();
 
-	X3D::X3DSFNode <X3D::X3DGroupingNode> group = scene -> createNode ("Transform");
+	X3D::X3DSFNode <X3D::X3DGroupingNode> group (scene -> createNode ("Transform"));
 
 	for (const auto & child : nodes)
 	{
@@ -616,7 +613,7 @@ throw (X3D::Error <X3D::INVALID_NODE>)
 
 		// Adjust transformation
 		X3D::Matrix4f                          childModelViewMatrix = findModelViewMatrix (child);
-		X3D::X3DSFNode <X3D::X3DTransformNode> transform            = child;
+		X3D::X3DSFNode <X3D::X3DTransformNode> transform (child);
 
 		if (transform)
 		{
@@ -638,7 +635,7 @@ throw (X3D::Error <X3D::INVALID_NODE>)
 
 	setEdited (true);
 
-	return group;
+	return X3D::SFNode (group);
 }
 
 X3D::MFNode
@@ -661,7 +658,7 @@ throw (X3D::Error <X3D::INVALID_NODE>,
 		// Adjust transformation
 
 		X3D::Matrix4f                          childModelViewMatrix = findModelViewMatrix (child);
-		X3D::X3DSFNode <X3D::X3DTransformNode> transform            = child;
+		X3D::X3DSFNode <X3D::X3DTransformNode> transform (child);
 
 		if (transform)
 		{
@@ -690,8 +687,6 @@ X3DBrowserEditor::addToGroup (const X3D::SFNode & group, const X3D::SFNode & chi
 throw (X3D::Error <X3D::INVALID_NODE>,
        X3D::Error <X3D::INVALID_NAME>)
 {
-	__LOG__ << std::endl;
-
 	if (not group)
 		throw X3D::Error <X3D::INVALID_NODE> ("Group node is emtpy.");
 
@@ -706,7 +701,7 @@ throw (X3D::Error <X3D::INVALID_NODE>,
 	// Get group modelview matrix
 
 	X3D::Matrix4f                          groupModelViewMatrix = findModelViewMatrix (group);
-	X3D::X3DSFNode <X3D::X3DTransformNode> transform            = group;
+	X3D::X3DSFNode <X3D::X3DTransformNode> transform (group);
 
 	if (transform)
 		groupModelViewMatrix .multLeft (transform -> getMatrix ());
@@ -715,7 +710,7 @@ throw (X3D::Error <X3D::INVALID_NODE>,
 
 	{
 		X3D::Matrix4f                          childModelViewMatrix = findModelViewMatrix (child);
-		X3D::X3DSFNode <X3D::X3DTransformNode> transform            = child;
+		X3D::X3DSFNode <X3D::X3DTransformNode> transform (child);
 
 		if (transform)
 		{
@@ -740,7 +735,7 @@ throw (X3D::Error <X3D::INVALID_NODE>,
 	auto sfnode = dynamic_cast <X3D::SFNode*> (containerField);
 
 	if (sfnode)
-		sfnode -> setValue (child);                                     // XXX Remove previous child completely from scene if not in scene anymore
+		sfnode -> setValue (child);                                                                                                                                                                                                                                                                                          // XXX Remove previous child completely from scene if not in scene anymore
 
 	else
 	{
@@ -754,10 +749,10 @@ throw (X3D::Error <X3D::INVALID_NODE>,
 }
 
 void
-X3DBrowserEditor::detachFromGroup (const X3D::X3DSFNode <X3D::X3DNode> & child, bool detachToLayer0, const UndoStepPtr & undoStep)
+X3DBrowserEditor::detachFromGroup (X3D::SFNode node, bool detachToLayer0, const UndoStepPtr & undoStep)
 throw (X3D::Error <X3D::INVALID_NODE>)
 {
-	__LOG__ << std::endl;
+	X3D::X3DSFNode <X3D::X3DNode> child (node);
 
 	if (not child)
 		throw X3D::Error <X3D::INVALID_NODE> ("Node is empty.");
@@ -766,13 +761,13 @@ throw (X3D::Error <X3D::INVALID_NODE>)
 
 	// Adjust transformation
 
-	X3D::X3DSFNode <X3D::X3DTransformNode> transform = child;
+	X3D::X3DSFNode <X3D::X3DTransformNode> transform (child);
 
 	if (transform)
 	{
-		undoStep -> addFunction (std::bind (std::mem_fn (&X3DBrowserEditor::undoSetMatrix), this,
-		                                    transform,
-		                                    transform -> getMatrix ()));
+		undoStep -> addFunction (std::mem_fn (&X3DBrowserEditor::undoSetMatrix), this,
+		                         transform,
+		                         transform -> getMatrix ());
 
 		X3D::Matrix4f childModelViewMatrix = findModelViewMatrix (child);
 
@@ -782,17 +777,17 @@ throw (X3D::Error <X3D::INVALID_NODE>)
 
 	// Remove child from scene graph
 
-	removeNodeFromSceneGraph (getBrowser () -> getExecutionContext (), child, undoStep);
+	removeNodeFromSceneGraph (getBrowser () -> getExecutionContext (), node, undoStep);
 
 	// Add to layers
 
 	if (detachToLayer0)
 	{
-		undoStep -> addFunction (std::bind (std::mem_fn (&X3DBrowserEditor::undoInsertNode), this,
-		                                    getBrowser () -> getExecutionContext (),
-		                                    std::ref (getBrowser () -> getExecutionContext () -> getRootNodes ()),
-		                                    getBrowser () -> getExecutionContext () -> getRootNodes () .size (),
-		                                    child));
+		undoStep -> addFunction (std::mem_fn (&X3DBrowserEditor::undoInsertNode), this,
+		                         X3D::SFNode (getBrowser () -> getExecutionContext ()),
+		                         std::ref (getBrowser () -> getExecutionContext () -> getRootNodes ()),
+		                         getBrowser () -> getExecutionContext () -> getRootNodes () .size (),
+		                         node);
 
 		getBrowser () -> getExecutionContext () -> getRootNodes () .emplace_back (child);
 	}
@@ -802,21 +797,21 @@ throw (X3D::Error <X3D::INVALID_NODE>)
 		{
 			if (layer -> isLayer0 ())
 			{
-				undoStep -> addFunction (std::bind (std::mem_fn (&X3DBrowserEditor::undoInsertNode), this,
-				                                    getBrowser () -> getExecutionContext (),
-				                                    std::ref (getBrowser () -> getExecutionContext () -> getRootNodes ()),
-				                                    getBrowser () -> getExecutionContext () -> getRootNodes () .size (),
-				                                    child));
+				undoStep -> addFunction (std::mem_fn (&X3DBrowserEditor::undoInsertNode), this,
+				                         X3D::SFNode (getBrowser () -> getExecutionContext ()),
+				                         std::ref (getBrowser () -> getExecutionContext () -> getRootNodes ()),
+				                         getBrowser () -> getExecutionContext () -> getRootNodes () .size (),
+				                         node);
 
 				getBrowser () -> getExecutionContext () -> getRootNodes () .emplace_back (child);
 			}
 			else
 			{
-				undoStep -> addFunction (std::bind (std::mem_fn (&X3DBrowserEditor::undoInsertNode), this,
-				                                    layer,
-				                                    std::ref (layer -> children ()),
-				                                    layer -> children () .size (),
-				                                    child));
+				undoStep -> addFunction (std::mem_fn (&X3DBrowserEditor::undoInsertNode), this,
+				                         X3D::SFNode (layer),
+				                         std::ref (layer -> children ()),
+				                         layer -> children () .size (),
+				                         node);
 
 				layer -> children () .emplace_back (child);
 			}
@@ -830,8 +825,6 @@ X3D::MFNode
 X3DBrowserEditor::createParentGroup (const X3D::SFNode & child, const UndoStepPtr & undoStep)
 throw (X3D::Error <X3D::INVALID_NODE>)
 {
-	__LOG__ << std::endl;
-
 	if (not child)
 		throw X3D::Error <X3D::INVALID_NODE> ("Node is empty.");
 
@@ -839,19 +832,19 @@ throw (X3D::Error <X3D::INVALID_NODE>)
 
 	auto scene = getBrowser () -> getExecutionContext ();
 
-	traverse (scene, [scene, child, &groups] (const X3D::SFNode &, X3D::MFNode* const mfnode, X3D::SFNode* const sfnode, size_t)
+	traverse (scene, [&scene, &child, &groups] (X3D::SFNode & node)
 	          {
-	             if (child not_eq *sfnode)
+	             if (child not_eq node)
 						 return false;
 
 	             // Replace node with Transform
 
-	             X3D::X3DSFNode <X3D::X3DGroupingNode> group = scene -> createNode ("Transform");
+	             X3D::X3DSFNode <X3D::X3DGroupingNode> group (scene -> createNode ("Transform"));
 
 	             group -> children () .emplace_back (child);
 	             group -> setup ();
 
-	             sfnode -> setValue (group);
+	             node = group;
 
 	             groups .emplace_back (group);
 
@@ -875,27 +868,18 @@ bool
 X3DBrowserEditor::traverse (X3D::X3DExecutionContext* const executionContext, const TraverseCallback & callback) const
 {
 	X3D::ChildObjectSet seen;
-	size_t              index = 0;
 
-	auto & rootNodes = executionContext -> getRootNodes ();
-	auto   array     = rootNodes;
-
-	for (auto & rootNode : array)
+	for (auto & rootNode : executionContext -> getRootNodes ())
 	{
 		if (traverse (rootNode, callback, seen))
 			return true;
-
-		if (callback (executionContext, &rootNodes, &rootNodes [index], index))
-			return true;
-
-		++ index;
 	}
 
 	return false;
 }
 
 bool
-X3DBrowserEditor::traverse (const X3D::SFNode & node, const TraverseCallback & callback) const
+X3DBrowserEditor::traverse (X3D::SFNode & node, const TraverseCallback & callback) const
 {
 	X3D::ChildObjectSet seen;
 
@@ -903,13 +887,16 @@ X3DBrowserEditor::traverse (const X3D::SFNode & node, const TraverseCallback & c
 }
 
 bool
-X3DBrowserEditor::traverse (const X3D::SFNode & node, const TraverseCallback & callback, X3D::ChildObjectSet & seen) const
+X3DBrowserEditor::traverse (X3D::SFNode & node, const TraverseCallback & callback, X3D::ChildObjectSet & seen) const
 {
 	if (not node)
 		return false;
 
 	if (not seen .insert (node) .second)
 		return false;
+
+	if (callback (node))
+		return true;
 
 	for (const auto & field : node -> getFieldDefinitions ())
 	{
@@ -922,26 +909,16 @@ X3DBrowserEditor::traverse (const X3D::SFNode & node, const TraverseCallback & c
 					if (traverse (*sfnode, callback, seen))
 						return true;
 
-					if (callback (node, nullptr, sfnode, 0))
-						return true;
-
 					break;
 				}
 			case X3D::X3DConstants::MFNode:
 			{
-				auto   mfnode = static_cast <X3D::MFNode*> (field);
-				auto   array  = *mfnode;
-				size_t index  = 0;
+				auto mfnode = static_cast <X3D::MFNode*> (field);
 
-				for (auto & value : array)
+				for (auto & value : *mfnode)
 				{
 					if (traverse (value, callback, seen))
 						return true;
-
-					if (callback (node, mfnode, &(*mfnode) [index], index))
-						return true;
-
-					++ index;
 				}
 
 				break;
@@ -1115,8 +1092,6 @@ throw (X3D::Error <X3D::INVALID_NAME>)
 void
 X3DBrowserEditor::undoInsertNode (const X3D::SFNode & parent, X3D::MFNode & field, size_t index, const X3D::SFNode & node)
 {
-	__LOG__ << std::endl;
-
 	if (index < field .size () and field [index] == node)
 	{
 		field .erase (field .begin () + index);
@@ -1131,8 +1106,6 @@ X3DBrowserEditor::undoInsertNode (const X3D::SFNode & parent, X3D::MFNode & fiel
 void
 X3DBrowserEditor::undoEraseNode (const X3D::SFNode & parent, X3D::MFNode & field, const X3D::SFNode & value, const std::vector <size_t> & indices)
 {
-	__LOG__ << std::endl;
-
 	for (const auto & index : indices)
 	{
 		if (index <= field .size ())

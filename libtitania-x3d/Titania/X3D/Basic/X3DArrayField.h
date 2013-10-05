@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,20 +51,20 @@
 #ifndef __TITANIA_X3D_BASIC_X3DARRAY_FIELD_H__
 #define __TITANIA_X3D_BASIC_X3DARRAY_FIELD_H__
 
-#include "../Basic/X3DField.h"
-#include "../Types/Array.h"
+ #include "../Basic/X3DField.h"
+ #include "../Types/Array.h"
 
-#include <Titania/Algorithm/Remove.h>
-#include <Titania/Basic/ReferenceIterator.h>
-#include <Titania/Utility/Adapter.h>
-#include <initializer_list>
+ #include <Titania/Algorithm.h>
+ #include <Titania/Basic/ReferenceIterator.h>
+ #include <Titania/Utility/Adapter.h>
+ #include <initializer_list>
 
 namespace titania {
 namespace X3D {
 
 template <class ValueType>
 class X3DArrayField :
-	public X3DField <Array <ValueType>>
+	public X3DField <Array <ValueType>> 
 {
 public:
 
@@ -155,14 +155,14 @@ public:
 	X3DArrayField*
 	clone () const
 	throw (Error <INVALID_NAME>,
-          Error <NOT_SUPPORTED>) override
+	       Error <NOT_SUPPORTED>) override
 	{ return new X3DArrayField (*this); }
 
 	virtual
 	X3DArrayField*
 	clone (X3DExecutionContext* const) const
 	throw (Error <INVALID_NAME>,
-          Error <NOT_SUPPORTED>) override
+	       Error <NOT_SUPPORTED>) override
 	{ return clone (); }
 
 	///  @name Assignment operators
@@ -179,15 +179,15 @@ public:
 	{
 		if (&field == this)
 			return *this;
-			
+
 		clear ();
 
 		get () = field .get ();
-		
+
 		addChildren (get () .begin (), get () .end ());
-		
+
 		field .clear ();
-		
+
 		addEvent ();
 
 		return *this;
@@ -222,7 +222,7 @@ public:
 		assign (list .begin (), list .end ());
 		return *this;
 	}
-	
+
 	///  @name Tests
 
 	virtual
@@ -408,6 +408,16 @@ public:
 	size_type
 	size () const
 	{ return getValue () .size (); }
+
+	///  @name Search
+
+	std::vector <size_t>
+	indices_of (const ValueType & value) const
+	{ return indices_of (value .getValue ()); }
+
+	std::vector <size_t>
+	indices_of (const typename ValueType::value_type & value) const
+	{ return basic::indices_of (begin (), end (), value); }
 
 	///  @name Input/Output
 
@@ -742,9 +752,9 @@ throw (Error <INVALID_X3D>,
 	if (istream)
 	{
 		std::string whitespaces;
-	
+
 		Grammar::whitespaces (istream, whitespaces);
-		
+
 		if (Grammar::OpenBracket (istream))
 		{
 			X3DArrayField array;

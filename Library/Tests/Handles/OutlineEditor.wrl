@@ -13,18 +13,6 @@ EXTERNPROTO Grid [
 ]
 "Grid.wrl"
 
-EXTERNPROTO Rotor [
-  exposedField SFBool     enabled
-  exposedField SFTime     cycleInterval
-  exposedField SFVec3f    axis
-  exposedField SFFloat    angle
-  exposedField SFBool     loop
-  exposedField SFTime     startTime
-  exposedField SFTime     stopTime
-  eventOut     SFRotation value_changed
-]
-"Rotor.wrl"
-
 EXTERNPROTO Rotor2 [
   exposedField SFBool     enabled
   exposedField SFTime     cycleInterval
@@ -43,6 +31,18 @@ EXTERNPROTO RoundedRectangle2D [
   field        SFBool  solid
 ]
 "../../../Titania/share/titania/Library/Prototypes/Geometry2D/RoundedRectangle2D/RoundedRectangle2D.x3dv"
+
+EXTERNPROTO Rotor [
+  exposedField SFBool     enabled
+  exposedField SFTime     cycleInterval
+  exposedField SFVec3f    axis
+  exposedField SFFloat    angle
+  exposedField SFBool     loop
+  exposedField SFTime     startTime
+  exposedField SFTime     stopTime
+  eventOut     SFRotation value_changed
+]
+"Rotor.wrl"
 
 PROTO Children1 [
   exposedField MFNode children1 [ ]
@@ -106,7 +106,7 @@ DEF Rotor Rotor {
 
 DEF Box Transform {
   translation 1.40843 1.10727 0.193803
-  rotation 0 0 1 5.34149
+  rotation 0 0 1 4.30271
   scale 0.2 0.2 0.2
   children Transform {
     children Shape {

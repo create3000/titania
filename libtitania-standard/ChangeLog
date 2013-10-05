@@ -1,3 +1,9 @@
+2013-10-05  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Algorithm.h:
+	* libtitania-standard.cproj:
+	* IndicesOf.h: 
+
 2013-10-02  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Backtrace.h:

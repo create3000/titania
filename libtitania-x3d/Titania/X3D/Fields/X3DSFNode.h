@@ -82,6 +82,7 @@ public:
 	{ }
 
 	template <class Up>
+	explicit
 	X3DSFNode (const X3DSFNode <Up> & field) :
 		X3DSFNode (dynamic_cast <ValueType*> (field .getValue ()))
 	{ }
@@ -93,6 +94,7 @@ public:
 	}
 
 	template <class Up>
+	explicit
 	X3DSFNode (X3DSFNode <Up> && field) :
 		X3DSFNode (dynamic_cast <ValueType*> (field .getValue ()))
 	{

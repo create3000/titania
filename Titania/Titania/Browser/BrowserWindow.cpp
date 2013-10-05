@@ -60,7 +60,7 @@
 namespace titania {
 namespace puck {
 
-BrowserWindow::BrowserWindow (const X3D::X3DSFNode <X3D::X3DBrowserSurface> & browserSurface, const basic::uri & worldURL) :
+BrowserWindow::BrowserWindow (const X3D::X3DSFNode <X3D::Browser> & browserSurface, const basic::uri & worldURL) :
             X3DBaseNode (browserSurface, browserSurface),
 	    X3DBaseInterface (this),
 	    X3DBrowserEditor (worldURL),

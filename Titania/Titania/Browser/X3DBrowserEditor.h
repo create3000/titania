@@ -119,10 +119,10 @@ protected:
 	throw (X3D::Error <X3D::INVALID_NAME>);
 
 	void
-	cutNodes (const X3D::MFNode &, const UndoStepPtr &);
+	cutNodes (X3D::MFNode, const UndoStepPtr &);
 
 	void
-	copyNodes (const X3D::MFNode &);
+	copyNodes (X3D::MFNode);
 
 	void
 	pasteNodes (const X3D::MFNode &, const UndoStepPtr &);
@@ -131,22 +131,22 @@ protected:
 	removeNode (const X3D::SFNode &, const UndoStepPtr &)
 	throw (X3D::Error <X3D::INVALID_NODE>);
 
-	X3D::X3DSFNode <X3D::X3DGroupingNode>
+	X3D::SFNode
 	groupNodes (const X3D::MFNode &, const UndoStepPtr &)
 	throw (X3D::Error <X3D::INVALID_NODE>);
 
 	X3D::MFNode
 	ungroupNode (const X3D::SFNode &, const UndoStepPtr &)
 	throw (X3D::Error <X3D::INVALID_NODE>,
-          X3D::Error <X3D::INVALID_NAME>);
+	       X3D::Error <X3D::INVALID_NAME>);
 
 	void
 	addToGroup (const X3D::SFNode &, const X3D::SFNode &, const UndoStepPtr &)
 	throw (X3D::Error <X3D::INVALID_NODE>,
-          X3D::Error <X3D::INVALID_NAME>);
+	       X3D::Error <X3D::INVALID_NAME>);
 
 	void
-	detachFromGroup (const X3D::X3DSFNode <X3D::X3DNode> &, bool, const UndoStepPtr &)
+	detachFromGroup (X3D::SFNode, bool, const UndoStepPtr &)
 	throw (X3D::Error <X3D::INVALID_NODE>);
 
 	X3D::MFNode
@@ -156,7 +156,7 @@ protected:
 
 private:
 
-	typedef std::function <bool (const X3D::SFNode &, X3D::MFNode*, X3D::SFNode*, size_t)> TraverseCallback;
+	typedef std::function <bool (X3D::SFNode &)> TraverseCallback;
 
 	void
 	set_initialized ();
@@ -165,10 +165,10 @@ private:
 	set_shutdown ();
 
 	std::string
-	toString (const X3D::MFNode &) const;
+	toString (X3D::MFNode &) const;
 
 	void
-	removeNode (const X3D::X3DSFNode <X3D::Scene> &, const X3D::SFNode &, const UndoStepPtr &);
+	removeNode (const X3D::X3DSFNode <X3D::Scene> &, X3D::SFNode, const UndoStepPtr &);
 
 	void
 	removeExportedNodes (const X3D::X3DSFNode <X3D::Scene> &, const X3D::SFNode &);
@@ -178,6 +178,9 @@ private:
 
 	void
 	removeNodeFromSceneGraph (X3D::X3DExecutionContext* const, const X3D::SFNode &, const UndoStepPtr &);
+
+	void
+	removeNode (const X3D::SFNode &, X3D::MFNode &, const X3D::SFNode &, const UndoStepPtr &);
 
 	void
 	removeNamedNode (X3D::X3DExecutionContext* const, const X3D::SFNode &);
@@ -196,10 +199,10 @@ private:
 	traverse (X3D::X3DExecutionContext* const, const TraverseCallback &) const;
 
 	bool
-	traverse (const X3D::SFNode &, const TraverseCallback &) const;
+	traverse (X3D::SFNode &, const TraverseCallback &) const;
 
 	bool
-	traverse (const X3D::SFNode &, const TraverseCallback &, X3D::ChildObjectSet &) const;
+	traverse (X3D::SFNode &, const TraverseCallback &, X3D::ChildObjectSet &) const;
 
 	X3D::Matrix4f
 	findModelViewMatrix (X3D::X3DBaseNode* const) const;
@@ -217,7 +220,7 @@ private:
 	X3D::MFNode*
 	getGroupingField (const X3D::SFNode & node) const
 	throw (X3D::Error <X3D::INVALID_NAME>);
-	
+
 	///  @name Undo functions
 
 	void

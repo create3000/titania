@@ -51,10 +51,9 @@
 #include "Browser/BrowserWindow.h"
 #include "Configuration/config.h"
 #include <Titania/OS/Env.h>
-#include <iostream>
 
-using namespace titania;
-using namespace titania::puck;
+namespace titania {
+namespace puck {
 
 class BrowserApplication :
 	public Gtk::Application
@@ -127,6 +126,9 @@ private:
 
 };
 
+} // puck
+} // titania
+
 int
 main (int argc, char** argv)
 {
@@ -135,13 +137,13 @@ main (int argc, char** argv)
 		<< " Compiled at " << __DATE__ << " " << __TIME__ << std::endl
 		<< std::endl;
 
-	std::setlocale (LC_ALL, os::env ("LANG") .c_str ());
+	std::setlocale (LC_ALL, titania::os::env ("LANG") .c_str ());
 
 	//std::locale::global (std::locale (os::env ("LANG") .c_str ()));
 
 	try
 	{
-		BrowserApplication browserApplication (argc, argv);
+		titania::puck::BrowserApplication browserApplication (argc, argv);
 
 		browserApplication .run ();
 	}

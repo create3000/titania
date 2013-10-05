@@ -58,6 +58,7 @@
 #include "X3D/Bits/Cast.h"
 #include "X3D/Bits/Error.h"
 #include "X3D/Components.h"
+#include "X3D/Prototype/X3DProto.h"
 
 #include "X3D/Execution/BindableNodeList.h"
 #include "X3D/Execution/BindableNodeStack.h"

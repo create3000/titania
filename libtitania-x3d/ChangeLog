@@ -1,5 +1,11 @@
 2013-10-05  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3D.h:
+	* X3DSFNode.h:
+	* X3DArrayField.h: 
+
+2013-10-05  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DField.h:
 	* X3DBrowser.cpp:
 	* X3DBrowserContext.cpp: 

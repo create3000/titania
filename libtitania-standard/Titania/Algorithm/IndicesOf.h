@@ -48,5 +48,36 @@
  *
  ******************************************************************************/
 
-#include "Algorithm/IndicesOf.h"
-#include "Algorithm/Remove.h"
+#ifndef __TITANIA_ALGORITHM_INDICES_OF_H__
+#define __TITANIA_ALGORITHM_INDICES_OF_H__
+
+#include <vector>
+#include <algorithm>
+
+namespace titania {
+namespace basic {
+
+template <class InputIt, class T>
+std::vector <size_t>
+indices_of (InputIt first, InputIt last, const T & value)
+{
+	std::vector <size_t> indices;
+	
+	InputIt begin = first;
+
+	first = std::find (first, last, value);
+
+	while (first not_eq last)
+	{
+		indices .emplace_back (first - begin);
+
+		first = std::find (++ first, last, value);
+	}
+
+	return indices;
+}
+
+} // basic
+} // titania
+
+#endif
