@@ -51,16 +51,12 @@
 #ifndef __TITANIA_UNDO_UNDO_FUNCTION_H__
 #define __TITANIA_UNDO_UNDO_FUNCTION_H__
 
+#include <functional>
+
 namespace titania {
 namespace puck {
 
-class UndoFunction
-{
-public:
-
-	UndoFunction ();
-
-};
+typedef std::function <void ()> UndoFunction;
 
 } // puck
 } // titania

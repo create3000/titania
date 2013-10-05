@@ -52,6 +52,7 @@
 #define __TITANIA_BROWSER_X3DBROWSER_EDITOR_H__
 
 #include "../Browser/X3DBrowserWidget.h"
+#include "../Undo/UndoHistory.h"
 
 namespace titania {
 namespace puck {
@@ -109,45 +110,47 @@ protected:
 	void
 	restoreSession () final;
 
+	/// @name Undo
+
 	/// @name Edit operations
 
 	void
-	addNode (const std::string &)
+	addNode (const std::string &, const UndoStepPtr &)
 	throw (X3D::Error <X3D::INVALID_NAME>);
 
 	void
-	cutNodes (const X3D::MFNode &);
+	cutNodes (const X3D::MFNode &, const UndoStepPtr &);
 
 	void
 	copyNodes (const X3D::MFNode &);
 
 	void
-	pasteNodes (const X3D::MFNode &);
+	pasteNodes (const X3D::MFNode &, const UndoStepPtr &);
 
 	void
-	removeNode (const X3D::SFNode &)
+	removeNode (const X3D::SFNode &, const UndoStepPtr &)
 	throw (X3D::Error <X3D::INVALID_NODE>);
 
 	X3D::X3DSFNode <X3D::X3DGroupingNode>
-	groupNodes (const X3D::MFNode &)
+	groupNodes (const X3D::MFNode &, const UndoStepPtr &)
 	throw (X3D::Error <X3D::INVALID_NODE>);
 
 	X3D::MFNode
-	ungroupNode (const X3D::SFNode &)
+	ungroupNode (const X3D::SFNode &, const UndoStepPtr &)
 	throw (X3D::Error <X3D::INVALID_NODE>,
           X3D::Error <X3D::INVALID_NAME>);
 
 	void
-	addToGroup (const X3D::SFNode &, const X3D::SFNode &)
+	addToGroup (const X3D::SFNode &, const X3D::SFNode &, const UndoStepPtr &)
 	throw (X3D::Error <X3D::INVALID_NODE>,
           X3D::Error <X3D::INVALID_NAME>);
 
 	void
-	detachFromGroup (const X3D::X3DSFNode <X3D::X3DNode> &, bool)
+	detachFromGroup (const X3D::X3DSFNode <X3D::X3DNode> &, bool, const UndoStepPtr &)
 	throw (X3D::Error <X3D::INVALID_NODE>);
 
 	X3D::MFNode
-	createParentGroup (const X3D::SFNode &)
+	createParentGroup (const X3D::SFNode &, const UndoStepPtr &)
 	throw (X3D::Error <X3D::INVALID_NODE>);
 
 
@@ -165,25 +168,25 @@ private:
 	toString (const X3D::MFNode &) const;
 
 	void
-	removeNode (const X3D::X3DSFNode <X3D::Scene> &, const X3D::SFNode &) const;
+	removeNode (const X3D::X3DSFNode <X3D::Scene> &, const X3D::SFNode &, const UndoStepPtr &);
 
 	void
-	removeExportedNodes (const X3D::X3DSFNode <X3D::Scene> &, const X3D::SFNode &) const;
+	removeExportedNodes (const X3D::X3DSFNode <X3D::Scene> &, const X3D::SFNode &);
 
 	void
-	removeNode (X3D::X3DExecutionContext* const, const X3D::SFNode &) const;
+	removeNode (X3D::X3DExecutionContext* const, const X3D::SFNode &, const UndoStepPtr &);
 
 	void
-	removeNodeFromSceneGraph (X3D::X3DExecutionContext* const, const X3D::SFNode &) const;
+	removeNodeFromSceneGraph (X3D::X3DExecutionContext* const, const X3D::SFNode &, const UndoStepPtr &);
 
 	void
-	removeNamedNode (X3D::X3DExecutionContext* const, const X3D::SFNode &) const;
+	removeNamedNode (X3D::X3DExecutionContext* const, const X3D::SFNode &);
 
 	void
-	removeImportedNodes (X3D::X3DExecutionContext* const, const X3D::SFNode &) const;
+	removeImportedNodes (X3D::X3DExecutionContext* const, const X3D::SFNode &);
 
 	void
-	deleteRoutes (X3D::X3DExecutionContext* const, const X3D::SFNode &) const;
+	deleteRoutes (X3D::X3DExecutionContext* const, const X3D::SFNode &);
 
 	bool
 	traverse (const X3D::X3DSFNode <X3D::Scene> & scene, const TraverseCallback & callback) const
@@ -215,12 +218,28 @@ private:
 	getGroupingField (const X3D::SFNode & node) const
 	throw (X3D::Error <X3D::INVALID_NAME>);
 	
+	///  @name Undo functions
+
+	void
+	undoInsertNode (const X3D::SFNode &, X3D::MFNode &, size_t, const X3D::SFNode &);
+
+	void
+	undoEraseNode (const X3D::SFNode &, X3D::MFNode &, const X3D::SFNode &, const std::vector <size_t> &);
+
+	void
+	undoSetValue (const X3D::SFNode &, X3D::SFNode &, const X3D::SFNode &);
+
+	void
+	undoSetMatrix (const X3D::X3DSFNode <X3D::X3DTransformNode> &, const X3D::Matrix4f &);
+
 	///  @name Members
 
 	bool edited;
 	bool saveConfirmed;
 
 	X3D::X3DSFNode <X3D::Scene> scene;
+
+	UndoHistory undoHistory;
 
 };
 

@@ -234,5 +234,4 @@ LibraryView::~LibraryView ()
 { }
 
 } // puck
-
 } // titania

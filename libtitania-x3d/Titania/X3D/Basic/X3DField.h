@@ -68,6 +68,7 @@ public:
 	typedef ValueType value_type;
 
 	using X3DFieldDefinition::addInterest;
+	using X3DFieldDefinition::processInterests;
 
 	///  @name Construction
 
@@ -82,11 +83,19 @@ public:
 
 	///  Default assignment operator.  Behaves the same as the 6.7.6 setValue service.
 	X3DField &
-	operator = (const X3DField &);
+	operator = (const X3DField & field)
+	{
+		setValue (field .getValue ());
+		return *this;
+	}
 
 	///  Assignment operator for field values.  Behaves the same as the 6.7.6 setValue service.
 	X3DField &
-	operator = (const ValueType &);
+	operator = (const ValueType & value)
+	{
+		setValue (value);
+		return *this;
+	}
 
 	/// @name Common members
 
@@ -110,12 +119,22 @@ public:
 
 	///  6.7.6 setValue service.
 	void
-	setValue (const ValueType &);
+	setValue (const ValueType & value)
+	{
+		set (value);
+		addEvent ();
+	}
 
-	///  Set @a value to this field without notifying this field.
+	///  Set @a value to this field without notifying this fields parents.
+	void
+	set (const X3DField & field)
+	{ set (field .getValue ()); }
+
+	///  Set @a value to this field without notifying this fields parents.
 	virtual
 	void
-	set (const ValueType &);
+	set (const ValueType & value)
+	{ this -> value = value; }
 
 	///  Conversion operator.
 	operator const ValueType & () const
@@ -126,7 +145,11 @@ public:
 	///  Returns true if the type and the value of both fields are equal.
 	virtual
 	bool
-	operator == (const X3DFieldDefinition &) const override;
+	operator == (const X3DFieldDefinition & field) const override
+	{
+		assert (getType () == field .getType ());
+		return getValue () == static_cast <const X3DField &> (field) .getValue ();
+	}
 
 	///  Returns true if the type or the value of both fields are not equal.
 	virtual
@@ -146,13 +169,29 @@ public:
 	void
 	addInterest (Class & object, void (Class::* memberFunction) (const ValueType &)) const
 	{ addInterest (object, memberFunction, std::cref (value)); }
+	
+	///  Process interest service
+	void
+	processInterests (const X3DField & field)
+	{ processInterests (field .getValue ()); }
+
+	void
+	processInterests (const ValueType & value)
+	{
+		set (value);
+		processInterests ();
+	}
 
 	///  @name Destruction
 
 	///  6.7.8 dispose
 	virtual
 	void
-	dispose () override;
+	dispose () override
+	{
+		X3DFieldDefinition::dispose ();
+		reset (); // Reset as final step when parents empty.
+	}
 
 
 protected:
@@ -194,12 +233,17 @@ protected:
 	///  Set @a field to this field without notifying this field.
 	virtual
 	void
-	write (const X3DChildObject &);
+	write (const X3DChildObject & field)
+	{
+		//assert (getType () == field .getType ());
+		set (static_cast <const X3DField &> (field) .getValue ());
+	}
 
 	///  Set this field to its default value.
 	virtual
 	void
-	reset ();
+	reset ()
+	{ value = ValueType (); }
 
 
 private:
@@ -225,81 +269,6 @@ const std::string X3DField <ValueType>::typeName = "X3DField";
 
 template <class ValueType>
 const X3DConstants::FieldType X3DField <ValueType>::type = X3DConstants::SFBool;
-
-template <class ValueType>
-inline
-X3DField <ValueType> &
-X3DField <ValueType>::operator = (const X3DField & value)
-{
-	setValue (value .getValue ());
-	return *this;
-}
-
-template <class ValueType>
-inline
-X3DField <ValueType> &
-X3DField <ValueType>::operator = (const ValueType & value)
-{
-	setValue (value);
-	return *this;
-}
-
-template <class ValueType>
-inline
-void
-X3DField <ValueType>::setValue (const ValueType & value)
-{
-	set (value);
-	addEvent ();
-}
-
-template <class ValueType>
-inline
-void
-X3DField <ValueType>::set (const ValueType & value)
-{
-	this -> value = value;
-}
-
-template <class ValueType>
-inline
-void
-X3DField <ValueType>::write (const X3DChildObject & field)
-{
-	//assert (getType () == field .getType ());
-
-	set (static_cast <const X3DField &> (field) .getValue ());
-}
-
-template <class ValueType>
-inline
-bool
-X3DField <ValueType>::operator == (const X3DFieldDefinition & field) const
-{
-	if (getType () == field .getType ())
-		return getValue () == static_cast <const X3DField &> (field) .getValue ();
-
-	return false;
-}
-
-template <class ValueType>
-inline
-void
-X3DField <ValueType>::reset ()
-{
-	value = ValueType ();
-}
-
-template <class ValueType>
-inline
-void
-X3DField <ValueType>::dispose ()
-{
-	X3DFieldDefinition::dispose ();
-
-	// Reset as final step when parents empty.
-	reset ();
-}
 
 //@{
 template <class ValueType>

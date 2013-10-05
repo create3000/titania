@@ -20,13 +20,18 @@ EXTERNPROTO Yellow [
 ]
 "Colors.wrl"
 
+DEF EnterWorld VisibilitySensor { }
+
 DEF Blue Background {
   skyColor 0.25098 0.270588 0.329412
 }
 
-Viewpoint {
+DEF Home Viewpoint {
   description "Home"
 }
+
+ROUTE EnterWorld .isActive TO Blue.set_bind
+ROUTE EnterWorld .isActive TO Home.set_bind
 
 DEF Titania Transform {
   translation 3 -4 0

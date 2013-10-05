@@ -133,8 +133,6 @@ X3DBrowserContext::X3DBrowserContext () :
 	             selection,
 	             notification,
 	             console);
-
-	initialized () .isTainted (true);
 }
 
 void
@@ -209,7 +207,7 @@ X3DBrowserContext::initialize ()
 	}
 
 	initialized () .addInterest (this, &X3DBrowserContext::set_initialized);
-	shutdown () .addInterest (this, &X3DBrowserContext::set_shutdown);
+	shutdown ()    .addInterest (this, &X3DBrowserContext::set_shutdown);
 }
 
 void

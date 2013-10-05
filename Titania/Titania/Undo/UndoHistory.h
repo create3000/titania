@@ -51,6 +51,10 @@
 #ifndef __TITANIA_UNDO_UNDO_HISTORY_H__
 #define __TITANIA_UNDO_UNDO_HISTORY_H__
 
+#include "../Undo/UndoStep.h"
+
+#include <memory>
+
 namespace titania {
 namespace puck {
 
@@ -59,6 +63,12 @@ class UndoHistory
 public:
 
 	UndoHistory ();
+
+	void
+	addStep (const std::shared_ptr <UndoStep> &);
+
+	void
+	clear ();
 
 };
 

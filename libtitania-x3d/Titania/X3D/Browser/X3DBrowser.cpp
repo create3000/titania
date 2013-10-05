@@ -120,7 +120,6 @@ X3DBrowser::initialize ()
 	       std::string (80, '*'), '\n',
 	       '\n');
 
-	initialized () .isTainted (false);
 	initialized () = getCurrentTime ();
 }
 
@@ -262,7 +261,8 @@ throw (Error <INVALID_SCENE>,
 
 		// Generate initialized event immediately upon receiving this service.
 
-		initialized () = getCurrentTime ();
+		if (initialized ())
+			initialized () .processInterests (getCurrentTime ());
 
 		print ("*** The browser is requested to replace the world with '", scene -> getWorldURL (), "'.\n");
 

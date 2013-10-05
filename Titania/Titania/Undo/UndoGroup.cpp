@@ -57,5 +57,4 @@ UndoGroup::UndoGroup ()
 { }
 
 } // puck
-
 } // titania

@@ -56,6 +56,15 @@ namespace puck {
 UndoHistory::UndoHistory ()
 { }
 
-} // puck
+void
+UndoHistory::addStep (const std::shared_ptr <UndoStep> & undoStep)
+{
 
+}
+
+void
+UndoHistory::clear ()
+{ }
+
+} // puck
 } // titania

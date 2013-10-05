@@ -53,9 +53,19 @@
 namespace titania {
 namespace puck {
 
-UndoStep::UndoStep ()
+UndoStep::UndoStep (const std::string & description) :
+	description (description),
+	  functions ()
 { }
 
-} // puck
+void
+UndoStep::undo () const
+{
+	__LOG__ << std::endl;
+	
+	for (const auto & function : functions)
+		function ();
+}
 
+} // puck
 } // titania

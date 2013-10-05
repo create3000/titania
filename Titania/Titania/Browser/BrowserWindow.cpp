@@ -435,7 +435,8 @@ BrowserWindow::on_add_node (const std::string & typeName)
 {
 	try
 	{
-		addNode (typeName);
+		auto undoStep = std::make_shared <UndoStep> (_ ("Add Node"));
+		addNode (typeName, undoStep);
 		getBrowser () -> update ();
 	}
 	catch (const X3D::X3DError &)
@@ -452,8 +453,10 @@ BrowserWindow::on_cut_nodes_activate ()
 	if (selection .empty ())
 		return;
 
-	cutNodes (selection);
-	
+	auto undoStep = std::make_shared <UndoStep> (_ ("Cut"));
+
+	cutNodes (selection, undoStep);
+
 	getBrowser () -> getSelection () -> clear ();
 	getBrowser () -> update ();
 }
@@ -478,9 +481,11 @@ BrowserWindow::on_paste_nodes_activate ()
 {
 	__LOG__ << std::endl;
 
+	auto undoStep = std::make_shared <UndoStep> (_ ("Paste"));
+
 	const auto selection = getBrowser () -> getSelection () -> getChildren ();
 
-	pasteNodes (selection);
+	pasteNodes (selection, undoStep);
 
 	getBrowser () -> update ();
 }
@@ -495,13 +500,15 @@ BrowserWindow::on_delete_nodes_activate ()
 	if (selection .empty ())
 		return;
 
+	auto undoStep = std::make_shared <UndoStep> (_ ("Delete"));
+
 	getBrowser () -> getSelection () -> clear ();
 
 	for (const auto & child : selection)
 	{
 		try
 		{
-			removeNode (child);
+			removeNode (child, undoStep);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -520,8 +527,10 @@ BrowserWindow::on_group_selected_nodes_activate ()
 	if (selection .empty ())
 		return;
 
+	auto undoStep = std::make_shared <UndoStep> (_ ("Group"));
+
 	getBrowser () -> getSelection () -> clear ();
-	getBrowser () -> getSelection () -> addChild (groupNodes (selection));
+	getBrowser () -> getSelection () -> addChild (groupNodes (selection, undoStep));
 	getBrowser () -> update ();
 }
 
@@ -535,13 +544,15 @@ BrowserWindow::on_ungroup_node_activate ()
 	if (selection .empty ())
 		return;
 
+	auto undoStep = std::make_shared <UndoStep> (_ ("Ungroup"));
+
 	getBrowser () -> getSelection () -> clear ();
 
 	for (const auto & group : selection)
 	{
 		try
 		{
-			for (const auto & child : ungroupNode (group))
+			for (const auto & child : ungroupNode (group, undoStep))
 				getBrowser () -> getSelection () -> addChild (child);
 		}
 		catch (const X3D::X3DError &)
@@ -561,13 +572,15 @@ BrowserWindow::on_add_to_group_activate ()
 	if (selection .size () < 2)
 		return;
 
+	auto undoStep = std::make_shared <UndoStep> (_ ("Add To Group"));
+
 	auto group = selection .back ();
 	selection .pop_back ();
 
 	try
 	{
 		for (const auto & child : selection)
-			addToGroup (group, child);
+			addToGroup (group, child, undoStep);
 	}
 	catch (const X3D::X3DError &)
 	{ }
@@ -587,11 +600,13 @@ BrowserWindow::on_detach_from_group_activate ()
 	if (selection .empty ())
 		return;
 
+	auto undoStep = std::make_shared <UndoStep> (_ ("Detach From Group"));
+
 	for (const auto & child : selection)
 	{
 		try
 		{
-			detachFromGroup (child, getKeys () .shift ());
+			detachFromGroup (child, getKeys () .shift (), undoStep);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -610,6 +625,8 @@ BrowserWindow::on_create_parent_group_activate ()
 	if (selection .empty ())
 		return;
 
+	auto undoStep = std::make_shared <UndoStep> (_ ("Create Parent Group"));
+
 	getBrowser () -> getSelection () -> clear ();
 
 	X3D::MFNode groups;
@@ -620,7 +637,7 @@ BrowserWindow::on_create_parent_group_activate ()
 		{
 			// Select Transform and expand
 
-			for (const auto & group : createParentGroup (child))
+			for (const auto & group : createParentGroup (child, undoStep))
 			{
 				groups .emplace_back (group);
 
