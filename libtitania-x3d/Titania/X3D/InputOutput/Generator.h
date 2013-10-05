@@ -207,13 +207,19 @@ public:
 
 private:
 
+	static
+	std::string
+	getUniqueName ();
+
 	typedef std::set <const X3DBaseNode*>              NodeSet;
-	typedef std::map <const X3DBaseNode*, std::string> NewNamesIndex;
+	typedef std::map <std::string, const X3DBaseNode*> NameIndex;
+	typedef std::map <const X3DBaseNode*, std::string> NameIndexByNode;
 	typedef std::map <const X3DBaseNode*, std::string> ImportedNamesIndex;
 
 	static size_t             level;
 	static NodeSet            nodes;
-	static NewNamesIndex      newNames;
+	static NameIndex          names;
+	static NameIndexByNode    namesByNode;
 	static size_t             newName;
 	static ImportedNamesIndex importedNames;
 

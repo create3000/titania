@@ -51,6 +51,7 @@
 #include "Generator.h"
 
 #include "../Browser/X3DBrowser.h"
+#include "../Parser/RegEx.h"
 
 #include <cassert>
 
@@ -187,9 +188,11 @@ const Generator::NodeTypesIndex       Generator::NodeTypes;
 
 size_t                        Generator::level = 0;
 Generator::NodeSet            Generator::nodes;
-Generator::NewNamesIndex      Generator::newNames;
+Generator::NameIndex          Generator::names;
+Generator::NameIndexByNode    Generator::namesByNode;
 size_t                        Generator::newName = 0;
 Generator::ImportedNamesIndex Generator::importedNames;
+static const std::string      emptyName;
 
 bool                 Generator::expandNodes = false;
 Generator::StyleType Generator::style       = NICEST;
@@ -201,6 +204,7 @@ void
 Generator::Style (const std::string & value)
 {
 	std::string style = value;
+
 	std::transform (style .begin (), style .end (), style .begin (), ::toupper);
 
 	if (style == "SMALLEST")
@@ -321,7 +325,8 @@ Generator::PopContext ()
 	if (level == 0)
 	{
 		nodes .clear ();
-		newNames .clear ();
+		names .clear ();
+		namesByNode .clear ();
 		importedNames .clear ();
 	}
 }
@@ -341,36 +346,91 @@ Generator::AddNode (const X3DBaseNode* basicNode)
 const std::string &
 Generator::GetName (const X3DBaseNode* basicNode)
 {
+	// Is the node already in index
+
+	auto iter = namesByNode .find (basicNode);
+
+	if (iter not_eq namesByNode .end ())
+		return iter -> second;
+
+	// The node has no name
+
 	if (basicNode -> getName () .empty ())
 	{
-		auto iter = newNames .find (basicNode);
-
-		if (iter not_eq newNames .end ())
-			return iter -> second;
-
 		if (basicNode -> getNumClones () > 1 or basicNode -> hasRoutes ())
 		{
-			std::string name;
+			std::string name = getUniqueName ();
 
-			try
+			names [name]            = basicNode;
+			namesByNode [basicNode] = name;
+
+			return namesByNode [basicNode];
+		}
+
+		// The node doesn't need a name
+
+		return basicNode -> getName ();
+	}
+
+	// The node has a name
+
+	std::string name      = basicNode -> getName ();
+	bool        hasNumber = RegEx::_LastNumber .PartialMatch (name);
+
+	RegEx::_LastNumber .Replace ("", &name);
+
+	if (name .empty ())
+	{
+		if (basicNode -> getNumClones () > 1 or basicNode -> hasRoutes ())
+			name = getUniqueName ();
+
+		else
+			return emptyName;
+	}
+	else
+	{
+		size_t      i       = 0;
+		std::string newName = hasNumber ? name + '_' + std::to_string (++ i) : name;
+
+		try
+		{
+			for ( ; ;)
 			{
-				for ( ; ;)
-				{
-					name = '_' + std::to_string (++ newName);
+				names .at (newName);
 
-					basicNode -> getExecutionContext () -> getNamedNode (name);
-				}
+				newName = name + '_' + std::to_string (++ i);
 			}
-			catch (const Error <INVALID_NAME> &)
-			{ }
-
-			newNames [basicNode] = name;
-
-			return newNames [basicNode];
+		}
+		catch (const std::out_of_range &)
+		{
+			name = newName;
 		}
 	}
 
-	return basicNode -> getName ();
+	names [name]            = basicNode;
+	namesByNode [basicNode] = name;
+
+	return namesByNode [basicNode];
+}
+
+std::string
+Generator::getUniqueName ()
+{
+	std::string name;
+
+	try
+	{
+		for ( ; ;)
+		{
+			name = '_' + std::to_string (++ newName);
+
+			names .at (name);
+		}
+	}
+	catch (const std::out_of_range &)
+	{ }
+
+	return name;
 }
 
 void

@@ -90,13 +90,13 @@ DEF Text1 Transform {
 
 DEF Sensors Transform {
   children [
-    DEF _0 ProximitySensor { }
-    DEF _1 VisibilitySensor { }
+    DEF _1 ProximitySensor { }
+    VisibilitySensor { }
   ]
 }
 
 Group {
-  children USE _0
+  children USE _1
 }
 
 DEF Rotor Rotor {
@@ -106,7 +106,7 @@ DEF Rotor Rotor {
 
 DEF Box Transform {
   translation 1.40843 1.10727 0.193803
-  rotation 0 0 1 4.30271
+  rotation 0 0 1 1.65713
   scale 0.2 0.2 0.2
   children Transform {
     children Shape {

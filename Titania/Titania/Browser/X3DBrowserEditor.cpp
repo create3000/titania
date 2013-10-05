@@ -318,14 +318,17 @@ X3DBrowserEditor::toString (X3D::MFNode & nodes) const
 
 	std::deque <X3D::Route*> routes;
 
-	X3D::traverse (nodes, [&nodeIndex, &routes] (X3D::SFNode & node)
+	X3D::traverse (nodes, [this, &nodeIndex, &routes] (X3D::SFNode & node)
 	               {
 	                  for (const auto & field: node -> getFieldDefinitions ())
 	                  {
 	                     for (const auto & route: field -> getOutputRoutes ())
 	                     {
-	                        if (nodeIndex .find (route -> getDestinationNode ()) not_eq nodeIndex .end ())
-										routes .emplace_back (route);
+	                        if (route -> getExecutionContext () == getBrowser () -> getExecutionContext ())
+	                        {
+		                        if (nodeIndex .find (route -> getDestinationNode ()) not_eq nodeIndex .end ())
+											routes .emplace_back (route);
+									}
 								}
 							}
 
