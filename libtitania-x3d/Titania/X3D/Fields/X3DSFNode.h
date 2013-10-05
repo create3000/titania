@@ -164,25 +164,27 @@ public:
 	///  @name Node services
 
 	const std::string &
-	getNodeTypeName () const;
+	getNodeTypeName () const
+	{ return getValue () -> getTypeName (); }
 
 	const X3DBaseNode*
-	getNodeType () const;
-
-	void
-	setNodeName (const std::string &) const;
+	getNodeType () const
+	{ return getValue () -> getType (); }
 
 	const std::string &
-	getNodeName () const;
+	getNodeName () const
+	{ return getValue () -> getName (); }
 
 	const FieldDefinitionArray &
-	getFieldDefinitions () const;
+	getFieldDefinitions () const
+	{ return getValue () -> getFieldDefinitions (); }
 
 	X3DFieldDefinition*
-	getField (const std::string &) const
+	getField (const std::string & name) const
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	       Error <DISPOSED>)
+	{ return getValue () -> getField (name); }
 
 	///  @name Set value services
 
@@ -244,6 +246,8 @@ public:
 private:
 
 	using X3DField <ValueType*>::reset;
+
+	///  @name Operations
 
 	void
 	addNode (ValueType* const);
@@ -325,57 +329,6 @@ X3DSFNode <ValueType>::operator = (X3DSFNode <Up> && field)
 	X3DField <ValueType*>::operator = (dynamic_cast <ValueType*> (field .getValue ()));
 	field = nullptr;
 	return *this;
-}
-
-template <class ValueType>
-inline
-const std::string &
-X3DSFNode <ValueType>::getNodeTypeName () const
-{
-	return getValue () -> getTypeName ();
-}
-
-template <class ValueType>
-inline
-const X3DBaseNode*
-X3DSFNode <ValueType>::getNodeType () const
-{
-	return getValue () -> getType ();
-}
-
-template <class ValueType>
-inline
-void
-X3DSFNode <ValueType>::setNodeName (const std::string & name) const
-{
-	return getValue () -> setName (name);
-}
-
-template <class ValueType>
-inline
-const std::string &
-X3DSFNode <ValueType>::getNodeName () const
-{
-	return getValue () -> getName ();
-}
-
-template <class ValueType>
-inline
-const FieldDefinitionArray &
-X3DSFNode <ValueType>::getFieldDefinitions () const
-{
-	return getValue () -> getFieldDefinitions ();
-}
-
-template <class ValueType>
-inline
-X3DFieldDefinition*
-X3DSFNode <ValueType>::getField (const std::string & name) const
-throw (Error <INVALID_NAME>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	return getValue () -> getField (name);
 }
 
 template <class ValueType>

@@ -48,41 +48,80 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_H__
-#define __TITANIA_X3D_H__
+#include "Traverse.h"
 
-// Include Browser as first file
-#include "X3D/Browser/Browser.h"
-#include "X3D/Browser/BrowserApplication.h"
-
-#include "X3D/Bits/Cast.h"
-#include "X3D/Bits/Error.h"
-#include "X3D/Bits/Traverse.h"
-#include "X3D/Components.h"
-#include "X3D/Prototype/X3DProto.h"
-
-#include "X3D/Execution/BindableNodeList.h"
-#include "X3D/Execution/BindableNodeStack.h"
-
-#include "X3D/Browser/Properties/MotionBlur.h"
-#include "X3D/InputOutput/Loader.h"
-#include "X3D/Miscellaneous/Keys.h"
-#include "X3D/Miscellaneous/MediaStream.h"
-#include "X3D/Parser/Filter.h"
-#include "X3D/Parser/RegEx.h"
+#include "../Basic/NodeSet.h"
 
 namespace titania {
 namespace X3D {
 
-const X3DSFNode <BrowserApplication> &
-getBrowser (/* parameter */)
-throw (Error <BROWSER_UNAVAILABLE>);
+static
+bool
+traverse (X3D::SFNode & node, const TraverseCallback & callback, NodeSet & seen)
+{
+	if (not node)
+		return false;
 
-X3DSFNode <Browser>
-createBrowser ()
-throw (Error <BROWSER_UNAVAILABLE>);
+	if (not seen .insert (node) .second)
+		return false;
+
+	for (const auto & field : node -> getFieldDefinitions ())
+	{
+		switch (field -> getType ())
+		{
+			case X3D::X3DConstants::SFNode :
+				{
+					auto sfnode = static_cast <X3D::SFNode*> (field);
+
+					if (traverse (*sfnode, callback, seen))
+						return true;
+
+					break;
+				}
+			case X3D::X3DConstants::MFNode:
+			{
+				auto mfnode = static_cast <X3D::MFNode*> (field);
+
+				for (auto & value : *mfnode)
+				{
+					if (traverse (value, callback, seen))
+						return true;
+				}
+
+				break;
+			}
+			default:
+				break;
+		}
+	}
+
+	if (callback (node))
+		return true;
+
+	return false;
+}
+
+bool
+traverse (X3D::MFNode & nodes, const TraverseCallback & callback)
+{
+	NodeSet seen;
+
+	for (auto & node : nodes)
+	{
+		if (traverse (node, callback, seen))
+			return true;
+	}
+
+	return false;
+}
+
+bool
+traverse (X3D::SFNode & node, const TraverseCallback & callback)
+{
+	NodeSet seen;
+
+	return traverse (node, callback, seen);
+}
 
 } // X3D
 } // titania
-
-#endif

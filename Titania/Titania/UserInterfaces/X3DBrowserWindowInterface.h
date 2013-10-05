@@ -175,10 +175,6 @@ public:
 	getOpenLocationImage () const
 	{ return *m_openLocationImage; }
 
-	Gtk::Image &
-	getWalkViewerImage () const
-	{ return *m_walkViewerImage; }
-
 	Gtk::Menu &
 	getViewerTypeMenu () const
 	{ return *m_viewerTypeMenu; }
@@ -198,6 +194,10 @@ public:
 	Gtk::ImageMenuItem &
 	getNoneViewerMenuItem () const
 	{ return *m_noneViewerMenuItem; }
+
+	Gtk::Image &
+	getWalkViewerImage () const
+	{ return *m_walkViewerImage; }
 
 	Gtk::Image &
 	getWorkspacesImage () const
@@ -765,12 +765,12 @@ private:
 	Gtk::Dialog*                    m_openLocationDialog;
 	Gtk::Entry*                     m_openLocationEntry;
 	Gtk::Image*                     m_openLocationImage;
-	Gtk::Image*                     m_walkViewerImage;
 	Gtk::Menu*                      m_viewerTypeMenu;
 	Gtk::ImageMenuItem*             m_examineViewerMenuItem;
 	Gtk::ImageMenuItem*             m_walkViewerMenuItem;
 	Gtk::ImageMenuItem*             m_flyViewerMenuItem;
 	Gtk::ImageMenuItem*             m_noneViewerMenuItem;
+	Gtk::Image*                     m_walkViewerImage;
 	Gtk::Image*                     m_workspacesImage;
 	Gtk::Window*                    m_window;
 	Gtk::VBox*                      m_widget;

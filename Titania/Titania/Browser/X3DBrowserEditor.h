@@ -156,8 +156,6 @@ protected:
 
 private:
 
-	typedef std::function <bool (X3D::SFNode &)> TraverseCallback;
-
 	void
 	set_initialized ();
 
@@ -190,19 +188,6 @@ private:
 
 	void
 	deleteRoutes (X3D::X3DExecutionContext* const, const X3D::SFNode &);
-
-	bool
-	traverse (const X3D::X3DSFNode <X3D::Scene> & scene, const TraverseCallback & callback) const
-	{ return traverse (scene .getValue (), callback); }
-
-	bool
-	traverse (X3D::X3DExecutionContext* const, const TraverseCallback &) const;
-
-	bool
-	traverse (X3D::SFNode &, const TraverseCallback &) const;
-
-	bool
-	traverse (X3D::SFNode &, const TraverseCallback &, X3D::ChildObjectSet &) const;
 
 	X3D::Matrix4f
 	findModelViewMatrix (X3D::X3DBaseNode* const) const;

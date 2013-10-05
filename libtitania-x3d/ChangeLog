@@ -1,5 +1,15 @@
 2013-10-05  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* X3D.h:
+	* libtitania-x3d.cproj:
+	* Traverse.h:
+	* Traverse.cpp:
+	* X3DSFNode.h:
+	* X3DExecutionContext.h: 
+
+2013-10-05  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3D.h:
 	* X3DSFNode.h:
 	* X3DArrayField.h: 

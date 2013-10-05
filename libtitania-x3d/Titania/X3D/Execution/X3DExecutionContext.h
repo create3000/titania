@@ -403,8 +403,9 @@ public:
 
 	///  @name Input/Output
 
+	virtual
 	void
-	toStream (std::ostream &) const;
+	toStream (std::ostream &) const override;
 
 	///  @name Destruction
 

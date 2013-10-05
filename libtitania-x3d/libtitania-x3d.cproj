@@ -584,6 +584,7 @@
     <None Include="Titania\X3D\Browser\X3DBrowserSurface.h" />
     <None Include="Titania\X3D\Miscellaneous\International.h" />
     <None Include="share\titania\handles\library\RoundedRectangle2D.wrl" />
+    <None Include="Titania\X3D\Bits\Traverse.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1026,6 +1027,7 @@
     <Compile Include="Titania\X3D\Components\Grouping\X3DTransformNode.cpp" />
     <Compile Include="Titania\X3D\Components\ParticleSystems\ForcePhysicsModel.cpp" />
     <Compile Include="Titania\X3D\Browser\X3DBrowserSurface.cpp" />
+    <Compile Include="Titania\X3D\Bits\Traverse.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

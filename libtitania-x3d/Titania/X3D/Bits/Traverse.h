@@ -48,39 +48,22 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_H__
-#define __TITANIA_X3D_H__
+#ifndef __TITANIA_X3D_BITS_TRAVERSE_H__
+#define __TITANIA_X3D_BITS_TRAVERSE_H__
 
-// Include Browser as first file
-#include "X3D/Browser/Browser.h"
-#include "X3D/Browser/BrowserApplication.h"
-
-#include "X3D/Bits/Cast.h"
-#include "X3D/Bits/Error.h"
-#include "X3D/Bits/Traverse.h"
-#include "X3D/Components.h"
-#include "X3D/Prototype/X3DProto.h"
-
-#include "X3D/Execution/BindableNodeList.h"
-#include "X3D/Execution/BindableNodeStack.h"
-
-#include "X3D/Browser/Properties/MotionBlur.h"
-#include "X3D/InputOutput/Loader.h"
-#include "X3D/Miscellaneous/Keys.h"
-#include "X3D/Miscellaneous/MediaStream.h"
-#include "X3D/Parser/Filter.h"
-#include "X3D/Parser/RegEx.h"
+#include "../Fields/MFNode.h"
+#include "../Fields/SFNode.h"
 
 namespace titania {
 namespace X3D {
 
-const X3DSFNode <BrowserApplication> &
-getBrowser (/* parameter */)
-throw (Error <BROWSER_UNAVAILABLE>);
+typedef std::function <bool (X3D::SFNode &)> TraverseCallback;
 
-X3DSFNode <Browser>
-createBrowser ()
-throw (Error <BROWSER_UNAVAILABLE>);
+bool
+traverse (MFNode &, const TraverseCallback &);
+
+bool
+traverse (SFNode &, const TraverseCallback &);
 
 } // X3D
 } // titania

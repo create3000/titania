@@ -98,8 +98,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_openLocationEntry -> set_name ("OpenLocationEntry");
 	m_builder -> get_widget ("OpenLocationImage", m_openLocationImage);
 	m_openLocationImage -> set_name ("OpenLocationImage");
-	m_builder -> get_widget ("WalkViewerImage", m_walkViewerImage);
-	m_walkViewerImage -> set_name ("WalkViewerImage");
 	m_builder -> get_widget ("ViewerTypeMenu", m_viewerTypeMenu);
 	m_viewerTypeMenu -> set_name ("ViewerTypeMenu");
 	m_builder -> get_widget ("ExamineViewerMenuItem", m_examineViewerMenuItem);
@@ -110,6 +108,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_flyViewerMenuItem -> set_name ("FlyViewerMenuItem");
 	m_builder -> get_widget ("NoneViewerMenuItem", m_noneViewerMenuItem);
 	m_noneViewerMenuItem -> set_name ("NoneViewerMenuItem");
+	m_builder -> get_widget ("WalkViewerImage", m_walkViewerImage);
+	m_walkViewerImage -> set_name ("WalkViewerImage");
 	m_builder -> get_widget ("WorkspacesImage", m_workspacesImage);
 	m_workspacesImage -> set_name ("WorkspacesImage");
 	m_builder -> get_widget ("Window", m_window);
