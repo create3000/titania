@@ -123,6 +123,12 @@ protected:
 	void
 	pasteNodes (const X3D::MFNode &, const UndoStepPtr &);
 
+	void
+	updatePasteStatus ();
+
+	bool
+	getPasteStatus ();
+
 	/// @name Edit operations
 
 	void
@@ -169,9 +175,13 @@ private:
 
 	void
 	set_shutdown ();
+	
+	// Clipboard
 
 	std::string
 	toString (X3D::MFNode &) const;
+
+	// Edit
 
 	void
 	removeNode (const X3D::X3DSFNode <X3D::Scene> &, X3D::SFNode, const UndoStepPtr &);
@@ -233,9 +243,9 @@ private:
 	bool edited;
 	bool saveConfirmed;
 
-	X3D::X3DSFNode <X3D::Scene> scene;
-
 	UndoHistory undoHistory;
+
+	X3D::X3DSFNode <X3D::Scene> scene;
 
 };
 

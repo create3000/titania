@@ -1,5 +1,10 @@
 2013-10-06  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBrowser.cpp:
+	* GoldenGate.cpp: 
+
+2013-10-06  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Error.h:
 	* MFNode.h:
 	* Traverse.h:

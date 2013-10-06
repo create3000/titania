@@ -262,7 +262,7 @@ throw (Error <INVALID_SCENE>,
 		// Generate initialized event immediately upon receiving this service.
 
 		if (initialized ())
-			initialized () .processInterests (getCurrentTime ());
+			initialized () = getCurrentTime ();
 
 		print ("*** The browser is requested to replace the world with '", scene -> getWorldURL (), "'.\n");
 

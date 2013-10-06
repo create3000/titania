@@ -61,17 +61,17 @@ namespace titania {
 namespace puck {
 
 BrowserWindow::BrowserWindow (const X3D::X3DSFNode <X3D::Browser> & browserSurface, const basic::uri & worldURL) :
-            X3DBaseNode (browserSurface, browserSurface),
-	    X3DBaseInterface (this),
-	    X3DBrowserEditor (worldURL),
-	      browserSurface (browserSurface),
-	    motionBlurEditor (this),
-	         libraryView (this),
-	       viewpointList (this),
-	       historyEditor (this),
-	       outlineEditor (this),
-	                keys (),
-	           importURL ()
+	     X3DBaseNode (browserSurface, browserSurface),
+	X3DBaseInterface (this),
+	X3DBrowserEditor (worldURL),
+	  browserSurface (browserSurface),
+	motionBlurEditor (this),
+	     libraryView (this),
+	   viewpointList (this),
+	   historyEditor (this),
+	   outlineEditor (this),
+	            keys (),
+	       importURL ()
 { }
 
 void
@@ -91,7 +91,7 @@ BrowserWindow::initialize ()
 	getFileFilterImage () -> set_name (_ ("Images"));
 	getFileFilterAudio () -> set_name (_ ("Audio"));
 	getFileFilterVideo () -> set_name (_ ("Videos"));
-	
+
 	// Dialogs
 	getFileOpenDialog ()        .set_transient_for (getWindow ());
 	getOpenLocationDialog ()    .set_transient_for (getWindow ());
@@ -124,6 +124,11 @@ BrowserWindow::initialize ()
 	// Selection
 	getBrowser () -> getSelection () -> getChildren () .addInterest (this, &BrowserWindow::set_selection);
 	set_selection (getBrowser () -> getSelection () -> getChildren ());
+
+	// Clipboard
+	Gtk::Clipboard::get () -> set_can_store ();
+	Gtk::Clipboard::get () -> signal_owner_change ().connect (sigc::mem_fun (*this, &BrowserWindow::on_clipboard_owner_change));
+	updatePasteStatus ();
 
 	// Dashboard
 	getBrowser () -> getBrowserOptions () -> dashboard () .addInterest (this, &BrowserWindow::set_dashboard);
@@ -430,7 +435,15 @@ BrowserWindow::on_open_location_entry_key_release_event (GdkEventKey* event)
 	return false;
 }
 
-// Edit menu
+// Clipboard
+
+void
+BrowserWindow::on_clipboard_owner_change (GdkEventOwnerChange*)
+{
+	__LOG__ << std::endl;
+
+	updatePasteStatus ();
+}
 
 void
 BrowserWindow::on_cut_nodes_activate ()
@@ -478,6 +491,8 @@ BrowserWindow::on_paste_nodes_activate ()
 
 	getBrowser () -> update ();
 }
+
+// Edit menu
 
 void
 BrowserWindow::on_add_node (const std::string & typeName)
@@ -852,8 +867,6 @@ BrowserWindow::on_node_properties ()
 	if (getBrowser () -> getSelection () -> getChildren () .size ())
 		openNodePropertiesEditor (getBrowser () -> getSelection () -> getChildren () .back ());
 }
-
-
 
 // Browser dashboard handling
 

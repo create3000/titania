@@ -148,7 +148,7 @@ private:
 
 	void
 	set_selection (const X3D::MFNode & children);
-
+	
 	///  @name Key events
 
 	virtual
@@ -214,10 +214,10 @@ private:
 	bool
 	on_open_location_entry_key_release_event (GdkEventKey*) final;
 
-	///  @name Edit menu 
+	///  @name Clipboard handling
 
 	void
-	on_add_node (const std::string &);
+	on_clipboard_owner_change (GdkEventOwnerChange*);
 
 	virtual
 	void
@@ -230,6 +230,11 @@ private:
 	virtual
 	void
 	on_paste_nodes_activate () final;
+
+	///  @name Edit menu 
+
+	void
+	on_add_node (const std::string &);
 
 	virtual
 	void
@@ -440,8 +445,8 @@ private:
 	HistoryEditor    historyEditor;
 	OutlineEditor    outlineEditor;
 
-	X3D::Keys  keys;
-	basic::uri importURL;
+	X3D::Keys   keys;
+	basic::uri  importURL;
 
 };
 

@@ -59,8 +59,8 @@ X3DBrowserEditor::X3DBrowserEditor (const basic::uri & worldURL) :
 	X3DBrowserWidget (worldURL),
 	          edited (false),
 	   saveConfirmed (false),
-	           scene (),
-	     undoHistory ()
+	     undoHistory (),
+	           scene ()
 { }
 
 void
@@ -300,6 +300,9 @@ X3DBrowserEditor::toString (X3D::MFNode & nodes) const
 	std::ostringstream text;
 
 	text
+		<< "#X3D V3.3 utf8 Titania"
+		<< std::endl
+		<< std::endl
 		<< '#' << getBrowser () -> getExecutionContext () -> getWorldURL ()
 		<< std::endl
 		<< std::endl;
@@ -342,14 +345,25 @@ X3DBrowserEditor::pasteNodes (const X3D::MFNode & nodes, const UndoStepPtr & und
 		{
 			std::istringstream text (clipboard -> wait_for_text ());
 
-			std::string whitespaces;
-			X3D::Grammar::whitespaces (text, whitespaces);
-
-			std::string worldURL;
-
-			if (X3D::Grammar::comment (text, worldURL))
+			std::string header;
+	
+			if (X3D::Grammar::comment (text, header))
 			{
-				import (getBrowser () -> createX3DFromStream (worldURL, text));
+				std::string encoding, specificationVersion, characterEncoding, comment;
+
+				if (X3D::Grammar::Header .FullMatch (header, &encoding, &specificationVersion, &characterEncoding, &comment))
+				{
+					std::string whitespaces;
+					X3D::Grammar::whitespaces (text, whitespaces);
+
+					std::string worldURL;
+
+					if (X3D::Grammar::comment (text, worldURL))
+					{
+						import (getBrowser () -> createX3DFromStream (worldURL, text));				
+					}
+				}
+			
 			}
 		}
 	}
@@ -357,6 +371,35 @@ X3DBrowserEditor::pasteNodes (const X3D::MFNode & nodes, const UndoStepPtr & und
 	{
 		std::clog << error .what () << std::endl;
 	}
+}
+
+void
+X3DBrowserEditor::updatePasteStatus ()
+{
+	getPasteMenuItem () .set_sensitive (getPasteStatus ());
+}
+
+bool
+X3DBrowserEditor::getPasteStatus ()
+{
+	Glib::RefPtr <Gtk::Clipboard> clipboard = Gtk::Clipboard::get ();
+
+	if (clipboard -> wait_is_text_available ())
+	{
+		std::istringstream text (clipboard -> wait_for_text ());
+
+		std::string header;
+
+		if (X3D::Grammar::comment (text, header))
+		{
+			std::string encoding, specificationVersion, characterEncoding, comment;
+
+			if (X3D::Grammar::Header .FullMatch (header, &encoding, &specificationVersion, &characterEncoding, &comment))
+				return true;
+		}
+	}
+
+	return false;
 }
 
 // Edit operations
@@ -708,7 +751,7 @@ X3DBrowserEditor::addToGroup (const X3D::SFNode & group, const X3D::MFNode & chi
 			auto sfnode = dynamic_cast <X3D::SFNode*> (containerField);
 
 			if (sfnode)
-				sfnode -> setValue (child);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  // XXX Remove previous child completely from scene if not in scene anymore
+				sfnode -> setValue (child);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      // XXX Remove previous child completely from scene if not in scene anymore
 
 			else
 			{
@@ -832,7 +875,7 @@ X3DBrowserEditor::createParentGroup (const X3D::MFNode & children, const UndoSte
 
 		                  return false;
 							},
-							false);
+		               false);
 	}
 
 	setEdited (true);

@@ -258,6 +258,9 @@ golden_gate (const basic::uri & uri, basic::ifilestream && istream)
 		if (istream .response_headers () .at ("Content-Type") == "model/vrml")
 			return std::move (istream);
 
+		if (istream .response_headers () .at ("Content-Type") == "x-world/x-vrml")
+			return std::move (istream);
+
 		if (istream .response_headers () .at ("Content-Type") == "model/x3d+vrml")
 			return std::move (istream);
 
