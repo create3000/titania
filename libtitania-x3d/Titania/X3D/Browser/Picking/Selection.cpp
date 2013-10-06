@@ -66,7 +66,7 @@ Selection::Selection (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	   children ()
 {
-	addChildren (children);
+	X3DChildObject::addChildren (children);
 }
 
 X3DBaseNode*
@@ -76,52 +76,46 @@ Selection::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-Selection::addChild (const SFNode & child)
+Selection::addChildren (const MFNode & value)
 {
-	if (not child)
-		return;
-		
 	if (getBrowser () -> makeCurrent ())
 	{
-		child -> addHandle ();
+		for (const auto & child : value)
+		{
+			if (child)
+			{
+				child -> addHandle ();
 
-		children .emplace_back (child);
+				children .emplace_back (child);
+			}
+		}
 	}
 }
 
 void
-Selection::removeChild (const SFNode & child)
+Selection::removeChildren (const MFNode & value)
 {
-	if (not child)
-		return;
-
 	if (getBrowser () -> makeCurrent ())
 	{
-		children .erase (std::remove (children .begin (),
-		                              children .end (),
-		                              child),
-		                 children .end ());
+		for (const auto & child : value)
+		{
+			if (child)
+			{
+				children .erase (std::remove (children .begin (),
+				                              children .end (),
+				                              child),
+				                 children .end ());
 
-		// Handle
-
-		child -> removeHandle ();
+				child -> removeHandle ();
+			}
+		}
 	}
 }
 
 void
 Selection::clear ()
 {
-	if (getBrowser () -> makeCurrent ())
-	{
-		MFNode copy = children;
-		children .clear ();
-
-		for (const auto & child : copy)
-		{
-			if (child)
-				child -> removeHandle ();
-		}
-	}
+	removeChildren (MFNode (children)); // Make copy because we erase in children.
 }
 
 void

@@ -89,12 +89,10 @@ public:
 		ArrayField (std::move (field))
 	{ }
 
-	explicit
 	MFNode (std::initializer_list <SFNode> initializer_list) :
 		ArrayField (initializer_list)
 	{ }
 
-	explicit
 	MFNode (std::initializer_list <const typename SFNode::value_type> initializer_list) :
 		ArrayField (initializer_list)
 	{ }

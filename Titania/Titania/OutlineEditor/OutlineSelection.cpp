@@ -83,34 +83,34 @@ OutlineSelection::set_select_multiple (bool value)
 void
 OutlineSelection::set_children (const X3D::MFNode & value)
 {
-	for (const auto & sfnode : children)
-		select (sfnode .getValue (), false);
+	for (const auto & child : children)
+		select (child, false);
 
 	children = value;
 
-	for (const auto & sfnode : children)
-		select (sfnode .getValue (), true);
+	for (const auto & child : children)
+		select (child, true);
 
 	treeView -> queue_draw ();
 }
 
 void
-OutlineSelection::select (const X3D::SFNode & sfnode)
+OutlineSelection::select (const X3D::SFNode & node)
 {
-	if (sfnode)
+	if (node)
 	{
-		bool selected = std::find (children .begin (), children .end (), sfnode) not_eq children .end ();
+		bool selected = std::find (children .begin (), children .end (), node) not_eq children .end ();
 
 		if (selectMultiple)
 		{
 			if (selected)
-				getBrowser () -> getSelection () -> removeChild (sfnode);
+				getBrowser () -> getSelection () -> removeChildren ({ node });
 		}
 		else
 			clear ();
 
 		if (not selected)
-			getBrowser () -> getSelection () -> addChild (sfnode);
+			getBrowser () -> getSelection () -> addChildren ({ node });
 	}
 }
 

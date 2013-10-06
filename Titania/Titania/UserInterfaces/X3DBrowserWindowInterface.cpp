@@ -110,8 +110,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_noneViewerMenuItem -> set_name ("NoneViewerMenuItem");
 	m_builder -> get_widget ("WalkViewerImage", m_walkViewerImage);
 	m_walkViewerImage -> set_name ("WalkViewerImage");
-	m_builder -> get_widget ("WorkspacesImage", m_workspacesImage);
-	m_workspacesImage -> set_name ("WorkspacesImage");
 	m_builder -> get_widget ("Window", m_window);
 	m_window -> set_name ("Window");
 	m_builder -> get_widget ("Widget", m_widget);
@@ -198,6 +196,12 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_fullScreenMenuItem -> set_name ("FullScreenMenuItem");
 	m_builder -> get_widget ("UnFullScreenMenuItem", m_unFullScreenMenuItem);
 	m_unFullScreenMenuItem -> set_name ("UnFullScreenMenuItem");
+	m_builder -> get_widget ("SelectionMenuItem", m_selectionMenuItem);
+	m_selectionMenuItem -> set_name ("SelectionMenuItem");
+	m_builder -> get_widget ("SelectAllMenuItem", m_selectAllMenuItem);
+	m_selectAllMenuItem -> set_name ("SelectAllMenuItem");
+	m_builder -> get_widget ("DeselectAllMenuItem", m_deselectAllMenuItem);
+	m_deselectAllMenuItem -> set_name ("DeselectAllMenuItem");
 	m_builder -> get_widget ("NavigationMenuItem", m_navigationMenuItem);
 	m_navigationMenuItem -> set_name ("NavigationMenuItem");
 	m_builder -> get_widget ("RubberbandMenuItem", m_rubberbandMenuItem);
@@ -268,6 +272,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_libraryViewBox -> set_name ("LibraryViewBox");
 	m_builder -> get_widget ("OutlineEditorBox", m_outlineEditorBox);
 	m_outlineEditorBox -> set_name ("OutlineEditorBox");
+	m_builder -> get_widget ("WorkspacesImage", m_workspacesImage);
+	m_workspacesImage -> set_name ("WorkspacesImage");
 
 	// Connect object Gtk::MessageDialog with id 'MessageDialog'.
 	m_messageDialog -> signal_response () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_messageDialog_response));
@@ -330,6 +336,10 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	// Connect object Gtk::ImageMenuItem with id 'FullScreenMenuItem'.
 	m_fullScreenMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_fullscreen));
 	m_unFullScreenMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_unfullscreen));
+	m_selectAllMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_select_all_activate));
+
+	// Connect object Gtk::MenuItem with id 'DeselectAllMenuItem'.
+	m_deselectAllMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_deselect_all_activate));
 
 	// Connect object Gtk::CheckMenuItem with id 'RubberbandMenuItem'.
 	m_rubberbandMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_rubberband_toggled));

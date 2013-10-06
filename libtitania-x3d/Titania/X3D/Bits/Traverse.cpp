@@ -57,42 +57,47 @@ namespace X3D {
 
 static
 bool
-traverse (X3D::SFNode & node, const TraverseCallback & callback, NodeSet & seen)
+traverse (X3D::SFNode & node, const TraverseCallback & callback, bool distinct, NodeSet & seen)
 {
 	if (not node)
 		return false;
 
-	if (not seen .insert (node) .second)
-		return false;
-
-	for (const auto & field : node -> getFieldDefinitions ())
+	if (seen .insert (node) .second)
 	{
-		switch (field -> getType ())
+		for (const auto & field : node -> getFieldDefinitions ())
 		{
-			case X3D::X3DConstants::SFNode :
-				{
-					auto sfnode = static_cast <X3D::SFNode*> (field);
+			switch (field -> getType ())
+			{
+				case X3D::X3DConstants::SFNode :
+					{
+						auto sfnode = static_cast <X3D::SFNode*> (field);
 
-					if (traverse (*sfnode, callback, seen))
-						return true;
+						if (traverse (*sfnode, callback, distinct, seen))
+							return true;
+
+						break;
+					}
+				case X3D::X3DConstants::MFNode:
+				{
+					auto mfnode = static_cast <X3D::MFNode*> (field);
+
+					for (auto & value : *mfnode)
+					{
+						if (traverse (value, callback, distinct, seen))
+							return true;
+					}
 
 					break;
 				}
-			case X3D::X3DConstants::MFNode:
-			{
-				auto mfnode = static_cast <X3D::MFNode*> (field);
-
-				for (auto & value : *mfnode)
-				{
-					if (traverse (value, callback, seen))
-						return true;
-				}
-
-				break;
+				default:
+					break;
 			}
-			default:
-				break;
 		}
+	}
+	else
+	{
+		if (distinct)
+			return false;
 	}
 
 	if (callback (node))
@@ -102,13 +107,13 @@ traverse (X3D::SFNode & node, const TraverseCallback & callback, NodeSet & seen)
 }
 
 bool
-traverse (X3D::MFNode & nodes, const TraverseCallback & callback)
+traverse (X3D::MFNode & nodes, const TraverseCallback & callback, bool distinct)
 {
 	NodeSet seen;
 
 	for (auto & node : nodes)
 	{
-		if (traverse (node, callback, seen))
+		if (traverse (node, callback, distinct, seen))
 			return true;
 	}
 
@@ -116,11 +121,11 @@ traverse (X3D::MFNode & nodes, const TraverseCallback & callback)
 }
 
 bool
-traverse (X3D::SFNode & node, const TraverseCallback & callback)
+traverse (X3D::SFNode & node, const TraverseCallback & callback, bool distinct)
 {
 	NodeSet seen;
 
-	return traverse (node, callback, seen);
+	return traverse (node, callback, distinct, seen);
 }
 
 } // X3D

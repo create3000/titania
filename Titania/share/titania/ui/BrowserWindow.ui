@@ -618,6 +618,11 @@
     <property name="can_focus">False</property>
     <property name="stock">gtk-network</property>
   </object>
+  <object class="GtkImage" id="WorkspacesImage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="icon_name">visualization</property>
+  </object>
   <object class="GtkMenu" id="ViewerTypeMenu">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -666,11 +671,6 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">WalkViewer</property>
-  </object>
-  <object class="GtkImage" id="WorkspacesImage">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="icon_name">visualization</property>
   </object>
   <object class="GtkWindow" id="Window">
     <property name="width_request">1000</property>
@@ -1183,6 +1183,41 @@
                         <property name="accel_group">MenuAccelGroup</property>
                         <accelerator key="F11" signal="activate"/>
                         <signal name="activate" handler="on_unfullscreen" swapped="no"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="SelectionMenuItem">
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">_Selection</property>
+                <property name="use_underline">True</property>
+                <child type="submenu">
+                  <object class="GtkMenu" id="menu9">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkImageMenuItem" id="SelectAllMenuItem">
+                        <property name="label">gtk-select-all</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
+                        <property name="accel_group">MenuAccelGroup</property>
+                        <accelerator key="a" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                        <signal name="activate" handler="on_select_all_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="DeselectAllMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Deselect All</property>
+                        <property name="use_underline">True</property>
+                        <accelerator key="d" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                        <signal name="activate" handler="on_deselect_all_activate" swapped="no"/>
                       </object>
                     </child>
                   </object>

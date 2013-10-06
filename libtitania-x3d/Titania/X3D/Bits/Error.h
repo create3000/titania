@@ -97,7 +97,7 @@ public:
 
 	explicit
 	Error (const std::string & message) :
-		X3DError (message .c_str ())
+		X3DError (message)
 	{ }
 
 	virtual
@@ -106,6 +106,18 @@ public:
 	{ }
 
 };
+
+///  @relates X3DError
+///  @name Input/Output operations
+
+///  Insertion operator for X3DError.
+template <class StringT, class Traits>
+inline
+std::basic_ostream <typename StringT::value_type, Traits> &
+operator << (std::basic_ostream <typename StringT::value_type, Traits> & ostream, const X3DError & error)
+{
+	return ostream << error .toString ();
+}
 
 extern template class Error <BROWSER_UNAVAILABLE>;
 extern template class Error <CONNECTION_ERROR>;

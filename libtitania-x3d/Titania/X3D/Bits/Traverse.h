@@ -60,10 +60,10 @@ namespace X3D {
 typedef std::function <bool (X3D::SFNode &)> TraverseCallback;
 
 bool
-traverse (MFNode &, const TraverseCallback &);
+traverse (MFNode &, const TraverseCallback &, bool = true);
 
 bool
-traverse (SFNode &, const TraverseCallback &);
+traverse (SFNode &, const TraverseCallback &, bool = true);
 
 } // X3D
 } // titania

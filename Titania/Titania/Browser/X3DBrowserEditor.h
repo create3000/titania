@@ -112,11 +112,7 @@ protected:
 
 	/// @name Undo
 
-	/// @name Edit operations
-
-	void
-	addNode (const std::string &, const UndoStepPtr &)
-	throw (X3D::Error <X3D::INVALID_NAME>);
+	/// @name Clipboard operations
 
 	void
 	cutNodes (X3D::MFNode, const UndoStepPtr &);
@@ -127,31 +123,43 @@ protected:
 	void
 	pasteNodes (const X3D::MFNode &, const UndoStepPtr &);
 
+	/// @name Edit operations
+
 	void
-	removeNode (const X3D::SFNode &, const UndoStepPtr &)
-	throw (X3D::Error <X3D::INVALID_NODE>);
+	addNode (const std::string &, const UndoStepPtr &)
+	throw (X3D::Error <X3D::INVALID_NAME>);
+
+	void
+	removeNodes (const X3D::MFNode &, const UndoStepPtr &);
 
 	X3D::SFNode
-	groupNodes (const X3D::MFNode &, const UndoStepPtr &)
-	throw (X3D::Error <X3D::INVALID_NODE>);
+	groupNodes (const X3D::MFNode &, const UndoStepPtr &);
 
 	X3D::MFNode
-	ungroupNode (const X3D::SFNode &, const UndoStepPtr &)
-	throw (X3D::Error <X3D::INVALID_NODE>,
-	       X3D::Error <X3D::INVALID_NAME>);
+	ungroupNodes (const X3D::MFNode &, const UndoStepPtr &);
 
 	void
-	addToGroup (const X3D::SFNode &, const X3D::SFNode &, const UndoStepPtr &)
-	throw (X3D::Error <X3D::INVALID_NODE>,
-	       X3D::Error <X3D::INVALID_NAME>);
+	addToGroup (const X3D::SFNode &, const X3D::MFNode &, const UndoStepPtr &);
 
 	void
-	detachFromGroup (X3D::SFNode, bool, const UndoStepPtr &)
-	throw (X3D::Error <X3D::INVALID_NODE>);
+	detachFromGroup (X3D::MFNode, bool, const UndoStepPtr &);
 
 	X3D::MFNode
-	createParentGroup (const X3D::SFNode &, const UndoStepPtr &)
-	throw (X3D::Error <X3D::INVALID_NODE>);
+	createParentGroup (const X3D::MFNode &, const UndoStepPtr &);
+
+	/// @name Selection operations
+
+	void
+	select (const X3D::MFNode &, const UndoStepPtr &);
+
+	void
+	deselect (const X3D::MFNode &, const UndoStepPtr &);
+
+	void
+	selectAll (const UndoStepPtr &);
+
+	void
+	deselectAll (const UndoStepPtr &);
 
 
 private:
@@ -200,11 +208,11 @@ private:
 
 	X3D::X3DFieldDefinition*
 	getContainerField (const X3D::SFNode &, const X3D::SFNode &) const
-	throw (X3D::Error <X3D::INVALID_NAME>);
+	throw (X3D::Error <X3D::INVALID_NODE>);
 
 	X3D::MFNode*
 	getGroupingField (const X3D::SFNode & node) const
-	throw (X3D::Error <X3D::INVALID_NAME>);
+	throw (X3D::Error <X3D::INVALID_NODE>);
 
 	///  @name Undo functions
 

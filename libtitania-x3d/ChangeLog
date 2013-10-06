@@ -1,3 +1,12 @@
+2013-10-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Error.h:
+	* MFNode.h:
+	* Traverse.h:
+	* Traverse.cpp:
+	* Selection.h:
+	* Selection.cpp: 
+
 2013-10-05  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Generator.h:

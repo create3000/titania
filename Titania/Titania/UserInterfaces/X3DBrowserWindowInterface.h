@@ -199,10 +199,6 @@ public:
 	getWalkViewerImage () const
 	{ return *m_walkViewerImage; }
 
-	Gtk::Image &
-	getWorkspacesImage () const
-	{ return *m_workspacesImage; }
-
 	Gtk::Window &
 	getWindow () const
 	{ return *m_window; }
@@ -376,6 +372,18 @@ public:
 	{ return *m_unFullScreenMenuItem; }
 
 	Gtk::MenuItem &
+	getSelectionMenuItem () const
+	{ return *m_selectionMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getSelectAllMenuItem () const
+	{ return *m_selectAllMenuItem; }
+
+	Gtk::MenuItem &
+	getDeselectAllMenuItem () const
+	{ return *m_deselectAllMenuItem; }
+
+	Gtk::MenuItem &
 	getNavigationMenuItem () const
 	{ return *m_navigationMenuItem; }
 
@@ -514,6 +522,10 @@ public:
 	Gtk::Box &
 	getOutlineEditorBox () const
 	{ return *m_outlineEditorBox; }
+
+	Gtk::Image &
+	getWorkspacesImage () const
+	{ return *m_workspacesImage; }
 
 	virtual
 	void
@@ -685,6 +697,14 @@ public:
 
 	virtual
 	void
+	on_select_all_activate () = 0;
+
+	virtual
+	void
+	on_deselect_all_activate () = 0;
+
+	virtual
+	void
 	on_rubberband_toggled () = 0;
 
 	virtual
@@ -771,7 +791,6 @@ private:
 	Gtk::ImageMenuItem*             m_flyViewerMenuItem;
 	Gtk::ImageMenuItem*             m_noneViewerMenuItem;
 	Gtk::Image*                     m_walkViewerImage;
-	Gtk::Image*                     m_workspacesImage;
 	Gtk::Window*                    m_window;
 	Gtk::VBox*                      m_widget;
 	Gtk::MenuBar*                   m_menuBar;
@@ -815,6 +834,9 @@ private:
 	Gtk::CheckMenuItem*             m_renderingPropertiesMenuItem;
 	Gtk::ImageMenuItem*             m_fullScreenMenuItem;
 	Gtk::ImageMenuItem*             m_unFullScreenMenuItem;
+	Gtk::MenuItem*                  m_selectionMenuItem;
+	Gtk::ImageMenuItem*             m_selectAllMenuItem;
+	Gtk::MenuItem*                  m_deselectAllMenuItem;
 	Gtk::MenuItem*                  m_navigationMenuItem;
 	Gtk::CheckMenuItem*             m_rubberbandMenuItem;
 	Gtk::MenuItem*                  m_toolsMenuItem;
@@ -850,6 +872,7 @@ private:
 	Gtk::Box*                       m_historyEditorBox;
 	Gtk::Box*                       m_libraryViewBox;
 	Gtk::Box*                       m_outlineEditorBox;
+	Gtk::Image*                     m_workspacesImage;
 
 };
 

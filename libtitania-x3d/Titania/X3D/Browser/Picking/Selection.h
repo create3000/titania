@@ -90,10 +90,10 @@ public:
 	///  @name Member access
 
 	void
-	addChild (const SFNode &);
+	addChildren (const MFNode &);
 
 	void
-	removeChild (const SFNode &);
+	removeChildren (const MFNode &);
 
 	const MFNode &
 	getChildren () const

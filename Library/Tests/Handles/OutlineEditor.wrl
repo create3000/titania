@@ -91,7 +91,7 @@ DEF Text1 Transform {
 DEF Sensors Transform {
   children [
     DEF _1 ProximitySensor { }
-    VisibilitySensor { }
+    DEF _2 VisibilitySensor { }
   ]
 }
 
@@ -106,7 +106,7 @@ DEF Rotor Rotor {
 
 DEF Box Transform {
   translation 1.40843 1.10727 0.193803
-  rotation 0 0 1 1.65713
+  rotation 0 0 1 0.437195
   scale 0.2 0.2 0.2
   children Transform {
     children Shape {
@@ -186,4 +186,5 @@ Anchor {
   }
 }
 
+ROUTE _1.isActive TO _2.set_enabled
 ROUTE Rotor.value_changed TO Box.set_rotation

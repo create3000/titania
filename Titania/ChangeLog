@@ -1,3 +1,14 @@
+2013-10-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* BrowserWindow.h:
+	* BrowserWindow.ui:
+	* BrowserWindow.cpp:
+	* X3DBrowserEditor.h:
+	* X3DBrowserEditor.cpp:
+	* OutlineSelection.cpp:
+	* X3DBrowserWindowInterface.h:
+	* X3DBrowserWindowInterface.cpp: 
+
 2013-10-05  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBrowserEditor.cpp: 

@@ -332,6 +332,16 @@ private:
 	void
 	on_unfullscreen () final;
 
+	///  @name Selection
+
+	virtual
+	void
+	on_select_all_activate () final;
+
+	virtual
+	void
+	on_deselect_all_activate () final;
+
 	///  @name Navigation
 
 	virtual
