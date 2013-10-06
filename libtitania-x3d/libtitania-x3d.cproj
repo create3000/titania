@@ -568,8 +568,6 @@
     <None Include="Titania\X3D\Components\Core\MetadataBoolean.h" />
     <None Include="Titania\X3D\Bits\HatchStyles.h" />
     <None Include="Titania\X3D\Bits\Linetypes.h" />
-    <None Include="share\mime\model\x3d+vrml.xml" />
-    <None Include="share\mime\model\x3d+xml.xml" />
     <None Include="Titania\X3D\Browser\Notification.h" />
     <None Include="Titania\X3D\Browser\Picking\Hit.h" />
     <None Include="Titania\X3D\Browser\Picking\HitArray.h" />
@@ -586,6 +584,9 @@
     <None Include="share\titania\handles\library\RoundedRectangle2D.wrl" />
     <None Include="Titania\X3D\Bits\Traverse.h" />
     <None Include="Titania\X3D\Thread\SceneLoader.h" />
+    <None Include="share\titania\mime\model\x3d+vrml.xml" />
+    <None Include="share\titania\mime\model\x3d+xml.xml" />
+    <None Include="share\titania\mime\model\vrml.xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

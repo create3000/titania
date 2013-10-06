@@ -19,7 +19,6 @@ set -e
 case "$1" in
        purge|remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
 
-         /usr/bin/update-mime-database /usr/share/mime
          /usr/bin/xdg-icon-resource uninstall --size 48 titania
 
 

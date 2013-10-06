@@ -117,10 +117,10 @@ SceneLoader::prepareEvents ()
 			}
 			catch (const X3DError & error)
 			{
-				callback (nullptr);
 				browser -> println (error .what ());
+				callback (nullptr);
 			}
-			
+
 			callback = [ ] (const X3DSFNode <Scene> &) { }; // Clear callback
 		}
 	}

@@ -25,8 +25,11 @@ set -e
 case "$1" in
     configure)
       
-      /usr/bin/update-mime-database /usr/share/mime
       /usr/bin/xdg-icon-resource install --novendor --size 48 /usr/share/pixmaps/titania.png
+      
+      /usr/bin/xdg-mime install --novendor /usr/share/titania/mime/model/vrml.xml 
+      /usr/bin/xdg-mime install --novendor /usr/share/titania/mime/model/x3d+vrml.xml 
+      /usr/bin/xdg-mime install --novendor /usr/share/titania/mime/model/x3d+xml.xml 
 
     ;;
 

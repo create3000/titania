@@ -1,19 +1,18 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Browser/BrowserWindow.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/share/mime/model/x3d+vrml.xml">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/InputOutput/Generator.cpp" Line="373" Column="3" />
-      <File FileName="Library/Tests/Handles/OutlineEditor.wrl" Line="83" Column="19" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="165" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="867" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="345" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="496" Column="35" />
+      <File FileName="Library/Tests/Handles/OutlineEditor.wrl" Line="167" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="128" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="305" Column="15" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="220" Column="51" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="423" Column="21" />
       <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DBaseNode.cpp" Line="620" Column="1" />
       <File FileName="Titania/Titania/Undo/UndoFunction.h" Line="65" Column="1" />
       <File FileName="Titania/Titania/Undo/UndoStep.h" Line="81" Column="73" />
-      <File FileName="Titania/Titania/Undo/UndoStep.cpp" Line="53" Column="20" />
-      <File FileName="libtitania-x3d/Titania/X3D/InputOutput/Generator.h" Line="215" Column="53" />
-      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DExecutionContext.cpp" Line="313" Column="1" />
+      <File FileName="Titania/Titania/Undo/UndoStep.cpp" Line="69" Column="1" />
+      <File FileName="libtitania-x3d/share/mime/model/x3d+vrml.xml" Line="37" Column="23" />
+      <File FileName="libtitania-x3d/share/mime/model/x3d+xml.xml" Line="4" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -23,9 +22,17 @@
             <Node name="glade2c++" expanded="True" />
             <Node name="uncrustify-all" expanded="True" />
           </Node>
+          <Node name="build" expanded="True">
+            <Node name="debian" expanded="True" />
+          </Node>
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
-            <Node name="Examples" expanded="True" />
+            <Node name="Examples" expanded="True">
+              <Node name="Appartment" expanded="True" />
+              <Node name="Capone" expanded="True">
+                <Node name="stage" expanded="True" />
+              </Node>
+            </Node>
             <Node name="Prototypes" expanded="True">
               <Node name="Engines" expanded="True">
                 <Node name="Rotor" expanded="True" />
@@ -67,36 +74,29 @@
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
-                <Node name="Base" expanded="True" />
-                <Node name="Basic" expanded="True" />
-                <Node name="Bits" expanded="True" />
-                <Node name="Browser" expanded="True" />
+                <Node name="Browser" expanded="True">
+                  <Node name="Properties" expanded="True" />
+                </Node>
                 <Node name="Components" expanded="True">
-                  <Node name="Core" expanded="True" />
                   <Node name="Networking" expanded="True" />
-                  <Node name="Shaders" expanded="True" />
                 </Node>
                 <Node name="Execution" expanded="True" />
-                <Node name="InputOutput" expanded="True" />
-                <Node name="Parser" expanded="True" />
+                <Node name="JavaScript" expanded="True">
+                  <Node name="SpiderMonkey" expanded="True" />
+                </Node>
+                <Node name="Thread" expanded="True" />
               </Node>
             </Node>
           </Node>
           <Node name="Titania" expanded="True">
             <Node name="share" expanded="True">
-              <Node name="titania" expanded="True">
-                <Node name="pages" expanded="True">
-                  <Node name="about" expanded="True">
-                    <Node name="library" expanded="True" />
-                  </Node>
-                </Node>
-              </Node>
+              <Node name="applications" expanded="True" />
             </Node>
             <Node name="Titania" expanded="True">
-              <Node name="Browser" expanded="True">
-                <Node name="BrowserWindow.cpp" selected="True" />
-              </Node>
+              <Node name="Browser" expanded="True" />
+              <Node name="HistoryEditor" expanded="True" />
               <Node name="LibraryView" expanded="True" />
+              <Node name="OutlineEditor" expanded="True" />
               <Node name="Undo" expanded="True" />
             </Node>
           </Node>

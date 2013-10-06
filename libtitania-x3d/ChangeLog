@@ -1,5 +1,15 @@
 2013-10-06  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* libtitania-x3d.cproj:
+	* x3d+xml.xml:
+	* x3d+vrml.xml:
+	* vrml.xml:
+	* SceneLoader.cpp:
+	* x3d+xml.xml:
+	* x3d+vrml.xml: 
+
+2013-10-06  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* Scene.cpp:
