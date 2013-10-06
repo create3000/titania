@@ -57,8 +57,8 @@
 
 #include <iomanip>
 #include <iostream>
-#include <omp.h>
 #include <malloc.h>
+#include <omp.h>
 
 namespace titania {
 namespace X3D {
@@ -76,17 +76,17 @@ const std::string RenderingProperties::typeName       = "RenderingProperties";
 const std::string RenderingProperties::containerField = "renderingProperties";
 
 RenderingProperties::Fields::Fields () :
-	enabled (),
-	cycleInterval (1),
-	vendor (new SFString ()),
-	renderer (new SFString ()),
-	version (new SFString ()),
-	maxThreads (new SFInt32 (1)),
+	       enabled (),
+	 cycleInterval (1),
+	        vendor (new SFString ()),
+	      renderer (new SFString ()),
+	       version (new SFString ()),
+	    maxThreads (new SFInt32 (1)),
 	maxTextureSize (new SFInt32 ()),
-	textureUnits (new SFInt32 ()),
-	maxLights (new SFInt32 ()),
-	colorDepth (new SFInt32 ()),
-	textureMemory (new SFDouble ())
+	  textureUnits (new SFInt32 ()),
+	     maxLights (new SFInt32 ()),
+	    colorDepth (new SFInt32 ()),
+	 textureMemory (new SFDouble ())
 { }
 
 RenderingProperties::RenderingProperties (X3DExecutionContext* const executionContext) :
@@ -156,9 +156,9 @@ RenderingProperties::initialize ()
 		glGetIntegerv (GL_POLYGON_SMOOTH, &glPolygonSmooth);
 
 		if (hasExtension ("GL_NVX_gpu_memory_info"))
-			glGetIntegerv (GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &glTextureMemory);                                                                                                                                                                                                                                                                                                                                                                                                                                           // in KBytes
+			glGetIntegerv (GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &glTextureMemory);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                // in KBytes
 
-		maxThreads ()     = omp_get_max_threads ();
+		maxThreads ()     = std::min (4, omp_get_max_threads ());
 		textureUnits ()   = glTextureUnits;
 		maxTextureSize () = glMaxTextureSize;
 		maxLights ()      = glMaxLights;

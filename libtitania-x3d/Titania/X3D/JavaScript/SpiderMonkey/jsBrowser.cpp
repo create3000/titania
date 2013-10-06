@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -54,17 +54,18 @@
 #include "../../Components/Scripting/Script.h"
 #include "../../InputOutput/Generator.h"
 #include "../../InputOutput/Loader.h"
+#include "../../Thread/SceneLoader.h"
 #include "Fields/jsMFNode.h"
 #include "Fields/jsMFString.h"
 #include "Fields/jsSFNode.h"
 #include "jsComponentInfoArray.h"
 #include "jsContext.h"
+#include "jsError.h"
 #include "jsProfileInfoArray.h"
 #include "jsString.h"
 #include "jsX3DExecutionContext.h"
 #include "jsX3DScene.h"
 #include "jsfield.h"
-#include "jsError.h"
 
 namespace titania {
 namespace X3D {
@@ -289,7 +290,7 @@ jsBrowser::createX3DFromURL (JSContext* context, uintN argc, jsval* vp)
 		auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
 		auto script     = javaScript -> getNode ();
 
-		JSObject* ourl = nullptr;
+		JSObject* ourl  = nullptr;
 		JSObject* onode = nullptr;
 		JSString* event;
 
@@ -322,7 +323,7 @@ jsBrowser::createX3DFromURL (JSContext* context, uintN argc, jsval* vp)
 								try
 								{
 									X3DSFNode <Scene> scene = Loader (script -> getExecutionContext (),
-			                                                    script -> getWorldURL ()) .createX3DFromURL (*url);
+									                                  script -> getWorldURL ()) .createX3DFromURL (*url);
 
 									if (scene)
 									{
@@ -364,7 +365,7 @@ jsBrowser::createX3DFromURL (JSContext* context, uintN argc, jsval* vp)
 				try
 				{
 					X3DSFNode <Scene> scene = Loader (script -> getExecutionContext (),
-			                                        script -> getWorldURL ()) .createX3DFromURL (*url);
+					                                  script -> getWorldURL ()) .createX3DFromURL (*url);
 
 					if (argc == 2)
 						onode = javaScript -> getGlobal ();
@@ -398,7 +399,7 @@ jsBrowser::createX3DFromURL (JSContext* context, uintN argc, jsval* vp)
 			try
 			{
 				X3DSFNode <Scene> scene = Loader (script -> getExecutionContext (),
-			                                     script -> getWorldURL ()) .createX3DFromURL (*url);
+				                                  script -> getWorldURL ()) .createX3DFromURL (*url);
 
 				return jsX3DScene::create (context, scene, vp);
 			}
@@ -422,7 +423,7 @@ jsBrowser::loadURL (JSContext* context, uintN argc, jsval* vp)
 	{
 		Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
-		JSObject* ourl = nullptr;
+		JSObject* ourl       = nullptr;
 		JSObject* oparameter = nullptr;
 
 		jsval* argv = JS_ARGV (context, vp);
@@ -757,9 +758,10 @@ jsBrowser::createVrmlFromURL (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 3)
 	{
-		Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+		jsContext* javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
+		Script*    script     = javaScript -> getNode ();
 
-		JSObject* ourl = nullptr;
+		JSObject* ourl  = nullptr;
 		JSObject* onode = nullptr;
 		JSString* event;
 
@@ -788,26 +790,37 @@ jsBrowser::createVrmlFromURL (JSContext* context, uintN argc, jsval* vp)
 				{
 					if (field -> getType () == X3DConstants::MFNode)
 					{
-						try
-						{
-							X3DSFNode <Scene> scene = Loader (script -> getExecutionContext (),
-			                                              script -> getWorldURL ()) .createX3DFromURL (*url);
+						if (javaScript -> getFuture ())
+							javaScript -> getFuture () -> wait ();
+							
+						using namespace std::placeholders;
 
-							if (scene)
-							{
-								field -> write (scene -> getRootNodes ());
-								field -> addEvent ();
-							}
-						}
-						catch (const X3DError & error)
-						{
-							field -> write (MFNode ());
-							field -> addEvent ();
+						javaScript -> getFuture () .reset (new SceneLoader (script -> getExecutionContext (),
+						                                                    *url,
+						                                                    std::bind (&jsBrowser::setSceneAsync,
+						                                                               *sfnode,
+						                                                               std::ref (*static_cast <MFNode*> (field)),
+						                                                               _1)));
 
-							JS_ReportError (context, error .what ());
-						}
+//						try
+//						{
+//							X3DSFNode <Scene> scene = Loader (script -> getExecutionContext (),
+//							                                  script -> getWorldURL ()) .createX3DFromURL (*url);
+//
+//							if (scene)
+//							{
+//								field -> write (scene -> getRootNodes ());
+//								field -> addEvent ();
+//							}
+//						}
+//						catch (const X3DError & error)
+//						{
+//							field -> write (MFNode ());
+//							field -> addEvent ();
+//
+//							JS_ReportError (context, error .what ());
+//						}
 
-						//std::cout << "createVrmlFromURL " << *url << std::endl;
 						JS_SET_RVAL (context, vp, JSVAL_VOID);
 
 						return JS_TRUE;
@@ -832,6 +845,16 @@ jsBrowser::createVrmlFromURL (JSContext* context, uintN argc, jsval* vp)
 	return JS_FALSE;
 }
 
+void
+jsBrowser::setSceneAsync (const SFNode & node, MFNode & field, const X3DSFNode <Scene> & scene)
+{
+	if (scene)
+	{
+		scene -> setup ();
+		field = scene -> getRootNodes ();
+	}
+}
+
 JSBool
 jsBrowser::addRoute (JSContext* context, uintN argc, jsval* vp)
 {
@@ -851,9 +874,9 @@ jsBrowser::deleteRoute (JSContext* context, uintN argc, jsval* vp)
 	if (argc == 4)
 	{
 		Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
-		
+
 		JSObject* ofromNode = nullptr;
-		JSObject* otoNode = nullptr;
+		JSObject* otoNode   = nullptr;
 		JSString* fromEventOut;
 		JSString* toEventIn;
 

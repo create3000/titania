@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,134 +48,53 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_NETWORKING_INLINE_H__
-#define __TITANIA_X3D_COMPONENTS_NETWORKING_INLINE_H__
+#ifndef __TITANIA_X3D_THREAD_SCENE_LOADER_H__
+#define __TITANIA_X3D_THREAD_SCENE_LOADER_H__
 
-#include "../../Execution/Scene.h"
-#include "../Grouping/Group.h"
-#include "../Networking/X3DUrlObject.h"
+#include "../Fields.h"
 
-#include <memory>
+#include <atomic>
+#include <future>
 
 namespace titania {
 namespace X3D {
 
-class SceneLoader;
+class X3DBrowser;
+class X3DExecutionContext;
+class Scene;
 
-class Inline :
-	public X3DChildNode, public X3DBoundedObject, public X3DUrlObject
+class SceneLoader :
+	public X3DInput
 {
 public:
 
-	Inline (X3DExecutionContext* const);
+	typedef std::function <void (const X3DSFNode <Scene> &)> Callback;
 
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final;
+	SceneLoader (X3DExecutionContext* const, const MFString &, const Callback &);
 
-	///  @name Common members
-
-	virtual
-	const std::string &
-	getComponentName () const final
-	{ return componentName; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final
-	{ return containerField; }
-
-	///  @name Fields
-
-	SFBool &
-	load ()
-	{ return *fields .load; }
-
-	const SFBool &
-	load () const
-	{ return *fields .load; }
-
-	virtual
-	Box3f
-	getBBox () final;
-
-	virtual
 	void
-	requestImmediateLoad () final;
-
-	const SFNode &
-	getExportedNode (const std::string &) const
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	wait ();
 
 	virtual
-	void
-	traverse (const TraverseType) final;
-
-	virtual
-	void
-	toStream (std::ostream & ostream) const final
-	{ X3DBaseNode::toStream (ostream); }
-
-	virtual
-	void
-	dispose () final;
+	~SceneLoader ();
 
 
 private:
 
-	virtual
-	void
-	initialize () final;
+	std::future <X3DSFNode <Scene>> 
+	getFuture (const MFString &);
+
+	X3DSFNode <Scene>
+	loadAsync (const MFString &);
 
 	void
-	setSceneAsync (const X3DSFNode <Scene> &);
+	prepareEvents ();
 
-	void
-	setScene (const X3DSFNode <Scene> &);
-
-	void
-	requestAsyncLoad ();
-
-	void
-	requestUnload ();
-
-	void
-	set_load ();
-
-	void
-	set_url ();
-
-
-	///  @name Static members
-
-	static const std::string componentName;
-	static const std::string typeName;
-	static const std::string containerField;
-
-	///  @name Members
-
-	struct Fields
-	{
-		Fields ();
-
-		SFBool* const load;
-	};
-
-	Fields fields;
-
-	X3DSFNode <Scene> scene;
-	X3DSFNode <Group> group;
-
-	std::unique_ptr <SceneLoader> future;
-	bool                          initialized;
+	X3DBrowser* const                browser;
+	X3DExecutionContext* const       executionContext;
+	Callback                         callback;
+	std::atomic <bool>               running;
+	std::future <X3DSFNode <Scene>>  future;
 
 };
 

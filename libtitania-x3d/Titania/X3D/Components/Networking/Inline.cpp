@@ -51,109 +51,13 @@
 #include "Inline.h"
 
 #include "../../Browser/X3DBrowser.h"
-#include "../../Execution/Scene.h"
-#include "../../Execution/X3DExecutionContext.h"
 #include "../../InputOutput/Loader.h"
-
-#include <atomic>
-#include <future>
-
-#include <Titania/Backtrace.h>
+#include "../../Thread/SceneLoader.h"
 
 namespace titania {
 namespace X3D {
 
 static constexpr bool X3D_PARALLEL = true;
-
-class Inline::Future :
-	public X3DInput
-{
-public:
-
-	Future (Inline* const inlineNode) :
-		inlineNode (inlineNode),
-		   running (true),
-		    future (getFuture ())
-	{
-		inlineNode -> getBrowser () -> prepareEvents () .addInterest (this, &Future::prepareEvents);
-		inlineNode -> getBrowser () -> addEvent ();
-	}
-
-	void
-	wait ()
-	{
-		if (future .valid ())
-		{
-			future .wait ();
-			prepareEvents ();
-		}
-	}
-
-	virtual
-	~Future ()
-	{
-		running = false;
-
-		if (future .valid ())
-			future .wait ();
-	}
-
-private:
-
-	std::future <X3DSFNode <Scene>> 
-	getFuture ()
-	{
-		return std::async (std::launch::async, std::mem_fn (&Future::loadAsync), this, inlineNode -> url ());
-	}
-
-	X3DSFNode <Scene>
-	loadAsync (const MFString & url)
-	{
-		std::lock_guard <std::mutex> lock (inlineNode -> getBrowser () -> getThread ());
-
-		X3DSFNode <Scene> scene = inlineNode -> getBrowser () -> createScene ();
-
-		if (running)
-			Loader (inlineNode -> getExecutionContext ()) .parseIntoScene (scene, url);
-
-		return scene;
-	}
-
-	void
-	prepareEvents ()
-	{
-		inlineNode -> getBrowser () -> addEvent ();
-
-		if (future .valid ())
-		{
-			auto status = future .wait_for (std::chrono::milliseconds (0));
-
-			if (status == std::future_status::ready)
-			{
-				inlineNode -> getBrowser () -> prepareEvents () .removeInterest (this, &Future::prepareEvents);
-
-				try
-				{
-					X3DSFNode <Scene> scene = future .get ();
-
-					inlineNode -> setScene (scene);
-					inlineNode -> setLoadState (COMPLETE_STATE);
-				}
-				catch (const X3DError & error)
-				{
-					inlineNode -> setScene (inlineNode -> getBrowser () -> createScene ());
-					inlineNode -> setLoadState (FAILED_STATE);
-					inlineNode -> getBrowser () -> println (error .what ());
-				}
-			}
-		}
-	}
-
-	Inline* const                    inlineNode;
-	std::atomic <bool>               running;
-	std::future <X3DSFNode <Scene>>  future;
-
-};
 
 const std::string Inline::componentName  = "Networking";
 const std::string Inline::typeName       = "Inline";
@@ -223,6 +127,21 @@ Inline::initialize ()
 }
 
 void
+Inline::setSceneAsync (const X3DSFNode <Scene> & value)
+{
+	if (value)
+	{
+		setScene (value);
+		setLoadState (COMPLETE_STATE);
+	}
+	else
+	{
+		setScene (getBrowser () -> createScene ());
+		setLoadState (FAILED_STATE);
+	}
+}
+
+void
 Inline::setScene (const X3DSFNode <Scene> & value)
 {
 	if (scene)
@@ -267,12 +186,16 @@ throw (Error <INVALID_NAME>,
 void
 Inline::requestAsyncLoad ()
 {
+	using namespace std::placeholders;
+
 	if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)
 		return;
 
 	setLoadState (IN_PROGRESS_STATE);
 
-	future .reset (new Future (this));
+	future .reset (new SceneLoader (getExecutionContext (),
+	                                url (),
+	                                std::bind (std::mem_fn (&Inline::setSceneAsync), this, _1)));
 }
 
 void

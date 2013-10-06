@@ -51,11 +51,15 @@
 #ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_BROWSER_H__
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_BROWSER_H__
 
+#include "../../Fields.h"
+
 #include <iostream>
 #include <jsapi.h>
 
 namespace titania {
 namespace X3D {
+
+class Scene;
 
 class jsBrowser
 {
@@ -119,6 +123,10 @@ private:
 	static JSBool createVrmlFromURL    (JSContext *, uintN, jsval*);
 	static JSBool addRoute             (JSContext *, uintN, jsval*);
 	static JSBool deleteRoute          (JSContext *, uintN, jsval*);
+
+	static
+	void
+	setSceneAsync (const SFNode &, MFNode &, const X3DSFNode <Scene> &);
 
 	static JSClass        static_class;
 	static JSPropertySpec properties [ ];

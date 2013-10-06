@@ -200,7 +200,7 @@ Scene::getUniqueName (const X3DSFNode <Scene> & scene) const
 
 Scene::~Scene ()
 {
-	__LOG__ << std::endl;
+	__LOG__ << getWorldURL () << std::endl;
 
 	getGarbageCollector () .trimFreeMemory ();
 }

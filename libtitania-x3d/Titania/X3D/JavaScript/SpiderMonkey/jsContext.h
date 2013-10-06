@@ -62,6 +62,8 @@
 namespace titania {
 namespace X3D {
 
+class SceneLoader;
+
 class jsContext :
 	public X3DJavaScriptContext
 {
@@ -126,6 +128,10 @@ public:
 
 	JSObject*
 	getObject (X3DFieldDefinition*);
+	
+	std::unique_ptr <SceneLoader> &
+	getFuture ()
+	{ return future; }
 
 	virtual
 	void
@@ -222,6 +228,8 @@ private:
 	std::map <X3DFieldDefinition*, jsval>     functions;
 	std::map <X3DFieldDefinition*, JSObject*> objects;
 	std::map <basic::uri, jsval>              files;
+
+	std::unique_ptr <SceneLoader> future;
 
 };
 

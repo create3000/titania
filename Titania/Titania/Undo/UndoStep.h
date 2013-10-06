@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,138 +48,52 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_NETWORKING_INLINE_H__
-#define __TITANIA_X3D_COMPONENTS_NETWORKING_INLINE_H__
+#ifndef __TITANIA_UNDO_UNDO_STEP_H__
+#define __TITANIA_UNDO_UNDO_STEP_H__
 
-#include "../../Execution/Scene.h"
-#include "../Grouping/Group.h"
-#include "../Networking/X3DUrlObject.h"
+#include "../Undo/UndoFunction.h"
 
+#include <Titania/LOG.h>
+
+#include <string>
+#include <deque>
 #include <memory>
 
 namespace titania {
-namespace X3D {
+namespace puck {
 
-class SceneLoader;
-
-class Inline :
-	public X3DChildNode, public X3DBoundedObject, public X3DUrlObject
+/**
+ *  An UndoStep represents a group of UndoFunctions.
+ */
+class UndoStep
 {
 public:
 
-	Inline (X3DExecutionContext* const);
+	UndoStep (const std::string &);
 
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final;
-
-	///  @name Common members
-
-	virtual
 	const std::string &
-	getComponentName () const final
-	{ return componentName; }
+	getDescription () const
+	{ return description; }
 
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final
-	{ return containerField; }
-
-	///  @name Fields
-
-	SFBool &
-	load ()
-	{ return *fields .load; }
-
-	const SFBool &
-	load () const
-	{ return *fields .load; }
-
-	virtual
-	Box3f
-	getBBox () final;
-
-	virtual
+	template <class ... Args>
 	void
-	requestImmediateLoad () final;
+	addFunction (Args && ... args)
+	{ functions .emplace_front (std::bind (std::forward <Args> (args) ...)); }
 
-	const SFNode &
-	getExportedNode (const std::string &) const
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
-
-	virtual
 	void
-	traverse (const TraverseType) final;
-
-	virtual
-	void
-	toStream (std::ostream & ostream) const final
-	{ X3DBaseNode::toStream (ostream); }
-
-	virtual
-	void
-	dispose () final;
+	undo () const;
 
 
 private:
 
-	virtual
-	void
-	initialize () final;
-
-	void
-	setSceneAsync (const X3DSFNode <Scene> &);
-
-	void
-	setScene (const X3DSFNode <Scene> &);
-
-	void
-	requestAsyncLoad ();
-
-	void
-	requestUnload ();
-
-	void
-	set_load ();
-
-	void
-	set_url ();
-
-
-	///  @name Static members
-
-	static const std::string componentName;
-	static const std::string typeName;
-	static const std::string containerField;
-
-	///  @name Members
-
-	struct Fields
-	{
-		Fields ();
-
-		SFBool* const load;
-	};
-
-	Fields fields;
-
-	X3DSFNode <Scene> scene;
-	X3DSFNode <Group> group;
-
-	std::unique_ptr <SceneLoader> future;
-	bool                          initialized;
+	const std::string         description;
+	std::deque <UndoFunction> functions;
 
 };
 
-} // X3D
+typedef std::shared_ptr <UndoStep> UndoStepPtr;
+
+} // puck
 } // titania
 
 #endif

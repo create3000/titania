@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <!-- interface-requires gtk+ 3.0 -->
-  <object class="GtkImage" id="ExamineViewerImage">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">ExamineViewer</property>
-  </object>
   <object class="GtkFileFilter" id="FileFilterAllFiles">
     <patterns>
       <pattern>*</pattern>
@@ -54,6 +49,8 @@
       <source stock-id="ExamineViewer" filename="icons/ExamineViewer.svg"/>
       <source stock-id="Hand" filename="icons/Hand.png"/>
       <source stock-id="Arrow" filename="icons/Arrow.png"/>
+      <source stock-id="GroupNodes" filename="icons/Group.svg"/>
+      <source stock-id="UngroupNodes" filename="icons/Ungroup.svg"/>
     </sources>
   </object>
   <object class="GtkFileChooserDialog" id="FileImportDialog">
@@ -454,6 +451,77 @@
     <property name="icon_name">document-import</property>
   </object>
   <object class="GtkAccelGroup" id="MenuAccelGroup"/>
+  <object class="GtkMenu" id="ViewerTypeMenu">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkImageMenuItem" id="ExamineViewerMenuItem">
+        <property name="label" translatable="yes">Examine Viewer</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">ExamineViewerImage</property>
+        <property name="use_stock">False</property>
+        <signal name="activate" handler="on_examine_viewer_activate" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="WalkViewerMenuItem">
+        <property name="label" translatable="yes">Walk Viewer</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">WalkViewerImage</property>
+        <property name="use_stock">False</property>
+        <signal name="activate" handler="on_walk_viewer_activate" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="FlyViewerMenuItem">
+        <property name="label" translatable="yes">Fly Viewer</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">FlyViewerImage</property>
+        <property name="use_stock">False</property>
+        <signal name="activate" handler="on_fly_viewer_activate" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="NoneViewerMenuItem">
+        <property name="label" translatable="yes">None Viewer</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">NoneViewerImage</property>
+        <property name="use_stock">False</property>
+        <signal name="activate" handler="on_none_viewer_activate" swapped="no"/>
+      </object>
+    </child>
+  </object>
+  <object class="GtkImage" id="WalkViewerImage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">WalkViewer</property>
+  </object>
+  <object class="GtkImage" id="WorkspacesImage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="icon_name">visualization</property>
+  </object>
+  <object class="GtkImage" id="image6">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">GroupNodes</property>
+    <property name="icon-size">1</property>
+  </object>
+  <object class="GtkImage" id="ExamineViewerImage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">ExamineViewer</property>
+  </object>
+  <object class="GtkImage" id="image7">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">UngroupNodes</property>
+    <property name="icon-size">1</property>
+  </object>
   <object class="GtkMessageDialog" id="MessageDialog">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
@@ -617,60 +685,6 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-network</property>
-  </object>
-  <object class="GtkImage" id="WorkspacesImage">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="icon_name">visualization</property>
-  </object>
-  <object class="GtkMenu" id="ViewerTypeMenu">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <child>
-      <object class="GtkImageMenuItem" id="ExamineViewerMenuItem">
-        <property name="label" translatable="yes">Examine Viewer</property>
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="image">ExamineViewerImage</property>
-        <property name="use_stock">False</property>
-        <signal name="activate" handler="on_examine_viewer_activate" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="WalkViewerMenuItem">
-        <property name="label" translatable="yes">Walk Viewer</property>
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="image">WalkViewerImage</property>
-        <property name="use_stock">False</property>
-        <signal name="activate" handler="on_walk_viewer_activate" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="FlyViewerMenuItem">
-        <property name="label" translatable="yes">Fly Viewer</property>
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="image">FlyViewerImage</property>
-        <property name="use_stock">False</property>
-        <signal name="activate" handler="on_fly_viewer_activate" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="NoneViewerMenuItem">
-        <property name="label" translatable="yes">None Viewer</property>
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="image">NoneViewerImage</property>
-        <property name="use_stock">False</property>
-        <signal name="activate" handler="on_none_viewer_activate" swapped="no"/>
-      </object>
-    </child>
-  </object>
-  <object class="GtkImage" id="WalkViewerImage">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">WalkViewer</property>
   </object>
   <object class="GtkWindow" id="Window">
     <property name="width_request">1000</property>
@@ -885,21 +899,23 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkMenuItem" id="GroupSelectedNodesMenuItem">
+                      <object class="GtkImageMenuItem" id="GroupSelectedNodesMenuItem">
+                        <property name="label" translatable="yes">Group</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Group</property>
-                        <property name="use_underline">True</property>
+                        <property name="image">image6</property>
+                        <property name="use_stock">False</property>
                         <accelerator key="g" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                         <signal name="activate" handler="on_group_selected_nodes_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>
-                      <object class="GtkMenuItem" id="UngroupMenuItem">
+                      <object class="GtkImageMenuItem" id="UngroupMenuItem">
+                        <property name="label" translatable="yes">Ungroup</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Ungroup</property>
-                        <property name="use_underline">True</property>
+                        <property name="image">image7</property>
+                        <property name="use_stock">False</property>
                         <accelerator key="g" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
                         <signal name="activate" handler="on_ungroup_node_activate" swapped="no"/>
                       </object>

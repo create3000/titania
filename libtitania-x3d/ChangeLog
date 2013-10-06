@@ -1,5 +1,20 @@
 2013-10-06  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Scene.cpp:
+	* SceneLoader.h:
+	* SceneLoader.cpp:
+	* Inline.h:
+	* Inline.cpp:
+	* jsContext.h:
+	* jsBrowser.h:
+	* jsBrowser.cpp:
+	* jsContext.cpp:
+	* RenderingProperties.cpp: 
+
+2013-10-06  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBrowser.cpp:
 	* GoldenGate.cpp: 
 

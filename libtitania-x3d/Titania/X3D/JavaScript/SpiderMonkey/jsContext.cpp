@@ -52,6 +52,7 @@
 
 #include "../../Browser/X3DBrowser.h"
 #include "../../InputOutput/Loader.h"
+#include "../../Thread/SceneLoader.h"
 
 #include "jsGlobals.h"
 #include "jsX3DConstants.h"
@@ -110,7 +111,8 @@ jsContext::jsContext (Script* script, const std::string & ecmascript, const basi
 	              fields (),
 	           functions (),
 	             objects (),
-	               files ()
+	               files (),
+	              future ()
 {
 	// Get a JS runtime.
 	runtime = JS_NewRuntime (64 * 1024 * 1024); // 64 MB runtime memory
@@ -678,6 +680,8 @@ jsContext::error (JSContext* context, const char* message, JSErrorReport* report
 void
 jsContext::dispose ()
 {
+	future .reset ();
+
 	shutdown ();
 
 	for (auto & field : fields)

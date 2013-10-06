@@ -1,5 +1,23 @@
 2013-10-06  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* UndoStep.h:
+	* UndoGroup.h:
+	* Box.svg:
+	* Text.svg:
+	* Cone.svg:
+	* Group.svg:
+	* BrowserWindow.ui:
+	* Sphere.svg:
+	* Ungroup.svg:
+	* Cylinder.svg:
+	* Box.svg:
+	* Cone.svg:
+	* Text.svg:
+	* Sphere.svg:
+	* Cylinder.svg: 
+
+2013-10-06  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* BrowserWindow.h:
 	* BrowserWindow.cpp:
 	* X3DBrowserEditor.h:

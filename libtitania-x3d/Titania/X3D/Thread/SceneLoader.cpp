@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,138 +48,91 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_NETWORKING_INLINE_H__
-#define __TITANIA_X3D_COMPONENTS_NETWORKING_INLINE_H__
+#include "SceneLoader.h"
 
-#include "../../Execution/Scene.h"
-#include "../Grouping/Group.h"
-#include "../Networking/X3DUrlObject.h"
-
-#include <memory>
+#include "../Browser/X3DBrowser.h"
+#include "../InputOutput/Loader.h"
 
 namespace titania {
 namespace X3D {
 
-class SceneLoader;
-
-class Inline :
-	public X3DChildNode, public X3DBoundedObject, public X3DUrlObject
+SceneLoader::SceneLoader (X3DExecutionContext* const executionContext, const MFString & url, const Callback & callback) :
+	         browser (executionContext -> getBrowser ()),
+	executionContext (executionContext),
+	        callback (callback),
+	         running (true),
+	          future (getFuture (url))
 {
-public:
+	browser -> prepareEvents () .addInterest (this, &SceneLoader::prepareEvents);
+	browser -> addEvent ();
+}
 
-	Inline (X3DExecutionContext* const);
-
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final;
-
-	///  @name Common members
-
-	virtual
-	const std::string &
-	getComponentName () const final
-	{ return componentName; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final
-	{ return containerField; }
-
-	///  @name Fields
-
-	SFBool &
-	load ()
-	{ return *fields .load; }
-
-	const SFBool &
-	load () const
-	{ return *fields .load; }
-
-	virtual
-	Box3f
-	getBBox () final;
-
-	virtual
-	void
-	requestImmediateLoad () final;
-
-	const SFNode &
-	getExportedNode (const std::string &) const
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
-
-	virtual
-	void
-	traverse (const TraverseType) final;
-
-	virtual
-	void
-	toStream (std::ostream & ostream) const final
-	{ X3DBaseNode::toStream (ostream); }
-
-	virtual
-	void
-	dispose () final;
-
-
-private:
-
-	virtual
-	void
-	initialize () final;
-
-	void
-	setSceneAsync (const X3DSFNode <Scene> &);
-
-	void
-	setScene (const X3DSFNode <Scene> &);
-
-	void
-	requestAsyncLoad ();
-
-	void
-	requestUnload ();
-
-	void
-	set_load ();
-
-	void
-	set_url ();
-
-
-	///  @name Static members
-
-	static const std::string componentName;
-	static const std::string typeName;
-	static const std::string containerField;
-
-	///  @name Members
-
-	struct Fields
+void
+SceneLoader::wait ()
+{
+	if (future .valid ())
 	{
-		Fields ();
+		future .wait ();
+		prepareEvents ();
+	}
+}
 
-		SFBool* const load;
-	};
+std::future <X3DSFNode <Scene>> 
+SceneLoader::getFuture (const MFString & url)
+{
+	return std::async (std::launch::async, std::mem_fn (&SceneLoader::loadAsync), this, url);
+}
 
-	Fields fields;
+X3DSFNode <Scene>
+SceneLoader::loadAsync (const MFString & url)
+{
+	std::lock_guard <std::mutex> lock (browser -> getThread ());
 
-	X3DSFNode <Scene> scene;
-	X3DSFNode <Group> group;
+	X3DSFNode <Scene> scene = browser -> createScene ();
 
-	std::unique_ptr <SceneLoader> future;
-	bool                          initialized;
+	if (running)
+		Loader (executionContext) .parseIntoScene (scene, url);
 
-};
+	return scene;
+}
+
+void
+SceneLoader::prepareEvents ()
+{
+	browser -> addEvent ();
+
+	if (future .valid ())
+	{
+		auto status = future .wait_for (std::chrono::milliseconds (0));
+
+		if (status == std::future_status::ready)
+		{
+			browser -> prepareEvents () .removeInterest (this, &SceneLoader::prepareEvents);
+
+			try
+			{
+				X3DSFNode <Scene> scene = future .get ();
+
+				callback (scene);
+			}
+			catch (const X3DError & error)
+			{
+				callback (nullptr);
+				browser -> println (error .what ());
+			}
+			
+			callback = [ ] (const X3DSFNode <Scene> &) { }; // Clear callback
+		}
+	}
+}
+
+SceneLoader::~SceneLoader ()
+{
+	running = false;
+
+	if (future .valid ())
+		future .wait ();
+}
 
 } // X3D
 } // titania
-
-#endif
