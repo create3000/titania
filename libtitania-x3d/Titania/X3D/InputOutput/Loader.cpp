@@ -76,13 +76,13 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	std::istringstream istringstream (string);
+	basic::ifilestream istream (string);
 
-	return createX3DFromStream (istringstream);
+	return createX3DFromStream (istream);
 }
 
 X3DSFNode <Scene>
-Loader::createX3DFromStream (std::istream & istream)
+Loader::createX3DFromStream (basic::ifilestream & istream)
 throw (Error <INVALID_X3D>,
        Error <NOT_SUPPORTED>,
        Error <INVALID_OPERATION_TIMING>,
@@ -92,18 +92,17 @@ throw (Error <INVALID_X3D>,
 }
 
 X3DSFNode <Scene>
-Loader::createX3DFromStream (const basic::uri & worldURL, std::istream & istream)
+Loader::createX3DFromStream (const basic::uri & worldURL, basic::ifilestream & istream)
 throw (Error <INVALID_X3D>,
        Error <NOT_SUPPORTED>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	X3DSFNode <Scene> scene = getBrowser () -> createScene ();
-	
-	basic::igzfilter   gzistream     = basic::gunzip (std::move (istream));
-	basic::ifilestream goldenistream = golden_gate ("<stream>", std::move (gzistream));
 
-	scene -> isCompressed (gzistream .is_compressed ());
+	basic::ifilestream goldenistream = golden_gate ("<stream>", std::move (istream));
+
+	scene -> isCompressed (istream .is_compressed ());
 	scene -> fromStream (worldURL, goldenistream);
 	scene -> setup ();
 
@@ -162,10 +161,10 @@ throw (Error <INVALID_URL>,
 		{
 			basic::uri uri = URL .str ();
 
-			basic::igzfilter   gzistream     = loadStream (uri);
-			basic::ifilestream goldenistream = golden_gate (URL .str (), std::move (gzistream));
+			basic::ifilestream istream       = loadStream (uri);
+			basic::ifilestream goldenistream = golden_gate (URL .str (), std::move (istream));
 
-			scene -> isCompressed (gzistream .is_compressed ());
+			scene -> isCompressed (istream .is_compressed ());
 			scene -> fromStream (worldURL, goldenistream);
 
 			return;
@@ -208,7 +207,7 @@ throw (Error <INVALID_URL>,
 	return ostringstream .str ();
 }
 
-basic::igzfilter
+basic::ifilestream
 Loader::loadStream (const SFString & URL)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>)
@@ -216,7 +215,7 @@ throw (Error <INVALID_URL>,
 	return loadStream (URL .str ());
 }
 
-basic::igzfilter
+basic::ifilestream
 Loader::loadStream (const basic::uri & uri)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>)
@@ -232,7 +231,7 @@ throw (Error <INVALID_URL>,
 	if (transformedURL .scheme () not_eq "data")
 		std::clog << "\tTransformed URL is '" << transformedURL << "'" << std::endl;
 
-	basic::ifilestream istream (transformedURL, 15000);
+	basic::ifilestream istream (transformedURL);
 
 	if (istream)
 	{
@@ -250,13 +249,13 @@ throw (Error <INVALID_URL>,
 				std::clog << "Done." << std::endl;
 			}
 
-			return basic::gunzip (std::move (istream));
+			return istream;
 		}
 	}
 
 	std::clog << "Failed." << std::endl;
 
-	throw Error <URL_UNAVAILABLE> ("Couldn't load URL '" + transformedURL + "'.\nStatus: " + std::to_string (istream .status ()) + ". " + istream .reason ());
+	throw Error <URL_UNAVAILABLE> ("Couldn't load URL '" + transformedURL + "'.\n" + istream .reason ());
 }
 
 } // X3D

@@ -46,6 +46,7 @@
     <None Include="Makefile.am" />
     <None Include="Titania\Stream\InputUrlStream.h" />
     <None Include="Titania\Stream\UrlStreamBuf.h" />
+    <None Include="Titania\Stream\GZFilterBuf.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -55,6 +56,7 @@
     <Compile Include="Titania\Stream\InputFileStream.cpp" />
     <Compile Include="Titania\Stream\InputUrlStream.cpp" />
     <Compile Include="Titania\Stream\UrlStreamBuf.cpp" />
+    <Compile Include="Titania\Stream\GZFilterBuf.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

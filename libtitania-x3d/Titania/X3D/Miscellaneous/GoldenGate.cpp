@@ -135,7 +135,7 @@ golden_x3d (basic::ifilestream && istream)
 
 	// Return stream
 
-	return basic::ifilestream ("data:model/vrml;charset=UTF-8," + Glib::uri_escape_string (string));
+	return basic::ifilestream (string);
 }
 
 static
@@ -183,7 +183,7 @@ golden_image (const basic::uri & uri)
 		float width  = (float) image .size () .width  () / (float) image .density () .width  () * M_INCH;
 		float height = (float) image .size () .height () / (float) image .density () .height () * M_INCH;
 
-		std::string file = os::load_file (os::find_data_file ("titania/filetype/image.wrl"));
+		std::string file = os::load_file (os::find_data_file ("titania/goldengate/image.wrl"));
 
 		Name   .GlobalReplace (get_name (uri), &file);
 		Width  .GlobalReplace (std::to_string (width), &file);
@@ -192,7 +192,7 @@ golden_image (const basic::uri & uri)
 
 		std::locale::global (locale);
 
-		return basic::ifilestream ("data:model/vrml;charset=UTF-8," + file);
+		return basic::ifilestream (file);
 	}
 	catch (...)
 	{
@@ -205,13 +205,13 @@ static
 basic::ifilestream
 golden_audio (const basic::uri & uri)
 {
-	std::string file = os::load_file (os::find_data_file ("titania/filetype/audio.wrl"));
+	std::string file = os::load_file (os::find_data_file ("titania/goldengate/audio.wrl"));
 
 	Name        .GlobalReplace (get_name (uri), &file);
 	Description .GlobalReplace (SFString (uri .basename (false)) .toString (), &file);
 	URL         .GlobalReplace (MFString ({ uri .basename (), uri .str () }) .toString (), &file);
 
-	return basic::ifilestream ("data:model/vrml;charset=UTF-8," + file);
+	return basic::ifilestream (file);
 }
 
 static
@@ -224,7 +224,7 @@ golden_video (const basic::uri & uri)
 	mediaStream .setUri (uri);
 	mediaStream .sync ();
 
-	std::string file = os::load_file (os::find_data_file ("titania/filetype/video.wrl"));
+	std::string file = os::load_file (os::find_data_file ("titania/goldengate/video.wrl"));
 
 	float width  = 1;
 	float height = 1;
@@ -245,7 +245,7 @@ golden_video (const basic::uri & uri)
 
 	std::locale::global (locale);
 
-	return basic::ifilestream ("data:model/vrml;charset=UTF-8," + file);
+	return basic::ifilestream (file);
 }
 
 basic::ifilestream
@@ -253,33 +253,38 @@ golden_gate (const basic::uri & uri, basic::ifilestream && istream)
 {
 	try
 	{
-		__LOG__ << istream .response_headers () .at ("Content-Type") << " : " << uri << std::endl;
+		std::string contentType = istream .response_headers () .at ("Content-Type");
+	
+		__LOG__ << contentType << " : " << uri << std::endl;
 
-		if (istream .response_headers () .at ("Content-Type") == "model/vrml")
+		if (contentType == "model/vrml")
 			return std::move (istream);
 
-		if (istream .response_headers () .at ("Content-Type") == "x-world/x-vrml")
+		if (contentType == "x-world/x-vrml")
 			return std::move (istream);
 
-		if (istream .response_headers () .at ("Content-Type") == "model/x3d+vrml")
+		if (contentType == "model/x3d+vrml")
 			return std::move (istream);
 
-		if (istream .response_headers () .at ("Content-Type") == "model/x3d+xml")
+		if (contentType == "model/x3d+xml")
 			return golden_x3d (std::move (istream));
 
-		if (istream .response_headers () .at ("Content-Type") == "application/xml")
+		if (contentType == "application/xml")
 			return golden_x3d (std::move (istream));
 
-		if (istream .response_headers () .at ("Content-Type") == "text/plain")
+		if (contentType == "text/plain")
 			return golden_text (std::move (istream));
 
-		if (Gio::content_type_is_a (istream .response_headers () .at ("Content-Type"), "image/*"))
+		if (Gio::content_type_is_a (contentType, "image/*"))
 			return golden_image (uri);
 
-		if (Gio::content_type_is_a (istream .response_headers () .at ("Content-Type"), "audio/*"))
+		if (Gio::content_type_is_a (contentType, "audio/*"))
 			return golden_audio (uri);
 
-		if (Gio::content_type_is_a (istream .response_headers () .at ("Content-Type"), "video/*"))
+		if (Gio::content_type_is_a (contentType, "video/*"))
+			return golden_video (uri);
+
+		if (contentType == "application/ogg")
 			return golden_video (uri);
 	}
 	catch (...)

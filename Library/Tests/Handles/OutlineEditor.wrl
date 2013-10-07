@@ -62,7 +62,7 @@ PROTO Children1 [
   }
 }
 
-NavigationInfo {
+DEF None NavigationInfo {
   type [ "NONE", "ANY" ]
 }
 
@@ -76,6 +76,11 @@ Viewpoint {
   description "OutlineEditor"
   position 2.37398 0.256043 5.7671
   centerOfRotation 2.37398 0.256043 0
+}
+
+Grid {
+  xDimension 100
+  zDimension 100
 }
 
 DEF Text1 Transform {
@@ -112,7 +117,7 @@ DEF Rotor Rotor {
 
 DEF Box Transform {
   translation 1.40843 1.10727 0.193803
-  rotation 0 0 1 3.47134
+  rotation 0 0 1 4.38327
   scale 0.2 0.2 0.2
   children Transform {
     children Shape {
@@ -163,11 +168,6 @@ Children1 {
     Transform { }
     Transform { }
   ]
-}
-
-Grid {
-  xDimension 100
-  zDimension 100
 }
 
 DEF Rotor2 Rotor2 { }

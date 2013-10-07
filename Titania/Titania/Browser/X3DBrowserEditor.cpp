@@ -343,7 +343,7 @@ X3DBrowserEditor::pasteNodes (const X3D::MFNode & nodes, const UndoStepPtr & und
 
 		if (clipboard -> wait_is_text_available ())
 		{
-			std::istringstream text (clipboard -> wait_for_text ());
+			basic::ifilestream text (clipboard -> wait_for_text ());
 
 			std::string header;
 	

@@ -350,7 +350,7 @@ throw (Error <INVALID_X3D>,
 }
 
 X3DSFNode <Scene>
-X3DBrowser::createX3DFromStream (std::istream & istream)
+X3DBrowser::createX3DFromStream (basic::ifilestream & istream)
 throw (Error <INVALID_X3D>,
        Error <NOT_SUPPORTED>,
        Error <INVALID_OPERATION_TIMING>,
@@ -363,7 +363,7 @@ throw (Error <INVALID_X3D>,
 }
 
 X3DSFNode <Scene>
-X3DBrowser::createX3DFromStream (const basic::uri & worldURL, std::istream & istream)
+X3DBrowser::createX3DFromStream (const basic::uri & worldURL, basic::ifilestream & istream)
 throw (Error <INVALID_X3D>,
        Error <NOT_SUPPORTED>,
        Error <INVALID_OPERATION_TIMING>,

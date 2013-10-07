@@ -449,7 +449,6 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Types/Image.cpp
 
 libtitania_x3d_la_LIBADD = $(TITANIA_X3D_LIBS)  \
-	$(TITANIA_GZSTREAM_LIBS) \
 	$(TITANIA_OPENGL_SURFACE_LIBS) \
 	$(TITANIA_STANDARD_LIBS) \
 	$(TITANIA_STREAM_LIBS) \
@@ -459,7 +458,6 @@ libtitania_x3d_la_LIBADD = $(TITANIA_X3D_LIBS)  \
 	$(top_builddir)/libtitania-stream/libtitania-stream.la
 
 AM_CPPFLAGS = $(TITANIA_X3D_CFLAGS) \
-	$(TITANIA_GZSTREAM_CFLAGS) \
 	$(TITANIA_OPENGL_SURFACE_CFLAGS) \
 	$(TITANIA_STANDARD_CFLAGS) \
 	$(TITANIA_STREAM_CFLAGS) \

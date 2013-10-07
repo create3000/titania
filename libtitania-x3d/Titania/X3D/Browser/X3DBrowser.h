@@ -37,6 +37,8 @@
 #include "../Configuration/SupportedProfiles.h"
 #include "../Execution/Scene.h"
 
+#include <Titania/Stream/InputFileStream.h>
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 namespace titania {
@@ -181,14 +183,14 @@ public:
 	       Error <DISPOSED>);
 
 	X3DSFNode <Scene>
-	createX3DFromStream (std::istream &)
+	createX3DFromStream (basic::ifilestream &)
 	throw (Error <INVALID_X3D>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
 	X3DSFNode <Scene>
-	createX3DFromStream (const basic::uri &, std::istream &)
+	createX3DFromStream (const basic::uri &, basic::ifilestream &)
 	throw (Error <INVALID_X3D>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,

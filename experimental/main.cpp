@@ -47,7 +47,6 @@
 #include <Titania/Math/Numbers/Vector3.h>
 #include <Titania/Math/Numbers/Vector4.h>
 #include <Titania/OS.h>
-#include <Titania/Stream/IGZFilter.h>
 #include <Titania/Stream/InputFileStream.h>
 #include <Titania/Stream/InputUrlStream.h>
 #include <Titania/Utility/Pass.h>
@@ -73,6 +72,8 @@
 #include <thread>
 #include <unordered_set>
 #include <vector>
+
+#include <giomm.h>
 
 #include <cstdarg>
 
@@ -256,6 +257,26 @@ sprintf (const char* fmt, ...)
 	return str;
 }
 
+void
+test (const basic::uri & uri, bool content)
+{
+	basic::ifilestream a (uri);
+
+	std::clog << bool (a) << std::endl;
+	a .send ();
+	std::clog << bool (a) << std::endl;
+
+	basic::ifilestream istream = std::move (a);
+
+	std::clog << "bool: "          << bool (istream) << std::endl;
+	std::clog << "status: "        << istream .status () << std::endl;
+	std::clog << "is_compressed: " << istream .is_compressed () << std::endl;
+	std::clog << "Content-Type: "  << istream .response_headers () .at ("Content-Type") << std::endl;
+
+	if (content)
+		std::clog << istream .rdbuf () << std::endl;
+}
+
 int
 main (int argc, char** argv)
 {
@@ -264,9 +285,12 @@ main (int argc, char** argv)
 	#ifdef _GLIBCXX_PARALLEL
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
+	
+	Gio::init ();
 
-	std::clog << "resolve: " << basic::uri ("/1/2/3/A.wrl") .relative_path ("/1/2/B.wrl") << std::endl;
-	std::clog << "resolve: " << basic::uri ("/1/2/B.wrl") .relative_path ("/1/2/3/A.wrl") << std::endl;
+	//test ("/home/holger/VRML2", true);
+	//test ("/home/holger/VRML2.gz", true);
+	test ("/home/holger/Videos/Brokeback Mountain.avi", false);
 
 	std::clog << "Function main done." << std::endl;
 	exit (0);

@@ -28,15 +28,12 @@
 
 #include "InputFileStream.h"
 
-#include <Titania/LOG.h>
-#include <Titania/OS/FileSize.h>
-#include <Titania/OS/IsFile.h>
-
 #include <glibmm/main.h>
 
 #include <giomm.h>
-#include <iostream>
 #include <utility>
+
+#include <Titania/LOG.h>
 
 namespace titania {
 namespace basic {
@@ -60,19 +57,31 @@ base64_decode (const std::string & string)
 
 ifilestream::ifilestream () :
 	         std::istream (),
-	         data_istream (nullptr),
-	           url_stream (nullptr),
-	              istream (nullptr),
+	         data_istream (),
+	           url_stream (),
+	             gzfilter (),
 	 file_request_headers (),
 	file_response_headers (),
 	                m_url (),
-	             m_status ()
+	             m_status (0)
 { }
 
-ifilestream::ifilestream (const basic::uri & url, size_t timeout) :
+ifilestream::ifilestream (const basic::uri & url) :
 	ifilestream ()
 {
-	open (url, timeout);
+	open (url);
+}
+
+ifilestream::ifilestream (const std::string & string) :
+	ifilestream ()
+{
+	file_response_headers .insert (std::make_pair ("Content-Length", std::to_string (string .size ())));
+	data_istream .reset (new std::istringstream (string));
+	
+	rdbuf (data_istream -> rdbuf ());
+	clear (data_istream -> rdstate ());
+
+	send ();
 }
 
 ifilestream::ifilestream (ifilestream && other) :
@@ -81,69 +90,67 @@ ifilestream::ifilestream (ifilestream && other) :
 	*this = std::move (other);
 }
 
-ifilestream::ifilestream (std::istream && other) :
-	ifilestream ()
-{
-	*this = std::move (other);
-}
+//ifilestream::ifilestream (std::istream && other) :
+//	ifilestream ()
+//{
+//	*this = std::move (other);
+//}
 
 ifilestream &
 ifilestream::operator = (ifilestream && other)
 {
 	close ();
 
-	istream               = other .istream;
+	data_istream          = std::move (other .data_istream);
+	url_stream            = std::move (other .url_stream);
+	gzfilter              = std::move (other .gzfilter);
 	file_request_headers  = std::move (other .file_request_headers);
 	file_response_headers = std::move (other .file_response_headers);
 	m_url                 = std::move (other .m_url);
+	m_status              = std::move (other .m_status);
 
-	other .data_istream = nullptr;
-	other .url_stream   = nullptr;
-	other .istream      = nullptr;
-
-	rdbuf (istream -> rdbuf ());
 	clear (other .rdstate ());
+	rdbuf (other .rdbuf (nullptr));
 
-	other .rdbuf (nullptr);
 	other .clear (std::ios::badbit);
 
 	return *this;
 }
 
-// Does not realy work with std::istream, thus std::istream is not movable
-
-ifilestream &
-ifilestream::operator = (std::istream && other)
-{
-	close ();
-
-	auto sstream = new std::stringstream ();
-	*sstream << other .rdbuf ();
-
-	istream = sstream;
-
-	url ("");
-
-	rdbuf (istream -> rdbuf ());
-	clear (other .rdstate ());
-
-	other .rdbuf (nullptr);
-	other .clear (std::ios::badbit);
-
-	guess_content_type (istream);
-
-	return *this;
-}
+//// Does not realy work with std::istream, thus std::istream is not movable
+//
+//ifilestream &
+//ifilestream::operator = (std::istream && other)
+//{
+//	close ();
+//
+//	auto sstream = new std::stringstream ();
+//	*sstream << other .rdbuf ();
+//
+//	istream = sstream;
+//
+//	url ("");
+//
+//	rdbuf (istream -> rdbuf ());
+//	clear (other .rdstate ());
+//
+//	other .rdbuf (nullptr);
+//	other .clear (std::ios::badbit);
+//
+//	guess_content_type (istream);
+//
+//	return *this;
+//}
 
 // Connection handling
 
 void
-ifilestream::open (const basic::uri & URL, size_t timeout)
+ifilestream::open (const basic::uri & URL)
 {
 	url (URL);
 
 	close ();
-
+	
 	if (url () .scheme () == "data")
 	{
 		// data:[<MIME-Typ>][;charset="<Zeichensatz>"][;base64],<Daten>
@@ -151,7 +158,7 @@ ifilestream::open (const basic::uri & URL, size_t timeout)
 		std::string::size_type first  = std::string::npos;
 		std::string::size_type length = 0;
 		std::string::size_type comma  = url () .path () .find (',');
-	
+
 		if (comma not_eq std::string::npos)
 		{
 			std::string header = url () .path () .substr (0, comma);
@@ -178,50 +185,65 @@ ifilestream::open (const basic::uri & URL, size_t timeout)
 			length = url () .path () .size () - first;
 
 			// header
+			
+			if (not content_type .empty ())
+				file_response_headers .insert (std::make_pair ("Content-Type", content_type));
 
-			file_response_headers .insert (std::make_pair ("Content-Type",   content_type));
 			file_response_headers .insert (std::make_pair ("Content-Length", std::to_string (length)));
-		
-			istream = data_istream = new std::istringstream (base64
-			                                                 ? base64_decode (url () .path () .substr (first))
-																			 : Glib::uri_unescape_string (url () .path () .substr (first)));
+
+			// stream
+			
+			data_istream .reset (new std::istringstream (base64
+			                                             ? base64_decode (url () .path () .substr (first))
+																		: Glib::uri_unescape_string (url () .path () .substr (first))));
 		}
 		else
-			istream = data_istream = new std::istringstream ();
+			data_istream .reset (new std::istringstream ());
+
+		rdbuf (data_istream -> rdbuf ());
+		clear (data_istream -> rdstate ());
 	}
 	else
 	{
-		istream = url_stream = new iurlstream ();
-		url_stream -> open (url (), timeout);
-	}
+		url_stream .reset (new iurlstream ());
+		url_stream -> open (url ());
 
-	rdbuf (istream -> rdbuf ());
-	clear (istream -> rdstate ());
+		rdbuf (url_stream -> rdbuf ());
+		clear (url_stream -> rdstate ());
+	}
 }
 
 void
 ifilestream::send ()
 {
-	if (url_stream and * url_stream)
-	{
-		url_stream -> send ();
-		url (url_stream -> url ());
-		status (url_stream -> status ());
-	}
-//	else if (file_istream)
-//	{
-//		guess_content_type (file_istream);
-//
-//		file_response_headers .insert (std::make_pair ("Content-Length", std::to_string (os::file_size (url () .path ()))));
-//	}
+	if (not *this)
+		return;
 
-	setstate (istream -> rdstate ());
+	std::istream* istream = url_stream .get ();
+	
+	 if (not istream)
+	   istream = data_istream .get ();
+
+	try
+	{
+		gzfilter .reset (new gzfilterbuf (istream -> rdbuf ()));
+
+		rdbuf (gzfilter .get ());
+		clear ();
+
+		file_response_headers .erase ("Content-Type");
+		guess_content_type ("", this);
+	}
+	catch (const std::invalid_argument &)
+	{
+		guess_content_type (url (), this);
+	}
 }
 
 void
-ifilestream::guess_content_type (std::istream* istream)
+ifilestream::guess_content_type (const basic::uri & url, std::istream* const istream)
 {
-	static constexpr size_t BUFFER_SIZE = 128;
+	static constexpr size_t BUFFER_SIZE = 255;
 
 	auto state = istream -> rdstate ();
 	auto pos   = istream -> tellg ();
@@ -232,7 +254,7 @@ ifilestream::guess_content_type (std::istream* istream)
 	size_t data_size = istream -> rdbuf () -> sgetn (data, BUFFER_SIZE);
 
 	bool        result_uncertain;
-	std::string content_type = Gio::content_type_guess (url () .path (), (guchar*) data, data_size, result_uncertain);
+	std::string content_type = Gio::content_type_guess (url .path (), (guchar*) data, data_size, result_uncertain);
 
 	file_response_headers .insert (std::make_pair ("Content-Type", content_type));
 
@@ -245,55 +267,30 @@ ifilestream::guess_content_type (std::istream* istream)
 void
 ifilestream::close ()
 {
-	url_stream   = nullptr;
-	data_istream = nullptr;
-
-	if (istream)
-	{
-		delete istream;
-		istream = nullptr;
-	}
-
 	rdbuf (nullptr);
 	clear (std::ios::badbit);
+
+	gzfilter     .reset ();
+	url_stream   .reset ();
+	data_istream .reset ();
 }
 
 void
 ifilestream::request_header (const std::string & header, const std::string & value)
 {
-	if (url_stream)
-		return url_stream -> request_header (header, value);
-
 	file_request_headers .insert (std::make_pair (header, value));
 }
 
 const ifilestream::headers_type &
 ifilestream::request_headers () const
 {
-	if (url_stream)
-		return url_stream -> request_headers ();
-
 	return file_request_headers;
 }
 
 const ifilestream::headers_type &
 ifilestream::response_headers () const
 {
-	if (url_stream)
-		return url_stream -> response_headers ();
-
 	return file_response_headers;
-}
-
-// SocketStreamBuffer
-
-const std::string &
-ifilestream::http_version () const
-{
-	if (url_stream)
-		return url_stream -> http_version ();
-
-	return empty_string;
 }
 
 const std::string &
@@ -302,23 +299,7 @@ ifilestream::reason () const
 	if (url_stream)
 		return url_stream -> reason ();
 
-	return *istream ? reasons [0] : reasons [1];
-}
-
-size_t
-ifilestream::timeout () const
-{
-	if (url_stream)
-		return url_stream -> timeout ();
-
-	return 0;
-}
-
-void
-ifilestream::timeout (size_t value)
-{
-	if (url_stream)
-		url_stream -> timeout (value);
+	return *data_istream ? reasons [0] : reasons [1];
 }
 
 ifilestream::~ifilestream ()

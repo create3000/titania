@@ -52,10 +52,12 @@
 #define __TITANIA_STREAM_INPUT_FILE_STREAM_H__
 
 #include "../Stream/InputUrlStream.h"
+#include "../Stream/GZFilterBuf.h"
 
 #include <fstream>
 #include <map>
 #include <sstream>
+#include <memory>
 
 namespace titania {
 namespace basic {
@@ -65,24 +67,22 @@ class ifilestream :
 {
 public:
 
-	typedef basic::iurlstream::headers_type headers_type;
-	typedef basic::iurlstream::status_type  status_type;
+	typedef std::map <std::string, std::string> headers_type;
 
 	/// @name Constructors
 
 	ifilestream ();
 
-	ifilestream (const basic::uri &, size_t = 60000);
+	explicit
+	ifilestream (const basic::uri &);
+
+	explicit
+	ifilestream (const std::string &);
 
 	ifilestream (ifilestream &&);
 
-	ifilestream (std::istream &&);
-
 	ifilestream &
 	operator = (ifilestream &&);
-
-	ifilestream &
-	operator = (std::istream &&);
 
 	/// @name Header handling
 
@@ -96,31 +96,26 @@ public:
 	response_headers () const;
 
 	/// @name Element access
+	
+	bool
+	is_compressed () const
+	{ return gzfilter .get (); }
 
 	const basic::uri &
 	url () const
 	{ return m_url; }
 
-	const std::string &
-	http_version () const;
-
-	iurlstream::status_type
+	size_t
 	status () const
 	{ return m_status; }
 
 	const std::string &
 	reason () const;
 
-	size_t
-	timeout () const;
-
-	void
-	timeout (size_t);
-
 	/// @name Connection handling
 
 	void
-	open (const basic::uri &, size_t = 60000);
+	open (const basic::uri &);
 
 	void
 	send ();
@@ -150,20 +145,20 @@ private:
 	{ m_status = value; }
 
 	void
-	guess_content_type (std::istream*);
+	guess_content_type (const basic::uri &, std::istream* const);
 
 	static const std::string reasons [2];
 	static const std::string empty_string;
 
-	std::istringstream* data_istream;
-	iurlstream*         url_stream;
-	std::istream*       istream;
+	std::unique_ptr <std::istringstream> data_istream;
+	std::unique_ptr <iurlstream>         url_stream;
+	std::unique_ptr <gzfilterbuf>        gzfilter;
 
 	headers_type file_request_headers;
 	headers_type file_response_headers;
 
 	basic::uri              m_url;
-	iurlstream::status_type m_status;
+	size_t m_status;
 
 };
 

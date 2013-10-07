@@ -1086,19 +1086,19 @@
   </ProjectExtensions>
   <ItemGroup>
     <Content Include="share\titania\pages\about\splash.wrl" />
-    <Content Include="share\titania\filetype\image.wrl">
-      <DeployService-TargetDirectoryId>ProgramFilesRoot</DeployService-TargetDirectoryId>
-      <DeployService-UseProjectRelativePath>true</DeployService-UseProjectRelativePath>
-    </Content>
-    <Content Include="share\titania\filetype\audio.wrl">
-      <DeployService-TargetDirectoryId>ProgramFilesRoot</DeployService-TargetDirectoryId>
-      <DeployService-UseProjectRelativePath>true</DeployService-UseProjectRelativePath>
-    </Content>
-    <Content Include="share\titania\filetype\video.wrl">
-      <DeployService-TargetDirectoryId>ProgramFilesRoot</DeployService-TargetDirectoryId>
-      <DeployService-UseProjectRelativePath>true</DeployService-UseProjectRelativePath>
-    </Content>
     <Content Include="share\titania\pages\about\library\Logo.wrl" />
     <Content Include="share\titania\pages\about\library\Colors.wrl" />
+    <Content Include="share\titania\goldengate\image.wrl">
+      <DeployService-TargetDirectoryId>ProgramFilesRoot</DeployService-TargetDirectoryId>
+      <DeployService-UseProjectRelativePath>true</DeployService-UseProjectRelativePath>
+    </Content>
+    <Content Include="share\titania\goldengate\audio.wrl">
+      <DeployService-TargetDirectoryId>ProgramFilesRoot</DeployService-TargetDirectoryId>
+      <DeployService-UseProjectRelativePath>true</DeployService-UseProjectRelativePath>
+    </Content>
+    <Content Include="share\titania\goldengate\video.wrl">
+      <DeployService-TargetDirectoryId>ProgramFilesRoot</DeployService-TargetDirectoryId>
+      <DeployService-UseProjectRelativePath>true</DeployService-UseProjectRelativePath>
+    </Content>
   </ItemGroup>
 </Project>

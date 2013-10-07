@@ -67,10 +67,10 @@ main (int argc, char** argv)
 	options .addUsage ("       x3dtidy - X3D/VRML beautifer");
 	options .addUsage ("");
 	options .addUsage ("SYNOPSIS");
-	options .addUsage ("       x3dtidy [OPTIONS] [FILE] [OUTFILE]");
+	options .addUsage ("       x3dtidy [OPTIONS] FILE [OUTFILE]");
 	options .addUsage ("");
 	options .addUsage ("DESCRIPTION");
-	options .addUsage ("       Format FILE, or standard input, to standard output or to OUTFILE.");
+	options .addUsage ("       Format FILE to standard output or to OUTFILE.");
 	options .addUsage ("");
 	options .addUsage ("VRML2 field names and access types are printed when the encoding is VRML,");
 	options .addUsage ("otherwise X3D field names and access types are printed.");
@@ -91,8 +91,6 @@ main (int argc, char** argv)
 	options .addUsage ("       -s=mode, --style=mode");
 	options .addUsage ("              mode can be 'smallest', 'small ', 'compact', or 'nicest'");
 	options .addUsage ("              nicest is the default mode");
-	options .addUsage ("");
-	options .addUsage ("       With no FILE given, or when FILE is -, read from standard input.");
 	options .addUsage ("");
 	options .addUsage ("EXAMPLES");
 	options .addUsage ("       x3dtidy -s=compact file.wrl");
@@ -120,7 +118,7 @@ main (int argc, char** argv)
 	if (options .getFlag ("help") or options .getFlag ('h'))
 	{
 		options .printUsage ();
-		return 1;
+		return 0;
 	}
 
 	if (options .getFlag ("expanded") or options .getFlag ('e'))
@@ -171,7 +169,7 @@ main (int argc, char** argv)
 			}
 		}
 		else
-			std::cout << browser -> createX3DFromStream (std::cin);
+			options .printUsage ();
 	}
 	catch (const X3D::X3DError & exception)
 	{

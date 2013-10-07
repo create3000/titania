@@ -6,9 +6,6 @@ lib_LTLIBRARIES =  \
 
 libtitania_gzstream_la_LIBADD = $(TITANIA_GZSTREAM_LIBS) 
 
-libtitania_gzstream_la_SOURCES =  \
-	Titania/gzstream.cpp \
-	Titania/Stream/GZFilterBuf.cpp \
-	Titania/Stream/IGZFilter.cpp
+libtitania_gzstream_la_SOURCES = Titania/gzstream.cpp
 
 AM_CPPFLAGS = $(TITANIA_GZSTREAM_CFLAGS) 

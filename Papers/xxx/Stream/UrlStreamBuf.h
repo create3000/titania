@@ -52,17 +52,23 @@
 #define __TITANIA_STREAM_URL_STREAM_BUF_H__
 
 #include <Titania/Basic/URI.h>
+#include <sstream>
 
-#include <giomm.h>
-#include <streambuf>
+extern "C"
+{
+#include <curl/curl.h>
+}
 
 namespace titania {
 namespace basic {
 
 class urlstreambuf :
-	public std::streambuf
+	public std::stringbuf
 {
 public:
+
+	typedef std::map <std::string, std::string> headers_type;
+	typedef size_t                              size_type;
 
 	urlstreambuf ();
 
@@ -74,15 +80,26 @@ public:
 	open (const basic::uri &);
 
 	urlstreambuf*
+	send (const headers_type & = { });
+
+	urlstreambuf*
 	close ();
 
 	const basic::uri &
 	url () const
 	{ return m_url; }
-	
-	const std::string &
-	reason () const
-	{ return m_reason; }
+
+	size_type
+	timeout () const
+	{ return m_timeout; }
+
+	void
+	timeout (size_type value)
+	{ m_timeout = value; }
+
+	std::stringstream &
+	headers ()
+	{ return m_headers; }
 
 	virtual
 	~urlstreambuf ()
@@ -95,30 +112,20 @@ private:
 	url (const basic::uri & value)
 	{ m_url = value; }
 
-	void
-	reason (const std::string & value)
-	{ m_reason = value; }
+	static
+	int
+	write_header (char* data, size_t, size_t, std::stringstream*);
 
-	virtual
-	traits_type::int_type
-	underflow () final;
+	static
+	int
+	write_data (char* data, size_t, size_t, urlstreambuf*);
 
-	virtual
-	pos_type
-	seekoff (off_type, std::ios_base::seekdir, std::ios_base::openmode) final;
+	CURL* curl;                  // CURL handle
+	bool  opened;                // Open/close state of stream
 
-	static constexpr size_t bufferSize = 1024;
-
-	bool              opened;       // Open/close state of stream
-	basic::uri        m_url;        // The URL
-	std::string       m_reason;
-
-	Glib::RefPtr <Gio::FileInputStream> stream;
-
-	char   buffer [2 * bufferSize]; // Data buffer
-	size_t bytesRead;
-	size_t lastBytesRead;
-	size_t bytesGone;
+	basic::uri        m_url;     // The URL
+	size_type         m_timeout; // in ms
+	std::stringstream m_headers; // Header data
 
 };
 

@@ -53,7 +53,7 @@
 
 #include "../Execution/X3DScene.h"
 
-#include <Titania/Stream/IGZFilter.h>
+#include <Titania/Stream/InputFileStream.h>
 
 namespace titania {
 namespace X3D {
@@ -98,14 +98,14 @@ public:
 	       Error <DISPOSED>);
 
 	X3DSFNode <Scene>
-	createX3DFromStream (std::istream & istream)
+	createX3DFromStream (basic::ifilestream & istream)
 	throw (Error <INVALID_X3D>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
 	X3DSFNode <Scene>
-	createX3DFromStream (const basic::uri & worldURL, std::istream & istream)
+	createX3DFromStream (const basic::uri & worldURL, basic::ifilestream &)
 	throw (Error <INVALID_X3D>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -138,12 +138,12 @@ public:
 	throw (Error <INVALID_URL>,
 	       Error <URL_UNAVAILABLE>);
 
-	basic::igzfilter
+	basic::ifilestream
 	loadStream (const SFString & URL)
 	throw (Error <INVALID_URL>,
 	       Error <URL_UNAVAILABLE>);
 
-	basic::igzfilter
+	basic::ifilestream
 	loadStream (const basic::uri & uri)
 	throw (Error <INVALID_URL>,
 	       Error <URL_UNAVAILABLE>);

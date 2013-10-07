@@ -28,20 +28,27 @@
 
 #include "UrlStreamBuf.h"
 
-#include <cstring>
 #include <Titania/LOG.h>
+#include <cstring>
 
 namespace titania {
 namespace basic {
 
 urlstreambuf::urlstreambuf () :
-	std::stringbuf (std::ios_base::in | std::ios_base::out),
-	          curl (nullptr),
+	std::streambuf (),
 	        opened (false),
 	         m_url (),
-	     m_timeout (60000),                                  // 60 seconds
-	     m_headers ()
-{ }
+	      m_reason (),
+	        stream (),
+	        buffer (),
+	     bytesRead (0),
+	 lastBytesRead (0),
+	     bytesGone (0)
+{
+	setg (buffer + bufferSize,                          // beginning of putback area
+	      buffer + bufferSize,                          // read position
+	      buffer + bufferSize);                         // end position
+}
 
 urlstreambuf*
 urlstreambuf::open (const basic::uri & URL)
@@ -50,88 +57,68 @@ urlstreambuf::open (const basic::uri & URL)
 
 	close ();
 
-	// Init CURL.
+	try
+	{
+		stream = Gio::File::create_for_uri (url () .filename (url () .is_network ())) -> read ();
 
-	curl = curl_easy_init ();
+		opened = true;
 
-	if (not curl)
-		return nullptr;
-
-	curl_easy_setopt (curl, CURLOPT_URL,               url () .filename (true) .str () .c_str ());
-	curl_easy_setopt (curl, CURLOPT_USE_SSL,           CURLUSESSL_TRY);
-	curl_easy_setopt (curl, CURLOPT_HEADER,            false);
-	curl_easy_setopt (curl, CURLOPT_FOLLOWLOCATION,    true);
-	curl_easy_setopt (curl, CURLOPT_CONNECTTIMEOUT_MS, timeout ());
-	curl_easy_setopt (curl, CURLOPT_TIMEOUT_MS,        timeout ());
-	curl_easy_setopt (curl, CURLOPT_ACCEPTTIMEOUT_MS,  timeout ());
-	curl_easy_setopt (curl, CURLOPT_ACCEPT_ENCODING,   "");
-	curl_easy_setopt (curl, CURLOPT_FAILONERROR,       true);
-	curl_easy_setopt (curl, CURLOPT_NOSIGNAL,          true);
-	curl_easy_setopt (curl, CURLOPT_HEADERFUNCTION,    write_header);
-	curl_easy_setopt (curl, CURLOPT_HEADERDATA,        &m_headers);
-	curl_easy_setopt (curl, CURLOPT_WRITEFUNCTION,     write_data);
-	curl_easy_setopt (curl, CURLOPT_WRITEDATA,         this);
-	//curl_easy_setopt (curl, CURLOPT_VERBOSE,           true);
-
-	opened = true;
-
-	return this;
-}
-
-urlstreambuf*
-urlstreambuf::send (const headers_type & headers)
-{
-	// Add headers
-
-	struct curl_slist* headerlist = nullptr;
-
-	for (const auto & header : headers)
-		headerlist = curl_slist_append (headerlist, (header .first + ": " + header .second) .c_str ());
-
-	curl_easy_setopt (curl, CURLOPT_HTTPHEADER, headerlist);
-
-	// Attempt to retrieve the remote page
-
-	CURLcode retcode = curl_easy_perform (curl);
-
-	curl_slist_free_all (headerlist);
-
-	// Did we succeed?
-	if (retcode == CURLE_OK)
 		return this;
+	}
+	catch (const Gio::Error & error)
+	{
+		reason (error .what ());
 
-	std::clog << "CURL Error: " << url () << std::endl;
-	std::clog << "CURL Error: " << "Can't send Request: " << std::strerror (retcode) << std::endl;
-
-	close ();
-
-	return nullptr;
+		return nullptr;
+	}
 }
 
-int
-urlstreambuf::write_header (char* data, size_t size, size_t nmemb, std::stringstream* header)
+urlstreambuf::traits_type::int_type
+urlstreambuf::underflow ()
 {
-	// What we will return
-	size_t bytes = size * nmemb;
+	bytesGone += lastBytesRead;
 
-	// Append the data to the buffer
-	header -> rdbuf () -> sputn (data, bytes);
+	// Move buffer to back buffer area.
 
-	// How much did we write?
-	return bytes;
+	(void) memcpy (buffer + bufferSize - bytesRead, buffer + bufferSize, bytesRead);
+
+	lastBytesRead = bytesRead;
+
+	bytesRead = stream -> read (buffer + bufferSize, bufferSize);
+
+	if (bytesRead == 0)
+		return traits_type::eof ();
+
+	// reset buffer pointers
+	setg (buffer + bufferSize - lastBytesRead,         // beginning of putback area
+	      buffer + bufferSize,                         // read position
+	      buffer + bufferSize + bytesRead);            // end of buffer
+
+	// return next character
+	return traits_type::to_int_type (*gptr ());
 }
 
-int
-urlstreambuf::write_data (char* data, size_t size, size_t nmemb, urlstreambuf* self)
+urlstreambuf::pos_type
+urlstreambuf::seekoff (off_type off, std::ios_base::seekdir dir, std::ios_base::openmode which)
 {
-	// What we will return
-	size_t bytes = size * nmemb;
+	if (which == std::ios_base::in)
+	{
+		if (dir == std::ios_base::cur)
+		{
+			auto pos = gptr () + off;
 
-	// Append the data to the buffer
-	self -> sputn (data, bytes);
+			if (pos >= eback () and pos <= egptr ())
+			{
+				gbump (off);
 
-	// How much did we write?
-	return bytes;
+				return bytesGone + gptr () - eback ();
+			}
+
+			throw std::out_of_range ("basic_gzfilterbuf::seekoff");
+		}
+	}
+
+	throw std::invalid_argument ("basic_gzfilterbuf::seekoff");
 }
 
 urlstreambuf*
@@ -140,10 +127,6 @@ urlstreambuf::close ()
 	if (is_open ())
 	{
 		opened = false;
-
-		// Cleanup.
-
-		curl_easy_cleanup (curl);
 	}
 
 	return this;

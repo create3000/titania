@@ -26,62 +26,12 @@
 //  *
 //  ************************************************************************/
 
-#include "InputUrlStream.h"
-
-#include <Titania/LOG.h>
+#include "GZFilterBuf.h"
 
 namespace titania {
 namespace basic {
 
-iurlstream::iurlstream () :
-	         std::istream (),
-	                  buf (new urlstreambuf ())
-{
-	init (buf);
-	clear ();
-}
-
-iurlstream::iurlstream (const basic::uri & url) :
-	          iurlstream ()
-{
-	open (url);
-}
-
-iurlstream::iurlstream (iurlstream && other) :
-	         std::istream (),
-	                  buf (other .buf)
-{
-	init (buf);
-	clear (other .rdstate ());
-
-	other .buf = nullptr;
-	other .rdbuf (nullptr);
-	other .clear (std::ios::badbit);
-}
-
-void
-iurlstream::open (const basic::uri & url)
-{
-	clear ();
-
-	if (not buf -> open (url))
-		setstate (std::ios::failbit);
-}
-
-void
-iurlstream::close ()
-{
-	if (rdbuf ())
-		buf -> close ();
-
-	setstate (std::ios::badbit);
-}
-
-iurlstream::~iurlstream ()
-{
-	if (rdbuf ())
-		delete rdbuf (nullptr);
-}
+template class basic_gzfilterbuf <char>;
 
 } // basic
 } // titania

@@ -1,3 +1,16 @@
+2013-10-07  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-stream.cproj:
+	* GZFilterBuf.h:
+	* UrlStreamBuf.h:
+	* GZFilterBuf.cpp:
+	* InputUrlStream.h:
+	* UrlStreamBuf.cpp:
+	* InputFileStream.h:
+	* InputUrlStream.cpp:
+	* InputFileStream.cpp: 
+
 2013-09-28  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* InputFileStream.cpp: 

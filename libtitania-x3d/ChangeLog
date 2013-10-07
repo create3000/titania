@@ -1,3 +1,23 @@
+2013-10-07  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* OpenGL.h:
+	* video.wrl:
+	* X3DBrowser.h:
+	* Loader.h:
+	* image.wrl:
+	* audio.wrl:
+	* image.wrl:
+	* audio.wrl:
+	* video.wrl:
+	* X3DBrowser.cpp:
+	* Loader.cpp:
+	* image.wrl:
+	* audio.wrl:
+	* video.wrl:
+	* GoldenGate.cpp: 
+
 2013-10-06  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* libtitania-x3d.cproj:

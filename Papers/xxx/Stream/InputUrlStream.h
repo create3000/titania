@@ -48,77 +48,118 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_STREAM_URL_STREAM_BUF_H__
-#define __TITANIA_STREAM_URL_STREAM_BUF_H__
+#ifndef __TITANIA_STREAM_INPUT_URL_STREAM_H__
+#define __TITANIA_STREAM_INPUT_URL_STREAM_H__
 
-#include <Titania/Basic/URI.h>
-
-#include <giomm.h>
-#include <streambuf>
+#include "../Stream/UrlStreamBuf.h"
 
 namespace titania {
 namespace basic {
 
-class urlstreambuf :
-	public std::streambuf
+class iurlstream :
+	public std::istream
 {
 public:
 
-	urlstreambuf ();
+	typedef urlstreambuf::headers_type headers_type;
+	typedef size_t                     status_type;
 
-	bool
-	is_open ()
-	{ return opened; }
+	/// @name Constructors
 
-	urlstreambuf*
-	open (const basic::uri &);
+	iurlstream ();
 
-	urlstreambuf*
-	close ();
+	iurlstream (const basic::uri &, size_t = 60000);
+
+	iurlstream (iurlstream &&);
+
+	/// @name Properties
 
 	const basic::uri &
 	url () const
-	{ return m_url; }
-	
+	{ return buf -> url (); }
+
+	/// @name Connection handling
+
+	void
+	open (const basic::uri &, size_t = 60000);
+
+	void
+	send ();
+
+	void
+	close ();
+
+	/// @name Header handling
+
+	void
+	request_header (const std::string &, const std::string &);
+
+	void
+	request_headers (const headers_type & value)
+	{ request_headers_map = value; }
+
+	const headers_type &
+	request_headers () const
+	{ return request_headers_map; }
+
+	const headers_type &
+	response_headers () const
+	{ return response_headers_map; }
+
+	/// @name Element access
+
+	const std::string &
+	http_version ()
+	{ return response_http_version; }
+
+	status_type
+	status () const
+	{ return response_status; }
+
 	const std::string &
 	reason () const
-	{ return m_reason; }
+	{ return response_reason; }
+
+	size_t
+	timeout () const
+	{ return buf -> timeout (); }
+
+	void
+	timeout (size_t value)
+	{ return buf -> timeout (value); }
+
+	/// @name Destructor
 
 	virtual
-	~urlstreambuf ()
-	{ close (); }
+	~iurlstream ();
 
 
 private:
 
-	void
-	url (const basic::uri & value)
-	{ m_url = value; }
+	iurlstream (const iurlstream &) = delete;
+
+	iurlstream &
+	operator = (const iurlstream &) = delete;
+
+	bool
+	parse_status_line ();
 
 	void
-	reason (const std::string & value)
-	{ m_reason = value; }
+	parse_response_headers ();
 
-	virtual
-	traits_type::int_type
-	underflow () final;
+	void
+	parse_response_header ();
 
-	virtual
-	pos_type
-	seekoff (off_type, std::ios_base::seekdir, std::ios_base::openmode) final;
+	///  @name Members
 
-	static constexpr size_t bufferSize = 1024;
+	urlstreambuf* buf;
 
-	bool              opened;       // Open/close state of stream
-	basic::uri        m_url;        // The URL
-	std::string       m_reason;
+	headers_type request_headers_map;
+	headers_type response_headers_map;
 
-	Glib::RefPtr <Gio::FileInputStream> stream;
-
-	char   buffer [2 * bufferSize]; // Data buffer
-	size_t bytesRead;
-	size_t lastBytesRead;
-	size_t bytesGone;
+	std::string response_http_version;
+	status_type response_status;
+	std::string response_reason;
 
 };
 
