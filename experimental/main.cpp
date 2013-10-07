@@ -257,14 +257,22 @@ sprintf (const char* fmt, ...)
 	return str;
 }
 
+basic::ifilestream
+get_stream (const basic::uri & uri)
+{
+	basic::ifilestream istream (uri);
+
+	istream .send ();
+	std::clog << "is_compressed: " << istream .is_compressed () << std::endl;
+
+	return istream;
+}
+
 void
 test (const basic::uri & uri, bool content)
 {
-	basic::ifilestream a (uri);
-
-	std::clog << bool (a) << std::endl;
-	a .send ();
-	std::clog << bool (a) << std::endl;
+	basic::ifilestream a = get_stream (uri);
+	std::clog << "is_compressed: " << a .is_compressed () << std::endl;
 
 	basic::ifilestream istream = std::move (a);
 
@@ -289,8 +297,8 @@ main (int argc, char** argv)
 	Gio::init ();
 
 	//test ("/home/holger/VRML2", true);
-	//test ("/home/holger/VRML2.gz", true);
-	test ("/home/holger/Videos/Brokeback Mountain.avi", false);
+	test ("/home/holger/VRML2.gz", false);
+	//test ("/home/holger/Videos/Brokeback Mountain.avi", false);
 
 	std::clog << "Function main done." << std::endl;
 	exit (0);

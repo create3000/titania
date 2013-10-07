@@ -117,7 +117,7 @@ DEF Rotor Rotor {
 
 DEF Box Transform {
   translation 1.40843 1.10727 0.193803
-  rotation 0 0 1 4.38327
+  rotation 0 0 1 4.17008
   scale 0.2 0.2 0.2
   children Transform {
     children Shape {

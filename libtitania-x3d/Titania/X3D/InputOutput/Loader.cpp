@@ -159,12 +159,10 @@ throw (Error <INVALID_URL>,
 	{
 		try
 		{
-			basic::uri uri = URL .str ();
-
-			basic::ifilestream istream       = loadStream (uri);
-			basic::ifilestream goldenistream = golden_gate (URL .str (), std::move (istream));
-
+			basic::ifilestream istream = loadStream (URL .str ());
 			scene -> isCompressed (istream .is_compressed ());
+
+			basic::ifilestream goldenistream = golden_gate (URL .str (), std::move (istream));
 			scene -> fromStream (worldURL, goldenistream);
 
 			return;
@@ -176,7 +174,7 @@ throw (Error <INVALID_URL>,
 	}
 
 	std::ostringstream error;
-	
+
 	for (const auto & string : urlError)
 		error << string .str ();
 

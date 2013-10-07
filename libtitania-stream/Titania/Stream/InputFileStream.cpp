@@ -77,7 +77,7 @@ ifilestream::ifilestream (const std::string & string) :
 {
 	file_response_headers .insert (std::make_pair ("Content-Length", std::to_string (string .size ())));
 	data_istream .reset (new std::istringstream (string));
-	
+
 	rdbuf (data_istream -> rdbuf ());
 	clear (data_istream -> rdstate ());
 
@@ -150,7 +150,7 @@ ifilestream::open (const basic::uri & URL)
 	url (URL);
 
 	close ();
-	
+
 	if (url () .scheme () == "data")
 	{
 		// data:[<MIME-Typ>][;charset="<Zeichensatz>"][;base64],<Daten>
@@ -185,14 +185,14 @@ ifilestream::open (const basic::uri & URL)
 			length = url () .path () .size () - first;
 
 			// header
-			
+
 			if (not content_type .empty ())
 				file_response_headers .insert (std::make_pair ("Content-Type", content_type));
 
 			file_response_headers .insert (std::make_pair ("Content-Length", std::to_string (length)));
 
 			// stream
-			
+
 			data_istream .reset (new std::istringstream (base64
 			                                             ? base64_decode (url () .path () .substr (first))
 																		: Glib::uri_unescape_string (url () .path () .substr (first))));
@@ -216,13 +216,13 @@ ifilestream::open (const basic::uri & URL)
 void
 ifilestream::send ()
 {
-	if (not *this)
+	if (not * this)
 		return;
 
 	std::istream* istream = url_stream .get ();
-	
-	 if (not istream)
-	   istream = data_istream .get ();
+
+	if (not istream)
+		istream = data_istream .get ();
 
 	try
 	{
