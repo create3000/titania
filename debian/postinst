@@ -26,6 +26,11 @@ case "$1" in
     configure)
       
       /usr/bin/xdg-icon-resource install --novendor --size 48 /usr/share/pixmaps/titania.png
+		/usr/bin/xdg-desktop-icon  install --novendor /usr/share/applications/titania.desktop
+      
+      /usr/bin/xdg-icon-resource install --novendor --context mimetypes --size 128 /usr/share/titania/mime/model/vrml.png     model-vrml
+      /usr/bin/xdg-icon-resource install --novendor --context mimetypes --size 128 /usr/share/titania/mime/model/x3d+vrml.png model-x3d+vrml
+      /usr/bin/xdg-icon-resource install --novendor --context mimetypes --size 128 /usr/share/titania/mime/model/x3d+vrml.png model-x3d+xml
       
       /usr/bin/xdg-mime install --novendor /usr/share/titania/mime/model/vrml.xml 
       /usr/bin/xdg-mime install --novendor /usr/share/titania/mime/model/x3d+vrml.xml 

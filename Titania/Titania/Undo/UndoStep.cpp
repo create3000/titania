@@ -61,8 +61,6 @@ UndoStep::UndoStep (const std::string & description) :
 void
 UndoStep::undo () const
 {
-	__LOG__ << std::endl;
-	
 	for (const auto & function : functions)
 		function ();
 }

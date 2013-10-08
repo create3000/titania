@@ -587,6 +587,10 @@
     <None Include="share\titania\mime\model\x3d+vrml.xml" />
     <None Include="share\titania\mime\model\x3d+xml.xml" />
     <None Include="share\titania\mime\model\vrml.xml" />
+    <None Include="share\titania\mime\model\vrml.png" />
+    <None Include="share\titania\mime\model\x3d+vrml.png" />
+    <None Include="share\icons\hicolor\scalable\mimetypes\model-x3d+vrml.svg" />
+    <None Include="share\icons\hicolor\scalable\mimetypes\model-vrml.svg" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1064,6 +1068,7 @@
     <Folder Include="Titania\X3D\Browser\Picking\" />
     <Folder Include="share\titania\handles\library\" />
     <Folder Include="Titania\X3D\Thread\" />
+    <Folder Include="share\icons\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

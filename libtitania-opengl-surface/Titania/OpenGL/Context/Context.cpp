@@ -58,7 +58,7 @@ namespace opengl {
 
 Context::Context (Display* xDisplay) :
 	xDisplay (xDisplay),
-	xContext (NULL)
+	xContext (nullptr)
 { }
 
 Display*

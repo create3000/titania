@@ -50,6 +50,9 @@
 
 #include "WindowContext.h"
 
+#include <gdk/gdkx.h>
+
+#include <Titania/LOG.h>
 #include <stdexcept>
 
 namespace titania {
@@ -97,6 +100,34 @@ WindowContext::create (GLXContext sharingContext, bool direct)
 		throw std::runtime_error ("WindowContext::WindowContext: Couldn't create context.");
 
 	return xContext;
+
+//	static
+//	int32_t visualAttributes [ ] = {
+//		GLX_RGBA,
+//		GLX_RED_SIZE,         1,
+//		GLX_GREEN_SIZE,       1,
+//		GLX_BLUE_SIZE,        1,
+//		GLX_ALPHA_SIZE,       1,
+//		GLX_ACCUM_RED_SIZE,   1,
+//		GLX_ACCUM_GREEN_SIZE, 1,
+//		GLX_ACCUM_BLUE_SIZE,  1,
+//		GLX_ACCUM_ALPHA_SIZE, 1,
+//		GLX_DOUBLEBUFFER,     true, 
+//		GLX_DEPTH_SIZE,       24, 
+//		0
+//	};
+//
+//	auto display = gdk_x11_get_default_xdisplay ();
+//
+//	XVisualInfo* visualInfo = glXChooseVisual (display, DefaultScreen (display), visualAttributes);
+//
+//	GLXContext xContext = glXCreateContext (display, visualInfo, sharingContext, direct);
+//	XFree (visualInfo);
+//
+//	if (not xContext)
+//		throw std::runtime_error ("WindowContext::WindowContext: Couldn't create context.");
+//
+//	return xContext;
 }
 
 WindowContext::~WindowContext ()

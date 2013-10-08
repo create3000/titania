@@ -1,3 +1,16 @@
+2013-10-08  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-x3d.cproj:
+	* vrml.svg:
+	* vrml.xml:
+	* vrml.png:
+	* x3d+xml.xml:
+	* x3d+vrml.xml:
+	* x3d+vrml.png:
+	* x3d+vrml.svg:
+	* model-vrml.svg:
+	* model-x3d+vrml.svg: 
+
 2013-10-07  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Loader.cpp: 

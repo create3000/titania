@@ -60,7 +60,7 @@
 		<comment xml:lang="zh_TW">X3D 文件</comment>
 		<acronym>X3D</acronym>
 		<expanded-acronym>Extensible 3D</expanded-acronym>
-		<generic-icon name="x-office-document"/>
+		<generic-icon name="model-x3d+xml"/>
 		<sub-class-of type="application/xml"/>
 		<magic priority="50">
 			<match type="string" offset="0:255" value="<!DOCTYPE X3D"/>
