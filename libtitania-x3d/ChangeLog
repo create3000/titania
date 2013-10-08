@@ -1,6 +1,12 @@
 2013-10-08  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* libtitania-x3d.cproj:
+	* x3d+xml.png:
+	* model-x3d+xml.svg: 
+
+2013-10-08  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-x3d.cproj:
 	* vrml.svg:
 	* vrml.xml:
 	* vrml.png:

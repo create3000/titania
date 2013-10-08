@@ -30,7 +30,7 @@ case "$1" in
       
       /usr/bin/xdg-icon-resource install --novendor --context mimetypes --size 128 /usr/share/titania/mime/model/vrml.png     model-vrml
       /usr/bin/xdg-icon-resource install --novendor --context mimetypes --size 128 /usr/share/titania/mime/model/x3d+vrml.png model-x3d+vrml
-      /usr/bin/xdg-icon-resource install --novendor --context mimetypes --size 128 /usr/share/titania/mime/model/x3d+vrml.png model-x3d+xml
+      /usr/bin/xdg-icon-resource install --novendor --context mimetypes --size 128 /usr/share/titania/mime/model/x3d+xml.png  model-x3d+xml
       
       /usr/bin/xdg-mime install --novendor /usr/share/titania/mime/model/vrml.xml 
       /usr/bin/xdg-mime install --novendor /usr/share/titania/mime/model/x3d+vrml.xml 

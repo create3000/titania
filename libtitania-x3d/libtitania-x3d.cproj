@@ -591,6 +591,8 @@
     <None Include="share\titania\mime\model\x3d+vrml.png" />
     <None Include="share\icons\hicolor\scalable\mimetypes\model-x3d+vrml.svg" />
     <None Include="share\icons\hicolor\scalable\mimetypes\model-vrml.svg" />
+    <None Include="share\icons\hicolor\scalable\mimetypes\model-x3d+xml.svg" />
+    <None Include="share\titania\mime\model\x3d+xml.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
