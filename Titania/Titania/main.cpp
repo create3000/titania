@@ -132,18 +132,26 @@ private:
 int
 main (int argc, char** argv)
 {
+	using namespace titania;
+
 	std::clog
 		<< "Titania started ..." << std::endl
 		<< " Compiled at " << __DATE__ << " " << __TIME__ << std::endl
 		<< std::endl;
 
-	std::setlocale (LC_ALL, titania::os::env ("LANG") .c_str ());
+	std::setlocale (LC_ALL, os::env ("LANG") .c_str ());
 
 	//std::locale::global (std::locale (os::env ("LANG") .c_str ()));
 
 	try
 	{
-		titania::puck::BrowserApplication browserApplication (argc, argv);
+		//Gtk::Main kit (argc, argv);
+
+		//puck::BrowserWindow browserWindow (X3D::createBrowser (), "");
+		
+		//Gtk::Main::run (browserWindow .getWindow ());
+		
+		puck::BrowserApplication browserApplication (argc, argv);
 
 		browserApplication .run ();
 	}
