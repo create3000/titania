@@ -51,6 +51,7 @@
 #include "Env.h"
 
 #include <cstdlib>
+#include <stdlib.h>
 
 namespace titania {
 namespace os {
@@ -61,6 +62,12 @@ env (const std::string & value)
 	char* string = std::getenv (value .c_str ());
 
 	return string ? string : "";
+}
+
+void
+env (const std::string & key, const std::string & value)
+{
+	setenv (key .c_str (), value .c_str (), 1);
 }
 
 } // os

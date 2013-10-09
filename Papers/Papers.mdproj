@@ -68,6 +68,7 @@
     <None Include="xxx\Stream\InputHTTPStream.h" />
     <None Include="xxx\Stream\SocketStreamBuf.h" />
     <None Include="xxx\Stream\InputUrlStream.h" />
+    <None Include="Statistic.ods" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Quaternion\" />

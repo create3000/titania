@@ -48,21 +48,36 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OS_ENV_H__
-#define __TITANIA_OS_ENV_H__
+#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_LOCK_GUARD_H__
+#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_LOCK_GUARD_H__
 
-#include <string>
+#include <jsapi.h>
 
 namespace titania {
-namespace os {
+namespace X3D {
 
-std::string
-env (const std::string &);
+class jsLockGuard
+{
+public:
 
-void
-env (const std::string &, const std::string &);
+	jsLockGuard (JSContext* const context) :
+		context (context)
+	{
+		JS_BeginRequest (context);
+	}
 
-} // os
+	~jsLockGuard ()
+	{
+		JS_EndRequest (context);
+	}
+
+private:
+
+	JSContext* const context;
+
+};
+
+} // X3D
 } // titania
 
 #endif

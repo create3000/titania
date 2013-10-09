@@ -54,10 +54,11 @@
 #include "../../Components/Networking/X3DUrlObject.h"
 #include "../../Components/Scripting/Script.h"
 #include "../X3DJavaScriptContext.h"
-#include <map>
-#include <map>
 
 #include <jsapi.h>
+
+#include <map>
+#include <mutex>
 
 namespace titania {
 namespace X3D {
@@ -202,6 +203,9 @@ private:
 	addEvent (X3DChildObject* const, const EventPtr &) final
 	{ }
 
+	void
+	runGarbageCollector ();
+
 	///  @name Static members
 
 	static const std::string componentName;
@@ -214,7 +218,7 @@ private:
 
 	JSRuntime*              runtime;
 	JSContext*              context;
-	JSObject* global = nullptr;
+	JSObject*               global;
 	Script*                 script;
 	std::deque <basic::uri> worldURL;
 	size_t                  index;
@@ -230,6 +234,7 @@ private:
 	std::map <basic::uri, jsval>              files;
 
 	std::unique_ptr <SceneLoader> future;
+	mutable std::mutex            mutex;
 
 };
 

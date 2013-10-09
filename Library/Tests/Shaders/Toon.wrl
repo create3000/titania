@@ -27,8 +27,8 @@ void main ()
 {
 	normal = normalize (gl_NormalMatrix * gl_Normal);
 
-	gl_FrontColor = gl_Color;      // Pass color
-	gl_Position   = ftransform (); // Pass vertex
+	gl_FrontColor = gl_Color;      /* Pass color  */
+	gl_Position   = ftransform (); /* Pass vertex */
 }
 "
           }

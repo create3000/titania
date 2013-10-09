@@ -144,7 +144,6 @@ Material::draw ()
 	glMaterialf  (GL_FRONT_AND_BACK, GL_SHININESS, glShininess);
 
 	glColor4fv (glEmissiveColor); // for lines and points
-
 }
 
 } // X3D

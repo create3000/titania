@@ -117,7 +117,7 @@ DEF Rotor Rotor {
 
 DEF Box Transform {
   translation 1.40843 1.10727 0.193803
-  rotation 0 0 1 4.17008
+  rotation 0 0 1 0.248886
   scale 0.2 0.2 0.2
   children Transform {
     children Shape {
@@ -191,6 +191,8 @@ Anchor {
     }
   }
 }
+
+ImageTexture { }
 
 ROUTE _1.isActive TO _2.set_enabled
 ROUTE Rotor.value_changed TO Box.set_rotation

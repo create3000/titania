@@ -1,5 +1,27 @@
 2013-10-09  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* main.cpp:
+	* BrowserWindow.ui:
+	* lena.jpg:
+	* Background.x3dv:
+	* lostvalley_up.jpg:
+	* lostvalley_down.jpg:
+	* lostvalley_west.jpg:
+	* lostvalley_east.jpg:
+	* lostvalley_south.jpg:
+	* lostvalley_north.jpg:
+	* Background.x3dv:
+	* lostvalley_up.jpg:
+	* ComposedCubeMapTexture.x3dv:
+	* lostvalley_east.jpg:
+	* lostvalley_down.jpg:
+	* lostvalley_west.jpg:
+	* lostvalley_south.jpg:
+	* lostvalley_north.jpg:
+	* ComposedCubeMapTexture.x3dv: 
+
+2013-10-09  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* run.pl:
 	* main.cpp: 
 

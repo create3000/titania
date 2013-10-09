@@ -80,6 +80,8 @@
 #include "jsString.h"
 #include "jsfield.h"
 
+#include <thread>
+
 namespace titania {
 namespace X3D {
 
@@ -98,9 +100,9 @@ JSClass jsContext::global_class = {
 jsContext::jsContext (Script* script, const std::string & ecmascript, const basic::uri & uri, size_t index) :
 	         X3DBaseNode (script -> getBrowser (), script -> getExecutionContext ()),
 	X3DJavaScriptContext (),
-	             runtime (NULL),
-	             context (NULL),
-	              global (NULL),
+	             runtime (nullptr),
+	             context (nullptr),
+	              global (nullptr),
 	              script (script),
 	            worldURL ({ uri }),
 	               index (index),
@@ -112,41 +114,43 @@ jsContext::jsContext (Script* script, const std::string & ecmascript, const basi
 	           functions (),
 	             objects (),
 	               files (),
-	              future ()
+	              future (),
+	               mutex ()
 {
 	// Get a JS runtime.
 	runtime = JS_NewRuntime (64 * 1024 * 1024); // 64 MB runtime memory
 
-	if (runtime == NULL)
+	if (runtime == nullptr)
 		throw std::invalid_argument ("Couldn't not create JavaScript runtime.");
 
 	// Create a context.
 	context = JS_NewContext (runtime, 512);
 
-	if (context == NULL)
+	if (context == nullptr)
 		throw std::invalid_argument ("Couldn't not create JavaScript context.");
-
+		
 	JS_SetOptions (context, JSOPTION_ATLINE | JSOPTION_VAROBJFIX | JSOPTION_JIT | JSOPTION_METHODJIT);
 	JS_SetVersion (context, JSVERSION_LATEST);
 	JS_SetErrorReporter (context, error);
 
 	// Create the global object.
-	global = JS_NewCompartmentAndGlobalObject (context, &global_class, NULL);
+	global = JS_NewCompartmentAndGlobalObject (context, &global_class, nullptr);
 
-	if (global == NULL)
+	if (global == nullptr)
 		throw std::invalid_argument ("Couldn't not create JavaScript global object.");
 
 	initContext ();
 
 	initNode ();
 
-	if (not evaluate (ecmascript, uri == getExecutionContext () -> getWorldURL () ? "" : uri .str ()))
+	if (evaluate (ecmascript, uri == getExecutionContext () -> getWorldURL () ? "" : uri .str ()))
 	{
-		dispose ();
-		throw std::invalid_argument ("Couldn't evaluate script.");
+		initEventHandler ();
+		return;
 	}
 
-	initEventHandler ();
+	dispose ();
+	throw std::invalid_argument ("Couldn't evaluate script.");
 }
 
 X3DBaseNode*
@@ -492,6 +496,8 @@ jsContext::evaluate (const std::string & string, const std::string & filename, j
 void
 jsContext::set_field (X3DFieldDefinition* field)
 {
+	std::lock_guard <std::mutex> lock (mutex);
+
 	jsval argv [2];
 
 	switch (field -> getType ())
@@ -527,6 +533,7 @@ jsContext::set_initialized ()
 
 	//JS_MaybeGC (context);
 	JS_GC (context);
+	//std::thread (std::mem_fn (&jsContext::runGarbageCollector), this) .detach ();
 }
 
 void
@@ -544,6 +551,7 @@ jsContext::eventsProcessed ()
 
 	//JS_MaybeGC (context);
 	JS_GC (context);
+	//std::thread (std::mem_fn (&jsContext::runGarbageCollector), this) .detach ();
 }
 
 void
@@ -557,7 +565,7 @@ jsval
 jsContext::getFunction (const std::string & name) const
 {
 	jsval     function = JSVAL_VOID;
-	JSObject* objp     = NULL;
+	JSObject* objp     = nullptr;
 
 	JSBool result = JS_GetMethod (context, global, name .c_str (), &objp, &function);
 
@@ -571,7 +579,7 @@ void
 jsContext::callFunction (const std::string & name) const
 {
 	jsval     function = JSVAL_VOID;
-	JSObject* objp     = NULL;
+	JSObject* objp     = nullptr;
 
 	JSBool result = JS_GetMethod (context, global, name .c_str (), &objp, &function);
 
@@ -584,9 +592,11 @@ jsContext::callFunction (const std::string & name) const
 void
 jsContext::callFunction (jsval function) const
 {
+	std::lock_guard <std::mutex> lock (mutex);
+
 	jsval rval;
 
-	JS_CallFunctionValue (context, global, function, 0, NULL, &rval);
+	JS_CallFunctionValue (context, global, function, 0, nullptr, &rval);
 }
 
 void
@@ -678,17 +688,29 @@ jsContext::error (JSContext* context, const char* message, JSErrorReport* report
 }
 
 void
+jsContext::runGarbageCollector ()
+{
+	std::lock_guard <std::mutex> lock (mutex);
+
+	JS_GC (context);
+}
+
+void
 jsContext::dispose ()
 {
-	future .reset ();
+	{
+		std::lock_guard <std::mutex> lock (mutex);
 
-	shutdown ();
+		future .reset ();
 
-	for (auto & field : fields)
-		JS_RemoveValueRoot (context, &field .second);
+		shutdown ();
 
-	for (auto & file : files)
-		JS_RemoveValueRoot (context, &file .second);
+		for (auto & field : fields)
+			JS_RemoveValueRoot (context, &field .second);
+
+		for (auto & file : files)
+			JS_RemoveValueRoot (context, &file .second);
+	}
 
 	// Cleanup.
 	JS_DestroyContext (context);

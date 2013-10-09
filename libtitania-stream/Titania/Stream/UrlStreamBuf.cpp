@@ -71,6 +71,12 @@ urlstreambuf::open (const basic::uri & URL)
 
 		return nullptr;
 	}
+	catch (const Glib::Error & error)
+	{
+		reason (error .what ());
+
+		return nullptr;
+	}
 }
 
 urlstreambuf::traits_type::int_type
