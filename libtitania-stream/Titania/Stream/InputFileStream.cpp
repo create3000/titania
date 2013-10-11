@@ -28,8 +28,9 @@
 
 #include "InputFileStream.h"
 
-#include <glibmm/main.h>
+#include <Titania/OS/IsFile.h>
 
+#include <glibmm/main.h>
 #include <giomm.h>
 #include <utility>
 
@@ -57,19 +58,20 @@ base64_decode (const std::string & string)
 
 ifilestream::ifilestream () :
 	         std::istream (),
-	         data_istream (),
-	           url_stream (),
 	             gzfilter (),
+	         data_istream (),
+	         file_istream (),
+	          url_istream (),
 	 file_request_headers (),
 	file_response_headers (),
 	                m_url (),
 	             m_status (0)
 { }
 
-ifilestream::ifilestream (const basic::uri & url) :
+ifilestream::ifilestream (const basic::uri & url, size_t timeout) :
 	ifilestream ()
 {
-	open (url);
+	open (url, timeout);
 }
 
 ifilestream::ifilestream (const std::string & string) :
@@ -90,62 +92,33 @@ ifilestream::ifilestream (ifilestream && other) :
 	*this = std::move (other);
 }
 
-//ifilestream::ifilestream (std::istream && other) :
-//	ifilestream ()
-//{
-//	*this = std::move (other);
-//}
-
 ifilestream &
 ifilestream::operator = (ifilestream && other)
 {
 	close ();
 
-	data_istream          = std::move (other .data_istream);
-	url_stream            = std::move (other .url_stream);
 	gzfilter              = std::move (other .gzfilter);
+	data_istream          = std::move (other .data_istream);
+	file_istream          = std::move (other .file_istream);
+	url_istream           = std::move (other .url_istream);
 	file_request_headers  = std::move (other .file_request_headers);
 	file_response_headers = std::move (other .file_response_headers);
 	m_url                 = std::move (other .m_url);
 	m_status              = std::move (other .m_status);
 
+	rdbuf (other .rdbuf ());
 	clear (other .rdstate ());
-	rdbuf (other .rdbuf (nullptr));
 
+	other .rdbuf (nullptr);
 	other .clear (std::ios::badbit);
 
 	return *this;
 }
 
-//// Does not realy work with std::istream, thus std::istream is not movable
-//
-//ifilestream &
-//ifilestream::operator = (std::istream && other)
-//{
-//	close ();
-//
-//	auto sstream = new std::stringstream ();
-//	*sstream << other .rdbuf ();
-//
-//	istream = sstream;
-//
-//	url ("");
-//
-//	rdbuf (istream -> rdbuf ());
-//	clear (other .rdstate ());
-//
-//	other .rdbuf (nullptr);
-//	other .clear (std::ios::badbit);
-//
-//	guess_content_type (istream);
-//
-//	return *this;
-//}
-
 // Connection handling
 
 void
-ifilestream::open (const basic::uri & URL)
+ifilestream::open (const basic::uri & URL, size_t timeout)
 {
 	url (URL);
 
@@ -203,13 +176,30 @@ ifilestream::open (const basic::uri & URL)
 		rdbuf (data_istream -> rdbuf ());
 		clear (data_istream -> rdstate ());
 	}
+	else if (url () .is_local ())
+	{
+		file_istream .reset (new std::ifstream ());
+
+		if (os::is_file (url () .path ()))
+		{
+			file_istream -> open (url () .path ());
+
+			rdbuf (file_istream -> rdbuf ());
+			clear (file_istream -> rdstate ());
+		}
+		else
+		{
+			status (400);
+			rdbuf (file_istream -> rdbuf ());
+			clear (std::ios::failbit);
+		}
+	}
 	else
 	{
-		url_stream .reset (new iurlstream ());
-		url_stream -> open (url ());
+		url_istream .reset (new iurlstream (url (), timeout));
 
-		rdbuf (url_stream -> rdbuf ());
-		clear (url_stream -> rdstate ());
+		rdbuf (url_istream -> rdbuf ());
+		clear (url_istream -> rdstate ());
 	}
 }
 
@@ -219,10 +209,24 @@ ifilestream::send ()
 	if (not * this)
 		return;
 
-	std::istream* istream = url_stream .get ();
+	if (url_istream)
+	{
+		url_istream -> send ();
+		url (url_istream -> url ());
+		status (url_istream -> status ());
+		clear (url_istream -> rdstate ());
+	}
+
+	if (not * this)
+		return;
+
+	std::istream* istream = data_istream .get ();
 
 	if (not istream)
-		istream = data_istream .get ();
+		istream = file_istream .get ();
+
+	if (not istream)
+		istream = url_istream .get ();
 
 	try
 	{
@@ -271,35 +275,51 @@ ifilestream::close ()
 	clear (std::ios::badbit);
 
 	gzfilter     .reset ();
-	url_stream   .reset ();
 	data_istream .reset ();
+	file_istream .reset ();
+	url_istream  .reset ();
 }
 
 void
 ifilestream::request_header (const std::string & header, const std::string & value)
 {
+	if (url_istream)
+		return url_istream -> request_header (header, value);
+
 	file_request_headers .insert (std::make_pair (header, value));
 }
 
 const ifilestream::headers_type &
 ifilestream::request_headers () const
 {
+	if (url_istream)
+		return url_istream -> request_headers ();
+
 	return file_request_headers;
 }
 
 const ifilestream::headers_type &
 ifilestream::response_headers () const
 {
+	if (url_istream)
+		return url_istream -> response_headers ();
+
 	return file_response_headers;
 }
 
 const std::string &
 ifilestream::reason () const
 {
-	if (url_stream)
-		return url_stream -> reason ();
+	if (data_istream)
+		return *data_istream ? reasons [0] : reasons [1];
 
-	return *data_istream ? reasons [0] : reasons [1];
+	if (file_istream)
+		return *file_istream ? reasons [0] : reasons [1];
+
+	if (url_istream)
+		return url_istream -> reason ();
+
+	return reasons [0];
 }
 
 ifilestream::~ifilestream ()

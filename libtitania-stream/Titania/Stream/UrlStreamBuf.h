@@ -52,9 +52,12 @@
 #define __TITANIA_STREAM_URL_STREAM_BUF_H__
 
 #include <Titania/Basic/URI.h>
-
-#include <giomm.h>
 #include <streambuf>
+
+extern "C"
+{
+#include <curl/curl.h>
+}
 
 namespace titania {
 namespace basic {
@@ -64,6 +67,8 @@ class urlstreambuf :
 {
 public:
 
+	typedef std::map <std::string, std::string> headers_type;
+
 	urlstreambuf ();
 
 	bool
@@ -71,7 +76,10 @@ public:
 	{ return opened; }
 
 	urlstreambuf*
-	open (const basic::uri &);
+	open (const basic::uri &, size_t);
+
+	urlstreambuf*
+	send (const headers_type & = { });
 
 	urlstreambuf*
 	close ();
@@ -79,10 +87,10 @@ public:
 	const basic::uri &
 	url () const
 	{ return m_url; }
-	
-	const std::string &
-	reason () const
-	{ return m_reason; }
+
+	std::stringstream &
+	headers ()
+	{ return m_headers; }
 
 	virtual
 	~urlstreambuf ()
@@ -95,29 +103,50 @@ private:
 	url (const basic::uri & value)
 	{ m_url = value; }
 
+	size_t
+	timeout () const
+	{ return m_timeout; }
+
 	void
-	reason (const std::string & value)
-	{ m_reason = value; }
+	timeout (size_t value)
+	{ m_timeout = value; }
+
+	int
+	wait ();
+
+	static
+	int
+	write_header (char* data, size_t, size_t, std::stringstream*);
+
+	static
+	int
+	write_data (char* data, size_t, size_t, urlstreambuf*);
+
+	int
+	write (char* data, size_t bytes);
 
 	virtual
 	traits_type::int_type
-	underflow () final;
+	underflow ();
 
 	virtual
 	pos_type
-	seekoff (off_type, std::ios_base::seekdir, std::ios_base::openmode) final;
+	seekoff (off_type, std::ios_base::seekdir, std::ios_base::openmode);
 
-	static constexpr size_t bufferSize = 1024;
+	CURLM* curlm;                    // CURL multi handle
+	CURL*  curl;                     // CURL handle
+	int    running;
+	bool   opened;                   // Open/close state of stream
 
-	bool              opened;       // Open/close state of stream
 	basic::uri        m_url;        // The URL
-	std::string       m_reason;
+	size_t            m_timeout;    // in ms
+	std::stringstream m_headers;    // Header data
 
-	Glib::RefPtr <Gio::FileInputStream> stream;
-
-	char   buffer [2 * bufferSize]; // Data buffer
+	// Size of put back data buffer & data buffer.
+	size_t bufferSize;
+	char*  buffer;
 	size_t bytesRead;
-	size_t lastBytesRead;
+	size_t backBufferSize;
 	size_t bytesGone;
 
 };

@@ -243,7 +243,7 @@ public:
 	///  @name Thread handling
 
 	std::mutex &
-	getThread ();
+	getDownloadMutex ();
 
 	///  @name Key device handling
 
@@ -326,6 +326,8 @@ public:
 
 	void
 	dispose ();
+
+	~X3DBrowserContext ();
 
 
 protected:
@@ -428,9 +430,9 @@ private:
 	Speed <double> currentSpeed;
 	double         currentFrameRate;
 
-	size_t                  threadIndex;
-	std::deque <std::mutex> threads;
-	std::mutex              threadMutex;
+	size_t                  downloadMutexIndex;
+	std::deque <std::mutex> downloadMutexes;
+	std::mutex              downloadMutex;
 
 	X3DSFNode <Notification> notification;
 	X3DSFNode <Console>      console;

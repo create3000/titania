@@ -96,8 +96,8 @@ X3DBrowserSurface::initialize ()
 	pointingDevice .setup ();
 
 	getViewer () .addInterest (this, &X3DBrowserSurface::set_viewer);
-	changed () .addInterest (this, &Gtk::Widget::queue_draw);
-	//changed () .addInterest (this, &X3DBrowserSurface::set_changed);
+	//changed () .addInterest (this, &Gtk::Widget::queue_draw);
+	changed () .addInterest (this, &X3DBrowserSurface::set_changed);
 
 	setCursor (Gdk::ARROW);
 }
@@ -105,7 +105,9 @@ X3DBrowserSurface::initialize ()
 void
 X3DBrowserSurface::set_changed ()
 {
-	Glib::signal_idle () .connect_once (sigc::mem_fun (*this, &X3DBrowser::update), Glib::PRIORITY_LOW - 300); // Glib::PRIORITY_LOW = 300
+	Glib::signal_idle () .connect_once (sigc::mem_fun (*this, &Gtk::Widget::queue_draw));
+
+	get_window () -> process_updates (false);
 }
 
 void

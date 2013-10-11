@@ -128,6 +128,8 @@ Surface::set_configure_event (GdkEventConfigure* event)
 		reshape ();
 	}
 
+	queue_draw ();
+
 	return false; // Propagate the event further.
 }
 

@@ -74,7 +74,7 @@ public:
 	ifilestream ();
 
 	explicit
-	ifilestream (const basic::uri &);
+	ifilestream (const basic::uri &, size_t);
 
 	explicit
 	ifilestream (const std::string &);
@@ -115,7 +115,7 @@ public:
 	/// @name Connection handling
 
 	void
-	open (const basic::uri &);
+	open (const basic::uri &, size_t);
 
 	void
 	send ();
@@ -150,9 +150,10 @@ private:
 	static const std::string reasons [2];
 	static const std::string empty_string;
 
-	std::unique_ptr <std::istringstream> data_istream;
-	std::unique_ptr <iurlstream>         url_stream;
 	std::unique_ptr <gzfilterbuf>        gzfilter;
+	std::unique_ptr <std::istringstream> data_istream;
+	std::unique_ptr <std::ifstream>      file_istream;
+	std::unique_ptr <iurlstream>         url_istream;
 
 	headers_type file_request_headers;
 	headers_type file_response_headers;

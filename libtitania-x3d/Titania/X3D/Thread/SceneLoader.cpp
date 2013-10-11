@@ -86,9 +86,12 @@ SceneLoader::getFuture (const MFString & url)
 X3DSFNode <Scene>
 SceneLoader::loadAsync (const MFString & url)
 {
-	std::lock_guard <std::mutex> lock (browser -> getThread ());
+	std::lock_guard <std::mutex> lock (browser -> getDownloadMutex ());
 
-	X3DSFNode <Scene> scene = browser -> createScene ();
+	X3DSFNode <Scene> scene;
+
+	if (running)
+		scene = browser -> createScene ();
 
 	if (running)
 		Loader (executionContext) .parseIntoScene (scene, url);

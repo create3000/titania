@@ -52,7 +52,7 @@
 #define __TITANIA_STREAM_URL_STREAM_BUF_H__
 
 #include <Titania/Basic/URI.h>
-#include <sstream>
+#include <streambuf>
 
 extern "C"
 {
@@ -63,7 +63,7 @@ namespace titania {
 namespace basic {
 
 class urlstreambuf :
-	public std::stringbuf
+	public std::streambuf
 {
 public:
 
@@ -120,12 +120,28 @@ private:
 	int
 	write_data (char* data, size_t, size_t, urlstreambuf*);
 
+	virtual
+	traits_type::int_type
+	underflow ();
+
+	virtual
+	pos_type
+	seekoff (off_type, std::ios_base::seekdir, std::ios_base::openmode);
+
 	CURL* curl;                  // CURL handle
 	bool  opened;                // Open/close state of stream
 
 	basic::uri        m_url;     // The URL
 	size_type         m_timeout; // in ms
 	std::stringstream m_headers; // Header data
+
+	// Size of put back data buffer & data buffer.
+	static constexpr size_t bufferSize = 1024;
+
+	char     buffer [2 * bufferSize]; // Data buffer
+	size_t   bytesRead;
+	size_t   lastBytesRead;
+	size_t   bytesGone;
 
 };
 

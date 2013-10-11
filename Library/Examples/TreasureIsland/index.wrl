@@ -18,6 +18,13 @@ function initialize ()
 "
 }
 
+NavigationInfo {
+  avatarSize [ 0.1, 1.6, 0.75 ]
+  type "NONE"
+  visibilityLimit 300
+  transitionType "TELEPORT"
+}
+
 Inline {
   url "stage/index.wrl"
 }

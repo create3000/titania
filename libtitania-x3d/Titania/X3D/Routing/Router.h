@@ -82,6 +82,9 @@ public:
 	void
 	processEvents ();
 
+	bool
+	empty () const;
+
 	size_t
 	size () const;
 

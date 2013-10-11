@@ -260,10 +260,12 @@ sprintf (const char* fmt, ...)
 basic::ifilestream
 get_stream (const basic::uri & uri)
 {
-	basic::ifilestream istream (uri);
+	basic::ifilestream istream (uri, 3000);
+	__LOG__ << "bool: " << bool (istream) << std::endl;
 
 	istream .send ();
-	std::clog << "is_compressed: " << istream .is_compressed () << std::endl;
+	__LOG__ << "bool: " << bool (istream) << std::endl;
+	__LOG__ << "is_compressed: " << istream .is_compressed () << std::endl;
 
 	return istream;
 }
@@ -271,18 +273,25 @@ get_stream (const basic::uri & uri)
 void
 test (const basic::uri & uri, bool content)
 {
+	std::clog << uri << std::endl;
+
 	basic::ifilestream a = get_stream (uri);
-	std::clog << "is_compressed: " << a .is_compressed () << std::endl;
+	__LOG__ << "bool: "          << bool (a) << std::endl;
+	__LOG__ << "is_compressed: " << a .is_compressed () << std::endl;
 
 	basic::ifilestream istream = std::move (a);
 
-	std::clog << "bool: "          << bool (istream) << std::endl;
-	std::clog << "status: "        << istream .status () << std::endl;
-	std::clog << "is_compressed: " << istream .is_compressed () << std::endl;
-	std::clog << "Content-Type: "  << istream .response_headers () .at ("Content-Type") << std::endl;
+	__LOG__ << "bool: "          << bool (istream) << std::endl;
+	__LOG__ << "status: "        << istream .status () << std::endl;
+	__LOG__ << "is_compressed: " << istream .is_compressed () << std::endl;
 
-	if (content)
-		std::clog << istream .rdbuf () << std::endl;
+	if (istream)
+	{
+		__LOG__ << "Content-Type: "  << istream .response_headers () .at ("Content-Type") << std::endl;
+
+		if (content)
+			std::clog << istream .rdbuf () << std::endl;
+	}
 }
 
 int
@@ -293,12 +302,15 @@ main (int argc, char** argv)
 	#ifdef _GLIBCXX_PARALLEL
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
-	
+
+	Glib::thread_init ();
 	Gio::init ();
 
+	test ("http://titania.credate3000.de", true);
 	//test ("/home/holger/VRML2", true);
-	test ("/home/holger/VRML2.gz", false);
+	//test ("/home/holger/VRML2.gz", true);
 	//test ("/home/holger/Videos/Brokeback Mountain.avi", false);
+	//test ("http://www.web3d.org/x3d/content/examples/X3dForWebAuthors/Chapter03-Grouping/CoordinateAxes.x3d", false);
 
 	std::clog << "Function main done." << std::endl;
 	exit (0);
@@ -417,3 +429,132 @@ main (int argc, char** argv)
 //	g_object_unref (outputBuffer);
 //	g_object_unref (gegl);
 //	gegl_exit ();
+
+///* This is a very simple example using the multi interface. */
+//
+//#include <stdio.h>
+//#include <string.h>
+//
+///* somewhat unix-specific */
+//#include <sys/time.h>
+//#include <unistd.h>
+//
+///* curl stuff */
+//#include <curl/curl.h>
+//
+//int
+//write_data (char* data, size_t size, size_t nmemb, void* self)
+//{
+//	// What we will return
+//	size_t bytes = size * nmemb;
+//
+//	// Append the data to the buffer
+//	__LOG__ << bytes << std::endl;
+//
+//	// How much did we write?
+//	return bytes;
+//}
+//
+///*
+// * Simply download a HTTP file.
+// */
+//int
+//main (void)
+//{
+//	CURL*  http_handle;
+//	CURLM* multi_handle;
+//
+//	int still_running; /* keep number of running handles */
+//
+//	curl_global_init (CURL_GLOBAL_DEFAULT);
+//
+//	http_handle = curl_easy_init ();
+//
+//	/* set the options (I left out a few, you'll get the point anyway) */
+//	curl_easy_setopt (http_handle, CURLOPT_URL, "http://titania.create3000.de/");
+//	curl_easy_setopt (http_handle, CURLOPT_WRITEFUNCTION,     write_data);
+//
+//	/* init a multi stack */
+//	multi_handle = curl_multi_init ();
+//
+//	/* add the individual transfers */
+//	curl_multi_add_handle (multi_handle, http_handle);
+//
+//	__LOG__ << std::endl;
+//	/* we start some action by calling perform right away */
+//	curl_multi_perform (multi_handle, &still_running);
+//
+//	do
+//	{
+//		__LOG__ << std::endl;
+//	
+//		struct timeval timeout;
+//		int            rc; /* select() return code */
+//
+//		fd_set fdread;
+//		fd_set fdwrite;
+//		fd_set fdexcep;
+//		int    maxfd = -1;
+//
+//		long curl_timeo = -1;
+//
+//		FD_ZERO (&fdread);
+//		FD_ZERO (&fdwrite);
+//		FD_ZERO (&fdexcep);
+//
+//		/* set a suitable timeout to play around with */
+//		timeout .tv_sec  = 1;
+//		timeout .tv_usec = 0;
+//
+//		curl_multi_timeout (multi_handle, &curl_timeo);
+//
+//		if (curl_timeo >= 0)
+//		{
+//			timeout .tv_sec = curl_timeo / 1000;
+//
+//			if (timeout.tv_sec > 1)
+//				timeout .tv_sec = 1;
+//			else
+//				timeout .tv_usec = (curl_timeo % 1000) * 1000;
+//		}
+//
+//		/* get file descriptors from the transfers */
+//		curl_multi_fdset (multi_handle, &fdread, &fdwrite, &fdexcep, &maxfd);
+//
+//		/* In a real-world program you OF COURSE check the return code of the
+//		 * function calls.  On success, the value of maxfd is guaranteed to be
+//		 * greater or equal than -1.  We call select(maxfd + 1, ...), specially in
+//		 * case of (maxfd == -1), we call select(0, ...), which is basically equal
+//		 * to sleep. */
+//
+//		rc = select (maxfd + 1, &fdread, &fdwrite, &fdexcep, &timeout);
+//
+//		switch (rc)
+//		{
+//			case -1:
+//
+//				/* select error */
+//				still_running = 0;
+//				printf ("select() returns error, this is badness\n");
+//				break;
+//			case 0:
+//			default:
+//
+//				__LOG__ << std::endl;
+//				/* timeout or readable/writable sockets */
+//				curl_multi_perform (multi_handle, &still_running);
+//				break;
+//		}
+//	}
+//	while (still_running);
+//
+//	curl_multi_remove_handle (multi_handle, http_handle);
+//
+//	curl_easy_cleanup (http_handle);
+//
+//	curl_multi_cleanup (multi_handle);
+//
+//	curl_global_cleanup ();
+//
+//	return 0;
+//}

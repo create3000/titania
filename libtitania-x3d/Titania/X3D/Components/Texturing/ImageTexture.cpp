@@ -66,31 +66,34 @@ class ImageTexture::Future :
 {
 public:
 
-	typedef Texture::size_type size_type;
+	typedef std::function <void (const TexturePtr &)> Callback;
 
-	Future (ImageTexture* const imageTexture) :
-		imageTexture (imageTexture),
-		     running (true),
-		      future (getFuture ())
+	Future (X3DExecutionContext* const executionContext,
+	        const MFString & url,
+	        const Color4f & borderColor, size_t borderWidth,
+	        size_t minTextureSize, size_t maxTextureSize,
+	        const Callback & callback) :
+		         browser (executionContext -> getBrowser ()),
+		executionContext (executionContext),
+		        callback (callback),
+		         running (true),
+		          future (getFuture (url, borderColor, borderWidth, minTextureSize, maxTextureSize))
 	{
-		imageTexture -> getBrowser () -> prepareEvents () .addInterest (this, &Future::prepareEvents);
-		imageTexture -> getBrowser () -> addEvent ();
+		browser -> prepareEvents () .addInterest (this, &Future::prepareEvents);
+		browser -> addEvent ();
 	}
 
 	void
-	wait ()
+	cancel ()
 	{
-		if (future .valid ())
-		{
-			future .wait ();
-			prepareEvents ();
-		}
+		running = false;
+		browser -> prepareEvents () .removeInterest (this, &Future::prepareEvents);
 	}
 
 	virtual
 	~Future ()
 	{
-		running = false;
+		cancel ();
 
 		if (future .valid ())
 			future .wait ();
@@ -99,34 +102,34 @@ public:
 private:
 
 	std::future <TexturePtr>
-	getFuture ()
+	getFuture (const MFString & url,
+	           const Color4f & borderColor, size_t borderWidth,
+	           size_t minTextureSize, size_t maxTextureSize)
 	{
-		if (imageTexture -> url () .empty ())
+		if (url .empty ())
 			std::async (std::launch::deferred, [ ] (){ return nullptr; });
 
 		return std::async (std::launch::async, std::mem_fn (&Future::loadAsync), this,
-		                   imageTexture -> url (),
-		                   imageTexture -> getTextureProperties () -> borderColor (),
-		                   imageTexture -> getTextureProperties () -> borderWidth (),
-		                   imageTexture -> getBrowser () -> getBrowserOptions () -> minTextureSize (),
-		                   imageTexture -> getBrowser () -> getRenderingProperties () -> maxTextureSize ());
+		                   url,
+		                   borderColor, borderWidth,
+		                   minTextureSize, maxTextureSize);
 	}
 
 	TexturePtr
 	loadAsync (const MFString & url,
-	           const Color4f & borderColor, size_type borderWidth,
-	           size_type minTextureSize, size_type maxTextureSize)
+	           const Color4f & borderColor, size_t borderWidth,
+	           size_t minTextureSize, size_t maxTextureSize)
 	{
 		for (const auto & URL : url)
 		{
-			std::lock_guard <std::mutex> lock (imageTexture -> getBrowser () -> getThread ());
-
 			try
 			{
+				std::lock_guard <std::mutex> lock (browser -> getDownloadMutex ());
+
 				TexturePtr texture;
 
 				if (running)
-					texture .reset (new Texture (Loader (imageTexture -> getExecutionContext ()) .loadDocument (URL)));
+					texture .reset (new Texture (Loader (executionContext) .loadDocument (URL)));
 
 				if (running)
 					texture -> process (borderColor, borderWidth, minTextureSize, maxTextureSize);
@@ -141,7 +144,7 @@ private:
 			{
 				std::clog
 					<< "Bad Image: " << error .what () << ", "
-					<< "in URL '" << imageTexture -> getExecutionContext () -> getWorldURL () .transform (URL .str ()) << "'"
+					<< "in URL '" << executionContext -> getWorldURL () .transform (URL .str ()) << "'"
 					<< std::endl;
 			}
 		}
@@ -152,7 +155,7 @@ private:
 	void
 	prepareEvents ()
 	{
-		imageTexture -> getBrowser () -> addEvent ();
+		browser -> addEvent ();
 
 		if (future .valid ())
 		{
@@ -160,15 +163,17 @@ private:
 
 			if (status == std::future_status::ready)
 			{
-				imageTexture -> getBrowser () -> prepareEvents () .removeInterest (this, &Future::prepareEvents);
-				imageTexture -> setTexture (future .get ());
+				browser -> prepareEvents () .removeInterest (this, &Future::prepareEvents);
+				callback (future .get ());
 			}
 		}
 	}
 
-	ImageTexture* const      imageTexture;
-	std::atomic <bool>       running;
-	std::future <TexturePtr> future;
+	X3DBrowser* const          browser;
+	X3DExecutionContext* const executionContext;
+	Callback                   callback;
+	std::atomic <bool>         running;
+	std::future <TexturePtr>   future;
 
 };
 
@@ -228,12 +233,20 @@ ImageTexture::requestImmediateLoad ()
 void
 ImageTexture::requestAsyncLoad ()
 {
+	using namespace std::placeholders;
+
 	if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)
 		return;
 
 	setLoadState (IN_PROGRESS_STATE);
 
-	future .reset (new Future (this));
+	future .reset (new Future (getExecutionContext (),
+	                           url (),
+	                           getTextureProperties () -> borderColor (),
+	                           getTextureProperties () -> borderWidth (),
+	                           getBrowser () -> getBrowserOptions () -> minTextureSize (),
+	                           getBrowser () -> getRenderingProperties () -> maxTextureSize (),
+	                           std::bind (std::mem_fn (&ImageTexture::setTexture), this, _1)));
 }
 
 void
@@ -247,7 +260,8 @@ ImageTexture::update ()
 void
 ImageTexture::dispose ()
 {
-	future .reset ();
+	if (future)
+		future -> cancel ();
 
 	X3DUrlObject::dispose ();
 	X3DTexture2DNode::dispose ();

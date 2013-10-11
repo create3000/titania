@@ -65,102 +65,39 @@
 //////#include "Tests/AddAndRemoveNode.h"
 
 #include <Titania/X3D.h>
+#include <Titania/OS.h>
 #include <gtkmm.h>
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 using namespace titania;
 using namespace titania::Test;
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-template <class Type>
-inline
-bool
-operator == (const X3D::Array <X3D::X3DField <Type>> & lhs, const X3D::Array <X3D::X3DField <Type>> & rhs)
-{
-	__LOG__ << std::endl;
-
-	return lhs .size () == rhs .size () &&
-	       std::equal (lhs .begin (), lhs .end (),
-	                   rhs .begin (),
-	                   [ ] (const Type * a, const Type * b){ return *a == *b; });
-}
-
-void
-delete_object (X3D::X3DObject* o)
-{
-	delete o;
-}
 
 int
 main (int argc, char* argv [ ])
 {
 	install_signal_hander ();
+	
+	os::env ("UBUNTU_MENUPROXY", "libappmenu.so");
 
-	gtk_init (0, 0);
-	Gtk::Main::init_gtkmm_internals ();
+	//gtk_init (0, 0);
+	//Gtk::Main::init_gtkmm_internals ();
 
 	std::clog << std::boolalpha << std::endl;
-	
-	__LOG__ << sizeof (X3D::SFBool) << std::endl;
-	__LOG__ << sizeof (X3D::SFDouble) << std::endl;
-	__LOG__ << sizeof (X3D::SFString) << std::endl;
-	__LOG__ << sizeof (X3D::SFMatrix4d) << std::endl;
-	__LOG__ << sizeof (X3D::SFVec4d) << std::endl;
-
-	__LOG__ << std::endl;
-	__LOG__ << sizeof (X3D::MFBool) << std::endl;
-	__LOG__ << sizeof (X3D::MFDouble) << std::endl;
-	__LOG__ << sizeof (X3D::MFString) << std::endl;
-	__LOG__ << sizeof (X3D::MFMatrix4d) << std::endl;
-	__LOG__ << sizeof (X3D::MFVec4d) << std::endl;
-
-	__LOG__ << std::endl;
-	__LOG__ << sizeof (X3D::Scene) << std::endl;
-	__LOG__ << sizeof (X3D::Transform) << std::endl;
 
 	std::clog << "Test started ..." << std::endl << std::endl;
 	{
 		std::clog << "Start of block ..." << std::endl;
 
 		{
-			auto browser = X3D::getBrowser ();
+			Gtk::Main kit (argc, argv);
 
-			for (int i = 0; i < 5; ++ i)
-			{
-				{
-					X3D::MFInt32 a1;
+			auto builder = Gtk::Builder::create_from_file ("/home/holger/Projekte/Titania/Titania/share/titania/ui/BrowserWindow.ui");
 
-					a1 .resize (2000000);
+			Gtk::Window* window;
+			builder -> get_widget ("Window", window);
+			window -> show_all ();
 
-					__LOG__ << a1 .size () << std::endl;
-				}
-
-				__LOG__ << browser .getGarbageCollector () .size () << std::endl;
-				browser .getGarbageCollector () .dispose ();
-
-				sleep (3);
-			}
-
-//			for (int i = 0; i < 5; ++ i)
-//			{
-//				{
-//					std::deque <X3D::SFInt32*> a1;
-//
-//					for (int i = 0; i < 2000000; ++ i)
-//						a1 .emplace_back (new X3D::SFInt32 ());
-//
-//					for (const auto & field : a1)
-//						browser .getGarbageCollector () .addObject (field);
-//
-//					__LOG__ << a1 .size () << std::endl;
-//				}
-//
-//				browser .getGarbageCollector () .dispose ();
-//
-//				sleep (1);
-//			}
+			Gtk::Main::run (*window);
 		}
 
 		std::clog << "End of block ..." << std::endl;

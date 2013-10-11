@@ -62,6 +62,7 @@ Loader::Loader (X3DExecutionContext* const executionContext) :
 
 Loader::Loader (X3DExecutionContext* const executionContext, const basic::uri & referer) :
 	executionContext (executionContext),
+	       userAgent (getBrowser () -> getUserAgent ()),
 	         referer (referer),
 	        worldURL (),
 	        urlError ()
@@ -88,7 +89,7 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	return createX3DFromStream (getReferer (), istream);
+	return createX3DFromStream (referer, istream);
 }
 
 X3DSFNode <Scene>
@@ -138,7 +139,7 @@ throw (Error <INVALID_URL>,
 				getExecutionContext () -> changeViewpoint (uri .fragment ());
 
 			else
-				getBrowser () -> loadURL ({ getReferer () .transform (uri) .str () }, parameter);
+				getBrowser () -> loadURL ({ referer .transform (uri) .str () }, parameter);
 
 			break;
 		}
@@ -224,17 +225,17 @@ throw (Error <INVALID_URL>,
 	if (uri .scheme () not_eq "data")
 		std::clog << "Trying to load URI '" << uri << "': " << std::endl;
 
-	basic::uri transformedURL = getReferer () .transform (uri);
+	basic::uri transformedURL = referer .transform (uri);
 
 	if (transformedURL .scheme () not_eq "data")
 		std::clog << "\tTransformed URL is '" << transformedURL << "'" << std::endl;
 
-	basic::ifilestream istream (transformedURL);
+	basic::ifilestream istream (transformedURL, 15000);
 
 	if (istream)
 	{
-		istream .request_header ("User-Agent", getBrowser () -> getUserAgent ());
-		istream .request_header ("Referer",    getReferer () .filename ());
+		istream .request_header ("User-Agent", userAgent);
+		istream .request_header ("Referer",    referer .filename ());
 		istream .send ();
 
 		if (istream)

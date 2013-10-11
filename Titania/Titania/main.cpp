@@ -140,7 +140,7 @@ main (int argc, char** argv)
 		<< std::endl;
 
 	std::setlocale (LC_ALL, os::env ("LANG") .c_str ());
-	os::env ("UBUNTU_MENUPROXY", "");
+	//os::env ("UBUNTU_MENUPROXY", "");
 
 	try
 	{

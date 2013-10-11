@@ -107,9 +107,9 @@ X3DBrowserContext::X3DBrowserContext () :
 	                changedTime (clock -> cycle ()),
 	               currentSpeed (0),
 	           currentFrameRate (0),
-	                threadIndex (0),
-	                    threads (1),
-	                threadMutex (),
+	         downloadMutexIndex (0),
+	            downloadMutexes (1),
+	              downloadMutex (),
 	               notification (new Notification (this)),
 	                    console (new Console (this))                       // SFNode  [ ]   console    NULL  [Console]
 {
@@ -163,7 +163,7 @@ X3DBrowserContext::initialize ()
 	for (int32_t i = 1; i < renderingProperties -> textureUnits (); ++ i)
 		textureUnits .push (i);
 
-	threads .resize (std::min <int32_t> (renderingProperties -> maxThreads (), MAX_DOWNLOAD_THREADS));
+	downloadMutexes .resize (std::min <int32_t> (renderingProperties -> maxThreads () * 2, MAX_DOWNLOAD_THREADS));
 
 	// Initialize OpenGL context
 
@@ -266,13 +266,13 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 std::mutex &
-X3DBrowserContext::getThread ()
+X3DBrowserContext::getDownloadMutex ()
 {
-	std::lock_guard <std::mutex> lock (threadMutex);
+	std::lock_guard <std::mutex> lock (downloadMutex);
 
-	threadIndex = (threadIndex + 1) % threads .size ();
+	downloadMutexIndex = (downloadMutexIndex + 1) % downloadMutexes .size ();
 
-	return threads [threadIndex];
+	return downloadMutexes [downloadMutexIndex];
 }
 
 void
@@ -642,7 +642,7 @@ X3DBrowserContext::update ()
 
 			// Debug
 			router .debug ();
-			assert (router .size () == 0); // assert (router .empty ());
+			assert (router .empty ());
 
 			// Display
 
@@ -698,6 +698,14 @@ X3DBrowserContext::dispose ()
 	javaScriptEngine .dispose ();
 
 	X3DExecutionContext::dispose ();
+}
+
+X3DBrowserContext::~X3DBrowserContext ()
+{
+	for (auto & downloadMutex : downloadMutexes)
+		downloadMutex .lock ();
+
+	__LOG__ << std::endl;
 }
 
 } // X3D

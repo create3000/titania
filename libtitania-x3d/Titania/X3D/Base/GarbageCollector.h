@@ -82,6 +82,9 @@ public:
 	void
 	dispose ();
 
+	bool
+	empty () const;
+
 	size_t
 	size () const;
 

@@ -77,10 +77,6 @@ public:
 	{ return executionContext; }
 
 	const basic::uri &
-	getReferer () const
-	{ return referer; }
-
-	const basic::uri &
 	getWorldURL () const
 	{ return worldURL; }
 
@@ -152,6 +148,7 @@ public:
 private:
 
 	X3DExecutionContext* const executionContext;
+	const std::string          userAgent;
 	const basic::uri           referer;
 	basic::uri                 worldURL;
 	MFString                   urlError;

@@ -85,6 +85,8 @@
 namespace titania {
 namespace X3D {
 
+// mutex test: http://www.web3d.org/x3d/content/examples/Basic/StudentProjects/DeadReckoningComparisons.x3d
+
 const std::string jsContext::componentName  = "Browser";
 const std::string jsContext::typeName       = "jsContext";
 const std::string jsContext::containerField = "context";
@@ -496,7 +498,7 @@ jsContext::evaluate (const std::string & string, const std::string & filename, j
 void
 jsContext::set_field (X3DFieldDefinition* field)
 {
-	std::lock_guard <std::mutex> lock (mutex);
+	//std::lock_guard <std::mutex> lock (mutex);
 
 	jsval argv [2];
 
@@ -533,6 +535,7 @@ jsContext::set_initialized ()
 
 	//JS_MaybeGC (context);
 	JS_GC (context);
+
 	//std::thread (std::mem_fn (&jsContext::runGarbageCollector), this) .detach ();
 }
 
@@ -551,6 +554,7 @@ jsContext::eventsProcessed ()
 
 	//JS_MaybeGC (context);
 	JS_GC (context);
+
 	//std::thread (std::mem_fn (&jsContext::runGarbageCollector), this) .detach ();
 }
 
@@ -592,7 +596,7 @@ jsContext::callFunction (const std::string & name) const
 void
 jsContext::callFunction (jsval function) const
 {
-	std::lock_guard <std::mutex> lock (mutex);
+	//std::lock_guard <std::mutex> lock (mutex);
 
 	jsval rval;
 
@@ -690,7 +694,7 @@ jsContext::error (JSContext* context, const char* message, JSErrorReport* report
 void
 jsContext::runGarbageCollector ()
 {
-	std::lock_guard <std::mutex> lock (mutex);
+	//std::lock_guard <std::mutex> lock (mutex);
 
 	JS_GC (context);
 }
@@ -699,7 +703,7 @@ void
 jsContext::dispose ()
 {
 	{
-		std::lock_guard <std::mutex> lock (mutex);
+		//std::lock_guard <std::mutex> lock (mutex);
 
 		future .reset ();
 

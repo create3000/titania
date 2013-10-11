@@ -61,11 +61,14 @@ class iurlstream :
 {
 public:
 
+	typedef urlstreambuf::headers_type headers_type;
+	typedef size_t                     status_type;
+
 	/// @name Constructors
 
 	iurlstream ();
 
-	iurlstream (const basic::uri &);
+	iurlstream (const basic::uri &, size_t = 60000);
 
 	iurlstream (iurlstream &&);
 
@@ -78,16 +81,44 @@ public:
 	/// @name Connection handling
 
 	void
-	open (const basic::uri &);
+	open (const basic::uri &, size_t = 60000);
+
+	void
+	send ();
 
 	void
 	close ();
 
+	/// @name Header handling
+
+	void
+	request_header (const std::string &, const std::string &);
+
+	void
+	request_headers (const headers_type & value)
+	{ request_headers_map = value; }
+
+	const headers_type &
+	request_headers () const
+	{ return request_headers_map; }
+
+	const headers_type &
+	response_headers () const
+	{ return response_headers_map; }
+
 	/// @name Element access
 
 	const std::string &
+	http_version ()
+	{ return response_http_version; }
+
+	status_type
+	status () const
+	{ return response_status; }
+
+	const std::string &
 	reason () const
-	{ return buf -> reason (); }
+	{ return response_reason; }
 
 	/// @name Destructor
 
@@ -102,9 +133,25 @@ private:
 	iurlstream &
 	operator = (const iurlstream &) = delete;
 
+	bool
+	parse_status_line ();
+
+	void
+	parse_response_headers ();
+
+	void
+	parse_response_header ();
+
 	///  @name Members
 
 	urlstreambuf* buf;
+
+	headers_type request_headers_map;
+	headers_type response_headers_map;
+
+	std::string response_http_version;
+	status_type response_status;
+	std::string response_reason;
 
 };
 

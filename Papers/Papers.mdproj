@@ -63,12 +63,13 @@
     <None Include="CosmoWorlds\OutlineEditor3.png" />
     <None Include="xxx\Stream\GZFilterBuf.h" />
     <None Include="xxx\Stream\IGZFilter.h" />
-    <None Include="xxx\Stream\UrlStreamBuf.h" />
     <None Include="xxx\SurfaceN.h" />
     <None Include="xxx\Stream\InputHTTPStream.h" />
     <None Include="xxx\Stream\SocketStreamBuf.h" />
     <None Include="xxx\Stream\InputUrlStream.h" />
     <None Include="Statistic.ods" />
+    <None Include="xxx\Stream\UrlStreamBuf.cpp" />
+    <None Include="xxx\Stream\UrlStreamBuf.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Quaternion\" />
@@ -82,7 +83,6 @@
     <Compile Include="xxx\X3DUrlObject.cpp" />
     <Compile Include="xxx\Stream\GZFilterBuf.cpp" />
     <Compile Include="xxx\Stream\IGZFilter.cpp" />
-    <Compile Include="xxx\Stream\UrlStreamBuf.cpp" />
     <Compile Include="xxx\SurfaceN.cpp" />
     <Compile Include="xxx\Stream\InputHTTPStream.cpp" />
     <Compile Include="xxx\Stream\SocketStreamBuf.cpp" />

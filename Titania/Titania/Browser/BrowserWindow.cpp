@@ -251,9 +251,11 @@ BrowserWindow::on_open_location ()
 
 		if (clipboard -> wait_is_text_available ())
 		{
+			static const pcrecpp::RE scheme ("\\A(file|http|https|ftp|smb)$");
+
 			basic::uri uri (clipboard -> wait_for_text ());
 
-			if (uri .scheme () == "http" or uri .scheme () == "ftp" or uri .scheme () == "file")
+			if (scheme .FullMatch (uri .scheme ()))
 				getOpenLocationEntry () .set_text (uri .str ());
 		}
 

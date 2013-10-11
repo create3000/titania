@@ -158,7 +158,7 @@ RenderingProperties::initialize ()
 		if (hasExtension ("GL_NVX_gpu_memory_info"))
 			glGetIntegerv (GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &glTextureMemory);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                // in KBytes
 
-		maxThreads ()     = std::min (4, omp_get_max_threads ());
+		maxThreads ()     = omp_get_max_threads ();
 		textureUnits ()   = glTextureUnits;
 		maxTextureSize () = glMaxTextureSize;
 		maxLights ()      = glMaxLights;

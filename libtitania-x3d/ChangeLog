@@ -1,3 +1,22 @@
+2013-10-11  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-x3d.cproj:
+	* Router.h:
+	* Router.cpp:
+	* Loader.h:
+	* Loader.cpp:
+	* SceneLoader.cpp:
+	* GarbageCollector.h:
+	* x3d+xml.xml:
+	* GarbargeCollector.cpp:
+	* X3DBrowserContext.h:
+	* X3DBrowserContext.cpp:
+	* X3DBrowserSurface.cpp:
+	* ImageTexture.cpp:
+	* jsLockGuard.h:
+	* jsContext.cpp:
+	* RenderingProperties.cpp: 
+
 2013-10-09  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* libtitania-x3d.cproj:

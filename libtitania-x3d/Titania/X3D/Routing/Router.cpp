@@ -116,7 +116,7 @@ Router::getNodes ()
 void
 Router::processEvents ()
 {
-	//	while (not events .empty ())
+	//	while (not empty ())
 	//	{
 	//		for (auto & event : events)
 	//		{
@@ -128,7 +128,7 @@ Router::processEvents ()
 	//		eventsProcessed ();
 	//	}
 
-	while (not events .empty ())
+	while (not empty ())
 	{
 		do
 		{
@@ -137,7 +137,7 @@ Router::processEvents ()
 				event .first -> processEvent (event .second);
 			}
 		}
-		while (not events .empty ());
+		while (not empty ());
 
 		eventsProcessed ();
 	}
@@ -148,6 +148,14 @@ Router::eventsProcessed ()
 {
 	for (const auto & node : getNodes ())
 		node -> processEvents ();
+}
+
+bool
+Router::empty () const
+{
+	//std::lock_guard <std::mutex> lock (mutex);
+
+	return events .empty ();
 }
 
 size_t

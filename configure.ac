@@ -119,8 +119,8 @@ ImageMagick++
 libgtop-2.0)
 
 PKG_CHECK_MODULES(TITANIA_STREAM,
-giomm-2.4
-zlib)
+libcurl
+giomm-2.4)
 
 PKG_CHECK_MODULES(TITANIA_SQLITE,
 sqlite3

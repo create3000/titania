@@ -111,8 +111,16 @@ GarbageCollector::deleteObjects (ObjectArray && objects)
 void
 GarbageCollector::dispose ()
 {
-	if (size ())
+	if (not empty ())
 		std::thread (&GarbageCollector::deleteObjects, getObjects ()) .detach ();
+}
+
+bool
+GarbageCollector::empty () const
+{
+	std::lock_guard <std::mutex> lock (mutex);
+
+	return objects .empty ();
 }
 
 size_t
