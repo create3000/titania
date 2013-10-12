@@ -1,43 +1,28 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Library/Tests/Handles/OutlineEditor.wrl">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Undo/UndoStep.cpp">
     <Files>
       <File FileName="Library/Tests/Handles/OutlineEditor.wrl" Line="6" Column="5" />
       <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="128" Column="1" />
       <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="1000" Column="48" />
       <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="220" Column="51" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="423" Column="21" />
-      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DBaseNode.cpp" Line="516" Column="49" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="81" Column="1" />
       <File FileName="Titania/Titania/Undo/UndoFunction.h" Line="65" Column="1" />
       <File FileName="Titania/Titania/Undo/UndoStep.h" Line="81" Column="73" />
       <File FileName="Titania/Titania/Undo/UndoStep.cpp" Line="64" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsLockGuard.h" Line="72" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsContext.h" Line="208" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/jsContext.cpp" Line="615" Column="3" />
-      <File FileName="libtitania-x3d/Titania/X3D/Base/GarbargeCollector.cpp" Line="100" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.cpp" Line="457" Column="2" />
-      <File FileName="libtitania-stream/Titania/Stream/UrlStreamBuf.cpp" Line="77" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Shape/X3DMaterialNode.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Shape/Material.cpp" Line="151" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Shape/Shape.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Shape/X3DShapeNode.cpp" Line="221" Column="12" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Shape/Appearance.cpp" Line="215" Column="3" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="miscellaneous" expanded="True">
-            <Node name="uncrustify-all" expanded="True" />
-          </Node>
           <Node name="build" expanded="True">
             <Node name="debian" expanded="True" />
           </Node>
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
+            <Node name="Examples" expanded="True" />
             <Node name="Tests" expanded="True">
-              <Node name="Handles" expanded="True">
-                <Node name="OutlineEditor.wrl" selected="True" />
-              </Node>
+              <Node name="Handles" expanded="True" />
+              <Node name="images" expanded="True" />
               <Node name="Shaders" expanded="True" />
             </Node>
           </Node>
@@ -48,67 +33,11 @@
               </Node>
             </Node>
           </Node>
-          <Node name="libtitania-standard" expanded="True">
-            <Node name="Titania" expanded="True">
-              <Node name="Math" expanded="True">
-                <Node name="Numbers" expanded="True" />
-              </Node>
-            </Node>
-          </Node>
-          <Node name="libtitania-stream" expanded="True">
-            <Node name="Titania" expanded="True">
-              <Node name="Stream" expanded="True" />
-            </Node>
-          </Node>
           <Node name="libtitania-x3d" expanded="True">
-            <Node name="share" expanded="True">
-              <Node name="icons" expanded="True">
-                <Node name="hicolor" expanded="True">
-                  <Node name="scalable" expanded="True">
-                    <Node name="mimetypes" expanded="True" />
-                  </Node>
-                </Node>
-              </Node>
-              <Node name="titania" expanded="True">
-                <Node name="handles" expanded="True">
-                  <Node name="library" expanded="True" />
-                </Node>
-                <Node name="mime" expanded="True">
-                  <Node name="model" expanded="True" />
-                </Node>
-                <Node name="pages" expanded="True">
-                  <Node name="about" expanded="True">
-                    <Node name="library" expanded="True" />
-                  </Node>
-                </Node>
-              </Node>
-            </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
                 <Node name="Base" expanded="True" />
-                <Node name="Basic" expanded="True" />
-                <Node name="Browser" expanded="True">
-                  <Node name="Properties" expanded="True" />
-                </Node>
-                <Node name="Components" expanded="True">
-                  <Node name="EnvironmentalSensor" expanded="True" />
-                  <Node name="Networking" expanded="True" />
-                  <Node name="Rendering" expanded="True" />
-                  <Node name="Shape" expanded="True" />
-                  <Node name="Texturing" expanded="True" />
-                  <Node name="Time" expanded="True" />
-                </Node>
-                <Node name="Execution" expanded="True" />
-                <Node name="InputOutput" expanded="True" />
-                <Node name="JavaScript" expanded="True">
-                  <Node name="SpiderMonkey" expanded="True">
-                    <Node name="Fields" expanded="True" />
-                  </Node>
-                </Node>
-                <Node name="Miscellaneous" expanded="True" />
-                <Node name="Rendering" expanded="True" />
-                <Node name="Routing" expanded="True" />
-                <Node name="Thread" expanded="True" />
+                <Node name="Browser" expanded="True" />
               </Node>
             </Node>
           </Node>
@@ -117,24 +46,24 @@
               <Node name="Stream" expanded="True" />
             </Node>
           </Node>
+          <Node name="test" expanded="True" />
           <Node name="Titania" expanded="True">
             <Node name="share" expanded="True">
               <Node name="applications" expanded="True" />
               <Node name="titania" expanded="True">
-                <Node name="Library" expanded="True">
-                  <Node name="Backgrounds" expanded="True" />
-                </Node>
-                <Node name="ui" expanded="True">
-                  <Node name="icons" expanded="True" />
-                </Node>
+                <Node name="Library" expanded="True" />
+                <Node name="ui" expanded="True" />
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
+              <Node name="Base" expanded="True" />
               <Node name="Browser" expanded="True" />
               <Node name="HistoryEditor" expanded="True" />
               <Node name="LibraryView" expanded="True" />
               <Node name="OutlineEditor" expanded="True" />
-              <Node name="Undo" expanded="True" />
+              <Node name="Undo" expanded="True">
+                <Node name="UndoStep.cpp" selected="True" />
+              </Node>
             </Node>
           </Node>
           <Node name="x3dtidy" expanded="True" />

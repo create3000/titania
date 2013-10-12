@@ -61,8 +61,9 @@
 		<acronym>X3D</acronym>
 		<expanded-acronym>Extensible 3D</expanded-acronym>
 		<generic-icon name="model-x3d+binary"/>
+		<sub-class-of type="application/octet-stream"/>
 		<magic priority="50">
-			<match type="big32" offset="0" value="\0xE0000001\0x2010001E"/>
+			<match type="string" offset="0" value="\0xE0\0x00\0x00\0x01\0x20\0x10\0x00\0x1E"/>
 		</magic>
 		<glob pattern="*.x3db"/>
 		<glob pattern="*.x3dbz"/>
