@@ -1,5 +1,20 @@
 2013-10-12  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* libtitania-x3d.cproj:
+	* vrml.png:
+	* x3d+xml.png:
+	* x3d+vrml.xml:
+	* x3d+vrml.png:
+	* GarbargeCollector.cpp:
+	* x3d+binary.png:
+	* x3d+binary.xml:
+	* model-vrml.svg:
+	* model-x3d+xml.svg:
+	* model-x3d+vrml.svg:
+	* model-x3d+binary.svg: 
+
+2013-10-12  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* SceneLoader.h:

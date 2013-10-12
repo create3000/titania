@@ -593,6 +593,9 @@
     <None Include="share\icons\hicolor\scalable\mimetypes\model-x3d+xml.svg" />
     <None Include="share\titania\mime\model\x3d+xml.png" />
     <None Include="Titania\X3D\Thread\TextureLoader.h" />
+    <None Include="share\icons\hicolor\scalable\mimetypes\model-x3d+binary.svg" />
+    <None Include="share\titania\mime\model\x3d+binary.xml" />
+    <None Include="share\titania\mime\model\x3d+binary.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

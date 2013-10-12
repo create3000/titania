@@ -28,18 +28,20 @@
   </object>
   <object class="GtkFileFilter" id="FileFilterX3D">
     <mime-types>
+      <mime-type>x-world/x-vrml</mime-type>
       <mime-type>model/vrml</mime-type>
       <mime-type>model/x3d+vrml</mime-type>
-      <mime-type>x-world/x-vrml</mime-type>
+      <mime-type>model/x3d+xml</mime-type>
     </mime-types>
     <patterns>
       <pattern>*.x3d</pattern>
       <pattern>*.x3d.gz</pattern>
       <pattern>*.x3dv</pattern>
       <pattern>*.x3dvz</pattern>
+      <pattern>*.x3dv.gz</pattern>
       <pattern>*.wrl</pattern>
-      <pattern>*.wrl.gz</pattern>
       <pattern>*.wrz</pattern>
+      <pattern>*.wrl.gz</pattern>
     </patterns>
   </object>
   <object class="GtkIconFactory" id="IconFactory">

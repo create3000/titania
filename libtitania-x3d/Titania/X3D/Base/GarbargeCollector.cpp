@@ -112,7 +112,7 @@ void
 GarbageCollector::dispose ()
 {
 	if (not empty ())
-		std::thread (&GarbageCollector::deleteObjects, getObjects ()) .detach ();
+		std::thread (&GarbageCollector::deleteObjects, std::move (getObjects ())) .detach ();
 }
 
 bool
@@ -133,7 +133,7 @@ GarbageCollector::size () const
 
 GarbageCollector::~GarbageCollector ()
 {
-	deleteObjects (getObjects ());
+	deleteObjects (std::move (getObjects ()));
 }
 
 } // X3D
