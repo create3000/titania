@@ -446,6 +446,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Routing/Router.cpp \
 	Titania/X3D/Routing/RouteSet.cpp \
 	Titania/X3D/Thread/SceneLoader.cpp \
+	Titania/X3D/Thread/TextureLoader.cpp \
 	Titania/X3D/Types/Image.cpp
 
 libtitania_x3d_la_LIBADD = $(TITANIA_X3D_LIBS)  \

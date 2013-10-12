@@ -53,6 +53,7 @@
 
 #include "../Networking/X3DUrlObject.h"
 #include "../Texturing/X3DTexture2DNode.h"
+#include "../../Thread/TextureLoader.h"
 
 namespace titania {
 namespace X3D {
@@ -103,8 +104,6 @@ public:
 
 private:
 
-	class Future;
-
 	using X3DTexture2DNode::setImage;
 
 	virtual
@@ -119,7 +118,7 @@ private:
 	void
 	update () final;
 
-	std::unique_ptr <Future> future;
+	std::unique_ptr <TextureLoader> future;
 
 	///  @name Static members
 

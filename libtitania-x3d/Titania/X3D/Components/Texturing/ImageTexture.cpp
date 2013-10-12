@@ -52,130 +52,9 @@
 
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "../../InputOutput/Loader.h"
-#include "../../Miscellaneous/Texture.h"
-
-#include <atomic>
-#include <future>
 
 namespace titania {
 namespace X3D {
-
-class ImageTexture::Future :
-	public X3DInput
-{
-public:
-
-	typedef std::function <void (const TexturePtr &)> Callback;
-
-	Future (X3DExecutionContext* const executionContext,
-	        const MFString & url,
-	        const Color4f & borderColor, size_t borderWidth,
-	        size_t minTextureSize, size_t maxTextureSize,
-	        const Callback & callback) :
-		         browser (executionContext -> getBrowser ()),
-		executionContext (executionContext),
-		        callback (callback),
-		         running (true),
-		          future (getFuture (url, borderColor, borderWidth, minTextureSize, maxTextureSize))
-	{
-		browser -> prepareEvents () .addInterest (this, &Future::prepareEvents);
-		browser -> addEvent ();
-	}
-
-	void
-	cancel ()
-	{
-		running = false;
-		browser -> prepareEvents () .removeInterest (this, &Future::prepareEvents);
-	}
-
-	virtual
-	~Future ()
-	{
-		cancel ();
-
-		if (future .valid ())
-			future .wait ();
-	}
-
-private:
-
-	std::future <TexturePtr>
-	getFuture (const MFString & url,
-	           const Color4f & borderColor, size_t borderWidth,
-	           size_t minTextureSize, size_t maxTextureSize)
-	{
-		if (url .empty ())
-			std::async (std::launch::deferred, [ ] (){ return nullptr; });
-
-		return std::async (std::launch::async, std::mem_fn (&Future::loadAsync), this,
-		                   url,
-		                   borderColor, borderWidth,
-		                   minTextureSize, maxTextureSize);
-	}
-
-	TexturePtr
-	loadAsync (const MFString & url,
-	           const Color4f & borderColor, size_t borderWidth,
-	           size_t minTextureSize, size_t maxTextureSize)
-	{
-		for (const auto & URL : url)
-		{
-			try
-			{
-				std::lock_guard <std::mutex> lock (browser -> getDownloadMutex ());
-
-				TexturePtr texture;
-
-				if (running)
-					texture .reset (new Texture (Loader (executionContext) .loadDocument (URL)));
-
-				if (running)
-					texture -> process (borderColor, borderWidth, minTextureSize, maxTextureSize);
-
-				return texture;
-			}
-			catch (const X3DError & error)
-			{
-				std::clog << "ImageTexture: " << error .what () << std::endl;
-			}
-			catch (const std::exception & error)
-			{
-				std::clog
-					<< "Bad Image: " << error .what () << ", "
-					<< "in URL '" << executionContext -> getWorldURL () .transform (URL .str ()) << "'"
-					<< std::endl;
-			}
-		}
-
-		return nullptr;
-	}
-
-	void
-	prepareEvents ()
-	{
-		browser -> addEvent ();
-
-		if (future .valid ())
-		{
-			auto status = future .wait_for (std::chrono::milliseconds (0));
-
-			if (status == std::future_status::ready)
-			{
-				browser -> prepareEvents () .removeInterest (this, &Future::prepareEvents);
-				callback (future .get ());
-			}
-		}
-	}
-
-	X3DBrowser* const          browser;
-	X3DExecutionContext* const executionContext;
-	Callback                   callback;
-	std::atomic <bool>         running;
-	std::future <TexturePtr>   future;
-
-};
 
 const std::string ImageTexture::componentName  = "Texturing";
 const std::string ImageTexture::typeName       = "ImageTexture";
@@ -240,13 +119,13 @@ ImageTexture::requestAsyncLoad ()
 
 	setLoadState (IN_PROGRESS_STATE);
 
-	future .reset (new Future (getExecutionContext (),
-	                           url (),
-	                           getTextureProperties () -> borderColor (),
-	                           getTextureProperties () -> borderWidth (),
-	                           getBrowser () -> getBrowserOptions () -> minTextureSize (),
-	                           getBrowser () -> getRenderingProperties () -> maxTextureSize (),
-	                           std::bind (std::mem_fn (&ImageTexture::setTexture), this, _1)));
+	future .reset (new TextureLoader (getExecutionContext (),
+	                                  url (),
+	                                  getTextureProperties () -> borderColor (),
+	                                  getTextureProperties () -> borderWidth (),
+	                                  getBrowser () -> getBrowserOptions () -> minTextureSize (),
+	                                  getBrowser () -> getRenderingProperties () -> maxTextureSize (),
+	                                  std::bind (std::mem_fn (&ImageTexture::setTexture), this, _1)));
 }
 
 void

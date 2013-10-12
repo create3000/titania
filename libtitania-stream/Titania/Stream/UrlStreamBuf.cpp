@@ -115,13 +115,12 @@ urlstreambuf::send (const headers_type & headers)
 	curl_easy_setopt (curl, CURLOPT_HTTPHEADER, headerlist);
 
 	// Attempt to retrieve the remote page
-	//__LOG__ << std::endl;
 	CURLMcode retcode = curl_multi_perform (curlm, &running);
 	
 	while (running and not bytesRead)
 	{
-		wait ();
-		curl_multi_perform (curlm, &running);
+		if (wait () > 0)
+			curl_multi_perform (curlm, &running);
 	}
 
 	curl_slist_free_all (headerlist);
@@ -141,8 +140,6 @@ urlstreambuf::send (const headers_type & headers)
 int
 urlstreambuf::wait ()
 {
-	//__LOG__ << std::endl;
-
 	fd_set fdread;
 	fd_set fdwrite;
 	fd_set fdexcep;
@@ -174,8 +171,6 @@ urlstreambuf::write_header (char* data, size_t size, size_t nmemb, std::stringst
 	// What we will return
 	size_t bytes = size * nmemb;
 
-	//__LOG__ << bytes << std::endl;
-
 	// Append the data to the buffer
 	header -> rdbuf () -> sputn (data, bytes);
 
@@ -192,8 +187,6 @@ urlstreambuf::write_data (char* data, size_t size, size_t nmemb, urlstreambuf* s
 int
 urlstreambuf::write (char* data, size_t bytes)
 {
-	//__LOG__ << bytes << std::endl;
-	
 	buffer = (char*) realloc (buffer, bufferSize + bytesRead + bytes);
 
 	(void) memcpy (buffer + bufferSize + bytesRead, data, bytes);
@@ -212,8 +205,6 @@ urlstreambuf::write (char* data, size_t bytes)
 urlstreambuf::traits_type::int_type
 urlstreambuf::underflow ()
 {
-	//__LOG__ << backBufferSize << std::endl;
-
 	size_t bytesToMove = std::min (bufferSize, backBufferSize + bytesRead);
 
 	bytesGone += backBufferSize + bytesRead - bytesToMove;
@@ -229,9 +220,10 @@ urlstreambuf::underflow ()
 	bytesRead = 0;
 
 	if (running)
-		wait ();
-
-	curl_multi_perform (curlm, &running);
+	{
+		if (wait () > 0)
+			curl_multi_perform (curlm, &running);
+	}
 
 	if (bytesRead == 0)
 		return traits_type::eof ();

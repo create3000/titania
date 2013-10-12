@@ -53,7 +53,7 @@
 
 #include "../Texturing/TextureProperties.h"
 #include "../Texturing/X3DTextureNode.h"
-#include "../../Miscellaneous/TexturePtr.h"
+#include "../../Miscellaneous/Texture.h"
 
 namespace titania {
 namespace X3D {

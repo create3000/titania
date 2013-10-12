@@ -310,16 +310,10 @@ ifilestream::response_headers () const
 const std::string &
 ifilestream::reason () const
 {
-	if (data_istream)
-		return *data_istream ? reasons [0] : reasons [1];
-
-	if (file_istream)
-		return *file_istream ? reasons [0] : reasons [1];
-
 	if (url_istream)
 		return url_istream -> reason ();
 
-	return reasons [0];
+	return *this ? reasons [0] : reasons [1];
 }
 
 ifilestream::~ifilestream ()

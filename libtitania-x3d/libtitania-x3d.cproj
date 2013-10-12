@@ -558,7 +558,6 @@
     <None Include="Titania\X3D\Miscellaneous\GoldenGate.h" />
     <None Include="Titania\X3D\Miscellaneous\Keys.h" />
     <None Include="Titania\X3D\Miscellaneous\Texture.h" />
-    <None Include="Titania\X3D\Miscellaneous\TexturePtr.h" />
     <None Include="Titania\X3D\Miscellaneous\FontConfig.h" />
     <None Include="Titania\X3D\Miscellaneous\MediaStream.h" />
     <None Include="Titania\X3D\Miscellaneous\FontPtr.h" />
@@ -593,6 +592,7 @@
     <None Include="share\icons\hicolor\scalable\mimetypes\model-vrml.svg" />
     <None Include="share\icons\hicolor\scalable\mimetypes\model-x3d+xml.svg" />
     <None Include="share\titania\mime\model\x3d+xml.png" />
+    <None Include="Titania\X3D\Thread\TextureLoader.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1037,6 +1037,7 @@
     <Compile Include="Titania\X3D\Browser\X3DBrowserSurface.cpp" />
     <Compile Include="Titania\X3D\Bits\Traverse.cpp" />
     <Compile Include="Titania\X3D\Thread\SceneLoader.cpp" />
+    <Compile Include="Titania\X3D\Thread\TextureLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

@@ -1,3 +1,8 @@
+2013-10-12  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* UrlStreamBuf.cpp:
+	* InputFileStream.cpp: 
+
 2013-10-11  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* UrlStreamBuf.h:

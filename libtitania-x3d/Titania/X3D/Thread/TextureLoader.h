@@ -48,17 +48,55 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BITS_TEXTURE_PTR_H__
-#define __TITANIA_X3D_BITS_TEXTURE_PTR_H__
+#ifndef __TITANIA_X3D_THREAD_TEXTURE_LOADER_H__
+#define __TITANIA_X3D_THREAD_TEXTURE_LOADER_H__
 
-#include <memory>
+#include "../Browser/X3DBrowser.h"
+#include "../InputOutput/Loader.h"
+#include "../Miscellaneous/Texture.h"
+
+#include <atomic>
+#include <future>
 
 namespace titania {
 namespace X3D {
 
-class Texture;
+class TextureLoader :
+	public X3DInput
+{
+public:
 
-typedef std::unique_ptr <Texture> TexturePtr;
+	typedef std::function <void (const TexturePtr &)> Callback;
+
+	TextureLoader (X3DExecutionContext* const executionContext,
+	               const MFString &, const Color4f &, size_t, size_t, size_t,
+	               const Callback &);
+
+	void
+	cancel ();
+
+	virtual
+	~TextureLoader ();
+
+
+private:
+
+	std::future <TexturePtr>
+	getFuture (const MFString &, const Color4f &, size_t, size_t, size_t);
+
+	TexturePtr
+	loadAsync (const MFString &, const Color4f &, size_t, size_t, size_t);
+
+	void
+	prepareEvents ();
+
+	X3DBrowser* const          browser;
+	X3DExecutionContext* const executionContext;
+	Callback                   callback;
+	std::atomic <bool>         running;
+	std::future <TexturePtr>   future;
+
+};
 
 } // X3D
 } // titania

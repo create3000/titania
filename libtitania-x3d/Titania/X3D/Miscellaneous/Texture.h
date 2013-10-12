@@ -53,8 +53,10 @@
 
 #include "../Rendering/OpenGL.h"
 #include "../Types/Numbers.h"
+
 #include <Magick++.h>
 #include <string>
+#include <memory>
 
 namespace titania {
 namespace X3D {
@@ -126,6 +128,8 @@ private:
 	Magick::Blob  blob;
 
 };
+
+typedef std::unique_ptr <Texture> TexturePtr;
 
 } // X3D
 } // titania

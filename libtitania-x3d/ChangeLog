@@ -1,3 +1,20 @@
+2013-10-12  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* SceneLoader.h:
+	* TextureLoader.h:
+	* SceneLoader.cpp:
+	* Texture.h:
+	* TextureLoader.cpp:
+	* TexturePtr.h:
+	* X3DBrowserSurface.cpp:
+	* Inline.cpp:
+	* ImageTexture.h:
+	* ImageTexture.cpp:
+	* X3DTexture2DNode.h:
+	* X3DTexture2DNode.cpp: 
+
 2013-10-11  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* libtitania-x3d.cproj:

@@ -48,66 +48,88 @@
  *
  ******************************************************************************/
 
-#include "SceneLoader.h"
+#include "TextureLoader.h"
 
-#include "../Browser/X3DBrowser.h"
 #include "../InputOutput/Loader.h"
 
 namespace titania {
 namespace X3D {
 
-SceneLoader::SceneLoader (X3DExecutionContext* const executionContext, const MFString & url, const Callback & callback) :
+TextureLoader::TextureLoader (X3DExecutionContext* const executionContext,
+                              const MFString & url,
+                              const Color4f & borderColor, size_t borderWidth,
+                              size_t minTextureSize, size_t maxTextureSize,
+                              const Callback & callback) :
 	         browser (executionContext -> getBrowser ()),
 	executionContext (executionContext),
 	        callback (callback),
 	         running (true),
-	          future (getFuture (url))
+	          future (getFuture (url, borderColor, borderWidth, minTextureSize, maxTextureSize))
 {
-	browser -> prepareEvents () .addInterest (this, &SceneLoader::prepareEvents);
+	browser -> prepareEvents () .addInterest (this, &TextureLoader::prepareEvents);
 	browser -> addEvent ();
 }
 
 void
-SceneLoader::wait ()
-{
-	if (future .valid ())
-	{
-		future .wait ();
-		prepareEvents ();
-	}
-}
-
-void
-SceneLoader::cancel ()
+TextureLoader::cancel ()
 {
 	running = false;
-	browser -> prepareEvents () .removeInterest (this, &SceneLoader::prepareEvents);
+	browser -> prepareEvents () .removeInterest (this, &TextureLoader::prepareEvents);
 }
 
-std::future <X3DSFNode <Scene>> 
-SceneLoader::getFuture (const MFString & url)
+std::future <TexturePtr>
+TextureLoader::getFuture (const MFString & url,
+                          const Color4f & borderColor, size_t borderWidth,
+                          size_t minTextureSize, size_t maxTextureSize)
 {
-	return std::async (std::launch::async, std::mem_fn (&SceneLoader::loadAsync), this, url);
+	if (url .empty ())
+		std::async (std::launch::deferred, [ ] (){ return nullptr; });
+
+	return std::async (std::launch::async, std::mem_fn (&TextureLoader::loadAsync), this,
+	                   url,
+	                   borderColor, borderWidth,
+	                   minTextureSize, maxTextureSize);
 }
 
-X3DSFNode <Scene>
-SceneLoader::loadAsync (const MFString & url)
+TexturePtr
+TextureLoader::loadAsync (const MFString & url,
+                          const Color4f & borderColor, size_t borderWidth,
+                          size_t minTextureSize, size_t maxTextureSize)
 {
-	std::lock_guard <std::mutex> lock (browser -> getDownloadMutex ());
+	for (const auto & URL : url)
+	{
+		try
+		{
+			std::lock_guard <std::mutex> lock (browser -> getDownloadMutex ());
 
-	X3DSFNode <Scene> scene;
+			TexturePtr texture;
 
-	if (running)
-		scene = browser -> createScene ();
+			if (running)
+				texture .reset (new Texture (Loader (executionContext) .loadDocument (URL)));
 
-	if (running)
-		Loader (executionContext) .parseIntoScene (scene, url);
+			if (running)
+				texture -> process (borderColor, borderWidth, minTextureSize, maxTextureSize);
 
-	return scene;
+			return texture;
+		}
+		catch (const X3DError & error)
+		{
+			std::clog << "ImageTexture: " << error .what () << std::endl;
+		}
+		catch (const std::exception & error)
+		{
+			std::clog
+				<< "Bad Image: " << error .what () << ", "
+				<< "in URL '" << executionContext -> getWorldURL () .transform (URL .str ()) << "'"
+				<< std::endl;
+		}
+	}
+
+	return nullptr;
 }
 
 void
-SceneLoader::prepareEvents ()
+TextureLoader::prepareEvents ()
 {
 	browser -> addEvent ();
 
@@ -117,26 +139,13 @@ SceneLoader::prepareEvents ()
 
 		if (status == std::future_status::ready)
 		{
-			browser -> prepareEvents () .removeInterest (this, &SceneLoader::prepareEvents);
-
-			try
-			{
-				X3DSFNode <Scene> scene = future .get ();
-
-				callback (scene);
-			}
-			catch (const X3DError & error)
-			{
-				browser -> println (error .what ());
-				callback (nullptr);
-			}
-
-			callback = [ ] (const X3DSFNode <Scene> &) { }; // Clear callback
+			browser -> prepareEvents () .removeInterest (this, &TextureLoader::prepareEvents);
+			callback (future .get ());
 		}
 	}
 }
 
-SceneLoader::~SceneLoader ()
+TextureLoader::~TextureLoader ()
 {
 	cancel ();
 

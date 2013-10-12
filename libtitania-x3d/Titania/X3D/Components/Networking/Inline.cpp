@@ -286,7 +286,8 @@ Inline::traverse (const TraverseType type)
 void
 Inline::dispose ()
 {
-	future .reset ();
+	if (future)
+		future -> cancel ();
 
 	scene .dispose ();
 	group .dispose ();
