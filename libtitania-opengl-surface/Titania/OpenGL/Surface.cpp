@@ -68,12 +68,56 @@ Surface::Surface () :
 {
 	set_double_buffered (false);
 	set_app_paintable (true);
+	//set_visual (4); // 4 x Antialiasing
 
 	// Enable map_event.
 	add_events (Gdk::STRUCTURE_MASK);
 
 	// Connect to map_event.
 	map_connection = signal_map_event () .connect (sigc::mem_fun (*this, &Surface::set_map_event));
+}
+
+void
+Surface::set_visual (int32_t samples)
+{
+	static
+	int32_t visualAttributes [ ] = {
+		//		GLX_X_RENDERABLE,     true,
+		//		GLX_DRAWABLE_TYPE,    GLX_WINDOW_BIT,
+		//		GLX_RENDER_TYPE,      GLX_RGBA_BIT,
+		GLX_X_VISUAL_TYPE,    GLX_TRUE_COLOR,
+		GLX_RGBA,
+		GLX_RED_SIZE,         8,
+		GLX_GREEN_SIZE,       8,
+		GLX_BLUE_SIZE,        8,
+		GLX_ALPHA_SIZE,       0,
+		GLX_ACCUM_RED_SIZE,   8,
+		GLX_ACCUM_GREEN_SIZE, 8,
+		GLX_ACCUM_BLUE_SIZE,  8,
+		GLX_ACCUM_ALPHA_SIZE, 8,
+		GLX_DOUBLEBUFFER,     true,
+		GLX_DEPTH_SIZE,       24,
+		GLX_SAMPLE_BUFFERS,   1,            // Multisampling
+		GLX_SAMPLES,          samples,      // 4 x Antialiasing
+		0
+	};
+
+	GdkScreen* screen  = gdk_screen_get_default ();
+	gint       nscreen = GDK_SCREEN_XNUMBER (screen);
+
+	auto display = gdk_x11_get_default_xdisplay ();
+
+	XVisualInfo* visualInfo = glXChooseVisual (display, nscreen, visualAttributes);
+
+	if (visualInfo)
+	{
+		GdkVisual* visual = gdk_x11_screen_lookup_visual (screen, visualInfo -> visualid);
+
+		if (visual)
+			gtk_widget_set_visual (GTK_WIDGET (gobj ()), visual);
+
+		XFree (visualInfo);
+	}
 }
 
 const std::shared_ptr <Context> &

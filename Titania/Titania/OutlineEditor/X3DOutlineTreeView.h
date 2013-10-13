@@ -71,6 +71,11 @@ class X3DOutlineTreeView :
 {
 public:
 
+	///  @name Construction
+
+	void
+	setup ();
+
 	///  @name Member access
 
 	const Glib::RefPtr <OutlineTreeModel> &
@@ -117,12 +122,16 @@ protected:
 
 	X3DOutlineTreeView ();
 
+	///  @name Member access
+
 	OutlineCellRenderer*
 	get_cellrenderer () const
 	{ return cellrenderer; }
 
 	bool
 	get_shift_key ();
+
+	///  @name Operations
 
 	void
 	watch (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
@@ -151,7 +160,7 @@ private:
 	get_open_path (const Gtk::TreeModel::iterator &) const;
 
 	void
-	set_world ();
+	set_initialized ();
 
 	void
 	set_rootNodes ();

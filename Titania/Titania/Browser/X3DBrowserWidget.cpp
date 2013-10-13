@@ -60,6 +60,8 @@
 #include <fstream>
 #include <iostream>
 
+#include <gdk/gdkx.h>
+
 namespace titania {
 namespace puck {
 
@@ -69,8 +71,6 @@ X3DBrowserWidget::X3DBrowserWidget (const basic::uri & worldURL) :
 	getConfig () .setItem ("url", worldURL);
 
 	// User interface
-
-	setTransparent (true);
 
 	// Browser
 	X3D::getBrowser () -> getBrowserOptions () -> splashScreen () = true;

@@ -85,6 +85,7 @@ RenderingProperties::Fields::Fields () :
 	maxTextureSize (new SFInt32 ()),
 	  textureUnits (new SFInt32 ()),
 	     maxLights (new SFInt32 ()),
+	   antialiased (new SFBool ()),
 	    colorDepth (new SFInt32 ()),
 	 textureMemory (new SFDouble ())
 { }
@@ -108,9 +109,12 @@ RenderingProperties::RenderingProperties (X3DExecutionContext* const executionCo
 	addField (outputOnly, "MaxTextureSize", maxTextureSize ());
 	addField (outputOnly, "TextureUnits",   textureUnits ());
 	addField (outputOnly, "MaxLights",      maxLights ());
+	addField (outputOnly, "Antialiased",    antialiased ());
 	addField (outputOnly, "ColorDepth",     colorDepth ());
 	addField (outputOnly, "TextureMemory",  textureMemory ());
 	addField (outputOnly, "MaxThreads",     maxThreads ());
+
+	addField ("AntiAliased", "Antialiased");
 }
 
 RenderingProperties*
@@ -124,10 +128,7 @@ RenderingProperties::initialize ()
 {
 	X3DBaseNode::initialize ();
 
-	addField (outputOnly, "Shading",     getBrowser () -> getBrowserOptions () -> shading ());
-	addField (outputOnly, "Antialiased", getBrowser () -> getBrowserOptions () -> antialiased ());
-
-	addField ("AntiAliased", "Antialiased");
+	addField (outputOnly, "Shading", getBrowser () -> getBrowserOptions () -> shading ());
 
 	if (glXGetCurrentContext ())
 	{
@@ -186,18 +187,6 @@ const SFString &
 RenderingProperties::shading () const
 {
 	return getBrowser () -> getBrowserOptions () -> shading ();
-}
-
-SFBool &
-RenderingProperties::antialiased ()
-{
-	return getBrowser () -> getBrowserOptions () -> antialiased ();
-}
-
-const SFBool &
-RenderingProperties::antialiased () const
-{
-	return getBrowser () -> getBrowserOptions () -> antialiased ();
 }
 
 //

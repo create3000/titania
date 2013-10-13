@@ -55,27 +55,26 @@
 #include <set>
 #include <string>
 
-#include "Test.h"
-
-//#include "Tests/Rotation.h"
-//#include "Tests/AddAndRemoveNode.h"
-//#include "Tests/Hierarchy.h"
-//#include "Tests/FieldInterest.h"
-
-//////#include "Tests/AddAndRemoveNode.h"
-
 #include <Titania/X3D.h>
 #include <Titania/OS.h>
 #include <gtkmm.h>
 
-
 using namespace titania;
-using namespace titania::Test;
+
+struct Test
+{
+void
+set_initialized (const X3D::X3DSFNode <X3D::Browser> & browser)
+{
+	browser -> initialized () .removeInterest (this, &Test::set_initialized);
+	browser -> loadURL ({ "/home/holger/Projekte/Titania/Library/Examples/ICTS/stage/index__6.T.wrl" });
+}
+};
 
 int
 main (int argc, char* argv [ ])
 {
-	install_signal_hander ();
+	//install_signal_hander ();
 	
 	os::env ("UBUNTU_MENUPROXY", "libappmenu.so");
 
@@ -91,13 +90,18 @@ main (int argc, char* argv [ ])
 		{
 			Gtk::Main kit (argc, argv);
 
-			auto builder = Gtk::Builder::create_from_file ("/home/holger/Projekte/Titania/Titania/share/titania/ui/BrowserWindow.ui");
+			Gtk::Window window;
+			window .show ();
+			
+			Test test;
+			
+			auto browser = X3D::createBrowser ();
+			browser -> getRenderingProperties () -> enabled () = true;
+			browser -> initialized () .addInterest (&test, &Test::set_initialized, browser);
+			browser -> show ();
+			window .add (*browser);
 
-			Gtk::Window* window;
-			builder -> get_widget ("Window", window);
-			window -> show_all ();
-
-			Gtk::Main::run (*window);
+			Gtk::Main::run (window);
 		}
 
 		std::clog << "End of block ..." << std::endl;

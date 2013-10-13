@@ -76,6 +76,7 @@ OutlineEditor::initialize ()
 
 	getViewport () .add (treeview);
 
+	treeview .setup ();
 	treeview .show ();
 }
 

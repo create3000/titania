@@ -107,9 +107,11 @@ X3DBrowserSurface::set_changed ()
 {
 	//Glib::signal_idle () .connect_once (sigc::mem_fun (*this, &Gtk::Widget::queue_draw));
 	
-	queue_draw ();
+	//queue_draw ();
 
-	get_window () -> process_updates (false);
+	//get_window () -> invalidate_rect (get_allocation (), false);
+
+	//get_window () -> process_updates (false);
 }
 
 void

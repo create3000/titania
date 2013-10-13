@@ -361,6 +361,9 @@ private:
 	initialize () final;
 
 	void
+	set_antialiased ();
+
+	void
 	set_textureQuality ();
 
 	void

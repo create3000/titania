@@ -303,7 +303,7 @@ X3DRenderer::navigation ()
 	glPushMatrix ();
 
 	{
-		// Render opaque objects first
+		// Render all objects
 
 		glEnable (GL_DEPTH_TEST);
 		glDepthMask (GL_TRUE);

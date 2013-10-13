@@ -174,10 +174,12 @@ public:
 	{ return *fields .maxLights; }
 
 	SFBool &
-	antialiased ();
+	antialiased ()
+	{ return *fields .antialiased; }
 
 	const SFBool &
-	antialiased () const;
+	antialiased () const
+	{ return *fields .antialiased; }
 
 	SFInt32 &
 	colorDepth ()
@@ -266,6 +268,7 @@ private:
 		SFInt32* const maxTextureSize;
 		SFInt32* const textureUnits;
 		SFInt32* const maxLights;
+		SFBool* const antialiased;
 		SFInt32* const colorDepth;
 		SFDouble* const textureMemory;
 	};

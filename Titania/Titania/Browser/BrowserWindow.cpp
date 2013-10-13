@@ -72,7 +72,12 @@ BrowserWindow::BrowserWindow (const X3D::X3DSFNode <X3D::Browser> & browserSurfa
 	   outlineEditor (this),
 	            keys (),
 	       importURL ()
-{ }
+{
+	if (getConfig () .boolean ("transparent"))
+		setTransparent (true);
+	else
+		getBrowserSurface () -> set_visual (4); // 4 x Antialiasing
+}
 
 void
 BrowserWindow::initialize ()

@@ -652,7 +652,6 @@ X3DBrowserContext::update ()
 			getWorld () -> traverse (TraverseType::COLLECT);
 
 			displayed () .processInterests ();
-
 			swapBuffers ();
 
 			// Finish

@@ -67,6 +67,7 @@
 #include "../Geometry3D/QuadSphereOptions.h"
 #include "../Geometry3D/X3DSphereOptionNode.h"
 #include "../Properties/MotionBlur.h"
+#include "../X3DBrowser.h"
 
 #include "../../Rendering/OpenGL.h"
 
@@ -102,7 +103,7 @@ BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
 	             dashboard (new SFBool (true)),
 	            rubberBand (new SFBool (true)),
 	enableInlineViewpoints (new SFBool (true)),
-	           antialiased (new SFBool ()),
+	           antialiased (new SFBool (true)),
 	        textureQuality (new SFString ("MEDIUM")),
 	      primitiveQuality (new SFString ("MEDIUM")),
 	     qualityWhenMoving (new SFString ("MEDIUM")),
@@ -195,9 +196,12 @@ BrowserOptions::initialize ()
 	lineProperties () -> applied () = false;
 	fillProperties () -> hatched () = false;
 
+	antialiased ()      .addInterest (this, &BrowserOptions::set_antialiased);
+	textureQuality ()   .addInterest (this, &BrowserOptions::set_textureQuality);
 	primitiveQuality () .addInterest (this, &BrowserOptions::set_primitiveQuality);
 	shading ()          .addInterest (this, &BrowserOptions::set_shading);
 
+	set_antialiased ();
 	set_textureQuality ();
 	set_primitiveQuality ();
 	set_shading ();
@@ -228,12 +232,54 @@ BrowserOptions::motionBlurIntensity () const
 }
 
 void
+BrowserOptions::set_antialiased ()
+{
+	if (antialiased ())
+	{
+		glEnable (GL_MULTISAMPLE);
+
+		GLint sampleBuffers, samples;
+
+		glGetIntegerv (GL_SAMPLE_BUFFERS, &sampleBuffers);
+		glGetIntegerv (GL_SAMPLES, &samples);
+
+		getBrowser () -> getRenderingProperties () -> antialiased () = sampleBuffers and samples;
+
+		__LOG__ << "Number of sample buffers: " << sampleBuffers << std::endl;
+		__LOG__ << "Number of samples: " << samples << std::endl;
+	}
+	else
+	{
+		glDisable (GL_MULTISAMPLE);
+		getBrowser () -> getRenderingProperties () -> antialiased () = false;
+	}
+
+}
+
+void
 BrowserOptions::set_textureQuality ()
 {
-	textureProperties () -> magnificationFilter () = "NICEST";
-	textureProperties () -> minificationFilter ()  = "NICEST";
-	textureProperties () -> textureCompression ()  = "NICEST";
-	textureProperties () -> generateMipMaps ()     = true;
+	if (primitiveQuality () == "LOW")
+	{
+		textureProperties () -> magnificationFilter () = "FASTEST";
+		textureProperties () -> minificationFilter ()  = "FASTEST";
+		textureProperties () -> textureCompression ()  = "FASTEST";
+		textureProperties () -> generateMipMaps ()     = false;
+	}
+	else if (primitiveQuality () == "MEDIUM")
+	{
+		textureProperties () -> magnificationFilter () = "NICEST";
+		textureProperties () -> minificationFilter ()  = "NICEST";
+		textureProperties () -> textureCompression ()  = "NICEST";
+		textureProperties () -> generateMipMaps ()     = true;
+	}
+	else if (primitiveQuality () == "HIGH")
+	{
+		textureProperties () -> magnificationFilter () = "NICEST";
+		textureProperties () -> minificationFilter ()  = "NICEST";
+		textureProperties () -> textureCompression ()  = "NICEST";
+		textureProperties () -> generateMipMaps ()     = true;
+	}
 }
 
 void

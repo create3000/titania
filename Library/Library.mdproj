@@ -2325,6 +2325,8 @@
     <None Include="Examples\BIC\stage\worlds\bic-wegweiser.wrl" />
     <None Include="Examples\Mikroben\stage\index.wrl.gz" />
     <None Include="Examples\Mikroben\stage\index.wrl" />
+    <None Include="Examples\ICTS\stage\index__6.T.wrl" />
+    <None Include="Tests\Scripting\Antialiasing.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

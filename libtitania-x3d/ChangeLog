@@ -1,3 +1,14 @@
+2013-10-13  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DRenderer.cpp:
+	* X3DBrowserContext.cpp:
+	* X3DBrowserSurface.cpp:
+	* Viewpoint.cpp:
+	* BrowserOptions.h:
+	* BrowserOptions.cpp:
+	* RenderingProperties.h:
+	* RenderingProperties.cpp: 
+
 2013-10-12  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* x3d+binary.xml: 

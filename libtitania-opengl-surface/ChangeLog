@@ -1,3 +1,9 @@
+2013-10-13  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Surface.h:
+	* Surface.cpp:
+	* WindowContext.cpp: 
+
 2013-10-12  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Surface.cpp: 

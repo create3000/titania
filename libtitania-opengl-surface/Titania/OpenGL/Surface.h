@@ -69,6 +69,9 @@ public:
 	virtual
 	~Surface ();
 
+	void
+	set_visual (int32_t = 4);
+
 	bool
 	makeCurrent () const;
 

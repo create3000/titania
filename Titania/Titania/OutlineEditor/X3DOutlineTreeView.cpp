@@ -82,6 +82,7 @@ X3DOutlineTreeView::X3DOutlineTreeView () :
 	treeviewcolumn_name -> set_expand (false);
 
 	// CellRenderer
+
 	treeviewcolumn_name -> pack_start (*cellrenderer, false);
 	treeviewcolumn_name -> add_attribute (*cellrenderer, "tree-data",           OutlineTreeModel::DATA_COLUMN);
 	treeviewcolumn_name -> add_attribute (*cellrenderer, "foreground-set",      OutlineTreeModel::SELECTED_COLUMN);
@@ -92,10 +93,16 @@ X3DOutlineTreeView::X3DOutlineTreeView () :
 	// Append column
 
 	append_column (*treeviewcolumn_name);
+}
 
+void
+X3DOutlineTreeView::setup ()
+{
 	// Register browser interest
 
-	getBrowser () -> initialized () .addInterest (this, &X3DOutlineTreeView::set_world);
+	getBrowser () -> initialized () .addInterest (this, &X3DOutlineTreeView::set_initialized);
+	
+	set_initialized ();
 }
 
 void
@@ -202,7 +209,7 @@ X3DOutlineTreeView::get_shift_key ()
 }
 
 void
-X3DOutlineTreeView::set_world ()
+X3DOutlineTreeView::set_initialized ()
 {
 	//__LOG__ << std::endl;
 

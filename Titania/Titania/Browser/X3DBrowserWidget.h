@@ -98,6 +98,9 @@ protected:
 	void
 	updateTitle (bool) const;
 
+	void
+	setTransparent (bool);
+
 
 private:
 
@@ -122,9 +125,6 @@ private:
 
 	void
 	loadIcon ();
-
-	void
-	setTransparent (bool);
 
 	bool
 	statistics ();

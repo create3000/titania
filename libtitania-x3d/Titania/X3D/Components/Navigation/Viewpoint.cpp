@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -61,7 +61,7 @@ const std::string Viewpoint::typeName       = "Viewpoint";
 const std::string Viewpoint::containerField = "children";
 
 Viewpoint::Fields::Fields () :
-	position (new SFVec3f (0, 0, 10)),
+	   position (new SFVec3f (0, 0, 10)),
 	fieldOfView (new SFFloat (0.785398))
 { }
 
@@ -132,7 +132,8 @@ Viewpoint::reshape (const float zNear, const float zFar)
 	size_t width  = viewport [2];
 	size_t height = viewport [3];
 
-	float fov = fieldOfView () > 0 and fieldOfView () < M_PI ? fieldOfView () : M_PI / 4;
+	float fov = fieldOfView () > 0 and fieldOfView () < M_PI ? fieldOfView () :
+						M_PI / 4;
 	float ratio = std::tan (fov / 2) * zNear;
 
 	if (width > height)
