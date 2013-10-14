@@ -244,9 +244,6 @@ BrowserOptions::set_antialiased ()
 		glGetIntegerv (GL_SAMPLES, &samples);
 
 		getBrowser () -> getRenderingProperties () -> antialiased () = sampleBuffers and samples;
-
-		__LOG__ << "Number of sample buffers: " << sampleBuffers << std::endl;
-		__LOG__ << "Number of samples: " << samples << std::endl;
 	}
 	else
 	{
@@ -259,33 +256,63 @@ BrowserOptions::set_antialiased ()
 void
 BrowserOptions::set_textureQuality ()
 {
-	if (primitiveQuality () == "LOW")
+	if (textureQuality () == "HIGH")
+	{
+		textureProperties () -> magnificationFilter () = "NICEST";
+		textureProperties () -> minificationFilter ()  = "NICEST";
+		textureProperties () -> textureCompression ()  = "NICEST";
+		textureProperties () -> generateMipMaps ()     = true;
+
+		glHint (GL_GENERATE_MIPMAP_HINT,        GL_NICEST);
+		glHint (GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+		return;
+	}
+
+	if (textureQuality () == "LOW")
 	{
 		textureProperties () -> magnificationFilter () = "FASTEST";
 		textureProperties () -> minificationFilter ()  = "FASTEST";
 		textureProperties () -> textureCompression ()  = "FASTEST";
 		textureProperties () -> generateMipMaps ()     = false;
+	
+		glHint (GL_GENERATE_MIPMAP_HINT,        GL_FASTEST);
+		glHint (GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
+		return;
 	}
-	else if (primitiveQuality () == "MEDIUM")
-	{
-		textureProperties () -> magnificationFilter () = "NICEST";
-		textureProperties () -> minificationFilter ()  = "NICEST";
-		textureProperties () -> textureCompression ()  = "NICEST";
-		textureProperties () -> generateMipMaps ()     = true;
-	}
-	else if (primitiveQuality () == "HIGH")
-	{
-		textureProperties () -> magnificationFilter () = "NICEST";
-		textureProperties () -> minificationFilter ()  = "NICEST";
-		textureProperties () -> textureCompression ()  = "NICEST";
-		textureProperties () -> generateMipMaps ()     = true;
-	}
+
+	// MEDIUM
+
+	textureProperties () -> magnificationFilter () = "NICEST";
+	textureProperties () -> minificationFilter ()  = "AVG_PIXEL_NEAREST_MIPMAP";
+	textureProperties () -> textureCompression ()  = "MEDIUM";
+	textureProperties () -> generateMipMaps ()     = true;
+
+	glHint (GL_GENERATE_MIPMAP_HINT,        GL_FASTEST);
+	glHint (GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
 }
 
 void
 BrowserOptions::set_primitiveQuality ()
 {
 	std::clog << "Setting primitive quality to " << primitiveQuality () << "." << std::endl;
+
+	if (primitiveQuality () == "HIGH")
+	{
+		arc2DOptions ()      -> minAngle () = M_PI / 40;
+		arcClose2DOptions () -> minAngle () = M_PI / 40;
+		circle2DOptions ()   -> segments () = 100;
+		disc2DOptions ()     -> segments () = 100;
+
+		auto quadSphereProperties = dynamic_cast <QuadSphereOptions*> (sphereOptions () .getValue ());
+
+		if (quadSphereProperties)
+		{
+			quadSphereProperties -> uDimension () = 80;
+			quadSphereProperties -> vDimension () = 40;
+		}
+
+		return;
+	}
 
 	if (primitiveQuality () == "LOW")
 	{
@@ -301,36 +328,23 @@ BrowserOptions::set_primitiveQuality ()
 			quadSphereProperties -> uDimension () = 20;
 			quadSphereProperties -> vDimension () = 10;
 		}
+		
+		return;
 	}
-	else if (primitiveQuality () == "MEDIUM")
+
+	// MEDIUM
+
+	arc2DOptions ()      -> minAngle () = M_PI / 20;
+	arcClose2DOptions () -> minAngle () = M_PI / 20;
+	circle2DOptions ()   -> segments () = 60;
+	disc2DOptions ()     -> segments () = 60;
+
+	auto quadSphereProperties = dynamic_cast <QuadSphereOptions*> (sphereOptions () .getValue ());
+
+	if (quadSphereProperties)
 	{
-		arc2DOptions ()      -> minAngle () = M_PI / 20;
-		arcClose2DOptions () -> minAngle () = M_PI / 20;
-		circle2DOptions ()   -> segments () = 60;
-		disc2DOptions ()     -> segments () = 60;
-
-		auto quadSphereProperties = dynamic_cast <QuadSphereOptions*> (sphereOptions () .getValue ());
-
-		if (quadSphereProperties)
-		{
-			quadSphereProperties -> uDimension () = 40;
-			quadSphereProperties -> vDimension () = 20;
-		}
-	}
-	else if (primitiveQuality () == "HIGH")
-	{
-		arc2DOptions ()      -> minAngle () = M_PI / 40;
-		arcClose2DOptions () -> minAngle () = M_PI / 40;
-		circle2DOptions ()   -> segments () = 100;
-		disc2DOptions ()     -> segments () = 100;
-
-		auto quadSphereProperties = dynamic_cast <QuadSphereOptions*> (sphereOptions () .getValue ());
-
-		if (quadSphereProperties)
-		{
-			quadSphereProperties -> uDimension () = 80;
-			quadSphereProperties -> vDimension () = 40;
-		}
+		quadSphereProperties -> uDimension () = 40;
+		quadSphereProperties -> vDimension () = 20;
 	}
 }
 
@@ -338,16 +352,15 @@ void
 BrowserOptions::set_shading ()
 {
 	std::clog << "Setting shading to " << shading () << "." << std::endl;
+	
+	getBrowser () -> getRenderingProperties () -> shading () = shading ();
 
 	if (shading () == "PHONG")
 	{
 		glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
 		glShadeModel (GL_SMOOTH);
-	}
-	else if (shading () == "GOURAUD")
-	{
-		glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
-		glShadeModel (GL_SMOOTH);
+
+		getBrowser () -> getRenderingProperties () -> shading () = "GOURAUD";
 	}
 	else if (shading () == "FLAT")
 	{
@@ -363,6 +376,13 @@ BrowserOptions::set_shading ()
 	{
 		glPolygonMode (GL_FRONT_AND_BACK, GL_POINT);
 		glShadeModel (GL_SMOOTH);
+	}
+	else // GOURAUD
+	{
+		glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
+		glShadeModel (GL_SMOOTH);
+
+		getBrowser () -> getRenderingProperties () -> shading () = "GOURAUD";
 	}
 }
 

@@ -189,9 +189,7 @@ X3DBrowserContext::initialize ()
 		glLightModeli  (GL_LIGHT_MODEL_TWO_SIDE,      GL_TRUE);
 		glLightModeli  (GL_LIGHT_MODEL_COLOR_CONTROL, GL_SEPARATE_SPECULAR_COLOR);
 
-		glHint (GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-		glHint (GL_GENERATE_MIPMAP_HINT,        GL_NICEST);
-		glHint (GL_FOG_HINT,                    GL_NICEST);
+		glHint (GL_FOG_HINT, GL_NICEST);
 
 		glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
 

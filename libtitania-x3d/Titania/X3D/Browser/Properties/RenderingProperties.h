@@ -61,9 +61,11 @@ namespace titania {
 namespace X3D {
 
 // Property Name     Value data type      Description
+// MaxThreads        Integer              The maximum number of parallel threads supported.
 // Shading           String               The type of shading algorithm in use. Typical values are Flat, Gouraud, Phong, Wireframe.
-// MaxTextureSize    Integer              The maximum texture size supported. The format shall be WIDTHxHEIGHT describing the number of pixels in each direction (for example 1024x1024).
+// MaxTextureSize    String               The maximum texture size supported. The format shall be WIDTHxHEIGHT describing the number of pixels in each direction (for example 1024x1024).
 // TextureUnits      Integer              The number of texture units supported for doing multitexture.
+// MaxLights         Integer              The maximum number of lights supported.
 // AntiAliased       Boolean              True or false if the rendering is currently anti-aliased or not
 // ColorDepth        Integer              The number of bits of colour depth supported by the screen. Allows for optimized selection of textures, particularly for lower colour depth screen capabilities.
 // TextureMemory     Float                The amount of memory in megabytes available for textures to be placed on the video card.
@@ -144,10 +146,12 @@ public:
 	{ return *fields .maxThreads; }
 
 	SFString &
-	shading ();
+	shading ()
+	{ return *fields .shading; }
 
 	const SFString &
-	shading () const;
+	shading () const
+	{ return *fields .shading; }
 
 	SFInt32 &
 	maxTextureSize ()
@@ -265,6 +269,7 @@ private:
 		SFString* const renderer;
 		SFString* const version;
 		SFInt32* const maxThreads;
+		SFString* const shading;
 		SFInt32* const maxTextureSize;
 		SFInt32* const textureUnits;
 		SFInt32* const maxLights;

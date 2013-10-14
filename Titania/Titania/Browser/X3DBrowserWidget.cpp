@@ -68,9 +68,8 @@ namespace puck {
 X3DBrowserWidget::X3DBrowserWidget (const basic::uri & worldURL) :
 	X3DBrowserWindowInterface (get_ui ("BrowserWindow.ui"), gconf_dir ())
 {
-	getConfig () .setItem ("url", worldURL);
-
 	// User interface
+	getConfig () .setItem ("url", worldURL);
 
 	// Browser
 	X3D::getBrowser () -> getBrowserOptions () -> splashScreen () = true;

@@ -148,17 +148,14 @@ TextureProperties::getBoundaryModeR () const
 GLenum
 TextureProperties::getMinificationFilter () const
 {
-	if (minificationFilter () == "AVG_PIXEL")
-		return GL_LINEAR;
-
 	if (minificationFilter () == "AVG_PIXEL_AVG_MIPMAP")
 		return GL_LINEAR_MIPMAP_LINEAR;
 
+	if (minificationFilter () == "AVG_PIXEL")
+		return GL_LINEAR;
+
 	if (minificationFilter () == "AVG_PIXEL_NEAREST_MIPMAP")
 		return GL_LINEAR_MIPMAP_NEAREST;
-
-	if (minificationFilter () == "NEAREST_PIXEL")
-		return GL_NEAREST;
 
 	if (minificationFilter () == "NEAREST_PIXEL_AVG_MIPMAP")
 		return GL_NEAREST_MIPMAP_LINEAR;
@@ -166,13 +163,16 @@ TextureProperties::getMinificationFilter () const
 	if (minificationFilter () == "NEAREST_PIXEL_NEAREST_MIPMAP")
 		return GL_NEAREST_MIPMAP_NEAREST;
 
+	if (minificationFilter () == "NEAREST_PIXEL")
+		return GL_NEAREST;
+
 	if (minificationFilter () == "DEFAULT")
 		return x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties ()) -> getMinificationFilter ();
 
 	if (minificationFilter () == "FASTEST")
 		return GL_NEAREST;
 
-	// if (minificationFilter == "NICEST")
+	// NICEST
 	return generateMipMaps ()
 	       ? GL_LINEAR_MIPMAP_LINEAR
 			 : GL_LINEAR;
@@ -193,21 +193,21 @@ TextureProperties::getMagnificationFilter () const
 	if (magnificationFilter () == "FASTEST")
 		return GL_NEAREST;
 
-	// if (magnificationFilter == "NICEST")
+	// NICEST
 	return GL_LINEAR;
 }
 
 CompressionMode
 TextureProperties::getTextureCompression () const
 {
-	if (textureCompression () == "LOW")
-		return CompressionMode::LOW;
+	if (textureCompression () == "HIGH")
+		return CompressionMode::HIGH;
 
 	if (textureCompression () == "MEDIUM")
 		return CompressionMode::MEDIUM;
 
-	if (textureCompression () == "HIGH")
-		return CompressionMode::HIGH;
+	if (textureCompression () == "LOW")
+		return CompressionMode::LOW;
 
 	if (textureCompression () == "DEFAULT")
 		return x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties ()) -> getTextureCompression ();
@@ -215,7 +215,7 @@ TextureProperties::getTextureCompression () const
 	if (textureCompression () == "FASTEST")
 		return CompressionMode::FASTEST;
 
-	//if (textureCompression == "NICEST")
+	// NICEST
 	return CompressionMode::NICEST;
 
 }

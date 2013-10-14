@@ -202,9 +202,6 @@ Appearance::set_shaders ()
 void
 Appearance::draw ()
 {
-	glUseProgram (0);
-	glBindProgramPipeline (0);
-
 	// Material
 
 	if (_material)
@@ -229,6 +226,12 @@ Appearance::draw ()
 
 	if (_shader)
 		_shader -> draw ();
+
+	else
+	{
+		glUseProgram (0);
+		glBindProgramPipeline (0);
+	}
 }
 
 } // X3D
