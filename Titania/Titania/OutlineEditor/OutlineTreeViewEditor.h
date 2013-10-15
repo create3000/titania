@@ -65,7 +65,7 @@ public:
 
 	///  @name Construction
 
-	OutlineTreeViewEditor (BrowserWindow* const);
+	OutlineTreeViewEditor (BrowserWindow* const, const X3D::X3DSFNode <X3D::X3DExecutionContext> &);
 
 
 private:

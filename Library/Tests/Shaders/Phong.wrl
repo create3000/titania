@@ -9,7 +9,9 @@ Background {
 Transform {
   children Shape {
     appearance Appearance {
-      material Material { }
+      material Material {
+        diffuseColor 1 0 0
+      }
       shaders DEF Phong ComposedShader {
         language "GLSL"
         parts [
@@ -45,7 +47,7 @@ void main (void)
 
 	for (int i = 0; i < MAX_LIGHTS; ++ i)
 	{
-		vec3 L = normalize (gl_LightSource [i] .position .xyz - v);
+		vec3 L = normalize (gl_LightSource [i] .position .xyz);
 		vec3 E = normalize (-v);                                      /* we are in Eye Coordinates, so EyePos is (0, 0, 0) */
 		vec3 R = normalize (-reflect (L, N));
 

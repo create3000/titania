@@ -96,8 +96,16 @@ LineProperties::draw ()
 		else
 			glLineStipple (1, linetypes [1]);
 
-		glLineWidth (linewidthScaleFactor ());
-		glPointSize (linewidthScaleFactor ());
+		if (linewidthScaleFactor () > 0)
+		{
+			glLineWidth (linewidthScaleFactor ());
+			glPointSize (linewidthScaleFactor ());
+		}
+		else
+		{
+			glLineWidth (1);
+			glPointSize (1);
+		}
 	}
 	else
 	{

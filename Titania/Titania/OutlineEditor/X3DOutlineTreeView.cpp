@@ -58,11 +58,11 @@
 namespace titania {
 namespace puck {
 
-X3DOutlineTreeView::X3DOutlineTreeView () :
+X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DSFNode <X3D::X3DExecutionContext> & executionContext) :
 	              Gtk::TreeView (),
 	X3DOutlineTreeViewInterface (get_ui ("OutlineTreeView.ui"), gconf_dir ()),
-	                      model (OutlineTreeModel::create (getBrowserWindow ())),
-	               cellrenderer (Gtk::manage (new OutlineCellRenderer (getBrowser ()))),
+	                      model (OutlineTreeModel::create (getBrowserWindow (), executionContext)),
+	               cellrenderer (Gtk::manage (new OutlineCellRenderer (getBrowser (), this))),
 	                expandLevel (0)
 {
 	// Options
@@ -93,16 +93,10 @@ X3DOutlineTreeView::X3DOutlineTreeView () :
 	// Append column
 
 	append_column (*treeviewcolumn_name);
-}
-
-void
-X3DOutlineTreeView::setup ()
-{
-	// Register browser interest
-
-	getBrowser () -> initialized () .addInterest (this, &X3DOutlineTreeView::set_initialized);
 	
-	set_initialized ();
+	//
+
+	set_execution_context (executionContext);
 }
 
 void
@@ -209,18 +203,18 @@ X3DOutlineTreeView::get_shift_key ()
 }
 
 void
-X3DOutlineTreeView::set_initialized ()
+X3DOutlineTreeView::set_execution_context (const X3D::X3DSFNode <X3D::X3DExecutionContext> & executionContext)
 {
 	//__LOG__ << std::endl;
 
 	for (const auto & child : get_model () -> children ())
 		unwatch_tree (child);
-		
-	//getBrowser () -> getExecutionContext () -> getRootNodes () .removeInterest (this, &X3DOutlineTreeView::set_rootNodes);
+	
+	get_model () -> get_execution_context () -> getRootNodes () .removeInterest (this, &X3DOutlineTreeView::set_rootNodes);
 
-	set_model (OutlineTreeModel::create (getBrowserWindow ()));
+	set_model (OutlineTreeModel::create (getBrowserWindow (), executionContext));
 
-	getBrowser () -> getExecutionContext () -> getRootNodes () .addInterest (this, &X3DOutlineTreeView::set_rootNodes);
+	executionContext -> getRootNodes () .addInterest (this, &X3DOutlineTreeView::set_rootNodes);
 
 	set_rootNodes ();
 }
@@ -598,7 +592,7 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 						{
 							if (not field -> isInitializeable () or node -> isDefaultValue (field))
 							{
-								if (field -> getInputRoutes () .empty () and field -> getOutputRoutes () .empty ())
+								if (not get_model () -> get_input_routes (field) and not get_model () -> get_output_routes (field))
 									continue;
 							}
 
@@ -639,10 +633,16 @@ void
 X3DOutlineTreeView::expand_routes (const Gtk::TreeModel::iterator & iter, X3D::X3DFieldDefinition* field)
 {
 	for (const auto & route : field -> getInputRoutes ())
-		get_model () -> append (iter, OutlineIterType::X3DInputRoute, route);
+	{
+		if (route -> getSourceNode () -> getExecutionContext () == get_model () -> get_execution_context ())
+			get_model () -> append (iter, OutlineIterType::X3DInputRoute, route);
+	}
 
 	for (const auto & route : field -> getOutputRoutes ())
-		get_model () -> append (iter, OutlineIterType::X3DOutputRoute, route);
+	{
+		if (route -> getDestinationNode () -> getExecutionContext () == get_model () -> get_execution_context ())
+			get_model () -> append (iter, OutlineIterType::X3DOutputRoute, route);
+	}
 }
 
 void

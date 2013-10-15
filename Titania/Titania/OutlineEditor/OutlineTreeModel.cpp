@@ -60,13 +60,13 @@ const std::string OutlineTreeModel::componentName  = "BrowserWindow";
 const std::string OutlineTreeModel::typeName       = "OutlineTreeModel";
 const std::string OutlineTreeModel::containerField = "model";
 
-OutlineTreeModel::OutlineTreeModel (BrowserWindow* const browserWindow) :
+OutlineTreeModel::OutlineTreeModel (BrowserWindow* const browserWindow, const X3D::X3DSFNode <X3D::X3DExecutionContext> & executionContext) :
 	X3D::X3DBaseNode (browserWindow -> getBrowser (), browserWindow -> getExecutionContext ()),
 	Glib::ObjectBase (typeid (OutlineTreeModel)),
 	X3DBaseInterface (browserWindow),
 	    Glib::Object (),
 	  Gtk::TreeModel (),
-	executionContext (getBrowser () -> getExecutionContext ()),
+	executionContext (executionContext),
 	            tree (),
 	           stamp (reinterpret_cast <long int> (this))
 {
@@ -74,10 +74,10 @@ OutlineTreeModel::OutlineTreeModel (BrowserWindow* const browserWindow) :
 }
 
 Glib::RefPtr <OutlineTreeModel>
-OutlineTreeModel::create (BrowserWindow* const browserWindow)
+OutlineTreeModel::create (BrowserWindow* const browserWindow, const X3D::X3DSFNode <X3D::X3DExecutionContext> & executionContext)
 {
 	//__LOG__ << std::endl;
-	return Glib::RefPtr <OutlineTreeModel> (new OutlineTreeModel (browserWindow));
+	return Glib::RefPtr <OutlineTreeModel> (new OutlineTreeModel (browserWindow, executionContext));
 }
 
 bool
@@ -131,6 +131,28 @@ std::deque <OutlineTreeData*>
 OutlineTreeModel::get_parents (const iterator & iter) const
 {
 	return tree .get_parents (get_path (iter));
+}
+
+size_t
+OutlineTreeModel::get_input_routes (X3D::X3DFieldDefinition* const field) const
+{
+	bool size = 0;
+	
+	for (const auto & route : field -> getInputRoutes ())
+		size += route -> getSourceNode () -> getExecutionContext () == executionContext;
+	
+	return size;
+}
+
+size_t
+OutlineTreeModel::get_output_routes (X3D::X3DFieldDefinition* const field) const
+{
+	bool size = 0;
+
+	for (const auto & route : field -> getOutputRoutes ())
+		size += route -> getDestinationNode () -> getExecutionContext () == executionContext;
+	
+	return size;
 }
 
 void
@@ -380,7 +402,7 @@ OutlineTreeModel::iter_has_child_vfunc (const iterator & iter) const
 		{
 			auto field = static_cast <X3D::X3DFieldDefinition*> (get_object (iter));
 
-			bool size = field -> getInputRoutes () .size () + field -> getOutputRoutes () .size ();
+			bool size = get_input_routes (field) + get_output_routes (field);
 
 			switch (field -> getType ())
 			{

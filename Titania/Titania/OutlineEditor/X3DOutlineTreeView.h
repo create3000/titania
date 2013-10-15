@@ -71,16 +71,14 @@ class X3DOutlineTreeView :
 {
 public:
 
-	///  @name Construction
-
-	void
-	setup ();
-
 	///  @name Member access
 
 	const Glib::RefPtr <OutlineTreeModel> &
 	get_model () const
 	{ return model; }
+
+	void
+	set_execution_context (const X3D::X3DSFNode <X3D::X3DExecutionContext> &);
 
 	///  @name Iter access
 
@@ -120,7 +118,7 @@ protected:
 
 	///  @name Construction
 
-	X3DOutlineTreeView ();
+	X3DOutlineTreeView (const X3D::X3DSFNode <X3D::X3DExecutionContext> &);
 
 	///  @name Member access
 
@@ -158,9 +156,6 @@ private:
 
 	Gtk::TreeModel::Path
 	get_open_path (const Gtk::TreeModel::iterator &) const;
-
-	void
-	set_initialized ();
 
 	void
 	set_rootNodes ();

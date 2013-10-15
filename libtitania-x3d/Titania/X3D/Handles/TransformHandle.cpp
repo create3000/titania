@@ -187,44 +187,20 @@ TransformHandle::traverse (const TraverseType type)
 {
 	transform -> traverse (type);
 
-	switch (type)
+	glPushMatrix ();
+
+	glMultMatrixf (transform -> getMatrix () .data ());
+
+	if (type == TraverseType::CAMERA) // Last chance to process events
+		reshape ();
+
+	for (const auto & rootNode : scene -> getRootNodes ())
 	{
-		case TraverseType::PICKING:
-		case TraverseType::CAMERA:
-		case TraverseType::NAVIGATION:
-		case TraverseType::COLLISION:
-		{
-			glPushMatrix ();
-
-			glMultMatrixf (transform -> getMatrix () .data ());
-
-			for (const auto & rootNode : scene -> getRootNodes ())
-			{
-				if (rootNode)
-					rootNode -> traverse (type);
-			}
-
-			glPopMatrix ();
-			break;
-		}
-		case TraverseType::COLLECT:
-		{
-			glPushMatrix ();
-
-			glMultMatrixf (transform -> getMatrix () .data ());
-
-			reshape ();
-
-			for (const auto & rootNode : scene -> getRootNodes ())
-			{
-				if (rootNode)
-					rootNode -> traverse (type);
-			}
-
-			glPopMatrix ();
-			break;
-		}
+		if (rootNode)
+			rootNode -> traverse (type);
 	}
+
+	glPopMatrix ();
 }
 
 void

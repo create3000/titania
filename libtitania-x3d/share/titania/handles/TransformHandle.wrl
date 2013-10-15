@@ -32,6 +32,71 @@ function set_time (value, time)
   }
 }
 
+PROTO HandleShader [ ]
+{
+  # This is a phong shader where the light position is in the center of the object
+  ComposedShader {
+    language "GLSL"
+    parts [
+      ShaderPart {
+        url "data:text/plain,
+#version 120
+
+varying vec3 N;
+varying vec3 v;
+
+void main(void)  
+{     
+	v = vec3 (gl_ModelViewMatrix * gl_Vertex);
+	N = normalize (gl_NormalMatrix * gl_Normal);
+
+	gl_Position = ftransform ();
+}
+"
+      }
+      ShaderPart {
+        type "FRAGMENT"
+        url "data:text/plain,
+#version 120
+
+varying vec3 N;
+varying vec3 v;
+
+int MAX_LIGHTS = 1;
+
+void main (void)
+{
+	vec4 finalColor = vec4 (0, 0, 0, 0);
+
+	for (int i = 0; i < MAX_LIGHTS; ++ i)
+	{
+		vec3 L = normalize (-v);
+		vec3 E = normalize (-v);                                      /* we are in Eye Coordinates, so EyePos is (0, 0, 0) */
+		vec3 R = normalize (-reflect (L, N));
+
+		/* Calculate Ambient Term: */
+		vec4 Iamb = gl_FrontLightProduct [i] .ambient;
+
+		/* Calculate Diffuse Term: */
+		vec4 Idiff = gl_FrontLightProduct [i] .diffuse * max (dot (N, L), 0);
+		Idiff = clamp (Idiff, 0, 1);
+
+		/* Calculate Specular Term: */
+		vec4 Ispec = gl_FrontLightProduct[i] .specular * pow (max (dot (R, E), 0), 0.3 * gl_FrontMaterial .shininess);
+		Ispec = clamp (Ispec, 0, 1);
+
+		/* Write Total Color: */
+		finalColor += Iamb + Idiff + Ispec;
+	}
+	
+	gl_FragColor = gl_FrontLightModelProduct .sceneColor + finalColor;
+}
+"
+      }
+    ]
+  }
+}
+
 PROTO TransformHandle [
   # required fields
   exposedField SFMatrix4f cameraSpaceMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
@@ -49,6 +114,11 @@ PROTO TransformHandle [
         scale IS bboxSize
         children [
           DEF BBox Shape {
+            appearance Appearance {
+              material Material {
+                emissiveColor 0.35 1 0.7
+              }
+            }
             geometry IndexedLineSet {
               coordIndex [ 0, 1, 2, 3, 0, -1, 4, 5, 6, 7, 4, -1, 0, 4, -1, 3, 7, -1, 1, 5, -1, 2, 6, -1 ]
               coord Coordinate {
@@ -75,7 +145,9 @@ PROTO TransformHandle [
           DEF Front Transform {
             children Transform {
               children [
-                DEF FrontSensor PlaneSensor { }
+                DEF FrontSensor PlaneSensor {
+                  autoOffset FALSE
+                }
                 DEF Plane Shape {
                   appearance Appearance {
                     material Material {
@@ -93,7 +165,9 @@ PROTO TransformHandle [
             children Transform {
               rotation 0 1 0 1.5708
               children [
-                DEF RightSensor PlaneSensor { }
+                DEF RightSensor PlaneSensor {
+                  autoOffset FALSE
+                }
                 USE Plane
               ]
             }
@@ -102,7 +176,9 @@ PROTO TransformHandle [
             children Transform {
               rotation 0 1 0 3.14159
               children [
-                DEF BackSensor PlaneSensor { }
+                DEF BackSensor PlaneSensor {
+                  autoOffset FALSE
+                }
                 USE Plane
               ]
             }
@@ -111,7 +187,9 @@ PROTO TransformHandle [
             children Transform {
               rotation 0 -1 0 1.5708
               children [
-                DEF LeftSensor PlaneSensor { }
+                DEF LeftSensor PlaneSensor {
+                  autoOffset FALSE
+                }
                 USE Plane
               ]
             }
@@ -120,7 +198,9 @@ PROTO TransformHandle [
             children Transform {
               rotation -1 0 0 1.5708
               children [
-                DEF TopSensor PlaneSensor { }
+                DEF TopSensor PlaneSensor {
+                  autoOffset FALSE
+                }
                 USE Plane
               ]
             }
@@ -129,21 +209,104 @@ PROTO TransformHandle [
             children Transform {
               rotation 1 0 0 1.5708
               children [
-                DEF BottomSensor PlaneSensor { }
+                DEF BottomSensor PlaneSensor {
+                  autoOffset FALSE
+                }
                 USE Plane
               ]
             }
           }
         ]
       }
+      DEF CenterPoint Transform {
+        children [
+          ScreenGroup {
+            children Shape {
+              appearance Appearance {
+                material DEF Yellow Material {
+                  diffuseColor 1 1 0
+                }
+                shaders DEF HandleShader HandleShader { }
+              }
+              geometry Sphere {
+                radius 3
+              }
+            }
+          }
+          DEF RotationToolSwitch Switch {
+            choice [
+              Group { }
+              Group {
+                children [
+                  DEF XRotationTool Transform {
+                    rotation 0 1 0 1.5708
+                    children Shape {
+                      appearance Appearance {
+                        material Material {
+                          emissiveColor 1 0 0
+                        }
+                      }
+                      geometry DEF Circle Circle2D { }
+                    }
+                  }
+                  DEF YRotationTool Transform {
+                    rotation 1 0 0 1.5708
+                    children Shape {
+                      appearance Appearance {
+                        material Material {
+                          emissiveColor 0 1 0
+                        }
+                      }
+                      geometry USE Circle
+                    }
+                  }
+                  DEF ZRotationTool Transform {
+                    children Shape {
+                      appearance Appearance {
+                        material Material {
+                          emissiveColor 0 0 1
+                        }
+                      }
+                      geometry USE Circle
+                    }
+                  }
+                ]
+              }
+              Group { }
+            ]
+          }
+        ]
+      }
+      DEF CenterLine Shape {
+        appearance Appearance {
+          lineProperties LineProperties {
+            linetype 3
+          }
+          material USE Yellow
+        }
+        geometry DEF CenterIndexedLineSet IndexedLineSet {
+          coordIndex [ 0, 1, -1 ]
+          color Color {
+            color [ 1 1 0, 1 1 0 ]
+          }
+          coord DEF CenterLineCoord Coordinate { }
+        }
+      }
       Group {
         children [
           DEF ModeTouch TouchSensor { }
-          DEF XAxisSensor PlaneSensor {
+          DEF XTranslationSensor PlaneSensor {
+            autoOffset FALSE
             maxPosition -1 0
           }
-          DEF XRotationSensor SphereSensor {
+          DEF XRotationSensor CylinderSensor {
             enabled FALSE
+            autoOffset FALSE
+          }
+          DEF XScaleSensor PlaneSensor {
+            enabled FALSE
+            autoOffset FALSE
+            maxPosition -1 0
           }
           DEF X Transform {
             translation IS bboxCenter
@@ -152,16 +315,15 @@ PROTO TransformHandle [
                 children Transform {
                   rotation 0 0 -1 1.5708
                   children DEF XSwitch Switch {
-                    whichChoice 0
                     choice [
                       Transform {
                         translation 0 10 0
                         children Shape {
                           appearance DEF Red Appearance {
                             material Material {
-                              diffuseColor 1 0.3 0.3
-                              emissiveColor 1 0 0
+                              diffuseColor 1 0 0
                             }
+                            shaders USE HandleShader
                           }
                           geometry DEF Arrow Cone {
                             height 20
@@ -198,11 +360,18 @@ PROTO TransformHandle [
       Group {
         children [
           USE ModeTouch
-          DEF YAxisSensor PlaneSensor {
+          DEF YTranslationSensor PlaneSensor {
+            autoOffset FALSE
             maxPosition 0 -1
           }
-          DEF YRotationSensor SphereSensor {
+          DEF YRotationSensor CylinderSensor {
             enabled FALSE
+            autoOffset FALSE
+          }
+          DEF YScaleSensor PlaneSensor {
+            enabled FALSE
+            autoOffset FALSE
+            maxPosition 0 -1
           }
           DEF Y Transform {
             translation IS bboxCenter
@@ -210,16 +379,15 @@ PROTO TransformHandle [
               children ScreenGroup {
                 children Transform {
                   children DEF YSwitch Switch {
-                    whichChoice 0
                     choice [
                       Transform {
                         translation 0 10 0
                         children Shape {
                           appearance DEF Green Appearance {
                             material Material {
-                              diffuseColor 0.3 1 0.3
-                              emissiveColor 0 1 0
+                              diffuseColor 0 1 0
                             }
+                            shaders USE HandleShader
                           }
                           geometry USE Arrow
                         }
@@ -249,11 +417,18 @@ PROTO TransformHandle [
       Group {
         children [
           USE ModeTouch
-          DEF ZAxisSensor PlaneSensor {
+          DEF ZTranslationSensor PlaneSensor {
             axisRotation 0 1 0 1.5708
+            autoOffset FALSE
           }
-          DEF ZRotationSensor SphereSensor {
+          DEF ZRotationSensor CylinderSensor {
             enabled FALSE
+            autoOffset FALSE
+          }
+          DEF ZScaleSensor PlaneSensor {
+            enabled FALSE
+            axisRotation 0 1 0 1.5708
+            autoOffset FALSE
           }
           DEF Z Transform {
             translation IS bboxCenter
@@ -262,16 +437,15 @@ PROTO TransformHandle [
                 children Transform {
                   rotation 1 0 0 1.5708
                   children DEF ZSwitch Switch {
-                    whichChoice 0
                     choice [
                       Transform {
                         translation 0 10 0
                         children Shape {
                           appearance DEF Blue Appearance {
                             material Material {
-                              diffuseColor 0.3 0.3 1
-                              emissiveColor 0 0 1
+                              diffuseColor 0 0 1
                             }
+                            shaders USE HandleShader
                           }
                           geometry USE Arrow
                         }
@@ -305,12 +479,42 @@ PROTO TransformHandle [
 
   DEF ModeScript Script {
     eventIn  SFTime  set_time
+    eventOut SFBool  move
+    eventOut SFBool  rotate
+    eventOut SFBool  scale
     eventOut SFInt32 whichChoice_changed
 
     url "vrmlscript:
+function initialize (value, time)
+{
+	set_whichChoice (1);
+}
+
 function set_time (value, time)
 {
-	whichChoice_changed = (whichChoice_changed + 1) % 3;
+	set_whichChoice ((whichChoice_changed + 1) % 3);
+}
+
+function set_whichChoice (value)
+{
+	move   = false;
+	rotate = false;
+	scale  = false;
+	
+	switch (value)
+	{
+		case 0:
+			move = true;
+			break;
+		case 1:
+			rotate = true;
+			break;
+		case 2:
+			scale = true;
+			break;
+	}
+
+	whichChoice_changed = value;
 }
 "
   }
@@ -329,7 +533,6 @@ function set_time (value, time)
     field        SFNode     bottom USE Bottom
 
     url "vrmlscript:
-
 function eventsProcessed ()
 {
 	// Position and scale planes
@@ -366,14 +569,47 @@ function eventsProcessed ()
     directOutput TRUE
   }
 
-  DEF ArrowsScript Script {
-    exposedField SFVec3f    bboxSize IS bboxSize
-    field        SFNode     x USE XHandle
-    field        SFNode     y USE YHandle
-    field        SFNode     z USE ZHandle
+  DEF CenterScript Script {
+    eventIn      SFNode  set_transform_node
+    eventIn      SFVec3f set_center
+    exposedField SFVec3f bboxCenter IS bboxCenter
+    exposedField SFNode  transform IS transform
+    field        SFNode  point USE CenterPoint
+    field        SFNode  coord USE CenterLineCoord
+    field        SFNode  xRotation USE XRotationTool 
+    field        SFNode  yRotation USE YRotationTool 
+    field        SFNode  zRotation USE ZRotationTool 
+    field        SFNode  self USE CenterScript
 
     url "vrmlscript:
+function set_transform_node ()
+{
+  Browser .addRoute (transform, 'center', self, 'set_center');
+}    
 
+function eventsProcessed ()
+{
+	point .translation = transform .center;
+	coord .point       = new MFVec3f (transform .center, bboxCenter);
+
+	var radius = transform .center .subtract (bboxCenter) .length ();
+	var scale  = new SFVec3f (radius, radius, radius);
+
+	xRotation .scale = scale;
+	yRotation .scale = scale;
+	zRotation .scale = scale;
+}
+"
+    directOutput TRUE
+  }
+
+  DEF ArrowsScript Script {
+    exposedField SFVec3f bboxSize IS bboxSize
+    field        SFNode  x USE XHandle
+    field        SFNode  y USE YHandle
+    field        SFNode  z USE ZHandle
+
+    url "vrmlscript:
 function eventsProcessed ()
 {
 	// Position and scale arrows
@@ -386,7 +622,7 @@ function eventsProcessed ()
     directOutput TRUE
   }
 
-  DEF Move Script {
+  DEF MoveScript Script {
     eventIn      SFBool  set_active
     eventIn      SFVec3f set_frontTranslation
     eventIn      SFVec3f set_rightTranslation
@@ -400,39 +636,12 @@ function eventsProcessed ()
     exposedField SFVec3f bboxSize IS bboxSize
     exposedField SFNode  transform IS transform
     field        SFVec3f translation 0 0 0
-    field        SFNode  frontSensor USE FrontSensor
-    field        SFNode  rightSensor USE RightSensor
-    field        SFNode  backSensor USE BackSensor
-    field        SFNode  leftSensor USE LeftSensor
-    field        SFNode  topSensor USE TopSensor
-    field        SFNode  bottomSensor USE BottomSensor
-    field        SFNode  xSensor USE XAxisSensor
-    field        SFNode  ySensor USE YAxisSensor
-    field        SFNode  zSensor USE ZAxisSensor
 
     url "vrmlscript:
-
-var null3f = new SFVec3f ();
-
 function set_active (value)
 {
 	if (value)
-	{
 		translation = transform .translation;
-	}
-	else
-	{
-		frontSensor  .offset = null3f;
-		rightSensor  .offset = null3f;
-		backSensor   .offset = null3f;
-		leftSensor   .offset = null3f;
-		topSensor    .offset = null3f;
-		bottomSensor .offset = null3f;
-
-		xSensor .offset = null3f;
-		ySensor .offset = null3f;
-		zSensor .offset = null3f;
-	}
 }
 
 function set_frontTranslation (value)
@@ -502,41 +711,113 @@ function multVec (a, b)
     directOutput TRUE
   }
 
+  DEF RotateScript Script {
+    eventIn      SFBool     set_active
+    eventIn      SFRotation set_xRotation
+    eventIn      SFRotation set_yRotation
+    eventIn      SFRotation set_zRotation
+    exposedField SFNode     transform IS transform
+    field        SFRotation rotation 0 0 1 0
+
+    url "vrmlscript:
+function set_active (value)
+{
+	print (value);
+
+	if (value)
+		rotation = transform .rotation;
+}
+
+function set_xRotation (value)
+{
+	print (value);
+
+	transform .rotation = rotation .multiply (value);
+}
+
+function set_yRotation (value)
+{
+	print (value);
+	transform .rotation = rotation .multiply (value);
+}
+
+function set_zRotation (value)
+{
+	print (value);
+	transform .rotation = rotation .multiply (value);
+}
+
+function add (value)
+{
+	var offset = transform .rotation .multVec (multVec (value, transform .scale));
+
+	transform .translation = translation .add (offset);
+}
+"
+    directOutput TRUE
+  }
+
 
   # Mode translate, rotate or scale
 
   ROUTE ModeTouch.touchTime TO DoubleClick_1.set_time
   ROUTE DoubleClick_1.doubleClickTime TO ModeScript.set_time
 
-  #
+  # Mode Switch
 
+  ROUTE ModeScript.move TO XTranslationSensor.set_enabled
+  ROUTE ModeScript.move TO YTranslationSensor.set_enabled
+  ROUTE ModeScript.move TO ZTranslationSensor.set_enabled
+  ROUTE ModeScript.rotate TO XRotationSensor.set_enabled
+  ROUTE ModeScript.rotate TO YRotationSensor.set_enabled
+  ROUTE ModeScript.rotate TO ZRotationSensor.set_enabled
+  ROUTE ModeScript.scale TO XScaleSensor.set_enabled
+  ROUTE ModeScript.scale TO YScaleSensor.set_enabled
+  ROUTE ModeScript.scale TO ZScaleSensor.set_enabled
   ROUTE ModeScript.whichChoice_changed TO XSwitch.set_whichChoice
   ROUTE ModeScript.whichChoice_changed TO YSwitch.set_whichChoice
   ROUTE ModeScript.whichChoice_changed TO ZSwitch.set_whichChoice
+  ROUTE ModeScript.whichChoice_changed TO RotationToolSwitch.set_whichChoice
+
+  # Center Script
+
+  ROUTE CenterScript.transform_changed TO CenterScript.set_transform_node
 
   # Move
 
-  ROUTE FrontSensor.isActive TO Move.set_active
-  ROUTE RightSensor.isActive TO Move.set_active
-  ROUTE BackSensor.isActive TO Move.set_active
-  ROUTE LeftSensor.isActive TO Move.set_active
-  ROUTE TopSensor.isActive TO Move.set_active
-  ROUTE BottomSensor.isActive TO Move.set_active
-  ROUTE XAxisSensor.isActive TO Move.set_active
-  ROUTE YAxisSensor.isActive TO Move.set_active
-  ROUTE ZAxisSensor.isActive TO Move.set_active
+  ROUTE FrontSensor.isActive TO MoveScript.set_active
+  ROUTE RightSensor.isActive TO MoveScript.set_active
+  ROUTE BackSensor.isActive TO MoveScript.set_active
+  ROUTE LeftSensor.isActive TO MoveScript.set_active
+  ROUTE TopSensor.isActive TO MoveScript.set_active
+  ROUTE BottomSensor.isActive TO MoveScript.set_active
+  ROUTE XTranslationSensor.isActive TO MoveScript.set_active
+  ROUTE YTranslationSensor.isActive TO MoveScript.set_active
+  ROUTE ZTranslationSensor.isActive TO MoveScript.set_active
 
   #
 
-  ROUTE FrontSensor.translation_changed TO Move.set_frontTranslation
-  ROUTE RightSensor.translation_changed TO Move.set_rightTranslation
-  ROUTE BackSensor.translation_changed TO Move.set_backTranslation
-  ROUTE LeftSensor.translation_changed TO Move.set_leftTranslation
-  ROUTE TopSensor.translation_changed TO Move.set_topTranslation
-  ROUTE BottomSensor.translation_changed TO Move.set_bottomTranslation
-  ROUTE XAxisSensor.translation_changed TO Move.set_xTranslation
-  ROUTE YAxisSensor.translation_changed TO Move.set_yTranslation
-  ROUTE ZAxisSensor.translation_changed TO Move.set_zTranslation
+  ROUTE FrontSensor.translation_changed TO MoveScript.set_frontTranslation
+  ROUTE RightSensor.translation_changed TO MoveScript.set_rightTranslation
+  ROUTE BackSensor.translation_changed TO MoveScript.set_backTranslation
+  ROUTE LeftSensor.translation_changed TO MoveScript.set_leftTranslation
+  ROUTE TopSensor.translation_changed TO MoveScript.set_topTranslation
+  ROUTE BottomSensor.translation_changed TO MoveScript.set_bottomTranslation
+  ROUTE XTranslationSensor.translation_changed TO MoveScript.set_xTranslation
+  ROUTE YTranslationSensor.translation_changed TO MoveScript.set_yTranslation
+  ROUTE ZTranslationSensor.translation_changed TO MoveScript.set_zTranslation
+
+  # Rotate
+
+  ROUTE XRotationSensor.isActive TO RotateScript.set_active
+  ROUTE YRotationSensor.isActive TO RotateScript.set_active
+  ROUTE ZRotationSensor.isActive TO RotateScript.set_active
+
+  #
+
+  ROUTE XRotationSensor.rotation_changed TO RotateScript.set_xRotation
+  ROUTE YRotationSensor.rotation_changed TO RotateScript.set_yRotation
+  ROUTE ZRotationSensor.rotation_changed TO RotateScript.set_zRotation
 }
 
 DEF Handle TransformHandle { }

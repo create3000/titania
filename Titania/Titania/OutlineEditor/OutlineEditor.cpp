@@ -60,7 +60,7 @@ OutlineEditor::OutlineEditor (BrowserWindow* const browserWindow) :
 	         X3D::X3DBaseNode (browserWindow -> getBrowser (), browserWindow -> getExecutionContext ()),
 	         X3DBaseInterface (browserWindow),
 	X3DOutlineEditorInterface (get_ui ("OutlineEditor.ui"), gconf_dir ()),
-	                 treeview (browserWindow)
+	                 treeview (browserWindow, X3D::X3DSFNode <X3D::X3DExecutionContext> (getBrowser () -> getExecutionContext ()))
 { }
 
 void
@@ -75,9 +75,18 @@ OutlineEditor::initialize ()
 	X3DOutlineEditorInterface::initialize ();
 
 	getViewport () .add (treeview);
-
-	treeview .setup ();
 	treeview .show ();
+
+	// Register browser interest
+	getBrowser () -> initialized () .addInterest (this, &OutlineEditor::set_initialized);
+	
+	set_initialized ();
+}
+
+void
+OutlineEditor::set_initialized ()
+{
+	treeview .set_execution_context (X3D::X3DSFNode <X3D::X3DExecutionContext> (getBrowser () -> getExecutionContext ()));
 }
 
 } // puck

@@ -133,11 +133,11 @@ IndexedFaceSet::set_coordIndex ()
 
 	if (_coord)
 	{
-		int32_t numPoints = -1;
-
 		if (not coordIndex () .empty ())
 		{
 			// Determine number of points and polygons.
+
+			int32_t numPoints = -1;
 
 			for (const auto & index : coordIndex ())
 			{

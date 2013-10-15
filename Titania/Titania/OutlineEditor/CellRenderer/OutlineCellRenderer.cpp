@@ -52,6 +52,7 @@
 
 #include "../../Configuration/config.h"
 #include "../OutlineTreeModel.h"
+#include "../X3DOutlineTreeView.h"
 
 namespace titania {
 namespace puck {
@@ -59,9 +60,10 @@ namespace puck {
 constexpr int NAME_PAD_X        = 1;
 constexpr int ACCESS_TYPE_PAD_X = 8;
 
-OutlineCellRenderer::OutlineCellRenderer (X3D::X3DBrowser* const browser) :
+OutlineCellRenderer::OutlineCellRenderer (X3D::X3DBrowser* const browser, X3DOutlineTreeView* const treeView) :
 	             Glib::ObjectBase (typeid (OutlineCellRenderer)),
 	        Gtk::CellRendererText (),
+	                     treeView (treeView),
 	                data_property (*this, "tree-data", nullptr),
 	            cellrenderer_icon (),
 	cellrenderer_access_type_icon (),
@@ -121,10 +123,10 @@ OutlineCellRenderer::on_data ()
 
 			const std::string name = route -> getSourceNode () -> getName () .size ()
 			                         ? route -> getSourceNode () -> getName ()
-											 : _("<unnamed>");
+											 : _ ("<unnamed>");
 
 			property_editable ()                              = false;
-			property_markup ()                                = _("Route from ") + name + "." + route -> getSourceField ();
+			property_markup ()                                = _ ("Route from ") + name + "." + route -> getSourceField ();
 			cellrenderer_access_type_icon .property_pixbuf () = accessTypeImages [X3D::inputOnly] [1];
 			set_alignment (0, 0.5);
 			break;
@@ -135,10 +137,10 @@ OutlineCellRenderer::on_data ()
 
 			const std::string name = route -> getDestinationNode () -> getName () .size ()
 			                         ? route -> getDestinationNode () -> getName ()
-											 : _("<unnamed>");
+											 : _ ("<unnamed>");
 
 			property_editable ()                              = false;
-			property_markup ()                                = _("Route to ") + name + "." + route -> getDestinationField ();
+			property_markup ()                                = _ ("Route to ") + name + "." + route -> getDestinationField ();
 			cellrenderer_access_type_icon .property_pixbuf () = accessTypeImages [X3D::outputOnly] [1];
 			set_alignment (0, 0.5);
 			break;
@@ -228,19 +230,22 @@ OutlineCellRenderer::get_access_type_icon () const
 	auto   field = static_cast <X3D::X3DFieldDefinition*> (get_object ());
 	auto   iter  = accessTypeImages .find (field -> getAccessType ());
 	size_t index = 0;
+	
+	size_t inputRoutes  = treeView -> get_model () -> get_input_routes (field);
+	size_t outputRoutes = treeView -> get_model () -> get_output_routes (field);
 
 	switch (field -> getAccessType ())
 	{
 		case X3D::initializeOnly:
 			break;
 		case X3D::inputOnly:
-			index = std::min <size_t> (field -> getInputRoutes () .size (), 2);
+			index = std::min <size_t> (inputRoutes, 2);
 			break;
 		case X3D::outputOnly:
-			index = std::min <size_t> (field -> getOutputRoutes () .size (), 2);
+			index = std::min <size_t> (outputRoutes, 2);
 			break;
 		case X3D::inputOutput:
-			index = (std::min <size_t> (field -> getInputRoutes () .size (), 2) << 2) | (std::min <size_t> (field -> getOutputRoutes () .size (), 2));
+			index = (std::min <size_t> (inputRoutes, 2) << 2) | (std::min <size_t> (outputRoutes, 2));
 			break;
 	}
 

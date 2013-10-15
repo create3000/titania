@@ -110,7 +110,7 @@ public:
 
 	static
 	Glib::RefPtr <OutlineTreeModel>
-	create (BrowserWindow* const);
+	create (BrowserWindow* const, const X3D::X3DSFNode <X3D::X3DExecutionContext> &);
 
 	///  @name Common members
 
@@ -129,6 +129,12 @@ public:
 	const std::string &
 	getContainerField () const final
 	{ return containerField; }
+	
+	///  @name Member access
+
+	const X3D::X3DSFNode <X3D::X3DExecutionContext> &
+	get_execution_context () const
+	{ return executionContext; }
 
 	///  @name Tree node
 
@@ -146,6 +152,12 @@ public:
 	static
 	X3D::X3DChildObject*
 	get_object (const iterator &);
+
+	size_t
+	get_input_routes (X3D::X3DFieldDefinition* const) const;
+
+	size_t
+	get_output_routes (X3D::X3DFieldDefinition* const) const;
 
 	///  @name Operations
 
@@ -172,7 +184,7 @@ public:
 
 private:
 
-	OutlineTreeModel (BrowserWindow* const);
+	OutlineTreeModel (BrowserWindow* const, const X3D::X3DSFNode <X3D::X3DExecutionContext> &);
 
 	bool
 	iter_is_valid (const iterator & iter) const;

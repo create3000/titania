@@ -1,5 +1,15 @@
 2013-10-15  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* TransformHandle.cpp:
+	* TransformHandle.wrl:
+	* Circle2D.cpp:
+	* LineProperties.cpp:
+	* IndexedLineSet.h:
+	* IndexedLineSet.cpp:
+	* IndexedFaceSet.cpp: 
+
+2013-10-15  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* TransformHandle.wrl:
 	* Viewpoint.cpp:
 	* OrthoViewpoint.cpp: 

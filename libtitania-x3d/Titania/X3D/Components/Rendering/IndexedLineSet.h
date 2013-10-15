@@ -163,6 +163,9 @@ private:
 	void
 	initialize () final;
 
+	std::deque <std::deque <size_t>>
+	getPolylines () const;
+
 	void
 	set_coordIndex ();
 
@@ -196,8 +199,8 @@ private:
 	};
 
 	Fields fields;
-
-	std::deque <std::deque <size_t>> polylines;
+	
+	size_t numPolylines;
 
 };
 

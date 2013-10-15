@@ -77,7 +77,7 @@ IndexedLineSet::IndexedLineSet (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DGeometryNode (),
 	         fields (),
-	      polylines ()
+	   numPolylines (0)
 {
 	addField (inputOutput,    "metadata",       metadata ());
 	addField (initializeOnly, "colorPerVertex", colorPerVertex ());
@@ -106,70 +106,76 @@ IndexedLineSet::initialize ()
 	set_coordIndex ();
 }
 
+std::deque <std::deque <size_t>>
+IndexedLineSet::getPolylines () const
+{
+	std::deque <std::deque <size_t>> polylines;
+
+	// Construct polylines array and determine the number of used points.
+	std::deque <size_t> polyline;
+
+	size_t  i = 0;
+
+	for (const auto & index : coordIndex ())
+	{
+		if (index >= 0)
+			// Add vertex.
+			polyline .emplace_back (i);
+
+		else
+		{
+			// Negativ index.
+
+			if (not polyline .empty ())
+			{
+				if (polyline .size () > 1)
+				{
+					// Add polylines.
+					polylines .emplace_back (polyline);
+				}
+
+				polyline .clear ();
+			}
+		}
+
+		++ i;
+	}
+	
+	return polylines;
+}
+
 void
 IndexedLineSet::set_coordIndex ()
 {
 	auto _coord = x3d_cast <Coordinate*> (coord ());
 
-	polylines .clear ();
+	numPolylines = 0;
 
 	if (_coord)
 	{
-		// Fill up coordIndex if there are no indices.
-		if (coordIndex () .empty ())
-		{
-			for (size_t i = 0, size = _coord -> point () .size (); i < size; ++ i)
-				coordIndex () .emplace_back (i);
-		}
-
 		if (not coordIndex () .empty ())
 		{
-			// Add -1 (polylines end marker) to coordIndex if not present.
-			if (coordIndex () .back () >= 0)
-				coordIndex () .emplace_back (-1);
+			// Determine number of points and polygons.
 
-			// Construct polylines array and determine the number of used points.
-			size_t  i         = 0;
 			int32_t numPoints = -1;
-
-			std::deque <size_t> polyline;
 
 			for (const auto & index : coordIndex ())
 			{
 				numPoints = std::max <int32_t> (numPoints, index);
 
-				if (index >= 0)
-					// Add vertex.
-					polyline .emplace_back (i);
-
-				else
-				{
-					// Negativ index.
-
-					if (not polyline .empty ())
-					{
-						if (polyline .size () > 1)
-						{
-							// Add polylines.
-							polylines .emplace_back (polyline);
-						}
-
-						polyline .clear ();
-					}
-				}
-
-				++ i;
+				if (index < 0)
+					++ numPolylines;
 			}
 
 			++ numPoints;
 
-			if (not polylines .empty ())
-			{
-				// Resize coord .point if to small
-				_coord -> resize (numPoints);
+			if (coordIndex () .back () > -1)
+				++ numPolylines;
 
-				set_colorIndex ();
-			}
+			// Resize coord .point if to small
+			_coord -> resize (numPoints);
+
+			set_colorIndex ();
 		}
 	}
 }
@@ -192,7 +198,7 @@ IndexedLineSet::set_colorIndex ()
 		}
 		else
 		{
-			for (size_t i = colorIndex () .size (), size = polylines .size (); i < size; ++ i)
+			for (size_t i = colorIndex () .size (), size = numPolylines; i < size; ++ i)
 			{
 				colorIndex () .emplace_back (i);
 			}
@@ -228,6 +234,8 @@ IndexedLineSet::build ()
 
 	if (not _coord or _coord -> point () .empty ())
 		return;
+
+	auto polylines = getPolylines ();
 
 	// Color
 

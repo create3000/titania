@@ -88,6 +88,9 @@ private:
 	void
 	initialize () final;
 
+	void
+	set_initialized ();
+
 	OutlineTreeViewEditor treeview;
 
 };

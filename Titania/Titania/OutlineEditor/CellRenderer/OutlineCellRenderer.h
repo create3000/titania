@@ -61,12 +61,14 @@
 namespace titania {
 namespace puck {
 
+class X3DOutlineTreeView;
+
 class OutlineCellRenderer :
 	public Gtk::CellRendererText
 {
 public:
 
-	OutlineCellRenderer (X3D::X3DBrowser* const);
+	OutlineCellRenderer (X3D::X3DBrowser* const, X3DOutlineTreeView* const);
 
 	// Properties
 	Glib::Property <OutlineTreeData*> &
@@ -165,6 +167,8 @@ private:
 
 	typedef std::map <const X3D::X3DConstants::FieldType,  Glib::RefPtr <Gdk::Pixbuf>>               FieldTypeImageIndex;
 	typedef std::map <const X3D::X3DConstants::AccessType, std::deque <Glib::RefPtr <Gdk::Pixbuf>>> AccessTypeImageIndex;
+
+	X3DOutlineTreeView* treeView;
 
 	Glib::Property <OutlineTreeData*> data_property;
 
