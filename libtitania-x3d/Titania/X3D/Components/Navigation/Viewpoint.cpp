@@ -102,7 +102,7 @@ Viewpoint::getScreenScale (float distance, const Vector4i & viewport) const
 	else
 		size /= width;
 
-	return Vector3f (size, size, 1);
+	return Vector3f (size, size, size);
 }
 
 Vector3f

@@ -125,9 +125,9 @@ OrthoViewpoint::getScreenScale (float, const Vector4i & viewport) const
 	int height = viewport [3];
 
 	if (width > height)
-		return Vector3f (getSizeX () / height, getSizeY () / height, 1);
+		return Vector3f (getSizeX () / height, getSizeY () / height, getSizeY () / height);
 
-	return Vector3f (getSizeX () / width, getSizeY () / width, 1);
+	return Vector3f (getSizeX () / width, getSizeY () / width, getSizeX () / width);
 }
 
 Vector2f

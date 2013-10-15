@@ -147,36 +147,49 @@ PROTO TransformHandle [
           }
           DEF X Transform {
             translation IS bboxCenter
-            scale 0 0 0
-            children Transform {
-              rotation 0 0 -1 1.5708
-              children DEF XSwitch Switch {
-                whichChoice 0
-                choice [
-                  Shape {
-                    appearance DEF Red Appearance {
-                      material Material {
-                        diffuseColor 1 0 0
+            children DEF XHandle Transform {
+              children ScreenGroup {
+                children Transform {
+                  rotation 0 0 -1 1.5708
+                  children DEF XSwitch Switch {
+                    whichChoice 0
+                    choice [
+                      Transform {
+                        translation 0 10 0
+                        children Shape {
+                          appearance DEF Red Appearance {
+                            material Material {
+                              diffuseColor 1 0.3 0.3
+                              emissiveColor 1 0 0
+                            }
+                          }
+                          geometry DEF Arrow Cone {
+                            height 20
+                            bottomRadius 6
+                          }
+                        }
                       }
-                    }
-                    geometry DEF Arrow Cone {
-                      height 0.03
-                      bottomRadius 0.01
-                    }
+                      Transform {
+                        translation 0 6 0
+                        children Shape {
+                          appearance USE Red
+                          geometry DEF Sphere Sphere {
+                            radius 6
+                          }
+                        }
+                      }
+                      Transform {
+                        translation 0 5 0
+                        children Shape {
+                          appearance USE Red
+                          geometry DEF Box Box {
+                            size 10 10 10
+                          }
+                        }
+                      }
+                    ]
                   }
-                  Shape {
-                    appearance USE Red
-                    geometry DEF Sphere Sphere {
-                      radius 0.01
-                    }
-                  }
-                  Shape {
-                    appearance USE Red
-                    geometry DEF Box Box {
-                      size 0.02 0.02 0.02
-                    }
-                  }
-                ]
+                }
               }
             }
           }
@@ -193,28 +206,41 @@ PROTO TransformHandle [
           }
           DEF Y Transform {
             translation IS bboxCenter
-            scale 0 0 0
-            children Transform {
-              children DEF YSwitch Switch {
-                whichChoice 0
-                choice [
-                  Shape {
-                    appearance DEF Green Appearance {
-                      material Material {
-                        diffuseColor 0 1 0
+            children DEF YHandle Transform {
+              children ScreenGroup {
+                children Transform {
+                  children DEF YSwitch Switch {
+                    whichChoice 0
+                    choice [
+                      Transform {
+                        translation 0 10 0
+                        children Shape {
+                          appearance DEF Green Appearance {
+                            material Material {
+                              diffuseColor 0.3 1 0.3
+                              emissiveColor 0 1 0
+                            }
+                          }
+                          geometry USE Arrow
+                        }
                       }
-                    }
-                    geometry USE Arrow
+                      Transform {
+                        translation 0 6 0
+                        children Shape {
+                          appearance USE Green
+                          geometry USE Sphere
+                        }
+                      }
+                      Transform {
+                        translation 0 5 0
+                        children Shape {
+                          appearance USE Green
+                          geometry USE Box
+                        }
+                      }
+                    ]
                   }
-                  Shape {
-                    appearance USE Green
-                    geometry USE Sphere
-                  }
-                  Shape {
-                    appearance USE Green
-                    geometry USE Box
-                  }
-                ]
+                }
               }
             }
           }
@@ -231,29 +257,42 @@ PROTO TransformHandle [
           }
           DEF Z Transform {
             translation IS bboxCenter
-            scale 0 0 0
-            children Transform {
-              rotation 1 0 0 1.5708
-              children DEF ZSwitch Switch {
-                whichChoice 0
-                choice [
-                  Shape {
-                    appearance DEF Blue Appearance {
-                      material Material {
-                        diffuseColor 0 0 1
+            children DEF ZHandle Transform {
+              children ScreenGroup {
+                children Transform {
+                  rotation 1 0 0 1.5708
+                  children DEF ZSwitch Switch {
+                    whichChoice 0
+                    choice [
+                      Transform {
+                        translation 0 10 0
+                        children Shape {
+                          appearance DEF Blue Appearance {
+                            material Material {
+                              diffuseColor 0.3 0.3 1
+                              emissiveColor 0 0 1
+                            }
+                          }
+                          geometry USE Arrow
+                        }
                       }
-                    }
-                    geometry USE Arrow
+                      Transform {
+                        translation 0 6 0
+                        children Shape {
+                          appearance USE Blue
+                          geometry USE Sphere
+                        }
+                      }
+                      Transform {
+                        translation 0 5 0
+                        children Shape {
+                          appearance USE Blue
+                          geometry USE Box
+                        }
+                      }
+                    ]
                   }
-                  Shape {
-                    appearance USE Blue
-                    geometry USE Sphere
-                  }
-                  Shape {
-                    appearance USE Blue
-                    geometry USE Box
-                  }
-                ]
+                }
               }
             }
           }
@@ -262,7 +301,7 @@ PROTO TransformHandle [
     ]
   }
 
-  DEF DoubleClick DoubleClick { }
+  DEF DoubleClick_1 DoubleClick { }
 
   DEF ModeScript Script {
     eventIn  SFTime  set_time
@@ -328,14 +367,10 @@ function eventsProcessed ()
   }
 
   DEF ArrowsScript Script {
-    exposedField SFMatrix4f cameraSpaceMatrix IS cameraSpaceMatrix
-    exposedField SFMatrix4f modelViewMatrix IS modelViewMatrix
     exposedField SFVec3f    bboxSize IS bboxSize
-    exposedField SFVec3f    bboxCenter IS bboxCenter
-    field        SFNode     x USE X
-    field        SFNode     y USE Y
-    field        SFNode     z USE Z
-    field        SFNode     arrow USE Arrow
+    field        SFNode     x USE XHandle
+    field        SFNode     y USE YHandle
+    field        SFNode     z USE ZHandle
 
     url "vrmlscript:
 
@@ -343,55 +378,37 @@ function eventsProcessed ()
 {
 	// Position and scale arrows
 
-	var scale = new SFVec3f ();
-	modelViewMatrix .multRight (cameraSpaceMatrix) .getTransform (null, null, scale);
-
-	var distance = modelViewMatrix .multVecMatrix (bboxCenter) .length ();
-	var offset   = arrow .height / 2 * distance;
-
-	x .children [0] .translation = new SFVec3f (offset + bboxSize .x / 2 * scale .x, 0, 0);
-	y .children [0] .translation = new SFVec3f (0, offset + bboxSize .y / 2 * scale .y, 0);
-	z .children [0] .translation = new SFVec3f (0, 0, offset + bboxSize .z / 2 * scale .z);
-
-	scale = new SFVec3f (1 / scale .x, 1 / scale .y, 1 / scale .z);
-	x .scale = scale;
-	y .scale = scale;
-	z .scale = scale;
-
-	scale = new SFVec3f (distance, distance, distance)
-	x .children [0] .scale = scale;
-	y .children [0] .scale = scale;
-	z .children [0] .scale = scale;
+	x .translation = new SFVec3f (bboxSize .x / 2, 0, 0);
+	y .translation = new SFVec3f (0, bboxSize .y / 2, 0);
+	z .translation = new SFVec3f (0, 0, bboxSize .z / 2);
 }
 "
     directOutput TRUE
   }
 
   DEF Move Script {
-    eventIn      SFBool     set_active
-    eventIn      SFVec3f    set_frontTranslation
-    eventIn      SFVec3f    set_rightTranslation
-    eventIn      SFVec3f    set_backTranslation
-    eventIn      SFVec3f    set_leftTranslation
-    eventIn      SFVec3f    set_topTranslation
-    eventIn      SFVec3f    set_bottomTranslation
-    eventIn      SFVec3f    set_xTranslation
-    eventIn      SFVec3f    set_yTranslation
-    eventIn      SFVec3f    set_zTranslation
-    exposedField SFMatrix4f cameraSpaceMatrix IS cameraSpaceMatrix
-    exposedField SFMatrix4f modelViewMatrix IS modelViewMatrix
-    exposedField SFVec3f    bboxSize IS bboxSize
-    exposedField SFNode     transform IS transform
-    field        SFVec3f    translation 0 0 0
-    field        SFNode     frontSensor USE FrontSensor
-    field        SFNode     rightSensor USE RightSensor
-    field        SFNode     backSensor USE BackSensor
-    field        SFNode     leftSensor USE LeftSensor
-    field        SFNode     topSensor USE TopSensor
-    field        SFNode     bottomSensor USE BottomSensor
-    field        SFNode     xSensor USE XAxisSensor
-    field        SFNode     ySensor USE YAxisSensor
-    field        SFNode     zSensor USE ZAxisSensor
+    eventIn      SFBool  set_active
+    eventIn      SFVec3f set_frontTranslation
+    eventIn      SFVec3f set_rightTranslation
+    eventIn      SFVec3f set_backTranslation
+    eventIn      SFVec3f set_leftTranslation
+    eventIn      SFVec3f set_topTranslation
+    eventIn      SFVec3f set_bottomTranslation
+    eventIn      SFVec3f set_xTranslation
+    eventIn      SFVec3f set_yTranslation
+    eventIn      SFVec3f set_zTranslation
+    exposedField SFVec3f bboxSize IS bboxSize
+    exposedField SFNode  transform IS transform
+    field        SFVec3f translation 0 0 0
+    field        SFNode  frontSensor USE FrontSensor
+    field        SFNode  rightSensor USE RightSensor
+    field        SFNode  backSensor USE BackSensor
+    field        SFNode  leftSensor USE LeftSensor
+    field        SFNode  topSensor USE TopSensor
+    field        SFNode  bottomSensor USE BottomSensor
+    field        SFNode  xSensor USE XAxisSensor
+    field        SFNode  ySensor USE YAxisSensor
+    field        SFNode  zSensor USE ZAxisSensor
 
     url "vrmlscript:
 
@@ -470,9 +487,6 @@ function add_with_bbox (value)
 
 function add (value)
 {
-	//var scale = new SFVec3f ();
-	//modelViewMatrix .multRight (cameraSpaceMatrix) .getTransform (null, null, scale);
-
 	var offset = transform .rotation .multVec (multVec (value, transform .scale));
 
 	transform .translation = translation .add (offset);
@@ -491,8 +505,8 @@ function multVec (a, b)
 
   # Mode translate, rotate or scale
 
-  ROUTE ModeTouch.touchTime TO DoubleClick.set_time
-  ROUTE DoubleClick.doubleClickTime TO ModeScript.set_time
+  ROUTE ModeTouch.touchTime TO DoubleClick_1.set_time
+  ROUTE DoubleClick_1.doubleClickTime TO ModeScript.set_time
 
   #
 

@@ -1,3 +1,9 @@
+2013-10-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* TransformHandle.wrl:
+	* Viewpoint.cpp:
+	* OrthoViewpoint.cpp: 
+
 2013-10-14  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBrowserContext.cpp:
