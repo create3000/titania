@@ -197,10 +197,12 @@ CylinderSensor::set_motion (const HitPtr & hit)
 
 	if (getTrackPoint (hitRay, trackPoint, behind))
 	{
+		__LOG__ << std::endl;
 		zPlane = Plane3f (trackPoint, zPlane .normal ());
 	}
 	else
 	{
+		__LOG__ << std::endl;
 		// Find trackPoint on the plane with cylinder
 
 		Vector3f p1;
@@ -232,6 +234,8 @@ CylinderSensor::set_motion (const HitPtr & hit)
 
 	if (behind and not disk)
 		rotation .inverse ();
+
+	__LOG__ << behind << std::endl;
 
 	rotation = offset * rotation;
 
