@@ -1,5 +1,10 @@
 2013-10-16  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DRenderer.cpp:
+	* TransformHandle.wrl: 
+
+2013-10-16  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* TransformHandle.wrl:
 	* CylinderSensor.cpp: 
 

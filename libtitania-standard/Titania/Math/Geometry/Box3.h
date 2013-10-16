@@ -90,39 +90,33 @@ public:
 	///  Default constructor. Constructs a box of size 0 0 0 and center 0 0 0.
 	constexpr
 	box3 () :
-		d0 (),
-		d1 (),
-		d2 (),
-		d3 (),
-		translation ()
+		points ()
 	{ }
 
 	///  Copy constructor.
 	template <class Up>
 	constexpr
 	box3 (const box3 <Up> & box) :
-		d0 (box .d0),
-		d1 (box .d1),
-		d2 (box .d2),
-		d3 (box .d3),
-		translation (box .translation)
-	{ }
-
-	///  Constructs a box of min @a min and max @a max.
-	constexpr
-	box3 (const vector3 <Type> & min, const vector3 <Type> & max, bool) :
-		box3 (max - min, min + (max - min) / Type (2))
+		points (box .points)
 	{ }
 
 	///  Constructs a box of size @a size and center @a size.
 	box3 (const vector3 <Type> & size, const vector3 <Type> & center) :
-		translation (center)
+      box3 (center - size * Type (0.5), center + size * Type (0.5), true)
+	{ }
+
+	///  Constructs a box of min @a min and max @a max.
+	box3 (const vector3 <Type> & min, const vector3 <Type> & max, bool)
 	{
-		vector3 <Type> size1_2 = size / Type (2);
-		d0 = vector3 <Type> (+size1_2 .x (), +size1_2 .y (), -size1_2 .z ());
-		d1 = vector3 <Type> (-size1_2 .x (), +size1_2 .y (), +size1_2 .z ());
-		d2 = vector3 <Type> (+size1_2 .x (), -size1_2. y (), +size1_2 .z ());
-		d3 = vector3 <Type> (-size1_2. x (), -size1_2 .y (), -size1_2 .z ());
+		points [0] = vector3 <Type> (max .x (), min .y (), max .z ());
+		points [1] = vector3 <Type> (max .x (), max .y (), max .z ());
+		points [2] = vector3 <Type> (min .x (), max. y (), max .z ());
+		points [3] = vector3 <Type> (min. x (), min .y (), max .z ());
+
+		points [4] = vector3 <Type> (max .x (), min .y (), min .z ());
+		points [5] = vector3 <Type> (max .x (), max .y (), min .z ());
+		points [6] = vector3 <Type> (min .x (), max. y (), min .z ());
+		points [7] = vector3 <Type> (min. x (), min .y (), min .z ());
 	}
 
 	///  @name Assignment operator
@@ -132,11 +126,7 @@ public:
 	box3 &
 	operator = (const box3 <Up> & box)
 	{
-		d0          = box .d0;
-		d1          = box .d1;
-		d2          = box .d2;
-		d3          = box .d3;
-		translation = box .translation;
+		points = box .points;
 		return *this;
 	}
 
@@ -146,34 +136,46 @@ public:
 	vector3 <Type>
 	min () const
 	{
-		vector3 <Type> min = math::min (d0, d1);
-		min = math::min (min, d2);
-		min = math::min (min, d3);
+		vector3 <Type> min = math::min (points [0], points [1]);
+		min = math::min (min, points [2]);
+		min = math::min (min, points [3]);
+		min = math::min (min, points [4]);
+		min = math::min (min, points [5]);
+		min = math::min (min, points [6]);
+		min = math::min (min, points [7]);
 
-		return translation + min;
+		return min;
 	}
 
 	///  Return the maximum vector of this box.
 	vector3 <Type>
 	max () const
 	{
-		vector3 <Type> max = math::max (d0, d1);
-		max = math::max (max, d2);
-		max = math::max (max, d3);
+		vector3 <Type> max = math::max (points [0], points [1]);
+		max = math::max (max, points [2]);
+		max = math::max (max, points [3]);
+		max = math::max (max, points [4]);
+		max = math::max (max, points [5]);
+		max = math::max (max, points [6]);
+		max = math::max (max, points [7]);
 
-		return translation + max;
+		return max;
 	}
 
 	///  Return the size of this box.
 	vector3 <Type>
 	size () const
-	{
-		return max () - min ();
-	}
+	{ return max () - min (); }
 
 	///  Return the center of this box.
-	const vector3 <Type> &
-	center () const { return translation; }
+	const vector3 <Type>
+	center () const
+	{
+		auto min = this -> min ();
+		auto max = this -> max ();
+
+		return (min + max) * Type (0.5);
+	}
 
 	///  @name  Arithmetic operations
 	///  All these operators modify this box3 inplace.
@@ -203,18 +205,20 @@ public:
 	///  Translate this box by @a translation.
 	template <class Up>
 	box3 &
-	operator += (const vector3 <Up> & t)
+	operator += (const vector3 <Up> & translation)
 	{
-		translation += t;
+		for (auto & point : points)
+			point += translation;
 		return *this;
 	}
 
 	///  Translate this box by @a translation.
 	template <class Up>
 	box3 &
-	operator -= (const vector3 <Up> & t)
+	operator -= (const vector3 <Up> & translation)
 	{
-		translation -= t;
+		for (auto & point : points)
+			point += translation;
 		return *this;
 	}
 
@@ -222,22 +226,14 @@ public:
 	box3 &
 	operator *= (const Type & scale)
 	{
-		d0 *= scale;
-		d1 *= scale;
-		d2 *= scale;
-		d3 *= scale;
-		return *this;
+		return *this = box3 (size () * scale, center ());
 	}
 
 	///  Scale this box3 by @a scale.
 	box3 &
 	operator /= (const Type & scale)
 	{
-		d0 /= scale;
-		d1 /= scale;
-		d2 /= scale;
-		d3 /= scale;
-		return *this;
+		return *this = box3 (size () / scale, center ());
 	}
 
 	///  Transform this box by @a matrix.
@@ -251,11 +247,8 @@ public:
 	box3 &
 	multMatrixBox (const matrix4 <Type> & matrix)
 	{
-		d0          = matrix .multMatrixDir (d0);
-		d1          = matrix .multMatrixDir (d1);
-		d2          = matrix .multMatrixDir (d2);
-		d3          = matrix .multMatrixDir (d3);
-		translation = matrix .multMatrixVec (translation);
+		for (auto & point : points)
+			point = matrix .multMatrixVec (point);
 		return *this;
 	}
 
@@ -263,11 +256,8 @@ public:
 	box3 &
 	multBoxMatrix (const matrix4 <Type> & matrix)
 	{
-		d0          = matrix .multDirMatrix (d0);
-		d1          = matrix .multDirMatrix (d1);
-		d2          = matrix .multDirMatrix (d2);
-		d3          = matrix .multDirMatrix (d3);
-		translation = matrix .multVecMatrix (translation);
+		for (auto & point : points)
+			point = matrix .multVecMatrix (point);
 		return *this;
 	}
 
@@ -288,11 +278,7 @@ public:
 
 private:
 
-	vector3 <Type> d0;
-	vector3 <Type> d1;
-	vector3 <Type> d2;
-	vector3 <Type> d3;
-	vector3 <Type> translation;
+	std::array <vector3 <Type>, 8> points;
 
 };
 
@@ -317,7 +303,7 @@ box3 <Type>::intersect (const line3 <Type> & line, vector3 <Type> & intersection
 {
 	vector3 <Type> min    = this -> min ();
 	vector3 <Type> max    = this -> max ();
-	vector3 <Type> center = this -> center ();
+	vector3 <Type> center = (min + max) * Type (0.5);
 
 	vector3 <Type> points [6] = {
 		vector3 <Type> (center .x (), center .y (), max .z ()), // right

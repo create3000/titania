@@ -404,7 +404,7 @@ PROTO TransformTool [
           DEF RotationToolSwitch Switch {
             choice [
               Group { }
-              Group {
+              DEF RotationTool Transform {
                 children [
                   Group {
                     children [
@@ -430,7 +430,7 @@ PROTO TransformTool [
                               appearance Appearance {
                                 material DEF XCircleMaterial Material {
                                   emissiveColor 1 0 0
-                                  transparency 0.5
+                                  transparency 0.1
                                 }
                               }
                               geometry DEF Disk Disk2D {
@@ -465,7 +465,7 @@ PROTO TransformTool [
                               appearance Appearance {
                                 material DEF YCircleMaterial Material {
                                   emissiveColor 0 1 0
-                                  transparency 0.5
+                                  transparency 0.1
                                 }
                               }
                               geometry USE Disk
@@ -498,7 +498,7 @@ PROTO TransformTool [
                               appearance Appearance {
                                 material DEF ZCircleMaterial Material {
                                   emissiveColor 0 0 1
-                                  transparency 0.5
+                                  transparency 0.1
                                 }
                               }
                               geometry USE Disk
@@ -635,9 +635,6 @@ function eventsProcessed ()
     exposedField SFNode  transform IS transform
     field        SFNode  point USE CenterPoint
     field        SFNode  coord USE CenterLineCoord
-    field        SFNode  xRotation USE XRotationTool
-    field        SFNode  yRotation USE YRotationTool
-    field        SFNode  zRotation USE ZRotationTool
     field        SFNode  self USE CenterScript
 
     url "vrmlscript:
@@ -651,13 +648,6 @@ function eventsProcessed ()
 {
 	point .translation = transform .center;
 	coord .point       = new MFVec3f (transform .center, bboxCenter);
-
-	var radius = Math .max (bboxSize .length () / 2, transform .center .subtract (bboxCenter) .length ());
-	var scale  = new SFVec3f (radius, radius, radius);
-
-	xRotation .scale = scale;
-	yRotation .scale = scale;
-	zRotation .scale = scale;
 }
 "
     directOutput TRUE
@@ -771,6 +761,58 @@ function multVec (a, b)
     directOutput TRUE
   }
 
+  DEF RotationToolScript Script {
+    eventIn      SFNode     set_transform_node
+    eventIn      SFVec3f    set_center
+    exposedField SFMatrix4f cameraSpaceMatrix IS cameraSpaceMatrix
+    exposedField SFMatrix4f modelViewMatrix IS modelViewMatrix
+    exposedField SFNode     transform IS transform
+    exposedField SFVec3f    bboxSize IS bboxSize
+    exposedField SFVec3f    bboxCenter IS bboxCenter
+    field        SFNode     tool USE RotationTool
+    field        SFNode     xTool USE XRotationTool
+    field        SFNode     yTool USE YRotationTool
+    field        SFNode     zTool USE ZRotationTool
+    field        SFNode     self USE RotationToolScript
+
+    url "vrmlscript:
+function set_transform_node ()
+{
+  Browser .addRoute (transform, 'center', self, 'set_center');
+  eventsProcessed ();
+}    
+
+function eventsProcessed ()
+{
+	// Position and scale planes
+
+	var translation = new SFVec3f ();
+	var rotation    = new SFRotation ();
+	var scale       = new SFVec3f ();
+	var matrix      = new SFMatrix4f ();
+
+	modelViewMatrix .getTransform (translation, rotation, scale);
+	matrix .setTransform (translation, rotation);
+
+	var inverseModelViewMatrix = modelViewMatrix .inverse () .multLeft (matrix);
+
+	inverseModelViewMatrix .getTransform (tool .translation,
+	                                      tool .rotation,
+	                                      tool .scale,
+	                                      tool .scaleOrientation);
+
+	var max    = Math .max (Math .max (scale .x, scale .y), scale .z);
+	var radius = max * Math .max (bboxSize .length () / 2, transform .center .subtract (bboxCenter) .length ());
+	var scale  = new SFVec3f (radius, radius, radius);
+
+	xTool .scale = scale;
+	yTool .scale = scale;
+	zTool .scale = scale;
+}
+"
+    directOutput TRUE
+  }
+
   DEF DiskScript Script {
     eventIn  SFBool  set_x
     eventIn  SFBool  set_y
@@ -778,7 +820,7 @@ function multVec (a, b)
     eventOut SFFloat x_changed
     eventOut SFFloat y_changed
     eventOut SFFloat z_changed
-    field    SFFloat transparency 0.5
+    field    SFFloat transparency 0.9
 
     url "vrmlscript:
 function initialize ()
@@ -887,6 +929,10 @@ function set_zRotation (value)
   ROUTE ZTranslationSensor.translation_changed TO MoveScript.set_zTranslation
 
   # Rotate
+
+  ROUTE RotationToolScript.transform_changed TO RotationToolScript.set_transform_node
+
+  #
 
   ROUTE XRotationSensor.isActive TO DiskScript.set_x
   ROUTE YRotationSensor.isActive TO DiskScript.set_y
