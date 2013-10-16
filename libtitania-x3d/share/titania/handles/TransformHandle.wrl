@@ -565,6 +565,7 @@ function set_whichChoice (value)
 			move = true;
 			break;
 		case 1:
+			move   = true;
 			rotate = true;
 			break;
 		case 2:
