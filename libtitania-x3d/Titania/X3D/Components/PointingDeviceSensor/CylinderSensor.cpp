@@ -150,16 +150,16 @@ CylinderSensor::set_active (const HitPtr & hit, bool active)
 
 		if (isActive ())
 		{
-			inverseModelViewMatrix = ~getModelViewMatrix () .rotate (axisRotation ());
+			inverseModelViewMatrix = ~getModelViewMatrix ();
 
-			auto hitRay   = hit -> ray * inverseModelViewMatrix;
-			auto hitPoint = hit -> point * inverseModelViewMatrix;
+			const auto hitRay   = hit -> ray   * inverseModelViewMatrix;
+			const auto hitPoint = hit -> point * inverseModelViewMatrix;
 
-			auto yAxis = axisRotation () * Vector3f (0, 1, 0);
-			auto zAxis = inverseModelViewMatrix .multDirMatrix (Vector3f (0, 0, 1));
+			const auto yAxis = axisRotation () * Vector3f (0, 1, 0); // Local y-axis
+			const auto zAxis = inverseModelViewMatrix .multDirMatrix (Vector3f (0, 0, 1)); // Camera direction
 
-			auto axis    = Line3f (Vector3f (), yAxis);
-			auto pvector = axis .perpendicular_vector (hitPoint);
+			const auto axis    = Line3f (Vector3f (), yAxis);
+			const auto pvector = axis .perpendicular_vector (hitPoint);
 
 			cylinder = Cylinder3f (axis, abs (pvector));
 
@@ -197,12 +197,10 @@ CylinderSensor::set_motion (const HitPtr & hit)
 
 	if (getTrackPoint (hitRay, trackPoint, behind))
 	{
-		__LOG__ << std::endl;
 		zPlane = Plane3f (trackPoint, zPlane .normal ());
 	}
 	else
 	{
-		__LOG__ << std::endl;
 		// Find trackPoint on the plane with cylinder
 
 		Vector3f p1;
@@ -234,8 +232,6 @@ CylinderSensor::set_motion (const HitPtr & hit)
 
 	if (behind and not disk)
 		rotation .inverse ();
-
-	__LOG__ << behind << std::endl;
 
 	rotation = offset * rotation;
 

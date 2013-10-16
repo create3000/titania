@@ -409,37 +409,37 @@ PROTO TransformTool [
                   Group {
                     children [
                       DEF XRotationSensor CylinderSensor {
-                    axisRotation 0 0 1 1.5708
-                    diskAngle 1.5708
+                        axisRotation 0 0 1 1.5708
+                        diskAngle 1.5708
                         autoOffset FALSE
                       }
-                  DEF XRotationTool Transform {
-                    rotation 0 1 0 1.5708
-                    children [
-                      Shape {
-                        appearance Appearance {
-                          material Material {
-                            emissiveColor 1 0 0
+                      DEF XRotationTool Transform {
+                        rotation 0 1 0 1.5708
+                        children [
+                          Shape {
+                            appearance Appearance {
+                              material Material {
+                                emissiveColor 1 0 0
+                              }
+                            }
+                            geometry DEF Circle Circle2D { }
                           }
-                        }
-                        geometry DEF Circle Circle2D { }
-                      }
-                      DEF XCircleSwitch Switch {
-                        whichChoice 0
-                        choice Shape {
-                          appearance Appearance {
-                            material DEF XCircleMaterial Material {
-                              emissiveColor 1 0 0
-                              transparency 0.5
+                          DEF XCircleSwitch Switch {
+                            whichChoice 0
+                            choice Shape {
+                              appearance Appearance {
+                                material DEF XCircleMaterial Material {
+                                  emissiveColor 1 0 0
+                                  transparency 0.5
+                                }
+                              }
+                              geometry DEF Disk Disk2D {
+                                solid FALSE
+                              }
                             }
                           }
-                          geometry DEF Disk Disk2D {
-                            solid FALSE
-                          }
-                        }
+                        ]
                       }
-                    ]
-                  }
                     ]
                   }
                   Group {
@@ -448,64 +448,64 @@ PROTO TransformTool [
                         diskAngle 1.5708
                         autoOffset FALSE
                       }
-                  DEF YRotationTool Transform {
-                    rotation 1 0 0 1.5708
-                    children [
-                      Shape {
-                        appearance Appearance {
-                          material Material {
-                            emissiveColor 0 1 0
+                      DEF YRotationTool Transform {
+                        rotation 1 0 0 1.5708
+                        children [
+                          Shape {
+                            appearance Appearance {
+                              material Material {
+                                emissiveColor 0 1 0
+                              }
+                            }
+                            geometry USE Circle
                           }
-                        }
-                        geometry USE Circle
-                      }
-                      DEF YCircleSwitch Switch {
-                        whichChoice 0
-                        choice Shape {
-                          appearance Appearance {
-                            material DEF YCircleMaterial Material {
-                              emissiveColor 0 1 0
-                              transparency 0.5
+                          DEF YCircleSwitch Switch {
+                            whichChoice 0
+                            choice Shape {
+                              appearance Appearance {
+                                material DEF YCircleMaterial Material {
+                                  emissiveColor 0 1 0
+                                  transparency 0.5
+                                }
+                              }
+                              geometry USE Disk
                             }
                           }
-                          geometry USE Disk
-                        }
+                        ]
                       }
-                    ]
-                  }
                     ]
                   }
                   Group {
                     children [
                       DEF ZRotationSensor CylinderSensor {
-                    axisRotation 1 0 0 1.5708
-                    diskAngle 1.5708
+                        axisRotation 1 0 0 1.5708
+                        diskAngle 1.5708
                         autoOffset FALSE
                       }
-                  DEF ZRotationTool Transform {
-                    children [
-                      Shape {
-                        appearance Appearance {
-                          material Material {
-                            emissiveColor 0 0 1
+                      DEF ZRotationTool Transform {
+                        children [
+                          Shape {
+                            appearance Appearance {
+                              material Material {
+                                emissiveColor 0 0 1
+                              }
+                            }
+                            geometry USE Circle
                           }
-                        }
-                        geometry USE Circle
-                      }
-                      DEF ZCircleSwitch Switch {
-                        whichChoice 0
-                        choice Shape {
-                          appearance Appearance {
-                            material DEF ZCircleMaterial Material {
-                              emissiveColor 0 0 1
-                              transparency 0.5
+                          DEF ZCircleSwitch Switch {
+                            whichChoice 0
+                            choice Shape {
+                              appearance Appearance {
+                                material DEF ZCircleMaterial Material {
+                                  emissiveColor 0 0 1
+                                  transparency 0.5
+                                }
+                              }
+                              geometry USE Disk
                             }
                           }
-                          geometry USE Disk
-                        }
+                        ]
                       }
-                    ]
-                  }
                     ]
                   }
                 ]
@@ -806,33 +806,15 @@ function set_z (value)
   }
 
   DEF RotateScript Script {
-    eventIn      SFNode     set_transform_node
     eventIn      SFBool     set_active
     eventIn      SFRotation set_rotation
     eventIn      SFRotation set_xRotation
     eventIn      SFRotation set_yRotation
     eventIn      SFRotation set_zRotation
     exposedField SFNode     transform IS transform
-    field        SFNode     xSensor USE XRotationSensor
-    field        SFNode     ySensor USE YRotationSensor
-    field        SFNode     zSensor USE ZRotationSensor
     field        SFRotation rotation 0 0 1 0
-    field        SFNode     self USE RotateScript
 
     url "vrmlscript:
-function set_transform_node ()
-{
-  Browser .addRoute (transform, 'rotation', self, 'set_rotation');
-  set_rotation (transform .rotation)
-}    
-
-function set_rotation (value)
-{
-	xSensor .axisRotation = new SFRotation (0, 0, 1, 1.5708) .multiply (value);
-	ySensor .axisRotation = value;
-	zSensor .axisRotation = new SFRotation (1, 0, 0, 1.5708) .multiply (value);
-}
-
 function set_active (value)
 {
 	if (value)
@@ -841,28 +823,22 @@ function set_active (value)
 
 function set_xRotation (value)
 {
-	transform .rotation = rotation .multiply (value);
+	transform .rotation = value .multiply (rotation);
 }
 
 function set_yRotation (value)
 {
-	transform .rotation = rotation .multiply (value);
+	transform .rotation = value .multiply (rotation);
 }
 
 function set_zRotation (value)
 {
-	transform .rotation = rotation .multiply (value);
-}
-
-function add (value)
-{
-	var offset = transform .rotation .multVec (multVec (value, transform .scale));
-
-	transform .translation = translation .add (offset);
+	transform .rotation = value .multiply (rotation);
 }
 "
     directOutput TRUE
   }
+
 
   # Mode translate, rotate or scale
 
@@ -911,10 +887,6 @@ function add (value)
   ROUTE ZTranslationSensor.translation_changed TO MoveScript.set_zTranslation
 
   # Rotate
-  
-  ROUTE RotateScript.transform_changed TO RotateScript.set_transform_node
-
-  #
 
   ROUTE XRotationSensor.isActive TO DiskScript.set_x
   ROUTE YRotationSensor.isActive TO DiskScript.set_y
