@@ -791,7 +791,7 @@ function multVec (a, b)
     exposedField SFNode     transform IS transform
     exposedField SFVec3f    bboxSize IS bboxSize
     exposedField SFVec3f    bboxCenter IS bboxCenter
-    field        SFNode     tool USE RotationHandles
+    field        SFNode     handles USE RotationHandles
     field        SFNode     xHandle USE XRotationHandle
     field        SFNode     yHandle USE YRotationHandle
     field        SFNode     zHandle USE ZRotationHandle
@@ -820,10 +820,10 @@ function eventsProcessed ()
 
 		var inverseModelViewMatrix = modelViewMatrix .inverse () .multLeft (matrix);
 
-		inverseModelViewMatrix .getTransform (tool .translation,
-		                                      tool .rotation,
-		                                      tool .scale,
-		                                      tool .scaleOrientation);
+		inverseModelViewMatrix .getTransform (handles .translation,
+		                                      handles .rotation,
+		                                      handles .scale,
+		                                      handles .scaleOrientation);
 		
 		// Uniform scale circles
 
