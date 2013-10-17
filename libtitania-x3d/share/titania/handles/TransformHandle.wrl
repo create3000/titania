@@ -32,7 +32,7 @@ function set_time (value, time)
   }
 }
 
-PROTO ToolShader [ ]
+PROTO HandleShader [ ]
 {
   # This is a phong shader where the light position is in the center of the object
   ComposedShader {
@@ -149,7 +149,7 @@ PROTO TransformTool [
                   autoOffset FALSE
                 }
                 DEF Plane Shape {
-                  appearance Appearance {
+                  appearance DEF Transparent Appearance {
                     material Material {
                       transparency 1
                     }
@@ -218,164 +218,107 @@ PROTO TransformTool [
           }
         ]
       }
-      Billboard {
-        axisOfRotation 1 0 0
+      DEF AdjustmentHandles Transform {
+        translation IS bboxCenter
         children [
-          DEF ModeTouch TouchSensor { }
-          DEF XTranslationSensor PlaneSensor {
-            description "move along x-axis"
-            autoOffset FALSE
-            maxPosition -1 0
-          }
-          DEF XScaleSensor PlaneSensor {
-            enabled FALSE
-            autoOffset FALSE
-            maxPosition -1 0
-          }
-          DEF X Transform {
-            translation IS bboxCenter
-            children DEF XTool Transform {
-              children ScreenGroup {
-                children DEF XSwitch Switch {
-                  choice [
-                    Transform {
-                      translation 10 0 0
-                      rotation 0 0 -1 1.5708
-                      children Shape {
-                        appearance DEF Red Appearance {
-                          material Material {
-                            diffuseColor 1 0 0
-                          }
-                          shaders DEF ToolShader ToolShader { }
-                        }
-                        geometry DEF Arrow Cone {
-                          height 21
-                          bottomRadius 7
-                        }
-                      }
-                    }
-                    Transform {
-                      translation 8 0 0
-                      children Shape {
-                        appearance USE Red
-                        geometry DEF Sphere Sphere {
-                          radius 8
-                        }
-                      }
-                    }
-                    Transform {
-                      translation 6 0 0
-                      children Shape {
-                        appearance USE Red
-                        geometry DEF Box Box {
-                          size 12 12 12
-                        }
-                      }
-                    }
-                  ]
-                }
+          DEF X Billboard {
+            axisOfRotation 1 0 0
+            children [
+              DEF ModeTouch TouchSensor { }
+              DEF XTranslationSensor PlaneSensor {
+                description "move along x-axis"
+                autoOffset FALSE
+                maxPosition -1 0
               }
-            }
-          }
-        ]
-      }
-      Billboard {
-        children [
-          USE ModeTouch
-          DEF YTranslationSensor PlaneSensor {
-            description "move along y-axis"
-            autoOffset FALSE
-            maxPosition 0 -1
-          }
-          DEF YScaleSensor PlaneSensor {
-            enabled FALSE
-            autoOffset FALSE
-            maxPosition 0 -1
-          }
-          DEF Y Transform {
-            translation IS bboxCenter
-            children DEF YTool Transform {
-              children ScreenGroup {
-                children DEF YSwitch Switch {
-                  choice [
-                    Transform {
-                      translation 0 10 0
-                      children Shape {
-                        appearance DEF Green Appearance {
-                          material Material {
-                            diffuseColor 0 1 0
-                          }
-                          shaders USE ToolShader
-                        }
-                        geometry USE Arrow
-                      }
-                    }
-                    Transform {
-                      translation 0 8 0
-                      children Shape {
-                        appearance USE Green
-                        geometry USE Sphere
-                      }
-                    }
-                    Transform {
-                      translation 0 6 0
-                      children Shape {
-                        appearance USE Green
-                        geometry USE Box
-                      }
-                    }
-                  ]
-                }
+              DEF XScaleSensor PlaneSensor {
+                enabled FALSE
+                autoOffset FALSE
+                maxPosition -1 0
               }
-            }
-          }
-        ]
-      }
-      Transform {
-        rotation 0 -1 0 1.5708
-        children Billboard {
-          axisOfRotation 1 0 0
-          children [
-            USE ModeTouch
-            DEF ZTranslationSensor PlaneSensor {
-              description "move along z-axis"
-              autoOffset FALSE
-            }
-            DEF ZScaleSensor PlaneSensor {
-              enabled FALSE
-              axisRotation 0 1 0 1.5708
-              autoOffset FALSE
-            }
-            DEF Z Transform {
-              translation IS bboxCenter
-              children DEF ZTool Transform {
+              DEF XHandle Transform {
                 children ScreenGroup {
-                  children DEF ZSwitch Switch {
+                  children DEF XSwitch Switch {
                     choice [
                       Transform {
-                        translation 10 0 0
+                        translation 10.5 0 0
                         rotation 0 0 -1 1.5708
                         children Shape {
-                          appearance DEF Blue Appearance {
+                          appearance DEF Red Appearance {
                             material Material {
-                              diffuseColor 0 0 1
+                              diffuseColor 1 0 0
                             }
-                            shaders USE ToolShader
+                            shaders DEF HandleShader HandleShader { }
                           }
-                          geometry USE Arrow
+                          geometry DEF Arrow Cone {
+                            height 21
+                            bottomRadius 7
+                          }
                         }
                       }
                       Transform {
                         translation 8 0 0
                         children Shape {
-                          appearance USE Blue
-                          geometry USE Sphere
+                          appearance USE Red
+                          geometry DEF Sphere Sphere {
+                            radius 8
+                          }
                         }
                       }
                       Transform {
                         translation 6 0 0
                         children Shape {
-                          appearance USE Blue
+                          appearance USE Red
+                          geometry DEF Box Box {
+                            size 12 12 12
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+          DEF Y Billboard {
+            children [
+              USE ModeTouch
+              DEF YTranslationSensor PlaneSensor {
+                description "move along y-axis"
+                autoOffset FALSE
+                maxPosition 0 -1
+              }
+              DEF YScaleSensor PlaneSensor {
+                enabled FALSE
+                autoOffset FALSE
+                maxPosition 0 -1
+              }
+              DEF YHandle Transform {
+                children ScreenGroup {
+                  children DEF YSwitch Switch {
+                    choice [
+                      Transform {
+                        translation 0 10.5 0
+                        children Shape {
+                          appearance DEF Green Appearance {
+                            material Material {
+                              diffuseColor 0 1 0
+                            }
+                            shaders USE HandleShader
+                          }
+                          geometry USE Arrow
+                        }
+                      }
+                      Transform {
+                        translation 0 8 0
+                        children Shape {
+                          appearance USE Green
+                          geometry USE Sphere
+                        }
+                      }
+                      Transform {
+                        translation 0 6 0
+                        children Shape {
+                          appearance USE Green
                           geometry USE Box
                         }
                       }
@@ -383,9 +326,61 @@ PROTO TransformTool [
                   }
                 }
               }
+            ]
+          }
+          DEF Z Transform {
+            rotation 0 -1 0 1.5708
+            children Billboard {
+              axisOfRotation 1 0 0
+              children [
+                USE ModeTouch
+                DEF ZTranslationSensor PlaneSensor {
+                  description "move along z-axis"
+                  autoOffset FALSE
+                }
+                DEF ZScaleSensor PlaneSensor {
+                  enabled FALSE
+                  autoOffset FALSE
+                }
+                DEF ZHandle Transform {
+                  children ScreenGroup {
+                    children DEF ZSwitch Switch {
+                      choice [
+                        Transform {
+                          translation 10.5 0 0
+                          rotation 0 0 -1 1.5708
+                          children Shape {
+                            appearance DEF Blue Appearance {
+                              material Material {
+                                diffuseColor 0 0 1
+                              }
+                              shaders USE HandleShader
+                            }
+                            geometry USE Arrow
+                          }
+                        }
+                        Transform {
+                          translation 8 0 0
+                          children Shape {
+                            appearance USE Blue
+                            geometry USE Sphere
+                          }
+                        }
+                        Transform {
+                          translation 6 0 0
+                          children Shape {
+                            appearance USE Blue
+                            geometry USE Box
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
             }
-          ]
-        }
+          }
+        ]
       }
       DEF CenterPoint Transform {
         children [
@@ -395,17 +390,17 @@ PROTO TransformTool [
                 material DEF Yellow Material {
                   diffuseColor 1 1 0
                 }
-                shaders USE ToolShader
+                shaders USE HandleShader
               }
               geometry Sphere {
                 radius 5
               }
             }
           }
-          DEF RotationToolSwitch Switch {
+          DEF RotationHandlesSwitch Switch {
             choice [
               Group { }
-              DEF RotationTool Transform {
+              DEF RotationHandles Transform {
                 children [
                   Group {
                     children [
@@ -414,9 +409,18 @@ PROTO TransformTool [
                         diskAngle 1.5708
                         autoOffset FALSE
                       }
-                      DEF XRotationTool Transform {
+                      DEF XRotationHandle Transform {
                         rotation 0 1 0 1.5708
                         children [
+                          DEF Cylinder Transform {
+                            rotation 1 0 0 1.5708
+                            children Shape {
+                              appearance USE Transparent
+                              geometry Cylinder {
+                                height 0.01
+                              }
+                            }
+                          }
                           Shape {
                             appearance Appearance {
                               material Material {
@@ -449,9 +453,10 @@ PROTO TransformTool [
                         diskAngle 1.5708
                         autoOffset FALSE
                       }
-                      DEF YRotationTool Transform {
+                      DEF YRotationHandle Transform {
                         rotation 1 0 0 1.5708
                         children [
+                          USE Cylinder
                           Shape {
                             appearance Appearance {
                               material Material {
@@ -483,8 +488,9 @@ PROTO TransformTool [
                         diskAngle 1.5708
                         autoOffset FALSE
                       }
-                      DEF ZRotationTool Transform {
+                      DEF ZRotationHandle Transform {
                         children [
+                          USE Cylinder
                           Shape {
                             appearance Appearance {
                               material Material {
@@ -560,7 +566,7 @@ PROTO TransformTool [
     url "vrmlscript:
 function initialize (value, time)
 {
-	set_whichChoice (0);
+	set_whichChoice (1);
 }
 
 function set_time (value, time)
@@ -671,9 +677,9 @@ function eventsProcessed ()
 
   DEF ArrowsScript Script {
     exposedField SFVec3f bboxSize IS bboxSize
-    field        SFNode  x USE XTool
-    field        SFNode  y USE YTool
-    field        SFNode  z USE ZTool
+    field        SFNode  x USE XHandle
+    field        SFNode  y USE YHandle
+    field        SFNode  z USE ZHandle
 
     url "vrmlscript:
 function eventsProcessed ()
@@ -682,7 +688,7 @@ function eventsProcessed ()
 
 	x .translation = new SFVec3f (bboxSize .x / 2, 0, 0);
 	y .translation = new SFVec3f (0, bboxSize .y / 2, 0);
-	z .translation = new SFVec3f (bboxSize .x / 2, 0, 0);
+	z .translation = new SFVec3f (bboxSize .z / 2, 0, 0);
 }
 "
     directOutput TRUE
@@ -777,7 +783,7 @@ function multVec (a, b)
     directOutput TRUE
   }
 
-  DEF RotationToolScript Script {
+  DEF RotationHandleScript Script {
     eventIn      SFNode     set_transform_node
     eventIn      SFVec3f    set_center
     exposedField SFMatrix4f cameraSpaceMatrix IS cameraSpaceMatrix
@@ -785,11 +791,11 @@ function multVec (a, b)
     exposedField SFNode     transform IS transform
     exposedField SFVec3f    bboxSize IS bboxSize
     exposedField SFVec3f    bboxCenter IS bboxCenter
-    field        SFNode     tool USE RotationTool
-    field        SFNode     xTool USE XRotationTool
-    field        SFNode     yTool USE YRotationTool
-    field        SFNode     zTool USE ZRotationTool
-    field        SFNode     self USE RotationToolScript
+    field        SFNode     tool USE RotationHandles
+    field        SFNode     xHandle USE XRotationHandle
+    field        SFNode     yHandle USE YRotationHandle
+    field        SFNode     zHandle USE ZRotationHandle
+    field        SFNode     self USE RotationHandleScript
 
     url "vrmlscript:
 function set_transform_node ()
@@ -825,9 +831,9 @@ function eventsProcessed ()
 		var radius = max * Math .max (bboxSize .length () / 2, transform .center .subtract (bboxCenter) .length ());
 		var scale  = new SFVec3f (radius, radius, radius);
 
-		xTool .scale = scale;
-		yTool .scale = scale;
-		zTool .scale = scale;
+		xHandle .scale = scale;
+		yHandle .scale = scale;
+		zHandle .scale = scale;
 	}
 	catch (error)
 	{
@@ -927,7 +933,7 @@ function set_zRotation (value)
   ROUTE ModeScript.whichChoice_changed TO XSwitch.set_whichChoice
   ROUTE ModeScript.whichChoice_changed TO YSwitch.set_whichChoice
   ROUTE ModeScript.whichChoice_changed TO ZSwitch.set_whichChoice
-  ROUTE ModeScript.whichChoice_changed TO RotationToolSwitch.set_whichChoice
+  ROUTE ModeScript.whichChoice_changed TO RotationHandlesSwitch.set_whichChoice
 
   # Center Script
 
@@ -959,7 +965,7 @@ function set_zRotation (value)
 
   # Rotate
 
-  ROUTE RotationToolScript.transform_changed TO RotationToolScript.set_transform_node
+  ROUTE RotationHandleScript.transform_changed TO RotationHandleScript.set_transform_node
 
   #
 

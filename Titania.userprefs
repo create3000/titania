@@ -1,18 +1,18 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-opengl-surface/Titania/OpenGL/Surface.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/share/titania/handles/TransformHandle.wrl">
     <Files>
       <File FileName="Library/Tests/Handles/OutlineEditor.wrl" Line="6" Column="5" />
       <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="128" Column="1" />
       <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="987" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="220" Column="51" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="67" Column="11" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="76" Column="7" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="81" Column="1" />
       <File FileName="Titania/Titania/Undo/UndoFunction.h" Line="65" Column="1" />
       <File FileName="Titania/Titania/Undo/UndoStep.h" Line="81" Column="73" />
       <File FileName="Titania/Titania/Undo/UndoStep.cpp" Line="64" Column="1" />
-      <File FileName="test/main.cpp" Line="99" Column="61" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="75" Column="4" />
-      <File FileName="libtitania-opengl-surface/Titania/OpenGL/Surface.cpp" Line="78" Column="15" />
+      <File FileName="libtitania-x3d/share/titania/handles/TransformHandle.wrl" Line="336" Column="18" />
+      <File FileName="libtitania-x3d/Titania/X3D/Handles/TransformHandle.h" Line="236" Column="27" />
+      <File FileName="libtitania-x3d/Titania/X3D/Handles/TransformHandle.cpp" Line="190" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -22,24 +22,40 @@
           </Node>
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
-            <Node name="Examples" expanded="True" />
+            <Node name="Examples" expanded="True">
+              <Node name="TikiWorld" expanded="True" />
+            </Node>
+            <Node name="Prototypes" expanded="True">
+              <Node name="Geometry3D" expanded="True">
+                <Node name="Torus" expanded="True" />
+              </Node>
+            </Node>
             <Node name="Tests" expanded="True">
               <Node name="Handles" expanded="True" />
-              <Node name="images" expanded="True" />
-              <Node name="Scripting" expanded="True" />
+              <Node name="PointingDeviceSensor" expanded="True" />
+              <Node name="Shaders" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-opengl-surface" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="OpenGL" expanded="True">
                 <Node name="Context" expanded="True" />
-                <Node name="Surface.cpp" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+          <Node name="libtitania-standard" expanded="True">
+            <Node name="Titania" expanded="True">
+              <Node name="Math" expanded="True">
+                <Node name="Geometry" expanded="True" />
               </Node>
             </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
             <Node name="share" expanded="True">
               <Node name="titania" expanded="True">
+                <Node name="handles" expanded="True">
+                  <Node name="TransformHandle.wrl" selected="True" />
+                </Node>
                 <Node name="mime" expanded="True">
                   <Node name="model" expanded="True" />
                 </Node>
@@ -48,14 +64,20 @@
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
                 <Node name="Base" expanded="True" />
+                <Node name="Basic" expanded="True" />
                 <Node name="Browser" expanded="True">
-                  <Node name="Properties" expanded="True" />
-                  <Node name="Viewer" expanded="True" />
+                  <Node name="Picking" expanded="True" />
                 </Node>
                 <Node name="Components" expanded="True">
+                  <Node name="Core" expanded="True" />
+                  <Node name="EnvironmentalSensor" expanded="True" />
+                  <Node name="Grouping" expanded="True" />
+                  <Node name="Layout" expanded="True" />
                   <Node name="Navigation" expanded="True" />
-                  <Node name="Shape" expanded="True" />
+                  <Node name="PointingDeviceSensor" expanded="True" />
                 </Node>
+                <Node name="Fields" expanded="True" />
+                <Node name="Handles" expanded="True" />
                 <Node name="Rendering" expanded="True" />
               </Node>
             </Node>
@@ -70,7 +92,19 @@
             <Node name="share" expanded="True">
               <Node name="applications" expanded="True" />
               <Node name="titania" expanded="True">
-                <Node name="Library" expanded="True" />
+                <Node name="Library" expanded="True">
+                  <Node name="Prototypes" expanded="True">
+                    <Node name="Geometry2D" expanded="True">
+                      <Node name="RoundedRectangle2D" expanded="True" />
+                    </Node>
+                    <Node name="Geometry3D" expanded="True">
+                      <Node name="Torus" expanded="True" />
+                    </Node>
+                  </Node>
+                </Node>
+                <Node name="pages" expanded="True">
+                  <Node name="about" expanded="True" />
+                </Node>
                 <Node name="ui" expanded="True" />
               </Node>
             </Node>
@@ -81,7 +115,9 @@
               <Node name="LibraryView" expanded="True" />
               <Node name="MotionBlurEditor" expanded="True" />
               <Node name="NodePropertiesEditor" expanded="True" />
-              <Node name="OutlineEditor" expanded="True" />
+              <Node name="OutlineEditor" expanded="True">
+                <Node name="CellRenderer" expanded="True" />
+              </Node>
               <Node name="Undo" expanded="True" />
               <Node name="ViewpointList" expanded="True" />
             </Node>
