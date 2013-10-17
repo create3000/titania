@@ -119,25 +119,22 @@ Notification::initialize ()
 void
 Notification::set_string ()
 {
-	if (not string () .empty ())
+	try
 	{
+		auto notification = scene -> getNamedNode ("Notification");
+
 		try
 		{
-			auto notification = scene -> getNamedNode ("Notification");
+			SFString & field = *static_cast <SFString*> (notification -> getField ("set_string"));
 
-			try
-			{
-				SFString & field = *static_cast <SFString*> (notification -> getField ("set_string"));
-
-				field = string ();
-			}
-			catch (const X3DError &)
-			{ }
+			field = string ();
 		}
 		catch (const X3DError &)
-		{
-			// catch error from getNamedNode
-		}
+		{ }
+	}
+	catch (const X3DError &)
+	{
+		// catch error from getNamedNode
 	}
 }
 

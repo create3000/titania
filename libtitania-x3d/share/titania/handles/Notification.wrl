@@ -19,14 +19,6 @@ PROTO Notification [
   exposedField SFNode   fontStyle NULL
 ]
 {
-  PROTO Fields [
-    exposedField SFTime  cycleInterval 1
-    exposedField SFVec2f borderWidth 1 1
-  ]
-  {
-    MetadataSet { }
-  }
-
   Group {
     children [
       Shape {
@@ -77,21 +69,19 @@ PROTO Notification [
     keyValue [ 0, 1 ]
   }
 
-  DEF Notification Script {
-    eventIn  SFString set_string IS set_string
-    eventIn  SFVec2f  set_textBounds
-    eventIn  SFBool   set_start
-    eventIn  SFBool   set_end
-    eventOut SFBool   isActive IS isActive
-    field    SFNode   background USE BackgroundGeometry
-    field    SFNode   text USE Text
-    field    SFNode   startTimer DEF StartTimer TimeSensor { }
-    field    SFNode   endTimer DEF EndTimer TimeSensor {
+  DEF NotificationScript Script {
+    eventIn      SFString set_string IS set_string
+    eventIn      SFVec2f  set_textBounds
+    eventIn      SFBool   set_start
+    eventIn      SFBool   set_end
+    exposedField SFTime   cycleInterval IS cycleInterval
+    exposedField SFVec2f  borderWidth IS borderWidth
+    eventOut     SFBool   isActive IS isActive
+    field        SFNode   background USE BackgroundGeometry
+    field        SFNode   text USE Text
+    field        SFNode   startTimer DEF StartTimer TimeSensor { }
+    field        SFNode   endTimer DEF EndTimer TimeSensor {
       cycleInterval 2
-    }
-    field    SFNode   fields Fields {
-      cycleInterval IS cycleInterval
-      borderWidth IS borderWidth
     }
 
     url "vrmlscript:
@@ -104,12 +94,12 @@ function set_string (value, time)
 		startTimer .startTime = time;
 
 	endTimer .stopTime  = time;
-	endTimer .startTime = time + startTimer .cycleInterval + fields .cycleInterval;
+	endTimer .startTime = time + startTimer .cycleInterval + cycleInterval;
 }
 
 function set_textBounds (value, time)
 {
-	background .size = value .add (fields .borderWidth);
+	background .size = value .add (borderWidth);
 }
 
 function set_start (value, time)
@@ -130,9 +120,9 @@ function set_end (value, time)
 
   # String
 
-  ROUTE Text.textBounds TO Notification.set_textBounds
-  ROUTE StartTimer.isActive TO Notification.set_start
-  ROUTE EndTimer.isActive TO Notification.set_end
+  ROUTE Text.textBounds TO NotificationScript.set_textBounds
+  ROUTE StartTimer.isActive TO NotificationScript.set_start
+  ROUTE EndTimer.isActive TO NotificationScript.set_end
 
   # FadeIn
 
@@ -167,7 +157,6 @@ LayoutGroup {
   children DEF Notification Notification {
     fontStyle FontStyle {
       family "sans"
-      style "PLAIN"
       size 18
       justify [ "MIDDLE", "MIDDLE" ]
     }
