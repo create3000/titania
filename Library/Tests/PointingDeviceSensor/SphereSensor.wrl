@@ -39,8 +39,11 @@ Transform {
     }
     DEF Button1 Transform {
       children [
-        DEF Touch1 SphereSensor { }
+        DEF Touch1 SphereSensor {
+          offset 0.0745359 -0.970178 0.230648 2.06971
+        }
         DEF Shape1 Transform {
+          rotation 0.0745359 -0.970178 0.230648 2.06971
           children Transform {
             translation 2 0 0
             children Shape {
@@ -50,6 +53,22 @@ Transform {
                 }
               }
               geometry Sphere { }
+            }
+          }
+        }
+        DEF TrackPoint Transform {
+          translation -1.19638 0.879802 2.42843
+          scaleOrientation -0.357407 0.862856 -0.357407 4.51948
+          children Shape {
+            appearance Appearance {
+              lineProperties LineProperties {
+                linewidthScaleFactor 5
+              }
+            }
+            geometry PointSet {
+              coord Coordinate {
+                point 0 0 0
+              }
             }
           }
         }
@@ -81,6 +100,7 @@ function set_isActive1 (value)
 "
 }
 
+ROUTE Touch1.trackPoint_changed TO TrackPoint.set_translation
 ROUTE Touch1.isOver TO Debug.set_isOver1
 ROUTE Touch1.isActive TO Debug.set_isActive1
 ROUTE Touch1.trackPoint_changed TO Debug.set_trackPoint1

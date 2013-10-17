@@ -72,6 +72,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	           javaScriptEngine (new SpiderMonkey        (this)),          // SFNode  [ ]       javaScriptEngine    NULL   [JavaScriptEngine]
 	                    enabled (true),
 	          initializedOutput (),                                        // SFTime [out]  initialized
+	               pickedOutput (),                                        // [out]  picked
 	             reshapedOutput (),                                        // [out]  reshaped
 	              sensorsOutput (),                                        // [out]  sensors
 	        prepareEventsOutput (),                                        // [out]  prepareEvents
@@ -446,6 +447,8 @@ X3DBrowserContext::pick (const double _x, const double _y)
 
 	getWorld () -> traverse (TraverseType::PICKING);
 
+	picked () .processInterests ();
+
 	// Selection end.
 
 	std::stable_sort (hits .begin (), hits .end (), hitComp);
@@ -675,6 +678,7 @@ void
 X3DBrowserContext::dispose ()
 {
 	initializedOutput   .dispose ();
+	pickedOutput        .dispose ();
 	reshapedOutput      .dispose ();
 	prepareEventsOutput .dispose ();
 	displayedOutput     .dispose ();

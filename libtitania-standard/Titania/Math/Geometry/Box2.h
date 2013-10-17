@@ -53,22 +53,10 @@
 
 #include "../Numbers/Matrix3.h"
 #include "../Numbers/Vector2.h"
+#include <array>
 
 namespace titania {
 namespace math {
-
-/*
- *                    d0
- *     -------------
- *    |             |
- *    |             |
- *    |             |
- *    |             |
- *    |  d1         |
- *    |_____________|
- *
- *
- */
 
 template <class Type>
 class box2
@@ -83,33 +71,28 @@ public:
 	///  Default constructor. Constructs a box of size 0 0 and center 0 0.
 	constexpr
 	box2 () :
-		d0 (),
-		d1 (),
-		translation ()
+		points ()
 	{ }
 
 	///  Copy constructor.
 	template <class Up>
 	constexpr
 	box2 (const box2 <Up> & box) :
-		d0 (box .d0),
-		d1 (box .d1),
-		translation (box .translation)
-	{ }
-
-	///  Constructs a box of min @a min and max @a max.
-	constexpr
-	box2 (const vector2 <Type> & min, const vector2 <Type> & max, bool) :
-		box2 (max - min, min + (max - min) / Type (2))
+		points (box .points)
 	{ }
 
 	///  Constructs a box of size @a size and center @a size.
 	box2 (const vector2 <Type> & size, const vector2 <Type> & center) :
-		translation (center)
+      box2 (center - size * Type (0.5), center + size * Type (0.5), true)
+	{ }
+
+	///  Constructs a box of min @a min and max @a max.
+	box2 (const vector2 <Type> & min, const vector2 <Type> & max, bool)
 	{
-		vector2 <Type> size1_2 = size / Type (2);
-		d0 = vector2 <Type> (+size1_2 .x (), +size1_2 .y ());
-		d1 = vector2 <Type> (+size1_2 .x (), -size1_2 .y ());
+		points [0] = vector2 <Type> (max .x (), min .y ());
+		points [1] = vector2 <Type> (max .x (), max .y ());
+		points [2] = vector2 <Type> (min .x (), max. y ());
+		points [3] = vector2 <Type> (min. x (), min .y ());
 	}
 
 	///  @name Assignment operator
@@ -119,9 +102,7 @@ public:
 	box2 &
 	operator = (const box2 <Up> & box)
 	{
-		d0          = box .d0;
-		d1          = box .d1;
-		translation = box .translation;
+		points = box .points;
 		return *this;
 	}
 
@@ -131,34 +112,38 @@ public:
 	vector2 <Type>
 	min () const
 	{
-		vector2 <Type> min = math::min (d0, d1);
-		min = math::min (min, -d0);
-		min = math::min (min, -d1);
+		vector2 <Type> min = math::min (points [0], points [1]);
+		min = math::min (min, points [2]);
+		min = math::min (min, points [3]);
 
-		return translation + min;
+		return min;
 	}
 
 	///  Return the maximum vector of this box.
 	vector2 <Type>
 	max () const
 	{
-		vector2 <Type> max = math::max (d0, d1);
-		max = math::max (max, -d0);
-		max = math::max (max, -d1);
+		vector2 <Type> max = math::max (points [0], points [1]);
+		max = math::max (max, points [2]);
+		max = math::max (max, points [3]);
 
-		return translation + max;
+		return max;
 	}
 
 	///  Return the size of this box.
 	vector2 <Type>
 	size () const
-	{
-		return max () - min ();
-	}
+	{ return max () - min (); }
 
 	///  Return the center of this box.
-	const vector2 <Type> &
-	center () const { return translation; }
+	vector2 <Type>
+	center () const
+	{
+		auto min = this -> min ();
+		auto max = this -> max ();
+
+		return (min + max) * Type (0.5);
+	}
 
 	///  @name  Arithmetic operations
 	///  All these operators modify this box2 inplace.
@@ -188,18 +173,20 @@ public:
 	///  Translate this box by @a translation.
 	template <class Up>
 	box2 &
-	operator += (const vector2 <Up> & t)
+	operator += (const vector2 <Up> & translation)
 	{
-		translation += t;
+		for (auto & point : points)
+			point += translation;
 		return *this;
 	}
 
 	///  Translate this box by @a translation.
 	template <class Up>
 	box2 &
-	operator -= (const vector2 <Up> & t)
+	operator -= (const vector2 <Up> & translation)
 	{
-		translation -= t;
+		for (auto & point : points)
+			point -= translation;
 		return *this;
 	}
 
@@ -207,18 +194,14 @@ public:
 	box2 &
 	operator *= (const Type & scale)
 	{
-		d0 *= scale;
-		d1 *= scale;
-		return *this;
+		return *this = box2 (size () * scale, center ());
 	}
 
 	///  Scale this box2 by @a scale.
 	box2 &
 	operator /= (const Type & scale)
 	{
-		d0 /= scale;
-		d1 /= scale;
-		return *this;
+		return *this = box2 (size () / scale, center ());
 	}
 
 	///  Scale this box by @a scale.
@@ -232,9 +215,8 @@ public:
 	box2 &
 	multMatrixBox (const matrix3 <Type> & matrix)
 	{
-		d0          = matrix .multMatrixDir (d0);
-		d1          = matrix .multMatrixDir (d1);
-		translation = matrix .multMatrixVec (translation);
+		for (auto & point : points)
+			point = matrix .multMatrixVec (point);
 		return *this;
 	}
 
@@ -242,17 +224,14 @@ public:
 	box2 &
 	multBoxMatrix (const matrix3 <Type> & matrix)
 	{
-		d0          = matrix .multDirMatrix (d0);
-		d1          = matrix .multDirMatrix (d1);
-		translation = matrix .multVecMatrix (translation);
+		for (auto & point : points)
+			point = matrix .multVecMatrix (point);
 		return *this;
 	}
 
 private:
 
-	vector2 <Type> d0;
-	vector2 <Type> d1;
-	vector2 <Type> translation;
+	std::array <vector2 <Type>, 4> points;
 
 };
 

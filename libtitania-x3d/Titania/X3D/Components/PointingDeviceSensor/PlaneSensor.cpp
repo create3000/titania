@@ -62,8 +62,8 @@ const std::string PlaneSensor::containerField = "children";
 PlaneSensor::Fields::Fields () :
 	       axisRotation (new SFRotation ()),
 	             offset (new SFVec3f ()),
-	        maxPosition (new SFVec2f (-1, -1)),
 	        minPosition (new SFVec2f ()),
+	        maxPosition (new SFVec2f (-1, -1)),
 	translation_changed (new SFVec3f ())
 { }
 
@@ -82,8 +82,8 @@ PlaneSensor::PlaneSensor (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "axisRotation",        axisRotation ());
 	addField (inputOutput, "autoOffset",          autoOffset ());
 	addField (inputOutput, "offset",              offset ());
-	addField (inputOutput, "maxPosition",         maxPosition ());
 	addField (inputOutput, "minPosition",         minPosition ());
+	addField (inputOutput, "maxPosition",         maxPosition ());
 	addField (outputOnly,  "trackPoint_changed",  trackPoint_changed ());
 	addField (outputOnly,  "translation_changed", translation_changed ());
 	addField (outputOnly,  "isOver",              isOver ());
@@ -105,10 +105,11 @@ PlaneSensor::set_active (const HitPtr & hit, bool active)
 
 		if (isActive ())
 		{
-			inverseModelViewMatrix = ~getModelViewMatrix () .rotate (axisRotation ());
-			plane                  = Plane3f (hit -> point * inverseModelViewMatrix, Vector3f (0, 0, 1));
+			inverseModelViewMatrix = ~getModelViewMatrix ();
 
-			auto hitRay = hit -> ray * inverseModelViewMatrix;
+			const auto hitRay = hit -> ray * inverseModelViewMatrix;
+
+			plane  = Plane3f (Vector3f (), axisRotation () * Vector3f (0, 0, 1));
 
 			Vector3f trackPoint;
 
@@ -130,6 +131,26 @@ PlaneSensor::set_active (const HitPtr & hit, bool active)
 	{ }
 }
 
+Vector3f
+PlaneSensor::getTrackPoint (const Line3f hitRay) const
+{
+	Vector3f trackPoint;
+	Vector3f zTrackPoint;
+
+//	float angle = std::abs (dot (plane .normal (), hitRay .direction ()));
+//	float alpha = 1 / (1 + std::pow (100, (-12 * angle + 1.5)));
+//
+//	__LOG__ << angle << " : " << alpha << std::endl;
+//
+//	Plane3f sPlane (Vector3f (), hitRay .direction ());
+//	sPlane .intersect (hitRay, zTrackPoint);
+//
+//	if (plane .intersect (hitRay, trackPoint))
+//		return math::lerp (zTrackPoint, trackPoint, angle);
+
+	return zTrackPoint;
+}
+
 void
 PlaneSensor::set_motion (const HitPtr & hit)
 {
@@ -139,9 +160,8 @@ PlaneSensor::set_motion (const HitPtr & hit)
 
 	if (plane .intersect (hitRay, trackPoint))
 	{
-		trackPoint_changed () = trackPoint;
-
-		auto translation = startOffset + (trackPoint - startPoint);
+		//auto trackPoint  = getTrackPoint (hitRay);
+		auto translation = ~axisRotation () * (startOffset + (trackPoint - startPoint));
 
 		// X component
 
@@ -153,7 +173,12 @@ PlaneSensor::set_motion (const HitPtr & hit)
 		if (not (minPosition () .getY () > maxPosition () .getY ()))
 			translation .y (math::clamp <float> (translation .y (), minPosition () .getY (), maxPosition () .getY ()));
 
-		translation_changed () = translation;
+		// Z component
+
+		translation .z (0);
+
+		trackPoint_changed ()  = trackPoint;
+		translation_changed () = axisRotation () * translation;
 	}
 }
 

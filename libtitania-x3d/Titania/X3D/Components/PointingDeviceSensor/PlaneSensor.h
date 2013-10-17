@@ -61,6 +61,8 @@ class PlaneSensor :
 {
 public:
 
+	///  @name Construction
+
 	PlaneSensor (X3DExecutionContext* const);
 
 	virtual
@@ -104,20 +106,20 @@ public:
 	{ return *fields .offset; }
 
 	SFVec2f &
-	maxPosition ()
-	{ return *fields .maxPosition; }
-
-	const SFVec2f &
-	maxPosition () const
-	{ return *fields .maxPosition; }
-
-	SFVec2f &
 	minPosition ()
 	{ return *fields .minPosition; }
 
 	const SFVec2f &
 	minPosition () const
 	{ return *fields .minPosition; }
+
+	SFVec2f &
+	maxPosition ()
+	{ return *fields .maxPosition; }
+
+	const SFVec2f &
+	maxPosition () const
+	{ return *fields .maxPosition; }
 
 	SFVec3f &
 	translation_changed ()
@@ -126,6 +128,8 @@ public:
 	const SFVec3f &
 	translation_changed () const
 	{ return *fields .translation_changed; }
+
+	///  @name Operations
 
 	virtual
 	void
@@ -138,6 +142,10 @@ public:
 
 private:
 
+	///  @name Operations
+
+	Vector3f
+	getTrackPoint (const Line3f) const;
 
 	///  @name Static members
 
@@ -153,8 +161,8 @@ private:
 
 		SFRotation* const axisRotation;
 		SFVec3f* const offset;
-		SFVec2f* const maxPosition;
 		SFVec2f* const minPosition;
+		SFVec2f* const maxPosition;
 		SFVec3f* const translation_changed;
 	};
 

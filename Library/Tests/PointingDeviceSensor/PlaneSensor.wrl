@@ -26,67 +26,90 @@ Transform {
     Viewpoint {
       description "Left"
       position -10 0 0
-      orientation 0 1 0 -1.5707963
+      orientation -0 -1 -0 1.5708
     }
     Viewpoint {
       description "Right"
       position 10 0 0
-      orientation 0 1 0 1.5707963
+      orientation 0 1 0 1.5708
+    }
+    DEF Touch1 PlaneSensor {
+      axisRotation 0 0 1 0
+      maxPosition 2 2
     }
     DEF Button1 Transform {
-      children [
-        DEF Touch1 PlaneSensor {
-          maxPosition 2 2
-        }
-        DEF Shape1 Transform {
-          children [
-            Transform {
-              translation 0 1 0
-              children Shape {
-                geometry Text {
-                  string "1"
-                  fontStyle FontStyle {
-                    justify "MIDDLE"
-                  }
+      rotation 0 0 1 0
+      scaleOrientation -0.357407 0.862856 -0.357407 4.51948
+      children DEF Shape1 Transform {
+        children [
+          Transform {
+            translation 0 1 0
+            children Shape {
+              geometry Text {
+                string "1"
+                fontStyle FontStyle {
+                  justify "MIDDLE"
                 }
               }
             }
-            Transform {
-              scale 0.5 0.5 0.5
-              children Shape {
-                appearance Appearance {
-                  material Material { }
+          }
+          DEF Cube Transform {
+            rotation 0 0 1 0
+            scale 0.5 0.5 0.5
+            children Shape {
+              appearance Appearance {
+                material Material {
+                  transparency 0.5
                 }
-                geometry DEF Cube IndexedFaceSet {
-                  solid FALSE
-                  colorPerVertex FALSE
-                  texCoordIndex [ 0, 1, 3, 2, -1, 0, 1, 3, 2, -1, 0, 1, 3, 2, -1, 0, 1, 3, 2, -1, 0, 1, 3, 2, -1, 0, 1, 3, 2, -1 ]
-                  colorIndex [ 0, 1, 2, 3, 4, 5 ]
-                  coordIndex [ 0, 1, 3, 2, -1, 4, 5, 7, 6, -1, 6, 7, 1, 0, -1, 2, 3, 5, 4, -1, 6, 0, 2, 4, -1, 1, 7, 5, 3, -1 ]
-                  texCoord TextureCoordinate {
-                    point [ 0 1, 0 0, 1 1, 1 0 ]
-                  }
-                  color Color {
-                    color [ 1 0 0, 0 1 0, 0 0 1, 1 1 0, 0 1 1, 1 0 1 ]
-                  }
-                  coord Coordinate {
-                    point [ -1 1 1, -1 -1 1, 1 1 1, 1 -1 1, 1 1 -1, 1 -1 -1, -1 1 -1, -1 -1 -1 ]
-                  }
+              }
+              geometry IndexedFaceSet {
+                solid FALSE
+                colorPerVertex FALSE
+                texCoordIndex [ 0, 1, 3, 2, -1, 0, 1, 3, 2, -1, 0, 1, 3, 2, -1, 0, 1, 3, 2, -1, 0, 1, 3, 2, -1, 0, 1, 3, 2, -1 ]
+                colorIndex [ 0, 1, 2, 3, 4, 5 ]
+                coordIndex [ 0, 1, 3, 2, -1, 4, 5, 7, 6, -1, 6, 7, 1, 0, -1, 2, 3, 5, 4, -1, 6, 0, 2, 4, -1, 1, 7, 5, 3, -1 ]
+                texCoord TextureCoordinate {
+                  point [ 0 1, 0 0, 1 1, 1 0 ]
+                }
+                color Color {
+                  color [ 1 0 0, 0 1 0, 0 0 1, 1 1 0, 0 1 1, 1 0 1 ]
+                }
+                coord Coordinate {
+                  point [ -1 1 1, -1 -1 1, 1 1 1, 1 -1 1, 1 1 -1, 1 -1 -1, -1 1 -1, -1 -1 -1 ]
                 }
               }
             }
-          ]
-        }
-      ]
+          }
+        ]
+      }
     }
     DEF BBox Transform {
-      translation -0.5 -0.5 0
-      scale 3 3 3
+      translation 0 -1.49012e-08 0
+      rotation 0 0 1 0
+      scale 2 2 1
+      scaleOrientation 7.82146e-14 7.82146e-14 -1 1.5708
       children Shape {
         geometry IndexedLineSet {
           coordIndex [ 0, 1, 2, 3, 4, -1 ]
           coord Coordinate {
             point [ 0 0 0, 1 0 0, 1 1 0, 0 1 0, 0 0 0 ]
+          }
+        }
+      }
+    }
+    DEF TrackPoint Transform {
+      translation -1.00592 -0.328148 0
+      rotation 0 0 1 0
+      scaleOrientation -0.357407 0.862856 -0.357407 4.51948
+      children Shape {
+        appearance Appearance {
+          lineProperties LineProperties {
+            linewidthScaleFactor 5
+          }
+        }
+        geometry PointSet {
+          coord Coordinate {
+            point 0 0 0
           }
         }
       }
@@ -117,8 +140,12 @@ function set_isActive1 (value)
 "
 }
 
+ROUTE Touch1.trackPoint_changed TO TrackPoint.set_translation
+ROUTE BBox.rotation_changed TO Touch1.set_axisRotation
+ROUTE BBox.rotation_changed TO Cube.set_rotation
 ROUTE Touch1.trackPoint_changed TO Debug.set_trackPoint1
 ROUTE Touch1.isOver TO Debug.set_isOver1
 ROUTE Touch1.isActive TO Debug.set_isActive1
 ROUTE Touch1.translation_changed TO Button1.set_translation
+
 #ROUTE Touch1.translation_changed TO Touch1.set_offset

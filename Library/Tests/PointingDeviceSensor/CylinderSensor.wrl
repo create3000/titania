@@ -2,7 +2,7 @@
 
 META "title" "CylinderSensor"
 
-DEF _0 Transform {
+Transform {
   translation 3.65468 0.0348776 2.6975
   rotation -0.57735 0.57735 0.577351 2.09439
   scale 26.825 26.8249 26.825
@@ -59,6 +59,22 @@ DEF _0 Transform {
             }
           }
         }
+        DEF TrackPoint Transform {
+          translation -1.00592 -0.328148 0
+          scaleOrientation -0.357407 0.862856 -0.357407 4.51948
+          children Shape {
+            appearance Appearance {
+              lineProperties LineProperties {
+                linewidthScaleFactor 5
+              }
+            }
+            geometry PointSet {
+              coord Coordinate {
+                point 0 0 0
+              }
+            }
+          }
+        }
       ]
     }
     Transform {
@@ -98,6 +114,7 @@ function set_isActive1 (value)
 "
 }
 
+ROUTE Touch1.trackPoint_changed TO TrackPoint.set_translation
 ROUTE Touch1.isOver TO Debug.set_isOver1
 ROUTE Touch1.isActive TO Debug.set_isActive1
 ROUTE Touch1.trackPoint_changed TO Debug.set_trackPoint1

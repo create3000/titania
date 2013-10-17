@@ -1,0 +1,26 @@
+#X3D V3.3 utf8 Titania
+
+META "title" "RoundedRectangle2D Prototype"
+
+EXTERNPROTO Torus [
+  exposedField SFFloat minorRadius
+  exposedField SFFloat majorRadius
+  exposedField SFInt32 minorDimension
+  exposedField SFInt32 majorDimension
+  field SFBool  solid
+  field SFBool  ccw
+  field SFFloat creaseAngle
+]
+[
+  "Torus.x3dv",
+  "file:///usr/share/titania/Library/Prototypes/Geometry3D/Torus/Torus.x3dv"
+]
+
+DEF Torus Transform {
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry Torus { }
+  }
+}

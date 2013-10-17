@@ -103,6 +103,10 @@ public:
 	{ return initializedOutput; }
 
 	const Output &
+	picked () const
+	{ return pickedOutput; }
+
+	const Output &
 	reshaped () const
 	{ return reshapedOutput; }
 
@@ -386,6 +390,7 @@ private:
 	bool enabled;
 
 	SFTime initializedOutput;
+	Output pickedOutput;
 	Output reshapedOutput;
 	Output sensorsOutput;
 	Output prepareEventsOutput;

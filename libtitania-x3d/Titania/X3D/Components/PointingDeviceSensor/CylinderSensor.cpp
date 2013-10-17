@@ -152,10 +152,10 @@ CylinderSensor::set_active (const HitPtr & hit, bool active)
 		{
 			inverseModelViewMatrix = ~getModelViewMatrix ();
 
-			const auto hitRay   = hit -> ray   * inverseModelViewMatrix;
+			const auto hitRay   = hit -> ray * inverseModelViewMatrix;
 			const auto hitPoint = hit -> point * inverseModelViewMatrix;
 
-			const auto yAxis = axisRotation () * Vector3f (0, 1, 0); // Local y-axis
+			const auto yAxis = axisRotation () * Vector3f (0, 1, 0);                       // Local y-axis
 			const auto zAxis = inverseModelViewMatrix .multDirMatrix (Vector3f (0, 0, 1)); // Camera direction
 
 			const auto axis    = Line3f (Vector3f (), yAxis);
@@ -163,8 +163,8 @@ CylinderSensor::set_active (const HitPtr & hit, bool active)
 
 			cylinder = Cylinder3f (axis, abs (pvector));
 
-			yPlane = Plane3f (Vector3f (), yAxis);  // Sensor aligned Y-plane
-			zPlane = Plane3f (hitPoint, zAxis);     // Screen aligned Z-plane.
+			yPlane = Plane3f (Vector3f (), yAxis);                                         // Sensor aligned Y-plane
+			zPlane = Plane3f (hitPoint, zAxis);                                            // Screen aligned Z-plane.
 
 			disk   = std::abs (dot (hitRay .direction (), yAxis)) > std::cos (diskAngle ());
 			behind = isBehind (hitRay, hitPoint);

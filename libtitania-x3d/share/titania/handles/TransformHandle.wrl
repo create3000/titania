@@ -218,10 +218,12 @@ PROTO TransformTool [
           }
         ]
       }
-      Group {
+      Billboard {
+        axisOfRotation 1 0 0
         children [
           DEF ModeTouch TouchSensor { }
           DEF XTranslationSensor PlaneSensor {
+            description "move along x-axis"
             autoOffset FALSE
             maxPosition -1 0
           }
@@ -234,55 +236,54 @@ PROTO TransformTool [
             translation IS bboxCenter
             children DEF XTool Transform {
               children ScreenGroup {
-                children Transform {
-                  rotation 0 0 -1 1.5708
-                  children DEF XSwitch Switch {
-                    choice [
-                      Transform {
-                        translation 0 10 0
-                        children Shape {
-                          appearance DEF Red Appearance {
-                            material Material {
-                              diffuseColor 1 0 0
-                            }
-                            shaders DEF ToolShader ToolShader { }
+                children DEF XSwitch Switch {
+                  choice [
+                    Transform {
+                      translation 10 0 0
+                      rotation 0 0 -1 1.5708
+                      children Shape {
+                        appearance DEF Red Appearance {
+                          material Material {
+                            diffuseColor 1 0 0
                           }
-                          geometry DEF Arrow Cone {
-                            height 20
-                            bottomRadius 6
-                          }
+                          shaders DEF ToolShader ToolShader { }
+                        }
+                        geometry DEF Arrow Cone {
+                          height 21
+                          bottomRadius 7
                         }
                       }
-                      Transform {
-                        translation 0 6 0
-                        children Shape {
-                          appearance USE Red
-                          geometry DEF Sphere Sphere {
-                            radius 6
-                          }
+                    }
+                    Transform {
+                      translation 8 0 0
+                      children Shape {
+                        appearance USE Red
+                        geometry DEF Sphere Sphere {
+                          radius 8
                         }
                       }
-                      Transform {
-                        translation 0 5 0
-                        children Shape {
-                          appearance USE Red
-                          geometry DEF Box Box {
-                            size 10 10 10
-                          }
+                    }
+                    Transform {
+                      translation 6 0 0
+                      children Shape {
+                        appearance USE Red
+                        geometry DEF Box Box {
+                          size 12 12 12
                         }
                       }
-                    ]
-                  }
+                    }
+                  ]
                 }
               }
             }
           }
         ]
       }
-      Group {
+      Billboard {
         children [
           USE ModeTouch
           DEF YTranslationSensor PlaneSensor {
+            description "move along y-axis"
             autoOffset FALSE
             maxPosition 0 -1
           }
@@ -295,65 +296,65 @@ PROTO TransformTool [
             translation IS bboxCenter
             children DEF YTool Transform {
               children ScreenGroup {
-                children Transform {
-                  children DEF YSwitch Switch {
-                    choice [
-                      Transform {
-                        translation 0 10 0
-                        children Shape {
-                          appearance DEF Green Appearance {
-                            material Material {
-                              diffuseColor 0 1 0
-                            }
-                            shaders USE ToolShader
+                children DEF YSwitch Switch {
+                  choice [
+                    Transform {
+                      translation 0 10 0
+                      children Shape {
+                        appearance DEF Green Appearance {
+                          material Material {
+                            diffuseColor 0 1 0
                           }
-                          geometry USE Arrow
+                          shaders USE ToolShader
                         }
+                        geometry USE Arrow
                       }
-                      Transform {
-                        translation 0 6 0
-                        children Shape {
-                          appearance USE Green
-                          geometry USE Sphere
-                        }
+                    }
+                    Transform {
+                      translation 0 8 0
+                      children Shape {
+                        appearance USE Green
+                        geometry USE Sphere
                       }
-                      Transform {
-                        translation 0 5 0
-                        children Shape {
-                          appearance USE Green
-                          geometry USE Box
-                        }
+                    }
+                    Transform {
+                      translation 0 6 0
+                      children Shape {
+                        appearance USE Green
+                        geometry USE Box
                       }
-                    ]
-                  }
+                    }
+                  ]
                 }
               }
             }
           }
         ]
       }
-      Group {
-        children [
-          USE ModeTouch
-          DEF ZTranslationSensor PlaneSensor {
-            axisRotation 0 1 0 1.5708
-            autoOffset FALSE
-          }
-          DEF ZScaleSensor PlaneSensor {
-            enabled FALSE
-            axisRotation 0 1 0 1.5708
-            autoOffset FALSE
-          }
-          DEF Z Transform {
-            translation IS bboxCenter
-            children DEF ZTool Transform {
-              children ScreenGroup {
-                children Transform {
-                  rotation 1 0 0 1.5708
+      Transform {
+        rotation 0 -1 0 1.5708
+        children Billboard {
+          axisOfRotation 1 0 0
+          children [
+            USE ModeTouch
+            DEF ZTranslationSensor PlaneSensor {
+              description "move along z-axis"
+              autoOffset FALSE
+            }
+            DEF ZScaleSensor PlaneSensor {
+              enabled FALSE
+              axisRotation 0 1 0 1.5708
+              autoOffset FALSE
+            }
+            DEF Z Transform {
+              translation IS bboxCenter
+              children DEF ZTool Transform {
+                children ScreenGroup {
                   children DEF ZSwitch Switch {
                     choice [
                       Transform {
-                        translation 0 10 0
+                        translation 10 0 0
+                        rotation 0 0 -1 1.5708
                         children Shape {
                           appearance DEF Blue Appearance {
                             material Material {
@@ -365,14 +366,14 @@ PROTO TransformTool [
                         }
                       }
                       Transform {
-                        translation 0 6 0
+                        translation 8 0 0
                         children Shape {
                           appearance USE Blue
                           geometry USE Sphere
                         }
                       }
                       Transform {
-                        translation 0 5 0
+                        translation 6 0 0
                         children Shape {
                           appearance USE Blue
                           geometry USE Box
@@ -383,8 +384,8 @@ PROTO TransformTool [
                 }
               }
             }
-          }
-        ]
+          ]
+        }
       }
       DEF CenterPoint Transform {
         children [
@@ -397,7 +398,7 @@ PROTO TransformTool [
                 shaders USE ToolShader
               }
               geometry Sphere {
-                radius 3
+                radius 5
               }
             }
           }
@@ -530,6 +531,20 @@ PROTO TransformTool [
           coord DEF CenterLineCoord Coordinate { }
         }
       }
+      DEF PPoint Transform {
+        children Shape {
+          appearance Appearance {
+            lineProperties LineProperties {
+              linewidthScaleFactor 5
+            }
+          }
+          geometry PointSet {
+            coord Coordinate {
+              point 0 0 0
+            }
+          }
+        }
+      }
     ]
   }
 
@@ -545,7 +560,7 @@ PROTO TransformTool [
     url "vrmlscript:
 function initialize (value, time)
 {
-	set_whichChoice (1);
+	set_whichChoice (0);
 }
 
 function set_time (value, time)
@@ -667,7 +682,7 @@ function eventsProcessed ()
 
 	x .translation = new SFVec3f (bboxSize .x / 2, 0, 0);
 	y .translation = new SFVec3f (0, bboxSize .y / 2, 0);
-	z .translation = new SFVec3f (0, 0, bboxSize .z / 2);
+	z .translation = new SFVec3f (bboxSize .x / 2, 0, 0);
 }
 "
     directOutput TRUE
@@ -737,7 +752,7 @@ function set_yTranslation (value)
 
 function set_zTranslation (value)
 {
-	add (new SFVec3f (0, 0, -value .x));
+	add (new SFVec3f (0, 0, value .x));
 }
 
 function add_with_bbox (value)
@@ -785,30 +800,39 @@ function set_transform_node ()
 
 function eventsProcessed ()
 {
-	// Position and scale planes
+	try
+	{
+		var translation = new SFVec3f ();
+		var rotation    = new SFRotation ();
+		var scale       = new SFVec3f ();
+		var matrix      = new SFMatrix4f ();
 
-	var translation = new SFVec3f ();
-	var rotation    = new SFRotation ();
-	var scale       = new SFVec3f ();
-	var matrix      = new SFMatrix4f ();
+		modelViewMatrix .getTransform (translation, rotation, scale);
+		matrix .setTransform (translation, rotation);
 
-	modelViewMatrix .getTransform (translation, rotation, scale);
-	matrix .setTransform (translation, rotation);
+		// Reset scale and scaleOrientation
 
-	var inverseModelViewMatrix = modelViewMatrix .inverse () .multLeft (matrix);
+		var inverseModelViewMatrix = modelViewMatrix .inverse () .multLeft (matrix);
 
-	inverseModelViewMatrix .getTransform (tool .translation,
-	                                      tool .rotation,
-	                                      tool .scale,
-	                                      tool .scaleOrientation);
+		inverseModelViewMatrix .getTransform (tool .translation,
+		                                      tool .rotation,
+		                                      tool .scale,
+		                                      tool .scaleOrientation);
+		
+		// Uniform scale circles
 
-	var max    = Math .max (Math .max (scale .x, scale .y), scale .z);
-	var radius = max * Math .max (bboxSize .length () / 2, transform .center .subtract (bboxCenter) .length ());
-	var scale  = new SFVec3f (radius, radius, radius);
+		var max    = Math .max (Math .max (scale .x, scale .y), scale .z);
+		var radius = max * Math .max (bboxSize .length () / 2, transform .center .subtract (bboxCenter) .length ());
+		var scale  = new SFVec3f (radius, radius, radius);
 
-	xTool .scale = scale;
-	yTool .scale = scale;
-	zTool .scale = scale;
+		xTool .scale = scale;
+		yTool .scale = scale;
+		zTool .scale = scale;
+	}
+	catch (error)
+	{
+		// Catch error from matrix inverse.
+	}
 }
 "
     directOutput TRUE
@@ -882,6 +906,10 @@ function set_zRotation (value)
     directOutput TRUE
   }
 
+  ROUTE FrontSensor.trackPoint_changed TO PPoint.set_translation
+  ROUTE XTranslationSensor.trackPoint_changed TO PPoint.set_translation
+  ROUTE YTranslationSensor.trackPoint_changed TO PPoint.set_translation
+  ROUTE ZTranslationSensor.trackPoint_changed TO PPoint.set_translation
 
   # Mode translate, rotate or scale
 
