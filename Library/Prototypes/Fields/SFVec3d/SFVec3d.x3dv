@@ -1,0 +1,28 @@
+#X3D V3.3 utf8 Titania
+
+PROTO SFVec3d [
+  inputOutput SFTime  triggerTime 0
+  inputOutput SFVec3d keyValue 0 0 0
+  outputOnly  SFVec3d value_changed
+]
+{
+  DEF SFVec3d Script {
+    inputOutput SFTime  triggerTime IS triggerTime
+    inputOutput SFVec3d keyValue IS keyValue
+    outputOnly  SFVec3d value_changed IS value_changed
+
+    url "vrmlscript:
+function initialize ()
+{
+	if (triggerTime)
+		set_triggerTime (0, 0);
+}
+
+function set_triggerTime (value, time)
+{
+	value_changed = keyValue;
+}
+"
+  }
+}
+

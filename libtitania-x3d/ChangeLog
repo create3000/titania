@@ -1,5 +1,19 @@
 2013-10-17  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* libtitania-x3d.cproj:
+	* X3DBrowser.h:
+	* X3DBrowser.cpp:
+	* Notification.wrl:
+	* WorldInfo.h:
+	* TransformHandle.wrl:
+	* WorldInfo.cpp:
+	* Anchor.cpp:
+	* RoundedRectangle2D.wrl:
+	* RoundedRectangle2D.x3dv:
+	* X3DPointingDeviceSensorNode.cpp: 
+
+2013-10-17  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Notification.wrl:
 	* TransformHandle.wrl:
 	* jsContext.cpp: 

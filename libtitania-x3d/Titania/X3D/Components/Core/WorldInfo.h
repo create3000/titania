@@ -61,6 +61,8 @@ class WorldInfo :
 {
 public:
 
+	///  @name Construction
+
 	WorldInfo (X3DExecutionContext* const);
 
 	virtual
@@ -106,6 +108,11 @@ public:
 
 private:
 
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final;
 
 	///  @name Static members
 

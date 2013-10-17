@@ -129,6 +129,17 @@ X3DBrowser::getBrowser () const
 	return const_cast <X3DBrowser*> (this);
 }
 
+void
+X3DBrowser::setDescription (const std::string & value)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	description = value;
+
+	if (not value .empty ())
+		getNotification () -> string () = value;
+}
+
 const basic::uri &
 X3DBrowser::getWorldURL () const
 throw (Error <INVALID_OPERATION_TIMING>,

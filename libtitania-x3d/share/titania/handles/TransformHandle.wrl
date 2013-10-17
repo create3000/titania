@@ -226,7 +226,7 @@ PROTO TransformTool [
             children [
               DEF ModeTouch TouchSensor { }
               DEF XTranslationSensor PlaneSensor {
-                description "move along x-axis"
+                description "x-Axis"
                 autoOffset FALSE
                 maxPosition -1 0
               }
@@ -283,7 +283,7 @@ PROTO TransformTool [
             children [
               USE ModeTouch
               DEF YTranslationSensor PlaneSensor {
-                description "move along y-axis"
+                description "y-Axis"
                 autoOffset FALSE
                 maxPosition 0 -1
               }
@@ -335,7 +335,7 @@ PROTO TransformTool [
               children [
                 USE ModeTouch
                 DEF ZTranslationSensor PlaneSensor {
-                  description "move along z-axis"
+                  description "z-Axis"
                   autoOffset FALSE
                 }
                 DEF ZScaleSensor PlaneSensor {
@@ -405,7 +405,6 @@ PROTO TransformTool [
                   Group {
                     children [
                       DEF XRotationSensor CylinderSensor {
-                        description "rotate around x-axis"
                         axisRotation 0 0 1 1.5708
                         diskAngle 1.5708
                         autoOffset FALSE
@@ -451,7 +450,6 @@ PROTO TransformTool [
                   Group {
                     children [
                       DEF YRotationSensor CylinderSensor {
-                        description "rotate around y-axis"
                         diskAngle 1.5708
                         autoOffset FALSE
                       }
@@ -486,7 +484,6 @@ PROTO TransformTool [
                   Group {
                     children [
                       DEF ZRotationSensor CylinderSensor {
-                        description "rotate around z-axis"
                         axisRotation 1 0 0 1.5708
                         diskAngle 1.5708
                         autoOffset FALSE
@@ -665,7 +662,6 @@ function eventsProcessed ()
 function set_transform ()
 {
   Browser .addRoute (transform, 'center', self, 'set_center');
-  eventsProcessed ();
 }    
 
 function eventsProcessed ()
@@ -802,7 +798,6 @@ function multVec (a, b)
 function set_transform ()
 {
   Browser .addRoute (transform, 'center', self, 'set_center');
-  eventsProcessed ();
 }    
 
 function eventsProcessed ()

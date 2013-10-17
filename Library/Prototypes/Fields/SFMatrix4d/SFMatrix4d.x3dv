@@ -1,0 +1,28 @@
+#X3D V3.3 utf8 Titania
+
+PROTO SFMatrix4d [
+  inputOutput SFTime     triggerTime 0
+  inputOutput SFMatrix4d keyValue 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
+  outputOnly  SFMatrix4d value_changed
+]
+{
+  DEF SFMatrix4d Script {
+    inputOutput SFTime     triggerTime IS triggerTime
+    inputOutput SFMatrix4d keyValue IS keyValue
+    outputOnly  SFMatrix4d value_changed IS value_changed
+
+    url "vrmlscript:
+function initialize ()
+{
+	if (triggerTime)
+		set_triggerTime (0, 0);
+}
+
+function set_triggerTime (value, time)
+{
+	value_changed = keyValue;
+}
+"
+  }
+}
+

@@ -50,6 +50,7 @@
 
 #include "WorldInfo.h"
 
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -78,6 +79,15 @@ X3DBaseNode*
 WorldInfo::create (X3DExecutionContext* const executionContext) const
 {
 	return new WorldInfo (executionContext);
+}
+
+void
+WorldInfo::initialize ()
+{
+	X3DInfoNode::initialize ();
+
+	if (not title () .empty ())
+		getBrowser () -> getNotification () -> string () = title ();
 }
 
 } // X3D

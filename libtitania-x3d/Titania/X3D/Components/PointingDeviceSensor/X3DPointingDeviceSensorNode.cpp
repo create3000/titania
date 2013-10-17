@@ -96,7 +96,7 @@ X3DPointingDeviceSensorNode::set_over (const HitPtr &, bool value)
 	{
 		isOver () = value;
 		
-		if (isOver ())
+		if (isOver () and not description () .empty ())
 			getBrowser () -> getNotification () -> string () = description ();
 	}
 }

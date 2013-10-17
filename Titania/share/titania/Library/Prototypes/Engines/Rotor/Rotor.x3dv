@@ -3,24 +3,16 @@
 META "title" "Rotor Prototype"
 
 PROTO Rotor [
-  exposedField SFBool     enabled TRUE
-  exposedField SFTime     cycleInterval 1
-  exposedField SFVec3f    axis 0 0 1
-  exposedField SFFloat    angle 0
-  exposedField SFBool     loop FALSE
-  exposedField SFTime     startTime 0
-  exposedField SFTime     stopTime 0
-  eventOut     SFRotation value_changed
+  inputOutput SFBool     enabled TRUE
+  inputOutput SFTime     cycleInterval 1
+  inputOutput SFVec3f    axis 0 0 1
+  inputOutput SFFloat    angle 0
+  inputOutput SFBool     loop FALSE
+  inputOutput SFTime     startTime 0
+  inputOutput SFTime     stopTime 0
+  outputOnly  SFRotation value_changed
 ]
 {
-  PROTO Fields [
-    exposedField SFVec3f axis 0 0 1
-    exposedField SFFloat angle 0
-  ]
-  {
-    MetadataBool { }
-  }
-
   DEF Timer TimeSensor {
     enabled IS enabled
     cycleInterval IS cycleInterval
@@ -36,13 +28,11 @@ PROTO Rotor [
   }
 
   DEF Rotor Script {
-    eventIn SFVec3f set_axis
-    eventIn SFFloat set_angle
-    field   SFNode  interpolator USE Interpolator
-    field   SFNode  fields DEF Fields Fields {
-      axis IS axis
-      angle IS angle
-    }
+    inputOnly      SFVec3f set_axis
+    inputOnly      SFFloat set_angle
+    inputOutput    SFVec3f axis IS axis
+    inputOutput    SFFloat angle IS angle
+    initializeOnly SFNode  interpolator USE Interpolator
 
     url "vrmlscript:
 
@@ -62,7 +52,7 @@ function eventsProcessed ()
 	var keyValue = interpolator .keyValue;
 
 	for (var i = 0; i < 4; ++ i)
-		keyValue [i] = new SFRotation (fields .axis, fields .angle + 2 * Math .PI / 4 * i);
+		keyValue [i] = new SFRotation (axis, angle + 2 * Math .PI / 4 * i);
 	
 	keyValue [4] = keyValue [0];
 }
@@ -70,7 +60,5 @@ function eventsProcessed ()
   }
 
   ROUTE Timer.fraction_changed TO Interpolator.set_fraction
-  ROUTE Fields.axis_changed TO Rotor.set_axis
-  ROUTE Fields.angle_changed TO Rotor.set_angle
 }
 

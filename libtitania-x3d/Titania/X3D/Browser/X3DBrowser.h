@@ -86,8 +86,7 @@ public:
 	void
 	setDescription (const std::string & value)
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
-	{ description = value; }
+	       Error <DISPOSED>);
 
 	const SFString &
 	getDescription ()

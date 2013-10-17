@@ -110,7 +110,7 @@ Anchor::set_over (bool value)
 	{
 		isOver = value;
 		
-		if (isOver)
+		if (isOver and not description () .empty ())
 			getBrowser () -> getNotification () -> string () = description ();
 	}
 }

@@ -1,0 +1,28 @@
+#X3D V3.3 utf8 Titania
+
+PROTO MFMatrix3f [
+  inputOutput SFTime     triggerTime 0
+  inputOutput MFMatrix3f keyValue [ ]
+  outputOnly  MFMatrix3f value_changed
+]
+{
+  DEF MFMatrix3f Script {
+    inputOutput SFTime     triggerTime IS triggerTime
+    inputOutput MFMatrix3f keyValue IS keyValue
+    outputOnly  MFMatrix3f value_changed IS value_changed
+
+    url "vrmlscript:
+function initialize ()
+{
+	if (triggerTime)
+		set_triggerTime (0, 0);
+}
+
+function set_triggerTime (value, time)
+{
+	value_changed = keyValue;
+}
+"
+  }
+}
+

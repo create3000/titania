@@ -9,19 +9,11 @@ PROTO Delay [
   outputOnly  SFTime exitTime
 ]
 {
-  PROTO Fields [
-    inputOutput SFTime cycleInterval 1
-    inputOutput SFTime startTime 0
-    inputOutput SFTime stopTime 0
-  ]
-  {
-    Group { }
-  }
-
   DEF Delay Script {
-    inputOnly      SFTime set_startTime
-    inputOnly      SFTime set_stopTime
     inputOnly      SFBool set_isActive
+    inputOutput    SFTime cycleInterval IS cycleInterval
+    inputOutput    SFTime startTime IS startTime
+    inputOutput    SFTime stopTime IS stopTime
     outputOnly     SFTime exitTime IS exitTime
     initializeOnly SFNode timeSensor DEF TimeSensor TimeSensor {
       enabled IS enabled
@@ -29,23 +21,18 @@ PROTO Delay [
       stopTime 1
       isActive IS isActive
     }
-    initializeOnly SFNode fields DEF Fields Fields {
-      cycleInterval IS cycleInterval
-      startTime IS startTime
-      stopTime IS stopTime
-    }
 
     url "vrmlscript:
 function initialize ()
 {
-	if (timeSensor .enabled && fields .startTime)
-		fields .startTime = 1;
+	if (timeSensor .enabled && startTime)
+		startTime = 1;
 }
 
 function set_startTime (value, time)
 {
 	timeSensor .startTime = time;
-	timeSensor .stopTime  = time + fields .cycleInterval;
+	timeSensor .stopTime  = time + cycleInterval;
 }
 
 function set_stopTime (value, time)
@@ -64,7 +51,5 @@ function set_isActive (value, time)
   }
 
   ROUTE TimeSensor.isActive TO Delay.set_isActive
-  ROUTE Fields.startTime_changed TO Delay.set_startTime
-  ROUTE Fields.stopTime_changed TO Delay.set_stopTime
 }
 

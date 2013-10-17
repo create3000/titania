@@ -1,0 +1,28 @@
+#X3D V3.3 utf8 Titania
+
+PROTO SFImage [
+  inputOutput SFTime  triggerTime 0
+  inputOutput SFImage keyValue 0 0 0
+  outputOnly  SFImage value_changed
+]
+{
+  DEF SFImage Script {
+    inputOutput SFTime  triggerTime IS triggerTime
+    inputOutput SFImage keyValue IS keyValue
+    outputOnly  SFImage value_changed IS value_changed
+
+    url "vrmlscript:
+function initialize ()
+{
+	if (triggerTime)
+		set_triggerTime (0, 0);
+}
+
+function set_triggerTime (value, time)
+{
+	value_changed = keyValue;
+}
+"
+  }
+}
+

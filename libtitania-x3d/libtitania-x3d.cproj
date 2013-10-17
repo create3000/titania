@@ -580,7 +580,6 @@
     <None Include="Titania\X3D\Components\ParticleSystems\ForcePhysicsModel.h" />
     <None Include="Titania\X3D\Browser\X3DBrowserSurface.h" />
     <None Include="Titania\X3D\Miscellaneous\International.h" />
-    <None Include="share\titania\handles\library\RoundedRectangle2D.wrl" />
     <None Include="Titania\X3D\Bits\Traverse.h" />
     <None Include="Titania\X3D\Thread\SceneLoader.h" />
     <None Include="share\titania\mime\model\x3d+vrml.xml" />
@@ -596,6 +595,7 @@
     <None Include="share\icons\hicolor\scalable\mimetypes\model-x3d+binary.svg" />
     <None Include="share\titania\mime\model\x3d+binary.xml" />
     <None Include="share\titania\mime\model\x3d+binary.png" />
+    <None Include="share\titania\handles\library\RoundedRectangle2D.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

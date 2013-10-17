@@ -1,0 +1,28 @@
+#X3D V3.3 utf8 Titania
+
+PROTO SFFloat [
+  inputOutput SFTime  triggerTime 0
+  inputOutput SFFloat keyValue 0
+  outputOnly  SFFloat value_changed
+]
+{
+  DEF SFFloat Script {
+    inputOutput SFTime  triggerTime IS triggerTime
+    inputOutput SFFloat keyValue IS keyValue
+    outputOnly  SFFloat value_changed IS value_changed
+
+    url "vrmlscript:
+function initialize ()
+{
+	if (triggerTime)
+		set_triggerTime (0, 0);
+}
+
+function set_triggerTime (value, time)
+{
+	value_changed = keyValue;
+}
+"
+  }
+}
+

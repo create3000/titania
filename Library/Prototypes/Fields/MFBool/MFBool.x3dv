@@ -1,0 +1,28 @@
+#X3D V3.3 utf8 Titania
+
+PROTO MFBool [
+  inputOutput SFTime triggerTime 0
+  inputOutput MFBool keyValue [ ]
+  outputOnly  MFBool value_changed
+]
+{
+  DEF MFBool Script {
+    inputOutput SFTime triggerTime IS triggerTime
+    inputOutput MFBool keyValue IS keyValue
+    outputOnly  MFBool value_changed IS value_changed
+
+    url "vrmlscript:
+function initialize ()
+{
+	if (triggerTime)
+		set_triggerTime (0, 0);
+}
+
+function set_triggerTime (value, time)
+{
+	value_changed = keyValue;
+}
+"
+  }
+}
+

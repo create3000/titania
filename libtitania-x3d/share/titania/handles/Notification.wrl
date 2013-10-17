@@ -5,7 +5,7 @@ EXTERNPROTO RoundedRectangle2D [
   exposedField SFVec2f size
   field        SFBool  solid
 ]
-"library/RoundedRectangle2D.wrl"
+"library/RoundedRectangle2D.x3dv"
 
 PROTO Notification [
   # Custom fields

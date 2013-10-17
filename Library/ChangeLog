@@ -1,5 +1,96 @@
 2013-10-17  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Library.mdproj:
+	* WorldInfo.wrl:
+	* Fields.pl:
+	* OutlineEditor.wrl:
+	* MFBool.wrl:
+	* SFNode.wrl:
+	* MFTime.wrl:
+	* MFNode.wrl:
+	* SFBool.wrl:
+	* SFTime.wrl:
+	* MFBool.x3dv:
+	* SFNode.x3dv:
+	* MFTime.x3dv:
+	* SFBool.x3dv:
+	* SFTime.x3dv:
+	* MFNode.x3dv:
+	* MFVec2d.wrl:
+	* SFVec4f.wrl:
+	* MFColor.wrl:
+	* SFVec4d.wrl:
+	* MFFloat.wrl:
+	* MFInt32.wrl:
+	* MFImage.wrl:
+	* SFVec2d.wrl:
+	* SFInt32.wrl:
+	* SFImage.wrl:
+	* SFVec3f.wrl:
+	* SFVec3d.wrl:
+	* SFVec2f.wrl:
+	* SFFloat.wrl:
+	* MFVec3f.wrl:
+	* MFVec3d.wrl:
+	* MFVec2f.wrl:
+	* MFVec4f.wrl:
+	* SFColor.wrl:
+	* MFVec4d.wrl:
+	* SFVec4d.x3dv:
+	* SFVec3f.x3dv:
+	* MFColor.x3dv:
+	* SFVec4f.x3dv:
+	* MFVec4f.x3dv:
+	* MFVec4d.x3dv:
+	* MFVec3f.x3dv:
+	* SFImage.x3dv:
+	* SFFloat.x3dv:
+	* SFColor.x3dv:
+	* MFInt32.x3dv:
+	* MFImage.x3dv:
+	* MFFloat.x3dv:
+	* MFVec3d.x3dv:
+	* MFVec2f.x3dv:
+	* MFVec2d.x3dv:
+	* SFVec2f.x3dv:
+	* SFVec2d.x3dv:
+	* SFVec3d.x3dv:
+	* SFInt32.x3dv:
+	* MFString.wrl:
+	* MFDouble.wrl:
+	* SFDouble.wrl:
+	* SFString.wrl:
+	* SFString.x3dv:
+	* MFDouble.x3dv:
+	* MFString.x3dv:
+	* SFDouble.x3dv:
+	* SFMatrix4f.wrl:
+	* SFMatrix4d.wrl:
+	* SFMatrix3d.wrl:
+	* SFMatrix3f.wrl:
+	* MFMatrix3f.wrl:
+	* MFMatrix3d.wrl:
+	* MFMatrix4d.wrl:
+	* SFRotation.wrl:
+	* MFMatrix4f.wrl:
+	* MFRotation.wrl:
+	* SFMatrix3d.x3dv:
+	* SFMatrix4d.x3dv:
+	* SFMatrix4f.x3dv:
+	* SFRotation.x3dv:
+	* MFMatrix3d.x3dv:
+	* MFMatrix4f.x3dv:
+	* MFMatrix4d.x3dv:
+	* MFRotation.x3dv:
+	* MFMatrix3f.x3dv:
+	* SFMatrix3f.x3dv:
+	* SFColorRGBA.wrl:
+	* MFColorRGBA.wrl:
+	* SFColorRGBA.x3dv:
+	* MFColorRGBA.x3dv: 
+
+2013-10-17  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* TransformHandle.wrl: 
 
 2013-10-17  Holger Seelig  <holger.seelig@yahoo.de>
