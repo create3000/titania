@@ -405,6 +405,7 @@ PROTO TransformTool [
                   Group {
                     children [
                       DEF XRotationSensor CylinderSensor {
+                        description "rotate around x-axis"
                         axisRotation 0 0 1 1.5708
                         diskAngle 1.5708
                         autoOffset FALSE
@@ -450,6 +451,7 @@ PROTO TransformTool [
                   Group {
                     children [
                       DEF YRotationSensor CylinderSensor {
+                        description "rotate around y-axis"
                         diskAngle 1.5708
                         autoOffset FALSE
                       }
@@ -484,6 +486,7 @@ PROTO TransformTool [
                   Group {
                     children [
                       DEF ZRotationSensor CylinderSensor {
+                        description "rotate around z-axis"
                         axisRotation 1 0 0 1.5708
                         diskAngle 1.5708
                         autoOffset FALSE
@@ -566,7 +569,7 @@ PROTO TransformTool [
     url "vrmlscript:
 function initialize (value, time)
 {
-	set_whichChoice (1);
+	set_whichChoice (0);
 }
 
 function set_time (value, time)
@@ -650,7 +653,6 @@ function eventsProcessed ()
   }
 
   DEF CenterScript Script {
-    eventIn      SFNode  set_transform_node
     eventIn      SFVec3f set_center
     exposedField SFVec3f bboxSize IS bboxSize
     exposedField SFVec3f bboxCenter IS bboxCenter
@@ -660,7 +662,7 @@ function eventsProcessed ()
     field        SFNode  self USE CenterScript
 
     url "vrmlscript:
-function set_transform_node ()
+function set_transform ()
 {
   Browser .addRoute (transform, 'center', self, 'set_center');
   eventsProcessed ();
@@ -784,7 +786,6 @@ function multVec (a, b)
   }
 
   DEF RotationHandleScript Script {
-    eventIn      SFNode     set_transform_node
     eventIn      SFVec3f    set_center
     exposedField SFMatrix4f cameraSpaceMatrix IS cameraSpaceMatrix
     exposedField SFMatrix4f modelViewMatrix IS modelViewMatrix
@@ -798,7 +799,7 @@ function multVec (a, b)
     field        SFNode     self USE RotationHandleScript
 
     url "vrmlscript:
-function set_transform_node ()
+function set_transform ()
 {
   Browser .addRoute (transform, 'center', self, 'set_center');
   eventsProcessed ();
@@ -852,6 +853,9 @@ function eventsProcessed ()
     eventOut SFFloat y_changed
     eventOut SFFloat z_changed
     field    SFFloat transparency 0.9
+    field    SFNode xSensor USE XRotationSensor
+    field    SFNode ySensor USE YRotationSensor
+    field    SFNode zSensor USE ZRotationSensor
 
     url "vrmlscript:
 function initialize ()
@@ -863,17 +867,22 @@ function initialize ()
 
 function set_x (value)
 {
-	x_changed = value ? transparency : 1;
+	x_changed = isActive (xSensor, ySensor, zSensor) ? transparency : 1;
 }
 
 function set_y (value)
 {
-	y_changed = value ? transparency : 1;
+	y_changed = isActive (ySensor, xSensor, zSensor) ? transparency : 1;
 }
 
 function set_z (value)
 {
-	z_changed = value ? transparency : 1;
+	z_changed = isActive (zSensor, xSensor, ySensor) ? transparency : 1;
+}
+
+function isActive (sensorA, sensorB, sensorC)
+{
+	return (sensorA .isOver || sensorA .isActive) && !(sensorB .isActive || sensorC .isActive);
 }
 "
   }
@@ -937,8 +946,6 @@ function set_zRotation (value)
 
   # Center Script
 
-  ROUTE CenterScript.transform_changed TO CenterScript.set_transform_node
-
   # Move
 
   ROUTE FrontSensor.isActive TO MoveScript.set_active
@@ -965,10 +972,9 @@ function set_zRotation (value)
 
   # Rotate
 
-  ROUTE RotationHandleScript.transform_changed TO RotationHandleScript.set_transform_node
-
-  #
-
+  ROUTE XRotationSensor.isOver TO DiskScript.set_x
+  ROUTE YRotationSensor.isOver TO DiskScript.set_y
+  ROUTE ZRotationSensor.isOver TO DiskScript.set_z
   ROUTE XRotationSensor.isActive TO DiskScript.set_x
   ROUTE YRotationSensor.isActive TO DiskScript.set_y
   ROUTE ZRotationSensor.isActive TO DiskScript.set_z

@@ -167,7 +167,7 @@ LayoutGroup {
   children DEF Notification Notification {
     fontStyle FontStyle {
       family "sans"
-      style "BOLD"
+      style "PLAIN"
       size 18
       justify [ "MIDDLE", "MIDDLE" ]
     }

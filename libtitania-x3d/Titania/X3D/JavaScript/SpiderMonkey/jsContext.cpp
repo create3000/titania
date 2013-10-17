@@ -264,7 +264,6 @@ jsContext::initNode ()
 			{
 				addUserDefinedField (field);
 				defineProperty (context, global, field, field -> getName (),              JSPROP_ENUMERATE);
-				defineProperty (context, global, field, "set_" + field -> getName (),     0);
 				defineProperty (context, global, field, field -> getName () + "_changed", 0);
 				break;
 			}
@@ -345,9 +344,12 @@ jsContext::initEventHandler ()
 	{
 		switch (field -> getAccessType ())
 		{
-			case inputOnly :
+			case inputOnly:
+			case inputOutput:
 				{
-					jsval function = getFunction (field -> getName ());
+					jsval function = field -> getAccessType () == inputOnly
+					                 ? getFunction (field -> getName ())
+					                 : getFunction ("set_" + field -> getName ());
 
 					if (not JSVAL_IS_VOID (function))
 					{
