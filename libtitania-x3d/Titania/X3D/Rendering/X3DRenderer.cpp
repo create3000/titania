@@ -87,17 +87,13 @@ X3DRenderer::initialize ()
 void
 X3DRenderer::addShape (X3DShapeNode* shape)
 {
-	auto matrix = ModelViewMatrix4f ();
-	auto bbox   = shape -> getBBox () * matrix;
-	auto min    = bbox .min ();
+	auto matrix   = ModelViewMatrix4f ();
+	auto distance = getDistance (shape, matrix);
 
-	if (min .z () < 0)
+	if (distance < 0)
 	{
 		if (ViewVolume (matrix) .intersect (shape -> getBBox ()))
 		{
-			auto max      = bbox .max ();
-			auto distance = (min .z () + max .z ()) * 0.5f;
-	
 			X3DFogObject*               fog         = getCurrentLayer () -> getFog ();
 			const LightContainerArray & localLights = getCurrentLayer () -> getLocalLights ();
 
@@ -127,16 +123,12 @@ void
 X3DRenderer::addCollision (X3DShapeNode* shape)
 {
 	auto matrix = ModelViewMatrix4f ();
-	auto bbox   = shape -> getBBox () * matrix;
-	auto min    = bbox .min ();
+	auto distance = getDistance (shape, matrix);
 
-	if (min .z () < 0)
+	if (distance < 0)
 	{
 		if (ViewVolume (matrix) .intersect (shape -> getBBox ()))
 		{
-			auto max      = bbox .max ();
-			auto distance = (min .z () + max .z ()) * 0.5f;
-		
 			const CollisionArray & collisions = getCurrentLayer () -> getCollisions ();
 
 			if (numCollisionShapes < collisionShapes .size ())
@@ -153,7 +145,7 @@ float
 X3DRenderer::getDistance (X3DShapeNode* shape, const Matrix4f & matrix)
 {
 	Box3f bbox  = shape -> getBBox () * matrix;
-	float depth = bbox .size () .z () * 0.5f;
+	float depth = bbox .size () .z () / 2;
 
 	return bbox .center () .z () - depth;
 }

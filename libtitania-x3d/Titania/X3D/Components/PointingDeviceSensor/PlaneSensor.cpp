@@ -107,9 +107,10 @@ PlaneSensor::set_active (const HitPtr & hit, bool active)
 		{
 			inverseModelViewMatrix = ~getModelViewMatrix ();
 
-			const auto hitRay = hit -> ray * inverseModelViewMatrix;
+			const auto hitRay   = hit -> ray * inverseModelViewMatrix;
+			const auto hitPoint = hit -> point * inverseModelViewMatrix;
 
-			plane  = Plane3f (Vector3f (), axisRotation () * Vector3f (0, 0, 1));
+			plane  = Plane3f (hitPoint, axisRotation () * Vector3f (0, 0, 1));
 
 			Vector3f trackPoint;
 

@@ -112,7 +112,7 @@ Vector3f
 GeoViewpoint::getLookAtPositionOffset (Box3f bbox) const
 {
 	return bbox .center ()
-	       + getUserOrientation () * (Vector3f (0, 0, (math::abs (bbox .size ()) * 0.5f) / std::tan (fieldOfView () * 0.5f)))
+	       + getUserOrientation () * (Vector3f (0, 0, (math::abs (bbox .size ()) / 2) / std::tan (fieldOfView () / 2)))
 	       - getPosition ();
 }
 

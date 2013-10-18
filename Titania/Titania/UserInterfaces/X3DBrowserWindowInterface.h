@@ -175,6 +175,10 @@ public:
 	getOpenLocationImage () const
 	{ return *m_openLocationImage; }
 
+	Gtk::Image &
+	getWalkViewerImage () const
+	{ return *m_walkViewerImage; }
+
 	Gtk::Menu &
 	getViewerTypeMenu () const
 	{ return *m_viewerTypeMenu; }
@@ -194,10 +198,6 @@ public:
 	Gtk::ImageMenuItem &
 	getNoneViewerMenuItem () const
 	{ return *m_noneViewerMenuItem; }
-
-	Gtk::Image &
-	getWalkViewerImage () const
-	{ return *m_walkViewerImage; }
 
 	Gtk::Window &
 	getWindow () const
@@ -267,11 +267,11 @@ public:
 	getDeleteMenuItem () const
 	{ return *m_deleteMenuItem; }
 
-	Gtk::MenuItem &
+	Gtk::ImageMenuItem &
 	getGroupSelectedNodesMenuItem () const
 	{ return *m_groupSelectedNodesMenuItem; }
 
-	Gtk::MenuItem &
+	Gtk::ImageMenuItem &
 	getUngroupMenuItem () const
 	{ return *m_ungroupMenuItem; }
 
@@ -785,12 +785,12 @@ private:
 	Gtk::Dialog*                    m_openLocationDialog;
 	Gtk::Entry*                     m_openLocationEntry;
 	Gtk::Image*                     m_openLocationImage;
+	Gtk::Image*                     m_walkViewerImage;
 	Gtk::Menu*                      m_viewerTypeMenu;
 	Gtk::ImageMenuItem*             m_examineViewerMenuItem;
 	Gtk::ImageMenuItem*             m_walkViewerMenuItem;
 	Gtk::ImageMenuItem*             m_flyViewerMenuItem;
 	Gtk::ImageMenuItem*             m_noneViewerMenuItem;
-	Gtk::Image*                     m_walkViewerImage;
 	Gtk::Window*                    m_window;
 	Gtk::VBox*                      m_widget;
 	Gtk::MenuBar*                   m_menuBar;
@@ -808,8 +808,8 @@ private:
 	Gtk::ImageMenuItem*             m_copyMenuItem;
 	Gtk::ImageMenuItem*             m_pasteMenuItem;
 	Gtk::ImageMenuItem*             m_deleteMenuItem;
-	Gtk::MenuItem*                  m_groupSelectedNodesMenuItem;
-	Gtk::MenuItem*                  m_ungroupMenuItem;
+	Gtk::ImageMenuItem*             m_groupSelectedNodesMenuItem;
+	Gtk::ImageMenuItem*             m_ungroupMenuItem;
 	Gtk::MenuItem*                  m_addToGroupMenuItem;
 	Gtk::MenuItem*                  m_detachFromGroupMenuItem;
 	Gtk::MenuItem*                  m_createParentGroupMenuItem;

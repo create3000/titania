@@ -1,3 +1,9 @@
+2013-10-18  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DOutlineTreeView.cpp:
+	* X3DBrowserWindowInterface.h:
+	* X3DBrowserWindowInterface.cpp: 
+
 2013-10-17  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Delay.x3dv:

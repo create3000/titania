@@ -158,8 +158,10 @@ TransformHandle::reshape ()
 		{
 			SFVec3f & field = *static_cast <SFVec3f*> (handle -> getField ("bboxSize"));
 
-			if (field not_eq bbox .size ())
-				field = bbox .size ();
+			auto size = bbox .size ();
+
+			if (field not_eq size)
+				field = size;
 		}
 		catch (const X3DError &)
 		{ }

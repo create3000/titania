@@ -113,7 +113,7 @@ ViewVolume::intersect (const Box3f & bbox) const
 {
 	if (valid)
 	{
-		float nradius = math::abs (bbox .size ()) * 0.5f;
+		float nradius = math::abs (bbox .size ()) / 2;
 
 		for (const auto & plane : planes)
 		{

@@ -84,10 +84,10 @@ void
 print_time (double time)
 {
 	std::clog
-		<< std::setiosflags (std::ios::fixed)
-		<< std::setprecision (std::numeric_limits <double>::digits10)
-		<< time
-		<< std::endl;
+	<< std::setiosflags (std::ios::fixed)
+	<< std::setprecision (std::numeric_limits <double>::digits10)
+	<< time
+	<< std::endl;
 }
 
 /*basic::ifilestream
@@ -174,6 +174,7 @@ test_path (const basic::path & path)
 typedef math::quaternion <float> Quaternionf;
 typedef math::vector2 <float>    Vector2f;
 typedef math::vector3 <float>    Vector3f;
+typedef math::vector4 <float>    Vector4f;
 typedef math::rotation4 <float>  Rotation4f;
 typedef math::matrix4 <float>    Matrix4f;
 typedef math::box2 <float>       Box2f;
@@ -261,6 +262,7 @@ basic::ifilestream
 get_stream (const basic::uri & uri)
 {
 	basic::ifilestream istream (uri, 3000);
+
 	__LOG__ << "bool: " << bool (istream) << std::endl;
 
 	istream .send ();
@@ -270,30 +272,98 @@ get_stream (const basic::uri & uri)
 	return istream;
 }
 
-void
-test (const basic::uri & uri, bool content)
+namespace Test {
+
+class Box3f
 {
-	std::clog << uri << std::endl;
+public:
 
-	basic::ifilestream a = get_stream (uri);
-	__LOG__ << "bool: "          << bool (a) << std::endl;
-	__LOG__ << "is_compressed: " << a .is_compressed () << std::endl;
-
-	basic::ifilestream istream = std::move (a);
-
-	__LOG__ << "bool: "          << bool (istream) << std::endl;
-	__LOG__ << "status: "        << istream .status () << std::endl;
-	__LOG__ << "is_compressed: " << istream .is_compressed () << std::endl;
-
-	if (istream)
+	Box3f (const Vector3f & size, const Vector3f & center)
 	{
-		__LOG__ << "Content-Type: "  << istream .response_headers () .at ("Content-Type") << std::endl;
-
-		if (content)
-			std::clog << istream .rdbuf () << std::endl;
+		matrix = Matrix4f (size .x () * 0.5f, 0, 0, 0,
+		                   0, size .y () * 0.5f, 0, 0,
+		                   0, 0, size .z () * 0.5f, 0,
+		                   center .x (), center .y (), center .z (), 1);
 	}
-}
 
+	void
+	size () const
+	{
+		auto x = Vector3f (matrix [0] [0], matrix [0] [1], matrix [0] [2]);
+		auto y = Vector3f (matrix [1] [0], matrix [1] [1], matrix [1] [2]);
+		auto z = Vector3f (matrix [2] [0], matrix [2] [1], matrix [2] [2]);
+
+		std::clog << math::abs (x) << " " << math::abs (y) << " "<< math::abs (z) << " " << std::endl;
+	}
+
+	void
+	center () const
+	{
+		std::clog << matrix .translation () << std::endl;
+	}
+
+	void
+	min_max () const
+	{
+		auto x = Vector3f (matrix [0] [0], matrix [0] [1], matrix [0] [2]);
+		auto y = Vector3f (matrix [1] [0], matrix [1] [1], matrix [1] [2]);
+		auto z = Vector3f (matrix [2] [0], matrix [2] [1], matrix [2] [2]);
+
+		auto r1 =  x + y;
+		auto r2 = -x + y;
+		auto r3 = -x - y;
+		auto r4 =  x - y;
+
+		auto p1 = r1 + z;
+		auto p2 = r2 + z;
+		auto p3 = r3 + z;
+		auto p4 = r4 + z;
+
+		auto p5 = r1 - z;
+		auto p6 = r2 - z;
+		auto p7 = r3 - z;
+		auto p8 = r4 - z;
+
+		auto min = math::min (p1, p2);
+		min = math::min (min, p3);
+		min = math::min (min, p4);
+		min = math::min (min, p5);
+		min = math::min (min, p6);
+		min = math::min (min, p7);
+		min = math::min (min, p8);
+
+		auto max = math::max (p1, p2);
+		max = math::max (max, p3);
+		max = math::max (max, p4);
+		max = math::max (max, p5);
+		max = math::max (max, p6);
+		max = math::max (max, p7);
+		max = math::max (max, p8);
+
+		std::clog << min << " : " << max << std::endl;
+	}
+
+	Box3f &
+	rotate (const Rotation4f & rotation)
+	{
+		
+		matrix = matrix * Matrix4f (rotation);
+		return *this;
+	}
+
+	void
+	print () const
+	{
+		std::clog << matrix << std::endl;
+	}
+
+private:
+
+	Matrix4f matrix;
+
+};
+
+}
 int
 main (int argc, char** argv)
 {
@@ -302,15 +372,47 @@ main (int argc, char** argv)
 	#ifdef _GLIBCXX_PARALLEL
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
+	
+	Rotation4f rotation (0, 0, 1, M_PI / 4.0f);
 
-	Glib::thread_init ();
-	Gio::init ();
+	Test::Box3f (Vector3f (-1, -1, -1), Vector3f (0, 0, 0)) .size ();
+	Test::Box3f (Vector3f ( 1,  1,  1), Vector3f (0, 0, 0)) .size ();
+	Test::Box3f (Vector3f ( 1,  2,  3), Vector3f (0, 0, 0)) .size ();
+	Test::Box3f (Vector3f ( 2,  3,  4), Vector3f (1, 2, 3)) .size ();
+	Test::Box3f (Vector3f ( 8,  5,  3), Vector3f (4, 6, 9)) .size ();
 
-	test ("http://titania.credate3000.de", true);
-	//test ("/home/holger/VRML2", true);
-	//test ("/home/holger/VRML2.gz", true);
-	//test ("/home/holger/Videos/Brokeback Mountain.avi", false);
-	//test ("http://www.web3d.org/x3d/content/examples/X3dForWebAuthors/Chapter03-Grouping/CoordinateAxes.x3d", false);
+	std::clog << std::endl;
+
+	Test::Box3f (Vector3f (-1, -1, -1), Vector3f (0, 0, 0)) .center ();
+	Test::Box3f (Vector3f ( 1,  1,  1), Vector3f (0, 0, 0)) .center ();
+	Test::Box3f (Vector3f ( 1,  2,  3), Vector3f (0, 0, 0)) .center ();
+	Test::Box3f (Vector3f ( 2,  3,  4), Vector3f (1, 2, 3)) .center ();
+	Test::Box3f (Vector3f ( 8,  5,  3), Vector3f (4, 6, 9)) .center ();
+
+	std::clog << std::endl;
+
+	Test::Box3f (Vector3f (-1, -1, -1), Vector3f (0, 0, 0)) .rotate (rotation) .size ();
+	Test::Box3f (Vector3f ( 1,  1,  1), Vector3f (0, 0, 0)) .rotate (rotation) .size ();
+	Test::Box3f (Vector3f ( 1,  2,  3), Vector3f (0, 0, 0)) .rotate (rotation) .size ();
+	Test::Box3f (Vector3f ( 2,  3,  4), Vector3f (1, 2, 3)) .rotate (rotation) .size ();
+	Test::Box3f (Vector3f ( 8,  5,  3), Vector3f (4, 6, 9)) .rotate (rotation) .size ();
+
+	std::clog << std::endl;
+
+	Test::Box3f (Vector3f (-1, -1, -1), Vector3f (0, 0, 0)) .rotate (rotation) .center ();
+	Test::Box3f (Vector3f ( 1,  1,  1), Vector3f (0, 0, 0)) .rotate (rotation) .center ();
+	Test::Box3f (Vector3f ( 1,  2,  3), Vector3f (0, 0, 0)) .rotate (rotation) .center ();
+	Test::Box3f (Vector3f ( 2,  3,  4), Vector3f (1, 2, 3)) .rotate (rotation) .center ();
+	Test::Box3f (Vector3f ( 8,  5,  3), Vector3f (4, 6, 9)) .rotate (rotation) .center ();
+
+	std::clog << std::endl;
+
+	//Test::Box3f (Vector3f (-1, -1, -1), Vector3f (0, 0, 0)) .rotate (rotation) .min ();
+	Test::Box3f (Vector3f ( 1,  2,  3), Vector3f (0, 0, 0)) .rotate (rotation) .min_max ();
+	//std::clog << (Matrix4f (rotation) * Box3f (Vector3f ( 1,  2,  3), Vector3f (0, 0, 0))) .min () << std::endl;
+	//Test::Box3f (Vector3f ( 1,  2,  3), Vector3f (0, 0, 0)) .rotate (rotation) .min ();
+	//Test::Box3f (Vector3f ( 2,  3,  4), Vector3f (1, 2, 3)) .rotate (rotation) .min ();
+	//Test::Box3f (Vector3f ( 8,  5,  3), Vector3f (4, 6, 9)) .rotate (rotation) .min ();
 
 	std::clog << "Function main done." << std::endl;
 	exit (0);
@@ -487,7 +589,7 @@ main (int argc, char** argv)
 //	do
 //	{
 //		__LOG__ << std::endl;
-//	
+//
 //		struct timeval timeout;
 //		int            rc; /* select() return code */
 //

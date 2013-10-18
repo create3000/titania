@@ -98,6 +98,7 @@ perl -e '
 		$lm = 0;
 		$lc = 0;
 		while ($_ = shift @_) {
+
 			last unless $_ =~ $member_rx;
 			$lm = max ($lm, length ($2));
 			$lc = max ($lc, length ($3));

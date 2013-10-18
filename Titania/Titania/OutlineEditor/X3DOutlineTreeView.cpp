@@ -102,8 +102,9 @@ X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DSFNode <X3D::X3DExecutionC
 void
 X3DOutlineTreeView::set_model (const Glib::RefPtr <OutlineTreeModel> & value)
 {
-	model = value;
 	Gtk::TreeView::set_model (value);
+
+	model = value;
 }
 
 std::deque <Gtk::TreeModel::iterator>

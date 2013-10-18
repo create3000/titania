@@ -48,84 +48,24 @@
  *
  ******************************************************************************/
 
-#include "Box.h"
-
-#include "../../Browser/Geometry3D/BoxOptions.h"
-#include "../../Browser/X3DBrowser.h"
-#include "../../Execution/X3DExecutionContext.h"
+#include "Box3.h"
 
 namespace titania {
-namespace X3D {
+namespace math {
 
-const std::string Box::componentName  = "Geometry3D";
-const std::string Box::typeName       = "Box";
-const std::string Box::containerField = "geometry";
+template class box3 <float>;
+template class box3 <double>;
+template class box3 <long double>;
 
-Box::Fields::Fields () :
-	 size (new SFVec3f (2, 2, 2)),
-	solid (new SFBool (true))
-{ }
+//
+template std::istream & operator >> (std::istream &, box3 <float> &);
+template std::istream & operator >> (std::istream &, box3 <double> &);
+template std::istream & operator >> (std::istream &, box3 <long double> &);
 
-Box::Box (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DGeometryNode (),
-	         fields ()
-{
-	addField (inputOutput,    "metadata", metadata ());
-	addField (initializeOnly, "size",     size ());
-	addField (initializeOnly, "solid",    solid ());
-}
+//
+template std::ostream & operator << (std::ostream &, const box3 <float> &);
+template std::ostream & operator << (std::ostream &, const box3 <double> &);
+template std::ostream & operator << (std::ostream &, const box3 <long double> &);
 
-X3DBaseNode*
-Box::create (X3DExecutionContext* const executionContext) const
-{
-	return new Box (executionContext);
-}
-
-void
-Box::initialize ()
-{
-	X3DGeometryNode::initialize ();
-
-	getBrowser () -> getBrowserOptions () -> boxOptions () .addInterest (this, &Box::set_properties);
-}
-
-Box3f
-Box::createBBox ()
-{
-	return Box3f (size (), Vector3f ());
-}
-
-void
-Box::set_properties ()
-{
-	update ();
-}
-
-void
-Box::build ()
-{
-	const BoxOptions* properties = getBrowser () -> getBrowserOptions () -> boxOptions ();
-
-	getTexCoord () = properties -> getTexCoord ();
-	getNormals  () = properties -> getNormals  ();
-
-	if (size () == Vector3f (2, 2, 2))
-		getVertices () = properties -> getVertices ();
-
-	else
-	{
-		getVertices () .reserve (properties -> getVertices () .size ());
-
-		auto size1_2 = size () / 2.0f;
-
-		for (const auto & vertex : properties -> getVertices ())
-			getVertices () .emplace_back (vertex * size1_2);
-	}
-
-	addElements (properties -> getVertexMode (), getVertices () .size ());
-	setSolid (solid ());
-}
-
-} // X3D
+} // math
 } // titania

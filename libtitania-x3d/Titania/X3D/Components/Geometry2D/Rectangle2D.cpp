@@ -123,7 +123,7 @@ Rectangle2D::build ()
 	{
 		getVertices () .reserve (properties -> getVertices () .size ());
 
-		auto size1_2 = Vector3f (size () .getX (), size () .getY (), 0) * 0.5f;
+		auto size1_2 = Vector3f (size () .getX (), size () .getY (), 0) / 2.0f;
 
 		for (const auto & vertex : properties -> getVertices ())
 			getVertices () .emplace_back (vertex * size1_2);

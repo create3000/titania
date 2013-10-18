@@ -71,35 +71,37 @@ public:
 
 	///  @name Constructors
 
-	///  Default constructor. Constructs an empty box.
+	///  Default constructor. Constructs a box of size 0 0 0 and center 0 0 0.
 	constexpr
 	box3 () :
-		value (Type (0.5), 0, 0, 0,
-		       0, Type (0.5), 0, 0,
-		       0, 0, Type (0.5), 0,
-		       0, 0, 0, 0)
+		points ()
 	{ }
 
 	///  Copy constructor.
 	template <class Up>
 	constexpr
 	box3 (const box3 <Up> & box) :
-		value (box .value)
+		points (box .points)
 	{ }
 
 	///  Constructs a box of size @a size and center @a size.
-	constexpr
 	box3 (const vector3 <Type> & size, const vector3 <Type> & center) :
-		value (size .x () / 2, 0, 0, 0,
-		       0, size .y () / 2, 0, 0,
-		       0, 0, size .z () / 2, 0,
-		       center .x (), center .y (), center .z (), 1)
+      box3 (center - size * Type (0.5), center + size * Type (0.5), true)
 	{ }
 
 	///  Constructs a box of min @a min and max @a max.
-	box3 (const vector3 <Type> & min, const vector3 <Type> & max, bool) :
-		box3 (max - min, (max + min) / Type (2))
-	{ }
+	box3 (const vector3 <Type> & min, const vector3 <Type> & max, bool)
+	{
+		points [0] = vector3 <Type> (max .x (), min .y (), max .z ());
+		points [1] = vector3 <Type> (max .x (), max .y (), max .z ());
+		points [2] = vector3 <Type> (min .x (), max. y (), max .z ());
+		points [3] = vector3 <Type> (min. x (), min .y (), max .z ());
+
+		points [4] = vector3 <Type> (max .x (), min .y (), min .z ());
+		points [5] = vector3 <Type> (max .x (), max .y (), min .z ());
+		points [6] = vector3 <Type> (min .x (), max. y (), min .z ());
+		points [7] = vector3 <Type> (min. x (), min .y (), min .z ());
+	}
 
 	///  @name Assignment operator
 
@@ -108,34 +110,56 @@ public:
 	box3 &
 	operator = (const box3 <Up> & box)
 	{
-		value = box .value;
+		points = box .points;
 		return *this;
 	}
 
 	///  @name Element access
 
-	const matrix4 <Type> &
-	matrix () const
-	{ return value; }
+	///  Return the minimum vector of this box.
+	vector3 <Type>
+	min () const
+	{
+		vector3 <Type> min = math::min (points [0], points [1]);
+		min = math::min (min, points [2]);
+		min = math::min (min, points [3]);
+		min = math::min (min, points [4]);
+		min = math::min (min, points [5]);
+		min = math::min (min, points [6]);
+		min = math::min (min, points [7]);
+
+		return min;
+	}
+
+	///  Return the maximum vector of this box.
+	vector3 <Type>
+	max () const
+	{
+		vector3 <Type> max = math::max (points [0], points [1]);
+		max = math::max (max, points [2]);
+		max = math::max (max, points [3]);
+		max = math::max (max, points [4]);
+		max = math::max (max, points [5]);
+		max = math::max (max, points [6]);
+		max = math::max (max, points [7]);
+
+		return max;
+	}
 
 	///  Return the size of this box.
 	vector3 <Type>
 	size () const
-	{
-		vector3 <Type> min, max;
-		min_max (min, max);
-
-		return max - min;
-	}
+	{ return max () - min (); }
 
 	///  Return the center of this box.
-	vector3 <Type>
+	const vector3 <Type>
 	center () const
-	{ return value .translation (); }
+	{
+		auto min = this -> min ();
+		auto max = this -> max ();
 
-	bool
-	empty () const
-	{ return value [3] [3] == 0; }
+		return (min + max) * Type (0.5);
+	}
 
 	///  @name  Arithmetic operations
 	///  All these operators modify this box3 inplace.
@@ -145,20 +169,16 @@ public:
 	box3 &
 	operator += (const box3 <Up> & box)
 	{
-		if (not empty ())
+		vector3 <Type> lhs_min = this -> min ();
+		vector3 <Type> lhs_max = this -> max ();
+
+		vector3 <Type> rhs_min = box .min ();
+		vector3 <Type> rhs_max = box .max ();
+
+		if (lhs_min not_eq lhs_max)
 		{
-			if (not box .empty ())
-			{
-				auto lsize1_2 = size () / 2.0f;
-				auto lhs_min  = center () - lsize1_2;
-				auto lhs_max  = center () + lsize1_2;
-
-				auto rsize1_2 = box .size () / 2.0f;
-				auto rhs_min  = box .center () - rsize1_2;
-				auto rhs_max  = box .center () + rsize1_2;
-
+			if (rhs_min not_eq rhs_max)
 				return *this = box3 (math::min (lhs_min, rhs_min), math::max (lhs_max, rhs_max), true);
-			}
 
 			return *this;
 		}
@@ -171,7 +191,8 @@ public:
 	box3 &
 	operator += (const vector3 <Up> & translation)
 	{
-		value .translate (translation);
+		for (auto & point : points)
+			point += translation;
 		return *this;
 	}
 
@@ -180,8 +201,23 @@ public:
 	box3 &
 	operator -= (const vector3 <Up> & translation)
 	{
-		value .translate (-translation);
+		for (auto & point : points)
+			point += translation;
 		return *this;
+	}
+
+	///  Scale this box3 by @a scale.
+	box3 &
+	operator *= (const Type & scale)
+	{
+		return *this = box3 (size () * scale, center ());
+	}
+
+	///  Scale this box3 by @a scale.
+	box3 &
+	operator /= (const Type & scale)
+	{
+		return *this = box3 (size () / scale, center ());
 	}
 
 	///  Transform this box by @a matrix.
@@ -195,7 +231,8 @@ public:
 	box3 &
 	multMatrixBox (const matrix4 <Type> & matrix)
 	{
-		value .multLeft (matrix);
+		for (auto & point : points)
+			point = matrix .multMatrixVec (point);
 		return *this;
 	}
 
@@ -203,7 +240,8 @@ public:
 	box3 &
 	multBoxMatrix (const matrix4 <Type> & matrix)
 	{
-		value .multRight (matrix);
+		for (auto & point : points)
+			point = matrix .multVecMatrix (point);
 		return *this;
 	}
 
@@ -224,46 +262,7 @@ public:
 
 private:
 
-	void
-	min_max (vector3 <Type> & min, vector3 <Type> & max) const
-	{
-		vector3 <Type> x (value [0] [0], value [0] [1], value [0] [2]);
-		vector3 <Type> y (value [1] [0], value [1] [1], value [1] [2]);
-		vector3 <Type> z (value [2] [0], value [2] [1], value [2] [2]);
-
-		auto r1 =  x + y;
-		auto r2 = -x + y;
-		auto r3 = -x - y;
-		auto r4 =  x - y;
-
-		auto p1 = r1 + z;
-		auto p2 = r2 + z;
-		auto p3 = r3 + z;
-		auto p4 = r4 + z;
-
-		auto p5 = r1 - z;
-		auto p6 = r2 - z;
-		auto p7 = r3 - z;
-		auto p8 = r4 - z;
-
-		min = math::min (p1, p2);
-		min = math::min (min, p3);
-		min = math::min (min, p4);
-		min = math::min (min, p5);
-		min = math::min (min, p6);
-		min = math::min (min, p7);
-		min = math::min (min, p8);
-
-		max = math::max (p1, p2);
-		max = math::max (max, p3);
-		max = math::max (max, p4);
-		max = math::max (max, p5);
-		max = math::max (max, p6);
-		max = math::max (max, p7);
-		max = math::max (max, p8);
-	}
-
-	matrix4 <Type> value;
+	std::array <vector3 <Type>, 8> points;
 
 };
 
@@ -271,9 +270,8 @@ template <class Type>
 bool
 box3 <Type>::intersect (const vector3 <Type> & point) const
 {
-	auto size1_2 = size () / Type (2);
-	auto min     = center () - size1_2;
-	auto max     = center () + size1_2;
+	vector3 <Type> min = this -> min ();
+	vector3 <Type> max = this -> max ();
 
 	return min .x () <= point .x () and
 	       max .x () >= point .x () and
@@ -287,11 +285,9 @@ template <class Type>
 bool
 box3 <Type>::intersect (const line3 <Type> & line, vector3 <Type> & intersection) const
 {
-	auto size1_2 = size () / Type (2);
-	auto min     = center () - size1_2;
-	auto max     = center () + size1_2;
-
-	vector3 <Type> center = (min + max) / Type (2);
+	vector3 <Type> min    = this -> min ();
+	vector3 <Type> max    = this -> max ();
+	vector3 <Type> center = (min + max) * Type (0.5);
 
 	vector3 <Type> points [6] = {
 		vector3 <Type> (center .x (), center .y (), max .z ()), // right
@@ -354,9 +350,8 @@ template <class Type>
 bool
 box3 <Type>::intersect (const sphere3 <Type> & sphere) const
 {
-	auto size1_2 = size () / Type (2);
-	auto min     = center () - size1_2;
-	auto max     = center () + size1_2;
+	vector3 <Type> min = this -> min ();
+	vector3 <Type> max = this -> max ();
 
 	vector3 <Type> center = sphere .center ();
 	Type           radius = sphere .radius ();
@@ -378,7 +373,9 @@ template <class Type>
 constexpr bool
 operator == (const box3 <Type> & lhs, const box3 <Type> & rhs)
 {
-	return lhs .matrix () == rhs .matrix ();
+	return
+	   lhs .min () == rhs .min () and
+	   lhs .max () == rhs .max ();
 }
 
 ///  Compares two box3 numbers.
@@ -387,7 +384,9 @@ template <class Type>
 constexpr bool
 operator not_eq (const box3 <Type> & lhs, const box3 <Type> & rhs)
 {
-	return lhs .matrix () not_eq rhs .matrix ();
+	return
+	   lhs .min () not_eq rhs .min () or
+	   lhs .max () not_eq rhs .max ();
 }
 
 ///  @relates box3

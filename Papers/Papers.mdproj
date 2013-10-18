@@ -70,6 +70,7 @@
     <None Include="Statistic.ods" />
     <None Include="xxx\Stream\UrlStreamBuf.cpp" />
     <None Include="xxx\Stream\UrlStreamBuf.h" />
+    <None Include="xxx\Box3.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Quaternion\" />
@@ -87,5 +88,6 @@
     <Compile Include="xxx\Stream\InputHTTPStream.cpp" />
     <Compile Include="xxx\Stream\SocketStreamBuf.cpp" />
     <Compile Include="xxx\Stream\InputUrlStream.cpp" />
+    <Compile Include="xxx\Box3.cpp" />
   </ItemGroup>
 </Project>

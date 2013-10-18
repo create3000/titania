@@ -164,7 +164,7 @@ NavigationInfo::getNearPlane () const
 		zNear = std::numeric_limits <float>::epsilon () * 100;
 
 	else
-		zNear *= 0.5f;
+		zNear /= 2;
 
 	return zNear;
 }

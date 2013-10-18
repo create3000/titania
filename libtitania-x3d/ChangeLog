@@ -1,3 +1,19 @@
+2013-10-18  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* ViewVolume.cpp:
+	* Text.cpp:
+	* X3DRenderer.cpp:
+	* TransformHandle.cpp:
+	* Box.cpp:
+	* Viewpoint.cpp:
+	* Rectangle2D.cpp:
+	* GeoViewpoint.cpp:
+	* X3DBoundedObject.cpp:
+	* NavigationInfo.cpp:
+	* OrthoViewpoint.cpp:
+	* X3DGeometryNode.cpp:
+	* PlaneSensor.cpp: 
+
 2013-10-17  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Notification.cpp:

@@ -98,6 +98,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_openLocationEntry -> set_name ("OpenLocationEntry");
 	m_builder -> get_widget ("OpenLocationImage", m_openLocationImage);
 	m_openLocationImage -> set_name ("OpenLocationImage");
+	m_builder -> get_widget ("WalkViewerImage", m_walkViewerImage);
+	m_walkViewerImage -> set_name ("WalkViewerImage");
 	m_builder -> get_widget ("ViewerTypeMenu", m_viewerTypeMenu);
 	m_viewerTypeMenu -> set_name ("ViewerTypeMenu");
 	m_builder -> get_widget ("ExamineViewerMenuItem", m_examineViewerMenuItem);
@@ -108,8 +110,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_flyViewerMenuItem -> set_name ("FlyViewerMenuItem");
 	m_builder -> get_widget ("NoneViewerMenuItem", m_noneViewerMenuItem);
 	m_noneViewerMenuItem -> set_name ("NoneViewerMenuItem");
-	m_builder -> get_widget ("WalkViewerImage", m_walkViewerImage);
-	m_walkViewerImage -> set_name ("WalkViewerImage");
 	m_builder -> get_widget ("Window", m_window);
 	m_window -> set_name ("Window");
 	m_builder -> get_widget ("Widget", m_widget);
@@ -305,10 +305,10 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_copyMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_copy_nodes_activate));
 	m_pasteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_paste_nodes_activate));
 	m_deleteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_delete_nodes_activate));
-
-	// Connect object Gtk::MenuItem with id 'GroupSelectedNodesMenuItem'.
 	m_groupSelectedNodesMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_group_selected_nodes_activate));
 	m_ungroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_ungroup_node_activate));
+
+	// Connect object Gtk::MenuItem with id 'AddToGroupMenuItem'.
 	m_addToGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_add_to_group_activate));
 	m_detachFromGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_detach_from_group_activate));
 	m_createParentGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_group_activate));

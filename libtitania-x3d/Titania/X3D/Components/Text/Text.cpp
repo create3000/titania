@@ -252,9 +252,12 @@ Text::build ()
 {
 	// We cannot access the geometry thus we add a simple rectangle to the geometry to enable picking.
 
-	Box3f    bbox = getBBox ();
-	Vector3f min  = bbox .min ();
-	Vector3f max  = bbox .max ();
+	Box3f bbox = getBBox ();
+
+	auto size1_2 = bbox .size () / 2.0f;
+	auto center  = bbox .center ();
+	auto min     = center - size1_2;
+	auto max     = center + size1_2;
 
 	getTexCoord () .emplace_back (0, 0, 0);
 	getNormals  () .emplace_back (0, 0, 1);
@@ -279,7 +282,7 @@ void
 Text::draw ()
 {
 	const X3DFontStyleNode* fontStyle = getFontStyle ();
-	
+
 	if (not fontStyle -> getFont ())
 		return;
 

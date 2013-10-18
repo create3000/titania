@@ -83,7 +83,7 @@ public:
 
 	///  Constructs a box of size @a size and center @a size.
 	box2 (const vector2 <Type> & size, const vector2 <Type> & center) :
-      box2 (center - size * Type (0.5), center + size * Type (0.5), true)
+      box2 (center - size / Type (2), center + size / Type (2), true)
 	{ }
 
 	///  Constructs a box of min @a min and max @a max.
@@ -142,7 +142,7 @@ public:
 		auto min = this -> min ();
 		auto max = this -> max ();
 
-		return (min + max) * Type (0.5);
+		return (min + max) / Type (2);
 	}
 
 	///  @name  Arithmetic operations

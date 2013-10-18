@@ -94,7 +94,7 @@ Viewpoint::getScreenScale (float distance, const Vector4i & viewport) const
 {
 	int   width  = viewport [2];
 	int   height = viewport [3];
-	float size   = distance * std::tan (fieldOfView () * 0.5f) * 2;
+	float size   = distance * std::tan (fieldOfView () / 2) * 2;
 
 	if (width > height)
 		size /= height;
@@ -110,7 +110,7 @@ Viewpoint::getLookAtPositionOffset (Box3f bbox) const
 {
 	if (getBrowser () -> getActiveLayer ())
 	{
-		float distance    = (abs (bbox .size ()) * 0.5f) / std::tan (fieldOfView () * 0.5f);
+		float distance    = (abs (bbox .size ()) / 2) / std::tan (fieldOfView () / 2);
 		float minDistance = getBrowser () -> getActiveLayer () -> getNavigationInfo () -> getNearPlane () * 2;
 
 		return bbox .center ()

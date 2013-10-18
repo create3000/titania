@@ -92,7 +92,7 @@ X3DGeometryNode::eventsProcessed ()
 const Box3f
 X3DGeometryNode::getBBox ()
 {
-	if (bbox == Box3f ())
+	if (bbox .empty ())
 		return bbox = createBBox ();
 
 	return bbox;
@@ -284,12 +284,13 @@ void
 X3DGeometryNode::getTexCoordParams (Vector3f & min, float & Ssize, int & Sindex, int & Tindex)
 {
 	Box3f bbox = getBBox ();
+	auto  size = bbox .size ();
 
-	min = bbox .min ();
+	min = bbox .center () - size / 2.0f;
 
-	float Xsize = bbox .size () .x ();
-	float Ysize = bbox .size () .y ();
-	float Zsize = bbox .size () .z ();
+	float Xsize = size .x ();
+	float Ysize = size .y ();
+	float Zsize = size .z ();
 
 	if ((Xsize >= Ysize) and (Xsize >= Zsize))
 	{
