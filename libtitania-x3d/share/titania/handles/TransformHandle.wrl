@@ -383,66 +383,31 @@ PROTO TransformTool [
               ]
             }
           }
-          DEF ScaleTool Group {
-            children DEF ZScaleSwitch Switch {
-              choice [
-                Group { }
-                Group { }
-                Group {
-                  children [
-                    DEF XScaleHandle Transform {
-                      children ScreenGroup {
-                        children Transform {
-                          translation 6 0 0
-                          children Shape {
-                            appearance USE Red
-                            geometry DEF Box Box {
-                              size 12 12 12
-                            }
-                          }
-                        }
-                      }
-                    }
-                    DEF YScaleHandle Transform {
-                      children ScreenGroup {
-                        children Transform {
-                          translation 0 6 0
-                          children Shape {
-                            appearance USE Green
-                            geometry USE Box
-                          }
-                        }
-                      }
-                    }
-                    Transform {
-                      rotation 0 -1 0 1.5708
-                      children DEF ZScaleHandle Transform {
-                        children ScreenGroup {
-                          children Transform {
-                            translation 6 0 0
-                            children Shape {
-                              appearance USE Blue
-                              geometry USE Box
-                            }
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              ]
-            }
-          }
         ]
+      }
+      DEF CenterLine Shape {
+        appearance Appearance {
+          lineProperties LineProperties {
+            linetype 3
+          }
+          material DEF Yellow Material {
+            diffuseColor 1 1 0
+          }
+        }
+        geometry DEF CenterIndexedLineSet IndexedLineSet {
+          coordIndex [ 0, 1, -1 ]
+          color Color {
+            color [ 1 1 0, 1 1 0 ]
+          }
+          coord DEF CenterLineCoord Coordinate { }
+        }
       }
       DEF CenterPoint Transform {
         children [
           ScreenGroup {
             children Shape {
               appearance Appearance {
-                material DEF Yellow Material {
-                  diffuseColor 1 1 0
-                }
+                material USE Yellow
                 shaders USE HandleShader
               }
               geometry Sphere {
@@ -575,19 +540,91 @@ PROTO TransformTool [
           }
         ]
       }
-      DEF CenterLine Shape {
-        appearance Appearance {
-          lineProperties LineProperties {
-            linetype 3
-          }
-          material USE Yellow
-        }
-        geometry DEF CenterIndexedLineSet IndexedLineSet {
-          coordIndex [ 0, 1, -1 ]
-          color Color {
-            color [ 1 1 0, 1 1 0 ]
-          }
-          coord DEF CenterLineCoord Coordinate { }
+      DEF ScaleTool Transform {
+        translation IS bboxCenter
+        children DEF ZScaleSwitch Switch {
+          choice [
+            Group { }
+            Group { }
+            Group {
+              children [
+                DEF XScaleHandle Transform {
+                  children ScreenGroup {
+                    children Transform {
+                      translation 6 0 0
+                      children Shape {
+                        appearance USE Red
+                        geometry DEF Box Box {
+                          size 12 12 12
+                        }
+                      }
+                    }
+                  }
+                }
+                DEF YScaleHandle Transform {
+                  children ScreenGroup {
+                    children Transform {
+                      translation 0 6 0
+                      children Shape {
+                        appearance USE Green
+                        geometry USE Box
+                      }
+                    }
+                  }
+                }
+                Transform {
+                  rotation 0 -1 0 1.5708
+                  children DEF ZScaleHandle Transform {
+                    children ScreenGroup {
+                      children Transform {
+                        translation 6 0 0
+                        children Shape {
+                          appearance USE Blue
+                          geometry USE Box
+                        }
+                      }
+                    }
+                  }
+                }
+                DEF ScaleHandle1 Transform {
+                  children DEF ScaleHandle ScreenGroup {
+                    children Transform {
+                      children Shape {
+                        appearance DEF White Appearance {
+                          material Material {
+                            diffuseColor 1 1 1
+                          }
+                          shaders USE HandleShader
+                        }
+                        geometry USE Box
+                      }
+                    }
+                  }
+                }
+                DEF ScaleHandle2 Transform {
+                  children USE ScaleHandle
+                }
+                DEF ScaleHandle3 Transform {
+                  children USE ScaleHandle
+                }
+                DEF ScaleHandle4 Transform {
+                  children USE ScaleHandle
+                }
+                DEF ScaleHandle5 Transform {
+                  children USE ScaleHandle
+                }
+                DEF ScaleHandle6 Transform {
+                  children USE ScaleHandle
+                }
+                DEF ScaleHandle7 Transform {
+                  children USE ScaleHandle
+                }
+                DEF ScaleHandle8 Transform {
+                  children USE ScaleHandle
+                }
+              ]
+            }
+          ]
         }
       }
       DEF PPoint Transform {
@@ -702,30 +739,6 @@ function eventsProcessed ()
     directOutput TRUE
   }
 
-  DEF CenterScript Script {
-    eventIn      SFVec3f set_center
-    exposedField SFVec3f bboxSize IS bboxSize
-    exposedField SFVec3f bboxCenter IS bboxCenter
-    exposedField SFNode  transform IS transform
-    field        SFNode  point USE CenterPoint
-    field        SFNode  coord USE CenterLineCoord
-    field        SFNode  self USE CenterScript
-
-    url "vrmlscript:
-function set_transform ()
-{
-  Browser .addRoute (transform, 'center', self, 'set_center');
-}    
-
-function eventsProcessed ()
-{
-	point .translation = transform .center;
-	coord .point       = new MFVec3f (transform .center, bboxCenter);
-}
-"
-    directOutput TRUE
-  }
-
   DEF ArrowsScript Script {
     exposedField SFVec3f bboxSize IS bboxSize
     field        SFNode  x USE XHandle
@@ -735,11 +748,13 @@ function eventsProcessed ()
     url "vrmlscript:
 function eventsProcessed ()
 {
-	// Position and scale arrows
+	// Position arrows
+	
+	var bboxSize1_2 = bboxSize .divide (2);
 
-	x .translation = new SFVec3f (bboxSize .x / 2, 0, 0);
-	y .translation = new SFVec3f (0, bboxSize .y / 2, 0);
-	z .translation = new SFVec3f (bboxSize .z / 2, 0, 0);
+	x .translation = new SFVec3f (bboxSize1_2 .x, 0, 0);
+	y .translation = new SFVec3f (0, bboxSize1_2 .y, 0);
+	z .translation = new SFVec3f (bboxSize1_2 .z, 0, 0);
 }
 "
     directOutput TRUE
@@ -836,6 +851,30 @@ function multVec (a, b)
 	return new SFVec3f (a .x * b .x,
 	                    a .y * b .y,
 	                    a .z * b .z);
+}
+"
+    directOutput TRUE
+  }
+
+  DEF CenterScript Script {
+    eventIn      SFVec3f set_center
+    exposedField SFVec3f bboxSize IS bboxSize
+    exposedField SFVec3f bboxCenter IS bboxCenter
+    exposedField SFNode  transform IS transform
+    field        SFNode  point USE CenterPoint
+    field        SFNode  coord USE CenterLineCoord
+    field        SFNode  self USE CenterScript
+
+    url "vrmlscript:
+function set_transform ()
+{
+  Browser .addRoute (transform, 'center', self, 'set_center');
+}    
+
+function eventsProcessed ()
+{
+	point .translation = transform .center;
+	coord .point       = new MFVec3f (transform .center, bboxCenter);
 }
 "
     directOutput TRUE
@@ -976,21 +1015,52 @@ function set_zRotation (value)
     directOutput TRUE
   }
 
+  DEF ScaleHandlesScript Script {
+    exposedField SFVec3f bboxSize IS bboxSize
+    field        SFNode  handle1 USE ScaleHandle1
+    field        SFNode  handle2 USE ScaleHandle2
+    field        SFNode  handle3 USE ScaleHandle3
+    field        SFNode  handle4 USE ScaleHandle4
+    field        SFNode  handle5 USE ScaleHandle5
+    field        SFNode  handle6 USE ScaleHandle6
+    field        SFNode  handle7 USE ScaleHandle7
+    field        SFNode  handle8 USE ScaleHandle8
+
+    url "vrmlscript:
+function eventsProcessed ()
+{
+	var bboxSize1_2 = bboxSize .divide (2);
+
+	handle1 .translation = new SFVec3f ( bboxSize1_2 .x,  bboxSize1_2 .y,  bboxSize1_2 .z);
+	handle2 .translation = new SFVec3f (-bboxSize1_2 .x,  bboxSize1_2 .y,  bboxSize1_2 .z);
+	handle3 .translation = new SFVec3f (-bboxSize1_2 .x, -bboxSize1_2 .y,  bboxSize1_2 .z);
+	handle4 .translation = new SFVec3f ( bboxSize1_2 .x, -bboxSize1_2 .y,  bboxSize1_2 .z);
+
+	handle5 .translation = new SFVec3f ( bboxSize1_2 .x,  bboxSize1_2 .y, -bboxSize1_2 .z);
+	handle6 .translation = new SFVec3f (-bboxSize1_2 .x,  bboxSize1_2 .y, -bboxSize1_2 .z);
+	handle7 .translation = new SFVec3f (-bboxSize1_2 .x, -bboxSize1_2 .y, -bboxSize1_2 .z);
+	handle8 .translation = new SFVec3f ( bboxSize1_2 .x, -bboxSize1_2 .y, -bboxSize1_2 .z);
+}
+"
+    directOutput TRUE
+  }
 
   DEF ScaleScript Script {
     eventIn      SFBool     set_active
-    eventIn      SFVec3f set_xScale
-    eventIn      SFVec3f set_yScale
-    eventIn      SFVec3f set_zScale
+    eventIn      SFVec3f    set_xScale
+    eventIn      SFVec3f    set_yScale
+    eventIn      SFVec3f    set_zScale
+    exposedField SFBool     scaleAroundBBoxCenter FALSE
     exposedField SFNode     transform IS transform
     exposedField SFVec3f    bboxSize IS bboxSize
     exposedField SFVec3f    bboxCenter IS bboxCenter
-    field        SFVec3f translation 0 0 0
-    field        SFVec3f scaleFactor 1 1 1
+    field        SFVec3f    translation 0 0 0
+    field        SFVec3f    scaleFactor 1 1 1
+    field        SFVec3f    center 0 0 0
+    field        SFVec3f    distanceFromCenter 0 0 0
+    field        SFMatrix4f matrix 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 
     url "vrmlscript:
-    
-var matrix = new SFMatrix4f ();
 	
 function set_active (value)
 {
@@ -998,6 +1068,7 @@ function set_active (value)
 	{
 		translation = transform .translation;
 		scaleFactor = transform .scale;
+		center      = transform .center;
 
 		matrix .setTransform (transform .translation,
 		                      transform .rotation,
@@ -1005,6 +1076,7 @@ function set_active (value)
 		                      transform .scaleOrientation,
 		                      transform .center);
 
+		distanceFromCenter = bboxCenter .subtract (transform .center);
 	}
 }
 
@@ -1025,10 +1097,13 @@ function set_zScale (value)
 
 function scale (value)
 {
-	var scale = multVec (scaleFactor, value);
+	if (value .x < 0 || value .y < 0 || value .z < 0)
+		return;
 	
-	transform .scale = scale;
-	translate ();
+	transform .scale = multVec (scaleFactor, value);
+
+	if (scaleAroundBBoxCenter)
+		translate ();
 }
 
 function translate ()
@@ -1040,12 +1115,10 @@ function translate ()
 	                            transform .scaleOrientation,
 	                            transform .center);
 
-	var center = bboxCenter .subtract (transform .center);
-	var offset = scaledMatrix .multDirMatrix (center) .subtract (matrix .multDirMatrix (center));
+	var centerOffset = scaledMatrix .inverse () .multDirMatrix (scaledMatrix .multDirMatrix (distanceFromCenter) .subtract (matrix .multDirMatrix (distanceFromCenter)));
 
-	print (bboxSize);
-
-	transform .translation = translation .subtract (offset);
+	transform .translation = translation .subtract (centerOffset);
+	transform .center      = center .add (centerOffset);
 }
 
 function multVec (a, b)

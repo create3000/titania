@@ -674,7 +674,7 @@ Parser::nodeStatement (SFNode & _node)
 			if (node (_node, _nodeNameId))
 				return true;
 			else
-				throw Error <INVALID_X3D> ("Expected node type name after DEF.");
+				throw Error <INVALID_X3D> ("Expected node name after DEF.");
 		}
 		else
 			throw Error <INVALID_X3D> ("No name given after DEF.");
