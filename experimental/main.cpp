@@ -285,17 +285,6 @@ public:
 		                   0, 0, size .z () * 0.5f, 0,
 		                   center .x (), center .y (), center .z (), 1);
 	}
-
-	void
-	size () const
-	{
-		auto x = Vector3f (matrix [0] [0], matrix [0] [1], matrix [0] [2]);
-		auto y = Vector3f (matrix [1] [0], matrix [1] [1], matrix [1] [2]);
-		auto z = Vector3f (matrix [2] [0], matrix [2] [1], matrix [2] [2]);
-
-		std::clog << math::abs (x) << " " << math::abs (y) << " "<< math::abs (z) << " " << std::endl;
-	}
-
 	void
 	center () const
 	{
@@ -303,7 +292,7 @@ public:
 	}
 
 	void
-	min_max () const
+	size () const
 	{
 		auto x = Vector3f (matrix [0] [0], matrix [0] [1], matrix [0] [2]);
 		auto y = Vector3f (matrix [1] [0], matrix [1] [1], matrix [1] [2]);
@@ -340,7 +329,7 @@ public:
 		max = math::max (max, p7);
 		max = math::max (max, p8);
 
-		std::clog << min << " : " << max << std::endl;
+		std::clog << max - min << std::endl;
 	}
 
 	Box3f &
@@ -375,44 +364,19 @@ main (int argc, char** argv)
 	
 	Rotation4f rotation (0, 0, 1, M_PI / 4.0f);
 
-	Test::Box3f (Vector3f (-1, -1, -1), Vector3f (0, 0, 0)) .size ();
-	Test::Box3f (Vector3f ( 1,  1,  1), Vector3f (0, 0, 0)) .size ();
-	Test::Box3f (Vector3f ( 1,  2,  3), Vector3f (0, 0, 0)) .size ();
-	Test::Box3f (Vector3f ( 2,  3,  4), Vector3f (1, 2, 3)) .size ();
-	Test::Box3f (Vector3f ( 8,  5,  3), Vector3f (4, 6, 9)) .size ();
+	Test::Box3f (Vector3f ( 1,  2,  1), Vector3f (0, 0, 0)) .rotate (rotation) .size ();
+	Test::Box3f (Vector3f ( 2,  3,  1), Vector3f (1, 2, 3)) .rotate (rotation) .size ();
+
+	std::clog << Box3f (Vector3f ( 1,  2,  1), Vector3f (0, 1, 0)) .multBoxMatrix (rotation) .size () << std::endl;
+	std::clog << Box3f (Vector3f ( 2,  3,  1), Vector3f (1, 0, 0)) .multBoxMatrix (rotation) .size () << std::endl;
+
+	Test::Box3f (Vector3f ( 1,  2,  1), Vector3f (0, 1, 0)) .rotate (rotation) .center ();
+	Test::Box3f (Vector3f ( 2,  3,  1), Vector3f (1, 0, 0)) .rotate (rotation) .center ();
+
+	std::clog << Box3f (Vector3f ( 1,  2,  1), Vector3f (0, 1, 0)) .multBoxMatrix (rotation) .center () << std::endl;
+	std::clog << Box3f (Vector3f ( 2,  3,  1), Vector3f (1, 0, 0)) .multBoxMatrix (rotation) .center () << std::endl;
 
 	std::clog << std::endl;
-
-	Test::Box3f (Vector3f (-1, -1, -1), Vector3f (0, 0, 0)) .center ();
-	Test::Box3f (Vector3f ( 1,  1,  1), Vector3f (0, 0, 0)) .center ();
-	Test::Box3f (Vector3f ( 1,  2,  3), Vector3f (0, 0, 0)) .center ();
-	Test::Box3f (Vector3f ( 2,  3,  4), Vector3f (1, 2, 3)) .center ();
-	Test::Box3f (Vector3f ( 8,  5,  3), Vector3f (4, 6, 9)) .center ();
-
-	std::clog << std::endl;
-
-	Test::Box3f (Vector3f (-1, -1, -1), Vector3f (0, 0, 0)) .rotate (rotation) .size ();
-	Test::Box3f (Vector3f ( 1,  1,  1), Vector3f (0, 0, 0)) .rotate (rotation) .size ();
-	Test::Box3f (Vector3f ( 1,  2,  3), Vector3f (0, 0, 0)) .rotate (rotation) .size ();
-	Test::Box3f (Vector3f ( 2,  3,  4), Vector3f (1, 2, 3)) .rotate (rotation) .size ();
-	Test::Box3f (Vector3f ( 8,  5,  3), Vector3f (4, 6, 9)) .rotate (rotation) .size ();
-
-	std::clog << std::endl;
-
-	Test::Box3f (Vector3f (-1, -1, -1), Vector3f (0, 0, 0)) .rotate (rotation) .center ();
-	Test::Box3f (Vector3f ( 1,  1,  1), Vector3f (0, 0, 0)) .rotate (rotation) .center ();
-	Test::Box3f (Vector3f ( 1,  2,  3), Vector3f (0, 0, 0)) .rotate (rotation) .center ();
-	Test::Box3f (Vector3f ( 2,  3,  4), Vector3f (1, 2, 3)) .rotate (rotation) .center ();
-	Test::Box3f (Vector3f ( 8,  5,  3), Vector3f (4, 6, 9)) .rotate (rotation) .center ();
-
-	std::clog << std::endl;
-
-	//Test::Box3f (Vector3f (-1, -1, -1), Vector3f (0, 0, 0)) .rotate (rotation) .min ();
-	Test::Box3f (Vector3f ( 1,  2,  3), Vector3f (0, 0, 0)) .rotate (rotation) .min_max ();
-	//std::clog << (Matrix4f (rotation) * Box3f (Vector3f ( 1,  2,  3), Vector3f (0, 0, 0))) .min () << std::endl;
-	//Test::Box3f (Vector3f ( 1,  2,  3), Vector3f (0, 0, 0)) .rotate (rotation) .min ();
-	//Test::Box3f (Vector3f ( 2,  3,  4), Vector3f (1, 2, 3)) .rotate (rotation) .min ();
-	//Test::Box3f (Vector3f ( 8,  5,  3), Vector3f (4, 6, 9)) .rotate (rotation) .min ();
 
 	std::clog << "Function main done." << std::endl;
 	exit (0);

@@ -141,13 +141,12 @@ Text::createBBox ()
 	for (const auto & line : string ())
 	{
 		Box2f    lineBBox = getLineBBox (fontStyle, line .getValue ());
-		Vector2f min      = lineBBox .min ();
-		Vector2f max      = lineBBox .max ();
+		Vector2f size     = lineBBox .size ();
+		Vector2f min      = lineBBox .center () - size / 2.0f;
+		Vector2f max      = lineBBox .center () + size / 2.0f;
 
 		if (i == 1)
 			y1 = max .y ();
-
-		Vector2f size = lineBBox .size ();
 
 		// Calculate charSpacing and lineBounds.
 
@@ -192,36 +191,44 @@ Text::createBBox ()
 		++ i;
 	}
 
+	Vector2f size1_2  = bbox .size () / 2.0f;
+	Vector2f center   = bbox .center ();
+	Vector2f min      = center - size1_2;
+	Vector2f max      = center + size1_2;
+
 	textBounds () .setValue (bbox .size ());
 
 	if (string () .size () > 1)
 	{
-		lineBounds () .front () .setY (bbox .max () .y () + (lineHeight - y1) * scale);
+		lineBounds () .front () .setY (max .y () + (lineHeight - y1) * scale);
 		lineBounds () .back  () .setY (textBounds () .getY () - (lineBounds () [0] .getY () + (string () .size () - 2) * fontStyle -> spacing ()));
 	}
 
 	switch (fontStyle -> getMinorAlignment ())
 	{
 		case X3DFontStyleNode::Alignment::BEGIN:
-			minorAlignment = Vector2f (0, -bbox .max () .y ());
+			minorAlignment = Vector2f (0, -max .y ());
 			break;
 		case X3DFontStyleNode::Alignment::FIRST:
 			minorAlignment = Vector2f ();
 			break;
 		case X3DFontStyleNode::Alignment::MIDDLE:
-			minorAlignment = Vector2f (0, textBounds () .getY () / 2 - bbox .max () .y ());
+			minorAlignment = Vector2f (0, textBounds () .getY () / 2 - max .y ());
 			break;
 		case X3DFontStyleNode::Alignment::END:
-			minorAlignment = Vector2f  (0, textBounds () .getY () - bbox .max () .y ());
+			minorAlignment = Vector2f  (0, textBounds () .getY () - max .y ());
 			break;
 	}
 
-	bbox += minorAlignment;
+	// Translate bbox by minorAlignment
+	center += minorAlignment;
+	min     = center - size1_2;
+	max     = center + size1_2;
 
-	origin () = Vector3f (bbox .min () .x (), bbox .max () .y (), 0);
+	origin () = Vector3f (min .x (), max .y (), 0);
 
-	return Box3f (Vector3f (bbox .min () .x (), bbox .min () .y (), 0),
-	              Vector3f (bbox .max () .x (), bbox .max () .y (), 0),
+	return Box3f (Vector3f (min .x (), min .y (), 0),
+	              Vector3f (max .x (), max .y (), 0),
 	              true);
 }
 

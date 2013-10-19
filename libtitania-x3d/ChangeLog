@@ -1,3 +1,11 @@
+2013-10-19  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* vrml.png:
+	* Text.cpp:
+	* TransformHandle.cpp:
+	* TransformHandle.wrl:
+	* model-vrml.svg: 
+
 2013-10-18  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* ViewVolume.cpp:

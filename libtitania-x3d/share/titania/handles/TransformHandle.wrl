@@ -232,6 +232,7 @@ PROTO TransformTool [
               }
               DEF XScaleSensor PlaneSensor {
                 enabled FALSE
+                description "x-Axis"
                 autoOffset FALSE
                 maxPosition -1 0
               }
@@ -267,9 +268,9 @@ PROTO TransformTool [
                       Transform {
                         translation 6 0 0
                         children Shape {
-                          appearance USE Red
-                          geometry DEF Box Box {
-                            size 12 12 12
+                          appearance USE Transparent
+                          geometry DEF ScaleSphere Sphere {
+                            radius 12
                           }
                         }
                       }
@@ -289,6 +290,7 @@ PROTO TransformTool [
               }
               DEF YScaleSensor PlaneSensor {
                 enabled FALSE
+                description "y-Axis"
                 autoOffset FALSE
                 maxPosition 0 -1
               }
@@ -318,8 +320,8 @@ PROTO TransformTool [
                       Transform {
                         translation 0 6 0
                         children Shape {
-                          appearance USE Green
-                          geometry USE Box
+                          appearance USE Transparent
+                          geometry USE ScaleSphere
                         }
                       }
                     ]
@@ -340,6 +342,7 @@ PROTO TransformTool [
                 }
                 DEF ZScaleSensor PlaneSensor {
                   enabled FALSE
+                  description "z-Axis"
                   autoOffset FALSE
                 }
                 DEF ZHandle Transform {
@@ -369,13 +372,63 @@ PROTO TransformTool [
                         Transform {
                           translation 6 0 0
                           children Shape {
-                            appearance USE Blue
-                            geometry USE Box
+                            appearance USE Transparent
+                            geometry USE ScaleSphere
                           }
                         }
                       ]
                     }
                   }
+                }
+              ]
+            }
+          }
+          DEF ScaleTool Group {
+            children DEF ZScaleSwitch Switch {
+              choice [
+                Group { }
+                Group { }
+                Group {
+                  children [
+                    DEF XScaleHandle Transform {
+                      children ScreenGroup {
+                        children Transform {
+                          translation 6 0 0
+                          children Shape {
+                            appearance USE Red
+                            geometry DEF Box Box {
+                              size 12 12 12
+                            }
+                          }
+                        }
+                      }
+                    }
+                    DEF YScaleHandle Transform {
+                      children ScreenGroup {
+                        children Transform {
+                          translation 0 6 0
+                          children Shape {
+                            appearance USE Green
+                            geometry USE Box
+                          }
+                        }
+                      }
+                    }
+                    Transform {
+                      rotation 0 -1 0 1.5708
+                      children DEF ZScaleHandle Transform {
+                        children ScreenGroup {
+                          children Transform {
+                            translation 6 0 0
+                            children Shape {
+                              appearance USE Blue
+                              geometry USE Box
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
                 }
               ]
             }
@@ -566,7 +619,7 @@ PROTO TransformTool [
     url "vrmlscript:
 function initialize (value, time)
 {
-	set_whichChoice (0);
+	set_whichChoice (2);
 }
 
 function set_time (value, time)
@@ -716,57 +769,64 @@ function set_active (value)
 
 function set_frontTranslation (value)
 {
-	add_with_bbox (new SFVec3f (value .x, value .y, 0));
+	translate_with_bbox (new SFVec3f (value .x, value .y, 0));
 }
 
 function set_rightTranslation (value)
 {
-	add_with_bbox (new SFVec3f (0, value .y, -value .x));
+	translate_with_bbox (new SFVec3f (0, value .y, -value .x));
 }
 
 function set_backTranslation (value)
 {
-	add_with_bbox (new SFVec3f (-value .x, value .y, 0));
+	translate_with_bbox (new SFVec3f (-value .x, value .y, 0));
 }
 
 function set_leftTranslation (value)
 {
-	add_with_bbox (new SFVec3f (0, value .y, value .x));
+	translate_with_bbox (new SFVec3f (0, value .y, value .x));
 }
 
 function set_topTranslation (value)
 {
-	add_with_bbox (new SFVec3f (value .x, 0, -value .y));
+	translate_with_bbox (new SFVec3f (value .x, 0, -value .y));
 }
 
 function set_bottomTranslation (value)
 {
-	add_with_bbox (new SFVec3f (value .x, 0, value .y));
+	translate_with_bbox (new SFVec3f (value .x, 0, value .y));
 }
 
 function set_xTranslation (value)
 {
-	add (new SFVec3f (value .x, 0, 0));
+	translate (new SFVec3f (value .x, 0, 0));
 }
 
 function set_yTranslation (value)
 {
-	add (new SFVec3f (0, value .y, 0));
+	translate (new SFVec3f (0, value .y, 0));
 }
 
 function set_zTranslation (value)
 {
-	add (new SFVec3f (0, 0, value .x));
+	translate (new SFVec3f (0, 0, value .x));
 }
 
-function add_with_bbox (value)
+function translate_with_bbox (value)
 {
-	add (multVec (value, bboxSize));
+	translate (multVec (value, bboxSize));
 }
 
-function add (value)
+function translate (value)
 {
-	var offset = transform .rotation .multVec (multVec (value, transform .scale));
+	var matrix = new SFMatrix4f ();
+	matrix .setTransform (transform .translation,
+	                      transform .rotation,
+	                      transform .scale,
+	                      transform .scaleOrientation,
+	                      transform .center);
+
+	var offset = matrix .multDirMatrix (value);
 
 	transform .translation = translation .add (offset);
 }
@@ -848,9 +908,9 @@ function eventsProcessed ()
     eventOut SFFloat y_changed
     eventOut SFFloat z_changed
     field    SFFloat transparency 0.9
-    field    SFNode xSensor USE XRotationSensor
-    field    SFNode ySensor USE YRotationSensor
-    field    SFNode zSensor USE ZRotationSensor
+    field    SFNode  xSensor USE XRotationSensor
+    field    SFNode  ySensor USE YRotationSensor
+    field    SFNode  zSensor USE ZRotationSensor
 
     url "vrmlscript:
 function initialize ()
@@ -916,6 +976,88 @@ function set_zRotation (value)
     directOutput TRUE
   }
 
+
+  DEF ScaleScript Script {
+    eventIn      SFBool     set_active
+    eventIn      SFVec3f set_xScale
+    eventIn      SFVec3f set_yScale
+    eventIn      SFVec3f set_zScale
+    exposedField SFNode     transform IS transform
+    exposedField SFVec3f    bboxSize IS bboxSize
+    exposedField SFVec3f    bboxCenter IS bboxCenter
+    field        SFVec3f translation 0 0 0
+    field        SFVec3f scaleFactor 1 1 1
+
+    url "vrmlscript:
+    
+var matrix = new SFMatrix4f ();
+	
+function set_active (value)
+{
+	if (value)
+	{
+		translation = transform .translation;
+		scaleFactor = transform .scale;
+
+		matrix .setTransform (transform .translation,
+		                      transform .rotation,
+		                      transform .scale,
+		                      transform .scaleOrientation,
+		                      transform .center);
+
+	}
+}
+
+function set_xScale (value)
+{
+	scale (new SFVec3f (1 + 2 * value .x / bboxSize .x, 1, 1));
+}
+
+function set_yScale (value)
+{
+	scale (new SFVec3f (1, 1 + 2 * value .y / bboxSize .y, 1));
+}
+
+function set_zScale (value)
+{
+	scale (new SFVec3f (1, 1, 1 + 2 * value .x / bboxSize .z));
+}
+
+function scale (value)
+{
+	var scale = multVec (scaleFactor, value);
+	
+	transform .scale = scale;
+	translate ();
+}
+
+function translate ()
+{
+	var scaledMatrix = new SFMatrix4f ();
+	scaledMatrix .setTransform (transform .translation,
+	                            transform .rotation,
+	                            transform .scale,
+	                            transform .scaleOrientation,
+	                            transform .center);
+
+	var center = bboxCenter .subtract (transform .center);
+	var offset = scaledMatrix .multDirMatrix (center) .subtract (matrix .multDirMatrix (center));
+
+	print (bboxSize);
+
+	transform .translation = translation .subtract (offset);
+}
+
+function multVec (a, b)
+{
+	return new SFVec3f (a .x * b .x,
+	                    a .y * b .y,
+	                    a .z * b .z);
+}
+"
+    directOutput TRUE
+  }
+
   ROUTE FrontSensor.trackPoint_changed TO PPoint.set_translation
   ROUTE XTranslationSensor.trackPoint_changed TO PPoint.set_translation
   ROUTE YTranslationSensor.trackPoint_changed TO PPoint.set_translation
@@ -939,9 +1081,7 @@ function set_zRotation (value)
   ROUTE ModeScript.whichChoice_changed TO ZSwitch.set_whichChoice
   ROUTE ModeScript.whichChoice_changed TO RotationHandlesSwitch.set_whichChoice
 
-  # Center Script
-
-  # Move
+  # Move Tool
 
   ROUTE FrontSensor.isActive TO MoveScript.set_active
   ROUTE RightSensor.isActive TO MoveScript.set_active
@@ -965,7 +1105,7 @@ function set_zRotation (value)
   ROUTE YTranslationSensor.translation_changed TO MoveScript.set_yTranslation
   ROUTE ZTranslationSensor.translation_changed TO MoveScript.set_zTranslation
 
-  # Rotate
+  # Rotate Tool
 
   ROUTE XRotationSensor.isOver TO DiskScript.set_x
   ROUTE YRotationSensor.isOver TO DiskScript.set_y
@@ -988,6 +1128,25 @@ function set_zRotation (value)
   ROUTE XRotationSensor.rotation_changed TO RotateScript.set_xRotation
   ROUTE YRotationSensor.rotation_changed TO RotateScript.set_yRotation
   ROUTE ZRotationSensor.rotation_changed TO RotateScript.set_zRotation
+
+  # Scale Tool
+
+  ROUTE XHandle.translation_changed TO XScaleHandle.set_translation
+  ROUTE YHandle.translation_changed TO YScaleHandle.set_translation
+  ROUTE ZHandle.translation_changed TO ZScaleHandle.set_translation
+  ROUTE ZSwitch.whichChoice_changed TO ZScaleSwitch.set_whichChoice
+
+  #
+
+  ROUTE XScaleSensor.isActive TO ScaleScript.set_active
+  ROUTE YScaleSensor.isActive TO ScaleScript.set_active
+  ROUTE ZScaleSensor.isActive TO ScaleScript.set_active
+
+  #
+
+  ROUTE XScaleSensor.translation_changed TO ScaleScript.set_xScale
+  ROUTE YScaleSensor.translation_changed TO ScaleScript.set_yScale
+  ROUTE ZScaleSensor.translation_changed TO ScaleScript.set_zScale
 }
 
 DEF Handle TransformTool { }

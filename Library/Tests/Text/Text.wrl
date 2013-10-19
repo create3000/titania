@@ -44,19 +44,21 @@ Viewpoint {
   centerOfRotation 0 -0.0839844 0
 }
 
-DEF Lines Shape {
-  appearance Appearance {
-    material Material {
-      diffuseColor 1 0 0
+DEF Text1 Transform {
+  children DEF Lines Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 1 0 0
+      }
     }
-  }
-  geometry DEF Text Text {
-    string [ "Hällö Wörld!", "This is my line!", "now a new one." ]
-    length [ 12, 0, 10 ]
-    fontStyle FontStyle {
-      family "Ubuntu Mono"
-      style "BOLDITALIC"
-      justify [ "BEGIN", "BEGIN" ]
+    geometry DEF Text Text {
+      string [ "Hällö Wörld!", "This is my line!", "now a new one." ]
+      length [ 12, 0, 10 ]
+      fontStyle FontStyle {
+        family "Ubuntu Mono"
+        style "BOLDITALIC"
+        justify [ "BEGIN", "BEGIN" ]
+      }
     }
   }
 }
@@ -118,9 +120,29 @@ DEF YellowBox Transform {
   }
 }
 
-DEF LineBounds Transform { }
+DEF LineBounds Transform {
+  translation 0 -0.245362 0
+  children [
+    BBox2 {
+      scale 12 1 1
+      color 1 0 0
+    }
+    BBox2 {
+      translation 0 -1 0
+      scale 7.945 1 1
+      color 0 1 0
+    }
+    BBox2 {
+      translation 0 -2 0
+      scale 10 0.707031 1
+      color 0 0 1
+    }
+  ]
+}
 
 DEF TextBounds Transform {
+  translation 0 -0.245362 0
+  scale 12 2.70703 1
   children BBox2 { }
 }
 

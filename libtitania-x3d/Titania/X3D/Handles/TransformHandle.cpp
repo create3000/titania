@@ -128,7 +128,7 @@ TransformHandle::reshape ()
 	try
 	{
 		auto handle = scene -> getNamedNode ("Handle");
-		auto bbox   = getBBox () * ~transform -> getMatrix ();
+		auto bbox   = transform -> X3DGroupingNode::getBBox ();
 
 		try
 		{

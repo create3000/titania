@@ -123,9 +123,9 @@ public:
 	///  Vector typedef.
 	///  This is the type for the vector representation of this matrix.
 	///  The matrix consists of four vectors of type vector3.
-	///  0 [     0 ]
-	///  1 [     0 ]
-	///  2 [ x y 1 ]
+	///  0 [ x-axis 0 ]
+	///  1 [ y-axis 0 ]
+	///  2 [ x y    1 ]
 	typedef vector3 <vector3_type> vector_type;
 
 	///  Array typedef.

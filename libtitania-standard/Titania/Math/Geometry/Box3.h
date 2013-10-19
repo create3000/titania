@@ -97,6 +97,7 @@ public:
 	{ }
 
 	///  Constructs a box of min @a min and max @a max.
+	constexpr
 	box3 (const vector3 <Type> & min, const vector3 <Type> & max, bool) :
 		box3 (max - min, (max + min) / Type (2))
 	{ }
@@ -120,19 +121,14 @@ public:
 
 	///  Return the size of this box.
 	vector3 <Type>
-	size () const
-	{
-		vector3 <Type> min, max;
-		min_max (min, max);
-
-		return max - min;
-	}
+	size () const;
 
 	///  Return the center of this box.
 	vector3 <Type>
 	center () const
 	{ return value .translation (); }
 
+	///  Return whether this box is an empty box.
 	bool
 	empty () const
 	{ return value [3] [3] == 0; }
@@ -143,46 +139,7 @@ public:
 	///  Add @a box3 to this box.
 	template <class Up>
 	box3 &
-	operator += (const box3 <Up> & box)
-	{
-		if (not empty ())
-		{
-			if (not box .empty ())
-			{
-				auto lsize1_2 = size () / 2.0f;
-				auto lhs_min  = center () - lsize1_2;
-				auto lhs_max  = center () + lsize1_2;
-
-				auto rsize1_2 = box .size () / 2.0f;
-				auto rhs_min  = box .center () - rsize1_2;
-				auto rhs_max  = box .center () + rsize1_2;
-
-				return *this = box3 (math::min (lhs_min, rhs_min), math::max (lhs_max, rhs_max), true);
-			}
-
-			return *this;
-		}
-
-		return *this = box;
-	}
-
-	///  Translate this box by @a translation.
-	template <class Up>
-	box3 &
-	operator += (const vector3 <Up> & translation)
-	{
-		value .translate (translation);
-		return *this;
-	}
-
-	///  Translate this box by @a translation.
-	template <class Up>
-	box3 &
-	operator -= (const vector3 <Up> & translation)
-	{
-		value .translate (-translation);
-		return *this;
-	}
+	operator += (const box3 <Up> &);
 
 	///  Transform this box by @a matrix.
 	box3 &
@@ -224,48 +181,75 @@ public:
 
 private:
 
-	void
-	min_max (vector3 <Type> & min, vector3 <Type> & max) const
-	{
-		vector3 <Type> x (value [0] [0], value [0] [1], value [0] [2]);
-		vector3 <Type> y (value [1] [0], value [1] [1], value [1] [2]);
-		vector3 <Type> z (value [2] [0], value [2] [1], value [2] [2]);
-
-		auto r1 =  x + y;
-		auto r2 = -x + y;
-		auto r3 = -x - y;
-		auto r4 =  x - y;
-
-		auto p1 = r1 + z;
-		auto p2 = r2 + z;
-		auto p3 = r3 + z;
-		auto p4 = r4 + z;
-
-		auto p5 = r1 - z;
-		auto p6 = r2 - z;
-		auto p7 = r3 - z;
-		auto p8 = r4 - z;
-
-		min = math::min (p1, p2);
-		min = math::min (min, p3);
-		min = math::min (min, p4);
-		min = math::min (min, p5);
-		min = math::min (min, p6);
-		min = math::min (min, p7);
-		min = math::min (min, p8);
-
-		max = math::max (p1, p2);
-		max = math::max (max, p3);
-		max = math::max (max, p4);
-		max = math::max (max, p5);
-		max = math::max (max, p6);
-		max = math::max (max, p7);
-		max = math::max (max, p8);
-	}
-
 	matrix4 <Type> value;
 
 };
+
+template <class Type>
+vector3 <Type>
+box3 <Type>::size () const
+{
+	vector3 <Type> x (value [0] [0], value [0] [1], value [0] [2]);
+	vector3 <Type> y (value [1] [0], value [1] [1], value [1] [2]);
+	vector3 <Type> z (value [2] [0], value [2] [1], value [2] [2]);
+
+	auto r1 =  x + y;
+	auto r2 = -x + y;
+	auto r3 = -x - y;
+	auto r4 =  x - y;
+
+	auto p1 = r1 + z;
+	auto p2 = r2 + z;
+	auto p3 = r3 + z;
+	auto p4 = r4 + z;
+
+	auto p5 = r1 - z;
+	auto p6 = r2 - z;
+	auto p7 = r3 - z;
+	auto p8 = r4 - z;
+
+	vector3 <Type> min, max;
+
+	min = math::min (p1, p2);
+	min = math::min (min, p3);
+	min = math::min (min, p4);
+	min = math::min (min, p5);
+	min = math::min (min, p6);
+	min = math::min (min, p7);
+	min = math::min (min, p8);
+
+	max = math::max (p1, p2);
+	max = math::max (max, p3);
+	max = math::max (max, p4);
+	max = math::max (max, p5);
+	max = math::max (max, p6);
+	max = math::max (max, p7);
+	max = math::max (max, p8);
+
+	return max - min;
+}
+
+template <class Type>
+template <class Up>
+box3 <Type> &
+box3 <Type>::operator += (const box3 <Up> & box)
+{
+	if (empty ())
+		return *this = box;
+
+	if (box .empty ())
+		return *this;
+
+	auto lsize1_2 = size () / 2.0f;
+	auto lhs_min  = center () - lsize1_2;
+	auto lhs_max  = center () + lsize1_2;
+
+	auto rsize1_2 = box .size () / 2.0f;
+	auto rhs_min  = box .center () - rsize1_2;
+	auto rhs_max  = box .center () + rsize1_2;
+
+	return *this = box3 (math::min (lhs_min, rhs_min), math::max (lhs_max, rhs_max), true);
+}
 
 template <class Type>
 bool
@@ -400,60 +384,6 @@ box3 <Type>
 operator + (const box3 <Type> & lhs, const box3 <Type> & rhs)
 {
 	return box3 <Type> (lhs) += rhs;
-}
-
-///  Return new box value @a lhs translated @a rhs.
-template <class Type>
-inline
-box3 <Type>
-operator + (const box3 <Type> & lhs, const vector3 <Type> & rhs)
-{
-	return box3 <Type> (lhs) += rhs;
-}
-
-///  Return new box3 value @a rhs translated @a lhs.
-template <class Type>
-inline
-box3 <Type>
-operator + (const vector3 <Type> & lhs, const box3 <Type> & rhs)
-{
-	return box3 <Type> (rhs) += lhs;
-}
-
-///  Return new box3 value @a rhs translated @a lhs.
-template <class Type>
-inline
-box3 <Type>
-operator - (const vector3 <Type> & lhs, const box3 <Type> & rhs)
-{
-	return box3 <Type> (rhs) -= lhs;
-}
-
-///  Return new box3 value @a rhs transformed by matrix @a lhs.
-template <class Type>
-inline
-box3 <Type>
-operator * (const box3 <Type> & lhs, const Type & rhs)
-{
-	return box3 <Type> (lhs) *= rhs;
-}
-
-///  Return new box3 value @a rhs scaled @a lhs.
-template <class Type>
-inline
-box3 <Type>
-operator * (const Type & lhs, const box3 <Type> & rhs)
-{
-	return box3 <Type> (rhs) *= lhs;
-}
-
-///  Return new box3 value @a rhs scaled @a lhs.
-template <class Type>
-inline
-box3 <Type>
-operator / (const Type & lhs, const box3 <Type> & rhs)
-{
-	return box3 <Type> (rhs) /= lhs;
 }
 
 ///  Return new box3 value @a rhs transformed by matrix @a lhs.
