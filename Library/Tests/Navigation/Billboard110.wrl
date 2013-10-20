@@ -1,6 +1,6 @@
 #VRML V2.0 utf8
 
-META "title" "Billboard 1 1 0"
+META "title" "Billboard 1 1 1"
 
 Background {
   skyAngle [ 0.8, 1.3, 1.4, 1.5708 ]
@@ -30,6 +30,8 @@ DEF Proxy ProximitySensor {
 
 # Buttons for predefined axes and random axis
 DEF HUD Transform {
+  translation -1.61071 4.86312 -8.58801
+  rotation -0.98057 -0.19312 0.0344446 2.60806
   children Transform {
     translation 0 -0.3 -1
     scale 0.02 0.02 0.02
@@ -95,68 +97,84 @@ DEF HUD Transform {
 
 DEF Billboard Billboard {
   axisOfRotation 1 1 1
-  children DEF XForm Transform {
-    children [
-      Transform {
-        rotation 1 0 0 1.5708
-        children Shape {
+  children [
+    DEF XForm Transform {
+      children [
+        Transform {
+          rotation 1 0 0 1.5708
+          children Shape {
+            appearance Appearance {
+              material Material { }
+            }
+            geometry Cone { }
+          }
+        }
+        Shape {
           appearance Appearance {
             material Material { }
           }
-          geometry Cone { }
-        }
-      }
-      Shape {
-        appearance Appearance {
-          material Material { }
-        }
-        geometry IndexedLineSet {
-          colorIndex [ 0, 1, -1, 2, 3, -1 ]
-          coordIndex [ 0, 1, -1, 2, 3, -1 ]
-          color Color {
-            color [ 0 0 0, 1 1 1, 0 0 0, 1 1 1 ]
-          }
-          coord DEF Local Coordinate {
-            point [ -2 0 0, 2 0 0, 0 -2 0, 0 2 0 ]
+          geometry IndexedLineSet {
+            colorIndex [ 0, 1, -1, 2, 3, -1 ]
+            coordIndex [ 0, 1, -1, 2, 3, -1 ]
+            color Color {
+              color [ 0 0 0, 1 1 1, 0 0 0, 1 1 1 ]
+            }
+            coord DEF Local Coordinate {
+              point [ -2 0 0, 2 0 0, 0 -2 0, 0 2 0 ]
+            }
           }
         }
-      }
-      Transform {
-        translation 2 0 0
-        scale 0.5 0.5 0.5
-        children Billboard {
-          axisOfRotation 0 0 0
-          children Shape {
-            appearance Appearance {
-              material Material {
-                diffuseColor 0 0 0
+        Transform {
+          translation 2 0 0
+          scale 0.5 0.5 0.5
+          children Billboard {
+            axisOfRotation 0 0 0
+            children Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0 0 0
+                }
+              }
+              geometry Text {
+                string "x"
               }
             }
-            geometry Text {
-              string "x"
-            }
           }
         }
-      }
-      Transform {
-        translation 0 2 0
-        scale 0.5 0.5 0.5
-        children Billboard {
-          axisOfRotation 0 0 0
-          children Shape {
-            appearance Appearance {
-              material Material {
-                diffuseColor 0 0 0
+        Transform {
+          translation 0 2 0
+          scale 0.5 0.5 0.5
+          children Billboard {
+            axisOfRotation 0 0 0
+            children Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0 0 0
+                }
+              }
+              geometry Text {
+                string "y"
               }
             }
-            geometry Text {
-              string "y"
-            }
           }
         }
+      ]
+    }
+    DEF LocalAxisOfRotation1 Shape {
+      appearance Appearance {
+        lineProperties LineProperties {
+          linetype 3
+        }
+        material Material { }
       }
-    ]
-  }
+      geometry IndexedLineSet {
+        coordIndex [ 0, 1, -1 ]
+        coord DEF LocalAxisOfRotation Coordinate {
+          point [ -3 -3 -3, 3 3 3 ]
+        }
+      }
+    }
+  ]
 }
 
 # Axis of rotation
@@ -267,7 +285,7 @@ DEF ZAxis Transform {
 
 # Normal
 DEF Normal Transform {
-  rotation 0 1 0 3.14159
+  rotation -0.460454 -0.887684 0 1.16704
   children [
     Shape {
       appearance Appearance {
@@ -342,6 +360,7 @@ DEF AxisScript Script {
   field   SFNode     billboard USE Billboard
   field   SFNode     xform USE XForm
   field   SFNode     absolute USE AxisOfRotation
+  field   SFNode     local USE LocalAxisOfRotation
   field   SFNode     sensor USE AxisSensor
   field   SFNode     normal USE Normal
   field   SFNode     rotation USE Rotation
@@ -400,8 +419,9 @@ function set_axisOfRotation (axisOfRotation)
 
 	var axisRotation = new SFRotation (zAxis, axisOfRotation);
 	
+	local .point       = new MFVec3f (axisOfRotation .multiply (3) .negate (), axisOfRotation .multiply (3));
 	absolute .rotation = axisRotation;
-	sensor .offset = axisRotation;
+	sensor .offset     = axisRotation;
 
 	// Angle between zAxis and axisOfRotation
 	var angle = Math .acos (zAxis .dot (axisOfRotation .normalize ()));
@@ -410,12 +430,21 @@ function set_axisOfRotation (axisOfRotation)
 
 	arc .endAngle = angle;
 
+	print ('axisOfRotation: ', local .point);
 	print ('axisOfRotation: ', axisOfRotation);
 	print ('normal:         ', vector);
 	print ('angle:          ', angle);
+	
+
+	var n = vector .normalize ();
+	var a = axisOfRotation .cross (zAxis .cross (axisOfRotation)) .normalize ();
+			
+	var angle = n .dot (a);
+	print ('angle n         ', angle);
+
 }
 "
-    directOutput TRUE
+  directOutput TRUE
 }
 
 ROUTE Proxy.position_changed TO HUD.set_translation

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -123,12 +123,19 @@ Billboard::rotate (const TraverseType type) const
 		}
 		else
 		{
-			Vector3f vector = cross (axisOfRotation () .getValue (), billboardToViewer);           // direction vector of plane
-			float    angle  = std::acos (dot (zAxis, normalize (axisOfRotation () .getValue ()))); // angle between zAxis and axisOfRotation
+			Vector3f normal = cross (axisOfRotation () .getValue (), billboardToViewer); // normal vector of plane
+			Vector3f vector = cross (axisOfRotation () .getValue (), zAxis);             // normal vector of plane between axisOfRotation and zAxis
 
-			Vector3f z = Rotation4f (vector, angle) * axisOfRotation () .getValue ();              // intersection of zAxis and plane
+			Rotation4f rotation (vector, normal);
 
-			glMultMatrixf (Matrix4f (Rotation4f (zAxis, z)) .data ());                             // rotate zAxis in plane
+			glMultMatrixf (Matrix4f (rotation) .data ());                                // rotate zAxis in plane
+
+			//Vector3f vector = cross (axisOfRotation () .getValue (), billboardToViewer);           // direction vector of plane
+			//float    angle  = std::acos (dot (zAxis, normalize (axisOfRotation () .getValue ()))); // angle between zAxis and axisOfRotation
+			//
+			//Vector3f z = Rotation4f (vector, angle) * axisOfRotation () .getValue ();              // intersection of zAxis and plane
+			//
+			//glMultMatrixf (Matrix4f (Rotation4f (zAxis, z)) .data ());                             // rotate zAxis in plane
 		}
 	}
 	catch (const std::domain_error &)

@@ -145,6 +145,7 @@ PROTO TransformTool [
           DEF Front Transform {
             children Transform {
               children [
+                DEF ModeTouch TouchSensor { }
                 DEF FrontSensor PlaneSensor {
                   autoOffset FALSE
                 }
@@ -165,6 +166,7 @@ PROTO TransformTool [
             children Transform {
               rotation 0 1 0 1.5708
               children [
+                USE ModeTouch
                 DEF RightSensor PlaneSensor {
                   autoOffset FALSE
                 }
@@ -176,6 +178,7 @@ PROTO TransformTool [
             children Transform {
               rotation 0 1 0 3.14159
               children [
+                USE ModeTouch
                 DEF BackSensor PlaneSensor {
                   autoOffset FALSE
                 }
@@ -187,6 +190,7 @@ PROTO TransformTool [
             children Transform {
               rotation 0 -1 0 1.5708
               children [
+                USE ModeTouch
                 DEF LeftSensor PlaneSensor {
                   autoOffset FALSE
                 }
@@ -198,6 +202,7 @@ PROTO TransformTool [
             children Transform {
               rotation -1 0 0 1.5708
               children [
+                USE ModeTouch
                 DEF TopSensor PlaneSensor {
                   autoOffset FALSE
                 }
@@ -209,6 +214,7 @@ PROTO TransformTool [
             children Transform {
               rotation 1 0 0 1.5708
               children [
+                USE ModeTouch
                 DEF BottomSensor PlaneSensor {
                   autoOffset FALSE
                 }
@@ -224,7 +230,7 @@ PROTO TransformTool [
           DEF X Billboard {
             axisOfRotation 1 0 0
             children [
-              DEF ModeTouch TouchSensor { }
+              USE ModeTouch
               DEF XTranslationSensor PlaneSensor {
                 description "x-Axis"
                 autoOffset FALSE
@@ -540,9 +546,45 @@ PROTO TransformTool [
           }
         ]
       }
+      DEF ScaleHandleSwitch Switch {
+        choice [
+          Group { }
+          Group { }
+          DEF ScaleHandles Transform {
+            translation IS bboxCenter
+            children 
+            
+           DEF ScaleHandle17 Billboard {
+            
+                children [
+                  USE ModeTouch
+                   DEF ScaleSensor1 PlaneSensor {
+                    autoOffset FALSE
+                  }
+                  DEF ScaleHandle1 Transform {
+                    children DEF ScaleHandle ScreenGroup {
+                      children Shape {
+                        appearance USE Blue
+                        geometry Rectangle2D {
+                          solid FALSE
+                          size 50 50
+                         }
+                      }
+                    }
+                  }
+                  DEF ScaleHandle7 Transform {
+                    rotation 0 0 1 1.5708
+                    children USE ScaleHandle
+                  }
+                ]
+              }
+
+          }
+        ]
+      }
       DEF ScaleTool Transform {
         translation IS bboxCenter
-        children DEF ZScaleSwitch Switch {
+        children DEF ScaleSwitch Switch {
           choice [
             Group { }
             Group { }
@@ -586,13 +628,14 @@ PROTO TransformTool [
                     }
                   }
                 }
-                DEF ScaleHandle1 Transform {
-                  children DEF ScaleHandle ScreenGroup {
+                DEF Scale1 Transform {
+                  children DEF ScaleHandleRepesentation ScreenGroup {
                     children Transform {
                       children Shape {
                         appearance DEF White Appearance {
                           material Material {
                             diffuseColor 1 1 1
+                            transparency 0.9
                           }
                           shaders USE HandleShader
                         }
@@ -601,26 +644,26 @@ PROTO TransformTool [
                     }
                   }
                 }
-                DEF ScaleHandle2 Transform {
-                  children USE ScaleHandle
+                DEF Scale2 Transform {
+                  children USE ScaleHandleRepesentation
                 }
-                DEF ScaleHandle3 Transform {
-                  children USE ScaleHandle
+                DEF Scale3 Transform {
+                  children USE ScaleHandleRepesentation
                 }
-                DEF ScaleHandle4 Transform {
-                  children USE ScaleHandle
+                DEF Scale4 Transform {
+                  children USE ScaleHandleRepesentation
                 }
-                DEF ScaleHandle5 Transform {
-                  children USE ScaleHandle
+                DEF Scale5 Transform {
+                  children USE ScaleHandleRepesentation
                 }
-                DEF ScaleHandle6 Transform {
-                  children USE ScaleHandle
+                DEF Scale6 Transform {
+                  children USE ScaleHandleRepesentation
                 }
-                DEF ScaleHandle7 Transform {
-                  children USE ScaleHandle
+                DEF Scale7 Transform {
+                  children USE ScaleHandleRepesentation
                 }
-                DEF ScaleHandle8 Transform {
-                  children USE ScaleHandle
+                DEF Scale8 Transform {
+                  children USE ScaleHandleRepesentation
                 }
               ]
             }
@@ -1017,29 +1060,39 @@ function set_zRotation (value)
 
   DEF ScaleHandlesScript Script {
     exposedField SFVec3f bboxSize IS bboxSize
+    field        SFNode  scale1 USE Scale1
+    field        SFNode  scale2 USE Scale2
+    field        SFNode  scale3 USE Scale3
+    field        SFNode  scale4 USE Scale4
+    field        SFNode  scale5 USE Scale5
+    field        SFNode  scale6 USE Scale6
+    field        SFNode  scale7 USE Scale7
+    field        SFNode  scale8 USE Scale8
     field        SFNode  handle1 USE ScaleHandle1
-    field        SFNode  handle2 USE ScaleHandle2
-    field        SFNode  handle3 USE ScaleHandle3
-    field        SFNode  handle4 USE ScaleHandle4
-    field        SFNode  handle5 USE ScaleHandle5
-    field        SFNode  handle6 USE ScaleHandle6
     field        SFNode  handle7 USE ScaleHandle7
-    field        SFNode  handle8 USE ScaleHandle8
+    field        SFNode  handle17 USE ScaleHandle17
 
     url "vrmlscript:
 function eventsProcessed ()
 {
 	var bboxSize1_2 = bboxSize .divide (2);
+	var radius      = bboxSize1_2 .length ();
 
-	handle1 .translation = new SFVec3f ( bboxSize1_2 .x,  bboxSize1_2 .y,  bboxSize1_2 .z);
-	handle2 .translation = new SFVec3f (-bboxSize1_2 .x,  bboxSize1_2 .y,  bboxSize1_2 .z);
-	handle3 .translation = new SFVec3f (-bboxSize1_2 .x, -bboxSize1_2 .y,  bboxSize1_2 .z);
-	handle4 .translation = new SFVec3f ( bboxSize1_2 .x, -bboxSize1_2 .y,  bboxSize1_2 .z);
+	scale1 .translation = new SFVec3f ( bboxSize1_2 .x,  bboxSize1_2 .y,  bboxSize1_2 .z);
+	scale2 .translation = new SFVec3f (-bboxSize1_2 .x,  bboxSize1_2 .y,  bboxSize1_2 .z);
+	scale3 .translation = new SFVec3f (-bboxSize1_2 .x, -bboxSize1_2 .y,  bboxSize1_2 .z);
+	scale4 .translation = new SFVec3f ( bboxSize1_2 .x, -bboxSize1_2 .y,  bboxSize1_2 .z);
 
-	handle5 .translation = new SFVec3f ( bboxSize1_2 .x,  bboxSize1_2 .y, -bboxSize1_2 .z);
-	handle6 .translation = new SFVec3f (-bboxSize1_2 .x,  bboxSize1_2 .y, -bboxSize1_2 .z);
-	handle7 .translation = new SFVec3f (-bboxSize1_2 .x, -bboxSize1_2 .y, -bboxSize1_2 .z);
-	handle8 .translation = new SFVec3f ( bboxSize1_2 .x, -bboxSize1_2 .y, -bboxSize1_2 .z);
+	scale5 .translation = new SFVec3f ( bboxSize1_2 .x,  bboxSize1_2 .y, -bboxSize1_2 .z);
+	scale6 .translation = new SFVec3f (-bboxSize1_2 .x,  bboxSize1_2 .y, -bboxSize1_2 .z);
+	scale7 .translation = new SFVec3f (-bboxSize1_2 .x, -bboxSize1_2 .y, -bboxSize1_2 .z);
+	scale8 .translation = new SFVec3f ( bboxSize1_2 .x, -bboxSize1_2 .y, -bboxSize1_2 .z);
+
+	handle1 .translation = scale1 .translation;
+	handle7 .translation = scale7 .translation;
+	handle17 .axisOfRotation = scale1 .translation;
+
+	print (handle17 .axisOfRotation);
 }
 "
     directOutput TRUE
@@ -1050,7 +1103,8 @@ function eventsProcessed ()
     eventIn      SFVec3f    set_xScale
     eventIn      SFVec3f    set_yScale
     eventIn      SFVec3f    set_zScale
-    exposedField SFBool     scaleAroundBBoxCenter FALSE
+    eventIn      SFVec3f    set_scale1
+    exposedField SFBool     scaleAroundBBoxCenter TRUE
     exposedField SFNode     transform IS transform
     exposedField SFVec3f    bboxSize IS bboxSize
     exposedField SFVec3f    bboxCenter IS bboxCenter
@@ -1093,6 +1147,12 @@ function set_yScale (value)
 function set_zScale (value)
 {
 	scale (new SFVec3f (1, 1, 1 + 2 * value .x / bboxSize .z));
+}
+
+function set_scale1 (value)
+{
+	var size = 1 + 2 * value .x / bboxSize .length ();
+	scale (new SFVec3f (size, size, size));
 }
 
 function scale (value)
@@ -1207,19 +1267,23 @@ function multVec (a, b)
   ROUTE XHandle.translation_changed TO XScaleHandle.set_translation
   ROUTE YHandle.translation_changed TO YScaleHandle.set_translation
   ROUTE ZHandle.translation_changed TO ZScaleHandle.set_translation
-  ROUTE ZSwitch.whichChoice_changed TO ZScaleSwitch.set_whichChoice
+  ROUTE ModeScript.whichChoice_changed TO ScaleSwitch.set_whichChoice
+  ROUTE ModeScript.whichChoice_changed TO ScaleHandleSwitch.set_whichChoice
 
   #
 
   ROUTE XScaleSensor.isActive TO ScaleScript.set_active
   ROUTE YScaleSensor.isActive TO ScaleScript.set_active
   ROUTE ZScaleSensor.isActive TO ScaleScript.set_active
+  ROUTE ScaleSensor1.isActive TO ScaleScript.set_active
 
   #
 
   ROUTE XScaleSensor.translation_changed TO ScaleScript.set_xScale
   ROUTE YScaleSensor.translation_changed TO ScaleScript.set_yScale
   ROUTE ZScaleSensor.translation_changed TO ScaleScript.set_zScale
+
+  ROUTE ScaleSensor1.translation_changed TO ScaleScript.set_scale1
 }
 
 DEF Handle TransformTool { }
