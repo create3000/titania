@@ -2,21 +2,16 @@
 
 META "title" "PlaneSensor"
 
-Viewpoint {
-  description "Home"
-  position -88.6722 213.073 -140.126
-  orientation -0.687201 0.577929 0.440173 2.68045
-  centerOfRotation -3.18198 0.0348932 2.69748
-}
-
 Transform {
   translation 3.65468 0.0348776 2.6975
   rotation -0.57735 0.57735 0.577351 2.09439
   scale 26.825 26.8249 26.825
-  scaleOrientation 0.0459123 -0.998773 0.01854 0.72878
+  scaleOrientation 0.025734 0.998112 0.0557681 0.774604
   children [
     Viewpoint {
       description "Front"
+      position 0.00763417 1.06064 5.59705
+      centerOfRotation 0.00763417 1.06064 0
     }
     Viewpoint {
       description "Back"
@@ -97,7 +92,7 @@ Transform {
       }
     }
     DEF TrackPoint Transform {
-      translation -1.00592 -0.328148 0
+      translation -3.96299e-08 -4.25478e-08 0
       scaleOrientation -0.357407 0.862856 -0.357407 4.51948
       children Shape {
         appearance Appearance {
@@ -136,6 +131,13 @@ function set_isActive1 (value)
 	print ('Touch 1 isActive: ' + value);
 }
 "
+}
+
+Viewpoint {
+  description "Home"
+  position -88.6722 213.073 -140.126
+  orientation -0.687201 0.577929 0.440173 2.68045
+  centerOfRotation -3.18198 0.0348932 2.69748
 }
 
 ROUTE Touch1.trackPoint_changed TO TrackPoint.set_translation
