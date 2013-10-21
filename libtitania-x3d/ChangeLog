@@ -3,6 +3,13 @@
 	* TransformHandle.wrl:
 	* PlaneSensor.h:
 	* PlaneSensor.cpp:
+	* CylinderSensor.cpp: 
+
+2013-10-21  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* TransformHandle.wrl:
+	* PlaneSensor.h:
+	* PlaneSensor.cpp:
 	* jsSFRotation.cpp: 
 
 2013-10-21  Holger Seelig  <holger.seelig@yahoo.de>

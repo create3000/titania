@@ -1195,7 +1195,7 @@ function scale (value)
 {
 	if (value .x < 0 || value .y < 0 || value .z < 0)
 		return;
-	
+
 	transform .scale = multVec (scaleFactor, value);
 
 	if (scaleAroundBBoxCenter)

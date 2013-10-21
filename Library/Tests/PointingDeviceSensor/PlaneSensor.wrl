@@ -34,11 +34,10 @@ Transform {
       orientation 0 1 0 1.5708
     }
     DEF Touch1 PlaneSensor {
-      axisRotation 0 0 1 0
+      axisRotation 0 0 1 0.78
       maxPosition 2 2
     }
     DEF Button1 Transform {
-      rotation 0 0 1 0
       scaleOrientation -0.357407 0.862856 -0.357407 4.51948
       children DEF Shape1 Transform {
         children [
@@ -54,7 +53,7 @@ Transform {
             }
           }
           DEF Cube Transform {
-            rotation 0 0 1 0
+            rotation 0 0 1 0.78
             scale 0.5 0.5 0.5
             children Shape {
               appearance Appearance {
@@ -85,7 +84,7 @@ Transform {
     }
     DEF BBox Transform {
       translation 0 -1.49012e-08 0
-      rotation 0 0 1 0
+      rotation 0 0 1 0.78
       scale 2 2 1
       scaleOrientation 7.82146e-14 7.82146e-14 -1 1.5708
       children Shape {
@@ -99,7 +98,6 @@ Transform {
     }
     DEF TrackPoint Transform {
       translation -1.00592 -0.328148 0
-      rotation 0 0 1 0
       scaleOrientation -0.357407 0.862856 -0.357407 4.51948
       children Shape {
         appearance Appearance {

@@ -145,10 +145,10 @@ private:
 	///  @name Operations
 
 	void
-	trackStart (const Vector3d &, const Vector3d &);
+	trackStart (const Vector3d &, Vector3d);
 
 	void
-	track (const Vector3d &);
+	track (Vector3d);
 
 	///  @name Static members
 
@@ -174,9 +174,9 @@ private:
 	bool     planeSensor;
 	Line3d   line;
 	Plane3d  plane;
+	Vector3d trackPointOffset;
 	Vector3d startOffset;
 	Vector3d startPoint;
-	Vector3d trackPointOffset;
 	Matrix4d inverseModelViewMatrix;
 
 };

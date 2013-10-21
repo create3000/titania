@@ -174,7 +174,7 @@ CylinderSensor::set_active (const HitPtr & hit, bool active)
 
 			fromVector = getVector (hitRay, trackPoint);
 
-			trackPoint_changed () = trackPoint;
+			trackPoint_changed () = Rotation4d (~axisRotation ()) * trackPoint;
 			rotation_changed ()   = Rotation4d (yAxis, offset ());
 			startOffset           = offset ();
 		}
@@ -224,7 +224,7 @@ CylinderSensor::set_motion (const HitPtr & hit)
 		getTrackPoint (hitRay, trackPoint);
 	}
 
-	trackPoint_changed () = trackPoint;
+	trackPoint_changed () = Rotation4d (~axisRotation ()) * trackPoint;
 
 	const auto toVector = getVector (hitRay, trackPoint);
 	const auto offset   = Rotation4d (cylinder .axis () .direction (), startOffset);
