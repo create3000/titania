@@ -2328,6 +2328,7 @@
     <None Include="Prototypes\Fields\SFVec4d\SFVec4d.x3dv" />
     <None Include="Prototypes\Fields\SFVec4f\SFVec4f.x3dv" />
     <None Include="Prototypes\Fields\Fields.pl" />
+    <None Include="Tests\PointingDeviceSensor\LineSensor.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

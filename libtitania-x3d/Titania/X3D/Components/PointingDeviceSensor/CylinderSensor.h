@@ -147,16 +147,16 @@ public:
 private:
 
 	bool
-	isBehind (const Line3f &, const Vector3f &) const;
+	isBehind (const Line3d &, const Vector3d &) const;
 
-	Vector3f
-	getVector (const Line3f &, const Vector3f &) const;
+	Vector3d
+	getVector (const Line3d &, const Vector3d &) const;
 
 	bool
-	getTrackPoint (const Line3f &, Vector3f &, bool = false) const;
+	getTrackPoint (const Line3d &, Vector3d &, bool = false) const;
 
-	float
-	getAngle (const Rotation4f &) const;
+	double
+	getAngle (const Rotation4d &) const;
 
 
 	///  @name Static members
@@ -181,15 +181,15 @@ private:
 
 	Fields fields;
 
-	Cylinder3f cylinder;
+	Cylinder3d cylinder;
 	bool       disk;
-	Plane3f    yPlane;
-	Plane3f    zPlane;
+	Plane3d    yPlane;
+	Plane3d    zPlane;
 	bool       behind;
-	Vector3f   fromVector;
-	float      startOffset;
-	float      angle;
-	Matrix4f   inverseModelViewMatrix;
+	Vector3d   fromVector;
+	double     startOffset;
+	double     angle;
+	Matrix4d   inverseModelViewMatrix;
 
 };
 

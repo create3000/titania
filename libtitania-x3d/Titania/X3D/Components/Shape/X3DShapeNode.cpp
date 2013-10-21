@@ -172,7 +172,7 @@ X3DShapeNode::pick ()
 	{
 		if (ViewVolume () .intersect (getBBox ()))
 		{
-			Line3f hitRay = getBrowser () -> getHitRay ();
+			Line3f hitRay = getBrowser () -> getHitRay (); // Attention!! returns a Line3d
 
 			std::deque <IntersectionPtr> itersections;
 
@@ -196,7 +196,7 @@ X3DShapeNode::pick ()
 																 });
 
 				if (itersection not_eq itersections .end ())
-					getBrowser () -> addHit (ModelViewMatrix4f (), *itersection, this);
+					getBrowser () -> addHit (ModelViewMatrix4d (), *itersection, this);
 			}
 		}
 	}

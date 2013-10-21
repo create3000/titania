@@ -456,7 +456,7 @@ X3DBrowserContext::pick (const double _x, const double _y)
 	enabledSensors = { NodeSet () };
 }
 
-Line3f
+Line3d
 X3DBrowserContext::getHitRay () const
 {
 	try
@@ -465,14 +465,14 @@ X3DBrowserContext::getHitRay () const
 	}
 	catch (const std::domain_error &)
 	{
-		return Line3f (Vector3f (), Vector3f ());
+		return Line3d (Vector3d (), Vector3d ());
 	}
 }
 
 void
-X3DBrowserContext::addHit (const Matrix4f & transformationMatrix, const IntersectionPtr & intersection, X3DBaseNode* const node)
+X3DBrowserContext::addHit (const Matrix4d & transformationMatrix, const IntersectionPtr & intersection, X3DBaseNode* const node)
 {
-	hits .emplace_front (new Hit (transformationMatrix, hitRay, intersection, enabledSensors .back (), node));
+	hits .emplace_front (new Hit (x, y, transformationMatrix, hitRay, intersection, enabledSensors .back (), node));
 }
 
 void
@@ -544,7 +544,7 @@ X3DBrowserContext::motionNotifyEvent ()
 		if (dragSensorNode)
 		{
 			dragSensorNode -> set_motion (getHits () .empty ()
-			                              ? std::make_shared <Hit> (Matrix4f (), hitRay, std::make_shared <Intersection> (), NodeSet (), nullptr)
+			                              ? std::make_shared <Hit> (x, y, Matrix4d (), hitRay, std::make_shared <Intersection> (), NodeSet (), nullptr)
 													: getHits () .front ());
 		}
 	}
@@ -581,7 +581,7 @@ X3DBrowserContext::buttonReleaseEvent ()
 		auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node .getValue ());
 
 		if (pointingDeviceSensorNode)
-			pointingDeviceSensorNode -> set_active (std::make_shared <Hit> (Matrix4f (), hitRay, std::make_shared <Intersection> (), NodeSet (), nullptr),
+			pointingDeviceSensorNode -> set_active (std::make_shared <Hit> (x, y, Matrix4d (), hitRay, std::make_shared <Intersection> (), NodeSet (), nullptr),
 			                                        false);
 
 		else

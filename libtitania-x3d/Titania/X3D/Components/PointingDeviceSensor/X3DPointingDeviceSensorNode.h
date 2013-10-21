@@ -103,9 +103,17 @@ protected:
 	void
 	initialize () override;
 
-	Matrix4f
+	Matrix4d
+	getProjectionMatrix () const
+	{ return projectionMatrix; }
+
+	Matrix4d
 	getModelViewMatrix () const
 	{ return modelViewMatrix; }
+
+	Vector4i
+	getViewport () const
+	{ return viewport; }
 
 
 private:
@@ -123,7 +131,9 @@ private:
 
 	Fields fields;
 
-	Matrix4f modelViewMatrix;
+	Matrix4d modelViewMatrix;
+	Matrix4d projectionMatrix;
+	Vector4i viewport;
 
 };
 

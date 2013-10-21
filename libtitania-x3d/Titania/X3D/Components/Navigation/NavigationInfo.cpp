@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -66,14 +66,14 @@ const std::string NavigationInfo::typeName       = "NavigationInfo";
 const std::string NavigationInfo::containerField = "children";
 
 NavigationInfo::Fields::Fields () :
-	type (new MFString ({ "EXAMINE", "ANY" })),
-	avatarSize (new MFFloat ({ 0.25, 1.6, 0.75 })),
-	speed (new SFFloat (1)),
-	headlight (new SFBool (true)),
-	visibilityLimit (new SFFloat ()),
-	transitionType (new MFString ({ "LINEAR" })),
-	transitionTime (new SFTime (1)),
-	transitionStart (),
+	              type (new MFString ({ "EXAMINE", "ANY" })),
+	        avatarSize (new MFFloat ({ 0.25, 1.6, 0.75 })),
+	             speed (new SFFloat (1)),
+	         headlight (new SFBool (true)),
+	   visibilityLimit (new SFFloat ()),
+	    transitionType (new MFString ({ "LINEAR" })),
+	    transitionTime (new SFTime (1)),
+	   transitionStart (),
 	transitionComplete (new SFBool ())
 { }
 

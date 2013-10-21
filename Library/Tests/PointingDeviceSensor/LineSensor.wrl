@@ -1,0 +1,129 @@
+#VRML V2.0 utf8 Titania
+
+META "title" "LineSensor"
+
+Viewpoint {
+  description "Home"
+  position 3.65536 268.285 2.69857
+  orientation -0.57735 0.57735 0.577351 2.09439
+}
+
+Transform {
+  translation 3.65468 0.0348776 2.6975
+  rotation -0.57735 0.57735 0.577351 2.09439
+  scale 26.825 26.8249 26.825
+  scaleOrientation 0.0459123 -0.998773 0.01854 0.72878
+  children [
+    Viewpoint {
+      description "Front"
+    }
+    Viewpoint {
+      description "Back"
+      position 0 0 -10
+      orientation 0 1 0 3.14159
+    }
+    Viewpoint {
+      description "Left"
+      position -10 0 0
+      orientation -0 -1 -0 1.5708
+    }
+    Viewpoint {
+      description "Right"
+      position 10 0 0
+      orientation 0 1 0 1.5708
+    }
+    DEF Touch1 PlaneSensor {
+      axisRotation 0 0 1 0.785398
+      offset 0.105478 0.105478 0
+      maxPosition -1 0
+    }
+    DEF Button1 Transform {
+      translation 0.105478 0.105478 0
+      children DEF Shape1 Transform {
+        children [
+          Transform {
+            translation 0 1 0
+            children Shape {
+              geometry Text {
+                string "1"
+                fontStyle FontStyle {
+                  justify "MIDDLE"
+                }
+              }
+            }
+          }
+          DEF Cube Transform {
+            scale 0.5 0.5 0.5
+            children Shape {
+              appearance Appearance {
+                material Material {
+                  transparency 0.5
+                }
+              }
+              geometry Box { }
+            }
+          }
+        ]
+      }
+    }
+    DEF Line Transform {
+      rotation 0 0 1 0.785398
+      children Shape {
+        geometry IndexedLineSet {
+          coordIndex [ 0, 1, -1 ]
+          coord Coordinate {
+            point [ -2000 0 0, 2000 0 0 ]
+          }
+        }
+      }
+    }
+    DEF TrackPoint Transform {
+      translation 0.105478 0.105478 0
+      children Shape {
+        appearance Appearance {
+          lineProperties LineProperties {
+            linewidthScaleFactor 5
+          }
+        }
+        geometry PointSet {
+          coord Coordinate {
+            point 0 0 0
+          }
+        }
+      }
+    }
+  ]
+}
+
+DEF Debug Script {
+  eventIn SFVec3f set_trackPoint1
+  eventIn SFBool  set_isOver1
+  eventIn SFBool  set_isActive1
+
+  url "vrmlscript:
+function set_trackPoint1 (value)
+{
+	print ('Touch 1 trackPoint: ' + value);
+}
+
+function set_isOver1 (value)
+{
+	print ('Touch 1 isOver: ' + value);
+}
+
+function set_isActive1 (value)
+{
+	print ('Touch 1 isActive: ' + value);
+}
+"
+}
+
+ROUTE Touch1.trackPoint_changed TO TrackPoint.set_translation
+ROUTE Line.rotation_changed TO Touch1.set_axisRotation
+ROUTE Line.rotation_changed TO Cube.set_rotation
+ROUTE Touch1.trackPoint_changed TO Debug.set_trackPoint1
+ROUTE Touch1.isOver TO Debug.set_isOver1
+ROUTE Touch1.isActive TO Debug.set_isActive1
+ROUTE Touch1.translation_changed TO Button1.set_translation
+
+#ROUTE Touch1.translation_changed TO Touch1.set_offset

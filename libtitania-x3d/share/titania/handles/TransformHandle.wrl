@@ -227,8 +227,7 @@ PROTO TransformTool [
       DEF AdjustmentHandles Transform {
         translation IS bboxCenter
         children [
-          DEF X Billboard {
-            axisOfRotation 1 0 0
+          DEF X Group {
             children [
               USE ModeTouch
               DEF XTranslationSensor PlaneSensor {
@@ -271,22 +270,22 @@ PROTO TransformTool [
                           }
                         }
                       }
-                      Transform {
-                        translation 6 0 0
-                        children Shape {
-                          appearance USE Transparent
-                          geometry DEF ScaleSphere Sphere {
-                            radius 12
-                          }
+                Transform {
+                      translation 6 0 0
+                      children Shape {
+                        appearance USE Red
+                        geometry DEF Box Box {
+                          size 12 12 12
                         }
                       }
+                }
                     ]
                   }
                 }
               }
             ]
           }
-          DEF Y Billboard {
+          DEF Y Group {
             children [
               USE ModeTouch
               DEF YTranslationSensor PlaneSensor {
@@ -323,41 +322,42 @@ PROTO TransformTool [
                           geometry USE Sphere
                         }
                       }
-                      Transform {
-                        translation 0 6 0
-                        children Shape {
-                          appearance USE Transparent
-                          geometry USE ScaleSphere
-                        }
+                Transform {
+                      translation 0 6 0
+                      children Shape {
+                        appearance USE Green
+                        geometry USE Box
                       }
+                }
                     ]
                   }
                 }
               }
             ]
           }
-          DEF Z Transform {
-            rotation 0 -1 0 1.5708
-            children Billboard {
-              axisOfRotation 1 0 0
+          DEF Z Group {
               children [
                 USE ModeTouch
                 DEF ZTranslationSensor PlaneSensor {
                   description "z-Axis"
                   autoOffset FALSE
+                  axisRotation 0 -1 0 1.5708
+                maxPosition -1 0
                 }
                 DEF ZScaleSensor PlaneSensor {
                   enabled FALSE
                   description "z-Axis"
                   autoOffset FALSE
+                  axisRotation 0 -1 0 1.5708
+                maxPosition -1 0
                 }
                 DEF ZHandle Transform {
                   children ScreenGroup {
                     children DEF ZSwitch Switch {
                       choice [
                         Transform {
-                          translation 10.5 0 0
-                          rotation 0 0 -1 1.5708
+                          translation 0 0 10.5
+                          rotation 1 0 0 1.5708
                           children Shape {
                             appearance DEF Blue Appearance {
                               material Material {
@@ -369,26 +369,79 @@ PROTO TransformTool [
                           }
                         }
                         Transform {
-                          translation 8 0 0
+                          translation 0 0 8
                           children Shape {
                             appearance USE Blue
                             geometry USE Sphere
                           }
                         }
-                        Transform {
-                          translation 6 0 0
-                          children Shape {
-                            appearance USE Transparent
-                            geometry USE ScaleSphere
-                          }
+                Transform {
+                        translation 0 0 6
+                        children Shape {
+                          appearance USE Blue
+                          geometry USE Box
                         }
+                }
                       ]
                     }
                   }
                 }
               ]
             }
-          }
+      DEF ScaleTool Switch {
+          choice [
+            Group { }
+            Group { }
+            Group {
+              children [
+                DEF ScaleHandle1 Transform {
+                  children [
+                  DEF ScaleSensor1 PlaneSensor {
+                    autoOffset FALSE
+                  }
+
+                  DEF ScaleHandle ScreenGroup {
+                    children Transform {
+                      children Shape {
+                        appearance DEF White Appearance {
+                          material Material {
+                            diffuseColor 1 1 1
+                            transparency 0.9
+                          }
+                          shaders USE HandleShader
+                        }
+                        geometry USE Box
+                      }
+                    }
+                  }
+                  
+                  ]
+                }
+                DEF ScaleHandle2 Transform {
+                  children USE ScaleHandle
+                }
+                DEF ScaleHandle3 Transform {
+                  children USE ScaleHandle
+                }
+                DEF ScaleHandle4 Transform {
+                  children USE ScaleHandle
+                }
+                DEF ScaleHandle5 Transform {
+                  children USE ScaleHandle
+                }
+                DEF ScaleHandle6 Transform {
+                  children USE ScaleHandle
+                }
+                DEF ScaleHandle7 Transform {
+                  children USE ScaleHandle
+                }
+                DEF ScaleHandle8 Transform {
+                  children USE ScaleHandle
+                }
+              ]
+            }
+          ]
+        }
         ]
       }
       DEF CenterLine Shape {
@@ -546,130 +599,6 @@ PROTO TransformTool [
           }
         ]
       }
-      DEF ScaleHandleSwitch Switch {
-        choice [
-          Group { }
-          Group { }
-          DEF ScaleHandles Transform {
-            translation IS bboxCenter
-            children 
-            
-           DEF ScaleHandle17 Billboard {
-            
-                children [
-                  USE ModeTouch
-                   DEF ScaleSensor1 PlaneSensor {
-                    autoOffset FALSE
-                  }
-                  DEF ScaleHandle1 Transform {
-                    children DEF ScaleHandle ScreenGroup {
-                      children Shape {
-                        appearance USE Blue
-                        geometry Rectangle2D {
-                          solid FALSE
-                          size 50 50
-                         }
-                      }
-                    }
-                  }
-                  DEF ScaleHandle7 Transform {
-                    rotation 0 0 1 1.5708
-                    children USE ScaleHandle
-                  }
-                ]
-              }
-
-          }
-        ]
-      }
-      DEF ScaleTool Transform {
-        translation IS bboxCenter
-        children DEF ScaleSwitch Switch {
-          choice [
-            Group { }
-            Group { }
-            Group {
-              children [
-                DEF XScaleHandle Transform {
-                  children ScreenGroup {
-                    children Transform {
-                      translation 6 0 0
-                      children Shape {
-                        appearance USE Red
-                        geometry DEF Box Box {
-                          size 12 12 12
-                        }
-                      }
-                    }
-                  }
-                }
-                DEF YScaleHandle Transform {
-                  children ScreenGroup {
-                    children Transform {
-                      translation 0 6 0
-                      children Shape {
-                        appearance USE Green
-                        geometry USE Box
-                      }
-                    }
-                  }
-                }
-                Transform {
-                  rotation 0 -1 0 1.5708
-                  children DEF ZScaleHandle Transform {
-                    children ScreenGroup {
-                      children Transform {
-                        translation 6 0 0
-                        children Shape {
-                          appearance USE Blue
-                          geometry USE Box
-                        }
-                      }
-                    }
-                  }
-                }
-                DEF Scale1 Transform {
-                  children DEF ScaleHandleRepesentation ScreenGroup {
-                    children Transform {
-                      children Shape {
-                        appearance DEF White Appearance {
-                          material Material {
-                            diffuseColor 1 1 1
-                            transparency 0.9
-                          }
-                          shaders USE HandleShader
-                        }
-                        geometry USE Box
-                      }
-                    }
-                  }
-                }
-                DEF Scale2 Transform {
-                  children USE ScaleHandleRepesentation
-                }
-                DEF Scale3 Transform {
-                  children USE ScaleHandleRepesentation
-                }
-                DEF Scale4 Transform {
-                  children USE ScaleHandleRepesentation
-                }
-                DEF Scale5 Transform {
-                  children USE ScaleHandleRepesentation
-                }
-                DEF Scale6 Transform {
-                  children USE ScaleHandleRepesentation
-                }
-                DEF Scale7 Transform {
-                  children USE ScaleHandleRepesentation
-                }
-                DEF Scale8 Transform {
-                  children USE ScaleHandleRepesentation
-                }
-              ]
-            }
-          ]
-        }
-      }
       DEF PPoint Transform {
         children Shape {
           appearance Appearance {
@@ -797,7 +726,7 @@ function eventsProcessed ()
 
 	x .translation = new SFVec3f (bboxSize1_2 .x, 0, 0);
 	y .translation = new SFVec3f (0, bboxSize1_2 .y, 0);
-	z .translation = new SFVec3f (bboxSize1_2 .z, 0, 0);
+	z .translation = new SFVec3f (0, 0, bboxSize1_2 .z);
 }
 "
     directOutput TRUE
@@ -867,7 +796,7 @@ function set_yTranslation (value)
 
 function set_zTranslation (value)
 {
-	translate (new SFVec3f (0, 0, value .x));
+	translate (new SFVec3f (0, 0, value .z));
 }
 
 function translate_with_bbox (value)
@@ -1060,17 +989,15 @@ function set_zRotation (value)
 
   DEF ScaleHandlesScript Script {
     exposedField SFVec3f bboxSize IS bboxSize
-    field        SFNode  scale1 USE Scale1
-    field        SFNode  scale2 USE Scale2
-    field        SFNode  scale3 USE Scale3
-    field        SFNode  scale4 USE Scale4
-    field        SFNode  scale5 USE Scale5
-    field        SFNode  scale6 USE Scale6
-    field        SFNode  scale7 USE Scale7
-    field        SFNode  scale8 USE Scale8
     field        SFNode  handle1 USE ScaleHandle1
+    field        SFNode  handle2 USE ScaleHandle2
+    field        SFNode  handle3 USE ScaleHandle3
+    field        SFNode  handle4 USE ScaleHandle4
+    field        SFNode  handle5 USE ScaleHandle5
+    field        SFNode  handle6 USE ScaleHandle6
     field        SFNode  handle7 USE ScaleHandle7
-    field        SFNode  handle17 USE ScaleHandle17
+    field        SFNode  handle8 USE ScaleHandle8
+    field        SFNode  sensor1 USE ScaleSensor1
 
     url "vrmlscript:
 function eventsProcessed ()
@@ -1078,21 +1005,19 @@ function eventsProcessed ()
 	var bboxSize1_2 = bboxSize .divide (2);
 	var radius      = bboxSize1_2 .length ();
 
-	scale1 .translation = new SFVec3f ( bboxSize1_2 .x,  bboxSize1_2 .y,  bboxSize1_2 .z);
-	scale2 .translation = new SFVec3f (-bboxSize1_2 .x,  bboxSize1_2 .y,  bboxSize1_2 .z);
-	scale3 .translation = new SFVec3f (-bboxSize1_2 .x, -bboxSize1_2 .y,  bboxSize1_2 .z);
-	scale4 .translation = new SFVec3f ( bboxSize1_2 .x, -bboxSize1_2 .y,  bboxSize1_2 .z);
+	handle1 .translation = new SFVec3f ( bboxSize1_2 .x,  bboxSize1_2 .y,  bboxSize1_2 .z);
+	handle2 .translation = new SFVec3f (-bboxSize1_2 .x,  bboxSize1_2 .y,  bboxSize1_2 .z);
+	handle3 .translation = new SFVec3f (-bboxSize1_2 .x, -bboxSize1_2 .y,  bboxSize1_2 .z);
+	handle4 .translation = new SFVec3f ( bboxSize1_2 .x, -bboxSize1_2 .y,  bboxSize1_2 .z);
 
-	scale5 .translation = new SFVec3f ( bboxSize1_2 .x,  bboxSize1_2 .y, -bboxSize1_2 .z);
-	scale6 .translation = new SFVec3f (-bboxSize1_2 .x,  bboxSize1_2 .y, -bboxSize1_2 .z);
-	scale7 .translation = new SFVec3f (-bboxSize1_2 .x, -bboxSize1_2 .y, -bboxSize1_2 .z);
-	scale8 .translation = new SFVec3f ( bboxSize1_2 .x, -bboxSize1_2 .y, -bboxSize1_2 .z);
+	handle5 .translation = new SFVec3f ( bboxSize1_2 .x,  bboxSize1_2 .y, -bboxSize1_2 .z);
+	handle6 .translation = new SFVec3f (-bboxSize1_2 .x,  bboxSize1_2 .y, -bboxSize1_2 .z);
+	handle7 .translation = new SFVec3f (-bboxSize1_2 .x, -bboxSize1_2 .y, -bboxSize1_2 .z);
+	handle8 .translation = new SFVec3f ( bboxSize1_2 .x, -bboxSize1_2 .y, -bboxSize1_2 .z);
 
-	handle1 .translation = scale1 .translation;
-	handle7 .translation = scale7 .translation;
-	handle17 .axisOfRotation = scale1 .translation;
+	var xAxis = new SFVec3f (1, 0, 0);
 
-	print (handle17 .axisOfRotation);
+	sensor1 .axisRotation = new SFRotation (xAxis, handle1 .translation);
 }
 "
     directOutput TRUE
@@ -1146,7 +1071,7 @@ function set_yScale (value)
 
 function set_zScale (value)
 {
-	scale (new SFVec3f (1, 1, 1 + 2 * value .x / bboxSize .z));
+	scale (new SFVec3f (1, 1, 1 + 2 * value .z / bboxSize .z));
 }
 
 function set_scale1 (value)
@@ -1264,11 +1189,7 @@ function multVec (a, b)
 
   # Scale Tool
 
-  ROUTE XHandle.translation_changed TO XScaleHandle.set_translation
-  ROUTE YHandle.translation_changed TO YScaleHandle.set_translation
-  ROUTE ZHandle.translation_changed TO ZScaleHandle.set_translation
-  ROUTE ModeScript.whichChoice_changed TO ScaleSwitch.set_whichChoice
-  ROUTE ModeScript.whichChoice_changed TO ScaleHandleSwitch.set_whichChoice
+  ROUTE ModeScript.whichChoice_changed TO ScaleTool.set_whichChoice
 
   #
 

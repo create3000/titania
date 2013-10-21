@@ -115,7 +115,7 @@ public:
 private:
 
 	bool
-	getTrackPoint (const Line3f &, Vector3f &, bool = false) const;
+	getTrackPoint (const Line3d &, Vector3d &, bool = false) const;
 
 
 	///  @name Static members
@@ -136,13 +136,13 @@ private:
 
 	Fields fields;
 
-	Plane3f    zPlane;
-	Sphere3f   sphere;
+	Plane3d    zPlane;
+	Sphere3d   sphere;
 	bool       behind;
-	Vector3f   fromVector;
-	SFRotation startOffset;
-	Vector3f   startPoint;
-	Matrix4f   inverseModelViewMatrix;
+	Vector3d   fromVector;
+	Rotation4d startOffset;
+	Vector3d   startPoint;
+	Matrix4d   inverseModelViewMatrix;
 
 };
 

@@ -61,9 +61,11 @@ X3DPointingDeviceSensorNode::Fields::Fields () :
 { }
 
 X3DPointingDeviceSensorNode::X3DPointingDeviceSensorNode () :
-	  X3DSensorNode (),
-	         fields (),
-	modelViewMatrix ()
+	   X3DSensorNode (),
+	          fields (),
+	 modelViewMatrix (),
+	projectionMatrix (),
+	        viewport ()
 {
 	addNodeType (X3DConstants::X3DPointingDeviceSensorNode);
 }
@@ -95,7 +97,7 @@ X3DPointingDeviceSensorNode::set_over (const HitPtr &, bool value)
 	if (value not_eq isOver ())
 	{
 		isOver () = value;
-		
+
 		if (isOver () and not description () .empty ())
 			getBrowser () -> getNotification () -> string () = description ();
 	}
@@ -115,7 +117,9 @@ X3DPointingDeviceSensorNode::push ()
 	{
 		getBrowser () -> getSensors () .back () .insert (this);
 
-		modelViewMatrix = ModelViewMatrix4f ();
+		projectionMatrix = ProjectionMatrix4d ();
+		modelViewMatrix  = ModelViewMatrix4d ();
+		viewport         = Viewport4i ();
 	}
 }
 

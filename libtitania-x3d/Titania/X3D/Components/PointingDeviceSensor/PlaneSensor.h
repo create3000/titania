@@ -142,11 +142,6 @@ public:
 
 private:
 
-	///  @name Operations
-
-	Vector3f
-	getTrackPoint (const Line3f) const;
-
 	///  @name Static members
 
 	static const std::string componentName;
@@ -168,10 +163,11 @@ private:
 
 	Fields fields;
 
-	Plane3f  plane;
-	Vector3f startOffset;
-	Vector3f startPoint;
-	Matrix4f inverseModelViewMatrix;
+	bool     planeSensor;
+	Plane3d  plane;
+	Vector3d startOffset;
+	Vector3d startPoint;
+	Line3d   line;
 
 };
 

@@ -51,6 +51,7 @@
 #include "PlaneSensor.h"
 
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Rendering/ViewVolume.h"
 
 namespace titania {
 namespace X3D {
@@ -71,10 +72,11 @@ PlaneSensor::PlaneSensor (X3DExecutionContext* const executionContext) :
 	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	     X3DDragSensorNode (),
 	                fields (),
+	           planeSensor (true),
 	                 plane (),
 	           startOffset (),
 	            startPoint (),
-	inverseModelViewMatrix ()
+	                  line ()
 {
 	addField (inputOutput, "metadata",            metadata ());
 	addField (inputOutput, "enabled",             enabled ());
@@ -96,6 +98,8 @@ PlaneSensor::create (X3DExecutionContext* const executionContext) const
 	return new PlaneSensor (executionContext);
 }
 
+Matrix4d inverseModelViewMatrix;
+
 void
 PlaneSensor::set_active (const HitPtr & hit, bool active)
 {
@@ -110,16 +114,55 @@ PlaneSensor::set_active (const HitPtr & hit, bool active)
 			const auto hitRay   = hit -> ray * inverseModelViewMatrix;
 			const auto hitPoint = hit -> point * inverseModelViewMatrix;
 
-			plane  = Plane3f (hitPoint, axisRotation () * Vector3f (0, 0, 1));
-
-			Vector3f trackPoint;
-
-			if (plane .intersect (hitRay, trackPoint))
+			if (minPosition () .getX () == maxPosition () .getX ())
 			{
-				startPoint             = trackPoint;
-				trackPoint_changed ()  = trackPoint;
-				translation_changed () = offset ();
-				startOffset            = offset ();
+				planeSensor = false;
+
+				const auto point     = Vector3d (minPosition () .getX (), 0, 0);
+				const auto direction = axisRotation () * Vector3d (0, std::abs (maxPosition () .getY () - minPosition () .getY ()), 0);
+
+				line = Line3d (point, normalize (direction));
+			}
+			else if (minPosition () .getY () == maxPosition () .getY ())
+			{
+				planeSensor = false;
+
+				const auto point     = Vector3d (0, minPosition () .getY (), 0);
+				const auto direction = axisRotation () * Vector3d (std::abs (maxPosition () .getX () - minPosition () .getX ()), 0, 0);
+
+				line = Line3d (point, normalize (direction));
+			}
+			else
+			{
+				planeSensor = true;
+				plane       = Plane3d (hitPoint, axisRotation () * Vector3d (0, 0, 1));
+			}
+
+			if (planeSensor)
+			{
+				Vector3d trackPoint;
+
+				if (plane .intersect (hitRay, trackPoint))
+				{
+					startPoint             = trackPoint;
+					trackPoint_changed ()  = trackPoint;
+					translation_changed () = offset ();
+					startOffset            = offset () .getValue ();
+				}
+			}
+			else
+			{
+				const auto screenLine     = ViewVolume::projectLine (line, getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+				auto       trackPoint     = screenLine .closest_point (Vector3d (hit -> x, hit -> y, 0));
+				const auto trackPointLine = ViewVolume::unProjectLine (trackPoint .x (), trackPoint .y (), getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+
+				if (line .closest_point (trackPointLine, trackPoint))
+				{
+					startPoint             = trackPoint;
+					trackPoint_changed ()  = trackPoint;
+					translation_changed () = offset ();
+					startOffset            = offset () .getValue ();
+				}
 			}
 		}
 		else
@@ -132,54 +175,68 @@ PlaneSensor::set_active (const HitPtr & hit, bool active)
 	{ }
 }
 
-Vector3f
-PlaneSensor::getTrackPoint (const Line3f hitRay) const
-{
-	Vector3f trackPoint;
-	Vector3f zTrackPoint;
-
-//	float angle = std::abs (dot (plane .normal (), hitRay .direction ()));
-//	float alpha = 1 / (1 + std::pow (100, (-12 * angle + 1.5)));
-//
-//	__LOG__ << angle << " : " << alpha << std::endl;
-//
-//	Plane3f sPlane (Vector3f (), hitRay .direction ());
-//	sPlane .intersect (hitRay, zTrackPoint);
-//
-//	if (plane .intersect (hitRay, trackPoint))
-//		return math::lerp (zTrackPoint, trackPoint, angle);
-
-	return zTrackPoint;
-}
-
 void
 PlaneSensor::set_motion (const HitPtr & hit)
 {
-	auto hitRay = hit -> ray * inverseModelViewMatrix;
-
-	Vector3f trackPoint;
-
-	if (plane .intersect (hitRay, trackPoint))
+	if (planeSensor)
 	{
-		//auto trackPoint  = getTrackPoint (hitRay);
-		auto translation = ~axisRotation () * (startOffset + (trackPoint - startPoint));
+		//const auto inverseModelViewMatrix = ~getModelViewMatrix ();
 
-		// X component
+		const auto hitRay = hit -> ray * inverseModelViewMatrix;
 
-		if (not (minPosition () .getX () > maxPosition () .getX ()))
-			translation .x (math::clamp <float> (translation .x (), minPosition () .getX (), maxPosition () .getX ()));
+		Vector3d trackPoint;
 
-		// Y component
+		if (plane .intersect (hitRay, trackPoint))
+		{
+			auto translation = Rotation4d (~axisRotation ()) * (startOffset + (trackPoint - startPoint));
 
-		if (not (minPosition () .getY () > maxPosition () .getY ()))
-			translation .y (math::clamp <float> (translation .y (), minPosition () .getY (), maxPosition () .getY ()));
+			// X component
 
-		// Z component
+			if (not (minPosition () .getX () > maxPosition () .getX ()))
+				translation .x (math::clamp <float> (translation .x (), minPosition () .getX (), maxPosition () .getX ()));
 
-		translation .z (0);
+			// Y component
 
-		trackPoint_changed ()  = trackPoint;
-		translation_changed () = axisRotation () * translation;
+			if (not (minPosition () .getY () > maxPosition () .getY ()))
+				translation .y (math::clamp <float> (translation .y (), minPosition () .getY (), maxPosition () .getY ()));
+
+			// Z component
+
+			translation .z (0);
+
+			trackPoint_changed ()  = trackPoint;
+			translation_changed () = axisRotation () * translation;
+		}
+	}
+	else
+	{
+		try
+		{
+
+			const auto screenLine     = ViewVolume::projectLine (line, ~inverseModelViewMatrix, getProjectionMatrix (), getViewport ());
+			auto       trackPoint     = screenLine .closest_point (Vector3d (hit -> x, hit -> y, 0));
+			const auto trackPointLine = ViewVolume::unProjectLine (trackPoint .x (), trackPoint .y (), ~inverseModelViewMatrix, getProjectionMatrix (), getViewport ());
+
+			__LOG__ << std::endl;
+			__LOG__ << line << std::endl;
+			__LOG__ << screenLine << std::endl;
+			__LOG__ << trackPoint << std::endl;
+
+			if (line .closest_point (trackPointLine, trackPoint))
+			{
+				__LOG__ << trackPoint << std::endl;
+				auto translation = startOffset + (trackPoint - startPoint);
+
+				trackPoint_changed ()  = trackPoint;
+				translation_changed () = translation;
+			}
+			else
+				__LOG__ << std::endl;
+		}
+		catch (const std::domain_error &)
+		{
+			__LOG__ << std::endl;
+		}
 	}
 }
 

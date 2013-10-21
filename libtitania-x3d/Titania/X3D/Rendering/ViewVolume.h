@@ -73,18 +73,31 @@ public:
 
 	static
 	Vector3d
-	unProjectPoint (double, double, double, const Matrix4d &, const Matrix4d &, const Vector4i &);
+	unProjectPoint (double, double, double, const Matrix4d &, const Matrix4d &, const Vector4i &)
+	throw (std::domain_error);
 
 	static
 	Line3d
-	unProjectLine (double, double, const Matrix4d &, const Matrix4d &, const Vector4i &);
+	unProjectLine (double, double, const Matrix4d &, const Matrix4d &, const Vector4i &)
+	throw (std::domain_error);
+
+	static
+	Vector3d
+	projectPoint (const Vector3d &, const Matrix4d &, const Matrix4d &, const Vector4i &)
+	throw (std::domain_error);
+
+	static
+	Line3d
+	projectLine (const Line3d &, const Matrix4d &, const Matrix4d &, const Vector4i &)
+	throw (std::domain_error);
 
 
 private:
 
 	static
 	Vector3d
-	unProjectPoint (double, double, double, const Matrix4d &, const Vector4i &);
+	unProjectPoint (double, double, double, const Matrix4d &, const Vector4i &)
+	throw (std::domain_error);
 
 	std::vector <Plane3f> planes;
 	bool                  valid;

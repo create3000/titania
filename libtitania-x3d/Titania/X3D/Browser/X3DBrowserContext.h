@@ -271,11 +271,11 @@ public:
 	updateHitRay ()
 	{ hitRay = getHitRay (); }
 
-	Line3f
+	Line3d
 	getHitRay () const;
 
 	void
-	addHit (const Matrix4f &, const IntersectionPtr &, X3DBaseNode* const);
+	addHit (const Matrix4d &, const IntersectionPtr &, X3DBaseNode* const);
 
 	const HitArray &
 	getHits () const
@@ -423,7 +423,7 @@ private:
 
 	double                x;
 	double                y;
-	Line3f                hitRay;
+	Line3d                hitRay;
 	HitArray              hits;
 	HitComp               hitComp;
 	std::deque <NodeSet>  enabledSensors;

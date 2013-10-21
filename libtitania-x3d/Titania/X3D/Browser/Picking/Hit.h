@@ -63,17 +63,20 @@ class Hit
 {
 public:
 
-	Hit (const Matrix4f &,
-	     const Line3f &,
+	Hit (const double, const double,
+	     const Matrix4d &,
+	     const Line3d &,
 	     const IntersectionPtr &,
 	     const NodeSet &,
 	     X3DBaseNode* const);
 
-	const Matrix4f     transformationMatrix;
-	const Line3f       ray;
-	const Vector3f     texCoord;
-	const Vector3f     normal;
-	const Vector3f     point;
+	double x;
+	double y;
+	const Matrix4d     transformationMatrix;
+	const Line3d       ray;
+	const Vector3d     texCoord;
+	const Vector3d     normal;
+	const Vector3d     point;
 	const float        distance;
 	const NodeSet      sensors;
 	const X3DBaseNode* node;

@@ -53,11 +53,14 @@
 namespace titania {
 namespace X3D {
 
-Hit::Hit (const Matrix4f & transformationMatrix,
-          const Line3f & hitRay,
+Hit::Hit (const double x, const double y,
+          const Matrix4d & transformationMatrix,
+          const Line3d & hitRay,
           const IntersectionPtr & intersection,
           const NodeSet & sensors,
           X3DBaseNode* const node) :
+                      x (x),
+                      y (y),
 	transformationMatrix (transformationMatrix),
 	                 ray (hitRay),
 	            texCoord (intersection -> hitTexCoord),

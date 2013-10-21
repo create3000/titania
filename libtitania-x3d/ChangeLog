@@ -1,3 +1,23 @@
+2013-10-21  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Hit.h:
+	* ViewVolume.h:
+	* Hit.cpp:
+	* ViewVolume.cpp:
+	* X3DBrowserContext.h:
+	* X3DBrowserContext.cpp:
+	* TransformHandle.wrl:
+	* X3DShapeNode.cpp:
+	* NavigationInfo.cpp:
+	* PlaneSensor.h:
+	* SphereSensor.h:
+	* PlaneSensor.cpp:
+	* SphereSensor.cpp:
+	* CylinderSensor.h:
+	* CylinderSensor.cpp:
+	* X3DPointingDeviceSensorNode.h:
+	* X3DPointingDeviceSensorNode.cpp: 
+
 2013-10-20  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* TransformHandle.wrl:
