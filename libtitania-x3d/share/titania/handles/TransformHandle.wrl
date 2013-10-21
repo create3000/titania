@@ -270,15 +270,15 @@ PROTO TransformTool [
                           }
                         }
                       }
-                Transform {
-                      translation 6 0 0
-                      children Shape {
-                        appearance USE Red
-                        geometry DEF Box Box {
-                          size 12 12 12
+                      Transform {
+                        translation 6 0 0
+                        children Shape {
+                          appearance USE Red
+                          geometry DEF Box Box {
+                            size 12 12 12
+                          }
                         }
                       }
-                }
                     ]
                   }
                 }
@@ -322,13 +322,13 @@ PROTO TransformTool [
                           geometry USE Sphere
                         }
                       }
-                Transform {
-                      translation 0 6 0
-                      children Shape {
-                        appearance USE Green
-                        geometry USE Box
+                      Transform {
+                        translation 0 6 0
+                        children Shape {
+                          appearance USE Green
+                          geometry USE Box
+                        }
                       }
-                }
                     ]
                   }
                 }
@@ -336,112 +336,152 @@ PROTO TransformTool [
             ]
           }
           DEF Z Group {
-              children [
-                USE ModeTouch
-                DEF ZTranslationSensor PlaneSensor {
-                  description "z-Axis"
-                  autoOffset FALSE
-                  axisRotation 0 -1 0 1.5708
+            children [
+              USE ModeTouch
+              DEF ZTranslationSensor PlaneSensor {
+                description "z-Axis"
+                axisRotation 0 -1 0 1.5708
+                autoOffset FALSE
                 maxPosition -1 0
-                }
-                DEF ZScaleSensor PlaneSensor {
-                  enabled FALSE
-                  description "z-Axis"
-                  autoOffset FALSE
-                  axisRotation 0 -1 0 1.5708
+              }
+              DEF ZScaleSensor PlaneSensor {
+                enabled FALSE
+                description "z-Axis"
+                axisRotation 0 -1 0 1.5708
+                autoOffset FALSE
                 maxPosition -1 0
-                }
-                DEF ZHandle Transform {
-                  children ScreenGroup {
-                    children DEF ZSwitch Switch {
-                      choice [
-                        Transform {
-                          translation 0 0 10.5
-                          rotation 1 0 0 1.5708
-                          children Shape {
-                            appearance DEF Blue Appearance {
-                              material Material {
-                                diffuseColor 0 0 1
-                              }
-                              shaders USE HandleShader
+              }
+              DEF ZHandle Transform {
+                children ScreenGroup {
+                  children DEF ZSwitch Switch {
+                    choice [
+                      Transform {
+                        translation 0 0 10.5
+                        rotation 1 0 0 1.5708
+                        children Shape {
+                          appearance DEF Blue Appearance {
+                            material Material {
+                              diffuseColor 0 0 1
                             }
-                            geometry USE Arrow
+                            shaders USE HandleShader
                           }
+                          geometry USE Arrow
                         }
-                        Transform {
-                          translation 0 0 8
-                          children Shape {
-                            appearance USE Blue
-                            geometry USE Sphere
-                          }
+                      }
+                      Transform {
+                        translation 0 0 8
+                        children Shape {
+                          appearance USE Blue
+                          geometry USE Sphere
                         }
-                Transform {
+                      }
+                      Transform {
                         translation 0 0 6
                         children Shape {
                           appearance USE Blue
                           geometry USE Box
                         }
-                }
-                      ]
-                    }
-                  }
-                }
-              ]
-            }
-      DEF ScaleTool Switch {
-          choice [
-            Group { }
-            Group { }
-            Group {
-              children [
-                DEF ScaleHandle1 Transform {
-                  children [
-                  DEF ScaleSensor1 PlaneSensor {
-                    autoOffset FALSE
-                  }
-
-                  DEF ScaleHandle ScreenGroup {
-                    children Transform {
-                      children Shape {
-                        appearance DEF White Appearance {
-                          material Material {
-                            diffuseColor 1 1 1
-                            transparency 0.9
-                          }
-                          shaders USE HandleShader
-                        }
-                        geometry USE Box
                       }
-                    }
+                    ]
                   }
-                  
-                  ]
                 }
-                DEF ScaleHandle2 Transform {
-                  children USE ScaleHandle
-                }
-                DEF ScaleHandle3 Transform {
-                  children USE ScaleHandle
-                }
-                DEF ScaleHandle4 Transform {
-                  children USE ScaleHandle
-                }
-                DEF ScaleHandle5 Transform {
-                  children USE ScaleHandle
-                }
-                DEF ScaleHandle6 Transform {
-                  children USE ScaleHandle
-                }
-                DEF ScaleHandle7 Transform {
-                  children USE ScaleHandle
-                }
-                DEF ScaleHandle8 Transform {
-                  children USE ScaleHandle
-                }
-              ]
-            }
-          ]
-        }
+              }
+            ]
+          }
+          DEF ScaleTool Switch {
+            choice [
+              Group { }
+              Group { }
+              Group {
+                children [
+                  DEF ScaleHandle1 Transform {
+                    children [
+                      DEF ScaleSensor1 PlaneSensor {
+                        autoOffset FALSE
+                        maxPosition -1 0
+                      }
+                      DEF ScaleHandle ScreenGroup {
+                        children Transform {
+                          children Shape {
+                            appearance DEF White Appearance {
+                              material Material {
+                                diffuseColor 1 1 1
+                              }
+                              shaders USE HandleShader
+                            }
+                            geometry USE Box
+                          }
+                        }
+                      }
+                    ]
+                  }
+                  DEF ScaleHandle2 Transform {
+                    children [
+                      DEF ScaleSensor2 PlaneSensor {
+                        autoOffset FALSE
+                        maxPosition -1 0
+                      }
+                        USE ScaleHandle
+                    ]
+                  }
+                  DEF ScaleHandle3 Transform {
+                    children [
+                      DEF ScaleSensor3 PlaneSensor {
+                        autoOffset FALSE
+                        maxPosition -1 0
+                      }
+                        USE ScaleHandle
+                    ]
+                  }
+                  DEF ScaleHandle4 Transform {
+                    children [
+                      DEF ScaleSensor4 PlaneSensor {
+                        autoOffset FALSE
+                        maxPosition -1 0
+                      }
+                        USE ScaleHandle
+                    ]
+                  }
+                  DEF ScaleHandle5 Transform {
+                    children [
+                      DEF ScaleSensor5 PlaneSensor {
+                        autoOffset FALSE
+                        maxPosition -1 0
+                      }
+                        USE ScaleHandle
+                    ]
+                  }
+                  DEF ScaleHandle6 Transform {
+                    children [
+                      DEF ScaleSensor6 PlaneSensor {
+                        autoOffset FALSE
+                        maxPosition -1 0
+                      }
+                        USE ScaleHandle
+                    ]
+                  }
+                  DEF ScaleHandle7 Transform {
+                    children [
+                      DEF ScaleSensor7 PlaneSensor {
+                        autoOffset FALSE
+                        maxPosition -1 0
+                      }
+                        USE ScaleHandle
+                    ]
+                  }
+                  DEF ScaleHandle8 Transform {
+                    children [
+                      DEF ScaleSensor8 PlaneSensor {
+                        autoOffset FALSE
+                        maxPosition -1 0
+                      }
+                        USE ScaleHandle
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
         ]
       }
       DEF CenterLine Shape {
@@ -998,6 +1038,13 @@ function set_zRotation (value)
     field        SFNode  handle7 USE ScaleHandle7
     field        SFNode  handle8 USE ScaleHandle8
     field        SFNode  sensor1 USE ScaleSensor1
+    field        SFNode  sensor2 USE ScaleSensor2
+    field        SFNode  sensor3 USE ScaleSensor3
+    field        SFNode  sensor4 USE ScaleSensor4
+    field        SFNode  sensor5 USE ScaleSensor5
+    field        SFNode  sensor6 USE ScaleSensor6
+    field        SFNode  sensor7 USE ScaleSensor7
+    field        SFNode  sensor8 USE ScaleSensor8
 
     url "vrmlscript:
 function eventsProcessed ()
@@ -1018,6 +1065,14 @@ function eventsProcessed ()
 	var xAxis = new SFVec3f (1, 0, 0);
 
 	sensor1 .axisRotation = new SFRotation (xAxis, handle1 .translation);
+	sensor2 .axisRotation = new SFRotation (xAxis, handle2 .translation);
+	sensor3 .axisRotation = new SFRotation (xAxis, handle3 .translation);
+	sensor4 .axisRotation = new SFRotation (xAxis, handle4 .translation);
+
+	sensor5 .axisRotation = new SFRotation (xAxis, handle5 .translation);
+	sensor6 .axisRotation = new SFRotation (xAxis, handle6 .translation);
+	sensor7 .axisRotation = new SFRotation (xAxis, handle7 .translation);
+	sensor8 .axisRotation = new SFRotation (xAxis, handle8 .translation);
 }
 "
     directOutput TRUE
@@ -1029,6 +1084,13 @@ function eventsProcessed ()
     eventIn      SFVec3f    set_yScale
     eventIn      SFVec3f    set_zScale
     eventIn      SFVec3f    set_scale1
+    eventIn      SFVec3f    set_scale2
+    eventIn      SFVec3f    set_scale3
+    eventIn      SFVec3f    set_scale4
+    eventIn      SFVec3f    set_scale5
+    eventIn      SFVec3f    set_scale6
+    eventIn      SFVec3f    set_scale7
+    eventIn      SFVec3f    set_scale8
     exposedField SFBool     scaleAroundBBoxCenter TRUE
     exposedField SFNode     transform IS transform
     exposedField SFVec3f    bboxSize IS bboxSize
@@ -1038,6 +1100,14 @@ function eventsProcessed ()
     field        SFVec3f    center 0 0 0
     field        SFVec3f    distanceFromCenter 0 0 0
     field        SFMatrix4f matrix 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+    field        SFNode  sensor1 USE ScaleSensor1
+    field        SFNode  sensor2 USE ScaleSensor2
+    field        SFNode  sensor3 USE ScaleSensor3
+    field        SFNode  sensor4 USE ScaleSensor4
+    field        SFNode  sensor5 USE ScaleSensor5
+    field        SFNode  sensor6 USE ScaleSensor6
+    field        SFNode  sensor7 USE ScaleSensor7
+    field        SFNode  sensor8 USE ScaleSensor8
 
     url "vrmlscript:
 	
@@ -1076,7 +1146,48 @@ function set_zScale (value)
 
 function set_scale1 (value)
 {
-	var size = 1 + 2 * value .x / bboxSize .length ();
+	set_scale (value, sgn (sensor1 .trackPoint_changed .x))
+}
+
+function set_scale2 (value)
+{
+	set_scale (value, sgn (sensor2 .trackPoint_changed .x))
+}
+
+function set_scale3 (value)
+{
+	set_scale (value, sgn (sensor3 .trackPoint_changed .x))
+}
+
+function set_scale4 (value)
+{
+	set_scale (value, sgn (sensor4 .trackPoint_changed .x))
+}
+
+function set_scale5 (value)
+{
+	set_scale (value, sgn (sensor5 .trackPoint_changed .x))
+}
+
+function set_scale6 (value)
+{
+	set_scale (value, sgn (sensor6 .trackPoint_changed .x))
+}
+
+function set_scale7 (value)
+{
+	set_scale (value, sgn (sensor7 .trackPoint_changed .x))
+}
+
+function set_scale8 (value)
+{
+	set_scale (value, sgn (sensor8 .trackPoint_changed .x))
+}
+
+function set_scale (value, sgn)
+{
+	var size = 1 + 2 * sgn * value .length () / bboxSize .length ();
+	
 	scale (new SFVec3f (size, size, size));
 }
 
@@ -1111,6 +1222,11 @@ function multVec (a, b)
 	return new SFVec3f (a .x * b .x,
 	                    a .y * b .y,
 	                    a .z * b .z);
+}
+
+function sgn (value)
+{
+	return value < 0 ? -1 : value > 0 ? 1 : 0;
 }
 "
     directOutput TRUE
@@ -1197,14 +1313,27 @@ function multVec (a, b)
   ROUTE YScaleSensor.isActive TO ScaleScript.set_active
   ROUTE ZScaleSensor.isActive TO ScaleScript.set_active
   ROUTE ScaleSensor1.isActive TO ScaleScript.set_active
+  ROUTE ScaleSensor2.isActive TO ScaleScript.set_active
+  ROUTE ScaleSensor3.isActive TO ScaleScript.set_active
+  ROUTE ScaleSensor4.isActive TO ScaleScript.set_active
+  ROUTE ScaleSensor5.isActive TO ScaleScript.set_active
+  ROUTE ScaleSensor6.isActive TO ScaleScript.set_active
+  ROUTE ScaleSensor7.isActive TO ScaleScript.set_active
+  ROUTE ScaleSensor8.isActive TO ScaleScript.set_active
 
   #
 
   ROUTE XScaleSensor.translation_changed TO ScaleScript.set_xScale
   ROUTE YScaleSensor.translation_changed TO ScaleScript.set_yScale
   ROUTE ZScaleSensor.translation_changed TO ScaleScript.set_zScale
-
   ROUTE ScaleSensor1.translation_changed TO ScaleScript.set_scale1
+  ROUTE ScaleSensor2.translation_changed TO ScaleScript.set_scale2
+  ROUTE ScaleSensor3.translation_changed TO ScaleScript.set_scale3
+  ROUTE ScaleSensor4.translation_changed TO ScaleScript.set_scale4
+  ROUTE ScaleSensor5.translation_changed TO ScaleScript.set_scale5
+  ROUTE ScaleSensor6.translation_changed TO ScaleScript.set_scale6
+  ROUTE ScaleSensor7.translation_changed TO ScaleScript.set_scale7
+  ROUTE ScaleSensor8.translation_changed TO ScaleScript.set_scale8
 }
 
 DEF Handle TransformTool { }

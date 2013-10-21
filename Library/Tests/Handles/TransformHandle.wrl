@@ -54,10 +54,10 @@ Grid {
 }
 
 Transform {
-  translation 0.0996977 1.39555 1.12365
+  translation 0.0964436 1.39555 1.15002
   rotation 0 1 0 1.57025
-  scale 2.76193 1.38097 0.60044
-  center 0.269005 0 9.45874e-11
+  scale 3.14085 1.57043 0.682817
+  center 0.357194 0 -7.94898e-10
   children Transform {
     translation 1 0 0
     children Transform {
@@ -119,9 +119,10 @@ Transform {
 }
 
 DEF Three Transform {
-  translation 12.5436 1.69678 22.7852
+  translation -1.37055 3.6108 11.7352
   rotation 5.76765e-08 -1 3.09391e-07 0.713838
-  scale 0.478353 0.353604 0.459139
+  scale 0.297465 0.21989 0.285517
+  center 13.9142 -1.91402 11.05
   children [
     DEF Two1 Transform {
       translation 11.3542 3.56295 18.6101
@@ -214,11 +215,11 @@ Transform {
 
 Transform {
   translation -4.0827 0 -0.824179
+  scale 3.55814 3.55814 3.55814
 }
 
 DEF _1 Transform {
-  rotation 0.57735 0.57735 0.57735 3.98759
-  scale 1 1 1
+  rotation 0.57735 0.57735 0.57735 1.88069
   scaleOrientation 0.327182 0.918798 0.220821 2.76164
   children [
     Shape {
@@ -251,6 +252,7 @@ DEF _1 Transform {
 }
 
 DEF _2 Rotor {
+  cycleInterval 10
   axis 1 1 1
   loop TRUE
 }

@@ -294,17 +294,17 @@ jsSFRotation::setAxis (JSContext* context, uintN argc, jsval* vp)
 	{
 		SFRotation4f* sfrotation = (SFRotation4f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
-		JSObject* obj2 = nullptr;
+		JSObject* obj = nullptr;
 
 		jsval* argv = JS_ARGV (context, vp);
 
-		if (not JS_ConvertArguments (context, argc, argv, "o", &obj2))
+		if (not JS_ConvertArguments (context, argc, argv, "o", &obj))
 			return JS_FALSE;
 
-		if (JS_InstanceOfError (context, obj2, jsSFVec3f::getClass ()))
+		if (JS_InstanceOfError (context, obj, jsSFVec3f::getClass ()))
 			return JS_FALSE;
 
-		SFVec3f* sfvec3f = (SFVec3f*) JS_GetPrivate (context, obj2);
+		SFVec3f* sfvec3f = (SFVec3f*) JS_GetPrivate (context, obj);
 
 		sfrotation -> setAxis (*sfvec3f);
 
@@ -340,17 +340,17 @@ jsSFRotation::multiply (JSContext* context, uintN argc, jsval* vp)
 	{
 		SFRotation4f* sfrotation1 = (SFRotation4f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
-		JSObject* obj2 = nullptr;
+		JSObject* obj = nullptr;
 
 		jsval* argv = JS_ARGV (context, vp);
 
-		if (not JS_ConvertArguments (context, argc, argv, "o", &obj2))
+		if (not JS_ConvertArguments (context, argc, argv, "o", &obj))
 			return JS_FALSE;
 
-		if (JS_InstanceOfError (context, obj2, getClass ()))
+		if (JS_InstanceOfError (context, obj, getClass ()))
 			return JS_FALSE;
 
-		SFRotation4f* sfrotation2 = (SFRotation4f*) JS_GetPrivate (context, obj2);
+		SFRotation4f* sfrotation2 = (SFRotation4f*) JS_GetPrivate (context, obj);
 
 		return create (context, sfrotation1 -> multiply (*sfrotation2), &JS_RVAL (context, vp));
 	}
@@ -367,19 +367,32 @@ jsSFRotation::multVec (JSContext* context, uintN argc, jsval* vp)
 	{
 		SFRotation4f* sfrotation = (SFRotation4f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
-		JSObject* obj2 = nullptr;
+		JSObject* obj = nullptr;
 
 		jsval* argv = JS_ARGV (context, vp);
 
-		if (not JS_ConvertArguments (context, argc, argv, "o", &obj2))
+		if (not JS_ConvertArguments (context, argc, argv, "o", &obj))
+			return JS_FALSE;
+			
+		if (not obj)
+		{
+			JS_ReportError (context, "Type of argument 1 is invalid - should be SFVec3f or SFVec3d, is NULL");
+			return JS_FALSE;
+		}
+
+		if (JS_InstanceOf (context, obj, jsSFVec3f::getClass (), nullptr))
+		{
+			SFVec3f* sfvec3f = (SFVec3f*) JS_GetPrivate (context, obj);
+
+			return jsSFVec3f::create (context, sfrotation -> multVec (*sfvec3f), &JS_RVAL (context, vp));
+		}
+
+		if (JS_InstanceOfError (context, obj, jsSFVec3d::getClass ()))
 			return JS_FALSE;
 
-		if (JS_InstanceOfError (context, obj2, jsSFVec3f::getClass ()))
-			return JS_FALSE;
+		SFVec3d* sfvec3d = (SFVec3d*) JS_GetPrivate (context, obj);
 
-		SFVec3f* sfvec3f = (SFVec3f*) JS_GetPrivate (context, obj2);
-
-		return jsSFVec3f::create (context, sfrotation -> multVec (*sfvec3f), &JS_RVAL (context, vp));
+		return jsSFVec3d::create (context, SFRotation4d (sfrotation -> getValue ()) .multVec (*sfvec3d), &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "%s .multVec: wrong number of arguments", getClass () -> name);
@@ -396,18 +409,18 @@ jsSFRotation::slerp (JSContext* context, uintN argc, jsval* vp)
 		{
 			SFRotation4f* sfrotation = (SFRotation4f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
-			JSObject* obj2 = nullptr;
+			JSObject* obj = nullptr;
 			jsdouble  t;
 
 			jsval* argv = JS_ARGV (context, vp);
 
-			if (not JS_ConvertArguments (context, argc, argv, "od", &obj2, &t))
+			if (not JS_ConvertArguments (context, argc, argv, "od", &obj, &t))
 				return JS_FALSE;
 
-			if (JS_InstanceOfError (context, obj2, getClass ()))
+			if (JS_InstanceOfError (context, obj, getClass ()))
 				return JS_FALSE;
 
-			SFRotation4f* dest = (SFRotation4f*) JS_GetPrivate (context, obj2);
+			SFRotation4f* dest = (SFRotation4f*) JS_GetPrivate (context, obj);
 
 			return create (context, sfrotation -> slerp (*dest, t), &JS_RVAL (context, vp));
 		}

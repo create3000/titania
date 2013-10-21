@@ -1,5 +1,12 @@
 2013-10-21  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* TransformHandle.wrl:
+	* PlaneSensor.h:
+	* PlaneSensor.cpp:
+	* jsSFRotation.cpp: 
+
+2013-10-21  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Hit.h:
 	* ViewVolume.h:
 	* Hit.cpp:

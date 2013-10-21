@@ -1,6 +1,6 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-standard/Titania/Math/Geometry/Box2.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/share/titania/handles/TransformHandle.wrl">
     <Files>
       <File FileName="Library/Tests/Handles/OutlineEditor.wrl" Line="15" Column="1" />
       <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="128" Column="1" />
@@ -10,13 +10,12 @@
       <File FileName="Titania/Titania/Undo/UndoFunction.h" Line="65" Column="1" />
       <File FileName="Titania/Titania/Undo/UndoStep.h" Line="81" Column="73" />
       <File FileName="Titania/Titania/Undo/UndoStep.cpp" Line="64" Column="1" />
-      <File FileName="libtitania-x3d/share/titania/handles/TransformHandle.wrl" Line="785" Column="39" />
+      <File FileName="libtitania-x3d/share/titania/handles/TransformHandle.wrl" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Handles/TransformHandle.h" Line="236" Column="27" />
-      <File FileName="libtitania-x3d/Titania/X3D/Handles/TransformHandle.cpp" Line="131" Column="17" />
-      <File FileName="libtitania-standard/Titania/Math/Geometry/Box3.h" Line="138" Column="1" />
-      <File FileName="libtitania-standard/Titania/Math/Geometry/Box2.h" Line="129" Column="3" />
-      <File FileName="experimental/main.cpp" Line="299" Column="68" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/Text.cpp" Line="223" Column="37" />
+      <File FileName="libtitania-x3d/Titania/X3D/Handles/TransformHandle.cpp" Line="131" Column="54" />
+      <File FileName="Library/Tests/PointingDeviceSensor/LineSensor.wrl" Line="3" Column="19" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/PlaneSensor.h" Line="167" Column="9" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/PlaneSensor.cpp" Line="224" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -33,7 +32,6 @@
               </Node>
             </Node>
             <Node name="Tests" expanded="True">
-              <Node name="Handles" expanded="True" />
               <Node name="PointingDeviceSensor" expanded="True" />
               <Node name="Shaders" expanded="True" />
             </Node>
@@ -48,9 +46,7 @@
           <Node name="libtitania-standard" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="Math" expanded="True">
-                <Node name="Geometry" expanded="True">
-                  <Node name="Box2.h" selected="True" />
-                </Node>
+                <Node name="Geometry" expanded="True" />
                 <Node name="Numbers" expanded="True" />
               </Node>
             </Node>
@@ -67,6 +63,7 @@
               <Node name="titania" expanded="True">
                 <Node name="handles" expanded="True">
                   <Node name="library" expanded="True" />
+                  <Node name="TransformHandle.wrl" selected="True" />
                 </Node>
                 <Node name="mime" expanded="True">
                   <Node name="model" expanded="True" />
@@ -77,26 +74,17 @@
               <Node name="X3D" expanded="True">
                 <Node name="Base" expanded="True" />
                 <Node name="Browser" expanded="True">
+                  <Node name="Picking" expanded="True" />
                   <Node name="Viewer" expanded="True" />
                 </Node>
                 <Node name="Components" expanded="True">
-                  <Node name="Core" expanded="True" />
-                  <Node name="EnvironmentalSensor" expanded="True" />
-                  <Node name="Geometry2D" expanded="True" />
-                  <Node name="Geometry3D" expanded="True" />
-                  <Node name="Geospatial" expanded="True" />
-                  <Node name="Grouping" expanded="True" />
-                  <Node name="Layout" expanded="True" />
-                  <Node name="Lighting" expanded="True" />
+                  <Node name="Layering" expanded="True" />
                   <Node name="Navigation" expanded="True" />
-                  <Node name="Networking" expanded="True" />
-                  <Node name="Picking" expanded="True" />
                   <Node name="PointingDeviceSensor" expanded="True" />
-                  <Node name="Rendering" expanded="True" />
-                  <Node name="Text" expanded="True" />
+                  <Node name="Shape" expanded="True" />
                 </Node>
-                <Node name="Fields" expanded="True" />
                 <Node name="Handles" expanded="True" />
+                <Node name="Parser" expanded="True" />
                 <Node name="Rendering" expanded="True" />
               </Node>
             </Node>

@@ -142,6 +142,14 @@ public:
 
 private:
 
+	///  @name Operations
+
+	void
+	trackStart (const Vector3d &, const Vector3d &);
+
+	void
+	track (const Vector3d &);
+
 	///  @name Static members
 
 	static const std::string componentName;
@@ -164,10 +172,12 @@ private:
 	Fields fields;
 
 	bool     planeSensor;
+	Line3d   line;
 	Plane3d  plane;
 	Vector3d startOffset;
 	Vector3d startPoint;
-	Line3d   line;
+	Vector3d trackPointOffset;
+	Matrix4d inverseModelViewMatrix;
 
 };
 
