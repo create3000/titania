@@ -136,12 +136,11 @@ private:
 
 	Fields fields;
 
-	Plane3d    zPlane;
 	Sphere3d   sphere;
+	Plane3d    zPlane;
 	bool       behind;
 	Vector3d   fromVector;
 	Vector3d   startPoint;
-	Matrix4d   inverseModelViewMatrix;
 
 };
 

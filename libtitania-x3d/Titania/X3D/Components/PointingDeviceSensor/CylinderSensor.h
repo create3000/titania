@@ -188,7 +188,6 @@ private:
 	bool       behind;
 	Vector3d   fromVector;
 	double     angle;
-	Matrix4d   inverseModelViewMatrix;
 
 };
 

@@ -992,34 +992,26 @@ function isActive (sensorA, sensorB, sensorC)
   }
 
   DEF RotateScript Script {
-    eventIn      SFBool     set_active
     eventIn      SFRotation set_rotation
     eventIn      SFRotation set_xRotation
     eventIn      SFRotation set_yRotation
     eventIn      SFRotation set_zRotation
     exposedField SFNode     transform IS transform
-    field        SFRotation rotation 0 0 1 0
 
     url "vrmlscript:
-function set_active (value)
-{
-	if (value)
-		rotation = transform .rotation;
-}
-
 function set_xRotation (value)
 {
-	transform .rotation = value .multiply (rotation);
+	transform .rotation = value .multiply (transform .rotation);
 }
 
 function set_yRotation (value)
 {
-	transform .rotation = value .multiply (rotation);
+	transform .rotation = value .multiply (transform .rotation);
 }
 
 function set_zRotation (value)
 {
-	transform .rotation = value .multiply (rotation);
+	transform .rotation = value .multiply (transform .rotation);
 }
 "
     directOutput TRUE
@@ -1370,12 +1362,6 @@ function divVec (a, b)
   ROUTE DiskScript.x_changed TO XCircleMaterial.set_transparency
   ROUTE DiskScript.y_changed TO YCircleMaterial.set_transparency
   ROUTE DiskScript.z_changed TO ZCircleMaterial.set_transparency
-
-  #
-
-  ROUTE XRotationSensor.isActive TO RotateScript.set_active
-  ROUTE YRotationSensor.isActive TO RotateScript.set_active
-  ROUTE ZRotationSensor.isActive TO RotateScript.set_active
 
   #
 

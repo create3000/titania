@@ -361,22 +361,19 @@ main (int argc, char** argv)
 	#ifdef _GLIBCXX_PARALLEL
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
-	
-	Rotation4f rotation (0, 0, 1, M_PI / 4.0f);
 
-	Test::Box3f (Vector3f ( 1,  2,  1), Vector3f (0, 0, 0)) .rotate (rotation) .size ();
-	Test::Box3f (Vector3f ( 2,  3,  1), Vector3f (1, 2, 3)) .rotate (rotation) .size ();
-
-	std::clog << Box3f (Vector3f ( 1,  2,  1), Vector3f (0, 1, 0)) .multBoxMatrix (rotation) .size () << std::endl;
-	std::clog << Box3f (Vector3f ( 2,  3,  1), Vector3f (1, 0, 0)) .multBoxMatrix (rotation) .size () << std::endl;
-
-	Test::Box3f (Vector3f ( 1,  2,  1), Vector3f (0, 1, 0)) .rotate (rotation) .center ();
-	Test::Box3f (Vector3f ( 2,  3,  1), Vector3f (1, 0, 0)) .rotate (rotation) .center ();
-
-	std::clog << Box3f (Vector3f ( 1,  2,  1), Vector3f (0, 1, 0)) .multBoxMatrix (rotation) .center () << std::endl;
-	std::clog << Box3f (Vector3f ( 2,  3,  1), Vector3f (1, 0, 0)) .multBoxMatrix (rotation) .center () << std::endl;
+	std::clog << std::setprecision (std::numeric_limits <double> ::digits10) << std::endl;
 
 	std::clog << std::endl;
+	std::clog << 10000001.0 << std::endl;
+	std::clog << 100000001.0 << std::endl;
+	std::clog << 1000000001.0 << std::endl;
+	std::clog << 10000000001.0 << std::endl;
+	std::clog << 100000000001.0 << std::endl;
+	std::clog << 1000000000001.0 << std::endl;
+	std::clog << 1000000000001.0 << std::endl;
+	std::clog << 100000000000001.0 << std::endl;
+	std::clog << 1000000000000001.0 << std::endl;
 
 	std::clog << "Function main done." << std::endl;
 	exit (0);

@@ -68,12 +68,11 @@ SphereSensor::SphereSensor (X3DExecutionContext* const executionContext) :
 	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	     X3DDragSensorNode (),
 	                fields (),
-	                zPlane (),
 	                sphere (),
+	                zPlane (),
 	                behind (false),
 	            fromVector (),
-	            startPoint (),
-	inverseModelViewMatrix ()
+	            startPoint ()
 {
 	addField (inputOutput, "metadata",           metadata ());
 	addField (inputOutput, "enabled",            enabled ());
@@ -117,10 +116,10 @@ SphereSensor::set_active (const HitPtr & hit, bool active)
 	{
 		if (isActive ())
 		{
-			inverseModelViewMatrix = ~getModelViewMatrix ();
+			const auto inverseModelViewMatrix = ~getModelViewMatrix ();
 
-			auto hitPoint = hit -> point * inverseModelViewMatrix;
-			auto center   = Vector3d ();
+			const auto hitPoint = hit -> point * inverseModelViewMatrix;
+			const auto center   = Vector3d ();
 
 			zPlane = Plane3d (center, inverseModelViewMatrix .multDirMatrix (Vector3d (0, 0, 1))); // Screen aligned Z-plane
 			sphere = Sphere3d (abs (hitPoint - center), center);
@@ -144,13 +143,16 @@ SphereSensor::set_active (const HitPtr & hit, bool active)
 void
 SphereSensor::set_motion (const HitPtr & hit)
 {
+	const auto inverseModelViewMatrix = ~getModelViewMatrix ();
+
 	const auto hitRay = hit -> ray * inverseModelViewMatrix;
 
 	Vector3d trackPoint;
 
 	if (getTrackPoint (hitRay, trackPoint, behind))
 	{
-		zPlane = Plane3d (trackPoint, zPlane .normal ());
+		const auto zAxis = inverseModelViewMatrix .multDirMatrix (Vector3d (0, 0, 1)); // Camera direction
+		zPlane = Plane3d (trackPoint, zAxis);                                          // Screen aligned Z-plane
 	}
 	else
 	{
