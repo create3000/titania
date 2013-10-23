@@ -145,7 +145,7 @@ SphereSensor::set_motion (const HitPtr & hit)
 {
 	const auto inverseModelViewMatrix = ~getModelViewMatrix ();
 
-	const auto hitRay = hit -> ray * inverseModelViewMatrix;
+	auto hitRay = hit -> ray * inverseModelViewMatrix;
 
 	Vector3d trackPoint;
 
@@ -161,7 +161,7 @@ SphereSensor::set_motion (const HitPtr & hit)
 		Vector3d tangentPoint;
 		zPlane .intersect (hitRay, tangentPoint);
 
-		auto hitRay = Line3d (tangentPoint, sphere .center (), true);
+		hitRay = Line3d (tangentPoint, sphere .center (), true);
 
 		getTrackPoint (hitRay, trackPoint);
 

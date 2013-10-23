@@ -1,5 +1,9 @@
 2013-10-23  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* SphereSensor.cpp: 
+
+2013-10-23  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* ViewVolume.cpp:
 	* TransformHandle.wrl:
 	* SphereSensor.h:

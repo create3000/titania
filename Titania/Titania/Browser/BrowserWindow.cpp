@@ -131,7 +131,7 @@ BrowserWindow::initialize ()
 	set_selection (getBrowser () -> getSelection () -> getChildren ());
 
 	// Clipboard
-	Gtk::Clipboard::get () -> set_can_store ();
+	// Gtk::Clipboard::get () -> set_can_store (); // not needed
 	Gtk::Clipboard::get () -> signal_owner_change ().connect (sigc::mem_fun (*this, &BrowserWindow::on_clipboard_owner_change));
 	updatePasteStatus ();
 
