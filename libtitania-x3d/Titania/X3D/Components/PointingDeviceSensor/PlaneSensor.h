@@ -175,9 +175,7 @@ private:
 	Line3d   line;
 	Plane3d  plane;
 	Vector3d trackPointOffset;
-	Vector3d startOffset;
 	Vector3d startPoint;
-	Matrix4d inverseModelViewMatrix;
 
 };
 

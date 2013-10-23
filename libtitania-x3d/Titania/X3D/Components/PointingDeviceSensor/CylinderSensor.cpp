@@ -122,7 +122,7 @@ CylinderSensor::getTrackPoint (const Line3d & hitRay, Vector3d & trackPoint, boo
 
 	if (cylinder .intersect (hitRay, trackPoint, exit))
 	{
-		if ((abs (hitRay .origin () - exit) < abs (hitRay .origin () - trackPoint)) - behind)
+		if ((abs (hitRay .point () - exit) < abs (hitRay .point () - trackPoint)) - behind)
 			trackPoint = exit;
 
 		return true;
@@ -144,10 +144,10 @@ CylinderSensor::getAngle (const Rotation4d & rotation) const
 void
 CylinderSensor::set_active (const HitPtr & hit, bool active)
 {
+	X3DDragSensorNode::set_active (hit, active);
+
 	try
 	{
-		X3DDragSensorNode::set_active (hit, active);
-
 		if (isActive ())
 		{
 			inverseModelViewMatrix = ~getModelViewMatrix ();

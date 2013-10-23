@@ -190,9 +190,9 @@ plane3 <Type>::intersect (const line3 <Type> & line, vector3 <Type> & point) con
 		return false;
 
 	// Plane and line are not parallel. The intersection point can be calculated now.
-	Type t = (distance_from_origin () - dot (normal (), line .origin ())) / theta;
+	Type t = (distance_from_origin () - dot (normal (), line .point ())) / theta;
 
-	point = line .origin () + line .direction () * t;
+	point = line .point () + line .direction () * t;
 
 	return true;
 }

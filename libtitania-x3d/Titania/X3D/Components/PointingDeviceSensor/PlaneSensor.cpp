@@ -76,9 +76,7 @@ PlaneSensor::PlaneSensor (X3DExecutionContext* const executionContext) :
 	                  line (),
 	                 plane (),
 	      trackPointOffset (),
-	           startOffset (),
-	            startPoint (),
-	inverseModelViewMatrix ()
+	            startPoint ()
 {
 	addField (inputOutput, "metadata",            metadata ());
 	addField (inputOutput, "enabled",             enabled ());
@@ -103,18 +101,21 @@ PlaneSensor::create (X3DExecutionContext* const executionContext) const
 void
 PlaneSensor::set_active (const HitPtr & hit, bool active)
 {
+	X3DDragSensorNode::set_active (hit, active);
+
 	try
 	{
-		X3DDragSensorNode::set_active (hit, active);
-
 		if (isActive ())
 		{
-			inverseModelViewMatrix = ~getModelViewMatrix ();
+			const auto inverseModelViewMatrix = ~getModelViewMatrix ();
 
-			const auto       hitRay   = hit -> ray * inverseModelViewMatrix;
-			const auto       hitPoint = hit -> point * inverseModelViewMatrix;
+			const auto hitRay   = hit -> ray * inverseModelViewMatrix;
+			const auto hitPoint = hit -> point * inverseModelViewMatrix;
+
 			const Rotation4d axisRotation (this -> axisRotation () .getValue ());
-			const Vector3d   origin (0, 0, hitPoint .z ());
+			
+			// hitPoint is used as origin for the case that the sensor is located at camera position
+			const auto origin = abs (inverseModelViewMatrix .translation ()) < 0.00001 ? hitPoint : Vector3d ();
 
 			if (minPosition () .getX () == maxPosition () .getX ())
 			{
@@ -168,13 +169,10 @@ PlaneSensor::set_active (const HitPtr & hit, bool active)
 void
 PlaneSensor::trackStart (const Vector3d & origin, Vector3d trackPoint)
 {
-	__LOG__ << trackPoint << std::endl;
-
 	trackPointOffset       = origin;
 	startPoint             = trackPoint;
 	trackPoint_changed ()  = trackPoint - trackPointOffset;
 	translation_changed () = offset ();
-	startOffset            = offset () .getValue ();
 }
 
 void
@@ -182,6 +180,8 @@ PlaneSensor::set_motion (const HitPtr & hit)
 {
 	if (planeSensor)
 	{
+		const auto inverseModelViewMatrix = ~getModelViewMatrix ();
+
 		const auto hitRay = hit -> ray * inverseModelViewMatrix;
 
 		Vector3d trackPoint;
@@ -193,9 +193,9 @@ PlaneSensor::set_motion (const HitPtr & hit)
 	{
 		try
 		{
-			const auto screenLine     = ViewVolume::projectLine (line, ~inverseModelViewMatrix, getProjectionMatrix (), getViewport ());
+			const auto screenLine     = ViewVolume::projectLine (line, getModelViewMatrix (), getProjectionMatrix (), getViewport ());
 			auto       trackPoint     = screenLine .closest_point (Vector3d (hit -> x, hit -> y, 0));
-			const auto trackPointLine = ViewVolume::unProjectLine (trackPoint .x (), trackPoint .y (), ~inverseModelViewMatrix, getProjectionMatrix (), getViewport ());
+			const auto trackPointLine = ViewVolume::unProjectLine (trackPoint .x (), trackPoint .y (), getModelViewMatrix (), getProjectionMatrix (), getViewport ());
 
 			if (line .closest_point (trackPointLine, trackPoint))
 				track (trackPoint);
@@ -208,7 +208,7 @@ PlaneSensor::set_motion (const HitPtr & hit)
 void
 PlaneSensor::track (Vector3d trackPoint)
 {
-	auto translation = Rotation4d (~axisRotation ()) * (startOffset + (trackPoint - startPoint));
+	auto translation = Rotation4d (~axisRotation ()) * (Vector3d (offset () .getValue ()) + trackPoint - startPoint);
 
 	// X component
 

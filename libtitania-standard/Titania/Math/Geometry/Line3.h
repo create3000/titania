@@ -80,14 +80,14 @@ public:
 	template <class Up>
 	constexpr
 	line3 (const line3 <Up> & line) :
-		value { line .origin (), line .direction () }
+		value { line .point (), line .direction () }
 
 	{ }
 
-	///  Constructs a line of from @a origin and @a direction, where direction must be normalized.
+	///  Constructs a line of from @a point and @a direction, where direction must be normalized.
 	constexpr
-	line3 (const vector3 <Type> & origin, const vector3 <Type> & direction) :
-		value { origin, direction }
+	line3 (const vector3 <Type> & point, const vector3 <Type> & direction) :
+		value { point, direction }
 
 	{ }
 
@@ -102,7 +102,7 @@ public:
 
 	///  Returns the point of this line.
 	const vector3 <Type> &
-	origin () const { return value .point; }
+	point () const { return value .point; }
 
 	/// Returns the direction of this line as normal a vector.
 	const vector3 <Type> &
@@ -156,7 +156,7 @@ public:
 	vector3 <Type>
 	perpendicular_vector (const vector3 <Type> & point) const
 	{
-		vector3 <Type> d = origin () - point;
+		vector3 <Type> d = this -> point () - point;
 		return d - dot (d, direction ()) * direction ();
 	}
 
@@ -164,7 +164,7 @@ public:
 	vector3 <Type>
 	perpendicular_vector (const line3 <Type> & line) const
 	{
-		vector3 <Type> d = origin () - line .origin ();
+		vector3 <Type> d = point () - line .point ();
 
 		Type re1 = dot (d, direction ());
 		Type re2 = dot (d, line .direction ());
@@ -181,15 +181,15 @@ public:
 	vector3 <Type>
 	closest_point (const vector3 <Type> & point) const
 	{
-	  return origin () + direction () * dot (point - origin (), direction ());
+	  return this -> point () + direction () * dot (point - this -> point (), direction ());
 	}
 
 	///  Returns the closest point from @a line to this line on this line.
 	bool
 	closest_point (const line3 & line, vector3 <Type> & point) const
 	{
-		auto p1 = origin ();
-		auto p2 = line .origin ();
+		auto p1 = this -> point ();
+		auto p2 = line .point ();
 
 		auto d1 = direction ();
 		auto d2 = line .direction ();
@@ -248,8 +248,8 @@ line3 <Type>::intersect (const vector3 <Type> & A, const vector3 <Type> & B, con
 
 	Type inv_det = 1 / det;
 
-	// calculate distance from vert0 to ray origin
-	vector3 <Type> tvec = origin () - A;
+	// calculate distance from vert0 to ray point
+	vector3 <Type> tvec = point () - A;
 
 	// calculate U parameter and test bounds
 	u = dot (tvec, pvec) * inv_det;
@@ -300,13 +300,13 @@ template <class CharT, class Traits, class Type>
 std::basic_istream <CharT, Traits> &
 operator >> (std::basic_istream <CharT, Traits> & istream, line3 <Type> & line)
 {
-	vector3 <Type> origin;
+	vector3 <Type> point;
 	vector3 <Type> direction;
 
-	istream >> origin >> direction;
+	istream >> point >> direction;
 
 	if (istream)
-		line = line3 <Type> (origin, direction);
+		line = line3 <Type> (point, direction);
 
 	return istream;
 }
@@ -316,7 +316,7 @@ template <class CharT, class Traits, class Type>
 std::basic_ostream <CharT, Traits> &
 operator << (std::basic_ostream <CharT, Traits> & ostream, const line3 <Type> & line)
 {
-	return ostream << line .origin () << " " << line .direction ();
+	return ostream << line .point () << " " << line .direction ();
 }
 
 extern template class line3 <float>;

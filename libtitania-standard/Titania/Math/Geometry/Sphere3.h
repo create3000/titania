@@ -135,7 +135,7 @@ template <class Type>
 bool
 sphere3 <Type>::intersect (const line3 <Type> & line, vector3 <Type> & intersection1, vector3 <Type> & intersection2) const
 {
-	auto L   = center () - line .origin ();
+	auto L   = center () - line .point ();
 	Type tca = dot (L, line .direction ());
 
 	if (tca < 0)
@@ -153,8 +153,8 @@ sphere3 <Type>::intersect (const line3 <Type> & line, vector3 <Type> & intersect
 	Type t1 = tca - thc;
 	Type t2 = tca + thc;
 
-	intersection1 = line .origin () + line .direction () * t1;
-	intersection2 = line .origin () + line .direction () * t2;
+	intersection1 = line .point () + line .direction () * t1;
+	intersection2 = line .point () + line .direction () * t2;
 
 	return true;
 }

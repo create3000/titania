@@ -142,9 +142,9 @@ cylinder3 <Type>::intersect (const line3 <Type> & line, vector3 <Type> & enter, 
 	toUnitCylSpace .multLeft (mtxToYAxis);
 
 	// find the given line un-translated
-	vector3 <Type> origin = line .origin ();
-	origin -= axis () .origin ();
-	line3 <Type> noTranslationLine (origin, line .direction ());
+	vector3 <Type> point = line .point ();
+	point -= axis () .point ();
+	line3 <Type> noTranslationLine (point, line .direction ());
 
 	// find the un-translated line in unit cylinder's space
 	line3 <Type> cylLine = noTranslationLine .multLineMatrix (toUnitCylSpace);
@@ -159,10 +159,10 @@ cylinder3 <Type>::intersect (const line3 <Type> & line, vector3 <Type> & enter, 
 		matrix4 <Type> fromUnitCylSpace = inverse (toUnitCylSpace);
 
 		enter  = fromUnitCylSpace .multVecMatrix (cylEnter);
-		enter += axis () .origin ();
+		enter += axis () .point ();
 
 		exit  = fromUnitCylSpace .multVecMatrix (cylExit);
-		exit += axis () .origin ();
+		exit += axis () .point ();
 	}
 
 	return intersected;
@@ -174,7 +174,7 @@ cylinder3 <Type>::unit_cylinder_intersect (const line3 <Type> & line, vector3 <T
 {
 	Type A, B, C, discr, sqroot, t0, t1;
 
-	const vector3 <Type> & pos = line .origin ();
+	const vector3 <Type> & pos = line .point ();
 	const vector3 <Type> & dir = line .direction ();
 
 	A = dir [0] * dir [0] + dir [2] * dir [2];

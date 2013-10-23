@@ -10,14 +10,14 @@
       <File FileName="Titania/Titania/Undo/UndoFunction.h" Line="65" Column="1" />
       <File FileName="Titania/Titania/Undo/UndoStep.h" Line="81" Column="73" />
       <File FileName="Titania/Titania/Undo/UndoStep.cpp" Line="64" Column="1" />
-      <File FileName="libtitania-x3d/share/titania/handles/TransformHandle.wrl" Line="1200" Column="1" />
+      <File FileName="libtitania-x3d/share/titania/handles/TransformHandle.wrl" Line="858" Column="30" />
       <File FileName="libtitania-x3d/Titania/X3D/Handles/TransformHandle.h" Line="236" Column="27" />
       <File FileName="libtitania-x3d/Titania/X3D/Handles/TransformHandle.cpp" Line="131" Column="54" />
       <File FileName="Library/Tests/PointingDeviceSensor/LineSensor.wrl" Line="15" Column="55" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/PlaneSensor.h" Line="151" Column="17" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/PlaneSensor.cpp" Line="114" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/PlaneSensor.cpp" Line="143" Column="5" />
       <File FileName="Library/Tests/Navigation/test.wrl" Line="26" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/CylinderSensor.cpp" Line="177" Column="60" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/CylinderSensor.cpp" Line="178" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">

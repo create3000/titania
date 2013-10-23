@@ -100,7 +100,7 @@ SphereSensor::getTrackPoint (const Line3d & hitRay, Vector3d & trackPoint, bool 
 
 	if (sphere .intersect (hitRay, trackPoint, exit))
 	{
-		if ((abs (hitRay .origin () - exit) < abs (hitRay .origin () - trackPoint)) - behind)
+		if ((abs (hitRay .point () - exit) < abs (hitRay .point () - trackPoint)) - behind)
 			trackPoint = exit;
 
 		return true;
@@ -112,10 +112,10 @@ SphereSensor::getTrackPoint (const Line3d & hitRay, Vector3d & trackPoint, bool 
 void
 SphereSensor::set_active (const HitPtr & hit, bool active)
 {
+	X3DDragSensorNode::set_active (hit, active);
+
 	try
 	{
-		X3DDragSensorNode::set_active (hit, active);
-
 		if (isActive ())
 		{
 			inverseModelViewMatrix = ~getModelViewMatrix ();
