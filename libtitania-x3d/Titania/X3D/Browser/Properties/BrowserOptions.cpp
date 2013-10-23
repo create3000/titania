@@ -283,7 +283,7 @@ BrowserOptions::set_textureQuality ()
 	// MEDIUM
 
 	textureProperties () -> magnificationFilter () = "NICEST";
-	textureProperties () -> minificationFilter ()  = "AVG_PIXEL_NEAREST_MIPMAP";
+	textureProperties () -> minificationFilter ()  = "AVG_PIXEL_AVG_MIPMAP";
 	textureProperties () -> textureCompression ()  = "MEDIUM";
 	textureProperties () -> generateMipMaps ()     = true;
 

@@ -140,7 +140,6 @@ private:
 	Sphere3d   sphere;
 	bool       behind;
 	Vector3d   fromVector;
-	Rotation4d startOffset;
 	Vector3d   startPoint;
 	Matrix4d   inverseModelViewMatrix;
 

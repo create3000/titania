@@ -668,12 +668,11 @@ PROTO TransformTool [
     url "vrmlscript:
 function initialize (value, time)
 {
-	set_whichChoice (2);
+	set_whichChoice (0);
 }
 
 function set_time (value, time)
 {
-	print (value);
 	set_whichChoice ((whichChoice_changed + 1) % 3);
 }
 
@@ -714,6 +713,12 @@ function set_whichChoice (value)
     field        SFNode     left USE Left
     field        SFNode     top USE Top
     field        SFNode     bottom USE Bottom
+    field        SFNode     frontSensor USE FrontSensor
+    field        SFNode     rightSensor USE RightSensor
+    field        SFNode     backSensor USE BackSensor
+    field        SFNode     leftSensor USE LeftSensor
+    field        SFNode     topSensor USE TopSensor
+    field        SFNode     bottomSensor USE BottomSensor
 
     url "vrmlscript:
 function eventsProcessed ()
@@ -740,13 +745,13 @@ function eventsProcessed ()
 	left   .scale = new SFVec3f (1, bboxSize .y, bboxSize .z);
 	top    .scale = new SFVec3f (bboxSize .x, 1, bboxSize .z);
 	bottom .scale = new SFVec3f (bboxSize .x, 1, bboxSize .z);
-	
-	front  .children [0] .children [0] .enabled = bboxSize .x && bboxSize .y;
-	right  .children [0] .children [0] .enabled = bboxSize .y && bboxSize .z;
-	back   .children [0] .children [0] .enabled = bboxSize .x && bboxSize .y;
-	left   .children [0] .children [0] .enabled = bboxSize .y && bboxSize .z;
-	top    .children [0] .children [0] .enabled = bboxSize .x && bboxSize .z;
-	bottom .children [0] .children [0] .enabled = bboxSize .x && bboxSize .z;
+
+	frontSensor  .enabled = bboxSize .x && bboxSize .y;
+	rightSensor  .enabled = bboxSize .y && bboxSize .z;
+	backSensor   .enabled = bboxSize .x && bboxSize .y;
+	leftSensor   .enabled = bboxSize .y && bboxSize .z;
+	topSensor    .enabled = bboxSize .x && bboxSize .z;
+	bottomSensor .enabled = bboxSize .x && bboxSize .z;
 }
 "
     directOutput TRUE
@@ -1313,6 +1318,8 @@ function divVec (a, b)
 "
     directOutput TRUE
   }
+
+  # Debug
 
   ROUTE FrontSensor.trackPoint_changed TO PPoint.set_translation
   ROUTE XTranslationSensor.trackPoint_changed TO PPoint.set_translation

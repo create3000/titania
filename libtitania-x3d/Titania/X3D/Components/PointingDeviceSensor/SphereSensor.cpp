@@ -72,7 +72,6 @@ SphereSensor::SphereSensor (X3DExecutionContext* const executionContext) :
 	                sphere (),
 	                behind (false),
 	            fromVector (),
-	           startOffset (),
 	            startPoint (),
 	inverseModelViewMatrix ()
 {
@@ -130,7 +129,6 @@ SphereSensor::set_active (const HitPtr & hit, bool active)
 			fromVector            = hitPoint - center;
 			trackPoint_changed () = hitPoint;
 			rotation_changed ()   = offset ();
-			startOffset           = offset () .getValue ();
 			startPoint            = hitPoint;
 		}
 		else
@@ -148,7 +146,7 @@ SphereSensor::set_motion (const HitPtr & hit)
 {
 	const auto hitRay = hit -> ray * inverseModelViewMatrix;
 
-	Vector3d trackPoint, intersection2;
+	Vector3d trackPoint;
 
 	if (getTrackPoint (hitRay, trackPoint, behind))
 	{
@@ -184,7 +182,7 @@ SphereSensor::set_motion (const HitPtr & hit)
 	if (behind)
 		rotation .inverse ();
 
-	rotation_changed () = startOffset * rotation;
+	rotation_changed () = Rotation4d (offset () .getValue ()) * rotation;
 }
 
 } // X3D

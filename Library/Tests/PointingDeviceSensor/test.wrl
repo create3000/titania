@@ -1,0 +1,14 @@
+#X3D V3.0 utf8 Titania 0.1
+
+META "title" "PointingDeviceSensor test"
+
+DEF Box Transform {
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry Box {
+      size 2 2 0
+    }
+  }
+}

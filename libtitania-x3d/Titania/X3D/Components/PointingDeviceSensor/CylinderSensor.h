@@ -187,7 +187,6 @@ private:
 	Plane3d    zPlane;
 	bool       behind;
 	Vector3d   fromVector;
-	double     startOffset;
 	double     angle;
 	Matrix4d   inverseModelViewMatrix;
 

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -64,17 +64,17 @@ const std::string TextureProperties::containerField = "textureProperties";
 // http://new.web3d.org/files/specifications/19775-1/V3.2/Part01/components/texturing.html#TextureProperties
 
 TextureProperties::Fields::Fields () :
-	borderColor (new SFColorRGBA ()),
-	borderWidth (new SFInt32 ()),
-	boundaryModeS (new SFString ("REPEAT")),
-	boundaryModeT (new SFString ("REPEAT")),
-	boundaryModeR (new SFString ("REPEAT")),
-	minificationFilter (new SFString ("FASTEST")),
+	        borderColor (new SFColorRGBA ()),
+	        borderWidth (new SFInt32 ()),
+	      boundaryModeS (new SFString ("REPEAT")),
+	      boundaryModeT (new SFString ("REPEAT")),
+	      boundaryModeR (new SFString ("REPEAT")),
+	 minificationFilter (new SFString ("FASTEST")),
 	magnificationFilter (new SFString ("FASTEST")),
-	textureCompression (new SFString ("FASTEST")),
-	generateMipMaps (new SFBool ()),
-	anisotropicDegree (new SFFloat (1)),
-	texturePriority (new SFFloat ())
+	 textureCompression (new SFString ("FASTEST")),
+	    generateMipMaps (new SFBool ()),
+	  anisotropicDegree (new SFFloat (1)),
+	    texturePriority (new SFFloat ())
 { }
 
 TextureProperties::TextureProperties (X3DExecutionContext* const executionContext) :

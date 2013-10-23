@@ -168,6 +168,9 @@ X3DShapeNode::traverse (const TraverseType type)
 void
 X3DShapeNode::pick ()
 {
+	if (getBrowser () -> getSensors () .back () .empty ())
+		return;
+
 	if (_geometry)
 	{
 		if (ViewVolume () .intersect (getBBox ()))
