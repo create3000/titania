@@ -1,3 +1,10 @@
+2013-10-24  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Appearance.h:
+	* Appearance.cpp:
+	* ProgramShader.cpp:
+	* ShaderProgram.cpp: 
+
 2013-10-23  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* SphereSensor.cpp: 

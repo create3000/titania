@@ -51,6 +51,7 @@
 #include "ProgramShader.h"
 
 #include "../../Bits/Cast.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Shaders/ShaderProgram.h"
 
@@ -92,7 +93,7 @@ void
 ProgramShader::initialize ()
 {
 	X3DShaderNode::initialize ();
-
+	
 	if (glXGetCurrentContext ())
 	{
 		activate () .addInterest (this, &ProgramShader::set_activate);
@@ -133,6 +134,12 @@ ProgramShader::getProgramStageBit (const String & type)
 void
 ProgramShader::requestExplicitRelink ()
 {
+	if (not getBrowser () -> getRenderingProperties () -> hasExtension ("GL_ARB_separate_shader_objects"))
+	{
+		isValid () = false;
+		return;
+	}
+
 	if (pipelineId)
 	{
 		glDeleteProgramPipelines (1, &pipelineId);
@@ -169,10 +176,8 @@ ProgramShader::requestExplicitRelink ()
 void
 ProgramShader::set_activate ()
 {
-	if (not activate ())
-		return;
-
-	requestExplicitRelink ();
+	if (activate ())
+		requestExplicitRelink ();
 }
 
 void
@@ -180,6 +185,7 @@ ProgramShader::draw ()
 {
 	X3DShaderNode::draw ();
 
+	glUseProgram (0);
 	glBindProgramPipeline (pipelineId);
 }
 

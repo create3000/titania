@@ -1,28 +1,30 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/PlaneSensor.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="debian/control">
     <Files>
       <File FileName="Library/Tests/Handles/OutlineEditor.wrl" Line="15" Column="1" />
       <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="128" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="987" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="231" Column="1" />
       <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="76" Column="7" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="81" Column="1" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="120" Column="19" />
       <File FileName="Titania/Titania/Undo/UndoFunction.h" Line="65" Column="1" />
       <File FileName="Titania/Titania/Undo/UndoStep.h" Line="81" Column="73" />
       <File FileName="Titania/Titania/Undo/UndoStep.cpp" Line="64" Column="1" />
-      <File FileName="libtitania-x3d/share/titania/handles/TransformHandle.wrl" Line="858" Column="30" />
+      <File FileName="libtitania-x3d/share/titania/handles/TransformHandle.wrl" Line="1255" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Handles/TransformHandle.h" Line="236" Column="27" />
       <File FileName="libtitania-x3d/Titania/X3D/Handles/TransformHandle.cpp" Line="131" Column="54" />
-      <File FileName="Library/Tests/PointingDeviceSensor/LineSensor.wrl" Line="15" Column="55" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/PlaneSensor.h" Line="151" Column="17" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/PlaneSensor.cpp" Line="143" Column="5" />
-      <File FileName="Library/Tests/Navigation/test.wrl" Line="26" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/CylinderSensor.cpp" Line="178" Column="1" />
+      <File FileName="debian/rules" Line="1" Column="1" />
+      <File FileName="debian/control" Line="47" Column="18" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="miscellaneous" expanded="True" />
+          <Node name="build" expanded="True">
+            <Node name="debian" expanded="True">
+              <Node name="control" selected="True" />
+            </Node>
+          </Node>
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
             <Node name="Examples" expanded="True">
@@ -48,10 +50,7 @@
           </Node>
           <Node name="libtitania-standard" expanded="True">
             <Node name="Titania" expanded="True">
-              <Node name="Math" expanded="True">
-                <Node name="Geometry" expanded="True" />
-                <Node name="Numbers" expanded="True" />
-              </Node>
+              <Node name="InputOutput" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
@@ -77,24 +76,17 @@
                 <Node name="Base" expanded="True" />
                 <Node name="Browser" expanded="True">
                   <Node name="Picking" expanded="True" />
+                  <Node name="Properties" expanded="True" />
                   <Node name="Viewer" expanded="True" />
                 </Node>
                 <Node name="Components" expanded="True">
                   <Node name="Layering" expanded="True" />
                   <Node name="Navigation" expanded="True" />
-                  <Node name="PointingDeviceSensor" expanded="True">
-                    <Node name="PlaneSensor.cpp" selected="True" />
-                  </Node>
+                  <Node name="PointingDeviceSensor" expanded="True" />
                   <Node name="Shape" expanded="True" />
                 </Node>
-                <Node name="Fields" expanded="True" />
                 <Node name="Handles" expanded="True" />
-                <Node name="JavaScript" expanded="True">
-                  <Node name="SpiderMonkey" expanded="True">
-                    <Node name="Fields" expanded="True" />
-                  </Node>
-                </Node>
-                <Node name="Parser" expanded="True" />
+                <Node name="InputOutput" expanded="True" />
                 <Node name="Rendering" expanded="True" />
               </Node>
             </Node>

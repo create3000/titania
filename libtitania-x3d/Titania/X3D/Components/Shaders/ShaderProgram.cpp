@@ -136,6 +136,12 @@ ShaderProgram::getShaderType () const
 void
 ShaderProgram::requestImmediateLoad ()
 {
+	if (not getBrowser () -> getRenderingProperties () -> hasExtension ("GL_ARB_separate_shader_objects"))
+	{
+		setLoadState (FAILED_STATE);
+		return;
+	}
+
 	if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)
 		return;
 

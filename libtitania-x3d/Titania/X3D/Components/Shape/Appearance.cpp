@@ -85,7 +85,8 @@ Appearance::Appearance (X3DExecutionContext* const executionContext) :
 	        _material (nullptr),
 	         _texture (nullptr),
 	_textureTransform (nullptr),
-	          _shader (nullptr)
+	          _shader (nullptr),
+glBindProgramPipeline ()
 {
 	addField (inputOutput, "metadata",         metadata ());
 	addField (inputOutput, "fillProperties",   fillProperties ());
@@ -106,6 +107,11 @@ void
 Appearance::initialize ()
 {
 	X3DAppearanceNode::initialize ();
+
+	if (getBrowser () -> getRenderingProperties () -> hasExtension ("GL_ARB_separate_shader_objects"))
+		glBindProgramPipeline = ::glBindProgramPipeline;
+	else
+		glBindProgramPipeline = [ ] (GLuint) { };
 
 	lineProperties ()   .addInterest (this, &Appearance::set_lineProperties);
 	fillProperties ()   .addInterest (this, &Appearance::set_fillProperties);
@@ -185,18 +191,21 @@ Appearance::set_textureTransform ()
 void
 Appearance::set_shaders ()
 {
-	_shader = nullptr;
-
 	for (const auto & shader : shaders ())
 	{
-		_shader = x3d_cast <X3DShaderNode*> (shader);
+		auto shaderNode = x3d_cast <X3DShaderNode*> (shader);
 
-		if (_shader and _shader -> isValid ())
+		if (shaderNode and shaderNode -> isValid ())
 		{
-			_shader -> isSelected () = true;
-			break;
+			shaderNode -> isSelected () = true;
+
+			_shader = shaderNode;
+
+			return;
 		}
 	}
+
+	_shader = nullptr;	
 }
 
 void
