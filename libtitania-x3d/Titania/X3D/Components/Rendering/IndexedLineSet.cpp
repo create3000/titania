@@ -110,9 +110,7 @@ std::deque <std::deque <size_t>>
 IndexedLineSet::getPolylines () const
 {
 	std::deque <std::deque <size_t>> polylines;
-
-	// Construct polylines array and determine the number of used points.
-	std::deque <size_t> polyline;
+	std::deque <size_t>              polyline;
 
 	size_t  i = 0;
 
@@ -140,7 +138,16 @@ IndexedLineSet::getPolylines () const
 
 		++ i;
 	}
-	
+
+	if (coordIndex () .back () >= 0)
+	{
+		if (not polyline .empty ())
+		{
+			if (polyline .size () > 1)
+				polylines .emplace_back (polyline);
+		}
+	}
+
 	return polylines;
 }
 

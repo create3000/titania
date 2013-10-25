@@ -130,7 +130,7 @@ jsContext::jsContext (Script* script, const std::string & ecmascript, const basi
 
 	if (context == nullptr)
 		throw std::invalid_argument ("Couldn't not create JavaScript context.");
-		
+
 	JS_SetOptions (context, JSOPTION_ATLINE | JSOPTION_VAROBJFIX | JSOPTION_JIT | JSOPTION_METHODJIT);
 	JS_SetVersion (context, JSVERSION_LATEST);
 	JS_SetErrorReporter (context, error);
@@ -344,12 +344,12 @@ jsContext::initEventHandler ()
 	{
 		switch (field -> getAccessType ())
 		{
-			case inputOnly:
-			case inputOutput:
+			case inputOnly   :
+			case inputOutput :
 				{
 					jsval function = field -> getAccessType () == inputOnly
 					                 ? getFunction (field -> getName ())
-					                 : getFunction ("set_" + field -> getName ());
+										  : getFunction ("set_" + field -> getName ());
 
 					if (not JSVAL_IS_VOID (function))
 					{
@@ -359,7 +359,7 @@ jsContext::initEventHandler ()
 
 					break;
 				}
-			default:
+			default :
 				break;
 		}
 	}
@@ -506,25 +506,26 @@ jsContext::set_field (X3DFieldDefinition* field)
 
 	jsval argv [2];
 
-	switch (field -> getType ())
-	{
-		case X3DConstants::SFBool:
-		case X3DConstants::SFDouble:
-		case X3DConstants::SFFloat:
-		case X3DConstants::SFInt32:
-		case X3DConstants::SFString:
-		case X3DConstants::SFTime:
-		{
-			JS_NewFieldValue (context, field, &argv [0], true);
-			break;
-		}
-		default:
-		{
-			JS_NewFieldValue (context, field -> clone (), &argv [0], true);
-			break;
-		}
-	}
+	//	switch (field -> getType ())
+	//	{
+	//		case X3DConstants::SFBool:
+	//		case X3DConstants::SFDouble:
+	//		case X3DConstants::SFFloat:
+	//		case X3DConstants::SFInt32:
+	//		case X3DConstants::SFString:
+	//		case X3DConstants::SFTime:
+	//		{
+	//			JS_NewFieldValue (context, field, &argv [0], true);
+	//			break;
+	//		}
+	//		default:
+	//		{
+	//			JS_NewFieldValue (context, field -> clone (), &argv [0], true);
+	//			break;
+	//		}
+	//	}
 
+	JS_NewFieldValue (context, field, &argv [0], true);
 	JS_NewNumberValue (context, getCurrentTime (), &argv [1]);
 
 	jsval rval;
@@ -715,7 +716,7 @@ jsContext::dispose ()
 
 		shutdown ();
 
-		for (auto & field : fields)
+		for (auto & field: fields)
 			JS_RemoveValueRoot (context, &field .second);
 
 		for (auto & file : files)
