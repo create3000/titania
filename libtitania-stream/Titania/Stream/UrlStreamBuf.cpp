@@ -31,13 +31,15 @@
 #include <Titania/LOG.h>
 #include <cstring>
 
+#include <netdb.h>
+
 namespace titania {
 namespace basic {
 
 urlstreambuf::urlstreambuf () :
 	std::streambuf (),
-	         curlm (nullptr),
-	          curl (nullptr),
+	  multi_handle (nullptr),
+	   easy_handle (nullptr),
 	       running (false),
 	        opened (false),
 	         m_url (),
@@ -62,36 +64,45 @@ urlstreambuf::open (const basic::uri & URL, size_t Timeout)
 
 	close ();
 
+	// Test if host exists.
+
+	// struct addrinfo* result;
+	// int error = getaddrinfo (url () .host () .c_str (), nullptr, nullptr, &result);
+
+	// if (error not_eq 0)
+	//    return nullptr;
+
 	// Init CURL.
 
-	curl = curl_easy_init ();
+	easy_handle = curl_easy_init ();
 
-	if (not curl)
+	if (not easy_handle)
 		return nullptr;
 
-	curl_easy_setopt (curl, CURLOPT_URL,               url () .filename (url () .is_network ()) .str () .c_str ());
-	curl_easy_setopt (curl, CURLOPT_BUFFERSIZE,        bufferSize);
-	curl_easy_setopt (curl, CURLOPT_USE_SSL,           CURLUSESSL_TRY);
-	curl_easy_setopt (curl, CURLOPT_HEADER,            false);
-	curl_easy_setopt (curl, CURLOPT_FOLLOWLOCATION,    true);
-	curl_easy_setopt (curl, CURLOPT_CONNECTTIMEOUT_MS, timeout ());
-	curl_easy_setopt (curl, CURLOPT_TIMEOUT_MS,        timeout ());
-	curl_easy_setopt (curl, CURLOPT_ACCEPTTIMEOUT_MS,  timeout ());
-	curl_easy_setopt (curl, CURLOPT_ACCEPT_ENCODING,   "");
-	curl_easy_setopt (curl, CURLOPT_FAILONERROR,       true);
-	curl_easy_setopt (curl, CURLOPT_NOSIGNAL,          true);
-	curl_easy_setopt (curl, CURLOPT_HEADERFUNCTION,    write_header);
-	curl_easy_setopt (curl, CURLOPT_HEADERDATA,        &m_headers);
-	curl_easy_setopt (curl, CURLOPT_WRITEFUNCTION,     write_data);
-	curl_easy_setopt (curl, CURLOPT_WRITEDATA,         this);
-	//curl_easy_setopt (curl, CURLOPT_VERBOSE,           true);
+	curl_easy_setopt (easy_handle, CURLOPT_URL,               url () .filename (url () .is_network ()) .str () .c_str ());
+	curl_easy_setopt (easy_handle, CURLOPT_BUFFERSIZE,        bufferSize);
+	curl_easy_setopt (easy_handle, CURLOPT_USE_SSL,           CURLUSESSL_TRY);
+	curl_easy_setopt (easy_handle, CURLOPT_HEADER,            false);
+	curl_easy_setopt (easy_handle, CURLOPT_FOLLOWLOCATION,    true);
+	curl_easy_setopt (easy_handle, CURLOPT_CONNECTTIMEOUT_MS, timeout ());
+	curl_easy_setopt (easy_handle, CURLOPT_TIMEOUT_MS,        timeout ());
+	curl_easy_setopt (easy_handle, CURLOPT_ACCEPTTIMEOUT_MS,  timeout ());
+	curl_easy_setopt (easy_handle, CURLOPT_ACCEPT_ENCODING,   "");
+	curl_easy_setopt (easy_handle, CURLOPT_FAILONERROR,       true);
+	curl_easy_setopt (easy_handle, CURLOPT_NOSIGNAL,          true);
+	curl_easy_setopt (easy_handle, CURLOPT_HEADERFUNCTION,    write_header);
+	curl_easy_setopt (easy_handle, CURLOPT_HEADERDATA,        &m_headers);
+	curl_easy_setopt (easy_handle, CURLOPT_WRITEFUNCTION,     write_data);
+	curl_easy_setopt (easy_handle, CURLOPT_WRITEDATA,         this);
+	curl_easy_setopt (easy_handle, CURLOPT_VERBOSE,           false);
 
-	curlm = curl_multi_init ();
+	multi_handle = curl_multi_init ();
 
-	if (not curlm)
+	if (not multi_handle)
 		return nullptr;
 
-	curl_multi_add_handle (curlm, curl);
+	if (curl_multi_add_handle (multi_handle, easy_handle) not_eq CURLM_OK)
+		return nullptr;
 
 	// Allocate back buffer
 
@@ -112,25 +123,30 @@ urlstreambuf::send (const headers_type & headers)
 	for (const auto & header : headers)
 		headerlist = curl_slist_append (headerlist, (header .first + ": " + header .second) .c_str ());
 
-	curl_easy_setopt (curl, CURLOPT_HTTPHEADER, headerlist);
+	curl_easy_setopt (easy_handle, CURLOPT_HTTPHEADER, headerlist);
 
 	// Attempt to retrieve the remote page
-	CURLMcode retcode = curl_multi_perform (curlm, &running);
-	
+	CURLMcode retcode = curl_multi_perform (multi_handle, &running);
+
+	// Read first arriving bytes
+
 	while (running and not bytesRead)
 	{
-		if (wait () > 0)
-			curl_multi_perform (curlm, &running);
+		if (wait () >= 0)
+			curl_multi_perform (multi_handle, &running);
+
+		else
+			running = false;
 	}
 
 	curl_slist_free_all (headerlist);
-	
+
 	// Did we succeed?
 	if (retcode == CURLM_OK and (running or bytesRead))
 		return this;
 
 	std::clog << "CURL Error: " << url () << std::endl;
-	std::clog << "CURL Error: " << "Can't send Request: " << std::strerror (retcode) << std::endl;
+	std::clog << "CURL Error: " << "Can't send request: " << std::strerror (retcode) << std::endl;
 
 	close ();
 
@@ -149,20 +165,37 @@ urlstreambuf::wait ()
 	FD_ZERO (&fdwrite);
 	FD_ZERO (&fdexcep);
 
+	// set a suitable timeout to play around with
+	long curl_timeout = -1;
+	curl_multi_timeout (multi_handle, &curl_timeout);
+
 	struct timeval timeout;
-	timeout .tv_sec  = this -> timeout ();
-	timeout .tv_usec = (this -> timeout () - timeout .tv_sec) * 1000000;
+	timeout .tv_sec  = 1;
+	timeout .tv_usec = 0;
 
-	/* get file descriptors from the transfers */
-	curl_multi_fdset (curlm, &fdread, &fdwrite, &fdexcep, &maxfd);
+	if (curl_timeout >= 0)
+	{
+		timeout .tv_sec = curl_timeout / 1000;
 
-	/* In a real-world program you OF COURSE check the return code of the
-	 * function calls.  On success, the value of maxfd is guaranteed to be
-	 * greater or equal than -1.  We call select(maxfd + 1, ...), specially in
-	 * case of (maxfd == -1), we call select(0, ...), which is basically equal
-	 * to sleep. */
+		if (timeout.tv_sec > 1)
+			timeout .tv_sec = 1;
+		else
+			timeout .tv_usec = (curl_timeout % 1000) * 1000;
+	}
 
-	return select (maxfd + 1, &fdread, &fdwrite, &fdexcep, &timeout);
+	// get file descriptors from the transfers
+	CURLMcode retcode = curl_multi_fdset (multi_handle, &fdread, &fdwrite, &fdexcep, &maxfd);
+
+	// In a real-world program you OF COURSE check the return code of the
+	// function calls.  On success, the value of maxfd is guaranteed to be
+	// greater or equal than -1.  We call select(maxfd + 1, ...), specially in
+	// case of (maxfd == -1), we call select(0, ...), which is basically equal
+	// to sleep.
+
+	if (retcode == CURLM_OK)
+		return select (maxfd + 1, &fdread, &fdwrite, &fdexcep, &timeout);
+
+	return -1;
 }
 
 int
@@ -219,10 +252,13 @@ urlstreambuf::underflow ()
 
 	bytesRead = 0;
 
-	if (running)
+	while (running and not bytesRead)
 	{
-		if (wait () > 0)
-			curl_multi_perform (curlm, &running);
+		if (wait () >= 0)
+			curl_multi_perform (multi_handle, &running);
+
+		else
+			running = false;
 	}
 
 	if (bytesRead == 0)
@@ -260,21 +296,21 @@ urlstreambuf::close ()
 {
 	opened = false;
 
-	if (curlm)
-		curl_multi_remove_handle (curlm, curl);
+	if (multi_handle)
+		curl_multi_remove_handle (multi_handle, easy_handle);
 
-	if (curl)
-		curl_easy_cleanup (curl);
+	if (easy_handle)
+		curl_easy_cleanup (easy_handle);
 
-	if (curlm)
-		curl_multi_cleanup (curlm);
+	if (multi_handle)
+		curl_multi_cleanup (multi_handle);
 
 	if (buffer)
 		free (buffer);
 
-	curlm  = nullptr;
-	curl   = nullptr;
-	buffer = nullptr;
+	multi_handle = nullptr;
+	easy_handle  = nullptr;
+	buffer       = nullptr;
 
 	return this;
 }

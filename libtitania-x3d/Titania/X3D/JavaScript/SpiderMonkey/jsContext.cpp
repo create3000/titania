@@ -502,6 +502,8 @@ jsContext::set_field (X3DFieldDefinition* field)
 {
 	//std::lock_guard <std::mutex> lock (mutex);
 
+	field -> isTainted (true);
+
 	jsval argv [2];
 
 	switch (field -> getType ())
@@ -527,6 +529,8 @@ jsContext::set_field (X3DFieldDefinition* field)
 
 	jsval rval;
 	JS_CallFunctionValue (context, global, functions [field], 2, argv, &rval);
+
+	field -> isTainted (false);
 }
 
 void

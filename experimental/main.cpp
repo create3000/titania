@@ -1,8 +1,8 @@
-// /* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-// /*************************************************************************
-//  *
-//  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-//  *
+ /* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
+ /*************************************************************************
+  *
+  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+  *
 //  * Copyright 1999, 2012 Holger Seelig <holger.seelig@yahoo.de>.
 //  *
 //  * Titania - a multi-platform office productivity suite
@@ -80,279 +80,284 @@
 using namespace titania;
 using namespace titania::basic;
 
-void
-print_time (double time)
-{
-	std::clog
-	<< std::setiosflags (std::ios::fixed)
-	<< std::setprecision (std::numeric_limits <double>::digits10)
-	<< time
-	<< std::endl;
-}
+//void
+//print_time (double time)
+//{
+//	std::clog
+//		<< std::setiosflags (std::ios::fixed)
+//		<< std::setprecision (std::numeric_limits <double>::digits10)
+//		<< time
+//		<< std::endl;
+//}
+//
+///*basic::ifilestream
+// * get_stream ()
+// * {
+// * titania::TestURI ();
+// *
+// * basic::uri url0 = std::move (basic::uri ("http://titania.create3000.de"));
+// * basic::uri url1 = std::move (basic::uri ("http://titania.create3000.de/documentation/examples/hello_world.wrl"));
+// *
+// * basic::uri url2 = "file:///home/holger/Projekte/Titania/Titania/share/titania/puck/pages/about/home.wrl";
+// * basic::uri url3 = "holger/Titania/Titania/share/titania/puck/pages/about/home.wrl";
+// *
+// * basic::uri url4 = "http://lockalhost:1235";
+// * basic::uri url5 = "about";
+// *
+// * basic::uri url6 = "urn:iso:std:iso:9999:-1:ed-2:en:amd:1";
+// *
+// * //
+// *
+// * //
+// *
+// * //
+// *
+// * std::clog << "resolve: " << basic::uri ("h1.wrl",    url0) << std::endl;
+// * std::clog << "resolve: " << basic::uri ("../h1.wrl", url0) << std::endl;
+// * std::clog << "resolve: " << basic::uri ("/h1.wrl",   url0) << std::endl;
+// * std::clog << "resolve: " << basic::uri ("/h1.wrl",   url0) << std::endl;
+// *
+// * std::clog << "resolve: " << basic::uri ("h1.wrl",    url1) << std::endl;
+// * std::clog << "resolve: " << basic::uri ("../h1.wrl", url1) << std::endl;
+// * std::clog << "resolve: " << basic::uri ("/h1.wrl",   url1) << std::endl;
+// *
+// * std::clog << "resolve: " << basic::uri ("h1.wrl",    url2) << std::endl;
+// * std::clog << "resolve: " << basic::uri ("../h1.wrl", url2) << std::endl;
+// * std::clog << "resolve: " << basic::uri ("/h1.wrl",   url2) << std::endl;
+// *
+// * std::clog << "resolve: " << basic::uri ("h1.wrl",    url3) << std::endl;
+// * std::clog << "resolve: " << basic::uri ("../h1.wrl", url3) << std::endl;
+// * std::clog << "resolve: " << basic::uri ("/h1.wrl",   url3) << std::endl;
+// *
+// * std::clog << "box: " << math::box3 <float> () .max () << std::endl;
+// * std::clog << "box: " << math::box3 <float> () .size () << std::endl;
+// *
+// * //
+// *
+// * basic::uri         url = "urn:iso:std:iso:9999:-1:ed-2:en:amd:1";
+// * basic::ifilestream stream (basic::http::method::GET, url5);
+// *
+// * if (stream)
+// * {
+// *    // Request Headers
+// *
+// *    stream .request_header ("User-Agent", "Horst Jochen Scholz Graupner");
+// *
+// *    std::clog << "Request Headers" << std::endl;
+// *
+// *    for (const auto & request_header : stream .request_headers ())
+// *       std::clog << request_header .first << ": " << request_header .second << std::endl;
+// *
+// *    std::clog << std::endl;
+// *
+// *    // Send
+// *
+// *    stream .send ();
+// * }
+// * else
+// *    std::clog << "Open fails." << std::endl;
+// *
+// * return stream;
+// * }
+// */
+//
+//void
+//test_path (const basic::path & path)
+//{
+//	std::clog << std::endl;
+//	std::clog << "path:   " << path << std::endl;
+//	std::clog << "parent: " << path .remove_dot_segments () .parent () << std::endl;
+//	std::clog << "remove: " << path .remove_dot_segments () << std::endl;
+//
+//}
+//
+//typedef math::quaternion <float> Quaternionf;
+//typedef math::vector2 <float>    Vector2f;
+//typedef math::vector3 <float>    Vector3f;
+//typedef math::vector4 <float>    Vector4f;
+//typedef math::rotation4 <float>  Rotation4f;
+//typedef math::matrix4 <float>    Matrix4f;
+//typedef math::box2 <float>       Box2f;
+//typedef math::box3 <float>       Box3f;
+//typedef math::cylinder3 <float>  Cylinder3f;
+//typedef math::plane3 <float>     Plane3f;
+//typedef math::line3 <float>      Line3f;
+//typedef math::sphere3 <float>    Sphere3f;
+//
+//#include <v8.h>
+//
+//// https://www.homepluspower.info/2010/06/v8-javascript-engine-tutorial-part-1.html
+//// https://www.homepluspower.info/2010/06/v8-javascript-engine-tutorial-part-2.html
+//// http://athile.net/library/wiki/index.php/Library/V8/Tutorial
+//// http://www.codeproject.com/Articles/29109/Using-V8-Google-s-Chrome-JavaScript-Virtual-Machin
+//// http://v8.googlecode.com/svn/trunk/samples/shell.cc
+//// http://stackoverflow.com/questions/11387015/calling-a-v8-javascript-function-from-c-with-an-argument
+//
+//#include <Titania/InputOutput.h>
+//
+//bool
+//intersect (const Plane3f & p1, const Plane3f & p2, Line3f & line)
+//{
+//	// http://stackoverflow.com/questions/6408670/intersection-between-two-planes
+//
+//	if (dot (p1 .normal (), p2 .normal ()) < 1)
+//	{
+//		Vector3f direction = normalize (cross (p1 .normal (), p2 .normal ()));
+//
+//		//		float d1 = p1 .distance (c);
+//		//		float d2 = p2 .distance (c);
+//		//
+//		//		Vector3f point = (c - (d1 * p1 .normal ()) - (d2 * p2 .normal ()));
+//
+//		line = Line3f (Vector3f (), direction);
+//
+//		return true;
+//	}
+//
+//	// Planes are parallel
+//
+//	return false;
+//}
+//
+//template <class Type>
+//class A
+//{
+//public:
+//
+//	A ()
+//	{
+//		__LOG__ << std::endl;
+//	}
+//
+//	A (const A &)
+//	{
+//		__LOG__ << std::endl;
+//	}
+//
+//	template <class Up>
+//	A (const A <Up> &)
+//	{
+//		__LOG__ << std::endl;
+//	}
+//
+//};
+//
+//std::string
+//sprintf (const char* fmt, ...)
+//{
+//	char*   ret = nullptr;
+//	va_list ap;
+//
+//	va_start (ap, fmt);
+//	int n = vasprintf (&ret, fmt, ap);
+//	va_end (ap);
+//
+//	std::string str (ret, n);
+//	free (ret);
+//
+//	return str;
+//}
+//
+//basic::ifilestream
+//get_stream (const basic::uri & uri)
+//{
+//	basic::ifilestream istream (uri, 3000);
+//
+//	__LOG__ << "bool: " << bool (istream) << std::endl;
+//
+//	istream .send ();
+//	__LOG__ << "bool: " << bool (istream) << std::endl;
+//	__LOG__ << "is_compressed: " << istream .is_compressed () << std::endl;
+//
+//	return istream;
+//}
+//
+//namespace Test {
+//
+//class Box3f
+//{
+//public:
+//
+//	Box3f (const Vector3f & size, const Vector3f & center)
+//	{
+//		matrix = Matrix4f (size .x () * 0.5f, 0, 0, 0,
+//		                   0, size .y () * 0.5f, 0, 0,
+//		                   0, 0, size .z () * 0.5f, 0,
+//		                   center .x (), center .y (), center .z (), 1);
+//	}
+//
+//	void
+//	center () const
+//	{
+//		std::clog << matrix .translation () << std::endl;
+//	}
+//
+//	void
+//	size () const
+//	{
+//		auto x = Vector3f (matrix [0] [0], matrix [0] [1], matrix [0] [2]);
+//		auto y = Vector3f (matrix [1] [0], matrix [1] [1], matrix [1] [2]);
+//		auto z = Vector3f (matrix [2] [0], matrix [2] [1], matrix [2] [2]);
+//
+//		auto r1 =  x + y;
+//		auto r2 = -x + y;
+//		auto r3 = -x - y;
+//		auto r4 =  x - y;
+//
+//		auto p1 = r1 + z;
+//		auto p2 = r2 + z;
+//		auto p3 = r3 + z;
+//		auto p4 = r4 + z;
+//
+//		auto p5 = r1 - z;
+//		auto p6 = r2 - z;
+//		auto p7 = r3 - z;
+//		auto p8 = r4 - z;
+//
+//		auto min = math::min (p1, p2);
+//
+//		min = math::min (min, p3);
+//		min = math::min (min, p4);
+//		min = math::min (min, p5);
+//		min = math::min (min, p6);
+//		min = math::min (min, p7);
+//		min = math::min (min, p8);
+//
+//		auto max = math::max (p1, p2);
+//		max = math::max (max, p3);
+//		max = math::max (max, p4);
+//		max = math::max (max, p5);
+//		max = math::max (max, p6);
+//		max = math::max (max, p7);
+//		max = math::max (max, p8);
+//
+//		std::clog << max - min << std::endl;
+//	}
+//
+//	Box3f &
+//	rotate (const Rotation4f & rotation)
+//	{
+//
+//		matrix = matrix * Matrix4f (rotation);
+//		return *this;
+//	}
+//
+//	void
+//	print () const
+//	{
+//		std::clog << matrix << std::endl;
+//	}
+//
+//private:
+//
+//	Matrix4f matrix;
+//
+//};
+//
+//}
+//
 
-/*basic::ifilestream
- * get_stream ()
- * {
- * titania::TestURI ();
- *
- * basic::uri url0 = std::move (basic::uri ("http://titania.create3000.de"));
- * basic::uri url1 = std::move (basic::uri ("http://titania.create3000.de/documentation/examples/hello_world.wrl"));
- *
- * basic::uri url2 = "file:///home/holger/Projekte/Titania/Titania/share/titania/puck/pages/about/home.wrl";
- * basic::uri url3 = "holger/Titania/Titania/share/titania/puck/pages/about/home.wrl";
- *
- * basic::uri url4 = "http://lockalhost:1235";
- * basic::uri url5 = "about";
- *
- * basic::uri url6 = "urn:iso:std:iso:9999:-1:ed-2:en:amd:1";
- *
- * //
- *
- * //
- *
- * //
- *
- * std::clog << "resolve: " << basic::uri ("h1.wrl",    url0) << std::endl;
- * std::clog << "resolve: " << basic::uri ("../h1.wrl", url0) << std::endl;
- * std::clog << "resolve: " << basic::uri ("/h1.wrl",   url0) << std::endl;
- * std::clog << "resolve: " << basic::uri ("/h1.wrl",   url0) << std::endl;
- *
- * std::clog << "resolve: " << basic::uri ("h1.wrl",    url1) << std::endl;
- * std::clog << "resolve: " << basic::uri ("../h1.wrl", url1) << std::endl;
- * std::clog << "resolve: " << basic::uri ("/h1.wrl",   url1) << std::endl;
- *
- * std::clog << "resolve: " << basic::uri ("h1.wrl",    url2) << std::endl;
- * std::clog << "resolve: " << basic::uri ("../h1.wrl", url2) << std::endl;
- * std::clog << "resolve: " << basic::uri ("/h1.wrl",   url2) << std::endl;
- *
- * std::clog << "resolve: " << basic::uri ("h1.wrl",    url3) << std::endl;
- * std::clog << "resolve: " << basic::uri ("../h1.wrl", url3) << std::endl;
- * std::clog << "resolve: " << basic::uri ("/h1.wrl",   url3) << std::endl;
- *
- * std::clog << "box: " << math::box3 <float> () .max () << std::endl;
- * std::clog << "box: " << math::box3 <float> () .size () << std::endl;
- *
- * //
- *
- * basic::uri         url = "urn:iso:std:iso:9999:-1:ed-2:en:amd:1";
- * basic::ifilestream stream (basic::http::method::GET, url5);
- *
- * if (stream)
- * {
- *    // Request Headers
- *
- *    stream .request_header ("User-Agent", "Horst Jochen Scholz Graupner");
- *
- *    std::clog << "Request Headers" << std::endl;
- *
- *    for (const auto & request_header : stream .request_headers ())
- *       std::clog << request_header .first << ": " << request_header .second << std::endl;
- *
- *    std::clog << std::endl;
- *
- *    // Send
- *
- *    stream .send ();
- * }
- * else
- *    std::clog << "Open fails." << std::endl;
- *
- * return stream;
- * }
- */
 
-void
-test_path (const basic::path & path)
-{
-	std::clog << std::endl;
-	std::clog << "path:   " << path << std::endl;
-	std::clog << "parent: " << path .remove_dot_segments () .parent () << std::endl;
-	std::clog << "remove: " << path .remove_dot_segments () << std::endl;
-
-}
-
-typedef math::quaternion <float> Quaternionf;
-typedef math::vector2 <float>    Vector2f;
-typedef math::vector3 <float>    Vector3f;
-typedef math::vector4 <float>    Vector4f;
-typedef math::rotation4 <float>  Rotation4f;
-typedef math::matrix4 <float>    Matrix4f;
-typedef math::box2 <float>       Box2f;
-typedef math::box3 <float>       Box3f;
-typedef math::cylinder3 <float>  Cylinder3f;
-typedef math::plane3 <float>     Plane3f;
-typedef math::line3 <float>      Line3f;
-typedef math::sphere3 <float>    Sphere3f;
-
-#include <v8.h>
-
-// https://www.homepluspower.info/2010/06/v8-javascript-engine-tutorial-part-1.html
-// https://www.homepluspower.info/2010/06/v8-javascript-engine-tutorial-part-2.html
-// http://athile.net/library/wiki/index.php/Library/V8/Tutorial
-// http://www.codeproject.com/Articles/29109/Using-V8-Google-s-Chrome-JavaScript-Virtual-Machin
-// http://v8.googlecode.com/svn/trunk/samples/shell.cc
-// http://stackoverflow.com/questions/11387015/calling-a-v8-javascript-function-from-c-with-an-argument
-
-#include <Titania/InputOutput.h>
-
-bool
-intersect (const Plane3f & p1, const Plane3f & p2, Line3f & line)
-{
-	// http://stackoverflow.com/questions/6408670/intersection-between-two-planes
-
-	if (dot (p1 .normal (), p2 .normal ()) < 1)
-	{
-		Vector3f direction = normalize (cross (p1 .normal (), p2 .normal ()));
-
-		//		float d1 = p1 .distance (c);
-		//		float d2 = p2 .distance (c);
-		//
-		//		Vector3f point = (c - (d1 * p1 .normal ()) - (d2 * p2 .normal ()));
-
-		line = Line3f (Vector3f (), direction);
-
-		return true;
-	}
-
-	// Planes are parallel
-
-	return false;
-}
-
-template <class Type>
-class A
-{
-public:
-
-	A ()
-	{
-		__LOG__ << std::endl;
-	}
-
-	A (const A &)
-	{
-		__LOG__ << std::endl;
-	}
-
-	template <class Up>
-	A (const A <Up> &)
-	{
-		__LOG__ << std::endl;
-	}
-
-};
-
-std::string
-sprintf (const char* fmt, ...)
-{
-	char*   ret = nullptr;
-	va_list ap;
-
-	va_start (ap, fmt);
-	int n = vasprintf (&ret, fmt, ap);
-	va_end (ap);
-
-	std::string str (ret, n);
-	free (ret);
-
-	return str;
-}
-
-basic::ifilestream
-get_stream (const basic::uri & uri)
-{
-	basic::ifilestream istream (uri, 3000);
-
-	__LOG__ << "bool: " << bool (istream) << std::endl;
-
-	istream .send ();
-	__LOG__ << "bool: " << bool (istream) << std::endl;
-	__LOG__ << "is_compressed: " << istream .is_compressed () << std::endl;
-
-	return istream;
-}
-
-namespace Test {
-
-class Box3f
-{
-public:
-
-	Box3f (const Vector3f & size, const Vector3f & center)
-	{
-		matrix = Matrix4f (size .x () * 0.5f, 0, 0, 0,
-		                   0, size .y () * 0.5f, 0, 0,
-		                   0, 0, size .z () * 0.5f, 0,
-		                   center .x (), center .y (), center .z (), 1);
-	}
-	void
-	center () const
-	{
-		std::clog << matrix .translation () << std::endl;
-	}
-
-	void
-	size () const
-	{
-		auto x = Vector3f (matrix [0] [0], matrix [0] [1], matrix [0] [2]);
-		auto y = Vector3f (matrix [1] [0], matrix [1] [1], matrix [1] [2]);
-		auto z = Vector3f (matrix [2] [0], matrix [2] [1], matrix [2] [2]);
-
-		auto r1 =  x + y;
-		auto r2 = -x + y;
-		auto r3 = -x - y;
-		auto r4 =  x - y;
-
-		auto p1 = r1 + z;
-		auto p2 = r2 + z;
-		auto p3 = r3 + z;
-		auto p4 = r4 + z;
-
-		auto p5 = r1 - z;
-		auto p6 = r2 - z;
-		auto p7 = r3 - z;
-		auto p8 = r4 - z;
-
-		auto min = math::min (p1, p2);
-		min = math::min (min, p3);
-		min = math::min (min, p4);
-		min = math::min (min, p5);
-		min = math::min (min, p6);
-		min = math::min (min, p7);
-		min = math::min (min, p8);
-
-		auto max = math::max (p1, p2);
-		max = math::max (max, p3);
-		max = math::max (max, p4);
-		max = math::max (max, p5);
-		max = math::max (max, p6);
-		max = math::max (max, p7);
-		max = math::max (max, p8);
-
-		std::clog << max - min << std::endl;
-	}
-
-	Box3f &
-	rotate (const Rotation4f & rotation)
-	{
-		
-		matrix = matrix * Matrix4f (rotation);
-		return *this;
-	}
-
-	void
-	print () const
-	{
-		std::clog << matrix << std::endl;
-	}
-
-private:
-
-	Matrix4f matrix;
-
-};
-
-}
 int
 main (int argc, char** argv)
 {
@@ -362,18 +367,11 @@ main (int argc, char** argv)
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
 
-	std::clog << std::setprecision (std::numeric_limits <double> ::digits10) << std::endl;
+	basic::ifilestream istream ("http://titania.create3000.de", 15000);
+	
+	istream .send ();
 
-	std::clog << std::endl;
-	std::clog << 10000001.0 << std::endl;
-	std::clog << 100000001.0 << std::endl;
-	std::clog << 1000000001.0 << std::endl;
-	std::clog << 10000000001.0 << std::endl;
-	std::clog << 100000000001.0 << std::endl;
-	std::clog << 1000000000001.0 << std::endl;
-	std::clog << 1000000000001.0 << std::endl;
-	std::clog << 100000000000001.0 << std::endl;
-	std::clog << 1000000000000001.0 << std::endl;
+	std::clog << istream .rdbuf () << std::endl;
 
 	std::clog << "Function main done." << std::endl;
 	exit (0);
@@ -513,6 +511,7 @@ main (int argc, char** argv)
 //
 //	// Append the data to the buffer
 //	__LOG__ << bytes << std::endl;
+//	__LOG__ << std::string (data, bytes) << std::endl;
 //
 //	// How much did we write?
 //	return bytes;
@@ -524,24 +523,35 @@ main (int argc, char** argv)
 //int
 //main (void)
 //{
-//	CURL*  http_handle;
+//	CURL*  easy_handle;
 //	CURLM* multi_handle;
 //
 //	int still_running; /* keep number of running handles */
 //
-//	curl_global_init (CURL_GLOBAL_DEFAULT);
+//	//curl_global_init (CURL_GLOBAL_DEFAULT);
 //
-//	http_handle = curl_easy_init ();
+//	easy_handle = curl_easy_init ();
 //
 //	/* set the options (I left out a few, you'll get the point anyway) */
-//	curl_easy_setopt (http_handle, CURLOPT_URL, "http://titania.create3000.de/");
-//	curl_easy_setopt (http_handle, CURLOPT_WRITEFUNCTION,     write_data);
+//	curl_easy_setopt (easy_handle, CURLOPT_URL,               "http://vr.create3000.tv/");
+//	curl_easy_setopt (easy_handle, CURLOPT_BUFFERSIZE,        1024);
+//	curl_easy_setopt (easy_handle, CURLOPT_USE_SSL,           CURLUSESSL_TRY);
+//	curl_easy_setopt (easy_handle, CURLOPT_HEADER,            false);
+//	curl_easy_setopt (easy_handle, CURLOPT_FOLLOWLOCATION,    true);
+//	curl_easy_setopt (easy_handle, CURLOPT_CONNECTTIMEOUT_MS, 15000);
+//	curl_easy_setopt (easy_handle, CURLOPT_TIMEOUT_MS,        15000);
+//	curl_easy_setopt (easy_handle, CURLOPT_ACCEPTTIMEOUT_MS,  15000);
+//	curl_easy_setopt (easy_handle, CURLOPT_ACCEPT_ENCODING,   "");
+//	curl_easy_setopt (easy_handle, CURLOPT_FAILONERROR,       true);
+//	curl_easy_setopt (easy_handle, CURLOPT_NOSIGNAL,          true);
+//	curl_easy_setopt (easy_handle, CURLOPT_WRITEFUNCTION,     write_data);
+//	curl_easy_setopt (easy_handle, CURLOPT_VERBOSE,           true);
 //
 //	/* init a multi stack */
 //	multi_handle = curl_multi_init ();
 //
 //	/* add the individual transfers */
-//	curl_multi_add_handle (multi_handle, http_handle);
+//	curl_multi_add_handle (multi_handle, easy_handle);
 //
 //	__LOG__ << std::endl;
 //	/* we start some action by calling perform right away */
@@ -559,7 +569,7 @@ main (int argc, char** argv)
 //		fd_set fdexcep;
 //		int    maxfd = -1;
 //
-//		long curl_timeo = -1;
+//		long curl_timeout = -1;
 //
 //		FD_ZERO (&fdread);
 //		FD_ZERO (&fdwrite);
@@ -569,17 +579,20 @@ main (int argc, char** argv)
 //		timeout .tv_sec  = 1;
 //		timeout .tv_usec = 0;
 //
-//		curl_multi_timeout (multi_handle, &curl_timeo);
+//		curl_multi_timeout (multi_handle, &curl_timeout);
 //
-//		if (curl_timeo >= 0)
+//		if (curl_timeout >= 0)
 //		{
-//			timeout .tv_sec = curl_timeo / 1000;
+//			timeout .tv_sec = curl_timeout / 1000;
 //
 //			if (timeout.tv_sec > 1)
 //				timeout .tv_sec = 1;
 //			else
-//				timeout .tv_usec = (curl_timeo % 1000) * 1000;
+//				timeout .tv_usec = (curl_timeout % 1000) * 1000;
 //		}
+//		
+//		__LOG__ <<  timeout.tv_sec << std::endl;
+//		__LOG__ <<  timeout.tv_usec << std::endl;
 //
 //		/* get file descriptors from the transfers */
 //		curl_multi_fdset (multi_handle, &fdread, &fdwrite, &fdexcep, &maxfd);
@@ -611,9 +624,9 @@ main (int argc, char** argv)
 //	}
 //	while (still_running);
 //
-//	curl_multi_remove_handle (multi_handle, http_handle);
+//	curl_multi_remove_handle (multi_handle, easy_handle);
 //
-//	curl_easy_cleanup (http_handle);
+//	curl_easy_cleanup (easy_handle);
 //
 //	curl_multi_cleanup (multi_handle);
 //

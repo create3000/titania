@@ -133,10 +133,10 @@ private:
 	pos_type
 	seekoff (off_type, std::ios_base::seekdir, std::ios_base::openmode);
 
-	CURLM* curlm;                    // CURL multi handle
-	CURL*  curl;                     // CURL handle
+	CURLM* multi_handle;            // CURL multi handle
+	CURL*  easy_handle;             // CURL handle
 	int    running;
-	bool   opened;                   // Open/close state of stream
+	bool   opened;                  // Open/close state of stream
 
 	basic::uri        m_url;        // The URL
 	size_t            m_timeout;    // in ms

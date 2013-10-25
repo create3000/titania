@@ -70,7 +70,7 @@ class Context
 public:
 
 	GLXContext
-	getValue () const;
+	getContext () const;
 
 	virtual
 	bool
@@ -95,7 +95,7 @@ protected:
 	setDrawable (GLXDrawable);
 
 	void
-	setValue (GLXContext);
+	setContext (GLXContext);
 
 
 private:

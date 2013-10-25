@@ -99,6 +99,8 @@ void
 X3DExecutionContext::initialize ()
 {
 	X3DNode::initialize ();
+	
+	__LOG__ << "Initialize: " << getWorldURL () << std::endl; 
 
 	rootNodes          .isTainted (false);
 	uninitializedNodes .isTainted (false);
@@ -108,6 +110,8 @@ X3DExecutionContext::initialize ()
 		for (auto & uninitializedNode : MFNode (std::move (uninitializedNodes)))
 			uninitializedNode -> setup ();
 	}
+	
+	__LOG__ << "Initialize done: " << getWorldURL () << std::endl; 
 }
 
 void

@@ -50,7 +50,11 @@
 
 #include "Surface.h"
 
+extern "C"
+{
 #include <gdk/gdkx.h>
+}
+
 #include <gtkmm/container.h>
 #include <gtkmm/main.h>
 

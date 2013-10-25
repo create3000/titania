@@ -194,14 +194,6 @@ X3DBrowserContext::initialize ()
 
 		glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
 
-		//	glHint (GL_POINT_SMOOTH_HINT,   GL_NICEST);
-		//	glHint (GL_LINE_SMOOTH_HINT,    GL_NICEST);
-		//	glHint (GL_POLYGON_SMOOTH_HINT, GL_NICEST);
-		//
-		//	glEnable (GL_POINT_SMOOTH);
-		//	glEnable (GL_LINE_SMOOTH);
-		//	glEnable (GL_POLYGON_SMOOTH);
-
 		notification -> setup ();
 	}
 
@@ -664,7 +656,6 @@ X3DBrowserContext::update ()
 			if (errorNum not_eq GL_NO_ERROR)
 				std::clog << "OpenGL Error at " << SFTime (getCurrentTime ()) .toLocaleString () << ": " << gluErrorString (errorNum) << std::endl;
 		}
-
 	}
 	catch (const std::exception & exception)
 	{

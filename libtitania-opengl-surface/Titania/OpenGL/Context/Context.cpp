@@ -74,13 +74,13 @@ Context::setDrawable (GLXDrawable value)
 }
 
 void
-Context::setValue (GLXContext value)
+Context::setContext (GLXContext value)
 {
 	xContext = value;
 }
 
 GLXContext
-Context::getValue () const
+Context::getContext () const
 {
 	return xContext;
 }

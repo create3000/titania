@@ -50,10 +50,9 @@
 
 #include "WindowContext.h"
 
-#include <gdk/gdkx.h>
+#include <stdexcept>
 
 #include <Titania/LOG.h>
-#include <stdexcept>
 
 namespace titania {
 namespace opengl {
@@ -65,7 +64,7 @@ WindowContext::WindowContext (Display* display,
 	Context (display),
 	xWindow (xWindow)
 {
-	setValue    (create (sharingContext .getValue (), direct));
+	setContext (create (sharingContext .getContext (), direct));
 	setDrawable (xWindow);
 }
 
@@ -75,8 +74,10 @@ WindowContext::WindowContext (Display* display,
 	Context (display),
 	xWindow (xWindow)
 {
-	setValue    (create (NULL, direct));
+	setContext (create (nullptr, direct));
 	setDrawable (xWindow);
+
+	//glXSwapIntervalEXT (display, xWindow, 0);
 }
 
 GLXContext
@@ -94,7 +95,7 @@ WindowContext::create (GLXContext sharingContext, bool direct)
 	XVisualInfo* visualInfoList = XGetVisualInfo (getDisplay (), VisualIDMask, &visualInfo, &numReturned);
 
 	GLXContext xContext = glXCreateContext (getDisplay (), visualInfoList, sharingContext, direct);
-	
+
 	XFree (visualInfoList);
 
 	if (not xContext)

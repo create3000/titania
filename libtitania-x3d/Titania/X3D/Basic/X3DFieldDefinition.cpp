@@ -173,17 +173,17 @@ X3DFieldDefinition::processEvent (const EventPtr & event)
 
 	processInterests ();
 	
-	size_t i = 0;
+	bool first = true;
 
 	for (const auto & fieldDefinition : interests)
 	{
-		if (i == 0)
+		if (first)
+		{
+			first = false;
 			fieldDefinition -> addEvent (fieldDefinition, event);
-
+		}
 		else
 			fieldDefinition -> addEvent (fieldDefinition, EventPtr (new Event (*event)));
-		
-		++ i;
 	}
 }
 
