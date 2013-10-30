@@ -86,8 +86,12 @@ void
 ScreenText::configure (const Cairo::RefPtr <Cairo::Context> & context)
 {
 	std::string family = fontStyle -> family () .empty () ? "Serif" : fontStyle -> family () [0] .str ();
-	auto        slant  = fontStyle -> isItalic () ? Cairo::FONT_SLANT_ITALIC : Cairo::FONT_SLANT_NORMAL;
-	auto        weight = fontStyle -> isBold ()   ? Cairo::FONT_WEIGHT_BOLD  : Cairo::FONT_WEIGHT_NORMAL;
+
+	if (family == "TYPEWRITER")
+		family = "monospace";
+
+	auto slant  = fontStyle -> isItalic () ? Cairo::FONT_SLANT_ITALIC : Cairo::FONT_SLANT_NORMAL;
+	auto weight = fontStyle -> isBold ()   ? Cairo::FONT_WEIGHT_BOLD  : Cairo::FONT_WEIGHT_NORMAL;
 
 	context -> select_font_face (family, slant, weight);
 	context -> set_font_size (fontStyle -> getSize ());

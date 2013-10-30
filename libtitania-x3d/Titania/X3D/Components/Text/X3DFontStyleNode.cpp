@@ -82,7 +82,7 @@ X3DTextGeometry::initialize (Text* const text, const X3DFontStyleNode* const fon
 	{
 		Box2d bbox;
 
-		double y1         = 0;
+//		double y1         = 0;
 		double lineHeight = fontStyle -> getLineHeight ();
 		double scale      = fontStyle -> getScale ();
 
@@ -96,8 +96,8 @@ X3DTextGeometry::initialize (Text* const text, const X3DFontStyleNode* const fon
 
 			Vector2d size = max - min;
 
-			if (i == 1)
-				y1 = max .y ();
+//			if (i == 1)
+//				y1 = max .y ();
 
 			// Calculate charSpacing and lineBounds.
 
@@ -159,11 +159,11 @@ X3DTextGeometry::initialize (Text* const text, const X3DFontStyleNode* const fon
 
 		text -> textBounds () = size;
 
-		if (string () .size () > 1)
-		{
-			text -> lineBounds () .front () .setY (max .y () + (lineHeight - y1) * scale);
-			text -> lineBounds () .back  () .setY (text -> textBounds () .getY () - (text -> lineBounds () [0] .getY () + (string () .size () - 2) * fontStyle -> spacing ()));
-		}
+//		if (string () .size () > 1)
+//		{
+//			text -> lineBounds () .front () .setY (max .y () + (lineHeight - y1) * scale);
+//			text -> lineBounds () .back  () .setY (text -> textBounds () .getY () - (text -> lineBounds () [0] .getY () + (string () .size () - 2) * fontStyle -> spacing ()));
+//		}
 
 		bearing = Vector2d (0, -max .y ());
 
