@@ -3,6 +3,10 @@
 META "icon" "about:icon"
 META "title" "Random ScreenText"
 
+Background {
+  skyColor 1 1 1
+}
+
 Viewpoint { }
 
 Transform {
@@ -13,7 +17,7 @@ Transform {
       }
     }
     geometry DEF Time Text {
-      string "Wed, 30 Oct 2013 08:27:52 GMT"
+      string "Wed, 30 Oct 2013 13:47:40 GMT"
       fontStyle ScreenFontStyle {
         family "Action Jackson"
         pointSize 32
