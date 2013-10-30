@@ -1,5 +1,9 @@
 2013-10-30  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* ScreenFontStyle.cpp: 
+
+2013-10-30  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Text.cpp:
 	* Notification.wrl:
 	* FontStyle.h:
