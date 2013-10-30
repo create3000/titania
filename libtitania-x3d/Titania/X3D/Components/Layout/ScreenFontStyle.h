@@ -74,7 +74,7 @@ public:
 
 	virtual
 	void
-	draw () final;
+	display () final;
 
 	virtual
 	~ScreenText ();
@@ -94,8 +94,9 @@ private:
 	void
 	build ();
 
+	virtual
 	void
-	compile ();
+	draw () final;
 
 	void
 	scale () const;
@@ -105,7 +106,6 @@ private:
 
 	Cairo::RefPtr <Cairo::Context> context;
 	GLuint                         textureId;
-	GLuint                         listId;
 	
 	Vector3d min;
 	Vector3d max;

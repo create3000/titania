@@ -60,7 +60,8 @@ X3DTextGeometry::X3DTextGeometry () :
 	  charSpacings (),
 	       bearing (),
 	minorAlignment (),
-	   translation ()
+	   translation (),
+	        listId (glGenLists (1))
 { }
 
 void
@@ -90,19 +91,28 @@ X3DTextGeometry::initialize (Text* const text, const X3DFontStyleNode* const fon
 
 		for (const auto & line : text -> string ())
 		{
-			Box2d    lineBBox = getLineBounds (fontStyle, line .getValue ());
-			Vector2d size     = lineBBox .size ();
-			Vector2d min      = lineBBox .center () - size / 2.0;
-			Vector2d max      = lineBBox .center () + size / 2.0;
+			Vector2d min, max;
+			getLineBounds (fontStyle, line .getValue (), min, max);
+
+			Vector2d size = max - min;
 
 			if (i == 1)
 				y1 = max .y ();
 
 			// Calculate charSpacing and lineBounds.
 
-			double    charSpacing = 0;
-			Vector2d lineBound   = Vector2d (size .x (), lineHeight) * scale;
-			double    length      = text -> getLength (i);
+			double   charSpacing = 0;
+			Vector2d lineBound   = Vector2d (size .x (), i == 0 ? size .y () : lineHeight) * scale;
+			double   length      = text -> getLength (i);
+
+			if (text -> maxExtent ())
+			{
+				if (length)
+					length = std::min <double> (text -> maxExtent (), length);
+				
+				else
+					length = std::min <double> (text -> maxExtent (), size .x () * scale);
+			}
 
 			if (length)
 			{
@@ -186,25 +196,50 @@ X3DTextGeometry::initialize (Text* const text, const X3DFontStyleNode* const fon
 	}
 }
 
-Box2d
-X3DTextGeometry::getLineBounds (const X3DFontStyleNode* const fontStyle, const std::string & line) const
+void
+X3DTextGeometry::getLineBounds (const X3DFontStyleNode* const fontStyle, const std::string & line, Vector2d & min, Vector2d & max) const
 {
-	Vector2d min, max;
-
-	getLineBounds (line, min, max);
+	if (not line .empty ())
+		getLineBounds (line, min, max);
 
 	switch (fontStyle -> getMajorAlignment ())
 	{
 		case X3DFontStyleNode::Alignment::BEGIN:
 		case X3DFontStyleNode::Alignment::FIRST:
-			return Box2d (Vector2d (0, min .y ()), Vector2d (max .x (), max .y ()), true);
-
+			min .x (0);
+			break;
 		case X3DFontStyleNode::Alignment::MIDDLE:
 		case X3DFontStyleNode::Alignment::END:
-			return Box2d (Vector2d (min .x (), min .y ()), Vector2d (max .x (), max .y ()), true);
+			break;
 	}
+}
 
-	return Box2d (Vector2d (), Vector2d ());
+void
+X3DTextGeometry::compile (Text* const text)
+{
+	glNewList (listId, GL_COMPILE);
+
+	if (text -> solid ())
+		glEnable (GL_CULL_FACE);
+
+	else
+		glDisable (GL_CULL_FACE);
+
+	draw ();
+
+	glEndList ();
+}
+
+void
+X3DTextGeometry::display ()
+{
+	glCallList (listId);
+}
+
+X3DTextGeometry::~X3DTextGeometry ()
+{
+	if (listId)
+		glDeleteLists (listId, 1);
 }
 
 X3DFontStyleNode::Fields::Fields () :
@@ -271,7 +306,7 @@ X3DFontStyleNode::set_justify ()
 	alignments [0] = justify () .size () > 0
 	                 ? getAlignment (0)
 						  : Alignment::BEGIN;
-						
+
 	alignments [1] = justify () .size () > 1
 	                 ? getAlignment (1)
 						  : Alignment::FIRST;

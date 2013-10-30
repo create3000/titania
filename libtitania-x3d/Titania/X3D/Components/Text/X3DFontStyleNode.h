@@ -76,11 +76,10 @@ public:
 
 	virtual
 	void
-	draw () = 0;
+	display ();
 
 	virtual
-	~X3DTextGeometry ()
-	{ }
+	~X3DTextGeometry ();
 
 
 protected:
@@ -112,11 +111,18 @@ protected:
 	void
 	getLineBounds (const std::string &, Vector2d &, Vector2d &) const = 0;
 
+	void
+	compile (Text* const);
+
+	virtual
+	void
+	draw () = 0;
+
 
 private:
 
-	Box2d
-	getLineBounds (const X3DFontStyleNode* const, const std::string &) const;
+	void
+	getLineBounds (const X3DFontStyleNode* const, const std::string &, Vector2d &, Vector2d &) const;
 
 	Box3d bbox;
 
@@ -124,6 +130,7 @@ private:
 	Vector2d              bearing;
 	Vector2d              minorAlignment;
 	std::deque <Vector2d> translation;
+	GLuint                listId;
 
 };
 

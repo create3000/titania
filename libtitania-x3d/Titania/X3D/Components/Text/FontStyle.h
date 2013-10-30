@@ -71,16 +71,16 @@ public:
 	isTransparent () const
 	{ return false; }
 
-	virtual
-	void
-	draw () final;
-
 
 private:
 
 	virtual
 	void
 	getLineBounds (const std::string &, Vector2d &, Vector2d &) const final;
+
+	virtual
+	void
+	draw () final;
 
 	Text* const            text;
 	const FontStyle* const fontStyle;
@@ -193,7 +193,7 @@ private:
 
 	FontPtr font;
 	double  lineHeight;
-	double   scale;
+	double  scale;
 
 };
 

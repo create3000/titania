@@ -69,12 +69,9 @@ ScreenText::ScreenText (Text* const text, const ScreenFontStyle* const fontStyle
 	      fontStyle (fontStyle),
 	        context (Cairo::Context::create (Cairo::ImageSurface::create (Cairo::FORMAT_RGB24, 0, 0))),
 	      textureId (0),
-	         listId (glGenLists (1)),
 	            min (),
 	            max ()
 {
-	__LOG__ << std::endl;
-
 	glGenTextures (1, &textureId);
 
 	configure (context);
@@ -82,7 +79,7 @@ ScreenText::ScreenText (Text* const text, const ScreenFontStyle* const fontStyle
 	setTextBounds ();
 
 	build ();
-	compile ();
+	compile (text);
 }
 
 void
@@ -110,8 +107,6 @@ ScreenText::getLineBounds (const std::string & line, Vector2d & min, Vector2d & 
 void
 ScreenText::setTextBounds ()
 {
-	__LOG__ << text -> string () << std::endl;
-
 	text -> textBounds () = math::ceil (text -> textBounds () .getValue ());
 
 	Box3d bbox = getBBox ();
@@ -152,6 +147,8 @@ ScreenText::setTextBounds ()
 			max .y (min .y () + text -> textBounds () .getY ());
 			break;
 	}
+
+	text -> origin () = Vector3d (min .x (), max .y (), 0);
 
 	setBBox (Box3d (min, max, true));
 }
@@ -196,27 +193,48 @@ ScreenText::build ()
 
 	for (const auto & line : text -> string ())
 	{
-		double x = alignment .x () + getTranslation () [i] .x ();
-		double y = -(alignment .y () + getTranslation () [i] .y ());
-
-		font -> text_to_glyphs (x, y, line, glyphs, clusters, cluster_flags);
-
-		double space       = 0;
-		double charSpacing = getCharSpacing () [i];
-
-		for (auto & glyph : glyphs)
+		try
 		{
-			glyph .x += space;
-			space += charSpacing;
-		}
+			if (not line .empty ())
+			{
+				double x = alignment .x () + getTranslation () [i] .x ();
+				double y = -(alignment .y () + getTranslation () [i] .y ());
 
-		context -> show_text_glyphs (line, glyphs, clusters, cluster_flags);
+				font -> text_to_glyphs (x, y, line, glyphs, clusters, cluster_flags);
+
+				double space       = 0;
+				double charSpacing = getCharSpacing () [i];
+
+				for (auto & glyph : glyphs)
+				{
+					glyph .x += space;
+					space += charSpacing;
+				}
+
+				context -> show_text_glyphs (line, glyphs, clusters, cluster_flags);
+			}
+		}
+		catch (...)
+		{ }
 
 		++ i;
 	}
 
 	if (surface -> get_width () and surface -> get_height ())
 		surface -> write_to_png ("/home/holger/test.png");
+
+	// Set RGB to white
+
+	unsigned char* first = surface -> get_data ();
+	unsigned char* last  = first + 4 * surface -> get_width () * surface -> get_height ();
+
+	while (first < last)
+	{
+		*first ++ = 255;
+		*first ++ = 255;
+		*first ++ = 255;
+		++ first;
+	}
 
 	// Upload texture
 
@@ -239,29 +257,10 @@ ScreenText::build ()
 	glBindTexture (GL_TEXTURE_2D, 0);
 }
 
-// Same as in ScreenGroup
 void
-ScreenText::scale () const
+ScreenText::draw ()
 {
-	Matrix4d modelViewMatrix = ModelViewMatrix4d ();
-
-	Vector3d   translation;
-	Rotation4d rotation;
-
-	modelViewMatrix .get (translation, rotation);
-
-	double distance = math::abs (modelViewMatrix .translation ());
-
-	Matrix4d matrix;
-	matrix .set (translation, rotation, fontStyle -> getCurrentViewpoint () -> getScreenScale (distance, Viewport4i ()));
-
-	glLoadMatrixd (matrix .data ());
-}
-
-void
-ScreenText::compile ()
-{
-	glNewList (listId, GL_COMPILE);
+	// See GL_ARB_texture_env_combine for blending textures
 
 	glEnable (GL_TEXTURE_2D);
 	glBindTexture (GL_TEXTURE_2D, textureId);
@@ -288,24 +287,39 @@ ScreenText::compile ()
 	//
 
 	glDisable (GL_TEXTURE_2D);
-	glEndList ();
+}
+
+// Same as in ScreenGroup
+void
+ScreenText::scale () const
+{
+	Matrix4d modelViewMatrix = ModelViewMatrix4d ();
+
+	Vector3d   translation;
+	Rotation4d rotation;
+
+	modelViewMatrix .get (translation, rotation);
+
+	double distance = math::abs (modelViewMatrix .translation ());
+
+	Matrix4d matrix;
+	matrix .set (translation, rotation, fontStyle -> getCurrentViewpoint () -> getScreenScale (distance, Viewport4i ()));
+
+	glLoadMatrixd (matrix .data ());
 }
 
 void
-ScreenText::draw ()
+ScreenText::display ()
 {
 	scale ();
 
-	glCallList (listId);
+	X3DTextGeometry::display ();
 }
 
 ScreenText::~ScreenText ()
 {
 	if (textureId)
 		glDeleteTextures (1, &textureId);
-
-	if (listId)
-		glDeleteLists (listId, 1);
 }
 
 const std::string ScreenFontStyle::componentName  = "Layout";

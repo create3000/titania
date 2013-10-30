@@ -1,5 +1,16 @@
 2013-10-30  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Text.cpp:
+	* Notification.wrl:
+	* FontStyle.h:
+	* FontStyle.cpp:
+	* X3DFontStyleNode.h:
+	* ScreenFontStyle.h:
+	* X3DFontStyleNode.cpp:
+	* ScreenFontStyle.cpp: 
+
+2013-10-30  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Text.h:
 	* Text.cpp:
 	* Layout.h:

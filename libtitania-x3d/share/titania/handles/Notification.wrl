@@ -9,7 +9,7 @@ EXTERNPROTO RoundedRectangle2D [
 
 PROTO Notification [
   # Custom fields
-  exposedField SFTime   cycleInterval 300
+  exposedField SFTime   cycleInterval 3
   exposedField SFFloat  cornerRadius 4
   exposedField SFFloat  linewidthScaleFactor 1
   exposedField SFVec2f  borderWidth 10 5

@@ -161,13 +161,7 @@ Text::build ()
 void
 Text::draw ()
 {
-	if (solid ())
-		glEnable (GL_CULL_FACE);
-
-	else
-		glDisable (GL_CULL_FACE);
-
-	text -> draw ();
+	text -> display ();
 }
 
 void

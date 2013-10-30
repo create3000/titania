@@ -76,6 +76,8 @@ PolygonText::PolygonText (Text* const text, const FontStyle* const fontStyle) :
 	}
 
 	initialize (text, fontStyle);
+	
+	compile (text);
 }
 
 void
