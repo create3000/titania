@@ -201,11 +201,11 @@ box2 <Type>::operator += (const box2 <Up> & box)
 	if (box .empty ())
 		return *this;
 
-	auto lsize1_2 = size () / 2.0f;
+	auto lsize1_2 = size () / Type (2);
 	auto lhs_min  = center () - lsize1_2;
 	auto lhs_max  = center () + lsize1_2;
 
-	auto rsize1_2 = box .size () / 2.0f;
+	auto rsize1_2 = box .size () / Type (2);
 	auto rhs_min  = box .center () - rsize1_2;
 	auto rhs_max  = box .center () + rsize1_2;
 

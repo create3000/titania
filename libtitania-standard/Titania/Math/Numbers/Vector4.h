@@ -524,6 +524,38 @@ max (const vector4 <Type> & lhs, const vector4 <Type> & rhs)
 	                       std::max (lhs .w (), rhs .w ()));
 }
 
+/**
+ * @returns Computes nearest integer not greater than arg. 
+ * @param a vector4 <Type>.\n
+ * @a Type is any type supporting copy constructions and comparisons with operator<.
+ */
+
+template <class Type>
+vector4 <Type>
+floor (const vector4 <Type> & arg)
+{
+	return vector4 <Type> (std::floor (arg .x ()),
+	                       std::floor (arg .y ()),
+	                       std::floor (arg .z ()),
+	                       std::floor (arg .w ()));
+}
+
+/**
+ * @returns Computes nearest integer not less than arg.
+ * @param a vector4 <Type>.\n
+ * @a Type is any type supporting copy constructions and comparisons with operator<.
+ */
+
+template <class Type>
+vector4 <Type>
+ceil (const vector4 <Type> & arg)
+{
+	return vector4 <Type> (std::ceil (arg .x ()),
+	                       std::ceil (arg .y ()),
+	                       std::ceil (arg .z ()),
+	                       std::ceil (arg .w ()));
+}
+
 ///  @relates vector4
 ///  @name Input/Output operations
 

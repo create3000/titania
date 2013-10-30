@@ -71,6 +71,7 @@
     <None Include="xxx\Stream\UrlStreamBuf.cpp" />
     <None Include="xxx\Stream\UrlStreamBuf.h" />
     <None Include="xxx\Box3.h" />
+    <None Include="ft-show-glyphs-positioning.c" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Quaternion\" />

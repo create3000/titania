@@ -1,15 +1,17 @@
 /*
  * Titania Styles CSS
  */
-
+ 
+/*
 #OutlineTreeViewEditor .textview-editable {
-	background-color: mix (@selected_bg_color, @bg_color, 0.9);
+	background-color: mix (bg[SELECTED], bg[NORMAL], 0.9);
 }
 
 #OutlineTreeViewEditor .textview-editable:selected {
 	color: @selected_fg_color;
 	background-color: @selected_bg_color;
 }
+*/
 
 #Console {
 	font-family: monospace;

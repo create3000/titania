@@ -54,7 +54,7 @@ DEF Lines Shape {
     string [ "Hällö Wörld!", "This is my line!", "now a new one." ]
     length [ 12, 0, 10 ]
     fontStyle FontStyle {
-      family "Ubuntu Mono"
+      family "SANS"
       style "BOLDITALIC"
       justify [ "BEGIN", "BEGIN" ]
     }
@@ -118,9 +118,27 @@ DEF YellowBox Transform {
   }
 }
 
-DEF LineBounds Transform { }
+DEF LineBounds Transform {
+  children [
+    BBox2 {
+      scale 12 1 1
+      color 1 0 0
+    }
+    BBox2 {
+      translation 0 -1 0
+      scale 5.28516 1 1
+      color 0 1 0
+    }
+    BBox2 {
+      translation 0 -2 0
+      scale 10 1 1
+      color 0 0 1
+    }
+  ]
+}
 
 DEF TextBounds Transform {
+  scale 12 2.49588 1
   children BBox2 { }
 }
 

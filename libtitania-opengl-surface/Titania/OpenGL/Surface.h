@@ -54,7 +54,7 @@
 // include order is important
 #include <gtkmm/drawingarea.h>
 
-#include "Context/Context.h"
+#include "Context/WindowContext.h"
 
 #include <memory>
 
@@ -76,6 +76,9 @@ public:
 	makeCurrent () const;
 
 	void
+	swapInterval (unsigned int) const;
+
+	void
 	swapBuffers () const;
 
 	void
@@ -85,11 +88,6 @@ public:
 protected:
 
 	Surface ();
-
-	///  @name Element access
-
-	const std::shared_ptr <Context> &
-	getContext ();
 
 	/// @name OpenGL handler
 
@@ -127,7 +125,7 @@ private:
 	sigc::connection construct_connection;
 	sigc::connection draw_connection;
 
-	std::shared_ptr <Context> context;
+	std::shared_ptr <WindowContext> context;
 
 };
 

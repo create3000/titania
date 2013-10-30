@@ -147,7 +147,7 @@ BrowserWindow::initialize ()
 
 	// Window
 	getWindow () .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::ARROW));
-	getWindow () .grab_focus ();
+	getWidget () .grab_focus ();
 }
 
 // Menu

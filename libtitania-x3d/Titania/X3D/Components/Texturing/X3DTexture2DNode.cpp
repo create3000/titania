@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -72,8 +72,8 @@ namespace X3D {
 const GLint X3DTexture2DNode::wrapTypes [2] = { GL_CLAMP, GL_REPEAT };
 
 X3DTexture2DNode::Fields::Fields () :
-	repeatS (new SFBool (true)),
-	repeatT (new SFBool (true)),
+	          repeatS (new SFBool (true)),
+	          repeatT (new SFBool (true)),
 	textureProperties (new SFNode ())
 { }
 
@@ -179,6 +179,7 @@ X3DTexture2DNode::updateTextureProperties ()
 
 		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapTypes [false]);
 		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapTypes [false]);
+		//glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, wrapTypes [false]);
 	}
 	else
 	{
@@ -190,11 +191,13 @@ X3DTexture2DNode::updateTextureProperties ()
 		{
 			glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, textureProperties -> getBoundaryModeS ());
 			glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, textureProperties -> getBoundaryModeT ());
+			//glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, textureProperties -> getBoundaryModeR ());
 		}
 		else
 		{
 			glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapTypes [repeatS ()]);
 			glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapTypes [repeatT ()]);
+			//glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, wrapTypes [true]);
 		}
 	}
 

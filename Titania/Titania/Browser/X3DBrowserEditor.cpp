@@ -203,8 +203,10 @@ X3DBrowserEditor::save (const basic::uri & worldURL, bool compressed)
 bool
 X3DBrowserEditor::close ()
 {
+	getWidget () .grab_focus ();
+
 	if (isSaved ())
-		return X3DBrowserWindowInterface::close ();
+		return X3DBrowserWidget::close ();
 
 	return true;
 }

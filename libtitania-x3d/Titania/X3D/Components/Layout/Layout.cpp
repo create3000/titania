@@ -54,6 +54,8 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Navigation/OrthoViewpoint.h"
 
+#include <Titania/Math/Functional.h>
+
 namespace titania {
 namespace X3D {
 
@@ -208,18 +210,6 @@ Layout::getScaleModeY () const
 		return ScaleModeType::FRACTION;
 	
 	return scaleModeY;
-}
-
-Vector2f
-Layout::getRectangleCenter () const
-{
-	return rectangleCenter;
-}
-
-Vector2f
-Layout::getRectangleSize () const
-{
-	return rectangleSize;
 }
 
 void
@@ -448,8 +438,8 @@ Layout::transform (const TraverseType type)
 		int viewportWidth  = viewport [2];
 		int viewportHeight = viewport [3];
 
-		Vector2f viewportSize        = viewpoint -> getViewportSize (viewport);
-		Vector2f parentRectangleSize = parent ? parent -> getRectangleSize () : viewportSize;
+		Vector2d viewportSize        = viewpoint -> getViewportSize (viewport);
+		Vector2d parentRectangleSize = parent ? parent -> getRectangleSize () : viewportSize;
 
 		switch (getSizeUnitX ())
 		{
@@ -477,7 +467,7 @@ Layout::transform (const TraverseType type)
 
 		// Calculate translation
 
-		Vector3f translation;
+		Vector3d translation;
 		
 		switch (getAlignX ())
 		{
@@ -485,6 +475,8 @@ Layout::transform (const TraverseType type)
 				translation .x (-(parentRectangleSize .x () - rectangleSize .x ()) / 2);
 				break;
 			case HorizontalAlignType::CENTER:
+				if (getSizeUnitX () == SizeUnitType::PIXEL and math::is_odd (viewportWidth))
+					translation .x (-0.5 * viewportSize .x () / viewportWidth);
 				break;
 			case HorizontalAlignType::RIGHT:
 				translation .x ((parentRectangleSize .x () - rectangleSize .x ()) / 2);
@@ -497,6 +489,8 @@ Layout::transform (const TraverseType type)
 				translation .y (-(parentRectangleSize .y () - rectangleSize .y ()) / 2);
 				break;
 			case VerticalAlignType::CENTER:
+				if (getSizeUnitX () == SizeUnitType::PIXEL and math::is_odd (viewportHeight))
+					translation .y (-0.5 * viewportSize .y () / viewportHeight);
 				break;
 			case VerticalAlignType::TOP:
 				translation .y ((parentRectangleSize .y () - rectangleSize .y ()) / 2);
@@ -505,7 +499,7 @@ Layout::transform (const TraverseType type)
 
 		// Calculate offset
 
-		Vector3f offset;	
+		Vector3d offset;	
 
 		switch (getOffsetUnitX ())
 		{
@@ -533,12 +527,12 @@ Layout::transform (const TraverseType type)
 
 		// Calculate scale
 
-		Vector3f scale (1, 1, 1);
+		Vector3d scale (1, 1, 1);
 	
-		Vector3f   currentTranslation, currentScale;
-		Rotation4f currentRotation;
+		Vector3d   currentTranslation, currentScale;
+		Rotation4d currentRotation;
 
-		Matrix4f modelViewMatrix = getModelViewMatrix (type);
+		Matrix4d modelViewMatrix = getModelViewMatrix (type);
 		modelViewMatrix .get (currentTranslation, currentRotation, currentScale);
 
 		switch (getScaleModeX ())
@@ -596,12 +590,12 @@ Layout::transform (const TraverseType type)
 
 		// Transform
 
-		Matrix4f matrix;
+		Matrix4d matrix;
 		matrix .set (currentTranslation, currentRotation);
 		matrix .translate (translation + offset);
 		matrix .scale (scale);
 
-		glLoadMatrixf (matrix .data ());
+		glLoadMatrixd (matrix .data ());
 
 		//__LOG__ << this << " : " << rectangleSize << std::endl;
 		//__LOG__ << this << " : " << scale << std::endl;

@@ -21,7 +21,7 @@ EXTERNPROTO Rotor [
   exposedField SFBool     loop
   exposedField SFTime     startTime
   exposedField SFTime     stopTime
-  eventOut     SFRotation value_changed
+  eventOut     SFRotation rotation_changed
 ]
 "../../../Titania/share/titania/Library/Prototypes/Engines/Rotor/Rotor.x3dv"
 
@@ -33,7 +33,7 @@ EXTERNPROTO Rotor2 [
   exposedField SFBool     loop
   exposedField SFTime     startTime
   exposedField SFTime     stopTime
-  eventOut     SFRotation value_changed
+  eventOut     SFRotation rotation_changed
 ]
 "../../../Titania/share/titania/Library/Prototypes/Engines/Rotor/Rotor.x3dv#Rotor"
 
@@ -195,4 +195,4 @@ Anchor {
 ImageTexture { }
 
 ROUTE _1.isActive TO _2.set_enabled
-ROUTE Rotor.value_changed TO Box.set_rotation
+ROUTE Rotor.rotation_changed TO Box.set_rotation

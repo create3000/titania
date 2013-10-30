@@ -1,3 +1,34 @@
+2013-10-30  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Text.h:
+	* Text.cpp:
+	* Layout.h:
+	* Notification.wrl:
+	* FontStyle.h:
+	* Layout.cpp:
+	* FontStyle.cpp:
+	* X3DBrowserSurface.cpp:
+	* X3DLayoutNode.h:
+	* Viewpoint.h:
+	* X3DExecutionContext.cpp:
+	* ScreenGroup.cpp:
+	* X3DFontStyleNode.h:
+	* Viewpoint.cpp:
+	* ScreenFontStyle.h:
+	* GeoViewpoint.h:
+	* X3DFontStyleNode.cpp:
+	* ScreenFontStyle.cpp:
+	* OrthoViewpoint.h:
+	* GeoViewpoint.cpp:
+	* X3DGeometryNode.h:
+	* ElevationGrid.cpp:
+	* IndexedLineSet.cpp:
+	* IndexedFaceSet.cpp:
+	* OrthoViewpoint.cpp:
+	* X3DViewpointNode.h:
+	* X3DTexture2DNode.cpp:
+	* X3DComposedGeometryNode.cpp: 
+
 2013-10-25  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* jsContext.cpp:

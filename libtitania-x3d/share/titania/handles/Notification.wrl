@@ -9,10 +9,10 @@ EXTERNPROTO RoundedRectangle2D [
 
 PROTO Notification [
   # Custom fields
-  exposedField SFTime   cycleInterval 3
+  exposedField SFTime   cycleInterval 300
   exposedField SFFloat  cornerRadius 4
   exposedField SFFloat  linewidthScaleFactor 1
-  exposedField SFVec2f  borderWidth 20 10
+  exposedField SFVec2f  borderWidth 10 5
   # Required fields
   eventIn      SFString set_string
   eventOut     SFBool   isActive
@@ -21,6 +21,7 @@ PROTO Notification [
 {
   Group {
     children [
+   
       Shape {
         appearance Appearance {
           material DEF BackgroundMaterial Material {
@@ -46,6 +47,7 @@ PROTO Notification [
         }
         geometry USE BackgroundGeometry
       }
+ 
       Shape {
         appearance Appearance {
           material DEF TextMaterial Material {
@@ -56,6 +58,7 @@ PROTO Notification [
           fontStyle IS fontStyle
         }
       }
+      
     ]
   }
 
@@ -99,7 +102,13 @@ function set_string (value, time)
 
 function set_textBounds (value, time)
 {
-	background .size = value .add (borderWidth);
+	background .size = value .add (borderWidth .multiply (2));
+	
+	if (is_even (background .size .x))
+		++ background .size .x;
+	
+	if (is_even (background .size .y))
+		++ background .size .y;
 }
 
 function set_start (value, time)
@@ -112,6 +121,11 @@ function set_end (value, time)
 {
 	if (!value && !startTimer .isActive)
 		isActive = false;
+}
+
+function is_even (value)
+{
+	return !(value & 1);
 }
 "
     directOutput TRUE
@@ -149,15 +163,15 @@ LayoutGroup {
   layout Layout {
     align [ "CENTER", "BOTTOM" ]
     offsetUnits "PIXEL"
-    offset [ 0, 50.5 ]
+    offset [ 0, 50 ]
     sizeUnits "PIXEL"
     size [ 200, 26 ]
     scaleMode "PIXEL"
   }
   children DEF Notification Notification {
-    fontStyle FontStyle {
-      family "sans"
-      size 18
+    fontStyle ScreenFontStyle {
+      family "SANS"
+      pointSize 9
       justify [ "MIDDLE", "MIDDLE" ]
     }
   }

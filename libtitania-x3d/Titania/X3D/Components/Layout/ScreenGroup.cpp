@@ -84,21 +84,22 @@ ScreenGroup::getBBox ()
 	return Box3f ();
 }
 
+// Same as in Text
 void
 ScreenGroup::scale (const TraverseType type) const
 {
-	Matrix4f modelViewMatrix = getModelViewMatrix (type);
+	Matrix4d modelViewMatrix = getModelViewMatrix (type);
 
-	Vector3f translation;
-	Rotation4f rotation;
+	Vector3d translation;
+	Rotation4d rotation;
 	modelViewMatrix .get (translation, rotation);
 
-	float distance = math::abs (modelViewMatrix .translation ());
+	double distance = math::abs (modelViewMatrix .translation ());
 
-	Matrix4f matrix;
+	Matrix4d matrix;
 	matrix .set (translation, rotation, getCurrentViewpoint () -> getScreenScale (distance, Viewport4i ()));
 
-	glLoadMatrixf (matrix .data ());
+	glLoadMatrixd (matrix .data ());
 }
 
 void

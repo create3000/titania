@@ -116,10 +116,10 @@ GeoViewpoint::getLookAtPositionOffset (Box3f bbox) const
 	       - getPosition ();
 }
 
-Vector3f
-GeoViewpoint::getScreenScale (float, const Vector4i & viewport) const
+Vector3d
+GeoViewpoint::getScreenScale (double, const Vector4i & viewport) const
 {
-	return Vector3f (1, 1, 1);
+	return Vector3d (1, 1, 1);
 }
 
 void

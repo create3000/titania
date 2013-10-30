@@ -50,13 +50,162 @@
 
 #include "X3DFontStyleNode.h"
 
-#include "../../Execution/X3DExecutionContext.h"
-#include "../../Miscellaneous/FontConfig.h"
-
-#include <Titania/OS/FileExists.h>
+#include "../Text/Text.h"
 
 namespace titania {
 namespace X3D {
+
+X3DTextGeometry::X3DTextGeometry () :
+	          bbox (),
+	  charSpacings (),
+	       bearing (),
+	minorAlignment (),
+	   translation ()
+{ }
+
+void
+X3DTextGeometry::initialize (Text* const text, const X3DFontStyleNode* const fontStyle)
+{
+	text -> lineBounds () .clear ();
+	charSpacings .clear ();
+	translation  .clear ();
+
+	if (text -> string () .empty ())
+	{
+		text -> origin ()     = Vector3d ();
+		text -> textBounds () = Vector2d ();
+
+		setBBox (Box3d ());
+	}
+	else
+	{
+		Box2d bbox;
+
+		double y1         = 0;
+		double lineHeight = fontStyle -> getLineHeight ();
+		double scale      = fontStyle -> getScale ();
+
+		// Calculate BBoxes.
+		size_t i = 0;
+
+		for (const auto & line : text -> string ())
+		{
+			Box2d    lineBBox = getLineBounds (fontStyle, line .getValue ());
+			Vector2d size     = lineBBox .size ();
+			Vector2d min      = lineBBox .center () - size / 2.0;
+			Vector2d max      = lineBBox .center () + size / 2.0;
+
+			if (i == 1)
+				y1 = max .y ();
+
+			// Calculate charSpacing and lineBounds.
+
+			double    charSpacing = 0;
+			Vector2d lineBound   = Vector2d (size .x (), lineHeight) * scale;
+			double    length      = text -> getLength (i);
+
+			if (length)
+			{
+				charSpacing = (length - lineBound .x ()) / (line .length () - 1) / scale;
+				lineBound .x (length);
+				size .x (length / scale);
+			}
+
+			charSpacings  .emplace_back (charSpacing);
+			text -> lineBounds () .emplace_back (lineBound);
+
+			// Calculate line translation.
+
+			switch (fontStyle -> getMajorAlignment ())
+			{
+				case X3DFontStyleNode::Alignment::BEGIN:
+				case X3DFontStyleNode::Alignment::FIRST:
+					translation .emplace_back (0, -(i * lineHeight));
+					break;
+				case X3DFontStyleNode::Alignment::MIDDLE:
+					translation .emplace_back (-min .x () - size .x () / 2, -(i * lineHeight));
+					break;
+				case X3DFontStyleNode::Alignment::END:
+					translation .emplace_back (-min .x () - size .x (), -(i * lineHeight));
+					break;
+			}
+
+			// Calculate center.
+
+			Vector2d center = Vector2d (min .x (), min .y ()) + size / 2.0;
+
+			// Add bbox.
+
+			bbox += Box2d (size * scale, (center + translation [i]) * scale);
+
+			++ i;
+		}
+
+		Vector2d size    = bbox .size ();
+		Vector2d size1_2 = size / 2.0;
+		Vector2d center  = bbox .center ();
+		Vector2d min     = center - size1_2;
+		Vector2d max     = center + size1_2;
+
+		text -> textBounds () = size;
+
+		if (string () .size () > 1)
+		{
+			text -> lineBounds () .front () .setY (max .y () + (lineHeight - y1) * scale);
+			text -> lineBounds () .back  () .setY (text -> textBounds () .getY () - (text -> lineBounds () [0] .getY () + (string () .size () - 2) * fontStyle -> spacing ()));
+		}
+
+		bearing = Vector2d (0, -max .y ());
+
+		switch (fontStyle -> getMinorAlignment ())
+		{
+			case X3DFontStyleNode::Alignment::BEGIN:
+				minorAlignment = Vector2d (0, -max .y ());
+				break;
+			case X3DFontStyleNode::Alignment::FIRST:
+				minorAlignment = Vector2d ();
+				break;
+			case X3DFontStyleNode::Alignment::MIDDLE:
+				minorAlignment = Vector2d (0, text -> textBounds () .getY () / 2 - max .y ());
+				break;
+			case X3DFontStyleNode::Alignment::END:
+				minorAlignment = Vector2d (0, text -> textBounds () .getY () - max .y ());
+				break;
+		}
+
+		// Translate bbox by minorAlignment
+		center += minorAlignment;
+		min     = center - size1_2;
+		max     = center + size1_2;
+
+		text -> origin () = Vector3d (min .x (), max .y (), 0);
+
+		setBBox (Box3d (Vector3d (min .x (), min .y (), 0),
+		                Vector3d (max .x (), max .y (), 0),
+		                true));
+	}
+}
+
+Box2d
+X3DTextGeometry::getLineBounds (const X3DFontStyleNode* const fontStyle, const std::string & line) const
+{
+	Vector2d min, max;
+
+	getLineBounds (line, min, max);
+
+	switch (fontStyle -> getMajorAlignment ())
+	{
+		case X3DFontStyleNode::Alignment::BEGIN:
+		case X3DFontStyleNode::Alignment::FIRST:
+			return Box2d (Vector2d (0, min .y ()), Vector2d (max .x (), max .y ()), true);
+
+		case X3DFontStyleNode::Alignment::MIDDLE:
+		case X3DFontStyleNode::Alignment::END:
+			return Box2d (Vector2d (min .x (), min .y ()), Vector2d (max .x (), max .y ()), true);
+	}
+
+	return Box2d (Vector2d (), Vector2d ());
+}
 
 X3DFontStyleNode::Fields::Fields () :
 	     family (new MFString ({ "SERIF" })),
@@ -72,10 +221,9 @@ X3DFontStyleNode::Fields::Fields () :
 X3DFontStyleNode::X3DFontStyleNode () :
 	X3DPropertyNode (),
 	         fields (),
-	           font (),
-	     lineHeight (1),
-	          scale (1),
-	     alignments ({ Alignment::BEGIN, Alignment::BEGIN })
+	         italic (false),
+	           bold (false),
+	     alignments ({ Alignment::BEGIN, Alignment::FIRST })
 {
 	addNodeType (X3DConstants::X3DFontStyleNode);
 }
@@ -85,12 +233,10 @@ X3DFontStyleNode::initialize ()
 {
 	X3DPropertyNode::initialize ();
 
-	family  () .addInterest (this, &X3DFontStyleNode::set_font);
-	style   () .addInterest (this, &X3DFontStyleNode::set_font);
-	spacing () .addInterest (this, &X3DFontStyleNode::set_font);
+	style ()   .addInterest (this, &X3DFontStyleNode::set_style);
 	justify () .addInterest (this, &X3DFontStyleNode::set_justify);
 
-	set_font ();
+	set_style ();
 	set_justify ();
 }
 
@@ -100,107 +246,23 @@ X3DFontStyleNode::getAlignment (const size_t index) const
 	if (justify () [index] == "BEGIN")
 		return Alignment::BEGIN;
 
-	else if (justify () [index] == "FIRST")
+	if (justify () [index] == "FIRST")
 		return Alignment::FIRST;
 
-	else if (justify () [index] == "MIDDLE")
+	if (justify () [index] == "MIDDLE")
 		return Alignment::MIDDLE;
 
-	else if (justify () [index] == "END")
+	if (justify () [index] == "END")
 		return Alignment::END;
 
 	return index ? Alignment::FIRST : Alignment::BEGIN;
 }
 
-int
-X3DFontStyleNode::loadFont ()
-{
-	bool isExactMatch = false;
-
-	for (const auto & familyName : family ())
-	{
-		std::string filename = getFilename (familyName, isExactMatch);
-
-		if (isExactMatch)
-		{
-			// Create a pixmap font from a TrueType file.
-			font .reset (new FTPolygonFont (filename .c_str ()));
-
-			// Check for errors	
-			if (font -> Error () == 0)
-				return 0;
-		}
-	}
-
-	font .reset (new FTPolygonFont (getFilename ("SERIF", isExactMatch) .c_str ()));
-	
-	return font -> Error ();
-}
-
-std::string
-X3DFontStyleNode::getFilename (const String & familyName, bool & isExactMatch) const
-{
-	// Test if familyName is a valid path
-
-	basic::uri uri = getExecutionContext () -> getWorldURL () .transform (familyName .raw ());
-	
-	if (uri .is_local ())
-	{
-		if (os::file_exists (uri .path ()))
-		{
-			isExactMatch = true;
-			return uri .path ();
-		}
-	}
-
-	// Get a filename from font server
-
-	FcPattern* pattern = FcNameParse ((FcChar8*) familyName .c_str ());
-
-	FcPatternAddString (pattern, "style", (FcChar8*) (style () == "BOLDITALIC" ? "bold italic" : style () .getValue () .c_str ()));
-
-	FcConfigSubstitute (nullptr, pattern, FcMatchPattern);
-	FcDefaultSubstitute (pattern);
-
-	String familyNameAfterConfiguration = get_family_name (pattern);
-
-	FcResult   result;
-	FcPattern* match = FcFontMatch (nullptr, pattern, &result);
-
-	String familyNameAfterMatching = get_family_name (match);
-
-	isExactMatch = familyNameAfterConfiguration .lowercase () == familyNameAfterMatching .lowercase ();
-
-	std::string filename = get_filename (match);
-
-	FcPatternDestroy (pattern);
-	FcPatternDestroy (match);
-
-	return filename;
-}
-
 void
-X3DFontStyleNode::set_font ()
+X3DFontStyleNode::set_style ()
 {
-	// Create a polygon font from a TrueType file.
-	loadFont ();
-	
-	if (font -> Error () == 0)
-	{
-		font -> CharMap (ft_encoding_unicode);
-		font -> UseDisplayList (true);
-
-		// Set the font size to large text.
-		font -> FaceSize (100);
-
-		// Calculate lineHeight.
-		lineHeight = font -> LineHeight () * spacing ();
-
-		// Calculate scale.
-		scale = getSize () / font -> LineHeight ();
-	}
-	else
-		font .reset ();
+	italic = style () == "ITALIC" or style () == "BOLDITALIC";
+	bold   = style () == "BOLD"   or style () == "BOLDITALIC";
 }
 
 void
@@ -209,18 +271,10 @@ X3DFontStyleNode::set_justify ()
 	alignments [0] = justify () .size () > 0
 	                 ? getAlignment (0)
 						  : Alignment::BEGIN;
-
+						
 	alignments [1] = justify () .size () > 1
 	                 ? getAlignment (1)
 						  : Alignment::FIRST;
-}
-
-void
-X3DFontStyleNode::dispose ()
-{
-	font .reset ();
-
-	X3DPropertyNode::dispose ();
 }
 
 } // X3D

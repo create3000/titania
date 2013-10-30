@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,11 +51,81 @@
 #ifndef __TITANIA_X3D_COMPONENTS_TEXT_X3DFONT_STYLE_NODE_H__
 #define __TITANIA_X3D_COMPONENTS_TEXT_X3DFONT_STYLE_NODE_H__
 
+#include "../../Types/Geometry.h"
 #include "../Core/X3DPropertyNode.h"
-#include "../../Miscellaneous/FontPtr.h"
 
 namespace titania {
 namespace X3D {
+
+class Text;
+class X3DFontStyleNode;
+
+class X3DTextGeometry
+{
+public:
+
+	X3DTextGeometry ();
+
+	const Box3d &
+	getBBox () const
+	{ return bbox; }
+
+	virtual
+	bool
+	isTransparent () const = 0;
+
+	virtual
+	void
+	draw () = 0;
+
+	virtual
+	~X3DTextGeometry ()
+	{ }
+
+
+protected:
+
+	void
+	initialize (Text* const, const X3DFontStyleNode* const);
+
+	void
+	setBBox (const Box3d & value)
+	{ bbox = value; }
+	
+	const std::deque <double> &
+	getCharSpacing () const
+	{ return charSpacings; }
+	
+	const Vector2d &
+	getBearing () const
+	{ return bearing; }
+	
+	const Vector2d &
+	getMinorAlignment () const
+	{ return minorAlignment; }
+	
+	const std::deque <Vector2d> &
+	getTranslation () const
+	{ return translation; }
+
+	virtual
+	void
+	getLineBounds (const std::string &, Vector2d &, Vector2d &) const = 0;
+
+
+private:
+
+	Box2d
+	getLineBounds (const X3DFontStyleNode* const, const std::string &) const;
+
+	Box3d bbox;
+
+	std::deque <double>   charSpacings;
+	Vector2d              bearing;
+	Vector2d              minorAlignment;
+	std::deque <Vector2d> translation;
+
+};
 
 class X3DFontStyleNode :
 	public X3DPropertyNode
@@ -69,7 +139,7 @@ public:
 		MIDDLE,
 		END
 	};
-	
+
 	///  @name Fields
 
 	MFString &
@@ -138,6 +208,26 @@ public:
 
 	///  @name Member access
 
+	virtual
+	std::shared_ptr <X3DTextGeometry>
+	getTextGeometry (Text* const) const = 0;
+
+	bool
+	isItalic () const
+	{ return italic; }
+
+	bool
+	isBold () const
+	{ return bold; }
+
+	virtual
+	double
+	getLineHeight () const = 0;
+
+	virtual
+	double
+	getScale () const = 0;
+
 	Alignment
 	getMajorAlignment () const
 	{ return alignments [0]; }
@@ -145,22 +235,6 @@ public:
 	Alignment
 	getMinorAlignment () const
 	{ return alignments [1]; }
-
-	const FontPtr &
-	getFont () const
-	{ return font; }
-	
-	float
-	getLineHeight () const
-	{ return lineHeight; }
-
-	float
-	getScale () const
-	{ return scale; }
-
-	virtual
-	void
-	dispose () final;
 
 
 protected:
@@ -173,29 +247,18 @@ protected:
 	void
 	initialize () override;
 
-	///  @name Member access
-
-	virtual
-	float
-	getSize () const = 0;
-
-	///  @name Event handlers
-
-	void
-	set_font ();
-
 
 private:
 
 	///  @name Member access
 
-	int
-	loadFont ();
-
-	std::string
-	getFilename (const String &, bool &) const;
+	Alignment
+	getAlignment (const size_t) const;
 
 	///  @name Event handlers
+
+	void
+	set_style ();
 
 	void
 	set_justify ();
@@ -218,13 +281,10 @@ private:
 
 	Fields fields;
 
-	Alignment
-	getAlignment (const size_t) const;
+	bool italic;
+	bool bold;
 
-	FontPtr   font;
-	float     lineHeight;
-	float     scale;
-	Alignment alignments [2];
+	std::array <Alignment, 2> alignments;
 
 };
 

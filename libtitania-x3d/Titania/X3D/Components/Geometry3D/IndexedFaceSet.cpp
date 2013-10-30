@@ -116,10 +116,15 @@ IndexedFaceSet::initialize ()
 {
 	X3DComposedGeometryNode::initialize ();
 
-	coordIndex ()    .addInterest (this, &IndexedFaceSet::set_coordIndex);
 	texCoordIndex () .addInterest (this, &IndexedFaceSet::set_texCoordIndex);
 	colorIndex ()    .addInterest (this, &IndexedFaceSet::set_colorIndex);
 	normalIndex ()   .addInterest (this, &IndexedFaceSet::set_normalIndex);
+	coordIndex ()    .addInterest (this, &IndexedFaceSet::set_coordIndex);
+
+	texCoord () .addInterest (this, &IndexedFaceSet::set_texCoordIndex);
+	color ()    .addInterest (this, &IndexedFaceSet::set_colorIndex);
+	normal ()   .addInterest (this, &IndexedFaceSet::set_normalIndex);
+	coord ()    .addInterest (this, &IndexedFaceSet::set_coordIndex);
 
 	set_coordIndex ();
 }
@@ -327,6 +332,10 @@ IndexedFaceSet::build ()
 
 	int face = 0;
 
+	Vector3f faceNormal;
+	Color3f  faceColor;
+	Color4f  faceColorRGBA;
+
 	GLenum vertexMode        = getVertexMode (polygons [0] .elements [0] .size ());
 	GLenum currentVertexMode = 0;
 	size_t vertices          = 0;
@@ -335,10 +344,6 @@ IndexedFaceSet::build ()
 	{
 		for (const auto element : polygon .elements)
 		{
-			Vector3f    faceNormal;
-			SFColor     faceColor;
-			SFColorRGBA faceColorRGBA;
-
 			if (not colorPerVertex ())
 			{
 				if (_color and colorIndex () [face] > -1)

@@ -113,8 +113,8 @@ public:
 	///  @name Member access
 
 	virtual
-	Vector3f
-	getScreenScale (float, const Vector4i &) const final;
+	Vector3d
+	getScreenScale (double, const Vector4i &) const final;
 
 	///  @name Operations
 

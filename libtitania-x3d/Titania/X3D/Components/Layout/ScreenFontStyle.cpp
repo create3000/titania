@@ -48,12 +48,265 @@
  *
  ******************************************************************************/
 
+#include <gdkmm.h>
+
 #include "ScreenFontStyle.h"
 
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Navigation/X3DViewpointNode.h"
+#include "../Text/Text.h"
+
+#include <Titania/Physics/Constants.h>
 
 namespace titania {
 namespace X3D {
+
+static constexpr double M_POINT = M_INCH / 72;
+
+ScreenText::ScreenText (Text* const text, const ScreenFontStyle* const fontStyle) :
+	X3DTextGeometry (),
+	           text (text),
+	      fontStyle (fontStyle),
+	        context (Cairo::Context::create (Cairo::ImageSurface::create (Cairo::FORMAT_RGB24, 0, 0))),
+	      textureId (0),
+	         listId (glGenLists (1)),
+	            min (),
+	            max ()
+{
+	__LOG__ << std::endl;
+
+	glGenTextures (1, &textureId);
+
+	configure (context);
+	initialize (text, fontStyle);
+	setTextBounds ();
+
+	build ();
+	compile ();
+}
+
+void
+ScreenText::configure (const Cairo::RefPtr <Cairo::Context> & context)
+{
+	std::string family = fontStyle -> family () .empty () ? "Serif" : fontStyle -> family () [0] .str ();
+	auto        slant  = fontStyle -> isItalic () ? Cairo::FONT_SLANT_ITALIC : Cairo::FONT_SLANT_NORMAL;
+	auto        weight = fontStyle -> isBold ()   ? Cairo::FONT_WEIGHT_BOLD  : Cairo::FONT_WEIGHT_NORMAL;
+
+	context -> select_font_face (family, slant, weight);
+	context -> set_font_size (fontStyle -> getSize ());
+}
+
+void
+ScreenText::getLineBounds (const std::string & line, Vector2d & min, Vector2d & max) const
+{
+	Cairo::TextExtents textExtents;
+
+	context -> get_text_extents (line, textExtents);
+
+	min = Vector2d (textExtents .x_bearing, -textExtents .y_bearing - textExtents .height);
+	max = min + Vector2d (textExtents .width, textExtents .height);
+}
+
+void
+ScreenText::setTextBounds ()
+{
+	__LOG__ << text -> string () << std::endl;
+
+	text -> textBounds () = math::ceil (text -> textBounds () .getValue ());
+
+	Box3d bbox = getBBox ();
+
+	Vector3d size    = bbox .size ();
+	Vector3d size1_2 = size / 2.0;
+	Vector3d center  = bbox .center ();
+
+	min  = center - size1_2;
+	max  = center + size1_2;
+
+	switch (fontStyle -> getMajorAlignment ())
+	{
+		case X3DFontStyleNode::Alignment::BEGIN:
+		case X3DFontStyleNode::Alignment::FIRST:
+			max .x (min .x () + text -> textBounds () .getX ());
+			break;
+		case X3DFontStyleNode::Alignment::MIDDLE:
+			min .x (std::round (min .x ()));
+			max .x (min .x () + text -> textBounds () .getX ());
+			break;
+		case X3DFontStyleNode::Alignment::END:
+			min .x (max .x () - text -> textBounds () .getX ());
+			break;
+	}
+
+	switch (fontStyle -> getMinorAlignment ())
+	{
+		case X3DFontStyleNode::Alignment::BEGIN:
+		case X3DFontStyleNode::Alignment::FIRST:
+			min .y (max .y () - text -> textBounds () .getY ());
+			break;
+		case X3DFontStyleNode::Alignment::MIDDLE:
+			max .y (std::round (max .y ()));
+			min .y (max .y () - text -> textBounds () .getY ());
+			break;
+		case X3DFontStyleNode::Alignment::END:
+			max .y (min .y () + text -> textBounds () .getY ());
+			break;
+	}
+
+	setBBox (Box3d (min, max, true));
+}
+
+void
+ScreenText::build ()
+{
+	// Create context
+	
+	auto surface = Cairo::ImageSurface::create (Cairo::FORMAT_ARGB32,
+	                                            text -> textBounds () .getX (),
+	                                            text -> textBounds () .getY ());
+
+	auto context = Cairo::Context::create (surface);
+
+	configure (context);
+	context -> set_source_rgb (1, 1, 1);
+
+	// Render lines.
+
+	Vector2d alignment = getBearing ();
+
+	switch (fontStyle -> getMajorAlignment ())
+	{
+		case X3DFontStyleNode::Alignment::BEGIN:
+		case X3DFontStyleNode::Alignment::FIRST:
+			break;
+		case X3DFontStyleNode::Alignment::MIDDLE:
+			alignment += Vector2d (text -> textBounds () .getX () / 2, 0);
+			break;
+		case X3DFontStyleNode::Alignment::END:
+			alignment += Vector2d (text -> textBounds () .getX (), 0);
+			break;
+	}
+
+	auto                             font = context -> get_scaled_font ();
+	std::vector <Cairo::Glyph>       glyphs;
+	std::vector <Cairo::TextCluster> clusters;
+	Cairo::TextClusterFlags          cluster_flags;
+
+	size_t i = 0;
+
+	for (const auto & line : text -> string ())
+	{
+		double x = alignment .x () + getTranslation () [i] .x ();
+		double y = -(alignment .y () + getTranslation () [i] .y ());
+
+		font -> text_to_glyphs (x, y, line, glyphs, clusters, cluster_flags);
+
+		double space       = 0;
+		double charSpacing = getCharSpacing () [i];
+
+		for (auto & glyph : glyphs)
+		{
+			glyph .x += space;
+			space += charSpacing;
+		}
+
+		context -> show_text_glyphs (line, glyphs, clusters, cluster_flags);
+
+		++ i;
+	}
+
+	if (surface -> get_width () and surface -> get_height ())
+		surface -> write_to_png ("/home/holger/test.png");
+
+	// Upload texture
+
+	glBindTexture (GL_TEXTURE_2D, textureId);
+
+	glTexParameteri (GL_TEXTURE_2D, GL_GENERATE_MIPMAP,    false);
+	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,     GL_CLAMP);
+	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,     GL_CLAMP);
+
+	glTexImage2D (GL_TEXTURE_2D,
+	              0,     // This texture is level 0 in mimpap generation.
+	              GL_RGBA,
+	              surface -> get_width (), surface -> get_height (),
+	              false, // border
+	              GL_BGRA, GL_UNSIGNED_BYTE,
+	              surface -> get_data ());
+
+	glBindTexture (GL_TEXTURE_2D, 0);
+}
+
+// Same as in ScreenGroup
+void
+ScreenText::scale () const
+{
+	Matrix4d modelViewMatrix = ModelViewMatrix4d ();
+
+	Vector3d   translation;
+	Rotation4d rotation;
+
+	modelViewMatrix .get (translation, rotation);
+
+	double distance = math::abs (modelViewMatrix .translation ());
+
+	Matrix4d matrix;
+	matrix .set (translation, rotation, fontStyle -> getCurrentViewpoint () -> getScreenScale (distance, Viewport4i ()));
+
+	glLoadMatrixd (matrix .data ());
+}
+
+void
+ScreenText::compile ()
+{
+	glNewList (listId, GL_COMPILE);
+
+	glEnable (GL_TEXTURE_2D);
+	glBindTexture (GL_TEXTURE_2D, textureId);
+	glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+
+	glMatrixMode (GL_TEXTURE);
+	glLoadIdentity ();
+	glMatrixMode (GL_MODELVIEW);
+	
+	//
+
+	glBegin (GL_QUADS);
+	glNormal3d (0, 0, 1);
+	glTexCoord2d (0, 1);
+	glVertex3d (min .x (), min .y (), min .z ());
+	glTexCoord2d (1, 1);
+	glVertex3d (max .x (), min .y (), min .z ());
+	glTexCoord2d (1, 0);
+	glVertex3d (max .x (), max .y (), max .z ());
+	glTexCoord2d (0, 0);
+	glVertex3d (min .x (), max .y (), min .z ());
+	glEnd ();
+
+	//
+
+	glDisable (GL_TEXTURE_2D);
+	glEndList ();
+}
+
+void
+ScreenText::draw ()
+{
+	scale ();
+
+	glCallList (listId);
+}
+
+ScreenText::~ScreenText ()
+{
+	if (textureId)
+		glDeleteTextures (1, &textureId);
+
+	if (listId)
+		glDeleteLists (listId, 1);
+}
 
 const std::string ScreenFontStyle::componentName  = "Layout";
 const std::string ScreenFontStyle::typeName       = "ScreenFontStyle";
@@ -86,10 +339,38 @@ ScreenFontStyle::create (X3DExecutionContext* const executionContext) const
 	return new ScreenFontStyle (executionContext);
 }
 
-float
+void
+ScreenFontStyle::initialize ()
+{
+	X3DFontStyleNode::initialize ();
+
+	//pointSize () .addInterest (this, &ScreenFontStyle::set_font);
+}
+
+std::shared_ptr <X3DTextGeometry>
+ScreenFontStyle::getTextGeometry (Text* const text) const
+{
+	return std::shared_ptr <X3DTextGeometry> (new ScreenText (text, this));
+}
+
+double
+ScreenFontStyle::getLineHeight () const
+{
+	return getSize () * spacing ();
+}
+
+double
 ScreenFontStyle::getSize () const
 {
-	return pointSize ();
+	if (glXGetCurrentContext ())
+	{
+		double height   = Gdk::Screen::get_default () -> get_height ();
+		double height_m = Gdk::Screen::get_default () -> get_height_mm () / 1000.0;
+
+		return M_POINT * pointSize () * height / height_m;
+	}
+
+	return 0;
 }
 
 } // X3D

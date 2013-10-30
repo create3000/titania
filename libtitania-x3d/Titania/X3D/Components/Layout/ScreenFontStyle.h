@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -53,8 +53,64 @@
 
 #include "../Text/X3DFontStyleNode.h"
 
+#include <cairomm/cairomm.h>
+
 namespace titania {
 namespace X3D {
+
+class ScreenFontStyle;
+
+class ScreenText :
+	public X3DTextGeometry
+{
+public:
+
+	ScreenText (Text* const, const ScreenFontStyle* const);
+
+	virtual
+	bool
+	isTransparent () const
+	{ return true; }
+
+	virtual
+	void
+	draw () final;
+
+	virtual
+	~ScreenText ();
+
+private:
+
+	void
+	configure (const Cairo::RefPtr <Cairo::Context> &);
+
+	virtual
+	void
+	getLineBounds (const std::string &, Vector2d &, Vector2d &) const final;
+
+	void
+	setTextBounds ();
+
+	void
+	build ();
+
+	void
+	compile ();
+
+	void
+	scale () const;
+
+	Text* const                  text;
+	const ScreenFontStyle* const fontStyle;
+
+	Cairo::RefPtr <Cairo::Context> context;
+	GLuint                         textureId;
+	GLuint                         listId;
+	
+	Vector3d min;
+	Vector3d max;
+
+};
 
 class ScreenFontStyle :
 	public X3DFontStyleNode
@@ -97,15 +153,37 @@ public:
 	pointSize () const
 	{ return *fields .pointSize; }
 
-
-private:
-
 	///  @name Member access
 
 	virtual
-	float
-	getSize () const final;
+	std::shared_ptr <X3DTextGeometry>
+	getTextGeometry (Text* const) const;
 
+	double
+	getSize () const;
+
+	virtual
+	double
+	getLineHeight () const final;
+
+	virtual
+	double
+	getScale () const final
+	{ return 1; }
+
+
+protected:
+
+	friend class ScreenText;
+
+
+private:
+
+	/// @name Construction
+
+	virtual
+	void
+	initialize () final;
 
 	///  @name Static members
 

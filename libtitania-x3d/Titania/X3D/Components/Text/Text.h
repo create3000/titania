@@ -156,8 +156,18 @@ public:
 
 	virtual
 	bool
+	isTransparent () const
+	{ return text -> isTransparent (); }
+
+	virtual
+	bool
 	isLineGeometry () const final
 	{ return false; }
+
+	///  @name Member access
+
+	float
+	getLength (const size_t);
 
 	///  @name Operations
 
@@ -165,11 +175,12 @@ public:
 	void
 	draw () final;
 
+	virtual
+	void
+	dispose () final;
+
 
 private:
-
-	float
-	getLength (const size_t);
 
 	const X3DFontStyleNode*
 	getFontStyle () const;
@@ -178,13 +189,9 @@ private:
 	Box3f
 	createBBox () final;
 
-	Box2f
-	getLineBBox (const X3DFontStyleNode*, const std::string &);
-
 	virtual
 	void
 	build () final;
-
 
 	///  @name Static members
 
@@ -210,9 +217,7 @@ private:
 
 	Fields fields;
 
-	std::deque <float>    charSpacings;
-	Vector2f              minorAlignment;
-	std::deque <Vector2f> translation;
+	std::shared_ptr <X3DTextGeometry> text;
 
 };
 

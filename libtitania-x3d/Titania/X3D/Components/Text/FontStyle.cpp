@@ -51,9 +51,74 @@
 #include "FontStyle.h"
 
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Miscellaneous/FontConfig.h"
+#include "../Text/Text.h"
+
+#include <Titania/OS/FileExists.h>
 
 namespace titania {
 namespace X3D {
+
+PolygonText::PolygonText (Text* const text, const FontStyle* const fontStyle) :
+	X3DTextGeometry (),
+	           text (text),
+	      fontStyle (fontStyle)
+{
+	if (not fontStyle -> getFont ())
+	{
+		text -> origin ()     = Vector3d ();
+		text -> textBounds () = Vector2d ();
+		text -> lineBounds () .clear (),
+
+		setBBox (Box3d ());
+
+		return;
+	}
+
+	initialize (text, fontStyle);
+}
+
+void
+PolygonText::getLineBounds (const std::string & line, Vector2d & min, Vector2d & max) const
+{
+	FTBBox  ftbbox = fontStyle -> getFont () -> BBox (line .c_str ());
+	FTPoint ftmin  = ftbbox .Lower ();
+	FTPoint ftmax  = ftbbox .Upper ();
+
+	min = Vector2d (ftmin .X (), ftmin .Y ());
+	max = Vector2d (ftmax .X (), ftmax .Y ());
+}
+
+void
+PolygonText::draw ()
+{
+	if (not fontStyle -> getFont ())
+		return;
+
+	glPushMatrix ();
+	{
+		glTranslatef (getMinorAlignment () .x (), getMinorAlignment () .y (), 0);
+
+		double size = fontStyle -> getScale ();
+
+		glScalef (size, size, size);
+
+		// Render lines.
+		size_t i = 0;
+
+		for (const auto & line : text -> string ())
+		{
+			fontStyle -> getFont () -> Render (line .getValue () .c_str (),
+			                                   -1,
+			                                   FTPoint (getTranslation () [i] .x (), getTranslation () [i] .y (), 0),
+			                                   FTPoint (getCharSpacing () [i], 0, 0),
+			                                   FTGL::RENDER_ALL);
+
+			++ i;
+		}
+	}
+	glPopMatrix ();
+}
 
 const std::string FontStyle::componentName  = "Text";
 const std::string FontStyle::typeName       = "FontStyle";
@@ -66,7 +131,10 @@ FontStyle::Fields::Fields () :
 FontStyle::FontStyle (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DFontStyleNode (),
-	          fields ()
+	          fields (),
+	            font (),
+	      lineHeight (1),
+	           scale (1)
 {
 	addField (inputOutput,    "metadata",    metadata ());
 	addField (initializeOnly, "family",      family ());
@@ -91,13 +159,121 @@ FontStyle::initialize ()
 {
 	X3DFontStyleNode::initialize ();
 
-	size () .addInterest (this, &FontStyle::set_font);
+	family  () .addInterest (this, &FontStyle::set_font);
+	style   () .addInterest (this, &FontStyle::set_font);
+	size    () .addInterest (this, &FontStyle::set_font);
+	spacing () .addInterest (this, &FontStyle::set_font);
+
+	set_font ();
 }
 
-float
-FontStyle::getSize () const
+std::shared_ptr <X3DTextGeometry>
+FontStyle::getTextGeometry (Text* const text) const
 {
-	return size ();
+	return std::shared_ptr <X3DTextGeometry> (new PolygonText (text, this));
+}
+
+void
+FontStyle::set_font ()
+{
+	// Create a polygon font from a TrueType file.
+
+	if (loadFont () == 0)
+	{
+		font -> CharMap (ft_encoding_unicode);
+		font -> UseDisplayList (true);
+
+		// Set the font size to large text.
+		font -> FaceSize (100);
+
+		// Calculate lineHeight.
+		lineHeight = font -> LineHeight () * spacing ();
+
+		// Calculate scale.
+		scale = size () / font -> LineHeight ();
+	}
+	else
+		font .reset ();
+}
+
+int
+FontStyle::loadFont ()
+{
+	bool isExactMatch = false;
+
+	for (const auto & familyName : family ())
+	{
+		std::string filename = getFilename (familyName, isExactMatch);
+
+		if (isExactMatch)
+		{
+			// Create a pixmap font from a TrueType file.
+			font .reset (new FTPolygonFont (filename .c_str ()));
+
+			// Check for errors
+			if (font -> Error () == 0)
+				return 0;
+		}
+	}
+
+	font .reset (new FTPolygonFont (getFilename ("SERIF", isExactMatch) .c_str ()));
+
+	return font -> Error ();
+}
+
+std::string
+FontStyle::getFilename (const String & familyName, bool & isExactMatch) const
+{
+	// Test if familyName is a valid path
+
+	basic::uri uri = getExecutionContext () -> getWorldURL () .transform (familyName .raw ());
+
+	if (uri .is_local ())
+	{
+		if (os::file_exists (uri .path ()))
+		{
+			isExactMatch = true;
+			return uri .path ();
+		}
+	}
+
+	// Get a filename from font server
+
+	//FcPattern* pattern = FcNameParse ((FcChar8*) (familyName == "TYPEWRITER" ? "monospace" : familyName .c_str ()));
+	FcPattern* pattern = FcPatternCreate ();
+	FcPatternAddString (pattern, FC_FAMILY, (FcChar8*) (familyName == "TYPEWRITER" ? "monospace" : familyName .c_str ()));
+
+	//FcPatternAddString (pattern, "style", (FcChar8*) (style () == "BOLDITALIC" ? "bold italic" : style () .getValue () .c_str ()));
+	FcPatternAddInteger (pattern, FC_WEIGHT, isBold ()   ? FC_WEIGHT_BOLD  : FC_WEIGHT_NORMAL);
+	FcPatternAddInteger (pattern, FC_SLANT,  isItalic () ? FC_SLANT_ITALIC : FC_SLANT_ROMAN);
+	FcPatternAddBool (pattern, FC_SCALABLE, FcTrue);
+
+	FcConfigSubstitute (nullptr, pattern, FcMatchPattern);
+	FcDefaultSubstitute (pattern);
+
+	String familyNameAfterConfiguration = get_family_name (pattern);
+
+	FcResult   result;
+	FcPattern* match = FcFontMatch (nullptr, pattern, &result);
+
+	String familyNameAfterMatching = get_family_name (match);
+
+	isExactMatch = familyNameAfterConfiguration .lowercase () == familyNameAfterMatching .lowercase ();
+
+	std::string filename = get_filename (match);
+
+	FcPatternDestroy (pattern);
+	FcPatternDestroy (match);
+
+	return filename;
+}
+
+void
+FontStyle::dispose ()
+{
+	font .reset ();
+
+	X3DFontStyleNode::dispose ();
 }
 
 } // X3D

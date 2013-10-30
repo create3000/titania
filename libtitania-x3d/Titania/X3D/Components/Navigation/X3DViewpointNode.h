@@ -149,8 +149,8 @@ public:
 	{ return parentMatrix; }
 
 	virtual
-	Vector3f
-	getScreenScale (float, const Vector4i &) const = 0;
+	Vector3d
+	getScreenScale (double, const Vector4i &) const = 0;
 
 	///  @name Operations
 

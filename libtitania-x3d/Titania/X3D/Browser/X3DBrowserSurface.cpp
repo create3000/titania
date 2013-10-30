@@ -92,6 +92,8 @@ X3DBrowserSurface::initialize ()
 {
 	X3DBrowser::initialize ();
 
+	//swapInterval (0);
+
 	keyDevice      .setup ();
 	pointingDevice .setup ();
 

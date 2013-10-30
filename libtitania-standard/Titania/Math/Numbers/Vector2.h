@@ -473,6 +473,34 @@ max (const vector2 <Type> & lhs, const vector2 <Type> & rhs)
 	                       std::max (lhs .y (), rhs .y ()));
 }
 
+/**
+ * @returns Computes nearest integer not greater than arg. 
+ * @param a vector2 <Type>.\n
+ * @a Type is any type supporting copy constructions and comparisons with operator<.
+ */
+
+template <class Type>
+vector2 <Type>
+floor (const vector2 <Type> & arg)
+{
+	return vector2 <Type> (std::floor (arg .x ()),
+	                       std::floor (arg .y ()));
+}
+
+/**
+ * @returns Computes nearest integer not less than arg.
+ * @param a vector2 <Type>.\n
+ * @a Type is any type supporting copy constructions and comparisons with operator<.
+ */
+
+template <class Type>
+vector2 <Type>
+ceil (const vector2 <Type> & arg)
+{
+	return vector2 <Type> (std::ceil (arg .x ()),
+	                       std::ceil (arg .y ()));
+}
+
 ///  @relates vector2
 ///  @name Input/Output operations
 

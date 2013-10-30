@@ -94,43 +94,43 @@ OrthoViewpoint::getPosition () const
 	return position ();
 }
 
-float
+double
 OrthoViewpoint::getMinimumX () const
 {
 	return fieldOfView () .size () > 0 ? fieldOfView () [0] : -1;
 }
 
-float
+double
 OrthoViewpoint::getMinimumY () const
 {
 	return fieldOfView () .size () > 1 ? fieldOfView () [1] : -1;
 }
 
-float
+double
 OrthoViewpoint::getMaximumX () const
 {
 	return fieldOfView () .size () > 2 ? fieldOfView () [2] : 1;
 }
 
-float
+double
 OrthoViewpoint::getMaximumY () const
 {
 	return fieldOfView () .size () > 3 ? fieldOfView () [3] : 1;
 }
 
-Vector3f
-OrthoViewpoint::getScreenScale (float, const Vector4i & viewport) const
+Vector3d
+OrthoViewpoint::getScreenScale (double, const Vector4i & viewport) const
 {
 	int width  = viewport [2];
 	int height = viewport [3];
 
 	if (width > height)
-		return Vector3f (getSizeX () / height, getSizeY () / height, getSizeY () / height);
+		return Vector3d (getSizeX () / height, getSizeY () / height, getSizeY () / height);
 
-	return Vector3f (getSizeX () / width, getSizeY () / width, getSizeX () / width);
+	return Vector3d (getSizeX () / width, getSizeY () / width, getSizeX () / width);
 }
 
-Vector2f
+Vector2d
 OrthoViewpoint::getViewportSize (const Vector4i & viewport) const
 {
 	int width  = viewport [2];
@@ -138,13 +138,13 @@ OrthoViewpoint::getViewportSize (const Vector4i & viewport) const
 
 	if (width > height)
 	{
-		return Vector2f (width * getSizeX () / height,
+		return Vector2d (width * (double) getSizeX () / height,
 		                 getSizeY ());
 	}
 	else
 	{
-		return Vector2f (getSizeX (),
-		                 height * getSizeY () / width);
+		return Vector2d (getSizeX (),
+		                 height * (double) getSizeY () / width);
 	}
 }
 
@@ -176,17 +176,17 @@ OrthoViewpoint::reshape (const float zNear, const float zFar)
 	int width  = viewport [2];
 	int height = viewport [3];
 
-	Vector2f size = getViewportSize (viewport);
+	Vector2d size = getViewportSize (viewport);
 
 	if (width > height)
 	{
-		float left = getMinimumX () + (getMaximumX () - getMinimumX ()) / 2 - size .x () / 2;
+		double left = getMinimumX () + (getMaximumX () - getMinimumX ()) / 2 - size .x () / 2;
 
 		glOrtho (left, left + size .x (), getMinimumY (), getMaximumY (), zNear, zFar);
 	}
 	else
 	{
-		float bottom = getMinimumY () + (getMaximumY () - getMinimumY ()) / 2 - size .y () / 2;
+		double bottom = getMinimumY () + (getMaximumY () - getMinimumY ()) / 2 - size .y () / 2;
 
 		glOrtho (getMinimumX (), getMaximumX (), bottom, bottom + size .y (), zNear, zFar);
 	}

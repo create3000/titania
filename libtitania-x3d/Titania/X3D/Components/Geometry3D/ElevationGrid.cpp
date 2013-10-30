@@ -358,12 +358,12 @@ ElevationGrid::build ()
 	size_t  i    = 0;
 	int32_t face = 0;
 
+	Vector3f faceNormal;
+
 	std::vector <size_t>::const_iterator index;
 
 	for (index = coordIndex .begin (); index not_eq coordIndex .end (); ++ face)
 	{
-		Vector3f faceNormal;
-
 		if (_normal)
 		{
 			if (not normalPerVertex ())
@@ -395,15 +395,11 @@ ElevationGrid::build ()
 			}
 			else if (_colorRGBA)
 			{
-				float r = 0, g = 0, b = 0, a = 0;
-
 				if (colorPerVertex ())
-					_colorRGBA -> color () [*index] .getValue (r, g, b, a);
+					getColorsRGBA () .emplace_back (_colorRGBA -> color () [*index]);
 
 				else
-					_colorRGBA -> color () [face] .getValue (r, g, b, a);
-
-				getColorsRGBA () .emplace_back (r, g, b, 1 - a);
+					getColorsRGBA () .emplace_back (_colorRGBA -> color () [face]);
 			}
 
 			if (_normal)

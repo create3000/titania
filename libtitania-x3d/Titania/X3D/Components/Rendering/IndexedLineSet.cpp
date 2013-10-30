@@ -102,6 +102,8 @@ IndexedLineSet::initialize ()
 
 	coordIndex () .addInterest (this, &IndexedLineSet::set_coordIndex);
 	colorIndex () .addInterest (this, &IndexedLineSet::set_colorIndex);
+	coord ()      .addInterest (this, &IndexedLineSet::set_coordIndex);
+	color ()      .addInterest (this, &IndexedLineSet::set_colorIndex);
 
 	set_coordIndex ();
 }
@@ -253,11 +255,11 @@ IndexedLineSet::build ()
 
 	int face = 0;
 
+	Color3f faceColor;
+	Color4f faceColorRGBA;
+
 	for (const auto polyline : polylines)
 	{
-		SFColor     faceColor;
-		SFColorRGBA faceColorRGBA;
-
 		if (not colorPerVertex ())
 		{
 			if (_color and colorIndex () [face] >= 0)

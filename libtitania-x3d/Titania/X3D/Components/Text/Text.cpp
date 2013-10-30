@@ -54,6 +54,8 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
+#include "../Text/FontStyle.h"
+
 namespace titania {
 namespace X3D {
 
@@ -76,9 +78,7 @@ Text::Text (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DGeometryNode (),
 	         fields (),
-	   charSpacings (),
-	 minorAlignment (),
-	    translation ()
+	           text ()
 {
 	addField (inputOutput,    "metadata",   metadata ());
 	addField (inputOutput,    "string",     string ());
@@ -120,146 +120,19 @@ Text::getFontStyle () const
 Box3f
 Text::createBBox ()
 {
-	const X3DFontStyleNode* fontStyle = getFontStyle ();
-
-	if (not fontStyle -> getFont ())
-		return Box3f ();
-
-	Box2f bbox;
-
-	float y1         = 0;
-	float lineHeight = fontStyle -> getLineHeight ();
-	float scale      = fontStyle -> getScale ();
-
-	charSpacings  .clear ();
-	lineBounds () .clear ();
-	translation   .clear ();
-
-	// Calculate BBoxes.
-	size_t i = 0;
-
-	for (const auto & line : string ())
-	{
-		Box2f    lineBBox = getLineBBox (fontStyle, line .getValue ());
-		Vector2f size     = lineBBox .size ();
-		Vector2f min      = lineBBox .center () - size / 2.0f;
-		Vector2f max      = lineBBox .center () + size / 2.0f;
-
-		if (i == 1)
-			y1 = max .y ();
-
-		// Calculate charSpacing and lineBounds.
-
-		float    charSpacing = 0;
-		Vector2f lineBound   = Vector2f (size .x (), lineHeight) * scale;
-		float    length      = getLength (i);
-
-		if (length)
-		{
-			charSpacing = (length - lineBound .x ()) / (line .length () - 1) / scale;
-			lineBound .x (length);
-			size .x (length / scale);
-		}
-
-		charSpacings  .emplace_back (charSpacing);
-		lineBounds () .emplace_back (lineBound);
-
-		// Calculate line translation.
-
-		switch (fontStyle -> getMajorAlignment ())
-		{
-			case X3DFontStyleNode::Alignment::BEGIN:
-			case X3DFontStyleNode::Alignment::FIRST:
-				translation .emplace_back (0, -(i * lineHeight));
-				break;
-			case X3DFontStyleNode::Alignment::MIDDLE:
-				translation .emplace_back (-min .x () - size .x () / 2, -(i * lineHeight));
-				break;
-			case X3DFontStyleNode::Alignment::END:
-				translation .emplace_back (-min .x () - size .x (), -(i * lineHeight));
-				break;
-		}
-
-		// Calculate center.
-
-		Vector2f center = Vector2f (min .x (), min .y ()) + size / 2.0f;
-
-		// Add bbox.
-
-		bbox += Box2f (size * scale, (center + translation [i]) * scale);
-
-		++ i;
-	}
-
-	Vector2f size1_2  = bbox .size () / 2.0f;
-	Vector2f center   = bbox .center ();
-	Vector2f min      = center - size1_2;
-	Vector2f max      = center + size1_2;
-
-	textBounds () .setValue (bbox .size ());
-
-	if (string () .size () > 1)
-	{
-		lineBounds () .front () .setY (max .y () + (lineHeight - y1) * scale);
-		lineBounds () .back  () .setY (textBounds () .getY () - (lineBounds () [0] .getY () + (string () .size () - 2) * fontStyle -> spacing ()));
-	}
-
-	switch (fontStyle -> getMinorAlignment ())
-	{
-		case X3DFontStyleNode::Alignment::BEGIN:
-			minorAlignment = Vector2f (0, -max .y ());
-			break;
-		case X3DFontStyleNode::Alignment::FIRST:
-			minorAlignment = Vector2f ();
-			break;
-		case X3DFontStyleNode::Alignment::MIDDLE:
-			minorAlignment = Vector2f (0, textBounds () .getY () / 2 - max .y ());
-			break;
-		case X3DFontStyleNode::Alignment::END:
-			minorAlignment = Vector2f  (0, textBounds () .getY () - max .y ());
-			break;
-	}
-
-	// Translate bbox by minorAlignment
-	center += minorAlignment;
-	min     = center - size1_2;
-	max     = center + size1_2;
-
-	origin () = Vector3f (min .x (), max .y (), 0);
-
-	return Box3f (Vector3f (min .x (), min .y (), 0),
-	              Vector3f (max .x (), max .y (), 0),
-	              true);
-}
-
-Box2f
-Text::getLineBBox (const X3DFontStyleNode* fontStyle, const std::string & line)
-{
-	FTBBox  ftbbox = fontStyle -> getFont () -> BBox (line .c_str ());
-	FTPoint min    = ftbbox .Lower ();
-	FTPoint max    = ftbbox .Upper ();
-
-	switch (fontStyle -> getMajorAlignment ())
-	{
-		case X3DFontStyleNode::Alignment::BEGIN:
-		case X3DFontStyleNode::Alignment::FIRST:
-			return Box2f (Vector2f (0, min .Y ()), Vector2f (max .X (), max .Y ()), true);
-
-		case X3DFontStyleNode::Alignment::MIDDLE:
-		case X3DFontStyleNode::Alignment::END:
-			return Box2f (Vector2f (min .X (), min .Y ()), Vector2f (max .X (), max .Y ()), true);
-	}
-
-	// Control never reaches this line.
-	return Box2f ();
+	return text -> getBBox ();
 }
 
 void
 Text::build ()
 {
+	//
+
+	text = getFontStyle () -> getTextGeometry (this);
+
 	// We cannot access the geometry thus we add a simple rectangle to the geometry to enable picking.
 
-	Box3f bbox = getBBox ();
+	Box3f bbox = text -> getBBox ();
 
 	auto size1_2 = bbox .size () / 2.0f;
 	auto center  = bbox .center ();
@@ -288,42 +161,21 @@ Text::build ()
 void
 Text::draw ()
 {
-	const X3DFontStyleNode* fontStyle = getFontStyle ();
-
-	if (not fontStyle -> getFont ())
-		return;
-
-	float scale = fontStyle -> getScale ();
-
 	if (solid ())
 		glEnable (GL_CULL_FACE);
 
 	else
 		glDisable (GL_CULL_FACE);
 
-	// Calculate translations and lineBounds if needed.
-	getBBox ();
+	text -> draw ();
+}
 
-	glPushMatrix ();
-	{
-		glTranslatef (minorAlignment .x (), minorAlignment .y (), 0);
-		glScalef (scale, scale, scale);
+void
+Text::dispose ()
+{
+	text .reset ();
 
-		// Render lines.
-		size_t i = 0;
-
-		for (const auto & line : string ())
-		{
-			fontStyle -> getFont () -> Render (line .getValue () .c_str (),
-			                                   -1,
-			                                   FTPoint (translation [i] .x (), translation [i] .y (), 0),
-			                                   FTPoint (charSpacings [i], 0, 0),
-			                                   FTGL::RENDER_ALL);
-
-			++ i;
-		}
-	}
-	glPopMatrix ();
+	X3DGeometryNode::dispose ();
 }
 
 } // X3D

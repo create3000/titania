@@ -112,10 +112,10 @@ public:
 	getPosition () const final;
 
 	virtual
-	Vector3f
-	getScreenScale (float, const Vector4i &) const final;
+	Vector3d
+	getScreenScale (double, const Vector4i &) const final;
 
-	Vector2f
+	Vector2d
 	getViewportSize (const Vector4i &) const;
 
 	///  @name Operations
@@ -129,23 +129,23 @@ private:
 
 	///  @name Member access
 
-	float
+	double
 	getMinimumX () const;
 
-	float
+	double
 	getMinimumY () const;
 
-	float
+	double
 	getMaximumX () const;
 
-	float
+	double
 	getMaximumY () const;
 
-	float
+	double
 	getSizeX () const
 	{ return getMaximumX () - getMinimumX (); }
 
-	float
+	double
 	getSizeY () const
 	{ return getMaximumY () - getMinimumY (); }
 

@@ -1,3 +1,14 @@
+2013-10-30  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* style.css:
+	* BrowserWindow.ui:
+	* BrowserWindow.cpp:
+	* X3DBrowserEditor.cpp:
+	* Text.x3dv:
+	* Rotor.x3dv:
+	* IndexedLineSet.x3dv:
+	* ExternProto.x3dv: 
+
 2013-10-23  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* BrowserWindow.cpp: 

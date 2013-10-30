@@ -691,7 +691,7 @@
     <child>
       <object class="GtkVBox" id="Widget">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can_focus">True</property>
         <child>
           <object class="GtkMenuBar" id="MenuBar">
             <property name="visible">True</property>

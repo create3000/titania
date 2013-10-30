@@ -1,28 +1,33 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="../../.drirc">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Layout/ScreenFontStyle.cpp">
     <Files>
-      <File FileName="Library/Tests/Handles/OutlineEditor.wrl" Line="178" Column="23" />
+      <File FileName="Library/Tests/Handles/OutlineEditor.wrl" Line="26" Column="66" />
       <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="128" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="231" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="206" Column="11" />
       <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="76" Column="7" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="120" Column="19" />
-      <File FileName="Titania/Titania/Undo/UndoFunction.h" Line="65" Column="1" />
-      <File FileName="Titania/Titania/Undo/UndoStep.h" Line="81" Column="73" />
-      <File FileName="Titania/Titania/Undo/UndoStep.cpp" Line="64" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.cpp" Line="193" Column="35" />
-      <File FileName="../../.drirc" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="152" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Layout/ScreenFontStyle.h" Line="137" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Layout/ScreenFontStyle.cpp" Line="124" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/Text.h" Line="217" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/Text.cpp" Line="133" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/FontStyle.cpp" Line="101" Column="43" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/X3DFontStyleNode.cpp" Line="87" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/X3DFontStyleNode.h" Line="173" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/FontStyle.h" Line="147" Column="30" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="miscellaneous" expanded="True" />
           <Node name="build" expanded="True">
             <Node name="debian" expanded="True" />
           </Node>
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
             <Node name="Examples" expanded="True">
+              <Node name="Pong" expanded="True">
+                <Node name="stage" expanded="True" />
+              </Node>
               <Node name="TikiWorld" expanded="True" />
             </Node>
             <Node name="Prototypes" expanded="True">
@@ -32,9 +37,7 @@
             </Node>
             <Node name="Tests" expanded="True">
               <Node name="Handles" expanded="True" />
-              <Node name="Navigation" expanded="True" />
-              <Node name="PointingDeviceSensor" expanded="True" />
-              <Node name="Shaders" expanded="True" />
+              <Node name="Text" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-opengl-surface" expanded="True">
@@ -47,6 +50,12 @@
           <Node name="libtitania-standard" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="InputOutput" expanded="True" />
+              <Node name="Physics" expanded="True" />
+            </Node>
+          </Node>
+          <Node name="libtitania-stream" expanded="True">
+            <Node name="Titania" expanded="True">
+              <Node name="Stream" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
@@ -69,22 +78,24 @@
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
-                <Node name="Base" expanded="True" />
-                <Node name="Browser" expanded="True">
-                  <Node name="Picking" expanded="True" />
-                  <Node name="Properties" expanded="True" />
-                  <Node name="Viewer" expanded="True" />
-                  <Node name="X3DBrowserContext.cpp" selected="True" />
-                </Node>
+                <Node name="Browser" expanded="True" />
                 <Node name="Components" expanded="True">
+                  <Node name="Geometry3D" expanded="True" />
                   <Node name="Layering" expanded="True" />
-                  <Node name="Navigation" expanded="True" />
-                  <Node name="PointingDeviceSensor" expanded="True" />
-                  <Node name="Shape" expanded="True" />
+                  <Node name="Layout" expanded="True">
+                    <Node name="ScreenFontStyle.cpp" selected="True" />
+                  </Node>
+                  <Node name="Text" expanded="True" />
                 </Node>
+                <Node name="Execution" expanded="True" />
                 <Node name="Handles" expanded="True" />
                 <Node name="InputOutput" expanded="True" />
+                <Node name="JavaScript" expanded="True">
+                  <Node name="SpiderMonkey" expanded="True" />
+                </Node>
                 <Node name="Rendering" expanded="True" />
+                <Node name="Routing" expanded="True" />
+                <Node name="Thread" expanded="True" />
               </Node>
             </Node>
           </Node>
@@ -99,20 +110,9 @@
               <Node name="applications" expanded="True" />
               <Node name="titania" expanded="True">
                 <Node name="Library" expanded="True">
-                  <Node name="Prototypes" expanded="True">
-                    <Node name="Engines" expanded="True">
-                      <Node name="Rotor" expanded="True" />
-                    </Node>
-                    <Node name="Geometry2D" expanded="True">
-                      <Node name="RoundedRectangle2D" expanded="True" />
-                    </Node>
-                    <Node name="Geometry3D" expanded="True">
-                      <Node name="Torus" expanded="True" />
-                    </Node>
+                  <Node name="Primitives" expanded="True">
+                    <Node name="Geometry3D" expanded="True" />
                   </Node>
-                </Node>
-                <Node name="pages" expanded="True">
-                  <Node name="about" expanded="True" />
                 </Node>
                 <Node name="ui" expanded="True" />
               </Node>
@@ -128,6 +128,7 @@
                 <Node name="CellRenderer" expanded="True" />
               </Node>
               <Node name="Undo" expanded="True" />
+              <Node name="UserInterfaces" expanded="True" />
               <Node name="ViewpointList" expanded="True" />
             </Node>
           </Node>

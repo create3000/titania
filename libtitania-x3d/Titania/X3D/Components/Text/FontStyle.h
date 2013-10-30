@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,10 +51,41 @@
 #ifndef __TITANIA_X3D_COMPONENTS_TEXT_FONT_STYLE_H__
 #define __TITANIA_X3D_COMPONENTS_TEXT_FONT_STYLE_H__
 
+#include "../../Miscellaneous/FontPtr.h"
 #include "../Text/X3DFontStyleNode.h"
 
 namespace titania {
 namespace X3D {
+
+class FontStyle;
+
+class PolygonText :
+	public X3DTextGeometry
+{
+public:
+
+	PolygonText (Text* const, const FontStyle* const);
+
+	virtual
+	bool
+	isTransparent () const
+	{ return false; }
+
+	virtual
+	void
+	draw () final;
+
+
+private:
+
+	virtual
+	void
+	getLineBounds (const std::string &, Vector2d &, Vector2d &) const final;
+
+	Text* const            text;
+	const FontStyle* const fontStyle;
+
+};
 
 class FontStyle :
 	public X3DFontStyleNode
@@ -97,6 +128,32 @@ public:
 	size () const
 	{ return *fields .size; }
 
+	///  @name Member access
+
+	virtual
+	std::shared_ptr <X3DTextGeometry>
+	getTextGeometry (Text* const) const;
+
+	const FontPtr &
+	getFont () const
+	{ return font; }
+
+	virtual
+	double
+	getLineHeight () const final
+	{ return lineHeight; }
+
+	virtual
+	double
+	getScale () const final
+	{ return scale; }
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final;
+
 
 private:
 
@@ -106,12 +163,16 @@ private:
 	void
 	initialize () final;
 
-	///  @name Member access
+	///  @name Event handlers
 
-	virtual
-	float
-	getSize () const final;
+	void
+	set_font ();
 
+	int
+	loadFont ();
+
+	std::string
+	getFilename (const String &, bool &) const;
 
 	///  @name Static members
 
@@ -129,6 +190,10 @@ private:
 	};
 
 	Fields fields;
+
+	FontPtr font;
+	double  lineHeight;
+	double   scale;
 
 };
 

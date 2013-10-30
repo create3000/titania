@@ -161,12 +161,12 @@ X3DComposedGeometryNode::buildPolygons (size_t vertexCount, size_t size)
 
 	// Fill GeometryNode
 
+	Vector3f faceNormal;
+	Color3f  faceColor;
+	Color4f  faceColorRGBA;
+
 	for (size_t index = 0, face = 0; index < size; ++ face)
 	{
-		Vector3f    faceNormal;
-		SFColor     faceColor;
-		SFColorRGBA faceColorRGBA;
-
 		if (not colorPerVertex ())
 		{
 			if (_color)

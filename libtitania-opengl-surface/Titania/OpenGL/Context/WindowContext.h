@@ -70,6 +70,9 @@ public:
 	               GLXWindow,
 	               bool = true);
 
+	void
+	swapInterval (unsigned int) const;
+
 	virtual
 	~WindowContext ();
 

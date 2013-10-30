@@ -76,8 +76,37 @@ WindowContext::WindowContext (Display* display,
 {
 	setContext (create (nullptr, direct));
 	setDrawable (xWindow);
+}
 
-	//glXSwapIntervalEXT (display, xWindow, 0);
+void
+WindowContext::swapInterval (unsigned int interval) const
+{
+	if (makeCurrent ())
+	{
+		auto glXSwapIntervalEXT = (PFNGLXSWAPINTERVALEXTPROC) glXGetProcAddress ((GLubyte*) "glXSwapIntervalEXT");
+		
+		if (glXSwapIntervalEXT)
+		{
+			glXSwapIntervalEXT (getDisplay (), xWindow, interval);
+			return;
+		}
+
+		auto glXSwapIntervalSGI = (PFNGLXSWAPINTERVALSGIPROC) glXGetProcAddress ((GLubyte*) "glXSwapIntervalSGI");
+
+		if (glXSwapIntervalSGI)
+		{
+			glXSwapIntervalSGI (interval);
+			return;
+		}
+		
+		auto glXSwapIntervalMESA = (PFNGLXSWAPINTERVALMESAPROC) glXGetProcAddress ((GLubyte*) "glXSwapIntervalMESA");
+
+		if (glXSwapIntervalMESA)
+		{
+			glXSwapIntervalMESA (interval);
+			return;
+		}
+	}
 }
 
 GLXContext

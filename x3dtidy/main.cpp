@@ -51,7 +51,6 @@
 #include <iostream>
 
 #include <Titania/X3D.h>
-#include <gtkmm.h>
 #include <unistd.h>
 
 #include "anyoption.h"

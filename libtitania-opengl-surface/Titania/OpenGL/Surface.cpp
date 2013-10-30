@@ -94,7 +94,7 @@ Surface::set_visual (int32_t samples)
 		GLX_RED_SIZE,         8,
 		GLX_GREEN_SIZE,       8,
 		GLX_BLUE_SIZE,        8,
-		GLX_ALPHA_SIZE,       0,
+		GLX_ALPHA_SIZE,       8,
 		GLX_ACCUM_RED_SIZE,   8,
 		GLX_ACCUM_GREEN_SIZE, 8,
 		GLX_ACCUM_BLUE_SIZE,  8,
@@ -122,12 +122,6 @@ Surface::set_visual (int32_t samples)
 
 		XFree (visualInfo);
 	}
-}
-
-const std::shared_ptr <Context> &
-Surface::getContext ()
-{
-	return context;
 }
 
 bool
@@ -213,6 +207,12 @@ bool
 Surface::makeCurrent () const
 {
 	return context and context -> makeCurrent ();
+}
+
+void
+Surface::swapInterval (unsigned int interval) const
+{
+	context -> swapInterval (interval);
 }
 
 void

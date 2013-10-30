@@ -84,7 +84,7 @@ public:
 	template <class Up>
 	constexpr
 	box3 (const box3 <Up> & box) :
-		value (box .value)
+		value (box .matrix ())
 	{ }
 
 	///  Constructs a box of size @a size and center @a size.

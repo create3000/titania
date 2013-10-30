@@ -157,11 +157,11 @@ public:
 	SizeUnitType
 	getOffsetUnitY () const final;
 
-	float
+	double
 	getOffsetX () const
 	{ return offsetX; }
 
-	float
+	double
 	getOffsetY () const
 	{ return offsetY; }
 
@@ -173,11 +173,11 @@ public:
 	SizeUnitType
 	getSizeUnitY () const final;
 
-	float
+	double
 	getSizeX () const
 	{ return sizeX; }
 
-	float
+	double
 	getSizeY () const
 	{ return sizeY; }
 
@@ -187,13 +187,13 @@ public:
 	ScaleModeType
 	getScaleModeY () const;
 
-	virtual
-	Vector2f
-	getRectangleCenter () const final;
+	Vector2d
+	getRectangleCenter () const
+	{ return rectangleCenter; }
 
-	virtual
-	Vector2f
-	getRectangleSize () const final;
+	Vector2d
+	getRectangleSize () const
+	{ return rectangleSize; }
 
 	///  @name Operations
 
@@ -257,19 +257,19 @@ private:
 	VerticalAlignType   alignY;
 	SizeUnitType        offsetUnitX;
 	SizeUnitType        offsetUnitY;
-	float               offsetX;
-	float               offsetY;
+	double              offsetX;
+	double              offsetY;
 	SizeUnitType        sizeUnitX;
 	SizeUnitType        sizeUnitY;
-	float               sizeX;
-	float               sizeY;
+	double              sizeX;
+	double              sizeY;
 	ScaleModeType       scaleModeX;
 	ScaleModeType       scaleModeY;
 
 	X3DLayoutNode* parent;
 	Vector4i       viewport;
-	Vector2f       rectangleCenter;   // In m
-	Vector2f       rectangleSize;     // In m
+	Vector2d       rectangleCenter;   // In m
+	Vector2d       rectangleSize;     // In m
 
 };
 

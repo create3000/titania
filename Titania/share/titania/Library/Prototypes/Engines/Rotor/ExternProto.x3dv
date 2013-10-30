@@ -8,7 +8,7 @@ EXTERNPROTO Rotor [
   exposedField SFBool     loop
   exposedField SFTime     startTime
   exposedField SFTime     stopTime
-  eventOut     SFRotation value_changed
+  eventOut     SFRotation rotation_changed
 ]
 [
   "Rotor.x3dv",
