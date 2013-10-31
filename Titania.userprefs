@@ -1,20 +1,21 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Layout/ScreenFontStyle.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Text/FontStyle.cpp">
     <Files>
       <File FileName="Library/Tests/Handles/OutlineEditor.wrl" Line="26" Column="66" />
       <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="128" Column="1" />
       <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="206" Column="11" />
       <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="76" Column="7" />
       <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="152" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Layout/ScreenFontStyle.h" Line="137" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Layout/ScreenFontStyle.cpp" Line="124" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/Text.h" Line="217" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/Text.cpp" Line="133" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/FontStyle.cpp" Line="101" Column="43" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/X3DFontStyleNode.cpp" Line="87" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/X3DFontStyleNode.h" Line="173" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/FontStyle.h" Line="147" Column="30" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Layout/ScreenFontStyle.h" Line="99" Column="15" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Layout/ScreenFontStyle.cpp" Line="92" Column="1" />
+      <File FileName="libtitania-x3d/share/titania/handles/Notification.wrl" Line="12" Column="40" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/X3DFontStyleNode.h" Line="126" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/X3DFontStyleNode.cpp" Line="101" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/FontStyle.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/FontStyle.cpp" Line="299" Column="15" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/Text.h" Line="161" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/Text.cpp" Line="164" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -37,6 +38,7 @@
             </Node>
             <Node name="Tests" expanded="True">
               <Node name="Handles" expanded="True" />
+              <Node name="Layout" expanded="True" />
               <Node name="Text" expanded="True" />
             </Node>
           </Node>
@@ -50,6 +52,10 @@
           <Node name="libtitania-standard" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="InputOutput" expanded="True" />
+              <Node name="Math" expanded="True">
+                <Node name="Geometry" expanded="True" />
+                <Node name="Numbers" expanded="True" />
+              </Node>
               <Node name="Physics" expanded="True" />
             </Node>
           </Node>
@@ -60,50 +66,29 @@
           </Node>
           <Node name="libtitania-x3d" expanded="True">
             <Node name="share" expanded="True">
-              <Node name="icons" expanded="True">
-                <Node name="hicolor" expanded="True">
-                  <Node name="scalable" expanded="True">
-                    <Node name="mimetypes" expanded="True" />
-                  </Node>
-                </Node>
-              </Node>
               <Node name="titania" expanded="True">
-                <Node name="handles" expanded="True">
-                  <Node name="library" expanded="True" />
-                </Node>
-                <Node name="mime" expanded="True">
-                  <Node name="model" expanded="True" />
-                </Node>
+                <Node name="handles" expanded="True" />
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
-                <Node name="Browser" expanded="True" />
+                <Node name="Browser" expanded="True">
+                  <Node name="Properties" expanded="True" />
+                </Node>
                 <Node name="Components" expanded="True">
-                  <Node name="Geometry3D" expanded="True" />
-                  <Node name="Layering" expanded="True" />
-                  <Node name="Layout" expanded="True">
-                    <Node name="ScreenFontStyle.cpp" selected="True" />
+                  <Node name="Core" expanded="True" />
+                  <Node name="Layout" expanded="True" />
+                  <Node name="Rendering" expanded="True" />
+                  <Node name="Text" expanded="True">
+                    <Node name="FontStyle.cpp" selected="True" />
                   </Node>
-                  <Node name="Text" expanded="True" />
                 </Node>
                 <Node name="Execution" expanded="True" />
-                <Node name="Handles" expanded="True" />
-                <Node name="InputOutput" expanded="True" />
-                <Node name="JavaScript" expanded="True">
-                  <Node name="SpiderMonkey" expanded="True" />
-                </Node>
-                <Node name="Rendering" expanded="True" />
-                <Node name="Routing" expanded="True" />
-                <Node name="Thread" expanded="True" />
+                <Node name="Miscellaneous" expanded="True" />
               </Node>
             </Node>
           </Node>
-          <Node name="Papers" expanded="True">
-            <Node name="xxx" expanded="True">
-              <Node name="Stream" expanded="True" />
-            </Node>
-          </Node>
+          <Node name="Papers" expanded="True" />
           <Node name="test" expanded="True" />
           <Node name="Titania" expanded="True">
             <Node name="share" expanded="True">
@@ -111,7 +96,7 @@
               <Node name="titania" expanded="True">
                 <Node name="Library" expanded="True">
                   <Node name="Primitives" expanded="True">
-                    <Node name="Geometry3D" expanded="True" />
+                    <Node name="Rendering" expanded="True" />
                   </Node>
                 </Node>
                 <Node name="ui" expanded="True" />

@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_MISCELLANEOUS_FONT_CONFIG_H__
 
 #include <string>
+#include <memory>
 
 extern "C"
 {
@@ -61,11 +62,94 @@ extern "C"
 namespace titania {
 namespace X3D {
 
-std::string
-get_family_name (FcPattern*);
+class Font
+{
+public:
 
-std::string
-get_filename (FcPattern*);
+	enum class Slant
+	{
+		ROMAN,
+		ITALIC
+	};
+
+	enum class Weight
+	{
+		NORMAL,
+		BOLD
+	};
+
+	struct PatternDeleter
+	{
+		void
+		operator () (FcPattern* pattern) const
+		{
+			FcPatternDestroy (pattern);
+		}
+
+	};
+
+	typedef std::shared_ptr <FcPattern> PatternPtr;
+
+	///  @name Construction
+
+	Font ();
+
+	Font (const Font &);
+
+	///  @name Member access
+
+	const PatternPtr &
+	getPattern () const;
+
+	void
+	setFamilyName (const std::string &);
+
+	std::string
+	getFamilyName () const;
+
+	void
+	setSlant (const Slant &);
+
+	void
+	setWeight (const Weight &);
+
+	void
+	setStyle (const std::string &);
+
+	void
+	setScalable (bool value);
+
+	void
+	setFilename (const std::string &);
+
+	std::string
+	getFilename () const;
+
+	///  @name Operations
+
+	void
+	substitute ();
+
+	Font
+	match () const;
+
+	///  @name Destruction
+
+	virtual
+	~Font ();
+
+
+private:
+
+	///  @name Construction
+
+	Font (const PatternPtr &);
+
+	///  @name Members
+
+	PatternPtr pattern;
+
+};
 
 } // X3D
 } // titania

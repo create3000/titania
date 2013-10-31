@@ -53,23 +53,110 @@
 namespace titania {
 namespace X3D {
 
+Font::Font () :
+	pattern (PatternPtr (FcPatternCreate (), PatternDeleter ()))
+{ }
+
+Font::Font (const Font & font) :
+	pattern (font .getPattern ())
+{ }
+
+Font::Font (const PatternPtr & pattern) :
+	pattern (pattern)
+{ }
+
+const Font::PatternPtr &
+Font::getPattern () const
+{ return pattern; }
+
+void
+Font::setFamilyName (const std::string & value)
+{
+	FcPatternAddString (pattern .get (), FC_FAMILY, (FcChar8*) value .c_str ());
+}
+
 std::string
-get_family_name (FcPattern* pattern)
+Font::getFamilyName () const
 {
 	FcChar8* familyName;
 
-	FcPatternGetString (pattern, FC_FAMILY, 0, &familyName);
+	FcPatternGetString (pattern .get (), FC_FAMILY, 0, &familyName);
 	return (char*) familyName;
 }
 
+void
+Font::setSlant (const Slant & value)
+{
+	switch (value)
+	{
+		case Slant::ROMAN:
+			FcPatternAddInteger (pattern .get (), FC_SLANT, FC_SLANT_ROMAN);
+			break;
+		case Slant::ITALIC:
+			FcPatternAddInteger (pattern .get (), FC_SLANT, FC_SLANT_ITALIC);
+			break;
+	}
+}
+
+void
+Font::setWeight (const Weight & value)
+{
+	switch (value)
+	{
+		case Weight::NORMAL:
+			FcPatternAddInteger (pattern .get (), FC_WEIGHT, FC_WEIGHT_NORMAL);
+			break;
+		case Weight::BOLD:
+			FcPatternAddInteger (pattern .get (), FC_WEIGHT, FC_WEIGHT_BOLD);
+			break;
+	}
+}
+
+
+void
+Font::setStyle (const std::string & value)
+{
+	FcPatternAddString (pattern .get (), "style", (FcChar8*) value .c_str ());
+}
+
+void
+Font::setScalable (bool value)
+{
+	FcPatternAddBool (pattern .get (), FC_SCALABLE, value ? FcTrue : FcFalse);
+}
+
+void
+Font::setFilename (const std::string & value)
+{
+	FcPatternAddString (pattern .get (), FC_FILE, (FcChar8*) value .c_str ());
+}
+
 std::string
-get_filename (FcPattern* pattern)
+Font::getFilename () const
 {
 	FcChar8* filename = nullptr;
 
-	FcPatternGetString (pattern, FC_FILE, 0, &filename);
+	FcPatternGetString (pattern .get (), FC_FILE, 0, &filename);
 	return (char*) filename;
 }
+
+void
+Font::substitute ()
+{
+	FcConfigSubstitute (nullptr, pattern .get (), FcMatchPattern);
+	FcDefaultSubstitute (pattern .get ());
+}
+
+Font
+Font::match () const
+{
+	FcResult result;
+
+	return Font (PatternPtr (FcFontMatch (nullptr, pattern .get (), &result), PatternDeleter ()));
+}
+
+Font::~Font ()
+{ }
 
 } // X3D
 } // titania/

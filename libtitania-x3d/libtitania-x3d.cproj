@@ -560,7 +560,6 @@
     <None Include="Titania\X3D\Miscellaneous\Texture.h" />
     <None Include="Titania\X3D\Miscellaneous\FontConfig.h" />
     <None Include="Titania\X3D\Miscellaneous\MediaStream.h" />
-    <None Include="Titania\X3D\Miscellaneous\FontPtr.h" />
     <None Include="Titania\X3D\InputOutput\Loader.h" />
     <None Include="Titania\X3D\Browser\Devices\PointingDevice.h" />
     <None Include="Titania\X3D\Browser\Devices\KeyDevice.h" />

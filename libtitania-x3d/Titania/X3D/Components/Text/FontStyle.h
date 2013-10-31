@@ -51,13 +51,14 @@
 #ifndef __TITANIA_X3D_COMPONENTS_TEXT_FONT_STYLE_H__
 #define __TITANIA_X3D_COMPONENTS_TEXT_FONT_STYLE_H__
 
-#include "../../Miscellaneous/FontPtr.h"
 #include "../Text/X3DFontStyleNode.h"
+#include <FTGL/ftgl.h>
 
 namespace titania {
 namespace X3D {
 
 class FontStyle;
+typedef std::unique_ptr <FTPolygonFont> FontPtr;
 
 class PolygonText :
 	public X3DTextGeometry
@@ -86,6 +87,8 @@ private:
 	const FontStyle* const fontStyle;
 
 };
+
+typedef std::unique_ptr <FTPolygonFont> PolygonFontPtr;
 
 class FontStyle :
 	public X3DFontStyleNode
@@ -135,8 +138,8 @@ public:
 	getTextGeometry (Text* const) const;
 
 	const FontPtr &
-	getFont () const
-	{ return font; }
+	getPolygonFont () const
+	{ return polygonFont; }
 
 	virtual
 	double
@@ -168,11 +171,8 @@ private:
 	void
 	set_font ();
 
-	int
-	loadFont ();
-
-	std::string
-	getFilename (const String &, bool &) const;
+	PolygonFontPtr
+	getPolygonFont (const MFString &) const;
 
 	///  @name Static members
 
@@ -191,9 +191,9 @@ private:
 
 	Fields fields;
 
-	FontPtr font;
-	double  lineHeight;
-	double  scale;
+	PolygonFontPtr polygonFont;
+	double         lineHeight;
+	double         scale;
 
 };
 

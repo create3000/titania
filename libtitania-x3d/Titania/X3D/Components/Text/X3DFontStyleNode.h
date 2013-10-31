@@ -53,6 +53,7 @@
 
 #include "../../Types/Geometry.h"
 #include "../Core/X3DPropertyNode.h"
+#include "../../Miscellaneous/FontConfig.h"
 
 namespace titania {
 namespace X3D {
@@ -253,6 +254,12 @@ protected:
 	virtual
 	void
 	initialize () override;
+
+	Font
+	getFont () const;
+
+	Font
+	getFont (const String &, bool &) const;
 
 
 private:

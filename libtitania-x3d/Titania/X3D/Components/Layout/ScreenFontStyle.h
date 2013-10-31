@@ -112,6 +112,8 @@ private:
 
 };
 
+typedef std::shared_ptr <Font> ScreenFontPtr;
+
 class ScreenFontStyle :
 	public X3DFontStyleNode
 {
@@ -159,6 +161,10 @@ public:
 	std::shared_ptr <X3DTextGeometry>
 	getTextGeometry (Text* const) const;
 
+	const ScreenFontPtr &
+	getScreenFont () const
+	{ return screenFont; }
+
 	double
 	getSize () const;
 
@@ -171,6 +177,11 @@ public:
 	getScale () const final
 	{ return 1; }
 
+	///  @name Destruction
+
+	void
+	dispose ();
+
 
 protected:
 
@@ -179,11 +190,16 @@ protected:
 
 private:
 
-	/// @name Construction
+	///  @name Construction
 
 	virtual
 	void
 	initialize () final;
+
+	///  @name Event handlers
+	
+	void
+	set_font ();
 
 	///  @name Static members
 
@@ -201,6 +217,8 @@ private:
 	};
 
 	Fields fields;
+	
+	ScreenFontPtr screenFont;
 
 };
 

@@ -50,11 +50,8 @@
 
 #include "FontStyle.h"
 
-#include "../../Execution/X3DExecutionContext.h"
-#include "../../Miscellaneous/FontConfig.h"
 #include "../Text/Text.h"
-
-#include <Titania/OS/FileExists.h>
+#include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {
@@ -64,7 +61,7 @@ PolygonText::PolygonText (Text* const text, const FontStyle* const fontStyle) :
 	           text (text),
 	      fontStyle (fontStyle)
 {
-	if (not fontStyle -> getFont ())
+	if (not fontStyle -> getPolygonFont ())
 	{
 		text -> origin ()     = Vector3d ();
 		text -> textBounds () = Vector2d ();
@@ -76,14 +73,14 @@ PolygonText::PolygonText (Text* const text, const FontStyle* const fontStyle) :
 	}
 
 	initialize (text, fontStyle);
-	
+
 	compile (text);
 }
 
 void
 PolygonText::getLineBounds (const std::string & line, Vector2d & min, Vector2d & max) const
 {
-	FTBBox  ftbbox = fontStyle -> getFont () -> BBox (line .c_str ());
+	FTBBox  ftbbox = fontStyle -> getPolygonFont () -> BBox (line .c_str ());
 	FTPoint ftmin  = ftbbox .Lower ();
 	FTPoint ftmax  = ftbbox .Upper ();
 
@@ -94,7 +91,7 @@ PolygonText::getLineBounds (const std::string & line, Vector2d & min, Vector2d &
 void
 PolygonText::draw ()
 {
-	if (not fontStyle -> getFont ())
+	if (not fontStyle -> getPolygonFont ())
 		return;
 
 	glPushMatrix ();
@@ -110,11 +107,11 @@ PolygonText::draw ()
 
 		for (const auto & line : text -> string ())
 		{
-			fontStyle -> getFont () -> Render (line .getValue () .c_str (),
-			                                   -1,
-			                                   FTPoint (getTranslation () [i] .x (), getTranslation () [i] .y (), 0),
-			                                   FTPoint (getCharSpacing () [i], 0, 0),
-			                                   FTGL::RENDER_ALL);
+			fontStyle -> getPolygonFont () -> Render (line .getValue () .c_str (),
+			                                          -1,
+			                                          FTPoint (getTranslation () [i] .x (), getTranslation () [i] .y (), 0),
+			                                          FTPoint (getCharSpacing () [i], 0, 0),
+			                                          FTGL::RENDER_ALL);
 
 			++ i;
 		}
@@ -134,7 +131,7 @@ FontStyle::FontStyle (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DFontStyleNode (),
 	          fields (),
-	            font (),
+	     polygonFont (),
 	      lineHeight (1),
 	           scale (1)
 {
@@ -180,100 +177,53 @@ FontStyle::set_font ()
 {
 	// Create a polygon font from a TrueType file.
 
-	if (loadFont () == 0)
+	polygonFont = std::move (getPolygonFont (family ()));
+
+	if (polygonFont -> Error () == 0)
 	{
-		font -> CharMap (ft_encoding_unicode);
-		font -> UseDisplayList (true);
+		polygonFont -> CharMap (ft_encoding_unicode);
+		polygonFont -> UseDisplayList (true);
 
 		// Set the font size to large text.
-		font -> FaceSize (100);
+		polygonFont -> FaceSize (100);
 
 		// Calculate lineHeight.
-		lineHeight = font -> LineHeight () * spacing ();
+		lineHeight = polygonFont -> LineHeight () * spacing ();
 
 		// Calculate scale.
-		scale = size () / font -> LineHeight ();
+		scale = size () / polygonFont -> LineHeight ();
 	}
 	else
-		font .reset ();
+		polygonFont .reset ();
 }
 
-int
-FontStyle::loadFont ()
+PolygonFontPtr
+FontStyle::getPolygonFont (const MFString & family) const
 {
 	bool isExactMatch = false;
 
-	for (const auto & familyName : family ())
+	for (const auto & familyName : family)
 	{
-		std::string filename = getFilename (familyName, isExactMatch);
+		Font font = getFont (familyName, isExactMatch);
 
 		if (isExactMatch)
 		{
 			// Create a pixmap font from a TrueType file.
-			font .reset (new FTPolygonFont (filename .c_str ()));
+			PolygonFontPtr polygonFont (new FTPolygonFont (font .getFilename () .c_str ()));
 
 			// Check for errors
-			if (font -> Error () == 0)
-				return 0;
+			if (polygonFont -> Error () == 0)
+				return polygonFont;
 		}
 	}
 
-	font .reset (new FTPolygonFont (getFilename ("SERIF", isExactMatch) .c_str ()));
-
-	return font -> Error ();
-}
-
-std::string
-FontStyle::getFilename (const String & familyName, bool & isExactMatch) const
-{
-	// Test if familyName is a valid path
-
-	basic::uri uri = getExecutionContext () -> getWorldURL () .transform (familyName .raw ());
-
-	if (uri .is_local ())
-	{
-		if (os::file_exists (uri .path ()))
-		{
-			isExactMatch = true;
-			return uri .path ();
-		}
-	}
-
-	// Get a filename from font server
-
-	//FcPattern* pattern = FcNameParse ((FcChar8*) (familyName == "TYPEWRITER" ? "monospace" : familyName .c_str ()));
-	FcPattern* pattern = FcPatternCreate ();
-	FcPatternAddString (pattern, FC_FAMILY, (FcChar8*) (familyName == "TYPEWRITER" ? "monospace" : familyName .c_str ()));
-
-	//FcPatternAddString (pattern, "style", (FcChar8*) (style () == "BOLDITALIC" ? "bold italic" : style () .getValue () .c_str ()));
-	FcPatternAddInteger (pattern, FC_WEIGHT, isBold ()   ? FC_WEIGHT_BOLD  : FC_WEIGHT_NORMAL);
-	FcPatternAddInteger (pattern, FC_SLANT,  isItalic () ? FC_SLANT_ITALIC : FC_SLANT_ROMAN);
-	FcPatternAddBool (pattern, FC_SCALABLE, FcTrue);
-
-	FcConfigSubstitute (nullptr, pattern, FcMatchPattern);
-	FcDefaultSubstitute (pattern);
-
-	String familyNameAfterConfiguration = get_family_name (pattern);
-
-	FcResult   result;
-	FcPattern* match = FcFontMatch (nullptr, pattern, &result);
-
-	String familyNameAfterMatching = get_family_name (match);
-
-	isExactMatch = familyNameAfterConfiguration .lowercase () == familyNameAfterMatching .lowercase ();
-
-	std::string filename = get_filename (match);
-
-	FcPatternDestroy (pattern);
-	FcPatternDestroy (match);
-
-	return filename;
+	return PolygonFontPtr (new FTPolygonFont (getFont ("SERIF", isExactMatch) .getFilename () .c_str ()));
 }
 
 void
 FontStyle::dispose ()
 {
-	font .reset ();
+	polygonFont .reset ();
 
 	X3DFontStyleNode::dispose ();
 }

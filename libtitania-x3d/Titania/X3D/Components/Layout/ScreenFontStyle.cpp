@@ -85,15 +85,10 @@ ScreenText::ScreenText (Text* const text, const ScreenFontStyle* const fontStyle
 void
 ScreenText::configure (const Cairo::RefPtr <Cairo::Context> & context)
 {
-	std::string family = fontStyle -> family () .empty () ? "Serif" : fontStyle -> family () [0] .str ();
+	ScreenFontPtr font = fontStyle -> getScreenFont ();
+	auto fontFace = Cairo::FtFontFace::create (font -> getPattern () .get ());
 
-	if (family == "TYPEWRITER")
-		family = "monospace";
-
-	auto slant  = fontStyle -> isItalic () ? Cairo::FONT_SLANT_ITALIC : Cairo::FONT_SLANT_NORMAL;
-	auto weight = fontStyle -> isBold ()   ? Cairo::FONT_WEIGHT_BOLD  : Cairo::FONT_WEIGHT_NORMAL;
-
-	context -> select_font_face (family, slant, weight);
+	context -> set_font_face (fontFace);
 	context -> set_font_size (fontStyle -> getSize ());
 }
 
@@ -119,8 +114,8 @@ ScreenText::setTextBounds ()
 	Vector3d size1_2 = size / 2.0;
 	Vector3d center  = bbox .center ();
 
-	min  = center - size1_2;
-	max  = center + size1_2;
+	min = center - size1_2;
+	max = center + size1_2;
 
 	switch (fontStyle -> getMajorAlignment ())
 	{
@@ -161,7 +156,7 @@ void
 ScreenText::build ()
 {
 	// Create context
-	
+
 	auto surface = Cairo::ImageSurface::create (Cairo::FORMAT_ARGB32,
 	                                            text -> textBounds () .getX (),
 	                                            text -> textBounds () .getY ());
@@ -212,7 +207,7 @@ ScreenText::build ()
 				for (auto & glyph : glyphs)
 				{
 					glyph .x += space;
-					space += charSpacing;
+					space    += charSpacing;
 				}
 
 				context -> show_text_glyphs (line, glyphs, clusters, cluster_flags);
@@ -273,7 +268,7 @@ ScreenText::draw ()
 	glMatrixMode (GL_TEXTURE);
 	glLoadIdentity ();
 	glMatrixMode (GL_MODELVIEW);
-	
+
 	//
 
 	glBegin (GL_QUADS);
@@ -337,7 +332,8 @@ ScreenFontStyle::Fields::Fields () :
 ScreenFontStyle::ScreenFontStyle (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DFontStyleNode (),
-	          fields ()
+	          fields (),
+	      screenFont ()
 {
 	addField (inputOutput,    "metadata",    metadata ());
 	addField (initializeOnly, "family",      family ());
@@ -362,7 +358,10 @@ ScreenFontStyle::initialize ()
 {
 	X3DFontStyleNode::initialize ();
 
-	//pointSize () .addInterest (this, &ScreenFontStyle::set_font);
+	family () .addInterest (this, &ScreenFontStyle::set_font);
+	style  () .addInterest (this, &ScreenFontStyle::set_font);
+
+	set_font ();
 }
 
 std::shared_ptr <X3DTextGeometry>
@@ -389,6 +388,20 @@ ScreenFontStyle::getSize () const
 	}
 
 	return 0;
+}
+
+void
+ScreenFontStyle::set_font ()
+{
+	screenFont .reset (new Font (getFont ()));
+}
+
+void
+ScreenFontStyle::dispose ()
+{
+	screenFont .reset ();
+
+	X3DFontStyleNode::dispose ();
 }
 
 } // X3D

@@ -50,7 +50,10 @@
 
 #include "X3DFontStyleNode.h"
 
+#include "../../Execution/X3DExecutionContext.h"
 #include "../Text/Text.h"
+
+#include <Titania/OS/FileExists.h>
 
 namespace titania {
 namespace X3D {
@@ -291,6 +294,61 @@ X3DFontStyleNode::getAlignment (const size_t index) const
 		return Alignment::END;
 
 	return index ? Alignment::FIRST : Alignment::BEGIN;
+}
+
+Font
+X3DFontStyleNode::getFont () const
+{
+	bool isExactMatch = false;
+
+	for (const auto & familyName : family ())
+	{
+		Font font = getFont (familyName, isExactMatch);
+
+		if (isExactMatch)
+			return font;
+	}
+
+	return getFont ("SERIF", isExactMatch);
+}
+
+Font
+X3DFontStyleNode::getFont (const String & familyName, bool & isExactMatch) const
+{
+	// Test if familyName is a valid path
+
+	basic::uri uri = getExecutionContext () -> getWorldURL () .transform (familyName .raw ());
+
+	if (uri .is_local ())
+	{
+		if (os::file_exists (uri .path ()))
+		{
+			isExactMatch = true;
+
+			Font font;
+			font .setFilename (uri .path ());
+			font .substitute ();
+			return font;
+		}
+	}
+
+	Font font;
+	font .setFamilyName (familyName == "TYPEWRITER" ? "monospace" : familyName);
+	font .setWeight (isBold ()   ? Font::Weight::BOLD  : Font::Weight::NORMAL);
+	font .setSlant  (isItalic () ? Font::Slant::ITALIC : Font::Slant::ROMAN);
+	font .setScalable (true);
+
+	font .substitute ();
+
+	String familyNameAfterConfiguration = font .getFamilyName ();
+
+	Font match = font .match ();
+
+	String familyNameAfterMatching = match .getFamilyName ();
+
+	isExactMatch = familyNameAfterConfiguration .lowercase () == familyNameAfterMatching .lowercase ();
+
+	return match;
 }
 
 void
