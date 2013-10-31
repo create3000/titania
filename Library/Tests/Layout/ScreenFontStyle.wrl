@@ -1,0 +1,95 @@
+#X3D V3.0 utf8 Titania 0.1
+
+Background {
+  skyColor 0.2 0.2 0.2
+}
+
+OrthoViewpoint {
+  description "OrthoViewpoint"
+}
+
+Viewpoint {
+  description "Viewpoint"
+}
+
+DEF Rectangle2D Transform {
+  translation 0 0 -1.86478
+  scale 0.531331 0.531331 0.531331
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 0 0 0
+      }
+    }
+    geometry Rectangle2D { }
+  }
+}
+
+DEF Lena Anchor {
+  description "Image of Lena"
+  children DEF lena Transform {
+    translation 0 0.323634 0
+    scale 0.173397 0.175741 1
+    children Shape {
+      appearance Appearance {
+        texture ImageTexture {
+          url [ "../../../Titania/share/titania/Library/Textures/People/lena.jpg", "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/People/lena.jpg" ]
+          repeatS FALSE
+          repeatT FALSE
+        }
+      }
+      geometry Rectangle2D {
+        solid FALSE
+      }
+    }
+  }
+}
+
+DEF Axes Transform {
+  children Shape {
+    geometry IndexedLineSet {
+      colorPerVertex FALSE
+      colorIndex [ 0, 1 ]
+      coordIndex [ 0, 1, -1, 2, 3 ]
+      color Color {
+        color [ 1 0 0, 0 1 0 ]
+      }
+      coord Coordinate {
+        point [ -1 0 0, 1 0 0, 0 -1 0, 0 1 0 ]
+      }
+    }
+  }
+}
+
+DEF Text Transform {
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 1 0 0
+        specularColor 0 1 0
+      }
+    }
+    geometry Text {
+      string [ "", "ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ", "Aabcdefghijklmnopqrstuvwxyzäöü", "0123456789!\"§$%&/()=?", "Image of Lena" ]
+      length [ 0, 350, 350, 350 ]
+      maxExtent 300
+      fontStyle ScreenFontStyle {
+        family [ "Test-XXX", "../../../Titania/share/titania/fonts/pt-sans/PTN57F.ttf", "SANS" ]
+        pointSize 11
+        spacing 1.2
+        justify [ "BEGIN", "BEGIN" ]
+      }
+    }
+  }
+}
+
+DEF Debug Script {
+url "vrmlscript:
+function initialize ()
+{
+	var text = Browser .createVrmlFromString ('Text { string [\"M\", \"M\"] fontStyle ScreenFontStyle { pointSize 12 } }') [0];
+
+	print ('DPI: ' + text .lineBounds [1] .y * 6);
+}
+"
+}

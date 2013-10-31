@@ -87,6 +87,8 @@ function set_textBounds (value, time)
 
 	geometry .size = bounds .add (new SFVec2f (cornerRadius + 1, cornerRadius + 1));
 
+	// Align background line geometry on whole pixel
+
 	if (is_even (geometry .size .x))
 		++ geometry .size .x;
 	
@@ -131,8 +133,8 @@ LayoutGroup {
   children DEF StatisticsTool Statistics {
     string [ ]
     fontStyle ScreenFontStyle {
-      family "TYPEWRITER"
-      pointSize 8
+      family [ "TYPEWRITER" ]
+      pointSize 7.5
       spacing 1.2
       justify [
         "BEGIN",

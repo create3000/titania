@@ -101,6 +101,8 @@ function set_textBounds (value, time)
 {
 	background .size = value .add (borderWidth .multiply (2));
 	
+	// Align background line geometry on whole pixel
+	
 	if (is_even (background .size .x))
 		++ background .size .x;
 	

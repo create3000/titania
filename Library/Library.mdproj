@@ -2331,6 +2331,7 @@
     <None Include="Tests\PointingDeviceSensor\LineSensor.wrl" />
     <None Include="Tests\PointingDeviceSensor\test.wrl" />
     <None Include="Tests\Layout\RandomText.wrl" />
+    <None Include="Tests\Layout\ScreenFontStyle.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

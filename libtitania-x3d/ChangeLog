@@ -1,5 +1,11 @@
 2013-10-31  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Statistics.wrl:
+	* Notification.wrl:
+	* ScreenFontStyle.cpp: 
+
+2013-10-31  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* libtitania-x3d.cproj:
 	* config.h:
 	* config.cpp:
