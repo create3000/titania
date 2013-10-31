@@ -253,12 +253,6 @@ private:
 	void
 	_set_bind ();
 
-	void
-	camera ();
-
-	void
-	collect ();
-
 	///  @name Members
 
 	struct Fields

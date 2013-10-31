@@ -68,12 +68,11 @@ Notification::Fields::Fields () :
 Notification::Notification (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	     fields (),
-	      world (),
-	      scene ()
+	      world ()
 {
 	addField (inputOutput, "string", string ());
 	
-	addChildren (world, scene);
+	addChildren (world);
 }
 
 X3DBaseNode*
@@ -87,9 +86,11 @@ Notification::initialize ()
 {
 	X3DBaseNode::initialize ();
 
+	X3DSFNode <Scene> scene;
+
 	try
 	{
-		scene = getBrowser () -> createX3DFromURL ({ get_handle ("Notification.wrl") .str () });
+		scene = getBrowser () -> createX3DFromURL ({ get_tool ("Notification.wrl") .str () });
 
 		try
 		{
@@ -121,7 +122,7 @@ Notification::set_string ()
 {
 	try
 	{
-		auto notification = scene -> getNamedNode ("Notification");
+		auto notification = world -> getExecutionContext () -> getNamedNode ("Notification");
 
 		try
 		{
@@ -161,7 +162,6 @@ void
 Notification::dispose ()
 {
 	world .dispose ();
-	scene .dispose ();
 
 	X3DBaseNode::dispose ();
 }

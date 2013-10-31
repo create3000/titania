@@ -224,7 +224,7 @@ NavigationInfo::traverse (const TraverseType type)
 {
 	switch (type)
 	{
-		case TraverseType::COLLECT:
+		case TraverseType::CAMERA:
 		{
 			getCurrentLayer () -> getNavigationInfos () -> push_back (this);
 			break;

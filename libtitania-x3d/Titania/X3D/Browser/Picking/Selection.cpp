@@ -64,6 +64,7 @@ const std::string Selection::containerField = "selection";
 
 Selection::Selection (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	    enabled (),
 	   children ()
 {
 	X3DChildObject::addChildren (children);
@@ -84,7 +85,8 @@ Selection::addChildren (const MFNode & value)
 		{
 			if (child)
 			{
-				child -> addHandle ();
+				if (child -> getExecutionContext () == getBrowser () -> getExecutionContext ())
+					child -> addHandle ();
 
 				children .emplace_back (child);
 			}

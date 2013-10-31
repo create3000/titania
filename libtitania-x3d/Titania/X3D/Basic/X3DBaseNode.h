@@ -180,8 +180,12 @@ public:
 	bool
 	hasRoutes () const;
 
+	bool
+	isInternal () const
+	{ return internal; }
+
 	void
-	setInternal (bool);
+	isInternal (bool);
 
 	///  @name Event handling
 	
@@ -341,6 +345,7 @@ private:
 	FieldAliasesMap      fieldAliases;          // VRML names
 	size_t               numUserDefinedFields;  // Number of user defined fields
 
+	bool                 internal;
 	bool                 extendedEventHandling; // Handle initializeOnlys as input events
 	NodeId               nodeId;                // Router eventsProcessed id
 	std::deque <EventId> events;

@@ -162,7 +162,14 @@ public:
 				return node;
 		}
 
-		return at (0);
+		try
+		{
+			return at (1);
+		}
+		catch (const std::out_of_range &)
+		{
+			return at (0);
+		}
 	}
 
 	void

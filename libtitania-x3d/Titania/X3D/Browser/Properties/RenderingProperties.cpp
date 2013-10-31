@@ -50,7 +50,9 @@
 
 #include "RenderingProperties.h"
 
+#include "../../Bits/config.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Execution/World.h"
 #include "../X3DBrowser.h"
 
 #include <Titania/String.h>
@@ -98,11 +100,7 @@ RenderingProperties::RenderingProperties (X3DExecutionContext* const executionCo
 	    X3DNode (),
 	     fields (),
 	 extensions (),
-	 fontFamily ("-schumacher-clean-medium-r-normal--12-120-75-75-c-60-iso8859-1"), // SFString [in,out] fontFamily
-	 fontHeigth (0),
-	   fontInfo (NULL),
-	     listId (0),
-	     string ()
+	      world ()
 {
 	addChildren (enabled (), cycleInterval ());
 
@@ -119,6 +117,8 @@ RenderingProperties::RenderingProperties (X3DExecutionContext* const executionCo
 	addField (outputOnly, "TextureMemory",  textureMemory ());
 
 	addField ("AntiAliased", "Antialiased");
+
+	addChildren (world);
 }
 
 RenderingProperties*
@@ -134,6 +134,23 @@ RenderingProperties::initialize ()
 
 	if (glXGetCurrentContext ())
 	{
+		X3DSFNode <Scene> scene;
+
+		try
+		{
+			scene = getBrowser () -> createX3DFromURL ({ get_tool ("Statistics.wrl") .str () });
+		}
+		catch (const X3DError & error)
+		{
+			std::clog << error .what () << std::endl;
+
+			scene = getBrowser () -> createScene ();
+			scene -> setup ();
+		}
+
+		world = new World (scene);
+		world -> setup ();
+
 		vendor ()   = (const char*) glGetString (GL_VENDOR);
 		renderer () = (const char*) glGetString (GL_RENDERER);
 		version ()  = (const char*) glGetString (GL_VERSION);
@@ -168,11 +185,6 @@ RenderingProperties::initialize ()
 		antialiased ()    = glPolygonSmooth;
 		colorDepth ()     = glRedBits + glGreen + glBlueBits + glAlphaBits;
 		textureMemory ()  = glTextureMemory * 1024;
-
-		// Display
-
-		listId = glGenLists (1);
-		set_fontFamily ();
 
 		enabled () .addInterest (this, &RenderingProperties::set_enabled);
 		set_enabled ();
@@ -241,69 +253,12 @@ RenderingProperties::set_enabled ()
 }
 
 void
-RenderingProperties::set_fontFamily ()
-{
-	if (fontInfo)
-		glDeleteLists (fontListBase, fontInfo -> max_char_or_byte2);
-
-	Display* display = XOpenDisplay (NULL);
-	fontInfo = XLoadQueryFont (display, fontFamily .getValue () .c_str ());
-
-	if (fontInfo)
-	{
-		fontListBase = glGenLists (fontInfo -> max_char_or_byte2);
-		fontHeigth   = fontInfo -> ascent + fontInfo -> descent;
-		glXUseXFont (fontInfo -> fid, 0, fontInfo -> max_char_or_byte2, fontListBase);
-	}
-	else
-		std::clog << "Warning Statistics: Can't load font " << fontFamily << std::endl;
-}
-
-void
 RenderingProperties::reset ()
 {
 	clock       .reset ();
 	renderClock .reset ();
 
 	build ();
-	glCallList (listId);
-}
-
-void
-RenderingProperties::build ()
-{
-	glNewList (listId, GL_COMPILE);
-
-	// Configure HUD
-
-	Vector4i viewport = Viewport4i ();
-
-	int width  = viewport [2];
-	int height = viewport [3];
-
-	glMatrixMode (GL_PROJECTION);
-	glLoadIdentity ();
-	glOrtho (0, width, 0, height, -1, 1);
-	glMatrixMode (GL_MODELVIEW);
-
-	glDisable (GL_DEPTH_TEST);
-	glColor3f (197.0 / 255.0, 96.0 / 255.0, 0);
-
-	// Display stats.
-
-	int i = 0;
-	update ();
-
-	for (const auto & line : string)
-	{
-		glLoadIdentity ();
-		glRasterPos2f (10, 10 + (string .size () - i - 1) * fontHeigth);
-		glListBase (fontListBase);
-		glCallLists (line .length (), GL_UNSIGNED_BYTE, line .c_str ());
-		++ i;
-	}
-
-	glEndList ();
 }
 
 void
@@ -320,83 +275,90 @@ RenderingProperties::display ()
 
 	if (clock .interval () > cycleInterval ())
 	{
-		//			maxEventTime = std::max (maxEventTime,    getBrowser () -> getEventTime ());
-		//			maxTraverseTime = std::max (maxTraverseTime, getBrowser () -> getRenderer () -> getTraverseTime ());
-		//			maxDrawTime     = std::max (maxDrawTime,     getBrowser () -> getRenderer () -> getDrawTime ());
-
 		build ();
 
 		clock       .reset ();
 		renderClock .reset ();
 	}
 
-	//
+	// Display statistics
 
-	glCallList (listId);
+	world -> traverse (TraverseType::COLLECT);
 }
 
 void
-RenderingProperties::update ()
+RenderingProperties::build ()
 {
-	//	   time_type
-	//       eventTime = getBrowser () -> getEventTime (),
-	//	      traverseTime = getBrowser () -> getRenderer () -> getTraverseTime (),
-	//	      renderInterval     = getBrowser () -> getRenderer () -> getDrawTime ();
+	try
+	{
+		auto statistics = world -> getExecutionContext () -> getNamedNode ("StatisticsTool");
 
-	string .clear ();
+		try
+		{
+			MFString* string = static_cast <MFString*> (statistics -> getField ("string"));
 
-	std::ostringstream stringstream;
+			string -> clear ();
 
-	stringstream .str (""); stringstream << "Current Graphics Renderer";
-	string .emplace_back (stringstream .str ());
+			std::ostringstream stringstream;
 
-	stringstream .str (""); stringstream << "  Name: " << renderer () .getValue ();
-	string .emplace_back (stringstream .str ());
+			stringstream .str (""); stringstream << "Current Graphics Renderer";
+			string -> emplace_back (stringstream .str ());
 
-	stringstream .str ("");
-	string .emplace_back (stringstream .str ());
+			stringstream .str (""); stringstream << "  Name: " << renderer () .getValue ();
+			string -> emplace_back (stringstream .str ());
 
-	stringstream .str (""); stringstream << "Rendering properties";
-	string .emplace_back (stringstream .str ());
+			stringstream .str ("");
+			string -> emplace_back (stringstream .str ());
 
-	stringstream .str (""); stringstream << "Max threads:               " << maxThreads ();
-	string .emplace_back (stringstream .str ());
+			stringstream .str (""); stringstream << "Rendering properties";
+			string -> emplace_back (stringstream .str ());
 
-	stringstream .str (""); stringstream << "Texture units:             " << textureUnits ();
-	string .emplace_back (stringstream .str ());
+			stringstream .str (""); stringstream << "Max threads:               " << maxThreads ();
+			string -> emplace_back (stringstream .str ());
 
-	stringstream .str (""); stringstream << "Max texture size:          " << maxTextureSize () << " x " << maxTextureSize () << " pixel";
-	string .emplace_back (stringstream .str ());
+			stringstream .str (""); stringstream << "Texture units:             " << textureUnits ();
+			string -> emplace_back (stringstream .str ());
 
-	stringstream .str (""); stringstream << "Antialiased:               " << antialiased ();
-	string .emplace_back (stringstream .str ());
+			stringstream .str (""); stringstream << "Max texture size:          " << maxTextureSize () << " x " << maxTextureSize () << " pixel";
+			string -> emplace_back (stringstream .str ());
 
-	stringstream .str (""); stringstream << "Max lights:                " << maxLights ();
-	string .emplace_back (stringstream .str ());
+			stringstream .str (""); stringstream << "Antialiased:               " << antialiased ();
+			string -> emplace_back (stringstream .str ());
 
-	stringstream .str (""); stringstream << "Color depth:               " << colorDepth () << " bits";
-	string .emplace_back (stringstream .str ());
+			stringstream .str (""); stringstream << "Max lights:                " << maxLights ();
+			string -> emplace_back (stringstream .str ());
 
-	stringstream .str (""); stringstream << "Texture Memory:            " << (textureMemory () > 0 ? strfsize (textureMemory ()) : "n/a");
-	string .emplace_back (stringstream .str ());
+			stringstream .str (""); stringstream << "Color depth:               " << colorDepth () << " bits";
+			string -> emplace_back (stringstream .str ());
 
-	stringstream .str (""); stringstream << "Available Texture Memory:  " << strfsize (getAvailableTextureMemory ());
-	string .emplace_back (stringstream .str ());
+			stringstream .str (""); stringstream << "Texture Memory:            " << (textureMemory () > 0 ? strfsize (textureMemory ()) : "n/a");
+			string -> emplace_back (stringstream .str ());
 
-	stringstream .str (""); stringstream << "Memory Usage:              " << strfsize (getGarbageCollector () .getMemoryUsage ());
-	string .emplace_back (stringstream .str ());
+			stringstream .str (""); stringstream << "Available Texture Memory:  " << strfsize (getAvailableTextureMemory ());
+			string -> emplace_back (stringstream .str ());
 
-	stringstream .str ("");
-	string .emplace_back (stringstream .str ());
+			stringstream .str (""); stringstream << "Memory Usage:              " << strfsize (getGarbageCollector () .getMemoryUsage ());
+			string -> emplace_back (stringstream .str ());
 
-	stringstream .str (""); stringstream << "Frame Rate:                " << std::setprecision (1) << std::fixed << fps () << " fps";
-	string .emplace_back (stringstream .str ());
+			stringstream .str ("");
+			string -> emplace_back (stringstream .str ());
 
-	stringstream .str (""); stringstream << "Display:                   " << std::setprecision (2) << std::fixed << renderClock .average () / clock .average () * 100 << " %";
-	string .emplace_back (stringstream .str ());
+			stringstream .str (""); stringstream << "Frame Rate:                " << std::setprecision (1) << std::fixed << fps () << " fps";
+			string -> emplace_back (stringstream .str ());
 
-	stringstream .str (""); stringstream << "Sensors:                   " << getBrowser () -> sensors () .getRequesters () .size () + getBrowser () -> prepareEvents () .getRequesters () .size () - 1; // remove self
-	string .emplace_back (stringstream .str ());
+			stringstream .str (""); stringstream << "Display:                   " << std::setprecision (2) << std::fixed << renderClock .average () / clock .average () * 100 << " %";
+			string -> emplace_back (stringstream .str ());
+
+			stringstream .str (""); stringstream << "Sensors:                   " << getBrowser () -> sensors () .getRequesters () .size () + getBrowser () -> prepareEvents () .getRequesters () .size () - 1; // remove self
+			string -> emplace_back (stringstream .str ());
+		}
+		catch (const X3DError &)
+		{ }
+	}
+	catch (const X3DError &)
+	{
+		// catch error from getNamedNode
+	}
 }
 
 void
@@ -420,11 +382,7 @@ RenderingProperties::toStream (std::ostream & stream) const
 void
 RenderingProperties::dispose ()
 {
-	if (fontInfo)
-		glDeleteLists (fontListBase, fontInfo -> max_char_or_byte2);
-
-	if (listId)
-		glDeleteLists (listId, 1);
+	world .dispose ();
 
 	X3DNode::dispose ();
 }

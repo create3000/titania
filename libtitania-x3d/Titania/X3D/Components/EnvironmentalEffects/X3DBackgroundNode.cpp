@@ -307,12 +307,14 @@ X3DBackgroundNode::traverse (const TraverseType type)
 {
 	switch (type)
 	{
-		case TraverseType::COLLECT:
+		case TraverseType::CAMERA:
 		{
 			getCurrentLayer () -> getBackgrounds () -> push_back (this);
-
+			break;
+		}
+		case TraverseType::COLLECT:
+		{
 			matrix = ModelViewMatrix4f ();
-
 			break;
 		}
 		default:

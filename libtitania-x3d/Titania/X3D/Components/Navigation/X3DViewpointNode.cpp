@@ -397,37 +397,22 @@ X3DViewpointNode::traverse (const TraverseType type)
 	{
 		case TraverseType::CAMERA:
 		{
-			camera ();
-			break;
-		}
-		case TraverseType::COLLECT:
-		{
-			collect ();
+			getCurrentLayer () -> getViewpoints () -> push_back (this);
+
+			setParentMatrix (ModelViewMatrix4f ());
+
+			if (isBound ())
+			{
+				Matrix4f matrix;
+				matrix .set (getUserPosition (), getUserOrientation (), scaleOffset (), scaleOrientationOffset ());
+
+				setTransformationMatrix (matrix * ModelViewMatrix4f ());
+			}
 			break;
 		}
 		default:
 			break;
 	}
-}
-
-void
-X3DViewpointNode::camera ()
-{
-	setParentMatrix (ModelViewMatrix4f ());
-
-	if (isBound ())
-	{
-		Matrix4f matrix;
-		matrix .set (getUserPosition (), getUserOrientation (), scaleOffset (), scaleOrientationOffset ());
-
-		setTransformationMatrix (matrix * ModelViewMatrix4f ());
-	}
-}
-
-void
-X3DViewpointNode::collect ()
-{
-	getCurrentLayer () -> getViewpoints () -> push_back (this);
 }
 
 void

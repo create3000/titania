@@ -89,6 +89,14 @@ public:
 
 	///  @name Member access
 
+	SFBool &
+	getEnabled ()
+	{ return enabled; }
+
+	const SFBool &
+	getEnabled () const
+	{ return enabled; }
+
 	void
 	addChildren (const MFNode &);
 
@@ -121,6 +129,7 @@ private:
 
 	///  @name Members
 
+	SFBool enabled;
 	MFNode children;
 
 };

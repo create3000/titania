@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -64,9 +64,9 @@ get_page (const std::string & filename)
 }
 
 basic::uri
-get_handle (const std::string & filename)
+get_tool (const std::string & filename)
 {
-	return "file://" + os::find_data_file (TITANIA_DATA_DIR + "handles/" + filename);
+	return "file://" + os::find_data_file (TITANIA_DATA_DIR + "tools/" + filename);
 }
 
 } // X3D

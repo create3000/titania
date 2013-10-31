@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_BROWSER_PROPERTIES_RENDERING_PROPERTIES_H__
 
 #include "../../Components/Core/X3DNode.h"
+
 #include <Titania/Chrono/StopWatch.h>
 
 #include <set>
@@ -69,6 +70,8 @@ namespace X3D {
 // AntiAliased       Boolean              True or false if the rendering is currently anti-aliased or not
 // ColorDepth        Integer              The number of bits of colour depth supported by the screen. Allows for optimized selection of textures, particularly for lower colour depth screen capabilities.
 // TextureMemory     Float                The amount of memory in megabytes available for textures to be placed on the video card.
+
+class World;
 
 class RenderingProperties :
 	public X3DNode
@@ -240,16 +243,10 @@ private:
 	set_enabled ();
 
 	void
-	set_fontFamily ();
-
-	void
 	reset ();
 
 	void
 	build ();
-
-	void
-	update ();
 
 	///  @name Static members
 
@@ -285,12 +282,7 @@ private:
 	chrono::stopwatch <double> clock;
 	chrono::stopwatch <double> renderClock;
 
-	SFString                  fontFamily;
-	size_t                    fontHeigth;
-	GLuint                    fontListBase;
-	XFontStruct*              fontInfo;
-	GLuint                    listId;
-	std::vector <std::string> string;
+	X3DSFNode <World> world;
 
 };
 

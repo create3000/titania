@@ -79,7 +79,7 @@ TransformHandle::initialize ()
 
 	try
 	{
-		scene = getBrowser () -> createX3DFromURL ({ get_handle ("TransformHandle.wrl") .str () });
+		scene = getBrowser () -> createX3DFromURL ({ get_tool ("TransformTool.wrl") .str () });
 
 		X3DFieldDefinition* field = scene -> getNamedNode ("Handle") -> getField ("transform");
 

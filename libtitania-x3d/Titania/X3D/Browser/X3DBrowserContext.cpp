@@ -145,27 +145,6 @@ X3DBrowserContext::initialize ()
 
 	advanceClock ();
 
-	// Properties
-
-	renderingProperties -> setup ();
-	browserProperties   -> setup ();
-	browserOptions      -> setup ();
-	javaScriptEngine    -> setup ();
-	selection           -> setup ();
-	console             -> setup ();
-
-	// Lights
-
-	for (int32_t i = 0; i < renderingProperties -> maxLights (); ++ i)
-		lights .push (GL_LIGHT0 + i);
-
-	// TextureUnits
-
-	for (int32_t i = 1; i < renderingProperties -> textureUnits (); ++ i)
-		textureUnits .push (i);
-
-	downloadMutexes .resize (std::min <int32_t> (renderingProperties -> maxThreads () * 2, MAX_DOWNLOAD_THREADS));
-
 	// Initialize OpenGL context
 
 	if (glXGetCurrentContext ())
@@ -194,7 +173,27 @@ X3DBrowserContext::initialize ()
 
 		glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
 
-		notification -> setup ();
+		// Properties
+
+		renderingProperties -> setup ();
+		browserProperties   -> setup ();
+		browserOptions      -> setup ();
+		javaScriptEngine    -> setup ();
+		selection           -> setup ();
+		notification        -> setup ();
+		console             -> setup ();
+
+		// Lights
+
+		for (int32_t i = 0; i < renderingProperties -> maxLights (); ++ i)
+			lights .push (GL_LIGHT0 + i);
+
+		// TextureUnits
+
+		for (int32_t i = 1; i < renderingProperties -> textureUnits (); ++ i)
+			textureUnits .push (i);
+
+		downloadMutexes .resize (std::min <int32_t> (renderingProperties -> maxThreads () * 2, MAX_DOWNLOAD_THREADS));
 	}
 
 	initialized () .addInterest (this, &X3DBrowserContext::set_initialized);

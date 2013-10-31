@@ -513,7 +513,6 @@
     <None Include="Titania\X3D\Browser\Console.h" />
     <None Include="Titania\X3D\Handles\TransformHandle.h" />
     <None Include="Titania\X3D\Bits\config.h" />
-    <None Include="share\titania\handles\TransformHandle.wrl" />
     <None Include="Titania\X3D\Parser\Grammar.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsX3DConstants.h" />
     <None Include="Titania\X3D\Basic\NodeSet.h" />
@@ -573,7 +572,6 @@
     <None Include="Titania\X3D\Browser\Picking\Intersection.h" />
     <None Include="Titania\X3D\Browser\Picking\IntersectionPtr.h" />
     <None Include="Titania\X3D\Browser\Picking\Selection.h" />
-    <None Include="share\titania\handles\Notification.wrl" />
     <None Include="Titania\X3D\Components\Grouping\X3DTransformNode.h" />
     <None Include="Titania\X3D\Routing\EventList.h" />
     <None Include="Titania\X3D\Components\ParticleSystems\ForcePhysicsModel.h" />
@@ -594,7 +592,10 @@
     <None Include="share\icons\hicolor\scalable\mimetypes\model-x3d+binary.svg" />
     <None Include="share\titania\mime\model\x3d+binary.xml" />
     <None Include="share\titania\mime\model\x3d+binary.png" />
-    <None Include="share\titania\handles\library\RoundedRectangle2D.x3dv" />
+    <None Include="share\titania\tools\Notification.wrl" />
+    <None Include="share\titania\tools\library\RoundedRectangle2D.x3dv" />
+    <None Include="share\titania\tools\Statistics.wrl" />
+    <None Include="share\titania\tools\TransformTool.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1065,15 +1066,15 @@
     <Folder Include="Titania\X3D\Handles\" />
     <Folder Include="share\" />
     <Folder Include="share\titania\" />
-    <Folder Include="share\titania\handles\" />
     <Folder Include="share\titania\pages\" />
     <Folder Include="share\titania\pages\about\" />
     <Folder Include="Titania\X3D\Miscellaneous\" />
     <Folder Include="Titania\X3D\Browser\Devices\" />
     <Folder Include="Titania\X3D\Browser\Picking\" />
-    <Folder Include="share\titania\handles\library\" />
     <Folder Include="Titania\X3D\Thread\" />
     <Folder Include="share\icons\" />
+    <Folder Include="share\titania\tools\" />
+    <Folder Include="share\titania\tools\library\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

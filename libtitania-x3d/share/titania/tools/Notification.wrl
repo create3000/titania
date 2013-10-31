@@ -21,7 +21,6 @@ PROTO Notification [
 {
   Group {
     children [
-   
       Shape {
         appearance Appearance {
           material DEF BackgroundMaterial Material {
@@ -47,7 +46,6 @@ PROTO Notification [
         }
         geometry USE BackgroundGeometry
       }
- 
       Shape {
         appearance Appearance {
           material DEF TextMaterial Material {
@@ -58,7 +56,6 @@ PROTO Notification [
           fontStyle IS fontStyle
         }
       }
-      
     ]
   }
 

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -108,8 +108,6 @@ X3DLayerNode::X3DLayerNode (X3DViewpointNode* _defaultViewpoint, X3DGroupingNode
 	             fogs,
 	             viewpoints,
 	             group);
-
-	defaultViewpoint -> description () = "Default Viewpoint";
 }
 
 void
@@ -133,13 +131,12 @@ X3DLayerNode::initialize ()
 	viewpoints      -> setup ();
 	fogs            -> setup ();
 
-	group -> setInternal (true);
+	group -> isInternal (true);
 	group -> children () = children ();
 	group -> setup ();
 
 	defaultBackground -> transparency () = 1;
 	defaultFog        -> transparency () = 1;
-	defaultViewpoint  -> isBound ()      = true;
 
 	viewport ()       .addInterest (this, &X3DLayerNode::set_viewport);
 	addChildren ()    .addInterest (group -> addChildren ());
@@ -364,8 +361,17 @@ X3DLayerNode::camera ()
 	glLoadIdentity ();
 	getViewpoint () -> reshape ();
 
-	defaultViewpoint -> traverse (TraverseType::CAMERA);
+	defaultNavigationInfo -> traverse (TraverseType::CAMERA);
+	defaultBackground     -> traverse (TraverseType::CAMERA);
+	defaultFog            -> traverse (TraverseType::CAMERA);
+	defaultViewpoint      -> traverse (TraverseType::CAMERA);
+
 	group -> traverse (TraverseType::CAMERA);
+
+	navigationInfos -> update ();
+	backgrounds     -> update ();
+	fogs            -> update ();
+	viewpoints      -> update ();
 }
 
 void
@@ -434,11 +440,6 @@ X3DLayerNode::collect ()
 
 	render (TraverseType::COLLECT);
 
-	navigationInfos -> update ();
-	backgrounds     -> update ();
-	viewpoints      -> update ();
-	fogs            -> update ();
-
 	getNavigationInfo () -> disable ();
 	currentViewport -> pop ();
 
@@ -466,8 +467,8 @@ X3DLayerNode::dispose ()
 
 	navigationInfos .dispose ();
 	backgrounds     .dispose ();
-	viewpoints      .dispose ();
 	fogs            .dispose ();
+	viewpoints      .dispose ();
 
 	group .dispose ();
 

@@ -107,7 +107,7 @@ Fog::traverse (const TraverseType type)
 {
 	switch (type)
 	{
-		case TraverseType::COLLECT:
+		case TraverseType::CAMERA:
 		{
 			getCurrentLayer () -> getFogs () -> push_back (this);
 			break;

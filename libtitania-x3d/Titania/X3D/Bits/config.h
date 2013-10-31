@@ -60,7 +60,7 @@ basic::uri
 get_page (const std::string &);
 
 basic::uri
-get_handle (const std::string &);
+get_tool (const std::string &);
 
 } // X3D
 } // titania

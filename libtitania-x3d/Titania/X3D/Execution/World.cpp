@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -85,7 +85,7 @@ World::initialize ()
 {
 	X3DBaseNode::initialize ();
 
-	layerSet -> setInternal (true);
+	layerSet -> isInternal (true);
 	layerSet -> setup ();
 	layerSet -> setLayer0 (layer0);
 	layerSet -> getActiveLayer () .addInterest (this, &World::set_activeLayer);
@@ -95,7 +95,7 @@ World::initialize ()
 	set_rootNodes (); // This can happen twice when rootNodes is tainted
 
 	layer0 -> isLayer0 (true);
-	layer0 -> setInternal (true);
+	layer0 -> isInternal (true);
 	layer0 -> setup ();
 	layer0 -> getBackgroundStack () -> bottom () -> transparency () = 0;
 
@@ -141,7 +141,6 @@ void
 World::bind ()
 {
 	layerSet -> traverse (TraverseType::CAMERA);
-	layerSet -> traverse (TraverseType::COLLECT);
 
 	for (auto & layer : layerSet -> getLayers ())
 	{
@@ -170,6 +169,7 @@ World::bind ()
 			auto viewpoint = layer -> getViewpoints () -> bound ();
 			layer -> getViewpointStack () -> force_push (viewpoint);
 		}
+		
 	}
 
 	// Bind viewpoint from URL.
