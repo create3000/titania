@@ -95,12 +95,36 @@ public:
 	point () const
 	{ return *fields .point; }
 
+	///  @name Operations
+
+	virtual
+	Vector3f
+	getNormal (size_t, size_t, size_t) const final;
+
+	virtual
 	void
-	resize (size_t);
+	addVertex (opengl::tesselator <size_t> &, size_t, size_t) const final;
+
+	virtual
+	void
+	emplace_back (std::vector <Vector3f>&, size_t) const final;
+
+	virtual
+	void
+	resize (size_t) final;
+
+	virtual
+	size_t
+	empty () const final
+	{ return point () .empty (); }
+
+	virtual
+	size_t
+	size () const final
+	{ return point () .size (); }
 
 
 private:
-
 
 	///  @name Static members
 

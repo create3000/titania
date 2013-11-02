@@ -54,7 +54,7 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Rendering/Color.h"
 #include "../Rendering/ColorRGBA.h"
-#include "../Rendering/Coordinate.h"
+#include "../Rendering/X3DCoordinateNode.h"
 
 namespace titania {
 namespace X3D {
@@ -156,7 +156,7 @@ IndexedLineSet::getPolylines () const
 void
 IndexedLineSet::set_coordIndex ()
 {
-	auto _coord = x3d_cast <Coordinate*> (coord ());
+	auto _coord = x3d_cast <X3DCoordinateNode*> (coord ());
 
 	numPolylines = 0;
 
@@ -239,9 +239,9 @@ IndexedLineSet::set_colorIndex ()
 void
 IndexedLineSet::build ()
 {
-	auto _coord = x3d_cast <Coordinate*> (coord ());
+	auto _coord = x3d_cast <X3DCoordinateNode*> (coord ());
 
-	if (not _coord or _coord -> point () .empty ())
+	if (not _coord or _coord -> empty ())
 		return;
 
 	auto polylines = getPolylines ();
@@ -294,7 +294,7 @@ IndexedLineSet::build ()
 						getColorsRGBA () .emplace_back (faceColorRGBA);
 				}
 
-				getVertices () .emplace_back (_coord -> point () [coordIndex () [i]]);
+				_coord -> emplace_back (getVertices (), coordIndex () [i]);
 			}
 		}
 

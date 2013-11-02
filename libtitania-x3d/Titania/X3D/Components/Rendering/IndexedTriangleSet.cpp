@@ -52,7 +52,6 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "../Rendering/Coordinate.h"
 
 namespace titania {
 namespace X3D {

@@ -52,7 +52,7 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "../Rendering/Coordinate.h"
+#include "../Rendering/X3DCoordinateNode.h"
 
 namespace titania {
 namespace X3D {
@@ -91,10 +91,10 @@ TriangleSet::create (X3DExecutionContext* const executionContext) const
 void
 TriangleSet::build ()
 {
-	auto _coord = x3d_cast <Coordinate*> (coord ());
+	auto _coord = x3d_cast <X3DCoordinateNode*> (coord ());
 
 	if (_coord)
-		buildPolygons (3, _coord -> point () .size ());
+		buildPolygons (3, _coord -> size ());
 }
 
 void

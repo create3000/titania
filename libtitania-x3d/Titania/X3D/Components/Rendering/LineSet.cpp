@@ -54,7 +54,7 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Rendering/Color.h"
 #include "../Rendering/ColorRGBA.h"
-#include "../Rendering/Coordinate.h"
+#include "../Rendering/X3DCoordinateNode.h"
 
 namespace titania {
 namespace X3D {
@@ -93,9 +93,9 @@ LineSet::create (X3DExecutionContext* const executionContext) const
 void
 LineSet::build ()
 {
-	auto _coord = x3d_cast <Coordinate*> (coord ());
+	auto _coord = x3d_cast <X3DCoordinateNode*> (coord ());
 
-	if (not _coord or _coord -> point () .empty ())
+	if (not _coord or _coord -> empty ())
 		return;
 
 	// Color
@@ -104,10 +104,10 @@ LineSet::build ()
 	auto _colorRGBA = x3d_cast <ColorRGBA*> (color ());
 
 	if (_color)
-		_color -> resize (_coord -> point () .size ());
+		_color -> resize (_coord -> size ());
 
 	if (_colorRGBA)
-		_colorRGBA -> resize (_coord -> point () .size ());
+		_colorRGBA -> resize (_coord -> size ());
 
 	// Fill GeometryNode
 
@@ -117,7 +117,7 @@ LineSet::build ()
 	{
 		// Create two vertices for each line.
 
-		if (index + count > _coord -> point () .size ())
+		if (index + count > _coord -> size ())
 			break;
 
 		if (count > 1)
@@ -133,7 +133,7 @@ LineSet::build ()
 					getColorsRGBA () .emplace_back (_colorRGBA -> color () [index]);
 				}
 
-				getVertices () .emplace_back (_coord -> point () [index]);
+				_coord -> emplace_back (getVertices (), index);
 			}
 
 			addElements (GL_LINE_STRIP, count);

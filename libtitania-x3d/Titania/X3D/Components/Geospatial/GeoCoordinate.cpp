@@ -51,6 +51,7 @@
 #include "GeoCoordinate.h"
 
 #include "../../Execution/X3DExecutionContext.h"
+#include <Titania/Math/Utility/Normal.h>
 
 namespace titania {
 namespace X3D {
@@ -60,9 +61,9 @@ const std::string GeoCoordinate::typeName       = "GeoCoordinate";
 const std::string GeoCoordinate::containerField = "coord";
 
 GeoCoordinate::Fields::Fields () :
-	point (new MFVec3d ()),
 	geoOrigin (new SFNode ()),
-	geoSystem (new MFString ({ "GD", "WE" }))
+	geoSystem (new MFString ({ "GD", "WE" })),
+	    point (new MFVec3d ())
 { }
 
 GeoCoordinate::GeoCoordinate (X3DExecutionContext* const executionContext) :
@@ -71,15 +72,42 @@ GeoCoordinate::GeoCoordinate (X3DExecutionContext* const executionContext) :
 	           fields ()
 {
 	addField (inputOutput,    "metadata",  metadata ());
-	addField (inputOutput,    "point",     point ());
 	addField (initializeOnly, "geoOrigin", geoOrigin ());
 	addField (initializeOnly, "geoSystem", geoSystem ());
+	addField (inputOutput,    "point",     point ());
 }
 
 X3DBaseNode*
 GeoCoordinate::create (X3DExecutionContext* const executionContext) const
 {
 	return new GeoCoordinate (executionContext);
+}
+
+Vector3f
+GeoCoordinate::getNormal (size_t index1, size_t index2, size_t index3) const
+{
+	return math::normal <double> (point () [index1],
+	                              point () [index2],
+	                              point () [index3]);
+}
+
+void
+GeoCoordinate::addVertex (opengl::tesselator <size_t> & tesselator, size_t index, size_t i) const
+{
+	tesselator .add_vertex (point () [index] .getValue (), i);
+}
+
+void
+GeoCoordinate::emplace_back (std::vector <Vector3f> & vertices, size_t index) const
+{
+	vertices .emplace_back (point () [index] .getValue ());
+}
+
+void
+GeoCoordinate::resize (size_t size)
+{
+	if (point () .size () < size)
+		point () .resize (size);
 }
 
 } // X3D

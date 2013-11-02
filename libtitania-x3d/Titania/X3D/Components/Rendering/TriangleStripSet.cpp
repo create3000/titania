@@ -52,7 +52,7 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "../Rendering/Coordinate.h"
+#include "../Rendering/X3DCoordinateNode.h"
 
 namespace titania {
 namespace X3D {
@@ -105,9 +105,9 @@ TriangleStripSet::initialize ()
 void
 TriangleStripSet::set_stripCount ()
 {
-	auto _coord = x3d_cast <Coordinate*> (coord ());
+	auto _coord = x3d_cast <X3DCoordinateNode*> (coord ());
 
-	if (not _coord or _coord -> point () .empty ())
+	if (not _coord or _coord -> empty ())
 		return;
 
 	// Build coordIndex

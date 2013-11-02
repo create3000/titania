@@ -51,6 +51,7 @@
 #include "Coordinate.h"
 
 #include "../../Execution/X3DExecutionContext.h"
+#include <Titania/Math/Utility/Normal.h>
 
 namespace titania {
 namespace X3D {
@@ -76,6 +77,26 @@ X3DBaseNode*
 Coordinate::create (X3DExecutionContext* const executionContext) const
 {
 	return new Coordinate (executionContext);
+}
+
+Vector3f
+Coordinate::getNormal (size_t index1, size_t index2, size_t index3) const
+{
+	return math::normal <float> (point () [index1],
+	                             point () [index2],
+	                             point () [index3]);
+}
+
+void
+Coordinate::addVertex (opengl::tesselator <size_t> & tesselator, size_t index, size_t i) const
+{
+	tesselator .add_vertex (point () [index], i);
+}
+
+void
+Coordinate::emplace_back (std::vector <Vector3f> & vertices, size_t index) const
+{
+	vertices .emplace_back (point () [index]);
 }
 
 void

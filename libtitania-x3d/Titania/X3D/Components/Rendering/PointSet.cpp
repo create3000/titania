@@ -54,7 +54,7 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Rendering/Color.h"
 #include "../Rendering/ColorRGBA.h"
-#include "../Rendering/Coordinate.h"
+#include "../Rendering/X3DCoordinateNode.h"
 
 namespace titania {
 namespace X3D {
@@ -91,7 +91,7 @@ PointSet::create (X3DExecutionContext* const executionContext) const
 void
 PointSet::build ()
 {
-	auto _coord = x3d_cast <Coordinate*> (coord ());
+	auto _coord = x3d_cast <X3DCoordinateNode*> (coord ());
 
 	if (not _coord)
 		return;
@@ -101,18 +101,19 @@ PointSet::build ()
 
 	if (_color)
 	{
-		getColors () .reserve (_coord -> point () .size ());
+		getColors () .reserve (_coord -> size ());
 		getColors () .assign  (_color -> color () .begin (), _color -> color () .end ());
-		getColors () .resize  (_coord -> point () .size (), Color3f (1, 1, 1));
+		getColors () .resize  (_coord -> size (), Color3f (1, 1, 1));
 	}
 	else if (_colorRGBA)
 	{
-		getColorsRGBA () .reserve (_coord -> point () .size ());
+		getColorsRGBA () .reserve (_coord -> size ());
 		getColorsRGBA () .assign  (_colorRGBA -> color () .begin (), _colorRGBA -> color () .end ());
-		getColorsRGBA () .resize  (_coord -> point () .size (), Color4f (1, 1, 1, 1));
+		getColorsRGBA () .resize  (_coord -> size (), Color4f (1, 1, 1, 1));
 	}
 
-	getVertices () .assign (_coord -> point () .begin (), _coord -> point () .end ());
+	for (size_t i = 0, size = _coord -> size (); i < size; ++ i)
+		_coord -> emplace_back (getVertices (), i);
 
 	addElements (GL_POINTS, getVertices () .size ());
 	setSolid (false);

@@ -1,34 +1,21 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Library/Examples/Pong/stage/4vong.wrl">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Library/Tests/Handles/OutlineEditor.wrl">
     <Files>
-      <File FileName="Library/Tests/Handles/OutlineEditor.wrl" Line="26" Column="66" />
+      <File FileName="Library/Tests/Handles/OutlineEditor.wrl" Line="10" Column="29" />
       <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="128" Column="1" />
       <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="206" Column="11" />
       <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="76" Column="7" />
       <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="905" Column="1" />
       <File FileName="libtitania-x3d/share/titania/tools/TransformTool.wrl" Line="734" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/PlaneSensor.h" Line="152" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/PlaneSensor.cpp" Line="199" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/CylinderSensor.h" Line="189" Column="23" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/CylinderSensor.cpp" Line="80" Column="22" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/SphereSensor.cpp" Line="127" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/SphereSensor.h" Line="141" Column="20" />
-      <File FileName="Library/Examples/Pong/stage/4vong.wrl" Line="226" Column="20" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="build" expanded="True">
-            <Node name="debian" expanded="True" />
-          </Node>
-          <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
             <Node name="Examples" expanded="True">
               <Node name="Pong" expanded="True">
-                <Node name="stage" expanded="True">
-                  <Node name="4vong.wrl" selected="True" />
-                </Node>
+                <Node name="stage" expanded="True" />
               </Node>
               <Node name="TikiWorld" expanded="True" />
             </Node>
@@ -38,7 +25,9 @@
               </Node>
             </Node>
             <Node name="Tests" expanded="True">
-              <Node name="Handles" expanded="True" />
+              <Node name="Handles" expanded="True">
+                <Node name="OutlineEditor.wrl" selected="True" />
+              </Node>
               <Node name="Layout" expanded="True" />
               <Node name="Text" expanded="True" />
             </Node>

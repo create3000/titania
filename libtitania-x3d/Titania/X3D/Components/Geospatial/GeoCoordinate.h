@@ -87,14 +87,6 @@ public:
 
 	///  @name Fields
 
-	MFVec3d &
-	point ()
-	{ return *fields .point; }
-
-	const MFVec3d &
-	point () const
-	{ return *fields .point; }
-
 	SFNode &
 	geoOrigin ()
 	{ return *fields .geoOrigin; }
@@ -110,6 +102,42 @@ public:
 	const MFString &
 	geoSystem () const
 	{ return *fields .geoSystem; }
+
+	MFVec3d &
+	point ()
+	{ return *fields .point; }
+
+	const MFVec3d &
+	point () const
+	{ return *fields .point; }
+
+	///  @name Operations
+
+	virtual
+	Vector3f
+	getNormal (size_t, size_t, size_t) const final;
+
+	virtual
+	void
+	addVertex (opengl::tesselator <size_t> &, size_t, size_t) const final;
+
+	virtual
+	void
+	emplace_back (std::vector <Vector3f>&, size_t) const final;
+
+	virtual
+	void
+	resize (size_t) final;
+
+	virtual
+	size_t
+	empty () const final
+	{ return point () .empty (); }
+
+	virtual
+	size_t
+	size () const final
+	{ return point () .size (); }
 
 
 private:
@@ -127,9 +155,9 @@ private:
 	{
 		Fields ();
 
-		MFVec3d* const point;
 		SFNode* const geoOrigin;
 		MFString* const geoSystem;
+		MFVec3d* const point;
 	};
 
 	Fields fields;

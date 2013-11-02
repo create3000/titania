@@ -1,5 +1,26 @@
 2013-11-02  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* LineSet.cpp:
+	* Coordinate.h:
+	* PointSet.cpp:
+	* QuadSet.cpp:
+	* Coordinate.cpp:
+	* CoordinateDouble.h:
+	* TriangleSet.cpp:
+	* MultiTexture.cpp:
+	* CoordinateDouble.cpp:
+	* GeoCoordinate.h:
+	* TriangleFanSet.cpp:
+	* GeoCoordinate.cpp:
+	* IndexedLineSet.cpp:
+	* X3DCoordinateNode.h:
+	* IndexedFaceSet.cpp:
+	* TriangleStripSet.cpp:
+	* IndexedTriangleSet.cpp:
+	* X3DComposedGeometryNode.cpp: 
+
+2013-11-02  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Statistics.wrl:
 	* Notification.cpp:
 	* Notification.wrl:

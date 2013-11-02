@@ -53,7 +53,7 @@
 #include "../../Bits/Cast.h"
 #include "../Rendering/Color.h"
 #include "../Rendering/ColorRGBA.h"
-#include "../Rendering/Coordinate.h"
+#include "../Rendering/X3DCoordinateNode.h"
 #include "../Rendering/Normal.h"
 #include "../Texturing/TextureCoordinate.h"
 #include "../Texturing/TextureCoordinateGenerator.h"
@@ -84,7 +84,7 @@ X3DComposedGeometryNode::X3DComposedGeometryNode () :
 void
 X3DComposedGeometryNode::set_index (const MFInt32 & index)
 {
-	auto _coord = x3d_cast <Coordinate*> (coord ());
+	auto _coord = x3d_cast <X3DCoordinateNode*> (coord ());
 
 	int32_t numPoints = -1;
 
@@ -107,9 +107,9 @@ X3DComposedGeometryNode::set_index (const MFInt32 & index)
 void
 X3DComposedGeometryNode::buildPolygons (size_t vertexCount, size_t size)
 {
-	auto _coord = x3d_cast <Coordinate*> (coord ());
+	auto _coord = x3d_cast <X3DCoordinateNode*> (coord ());
 
-	if (not _coord or _coord -> point () .empty ())
+	if (not _coord or _coord -> empty ())
 		return;
 
 	size_t faces = size / vertexCount; // Integer division
@@ -216,7 +216,7 @@ X3DComposedGeometryNode::buildPolygons (size_t vertexCount, size_t size)
 					getNormals () .emplace_back (faceNormal);
 			}
 
-			getVertices () .emplace_back (_coord -> point () [getIndex (index)]);
+			_coord -> emplace_back (getVertices (), getIndex (index));
 		}
 	}
 
@@ -253,7 +253,7 @@ X3DComposedGeometryNode::buildNormals (size_t vertexCount, size_t size)
 void
 X3DComposedGeometryNode::buildFaceNormals (size_t vertexCount, size_t size)
 {
-	auto _coord = x3d_cast <Coordinate*> (coord ());
+	auto _coord = x3d_cast <X3DCoordinateNode*> (coord ());
 
 	for (size_t index = 0; index < size; index += vertexCount)
 	{
@@ -262,9 +262,9 @@ X3DComposedGeometryNode::buildFaceNormals (size_t vertexCount, size_t size)
 		for (size_t i = 1, size = vertexCount - 1; i < size; ++ i)
 		{
 			// Determine polygon normal.
-			normal += math::normal <float> (_coord -> point () [getIndex (index)],
-			                                _coord -> point () [getIndex (index + i)],
-			                                _coord -> point () [getIndex (index + i + 1)]);
+			normal += _coord -> getNormal (getIndex (index),
+			                               getIndex (index + i),
+			                               getIndex (index + i + 1));
 		}
 
 		getNormals () .resize (getNormals () .size () + vertexCount, vertexCount == 3 ? normal : normalize (normal));

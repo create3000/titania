@@ -60,12 +60,12 @@ const std::string MultiTexture::typeName       = "MultiTexture";
 const std::string MultiTexture::containerField = "texture";
 
 MultiTexture::Fields::Fields () :
-	alpha (new SFFloat (1)),
-	color (new SFColor (1, 1, 1)),
+	   alpha (new SFFloat (1)),
+	   color (new SFColor (1, 1, 1)),
 	function (new MFString ()),
-	mode (new MFString ()),
-	source (new MFString ()),
-	texture (new MFNode ())
+	    mode (new MFString ()),
+	  source (new MFString ()),
+	 texture (new MFNode ())
 { }
 
 MultiTexture::MultiTexture (X3DExecutionContext* const executionContext) :

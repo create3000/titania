@@ -52,14 +52,12 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "../../Rendering/Tesselator.h"
 #include "../Rendering/Color.h"
 #include "../Rendering/ColorRGBA.h"
-#include "../Rendering/Coordinate.h"
+#include "../Rendering/X3DCoordinateNode.h"
 #include "../Rendering/Normal.h"
 #include "../Texturing/TextureCoordinate.h"
 #include "../Texturing/TextureCoordinateGenerator.h"
-#include <iostream>
 
 namespace titania {
 namespace X3D {
@@ -132,7 +130,7 @@ IndexedFaceSet::initialize ()
 void
 IndexedFaceSet::set_coordIndex ()
 {
-	auto _coord = x3d_cast <Coordinate*> (coord ());
+	auto _coord = x3d_cast <X3DCoordinateNode*> (coord ());
 
 	numPolygons = 0;
 
@@ -285,7 +283,7 @@ IndexedFaceSet::set_normalIndex ()
 void
 IndexedFaceSet::build ()
 {
-	auto _coord = x3d_cast <Coordinate*> (coord ());
+	auto _coord = x3d_cast <X3DCoordinateNode*> (coord ());
 
 	// Tesselate
 
@@ -411,7 +409,7 @@ IndexedFaceSet::build ()
 						getNormals () .emplace_back (faceNormal);
 				}
 
-				getVertices () .emplace_back (_coord -> point () [coordIndex () [i]]);
+				_coord -> emplace_back (getVertices (), coordIndex () [i]);
 			}
 		}
 
@@ -440,7 +438,7 @@ IndexedFaceSet::buildNormals (const PolygonArray & polygons)
 
 	NormalIndex normalIndex;
 
-	auto _coord = x3d_cast <Coordinate*> (coord ());
+	auto _coord = x3d_cast <X3DCoordinateNode*> (coord ());
 
 	for (const auto & polygon : polygons)
 	{
@@ -451,9 +449,9 @@ IndexedFaceSet::buildNormals (const PolygonArray & polygons)
 		{
 			for (size_t i = 1, size = element .size () - 1; i < size; ++ i)
 			{
-				normal += math::normal <float> (_coord -> point () [coordIndex () [element [0]]],
-				                                _coord -> point () [coordIndex () [element [i]]],
-				                                _coord -> point () [coordIndex () [element [i + 1]]]);
+				normal += _coord -> getNormal (coordIndex () [element [0]],
+				                               coordIndex () [element [i]],
+				                               coordIndex () [element [i + 1]]);
 			}
 		}
 
@@ -484,7 +482,7 @@ IndexedFaceSet::buildNormals (const PolygonArray & polygons)
 void
 IndexedFaceSet::tesselate (PolygonArray & polygons, size_t & numVertices)
 {
-	auto _coord = x3d_cast <Coordinate*> (coord ());
+	auto _coord = x3d_cast <X3DCoordinateNode*> (coord ());
 
 	if (not _coord)
 		return;
@@ -550,14 +548,14 @@ IndexedFaceSet::tesselate (const Vertices & vertices)
 	if (convex ())
 		return ElementArray { vertices };
 
-	auto _coord = x3d_cast <Coordinate*> (coord ());
+	auto _coord = x3d_cast <X3DCoordinateNode*> (coord ());
 
 	ElementArray elements;
 
 	opengl::tesselator <size_t> tesselator;
 
 	for (const auto & i : vertices)
-		tesselator .add_vertex (_coord -> point () [coordIndex () [i]], i);
+		_coord -> addVertex (tesselator, coordIndex () [i], i);
 
 	tesselator .tesselate ();
 
@@ -619,7 +617,7 @@ IndexedFaceSet::tesselate (const Vertices & vertices)
 //
 //	getTexCoordParams (min, Ssize, Sindex, Tindex);
 //
-//	auto _coord = x3d_cast <Coordinate*> (coord);
+//	auto _coord = x3d_cast <X3DCoordinateNode*> (coord);
 //
 //	for (const auto & polygon : polygons)
 //	{

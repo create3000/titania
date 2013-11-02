@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_COMPONENTS_RENDERING_X3DCOORDINATE_NODE_H__
 
 #include "../Rendering/X3DGeometricPropertyNode.h"
+#include "../../Rendering/Tesselator.h"
 
 namespace titania {
 namespace X3D {
@@ -59,6 +60,35 @@ namespace X3D {
 class X3DCoordinateNode :
 	public X3DGeometricPropertyNode
 {
+public:
+
+	///  @name Operations
+
+	virtual
+	Vector3f
+	getNormal (size_t, size_t, size_t) const = 0;
+
+	virtual
+	void
+	addVertex (opengl::tesselator <size_t> &, size_t, size_t) const = 0;
+
+	virtual
+	void
+	emplace_back (std::vector <Vector3f>&, size_t) const = 0;
+
+	virtual
+	void
+	resize (size_t) = 0;
+
+	virtual
+	size_t
+	empty () const = 0;
+
+	virtual
+	size_t
+	size () const = 0;
+
+
 protected:
 
 	X3DCoordinateNode ();
