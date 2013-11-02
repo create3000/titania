@@ -9,7 +9,7 @@ EXTERNPROTO RoundedRectangle2D [
 
 PROTO Notification [
   # Custom fields
-  exposedField SFTime   cycleInterval 3
+  exposedField SFTime   cycleInterval 5
   exposedField SFFloat  cornerRadius 4
   exposedField SFFloat  linewidthScaleFactor 1
   exposedField SFVec2f  borderWidth 10 5
@@ -75,6 +75,7 @@ PROTO Notification [
     eventIn      SFBool   set_start
     eventIn      SFBool   set_end
     exposedField SFTime   cycleInterval IS cycleInterval
+    exposedField SFFloat  linewidthScaleFactor IS linewidthScaleFactor
     exposedField SFVec2f  borderWidth IS borderWidth
     eventOut     SFBool   isActive IS isActive
     field        SFNode   background USE BackgroundGeometry
@@ -103,11 +104,14 @@ function set_textBounds (value, time)
 	
 	// Align background line geometry on whole pixel
 	
-	if (is_even (background .size .x))
-		++ background .size .x;
-	
-	if (is_even (background .size .y))
-		++ background .size .y;
+	if (is_odd (linewidthScaleFactor))
+	{
+		if (is_even (background .size .x))
+			++ background .size .x;
+		
+		if (is_even (background .size .y))
+			++ background .size .y;
+	}
 }
 
 function set_start (value, time)
@@ -124,7 +128,12 @@ function set_end (value, time)
 
 function is_even (value)
 {
-	return !(value & 1);
+	return ! is_odd (value);
+}
+
+function is_odd (value)
+{
+	return value & 1;
 }
 "
     directOutput TRUE

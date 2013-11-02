@@ -1,21 +1,20 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Text/FontStyle.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Library/Examples/Pong/stage/4vong.wrl">
     <Files>
       <File FileName="Library/Tests/Handles/OutlineEditor.wrl" Line="26" Column="66" />
       <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="128" Column="1" />
       <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="206" Column="11" />
       <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="76" Column="7" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="152" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Layout/ScreenFontStyle.h" Line="99" Column="15" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Layout/ScreenFontStyle.cpp" Line="92" Column="1" />
-      <File FileName="libtitania-x3d/share/titania/handles/Notification.wrl" Line="12" Column="40" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/X3DFontStyleNode.h" Line="126" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/X3DFontStyleNode.cpp" Line="101" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/FontStyle.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/FontStyle.cpp" Line="299" Column="15" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/Text.h" Line="161" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/Text.cpp" Line="164" Column="1" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="905" Column="1" />
+      <File FileName="libtitania-x3d/share/titania/tools/TransformTool.wrl" Line="734" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/PlaneSensor.h" Line="152" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/PlaneSensor.cpp" Line="199" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/CylinderSensor.h" Line="189" Column="23" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/CylinderSensor.cpp" Line="80" Column="22" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/SphereSensor.cpp" Line="127" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/SphereSensor.h" Line="141" Column="20" />
+      <File FileName="Library/Examples/Pong/stage/4vong.wrl" Line="226" Column="20" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -27,7 +26,9 @@
           <Node name="Library" expanded="True">
             <Node name="Examples" expanded="True">
               <Node name="Pong" expanded="True">
-                <Node name="stage" expanded="True" />
+                <Node name="stage" expanded="True">
+                  <Node name="4vong.wrl" selected="True" />
+                </Node>
               </Node>
               <Node name="TikiWorld" expanded="True" />
             </Node>
@@ -42,13 +43,6 @@
               <Node name="Text" expanded="True" />
             </Node>
           </Node>
-          <Node name="libtitania-opengl-surface" expanded="True">
-            <Node name="Titania" expanded="True">
-              <Node name="OpenGL" expanded="True">
-                <Node name="Context" expanded="True" />
-              </Node>
-            </Node>
-          </Node>
           <Node name="libtitania-standard" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="InputOutput" expanded="True" />
@@ -59,32 +53,17 @@
               <Node name="Physics" expanded="True" />
             </Node>
           </Node>
-          <Node name="libtitania-stream" expanded="True">
-            <Node name="Titania" expanded="True">
-              <Node name="Stream" expanded="True" />
-            </Node>
-          </Node>
           <Node name="libtitania-x3d" expanded="True">
             <Node name="share" expanded="True">
               <Node name="titania" expanded="True">
-                <Node name="handles" expanded="True" />
+                <Node name="tools" expanded="True" />
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
-                <Node name="Browser" expanded="True">
-                  <Node name="Properties" expanded="True" />
-                </Node>
                 <Node name="Components" expanded="True">
-                  <Node name="Core" expanded="True" />
-                  <Node name="Layout" expanded="True" />
-                  <Node name="Rendering" expanded="True" />
-                  <Node name="Text" expanded="True">
-                    <Node name="FontStyle.cpp" selected="True" />
-                  </Node>
+                  <Node name="PointingDeviceSensor" expanded="True" />
                 </Node>
-                <Node name="Execution" expanded="True" />
-                <Node name="Miscellaneous" expanded="True" />
               </Node>
             </Node>
           </Node>
@@ -98,6 +77,9 @@
                   <Node name="Primitives" expanded="True">
                     <Node name="Rendering" expanded="True" />
                   </Node>
+                </Node>
+                <Node name="pages" expanded="True">
+                  <Node name="about" expanded="True" />
                 </Node>
                 <Node name="ui" expanded="True" />
               </Node>

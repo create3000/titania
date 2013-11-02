@@ -337,16 +337,11 @@ X3DFontStyleNode::getFont (const String & familyName, bool & isExactMatch) const
 	font .setWeight (isBold ()   ? Font::Weight::BOLD  : Font::Weight::NORMAL);
 	font .setSlant  (isItalic () ? Font::Slant::ITALIC : Font::Slant::ROMAN);
 	font .setScalable (true);
-
 	font .substitute ();
-
-	String familyNameAfterConfiguration = font .getFamilyName ();
 
 	Font match = font .match ();
 
-	String familyNameAfterMatching = match .getFamilyName ();
-
-	isExactMatch = familyNameAfterConfiguration .lowercase () == familyNameAfterMatching .lowercase ();
+	isExactMatch = font == match;
 
 	return match;
 }

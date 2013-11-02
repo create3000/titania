@@ -51,6 +51,8 @@
 #ifndef __TITANIA_X3D_MISCELLANEOUS_FONT_CONFIG_H__
 #define __TITANIA_X3D_MISCELLANEOUS_FONT_CONFIG_H__
 
+#include "../Types/String.h"
+
 #include <string>
 #include <memory>
 
@@ -150,6 +152,13 @@ private:
 	PatternPtr pattern;
 
 };
+
+inline
+bool
+operator == (const Font & lhs, const Font & rhs)
+{
+	return String (lhs .getFamilyName ())  .lowercase () == String (rhs .getFamilyName ())  .lowercase ();
+}
 
 } // X3D
 } // titania

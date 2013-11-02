@@ -77,8 +77,7 @@ CylinderSensor::CylinderSensor (X3DExecutionContext* const executionContext) :
 	           yPlane (),
 	           zPlane (),
 	           behind (false),
-	       fromVector (),
-	            angle (0)
+	       fromVector ()
 {
 	addField (inputOutput, "metadata",           metadata ());
 	addField (inputOutput, "enabled",            enabled ());
@@ -197,63 +196,68 @@ CylinderSensor::set_active (const HitPtr & hit, bool active)
 void
 CylinderSensor::set_motion (const HitPtr & hit)
 {
-	const auto inverseModelViewMatrix = ~getModelViewMatrix ();
-
-	const auto hitRay = hit -> ray * inverseModelViewMatrix;
-
-	Vector3d trackPoint;
-
-	if (getTrackPoint (hitRay, trackPoint, behind))
+	try
 	{
-		const auto zAxis = inverseModelViewMatrix .multDirMatrix (Vector3d (0, 0, 1)); // Camera direction
-		zPlane = Plane3d (trackPoint, zAxis);                                          // Screen aligned Z-plane
-	}
-	else
-	{
-		// Find trackPoint on the plane with cylinder
+		const auto inverseModelViewMatrix = ~getModelViewMatrix ();
 
-		Vector3d p1;
-		zPlane .intersect (hitRay, p1);
+		const auto hitRay = hit -> ray * inverseModelViewMatrix;
 
-		const auto axisPoint = p1 + cylinder .axis () .perpendicular_vector (p1);
+		Vector3d trackPoint;
 
-		auto hitRay = Line3d (p1, axisPoint, true);
+		if (getTrackPoint (hitRay, trackPoint, behind))
+		{
+			const auto zAxis = inverseModelViewMatrix .multDirMatrix (Vector3d (0, 0, 1)); // Camera direction
+			zPlane = Plane3d (trackPoint, zAxis);                                          // Screen aligned Z-plane
+		}
+		else
+		{
+			// Find trackPoint on the plane with cylinder
 
-		getTrackPoint (hitRay, trackPoint);
+			Vector3d p1;
+			zPlane .intersect (hitRay, p1);
 
-		// Find trackPoint behind sphere
+			const auto axisPoint = p1 + cylinder .axis () .perpendicular_vector (p1);
 
-		auto normal = zPlane .normal ();
+			auto hitRay = Line3d (p1, axisPoint, true);
 
-		if (behind)
-			normal .negate ();
+			getTrackPoint (hitRay, trackPoint);
 
-		hitRay = Line3d (trackPoint - normal * abs (p1 - trackPoint), axisPoint, true);
+			// Find trackPoint behind sphere
 
-		getTrackPoint (hitRay, trackPoint);
-	}
+			auto normal = zPlane .normal ();
 
-	trackPoint_changed () = trackPoint;
+			if (behind)
+				normal .negate ();
 
-	const auto toVector = getVector (hitRay, trackPoint);
-	const auto offset   = Rotation4d (cylinder .axis () .direction (), this -> offset ());
-	auto       rotation = Rotation4d (fromVector, toVector);
+			hitRay = Line3d (trackPoint - normal * abs (p1 - trackPoint), axisPoint, true);
 
-	if (behind and not disk)
-		rotation .inverse ();
+			getTrackPoint (hitRay, trackPoint);
+		}
 
-	rotation = offset * rotation;
+		trackPoint_changed () = trackPoint;
 
-	if (minAngle () > maxAngle ())
-		rotation_changed () = rotation;
+		const auto toVector   = getVector (hitRay, trackPoint);
+		const auto offset     = Rotation4d (cylinder .axis () .direction (), this -> offset ());
+		auto       rotation   = Rotation4d (fromVector, toVector);
 
-	else
-	{
-		auto angle = getAngle (rotation);
+		if (behind and not disk)
+			rotation .inverse ();
 
-		if (angle > minAngle () and angle < maxAngle ())
+		rotation = offset * rotation;
+
+		if (minAngle () > maxAngle ())
 			rotation_changed () = rotation;
+
+		else
+		{
+			auto angle = getAngle (rotation);
+
+			if (angle > minAngle () and angle < maxAngle ())
+				rotation_changed () = rotation;
+		}
 	}
+	catch (const std::domain_error &)
+	{ }
 }
 
 } // X3D

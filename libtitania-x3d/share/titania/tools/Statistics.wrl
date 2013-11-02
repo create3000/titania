@@ -68,6 +68,7 @@ PROTO Statistics [
   DEF NotificationScript Script {
     eventIn      SFVec2f set_textBounds
     exposedField SFFloat cornerRadius IS cornerRadius
+    exposedField SFFloat linewidthScaleFactor IS linewidthScaleFactor
     exposedField SFVec2f borderWidth IS borderWidth
     field        SFNode  statistics USE Statistics
     field        SFNode  background USE Background
@@ -89,16 +90,24 @@ function set_textBounds (value, time)
 
 	// Align background line geometry on whole pixel
 
-	if (is_even (geometry .size .x))
-		++ geometry .size .x;
-	
-	if (is_even (geometry .size .y))
-		++ geometry .size .y;
+	if (is_odd (linewidthScaleFactor))
+	{
+		if (is_even (geometry .size .x))
+			++ geometry .size .x;
+		
+		if (is_even (geometry .size .y))
+			++ geometry .size .y;
+	}
 }
 
 function is_even (value)
 {
-	return !(value & 1);
+	return ! is_odd (value);
+}
+
+function is_odd (value)
+{
+	return value & 1;
 }
 "
     directOutput TRUE
@@ -118,28 +127,18 @@ OrthoViewpoint { }
 
 LayoutGroup {
   layout Layout {
-    align [
-      "LEFT",
-      "BOTTOM"
-    ]
+    align [ "LEFT", "BOTTOM" ]
     offsetUnits "PIXEL"
     sizeUnits "PIXEL"
-    size [
-      0,
-      0
-    ]
+    size [ 0, 0 ]
     scaleMode "PIXEL"
   }
   children DEF StatisticsTool Statistics {
-    string [ ]
     fontStyle ScreenFontStyle {
-      family [ "TYPEWRITER" ]
+      family "TYPEWRITER"
       pointSize 7.5
       spacing 1.2
-      justify [
-        "BEGIN",
-        "END"
-      ]
+      justify [ "BEGIN", "END" ]
     }
   }
 }

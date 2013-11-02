@@ -367,11 +367,18 @@ main (int argc, char** argv)
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
 
-	basic::ifilestream istream ("http://titania.create3000.de", 15000);
-	
-	istream .send ();
+	std::clog << std::numeric_limits <float>::digits << std::endl;
+	std::clog << std::numeric_limits <float>::digits10 << std::endl;
+	std::clog << std::numeric_limits <float>::max_digits10 << std::endl;
 
-	std::clog << istream .rdbuf () << std::endl;
+	std::clog << std::setprecision (std::numeric_limits <float>::digits) << 0.1f << std::endl;
+	std::clog << std::setprecision (std::numeric_limits <float>::digits10) << 0.1f << std::endl;
+	std::clog << std::setprecision (std::numeric_limits <float>::max_digits10) << 0.1f << std::endl;
+
+	std::clog << std::setprecision (std::numeric_limits <float>::max_digits10-2) << 0.1f << std::endl;
+	std::clog << std::setprecision (std::numeric_limits <float>::max_digits10-2) << 0.01f << std::endl;
+	std::clog << std::setprecision (std::numeric_limits <float>::max_digits10-2) << 0.001f << std::endl;
+	std::clog << std::setprecision (std::numeric_limits <float>::max_digits10-2) << 0.0001f << std::endl;
 
 	std::clog << "Function main done." << std::endl;
 	exit (0);

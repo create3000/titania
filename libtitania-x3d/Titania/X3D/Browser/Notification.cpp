@@ -86,35 +86,38 @@ Notification::initialize ()
 {
 	X3DBaseNode::initialize ();
 
-	X3DSFNode <Scene> scene;
-
-	try
+	if (glXGetCurrentContext ())
 	{
-		scene = getBrowser () -> createX3DFromURL ({ get_tool ("Notification.wrl") .str () });
+		X3DSFNode <Scene> scene;
 
 		try
 		{
-			auto notification = scene -> getNamedNode ("Notification");
+			scene = getBrowser () -> createX3DFromURL ({ get_tool ("Notification.wrl") .str () });
 
-			SFBool & field = *static_cast <SFBool*> (notification -> getField ("isActive"));
+			try
+			{
+				auto notification = scene -> getNamedNode ("Notification");
 
-			field .addInterest (this, &Notification::set_active);
+				SFBool & field = *static_cast <SFBool*> (notification -> getField ("isActive"));
+
+				field .addInterest (this, &Notification::set_active);
+			}
+			catch (const X3DError &)
+			{ }
 		}
-		catch (const X3DError &)
-		{ }
+		catch (const X3DError & error)
+		{
+			std::clog << error .what () << std::endl;
+
+			scene = getBrowser () -> createScene ();
+			scene -> setup ();
+		}
+
+		world = new World (scene);
+		world -> setup ();
+
+		string () .addInterest (this, &Notification::set_string);
 	}
-	catch (const X3DError & error)
-	{
-		std::clog << error .what () << std::endl;
-
-		scene = getBrowser () -> createScene ();
-		scene -> setup ();
-	}
-
-	world = new World (scene);
-	world -> setup ();
-
-	string () .addInterest (this, &Notification::set_string);
 }
 	
 void

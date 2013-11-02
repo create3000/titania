@@ -178,20 +178,20 @@ PlaneSensor::trackStart (const Vector3d & origin, Vector3d trackPoint)
 void
 PlaneSensor::set_motion (const HitPtr & hit)
 {
-	if (planeSensor)
+	try
 	{
-		const auto inverseModelViewMatrix = ~getModelViewMatrix ();
+		if (planeSensor)
+		{
+			const auto inverseModelViewMatrix = ~getModelViewMatrix ();
 
-		const auto hitRay = hit -> ray * inverseModelViewMatrix;
+			const auto hitRay = hit -> ray * inverseModelViewMatrix;
 
-		Vector3d trackPoint;
+			Vector3d trackPoint;
 
-		if (plane .intersect (hitRay, trackPoint))
-			track (trackPoint);
-	}
-	else
-	{
-		try
+			if (plane .intersect (hitRay, trackPoint))
+				track (trackPoint);
+		}
+		else
 		{
 			const auto screenLine     = ViewVolume::projectLine (line, getModelViewMatrix (), getProjectionMatrix (), getViewport ());
 			auto       trackPoint     = screenLine .closest_point (Vector3d (hit -> x, hit -> y, 0));
@@ -200,9 +200,9 @@ PlaneSensor::set_motion (const HitPtr & hit)
 			if (line .closest_point (trackPointLine, trackPoint))
 				track (trackPoint);
 		}
-		catch (const std::domain_error &)
-		{ }
 	}
+	catch (const std::domain_error &)
+	{ }
 }
 
 void

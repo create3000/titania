@@ -51,8 +51,8 @@
 #include "RenderingProperties.h"
 
 #include "../../Bits/config.h"
-#include "../../Execution/X3DExecutionContext.h"
 #include "../../Execution/World.h"
+#include "../../Execution/X3DExecutionContext.h"
 #include "../X3DBrowser.h"
 
 #include <Titania/String.h>
@@ -176,7 +176,7 @@ RenderingProperties::initialize ()
 		glGetIntegerv (GL_POLYGON_SMOOTH, &glPolygonSmooth);
 
 		if (hasExtension ("GL_NVX_gpu_memory_info"))
-			glGetIntegerv (GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &glTextureMemory);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                // in KBytes
+			glGetIntegerv (GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &glTextureMemory);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     // in KBytes
 
 		maxThreads ()     = omp_get_max_threads ();
 		textureUnits ()   = glTextureUnits;
@@ -301,56 +301,23 @@ RenderingProperties::build ()
 
 			std::ostringstream stringstream;
 
-			stringstream .str (""); stringstream << "Current Graphics Renderer";
-			string -> emplace_back (stringstream .str ());
-
-			stringstream .str (""); stringstream << "  Name: " << renderer () .getValue ();
-			string -> emplace_back (stringstream .str ());
-
-			stringstream .str ("");
-			string -> emplace_back (stringstream .str ());
-
-			stringstream .str (""); stringstream << "Rendering properties";
-			string -> emplace_back (stringstream .str ());
-
-			stringstream .str (""); stringstream << "Max threads:               " << maxThreads ();
-			string -> emplace_back (stringstream .str ());
-
-			stringstream .str (""); stringstream << "Texture units:             " << textureUnits ();
-			string -> emplace_back (stringstream .str ());
-
-			stringstream .str (""); stringstream << "Max texture size:          " << maxTextureSize () << " x " << maxTextureSize () << " pixel";
-			string -> emplace_back (stringstream .str ());
-
-			stringstream .str (""); stringstream << "Antialiased:               " << antialiased ();
-			string -> emplace_back (stringstream .str ());
-
-			stringstream .str (""); stringstream << "Max lights:                " << maxLights ();
-			string -> emplace_back (stringstream .str ());
-
-			stringstream .str (""); stringstream << "Color depth:               " << colorDepth () << " bits";
-			string -> emplace_back (stringstream .str ());
-
-			stringstream .str (""); stringstream << "Texture Memory:            " << (textureMemory () > 0 ? strfsize (textureMemory ()) : "n/a");
-			string -> emplace_back (stringstream .str ());
-
-			stringstream .str (""); stringstream << "Available Texture Memory:  " << strfsize (getAvailableTextureMemory ());
-			string -> emplace_back (stringstream .str ());
-
-			stringstream .str (""); stringstream << "Memory Usage:              " << strfsize (getGarbageCollector () .getMemoryUsage ());
-			string -> emplace_back (stringstream .str ());
-
-			stringstream .str ("");
-			string -> emplace_back (stringstream .str ());
-
-			stringstream .str (""); stringstream << "Frame Rate:                " << std::setprecision (1) << std::fixed << fps () << " fps";
-			string -> emplace_back (stringstream .str ());
-
-			stringstream .str (""); stringstream << "Display:                   " << std::setprecision (2) << std::fixed << renderClock .average () / clock .average () * 100 << " %";
-			string -> emplace_back (stringstream .str ());
-
-			stringstream .str (""); stringstream << "Sensors:                   " << getBrowser () -> sensors () .getRequesters () .size () + getBrowser () -> prepareEvents () .getRequesters () .size () - 1; // remove self
-			string -> emplace_back (stringstream .str ());
+			string -> emplace_back ("Current Graphics Renderer");
+			string -> emplace_back (basic::sprintf ("  Name: %s", renderer () .getValue () .c_str ()));
+			string -> emplace_back ();
+			string -> emplace_back ("Rendering properties");
+			string -> emplace_back (basic::sprintf ("Max threads:               %d", maxThreads () .getValue ()));
+			string -> emplace_back (basic::sprintf ("Texture units:             %d", textureUnits () .getValue ()));
+			string -> emplace_back (basic::sprintf ("Max texture size:          %d × %d pixel", maxTextureSize () .getValue (), maxTextureSize () .getValue ()));
+			string -> emplace_back (basic::sprintf ("Antialiased:               %s", antialiased () .toString () .c_str ()));
+			string -> emplace_back (basic::sprintf ("Max lights:                %d", maxLights () .getValue ()));
+			string -> emplace_back (basic::sprintf ("Color depth:               %d bits", colorDepth () .getValue ()));
+			string -> emplace_back (basic::sprintf ("Texture Memory:            %s", textureMemory () > 0 ? strfsize (textureMemory ()) .c_str () : "n/a"));
+			string -> emplace_back (basic::sprintf ("Available Texture Memory:  %s", strfsize (getAvailableTextureMemory ()) .c_str ()));
+			string -> emplace_back (basic::sprintf ("Memory Usage:              %s", strfsize (getGarbageCollector () .getMemoryUsage ()) .c_str ()));
+			string -> emplace_back ();
+			string -> emplace_back (basic::sprintf ("Frame Rate:                %.1f fps", fps ()));
+			string -> emplace_back (basic::sprintf ("Display:                   %.2f %", 100 * renderClock .average () / clock .average ()));
+			string -> emplace_back (basic::sprintf ("Sensors:                   %zd", getBrowser () -> sensors () .getRequesters () .size () + getBrowser () -> prepareEvents () .getRequesters () .size () - 1));
 		}
 		catch (const X3DError &)
 		{ }

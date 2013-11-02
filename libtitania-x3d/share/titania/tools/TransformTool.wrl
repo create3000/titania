@@ -116,7 +116,7 @@ PROTO TransformTool [
           DEF BBox Shape {
             appearance Appearance {
               material Material {
-                emissiveColor 0.35 1 0.7
+                emissiveColor 0.349999994 1 0.699999988
               }
             }
             geometry IndexedLineSet {
@@ -164,7 +164,7 @@ PROTO TransformTool [
           }
           DEF Right Transform {
             children Transform {
-              rotation 0 1 0 1.5708
+              rotation 0 1 0 1.57079625
               children [
                 USE ModeTouch
                 DEF RightSensor PlaneSensor {
@@ -176,7 +176,7 @@ PROTO TransformTool [
           }
           DEF Back Transform {
             children Transform {
-              rotation 0 1 0 3.14159
+              rotation 0 1 0 3.14159012
               children [
                 USE ModeTouch
                 DEF BackSensor PlaneSensor {
@@ -188,7 +188,7 @@ PROTO TransformTool [
           }
           DEF Left Transform {
             children Transform {
-              rotation 0 -1 0 1.5708
+              rotation 0 -1 0 1.57079625
               children [
                 USE ModeTouch
                 DEF LeftSensor PlaneSensor {
@@ -200,7 +200,7 @@ PROTO TransformTool [
           }
           DEF Top Transform {
             children Transform {
-              rotation -1 0 0 1.5708
+              rotation -1 0 0 1.57079625
               children [
                 USE ModeTouch
                 DEF TopSensor PlaneSensor {
@@ -212,7 +212,7 @@ PROTO TransformTool [
           }
           DEF Bottom Transform {
             children Transform {
-              rotation 1 0 0 1.5708
+              rotation 1 0 0 1.57079625
               children [
                 USE ModeTouch
                 DEF BottomSensor PlaneSensor {
@@ -247,7 +247,7 @@ PROTO TransformTool [
                     choice [
                       Transform {
                         translation 10.5 0 0
-                        rotation 0 0 -1 1.5708
+                        rotation 0 0 -1 1.57079625
                         children Shape {
                           appearance DEF Red Appearance {
                             material Material {
@@ -340,14 +340,14 @@ PROTO TransformTool [
               USE ModeTouch
               DEF ZTranslationSensor PlaneSensor {
                 description "z-Axis"
-                axisRotation 0 -1 0 1.5708
+                axisRotation 0 -1 0 1.57079625
                 autoOffset FALSE
                 maxPosition -1 0
               }
               DEF ZScaleSensor PlaneSensor {
                 enabled FALSE
                 description "z-Axis"
-                axisRotation 0 -1 0 1.5708
+                axisRotation 0 -1 0 1.57079625
                 autoOffset FALSE
                 maxPosition -1 0
               }
@@ -357,7 +357,7 @@ PROTO TransformTool [
                     choice [
                       Transform {
                         translation 0 0 10.5
-                        rotation 1 0 0 1.5708
+                        rotation 1 0 0 1.57079625
                         children Shape {
                           appearance DEF Blue Appearance {
                             material Material {
@@ -421,7 +421,7 @@ PROTO TransformTool [
                         autoOffset FALSE
                         maxPosition -1 0
                       }
-                        USE ScaleHandle
+                      USE ScaleHandle
                     ]
                   }
                   DEF ScaleHandle3 Transform {
@@ -430,7 +430,7 @@ PROTO TransformTool [
                         autoOffset FALSE
                         maxPosition -1 0
                       }
-                        USE ScaleHandle
+                      USE ScaleHandle
                     ]
                   }
                   DEF ScaleHandle4 Transform {
@@ -439,7 +439,7 @@ PROTO TransformTool [
                         autoOffset FALSE
                         maxPosition -1 0
                       }
-                        USE ScaleHandle
+                      USE ScaleHandle
                     ]
                   }
                   DEF ScaleHandle5 Transform {
@@ -448,7 +448,7 @@ PROTO TransformTool [
                         autoOffset FALSE
                         maxPosition -1 0
                       }
-                        USE ScaleHandle
+                      USE ScaleHandle
                     ]
                   }
                   DEF ScaleHandle6 Transform {
@@ -457,7 +457,7 @@ PROTO TransformTool [
                         autoOffset FALSE
                         maxPosition -1 0
                       }
-                        USE ScaleHandle
+                      USE ScaleHandle
                     ]
                   }
                   DEF ScaleHandle7 Transform {
@@ -466,7 +466,7 @@ PROTO TransformTool [
                         autoOffset FALSE
                         maxPosition -1 0
                       }
-                        USE ScaleHandle
+                      USE ScaleHandle
                     ]
                   }
                   DEF ScaleHandle8 Transform {
@@ -475,7 +475,7 @@ PROTO TransformTool [
                         autoOffset FALSE
                         maxPosition -1 0
                       }
-                        USE ScaleHandle
+                      USE ScaleHandle
                     ]
                   }
                 ]
@@ -522,19 +522,19 @@ PROTO TransformTool [
                   Group {
                     children [
                       DEF XRotationSensor CylinderSensor {
-                        axisRotation 0 0 1 1.5708
-                        diskAngle 1.5708
+                        axisRotation 0 0 1 1.57079625
+                        diskAngle 1.57079625
                         autoOffset FALSE
                       }
                       DEF XRotationHandle Transform {
-                        rotation 0 1 0 1.5708
+                        rotation 0 1 0 1.57079625
                         children [
                           DEF Cylinder Transform {
-                            rotation 1 0 0 1.5708
+                            rotation 1 0 0 1.57079625
                             children Shape {
                               appearance USE Transparent
                               geometry Cylinder {
-                                height 0.01
+                                height 0.00999999978
                               }
                             }
                           }
@@ -552,7 +552,7 @@ PROTO TransformTool [
                               appearance Appearance {
                                 material DEF XCircleMaterial Material {
                                   emissiveColor 1 0 0
-                                  transparency 0.1
+                                  transparency 0.100000001
                                 }
                               }
                               geometry DEF Disk Disk2D {
@@ -567,11 +567,11 @@ PROTO TransformTool [
                   Group {
                     children [
                       DEF YRotationSensor CylinderSensor {
-                        diskAngle 1.5708
+                        diskAngle 1.57079625
                         autoOffset FALSE
                       }
                       DEF YRotationHandle Transform {
-                        rotation 1 0 0 1.5708
+                        rotation 1 0 0 1.57079625
                         children [
                           USE Cylinder
                           Shape {
@@ -588,7 +588,7 @@ PROTO TransformTool [
                               appearance Appearance {
                                 material DEF YCircleMaterial Material {
                                   emissiveColor 0 1 0
-                                  transparency 0.1
+                                  transparency 0.100000001
                                 }
                               }
                               geometry USE Disk
@@ -601,8 +601,8 @@ PROTO TransformTool [
                   Group {
                     children [
                       DEF ZRotationSensor CylinderSensor {
-                        axisRotation 1 0 0 1.5708
-                        diskAngle 1.5708
+                        axisRotation 1 0 0 1.57079625
+                        diskAngle 1.57079625
                         autoOffset FALSE
                       }
                       DEF ZRotationHandle Transform {
@@ -622,7 +622,7 @@ PROTO TransformTool [
                               appearance Appearance {
                                 material DEF ZCircleMaterial Material {
                                   emissiveColor 0 0 1
-                                  transparency 0.1
+                                  transparency 0.100000001
                                 }
                               }
                               geometry USE Disk
@@ -668,7 +668,7 @@ PROTO TransformTool [
     url "vrmlscript:
 function initialize (value, time)
 {
-	set_whichChoice (0);
+	set_whichChoice (2);
 }
 
 function set_time (value, time)
@@ -1176,17 +1176,17 @@ function set_active8 (value)
 
 function set_xScale (value)
 {
-	scale (value, xSensor);
+	scale (new SFVec3f (value .x, 0, 0), xSensor);
 }
 
 function set_yScale (value)
 {
-	scale (value, ySensor);
+	scale (new SFVec3f (0, value .y, 0), ySensor);
 }
 
 function set_zScale (value)
 {
-	scale (value, zSensor);
+	scale (new SFVec3f (0, 0, value .z), zSensor);
 }
 
 function set_scale1 (value)

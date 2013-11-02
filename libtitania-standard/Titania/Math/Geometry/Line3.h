@@ -174,30 +174,32 @@ public:
 		Type a = (re1 - re2 * e12) / (1 - E12);
 		Type b = -(re2 - re1 * e12) / (1 - E12);
 
-		return d + b * line .direction () - a * direction ();
+		return d + b* line .direction () - a*
+		       direction ();
+
 	}
 
 	///  Returns the closest point from @a point to this line on this line.
 	vector3 <Type>
 	closest_point (const vector3 <Type> & point) const
 	{
-	  return this -> point () + direction () * dot (point - this -> point (), direction ());
+		return this -> point () + direction () * dot (point - this -> point (), direction ());
 	}
 
 	///  Returns the closest point from @a line to this line on this line.
 	bool
 	closest_point (const line3 & line, vector3 <Type> & point) const
 	{
-		auto p1 = this -> point ();
-		auto p2 = line .point ();
+		const auto & p1 = this -> point ();
+		const auto & p2 = line .point ();
 
-		auto d1 = direction ();
-		auto d2 = line .direction ();
+		const auto & d1 = direction ();
+		const auto & d2 = line .direction ();
 
 		auto u = p2 - p1;
 		Type t = dot (d1, d2);
 
-		if (t <= -1 or t >= 1)
+		if (std::abs (t) >= 1)
 			return false;  // lines are parallel
 
 		t     = (dot (u, d1) - t * dot (u, d2)) / (1 - t * t);

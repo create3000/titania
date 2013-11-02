@@ -125,10 +125,10 @@ SphereSensor::set_active (const HitPtr & hit, bool active)
 			sphere = Sphere3d (abs (hitPoint - center), center);
 			behind = zPlane .distance (hitPoint) < 0;
 
-			fromVector            = hitPoint - center;
+			fromVector            = hitPoint - sphere .center ();
+			startPoint            = hit -> point;
 			trackPoint_changed () = hitPoint;
 			rotation_changed ()   = offset ();
-			startPoint            = hitPoint;
 		}
 		else
 		{
@@ -143,48 +143,54 @@ SphereSensor::set_active (const HitPtr & hit, bool active)
 void
 SphereSensor::set_motion (const HitPtr & hit)
 {
-	const auto inverseModelViewMatrix = ~getModelViewMatrix ();
-
-	auto hitRay = hit -> ray * inverseModelViewMatrix;
-
-	Vector3d trackPoint;
-
-	if (getTrackPoint (hitRay, trackPoint, behind))
+	try
 	{
-		const auto zAxis = inverseModelViewMatrix .multDirMatrix (Vector3d (0, 0, 1)); // Camera direction
-		zPlane = Plane3d (trackPoint, zAxis);                                          // Screen aligned Z-plane
+		const auto inverseModelViewMatrix = ~getModelViewMatrix ();
+
+		auto       hitRay     = hit -> ray * inverseModelViewMatrix;
+		const auto startPoint = this -> startPoint * inverseModelViewMatrix;
+
+		Vector3d trackPoint;
+
+		if (getTrackPoint (hitRay, trackPoint, behind))
+		{
+			const auto zAxis = inverseModelViewMatrix .multDirMatrix (Vector3d (0, 0, 1)); // Camera direction
+			zPlane = Plane3d (trackPoint, zAxis);                                          // Screen aligned Z-plane
+		}
+		else
+		{
+			// Find trackPoint on the plane with sphere
+
+			Vector3d tangentPoint;
+			zPlane .intersect (hitRay, tangentPoint);
+
+			hitRay = Line3d (tangentPoint, sphere .center (), true);
+
+			getTrackPoint (hitRay, trackPoint);
+
+			// Find trackPoint behind sphere
+
+			const auto triNormal     = math::normal (sphere .center (), trackPoint, startPoint);
+			const auto dirFromCenter = normalize (trackPoint - sphere .center ());
+			const auto normal        = cross (triNormal, dirFromCenter);
+
+			hitRay = Line3d (trackPoint - normal * abs (tangentPoint - trackPoint), sphere .center (), true);
+
+			getTrackPoint (hitRay, trackPoint);
+		}
+
+		trackPoint_changed () = trackPoint;
+
+		const auto toVector   = trackPoint - sphere .center ();
+		auto       rotation   = Rotation4d (fromVector, toVector);
+
+		if (behind)
+			rotation .inverse ();
+
+		rotation_changed () = Rotation4d (offset () .getValue ()) * rotation;
 	}
-	else
-	{
-		// Find trackPoint on the plane with sphere
-
-		Vector3d tangentPoint;
-		zPlane .intersect (hitRay, tangentPoint);
-
-		hitRay = Line3d (tangentPoint, sphere .center (), true);
-
-		getTrackPoint (hitRay, trackPoint);
-
-		// Find trackPoint behind sphere
-
-		const auto triNormal     = math::normal (sphere .center (), trackPoint, startPoint);
-		const auto dirFromCenter = normalize (trackPoint - sphere .center ());
-		const auto normal        = cross (triNormal, dirFromCenter);
-
-		hitRay = Line3d (trackPoint - normal * abs (tangentPoint - trackPoint), sphere .center (), true);
-
-		getTrackPoint (hitRay, trackPoint);
-	}
-
-	trackPoint_changed () = trackPoint;
-
-	const auto toVector = trackPoint - sphere .center ();
-	auto       rotation = Rotation4d (fromVector, toVector);
-
-	if (behind)
-		rotation .inverse ();
-
-	rotation_changed () = Rotation4d (offset () .getValue ()) * rotation;
+	catch (const std::domain_error &)
+	{ }
 }
 
 } // X3D
