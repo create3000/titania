@@ -52,10 +52,9 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "../Rendering/Color.h"
-#include "../Rendering/ColorRGBA.h"
+#include "../Rendering/X3DColorNode.h"
 #include "../Rendering/X3DCoordinateNode.h"
-#include "../Rendering/Normal.h"
+#include "../Rendering/X3DNormalNode.h"
 #include "../Texturing/TextureCoordinate.h"
 #include "../Texturing/TextureCoordinateGenerator.h"
 
@@ -197,10 +196,9 @@ IndexedFaceSet::set_texCoordIndex ()
 void
 IndexedFaceSet::set_colorIndex ()
 {
-	auto _color     = x3d_cast <Color*> (color ());
-	auto _colorRGBA = x3d_cast <ColorRGBA*> (color ());
+	auto _color = x3d_cast <X3DColorNode*> (color ());
 
-	if (_color or _colorRGBA)
+	if (_color)
 	{
 		// Fill up colorIndex if to small.
 		if (colorPerVertex ())
@@ -231,20 +229,14 @@ IndexedFaceSet::set_colorIndex ()
 
 		// Resize color .color if to small.
 		if (_color)
-		{
 			_color -> resize (numColors);
-		}
-		else if (_colorRGBA)
-		{
-			_colorRGBA -> resize (numColors);
-		}
 	}
 }
 
 void
 IndexedFaceSet::set_normalIndex ()
 {
-	auto _normal = x3d_cast <Normal*> (normal ());
+	auto _normal = x3d_cast <X3DNormalNode*> (normal ());
 
 	if (_normal)
 	{
@@ -299,14 +291,10 @@ IndexedFaceSet::build ()
 
 	// Color
 
-	auto _color     = x3d_cast <Color*> (color ());
-	auto _colorRGBA = x3d_cast <ColorRGBA*> (color ());
+	auto _color = x3d_cast <X3DColorNode*> (color ());
 
 	if (_color)
 		getColors () .reserve (reserve);
-
-	else if (_colorRGBA)
-		getColorsRGBA () .reserve (reserve);
 
 	// TextureCoordinate
 
@@ -318,7 +306,7 @@ IndexedFaceSet::build ()
 
 	// Normal
 
-	auto _normal = x3d_cast <Normal*> (normal ());
+	auto _normal = x3d_cast <X3DNormalNode*> (normal ());
 
 	getNormals () .reserve (reserve);
 
@@ -328,12 +316,7 @@ IndexedFaceSet::build ()
 
 	// Fill GeometryNode
 
-	int face = 0;
-
-	Vector3f faceNormal;
-	Color3f  faceColor;
-	Color4f  faceColorRGBA;
-
+	int    face              = 0;
 	GLenum vertexMode        = getVertexMode (polygons [0] .elements [0] .size ());
 	GLenum currentVertexMode = 0;
 	size_t vertices          = 0;
@@ -342,21 +325,6 @@ IndexedFaceSet::build ()
 	{
 		for (const auto element : polygon .elements)
 		{
-			if (not colorPerVertex ())
-			{
-				if (_color and colorIndex () [face] > -1)
-					faceColor = _color -> color () [colorIndex () [face]];
-
-				else if (_colorRGBA and colorIndex () [face] > -1)
-					faceColorRGBA = _colorRGBA -> color () [colorIndex () [face]];
-			}
-
-			if (_normal)
-			{
-				if (not normalPerVertex () and normalIndex () [face] > -1)
-					faceNormal = _normal -> vector () [normalIndex () [face]];
-			}
-
 			currentVertexMode = getVertexMode (element .size ());
 
 			if (currentVertexMode not_eq vertexMode or vertexMode == GL_POLYGON)
@@ -375,18 +343,10 @@ IndexedFaceSet::build ()
 				if (_color)
 				{
 					if (colorPerVertex () and colorIndex () [i] > -1)
-						getColors () .emplace_back (_color -> color () [colorIndex () [i]]);
+						_color -> emplace_back (getColors (), colorIndex () [i]);
 
 					else
-						getColors () .emplace_back (faceColor);
-				}
-				else if (_colorRGBA)
-				{
-					if (colorPerVertex () and colorIndex () [i] > -1)
-						getColorsRGBA () .emplace_back (_colorRGBA -> color () [colorIndex () [i]]);
-
-					else
-						getColorsRGBA () .emplace_back (faceColorRGBA);
+						_color -> emplace_back (getColors (), colorIndex () [face]);
 				}
 
 				if (_textureCoordinate)
@@ -403,10 +363,10 @@ IndexedFaceSet::build ()
 				if (_normal)
 				{
 					if (normalPerVertex () and normalIndex () [i] > -1)
-						getNormals () .emplace_back (_normal -> vector () [normalIndex () [i]]);
+						_normal -> emplace_back (getNormals (), normalIndex () [i]);
 
 					else
-						getNormals () .emplace_back (faceNormal);
+						_normal -> emplace_back (getNormals (), normalIndex () [face]);
 				}
 
 				_coord -> emplace_back (getVertices (), coordIndex () [i]);

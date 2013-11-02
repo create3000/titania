@@ -79,6 +79,12 @@ Normal::create (X3DExecutionContext* const executionContext) const
 }
 
 void
+Normal::emplace_back (std::vector <Vector3f> & normals, size_t index) const
+{
+	normals .emplace_back (vector () [index]);
+}
+
+void
 Normal::resize (size_t size)
 {
 	if (vector () .empty ())

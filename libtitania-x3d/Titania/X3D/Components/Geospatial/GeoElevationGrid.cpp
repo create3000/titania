@@ -50,7 +50,9 @@
 
 #include "GeoElevationGrid.h"
 
+#include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Rendering/X3DColorNode.h"
 
 namespace titania {
 namespace X3D {
@@ -60,24 +62,24 @@ const std::string GeoElevationGrid::typeName       = "GeoElevationGrid";
 const std::string GeoElevationGrid::containerField = "geometry";
 
 GeoElevationGrid::Fields::Fields () :
-	set_height (new MFDouble ()),
-	color (new SFNode ()),
-	normal (new SFNode ()),
-	texCoord (new SFNode ()),
-	yScale (new SFFloat (1)),
-	colorPerVertex (new SFBool (true)),
-	creaseAngle (new SFDouble ()),
-	geoGridOrigin (new SFVec3d ()),
-	geoOrigin (new SFNode ()),
-	geoSystem (new MFString ({ "GD", "WE" })),
-	height (new MFDouble ()),
+	     set_height (new MFDouble ()),
+	          color (new SFNode ()),
+	         normal (new SFNode ()),
+	       texCoord (new SFNode ()),
+	         yScale (new SFFloat (1)),
+	 colorPerVertex (new SFBool (true)),
+	    creaseAngle (new SFDouble ()),
+	  geoGridOrigin (new SFVec3d ()),
+	      geoOrigin (new SFNode ()),
+	      geoSystem (new MFString ({ "GD", "WE" })),
+	         height (new MFDouble ()),
 	normalPerVertex (new SFBool (true)),
-	solid (new SFBool (true)),
-	ccw (new SFBool (true)),
-	xDimension (new SFInt32 ()),
-	xSpacing (new SFDouble (1)),
-	zDimension (new SFInt32 ()),
-	zSpacing (new SFDouble (1))
+	          solid (new SFBool (true)),
+	            ccw (new SFBool (true)),
+	     xDimension (new SFInt32 ()),
+	       xSpacing (new SFDouble (1)),
+	     zDimension (new SFInt32 ()),
+	       zSpacing (new SFDouble (1))
 { }
 
 GeoElevationGrid::GeoElevationGrid (X3DExecutionContext* const executionContext) :
@@ -110,6 +112,14 @@ X3DBaseNode*
 GeoElevationGrid::create (X3DExecutionContext* const executionContext) const
 {
 	return new GeoElevationGrid (executionContext);
+}
+
+bool
+GeoElevationGrid::isTransparent () const
+{
+	auto _color = x3d_cast <X3DColorNode*> (color ());
+
+	return _color and _color -> isTransparent ();
 }
 
 void

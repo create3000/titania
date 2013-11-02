@@ -77,7 +77,7 @@ public:
 	virtual
 	bool
 	isTransparent () const
-	{ return colorsRGBA .size (); }
+	{ return false; }
 
 	virtual
 	bool
@@ -123,13 +123,9 @@ protected:
 	setTextureCoordinateGenerator (TextureCoordinateGenerator* value)
 	{ textureCoordinateGenerator = value; }
 
-	std::vector <Color3f> &
+	std::vector <Color4f> &
 	getColors ()
 	{ return colors; }
-
-	std::vector <Color4f> &
-	getColorsRGBA ()
-	{ return colorsRGBA; }
 
 	std::vector <Vector3f> &
 	getNormals ()
@@ -220,8 +216,7 @@ private:
 	Box3f                       bbox;
 	std::vector <Vector3f>      texCoords;
 	TextureCoordinateGenerator* textureCoordinateGenerator;
-	std::vector <Color3f>       colors;
-	std::vector <Color4f>       colorsRGBA;
+	std::vector <Color4f>       colors;
 	std::vector <Vector3f>      normals;
 	std::vector <Vector3f>      vertices;
 	bool                        solid;

@@ -132,6 +132,12 @@ public:
 	fogCoord () const
 	{ return *fields .fogCoord; }
 
+	///  @name Operations
+
+	virtual
+	bool
+	isTransparent () const final;
+
 	virtual
 	void
 	draw ();

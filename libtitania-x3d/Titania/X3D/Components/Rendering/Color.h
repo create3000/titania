@@ -95,8 +95,30 @@ public:
 	color () const
 	{ return *fields .color; }
 
+	///  @name Operations
+
+	virtual
+	bool
+	isTransparent () const final
+	{ return false; }
+	
+	virtual
 	void
-	resize (size_t);
+	emplace_back (std::vector <Color4f>&, size_t) const final;
+
+	virtual
+	void
+	resize (size_t) final;
+
+	virtual
+	size_t
+	empty () const final
+	{ return color () .empty (); }
+
+	virtual
+	size_t
+	size () const final
+	{ return color () .size (); }
 
 
 private:

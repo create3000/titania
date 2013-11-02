@@ -51,10 +51,9 @@
 #include "X3DComposedGeometryNode.h"
 
 #include "../../Bits/Cast.h"
-#include "../Rendering/Color.h"
-#include "../Rendering/ColorRGBA.h"
+#include "../Rendering/X3DColorNode.h"
 #include "../Rendering/X3DCoordinateNode.h"
-#include "../Rendering/Normal.h"
+#include "../Rendering/X3DNormalNode.h"
 #include "../Texturing/TextureCoordinate.h"
 #include "../Texturing/TextureCoordinateGenerator.h"
 
@@ -79,6 +78,14 @@ X3DComposedGeometryNode::X3DComposedGeometryNode () :
 	         fields ()
 {
 	addNodeType (X3DConstants::X3DComposedGeometryNode);
+}
+
+bool
+X3DComposedGeometryNode::isTransparent () const
+{
+	auto _color = x3d_cast <X3DColorNode*> (color ());
+
+	return _color and _color -> isTransparent ();
 }
 
 void
@@ -120,19 +127,12 @@ X3DComposedGeometryNode::buildPolygons (size_t vertexCount, size_t size)
 
 	// Color
 
-	auto _color     = x3d_cast <Color*> (color ());
-	auto _colorRGBA = x3d_cast <ColorRGBA*> (color ());
+	auto _color = x3d_cast <X3DColorNode*> (color ());
 
 	if (_color)
 	{
 		_color -> resize (colorPerVertex () ? size : faces);
 		getColors () .reserve (size);
-	}
-
-	else if (_colorRGBA)
-	{
-		_colorRGBA -> resize (colorPerVertex () ? size : faces);
-		getColorsRGBA () .reserve (size);
 	}
 
 	// TextureCoordinate
@@ -148,7 +148,7 @@ X3DComposedGeometryNode::buildPolygons (size_t vertexCount, size_t size)
 
 	// Normal
 
-	auto _normal = x3d_cast <Normal*> (normal ());
+	auto _normal = x3d_cast <X3DNormalNode*> (normal ());
 
 	if (_normal)
 		_normal -> resize (normalPerVertex () ? size : faces);
@@ -161,44 +161,17 @@ X3DComposedGeometryNode::buildPolygons (size_t vertexCount, size_t size)
 
 	// Fill GeometryNode
 
-	Vector3f faceNormal;
-	Color3f  faceColor;
-	Color4f  faceColorRGBA;
-
 	for (size_t index = 0, face = 0; index < size; ++ face)
 	{
-		if (not colorPerVertex ())
-		{
-			if (_color)
-				faceColor = _color -> color () [face];
-
-			else if (_colorRGBA)
-				faceColorRGBA = _colorRGBA -> color () [face];
-		}
-
-		if (_normal)
-		{
-			if (not normalPerVertex ())
-				faceNormal = _normal -> vector () [face];
-		}
-
 		for (size_t i = 0; i < vertexCount; ++ i, ++ index)
 		{
 			if (_color)
 			{
 				if (colorPerVertex ())
-					getColors () .emplace_back (_color -> color () [getIndex (index)]);
+					_color -> emplace_back (getColors (), getIndex (index));
 
 				else
-					getColors () .emplace_back (faceColor);
-			}
-			else if (_colorRGBA)
-			{
-				if (colorPerVertex ())
-					getColorsRGBA () .emplace_back (_colorRGBA -> color () [getIndex (index)]);
-
-				else
-					getColorsRGBA () .emplace_back (faceColorRGBA);
+					_color -> emplace_back (getColors (), face);
 			}
 
 			if (_textureCoordinate)
@@ -210,10 +183,10 @@ X3DComposedGeometryNode::buildPolygons (size_t vertexCount, size_t size)
 			if (_normal)
 			{
 				if (normalPerVertex ())
-					getNormals () .emplace_back (_normal -> vector () [getIndex (index)]);
+					_normal -> emplace_back (getNormals (), getIndex (index));
 
 				else
-					getNormals () .emplace_back (faceNormal);
+					_normal -> emplace_back (getNormals (), face);
 			}
 
 			_coord -> emplace_back (getVertices (), getIndex (index));

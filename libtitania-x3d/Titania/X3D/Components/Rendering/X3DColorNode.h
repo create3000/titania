@@ -59,6 +59,29 @@ namespace X3D {
 class X3DColorNode :
 	public X3DGeometricPropertyNode
 {
+public:
+
+	virtual
+	bool
+	isTransparent () const = 0;
+
+	virtual
+	void
+	emplace_back (std::vector <Color4f>&, size_t) const = 0;
+
+	virtual
+	void
+	resize (size_t) = 0;
+
+	virtual
+	size_t
+	empty () const = 0;
+
+	virtual
+	size_t
+	size () const = 0;
+
+
 protected:
 
 	X3DColorNode ();

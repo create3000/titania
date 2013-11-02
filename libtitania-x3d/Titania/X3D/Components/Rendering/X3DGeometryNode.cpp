@@ -61,7 +61,6 @@ X3DGeometryNode::X3DGeometryNode () :
 	                 texCoords (),
 	textureCoordinateGenerator (nullptr),
 	                    colors (),
-	                colorsRGBA (),
 	                   normals (),
 	                  vertices (),
 	                     solid (true),
@@ -467,11 +466,10 @@ X3DGeometryNode::clear ()
 
 	texCoords .clear ();
 	textureCoordinateGenerator = nullptr;
-	colors     .clear ();
-	colorsRGBA .clear ();
-	normals    .clear ();
-	vertices   .clear ();
-	elements   .clear ();
+	colors   .clear ();
+	normals  .clear ();
+	vertices .clear ();
+	elements .clear ();
 }
 
 void
@@ -512,15 +510,7 @@ X3DGeometryNode::draw (bool solid, bool texture, bool lighting)
 			glEnable (GL_COLOR_MATERIAL);
 
 		glEnableClientState (GL_COLOR_ARRAY);
-		glColorPointer (3, GL_FLOAT, 0, colors .data ());
-	}
-	else if (not colorsRGBA .empty ())
-	{
-		if (lighting)
-			glEnable (GL_COLOR_MATERIAL);
-
-		glEnableClientState (GL_COLOR_ARRAY);
-		glColorPointer (4, GL_FLOAT, 0, colorsRGBA .data ());
+		glColorPointer (4, GL_FLOAT, 0, colors .data ());
 	}
 
 	if (lighting)

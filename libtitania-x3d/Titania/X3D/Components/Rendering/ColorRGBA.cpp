@@ -79,6 +79,12 @@ ColorRGBA::create (X3DExecutionContext* const executionContext) const
 }
 
 void
+ColorRGBA::emplace_back (std::vector <Color4f> & colors, size_t index) const
+{
+	colors .emplace_back (color () [index]);
+}
+
+void
 ColorRGBA::resize (size_t size)
 {
 	if (color () .empty ())

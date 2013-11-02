@@ -52,8 +52,7 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "../Rendering/Color.h"
-#include "../Rendering/ColorRGBA.h"
+#include "../Rendering/X3DColorNode.h"
 #include "../Rendering/X3DCoordinateNode.h"
 
 namespace titania {
@@ -88,6 +87,14 @@ PointSet::create (X3DExecutionContext* const executionContext) const
 	return new PointSet (executionContext);
 }
 
+bool
+PointSet::isTransparent () const
+{
+	auto _color = x3d_cast <X3DColorNode*> (color ());
+
+	return _color and _color -> isTransparent ();
+}
+
 void
 PointSet::build ()
 {
@@ -96,20 +103,16 @@ PointSet::build ()
 	if (not _coord)
 		return;
 
-	auto _color     = x3d_cast <Color*> (color ());
-	auto _colorRGBA = x3d_cast <ColorRGBA*> (color ());
+	auto _color = x3d_cast <X3DColorNode*> (color ());
 
 	if (_color)
 	{
 		getColors () .reserve (_coord -> size ());
-		getColors () .assign  (_color -> color () .begin (), _color -> color () .end ());
-		getColors () .resize  (_coord -> size (), Color3f (1, 1, 1));
-	}
-	else if (_colorRGBA)
-	{
-		getColorsRGBA () .reserve (_coord -> size ());
-		getColorsRGBA () .assign  (_colorRGBA -> color () .begin (), _colorRGBA -> color () .end ());
-		getColorsRGBA () .resize  (_coord -> size (), Color4f (1, 1, 1, 1));
+		
+		for (size_t i = 0, size = _color -> size (); i < size; ++ i)
+			_color -> emplace_back (getColors (), i);
+		
+		getColors () .resize  (_coord -> size (), Color4f (1, 1, 1, 1));
 	}
 
 	for (size_t i = 0, size = _coord -> size (); i < size; ++ i)

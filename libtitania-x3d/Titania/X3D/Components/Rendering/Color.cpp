@@ -79,6 +79,14 @@ Color::create (X3DExecutionContext* const executionContext) const
 }
 
 void
+Color::emplace_back (std::vector <Color4f> & colors, size_t index) const
+{
+	const Color3f & color3 = color () [index];
+
+	colors .emplace_back (color3 .r (), color3 .g (), color3 .b (), 1);
+}
+
+void
 Color::resize (size_t size)
 {
 	if (color () .empty ())

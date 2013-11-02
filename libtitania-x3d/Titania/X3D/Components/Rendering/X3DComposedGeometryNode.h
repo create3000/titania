@@ -147,6 +147,12 @@ public:
 	coord () const
 	{ return *fields .coord; }
 
+	///  @name Tests
+
+	virtual
+	bool
+	isTransparent () const final;
+
 
 protected:
 

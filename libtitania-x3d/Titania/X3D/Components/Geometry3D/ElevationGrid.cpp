@@ -52,9 +52,8 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "../Rendering/Color.h"
-#include "../Rendering/ColorRGBA.h"
-#include "../Rendering/Normal.h"
+#include "../Rendering/X3DColorNode.h"
+#include "../Rendering/X3DNormalNode.h"
 #include "../Texturing/TextureCoordinate.h"
 
 namespace titania {
@@ -118,6 +117,14 @@ void
 ElevationGrid::initialize ()
 {
 	X3DGeometryNode::initialize ();
+}
+
+bool
+ElevationGrid::isTransparent () const
+{
+	auto _color = x3d_cast <X3DColorNode*> (color ());
+
+	return _color and _color -> isTransparent ();
 }
 
 float
@@ -297,58 +304,30 @@ ElevationGrid::build ()
 		getTexCoord () .reserve (coordIndex .size ());
 	}
 
-	auto _color = x3d_cast <Color*> (color ());
+	auto _color = x3d_cast <X3DColorNode*> (color ());
 
 	if (_color)
 	{
 		if (colorPerVertex ())
-		{
-			if (_color -> color () .size () < vertices)
-				_color -> color () .resize (vertices);
-		}
+			_color -> resize (vertices);
+
 		else
-		{
-			if (_color -> color () .size () < faces)
-				_color -> color () .resize (faces);
-		}
+			_color -> resize (faces);
 
 		getColors () .reserve (coordIndex .size ());
 	}
 
-	auto _colorRGBA = x3d_cast <ColorRGBA*> (color ());
-
-	if (_colorRGBA)
-	{
-		if (colorPerVertex ())
-		{
-			if (_colorRGBA -> color () .size () < vertices)
-				_colorRGBA -> color () .resize (vertices);
-		}
-		else
-		{
-			if (_colorRGBA -> color () .size () < faces)
-				_colorRGBA -> color () .resize (faces);
-		}
-
-		getColorsRGBA () .reserve (coordIndex .size ());
-	}
-
 	std::vector <Vector3f> normals;
 
-	auto _normal = x3d_cast <Normal*> (normal ());
+	auto _normal = x3d_cast <X3DNormalNode*> (normal ());
 
 	if (_normal)
 	{
 		if (normalPerVertex ())
-		{
-			if (_normal -> vector () .size () < vertices)
-				_normal -> vector () .resize (vertices);
-		}
+			_normal -> resize (vertices);
+
 		else
-		{
-			if (_normal -> vector () .size () < faces)
-				_normal -> vector () .resize (faces);
-		}
+			_normal -> resize (faces);
 	}
 	else
 		normals = createNormals (points, coordIndex);
@@ -358,18 +337,10 @@ ElevationGrid::build ()
 	size_t  i    = 0;
 	int32_t face = 0;
 
-	Vector3f faceNormal;
-
 	std::vector <size_t>::const_iterator index;
 
 	for (index = coordIndex .begin (); index not_eq coordIndex .end (); ++ face)
 	{
-		if (_normal)
-		{
-			if (not normalPerVertex ())
-				getNormals () .emplace_back (_normal -> vector () [face]);
-		}
-
 		for (int32_t p = 0; p < 6; ++ p, ++ index, ++ i)
 		{
 			if (_textureCoordinate)
@@ -387,30 +358,22 @@ ElevationGrid::build ()
 			if (_color)
 			{
 				if (colorPerVertex ())
-					getColors () .emplace_back (_color -> color () [*index]);
+					_color -> emplace_back (getColors (), *index);
 
 				else
-					getColors () .emplace_back (_color -> color () [face]);
-
-			}
-			else if (_colorRGBA)
-			{
-				if (colorPerVertex ())
-					getColorsRGBA () .emplace_back (_colorRGBA -> color () [*index]);
-
-				else
-					getColorsRGBA () .emplace_back (_colorRGBA -> color () [face]);
+					_color -> emplace_back (getColors (), face);
 			}
 
 			if (_normal)
 			{
 				if (normalPerVertex ())
-					getNormals () .emplace_back (_normal -> vector () [*index]);
+					_normal -> emplace_back (getNormals (), *index);
+
+				else
+					_normal -> emplace_back (getNormals (), face);
 			}
 			else
-			{
 				getNormals () .emplace_back (normals [i]);
-			}
 
 			getVertices  () .emplace_back (points [*index]);
 		}

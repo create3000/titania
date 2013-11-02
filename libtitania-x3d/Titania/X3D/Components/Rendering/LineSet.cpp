@@ -52,8 +52,7 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "../Rendering/Color.h"
-#include "../Rendering/ColorRGBA.h"
+#include "../Rendering/X3DColorNode.h"
 #include "../Rendering/X3DCoordinateNode.h"
 
 namespace titania {
@@ -90,6 +89,14 @@ LineSet::create (X3DExecutionContext* const executionContext) const
 	return new LineSet (executionContext);
 }
 
+bool
+LineSet::isTransparent () const
+{
+	auto _color = x3d_cast <X3DColorNode*> (color ());
+
+	return _color and _color -> isTransparent ();
+}
+
 void
 LineSet::build ()
 {
@@ -100,14 +107,10 @@ LineSet::build ()
 
 	// Color
 
-	auto _color     = x3d_cast <Color*> (color ());
-	auto _colorRGBA = x3d_cast <ColorRGBA*> (color ());
+	auto _color = x3d_cast <X3DColorNode*> (color ());
 
 	if (_color)
 		_color -> resize (_coord -> size ());
-
-	if (_colorRGBA)
-		_colorRGBA -> resize (_coord -> size ());
 
 	// Fill GeometryNode
 
@@ -125,13 +128,7 @@ LineSet::build ()
 			for (size_t i = 0; i < (size_t) count; ++ i, ++ index)
 			{
 				if (_color)
-				{
-					getColors () .emplace_back (_color -> color () [index]);
-				}
-				else if (_colorRGBA)
-				{
-					getColorsRGBA () .emplace_back (_colorRGBA -> color () [index]);
-				}
+					_color -> emplace_back (getColors (), index);
 
 				_coord -> emplace_back (getVertices (), index);
 			}

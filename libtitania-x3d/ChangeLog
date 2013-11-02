@@ -1,5 +1,31 @@
 2013-11-02  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Color.h:
+	* Normal.h:
+	* Color.cpp:
+	* LineSet.h:
+	* PointSet.h:
+	* Normal.cpp:
+	* ColorRGBA.h:
+	* LineSet.cpp:
+	* PointSet.cpp:
+	* ColorRGBA.cpp:
+	* X3DColorNode.h:
+	* X3DNormalNode.h:
+	* IndexedLineSet.h:
+	* ElevationGrid.h:
+	* X3DGeometryNode.h:
+	* ElevationGrid.cpp:
+	* IndexedLineSet.cpp:
+	* X3DGeometryNode.cpp:
+	* GeoElevationGrid.h:
+	* IndexedFaceSet.cpp:
+	* GeoElevationGrid.cpp:
+	* X3DComposedGeometryNode.h:
+	* X3DComposedGeometryNode.cpp: 
+
+2013-11-02  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* LineSet.cpp:
 	* Coordinate.h:
 	* PointSet.cpp:

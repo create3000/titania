@@ -52,8 +52,7 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "../Rendering/Color.h"
-#include "../Rendering/ColorRGBA.h"
+#include "../Rendering/X3DColorNode.h"
 #include "../Rendering/X3DCoordinateNode.h"
 
 namespace titania {
@@ -106,6 +105,14 @@ IndexedLineSet::initialize ()
 	color ()      .addInterest (this, &IndexedLineSet::set_colorIndex);
 
 	set_coordIndex ();
+}
+
+bool
+IndexedLineSet::isTransparent () const
+{
+	auto _color = x3d_cast <X3DColorNode*> (color ());
+
+	return _color and _color -> isTransparent ();
 }
 
 std::deque <std::deque <size_t>>
@@ -192,10 +199,9 @@ IndexedLineSet::set_coordIndex ()
 void
 IndexedLineSet::set_colorIndex ()
 {
-	auto _color     = x3d_cast <Color*> (color ());
-	auto _colorRGBA = x3d_cast <ColorRGBA*> (color ());
+	auto _color = x3d_cast <X3DColorNode*> (color ());
 
-	if (_color or _colorRGBA)
+	if (_color)
 	{
 		// Fill up colorIndex if to small.
 		if (colorPerVertex ())
@@ -226,13 +232,7 @@ IndexedLineSet::set_colorIndex ()
 
 		// Resize color .color if to small.
 		if (_color)
-		{
 			_color -> resize (numColors);
-		}
-		else if (_colorRGBA)
-		{
-			_colorRGBA -> resize (numColors);
-		}
 	}
 }
 
@@ -248,27 +248,14 @@ IndexedLineSet::build ()
 
 	// Color
 
-	auto _color     = x3d_cast <Color*> (color ());
-	auto _colorRGBA = x3d_cast <ColorRGBA*> (color ());
+	auto _color = x3d_cast <X3DColorNode*> (color ());
 
 	// Fill GeometryNode
 
 	int face = 0;
 
-	Color3f faceColor;
-	Color4f faceColorRGBA;
-
 	for (const auto polyline : polylines)
 	{
-		if (not colorPerVertex ())
-		{
-			if (_color and colorIndex () [face] >= 0)
-				faceColor = _color -> color () [colorIndex () [face]];
-
-			else if (_colorRGBA and colorIndex () [face] >= 0)
-				faceColorRGBA = _colorRGBA -> color () [colorIndex () [face]];
-		}
-
 		// Create two vertices for each line.
 
 		for (size_t line = 0, end = polyline .size () - 1; line < end; ++ line)
@@ -279,19 +266,11 @@ IndexedLineSet::build ()
 
 				if (_color)
 				{
-					if (colorPerVertex () and colorIndex () [i] >= 0)
-						getColors () .emplace_back (_color -> color () [colorIndex () [i]]);
+					if (colorPerVertex () and colorIndex () [i] > -1)
+						_color -> emplace_back (getColors (), colorIndex () [i]);
 
 					else
-						getColors () .emplace_back (faceColor);
-				}
-				else if (_colorRGBA)
-				{
-					if (colorPerVertex () and colorIndex () [i] >= 0)
-						getColorsRGBA () .emplace_back (_colorRGBA -> color () [colorIndex () [i]]);
-
-					else
-						getColorsRGBA () .emplace_back (faceColorRGBA);
+						_color -> emplace_back (getColors (), colorIndex () [face]);
 				}
 
 				_coord -> emplace_back (getVertices (), coordIndex () [i]);

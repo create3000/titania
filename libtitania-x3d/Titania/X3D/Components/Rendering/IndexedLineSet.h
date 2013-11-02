@@ -147,6 +147,10 @@ public:
 
 	virtual
 	bool
+	isTransparent () const final;
+
+	virtual
+	bool
 	isLineGeometry () const final
 	{ return true; }
 
