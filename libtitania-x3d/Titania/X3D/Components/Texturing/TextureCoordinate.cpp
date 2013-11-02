@@ -77,6 +77,13 @@ TextureCoordinate::create (X3DExecutionContext* const executionContext) const
 {
 	return new TextureCoordinate (executionContext);
 }
+	
+void
+TextureCoordinate::emplace_back (std::vector <Vector4f>& texCoords, size_t index) const
+{
+	const Vector2f & point2 = point () [index];
+	texCoords .emplace_back (point2 .x (), point2 .y (), 0, 1);
+}
 
 void
 TextureCoordinate::resize (size_t size)

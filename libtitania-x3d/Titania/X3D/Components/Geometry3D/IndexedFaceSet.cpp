@@ -55,7 +55,7 @@
 #include "../Rendering/X3DColorNode.h"
 #include "../Rendering/X3DCoordinateNode.h"
 #include "../Rendering/X3DNormalNode.h"
-#include "../Texturing/TextureCoordinate.h"
+#include "../Texturing/X3DTextureCoordinateNode.h"
 #include "../Texturing/TextureCoordinateGenerator.h"
 
 namespace titania {
@@ -167,7 +167,7 @@ IndexedFaceSet::set_coordIndex ()
 void
 IndexedFaceSet::set_texCoordIndex ()
 {
-	auto _textureCoordinate = x3d_cast <TextureCoordinate*> (texCoord ());
+	auto _textureCoordinate = x3d_cast <X3DTextureCoordinateNode*> (texCoord ());
 
 	if (_textureCoordinate)
 	{
@@ -298,10 +298,10 @@ IndexedFaceSet::build ()
 
 	// TextureCoordinate
 
-	auto _textureCoordinate          = x3d_cast <TextureCoordinate*> (texCoord ());
+	auto _textureCoordinate          = x3d_cast <X3DTextureCoordinateNode*> (texCoord ());
 	auto _textureCoordinateGenerator = x3d_cast <TextureCoordinateGenerator*> (texCoord ());
 
-	if (_textureCoordinate or not _textureCoordinateGenerator)
+	if (_textureCoordinate and not _textureCoordinate -> empty ())
 		getTexCoord () .reserve (reserve);
 
 	// Normal
@@ -349,15 +349,13 @@ IndexedFaceSet::build ()
 						_color -> emplace_back (getColors (), colorIndex () [face]);
 				}
 
-				if (_textureCoordinate)
+				if (_textureCoordinate and not _textureCoordinate -> empty ())
 				{
 					if (texCoordIndex () [i] > -1)
-					{
-						const auto & t = _textureCoordinate -> point () [texCoordIndex () [i]];
-						getTexCoord () .emplace_back (t .getX (), t .getY (), 0);
-					}
+						_textureCoordinate -> emplace_back (getTexCoord (), texCoordIndex () [i]);
+
 					else
-						getTexCoord () .emplace_back (0, 0, 0);
+						getTexCoord () .emplace_back (0, 0, 0, 1);
 				}
 
 				if (_normal)

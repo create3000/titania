@@ -126,7 +126,7 @@ private:
 	std::deque <int32_t>
 	createTexIndices ();
 
-	std::deque <Vector3f>
+	std::deque <Vector4f>
 	createTexCoord ();
 
 	std::deque <int32_t>

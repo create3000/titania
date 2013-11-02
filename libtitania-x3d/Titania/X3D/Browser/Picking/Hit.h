@@ -74,7 +74,7 @@ public:
 	double y;
 	const Matrix4d     transformationMatrix;
 	const Line3d       ray;
-	const Vector3d     texCoord;
+	const Vector4d     texCoord;
 	const Vector3d     normal;
 	const Vector3d     point;
 	const float        distance;

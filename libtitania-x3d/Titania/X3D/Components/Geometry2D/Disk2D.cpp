@@ -190,7 +190,7 @@ Disk2D::build ()
 
 	for (const auto & texCoord : properties -> getTexCoord ())
 	{
-		getTexCoord () .emplace_back (texCoord * scale + Vector3f ((1 - scale) / 2, (1 - scale) / 2, 0));
+		getTexCoord () .emplace_back (texCoord * scale + Vector4f ((1 - scale) / 2, (1 - scale) / 2, 0, 1));
 		getTexCoord () .emplace_back (texCoord);
 	}
 

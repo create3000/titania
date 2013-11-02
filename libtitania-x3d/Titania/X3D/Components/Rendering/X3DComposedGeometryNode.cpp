@@ -54,7 +54,7 @@
 #include "../Rendering/X3DColorNode.h"
 #include "../Rendering/X3DCoordinateNode.h"
 #include "../Rendering/X3DNormalNode.h"
-#include "../Texturing/TextureCoordinate.h"
+#include "../Texturing/X3DTextureCoordinateNode.h"
 #include "../Texturing/TextureCoordinateGenerator.h"
 
 namespace titania {
@@ -137,13 +137,13 @@ X3DComposedGeometryNode::buildPolygons (size_t vertexCount, size_t size)
 
 	// TextureCoordinate
 
-	auto _textureCoordinate          = x3d_cast <TextureCoordinate*> (texCoord ());
+	auto _textureCoordinate          = x3d_cast <X3DTextureCoordinateNode*> (texCoord ());
 	auto _textureCoordinateGenerator = x3d_cast <TextureCoordinateGenerator*> (texCoord ());
 
 	if (_textureCoordinate)
 		_textureCoordinate -> resize (size);
 
-	if (_textureCoordinate or not _textureCoordinateGenerator)
+	if (_textureCoordinate and not _textureCoordinate -> empty ())
 		getTexCoord () .reserve (size);
 
 	// Normal
@@ -174,11 +174,8 @@ X3DComposedGeometryNode::buildPolygons (size_t vertexCount, size_t size)
 					_color -> emplace_back (getColors (), face);
 			}
 
-			if (_textureCoordinate)
-			{
-				const auto & t = _textureCoordinate -> point () [getIndex (index)];
-				getTexCoord () .emplace_back (t .getX (), t .getY (), 0);
-			}
+			if (_textureCoordinate and not _textureCoordinate -> empty ())
+				_textureCoordinate -> emplace_back (getTexCoord (), getIndex (index));
 
 			if (_normal)
 			{

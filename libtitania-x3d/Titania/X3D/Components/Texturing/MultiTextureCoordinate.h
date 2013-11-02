@@ -98,6 +98,27 @@ public:
 
 private:
 
+	///  @name Operations
+
+	virtual
+	void
+	emplace_back (std::vector <Vector4f>& texCoords, size_t) const
+	{ texCoords .emplace_back (0, 0, 0, 1); }
+
+	virtual
+	void
+	resize (size_t) final
+	{ }
+
+	virtual
+	size_t
+	empty () const final
+	{ return true; }
+
+	virtual
+	size_t
+	size () const final
+	{ return 0; }
 
 	///  @name Static members
 

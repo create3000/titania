@@ -54,7 +54,7 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Rendering/X3DColorNode.h"
 #include "../Rendering/X3DNormalNode.h"
-#include "../Texturing/TextureCoordinate.h"
+#include "../Texturing/X3DTextureCoordinateNode.h"
 
 namespace titania {
 namespace X3D {
@@ -164,10 +164,10 @@ ElevationGrid::createBBox ()
 	return Box3f (size, center);
 }
 
-std::vector <Vector3f>
+std::vector <Vector4f>
 ElevationGrid::createTexCoord () const
 {
-	std::vector <Vector3f> texCoord;
+	std::vector <Vector4f> texCoord;
 	texCoord .reserve (xDimension () * zDimension ());
 
 	for (float j = 0; j < zDimension (); ++ j)
@@ -176,7 +176,8 @@ ElevationGrid::createTexCoord () const
 		{
 			texCoord .emplace_back (i / (xDimension () - 1),
 			                        j / (zDimension () - 1),
-			                        0);
+			                        0,
+			                        1);
 		}
 	}
 
@@ -284,21 +285,19 @@ ElevationGrid::build ()
 
 	getVertices () .reserve (coordIndex .size ());
 
-	std::vector <Vector3f> _texCoord;
+	std::vector <Vector4f> _texCoord;
 
-	auto _textureCoordinate          = x3d_cast <TextureCoordinate*> (texCoord ());
+	auto _textureCoordinate          = x3d_cast <X3DTextureCoordinateNode*> (texCoord ());
 	auto _textureCoordinateGenerator = x3d_cast <TextureCoordinateGenerator*> (texCoord ());
 
-	if (_textureCoordinate)
+	if (_textureCoordinateGenerator)
+		;
+	else if (_textureCoordinate)
 	{
-		if (_textureCoordinate -> point () .size () < vertices)
-			_textureCoordinate -> point () .resize (vertices);
-
+		_textureCoordinate -> resize (vertices);
 		getTexCoord () .reserve (coordIndex .size ());
 	}
-	else if (_textureCoordinateGenerator)
-	{ }
-	else
+	else 
 	{
 		_texCoord = createTexCoord ();
 		getTexCoord () .reserve (coordIndex .size ());
@@ -343,17 +342,13 @@ ElevationGrid::build ()
 	{
 		for (int32_t p = 0; p < 6; ++ p, ++ index, ++ i)
 		{
-			if (_textureCoordinate)
-			{
-				const auto & t = _textureCoordinate -> point () [*index];
-				getTexCoord () .emplace_back (t .getX (), t .getY (), 0);
-			}
-			else if (_textureCoordinateGenerator)
-			{ }
+			if (_textureCoordinateGenerator)
+				;
+			else if (_textureCoordinate)
+				_textureCoordinate -> emplace_back (getTexCoord (), *index);
+
 			else
-			{
 				getTexCoord () .emplace_back (_texCoord [*index]);
-			}
 
 			if (_color)
 			{

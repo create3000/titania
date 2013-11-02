@@ -125,7 +125,8 @@ TriangleSet2D::buildTexCoord ()
 	{
 		getTexCoord () .emplace_back ((point [0] - min [0]) / Ssize,
 		                              (point [1] - min [1]) / Ssize,
-		                              0);
+		                              0,
+		                              1);
 	}
 }
 

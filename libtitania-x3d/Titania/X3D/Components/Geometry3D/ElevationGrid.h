@@ -233,7 +233,7 @@ private:
 	Box3f
 	createBBox () final;
 
-	std::vector <Vector3f>
+	std::vector <Vector4f>
 	createTexCoord () const;
 
 	std::vector <Vector3f>

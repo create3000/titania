@@ -1,5 +1,38 @@
 2013-11-02  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Hit.h:
+	* Text.cpp:
+	* Intersection.h:
+	* Cone.cpp:
+	* Disk2D.cpp:
+	* BoxOptions.cpp:
+	* Cylinder.cpp:
+	* Extrusion.cpp:
+	* Disk2DOptions.cpp:
+	* ArcClose2D.cpp:
+	* ElevationGrid.h:
+	* QuadSphereOptions.h:
+	* X3DGeometryNode.h:
+	* ElevationGrid.cpp:
+	* TriangleSet2D.cpp:
+	* X3DGeometryNode.cpp:
+	* IndexedFaceSet.cpp:
+	* QuadSphereOptions.cpp:
+	* TextureCoordinate.h:
+	* Rectangle2DOptions.cpp:
+	* TextureCoordinate.cpp:
+	* X3DGeometricOptionNode.h:
+	* TextureCoordinate3D.h:
+	* TextureCoordinate4D.h:
+	* MultiTextureCoordinate.h:
+	* TextureCoordinate4D.cpp:
+	* TextureCoordinate3D.cpp:
+	* X3DTextureCoordinateNode.h:
+	* X3DComposedGeometryNode.cpp:
+	* TextureCoordinateGenerator.h: 
+
+2013-11-02  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Color.h:
 	* Normal.h:
 	* Color.cpp:

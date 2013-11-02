@@ -77,6 +77,26 @@ TextureCoordinate3D::create (X3DExecutionContext* const executionContext) const
 {
 	return new TextureCoordinate3D (executionContext);
 }
+	
+void
+TextureCoordinate3D::emplace_back (std::vector <Vector4f>& texCoords, size_t index) const
+{
+	const Vector3f & point3 = point () [index];
+	texCoords .emplace_back (point3 .x (), point3 .y (), point3 .z (), 1);
+}
+
+void
+TextureCoordinate3D::resize (size_t size)
+{
+	if (point () .empty ())
+		point () .resize (size);
+
+	else
+	{
+		if (point () .size () < size)
+			point () .resize (size, point () .back ());
+	}
+}
 
 } // X3D
 } // titania

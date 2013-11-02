@@ -60,7 +60,7 @@ class Intersection
 {
 public:
 
-	Vector3f hitTexCoord;
+	Vector4f hitTexCoord;
 	Vector3f hitNormal;
 	Vector3f hitPoint;
 

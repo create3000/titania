@@ -119,6 +119,27 @@ private:
 	void
 	initialize () final;
 
+	///  @name Operations
+
+	virtual
+	void
+	emplace_back (std::vector <Vector4f>&, size_t) const
+	{ throw std::runtime_error ("TextureCoordinateGenerator::emplace_back"); }
+
+	virtual
+	void
+	resize (size_t) final
+	{ }
+
+	virtual
+	size_t
+	empty () const final
+	{ return true; }
+
+	virtual
+	size_t
+	size () const final
+	{ return 0; }
 
 	///  @name Static members
 

@@ -115,7 +115,7 @@ protected:
 
 	///  @name Member access
 
-	std::vector <Vector3f> &
+	std::vector <Vector4f> &
 	getTexCoord ()
 	{ return texCoords; }
 
@@ -214,7 +214,7 @@ private:
 	///  @name Members
 
 	Box3f                       bbox;
-	std::vector <Vector3f>      texCoords;
+	std::vector <Vector4f>      texCoords;
 	TextureCoordinateGenerator* textureCoordinateGenerator;
 	std::vector <Color4f>       colors;
 	std::vector <Vector3f>      normals;
