@@ -79,11 +79,16 @@ Color::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-Color::addColor (std::vector <Color4f> & colors, size_t index) const
+Color::addColor (std::vector <Color4f> & colors, int32_t index) const
 {
-	const Color3f & color3 = color () [index];
+	if (index > -1)
+	{
+		const Color3f & color3 = color () [index];
 
-	colors .emplace_back (color3 .r (), color3 .g (), color3 .b (), 1);
+		colors .emplace_back (color3 .r (), color3 .g (), color3 .b (), 1);
+	}
+	else
+		colors .emplace_back (1, 1, 1, 1);
 }
 
 void

@@ -52,6 +52,8 @@
 
 #include "../../Execution/X3DExecutionContext.h"
 
+#include <cassert>
+
 namespace titania {
 namespace X3D {
 
@@ -125,7 +127,7 @@ X3DGeometryNode::intersect (const Line3f & line, std::deque <IntersectionPtr> & 
 	{
 		float u, v, t;
 		
-		size_t texCoordsSize = texCoords .size ();
+		size_t texCoordsSize = texCoords .empty () ? 0 : texCoords [0] .size (); // LineGeometry doesn't have texCoords
 		size_t first         = 0;
 
 		for (const auto & element : elements)
@@ -138,7 +140,7 @@ X3DGeometryNode::intersect (const Line3f & line, std::deque <IntersectionPtr> & 
 						{
 							if (line .intersect (vertices [i], vertices [i + 1], vertices [i + 2], u, v, t))
 							{
-								Vector4f texCoord = i < texCoordsSize ? (1 - u - v) * texCoords [i] + u * texCoords [i + 1] + v * texCoords [i + 2] : Vector4f ();
+								Vector4f texCoord = i < texCoordsSize ? (1 - u - v) * texCoords [0] [i] + u * texCoords [0] [i + 1] + v * texCoords [0] [i + 2] : Vector4f (0, 0, 0, 1);
 
 								intersections .emplace_back (new Intersection { texCoord,
 								                                                (1 - u - v) * normals  [i] + u * normals  [i + 1] + v * normals  [i + 2],
@@ -155,7 +157,7 @@ X3DGeometryNode::intersect (const Line3f & line, std::deque <IntersectionPtr> & 
 					{
 						if (line .intersect (vertices [i], vertices [i + 1], vertices [i + 2], u, v, t))
 						{
-							Vector4f texCoord = i < texCoordsSize ? (1 - u - v) * texCoords [i] + u * texCoords [i + 1] + v * texCoords [i + 2] : Vector4f ();
+							Vector4f texCoord = i < texCoordsSize ? (1 - u - v) * texCoords [0] [i] + u * texCoords [0] [i + 1] + v * texCoords [0] [i + 2] : Vector4f (0, 0, 0, 1);
 
 							intersections .emplace_back (new Intersection { texCoord,
 							                                                (1 - u - v) * normals  [i] + u * normals  [i + 1] + v * normals  [i + 2],
@@ -165,7 +167,7 @@ X3DGeometryNode::intersect (const Line3f & line, std::deque <IntersectionPtr> & 
 
 						if (line .intersect (vertices [i], vertices [i + 2], vertices [i + 3], u, v, t))
 						{
-							Vector4f texCoord = i < texCoordsSize ? (1 - u - v) * texCoords [i] + u * texCoords [i + 2] + v * texCoords [i + 3] : Vector4f ();
+							Vector4f texCoord = i < texCoordsSize ? (1 - u - v) * texCoords [0] [i] + u * texCoords [0] [i + 2] + v * texCoords [0] [i + 3] : Vector4f (0, 0, 0, 1);
 
 							intersections .emplace_back (new Intersection { texCoord,
 							                                                (1 - u - v) * normals  [i] + u * normals  [i + 2] + v * normals  [i + 3],
@@ -182,7 +184,7 @@ X3DGeometryNode::intersect (const Line3f & line, std::deque <IntersectionPtr> & 
 					{
 						if (line .intersect (vertices [first], vertices [i], vertices [i + 1], u, v, t))
 						{
-							Vector4f texCoord = (size_t) i < texCoordsSize ? (1 - u - v) * texCoords [first] + u * texCoords [i] + v * texCoords [i + 1] : Vector4f ();
+							Vector4f texCoord = (size_t) i < texCoordsSize ? (1 - u - v) * texCoords [0] [first] + u * texCoords [0] [i] + v * texCoords [0] [i + 1] : Vector4f (0, 0, 0, 1);
 
 							intersections .emplace_back (new Intersection { texCoord,
 							                                                (1 - u - v) * normals  [first] + u * normals  [i] + v * normals  [i + 1],
@@ -269,14 +271,14 @@ X3DGeometryNode::buildTexCoord ()
 
 	getTexCoordParams (min, Ssize, Sindex, Tindex);
 
-	getTexCoord () .reserve (getVertices () .size ());
+	getTexCoord () [0] .reserve (getVertices () .size ());
 
 	for (const auto & vertex : getVertices ())
 	{
-		getTexCoord () .emplace_back ((vertex [Sindex] - min [Sindex]) / Ssize,
-		                              (vertex [Tindex] - min [Tindex]) / Ssize,
-		                              0,
-		                              1);
+		getTexCoord () [0] .emplace_back ((vertex [Sindex] - min [Sindex]) / Ssize,
+		                                  (vertex [Tindex] - min [Tindex]) / Ssize,
+		                                  0,
+		                                  1);
 	}
 }
 
@@ -403,18 +405,20 @@ X3DGeometryNode::refineNormals (const NormalIndex & normalIndex, std::vector <Ve
 void
 X3DGeometryNode::addMirrorVertices (GLenum vertexMode, const bool convex)
 {
+	auto & texCoords = this -> texCoords [0];
+
 	addElements (vertexMode, getVertices () .size ());
 
 	switch (vertexMode)
 	{
 		case GL_QUAD_STRIP:
 		{
-			for (int32_t i = getTexCoord () .size () - 2; i >= 0; i -= 2)
+			for (int32_t i = texCoords .size () - 2; i >= 0; i -= 2)
 			{
-				const auto & texCoord1 = getTexCoord () [i];
-				const auto & texCoord0 = getTexCoord () [i + 1];
-				getTexCoord () .emplace_back (1 - texCoord1 .x (), texCoord1 .y (), texCoord1 .z (), 1);
-				getTexCoord () .emplace_back (1 - texCoord0 .x (), texCoord0 .y (), texCoord0 .z (), 1);
+				const auto & texCoord1 = texCoords [i];
+				const auto & texCoord0 = texCoords [i + 1];
+				texCoords .emplace_back (1 - texCoord1 .x (), texCoord1 .y (), texCoord1 .z (), 1);
+				texCoords .emplace_back (1 - texCoord0 .x (), texCoord0 .y (), texCoord0 .z (), 1);
 			}
 
 			for (int32_t i = getVertices () .size () - 2; i >= 0; i -= 2)
@@ -434,14 +438,14 @@ X3DGeometryNode::addMirrorVertices (GLenum vertexMode, const bool convex)
 
 			if (not convex)
 			{
-				getTexCoord () .emplace_back (1 - getTexCoord () .front () .x (), getTexCoord () .front () .y (), getTexCoord () .front () .z (), getTexCoord () .front () .w ());
+				texCoords .emplace_back (1 - texCoords .front () .x (), texCoords .front () .y (), texCoords .front () .z (), texCoords .front () .w ());
 				getNormals  () .emplace_back (0, 0, -1);
 				getVertices () .emplace_back (getVertices () .front ());
 			}
 
-			for (const auto & texCoord : basic::adapter (getTexCoord () .crbegin () + offset, getTexCoord () .crend () - offset))
+			for (const auto & texCoord : basic::adapter (texCoords .crbegin () + offset, texCoords .crend () - offset))
 			{
-				getTexCoord () .emplace_back (1 - texCoord .x (), texCoord .y (), texCoord .z (), texCoord .w ());
+				texCoords .emplace_back (1 - texCoord .x (), texCoord .y (), texCoord .z (), texCoord .w ());
 			}
 
 			for (const auto & vertex : basic::adapter (getVertices () .crbegin () + offset, getVertices () .crend () - offset))
@@ -499,7 +503,7 @@ X3DGeometryNode::draw (bool solid, bool texture, bool lighting)
 		{
 			glEnableClientState (GL_TEXTURE_COORD_ARRAY);
 			//glClientActiveTexture (GL_TEXTURE0);
-			glTexCoordPointer (4, GL_FLOAT, 0, texCoords .data ());
+			glTexCoordPointer (4, GL_FLOAT, 0, texCoords [0] .data ());
 		}
 	}
 

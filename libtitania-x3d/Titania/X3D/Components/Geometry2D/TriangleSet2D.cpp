@@ -86,7 +86,9 @@ TriangleSet2D::build ()
 	size_t elements = solid () ? 1 : 2;
 	size_t reserve  = elements * vertices () .size ();
 
-	getTexCoord () .reserve (reserve);
+	getTexCoord () .emplace_back ();
+	getTexCoord () [0] .reserve (reserve);
+
 	getNormals  () .reserve (reserve);
 	getVertices () .reserve (reserve);
 
@@ -96,7 +98,7 @@ TriangleSet2D::build ()
 		getVertices () .emplace_back (vertex .getX (), vertex .getY (), 0);
 	}
 
-	size_t resize = vertices () .size () - (vertices () .size () % 3);
+	size_t resize = vertices () .size () - (vertices () .size () % 3); // Resize to a factor of 3.
 
 	getNormals  () .resize (resize);
 	getVertices () .resize (resize);
@@ -113,7 +115,7 @@ TriangleSet2D::build ()
 void
 TriangleSet2D::buildTexCoord ()
 {
-	getTexCoord () .reserve (getVertices () .size ());
+	getTexCoord () [0] .reserve (getVertices () .size ());
 
 	Vector3f min;
 	float    Ssize;
@@ -123,10 +125,10 @@ TriangleSet2D::buildTexCoord ()
 
 	for (const auto & point : getVertices ())
 	{
-		getTexCoord () .emplace_back ((point [0] - min [0]) / Ssize,
-		                              (point [1] - min [1]) / Ssize,
-		                              0,
-		                              1);
+		getTexCoord () [0] .emplace_back ((point [0] - min [0]) / Ssize,
+		                                  (point [1] - min [1]) / Ssize,
+		                                  0,
+		                                  1);
 	}
 }
 

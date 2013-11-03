@@ -77,12 +77,24 @@ TextureCoordinate::create (X3DExecutionContext* const executionContext) const
 {
 	return new TextureCoordinate (executionContext);
 }
-	
+
 void
-TextureCoordinate::addTexCoord (std::vector <Vector4f>& texCoords, size_t index) const
+TextureCoordinate::init (TexCoordArray & texCoords, size_t reserve) const
 {
-	const Vector2f & point2 = point () [index];
-	texCoords .emplace_back (point2 .x (), point2 .y (), 0, 1);
+	texCoords .emplace_back ();
+	texCoords .back () .reserve (reserve);
+}
+
+void
+TextureCoordinate::addTexCoord (TexCoordArray & texCoords, int32_t index) const
+{
+	if (index > -1)
+	{
+		const Vector2f & point2 = point () [index];
+		texCoords [0] .emplace_back (point2 .x (), point2 .y (), 0, 1);
+	}
+	else
+		texCoords [0] .emplace_back (0, 0, 0, 1);
 }
 
 void

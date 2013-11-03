@@ -301,8 +301,12 @@ IndexedFaceSet::build ()
 	auto _textureCoordinate          = x3d_cast <X3DTextureCoordinateNode*> (texCoord ());
 	auto _textureCoordinateGenerator = x3d_cast <TextureCoordinateGenerator*> (texCoord ());
 
-	if (_textureCoordinate and not _textureCoordinate -> isEmpty ())
-		getTexCoord () .reserve (reserve);
+	if (_textureCoordinateGenerator)
+		;
+	else if (_textureCoordinate)
+		_textureCoordinate -> init (getTexCoord (), reserve);
+	else
+		getTexCoord () .emplace_back ();
 
 	// Normal
 
@@ -342,25 +346,21 @@ IndexedFaceSet::build ()
 			{
 				if (_color)
 				{
-					if (colorPerVertex () and colorIndex () [i] > -1)
+					if (colorPerVertex ())
 						_color -> addColor (getColors (), colorIndex () [i]);
 
 					else
 						_color -> addColor (getColors (), colorIndex () [face]);
 				}
 
-				if (_textureCoordinate and not _textureCoordinate -> isEmpty ())
-				{
-					if (texCoordIndex () [i] > -1)
-						_textureCoordinate -> addTexCoord (getTexCoord (), texCoordIndex () [i]);
-
-					else
-						getTexCoord () .emplace_back (0, 0, 0, 1);
-				}
+				if (_textureCoordinateGenerator)
+					;
+				else if (_textureCoordinate)
+					_textureCoordinate -> addTexCoord (getTexCoord (), texCoordIndex () [i]);
 
 				if (_normal)
 				{
-					if (normalPerVertex () and normalIndex () [i] > -1)
+					if (normalPerVertex ())
 						_normal -> addVector (getNormals (), normalIndex () [i]);
 
 					else
@@ -378,7 +378,7 @@ IndexedFaceSet::build ()
 
 	// Autogenerate normal and texCoord if not specified
 
-	if (not _textureCoordinate and not _textureCoordinateGenerator)
+	if (not _textureCoordinate)
 		buildTexCoord ();
 
 	if (not _normal)

@@ -55,6 +55,7 @@
 #include "../../Types/Geometry.h"
 #include "../Core/X3DNode.h"
 #include "../Texturing/TextureCoordinateGenerator.h"
+#include "../../Rendering/TexCoordArray.h"
 
 #include <map>
 
@@ -115,7 +116,7 @@ protected:
 
 	///  @name Member access
 
-	std::vector <Vector4f> &
+	TexCoordArray &
 	getTexCoord ()
 	{ return texCoords; }
 
@@ -214,7 +215,7 @@ private:
 	///  @name Members
 
 	Box3f                       bbox;
-	std::vector <Vector4f>      texCoords;
+	TexCoordArray               texCoords;
 	TextureCoordinateGenerator* textureCoordinateGenerator;
 	std::vector <Color4f>       colors;
 	std::vector <Vector3f>      normals;

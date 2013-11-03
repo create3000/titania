@@ -107,7 +107,11 @@ Box::build ()
 {
 	const BoxOptions* properties = getBrowser () -> getBrowserOptions () -> boxOptions ();
 
-	getTexCoord () = properties -> getTexCoord ();
+	getTexCoord () .emplace_back ();
+	getTexCoord () [0] .reserve (properties -> getTexCoord () .size ());
+	getTexCoord () [0] = properties -> getTexCoord ();
+
+	getNormals () .reserve (properties -> getNormals () .size ());
 	getNormals  () = properties -> getNormals  ();
 
 	if (size () == Vector3f (2, 2, 2))

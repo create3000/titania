@@ -103,11 +103,11 @@ public:
 
 	virtual
 	void
-	addVertex (opengl::tesselator <size_t> &, size_t, size_t) const final;
+	addVertex (opengl::tesselator <size_t> &, int32_t, size_t) const final;
 
 	virtual
 	void
-	addVertex (std::vector <Vector3f>&, size_t) const final;
+	addVertex (std::vector <Vector3f>&, int32_t) const final;
 
 	virtual
 	void

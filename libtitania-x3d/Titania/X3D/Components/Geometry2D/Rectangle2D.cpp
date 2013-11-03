@@ -109,12 +109,14 @@ Rectangle2D::build ()
 
 	size_t elements = solid () ? 1 : 2;
 
-	getTexCoord () .reserve (elements * properties -> getTexCoord () .size ());
-	getNormals  () .reserve (elements * properties -> getNormals  () .size ());
-	getVertices () .reserve (elements * properties -> getVertices () .size ());
+	getTexCoord () .emplace_back ();
+	getTexCoord () [0] .reserve (elements * properties -> getTexCoord () .size ());
+	getTexCoord () [0] = properties -> getTexCoord ();
 
-	getTexCoord () = properties -> getTexCoord ();
-	getNormals  () = properties -> getNormals  ();
+	getNormals () .reserve (elements * properties -> getNormals  () .size ());
+	getNormals () = properties -> getNormals  ();
+
+	getVertices () .reserve (elements * properties -> getVertices () .size ());
 
 	if (size () == Vector2f (2, 2))
 		getVertices () = properties -> getVertices ();

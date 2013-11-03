@@ -121,39 +121,42 @@ IndexedLineSet::getPolylines () const
 	std::deque <std::deque <size_t>> polylines;
 	std::deque <size_t>              polyline;
 
-	size_t  i = 0;
-
-	for (const auto & index : coordIndex ())
+	if (not coordIndex () .empty ())
 	{
-		if (index >= 0)
-			// Add vertex.
-			polyline .emplace_back (i);
+		size_t i = 0;
 
-		else
+		for (const auto & index : coordIndex ())
 		{
-			// Negativ index.
+			if (index >= 0)
+				// Add vertex.
+				polyline .emplace_back (i);
 
+			else
+			{
+				// Negativ index.
+
+				if (not polyline .empty ())
+				{
+					if (polyline .size () > 1)
+					{
+						// Add polylines.
+						polylines .emplace_back (std::move (polyline));
+					}
+
+					polyline .clear ();
+				}
+			}
+
+			++ i;
+		}
+
+		if (coordIndex () .back () >= 0)
+		{
 			if (not polyline .empty ())
 			{
 				if (polyline .size () > 1)
-				{
-					// Add polylines.
-					polylines .emplace_back (polyline);
-				}
-
-				polyline .clear ();
+					polylines .emplace_back (std::move (polyline));
 			}
-		}
-
-		++ i;
-	}
-
-	if (coordIndex () .back () >= 0)
-	{
-		if (not polyline .empty ())
-		{
-			if (polyline .size () > 1)
-				polylines .emplace_back (polyline);
 		}
 	}
 
@@ -244,7 +247,7 @@ IndexedLineSet::build ()
 	if (not _coord or _coord -> isEmpty ())
 		return;
 
-	auto polylines = getPolylines ();
+	auto polylines = std::move (getPolylines ());
 
 	// Color
 
@@ -266,7 +269,7 @@ IndexedLineSet::build ()
 
 				if (_color)
 				{
-					if (colorPerVertex () and colorIndex () [i] > -1)
+					if (colorPerVertex ())
 						_color -> addColor (getColors (), colorIndex () [i]);
 
 					else

@@ -139,19 +139,21 @@ Text::build ()
 	auto min     = center - size1_2;
 	auto max     = center + size1_2;
 
-	getTexCoord () .emplace_back (0, 0, 0, 1);
+	getTexCoord () .emplace_back ();
+
+	getTexCoord () [0] .emplace_back (0, 0, 0, 1);
 	getNormals  () .emplace_back (0, 0, 1);
 	getVertices () .emplace_back (min);
 
-	getTexCoord () .emplace_back (1, 0, 0, 1);
+	getTexCoord () [0] .emplace_back (1, 0, 0, 1);
 	getNormals  () .emplace_back (0, 0, 1);
 	getVertices () .emplace_back (max .x (), min .y (), min .z ());
 
-	getTexCoord () .emplace_back (1, 1, 0, 1);
+	getTexCoord () [0] .emplace_back (1, 1, 0, 1);
 	getNormals  () .emplace_back (0, 0, 1);
 	getVertices () .emplace_back (max);
 
-	getTexCoord () .emplace_back (0, 1, 0, 1);
+	getTexCoord () [0] .emplace_back (0, 1, 0, 1);
 	getNormals  () .emplace_back (0, 0, 1);
 	getVertices () .emplace_back (min .x (), max .y (), min .z ());
 

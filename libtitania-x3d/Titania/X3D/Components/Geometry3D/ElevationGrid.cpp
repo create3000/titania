@@ -294,13 +294,14 @@ ElevationGrid::build ()
 		;
 	else if (_textureCoordinate)
 	{
+		_textureCoordinate -> init (getTexCoord (), coordIndex .size ());
 		_textureCoordinate -> resize (vertices);
-		getTexCoord () .reserve (coordIndex .size ());
 	}
 	else 
 	{
-		_texCoord = createTexCoord ();
-		getTexCoord () .reserve (coordIndex .size ());
+		_texCoord = std::move (createTexCoord ());
+		getTexCoord () .emplace_back ();
+		getTexCoord () [0] .reserve (coordIndex .size ());
 	}
 
 	auto _color = x3d_cast <X3DColorNode*> (color ());
@@ -329,7 +330,7 @@ ElevationGrid::build ()
 			_normal -> resize (faces);
 	}
 	else
-		normals = createNormals (points, coordIndex);
+		normals = std::move (createNormals (points, coordIndex));
 
 	getNormals () .reserve (coordIndex .size ());
 
@@ -348,7 +349,7 @@ ElevationGrid::build ()
 				_textureCoordinate -> addTexCoord (getTexCoord (), *index);
 
 			else
-				getTexCoord () .emplace_back (_texCoord [*index]);
+				getTexCoord () [0] .emplace_back (_texCoord [*index]);
 
 			if (_color)
 			{

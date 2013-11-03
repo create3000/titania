@@ -77,11 +77,21 @@ TextureCoordinate4D::create (X3DExecutionContext* const executionContext) const
 {
 	return new TextureCoordinate4D (executionContext);
 }
-	
+
 void
-TextureCoordinate4D::addTexCoord (std::vector <Vector4f>& texCoords, size_t index) const
+TextureCoordinate4D::init (TexCoordArray & texCoords, size_t reserve) const
 {
-	texCoords .emplace_back (point () [index]);
+	texCoords .emplace_back ();
+	texCoords .back () .reserve (reserve);
+}
+
+void
+TextureCoordinate4D::addTexCoord (TexCoordArray & texCoords, int32_t index) const
+{
+	if (index > -1)
+		texCoords [0] .emplace_back (point () [index]);
+	else
+		texCoords [0] .emplace_back (0, 0, 0, 1);
 }
 
 void

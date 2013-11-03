@@ -596,6 +596,7 @@
     <None Include="share\titania\tools\library\RoundedRectangle2D.x3dv" />
     <None Include="share\titania\tools\Statistics.wrl" />
     <None Include="share\titania\tools\TransformTool.wrl" />
+    <None Include="Titania\X3D\Rendering\TexCoordArray.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

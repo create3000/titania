@@ -61,6 +61,8 @@ class TextureTransform3D :
 {
 public:
 
+	///  @name Construction
+
 	TextureTransform3D (X3DExecutionContext* const);
 
 	virtual
@@ -88,12 +90,12 @@ public:
 	///  @name Fields
 
 	SFVec3f &
-	center ()
-	{ return *fields .center; }
+	translation ()
+	{ return *fields .translation; }
 
 	const SFVec3f &
-	center () const
-	{ return *fields .center; }
+	translation () const
+	{ return *fields .translation; }
 
 	SFRotation &
 	rotation ()
@@ -112,12 +114,18 @@ public:
 	{ return *fields .scale; }
 
 	SFVec3f &
-	translation ()
-	{ return *fields .translation; }
+	center ()
+	{ return *fields .center; }
 
 	const SFVec3f &
-	translation () const
-	{ return *fields .translation; }
+	center () const
+	{ return *fields .center; }
+
+	///  @name Operations
+
+	virtual
+	void
+	eventsProcessed ();
 
 	virtual
 	void
@@ -126,6 +134,11 @@ public:
 
 private:
 
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final;
 
 	///  @name Static members
 
@@ -133,19 +146,23 @@ private:
 	static const std::string typeName;
 	static const std::string containerField;
 
+	static const Matrix4f textureMatrix;
+
 	///  @name Members
 
 	struct Fields
 	{
 		Fields ();
 
-		SFVec3f* const center;
+		SFVec3f* const translation;
 		SFRotation* const rotation;
 		SFVec3f* const scale;
-		SFVec3f* const translation;
+		SFVec3f* const center;
 	};
 
 	Fields fields;
+
+	Matrix4f matrix;
 
 };
 

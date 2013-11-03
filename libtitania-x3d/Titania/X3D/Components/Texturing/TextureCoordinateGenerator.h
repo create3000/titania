@@ -105,6 +105,31 @@ public:
 
 	///  @name Operations
 
+	virtual
+	void
+	init (TexCoordArray &, size_t) const final
+	{ }
+
+	virtual
+	void
+	addTexCoord (TexCoordArray&, int32_t) const final
+	{ throw std::runtime_error ("TextureCoordinateGenerator::emplace_back"); }
+
+	virtual
+	void
+	resize (size_t) final
+	{ }
+
+	virtual
+	size_t
+	isEmpty () const final
+	{ return true; }
+
+	virtual
+	size_t
+	getSize () const final
+	{ return 0; }
+
 	void
 	enable ();
 
@@ -122,28 +147,6 @@ private:
 
 	void
 	set_mode ();
-
-	///  @name Operations
-
-	virtual
-	void
-	addTexCoord (std::vector <Vector4f>&, size_t) const final
-	{ throw std::runtime_error ("TextureCoordinateGenerator::emplace_back"); }
-
-	virtual
-	void
-	resize (size_t) final
-	{ }
-
-	virtual
-	size_t
-	isEmpty () const final
-	{ return true; }
-
-	virtual
-	size_t
-	getSize () const final
-	{ return 0; }
 
 	///  @name Static members
 

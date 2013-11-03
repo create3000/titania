@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_COMPONENTS_TEXTURING_X3DTEXTURE_COORDINATE_NODE_H__
 
 #include "../Rendering/X3DGeometricPropertyNode.h"
+#include "../../Rendering/TexCoordArray.h"
 
 namespace titania {
 namespace X3D {
@@ -65,7 +66,11 @@ public:
 
 	virtual
 	void
-	addTexCoord (std::vector <Vector4f>&, size_t) const = 0;
+	init (TexCoordArray &, size_t) const = 0;
+
+	virtual
+	void
+	addTexCoord (TexCoordArray&, int32_t) const = 0;
 
 	virtual
 	void

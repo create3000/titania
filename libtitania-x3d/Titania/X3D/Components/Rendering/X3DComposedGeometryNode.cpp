@@ -140,11 +140,15 @@ X3DComposedGeometryNode::buildPolygons (size_t vertexCount, size_t size)
 	auto _textureCoordinate          = x3d_cast <X3DTextureCoordinateNode*> (texCoord ());
 	auto _textureCoordinateGenerator = x3d_cast <TextureCoordinateGenerator*> (texCoord ());
 
-	if (_textureCoordinate)
+	if (_textureCoordinateGenerator)
+		;
+	else if (_textureCoordinate)
+	{
+		_textureCoordinate -> init (getTexCoord (), size);
 		_textureCoordinate -> resize (size);
-
-	if (_textureCoordinate and not _textureCoordinate -> isEmpty ())
-		getTexCoord () .reserve (size);
+	}
+	else
+		getTexCoord () .emplace_back ();	
 
 	// Normal
 
@@ -174,7 +178,9 @@ X3DComposedGeometryNode::buildPolygons (size_t vertexCount, size_t size)
 					_color -> addColor (getColors (), face);
 			}
 
-			if (_textureCoordinate and not _textureCoordinate -> isEmpty ())
+			if (_textureCoordinateGenerator)
+				;
+			else if (_textureCoordinate)
 				_textureCoordinate -> addTexCoord (getTexCoord (), getIndex (index));
 
 			if (_normal)
@@ -192,7 +198,7 @@ X3DComposedGeometryNode::buildPolygons (size_t vertexCount, size_t size)
 
 	// Autogenerate normal and texCoord if not specified
 
-	if (not _textureCoordinate and not _textureCoordinateGenerator)
+	if (not _textureCoordinate)
 		buildTexCoord ();
 
 	if (not _normal)

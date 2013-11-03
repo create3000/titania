@@ -118,7 +118,7 @@ Disk2D::build ()
 
 		auto radius = std::abs (outerRadius ());
 
-		if (radius == 1.0f)
+		if (radius == 1)
 			getVertices () = properties -> getVertices ();
 
 		else
@@ -145,14 +145,16 @@ Disk2D::build ()
 
 		size_t elements = solid () ? 1 : 2;
 
-		getTexCoord () .reserve (elements * properties -> getTexCoord () .size ());
-		getNormals  () .reserve (elements * properties -> getNormals  () .size ());
+		getTexCoord () .emplace_back ();
+		getTexCoord () [0] .reserve (elements * properties -> getTexCoord () .size ());
+		getTexCoord () [0] = properties -> getTexCoord ();
+
+		getNormals () .reserve (elements * properties -> getNormals  () .size ());
+		getNormals () = properties -> getNormals  ();
+
 		getVertices () .reserve (elements * properties -> getVertices () .size ());
 
-		getTexCoord () = properties -> getTexCoord ();
-		getNormals  () = properties -> getNormals  ();
-
-		if (radius == 1.0f)
+		if (radius == 1)
 			getVertices () = properties -> getVertices ();
 
 		else
@@ -178,7 +180,9 @@ Disk2D::build ()
 
 	size_t elements = solid () ? 1 : 2;
 
-	getTexCoord () .reserve (elements * (properties -> getTexCoord () .size () + 2));
+	getTexCoord () .emplace_back ();
+	getTexCoord () [0] .reserve (elements * (properties -> getTexCoord () .size () + 2));
+
 	getNormals  () .reserve (elements * (properties -> getNormals  () .size () + 2));
 	getVertices () .reserve (elements * (properties -> getVertices () .size () + 2));
 
@@ -190,8 +194,8 @@ Disk2D::build ()
 
 	for (const auto & texCoord : properties -> getTexCoord ())
 	{
-		getTexCoord () .emplace_back (texCoord * scale + Vector4f ((1 - scale) / 2, (1 - scale) / 2, 0, 1));
-		getTexCoord () .emplace_back (texCoord);
+		getTexCoord () [0] .emplace_back (texCoord .x () * scale + (1 - scale) / 2, texCoord .y () * scale + (1 - scale) / 2, 0, 1);
+		getTexCoord () [0] .emplace_back (texCoord);
 	}
 
 	// Normals
@@ -211,8 +215,8 @@ Disk2D::build ()
 	}
 
 	// The last two vertices are the first two.
-	getTexCoord () .emplace_back (getTexCoord () [0]);
-	getTexCoord () .emplace_back (getTexCoord () [1]);
+	getTexCoord () [0] .emplace_back (getTexCoord () [0] [0]);
+	getTexCoord () [0] .emplace_back (getTexCoord () [0] [1]);
 	getNormals  () .emplace_back (getNormals  () [0]);
 	getNormals  () .emplace_back (getNormals  () [1]);
 	getVertices () .emplace_back (getVertices () [0]);

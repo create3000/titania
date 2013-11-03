@@ -106,6 +106,8 @@ Cone::createBBox ()
 void
 Cone::build ()
 {
+	getTexCoord () .emplace_back ();
+
 	float y1 = height () / 2;
 	float y2 = -y1;
 	float ny = std::atan (bottomRadius () / height ());
@@ -133,17 +135,17 @@ Cone::build ()
 			 */
 
 			// p1
-			getTexCoord () .emplace_back (u3, 1, 0, 1);
+			getTexCoord () [0] .emplace_back (u3, 1, 0, 1);
 			getNormals  () .emplace_back (x1, ny, z1);
 			getVertices () .emplace_back (0, y1, 0);
 
 			// p2
-			getTexCoord () .emplace_back (u1, 0, 0, 1);
+			getTexCoord () [0] .emplace_back (u1, 0, 0, 1);
 			getNormals  () .emplace_back (x1, ny, z1);
 			getVertices () .emplace_back (x1 * bottomRadius (), y2, z1 * bottomRadius ());
 
 			// p3
-			getTexCoord () .emplace_back (u2, 0, 0, 1);
+			getTexCoord () [0] .emplace_back (u2, 0, 0, 1);
 			getNormals  () .emplace_back (x2, ny, z2);
 			getVertices () .emplace_back (x2 * bottomRadius (), y2, z2 * bottomRadius ());
 		}
@@ -160,7 +162,7 @@ Cone::build ()
 			float x1     = -std::sin (theta1);
 			float z1     = -std::cos (theta1);
 
-			getTexCoord () .emplace_back ((x1 + 1) / 2, (z1 + 1) / 2, 0, 1);
+			getTexCoord () [0] .emplace_back ((x1 + 1) / 2, (z1 + 1) / 2, 0, 1);
 			getNormals  () .emplace_back (0, -1, 0);
 			getVertices () .emplace_back (x1 * bottomRadius (), y2, z1 * bottomRadius ());
 		}

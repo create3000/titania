@@ -61,6 +61,8 @@ class TextureTransform :
 {
 public:
 
+	///  @name Construction
+
 	TextureTransform (X3DExecutionContext* const);
 
 	virtual
@@ -119,6 +121,8 @@ public:
 	translation () const
 	{ return *fields .translation; }
 
+	///  @name Operations
+
 	virtual
 	void
 	eventsProcessed ();
@@ -134,12 +138,13 @@ private:
 	void
 	initialize () final;
 
-
 	///  @name Static members
 
 	static const std::string componentName;
 	static const std::string typeName;
 	static const std::string containerField;
+
+	static const Matrix3f textureMatrix;
 
 	///  @name Members
 

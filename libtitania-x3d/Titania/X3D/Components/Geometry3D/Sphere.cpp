@@ -109,8 +109,12 @@ Sphere::build ()
 {
 	const X3DSphereOptionNode* properties = getBrowser () -> getBrowserOptions () -> sphereOptions ();
 
-	getTexCoord () = properties -> getTexCoord ();
-	getNormals  () = properties -> getNormals  ();
+	getTexCoord () .emplace_back ();
+	getTexCoord () [0] .reserve (properties -> getTexCoord () .size ());
+	getTexCoord () [0] = properties -> getTexCoord ();
+
+	getNormals () .reserve (properties -> getNormals () .size ());
+	getNormals () = properties -> getNormals  ();
 
 	if (radius () == 1.0f)
 		getVertices () = properties -> getVertices ();

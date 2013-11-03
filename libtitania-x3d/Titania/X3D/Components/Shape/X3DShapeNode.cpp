@@ -168,8 +168,7 @@ X3DShapeNode::traverse (const TraverseType type)
 void
 X3DShapeNode::pick ()
 {
-	if (getBrowser () -> getSensors () .back () .empty ())
-		return;
+	// All geometries must be picked
 
 	if (_geometry)
 	{

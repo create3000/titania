@@ -88,15 +88,23 @@ Coordinate::getNormal (size_t index1, size_t index2, size_t index3) const
 }
 
 void
-Coordinate::addVertex (opengl::tesselator <size_t> & tesselator, size_t index, size_t i) const
+Coordinate::addVertex (opengl::tesselator <size_t> & tesselator, int32_t index, size_t i) const
 {
-	tesselator .add_vertex (point () [index], i);
+	if (index > -1)
+		tesselator .add_vertex (point () [index], i);
+
+	else
+		tesselator .add_vertex (Vector3f (), i);
 }
 
 void
-Coordinate::addVertex (std::vector <Vector3f> & vertices, size_t index) const
+Coordinate::addVertex (std::vector <Vector3f> & vertices, int32_t index) const
 {
-	vertices .emplace_back (point () [index]);
+	if (index > -1)
+		vertices .emplace_back (point () [index]);
+	
+	else
+		vertices .emplace_back ();
 }
 
 void

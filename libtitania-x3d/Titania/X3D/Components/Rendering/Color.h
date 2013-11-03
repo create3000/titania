@@ -104,7 +104,7 @@ public:
 	
 	virtual
 	void
-	addColor (std::vector <Color4f>&, size_t) const final;
+	addColor (std::vector <Color4f>&, int32_t) const final;
 
 	virtual
 	void

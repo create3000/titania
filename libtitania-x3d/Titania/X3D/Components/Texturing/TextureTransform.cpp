@@ -59,10 +59,9 @@ const std::string TextureTransform::componentName  = "Texturing";
 const std::string TextureTransform::typeName       = "TextureTransform";
 const std::string TextureTransform::containerField = "textureTransform";
 
-static
-const Matrix3f textureMatrix = { 1,  0, 0,
-	                              0, -1, 0,
-	                              0,  1, 1 };
+const Matrix3f TextureTransform::textureMatrix = { 1,  0, 0,
+	                                                0, -1, 0,
+	                                                0,  1, 1 };
 
 TextureTransform::Fields::Fields () :
 	     center (new SFVec2f ()),
@@ -74,7 +73,8 @@ TextureTransform::Fields::Fields () :
 TextureTransform::TextureTransform (X3DExecutionContext* const executionContext) :
 	            X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DTextureTransformNode (),
-	                 fields ()
+	                 fields (),
+	                 matrix ()
 {
 	addField (inputOutput, "metadata",    metadata ());
 	addField (inputOutput, "translation", translation ());

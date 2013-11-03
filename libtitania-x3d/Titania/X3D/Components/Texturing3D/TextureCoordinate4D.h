@@ -99,7 +99,11 @@ public:
 
 	virtual
 	void
-	addTexCoord (std::vector <Vector4f>&, size_t) const final;
+	init (TexCoordArray &, size_t) const final;
+
+	virtual
+	void
+	addTexCoord (TexCoordArray &, int32_t) const final;
 
 	virtual
 	void

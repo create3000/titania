@@ -111,6 +111,8 @@ Cylinder::createBBox ()
 void
 Cylinder::build ()
 {
+	getTexCoord () .emplace_back ();
+
 	float y1 = height () / 2;
 	float y2 = -y1;
 
@@ -133,22 +135,22 @@ Cylinder::build ()
 			// p2 - p3
 
 			// p1
-			getTexCoord () .emplace_back (u1, 1, 0, 1);
+			getTexCoord () [0] .emplace_back (u1, 1, 0, 1);
 			getNormals  () .emplace_back (x1, 0, z1);
 			getVertices () .emplace_back (x1 * radius (), y1, z1 * radius ());
 
 			// p2
-			getTexCoord () .emplace_back (u1, 0, 0, 1);
+			getTexCoord () [0] .emplace_back (u1, 0, 0, 1);
 			getNormals  () .emplace_back (x1, 0, z1);
 			getVertices () .emplace_back (x1 * radius (), y2, z1 * radius ());
 
 			// p3
-			getTexCoord () .emplace_back (u2, 0, 0, 1);
+			getTexCoord () [0] .emplace_back (u2, 0, 0, 1);
 			getNormals  () .emplace_back (x2, 0, z2);
 			getVertices () .emplace_back (x2 * radius (), y2, z2 * radius ());
 
 			// p4
-			getTexCoord () .emplace_back (u2, 1, 0, 1);
+			getTexCoord () [0] .emplace_back (u2, 1, 0, 1);
 			getNormals  () .emplace_back (x2, 0, z2);
 			getVertices () .emplace_back (x2 * radius (), y1, z2 * radius ());
 		}
@@ -165,7 +167,7 @@ Cylinder::build ()
 			float x1     = -std::sin (theta1);
 			float z1     = -std::cos (theta1);
 
-			getTexCoord () .emplace_back (+(x1 + 1) / 2, -(z1 - 1) / 2, 0, 1);
+			getTexCoord () [0] .emplace_back (+(x1 + 1) / 2, -(z1 - 1) / 2, 0, 1);
 			getNormals  () .emplace_back (0, 1, 0);
 			getVertices () .emplace_back (x1 * radius (), y1, z1 * radius ());
 		}
@@ -182,7 +184,7 @@ Cylinder::build ()
 			float x1     = -std::sin (theta1);
 			float z1     = -std::cos (theta1);
 
-			getTexCoord () .emplace_back ((x1 + 1) / 2, (z1 + 1) / 2, 0, 1);
+			getTexCoord () [0] .emplace_back ((x1 + 1) / 2, (z1 + 1) / 2, 0, 1);
 			getNormals  () .emplace_back (0, -1, 0);
 			getVertices () .emplace_back (x1 * radius (), y2, z1 * radius ());
 		}

@@ -48,91 +48,18 @@
  *
  ******************************************************************************/
 
-#include "TextureTransform3D.h"
+#ifndef __TITANIA_X3D_RENDERING_TEX_COORD_ARRAY_H__
+#define __TITANIA_X3D_RENDERING_TEX_COORD_ARRAY_H__
 
-#include "../../Execution/X3DExecutionContext.h"
+#include "../Types/Numbers.h"
+#include <vector>
 
 namespace titania {
 namespace X3D {
 
-const std::string TextureTransform3D::componentName  = "Texturing3D";
-const std::string TextureTransform3D::typeName       = "TextureTransform3D";
-const std::string TextureTransform3D::containerField = "textureTransform";
-
-const Matrix4f TextureTransform3D::textureMatrix = { 1,  0, 0, 0,
-	                                                  0, -1, 0, 0,
-	                                                  0,  1, 1, 0,
-	                                                  0,  0, 0, 1 };
-
-TextureTransform3D::Fields::Fields () :
-	translation (new SFVec3f ()),
-	   rotation (new SFRotation ()),
-	      scale (new SFVec3f (1, 1, 1)),
-	     center (new SFVec3f ())
-{ }
-
-TextureTransform3D::TextureTransform3D (X3DExecutionContext* const executionContext) :
-	            X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DTextureTransformNode (),
-	                 fields (),
-	                 matrix ()
-{
-	addField (inputOutput, "metadata",    metadata ());
-	addField (inputOutput, "translation", translation ());
-	addField (inputOutput, "rotation",    rotation ());
-	addField (inputOutput, "scale",       scale ());
-	addField (inputOutput, "center",      center ());
-}
-
-X3DBaseNode*
-TextureTransform3D::create (X3DExecutionContext* const executionContext) const
-{
-	return new TextureTransform3D (executionContext);
-}
-
-void
-TextureTransform3D::initialize ()
-{
-	X3DTextureTransformNode::initialize ();
-	eventsProcessed ();
-}
-
-void
-TextureTransform3D::eventsProcessed ()
-{
-	X3DTextureTransformNode::eventsProcessed ();
-
-	// Tc' = -C × S × R × C × T × Tc
-
-	Matrix4f m = textureMatrix;
-
-	if (center () not_eq Vector3f ())
-		m .translate (-center ());
-
-	if (scale () not_eq Vector3f (1, 1, 1))
-		m .scale (scale ());
-
-	if (rotation () not_eq Rotation4f ())
-		m .rotate (rotation ());
-
-	if (center () not_eq Vector3f ())
-		m .translate (center ());
-
-	if (translation () not_eq Vector3f ())
-		m .translate (translation ());
-
-	matrix = m;
-}
-
-void
-TextureTransform3D::draw ()
-{
-	glMatrixMode (GL_TEXTURE);
-
-	glLoadMatrixf (matrix .data ());
-
-	glMatrixMode (GL_MODELVIEW);
-}
+typedef std::vector <std::vector <Vector4f>>  TexCoordArray;
 
 } // X3D
 } // titania
+
+#endif

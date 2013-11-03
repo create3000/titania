@@ -80,5 +80,41 @@ MultiTextureCoordinate::create (X3DExecutionContext* const executionContext) con
 	return new MultiTextureCoordinate (executionContext);
 }
 
+void
+MultiTextureCoordinate::init (TexCoordArray & texCoords, size_t reserve) const
+{
+	texCoords .emplace_back ();
+	texCoords .back () .reserve (reserve);
+}
+
+void
+MultiTextureCoordinate::addTexCoord (TexCoordArray & texCoords, int32_t index) const
+{
+	if (index > -1)
+	{
+		texCoords [0] .emplace_back (0, 0, 0, 1);
+	}
+	else
+	{
+		texCoords [0] .emplace_back (0, 0, 0, 1);
+	}
+}
+
+void
+MultiTextureCoordinate::resize (size_t)
+{ }
+
+size_t
+MultiTextureCoordinate::isEmpty () const
+{
+	return true;
+}
+
+size_t
+MultiTextureCoordinate::getSize () const
+{
+	return 0;
+}
+
 } // X3D
 } // titania

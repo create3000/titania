@@ -85,6 +85,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	                    layouts (),
 	                     lights (),
 	               textureUnits (),
+	                   textures (),
 	                activeLayer (),
 	       activeNavigationInfo (nullptr),
 	activeNavigationInfoChanged (),

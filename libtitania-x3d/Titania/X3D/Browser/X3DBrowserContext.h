@@ -86,6 +86,7 @@ typedef std::stack <X3DLayerNode*>     LayerStack;
 typedef std::stack <X3DLayoutNode*>    LayoutStack;
 typedef std::stack <GLenum>            LightStack;
 typedef std::stack <size_t>            TextureUnitStack;
+typedef std::vector <size_t>           TextureArray;
 
 class X3DBrowserContext :
 	public X3DExecutionContext
@@ -243,6 +244,10 @@ public:
 	TextureUnitStack &
 	getTextureUnits ()
 	{ return textureUnits; }
+
+	TextureArray &
+	getTextures ()
+	{ return textures; }
 
 	///  @name Thread handling
 
@@ -406,6 +411,7 @@ private:
 	LayoutStack        layouts;
 	LightStack         lights;
 	TextureUnitStack   textureUnits;
+	TextureArray       textures;
 
 	X3DSFNode <X3DLayerNode>     activeLayer;
 	NavigationInfo*              activeNavigationInfo;

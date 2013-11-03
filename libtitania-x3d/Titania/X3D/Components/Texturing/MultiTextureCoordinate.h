@@ -95,30 +95,30 @@ public:
 	texCoord () const
 	{ return *fields .texCoord; }
 
-
-private:
-
 	///  @name Operations
 
 	virtual
 	void
-	addTexCoord (std::vector <Vector4f>& texCoords, size_t) const final
-	{ texCoords .emplace_back (0, 0, 0, 1); }
+	init (TexCoordArray &, size_t) const final;
 
 	virtual
 	void
-	resize (size_t) final
-	{ }
+	addTexCoord (TexCoordArray & texCoords, int32_t) const final;
+
+	virtual
+	void
+	resize (size_t) final;
 
 	virtual
 	size_t
-	isEmpty () const final
-	{ return true; }
+	isEmpty () const final;
 
 	virtual
 	size_t
-	getSize () const final
-	{ return 0; }
+	getSize () const final;
+
+
+private:
 
 	///  @name Static members
 

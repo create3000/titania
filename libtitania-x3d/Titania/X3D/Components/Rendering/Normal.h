@@ -99,7 +99,7 @@ public:
 
 	virtual
 	void
-	addVector (std::vector <Vector3f>&, size_t) const final;
+	addVector (std::vector <Vector3f>&, int32_t) const final;
 
 	virtual
 	void

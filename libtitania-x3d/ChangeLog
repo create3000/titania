@@ -1,5 +1,58 @@
 2013-11-03  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* libtitania-x3d.cproj:
+	* Text.cpp:
+	* TexCoordArray.h:
+	* X3DBrowserContext.h:
+	* Color.h:
+	* Box.cpp:
+	* X3DBrowserContext.cpp:
+	* Normal.h:
+	* Cone.cpp:
+	* Color.cpp:
+	* Normal.cpp:
+	* Sphere.cpp:
+	* Disk2D.cpp:
+	* ColorRGBA.h:
+	* Coordinate.h:
+	* X3DShapeNode.cpp:
+	* ColorRGBA.cpp:
+	* Cylinder.cpp:
+	* X3DColorNode.h:
+	* Coordinate.cpp:
+	* CoordinateDouble.h:
+	* Extrusion.cpp:
+	* X3DNormalNode.h:
+	* ArcClose2D.cpp:
+	* Rectangle2D.cpp:
+	* CoordinateDouble.cpp:
+	* GeoCoordinate.h:
+	* X3DGeometryNode.h:
+	* TextureTransform.h:
+	* GeoCoordinate.cpp:
+	* IndexedLineSet.cpp:
+	* ElevationGrid.cpp:
+	* TriangleSet2D.cpp:
+	* TextureCoordinate.h:
+	* IndexedFaceSet.cpp:
+	* X3DGeometryNode.cpp:
+	* X3DCoordinateNode.h:
+	* TextureTransform.cpp:
+	* TextureCoordinate.cpp:
+	* TextureTransform3D.h:
+	* TextureCoordinate4D.h:
+	* TextureCoordinate3D.h:
+	* MultiTextureCoordinate.h:
+	* TextureTransform3D.cpp:
+	* TextureCoordinate4D.cpp:
+	* TextureCoordinate3D.cpp:
+	* MultiTextureCoordinate.cpp:
+	* X3DTextureCoordinateNode.h:
+	* X3DComposedGeometryNode.cpp:
+	* TextureCoordinateGenerator.h: 
+
+2013-11-03  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Numbers.h:
 	* Geometry.h:
 	* TransformTool.wrl:
