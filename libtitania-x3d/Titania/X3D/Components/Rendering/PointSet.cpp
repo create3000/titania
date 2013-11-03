@@ -107,16 +107,16 @@ PointSet::build ()
 
 	if (_color)
 	{
-		getColors () .reserve (_coord -> size ());
+		getColors () .reserve (_coord -> getSize ());
 		
-		for (size_t i = 0, size = _color -> size (); i < size; ++ i)
-			_color -> emplace_back (getColors (), i);
+		for (size_t i = 0, size = _color -> getSize (); i < size; ++ i)
+			_color -> addColor (getColors (), i);
 		
-		getColors () .resize  (_coord -> size (), Color4f (1, 1, 1, 1));
+		getColors () .resize  (_coord -> getSize (), Color4f (1, 1, 1, 1));
 	}
 
-	for (size_t i = 0, size = _coord -> size (); i < size; ++ i)
-		_coord -> emplace_back (getVertices (), i);
+	for (size_t i = 0, size = _coord -> getSize (); i < size; ++ i)
+		_coord -> addVertex (getVertices (), i);
 
 	addElements (GL_POINTS, getVertices () .size ());
 	setSolid (false);

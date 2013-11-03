@@ -103,8 +103,7 @@ public:
 	parameter () const
 	{ return *fields .parameter; }
 
-	void
-	set_mode ();
+	///  @name Operations
 
 	void
 	enable ();
@@ -119,11 +118,16 @@ private:
 	void
 	initialize () final;
 
+	///  @name Event handler
+
+	void
+	set_mode ();
+
 	///  @name Operations
 
 	virtual
 	void
-	emplace_back (std::vector <Vector4f>&, size_t) const
+	addTexCoord (std::vector <Vector4f>&, size_t) const final
 	{ throw std::runtime_error ("TextureCoordinateGenerator::emplace_back"); }
 
 	virtual
@@ -133,12 +137,12 @@ private:
 
 	virtual
 	size_t
-	empty () const final
+	isEmpty () const final
 	{ return true; }
 
 	virtual
 	size_t
-	size () const final
+	getSize () const final
 	{ return 0; }
 
 	///  @name Static members

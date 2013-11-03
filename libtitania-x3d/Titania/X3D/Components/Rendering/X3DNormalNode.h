@@ -65,7 +65,7 @@ public:
 
 	virtual
 	void
-	emplace_back (std::vector <Vector3f>&, size_t) const = 0;
+	addVector (std::vector <Vector3f>&, size_t) const = 0;
 
 	virtual
 	void
@@ -73,11 +73,11 @@ public:
 
 	virtual
 	size_t
-	empty () const = 0;
+	isEmpty () const = 0;
 
 	virtual
 	size_t
-	size () const = 0;
+	getSize () const = 0;
 
 
 protected:

@@ -55,6 +55,8 @@
 namespace titania {
 namespace X3D {
 
+// See GL_ARB_texture_env_combine for blending textures
+
 const std::string MultiTextureCoordinate::componentName  = "Texturing";
 const std::string MultiTextureCoordinate::typeName       = "MultiTextureCoordinate";
 const std::string MultiTextureCoordinate::containerField = "texCoord";

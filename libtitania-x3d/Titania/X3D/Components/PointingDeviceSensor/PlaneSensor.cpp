@@ -190,20 +190,35 @@ PlaneSensor::set_motion (const HitPtr & hit)
 
 			if (plane .intersect (hitRay, trackPoint))
 				track (trackPoint);
+
+			else
+				throw std::domain_error ("Plane and line are parallel.");
 		}
 		else
 		{
 			const auto screenLine     = ViewVolume::projectLine (line, getModelViewMatrix (), getProjectionMatrix (), getViewport ());
 			auto       trackPoint     = screenLine .closest_point (Vector3d (hit -> x, hit -> y, 0));
 			const auto trackPointLine = ViewVolume::unProjectLine (trackPoint .x (), trackPoint .y (), getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+			
+			//double angle = std::abs (dot (line .direction (), trackPointLine .direction ()));
+
+			//__LOG__ << std::setprecision (std::numeric_limits <double>::digits10) << angle << std::endl;
 
 			if (line .closest_point (trackPointLine, trackPoint))
 				track (trackPoint);
+
+			else
+				throw std::domain_error ("Lines are parallel.");
 		}
 	}
 	catch (const std::domain_error &)
-	{ }
+	{
+		trackPoint_changed ()  .addEvent ();
+		translation_changed () .addEvent ();
+	}
 }
+
+
 
 void
 PlaneSensor::track (Vector3d trackPoint)

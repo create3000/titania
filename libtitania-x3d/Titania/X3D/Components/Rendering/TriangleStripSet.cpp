@@ -107,7 +107,7 @@ TriangleStripSet::set_stripCount ()
 {
 	auto _coord = x3d_cast <X3DCoordinateNode*> (coord ());
 
-	if (not _coord or _coord -> empty ())
+	if (not _coord or _coord -> isEmpty ())
 		return;
 
 	// Build coordIndex
@@ -120,8 +120,8 @@ TriangleStripSet::set_stripCount ()
 	{
 		for (int32_t i = 0, size = vertexCount - 2; i < size; ++ i)
 		{
-			coordIndex .emplace_back (index + (i % 2 ? i + 1 : i));
-			coordIndex .emplace_back (index + (i % 2 ? i : i + 1));
+			coordIndex .emplace_back (index + (is_odd (i) ? i + 1 : i));
+			coordIndex .emplace_back (index + (is_odd (i) ? i : i + 1));
 			coordIndex .emplace_back (index + (i + 2));
 		}
 

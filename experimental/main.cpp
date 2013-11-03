@@ -367,18 +367,21 @@ main (int argc, char** argv)
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
 
-	std::clog << std::numeric_limits <float>::digits << std::endl;
-	std::clog << std::numeric_limits <float>::digits10 << std::endl;
-	std::clog << std::numeric_limits <float>::max_digits10 << std::endl;
+	std::clog << math::is_odd (0) << std::endl;
+	std::clog << math::is_odd (1) << std::endl;
+	std::clog << math::is_odd (2) << std::endl;
+	std::clog << math::is_odd (3) << std::endl;
+	std::clog << math::is_odd (4) << std::endl;
+	std::clog << math::is_odd (5) << std::endl;
 
-	std::clog << std::setprecision (std::numeric_limits <float>::digits) << 0.1f << std::endl;
-	std::clog << std::setprecision (std::numeric_limits <float>::digits10) << 0.1f << std::endl;
-	std::clog << std::setprecision (std::numeric_limits <float>::max_digits10) << 0.1f << std::endl;
+	std::clog << std::endl;
 
-	std::clog << std::setprecision (std::numeric_limits <float>::max_digits10-2) << 0.1f << std::endl;
-	std::clog << std::setprecision (std::numeric_limits <float>::max_digits10-2) << 0.01f << std::endl;
-	std::clog << std::setprecision (std::numeric_limits <float>::max_digits10-2) << 0.001f << std::endl;
-	std::clog << std::setprecision (std::numeric_limits <float>::max_digits10-2) << 0.0001f << std::endl;
+	std::clog << 0 % 2 << std::endl;
+	std::clog << 1 % 2 << std::endl;
+	std::clog << 2 % 2 << std::endl;
+	std::clog << 3 % 2 << std::endl;
+	std::clog << 4 % 2 << std::endl;
+	std::clog << 5 % 2 << std::endl;
 
 	std::clog << "Function main done." << std::endl;
 	exit (0);

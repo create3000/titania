@@ -79,7 +79,7 @@ TextureCoordinate4D::create (X3DExecutionContext* const executionContext) const
 }
 	
 void
-TextureCoordinate4D::emplace_back (std::vector <Vector4f>& texCoords, size_t index) const
+TextureCoordinate4D::addTexCoord (std::vector <Vector4f>& texCoords, size_t index) const
 {
 	texCoords .emplace_back (point () [index]);
 }

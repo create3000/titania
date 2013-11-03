@@ -98,7 +98,7 @@ GeoCoordinate::addVertex (opengl::tesselator <size_t> & tesselator, size_t index
 }
 
 void
-GeoCoordinate::emplace_back (std::vector <Vector3f> & vertices, size_t index) const
+GeoCoordinate::addVertex (std::vector <Vector3f> & vertices, size_t index) const
 {
 	vertices .emplace_back (point () [index] .getValue ());
 }

@@ -102,7 +102,7 @@ LineSet::build ()
 {
 	auto _coord = x3d_cast <X3DCoordinateNode*> (coord ());
 
-	if (not _coord or _coord -> empty ())
+	if (not _coord or _coord -> isEmpty ())
 		return;
 
 	// Color
@@ -110,17 +110,18 @@ LineSet::build ()
 	auto _color = x3d_cast <X3DColorNode*> (color ());
 
 	if (_color)
-		_color -> resize (_coord -> size ());
+		_color -> resize (_coord -> getSize ());
 
 	// Fill GeometryNode
 
 	size_t index = 0;
+	size_t size  = _coord -> getSize ();
 
 	for (const auto count : vertexCount ())
 	{
 		// Create two vertices for each line.
 
-		if (index + count > _coord -> size ())
+		if (index + count > size)
 			break;
 
 		if (count > 1)
@@ -128,9 +129,9 @@ LineSet::build ()
 			for (size_t i = 0; i < (size_t) count; ++ i, ++ index)
 			{
 				if (_color)
-					_color -> emplace_back (getColors (), index);
+					_color -> addColor (getColors (), index);
 
-				_coord -> emplace_back (getVertices (), index);
+				_coord -> addVertex (getVertices (), index);
 			}
 
 			addElements (GL_LINE_STRIP, count);

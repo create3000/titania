@@ -94,7 +94,7 @@ Coordinate::addVertex (opengl::tesselator <size_t> & tesselator, size_t index, s
 }
 
 void
-Coordinate::emplace_back (std::vector <Vector3f> & vertices, size_t index) const
+Coordinate::addVertex (std::vector <Vector3f> & vertices, size_t index) const
 {
 	vertices .emplace_back (point () [index]);
 }

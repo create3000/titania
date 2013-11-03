@@ -345,7 +345,7 @@ ElevationGrid::build ()
 			if (_textureCoordinateGenerator)
 				;
 			else if (_textureCoordinate)
-				_textureCoordinate -> emplace_back (getTexCoord (), *index);
+				_textureCoordinate -> addTexCoord (getTexCoord (), *index);
 
 			else
 				getTexCoord () .emplace_back (_texCoord [*index]);
@@ -353,19 +353,19 @@ ElevationGrid::build ()
 			if (_color)
 			{
 				if (colorPerVertex ())
-					_color -> emplace_back (getColors (), *index);
+					_color -> addColor (getColors (), *index);
 
 				else
-					_color -> emplace_back (getColors (), face);
+					_color -> addColor (getColors (), face);
 			}
 
 			if (_normal)
 			{
 				if (normalPerVertex ())
-					_normal -> emplace_back (getNormals (), *index);
+					_normal -> addVector (getNormals (), *index);
 
 				else
-					_normal -> emplace_back (getNormals (), face);
+					_normal -> addVector (getNormals (), face);
 			}
 			else
 				getNormals () .emplace_back (normals [i]);

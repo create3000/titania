@@ -129,7 +129,7 @@ IndexedTriangleStripSet::set_index ()
 				coordIndex .emplace_back (second);
 				coordIndex .emplace_back (index () [i]);
 
-				if (face % 2)
+				if (is_odd (face))
 					second = index () [i];
 
 				else

@@ -1,3 +1,50 @@
+2013-11-03  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Numbers.h:
+	* Geometry.h:
+	* TransformTool.wrl:
+	* Color.h:
+	* Normal.h:
+	* Color.cpp:
+	* Normal.cpp:
+	* ColorRGBA.h:
+	* LineSet.cpp:
+	* PointSet.cpp:
+	* Coordinate.h:
+	* ColorRGBA.cpp:
+	* QuadSet.cpp:
+	* CoordinateDouble.h:
+	* Extrusion.cpp:
+	* Coordinate.cpp:
+	* X3DColorNode.h:
+	* TriangleSet.cpp:
+	* X3DNormalNode.h:
+	* CoordinateDouble.cpp:
+	* GeoCoordinate.h:
+	* TriangleFanSet.cpp:
+	* ElevationGrid.cpp:
+	* IndexedLineSet.cpp:
+	* GeoCoordinate.cpp:
+	* X3DCoordinateNode.h:
+	* X3DGeometryNode.cpp:
+	* TextureCoordinate.h:
+	* IndexedFaceSet.cpp:
+	* TriangleStripSet.cpp:
+	* TextureCoordinate.cpp:
+	* TextureCoordinate3D.h:
+	* TextureCoordinate4D.h:
+	* MultiTextureCoordinate.h:
+	* TextureCoordinate3D.cpp:
+	* TextureCoordinate4D.cpp:
+	* X3DTextureCoordinateNode.h:
+	* PlaneSensor.cpp:
+	* MultiTextureCoordinate.cpp:
+	* IndexedTriangleStripSet.cpp:
+	* SphereSensor.cpp:
+	* X3DComposedGeometryNode.cpp:
+	* TextureCoordinateGenerator.h:
+	* CylinderSensor.cpp: 
+
 2013-11-02  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Hit.h:

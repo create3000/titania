@@ -102,7 +102,7 @@ private:
 
 	virtual
 	void
-	emplace_back (std::vector <Vector4f>& texCoords, size_t) const
+	addTexCoord (std::vector <Vector4f>& texCoords, size_t) const final
 	{ texCoords .emplace_back (0, 0, 0, 1); }
 
 	virtual
@@ -112,12 +112,12 @@ private:
 
 	virtual
 	size_t
-	empty () const final
+	isEmpty () const final
 	{ return true; }
 
 	virtual
 	size_t
-	size () const final
+	getSize () const final
 	{ return 0; }
 
 	///  @name Static members

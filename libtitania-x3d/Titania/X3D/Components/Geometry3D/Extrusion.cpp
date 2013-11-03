@@ -490,8 +490,8 @@ Extrusion::tesselateCap (const Tesselator & tesselator,
 			{
 				for (size_t i = 0, size = polygonElement .size () - 2; i < size; ++ i)
 				{
-					normal += math::normal (points [std::get < I > (polygonElement [i % 2 ? i + 1 : i] .data ())],
-					                        points [std::get < I > (polygonElement [i % 2 ? i : i + 1] .data ())],
+					normal += math::normal (points [std::get < I > (polygonElement [is_odd (i) ? i + 1 : i] .data ())],
+					                        points [std::get < I > (polygonElement [is_odd (i) ? i : i + 1] .data ())],
 					                        points [std::get < I > (polygonElement [i + 2] .data ())]);
 				}
 
@@ -545,15 +545,15 @@ Extrusion::tesselateCap (const Tesselator & tesselator,
 			{
 				for (size_t i = 0, size = polygonElement .size () - 2; i < size; ++ i)
 				{
-					Vector2f t = (min + crossSection () [std::get < K > (polygonElement [i % 2 ? i + 1 : i] .data ())]) / capSize;
+					Vector2f t = (min + crossSection () [std::get < K > (polygonElement [is_odd (i) ? i + 1 : i] .data ())]) / capSize;
 					getTexCoord () .emplace_back (t .x (), 1 - t .y (), 0, 1);
 					getNormals () .emplace_back (normal);
-					getVertices () .emplace_back (points [std::get < I > (polygonElement [i % 2 ? i + 1 : i] .data ())]);
+					getVertices () .emplace_back (points [std::get < I > (polygonElement [is_odd (i) ? i + 1 : i] .data ())]);
 
-					t = (min + crossSection () [std::get < K > (polygonElement [i % 2 ? i : i + 1] .data ())]) / capSize;
+					t = (min + crossSection () [std::get < K > (polygonElement [is_odd (i) ? i : i + 1] .data ())]) / capSize;
 					getTexCoord () .emplace_back (t .x (), 1 - t .y (), 0, 1);
 					getNormals () .emplace_back (normal);
-					getVertices () .emplace_back (points [std::get < I > (polygonElement [i % 2 ? i : i + 1] .data ())]);
+					getVertices () .emplace_back (points [std::get < I > (polygonElement [is_odd (i) ? i : i + 1] .data ())]);
 
 					t = (min + crossSection () [std::get < K > (polygonElement [i + 2] .data ())]) / capSize;
 					getTexCoord () .emplace_back (t .x (), 1 - t .y (), 0, 1);

@@ -65,7 +65,7 @@ inline
 constexpr bool
 is_odd (const Type & value)
 {
-	return value & 1;
+	return value & Type (1);
 }
 
 template <class Type>

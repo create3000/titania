@@ -104,7 +104,7 @@ public:
 	
 	virtual
 	void
-	emplace_back (std::vector <Color4f>&, size_t) const final;
+	addColor (std::vector <Color4f>&, size_t) const final;
 
 	virtual
 	void
@@ -112,12 +112,12 @@ public:
 
 	virtual
 	size_t
-	empty () const final
+	isEmpty () const final
 	{ return color () .empty (); }
 
 	virtual
 	size_t
-	size () const final
+	getSize () const final
 	{ return color () .size (); }
 
 

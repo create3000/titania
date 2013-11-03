@@ -61,23 +61,25 @@
 namespace titania {
 namespace X3D {
 
-typedef math::box2 <double> Box2d;
-typedef math::box2 <float>  Box2f;
+using namespace titania::math;
 
-typedef math::box3 <double> Box3d;
-typedef math::box3 <float>  Box3f;
+typedef box2 <double> Box2d;
+typedef box2 <float>  Box2f;
 
-typedef math::cylinder3 <double> Cylinder3d;
-typedef math::cylinder3 <float>  Cylinder3f;
+typedef box3 <double> Box3d;
+typedef box3 <float>  Box3f;
 
-typedef math::line3 <double> Line3d;
-typedef math::line3 <float>  Line3f;
+typedef cylinder3 <double> Cylinder3d;
+typedef cylinder3 <float>  Cylinder3f;
 
-typedef math::plane3 <double> Plane3d;
-typedef math::plane3 <float>  Plane3f;
+typedef line3 <double> Line3d;
+typedef line3 <float>  Line3f;
 
-typedef math::sphere3 <double> Sphere3d;
-typedef math::sphere3 <float>  Sphere3f;
+typedef plane3 <double> Plane3d;
+typedef plane3 <float>  Plane3f;
+
+typedef sphere3 <double> Sphere3d;
+typedef sphere3 <float>  Sphere3f;
 
 } // X3D
 } // titania

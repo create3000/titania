@@ -241,7 +241,7 @@ IndexedLineSet::build ()
 {
 	auto _coord = x3d_cast <X3DCoordinateNode*> (coord ());
 
-	if (not _coord or _coord -> empty ())
+	if (not _coord or _coord -> isEmpty ())
 		return;
 
 	auto polylines = getPolylines ();
@@ -267,13 +267,13 @@ IndexedLineSet::build ()
 				if (_color)
 				{
 					if (colorPerVertex () and colorIndex () [i] > -1)
-						_color -> emplace_back (getColors (), colorIndex () [i]);
+						_color -> addColor (getColors (), colorIndex () [i]);
 
 					else
-						_color -> emplace_back (getColors (), colorIndex () [face]);
+						_color -> addColor (getColors (), colorIndex () [face]);
 				}
 
-				_coord -> emplace_back (getVertices (), coordIndex () [i]);
+				_coord -> addVertex (getVertices (), coordIndex () [i]);
 			}
 		}
 

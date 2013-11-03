@@ -99,7 +99,7 @@ public:
 
 	virtual
 	void
-	emplace_back (std::vector <Vector3f>&, size_t) const final;
+	addVector (std::vector <Vector3f>&, size_t) const final;
 
 	virtual
 	void
@@ -107,12 +107,12 @@ public:
 
 	virtual
 	size_t
-	empty () const final
+	isEmpty () const final
 	{ return vector () .empty (); }
 
 	virtual
 	size_t
-	size () const final
+	getSize () const final
 	{ return vector () .size (); }
 
 

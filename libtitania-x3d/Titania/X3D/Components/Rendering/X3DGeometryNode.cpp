@@ -482,9 +482,6 @@ X3DGeometryNode::draw ()
 void
 X3DGeometryNode::draw (bool solid, bool texture, bool lighting)
 {
-	if (vertices .empty ())
-		return;
-
 	if (solid)
 		glEnable (GL_CULL_FACE);
 
@@ -501,6 +498,7 @@ X3DGeometryNode::draw (bool solid, bool texture, bool lighting)
 		else if (not texCoords .empty ())
 		{
 			glEnableClientState (GL_TEXTURE_COORD_ARRAY);
+			//glClientActiveTexture (GL_TEXTURE0);
 			glTexCoordPointer (4, GL_FLOAT, 0, texCoords .data ());
 		}
 	}

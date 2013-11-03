@@ -94,7 +94,7 @@ QuadSet::build ()
 	auto _coord = x3d_cast <X3DCoordinateNode*> (coord ());
 	
 	if (_coord)
-		buildPolygons (4, _coord -> size ());
+		buildPolygons (4, _coord -> getSize ());
 }
 
 void

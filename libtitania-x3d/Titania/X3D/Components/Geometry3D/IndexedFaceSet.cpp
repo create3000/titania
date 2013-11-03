@@ -301,7 +301,7 @@ IndexedFaceSet::build ()
 	auto _textureCoordinate          = x3d_cast <X3DTextureCoordinateNode*> (texCoord ());
 	auto _textureCoordinateGenerator = x3d_cast <TextureCoordinateGenerator*> (texCoord ());
 
-	if (_textureCoordinate and not _textureCoordinate -> empty ())
+	if (_textureCoordinate and not _textureCoordinate -> isEmpty ())
 		getTexCoord () .reserve (reserve);
 
 	// Normal
@@ -343,16 +343,16 @@ IndexedFaceSet::build ()
 				if (_color)
 				{
 					if (colorPerVertex () and colorIndex () [i] > -1)
-						_color -> emplace_back (getColors (), colorIndex () [i]);
+						_color -> addColor (getColors (), colorIndex () [i]);
 
 					else
-						_color -> emplace_back (getColors (), colorIndex () [face]);
+						_color -> addColor (getColors (), colorIndex () [face]);
 				}
 
-				if (_textureCoordinate and not _textureCoordinate -> empty ())
+				if (_textureCoordinate and not _textureCoordinate -> isEmpty ())
 				{
 					if (texCoordIndex () [i] > -1)
-						_textureCoordinate -> emplace_back (getTexCoord (), texCoordIndex () [i]);
+						_textureCoordinate -> addTexCoord (getTexCoord (), texCoordIndex () [i]);
 
 					else
 						getTexCoord () .emplace_back (0, 0, 0, 1);
@@ -361,13 +361,13 @@ IndexedFaceSet::build ()
 				if (_normal)
 				{
 					if (normalPerVertex () and normalIndex () [i] > -1)
-						_normal -> emplace_back (getNormals (), normalIndex () [i]);
+						_normal -> addVector (getNormals (), normalIndex () [i]);
 
 					else
-						_normal -> emplace_back (getNormals (), normalIndex () [face]);
+						_normal -> addVector (getNormals (), normalIndex () [face]);
 				}
 
-				_coord -> emplace_back (getVertices (), coordIndex () [i]);
+				_coord -> addVertex (getVertices (), coordIndex () [i]);
 			}
 		}
 
@@ -538,8 +538,8 @@ IndexedFaceSet::tesselate (const Vertices & vertices)
 				for (size_t i = 0, size = polygonElement .size () - 2; i < size; ++ i)
 				{
 					// Add triangle to polygon.
-					elements .emplace_back (std::move (Element ({ { std::get <0> (polygonElement [i % 2 ? i + 1 : i] .data ()),
-					                                                std::get <0> (polygonElement [i % 2 ? i : i + 1] .data ()),
+					elements .emplace_back (std::move (Element ({ { std::get <0> (polygonElement [is_odd (i) ? i + 1 : i] .data ()),
+					                                                std::get <0> (polygonElement [is_odd (i) ? i : i + 1] .data ()),
 					                                                std::get <0> (polygonElement [i + 2] .data ()) } })));
 				}
 
