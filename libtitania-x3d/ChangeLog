@@ -1,5 +1,23 @@
 2013-11-04  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBrowserContext.h:
+	* X3DBrowserContext.cpp:
+	* MultiTexture.h:
+	* MultiTexture.cpp:
+	* TriangleFanSet.cpp:
+	* X3DGeometryNode.cpp:
+	* RenderingProperties.h:
+	* IndexedQuadSet.cpp:
+	* TriangleStripSet.cpp:
+	* RenderingProperties.cpp:
+	* IndexedTriangleSet.cpp:
+	* IndexedTriangleFanSet.cpp:
+	* IndexedTriangleStripSet.cpp:
+	* X3DTextureCoordinateNode.cpp:
+	* X3DProgrammableShaderObject.cpp: 
+
+2013-11-04  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Appearance.cpp:
 	* MultiTexture.cpp:
 	* X3DGeometryNode.cpp:

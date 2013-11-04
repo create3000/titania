@@ -72,11 +72,12 @@ TriangleStripSet::TriangleStripSet (X3DExecutionContext* const executionContext)
 {
 	addField (inputOutput,    "metadata",        metadata ());
 
-	addField (inputOutput,    "stripCount",      stripCount ());
 	addField (initializeOnly, "solid",           solid ());
 	addField (initializeOnly, "ccw",             ccw ());
 	addField (initializeOnly, "colorPerVertex",  colorPerVertex ());
 	addField (initializeOnly, "normalPerVertex", normalPerVertex ());
+
+	addField (inputOutput,    "stripCount",      stripCount ());
 
 	addField (inputOutput,    "attrib",          attrib ());
 	addField (inputOutput,    "fogCoord",        fogCoord ());

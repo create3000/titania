@@ -17,10 +17,10 @@ Transform {
     }
     geometry DEF IndexedQuadSet IndexedQuadSet {
       solid FALSE
+      index [ 0, 1, 2, 3 ]
       coord Coordinate {
         point [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
       }
-      index [ 0, 1, 2, 3 ]
     }
   }
 }

@@ -80,20 +80,20 @@ const std::string RenderingProperties::typeName       = "RenderingProperties";
 const std::string RenderingProperties::containerField = "renderingProperties";
 
 RenderingProperties::Fields::Fields () :
-	       enabled (),
-	 cycleInterval (1),
-	        vendor (new SFString ()),
-	      renderer (new SFString ()),
-	       version (new SFString ()),
-	    maxThreads (new SFInt32 (1)),
-	       shading (new SFString ("GOURAUD")),
-	maxTextureSize (new SFInt32 ()),
-	  textureCoord (new SFInt32 ()),
-	  textureUnits (new SFInt32 ()),
-	     maxLights (new SFInt32 ()),
-	   antialiased (new SFBool ()),
-	    colorDepth (new SFInt32 ()),
-	 textureMemory (new SFDouble ())
+	             enabled (),
+	       cycleInterval (1),
+	              vendor (new SFString ()),
+	            renderer (new SFString ()),
+	             version (new SFString ()),
+	          maxThreads (new SFInt32 (1)),
+	             shading (new SFString ("GOURAUD")),
+	      maxTextureSize (new SFInt32 ()),
+	        textureUnits (new SFInt32 ()),
+	combinedTextureUnits (new SFInt32 ()),
+	           maxLights (new SFInt32 ()),
+	         antialiased (new SFBool ()),
+	          colorDepth (new SFInt32 ()),
+	       textureMemory (new SFDouble ())
 { }
 
 RenderingProperties::RenderingProperties (X3DExecutionContext* const executionContext) :
@@ -111,8 +111,8 @@ RenderingProperties::RenderingProperties (X3DExecutionContext* const executionCo
 	addField (outputOnly, "MaxThreads",     maxThreads ());
 	addField (outputOnly, "Shading",        shading ());
 	addField (outputOnly, "MaxTextureSize", maxTextureSize ());
-	addField (outputOnly, "TextureCoord",   textureCoord ());
-	addField (outputOnly, "TextureUnits",   textureUnits ());
+	addField (outputOnly, "TextureCoord",   textureUnits ());
+	addField (outputOnly, "TextureUnits",   combinedTextureUnits ());
 	addField (outputOnly, "MaxLights",      maxLights ());
 	addField (outputOnly, "Antialiased",    antialiased ());
 	addField (outputOnly, "ColorDepth",     colorDepth ());
@@ -161,14 +161,15 @@ RenderingProperties::initialize ()
 
 		//extensions .push_back (std::string ("GLEW ") + (const char*) glewGetString (GLEW_VERSION));
 
-		GLint glMaxTextureSize, glMaxLights, glTextureUnits, glTextureCoords;
+		GLint glMaxTextureSize, glMaxLights, glTextureUnits, glCombinedTextureUnits, glTextureCoords;
 		GLint glRedBits, glGreen, glBlueBits, glAlphaBits;
 		GLint glPolygonSmooth;
 		GLint glTextureMemory = -1;
 
 		glGetIntegerv (GL_MAX_TEXTURE_SIZE,                 &glMaxTextureSize);
 		glGetIntegerv (GL_MAX_TEXTURE_COORDS,               &glTextureCoords);
-		glGetIntegerv (GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &glTextureUnits);
+		glGetIntegerv (GL_MAX_TEXTURE_UNITS,                &glTextureUnits);
+		glGetIntegerv (GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &glCombinedTextureUnits);
 		glGetIntegerv (GL_MAX_LIGHTS,                       &glMaxLights);
 
 		glGetIntegerv (GL_RED_BITS,   &glRedBits);
@@ -179,16 +180,16 @@ RenderingProperties::initialize ()
 		glGetIntegerv (GL_POLYGON_SMOOTH, &glPolygonSmooth);
 
 		if (hasExtension ("GL_NVX_gpu_memory_info"))
-			glGetIntegerv (GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &glTextureMemory);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     // in KBytes
+			glGetIntegerv (GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &glTextureMemory);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               // in KBytes
 
-		maxThreads ()     = omp_get_max_threads ();
-		textureCoord ()   = std::min (8, glTextureCoords);
-		textureUnits ()   = glTextureUnits;
-		maxTextureSize () = glMaxTextureSize;
-		maxLights ()      = glMaxLights;
-		antialiased ()    = glPolygonSmooth;
-		colorDepth ()     = glRedBits + glGreen + glBlueBits + glAlphaBits;
-		textureMemory ()  = glTextureMemory * 1024;
+		maxThreads ()           = omp_get_max_threads ();
+		textureUnits ()         = std::min (glCombinedTextureUnits / 2, std::min (glTextureCoords, glTextureUnits));
+		combinedTextureUnits () = glCombinedTextureUnits;
+		maxTextureSize ()       = glMaxTextureSize;
+		maxLights ()            = glMaxLights;
+		antialiased ()          = glPolygonSmooth;
+		colorDepth ()           = glRedBits + glGreen + glBlueBits + glAlphaBits;
+		textureMemory ()        = glTextureMemory * 1024;
 
 		enabled () .addInterest (this, &RenderingProperties::set_enabled);
 		set_enabled ();
@@ -310,16 +311,16 @@ RenderingProperties::build ()
 			string -> emplace_back ();
 			string -> emplace_back ("Rendering properties");
 			string -> emplace_back (basic::sprintf ("Max threads:               %d", maxThreads () .getValue ()));
-			string -> emplace_back (basic::sprintf ("Texture units:             %d", textureUnits () .getValue ()));
+			string -> emplace_back (basic::sprintf ("Texture units:             %d / %d", textureUnits () .getValue (), combinedTextureUnits () - textureUnits ()));
 			string -> emplace_back (basic::sprintf ("Max texture size:          %d × %d pixel", maxTextureSize () .getValue (), maxTextureSize () .getValue ()));
 			string -> emplace_back (basic::sprintf ("Antialiased:               %s", antialiased () .toString () .c_str ()));
 			string -> emplace_back (basic::sprintf ("Max lights:                %d", maxLights () .getValue ()));
 			string -> emplace_back (basic::sprintf ("Color depth:               %d bits", colorDepth () .getValue ()));
-			string -> emplace_back (basic::sprintf ("Texture Memory:            %s", textureMemory () > 0 ? strfsize (textureMemory ()) .c_str () : "n/a"));
-			string -> emplace_back (basic::sprintf ("Available Texture Memory:  %s", strfsize (getAvailableTextureMemory ()) .c_str ()));
-			string -> emplace_back (basic::sprintf ("Memory Usage:              %s", strfsize (getGarbageCollector () .getMemoryUsage ()) .c_str ()));
+			string -> emplace_back (basic::sprintf ("Texture memory:            %s", textureMemory () > 0 ? strfsize (textureMemory ()) .c_str () : "n/a"));
+			string -> emplace_back (basic::sprintf ("Available texture memory:  %s", strfsize (getAvailableTextureMemory ()) .c_str ()));
+			string -> emplace_back (basic::sprintf ("Memory usage:              %s", strfsize (getGarbageCollector () .getMemoryUsage ()) .c_str ()));
 			string -> emplace_back ();
-			string -> emplace_back (basic::sprintf ("Frame Rate:                %.1f fps", fps ()));
+			string -> emplace_back (basic::sprintf ("Frame rate:                %.1f fps", fps ()));
 			string -> emplace_back (basic::sprintf ("Display:                   %.2f %", 100 * renderClock .average () / clock .average ()));
 			string -> emplace_back (basic::sprintf ("Sensors:                   %zd", getBrowser () -> sensors () .getRequesters () .size () + getBrowser () -> prepareEvents () .getRequesters () .size () - 1));
 		}
@@ -342,7 +343,7 @@ RenderingProperties::toStream (std::ostream & stream) const
 
 		<< "\tRendering properties" << std::endl
 		<< "\t\tMax threads: " << maxThreads () << std::endl
-		<< "\t\tTexture units: " << textureUnits () << std::endl
+		<< "\t\tTexture units: " << textureUnits () << " / " << combinedTextureUnits () - textureUnits () << std::endl
 		<< "\t\tMax texture size: " << maxTextureSize () << " × " << maxTextureSize () << " pixel" << std::endl
 		<< "\t\tMax lights: " << maxLights () << std::endl
 		<< "\t\tAntialiased: " << antialiased () .getValue () << std::endl

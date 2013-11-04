@@ -242,17 +242,17 @@ public:
 	///  @name Texture unit stack handling
 
 	TextureUnitStack &
-	getTextureCoord ()
-	{ return textureCoord; }
-
-	TextureUnitStack &
 	getTextureUnits ()
 	{ return textureUnits; }
+
+	TextureUnitStack &
+	getCombinedTextureUnits ()
+	{ return combinedTextureUnits; }
 
 	TextureArray &
 	getTextures ()
 	{ return textures; }
-	
+
 	void
 	isEnabledTexture (bool value)
 	{ texture = value; }
@@ -403,7 +403,7 @@ private:
 	set_navigationInfo_type ();
 
 	// Members
-	
+
 	bool enabled;
 
 	SFTime initializedOutput;
@@ -417,26 +417,26 @@ private:
 
 	std::shared_ptr <X3DClock> clock;
 
-	Router             router;
-	RendererStack      renderers;
-	LayerStack         layers;
-	LayoutStack        layouts;
-	LightStack         lights;
-	TextureUnitStack   textureCoord;
-	TextureUnitStack   textureUnits;
-	TextureArray       textures;
-	bool               texture;
+	Router           router;
+	RendererStack    renderers;
+	LayerStack       layers;
+	LayoutStack      layouts;
+	LightStack       lights;
+	TextureUnitStack textureUnits;
+	TextureUnitStack combinedTextureUnits;
+	TextureArray     textures;
+	bool             texture;
 
-	X3DSFNode <X3DLayerNode>     activeLayer;
-	NavigationInfo*              activeNavigationInfo;
-	SFTime                       activeNavigationInfoChanged;
-	X3DScalar <ViewerType>       viewer;
-	SFBool                       examineViewer;
-	SFBool                       walkViewer;
-	SFBool                       flyViewer;
-	SFBool                       noneViewer;
-	SFBool                       lookAt;
-	SFTime                       activeViewpointChanged;
+	X3DSFNode <X3DLayerNode> activeLayer;
+	NavigationInfo*          activeNavigationInfo;
+	SFTime                   activeNavigationInfoChanged;
+	X3DScalar <ViewerType>   viewer;
+	SFBool                   examineViewer;
+	SFBool                   walkViewer;
+	SFBool                   flyViewer;
+	SFBool                   noneViewer;
+	SFBool                   lookAt;
+	SFTime                   activeViewpointChanged;
 
 	X3DKeyDeviceSensorNode* keyDeviceSensorNode;
 	SFTime                  keyDeviceSensorNodeOutput;

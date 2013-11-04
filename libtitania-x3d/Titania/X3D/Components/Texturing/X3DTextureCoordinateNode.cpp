@@ -77,7 +77,14 @@ X3DTextureCoordinateNode::enable (const TexCoordArray & texCoords) const
 void
 X3DTextureCoordinateNode::disable () const
 {
-	disable (0);
+	if (getBrowser () -> getTextures () .empty ())
+		disable (0);
+
+	else
+	{
+		for (const auto & unit : getBrowser () -> getTextures ())
+			disable (unit);
+	}
 }
 
 } // X3D

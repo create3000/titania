@@ -76,14 +76,14 @@ IndexedTriangleFanSet::IndexedTriangleFanSet (X3DExecutionContext* const executi
 	addField (initializeOnly, "colorPerVertex",  colorPerVertex ());
 	addField (initializeOnly, "normalPerVertex", normalPerVertex ());
 
+	addField (initializeOnly, "index",           index ());
+
 	addField (inputOutput,    "attrib",          attrib ());
 	addField (inputOutput,    "fogCoord",        fogCoord ());
 	addField (inputOutput,    "texCoord",        texCoord ());
 	addField (inputOutput,    "color",           color ());
 	addField (inputOutput,    "normal",          normal ());
 	addField (inputOutput,    "coord",           coord ());
-
-	addField (initializeOnly, "index",           index ());
 }
 
 X3DBaseNode*

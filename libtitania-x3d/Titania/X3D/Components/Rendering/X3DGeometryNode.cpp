@@ -554,14 +554,14 @@ X3DGeometryNode::draw (bool solid, bool texture, bool lighting)
 		}
 		else
 		{
-			for (const auto & unit : basic::adapter (getBrowser () -> getTextures () .rbegin (), getBrowser () -> getTextures () .rend ()))
+			for (const auto & unit : getBrowser () -> getTextures ())
 			{
 				glActiveTexture (GL_TEXTURE0 + unit);
 
 				glDisable (GL_TEXTURE_2D);
 				glDisable (GL_TEXTURE_CUBE_MAP);
 	
-				getBrowser () -> getTextureCoord () .push (unit);
+				getBrowser () -> getTextureUnits () .push (unit);
 			}
 
 			getBrowser () -> getTextures () .clear ();

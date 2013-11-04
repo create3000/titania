@@ -2336,6 +2336,7 @@
     <None Include="Tests\CADGeometry\CADGeometry.wrl" />
     <None Include="Tests\Rendering\RenderingGeometry.wrl" />
     <None Include="Tests\Texturing\MultiTexture.wrl" />
+    <None Include="Tests\PointingDeviceSensor\Wheel.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

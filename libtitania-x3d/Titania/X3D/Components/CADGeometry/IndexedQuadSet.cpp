@@ -77,14 +77,14 @@ IndexedQuadSet::IndexedQuadSet (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "colorPerVertex",  colorPerVertex ());
 	addField (initializeOnly, "normalPerVertex", normalPerVertex ());
 
+	addField (inputOutput,    "index",           index ());
+
 	addField (inputOutput,    "attrib",          attrib ());
 	addField (inputOutput,    "fogCoord",        fogCoord ());
 	addField (inputOutput,    "texCoord",        texCoord ());
 	addField (inputOutput,    "color",           color ());
 	addField (inputOutput,    "normal",          normal ());
 	addField (inputOutput,    "coord",           coord ());
-
-	addField (inputOutput,    "index",           index ());
 }
 
 X3DBaseNode*

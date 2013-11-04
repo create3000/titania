@@ -73,11 +73,12 @@ TriangleFanSet::TriangleFanSet (X3DExecutionContext* const executionContext) :
 {
 	addField (inputOutput,    "metadata",        metadata ());
 
-	addField (inputOutput,    "fanCount",        fanCount ());
 	addField (initializeOnly, "solid",           solid ());
 	addField (initializeOnly, "ccw",             ccw ());
 	addField (initializeOnly, "colorPerVertex",  colorPerVertex ());
 	addField (initializeOnly, "normalPerVertex", normalPerVertex ());
+
+	addField (inputOutput,    "fanCount",        fanCount ());
 
 	addField (inputOutput,    "attrib",          attrib ());
 	addField (inputOutput,    "fogCoord",        fogCoord ());

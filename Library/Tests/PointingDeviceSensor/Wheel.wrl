@@ -1,0 +1,105 @@
+#VRML V2.0 utf8 Titania
+
+META "title" "Wheel"
+
+PROTO Wheel [
+  exposedField SFString description ""
+  exposedField SFRotation axisRotation 0 0 1 0
+  eventIn      MFNode   addChilren
+  eventIn      MFNode   removeChildren
+  eventOut     SFFloat  value_changed
+  exposedField MFNode   children [ ]
+]
+{
+  DEF Button Transform {
+    children [
+      DEF CylinderTouch CylinderSensor {
+        description IS description
+        axisRotation IS axisRotation
+        autoOffset FALSE
+      }
+      Transform {
+        addChildren IS addChilren
+        removeChildren IS removeChildren
+        children IS children
+      }
+    ]
+  }
+
+  DEF Wheel Script {
+    eventIn  SFRotation set_rotation
+    eventOut SFFloat    value_changed IS value_changed
+    exposedField SFRotation axisRotation IS axisRotation
+    field    SFNode     transform USE Button
+
+    url "vrmlscript:
+function set_rotation (rotation)
+{
+	var axis  = axisRotation .multVec (new SFVec3f (0, 1, 0));
+	var angle = axis .dot (rotation .getAxis ());
+	var sign  = angle < 0 ? 1 : -1;
+
+	value_changed += sign * rotation .angle;
+
+	transform .rotation = rotation .multiply (transform .rotation);
+}
+"
+  }
+
+  ROUTE CylinderTouch.rotation_changed TO Wheel.set_rotation
+}
+
+Viewpoint {
+  description "Top"
+  position 0 8 0
+  orientation -1 0 -0 1.5708
+}
+
+Viewpoint {
+  description "Front"
+  position 0 0 8
+}
+
+DEF Wheel Wheel {
+  description "Wheel"
+  children DEF XForm Transform {
+    children Shape {
+      appearance Appearance {
+        texture ImageTexture {
+          url "../images/image.png"
+        }
+      }
+      geometry Cylinder { }
+    }
+  }
+}
+
+DEF Text Transform {
+  translation 0 0 -2
+  rotation -1 0 0 1.5708
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry DEF Text Text {
+      string "3D Text"
+      fontStyle FontStyle {
+        justify [ "MIDDLE", "MIDDLE" ]
+      }
+    }
+  }
+}
+
+DEF Debug Script {
+eventIn SFFloat set_value
+eventOut MFString  string_changed
+url "vrmlscript:
+function set_value (value)
+{
+	string_changed = new MFString (Math .floor (value * 100) / 100);
+}
+"
+}
+
+ROUTE Wheel.value_changed TO Debug.set_value
+ROUTE Debug.string_changed TO Text.set_string

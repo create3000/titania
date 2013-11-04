@@ -17,10 +17,10 @@ Transform {
     }
     geometry DEF IndexedTriangleFanSet IndexedTriangleFanSet {
       solid FALSE
+      index [ 0, 1, 2 ]
       coord Coordinate {
         point [ -1 -1 0, 1 -1 0, 0 1 0 ]
       }
-      index [ 0, 1, 2 ]
     }
   }
 }
@@ -31,10 +31,10 @@ Transform {
     appearance USE Grey
     geometry DEF IndexedTriangleSet IndexedTriangleSet {
       solid FALSE
+      index [ 0, 1, 2 ]
       coord Coordinate {
         point [ -1 -1 0, 1 -1 0, 0 1 0 ]
       }
-      index [ 0, 1, 2 ]
     }
   }
 }
@@ -45,10 +45,10 @@ Transform {
     appearance USE Grey
     geometry DEF IndexedTriangleStripSet IndexedTriangleStripSet {
       solid FALSE
+      index [ 0, 1, 2 ]
       coord Coordinate {
         point [ -1 -1 0, 1 -1 0, 0 1 0 ]
       }
-      index [ 0, 1, 2 ]
     }
   }
 }
@@ -58,8 +58,8 @@ Transform {
   children Shape {
     appearance USE Grey
     geometry DEF TriangleFanSet TriangleFanSet {
-      fanCount 3
       solid FALSE
+      fanCount 3
       coord Coordinate {
         point [ -1 -1 0, 1 -1 0, 0 1 0 ]
       }
@@ -85,8 +85,8 @@ Transform {
   children Shape {
     appearance USE Grey
     geometry DEF TriangleStripSet TriangleStripSet {
-      stripCount 3
       solid FALSE
+      stripCount 3
       coord Coordinate {
         point [ -1 -1 0, 1 -1 0, 0 1 0 ]
       }

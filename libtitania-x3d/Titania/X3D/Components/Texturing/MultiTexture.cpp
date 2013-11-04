@@ -102,13 +102,13 @@ MultiTexture::draw ()
 
 		if (texture)
 		{
-			if (getBrowser () -> getTextureCoord () .empty ())
+			if (getBrowser () -> getTextureUnits () .empty ())
 				break;
 
 			// Get texture unit.
 
-			size_t unit = getBrowser () -> getTextureCoord () .top ();
-			getBrowser () -> getTextureCoord () .pop ();
+			size_t unit = getBrowser () -> getTextureUnits () .top ();
+			getBrowser () -> getTextureUnits () .pop ();
 
 			getBrowser () -> getTextures () .emplace_back (unit);
 

@@ -84,8 +84,8 @@ X3DBrowserContext::X3DBrowserContext () :
 	                     layers (),
 	                    layouts (),
 	                     lights (),
-	               textureCoord (),
 	               textureUnits (),
+	       combinedTextureUnits (),
 	                   textures (),
 	                    texture (false),
 	                activeLayer (),
@@ -193,11 +193,11 @@ X3DBrowserContext::initialize ()
 
 		// TextureUnits
 
-		for (int32_t i = renderingProperties -> textureCoord () - 1; i >= 0 ; -- i)
-			textureCoord .push (i); // Don't add GL_TEXTURE0
+		for (int32_t i = 0; i < renderingProperties -> textureUnits (); ++ i)
+			textureUnits .push (i);                                             // Don't add GL_TEXTURE0
 
-		for (int32_t i = renderingProperties -> textureCoord (); i < renderingProperties -> textureUnits (); ++ i)
-			textureUnits .push (i); // Don't add GL_TEXTURE0
+		for (int32_t i = renderingProperties -> textureUnits (); i < renderingProperties -> combinedTextureUnits (); ++ i)
+			combinedTextureUnits .push (i);                                     // Don't add GL_TEXTURE0
 
 		downloadMutexes .resize (std::min <int32_t> (renderingProperties -> maxThreads () * 2, MAX_DOWNLOAD_THREADS));
 	}

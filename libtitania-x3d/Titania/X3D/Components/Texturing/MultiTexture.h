@@ -161,9 +161,9 @@ private:
 
 		SFColor* const color;
 		SFFloat* const alpha;
-		MFString* const function;
 		MFString* const mode;
 		MFString* const source;
+		MFString* const function;
 		MFNode* const texture;
 	};
 

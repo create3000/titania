@@ -159,10 +159,10 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 
 				if (not textureUnit)
 				{
-					if (not getBrowser () -> getTextureUnits () .empty ())
+					if (not getBrowser () -> getCombinedTextureUnits () .empty ())
 					{
-						textureUnit = getBrowser () -> getTextureUnits () .top ();
-						getBrowser () -> getTextureUnits () .pop ();
+						textureUnit = getBrowser () -> getCombinedTextureUnits () .top ();
+						getBrowser () -> getCombinedTextureUnits () .pop ();
 						textureUnits .emplace_back (textureUnit);
 					}
 				}
@@ -352,7 +352,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 					}
 
 					for (const auto & textureUnit : textureUnits)
-						getBrowser () -> getTextureUnits () .push (textureUnit);
+						getBrowser () -> getCombinedTextureUnits () .push (textureUnit);
 				}
 
 				// Set uniform variable;
@@ -366,10 +366,10 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 				{
 					GLint textureUnit = 0;
 
-					if (getBrowser () -> getTextureUnits () .size ())
+					if (getBrowser () -> getCombinedTextureUnits () .size ())
 					{
-						textureUnit = getBrowser () -> getTextureUnits () .top ();
-						getBrowser () -> getTextureUnits () .pop ();
+						textureUnit = getBrowser () -> getCombinedTextureUnits () .top ();
+						getBrowser () -> getCombinedTextureUnits () .pop ();
 						textureUnits .emplace_back (textureUnit);
 					}
 
@@ -483,7 +483,7 @@ void
 X3DProgrammableShaderObject::dispose ()
 {
 	for (const auto & textureUnit : textureUnits)
-		getBrowser () -> getTextureUnits () .push (textureUnit);
+		getBrowser () -> getCombinedTextureUnits () .push (textureUnit);
 }
 
 } // X3D
