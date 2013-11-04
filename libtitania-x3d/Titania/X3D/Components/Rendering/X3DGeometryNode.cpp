@@ -549,8 +549,6 @@ X3DGeometryNode::draw (bool solid, bool texture, bool lighting)
 
 		if (getBrowser () -> getTextures () .empty ())
 		{
-			glActiveTexture (GL_TEXTURE0);
-				
 			glDisable (GL_TEXTURE_2D);
 			glDisable (GL_TEXTURE_CUBE_MAP);
 		}

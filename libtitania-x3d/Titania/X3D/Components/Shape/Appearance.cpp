@@ -232,7 +232,7 @@ Appearance::draw ()
 
 	// TextureTransform
 
-	//_textureTransform -> draw ();
+	_textureTransform -> draw ();
 
 	// Shader
 

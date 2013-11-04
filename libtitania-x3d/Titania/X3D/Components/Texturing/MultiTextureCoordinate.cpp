@@ -152,15 +152,15 @@ MultiTextureCoordinate::enable (const TexCoordArray & texCoords) const
 			last = textureCoordinate;
 			++ channel;
 
-			if (unit == 0)
+			if (not size)
 				break;
 		}
 	}
 
 	if (last)
 	{
-		for ( ; channel < size; ++ channel)
-			last -> enable (getBrowser () -> getTextures () [channel], channel, texCoords);
+		for (size_t lastChannel = channel - 1; channel < size; ++ channel)
+			last -> enable (getBrowser () -> getTextures () [channel], lastChannel, texCoords);
 	}
 }
 
@@ -187,7 +187,7 @@ MultiTextureCoordinate::disable () const
 			last = textureCoordinate;
 			++ channel;
 
-			if (unit == 0)
+			if (not size)
 				break;
 		}
 	}

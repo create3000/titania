@@ -1,5 +1,12 @@
 2013-11-04  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Appearance.cpp:
+	* MultiTexture.cpp:
+	* X3DGeometryNode.cpp:
+	* MultiTextureCoordinate.cpp: 
+
+2013-11-04  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBrowserContext.h:
 	* X3DBrowserContext.cpp:
 	* Box.cpp:
