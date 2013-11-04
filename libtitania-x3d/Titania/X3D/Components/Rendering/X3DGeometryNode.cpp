@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -50,6 +50,7 @@
 
 #include "X3DGeometryNode.h"
 
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 #include <cassert>
@@ -58,16 +59,16 @@ namespace titania {
 namespace X3D {
 
 X3DGeometryNode::X3DGeometryNode () :
-	                   X3DNode (),
-	                      bbox (),
-	                 texCoords (),
-	textureCoordinateGenerator (nullptr),
-	                    colors (),
-	                   normals (),
-	                  vertices (),
-	                     solid (true),
-	                       ccw (GL_CCW),
-	                  elements ()
+	          X3DNode (),
+	             bbox (),
+	        texCoords (),
+	textureCoordinate (nullptr),
+	           colors (),
+	          normals (),
+	         vertices (),
+	            solid (true),
+	              ccw (GL_CCW),
+	         elements ()
 {
 	addNodeType (X3DConstants::X3DGeometryNode);
 }
@@ -117,6 +118,16 @@ X3DGeometryNode::createBBox ()
 	return Box3f (min, max, true);
 }
 
+void
+X3DGeometryNode::setTextureCoordinate (X3DTextureCoordinateNode* value)
+{
+	if (value)
+		textureCoordinate = value;
+	
+	else
+		textureCoordinate = getBrowser () -> getBrowserOptions () -> texCoord ();
+}
+
 bool
 X3DGeometryNode::intersect (const Line3f & line, std::deque <IntersectionPtr> & intersections) const
 {
@@ -126,7 +137,7 @@ X3DGeometryNode::intersect (const Line3f & line, std::deque <IntersectionPtr> & 
 	if (bbox .intersect (line, temp))
 	{
 		float u, v, t;
-		
+
 		size_t texCoordsSize = texCoords .empty () ? 0 : texCoords [0] .size (); // LineGeometry doesn't have texCoords
 		size_t first         = 0;
 
@@ -470,7 +481,7 @@ X3DGeometryNode::clear ()
 	bbox = Box3f ();
 
 	texCoords .clear ();
-	textureCoordinateGenerator = nullptr;
+	textureCoordinate = nullptr;
 	colors   .clear ();
 	normals  .clear ();
 	vertices .clear ();
@@ -480,7 +491,7 @@ X3DGeometryNode::clear ()
 void
 X3DGeometryNode::draw ()
 {
-	draw (solid, glIsEnabled (GL_TEXTURE_2D) or glIsEnabled (GL_TEXTURE_CUBE_MAP), glIsEnabled (GL_LIGHTING));
+	draw (solid, getBrowser () -> isEnabledTexture (), glIsEnabled (GL_LIGHTING));
 }
 
 void
@@ -496,15 +507,8 @@ X3DGeometryNode::draw (bool solid, bool texture, bool lighting)
 
 	if (texture)
 	{
-		if (textureCoordinateGenerator)
-			textureCoordinateGenerator -> enable ();
-
-		else if (not texCoords .empty ())
-		{
-			glEnableClientState (GL_TEXTURE_COORD_ARRAY);
-			//glClientActiveTexture (GL_TEXTURE0);
-			glTexCoordPointer (4, GL_FLOAT, 0, texCoords [0] .data ());
-		}
+		if (textureCoordinate)
+			textureCoordinate -> enable (texCoords);
 	}
 
 	if (not colors .empty ())
@@ -516,7 +520,7 @@ X3DGeometryNode::draw (bool solid, bool texture, bool lighting)
 		glColorPointer (4, GL_FLOAT, 0, colors .data ());
 	}
 
-	if (lighting)
+	if (lighting /* or shader */)
 	{
 		if (not normals .empty ())
 		{
@@ -536,10 +540,41 @@ X3DGeometryNode::draw (bool solid, bool texture, bool lighting)
 		first += element .count;
 	}
 
-	if (textureCoordinateGenerator)
-		textureCoordinateGenerator -> disable ();
+	// Texture
 
-	glDisableClientState (GL_TEXTURE_COORD_ARRAY);
+	if (texture)
+	{
+		if (textureCoordinate)
+			textureCoordinate -> disable ();
+
+		if (getBrowser () -> getTextures () .empty ())
+		{
+			glActiveTexture (GL_TEXTURE0);
+				
+			glDisable (GL_TEXTURE_2D);
+			glDisable (GL_TEXTURE_CUBE_MAP);
+		}
+		else
+		{
+			for (const auto & unit : basic::adapter (getBrowser () -> getTextures () .rbegin (), getBrowser () -> getTextures () .rend ()))
+			{
+				glActiveTexture (GL_TEXTURE0 + unit);
+
+				glDisable (GL_TEXTURE_2D);
+				glDisable (GL_TEXTURE_CUBE_MAP);
+	
+				getBrowser () -> getTextureCoord () .push (unit);
+			}
+
+			getBrowser () -> getTextures () .clear ();
+			glActiveTexture (GL_TEXTURE0);
+		}
+
+		getBrowser () -> isEnabledTexture (false);
+	}
+
+	// Other arrays
+
 	glDisableClientState (GL_COLOR_ARRAY);
 	glDisableClientState (GL_NORMAL_ARRAY);
 	glDisableClientState (GL_VERTEX_ARRAY);

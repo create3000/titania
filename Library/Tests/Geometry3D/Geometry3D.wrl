@@ -1,51 +1,54 @@
 #VRML V2.0 utf8 CosmoWorlds V1.0
 
+Background {
+  skyColor 0.2 0.2 0.2
+}
+
 Viewpoint {
   description "Home"
+  position 9 0 20
+  centerOfRotation 9 0 0
 }
 
 Transform {
   children Shape {
-    appearance Appearance {
+    appearance DEF Grey Appearance {
       material Material { }
     }
-    geometry Box { }
+    geometry DEF Box Box { }
   }
 }
+
 Transform {
   translation 3 0 0
   children Shape {
-    appearance Appearance {
-      material Material { }
-    }
-    geometry Sphere { }
+    appearance USE Grey
+    geometry DEF Sphere Sphere { }
   }
 }
+
 Transform {
-  translation -3 0 0
+  translation 6 0 0
   children Shape {
-    appearance Appearance {
-      material Material { }
-    }
-    geometry Cylinder { }
+    appearance USE Grey
+    geometry DEF Cylinder Cylinder { }
   }
 }
+
 Transform {
-  translation 0 -3 0
+  translation 9 0 0
   children Shape {
-    appearance Appearance {
-      material Material { }
-    }
-    geometry Cone { }
+    appearance USE Grey
+    geometry DEF Cone Cone { }
   }
 }
+
 Transform {
-  translation 0 3 0
+  translation 12 0 0
+  scale 0.5 0.5 0.5
   children Shape {
-    appearance Appearance {
-      material Material { }
-    }
-    geometry Extrusion {
+    appearance USE Grey
+    geometry DEF Extrusion Extrusion {
       beginCap FALSE
       endCap FALSE
       ccw FALSE
@@ -57,16 +60,94 @@ Transform {
     }
   }
 }
+
 Transform {
-  translation 0 0 -3
+  translation 14 1 0
+  rotation 1 0 0 1.5708
   children Shape {
-    appearance Appearance {
-      material Material { }
-    }
-    geometry ElevationGrid {
-      height [ 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
+    appearance USE Grey
+    geometry DEF ElevationGrid ElevationGrid {
       xDimension 3
       zDimension 3
+      solid FALSE
+      height [ 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
     }
+  }
+}
+
+Transform {
+  translation 18 0 0
+  children Shape {
+    appearance USE Grey
+    geometry DEF IndexedFaceSet IndexedFaceSet {
+      solid FALSE
+      coordIndex [ 0, 1, 2, -1 ]
+      coord Coordinate {
+        point [ -1 -1 0, 1 -1 0, 0 1 0 ]
+      }
+    }
+  }
+}
+
+Transform {
+  translation 0 3 0
+  children Shape {
+    appearance DEF Image Appearance {
+      material Material { }
+      texture ImageTexture {
+        url "../images/image.png"
+      }
+    }
+    geometry USE Box
+  }
+}
+
+Transform {
+  translation 3 3 0
+  children Shape {
+    appearance USE Image
+    geometry USE Sphere
+  }
+}
+
+Transform {
+  translation 6 3 0
+  children Shape {
+    appearance USE Image
+    geometry USE Cylinder
+  }
+}
+
+Transform {
+  translation 9 3 0
+  children Shape {
+    appearance USE Image
+    geometry USE Cone
+  }
+}
+
+Transform {
+  translation 12 3 0
+  scale 0.5 0.5 0.5
+  children Shape {
+    appearance USE Image
+    geometry USE Extrusion
+  }
+}
+
+Transform {
+  translation 14 4 0
+  rotation 1 0 0 1.5708
+  children Shape {
+    appearance USE Image
+    geometry USE ElevationGrid
+  }
+}
+
+Transform {
+  translation 18 3 0
+  children Shape {
+    appearance USE Image
+    geometry USE IndexedFaceSet
   }
 }

@@ -59,10 +59,6 @@ const std::string TextureTransform::componentName  = "Texturing";
 const std::string TextureTransform::typeName       = "TextureTransform";
 const std::string TextureTransform::containerField = "textureTransform";
 
-const Matrix3f TextureTransform::textureMatrix = { 1,  0, 0,
-	                                                0, -1, 0,
-	                                                0,  1, 1 };
-
 TextureTransform::Fields::Fields () :
 	     center (new SFVec2f ()),
 	   rotation (new SFFloat ()),
@@ -73,8 +69,7 @@ TextureTransform::Fields::Fields () :
 TextureTransform::TextureTransform (X3DExecutionContext* const executionContext) :
 	            X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DTextureTransformNode (),
-	                 fields (),
-	                 matrix ()
+	                 fields ()
 {
 	addField (inputOutput, "metadata",    metadata ());
 	addField (inputOutput, "translation", translation ());
@@ -90,47 +85,30 @@ TextureTransform::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-TextureTransform::initialize ()
-{
-	X3DTextureTransformNode::initialize ();
-	eventsProcessed ();
-}
-
-void
 TextureTransform::eventsProcessed ()
 {
 	X3DTextureTransformNode::eventsProcessed ();
 
 	// Tc' = -C × S × R × C × T × Tc
 
-	Matrix3f m = textureMatrix;
+	Matrix3f matrix;
 
 	if (center () not_eq Vector2f (0, 0))
-		m .translate (-center ());
+		matrix .translate (-center ());
 
 	if (scale () not_eq Vector2f (1, 1))
-		m .scale (scale ());
+		matrix .scale (scale ());
 
 	if (rotation () not_eq 0.0f)
-		m .rotate (rotation ());
+		matrix .rotate (rotation ());
 
 	if (center () not_eq Vector2f (0, 0))
-		m .translate (center ());
+		matrix .translate (center ());
 
 	if (translation () not_eq Vector2f (0, 0))
-		m .translate (translation ());
+		matrix .translate (translation ());
 
-	matrix = m;
-}
-
-void
-TextureTransform::draw ()
-{
-	glMatrixMode (GL_TEXTURE);
-
-	glLoadMatrixf (matrix .data ());
-
-	glMatrixMode (GL_MODELVIEW);
+	setMatrix (matrix);
 }
 
 

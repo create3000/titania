@@ -95,7 +95,7 @@ ArcClose2D::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	getBrowser () -> getBrowserOptions () -> arcClose2DOptions () .addInterest (this, &ArcClose2D::set_properties);
+	getBrowser () -> getBrowserOptions () -> arcClose2D () .addInterest (this, &ArcClose2D::set_properties);
 }
 
 float
@@ -124,7 +124,7 @@ ArcClose2D::set_properties ()
 void
 ArcClose2D::build ()
 {
-	const ArcClose2DOptions* properties = getBrowser () -> getBrowserOptions () -> arcClose2DOptions ();
+	const ArcClose2DOptions* properties = getBrowser () -> getBrowserOptions () -> arcClose2D ();
 
 	float  difference = getAngle ();
 	size_t segments   = std::ceil (difference / properties -> minAngle ());
@@ -168,6 +168,7 @@ ArcClose2D::build ()
 
 	addElements (GL_POLYGON, getVertices () .size ());
 	setSolid (true);
+	setTextureCoordinate (nullptr);
 
 	if (not solid ())
 		addMirrorVertices (GL_POLYGON, false);

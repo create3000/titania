@@ -1,3 +1,14 @@
+2013-11-04  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Library.mdproj:
+	* test.wrl:
+	* Texture.wrl:
+	* Geometry2D.wrl:
+	* Geometry3D.wrl:
+	* MultiTexture.wrl:
+	* CADGeometry.wrl:
+	* RenderingGeometry.wrl: 
+
 2013-11-03  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* hangar.wrl: 

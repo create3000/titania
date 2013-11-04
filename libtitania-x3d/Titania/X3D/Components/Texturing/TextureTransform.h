@@ -127,24 +127,14 @@ public:
 	void
 	eventsProcessed ();
 
-	virtual
-	void
-	draw ();
-
 
 private:
-
-	virtual
-	void
-	initialize () final;
 
 	///  @name Static members
 
 	static const std::string componentName;
 	static const std::string typeName;
 	static const std::string containerField;
-
-	static const Matrix3f textureMatrix;
 
 	///  @name Members
 
@@ -159,8 +149,6 @@ private:
 	};
 
 	Fields fields;
-
-	Matrix4f matrix;
 
 };
 

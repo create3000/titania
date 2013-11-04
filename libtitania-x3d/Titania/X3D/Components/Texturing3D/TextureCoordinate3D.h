@@ -103,25 +103,22 @@ public:
 
 	virtual
 	void
-	addTexCoord (TexCoordArray &, int32_t) const final;
+	addTexCoord (size_t, TexCoordArray &, int32_t) const final;
 
 	virtual
 	void
 	resize (size_t) final;
 
 	virtual
-	size_t
-	isEmpty () const final
-	{ return point () .empty (); }
+	void
+	enable (size_t, size_t, const TexCoordArray &) const final;
 
 	virtual
-	size_t
-	getSize () const final
-	{ return point () .size (); }
+	void
+	disable (size_t) const final;
 
 
 private:
-
 
 	///  @name Static members
 

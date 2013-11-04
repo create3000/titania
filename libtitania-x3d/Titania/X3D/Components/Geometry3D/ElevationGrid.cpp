@@ -287,12 +287,9 @@ ElevationGrid::build ()
 
 	std::vector <Vector4f> _texCoord;
 
-	auto _textureCoordinate          = x3d_cast <X3DTextureCoordinateNode*> (texCoord ());
-	auto _textureCoordinateGenerator = x3d_cast <TextureCoordinateGenerator*> (texCoord ());
+	auto _textureCoordinate = x3d_cast <X3DTextureCoordinateNode*> (texCoord ());
 
-	if (_textureCoordinateGenerator)
-		;
-	else if (_textureCoordinate)
+	if (_textureCoordinate)
 	{
 		_textureCoordinate -> init (getTexCoord (), coordIndex .size ());
 		_textureCoordinate -> resize (vertices);
@@ -317,8 +314,6 @@ ElevationGrid::build ()
 		getColors () .reserve (coordIndex .size ());
 	}
 
-	std::vector <Vector3f> normals;
-
 	auto _normal = x3d_cast <X3DNormalNode*> (normal ());
 
 	if (_normal)
@@ -330,22 +325,19 @@ ElevationGrid::build ()
 			_normal -> resize (faces);
 	}
 	else
-		normals = std::move (createNormals (points, coordIndex));
+		getNormals () = std::move (createNormals (points, coordIndex));
 
 	getNormals () .reserve (coordIndex .size ());
 
-	size_t  i    = 0;
 	int32_t face = 0;
 
 	std::vector <size_t>::const_iterator index;
 
 	for (index = coordIndex .begin (); index not_eq coordIndex .end (); ++ face)
 	{
-		for (int32_t p = 0; p < 6; ++ p, ++ index, ++ i)
+		for (int32_t p = 0; p < 6; ++ p, ++ index)
 		{
-			if (_textureCoordinateGenerator)
-				;
-			else if (_textureCoordinate)
+			if (_textureCoordinate)
 				_textureCoordinate -> addTexCoord (getTexCoord (), *index);
 
 			else
@@ -368,17 +360,15 @@ ElevationGrid::build ()
 				else
 					_normal -> addVector (getNormals (), face);
 			}
-			else
-				getNormals () .emplace_back (normals [i]);
 
 			getVertices  () .emplace_back (points [*index]);
 		}
 	}
 
-	setTextureCoordinateGenerator (_textureCoordinateGenerator);
 	addElements (GL_TRIANGLES, getVertices () .size ());
 	setSolid (solid ());
 	setCCW (ccw ());
+	setTextureCoordinate (_textureCoordinate);
 }
 
 } // X3D

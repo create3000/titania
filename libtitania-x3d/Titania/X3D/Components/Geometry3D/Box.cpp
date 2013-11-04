@@ -87,7 +87,7 @@ Box::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	getBrowser () -> getBrowserOptions () -> boxOptions () .addInterest (this, &Box::set_properties);
+	getBrowser () -> getBrowserOptions () -> box () .addInterest (this, &Box::set_properties);
 }
 
 Box3f
@@ -105,7 +105,7 @@ Box::set_properties ()
 void
 Box::build ()
 {
-	const BoxOptions* properties = getBrowser () -> getBrowserOptions () -> boxOptions ();
+	const BoxOptions* properties = getBrowser () -> getBrowserOptions () -> box ();
 
 	getTexCoord () .emplace_back ();
 	getTexCoord () [0] .reserve (properties -> getTexCoord () .size ());
@@ -129,6 +129,7 @@ Box::build ()
 
 	addElements (properties -> getVertexMode (), getVertices () .size ());
 	setSolid (solid ());
+	setTextureCoordinate (nullptr);
 }
 
 } // X3D

@@ -59,9 +59,38 @@ namespace X3D {
 class X3DTextureTransformNode :
 	public X3DAppearanceChildNode
 {
+public:
+
+	///  @name Operations
+
+	virtual
+	void
+	draw ();
+
+
 protected:
 
+	///  @name Construction
+
 	X3DTextureTransformNode ();
+
+	virtual
+	void
+	initialize () final;
+
+	void
+	setMatrix (const Matrix4f &);
+
+
+private:
+
+	///  @name Static members
+
+	static const Matrix4f textureMatrix;
+
+	///  @name Members
+
+	Matrix4f matrix;
 
 };
 

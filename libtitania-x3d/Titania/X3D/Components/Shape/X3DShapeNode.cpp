@@ -218,9 +218,6 @@ X3DShapeNode::draw ()
 	{
 		if (_appearance -> getFillProperties () -> filled ())
 			_geometry -> draw ();
-			
-		glDisable (GL_TEXTURE_2D);
-		glDisable (GL_TEXTURE_CUBE_MAP);
 
 		// Draw hatch on top of whatever appearance is specified.
 

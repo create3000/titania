@@ -53,10 +53,39 @@
 namespace titania {
 namespace X3D {
 
+const Matrix4f X3DTextureTransformNode::textureMatrix = { 1,  0, 0, 0,
+	                                                       0, -1, 0, 0,
+	                                                       0,  0, 1, 0,
+	                                                       0,  1, 0, 1 };
+
 X3DTextureTransformNode::X3DTextureTransformNode () :
 	X3DAppearanceChildNode ()
 {
 	addNodeType (X3DConstants::X3DTextureTransformNode);
+}
+
+void
+X3DTextureTransformNode::initialize ()
+{
+	X3DAppearanceChildNode::initialize ();
+
+	eventsProcessed ();
+}
+
+void
+X3DTextureTransformNode::setMatrix (const Matrix4f & m)
+{
+	matrix = m * textureMatrix;
+}
+
+void
+X3DTextureTransformNode::draw ()
+{
+	glMatrixMode (GL_TEXTURE);
+
+	glLoadMatrixf (matrix .data ());
+
+	glMatrixMode (GL_MODELVIEW);
 }
 
 } // X3D

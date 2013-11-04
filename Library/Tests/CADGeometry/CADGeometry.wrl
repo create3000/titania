@@ -1,0 +1,60 @@
+#VRML V2.0 utf8
+
+Background {
+  skyColor 0.2 0.2 0.2
+}
+
+Viewpoint {
+  description "Home"
+  position 1.5 0 12
+  centerOfRotation 1.2 0 0
+}
+
+Transform {
+  children Shape {
+    appearance DEF Grey Appearance {
+      material Material { }
+    }
+    geometry DEF IndexedQuadSet IndexedQuadSet {
+      solid FALSE
+      coord Coordinate {
+        point [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+      }
+      index [ 0, 1, 2, 3 ]
+    }
+  }
+}
+
+Transform {
+  translation 3 0 0
+  children Shape {
+    appearance USE Grey
+    geometry DEF QuadSet QuadSet {
+      solid FALSE
+      coord Coordinate {
+        point [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+      }
+    }
+  }
+}
+
+Transform {
+  translation 0 3 0
+  children Shape {
+    appearance DEF Image Appearance {
+      material Material { }
+      texture ImageTexture {
+        url "../images/image.png"
+      }
+    }
+    geometry USE IndexedQuadSet
+  }
+}
+
+Transform {
+  translation 3 3 0
+  children Shape {
+    appearance USE Image
+    geometry USE QuadSet
+  }
+}

@@ -88,6 +88,7 @@ RenderingProperties::Fields::Fields () :
 	    maxThreads (new SFInt32 (1)),
 	       shading (new SFString ("GOURAUD")),
 	maxTextureSize (new SFInt32 ()),
+	  textureCoord (new SFInt32 ()),
 	  textureUnits (new SFInt32 ()),
 	     maxLights (new SFInt32 ()),
 	   antialiased (new SFBool ()),
@@ -110,6 +111,7 @@ RenderingProperties::RenderingProperties (X3DExecutionContext* const executionCo
 	addField (outputOnly, "MaxThreads",     maxThreads ());
 	addField (outputOnly, "Shading",        shading ());
 	addField (outputOnly, "MaxTextureSize", maxTextureSize ());
+	addField (outputOnly, "TextureCoord",   textureCoord ());
 	addField (outputOnly, "TextureUnits",   textureUnits ());
 	addField (outputOnly, "MaxLights",      maxLights ());
 	addField (outputOnly, "Antialiased",    antialiased ());
@@ -159,12 +161,13 @@ RenderingProperties::initialize ()
 
 		//extensions .push_back (std::string ("GLEW ") + (const char*) glewGetString (GLEW_VERSION));
 
-		GLint glMaxTextureSize, glMaxLights, glTextureUnits;
+		GLint glMaxTextureSize, glMaxLights, glTextureUnits, glTextureCoords;
 		GLint glRedBits, glGreen, glBlueBits, glAlphaBits;
 		GLint glPolygonSmooth;
 		GLint glTextureMemory = -1;
 
 		glGetIntegerv (GL_MAX_TEXTURE_SIZE,                 &glMaxTextureSize);
+		glGetIntegerv (GL_MAX_TEXTURE_COORDS,               &glTextureCoords);
 		glGetIntegerv (GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &glTextureUnits);
 		glGetIntegerv (GL_MAX_LIGHTS,                       &glMaxLights);
 
@@ -179,6 +182,7 @@ RenderingProperties::initialize ()
 			glGetIntegerv (GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &glTextureMemory);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     // in KBytes
 
 		maxThreads ()     = omp_get_max_threads ();
+		textureCoord ()   = std::min (8, glTextureCoords);
 		textureUnits ()   = glTextureUnits;
 		maxTextureSize () = glMaxTextureSize;
 		maxLights ()      = glMaxLights;

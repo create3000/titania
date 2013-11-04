@@ -79,8 +79,12 @@ TextureTransformMatrix3D::create (X3DExecutionContext* const executionContext) c
 }
 
 void
-TextureTransformMatrix3D::draw ()
-{ }
+TextureTransformMatrix3D::eventsProcessed ()
+{
+	X3DTextureTransformNode::eventsProcessed ();
+
+	setMatrix (matrix ());
+}
 
 } // X3D
 } // titania

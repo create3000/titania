@@ -107,13 +107,12 @@ public:
 
 	virtual
 	void
-	init (TexCoordArray &, size_t) const final
-	{ }
+	init (TexCoordArray &, size_t) const final;
 
 	virtual
 	void
-	addTexCoord (TexCoordArray&, int32_t) const final
-	{ throw std::runtime_error ("TextureCoordinateGenerator::emplace_back"); }
+	addTexCoord (size_t, TexCoordArray &, int32_t) const final
+	{ }
 
 	virtual
 	void
@@ -121,20 +120,12 @@ public:
 	{ }
 
 	virtual
-	size_t
-	isEmpty () const final
-	{ return true; }
+	void
+	enable (size_t, size_t, const TexCoordArray &) const final;
 
 	virtual
-	size_t
-	getSize () const final
-	{ return 0; }
-
 	void
-	enable ();
-
-	void
-	disable ();
+	disable (size_t) const final;
 
 
 private:

@@ -242,12 +242,24 @@ public:
 	///  @name Texture unit stack handling
 
 	TextureUnitStack &
+	getTextureCoord ()
+	{ return textureCoord; }
+
+	TextureUnitStack &
 	getTextureUnits ()
 	{ return textureUnits; }
 
 	TextureArray &
 	getTextures ()
 	{ return textures; }
+	
+	void
+	isEnabledTexture (bool value)
+	{ texture = value; }
+
+	bool
+	isEnabledTexture () const
+	{ return texture; }
 
 	///  @name Thread handling
 
@@ -410,8 +422,10 @@ private:
 	LayerStack         layers;
 	LayoutStack        layouts;
 	LightStack         lights;
+	TextureUnitStack   textureCoord;
 	TextureUnitStack   textureUnits;
 	TextureArray       textures;
+	bool               texture;
 
 	X3DSFNode <X3DLayerNode>     activeLayer;
 	NavigationInfo*              activeNavigationInfo;

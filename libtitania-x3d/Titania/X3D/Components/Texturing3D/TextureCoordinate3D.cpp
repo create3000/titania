@@ -86,15 +86,15 @@ TextureCoordinate3D::init (TexCoordArray & texCoords, size_t reserve) const
 }
 
 void
-TextureCoordinate3D::addTexCoord (TexCoordArray & texCoords, int32_t index) const
+TextureCoordinate3D::addTexCoord (size_t channel, TexCoordArray & texCoords, int32_t index) const
 {
 	if (index > -1)
 	{
 		const Vector3f & point3 = point () [index];
-		texCoords [0] .emplace_back (point3 .x (), point3 .y (), point3 .z (), 1);
+		texCoords [channel] .emplace_back (point3 .x (), point3 .y (), point3 .z (), 1);
 	}
 	else
-		texCoords [0] .emplace_back (0, 0, 0, 1);
+		texCoords [channel] .emplace_back (0, 0, 0, 1);
 }
 
 void
@@ -108,6 +108,21 @@ TextureCoordinate3D::resize (size_t size)
 		if (point () .size () < size)
 			point () .resize (size, point () .back ());
 	}
+}
+
+void
+TextureCoordinate3D::enable (size_t unit, size_t channel, const TexCoordArray & texCoords) const
+{
+	glClientActiveTexture (GL_TEXTURE0 + unit);
+	glEnableClientState (GL_TEXTURE_COORD_ARRAY);
+	glTexCoordPointer (4, GL_FLOAT, 0, texCoords [channel] .data ());
+}
+
+void
+TextureCoordinate3D::disable (size_t unit) const
+{
+	glClientActiveTexture (GL_TEXTURE0 + unit);
+	glDisableClientState (GL_TEXTURE_COORD_ARRAY);
 }
 
 } // X3D

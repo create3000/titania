@@ -55,6 +55,7 @@
 #include "../../Components/Shape/FillProperties.h"
 #include "../../Components/Shape/LineProperties.h"
 #include "../../Components/Text/FontStyle.h"
+#include "../../Components/Texturing/TextureCoordinate.h"
 #include "../../Components/Texturing/TextureProperties.h"
 #include "../../Components/Texturing/TextureTransform.h"
 #include "../../Execution/X3DExecutionContext.h"
@@ -117,13 +118,14 @@ BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
 	        fillProperties (new FillProperties (executionContext)),
 	     textureProperties (new TextureProperties (executionContext)),
 	      textureTransform (new TextureTransform (executionContext)),
-	          arc2DOptions (new Arc2DOptions (executionContext)),
-	     arcClose2DOptions (new ArcClose2DOptions (executionContext)),
-	       circle2DOptions (new Circle2DOptions (executionContext)),
-	         disc2DOptions (new Disk2DOptions (executionContext)),
-	    rectangle2DOptions (new Rectangle2DOptions (executionContext)),
-	            boxOptions (new BoxOptions (executionContext)),
-	         sphereOptions (new QuadSphereOptions (executionContext)),
+	                 arc2D (new Arc2DOptions (executionContext)),
+	            arcClose2D (new ArcClose2DOptions (executionContext)),
+	              circle2D (new Circle2DOptions (executionContext)),
+	                disc2D (new Disk2DOptions (executionContext)),
+	           rectangle2D (new Rectangle2DOptions (executionContext)),
+	                   box (new BoxOptions (executionContext)),
+	                sphere (new QuadSphereOptions (executionContext)),
+	              texCoord (new TextureCoordinate (executionContext)),
 	             fontStyle (new FontStyle (executionContext)),
 	              viewport (new Viewport (executionContext))
 { }
@@ -155,13 +157,14 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 	             fillProperties (),
 	             textureProperties (),
 	             textureTransform (),
-	             arc2DOptions (),
-	             arcClose2DOptions (),
-	             circle2DOptions (),
-	             disc2DOptions (),
-	             rectangle2DOptions (),
-	             boxOptions (),
-	             sphereOptions (),
+	             arc2D (),
+	             arcClose2D (),
+	             circle2D (),
+	             disc2D (),
+	             rectangle2D (),
+	             box (),
+	             sphere (),
+	             texCoord (),
 	             fontStyle (),
 	             viewport ());
 }
@@ -177,21 +180,22 @@ BrowserOptions::initialize ()
 {
 	X3DBaseNode::initialize ();
 
-	motionBlurOptions ()  -> setup ();
-	appearance ()         -> setup ();
-	lineProperties ()     -> setup ();
-	fillProperties ()     -> setup ();
-	textureProperties ()  -> setup ();
-	textureTransform ()   -> setup ();
-	arc2DOptions ()       -> setup ();
-	arcClose2DOptions ()  -> setup ();
-	circle2DOptions ()    -> setup ();
-	disc2DOptions ()      -> setup ();
-	rectangle2DOptions () -> setup ();
-	boxOptions ()         -> setup ();
-	sphereOptions ()      -> setup ();
-	fontStyle ()          -> setup ();
-	viewport ()           -> setup ();
+	motionBlurOptions () -> setup ();
+	appearance ()        -> setup ();
+	lineProperties ()    -> setup ();
+	fillProperties ()    -> setup ();
+	textureProperties () -> setup ();
+	textureTransform ()  -> setup ();
+	arc2D ()             -> setup ();
+	arcClose2D ()        -> setup ();
+	circle2D ()          -> setup ();
+	disc2D ()            -> setup ();
+	rectangle2D ()       -> setup ();
+	box ()               -> setup ();
+	sphere ()            -> setup ();
+	texCoord ()          -> setup ();
+	fontStyle ()         -> setup ();
+	viewport ()          -> setup ();
 
 	lineProperties () -> applied () = false;
 	fillProperties () -> hatched () = false;
@@ -274,7 +278,7 @@ BrowserOptions::set_textureQuality ()
 		textureProperties () -> minificationFilter ()  = "FASTEST";
 		textureProperties () -> textureCompression ()  = "FASTEST";
 		textureProperties () -> generateMipMaps ()     = false;
-	
+
 		glHint (GL_GENERATE_MIPMAP_HINT,        GL_FASTEST);
 		glHint (GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
 		return;
@@ -284,7 +288,7 @@ BrowserOptions::set_textureQuality ()
 
 	textureProperties () -> magnificationFilter () = "NICEST";
 	textureProperties () -> minificationFilter ()  = "AVG_PIXEL_AVG_MIPMAP";
-	textureProperties () -> textureCompression ()  = "MEDIUM";
+	textureProperties () -> textureCompression ()  = "NICEST";
 	textureProperties () -> generateMipMaps ()     = true;
 
 	glHint (GL_GENERATE_MIPMAP_HINT,        GL_FASTEST);
@@ -298,17 +302,17 @@ BrowserOptions::set_primitiveQuality ()
 
 	if (primitiveQuality () == "HIGH")
 	{
-		arc2DOptions ()      -> minAngle () = M_PI / 40;
-		arcClose2DOptions () -> minAngle () = M_PI / 40;
-		circle2DOptions ()   -> segments () = 100;
-		disc2DOptions ()     -> segments () = 100;
+		arc2D ()      -> minAngle () = M_PI / 40;
+		arcClose2D () -> minAngle () = M_PI / 40;
+		circle2D ()   -> segments () = 100;
+		disc2D ()     -> segments () = 100;
 
-		auto quadSphereProperties = dynamic_cast <QuadSphereOptions*> (sphereOptions () .getValue ());
+		auto quadSphere = dynamic_cast <QuadSphereOptions*> (sphere () .getValue ());
 
-		if (quadSphereProperties)
+		if (quadSphere)
 		{
-			quadSphereProperties -> uDimension () = 80;
-			quadSphereProperties -> vDimension () = 40;
+			quadSphere -> uDimension () = 80;
+			quadSphere -> vDimension () = 40;
 		}
 
 		return;
@@ -316,35 +320,35 @@ BrowserOptions::set_primitiveQuality ()
 
 	if (primitiveQuality () == "LOW")
 	{
-		arc2DOptions ()      -> minAngle () = M_PI / 10;
-		arcClose2DOptions () -> minAngle () = M_PI / 10;
-		circle2DOptions ()   -> segments () = 20;
-		disc2DOptions ()     -> segments () = 20;
+		arc2D ()      -> minAngle () = M_PI / 10;
+		arcClose2D () -> minAngle () = M_PI / 10;
+		circle2D ()   -> segments () = 20;
+		disc2D ()     -> segments () = 20;
 
-		auto quadSphereProperties = dynamic_cast <QuadSphereOptions*> (sphereOptions () .getValue ());
+		auto quadSphere = dynamic_cast <QuadSphereOptions*> (sphere () .getValue ());
 
-		if (quadSphereProperties)
+		if (quadSphere)
 		{
-			quadSphereProperties -> uDimension () = 20;
-			quadSphereProperties -> vDimension () = 10;
+			quadSphere -> uDimension () = 20;
+			quadSphere -> vDimension () = 10;
 		}
-		
+
 		return;
 	}
 
 	// MEDIUM
 
-	arc2DOptions ()      -> minAngle () = M_PI / 20;
-	arcClose2DOptions () -> minAngle () = M_PI / 20;
-	circle2DOptions ()   -> segments () = 60;
-	disc2DOptions ()     -> segments () = 60;
+	arc2D ()      -> minAngle () = M_PI / 20;
+	arcClose2D () -> minAngle () = M_PI / 20;
+	circle2D ()   -> segments () = 60;
+	disc2D ()     -> segments () = 60;
 
-	auto quadSphereProperties = dynamic_cast <QuadSphereOptions*> (sphereOptions () .getValue ());
+	auto quadSphere = dynamic_cast <QuadSphereOptions*> (sphere () .getValue ());
 
-	if (quadSphereProperties)
+	if (quadSphere)
 	{
-		quadSphereProperties -> uDimension () = 40;
-		quadSphereProperties -> vDimension () = 20;
+		quadSphere -> uDimension () = 40;
+		quadSphere -> vDimension () = 20;
 	}
 }
 
@@ -352,7 +356,7 @@ void
 BrowserOptions::set_shading ()
 {
 	std::clog << "Setting shading to " << shading () << "." << std::endl;
-	
+
 	getBrowser () -> getRenderingProperties () -> shading () = shading ();
 
 	if (shading () == "PHONG")
@@ -377,7 +381,7 @@ BrowserOptions::set_shading ()
 		glPolygonMode (GL_FRONT_AND_BACK, GL_POINT);
 		glShadeModel (GL_SMOOTH);
 	}
-	else // GOURAUD
+	else  // GOURAUD
 	{
 		glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
 		glShadeModel (GL_SMOOTH);
@@ -389,21 +393,22 @@ BrowserOptions::set_shading ()
 void
 BrowserOptions::dispose ()
 {
-	motionBlurOptions ()  .dispose ();
-	appearance ()         .dispose ();
-	lineProperties ()     .dispose ();
-	fillProperties ()     .dispose ();
-	textureProperties ()  .dispose ();
-	textureTransform ()   .dispose ();
-	arc2DOptions ()       .dispose ();
-	arcClose2DOptions ()  .dispose ();
-	circle2DOptions ()    .dispose ();
-	disc2DOptions ()      .dispose ();
-	rectangle2DOptions () .dispose ();
-	boxOptions ()         .dispose ();
-	sphereOptions ()      .dispose ();
-	fontStyle ()          .dispose ();
-	viewport ()           .dispose ();
+	motionBlurOptions () .dispose ();
+	appearance ()        .dispose ();
+	lineProperties ()    .dispose ();
+	fillProperties ()    .dispose ();
+	textureProperties () .dispose ();
+	textureTransform ()  .dispose ();
+	arc2D ()             .dispose ();
+	arcClose2D ()        .dispose ();
+	circle2D ()          .dispose ();
+	disc2D ()            .dispose ();
+	rectangle2D ()       .dispose ();
+	box ()               .dispose ();
+	sphere ()            .dispose ();
+	texCoord ()          .dispose ();
+	fontStyle ()         .dispose ();
+	viewport ()          .dispose ();
 }
 
 } // X3D

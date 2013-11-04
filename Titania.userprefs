@@ -1,13 +1,14 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Library/Tests/Handles/OutlineEditor.wrl">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Texturing/MultiTextureCoordinate.cpp">
     <Files>
       <File FileName="Library/Tests/Handles/OutlineEditor.wrl" Line="10" Column="29" />
       <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="128" Column="1" />
       <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="206" Column="11" />
       <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="76" Column="7" />
       <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="905" Column="1" />
-      <File FileName="libtitania-x3d/share/titania/tools/TransformTool.wrl" Line="734" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/MultiTextureCoordinate.h" Line="55" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/MultiTextureCoordinate.cpp" Line="97" Column="4" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -25,9 +26,7 @@
               </Node>
             </Node>
             <Node name="Tests" expanded="True">
-              <Node name="Handles" expanded="True">
-                <Node name="OutlineEditor.wrl" selected="True" />
-              </Node>
+              <Node name="Handles" expanded="True" />
               <Node name="Layout" expanded="True" />
               <Node name="Text" expanded="True" />
             </Node>
@@ -50,8 +49,14 @@
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
+                <Node name="Browser" expanded="True">
+                  <Node name="Properties" expanded="True" />
+                </Node>
                 <Node name="Components" expanded="True">
                   <Node name="PointingDeviceSensor" expanded="True" />
+                  <Node name="Texturing" expanded="True">
+                    <Node name="MultiTextureCoordinate.cpp" selected="True" />
+                  </Node>
                 </Node>
               </Node>
             </Node>

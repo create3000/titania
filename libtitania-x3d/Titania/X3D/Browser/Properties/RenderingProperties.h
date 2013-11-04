@@ -165,6 +165,14 @@ public:
 	{ return *fields .maxTextureSize; }
 
 	SFInt32 &
+	textureCoord ()
+	{ return *fields .textureCoord; }
+
+	const SFInt32 &
+	textureCoord () const
+	{ return *fields .textureCoord; }
+
+	SFInt32 &
 	textureUnits ()
 	{ return *fields .textureUnits; }
 
@@ -268,6 +276,7 @@ private:
 		SFInt32* const maxThreads;
 		SFString* const shading;
 		SFInt32* const maxTextureSize;
+		SFInt32* const textureCoord;
 		SFInt32* const textureUnits;
 		SFInt32* const maxLights;
 		SFBool* const antialiased;

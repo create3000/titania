@@ -60,7 +60,7 @@ const std::string TextureCoordinateGenerator::typeName       = "TextureCoordinat
 const std::string TextureCoordinateGenerator::containerField = "texCoord";
 
 TextureCoordinateGenerator::Fields::Fields () :
-	mode (new SFString ("SPHERE")),
+	     mode (new SFString ("SPHERE")),
 	parameter (new MFFloat ())
 { }
 
@@ -145,22 +145,39 @@ TextureCoordinateGenerator::set_mode ()
 }
 
 void
-TextureCoordinateGenerator::enable ()
+TextureCoordinateGenerator::init (TexCoordArray & texCoords, size_t) const
 {
-	glTexGeni (GL_S, GL_TEXTURE_GEN_MODE, textureGenMode);
-	glTexGeni (GL_T, GL_TEXTURE_GEN_MODE, textureGenMode);
-	glTexGeni (GL_R, GL_TEXTURE_GEN_MODE, textureGenMode);
-	glEnable (GL_TEXTURE_GEN_S);
-	glEnable (GL_TEXTURE_GEN_T);
-	glEnable (GL_TEXTURE_GEN_R);
+	texCoords .emplace_back ();
 }
 
 void
-TextureCoordinateGenerator::disable ()
+TextureCoordinateGenerator::enable (size_t unit, size_t, const TexCoordArray &) const
 {
+	glActiveTexture (GL_TEXTURE0 + unit);
+
+	glTexGeni (GL_S, GL_TEXTURE_GEN_MODE, textureGenMode);
+	glTexGeni (GL_T, GL_TEXTURE_GEN_MODE, textureGenMode);
+	glEnable (GL_TEXTURE_GEN_S);
+	glEnable (GL_TEXTURE_GEN_T);
+
+	if (textureGenMode not_eq GL_SPHERE_MAP)
+	{
+		glTexGeni (GL_R, GL_TEXTURE_GEN_MODE, textureGenMode);
+		glEnable (GL_TEXTURE_GEN_R);
+		//glTexGeni (GL_Q, GL_TEXTURE_GEN_MODE, textureGenMode);
+		//glEnable (GL_TEXTURE_GEN_Q);
+	}
+}
+
+void
+TextureCoordinateGenerator::disable (size_t unit) const
+{
+	glActiveTexture (GL_TEXTURE0 + unit);
+
 	glDisable (GL_TEXTURE_GEN_S);
 	glDisable (GL_TEXTURE_GEN_T);
 	glDisable (GL_TEXTURE_GEN_R);
+	//glDisable (GL_TEXTURE_GEN_Q);
 }
 
 } // X3D

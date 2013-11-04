@@ -103,19 +103,29 @@ public:
 
 	virtual
 	void
-	addTexCoord (TexCoordArray & texCoords, int32_t) const final;
+	addTexCoord (size_t, TexCoordArray & texCoords, int32_t) const final;
 
 	virtual
 	void
 	resize (size_t) final;
 
 	virtual
-	size_t
-	isEmpty () const final;
+	void
+	enable (const TexCoordArray &) const final;
 
 	virtual
-	size_t
-	getSize () const final;
+	void
+	enable (size_t, size_t, const TexCoordArray &) const final
+	{ }
+
+	virtual
+	void
+	disable () const final;
+
+	virtual
+	void
+	disable (size_t) const final
+	{ }
 
 
 private:

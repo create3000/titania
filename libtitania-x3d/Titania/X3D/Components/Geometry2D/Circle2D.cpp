@@ -85,7 +85,7 @@ Circle2D::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	getBrowser () -> getBrowserOptions () -> circle2DOptions () .addInterest (this, &Circle2D::set_properties);
+	getBrowser () -> getBrowserOptions () -> circle2D () .addInterest (this, &Circle2D::set_properties);
 }
 
 Box3f
@@ -105,7 +105,7 @@ Circle2D::set_properties ()
 void
 Circle2D::build ()
 {
-	const Circle2DOptions* properties = getBrowser () -> getBrowserOptions () -> circle2DOptions ();
+	const Circle2DOptions* properties = getBrowser () -> getBrowserOptions () -> circle2D ();
 
 	if (std::abs (radius ()) == 1.0f)
 		getVertices () = properties -> getVertices ();

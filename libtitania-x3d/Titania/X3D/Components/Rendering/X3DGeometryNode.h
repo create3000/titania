@@ -121,8 +121,7 @@ protected:
 	{ return texCoords; }
 
 	void
-	setTextureCoordinateGenerator (TextureCoordinateGenerator* value)
-	{ textureCoordinateGenerator = value; }
+	setTextureCoordinate (X3DTextureCoordinateNode*);
 
 	std::vector <Color4f> &
 	getColors ()
@@ -216,7 +215,7 @@ private:
 
 	Box3f                       bbox;
 	TexCoordArray               texCoords;
-	TextureCoordinateGenerator* textureCoordinateGenerator;
+	X3DTextureCoordinateNode* textureCoordinate;
 	std::vector <Color4f>       colors;
 	std::vector <Vector3f>      normals;
 	std::vector <Vector3f>      vertices;

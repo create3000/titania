@@ -225,11 +225,14 @@ Appearance::draw ()
 	// Texture
 
 	if (_texture)
+	{
 		_texture -> draw ();
+		getBrowser () -> isEnabledTexture (true);
+	}
 
 	// TextureTransform
 
-	_textureTransform -> draw ();
+	//_textureTransform -> draw ();
 
 	// Shader
 

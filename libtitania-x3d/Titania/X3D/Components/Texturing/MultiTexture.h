@@ -87,14 +87,6 @@ public:
 
 	///  @name Fields
 
-	SFFloat &
-	alpha ()
-	{ return *fields .alpha; }
-
-	const SFFloat &
-	alpha () const
-	{ return *fields .alpha; }
-
 	SFColor &
 	color ()
 	{ return *fields .color; }
@@ -102,6 +94,14 @@ public:
 	const SFColor &
 	color () const
 	{ return *fields .color; }
+
+	SFFloat &
+	alpha ()
+	{ return *fields .alpha; }
+
+	const SFFloat &
+	alpha () const
+	{ return *fields .alpha; }
 
 	MFString &
 	function ()
@@ -147,7 +147,6 @@ public:
 
 private:
 
-
 	///  @name Static members
 
 	static const std::string componentName;
@@ -160,8 +159,8 @@ private:
 	{
 		Fields ();
 
-		SFFloat* const alpha;
 		SFColor* const color;
+		SFFloat* const alpha;
 		MFString* const function;
 		MFString* const mode;
 		MFString* const source;

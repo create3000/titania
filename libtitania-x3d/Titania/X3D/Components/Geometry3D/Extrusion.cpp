@@ -51,6 +51,7 @@
 #include "Extrusion.h"
 
 #include "../../Execution/X3DExecutionContext.h"
+
 #include <Titania/Utility/Adapter.h>
 
 namespace titania {
@@ -456,6 +457,7 @@ Extrusion::build ()
 
 	setSolid (solid ());
 	setCCW (ccw ());
+	setTextureCoordinate (nullptr);
 
 	#undef INDEX
 }

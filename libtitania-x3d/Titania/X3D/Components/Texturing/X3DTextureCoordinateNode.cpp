@@ -50,6 +50,8 @@
 
 #include "X3DTextureCoordinateNode.h"
 
+#include "../../Browser/X3DBrowser.h"
+
 namespace titania {
 namespace X3D {
 
@@ -57,6 +59,25 @@ X3DTextureCoordinateNode::X3DTextureCoordinateNode () :
 	X3DGeometricPropertyNode ()
 {
 	addNodeType (X3DConstants::X3DTextureCoordinateNode);
+}
+
+void
+X3DTextureCoordinateNode::enable (const TexCoordArray & texCoords) const
+{
+	if (getBrowser () -> getTextures () .empty ())
+		enable (0, 0, texCoords);
+
+	else
+	{
+		for (const auto & unit : getBrowser () -> getTextures ())
+			enable (unit, 0, texCoords);
+	}
+}
+
+void
+X3DTextureCoordinateNode::disable () const
+{
+	disable (0);
 }
 
 } // X3D

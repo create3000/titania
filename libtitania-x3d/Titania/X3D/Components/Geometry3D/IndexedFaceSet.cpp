@@ -56,7 +56,6 @@
 #include "../Rendering/X3DCoordinateNode.h"
 #include "../Rendering/X3DNormalNode.h"
 #include "../Texturing/X3DTextureCoordinateNode.h"
-#include "../Texturing/TextureCoordinateGenerator.h"
 
 namespace titania {
 namespace X3D {
@@ -298,12 +297,9 @@ IndexedFaceSet::build ()
 
 	// TextureCoordinate
 
-	auto _textureCoordinate          = x3d_cast <X3DTextureCoordinateNode*> (texCoord ());
-	auto _textureCoordinateGenerator = x3d_cast <TextureCoordinateGenerator*> (texCoord ());
+	auto _textureCoordinate = x3d_cast <X3DTextureCoordinateNode*> (texCoord ());
 
-	if (_textureCoordinateGenerator)
-		;
-	else if (_textureCoordinate)
+	if (_textureCoordinate)
 		_textureCoordinate -> init (getTexCoord (), reserve);
 	else
 		getTexCoord () .emplace_back ();
@@ -353,9 +349,7 @@ IndexedFaceSet::build ()
 						_color -> addColor (getColors (), colorIndex () [face]);
 				}
 
-				if (_textureCoordinateGenerator)
-					;
-				else if (_textureCoordinate)
+				if (_textureCoordinate)
 					_textureCoordinate -> addTexCoord (getTexCoord (), texCoordIndex () [i]);
 
 				if (_normal)
@@ -384,9 +378,9 @@ IndexedFaceSet::build ()
 	if (not _normal)
 		buildNormals (polygons);
 
-	setTextureCoordinateGenerator (_textureCoordinateGenerator);
 	setSolid (solid ());
 	setCCW (ccw ());
+	setTextureCoordinate (_textureCoordinate);
 }
 
 void

@@ -2332,6 +2332,10 @@
     <None Include="Tests\PointingDeviceSensor\test.wrl" />
     <None Include="Tests\Layout\RandomText.wrl" />
     <None Include="Tests\Layout\ScreenFontStyle.wrl" />
+    <None Include="Tests\Geometry2D\Geometry2D.wrl" />
+    <None Include="Tests\CADGeometry\CADGeometry.wrl" />
+    <None Include="Tests\Rendering\RenderingGeometry.wrl" />
+    <None Include="Tests\Texturing\MultiTexture.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

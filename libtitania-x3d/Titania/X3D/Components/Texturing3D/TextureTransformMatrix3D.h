@@ -95,13 +95,14 @@ public:
 	matrix () const
 	{ return *fields .matrix; }
 
+	///  @name Operations
+
 	virtual
 	void
-	draw ();
+	eventsProcessed ();
 
 
 private:
-
 
 	///  @name Static members
 

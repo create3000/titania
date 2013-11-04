@@ -87,7 +87,7 @@ Sphere::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	getBrowser () -> getBrowserOptions () -> sphereOptions () .addInterest (this, &Sphere::set_properties);
+	getBrowser () -> getBrowserOptions () -> sphere () .addInterest (this, &Sphere::set_properties);
 }
 
 void
@@ -107,7 +107,7 @@ Sphere::createBBox ()
 void
 Sphere::build ()
 {
-	const X3DSphereOptionNode* properties = getBrowser () -> getBrowserOptions () -> sphereOptions ();
+	const X3DSphereOptionNode* properties = getBrowser () -> getBrowserOptions () -> sphere ();
 
 	getTexCoord () .emplace_back ();
 	getTexCoord () [0] .reserve (properties -> getTexCoord () .size ());
@@ -129,6 +129,7 @@ Sphere::build ()
 
 	addElements (properties -> getVertexMode (), getVertices () .size ());
 	setSolid (solid ());
+	setTextureCoordinate (nullptr);
 }
 
 } // X3D

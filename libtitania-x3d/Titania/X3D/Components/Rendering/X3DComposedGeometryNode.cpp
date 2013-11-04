@@ -55,7 +55,6 @@
 #include "../Rendering/X3DCoordinateNode.h"
 #include "../Rendering/X3DNormalNode.h"
 #include "../Texturing/X3DTextureCoordinateNode.h"
-#include "../Texturing/TextureCoordinateGenerator.h"
 
 namespace titania {
 namespace X3D {
@@ -137,12 +136,9 @@ X3DComposedGeometryNode::buildPolygons (size_t vertexCount, size_t size)
 
 	// TextureCoordinate
 
-	auto _textureCoordinate          = x3d_cast <X3DTextureCoordinateNode*> (texCoord ());
-	auto _textureCoordinateGenerator = x3d_cast <TextureCoordinateGenerator*> (texCoord ());
+	auto _textureCoordinate = x3d_cast <X3DTextureCoordinateNode*> (texCoord ());
 
-	if (_textureCoordinateGenerator)
-		;
-	else if (_textureCoordinate)
+	if (_textureCoordinate)
 	{
 		_textureCoordinate -> init (getTexCoord (), size);
 		_textureCoordinate -> resize (size);
@@ -178,9 +174,7 @@ X3DComposedGeometryNode::buildPolygons (size_t vertexCount, size_t size)
 					_color -> addColor (getColors (), face);
 			}
 
-			if (_textureCoordinateGenerator)
-				;
-			else if (_textureCoordinate)
+			if (_textureCoordinate)
 				_textureCoordinate -> addTexCoord (getTexCoord (), getIndex (index));
 
 			if (_normal)
@@ -204,10 +198,10 @@ X3DComposedGeometryNode::buildPolygons (size_t vertexCount, size_t size)
 	if (not _normal)
 		buildNormals (vertexCount, size);
 
-	setTextureCoordinateGenerator (_textureCoordinateGenerator);
 	addElements (getVertexMode (vertexCount), getVertices () .size ());
 	setSolid (solid ());
 	setCCW (ccw ());
+	setTextureCoordinate (_textureCoordinate);
 }
 
 void

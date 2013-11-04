@@ -50,6 +50,8 @@
 
 #include "MultiTextureCoordinate.h"
 
+#include "../../Bits/Cast.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -83,37 +85,118 @@ MultiTextureCoordinate::create (X3DExecutionContext* const executionContext) con
 void
 MultiTextureCoordinate::init (TexCoordArray & texCoords, size_t reserve) const
 {
-	texCoords .emplace_back ();
-	texCoords .back () .reserve (reserve);
-}
+	for (const auto & node : texCoord ())
+	{
+		if (x3d_cast <MultiTextureCoordinate*> (node))
+			continue;
 
-void
-MultiTextureCoordinate::addTexCoord (TexCoordArray & texCoords, int32_t index) const
-{
-	if (index > -1)
-	{
-		texCoords [0] .emplace_back (0, 0, 0, 1);
-	}
-	else
-	{
-		texCoords [0] .emplace_back (0, 0, 0, 1);
+		auto textureCoordinate = x3d_cast <X3DTextureCoordinateNode*> (node);
+
+		if (textureCoordinate)
+			textureCoordinate -> init (texCoords, reserve);
 	}
 }
 
 void
-MultiTextureCoordinate::resize (size_t)
-{ }
-
-size_t
-MultiTextureCoordinate::isEmpty () const
+MultiTextureCoordinate::addTexCoord (size_t channel, TexCoordArray & texCoords, int32_t index) const
 {
-	return true;
+	channel = 0;
+
+	for (const auto & node : texCoord ())
+	{
+		if (x3d_cast <MultiTextureCoordinate*> (node))
+			continue;
+
+		auto textureCoordinate = x3d_cast <X3DTextureCoordinateNode*> (node);
+
+		if (textureCoordinate)
+		{
+			textureCoordinate -> addTexCoord (channel, texCoords, index);
+			++ channel;
+		}
+	}
 }
 
-size_t
-MultiTextureCoordinate::getSize () const
+void
+MultiTextureCoordinate::resize (size_t size)
 {
-	return 0;
+	for (const auto & node : texCoord ())
+	{
+		auto texCoord = x3d_cast <X3DTextureCoordinateNode*> (node);
+
+		if (texCoord)
+			texCoord -> resize (size);
+	}
+}
+
+void
+MultiTextureCoordinate::enable (const TexCoordArray & texCoords) const
+{
+	X3DTextureCoordinateNode* last    = nullptr;
+	size_t                    channel = 0;
+	size_t                    size    = getBrowser () -> getTextures () .size ();
+
+	for (const auto & node : texCoord ())
+	{
+		if (x3d_cast <MultiTextureCoordinate*> (node))
+			continue;
+
+		size_t unit = channel < size ? getBrowser () -> getTextures () [channel] : 0;
+
+		X3DTextureCoordinateNode* textureCoordinate = x3d_cast <X3DTextureCoordinateNode*> (node);
+
+		if (textureCoordinate)
+		{
+			textureCoordinate -> enable (unit, channel, texCoords);
+
+			last = textureCoordinate;
+			++ channel;
+
+			if (unit == 0)
+				break;
+		}
+	}
+
+	if (last)
+	{
+		for ( ; channel < size; ++ channel)
+			last -> enable (getBrowser () -> getTextures () [channel], channel, texCoords);
+	}
+}
+
+void
+MultiTextureCoordinate::disable () const
+{
+	X3DTextureCoordinateNode* last    = nullptr;
+	size_t                    channel = 0;
+	size_t                    size    = getBrowser () -> getTextures () .size ();
+
+	for (const auto & node : texCoord ())
+	{
+		if (x3d_cast <MultiTextureCoordinate*> (node))
+			continue;
+
+		size_t unit = channel < size ? getBrowser () -> getTextures () [channel] : 0;
+
+		X3DTextureCoordinateNode* textureCoordinate = x3d_cast <X3DTextureCoordinateNode*> (node);
+
+		if (textureCoordinate)
+		{
+			textureCoordinate -> disable (unit);
+
+			last = textureCoordinate;
+			++ channel;
+
+			if (unit == 0)
+				break;
+		}
+	}
+
+	if (last)
+	{
+		for ( ; channel < size; ++ channel)
+			last -> disable (getBrowser () -> getTextures () [channel]);
+	}
 }
 
 } // X3D

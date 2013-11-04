@@ -51,8 +51,8 @@
 #ifndef __TITANIA_X3D_COMPONENTS_TEXTURING_X3DTEXTURE_COORDINATE_NODE_H__
 #define __TITANIA_X3D_COMPONENTS_TEXTURING_X3DTEXTURE_COORDINATE_NODE_H__
 
-#include "../Rendering/X3DGeometricPropertyNode.h"
 #include "../../Rendering/TexCoordArray.h"
+#include "../Rendering/X3DGeometricPropertyNode.h"
 
 namespace titania {
 namespace X3D {
@@ -68,21 +68,33 @@ public:
 	void
 	init (TexCoordArray &, size_t) const = 0;
 
+	void
+	addTexCoord (TexCoordArray & texCoord, int32_t index) const
+	{ addTexCoord (0, texCoord, index); }
+
 	virtual
 	void
-	addTexCoord (TexCoordArray&, int32_t) const = 0;
+	addTexCoord (size_t, TexCoordArray &, int32_t) const = 0;
 
 	virtual
 	void
 	resize (size_t) = 0;
 
 	virtual
-	size_t
-	isEmpty () const = 0;
+	void
+	enable (const TexCoordArray & texCoords) const;
 
 	virtual
-	size_t
-	getSize () const = 0;
+	void
+	enable (size_t, size_t, const TexCoordArray &) const = 0;
+
+	virtual
+	void
+	disable () const;
+
+	virtual
+	void
+	disable (size_t) const = 0;
 
 
 protected:

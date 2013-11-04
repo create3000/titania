@@ -107,6 +107,7 @@ TriangleSet2D::build ()
 
 	addElements (GL_TRIANGLES, getVertices () .size ());
 	setSolid (true);
+	setTextureCoordinate (nullptr);
 
 	if (not solid ())
 		addMirrorVertices (GL_TRIANGLES, true);

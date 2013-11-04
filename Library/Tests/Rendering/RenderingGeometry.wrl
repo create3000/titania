@@ -1,0 +1,148 @@
+#VRML V2.0 utf8
+
+Background {
+  skyColor 0.2 0.2 0.2
+}
+
+Viewpoint {
+  description "Home"
+  position 7.5 0 18
+  centerOfRotation 7.5 0 0
+}
+
+Transform {
+  children Shape {
+    appearance DEF Grey Appearance {
+      material Material { }
+    }
+    geometry DEF IndexedTriangleFanSet IndexedTriangleFanSet {
+      solid FALSE
+      coord Coordinate {
+        point [ -1 -1 0, 1 -1 0, 0 1 0 ]
+      }
+      index [ 0, 1, 2 ]
+    }
+  }
+}
+
+Transform {
+  translation 3 0 0
+  children Shape {
+    appearance USE Grey
+    geometry DEF IndexedTriangleSet IndexedTriangleSet {
+      solid FALSE
+      coord Coordinate {
+        point [ -1 -1 0, 1 -1 0, 0 1 0 ]
+      }
+      index [ 0, 1, 2 ]
+    }
+  }
+}
+
+Transform {
+  translation 6 0 0
+  children Shape {
+    appearance USE Grey
+    geometry DEF IndexedTriangleStripSet IndexedTriangleStripSet {
+      solid FALSE
+      coord Coordinate {
+        point [ -1 -1 0, 1 -1 0, 0 1 0 ]
+      }
+      index [ 0, 1, 2 ]
+    }
+  }
+}
+
+Transform {
+  translation 9 0 0
+  children Shape {
+    appearance USE Grey
+    geometry DEF TriangleFanSet TriangleFanSet {
+      fanCount 3
+      solid FALSE
+      coord Coordinate {
+        point [ -1 -1 0, 1 -1 0, 0 1 0 ]
+      }
+    }
+  }
+}
+
+Transform {
+  translation 12 0 0
+  children Shape {
+    appearance USE Grey
+    geometry DEF TriangleSet TriangleSet {
+      solid FALSE
+      coord Coordinate {
+        point [ -1 -1 0, 1 -1 0, 0 1 0 ]
+      }
+    }
+  }
+}
+
+Transform {
+  translation 15 0 0
+  children Shape {
+    appearance USE Grey
+    geometry DEF TriangleStripSet TriangleStripSet {
+      stripCount 3
+      solid FALSE
+      coord Coordinate {
+        point [ -1 -1 0, 1 -1 0, 0 1 0 ]
+      }
+    }
+  }
+}
+
+Transform {
+  translation 0 3 0
+  children Shape {
+    appearance DEF Image Appearance {
+      material Material { }
+      texture ImageTexture {
+        url "../images/image.png"
+      }
+    }
+    geometry USE IndexedTriangleFanSet
+  }
+}
+
+Transform {
+  translation 3 3 0
+  children Shape {
+    appearance USE Image
+    geometry USE IndexedTriangleSet
+  }
+}
+
+Transform {
+  translation 6 3 0
+  children Shape {
+    appearance USE Image
+    geometry USE IndexedTriangleStripSet
+  }
+}
+
+Transform {
+  translation 9 3 0
+  children Shape {
+    appearance USE Image
+    geometry USE TriangleFanSet
+  }
+}
+
+Transform {
+  translation 12 3 0
+  children Shape {
+    appearance USE Image
+    geometry USE TriangleSet
+  }
+}
+
+Transform {
+  translation 15 3 0
+  children Shape {
+    appearance USE Image
+    geometry USE TriangleStripSet
+  }
+}

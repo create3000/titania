@@ -59,11 +59,6 @@ const std::string TextureTransform3D::componentName  = "Texturing3D";
 const std::string TextureTransform3D::typeName       = "TextureTransform3D";
 const std::string TextureTransform3D::containerField = "textureTransform";
 
-const Matrix4f TextureTransform3D::textureMatrix = { 1,  0, 0, 0,
-	                                                  0, -1, 0, 0,
-	                                                  0,  1, 1, 0,
-	                                                  0,  0, 0, 1 };
-
 TextureTransform3D::Fields::Fields () :
 	translation (new SFVec3f ()),
 	   rotation (new SFRotation ()),
@@ -74,8 +69,7 @@ TextureTransform3D::Fields::Fields () :
 TextureTransform3D::TextureTransform3D (X3DExecutionContext* const executionContext) :
 	            X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DTextureTransformNode (),
-	                 fields (),
-	                 matrix ()
+	                 fields ()
 {
 	addField (inputOutput, "metadata",    metadata ());
 	addField (inputOutput, "translation", translation ());
@@ -91,47 +85,30 @@ TextureTransform3D::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-TextureTransform3D::initialize ()
-{
-	X3DTextureTransformNode::initialize ();
-	eventsProcessed ();
-}
-
-void
 TextureTransform3D::eventsProcessed ()
 {
 	X3DTextureTransformNode::eventsProcessed ();
 
 	// Tc' = -C × S × R × C × T × Tc
 
-	Matrix4f m = textureMatrix;
+	Matrix4f matrix;
 
 	if (center () not_eq Vector3f ())
-		m .translate (-center ());
+		matrix .translate (-center ());
 
 	if (scale () not_eq Vector3f (1, 1, 1))
-		m .scale (scale ());
+		matrix .scale (scale ());
 
 	if (rotation () not_eq Rotation4f ())
-		m .rotate (rotation ());
+		matrix .rotate (rotation ());
 
 	if (center () not_eq Vector3f ())
-		m .translate (center ());
+		matrix .translate (center ());
 
 	if (translation () not_eq Vector3f ())
-		m .translate (translation ());
+		matrix .translate (translation ());
 
-	matrix = m;
-}
-
-void
-TextureTransform3D::draw ()
-{
-	glMatrixMode (GL_TEXTURE);
-
-	glLoadMatrixf (matrix .data ());
-
-	glMatrixMode (GL_MODELVIEW);
+	setMatrix (matrix);
 }
 
 } // X3D

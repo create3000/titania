@@ -14,15 +14,20 @@ Transform {
       material Material {
         diffuseColor 0.8 0 0
       }
-      texture ImageTexture {
-        url "../images/image.png"
+      texture MultiTexture {
+        texture ImageTexture {
+          url "../images/image.png"
+        }
       }
     }
     geometry IndexedFaceSet {
+      solid FALSE
       texCoordIndex [ 0, 1, 2, 3, -1 ]
       coordIndex [ 0, 1, 2, 3, -1 ]
-      texCoord TextureCoordinate {
-        point [ 0 0, 0.5 0, 0.5 0.5, 0 0.5 ]
+      texCoord MultiTextureCoordinate {
+        texCoord TextureCoordinate {
+          point [ 0 0, 0.5 0, 0.5 0.5, 0 0.5 ]
+        }
       }
       coord Coordinate {
         point [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]

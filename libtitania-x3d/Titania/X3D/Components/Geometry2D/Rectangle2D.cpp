@@ -87,7 +87,7 @@ Rectangle2D::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	getBrowser () -> getBrowserOptions () -> rectangle2DOptions () .addInterest (this, &Rectangle2D::set_properties);
+	getBrowser () -> getBrowserOptions () -> rectangle2D () .addInterest (this, &Rectangle2D::set_properties);
 }
 
 Box3f
@@ -105,7 +105,7 @@ Rectangle2D::set_properties ()
 void
 Rectangle2D::build ()
 {
-	const Rectangle2DOptions* properties = getBrowser () -> getBrowserOptions () -> rectangle2DOptions ();
+	const Rectangle2DOptions* properties = getBrowser () -> getBrowserOptions () -> rectangle2D ();
 
 	size_t elements = solid () ? 1 : 2;
 
@@ -133,6 +133,7 @@ Rectangle2D::build ()
 
 	addElements (properties -> getVertexMode (), getVertices () .size ());
 	setSolid (true);
+	setTextureCoordinate (nullptr);
 
 	if (not solid ())
 		addMirrorVertices (properties -> getVertexMode (), true);

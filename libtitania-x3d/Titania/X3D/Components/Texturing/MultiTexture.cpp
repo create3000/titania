@@ -50,6 +50,8 @@
 
 #include "MultiTexture.h"
 
+#include "../../Bits/Cast.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -60,11 +62,11 @@ const std::string MultiTexture::typeName       = "MultiTexture";
 const std::string MultiTexture::containerField = "texture";
 
 MultiTexture::Fields::Fields () :
-	   alpha (new SFFloat (1)),
 	   color (new SFColor (1, 1, 1)),
-	function (new MFString ()),
+	   alpha (new SFFloat (1)),
 	    mode (new MFString ()),
 	  source (new MFString ()),
+	function (new MFString ()),
 	 texture (new MFNode ())
 { }
 
@@ -74,11 +76,11 @@ MultiTexture::MultiTexture (X3DExecutionContext* const executionContext) :
 	        fields ()
 {
 	addField (inputOutput, "metadata", metadata ());
-	addField (inputOutput, "alpha",    alpha ());
 	addField (inputOutput, "color",    color ());
-	addField (inputOutput, "function", function ());
+	addField (inputOutput, "alpha",    alpha ());
 	addField (inputOutput, "mode",     mode ());
 	addField (inputOutput, "source",   source ());
+	addField (inputOutput, "function", function ());
 	addField (inputOutput, "texture",  texture ());
 }
 
@@ -90,7 +92,38 @@ MultiTexture::create (X3DExecutionContext* const executionContext) const
 
 void
 MultiTexture::draw ()
-{ }
+{
+	for (const auto & node : texture ())
+	{
+		if (x3d_cast <MultiTexture*> (node))
+			continue;
+
+		auto texture = x3d_cast <X3DTextureNode*> (node);
+
+		if (texture)
+		{
+			if (getBrowser () -> getTextureUnits () .empty ())
+				break;
+				
+			// Get texture unit.
+
+			size_t unit = getBrowser () -> getTextureCoord () .top ();
+			getBrowser () -> getTextureCoord () .pop ();
+
+			getBrowser () -> getTextures () .emplace_back (unit);
+
+			// Activate texture
+
+			glActiveTexture (GL_TEXTURE0 + unit);
+
+			texture -> draw ();
+
+			// 
+
+			glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+		}
+	}
+}
 
 } // X3D
 } // titania

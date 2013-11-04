@@ -90,7 +90,7 @@ Disk2D::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	getBrowser () -> getBrowserOptions () -> disc2DOptions () .addInterest (this, &Disk2D::set_properties);
+	getBrowser () -> getBrowserOptions () -> disc2D () .addInterest (this, &Disk2D::set_properties);
 }
 
 Box3f
@@ -110,7 +110,7 @@ Disk2D::set_properties ()
 void
 Disk2D::build ()
 {
-	const Disk2DOptions* properties = getBrowser () -> getBrowserOptions () -> disc2DOptions ();
+	const Disk2DOptions* properties = getBrowser () -> getBrowserOptions () -> disc2D ();
 
 	if (innerRadius () == outerRadius ())
 	{
@@ -167,6 +167,7 @@ Disk2D::build ()
 
 		addElements (properties -> getVertexMode (), getVertices () .size ());
 		setSolid (true);
+		setTextureCoordinate (nullptr);
 
 		if (not solid ())
 			addMirrorVertices (properties -> getVertexMode (), true);
@@ -224,6 +225,7 @@ Disk2D::build ()
 
 	addElements (GL_QUAD_STRIP, getVertices () .size ());
 	setSolid (true);
+	setTextureCoordinate (nullptr);
 
 	if (not solid ())
 		addMirrorVertices (GL_QUAD_STRIP, true);

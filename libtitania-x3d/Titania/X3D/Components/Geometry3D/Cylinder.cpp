@@ -50,6 +50,7 @@
 
 #include "Cylinder.h"
 
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 #define SEGMENTS 16.0
@@ -193,6 +194,7 @@ Cylinder::build ()
 	}
 
 	setSolid (solid ());
+	setTextureCoordinate (nullptr);
 }
 
 } // X3D

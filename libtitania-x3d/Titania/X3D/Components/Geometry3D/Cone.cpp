@@ -50,6 +50,7 @@
 
 #include "Cone.h"
 
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 #define SEGMENTS 16.0
@@ -171,6 +172,7 @@ Cone::build ()
 	}
 
 	setSolid (solid ());
+	setTextureCoordinate (nullptr);
 }
 
 } // X3D

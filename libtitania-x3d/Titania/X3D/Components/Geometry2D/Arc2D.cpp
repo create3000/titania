@@ -89,7 +89,7 @@ Arc2D::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	getBrowser () -> getBrowserOptions () -> arcClose2DOptions () .addInterest (this, &Arc2D::set_properties);
+	getBrowser () -> getBrowserOptions () -> arcClose2D () .addInterest (this, &Arc2D::set_properties);
 }
 
 float
@@ -118,7 +118,7 @@ Arc2D::set_properties ()
 void
 Arc2D::build ()
 {
-	const Arc2DOptions* properties = getBrowser () -> getBrowserOptions () -> arc2DOptions ();
+	const Arc2DOptions* properties = getBrowser () -> getBrowserOptions () -> arc2D ();
 
 	float  difference = getAngle ();
 	size_t segments   = std::ceil (difference / properties -> minAngle ());

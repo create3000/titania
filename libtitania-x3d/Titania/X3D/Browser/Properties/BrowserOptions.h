@@ -87,6 +87,7 @@ class Disk2DOptions;
 class Rectangle2DOptions;
 class BoxOptions;
 class X3DSphereOptionNode;
+class X3DTextureCoordinateNode;
 class MotionBlur;
 class Viewport;
 
@@ -274,60 +275,68 @@ public:
 	{ return fields .textureTransform; }
 
 	X3DSFNode <Arc2DOptions> &
-	arc2DOptions ()
-	{ return fields .arc2DOptions; }
+	arc2D ()
+	{ return fields .arc2D; }
 
 	const X3DSFNode <Arc2DOptions> &
-	arc2DOptions () const
-	{ return fields .arc2DOptions; }
+	arc2D () const
+	{ return fields .arc2D; }
 
 	X3DSFNode <ArcClose2DOptions> &
-	arcClose2DOptions ()
-	{ return fields .arcClose2DOptions; }
+	arcClose2D ()
+	{ return fields .arcClose2D; }
 
 	const X3DSFNode <ArcClose2DOptions> &
-	arcClose2DOptions () const
-	{ return fields .arcClose2DOptions; }
+	arcClose2D () const
+	{ return fields .arcClose2D; }
 
 	X3DSFNode <Circle2DOptions> &
-	circle2DOptions ()
-	{ return fields .circle2DOptions; }
+	circle2D ()
+	{ return fields .circle2D; }
 
 	const X3DSFNode <Circle2DOptions> &
-	circle2DOptions () const
-	{ return fields .circle2DOptions; }
+	circle2D () const
+	{ return fields .circle2D; }
 
 	X3DSFNode <Disk2DOptions> &
-	disc2DOptions ()
-	{ return fields .disc2DOptions; }
+	disc2D ()
+	{ return fields .disc2D; }
 
 	const X3DSFNode <Disk2DOptions> &
-	disc2DOptions () const
-	{ return fields .disc2DOptions; }
+	disc2D () const
+	{ return fields .disc2D; }
 
 	X3DSFNode <Rectangle2DOptions> &
-	rectangle2DOptions ()
-	{ return fields .rectangle2DOptions; }
+	rectangle2D ()
+	{ return fields .rectangle2D; }
 
 	const X3DSFNode <Rectangle2DOptions> &
-	rectangle2DOptions () const
-	{ return fields .rectangle2DOptions; }
+	rectangle2D () const
+	{ return fields .rectangle2D; }
 
 	X3DSFNode <BoxOptions> &
-	boxOptions ()
-	{ return fields .boxOptions; }
+	box ()
+	{ return fields .box; }
 
 	const X3DSFNode <BoxOptions> &
-	boxOptions () const
-	{ return fields .boxOptions; }
+	box () const
+	{ return fields .box; }
 
 	X3DSFNode <X3DSphereOptionNode> &
-	sphereOptions ()
-	{ return fields .sphereOptions; }
+	sphere ()
+	{ return fields .sphere; }
 
 	const X3DSFNode <X3DSphereOptionNode> &
-	sphereOptions () const
-	{ return fields .sphereOptions; }
+	sphere () const
+	{ return fields .sphere; }
+
+	X3DSFNode <X3DTextureCoordinateNode> &
+	texCoord ()
+	{ return fields .texCoord; }
+
+	const X3DSFNode <X3DTextureCoordinateNode> &
+	texCoord () const
+	{ return fields .texCoord; }
 
 	X3DSFNode <X3DFontStyleNode> &
 	fontStyle ()
@@ -402,13 +411,14 @@ private:
 		X3DSFNode <FillProperties> fillProperties;
 		X3DSFNode <TextureProperties> textureProperties;
 		X3DSFNode <TextureTransform> textureTransform;
-		X3DSFNode <Arc2DOptions> arc2DOptions;
-		X3DSFNode <ArcClose2DOptions> arcClose2DOptions;
-		X3DSFNode <Circle2DOptions> circle2DOptions;
-		X3DSFNode <Disk2DOptions> disc2DOptions;
-		X3DSFNode <Rectangle2DOptions> rectangle2DOptions;
-		X3DSFNode <BoxOptions> boxOptions;
-		X3DSFNode <X3DSphereOptionNode> sphereOptions;
+		X3DSFNode <Arc2DOptions> arc2D;
+		X3DSFNode <ArcClose2DOptions> arcClose2D;
+		X3DSFNode <Circle2DOptions> circle2D;
+		X3DSFNode <Disk2DOptions> disc2D;
+		X3DSFNode <Rectangle2DOptions> rectangle2D;
+		X3DSFNode <BoxOptions> box;
+		X3DSFNode <X3DSphereOptionNode> sphere;
+		X3DSFNode <X3DTextureCoordinateNode> texCoord;
 		X3DSFNode <X3DFontStyleNode> fontStyle;
 		X3DSFNode <Viewport> viewport;
 	};

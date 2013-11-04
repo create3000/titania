@@ -11,7 +11,7 @@ Transform {
           ImageTexture {
             url "../images/image.png"
           }
-          ImageTexture {
+          DEF Earth ImageTexture {
             url "../images/earth.png"
           }
         ]
@@ -54,7 +54,7 @@ Transform {
   children Shape {
     appearance Appearance {
       shaders ComposedShader {
-        inputOutput SFNode texture MovieTexture {
+        inputOutput SFNode texture DEF Movie MovieTexture {
           url "../../Examples/Vattenfall/stage/film6.mpv"
           loop TRUE
           repeatS FALSE
@@ -67,6 +67,8 @@ Transform {
           ShaderPart {
             type "FRAGMENT"
             url "data:text/plain,
+#version 120
+
 uniform sampler2D texture;
 
 void main (void)
@@ -87,6 +89,7 @@ Transform {
   children Shape {
     appearance Appearance {
       material Material { }
+      texture USE Movie
     }
     geometry Box {
       size 1 1 1
