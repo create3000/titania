@@ -1,5 +1,15 @@
 2013-11-05  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* MultiTexture.h:
+	* BrowserOptions.h:
+	* MultiTextureTransform.h:
+	* X3DTextureTransformNode.h:
+	* MultiTextureTransform.cpp:
+	* MultiTextureCoordinate.cpp:
+	* X3DTextureTransformNode.cpp: 
+
+2013-11-05  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* PlaneSensor.cpp: 
 
 2013-11-04  Holger Seelig  <holger.seelig@yahoo.de>

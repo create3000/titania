@@ -67,6 +67,10 @@ public:
 	void
 	draw ();
 
+	virtual
+	void
+	draw (size_t);
+
 
 protected:
 

@@ -79,7 +79,7 @@ class LineProperties;
 class FillProperties;
 class X3DFontStyleNode;
 class TextureProperties;
-class TextureTransform;
+class X3DTextureTransformNode;
 class Arc2DOptions;
 class ArcClose2DOptions;
 class Circle2DOptions;
@@ -266,11 +266,11 @@ public:
 	textureProperties () const
 	{ return fields .textureProperties; }
 
-	X3DSFNode <TextureTransform> &
+	X3DSFNode <X3DTextureTransformNode> &
 	textureTransform ()
 	{ return fields .textureTransform; }
 
-	const X3DSFNode <TextureTransform> &
+	const X3DSFNode <X3DTextureTransformNode> &
 	textureTransform () const
 	{ return fields .textureTransform; }
 
@@ -410,7 +410,7 @@ private:
 		X3DSFNode <LineProperties> lineProperties;
 		X3DSFNode <FillProperties> fillProperties;
 		X3DSFNode <TextureProperties> textureProperties;
-		X3DSFNode <TextureTransform> textureTransform;
+		X3DSFNode <X3DTextureTransformNode> textureTransform;
 		X3DSFNode <Arc2DOptions> arc2D;
 		X3DSFNode <ArcClose2DOptions> arcClose2D;
 		X3DSFNode <Circle2DOptions> circle2D;

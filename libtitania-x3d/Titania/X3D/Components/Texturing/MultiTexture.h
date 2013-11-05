@@ -61,6 +61,8 @@ class MultiTexture :
 {
 public:
 
+	///  @name Construction
+
 	MultiTexture (X3DExecutionContext* const);
 
 	virtual
@@ -135,10 +137,14 @@ public:
 	texture () const
 	{ return *fields .texture; }
 
+	///  @name Tests
+
 	virtual
 	bool
 	isTransparent () const
 	{ return false; }
+
+	///  @name Operstions
 
 	virtual
 	void

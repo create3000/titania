@@ -6,6 +6,7 @@ Background {
 
 Viewpoint {
   description "Home"
+  position 0 0 3.4
 }
 
 Transform {
@@ -22,6 +23,14 @@ Transform {
           ImageTexture {
             url "../images/image.png"
           }
+        ]
+      }
+      textureTransform MultiTextureTransform {
+        textureTransform [
+          TextureTransform {
+            scale 2 2
+          }
+          TextureTransform { }
         ]
       }
     }

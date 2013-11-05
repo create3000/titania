@@ -50,6 +50,8 @@
 
 #include "MultiTextureTransform.h"
 
+#include "../../Bits/Cast.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -80,7 +82,36 @@ MultiTextureTransform::create (X3DExecutionContext* const executionContext) cons
 
 void
 MultiTextureTransform::draw ()
-{ }
+{
+	X3DTextureTransformNode* defaultTextureTransform = getBrowser () -> getBrowserOptions () -> textureTransform ();
+	X3DTextureTransformNode* last                    = defaultTextureTransform;
+	size_t                   channel                 = 0;
+	size_t                   size                    = getBrowser () -> getTextures () .size ();
+
+	for (const auto & node : textureTransform ())
+	{
+		if (x3d_cast <MultiTextureTransform*> (node))
+			continue;
+
+		size_t unit = channel < size ? getBrowser () -> getTextures () [channel] : 0;
+
+		auto textureTransform = node ? x3d_cast <X3DTextureTransformNode*> (node) : defaultTextureTransform;
+
+		if (textureTransform)
+		{
+			textureTransform -> draw (unit);
+
+			last = textureTransform;
+			++ channel;
+
+			if (channel >= size)
+				break;
+		}
+	}
+
+	for ( ; channel < size; ++ channel)
+		last -> draw (getBrowser () -> getTextures () [channel]);
+}
 
 } // X3D
 } // titania

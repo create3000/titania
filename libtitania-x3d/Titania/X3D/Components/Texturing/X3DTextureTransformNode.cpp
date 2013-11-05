@@ -50,6 +50,8 @@
 
 #include "X3DTextureTransformNode.h"
 
+#include "../../Browser/X3DBrowser.h"
+
 namespace titania {
 namespace X3D {
 
@@ -81,6 +83,21 @@ X3DTextureTransformNode::setMatrix (const Matrix4f & m)
 void
 X3DTextureTransformNode::draw ()
 {
+	if (getBrowser () -> getTextures () .empty ())
+		draw (0);
+
+	else
+	{
+		for (const auto & unit : getBrowser () -> getTextures ())
+			draw (unit);
+	}
+}
+
+void
+X3DTextureTransformNode::draw (size_t unit)
+{
+	glActiveTexture (GL_TEXTURE0 + unit);
+
 	glMatrixMode (GL_TEXTURE);
 
 	glLoadMatrixf (matrix .data ());

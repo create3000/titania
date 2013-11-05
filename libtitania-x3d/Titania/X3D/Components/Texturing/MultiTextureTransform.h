@@ -61,6 +61,8 @@ class MultiTextureTransform :
 {
 public:
 
+	///  @name Construction
+
 	MultiTextureTransform (X3DExecutionContext* const);
 
 	virtual
@@ -95,9 +97,16 @@ public:
 	textureTransform () const
 	{ return *fields .textureTransform; }
 
+	///  @name Operations
+
 	virtual
 	void
-	draw ();
+	draw () final;
+
+	virtual
+	void
+	draw (size_t) final
+	{ }
 
 
 private:
