@@ -2339,6 +2339,7 @@
     <None Include="Tests\PointingDeviceSensor\Wheel.wrl" />
     <None Include="Tests\images\util-mark6.png" />
     <None Include="Tests\Rendering\ClipPlane.wrl" />
+    <None Include="Tests\Layering\ViewportLayer.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

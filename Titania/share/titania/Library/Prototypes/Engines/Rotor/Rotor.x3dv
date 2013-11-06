@@ -9,6 +9,8 @@ PROTO Rotor [
   inputOutput SFFloat    angle 0
   inputOutput SFBool     loop FALSE
   inputOutput SFTime     startTime 0
+  inputOutput SFTime     pauseTime 0
+  inputOutput SFTime     resumeTime 0
   inputOutput SFTime     stopTime 0
   outputOnly  SFRotation rotation_changed
 ]
@@ -18,6 +20,8 @@ PROTO Rotor [
     cycleInterval IS cycleInterval
     loop IS loop
     startTime IS startTime
+    pauseTime IS pauseTime
+    resumeTime IS resumeTime
     stopTime IS stopTime
   }
 

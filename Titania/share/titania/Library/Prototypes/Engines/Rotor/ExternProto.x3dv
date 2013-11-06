@@ -7,12 +7,11 @@ EXTERNPROTO Rotor [
   exposedField SFFloat    angle
   exposedField SFBool     loop
   exposedField SFTime     startTime
+  exposedField SFTime     pauseTime
+  exposedField SFTime     resumeTime
   exposedField SFTime     stopTime
   eventOut     SFRotation rotation_changed
 ]
-[
-  "Rotor.x3dv",
-  "file:///usr/share/titania/Library/Prototypes/Engines/Rotor/Rotor.x3dv"
-]
+[ "Rotor.x3dv", "file:///usr/share/titania/Library/Prototypes/Engines/Rotor/Rotor.x3dv" ]
 
 Rotor { }

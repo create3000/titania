@@ -1,0 +1,90 @@
+#X3D V3.0 utf8 Titania 0.1
+
+EXTERNPROTO Rotor [
+  inputOutput SFBool     enabled
+  inputOutput SFTime     cycleInterval
+  inputOutput SFVec3f    axis
+  inputOutput SFFloat    angle
+  inputOutput SFBool     loop
+  inputOutput SFTime     startTime
+  inputOutput SFTime     pauseTime
+  inputOutput SFTime     resumeTime
+  inputOutput SFTime     stopTime
+  outputOnly  SFRotation rotation_changed
+]
+[ "../../../Titania/share/titania/Library/Prototypes/Engines/Rotor/Rotor.x3dv", "file:///usr/share/titania/Library/Prototypes/Engines/Rotor/Rotor.x3dv" ]
+
+LayerSet {
+  activeLayer 2
+  order [ 1, 2, 3, 4 ]
+  layers [
+    DEF NE Layer {
+      viewport Viewport {
+        clipBoundary [ 0.5, 1, 0.5, 1 ]
+      }
+      children [
+        Viewpoint { }
+        Transform {
+          children DEF Beethoven Transform {
+            rotation 0 -1 0 1.27835
+            children Inline {
+              url "../Geometry3D/Beethoven.wrl"
+            }
+          }
+        }
+      ]
+    }
+    DEF SE Layer {
+      viewport Viewport {
+        clipBoundary [ 0.5, 1, 0, 0.5 ]
+      }
+      children [
+        Viewpoint {
+          position 3.37595 7.13251 8.61918
+          orientation -0.556812 0.536966 0.633741 0.969805
+        }
+        Transform {
+          children USE Beethoven
+        }
+      ]
+    }
+    DEF SW Layer {
+      viewport Viewport {
+        clipBoundary [ 0, 0.5, 0, 0.5 ]
+      }
+      children [
+        Viewpoint {
+          position 0 10 0
+          orientation -1 -0 -0 1.5708
+        }
+        Transform {
+          children USE Beethoven
+        }
+      ]
+    }
+    DEF NW Layer {
+      viewport Viewport {
+        clipBoundary [ 0, 0.5, 0.5, 1 ]
+      }
+      children [
+        Viewpoint {
+          position 10 0 0
+          orientation 0 1 0 1.5708
+        }
+        Transform {
+          children USE Beethoven
+        }
+      ]
+    }
+  ]
+}
+
+DEF Rotor Rotor {
+  cycleInterval 10
+  axis 0 -1 0
+  loop TRUE
+  pauseTime 0
+  resumeTime 0
+}
+
+ROUTE Rotor.rotation_changed TO Beethoven.set_rotation

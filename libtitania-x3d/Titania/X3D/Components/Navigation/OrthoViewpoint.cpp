@@ -97,25 +97,25 @@ OrthoViewpoint::getPosition () const
 double
 OrthoViewpoint::getMinimumX () const
 {
-	return fieldOfView () .size () > 0 ? fieldOfView () [0] : -1;
+	return fieldOfView () .size () > 0 ? fieldOfView () [0] : -1.0;
 }
 
 double
 OrthoViewpoint::getMinimumY () const
 {
-	return fieldOfView () .size () > 1 ? fieldOfView () [1] : -1;
+	return fieldOfView () .size () > 1 ? fieldOfView () [1] : -1.0;
 }
 
 double
 OrthoViewpoint::getMaximumX () const
 {
-	return fieldOfView () .size () > 2 ? fieldOfView () [2] : 1;
+	return fieldOfView () .size () > 2 ? fieldOfView () [2] : 1.0;
 }
 
 double
 OrthoViewpoint::getMaximumY () const
 {
-	return fieldOfView () .size () > 3 ? fieldOfView () [3] : 1;
+	return fieldOfView () .size () > 3 ? fieldOfView () [3] : 1.0;
 }
 
 Vector3d

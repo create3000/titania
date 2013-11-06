@@ -413,7 +413,7 @@ X3DRenderer::gravite ()
 		{
 			// Gravite
 
-			float currentFrameRate = speed ? getBrowser () -> getCurrentFrameRate () : 1000000;
+			float currentFrameRate = speed ? getBrowser () -> getCurrentFrameRate () : 1000000.0;
 
 			speed -= getBrowser () -> getBrowserOptions () -> gravity () / currentFrameRate;
 

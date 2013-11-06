@@ -174,7 +174,7 @@ NavigationInfo::getNearPlane () const
 float
 NavigationInfo::getFarPlane () const
 {
-	return visibilityLimit () ? visibilityLimit () : 100000;
+	return visibilityLimit () ? visibilityLimit () : 100000.0f;
 }
 
 TransitionType

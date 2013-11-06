@@ -85,14 +85,19 @@ ViewVolume::ViewVolume (const Matrix4d & modelview, const Matrix4d & projection)
 
 	try
 	{
+		int x1 = viewport [0];
+		int x2 = viewport [0] + viewport [2];
+		int y1 = viewport [1];
+		int y2 = viewport [1] + viewport [3];
+
 		Matrix4d matrix = ~(modelview * projection);
 
-		Vector3f p1 = unProjectPoint (0, viewport [3], 1, matrix, viewport);
-		Vector3f p2 = unProjectPoint (0, 0, 1, matrix, viewport);
-		Vector3f p3 = unProjectPoint (0, 0, 0, matrix, viewport);
-		Vector3f p4 = unProjectPoint (viewport [2], 0, 0, matrix, viewport);
-		Vector3f p5 = unProjectPoint (viewport [2], viewport [3], 0, matrix, viewport);
-		Vector3f p6 = unProjectPoint (viewport [2], viewport [3], 1, matrix, viewport);
+		Vector3f p1 = unProjectPoint (x1, y2, 1, matrix, viewport);
+		Vector3f p2 = unProjectPoint (x1, y1, 1, matrix, viewport);
+		Vector3f p3 = unProjectPoint (x1, y1, 0, matrix, viewport);
+		Vector3f p4 = unProjectPoint (x2, y1, 0, matrix, viewport);
+		Vector3f p5 = unProjectPoint (x2, y2, 0, matrix, viewport);
+		Vector3f p6 = unProjectPoint (x2, y2, 1, matrix, viewport);
 
 		planes .reserve (6);
 		planes .emplace_back (p4, normalize (cross (p3 - p4, p5 - p4)));  // front

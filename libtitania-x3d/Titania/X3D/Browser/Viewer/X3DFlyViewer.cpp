@@ -232,7 +232,7 @@ X3DFlyViewer::fly ()
 
 	// Position offset
 
-	float speed_factor = keys .shift () ? SHIFT_SPEED_FACTOR : 1;
+	float speed_factor = keys .shift () ? SHIFT_SPEED_FACTOR : 1.0;
 	speed_factor *= 1 - rotation .angle () / M_PI1_2;
 
 	Rotation4f orientation = viewpoint -> getUserOrientation () * Rotation4f (viewpoint -> getUserOrientation () * upVector, upVector);
@@ -252,7 +252,7 @@ X3DFlyViewer::pan ()
 
 	auto viewpoint = getActiveViewpoint ();
 
-	float speed_factor = keys .shift () ? PAN_SHIFT_SPEED_FACTOR : 1;
+	float speed_factor = keys .shift () ? PAN_SHIFT_SPEED_FACTOR : 1.0;
 
 	Rotation4f orientation = viewpoint -> getUserOrientation () * Rotation4f (viewpoint -> getUserOrientation () * upVector, upVector);
 	Vector3f   translation = orientation * direction * (speed_factor * dt);

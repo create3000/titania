@@ -1,5 +1,16 @@
 2013-11-06  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* ViewVolume.cpp:
+	* X3DRenderer.cpp:
+	* X3DFlyViewer.cpp:
+	* Viewport.cpp:
+	* X3DExecutionContext.cpp:
+	* SpotLight.cpp:
+	* NavigationInfo.cpp:
+	* OrthoViewpoint.cpp: 
+
+2013-11-06  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* PlaneSensor.cpp: 
 
 2013-11-06  Holger Seelig  <holger.seelig@yahoo.de>

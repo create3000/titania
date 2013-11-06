@@ -96,25 +96,25 @@ Viewport::initialize ()
 float
 Viewport::getLeft ()
 {
-	return clipBoundary () .size () > 0 ? clipBoundary () [0] : 0;
+	return clipBoundary () .size () > 0 ? clipBoundary () [0] : 0.0f;
 }
 
 float
 Viewport::getRight ()
 {
-	return clipBoundary () .size () > 1 ? clipBoundary () [1] : 1;
+	return clipBoundary () .size () > 1 ? clipBoundary () [1] : 1.0f;
 }
 
 float
 Viewport::getBottom ()
 {
-	return clipBoundary () .size () > 2 ? clipBoundary () [2] : 0;
+	return clipBoundary () .size () > 2 ? clipBoundary () [2] : 0.0f;
 }
 
 float
 Viewport::getTop ()
 {
-	return clipBoundary () .size () > 3 ? clipBoundary () [3] : 1;
+	return clipBoundary () .size () > 3 ? clipBoundary () [3] : 1.0f;
 }
 
 void
@@ -170,12 +170,12 @@ Viewport::push ()
 	float bottom = getBottom ();
 	float top    = getTop ();
 
-	float widht  = right - left;
+	float width  = right - left;
 	float height = top - bottom;
 
 	glViewport (left * viewport [2],
 	            bottom * viewport [3],
-	            widht * viewport [2],
+	            width * viewport [2],
 	            height * viewport [3]);
 }
 
