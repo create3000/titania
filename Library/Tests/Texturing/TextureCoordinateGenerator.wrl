@@ -1,59 +1,246 @@
 #VRML V2.0 utf8
 
-Viewpoint { }
+Viewpoint {
+  description "HOME"
+  position 4.5 -4.5 18
+  centerOfRotation 4.5 -4.5 0
+}
 
-Transform {
+DEF SPHERE Transform {
   children Shape {
     appearance Appearance {
       material Material { }
       texture ImageTexture {
-        url "../images/earth.png"
+        url "../images/image.png"
       }
     }
     geometry IndexedFaceSet {
-      coord Coordinate {
-        point [ 0 0 0, 0 -1 0, 1 0 0, 0 -1 0, 0 -2 0, 1 -2 0, 1 -1 0, 0 0 0, 2 1 0, 2 2 0, 1 3 0, 0 2 0 ]
-      }
+      texCoordIndex [ 0, 1, 2, 3, -1 ]
+      coordIndex [ 0, 1, 2, 3, -1 ]
       texCoord TextureCoordinateGenerator { }
-      coordIndex [ 0, 1, 2, -1, 3, 4, 5, 6, -1, 7, 8, 9, 10, 11, -1 ]
+      coord Coordinate {
+        point [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+      }
     }
   }
 }
-Transform {
+
+DEF SPHERE_LOCAL Transform {
+  translation 3 0 0
   children Shape {
     appearance Appearance {
       material Material { }
       texture ImageTexture {
-        url "../images/earth.png"
+        url "../images/image.png"
       }
     }
     geometry IndexedFaceSet {
-      coord Coordinate {
-        point [ -1 0 0, 0 0 0, 0 1 0, -1 1 0, -1 1 -1, -1 0 -1 ]
+      texCoordIndex [ 0, 1, 2, 3, -1 ]
+      coordIndex [ 0, 1, 2, 3, -1 ]
+      texCoord TextureCoordinateGenerator {
+        mode "SPHERE-LOCAL"
       }
+      coord Coordinate {
+        point [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+      }
+    }
+  }
+}
+
+DEF SPHERE_REFLECT Transform {
+  translation 6 0 0
+  children Shape {
+    appearance Appearance {
+      material Material { }
+      texture ImageTexture {
+        url "../images/image.png"
+      }
+    }
+    geometry IndexedFaceSet {
+      texCoordIndex [ 0, 1, 2, 3, -1 ]
+      coordIndex [ 0, 1, 2, 3, -1 ]
+      texCoord TextureCoordinateGenerator {
+        mode "SPHERE-REFLECT"
+      }
+      coord Coordinate {
+        point [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+      }
+    }
+  }
+}
+
+DEF SPHERE_REFLECT_LOCAL Transform {
+  translation 9 0 0
+  children Shape {
+    appearance Appearance {
+      material Material { }
+      texture ImageTexture {
+        url "../images/image.png"
+      }
+    }
+    geometry IndexedFaceSet {
+      texCoordIndex [ 0, 1, 2, 3, -1 ]
+      coordIndex [ 0, 1, 2, 3, -1 ]
+      texCoord TextureCoordinateGenerator {
+        mode "SPHERE-REFLECT-LOCAL"
+      }
+      coord Coordinate {
+        point [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+      }
+    }
+  }
+}
+
+DEF CAMERASPACENORMAL Transform {
+  translation 0 -3 0
+  children Shape {
+    appearance Appearance {
+      material Material { }
+      texture ImageTexture {
+        url "../images/image.png"
+      }
+    }
+    geometry IndexedFaceSet {
+      texCoordIndex [ 0, 1, 2, 3, -1 ]
+      coordIndex [ 0, 1, 2, 3, -1 ]
+      texCoord TextureCoordinateGenerator {
+        mode "CAMERASPACENORMAL"
+      }
+      coord Coordinate {
+        point [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+      }
+    }
+  }
+}
+
+DEF CAMERASPACEPOSITION Transform {
+  translation 3 -3 0
+  children Shape {
+    appearance Appearance {
+      material Material { }
+      texture ImageTexture {
+        url "../images/image.png"
+      }
+    }
+    geometry IndexedFaceSet {
+      texCoordIndex [ 0, 1, 2, 3, -1 ]
+      coordIndex [ 0, 1, 2, 3, -1 ]
       texCoord TextureCoordinateGenerator {
         mode "CAMERASPACEPOSITION"
       }
-      coordIndex [ 0, 1, 2, 3, -1, 0, 3, 4, 5, -1 ]
+      coord Coordinate {
+        point [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+      }
     }
   }
 }
-Transform {
+
+DEF CAMERASPACEREFLECTIONVECTOR Transform {
+  translation 6 -3 0
   children Shape {
     appearance Appearance {
       material Material { }
       texture ImageTexture {
-        url "../images/earth.png"
+        url "../images/image.png"
       }
     }
     geometry IndexedFaceSet {
-      coord Coordinate {
-        point [ -1 -1 0, -1 0 0, -1 0 -1, -1 -1 -1 ]
-      }
-      texCoord TextureCoordinateGenerator {
-        mode "CAMERASPACEREFLECTION"
-      }
+      texCoordIndex [ 0, 1, 2, 3, -1 ]
       coordIndex [ 0, 1, 2, 3, -1 ]
+      texCoord TextureCoordinateGenerator {
+        mode "CAMERASPACEREFLECTIONVECTOR"
+      }
+      coord Coordinate {
+        point [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+      }
+    }
+  }
+}
+
+DEF COORD_EYE Transform {
+  translation 0 -6 0
+  children Shape {
+    appearance Appearance {
+      material Material { }
+      texture ImageTexture {
+        url "../images/image.png"
+      }
+    }
+    geometry IndexedFaceSet {
+      texCoordIndex [ 0, 1, 2, 3, -1 ]
+      coordIndex [ 0, 1, 2, 3, -1 ]
+      texCoord TextureCoordinateGenerator {
+        mode "COORD-EYE"
+      }
+      coord Coordinate {
+        point [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+      }
+    }
+  }
+}
+
+DEF COORD Transform {
+  translation 3 -6 0
+  children Shape {
+    appearance Appearance {
+      material Material { }
+      texture ImageTexture {
+        url "../images/image.png"
+      }
+    }
+    geometry IndexedFaceSet {
+      texCoordIndex [ 0, 1, 2, 3, -1 ]
+      coordIndex [ 0, 1, 2, 3, -1 ]
+      texCoord TextureCoordinateGenerator {
+        mode "COORD"
+      }
+      coord Coordinate {
+        point [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+      }
+    }
+  }
+}
+
+DEF NOISE_EYE Transform {
+  translation 0 -9 0
+  children Shape {
+    appearance Appearance {
+      material Material { }
+      texture ImageTexture {
+        url "../images/image.png"
+      }
+    }
+    geometry IndexedFaceSet {
+      texCoordIndex [ 0, 1, 2, 3, -1 ]
+      coordIndex [ 0, 1, 2, 3, -1 ]
+      texCoord TextureCoordinateGenerator {
+        mode "NOISE-EYE"
+      }
+      coord Coordinate {
+        point [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+      }
+    }
+  }
+}
+
+DEF NOISE Transform {
+  translation 3 -9 0
+  children Shape {
+    appearance Appearance {
+      material Material { }
+      texture ImageTexture {
+        url "../images/image.png"
+      }
+    }
+    geometry IndexedFaceSet {
+      texCoordIndex [ 0, 1, 2, 3, -1 ]
+      coordIndex [ 0, 1, 2, 3, -1 ]
+      texCoord TextureCoordinateGenerator {
+        mode "NOISE"
+      }
+      coord Coordinate {
+        point [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+      }
     }
   }
 }

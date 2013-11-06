@@ -1,5 +1,10 @@
 2013-11-06  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* TextureCoordinateGenerator.h:
+	* TextureCoordinateGenerator.cpp: 
+
+2013-11-06  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Text.cpp:
 	* X3DBrowserContext.h:
 	* MultiTexture.cpp:

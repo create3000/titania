@@ -157,7 +157,7 @@ private:
 
 	Fields fields;
 
-	GLint textureGenMode;
+	GLenum texGenMode;
 
 };
 

@@ -68,7 +68,7 @@ TextureCoordinateGenerator::TextureCoordinateGenerator (X3DExecutionContext* con
 	             X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DTextureCoordinateNode (),
 	                  fields (),
-	          textureGenMode (GL_SPHERE_MAP)
+	              texGenMode ()
 {
 	addField (inputOutput, "metadata",  metadata ());
 	addField (inputOutput, "mode",      mode ());
@@ -94,54 +94,27 @@ TextureCoordinateGenerator::initialize ()
 void
 TextureCoordinateGenerator::set_mode ()
 {
-	if (mode () == "SPHERE")
-	{
-		textureGenMode = GL_SPHERE_MAP;
-	}
-	else if (mode () == "SPHERE-REFLECT-LOCAL")
-	{
-		textureGenMode = GL_SPHERE_MAP;
-	}
-	else if (mode () == "SPHERE-REFLECT")
-	{
-		textureGenMode = GL_SPHERE_MAP;
-	}
-	else if (mode () == "SPHERE-LOCAL")
-	{
-		textureGenMode = GL_SPHERE_MAP;
-	}
-	else if (mode () == "CAMERASPACENORMAL")
-	{
-		textureGenMode = GL_NORMAL_MAP;
-	}
-	else if (mode () == "CAMERASPACEPOSITION")
-	{
-		textureGenMode = GL_OBJECT_LINEAR;
-	}
-	else if (mode () == "CAMERASPACEREFLECTIONVECTOR")
-	{
-		textureGenMode = GL_REFLECTION_MAP;
-	}
-	else if (mode () == "COORD-EYE")
-	{
-		textureGenMode = GL_EYE_LINEAR;
-	}
-	else if (mode () == "COORD")
-	{
-		textureGenMode = GL_EYE_LINEAR;
-	}
-	else if (mode () == "NOISE-EYE")
-	{
-		textureGenMode = GL_EYE_LINEAR;
-	}
-	else if (mode () == "NOISE")
-	{
-		textureGenMode = GL_EYE_LINEAR;
-	}
+	static const std::map <std::string, GLenum> map = {
+		std::make_pair ("SPHERE",                      GL_SPHERE_MAP),     // Ok
+		std::make_pair ("SPHERE-LOCAL",                GL_SPHERE_MAP),     // Not supported
+		std::make_pair ("SPHERE-REFLECT",              GL_REFLECTION_MAP), // Not supported
+		std::make_pair ("SPHERE-REFLECT-LOCAL",        GL_REFLECTION_MAP), // Not supported
+		std::make_pair ("CAMERASPACENORMAL",           GL_NORMAL_MAP),     // Ok
+		std::make_pair ("CAMERASPACEPOSITION",         GL_EYE_LINEAR),     // Like COORD-EYE ???
+		std::make_pair ("CAMERASPACEREFLECTIONVECTOR", GL_REFLECTION_MAP), // Ok
+		std::make_pair ("COORD-EYE",                   GL_EYE_LINEAR),     // Ok
+		std::make_pair ("COORD",                       GL_OBJECT_LINEAR),  // Ok
+		std::make_pair ("NOISE-EYE",                   GL_SPHERE_MAP),     // Not supported
+		std::make_pair ("NOISE",                       GL_SPHERE_MAP)      // Not supported
+	};
+
+	auto iter = map .find (mode ());
+
+	if (iter not_eq map .end ())
+		texGenMode = iter -> second;
+
 	else
-	{
-		textureGenMode = GL_SPHERE_MAP;
-	}
+		texGenMode = GL_SPHERE_MAP;
 }
 
 void
@@ -155,18 +128,33 @@ TextureCoordinateGenerator::enable (int32_t unit, size_t, const TexCoordArray &)
 {
 	glActiveTexture (GL_TEXTURE0 + unit);
 
-	glTexGeni (GL_S, GL_TEXTURE_GEN_MODE, textureGenMode);
-	glTexGeni (GL_T, GL_TEXTURE_GEN_MODE, textureGenMode);
+	glTexGeni (GL_S, GL_TEXTURE_GEN_MODE, texGenMode);
+	glTexGeni (GL_T, GL_TEXTURE_GEN_MODE, texGenMode);
 	glEnable (GL_TEXTURE_GEN_S);
 	glEnable (GL_TEXTURE_GEN_T);
 
-	if (textureGenMode not_eq GL_SPHERE_MAP)
+	if (texGenMode not_eq GL_SPHERE_MAP)
 	{
-		glTexGeni (GL_R, GL_TEXTURE_GEN_MODE, textureGenMode);
+		glTexGeni (GL_R, GL_TEXTURE_GEN_MODE, texGenMode);
 		glEnable (GL_TEXTURE_GEN_R);
-		//glTexGeni (GL_Q, GL_TEXTURE_GEN_MODE, textureGenMode);
+		//glTexGeni (GL_Q, GL_TEXTURE_GEN_MODE, modeType .texGenMode);
 		//glEnable (GL_TEXTURE_GEN_Q);
 	}
+
+	//	Vector4f sVector (1, 0, 0, 0);
+	//	Vector4f tVector (0, 1, 0, 0);
+	//	Vector4f rVector (0, 0, 1, 0);
+	//	Vector4f qVector (0, 0, 0, 1);
+	//
+	//	glTexGenfv (GL_S, GL_OBJECT_PLANE, sVector .data ());
+	//	glTexGenfv (GL_T, GL_OBJECT_PLANE, tVector .data ());
+	//	glTexGenfv (GL_R, GL_OBJECT_PLANE, rVector .data ());
+	//	glTexGenfv (GL_Q, GL_OBJECT_PLANE, qVector .data ());
+	//
+	//	glTexGenfv (GL_S, GL_EYE_PLANE, sVector .data ());
+	//	glTexGenfv (GL_T, GL_EYE_PLANE, tVector .data ());
+	//	glTexGenfv (GL_R, GL_EYE_PLANE, rVector .data ());
+	//	glTexGenfv (GL_Q, GL_EYE_PLANE, qVector .data ());
 }
 
 void
