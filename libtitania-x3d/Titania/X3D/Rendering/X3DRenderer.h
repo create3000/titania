@@ -56,6 +56,7 @@
 #include "../Rendering/CollisionShape.h"
 #include "../Rendering/DepthBuffer.h"
 #include "../Rendering/ShapeContainer.h"
+#include "../Rendering/X3DCollectableContainer.h"
 
 #include <memory>
 
@@ -70,6 +71,14 @@ public:
 	float
 	getDistance () const
 	{ return distance; }
+	
+	CollectableContainerArray &
+	getGlobalObjects ()
+	{ return globalObjects; }
+	
+	CollectableContainerArray &
+	getLocalObjects ()
+	{ return localObjects; }
 
 	void
 	addShape (X3DShapeNode*);
@@ -102,8 +111,8 @@ protected:
 
 private:
 
-	typedef std::vector <ShapeContainer*> ShapeContainerArray;
-	typedef std::vector <CollisionShape*> CollisionShapeArray;
+	typedef std::vector <std::unique_ptr <ShapeContainer>> ShapeContainerArray;
+	typedef std::vector <std::unique_ptr <CollisionShape>> CollisionShapeArray;
 
 	static
 	float
@@ -127,9 +136,13 @@ private:
 
 	void
 	addStepUp ();
+	
+	CollectableContainerArray globalObjects;
+	CollectableContainerArray localObjects;
 
 	ShapeContainerArray     shapes;
 	ShapeContainerArray     transparentShapes;
+	ShapeContainerComp      shapeComare;
 	CollisionShapeArray     collisionShapes;
 	std::deque <Collision*> activeCollisions;
 

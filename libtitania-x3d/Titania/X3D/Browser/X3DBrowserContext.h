@@ -85,6 +85,7 @@ typedef std::stack <X3DRenderer*>      RendererStack;
 typedef std::stack <X3DLayerNode*>     LayerStack;
 typedef std::stack <X3DLayoutNode*>    LayoutStack;
 typedef std::stack <GLenum>            LightStack;
+typedef std::stack <GLenum>            ClipPlaneStack;
 typedef std::stack <int32_t>           TextureUnitStack;
 typedef std::vector <int32_t>          TextureArray;
 
@@ -238,6 +239,10 @@ public:
 	LightStack &
 	getLights ()
 	{ return lights; }
+
+	ClipPlaneStack &
+	getClipPlanes ()
+	{ return clipPlanes; }
 
 	///  @name Texture unit stack handling
 
@@ -422,6 +427,7 @@ private:
 	LayerStack       layers;
 	LayoutStack      layouts;
 	LightStack       lights;
+	ClipPlaneStack   clipPlanes;
 	TextureUnitStack textureUnits;
 	TextureUnitStack combinedTextureUnits;
 	TextureArray     textureStages;

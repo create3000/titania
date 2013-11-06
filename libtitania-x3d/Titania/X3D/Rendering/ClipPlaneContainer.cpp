@@ -48,52 +48,44 @@
  *
  ******************************************************************************/
 
-#include "ClipPlane.h"
+#include "ClipPlaneContainer.h"
 
-#include "../../Execution/X3DExecutionContext.h"
-#include "../../Rendering/ClipPlaneContainer.h"
-#include "../Layering/X3DLayerNode.h"
+#include "../Browser/X3DBrowser.h"
 
 namespace titania {
 namespace X3D {
 
-const std::string ClipPlane::componentName  = "Rendering";
-const std::string ClipPlane::typeName       = "ClipPlane";
-const std::string ClipPlane::containerField = "children";
-
-ClipPlane::Fields::Fields () :
-	enabled (new SFBool (true)),
-	  plane (new SFVec4f (0, 1, 0, 0))
+ClipPlaneContainer::ClipPlaneContainer (ClipPlane* node) :
+	X3DCollectableContainer (),
+	                   node (node),
+	                planeId (0)
 { }
 
-ClipPlane::ClipPlane (X3DExecutionContext* const executionContext) :
-	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DChildNode (),
-	      fields ()
+void
+ClipPlaneContainer::enable ()
 {
-	addField (inputOutput, "metadata", metadata ());
-	addField (inputOutput, "enabled",  enabled ());
-	addField (inputOutput, "plane",    plane ());
-}
+	auto & clipPlanes = node -> getBrowser () -> getClipPlanes ();
 
-X3DBaseNode*
-ClipPlane::create (X3DExecutionContext* const executionContext) const
-{
-	return new ClipPlane (executionContext);
+	if (not clipPlanes .empty ())
+	{
+		planeId = clipPlanes .top ();
+		clipPlanes .pop ();
+
+		glLoadMatrixf (getModelViewMatrix () .data ());
+
+      glClipPlane (planeId, Vector4d (node -> plane () .getValue ()) .data ());
+		glEnable (planeId);
+	}
 }
 
 void
-ClipPlane::push ()
+ClipPlaneContainer::disable ()
 {
-	if (enabled ())
-		getCurrentLayer () -> getLocalObjects () .emplace_back (new ClipPlaneContainer (this));
-}
-
-void
-ClipPlane::pop ()
-{
-	if (enabled ())
-		getCurrentLayer () -> getLocalObjects () .pop_back ();
+	if (planeId)
+	{
+		node -> getBrowser () -> getClipPlanes () .push (planeId);
+		glDisable (planeId);
+	}
 }
 
 } // X3D

@@ -48,16 +48,37 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_RENDERING_LIGHT_CONTAINER_ARRAY_H__
-#define __TITANIA_X3D_RENDERING_LIGHT_CONTAINER_ARRAY_H__
+#ifndef __TITANIA_X3D_RENDERING_CLIP_PLANE_CONTAINER_H__
+#define __TITANIA_X3D_RENDERING_CLIP_PLANE_CONTAINER_H__
 
-#include "LightContainer.h"
-#include <vector>
+#include "../Components/Rendering/ClipPlane.h"
+#include "../Rendering/X3DCollectableContainer.h"
 
 namespace titania {
 namespace X3D {
 
-typedef std::vector <LightContainer*> LightContainerArray;
+class ClipPlaneContainer :
+	public X3DCollectableContainer
+{
+public:
+
+	ClipPlaneContainer (ClipPlane*);
+
+	virtual
+	void
+	enable () final;
+
+	virtual
+	void
+	disable () final;
+
+
+private:
+
+	ClipPlane* node;
+	GLenum     planeId;
+
+};
 
 } // X3D
 } // titania

@@ -59,6 +59,24 @@ namespace X3D {
 class X3DChildNode :
 	virtual public X3DNode
 {
+public:
+
+	virtual
+	bool
+	isCollectable ()
+	{ return false; }
+
+	virtual
+	void
+	push ()
+	{ }
+
+	virtual
+	void
+	pop ()
+	{ }
+
+
 protected:
 
 	X3DChildNode ();

@@ -169,8 +169,8 @@ private:
 
 	MFBool                                     visible;
 	std::vector <X3DPointingDeviceSensorNode*> pointingDeviceSensors;
-	std::vector <X3DLightNode*>                lights;
 	std::vector <LocalFog*>                    localFogs;
+	std::vector <X3DChildNode*>                collectables;
 	std::vector <X3DChildNode*>                childNodes;
 
 };

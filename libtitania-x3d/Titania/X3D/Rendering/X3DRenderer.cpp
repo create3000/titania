@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -66,8 +66,11 @@ static constexpr size_t DEPTH_BUFFER_HEIGHT = 16;
 
 X3DRenderer::X3DRenderer () :
 	             X3DNode (),
+	       globalObjects (),
+	        localObjects (),
 	              shapes (),
 	   transparentShapes (),
+	         shapeComare (),
 	     collisionShapes (),
 	    activeCollisions (),
 	         depthBuffer (),
@@ -94,24 +97,23 @@ X3DRenderer::addShape (X3DShapeNode* shape)
 	{
 		if (ViewVolume (matrix) .intersect (shape -> getBBox ()))
 		{
-			X3DFogObject*               fog         = getCurrentLayer () -> getFog ();
-			const LightContainerArray & localLights = getCurrentLayer () -> getLocalLights ();
+			X3DFogObject* fog = getCurrentLayer () -> getFog ();
 
 			if (shape -> isTransparent ())
 			{
 				if (numTransparentShapes < transparentShapes .size ())
-					transparentShapes [numTransparentShapes] -> assign (shape, fog, localLights, matrix, distance);
+					transparentShapes [numTransparentShapes] -> assign (shape, fog, getLocalObjects (), matrix, distance);
 				else
-					transparentShapes .emplace_back (new ShapeContainer (shape, fog, localLights, matrix, distance));
+					transparentShapes .emplace_back (new ShapeContainer (shape, fog, getLocalObjects (), matrix, distance));
 
 				++ numTransparentShapes;
 			}
 			else
 			{
 				if (numOpaqueShapes < shapes .size ())
-					shapes [numOpaqueShapes] -> assign (shape, fog, localLights, matrix, distance);
+					shapes [numOpaqueShapes] -> assign (shape, fog, getLocalObjects (), matrix, distance);
 				else
-					shapes .emplace_back (new ShapeContainer (shape, fog, localLights, matrix, distance));
+					shapes .emplace_back (new ShapeContainer (shape, fog, getLocalObjects (), matrix, distance));
 
 				++ numOpaqueShapes;
 			}
@@ -122,7 +124,7 @@ X3DRenderer::addShape (X3DShapeNode* shape)
 void
 X3DRenderer::addCollision (X3DShapeNode* shape)
 {
-	auto matrix = ModelViewMatrix4f ();
+	auto matrix   = ModelViewMatrix4f ();
 	auto distance = getDistance (shape, matrix);
 
 	if (distance < 0)
@@ -188,14 +190,12 @@ X3DRenderer::render (const TraverseType type)
 void
 X3DRenderer::draw ()
 {
-	glPushMatrix ();
+	glLoadIdentity ();
 
 	// Enable global lights
 
-	const LightContainerArray & globalLights = getCurrentLayer () -> getGlobalLights ();
-
-	for (const auto & light : globalLights)
-		light -> enable ();
+	for (const auto & object : getGlobalObjects ())
+		object -> enable ();
 
 	if (1)
 	{
@@ -215,7 +215,7 @@ X3DRenderer::draw ()
 		glDepthMask (GL_FALSE);
 		glEnable (GL_BLEND);
 
-		std::stable_sort (transparentShapes .begin (), transparentShapes .begin () + numTransparentShapes, ShapeContainerComp ());
+		std::stable_sort (transparentShapes .begin (), transparentShapes .begin () + numTransparentShapes, shapeComare);
 
 		for (const auto & shape : basic::adapter (transparentShapes .cbegin (), transparentShapes .cbegin () + numTransparentShapes))
 			shape -> draw ();
@@ -233,7 +233,7 @@ X3DRenderer::draw ()
 
 		// Render transparent objects
 
-		std::stable_sort (transparentShapes .begin (), transparentShapes .begin () + numTransparentShapes, ShapeContainerComp ());
+		std::stable_sort (transparentShapes .begin (), transparentShapes .begin () + numTransparentShapes, shapeComare);
 
 		glEnable (GL_BLEND);
 
@@ -272,11 +272,11 @@ X3DRenderer::draw ()
 
 	// Disable global lights
 
-	for (const auto & light : basic::reverse_adapter (globalLights))
-		light -> disable ();
+	for (const auto & object : basic::reverse_adapter (getGlobalObjects ()))
+		object -> disable ();
 
-	glPopMatrix ();
-	
+	getGlobalObjects () .clear ();
+
 	// Reset to default OpenGL appearance
 
 	getBrowser () -> getBrowserOptions () -> appearance () -> draw ();
@@ -298,162 +298,21 @@ X3DRenderer::navigation ()
 	float zNear = navigationInfo -> getNearPlane ();
 	float zFar  = navigationInfo -> getFarPlane ();
 
-	// Render
+	// Render all objects
 
-	glPushMatrix ();
+	glLoadIdentity ();
 
-	{
-		// Render all objects
+	glEnable (GL_DEPTH_TEST);
+	glDepthMask (GL_TRUE);
+	glDisable (GL_BLEND);
 
-		glEnable (GL_DEPTH_TEST);
-		glDepthMask (GL_TRUE);
-		glDisable (GL_BLEND);
-
-		for (const auto & shape : basic::adapter (collisionShapes .cbegin (), collisionShapes .cbegin () + numCollisionShapes))
-			shape -> draw ();
-	}
-
-	glPopMatrix ();
+	for (const auto & shape : basic::adapter (collisionShapes .cbegin (), collisionShapes .cbegin () + numCollisionShapes))
+		shape -> draw ();
 
 	distance = depthBuffer -> getDistance (zNear, zFar);
 
 	depthBuffer -> unbind ();
 }
-
-//void
-//X3DRenderer::collide ()
-//{
-//return;
-//
-//	// Collision
-//
-//	// Bind buffer
-//
-//	depthBuffer -> bind ();
-//
-//	// Get NavigationInfo values
-//
-//	auto navigationInfo = getCurrentNavigationInfo ();
-//
-//	float zNear           = navigationInfo -> getNearPlane ();
-//	float zFar            = navigationInfo -> getFarPlane ();
-//	float collisionRadius = navigationInfo -> getCollisionRadius ();
-//
-//	// Transform viewpoint
-//
-//	auto viewpoint = getCurrentViewpoint ();
-//
-//	Matrix4f cameraSpaceMatrix = viewpoint -> getParentMatrix ();
-//
-//	cameraSpaceMatrix .translate (viewpoint -> getUserPosition ());
-//	cameraSpaceMatrix .rotate (Rotation4f (Vector3f (0, 0, 1), -getBrowser () -> velocity));
-//	//multMatrix (inverse (cameraSpaceMatrix));
-//
-//	// Render
-//
-//	glPushMatrix ();
-//
-//	{
-//		// Render opaque objects first
-//
-//		glEnable (GL_DEPTH_TEST);
-//		glDepthMask (GL_TRUE);
-//		glDisable (GL_BLEND);
-//
-//		for (const auto & shape : basic::adapter (shapes .cbegin (), shapes .cbegin () + numOpaqueShapes))
-//			shape -> draw ();
-//
-//		// Render transparent objects
-//
-//		for (const auto & shape : basic::adapter (transparentShapes .cbegin (), transparentShapes .cbegin () + numTransparentShapes))
-//			shape -> draw ();
-//	}
-//
-//	glPopMatrix ();
-//
-//	// Gravite or step up
-//
-//	Vector3f translation = getBrowser () -> velocity / (float) getBrowser () -> getCurrentFrameRate ();
-//	float    length      = math::abs (translation);
-//
-//	if (length)
-//	{
-//		float distance = depthBuffer -> getDistance (zNear, zFar);
-//
-//		//__LOG__ << distance << std::endl;
-//
-//		if (zFar - distance > 0) // Are there polygons under the viewer
-//		{
-//			distance -= collisionRadius;
-//
-//			if (distance > 0)
-//			{
-//				// Move
-//
-//				if (length > distance)
-//				{
-//					// Collision: The ground is reached.
-//					collisionRadius = length;
-//					getCurrentViewpoint () -> positionOffset += normalize (translation) * distance;
-//				}
-//
-//				else
-//					getCurrentViewpoint () -> positionOffset += translation;
-//			}
-//			else
-//			{
-//				// Collision
-//			}
-//		}
-//		else
-//			getCurrentViewpoint () -> positionOffset += translation;
-//
-//		getBrowser () -> velocity = Vector3f ();
-//	}
-//
-//	// Unbind buffer
-//
-//	depthBuffer -> unbind ();
-//
-//	{
-//		bool     intersected = false;
-//		Sphere3f collisionSphere (collisionRadius, Vector3f ());
-//
-//		std::deque <Vector3f> collisionNormal;
-//
-//		for (const auto & shape : basic::adapter (shapes .cbegin (), shapes .cbegin () + numOpaqueShapes))
-//		{
-//			if ((intersected = shape -> intersect (collisionSphere, collisionNormal)))
-//				break;
-//		}
-//
-//		if (not intersected)
-//		{
-//			for (const auto & shape : basic::adapter (transparentShapes .cbegin (), transparentShapes .cbegin () + numTransparentShapes))
-//			{
-//				if ((intersected = shape -> intersect (collisionSphere, collisionNormal)))
-//					break;
-//			}
-//		}
-//
-//		if (intersected)
-//		{
-//			if (getBrowser () -> getViewerType () == ViewerType::WALK or getBrowser () -> getViewerType () == ViewerType::FLY)
-//			{
-//				if (collisionNormal .size () == 1)
-//				{
-//					collisionNormal [0] = cameraSpaceMatrix .multDirMatrix (collisionNormal [0]);
-//
-//					auto translation = inverse (getCurrentViewpoint () -> getParentMatrix ()) .multDirMatrix (collisionNormal [0]);
-//
-//					getCurrentViewpoint () -> positionOffset += translation;
-//				}
-//			}
-//
-//			__LOG__ << SFTime (chrono::now ()) << " : " << intersected << " : " << collisionNormal .size () << std::endl;
-//		}
-//	}
-//}
 
 void
 X3DRenderer::collide ()
@@ -527,22 +386,16 @@ X3DRenderer::gravite ()
 	float height     = navigationInfo -> getAvatarHeight ();
 	float stepHeight = navigationInfo -> getStepHeight ();
 
-	// Render
+	// Render as opaque objects
 
-	glPushMatrix ();
+	glLoadIdentity ();
 
-	{
-		// Render opaque objects first
+	glEnable (GL_DEPTH_TEST);
+	glDepthMask (GL_TRUE);
+	glDisable (GL_BLEND);
 
-		glEnable (GL_DEPTH_TEST);
-		glDepthMask (GL_TRUE);
-		glDisable (GL_BLEND);
-
-		for (const auto & shape : basic::adapter (collisionShapes .cbegin (), collisionShapes .cbegin () + numCollisionShapes))
-			shape -> draw ();
-	}
-
-	glPopMatrix ();
+	for (const auto & shape : basic::adapter (collisionShapes .cbegin (), collisionShapes .cbegin () + numCollisionShapes))
+		shape -> draw ();
 
 	// Get distance and unbind buffer
 
@@ -618,22 +471,7 @@ X3DRenderer::dispose ()
 }
 
 X3DRenderer::~X3DRenderer ()
-{
-	for (const auto & shape : shapes)
-		delete shape;
-
-	shapes .clear ();
-
-	for (const auto & shape : transparentShapes)
-		delete shape;
-
-	transparentShapes .clear ();
-
-	for (const auto & shape : collisionShapes)
-		delete shape;
-
-	collisionShapes .clear ();
-}
+{ }
 
 } // X3D
 } // titania

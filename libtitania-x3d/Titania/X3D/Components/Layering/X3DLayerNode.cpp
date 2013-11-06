@@ -88,9 +88,6 @@ X3DLayerNode::X3DLayerNode (X3DViewpointNode* _defaultViewpoint, X3DGroupingNode
 	                 fogs (new FogList (getExecutionContext ())),
 	           viewpoints (new ViewpointList (getExecutionContext ())),
 	            localFogs (),
-	          localLights (),
-	    cachedLocalLights (),
-	         globalLights (),
 	                group (_layerGroup)
 {
 	addNodeType (X3DConstants::X3DLayerNode);
@@ -262,29 +259,6 @@ X3DLayerNode::getUserViewpoints () const
 }
 
 void
-X3DLayerNode::pushLocalLight (X3DLightNode* light)
-{
-	LightContainer* lightContainer = new LightContainer (ModelViewMatrix4f (), light);
-
-	localLights .emplace_back (lightContainer);
-	cachedLocalLights .emplace_back (lightContainer);
-}
-
-void
-X3DLayerNode::clearLights ()
-{
-	for (const auto & light : cachedLocalLights)
-		delete light;
-
-	cachedLocalLights .clear ();
-
-	for (const auto & light : globalLights)
-		delete light;
-
-	globalLights .clear ();
-}
-
-void
 X3DLayerNode::lookAt ()
 {
 	getViewpoint () -> lookAt (getBBox ());
@@ -442,8 +416,6 @@ X3DLayerNode::collect ()
 
 	getNavigationInfo () -> disable ();
 	currentViewport -> pop ();
-
-	clearLights ();
 }
 
 void

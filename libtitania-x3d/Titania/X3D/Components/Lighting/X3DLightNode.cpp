@@ -56,10 +56,10 @@ namespace titania {
 namespace X3D {
 
 X3DLightNode::Fields::Fields () :
-	global (new SFBool (true)),
-	on (new SFBool (true)),
-	color (new SFColor (1, 1, 1)),
-	intensity (new SFFloat (1)),
+	          global (new SFBool (true)),
+	              on (new SFBool (true)),
+	           color (new SFColor (1, 1, 1)),
+	       intensity (new SFFloat (1)),
 	ambientIntensity (new SFFloat ())
 { }
 
@@ -76,17 +76,18 @@ X3DLightNode::push ()
 	if (on ())
 	{
 		if (global ())
-			getCurrentLayer () -> addGlobalLight (this);
+			getCurrentLayer () -> getGlobalObjects () .emplace_back (new LightContainer (this));
+
 		else
-			getCurrentLayer () -> pushLocalLight (this);
+			getCurrentLayer () -> getLocalObjects () .emplace_back (new LightContainer (this));
 	}
 }
 
 void
 X3DLightNode::pop ()
 {
-	if (not global () and on ())
-		getCurrentLayer () -> popLocalLight ();
+	if (on () and not global ())
+		getCurrentLayer () -> getLocalObjects () .pop_back ();
 }
 
 } // X3D

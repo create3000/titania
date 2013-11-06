@@ -53,10 +53,12 @@
 
 #include "../Components/EnvironmentalEffects/X3DFogObject.h"
 #include "../Components/Shape/X3DShapeNode.h"
-#include "LightContainerArray.h"
+#include "../Rendering/X3DCollectableContainer.h"
 
 #include "../Types/Geometry.h"
 #include "../Types/Numbers.h"
+
+#include <memory>
 
 namespace titania {
 namespace X3D {
@@ -67,14 +69,14 @@ public:
 
 	ShapeContainer (X3DShapeNode*,
 	                X3DFogObject*,
-	                const LightContainerArray &,
+	                const CollectableContainerArray &,
 	                const Matrix4f &,
 	                float);
 
 	void
 	assign (X3DShapeNode*,
 	        X3DFogObject*,
-	        const LightContainerArray &,
+	        const CollectableContainerArray &,
 	        const Matrix4f &,
 	        float);
 
@@ -88,9 +90,9 @@ public:
 
 private:
 
-	X3DShapeNode*       shape;
-	X3DFogObject*       fog;
-	LightContainerArray localLights;
+	X3DShapeNode*             shape;
+	X3DFogObject*             fog;
+	CollectableContainerArray localObjects;
 
 	Matrix4f matrix;
 	float    distance;
@@ -102,7 +104,7 @@ class ShapeContainerComp
 public:
 
 	bool
-	operator () (const ShapeContainer* lhs, const ShapeContainer* rhs) const
+	operator () (const std::unique_ptr <ShapeContainer> & lhs, const std::unique_ptr <ShapeContainer> & rhs) const
 	{
 		return lhs -> getDistance () < rhs -> getDistance ();
 	}

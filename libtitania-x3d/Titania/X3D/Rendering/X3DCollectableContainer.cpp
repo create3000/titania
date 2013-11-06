@@ -48,53 +48,16 @@
  *
  ******************************************************************************/
 
-#include "ClipPlane.h"
+#include "X3DCollectableContainer.h"
 
-#include "../../Execution/X3DExecutionContext.h"
-#include "../../Rendering/ClipPlaneContainer.h"
-#include "../Layering/X3DLayerNode.h"
+#include "../Rendering/OpenGL.h"
 
 namespace titania {
 namespace X3D {
 
-const std::string ClipPlane::componentName  = "Rendering";
-const std::string ClipPlane::typeName       = "ClipPlane";
-const std::string ClipPlane::containerField = "children";
-
-ClipPlane::Fields::Fields () :
-	enabled (new SFBool (true)),
-	  plane (new SFVec4f (0, 1, 0, 0))
+X3DCollectableContainer::X3DCollectableContainer () :
+	modelViewMatrix (ModelViewMatrix4f ())
 { }
-
-ClipPlane::ClipPlane (X3DExecutionContext* const executionContext) :
-	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DChildNode (),
-	      fields ()
-{
-	addField (inputOutput, "metadata", metadata ());
-	addField (inputOutput, "enabled",  enabled ());
-	addField (inputOutput, "plane",    plane ());
-}
-
-X3DBaseNode*
-ClipPlane::create (X3DExecutionContext* const executionContext) const
-{
-	return new ClipPlane (executionContext);
-}
-
-void
-ClipPlane::push ()
-{
-	if (enabled ())
-		getCurrentLayer () -> getLocalObjects () .emplace_back (new ClipPlaneContainer (this));
-}
-
-void
-ClipPlane::pop ()
-{
-	if (enabled ())
-		getCurrentLayer () -> getLocalObjects () .pop_back ();
-}
 
 } // X3D
 } // titania

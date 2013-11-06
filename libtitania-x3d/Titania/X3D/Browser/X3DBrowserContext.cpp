@@ -84,6 +84,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	                     layers (),
 	                    layouts (),
 	                     lights (),
+	                 clipPlanes (),
 	               textureUnits (),
 	       combinedTextureUnits (),
 	              textureStages (),
@@ -190,6 +191,11 @@ X3DBrowserContext::initialize ()
 
 		for (int32_t i = renderingProperties -> maxLights () - 1; i >= 0 ; -- i)
 			lights .push (GL_LIGHT0 + i);
+
+		// ClipPlanes
+
+		for (int32_t i = renderingProperties -> maxClipPlanes () - 1; i >= 0 ; -- i)
+			clipPlanes .push (GL_CLIP_PLANE0 + i);
 
 		// TextureUnits
 

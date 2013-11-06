@@ -55,10 +55,10 @@
 namespace titania {
 namespace X3D {
 
-LightContainer::LightContainer (const Matrix4f & matrix, X3DLightNode* node) :
-	   node (node),
-	 matrix (matrix),
-	lightId (0)
+LightContainer::LightContainer (X3DLightNode* node) :
+	X3DCollectableContainer (),
+	                   node (node),
+	                lightId (0)
 { }
 
 void
@@ -70,12 +70,12 @@ LightContainer::enable ()
 	{
 		lightId = lights .top ();
 		lights .pop ();
+
 		glEnable (lightId);
 
-		glPushMatrix ();
-		glLoadMatrixf (matrix .data ());
+		glLoadMatrixf (getModelViewMatrix () .data ());
+
 		node -> draw (lightId);
-		glPopMatrix ();
 	}
 }
 
@@ -84,8 +84,8 @@ LightContainer::disable ()
 {
 	if (lightId)
 	{
-		node -> getBrowser () -> getLights () .push (lightId);
 		glDisable (lightId);
+		node -> getBrowser () -> getLights () .push (lightId);
 	}
 }
 

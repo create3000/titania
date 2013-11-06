@@ -1,0 +1,105 @@
+#X3D V3.3 utf8 Titania
+
+DEF Gray Background {
+  skyColor 0.2 0.2 0.2
+}
+
+Viewpoint {
+  description "Home"
+  position 16.0211 12.359 11.3904
+  orientation -0.657612 0.734577 0.167162 0.992967
+  centerOfRotation 4.5 0 0
+}
+
+DEF ClippedObjects Transform {
+  children [
+    DEF Box Transform {
+      children Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 0.8 0 0
+          }
+        }
+        geometry Box { }
+      }
+    }
+    DEF Cylinder Transform {
+      translation 3 0 0
+      children Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 0 0.8 0
+          }
+        }
+        geometry Cylinder { }
+      }
+    }
+    DEF Cone Transform {
+      translation 6 0 0
+      children Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 0 0 0.8
+          }
+        }
+        geometry Cone { }
+      }
+    }
+    DEF Sphere Transform {
+      translation 9 0 0
+      children Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 0.8 0.8 0
+          }
+        }
+        geometry Sphere { }
+      }
+    }
+    DEF ClipPlane ClipPlane {
+      plane 0 0 -1 1.02371
+    }
+  ]
+}
+
+DEF VisibleClipPlane Transform {
+  children [
+    DEF PlaneSensor PlaneSensor {
+      axisRotation 0 1 0 1.5708
+      offset 4.50002 0 1.02371
+      maxPosition -1 0
+    }
+    DEF Rectangle2D Transform {
+      translation 4.50002 0 1.02371
+      scale 8 2.5 1
+      children Shape {
+        appearance Appearance {
+          material Material {
+            transparency 0.5
+          }
+        }
+        geometry Rectangle2D { }
+      }
+    }
+  ]
+}
+
+DEF ClipPlaneScript Script {
+  inputOnly  SFVec3f set_translation
+  outputOnly SFVec4f plane_changed
+
+  url "vrmlscript:
+function set_translation (value)
+{
+	var distanceFromOrigin = new SFVec3f (0, 0, -1) .dot (value);
+
+	plane_changed = new SFVec4f (0,0,-1, -distanceFromOrigin);
+
+	print (plane_changed);
+}
+"
+}
+
+ROUTE PlaneSensor.translation_changed TO Rectangle2D.set_translation
+ROUTE PlaneSensor.translation_changed TO ClipPlaneScript.set_translation
+ROUTE ClipPlaneScript.plane_changed TO ClipPlane.set_plane

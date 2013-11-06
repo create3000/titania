@@ -188,6 +188,14 @@ public:
 	maxLights () const
 	{ return *fields .maxLights; }
 
+	SFInt32 &
+	maxClipPlanes ()
+	{ return *fields .maxClipPlanes; }
+
+	const SFInt32 &
+	maxClipPlanes () const
+	{ return *fields .maxClipPlanes; }
+
 	SFBool &
 	antialiased ()
 	{ return *fields .antialiased; }
@@ -279,6 +287,7 @@ private:
 		SFInt32* const textureUnits;
 		SFInt32* const combinedTextureUnits;
 		SFInt32* const maxLights;
+		SFInt32* const maxClipPlanes;
 		SFBool* const antialiased;
 		SFInt32* const colorDepth;
 		SFDouble* const textureMemory;

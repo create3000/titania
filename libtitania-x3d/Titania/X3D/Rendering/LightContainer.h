@@ -52,27 +52,30 @@
 #define __TITANIA_X3D_RENDERING_LIGHT_CONTAINER_H__
 
 #include "../Components/Lighting/X3DLightNode.h"
+#include "../Rendering/X3DCollectableContainer.h"
 
 namespace titania {
 namespace X3D {
 
-class LightContainer
+class LightContainer :
+	public X3DCollectableContainer
 {
 public:
 
-	LightContainer (const Matrix4f &, X3DLightNode*);
+	LightContainer (X3DLightNode*);
 
+	virtual
 	void
-	enable ();
+	enable () final;
 
+	virtual
 	void
-	disable ();
+	disable () final;
 
 
 private:
 
 	X3DLightNode* node;
-	Matrix4f      matrix;
 	GLenum        lightId;
 
 };

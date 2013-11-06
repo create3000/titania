@@ -102,6 +102,21 @@ public:
 	const SFVec4f &
 	plane () const
 	{ return *fields .plane; }
+	
+	///  @name Operations
+
+	virtual
+	bool
+	isCollectable () final
+	{ return true; }
+
+	virtual
+	void
+	push () final;
+	
+	virtual
+	void
+	pop () final;
 
 
 private:

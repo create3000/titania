@@ -67,8 +67,12 @@ X3DGroupingNode::Fields::Fields () :
 X3DGroupingNode::X3DGroupingNode () :
 	    X3DChildNode (),
 	X3DBoundedObject (),
-	          fields (),
-	         visible ()
+	 fields (),
+visible (),
+	pointingDeviceSensors (),
+	localFogs (),
+	collectables (),
+	childNodes ()
 {
 	addNodeType (X3DConstants::X3DGroupingNode);
 
@@ -138,9 +142,9 @@ void
 X3DGroupingNode::set_children ()
 {
 	pointingDeviceSensors .clear ();
-	lights     .clear ();
-	localFogs  .clear ();
-	childNodes .clear ();
+	localFogs    .clear ();
+	collectables .clear ();
+	childNodes   .clear ();
 
 	add (children ());
 }
@@ -159,27 +163,22 @@ X3DGroupingNode::add (const MFNode & children)
 
 		else
 		{
-			auto lightNode = x3d_cast <X3DLightNode*> (child);
+			auto localFog = x3d_cast <LocalFog*> (child);
 
-			if (lightNode)
-				lights .emplace_back (lightNode);
+			if (localFog)
+				localFogs .emplace_back (localFog);
 
 			else
 			{
-				auto localFog = x3d_cast <LocalFog*> (child);
+				auto childNode = x3d_cast <X3DChildNode*> (child);
 
-				if (localFog)
-					localFogs .emplace_back (localFog);
-
-				else
+				if (childNode)
 				{
-					auto childNode = x3d_cast <X3DChildNode*> (child);
-
-					if (childNode)
-					{
-						if (i >= visible .size () or visible [i])
-							childNodes .emplace_back (childNode);
-					}
+					if (childNode -> isCollectable ())
+						collectables .emplace_back (childNode);
+				
+					if (i >= visible .size () or visible [i])
+						childNodes .emplace_back (childNode);
 				}
 			}
 		}
@@ -236,20 +235,20 @@ X3DGroupingNode::pick ()
 void
 X3DGroupingNode::collect ()
 {
-	for (const auto & child : lights)
-		child -> push ();
-
 	if (not localFogs .empty ())
 		localFogs .front () -> push ();
+
+	for (const auto & child : collectables)
+		child -> push ();
 
 	for (const auto & child : childNodes)
 		child -> traverse (TraverseType::COLLECT);
 
+	for (const auto & child : basic::reverse_adapter (collectables))
+		child -> pop ();
+
 	if (not localFogs .empty ())
 		localFogs .front () -> pop ();
-
-	for (const auto & child : basic::reverse_adapter (lights))
-		child -> pop ();
 }
 
 void

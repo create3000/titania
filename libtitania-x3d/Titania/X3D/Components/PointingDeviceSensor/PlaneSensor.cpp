@@ -115,7 +115,7 @@ PlaneSensor::set_active (const HitPtr & hit, bool active)
 			const Rotation4d axisRotation (this -> axisRotation () .getValue ());
 			
 			// hitPoint is used as origin for the case that the sensor is located at camera position
-			const auto origin = abs (inverseModelViewMatrix .translation () .z ()) < 0.001 ? hitPoint : Vector3d ();
+			const auto origin = hitPoint;
 
 			if (minPosition () .getX () == maxPosition () .getX ())
 			{
@@ -234,10 +234,6 @@ PlaneSensor::track (Vector3d trackPoint)
 
 	if (not (minPosition () .getY () > maxPosition () .getY ()))
 		translation .y (math::clamp <float> (translation .y (), minPosition () .getY (), maxPosition () .getY ()));
-
-	// Z component
-
-	translation .z (0);
 
 	trackPoint_changed ()  = trackPoint - trackPointOffset;
 	translation_changed () = Rotation4d (axisRotation () .getValue ()) * translation;

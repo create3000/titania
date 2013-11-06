@@ -57,45 +57,45 @@ namespace X3D {
 
 ShapeContainer::ShapeContainer (X3DShapeNode* shape,
                                 X3DFogObject* fog,
-                                const LightContainerArray & localLights,
+                                const CollectableContainerArray & localObjects,
                                 const Matrix4f & matrix,
                                 float distance) :
-	      shape (shape),
-	        fog (fog),
-	localLights (localLights),
-	     matrix (matrix),
-	   distance (distance)
+	       shape (shape),
+	         fog (fog),
+	localObjects (localObjects),
+	      matrix (matrix),
+	    distance (distance)
 { }
 
 void
 ShapeContainer::assign (X3DShapeNode* shape,
                         X3DFogObject* fog,
-                        const LightContainerArray & localLights,
+                        const CollectableContainerArray & localObjects,
                         const Matrix4f & matrix,
                         float distance)
 {
-	this -> shape       = shape;
-	this -> fog         = fog;
-	this -> localLights = localLights;
-	this -> matrix      = matrix;
-	this -> distance    = distance;
+	this -> shape        = shape;
+	this -> fog          = fog;
+	this -> localObjects = localObjects;
+	this -> matrix       = matrix;
+	this -> distance     = distance;
 }
 
 void
 ShapeContainer::draw ()
 {
-	glLoadMatrixf (matrix .data ());
+	for (const auto & object : localObjects)
+		object -> enable ();
 
-	for (const auto & light : localLights)
-		light -> enable ();
+	glLoadMatrixf (matrix .data ());
 
 	if (fog)
 		fog -> enable ();
 
 	shape -> draw ();
 
-	for (const auto & light : basic::reverse_adapter (localLights))
-		light -> disable ();
+	for (const auto & object : basic::reverse_adapter (localObjects))
+		object -> disable ();
 }
 
 } // X3D

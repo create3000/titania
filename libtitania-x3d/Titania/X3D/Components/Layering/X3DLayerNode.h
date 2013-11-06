@@ -52,7 +52,6 @@
 #define __TITANIA_X3D_COMPONENTS_LAYERING_X3DLAYER_NODE_H__
 
 #include "../../Rendering/CollisionArray.h"
-#include "../../Rendering/LightContainerArray.h"
 #include "../../Rendering/X3DRenderer.h"
 #include "../EnvironmentalEffects/LocalFog.h"
 #include "../Grouping/X3DGroupingNode.h"
@@ -206,27 +205,6 @@ public:
 	getLocalFogs ()
 	{ return localFogs; }
 
-	///  @name Light handling
-
-	void
-	pushLocalLight (X3DLightNode*);
-
-	void
-	popLocalLight ()
-	{ localLights .pop_back (); }
-
-	const LightContainerArray &
-	getLocalLights ()
-	{ return localLights; }
-
-	void
-	addGlobalLight (X3DLightNode* light)
-	{ globalLights .push_back (new LightContainer (ModelViewMatrix4f (), light)); }
-
-	const LightContainerArray &
-	getGlobalLights ()
-	{ return globalLights; }
-
 	///  @name Collision handling
 
 	CollisionArray &
@@ -280,9 +258,6 @@ private:
 	getDistance (const Vector3f &, float, float, const Vector3f &);
 
 	///  @name Operations
-
-	void
-	clearLights ();
 
 	void
 	set_viewport ();
@@ -340,11 +315,8 @@ private:
 	X3DSFNode <FogList>            fogs;
 	X3DSFNode <ViewpointList>      viewpoints;
 
-	LocalFogStack       localFogs;
-	LightContainerArray localLights;
-	LightContainerArray cachedLocalLights;
-	LightContainerArray globalLights;
-	CollisionArray      collisions;
+	LocalFogStack  localFogs;
+	CollisionArray collisions;
 
 	X3DSFNode <X3DGroupingNode> group;
 

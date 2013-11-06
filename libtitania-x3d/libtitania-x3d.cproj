@@ -387,7 +387,6 @@
     <None Include="Titania\X3D\Browser\Browser.h" />
     <None Include="Titania\X3D\InputOutput\Generator.h" />
     <None Include="Titania\X3D\Rendering\LightContainer.h" />
-    <None Include="Titania\X3D\Rendering\LightContainerArray.h" />
     <None Include="Titania\X3D\Rendering\ShapeContainer.h" />
     <None Include="Titania\X3D\Components.h" />
     <None Include="Titania\X3D\Extensions\CosmoWorlds\CosmoWorlds.wrl" />
@@ -597,6 +596,8 @@
     <None Include="share\titania\tools\Statistics.wrl" />
     <None Include="share\titania\tools\TransformTool.wrl" />
     <None Include="Titania\X3D\Rendering\TexCoordArray.h" />
+    <None Include="Titania\X3D\Rendering\X3DCollectableContainer.h" />
+    <None Include="Titania\X3D\Rendering\ClipPlaneContainer.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1042,6 +1043,8 @@
     <Compile Include="Titania\X3D\Bits\Traverse.cpp" />
     <Compile Include="Titania\X3D\Thread\SceneLoader.cpp" />
     <Compile Include="Titania\X3D\Thread\TextureLoader.cpp" />
+    <Compile Include="Titania\X3D\Rendering\X3DCollectableContainer.cpp" />
+    <Compile Include="Titania\X3D\Rendering\ClipPlaneContainer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

@@ -1,5 +1,35 @@
 2013-11-06  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* X3DRenderer.h:
+	* X3DRenderer.cpp:
+	* ShapeContainer.h:
+	* LightContainer.h:
+	* X3DBrowserContext.h:
+	* LightContainer.cpp:
+	* ShapeContainer.cpp:
+	* X3DBrowserContext.cpp:
+	* ClipPlaneContainer.h:
+	* X3DChildNode.h:
+	* LightContainerArray.h:
+	* ClipPlaneContainer.cpp:
+	* ClipPlane.h:
+	* ClipPlane.cpp:
+	* X3DLayerNode.h:
+	* X3DLightNode.h:
+	* X3DLightNode.cpp:
+	* X3DLayerNode.cpp:
+	* X3DCollectableContainer.cpp:
+	* X3DGroupingNode.h:
+	* X3DGroupingNode.cpp:
+	* RenderingProperties.h:
+	* NavigationInfo.cpp:
+	* RenderingProperties.cpp:
+	* PlaneSensor.cpp: 
+
+2013-11-06  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* TextureCoordinateGenerator.h:
 	* TextureCoordinateGenerator.cpp: 
 

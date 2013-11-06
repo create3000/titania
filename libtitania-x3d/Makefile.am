@@ -435,11 +435,13 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Prototype/Proto.cpp \
 	Titania/X3D/Prototype/ProtoArray.cpp \
 	Titania/X3D/Prototype/X3DProto.cpp \
+	Titania/X3D/Rendering/ClipPlaneContainer.cpp \
 	Titania/X3D/Rendering/CollisionShape.cpp \
 	Titania/X3D/Rendering/DepthBuffer.cpp \
 	Titania/X3D/Rendering/LightContainer.cpp \
 	Titania/X3D/Rendering/ShapeContainer.cpp \
 	Titania/X3D/Rendering/ViewVolume.cpp \
+	Titania/X3D/Rendering/X3DCollectableContainer.cpp \
 	Titania/X3D/Rendering/X3DRenderer.cpp \
 	Titania/X3D/Routing/Route.cpp \
 	Titania/X3D/Routing/RouteArray.cpp \

@@ -62,6 +62,8 @@ class X3DLightNode :
 {
 public:
 
+	///  @name Fields
+
 	SFBool &
 	global ()
 	{ return *fields .global; }
@@ -102,11 +104,20 @@ public:
 	ambientIntensity () const
 	{ return *fields .ambientIntensity; }
 
-	void
-	push ();
+	///  @name Operations
+	
+	virtual
+	bool
+	isCollectable () final
+	{ return true; }
 
+	virtual
 	void
-	pop ();
+	push () final;
+
+	virtual
+	void
+	pop () final;
 
 	virtual
 	void
@@ -115,10 +126,14 @@ public:
 
 protected:
 
+	///  @name Construction
+
 	X3DLightNode ();
 
 
 private:
+
+	///  @name Members
 
 	struct Fields
 	{
