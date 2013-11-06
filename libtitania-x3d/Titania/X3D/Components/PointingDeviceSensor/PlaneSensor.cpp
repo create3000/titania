@@ -171,7 +171,7 @@ PlaneSensor::trackStart (const Vector3d & origin, Vector3d trackPoint)
 {
 	trackPointOffset       = origin;
 	startPoint             = trackPoint;
-	trackPoint_changed ()  = trackPoint - trackPointOffset;
+	trackPoint_changed ()  = Vector3d (offset () .getValue ()) + trackPoint - trackPointOffset;
 	translation_changed () = offset ();
 }
 
@@ -235,7 +235,7 @@ PlaneSensor::track (Vector3d trackPoint)
 	if (not (minPosition () .getY () > maxPosition () .getY ()))
 		translation .y (math::clamp <float> (translation .y (), minPosition () .getY (), maxPosition () .getY ()));
 
-	trackPoint_changed ()  = trackPoint - trackPointOffset;
+	trackPoint_changed ()  = Vector3d (offset () .getValue ()) + trackPoint - trackPointOffset;
 	translation_changed () = Rotation4d (axisRotation () .getValue ()) * translation;
 }
 
