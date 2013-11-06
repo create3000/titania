@@ -64,12 +64,12 @@ X3DTextureCoordinateNode::X3DTextureCoordinateNode () :
 void
 X3DTextureCoordinateNode::enable (const TexCoordArray & texCoords) const
 {
-	if (getBrowser () -> getTextures () .empty ())
+	if (getBrowser () -> getTextureStages () .empty ())
 		enable (0, 0, texCoords);
 
 	else
 	{
-		for (const auto & unit : getBrowser () -> getTextures ())
+		for (const auto & unit : getBrowser () -> getTextureStages ())
 			enable (unit, 0, texCoords);
 	}
 }
@@ -77,12 +77,12 @@ X3DTextureCoordinateNode::enable (const TexCoordArray & texCoords) const
 void
 X3DTextureCoordinateNode::disable () const
 {
-	if (getBrowser () -> getTextures () .empty ())
+	if (getBrowser () -> getTextureStages () .empty ())
 		disable (0);
 
 	else
 	{
-		for (const auto & unit : getBrowser () -> getTextures ())
+		for (const auto & unit : getBrowser () -> getTextureStages ())
 			disable (unit);
 	}
 }

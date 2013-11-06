@@ -141,17 +141,79 @@ public:
 
 	virtual
 	bool
-	isTransparent () const
-	{ return false; }
+	isTransparent () const final;
 
 	///  @name Operstions
 
 	virtual
 	void
-	draw ();
+	draw () final;
 
 
 private:
+
+	enum class ModeType {
+		MODULATE,
+		REPLACE,
+		MODULATE2X,
+		MODULATE4X,
+		ADD,
+		ADDSIGNED,
+		ADDSIGNED2X,
+		SUBTRACT,
+		ADDSMOOTH,
+		BLENDDIFFUSEALPHA,
+		BLENDTEXTUREALPHA,
+		BLENDFACTORALPHA,
+		BLENDCURRENTALPHA,
+		MODULATEALPHA_ADDCOLOR,
+		MODULATEINVALPHA_ADDCOLOR,
+		MODULATEINVCOLOR_ADDALPHA,
+		OFF,
+		SELECTARG1,
+		SELECTARG2,
+		DOTPRODUCT3
+	};
+	
+	enum class SourceType {
+		DEFAULT,
+		DIFFUSE,
+		SPECULAR,
+		FACTOR
+	};
+	
+	enum class FunctionType {
+		DEFAULT,
+		COMPLEMENT,
+		ALPHAREPLICATE
+	};
+	
+	virtual
+	void
+	initialize () final;
+
+	ModeType
+	getMode (size_t) const;
+
+	ModeType
+	getAlphaMode (size_t) const;
+
+	SourceType
+	getSource (size_t) const;
+
+	FunctionType
+	getFunction (size_t) const;
+
+	///  @name Event handlers
+
+	void
+	set_mode ();
+	
+	void
+	set_source ();
+	
+	void
+	set_function ();
 
 	///  @name Static members
 
@@ -174,6 +236,11 @@ private:
 	};
 
 	Fields fields;
+
+	std::vector <ModeType>     modes;
+	std::vector <ModeType>     alphaModes;
+	std::vector <SourceType>   sources;
+	std::vector <FunctionType> functions;
 
 };
 

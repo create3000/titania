@@ -2337,6 +2337,7 @@
     <None Include="Tests\Rendering\RenderingGeometry.wrl" />
     <None Include="Tests\Texturing\MultiTexture.wrl" />
     <None Include="Tests\PointingDeviceSensor\Wheel.wrl" />
+    <None Include="Tests\images\util-mark6.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

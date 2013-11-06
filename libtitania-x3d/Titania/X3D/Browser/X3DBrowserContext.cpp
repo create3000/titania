@@ -86,7 +86,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	                     lights (),
 	               textureUnits (),
 	       combinedTextureUnits (),
-	                   textures (),
+	              textureStages (),
 	                    texture (false),
 	                activeLayer (),
 	       activeNavigationInfo (nullptr),
@@ -188,12 +188,12 @@ X3DBrowserContext::initialize ()
 
 		// Lights
 
-		for (int32_t i = 0; i < renderingProperties -> maxLights (); ++ i)
+		for (int32_t i = renderingProperties -> maxLights () - 1; i >= 0 ; -- i)
 			lights .push (GL_LIGHT0 + i);
 
 		// TextureUnits
 
-		for (int32_t i = 0; i < renderingProperties -> textureUnits (); ++ i)
+		for (int32_t i = renderingProperties -> textureUnits () - 1; i >= 0 ; -- i)
 			textureUnits .push (i);                                             // Don't add GL_TEXTURE0
 
 		for (int32_t i = renderingProperties -> textureUnits (); i < renderingProperties -> combinedTextureUnits (); ++ i)

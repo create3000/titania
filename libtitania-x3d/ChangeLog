@@ -1,3 +1,18 @@
+2013-11-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DRenderer.cpp:
+	* X3DBrowserContext.h:
+	* ShapeContainer.cpp:
+	* X3DBrowserContext.cpp:
+	* MultiTexture.h:
+	* MultiTexture.cpp:
+	* X3DGroupingNode.cpp:
+	* X3DGeometryNode.cpp:
+	* MultiTextureTransform.cpp:
+	* MultiTextureCoordinate.cpp:
+	* X3DTextureTransformNode.cpp:
+	* X3DTextureCoordinateNode.cpp: 
+
 2013-11-05  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* MultiTexture.h:

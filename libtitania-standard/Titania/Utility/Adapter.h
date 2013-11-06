@@ -86,6 +86,22 @@ adapter (const Iterator & begin, const Iterator & end)
 	return container_adapter <Iterator> (begin, end);
 }
 
+template <class Container>
+inline
+container_adapter <typename Container::reverse_iterator>
+reverse_adapter (Container & container)
+{
+	return container_adapter <typename Container::reverse_iterator> (container .rbegin (), container .rend ());
+}
+
+template <class Container>
+inline
+container_adapter <typename Container::const_reverse_iterator>
+reverse_adapter (const Container & container)
+{
+	return container_adapter <typename Container::const_reverse_iterator> (container .rbegin (), container .rend ());
+}
+
 } // basic
 } // titania
 

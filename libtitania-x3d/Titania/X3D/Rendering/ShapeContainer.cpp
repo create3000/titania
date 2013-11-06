@@ -94,7 +94,7 @@ ShapeContainer::draw ()
 
 	shape -> draw ();
 
-	for (const auto & light : basic::adapter (localLights .crbegin (), localLights .crend ()))
+	for (const auto & light : basic::reverse_adapter (localLights))
 		light -> disable ();
 }
 

@@ -83,12 +83,12 @@ X3DTextureTransformNode::setMatrix (const Matrix4f & m)
 void
 X3DTextureTransformNode::draw ()
 {
-	if (getBrowser () -> getTextures () .empty ())
+	if (getBrowser () -> getTextureStages () .empty ())
 		draw (0);
 
 	else
 	{
-		for (const auto & unit : getBrowser () -> getTextures ())
+		for (const auto & unit : getBrowser () -> getTextureStages ())
 			draw (unit);
 	}
 }

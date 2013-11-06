@@ -9,19 +9,34 @@ Viewpoint {
   position 0 0 3.4
 }
 
-Transform {
+DEF Rectangle2D Transform {
+  translation 0 0 -2
+  children Shape {
+    appearance Appearance {
+      material Material { }
+      texture ImageTexture {
+        url "../images/util-mark6.png"
+      }
+    }
+    geometry Rectangle2D { }
+  }
+}
+
+DEF MultiTexture Transform {
   children Shape {
     appearance Appearance {
       material Material {
-        diffuseColor 0.8 0 0
+        diffuseColor 1 0 0
       }
       texture MultiTexture {
+        mode [ "SELECTARG1", "SELECTARG1" ]
+        function [ "", "ALPHAREPLICATE" ]
         texture [
           ImageTexture {
             url "../images/image.png"
           }
           ImageTexture {
-            url "../images/image.png"
+            url "../images/lena.jpg"
           }
         ]
       }
@@ -30,13 +45,16 @@ Transform {
           TextureTransform {
             scale 2 2
           }
-          TextureTransform { }
+          TextureTransform {
+            scale 2 2
+          }
         ]
       }
     }
     geometry IndexedFaceSet {
       solid FALSE
       texCoordIndex [ 0, 1, 2, 3, -1 ]
+      colorIndex [ 0, 1, 2, 3, -1 ]
       coordIndex [ 0, 1, 2, 3, -1 ]
       texCoord MultiTextureCoordinate {
         texCoord [

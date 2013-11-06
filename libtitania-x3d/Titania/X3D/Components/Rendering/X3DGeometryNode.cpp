@@ -547,14 +547,14 @@ X3DGeometryNode::draw (bool solid, bool texture, bool lighting)
 		if (textureCoordinate)
 			textureCoordinate -> disable ();
 
-		if (getBrowser () -> getTextures () .empty ())
+		if (getBrowser () -> getTextureStages () .empty ())
 		{
 			glDisable (GL_TEXTURE_2D);
 			glDisable (GL_TEXTURE_CUBE_MAP);
 		}
 		else
 		{
-			for (const auto & unit : getBrowser () -> getTextures ())
+			for (const auto & unit : basic::reverse_adapter (getBrowser () -> getTextureStages ()))
 			{
 				glActiveTexture (GL_TEXTURE0 + unit);
 
@@ -564,7 +564,7 @@ X3DGeometryNode::draw (bool solid, bool texture, bool lighting)
 				getBrowser () -> getTextureUnits () .push (unit);
 			}
 
-			getBrowser () -> getTextures () .clear ();
+			getBrowser () -> getTextureStages () .clear ();
 			glActiveTexture (GL_TEXTURE0);
 		}
 

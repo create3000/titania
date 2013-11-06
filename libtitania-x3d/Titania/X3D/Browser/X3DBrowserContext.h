@@ -250,8 +250,8 @@ public:
 	{ return combinedTextureUnits; }
 
 	TextureArray &
-	getTextures ()
-	{ return textures; }
+	getTextureStages ()
+	{ return textureStages; }
 
 	void
 	isEnabledTexture (bool value)
@@ -424,7 +424,7 @@ private:
 	LightStack       lights;
 	TextureUnitStack textureUnits;
 	TextureUnitStack combinedTextureUnits;
-	TextureArray     textures;
+	TextureArray     textureStages;
 	bool             texture;
 
 	X3DSFNode <X3DLayerNode> activeLayer;

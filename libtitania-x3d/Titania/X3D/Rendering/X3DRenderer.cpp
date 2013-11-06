@@ -272,7 +272,7 @@ X3DRenderer::draw ()
 
 	// Disable global lights
 
-	for (const auto & light : basic::adapter (globalLights .crbegin (), globalLights .crend ()))
+	for (const auto & light : basic::reverse_adapter (globalLights))
 		light -> disable ();
 
 	glPopMatrix ();

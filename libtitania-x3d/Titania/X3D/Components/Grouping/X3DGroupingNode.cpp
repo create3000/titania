@@ -248,7 +248,7 @@ X3DGroupingNode::collect ()
 	if (not localFogs .empty ())
 		localFogs .front () -> pop ();
 
-	for (const auto & child : basic::adapter (lights .crbegin (), lights .crend ()))
+	for (const auto & child : basic::reverse_adapter (lights))
 		child -> pop ();
 }
 
