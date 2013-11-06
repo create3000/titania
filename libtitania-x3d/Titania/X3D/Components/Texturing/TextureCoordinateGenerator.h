@@ -121,11 +121,11 @@ public:
 
 	virtual
 	void
-	enable (size_t, size_t, const TexCoordArray &) const final;
+	enable (int32_t, size_t, const TexCoordArray &) const final;
 
 	virtual
 	void
-	disable (size_t) const final;
+	disable (int32_t) const final;
 
 
 private:

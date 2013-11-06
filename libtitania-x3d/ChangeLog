@@ -1,5 +1,29 @@
 2013-11-06  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Text.cpp:
+	* X3DBrowserContext.h:
+	* MultiTexture.cpp:
+	* X3DGeometryNode.h:
+	* TextureCoordinate.h:
+	* X3DGeometryNode.cpp:
+	* TextureCoordinate.cpp:
+	* TextureCoordinate3D.h:
+	* TextureCoordinate4D.h:
+	* MultiTextureTransform.h:
+	* MultiTextureCoordinate.h:
+	* TextureCoordinate3D.cpp:
+	* X3DTextureTransformNode.h:
+	* MultiTextureTransform.cpp:
+	* TextureCoordinate4D.cpp:
+	* MultiTextureCoordinate.cpp:
+	* X3DTextureCoordinateNode.h:
+	* X3DTextureTransformNode.cpp:
+	* TextureCoordinateGenerator.h:
+	* X3DTextureCoordinateNode.cpp:
+	* TextureCoordinateGenerator.cpp: 
+
+2013-11-06  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DRenderer.cpp:
 	* X3DBrowserContext.h:
 	* ShapeContainer.cpp:

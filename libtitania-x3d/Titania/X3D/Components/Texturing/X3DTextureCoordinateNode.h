@@ -86,7 +86,7 @@ public:
 
 	virtual
 	void
-	enable (size_t, size_t, const TexCoordArray &) const = 0;
+	enable (int32_t, size_t, const TexCoordArray &) const = 0;
 
 	virtual
 	void
@@ -94,7 +94,7 @@ public:
 
 	virtual
 	void
-	disable (size_t) const = 0;
+	disable (int32_t) const = 0;
 
 
 protected:

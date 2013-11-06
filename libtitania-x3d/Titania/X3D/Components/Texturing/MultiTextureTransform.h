@@ -105,7 +105,7 @@ public:
 
 	virtual
 	void
-	draw (size_t) final
+	draw (int32_t) final
 	{ }
 
 

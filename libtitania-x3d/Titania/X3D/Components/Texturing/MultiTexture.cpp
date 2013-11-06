@@ -274,12 +274,19 @@ MultiTexture::draw ()
 
 		if (textureNode)
 		{
+			if (getMode (index) == ModeType::OFF and getAlphaMode (index) == ModeType::OFF)
+			{
+				getBrowser () -> getTextureStages () .emplace_back (-1);
+				++ index;
+				continue;
+			}
+
 			if (getBrowser () -> getTextureUnits () .empty ())
 				break;
 
 			// Get texture unit.
 
-			size_t unit = getBrowser () -> getTextureUnits () .top ();
+			int32_t unit = getBrowser () -> getTextureUnits () .top ();
 			getBrowser () -> getTextureUnits () .pop ();
 
 			getBrowser () -> getTextureStages () .emplace_back (unit);
@@ -366,14 +373,14 @@ MultiTexture::draw ()
 
 			//
 
-			glTexEnvi (GL_TEXTURE_ENV, GL_SOURCE0_RGB,   arg1_rgb_source);
-			glTexEnvi (GL_TEXTURE_ENV, GL_SOURCE0_ALPHA, arg1_alpha_source);
-			glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND0_RGB,  arg1_rgb_operand);
-			glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND1_RGB,  arg2_rgb_operand);
+			glTexEnvi (GL_TEXTURE_ENV, GL_SOURCE0_RGB,    arg1_rgb_source);
+			glTexEnvi (GL_TEXTURE_ENV, GL_SOURCE0_ALPHA,  arg1_alpha_source);
+			glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND0_RGB,   arg1_rgb_operand);
+			glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND0_ALPHA, arg1_alpha_operand);
 
 			glTexEnvi (GL_TEXTURE_ENV, GL_SOURCE1_RGB,    arg2_rgb_source);
 			glTexEnvi (GL_TEXTURE_ENV, GL_SOURCE1_ALPHA,  arg2_alpha_source);
-			glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND0_ALPHA, arg1_alpha_operand);
+			glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND1_RGB,   arg2_rgb_operand);
 			glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND1_ALPHA, arg2_alpha_operand);
 
 			// Set mode

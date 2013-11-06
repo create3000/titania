@@ -93,13 +93,14 @@ MultiTextureTransform::draw ()
 		if (x3d_cast <MultiTextureTransform*> (node))
 			continue;
 
-		size_t unit = channel < size ? getBrowser () -> getTextureStages () [channel] : 0;
+		int32_t unit = channel < size ? getBrowser () -> getTextureStages () [channel] : 0;
 
 		auto textureTransform = node ? x3d_cast <X3DTextureTransformNode*> (node) : defaultTextureTransform;
 
 		if (textureTransform)
 		{
-			textureTransform -> draw (unit);
+			if (unit >= 0)
+				textureTransform -> draw (unit);
 
 			last = textureTransform;
 			++ channel;
@@ -110,7 +111,12 @@ MultiTextureTransform::draw ()
 	}
 
 	for ( ; channel < size; ++ channel)
-		last -> draw (getBrowser () -> getTextureStages () [channel]);
+	{
+		int32_t unit = getBrowser () -> getTextureStages () [channel];
+
+		if (unit >= 0)
+			last -> draw (unit);
+	}
 }
 
 } // X3D

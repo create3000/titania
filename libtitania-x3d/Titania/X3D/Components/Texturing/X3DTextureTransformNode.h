@@ -69,7 +69,7 @@ public:
 
 	virtual
 	void
-	draw (size_t);
+	draw (int32_t);
 
 
 protected:

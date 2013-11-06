@@ -111,7 +111,7 @@ TextureCoordinate3D::resize (size_t size)
 }
 
 void
-TextureCoordinate3D::enable (size_t unit, size_t channel, const TexCoordArray & texCoords) const
+TextureCoordinate3D::enable (int32_t unit, size_t channel, const TexCoordArray & texCoords) const
 {
 	glClientActiveTexture (GL_TEXTURE0 + unit);
 	glEnableClientState (GL_TEXTURE_COORD_ARRAY);
@@ -119,7 +119,7 @@ TextureCoordinate3D::enable (size_t unit, size_t channel, const TexCoordArray & 
 }
 
 void
-TextureCoordinate3D::disable (size_t unit) const
+TextureCoordinate3D::disable (int32_t unit) const
 {
 	glClientActiveTexture (GL_TEXTURE0 + unit);
 	glDisableClientState (GL_TEXTURE_COORD_ARRAY);

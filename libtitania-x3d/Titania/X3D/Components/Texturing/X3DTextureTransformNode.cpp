@@ -89,12 +89,15 @@ X3DTextureTransformNode::draw ()
 	else
 	{
 		for (const auto & unit : getBrowser () -> getTextureStages ())
-			draw (unit);
+		{
+			if (unit >= 0)
+				draw (unit);
+		}
 	}
 }
 
 void
-X3DTextureTransformNode::draw (size_t unit)
+X3DTextureTransformNode::draw (int32_t unit)
 {
 	glActiveTexture (GL_TEXTURE0 + unit);
 

@@ -141,13 +141,14 @@ MultiTextureCoordinate::enable (const TexCoordArray & texCoords) const
 		if (x3d_cast <MultiTextureCoordinate*> (node))
 			continue;
 
-		size_t unit = channel < size ? getBrowser () -> getTextureStages () [channel] : 0;
-
+		int32_t unit = channel < size ? getBrowser () -> getTextureStages () [channel] : 0;
+		
 		auto textureCoordinate = x3d_cast <X3DTextureCoordinateNode*> (node);
 
 		if (textureCoordinate)
 		{
-			textureCoordinate -> enable (unit, channel, texCoords);
+			if (unit >= 0)
+				textureCoordinate -> enable (unit, channel, texCoords);
 
 			last = textureCoordinate;
 			++ channel;
@@ -160,7 +161,12 @@ MultiTextureCoordinate::enable (const TexCoordArray & texCoords) const
 	if (last)
 	{
 		for (size_t lastChannel = channel - 1; channel < size; ++ channel)
-			last -> enable (getBrowser () -> getTextureStages () [channel], lastChannel, texCoords);
+		{
+			int32_t unit = getBrowser () -> getTextureStages () [channel];
+		
+			if (unit >= 0)
+				last -> enable (unit, lastChannel, texCoords);
+		}
 	}
 }
 
@@ -176,13 +182,14 @@ MultiTextureCoordinate::disable () const
 		if (x3d_cast <MultiTextureCoordinate*> (node))
 			continue;
 
-		size_t unit = channel < size ? getBrowser () -> getTextureStages () [channel] : 0;
-
+		int32_t unit = channel < size ? getBrowser () -> getTextureStages () [channel] : 0;
+		
 		auto textureCoordinate = x3d_cast <X3DTextureCoordinateNode*> (node);
 
 		if (textureCoordinate)
 		{
-			textureCoordinate -> disable (unit);
+			if (unit >= 0)
+				textureCoordinate -> disable (unit);
 
 			last = textureCoordinate;
 			++ channel;
@@ -195,7 +202,12 @@ MultiTextureCoordinate::disable () const
 	if (last)
 	{
 		for ( ; channel < size; ++ channel)
-			last -> disable (getBrowser () -> getTextureStages () [channel]);
+		{
+			int32_t unit = getBrowser () -> getTextureStages () [channel];
+
+			if (unit >= 0)
+				last -> disable (unit);
+		}
 	}
 }
 

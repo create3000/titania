@@ -85,8 +85,8 @@ typedef std::stack <X3DRenderer*>      RendererStack;
 typedef std::stack <X3DLayerNode*>     LayerStack;
 typedef std::stack <X3DLayoutNode*>    LayoutStack;
 typedef std::stack <GLenum>            LightStack;
-typedef std::stack <size_t>            TextureUnitStack;
-typedef std::vector <size_t>           TextureArray;
+typedef std::stack <int32_t>           TextureUnitStack;
+typedef std::vector <int32_t>          TextureArray;
 
 class X3DBrowserContext :
 	public X3DExecutionContext

@@ -187,6 +187,9 @@ protected:
 	void
 	build () = 0;
 
+	void
+	disableTextures ();
+
 	virtual
 	void
 	eventsProcessed () override;

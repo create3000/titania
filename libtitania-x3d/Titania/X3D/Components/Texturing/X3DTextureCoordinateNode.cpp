@@ -70,7 +70,10 @@ X3DTextureCoordinateNode::enable (const TexCoordArray & texCoords) const
 	else
 	{
 		for (const auto & unit : getBrowser () -> getTextureStages ())
-			enable (unit, 0, texCoords);
+		{
+			if (unit >= 0)
+				enable (unit, 0, texCoords);
+		}
 	}
 }
 
@@ -83,7 +86,10 @@ X3DTextureCoordinateNode::disable () const
 	else
 	{
 		for (const auto & unit : getBrowser () -> getTextureStages ())
-			disable (unit);
+		{
+			if (unit >= 0)
+				disable (unit);
+		}
 	}
 }
 

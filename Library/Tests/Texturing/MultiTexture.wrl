@@ -26,30 +26,26 @@ DEF MultiTexture Transform {
   children Shape {
     appearance Appearance {
       material Material {
-        diffuseColor 1 0 0
+        diffuseColor 1 1 1
+        emissiveColor 1 1 1
       }
       texture MultiTexture {
-        mode [ "SELECTARG1", "SELECTARG1" ]
-        function [ "", "ALPHAREPLICATE" ]
+        mode [ "SELECTARG1", "SELECTARG1", "OFF" ]
+        function [ "COMPLEMENT", "ALPHAREPLICATE", "COMPLEMENT" ]
         texture [
           ImageTexture {
             url "../images/image.png"
+          }
+          MovieTexture {
+            url "../../Examples/Vattenfall/stage/film6.mpv"
+            loop TRUE
           }
           ImageTexture {
             url "../images/lena.jpg"
           }
         ]
       }
-      textureTransform MultiTextureTransform {
-        textureTransform [
-          TextureTransform {
-            scale 2 2
-          }
-          TextureTransform {
-            scale 2 2
-          }
-        ]
-      }
+      textureTransform MultiTextureTransform { }
     }
     geometry IndexedFaceSet {
       solid FALSE
