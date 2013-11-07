@@ -70,11 +70,11 @@ DepthBuffer::DepthBuffer (size_t width, size_t height) :
 		// Bind frame buffer.
 		glBindFramebuffer (GL_FRAMEBUFFER, id);
 
-		// The color buffer 1
-		//			glGenRenderbuffers (1, &colorBuffer);
-		//			glBindRenderbuffer (GL_RENDERBUFFER, colorBuffer);
-		//			glRenderbufferStorage (GL_RENDERBUFFER, GL_RGBA8, width, height);
-		//			glFramebufferRenderbuffer (GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, colorBuffer);
+		// DEBUG: The color buffer 1
+		//		glGenRenderbuffers (1, &colorBuffer);
+		//		glBindRenderbuffer (GL_RENDERBUFFER, colorBuffer);
+		//		glRenderbufferStorage (GL_RENDERBUFFER, GL_RGBA8, width, height);
+		//		glFramebufferRenderbuffer (GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, colorBuffer);
 
 		// The depth buffer
 		glGenRenderbuffers (1, &depthBuffer);
@@ -95,12 +95,9 @@ DepthBuffer::getDistance (float zNear, float zFar)
 {
 	glReadPixels (0, 0, width, height, GL_DEPTH_COMPONENT, GL_FLOAT, depth .data ());
 
-	float distance = depth [0];
+	auto distance = std::min_element (depth .begin (), depth .end ());
 
-	for (const auto & d : depth)
-		distance = std::min (distance, d);
-
-	return zNear + (zFar - zNear) * distance;
+	return zNear + (zFar - zNear) * *distance;
 }
 
 void
@@ -121,6 +118,19 @@ DepthBuffer::unbind ()
 {
 	glDisable (GL_SCISSOR_TEST);
 	glViewport (viewport [0], viewport [1], viewport [2], viewport [3]);
+
+	// Bind frame buffer.
+	glBindFramebuffer (GL_FRAMEBUFFER, 0);
+}
+
+// DEBUG
+void
+DepthBuffer::display ()
+{
+	glBindFramebuffer (GL_READ_FRAMEBUFFER, id);
+	glBindFramebuffer (GL_DRAW_FRAMEBUFFER, 0);
+
+	glBlitFramebuffer (0, 0, width, height, 0, 0, width, height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
 
 	// Bind frame buffer.
 	glBindFramebuffer (GL_FRAMEBUFFER, 0);

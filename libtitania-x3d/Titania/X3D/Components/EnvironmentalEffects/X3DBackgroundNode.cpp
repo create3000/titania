@@ -355,8 +355,6 @@ X3DBackgroundNode::draw ()
 
 		if (transparency ())
 			glEnable (GL_BLEND);
-		else
-			glDisable (GL_BLEND);
 
 		glEnable (GL_CULL_FACE);
 
@@ -372,6 +370,10 @@ X3DBackgroundNode::draw ()
 
 		glDisableClientState (GL_COLOR_ARRAY);
 		glDisableClientState (GL_VERTEX_ARRAY);
+
+		glDisable (GL_BLEND);
+		glDepthMask (GL_TRUE);
+		glEnable (GL_DEPTH_TEST);
 	}
 
 	glPolygonMode (GL_FRONT_AND_BACK, polygonMode [0]);

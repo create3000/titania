@@ -72,6 +72,9 @@ public:
 
 	void
 	unbind ();
+	
+	void
+	display ();
 
 	~DepthBuffer ();
 

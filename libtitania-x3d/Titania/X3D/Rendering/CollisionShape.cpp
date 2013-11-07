@@ -98,6 +98,7 @@ CollisionShape::draw ()
 
 	glLoadMatrixf (matrix .data ());
 
+	//shape -> draw ();
 	shape -> getGeometry () -> draw (false, false, false);
 
 	for (const auto & object : basic::reverse_adapter (localObjects))

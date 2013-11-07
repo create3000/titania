@@ -164,22 +164,26 @@ X3DRenderer::render (const TraverseType type)
 
 	getBrowser () -> getRenderers () .emplace (this);
 
-	collect (type);
-
 	switch (type)
 	{
 		case TraverseType::NAVIGATION:
 		{
+			collect (type);
+
 			navigation ();
 			break;
 		}
 		case TraverseType::COLLISION:
 		{
+			collect (type);
+
 			collide ();
 			break;
 		}
 		case TraverseType::COLLECT:
 		{
+			collect (type);
+
 			draw ();
 			break;
 		}
@@ -305,11 +309,6 @@ X3DRenderer::navigation ()
 
 	glLoadIdentity ();
 
-	glEnable (GL_DEPTH_TEST);
-	glDepthMask (GL_TRUE);
-	glDisable (GL_BLEND);
-	glDisable (GL_LIGHTING);
-
 	for (const auto & shape : basic::adapter (collisionShapes .cbegin (), collisionShapes .cbegin () + numCollisionShapes))
 		shape -> draw ();
 
@@ -379,10 +378,6 @@ X3DRenderer::gravite ()
 	if (getBrowser () -> getViewer () not_eq ViewerType::WALK)
 		return;
 
-	// Bind buffer
-
-	depthBuffer -> bind ();
-
 	// Get NavigationInfo values
 
 	auto navigationInfo = getCurrentNavigationInfo ();
@@ -392,14 +387,13 @@ X3DRenderer::gravite ()
 	float height     = navigationInfo -> getAvatarHeight ();
 	float stepHeight = navigationInfo -> getStepHeight ();
 
+	// Bind buffer
+
+	depthBuffer -> bind ();
+
 	// Render as opaque objects
 
 	glLoadIdentity ();
-
-	glEnable (GL_DEPTH_TEST);
-	glDepthMask (GL_TRUE);
-	glDisable (GL_BLEND);
-	glDisable (GL_LIGHTING);
 
 	for (const auto & shape : basic::adapter (collisionShapes .cbegin (), collisionShapes .cbegin () + numCollisionShapes))
 		shape -> draw ();

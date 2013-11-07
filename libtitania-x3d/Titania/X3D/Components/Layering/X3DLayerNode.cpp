@@ -326,6 +326,8 @@ X3DLayerNode::pick ()
 
 		getViewpoint () -> transform ();
 		group -> traverse (TraverseType::PICKING);
+
+		getGlobalObjects () .clear ();
 	}
 }
 

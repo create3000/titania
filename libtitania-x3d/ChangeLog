@@ -1,5 +1,17 @@
 2013-11-07  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* DepthBuffer.h:
+	* X3DRenderer.cpp:
+	* DepthBuffer.cpp:
+	* CollisionShape.cpp:
+	* X3DFlyViewer.cpp:
+	* X3DLayerNode.cpp:
+	* Background.cpp:
+	* X3DComposedGeometryNode.cpp:
+	* X3DBackgroundNode.cpp: 
+
+2013-11-07  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Notification.wrl:
 	* DepthBuffer.cpp:
 	* ClipPlaneContainer.h:

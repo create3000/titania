@@ -346,14 +346,14 @@ X3DFlyViewer::display ()
 		int width  = viewport [2];
 		int height = viewport [3];
 
+		glDisable (GL_DEPTH_TEST);
+
 		glMatrixMode (GL_PROJECTION);
 		glLoadIdentity ();
 		glOrtho (0, width, 0, height, -1, 1);
 		glMatrixMode (GL_MODELVIEW);
 
 		glLoadIdentity ();
-
-		glDisable (GL_DEPTH_TEST);
 
 		// Display Rubberband.
 
@@ -382,6 +382,8 @@ X3DFlyViewer::display ()
 		glVertex3f (f .x (), f .y (), f .z ());
 		glVertex3f (t .x (), t .y (), t .z ());
 		glEnd ();
+
+		glEnable (GL_DEPTH_TEST);
 	}
 	catch (const std::domain_error &)
 	{
