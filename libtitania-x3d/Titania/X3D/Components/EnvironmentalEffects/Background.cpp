@@ -176,6 +176,9 @@ Background::draw ()
 	float radius = 10000;
 	float s      = std::sqrt (std::pow (2 * radius, 2) / 2) / 2;
 
+	glDisable (GL_DEPTH_TEST);
+	glDepthMask (GL_FALSE);
+
 	glMatrixMode (GL_TEXTURE);
 	glLoadIdentity ();
 	glTranslatef (0, 1, 0);
@@ -307,6 +310,9 @@ Background::draw ()
 
 	glDisable (GL_BLEND);
 	glDisable (GL_TEXTURE_2D);
+
+	glDepthMask (GL_TRUE);
+	glEnable (GL_DEPTH_TEST);
 }
 
 void
