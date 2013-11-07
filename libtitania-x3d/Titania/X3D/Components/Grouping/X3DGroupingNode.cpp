@@ -202,8 +202,14 @@ X3DGroupingNode::traverse (const TraverseType type)
 					child -> push ();
 			}
 
+			for (const auto & child : collectables)
+				child -> push ();
+
 			for (const auto & child : childNodes)
 				child -> traverse (type);
+
+			for (const auto & child : basic::reverse_adapter (collectables))
+				child -> pop ();
 
 			if (not pointingDeviceSensors .empty ())
 				getBrowser () -> getSensors () .pop_back ();

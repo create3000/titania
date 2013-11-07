@@ -62,6 +62,12 @@ ClipPlaneContainer::ClipPlaneContainer (ClipPlane* const node) :
 	                planeId (0)
 { }
 
+bool
+ClipPlaneContainer::isClipped (const Vector3f & point, const Matrix4f & matrix) const
+{
+	return node -> isClipped (modelViewMatrix, point * matrix);
+}
+
 void
 ClipPlaneContainer::enable ()
 {

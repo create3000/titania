@@ -1,5 +1,17 @@
 2013-11-07  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Notification.wrl:
+	* DepthBuffer.cpp:
+	* ClipPlaneContainer.h:
+	* ClipPlaneContainer.cpp:
+	* ClipPlane.h:
+	* ClipPlane.cpp:
+	* X3DGeometryNode.h:
+	* X3DGroupingNode.cpp:
+	* X3DGeometryNode.cpp: 
+
+2013-11-07  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* ViewportContainer.cpp:
 	* X3DShapeNode.cpp: 
 

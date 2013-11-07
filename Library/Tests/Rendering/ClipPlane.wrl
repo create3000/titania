@@ -67,6 +67,9 @@ DEF ClippedObjects Transform {
     DEF ClipPlane ClipPlane {
       plane 0 0 -1 0.0464772
     }
+    TouchSensor {
+      description "Clipped objects"
+    }
   ]
 }
 

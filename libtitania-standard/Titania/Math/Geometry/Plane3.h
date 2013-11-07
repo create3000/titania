@@ -131,6 +131,12 @@ public:
 	const Type &
 	distance_from_origin () const
 	{ return value .distanceFromOrigin; }
+	
+	plane3
+	multPlaneMatrix (const matrix4 <Type> &);
+
+	plane3
+	multMatrixPlane (const matrix4 <Type> &);
 
 	///  Returns the distance from @a point.
 	constexpr Type
@@ -164,6 +170,51 @@ private:
 
 ///  @name Arithmetic operations
 
+///  Transform a plane by the given matrix
+template <class Type>
+plane3 <Type>
+plane3 <Type>::multPlaneMatrix (const matrix4 <Type> & matrix)
+{
+    // Find the point on the plane along the normal from the origin
+    auto	point = distance_from_origin () * normal ();
+
+    // Transform the plane normal by the matrix
+    // to get the new normal. Use the inverse transpose
+    // of the matrix so that normals are not scaled incorrectly.
+    auto invTran   = transpose (inverse (matrix));
+    auto newNormal = normalize (invTran .multDirMatrix (normal ()));
+
+    // Transform the point by the matrix
+    point = matrix .multVecMatrix (point);
+
+    // The new distance is the projected distance of the vector to the
+    // transformed point onto the (unit) transformed normal. This is
+    // just a dot product.
+    return plane3 (point, newNormal);
+}
+
+template <class Type>
+plane3 <Type>
+plane3 <Type>::multMatrixPlane (const matrix4 <Type> & matrix)
+{
+    // Find the point on the plane along the normal from the origin
+    auto	point = distance_from_origin () * normal ();
+
+    // Transform the plane normal by the matrix
+    // to get the new normal. Use the inverse transpose
+    // of the matrix so that normals are not scaled incorrectly.
+    auto invTran   = transpose (inverse (matrix));
+    auto newNormal = normalize (invTran .multMatrixDir (normal ()));
+
+    // Transform the point by the matrix
+    point = matrix .multMatrixVec (point);
+
+    // The new distance is the projected distance of the vector to the
+    // transformed point onto the (unit) transformed normal. This is
+    // just a dot product.
+    return plane3 (point, newNormal);
+}
+
 ///  Returns the distance from @a point.
 ///  The value can be both negative and positive depending
 ///  on the direction of the normal vector of this plane. If the point lies in the upper half
@@ -195,6 +246,24 @@ plane3 <Type>::intersect (const line3 <Type> & line, vector3 <Type> & point) con
 	point = line .point () + line .direction () * t;
 
 	return true;
+}
+
+///  @relates plane3
+///  @name Arithmetic operations
+
+///  Extraction operator for vector values.
+template <class Type>
+plane3 <Type>
+operator * (const plane3 <Type> & plane, const matrix4 <Type> & matrix)
+{
+	return plane .multPlaneMatrix (matrix);
+}
+
+template <class Type>
+plane3 <Type>
+operator * (const matrix4 <Type> & matrix, const plane3 <Type> & plane)
+{
+	return plane .multMatrixPlane (matrix);
 }
 
 ///  @relates plane3

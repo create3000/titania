@@ -111,6 +111,10 @@ public:
 	{ return true; }
 
 	virtual
+	bool
+	isClipped (const Matrix4f &, const Vector3f &) final;
+
+	virtual
 	void
 	push () final;
 	

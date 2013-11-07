@@ -211,6 +211,9 @@ private:
 
 	///  @name Operations
 
+	bool
+	isClipped (const Vector3f &, const Matrix4f &) const;
+
 	void
 	clear ();
 	
