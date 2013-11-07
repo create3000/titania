@@ -54,6 +54,7 @@
 #include "../Components/Navigation/Collision.h"
 #include "../Components/Shape/X3DShapeNode.h"
 #include "../Rendering/CollisionArray.h"
+#include "../Rendering/X3DCollectableContainer.h"
 
 #include "../Types/Geometry.h"
 #include "../Types/Numbers.h"
@@ -67,12 +68,14 @@ public:
 
 	CollisionShape (X3DShapeNode*,
 	                const CollisionArray &,
+	                const CollectableContainerArray &,
 	                const Matrix4f &,
 	                float);
 
 	void
 	assign (X3DShapeNode*,
 	        const CollisionArray &,
+	        const CollectableContainerArray &,
 	        const Matrix4f &,
 	        float);
 
@@ -93,8 +96,9 @@ public:
 
 private:
 
-	X3DShapeNode*  shape;
-	CollisionArray collisions;
+	X3DShapeNode*             shape;
+	CollisionArray            collisions;
+	CollectableContainerArray localObjects;
 
 	Matrix4f matrix;
 	float    distance;

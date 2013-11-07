@@ -64,7 +64,7 @@ const std::string LayoutGroup::containerField = "children";
 
 LayoutGroup::Fields::Fields () :
 	viewport (new SFNode ()),
-	layout (new SFNode ())
+	  layout (new SFNode ())
 { }
 
 LayoutGroup::LayoutGroup (X3DExecutionContext* const executionContext) :
@@ -129,10 +129,13 @@ LayoutGroup::traverse (const TraverseType type)
 		case TraverseType::PICKING:
 		case TraverseType::COLLECT:
 		{
+			if (currentViewport)
+				currentViewport -> push ();
+
 			if (currentLayout)
 			{
 				glPushMatrix ();
-				
+
 				currentLayout -> transform (type);
 
 				getBrowser () -> getLayouts () .push (currentLayout);
@@ -145,6 +148,9 @@ LayoutGroup::traverse (const TraverseType type)
 			}
 			else
 				X3DGroupingNode::traverse (type);
+
+			if (currentViewport)
+				currentViewport -> pop ();
 
 			break;
 		}

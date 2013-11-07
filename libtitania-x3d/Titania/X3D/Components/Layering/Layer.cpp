@@ -55,7 +55,6 @@
 #include "../../Execution/BindableNodeList.h"
 #include "../../Execution/BindableNodeStack.h"
 #include "../Grouping/Group.h"
-#include "../Layering/Viewport.h"
 #include "../Navigation/Viewpoint.h"
 
 namespace titania {

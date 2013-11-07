@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,14 +51,16 @@
 #ifndef __TITANIA_X3D_COMPONENTS_LAYERING_VIEWPORT_H__
 #define __TITANIA_X3D_COMPONENTS_LAYERING_VIEWPORT_H__
 
-#include "../../Rendering/X3DRenderer.h"
+#include "../../Rendering/ViewportContainer.h"
 #include "../Layering/X3DViewportNode.h"
+
+#include <memory>
 
 namespace titania {
 namespace X3D {
 
 class Viewport :
-	public X3DViewportNode, public X3DRenderer
+	public X3DViewportNode
 {
 public:
 
@@ -98,6 +100,20 @@ public:
 	clipBoundary () const
 	{ return *fields .clipBoundary; }
 
+	///  @name Member access
+
+	float
+	getLeft () const;
+
+	float
+	getRight () const;
+
+	float
+	getBottom () const;
+
+	float
+	getTop () const;
+
 	///  @name Operations
 
 	virtual
@@ -112,41 +128,16 @@ public:
 	void
 	pop () final;
 
-	///  @name Destruction
+	virtual
+	void
+	enable () final;
 
 	virtual
 	void
-	dispose () final;
+	disable () final;
 
 
 private:
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final;
-
-	///  @name Member access
-
-	float
-	getLeft ();
-
-	float
-	getRight ();
-
-	float
-	getBottom ();
-
-	float
-	getTop ();
-
-	///  @name Destruction
-
-	virtual
-	void
-	collect (const TraverseType) final;
-
 
 	///  @name Static members
 
@@ -165,7 +156,7 @@ private:
 
 	Fields fields;
 
-	Vector4i viewport;
+	std::vector <std::shared_ptr <ViewportContainer>>  viewports;
 
 };
 

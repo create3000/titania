@@ -51,7 +51,6 @@
 #ifndef __TITANIA_X3D_COMPONENTS_LIGHTING_X3DLIGHT_NODE_H__
 #define __TITANIA_X3D_COMPONENTS_LIGHTING_X3DLIGHT_NODE_H__
 
-#include "../../Browser/Properties/RenderingProperties.h"
 #include "../Core/X3DChildNode.h"
 
 namespace titania {

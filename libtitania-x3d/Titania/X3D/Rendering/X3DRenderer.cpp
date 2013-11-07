@@ -103,6 +103,7 @@ X3DRenderer::addShape (X3DShapeNode* shape)
 			{
 				if (numTransparentShapes < transparentShapes .size ())
 					transparentShapes [numTransparentShapes] -> assign (shape, fog, getLocalObjects (), matrix, distance);
+
 				else
 					transparentShapes .emplace_back (new ShapeContainer (shape, fog, getLocalObjects (), matrix, distance));
 
@@ -112,6 +113,7 @@ X3DRenderer::addShape (X3DShapeNode* shape)
 			{
 				if (numOpaqueShapes < shapes .size ())
 					shapes [numOpaqueShapes] -> assign (shape, fog, getLocalObjects (), matrix, distance);
+
 				else
 					shapes .emplace_back (new ShapeContainer (shape, fog, getLocalObjects (), matrix, distance));
 
@@ -134,9 +136,10 @@ X3DRenderer::addCollision (X3DShapeNode* shape)
 			const CollisionArray & collisions = getCurrentLayer () -> getCollisions ();
 
 			if (numCollisionShapes < collisionShapes .size ())
-				collisionShapes [numCollisionShapes] -> assign (shape, collisions, matrix, distance);
+				collisionShapes [numCollisionShapes] -> assign (shape, collisions, getLocalObjects (), matrix, distance);
+
 			else
-				collisionShapes .emplace_back (new CollisionShape (shape, collisions, matrix, distance));
+				collisionShapes .emplace_back (new CollisionShape (shape, collisions, getLocalObjects (), matrix, distance));
 
 			++ numCollisionShapes;
 		}
@@ -305,6 +308,7 @@ X3DRenderer::navigation ()
 	glEnable (GL_DEPTH_TEST);
 	glDepthMask (GL_TRUE);
 	glDisable (GL_BLEND);
+	glDisable (GL_LIGHTING);
 
 	for (const auto & shape : basic::adapter (collisionShapes .cbegin (), collisionShapes .cbegin () + numCollisionShapes))
 		shape -> draw ();
@@ -312,6 +316,8 @@ X3DRenderer::navigation ()
 	distance = depthBuffer -> getDistance (zNear, zFar);
 
 	depthBuffer -> unbind ();
+
+	getGlobalObjects () .clear ();
 }
 
 void
@@ -393,6 +399,7 @@ X3DRenderer::gravite ()
 	glEnable (GL_DEPTH_TEST);
 	glDepthMask (GL_TRUE);
 	glDisable (GL_BLEND);
+	glDisable (GL_LIGHTING);
 
 	for (const auto & shape : basic::adapter (collisionShapes .cbegin (), collisionShapes .cbegin () + numCollisionShapes))
 		shape -> draw ();

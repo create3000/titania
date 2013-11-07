@@ -52,8 +52,6 @@
 
 #include "../../Browser/X3DBrowser.h"
 
-#include <iostream>
-
 namespace titania {
 namespace X3D {
 
@@ -68,8 +66,8 @@ Viewport::Fields::Fields () :
 Viewport::Viewport (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DViewportNode (),
-	    X3DRenderer (),
-	         fields ()
+	         fields (),
+	      viewports ()
 {
 	addField (inputOutput,    "metadata",       metadata ());
 	addField (inputOutput,    "clipBoundary",   clipBoundary ());
@@ -86,33 +84,26 @@ Viewport::create (X3DExecutionContext* const executionContext) const
 	return new Viewport (executionContext);
 }
 
-void
-Viewport::initialize ()
-{
-	X3DViewportNode::initialize ();
-	X3DRenderer::initialize ();
-}
-
 float
-Viewport::getLeft ()
+Viewport::getLeft () const
 {
 	return clipBoundary () .size () > 0 ? clipBoundary () [0] : 0.0f;
 }
 
 float
-Viewport::getRight ()
+Viewport::getRight () const
 {
 	return clipBoundary () .size () > 1 ? clipBoundary () [1] : 1.0f;
 }
 
 float
-Viewport::getBottom ()
+Viewport::getBottom () const
 {
 	return clipBoundary () .size () > 2 ? clipBoundary () [2] : 0.0f;
 }
 
 float
-Viewport::getTop ()
+Viewport::getTop () const
 {
 	return clipBoundary () .size () > 3 ? clipBoundary () [3] : 1.0f;
 }
@@ -120,79 +111,55 @@ Viewport::getTop ()
 void
 Viewport::traverse (const TraverseType type)
 {
+	push ();
+
 	switch (type)
 	{
 		case TraverseType::PICKING:
 		{
-			push ();
+			viewports .back () -> enable ();
 
-			for (const auto & child : children ())
-				child -> traverse (type);
+			X3DGroupingNode::traverse (type);
 
-			pop ();
-
+			viewports .back () -> disable ();
 			break;
 		}
-		case TraverseType::CAMERA:
+		default:
 		{
-			for (const auto & child : children ())
-				child -> traverse (type);
-
-			break;
-		}
-		case TraverseType::NAVIGATION:
-		case TraverseType::COLLISION:
-		case TraverseType::COLLECT:
-		{
-			push ();
-			render (type);
-			pop ();
-
+			X3DGroupingNode::traverse (type);
 			break;
 		}
 	}
-}
 
-void
-Viewport::collect (const TraverseType type)
-{
-	for (const auto & child : children ())
-		child -> traverse (type);
+	pop ();
 }
 
 void
 Viewport::push ()
 {
-	viewport = Viewport4i (); // x, y, width, heigth
-
-	float left   = getLeft ();
-	float right  = getRight ();
-	float bottom = getBottom ();
-	float top    = getTop ();
-
-	float width  = right - left;
-	float height = top - bottom;
-
-	glViewport (left * viewport [2],
-	            bottom * viewport [3],
-	            width * viewport [2],
-	            height * viewport [3]);
+	viewports .emplace_back (new ViewportContainer (this));
+	getCurrentLayer () -> getLocalObjects () .emplace_back (viewports .back () );
 }
 
 void
 Viewport::pop ()
 {
-	glViewport (viewport [0],
-	            viewport [1],
-	            viewport [2],
-	            viewport [3]);
+	viewports .pop_back ();
+	getCurrentLayer () -> getLocalObjects () .pop_back ();
 }
 
 void
-Viewport::dispose ()
+Viewport::enable ()
 {
-	X3DViewportNode::dispose ();
-	X3DRenderer::dispose ();
+	viewports .emplace_back (new ViewportContainer (this));
+	viewports .back () -> scale ();
+}
+
+void
+Viewport::disable ()
+{
+	viewports .back () -> unscale ();
+	viewports .pop_back ();
 }
 
 } // X3D

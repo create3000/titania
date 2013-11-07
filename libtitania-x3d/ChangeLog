@@ -1,3 +1,35 @@
+2013-11-07  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* OpenGL.h:
+	* X3DRenderer.cpp:
+	* DepthBuffer.cpp:
+	* LightContainer.h:
+	* CollisionShape.h:
+	* CollisionArray.h:
+	* X3DBrowserSurface.h:
+	* X3DBrowserContext.h:
+	* LightContainer.cpp:
+	* CollisionShape.cpp:
+	* X3DBrowserContext.cpp:
+	* Layer.cpp:
+	* ViewportContainer.h:
+	* ClipPlaneContainer.h:
+	* Viewport.h:
+	* ViewportContainer.cpp:
+	* Viewport.cpp:
+	* ClipPlaneContainer.cpp:
+	* LayoutGroup.cpp:
+	* X3DShapeNode.cpp:
+	* X3DLightNode.h:
+	* X3DLayerNode.cpp:
+	* X3DLightNode.cpp:
+	* X3DCollectableContainer.cpp:
+	* X3DGroupingNode.h:
+	* X3DViewportNode.h:
+	* X3DGroupingNode.cpp: 
+
 2013-11-06  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* ViewVolume.cpp:

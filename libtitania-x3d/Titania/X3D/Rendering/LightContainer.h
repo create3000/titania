@@ -62,7 +62,7 @@ class LightContainer :
 {
 public:
 
-	LightContainer (X3DLightNode*);
+	LightContainer (X3DLightNode* const);
 
 	virtual
 	void
@@ -75,8 +75,9 @@ public:
 
 private:
 
-	X3DLightNode* node;
-	GLenum        lightId;
+	X3DLightNode* const node;
+	const Matrix4f      modelViewMatrix;
+	GLenum              lightId;
 
 };
 

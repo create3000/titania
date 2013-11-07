@@ -312,6 +312,9 @@ public:
 	Type
 	determinant () const;
 
+	Type
+	determinant3 () const;
+
 	///  Returns this matrix transposed.
 	matrix4 &
 	transpose ();
@@ -395,10 +398,7 @@ private:
 	        matrix4 & scaleOrientation) const;
 
 	Type
-	det3 () const;
-
-	Type
-	det3 (int r1, int r2, int r3, int c1, int c2, int c3) const;
+	determinant3 (int r1, int r2, int r3, int c1, int c2, int c3) const;
 
 	union
 	{
@@ -725,7 +725,7 @@ matrix4 <Type>::factor (vector3 <Type> & translation,
 	a .value [3] [3] = 1;
 
 	// (3) Compute det A. If negative, set sign = -1, else sign = 1
-	Type det      = a .det3 ();
+	Type det      = a .determinant3 ();
 	Type det_sign = (det < 0 ? -1 : 1);
 
 	if (det_sign * det == 0)
@@ -766,14 +766,14 @@ matrix4 <Type>::factor (vector3 <Type> & translation,
 template <class Type>
 inline
 Type
-matrix4 <Type>::det3 () const
+matrix4 <Type>::determinant3 () const
 {
-	return det3 (0, 1, 2, 0, 1, 2);
+	return determinant3 (0, 1, 2, 0, 1, 2);
 }
 
 template <class Type>
 Type
-matrix4 <Type>::det3 (int r1, int r2, int r3, int c1, int c2, int c3) const
+matrix4 <Type>::determinant3 (int r1, int r2, int r3, int c1, int c2, int c3) const
 {
 	Type a11 = value [r1] [c1];
 	Type a12 = value [r1] [c2];
@@ -796,10 +796,10 @@ template <class Type>
 Type
 matrix4 <Type>::determinant () const
 {
-	return value [0] [3] * det3 (1, 2, 3, 0, 1, 2)
-	       + value [1] [3] * det3 (0, 2, 3, 0, 1, 2)
-	       + value [2] [3] * det3 (0, 1, 3, 0, 1, 2)
-	       + value [3] [3] * det3 (0, 1, 2, 0, 1, 2);
+	return value [0] [3] * determinant3 (1, 2, 3, 0, 1, 2)
+	       + value [1] [3] * determinant3 (0, 2, 3, 0, 1, 2)
+	       + value [2] [3] * determinant3 (0, 1, 3, 0, 1, 2)
+	       + value [3] [3] * determinant3 (0, 1, 2, 0, 1, 2);
 }
 
 template <class Type>
@@ -821,22 +821,22 @@ matrix4 <Type>::inverse ()
 	if (det == 0)
 		throw std::domain_error ("matrix4::inverse: determinant is 0.");
 
-	return *this = matrix4 <Type> (det3 (1, 2, 3, 1, 2, 3) / det,
-	                               -det3 (0, 2, 3, 1, 2, 3) / det,
-	                               det3 (0, 1, 3, 1, 2, 3) / det,
-	                               -det3 (0, 1, 2, 1, 2, 3) / det,
-	                               -det3 (1, 2, 3, 0, 2, 3) / det,
-	                               det3 (0, 2, 3, 0, 2, 3) / det,
-	                               -det3 (0, 1, 3, 0, 2, 3) / det,
-	                               det3 (0, 1, 2, 0, 2, 3) / det,
-	                               det3 (1, 2, 3, 0, 1, 3) / det,
-	                               -det3 (0, 2, 3, 0, 1, 3) / det,
-	                               det3 (0, 1, 3, 0, 1, 3) / det,
-	                               -det3 (0, 1, 2, 0, 1, 3) / det,
-	                               -det3 (1, 2, 3, 0, 1, 2) / det,
-	                               det3 (0, 2, 3, 0, 1, 2) / det,
-	                               -det3 (0, 1, 3, 0, 1, 2) / det,
-	                               det3 (0, 1, 2, 0, 1, 2) / det);
+	return *this = matrix4 <Type> (determinant3 (1, 2, 3, 1, 2, 3) / det,
+	                               -determinant3 (0, 2, 3, 1, 2, 3) / det,
+	                               determinant3 (0, 1, 3, 1, 2, 3) / det,
+	                               -determinant3 (0, 1, 2, 1, 2, 3) / det,
+	                               -determinant3 (1, 2, 3, 0, 2, 3) / det,
+	                               determinant3 (0, 2, 3, 0, 2, 3) / det,
+	                               -determinant3 (0, 1, 3, 0, 2, 3) / det,
+	                               determinant3 (0, 1, 2, 0, 2, 3) / det,
+	                               determinant3 (1, 2, 3, 0, 1, 3) / det,
+	                               -determinant3 (0, 2, 3, 0, 1, 3) / det,
+	                               determinant3 (0, 1, 3, 0, 1, 3) / det,
+	                               -determinant3 (0, 1, 2, 0, 1, 3) / det,
+	                               -determinant3 (1, 2, 3, 0, 1, 2) / det,
+	                               determinant3 (0, 2, 3, 0, 1, 2) / det,
+	                               -determinant3 (0, 1, 3, 0, 1, 2) / det,
+	                               determinant3 (0, 1, 2, 0, 1, 2) / det);
 }
 
 template <class Type>

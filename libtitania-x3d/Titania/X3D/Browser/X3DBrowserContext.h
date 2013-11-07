@@ -163,6 +163,10 @@ public:
 
 	///  @name Layer handling
 
+	const Vector4i
+	getViewport () const
+	{ return viewport; }
+
 	const X3DSFNode <X3DLayerNode> &
 	getActiveLayer () const
 	{ return activeLayer; }
@@ -282,6 +286,9 @@ public:
 
 	///  @name Picking
 
+	bool
+	intersect (const Vector4i &) const;
+
 	void
 	pick (const double, const double);
 
@@ -334,6 +341,10 @@ public:
 	addEvent ();
 
 	///  @name Rendering
+
+	virtual
+	void
+	reshape ();
 
 	void
 	update ();
@@ -424,6 +435,7 @@ private:
 
 	Router           router;
 	RendererStack    renderers;
+	Vector4i         viewport;
 	LayerStack       layers;
 	LayoutStack      layouts;
 	LightStack       lights;

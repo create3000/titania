@@ -57,7 +57,7 @@
 namespace titania {
 namespace X3D {
 
-typedef std::deque <Collision*> CollisionArray;
+typedef std::vector <Collision*> CollisionArray;
 
 } // X3D
 } // titania

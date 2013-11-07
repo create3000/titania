@@ -125,7 +125,7 @@ private:
 	virtual
 	void
 	reshape () final
-	{ reshaped () .processInterests (); }
+	{ X3DBrowser::reshape (); }
 
 	virtual
 	void

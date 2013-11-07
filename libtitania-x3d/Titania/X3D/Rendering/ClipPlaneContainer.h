@@ -62,7 +62,7 @@ class ClipPlaneContainer :
 {
 public:
 
-	ClipPlaneContainer (ClipPlane*);
+	ClipPlaneContainer (ClipPlane* const);
 
 	virtual
 	void
@@ -75,8 +75,9 @@ public:
 
 private:
 
-	ClipPlane* node;
-	GLenum     planeId;
+	ClipPlane* const node;
+	const Matrix4f   modelViewMatrix;
+	GLenum           planeId;
 
 };
 

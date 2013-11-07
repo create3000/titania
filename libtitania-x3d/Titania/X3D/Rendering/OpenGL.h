@@ -80,6 +80,16 @@ Viewport4i ()
 }
 
 inline
+Vector4i
+Scissor4i ()
+{
+	Vector4i scissor;
+
+	glGetIntegerv (GL_SCISSOR_BOX, scissor .data ());
+	return scissor;
+}
+
+inline
 Matrix4d
 ModelViewMatrix4d ()
 {

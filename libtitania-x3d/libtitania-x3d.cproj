@@ -598,6 +598,7 @@
     <None Include="Titania\X3D\Rendering\TexCoordArray.h" />
     <None Include="Titania\X3D\Rendering\X3DCollectableContainer.h" />
     <None Include="Titania\X3D\Rendering\ClipPlaneContainer.h" />
+    <None Include="Titania\X3D\Rendering\ViewportContainer.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1043,8 +1044,8 @@
     <Compile Include="Titania\X3D\Bits\Traverse.cpp" />
     <Compile Include="Titania\X3D\Thread\SceneLoader.cpp" />
     <Compile Include="Titania\X3D\Thread\TextureLoader.cpp" />
-    <Compile Include="Titania\X3D\Rendering\X3DCollectableContainer.cpp" />
     <Compile Include="Titania\X3D\Rendering\ClipPlaneContainer.cpp" />
+    <Compile Include="Titania\X3D\Rendering\ViewportContainer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

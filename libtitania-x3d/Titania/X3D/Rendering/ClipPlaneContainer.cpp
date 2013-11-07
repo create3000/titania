@@ -55,9 +55,10 @@
 namespace titania {
 namespace X3D {
 
-ClipPlaneContainer::ClipPlaneContainer (ClipPlane* node) :
+ClipPlaneContainer::ClipPlaneContainer (ClipPlane* const node) :
 	X3DCollectableContainer (),
 	                   node (node),
+	        modelViewMatrix (ModelViewMatrix4f ()),
 	                planeId (0)
 { }
 
@@ -71,9 +72,9 @@ ClipPlaneContainer::enable ()
 		planeId = clipPlanes .top ();
 		clipPlanes .pop ();
 
-		glLoadMatrixf (getModelViewMatrix () .data ());
+		glLoadMatrixf (modelViewMatrix .data ());
 
-      glClipPlane (planeId, Vector4d (node -> plane () .getValue ()) .data ());
+		glClipPlane (planeId, Vector4d (node -> plane () .getValue ()) .data ());
 		glEnable (planeId);
 	}
 }

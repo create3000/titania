@@ -81,6 +81,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	              changedOutput (),                                        // [out]  changed
 	                      clock (new chrono::system_clock <time_type> ()),
 	                     router (),
+	                   viewport (),
 	                     layers (),
 	                    layouts (),
 	                     lights (),
@@ -436,6 +437,14 @@ X3DBrowserContext::setKeyDeviceSensorNode (X3DKeyDeviceSensorNode* const value)
 
 // Picking
 
+bool
+X3DBrowserContext::intersect (const Vector4i & scissor) const
+{
+	return
+		x > scissor .x () and x < scissor .x () + scissor .z () and
+		y > scissor .y () and y < scissor .y () + scissor .w ();
+}
+
 void
 X3DBrowserContext::pick (const double _x, const double _y)
 {
@@ -609,6 +618,17 @@ X3DBrowserContext::addEvent ()
 
 	changedTime = getCurrentTime ();
 	changed () .processInterests ();
+}
+
+void
+X3DBrowserContext::reshape ()
+{
+	if (makeCurrent ())
+	{
+		viewport = Viewport4i ();
+
+		reshaped () .processInterests ();
+	}
 }
 
 /*

@@ -6,8 +6,8 @@ DEF Gray Background {
 
 Viewpoint {
   description "Home"
-  position 16.0211 12.359 11.3904
-  orientation -0.657612 0.734577 0.167162 0.992967
+  position 14.8254 9.61127 14.7066
+  orientation -0.622537 0.765307 0.163563 0.775565
   centerOfRotation 4.5 0 0
 }
 
@@ -20,7 +20,9 @@ DEF ClippedObjects Transform {
             diffuseColor 0.8 0 0
           }
         }
-        geometry Box { }
+        geometry Box {
+          solid FALSE
+        }
       }
     }
     DEF Cylinder Transform {
@@ -31,7 +33,9 @@ DEF ClippedObjects Transform {
             diffuseColor 0 0.8 0
           }
         }
-        geometry Cylinder { }
+        geometry Cylinder {
+          solid FALSE
+        }
       }
     }
     DEF Cone Transform {
@@ -42,7 +46,9 @@ DEF ClippedObjects Transform {
             diffuseColor 0 0 0.8
           }
         }
-        geometry Cone { }
+        geometry Cone {
+          solid FALSE
+        }
       }
     }
     DEF Sphere Transform {
@@ -53,11 +59,13 @@ DEF ClippedObjects Transform {
             diffuseColor 0.8 0.8 0
           }
         }
-        geometry Sphere { }
+        geometry Sphere {
+          solid FALSE
+        }
       }
     }
     DEF ClipPlane ClipPlane {
-      plane 0 0 -1 1.02371
+      plane 0 0 -1 0.0464772
     }
   ]
 }
@@ -66,14 +74,17 @@ DEF VisibleClipPlane Transform {
   children [
     DEF PlaneSensor PlaneSensor {
       axisRotation 0 1 0 1.5708
-      offset 4.50002 0 1.02371
+      offset 4.50002 0 0.0464772
       maxPosition -1 0
     }
     DEF Rectangle2D Transform {
-      translation 4.50002 0 1.02371
+      translation 4.50002 0 0.0464772
       scale 8 2.5 1
       children Shape {
         appearance Appearance {
+          lineProperties LineProperties {
+            linewidthScaleFactor 3
+          }
           material Material {
             transparency 0.5
           }

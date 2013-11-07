@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -249,7 +249,7 @@ X3DLayerNode::getUserViewpoints () const
 {
 	UserViewpointList userViewpoints;
 
-	for (const auto & viewpoint :* getViewpoints ())
+	for (const auto & viewpoint : *getViewpoints ())
 	{
 		if (not viewpoint -> description () .empty ())
 			userViewpoints .emplace_back (viewpoint);
@@ -277,6 +277,8 @@ void
 X3DLayerNode::traverse (const TraverseType type)
 {
 	getBrowser () -> getLayers () .push (this);
+
+	currentViewport -> enable ();
 
 	switch (type)
 	{
@@ -308,6 +310,8 @@ X3DLayerNode::traverse (const TraverseType type)
 		}
 	}
 
+	currentViewport -> disable ();
+
 	getBrowser () -> getLayers () .pop ();
 }
 
@@ -316,16 +320,12 @@ X3DLayerNode::pick ()
 {
 	if (isPickable ())
 	{
-		currentViewport -> push ();
-
 		glLoadIdentity ();
 		getViewpoint () -> reshape ();
 		getBrowser ()   -> updateHitRay ();
 
 		getViewpoint () -> transform ();
 		group -> traverse (TraverseType::PICKING);
-
-		currentViewport -> pop ();
 	}
 }
 
@@ -351,20 +351,14 @@ X3DLayerNode::camera ()
 void
 X3DLayerNode::navigation ()
 {
-	currentViewport -> push ();
-
 	// Render
 
 	render (TraverseType::NAVIGATION);
-
-	currentViewport -> pop ();
 }
 
 void
 X3DLayerNode::collision ()
 {
-	currentViewport -> push ();
-
 	// Get NavigationInfo values
 
 	auto navigationInfo = getCurrentNavigationInfo ();
@@ -394,15 +388,11 @@ X3DLayerNode::collision ()
 	// Render
 
 	render (TraverseType::COLLISION);
-
-	currentViewport -> pop ();
 }
 
 void
 X3DLayerNode::collect ()
 {
-	currentViewport -> push ();
-
 	glClear (GL_DEPTH_BUFFER_BIT);
 
 	glLoadIdentity ();
@@ -415,7 +405,6 @@ X3DLayerNode::collect ()
 	render (TraverseType::COLLECT);
 
 	getNavigationInfo () -> disable ();
-	currentViewport -> pop ();
 }
 
 void

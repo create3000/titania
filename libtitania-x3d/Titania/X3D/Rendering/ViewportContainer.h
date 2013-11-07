@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,124 +48,42 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_GROUPING_X3DGROUPING_NODE_H__
-#define __TITANIA_X3D_COMPONENTS_GROUPING_X3DGROUPING_NODE_H__
+#ifndef __TITANIA_X3D_RENDERING_VIEWPORT_CONTAINER_H__
+#define __TITANIA_X3D_RENDERING_VIEWPORT_CONTAINER_H__
 
-#include "../Core/X3DChildNode.h"
-#include "../Grouping/X3DBoundedObject.h"
-
-#include "../EnvironmentalEffects/LocalFog.h"
-#include "../Lighting/X3DLightNode.h"
-#include "../PointingDeviceSensor/X3DPointingDeviceSensorNode.h"
+#include "../Rendering/X3DCollectableContainer.h"
 
 namespace titania {
 namespace X3D {
 
-class X3DGroupingNode :
-	virtual public X3DChildNode, public X3DBoundedObject
+class Viewport;
+
+class ViewportContainer :
+	public X3DCollectableContainer
 {
 public:
 
-	///  @name Fields
+	ViewportContainer (Viewport* const);
 
-	virtual
-	MFNode &
-	addChildren ()
-	{ return *fields .addChildren; }
-
-	virtual
-	const MFNode &
-	addChildren () const
-	{ return *fields .addChildren; }
-
-	virtual
-	MFNode &
-	removeChildren ()
-	{ return *fields .removeChildren; }
-
-	virtual
-	const MFNode &
-	removeChildren () const
-	{ return *fields .removeChildren; }
-
-	virtual
-	MFNode &
-	children ()
-	{ return *fields .children; }
-
-	virtual
-	const MFNode &
-	children () const
-	{ return *fields .children; }
-
-	///  @name Member access
-
-	virtual
-	Box3f
-	getBBox () override;
-	
 	void
-	setVisible (const MFBool &);
+	scale ();
 
-	const MFBool &
-	getVisible () const
-	{ return visible; }
-
-	///  @name Operations
+	void
+	unscale ();
 
 	virtual
 	void
-	traverse (const TraverseType) override;
+	enable () final;
 
 	virtual
 	void
-	dispose () override;
-
-
-protected:
-
-	using X3DChildNode::addChildren;
-	using X3DChildNode::removeChildren;
-
-	///  @name Creation
-
-	X3DGroupingNode ();
-
-	virtual
-	void
-	initialize () override;
+	disable () final;
 
 
 private:
 
-	void
-	set_addChildren ();
-
-	void
-	set_removeChildren ();
-
-	void
-	set_children ();
-
-	void
-	add (const MFNode &);
-
-	struct Fields
-	{
-		Fields ();
-
-		MFNode* const addChildren;
-		MFNode* const removeChildren;
-		MFNode* const children;
-	};
-
-	Fields fields;
-
-	MFBool                                     visible;
-	std::vector <X3DPointingDeviceSensorNode*> pointingDeviceSensors;
-	std::vector <LocalFog*>                    localFogs;
-	std::vector <X3DChildNode*>                collectables;
-	std::vector <X3DChildNode*>                childNodes;
+	Viewport* const node;
+	const Vector4i  viewport;
 
 };
 

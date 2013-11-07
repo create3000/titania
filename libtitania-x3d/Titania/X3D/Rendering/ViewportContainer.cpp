@@ -48,16 +48,86 @@
  *
  ******************************************************************************/
 
-#include "X3DCollectableContainer.h"
+#include "ViewportContainer.h"
 
-#include "../Rendering/OpenGL.h"
+#include "../Browser/X3DBrowser.h"
+#include "../Components/Layering/Viewport.h"
 
 namespace titania {
 namespace X3D {
 
-X3DCollectableContainer::X3DCollectableContainer () :
-	modelViewMatrix (ModelViewMatrix4f ())
+ViewportContainer::ViewportContainer (Viewport* const node) :
+	X3DCollectableContainer (),
+	                   node (node),
+	               viewport (Viewport4i ())
 { }
+
+void
+ViewportContainer::scale ()
+{
+	// The clipBoundary field of a Viewport node is specified in fractions of the -normal-render-surface-.
+
+	float left   = node -> getLeft ();
+	float right  = node -> getRight ();
+	float bottom = node -> getBottom ();
+	float top    = node -> getTop ();
+
+	float width  = right - left;
+	float height = top - bottom;
+
+	const auto & viewport = node -> getBrowser () -> getViewport ();
+
+	glViewport (viewport [2] * left,
+	            viewport [3] * bottom,
+	            viewport [2] * width,
+	            viewport [3] * height);
+}
+
+void
+ViewportContainer::unscale ()
+{
+	glViewport (viewport [0],
+	            viewport [1],
+	            viewport [2],
+	            viewport [3]);
+}
+
+void
+ViewportContainer::enable ()
+{
+	// The clipBoundary field of a Viewport node is specified in fractions of the -normal-render-surface-.
+
+	float left   = node -> getLeft ();
+	float right  = node -> getRight ();
+	float bottom = node -> getBottom ();
+	float top    = node -> getTop ();
+
+	float width  = right - left;
+	float height = top - bottom;
+
+	const auto & viewport = node -> getBrowser () -> getViewport ();
+
+	Vector4i scissor (viewport [2] * left,
+	                  viewport [3] * bottom,
+	                  viewport [2] * width,
+	                  viewport [3] * height);
+
+	if (scissor not_eq viewport)
+	{
+		glScissor (scissor [0],
+		           scissor [1],
+		           scissor [2],
+		           scissor [3]);
+
+		glEnable (GL_SCISSOR_TEST);
+	}
+}
+
+void
+ViewportContainer::disable ()
+{
+	glDisable (GL_SCISSOR_TEST);
+}
 
 } // X3D
 } // titania

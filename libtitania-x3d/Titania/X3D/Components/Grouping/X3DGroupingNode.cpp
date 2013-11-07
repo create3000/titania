@@ -194,11 +194,23 @@ X3DGroupingNode::traverse (const TraverseType type)
 	{
 		case TraverseType::PICKING:
 		{
-			pick ();
+			if (not pointingDeviceSensors .empty ())
+			{
+				getBrowser () -> getSensors () .emplace_back ();
+
+				for (const auto & child : pointingDeviceSensors)
+					child -> push ();
+			}
+
+			for (const auto & child : childNodes)
+				child -> traverse (type);
+
+			if (not pointingDeviceSensors .empty ())
+				getBrowser () -> getSensors () .pop_back ();
+
 			break;
 		}
 		case TraverseType::CAMERA:
-		case TraverseType::NAVIGATION:
 		case TraverseType::COLLISION:
 		{
 			for (const auto & child : childNodes)
@@ -206,49 +218,39 @@ X3DGroupingNode::traverse (const TraverseType type)
 
 			break;
 		}
+		case TraverseType::NAVIGATION:
+		{
+			for (const auto & child : collectables)
+				child -> push ();
+
+			for (const auto & child : childNodes)
+				child -> traverse (type);
+
+			for (const auto & child : basic::reverse_adapter (collectables))
+				child -> pop ();
+
+			break;
+		}
 		case TraverseType::COLLECT:
 		{
-			collect ();
+			if (not localFogs .empty ())
+				localFogs .front () -> push ();
+
+			for (const auto & child : collectables)
+				child -> push ();
+
+			for (const auto & child : childNodes)
+				child -> traverse (type);
+
+			for (const auto & child : basic::reverse_adapter (collectables))
+				child -> pop ();
+
+			if (not localFogs .empty ())
+				localFogs .front () -> pop ();
+
 			break;
 		}
 	}
-}
-
-void
-X3DGroupingNode::pick ()
-{
-	if (not pointingDeviceSensors .empty ())
-	{
-		getBrowser () -> getSensors () .emplace_back ();
-
-		for (const auto & child : pointingDeviceSensors)
-			child -> push ();
-	}
-
-	for (const auto & child : childNodes)
-		child -> traverse (TraverseType::PICKING);
-
-	if (not pointingDeviceSensors .empty ())
-		getBrowser () -> getSensors () .pop_back ();
-}
-
-void
-X3DGroupingNode::collect ()
-{
-	if (not localFogs .empty ())
-		localFogs .front () -> push ();
-
-	for (const auto & child : collectables)
-		child -> push ();
-
-	for (const auto & child : childNodes)
-		child -> traverse (TraverseType::COLLECT);
-
-	for (const auto & child : basic::reverse_adapter (collectables))
-		child -> pop ();
-
-	if (not localFogs .empty ())
-		localFogs .front () -> pop ();
 }
 
 void

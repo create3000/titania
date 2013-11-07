@@ -26,11 +26,14 @@ LayerSet {
         Viewpoint { }
         Transform {
           children DEF Beethoven Transform {
-            rotation 0 -1 0 1.27835
+            rotation 0 -1 0 2.42804
             children Inline {
               url "../Geometry3D/Beethoven.wrl"
             }
           }
+        }
+        DEF Gray Background {
+          skyColor 0.2 0.2 0.2
         }
       ]
     }
@@ -46,6 +49,9 @@ LayerSet {
         Transform {
           children USE Beethoven
         }
+        DEF Gray1 Background {
+          skyColor 0.3 0.3 0.3
+        }
       ]
     }
     DEF SW Layer {
@@ -59,6 +65,9 @@ LayerSet {
         }
         Transform {
           children USE Beethoven
+        }
+        DEF Gray2 Background {
+          skyColor 0.4 0.4 0.4
         }
       ]
     }
@@ -74,6 +83,9 @@ LayerSet {
         Transform {
           children USE Beethoven
         }
+        DEF Gray3 Background {
+          skyColor 0.5 0.5 0.5
+        }
       ]
     }
   ]
@@ -83,8 +95,6 @@ DEF Rotor Rotor {
   cycleInterval 10
   axis 0 -1 0
   loop TRUE
-  pauseTime 0
-  resumeTime 0
 }
 
 ROUTE Rotor.rotation_changed TO Beethoven.set_rotation

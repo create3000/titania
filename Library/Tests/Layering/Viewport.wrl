@@ -1,0 +1,66 @@
+#X3D V3.0 utf8 Titania 0.1
+
+EXTERNPROTO Rotor [
+  inputOutput SFBool     enabled
+  inputOutput SFTime     cycleInterval
+  inputOutput SFVec3f    axis
+  inputOutput SFFloat    angle
+  inputOutput SFBool     loop
+  inputOutput SFTime     startTime
+  inputOutput SFTime     pauseTime
+  inputOutput SFTime     resumeTime
+  inputOutput SFTime     stopTime
+  outputOnly  SFRotation rotation_changed
+]
+[ "../../../Titania/share/titania/Library/Prototypes/Engines/Rotor/Rotor.x3dv", "file:///usr/share/titania/Library/Prototypes/Engines/Rotor/Rotor.x3dv" ]
+
+DEF Gray Background {
+  skyColor 0.2 0.2 0.2
+}
+
+Viewport {
+  clipBoundary [ 0, 0.125, 0, 0.125 ]
+  children Transform {
+    translation -5.69358 -3.51336 -0.00391734
+    scale 0.283611 0.285052 0.289583
+    center 0.00318841 0.0301573 0.00391734
+    children DEF Beethoven Transform {
+      rotation 0 -1 0 4.26986
+      children Inline {
+        url "../Geometry3D/Beethoven.wrl"
+      }
+    }
+  }
+}
+
+Viewport {
+  clipBoundary [ 0, 0.25, 0, 0.25 ]
+  children Transform {
+    translation -4.87131 -3.10186 -0.920717
+    scale 0.667419 0.67081 0.681472
+    center -0.00329348 0.0437016 0.00386736
+    children USE Beethoven
+  }
+}
+
+Viewport {
+  clipBoundary [ 0, 0.5, 0, 0.5 ]
+  children [
+    Transform {
+      translation -2.27828 -1.25381 -0.920702
+      scale 1.10867 1.1143 1.13202
+      center -0.0051998 0.047685 0.00385266
+      children USE Beethoven
+    }
+    TouchSensor { }
+  ]
+}
+
+Viewport {
+  children Transform {
+    translation 2.18944 0.21038 -0.920696
+    scale 1.50093 1.50855 1.53254
+    center -0.00595336 0.0492596 0.00384685
+    children USE Beethoven
+  }
+}

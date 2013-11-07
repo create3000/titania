@@ -172,33 +172,36 @@ X3DShapeNode::pick ()
 
 	if (_geometry)
 	{
-		if (ViewVolume () .intersect (getBBox ()))
+		if (not glIsEnabled (GL_SCISSOR_TEST) or getBrowser () -> intersect (Scissor4i ()))
 		{
-			Line3f hitRay = getBrowser () -> getHitRay (); // Attention!! returns a Line3d
-
-			std::deque <IntersectionPtr> itersections;
-
-			if (_geometry -> intersect (hitRay, itersections))
+			if (ViewVolume () .intersect (getBBox ()))
 			{
-				for (auto & itersection : itersections)
-					itersection -> hitPoint = itersection -> hitPoint * ModelViewMatrix4f ();
+				Line3f hitRay = getBrowser () -> getHitRay (); // Attention!! returns a Line3d
 
-				// Sort desc
-				std::sort (itersections .begin (), itersections .end (),
-				           [ ] (const IntersectionPtr &lhs, const IntersectionPtr &rhs) -> bool
-				           {
-				              return lhs -> hitPoint .z () > rhs -> hitPoint .z ();
-							  });
+				std::deque <IntersectionPtr> itersections;
 
-				// Find first point that is not greater than near plane;
-				auto itersection = std::lower_bound (itersections .cbegin (), itersections .cend (), -getCurrentNavigationInfo () -> getNearPlane (),
-				                                     [ ] (const IntersectionPtr &lhs, const float & rhs) -> bool
-				                                     {
-				                                        return lhs -> hitPoint .z () > rhs;
-																 });
+				if (_geometry -> intersect (hitRay, itersections))
+				{
+					for (auto & itersection : itersections)
+						itersection -> hitPoint = itersection -> hitPoint * ModelViewMatrix4f ();
 
-				if (itersection not_eq itersections .end ())
-					getBrowser () -> addHit (ModelViewMatrix4d (), *itersection, this);
+					// Sort desc
+					std::sort (itersections .begin (), itersections .end (),
+					           [ ] (const IntersectionPtr &lhs, const IntersectionPtr &rhs) -> bool
+					           {
+					              return lhs -> hitPoint .z () > rhs -> hitPoint .z ();
+								  });
+
+					// Find first point that is not greater than near plane;
+					auto itersection = std::lower_bound (itersections .cbegin (), itersections .cend (), -getCurrentNavigationInfo () -> getNearPlane (),
+					                                     [ ] (const IntersectionPtr &lhs, const float & rhs) -> bool
+					                                     {
+					                                        return lhs -> hitPoint .z () > rhs;
+																	 });
+
+					if (itersection not_eq itersections .end ())
+						getBrowser () -> addHit (ModelViewMatrix4d (), *itersection, this);
+				}
 			}
 		}
 	}

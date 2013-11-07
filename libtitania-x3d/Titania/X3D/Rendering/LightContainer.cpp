@@ -55,9 +55,10 @@
 namespace titania {
 namespace X3D {
 
-LightContainer::LightContainer (X3DLightNode* node) :
+LightContainer::LightContainer (X3DLightNode* const node) :
 	X3DCollectableContainer (),
 	                   node (node),
+	        modelViewMatrix (ModelViewMatrix4f ()),
 	                lightId (0)
 { }
 
@@ -73,7 +74,7 @@ LightContainer::enable ()
 
 		glEnable (lightId);
 
-		glLoadMatrixf (getModelViewMatrix () .data ());
+		glLoadMatrixf (modelViewMatrix .data ());
 
 		node -> draw (lightId);
 	}
