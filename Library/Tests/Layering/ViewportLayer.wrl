@@ -26,7 +26,7 @@ LayerSet {
         Viewpoint { }
         Transform {
           children DEF Beethoven Transform {
-            rotation 0 -1 0 2.42804
+            rotation 0 -1 0 1.59771
             children Inline {
               url "../Geometry3D/Beethoven.wrl"
             }
@@ -52,6 +52,7 @@ LayerSet {
         DEF Gray1 Background {
           skyColor 0.3 0.3 0.3
         }
+        TouchSensor { }
       ]
     }
     DEF SW Layer {

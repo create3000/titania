@@ -67,20 +67,14 @@ ViewportContainer::scale ()
 {
 	// The clipBoundary field of a Viewport node is specified in fractions of the -normal-render-surface-.
 
-	float left   = node -> getLeft ();
-	float right  = node -> getRight ();
-	float bottom = node -> getBottom ();
-	float top    = node -> getTop ();
-
-	float width  = right - left;
-	float height = top - bottom;
-
 	const auto & viewport = node -> getBrowser () -> getViewport ();
 
-	glViewport (viewport [2] * left,
-	            viewport [3] * bottom,
-	            viewport [2] * width,
-	            viewport [3] * height);
+	int left   = viewport [2] * node -> getLeft ();
+	int right  = viewport [2] * node -> getRight ();
+	int bottom = viewport [3] * node -> getBottom ();
+	int top    = viewport [3] * node -> getTop ();
+
+	glViewport (left, bottom, right - left, top - bottom);
 }
 
 void
@@ -97,20 +91,14 @@ ViewportContainer::enable ()
 {
 	// The clipBoundary field of a Viewport node is specified in fractions of the -normal-render-surface-.
 
-	float left   = node -> getLeft ();
-	float right  = node -> getRight ();
-	float bottom = node -> getBottom ();
-	float top    = node -> getTop ();
-
-	float width  = right - left;
-	float height = top - bottom;
-
 	const auto & viewport = node -> getBrowser () -> getViewport ();
 
-	Vector4i scissor (viewport [2] * left,
-	                  viewport [3] * bottom,
-	                  viewport [2] * width,
-	                  viewport [3] * height);
+	int left   = viewport [2] * node -> getLeft ();
+	int right  = viewport [2] * node -> getRight ();
+	int bottom = viewport [3] * node -> getBottom ();
+	int top    = viewport [3] * node -> getTop ();
+
+	Vector4i scissor (left, bottom, right - left, top - bottom);
 
 	if (scissor not_eq viewport)
 	{

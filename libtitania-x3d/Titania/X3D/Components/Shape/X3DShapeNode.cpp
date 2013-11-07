@@ -172,7 +172,7 @@ X3DShapeNode::pick ()
 
 	if (_geometry)
 	{
-		if (not glIsEnabled (GL_SCISSOR_TEST) or getBrowser () -> intersect (Scissor4i ()))
+		if (getBrowser () -> intersect (glIsEnabled (GL_SCISSOR_TEST) ? Scissor4i () : Viewport4i ()))
 		{
 			if (ViewVolume () .intersect (getBBox ()))
 			{

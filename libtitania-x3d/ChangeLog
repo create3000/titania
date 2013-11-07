@@ -1,5 +1,10 @@
 2013-11-07  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* ViewportContainer.cpp:
+	* X3DShapeNode.cpp: 
+
+2013-11-07  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* OpenGL.h:
