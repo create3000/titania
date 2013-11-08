@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -52,10 +52,11 @@
 #define __TITANIA_X3D_COMPONENTS_RENDERING_X3DGEOMETRY_NODE_H__
 
 #include "../../Browser/Picking/IntersectionPtr.h"
+#include "../../Rendering/TexCoordArray.h"
+#include "../../Rendering/X3DCollectableContainer.h"
 #include "../../Types/Geometry.h"
 #include "../Core/X3DNode.h"
 #include "../Texturing/TextureCoordinateGenerator.h"
-#include "../../Rendering/TexCoordArray.h"
 
 #include <map>
 
@@ -88,14 +89,14 @@ public:
 
 	const Box3f
 	getBBox ();
-	
+
 	///  @name Operations
-	
+
 	bool
 	intersect (const Line3f &, std::deque <IntersectionPtr> &) const;
 
 	bool
-	intersect (const Matrix4f &, const Sphere3f &) const;
+	intersect (const Sphere3f &, const Matrix4f &, const CollectableContainerArray &) const;
 
 	virtual
 	void
@@ -108,7 +109,7 @@ public:
 
 protected:
 
-	typedef std::map <size_t, std::deque <size_t>> NormalIndex;
+	typedef std::map <size_t, std::deque <size_t>>  NormalIndex;
 
 	///  @name Construction
 
@@ -201,8 +202,8 @@ private:
 	{
 		Element (GLenum vertexMode, size_t count) :
 			vertexMode (vertexMode),
-			count (count)
-		{ }
+			     count (count)
+	          	{ }
 
 		GLenum vertexMode;
 		size_t count;
@@ -214,20 +215,23 @@ private:
 	bool
 	isClipped (const Vector3f &, const Matrix4f &) const;
 
+	bool
+	isClipped (const Vector3f &, const Matrix4f &, const CollectableContainerArray &) const;
+
 	void
 	clear ();
-	
+
 	///  @name Members
 
-	Box3f                       bbox;
-	TexCoordArray               texCoords;
+	Box3f                     bbox;
+	TexCoordArray             texCoords;
 	X3DTextureCoordinateNode* textureCoordinate;
-	std::vector <Color4f>       colors;
-	std::vector <Vector3f>      normals;
-	std::vector <Vector3f>      vertices;
-	bool                        solid;
-	GLenum                      ccw;
-	std::deque <Element>        elements;
+	std::vector <Color4f>     colors;
+	std::vector <Vector3f>    normals;
+	std::vector <Vector3f>    vertices;
+	bool                      solid;
+	GLenum                    ccw;
+	std::deque <Element>      elements;
 
 };
 

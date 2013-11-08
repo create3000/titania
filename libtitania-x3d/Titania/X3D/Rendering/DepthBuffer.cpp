@@ -50,6 +50,7 @@
 
 #include "DepthBuffer.h"
 
+#include <Titania/LOG.h>
 #include <stdexcept>
 
 namespace titania {
@@ -61,6 +62,7 @@ DepthBuffer::DepthBuffer (size_t width, size_t height) :
 	         id (0),
 	colorBuffer (0),
 	depthBuffer (0),
+			color (3 * width * height),
 	      depth (width * height)
 {
 	if (glXGetCurrentContext ()) // GL_EXT_framebuffer_object
@@ -70,7 +72,7 @@ DepthBuffer::DepthBuffer (size_t width, size_t height) :
 		// Bind frame buffer.
 		glBindFramebuffer (GL_FRAMEBUFFER, id);
 
-		// DEBUG: The color buffer 1
+		//		// DEBUG: The color buffer 1
 		//		glGenRenderbuffers (1, &colorBuffer);
 		//		glBindRenderbuffer (GL_RENDERBUFFER, colorBuffer);
 		//		glRenderbufferStorage (GL_RENDERBUFFER, GL_RGBA8, width, height);
@@ -111,6 +113,7 @@ DepthBuffer::bind ()
 	glScissor  (0, 0, width, height);
 	glEnable (GL_SCISSOR_TEST);
 	glClear (GL_DEPTH_BUFFER_BIT);
+	glClear (GL_COLOR_BUFFER_BIT); // DEBUG
 }
 
 void
@@ -124,16 +127,30 @@ DepthBuffer::unbind ()
 }
 
 // DEBUG
+
+void
+DepthBuffer::save ()
+{
+	glBindFramebuffer (GL_FRAMEBUFFER, id);
+	glReadPixels (0, 0, width, height, GL_RGB, GL_FLOAT, color .data ());
+	glBindFramebuffer (GL_FRAMEBUFFER, 0);
+}
+
+// DEBUG
+
 void
 DepthBuffer::display ()
 {
-	glBindFramebuffer (GL_READ_FRAMEBUFFER, id);
-	glBindFramebuffer (GL_DRAW_FRAMEBUFFER, 0);
+	glWindowPos2i (0, 0);
+	glDrawPixels (width, height, GL_RGB, GL_FLOAT, color .data ());
 
-	glBlitFramebuffer (0, 0, width, height, 0, 0, width, height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
-
-	// Bind frame buffer.
-	glBindFramebuffer (GL_FRAMEBUFFER, 0);
+	//	glBindFramebuffer (GL_READ_FRAMEBUFFER, id);
+	//	glBindFramebuffer (GL_DRAW_FRAMEBUFFER, 0);
+	//
+	//	glBlitFramebuffer (0, 0, width, height, 0, 0, width, height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+	//
+	//	// Bind frame buffer.
+	//	glBindFramebuffer (GL_FRAMEBUFFER, 0);
 }
 
 DepthBuffer::~DepthBuffer ()

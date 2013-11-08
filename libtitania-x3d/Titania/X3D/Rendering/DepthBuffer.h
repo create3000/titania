@@ -74,6 +74,9 @@ public:
 	unbind ();
 	
 	void
+	save ();
+
+	void
 	display ();
 
 	~DepthBuffer ();
@@ -84,11 +87,12 @@ private:
 	size_t width;
 	size_t height;
 
-	GLuint                id;
-	GLuint                colorBuffer;
-	GLuint                depthBuffer;
-	std::vector <GLfloat> depth;
-	GLint                 viewport [4];
+	GLuint              id;
+	GLuint              colorBuffer;
+	GLuint              depthBuffer;
+	std::vector <float> color;
+	std::vector <float> depth;
+	GLint               viewport [4];
 
 };
 

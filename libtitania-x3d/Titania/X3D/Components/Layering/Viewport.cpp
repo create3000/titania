@@ -111,7 +111,7 @@ Viewport::getTop () const
 void
 Viewport::traverse (const TraverseType type)
 {
-	push ();
+	push (type);
 
 	switch (type)
 	{
@@ -131,18 +131,18 @@ Viewport::traverse (const TraverseType type)
 		}
 	}
 
-	pop ();
+	pop (type);
 }
 
 void
-Viewport::push ()
+Viewport::push (const TraverseType)
 {
 	viewports .emplace_back (new ViewportContainer (this));
 	getCurrentLayer () -> getLocalObjects () .emplace_back (viewports .back () );
 }
 
 void
-Viewport::pop ()
+Viewport::pop (const TraverseType)
 {
 	viewports .pop_back ();
 	getCurrentLayer () -> getLocalObjects () .pop_back ();

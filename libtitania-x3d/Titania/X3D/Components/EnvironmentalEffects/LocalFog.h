@@ -96,11 +96,13 @@ public:
 	enabled () const
 	{ return *fields .enabled; }
 
+	virtual
 	void
-	push ();
+	push () final;
 
+	virtual
 	void
-	pop ();
+	pop () final;
 
 	virtual
 	void

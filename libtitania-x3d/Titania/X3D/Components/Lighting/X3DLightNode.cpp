@@ -72,8 +72,11 @@ X3DLightNode::X3DLightNode () :
 }
 
 void
-X3DLightNode::push ()
+X3DLightNode::push (const TraverseType type)
 {
+	if (type not_eq TraverseType::COLLECT)
+		return;
+
 	if (on ())
 	{
 		if (global ())
@@ -85,8 +88,11 @@ X3DLightNode::push ()
 }
 
 void
-X3DLightNode::pop ()
+X3DLightNode::pop (const TraverseType type)
 {
+	if (type not_eq TraverseType::COLLECT)
+		return;
+
 	if (on () and not global ())
 		getCurrentLayer () -> getLocalObjects () .pop_back ();
 }

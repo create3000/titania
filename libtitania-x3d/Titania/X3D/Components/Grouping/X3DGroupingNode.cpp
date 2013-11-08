@@ -203,13 +203,13 @@ X3DGroupingNode::traverse (const TraverseType type)
 			}
 
 			for (const auto & child : collectables)
-				child -> push ();
+				child -> push (type);
 
 			for (const auto & child : childNodes)
 				child -> traverse (type);
 
 			for (const auto & child : basic::reverse_adapter (collectables))
-				child -> pop ();
+				child -> pop (type);
 
 			if (not pointingDeviceSensors .empty ())
 				getBrowser () -> getSensors () .pop_back ();
@@ -217,7 +217,6 @@ X3DGroupingNode::traverse (const TraverseType type)
 			break;
 		}
 		case TraverseType::CAMERA:
-		case TraverseType::COLLISION:
 		{
 			for (const auto & child : childNodes)
 				child -> traverse (type);
@@ -225,34 +224,35 @@ X3DGroupingNode::traverse (const TraverseType type)
 			break;
 		}
 		case TraverseType::NAVIGATION:
+		case TraverseType::COLLISION:
 		{
 			for (const auto & child : collectables)
-				child -> push ();
+				child -> push (type);
 
 			for (const auto & child : childNodes)
 				child -> traverse (type);
 
 			for (const auto & child : basic::reverse_adapter (collectables))
-				child -> pop ();
+				child -> pop (type);
 
 			break;
 		}
 		case TraverseType::COLLECT:
 		{
-			if (not localFogs .empty ())
-				localFogs .front () -> push ();
+			for (const auto & child : localFogs)
+				child -> push ();
 
 			for (const auto & child : collectables)
-				child -> push ();
+				child -> push (type);
 
 			for (const auto & child : childNodes)
 				child -> traverse (type);
 
 			for (const auto & child : basic::reverse_adapter (collectables))
-				child -> pop ();
+				child -> pop (type);
 
-			if (not localFogs .empty ())
-				localFogs .front () -> pop ();
+			for (const auto & child : basic::reverse_adapter (localFogs))
+				child -> pop ();
 
 			break;
 		}

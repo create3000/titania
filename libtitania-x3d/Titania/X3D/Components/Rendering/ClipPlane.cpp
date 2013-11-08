@@ -91,14 +91,14 @@ ClipPlane::isClipped (const Matrix4f & matrix, const Vector3f & point)
 }
 
 void
-ClipPlane::push ()
+ClipPlane::push (const TraverseType)
 {
 	if (enabled ())
 		getCurrentLayer () -> getLocalObjects () .emplace_back (new ClipPlaneContainer (this));
 }
 
 void
-ClipPlane::pop ()
+ClipPlane::pop (const TraverseType)
 {
 	if (enabled ())
 		getCurrentLayer () -> getLocalObjects () .pop_back ();

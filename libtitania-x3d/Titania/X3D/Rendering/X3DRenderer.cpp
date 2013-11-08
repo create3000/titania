@@ -168,22 +168,29 @@ X3DRenderer::render (const TraverseType type)
 	{
 		case TraverseType::NAVIGATION:
 		{
-			collect (type);
+			depthBuffer -> bind ();
 
+			collect (type);
 			navigation ();
+
+			depthBuffer -> unbind ();
 			break;
 		}
 		case TraverseType::COLLISION:
 		{
-			collect (type);
+			// Collect for collide and gravite
 
+			depthBuffer -> bind ();
+
+			collect (type);
 			collide ();
+
+			depthBuffer -> unbind ();
 			break;
 		}
 		case TraverseType::COLLECT:
 		{
 			collect (type);
-
 			draw ();
 			break;
 		}
@@ -191,14 +198,13 @@ X3DRenderer::render (const TraverseType type)
 			break;
 	}
 
+	getGlobalObjects () .clear ();
 	getBrowser () -> getRenderers () .pop ();
 }
 
 void
 X3DRenderer::draw ()
 {
-	glLoadIdentity ();
-
 	// Enable global lights
 
 	for (const auto & object : getGlobalObjects ())
@@ -282,8 +288,6 @@ X3DRenderer::draw ()
 	for (const auto & object : basic::reverse_adapter (getGlobalObjects ()))
 		object -> disable ();
 
-	getGlobalObjects () .clear ();
-
 	// Reset to default OpenGL appearance
 
 	getBrowser () -> getBrowserOptions () -> appearance () -> draw ();
@@ -294,10 +298,6 @@ X3DRenderer::navigation ()
 {
 	// Measure distance
 
-	// Bind buffer
-
-	depthBuffer -> bind ();
-
 	// Get NavigationInfo values
 
 	auto navigationInfo = getCurrentNavigationInfo ();
@@ -307,16 +307,10 @@ X3DRenderer::navigation ()
 
 	// Render all objects
 
-	glLoadIdentity ();
-
 	for (const auto & shape : basic::adapter (collisionShapes .cbegin (), collisionShapes .cbegin () + numCollisionShapes))
 		shape -> draw ();
 
 	distance = depthBuffer -> getDistance (zNear, zFar);
-
-	depthBuffer -> unbind ();
-
-	getGlobalObjects () .clear ();
 }
 
 void
@@ -392,8 +386,6 @@ X3DRenderer::gravite ()
 	depthBuffer -> bind ();
 
 	// Render as opaque objects
-
-	glLoadIdentity ();
 
 	for (const auto & shape : basic::adapter (collisionShapes .cbegin (), collisionShapes .cbegin () + numCollisionShapes))
 		shape -> draw ();

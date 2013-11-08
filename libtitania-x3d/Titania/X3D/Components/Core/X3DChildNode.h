@@ -68,12 +68,12 @@ public:
 
 	virtual
 	void
-	push ()
+	push (const TraverseType)
 	{ }
 
 	virtual
 	void
-	pop ()
+	pop (const TraverseType)
 	{ }
 
 

@@ -3,7 +3,7 @@
 META "title" "Walk viewer"
 
 DEF Setup Script {
-  eventIn SFTime set_triggerTime
+  inputOnly SFTime set_triggerTime
 
   url "vrmlscript:
 function initialize ()
@@ -27,12 +27,12 @@ function set_triggerTime ()
 "
 }
 
-DEF _0 Transform {
+Transform {
   rotation 0 0 1 3.14159
   scale 0.1 0.1 0.1
   children [
     NavigationInfo {
-      type ["WALK" "ANY"]
+      type [ "WALK", "ANY" ]
     }
     Viewpoint {
       description "Home"
@@ -162,6 +162,78 @@ function set_collideTime (value)
 	print ('collideTime: ' + value);
 }
 "
+}
+
+DEF ClippedBox Transform {
+  translation -2.49049 0 -1.17989
+  children [
+    Transform {
+      children [
+        ClipPlane {
+          plane -1 0 0 0
+        }
+        Collision {
+          children [
+            DEF Box1 Transform {
+              children Shape {
+                appearance Appearance {
+                  material Material { }
+                }
+                geometry Box {
+                  solid FALSE
+                }
+              }
+            }
+            DEF Sphere Transform {
+              translation -0.00955868 0 2.39066
+              children DEF SphereShape Shape {
+                appearance Appearance {
+                  material Material { }
+                }
+                geometry DEF SphereGeometry Sphere {
+                  solid FALSE
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+    Collision {
+      enabled FALSE
+      children DEF Sphere1 Transform {
+        translation -0.00955868 0 2.39066
+        children Shape {
+          appearance Appearance {
+            fillProperties FillProperties {
+              filled FALSE
+              hatched FALSE
+            }
+            lineProperties LineProperties { }
+            material Material { }
+          }
+          geometry Sphere { }
+        }
+      }
+    }
+    Collision {
+      enabled FALSE
+      children DEF Box2 Transform {
+        children Shape {
+          appearance Appearance {
+            fillProperties FillProperties {
+              filled FALSE
+              hatched FALSE
+              hatchStyle 4
+            }
+            lineProperties LineProperties { }
+            material Material { }
+          }
+          geometry Box { }
+        }
+      }
+    }
+  ]
 }
 
 ROUTE Box.isActive TO Debug.set_active

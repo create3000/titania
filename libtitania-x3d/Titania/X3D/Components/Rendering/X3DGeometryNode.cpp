@@ -131,7 +131,13 @@ X3DGeometryNode::setTextureCoordinate (X3DTextureCoordinateNode* value)
 bool
 X3DGeometryNode::isClipped (const Vector3f & point, const Matrix4f & modelViewMatrix) const
 {
-	for (const auto & node : getCurrentLayer () -> getLocalObjects ())
+	return isClipped (point, modelViewMatrix, getCurrentLayer () -> getLocalObjects ());
+}
+
+bool
+X3DGeometryNode::isClipped (const Vector3f & point, const Matrix4f & modelViewMatrix, const CollectableContainerArray & localObjects) const
+{
+	for (const auto & node : localObjects)
 	{
 		if (node -> isClipped (point, modelViewMatrix))
 			return true;
@@ -244,7 +250,7 @@ X3DGeometryNode::intersect (const Line3f & line, std::deque <IntersectionPtr> & 
 }
 
 bool
-X3DGeometryNode::intersect (const Matrix4f & matrix, const Sphere3f & sphere) const
+X3DGeometryNode::intersect (const Sphere3f & sphere, const Matrix4f & matrix, const CollectableContainerArray & localObjects) const
 {
 	if ((bbox * matrix) .intersect (sphere))
 	{
@@ -258,6 +264,9 @@ X3DGeometryNode::intersect (const Matrix4f & matrix, const Sphere3f & sphere) co
 					{
 						for (size_t i = first, size = first + element .count; i < size; i += 3)
 						{
+							if (isClipped (vertices [i], matrix, localObjects))
+								continue;
+						
 							if (sphere .intersect (vertices [i] * matrix, vertices [i + 1] * matrix, vertices [i + 2] * matrix))
 								return true;
 						}
@@ -268,6 +277,9 @@ X3DGeometryNode::intersect (const Matrix4f & matrix, const Sphere3f & sphere) co
 				{
 					for (size_t i = first, size = first + element .count; i < size; i += 4)
 					{
+						if (isClipped (vertices [i], matrix, localObjects))
+							continue;
+						
 						if (sphere .intersect (vertices [i] * matrix, vertices [i + 1] * matrix, vertices [i + 2] * matrix))
 							return true;
 
@@ -281,6 +293,9 @@ X3DGeometryNode::intersect (const Matrix4f & matrix, const Sphere3f & sphere) co
 				{
 					for (int32_t i = first + 1, size = first + element .count - 1; i < size; ++ i)
 					{
+						if (isClipped (vertices [first], matrix, localObjects))
+							continue;
+						
 						if (sphere .intersect (vertices [first] * matrix, vertices [i] * matrix, vertices [i + 1] * matrix))
 							return true;
 					}

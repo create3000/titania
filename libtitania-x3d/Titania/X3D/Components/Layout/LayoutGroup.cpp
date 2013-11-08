@@ -130,7 +130,7 @@ LayoutGroup::traverse (const TraverseType type)
 		case TraverseType::COLLECT:
 		{
 			if (currentViewport)
-				currentViewport -> push ();
+				currentViewport -> push (type);
 
 			if (currentLayout)
 			{
@@ -150,7 +150,7 @@ LayoutGroup::traverse (const TraverseType type)
 				X3DGroupingNode::traverse (type);
 
 			if (currentViewport)
-				currentViewport -> pop ();
+				currentViewport -> pop (type);
 
 			break;
 		}

@@ -112,11 +112,11 @@ public:
 
 	virtual
 	void
-	push () final;
+	push (const TraverseType) final;
 
 	virtual
 	void
-	pop () final;
+	pop (const TraverseType) final;
 
 	virtual
 	void
