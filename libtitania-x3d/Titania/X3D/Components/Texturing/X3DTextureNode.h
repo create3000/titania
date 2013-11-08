@@ -70,6 +70,10 @@ public:
 	isTransparent () const = 0;
 
 	virtual
+	const X3DScalar <LoadState> &
+	checkLoadState () const = 0;
+
+	virtual
 	void
 	dispose ();
 

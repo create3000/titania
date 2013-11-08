@@ -1,5 +1,31 @@
 2013-11-08  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* MovieTexture.h:
+	* ImageTexture.h:
+	* PixelTexture.h:
+	* MultiTexture.h:
+	* MultiTexture.cpp:
+	* PixelTexture.cpp:
+	* X3DTextureNode.h:
+	* ImageTexture3D.h:
+	* PixelTexture3D.h:
+	* PixelTexture3D.cpp:
+	* ComposedTexture3D.h:
+	* ComposedTexture3D.cpp:
+	* Background.h:
+	* Background.cpp:
+	* ImageCubeMapTexture.h:
+	* TextureBackground.h:
+	* X3DBackgroundNode.h:
+	* ComposedCubeMapTexture.h:
+	* TextureBackground.cpp:
+	* X3DBackgroundNode.cpp:
+	* GeneratedCubeMapTexture.h:
+	* X3DEnvironmentTextureNode.h:
+	* X3DEnvironmentTextureNode.cpp: 
+
+2013-11-08  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* DepthBuffer.h:
 	* DepthBuffer.cpp:
 	* X3DRenderer.cpp:

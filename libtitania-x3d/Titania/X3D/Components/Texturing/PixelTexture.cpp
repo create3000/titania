@@ -68,7 +68,8 @@ PixelTexture::Fields::Fields () :
 PixelTexture::PixelTexture (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DTexture2DNode (),
-	          fields ()
+	          fields (),
+	       loadState (COMPLETE_STATE)
 {
 	addField (inputOutput,    "metadata",          metadata ());
 	addField (inputOutput,    "image",             image ());

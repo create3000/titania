@@ -62,6 +62,8 @@ class ImageTexture3D :
 {
 public:
 
+	///  @name Construction
+
 	ImageTexture3D (X3DExecutionContext* const);
 
 	virtual
@@ -86,25 +88,36 @@ public:
 	getContainerField () const final
 	{ return containerField; }
 
-	virtual
-	void
-	requestImmediateLoad ();
-
+	///  @name Member access
+	
 	virtual
 	bool
-	isTransparent () const
+	isTransparent () const final
 	{ return false; }
+	
+	virtual
+	const X3DScalar <LoadState> &
+	checkLoadState () const final
+	{ return X3DUrlObject::checkLoadState (); }
+
+	///  @name Operations
+	
+	virtual
+	void
+	requestImmediateLoad () final;
 
 	virtual
 	void
-	dispose ();
+	dispose () final;
 
 
 private:
 
+	///  @name Construction
+
 	virtual
 	void
-	initialize ();
+	initialize () final;
 
 	///  @name Static members
 

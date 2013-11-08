@@ -2341,6 +2341,7 @@
     <None Include="Tests\Rendering\ClipPlane.wrl" />
     <None Include="Tests\Layering\ViewportLayer.wrl" />
     <None Include="Tests\Layering\Viewport.wrl" />
+    <None Include="Tests\EnvironmentalEffects\TextureBackground.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

@@ -62,6 +62,8 @@ class ComposedCubeMapTexture :
 {
 public:
 
+	///  @name Construction
+
 	ComposedCubeMapTexture (X3DExecutionContext* const);
 
 	virtual
@@ -136,6 +138,8 @@ public:
 	top () const
 	{ return *fields .top; }
 
+	///  @name Operations
+
 	virtual
 	bool
 	isTransparent () const
@@ -148,9 +152,13 @@ public:
 
 private:
 
+	///  @name Construction
+
 	virtual
 	void
 	initialize ();
+
+	///  @name Event handlers
 
 	void
 	set_texture ();

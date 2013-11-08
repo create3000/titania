@@ -88,28 +88,20 @@ public:
 	///  @name Fields
 
 	SFNode &
-	backTexture ()
-	{ return *fields .backTexture; }
-
-	const SFNode &
-	backTexture () const
-	{ return *fields .backTexture; }
-
-	SFNode &
-	bottomTexture ()
-	{ return *fields .bottomTexture; }
-
-	const SFNode &
-	bottomTexture () const
-	{ return *fields .bottomTexture; }
-
-	SFNode &
 	frontTexture ()
 	{ return *fields .frontTexture; }
 
 	const SFNode &
 	frontTexture () const
 	{ return *fields .frontTexture; }
+
+	SFNode &
+	backTexture ()
+	{ return *fields .backTexture; }
+
+	const SFNode &
+	backTexture () const
+	{ return *fields .backTexture; }
 
 	SFNode &
 	leftTexture ()
@@ -135,9 +127,38 @@ public:
 	topTexture () const
 	{ return *fields .topTexture; }
 
+	SFNode &
+	bottomTexture ()
+	{ return *fields .bottomTexture; }
+
+	const SFNode &
+	bottomTexture () const
+	{ return *fields .bottomTexture; }
+
 
 private:
 
+	virtual
+	void
+	initialize () final;
+
+	void
+	set_frontTexture ();
+
+	void
+	set_backTexture ();
+
+	void
+	set_leftTexture ();
+
+	void
+	set_rightTexture ();
+
+	void
+	set_topTexture ();
+
+	void
+	set_bottomTexture ();
 
 	///  @name Static members
 
@@ -151,12 +172,12 @@ private:
 	{
 		Fields ();
 
-		SFNode* const backTexture;
-		SFNode* const bottomTexture;
 		SFNode* const frontTexture;
+		SFNode* const backTexture;
 		SFNode* const leftTexture;
 		SFNode* const rightTexture;
 		SFNode* const topTexture;
+		SFNode* const bottomTexture;
 	};
 
 	Fields fields;

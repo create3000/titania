@@ -1,0 +1,44 @@
+#VRML V2.0 utf8
+
+TextureBackground {
+  skyColor 0.2 0.2 0.2
+  frontTexture ImageTexture {
+    url "../CubeMapTexturing/images/lostvalley_south.png"
+    textureProperties DEF _1 TextureProperties {
+      boundaryModeS "CLAMP_TO_EDGE"
+      boundaryModeT "CLAMP_TO_EDGE"
+      boundaryModeR "CLAMP_TO_EDGE"
+    }
+  }
+  backTexture ImageTexture {
+    url "../CubeMapTexturing/images/lostvalley_north.png"
+    textureProperties USE _1
+  }
+  leftTexture ImageTexture {
+    url "../CubeMapTexturing/images/lostvalley_east.png"
+    textureProperties USE _1
+  }
+  rightTexture ImageTexture {
+    url "../CubeMapTexturing/images/lostvalley_west.png"
+    textureProperties USE _1
+  }
+  topTexture ImageTexture {
+    url "../CubeMapTexturing/images/lostvalley_up.png"
+    textureProperties USE _1
+  }
+  bottomTexture ImageTexture {
+    url "../CubeMapTexturing/images/lostvalley_down.png"
+    textureProperties USE _1
+  }
+}
+
+Transform {
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 1 0 0
+      }
+    }
+    geometry Box { }
+  }
+}

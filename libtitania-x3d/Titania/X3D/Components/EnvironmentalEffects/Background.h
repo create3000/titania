@@ -149,10 +149,6 @@ public:
 
 	virtual
 	void
-	draw ();
-
-	virtual
-	void
 	dispose ();
 
 

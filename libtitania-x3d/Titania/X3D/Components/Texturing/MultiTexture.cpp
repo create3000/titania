@@ -79,7 +79,8 @@ MultiTexture::MultiTexture (X3DExecutionContext* const executionContext) :
 	         modes (),
 	    alphaModes (),
 	       sources (),
-	     functions ()
+	     functions (),
+	     loadState (COMPLETE_STATE)
 {
 	addField (inputOutput, "metadata", metadata ());
 	addField (inputOutput, "color",    color ());

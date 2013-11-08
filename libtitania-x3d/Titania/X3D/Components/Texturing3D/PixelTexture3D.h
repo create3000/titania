@@ -61,6 +61,8 @@ class PixelTexture3D :
 {
 public:
 
+	///  @name Construction
+
 	PixelTexture3D (X3DExecutionContext* const);
 
 	virtual
@@ -95,9 +97,16 @@ public:
 	image () const
 	{ return *fields .image; }
 
+	///  @name Member access
+
 	bool
-	isTransparent () const
+	isTransparent () const final
 	{ return false; }
+
+	virtual
+	const X3DScalar <LoadState> &
+	checkLoadState () const final
+	{ return loadState; }
 
 
 private:
@@ -119,6 +128,8 @@ private:
 	};
 
 	Fields fields;
+	
+	X3DScalar <LoadState> loadState;
 
 };
 

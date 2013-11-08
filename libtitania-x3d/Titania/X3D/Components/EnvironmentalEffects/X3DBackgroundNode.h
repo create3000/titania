@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_COMPONENTS_ENVIRONMENTAL_EFFECTS_X3DBACKGROUND_NODE_H__
 
 #include "../Core/X3DBindableNode.h"
+#include "../Texturing/X3DTextureNode.h"
 
 namespace titania {
 namespace X3D {
@@ -130,6 +131,30 @@ protected:
 	void
 	eventsProcessed () override;
 
+	void
+	set_frontTexture (X3DTextureNode* const value)
+	{ frontTexture = value; }
+
+	void
+	set_backTexture (X3DTextureNode* const value)
+	{ backTexture = value; }
+
+	void
+	set_leftTexture (X3DTextureNode* const value)
+	{ leftTexture = value; }
+
+	void
+	set_rightTexture (X3DTextureNode* const value)
+	{ rightTexture = value; }
+
+	void
+	set_topTexture (X3DTextureNode* const value)
+	{ topTexture = value; }
+
+	void
+	set_bottomTexture (X3DTextureNode* const value)
+	{ bottomTexture = value; }
+
 
 private:
 
@@ -150,6 +175,12 @@ private:
 	void
 	build (float, const MFFloat &, const MFFloat &, const MFColor &, float, bool);
 
+	void
+	drawSphere ();
+
+	void
+	drawCube ();
+
 	struct Fields
 	{
 		Fields ();
@@ -167,6 +198,13 @@ private:
 	std::vector <Color4f>  glColors;
 	std::vector <Vector3f> glPoints;
 	GLsizei                numIndices;
+
+	X3DTextureNode* frontTexture;
+	X3DTextureNode* backTexture;
+	X3DTextureNode* leftTexture;
+	X3DTextureNode* rightTexture;
+	X3DTextureNode* topTexture;
+	X3DTextureNode* bottomTexture;
 
 };
 

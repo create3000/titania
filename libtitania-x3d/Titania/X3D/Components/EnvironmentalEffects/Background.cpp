@@ -141,10 +141,6 @@ Background::initialize ()
 	topUrl ()    .addInterest (topTexture    -> url ());
 	bottomUrl () .addInterest (bottomTexture -> url ());
 
-	textureProperties -> boundaryModeS () = "CLAMP_TO_EDGE";
-	textureProperties -> boundaryModeT () = "CLAMP_TO_EDGE";
-	textureProperties -> boundaryModeR () = "CLAMP_TO_EDGE";
-
 	frontTexture  -> url () = frontUrl ();
 	backTexture   -> url () = backUrl ();
 	leftTexture   -> url () = leftUrl ();
@@ -152,12 +148,16 @@ Background::initialize ()
 	topTexture    -> url () = topUrl ();
 	bottomTexture -> url () = bottomUrl ();
 
-	frontTexture  -> textureProperties () = textureProperties .getValue ();
-	backTexture   -> textureProperties () = textureProperties .getValue ();
-	leftTexture   -> textureProperties () = textureProperties .getValue ();
-	rightTexture  -> textureProperties () = textureProperties .getValue ();
-	topTexture    -> textureProperties () = textureProperties .getValue ();
-	bottomTexture -> textureProperties () = textureProperties .getValue ();
+	textureProperties -> boundaryModeS () = "CLAMP_TO_EDGE";
+	textureProperties -> boundaryModeT () = "CLAMP_TO_EDGE";
+	textureProperties -> boundaryModeR () = "CLAMP_TO_EDGE";
+
+	frontTexture  -> textureProperties () = textureProperties;
+	backTexture   -> textureProperties () = textureProperties;
+	leftTexture   -> textureProperties () = textureProperties;
+	rightTexture  -> textureProperties () = textureProperties;
+	topTexture    -> textureProperties () = textureProperties;
+	bottomTexture -> textureProperties () = textureProperties;
 
 	textureProperties -> setup ();
 	frontTexture      -> setup ();
@@ -166,153 +166,13 @@ Background::initialize ()
 	rightTexture      -> setup ();
 	topTexture        -> setup ();
 	bottomTexture     -> setup ();
-}
 
-void
-Background::draw ()
-{
-	X3DBackgroundNode::draw ();
-
-	float radius = 10000;
-	float s      = std::sqrt (std::pow (2 * radius, 2) / 2) / 2;
-
-	glDisable (GL_DEPTH_TEST);
-	glDepthMask (GL_FALSE);
-
-	glMatrixMode (GL_TEXTURE);
-	glLoadIdentity ();
-	glTranslatef (0, 1, 0);
-	glScalef (1, -1, 1);
-	glMatrixMode (GL_MODELVIEW);
-
-	glFrontFace (GL_CCW);
-	glColor4f (1, 1, 1, 1);
-
-	if (frontTexture -> checkLoadState () == COMPLETE_STATE)
-	{
-		if (frontTexture -> isTransparent ())
-			glEnable (GL_BLEND);
-		else
-			glDisable (GL_BLEND);
-
-		frontTexture -> draw ();
-		glBegin (GL_QUADS);
-		glTexCoord2f (1, 1);
-		glVertex3f (s, s, -s);
-		glTexCoord2f (0, 1);
-		glVertex3f (-s, s, -s);
-		glTexCoord2f (0, 0);
-		glVertex3f (-s, -s, -s);
-		glTexCoord2f (1, 0);
-		glVertex3f (s, -s, -s);
-		glEnd ();
-	}
-
-	if (backTexture -> checkLoadState () == COMPLETE_STATE)
-	{
-		if (frontTexture -> isTransparent ())
-			glEnable (GL_BLEND);
-		else
-			glDisable (GL_BLEND);
-
-		backTexture -> draw ();
-		glBegin (GL_QUADS);
-		glTexCoord2f (0, 0);
-		glVertex3f (s, -s, s);
-		glTexCoord2f (1, 0);
-		glVertex3f (-s, -s, s);
-		glTexCoord2f (1, 1);
-		glVertex3f (-s, s, s);
-		glTexCoord2f (0, 1);
-		glVertex3f (s, s, s);
-		glEnd ();
-	}
-
-	if (leftTexture -> checkLoadState () == COMPLETE_STATE)
-	{
-		if (frontTexture -> isTransparent ())
-			glEnable (GL_BLEND);
-		else
-			glDisable (GL_BLEND);
-
-		leftTexture -> draw ();
-		glBegin (GL_QUADS);
-		glTexCoord2f (0, 1);
-		glVertex3f (-s, s, s);
-		glTexCoord2f (0, 0);
-		glVertex3f (-s, -s, s);
-		glTexCoord2f (1, 0);
-		glVertex3f (-s, -s, -s);
-		glTexCoord2f (1, 1);
-		glVertex3f (-s, s, -s);
-		glEnd ();
-	}
-
-	if (rightTexture -> checkLoadState () == COMPLETE_STATE)
-	{
-		if (frontTexture -> isTransparent ())
-			glEnable (GL_BLEND);
-		else
-			glDisable (GL_BLEND);
-
-		rightTexture -> draw ();
-		glBegin (GL_QUADS);
-		glTexCoord2f (0, 1);
-		glVertex3f (s, s, -s);
-		glTexCoord2f (0, 0);
-		glVertex3f (s, -s, -s);
-		glTexCoord2f (1, 0);
-		glVertex3f (s, -s, s);
-		glTexCoord2f (1, 1);
-		glVertex3f (s, s, s);
-		glEnd ();
-	}
-
-	if (topTexture -> checkLoadState () == COMPLETE_STATE)
-	{
-		if (frontTexture -> isTransparent ())
-			glEnable (GL_BLEND);
-		else
-			glDisable (GL_BLEND);
-
-		topTexture -> draw ();
-		glBegin (GL_QUADS);
-		glTexCoord2f (0, 1);
-		glVertex3f (-s, s, s);
-		glTexCoord2f (0, 0);
-		glVertex3f (-s, s, -s);
-		glTexCoord2f (1, 0);
-		glVertex3f (s, s, -s);
-		glTexCoord2f (1, 1);
-		glVertex3f (s, s, s);
-		glEnd ();
-	}
-
-	if (bottomTexture -> checkLoadState () == COMPLETE_STATE)
-	{
-		if (frontTexture -> isTransparent ())
-			glEnable (GL_BLEND);
-		else
-			glDisable (GL_BLEND);
-
-		bottomTexture -> draw ();
-		glBegin (GL_QUADS);
-		glTexCoord2f (1, 0);
-		glVertex3f (s, -s, s);
-		glTexCoord2f (1, 1);
-		glVertex3f (s, -s, -s);
-		glTexCoord2f (0, 1);
-		glVertex3f (-s, -s, -s);
-		glTexCoord2f (0, 0);
-		glVertex3f (-s, -s, s);
-		glEnd ();
-	}
-
-	glDisable (GL_BLEND);
-	glDisable (GL_TEXTURE_2D);
-
-	glDepthMask (GL_TRUE);
-	glEnable (GL_DEPTH_TEST);
+	set_frontTexture  (frontTexture);
+	set_backTexture   (backTexture);
+	set_leftTexture   (leftTexture);
+	set_rightTexture  (rightTexture);
+	set_topTexture    (topTexture);
+	set_bottomTexture (bottomTexture);
 }
 
 void

@@ -59,9 +59,26 @@ namespace X3D {
 class X3DEnvironmentTextureNode :
 	public X3DTextureNode
 {
+public:
+
+	///  @name Member access
+
+	virtual
+	const X3DScalar <LoadState> &
+	checkLoadState () const final
+	{ return loadState; }
+
+
 protected:
 
+	///  @name Construction
+
 	X3DEnvironmentTextureNode ();
+
+
+private:
+	
+	X3DScalar <LoadState> loadState;
 
 };
 

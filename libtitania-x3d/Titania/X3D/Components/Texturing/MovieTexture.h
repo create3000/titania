@@ -67,6 +67,8 @@ class MovieTexture :
 {
 public:
 
+	///  @name Construction
+
 	MovieTexture (X3DExecutionContext* const);
 
 	virtual
@@ -91,11 +93,20 @@ public:
 	getContainerField () const final
 	{ return containerField; }
 
+	///  @name Member access
+	
 	virtual
 	bool
 	isTransparent () const final
 	{ return false; }
 
+	virtual
+	const X3DScalar <LoadState> &
+	checkLoadState () const final
+	{ return X3DUrlObject::checkLoadState (); }
+
+	///  @name Operations
+	
 	virtual
 	void
 	requestImmediateLoad () final;
@@ -107,10 +118,14 @@ public:
 
 private:
 
+	///  @name Construction
+
 	virtual
 	void
 	initialize () final;
 
+	///  @name Operations
+	
 	virtual
 	void
 	prepareEvents () final;

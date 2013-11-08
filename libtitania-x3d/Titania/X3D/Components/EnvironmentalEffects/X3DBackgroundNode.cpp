@@ -78,7 +78,13 @@ X3DBackgroundNode::Fields::Fields () :
 
 X3DBackgroundNode::X3DBackgroundNode () :
 	X3DBindableNode (),
-	         fields ()
+	         fields (),
+	     frontTexture (nullptr),
+	      backTexture (nullptr),
+	      leftTexture (nullptr),
+	     rightTexture (nullptr),
+	       topTexture (nullptr),
+	    bottomTexture (nullptr)
 {
 	addNodeType (X3DConstants::X3DBackgroundNode);
 }
@@ -325,6 +331,13 @@ X3DBackgroundNode::traverse (const TraverseType type)
 void
 X3DBackgroundNode::draw ()
 {
+	drawSphere ();
+	drawCube ();
+}
+
+void
+X3DBackgroundNode::drawSphere ()
+{
 	if (transparency () >= 1.0f)
 		return;
 
@@ -377,6 +390,169 @@ X3DBackgroundNode::draw ()
 	}
 
 	glPolygonMode (GL_FRONT_AND_BACK, polygonMode [0]);
+}
+
+void
+X3DBackgroundNode::drawCube ()
+{
+	float radius = 10000;
+	float s      = std::sqrt (std::pow (2 * radius, 2) / 2) / 2;
+
+	glDisable (GL_DEPTH_TEST);
+	glDepthMask (GL_FALSE);
+
+	glMatrixMode (GL_TEXTURE);
+	glLoadIdentity ();
+	glTranslatef (0, 1, 0);
+	glScalef (1, -1, 1);
+	glMatrixMode (GL_MODELVIEW);
+
+	glFrontFace (GL_CCW);
+	glColor4f (1, 1, 1, 1);
+
+	if (frontTexture)
+	{
+		if (frontTexture -> checkLoadState () == COMPLETE_STATE)
+		{
+			if (frontTexture -> isTransparent ())
+				glEnable (GL_BLEND);
+			else
+				glDisable (GL_BLEND);
+
+			frontTexture -> draw ();
+			glBegin (GL_QUADS);
+			glTexCoord2f (1, 1);
+			glVertex3f (s, s, -s);
+			glTexCoord2f (0, 1);
+			glVertex3f (-s, s, -s);
+			glTexCoord2f (0, 0);
+			glVertex3f (-s, -s, -s);
+			glTexCoord2f (1, 0);
+			glVertex3f (s, -s, -s);
+			glEnd ();
+		}
+	}
+
+	if (backTexture)
+	{
+		if (backTexture -> checkLoadState () == COMPLETE_STATE)
+		{
+			if (frontTexture -> isTransparent ())
+				glEnable (GL_BLEND);
+			else
+				glDisable (GL_BLEND);
+
+			backTexture -> draw ();
+			glBegin (GL_QUADS);
+			glTexCoord2f (0, 0);
+			glVertex3f (s, -s, s);
+			glTexCoord2f (1, 0);
+			glVertex3f (-s, -s, s);
+			glTexCoord2f (1, 1);
+			glVertex3f (-s, s, s);
+			glTexCoord2f (0, 1);
+			glVertex3f (s, s, s);
+			glEnd ();
+		}
+	}
+
+	if (leftTexture)
+	{
+		if (leftTexture -> checkLoadState () == COMPLETE_STATE)
+		{
+			if (frontTexture -> isTransparent ())
+				glEnable (GL_BLEND);
+			else
+				glDisable (GL_BLEND);
+
+			leftTexture -> draw ();
+			glBegin (GL_QUADS);
+			glTexCoord2f (0, 1);
+			glVertex3f (-s, s, s);
+			glTexCoord2f (0, 0);
+			glVertex3f (-s, -s, s);
+			glTexCoord2f (1, 0);
+			glVertex3f (-s, -s, -s);
+			glTexCoord2f (1, 1);
+			glVertex3f (-s, s, -s);
+			glEnd ();
+		}
+	}
+
+	if (rightTexture)
+	{
+		if (rightTexture -> checkLoadState () == COMPLETE_STATE)
+		{
+			if (frontTexture -> isTransparent ())
+				glEnable (GL_BLEND);
+			else
+				glDisable (GL_BLEND);
+
+			rightTexture -> draw ();
+			glBegin (GL_QUADS);
+			glTexCoord2f (0, 1);
+			glVertex3f (s, s, -s);
+			glTexCoord2f (0, 0);
+			glVertex3f (s, -s, -s);
+			glTexCoord2f (1, 0);
+			glVertex3f (s, -s, s);
+			glTexCoord2f (1, 1);
+			glVertex3f (s, s, s);
+			glEnd ();
+		}
+	}
+
+	if (topTexture)
+	{
+		if (topTexture -> checkLoadState () == COMPLETE_STATE)
+		{
+			if (frontTexture -> isTransparent ())
+				glEnable (GL_BLEND);
+			else
+				glDisable (GL_BLEND);
+
+			topTexture -> draw ();
+			glBegin (GL_QUADS);
+			glTexCoord2f (0, 1);
+			glVertex3f (-s, s, s);
+			glTexCoord2f (0, 0);
+			glVertex3f (-s, s, -s);
+			glTexCoord2f (1, 0);
+			glVertex3f (s, s, -s);
+			glTexCoord2f (1, 1);
+			glVertex3f (s, s, s);
+			glEnd ();
+		}
+	}
+
+	if (bottomTexture)
+	{
+		if (bottomTexture -> checkLoadState () == COMPLETE_STATE)
+		{
+			if (frontTexture -> isTransparent ())
+				glEnable (GL_BLEND);
+			else
+				glDisable (GL_BLEND);
+
+			bottomTexture -> draw ();
+			glBegin (GL_QUADS);
+			glTexCoord2f (1, 0);
+			glVertex3f (s, -s, s);
+			glTexCoord2f (1, 1);
+			glVertex3f (s, -s, -s);
+			glTexCoord2f (0, 1);
+			glVertex3f (-s, -s, -s);
+			glTexCoord2f (0, 0);
+			glVertex3f (-s, -s, s);
+			glEnd ();
+		}
+	}
+
+	glDisable (GL_BLEND);
+	glDisable (GL_TEXTURE_2D);
+
+	glDepthMask (GL_TRUE);
+	glEnable (GL_DEPTH_TEST);
 }
 
 } // X3D

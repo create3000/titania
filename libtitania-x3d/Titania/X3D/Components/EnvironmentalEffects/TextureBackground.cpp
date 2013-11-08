@@ -50,6 +50,7 @@
 
 #include "TextureBackground.h"
 
+#include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -60,12 +61,12 @@ const std::string TextureBackground::typeName       = "TextureBackground";
 const std::string TextureBackground::containerField = "children";
 
 TextureBackground::Fields::Fields () :
-	backTexture (new SFNode ()),
-	bottomTexture (new SFNode ()),
-	frontTexture (new SFNode ()),
-	leftTexture (new SFNode ()),
-	rightTexture (new SFNode ()),
-	topTexture (new SFNode ())
+	 frontTexture (new SFNode ()),
+	  backTexture (new SFNode ()),
+	  leftTexture (new SFNode ()),
+	 rightTexture (new SFNode ()),
+	   topTexture (new SFNode ()),
+	bottomTexture (new SFNode ())
 { }
 
 TextureBackground::TextureBackground (X3DExecutionContext* const executionContext) :
@@ -80,20 +81,76 @@ TextureBackground::TextureBackground (X3DExecutionContext* const executionContex
 	addField (inputOutput, "groundAngle",   groundAngle ());
 	addField (inputOutput, "groundColor",   groundColor ());
 	addField (inputOutput, "transparency",  transparency ());
-	addField (inputOutput, "backTexture",   backTexture ());
-	addField (inputOutput, "bottomTexture", bottomTexture ());
+	addField (outputOnly,  "isBound",       isBound ());
+	addField (outputOnly,  "bindTime",      bindTime ());
 	addField (inputOutput, "frontTexture",  frontTexture ());
+	addField (inputOutput, "backTexture",   backTexture ());
 	addField (inputOutput, "leftTexture",   leftTexture ());
 	addField (inputOutput, "rightTexture",  rightTexture ());
 	addField (inputOutput, "topTexture",    topTexture ());
-	addField (outputOnly,  "isBound",       isBound ());
-	addField (outputOnly,  "bindTime",      bindTime ());
+	addField (inputOutput, "bottomTexture", bottomTexture ());
 }
 
 X3DBaseNode*
 TextureBackground::create (X3DExecutionContext* const executionContext) const
 {
 	return new TextureBackground (executionContext);
+}
+
+void
+TextureBackground::initialize ()
+{
+	X3DBackgroundNode::initialize ();
+
+	frontTexture ()  .addInterest (this, &TextureBackground::set_frontTexture);
+	backTexture ()   .addInterest (this, &TextureBackground::set_backTexture);
+	leftTexture ()   .addInterest (this, &TextureBackground::set_leftTexture);
+	rightTexture ()  .addInterest (this, &TextureBackground::set_rightTexture);
+	topTexture ()    .addInterest (this, &TextureBackground::set_topTexture);
+	bottomTexture () .addInterest (this, &TextureBackground::set_bottomTexture);
+
+	set_frontTexture ();
+	set_backTexture ();
+	set_leftTexture ();
+	set_rightTexture ();
+	set_topTexture ();
+	set_bottomTexture ();
+}
+
+void
+TextureBackground::set_frontTexture ()
+{
+	X3DBackgroundNode::set_frontTexture (x3d_cast <X3DTextureNode*> (frontTexture ()));
+}
+
+void
+TextureBackground::set_backTexture ()
+{
+	X3DBackgroundNode::set_backTexture (x3d_cast <X3DTextureNode*> (backTexture ()));
+}
+
+void
+TextureBackground::set_leftTexture ()
+{
+	X3DBackgroundNode::set_leftTexture (x3d_cast <X3DTextureNode*> (leftTexture ()));
+}
+
+void
+TextureBackground::set_rightTexture ()
+{
+	X3DBackgroundNode::set_rightTexture (x3d_cast <X3DTextureNode*> (rightTexture ()));
+}
+
+void
+TextureBackground::set_topTexture ()
+{
+	X3DBackgroundNode::set_topTexture (x3d_cast <X3DTextureNode*> (topTexture ()));
+}
+
+void
+TextureBackground::set_bottomTexture ()
+{
+	X3DBackgroundNode::set_bottomTexture (x3d_cast <X3DTextureNode*> (bottomTexture ()));
 }
 
 } // X3D

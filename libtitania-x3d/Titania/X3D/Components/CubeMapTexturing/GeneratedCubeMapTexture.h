@@ -61,6 +61,8 @@ class GeneratedCubeMapTexture :
 {
 public:
 
+	///  @name Construction
+
 	GeneratedCubeMapTexture (X3DExecutionContext* const);
 
 	virtual
@@ -110,6 +112,8 @@ public:
 	const SFNode &
 	textureProperties () const
 	{ return *fields .textureProperties; }
+
+	///  @name Operations
 
 	virtual
 	bool

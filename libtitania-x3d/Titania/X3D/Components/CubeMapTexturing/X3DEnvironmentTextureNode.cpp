@@ -54,7 +54,8 @@ namespace titania {
 namespace X3D {
 
 X3DEnvironmentTextureNode::X3DEnvironmentTextureNode () :
-	X3DTextureNode ()
+	X3DTextureNode (),
+	     loadState (COMPLETE_STATE)
 {
 	addNodeType (X3DConstants::X3DEnvironmentTextureNode);
 }

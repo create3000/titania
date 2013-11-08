@@ -65,6 +65,8 @@ class ImageTexture :
 {
 public:
 
+	///  @name Construction
+
 	ImageTexture (X3DExecutionContext* const);
 
 	virtual
@@ -88,7 +90,16 @@ public:
 	const std::string &
 	getContainerField () const final
 	{ return containerField; }
+	
+	///  @name Member access
+	
+	virtual
+	const X3DScalar <LoadState> &
+	checkLoadState () const final
+	{ return X3DUrlObject::checkLoadState (); }
 
+	///  @name Operations
+	
 	virtual
 	void
 	requestImmediateLoad () final;
@@ -106,10 +117,14 @@ private:
 
 	using X3DTexture2DNode::setImage;
 
+	///  @name Construction
+
 	virtual
 	void
 	initialize () final;
 
+	///  @name Operations
+	
 	virtual
 	void
 	setTexture (const TexturePtr &) final;
@@ -118,13 +133,15 @@ private:
 	void
 	update () final;
 
-	std::unique_ptr <TextureLoader> future;
-
 	///  @name Static members
 
 	static const std::string componentName;
 	static const std::string typeName;
 	static const std::string containerField;
+
+	///  @name Members
+	
+	std::unique_ptr <TextureLoader> future;
 
 
 };

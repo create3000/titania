@@ -62,6 +62,8 @@ class ImageCubeMapTexture :
 {
 public:
 
+	///  @name Construction
+
 	ImageCubeMapTexture (X3DExecutionContext* const);
 
 	virtual
@@ -96,18 +98,24 @@ public:
 	textureProperties () const
 	{ return *fields .textureProperties; }
 
-	virtual
-	void
-	requestImmediateLoad ();
+	///  @name Member access
 
 	virtual
 	bool
 	isTransparent () const
 	{ return false; }
 
+	///  @name Operations
+
+	virtual
+	void
+	requestImmediateLoad ();
+	
 	virtual
 	void
 	draw ();
+
+	///  @name Destruction
 
 	virtual
 	void
@@ -116,10 +124,11 @@ public:
 
 private:
 
+	///  @name Construction
+
 	virtual
 	void
 	initialize ();
-
 
 	///  @name Static members
 

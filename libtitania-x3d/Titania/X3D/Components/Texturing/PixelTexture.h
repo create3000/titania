@@ -95,6 +95,13 @@ public:
 	image () const
 	{ return *fields .image; }
 
+	///  @name Member access
+
+	virtual
+	const X3DScalar <LoadState> &
+	checkLoadState () const final
+	{ return loadState; }
+
 
 private:
 
@@ -123,6 +130,8 @@ private:
 	};
 
 	Fields fields;
+	
+	X3DScalar <LoadState> loadState;
 
 };
 

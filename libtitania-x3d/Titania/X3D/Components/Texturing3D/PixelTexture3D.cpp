@@ -66,7 +66,8 @@ PixelTexture3D::Fields::Fields () :
 PixelTexture3D::PixelTexture3D (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DTexture3DNode (),
-	          fields ()
+	          fields (),
+	       loadState (COMPLETE_STATE)
 {
 	addField (inputOutput,    "metadata",          metadata ());
 	addField (initializeOnly, "repeatS",           repeatS ());

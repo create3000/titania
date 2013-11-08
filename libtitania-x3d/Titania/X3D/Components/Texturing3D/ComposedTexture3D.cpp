@@ -66,7 +66,8 @@ ComposedTexture3D::Fields::Fields () :
 ComposedTexture3D::ComposedTexture3D (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DTexture3DNode (),
-	          fields ()
+	          fields (),
+	       loadState (COMPLETE_STATE)
 {
 	addField (inputOutput,    "metadata",          metadata ());
 	addField (initializeOnly, "repeatS",           repeatS ());

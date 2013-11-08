@@ -137,11 +137,16 @@ public:
 	texture () const
 	{ return *fields .texture; }
 
-	///  @name Tests
+	///  @name Member access
 
 	virtual
 	bool
 	isTransparent () const final;
+
+	virtual
+	const X3DScalar <LoadState> &
+	checkLoadState () const final
+	{ return loadState; }
 
 	///  @name Operstions
 
@@ -241,6 +246,8 @@ private:
 	std::vector <ModeType>     alphaModes;
 	std::vector <SourceType>   sources;
 	std::vector <FunctionType> functions;
+	
+	X3DScalar <LoadState> loadState;
 
 };
 
