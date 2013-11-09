@@ -645,6 +645,9 @@ PROTO TransformTool [
             lineProperties LineProperties {
               linewidthScaleFactor 5
             }
+            material Material {
+              emissiveColor 0 1 1
+            }
           }
           geometry PointSet {
             coord Coordinate {
@@ -668,7 +671,7 @@ PROTO TransformTool [
     url "vrmlscript:
 function initialize (value, time)
 {
-	set_whichChoice (0);
+	set_whichChoice (2);
 }
 
 function set_time (value, time)
@@ -1176,57 +1179,57 @@ function set_active8 (value)
 
 function set_xScale (value)
 {
-	scale (new SFVec3f (value .x, 0, 0), xSensor);
+	scale (new SFVec3f (value .x, 0, 0), xSensor, false);
 }
 
 function set_yScale (value)
 {
-	scale (new SFVec3f (0, value .y, 0), ySensor);
+	scale (new SFVec3f (0, value .y, 0), ySensor, false);
 }
 
 function set_zScale (value)
 {
-	scale (new SFVec3f (0, 0, value .z), zSensor);
+	scale (new SFVec3f (0, 0, value .z), zSensor, false);
 }
 
 function set_scale1 (value)
 {
-	scale (value, sensor1);
+	scale (value, sensor1, true);
 }
 
 function set_scale2 (value)
 {
-	scale (new SFVec3f (-value .x, value .y, value .z), sensor2);
+	scale (new SFVec3f (-value .x, value .y, value .z), sensor2, true);
 }
 
 function set_scale3 (value)
 {
-	scale (new SFVec3f (-value .x, -value .y, value .z), sensor3);
+	scale (new SFVec3f (-value .x, -value .y, value .z), sensor3, true);
 }
 
 function set_scale4 (value)
 {
-	scale (new SFVec3f (value .x, -value .y, value .z), sensor4);
+	scale (new SFVec3f (value .x, -value .y, value .z), sensor4, true);
 }
 
 function set_scale5 (value)
 {
-	scale (new SFVec3f (value .x, value .y, -value .z), sensor5);
+	scale (new SFVec3f (value .x, value .y, -value .z), sensor5, true);
 }
 
 function set_scale6 (value)
 {
-	scale (new SFVec3f (-value .x, value .y, -value .z), sensor6);
+	scale (new SFVec3f (-value .x, value .y, -value .z), sensor6, true);
 }
 
 function set_scale7 (value)
 {
-	scale (new SFVec3f (-value .x, -value .y, -value .z), sensor7);
+	scale (new SFVec3f (-value .x, -value .y, -value .z), sensor7, true);
 }
 
 function set_scale8 (value)
 {
-	scale (new SFVec3f (value .x, -value .y, -value .z), sensor8);
+	scale (new SFVec3f (value .x, -value .y, -value .z), sensor8, true);
 }
 
 function set_active (value, sensor, sensorPosition)
@@ -1253,21 +1256,31 @@ function set_active (value, sensor, sensorPosition)
 	}
 }
 
-function scale (value, sensor)
+function scale (value, sensor, uniform)
 {
 	value = multVec (value, transform .scale);
 	value = divVec (value .multiply (2), bboxSize);
 
 	var scale = transform .scale .add (value);
 
-	if (scale .x <= minScale)
-		scale .x = minScale;
+	var min = Math .min (scale .x, scale .y, scale .z);
 
-	if (scale .y <= minScale)
-		scale .y = minScale;
+	if (uniform)
+	{
+		if (min < minScale)
+			scale = scale .multiply (minScale / min);
+	}
+	else
+	{
+		if (scale .x <= minScale)
+			scale .x = minScale;
 
-	if (scale .z <= minScale)
-		scale .z = minScale;
+		if (scale .y <= minScale)
+			scale .y = minScale;
+
+		if (scale .z <= minScale)
+			scale .z = minScale;	
+	}
 
 	var factor = divVec (scale, scaleFactor);
 
@@ -1320,6 +1333,7 @@ function divVec (a, b)
   ROUTE XScaleSensor.trackPoint_changed TO PPoint.set_translation
   ROUTE YScaleSensor.trackPoint_changed TO PPoint.set_translation
   ROUTE ZScaleSensor.trackPoint_changed TO PPoint.set_translation
+  ROUTE ScaleSensor1.trackPoint_changed TO PPoint.set_translation
 
   # Mode translate, rotate or scale
 

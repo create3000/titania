@@ -1,3 +1,10 @@
+2013-11-09  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* DepthBuffer.cpp:
+	* TransformTool.wrl:
+	* PlaneSensor.h:
+	* PlaneSensor.cpp: 
+
 2013-11-08  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* MovieTexture.h:

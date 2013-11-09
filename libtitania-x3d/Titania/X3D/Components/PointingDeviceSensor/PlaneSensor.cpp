@@ -75,7 +75,6 @@ PlaneSensor::PlaneSensor (X3DExecutionContext* const executionContext) :
 	           planeSensor (true),
 	                  line (),
 	                 plane (),
-	      trackPointOffset (),
 	            startPoint ()
 {
 	addField (inputOutput, "metadata",            metadata ());
@@ -98,6 +97,17 @@ PlaneSensor::create (X3DExecutionContext* const executionContext) const
 	return new PlaneSensor (executionContext);
 }
 
+bool
+PlaneSensor::getLineTrackPoint (const HitPtr & hit, const Line3d & line, Vector3d & trackPoint)
+throw (std::domain_error)
+{
+	const auto screenLine     = ViewVolume::projectLine (line, getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+	auto       trackPoint1    = screenLine .closest_point (Vector3d (hit -> x, hit -> y, 0));
+	const auto trackPointLine = ViewVolume::unProjectLine (trackPoint1 .x (), trackPoint1 .y (), getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+
+	return line .closest_point (trackPointLine, trackPoint);
+}
+
 void
 PlaneSensor::set_active (const HitPtr & hit, bool active)
 {
@@ -114,8 +124,8 @@ PlaneSensor::set_active (const HitPtr & hit, bool active)
 
 			const Rotation4d axisRotation (this -> axisRotation () .getValue ());
 			
-			// hitPoint is used as origin for the case that the sensor is located at camera position
-			const auto origin = hitPoint;
+			// hitPoint is used as point for the case that the sensor is located at camera position
+			const auto point = hitPoint;
 
 			if (minPosition () .getX () == maxPosition () .getX ())
 			{
@@ -123,7 +133,7 @@ PlaneSensor::set_active (const HitPtr & hit, bool active)
 
 				const auto direction = axisRotation * Vector3d (0, std::abs (maxPosition () .getY () - minPosition () .getY ()), 0);
 
-				line = Line3d (origin, normalize (direction));
+				line = Line3d (point, normalize (direction));
 			}
 			else if (minPosition () .getY () == maxPosition () .getY ())
 			{
@@ -131,29 +141,35 @@ PlaneSensor::set_active (const HitPtr & hit, bool active)
 
 				const auto direction = axisRotation * Vector3d (std::abs (maxPosition () .getX () - minPosition () .getX ()), 0, 0);
 
-				line = Line3d (origin, normalize (direction));
+				line = Line3d (point, normalize (direction));
 			}
 			else
 			{
 				planeSensor = true;
-				plane       = Plane3d (origin, axisRotation * Vector3d (0, 0, 1));
+				plane       = Plane3d (point, axisRotation * Vector3d (0, 0, 1));
 			}
 
 			if (planeSensor)
 			{
-				Vector3d trackPoint;
+				if (plane .intersect (hitRay, startPoint))
+				{
+					Vector3d trackPoint;
 
-				if (plane .intersect (hitRay, trackPoint))
-					trackStart (origin, trackPoint);
+					Plane3d (Vector3d (), plane .normal ()) .intersect (hitRay, trackPoint);
+
+					trackStart (trackPoint);
+				}
 			}
 			else
 			{
-				const auto screenLine     = ViewVolume::projectLine (line, getModelViewMatrix (), getProjectionMatrix (), getViewport ());
-				auto       trackPoint     = screenLine .closest_point (Vector3d (hit -> x, hit -> y, 0));
-				const auto trackPointLine = ViewVolume::unProjectLine (trackPoint .x (), trackPoint .y (), getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+				if (getLineTrackPoint (hit, line, startPoint))
+				{
+					Vector3d trackPoint;
 
-				if (line .closest_point (trackPointLine, trackPoint))
-					trackStart (origin, trackPoint);
+					getLineTrackPoint (hit, Line3d (Vector3d (), line .direction ()), trackPoint);
+	
+					trackStart (trackPoint);
+				}
 			}
 		}
 		else
@@ -167,11 +183,9 @@ PlaneSensor::set_active (const HitPtr & hit, bool active)
 }
 
 void
-PlaneSensor::trackStart (const Vector3d & origin, Vector3d trackPoint)
+PlaneSensor::trackStart (const Vector3d & trackPoint)
 {
-	trackPointOffset       = origin;
-	startPoint             = trackPoint;
-	trackPoint_changed ()  = Vector3d (offset () .getValue ()) + trackPoint - trackPointOffset;
+	trackPoint_changed ()  = trackPoint;
 	translation_changed () = offset ();
 }
 
@@ -186,27 +200,27 @@ PlaneSensor::set_motion (const HitPtr & hit)
 
 			const auto hitRay = hit -> ray * inverseModelViewMatrix;
 
-			Vector3d trackPoint;
+			Vector3d endPoint, trackPoint;
 
-			if (plane .intersect (hitRay, trackPoint))
-				track (trackPoint);
+			if (plane .intersect (hitRay, endPoint))
+			{
+				Plane3d (Vector3d (), plane .normal ()) .intersect (hitRay, trackPoint);
 
+				track (endPoint, trackPoint);
+			}
 			else
 				throw std::domain_error ("Plane and line are parallel.");
 		}
 		else
 		{
-			const auto screenLine     = ViewVolume::projectLine (line, getModelViewMatrix (), getProjectionMatrix (), getViewport ());
-			auto       trackPoint     = screenLine .closest_point (Vector3d (hit -> x, hit -> y, 0));
-			const auto trackPointLine = ViewVolume::unProjectLine (trackPoint .x (), trackPoint .y (), getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+			Vector3d endPoint, trackPoint;
+
+			if (getLineTrackPoint (hit, line, endPoint))
+			{
+				getLineTrackPoint (hit, Line3d (Vector3d (), line .direction ()), trackPoint);
 			
-			//double angle = std::abs (dot (line .direction (), trackPointLine .direction ()));
-
-			//__LOG__ << std::setprecision (std::numeric_limits <double>::digits10) << angle << std::endl;
-
-			if (line .closest_point (trackPointLine, trackPoint))
-				track (trackPoint);
-
+				track (endPoint, trackPoint);
+			}
 			else
 				throw std::domain_error ("Lines are parallel.");
 		}
@@ -218,12 +232,10 @@ PlaneSensor::set_motion (const HitPtr & hit)
 	}
 }
 
-
-
 void
-PlaneSensor::track (Vector3d trackPoint)
+PlaneSensor::track (const Vector3d & endPoint, const Vector3d & trackPoint)
 {
-	auto translation = Rotation4d (~axisRotation ()) * (Vector3d (offset () .getValue ()) + trackPoint - startPoint);
+	auto translation = Rotation4d (~axisRotation ()) * (Vector3d (offset () .getValue ()) + endPoint - startPoint);
 
 	// X component
 
@@ -235,7 +247,7 @@ PlaneSensor::track (Vector3d trackPoint)
 	if (not (minPosition () .getY () > maxPosition () .getY ()))
 		translation .y (math::clamp <float> (translation .y (), minPosition () .getY (), maxPosition () .getY ()));
 
-	trackPoint_changed ()  = Vector3d (offset () .getValue ()) + trackPoint - trackPointOffset;
+	trackPoint_changed ()  = trackPoint;
 	translation_changed () = Rotation4d (axisRotation () .getValue ()) * translation;
 }
 

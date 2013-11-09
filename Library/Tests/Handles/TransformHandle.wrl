@@ -33,8 +33,9 @@ Background {
 
 Viewpoint {
   description "Top"
-  position 0 15 0
-  orientation -1 0 0 1.57079
+  position 4.25667 5.78762 8.20675
+  orientation -0.791728 0.595504 0.136165 0.781445
+  centerOfRotation 0.318661 -0.108506 0.949541
 }
 
 Viewpoint {
@@ -54,7 +55,6 @@ Grid {
 }
 
 DEF _1 Transform {
-  scale 2 2 2
   children Transform {
     scale 2 1 1
     children Transform {

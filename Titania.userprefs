@@ -1,12 +1,15 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Rendering/DepthBuffer.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/EnvironmentalEffects/TextureBackground.cpp">
     <Files>
       <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderer.cpp" Line="284" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Grouping/X3DGroupingNode.h" Line="152" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Grouping/X3DGroupingNode.cpp" Line="231" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Rendering/DepthBuffer.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Rendering/DepthBuffer.cpp" Line="95" Column="2" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/EnvironmentalEffects/X3DBackgroundNode.cpp" Line="394" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/EnvironmentalEffects/TextureBackground.cpp" Line="80" Column="12" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/EnvironmentalEffects/Background.cpp" Line="151" Column="56" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -46,7 +49,9 @@
                 </Node>
                 <Node name="Components" expanded="True">
                   <Node name="Core" expanded="True" />
-                  <Node name="EnvironmentalEffects" expanded="True" />
+                  <Node name="EnvironmentalEffects" expanded="True">
+                    <Node name="TextureBackground.cpp" selected="True" />
+                  </Node>
                   <Node name="Grouping" expanded="True" />
                   <Node name="Layering" expanded="True" />
                   <Node name="Layout" expanded="True" />
@@ -56,9 +61,7 @@
                   <Node name="Shape" expanded="True" />
                   <Node name="Time" expanded="True" />
                 </Node>
-                <Node name="Rendering" expanded="True">
-                  <Node name="DepthBuffer.cpp" selected="True" />
-                </Node>
+                <Node name="Rendering" expanded="True" />
               </Node>
             </Node>
           </Node>

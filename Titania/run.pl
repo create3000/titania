@@ -11,7 +11,7 @@ chdir dirname $0;
 
 my $min = `date +'%M'`; chomp $min;
 
-if ($min > 150 and $min < 20)
+if ($min > 19 and $min < 20)
 {
 	say `gconftool-2 --dump /apps/titania > /home/holger/.gconf-titania-backup.xml`;
 	system "gconftool-2", "--recursive-unset", "/apps/titania";

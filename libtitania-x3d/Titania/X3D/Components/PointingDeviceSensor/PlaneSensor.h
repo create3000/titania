@@ -144,11 +144,15 @@ private:
 
 	///  @name Operations
 
-	void
-	trackStart (const Vector3d &, Vector3d);
+	bool
+	getLineTrackPoint (const HitPtr &, const Line3d &, Vector3d &)
+	throw (std::domain_error);
 
 	void
-	track (Vector3d);
+	trackStart (const Vector3d &);
+
+	void
+	track (const Vector3d &, const Vector3d &);
 
 	///  @name Static members
 
@@ -174,7 +178,6 @@ private:
 	bool     planeSensor;
 	Line3d   line;
 	Plane3d  plane;
-	Vector3d trackPointOffset;
 	Vector3d startPoint;
 
 };

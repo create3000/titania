@@ -62,7 +62,7 @@ DepthBuffer::DepthBuffer (size_t width, size_t height) :
 	         id (0),
 	colorBuffer (0),
 	depthBuffer (0),
-			color (3 * width * height),
+			color (3 * width * height), // DEBUG
 	      depth (width * height)
 {
 	if (glXGetCurrentContext ()) // GL_EXT_framebuffer_object
@@ -113,7 +113,7 @@ DepthBuffer::bind ()
 	glScissor  (0, 0, width, height);
 	glEnable (GL_SCISSOR_TEST);
 	glClear (GL_DEPTH_BUFFER_BIT);
-	glClear (GL_COLOR_BUFFER_BIT); // DEBUG
+	// glClear (GL_COLOR_BUFFER_BIT); // DEBUG
 }
 
 void
