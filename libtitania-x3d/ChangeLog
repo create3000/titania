@@ -1,5 +1,9 @@
 2013-11-09  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* PlaneSensor.cpp: 
+
+2013-11-09  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* DepthBuffer.cpp:
 	* TransformTool.wrl:
 	* PlaneSensor.h:

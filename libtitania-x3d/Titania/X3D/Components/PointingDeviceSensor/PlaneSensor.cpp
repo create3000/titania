@@ -166,8 +166,13 @@ PlaneSensor::set_active (const HitPtr & hit, bool active)
 				{
 					Vector3d trackPoint;
 
-					getLineTrackPoint (hit, Line3d (Vector3d (), line .direction ()), trackPoint);
-	
+					try
+					{
+						getLineTrackPoint (hit, Line3d (Vector3d (), line .direction ()), trackPoint);
+					}
+					catch (const std::domain_error &)
+					{ }
+
 					trackStart (trackPoint);
 				}
 			}
@@ -217,7 +222,12 @@ PlaneSensor::set_motion (const HitPtr & hit)
 
 			if (getLineTrackPoint (hit, line, endPoint))
 			{
-				getLineTrackPoint (hit, Line3d (Vector3d (), line .direction ()), trackPoint);
+				try
+				{
+					getLineTrackPoint (hit, Line3d (Vector3d (), line .direction ()), trackPoint);
+				}
+				catch (const std::domain_error &)
+				{ }
 			
 				track (endPoint, trackPoint);
 			}
