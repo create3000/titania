@@ -61,6 +61,8 @@ class PositionDamper :
 {
 public:
 
+	///  @name Construction
+
 	PositionDamper (X3DExecutionContext* const);
 
 	virtual
@@ -88,6 +90,14 @@ public:
 	///  @name Fields
 
 	SFVec3f &
+	set_value ()
+	{ return *fields .set_value; }
+
+	const SFVec3f &
+	set_value () const
+	{ return *fields .set_value; }
+
+	SFVec3f &
 	set_destination ()
 	{ return *fields .set_destination; }
 
@@ -96,12 +106,28 @@ public:
 	{ return *fields .set_destination; }
 
 	SFVec3f &
-	set_value ()
-	{ return *fields .set_value; }
+	initialValue ()
+	{ return *fields .initialValue; }
 
 	const SFVec3f &
-	set_value () const
-	{ return *fields .set_value; }
+	initialValue () const
+	{ return *fields .initialValue; }
+
+	SFVec3f &
+	initialDestination ()
+	{ return *fields .initialDestination; }
+
+	const SFVec3f &
+	initialDestination () const
+	{ return *fields .initialDestination; }
+
+	SFInt32 &
+	order ()
+	{ return *fields .order; }
+
+	const SFInt32 &
+	order () const
+	{ return *fields .order; }
 
 	SFTime &
 	tau ()
@@ -127,33 +153,39 @@ public:
 	value_changed () const
 	{ return *fields .value_changed; }
 
-	SFVec3f &
-	initialDestination ()
-	{ return *fields .initialDestination; }
-
-	const SFVec3f &
-	initialDestination () const
-	{ return *fields .initialDestination; }
-
-	SFVec3f &
-	initialValue ()
-	{ return *fields .initialValue; }
-
-	const SFVec3f &
-	initialValue () const
-	{ return *fields .initialValue; }
-
-	SFInt32 &
-	order ()
-	{ return *fields .order; }
-
-	const SFInt32 &
-	order () const
-	{ return *fields .order; }
-
 
 private:
 
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final;
+
+	///  @name Element access
+
+	size_t
+	getOrder () const;
+
+	float
+	getTolerance () const;
+
+	///  @name Event handlers
+	
+	void
+	_set_destination ();
+
+	void
+	_set_value ();
+
+	void
+	set_order ();
+
+	void
+	set_active (bool);
+	
+	void
+	prepareEvents ();
 
 	///  @name Static members
 
@@ -167,17 +199,19 @@ private:
 	{
 		Fields ();
 
-		SFVec3f* const set_destination;
 		SFVec3f* const set_value;
+		SFVec3f* const set_destination;
+		SFVec3f* const initialValue;
+		SFVec3f* const initialDestination;
+		SFInt32* const order;
 		SFTime* const tau;
 		SFFloat* const tolerance;
 		SFVec3f* const value_changed;
-		SFVec3f* const initialDestination;
-		SFVec3f* const initialValue;
-		SFInt32* const order;
 	};
 
 	Fields fields;
+
+	std::vector <Vector3f> value;
 
 };
 

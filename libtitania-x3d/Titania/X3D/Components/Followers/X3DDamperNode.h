@@ -61,6 +61,8 @@ class X3DDamperNode :
 {
 protected:
 
+	///  @name Construction
+
 	X3DDamperNode ();
 
 };

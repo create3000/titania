@@ -2468,6 +2468,7 @@
     <Folder Include="Tests\KeyDeviceSensor\" />
     <Folder Include="Tests\Layout\" />
     <Folder Include="Tests\Core\" />
+    <Folder Include="Tests\Follower\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Navigation\Rotor.wrl" />
@@ -2477,5 +2478,6 @@
     <Content Include="Tests\Layout\test.wrl" />
     <Content Include="Tests\Handles\Rotor.wrl" />
     <Content Include="Tests\Core\WorldInfo.wrl" />
+    <Content Include="Tests\Follower\PositionDamper.wrl" />
   </ItemGroup>
 </Project>

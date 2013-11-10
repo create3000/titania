@@ -1,0 +1,56 @@
+#X3D V3.3 utf8 Titania
+
+NavigationInfo {
+  type [ "NONE", "ANY" ]
+}
+
+Background {
+  skyColor 0.2 0.2 0.2
+}
+
+DEF Plane Transform {
+  children [
+    DEF Touch TouchSensor { }
+    DEF Rectangle2D Transform {
+      scale 3.77232 3.77232 1
+      children Shape {
+        appearance Appearance {
+          material Material { }
+        }
+        geometry Rectangle2D { }
+      }
+    }
+  ]
+}
+
+DEF Follower PositionDamper {
+  order 5
+  tau 1
+}
+
+DEF Sphere Transform {
+  scale 0.192862 0.192862 0.192862
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry Sphere { }
+  }
+}
+
+DEF FollowerScript Script {
+  inputOnly      SFTime  set_time
+  initializeOnly SFNode  touchSensor USE Touch
+  outputOnly     SFVec3f destination_changed
+
+  url "vrmlscript:
+function set_time ()
+{
+	destination_changed = touchSensor .hitPoint_changed;
+}
+"
+}
+
+ROUTE Touch.touchTime TO FollowerScript.set_time
+ROUTE FollowerScript.destination_changed TO Follower.set_destination
+ROUTE Follower.value_changed TO Sphere.set_translation

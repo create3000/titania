@@ -87,7 +87,9 @@ ClipPlane::isClipped (const Matrix4f & matrix, const Vector3f & point)
 {
 	auto clipPlane = Plane3f (Vector3f (plane () .getX (), plane () .getY (), plane () .getZ ()), -plane () .getW ());
 
-	return clipPlane .multPlaneMatrix (matrix) .distance (point) < 0;
+	clipPlane .multPlaneMatrix (matrix);
+
+	return clipPlane .distance (point) < 0;
 }
 
 void

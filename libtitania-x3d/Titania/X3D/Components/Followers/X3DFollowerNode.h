@@ -61,6 +61,8 @@ class X3DFollowerNode :
 {
 public:
 
+	///  @name Fields
+
 	SFBool &
 	isActive ()
 	{ return *fields .isActive; }
@@ -72,10 +74,14 @@ public:
 
 protected:
 
+	///  @name Construction
+
 	X3DFollowerNode ();
 
 
 private:
+
+	///  @name Members
 
 	struct Fields
 	{

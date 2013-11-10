@@ -132,11 +132,23 @@ public:
 	distance_from_origin () const
 	{ return value .distanceFromOrigin; }
 	
-	plane3
+	///  @name  Arithmetic operations
+	///  All these operators modify this box3 inplace.
+
+	///  Transform this line by @a matrix.
+	plane3 &
+	operator *= (const matrix4 <Type> & matrix)
+	{
+		return multPlaneMatrix (matrix);
+	}
+
+	plane3 &
 	multPlaneMatrix (const matrix4 <Type> &);
 
-	plane3
+	plane3 &
 	multMatrixPlane (const matrix4 <Type> &);
+
+	//  @name Distance
 
 	///  Returns the distance from @a point.
 	constexpr Type
@@ -172,7 +184,7 @@ private:
 
 ///  Transform a plane by the given matrix
 template <class Type>
-plane3 <Type>
+plane3 <Type> &
 plane3 <Type>::multPlaneMatrix (const matrix4 <Type> & matrix)
 {
     // Find the point on the plane along the normal from the origin
@@ -190,11 +202,11 @@ plane3 <Type>::multPlaneMatrix (const matrix4 <Type> & matrix)
     // The new distance is the projected distance of the vector to the
     // transformed point onto the (unit) transformed normal. This is
     // just a dot product.
-    return plane3 (point, newNormal);
+    return *this = plane3 (point, newNormal);
 }
 
 template <class Type>
-plane3 <Type>
+plane3 <Type> &
 plane3 <Type>::multMatrixPlane (const matrix4 <Type> & matrix)
 {
     // Find the point on the plane along the normal from the origin
@@ -212,7 +224,7 @@ plane3 <Type>::multMatrixPlane (const matrix4 <Type> & matrix)
     // The new distance is the projected distance of the vector to the
     // transformed point onto the (unit) transformed normal. This is
     // just a dot product.
-    return plane3 (point, newNormal);
+    return *this = plane3 (point, newNormal);
 }
 
 ///  Returns the distance from @a point.
@@ -256,14 +268,14 @@ template <class Type>
 plane3 <Type>
 operator * (const plane3 <Type> & plane, const matrix4 <Type> & matrix)
 {
-	return plane .multPlaneMatrix (matrix);
+	return plane3 <Type> (plane) .multPlaneMatrix (matrix);
 }
 
 template <class Type>
 plane3 <Type>
 operator * (const matrix4 <Type> & matrix, const plane3 <Type> & plane)
 {
-	return plane .multMatrixPlane (matrix);
+	return plane3 <Type> (plane) .multMatrixPlane (matrix);
 }
 
 ///  @relates plane3
