@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -50,6 +50,7 @@
 
 #include "CoordinateDamper.h"
 
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -60,14 +61,11 @@ const std::string CoordinateDamper::typeName       = "CoordinateDamper";
 const std::string CoordinateDamper::containerField = "children";
 
 CoordinateDamper::Fields::Fields () :
-	set_destination (new MFVec3f ()),
-	set_value (new MFVec3f ()),
-	tau (new SFTime ()),
-	tolerance (new SFFloat (-1)),
-	value_changed (new MFVec3f ()),
+	         set_value (new MFVec3f ()),
+	   set_destination (new MFVec3f ()),
+	      initialValue (new MFVec3f ({ SFVec3f () })),
 	initialDestination (new MFVec3f ({ SFVec3f () })),
-	initialValue (new MFVec3f ({ SFVec3f () })),
-	order (new SFInt32 ())
+	     value_changed (new MFVec3f ())
 { }
 
 CoordinateDamper::CoordinateDamper (X3DExecutionContext* const executionContext) :
@@ -76,15 +74,15 @@ CoordinateDamper::CoordinateDamper (X3DExecutionContext* const executionContext)
 	       fields ()
 {
 	addField (inputOutput,    "metadata",           metadata ());
-	addField (inputOnly,      "set_destination",    set_destination ());
 	addField (inputOnly,      "set_value",          set_value ());
+	addField (inputOnly,      "set_destination",    set_destination ());
+	addField (initializeOnly, "initialValue",       initialValue ());
+	addField (initializeOnly, "initialDestination", initialDestination ());
+	addField (initializeOnly, "order",              order ());
 	addField (inputOutput,    "tau",                tau ());
 	addField (inputOutput,    "tolerance",          tolerance ());
 	addField (outputOnly,     "isActive",           isActive ());
 	addField (outputOnly,     "value_changed",      value_changed ());
-	addField (initializeOnly, "initialDestination", initialDestination ());
-	addField (initializeOnly, "initialValue",       initialValue ());
-	addField (initializeOnly, "order",              order ());
 }
 
 X3DBaseNode*
@@ -92,6 +90,28 @@ CoordinateDamper::create (X3DExecutionContext* const executionContext) const
 {
 	return new CoordinateDamper (executionContext);
 }
+
+void
+CoordinateDamper::initialize ()
+{
+	X3DDamperNode::initialize ();
+}
+ 
+void
+CoordinateDamper::_set_destination ()
+{ }
+
+void
+CoordinateDamper::_set_value ()
+{ }
+
+void
+CoordinateDamper::set_order ()
+{ }
+
+void
+CoordinateDamper::prepareEvents ()
+{ }
 
 } // X3D
 } // titania

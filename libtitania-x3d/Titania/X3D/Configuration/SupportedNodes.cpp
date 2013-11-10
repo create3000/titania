@@ -229,6 +229,7 @@ SupportedNodes::SupportedNodes (X3DExecutionContext* const executionContext)
 	add ("RigidBody",                    new RigidBody                    (executionContext));
 	add ("RigidBodyCollection",          new RigidBodyCollection          (executionContext));
 	add ("ScalarChaser",                 new ScalarChaser                 (executionContext));
+	add ("ScalarDamper",                 new ScalarDamper                 (executionContext));
 	add ("ScalarInterpolator",           new ScalarInterpolator           (executionContext));
 	add ("ScreenFontStyle",              new ScreenFontStyle              (executionContext));
 	add ("ScreenGroup",                  new ScreenGroup                  (executionContext));

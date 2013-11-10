@@ -1,5 +1,30 @@
 2013-11-10  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Node.txt:
+	* HatchStyles.xcf:
+	* Followers.h:
+	* SupportedNodes.cpp:
+	* ColorDamper.h:
+	* ScalarDamper.h:
+	* ColorDamper.cpp:
+	* X3DDamperNode.h:
+	* PositionDamper.h:
+	* ScalarDamper.cpp:
+	* X3DDamperNode.cpp:
+	* TexCoordDamper2D.h:
+	* PositionDamper2D.h:
+	* CoordinateDamper.h:
+	* PositionDamper.cpp:
+	* OrientationDamper.h:
+	* CoordinateDamper.cpp:
+	* TexCoordDamper2D.cpp:
+	* PositionDamper2D.cpp:
+	* OrientationDamper.cpp: 
+
+2013-11-10  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* ClipPlane.cpp:
 	* X3DDamperNode.h:
 	* PositionDamper.h:

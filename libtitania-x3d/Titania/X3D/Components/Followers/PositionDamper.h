@@ -121,30 +121,6 @@ public:
 	initialDestination () const
 	{ return *fields .initialDestination; }
 
-	SFInt32 &
-	order ()
-	{ return *fields .order; }
-
-	const SFInt32 &
-	order () const
-	{ return *fields .order; }
-
-	SFTime &
-	tau ()
-	{ return *fields .tau; }
-
-	const SFTime &
-	tau () const
-	{ return *fields .tau; }
-
-	SFFloat &
-	tolerance ()
-	{ return *fields .tolerance; }
-
-	const SFFloat &
-	tolerance () const
-	{ return *fields .tolerance; }
-
 	SFVec3f &
 	value_changed ()
 	{ return *fields .value_changed; }
@@ -162,14 +138,6 @@ private:
 	void
 	initialize () final;
 
-	///  @name Element access
-
-	size_t
-	getOrder () const;
-
-	float
-	getTolerance () const;
-
 	///  @name Event handlers
 	
 	void
@@ -180,12 +148,10 @@ private:
 
 	void
 	set_order ();
-
-	void
-	set_active (bool);
 	
+	virtual
 	void
-	prepareEvents ();
+	prepareEvents () final;
 
 	///  @name Static members
 
@@ -203,9 +169,6 @@ private:
 		SFVec3f* const set_destination;
 		SFVec3f* const initialValue;
 		SFVec3f* const initialDestination;
-		SFInt32* const order;
-		SFTime* const tau;
-		SFFloat* const tolerance;
 		SFVec3f* const value_changed;
 	};
 

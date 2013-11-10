@@ -88,6 +88,14 @@ public:
 	///  @name Fields
 
 	MFVec2f &
+	value_changed ()
+	{ return *fields .value_changed; }
+
+	const MFVec2f &
+	value_changed () const
+	{ return *fields .value_changed; }
+
+	MFVec2f &
 	set_destination ()
 	{ return *fields .set_destination; }
 
@@ -96,36 +104,12 @@ public:
 	{ return *fields .set_destination; }
 
 	MFVec2f &
-	set_value ()
-	{ return *fields .set_value; }
+	initialValue ()
+	{ return *fields .initialValue; }
 
 	const MFVec2f &
-	set_value () const
-	{ return *fields .set_value; }
-
-	SFTime &
-	tau ()
-	{ return *fields .tau; }
-
-	const SFTime &
-	tau () const
-	{ return *fields .tau; }
-
-	SFFloat &
-	tolerance ()
-	{ return *fields .tolerance; }
-
-	const SFFloat &
-	tolerance () const
-	{ return *fields .tolerance; }
-
-	MFVec2f &
-	value_changed ()
-	{ return *fields .value_changed; }
-
-	const MFVec2f &
-	value_changed () const
-	{ return *fields .value_changed; }
+	initialValue () const
+	{ return *fields .initialValue; }
 
 	MFVec2f &
 	initialDestination ()
@@ -136,24 +120,36 @@ public:
 	{ return *fields .initialDestination; }
 
 	MFVec2f &
-	initialValue ()
-	{ return *fields .initialValue; }
+	set_value ()
+	{ return *fields .set_value; }
 
 	const MFVec2f &
-	initialValue () const
-	{ return *fields .initialValue; }
-
-	SFInt32 &
-	order ()
-	{ return *fields .order; }
-
-	const SFInt32 &
-	order () const
-	{ return *fields .order; }
+	set_value () const
+	{ return *fields .set_value; }
 
 
 private:
 
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final;
+
+	///  @name Event handlers
+	
+	void
+	_set_destination ();
+
+	void
+	_set_value ();
+
+	void
+	set_order ();
+	
+	virtual
+	void
+	prepareEvents () final;
 
 	///  @name Static members
 
@@ -167,14 +163,11 @@ private:
 	{
 		Fields ();
 
-		MFVec2f* const set_destination;
 		MFVec2f* const set_value;
-		SFTime* const tau;
-		SFFloat* const tolerance;
-		MFVec2f* const value_changed;
-		MFVec2f* const initialDestination;
+		MFVec2f* const set_destination;
 		MFVec2f* const initialValue;
-		SFInt32* const order;
+		MFVec2f* const initialDestination;
+		MFVec2f* const value_changed;
 	};
 
 	Fields fields;

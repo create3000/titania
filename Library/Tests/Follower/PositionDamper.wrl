@@ -1,5 +1,14 @@
 #X3D V3.3 utf8 Titania
 
+EXTERNPROTO LineTrail [
+  exposedField SFBool  enabled
+  inputOutput    SFTime  cycleInterval
+  inputOutput    SFTime  resetTime
+  inputOutput    SFVec3f point
+  initializeOnly SFInt32 dimension
+]
+"../Interpolation/LineTrail.wrl"
+
 NavigationInfo {
   type [ "NONE", "ANY" ]
 }
@@ -15,7 +24,10 @@ DEF Plane Transform {
       scale 3.77232 3.77232 1
       children Shape {
         appearance Appearance {
-          material Material { }
+          material Material {
+            diffuseColor 0.5 0 0.5
+            transparency 0.5
+          }
         }
         geometry Rectangle2D { }
       }
@@ -32,25 +44,64 @@ DEF Sphere Transform {
   scale 0.192862 0.192862 0.192862
   children Shape {
     appearance Appearance {
-      material Material { }
+      material DEF SphereMaterial Material { }
     }
     geometry Sphere { }
   }
 }
 
+DEF LineTrail Shape {
+  appearance Appearance {
+    material Material {
+      emissiveColor 0 0.8 0.8
+    }
+  }
+  geometry DEF Trail LineTrail {
+    cycleInterval 0.1
+    point -1.42764 -2.25535 0
+    dimension 200
+  }
+}
+
 DEF FollowerScript Script {
   inputOnly      SFTime  set_time
+  inputOnly      SFBool  set_active
+  eventOut       SFColor color_changed
   initializeOnly SFNode  touchSensor USE Touch
   outputOnly     SFVec3f destination_changed
 
   url "vrmlscript:
+function initialize ()
+{
+	var lhs = new SFRotation (1,2,3,4);
+	var rhs = new SFRotation (2,3,4,5);
+	
+	var d = rhs .inverse () .multiply (lhs);
+
+	print (lhs);
+	print (rhs .multiply (d));
+}
+
 function set_time ()
 {
 	destination_changed = touchSensor .hitPoint_changed;
+}
+
+function set_active (value)
+{
+	if (value)
+		color_changed = new SFColor (0.8, 0, 0);
+	
+	else
+		color_changed = new SFColor (0.8, 0.8, 0.8);
 }
 "
 }
 
 ROUTE Touch.touchTime TO FollowerScript.set_time
 ROUTE FollowerScript.destination_changed TO Follower.set_destination
+ROUTE FollowerScript.color_changed TO SphereMaterial.set_diffuseColor
+ROUTE Follower.isActive TO FollowerScript.set_active
 ROUTE Follower.value_changed TO Sphere.set_translation
+ROUTE Follower.isActive TO Trail.enabled
+ROUTE Follower.value_changed TO Trail.set_point

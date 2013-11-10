@@ -48,19 +48,135 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_FOLLOWERS_H__
-#define __TITANIA_X3D_COMPONENTS_FOLLOWERS_H__
+#ifndef __TITANIA_X3D_COMPONENTS_FOLLOWERS_SCALAR_DAMPER_H__
+#define __TITANIA_X3D_COMPONENTS_FOLLOWERS_SCALAR_DAMPER_H__
 
-#include "Followers/ColorDamper.h"
-#include "Followers/CoordinateDamper.h"
-#include "Followers/OrientationChaser.h"
-#include "Followers/OrientationDamper.h"
-#include "Followers/PositionChaser.h"
-#include "Followers/PositionChaser2D.h"
-#include "Followers/PositionDamper.h"
-#include "Followers/PositionDamper2D.h"
-#include "Followers/ScalarChaser.h"
-#include "Followers/ScalarDamper.h"
-#include "Followers/TexCoordDamper2D.h"
+#include "../Followers/X3DDamperNode.h"
+
+namespace titania {
+namespace X3D {
+
+class ScalarDamper :
+	public X3DDamperNode
+{
+public:
+
+	ScalarDamper (X3DExecutionContext* const);
+
+	virtual
+	X3DBaseNode*
+	create (X3DExecutionContext* const) const final;
+
+	///  @name Common members
+
+	virtual
+	const std::string &
+	getComponentName () const final
+	{ return componentName; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const final
+	{ return containerField; }
+
+	///  @name Fields
+
+	SFFloat &
+	value_changed ()
+	{ return *fields .value_changed; }
+
+	const SFFloat &
+	value_changed () const
+	{ return *fields .value_changed; }
+
+	SFFloat &
+	set_destination ()
+	{ return *fields .set_destination; }
+
+	const SFFloat &
+	set_destination () const
+	{ return *fields .set_destination; }
+
+	SFFloat &
+	initialValue ()
+	{ return *fields .initialValue; }
+
+	const SFFloat &
+	initialValue () const
+	{ return *fields .initialValue; }
+
+	SFFloat &
+	initialDestination ()
+	{ return *fields .initialDestination; }
+
+	const SFFloat &
+	initialDestination () const
+	{ return *fields .initialDestination; }
+
+	SFFloat &
+	set_value ()
+	{ return *fields .set_value; }
+
+	const SFFloat &
+	set_value () const
+	{ return *fields .set_value; }
+
+
+private:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final;
+
+	///  @name Event handlers
+
+	void
+	_set_destination ();
+
+	void
+	_set_value ();
+
+	void
+	set_order ();
+
+	virtual
+	void
+	prepareEvents () final;
+
+	///  @name Static members
+
+	static const std::string componentName;
+	static const std::string typeName;
+	static const std::string containerField;
+
+	///  @name Members
+
+	struct Fields
+	{
+		Fields ();
+
+		SFFloat* const set_value;
+		SFFloat* const set_destination;
+		SFFloat* const initialValue;
+		SFFloat* const initialDestination;
+		SFFloat* const value_changed;
+	};
+
+	Fields fields;
+
+	std::vector <float> value;
+
+};
+
+} // X3D
+} // titania
 
 #endif

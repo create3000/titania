@@ -116,6 +116,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Components/Followers/PositionDamper.cpp \
 	Titania/X3D/Components/Followers/PositionDamper2D.cpp \
 	Titania/X3D/Components/Followers/ScalarChaser.cpp \
+	Titania/X3D/Components/Followers/ScalarDamper.cpp \
 	Titania/X3D/Components/Followers/TexCoordDamper2D.cpp \
 	Titania/X3D/Components/Followers/X3DChaserNode.cpp \
 	Titania/X3D/Components/Followers/X3DDamperNode.cpp \

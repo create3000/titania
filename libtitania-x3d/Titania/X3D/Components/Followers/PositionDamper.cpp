@@ -65,9 +65,6 @@ PositionDamper::Fields::Fields () :
 	   set_destination (new SFVec3f ()),
 	      initialValue (new SFVec3f ()),
 	initialDestination (new SFVec3f ()),
-	             order (new SFInt32 ()),
-	               tau (new SFTime ()),
-	         tolerance (new SFFloat (-1)),
 	     value_changed (new SFVec3f ())
 { }
 
@@ -111,21 +108,6 @@ PositionDamper::initialize ()
 	set_active (abs (initialDestination () - initialValue ()) > getTolerance ());
 }
 
-size_t
-PositionDamper::getOrder () const
-{
-	return clamp <int32_t> (order (), 0, 10);
-}
-
-float
-PositionDamper::getTolerance () const
-{
-	if (tolerance () < 0)
-		return 0.001;
-
-	return tolerance ();
-}
-
 void
 PositionDamper::_set_value ()
 {
@@ -155,21 +137,6 @@ PositionDamper::set_order ()
 }
 
 void
-PositionDamper::set_active (bool value)
-{
-	if (value not_eq isActive ())
-	{
-		isActive () = value;
-
-		if (value)
-			getBrowser () -> prepareEvents () .addInterest (this, &PositionDamper::prepareEvents);
-
-		else
-			getBrowser () -> prepareEvents () .removeInterest (this, &PositionDamper::prepareEvents);
-	}
-}
-
-void
 PositionDamper::prepareEvents ()
 {
 	time_type delta = 1 / getBrowser () -> getCurrentFrameRate ();
@@ -185,7 +152,7 @@ PositionDamper::prepareEvents ()
 						    : value [i];
 	}
 
-	if (abs (value [0] - value [order]) < getTolerance ())
+	if (abs (value [order] - value [0]) < getTolerance ())
 	{
 		for (auto & v : basic::adapter (value .begin () + 1, value .end ()))
 			v = value [order];

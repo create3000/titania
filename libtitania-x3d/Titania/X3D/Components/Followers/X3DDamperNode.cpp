@@ -50,13 +50,52 @@
 
 #include "X3DDamperNode.h"
 
+#include "../../Browser/X3DBrowser.h"
+
 namespace titania {
 namespace X3D {
 
+X3DDamperNode::Fields::Fields () :
+	    order (new SFInt32 (3)),
+	      tau (new SFTime (0.3)),
+	tolerance (new SFFloat (-1))
+{ }
+
 X3DDamperNode::X3DDamperNode () :
-	X3DFollowerNode ()
+	X3DFollowerNode (),
+	         fields ()
 {
 	addNodeType (X3DConstants::X3DDamperNode);
+}
+
+size_t
+X3DDamperNode::getOrder () const
+{
+	return clamp <int32_t> (order (), 0, 5);
+}
+
+float
+X3DDamperNode::getTolerance () const
+{
+	if (tolerance () < 0)
+		return 0.001;
+
+	return tolerance ();
+}
+
+void
+X3DDamperNode::set_active (bool value)
+{
+	if (value not_eq isActive ())
+	{
+		isActive () = value;
+
+		if (value)
+			getBrowser () -> prepareEvents () .addInterest (this, &X3DDamperNode::prepareEvents);
+
+		else
+			getBrowser () -> prepareEvents () .removeInterest (this, &X3DDamperNode::prepareEvents);
+	}
 }
 
 } // X3D

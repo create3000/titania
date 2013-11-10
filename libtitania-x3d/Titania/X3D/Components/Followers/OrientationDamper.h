@@ -88,6 +88,14 @@ public:
 	///  @name Fields
 
 	SFRotation &
+	set_value ()
+	{ return *fields .set_value; }
+
+	const SFRotation &
+	set_value () const
+	{ return *fields .set_value; }
+
+	SFRotation &
 	set_destination ()
 	{ return *fields .set_destination; }
 
@@ -96,36 +104,12 @@ public:
 	{ return *fields .set_destination; }
 
 	SFRotation &
-	set_value ()
-	{ return *fields .set_value; }
+	initialValue ()
+	{ return *fields .initialValue; }
 
 	const SFRotation &
-	set_value () const
-	{ return *fields .set_value; }
-
-	SFTime &
-	tau ()
-	{ return *fields .tau; }
-
-	const SFTime &
-	tau () const
-	{ return *fields .tau; }
-
-	SFFloat &
-	tolerance ()
-	{ return *fields .tolerance; }
-
-	const SFFloat &
-	tolerance () const
-	{ return *fields .tolerance; }
-
-	SFRotation &
-	value_changed ()
-	{ return *fields .value_changed; }
-
-	const SFRotation &
-	value_changed () const
-	{ return *fields .value_changed; }
+	initialValue () const
+	{ return *fields .initialValue; }
 
 	SFRotation &
 	initialDestination ()
@@ -136,24 +120,41 @@ public:
 	{ return *fields .initialDestination; }
 
 	SFRotation &
-	initialValue ()
-	{ return *fields .initialValue; }
+	value_changed ()
+	{ return *fields .value_changed; }
 
 	const SFRotation &
-	initialValue () const
-	{ return *fields .initialValue; }
-
-	SFInt32 &
-	order ()
-	{ return *fields .order; }
-
-	const SFInt32 &
-	order () const
-	{ return *fields .order; }
+	value_changed () const
+	{ return *fields .value_changed; }
 
 
 private:
 
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final;
+
+	///  @name Operations
+
+	bool
+	equals (const Rotation4f &, const Rotation4f &, float) const;
+
+	///  @name Event handlers
+	
+	void
+	_set_destination ();
+
+	void
+	_set_value ();
+
+	void
+	set_order ();
+	
+	virtual
+	void
+	prepareEvents () final;
 
 	///  @name Static members
 
@@ -167,17 +168,16 @@ private:
 	{
 		Fields ();
 
-		SFRotation* const set_destination;
 		SFRotation* const set_value;
-		SFTime* const tau;
-		SFFloat* const tolerance;
-		SFRotation* const value_changed;
-		SFRotation* const initialDestination;
+		SFRotation* const set_destination;
 		SFRotation* const initialValue;
-		SFInt32* const order;
+		SFRotation* const initialDestination;
+		SFRotation* const value_changed;
 	};
 
 	Fields fields;
+
+	std::vector <Rotation4f> value;
 
 };
 

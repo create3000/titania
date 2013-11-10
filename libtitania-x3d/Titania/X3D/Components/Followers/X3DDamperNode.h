@@ -59,11 +59,72 @@ namespace X3D {
 class X3DDamperNode :
 	public X3DFollowerNode
 {
+public:
+
+	///  @name Fields
+
+	SFInt32 &
+	order ()
+	{ return *fields .order; }
+
+	const SFInt32 &
+	order () const
+	{ return *fields .order; }
+
+	SFTime &
+	tau ()
+	{ return *fields .tau; }
+
+	const SFTime &
+	tau () const
+	{ return *fields .tau; }
+
+	SFFloat &
+	tolerance ()
+	{ return *fields .tolerance; }
+
+	const SFFloat &
+	tolerance () const
+	{ return *fields .tolerance; }
+
+
 protected:
 
 	///  @name Construction
 
 	X3DDamperNode ();
+
+	///  @name Element access
+
+	size_t
+	getOrder () const;
+
+	float
+	getTolerance () const;
+
+	///  @name Event handlers
+
+	void
+	set_active (bool);
+	
+	virtual
+	void
+	prepareEvents () = 0;
+
+private:
+
+	///  @name Members
+
+	struct Fields
+	{
+		Fields ();
+
+		SFInt32* const order;
+		SFTime* const tau;
+		SFFloat* const tolerance;
+	};
+
+	Fields fields;
 
 };
 

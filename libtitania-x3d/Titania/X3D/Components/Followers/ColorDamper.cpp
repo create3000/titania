@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -50,6 +50,7 @@
 
 #include "ColorDamper.h"
 
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -60,37 +61,119 @@ const std::string ColorDamper::typeName       = "ColorDamper";
 const std::string ColorDamper::containerField = "children";
 
 ColorDamper::Fields::Fields () :
-	set_destination (new SFColor ()),
-	set_value (new SFColor ()),
-	tau (new SFTime ()),
-	tolerance (new SFFloat (-1)),
-	value_changed (new SFColor ()),
-	initialDestination (new SFColor ()),
-	initialValue (new SFColor ()),
-	order (new SFInt32 ())
+	         set_value (new SFColor ()),
+	   set_destination (new SFColor ()),
+	      initialValue (new SFColor (0.8, 0.8, 0.8)),
+	initialDestination (new SFColor (0.8, 0.8, 0.8)),
+	     value_changed (new SFColor ())
 { }
 
 ColorDamper::ColorDamper (X3DExecutionContext* const executionContext) :
 	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DDamperNode (),
-	       fields ()
+	       fields (),
+	        value ()
 {
 	addField (inputOutput,    "metadata",           metadata ());
-	addField (inputOnly,      "set_destination",    set_destination ());
 	addField (inputOnly,      "set_value",          set_value ());
+	addField (inputOnly,      "set_destination",    set_destination ());
+	addField (initializeOnly, "initialValue",       initialValue ());
+	addField (initializeOnly, "initialDestination", initialDestination ());
+	addField (initializeOnly, "order",              order ());
 	addField (inputOutput,    "tau",                tau ());
 	addField (inputOutput,    "tolerance",          tolerance ());
 	addField (outputOnly,     "isActive",           isActive ());
 	addField (outputOnly,     "value_changed",      value_changed ());
-	addField (initializeOnly, "initialDestination", initialDestination ());
-	addField (initializeOnly, "initialValue",       initialValue ());
-	addField (initializeOnly, "order",              order ());
 }
 
 X3DBaseNode*
 ColorDamper::create (X3DExecutionContext* const executionContext) const
 {
 	return new ColorDamper (executionContext);
+}
+
+void
+ColorDamper::initialize ()
+{
+	X3DDamperNode::initialize ();
+
+	set_value ()       .addInterest (this, &ColorDamper::_set_value);
+	set_destination () .addInterest (this, &ColorDamper::_set_destination);
+	order ()           .addInterest (this, &ColorDamper::set_order);
+
+	value .resize (getOrder () + 1, initialValue ());
+
+	value [0] = initialDestination ();
+
+	set_active (not equals (initialDestination (), initialValue (), getTolerance ()));
+}
+
+bool
+ColorDamper::equals (const Color3f & lhs, const Color3f & rhs, float tolerance) const
+{
+	Vector3f a (lhs .r (), lhs .g (), lhs .b ());
+	Vector3f b (rhs .r (), rhs .g (), rhs .b ());
+
+	return abs (a - b) < tolerance;
+}
+
+void
+ColorDamper::_set_destination ()
+{
+	for (auto & v : basic::adapter (value .begin () + 1, value .end ()))
+		v = set_value ();
+
+	value_changed () = set_value ();
+
+	set_active (true);
+}
+
+void
+ColorDamper::_set_value ()
+{
+	if (not equals (value [0], set_destination (), getTolerance ()))
+	{
+		value [0] = set_destination ();
+
+		set_active (true);
+	}
+}
+
+void
+ColorDamper::set_order ()
+{
+	value .resize (getOrder () + 1, value .back ());
+}
+
+void
+ColorDamper::prepareEvents ()
+{
+	time_type delta = 1 / getBrowser () -> getCurrentFrameRate ();
+
+	float alpha = std::exp (-delta / tau ());
+	
+	size_t order = value .size () - 1;
+
+	for (size_t i = 0; i < order; ++ i)
+	{
+		value [i + 1] = tau ()
+		                ? clerp (value [i], value [i + 1], alpha)
+						    : value [i];
+	}
+
+	if (not equals (value [order], value [0], getTolerance ()))
+	{
+		for (auto & v : basic::adapter (value .begin () + 1, value .end ()))
+			v = value [order];
+
+		value_changed () = value [order];
+
+		set_active (false);
+
+		return;
+	}
+
+	value_changed () = value [order];
 }
 
 } // X3D

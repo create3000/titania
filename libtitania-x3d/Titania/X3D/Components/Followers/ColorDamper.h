@@ -88,6 +88,14 @@ public:
 	///  @name Fields
 
 	SFColor &
+	set_value ()
+	{ return *fields .set_value; }
+
+	const SFColor &
+	set_value () const
+	{ return *fields .set_value; }
+
+	SFColor &
 	set_destination ()
 	{ return *fields .set_destination; }
 
@@ -96,36 +104,12 @@ public:
 	{ return *fields .set_destination; }
 
 	SFColor &
-	set_value ()
-	{ return *fields .set_value; }
+	initialValue ()
+	{ return *fields .initialValue; }
 
 	const SFColor &
-	set_value () const
-	{ return *fields .set_value; }
-
-	SFTime &
-	tau ()
-	{ return *fields .tau; }
-
-	const SFTime &
-	tau () const
-	{ return *fields .tau; }
-
-	SFFloat &
-	tolerance ()
-	{ return *fields .tolerance; }
-
-	const SFFloat &
-	tolerance () const
-	{ return *fields .tolerance; }
-
-	SFColor &
-	value_changed ()
-	{ return *fields .value_changed; }
-
-	const SFColor &
-	value_changed () const
-	{ return *fields .value_changed; }
+	initialValue () const
+	{ return *fields .initialValue; }
 
 	SFColor &
 	initialDestination ()
@@ -136,24 +120,41 @@ public:
 	{ return *fields .initialDestination; }
 
 	SFColor &
-	initialValue ()
-	{ return *fields .initialValue; }
+	value_changed ()
+	{ return *fields .value_changed; }
 
 	const SFColor &
-	initialValue () const
-	{ return *fields .initialValue; }
-
-	SFInt32 &
-	order ()
-	{ return *fields .order; }
-
-	const SFInt32 &
-	order () const
-	{ return *fields .order; }
+	value_changed () const
+	{ return *fields .value_changed; }
 
 
 private:
 
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final;
+
+	///  @name Operations
+
+	bool
+	equals (const Color3f &, const Color3f &, float) const;
+
+	///  @name Event handlers
+	
+	void
+	_set_destination ();
+
+	void
+	_set_value ();
+
+	void
+	set_order ();
+	
+	virtual
+	void
+	prepareEvents () final;
 
 	///  @name Static members
 
@@ -167,17 +168,16 @@ private:
 	{
 		Fields ();
 
-		SFColor* const set_destination;
 		SFColor* const set_value;
-		SFTime* const tau;
-		SFFloat* const tolerance;
-		SFColor* const value_changed;
-		SFColor* const initialDestination;
+		SFColor* const set_destination;
 		SFColor* const initialValue;
-		SFInt32* const order;
+		SFColor* const initialDestination;
+		SFColor* const value_changed;
 	};
 
 	Fields fields;
+
+	std::vector <Color3f> value;
 
 };
 

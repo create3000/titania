@@ -48,7 +48,7 @@
  *
  ******************************************************************************/
 
-#include "TexCoordDamper2D.h"
+#include "ScalarDamper.h"
 
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
@@ -56,22 +56,23 @@
 namespace titania {
 namespace X3D {
 
-const std::string TexCoordDamper2D::componentName  = "Followers";
-const std::string TexCoordDamper2D::typeName       = "TexCoordDamper2D";
-const std::string TexCoordDamper2D::containerField = "children";
+const std::string ScalarDamper::componentName  = "Followers";
+const std::string ScalarDamper::typeName       = "ScalarDamper";
+const std::string ScalarDamper::containerField = "children";
 
-TexCoordDamper2D::Fields::Fields () :
-	         set_value (new MFVec2f ()),
-	   set_destination (new MFVec2f ()),
-	      initialValue (new MFVec2f ()),
-	initialDestination (new MFVec2f ()),
-	     value_changed (new MFVec2f ())
+ScalarDamper::Fields::Fields () :
+	         set_value (new SFFloat ()),
+	   set_destination (new SFFloat ()),
+	      initialValue (new SFFloat ()),
+	initialDestination (new SFFloat ()),
+	     value_changed (new SFFloat ())
 { }
 
-TexCoordDamper2D::TexCoordDamper2D (X3DExecutionContext* const executionContext) :
+ScalarDamper::ScalarDamper (X3DExecutionContext* const executionContext) :
 	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DDamperNode (),
-	       fields ()
+	       fields (),
+	        value ()
 {
 	addField (inputOutput,    "metadata",           metadata ());
 	addField (inputOnly,      "set_value",          set_value ());
@@ -86,32 +87,85 @@ TexCoordDamper2D::TexCoordDamper2D (X3DExecutionContext* const executionContext)
 }
 
 X3DBaseNode*
-TexCoordDamper2D::create (X3DExecutionContext* const executionContext) const
+ScalarDamper::create (X3DExecutionContext* const executionContext) const
 {
-	return new TexCoordDamper2D (executionContext);
+	return new ScalarDamper (executionContext);
 }
 
 void
-TexCoordDamper2D::initialize ()
+ScalarDamper::initialize ()
 {
 	X3DDamperNode::initialize ();
+
+	set_value ()       .addInterest (this, &ScalarDamper::_set_value);
+	set_destination () .addInterest (this, &ScalarDamper::_set_destination);
+	order ()           .addInterest (this, &ScalarDamper::set_order);
+
+	value .resize (getOrder () + 1, initialValue ());
+
+	value [0] = initialDestination ();
+
+	set_active (abs (initialDestination () - initialValue ()) > getTolerance ());
 }
  
 void
-TexCoordDamper2D::_set_destination ()
-{ }
+ScalarDamper::_set_destination ()
+{
+	for (auto & v : basic::adapter (value .begin () + 1, value .end ()))
+		v = set_value ();
+
+	value_changed () = set_value ();
+
+	set_active (true);
+}
 
 void
-TexCoordDamper2D::_set_value ()
-{ }
+ScalarDamper::_set_value ()
+{
+	if (abs (value [0] - set_destination ()) > getTolerance ())
+	{
+		value [0] = set_destination ();
+
+		set_active (true);
+	}
+}
 
 void
-TexCoordDamper2D::set_order ()
-{ }
+ScalarDamper::set_order ()
+{
+	value .resize (getOrder () + 1, value .back ());
+}
 
 void
-TexCoordDamper2D::prepareEvents ()
-{ }
+ScalarDamper::prepareEvents ()
+{
+	time_type delta = 1 / getBrowser () -> getCurrentFrameRate ();
+
+	float alpha = std::exp (-delta / tau ());
+	
+	size_t order = value .size () - 1;
+
+	for (size_t i = 0; i < order; ++ i)
+	{
+		value [i + 1] = tau ()
+		                ? lerp (value [i], value [i + 1], alpha)
+						    : value [i];
+	}
+
+	if (abs (value [order] - value [0]) < getTolerance ())
+	{
+		for (auto & v : basic::adapter (value .begin () + 1, value .end ()))
+			v = value [order];
+
+		value_changed () = value [order];
+
+		set_active (false);
+
+		return;
+	}
+
+	value_changed () = value [order];
+}
 
 } // X3D
 } // titania

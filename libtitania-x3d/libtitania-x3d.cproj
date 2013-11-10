@@ -599,6 +599,9 @@
     <None Include="Titania\X3D\Rendering\X3DCollectableContainer.h" />
     <None Include="Titania\X3D\Rendering\ClipPlaneContainer.h" />
     <None Include="Titania\X3D\Rendering\ViewportContainer.h" />
+    <None Include="Titania\X3D\Components\Followers\ScalarDamper.h" />
+    <None Include="Titania\X3D\Components\Node.txt" />
+    <None Include="Titania\X3D\Bits\HatchStyles.xcf" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1046,6 +1049,7 @@
     <Compile Include="Titania\X3D\Thread\TextureLoader.cpp" />
     <Compile Include="Titania\X3D\Rendering\ClipPlaneContainer.cpp" />
     <Compile Include="Titania\X3D\Rendering\ViewportContainer.cpp" />
+    <Compile Include="Titania\X3D\Components\Followers\ScalarDamper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

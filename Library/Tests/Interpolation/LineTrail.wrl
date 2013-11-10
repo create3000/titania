@@ -1,6 +1,7 @@
 #VRML V2.0 utf8
 
 PROTO LineTrail [
+  exposedField SFBool  enabled TRUE
   exposedField SFTime  cycleInterval 1
   exposedField SFTime  resetTime 0
   exposedField SFVec3f point 0 0 0
@@ -25,6 +26,7 @@ PROTO LineTrail [
     eventIn SFTime  set_time
     field   SFInt32 dimension IS dimension
     field   SFNode  timer DEF Timer TimeSensor {
+      enabled IS enabled
       cycleInterval IS cycleInterval
       loop TRUE
       stopTime 1
@@ -49,8 +51,8 @@ function set_resetTime (value, time)
 
 function set_point (value, time)
 {
-	Browser .deleteRoute (fields, 'point', self, 'set_point');
 	timer .startTime = time;
+	Browser .deleteRoute (fields, 'point', self, 'set_point');
 }
 
 function set_time (value, time)
