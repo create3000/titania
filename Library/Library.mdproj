@@ -2342,6 +2342,7 @@
     <None Include="Tests\Layering\ViewportLayer.wrl" />
     <None Include="Tests\Layering\Viewport.wrl" />
     <None Include="Tests\EnvironmentalEffects\TextureBackground.wrl" />
+    <None Include="Tests\Follower\MFVec3f.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
@@ -2481,5 +2482,6 @@
     <Content Include="Tests\Follower\PositionDamper.wrl" />
     <Content Include="Tests\Follower\PositionDamper2D.wrl" />
     <Content Include="Tests\Follower\ColorDamper.wrl" />
+    <Content Include="Tests\Follower\CoordinateDamper.wrl" />
   </ItemGroup>
 </Project>

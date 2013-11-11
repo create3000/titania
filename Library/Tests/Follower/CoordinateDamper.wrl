@@ -1,0 +1,114 @@
+#X3D V3.3 utf8 Titania
+
+EXTERNPROTO MFVec3f [
+  inputOutput SFTime  triggerTime
+  inputOutput MFVec3f keyValue
+  outputOnly  MFVec3f value_changed
+]
+"MFVec3f.x3dv"
+
+NavigationInfo {
+  type [ "NONE", "ANY" ]
+}
+
+Background {
+  skyColor 0.2 0.2 0.2
+}
+
+DEF Rectangle2D Transform {
+  translation 2.71505 2.16353 0
+  scale 0.204112 0.204112 1
+  children [
+    Shape {
+      appearance Appearance {
+        material Material { }
+      }
+      geometry Rectangle2D { }
+    }
+    DEF Touch TouchSensor { }
+    DEF Value MFVec3f {
+      triggerTime 1384154512.24038
+      keyValue [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+    }
+  ]
+}
+
+DEF Rectangle2D1 Transform {
+  translation 2.71505 1.65935 0
+  scale 0.204112 0.204112 1
+  children [
+    Shape {
+      appearance Appearance {
+        material Material { }
+      }
+      geometry Rectangle2D { }
+    }
+    DEF Touch1 TouchSensor { }
+    DEF Value1 MFVec3f {
+      triggerTime 1384154510.77883
+      keyValue [ 0 -1 0, 1 0 0, 0 1 0, -1 0 0 ]
+    }
+  ]
+}
+
+DEF Rectangle2D2 Transform {
+  translation 2.71505 1.16847 0
+  scale 0.204112 0.204112 1
+  children [
+    Shape {
+      appearance Appearance {
+        material Material { }
+      }
+      geometry Rectangle2D { }
+    }
+    DEF Touch2 TouchSensor { }
+    DEF Value2 MFVec3f {
+      triggerTime 1384154436.85369
+      keyValue [ -1 1 0, -1 -1 0, 1 -1 0, 1 1 0 ]
+    }
+  ]
+}
+
+DEF Rectangle2D3 Transform {
+  translation 2.71505 0.678305 0
+  scale 0.204112 0.204112 1
+  children [
+    Shape {
+      appearance Appearance {
+        material Material { }
+      }
+      geometry Rectangle2D { }
+    }
+    DEF Touch3 TouchSensor { }
+    DEF Value3 MFVec3f {
+      triggerTime 1384154435.14716
+      keyValue [ -1 0 0, 0 -1 0, 1 0 0, 0 1 0 ]
+    }
+  ]
+}
+
+DEF Damper CoordinateDamper { }
+
+DEF QuadSetTransform Transform {
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry QuadSet {
+      solid FALSE
+      coord DEF Coordinate Coordinate {
+        point [ -0.99901 -0.999999 0, 0.999999 -0.99901 0, 0.99901 0.999999 0, -0.999999 0.99901 0 ]
+      }
+    }
+  }
+}
+
+ROUTE Touch.touchTime TO Value.set_triggerTime
+ROUTE Touch1.touchTime TO Value1.set_triggerTime
+ROUTE Touch2.touchTime TO Value2.set_triggerTime
+ROUTE Touch3.touchTime TO Value3.set_triggerTime
+ROUTE Value.value_changed TO Damper.set_destination
+ROUTE Value1.value_changed TO Damper.set_destination
+ROUTE Value2.value_changed TO Damper.set_destination
+ROUTE Value3.value_changed TO Damper.set_destination
+ROUTE Damper.value_changed TO Coordinate.set_point
