@@ -136,6 +136,11 @@ private:
 	void
 	initialize () final;
 
+	///  @name Operations
+
+	bool
+	equals (const Vector2f &, const Vector2f &, float) const;
+
 	///  @name Event handlers
 	
 	void

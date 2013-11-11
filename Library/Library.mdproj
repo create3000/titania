@@ -2479,5 +2479,7 @@
     <Content Include="Tests\Handles\Rotor.wrl" />
     <Content Include="Tests\Core\WorldInfo.wrl" />
     <Content Include="Tests\Follower\PositionDamper.wrl" />
+    <Content Include="Tests\Follower\PositionDamper2D.wrl" />
+    <Content Include="Tests\Follower\ColorDamper.wrl" />
   </ItemGroup>
 </Project>

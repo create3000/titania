@@ -136,6 +136,20 @@ private:
 	void
 	initialize () final;
 
+	///  @name Operations
+
+	template <class LHS, class RHS>
+	bool
+	equals (const LHS & lhs, const RHS & rhs, float tolerance) const
+	{
+		float distance = 0;
+
+		for (size_t i = 0, size = lhs .size (); i < size; ++ i)
+			distance = std::max (distance, abs (lhs [i] - rhs [i]));
+
+		return distance < tolerance;
+	}
+
 	///  @name Event handlers
 	
 	void
@@ -171,6 +185,8 @@ private:
 	};
 
 	Fields fields;
+
+	std::vector <std::vector <Vector3f>> value;
 
 };
 

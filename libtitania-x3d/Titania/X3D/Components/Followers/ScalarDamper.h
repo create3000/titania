@@ -136,6 +136,11 @@ private:
 	void
 	initialize () final;
 
+	///  @name Operations
+
+	bool
+	equals (const float &, const float &, float) const;
+
 	///  @name Event handlers
 
 	void

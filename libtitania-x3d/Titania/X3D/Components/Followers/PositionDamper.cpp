@@ -105,7 +105,13 @@ PositionDamper::initialize ()
 
 	value [0] = initialDestination ();
 
-	set_active (abs (initialDestination () - initialValue ()) > getTolerance ());
+	set_active (not equals (initialDestination (), initialValue (), getTolerance ()));
+}
+
+bool
+PositionDamper::equals (const Vector3f & lhs, const Vector3f & rhs, float tolerance) const
+{
+	return abs (lhs - rhs) < tolerance;
 }
 
 void
@@ -122,7 +128,7 @@ PositionDamper::_set_value ()
 void
 PositionDamper::_set_destination ()
 {
-	if (abs (value [0] - set_destination ()) > getTolerance ())
+	if (not equals (value [0], set_destination (), getTolerance ()))
 	{
 		value [0] = set_destination ();
 
@@ -139,32 +145,35 @@ PositionDamper::set_order ()
 void
 PositionDamper::prepareEvents ()
 {
-	time_type delta = 1 / getBrowser () -> getCurrentFrameRate ();
-
-	float alpha = std::exp (-delta / tau ());
-	
 	size_t order = value .size () - 1;
 
-	for (size_t i = 0; i < order; ++ i)
+	if (tau ())
 	{
-		value [i + 1] = tau ()
-		                ? lerp (value [i], value [i + 1], alpha)
-						    : value [i];
-	}
+		time_type delta = 1 / getBrowser () -> getCurrentFrameRate ();
 
-	if (abs (value [order] - value [0]) < getTolerance ())
-	{
-		for (auto & v : basic::adapter (value .begin () + 1, value .end ()))
-			v = value [order];
+		float alpha = std::exp (-delta / tau ());
+		
+		for (size_t i = 0; i < order; ++ i)
+		{
+			value [i + 1] = lerp (value [i], value [i + 1], alpha);
+		}
 
 		value_changed () = value [order];
 
-		set_active (false);
+		if (not equals (value [order], value [0], getTolerance ()))
+			return;
+	}
+	else
+	{
+		value_changed () = value [0];
 
-		return;
+		order = 0;
 	}
 
-	value_changed () = value [order];
+	for (auto & v : basic::adapter (value .begin () + 1, value .end ()))
+		v = value [order];
+
+	set_active (false);
 }
 
 } // X3D

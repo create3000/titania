@@ -35,7 +35,7 @@ DEF Plane Transform {
   ]
 }
 
-DEF Follower PositionDamper { }
+DEF Follower PositionDamper2D { }
 
 DEF Sphere Transform {
   scale 0.192862 0.192862 0.192862
@@ -63,15 +63,22 @@ DEF LineTrail Shape {
 
 DEF FollowerScript Script {
   inputOnly      SFTime  set_time
+  inputOnly      SFVec2f set_value
   inputOnly      SFBool  set_active
   outputOnly     SFColor color_changed
+  outputOnly     SFVec2f destination_changed
+  outputOnly     SFVec3f value_changed
   initializeOnly SFNode  touchSensor USE Touch
-  outputOnly     SFVec3f destination_changed
 
   url "vrmlscript:
 function set_time ()
 {
-	destination_changed = touchSensor .hitPoint_changed;
+	destination_changed = new SFVec2f (touchSensor .hitPoint_changed .x, touchSensor .hitPoint_changed .y);
+}
+
+function set_value (value)
+{
+	value_changed = new SFVec3f (value .x, value .y, 0);
 }
 
 function set_active (value)
@@ -89,6 +96,7 @@ ROUTE Touch.touchTime TO FollowerScript.set_time
 ROUTE FollowerScript.destination_changed TO Follower.set_destination
 ROUTE FollowerScript.color_changed TO SphereMaterial.set_diffuseColor
 ROUTE Follower.isActive TO FollowerScript.set_active
-ROUTE Follower.value_changed TO Sphere.set_translation
+ROUTE Follower.value_changed TO FollowerScript.set_value
+ROUTE FollowerScript.value_changed TO Sphere.set_translation
 ROUTE Follower.isActive TO Trail.set_enabled
-ROUTE Follower.value_changed TO Trail.set_point
+ROUTE FollowerScript.value_changed TO Trail.set_point

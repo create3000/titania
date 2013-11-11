@@ -71,7 +71,8 @@ TexCoordDamper2D::Fields::Fields () :
 TexCoordDamper2D::TexCoordDamper2D (X3DExecutionContext* const executionContext) :
 	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DDamperNode (),
-	       fields ()
+	       fields (),
+	        value ()
 {
 	addField (inputOutput,    "metadata",           metadata ());
 	addField (inputOnly,      "set_value",          set_value ());
@@ -95,23 +96,93 @@ void
 TexCoordDamper2D::initialize ()
 {
 	X3DDamperNode::initialize ();
+
+	set_value ()       .addInterest (this, &TexCoordDamper2D::_set_value);
+	set_destination () .addInterest (this, &TexCoordDamper2D::_set_destination);
+	order ()           .addInterest (this, &TexCoordDamper2D::set_order);
+
+	value .resize (getOrder () + 1);
+
+	for (auto & v : basic::adapter (value .begin () + 1, value .end ()))
+	{
+		v .assign (initialValue () .begin (), initialValue () .end ());
+		v .resize (initialDestination () .size ());
+	}
+
+	value [0] .assign (initialDestination () .begin (), initialDestination () .end ());
+
+	set_active (not equals (initialDestination (), initialValue (), getTolerance ()));
 }
- 
-void
-TexCoordDamper2D::_set_destination ()
-{ }
 
 void
 TexCoordDamper2D::_set_value ()
-{ }
+{
+	for (auto & v : basic::adapter (value .begin () + 1, value .end ()))
+		v .assign (set_value () .begin (), set_value () .end ());
+
+	value [0] .resize (set_value () .size ());
+
+	value_changed () = set_value ();
+
+	set_active (true);
+}
+
+void
+TexCoordDamper2D::_set_destination ()
+{
+	if (not equals (value [0], set_destination (), getTolerance ()))
+	{
+		for (auto & v : basic::adapter (value .begin () + 1, value .end ()))
+			v .resize (set_destination () .size ());
+
+		value [0] .assign (set_destination () .begin (), set_destination () .end ());
+
+		set_active (true);
+	}
+}
 
 void
 TexCoordDamper2D::set_order ()
-{ }
+{
+	value .resize (getOrder () + 1, value .back ());
+}
 
 void
 TexCoordDamper2D::prepareEvents ()
-{ }
+{
+	size_t order = value .size () - 1;
+
+	if (tau ())
+	{
+		time_type delta = 1 / getBrowser () -> getCurrentFrameRate ();
+
+		float alpha = std::exp (-delta / tau ());
+		
+		for (size_t i = 0; i < order; ++ i)
+		{
+			for (size_t j = 0, s = value [i] .size (); j < s; ++ j)
+			{
+				value [i + 1] [j] = lerp (value [i] [j], value [i + 1] [j], alpha);
+			}
+		}
+
+		value_changed () .assign (value [order] .begin (), value [order] .end ());
+
+		if (not equals (value [order], value [0], getTolerance ()))
+			return;
+	}
+	else
+	{
+		value_changed () .assign (value [0] .begin (), value [0] .end ());
+		
+		order = 0;
+	}
+
+	for (auto & v : basic::adapter (value .begin () + 1, value .end ()))
+		v = value [order];
+
+	set_active (false);
+}
 
 } // X3D
 } // titania

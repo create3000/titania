@@ -138,6 +138,11 @@ private:
 	void
 	initialize () final;
 
+	///  @name Operations
+
+	bool
+	equals (const Vector3f &, const Vector3f &, float) const;
+
 	///  @name Event handlers
 	
 	void

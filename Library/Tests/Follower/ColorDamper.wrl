@@ -1,0 +1,110 @@
+#X3D V3.3 utf8 Titania
+
+PROTO ChromaticCircle [
+  inputOutput SFFloat value 1
+  inputOutput SFVec2f size 2 2
+]
+{
+  Shape {
+    geometry DEF Geometry TriangleFanSet {
+      color Color { }
+      coord Coordinate { }
+    }
+  }
+
+  Script {
+    inputOutput    SFFloat value IS value
+    inputOutput    SFVec2f size IS size
+    initializeOnly SFInt32 dimension 60
+    initializeOnly SFNode  geometry USE Geometry
+
+    url "vrmlscript:
+function initialize ()
+{
+	eventsProcessed ();
+}
+
+function eventsProcessed ()
+{
+	var coordIndex = new MFInt32 ();
+	var color      = geometry .color .color;
+	var point      = geometry .coord .point;
+
+	var vertex = new SFVec3f (1, 0, 0);
+	var scale  = new SFMatrix4f (size .x / 2, 0, 0, 0,
+	                                   0, size .y / 2, 0, 0,
+	                                   0, 0, 0, 0,
+	                                   0, 0, 0, 1);
+	                               
+	color [0] .setHSV (0, 0, value);
+	point [0] = new SFVec3f (0, 0, 0);
+
+	for (var i = 0; i < dimension; ++ i)
+	{
+		color [i + 1] .setHSV (2 * Math. PI * i / dimension, 1, value);
+		point [i + 1] = scale .multMatrixVec (new SFRotation (0, 0, 1, 2 * Math. PI * i / dimension) .multVec (vertex));
+	}
+
+	color [color .length] = color [1];
+	point [point .length] = point [1];
+
+	geometry .fanCount = new MFInt32 (dimension + 2);
+}
+"
+  }
+}
+
+NavigationInfo {
+  type [ "NONE", "ANY" ]
+}
+
+Background {
+  skyColor 0.2 0.2 0.2
+}
+
+Viewpoint {
+  position 0 0 3
+}
+
+DEF Touch TouchSensor { }
+
+ChromaticCircle { }
+
+DEF Debug Script {
+  inputOnly      SFTime  set_time
+  inputOutput    SFFloat value 1
+  outputOnly     SFColor color_changed
+  initializeOnly SFNode  touchSensor USE Touch
+
+  url "vrmlscript:
+function set_time ()
+{
+	var hue        = Math .atan2 (touchSensor .hitPoint_changed .y, touchSensor .hitPoint_changed .x) 
+	var saturation = touchSensor .hitPoint_changed .length ();
+	
+	if (hue < 0)
+		hue = 2 * Math .PI + hue;
+	
+	color_changed .setHSV (hue, saturation, value);
+}
+"
+}
+
+DEF Damper ColorDamper { }
+
+DEF Sphere Transform {
+  translation 1.3 0 0
+  scale 0.15 0.15 0.15
+  children Shape {
+    appearance Appearance {
+      material DEF SphereMaterial Material {
+        diffuseColor 0.364181 0.647637 0.999999
+      }
+    }
+    geometry Sphere { }
+  }
+}
+
+ROUTE Touch.touchTime TO Debug.set_time
+ROUTE Debug.color_changed TO Damper.set_destination
+ROUTE Damper.value_changed TO SphereMaterial.set_diffuseColor
