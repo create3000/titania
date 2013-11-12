@@ -71,8 +71,8 @@ PositionChaser::PositionChaser (X3DExecutionContext* const executionContext) :
 	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DChaserNode (),
 	       fields (),
-	previousValue (),
 	bufferEndTime (0),
+	previousValue (),
 	       buffer ()
 {
 	addField (inputOutput,    "metadata",           metadata ());
@@ -99,8 +99,8 @@ PositionChaser::initialize ()
 	set_value ()       .addInterest (this, &PositionChaser::_set_value);
 	set_destination () .addInterest (this, &PositionChaser::_set_destination);
 
-	previousValue = initialValue ();
 	bufferEndTime = getCurrentTime ();
+	previousValue = initialValue ();
 
 	buffer .resize (getNumBuffers (), initialValue ());
 	buffer [0] = initialDestination ();
@@ -150,11 +150,7 @@ PositionChaser::prepareEvents ()
 {
 	float fraction = updateBuffer ();
 
-	auto deltaIn = buffer [buffer .size () - 1] - previousValue;
-
-	auto deltaOut = deltaIn * stepResponse ((buffer .size () - 1 + fraction) * getStepTime ());
-
-	auto output = previousValue + deltaOut;
+	auto output = lerp (previousValue, buffer [buffer .size () - 1], stepResponse ((buffer .size () - 1 + fraction) * getStepTime ()));
 
 	for (int32_t i = buffer .size () - 2; i >= 0; -- i)
 	{
@@ -178,7 +174,7 @@ PositionChaser::updateBuffer ()
 
 	if (fraction >= 1)
 	{
-		time_type seconds;
+		float seconds;
 		fraction = std::modf (fraction, &seconds);
 
 		if (seconds < buffer .size ())

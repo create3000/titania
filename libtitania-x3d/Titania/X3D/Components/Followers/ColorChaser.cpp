@@ -70,7 +70,10 @@ ColorChaser::Fields::Fields () :
 ColorChaser::ColorChaser (X3DExecutionContext* const executionContext) :
 	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DChaserNode (),
-	       fields ()
+	       fields (),
+	bufferEndTime (0),
+	previousValue (),
+	       buffer ()
 {
 	addField (inputOutput,    "metadata",           metadata ());
 	addField (inputOnly,      "set_value",          set_value ());
@@ -92,6 +95,23 @@ void
 ColorChaser::initialize ()
 {
 	X3DChaserNode::initialize ();
+
+	set_value ()       .addInterest (this, &ColorChaser::_set_value);
+	set_destination () .addInterest (this, &ColorChaser::_set_destination);
+
+	bufferEndTime = getCurrentTime ();
+	previousValue = initialValue ();
+
+	buffer .resize (getNumBuffers (), initialValue ());
+	buffer [0] = initialDestination ();
+
+	set_destination () .set (initialDestination ());
+
+	if (equals (initialDestination (), initialValue (), getTolerance ()))
+		value_changed () = initialDestination ();
+
+	else
+		set_active (true);
 }
 
 bool
@@ -106,22 +126,132 @@ ColorChaser::equals (const Color3f & lhs, const Color3f & rhs, float tolerance) 
 void
 ColorChaser::_set_value ()
 {
+	if (not isActive ())
+		bufferEndTime = getCurrentTime ();
+
+	for (auto & value : basic::adapter (buffer .begin () + 1, buffer .end ()))
+		value = set_value ();
+
+	previousValue = set_value ();
+
+	value_changed () = set_value ();
+
+	set_active (true);
 }
 
 void
 ColorChaser::_set_destination ()
 {
+	bufferEndTime = getCurrentTime ();
+
+	set_active (true);
+}
+
+template <class Type>
+static
+void
+hsv_lerp (const Type & a_h, const Type & a_s, const Type & a_v,
+          const Type & b_h, const Type & b_s, const Type & b_v,
+          const Type & t,
+          Type & r_h, Type & r_s, Type & r_v)
+{
+	Type range = std::abs (b_h - a_h);
+
+	if (range <= M_PI)
+	{
+		r_h = math::lerp (a_h, b_h, t);
+		r_s = math::lerp (a_s, b_s, t);
+		r_v = math::lerp (a_v, b_v, t);
+	}
+	else
+	{
+		Type step = (M_PI2 - range) * t;
+		Type h    = a_h < b_h ? a_h - step : a_h + step;
+
+		if (h < 0)
+			h += M_PI2;
+
+		else if (h > M_PI2)
+			h -= M_PI2;
+
+		r_h = h;
+		r_s = math::lerp (a_s, b_s, t);
+		r_v = math::lerp (a_v, b_v, t);
+	}
 }
 
 void
 ColorChaser::prepareEvents ()
 {
+	float fraction = updateBuffer ();
+
+	auto output = clerp (previousValue, buffer [buffer .size () - 1], stepResponse ((buffer .size () - 1 + fraction) * getStepTime ()));
+	
+	float ho, so, vo;
+	
+	output .getHSV (ho, so, vo);
+
+	for (int32_t i = buffer .size () - 2; i >= 0; -- i)
+	{
+		float h, s, v, h1, s1, v1;
+
+		buffer [i] .getHSV (h, s, v);
+		buffer [i + 1] .getHSV (h1, s1, v1);
+		
+		float t = stepResponse ((i + fraction) * getStepTime ());
+	
+		hsv_lerp (ho, so, vo,
+		          interval (ho + h - h1, 0.0f, float (2 * M_PI)),
+		          so + s - s1,
+		          vo + v - v1,
+		          t,
+		          ho, so, vo);
+	}
+
+	value_changed () .setHSV (ho, so, vo);
+
+	if (equals (output, set_destination (), getTolerance ()))
+		set_active (false);
 }
 
 float
 ColorChaser::updateBuffer ()
 {
-	return 1;
+	float fraction = (getCurrentTime () - bufferEndTime) / getStepTime ();
+
+	if (fraction >= 1)
+	{
+		float seconds;
+		fraction = std::modf (fraction, &seconds);
+
+		if (seconds < buffer .size ())
+		{
+			previousValue = buffer [buffer .size () - seconds];
+
+			for (int32_t i = buffer .size () - 1; i >= seconds; -- i)
+			{
+				buffer [i] = buffer [i - seconds];
+			}
+
+			for (size_t i = 0; i < seconds; ++ i)
+			{
+				float alpha = i / seconds;
+
+				buffer [i] = clerp (set_destination () .getValue (), buffer [seconds], alpha);
+ 			}
+		}
+		else
+		{
+			previousValue = seconds == buffer .size () ? buffer [0] : set_destination ();
+
+			for (auto & value : buffer)
+				value = set_destination ();
+		}
+
+		bufferEndTime += seconds * getStepTime ();
+	}
+
+	return fraction;
 }
 
 } // X3D

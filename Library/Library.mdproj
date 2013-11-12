@@ -2485,5 +2485,6 @@
     <Content Include="Tests\Follower\ColorDamper.wrl" />
     <Content Include="Tests\Follower\CoordinateDamper.wrl" />
     <Content Include="Tests\Follower\PositionChaser.wrl" />
+    <Content Include="Tests\Follower\ColorChaser.wrl" />
   </ItemGroup>
 </Project>

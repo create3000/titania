@@ -296,8 +296,10 @@ color3 <Type>::getHSV (Type & h, Type & s, Type & v) const
 
 	if (r () == max)
 		h = (g () - b ()) / delta;      // between yellow & magenta
+		
 	else if (g () == max)
 		h = 2 + (b () - r ()) / delta;  // between cyan & yellow
+		
 	else
 		h = 4 + (r () - g ()) / delta;  // between magenta & cyan
 
@@ -364,7 +366,6 @@ clerp (const color3 <Type> & source, const color3 <Type> & destination, const Ty
 		return color3 <Type>::HSV (h,
 		                           math::lerp (a_s, b_s, t),
 		                           math::lerp (a_v, b_v, t));
-
 	}
 }
 

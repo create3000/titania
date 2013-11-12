@@ -182,8 +182,8 @@ private:
 
 	Fields fields;
 
-	Vector3f               previousValue;
 	time_type              bufferEndTime;
+	Vector3f               previousValue;
 	std::vector <Vector3f> buffer;
 
 };

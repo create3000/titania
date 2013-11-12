@@ -70,7 +70,10 @@ TexCoordChaser2D::Fields::Fields () :
 TexCoordChaser2D::TexCoordChaser2D (X3DExecutionContext* const executionContext) :
 	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DChaserNode (),
-	       fields ()
+	       fields (),
+	bufferEndTime (0),
+	previousValue (),
+	       buffer ()
 {
 	addField (inputOutput,    "metadata",           metadata ());
 	addField (inputOnly,      "set_value",          set_value ());

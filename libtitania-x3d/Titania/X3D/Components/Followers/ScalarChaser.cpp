@@ -70,7 +70,10 @@ ScalarChaser::Fields::Fields () :
 ScalarChaser::ScalarChaser (X3DExecutionContext* const executionContext) :
 	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DChaserNode (),
-	       fields ()
+	       fields (),
+	bufferEndTime (0),
+	previousValue (),
+	       buffer ()
 {
 	addField (inputOutput,    "metadata",           metadata ());
 	addField (inputOnly,      "set_value",          set_value ());
@@ -92,6 +95,23 @@ void
 ScalarChaser::initialize ()
 {
 	X3DChaserNode::initialize ();
+
+	set_value ()       .addInterest (this, &ScalarChaser::_set_value);
+	set_destination () .addInterest (this, &ScalarChaser::_set_destination);
+
+	bufferEndTime = getCurrentTime ();
+	previousValue = initialValue ();
+
+	buffer .resize (getNumBuffers (), initialValue ());
+	buffer [0] = initialDestination ();
+
+	set_destination () .set (initialDestination ());
+
+	if (equals (initialDestination (), initialValue (), getTolerance ()))
+		value_changed () = initialDestination ();
+
+	else
+		set_active (true);
 }
 
 bool
@@ -103,22 +123,88 @@ ScalarChaser::equals (const float & lhs, const float & rhs, float tolerance) con
 void
 ScalarChaser::_set_value ()
 {
+	if (not isActive ())
+		bufferEndTime = getCurrentTime ();
+
+	for (auto & value : basic::adapter (buffer .begin () + 1, buffer .end ()))
+		value = set_value ();
+
+	previousValue = set_value ();
+
+	value_changed () = set_value ();
+
+	set_active (true);
 }
 
 void
 ScalarChaser::_set_destination ()
 {
+	if (not isActive ())
+		bufferEndTime = getCurrentTime ();
+
+	set_active (true);
 }
 
 void
 ScalarChaser::prepareEvents ()
 {
+	float fraction = updateBuffer ();
+
+	auto output = lerp (previousValue, buffer [buffer .size () - 1], stepResponse ((buffer .size () - 1 + fraction) * getStepTime ()));
+
+	for (int32_t i = buffer .size () - 2; i >= 0; -- i)
+	{
+		auto deltaIn = buffer [i] - buffer [i + 1];
+
+		auto deltaOut = deltaIn * stepResponse ((i + fraction) * getStepTime ());
+
+		output += deltaOut;
+	}
+
+	value_changed () = output;
+
+	if (equals (output, set_destination (), getTolerance ()))
+		set_active (false);
 }
 
 float
 ScalarChaser::updateBuffer ()
 {
-	return 1;
+	float fraction = (getCurrentTime () - bufferEndTime) / getStepTime ();
+
+	if (fraction >= 1)
+	{
+		float seconds;
+		fraction = std::modf (fraction, &seconds);
+
+		if (seconds < buffer .size ())
+		{
+			previousValue = buffer [buffer .size () - seconds];
+
+			for (int32_t i = buffer .size () - 1; i >= seconds; -- i)
+			{
+				buffer [i] = buffer [i - seconds];
+			}
+
+			for (size_t i = 0; i < seconds; ++ i)
+			{
+				float alpha = i / seconds;
+
+				buffer [i] = lerp (set_destination () .getValue (), buffer [seconds], alpha);
+ 			}
+		}
+		else
+		{
+			previousValue = seconds == buffer .size () ? buffer [0] : set_destination ();
+
+			for (auto & value : buffer)
+				value = set_destination ();
+		}
+
+		bufferEndTime += seconds * getStepTime ();
+	}
+
+	return fraction;
 }
 
 } // X3D

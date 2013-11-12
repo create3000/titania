@@ -180,6 +180,10 @@ private:
 
 	Fields fields;
 
+	time_type                bufferEndTime;
+	Rotation4f               previousValue;
+	std::vector <Rotation4f> buffer;
+
 };
 
 } // X3D

@@ -180,6 +180,10 @@ private:
 
 	Fields fields;
 
+	time_type             bufferEndTime;
+	Color3f               previousValue;
+	std::vector <Color3f> buffer;
+
 };
 
 } // X3D
