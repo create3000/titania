@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -60,11 +60,11 @@ const std::string OrientationChaser::typeName       = "OrientationChaser";
 const std::string OrientationChaser::containerField = "children";
 
 OrientationChaser::Fields::Fields () :
-	set_destination (new SFRotation ()),
-	set_value (new SFRotation ()),
-	value_changed (new SFRotation ()),
+	         set_value (new SFRotation ()),
+	   set_destination (new SFRotation ()),
+	      initialValue (new SFRotation (0, 1, 0, 0)),
 	initialDestination (new SFRotation (0, 1, 0, 0)),
-	initialValue (new SFRotation (0, 1, 0, 0))
+	     value_changed (new SFRotation ())
 { }
 
 OrientationChaser::OrientationChaser (X3DExecutionContext* const executionContext) :
@@ -73,13 +73,13 @@ OrientationChaser::OrientationChaser (X3DExecutionContext* const executionContex
 	       fields ()
 {
 	addField (inputOutput,    "metadata",           metadata ());
-	addField (inputOnly,      "set_destination",    set_destination ());
 	addField (inputOnly,      "set_value",          set_value ());
+	addField (inputOnly,      "set_destination",    set_destination ());
+	addField (initializeOnly, "initialValue",       initialValue ());
+	addField (initializeOnly, "initialDestination", initialDestination ());
+	addField (initializeOnly, "duration",           duration ());
 	addField (outputOnly,     "isActive",           isActive ());
 	addField (outputOnly,     "value_changed",      value_changed ());
-	addField (initializeOnly, "duration",           duration ());
-	addField (initializeOnly, "initialDestination", initialDestination ());
-	addField (initializeOnly, "initialValue",       initialValue ());
 }
 
 X3DBaseNode*
@@ -89,10 +89,8 @@ OrientationChaser::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-OrientationChaser::set_fraction ()
-{
-
-}
+OrientationChaser::prepareEvents ()
+{ }
 
 } // X3D
 } // titania

@@ -1,23 +1,17 @@
 #X3D V3.3 utf8 Titania
 
 PROTO SFInt32 [
-  inputOutput SFTime  triggerTime 0
+  inputOnly   SFTime  set_triggerTime
   inputOutput SFInt32 keyValue 0
   outputOnly  SFInt32 value_changed
 ]
 {
   DEF SFInt32 Script {
-    inputOutput SFTime  triggerTime IS triggerTime
+    inputOnly   SFTime  set_triggerTime IS set_triggerTime
     inputOutput SFInt32 keyValue IS keyValue
     outputOnly  SFInt32 value_changed IS value_changed
 
     url "vrmlscript:
-function initialize ()
-{
-	if (triggerTime)
-		set_triggerTime (0, 0);
-}
-
 function set_triggerTime (value, time)
 {
 	value_changed = keyValue;

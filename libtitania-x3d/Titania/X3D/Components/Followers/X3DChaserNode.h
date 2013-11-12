@@ -62,6 +62,8 @@ class X3DChaserNode :
 {
 public:
 
+	///  @name Fields
+
 	SFTime &
 	duration ()
 	{ return *fields .duration; }
@@ -70,30 +72,41 @@ public:
 	duration () const
 	{ return *fields .duration; }
 
-	virtual
-	void
-	dispose () override;
-
 
 protected:
+
+	///  @name Construction
 
 	X3DChaserNode ();
 
 	virtual
 	void
 	initialize () override;
+	
+	/// @name Operations
+	
+	size_t
+	getNumBuffers () const;
+	
+	float
+	getTolerance () const;
 
-	void
-	start ();
+	time_type
+	getStepTime () const
+	{ return stepTime; }
 
-	void
-	stop ();
+	float
+	stepResponse (time_type) const;
+
 
 private:
 
-	virtual
+	///  @name Event handlers
+
 	void
-	set_fraction () = 0;
+	set_duration ();
+
+	///  @name Members
 
 	struct Fields
 	{
@@ -103,8 +116,8 @@ private:
 	};
 
 	Fields fields;
-	
-	X3DSFNode <TimeSensor> timeSensor;
+
+	time_type stepTime;
 
 };
 

@@ -177,7 +177,7 @@ private:
 
 	Fields fields;
 
-	std::vector <Color3f> value;
+	std::vector <Color3f> buffer;
 
 };
 

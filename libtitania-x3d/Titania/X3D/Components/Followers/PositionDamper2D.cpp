@@ -72,7 +72,7 @@ PositionDamper2D::PositionDamper2D (X3DExecutionContext* const executionContext)
 	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DDamperNode (),
 	       fields (),
-	        value ()
+	       buffer ()
 {
 	addField (inputOutput,    "metadata",           metadata ());
 	addField (inputOnly,      "set_value",          set_value ());
@@ -101,11 +101,15 @@ PositionDamper2D::initialize ()
 	set_destination () .addInterest (this, &PositionDamper2D::_set_destination);
 	order ()           .addInterest (this, &PositionDamper2D::set_order);
 
-	value .resize (getOrder () + 1, initialValue ());
+	buffer .resize (getOrder () + 1, initialValue ());
 
-	value [0] = initialDestination ();
+	buffer [0] = initialDestination ();
 
-	set_active (not equals (initialDestination (), initialValue (), getTolerance ()));
+	if (equals (initialDestination (), initialValue (), getTolerance ()))
+		value_changed () = initialDestination ();
+
+	else
+		set_active (true);
 }
 
 bool
@@ -117,8 +121,8 @@ PositionDamper2D::equals (const Vector2f & lhs, const Vector2f & rhs, float tole
 void
 PositionDamper2D::_set_value ()
 {
-	for (auto & v : basic::adapter (value .begin () + 1, value .end ()))
-		v = set_value ();
+	for (auto & value : basic::adapter (buffer .begin () + 1, buffer .end ()))
+		value = set_value ();
 
 	value_changed () = set_value ();
 
@@ -128,24 +132,21 @@ PositionDamper2D::_set_value ()
 void
 PositionDamper2D::_set_destination ()
 {
-	if (not equals (value [0], set_destination (), getTolerance ()))
-	{
-		value [0] = set_destination ();
+	buffer [0] = set_destination ();
 
-		set_active (true);
-	}
+	set_active (true);
 }
 
 void
 PositionDamper2D::set_order ()
 {
-	value .resize (getOrder () + 1, value .back ());
+	buffer .resize (getOrder () + 1, buffer .back ());
 }
 
 void
 PositionDamper2D::prepareEvents ()
 {
-	size_t order = value .size () - 1;
+	size_t order = buffer .size () - 1;
 
 	if (tau ())
 	{
@@ -155,23 +156,23 @@ PositionDamper2D::prepareEvents ()
 		
 		for (size_t i = 0; i < order; ++ i)
 		{
-			value [i + 1] = lerp (value [i], value [i + 1], alpha);
+			buffer [i + 1] = lerp (buffer [i], buffer [i + 1], alpha);
 		}
 
-		value_changed () = value [order];
+		value_changed () = buffer [order];
 
-		if (not equals (value [order], value [0], getTolerance ()))
+		if (not equals (buffer [order], buffer [0], getTolerance ()))
 			return;
 	}
 	else
 	{
-		value_changed () = value [0];
+		value_changed () = buffer [0];
 
 		order = 0;
 	}
 
-	for (auto & v : basic::adapter (value .begin () + 1, value .end ()))
-		v = value [order];
+	for (auto & value : basic::adapter (buffer .begin () + 1, buffer .end ()))
+		value = buffer [order];
 
 	set_active (false);
 }

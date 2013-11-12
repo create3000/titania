@@ -60,28 +60,29 @@ const std::string PositionChaser::typeName       = "PositionChaser";
 const std::string PositionChaser::containerField = "children";
 
 PositionChaser::Fields::Fields () :
-	      initialValue (new SFVec3f ()),
-	initialDestination (new SFVec3f ()),
 	         set_value (new SFVec3f ()),
 	   set_destination (new SFVec3f ()),
+	      initialValue (new SFVec3f ()),
+	initialDestination (new SFVec3f ()),
 	     value_changed (new SFVec3f ())
 { }
 
 PositionChaser::PositionChaser (X3DExecutionContext* const executionContext) :
 	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DChaserNode (),
-	       fields ()
+	       fields (),
+	previousValue (),
+	bufferEndTime (0),
+	       buffer ()
 {
 	addField (inputOutput,    "metadata",           metadata ());
-	addField (initializeOnly, "duration",           duration ());
-	addField (initializeOnly, "initialValue",       initialValue ());
-	addField (initializeOnly, "initialDestination", initialDestination ());
 	addField (inputOnly,      "set_value",          set_value ());
 	addField (inputOnly,      "set_destination",    set_destination ());
+	addField (initializeOnly, "initialValue",       initialValue ());
+	addField (initializeOnly, "initialDestination", initialDestination ());
+	addField (initializeOnly, "duration",           duration ());
 	addField (outputOnly,     "isActive",           isActive ());
 	addField (outputOnly,     "value_changed",      value_changed ());
-
-	addField ("defaultValue", "initialValue");
 }
 
 X3DBaseNode*
@@ -94,37 +95,122 @@ void
 PositionChaser::initialize ()
 {
 	X3DChaserNode::initialize ();
-	
+
 	set_value ()       .addInterest (this, &PositionChaser::_set_value);
 	set_destination () .addInterest (this, &PositionChaser::_set_destination);
 
-	value_changed () = initialValue ();
+	previousValue = initialValue ();
+	bufferEndTime = getCurrentTime ();
 
-	if (initialValue () not_eq initialDestination ())
-		set_destination () = initialDestination ();
+	buffer .resize (getNumBuffers (), initialValue ());
+	buffer [0] = initialDestination ();
+
+	set_destination () .set (initialDestination ());
+
+	if (equals (initialDestination (), initialValue (), getTolerance ()))
+		value_changed () = initialDestination ();
+
+	else
+		set_active (true);
+}
+
+bool
+PositionChaser::equals (const Vector3f & lhs, const Vector3f & rhs, float tolerance) const
+{
+	return abs (lhs - rhs) < tolerance;
 }
 
 void
 PositionChaser::_set_value ()
 {
-	stop ();
+	for (auto & value : basic::adapter (buffer .begin () + 1, buffer .end ()))
+		value = set_value ();
+
+	previousValue = set_value ();
 
 	value_changed () = set_value ();
-	
-	start ();
+
+	set_active (true);
 }
 
 void
 PositionChaser::_set_destination ()
 {
-	stop ();
-	start ();
+	bufferEndTime = getCurrentTime ();
+
+	buffer [0] = set_destination ();
+
+	set_active (true);
 }
 
 void
-PositionChaser::set_fraction ()
+PositionChaser::prepareEvents ()
 {
+	float fraction = updateBuffer ();
 
+	auto deltaIn = buffer [buffer .size () - 1] - previousValue;
+
+	auto deltaOut = deltaIn * stepResponse ((buffer .size () - 1 + fraction) * getStepTime ());
+
+	auto output = previousValue + deltaOut;
+
+	for (int32_t i = buffer .size () - 2; i >= 0; -- i)
+	{
+		auto deltaIn = buffer [i] - buffer [i + 1];
+
+		auto deltaOut = deltaIn * stepResponse ((i + fraction) * getStepTime ());
+
+		output += deltaOut;
+	}
+
+	if (not equals (output, value_changed (), getTolerance ()))
+	{
+		value_changed () = output;
+
+		return;
+	}
+
+	set_active (false);
+}
+
+float
+PositionChaser::updateBuffer ()
+{
+	float fraction = (getCurrentTime () - bufferEndTime) / getStepTime ();
+
+	if (fraction >= 1)
+	{
+		time_type seconds;
+		fraction = std::modf (fraction, &seconds);
+
+		if (seconds < buffer .size ())
+		{
+			previousValue = buffer [buffer .size () - seconds];
+
+			for (int32_t i = buffer .size () - 1; i >= seconds; -- i)
+			{
+				buffer [i] = buffer [i - seconds];
+			}
+
+			for (size_t i = 0; i < seconds; ++ i)
+			{
+				float alpha = i / seconds;
+
+				buffer [i] = lerp (set_destination () .getValue (), buffer [seconds], alpha);
+ 			}
+		}
+		else
+		{
+			previousValue = seconds == buffer .size () ? buffer [0] : set_destination ();
+
+			for (auto & value : buffer)
+				value = set_destination ();
+		}
+
+		bufferEndTime += seconds * getStepTime ();
+	}
+
+	return fraction;
 }
 
 } // X3D

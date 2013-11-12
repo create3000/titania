@@ -102,15 +102,6 @@ protected:
 	float
 	getTolerance () const;
 
-	///  @name Event handlers
-
-	void
-	set_active (bool);
-	
-	virtual
-	void
-	prepareEvents () = 0;
-
 private:
 
 	///  @name Members

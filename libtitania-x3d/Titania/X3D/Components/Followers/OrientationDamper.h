@@ -177,7 +177,7 @@ private:
 
 	Fields fields;
 
-	std::vector <Rotation4f> value;
+	std::vector <Rotation4f> buffer;
 
 };
 

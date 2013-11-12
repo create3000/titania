@@ -42,7 +42,9 @@ DEF Plane Transform {
   ]
 }
 
-DEF Follower PositionDamper { }
+DEF Follower PositionChaser {
+  duration 2
+}
 
 DEF Sphere Transform {
   scale 0.192862 0.192862 0.192862
@@ -63,7 +65,6 @@ DEF LineTrail Shape {
   geometry DEF Trail LineTrail {
     enabled FALSE
     cycleInterval 0.1
-    point 3.28849 3.09872 0
     dimension 200
   }
 }

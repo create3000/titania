@@ -50,8 +50,6 @@
 
 #include "X3DDamperNode.h"
 
-#include "../../Browser/X3DBrowser.h"
-
 namespace titania {
 namespace X3D {
 
@@ -81,21 +79,6 @@ X3DDamperNode::getTolerance () const
 		return 0.001;
 
 	return tolerance ();
-}
-
-void
-X3DDamperNode::set_active (bool value)
-{
-	if (value not_eq isActive ())
-	{
-		isActive () = value;
-
-		if (value)
-			getBrowser () -> prepareEvents () .addInterest (this, &X3DDamperNode::prepareEvents);
-
-		else
-			getBrowser () -> prepareEvents () .removeInterest (this, &X3DDamperNode::prepareEvents);
-	}
 }
 
 } // X3D

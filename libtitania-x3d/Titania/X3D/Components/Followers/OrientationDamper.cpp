@@ -72,7 +72,7 @@ OrientationDamper::OrientationDamper (X3DExecutionContext* const executionContex
 	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DDamperNode (),
 	       fields (),
-	        value ()
+	       buffer ()
 {
 	addField (inputOutput,    "metadata",           metadata ());
 	addField (inputOnly,      "set_value",          set_value ());
@@ -101,11 +101,15 @@ OrientationDamper::initialize ()
 	set_destination () .addInterest (this, &OrientationDamper::_set_destination);
 	order ()           .addInterest (this, &OrientationDamper::set_order);
 
-	value .resize (getOrder () + 1, initialValue ());
+	buffer .resize (getOrder () + 1, initialValue ());
 
-	value [0] = initialDestination ();
+	buffer [0] = initialDestination ();
 
-	set_active (not equals (initialDestination (), initialValue (), getTolerance ()));
+	if (equals (initialDestination (), initialValue (), getTolerance ()))
+		value_changed () = initialDestination ();
+
+	else
+		set_active (true);
 }
 
 bool
@@ -119,8 +123,8 @@ OrientationDamper::equals (const Rotation4f & lhs, const Rotation4f & rhs, float
 void
 OrientationDamper::_set_value ()
 {
-	for (auto & v : basic::adapter (value .begin () + 1, value .end ()))
-		v = set_value ();
+	for (auto & value : basic::adapter (buffer .begin () + 1, buffer .end ()))
+		value = set_value ();
 
 	value_changed () = set_value ();
 
@@ -130,24 +134,21 @@ OrientationDamper::_set_value ()
 void
 OrientationDamper::_set_destination ()
 {
-	if (not equals (value [0], set_destination (), getTolerance ()))
-	{
-		value [0] = set_destination ();
+	buffer [0] = set_destination ();
 
-		set_active (true);
-	}
+	set_active (true);
 }
 
 void
 OrientationDamper::set_order ()
 {
-	value .resize (getOrder () + 1, value .back ());
+	buffer .resize (getOrder () + 1, buffer .back ());
 }
 
 void
 OrientationDamper::prepareEvents ()
 {
-	size_t order = value .size () - 1;
+	size_t order = buffer .size () - 1;
 
 	if (tau ())
 	{
@@ -157,23 +158,23 @@ OrientationDamper::prepareEvents ()
 		
 		for (size_t i = 0; i < order; ++ i)
 		{
-			value [i + 1] = slerp (value [i], value [i + 1], alpha);
+			buffer [i + 1] = slerp (buffer [i], buffer [i + 1], alpha);
 		}
 
-		value_changed () = value [order];
+		value_changed () = buffer [order];
 
-		if (not equals (value [order], value [0], getTolerance ()))
+		if (not equals (buffer [order], buffer [0], getTolerance ()))
 			return;
 	}
 	else
 	{
-		value_changed () = value [0];
+		value_changed () = buffer [0];
 
 		order = 0;
 	}
 
-	for (auto & v : basic::adapter (value .begin () + 1, value .end ()))
-		v = value [order];
+	for (auto & value : basic::adapter (buffer .begin () + 1, buffer .end ()))
+		value = buffer [order];
 
 	set_active (false);
 }

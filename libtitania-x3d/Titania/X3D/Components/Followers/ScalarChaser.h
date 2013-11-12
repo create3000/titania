@@ -88,14 +88,6 @@ public:
 	///  @name Fields
 
 	SFFloat &
-	set_destination ()
-	{ return *fields .set_destination; }
-
-	const SFFloat &
-	set_destination () const
-	{ return *fields .set_destination; }
-
-	SFFloat &
 	set_value ()
 	{ return *fields .set_value; }
 
@@ -104,12 +96,20 @@ public:
 	{ return *fields .set_value; }
 
 	SFFloat &
-	value_changed ()
-	{ return *fields .value_changed; }
+	set_destination ()
+	{ return *fields .set_destination; }
 
 	const SFFloat &
-	value_changed () const
-	{ return *fields .value_changed; }
+	set_destination () const
+	{ return *fields .set_destination; }
+
+	SFFloat &
+	initialValue ()
+	{ return *fields .initialValue; }
+
+	const SFFloat &
+	initialValue () const
+	{ return *fields .initialValue; }
 
 	SFFloat &
 	initialDestination ()
@@ -120,19 +120,19 @@ public:
 	{ return *fields .initialDestination; }
 
 	SFFloat &
-	initialValue ()
-	{ return *fields .initialValue; }
+	value_changed ()
+	{ return *fields .value_changed; }
 
 	const SFFloat &
-	initialValue () const
-	{ return *fields .initialValue; }
+	value_changed () const
+	{ return *fields .value_changed; }
 
 
 private:
 
 	virtual
 	void
-	set_fraction ();
+	prepareEvents () final;
 
 
 	///  @name Static members
@@ -147,11 +147,11 @@ private:
 	{
 		Fields ();
 
-		SFFloat* const set_destination;
 		SFFloat* const set_value;
-		SFFloat* const value_changed;
-		SFFloat* const initialDestination;
+		SFFloat* const set_destination;
 		SFFloat* const initialValue;
+		SFFloat* const initialDestination;
+		SFFloat* const value_changed;
 	};
 
 	Fields fields;

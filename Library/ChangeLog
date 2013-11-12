@@ -1,3 +1,55 @@
+2013-11-12  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Library.mdproj:
+	* Fields.pl:
+	* MFVec3f.x3dv:
+	* SFVec3f.x3dv:
+	* PositionDamper.wrl:
+	* PositionChaser.wrl:
+	* CoordinateDamper.wrl:
+	* MFNode.x3dv:
+	* SFTime.x3dv:
+	* MFTime.x3dv:
+	* MFBool.x3dv:
+	* SFNode.x3dv:
+	* SFBool.x3dv:
+	* SFColor.x3dv:
+	* MFVec4f.x3dv:
+	* SFImage.x3dv:
+	* SFFloat.x3dv:
+	* SFInt32.x3dv:
+	* SFVec3f.x3dv:
+	* SFVec4d.x3dv:
+	* SFVec4f.x3dv:
+	* SFVec2d.x3dv:
+	* SFVec2f.x3dv:
+	* SFVec3d.x3dv:
+	* MFVec2d.x3dv:
+	* MFVec2f.x3dv:
+	* MFImage.x3dv:
+	* MFInt32.x3dv:
+	* MFFloat.x3dv:
+	* MFVec3f.x3dv:
+	* MFVec4d.x3dv:
+	* MFColor.x3dv:
+	* MFVec3d.x3dv:
+	* SFString.x3dv:
+	* SFDouble.x3dv:
+	* MFString.x3dv:
+	* MFDouble.x3dv:
+	* MFMatrix4d.x3dv:
+	* MFMatrix3d.x3dv:
+	* MFMatrix3f.x3dv:
+	* SFMatrix4d.x3dv:
+	* SFMatrix3f.x3dv:
+	* SFMatrix3d.x3dv:
+	* SFMatrix4f.x3dv:
+	* MFMatrix4f.x3dv:
+	* SFRotation.x3dv:
+	* MFRotation.x3dv:
+	* SFColorRGBA.x3dv:
+	* MFColorRGBA.x3dv: 
+
 2013-11-11  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Library.mdproj:

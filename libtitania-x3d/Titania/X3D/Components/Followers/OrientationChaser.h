@@ -88,14 +88,6 @@ public:
 	///  @name Fields
 
 	SFRotation &
-	set_destination ()
-	{ return *fields .set_destination; }
-
-	const SFRotation &
-	set_destination () const
-	{ return *fields .set_destination; }
-
-	SFRotation &
 	set_value ()
 	{ return *fields .set_value; }
 
@@ -104,12 +96,20 @@ public:
 	{ return *fields .set_value; }
 
 	SFRotation &
-	value_changed ()
-	{ return *fields .value_changed; }
+	set_destination ()
+	{ return *fields .set_destination; }
 
 	const SFRotation &
-	value_changed () const
-	{ return *fields .value_changed; }
+	set_destination () const
+	{ return *fields .set_destination; }
+
+	SFRotation &
+	initialValue ()
+	{ return *fields .initialValue; }
+
+	const SFRotation &
+	initialValue () const
+	{ return *fields .initialValue; }
 
 	SFRotation &
 	initialDestination ()
@@ -120,19 +120,19 @@ public:
 	{ return *fields .initialDestination; }
 
 	SFRotation &
-	initialValue ()
-	{ return *fields .initialValue; }
+	value_changed ()
+	{ return *fields .value_changed; }
 
 	const SFRotation &
-	initialValue () const
-	{ return *fields .initialValue; }
+	value_changed () const
+	{ return *fields .value_changed; }
 
 
 private:
 
 	virtual
 	void
-	set_fraction ();
+	prepareEvents () final;
 
 
 	///  @name Static members
@@ -147,11 +147,11 @@ private:
 	{
 		Fields ();
 
-		SFRotation* const set_destination;
 		SFRotation* const set_value;
-		SFRotation* const value_changed;
-		SFRotation* const initialDestination;
+		SFRotation* const set_destination;
 		SFRotation* const initialValue;
+		SFRotation* const initialDestination;
+		SFRotation* const value_changed;
 	};
 
 	Fields fields;

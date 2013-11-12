@@ -179,7 +179,7 @@ private:
 
 	Fields fields;
 
-	std::vector <Vector3f> value;
+	std::vector <Vector3f> buffer;
 
 };
 

@@ -1,7 +1,7 @@
 #X3D V3.3 utf8 Titania
 
 EXTERNPROTO MFVec3f [
-  inputOutput SFTime  triggerTime
+  inputOnly SFTime  set_triggerTime
   inputOutput MFVec3f keyValue
   outputOnly  MFVec3f value_changed
 ]
@@ -27,7 +27,6 @@ DEF Rectangle2D Transform {
     }
     DEF Touch TouchSensor { }
     DEF Value MFVec3f {
-      triggerTime 1384154512.24038
       keyValue [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
     }
   ]
@@ -45,7 +44,6 @@ DEF Rectangle2D1 Transform {
     }
     DEF Touch1 TouchSensor { }
     DEF Value1 MFVec3f {
-      triggerTime 1384154510.77883
       keyValue [ 0 -1 0, 1 0 0, 0 1 0, -1 0 0 ]
     }
   ]
@@ -63,7 +61,6 @@ DEF Rectangle2D2 Transform {
     }
     DEF Touch2 TouchSensor { }
     DEF Value2 MFVec3f {
-      triggerTime 1384154436.85369
       keyValue [ -1 1 0, -1 -1 0, 1 -1 0, 1 1 0 ]
     }
   ]
@@ -81,7 +78,6 @@ DEF Rectangle2D3 Transform {
     }
     DEF Touch3 TouchSensor { }
     DEF Value3 MFVec3f {
-      triggerTime 1384154435.14716
       keyValue [ -1 0 0, 0 -1 0, 1 0 0, 0 1 0 ]
     }
   ]

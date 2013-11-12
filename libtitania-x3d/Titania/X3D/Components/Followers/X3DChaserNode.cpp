@@ -54,50 +54,55 @@ namespace titania {
 namespace X3D {
 
 X3DChaserNode::Fields::Fields () :
-	duration (new SFTime ())
+	duration (new SFTime (1))
 { }
 
 X3DChaserNode::X3DChaserNode () :
 	X3DFollowerNode (),
 	         fields (),
-	     timeSensor (new TimeSensor (getExecutionContext ()))
+	       stepTime ()
 {
 	addNodeType (X3DConstants::X3DChaserNode);
-	
-	addChildren (timeSensor);
 }
 
 void
 X3DChaserNode::initialize ()
 {
 	X3DFollowerNode::initialize ();
-	
-	duration () .addInterest (timeSensor -> cycleInterval ());
 
-	timeSensor -> cycleInterval () = duration ();
-	timeSensor -> isActive () .addInterest (isActive ());
-	timeSensor -> fraction_changed () .addInterest (this, &X3DChaserNode::set_fraction);
-	timeSensor -> setup ();
+	duration () .addInterest (this, &X3DChaserNode::set_duration);
+
+	set_duration ();
+}
+
+size_t
+X3DChaserNode::getNumBuffers () const
+{
+	return 60;
+}
+
+float
+X3DChaserNode::getTolerance () const
+{
+	return std::numeric_limits <float>::epsilon ();
+}
+
+float
+X3DChaserNode::stepResponse (time_type t) const
+{
+	if (t <= 0)
+		return 0;
+
+	if (t >= duration ())
+		return 1;
+
+	return 0.5 - 0.5 * std::cos ((t / duration ()) * M_PI);
 }
 
 void
-X3DChaserNode::start ()
+X3DChaserNode::set_duration ()
 {
-	timeSensor -> startTime () = getCurrentTime ();
-}
-
-void
-X3DChaserNode::stop ()
-{
-	timeSensor -> stopTime () = getCurrentTime ();
-}
-
-void
-X3DChaserNode::dispose ()
-{
-	timeSensor .dispose ();
-
-	X3DFollowerNode::dispose ();
+	stepTime = duration () / getNumBuffers ();
 }
 
 } // X3D

@@ -177,7 +177,7 @@ private:
 
 	Fields fields;
 
-	std::vector <Vector2f> value;
+	std::vector <Vector2f> buffer;
 
 };
 

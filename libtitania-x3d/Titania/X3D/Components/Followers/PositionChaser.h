@@ -61,6 +61,8 @@ class PositionChaser :
 {
 public:
 
+	///  @name Construction
+
 	PositionChaser (X3DExecutionContext* const);
 
 	virtual
@@ -88,22 +90,6 @@ public:
 	///  @name Fields
 
 	SFVec3f &
-	initialValue ()
-	{ return *fields .initialValue; }
-
-	const SFVec3f &
-	initialValue () const
-	{ return *fields .initialValue; }
-
-	SFVec3f &
-	initialDestination ()
-	{ return *fields .initialDestination; }
-
-	const SFVec3f &
-	initialDestination () const
-	{ return *fields .initialDestination; }
-
-	SFVec3f &
 	set_value ()
 	{ return *fields .set_value; }
 
@@ -120,6 +106,22 @@ public:
 	{ return *fields .set_destination; }
 
 	SFVec3f &
+	initialValue ()
+	{ return *fields .initialValue; }
+
+	const SFVec3f &
+	initialValue () const
+	{ return *fields .initialValue; }
+
+	SFVec3f &
+	initialDestination ()
+	{ return *fields .initialDestination; }
+
+	const SFVec3f &
+	initialDestination () const
+	{ return *fields .initialDestination; }
+
+	SFVec3f &
 	value_changed ()
 	{ return *fields .value_changed; }
 
@@ -130,9 +132,18 @@ public:
 
 private:
 
+	///  @name Construction
+
 	virtual
 	void
 	initialize () final;
+
+	///  @name Operations
+
+	bool
+	equals (const Vector3f &, const Vector3f &, float) const;
+
+	///  @name Event handlers
 
 	void
 	_set_value ();
@@ -140,10 +151,15 @@ private:
 	void
 	_set_destination ();
 
+	void
+	set_duration ();
+
 	virtual
 	void
-	set_fraction ();
+	prepareEvents () final;
 
+	float
+	updateBuffer ();
 
 	///  @name Static members
 
@@ -157,14 +173,18 @@ private:
 	{
 		Fields ();
 
-		SFVec3f* const initialValue;
-		SFVec3f* const initialDestination;
 		SFVec3f* const set_value;
 		SFVec3f* const set_destination;
+		SFVec3f* const initialValue;
+		SFVec3f* const initialDestination;
 		SFVec3f* const value_changed;
 	};
 
 	Fields fields;
+
+	Vector3f               previousValue;
+	time_type              bufferEndTime;
+	std::vector <Vector3f> buffer;
 
 };
 

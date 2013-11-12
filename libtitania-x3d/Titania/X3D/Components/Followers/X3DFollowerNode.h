@@ -78,6 +78,15 @@ protected:
 
 	X3DFollowerNode ();
 
+	///  @name Event handlers
+
+	void
+	set_active (bool);
+	
+	virtual
+	void
+	prepareEvents () = 0;
+
 
 private:
 

@@ -177,7 +177,7 @@ private:
 
 	Fields fields;
 
-	std::vector <float> value;
+	std::vector <float> buffer;
 
 };
 

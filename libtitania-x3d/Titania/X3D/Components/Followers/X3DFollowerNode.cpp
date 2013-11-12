@@ -50,6 +50,8 @@
 
 #include "X3DFollowerNode.h"
 
+#include "../../Browser/X3DBrowser.h"
+
 namespace titania {
 namespace X3D {
 
@@ -62,6 +64,21 @@ X3DFollowerNode::X3DFollowerNode () :
 	      fields ()
 {
 	addNodeType (X3DConstants::X3DFollowerNode);
+}
+
+void
+X3DFollowerNode::set_active (bool value)
+{
+	if (value not_eq isActive ())
+	{
+		isActive () = value;
+
+		if (value)
+			getBrowser () -> prepareEvents () .addInterest (this, &X3DFollowerNode::prepareEvents);
+
+		else
+			getBrowser () -> prepareEvents () .removeInterest (this, &X3DFollowerNode::prepareEvents);
+	}
 }
 
 } // X3D

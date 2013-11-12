@@ -88,14 +88,6 @@ public:
 	///  @name Fields
 
 	SFVec2f &
-	set_destination ()
-	{ return *fields .set_destination; }
-
-	const SFVec2f &
-	set_destination () const
-	{ return *fields .set_destination; }
-
-	SFVec2f &
 	set_value ()
 	{ return *fields .set_value; }
 
@@ -104,12 +96,20 @@ public:
 	{ return *fields .set_value; }
 
 	SFVec2f &
-	value_changed ()
-	{ return *fields .value_changed; }
+	set_destination ()
+	{ return *fields .set_destination; }
 
 	const SFVec2f &
-	value_changed () const
-	{ return *fields .value_changed; }
+	set_destination () const
+	{ return *fields .set_destination; }
+
+	SFVec2f &
+	initialValue ()
+	{ return *fields .initialValue; }
+
+	const SFVec2f &
+	initialValue () const
+	{ return *fields .initialValue; }
 
 	SFVec2f &
 	initialDestination ()
@@ -120,19 +120,19 @@ public:
 	{ return *fields .initialDestination; }
 
 	SFVec2f &
-	initialValue ()
-	{ return *fields .initialValue; }
+	value_changed ()
+	{ return *fields .value_changed; }
 
 	const SFVec2f &
-	initialValue () const
-	{ return *fields .initialValue; }
+	value_changed () const
+	{ return *fields .value_changed; }
 
 
 private:
 
 	virtual
 	void
-	set_fraction ();
+	prepareEvents () final;
 
 
 	///  @name Static members
@@ -147,11 +147,11 @@ private:
 	{
 		Fields ();
 
-		SFVec2f* const set_destination;
 		SFVec2f* const set_value;
-		SFVec2f* const value_changed;
-		SFVec2f* const initialDestination;
+		SFVec2f* const set_destination;
 		SFVec2f* const initialValue;
+		SFVec2f* const initialDestination;
+		SFVec2f* const value_changed;
 	};
 
 	Fields fields;

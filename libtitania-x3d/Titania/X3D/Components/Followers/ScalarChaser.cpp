@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -60,11 +60,11 @@ const std::string ScalarChaser::typeName       = "ScalarChaser";
 const std::string ScalarChaser::containerField = "children";
 
 ScalarChaser::Fields::Fields () :
-	set_destination (new SFFloat ()),
-	set_value (new SFFloat ()),
-	value_changed (new SFFloat ()),
+	         set_value (new SFFloat ()),
+	   set_destination (new SFFloat ()),
+	      initialValue (new SFFloat ()),
 	initialDestination (new SFFloat ()),
-	initialValue (new SFFloat ())
+	     value_changed (new SFFloat ())
 { }
 
 ScalarChaser::ScalarChaser (X3DExecutionContext* const executionContext) :
@@ -73,13 +73,13 @@ ScalarChaser::ScalarChaser (X3DExecutionContext* const executionContext) :
 	       fields ()
 {
 	addField (inputOutput,    "metadata",           metadata ());
-	addField (inputOnly,      "set_destination",    set_destination ());
 	addField (inputOnly,      "set_value",          set_value ());
+	addField (inputOnly,      "set_destination",    set_destination ());
+	addField (initializeOnly, "initialValue",       initialValue ());
+	addField (initializeOnly, "initialDestination", initialDestination ());
+	addField (initializeOnly, "duration",           duration ());
 	addField (outputOnly,     "isActive",           isActive ());
 	addField (outputOnly,     "value_changed",      value_changed ());
-	addField (initializeOnly, "duration",           duration ());
-	addField (initializeOnly, "initialDestination", initialDestination ());
-	addField (initializeOnly, "initialValue",       initialValue ());
 }
 
 X3DBaseNode*
@@ -89,10 +89,8 @@ ScalarChaser::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-ScalarChaser::set_fraction ()
-{
-
-}
+ScalarChaser::prepareEvents ()
+{ }
 
 } // X3D
 } // titania

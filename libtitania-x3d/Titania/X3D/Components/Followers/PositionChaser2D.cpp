@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -60,11 +60,11 @@ const std::string PositionChaser2D::typeName       = "PositionChaser2D";
 const std::string PositionChaser2D::containerField = "children";
 
 PositionChaser2D::Fields::Fields () :
-	set_destination (new SFVec2f ()),
-	set_value (new SFVec2f ()),
-	value_changed (new SFVec2f ()),
+	         set_value (new SFVec2f ()),
+	   set_destination (new SFVec2f ()),
+	      initialValue (new SFVec2f ()),
 	initialDestination (new SFVec2f ()),
-	initialValue (new SFVec2f ())
+	     value_changed (new SFVec2f ())
 { }
 
 PositionChaser2D::PositionChaser2D (X3DExecutionContext* const executionContext) :
@@ -73,13 +73,13 @@ PositionChaser2D::PositionChaser2D (X3DExecutionContext* const executionContext)
 	       fields ()
 {
 	addField (inputOutput,    "metadata",           metadata ());
-	addField (inputOnly,      "set_destination",    set_destination ());
 	addField (inputOnly,      "set_value",          set_value ());
+	addField (inputOnly,      "set_destination",    set_destination ());
+	addField (initializeOnly, "initialValue",       initialValue ());
+	addField (initializeOnly, "initialDestination", initialDestination ());
+	addField (initializeOnly, "duration",           duration ());
 	addField (outputOnly,     "isActive",           isActive ());
 	addField (outputOnly,     "value_changed",      value_changed ());
-	addField (initializeOnly, "duration",           duration ());
-	addField (initializeOnly, "initialDestination", initialDestination ());
-	addField (initializeOnly, "initialValue",       initialValue ());
 }
 
 X3DBaseNode*
@@ -89,10 +89,8 @@ PositionChaser2D::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-PositionChaser2D::set_fraction ()
-{
-
-}
+PositionChaser2D::prepareEvents ()
+{ }
 
 } // X3D
 } // titania

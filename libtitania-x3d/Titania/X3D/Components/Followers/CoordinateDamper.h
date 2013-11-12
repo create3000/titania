@@ -186,7 +186,7 @@ private:
 
 	Fields fields;
 
-	std::vector <std::vector <Vector3f>> value;
+	std::vector <std::vector <Vector3f>> buffer;
 
 };
 

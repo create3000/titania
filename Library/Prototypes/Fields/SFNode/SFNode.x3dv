@@ -1,23 +1,17 @@
 #X3D V3.3 utf8 Titania
 
 PROTO SFNode [
-  inputOutput SFTime triggerTime 0
+  inputOnly   SFTime set_triggerTime
   inputOutput SFNode keyValue NULL
   outputOnly  SFNode value_changed
 ]
 {
   DEF SFNode Script {
-    inputOutput SFTime triggerTime IS triggerTime
+    inputOnly   SFTime set_triggerTime IS set_triggerTime
     inputOutput SFNode keyValue IS keyValue
     outputOnly  SFNode value_changed IS value_changed
 
     url "vrmlscript:
-function initialize ()
-{
-	if (triggerTime)
-		set_triggerTime (0, 0);
-}
-
 function set_triggerTime (value, time)
 {
 	value_changed = keyValue;
