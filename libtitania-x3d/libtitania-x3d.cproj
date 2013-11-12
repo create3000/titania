@@ -602,6 +602,9 @@
     <None Include="Titania\X3D\Components\Followers\ScalarDamper.h" />
     <None Include="Titania\X3D\Components\Node.txt" />
     <None Include="Titania\X3D\Bits\HatchStyles.xcf" />
+    <None Include="Titania\X3D\Components\Followers\ColorChaser.h" />
+    <None Include="Titania\X3D\Components\Followers\CoordinateChaser.h" />
+    <None Include="Titania\X3D\Components\Followers\TexCoordChaser2D.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1050,6 +1053,9 @@
     <Compile Include="Titania\X3D\Rendering\ClipPlaneContainer.cpp" />
     <Compile Include="Titania\X3D\Rendering\ViewportContainer.cpp" />
     <Compile Include="Titania\X3D\Components\Followers\ScalarDamper.cpp" />
+    <Compile Include="Titania\X3D\Components\Followers\ColorChaser.cpp" />
+    <Compile Include="Titania\X3D\Components\Followers\CoordinateChaser.cpp" />
+    <Compile Include="Titania\X3D\Components\Followers\TexCoordChaser2D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

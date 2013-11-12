@@ -89,8 +89,37 @@ PositionChaser2D::create (X3DExecutionContext* const executionContext) const
 }
 
 void
+PositionChaser2D::initialize ()
+{
+	X3DChaserNode::initialize ();
+}
+
+bool
+PositionChaser2D::equals (const Vector2f & lhs, const Vector2f & rhs, float tolerance) const
+{
+	return abs (lhs - rhs) < tolerance;
+}
+
+void
+PositionChaser2D::_set_value ()
+{
+}
+
+void
+PositionChaser2D::_set_destination ()
+{
+}
+
+void
 PositionChaser2D::prepareEvents ()
-{ }
+{
+}
+
+float
+PositionChaser2D::updateBuffer ()
+{
+	return 1;
+}
 
 } // X3D
 } // titania

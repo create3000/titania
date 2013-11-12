@@ -130,10 +130,34 @@ public:
 
 private:
 
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final;
+
+	///  @name Operations
+
+	bool
+	equals (const Vector2f &, const Vector2f &, float) const;
+
+	///  @name Event handlers
+
+	void
+	_set_value ();
+
+	void
+	_set_destination ();
+
+	void
+	set_duration ();
+
 	virtual
 	void
 	prepareEvents () final;
 
+	float
+	updateBuffer ();
 
 	///  @name Static members
 

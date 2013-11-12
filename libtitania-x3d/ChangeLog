@@ -1,5 +1,24 @@
 2013-11-12  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Followers.h:
+	* SupportedNodes.cpp:
+	* ColorChaser.h:
+	* ScalarChaser.h:
+	* ColorChaser.cpp:
+	* ScalarChaser.cpp:
+	* PositionChaser2D.h:
+	* CoordinateChaser.h:
+	* TexCoordChaser2D.h:
+	* OrientationChaser.h:
+	* CoordinateChaser.cpp:
+	* TexCoordChaser2D.cpp:
+	* PositionChaser2D.cpp:
+	* OrientationChaser.cpp: 
+
+2013-11-12  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* PositionChaser.cpp: 
 
 2013-11-12  Holger Seelig  <holger.seelig@yahoo.de>

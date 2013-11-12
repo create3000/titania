@@ -89,8 +89,39 @@ OrientationChaser::create (X3DExecutionContext* const executionContext) const
 }
 
 void
+OrientationChaser::initialize ()
+{
+	X3DChaserNode::initialize ();
+}
+
+bool
+OrientationChaser::equals (const Rotation4f & lhs, const Rotation4f & rhs, float tolerance) const
+{
+	Rotation4f d = ~rhs * lhs;
+
+	return abs (d .angle ()) < tolerance;
+}
+
+void
+OrientationChaser::_set_value ()
+{
+}
+
+void
+OrientationChaser::_set_destination ()
+{
+}
+
+void
 OrientationChaser::prepareEvents ()
-{ }
+{
+}
+
+float
+OrientationChaser::updateBuffer ()
+{
+	return 1;
+}
 
 } // X3D
 } // titania

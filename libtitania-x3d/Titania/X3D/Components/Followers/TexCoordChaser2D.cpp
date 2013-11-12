@@ -48,22 +48,72 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_FOLLOWERS_H__
-#define __TITANIA_X3D_COMPONENTS_FOLLOWERS_H__
+#include "TexCoordChaser2D.h"
 
-#include "Followers/ColorChaser.h"
-#include "Followers/ColorDamper.h"
-#include "Followers/CoordinateChaser.h"
-#include "Followers/CoordinateDamper.h"
-#include "Followers/OrientationChaser.h"
-#include "Followers/OrientationDamper.h"
-#include "Followers/PositionChaser.h"
-#include "Followers/PositionChaser2D.h"
-#include "Followers/PositionDamper.h"
-#include "Followers/PositionDamper2D.h"
-#include "Followers/ScalarChaser.h"
-#include "Followers/ScalarDamper.h"
-#include "Followers/TexCoordChaser2D.h"
-#include "Followers/TexCoordDamper2D.h"
+#include "../../Execution/X3DExecutionContext.h"
 
-#endif
+namespace titania {
+namespace X3D {
+
+const std::string TexCoordChaser2D::componentName  = "Followers";
+const std::string TexCoordChaser2D::typeName       = "TexCoordChaser2D";
+const std::string TexCoordChaser2D::containerField = "children";
+
+TexCoordChaser2D::Fields::Fields () :
+	         set_value (new SFVec2f ()),
+	   set_destination (new SFVec2f ()),
+	      initialValue (new SFVec2f ()),
+	initialDestination (new SFVec2f ()),
+	     value_changed (new SFVec2f ())
+{ }
+
+TexCoordChaser2D::TexCoordChaser2D (X3DExecutionContext* const executionContext) :
+	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DChaserNode (),
+	       fields ()
+{
+	addField (inputOutput,    "metadata",           metadata ());
+	addField (inputOnly,      "set_value",          set_value ());
+	addField (inputOnly,      "set_destination",    set_destination ());
+	addField (initializeOnly, "initialValue",       initialValue ());
+	addField (initializeOnly, "initialDestination", initialDestination ());
+	addField (initializeOnly, "duration",           duration ());
+	addField (outputOnly,     "isActive",           isActive ());
+	addField (outputOnly,     "value_changed",      value_changed ());
+}
+
+X3DBaseNode*
+TexCoordChaser2D::create (X3DExecutionContext* const executionContext) const
+{
+	return new TexCoordChaser2D (executionContext);
+}
+
+void
+TexCoordChaser2D::initialize ()
+{
+	X3DChaserNode::initialize ();
+}
+
+void
+TexCoordChaser2D::_set_value ()
+{
+}
+
+void
+TexCoordChaser2D::_set_destination ()
+{
+}
+
+void
+TexCoordChaser2D::prepareEvents ()
+{
+}
+
+float
+TexCoordChaser2D::updateBuffer ()
+{
+	return 1;
+}
+
+} // X3D
+} // titania

@@ -48,22 +48,72 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_FOLLOWERS_H__
-#define __TITANIA_X3D_COMPONENTS_FOLLOWERS_H__
+#include "CoordinateChaser.h"
 
-#include "Followers/ColorChaser.h"
-#include "Followers/ColorDamper.h"
-#include "Followers/CoordinateChaser.h"
-#include "Followers/CoordinateDamper.h"
-#include "Followers/OrientationChaser.h"
-#include "Followers/OrientationDamper.h"
-#include "Followers/PositionChaser.h"
-#include "Followers/PositionChaser2D.h"
-#include "Followers/PositionDamper.h"
-#include "Followers/PositionDamper2D.h"
-#include "Followers/ScalarChaser.h"
-#include "Followers/ScalarDamper.h"
-#include "Followers/TexCoordChaser2D.h"
-#include "Followers/TexCoordDamper2D.h"
+#include "../../Execution/X3DExecutionContext.h"
 
-#endif
+namespace titania {
+namespace X3D {
+
+const std::string CoordinateChaser::componentName  = "Followers";
+const std::string CoordinateChaser::typeName       = "CoordinateChaser";
+const std::string CoordinateChaser::containerField = "children";
+
+CoordinateChaser::Fields::Fields () :
+	         set_value (new MFVec3f ()),
+	   set_destination (new MFVec3f ()),
+	      initialValue (new MFVec3f ({ SFVec3f () })),
+	initialDestination (new MFVec3f ({ SFVec3f () })),
+	     value_changed (new MFVec3f ())
+{ }
+
+CoordinateChaser::CoordinateChaser (X3DExecutionContext* const executionContext) :
+	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DChaserNode (),
+	       fields ()
+{
+	addField (inputOutput,    "metadata",           metadata ());
+	addField (inputOnly,      "set_value",          set_value ());
+	addField (inputOnly,      "set_destination",    set_destination ());
+	addField (initializeOnly, "initialValue",       initialValue ());
+	addField (initializeOnly, "initialDestination", initialDestination ());
+	addField (initializeOnly, "duration",           duration ());
+	addField (outputOnly,     "isActive",           isActive ());
+	addField (outputOnly,     "value_changed",      value_changed ());
+}
+
+X3DBaseNode*
+CoordinateChaser::create (X3DExecutionContext* const executionContext) const
+{
+	return new CoordinateChaser (executionContext);
+}
+
+void
+CoordinateChaser::initialize ()
+{
+	X3DChaserNode::initialize ();
+}
+
+void
+CoordinateChaser::_set_value ()
+{
+}
+
+void
+CoordinateChaser::_set_destination ()
+{
+}
+
+void
+CoordinateChaser::prepareEvents ()
+{
+}
+
+float
+CoordinateChaser::updateBuffer ()
+{
+	return 1;
+}
+
+} // X3D
+} // titania

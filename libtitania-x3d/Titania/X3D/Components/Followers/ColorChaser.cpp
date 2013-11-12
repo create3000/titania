@@ -48,22 +48,81 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_FOLLOWERS_H__
-#define __TITANIA_X3D_COMPONENTS_FOLLOWERS_H__
+#include "ColorChaser.h"
 
-#include "Followers/ColorChaser.h"
-#include "Followers/ColorDamper.h"
-#include "Followers/CoordinateChaser.h"
-#include "Followers/CoordinateDamper.h"
-#include "Followers/OrientationChaser.h"
-#include "Followers/OrientationDamper.h"
-#include "Followers/PositionChaser.h"
-#include "Followers/PositionChaser2D.h"
-#include "Followers/PositionDamper.h"
-#include "Followers/PositionDamper2D.h"
-#include "Followers/ScalarChaser.h"
-#include "Followers/ScalarDamper.h"
-#include "Followers/TexCoordChaser2D.h"
-#include "Followers/TexCoordDamper2D.h"
+#include "../../Execution/X3DExecutionContext.h"
 
-#endif
+namespace titania {
+namespace X3D {
+
+const std::string ColorChaser::componentName  = "Followers";
+const std::string ColorChaser::typeName       = "ColorChaser";
+const std::string ColorChaser::containerField = "children";
+
+ColorChaser::Fields::Fields () :
+	         set_value (new SFColor ()),
+	   set_destination (new SFColor ()),
+	      initialValue (new SFColor (0.8, 0.8, 0.8)),
+	initialDestination (new SFColor (0.8, 0.8, 0.8)),
+	     value_changed (new SFColor ())
+{ }
+
+ColorChaser::ColorChaser (X3DExecutionContext* const executionContext) :
+	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DChaserNode (),
+	       fields ()
+{
+	addField (inputOutput,    "metadata",           metadata ());
+	addField (inputOnly,      "set_value",          set_value ());
+	addField (inputOnly,      "set_destination",    set_destination ());
+	addField (initializeOnly, "initialValue",       initialValue ());
+	addField (initializeOnly, "initialDestination", initialDestination ());
+	addField (initializeOnly, "duration",           duration ());
+	addField (outputOnly,     "isActive",           isActive ());
+	addField (outputOnly,     "value_changed",      value_changed ());
+}
+
+X3DBaseNode*
+ColorChaser::create (X3DExecutionContext* const executionContext) const
+{
+	return new ColorChaser (executionContext);
+}
+
+void
+ColorChaser::initialize ()
+{
+	X3DChaserNode::initialize ();
+}
+
+bool
+ColorChaser::equals (const Color3f & lhs, const Color3f & rhs, float tolerance) const
+{
+	Vector3f a (lhs .r (), lhs .g (), lhs .b ());
+	Vector3f b (rhs .r (), rhs .g (), rhs .b ());
+
+	return abs (a - b) < tolerance;
+}
+
+void
+ColorChaser::_set_value ()
+{
+}
+
+void
+ColorChaser::_set_destination ()
+{
+}
+
+void
+ColorChaser::prepareEvents ()
+{
+}
+
+float
+ColorChaser::updateBuffer ()
+{
+	return 1;
+}
+
+} // X3D
+} // titania

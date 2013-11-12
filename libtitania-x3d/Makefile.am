@@ -107,7 +107,9 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Components/EventUtilities/TimeTrigger.cpp \
 	Titania/X3D/Components/EventUtilities/X3DSequencerNode.cpp \
 	Titania/X3D/Components/EventUtilities/X3DTriggerNode.cpp \
+	Titania/X3D/Components/Followers/ColorChaser.cpp \
 	Titania/X3D/Components/Followers/ColorDamper.cpp \
+	Titania/X3D/Components/Followers/CoordinateChaser.cpp \
 	Titania/X3D/Components/Followers/CoordinateDamper.cpp \
 	Titania/X3D/Components/Followers/OrientationChaser.cpp \
 	Titania/X3D/Components/Followers/OrientationDamper.cpp \
@@ -117,6 +119,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Components/Followers/PositionDamper2D.cpp \
 	Titania/X3D/Components/Followers/ScalarChaser.cpp \
 	Titania/X3D/Components/Followers/ScalarDamper.cpp \
+	Titania/X3D/Components/Followers/TexCoordChaser2D.cpp \
 	Titania/X3D/Components/Followers/TexCoordDamper2D.cpp \
 	Titania/X3D/Components/Followers/X3DChaserNode.cpp \
 	Titania/X3D/Components/Followers/X3DDamperNode.cpp \

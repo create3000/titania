@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,20 +48,20 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_FOLLOWERS_SCALAR_CHASER_H__
-#define __TITANIA_X3D_COMPONENTS_FOLLOWERS_SCALAR_CHASER_H__
+#ifndef __TITANIA_X3D_COMPONENTS_FOLLOWERS_TEX_COORD_CHASER2D_H__
+#define __TITANIA_X3D_COMPONENTS_FOLLOWERS_TEX_COORD_CHASER2D_H__
 
 #include "../Followers/X3DChaserNode.h"
 
 namespace titania {
 namespace X3D {
 
-class ScalarChaser :
+class TexCoordChaser2D :
 	public X3DChaserNode
 {
 public:
 
-	ScalarChaser (X3DExecutionContext* const);
+	TexCoordChaser2D (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
@@ -87,43 +87,43 @@ public:
 
 	///  @name Fields
 
-	SFFloat &
+	SFVec2f &
 	set_value ()
 	{ return *fields .set_value; }
 
-	const SFFloat &
+	const SFVec2f &
 	set_value () const
 	{ return *fields .set_value; }
 
-	SFFloat &
+	SFVec2f &
 	set_destination ()
 	{ return *fields .set_destination; }
 
-	const SFFloat &
+	const SFVec2f &
 	set_destination () const
 	{ return *fields .set_destination; }
 
-	SFFloat &
+	SFVec2f &
 	initialValue ()
 	{ return *fields .initialValue; }
 
-	const SFFloat &
+	const SFVec2f &
 	initialValue () const
 	{ return *fields .initialValue; }
 
-	SFFloat &
+	SFVec2f &
 	initialDestination ()
 	{ return *fields .initialDestination; }
 
-	const SFFloat &
+	const SFVec2f &
 	initialDestination () const
 	{ return *fields .initialDestination; }
 
-	SFFloat &
+	SFVec2f &
 	value_changed ()
 	{ return *fields .value_changed; }
 
-	const SFFloat &
+	const SFVec2f &
 	value_changed () const
 	{ return *fields .value_changed; }
 
@@ -138,8 +138,17 @@ private:
 
 	///  @name Operations
 
+	template <class LHS, class RHS>
 	bool
-	equals (const float &, const float &, float) const;
+	equals (const LHS & lhs, const RHS & rhs, float tolerance) const
+	{
+		float distance = 0;
+
+		for (size_t i = 0, size = lhs .size (); i < size; ++ i)
+			distance = std::max (distance, abs (lhs [i] - rhs [i]));
+
+		return distance < tolerance;
+	}
 
 	///  @name Event handlers
 
@@ -171,11 +180,11 @@ private:
 	{
 		Fields ();
 
-		SFFloat* const set_value;
-		SFFloat* const set_destination;
-		SFFloat* const initialValue;
-		SFFloat* const initialDestination;
-		SFFloat* const value_changed;
+		SFVec2f* const set_value;
+		SFVec2f* const set_destination;
+		SFVec2f* const initialValue;
+		SFVec2f* const initialDestination;
+		SFVec2f* const value_changed;
 	};
 
 	Fields fields;

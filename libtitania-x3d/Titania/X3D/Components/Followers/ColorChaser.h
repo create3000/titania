@@ -48,22 +48,141 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_FOLLOWERS_H__
-#define __TITANIA_X3D_COMPONENTS_FOLLOWERS_H__
+#ifndef __TITANIA_X3D_COMPONENTS_FOLLOWERS_COLOR_CHASER_H__
+#define __TITANIA_X3D_COMPONENTS_FOLLOWERS_COLOR_CHASER_H__
 
-#include "Followers/ColorChaser.h"
-#include "Followers/ColorDamper.h"
-#include "Followers/CoordinateChaser.h"
-#include "Followers/CoordinateDamper.h"
-#include "Followers/OrientationChaser.h"
-#include "Followers/OrientationDamper.h"
-#include "Followers/PositionChaser.h"
-#include "Followers/PositionChaser2D.h"
-#include "Followers/PositionDamper.h"
-#include "Followers/PositionDamper2D.h"
-#include "Followers/ScalarChaser.h"
-#include "Followers/ScalarDamper.h"
-#include "Followers/TexCoordChaser2D.h"
-#include "Followers/TexCoordDamper2D.h"
+#include "../Followers/X3DChaserNode.h"
+
+namespace titania {
+namespace X3D {
+
+class ColorChaser :
+	public X3DChaserNode
+{
+public:
+
+	ColorChaser (X3DExecutionContext* const);
+
+	virtual
+	X3DBaseNode*
+	create (X3DExecutionContext* const) const final;
+
+	///  @name Common members
+
+	virtual
+	const std::string &
+	getComponentName () const final
+	{ return componentName; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const final
+	{ return containerField; }
+
+	///  @name Fields
+
+	SFColor &
+	set_value ()
+	{ return *fields .set_value; }
+
+	const SFColor &
+	set_value () const
+	{ return *fields .set_value; }
+
+	SFColor &
+	set_destination ()
+	{ return *fields .set_destination; }
+
+	const SFColor &
+	set_destination () const
+	{ return *fields .set_destination; }
+
+	SFColor &
+	initialValue ()
+	{ return *fields .initialValue; }
+
+	const SFColor &
+	initialValue () const
+	{ return *fields .initialValue; }
+
+	SFColor &
+	initialDestination ()
+	{ return *fields .initialDestination; }
+
+	const SFColor &
+	initialDestination () const
+	{ return *fields .initialDestination; }
+
+	SFColor &
+	value_changed ()
+	{ return *fields .value_changed; }
+
+	const SFColor &
+	value_changed () const
+	{ return *fields .value_changed; }
+
+
+private:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final;
+
+	///  @name Operations
+
+	bool
+	equals (const Color3f &, const Color3f &, float) const;
+
+	///  @name Event handlers
+
+	void
+	_set_value ();
+
+	void
+	_set_destination ();
+
+	void
+	set_duration ();
+
+	virtual
+	void
+	prepareEvents () final;
+
+	float
+	updateBuffer ();
+
+	///  @name Static members
+
+	static const std::string componentName;
+	static const std::string typeName;
+	static const std::string containerField;
+
+	///  @name Members
+
+	struct Fields
+	{
+		Fields ();
+
+		SFColor* const set_value;
+		SFColor* const set_destination;
+		SFColor* const initialValue;
+		SFColor* const initialDestination;
+		SFColor* const value_changed;
+	};
+
+	Fields fields;
+
+};
+
+} // X3D
+} // titania
 
 #endif

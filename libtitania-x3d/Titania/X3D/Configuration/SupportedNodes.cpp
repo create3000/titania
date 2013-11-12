@@ -51,7 +51,6 @@
 #include "SupportedNodes.h"
 
 #include "../Components.h"
-#include <iostream>
 
 namespace titania {
 namespace X3D {
@@ -93,6 +92,7 @@ SupportedNodes::SupportedNodes (X3DExecutionContext* const executionContext)
 	add ("CollisionSensor",              new CollisionSensor              (executionContext));
 	add ("CollisionSpace",               new CollisionSpace               (executionContext));
 	add ("Color",                        new Color                        (executionContext));
+	add ("ColorChaser",                  new ColorChaser                  (executionContext));
 	add ("ColorDamper",                  new ColorDamper                  (executionContext));
 	add ("ColorInterpolator",            new ColorInterpolator            (executionContext));
 	add ("ColorRGBA",                    new ColorRGBA                    (executionContext));
@@ -105,6 +105,7 @@ SupportedNodes::SupportedNodes (X3DExecutionContext* const executionContext)
 	add ("Contour2D",                    new Contour2D                    (executionContext));
 	add ("ContourPolyline2D",            new ContourPolyline2D            (executionContext));
 	add ("Coordinate",                   new Coordinate                   (executionContext));
+	add ("CoordinateChaser",             new CoordinateChaser             (executionContext));
 	add ("CoordinateDamper",             new CoordinateDamper             (executionContext));
 	add ("CoordinateDouble",             new CoordinateDouble             (executionContext));
 	add ("CoordinateInterpolator",       new CoordinateInterpolator       (executionContext));
@@ -252,6 +253,7 @@ SupportedNodes::SupportedNodes (X3DExecutionContext* const executionContext)
 	add ("StringSensor",                 new StringSensor                 (executionContext));
 	add ("SurfaceEmitter",               new SurfaceEmitter               (executionContext));
 	add ("Switch",                       new Switch                       (executionContext));
+	add ("TexCoordChaser2D",             new TexCoordChaser2D             (executionContext));
 	add ("TexCoordDamper2D",             new TexCoordDamper2D             (executionContext));
 	add ("Text",                         new Text                         (executionContext));
 	add ("TextureBackground",            new TextureBackground            (executionContext));

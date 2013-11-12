@@ -89,8 +89,37 @@ ScalarChaser::create (X3DExecutionContext* const executionContext) const
 }
 
 void
+ScalarChaser::initialize ()
+{
+	X3DChaserNode::initialize ();
+}
+
+bool
+ScalarChaser::equals (const float & lhs, const float & rhs, float tolerance) const
+{
+	return abs (lhs - rhs) < tolerance;
+}
+
+void
+ScalarChaser::_set_value ()
+{
+}
+
+void
+ScalarChaser::_set_destination ()
+{
+}
+
+void
 ScalarChaser::prepareEvents ()
-{ }
+{
+}
+
+float
+ScalarChaser::updateBuffer ()
+{
+	return 1;
+}
 
 } // X3D
 } // titania
