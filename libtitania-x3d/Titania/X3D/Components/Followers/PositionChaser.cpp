@@ -123,6 +123,9 @@ PositionChaser::equals (const Vector3f & lhs, const Vector3f & rhs, float tolera
 void
 PositionChaser::_set_value ()
 {
+	if (not isActive ())
+		bufferEndTime = getCurrentTime ();
+
 	for (auto & value : basic::adapter (buffer .begin () + 1, buffer .end ()))
 		value = set_value ();
 
@@ -136,9 +139,8 @@ PositionChaser::_set_value ()
 void
 PositionChaser::_set_destination ()
 {
-	bufferEndTime = getCurrentTime ();
-
-	buffer [0] = set_destination ();
+	if (not isActive ())
+		bufferEndTime = getCurrentTime ();
 
 	set_active (true);
 }
@@ -163,14 +165,10 @@ PositionChaser::prepareEvents ()
 		output += deltaOut;
 	}
 
-	if (not equals (output, value_changed (), getTolerance ()))
-	{
-		value_changed () = output;
+	value_changed () = output;
 
-		return;
-	}
-
-	set_active (false);
+	if (equals (output, set_destination (), getTolerance ()))
+		set_active (false);
 }
 
 float

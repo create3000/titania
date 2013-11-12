@@ -43,10 +43,11 @@ DEF Plane Transform {
 }
 
 DEF Follower PositionChaser {
-  duration 2
+  duration 20
 }
 
 DEF Sphere Transform {
+  translation -0.240116 -0.0780645 0
   scale 0.192862 0.192862 0.192862
   children Shape {
     appearance Appearance {
@@ -65,6 +66,7 @@ DEF LineTrail Shape {
   geometry DEF Trail LineTrail {
     enabled FALSE
     cycleInterval 0.1
+    point -0.240116 -0.0780645 0
     dimension 200
   }
 }
