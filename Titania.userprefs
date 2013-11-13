@@ -1,23 +1,28 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Followers/PositionDamper.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/NURBS/NurbsPatchSurface.cpp">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderer.cpp" Line="284" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/ClipPlane.cpp" Line="91" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Followers/PositionDamper.h" Line="183" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Followers/PositionDamper.cpp" Line="187" Column="36" />
-      <File FileName="Library/Tests/Follower/PositionDamper.wrl" Line="34" Column="22" />
-      <File FileName="libtitania-standard/Titania/Math/Functional.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/NURBS/NurbsPatchSurface.h" Line="127" Column="26" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/NURBS/NurbsPatchSurface.cpp" Line="323" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
+          <Node name="build" expanded="True">
+            <Node name="debian" expanded="True" />
+          </Node>
           <Node name="Library" expanded="True">
+            <Node name="Prototypes" expanded="True">
+              <Node name="Fields" expanded="True">
+                <Node name="MFVec3f" expanded="True" />
+                <Node name="SFVec3f" expanded="True" />
+              </Node>
+              <Node name="Geometry2D" expanded="True">
+                <Node name="RegularPolygon2D" expanded="True" />
+              </Node>
+            </Node>
             <Node name="Tests" expanded="True">
-              <Node name="Follower" expanded="True" />
-              <Node name="Layering" expanded="True" />
-              <Node name="Lighting" expanded="True" />
-              <Node name="Rendering" expanded="True" />
+              <Node name="NURBS" expanded="True" />
               <Node name="Texturing" expanded="True" />
             </Node>
           </Node>
@@ -29,7 +34,6 @@
           <Node name="libtitania-standard" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="Math" expanded="True">
-                <Node name="Geometry" expanded="True" />
                 <Node name="Numbers" expanded="True" />
               </Node>
             </Node>
@@ -42,19 +46,21 @@
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
-                <Node name="Browser" expanded="True">
-                  <Node name="Viewer" expanded="True" />
-                </Node>
+                <Node name="Browser" expanded="True" />
                 <Node name="Components" expanded="True">
-                  <Node name="Followers" expanded="True">
-                    <Node name="PositionDamper.cpp" selected="True" />
+                  <Node name="Geometry3D" expanded="True" />
+                  <Node name="Geospatial" expanded="True" />
+                  <Node name="Layout" expanded="True" />
+                  <Node name="NURBS" expanded="True">
+                    <Node name="NurbsPatchSurface.cpp" selected="True" />
                   </Node>
-                  <Node name="PointingDeviceSensor" expanded="True" />
                   <Node name="Rendering" expanded="True" />
-                  <Node name="Shape" expanded="True" />
-                  <Node name="Time" expanded="True" />
+                  <Node name="Text" expanded="True" />
                 </Node>
+                <Node name="Configuration" expanded="True" />
+                <Node name="Execution" expanded="True" />
                 <Node name="Rendering" expanded="True" />
+                <Node name="Types" expanded="True" />
               </Node>
             </Node>
           </Node>

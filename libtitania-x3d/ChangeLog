@@ -1,5 +1,9 @@
 2013-11-13  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* NurbsPatchSurface.cpp: 
+
+2013-11-13  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Coordinate.h:
 	* Coordinate.cpp:
 	* CoordinateDouble.h:

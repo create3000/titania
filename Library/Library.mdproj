@@ -2345,6 +2345,7 @@
     <None Include="Tests\Follower\MFVec3f.x3dv" />
     <None Include="Tests\Follower\SFVec3f.x3dv" />
     <None Include="Tests\NURBS\FredTheBunny.x3dv" />
+    <None Include="Tests\NURBS\FourDucks.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

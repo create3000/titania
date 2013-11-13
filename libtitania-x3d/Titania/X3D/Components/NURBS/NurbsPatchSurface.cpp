@@ -54,8 +54,6 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Rendering/X3DCoordinateNode.h"
 
-#include "../Rendering/Coordinate.h"
-
 namespace titania {
 namespace X3D {
 
@@ -135,7 +133,7 @@ NurbsPatchSurface::getKnots (const MFDouble & knot, const SFInt32 & order, const
 
 	bool generateUniform = true;
 
-	if (knot .size () == size_t (dimension + order))
+	if (knots .size () == size_t (dimension + order))
 	{
 		generateUniform = false;
 
@@ -167,9 +165,18 @@ NurbsPatchSurface::getKnots (const MFDouble & knot, const SFInt32 & order, const
 	return knots;
 }
 
+static
+void
+nurbsError (GLenum errorCode)
+{
+   __LOG__ << gluErrorString (errorCode) << std::endl;
+}
+
 void
 NurbsPatchSurface::build ()
 {
+	__LOG__ << getName () << std::endl;
+
 	if (uOrder () < 2)
 		return;
 
@@ -182,7 +189,7 @@ NurbsPatchSurface::build ()
 	if (vDimension () < vOrder ())
 		return;
 
-	auto coordinate = x3d_cast <Coordinate*> (controlPoint ());
+	auto coordinate = x3d_cast <X3DCoordinateNode*> (controlPoint ());
 
 	if (not coordinate)
 		return;
@@ -190,130 +197,20 @@ NurbsPatchSurface::build ()
 	if (coordinate -> getSize () not_eq size_t (uDimension () * vDimension ()))
 		return;
 
-	std::vector <float> uKnots (uKnot () .size ());
-	std::vector <float> vKnots (vKnot () .size ());
+	// ControlPoints
 
-	if (weight () .size () not_eq size_t (uDimension () * vDimension ()))
-		return;
+	std::vector <Vector4f> controlPoints = std::move (coordinate -> getControlPoints (weight ()));
 
-	const MFVec3f & point = coordinate -> point ();
+	// Knots
 
-	std::vector <float> weights;
-	
-	GLenum map2Vertex3Or4;
-	size_t sizeOfVertex;
-
-	if (weight () .size () < point .size ())
-	{
-		sizeOfVertex   = 3;
-		map2Vertex3Or4 = GL_MAP2_VERTEX_3;
-		weights .reserve (point .size () * sizeOfVertex);
-
-		for (unsigned int i = 0; i < point .size (); i ++)
-		{
-			weights .emplace_back (point [i] .getX ());
-			weights .emplace_back (point [i] .getY ());
-			weights .emplace_back (point [i] .getZ ());
-		}
-	}
-	else
-	{
-		sizeOfVertex   = 4;
-		map2Vertex3Or4 = GL_MAP2_VERTEX_4;
-		weights .reserve (point .size () * sizeOfVertex);
-
-		for (unsigned int i = 0; i < point .size (); i ++)
-		{
-			weights .emplace_back (point [i] .getX ());
-			weights .emplace_back (point [i] .getY ());
-			weights .emplace_back (point [i] .getZ ());
-			weights .emplace_back (weight () [i]);
-		}
-	}
-
-	// check the knot-vectors. If they are not according to standard
-	// default uniform knot vectors will be generated.
-	bool generateUniform = true;
-
-	if (uKnot () .size () == (unsigned int) (uDimension () + uOrder ()))
-	{
-		generateUniform = false;
-		size_t consecutiveKnots = 0;
-
-		for (unsigned int i = 0; i < uKnot () .size (); i ++)
-		{
-			uKnots [i] = (GLfloat) uKnot () [i];
-
-			if (i > 0)
-			{
-				if (uKnots [i] == uKnots [ i - 1 ])
-					consecutiveKnots ++;
-				else
-					consecutiveKnots = 0;
-
-				if (consecutiveKnots > size_t (uOrder () - 1))
-					generateUniform = true;
-
-				if (uKnots [ i - 1 ] > uKnots [i])
-					generateUniform = true;
-			}
-		}
-	}
-
-	size_t uSizeToUse = uKnot () .size ();
-
-	if (generateUniform)
-	{
-		uSizeToUse = uDimension () + uOrder ();
-
-		uKnots .resize (uSizeToUse);
-
-		for (size_t i = 0; i < uSizeToUse; i ++)
-			uKnots [i] = (GLfloat) ((double) i / (uSizeToUse - 1));
-	}
-
-	generateUniform = true;
-
-	if (vKnot ().size () == (unsigned int) (vDimension () + vOrder ()))
-	{
-		generateUniform = false;
-		size_t consecutiveKnots = 0;
-
-		for (unsigned int i = 0; i < vKnot () .size (); i ++)
-		{
-			vKnots [i] = (GLfloat) vKnot () [i];
-
-			if (i > 0)
-			{
-				if (vKnots [i] == vKnots [ i - 1 ])
-					consecutiveKnots ++;
-				else
-					consecutiveKnots = 0;
-
-				if (consecutiveKnots > size_t (vOrder () - 1))
-					generateUniform = true;
-
-				if (vKnots [ i - 1 ] > vKnots [i])
-					generateUniform = true;
-			}
-		}
-	}
-
-	size_t vSizeToUse = vKnot () .size ();
-
-	if (generateUniform)
-	{
-		vSizeToUse = vDimension () + vOrder ();
-
-		vKnots .resize (vSizeToUse);
-
-		for (size_t i = 0; i < vSizeToUse; i ++)
-			vKnots [i] = (GLfloat) ((double) i / (vSizeToUse - 1));
-	}
+	std::vector <float> uKnots = std::move (getKnots (uKnot (), uOrder (), uDimension ()));
+	std::vector <float> vKnots = std::move (getKnots (vKnot (), vOrder (), vDimension ()));
 
 	glNewList (listId, GL_COMPILE);
 
 	GLUnurbs* nurbsRenderer = gluNewNurbsRenderer ();
+
+	gluNurbsCallback (nurbsRenderer, GLU_ERROR, (GLvoid (*) ()) nurbsError);
 
 	// Tesselation
 
@@ -321,22 +218,22 @@ NurbsPatchSurface::build ()
 	gluNurbsProperty (nurbsRenderer, GLU_U_STEP, getUTessellationPoints ());
 	gluNurbsProperty (nurbsRenderer, GLU_V_STEP, getVTessellationPoints ());
 
+	gluNurbsProperty (nurbsRenderer, GLU_DISPLAY_MODE, GLU_OUTLINE_POLYGON);
 	glEnable (GL_AUTO_NORMAL);
 
-	gluNurbsProperty (nurbsRenderer, GLU_DISPLAY_MODE, GLU_FILL);
 	gluBeginSurface (nurbsRenderer);
 
-	gluNurbsSurface( nurbsRenderer, 
-		uSizeToUse, uKnots .data (), 
-		vSizeToUse, vKnots .data (),
-		sizeOfVertex, sizeOfVertex * uDimension (),
-		weights .data (),
-		uOrder (), vOrder (),
-		map2Vertex3Or4);
+	gluNurbsSurface (nurbsRenderer,
+	                 uKnots .size (), uKnots .data (),
+	                 vKnots .size (), vKnots .data (),
+	                 4, 4 * uDimension (),
+	                 controlPoints [0] .data (),
+	                 uOrder (), vOrder (),
+	                 GL_MAP2_VERTEX_4);
 
 	gluEndSurface (nurbsRenderer);
 	glDisable (GL_AUTO_NORMAL);
-	
+
 	gluDeleteNurbsRenderer (nurbsRenderer);
 
 	glEndList ();
