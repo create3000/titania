@@ -1,5 +1,17 @@
 2013-11-13  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Coordinate.h:
+	* Coordinate.cpp:
+	* CoordinateDouble.h:
+	* NurbsPatchSurface.h:
+	* GeoCoordinate.h:
+	* CoordinateDouble.cpp:
+	* NurbsPatchSurface.cpp:
+	* GeoCoordinate.cpp:
+	* X3DCoordinateNode.h: 
+
+2013-11-13  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBrowser.cpp: 
 
 2013-11-13  Holger Seelig  <holger.seelig@yahoo.de>

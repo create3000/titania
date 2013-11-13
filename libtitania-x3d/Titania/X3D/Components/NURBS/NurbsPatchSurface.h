@@ -61,6 +61,8 @@ class NurbsPatchSurface :
 {
 public:
 
+	///  @name Construction
+
 	NurbsPatchSurface (X3DExecutionContext* const);
 
 	virtual
@@ -92,8 +94,37 @@ public:
 	isLineGeometry () const final
 	{ return false; }
 
+	///  @name Operations
+
+	virtual
+	void
+	draw () final;
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final;
+
 
 private:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final;
+
+	///  @name Operations
+
+	size_t
+	getUTessellationPoints () const;
+
+	size_t
+	getVTessellationPoints () const;
+
+	std::vector <float>
+	getKnots (const MFDouble &, const SFInt32 &, const SFInt32 &) const;
 
 	virtual
 	void
@@ -105,6 +136,9 @@ private:
 	static const std::string typeName;
 	static const std::string containerField;
 
+	///  @name Members
+
+	GLuint listId;
 
 };
 

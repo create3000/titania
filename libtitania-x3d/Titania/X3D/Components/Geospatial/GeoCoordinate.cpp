@@ -111,6 +111,27 @@ GeoCoordinate::addVertex (std::vector <Vector3f> & vertices, int32_t index) cons
 		vertices .emplace_back ();
 }
 
+std::vector <Vector4f>
+GeoCoordinate::getControlPoints (const MFDouble & weight) const
+{
+	std::vector <Vector4f> controlPoints;
+
+	controlPoints .reserve (point () .size ());
+	
+	if (weight .size () < point () .size ())
+	{
+		for (size_t i = 0; i < point () .size (); i ++)
+			controlPoints .emplace_back (point () [i] .getX (), point () [i] .getY (), point () [i] .getZ (), 1);
+	}
+	else
+	{
+		for (size_t i = 0; i < point () .size (); i ++)
+			controlPoints .emplace_back (point () [i] .getX (), point () [i] .getY (), point () [i] .getZ (), weight [i]);
+	}
+
+	return controlPoints;
+}
+
 void
 GeoCoordinate::resize (size_t size)
 {

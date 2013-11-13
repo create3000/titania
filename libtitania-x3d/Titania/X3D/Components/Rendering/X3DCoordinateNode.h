@@ -75,6 +75,10 @@ public:
 	virtual
 	void
 	addVertex (std::vector <Vector3f>&, int32_t) const = 0;
+	
+	virtual
+	std::vector <Vector4f>
+	getControlPoints (const MFDouble & weight) const = 0;
 
 	virtual
 	void

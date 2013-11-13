@@ -110,6 +110,10 @@ public:
 	addVertex (std::vector <Vector3f>&, int32_t) const final;
 
 	virtual
+	std::vector <Vector4f>
+	getControlPoints (const MFDouble & weight) const final;
+
+	virtual
 	void
 	resize (size_t) final;
 
