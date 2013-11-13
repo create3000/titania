@@ -1,0 +1,122 @@
+#X3D V3.3 utf8 Titania
+
+EXTERNPROTO LineTrail [
+  inputOutput    SFTime  cycleInterval
+  inputOutput    SFVec3f point
+  initializeOnly SFInt32 dimension
+]
+"../Interpolation/LineTrail.wrl"
+
+NavigationInfo {
+  type [ "NONE", "ANY" ]
+}
+
+Background {
+  skyColor 0.2 0.2 0.2
+}
+
+Viewpoint {
+  position 0 0 5
+}
+
+DEF LineTrail Shape {
+  appearance Appearance {
+    material Material {
+      emissiveColor 0 0.8 0.8
+    }
+  }
+  geometry DEF Trail LineTrail {
+    enabled TRUE
+    cycleInterval 0.1
+    resetTime 0
+    dimension 100
+  }
+}
+
+DEF Sphere Transform {
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          transparency 0.5
+        }
+      }
+      geometry Sphere { }
+    }
+    DEF Touch TouchSensor { }
+  ]
+}
+
+DEF Cone_1 Transform {
+  children [
+    DEF Cone Transform {
+      translation 0 0 0.192283
+      rotation 1 0 0 1.5708
+      scale 0.770473 0.770473 0.770473
+      children Shape {
+        appearance Appearance {
+          material DEF ConeMaterial Material { }
+        }
+        geometry Cone { }
+      }
+    }
+    DEF IndexedLineSet Transform {
+      children Shape {
+        geometry IndexedLineSet {
+          colorPerVertex FALSE
+          colorIndex [ 0, 1, 2 ]
+          coordIndex [ 0, 1, -1, 2, 3, -1, 4, 5, -1 ]
+          color Color {
+            color [ 1 0 0, 0 1 0, 0 0 1 ]
+          }
+          coord Coordinate {
+            point [ -1 0 0, 1 0 0, 0 -1 0, 0 1 0, 0 0 -1, 0 0 1 ]
+          }
+        }
+      }
+    }
+  ]
+}
+
+DEF Follower OrientationDamper { }
+
+DEF FollowerScript Script {
+  inputOnly      SFTime     set_time
+  inputOnly      SFBool     set_active
+  inputOnly      SFRotation set_rotation
+  outputOnly     SFColor    color_changed
+  outputOnly     SFRotation destination_changed
+  outputOnly     SFVec3f point_changed
+ initializeOnly SFNode     touchSensor USE Touch
+
+  url "vrmlscript:
+function set_time (value)
+{
+	destination_changed = new SFRotation (new SFVec3f (0, 0, 1), touchSensor .hitPoint_changed);
+}
+
+function set_active (value)
+{
+	if (value)
+		color_changed = new SFColor (0.8, 0, 0);
+	
+	else
+		color_changed = new SFColor (0.8, 0.8, 0.8);
+}
+
+function set_rotation (value)
+{
+	print (value);
+
+	point_changed = value .multVec (new SFVec3f (0, 0, 1));
+}
+"
+}
+
+ROUTE Touch.touchTime TO FollowerScript.set_time
+ROUTE FollowerScript.destination_changed TO Follower.set_destination
+ROUTE FollowerScript.color_changed TO ConeMaterial.set_diffuseColor
+ROUTE Follower.isActive TO FollowerScript.set_active
+ROUTE Follower.value_changed TO Cone_1.set_rotation
+ROUTE Follower.value_changed TO FollowerScript.set_rotation
+ROUTE FollowerScript.point_changed TO Trail.set_point

@@ -2487,5 +2487,7 @@
     <Content Include="Tests\Follower\PositionChaser.wrl" />
     <Content Include="Tests\Follower\ColorChaser.wrl" />
     <Content Include="Tests\Follower\CoordinateChaser.wrl" />
+    <Content Include="Tests\Follower\OrientationChaser.wrl" />
+    <Content Include="Tests\Follower\OrientationDamper.wrl" />
   </ItemGroup>
 </Project>
