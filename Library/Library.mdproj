@@ -2344,6 +2344,7 @@
     <None Include="Tests\EnvironmentalEffects\TextureBackground.wrl" />
     <None Include="Tests\Follower\MFVec3f.x3dv" />
     <None Include="Tests\Follower\SFVec3f.x3dv" />
+    <None Include="Tests\NURBS\FredTheBunny.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
@@ -2471,6 +2472,7 @@
     <Folder Include="Tests\Layout\" />
     <Folder Include="Tests\Core\" />
     <Folder Include="Tests\Follower\" />
+    <Folder Include="Tests\NURBS\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Navigation\Rotor.wrl" />

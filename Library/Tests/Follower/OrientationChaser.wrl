@@ -1,7 +1,9 @@
 #X3D V3.3 utf8 Titania
 
 EXTERNPROTO LineTrail [
+  inputOutput    SFBool  enabled
   inputOutput    SFTime  cycleInterval
+  inputOutput    SFTime  resetTime
   inputOutput    SFVec3f point
   initializeOnly SFInt32 dimension
 ]
@@ -121,6 +123,7 @@ ROUTE Touch.touchTime TO FollowerScript.set_time
 ROUTE FollowerScript.destination_changed TO Follower.set_destination
 ROUTE FollowerScript.color_changed TO ConeMaterial.set_diffuseColor
 ROUTE Follower.isActive TO FollowerScript.set_active
+ROUTE Follower.isActive TO Trail.enabled
 ROUTE Follower.value_changed TO Cone_1.set_rotation
 ROUTE Follower.value_changed TO FollowerScript.set_rotation
 ROUTE FollowerScript.point_changed TO Trail.set_point
