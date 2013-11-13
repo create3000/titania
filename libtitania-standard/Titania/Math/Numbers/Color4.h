@@ -94,10 +94,10 @@ public:
 	color4 (const Type & r, const Type & g, const Type & b, const Type & a) :
 		value
 	{
-		math::clamp (r, Type (), Type (1)),
-		math::clamp (g, Type (), Type (1)),
-		math::clamp (b, Type (), Type (1)),
-		math::clamp (a, Type (), Type (1))
+		clamp (r, Type (), Type (1)),
+		clamp (g, Type (), Type (1)),
+		clamp (b, Type (), Type (1)),
+		clamp (a, Type (), Type (1))
 	}
 
 	{ }
@@ -122,7 +122,7 @@ public:
 	///  Set red component of this color.
 	void
 	r (const Type & r)
-	{ value [0] = math::clamp (r, Type (), Type (1)); }
+	{ value [0] = clamp (r, Type (), Type (1)); }
 
 	///  Return red component of this color.
 	const Type &
@@ -132,7 +132,7 @@ public:
 	///  Set green component of this color.
 	void
 	g (const Type & g)
-	{ value [1] = math::clamp (g, Type (), Type (1)); }
+	{ value [1] = clamp (g, Type (), Type (1)); }
 
 	///  Return green component of this color.
 	const Type &
@@ -142,7 +142,7 @@ public:
 	///  Set blue component of this color.
 	void
 	b (const Type & b)
-	{ value [2] = math::clamp (b, Type (), Type (1)); }
+	{ value [2] = clamp (b, Type (), Type (1)); }
 
 	///  Return blue component of this color.
 	const Type &
@@ -152,7 +152,7 @@ public:
 	///  Set alpha component of this color.
 	void
 	a (const Type & a)
-	{ value [3] = math::clamp (a, Type (), Type (1)); }
+	{ value [3] = clamp (a, Type (), Type (1)); }
 
 	///  Return alpha component of this color.
 	const Type &
@@ -207,10 +207,10 @@ template <typename Type>
 void
 color4 <Type>::set (const Type & r, const Type & g, const Type & b, const Type & a)
 {
-	value [0] = math::clamp (r, Type (0), Type (1));
-	value [1] = math::clamp (g, Type (0), Type (1));
-	value [2] = math::clamp (b, Type (0), Type (1));
-	value [3] = math::clamp (a, Type (0), Type (1));
+	value [0] = clamp (r, Type (0), Type (1));
+	value [1] = clamp (g, Type (0), Type (1));
+	value [2] = clamp (b, Type (0), Type (1));
+	value [3] = clamp (a, Type (0), Type (1));
 }
 
 template <typename Type>
@@ -231,7 +231,7 @@ color4 <Type>::setHSV (const Type & h, const Type & s, const Type & v)
 	// H is given on [0, 2 * Pi]. S and V are given on [0, 1].
 	// RGB are each returned on [0, 1].
 
-	Type _v = math::clamp (v, Type (), Type (1));
+	Type _v = clamp (v, Type (), Type (1));
 
 	if (s == 0)
 	{
@@ -240,9 +240,9 @@ color4 <Type>::setHSV (const Type & h, const Type & s, const Type & v)
 		return;
 	}
 
-	Type _s = math::clamp (s, Type (), Type (1));
+	Type _s = clamp (s, Type (), Type (1));
 
-	Type w = math::degree (math::clamp (h, Type (), Type (2 * M_PI))) / 60; // sector 0 to 5
+	Type w = degree (interval (h, Type (), Type (2 * Type (Type (M_PI))))) / 60; // sector 0 to 5
 
 	Type i = std::floor (w);
 	Type f = w - i;                                                         // factorial part of h
@@ -318,10 +318,10 @@ color4 <Type>::getHSV (Type & h, Type & s, Type & v) const
 	else
 		h = 4 + (r () - g ()) / delta;  // between magenta & cyan
 
-	h *= M_PI / 3;                     // radiants
+	h *= Type (Type (M_PI)) / 3;                     // radiants
 
 	if (h < 0)
-		h += 2 * M_PI;
+		h += 2 * Type (Type (M_PI));
 }
 
 // Operators:
@@ -352,8 +352,6 @@ template <typename Type>
 color4 <Type>
 clerp (const color4 <Type> & source, const color4 <Type> & destination, const Type & t)
 {
-	static constexpr Type PI2 = 2 * M_PI;
-
 	Type
 	   a_h, a_s, a_v,
 	   b_h, b_s, b_v;
@@ -363,28 +361,28 @@ clerp (const color4 <Type> & source, const color4 <Type> & destination, const Ty
 
 	Type range = std::abs (b_h - a_h);
 
-	if (range <= M_PI)
+	if (range <= Type (Type (M_PI)))
 	{
-		return color4 <Type>::HSVA (math::lerp (a_h, b_h, t),
-		                            math::lerp (a_s, b_s, t),
-		                            math::lerp (a_v, b_v, t),
-		                            math::lerp (source .a (), destination .a (), t));
+		return color4 <Type>::HSVA (lerp (a_h, b_h, t),
+		                            lerp (a_s, b_s, t),
+		                            lerp (a_v, b_v, t),
+		                            lerp (source .a (), destination .a (), t));
 	}
 	else
 	{
-		Type step = (PI2 - range) * t;
+		Type step = (Type (M_PI2) - range) * t;
 		Type h    = a_h < b_h ? a_h - step : a_h + step;
 
 		if (h < 0)
-			h += PI2;
+			h += Type (M_PI2);
 
-		else if (h > PI2)
-			h -= PI2;
+		else if (h > Type (M_PI2))
+			h -= Type (M_PI2);
 
 		return color4 <Type>::HSVA (h,
-		                            math::lerp (a_s, b_s, t),
-		                            math::lerp (a_v, b_v, t),
-		                            math::lerp (source .a (), destination .a (), t));
+		                            lerp (a_s, b_s, t),
+		                            lerp (a_v, b_v, t),
+		                            lerp (source .a (), destination .a (), t));
 
 	}
 }

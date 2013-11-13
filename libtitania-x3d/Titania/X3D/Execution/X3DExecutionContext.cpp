@@ -282,8 +282,10 @@ throw (Error <INVALID_NAME>,
 std::string
 X3DExecutionContext::getUniqueName (std::string name, bool hidden) const
 {
+	hidden = true; // XXX Remove this parameter
+
 	RegEx::_LastNumber .Replace ("", &name);
-	
+
 	if (not hidden)
 		RegEx::LastNumber .Replace ("", &name);
 

@@ -126,8 +126,6 @@ Scene::updateNamedNodes (const X3DSFNode <Scene> & scene)
 std::string
 Scene::getUniqueName (const X3DSFNode <Scene> & scene, std::string name) const
 {
-	__LOG__ << name << std::endl;
-
 	RegEx::_LastNumber .Replace ("", &name);
 	RegEx::LastNumber .Replace ("", &name);
 
@@ -158,11 +156,7 @@ Scene::getUniqueName (const X3DSFNode <Scene> & scene, std::string name) const
 			}
 
 			newName = name + std::to_string (++ i);
-
-			__LOG__ << "\t" << newName << std::endl;
 		}
-
-		__LOG__ << "\t" << newName << std::endl;
 
 		return newName;
 	}

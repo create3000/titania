@@ -87,43 +87,43 @@ public:
 
 	///  @name Fields
 
-	SFVec2f &
+	MFVec2f &
 	set_value ()
 	{ return *fields .set_value; }
 
-	const SFVec2f &
+	const MFVec2f &
 	set_value () const
 	{ return *fields .set_value; }
 
-	SFVec2f &
+	MFVec2f &
 	set_destination ()
 	{ return *fields .set_destination; }
 
-	const SFVec2f &
+	const MFVec2f &
 	set_destination () const
 	{ return *fields .set_destination; }
 
-	SFVec2f &
+	MFVec2f &
 	initialValue ()
 	{ return *fields .initialValue; }
 
-	const SFVec2f &
+	const MFVec2f &
 	initialValue () const
 	{ return *fields .initialValue; }
 
-	SFVec2f &
+	MFVec2f &
 	initialDestination ()
 	{ return *fields .initialDestination; }
 
-	const SFVec2f &
+	const MFVec2f &
 	initialDestination () const
 	{ return *fields .initialDestination; }
 
-	SFVec2f &
+	MFVec2f &
 	value_changed ()
 	{ return *fields .value_changed; }
 
-	const SFVec2f &
+	const MFVec2f &
 	value_changed () const
 	{ return *fields .value_changed; }
 
@@ -180,11 +180,11 @@ private:
 	{
 		Fields ();
 
-		SFVec2f* const set_value;
-		SFVec2f* const set_destination;
-		SFVec2f* const initialValue;
-		SFVec2f* const initialDestination;
-		SFVec2f* const value_changed;
+		MFVec2f* const set_value;
+		MFVec2f* const set_destination;
+		MFVec2f* const initialValue;
+		MFVec2f* const initialDestination;
+		MFVec2f* const value_changed;
 	};
 
 	Fields fields;

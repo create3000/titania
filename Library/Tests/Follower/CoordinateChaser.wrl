@@ -26,7 +26,7 @@ DEF DestinatinButton1 Transform {
       geometry Rectangle2D { }
     }
     DEF Touch TouchSensor { }
-    DEF Value MFVec3f {
+    DEF Destination MFVec3f {
       keyValue [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
     }
   ]
@@ -43,7 +43,7 @@ DEF DestinatinButton2 Transform {
       geometry Rectangle2D { }
     }
     DEF Touch1 TouchSensor { }
-    DEF Value1 MFVec3f {
+    DEF Destination1 MFVec3f {
       keyValue [ 0 -1 0, 1 0 0, 0 1 0, -1 0 0 ]
     }
   ]
@@ -60,7 +60,7 @@ DEF DestinatinButton3 Transform {
       geometry Rectangle2D { }
     }
     DEF Touch2 TouchSensor { }
-    DEF Value2 MFVec3f {
+    DEF Destination2 MFVec3f {
       keyValue [ -1 1 0, -1 -1 0, 1 -1 0, 1 1 0 ]
     }
   ]
@@ -77,13 +77,13 @@ DEF DestinatinButton4 Transform {
       geometry Rectangle2D { }
     }
     DEF Touch3 TouchSensor { }
-    DEF Value3 MFVec3f {
+    DEF Destination3 MFVec3f {
       keyValue [ -1 0 0, 0 -1 0, 1 0 0, 0 1 0 ]
     }
   ]
 }
 
-DEF Damper CoordinateDamper { }
+DEF Damper CoordinateChaser { }
 
 DEF QuadSetTransform Transform {
   children Shape {
@@ -99,12 +99,31 @@ DEF QuadSetTransform Transform {
   }
 }
 
-ROUTE Touch.touchTime TO Value.set_triggerTime
-ROUTE Touch1.touchTime TO Value1.set_triggerTime
-ROUTE Touch2.touchTime TO Value2.set_triggerTime
-ROUTE Touch3.touchTime TO Value3.set_triggerTime
-ROUTE Value.value_changed TO Damper.set_destination
-ROUTE Value1.value_changed TO Damper.set_destination
-ROUTE Value2.value_changed TO Damper.set_destination
-ROUTE Value3.value_changed TO Damper.set_destination
+DEF ValueButton Transform {
+  translation 2.71505 -1.10841 0
+  scale 0.204112 0.204112 1
+  children [
+    Shape {
+      appearance Appearance {
+        material Material { }
+      }
+      geometry Rectangle2D { }
+    }
+    DEF Touch4 TouchSensor { }
+    DEF Value MFVec3f {
+      keyValue [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+    }
+  ]
+}
+
+ROUTE Touch.touchTime TO Destination.set_triggerTime
+ROUTE Touch1.touchTime TO Destination1.set_triggerTime
+ROUTE Touch2.touchTime TO Destination2.set_triggerTime
+ROUTE Touch3.touchTime TO Destination3.set_triggerTime
+ROUTE Destination.value_changed TO Damper.set_destination
+ROUTE Destination1.value_changed TO Damper.set_destination
+ROUTE Destination2.value_changed TO Damper.set_destination
+ROUTE Destination3.value_changed TO Damper.set_destination
 ROUTE Damper.value_changed TO Coordinate.set_point
+ROUTE Touch4.touchTime TO Value.set_triggerTime
+ROUTE Value.value_changed TO Damper.set_value

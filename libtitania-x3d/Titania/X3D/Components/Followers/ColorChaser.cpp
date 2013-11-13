@@ -147,39 +147,6 @@ ColorChaser::_set_destination ()
 	set_active (true);
 }
 
-template <class Type>
-static
-void
-hsv_lerp (const Type & a_h, const Type & a_s, const Type & a_v,
-          const Type & b_h, const Type & b_s, const Type & b_v,
-          const Type & t,
-          Type & r_h, Type & r_s, Type & r_v)
-{
-	Type range = std::abs (b_h - a_h);
-
-	if (range <= M_PI)
-	{
-		r_h = math::lerp (a_h, b_h, t);
-		r_s = math::lerp (a_s, b_s, t);
-		r_v = math::lerp (a_v, b_v, t);
-	}
-	else
-	{
-		Type step = (M_PI2 - range) * t;
-		Type h    = a_h < b_h ? a_h - step : a_h + step;
-
-		if (h < 0)
-			h += M_PI2;
-
-		else if (h > M_PI2)
-			h -= M_PI2;
-
-		r_h = h;
-		r_s = math::lerp (a_s, b_s, t);
-		r_v = math::lerp (a_v, b_v, t);
-	}
-}
-
 void
 ColorChaser::prepareEvents ()
 {

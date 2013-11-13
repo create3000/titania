@@ -60,11 +60,11 @@ const std::string TexCoordChaser2D::typeName       = "TexCoordChaser2D";
 const std::string TexCoordChaser2D::containerField = "children";
 
 TexCoordChaser2D::Fields::Fields () :
-	         set_value (new SFVec2f ()),
-	   set_destination (new SFVec2f ()),
-	      initialValue (new SFVec2f ()),
-	initialDestination (new SFVec2f ()),
-	     value_changed (new SFVec2f ())
+	         set_value (new MFVec2f ()),
+	   set_destination (new MFVec2f ()),
+	      initialValue (new MFVec2f ()),
+	initialDestination (new MFVec2f ()),
+	     value_changed (new MFVec2f ())
 { }
 
 TexCoordChaser2D::TexCoordChaser2D (X3DExecutionContext* const executionContext) :
@@ -95,27 +95,141 @@ void
 TexCoordChaser2D::initialize ()
 {
 	X3DChaserNode::initialize ();
+
+	set_value ()       .addInterest (this, &TexCoordChaser2D::_set_value);
+	set_destination () .addInterest (this, &TexCoordChaser2D::_set_destination);
+
+	bufferEndTime = getCurrentTime ();
+	previousValue .assign (initialValue () .begin (), initialValue () .end ());
+
+	buffer .resize (getNumBuffers ());
+
+	for (auto & value : basic::adapter (buffer .begin () + 1, buffer .end ()))
+	{
+		value .assign (initialValue () .begin (), initialValue () .end ());
+		value .resize (initialDestination () .size ());
+	}
+
+	buffer [0] .assign (initialDestination () .begin (), initialDestination () .end ());
+
+	set_destination () .set (initialDestination ());
+
+	if (equals (initialDestination (), initialValue (), getTolerance ()))
+		value_changed () = initialDestination ();
+
+	else
+		set_active (true);
 }
 
 void
 TexCoordChaser2D::_set_value ()
 {
+	if (not isActive ())
+		bufferEndTime = getCurrentTime ();
+
+	for (auto & value : basic::adapter (buffer .begin () + 1, buffer .end ()))
+		value .assign (set_value () .begin (), set_value () .end ());
+
+	buffer [0] .resize (set_value () .size ());
+
+	previousValue .assign (set_value () .begin (), set_value () .end ());
+
+	value_changed () = set_value ();
+
+	set_active (true);
 }
 
 void
 TexCoordChaser2D::_set_destination ()
 {
+	for (auto & value : buffer)
+		value .resize (set_destination () .size ());
+
+	if (not isActive ())
+		bufferEndTime = getCurrentTime ();
+
+	set_active (true);
 }
 
 void
 TexCoordChaser2D::prepareEvents ()
 {
+	std::vector <Vector2f> output (set_destination () .size ());
+
+	float fraction = updateBuffer ();
+
+	float alpha = stepResponse ((buffer .size () - 1 + fraction) * getStepTime ());
+
+	for (size_t j = 0, size = set_destination () .size (); j < size; ++ j)
+		output [j] = lerp (previousValue [j], buffer [buffer .size () - 1] [j], alpha);
+
+	for (int32_t i = buffer .size () - 2; i >= 0; -- i)
+	{
+		float alpha = stepResponse ((i + fraction) * getStepTime ());
+	
+		for (size_t j = 0, size = set_destination () .size (); j < size; ++ j)
+		{
+			auto deltaIn = buffer [i] [j] - buffer [i + 1] [j];
+
+			auto deltaOut = deltaIn * alpha;
+
+			output [j] += deltaOut;
+		}
+	}
+
+	value_changed () .assign (output .begin (), output .end ());
+
+	if (equals (output, set_destination (), getTolerance ()))
+		set_active (false);
 }
 
 float
 TexCoordChaser2D::updateBuffer ()
 {
-	return 1;
+	float fraction = (getCurrentTime () - bufferEndTime) / getStepTime ();
+
+	if (fraction >= 1)
+	{
+		float seconds;
+		fraction = std::modf (fraction, &seconds);
+
+		if (seconds < buffer .size ())
+		{
+			previousValue = buffer [buffer .size () - seconds];
+
+			for (int32_t i = buffer .size () - 1; i >= seconds; -- i)
+			{
+				for (size_t j = 0, size = set_destination () .size (); j < size; ++ j)
+				{
+					buffer [i] [j] = buffer [i - seconds] [j];
+				}
+			}
+
+			for (size_t i = 0; i < seconds; ++ i)
+			{
+				float alpha = i / seconds;
+
+				for (size_t j = 0, size = set_destination () .size (); j < size; ++ j)
+				{
+					buffer [i] [j] = lerp (set_destination () [j] .getValue (), buffer [seconds] [j], alpha);
+				}
+ 			}
+		}
+		else
+		{
+			if (seconds == buffer .size ())
+				previousValue = buffer [0];
+			else
+				previousValue .assign (set_destination () .begin (), set_destination () .end ());
+
+			for (auto & value : buffer)
+				value .assign (set_destination () .begin (), set_destination () .end ());
+		}
+
+		bufferEndTime += seconds * getStepTime ();
+	}
+
+	return fraction;
 }
 
 } // X3D
