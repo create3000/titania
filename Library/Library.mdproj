@@ -2344,14 +2344,20 @@
     <None Include="Tests\EnvironmentalEffects\TextureBackground.wrl" />
     <None Include="Tests\Follower\MFVec3f.x3dv" />
     <None Include="Tests\Follower\SFVec3f.x3dv" />
-    <None Include="Tests\NURBS\FredTheBunny.x3dv" />
-    <None Include="Tests\NURBS\FourDucks.x3dv" />
-    <None Include="Tests\NURBS\HurricaneLantern.x3dv" />
-    <None Include="Tests\NURBS\MobiusNurbs.x3dv" />
-    <None Include="Tests\NURBS\NurbsPatch.x3dv" />
-    <None Include="Tests\NURBS\NurbsPatchImageTexture.x3dv" />
-    <None Include="Tests\NURBS\NurbsPatchSurfaceExample.x3dv" />
-    <None Include="Tests\NURBS\NurbsPatchSurfaceExampleLarge.x3dv" />
+    <None Include="Tests\NURBS\NurbsPatchSurface\FourDucks.x3dv" />
+    <None Include="Tests\NURBS\NurbsPatchSurface\FredTheBunny.x3dv" />
+    <None Include="Tests\NURBS\NurbsPatchSurface\HurricaneLantern.x3dv" />
+    <None Include="Tests\NURBS\NurbsPatchSurface\MobiusNurbs.x3dv" />
+    <None Include="Tests\NURBS\NurbsPatchSurface\NurbsPatch.x3dv" />
+    <None Include="Tests\NURBS\NurbsPatchSurface\NurbsPatchImageTexture.x3dv" />
+    <None Include="Tests\NURBS\NurbsPatchSurface\NurbsPatchSurfaceExample.x3dv" />
+    <None Include="Tests\NURBS\NurbsPatchSurface\NurbsPatchSurfaceExampleLarge.x3dv" />
+    <None Include="Tests\NURBS\NurbsTrimmedSurface\HoleCentered.x3dv" />
+    <None Include="Tests\NURBS\NurbsTrimmedSurface\HoleLargeOffset.x3dv" />
+    <None Include="Tests\NURBS\NurbsTrimmedSurface\HoleSmallOffset.x3dv" />
+    <None Include="Tests\NURBS\NurbsTrimmedSurface\NurbsTrimmedSurface.x3dv" />
+    <None Include="Tests\NURBS\NurbsTrimmedSurface\TrimmedNurbsWithHole.x3dv" />
+    <None Include="Tests\NURBS\NurbsTrimmedSurface\TrimmingContourExample.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
@@ -2480,6 +2486,8 @@
     <Folder Include="Tests\Core\" />
     <Folder Include="Tests\Follower\" />
     <Folder Include="Tests\NURBS\" />
+    <Folder Include="Tests\NURBS\NurbsPatchSurface\" />
+    <Folder Include="Tests\NURBS\NurbsTrimmedSurface\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Navigation\Rotor.wrl" />

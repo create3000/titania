@@ -1,6 +1,32 @@
 2013-11-14  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Library.mdproj:
+	* FourDucks.x3dv:
+	* NurbsPatch.x3dv:
+	* MobiusNurbs.x3dv:
+	* FredTheBunny.x3dv:
+	* HurricaneLantern.x3dv:
+	* NurbsPatchImageTexture.x3dv:
+	* NurbsPatchSurfaceExample.x3dv:
+	* FourDucks.x3dv:
+	* NurbsPatch.x3dv:
+	* NurbsPatchSurfaceExampleLarge.x3dv:
+	* MobiusNurbs.x3dv:
+	* FredTheBunny.x3dv:
+	* HoleCentered.x3dv:
+	* HurricaneLantern.x3dv:
+	* HoleSmallOffset.x3dv:
+	* HoleLargeOffset.x3dv:
+	* NurbsTrimmedSurface.x3dv:
+	* NurbsPatchImageTexture.x3dv:
+	* TrimmedNurbsWithHole.x3dv:
+	* NurbsPatchSurfaceExample.x3dv:
+	* TrimmingContourExample.x3dv:
+	* NurbsPatchSurfaceExampleLarge.x3dv: 
+
+2013-11-14  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Library.mdproj:
 	* NurbsPatch.x3dv:
 	* MobiusNurbs.x3dv:
 	* HurricaneLantern.x3dv:

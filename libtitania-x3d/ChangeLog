@@ -1,5 +1,9 @@
 2013-11-14  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DNurbsSurfaceGeometryNode.cpp: 
+
+2013-11-14  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* NurbsPatchSurface.h:
 	* NurbsTrimmedSurface.h:
 	* NurbsPatchSurface.cpp:

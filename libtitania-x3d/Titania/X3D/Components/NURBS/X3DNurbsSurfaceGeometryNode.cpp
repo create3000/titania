@@ -90,8 +90,11 @@ X3DNurbsSurfaceGeometryNode::getUTessellation () const
 {
 	if (uTessellation () > 0)
 		return uTessellation ();
+		
+	if (uTessellation () < 0)
+		return -uTessellation () * uDimension ();
 
-	return 3;
+	return 2 * uDimension ();
 }
 
 size_t
@@ -99,8 +102,11 @@ X3DNurbsSurfaceGeometryNode::getVTessellation () const
 {
 	if (vTessellation () > 0)
 		return vTessellation ();
+		
+	if (vTessellation () < 0)
+		return -vTessellation () * vDimension ();
 
-	return 3;
+	return 2 * vDimension ();
 }
 
 std::vector <float>
@@ -140,6 +146,16 @@ X3DNurbsSurfaceGeometryNode::getKnots (const MFDouble & knot, const SFInt32 & or
 
 		for (size_t i = 0, size = knots .size (); i < size; ++ i)
 			knots [i] = (float) i / (size - 1);
+	}
+	else
+	{
+		float scale = knots .back () - knots .front ();
+
+		if (scale)
+		{
+			for (auto & value : knots)
+				value /= scale;
+		}
 	}
 
 	return knots;
