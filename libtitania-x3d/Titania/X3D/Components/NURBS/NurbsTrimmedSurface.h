@@ -61,6 +61,8 @@ class NurbsTrimmedSurface :
 {
 public:
 
+	///  @name Construction
+
 	NurbsTrimmedSurface (X3DExecutionContext* const);
 
 	virtual
@@ -111,20 +113,14 @@ public:
 	trimmingContour () const
 	{ return *fields .trimmingContour; }
 
-	///  @name Tests
-
-	virtual
-	bool
-	isLineGeometry () const final
-	{ return false; }
-
 
 private:
 
+	///  @name Operations
+
 	virtual
 	void
-	build () final;
-
+	trim () final;
 
 	///  @name Static members
 

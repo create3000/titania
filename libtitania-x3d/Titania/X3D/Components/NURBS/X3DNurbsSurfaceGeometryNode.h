@@ -61,29 +61,7 @@ class X3DNurbsSurfaceGeometryNode :
 {
 public:
 
-	SFBool &
-	solid ()
-	{ return *fields .solid; }
-
-	const SFBool &
-	solid () const
-	{ return *fields .solid; }
-
-	SFNode &
-	controlPoint ()
-	{ return *fields .controlPoint; }
-
-	const SFNode &
-	controlPoint () const
-	{ return *fields .controlPoint; }
-
-	SFNode &
-	texCoord ()
-	{ return *fields .texCoord; }
-
-	const SFNode &
-	texCoord () const
-	{ return *fields .texCoord; }
+	///  @name Fields
 
 	SFInt32 &
 	uTessellation ()
@@ -101,14 +79,6 @@ public:
 	vTessellation () const
 	{ return *fields .vTessellation; }
 
-	MFDouble &
-	weight ()
-	{ return *fields .weight; }
-
-	const MFDouble &
-	weight () const
-	{ return *fields .weight; }
-
 	SFBool &
 	uClosed ()
 	{ return *fields .uClosed; }
@@ -117,21 +87,21 @@ public:
 	uClosed () const
 	{ return *fields .uClosed; }
 
-	SFInt32 &
-	uDimension ()
-	{ return *fields .uDimension; }
+	SFBool &
+	vClosed ()
+	{ return *fields .vClosed; }
 
-	const SFInt32 &
-	uDimension () const
-	{ return *fields .uDimension; }
+	const SFBool &
+	vClosed () const
+	{ return *fields .vClosed; }
 
-	MFDouble &
-	uKnot ()
-	{ return *fields .uKnot; }
+	SFBool &
+	solid ()
+	{ return *fields .solid; }
 
-	const MFDouble &
-	uKnot () const
-	{ return *fields .uKnot; }
+	const SFBool &
+	solid () const
+	{ return *fields .solid; }
 
 	SFInt32 &
 	uOrder ()
@@ -141,13 +111,21 @@ public:
 	uOrder () const
 	{ return *fields .uOrder; }
 
-	SFBool &
-	vClosed ()
-	{ return *fields .vClosed; }
+	SFInt32 &
+	vOrder ()
+	{ return *fields .vOrder; }
 
-	const SFBool &
-	vClosed () const
-	{ return *fields .vClosed; }
+	const SFInt32 &
+	vOrder () const
+	{ return *fields .vOrder; }
+
+	SFInt32 &
+	uDimension ()
+	{ return *fields .uDimension; }
+
+	const SFInt32 &
+	uDimension () const
+	{ return *fields .uDimension; }
 
 	SFInt32 &
 	vDimension ()
@@ -158,6 +136,14 @@ public:
 	{ return *fields .vDimension; }
 
 	MFDouble &
+	uKnot ()
+	{ return *fields .uKnot; }
+
+	const MFDouble &
+	uKnot () const
+	{ return *fields .uKnot; }
+
+	MFDouble &
 	vKnot ()
 	{ return *fields .vKnot; }
 
@@ -165,43 +151,121 @@ public:
 	vKnot () const
 	{ return *fields .vKnot; }
 
-	SFInt32 &
-	vOrder ()
-	{ return *fields .vOrder; }
+	MFDouble &
+	weight ()
+	{ return *fields .weight; }
 
-	const SFInt32 &
-	vOrder () const
-	{ return *fields .vOrder; }
+	const MFDouble &
+	weight () const
+	{ return *fields .weight; }
+
+	SFNode &
+	texCoord ()
+	{ return *fields .texCoord; }
+
+	const SFNode &
+	texCoord () const
+	{ return *fields .texCoord; }
+
+	SFNode &
+	controlPoint ()
+	{ return *fields .controlPoint; }
+
+	const SFNode &
+	controlPoint () const
+	{ return *fields .controlPoint; }
+
+	///  @name Tests
+
+	virtual
+	bool
+	isLineGeometry () const final
+	{ return false; }
 
 
 protected:
 
+	///  @name Construction
+
 	X3DNurbsSurfaceGeometryNode ();
+
+	///  @name Operations
+
+	virtual
+	void
+	trim ()
+	{ }
 
 
 private:
+
+	///  @name Operations
+
+	size_t
+	getUTessellation () const;
+
+	size_t
+	getVTessellation () const;
+
+	std::vector <float>
+	getKnots (const MFDouble &, const SFInt32 &, const SFInt32 &) const;
+
+	virtual
+	void
+	build () final;
+
+	///  @name Tessellator
+	
+	static
+	void
+	tessBeginData (GLenum, X3DNurbsSurfaceGeometryNode*);
+
+	static
+	void
+	tessTexCoordData (GLfloat*, X3DNurbsSurfaceGeometryNode*);
+
+	static
+	void
+	tessNormalData (GLfloat*, X3DNurbsSurfaceGeometryNode*);
+
+	static
+	void
+	tessVertexData (GLfloat*, X3DNurbsSurfaceGeometryNode*);
+
+	static
+	void
+	tessEndData (X3DNurbsSurfaceGeometryNode*);
+
+	static
+	void
+	tessError (GLenum);
 
 	struct Fields
 	{
 		Fields ();
 
-		SFBool* const solid;
-		SFNode* const controlPoint;
-		SFNode* const texCoord;
 		SFInt32* const uTessellation;
 		SFInt32* const vTessellation;
-		MFDouble* const weight;
 		SFBool* const uClosed;
-		SFInt32* const uDimension;
-		MFDouble* const uKnot;
-		SFInt32* const uOrder;
 		SFBool* const vClosed;
-		SFInt32* const vDimension;
-		MFDouble* const vKnot;
+		SFBool* const solid;
+		SFInt32* const uOrder;
 		SFInt32* const vOrder;
+		SFInt32* const uDimension;
+		SFInt32* const vDimension;
+		MFDouble* const uKnot;
+		MFDouble* const vKnot;
+		MFDouble* const weight;
+		SFNode* const texCoord;
+		SFNode* const controlPoint;
 	};
 
 	Fields fields;
+
+	GLenum type;
+	std::vector <Vector4f> texCoords;
+	std::vector <Vector3f> normals;
+	std::vector <Vector3f> vertices;
 
 };
 
