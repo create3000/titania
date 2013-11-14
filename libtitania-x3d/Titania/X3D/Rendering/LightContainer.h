@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -52,13 +52,13 @@
 #define __TITANIA_X3D_RENDERING_LIGHT_CONTAINER_H__
 
 #include "../Components/Lighting/X3DLightNode.h"
-#include "../Rendering/X3DCollectableContainer.h"
+#include "../Rendering/X3DCollectableObject.h"
 
 namespace titania {
 namespace X3D {
 
 class LightContainer :
-	public X3DCollectableContainer
+	public X3DCollectableObject
 {
 public:
 

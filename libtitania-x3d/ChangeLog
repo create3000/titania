@@ -1,5 +1,30 @@
 2013-11-14  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* X3DRenderer.h:
+	* ShapeContainer.h:
+	* LightContainer.h:
+	* CollisionShape.h:
+	* TransformHandle.cpp:
+	* LightContainer.cpp:
+	* CollisionShape.cpp:
+	* ShapeContainer.cpp:
+	* ViewportContainer.h:
+	* ClipPlaneContainer.h:
+	* X3DFlyViewer.cpp:
+	* ViewportContainer.cpp:
+	* X3DCollectableObject.h:
+	* ExamineViewer.cpp:
+	* ClipPlaneContainer.cpp:
+	* PolygonModeContainer.h:
+	* PolygonModeContainer.cpp:
+	* X3DGeometryNode.h:
+	* X3DGeometryNode.cpp:
+	* X3DNurbsSurfaceGeometryNode.cpp: 
+
+2013-11-14  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DNurbsSurfaceGeometryNode.cpp: 
 
 2013-11-14  Holger Seelig  <holger.seelig@yahoo.de>

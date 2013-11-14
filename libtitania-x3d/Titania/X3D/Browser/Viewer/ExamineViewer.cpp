@@ -61,8 +61,9 @@ namespace titania {
 namespace X3D {
 
 static constexpr float SPIN_ANGLE   = 0.006;
+static constexpr float SPIN_FACTOR  = 0.4;
 static constexpr float SCOLL_FACTOR = 1.0f / 50.0f;
-static constexpr float FRAME_RATE   = 100;
+static constexpr float FRAME_RATE   = 60;
 
 ExamineViewer::ExamineViewer (X3DBrowserSurface* const browser, NavigationInfo* navigationInfo) :
 	     X3DViewer (browser),
@@ -139,11 +140,9 @@ ExamineViewer::on_button_release_event (GdkEventButton* event)
 {
 	if (button == 1)
 	{
-		float angle = rotation .angle ();
-
-		if (angle > SPIN_ANGLE)
+		if (std::abs (rotation .angle ()) > SPIN_ANGLE)
 		{
-			rotation .angle (angle - SPIN_ANGLE);
+			rotation = slerp (Rotation4f (), rotation, SPIN_FACTOR);
 			addSpinning ();
 		}
 	}

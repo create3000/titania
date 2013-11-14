@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -53,7 +53,7 @@
 
 #include "../Components/EnvironmentalEffects/X3DFogObject.h"
 #include "../Components/Shape/X3DShapeNode.h"
-#include "../Rendering/X3DCollectableContainer.h"
+#include "../Rendering/X3DCollectableObject.h"
 
 #include "../Types/Geometry.h"
 #include "../Types/Numbers.h"
@@ -69,14 +69,14 @@ public:
 
 	ShapeContainer (X3DShapeNode*,
 	                X3DFogObject*,
-	                const CollectableContainerArray &,
+	                const CollectableObjectArray &,
 	                const Matrix4f &,
 	                float);
 
 	void
 	assign (X3DShapeNode*,
 	        X3DFogObject*,
-	        const CollectableContainerArray &,
+	        const CollectableObjectArray &,
 	        const Matrix4f &,
 	        float);
 
@@ -92,7 +92,7 @@ private:
 
 	X3DShapeNode*             shape;
 	X3DFogObject*             fog;
-	CollectableContainerArray localObjects;
+	CollectableObjectArray localObjects;
 
 	Matrix4f matrix;
 	float    distance;

@@ -66,7 +66,7 @@ static constexpr float     ROTATION_SPEED_FACTOR  = 0.48;
 static constexpr float     PAN_SHIFT_SPEED_FACTOR = 4;
 static constexpr float     ROLL_ANGLE             = M_PI / 32;
 static constexpr time_type ROLL_TIME              = 0.2;
-static constexpr double    FRAME_RATE             = 100;
+static constexpr double    FRAME_RATE             = 60;
 
 Vector3f X3DFlyViewer::upVector (0, 1, 0);
 

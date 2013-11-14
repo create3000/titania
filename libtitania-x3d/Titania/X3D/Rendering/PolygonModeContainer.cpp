@@ -48,64 +48,30 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_RENDERING_COLLISION_SHAPE_H__
-#define __TITANIA_X3D_RENDERING_COLLISION_SHAPE_H__
+#include "PolygonModeContainer.h"
 
-#include "../Components/Navigation/Collision.h"
-#include "../Components/Shape/X3DShapeNode.h"
-#include "../Rendering/CollisionArray.h"
-#include "../Rendering/X3DCollectableObject.h"
-
-#include "../Types/Geometry.h"
-#include "../Types/Numbers.h"
+#include "../Browser/X3DBrowser.h"
 
 namespace titania {
 namespace X3D {
 
-class CollisionShape
+PolygonModeContainer::PolygonModeContainer (GLenum type) :
+	X3DCollectableObject (),
+	                   type (type),
+	            polygonMode ()
+{ }
+
+void
+PolygonModeContainer::enable ()
 {
-public:
+	polygonMode .reset (new PolygonMode (type));
+}
 
-	CollisionShape (X3DShapeNode*,
-	                const CollisionArray &,
-	                const CollectableObjectArray &,
-	                const Matrix4f &,
-	                float);
-
-	void
-	assign (X3DShapeNode*,
-	        const CollisionArray &,
-	        const CollectableObjectArray &,
-	        const Matrix4f &,
-	        float);
-
-	float
-	getDistance () const
-	{ return distance; }
-
-	const CollisionArray &
-	getCollisions ()
-	{ return collisions; }
-
-	bool
-	intersect (const Sphere3f &) const;
-
-	void
-	draw ();
-
-
-private:
-
-	X3DShapeNode*             shape;
-	CollisionArray            collisions;
-	CollectableObjectArray localObjects;
-
-	Matrix4f matrix;
-	float    distance;
-
-};
+void
+PolygonModeContainer::disable ()
+{
+	polygonMode .reset ();
+}
 
 } // X3D
 } // titania
-
-#endif

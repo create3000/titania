@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -56,7 +56,7 @@
 #include "../Rendering/CollisionShape.h"
 #include "../Rendering/DepthBuffer.h"
 #include "../Rendering/ShapeContainer.h"
-#include "../Rendering/X3DCollectableContainer.h"
+#include "../Rendering/X3DCollectableObject.h"
 
 #include <memory>
 
@@ -72,11 +72,11 @@ public:
 	getDistance () const
 	{ return distance; }
 	
-	CollectableContainerArray &
+	CollectableObjectArray &
 	getGlobalObjects ()
 	{ return globalObjects; }
 	
-	CollectableContainerArray &
+	CollectableObjectArray &
 	getLocalObjects ()
 	{ return localObjects; }
 
@@ -137,8 +137,8 @@ private:
 	void
 	addStepUp ();
 	
-	CollectableContainerArray globalObjects;
-	CollectableContainerArray localObjects;
+	CollectableObjectArray globalObjects;
+	CollectableObjectArray localObjects;
 
 	ShapeContainerArray     shapes;
 	ShapeContainerArray     transparentShapes;

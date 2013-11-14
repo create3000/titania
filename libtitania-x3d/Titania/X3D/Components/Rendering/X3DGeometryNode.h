@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -53,7 +53,7 @@
 
 #include "../../Browser/Picking/IntersectionPtr.h"
 #include "../../Rendering/TexCoordArray.h"
-#include "../../Rendering/X3DCollectableContainer.h"
+#include "../../Rendering/X3DCollectableObject.h"
 #include "../../Types/Geometry.h"
 #include "../Core/X3DNode.h"
 #include "../Texturing/TextureCoordinateGenerator.h"
@@ -96,7 +96,7 @@ public:
 	intersect (const Line3f &, std::deque <IntersectionPtr> &) const;
 
 	bool
-	intersect (const Sphere3f &, const Matrix4f &, const CollectableContainerArray &) const;
+	intersect (const Sphere3f &, const Matrix4f &, const CollectableObjectArray &) const;
 
 	virtual
 	void
@@ -216,7 +216,7 @@ private:
 	isClipped (const Vector3f &, const Matrix4f &) const;
 
 	bool
-	isClipped (const Vector3f &, const Matrix4f &, const CollectableContainerArray &) const;
+	isClipped (const Vector3f &, const Matrix4f &, const CollectableObjectArray &) const;
 
 	void
 	clear ();

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -135,7 +135,7 @@ X3DGeometryNode::isClipped (const Vector3f & point, const Matrix4f & modelViewMa
 }
 
 bool
-X3DGeometryNode::isClipped (const Vector3f & point, const Matrix4f & modelViewMatrix, const CollectableContainerArray & localObjects) const
+X3DGeometryNode::isClipped (const Vector3f & point, const Matrix4f & modelViewMatrix, const CollectableObjectArray & localObjects) const
 {
 	for (const auto & node : localObjects)
 	{
@@ -250,7 +250,7 @@ X3DGeometryNode::intersect (const Line3f & line, std::deque <IntersectionPtr> & 
 }
 
 bool
-X3DGeometryNode::intersect (const Sphere3f & sphere, const Matrix4f & matrix, const CollectableContainerArray & localObjects) const
+X3DGeometryNode::intersect (const Sphere3f & sphere, const Matrix4f & matrix, const CollectableObjectArray & localObjects) const
 {
 	if ((bbox * matrix) .intersect (sphere))
 	{

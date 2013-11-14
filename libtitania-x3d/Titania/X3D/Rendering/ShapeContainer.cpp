@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -57,7 +57,7 @@ namespace X3D {
 
 ShapeContainer::ShapeContainer (X3DShapeNode* shape,
                                 X3DFogObject* fog,
-                                const CollectableContainerArray & localObjects,
+                                const CollectableObjectArray & localObjects,
                                 const Matrix4f & matrix,
                                 float distance) :
 	       shape (shape),
@@ -70,7 +70,7 @@ ShapeContainer::ShapeContainer (X3DShapeNode* shape,
 void
 ShapeContainer::assign (X3DShapeNode* shape,
                         X3DFogObject* fog,
-                        const CollectableContainerArray & localObjects,
+                        const CollectableObjectArray & localObjects,
                         const Matrix4f & matrix,
                         float distance)
 {

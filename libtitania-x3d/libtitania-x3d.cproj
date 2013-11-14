@@ -595,7 +595,6 @@
     <None Include="share\titania\tools\Statistics.wrl" />
     <None Include="share\titania\tools\TransformTool.wrl" />
     <None Include="Titania\X3D\Rendering\TexCoordArray.h" />
-    <None Include="Titania\X3D\Rendering\X3DCollectableContainer.h" />
     <None Include="Titania\X3D\Rendering\ClipPlaneContainer.h" />
     <None Include="Titania\X3D\Rendering\ViewportContainer.h" />
     <None Include="Titania\X3D\Components\Followers\ScalarDamper.h" />
@@ -605,6 +604,8 @@
     <None Include="Titania\X3D\Components\Followers\CoordinateChaser.h" />
     <None Include="Titania\X3D\Components\Followers\TexCoordChaser2D.h" />
     <None Include="Titania\X3D\Rendering\Tessellator.h" />
+    <None Include="Titania\X3D\Rendering\PolygonModeContainer.h" />
+    <None Include="Titania\X3D\Rendering\X3DCollectableObject.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1056,6 +1057,7 @@
     <Compile Include="Titania\X3D\Components\Followers\ColorChaser.cpp" />
     <Compile Include="Titania\X3D\Components\Followers\CoordinateChaser.cpp" />
     <Compile Include="Titania\X3D\Components\Followers\TexCoordChaser2D.cpp" />
+    <Compile Include="Titania\X3D\Rendering\PolygonModeContainer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

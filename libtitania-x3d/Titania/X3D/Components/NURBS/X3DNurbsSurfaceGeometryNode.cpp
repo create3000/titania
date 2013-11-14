@@ -88,6 +88,8 @@ X3DNurbsSurfaceGeometryNode::X3DNurbsSurfaceGeometryNode () :
 size_t
 X3DNurbsSurfaceGeometryNode::getUTessellation () const
 {
+	// Return a tessellation one less to the standard to get the right tessellation.
+
 	if (uTessellation () > 0)
 		return uTessellation ();
 		
@@ -100,6 +102,8 @@ X3DNurbsSurfaceGeometryNode::getUTessellation () const
 size_t
 X3DNurbsSurfaceGeometryNode::getVTessellation () const
 {
+	// Return a tessellation one less to the standard to get the right tessellation.
+
 	if (vTessellation () > 0)
 		return vTessellation ();
 		
@@ -149,12 +153,16 @@ X3DNurbsSurfaceGeometryNode::getKnots (const MFDouble & knot, const SFInt32 & or
 	}
 	else
 	{
+		// Scale to one unit length for correct tessellation.
+
 		float scale = knots .back () - knots .front ();
 
 		if (scale)
 		{
+			scale = 1 / scale;
+		
 			for (auto & value : knots)
-				value /= scale;
+				value *= scale;
 		}
 	}
 
@@ -164,8 +172,6 @@ X3DNurbsSurfaceGeometryNode::getKnots (const MFDouble & knot, const SFInt32 & or
 void
 X3DNurbsSurfaceGeometryNode::build ()
 {
-	__LOG__ << getName () << std::endl;
-
 	if (uOrder () < 2)
 		return;
 
@@ -321,12 +327,6 @@ X3DNurbsSurfaceGeometryNode::tessEndData (X3DNurbsSurfaceGeometryNode* self)
 			break;
 		case GL_QUAD_STRIP:
 		{
-			__LOG__
-				<< self -> texCoords .size () << " : "
-				<< self -> normals .size () << " : "
-				<< self -> vertices .size () << " : "
-				<< std::endl;
-
 			for (size_t i = 0, size = self -> vertices .size () - 2; i < size; i += 2)
 			{
 				size_t i1 = i;

@@ -54,6 +54,7 @@
 #include "../Browser/X3DBrowser.h"
 #include "../Components/Grouping/Transform.h"
 #include "../Execution/X3DExecutionContext.h"
+#include "../Rendering/PolygonModeContainer.h"
 
 namespace titania {
 namespace X3D {
@@ -189,6 +190,8 @@ TransformHandle::traverse (const TraverseType type)
 {
 	transform -> traverse (type);
 
+	getCurrentLayer () -> getLocalObjects () .emplace_back (new PolygonModeContainer (GL_FILL));
+
 	// Handle
 
 	glPushMatrix ();
@@ -205,6 +208,8 @@ TransformHandle::traverse (const TraverseType type)
 	}
 
 	glPopMatrix ();
+
+	getCurrentLayer () -> getLocalObjects () .pop_back ();
 }
 
 void

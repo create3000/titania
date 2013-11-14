@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,62 +48,47 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_RENDERING_COLLISION_SHAPE_H__
-#define __TITANIA_X3D_RENDERING_COLLISION_SHAPE_H__
+#ifndef __TITANIA_X3D_RENDERING_X3DCOLLECTABLE_OBJECT_H__
+#define __TITANIA_X3D_RENDERING_X3DCOLLECTABLE_OBJECT_H__
 
-#include "../Components/Navigation/Collision.h"
-#include "../Components/Shape/X3DShapeNode.h"
-#include "../Rendering/CollisionArray.h"
-#include "../Rendering/X3DCollectableObject.h"
-
-#include "../Types/Geometry.h"
 #include "../Types/Numbers.h"
+
+#include <memory>
+#include <vector>
 
 namespace titania {
 namespace X3D {
 
-class CollisionShape
+class X3DCollectableObject
 {
 public:
 
-	CollisionShape (X3DShapeNode*,
-	                const CollisionArray &,
-	                const CollectableObjectArray &,
-	                const Matrix4f &,
-	                float);
-
-	void
-	assign (X3DShapeNode*,
-	        const CollisionArray &,
-	        const CollectableObjectArray &,
-	        const Matrix4f &,
-	        float);
-
-	float
-	getDistance () const
-	{ return distance; }
-
-	const CollisionArray &
-	getCollisions ()
-	{ return collisions; }
-
+	virtual
 	bool
-	intersect (const Sphere3f &) const;
+	isClipped (const Vector3f &, const Matrix4f &) const
+	{ return false; }
 
+	virtual
 	void
-	draw ();
+	enable () = 0;
+
+	virtual
+	void
+	disable () = 0;
+
+	virtual
+	~X3DCollectableObject ()
+	{ }
 
 
-private:
+protected:
 
-	X3DShapeNode*             shape;
-	CollisionArray            collisions;
-	CollectableObjectArray localObjects;
-
-	Matrix4f matrix;
-	float    distance;
+	X3DCollectableObject ()
+	{ }
 
 };
+
+typedef std::vector <std::shared_ptr <X3DCollectableObject>>  CollectableObjectArray;
 
 } // X3D
 } // titania

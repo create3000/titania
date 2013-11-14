@@ -52,13 +52,13 @@
 #define __TITANIA_X3D_RENDERING_CLIP_PLANE_CONTAINER_H__
 
 #include "../Components/Rendering/ClipPlane.h"
-#include "../Rendering/X3DCollectableContainer.h"
+#include "../Rendering/X3DCollectableObject.h"
 
 namespace titania {
 namespace X3D {
 
 class ClipPlaneContainer :
-	public X3DCollectableContainer
+	public X3DCollectableObject
 {
 public:
 
