@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_COMPONENTS_GEOMETRY3D_EXTRUSION_H__
 #define __TITANIA_X3D_COMPONENTS_GEOMETRY3D_EXTRUSION_H__
 
-#include "../../Rendering/Tesselator.h"
+#include "../../Rendering/Tessellator.h"
 #include "../Rendering/X3DGeometryNode.h"
 
 namespace titania {
@@ -182,7 +182,7 @@ public:
 
 private:
 
-	typedef opengl::tesselator <size_t, size_t> Tesselator;
+	typedef opengl::tessellator <size_t, size_t> Tessellator;
 
 	virtual
 	void
@@ -199,7 +199,7 @@ private:
 	build () final;
 
 	void
-	tesselateCap (const Tesselator &,
+	tessellateCap (const Tessellator &,
 	              std::vector <Vector3f> &,
 	              const Vector2f &,
 	              const Vector2f &);

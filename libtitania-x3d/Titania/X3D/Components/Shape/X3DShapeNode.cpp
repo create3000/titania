@@ -214,8 +214,9 @@ X3DShapeNode::draw ()
 
 	if (_geometry -> isLineGeometry ())
 	{
-		_appearance -> getLineProperties () -> draw ();
+		_appearance -> getLineProperties () -> enable ();
 		_geometry -> draw ();
+		_appearance -> getLineProperties () -> disable ();
 	}
 	else
 	{
@@ -244,8 +245,9 @@ X3DShapeNode::draw ()
 			if (polygonMode [0] == GL_FILL)
 				glPolygonMode (GL_FRONT_AND_BACK, GL_LINE);
 
-			_appearance -> getLineProperties () -> draw ();
+			_appearance -> getLineProperties () -> enable ();
 			_geometry   -> draw ();
+			_appearance -> getLineProperties () -> disable ();
 
 			glPolygonMode (GL_FRONT_AND_BACK, polygonMode [0]);
 		}

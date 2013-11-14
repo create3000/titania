@@ -2346,6 +2346,12 @@
     <None Include="Tests\Follower\SFVec3f.x3dv" />
     <None Include="Tests\NURBS\FredTheBunny.x3dv" />
     <None Include="Tests\NURBS\FourDucks.x3dv" />
+    <None Include="Tests\NURBS\HurricaneLantern.x3dv" />
+    <None Include="Tests\NURBS\MobiusNurbs.x3dv" />
+    <None Include="Tests\NURBS\NurbsPatch.x3dv" />
+    <None Include="Tests\NURBS\NurbsPatchImageTexture.x3dv" />
+    <None Include="Tests\NURBS\NurbsPatchSurfaceExample.x3dv" />
+    <None Include="Tests\NURBS\NurbsPatchSurfaceExampleLarge.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

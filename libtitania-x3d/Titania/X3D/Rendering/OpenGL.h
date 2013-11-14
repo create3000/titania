@@ -129,6 +129,27 @@ ProjectionMatrix4f ()
 	return matrix;
 }
 
+class PolygonMode
+{
+public:
+
+	PolygonMode (GLenum type)
+	{
+		glGetIntegerv (GL_POLYGON_MODE, polygonMode);
+
+		glPolygonMode (GL_FRONT_AND_BACK, type);
+	}
+	
+	~PolygonMode ()
+	{
+		glPolygonMode (GL_FRONT_AND_BACK, polygonMode [0]);
+	}
+
+private:
+
+	GLint polygonMode [2];
+};
+
 } // X3D
 } // titania
 

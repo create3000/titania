@@ -292,6 +292,8 @@ RenderingProperties::display ()
 
 	// Display statistics
 
+	PolygonMode polygonMode (GL_FILL);
+
 	world -> traverse (TraverseType::COLLECT);
 }
 

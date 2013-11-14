@@ -84,7 +84,7 @@ LineProperties::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-LineProperties::draw ()
+LineProperties::enable ()
 {
 	if (applied ())
 	{
@@ -107,12 +107,14 @@ LineProperties::draw ()
 			glPointSize (1);
 		}
 	}
-	else
-	{
-		glDisable (GL_LINE_STIPPLE);
-		glLineWidth (1);
-		glPointSize (1);
-	}
+}
+
+void
+LineProperties::disable ()
+{
+	glDisable (GL_LINE_STIPPLE);
+	glLineWidth (1);
+	glPointSize (1);
 }
 
 } // X3D

@@ -331,6 +331,8 @@ X3DBackgroundNode::traverse (const TraverseType type)
 void
 X3DBackgroundNode::draw ()
 {
+	PolygonMode polygonMode (GL_FILL);
+
 	drawSphere ();
 	drawCube ();
 }
@@ -341,55 +343,47 @@ X3DBackgroundNode::drawSphere ()
 	if (transparency () >= 1.0f)
 		return;
 
-	//
+	// Draw
 
-	GLint polygonMode [2] = { 0, 0 }; // Front and back value.
-	glGetIntegerv (GL_POLYGON_MODE, polygonMode);
+	getCurrentViewpoint () -> reshape (1, 20000);
 
-	glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
-	{
-		getCurrentViewpoint () -> reshape (1, 20000);
+	// Rotate background
 
-		// Rotate background
+	Vector3d   translation;
+	Rotation4f rotation;
+	float      x, y, z, angle;
 
-		Vector3d   translation;
-		Rotation4f rotation;
-		float      x, y, z, angle;
+	matrix .get (translation, rotation);
+	rotation .get (x, y, z, angle);
 
-		matrix .get (translation, rotation);
-		rotation .get (x, y, z, angle);
+	glRotatef (math::degree (angle), x, y, z);
 
-		glRotatef (math::degree (angle), x, y, z);
+	// Draw
 
-		// Draw
+	glDisable (GL_DEPTH_TEST);
+	glDepthMask (GL_FALSE);
 
-		glDisable (GL_DEPTH_TEST);
-		glDepthMask (GL_FALSE);
+	if (transparency ())
+		glEnable (GL_BLEND);
 
-		if (transparency ())
-			glEnable (GL_BLEND);
+	glEnable (GL_CULL_FACE);
 
-		glEnable (GL_CULL_FACE);
+	glFrontFace (GL_CW);
 
-		glFrontFace (GL_CW);
+	glEnableClientState (GL_COLOR_ARRAY);
+	glColorPointer (4, GL_FLOAT, 0, glColors .data ());
 
-		glEnableClientState (GL_COLOR_ARRAY);
-		glColorPointer (4, GL_FLOAT, 0, glColors .data ());
+	glEnableClientState (GL_VERTEX_ARRAY);
+	glVertexPointer (3, GL_FLOAT, 0, glPoints .data ());
 
-		glEnableClientState (GL_VERTEX_ARRAY);
-		glVertexPointer (3, GL_FLOAT, 0, glPoints .data ());
+	glDrawArrays (GL_QUADS, 0, numIndices);
 
-		glDrawArrays (GL_QUADS, 0, numIndices);
+	glDisableClientState (GL_COLOR_ARRAY);
+	glDisableClientState (GL_VERTEX_ARRAY);
 
-		glDisableClientState (GL_COLOR_ARRAY);
-		glDisableClientState (GL_VERTEX_ARRAY);
-
-		glDisable (GL_BLEND);
-		glDepthMask (GL_TRUE);
-		glEnable (GL_DEPTH_TEST);
-	}
-
-	glPolygonMode (GL_FRONT_AND_BACK, polygonMode [0]);
+	glDisable (GL_BLEND);
+	glDepthMask (GL_TRUE);
+	glEnable (GL_DEPTH_TEST);
 }
 
 void

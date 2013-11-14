@@ -161,32 +161,34 @@ X3DComposedGeometryNode::buildPolygons (size_t vertexCount, size_t size)
 
 	// Fill GeometryNode
 
-	for (size_t index = 0, face = 0; index < size; ++ face)
+	for (size_t i = 0, face = 0; i < size; ++ face)
 	{
-		for (size_t i = 0; i < vertexCount; ++ i, ++ index)
+		for (size_t v = 0; v < vertexCount; ++ v, ++ i)
 		{
+			size_t index = getIndex (i);
+		
 			if (_color)
 			{
 				if (colorPerVertex ())
-					_color -> addColor (getColors (), getIndex (index));
+					_color -> addColor (getColors (), index);
 
 				else
 					_color -> addColor (getColors (), face);
 			}
 
 			if (_textureCoordinate)
-				_textureCoordinate -> addTexCoord (getTexCoord (), getIndex (index));
+				_textureCoordinate -> addTexCoord (getTexCoord (), index);
 
 			if (_normal)
 			{
 				if (normalPerVertex ())
-					_normal -> addVector (getNormals (), getIndex (index));
+					_normal -> addVector (getNormals (), index);
 
 				else
 					_normal -> addVector (getNormals (), face);
 			}
 
-			_coord -> addVertex (getVertices (), getIndex (index));
+			_coord -> addVertex (getVertices (), index);
 		}
 	}
 

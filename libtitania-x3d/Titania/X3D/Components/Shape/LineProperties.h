@@ -115,7 +115,16 @@ public:
 
 	virtual
 	void
-	draw () final;
+	enable () final;
+
+	virtual
+	void
+	disable () final;
+
+	virtual
+	void
+	draw () final
+	{ }
 
 
 private:

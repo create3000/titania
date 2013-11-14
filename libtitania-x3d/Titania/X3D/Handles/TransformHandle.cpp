@@ -189,6 +189,8 @@ TransformHandle::traverse (const TraverseType type)
 {
 	transform -> traverse (type);
 
+	// Handle
+
 	glPushMatrix ();
 
 	glMultMatrixf (transform -> getMatrix () .data ());

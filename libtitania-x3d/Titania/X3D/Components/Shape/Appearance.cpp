@@ -113,8 +113,8 @@ Appearance::initialize ()
 	else
 		glBindProgramPipeline = [ ] (GLuint) { };
 
-	lineProperties ()   .addInterest (this, &Appearance::set_lineProperties);
 	fillProperties ()   .addInterest (this, &Appearance::set_fillProperties);
+	lineProperties ()   .addInterest (this, &Appearance::set_lineProperties);
 	material ()         .addInterest (this, &Appearance::set_material);
 	texture ()          .addInterest (this, &Appearance::set_texture);
 	textureTransform () .addInterest (this, &Appearance::set_textureTransform);

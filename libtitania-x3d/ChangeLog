@@ -1,3 +1,43 @@
+2013-11-14  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-x3d.cproj:
+	* OpenGL.h:
+	* Tesselator.h:
+	* Tessellator.h:
+	* Notification.cpp:
+	* NurbsSet.h:
+	* TransformHandle.cpp:
+	* NurbsSet.cpp:
+	* NurbsCurve.h:
+	* Appearance.cpp:
+	* NurbsCurve.cpp:
+	* NurbsCurve2D.h:
+	* LineProperties.h:
+	* NurbsCurve2D.cpp:
+	* X3DShapeNode.cpp:
+	* Extrusion.h:
+	* Coordinate.h:
+	* BrowserOptions.h:
+	* Coordinate.cpp:
+	* LineProperties.cpp:
+	* CoordinateDouble.h:
+	* Extrusion.cpp:
+	* NurbsPatchSurface.h:
+	* BrowserOptions.cpp:
+	* GeoCoordinate.h:
+	* CoordinateDouble.cpp:
+	* NurbsPatchSurface.cpp:
+	* IndexedFaceSet.h:
+	* GeoCoordinate.cpp:
+	* X3DCoordinateNode.h:
+	* IndexedFaceSet.cpp:
+	* NurbsTrimmedSurface.cpp:
+	* RenderingProperties.cpp:
+	* X3DNurbsSurfaceGeometryNode.h:
+	* X3DComposedGeometryNode.cpp:
+	* X3DNurbsSurfaceGeometryNode.cpp:
+	* X3DBackgroundNode.cpp: 
+
 2013-11-13  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* NurbsPatchSurface.cpp: 

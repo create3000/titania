@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -410,14 +410,14 @@ Extrusion::build ()
 			}
 			else
 			{
-				Tesselator tesselator;
+				Tessellator tessellator;
 
 				for (size_t k = 0; k < numCapPoints; ++ k)
-					tesselator .add_vertex (points [INDEX (j, numCapPoints - 1 - k)], INDEX (j, numCapPoints - 1 - k), numCapPoints - 1 - k);
+					tessellator .add_vertex (points [INDEX (j, numCapPoints - 1 - k)], INDEX (j, numCapPoints - 1 - k), numCapPoints - 1 - k);
 
-				tesselator .tesselate ();
+				tessellator .tessellate ();
 
-				tesselateCap (tesselator, points, min, capSize);
+				tessellateCap (tessellator, points, min, capSize);
 			}
 		}
 
@@ -443,14 +443,14 @@ Extrusion::build ()
 			}
 			else
 			{
-				Tesselator tesselator;
+				Tessellator tessellator;
 
 				for (size_t k = 0; k < numCapPoints; ++ k)
-					tesselator .add_vertex (points [INDEX (j, k)], INDEX (j, k), k);
+					tessellator .add_vertex (points [INDEX (j, k)], INDEX (j, k), k);
 
-				tesselator .tesselate ();
+				tessellator .tessellate ();
 
-				tesselateCap (tesselator, points, min, capSize);
+				tessellateCap (tessellator, points, min, capSize);
 			}
 		}
 	}
@@ -463,7 +463,7 @@ Extrusion::build ()
 }
 
 void
-Extrusion::tesselateCap (const Tesselator & tesselator,
+Extrusion::tessellateCap (const Tessellator & tessellator,
                          std::vector <Vector3f> & points,
                          const Vector2f & min,
                          const Vector2f & capSize)
@@ -475,7 +475,7 @@ Extrusion::tesselateCap (const Tesselator & tesselator,
 
 	Vector3f normal;
 
-	for (const auto & polygonElement : tesselator .polygon ())
+	for (const auto & polygonElement : tessellator .polygon ())
 	{
 		switch (polygonElement .type ())
 		{
@@ -519,7 +519,7 @@ Extrusion::tesselateCap (const Tesselator & tesselator,
 
 	normal = normalize (normal);
 
-	for (const auto & polygonElement : tesselator .polygon ())
+	for (const auto & polygonElement : tessellator .polygon ())
 	{
 		switch (polygonElement .type ())
 		{

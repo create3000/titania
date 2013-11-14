@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -119,7 +119,7 @@ public:
 
 	virtual
 	void
-	addVertex (opengl::tesselator <size_t> &, int32_t, size_t) const final;
+	addVertex (opengl::tessellator <size_t> &, int32_t, size_t) const final;
 
 	virtual
 	void

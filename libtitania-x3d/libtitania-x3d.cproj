@@ -453,7 +453,6 @@
     <None Include="Titania\X3D\Base\Output.h" />
     <None Include="Titania\X3D\Browser\X3DBrowserContext.h" />
     <None Include="Titania\X3D\Execution\BindableNodeList.h" />
-    <None Include="Titania\X3D\Rendering\Tesselator.h" />
     <None Include="Makefile.am" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\Fields\jsMFBool.h" />
     <None Include="Titania\X3D\JavaScript\SpiderMonkey\jsfield.h" />
@@ -605,6 +604,7 @@
     <None Include="Titania\X3D\Components\Followers\ColorChaser.h" />
     <None Include="Titania\X3D\Components\Followers\CoordinateChaser.h" />
     <None Include="Titania\X3D\Components\Followers\TexCoordChaser2D.h" />
+    <None Include="Titania\X3D\Rendering\Tessellator.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

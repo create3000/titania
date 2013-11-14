@@ -65,7 +65,7 @@ namespace X3D {
 // EnableInlineViewpoints  Boolean                                  True                         Viewpoints from Inline nodes are included in list of viewpoints if made available by the Inline node.
 // Antialiased             Boolean                                  False                        Render using hardware antialiasing if available
 // TextureQuality          Low, Medium, High                        Medium                       Quality of texture map display
-// PrimitiveQuality        Low, Medium, High                        Medium                       Render quality (tesselation level) for Box, Cone, Cylinder, Sphere
+// PrimitiveQuality        Low, Medium, High                        Medium                       Render quality (tessellation level) for Box, Cone, Cylinder, Sphere
 // QualityWhenMoving       Low, Medium, High,                       Same (as while stationary)   Render quality while camera is moving
 // Shading                 Point, Wireframe, Flat, Gouraud, Phong   Gouraud                      Specify shading mode for all objects
 // MotionBlur              Boolean                                  False                        Render animations with motion blur

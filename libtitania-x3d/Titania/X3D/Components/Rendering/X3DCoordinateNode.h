@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_COMPONENTS_RENDERING_X3DCOORDINATE_NODE_H__
 
 #include "../Rendering/X3DGeometricPropertyNode.h"
-#include "../../Rendering/Tesselator.h"
+#include "../../Rendering/Tessellator.h"
 
 namespace titania {
 namespace X3D {
@@ -70,7 +70,7 @@ public:
 
 	virtual
 	void
-	addVertex (opengl::tesselator <size_t> &, int32_t, size_t) const = 0;
+	addVertex (opengl::tessellator <size_t> &, int32_t, size_t) const = 0;
 
 	virtual
 	void

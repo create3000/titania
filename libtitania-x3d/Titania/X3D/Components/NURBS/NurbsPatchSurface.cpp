@@ -53,6 +53,7 @@
 #include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Rendering/X3DCoordinateNode.h"
+#include "../Texturing/X3DTextureCoordinateNode.h"
 
 namespace titania {
 namespace X3D {
@@ -64,7 +65,10 @@ const std::string NurbsPatchSurface::containerField = "geometry";
 NurbsPatchSurface::NurbsPatchSurface (X3DExecutionContext* const executionContext) :
 	                X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DNurbsSurfaceGeometryNode (),
-	                     listId (0)
+	                       type (),
+	                  texCoords (),
+	                    normals (),
+	                   vertices ()
 {
 	addField (inputOutput,    "metadata",      metadata ());
 	addField (inputOutput,    "uTessellation", uTessellation ());
@@ -93,34 +97,24 @@ void
 NurbsPatchSurface::initialize ()
 {
 	X3DNurbsSurfaceGeometryNode::initialize ();
-
-	listId = glGenLists (1);
 }
 
 size_t
-NurbsPatchSurface::getUTessellationPoints () const
+NurbsPatchSurface::getUTessellation () const
 {
 	if (uTessellation () > 0)
-		return uTessellation () + 1;
+		return uTessellation ();
 
-	else if (uTessellation () < 0)
-		return -uTessellation () * uDimension () + 1;
-
-	else
-		return 2 * uDimension () + 1;
+	return 3;
 }
 
 size_t
-NurbsPatchSurface::getVTessellationPoints () const
+NurbsPatchSurface::getVTessellation () const
 {
 	if (vTessellation () > 0)
-		return vTessellation () + 1;
+		return vTessellation ();
 
-	else if (vTessellation () < 0)
-		return -vTessellation () * vDimension () + 1;
-
-	else
-		return 2 * vDimension () + 1;
+	return 3;
 }
 
 std::vector <float>
@@ -165,13 +159,6 @@ NurbsPatchSurface::getKnots (const MFDouble & knot, const SFInt32 & order, const
 	return knots;
 }
 
-static
-void
-nurbsError (GLenum errorCode)
-{
-   __LOG__ << gluErrorString (errorCode) << std::endl;
-}
-
 void
 NurbsPatchSurface::build ()
 {
@@ -206,22 +193,68 @@ NurbsPatchSurface::build ()
 	std::vector <float> uKnots = std::move (getKnots (uKnot (), uOrder (), uDimension ()));
 	std::vector <float> vKnots = std::move (getKnots (vKnot (), vOrder (), vDimension ()));
 
-	glNewList (listId, GL_COMPILE);
+	// TextureCoordinate
+
+	//	auto _textureCoordinate = x3d_cast <X3DTextureCoordinateNode*> (texCoord ());
+	//
+	//	if (_textureCoordinate)
+	//		_textureCoordinate -> init (getTexCoord (), reserve);
+	//	else
+	getTexCoord () .emplace_back ();
+
+	// Default unit square
+	std::vector <Vector4f> texControlPoints;
+	std::vector <float>    texUKnot;
+	std::vector <float>    texVKnot;
+
+	texControlPoints .emplace_back (0, 0, 0, 1);
+	texControlPoints .emplace_back (1, 0, 0, 1);
+	texControlPoints .emplace_back (0, 1, 0, 1);
+	texControlPoints .emplace_back (1, 1, 0, 1);
+
+	texUKnot .emplace_back (uKnots [0]);
+	texUKnot .emplace_back (uKnots [0]);
+	texUKnot .emplace_back (uKnots .back ());
+	texUKnot .emplace_back (uKnots .back ());
+
+	texVKnot .emplace_back (vKnots [0]);
+	texVKnot .emplace_back (vKnots [0]);
+	texVKnot .emplace_back (vKnots .back ());
+	texVKnot .emplace_back (vKnots .back ());
+
+	// Tessellation
 
 	GLUnurbs* nurbsRenderer = gluNewNurbsRenderer ();
 
-	gluNurbsCallback (nurbsRenderer, GLU_ERROR, (GLvoid (*) ()) nurbsError);
+	gluNurbsProperty (nurbsRenderer, GLU_NURBS_MODE, GLU_NURBS_TESSELLATOR);
 
-	// Tesselation
+	gluNurbsCallbackData (nurbsRenderer, this);
+
+	gluNurbsCallback (nurbsRenderer, GLU_NURBS_BEGIN_DATA,         _GLUfuncptr (&NurbsPatchSurface::tessBeginData));
+	gluNurbsCallback (nurbsRenderer, GLU_NURBS_TEXTURE_COORD_DATA, _GLUfuncptr (&NurbsPatchSurface::tessTexCoordData));
+	gluNurbsCallback (nurbsRenderer, GLU_NURBS_NORMAL_DATA,        _GLUfuncptr (&NurbsPatchSurface::tessNormalData));
+	gluNurbsCallback (nurbsRenderer, GLU_NURBS_VERTEX_DATA,        _GLUfuncptr (&NurbsPatchSurface::tessVertexData));
+	gluNurbsCallback (nurbsRenderer, GLU_NURBS_END_DATA,           _GLUfuncptr (&NurbsPatchSurface::tessEndData));
+	gluNurbsCallback (nurbsRenderer, GLU_ERROR,                    _GLUfuncptr (&NurbsPatchSurface::tessError));
+
+	// Options
 
 	gluNurbsProperty (nurbsRenderer, GLU_SAMPLING_METHOD, GLU_DOMAIN_DISTANCE);
-	gluNurbsProperty (nurbsRenderer, GLU_U_STEP, getUTessellationPoints ());
-	gluNurbsProperty (nurbsRenderer, GLU_V_STEP, getVTessellationPoints ());
-
-	gluNurbsProperty (nurbsRenderer, GLU_DISPLAY_MODE, GLU_OUTLINE_POLYGON);
+	gluNurbsProperty (nurbsRenderer, GLU_U_STEP, getUTessellation ());
+	gluNurbsProperty (nurbsRenderer, GLU_V_STEP, getVTessellation ());
 	glEnable (GL_AUTO_NORMAL);
 
+	// Tessellation
+
 	gluBeginSurface (nurbsRenderer);
+
+	gluNurbsSurface (nurbsRenderer,
+	                 4, texUKnot .data (),
+	                 4, texVKnot .data (),
+	                 4, 4 * 2,
+	                 texControlPoints [0] .data (),
+	                 2, 2,
+	                 GL_MAP2_TEXTURE_COORD_4);
 
 	gluNurbsSurface (nurbsRenderer,
 	                 uKnots .size (), uKnots .data (),
@@ -232,33 +265,109 @@ NurbsPatchSurface::build ()
 	                 GL_MAP2_VERTEX_4);
 
 	gluEndSurface (nurbsRenderer);
-	glDisable (GL_AUTO_NORMAL);
 
+	glDisable (GL_AUTO_NORMAL);
 	gluDeleteNurbsRenderer (nurbsRenderer);
 
-	glEndList ();
+	// End tessellation
+
+	addElements (getVertexMode (4), getVertices () .size ());
+	setSolid (solid ());
+	setCCW (true);
+	setTextureCoordinate (nullptr);
+}
+
+void
+NurbsPatchSurface::tessBeginData (GLenum type, NurbsPatchSurface* self)
+{
+	self -> type = type;
+	self -> texCoords .clear ();
+	self -> normals .clear ();
+	self -> vertices .clear ();
+}
+
+void
+NurbsPatchSurface::tessTexCoordData (GLfloat* texCoord, NurbsPatchSurface* self)
+{
+	self -> texCoords .emplace_back (texCoord [0], texCoord [1], texCoord [2], texCoord [3]);
+}
+
+void
+NurbsPatchSurface::tessNormalData (GLfloat* normal, NurbsPatchSurface* self)
+{
+	self -> normals .emplace_back (normal [0], normal [1], normal [2]);
+}
+
+void
+NurbsPatchSurface::tessVertexData (GLfloat* vertex, NurbsPatchSurface* self)
+{
+	self -> vertices .emplace_back (vertex [0], vertex [1], vertex [2]);
+}
+
+void
+NurbsPatchSurface::tessEndData (NurbsPatchSurface* self)
+{
+	switch (self -> type)
+	{
+		case GL_TRIANGLE_FAN:
+			break;
+		case GL_TRIANGLE_STRIP:
+			break;
+		case GL_TRIANGLES:
+			break;
+		case GL_QUAD_STRIP:
+		{
+			__LOG__
+				<< self -> texCoords .size () << " : "
+				<< self -> normals .size () << " : "
+				<< self -> vertices .size () << " : "
+				<< std::endl;
+		
+			for (size_t i = 0, size = self -> vertices .size () - 2; i < size; i += 2)
+			{
+				size_t i1 = i;
+				size_t i2 = i + 1;
+				size_t i3 = i + 3;
+				size_t i4 = i + 2;
+
+				self -> getTexCoord () [0] .emplace_back (self -> texCoords [i1]);
+				self -> getTexCoord () [0] .emplace_back (self -> texCoords [i2]);
+				self -> getTexCoord () [0] .emplace_back (self -> texCoords [i3]);
+				self -> getTexCoord () [0] .emplace_back (self -> texCoords [i4]);
+
+				self -> getNormals () .emplace_back (self -> normals [i1]);
+				self -> getNormals () .emplace_back (self -> normals [i2]);
+				self -> getNormals () .emplace_back (self -> normals [i3]);
+				self -> getNormals () .emplace_back (self -> normals [i4]);
+
+				self -> getVertices () .emplace_back (self -> vertices [i1]);
+				self -> getVertices () .emplace_back (self -> vertices [i2]);
+				self -> getVertices () .emplace_back (self -> vertices [i3]);
+				self -> getVertices () .emplace_back (self -> vertices [i4]);
+			}
+
+			break;
+		}
+		default:
+			break;
+	}
+}
+
+void
+NurbsPatchSurface::tessError (GLenum errorCode)
+{
+	__LOG__ << gluErrorString (errorCode) << std::endl;
 }
 
 void
 NurbsPatchSurface::draw ()
 {
-	if (solid ())
-		glEnable (GL_CULL_FACE);
-
-	else
-		glDisable (GL_CULL_FACE);
-
-	glFrontFace (GL_CCW);
-
-	glCallList (listId);
+	X3DNurbsSurfaceGeometryNode::draw ();
 }
 
 void
 NurbsPatchSurface::dispose ()
 {
-	if (listId)
-		glDeleteLists (listId, 1);
-
 	X3DNurbsSurfaceGeometryNode::dispose ();
 }
 

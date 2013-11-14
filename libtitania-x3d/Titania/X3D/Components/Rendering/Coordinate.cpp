@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -88,13 +88,13 @@ Coordinate::getNormal (size_t index1, size_t index2, size_t index3) const
 }
 
 void
-Coordinate::addVertex (opengl::tesselator <size_t> & tesselator, int32_t index, size_t i) const
+Coordinate::addVertex (opengl::tessellator <size_t> & tessellator, int32_t index, size_t i) const
 {
 	if (index > -1)
-		tesselator .add_vertex (point () [index], i);
+		tessellator .add_vertex (point () [index], i);
 
 	else
-		tesselator .add_vertex (Vector3f (), i);
+		tessellator .add_vertex (Vector3f (), i);
 }
 
 void

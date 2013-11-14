@@ -118,10 +118,10 @@ private:
 	///  @name Operations
 
 	size_t
-	getUTessellationPoints () const;
+	getUTessellation () const;
 
 	size_t
-	getVTessellationPoints () const;
+	getVTessellation () const;
 
 	std::vector <float>
 	getKnots (const MFDouble &, const SFInt32 &, const SFInt32 &) const;
@@ -129,6 +129,32 @@ private:
 	virtual
 	void
 	build () final;
+
+	///  @name Tessellator
+	
+	static
+	void
+	tessBeginData (GLenum, NurbsPatchSurface*);
+
+	static
+	void
+	tessTexCoordData (GLfloat*, NurbsPatchSurface*);
+
+	static
+	void
+	tessNormalData (GLfloat*, NurbsPatchSurface*);
+
+	static
+	void
+	tessVertexData (GLfloat*, NurbsPatchSurface*);
+
+	static
+	void
+	tessEndData (NurbsPatchSurface*);
+
+	static
+	void
+	tessError (GLenum);
 
 	///  @name Static members
 
@@ -138,7 +164,10 @@ private:
 
 	///  @name Members
 
-	GLuint listId;
+	GLenum type;
+	std::vector <Vector4f> texCoords;
+	std::vector <Vector3f> normals;
+	std::vector <Vector3f> vertices;
 
 };
 

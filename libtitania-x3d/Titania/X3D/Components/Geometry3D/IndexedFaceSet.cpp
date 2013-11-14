@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -276,12 +276,12 @@ IndexedFaceSet::build ()
 {
 	auto _coord = x3d_cast <X3DCoordinateNode*> (coord ());
 
-	// Tesselate
+	// Tessellate
 
 	PolygonArray polygons;
 	size_t       reserve = 0;
 
-	tesselate (polygons, reserve);
+	tessellate (polygons, reserve);
 
 	// Build arrays
 
@@ -432,7 +432,7 @@ IndexedFaceSet::buildNormals (const PolygonArray & polygons)
 }
 
 void
-IndexedFaceSet::tesselate (PolygonArray & polygons, size_t & numVertices)
+IndexedFaceSet::tessellate (PolygonArray & polygons, size_t & numVertices)
 {
 	auto _coord = x3d_cast <X3DCoordinateNode*> (coord ());
 
@@ -480,8 +480,8 @@ IndexedFaceSet::tesselate (PolygonArray & polygons, size_t & numVertices)
 					{
 						numVertices += convex () ? vertices .size () : (vertices .size () - 2) * 3;
 
-						// Tesselate polygons.
-						polygons .emplace_back (std::move (vertices), std::move (tesselate (vertices)));
+						// Tessellate polygons.
+						polygons .emplace_back (std::move (vertices), std::move (tessellate (vertices)));
 					}
 
 					else
@@ -495,7 +495,7 @@ IndexedFaceSet::tesselate (PolygonArray & polygons, size_t & numVertices)
 }
 
 IndexedFaceSet::ElementArray
-IndexedFaceSet::tesselate (const Vertices & vertices)
+IndexedFaceSet::tessellate (const Vertices & vertices)
 {
 	if (convex ())
 		return ElementArray { vertices };
@@ -504,14 +504,14 @@ IndexedFaceSet::tesselate (const Vertices & vertices)
 
 	ElementArray elements;
 
-	opengl::tesselator <size_t> tesselator;
+	opengl::tessellator <size_t> tessellator;
 
 	for (const auto & i : vertices)
-		_coord -> addVertex (tesselator, coordIndex () [i], i);
+		_coord -> addVertex (tessellator, coordIndex () [i], i);
 
-	tesselator .tesselate ();
+	tessellator .tessellate ();
 
-	for (const auto & polygonElement : tesselator .polygon ())
+	for (const auto & polygonElement : tessellator .polygon ())
 	{
 		switch (polygonElement .type ())
 		{

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -65,16 +65,16 @@ typedef math::vector3 <double> vector3d;
 typedef math::vector3 <float>  vector3f;
 
 template <class ... Args>
-class tesselator;
+class tessellator;
 
 template <class ... Args>
-class tesselator_vertex
+class tessellator_vertex
 {
 public:
 
 	typedef std::tuple <Args ...> Data;
 
-	tesselator_vertex (const vector3f & point, const std::tuple <Args ...> data) :
+	tessellator_vertex (const vector3f & point, const std::tuple <Args ...> data) :
 		m_point (point),
 		m_data  (data)
 	{ }
@@ -101,7 +101,7 @@ class polygon_element
 {
 public:
 
-	typedef tesselator_vertex <Args ...>    Vertex;
+	typedef tessellator_vertex <Args ...>    Vertex;
 	typedef std::deque <Vertex*>            VertexArray;
 	typedef typename VertexArray::size_type size_type;
 
@@ -125,30 +125,30 @@ private:
 	GLenum      m_type;
 	VertexArray m_vertices;
 
-	friend class tesselator <Args ...>;
+	friend class tessellator <Args ...>;
 
 };
 
 template <class ... Args>
-class tesselator
+class tessellator
 {
 public:
 
 	typedef std::deque <polygon_element <Args ...>> Polygon;
-	typedef tesselator_vertex <Args ...>             Vertex;
+	typedef tessellator_vertex <Args ...>             Vertex;
 
-	tesselator ();
+	tessellator ();
 
 	void
 	add_vertex (const vector3f &, const Args & ... args);
 
 	void
-	tesselate ();
+	tessellate ();
 
 	const Polygon &
-	polygon () const { return tesselatedPolygon; }
+	polygon () const { return tessellatedPolygon; }
 
-	~tesselator ();
+	~tessellator ();
 
 
 private:
@@ -167,39 +167,39 @@ private:
 
 	GLUtesselator*      tess;
 	std::deque <Vertex> vertices;
-	Polygon             tesselatedPolygon;
+	Polygon             tessellatedPolygon;
 
 };
 
 template <class ... Args>
-tesselator <Args ...>::tesselator ()
+tessellator <Args ...>::tessellator ()
 {
 	tess = gluNewTess ();
 
 	if (tess)
 	{
 		gluTessProperty (tess, GLU_TESS_BOUNDARY_ONLY, GLU_FALSE);
-		gluTessCallback (tess, GLU_TESS_BEGIN_DATA, _GLUfuncptr (&tesselator::tessBeginData));
-		gluTessCallback (tess, GLU_TESS_VERTEX_DATA, _GLUfuncptr (&tesselator::tessVertexData));
+		gluTessCallback (tess, GLU_TESS_BEGIN_DATA, _GLUfuncptr (&tessellator::tessBeginData));
+		gluTessCallback (tess, GLU_TESS_VERTEX_DATA, _GLUfuncptr (&tessellator::tessVertexData));
 
-		//gluTessCallback(tesselator, GLU_TESS_COMBINE_DATA, (_GLUfuncptr)&IndexedFaceSet::tessCombineData);
-		gluTessCallback (tess, GLU_TESS_END_DATA, _GLUfuncptr (&tesselator::tessEndData));
-		gluTessCallback (tess, GLU_TESS_ERROR, _GLUfuncptr (&tesselator::tessError));
+		//gluTessCallback(tessellator, GLU_TESS_COMBINE_DATA, (_GLUfuncptr)&IndexedFaceSet::tessCombineData);
+		gluTessCallback (tess, GLU_TESS_END_DATA, _GLUfuncptr (&tessellator::tessEndData));
+		gluTessCallback (tess, GLU_TESS_ERROR, _GLUfuncptr (&tessellator::tessError));
 	}
 }
 
 template <class ... Args>
 void
-tesselator <Args ...>::add_vertex (const vector3f & point, const Args & ... args)
+tessellator <Args ...>::add_vertex (const vector3f & point, const Args & ... args)
 {
 	vertices .emplace_back (point, std::forward_as_tuple (args ...));
 }
 
 template <class ... Args>
 void
-tesselator <Args ...>::tesselate ()
+tessellator <Args ...>::tessellate ()
 {
-	gluTessBeginPolygon (tess, &tesselatedPolygon);
+	gluTessBeginPolygon (tess, &tessellatedPolygon);
 	gluTessBeginContour (tess);
 
 	for (auto & vertex : vertices)
@@ -211,7 +211,7 @@ tesselator <Args ...>::tesselate ()
 
 template <class ... Args>
 void
-tesselator <Args ...>::tessBeginData (GLenum type, void* polygon_data)
+tessellator <Args ...>::tessBeginData (GLenum type, void* polygon_data)
 {
 	Polygon* polygon = (Polygon*) polygon_data;
 
@@ -220,7 +220,7 @@ tesselator <Args ...>::tessBeginData (GLenum type, void* polygon_data)
 
 template <class ... Args>
 void
-tesselator <Args ...>::tessVertexData (void* vertex_data, void* polygon_data)
+tessellator <Args ...>::tessVertexData (void* vertex_data, void* polygon_data)
 {
 	Polygon* polygon = (Polygon*) polygon_data;
 	Vertex*  vertex  = (Vertex*) vertex_data;
@@ -230,7 +230,7 @@ tesselator <Args ...>::tessVertexData (void* vertex_data, void* polygon_data)
 
 template <class ... Args>
 void
-tesselator <Args ...>::tessCombineData (GLdouble coords [3], void* vertex_data [4],
+tessellator <Args ...>::tessCombineData (GLdouble coords [3], void* vertex_data [4],
                                         GLfloat weight [4], void** outData,
                                         void* polygon_data)
 {
@@ -239,18 +239,18 @@ tesselator <Args ...>::tessCombineData (GLdouble coords [3], void* vertex_data [
 
 template <class ... Args>
 void
-tesselator <Args ...>::tessEndData (void* polygon_data)
+tessellator <Args ...>::tessEndData (void* polygon_data)
 { }
 
 template <class ... Args>
 void
-tesselator <Args ...>::tessError (GLenum err_no)
+tessellator <Args ...>::tessError (GLenum err_no)
 {
-	std::clog << "Warning: tesselation error: '" << (char*) gluErrorString (err_no) << "'." << std::endl;
+	std::clog << "Warning: tessellation error: '" << (char*) gluErrorString (err_no) << "'." << std::endl;
 }
 
 template <class ... Args>
-tesselator <Args ...>::~tesselator ()
+tessellator <Args ...>::~tessellator ()
 {
 	if (tess)
 		gluDeleteTess (tess);
