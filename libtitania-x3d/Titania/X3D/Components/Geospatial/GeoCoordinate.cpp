@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -117,16 +117,22 @@ GeoCoordinate::getControlPoints (const MFDouble & weight) const
 	std::vector <Vector4f> controlPoints;
 
 	controlPoints .reserve (point () .size ());
-	
+
 	if (weight .size () < point () .size ())
 	{
 		for (size_t i = 0; i < point () .size (); i ++)
-			controlPoints .emplace_back (point () [i] .getX (), point () [i] .getY (), point () [i] .getZ (), 1);
+			controlPoints .emplace_back (point () [i] .getX (),
+			                             point () [i] .getY (),
+			                             point () [i] .getZ (),
+			                             1);
 	}
 	else
 	{
 		for (size_t i = 0; i < point () .size (); i ++)
-			controlPoints .emplace_back (point () [i] .getX (), point () [i] .getY (), point () [i] .getZ (), weight [i]);
+			controlPoints .emplace_back (point () [i] .getX (),
+			                             point () [i] .getY (),
+			                             point () [i] .getZ (),
+			                             weight [i]);
 	}
 
 	return controlPoints;

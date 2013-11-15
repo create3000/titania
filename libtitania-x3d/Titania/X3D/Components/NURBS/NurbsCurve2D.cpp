@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -61,10 +61,10 @@ const std::string NurbsCurve2D::containerField = "children";
 
 NurbsCurve2D::Fields::Fields () :
 	tessellation (new SFInt32 ()),
-	weight (new MFDouble ()),
-	closed (new SFBool ()),
-	knot (new MFDouble ()),
-	order (new SFInt32 (3))
+	      closed (new SFBool ()),
+	       order (new SFInt32 (3)),
+	        knot (new MFDouble ()),
+	      weight (new MFDouble ())
 { }
 
 NurbsCurve2D::NurbsCurve2D (X3DExecutionContext* const executionContext) :
@@ -73,18 +73,102 @@ NurbsCurve2D::NurbsCurve2D (X3DExecutionContext* const executionContext) :
 	                  fields ()
 {
 	addField (inputOutput,    "metadata",     metadata ());
-	addField (inputOutput,    "controlPoint", controlPoint ());
 	addField (inputOutput,    "tessellation", tessellation ());
-	addField (inputOutput,    "weight",       weight ());
 	addField (initializeOnly, "closed",       closed ());
-	addField (initializeOnly, "knot",         knot ());
 	addField (initializeOnly, "order",        order ());
+	addField (initializeOnly, "knot",         knot ());
+	addField (inputOutput,    "weight",       weight ());
+	addField (inputOutput,    "controlPoint", controlPoint ());
 }
 
 X3DBaseNode*
 NurbsCurve2D::create (X3DExecutionContext* const executionContext) const
 {
 	return new NurbsCurve2D (executionContext);
+}
+
+std::vector <float>
+NurbsCurve2D::getKnots (const MFDouble & knot, const int32_t order, const int32_t dimension) const
+{
+	std::vector <float> knots (knot .begin (), knot .end ());
+
+	bool generateUniform = true;
+
+	if (knots .size () == size_t (dimension + order))
+	{
+		generateUniform = false;
+
+		size_t consecutiveKnots = 0;
+
+		for (size_t i = 1; i < knots .size (); ++ i)
+		{
+			if (knots [i] == knots [i - 1])
+				++ consecutiveKnots;
+			else
+				consecutiveKnots = 0;
+
+			if (consecutiveKnots > size_t (order - 1))
+				generateUniform = true;
+
+			if (knots [i - 1] > knots [i])
+				generateUniform = true;
+		}
+	}
+
+	if (generateUniform)
+	{
+		knots .resize (dimension + order);
+
+		for (size_t i = 0, size = knots .size (); i < size; ++ i)
+			knots [i] = (float) i / (size - 1);
+	}
+
+	return knots;
+}
+
+std::vector <Vector3f>
+NurbsCurve2D::getControlPoints () const
+{
+	std::vector <Vector3f> controlPoints;
+
+	controlPoints .reserve (controlPoint () .size ());
+	
+	if (weight () .size () < controlPoint () .size ())
+	{
+		for (size_t i = 0; i < controlPoint () .size (); i ++)
+			controlPoints .emplace_back (controlPoint () [i] .getX (),
+			                             controlPoint () [i] .getY (),
+			                             1);
+	}
+	else
+	{
+		for (size_t i = 0; i < controlPoint () .size (); i ++)
+			controlPoints .emplace_back (controlPoint () [i] .getX (), 
+			                             controlPoint () [i] .getY (), 
+			                             weight () [i]);
+	}
+
+	return controlPoints;
+}
+
+void
+NurbsCurve2D::draw (GLUnurbs* nurbsRenderer)
+{
+	if (order () < 2)
+		return;
+
+	if (controlPoint () .size () < (size_t) order ())
+		return;
+
+	std::vector <float> knots = std::move (getKnots (knot (), order (), controlPoint () .size ()));
+
+	std::vector <Vector3f> controlPoints = std::move (getControlPoints ());
+
+	gluNurbsCurve (nurbsRenderer,
+	               knots .size (), knots .data (),
+	               3, controlPoints [0] .data (),
+	               order (),
+	               GLU_MAP1_TRIM_3);
 }
 
 } // X3D

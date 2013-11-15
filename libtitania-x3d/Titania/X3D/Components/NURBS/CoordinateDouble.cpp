@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -92,7 +92,7 @@ CoordinateDouble::addVertex (opengl::tessellator <size_t> & tessellator, int32_t
 {
 	if (index > -1)
 		tessellator .add_vertex (point () [index] .getValue (), i);
-	
+
 	else
 		tessellator .add_vertex (Vector3f (), i);
 }
@@ -102,7 +102,7 @@ CoordinateDouble::addVertex (std::vector <Vector3f> & vertices, int32_t index) c
 {
 	if (index > -1)
 		vertices .emplace_back (point () [index] .getValue ());
-	
+
 	else
 		vertices .emplace_back ();
 }
@@ -113,16 +113,22 @@ CoordinateDouble::getControlPoints (const MFDouble & weight) const
 	std::vector <Vector4f> controlPoints;
 
 	controlPoints .reserve (point () .size ());
-	
+
 	if (weight .size () < point () .size ())
 	{
 		for (size_t i = 0; i < point () .size (); i ++)
-			controlPoints .emplace_back (point () [i] .getX (), point () [i] .getY (), point () [i] .getZ (), 1);
+			controlPoints .emplace_back (point () [i] .getX (),
+			                             point () [i] .getY (),
+			                             point () [i] .getZ (),
+			                             1);
 	}
 	else
 	{
 		for (size_t i = 0; i < point () .size (); i ++)
-			controlPoints .emplace_back (point () [i] .getX (), point () [i] .getY (), point () [i] .getZ (), weight [i]);
+			controlPoints .emplace_back (point () [i] .getX (),
+			                             point () [i] .getY (),
+			                             point () [i] .getZ (),
+			                             weight [i]);
 	}
 
 	return controlPoints;

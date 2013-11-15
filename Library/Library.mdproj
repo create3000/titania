@@ -2358,6 +2358,7 @@
     <None Include="Tests\NURBS\NurbsTrimmedSurface\NurbsTrimmedSurface.x3dv" />
     <None Include="Tests\NURBS\NurbsTrimmedSurface\TrimmedNurbsWithHole.x3dv" />
     <None Include="Tests\NURBS\NurbsTrimmedSurface\TrimmingContourExample.x3dv" />
+    <None Include="Tests\NURBS\NurbsPatchSurface\Rectangle2D.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

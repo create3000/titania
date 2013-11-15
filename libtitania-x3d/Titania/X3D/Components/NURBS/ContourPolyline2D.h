@@ -85,6 +85,13 @@ public:
 	getContainerField () const final
 	{ return containerField; }
 
+	///  @name Operations
+
+	virtual
+	void
+	draw (GLUnurbs*) final;
+
+
 private:
 
 	///  @name Static members

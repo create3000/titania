@@ -50,7 +50,10 @@
 
 #include "Contour2D.h"
 
+#include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../NURBS/ContourPolyline2D.h"
+#include "../NURBS/NurbsCurve2D.h"
 
 namespace titania {
 namespace X3D {
@@ -60,15 +63,15 @@ const std::string Contour2D::typeName       = "Contour2D";
 const std::string Contour2D::containerField = "trimmingContour";
 
 Contour2D::Fields::Fields () :
-	addChildren (new MFNode ()),
+	   addChildren (new MFNode ()),
 	removeChildren (new MFNode ()),
-	children (new MFNode ())
+	      children (new MFNode ())
 { }
 
 Contour2D::Contour2D (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	    X3DNode (),
-	     fields ()
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DPropertyNode (),
+	         fields ()
 {
 	addField (inputOutput, "metadata",       metadata ());
 	addField (inputOnly,   "addChildren",    addChildren ());
@@ -80,6 +83,64 @@ X3DBaseNode*
 Contour2D::create (X3DExecutionContext* const executionContext) const
 {
 	return new Contour2D (executionContext);
+}
+
+std::vector <X3DNurbsControlCurveNode*>
+Contour2D::getCurves () const
+{
+	std::vector <X3DNurbsControlCurveNode*> curves;
+	
+	for (const auto & child : children ())
+	{
+		auto curve = x3d_cast <X3DNurbsControlCurveNode*> (child);
+		
+		if (curve)
+		{
+			if (curve -> controlPoint () .empty ())
+				continue;
+
+			curves .emplace_back (curve);
+		}
+	}
+
+	return curves;
+}
+
+bool
+Contour2D::isClosed (const std::vector <X3DNurbsControlCurveNode*> & curves) const
+{
+	Vector2d last = curves .back () -> controlPoint () .back ();
+	
+	for (const auto & curve : curves)
+	{
+		Vector2d first = curve -> controlPoint () .front ();
+		
+		if (last not_eq first)
+			return false;
+		
+		last = curve -> controlPoint () .back ();
+	}
+
+	return true;
+}
+
+void
+Contour2D::trimSurface (GLUnurbs* nurbsRenderer)
+{
+	std::vector <X3DNurbsControlCurveNode*> curves = std::move (getCurves ());
+
+	if (curves .empty ())
+		return;
+
+	if (not isClosed (curves))
+		return;
+
+	gluBeginTrim (nurbsRenderer);
+
+	for (const auto & curve : curves)
+		curve -> draw (nurbsRenderer);
+
+	gluEndTrim (nurbsRenderer);
 }
 
 } // X3D

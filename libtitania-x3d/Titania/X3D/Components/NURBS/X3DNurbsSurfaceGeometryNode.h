@@ -193,7 +193,7 @@ protected:
 
 	virtual
 	void
-	trim ()
+	trimSurface (GLUnurbs*)
 	{ }
 
 
@@ -208,7 +208,7 @@ private:
 	getVTessellation () const;
 
 	std::vector <float>
-	getKnots (const MFDouble &, const SFInt32 &, const SFInt32 &) const;
+	getKnots (const MFDouble &, const int32_t, const int32_t) const;
 
 	virtual
 	void
@@ -266,6 +266,9 @@ private:
 	std::vector <Vector4f> texCoords;
 	std::vector <Vector3f> normals;
 	std::vector <Vector3f> vertices;
+	
+	GLenum vertexMode;
+	size_t numVertices;
 
 };
 

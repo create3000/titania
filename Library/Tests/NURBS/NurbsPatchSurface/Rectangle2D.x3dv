@@ -1,0 +1,23 @@
+#X3D V3.2 utf8
+
+DEF NurbsRectangle2D Transform {
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry NurbsPatchSurface {
+      uTessellation 2
+      vTessellation 2
+      solid FALSE
+      uOrder 2
+      vOrder 2
+      uDimension 2
+      vDimension 2
+      uKnot [ -1, -1, 1, 1 ]
+      vKnot [ -1, -1, 1, 1 ]
+      controlPoint Coordinate {
+        point [ -1 -1 0, 1 -1 0, -1 1 0, 1 1 0 ]
+      }
+    }
+  }
+}

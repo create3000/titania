@@ -61,6 +61,8 @@ class NurbsCurve2D :
 {
 public:
 
+	///  @name Construction
+
 	NurbsCurve2D (X3DExecutionContext* const);
 
 	virtual
@@ -95,14 +97,6 @@ public:
 	tessellation () const
 	{ return *fields .tessellation; }
 
-	MFDouble &
-	weight ()
-	{ return *fields .weight; }
-
-	const MFDouble &
-	weight () const
-	{ return *fields .weight; }
-
 	SFBool &
 	closed ()
 	{ return *fields .closed; }
@@ -110,14 +104,6 @@ public:
 	const SFBool &
 	closed () const
 	{ return *fields .closed; }
-
-	MFDouble &
-	knot ()
-	{ return *fields .knot; }
-
-	const MFDouble &
-	knot () const
-	{ return *fields .knot; }
 
 	SFInt32 &
 	order ()
@@ -127,9 +113,38 @@ public:
 	order () const
 	{ return *fields .order; }
 
+	MFDouble &
+	knot ()
+	{ return *fields .knot; }
+
+	const MFDouble &
+	knot () const
+	{ return *fields .knot; }
+
+	MFDouble &
+	weight ()
+	{ return *fields .weight; }
+
+	const MFDouble &
+	weight () const
+	{ return *fields .weight; }
+
+	///  @name Operations
+
+	virtual
+	void
+	draw (GLUnurbs*) final;
+	
 
 private:
 
+	///  @name Operations
+
+	std::vector <float>
+	getKnots (const MFDouble &, const int32_t, const int32_t) const;
+
+	std::vector <Vector3f>
+	getControlPoints () const;
 
 	///  @name Static members
 
@@ -144,10 +159,10 @@ private:
 		Fields ();
 
 		SFInt32* const tessellation;
-		MFDouble* const weight;
 		SFBool* const closed;
-		MFDouble* const knot;
 		SFInt32* const order;
+		MFDouble* const knot;
+		MFDouble* const weight;
 	};
 
 	Fields fields;

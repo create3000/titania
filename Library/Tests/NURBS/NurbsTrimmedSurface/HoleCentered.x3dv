@@ -98,6 +98,8 @@ Shape {
     }
   }
   geometry NurbsTrimmedSurface {
+          uTessellation 20
+          vTessellation 20
     solid FALSE
     uOrder 2
     vOrder 2
@@ -112,17 +114,17 @@ Shape {
     trimmingContour [
       Contour2D {
         children NurbsCurve2D {
-          controlPoint [ -4 -4, 4 -4, 4 4, -4 4, -4 -4 ]
-          weight [ 1, 1, 1, 1, 1 ]
-          knot [ 0, 0, 0.25, 0.5, 0.75, 1, 1 ]
           order 2
+          knot [ 0, 0, 0.25, 0.5, 0.75, 1, 1 ]
+          weight [ 1, 1, 1, 1, 1 ]
+          controlPoint [ -4 -4, 4 -4, 4 4, -4 4, -4 -4 ]
         }
       }
       Contour2D {
         children NurbsCurve2D {
-          controlPoint [ 1 0, 0.7071 -0.7071, 0 -1, -0.7071 -0.7071, -1 0, -0.7071 0.7071, 0 1, 0.7071 0.7071, 1 0 ]
-          weight [ 1, 0.7071, 1, 0.7071, 1, 0.7071, 1, 0.7071, 1 ]
           knot [ 0, 0, 0, 0.25, 0.25, 0.5, 0.5, 0.75, 0.75, 1, 1, 1 ]
+          weight [ 1, 0.7071, 1, 0.7071, 1, 0.7071, 1, 0.7071, 1 ]
+          controlPoint [ 1 0, 0.7071 -0.7071, 0 -1, -0.7071 -0.7071, -1 0, -0.7071 0.7071, 0 1, 0.7071 0.7071, 1 0 ]
         }
       }
     ]

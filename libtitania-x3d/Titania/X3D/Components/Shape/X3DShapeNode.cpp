@@ -225,7 +225,7 @@ X3DShapeNode::draw ()
 
 		// Draw hatch on top of whatever appearance is specified.
 
-		GLint polygonMode [2] = { 0, 0 }; // Front and back value.
+		GLint polygonMode [2]; // Front and back value.
 		glGetIntegerv (GL_POLYGON_MODE, polygonMode);
 
 		if (polygonMode [0] == GL_FILL)
@@ -249,7 +249,8 @@ X3DShapeNode::draw ()
 			_geometry   -> draw ();
 			_appearance -> getLineProperties () -> disable ();
 
-			glPolygonMode (GL_FRONT_AND_BACK, polygonMode [0]);
+			glPolygonMode (GL_FRONT, polygonMode [0]);
+			glPolygonMode (GL_BACK,  polygonMode [1]);
 		}
 	}
 

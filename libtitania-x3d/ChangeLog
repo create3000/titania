@@ -1,3 +1,24 @@
+2013-11-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* OpenGL.h:
+	* Contour2D.h:
+	* Contour2D.cpp:
+	* NurbsCurve2D.h:
+	* NurbsCurve2D.cpp:
+	* X3DShapeNode.cpp:
+	* Coordinate.cpp:
+	* ContourPolyline2D.h:
+	* CoordinateDouble.cpp:
+	* ContourPolyline2D.cpp:
+	* NurbsTrimmedSurface.h:
+	* GeoCoordinate.cpp:
+	* NurbsTrimmedSurface.cpp:
+	* X3DNurbsControlCurveNode.h:
+	* X3DNurbsControlCurveNode.cpp:
+	* X3DNurbsSurfaceGeometryNode.h:
+	* PlaneSensor.cpp:
+	* X3DNurbsSurfaceGeometryNode.cpp: 
+
 2013-11-14  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

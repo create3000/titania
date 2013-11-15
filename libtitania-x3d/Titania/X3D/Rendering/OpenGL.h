@@ -133,16 +133,26 @@ class PolygonMode
 {
 public:
 
-	PolygonMode (GLenum type)
+	PolygonMode (GLenum type) :
+		polygonMode ()
 	{
 		glGetIntegerv (GL_POLYGON_MODE, polygonMode);
 
 		glPolygonMode (GL_FRONT_AND_BACK, type);
 	}
 	
+	GLenum
+	front () const
+	{ return polygonMode [0]; }
+	
+	GLenum
+	back () const
+	{ return polygonMode [1]; }
+	
 	~PolygonMode ()
 	{
-		glPolygonMode (GL_FRONT_AND_BACK, polygonMode [0]);
+		glPolygonMode (GL_FRONT, polygonMode [0]);
+		glPolygonMode (GL_BACK,  polygonMode [1]);
 	}
 
 private:

@@ -120,7 +120,7 @@ private:
 
 	virtual
 	void
-	trim () final;
+	trimSurface (GLUnurbs*) final;
 
 	///  @name Static members
 

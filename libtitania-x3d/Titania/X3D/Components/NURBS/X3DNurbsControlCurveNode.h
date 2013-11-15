@@ -51,15 +51,17 @@
 #ifndef __TITANIA_X3D_COMPONENTS_NURBS_X3DNURBS_CONTROL_CURVE_NODE_H__
 #define __TITANIA_X3D_COMPONENTS_NURBS_X3DNURBS_CONTROL_CURVE_NODE_H__
 
-#include "../Core/X3DNode.h"
+#include "../Core/X3DPropertyNode.h"
 
 namespace titania {
 namespace X3D {
 
 class X3DNurbsControlCurveNode :
-	virtual public X3DNode
+	virtual public X3DPropertyNode
 {
 public:
+
+	///  @name Fields
 
 	MFVec2d &
 	controlPoint ()
@@ -69,13 +71,23 @@ public:
 	controlPoint () const
 	{ return *fields .controlPoint; }
 
+	///  @name Operations
+
+	virtual
+	void
+	draw (GLUnurbs*) = 0;
+
 
 protected:
+
+	///  @name Construction
 
 	X3DNurbsControlCurveNode ();
 
 
 private:
+
+	///  @name Members
 
 	struct Fields
 	{

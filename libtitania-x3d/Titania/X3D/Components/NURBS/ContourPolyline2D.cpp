@@ -73,5 +73,18 @@ ContourPolyline2D::create (X3DExecutionContext* const executionContext) const
 	return new ContourPolyline2D (executionContext);
 }
 
+void
+ContourPolyline2D::draw (GLUnurbs* nurbsRenderer)
+{
+	std::vector <Vector2f> controlPoints;
+
+	for (const auto & value : controlPoint ())
+		controlPoints .emplace_back (value .getValue ());
+
+	gluPwlCurve (nurbsRenderer,
+	             controlPoints .size (), controlPoints [0] .data (),
+	             2, GLU_MAP1_TRIM_2);
+}
+
 } // X3D
 } // titania

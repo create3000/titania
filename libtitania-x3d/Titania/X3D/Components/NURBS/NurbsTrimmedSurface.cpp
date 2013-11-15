@@ -50,7 +50,9 @@
 
 #include "NurbsTrimmedSurface.h"
 
+#include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../NURBS/Contour2D.h"
 
 namespace titania {
 namespace X3D {
@@ -97,8 +99,16 @@ NurbsTrimmedSurface::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-NurbsTrimmedSurface::trim ()
-{ }
+NurbsTrimmedSurface::trimSurface (GLUnurbs* nurbsRenderer)
+{
+	for (const auto & node : trimmingContour ())
+	{
+		auto contour = x3d_cast <Contour2D*> (node);
+		
+		if (contour)
+			contour -> trimSurface (nurbsRenderer);
+	}
+}
 
 } // X3D
 } // titania

@@ -123,9 +123,6 @@ PlaneSensor::set_active (const HitPtr & hit, bool active)
 			const auto hitPoint = hit -> point * inverseModelViewMatrix;
 
 			const Rotation4d axisRotation (this -> axisRotation () .getValue ());
-			
-			// hitPoint is used as point for the case that the sensor is located at camera position
-			const auto point = hitPoint;
 
 			if (minPosition () .getX () == maxPosition () .getX ())
 			{
@@ -133,7 +130,7 @@ PlaneSensor::set_active (const HitPtr & hit, bool active)
 
 				const auto direction = axisRotation * Vector3d (0, std::abs (maxPosition () .getY () - minPosition () .getY ()), 0);
 
-				line = Line3d (point, normalize (direction));
+				line = Line3d (hitPoint, normalize (direction));
 			}
 			else if (minPosition () .getY () == maxPosition () .getY ())
 			{
@@ -141,12 +138,12 @@ PlaneSensor::set_active (const HitPtr & hit, bool active)
 
 				const auto direction = axisRotation * Vector3d (std::abs (maxPosition () .getX () - minPosition () .getX ()), 0, 0);
 
-				line = Line3d (point, normalize (direction));
+				line = Line3d (hitPoint, normalize (direction));
 			}
 			else
 			{
 				planeSensor = true;
-				plane       = Plane3d (point, axisRotation * Vector3d (0, 0, 1));
+				plane       = Plane3d (hitPoint, axisRotation * Vector3d (0, 0, 1));
 			}
 
 			if (planeSensor)
