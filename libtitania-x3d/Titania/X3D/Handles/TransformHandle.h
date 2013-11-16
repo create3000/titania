@@ -65,7 +65,7 @@ class TransformHandle :
 {
 public:
 
-	TransformHandle (Transform* const, SFTime*, X3DExecutionContext* const);
+	TransformHandle (Transform* const, SFBool*, X3DExecutionContext* const);
 
 	///  @name Fields
 
@@ -178,6 +178,11 @@ public:
 	virtual
 	void
 	setUserData (const UserDataPtr &) final;
+	
+	virtual
+	X3DBaseNode*
+	getLocalNode () final
+	{ return transform; }
 
 	virtual
 	Box3f
@@ -190,12 +195,12 @@ public:
 
 	virtual
 	Matrix4f
-	getMatrix ()
+	getMatrix () final
 	{ return transform -> getMatrix (); }
 
 	virtual
 	void
-	addHandle (SFTime*) final
+	addHandle (SFBool*) final
 	{ }
 
 	virtual
@@ -235,7 +240,7 @@ private:
 	Transform*         transform;
 	X3DSFNode <Scene>  scene;
 
-	SFTime* startEditing;
+	SFBool* isActive;
 
 };
 

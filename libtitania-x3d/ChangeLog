@@ -1,6 +1,17 @@
 2013-11-16  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBaseNode.h:
+	* TransformTool.wrl:
+	* TransformHandle.h:
+	* TransformHandle.cpp:
+	* Selection.h:
+	* Selection.cpp:
+	* Transform.h:
+	* Transform.cpp: 
+
+2013-11-16  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DBaseNode.h:
 	* TransformHandle.h:
 	* TransformTool.wrl:
 	* TransformHandle.cpp:

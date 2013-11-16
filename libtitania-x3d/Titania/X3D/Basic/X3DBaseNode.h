@@ -59,6 +59,7 @@
 #include "../Bits/Error.h"
 #include "../Bits/TraverseType.h"
 #include "../Bits/X3DConstants.h"
+#include "../Fields/X3DScalar.h"
 #include "../Fields/SFTime.h"
 #include "../Routing/EventList.h"
 #include "../Routing/NodeList.h"
@@ -219,7 +220,7 @@ public:
 
 	virtual
 	void
-	addHandle (SFTime*)
+	addHandle (SFBool*)
 	{ }
 
 	virtual

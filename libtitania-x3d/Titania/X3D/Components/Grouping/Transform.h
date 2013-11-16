@@ -93,7 +93,7 @@ public:
 
 	virtual
 	void
-	addHandle (SFTime*) override;
+	addHandle (SFBool*) override;
 
 	virtual
 	void

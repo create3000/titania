@@ -177,7 +177,7 @@ private:
 	set_shutdown ();
 	
 	void
-	set_selection_start_editing ();
+	set_selection_active (bool);
 
 	// Clipboard
 
@@ -247,6 +247,7 @@ private:
 	bool saveConfirmed;
 
 	UndoHistory undoHistory;
+	std::map <X3D::Transform*, X3D::Matrix4f> matrices;
 
 	X3D::X3DSFNode <X3D::Scene> scene;
 

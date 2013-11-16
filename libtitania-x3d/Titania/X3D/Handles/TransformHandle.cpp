@@ -59,13 +59,13 @@
 namespace titania {
 namespace X3D {
 
-TransformHandle::TransformHandle (Transform* const transform, SFTime* startEditing, X3DExecutionContext* const executionContext) :
+TransformHandle::TransformHandle (Transform* const transform, SFBool* isActive, X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	      Transform (executionContext),
 	X3DHandleObject (),
 	      transform (transform),
 	          scene (),
-	   startEditing (startEditing)
+	       isActive (isActive)
 {
 	for (auto & field : transform -> getFieldDefinitions ())
 		addField (field -> getAccessType (), field -> getName (), *field);
@@ -85,7 +85,7 @@ TransformHandle::initialize ()
 
 		SFNode handle = scene -> getNamedNode ("Handle");
 		
-		handle -> getField ("startEditing") -> addInterest (*startEditing);
+		handle -> getField ("isActive") -> addInterest (*isActive);
 
 		X3DFieldDefinition* field = handle -> getField ("transform");
 

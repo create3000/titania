@@ -97,13 +97,13 @@ public:
 	getEnabled () const
 	{ return enabled; }
 	
-	SFTime &
-	getStartEditing ()
-	{ return startEditing; }
+	SFBool &
+	isActive ()
+	{ return active; }
 
-	const SFTime &
-	getStartEditing () const
-	{ return startEditing; }
+	const SFBool &
+	isActive () const
+	{ return active; }
 
 	void
 	addChildren (const MFNode &);
@@ -138,7 +138,7 @@ private:
 	///  @name Members
 
 	SFBool enabled;
-	SFTime startEditing;
+	SFBool active;
 	MFNode children;
 
 };

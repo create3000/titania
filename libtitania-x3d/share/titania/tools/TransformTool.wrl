@@ -99,7 +99,7 @@ void main (void)
 
 PROTO TransformTool [
   # required fields
-  eventOut     SFTime     startEditing
+  eventOut     SFBool     isActive
   exposedField SFMatrix4f cameraSpaceMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
   exposedField SFMatrix4f modelViewMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
   exposedField SFVec3f    bboxSize 0 0 0
@@ -117,7 +117,7 @@ PROTO TransformTool [
           DEF BBox Shape {
             appearance Appearance {
               material Material {
-                emissiveColor 0.349999994 1 0.699999988
+                emissiveColor 0.35 1 0.7
               }
             }
             geometry IndexedLineSet {
@@ -149,6 +149,7 @@ PROTO TransformTool [
                 DEF ModeTouch TouchSensor { }
                 DEF FrontSensor PlaneSensor {
                   autoOffset FALSE
+                  isActive IS isActive
                 }
                 DEF Plane Shape {
                   appearance DEF Transparent Appearance {
@@ -165,11 +166,12 @@ PROTO TransformTool [
           }
           DEF Right Transform {
             children Transform {
-              rotation 0 1 0 1.57079625
+              rotation 0 1 0 1.5708
               children [
                 USE ModeTouch
                 DEF RightSensor PlaneSensor {
                   autoOffset FALSE
+                  isActive IS isActive
                 }
                 USE Plane
               ]
@@ -177,11 +179,12 @@ PROTO TransformTool [
           }
           DEF Back Transform {
             children Transform {
-              rotation 0 1 0 3.14159012
+              rotation 0 1 0 3.14159
               children [
                 USE ModeTouch
                 DEF BackSensor PlaneSensor {
                   autoOffset FALSE
+                  isActive IS isActive
                 }
                 USE Plane
               ]
@@ -189,11 +192,12 @@ PROTO TransformTool [
           }
           DEF Left Transform {
             children Transform {
-              rotation 0 -1 0 1.57079625
+              rotation 0 -1 0 1.5708
               children [
                 USE ModeTouch
                 DEF LeftSensor PlaneSensor {
                   autoOffset FALSE
+                  isActive IS isActive
                 }
                 USE Plane
               ]
@@ -201,11 +205,12 @@ PROTO TransformTool [
           }
           DEF Top Transform {
             children Transform {
-              rotation -1 0 0 1.57079625
+              rotation -1 0 0 1.5708
               children [
                 USE ModeTouch
                 DEF TopSensor PlaneSensor {
                   autoOffset FALSE
+                  isActive IS isActive
                 }
                 USE Plane
               ]
@@ -213,11 +218,12 @@ PROTO TransformTool [
           }
           DEF Bottom Transform {
             children Transform {
-              rotation 1 0 0 1.57079625
+              rotation 1 0 0 1.5708
               children [
                 USE ModeTouch
                 DEF BottomSensor PlaneSensor {
                   autoOffset FALSE
+                  isActive IS isActive
                 }
                 USE Plane
               ]
@@ -235,12 +241,14 @@ PROTO TransformTool [
                 description "x-Axis"
                 autoOffset FALSE
                 maxPosition -1 0
+                isActive IS isActive
               }
               DEF XScaleSensor PlaneSensor {
                 enabled FALSE
                 description "x-Axis"
                 autoOffset FALSE
                 maxPosition -1 0
+                isActive IS isActive
               }
               DEF XHandle Transform {
                 children ScreenGroup {
@@ -248,7 +256,7 @@ PROTO TransformTool [
                     choice [
                       Transform {
                         translation 10.5 0 0
-                        rotation 0 0 -1 1.57079625
+                        rotation 0 0 -1 1.5708
                         children Shape {
                           appearance DEF Red Appearance {
                             material Material {
@@ -293,12 +301,14 @@ PROTO TransformTool [
                 description "y-Axis"
                 autoOffset FALSE
                 maxPosition 0 -1
+                isActive IS isActive
               }
               DEF YScaleSensor PlaneSensor {
                 enabled FALSE
                 description "y-Axis"
                 autoOffset FALSE
                 maxPosition 0 -1
+                isActive IS isActive
               }
               DEF YHandle Transform {
                 children ScreenGroup {
@@ -341,16 +351,18 @@ PROTO TransformTool [
               USE ModeTouch
               DEF ZTranslationSensor PlaneSensor {
                 description "z-Axis"
-                axisRotation 0 -1 0 1.57079625
+                axisRotation 0 -1 0 1.5708
                 autoOffset FALSE
                 maxPosition -1 0
+                isActive IS isActive
               }
               DEF ZScaleSensor PlaneSensor {
                 enabled FALSE
                 description "z-Axis"
-                axisRotation 0 -1 0 1.57079625
+                axisRotation 0 -1 0 1.5708
                 autoOffset FALSE
                 maxPosition -1 0
+                isActive IS isActive
               }
               DEF ZHandle Transform {
                 children ScreenGroup {
@@ -358,7 +370,7 @@ PROTO TransformTool [
                     choice [
                       Transform {
                         translation 0 0 10.5
-                        rotation 1 0 0 1.57079625
+                        rotation 1 0 0 1.5708
                         children Shape {
                           appearance DEF Blue Appearance {
                             material Material {
@@ -400,6 +412,7 @@ PROTO TransformTool [
                       DEF ScaleSensor1 PlaneSensor {
                         autoOffset FALSE
                         maxPosition -1 0
+                        isActive IS isActive
                       }
                       DEF ScaleHandle ScreenGroup {
                         children Transform {
@@ -421,6 +434,7 @@ PROTO TransformTool [
                       DEF ScaleSensor2 PlaneSensor {
                         autoOffset FALSE
                         maxPosition -1 0
+                        isActive IS isActive
                       }
                       USE ScaleHandle
                     ]
@@ -430,6 +444,7 @@ PROTO TransformTool [
                       DEF ScaleSensor3 PlaneSensor {
                         autoOffset FALSE
                         maxPosition -1 0
+                        isActive IS isActive
                       }
                       USE ScaleHandle
                     ]
@@ -439,6 +454,7 @@ PROTO TransformTool [
                       DEF ScaleSensor4 PlaneSensor {
                         autoOffset FALSE
                         maxPosition -1 0
+                        isActive IS isActive
                       }
                       USE ScaleHandle
                     ]
@@ -448,6 +464,7 @@ PROTO TransformTool [
                       DEF ScaleSensor5 PlaneSensor {
                         autoOffset FALSE
                         maxPosition -1 0
+                        isActive IS isActive
                       }
                       USE ScaleHandle
                     ]
@@ -457,6 +474,7 @@ PROTO TransformTool [
                       DEF ScaleSensor6 PlaneSensor {
                         autoOffset FALSE
                         maxPosition -1 0
+                        isActive IS isActive
                       }
                       USE ScaleHandle
                     ]
@@ -466,6 +484,7 @@ PROTO TransformTool [
                       DEF ScaleSensor7 PlaneSensor {
                         autoOffset FALSE
                         maxPosition -1 0
+                        isActive IS isActive
                       }
                       USE ScaleHandle
                     ]
@@ -475,6 +494,7 @@ PROTO TransformTool [
                       DEF ScaleSensor8 PlaneSensor {
                         autoOffset FALSE
                         maxPosition -1 0
+                        isActive IS isActive
                       }
                       USE ScaleHandle
                     ]
@@ -523,19 +543,20 @@ PROTO TransformTool [
                   Group {
                     children [
                       DEF XRotationSensor CylinderSensor {
-                        axisRotation 0 0 1 1.57079625
-                        diskAngle 1.57079625
+                        axisRotation 0 0 1 1.5708
+                        diskAngle 1.5708
                         autoOffset FALSE
+                        isActive IS isActive
                       }
                       DEF XRotationHandle Transform {
-                        rotation 0 1 0 1.57079625
+                        rotation 0 1 0 1.5708
                         children [
                           DEF Cylinder Transform {
-                            rotation 1 0 0 1.57079625
+                            rotation 1 0 0 1.5708
                             children Shape {
                               appearance USE Transparent
                               geometry Cylinder {
-                                height 0.00999999978
+                                height 0.01
                               }
                             }
                           }
@@ -553,7 +574,7 @@ PROTO TransformTool [
                               appearance Appearance {
                                 material DEF XCircleMaterial Material {
                                   emissiveColor 1 0 0
-                                  transparency 0.100000001
+                                  transparency 0.1
                                 }
                               }
                               geometry DEF Disk Disk2D {
@@ -568,11 +589,12 @@ PROTO TransformTool [
                   Group {
                     children [
                       DEF YRotationSensor CylinderSensor {
-                        diskAngle 1.57079625
+                        diskAngle 1.5708
                         autoOffset FALSE
+                        isActive IS isActive
                       }
                       DEF YRotationHandle Transform {
-                        rotation 1 0 0 1.57079625
+                        rotation 1 0 0 1.5708
                         children [
                           USE Cylinder
                           Shape {
@@ -589,7 +611,7 @@ PROTO TransformTool [
                               appearance Appearance {
                                 material DEF YCircleMaterial Material {
                                   emissiveColor 0 1 0
-                                  transparency 0.100000001
+                                  transparency 0.1
                                 }
                               }
                               geometry USE Disk
@@ -602,9 +624,10 @@ PROTO TransformTool [
                   Group {
                     children [
                       DEF ZRotationSensor CylinderSensor {
-                        axisRotation 1 0 0 1.57079625
-                        diskAngle 1.57079625
+                        axisRotation 1 0 0 1.5708
+                        diskAngle 1.5708
                         autoOffset FALSE
+                        isActive IS isActive
                       }
                       DEF ZRotationHandle Transform {
                         children [
@@ -623,7 +646,7 @@ PROTO TransformTool [
                               appearance Appearance {
                                 material DEF ZCircleMaterial Material {
                                   emissiveColor 0 0 1
-                                  transparency 0.100000001
+                                  transparency 0.1
                                 }
                               }
                               geometry USE Disk
@@ -661,20 +684,6 @@ PROTO TransformTool [
   }
 
   DEF DoubleClick_1 DoubleClick { }
-  
-  DEF EditingScript Script {
-    eventIn  SFBool  set_active
-    eventOut SFTime  startEditing IS startEditing
-
-    url "vrmlscript:
-function set_active (value, time)
-{
-	if (value)
-		startEditing = time;
-}
-"
-  }
-  
 
   DEF ModeScript Script {
     eventIn  SFTime  set_time
@@ -1339,6 +1348,7 @@ function divVec (a, b)
     directOutput TRUE
   }
 
+
   # Debug
 
   ROUTE FrontSensor.trackPoint_changed TO PPoint.set_translation
@@ -1349,37 +1359,6 @@ function divVec (a, b)
   ROUTE YScaleSensor.trackPoint_changed TO PPoint.set_translation
   ROUTE ZScaleSensor.trackPoint_changed TO PPoint.set_translation
   ROUTE ScaleSensor1.trackPoint_changed TO PPoint.set_translation
-  
-  # Editing
- 
-  ROUTE XTranslationSensor.isActive TO EditingScript.set_active
-  ROUTE YTranslationSensor.isActive TO EditingScript.set_active
-  ROUTE ZTranslationSensor.isActive TO EditingScript.set_active
-  ROUTE FrontSensor.isActive TO EditingScript.set_active
-  ROUTE RightSensor.isActive TO EditingScript.set_active
-  ROUTE BackSensor.isActive TO EditingScript.set_active
-  ROUTE LeftSensor.isActive TO EditingScript.set_active
-  ROUTE TopSensor.isActive TO EditingScript.set_active
-  ROUTE BottomSensor.isActive TO EditingScript.set_active
-
-  #
-
-  ROUTE XRotationSensor.isActive TO EditingScript.set_active
-  ROUTE YRotationSensor.isActive TO EditingScript.set_active
-  ROUTE ZRotationSensor.isActive TO EditingScript.set_active
-  #
-
-  ROUTE XScaleSensor.isActive TO EditingScript.set_active
-  ROUTE YScaleSensor.isActive TO EditingScript.set_active
-  ROUTE ZScaleSensor.isActive TO EditingScript.set_active
-  ROUTE ScaleSensor1.isActive TO EditingScript.set_active
-  ROUTE ScaleSensor2.isActive TO EditingScript.set_active
-  ROUTE ScaleSensor3.isActive TO EditingScript.set_active
-  ROUTE ScaleSensor4.isActive TO EditingScript.set_active
-  ROUTE ScaleSensor5.isActive TO EditingScript.set_active
-  ROUTE ScaleSensor6.isActive TO EditingScript.set_active
-  ROUTE ScaleSensor7.isActive TO EditingScript.set_active
-  ROUTE ScaleSensor8.isActive TO EditingScript.set_active
 
   # Mode translate, rotate or scale
 

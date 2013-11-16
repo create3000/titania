@@ -60,6 +60,7 @@ X3DBrowserEditor::X3DBrowserEditor (const basic::uri & worldURL) :
 	          edited (false),
 	   saveConfirmed (false),
 	     undoHistory (),
+	        matrices (),
 	           scene ()
 { }
 
@@ -71,7 +72,7 @@ X3DBrowserEditor::initialize ()
 	getBrowser () -> initialized () .addInterest (this, &X3DBrowserEditor::set_initialized);
 	getBrowser () -> shutdown ()    .addInterest (this, &X3DBrowserEditor::set_shutdown);
 	
-	getBrowser () -> getSelection () -> getStartEditing () .addInterest (this, &X3DBrowserEditor::set_selection_start_editing);
+	getBrowser () -> getSelection () -> isActive () .addInterest (this, &X3DBrowserEditor::set_selection_active);
 }
 
 void
@@ -110,11 +111,26 @@ X3DBrowserEditor::set_shutdown ()
 }
 
 void
-X3DBrowserEditor::set_selection_start_editing ()
+X3DBrowserEditor::set_selection_active (bool value)
 {
-	__LOG__ << std::endl;
+	__LOG__ << value << std::endl;
 
-	setEdited (true);
+	if (value)
+	{
+		for (const auto & child : getBrowser () -> getSelection () -> getChildren ())
+		{
+			auto transform = X3D::x3d_cast <X3D::Transform*> (child);
+
+			if (transform)
+				matrices [transform] = transform -> getMatrix ();
+		}
+	}
+	else
+	{
+		matrices .clear ();
+
+		setEdited (true);
+	}
 }
 
 bool
