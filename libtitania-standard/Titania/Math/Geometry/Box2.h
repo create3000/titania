@@ -159,6 +159,10 @@ public:
 		return *this;
 	}
 
+	///  Returns true if this box contains @a box.
+	bool
+	contains (const box2 & box) const;
+
 private:
 
 	matrix3 <Type> value;
@@ -210,6 +214,34 @@ box2 <Type>::operator += (const box2 <Up> & box)
 	auto rhs_max  = box .center () + rsize1_2;
 
 	return *this = box2 (math::min (lhs_min, rhs_min), math::max (lhs_max, rhs_max), true);
+}
+
+template <class Type>
+bool
+box2 <Type>::contains (const box2 <Type> & box) const
+{
+	if (empty () or box .empty ())
+		return false;
+
+	auto size1   = size () / Type (2);
+	auto center1 = center ();
+
+	auto min1 = center1 - size1;
+	auto max1 = center1 + size1;
+
+	auto size2   = box .size () / Type (2);
+	auto center2 = box .center ();
+
+	auto min2 = center2 - size2;
+	auto max2 = center2 + size2;
+
+	if (min2 .x () < min1 .x () or min2 .y () < min1 .y ())
+		return false;
+
+	if (max2 .x () > max1 .x () or max2 .y () > max1 .y ())
+		return false;
+
+	return true;
 }
 
 ///  @relates box2

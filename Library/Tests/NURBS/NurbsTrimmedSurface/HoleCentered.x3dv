@@ -98,8 +98,8 @@ Shape {
     }
   }
   geometry NurbsTrimmedSurface {
-          uTessellation 20
-          vTessellation 20
+    uTessellation 20
+    vTessellation 20
     solid FALSE
     uOrder 2
     vOrder 2

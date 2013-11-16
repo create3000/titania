@@ -89,7 +89,7 @@ public:
 
 	virtual
 	void
-	draw (GLUnurbs*) final;
+	draw (GLUnurbs*) const final;
 
 
 private:

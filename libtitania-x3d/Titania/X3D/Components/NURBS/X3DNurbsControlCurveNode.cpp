@@ -64,5 +64,23 @@ X3DNurbsControlCurveNode::X3DNurbsControlCurveNode () :
 	addNodeType (X3DConstants::X3DNurbsControlCurveNode);
 }
 
+Box2f
+X3DNurbsControlCurveNode::getBBox () const
+{
+	if (controlPoint () .empty ())
+		return Box2f ();
+	
+	Vector2d min = controlPoint () [0];
+	Vector2d max = min;
+
+	for (const auto & point : controlPoint ())
+	{
+		min = math::min (min, point .getValue ());
+		max = math::max (max, point .getValue ());
+	}
+
+	return Box2f (min, max, true);
+}
+
 } // X3D
 } // titania

@@ -61,7 +61,7 @@ namespace titania {
 namespace X3D {
 
 static constexpr float SPIN_ANGLE   = 0.006;
-static constexpr float SPIN_FACTOR  = 0.4;
+static constexpr float SPIN_FACTOR  = 0.6;
 static constexpr float SCOLL_FACTOR = 1.0f / 50.0f;
 static constexpr float FRAME_RATE   = 60;
 

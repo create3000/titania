@@ -112,19 +112,44 @@ public:
 	children () const
 	{ return *fields .children; }
 
+	///  @name Operations
+
+	bool
+	isEmpty () const
+	{ return curves .empty (); }
+
+	size_t
+	getSize () const
+	{ return curves .size (); }
+
+	bool
+	isClosed () const;
+	
+	Box2f
+	getBBox () const;
+
 	void
-	trimSurface (GLUnurbs*);
+	trimSurface (GLUnurbs*) const;
 
 
 private:
 
-	///  @name Operations
+	///  @name Construction
 
-	std::vector <X3DNurbsControlCurveNode*>
-	getCurves () const;
+	virtual
+	void
+	initialize () final;
+	
+	///  @name Event handlers
 
-	bool
-	isClosed (const std::vector <X3DNurbsControlCurveNode*> &) const;
+	void
+	set_addChildren ();
+
+	void
+	set_removeChildren ();
+
+	void
+	set_children ();
 
 	///  @name Static members
 
@@ -144,6 +169,10 @@ private:
 	};
 
 	Fields fields;
+
+	std::vector <X3DNurbsControlCurveNode*> curves;
+	
+	Box2f bbox;
 
 };
 

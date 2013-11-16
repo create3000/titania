@@ -235,7 +235,7 @@ X3DNurbsSurfaceGeometryNode::build ()
 	texVKnot .emplace_back (vKnots .back ());
 	texVKnot .emplace_back (vKnots .back ());
 
-	// Tessellation
+	// Initialize NURBS renderer
 
 	GLUnurbs* nurbsRenderer = gluNewNurbsRenderer ();
 
@@ -250,14 +250,23 @@ X3DNurbsSurfaceGeometryNode::build ()
 	gluNurbsCallback (nurbsRenderer, GLU_NURBS_END_DATA,           _GLUfuncptr (&X3DNurbsSurfaceGeometryNode::tessEndData));
 	gluNurbsCallback (nurbsRenderer, GLU_ERROR,                    _GLUfuncptr (&X3DNurbsSurfaceGeometryNode::tessError));
 
-	// Options
+	// Tessellation Options
+
+	//gluNurbsProperty (nurbsRenderer, GLU_SAMPLING_METHOD, GLU_OBJECT_PARAMETRIC_ERROR);
+	//gluNurbsProperty (nurbsRenderer, GLU_PARAMETRIC_TOLERANCE, 0.5);
+
+	//gluNurbsProperty (nurbsRenderer, GLU_SAMPLING_METHOD, GLU_PATH_LENGTH);
+	//gluNurbsProperty (nurbsRenderer, GLU_SAMPLING_TOLERANCE, 25.0);
 
 	gluNurbsProperty (nurbsRenderer, GLU_SAMPLING_METHOD, GLU_DOMAIN_DISTANCE);
 	gluNurbsProperty (nurbsRenderer, GLU_U_STEP, uScale ? getUTessellation () / uScale : 1);
 	gluNurbsProperty (nurbsRenderer, GLU_V_STEP, vScale ? getVTessellation () / vScale : 1);
+
+	// Options
+	
 	glEnable (GL_AUTO_NORMAL);
 
-	// Tessellation
+	// Tessellate
 
 	numVertices = 0;
 
@@ -385,6 +394,37 @@ X3DNurbsSurfaceGeometryNode::tessEndData (X3DNurbsSurfaceGeometryNode* self)
 
 			break;
 		case GL_TRIANGLE_STRIP:
+			for (size_t i = 0, size = self -> vertices .size () - 2; i < size; ++ i)
+			{
+				size_t i1, i2, i3;
+				
+				if (is_odd (i))
+				{
+					i1 = i;
+					i2 = i + 1;
+					i3 = i + 2;
+				}
+				else
+				{
+					i1 = i;
+					i2 = i + 2;
+					i3 = i + 1;
+				}
+
+				self -> getTexCoord () [0] .emplace_back (self -> texCoords [i1]);
+				self -> getTexCoord () [0] .emplace_back (self -> texCoords [i2]);
+				self -> getTexCoord () [0] .emplace_back (self -> texCoords [i3]);
+
+				self -> getNormals () .emplace_back (self -> normals [i1]);
+				self -> getNormals () .emplace_back (self -> normals [i2]);
+				self -> getNormals () .emplace_back (self -> normals [i3]);
+
+				self -> getVertices () .emplace_back (self -> vertices [i1]);
+				self -> getVertices () .emplace_back (self -> vertices [i2]);
+				self -> getVertices () .emplace_back (self -> vertices [i3]);
+
+				self -> numVertices += 3;      			
+			}
 		   //__LOG__ << "GL_TRIANGLE_STRIP" << std::endl;
 			break;
 		case GL_TRIANGLES:

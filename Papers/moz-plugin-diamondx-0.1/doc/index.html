@@ -1,0 +1,170 @@
+<html>
+<head>
+<title>DiamondX XEmbed Example Plugin</title>
+</head>
+
+<body>
+
+<table>
+<tr>
+<td>
+<h2>DiamondX XEmbed Example Plugin</h2>
+</td>
+<td>
+<img src="diamondx.png" width="250" height="150" alt="DiamondX" />
+</td>
+</tr>
+</table>
+
+<em>Updated: April 16, 2007</em>
+
+
+<h3>Introduction</h3>
+<p>
+DiamondX is a simple NPAPI plugin built to run on Unix platforms and exercise the 
+XEmbed browser extension. If your browser can run the DiamondX browser plugin then 
+it ought to be able to run the upgraded, XEmbed-supporting future version of 
+<a href="http://blogs.adobe.com/penguin.swf/">Adobe Flash Player for Unix</a> (on 
+particular platforms and CPU architectures).
+</p>
+
+
+<h3>Requirements</h3>
+<ul>
+<li>a working build environment (gcc, autotools)</li>
+<li>X11 headers and libraries</li>
+<li>GTK 2.0 headers and libraries</li>
+<li>Netscape Portable Runtime (nspr)</li>
+</ul>
+
+
+<h3>Installation</h3>
+<p>Unpack:</p>
+
+<pre>
+  tar jxvf diamondx-0.1.tar.bz2
+  cd diamondx-0.1
+</pre>
+
+<p>Configure and build:</p>
+
+<pre>
+  ./configure
+  make
+</pre>
+
+<p>At this point, the customary step is to perform 'make install'. However, that 
+will not do anything useful for this plugin. Execute:</p>
+
+<pre>
+  make install-plugin
+</pre>
+
+<p>This will install the plugin into ~/.mozilla/plugins which is one of the 
+standard destinations for browser plugins in a Unix environment.</p>
+
+
+<h3>Testing</h3>
+<p>
+In Mozilla/Firefox browsers, check the "about:plugins" page. The DiamondX plugin 
+should be registered.
+</p>
+
+<center>
+<table>
+<tr>
+<td cellpadding="1" bgcolor="#00cc66">
+<img src="diamondx-plugin-info.png" alt="DiamondX Plugin Info" width="620" 
+height="127" />
+</td>
+</tr>
+</table>
+</center>
+
+<p>
+The same applies for other NPAPI-compatible Unix browsers, using whatever 
+facilities that register the existence of plugins. If the plugin fails to register, 
+if may be necessary to ask the browser to re-register the plugins. If this still 
+doesn't work, run the 'ld' command against the plugin binary to make sure there are 
+no missing symbols:
+</p>
+
+<pre>
+  $ ld ~/.mozilla/plugins/libdiamondx.so
+  ld: warning: cannot find entry symbol _start; not setting start address
+</pre>
+
+<p>The warning about the missing _start symbol is normal. Any other warnings may 
+indicate a problem.
+</p>
+
+
+<p>
+To test the actual plugin functionality, load the file "test/index.htm" from the 
+main source distribution directory. This should show a page with a 400x300 DiamondX 
+plugin against a non-white background:
+</p>
+
+<center>
+<img src="diamondx-in-browser.png" width="409" height="349" alt="DiamondX plugin in 
+browser" />
+</center>
+
+In order to best test the plugin, run the browser from the command line. The 
+DiamondX plugin prints a lot of information to the standard output, particularly 
+concerning which events it is receiving. These are items to verify:
+
+<ul>
+<li>Moving the mouse over the plugin should result in mouse motion events.</li>
+<li>Moving the mouse into and out of the plugin should result in enter and 
+leave events, respectively.</li>
+<li>Clicking the left mouse button should trigger a lot of stuff:
+  <ul>
+  <li>A button 1 press event.</li>
+  <li>A notice about which quadrant of the plugin was clicked.</li>
+  <li>A button 1 release event.</li>
+  </ul>
+</li>
+<li>If the mouse is clicked in the first or second quadrants, the plugin 
+should present either a modal info dialog or a modal file selection dialog, 
+respectively. 
+Test that the hosting browser honors the modality of these dialogs.</li>
+<li>A right mouse click inside the browser should launch a context menu.</li>
+<li>If present, the mouse scroll wheel should report scrolling events.</li>
+<li>Focus: <strong>focus should not follow the mouse</strong>. This is a major 
+selling point of XEmbed. Fine-grained tests:
+  <ul>
+  <li>Clicking inside the plugin when the plugin does not have focus should send a 
+"focus in" 
+event.</li>
+  <li>Clicking outside the plugin when the plugin has focus should send a 
+"focus out" event.</li>
+  <li>While the plugin has focus, pressing and releasing keys on the keyboard 
+should send key press/release events.</li>
+  <li>When the plugin has focus, move the mouse outside of the plugin. The 
+plugin should still receive key events.</li>
+  <li>When the plugin does not have focus, move the mouse inside the plugin. 
+The plugin should not receive key events.</li>
+  </ul>
+</li>
+</ul>
+
+
+<h3>Future Development</h3>
+NPAPI plugins on Unix do not have a well-defined method for supporting windowless 
+plugins (a.k.a. wmode) that are popular in the world of Flash (and not just for 
+advertisements). This plugin will hopefully serve as a testbench for wmode support 
+in various browsers. There is already some code in place for supporting wmode but 
+it needs more browser buy-in. The reason that the plugin is plotted against a 
+non-white background is that it should eventually be a transparent windowless 
+plugin where the background takes over the white portions of the plugin. That's the 
+goal.
+
+
+<h3>Contact</h3>
+For feedback regarding this plugin, and only this plugin, send email to diamondx at 
+multimedia.cx.
+
+
+</body>
+</html>

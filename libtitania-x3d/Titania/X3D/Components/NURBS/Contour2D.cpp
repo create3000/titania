@@ -71,7 +71,8 @@ Contour2D::Fields::Fields () :
 Contour2D::Contour2D (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DPropertyNode (),
-	         fields ()
+	         fields (),
+	         curves ()
 {
 	addField (inputOutput, "metadata",       metadata ());
 	addField (inputOnly,   "addChildren",    addChildren ());
@@ -85,29 +86,20 @@ Contour2D::create (X3DExecutionContext* const executionContext) const
 	return new Contour2D (executionContext);
 }
 
-std::vector <X3DNurbsControlCurveNode*>
-Contour2D::getCurves () const
+void
+Contour2D::initialize ()
 {
-	std::vector <X3DNurbsControlCurveNode*> curves;
+	X3DPropertyNode::initialize ();
+	 
+	addChildren ()    .addInterest (this, &Contour2D::set_addChildren);
+	removeChildren () .addInterest (this, &Contour2D::set_removeChildren);
+	children ()       .addInterest (this, &Contour2D::set_children);
 	
-	for (const auto & child : children ())
-	{
-		auto curve = x3d_cast <X3DNurbsControlCurveNode*> (child);
-		
-		if (curve)
-		{
-			if (curve -> controlPoint () .empty ())
-				continue;
-
-			curves .emplace_back (curve);
-		}
-	}
-
-	return curves;
+	set_children ();
 }
 
 bool
-Contour2D::isClosed (const std::vector <X3DNurbsControlCurveNode*> & curves) const
+Contour2D::isClosed () const
 {
 	Vector2d last = curves .back () -> controlPoint () .back ();
 	
@@ -124,23 +116,57 @@ Contour2D::isClosed (const std::vector <X3DNurbsControlCurveNode*> & curves) con
 	return true;
 }
 
-void
-Contour2D::trimSurface (GLUnurbs* nurbsRenderer)
+Box2f
+Contour2D::getBBox () const
 {
-	std::vector <X3DNurbsControlCurveNode*> curves = std::move (getCurves ());
+	Box2f bbox;
 
-	if (curves .empty ())
-		return;
+	for (const auto & curve : curves)
+		bbox += curve -> getBBox ();
 
-	if (not isClosed (curves))
-		return;
+	return bbox;
+}
 
+void
+Contour2D::trimSurface (GLUnurbs* nurbsRenderer) const
+{
 	gluBeginTrim (nurbsRenderer);
 
 	for (const auto & curve : curves)
 		curve -> draw (nurbsRenderer);
 
 	gluEndTrim (nurbsRenderer);
+}
+
+void
+Contour2D::set_addChildren ()
+{
+
+}
+
+void
+Contour2D::set_removeChildren ()
+{
+
+}
+
+void
+Contour2D::set_children ()
+{
+	curves .clear ();
+
+	for (const auto & child : children ())
+	{
+		auto curve = x3d_cast <X3DNurbsControlCurveNode*> (child);
+		
+		if (curve)
+		{
+			if (curve -> controlPoint () .empty ())
+				continue;
+
+			curves .emplace_back (curve);
+		}
+	}
 }
 
 } // X3D

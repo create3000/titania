@@ -1,3 +1,19 @@
+2013-11-16  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Contour2D.h:
+	* Contour2D.cpp:
+	* NurbsCurve2D.h:
+	* ExamineViewer.cpp:
+	* NurbsCurve2D.cpp:
+	* ContourPolyline2D.h:
+	* NurbsTrimmedSurface.h:
+	* ContourPolyline2D.cpp:
+	* NurbsTrimmedSurface.cpp:
+	* X3DNurbsControlCurveNode.h:
+	* X3DNurbsControlCurveNode.cpp:
+	* X3DNurbsSurfaceGeometryNode.h:
+	* X3DNurbsSurfaceGeometryNode.cpp: 
+
 2013-11-15  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* OpenGL.h:

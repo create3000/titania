@@ -193,7 +193,7 @@ protected:
 
 	virtual
 	void
-	trimSurface (GLUnurbs*)
+	trimSurface (GLUnurbs*) const
 	{ }
 
 

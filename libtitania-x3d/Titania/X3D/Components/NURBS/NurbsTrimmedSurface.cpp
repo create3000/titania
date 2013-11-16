@@ -52,7 +52,6 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "../NURBS/Contour2D.h"
 
 namespace titania {
 namespace X3D {
@@ -99,14 +98,74 @@ NurbsTrimmedSurface::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-NurbsTrimmedSurface::trimSurface (GLUnurbs* nurbsRenderer)
+NurbsTrimmedSurface::initialize ()
 {
+	X3DNurbsSurfaceGeometryNode::initialize ();
+
+	addTrimmingContour ()    .addInterest (this, &NurbsTrimmedSurface::set_addTrimmingContour);
+	removeTrimmingContour () .addInterest (this, &NurbsTrimmedSurface::set_removeTrimmingContour);
+	trimmingContour ()       .addInterest (this, &NurbsTrimmedSurface::set_trimmingContour);
+
+	set_trimmingContour ();
+}
+
+void
+NurbsTrimmedSurface::set_addTrimmingContour ()
+{
+
+}
+
+void
+NurbsTrimmedSurface::set_removeTrimmingContour ()
+{
+
+}
+
+void
+NurbsTrimmedSurface::set_trimmingContour ()
+{
+
+}
+
+std::vector <Contour2D*>
+NurbsTrimmedSurface::getContours () const
+{
+	std::vector <Contour2D*> contours;
+
 	for (const auto & node : trimmingContour ())
 	{
 		auto contour = x3d_cast <Contour2D*> (node);
 		
 		if (contour)
-			contour -> trimSurface (nurbsRenderer);
+			contours .emplace_back (contour);
+	}
+
+	if (is_odd (contours .size ()))
+		contours .pop_back ();
+
+	return contours;
+}
+
+void
+NurbsTrimmedSurface::trimSurface (GLUnurbs* nurbsRenderer) const
+{
+	std::vector <Contour2D*> contours = std::move (getContours ());
+	
+	for (size_t i = 0, size = contours .size (); i < size; i += 2)
+	{
+		size_t i1 = i, i2 = i + 1;
+
+		if (contours [i1] -> isEmpty () or contours [i2] -> isEmpty ())
+			continue;
+
+		if (not contours [i1] -> isClosed () or not contours [i2] -> isClosed ())
+			continue;
+
+		if (not contours [i1] -> getBBox () .contains (contours [i2] -> getBBox ()))
+			continue;
+
+		contours [i1] -> trimSurface (nurbsRenderer);
+		contours [i2] -> trimSurface (nurbsRenderer);
 	}
 }
 

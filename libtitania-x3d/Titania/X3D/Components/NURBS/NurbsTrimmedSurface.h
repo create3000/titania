@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_COMPONENTS_NURBS_NURBS_TRIMMED_SURFACE_H__
 
 #include "../NURBS/X3DNurbsSurfaceGeometryNode.h"
+#include "../NURBS/Contour2D.h"
 
 namespace titania {
 namespace X3D {
@@ -113,14 +114,36 @@ public:
 	trimmingContour () const
 	{ return *fields .trimmingContour; }
 
-
-private:
-
 	///  @name Operations
 
 	virtual
 	void
-	trimSurface (GLUnurbs*) final;
+	trimSurface (GLUnurbs*) const final;
+
+
+private:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final;
+	
+	///  @name Event handlers
+
+	void
+	set_addTrimmingContour ();
+
+	void
+	set_removeTrimmingContour ();
+
+	void
+	set_trimmingContour ();
+
+	///  @name Operations
+	
+	std::vector <Contour2D*>
+	getContours () const;
 
 	///  @name Static members
 

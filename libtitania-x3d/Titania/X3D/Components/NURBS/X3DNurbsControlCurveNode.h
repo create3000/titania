@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_COMPONENTS_NURBS_X3DNURBS_CONTROL_CURVE_NODE_H__
 
 #include "../Core/X3DPropertyNode.h"
+#include "../../Types/Geometry.h"
 
 namespace titania {
 namespace X3D {
@@ -73,9 +74,12 @@ public:
 
 	///  @name Operations
 
+	Box2f
+	getBBox () const;
+
 	virtual
 	void
-	draw (GLUnurbs*) = 0;
+	draw (GLUnurbs*) const = 0;
 
 
 protected:

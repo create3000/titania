@@ -178,6 +178,10 @@ public:
 	bool
 	intersect (const sphere3 <Type> &) const;
 
+	///  Returns true if this box contains @a box.
+	bool
+	contains (const box3 &) const;
+
 
 private:
 
@@ -351,6 +355,34 @@ box3 <Type>::intersect (const sphere3 <Type> & sphere) const
 	       max .y () >= center .y () - radius and
 	       min .z () <= center .z () + radius and
 	       max .z () >= center .z () - radius;
+}
+
+template <class Type>
+bool
+box3 <Type>::contains (const box3 <Type> & box) const
+{
+	if (empty () or box .empty ())
+		return false;
+
+	auto size1   = size () / Type (2);
+	auto center1 = center ();
+
+	auto min1 = center1 - size1;
+	auto max1 = center1 + size1;
+
+	auto size2   = box .size () / Type (2);
+	auto center2 = box .center ();
+
+	auto min2 = center2 - size2;
+	auto max2 = center2 + size2;
+
+	if (min2 .x () < min1 .x () or min2 .y () < min1 .y () or min2 .z () < min1 .z ())
+		return false;
+
+	if (max2 .x () > max1 .x () or max2 .y () > max1 .y () or max2 .z () > max1 .z ())
+		return false;
+
+	return true;
 }
 
 ///  @relates box3

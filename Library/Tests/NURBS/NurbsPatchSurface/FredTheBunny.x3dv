@@ -268,7 +268,7 @@ Transform {
   }
 }
 
-Transform {
+DEF Bups Transform {
   translation 0.0305 -1.2548 0.8211
   children Transform {
     children Transform {
@@ -298,7 +298,7 @@ Transform {
   }
 }
 
-Transform {
+DEF LeftEar Transform {
   children Transform {
     rotation 0 1 0 3.1416
     children Transform {
@@ -324,7 +324,7 @@ Transform {
   }
 }
 
-DEF _1 Transform {
+DEF RightEar Transform {
   children Transform {
     children Transform {
       children Shape {
@@ -408,7 +408,7 @@ Transform {
   }
 }
 
-Transform {
+DEF Head Transform {
   translation 0 2.9132 0
   children Transform {
     children Transform {
@@ -434,7 +434,7 @@ Transform {
   }
 }
 
-Transform {
+DEF RightLeg Transform {
   translation 0 0.2316 0
   children Transform {
     rotation 0 1 0 3.1416
@@ -461,7 +461,7 @@ Transform {
   }
 }
 
-Transform {
+DEF LeftLeg Transform {
   translation 0 0.2316 0
   children Transform {
     children Transform {
@@ -487,7 +487,7 @@ Transform {
   }
 }
 
-Transform {
+DEF RighArm Transform {
   children Transform {
     rotation 0 1 0 3.1416
     children Transform {
@@ -513,7 +513,7 @@ Transform {
   }
 }
 
-Transform {
+DEF LeftArm Transform {
   children Transform {
     children Transform {
       children Shape {
@@ -538,7 +538,7 @@ Transform {
   }
 }
 
-Transform {
+DEF Body Transform {
   children Transform {
     children Transform {
       children Shape {

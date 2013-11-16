@@ -74,7 +74,7 @@ ContourPolyline2D::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-ContourPolyline2D::draw (GLUnurbs* nurbsRenderer)
+ContourPolyline2D::draw (GLUnurbs* nurbsRenderer) const
 {
 	std::vector <Vector2f> controlPoints;
 

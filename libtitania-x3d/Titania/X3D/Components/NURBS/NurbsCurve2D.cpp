@@ -152,7 +152,7 @@ NurbsCurve2D::getControlPoints () const
 }
 
 void
-NurbsCurve2D::draw (GLUnurbs* nurbsRenderer)
+NurbsCurve2D::draw (GLUnurbs* nurbsRenderer) const
 {
 	if (order () < 2)
 		return;
