@@ -1,5 +1,11 @@
 2013-11-16  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* TransformHandle.h:
+	* X3DTransformNode.h:
+	* X3DTransformNode.cpp: 
+
+2013-11-16  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3D.h:
 	* TransformHandle.h: 
 

@@ -124,6 +124,10 @@ public:
 	setMatrix (const Matrix4f &);
 
 	virtual
+	void
+	setMatrixWithCenter (const Matrix4f &, const Vector3f &);
+
+	virtual
 	Matrix4f
 	getMatrix ()
 	{ return matrix; }

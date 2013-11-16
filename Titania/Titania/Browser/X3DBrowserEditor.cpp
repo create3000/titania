@@ -122,7 +122,7 @@ X3DBrowserEditor::set_selection_active (bool value)
 			auto transformHandle = X3D::x3d_cast <X3D::TransformHandle*> (child);
 
 			if (transformHandle)
-				matrices [transformHandle] = transformHandle -> getMatrix ();
+				matrices [transformHandle] = std::make_pair (transformHandle -> getMatrix (), transformHandle -> center () .getValue ());
 		}
 	}
 	else
@@ -137,17 +137,20 @@ X3DBrowserEditor::set_selection_active (bool value)
 			{
 				try
 				{
-					X3D::Matrix4f startMatrix = matrices .at (transformHandle);
+					X3D::Matrix4f matrix = matrices .at (transformHandle) .first;
+					X3D::Vector3f center = matrices .at (transformHandle) .second;
 
-					if (startMatrix not_eq transformHandle -> getMatrix ())
+					if (matrix not_eq transformHandle -> getMatrix () or center not_eq transformHandle -> center ())
 					{
-						undoStep -> addUndoFunction (std::mem_fn (&X3DBrowserEditor::undoSetMatrix), this,
+						undoStep -> addUndoFunction (std::mem_fn (&X3DBrowserEditor::undoSetMatrixWithCenter), this,
 						                             X3D::X3DSFNode <X3D::X3DTransformNode> (transformHandle -> getTransform ()),
-						                             startMatrix);
+						                             matrix,
+						                             center);
 
-						undoStep -> addRedoFunction (std::mem_fn (&X3D::Transform::setMatrix),
+						undoStep -> addRedoFunction (std::mem_fn (&X3D::Transform::setMatrixWithCenter),
 						                             transformHandle -> getTransform (),
-						                             transformHandle -> getMatrix ());
+						                             transformHandle -> getMatrix (),
+						                             transformHandle -> center ());
 					}
 				}
 				catch (const std::out_of_range &)
@@ -1199,9 +1202,20 @@ X3DBrowserEditor::undoSetValue (const X3D::SFNode & parent, X3D::SFNode & field,
 }
 
 void
-X3DBrowserEditor::undoSetMatrix (const X3D::X3DSFNode <X3D::X3DTransformNode> & transform, const X3D::Matrix4f & matrix)
+X3DBrowserEditor::undoSetMatrix (const X3D::X3DSFNode <X3D::X3DTransformNode> & transform,
+                                 const X3D::Matrix4f & matrix)
 {
 	transform -> setMatrix (matrix);
+
+	setEdited (true);
+}
+
+void
+X3DBrowserEditor::undoSetMatrixWithCenter (const X3D::X3DSFNode <X3D::X3DTransformNode> & transform,
+                                           const X3D::Matrix4f & matrix,
+                                           const X3D::Vector3f & center)
+{
+	transform -> setMatrixWithCenter (matrix, center);
 
 	setEdited (true);
 }

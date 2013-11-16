@@ -247,13 +247,16 @@ private:
 	void
 	undoSetMatrix (const X3D::X3DSFNode <X3D::X3DTransformNode> &, const X3D::Matrix4f &);
 
+	void
+	undoSetMatrixWithCenter (const X3D::X3DSFNode <X3D::X3DTransformNode> &, const X3D::Matrix4f &, const X3D::Vector3f &);
+
 	///  @name Members
 
 	bool edited;
 	bool saveConfirmed;
 
 	UndoHistory undoHistory;
-	std::map <X3D::TransformHandle*, X3D::Matrix4f> matrices;
+	std::map <X3D::TransformHandle*, std::pair <X3D::Matrix4f, X3D::Vector3f>> matrices;
 
 	X3D::X3DSFNode <X3D::Scene> scene;
 

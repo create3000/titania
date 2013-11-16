@@ -84,17 +84,24 @@ X3DTransformNode::getBBox ()
 }
 
 void
-X3DTransformNode::setMatrix (const Matrix4f & value)
+X3DTransformNode::setMatrix (const Matrix4f & matrix)
+{
+	setMatrixWithCenter (matrix, center ());
+}
+
+void
+X3DTransformNode::setMatrixWithCenter (const Matrix4f & matrix, const Vector3f & c)
 {
 	Vector3f   t, s;
 	Rotation4f r, so;
 
-	value .get (t, r, s, so, center () .getValue ());
+	matrix .get (t, r, s, so, c);
 
 	translation ()      = t;
 	rotation ()         = r;
 	scale ()            = s;
 	scaleOrientation () = so;
+	center ()           = c;
 }
 
 void

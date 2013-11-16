@@ -185,8 +185,13 @@ public:
 
 	virtual
 	void
-	setMatrix (const Matrix4f & value) final
-	{ transform -> setMatrix (value);  }
+	setMatrix (const Matrix4f & matrix) final
+	{ transform -> setMatrix (matrix);  }
+
+	virtual
+	void
+	setMatrixWithCenter (const Matrix4f & matrix, const Vector3f & center) final
+	{ transform -> setMatrixWithCenter (matrix, center);  }
 
 	virtual
 	Matrix4f
