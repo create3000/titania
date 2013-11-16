@@ -89,6 +89,9 @@ public:
 	save (const basic::uri &, bool) final;
 
 	void
+	addUndoStep (const std::shared_ptr <UndoStep> &);
+
+	void
 	undo ();
 	
 	void
@@ -152,6 +155,9 @@ protected:
 
 	void
 	addToGroup (const X3D::SFNode &, const X3D::MFNode &, const UndoStepPtr &);
+
+	void
+	redoDetachFromGroup (X3D::MFNode, bool);
 
 	void
 	detachFromGroup (X3D::MFNode, bool, const UndoStepPtr &);

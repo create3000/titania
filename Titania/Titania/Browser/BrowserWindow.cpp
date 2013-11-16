@@ -471,14 +471,12 @@ BrowserWindow::on_open_location_entry_key_release_event (GdkEventKey* event)
 void
 BrowserWindow::on_undo_activate ()
 {
-	__LOG__ << std::endl;
 	undo ();
 }
 
 void
 BrowserWindow::on_redo_activate ()
 {
-	__LOG__ << std::endl;
 	redo ();
 }
 
@@ -487,16 +485,12 @@ BrowserWindow::on_redo_activate ()
 void
 BrowserWindow::on_clipboard_owner_change (GdkEventOwnerChange*)
 {
-	__LOG__ << std::endl;
-
 	updatePasteStatus ();
 }
 
 void
 BrowserWindow::on_cut_nodes_activate ()
 {
-	__LOG__ << std::endl;
-
 	const auto selection = getBrowser () -> getSelection () -> getChildren ();
 
 	if (selection .empty ())
@@ -513,8 +507,6 @@ BrowserWindow::on_cut_nodes_activate ()
 void
 BrowserWindow::on_copy_nodes_activate ()
 {
-	__LOG__ << std::endl;
-
 	const auto selection = getBrowser () -> getSelection () -> getChildren ();
 
 	if (selection .empty ())
@@ -528,8 +520,6 @@ BrowserWindow::on_copy_nodes_activate ()
 void
 BrowserWindow::on_paste_nodes_activate ()
 {
-	__LOG__ << std::endl;
-
 	auto undoStep = std::make_shared <UndoStep> (_ ("Paste"));
 
 	const auto selection = getBrowser () -> getSelection () -> getChildren ();
@@ -557,8 +547,6 @@ BrowserWindow::on_add_node (const std::string & typeName)
 void
 BrowserWindow::on_delete_nodes_activate ()
 {
-	__LOG__ << std::endl;
-
 	const auto selection = getBrowser () -> getSelection () -> getChildren ();
 
 	if (selection .empty ())
@@ -576,8 +564,6 @@ BrowserWindow::on_delete_nodes_activate ()
 void
 BrowserWindow::on_group_selected_nodes_activate ()
 {
-	__LOG__ << std::endl;
-
 	const auto selection = getBrowser () -> getSelection () -> getChildren ();
 
 	if (selection .empty ())
@@ -594,8 +580,6 @@ BrowserWindow::on_group_selected_nodes_activate ()
 void
 BrowserWindow::on_ungroup_node_activate ()
 {
-	__LOG__ << std::endl;
-
 	const auto selection = getBrowser () -> getSelection () -> getChildren ();
 
 	if (selection .empty ())
@@ -613,8 +597,6 @@ BrowserWindow::on_ungroup_node_activate ()
 void
 BrowserWindow::on_add_to_group_activate ()
 {
-	__LOG__ << std::endl;
-
 	auto selection = getBrowser () -> getSelection () -> getChildren ();
 
 	if (selection .size () < 2)
@@ -636,8 +618,6 @@ BrowserWindow::on_add_to_group_activate ()
 void
 BrowserWindow::on_detach_from_group_activate ()
 {
-	__LOG__ << std::endl;
-
 	const auto selection = getBrowser () -> getSelection () -> getChildren ();
 
 	if (selection .empty ())
@@ -645,16 +625,22 @@ BrowserWindow::on_detach_from_group_activate ()
 
 	auto undoStep = std::make_shared <UndoStep> (_ ("Detach From Group"));
 
+	undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
+
 	detachFromGroup (selection, getKeys () .shift (), undoStep);
 
 	getBrowser () -> update ();
+
+	undoStep -> addRedoFunction (std::mem_fn (&BrowserWindow::redoDetachFromGroup), this,
+	                             selection,
+	                             getKeys () .shift ());
+
+	addUndoStep (undoStep);
 }
 
 void
 BrowserWindow::on_create_parent_group_activate ()
 {
-	__LOG__ << std::endl;
-
 	const auto selection = getBrowser () -> getSelection () -> getChildren ();
 
 	if (selection .empty ())

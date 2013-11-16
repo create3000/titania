@@ -113,8 +113,6 @@ X3DBrowserEditor::set_shutdown ()
 void
 X3DBrowserEditor::set_selection_active (bool value)
 {
-	__LOG__ << value << std::endl;
-
 	if (value)
 	{
 		for (const auto & child : getBrowser () -> getSelection () -> getChildren ())
@@ -260,6 +258,12 @@ X3DBrowserEditor::save (const basic::uri & worldURL, bool compressed)
 }
 
 void
+X3DBrowserEditor::addUndoStep (const std::shared_ptr <UndoStep> & undoStep)
+{
+	undoHistory .addUndoStep (undoStep);
+}
+
+void
 X3DBrowserEditor::undo ()
 {
 	undoHistory .undo ();
@@ -307,7 +311,7 @@ X3DBrowserEditor::copyNodes (X3D::MFNode nodes)
 {
 	// Detach from group
 
-	auto undoDetachFromGroup = std::make_shared <UndoStep> ("");
+	auto undoDetachFromGroup = std::make_shared <UndoStep> ();
 
 	detachFromGroup (nodes, true, undoDetachFromGroup);
 
@@ -844,8 +848,18 @@ X3DBrowserEditor::addToGroup (const X3D::SFNode & group, const X3D::MFNode & chi
 }
 
 void
+X3DBrowserEditor::redoDetachFromGroup (X3D::MFNode children, bool detachToLayer0)
+{
+	detachFromGroup (children, detachToLayer0, std::make_shared <UndoStep> ());
+
+	getBrowser () -> update ();
+}
+
+void
 X3DBrowserEditor::detachFromGroup (X3D::MFNode children, bool detachToLayer0, const UndoStepPtr & undoStep)
 {
+	__LOG__ << undoStep -> size () << std::endl;
+
 	for (const auto & child : children)
 	{
 		X3D::X3DSFNode <X3D::X3DNode> node (child);

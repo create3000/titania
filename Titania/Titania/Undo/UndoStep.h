@@ -70,6 +70,8 @@ class UndoStep
 {
 public:
 
+	UndoStep ();
+
 	UndoStep (const std::string &);
 
 	const std::string &
