@@ -71,7 +71,7 @@ X3DBrowserEditor::initialize ()
 
 	getBrowser () -> initialized () .addInterest (this, &X3DBrowserEditor::set_initialized);
 	getBrowser () -> shutdown ()    .addInterest (this, &X3DBrowserEditor::set_shutdown);
-	
+
 	getBrowser () -> getSelection () -> isActive () .addInterest (this, &X3DBrowserEditor::set_selection_active);
 }
 
@@ -120,36 +120,34 @@ X3DBrowserEditor::set_selection_active (bool value)
 		for (const auto & child : getBrowser () -> getSelection () -> getChildren ())
 		{
 			auto transformHandle = X3D::x3d_cast <X3D::TransformHandle*> (child);
-		
+
 			if (transformHandle)
 				matrices [transformHandle] = transformHandle -> getMatrix ();
 		}
 	}
 	else
 	{
+		auto undoStep = std::make_shared <UndoStep> (_ ("Edit Transform"));
+
 		for (const auto & child : getBrowser () -> getSelection () -> getChildren ())
 		{
 			auto transformHandle = X3D::x3d_cast <X3D::TransformHandle*> (child);
-		
+
 			if (transformHandle)
 			{
 				try
 				{
 					X3D::Matrix4f startMatrix = matrices .at (transformHandle);
-				
+
 					if (startMatrix not_eq transformHandle -> getMatrix ())
 					{
-						auto undoStep = std::make_shared <UndoStep> (_ ("Edit Transform"));
+						undoStep -> addUndoFunction (std::mem_fn (&X3DBrowserEditor::undoSetMatrix), this,
+						                             X3D::X3DSFNode <X3D::X3DTransformNode> (transformHandle -> getTransform ()),
+						                             startMatrix);
 
-						undoStep -> addFunction (std::mem_fn (&X3DBrowserEditor::undoSetMatrix), this,
-						                         X3D::X3DSFNode <X3D::X3DTransformNode> (transformHandle -> getTransform ()),
-						                         startMatrix);
-
-						undoStep -> setRedoFunction (std::mem_fn (&X3D::Transform::setMatrix),
+						undoStep -> addRedoFunction (std::mem_fn (&X3D::Transform::setMatrix),
 						                             transformHandle -> getTransform (),
 						                             transformHandle -> getMatrix ());
-
-						undoHistory .addUndoStep (undoStep);
 					}
 				}
 				catch (const std::out_of_range &)
@@ -158,6 +156,8 @@ X3DBrowserEditor::set_selection_active (bool value)
 		}
 
 		matrices .clear ();
+
+		undoHistory .addUndoStep (undoStep);
 
 		setEdited (true);
 	}
@@ -416,7 +416,7 @@ X3DBrowserEditor::pasteNodes (const X3D::MFNode & nodes, const UndoStepPtr & und
 			basic::ifilestream text (clipboard -> wait_for_text ());
 
 			std::string header;
-	
+
 			if (X3D::Grammar::comment (text, header))
 			{
 				std::string encoding, specificationVersion, characterEncoding, comment;
@@ -430,10 +430,10 @@ X3DBrowserEditor::pasteNodes (const X3D::MFNode & nodes, const UndoStepPtr & und
 
 					if (X3D::Grammar::comment (text, worldURL))
 					{
-						import (getBrowser () -> createX3DFromStream (worldURL, text));				
+						import (getBrowser () -> createX3DFromStream (worldURL, text));
 					}
 				}
-			
+
 			}
 		}
 	}
@@ -584,10 +584,10 @@ X3DBrowserEditor::removeNodeFromSceneGraph (X3D::X3DExecutionContext* const exec
 
 										   if (*sfnode == node)
 										   {
-										      undoStep -> addFunction (std::mem_fn (&X3DBrowserEditor::undoSetValue), this,
-										                               parent,
-										                               std::ref (*sfnode),
-										                               node);
+										      undoStep -> addUndoFunction (std::mem_fn (&X3DBrowserEditor::undoSetValue), this,
+										                                   parent,
+										                                   std::ref (*sfnode),
+										                                   node);
 
 										      sfnode -> setValue (nullptr);
 											}
@@ -618,11 +618,11 @@ X3DBrowserEditor::removeNode (const X3D::SFNode & parent, X3D::MFNode & mfnode, 
 
 	if (not indices .empty ())
 	{
-		undoStep -> addFunction (std::mem_fn (&X3DBrowserEditor::undoEraseNode), this,
-		                         parent,
-		                         std::ref (mfnode),
-		                         node,
-		                         indices);
+		undoStep -> addUndoFunction (std::mem_fn (&X3DBrowserEditor::undoEraseNode), this,
+		                             parent,
+		                             std::ref (mfnode),
+		                             node,
+		                             indices);
 
 		mfnode .erase (std::remove (mfnode .begin (), mfnode .end (), node), mfnode .end ());
 	}
@@ -821,7 +821,7 @@ X3DBrowserEditor::addToGroup (const X3D::SFNode & group, const X3D::MFNode & chi
 			auto sfnode = dynamic_cast <X3D::SFNode*> (containerField);
 
 			if (sfnode)
-				sfnode -> setValue (child);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      // XXX Remove previous child completely from scene if not in scene anymore
+				sfnode -> setValue (child);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               // XXX Remove previous child completely from scene if not in scene anymore
 
 			else
 			{
@@ -858,9 +858,9 @@ X3DBrowserEditor::detachFromGroup (X3D::MFNode children, bool detachToLayer0, co
 
 		if (transform)
 		{
-			undoStep -> addFunction (std::mem_fn (&X3DBrowserEditor::undoSetMatrix), this,
-			                         transform,
-			                         transform -> getMatrix ());
+			undoStep -> addUndoFunction (std::mem_fn (&X3DBrowserEditor::undoSetMatrix), this,
+			                             transform,
+			                             transform -> getMatrix ());
 
 			X3D::Matrix4f childModelViewMatrix = findModelViewMatrix (node);
 
@@ -876,11 +876,11 @@ X3DBrowserEditor::detachFromGroup (X3D::MFNode children, bool detachToLayer0, co
 
 		if (detachToLayer0)
 		{
-			undoStep -> addFunction (std::mem_fn (&X3DBrowserEditor::undoInsertNode), this,
-			                         X3D::SFNode (getBrowser () -> getExecutionContext ()),
-			                         std::ref (getBrowser () -> getExecutionContext () -> getRootNodes ()),
-			                         getBrowser () -> getExecutionContext () -> getRootNodes () .size (),
-			                         child);
+			undoStep -> addUndoFunction (std::mem_fn (&X3DBrowserEditor::undoInsertNode), this,
+			                             X3D::SFNode (getBrowser () -> getExecutionContext ()),
+			                             std::ref (getBrowser () -> getExecutionContext () -> getRootNodes ()),
+			                             getBrowser () -> getExecutionContext () -> getRootNodes () .size (),
+			                             child);
 
 			getBrowser () -> getExecutionContext () -> getRootNodes () .emplace_back (node);
 		}
@@ -890,21 +890,21 @@ X3DBrowserEditor::detachFromGroup (X3D::MFNode children, bool detachToLayer0, co
 			{
 				if (layer -> isLayer0 ())
 				{
-					undoStep -> addFunction (std::mem_fn (&X3DBrowserEditor::undoInsertNode), this,
-					                         X3D::SFNode (getBrowser () -> getExecutionContext ()),
-					                         std::ref (getBrowser () -> getExecutionContext () -> getRootNodes ()),
-					                         getBrowser () -> getExecutionContext () -> getRootNodes () .size (),
-					                         child);
+					undoStep -> addUndoFunction (std::mem_fn (&X3DBrowserEditor::undoInsertNode), this,
+					                             X3D::SFNode (getBrowser () -> getExecutionContext ()),
+					                             std::ref (getBrowser () -> getExecutionContext () -> getRootNodes ()),
+					                             getBrowser () -> getExecutionContext () -> getRootNodes () .size (),
+					                             child);
 
 					getBrowser () -> getExecutionContext () -> getRootNodes () .emplace_back (node);
 				}
 				else
 				{
-					undoStep -> addFunction (std::mem_fn (&X3DBrowserEditor::undoInsertNode), this,
-					                         X3D::SFNode (layer),
-					                         std::ref (layer -> children ()),
-					                         layer -> children () .size (),
-					                         child);
+					undoStep -> addUndoFunction (std::mem_fn (&X3DBrowserEditor::undoInsertNode), this,
+					                             X3D::SFNode (layer),
+					                             std::ref (layer -> children ()),
+					                             layer -> children () .size (),
+					                             child);
 
 					layer -> children () .emplace_back (node);
 				}
@@ -1167,7 +1167,7 @@ X3DBrowserEditor::undoInsertNode (const X3D::SFNode & parent, X3D::MFNode & fiel
 		// There has something changed, clear history.
 		__LOG__ << std::endl;
 	}
-	
+
 	setEdited (true);
 }
 
@@ -1186,7 +1186,7 @@ X3DBrowserEditor::undoEraseNode (const X3D::SFNode & parent, X3D::MFNode & field
 			__LOG__ << std::endl;
 		}
 	}
-	
+
 	setEdited (true);
 }
 
@@ -1194,7 +1194,7 @@ void
 X3DBrowserEditor::undoSetValue (const X3D::SFNode & parent, X3D::SFNode & field, const X3D::SFNode & value)
 {
 	field = value;
-	
+
 	setEdited (true);
 }
 
@@ -1202,7 +1202,7 @@ void
 X3DBrowserEditor::undoSetMatrix (const X3D::X3DSFNode <X3D::X3DTransformNode> & transform, const X3D::Matrix4f & matrix)
 {
 	transform -> setMatrix (matrix);
-	
+
 	setEdited (true);
 }
 

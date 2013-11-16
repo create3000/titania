@@ -2,6 +2,13 @@
 
 	* UndoStep.h:
 	* UndoStep.cpp:
+	* UndoHistory.cpp:
+	* X3DBrowserEditor.cpp: 
+
+2013-11-16  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* UndoStep.h:
+	* UndoStep.cpp:
 	* UndoHistory.h:
 	* RedoFunction.h:
 	* UndoHistory.cpp:

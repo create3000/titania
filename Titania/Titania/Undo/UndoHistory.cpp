@@ -62,6 +62,9 @@ UndoHistory::UndoHistory () :
 void
 UndoHistory::addUndoStep (const std::shared_ptr <UndoStep> & undoStep)
 {
+	if (undoStep -> empty ())
+		return;
+
 	list .erase (list .begin () + (index + 1), list .end ());
 
 	list .emplace_back (undoStep);
@@ -87,7 +90,7 @@ UndoHistory::undo ()
 void
 UndoHistory::redo ()
 {
-	if (index + 1 < list .size ())
+	if (size_t (index + 1) < list .size ())
 	{
 		++ index;
 
@@ -101,6 +104,8 @@ void
 UndoHistory::clear ()
 {
 	list .clear ();
+
+	index = -1;
 
 	changed () .processInterests ();
 }

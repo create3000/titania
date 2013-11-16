@@ -78,13 +78,21 @@ public:
 
 	template <class ... Args>
 	void
-	addFunction (Args && ... args)
+	addUndoFunction (Args && ... args)
 	{ functions .emplace_front (std::bind (std::forward <Args> (args) ...)); }
 
 	template <class ... Args>
 	void
-	setRedoFunction (Args && ... args)
-	{ redoFunction = std::bind (std::forward <Args> (args) ...); }
+	addRedoFunction (Args && ... args)
+	{ redoFunctions .emplace_back (std::bind (std::forward <Args> (args) ...)); }
+
+	bool
+	empty () const
+	{ return functions .empty (); }
+
+	size_t
+	size () const
+	{ return functions .size (); }
 
 	void
 	undo () const;
@@ -97,7 +105,7 @@ private:
 
 	const std::string         description;
 	std::deque <UndoFunction> functions;
-	RedoFunction              redoFunction;
+	std::deque <RedoFunction> redoFunctions;
 
 };
 
