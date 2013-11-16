@@ -51,6 +51,7 @@
 #ifndef __TITANIA_UNDO_UNDO_STEP_H__
 #define __TITANIA_UNDO_UNDO_STEP_H__
 
+#include "../Undo/RedoFunction.h"
 #include "../Undo/UndoFunction.h"
 
 #include <Titania/LOG.h>
@@ -80,14 +81,23 @@ public:
 	addFunction (Args && ... args)
 	{ functions .emplace_front (std::bind (std::forward <Args> (args) ...)); }
 
+	template <class ... Args>
+	void
+	setRedoFunction (Args && ... args)
+	{ redoFunction = std::bind (std::forward <Args> (args) ...); }
+
 	void
 	undo () const;
+
+	void
+	redo () const;
 
 
 private:
 
 	const std::string         description;
 	std::deque <UndoFunction> functions;
+	RedoFunction              redoFunction;
 
 };
 

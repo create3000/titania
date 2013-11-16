@@ -88,6 +88,12 @@ public:
 	void
 	save (const basic::uri &, bool) final;
 
+	void
+	undo ();
+	
+	void
+	redo ();
+
 	virtual
 	bool
 	close () final;
@@ -247,7 +253,7 @@ private:
 	bool saveConfirmed;
 
 	UndoHistory undoHistory;
-	std::map <X3D::Transform*, X3D::Matrix4f> matrices;
+	std::map <X3D::TransformHandle*, X3D::Matrix4f> matrices;
 
 	X3D::X3DSFNode <X3D::Scene> scene;
 

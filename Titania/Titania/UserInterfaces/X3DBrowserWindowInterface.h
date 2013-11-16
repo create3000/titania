@@ -127,6 +127,10 @@ public:
 	getFileImportDialog () const
 	{ return *m_fileImportDialog; }
 
+	Gtk::CheckButton &
+	getImportAsInlineButton () const
+	{ return *m_importAsInlineButton; }
+
 	Gtk::Image &
 	getFileImportImage () const
 	{ return *m_fileImportImage; }
@@ -250,6 +254,14 @@ public:
 	Gtk::MenuItem &
 	getEditMenuItem () const
 	{ return *m_editMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getUndoMenuItem () const
+	{ return *m_undoMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getRedoMenuItem () const
+	{ return *m_redoMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getCutMenuItem () const
@@ -597,6 +609,14 @@ public:
 
 	virtual
 	void
+	on_undo_activate () = 0;
+
+	virtual
+	void
+	on_redo_activate () = 0;
+
+	virtual
+	void
 	on_cut_nodes_activate () = 0;
 
 	virtual
@@ -773,6 +793,7 @@ private:
 	Glib::RefPtr <Gtk::AccelGroup>  m_menuAccelGroup;
 	Gtk::Image*                     m_examineViewerImage;
 	Gtk::FileChooserDialog*         m_fileImportDialog;
+	Gtk::CheckButton*               m_importAsInlineButton;
 	Gtk::Image*                     m_fileImportImage;
 	Gtk::FileChooserDialog*         m_fileOpenDialog;
 	Gtk::FileChooserDialog*         m_fileSaveDialog;
@@ -804,6 +825,8 @@ private:
 	Gtk::ImageMenuItem*             m_revertMenuItem;
 	Gtk::ImageMenuItem*             m_quitMenuItem;
 	Gtk::MenuItem*                  m_editMenuItem;
+	Gtk::ImageMenuItem*             m_undoMenuItem;
+	Gtk::ImageMenuItem*             m_redoMenuItem;
 	Gtk::ImageMenuItem*             m_cutMenuItem;
 	Gtk::ImageMenuItem*             m_copyMenuItem;
 	Gtk::ImageMenuItem*             m_pasteMenuItem;

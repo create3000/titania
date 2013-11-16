@@ -1,5 +1,17 @@
 2013-11-16  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* configure:
+	* aclocal.m4:
+	* Makefile.in:
+	* configure:
+	* aclocal.m4:
+	* Makefile.in:
+	* config.h.in:
+	* Makefile.in:
+	* Makefile.in: 
+
+2013-11-16  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Papers.mdproj:
 	* main.c:
 	* sort.h:

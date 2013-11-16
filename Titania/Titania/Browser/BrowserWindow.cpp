@@ -466,6 +466,22 @@ BrowserWindow::on_open_location_entry_key_release_event (GdkEventKey* event)
 	return false;
 }
 
+// Undo/Redo
+
+void
+BrowserWindow::on_undo_activate ()
+{
+	__LOG__ << std::endl;
+	undo ();
+}
+
+void
+BrowserWindow::on_redo_activate ()
+{
+	__LOG__ << std::endl;
+	redo ();
+}
+
 // Clipboard
 
 void

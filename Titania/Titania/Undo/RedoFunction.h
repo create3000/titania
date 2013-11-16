@@ -48,52 +48,15 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_UNDO_UNDO_HISTORY_H__
-#define __TITANIA_UNDO_UNDO_HISTORY_H__
+#ifndef __TITANIA_UNDO_REDO_FUNCTION_H__
+#define __TITANIA_UNDO_REDO_FUNCTION_H__
 
-#include "../Undo/UndoStep.h"
-
-#include <Titania/X3D.h>
-#include <memory>
+#include <functional>
 
 namespace titania {
 namespace puck {
 
-class UndoHistory
-{
-public:
-
-	UndoHistory ();
-
-	X3D::Output &
-	changed ()
-	{ return changedOutput; }
-
-	const X3D::Output &
-	changed () const
-	{ return changedOutput; }
-
-	void
-	addUndoStep (const std::shared_ptr <UndoStep> &);
-
-	void
-	undo ();
-
-	void
-	redo ();
-
-	void
-	clear ();
-
-
-private:
-
-	std::deque <std::shared_ptr <UndoStep>>  list;
-
-	int         index;
-	X3D::Output changedOutput;
-
-};
+typedef std::function <void ()> RedoFunction;
 
 } // puck
 } // titania

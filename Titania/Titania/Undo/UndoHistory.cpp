@@ -53,18 +53,57 @@
 namespace titania {
 namespace puck {
 
-UndoHistory::UndoHistory ()
+UndoHistory::UndoHistory () :
+	         list (),
+	        index (-1),
+	changedOutput ()
 { }
 
 void
-UndoHistory::addStep (const std::shared_ptr <UndoStep> & undoStep)
+UndoHistory::addUndoStep (const std::shared_ptr <UndoStep> & undoStep)
 {
+	list .erase (list .begin () + (index + 1), list .end ());
 
+	list .emplace_back (undoStep);
+	
+	++ index;
+	
+	changed () .processInterests ();
+}
+
+void
+UndoHistory::undo ()
+{
+	if (index >= 0)
+	{
+		list [index] -> undo ();
+	
+		-- index;
+	
+		changed () .processInterests ();
+	}
+}
+
+void
+UndoHistory::redo ()
+{
+	if (index + 1 < list .size ())
+	{
+		++ index;
+
+		list [index] -> redo ();
+	
+		changed () .processInterests ();
+	}
 }
 
 void
 UndoHistory::clear ()
-{ }
+{
+	list .clear ();
+
+	changed () .processInterests ();
+}
 
 } // puck
 } // titania

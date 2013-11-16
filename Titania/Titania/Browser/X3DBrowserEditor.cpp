@@ -119,14 +119,44 @@ X3DBrowserEditor::set_selection_active (bool value)
 	{
 		for (const auto & child : getBrowser () -> getSelection () -> getChildren ())
 		{
-			auto transform = X3D::x3d_cast <X3D::Transform*> (child);
-
-			if (transform)
-				matrices [transform] = transform -> getMatrix ();
+			auto transformHandle = X3D::x3d_cast <X3D::TransformHandle*> (child);
+		
+			if (transformHandle)
+				matrices [transformHandle] = transformHandle -> getMatrix ();
 		}
 	}
 	else
 	{
+		for (const auto & child : getBrowser () -> getSelection () -> getChildren ())
+		{
+			auto transformHandle = X3D::x3d_cast <X3D::TransformHandle*> (child);
+		
+			if (transformHandle)
+			{
+				try
+				{
+					X3D::Matrix4f startMatrix = matrices .at (transformHandle);
+				
+					if (startMatrix not_eq transformHandle -> getMatrix ())
+					{
+						auto undoStep = std::make_shared <UndoStep> (_ ("Edit Transform"));
+
+						undoStep -> addFunction (std::mem_fn (&X3DBrowserEditor::undoSetMatrix), this,
+						                         X3D::X3DSFNode <X3D::X3DTransformNode> (transformHandle -> getTransform ()),
+						                         startMatrix);
+
+						undoStep -> setRedoFunction (std::mem_fn (&X3D::Transform::setMatrix),
+						                             transformHandle -> getTransform (),
+						                             transformHandle -> getMatrix ());
+
+						undoHistory .addUndoStep (undoStep);
+					}
+				}
+				catch (const std::out_of_range &)
+				{ }
+			}
+		}
+
 		matrices .clear ();
 
 		setEdited (true);
@@ -224,6 +254,18 @@ X3DBrowserEditor::save (const basic::uri & worldURL, bool compressed)
 	X3DBrowserWidget::save (worldURL, compressed);
 
 	setEdited (false);
+}
+
+void
+X3DBrowserEditor::undo ()
+{
+	undoHistory .undo ();
+}
+
+void
+X3DBrowserEditor::redo ()
+{
+	undoHistory .redo ();
 }
 
 bool
@@ -1125,6 +1167,8 @@ X3DBrowserEditor::undoInsertNode (const X3D::SFNode & parent, X3D::MFNode & fiel
 		// There has something changed, clear history.
 		__LOG__ << std::endl;
 	}
+	
+	setEdited (true);
 }
 
 void
@@ -1142,18 +1186,24 @@ X3DBrowserEditor::undoEraseNode (const X3D::SFNode & parent, X3D::MFNode & field
 			__LOG__ << std::endl;
 		}
 	}
+	
+	setEdited (true);
 }
 
 void
 X3DBrowserEditor::undoSetValue (const X3D::SFNode & parent, X3D::SFNode & field, const X3D::SFNode & value)
 {
 	field = value;
+	
+	setEdited (true);
 }
 
 void
 X3DBrowserEditor::undoSetMatrix (const X3D::X3DSFNode <X3D::X3DTransformNode> & transform, const X3D::Matrix4f & matrix)
 {
 	transform -> setMatrix (matrix);
+	
+	setEdited (true);
 }
 
 } // puck

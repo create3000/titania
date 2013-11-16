@@ -178,11 +178,6 @@ public:
 	virtual
 	void
 	setUserData (const UserDataPtr &) final;
-	
-	virtual
-	X3DBaseNode*
-	getLocalNode () final
-	{ return transform; }
 
 	virtual
 	Box3f
@@ -195,8 +190,12 @@ public:
 
 	virtual
 	Matrix4f
-	getMatrix () final
+	getMatrix ()
 	{ return transform -> getMatrix (); }
+
+	Transform*
+	getTransform () const
+	{ return transform; }
 
 	virtual
 	void

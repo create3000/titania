@@ -217,6 +217,14 @@ private:
 	bool
 	on_open_location_entry_key_release_event (GdkEventKey*) final;
 
+	virtual
+	void
+	on_undo_activate () final;
+
+	virtual
+	void
+	on_redo_activate () final;
+
 	///  @name Clipboard handling
 
 	void

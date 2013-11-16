@@ -74,6 +74,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_examineViewerImage -> set_name ("ExamineViewerImage");
 	m_builder -> get_widget ("FileImportDialog", m_fileImportDialog);
 	m_fileImportDialog -> set_name ("FileImportDialog");
+	m_builder -> get_widget ("ImportAsInlineButton", m_importAsInlineButton);
+	m_importAsInlineButton -> set_name ("ImportAsInlineButton");
 	m_builder -> get_widget ("FileImportImage", m_fileImportImage);
 	m_fileImportImage -> set_name ("FileImportImage");
 	m_builder -> get_widget ("FileOpenDialog", m_fileOpenDialog);
@@ -136,6 +138,10 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_quitMenuItem -> set_name ("QuitMenuItem");
 	m_builder -> get_widget ("EditMenuItem", m_editMenuItem);
 	m_editMenuItem -> set_name ("EditMenuItem");
+	m_builder -> get_widget ("UndoMenuItem", m_undoMenuItem);
+	m_undoMenuItem -> set_name ("UndoMenuItem");
+	m_builder -> get_widget ("RedoMenuItem", m_redoMenuItem);
+	m_redoMenuItem -> set_name ("RedoMenuItem");
 	m_builder -> get_widget ("CutMenuItem", m_cutMenuItem);
 	m_cutMenuItem -> set_name ("CutMenuItem");
 	m_builder -> get_widget ("CopyMenuItem", m_copyMenuItem);
@@ -301,6 +307,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_saveAsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_save_as));
 	m_revertMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_revert_to_saved));
 	m_quitMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_close));
+	m_undoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_undo_activate));
+	m_redoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_redo_activate));
 	m_cutMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_cut_nodes_activate));
 	m_copyMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_copy_nodes_activate));
 	m_pasteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_paste_nodes_activate));
