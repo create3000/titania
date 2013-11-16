@@ -63,11 +63,14 @@ const std::string Selection::typeName       = "Selection";
 const std::string Selection::containerField = "selection";
 
 Selection::Selection (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	    enabled (),
-	   children ()
+	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	     enabled (),
+	startEditing (),
+	    children ()
 {
-	X3DChildObject::addChildren (children);
+	X3DChildObject::addChildren (enabled,
+	                             startEditing,
+	                             children);
 }
 
 X3DBaseNode*
@@ -86,7 +89,7 @@ Selection::addChildren (const MFNode & value)
 			if (child)
 			{
 				if (child -> getExecutionContext () == getBrowser () -> getExecutionContext ())
-					child -> addHandle ();
+					child -> addHandle (&startEditing);
 
 				children .emplace_back (child);
 			}
@@ -123,6 +126,8 @@ Selection::clear ()
 void
 Selection::dispose ()
 {
+	removeChildren (MFNode (children));
+
 	children .dispose ();
 
 	X3DBaseNode::dispose ();

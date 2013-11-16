@@ -176,6 +176,9 @@ private:
 	void
 	set_shutdown ();
 	
+	void
+	set_selection_start_editing ();
+
 	// Clipboard
 
 	std::string

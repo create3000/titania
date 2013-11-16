@@ -65,7 +65,7 @@ class TransformHandle :
 {
 public:
 
-	TransformHandle (Transform* const, X3DExecutionContext* const);
+	TransformHandle (Transform* const, SFTime*, X3DExecutionContext* const);
 
 	///  @name Fields
 
@@ -195,7 +195,7 @@ public:
 
 	virtual
 	void
-	addHandle () final
+	addHandle (SFTime*) final
 	{ }
 
 	virtual
@@ -234,6 +234,8 @@ private:
 
 	Transform*         transform;
 	X3DSFNode <Scene>  scene;
+
+	SFTime* startEditing;
 
 };
 

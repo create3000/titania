@@ -99,6 +99,7 @@ void main (void)
 
 PROTO TransformTool [
   # required fields
+  eventOut     SFTime     startEditing
   exposedField SFMatrix4f cameraSpaceMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
   exposedField SFMatrix4f modelViewMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
   exposedField SFVec3f    bboxSize 0 0 0
@@ -660,6 +661,20 @@ PROTO TransformTool [
   }
 
   DEF DoubleClick_1 DoubleClick { }
+  
+  DEF EditingScript Script {
+    eventIn  SFBool  set_active
+    eventOut SFTime  startEditing IS startEditing
+
+    url "vrmlscript:
+function set_active (value, time)
+{
+	if (value)
+		startEditing = time;
+}
+"
+  }
+  
 
   DEF ModeScript Script {
     eventIn  SFTime  set_time
@@ -671,7 +686,7 @@ PROTO TransformTool [
     url "vrmlscript:
 function initialize (value, time)
 {
-	set_whichChoice (2);
+	set_whichChoice (0);
 }
 
 function set_time (value, time)
@@ -1334,6 +1349,37 @@ function divVec (a, b)
   ROUTE YScaleSensor.trackPoint_changed TO PPoint.set_translation
   ROUTE ZScaleSensor.trackPoint_changed TO PPoint.set_translation
   ROUTE ScaleSensor1.trackPoint_changed TO PPoint.set_translation
+  
+  # Editing
+ 
+  ROUTE XTranslationSensor.isActive TO EditingScript.set_active
+  ROUTE YTranslationSensor.isActive TO EditingScript.set_active
+  ROUTE ZTranslationSensor.isActive TO EditingScript.set_active
+  ROUTE FrontSensor.isActive TO EditingScript.set_active
+  ROUTE RightSensor.isActive TO EditingScript.set_active
+  ROUTE BackSensor.isActive TO EditingScript.set_active
+  ROUTE LeftSensor.isActive TO EditingScript.set_active
+  ROUTE TopSensor.isActive TO EditingScript.set_active
+  ROUTE BottomSensor.isActive TO EditingScript.set_active
+
+  #
+
+  ROUTE XRotationSensor.isActive TO EditingScript.set_active
+  ROUTE YRotationSensor.isActive TO EditingScript.set_active
+  ROUTE ZRotationSensor.isActive TO EditingScript.set_active
+  #
+
+  ROUTE XScaleSensor.isActive TO EditingScript.set_active
+  ROUTE YScaleSensor.isActive TO EditingScript.set_active
+  ROUTE ZScaleSensor.isActive TO EditingScript.set_active
+  ROUTE ScaleSensor1.isActive TO EditingScript.set_active
+  ROUTE ScaleSensor2.isActive TO EditingScript.set_active
+  ROUTE ScaleSensor3.isActive TO EditingScript.set_active
+  ROUTE ScaleSensor4.isActive TO EditingScript.set_active
+  ROUTE ScaleSensor5.isActive TO EditingScript.set_active
+  ROUTE ScaleSensor6.isActive TO EditingScript.set_active
+  ROUTE ScaleSensor7.isActive TO EditingScript.set_active
+  ROUTE ScaleSensor8.isActive TO EditingScript.set_active
 
   # Mode translate, rotate or scale
 
@@ -1355,15 +1401,15 @@ function divVec (a, b)
 
   # Move Tool
 
+  ROUTE XTranslationSensor.translation_changed TO MoveScript.set_xTranslation
+  ROUTE YTranslationSensor.translation_changed TO MoveScript.set_yTranslation
+  ROUTE ZTranslationSensor.translation_changed TO MoveScript.set_zTranslation
   ROUTE FrontSensor.translation_changed TO MoveScript.set_frontTranslation
   ROUTE RightSensor.translation_changed TO MoveScript.set_rightTranslation
   ROUTE BackSensor.translation_changed TO MoveScript.set_backTranslation
   ROUTE LeftSensor.translation_changed TO MoveScript.set_leftTranslation
   ROUTE TopSensor.translation_changed TO MoveScript.set_topTranslation
   ROUTE BottomSensor.translation_changed TO MoveScript.set_bottomTranslation
-  ROUTE XTranslationSensor.translation_changed TO MoveScript.set_xTranslation
-  ROUTE YTranslationSensor.translation_changed TO MoveScript.set_yTranslation
-  ROUTE ZTranslationSensor.translation_changed TO MoveScript.set_zTranslation
 
   # Rotate Tool
 

@@ -219,7 +219,7 @@ public:
 
 	virtual
 	void
-	addHandle ()
+	addHandle (SFTime*)
 	{ }
 
 	virtual

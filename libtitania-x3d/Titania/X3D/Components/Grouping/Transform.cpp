@@ -88,9 +88,9 @@ Transform::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-Transform::addHandle ()
+Transform::addHandle (SFTime* startEditing)
 {
-	X3DTransformNode::addHandle (new TransformHandle (this, getExecutionContext ()));
+	X3DTransformNode::addHandle (new TransformHandle (this, startEditing, getExecutionContext ()));
 }
 
 void

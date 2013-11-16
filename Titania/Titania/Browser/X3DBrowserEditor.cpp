@@ -70,6 +70,8 @@ X3DBrowserEditor::initialize ()
 
 	getBrowser () -> initialized () .addInterest (this, &X3DBrowserEditor::set_initialized);
 	getBrowser () -> shutdown ()    .addInterest (this, &X3DBrowserEditor::set_shutdown);
+	
+	getBrowser () -> getSelection () -> getStartEditing () .addInterest (this, &X3DBrowserEditor::set_selection_start_editing);
 }
 
 void
@@ -105,6 +107,14 @@ X3DBrowserEditor::set_shutdown ()
 	// Cancel shutdown
 
 	getBrowser () -> replaceWorld (getBrowser () -> getExecutionContext ());
+}
+
+void
+X3DBrowserEditor::set_selection_start_editing ()
+{
+	__LOG__ << std::endl;
+
+	setEdited (true);
 }
 
 bool
