@@ -114,6 +114,7 @@ BrowserWindow::initialize ()
 	// CSS
 	Glib::RefPtr <Gtk::CssProvider> cssProvider = Gtk::CssProvider::create ();
 	cssProvider -> load_from_path (get_ui ("style.css"));
+	cssProvider -> load_from_data (getStyles ());
 	Gtk::StyleContext::add_provider_for_screen (Gdk::Screen::get_default (), cssProvider, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 
 	// Drag & drop targets
@@ -148,6 +149,29 @@ BrowserWindow::initialize ()
 	// Window
 	getWindow () .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::ARROW));
 	getWidget () .grab_focus ();
+}
+
+std::string
+BrowserWindow::getStyles () const
+{
+	std::string string;
+
+	auto styleContext = getWidget () .get_style_context ();
+
+	auto fg_selected = styleContext -> get_color (Gtk::STATE_FLAG_SELECTED); 
+	auto bg_normal   = styleContext -> get_background_color (Gtk::STATE_FLAG_NORMAL); 
+	auto bg_selected = styleContext -> get_background_color (Gtk::STATE_FLAG_SELECTED); 
+
+	string += "#OutlineTreeViewEditor .textview-editable {";
+	string += "  background-color: mix (" + bg_selected .to_string () + ", " + bg_normal .to_string () + ", 0.9);";
+	string += "}";
+	string += "";
+	string += "#OutlineTreeViewEditor .textview-editable:selected {";
+	string += "  color: " + fg_selected .to_string () + ";";
+	string += "  background-color: " + bg_selected .to_string () + ";";
+	string += "}";
+
+	return string;
 }
 
 // Menu

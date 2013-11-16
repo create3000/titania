@@ -157,7 +157,6 @@ X3DBrowserContext::initialize ()
 		glClearColor (0, 0, 0, 0);
 		glClearDepth (1);
 
-		glColorMaterial (GL_FRONT_AND_BACK, GL_DIFFUSE);
 		glCullFace (GL_BACK);
 		glEnable (GL_NORMALIZE);
 
@@ -173,6 +172,8 @@ X3DBrowserContext::initialize ()
 		glLightModeli  (GL_LIGHT_MODEL_LOCAL_VIEWER,  GL_FALSE);
 		glLightModeli  (GL_LIGHT_MODEL_TWO_SIDE,      GL_TRUE);
 		glLightModeli  (GL_LIGHT_MODEL_COLOR_CONTROL, GL_SEPARATE_SPECULAR_COLOR);
+
+		glColorMaterial (GL_FRONT_AND_BACK, GL_DIFFUSE);
 
 		glHint (GL_FOG_HINT, GL_NICEST);
 

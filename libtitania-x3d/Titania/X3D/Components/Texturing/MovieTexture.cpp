@@ -142,9 +142,10 @@ MovieTexture::requestImmediateLoad ()
 		{
 			duration_changed () = getDuration ();
 
-			setImage (3, GL_BGRA,
+			setImage (GL_RGB, 3, 
 			          getVideoSink () -> get_width (),
 			          getVideoSink () -> get_height (),
+			          GL_BGRA,
 			          GST_BUFFER_DATA (buffer));
 
 			gst_buffer_unref (buffer);
@@ -159,7 +160,7 @@ MovieTexture::requestImmediateLoad ()
 	{
 		duration_changed () = -1;
 
-		setImage (3, GL_BGRA, 0, 0, nullptr);
+		setImage (GL_RGB, 3, 0, 0, GL_BGRA, nullptr);
 
 		setLoadState (FAILED_STATE);
 	}

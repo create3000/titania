@@ -115,17 +115,18 @@ X3DTexture2DNode::setTexture (const TexturePtr & texture)
 {
 	if (texture)
 	{
-		setImage (texture -> getComponents (),
-		          texture -> getFormat (),
+		setImage (getInternalFormat (texture -> getComponents ()),
+		          texture -> getComponents (),
 		          texture -> getWidth (), texture -> getHeight (),
+		          texture -> getFormat (),
 		          texture -> getData ());
 	}
 	else
-		setImage (3, GL_RGB, 0, 0, nullptr);
+		setImage (getInternalFormat (3), 3, GL_RGB, 0, 0, nullptr);
 }
 
 void
-X3DTexture2DNode::setImage (size_t comp, GLenum format, GLint w, GLint h, const void* data)
+X3DTexture2DNode::setImage (GLenum internalFormat, size_t comp, GLint w, GLint h, GLenum format, const void* data)
 {
 	// transfer image
 
@@ -140,7 +141,7 @@ X3DTexture2DNode::setImage (size_t comp, GLenum format, GLint w, GLint h, const 
 
 	glTexImage2D (GL_TEXTURE_2D,
 	              0,     // This texture is level 0 in mimpap generation.
-	              getInternalFormat (),
+	              internalFormat,
 	              width, height,
 	              false, // border
 	              format, GL_UNSIGNED_BYTE,

@@ -140,8 +140,8 @@ NurbsTrimmedSurface::getContours () const
 			contours .emplace_back (contour);
 	}
 
-	if (is_odd (contours .size ()))
-		contours .pop_back ();
+	//if (is_odd (contours .size ()))
+	//	contours .pop_back ();
 
 	return contours;
 }
@@ -151,21 +151,23 @@ NurbsTrimmedSurface::trimSurface (GLUnurbs* nurbsRenderer) const
 {
 	std::vector <Contour2D*> contours = std::move (getContours ());
 	
-	for (size_t i = 0, size = contours .size (); i < size; i += 2)
+	if (contours .size () < 2)
+		return;
+	
+	contours [0] -> trimSurface (nurbsRenderer);
+
+	for (size_t i = 1, size = contours .size (); i < size; ++ i)
 	{
-		size_t i1 = i, i2 = i + 1;
-
-		if (contours [i1] -> isEmpty () or contours [i2] -> isEmpty ())
+		if (contours [i] -> isEmpty ())
 			continue;
 
-		if (not contours [i1] -> isClosed () or not contours [i2] -> isClosed ())
+		if (not contours [i] -> isClosed ())
 			continue;
 
-		if (not contours [i1] -> getBBox () .contains (contours [i2] -> getBBox ()))
+		if (not contours [0] -> getBBox () .contains (contours [i] -> getBBox ()))
 			continue;
 
-		contours [i1] -> trimSurface (nurbsRenderer);
-		contours [i2] -> trimSurface (nurbsRenderer);
+		contours [i] -> trimSurface (nurbsRenderer);
 	}
 }
 

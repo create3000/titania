@@ -1,3 +1,8 @@
+2013-11-16  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* BrowserWindow.h:
+	* BrowserWindow.cpp: 
+
 2013-11-09  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* run.pl: 

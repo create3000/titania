@@ -1,5 +1,14 @@
 2013-11-16  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBrowserContext.cpp:
+	* MovieTexture.cpp:
+	* X3DTexture2DNode.h:
+	* NurbsTrimmedSurface.cpp:
+	* X3DTexture2DNode.cpp:
+	* TextureProperties.cpp: 
+
+2013-11-16  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Contour2D.h:
 	* Contour2D.cpp:
 	* NurbsCurve2D.h:

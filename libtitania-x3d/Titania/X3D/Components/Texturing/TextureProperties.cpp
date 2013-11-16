@@ -260,11 +260,11 @@ TextureProperties::getInternalFormat (int32_t components) const
 				case LOW:
 				case MEDIUM:
 				case HIGH:
-					return GL_COMPRESSED_RGB;
+					return GL_COMPRESSED_SRGB;
 				case DEFAULT:
 				case FASTEST:
 				case NICEST:
-					return GL_RGB;
+					return GL_SRGB8;
 			}
 		}
 		case 4:
@@ -274,11 +274,11 @@ TextureProperties::getInternalFormat (int32_t components) const
 				case LOW:
 				case MEDIUM:
 				case HIGH:
-					return GL_COMPRESSED_RGBA;
+					return GL_COMPRESSED_SRGB_ALPHA;
 				case DEFAULT:
 				case FASTEST:
 				case NICEST:
-					return GL_RGBA;
+					return GL_SRGB8_ALPHA8;
 			}
 		}
 	}

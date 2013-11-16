@@ -144,6 +144,9 @@ private:
 	void
 	initialize ();
 
+	std::string
+	getStyles () const;
+
 	///  @name Selection handling
 
 	void

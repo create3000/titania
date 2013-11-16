@@ -125,7 +125,7 @@ protected:
 	setTexture (const TexturePtr &);
 
 	void
-	setImage (size_t, GLenum, GLint, GLint, const void*);
+	setImage (GLenum, size_t, GLint, GLint, GLenum, const void*);
 
 	void
 	updateImage (GLenum, GLint, GLint, const void*);
@@ -142,7 +142,7 @@ private:
 	///  @name Member access
 
 	GLenum
-	getInternalFormat () const
+	getInternalFormat (size_t components) const
 	{ return getTextureProperties () -> getInternalFormat (components); }
 
 	///  @name Operations
