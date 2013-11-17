@@ -63,7 +63,11 @@ class UndoHistory
 {
 public:
 
+	///  @name Construction
+
 	UndoHistory ();
+
+	///  @name Fields
 
 	X3D::Output &
 	changed ()
@@ -72,6 +76,18 @@ public:
 	const X3D::Output &
 	changed () const
 	{ return changedOutput; }
+
+	///  @name Member access
+	
+	size_t
+	getIndex () const
+	{ return index; }
+	
+	const std::deque <std::shared_ptr <UndoStep>> &
+	getList () const
+	{ return list; }
+
+	///  @name Operations
 
 	void
 	addUndoStep (const std::shared_ptr <UndoStep> &);
@@ -87,6 +103,8 @@ public:
 
 
 private:
+
+	///  @name Members
 
 	std::deque <std::shared_ptr <UndoStep>>  list;
 

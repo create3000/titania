@@ -73,6 +73,10 @@ X3DBrowserEditor::initialize ()
 	getBrowser () -> shutdown ()    .addInterest (this, &X3DBrowserEditor::set_shutdown);
 
 	getBrowser () -> getSelection () -> isActive () .addInterest (this, &X3DBrowserEditor::set_selection_active);
+	
+	undoHistory .changed () .addInterest (this, &X3DBrowserEditor::set_undoHistory);
+	
+	set_undoHistory ();
 }
 
 void
@@ -257,6 +261,19 @@ X3DBrowserEditor::save (const basic::uri & worldURL, bool compressed)
 	setEdited (false);
 }
 
+bool
+X3DBrowserEditor::close ()
+{
+	getWidget () .grab_focus ();
+
+	if (isSaved ())
+		return X3DBrowserWidget::close ();
+
+	return true;
+}
+
+// Undo operations
+
 void
 X3DBrowserEditor::addUndoStep (const std::shared_ptr <UndoStep> & undoStep)
 {
@@ -275,18 +292,35 @@ X3DBrowserEditor::redo ()
 	undoHistory .redo ();
 }
 
-bool
-X3DBrowserEditor::close ()
+void
+X3DBrowserEditor::set_undoHistory ()
 {
-	getWidget () .grab_focus ();
-
-	if (isSaved ())
-		return X3DBrowserWidget::close ();
-
-	return true;
+	__LOG__ << std::endl;
+	
+	int index = undoHistory .getIndex ();
+	
+	if (index >= 0)
+	{
+		getUndoMenuItem () .set_label (_("Undo ") + undoHistory .getList () [index] -> getDescription ());
+		getUndoMenuItem () .set_sensitive (true);
+	}
+	else
+	{
+		getUndoMenuItem () .set_label (_("Undo"));
+		getUndoMenuItem () .set_sensitive (false);
+	}
+	
+	if (index + 1 < (int) undoHistory .getList () .size ())
+	{
+		getRedoMenuItem () .set_label (_("Redo ") + undoHistory .getList () [index + 1] -> getDescription ());
+		getRedoMenuItem () .set_sensitive (true);
+	}
+	else
+	{
+		getRedoMenuItem () .set_label (_("Redo"));
+		getRedoMenuItem () .set_sensitive (false);
+	}
 }
-
-// Undo operations
 
 // Clipboard operations
 

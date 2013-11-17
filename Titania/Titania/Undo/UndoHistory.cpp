@@ -90,7 +90,7 @@ UndoHistory::undo ()
 void
 UndoHistory::redo ()
 {
-	if (size_t (index + 1) < list .size ())
+	if (index + 1 < (int) list .size ())
 	{
 		++ index;
 

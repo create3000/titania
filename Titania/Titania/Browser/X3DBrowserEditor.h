@@ -120,6 +120,9 @@ protected:
 	restoreSession () final;
 
 	/// @name Undo
+	
+	void
+	set_undoHistory ();
 
 	/// @name Clipboard operations
 

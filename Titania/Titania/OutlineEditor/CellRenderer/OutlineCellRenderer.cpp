@@ -688,16 +688,19 @@ OutlineCellRenderer::set_field_value (X3D::X3DFieldDefinition* const field, cons
 
 	if (field -> fromString (string))
 	{
-		auto undoStep = std::make_shared <UndoStep> (_ ("Edit Field Value"));
+		if (field -> toString () not_eq value)
+		{
+			auto undoStep = std::make_shared <UndoStep> (_ ("Edit Field Value"));
 
-		undoStep -> addUndoFunction (std::mem_fn (&BrowserWindow::setEdited), treeView -> getBrowserWindow (), true);
-		undoStep -> addUndoFunction (std::bind (std::mem_fn (&X3D::X3DFieldDefinition::fromString), field, value),  node);
+			undoStep -> addUndoFunction (std::mem_fn (&BrowserWindow::setEdited), treeView -> getBrowserWindow (), true);
+			undoStep -> addUndoFunction (std::bind (std::mem_fn (&X3D::X3DFieldDefinition::fromString), field, value),  node);
 
-		undoStep -> addRedoFunction (std::bind (std::mem_fn (&X3D::X3DFieldDefinition::fromString), field, string), node);
-		undoStep -> addRedoFunction (std::mem_fn (&BrowserWindow::setEdited), treeView -> getBrowserWindow (), true);
+			undoStep -> addRedoFunction (std::bind (std::mem_fn (&X3D::X3DFieldDefinition::fromString), field, string), node);
+			undoStep -> addRedoFunction (std::mem_fn (&BrowserWindow::setEdited), treeView -> getBrowserWindow (), true);
 
-		treeView -> getBrowserWindow () -> addUndoStep (undoStep);
-		treeView -> getBrowserWindow () -> setEdited (true);
+			treeView -> getBrowserWindow () -> addUndoStep (undoStep);
+			treeView -> getBrowserWindow () -> setEdited (true);
+		}
 
 		return true;
 	}
