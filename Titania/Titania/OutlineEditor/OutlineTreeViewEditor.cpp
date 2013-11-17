@@ -221,15 +221,15 @@ OutlineTreeViewEditor::on_button_press_event (GdkEventButton* event)
 	{
 		case 1:
 		{
-			if (select_field (event -> x, event -> y))
+			if (select_field_value (event -> x, event -> y))
 				return true;
 
 			break;
 		}
 		case 3:
 		{
-			//			getPopupMenu () .popup (event -> button, event -> time);
-			//			return true;
+			// getPopupMenu () .popup (event -> button, event -> time);
+			// return true;
 			break;
 		}
 		default:
@@ -251,7 +251,7 @@ OutlineTreeViewEditor::select_node (const Gtk::TreeModel::iterator & iter, const
 }
 
 bool
-OutlineTreeViewEditor::select_field (int x, int y)
+OutlineTreeViewEditor::select_field_value (int x, int y)
 {
 	Gtk::TreeModel::Path path;
 	Gtk::TreeViewColumn* column = nullptr;
@@ -285,7 +285,6 @@ OutlineTreeViewEditor::on_edited (const Glib::ustring & string_path, const Glib:
 	get_model () -> row_changed (path, iter);
 	watch (iter, path);
 
-	getBrowserWindow () -> setEdited (true);
 	getBrowserWindow () -> enableMenus (true);
 }
 

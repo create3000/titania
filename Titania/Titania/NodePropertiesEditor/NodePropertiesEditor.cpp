@@ -117,12 +117,24 @@ NodePropertiesEditor::on_ok ()
 {
 	std::string name = getNameEntry () .get_text ();
 
-	node -> getExecutionContext () -> removeNamedNode (node -> getName ());
+	if (name not_eq node -> getName ())
+	{
+		auto undoStep = std::make_shared <UndoStep> (_ ("Edit Node Properties"));
 
-	if (name .size ())
-		node -> getExecutionContext () -> updateNamedNode (node -> getExecutionContext () -> getUniqueName (name), node);
+		undoStep -> addUndoFunction (&NodePropertiesEditor::updateNamedNode,
+		                             node -> getName (),
+		                             node,
+		                             getBrowserWindow ());
 
-	getBrowserWindow () -> setEdited (true);
+		undoStep -> addRedoFunction (&NodePropertiesEditor::updateNamedNode,
+		                             name,
+		                             node,
+		                             getBrowserWindow ());
+
+		updateNamedNode (name, node, getBrowserWindow ());
+
+		getBrowserWindow () -> addUndoStep (undoStep);
+	}
 
 	close ();
 }
@@ -131,6 +143,18 @@ void
 NodePropertiesEditor::on_cancel ()
 {
 	close ();
+}
+
+void
+NodePropertiesEditor::updateNamedNode (const std::string & name, const X3D::SFNode & node, BrowserWindow* const browserWindow)
+{
+	node -> getExecutionContext () -> removeNamedNode (node -> getName ());
+
+	if (not name .empty ())
+		node -> getExecutionContext () -> updateNamedNode (node -> getExecutionContext () -> getUniqueName (name), node);	
+
+	browserWindow -> getOutlineTreeView () .queue_draw ();
+	browserWindow -> setEdited (true);
 }
 
 NodePropertiesEditor::~NodePropertiesEditor ()

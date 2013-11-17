@@ -51,6 +51,8 @@
 #include "OutlineCellRenderer.h"
 
 #include "../../Configuration/config.h"
+#include "../../Undo/UndoStep.h"
+#include "../../Browser/BrowserWindow.h"
 #include "../OutlineTreeModel.h"
 #include "../X3DOutlineTreeView.h"
 
@@ -649,7 +651,7 @@ OutlineCellRenderer::on_editing_done ()
 		{
 			std::string string = textview -> get_text ();
 
-			if (set_field_value (data -> get_object (), string))
+			if (set_field_value (data -> get_object (), string, data -> get_path ()))
 			{
 				textview -> set_validated (true);
 				textview -> remove_widget ();
@@ -664,14 +666,43 @@ OutlineCellRenderer::on_editing_done ()
 }
 
 bool
-OutlineCellRenderer::set_field_value (X3D::X3DChildObject* const object, const std::string & string)
+OutlineCellRenderer::set_field_value (X3D::X3DChildObject* const object, const std::string & string, Gtk::TreeModel::Path path)
 {
-	auto field = static_cast <X3D::X3DFieldDefinition*> (object);
+	path .up ();
+	path .up ();
+
+	auto parent = treeView -> get_model () -> get_iter (path);
+	auto node   = static_cast <X3D::SFNode*> (treeView -> get_object (parent));
+	auto field  = static_cast <X3D::X3DFieldDefinition*> (object);
 
 	if (field -> isArray ())
-		return field -> fromString ("[" + string + "]");
+		return set_field_value (field, "[" + string + "]", *node);
 
-	return field -> fromString (string);
+	return set_field_value (field, string, *node);
+}
+
+bool
+OutlineCellRenderer::set_field_value (X3D::X3DFieldDefinition* const field, const std::string & string, const X3D::SFNode & node)
+{
+	std::string value = field -> toString ();
+
+	if (field -> fromString (string))
+	{
+		auto undoStep = std::make_shared <UndoStep> (_ ("Edit Field Value"));
+
+		undoStep -> addUndoFunction (std::mem_fn (&BrowserWindow::setEdited), treeView -> getBrowserWindow (), true);
+		undoStep -> addUndoFunction (std::bind (std::mem_fn (&X3D::X3DFieldDefinition::fromString), field, value),  node);
+
+		undoStep -> addRedoFunction (std::bind (std::mem_fn (&X3D::X3DFieldDefinition::fromString), field, string), node);
+		undoStep -> addRedoFunction (std::mem_fn (&BrowserWindow::setEdited), treeView -> getBrowserWindow (), true);
+
+		treeView -> getBrowserWindow () -> addUndoStep (undoStep);
+		treeView -> getBrowserWindow () -> setEdited (true);
+
+		return true;
+	}
+
+	return false;
 }
 
 void

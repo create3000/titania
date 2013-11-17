@@ -779,6 +779,7 @@ throw (Error <INVALID_X3D>,
 
 			if (istream >> value)
 			{
+				clear ();
 				emplace_back (value);
 				return;
 			}

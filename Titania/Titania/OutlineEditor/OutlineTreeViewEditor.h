@@ -115,7 +115,7 @@ private:
 	select_node (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
 
 	bool
-	select_field (int x, int y);
+	select_field_value (int x, int y);
 
 	void
 	on_edited (const Glib::ustring &, const Glib::ustring &);

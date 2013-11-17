@@ -101,6 +101,10 @@ private:
 	void
 	on_cancel () final;
 
+	static
+	void
+	updateNamedNode (const std::string &, const X3D::SFNode &, BrowserWindow* const);
+
 	///  @name Members
 	
 	const X3D::SFNode node;

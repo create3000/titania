@@ -1,9 +1,13 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/NURBS/NurbsPatchSurface.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Browser/BrowserWindow.cpp">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Components/NURBS/NurbsPatchSurface.h" Line="127" Column="26" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/NURBS/NurbsPatchSurface.cpp" Line="323" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="160" Column="21" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="854" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Handles/TransformHandle.h" Line="194" Column="52" />
+      <File FileName="libtitania-x3d/Titania/X3D/Handles/TransformHandle.cpp" Line="88" Column="32" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Grouping/X3DTransformNode.cpp" Line="89" Column="42" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="601" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -12,17 +16,13 @@
             <Node name="debian" expanded="True" />
           </Node>
           <Node name="Library" expanded="True">
-            <Node name="Prototypes" expanded="True">
-              <Node name="Fields" expanded="True">
-                <Node name="MFVec3f" expanded="True" />
-                <Node name="SFVec3f" expanded="True" />
-              </Node>
-              <Node name="Geometry2D" expanded="True">
-                <Node name="RegularPolygon2D" expanded="True" />
-              </Node>
-            </Node>
             <Node name="Tests" expanded="True">
-              <Node name="NURBS" expanded="True" />
+              <Node name="images" expanded="True" />
+              <Node name="NURBS" expanded="True">
+                <Node name="NurbsPatchSurface" expanded="True" />
+                <Node name="NurbsTrimmedSurface" expanded="True" />
+              </Node>
+              <Node name="Shape" expanded="True" />
               <Node name="Texturing" expanded="True" />
             </Node>
           </Node>
@@ -34,6 +34,7 @@
           <Node name="libtitania-standard" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="Math" expanded="True">
+                <Node name="Geometry" expanded="True" />
                 <Node name="Numbers" expanded="True" />
               </Node>
             </Node>
@@ -46,21 +47,15 @@
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
-                <Node name="Browser" expanded="True" />
-                <Node name="Components" expanded="True">
-                  <Node name="Geometry3D" expanded="True" />
-                  <Node name="Geospatial" expanded="True" />
-                  <Node name="Layout" expanded="True" />
-                  <Node name="NURBS" expanded="True">
-                    <Node name="NurbsPatchSurface.cpp" selected="True" />
-                  </Node>
-                  <Node name="Rendering" expanded="True" />
-                  <Node name="Text" expanded="True" />
+                <Node name="Basic" expanded="True" />
+                <Node name="Bits" expanded="True" />
+                <Node name="Browser" expanded="True">
+                  <Node name="Picking" expanded="True" />
                 </Node>
-                <Node name="Configuration" expanded="True" />
-                <Node name="Execution" expanded="True" />
-                <Node name="Rendering" expanded="True" />
-                <Node name="Types" expanded="True" />
+                <Node name="Components" expanded="True">
+                  <Node name="Grouping" expanded="True" />
+                </Node>
+                <Node name="Handles" expanded="True" />
               </Node>
             </Node>
           </Node>
@@ -75,10 +70,15 @@
                     </Node>
                   </Node>
                 </Node>
+                <Node name="ui" expanded="True" />
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
-              <Node name="Browser" expanded="True" />
+              <Node name="Browser" expanded="True">
+                <Node name="BrowserWindow.cpp" selected="True" />
+              </Node>
+              <Node name="NodePropertiesEditor" expanded="True" />
+              <Node name="Undo" expanded="True" />
               <Node name="ViewpointList" expanded="True" />
             </Node>
           </Node>

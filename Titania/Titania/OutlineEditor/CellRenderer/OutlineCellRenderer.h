@@ -143,7 +143,10 @@ private:
 	on_editing_done ();
 
 	bool
-	set_field_value (X3D::X3DChildObject* const, const std::string &);
+	set_field_value (X3D::X3DChildObject* const, const std::string &, Gtk::TreeModel::Path);
+
+	bool
+	set_field_value (X3D::X3DFieldDefinition* const, const std::string &, const X3D::SFNode &);
 
 	virtual
 	void
