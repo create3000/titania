@@ -80,6 +80,14 @@ Selection::create (X3DExecutionContext* const executionContext) const
 }
 
 void
+Selection::initialize ()
+{
+	X3DBaseNode::initialize ();
+
+	getBrowser () -> shutdown () .addInterest (this, &Selection::clear);
+}
+
+void
 Selection::addChildren (const MFNode & value)
 {
 	if (getBrowser () -> makeCurrent ())

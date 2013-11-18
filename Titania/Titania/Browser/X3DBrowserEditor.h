@@ -104,6 +104,22 @@ public:
 	bool
 	close () final;
 
+	/// @name Selection operations
+
+	void
+	select (const X3D::MFNode &, const UndoStepPtr &);
+
+	void
+	deselect (const X3D::MFNode &, const UndoStepPtr &);
+
+	void
+	selectAll (const UndoStepPtr &);
+
+	void
+	deselectAll (const UndoStepPtr &);
+
+	/// @name Editor handling
+
 	void
 	openNodePropertiesEditor (const X3D::SFNode &);
 
@@ -163,20 +179,6 @@ protected:
 
 	X3D::MFNode
 	createParentGroup (const X3D::MFNode &, const UndoStepPtr &);
-
-	/// @name Selection operations
-
-	void
-	select (const X3D::MFNode &, const UndoStepPtr &);
-
-	void
-	deselect (const X3D::MFNode &, const UndoStepPtr &);
-
-	void
-	selectAll (const UndoStepPtr &);
-
-	void
-	deselectAll (const UndoStepPtr &);
 
 
 private:

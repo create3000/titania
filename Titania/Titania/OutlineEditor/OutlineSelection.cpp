@@ -70,7 +70,6 @@ OutlineSelection::OutlineSelection (BrowserWindow* const browserWindow, OutlineT
 {
 	// Register browser interest
 
-	getBrowser () -> initialized () .addInterest (this, &OutlineSelection::clear);
 	getBrowser () -> getSelection () -> getChildren () .addInterest (this, &OutlineSelection::set_children);
 }
 
@@ -99,25 +98,23 @@ OutlineSelection::select (const X3D::SFNode & node)
 {
 	if (node)
 	{
+		auto undoStep = std::make_shared <UndoStep> (_ ("Selection Change"));
+
 		bool selected = std::find (children .begin (), children .end (), node) not_eq children .end ();
 
 		if (selectMultiple)
 		{
 			if (selected)
-				getBrowser () -> getSelection () -> removeChildren ({ node });
+				getBrowserWindow () -> deselect ({ node }, undoStep);
 		}
 		else
-			clear ();
+			getBrowserWindow () -> deselectAll (undoStep);
 
 		if (not selected)
-			getBrowser () -> getSelection () -> addChildren ({ node });
-	}
-}
+			getBrowserWindow () -> select ({ node }, undoStep);
 
-void
-OutlineSelection::clear ()
-{
-	getBrowser () -> getSelection () -> clear ();
+		getBrowserWindow () -> addUndoStep (undoStep);
+	}
 }
 
 void

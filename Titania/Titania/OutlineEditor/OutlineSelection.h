@@ -95,9 +95,6 @@ public:
 	void
 	select (const X3D::SFNode &);
 
-	void
-	clear ();
-
 
 private:
 

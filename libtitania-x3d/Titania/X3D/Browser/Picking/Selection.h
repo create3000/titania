@@ -129,6 +129,10 @@ public:
 
 private:
 
+	virtual
+	void
+	initialize () final;
+
 	///  @name Static members
 
 	static const std::string componentName;

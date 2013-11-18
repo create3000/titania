@@ -1122,6 +1122,7 @@ X3DBrowserEditor::deselectAll (const UndoStepPtr & undoStep)
 	auto selection = getBrowser () -> getSelection ();
 
 	undoStep -> addUndoFunction (std::mem_fn (&X3D::Selection::addChildren), selection, selection -> getChildren ());
+	undoStep -> addUndoFunction (std::mem_fn (&X3D::Selection::clear), selection);
 	undoStep -> addRedoFunction (std::mem_fn (&X3D::Selection::clear), selection);
 
 	selection -> clear ();

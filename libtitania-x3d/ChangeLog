@@ -1,5 +1,10 @@
 2013-11-18  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Selection.h:
+	* Selection.cpp: 
+
+2013-11-18  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBaseNode.h:
 	* X3DArrayField.h:
 	* X3DScene.cpp:

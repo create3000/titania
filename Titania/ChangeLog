@@ -1,5 +1,13 @@
 2013-11-18  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* BrowserWindow.cpp:
+	* X3DBrowserEditor.h:
+	* X3DBrowserEditor.cpp:
+	* OutlineSelection.h:
+	* OutlineSelection.cpp: 
+
+2013-11-18  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* UndoStep.h:
 	* UndoStep.cpp:
 	* UndoFunction.h:

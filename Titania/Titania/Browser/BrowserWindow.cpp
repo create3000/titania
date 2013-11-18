@@ -498,8 +498,9 @@ BrowserWindow::on_cut_nodes_activate ()
 
 	auto undoStep = std::make_shared <UndoStep> (_ ("Cut"));
 
-	cutNodes (selection, undoStep);
 	deselectAll (undoStep);
+
+	cutNodes (selection, undoStep);
 
 	getBrowser () -> update ();
 }
@@ -602,12 +603,12 @@ BrowserWindow::on_add_to_group_activate ()
 
 	auto undoStep = std::make_shared <UndoStep> (_ ("Add To Group"));
 
+	deselectAll (undoStep);
+
 	auto group = selection .back ();
 	selection .pop_back ();
 
 	addToGroup (group, selection, undoStep);
-
-	deselectAll (undoStep);
 
 	select ({ group }, undoStep);
 
@@ -851,6 +852,8 @@ BrowserWindow::on_select_all_activate ()
 	auto undoStep = std::make_shared <UndoStep> (_ ("Select All"));
 
 	selectAll (undoStep);
+
+	addUndoStep (undoStep);
 }
 
 void
@@ -859,6 +862,8 @@ BrowserWindow::on_deselect_all_activate ()
 	auto undoStep = std::make_shared <UndoStep> (_ ("Deselect All"));
 
 	deselectAll (undoStep);
+
+	addUndoStep (undoStep);
 }
 
 // Navigation menu
