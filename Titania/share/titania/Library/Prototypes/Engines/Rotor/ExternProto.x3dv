@@ -10,6 +10,7 @@ EXTERNPROTO Rotor [
   exposedField SFTime     pauseTime
   exposedField SFTime     resumeTime
   exposedField SFTime     stopTime
+  outputOnly   SFBool     isActive
   eventOut     SFRotation rotation_changed
 ]
 [ "Rotor.x3dv", "file:///usr/share/titania/Library/Prototypes/Engines/Rotor/Rotor.x3dv" ]

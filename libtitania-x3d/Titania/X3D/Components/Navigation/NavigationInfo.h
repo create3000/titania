@@ -71,6 +71,8 @@ class NavigationInfo :
 {
 public:
 
+	///  @name Creation
+
 	NavigationInfo (X3DExecutionContext* const);
 
 	virtual
@@ -169,6 +171,8 @@ public:
 	transitionComplete () const
 	{ return *fields .transitionComplete; }
 
+	///  @name Member access
+
 	float
 	getCollisionRadius () const;
 
@@ -187,6 +191,8 @@ public:
 	TransitionType
 	getTransitionType () const;
 
+	///  @name Operations
+
 	void
 	transitionStart (NavigationInfo*)
 	{ }
@@ -203,30 +209,41 @@ public:
 
 	virtual
 	void
-	traverse (const TraverseType);
+	traverse (const TraverseType) final;
+
+	///  @name Destruction
 
 	virtual
 	void
-	dispose ();
+	dispose () final;
 
 
 private:
 
+	///  @name Creation
+
 	virtual
 	void
-	initialize ();
+	initialize () final;
+
+	///  @name Event handling
 
 	void
 	set_headlight ();
 
-	virtual
-	void
-	bindToLayer (X3DLayerNode* const);
+	///  @name Operations
 
 	virtual
 	void
-	unbindFromLayer (X3DLayerNode* const);
+	bindToLayer (X3DLayerNode* const) final;
 
+	virtual
+	void
+	unbindFromLayer (X3DLayerNode* const) final;
+
+	virtual
+	void
+	removeFromLayer (X3DLayerNode* const) final;
 
 	///  @name Static members
 

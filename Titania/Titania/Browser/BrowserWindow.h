@@ -219,11 +219,11 @@ private:
 
 	virtual
 	void
-	on_undo_activate () final;
+	on_undo () final;
 
 	virtual
 	void
-	on_redo_activate () final;
+	on_redo () final;
 
 	///  @name Clipboard handling
 
@@ -243,9 +243,6 @@ private:
 	on_paste_nodes_activate () final;
 
 	///  @name Edit menu 
-
-	void
-	on_add_node (const std::string &);
 
 	virtual
 	void

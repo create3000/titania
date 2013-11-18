@@ -62,6 +62,8 @@ class Fog :
 {
 public:
 
+	///  @name Creation
+
 	Fog (X3DExecutionContext* const);
 
 	virtual
@@ -86,6 +88,8 @@ public:
 	getContainerField () const final
 	{ return containerField; }
 
+	///  @name Operations
+
 	void
 	transitionStart (Fog*)
 	{ }
@@ -96,26 +100,36 @@ public:
 
 	virtual
 	void
-	traverse (const TraverseType);
+	traverse (const TraverseType) final;
+
+	///  @name Destruction
 
 	virtual
 	void
-	dispose ();
+	dispose () final;
 
 
 private:
 
-	virtual
-	void
-	initialize ();
+	///  @name Creation
 
 	virtual
 	void
-	bindToLayer (X3DLayerNode* const);
+	initialize () final;
+
+	///  @name Operations
 
 	virtual
 	void
-	unbindFromLayer (X3DLayerNode* const);
+	bindToLayer (X3DLayerNode* const) final;
+
+	virtual
+	void
+	unbindFromLayer (X3DLayerNode* const) final;
+
+	virtual
+	void
+	removeFromLayer (X3DLayerNode* const) final;
 
 	///  @name Static members
 

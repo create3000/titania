@@ -66,7 +66,8 @@ X3DBindableNode::Fields::Fields () :
 
 X3DBindableNode::X3DBindableNode () :
 	X3DChildNode (),
-	      fields ()
+	      fields (),
+	    wasBound (false)
 {
 	addNodeType (X3DConstants::X3DBindableNode);
 }
@@ -92,6 +93,22 @@ X3DBindableNode::_set_bind ()
 		for (auto & layer : getLayers ())
 			unbindFromLayer (layer);
 	}
+}
+
+void
+X3DBindableNode::saveState ()
+{
+	wasBound = isBound ();
+
+	for (auto & layer : getLayers ())
+		removeFromLayer (layer);
+}
+
+void
+X3DBindableNode::restoreState ()
+{
+	if (wasBound)
+		set_bind () = true;
 }
 
 } // X3D

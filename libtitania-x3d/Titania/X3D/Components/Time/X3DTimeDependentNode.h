@@ -63,6 +63,8 @@ class X3DTimeDependentNode :
 {
 public:
 
+	///  @name Fields
+	
 	virtual
 	SFBool &
 	enabled () = 0;
@@ -143,6 +145,16 @@ public:
 	elapsedTime () const
 	{ return *fields .elapsedTime; }
 
+	///  @name Operations
+	
+	virtual
+	void
+	saveState () final;
+	
+	virtual
+	void
+	restoreState () final;
+
 	virtual
 	void
 	dispose () override;
@@ -150,6 +162,8 @@ public:
 
 protected:
 
+	///  @name Construction
+	
 	X3DTimeDependentNode ();
 
 	time_type
@@ -158,6 +172,8 @@ protected:
 	virtual
 	void
 	initialize () override;
+	
+	///  @name Event handling
 	
 	virtual
 	void
@@ -187,6 +203,8 @@ private:
 
 	typedef void (X3DTimeDependentNode::* TimeoutHandler)();
 
+	///  @name Event handling
+	
 	void
 	set_enabled ();
 
@@ -262,6 +280,8 @@ private:
 	sigc::connection pauseTimeout;
 	sigc::connection resumeTimeout;
 	sigc::connection stopTimeout;
+	
+	bool wasActive;
 
 };
 

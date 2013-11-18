@@ -335,6 +335,10 @@ public:
 	erase (iterator);
 
 	iterator
+	remove (const ValueType & value)
+	{ return erase (std::remove (begin (), end (), value), end ()); }
+
+	iterator
 	erase (iterator, iterator);
 
 	ValueType &
@@ -364,6 +368,12 @@ public:
 
 	void
 	pop_back ();
+
+	void
+	push_front (const ValueType &);
+
+	void
+	push_back (const ValueType &);
 
 	template <class ... Args>
 	void
@@ -675,6 +685,20 @@ X3DArrayField <ValueType>::pop_back ()
 	get () .pop_back ();
 
 	addEvent ();
+}
+
+template <class ValueType>
+void
+X3DArrayField <ValueType>::push_front (const ValueType & value)
+{
+	emplace_front (value);
+}
+
+template <class ValueType>
+void
+X3DArrayField <ValueType>::push_back (const ValueType & value)
+{
+	emplace_back (value);
 }
 
 template <class ValueType>

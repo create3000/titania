@@ -76,7 +76,8 @@ Inline::Inline (X3DExecutionContext* const executionContext) :
 	           scene (),
 	           group (new Group (executionContext)),
 	          future (),
-	     initialized (false)
+	     initialized (false),
+	       wasLoaded (false)
 {
 	addField (inputOutput,    "metadata",   metadata ());
 	addField (inputOutput,    "load",       load ());
@@ -275,6 +276,22 @@ Inline::set_url ()
 		else
 			requestImmediateLoad ();
 	}
+}
+
+void
+Inline::saveState ()
+{
+	wasLoaded = load ();
+
+	if (load ())
+		load () = false;
+}
+
+void
+Inline::restoreState ()
+{
+	if (wasLoaded)
+		load () = true;
 }
 
 void

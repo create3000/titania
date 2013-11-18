@@ -116,6 +116,12 @@ X3DBackgroundNode::unbindFromLayer (X3DLayerNode* const layer)
 	layer -> getBackgroundStack () -> pop (this);
 }
 
+void
+X3DBackgroundNode::removeFromLayer (X3DLayerNode* const layer)
+{
+	layer -> getBackgroundStack () -> erase (this);
+}
+
 Color3f
 X3DBackgroundNode::getColor (float theta, const MFColor & color, const MFFloat & angle)
 {

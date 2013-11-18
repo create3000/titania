@@ -187,6 +187,16 @@ public:
 
 	void
 	isInternal (bool);
+	
+	virtual
+	void
+	saveState ()
+	{ }
+
+	virtual
+	void
+	restoreState ()
+	{ }
 
 	///  @name Event handling
 	

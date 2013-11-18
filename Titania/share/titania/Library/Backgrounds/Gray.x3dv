@@ -1,0 +1,5 @@
+#X3D V3.3 utf8 Titania
+
+DEF Gray Background {
+  skyColor 0.2 0.2 0.2
+}

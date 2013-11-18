@@ -1,3 +1,26 @@
+2013-11-18  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DBaseNode.h:
+	* X3DArrayField.h:
+	* X3DScene.cpp:
+	* BindableNodeStack.h:
+	* Inline.h:
+	* Inline.cpp:
+	* X3DBindableNode.h:
+	* X3DBindableNode.cpp:
+	* Fog.h:
+	* NavigationInfo.h:
+	* X3DTimeDependentNode.h:
+	* Fog.cpp:
+	* X3DTimeDependentNode.cpp:
+	* X3DViewpointNode.h:
+	* NavigationInfo.cpp:
+	* X3DViewpointNode.cpp:
+	* Background.h:
+	* TextureBackground.h:
+	* X3DBackgroundNode.h:
+	* X3DBackgroundNode.cpp: 
+
 2013-11-17  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DArrayField.h: 

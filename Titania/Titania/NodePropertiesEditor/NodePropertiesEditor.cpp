@@ -133,6 +133,7 @@ NodePropertiesEditor::on_ok ()
 
 		updateNamedNode (name, node, getBrowserWindow ());
 
+		getBrowserWindow () -> setEditedWithUndo (true, undoStep);
 		getBrowserWindow () -> addUndoStep (undoStep);
 	}
 
@@ -154,7 +155,6 @@ NodePropertiesEditor::updateNamedNode (const std::string & name, const X3D::SFNo
 		node -> getExecutionContext () -> updateNamedNode (node -> getExecutionContext () -> getUniqueName (name), node);	
 
 	browserWindow -> getOutlineTreeView () .queue_draw ();
-	browserWindow -> setEdited (true);
 }
 
 NodePropertiesEditor::~NodePropertiesEditor ()

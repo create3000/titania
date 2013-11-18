@@ -62,6 +62,8 @@ class X3DBackgroundNode :
 {
 public:
 
+	///  @name Fields
+
 	MFFloat &
 	groundAngle ()
 	{ return *fields .groundAngle; }
@@ -102,6 +104,8 @@ public:
 	transparency () const
 	{ return *fields .transparency; }
 
+	///  @name Operations
+
 	void
 	transitionStart (X3DBackgroundNode*)
 	{ }
@@ -112,20 +116,23 @@ public:
 
 	virtual
 	void
-	traverse (const TraverseType);
+	traverse (const TraverseType) final;
 
-	virtual
 	void
 	draw ();
 
 
 protected:
 
+	///  @name Creation
+
 	X3DBackgroundNode ();
 
 	virtual
 	void
 	initialize () override;
+
+	///  @name Event handling
 
 	virtual
 	void
@@ -158,6 +165,8 @@ protected:
 
 private:
 
+	///  @name Operations
+
 	virtual
 	void
 	bindToLayer (X3DLayerNode* const) final;
@@ -165,6 +174,10 @@ private:
 	virtual
 	void
 	unbindFromLayer (X3DLayerNode* const) final;
+
+	virtual
+	void
+	removeFromLayer (X3DLayerNode* const) final;
 
 	static Color3f
 	getColor (float, const MFColor &, const MFFloat &);
@@ -180,6 +193,8 @@ private:
 
 	void
 	drawCube ();
+
+	///  @name Members
 
 	struct Fields
 	{

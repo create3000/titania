@@ -241,11 +241,15 @@ private:
 
 	virtual
 	void
-	bindToLayer (X3DLayerNode* const) override;
+	bindToLayer (X3DLayerNode* const) final;
 
 	virtual
 	void
-	unbindFromLayer (X3DLayerNode* const) override;
+	unbindFromLayer (X3DLayerNode* const) final;
+
+	virtual
+	void
+	removeFromLayer (X3DLayerNode* const) final;
 
 	void
 	set_isActive (bool);

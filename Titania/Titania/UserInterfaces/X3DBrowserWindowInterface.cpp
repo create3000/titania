@@ -234,6 +234,14 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_saveButton -> set_name ("SaveButton");
 	m_builder -> get_widget ("RefreshButton", m_refreshButton);
 	m_refreshButton -> set_name ("RefreshButton");
+	m_builder -> get_widget ("SeparatorToolItem1", m_separatorToolItem1);
+	m_separatorToolItem1 -> set_name ("SeparatorToolItem1");
+	m_builder -> get_widget ("UndoButton", m_undoButton);
+	m_undoButton -> set_name ("UndoButton");
+	m_builder -> get_widget ("RedoButton", m_redoButton);
+	m_redoButton -> set_name ("RedoButton");
+	m_builder -> get_widget ("SeparatorToolItem2", m_separatorToolItem2);
+	m_separatorToolItem2 -> set_name ("SeparatorToolItem2");
 	m_builder -> get_widget ("NodePropertiesButton", m_nodePropertiesButton);
 	m_nodePropertiesButton -> set_name ("NodePropertiesButton");
 	m_builder -> get_widget ("VPaned", m_vPaned);
@@ -307,8 +315,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_saveAsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_save_as));
 	m_revertMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_revert_to_saved));
 	m_quitMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_close));
-	m_undoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_undo_activate));
-	m_redoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_redo_activate));
+	m_undoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_undo));
+	m_redoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_redo));
 	m_cutMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_cut_nodes_activate));
 	m_copyMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_copy_nodes_activate));
 	m_pasteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_paste_nodes_activate));
@@ -372,6 +380,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_importButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_import));
 	m_saveButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_save));
 	m_refreshButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_revert_to_saved));
+	m_undoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_undo));
+	m_redoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_redo));
 	m_nodePropertiesButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_node_properties));
 
 	// Connect object Gtk::HBox with id 'SurfaceBox'.

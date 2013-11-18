@@ -469,13 +469,13 @@ BrowserWindow::on_open_location_entry_key_release_event (GdkEventKey* event)
 // Undo/Redo
 
 void
-BrowserWindow::on_undo_activate ()
+BrowserWindow::on_undo ()
 {
 	undo ();
 }
 
 void
-BrowserWindow::on_redo_activate ()
+BrowserWindow::on_redo ()
 {
 	redo ();
 }
@@ -532,19 +532,6 @@ BrowserWindow::on_paste_nodes_activate ()
 // Edit menu
 
 void
-BrowserWindow::on_add_node (const std::string & typeName)
-{
-	try
-	{
-		auto undoStep = std::make_shared <UndoStep> (_ ("Add Node"));
-		addNode (typeName, undoStep);
-		getBrowser () -> update ();
-	}
-	catch (const X3D::X3DError &)
-	{ }
-}
-
-void
 BrowserWindow::on_delete_nodes_activate ()
 {
 	const auto selection = getBrowser () -> getSelection () -> getChildren ();
@@ -558,7 +545,11 @@ BrowserWindow::on_delete_nodes_activate ()
 
 	removeNodes (selection, undoStep);
 
+	undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
+	
 	getBrowser () -> update ();
+
+	addUndoStep (undoStep);
 }
 
 void
@@ -571,10 +562,17 @@ BrowserWindow::on_group_selected_nodes_activate ()
 
 	auto undoStep = std::make_shared <UndoStep> (_ ("Group"));
 
+	undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
+
 	deselectAll (undoStep);
+
 	select ({ groupNodes (selection, undoStep) }, undoStep);
 
+	undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
+	
 	getBrowser () -> update ();
+
+	addUndoStep (undoStep);
 }
 
 void
@@ -610,6 +608,7 @@ BrowserWindow::on_add_to_group_activate ()
 	addToGroup (group, selection, undoStep);
 
 	deselectAll (undoStep);
+
 	select ({ group }, undoStep);
 
 	getBrowser () -> update ();
@@ -629,11 +628,9 @@ BrowserWindow::on_detach_from_group_activate ()
 
 	detachFromGroup (selection, getKeys () .shift (), undoStep);
 
+	undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
+	
 	getBrowser () -> update ();
-
-	undoStep -> addRedoFunction (std::mem_fn (&BrowserWindow::redoDetachFromGroup), this,
-	                             selection,
-	                             getKeys () .shift ());
 
 	addUndoStep (undoStep);
 }
@@ -724,6 +721,10 @@ BrowserWindow::enableEditor (bool enabled)
 	getSelectionMenuItem ()        .set_visible (enabled);
 
 	getImportButton ()         .set_visible (enabled);
+	getSeparatorToolItem1 ()   .set_visible (enabled);
+	getUndoButton ()           .set_visible (enabled);
+	getRedoButton ()           .set_visible (enabled);
+	getSeparatorToolItem2 ()   .set_visible (enabled);
 	getNodePropertiesButton () .set_visible (enabled);
 	getArrowButton ()          .set_visible (enabled);
 

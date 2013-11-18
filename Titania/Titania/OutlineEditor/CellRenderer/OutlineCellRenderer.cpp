@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -692,14 +692,13 @@ OutlineCellRenderer::set_field_value (X3D::X3DFieldDefinition* const field, cons
 		{
 			auto undoStep = std::make_shared <UndoStep> (_ ("Edit Field Value"));
 
-			undoStep -> addUndoFunction (std::mem_fn (&BrowserWindow::setEdited), treeView -> getBrowserWindow (), true);
-			undoStep -> addUndoFunction (std::bind (std::mem_fn (&X3D::X3DFieldDefinition::fromString), field, value),  node);
+			undoStep -> addVariables (node);
 
-			undoStep -> addRedoFunction (std::bind (std::mem_fn (&X3D::X3DFieldDefinition::fromString), field, string), node);
-			undoStep -> addRedoFunction (std::mem_fn (&BrowserWindow::setEdited), treeView -> getBrowserWindow (), true);
+			undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DFieldDefinition::fromString), field, value);
+			undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DFieldDefinition::fromString), field, string);
 
+			treeView -> getBrowserWindow () -> setEditedWithUndo (true, undoStep);
 			treeView -> getBrowserWindow () -> addUndoStep (undoStep);
-			treeView -> getBrowserWindow () -> setEdited (true);
 		}
 
 		return true;

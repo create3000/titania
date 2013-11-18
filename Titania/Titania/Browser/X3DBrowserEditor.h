@@ -70,6 +70,9 @@ public:
 	/// @name Member access
 
 	void
+	setEditedWithUndo (bool value, const UndoStepPtr &);
+
+	void
 	setEdited (bool);
 
 	bool
@@ -144,10 +147,6 @@ protected:
 	/// @name Edit operations
 
 	void
-	addNode (const std::string &, const UndoStepPtr &)
-	throw (X3D::Error <X3D::INVALID_NAME>);
-
-	void
 	removeNodes (const X3D::MFNode &, const UndoStepPtr &);
 
 	X3D::SFNode
@@ -158,9 +157,6 @@ protected:
 
 	void
 	addToGroup (const X3D::SFNode &, const X3D::MFNode &, const UndoStepPtr &);
-
-	void
-	redoDetachFromGroup (X3D::MFNode, bool);
 
 	void
 	detachFromGroup (X3D::MFNode, bool, const UndoStepPtr &);
@@ -205,7 +201,7 @@ private:
 	removeNode (const X3D::X3DSFNode <X3D::Scene> &, X3D::SFNode, const UndoStepPtr &);
 
 	void
-	removeExportedNodes (const X3D::X3DSFNode <X3D::Scene> &, const X3D::SFNode &);
+	removeExportedNodes (const X3D::X3DSFNode <X3D::Scene> &, const X3D::SFNode &, const UndoStepPtr &);
 
 	void
 	removeNode (X3D::X3DExecutionContext* const, const X3D::SFNode &, const UndoStepPtr &);
@@ -217,13 +213,13 @@ private:
 	removeNode (const X3D::SFNode &, X3D::MFNode &, const X3D::SFNode &, const UndoStepPtr &);
 
 	void
-	removeNamedNode (X3D::X3DExecutionContext* const, const X3D::SFNode &);
+	removeNamedNode (X3D::X3DExecutionContext* const, const X3D::SFNode &, const UndoStepPtr &);
 
 	void
-	removeImportedNodes (X3D::X3DExecutionContext* const, const X3D::SFNode &);
+	removeImportedNodes (X3D::X3DExecutionContext* const, const X3D::SFNode &, const UndoStepPtr &);
 
 	void
-	deleteRoutes (X3D::X3DExecutionContext* const, const X3D::SFNode &);
+	deleteRoutes (X3D::X3DExecutionContext* const, const X3D::SFNode &, const UndoStepPtr &);
 
 	X3D::Matrix4f
 	findModelViewMatrix (X3D::X3DBaseNode* const) const;
@@ -245,19 +241,10 @@ private:
 	///  @name Undo functions
 
 	void
-	undoInsertNode (const X3D::SFNode &, X3D::MFNode &, size_t, const X3D::SFNode &);
+	undoInsertNode (X3D::MFNode &, size_t, const X3D::SFNode &);
 
 	void
-	undoEraseNode (const X3D::SFNode &, X3D::MFNode &, const X3D::SFNode &, const std::vector <size_t> &);
-
-	void
-	undoSetValue (const X3D::SFNode &, X3D::SFNode &, const X3D::SFNode &);
-
-	void
-	undoSetMatrix (const X3D::X3DSFNode <X3D::X3DTransformNode> &, const X3D::Matrix4f &);
-
-	void
-	undoSetMatrixWithCenter (const X3D::X3DSFNode <X3D::X3DTransformNode> &, const X3D::Matrix4f &, const X3D::Vector3f &);
+	undoEraseNode (X3D::MFNode &, const X3D::SFNode &, const std::vector <size_t> &);
 
 	///  @name Members
 

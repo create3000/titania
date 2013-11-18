@@ -851,7 +851,7 @@
                         <property name="use_stock">True</property>
                         <property name="accel_group">MenuAccelGroup</property>
                         <accelerator key="z" signal="activate" modifiers="GDK_CONTROL_MASK"/>
-                        <signal name="activate" handler="on_undo_activate" swapped="no"/>
+                        <signal name="activate" handler="on_undo" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -863,7 +863,7 @@
                         <property name="use_stock">True</property>
                         <property name="accel_group">MenuAccelGroup</property>
                         <accelerator key="z" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
-                        <signal name="activate" handler="on_redo_activate" swapped="no"/>
+                        <signal name="activate" handler="on_redo" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -1429,7 +1429,43 @@
               </packing>
             </child>
             <child>
-              <object class="GtkSeparatorToolItem" id="separatortoolitem3">
+              <object class="GtkSeparatorToolItem" id="SeparatorToolItem1">
+                <property name="can_focus">False</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="UndoButton">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="label" translatable="yes">Undo last operation.</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">gtk-undo</property>
+                <signal name="clicked" handler="on_undo" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="RedoButton">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="label" translatable="yes">Redo last operation.</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">gtk-redo</property>
+                <signal name="clicked" handler="on_redo" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkSeparatorToolItem" id="SeparatorToolItem2">
                 <property name="can_focus">False</property>
               </object>
               <packing>

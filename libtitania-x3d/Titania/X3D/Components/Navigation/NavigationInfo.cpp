@@ -208,6 +208,12 @@ NavigationInfo::unbindFromLayer (X3DLayerNode* const layer)
 }
 
 void
+NavigationInfo::removeFromLayer (X3DLayerNode* const layer)
+{
+	layer -> getNavigationInfoStack () -> erase (this);
+}
+
+void
 NavigationInfo::enable ()
 {
 	if (headlight ())

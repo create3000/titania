@@ -59,15 +59,16 @@ UndoStep::UndoStep () :
 
 UndoStep::UndoStep (const std::string & description) :
 	  description (description),
-	    functions (),
+	    variables (),
+	undoFunctions (),
 	redoFunctions ()
 { }
 
 void
 UndoStep::undo () const
 {
-	for (const auto & function : functions)
-		function ();
+	for (const auto & undoFunction : undoFunctions)
+		undoFunction ();
 }
 
 void

@@ -201,6 +201,12 @@ X3DViewpointNode::unbindFromLayer (X3DLayerNode* const layer)
 }
 
 void
+X3DViewpointNode::removeFromLayer (X3DLayerNode* const layer)
+{
+	layer -> getViewpointStack () -> erase (this);
+}
+
+void
 X3DViewpointNode::resetUserOffsets ()
 {
 	positionOffset ()         = Vector3f ();

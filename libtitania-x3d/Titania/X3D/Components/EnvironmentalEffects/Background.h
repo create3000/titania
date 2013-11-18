@@ -149,7 +149,7 @@ public:
 
 	virtual
 	void
-	dispose ();
+	dispose () final;
 
 
 private:

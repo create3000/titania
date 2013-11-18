@@ -1,3 +1,22 @@
+2013-11-18  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* UndoStep.h:
+	* UndoStep.cpp:
+	* UndoFunction.h:
+	* RedoFunction.h:
+	* BrowserWindow.h:
+	* BrowserWindow.cpp:
+	* BrowserWindow.ui:
+	* X3DBrowserEditor.h:
+	* X3DBrowserEditor.cpp:
+	* Gray.x3dv:
+	* X3DBrowserWindowInterface.h:
+	* X3DBrowserWindowInterface.cpp:
+	* NodePropertiesEditor.cpp:
+	* Rotor.x3dv:
+	* OutlineCellRenderer.cpp:
+	* ExternProto.x3dv: 
+
 2013-11-17  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* UndoHistory.h:

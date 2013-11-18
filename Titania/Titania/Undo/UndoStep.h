@@ -51,9 +51,6 @@
 #ifndef __TITANIA_UNDO_UNDO_STEP_H__
 #define __TITANIA_UNDO_UNDO_STEP_H__
 
-#include "../Undo/RedoFunction.h"
-#include "../Undo/UndoFunction.h"
-
 #include <Titania/LOG.h>
 
 #include <string>
@@ -80,8 +77,13 @@ public:
 
 	template <class ... Args>
 	void
+	addVariables (const Args & ... args)
+	{ variables .emplace_back (std::bind ([ ] (const Args & ... args) {  }, std::forward <const Args> (args) ...)); }
+
+	template <class ... Args>
+	void
 	addUndoFunction (Args && ... args)
-	{ functions .emplace_front (std::bind (std::forward <Args> (args) ...)); }
+	{ undoFunctions .emplace_front (std::bind (std::forward <Args> (args) ...)); }
 
 	template <class ... Args>
 	void
@@ -90,11 +92,11 @@ public:
 
 	bool
 	empty () const
-	{ return functions .empty (); }
+	{ return undoFunctions .empty (); }
 
 	size_t
 	size () const
-	{ return functions .size (); }
+	{ return undoFunctions .size (); }
 
 	void
 	undo () const;
@@ -105,8 +107,13 @@ public:
 
 private:
 
+	using Variables    = std::function <void ()>;
+	using UndoFunction = std::function <void ()>;
+	using RedoFunction = std::function <void ()>;
+
 	const std::string         description;
-	std::deque <UndoFunction> functions;
+	std::deque <Variables>    variables;
+	std::deque <UndoFunction> undoFunctions;
 	std::deque <RedoFunction> redoFunctions;
 
 };

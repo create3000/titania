@@ -103,6 +103,12 @@ Fog::unbindFromLayer (X3DLayerNode* const layer)
 }
 
 void
+Fog::removeFromLayer (X3DLayerNode* const layer)
+{
+	layer -> getFogStack () -> erase (this);
+}
+
+void
 Fog::traverse (const TraverseType type)
 {
 	switch (type)

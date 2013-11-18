@@ -83,7 +83,8 @@ X3DTimeDependentNode::X3DTimeDependentNode () :
 	   startTimeout (),
 	   pauseTimeout (),
 	  resumeTimeout (),
-	    stopTimeout ()
+	    stopTimeout (),
+	      wasActive (false)
 {
 	addNodeType (X3DConstants::X3DTimeDependentNode);
 	
@@ -339,6 +340,22 @@ X3DTimeDependentNode::removeTimeouts ()
 	pauseTimeout  .disconnect ();
 	resumeTimeout .disconnect ();
 	stopTimeout   .disconnect ();
+}
+	
+void
+X3DTimeDependentNode::saveState ()
+{
+	wasActive = isActive ();
+	
+	if (isActive ())
+		stopTime () = getCurrentTime ();
+}
+
+void
+X3DTimeDependentNode::restoreState ()
+{
+	if (wasActive)
+		startTime () = getCurrentTime ();
 }
 
 // Destruction

@@ -191,6 +191,13 @@ public:
 
 		return false;
 	}
+
+	void
+	erase (pointer_type node)
+	{
+		if (not pop (node))
+			stack .erase (node);
+	}
 	
 	virtual
 	void
@@ -205,13 +212,6 @@ public:
 	}
 
 private:
-
-	void
-	erase (pointer_type node)
-	{
-		if (not pop (node))
-			stack .erase (node);
-	}
 
 	///  @name Static members
 

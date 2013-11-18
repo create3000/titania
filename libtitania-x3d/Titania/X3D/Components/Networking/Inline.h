@@ -67,6 +67,8 @@ class Inline :
 {
 public:
 
+	///  @name Construction
+
 	Inline (X3DExecutionContext* const);
 
 	virtual
@@ -101,6 +103,8 @@ public:
 	load () const
 	{ return *fields .load; }
 
+	///  @name Operations
+
 	virtual
 	Box3f
 	getBBox () final;
@@ -115,6 +119,16 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
+	///  @name Operations
+	
+	virtual
+	void
+	saveState () final;
+	
+	virtual
+	void
+	restoreState () final;
+
 	virtual
 	void
 	traverse (const TraverseType) final;
@@ -124,6 +138,8 @@ public:
 	toStream (std::ostream & ostream) const final
 	{ X3DBaseNode::toStream (ostream); }
 
+	///  @name Destruction
+
 	virtual
 	void
 	dispose () final;
@@ -131,9 +147,13 @@ public:
 
 private:
 
+	///  @name Construction
+
 	virtual
 	void
 	initialize () final;
+
+	///  @name Event handling
 
 	void
 	setSceneAsync (const X3DSFNode <Scene> &);
@@ -152,7 +172,6 @@ private:
 
 	void
 	set_url ();
-
 
 	///  @name Static members
 
@@ -176,6 +195,7 @@ private:
 
 	std::unique_ptr <SceneLoader> future;
 	bool                          initialized;
+	bool                          wasLoaded;
 
 };
 

@@ -21,6 +21,7 @@ EXTERNPROTO Rotor [
   exposedField SFBool     loop
   exposedField SFTime     startTime
   exposedField SFTime     stopTime
+  eventOut     SFBool     isActive
   eventOut     SFRotation rotation_changed
 ]
 "../../../Titania/share/titania/Library/Prototypes/Engines/Rotor/Rotor.x3dv"
@@ -33,6 +34,7 @@ EXTERNPROTO Rotor2 [
   exposedField SFBool     loop
   exposedField SFTime     startTime
   exposedField SFTime     stopTime
+  eventOut     SFBool     isActive
   eventOut     SFRotation rotation_changed
 ]
 "../../../Titania/share/titania/Library/Prototypes/Engines/Rotor/Rotor.x3dv#Rotor"
@@ -113,11 +115,13 @@ Group {
 DEF Rotor Rotor {
   cycleInterval 10
   loop TRUE
+  pauseTime 0
+  resumeTime 0
 }
 
 DEF Box Transform {
   translation 1.40843 1.10727 0.193803
-  rotation 0 0 1 5.38759
+  rotation 0 0 1 4.09319
   scale 0.2 0.2 0.2
   children Transform {
     children Shape {
@@ -170,7 +174,10 @@ Children1 {
   ]
 }
 
-DEF Rotor2 Rotor2 { }
+DEF Rotor2 Rotor2 {
+  pauseTime 0
+  resumeTime 0
+}
 
 Anchor {
   description "Reload"
@@ -193,6 +200,14 @@ Anchor {
 }
 
 ImageTexture { }
+
+DEF Inline Transform {
+  translation 4.15754 -0.435449 0
+  scale 0.502873 0.502872 1
+  children Inline {
+    url "Inline.wrl"
+  }
+}
 
 ROUTE _1.isActive TO _2.set_enabled
 ROUTE Rotor.rotation_changed TO Box.set_rotation

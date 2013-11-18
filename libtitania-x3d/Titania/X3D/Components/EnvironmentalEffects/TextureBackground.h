@@ -61,6 +61,8 @@ class TextureBackground :
 {
 public:
 
+	///  @name Construction
+
 	TextureBackground (X3DExecutionContext* const);
 
 	virtual
@@ -138,9 +140,13 @@ public:
 
 private:
 
+	///  @name Creation
+
 	virtual
 	void
 	initialize () final;
+
+	///  @name Event handling
 
 	void
 	set_frontTexture ();

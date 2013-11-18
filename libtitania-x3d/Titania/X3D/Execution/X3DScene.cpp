@@ -153,7 +153,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 void
-X3DScene::updateExportedNode (const std::string & exportedName,  const SFNode & node)
+X3DScene::updateExportedNode (const std::string & exportedName, const SFNode & node)
 throw (Error <INVALID_NAME>,
        Error <INVALID_NODE>,
        Error <INVALID_OPERATION_TIMING>,

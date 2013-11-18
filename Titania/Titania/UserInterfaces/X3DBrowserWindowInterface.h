@@ -447,6 +447,22 @@ public:
 	getRefreshButton () const
 	{ return *m_refreshButton; }
 
+	Gtk::SeparatorToolItem &
+	getSeparatorToolItem1 () const
+	{ return *m_separatorToolItem1; }
+
+	Gtk::ToolButton &
+	getUndoButton () const
+	{ return *m_undoButton; }
+
+	Gtk::ToolButton &
+	getRedoButton () const
+	{ return *m_redoButton; }
+
+	Gtk::SeparatorToolItem &
+	getSeparatorToolItem2 () const
+	{ return *m_separatorToolItem2; }
+
 	Gtk::ToolButton &
 	getNodePropertiesButton () const
 	{ return *m_nodePropertiesButton; }
@@ -609,11 +625,11 @@ public:
 
 	virtual
 	void
-	on_undo_activate () = 0;
+	on_undo () = 0;
 
 	virtual
 	void
-	on_redo_activate () = 0;
+	on_redo () = 0;
 
 	virtual
 	void
@@ -873,6 +889,10 @@ private:
 	Gtk::ToolButton*                m_importButton;
 	Gtk::ToolButton*                m_saveButton;
 	Gtk::ToolButton*                m_refreshButton;
+	Gtk::SeparatorToolItem*         m_separatorToolItem1;
+	Gtk::ToolButton*                m_undoButton;
+	Gtk::ToolButton*                m_redoButton;
+	Gtk::SeparatorToolItem*         m_separatorToolItem2;
 	Gtk::ToolButton*                m_nodePropertiesButton;
 	Gtk::Paned*                     m_vPaned;
 	Gtk::Paned*                     m_hPaned;

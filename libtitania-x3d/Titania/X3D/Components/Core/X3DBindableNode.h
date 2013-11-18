@@ -87,6 +87,15 @@ public:
 	bindTime () const
 	{ return *fields .bindTime; }
 
+	///  @name Operations
+	
+	virtual
+	void
+	saveState () final;
+	
+	virtual
+	void
+	restoreState () final;
 
 protected:
 
@@ -108,6 +117,10 @@ protected:
 	void
 	unbindFromLayer (X3DLayerNode* const) = 0;
 
+	virtual
+	void
+	removeFromLayer (X3DLayerNode* const) = 0;
+
 
 private:
 
@@ -126,6 +139,8 @@ private:
 	};
 
 	Fields fields;
+
+	bool wasBound;
 
 };
 

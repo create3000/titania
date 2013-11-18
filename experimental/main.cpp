@@ -1,30 +1,30 @@
- /* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
- /*************************************************************************
-  *
-  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-  *
-//  * Copyright 1999, 2012 Holger Seelig <holger.seelig@yahoo.de>.
-//  *
-//  * Titania - a multi-platform office productivity suite
-//  *
-//  * This file is part of the Titania Project.
-//  *
-//  * Titania is free software: you can redistribute it and/or modify
-//  * it under the terms of the GNU Lesser General Public License version 3
-//  * only, as published by the Free Software Foundation.
-//  *
-//  * Titania is distributed in the hope that it will be useful,
-//  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  * GNU Lesser General Public License version 3 for more details
-//  * (a copy is included in the LICENSE file that accompanied this code).
-//  *
-//  * You should have received a copy of the GNU Lesser General Public License
-//  * version 3 along with Titania.  If not, see
-//  * <http://www.gnu.org/licenses/lgpl.html>
-//  * for a copy of the LGPLv3 License.
-//  *
-//  ************************************************************************/
+/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
+/*************************************************************************
+ *
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * //  * Copyright 1999, 2012 Holger Seelig <holger.seelig@yahoo.de>.
+ * //  *
+ * //  * Titania - a multi-platform office productivity suite
+ * //  *
+ * //  * This file is part of the Titania Project.
+ * //  *
+ * //  * Titania is free software: you can redistribute it and/or modify
+ * //  * it under the terms of the GNU Lesser General Public License version 3
+ * //  * only, as published by the Free Software Foundation.
+ * //  *
+ * //  * Titania is distributed in the hope that it will be useful,
+ * //  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * //  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * //  * GNU Lesser General Public License version 3 for more details
+ * //  * (a copy is included in the LICENSE file that accompanied this code).
+ * //  *
+ * //  * You should have received a copy of the GNU Lesser General Public License
+ * //  * version 3 along with Titania.  If not, see
+ * //  * <http://www.gnu.org/licenses/lgpl.html>
+ * //  * for a copy of the LGPLv3 License.
+ * //  *
+ * //  ************************************************************************/
 
 //#include <Titania/Basic/Geometry/Line3.h>
 
@@ -357,6 +357,39 @@ using namespace titania::basic;
 //}
 //
 
+class A
+{
+public:
+
+	A ()
+	{
+		__LOG__ << std::endl;
+	}
+
+	A (const A &)
+	{
+		__LOG__ << std::endl;
+	}
+
+	void
+	f () const
+	{
+		__LOG__ << std::endl;
+	}
+
+	~A ()
+	{
+		__LOG__ << std::endl;
+	}
+
+};
+
+template <class ... Args>
+std::function <void ()>
+v (const Args & ... args)
+{
+	return std::bind ([ ] (const Args & ... args) {  }, std::forward <const Args> (args) ...);
+}
 
 int
 main (int argc, char** argv)
@@ -367,21 +400,27 @@ main (int argc, char** argv)
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
 
-	std::clog << math::is_odd (0) << std::endl;
-	std::clog << math::is_odd (1) << std::endl;
-	std::clog << math::is_odd (2) << std::endl;
-	std::clog << math::is_odd (3) << std::endl;
-	std::clog << math::is_odd (4) << std::endl;
-	std::clog << math::is_odd (5) << std::endl;
+	{
+		__LOG__ << std::endl;
+		
+		std::function <void ()> f;
 
-	std::clog << std::endl;
+		__LOG__ << std::endl;
 
-	std::clog << 0 % 2 << std::endl;
-	std::clog << 1 % 2 << std::endl;
-	std::clog << 2 % 2 << std::endl;
-	std::clog << 3 % 2 << std::endl;
-	std::clog << 4 % 2 << std::endl;
-	std::clog << 5 % 2 << std::endl;
+		{
+			__LOG__ << std::endl;
+			
+			f = v (A ());
+			
+			__LOG__ << std::endl;
+		}
+
+		__LOG__ << std::endl;
+		
+		f ();
+		
+		__LOG__ << std::endl;
+	}
 
 	std::clog << "Function main done." << std::endl;
 	exit (0);
@@ -600,7 +639,7 @@ main (int argc, char** argv)
 //			else
 //				timeout .tv_usec = (curl_timeout % 1000) * 1000;
 //		}
-//		
+//
 //		__LOG__ <<  timeout.tv_sec << std::endl;
 //		__LOG__ <<  timeout.tv_usec << std::endl;
 //
