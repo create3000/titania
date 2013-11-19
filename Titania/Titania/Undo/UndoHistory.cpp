@@ -56,8 +56,21 @@ namespace puck {
 UndoHistory::UndoHistory () :
 	         list (),
 	        index (-1),
+	   savedIndex (-1),
 	changedOutput ()
 { }
+
+std::string
+UndoHistory::getUndoDescription () const
+{
+	return _ ("Undo ") + list [index] -> getDescription ();
+}
+
+std::string
+UndoHistory::getRedoDescription () const
+{
+	return _ ("Redo ") + list [index + 1] -> getDescription ();
+}
 
 void
 UndoHistory::addUndoStep (const std::shared_ptr <UndoStep> & undoStep)
@@ -65,12 +78,15 @@ UndoHistory::addUndoStep (const std::shared_ptr <UndoStep> & undoStep)
 	if (undoStep -> empty ())
 		return;
 
+	if (index < savedIndex)
+		savedIndex = -2;
+
 	list .erase (list .begin () + (index + 1), list .end ());
 
 	list .emplace_back (undoStep);
-	
+
 	++ index;
-	
+
 	changed () .processInterests ();
 }
 
@@ -80,9 +96,9 @@ UndoHistory::undo ()
 	if (index >= 0)
 	{
 		list [index] -> undo ();
-	
+
 		-- index;
-	
+
 		changed () .processInterests ();
 	}
 }
@@ -95,7 +111,7 @@ UndoHistory::redo ()
 		++ index;
 
 		list [index] -> redo ();
-	
+
 		changed () .processInterests ();
 	}
 }
@@ -106,6 +122,8 @@ UndoHistory::clear ()
 	list .clear ();
 
 	index = -1;
+	
+	setSaved ();
 
 	changed () .processInterests ();
 }

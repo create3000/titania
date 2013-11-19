@@ -219,6 +219,8 @@ X3DPrototypeInstance::saveState ()
 
 	X3D::traverse (getScene () -> getRootNodes (), [&children] (X3D::SFNode & node)
 	               {
+	                  // If scene node in children, remove from children.
+
 	                  if (children .find (node) not_eq children .end ())
 	                     children .erase (node);
 

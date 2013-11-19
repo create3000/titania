@@ -87,7 +87,21 @@ public:
 	getList () const
 	{ return list; }
 
+	std::string
+	getUndoDescription () const;
+
+	std::string
+	getRedoDescription () const;
+
 	///  @name Operations
+	
+	bool
+	isModified () const
+	{ return index not_eq savedIndex; }
+	
+	void
+	setSaved ()
+	{ savedIndex = index; }
 
 	void
 	addUndoStep (const std::shared_ptr <UndoStep> &);
@@ -101,6 +115,14 @@ public:
 	void
 	clear ();
 
+	bool
+	empty () const
+	{ return list .empty (); }
+
+	size_t
+	size () const
+	{ return list .size (); }
+
 
 private:
 
@@ -109,6 +131,7 @@ private:
 	std::deque <std::shared_ptr <UndoStep>>  list;
 
 	int         index;
+	int         savedIndex;
 	X3D::Output changedOutput;
 
 };

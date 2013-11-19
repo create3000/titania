@@ -697,7 +697,6 @@ OutlineCellRenderer::set_field_value (X3D::X3DFieldDefinition* const field, cons
 			undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DFieldDefinition::fromString), field, value);
 			undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DFieldDefinition::fromString), field, string);
 
-			treeView -> getBrowserWindow () -> setEditedWithUndo (true, undoStep);
 			treeView -> getBrowserWindow () -> addUndoStep (undoStep);
 		}
 

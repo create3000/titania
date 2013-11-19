@@ -75,7 +75,7 @@ X3DUserInterface::construct ()
 	initialized_connection = getWidget () .signal_map () .connect (sigc::mem_fun (*this, &X3DUserInterface::set_initialized));
 
 	getWidget () .signal_map ()          .connect (sigc::mem_fun (*this, &X3DUserInterface::on_map));
-	getWindow () .signal_delete_event () .connect (sigc::mem_fun (*this, &X3DUserInterface::on_delete_event));
+	getWindow () .signal_delete_event () .connect (sigc::mem_fun (*this, &X3DUserInterface::on_delete_event), false);
 
 	userInterfaces .emplace_back (this);
 	userInterface = -- userInterfaces .end ();
@@ -210,7 +210,9 @@ X3DUserInterface::close ()
 
 	saveSession ();
 
-	getWindow () .hide ();
+	dispose ();
+
+	getWindow () .hide (); // Hide window at last
 
 	// Prevent destroying Window.
 	return true;

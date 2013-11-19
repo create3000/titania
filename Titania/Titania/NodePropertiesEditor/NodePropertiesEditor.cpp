@@ -133,7 +133,6 @@ NodePropertiesEditor::on_ok ()
 
 		updateNamedNode (name, node, getBrowserWindow ());
 
-		getBrowserWindow () -> setEditedWithUndo (true, undoStep);
 		getBrowserWindow () -> addUndoStep (undoStep);
 	}
 

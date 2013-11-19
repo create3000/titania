@@ -67,17 +67,12 @@ public:
 	bool
 	isSaved ();
 
-	/// @name Member access
-
 	void
-	setEditedWithUndo (bool value, const UndoStepPtr &);
-
-	void
-	setEdited (bool);
+	isModified (bool);
 
 	bool
-	getEdited () const
-	{ return edited; }
+	isModified () const
+	{ return modified; }
 
 	/// @name File operations
 
@@ -171,7 +166,7 @@ protected:
 	X3D::MFNode
 	ungroupNodes (const X3D::MFNode &, const UndoStepPtr &);
 
-	void
+	bool
 	addToGroup (const X3D::SFNode &, const X3D::MFNode &, const UndoStepPtr &);
 
 	void
@@ -200,19 +195,19 @@ private:
 	// Edit
 
 	void
-	removeNode (const X3D::X3DSFNode <X3D::Scene> &, X3D::SFNode, const UndoStepPtr &);
+	removeNodeFromScene (const X3D::X3DSFNode <X3D::Scene> &, X3D::SFNode, const UndoStepPtr &);
 
 	void
 	removeExportedNodes (const X3D::X3DSFNode <X3D::Scene> &, const X3D::SFNode &, const UndoStepPtr &);
 
 	void
-	removeNode (X3D::X3DExecutionContext* const, const X3D::SFNode &, const UndoStepPtr &);
+	removeNodeFromExecutionContext (X3D::X3DExecutionContext* const, const X3D::SFNode &, const UndoStepPtr &);
 
 	void
 	removeNodeFromSceneGraph (X3D::X3DExecutionContext* const, const X3D::SFNode &, const UndoStepPtr &);
 
 	void
-	removeNode (const X3D::SFNode &, X3D::MFNode &, const X3D::SFNode &, const UndoStepPtr &);
+	removeNodeFromMFNode (X3D::MFNode &, const X3D::SFNode &, const X3D::SFNode &, const UndoStepPtr &);
 
 	void
 	removeNamedNode (X3D::X3DExecutionContext* const, const X3D::SFNode &, const UndoStepPtr &);
@@ -222,6 +217,12 @@ private:
 
 	void
 	deleteRoutes (X3D::X3DExecutionContext* const, const X3D::SFNode &, const UndoStepPtr &);
+
+	void
+	emplaceBack (X3D::MFNode &, const X3D::SFNode &, const UndoStepPtr &);
+
+	void
+	createParentGroup (X3D::MFNode &, const X3D::SFNode &, const X3D::SFNode &, X3D::MFNode &, const UndoStepPtr &);
 
 	X3D::Matrix4f
 	findModelViewMatrix (X3D::X3DBaseNode* const) const;
@@ -250,10 +251,12 @@ private:
 
 	///  @name Members
 
-	bool edited;
+	bool modified;
 	bool saveConfirmed;
+	int  savedIndex;
 
 	UndoHistory undoHistory;
+	
 	std::map <X3D::TransformHandle*, std::pair <X3D::Matrix4f, X3D::Vector3f>> matrices;
 
 	X3D::X3DSFNode <X3D::Scene> scene;
