@@ -85,15 +85,23 @@ static
 void
 debug_print_parent_nodes (const X3D::X3DChildObject* object)
 {
+	static int i = 0;
+
 	for (auto & parent : object -> getParents ())
 	{
 		auto node = dynamic_cast <X3D::X3DBaseNode*> (parent);
 
 		if (node)
-			__LOG__ << "\t" << node -> getName () << " : " << node -> getTypeName () << std::endl;
+			__LOG__ << std::string (i, '\t') << node -> getName () << " : " << node -> getTypeName () << std::endl;
 
 		else
+		{
+			++ i;
+
 			debug_print_parent_nodes (parent);
+
+			-- i;
+		}
 	}
 }
 

@@ -415,6 +415,7 @@ void
 BrowserWindow::on_save_as ()
 {
 	updateWidget ("FileSaveDialog");
+
 	auto fileSaveDialog = getWidget <Gtk::FileChooserDialog> ("FileSaveDialog");
 
 	basic::uri worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
@@ -423,6 +424,7 @@ BrowserWindow::on_save_as ()
 		fileSaveDialog -> set_uri (worldURL .filename () .str ());
 
 	auto saveCompressedButton = getWidget <Gtk::CheckButton> ("SaveCompressedButton");
+
 	saveCompressedButton -> set_active (getBrowser () -> getExecutionContext () -> isCompressed ());
 
 	auto response_id = fileSaveDialog -> run ();
@@ -590,7 +592,11 @@ BrowserWindow::on_ungroup_node_activate ()
 
 	select (ungroupNodes (selection, undoStep), undoStep);
 
+	undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
+
 	getBrowser () -> update ();
+
+	addUndoStep (undoStep);
 }
 
 void
@@ -634,7 +640,11 @@ BrowserWindow::on_detach_from_group_activate ()
 
 	undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
 
+	deselectAll (undoStep);
+
 	detachFromGroup (selection, getKeys () .shift (), undoStep);
+
+	select (selection, undoStep);
 
 	undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
 	

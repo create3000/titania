@@ -237,6 +237,8 @@ X3DBrowserEditor::import (const X3D::X3DSFNode <X3D::Scene> & scene)
 {
 	try
 	{
+		auto undoStep = std::make_shared <UndoStep> (_ ("Import"));
+
 		auto & rootNodes    = getBrowser () -> getExecutionContext () -> getRootNodes ();
 		size_t numRootNodes = rootNodes .size ();
 
@@ -246,8 +248,10 @@ X3DBrowserEditor::import (const X3D::X3DSFNode <X3D::Scene> & scene)
 
 		// Select imported nodes
 
-		getBrowser () -> getSelection () -> clear ();
-		getBrowser () -> getSelection () -> addChildren (X3D::MFNode (rootNodes .begin () + numRootNodes, rootNodes .end ()));
+		deselectAll (undoStep);
+
+		select (X3D::MFNode (rootNodes .begin () + numRootNodes, rootNodes .end ()), undoStep);
+
 		getBrowser () -> update ();
 
 		isModified (true);
@@ -281,7 +285,7 @@ X3DBrowserEditor::close ()
 	return true;
 }
 
-// Undo operations
+// Undo/Redo operations
 
 void
 X3DBrowserEditor::addUndoStep (const std::shared_ptr <UndoStep> & undoStep)
@@ -795,15 +799,7 @@ X3DBrowserEditor::groupNodes (const X3D::MFNode & nodes, const UndoStepPtr & und
 		{
 			childModelViewMatrix .multLeft (transform -> getMatrix ());
 
-			undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DTransformNode::setMatrix),
-			                             transform,
-			                             transform -> getMatrix ());
-
-			undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DTransformNode::setMatrix),
-			                             transform,
-			                             childModelViewMatrix);
-
-			transform -> setMatrix (childModelViewMatrix);
+			setMatrix (transform, childModelViewMatrix, undoStep);
 		}
 
 		// Remove child from scene graph
@@ -822,32 +818,26 @@ X3DBrowserEditor::groupNodes (const X3D::MFNode & nodes, const UndoStepPtr & und
 	return X3D::SFNode (group);
 }
 
-void
-X3DBrowserEditor::emplaceBack (X3D::MFNode & array, const X3D::SFNode & node, const UndoStepPtr & undoStep)
-{
-	// Add to group
-
-	undoStep -> addUndoFunction (std::mem_fn (&X3DBrowserEditor::undoInsertNode), this,
-	                             std::ref (array),
-	                             array .size (),
-	                             node);
-
-	undoStep -> addRedoFunction (std::mem_fn (&X3D::MFNode::push_back), std::ref (array), node);
-
-	array .emplace_back (node);
-}
-
 X3D::MFNode
 X3DBrowserEditor::ungroupNodes (const X3D::MFNode & groups, const UndoStepPtr & undoStep)
 {
 	X3D::MFNode children;
 
+	auto scene = getBrowser () -> getExecutionContext ();
+	
+
 	for (const auto & group : groups)
 	{
 		try
 		{
-			if (not group)
+			X3D::X3DSFNode <X3D::X3DNode> node (group);
+
+			if (not node)
 				continue;
+
+			undoStep -> addVariables (group);
+
+			auto layers = node -> getLayers ();
 
 			auto groupingField = getGroupingField (group);
 
@@ -864,21 +854,37 @@ X3DBrowserEditor::ungroupNodes (const X3D::MFNode & groups, const UndoStepPtr & 
 				if (transform)
 				{
 					childModelViewMatrix .multLeft (transform -> getMatrix ());
-					transform -> setMatrix (childModelViewMatrix);
+
+					setMatrix (transform, childModelViewMatrix, undoStep);
 				}
 
 				// Add to layer
 
-				getBrowser () -> getExecutionContext () -> getRootNodes () .emplace_back (child);
+				for (const auto & layer : layers)
+				{
+					if (layer -> isLayer0 ())
+						emplaceBack (scene -> getRootNodes (), child, undoStep);
+
+					else
+					{
+						undoStep -> addVariables (X3D::SFNode (layer));
+
+						emplaceBack (layer -> children (), child, undoStep);
+					}
+				}
+
+				undoStep -> addUndoFunction (std::mem_fn (&X3D::MFNode::push_front), groupingField, child);
 
 				children .emplace_back (child);
 			}
+			
+			undoStep -> addRedoFunction (std::mem_fn (&X3D::MFNode::clear), groupingField);
+
+			groupingField -> clear ();
 
 			// Remove group from scene
 
-			removeNodeFromScene (getBrowser () -> getExecutionContext (), group, undoStep);
-
-			isModified (true);
+			removeNodeFromScene (scene, group, undoStep);
 		}
 		catch (const X3D::Error <X3D::INVALID_NODE> &)
 		{
@@ -932,15 +938,7 @@ X3DBrowserEditor::addToGroup (const X3D::SFNode & group, const X3D::MFNode & chi
 						childModelViewMatrix .multLeft (transform -> getMatrix ());
 						childModelViewMatrix .multRight (~groupModelViewMatrix);
 
-						undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DTransformNode::setMatrix),
-						                             transform,
-						                             transform -> getMatrix ());
-
-						undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DTransformNode::setMatrix),
-						                             transform,
-						                             childModelViewMatrix);
-
-						transform -> setMatrix (childModelViewMatrix);
+						setMatrix (transform, childModelViewMatrix, undoStep);
 					}
 					catch (const std::domain_error & error)
 					{ }
@@ -1008,16 +1006,8 @@ X3DBrowserEditor::detachFromGroup (X3D::MFNode children, bool detachToLayer0, co
 			X3D::Matrix4f childModelViewMatrix = findModelViewMatrix (node);
 
 			childModelViewMatrix .multLeft (transform -> getMatrix ());
-
-			undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DTransformNode::setMatrix),
-			                             transform,
-			                             transform -> getMatrix ());
-
-			undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DTransformNode::setMatrix),
-			                             transform,
-			                             childModelViewMatrix);
-
-			transform -> setMatrix (childModelViewMatrix);
+			
+			setMatrix (transform, childModelViewMatrix, undoStep);
 		}
 
 		// Remove child from scene graph
@@ -1205,6 +1195,68 @@ X3DBrowserEditor::openNodePropertiesEditor (const X3D::SFNode & node)
 	addDialog (new NodePropertiesEditor (getBrowserWindow (), node));
 }
 
+// Undo functions
+
+void
+X3DBrowserEditor::setMatrix (const X3D::X3DSFNode <X3D::X3DTransformNode> & transform, const X3D::Matrix4f & matrix, const UndoStepPtr & undoStep)
+{
+	undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DTransformNode::setMatrix),
+	                             transform,
+	                             transform -> getMatrix ());
+
+	undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DTransformNode::setMatrix),
+	                             transform,
+	                             matrix);
+
+	transform -> setMatrix (matrix);
+}
+
+void
+X3DBrowserEditor::emplaceBack (X3D::MFNode & array, const X3D::SFNode & node, const UndoStepPtr & undoStep)
+{
+	// Add to group
+
+	undoStep -> addUndoFunction (std::mem_fn (&X3DBrowserEditor::undoInsertNode), this,
+	                             std::ref (array),
+	                             array .size (),
+	                             node);
+
+	undoStep -> addRedoFunction (std::mem_fn (&X3D::MFNode::push_back), std::ref (array), node);
+
+	array .emplace_back (node);
+}
+
+void
+X3DBrowserEditor::undoInsertNode (X3D::MFNode & field, size_t index, const X3D::SFNode & node)
+{
+	if (index < field .size () and field [index] == node)
+	{
+		field .erase (field .begin () + index);
+	}
+	else
+	{
+		// There has something changed, clear history.
+		__LOG__ << std::endl;
+	}
+}
+
+void
+X3DBrowserEditor::undoEraseNode (X3D::MFNode & field, const X3D::SFNode & value, const std::vector <size_t> & indices)
+{
+	for (const auto & index : indices)
+	{
+		if (index <= field .size ())
+		{
+			field .insert (field .begin () + index, value);
+		}
+		else
+		{
+			// There is has something changed, clear history
+			__LOG__ << std::endl;
+		}
+	}
+}
+
 // Misc
 
 X3D::Matrix4f
@@ -1367,39 +1419,6 @@ throw (X3D::Error <X3D::INVALID_NODE>)
 	{ }
 
 	throw X3D::Error <X3D::INVALID_NODE> ("No appropriate container field found.");
-}
-
-// Undo functions
-
-void
-X3DBrowserEditor::undoInsertNode (X3D::MFNode & field, size_t index, const X3D::SFNode & node)
-{
-	if (index < field .size () and field [index] == node)
-	{
-		field .erase (field .begin () + index);
-	}
-	else
-	{
-		// There has something changed, clear history.
-		__LOG__ << std::endl;
-	}
-}
-
-void
-X3DBrowserEditor::undoEraseNode (X3D::MFNode & field, const X3D::SFNode & value, const std::vector <size_t> & indices)
-{
-	for (const auto & index : indices)
-	{
-		if (index <= field .size ())
-		{
-			field .insert (field .begin () + index, value);
-		}
-		else
-		{
-			// There is has something changed, clear history
-			__LOG__ << std::endl;
-		}
-	}
 }
 
 } // puck

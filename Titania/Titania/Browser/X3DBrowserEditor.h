@@ -86,6 +86,12 @@ public:
 	void
 	save (const basic::uri &, bool) final;
 
+	virtual
+	bool
+	close () final;
+
+	/// @name Undo/Redo operations
+
 	void
 	addUndoStep (const std::shared_ptr <UndoStep> &);
 
@@ -94,10 +100,6 @@ public:
 	
 	void
 	redo ();
-
-	virtual
-	bool
-	close () final;
 
 	/// @name Selection operations
 
@@ -219,10 +221,23 @@ private:
 	deleteRoutes (X3D::X3DExecutionContext* const, const X3D::SFNode &, const UndoStepPtr &);
 
 	void
+	createParentGroup (X3D::MFNode &, const X3D::SFNode &, const X3D::SFNode &, X3D::MFNode &, const UndoStepPtr &);
+
+	///  @name Undo functions
+
+	void
+	setMatrix (const X3D::X3DSFNode <X3D::X3DTransformNode> &, const X3D::Matrix4f &, const UndoStepPtr &);
+
+	void
 	emplaceBack (X3D::MFNode &, const X3D::SFNode &, const UndoStepPtr &);
 
 	void
-	createParentGroup (X3D::MFNode &, const X3D::SFNode &, const X3D::SFNode &, X3D::MFNode &, const UndoStepPtr &);
+	undoInsertNode (X3D::MFNode &, size_t, const X3D::SFNode &);
+
+	void
+	undoEraseNode (X3D::MFNode &, const X3D::SFNode &, const std::vector <size_t> &);
+
+	///  @name Misc
 
 	X3D::Matrix4f
 	findModelViewMatrix (X3D::X3DBaseNode* const) const;
@@ -240,14 +255,6 @@ private:
 	X3D::MFNode*
 	getGroupingField (const X3D::SFNode & node) const
 	throw (X3D::Error <X3D::INVALID_NODE>);
-
-	///  @name Undo functions
-
-	void
-	undoInsertNode (X3D::MFNode &, size_t, const X3D::SFNode &);
-
-	void
-	undoEraseNode (X3D::MFNode &, const X3D::SFNode &, const std::vector <size_t> &);
 
 	///  @name Members
 
