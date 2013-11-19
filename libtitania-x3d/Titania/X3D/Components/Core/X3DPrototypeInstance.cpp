@@ -203,9 +203,11 @@ X3DPrototypeInstance::getRootNode () const
 void
 X3DPrototypeInstance::saveState ()
 {
-	// Save state of children if not in scene
+	// Delete children of node if not in scene
 
 	std::set <X3D::SFNode> children;
+
+	// Collect children
 
 	X3D::traverse (getRootNodes (), [&children] (X3D::SFNode & child)
 	               {
@@ -213,17 +215,23 @@ X3DPrototypeInstance::saveState ()
 	                  return true;
 						});
 
+	// Remove scene nodes
+
+	X3D::traverse (getScene () -> getRootNodes (), [&children] (X3D::SFNode & node)
+	               {
+	                  if (children .find (node) not_eq children .end ())
+	                     children .erase (node);
+
+	                  return true;
+						});
+
+	// Save state of rest, this are only nodes not in scene
+
 	for (const auto & child : children)
 	{
-		if (X3D::traverse (getScene () -> getRootNodes (), [&child] (X3D::SFNode & node)
-		                       {
-		                          return node not_eq child;
-									  }))
-		{
-			child -> saveState ();
-			
-			savedChildren .emplace_back (child);
-		}
+		child -> saveState ();
+
+		savedChildren .emplace_back (child);
 	}
 }
 

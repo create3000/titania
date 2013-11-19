@@ -1,5 +1,9 @@
 2013-11-19  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DPrototypeInstance.cpp: 
+
+2013-11-19  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Traverse.cpp:
 	* Script.h:
 	* Script.cpp:
