@@ -192,6 +192,20 @@ Script::eventsProcessed ()
 }
 
 void
+Script::saveState ()
+{
+	javaScript = getBrowser () -> getJavaScriptEngine () -> createContext (this, "", "", 0);
+
+	setLoadState (NOT_STARTED_STATE);
+}
+
+void
+Script::restoreState ()
+{
+	requestImmediateLoad ();
+}
+
+void
 Script::dispose ()
 {
 	javaScript .dispose ();

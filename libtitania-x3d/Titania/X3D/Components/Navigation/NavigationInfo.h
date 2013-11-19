@@ -71,7 +71,7 @@ class NavigationInfo :
 {
 public:
 
-	///  @name Creation
+	///  @name Construction
 
 	NavigationInfo (X3DExecutionContext* const);
 
@@ -220,7 +220,7 @@ public:
 
 private:
 
-	///  @name Creation
+	///  @name Construction
 
 	virtual
 	void

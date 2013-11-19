@@ -62,7 +62,7 @@ class Fog :
 {
 public:
 
-	///  @name Creation
+	///  @name Construction
 
 	Fog (X3DExecutionContext* const);
 
@@ -111,7 +111,7 @@ public:
 
 private:
 
-	///  @name Creation
+	///  @name Construction
 
 	virtual
 	void

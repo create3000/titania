@@ -62,6 +62,8 @@ class Script :
 {
 public:
 
+	///  @name Construction
+
 	Script (X3DExecutionContext* const);
 
 	virtual
@@ -104,6 +106,8 @@ public:
 	mustEvaluate () const
 	{ return *fields .mustEvaluate; }
 
+	///  @name Operations
+
 	virtual
 	bool
 	loadDocument (const SFString &, std::string &) final;
@@ -115,6 +119,16 @@ public:
 	virtual
 	void
 	eventsProcessed () final;
+	
+	virtual
+	void
+	saveState () final;
+	
+	virtual
+	void
+	restoreState () final;
+
+	///  @name Destruction
 
 	virtual
 	void
@@ -123,9 +137,13 @@ public:
 
 private:
 
+	///  @name Construction
+
 	virtual
 	void
 	initialize () final;
+
+	///  @name Event handling
 
 	void
 	set_url ();

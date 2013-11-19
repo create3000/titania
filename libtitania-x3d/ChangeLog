@@ -1,3 +1,16 @@
+2013-11-19  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Traverse.cpp:
+	* Script.h:
+	* Script.cpp:
+	* X3DGroupingNode.h:
+	* Fog.h:
+	* NavigationInfo.h:
+	* X3DPrototypeInstance.h:
+	* X3DPrototypeInstance.cpp:
+	* TextureBackground.h:
+	* X3DBackgroundNode.h: 
+
 2013-11-18  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Selection.h:

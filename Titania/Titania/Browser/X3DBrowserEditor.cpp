@@ -383,7 +383,7 @@ X3DBrowserEditor::toString (X3D::MFNode & nodes) const
 	                  if (protoInstance)
 								protoDeclarations .insert (protoInstance -> getProtoDeclaration ());
 
-	                  return false;
+	                  return true;
 						});
 
 	// Create node index
@@ -393,7 +393,7 @@ X3DBrowserEditor::toString (X3D::MFNode & nodes) const
 	X3D::traverse (nodes, [&nodeIndex] (X3D::SFNode & node)
 	               {
 	                  nodeIndex .insert (node);
-	                  return false;
+	                  return true;
 						});
 
 	// Find connected routes
@@ -414,7 +414,7 @@ X3DBrowserEditor::toString (X3D::MFNode & nodes) const
 								}
 							}
 
-	                  return false;
+	                  return true;
 						});
 
 	// Generate text
@@ -551,19 +551,19 @@ X3DBrowserEditor::removeNode (const X3D::X3DSFNode <X3D::Scene> & scene, X3D::SF
 
 	std::set <X3D::SFNode> children;
 
-	X3D::traverse (node, [&node, &children] (X3D::SFNode & child)
+	X3D::traverse (node, [&children] (X3D::SFNode & child)
 	               {
 	                  children .insert (child);
-	                  return false;
+	                  return true;
 						});
 
 	children .erase (node);
 
 	for (const auto & child : children)
 	{
-		if (not X3D::traverse (scene -> getRootNodes (), [&child] (X3D::SFNode & node)
+		if (X3D::traverse (scene -> getRootNodes (), [&child] (X3D::SFNode & node)
 		                       {
-		                          return child == node;
+		                          return node not_eq child;
 									  }))
 		{
 			undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DBaseNode::restoreState), child);
@@ -663,7 +663,7 @@ X3DBrowserEditor::removeNodeFromSceneGraph (X3D::X3DExecutionContext* const exec
 								}
 							}
 
-	                  return false;
+	                  return true;
 						});
 }
 
@@ -1061,7 +1061,7 @@ X3DBrowserEditor::createParentGroup (const X3D::MFNode & children, const UndoSte
 		X3D::traverse (scene -> getRootNodes (), [&scene, &child, &groups] (X3D::SFNode & node)
 		               {
 		                  if (child not_eq node)
-									return false;
+									return true;
 
 		                  // Replace node with Transform
 
@@ -1074,7 +1074,7 @@ X3DBrowserEditor::createParentGroup (const X3D::MFNode & children, const UndoSte
 
 		                  groups .emplace_back (group);
 
-		                  return false;
+		                  return true;
 							},
 		               false);
 

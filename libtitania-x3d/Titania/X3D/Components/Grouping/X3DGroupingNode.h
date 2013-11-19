@@ -127,7 +127,7 @@ protected:
 	using X3DChildNode::addChildren;
 	using X3DChildNode::removeChildren;
 
-	///  @name Creation
+	///  @name Construction
 
 	X3DGroupingNode ();
 

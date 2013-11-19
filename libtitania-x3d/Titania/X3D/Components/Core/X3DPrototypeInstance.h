@@ -113,7 +113,15 @@ public:
 	getProtoDeclaration () const
 	{ return protoDeclaration; }
 
-	///  @name Operatins
+	///  @name Operations
+	
+	virtual
+	void
+	saveState () final;
+	
+	virtual
+	void
+	restoreState () final;
 
 	virtual
 	void
@@ -149,6 +157,7 @@ private:
 
 	X3DSFNode <X3DProto> protoDeclaration;
 
+	MFNode savedChildren;
 };
 
 } // X3D

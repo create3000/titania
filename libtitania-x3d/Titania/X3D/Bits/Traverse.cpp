@@ -60,7 +60,7 @@ bool
 traverse (X3D::SFNode & node, const TraverseCallback & callback, bool distinct, NodeSet & seen)
 {
 	if (not node)
-		return false;
+		return true;
 
 	if (seen .insert (node) .second)
 	{
@@ -73,9 +73,9 @@ traverse (X3D::SFNode & node, const TraverseCallback & callback, bool distinct, 
 						auto sfnode = static_cast <X3D::SFNode*> (field);
 
 						if (traverse (*sfnode, callback, distinct, seen))
-							return true;
+							continue;
 
-						break;
+						return false;
 					}
 				case X3D::X3DConstants::MFNode:
 				{
@@ -84,7 +84,9 @@ traverse (X3D::SFNode & node, const TraverseCallback & callback, bool distinct, 
 					for (auto & value : *mfnode)
 					{
 						if (traverse (value, callback, distinct, seen))
-							return true;
+							continue;
+						
+						return false;
 					}
 
 					break;
@@ -97,7 +99,7 @@ traverse (X3D::SFNode & node, const TraverseCallback & callback, bool distinct, 
 	else
 	{
 		if (distinct)
-			return false;
+			return true;
 	}
 
 	if (callback (node))
@@ -114,10 +116,12 @@ traverse (X3D::MFNode & nodes, const TraverseCallback & callback, bool distinct)
 	for (auto & node : nodes)
 	{
 		if (traverse (node, callback, distinct, seen))
-			return true;
+			continue;
+		
+		return false;
 	}
 
-	return false;
+	return true;
 }
 
 bool

@@ -124,7 +124,7 @@ public:
 
 protected:
 
-	///  @name Creation
+	///  @name Construction
 
 	X3DBackgroundNode ();
 

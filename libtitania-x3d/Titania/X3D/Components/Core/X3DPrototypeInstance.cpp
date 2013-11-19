@@ -50,6 +50,7 @@
 
 #include "X3DPrototypeInstance.h"
 
+#include "../../Bits/Traverse.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/Scene.h"
 #include "../../Prototype/ExternProto.h"
@@ -70,7 +71,8 @@ const std::string X3DPrototypeInstance::containerField = "children";
 X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const executionContext, const X3DSFNode <X3DProto> & prototype) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DExecutionContext (),
-	   protoDeclaration (prototype)
+	   protoDeclaration (prototype),
+	      savedChildren ()
 {
 	addNodeType (X3DConstants::X3DPrototypeInstance);
 
@@ -85,7 +87,7 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 		          *userDefinedField -> clone ());
 	}
 
-	addChildren (protoDeclaration);
+	addChildren (protoDeclaration, savedChildren);
 
 	// Assign protos and root nodes
 
@@ -199,6 +201,42 @@ X3DPrototypeInstance::getRootNode () const
 }
 
 void
+X3DPrototypeInstance::saveState ()
+{
+	// Save state of children if not in scene
+
+	std::set <X3D::SFNode> children;
+
+	X3D::traverse (getRootNodes (), [&children] (X3D::SFNode & child)
+	               {
+	                  children .insert (child);
+	                  return true;
+						});
+
+	for (const auto & child : children)
+	{
+		if (X3D::traverse (getScene () -> getRootNodes (), [&child] (X3D::SFNode & node)
+		                       {
+		                          return node not_eq child;
+									  }))
+		{
+			child -> saveState ();
+			
+			savedChildren .emplace_back (child);
+		}
+	}
+}
+
+void
+X3DPrototypeInstance::restoreState ()
+{
+	for (const auto & child : savedChildren)
+		child -> restoreState ();
+	
+	savedChildren .clear ();
+}
+
+void
 X3DPrototypeInstance::traverse (const TraverseType type)
 {
 	getRootNode () -> traverse (type);
@@ -213,6 +251,8 @@ X3DPrototypeInstance::toStream (std::ostream & ostream) const
 void
 X3DPrototypeInstance::dispose ()
 {
+	savedChildren .dispose ();
+
 	X3DExecutionContext::dispose ();
 
 	protoDeclaration .dispose ();
