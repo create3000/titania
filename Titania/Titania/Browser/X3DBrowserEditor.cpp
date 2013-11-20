@@ -1258,10 +1258,10 @@ X3DBrowserEditor::addSelection (const X3D::MFNode & nodes, const UndoStepPtr & u
 {
 	auto selection = getBrowser () -> getSelection ();
 
-	undoStep -> addUndoFunction (std::mem_fn (&X3D::Selection::setChildren),    selection, selection -> getChildren ());
+	undoStep -> addUndoFunction (std::mem_fn (&X3D::Selection::setChildren), selection, selection -> getChildren ());
 	undoStep -> addRedoFunction (std::mem_fn (&X3D::Selection::addChildren), selection, nodes);
 
-	selection -> removeChildren (nodes);
+	selection -> addChildren (nodes);
 }
 
 void
@@ -1283,7 +1283,7 @@ X3DBrowserEditor::select (const X3D::MFNode & nodes, const UndoStepPtr & undoSte
 	undoStep -> addUndoFunction (std::mem_fn (&X3D::Selection::setChildren), selection, selection -> getChildren ());
 	undoStep -> addRedoFunction (std::mem_fn (&X3D::Selection::setChildren), selection, nodes);
 
-	selection -> addChildren (nodes);
+	selection -> setChildren (nodes);
 }
 
 // Undo functions

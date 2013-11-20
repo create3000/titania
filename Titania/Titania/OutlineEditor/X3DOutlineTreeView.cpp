@@ -453,6 +453,8 @@ void
 X3DOutlineTreeView::on_row_has_child_toggled (const Gtk::TreeModel::Path & path)
 {
 	get_model () -> row_has_child_toggled (path, get_model () -> get_iter (path));
+
+	expand_row (path, false);
 }
 
 void

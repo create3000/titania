@@ -251,7 +251,7 @@ X3DBaseNode::replace (X3DBaseNode* const node, const std::set <const X3DFieldDef
 	{
 		auto sfnode = dynamic_cast <X3DFieldDefinition*> (parent);
 
-		if (sfnode and sfnode -> getTypeName () == "SFNode")
+		if (sfnode and sfnode -> getType () == X3DConstants::SFNode)
 		{
 			if (exclude .find (sfnode) == exclude .end ())
 			{
