@@ -98,18 +98,19 @@ OutlineSelection::select (const X3D::SFNode & node)
 {
 	if (node)
 	{
-		bool selected = std::find (children .begin (), children .end (), node) not_eq children .end ();
+		auto selection = getBrowser () -> getSelection ();
+		bool selected  = std::find (children .begin (), children .end (), node) not_eq children .end ();
 
 		if (selectMultiple)
 		{
 			if (selected)
-				getBrowserWindow () -> deselect ({ node });
+				selection -> removeChildren ({ node });
 		}
 		else
-			getBrowserWindow () -> deselectAll ();
+			selection -> clear ();
 
 		if (not selected)
-			getBrowserWindow () -> select ({ node });
+			selection -> addChildren ({ node });
 	}
 }
 

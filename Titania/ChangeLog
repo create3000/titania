@@ -1,5 +1,12 @@
 2013-11-20  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* BrowserWindow.cpp:
+	* X3DBrowserEditor.h:
+	* X3DBrowserEditor.cpp:
+	* OutlineSelection.cpp: 
+
+2013-11-20  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* BrowserWindow.ui:
 	* BrowserWindow.cpp:
 	* X3DBrowserEditor.h:

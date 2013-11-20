@@ -104,16 +104,16 @@ public:
 	/// @name Selection operations
 
 	void
-	select (const X3D::MFNode &);
+	select (const X3D::MFNode &, const UndoStepPtr &);
 
 	void
-	deselect (const X3D::MFNode &);
+	deselect (const X3D::MFNode &, const UndoStepPtr &);
 
 	void
-	selectAll ();
+	selectAll (const UndoStepPtr &);
 
 	void
-	deselectAll ();
+	deselectAll (const UndoStepPtr &);
 
 	/// @name Editor handling
 
