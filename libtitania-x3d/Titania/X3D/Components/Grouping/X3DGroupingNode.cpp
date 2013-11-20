@@ -115,10 +115,16 @@ X3DGroupingNode::set_addChildren ()
 {
 	if (not addChildren () .empty ())
 	{
-		add (addChildren ());
-
-		children () .insert (children () .end (), addChildren () .begin (), addChildren () .end ());
+		MFNode childrenToAdd;
 		
+		std::set_difference (addChildren () .begin (), addChildren () .end (),
+		                     children () .begin (), children () .end (),
+		                     std::back_inserter (childrenToAdd));
+
+		add (childrenToAdd);
+
+		children () .insert (children () .end (), childrenToAdd .begin (), childrenToAdd .end ());
+
 		addChildren () .set ({ });
 	}
 }
@@ -128,7 +134,8 @@ X3DGroupingNode::set_removeChildren ()
 {
 	if (not removeChildren () .empty ())
 	{
-		auto new_end = basic::remove (children () .begin (), children () .end (), removeChildren () .begin (), removeChildren () .end ());
+		auto new_end = basic::remove (children () .begin (), children () .end (),
+		                              removeChildren () .begin (), removeChildren () .end ());
 
 		children () .erase (new_end, children () .end ());
 
