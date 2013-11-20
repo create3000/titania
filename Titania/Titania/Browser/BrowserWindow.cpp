@@ -500,11 +500,17 @@ BrowserWindow::on_cut_nodes_activate ()
 
 	auto undoStep = std::make_shared <UndoStep> (_ ("Cut"));
 
+	undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
+
 	deselectAll (undoStep);
 
 	cutNodes (selection, undoStep);
 
+	undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
+
 	getBrowser () -> update ();
+
+	addUndoStep (undoStep);
 }
 
 void
@@ -529,7 +535,7 @@ BrowserWindow::on_paste_nodes_activate ()
 
 	pasteNodes (selection, undoStep);
 
-	getBrowser () -> update ();
+	addUndoStep (undoStep);
 }
 
 // Edit menu

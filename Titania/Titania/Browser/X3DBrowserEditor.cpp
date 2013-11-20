@@ -224,7 +224,11 @@ X3DBrowserEditor::import (const basic::uri & worldURL)
 	{
 		// Imported scene
 
-		import (getBrowser () -> createX3DFromURL ({ worldURL .str () }));
+		auto undoStep = std::make_shared <UndoStep> (_ ("Import"));
+
+		import (getBrowser () -> createX3DFromURL ({ worldURL .str () }), undoStep);
+	
+		addUndoStep (undoStep);
 	}
 	catch (const X3D::X3DError & error)
 	{
@@ -233,11 +237,11 @@ X3DBrowserEditor::import (const basic::uri & worldURL)
 }
 
 void
-X3DBrowserEditor::import (const X3D::X3DSFNode <X3D::Scene> & scene)
+X3DBrowserEditor::import (const X3D::X3DSFNode <X3D::Scene> & scene, const UndoStepPtr & undoStep)
 {
 	try
 	{
-		auto undoStep = std::make_shared <UndoStep> (_ ("Import"));
+		undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
 
 		auto & rootNodes    = getBrowser () -> getExecutionContext () -> getRootNodes ();
 		size_t numRootNodes = rootNodes .size ();
@@ -246,15 +250,29 @@ X3DBrowserEditor::import (const X3D::X3DSFNode <X3D::Scene> & scene)
 
 		getBrowser () -> getExecutionContext () -> importScene (scene);
 
+		size_t index = numRootNodes;
+
+		for (const auto & rootNode : basic::adapter (rootNodes .begin () + numRootNodes, rootNodes .end ()))
+		{
+			undoStep -> addUndoFunction (std::mem_fn (&X3DBrowserEditor::undoInsertNode), this,
+			                             std::ref (rootNodes),
+			                             index,
+			                             rootNode);
+
+			undoStep -> addRedoFunction (std::mem_fn (&X3D::MFNode::push_back), std::ref (rootNodes), rootNode);
+
+			++ index;
+		}
+
 		// Select imported nodes
 
 		deselectAll (undoStep);
 
 		select (X3D::MFNode (rootNodes .begin () + numRootNodes, rootNodes .end ()), undoStep);
 
-		getBrowser () -> update ();
+		undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
 
-		isModified (true);
+		getBrowser () -> update ();
 	}
 	catch (const X3D::X3DError & error)
 	{
@@ -487,11 +505,8 @@ X3DBrowserEditor::pasteNodes (const X3D::MFNode & nodes, const UndoStepPtr & und
 					std::string worldURL;
 
 					if (X3D::Grammar::comment (text, worldURL))
-					{
-						import (getBrowser () -> createX3DFromStream (worldURL, text));
-					}
+						import (getBrowser () -> createX3DFromStream (worldURL, text), undoStep);
 				}
-
 			}
 		}
 	}

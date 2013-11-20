@@ -80,7 +80,7 @@ public:
 	import (const basic::uri &);
 
 	void
-	import (const X3D::X3DSFNode <X3D::Scene> &);
+	import (const X3D::X3DSFNode <X3D::Scene> &, const UndoStepPtr &);
 
 	virtual
 	void
