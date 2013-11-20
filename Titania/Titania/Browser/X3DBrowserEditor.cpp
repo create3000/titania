@@ -218,17 +218,45 @@ X3DBrowserEditor::isModified (bool value)
 // File operations
 
 void
-X3DBrowserEditor::import (const basic::uri & worldURL)
+X3DBrowserEditor::import (const basic::uri & worldURL, const bool importAsInline)
 {
 	try
 	{
-		// Imported scene
+		if (importAsInline)
+		{
+			// Imported As Inline
+			
+			auto undoStep = std::make_shared <UndoStep> (_ ("Import As Inline"));
+			
+			auto relativePath = getBrowser () -> getExecutionContext () -> getWorldURL () .relative_path (worldURL);
 
-		auto undoStep = std::make_shared <UndoStep> (_ ("Import"));
+			std::string string;
 
-		import (getBrowser () -> createX3DFromURL ({ worldURL .str () }), undoStep);
-	
-		addUndoStep (undoStep);
+			string += "DEF " + X3D::get_name_from_uri (worldURL) + " Transform {";
+			string += "  children Inline {";
+			string += "    url [";
+			string += "      \"" + relativePath + "\"";
+			string += "      \"" + worldURL + "\"";
+			string += "    ]";
+			string += "  }";
+			string += "}";
+
+			auto scene = getBrowser () -> createX3DFromString (string);
+
+			import (scene, undoStep);
+
+			addUndoStep (undoStep);
+		}
+		else
+		{
+			// Imported file
+
+			auto undoStep = std::make_shared <UndoStep> (_ ("Import"));
+
+			import (getBrowser () -> createX3DFromURL ({ worldURL .str () }), undoStep);
+		
+			addUndoStep (undoStep);
+		}
 	}
 	catch (const X3D::X3DError & error)
 	{
@@ -278,7 +306,7 @@ X3DBrowserEditor::import (const X3D::X3DSFNode <X3D::Scene> & scene, const UndoS
 }
 
 void
-X3DBrowserEditor::save (const basic::uri & worldURL, bool compressed)
+X3DBrowserEditor::save (const basic::uri & worldURL, const bool compressed)
 {
 	X3DBrowserWidget::save (worldURL, compressed);
 

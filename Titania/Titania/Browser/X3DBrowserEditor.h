@@ -77,14 +77,14 @@ public:
 	/// @name File operations
 
 	void
-	import (const basic::uri &);
+	import (const basic::uri &, const bool);
 
 	void
 	import (const X3D::X3DSFNode <X3D::Scene> &, const UndoStepPtr &);
 
 	virtual
 	void
-	save (const basic::uri &, bool) final;
+	save (const basic::uri &, const bool) final;
 
 	virtual
 	bool

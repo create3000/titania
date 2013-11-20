@@ -1,5 +1,11 @@
 2013-11-20  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3D.h:
+	* GoldenGate.h:
+	* GoldenGate.cpp: 
+
+2013-11-20  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DPrototypeInstance.cpp: 
 
 2013-11-20  Holger Seelig  <holger.seelig@yahoo.de>

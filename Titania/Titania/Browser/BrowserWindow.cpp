@@ -260,12 +260,16 @@ BrowserWindow::on_open ()
 		basic::uri worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
 
 		if (worldURL .size () and worldURL .is_local ())
+		{
 			fileOpenDialog -> set_uri (worldURL .filename () .str ());
+		}
 
 		auto response_id = fileOpenDialog -> run ();
 
 		if (response_id == Gtk::RESPONSE_OK)
+		{
 			open (Glib::uri_unescape_string (fileOpenDialog -> get_uri ()));
+		}
 
 		delete fileOpenDialog;
 	}
@@ -295,7 +299,9 @@ BrowserWindow::on_open_location ()
 		getOpenLocationDialog () .hide ();
 
 		if (response_id == Gtk::RESPONSE_OK)
+		{
 			open (Glib::uri_unescape_string (getOpenLocationEntry () .get_text ()));
+		}
 	}
 }
 
@@ -315,6 +321,8 @@ BrowserWindow::on_import ()
 	updateWidget ("FileImportDialog");
 	auto fileImportDialog = getWidget <Gtk::FileChooserDialog> ("FileImportDialog");
 
+
+
 	fileImportDialog -> add_filter (getFileFilterX3D ());
 	fileImportDialog -> add_filter (getFileFilterImage ());
 	fileImportDialog -> add_filter (getFileFilterAudio ());
@@ -322,8 +330,9 @@ BrowserWindow::on_import ()
 	fileImportDialog -> set_filter (getFileFilterX3D ());
 
 	if (importURL .size () and importURL .is_local ())
+	{
 		fileImportDialog -> set_uri (importURL .filename () .str ());
-
+	}
 	else
 	{
 		basic::uri worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
@@ -332,10 +341,20 @@ BrowserWindow::on_import ()
 			fileImportDialog -> set_uri (worldURL .filename () .str ());
 	}
 
+	auto importAsInlineButton = getWidget <Gtk::CheckButton> ("ImportAsInlineButton");
+
+	importAsInlineButton -> set_active (getConfig () .boolean ("importAsInline"));
+
 	auto response_id = fileImportDialog -> run ();
 
 	if (response_id == Gtk::RESPONSE_OK)
-		import (importURL = Glib::uri_unescape_string (fileImportDialog -> get_uri ()));
+	{
+		importURL = Glib::uri_unescape_string (fileImportDialog -> get_uri ());
+
+		import (importURL, importAsInlineButton -> get_active ());
+	}
+
+	getConfig () .setItem ("importAsInline", importAsInlineButton -> get_active ());
 
 	delete fileImportDialog;
 }
@@ -372,7 +391,7 @@ BrowserWindow::dragDataHandling (const Glib::RefPtr <Gdk::DragContext> & context
 						open (uri);
 				}
 				else
-					import (uri);
+					import (uri, getConfig () .boolean ("importAsInline"));
 
 				context -> drag_finish (true, false, time);
 				return;
@@ -389,7 +408,7 @@ BrowserWindow::dragDataHandling (const Glib::RefPtr <Gdk::DragContext> & context
 					open (uri);
 			}
 			else
-				import (uri);
+				import (uri, getConfig () .boolean ("importAsInline"));
 
 			context -> drag_finish (true, false, time);
 			return;
@@ -430,7 +449,9 @@ BrowserWindow::on_save_as ()
 	auto response_id = fileSaveDialog -> run ();
 
 	if (response_id == Gtk::RESPONSE_OK)
+	{
 		save (Glib::uri_unescape_string (fileSaveDialog -> get_uri ()), saveCompressedButton -> get_active ());
+	}
 
 	delete fileSaveDialog;
 }

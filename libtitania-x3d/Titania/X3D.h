@@ -68,6 +68,7 @@
 #include "X3D/Browser/Properties/MotionBlur.h"
 #include "X3D/InputOutput/Loader.h"
 #include "X3D/Miscellaneous/Keys.h"
+#include "X3D/Miscellaneous/GoldenGate.h"
 #include "X3D/Miscellaneous/MediaStream.h"
 #include "X3D/Parser/Filter.h"
 #include "X3D/Parser/RegEx.h"

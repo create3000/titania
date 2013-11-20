@@ -73,9 +73,8 @@ static const pcrecpp::RE Width       ("__WIDTH__");
 static const pcrecpp::RE Height      ("__HEIGHT__");
 static const pcrecpp::RE URL         ("__URL__");
 
-static
 std::string
-get_name (const basic::uri & uri)
+get_name_from_uri (const basic::uri & uri)
 {
 	static const pcrecpp::RE Spaces ("\\s+");
 
@@ -88,7 +87,7 @@ get_name (const basic::uri & uri)
 	if (not name .empty ())
 		return name;
 
-	return "unnamed";
+	return "Unnamed";
 }
 
 static
@@ -185,7 +184,7 @@ golden_image (const basic::uri & uri)
 
 		std::string file = os::load_file (os::find_data_file ("titania/goldengate/image.wrl"));
 
-		Name   .GlobalReplace (get_name (uri), &file);
+		Name   .GlobalReplace (get_name_from_uri (uri), &file);
 		Width  .GlobalReplace (std::to_string (width), &file);
 		Height .GlobalReplace (std::to_string (height), &file);
 		URL    .GlobalReplace (MFString ({ uri .basename (), uri .str () }) .toString (), &file);
@@ -207,7 +206,7 @@ golden_audio (const basic::uri & uri)
 {
 	std::string file = os::load_file (os::find_data_file ("titania/goldengate/audio.wrl"));
 
-	Name        .GlobalReplace (get_name (uri), &file);
+	Name        .GlobalReplace (get_name_from_uri (uri), &file);
 	Description .GlobalReplace (SFString (uri .basename (false)) .toString (), &file);
 	URL         .GlobalReplace (MFString ({ uri .basename (), uri .str () }) .toString (), &file);
 
@@ -237,7 +236,7 @@ golden_video (const basic::uri & uri)
 
 	auto locale = std::locale::global (std::locale::classic ());
 
-	Name        .GlobalReplace (get_name (uri), &file);
+	Name        .GlobalReplace (get_name_from_uri (uri), &file);
 	Description .GlobalReplace (SFString (uri .basename (false)) .toString (), &file);
 	Width       .GlobalReplace (std::to_string (width),  &file);
 	Height      .GlobalReplace (std::to_string (height), &file);
