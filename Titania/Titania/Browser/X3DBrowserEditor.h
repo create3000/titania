@@ -203,7 +203,7 @@ private:
 	removeExportedNodes (const X3D::X3DSFNode <X3D::Scene> &, const X3D::SFNode &, const UndoStepPtr &);
 
 	void
-	removeNodeFromExecutionContext (X3D::X3DExecutionContext* const, const X3D::SFNode &, const UndoStepPtr &);
+	removeNodeFromExecutionContext (X3D::X3DExecutionContext* const, X3D::SFNode &, const UndoStepPtr &);
 
 	void
 	removeNodeFromSceneGraph (X3D::X3DExecutionContext* const, const X3D::SFNode &, const UndoStepPtr &);
@@ -219,6 +219,9 @@ private:
 
 	void
 	deleteRoutes (X3D::X3DExecutionContext* const, const X3D::SFNode &, const UndoStepPtr &);
+
+	void
+	removePrototypes (X3D::X3DExecutionContext* const, X3D::SFNode &, const UndoStepPtr &);
 
 	void
 	createParentGroup (X3D::MFNode &, const X3D::SFNode &, const X3D::SFNode &, X3D::MFNode &, const UndoStepPtr &);

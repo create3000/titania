@@ -46,6 +46,16 @@ EXTERNPROTO RoundedRectangle2D [
 ]
 "../../../Titania/share/titania/Library/Prototypes/Geometry2D/RoundedRectangle2D/RoundedRectangle2D.x3dv"
 
+EXTERNPROTO Delay [
+  exposedField SFTime cycleInterval
+  exposedField SFBool enabled
+  exposedField SFTime startTime
+  exposedField SFTime stopTime
+  eventOut     SFBool isActive
+  eventOut     SFTime exitTime
+]
+[ "../../../Titania/share/titania/Library/Prototypes/Time/Delay/Delay.x3dv", "file:///usr/share/titania/Library/Prototypes/Time/Delay/Delay.x3dv" ]
+
 PROTO Children1 [
   exposedField MFNode children1 [ ]
 ]
@@ -121,7 +131,7 @@ DEF Rotor Rotor {
 
 DEF Box Transform {
   translation 1.40843 1.10727 0.193803
-  rotation 0 0 1 3.01365
+  rotation 0 0 1 5.33434
   scale 0.2 0.2 0.2
   children Transform {
     children Shape {
@@ -208,6 +218,8 @@ DEF Inline Transform {
     url "Inline.wrl"
   }
 }
+
+Delay { }
 
 ROUTE _1.isActive TO _2.set_enabled
 ROUTE Rotor.rotation_changed TO Box.set_rotation
