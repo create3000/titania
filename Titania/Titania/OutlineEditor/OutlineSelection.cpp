@@ -98,22 +98,18 @@ OutlineSelection::select (const X3D::SFNode & node)
 {
 	if (node)
 	{
-		auto undoStep = std::make_shared <UndoStep> (_ ("Selection Change"));
-
 		bool selected = std::find (children .begin (), children .end (), node) not_eq children .end ();
 
 		if (selectMultiple)
 		{
 			if (selected)
-				getBrowserWindow () -> deselect ({ node }, undoStep);
+				getBrowserWindow () -> deselect ({ node });
 		}
 		else
-			getBrowserWindow () -> deselectAll (undoStep);
+			getBrowserWindow () -> deselectAll ();
 
 		if (not selected)
-			getBrowserWindow () -> select ({ node }, undoStep);
-
-		getBrowserWindow () -> addUndoStep (undoStep);
+			getBrowserWindow () -> select ({ node });
 	}
 }
 
