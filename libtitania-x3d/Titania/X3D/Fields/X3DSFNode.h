@@ -57,14 +57,34 @@
 namespace titania {
 namespace X3D {
 
-template <class ValueType>
-class X3DSFNode :
-	public X3DField <ValueType*>
+class X3DSFNodeBase :
+	virtual public X3DBase
 {
 public:
 
+	///  @name Operations
+	
+	virtual
+	X3DBaseNode*
+	getBaseValue () const = 0;
+
+
+protected:
+
+	X3DSFNodeBase () :
+		X3DBase ()
+	{ }
+
+};
+
+template <class ValueType>
+class X3DSFNode :
+	public X3DField <ValueType*>, public X3DSFNodeBase
+{
+public:
+
+	typedef ValueType* internal_type;
 	typedef ValueType* value_type;
-	typedef ValueType* scalar_type;
 
 	using X3DField <ValueType*>::operator =;
 	using X3DField <ValueType*>::addInterest;
@@ -190,7 +210,16 @@ public:
 
 	virtual
 	void
-	set (const value_type &) final;
+	set (const internal_type &) final;
+
+	virtual
+	void
+	write (const X3DChildObject &) final;
+	
+	virtual
+	X3DBaseNode*
+	getBaseValue () const final
+	{ return getValue (); }
 
 	///  @name Boolean operator
 
@@ -246,8 +275,6 @@ public:
 private:
 
 	using X3DField <ValueType*>::reset;
-
-	///  @name Operations
 
 	void
 	addNode (ValueType* const);
@@ -333,10 +360,19 @@ X3DSFNode <ValueType>::operator = (X3DSFNode <Up> && field)
 
 template <class ValueType>
 void
-X3DSFNode <ValueType>::set (const value_type & value)
+X3DSFNode <ValueType>::set (const internal_type & value)
 {
 	addNode (value);
 	X3DField <ValueType*>::set (value);
+}
+
+template <class ValueType>
+void
+X3DSFNode <ValueType>::write (const X3DChildObject & field)
+{
+	X3DBaseNode* baseNode = dynamic_cast <const X3DSFNodeBase &> (field) .getBaseValue ();
+
+	set (dynamic_cast <internal_type> (baseNode));
 }
 
 template <class ValueType>

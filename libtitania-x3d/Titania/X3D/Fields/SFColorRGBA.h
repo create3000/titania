@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -64,7 +64,7 @@ class SFColorRGBA :
 {
 public:
 
-	typedef Color3f::value_type scalar_type;
+	typedef Color3f::value_type value_type;
 	typedef size_t              size_type;
 
 	using X3DField <Color4f>::addInterest;
@@ -79,7 +79,7 @@ public:
 	explicit
 	SFColorRGBA (const Color4f &);
 
-	SFColorRGBA (const scalar_type &, const scalar_type &, const scalar_type &, const scalar_type &);
+	SFColorRGBA (const value_type &, const value_type &, const value_type &, const value_type &);
 
 	///  6.7.7 Add field interest.
 
@@ -102,46 +102,46 @@ public:
 	{ return new SFColorRGBA (*this); }
 
 	void
-	setR (const scalar_type &);
+	setR (const value_type &);
 
-	scalar_type
+	value_type
 	getR () const;
 
 	void
-	setG (const scalar_type &);
+	setG (const value_type &);
 
-	scalar_type
+	value_type
 	getG () const;
 
 	void
-	setB (const scalar_type &);
+	setB (const value_type &);
 
-	scalar_type
+	value_type
 	getB () const;
 
 	void
-	setA (const scalar_type &);
+	setA (const value_type &);
 
-	scalar_type
+	value_type
 	getA () const;
 
 	void
-	set1Value (const size_type &, const scalar_type &);
+	set1Value (const size_type &, const value_type &);
 
-	scalar_type
+	value_type
 	get1Value (const size_type &) const;
 
 	void
-	setValue (const scalar_type &, const scalar_type &, const scalar_type &, const scalar_type &);
+	setValue (const value_type &, const value_type &, const value_type &, const value_type &);
 
 	void
-	getValue (scalar_type &, scalar_type &, scalar_type &, scalar_type &) const;
+	getValue (value_type &, value_type &, value_type &, value_type &) const;
 
 	void
-	setHSV (const scalar_type &, const scalar_type &, const scalar_type &);
+	setHSV (const value_type &, const value_type &, const value_type &);
 
 	void
-	getHSV (scalar_type &, scalar_type &, scalar_type &) const;
+	getHSV (value_type &, value_type &, value_type &) const;
 
 	///  @name Input operator.
 	virtual

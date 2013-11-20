@@ -59,25 +59,25 @@ template <>
 const std::string X3DField <bool>::typeName ("SFBool");
 
 template <>
-const std::string X3DField <Double>::typeName ("SFDouble");
+const std::string X3DField <double>::typeName ("SFDouble");
 
 template <>
-const std::string X3DField <Float>::typeName ("SFFloat");
+const std::string X3DField <float>::typeName ("SFFloat");
 
 template <>
-const std::string X3DField <Int32>::typeName ("SFInt32");
+const std::string X3DField <int32_t>::typeName ("SFInt32");
 
 template <>
 const X3DConstants::FieldType X3DField <bool>::type = X3DConstants::SFBool;
 
 template <>
-const X3DConstants::FieldType X3DField <Double>::type = X3DConstants::SFDouble;
+const X3DConstants::FieldType X3DField <double>::type = X3DConstants::SFDouble;
 
 template <>
-const X3DConstants::FieldType X3DField <Float>::type = X3DConstants::SFFloat;
+const X3DConstants::FieldType X3DField <float>::type = X3DConstants::SFFloat;
 
 template <>
-const X3DConstants::FieldType X3DField <Int32>::type = X3DConstants::SFInt32;
+const X3DConstants::FieldType X3DField <int32_t>::type = X3DConstants::SFInt32;
 
 template <>
 void
@@ -108,7 +108,7 @@ throw (Error <INVALID_X3D>,
 
 template <>
 void
-X3DScalar <Double>::fromStream (std::istream & istream)
+X3DScalar <double>::fromStream (std::istream & istream)
 throw (Error <INVALID_X3D>,
        Error <NOT_SUPPORTED>,
        Error <INVALID_OPERATION_TIMING>,
@@ -126,7 +126,7 @@ throw (Error <INVALID_X3D>,
 
 template <>
 void
-X3DScalar <Float>::fromStream (std::istream & istream)
+X3DScalar <float>::fromStream (std::istream & istream)
 throw (Error <INVALID_X3D>,
        Error <NOT_SUPPORTED>,
        Error <INVALID_OPERATION_TIMING>,
@@ -144,7 +144,7 @@ throw (Error <INVALID_X3D>,
 
 template <>
 void
-X3DScalar <Int32>::fromStream (std::istream & istream)
+X3DScalar <int32_t>::fromStream (std::istream & istream)
 throw (Error <INVALID_X3D>,
        Error <NOT_SUPPORTED>,
        Error <INVALID_OPERATION_TIMING>,
@@ -169,35 +169,35 @@ X3DScalar <bool>::toStream (std::ostream & ostream) const
 
 template <>
 void
-X3DScalar <Double>::toStream (std::ostream & ostream) const
+X3DScalar <double>::toStream (std::ostream & ostream) const
 {
-	ostream << Generator::Precision <Double> << getValue ();
+	ostream << Generator::Precision <double> << getValue ();
 }
 
 template <>
 void
-X3DScalar <Float>::toStream (std::ostream & ostream) const
+X3DScalar <float>::toStream (std::ostream & ostream) const
 {
-	ostream << Generator::Precision <Float> << getValue ();
+	ostream << Generator::Precision <float> << getValue ();
 }
 
 template <>
 void
-X3DScalar <Int32>::toStream (std::ostream & ostream) const
+X3DScalar <int32_t>::toStream (std::ostream & ostream) const
 {
 	ostream << getValue ();
 }
 
 template class X3DField <bool>;
-template class X3DField <Double>;
-template class X3DField <Float>;
-template class X3DField <Int32>;
+template class X3DField <double>;
+template class X3DField <float>;
+template class X3DField <int32_t>;
 
 // SFBool, SFDouble, SFFloat and SFInt32
 template class X3DScalar <bool>;
-template class X3DScalar <Double>;
-template class X3DScalar <Float>;
-template class X3DScalar <Int32>;
+template class X3DScalar <double>;
+template class X3DScalar <float>;
+template class X3DScalar <int32_t>;
 
 } // X3D
 } // titania

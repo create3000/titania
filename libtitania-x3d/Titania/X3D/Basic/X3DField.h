@@ -65,7 +65,7 @@ class X3DField :
 {
 public:
 
-	typedef ValueType value_type;
+	typedef ValueType internal_type;
 
 	using X3DFieldDefinition::addInterest;
 	using X3DFieldDefinition::processInterests;
@@ -135,6 +135,14 @@ public:
 	void
 	set (const ValueType & value)
 	{ this -> value = value; }
+
+	///  Set @a field to this field without notifying this field.
+	virtual
+	void
+	write (const X3DChildObject & field) override
+	{
+		set (static_cast <const X3DField &> (field) .getValue ());
+	}
 
 	///  Conversion operator.
 	operator const ValueType & () const
@@ -230,15 +238,6 @@ protected:
 	ValueType &
 	get () { return value; }
 
-	///  Set @a field to this field without notifying this field.
-	virtual
-	void
-	write (const X3DChildObject & field)
-	{
-		//assert (getType () == field .getType ());
-		set (static_cast <const X3DField &> (field) .getValue ());
-	}
-
 	///  Set this field to its default value.
 	virtual
 	void
@@ -282,7 +281,7 @@ operator == (const X3DField <ValueType> & lhs, const X3DField <ValueType> & rhs)
 template <class ValueType>
 inline
 bool
-operator == (const typename X3DField <ValueType>::value_type & lhs, const X3DField <ValueType> & rhs)
+operator == (const typename X3DField <ValueType>::internal_type & lhs, const X3DField <ValueType> & rhs)
 {
 	return lhs == rhs .getValue ();
 }
@@ -290,7 +289,7 @@ operator == (const typename X3DField <ValueType>::value_type & lhs, const X3DFie
 template <class ValueType>
 inline
 bool
-operator == (const X3DField <ValueType> & lhs, const typename X3DField <ValueType>::value_type & rhs)
+operator == (const X3DField <ValueType> & lhs, const typename X3DField <ValueType>::internal_type & rhs)
 {
 	return lhs .getValue () == rhs;
 }
@@ -308,7 +307,7 @@ operator not_eq (const X3DField <ValueType> & lhs, const X3DField <ValueType> & 
 template <class ValueType>
 inline
 bool
-operator not_eq (const typename X3DField <ValueType>::value_type & lhs, const X3DField <ValueType> & rhs)
+operator not_eq (const typename X3DField <ValueType>::internal_type & lhs, const X3DField <ValueType> & rhs)
 {
 	return lhs not_eq rhs .getValue ();
 }
@@ -316,7 +315,7 @@ operator not_eq (const typename X3DField <ValueType>::value_type & lhs, const X3
 template <class ValueType>
 inline
 bool
-operator not_eq (const X3DField <ValueType> & lhs, const typename X3DField <ValueType>::value_type & rhs)
+operator not_eq (const X3DField <ValueType> & lhs, const typename X3DField <ValueType>::internal_type & rhs)
 {
 	return lhs .getValue () not_eq rhs;
 }

@@ -105,11 +105,19 @@ public:
 	isActive () const
 	{ return active; }
 
+	///  @name Member access
+
+	bool
+	isSelected (const SFNode &) const;
+
 	void
 	addChildren (const MFNode &);
 
 	void
 	removeChildren (const MFNode &);
+
+	void
+	setChildren (const MFNode &);
 
 	const MFNode &
 	getChildren () const

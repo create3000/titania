@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -73,83 +73,83 @@ SFColor::SFColor (const Color3f & value) :
 	X3DField <Color3f> (value)
 { }
 
-SFColor::SFColor (const scalar_type & r, const scalar_type & g, const scalar_type & b) :
+SFColor::SFColor (const value_type & r, const value_type & g, const value_type & b) :
 	X3DField <Color3f> (Color3f (r, g, b))
 { }
 
 void
-SFColor::setR (const scalar_type & r)
+SFColor::setR (const value_type & r)
 {
 	get () .r (r);
 	addEvent ();
 }
 
-typename SFColor::scalar_type
+typename SFColor::value_type
 SFColor::getR () const
 {
 	return getValue () .r ();
 }
 
 void
-SFColor::setG (const scalar_type & g)
+SFColor::setG (const value_type & g)
 {
 	get () .g (g);
 	addEvent ();
 }
 
-typename SFColor::scalar_type
+typename SFColor::value_type
 SFColor::getG () const
 {
 	return getValue () .g ();
 }
 
 void
-SFColor::setB (const scalar_type & b)
+SFColor::setB (const value_type & b)
 {
 	get () .b (b);
 	addEvent ();
 }
 
-typename SFColor::scalar_type
+typename SFColor::value_type
 SFColor::getB () const
 {
 	return getValue () .b ();
 }
 
 void
-SFColor::set1Value (const size_type & index, const scalar_type & value)
+SFColor::set1Value (const size_type & index, const value_type & value)
 {
-	get () [index] = math::clamp <scalar_type> (value, 0, 1);
+	get () [index] = math::clamp <value_type> (value, 0, 1);
 	addEvent ();
 }
 
-typename SFColor::scalar_type
+typename SFColor::value_type
 SFColor::get1Value (const size_type & index) const
 {
 	return getValue () [index];
 }
 
 void
-SFColor::setValue (const scalar_type & r, const scalar_type & g, const scalar_type & b)
+SFColor::setValue (const value_type & r, const value_type & g, const value_type & b)
 {
 	setValue (Color3f (r, g, b));
 }
 
 void
-SFColor::getValue (scalar_type & r, scalar_type & g, scalar_type & b) const
+SFColor::getValue (value_type & r, value_type & g, value_type & b) const
 {
 	getValue () .get (r, g, b);
 }
 
 void
-SFColor::setHSV (const scalar_type & h, const scalar_type & s, const scalar_type & v)
+SFColor::setHSV (const value_type & h, const value_type & s, const value_type & v)
 {
 	get () .setHSV (h, s, v);
 	addEvent ();
 }
 
 void
-SFColor::getHSV (scalar_type & h, scalar_type & s, scalar_type & v) const
+SFColor::getHSV (value_type & h, value_type & s, value_type & v) const
 {
 	getValue () .getHSV (h, s, v);
 }
@@ -189,7 +189,7 @@ throw (Error <INVALID_X3D>,
 void
 SFColor::toStream (std::ostream & ostream) const
 {
-	ostream << Generator::Precision <scalar_type> << getValue ();
+	ostream << Generator::Precision <value_type> << getValue ();
 }
 
 } // X3D

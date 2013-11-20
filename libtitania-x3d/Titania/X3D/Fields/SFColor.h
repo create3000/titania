@@ -64,7 +64,7 @@ class SFColor :
 {
 public:
 
-	typedef Color3f::value_type scalar_type;
+	typedef Color3f::value_type value_type;
 	typedef Color3f::size_type  size_type;
 
 	using X3DField <Color3f>::addInterest;
@@ -79,7 +79,7 @@ public:
 	explicit
 	SFColor (const Color3f &);
 
-	SFColor (const scalar_type &, const scalar_type &, const scalar_type &);
+	SFColor (const value_type &, const value_type &, const value_type &);
 
 	virtual
 	SFColor*
@@ -102,40 +102,40 @@ public:
 	///  Functions
 
 	void
-	setR (const scalar_type &);
+	setR (const value_type &);
 
-	scalar_type
+	value_type
 	getR () const;
 
 	void
-	setG (const scalar_type &);
+	setG (const value_type &);
 
-	scalar_type
+	value_type
 	getG () const;
 
 	void
-	setB (const scalar_type &);
+	setB (const value_type &);
 
-	scalar_type
+	value_type
 	getB () const;
 
 	void
-	set1Value (const size_type &, const scalar_type &);
+	set1Value (const size_type &, const value_type &);
 
-	scalar_type
+	value_type
 	get1Value (const size_type &) const;
 
 	void
-	setValue (const scalar_type &, const scalar_type &, const scalar_type &);
+	setValue (const value_type &, const value_type &, const value_type &);
 
 	void
-	getValue (scalar_type &, scalar_type &, scalar_type &) const;
+	getValue (value_type &, value_type &, value_type &) const;
 
 	void
-	setHSV (const scalar_type &, const scalar_type &, const scalar_type &);
+	setHSV (const value_type &, const value_type &, const value_type &);
 
 	void
-	getHSV (scalar_type &, scalar_type &, scalar_type &) const;
+	getHSV (value_type &, value_type &, value_type &) const;
 
 	///  @name Input operator.
 	virtual

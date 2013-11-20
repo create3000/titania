@@ -87,6 +87,12 @@ Selection::initialize ()
 	getBrowser () -> shutdown () .addInterest (this, &Selection::clear);
 }
 
+bool
+Selection::isSelected (const SFNode & node) const
+{
+	return std::find (children .begin (), children .end (), node) not_eq children .end ();
+}
+
 void
 Selection::addChildren (const MFNode & value)
 {
@@ -94,6 +100,9 @@ Selection::addChildren (const MFNode & value)
 	{
 		for (const auto & child : value)
 		{
+			if (isSelected (child))
+				continue;
+
 			if (child)
 			{
 				if (child -> getExecutionContext () == getBrowser () -> getExecutionContext ())
@@ -123,6 +132,19 @@ Selection::removeChildren (const MFNode & value)
 			}
 		}
 	}
+}
+
+void
+Selection::setChildren (const MFNode & value)
+{
+	MFNode difference;
+
+	std::set_difference (children .begin (), children .end (),
+	                     value .begin (), value .end (),
+	                     std::back_inserter (difference));
+
+	removeChildren (difference);
+	addChildren (value);
 }
 
 void

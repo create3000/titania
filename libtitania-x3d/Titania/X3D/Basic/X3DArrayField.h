@@ -68,29 +68,29 @@ class X3DArrayField :
 {
 public:
 
-	typedef ValueType         scalar_type;
-	typedef Array <ValueType> value_type;
+	typedef ValueType         value_type;
+	typedef Array <ValueType> internal_type;
 
-	typedef basic::reference_iterator <typename value_type::iterator, ValueType>                     iterator;
-	typedef basic::reference_iterator <typename value_type::reverse_iterator, ValueType>             reverse_iterator;
-	typedef basic::reference_iterator <typename value_type::const_iterator, const ValueType>         const_iterator;
-	typedef basic::reference_iterator <typename value_type::const_reverse_iterator, const ValueType> const_reverse_iterator;
+	typedef basic::reference_iterator <typename internal_type::iterator, ValueType>                     iterator;
+	typedef basic::reference_iterator <typename internal_type::reverse_iterator, ValueType>             reverse_iterator;
+	typedef basic::reference_iterator <typename internal_type::const_iterator, const ValueType>         const_iterator;
+	typedef basic::reference_iterator <typename internal_type::const_reverse_iterator, const ValueType> const_reverse_iterator;
 
-	typedef typename value_type::difference_type difference_type;
-	typedef typename value_type::size_type       size_type;
+	typedef typename internal_type::difference_type difference_type;
+	typedef typename internal_type::size_type       size_type;
 
-	using X3DField <value_type>::addInterest;
-	using X3DField <value_type>::addEvent;
-	using X3DField <value_type>::getType;
-	using X3DField <value_type>::getValue;
-	using X3DField <value_type>::operator =;
-	using X3DField <value_type>::getGarbageCollector;
+	using X3DField <internal_type>::addInterest;
+	using X3DField <internal_type>::addEvent;
+	using X3DField <internal_type>::getType;
+	using X3DField <internal_type>::getValue;
+	using X3DField <internal_type>::operator =;
+	using X3DField <internal_type>::getGarbageCollector;
 
 	///  @name Construction
 
 	///  Default constructor.
 	X3DArrayField () :
-		X3DField <value_type> ()
+		X3DField <internal_type> ()
 	{ }
 
 	///  Copy constructor.
@@ -100,21 +100,21 @@ public:
 
 	///  Move constructor.
 	X3DArrayField (X3DArrayField && field) :
-		X3DField <value_type> ()
+		X3DField <internal_type> ()
 	{
 		*this = std::move (field);
 	}
 
 	///  Construct an X3DArrayField from basic type @a value.
 	explicit
-	X3DArrayField (const value_type & value) :
+	X3DArrayField (const internal_type & value) :
 		X3DArrayField <ValueType> (const_iterator (value .begin ()), const_iterator (value .end ()))
 	{ }
 
 	//	///  Moves elements from basic type @a value.
 	//	explicit
-	//	X3DArrayField (value_type && value) :
-	//		X3DField <value_type> (value)
+	//	X3DArrayField (internal_type && value) :
+	//		X3DField <internal_type> (value)
 	//	{
 	//		addChildren (get () .begin (), get () .end ());
 	//	}
@@ -125,7 +125,7 @@ public:
 	{ }
 
 	template <const size_t Size>
-	X3DArrayField (const typename ValueType::value_type (&value) [Size]) :
+	X3DArrayField (const typename ValueType::internal_type (&value) [Size]) :
 		X3DArrayField <ValueType> (value, value + Size)
 	{ }
 
@@ -133,13 +133,13 @@ public:
 		X3DArrayField <ValueType> (list .begin (), list .end ())
 	{ }
 
-	X3DArrayField (std::initializer_list <const typename ValueType::value_type> list) :
+	X3DArrayField (std::initializer_list <const typename ValueType::internal_type> list) :
 		X3DArrayField <ValueType> (list .begin (), list .end ())
 	{ }
 
 	template <class InputIterator>
 	X3DArrayField (InputIterator first, InputIterator last) :
-		X3DField <value_type> ()
+		X3DField <internal_type> ()
 	{
 		for (const auto & value : basic::adapter (first, last))
 		{
@@ -170,7 +170,7 @@ public:
 	X3DArrayField &
 	operator = (const X3DArrayField & field)
 	{
-		X3DField <value_type>::operator = (field);
+		X3DField <internal_type>::operator = (field);
 		return *this;
 	}
 
@@ -203,7 +203,7 @@ public:
 
 	template <const size_t Size>
 	X3DArrayField &
-	operator = (const typename ValueType::value_type (&value) [Size])
+	operator = (const typename ValueType::internal_type (&value) [Size])
 	{
 		assign (value, value + Size);
 		return *this;
@@ -217,7 +217,7 @@ public:
 	}
 
 	X3DArrayField &
-	operator = (std::initializer_list <typename ValueType::value_type> list)
+	operator = (std::initializer_list <typename ValueType::internal_type> list)
 	{
 		assign (list .begin (), list .end ());
 		return *this;
@@ -254,7 +254,7 @@ public:
 	set1Value (const size_type index, const ValueType &);
 
 	void
-	set1Value (const size_type index, const typename ValueType::value_type &);
+	set1Value (const size_type index, const typename ValueType::internal_type &);
 
 	ValueType*
 	get1Value (const size_type);
@@ -262,7 +262,7 @@ public:
 	///  Set @a value to this field without notfying parents.
 	virtual
 	void
-	set (const value_type &) final;
+	set (const internal_type &) final;
 
 	template <class InputIterator>
 	void
@@ -426,7 +426,7 @@ public:
 	{ return indices_of (value .getValue ()); }
 
 	std::vector <size_t>
-	indices_of (const typename ValueType::value_type & value) const
+	indices_of (const typename ValueType::internal_type & value) const
 	{ return basic::indices_of (begin (), end (), value); }
 
 	///  @name Input/Output
@@ -451,7 +451,7 @@ public:
 
 protected:
 
-	using X3DField <value_type>::get;
+	using X3DField <internal_type>::get;
 
 	///  @name Element access
 
@@ -504,7 +504,7 @@ X3DArrayField <ValueType>::set1Value (const size_type index, const ValueType & f
 
 template <class ValueType>
 void
-X3DArrayField <ValueType>::set1Value (const size_type index, const typename ValueType::value_type & value)
+X3DArrayField <ValueType>::set1Value (const size_type index, const typename ValueType::internal_type & value)
 {
 	if (index >= size ())
 		resize (index + 1);
@@ -524,7 +524,7 @@ X3DArrayField <ValueType>::get1Value (const size_type index)
 
 template <class ValueType>
 void
-X3DArrayField <ValueType>::set (const value_type & value)
+X3DArrayField <ValueType>::set (const internal_type & value)
 {
 	set (const_iterator (value .cbegin ()), const_iterator (value .cend ()));
 }

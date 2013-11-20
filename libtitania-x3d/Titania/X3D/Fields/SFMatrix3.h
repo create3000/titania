@@ -67,7 +67,7 @@ class SFMatrix3 :
 {
 public:
 
-	typedef typename ValueType::value_type            scalar_type;
+	typedef typename ValueType::value_type            value_type;
 	typedef SFVec2 <typename ValueType::vector2_type> vector2_type;
 	typedef typename ValueType::size_type             size_type;
 
@@ -90,9 +90,9 @@ public:
 		X3DField <ValueType> (value)
 	{ }
 
-	SFMatrix3 (const scalar_type & e11, const scalar_type & e12, const scalar_type & e13,
-	           const scalar_type & e21, const scalar_type & e22, const scalar_type & e23,
-	           const scalar_type & e31, const scalar_type & e32, const scalar_type & e33) :
+	SFMatrix3 (const value_type & e11, const value_type & e12, const value_type & e13,
+	           const value_type & e21, const value_type & e22, const value_type & e23,
+	           const value_type & e31, const value_type & e32, const value_type & e33) :
 		X3DField <ValueType> (ValueType (e11, e12, e13, e21, e22, e23, e31, e32, e33))
 	{ }
 
@@ -116,20 +116,20 @@ public:
 	///  Functions
 
 	void
-	set1Value (const size_type &, const scalar_type &);
+	set1Value (const size_type &, const value_type &);
 
-	scalar_type
+	value_type
 	get1Value (const size_type &) const;
 
 	void
-	setValue (const scalar_type &, const scalar_type &, const scalar_type &,
-	          const scalar_type &, const scalar_type &, const scalar_type &,
-	          const scalar_type &, const scalar_type &, const scalar_type &);
+	setValue (const value_type &, const value_type &, const value_type &,
+	          const value_type &, const value_type &, const value_type &,
+	          const value_type &, const value_type &, const value_type &);
 
 	void
-	getValue (scalar_type &, scalar_type &, scalar_type &,
-	          scalar_type &, scalar_type &, scalar_type &,
-	          scalar_type &, scalar_type &, scalar_type &) const;
+	getValue (value_type &, value_type &, value_type &,
+	          value_type &, value_type &, value_type &,
+	          value_type &, value_type &, value_type &) const;
 
 	void
 	setTransform ();
@@ -139,24 +139,24 @@ public:
 
 	void
 	setTransform (const vector2_type &,
-	              const scalar_type &);
+	              const value_type &);
 
 	void
 	setTransform (const vector2_type &,
-	              const scalar_type &,
+	              const value_type &,
 	              const vector2_type  &);
 
 	void
 	setTransform (const vector2_type &,
-	              const scalar_type &,
+	              const value_type &,
 	              const vector2_type &,
-	              const scalar_type &);
+	              const value_type &);
 
 	void
 	setTransform (const vector2_type &,
-	              const scalar_type &,
+	              const value_type &,
 	              const vector2_type &,
-	              const scalar_type &,
+	              const value_type &,
 	              const vector2_type  &);
 
 	void
@@ -164,22 +164,22 @@ public:
 
 	void
 	getTransform (vector2_type &,
-	              scalar_type &) const;
+	              value_type &) const;
 
 	void
 	getTransform (vector2_type &,
-	              scalar_type &,
+	              value_type &,
 	              vector2_type &) const;
 
 	void
 	getTransform (vector2_type &,
-	              scalar_type &, vector2_type &,
-	              scalar_type &) const;
+	              value_type &, vector2_type &,
+	              value_type &) const;
 
 	void
 	getTransform (vector2_type &,
-	              scalar_type &, vector2_type &,
-	              scalar_type &,
+	              value_type &, vector2_type &,
+	              value_type &,
 	              vector2_type &) const;
 
 	SFMatrix3*
@@ -238,7 +238,7 @@ throw (Error <NOT_SUPPORTED>)
 
 template <class ValueType>
 void
-SFMatrix3 <ValueType>::set1Value (const size_type & index, const scalar_type & value)
+SFMatrix3 <ValueType>::set1Value (const size_type & index, const value_type & value)
 {
 	get () .data () [index] = value;
 	addEvent ();
@@ -246,7 +246,7 @@ SFMatrix3 <ValueType>::set1Value (const size_type & index, const scalar_type & v
 
 template <class ValueType>
 inline
-typename SFMatrix3 <ValueType>::scalar_type
+typename SFMatrix3 <ValueType>::value_type
 SFMatrix3 <ValueType>::get1Value (const size_type & index) const
 {
 	return getValue () .data () [index];
@@ -255,9 +255,9 @@ SFMatrix3 <ValueType>::get1Value (const size_type & index) const
 template <class ValueType>
 inline
 void
-SFMatrix3 <ValueType>::setValue (const scalar_type & e11, const scalar_type & e12, const scalar_type & e13,
-                                 const scalar_type & e21, const scalar_type & e22, const scalar_type & e23,
-                                 const scalar_type & e31, const scalar_type & e32, const scalar_type & e33)
+SFMatrix3 <ValueType>::setValue (const value_type & e11, const value_type & e12, const value_type & e13,
+                                 const value_type & e21, const value_type & e22, const value_type & e23,
+                                 const value_type & e31, const value_type & e32, const value_type & e33)
 {
 	setValue (ValueType (e11, e12, e13, e21, e22, e23, e31, e32, e33));
 }
@@ -265,9 +265,9 @@ SFMatrix3 <ValueType>::setValue (const scalar_type & e11, const scalar_type & e1
 template <class ValueType>
 inline
 void
-SFMatrix3 <ValueType>::getValue (scalar_type & e11, scalar_type & e12, scalar_type & e13,
-                                 scalar_type & e21, scalar_type & e22, scalar_type & e23,
-                                 scalar_type & e31, scalar_type & e32, scalar_type & e33) const
+SFMatrix3 <ValueType>::getValue (value_type & e11, value_type & e12, value_type & e13,
+                                 value_type & e21, value_type & e22, value_type & e23,
+                                 value_type & e31, value_type & e32, value_type & e33) const
 {
 	const auto & data = getValue () .data ();
 
@@ -303,7 +303,7 @@ SFMatrix3 <ValueType>::setTransform (const vector2_type & translation)
 template <class ValueType>
 void
 SFMatrix3 <ValueType>::setTransform (const vector2_type & translation,
-                                     const scalar_type & rotation)
+                                     const value_type & rotation)
 {
 	get () .set (translation, rotation);
 	addEvent ();
@@ -312,7 +312,7 @@ SFMatrix3 <ValueType>::setTransform (const vector2_type & translation,
 template <class ValueType>
 void
 SFMatrix3 <ValueType>::setTransform (const vector2_type & translation,
-                                     const scalar_type & rotation,
+                                     const value_type & rotation,
                                      const vector2_type & scale)
 {
 	get () .set (translation, rotation, scale);
@@ -322,9 +322,9 @@ SFMatrix3 <ValueType>::setTransform (const vector2_type & translation,
 template <class ValueType>
 void
 SFMatrix3 <ValueType>::setTransform (const vector2_type & translation,
-                                     const scalar_type & rotation,
+                                     const value_type & rotation,
                                      const vector2_type & scale,
-                                     const scalar_type & scaleOrientation)
+                                     const value_type & scaleOrientation)
 {
 	get () .set (translation, rotation, scale, scaleOrientation);
 	addEvent ();
@@ -333,9 +333,9 @@ SFMatrix3 <ValueType>::setTransform (const vector2_type & translation,
 template <class ValueType>
 void
 SFMatrix3 <ValueType>::setTransform (const vector2_type & translation,
-                                     const scalar_type & rotation,
+                                     const value_type & rotation,
                                      const vector2_type & scale,
-                                     const scalar_type & scaleOrientation,
+                                     const value_type & scaleOrientation,
                                      const vector2_type & center)
 {
 	get () .set (translation, rotation, scale, scaleOrientation, center);
@@ -346,7 +346,7 @@ template <class ValueType>
 void
 SFMatrix3 <ValueType>::getTransform (vector2_type & translation) const
 {
-	typename vector2_type::value_type t;
+	typename vector2_type::internal_type t;
 
 	getValue () .get (t);
 
@@ -356,9 +356,9 @@ SFMatrix3 <ValueType>::getTransform (vector2_type & translation) const
 template <class ValueType>
 void
 SFMatrix3 <ValueType>::getTransform (vector2_type & translation,
-                                     scalar_type & rotation) const
+                                     value_type & rotation) const
 {
-	typename vector2_type::value_type t;
+	typename vector2_type::internal_type t;
 
 	getValue () .get (t, rotation);
 
@@ -368,10 +368,10 @@ SFMatrix3 <ValueType>::getTransform (vector2_type & translation,
 template <class ValueType>
 void
 SFMatrix3 <ValueType>::getTransform (vector2_type & translation,
-                                     scalar_type & rotation,
+                                     value_type & rotation,
                                      vector2_type & scale) const
 {
-	typename vector2_type::value_type t, s;
+	typename vector2_type::internal_type t, s;
 
 	getValue () .get (t, rotation, s);
 
@@ -382,11 +382,11 @@ SFMatrix3 <ValueType>::getTransform (vector2_type & translation,
 template <class ValueType>
 void
 SFMatrix3 <ValueType>::getTransform (vector2_type & translation,
-                                     scalar_type & rotation,
+                                     value_type & rotation,
                                      vector2_type & scale,
-                                     scalar_type & scaleOrientation) const
+                                     value_type & scaleOrientation) const
 {
-	typename vector2_type::value_type t, s;
+	typename vector2_type::internal_type t, s;
 
 	getValue () .get (t, rotation, s, scaleOrientation);
 
@@ -397,12 +397,12 @@ SFMatrix3 <ValueType>::getTransform (vector2_type & translation,
 template <class ValueType>
 void
 SFMatrix3 <ValueType>::getTransform (vector2_type & translation,
-                                     scalar_type & rotation,
+                                     value_type & rotation,
                                      vector2_type & scale,
-                                     scalar_type & scaleOrientation,
+                                     value_type & scaleOrientation,
                                      vector2_type & center) const
 {
-	typename vector2_type::value_type t, s, c;
+	typename vector2_type::internal_type t, s, c;
 
 	getValue () .get (t, rotation, s, scaleOrientation, c);
 
@@ -499,7 +499,7 @@ inline
 void
 SFMatrix3 <ValueType>::toStream (std::ostream & ostream) const
 {
-	ostream << Generator::Precision <scalar_type> << getValue ();
+	ostream << Generator::Precision <value_type> << getValue ();
 }
 
 //extern template class X3DField <Matrix3d>;

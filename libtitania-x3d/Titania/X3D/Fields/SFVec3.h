@@ -66,7 +66,7 @@ class SFVec3 :
 {
 public:
 
-	typedef typename ValueType::value_type scalar_type;
+	typedef typename ValueType::value_type value_type;
 	typedef typename ValueType::size_type  size_type;
 
 	using X3DField <ValueType>::addInterest;
@@ -92,7 +92,7 @@ public:
 		X3DField <ValueType> (value)
 	{ }
 
-	SFVec3 (const scalar_type & x, const scalar_type & y, const scalar_type & z) :
+	SFVec3 (const value_type & x, const value_type & y, const value_type & z) :
 		X3DField <ValueType> (ValueType (x, y, z))
 	{ }
 
@@ -120,34 +120,34 @@ public:
 	///  @name Functions
 
 	void
-	setX (const scalar_type &);
+	setX (const value_type &);
 
-	scalar_type
+	value_type
 	getX () const;
 
 	void
-	setY (const scalar_type &);
+	setY (const value_type &);
 
-	scalar_type
+	value_type
 	getY () const;
 
 	void
-	setZ (const scalar_type &);
+	setZ (const value_type &);
 
-	scalar_type
+	value_type
 	getZ () const;
 
 	void
-	set1Value (const size_type &, const scalar_type &);
+	set1Value (const size_type &, const value_type &);
 
-	scalar_type
+	value_type
 	get1Value (const size_type &) const;
 
 	void
-	setValue (const scalar_type &, const scalar_type &, const scalar_type &);
+	setValue (const value_type &, const value_type &, const value_type &);
 
 	void
-	getValue (scalar_type &, scalar_type &, scalar_type &) const;
+	getValue (value_type &, value_type &, value_type &) const;
 
 	SFVec3 &
 	operator += (const SFVec3 &);
@@ -174,15 +174,15 @@ public:
 	multiply (const SFVec3 &) const;
 
 	SFVec3*
-	multiply (const scalar_type &) const;
+	multiply (const value_type &) const;
 
 	SFVec3*
 	divide (const SFVec3 &) const;
 
 	SFVec3*
-	divide (const scalar_type &) const;
+	divide (const value_type &) const;
 
-	scalar_type
+	value_type
 	dot (const SFVec3 &) const;
 
 	SFVec3*
@@ -191,7 +191,7 @@ public:
 	SFVec3*
 	normalize () const;
 
-	scalar_type
+	value_type
 	length () const;
 
 	///  @name Input operator.
@@ -226,7 +226,7 @@ throw (Error <NOT_SUPPORTED>)
 
 template <class ValueType>
 void
-SFVec3 <ValueType>::setX (const scalar_type & x)
+SFVec3 <ValueType>::setX (const value_type & x)
 {
 	get () .x (x);
 	addEvent ();
@@ -234,7 +234,7 @@ SFVec3 <ValueType>::setX (const scalar_type & x)
 
 template <class ValueType>
 inline
-typename SFVec3 <ValueType>::scalar_type
+typename SFVec3 <ValueType>::value_type
 SFVec3 <ValueType>::getX () const
 {
 	return getValue () .x ();
@@ -242,14 +242,14 @@ SFVec3 <ValueType>::getX () const
 
 template <class ValueType>
 void
-SFVec3 <ValueType>::setY (const scalar_type & y)
+SFVec3 <ValueType>::setY (const value_type & y)
 {
 	get () .y (y);
 	addEvent ();
 }
 
 template <class ValueType>
-typename SFVec3 <ValueType>::scalar_type
+typename SFVec3 <ValueType>::value_type
 SFVec3 <ValueType>::getY () const
 {
 	return getValue () .y ();
@@ -257,7 +257,7 @@ SFVec3 <ValueType>::getY () const
 
 template <class ValueType>
 void
-SFVec3 <ValueType>::setZ (const scalar_type & z)
+SFVec3 <ValueType>::setZ (const value_type & z)
 {
 	get () .z (z);
 	addEvent ();
@@ -265,7 +265,7 @@ SFVec3 <ValueType>::setZ (const scalar_type & z)
 
 template <class ValueType>
 inline
-typename SFVec3 <ValueType>::scalar_type
+typename SFVec3 <ValueType>::value_type
 SFVec3 <ValueType>::getZ () const
 {
 	return getValue () .z ();
@@ -273,7 +273,7 @@ SFVec3 <ValueType>::getZ () const
 
 template <class ValueType>
 void
-SFVec3 <ValueType>::set1Value (const size_type  & index, const scalar_type & value)
+SFVec3 <ValueType>::set1Value (const size_type  & index, const value_type & value)
 {
 	get () [index] = value;
 	addEvent ();
@@ -281,7 +281,7 @@ SFVec3 <ValueType>::set1Value (const size_type  & index, const scalar_type & val
 
 template <class ValueType>
 inline
-typename SFVec3 <ValueType>::scalar_type
+typename SFVec3 <ValueType>::value_type
 SFVec3 <ValueType>::get1Value (const size_type  & index) const
 {
 	return getValue () [index];
@@ -289,14 +289,14 @@ SFVec3 <ValueType>::get1Value (const size_type  & index) const
 
 template <class ValueType>
 void
-SFVec3 <ValueType>::setValue (const scalar_type & x, const scalar_type & y, const scalar_type & z)
+SFVec3 <ValueType>::setValue (const value_type & x, const value_type & y, const value_type & z)
 {
 	setValue (ValueType (x, y, z));
 }
 
 template <class ValueType>
 void
-SFVec3 <ValueType>::getValue (scalar_type & x, scalar_type & y, scalar_type & z) const
+SFVec3 <ValueType>::getValue (value_type & x, value_type & y, value_type & z) const
 {
 	x = getValue () .x ();
 	y = getValue () .y ();
@@ -374,7 +374,7 @@ SFVec3 <ValueType>::multiply (const SFVec3 & field) const
 template <class ValueType>
 inline
 SFVec3 <ValueType>*
-SFVec3 <ValueType>::multiply (const scalar_type & value) const
+SFVec3 <ValueType>::multiply (const value_type & value) const
 {
 	return new SFVec3 (getValue () * value);
 }
@@ -390,14 +390,14 @@ SFVec3 <ValueType>::divide (const SFVec3 & field) const
 template <class ValueType>
 inline
 SFVec3 <ValueType>*
-SFVec3 <ValueType>::divide (const scalar_type & value) const
+SFVec3 <ValueType>::divide (const value_type & value) const
 {
 	return new SFVec3 (getValue () / value);
 }
 
 template <class ValueType>
 inline
-typename SFVec3 <ValueType>::scalar_type
+typename SFVec3 <ValueType>::value_type
 SFVec3 <ValueType>::dot (const SFVec3 & field) const
 {
 	return math::dot (getValue (), field .getValue ());
@@ -421,7 +421,7 @@ SFVec3 <ValueType>::normalize () const
 
 template <class ValueType>
 inline
-typename SFVec3 <ValueType>::scalar_type
+typename SFVec3 <ValueType>::value_type
 SFVec3 <ValueType>::length () const
 {
 	return abs (getValue ());
@@ -451,7 +451,7 @@ inline
 void
 SFVec3 <ValueType>::toStream (std::ostream & ostream) const
 {
-	ostream << Generator::Precision <scalar_type> << getValue ();
+	ostream << Generator::Precision <value_type> << getValue ();
 }
 
 // Aritmetic operators.

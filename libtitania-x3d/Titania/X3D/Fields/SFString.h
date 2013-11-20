@@ -64,9 +64,9 @@ class SFString :
 {
 public:
 
-	typedef std::string::value_type char_type;
-	typedef value_type::value_type  scalar_type;
-	typedef value_type::size_type   size_type;
+	typedef std::string::value_type   char_type;
+	typedef internal_type::value_type value_type;
+	typedef internal_type::size_type  size_type;
 
 	using X3DField <String>::addInterest;
 	using X3DField <String>::operator =;

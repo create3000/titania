@@ -68,7 +68,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			if (not JS_ValueToBoolean (context, *vp, &value))
 				return JS_FALSE;
 
-			*(SFBool*) field = value;
+			*static_cast <SFBool*> (field) = value;
 
 			break;
 		}
@@ -82,7 +82,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			if (JS_InstanceOfError (context, value, jsSFColor::getClass ()))
 				return JS_FALSE;
 
-			*(SFColor*) field = *(SFColor*) JS_GetPrivate (context, value);
+			*static_cast <SFColor*> (field) = *(SFColor*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -96,7 +96,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			if (JS_InstanceOfError (context, value, jsSFColorRGBA::getClass ()))
 				return JS_FALSE;
 
-			*(SFColorRGBA*) field = *(SFColorRGBA*) JS_GetPrivate (context, value);
+			*static_cast <SFColorRGBA*> (field) = *(SFColorRGBA*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -107,7 +107,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			if (not JS_ValueToNumber (context, *vp, &value))
 				return JS_FALSE;
 
-			*(SFDouble*) field = value;
+			*static_cast <SFDouble*> (field) = value;
 
 			break;
 		}
@@ -118,7 +118,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			if (not JS_ValueToNumber (context, *vp, &value))
 				return JS_FALSE;
 
-			*(SFFloat*) field = value;
+			*static_cast <SFFloat*> (field) = value;
 
 			break;
 		}
@@ -129,7 +129,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			if (not JS_ValueToECMAInt32 (context, *vp, &value))
 				return JS_FALSE;
 
-			*(SFInt32*) field = value;
+			*static_cast <SFInt32*> (field) = value;
 
 			break;
 		}
@@ -143,7 +143,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			if (JS_InstanceOfError (context, value, jsSFImage::getClass ()))
 				return JS_FALSE;
 
-			*(SFImage*) field = *(SFImage*) JS_GetPrivate (context, value);
+			*static_cast <SFImage*> (field) = *(SFImage*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -157,7 +157,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			if (JS_InstanceOfError (context, value, jsSFMatrix3d::getClass ()))
 				return JS_FALSE;
 
-			*(SFMatrix3d*) field = *(SFMatrix3d*) JS_GetPrivate (context, value);
+			*static_cast <SFMatrix3d*> (field) = *(SFMatrix3d*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -171,7 +171,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			if (JS_InstanceOfError (context, value, jsSFMatrix3f::getClass ()))
 				return JS_FALSE;
 
-			*(SFMatrix3f*) field = *(SFMatrix3f*) JS_GetPrivate (context, value);
+			*static_cast <SFMatrix3f*> (field) = *(SFMatrix3f*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -185,7 +185,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			if (JS_InstanceOfError (context, value, jsSFMatrix4d::getClass ()))
 				return JS_FALSE;
 
-			*(SFMatrix4d*) field = *(SFMatrix4d*) JS_GetPrivate (context, value);
+			*static_cast <SFMatrix4d*> (field) = *(SFMatrix4d*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -199,7 +199,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			if (JS_InstanceOfError (context, value, jsSFMatrix4f::getClass ()))
 				return JS_FALSE;
 
-			*(SFMatrix4f*) field = *(SFMatrix4f*) JS_GetPrivate (context, value);
+			*static_cast <SFMatrix4f*> (field) = *(SFMatrix4f*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -215,10 +215,10 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 				if (JS_InstanceOfError (context, value, jsSFNode::getClass ()))
 					return JS_FALSE;
 
-				*(SFNode*) field = *(SFNode*) JS_GetPrivate (context, value);
+				*static_cast <SFNode*> (field) = *(SFNode*) JS_GetPrivate (context, value);
 			}
 			else
-				*(SFNode*) field = nullptr;
+				*static_cast <SFNode*> (field) = nullptr;
 
 			break;
 		}
@@ -232,13 +232,13 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			if (JS_InstanceOfError (context, value, jsSFRotation::getClass ()))
 				return JS_FALSE;
 
-			*(SFRotation*) field = *(SFRotation*) JS_GetPrivate (context, value);
+			*static_cast <SFRotation*> (field) = *(SFRotation*) JS_GetPrivate (context, value);
 
 			break;
 		}
 		case X3DConstants::SFString:
 		{
-			*(SFString*) field = JS_GetString (context, *vp);
+			*static_cast <SFString*> (field) = JS_GetString (context, *vp);
 
 			break;
 		}
@@ -249,7 +249,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			if (not JS_ValueToNumber (context, *vp, &value))
 				return JS_FALSE;
 
-			*(SFTime*) field = value;
+			*static_cast <SFTime*> (field) = value;
 
 			break;
 		}
@@ -263,7 +263,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			if (JS_InstanceOfError (context, value, jsSFVec2d::getClass ()))
 				return JS_FALSE;
 
-			*(SFVec2d*) field = *(SFVec2d*) JS_GetPrivate (context, value);
+			*static_cast <SFVec2d*> (field) = *(SFVec2d*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -277,7 +277,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			if (JS_InstanceOfError (context, value, jsSFVec2f::getClass ()))
 				return JS_FALSE;
 
-			*(SFVec2f*) field = *(SFVec2f*) JS_GetPrivate (context, value);
+			*static_cast <SFVec2f*> (field) = *(SFVec2f*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -291,7 +291,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			if (JS_InstanceOfError (context, value, jsSFVec3d::getClass ()))
 				return JS_FALSE;
 
-			*(SFVec3d*) field = *(SFVec3d*) JS_GetPrivate (context, value);
+			*static_cast <SFVec3d*> (field) = *(SFVec3d*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -305,7 +305,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			if (JS_InstanceOfError (context, value, jsSFVec3f::getClass ()))
 				return JS_FALSE;
 
-			*(SFVec3f*) field = *(SFVec3f*) JS_GetPrivate (context, value);
+			*static_cast <SFVec3f*> (field) = *(SFVec3f*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -319,7 +319,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			if (JS_InstanceOfError (context, value, jsSFVec4d::getClass ()))
 				return JS_FALSE;
 
-			*(SFVec4d*) field = *(SFVec4d*) JS_GetPrivate (context, value);
+			*static_cast <SFVec4d*> (field) = *(SFVec4d*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -333,7 +333,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			if (JS_InstanceOfError (context, value, jsSFVec4f::getClass ()))
 				return JS_FALSE;
 
-			*(SFVec4f*) field = *(SFVec4f*) JS_GetPrivate (context, value);
+			*static_cast <SFVec4f*> (field) = *(SFVec4f*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -347,7 +347,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			if (JS_InstanceOfError (context, value, jsMFBool::getClass ()))
 				return JS_FALSE;
 
-			*(MFBool*) field = *(MFBool*) JS_GetPrivate (context, value);
+			*static_cast <MFBool*> (field) = *(MFBool*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -361,7 +361,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			if (JS_InstanceOfError (context, value, jsMFColor::getClass ()))
 				return JS_FALSE;
 
-			*(MFColor*) field = *(MFColor*) JS_GetPrivate (context, value);
+			*static_cast <MFColor*> (field) = *(MFColor*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -375,7 +375,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			if (JS_InstanceOfError (context, value, jsMFColorRGBA::getClass ()))
 				return JS_FALSE;
 
-			*(MFColorRGBA*) field = *(MFColorRGBA*) JS_GetPrivate (context, value);
+			*static_cast <MFColorRGBA*> (field) = *(MFColorRGBA*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -389,7 +389,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			if (JS_InstanceOfError (context, value, jsMFDouble::getClass ()))
 				return JS_FALSE;
 
-			*(MFDouble*) field = *(MFDouble*) JS_GetPrivate (context, value);
+			*static_cast <MFDouble*> (field) = *(MFDouble*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -403,7 +403,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			if (JS_InstanceOfError (context, value, jsMFFloat::getClass ()))
 				return JS_FALSE;
 
-			*(MFFloat*) field = *(MFFloat*) JS_GetPrivate (context, value);
+			*static_cast <MFFloat*> (field) = *(MFFloat*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -417,7 +417,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			if (JS_InstanceOfError (context, value, jsMFImage::getClass ()))
 				return JS_FALSE;
 
-			*(MFImage*) field = *(MFImage*) JS_GetPrivate (context, value);
+			*static_cast <MFImage*> (field) = *(MFImage*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -431,7 +431,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			if (JS_InstanceOfError (context, value, jsMFInt32::getClass ()))
 				return JS_FALSE;
 
-			*(MFInt32*) field = *(MFInt32*) JS_GetPrivate (context, value);
+			*static_cast <MFInt32*> (field) = *(MFInt32*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -445,7 +445,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			if (JS_InstanceOfError (context, value, jsMFMatrix3d::getClass ()))
 				return JS_FALSE;
 
-			*(MFMatrix3d*) field = *(MFMatrix3d*) JS_GetPrivate (context, value);
+			*static_cast <MFMatrix3d*> (field) = *(MFMatrix3d*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -459,7 +459,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			if (JS_InstanceOfError (context, value, jsMFMatrix3f::getClass ()))
 				return JS_FALSE;
 
-			*(MFMatrix3f*) field = *(MFMatrix3f*) JS_GetPrivate (context, value);
+			*static_cast <MFMatrix3f*> (field) = *(MFMatrix3f*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -473,7 +473,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			if (JS_InstanceOfError (context, value, jsMFMatrix4d::getClass ()))
 				return JS_FALSE;
 
-			*(MFMatrix4d*) field = *(MFMatrix4d*) JS_GetPrivate (context, value);
+			*static_cast <MFMatrix4d*> (field) = *(MFMatrix4d*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -487,7 +487,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			if (JS_InstanceOfError (context, value, jsMFMatrix4f::getClass ()))
 				return JS_FALSE;
 
-			*(MFMatrix4f*) field = *(MFMatrix4f*) JS_GetPrivate (context, value);
+			*static_cast <MFMatrix4f*> (field) = *(MFMatrix4f*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -501,7 +501,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			if (JS_InstanceOfError (context, value, jsMFNode::getClass ()))
 				return JS_FALSE;
 
-			*(MFNode*) field = *(MFNode*) JS_GetPrivate (context, value);
+			*static_cast <MFNode*> (field) = *(MFNode*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -515,7 +515,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			if (JS_InstanceOfError (context, value, jsMFRotation::getClass ()))
 				return JS_FALSE;
 
-			*(MFRotation*) field = *(MFRotation*) JS_GetPrivate (context, value);
+			*static_cast <MFRotation*> (field) = *(MFRotation*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -529,7 +529,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			if (JS_InstanceOfError (context, value, jsMFString::getClass ()))
 				return JS_FALSE;
 
-			*(MFString*) field = *(MFString*) JS_GetPrivate (context, value);
+			*static_cast <MFString*> (field) = *(MFString*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -543,7 +543,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			if (JS_InstanceOfError (context, value, jsMFTime::getClass ()))
 				return JS_FALSE;
 
-			*(MFTime*) field = *(MFTime*) JS_GetPrivate (context, value);
+			*static_cast <MFTime*> (field) = *(MFTime*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -557,7 +557,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			if (JS_InstanceOfError (context, value, jsMFVec2d::getClass ()))
 				return JS_FALSE;
 
-			*(MFVec2d*) field = *(MFVec2d*) JS_GetPrivate (context, value);
+			*static_cast <MFVec2d*> (field) = *(MFVec2d*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -571,7 +571,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			if (JS_InstanceOfError (context, value, jsMFVec2f::getClass ()))
 				return JS_FALSE;
 
-			*(MFVec2f*) field = *(MFVec2f*) JS_GetPrivate (context, value);
+			*static_cast <MFVec2f*> (field) = *(MFVec2f*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -585,7 +585,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			if (JS_InstanceOfError (context, value, jsMFVec3d::getClass ()))
 				return JS_FALSE;
 
-			*(MFVec3d*) field = *(MFVec3d*) JS_GetPrivate (context, value);
+			*static_cast <MFVec3d*> (field) = *(MFVec3d*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -599,7 +599,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			if (JS_InstanceOfError (context, value, jsMFVec3f::getClass ()))
 				return JS_FALSE;
 
-			*(MFVec3f*) field = *(MFVec3f*) JS_GetPrivate (context, value);
+			*static_cast <MFVec3f*> (field) = *(MFVec3f*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -613,7 +613,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			if (JS_InstanceOfError (context, value, jsMFVec4d::getClass ()))
 				return JS_FALSE;
 
-			*(MFVec4d*) field = *(MFVec4d*) JS_GetPrivate (context, value);
+			*static_cast <MFVec4d*> (field) = *(MFVec4d*) JS_GetPrivate (context, value);
 
 			break;
 		}
@@ -627,7 +627,7 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 			if (JS_InstanceOfError (context, value, jsMFVec4f::getClass ()))
 				return JS_FALSE;
 
-			*(MFVec4f*) field = *(MFVec4f*) JS_GetPrivate (context, value);
+			*static_cast <MFVec4f*> (field) = *(MFVec4f*) JS_GetPrivate (context, value);
 
 			break;
 		}

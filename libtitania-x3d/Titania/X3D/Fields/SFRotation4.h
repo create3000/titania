@@ -67,7 +67,7 @@ class SFRotation4 :
 {
 public:
 
-	typedef typename ValueType::value_type            scalar_type;
+	typedef typename ValueType::value_type            value_type;
 	typedef SFVec3 <typename ValueType::vector3_type> vector3_type;
 	typedef typename ValueType::size_type             size_type;
 
@@ -84,9 +84,9 @@ public:
 	explicit
 	SFRotation4 (const ValueType &);
 
-	SFRotation4 (const scalar_type &, const scalar_type &, const scalar_type &, const scalar_type &);
+	SFRotation4 (const value_type &, const value_type &, const value_type &, const value_type &);
 
-	SFRotation4 (const vector3_type &, const scalar_type &);
+	SFRotation4 (const vector3_type &, const value_type &);
 
 	SFRotation4 (const vector3_type &, const vector3_type &);
 
@@ -110,21 +110,21 @@ public:
 	///  Functions
 
 	void
-	setX (const scalar_type &);
+	setX (const value_type &);
 
-	scalar_type
+	value_type
 	getX () const;
 
 	void
-	setY (const scalar_type &);
+	setY (const value_type &);
 
-	scalar_type
+	value_type
 	getY () const;
 
 	void
-	setZ (const scalar_type &);
+	setZ (const value_type &);
 
-	scalar_type
+	value_type
 	getZ () const;
 
 	void
@@ -134,22 +134,22 @@ public:
 	getAxis () const;
 
 	void
-	setAngle (const scalar_type &);
+	setAngle (const value_type &);
 
-	scalar_type
+	value_type
 	getAngle () const;
 
 	void
-	set1Value (const size_type &, const scalar_type &);
+	set1Value (const size_type &, const value_type &);
 
-	scalar_type
+	value_type
 	get1Value (const size_type &) const;
 
 	void
-	setValue (const scalar_type &, const scalar_type &, const scalar_type &, const scalar_type &);
+	setValue (const value_type &, const value_type &, const value_type &, const value_type &);
 
 	void
-	getValue (scalar_type &, scalar_type &, scalar_type &, scalar_type &) const;
+	getValue (value_type &, value_type &, value_type &, value_type &) const;
 
 	SFRotation4 &
 	operator *= (const SFRotation4 &);
@@ -167,7 +167,7 @@ public:
 	multVec (const vector3_type &) const;
 
 	SFRotation4*
-	slerp (const SFRotation4 &, const scalar_type &) const;
+	slerp (const SFRotation4 &, const value_type &) const;
 
 	///  @name Input operator.
 	virtual
@@ -206,12 +206,12 @@ SFRotation4 <ValueType>::SFRotation4 (const ValueType & value) :
 { }
 
 template <class ValueType>
-SFRotation4 <ValueType>::SFRotation4 (const scalar_type & x, const scalar_type & y, const scalar_type & z, const scalar_type & angle) :
+SFRotation4 <ValueType>::SFRotation4 (const value_type & x, const value_type & y, const value_type & z, const value_type & angle) :
 	X3DField <ValueType> (ValueType (x, y, z, angle))
 { }
 
 template <class ValueType>
-SFRotation4 <ValueType>::SFRotation4 (const vector3_type & vector, const scalar_type & angle) :
+SFRotation4 <ValueType>::SFRotation4 (const vector3_type & vector, const value_type & angle) :
 	X3DField <ValueType> (ValueType (vector .getValue (), angle))
 { }
 
@@ -231,7 +231,7 @@ throw (Error <NOT_SUPPORTED>)
 
 template <class ValueType>
 void
-SFRotation4 <ValueType>::setX (const scalar_type & x)
+SFRotation4 <ValueType>::setX (const value_type & x)
 {
 	get () .x (x);
 	addEvent ();
@@ -239,7 +239,7 @@ SFRotation4 <ValueType>::setX (const scalar_type & x)
 
 template <class ValueType>
 inline
-typename SFRotation4 <ValueType>::scalar_type
+typename SFRotation4 <ValueType>::value_type
 SFRotation4 <ValueType>::getX () const
 {
 	return getValue () .x ();
@@ -247,7 +247,7 @@ SFRotation4 <ValueType>::getX () const
 
 template <class ValueType>
 void
-SFRotation4 <ValueType>::setY (const scalar_type & y)
+SFRotation4 <ValueType>::setY (const value_type & y)
 {
 	get () .y (y);
 	addEvent ();
@@ -255,7 +255,7 @@ SFRotation4 <ValueType>::setY (const scalar_type & y)
 
 template <class ValueType>
 inline
-typename SFRotation4 <ValueType>::scalar_type
+typename SFRotation4 <ValueType>::value_type
 SFRotation4 <ValueType>::getY () const
 {
 	return getValue () .y ();
@@ -263,7 +263,7 @@ SFRotation4 <ValueType>::getY () const
 
 template <class ValueType>
 void
-SFRotation4 <ValueType>::setZ (const scalar_type & z)
+SFRotation4 <ValueType>::setZ (const value_type & z)
 {
 	get () .z (z);
 	addEvent ();
@@ -271,7 +271,7 @@ SFRotation4 <ValueType>::setZ (const scalar_type & z)
 
 template <class ValueType>
 inline
-typename SFRotation4 <ValueType>::scalar_type
+typename SFRotation4 <ValueType>::value_type
 SFRotation4 <ValueType>::getZ () const
 {
 	return getValue () .z ();
@@ -295,7 +295,7 @@ SFRotation4 <ValueType>::getAxis () const
 
 template <class ValueType>
 void
-SFRotation4 <ValueType>::setAngle (const scalar_type & angle)
+SFRotation4 <ValueType>::setAngle (const value_type & angle)
 {
 	get () .angle (angle);
 	addEvent ();
@@ -303,7 +303,7 @@ SFRotation4 <ValueType>::setAngle (const scalar_type & angle)
 
 template <class ValueType>
 inline
-typename SFRotation4 <ValueType>::scalar_type
+typename SFRotation4 <ValueType>::value_type
 SFRotation4 <ValueType>::getAngle () const
 {
 	return getValue () .angle ();
@@ -311,7 +311,7 @@ SFRotation4 <ValueType>::getAngle () const
 
 template <class ValueType>
 void
-SFRotation4 <ValueType>::set1Value (const size_type & index, const scalar_type & value)
+SFRotation4 <ValueType>::set1Value (const size_type & index, const value_type & value)
 {
 	get () [index] = value;
 	addEvent ();
@@ -319,7 +319,7 @@ SFRotation4 <ValueType>::set1Value (const size_type & index, const scalar_type &
 
 template <class ValueType>
 inline
-typename SFRotation4 <ValueType>::scalar_type
+typename SFRotation4 <ValueType>::value_type
 SFRotation4 <ValueType>::get1Value (const size_type & index) const
 {
 	return getValue () [index];
@@ -328,7 +328,7 @@ SFRotation4 <ValueType>::get1Value (const size_type & index) const
 template <class ValueType>
 inline
 void
-SFRotation4 <ValueType>::setValue (const scalar_type & x, const scalar_type & y, const scalar_type & z, const scalar_type & angle)
+SFRotation4 <ValueType>::setValue (const value_type & x, const value_type & y, const value_type & z, const value_type & angle)
 {
 	setValue (ValueType (x, y, z, angle));
 }
@@ -336,7 +336,7 @@ SFRotation4 <ValueType>::setValue (const scalar_type & x, const scalar_type & y,
 template <class ValueType>
 inline
 void
-SFRotation4 <ValueType>::getValue (scalar_type & x, scalar_type & y, scalar_type & z, scalar_type & angle) const
+SFRotation4 <ValueType>::getValue (value_type & x, value_type & y, value_type & z, value_type & angle) const
 {
 	getValue () .get (x, y, z, angle);
 }
@@ -386,7 +386,7 @@ SFRotation4 <ValueType>::multVec (const vector3_type &value) const
 template <class ValueType>
 inline
 SFRotation4 <ValueType>*
-SFRotation4 <ValueType>::slerp (const SFRotation4 & dest, const scalar_type & t) const
+SFRotation4 <ValueType>::slerp (const SFRotation4 & dest, const value_type & t) const
 {
 	return new SFRotation4 (math::slerp (getValue (), dest .getValue (), t));
 }
@@ -415,7 +415,7 @@ inline
 void
 SFRotation4 <ValueType>::toStream (std::ostream & ostream) const
 {
-	ostream << Generator::Precision <scalar_type> << getValue ();
+	ostream << Generator::Precision <value_type> << getValue ();
 }
 
 // Aritmetic operators.
@@ -423,7 +423,7 @@ SFRotation4 <ValueType>::toStream (std::ostream & ostream) const
 //@{
 template <class ValueType>
 inline
-typename SFRotation4 <ValueType>::value_type
+ValueType
 operator ~ (const SFRotation4 <ValueType> & rotation)
 {
 	return ~rotation .getValue ();

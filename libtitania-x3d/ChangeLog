@@ -1,5 +1,35 @@
 2013-11-20  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* SFVec4.h:
+	* MFNode.h:
+	* SFVec3.h:
+	* SFTime.h:
+	* SFVec2.h:
+	* Numbers.h:
+	* X3DField.h:
+	* SFImage.h:
+	* SFColor.h:
+	* SFString.h:
+	* SFTime.cpp:
+	* X3DScalar.h:
+	* X3DSFNode.h:
+	* SFColor.cpp:
+	* SFMatrix3.h:
+	* SFMatrix4.h:
+	* X3DScalar.cpp:
+	* SFColorRGBA.h:
+	* SFRotation4.h:
+	* X3DArrayField.h:
+	* X3DBaseNode.cpp:
+	* SFColorRGBA.cpp:
+	* Selection.h:
+	* Selection.cpp:
+	* jsfield.cpp:
+	* jsX3DArrayField.h:
+	* jsSFMatrix4.h: 
+
+2013-11-20  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3D.h:
 	* GoldenGate.h:
 	* GoldenGate.cpp: 

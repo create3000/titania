@@ -93,7 +93,7 @@ public:
 		ArrayField (initializer_list)
 	{ }
 
-	MFNode (std::initializer_list <const typename SFNode::value_type> initializer_list) :
+	MFNode (std::initializer_list <const typename SFNode::internal_type> initializer_list) :
 		ArrayField (initializer_list)
 	{ }
 

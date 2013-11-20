@@ -5,13 +5,18 @@ META "title" "Scripting test"
 DEF Script Script {
   field   SFVec3f vector 0 0 0
   field   SFNode  node Transform { }
+  field   SFNode  node2 NULL
 
   url "vrmlscript:
 function initialize ()
 {
 	print (node);
 	
-	node = null;
+	node2 = node;
+
+	print (node2);
+
+	node  = null;
 	
 	print (node == null);
 }

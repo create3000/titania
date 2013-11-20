@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -73,96 +73,96 @@ SFColorRGBA::SFColorRGBA (const Color4f & value) :
 	X3DField <Color4f> (value)
 { }
 
-SFColorRGBA::SFColorRGBA (const scalar_type & r, const scalar_type & g, const scalar_type & b, const scalar_type & a) :
+SFColorRGBA::SFColorRGBA (const value_type & r, const value_type & g, const value_type & b, const value_type & a) :
 	X3DField <Color4f> (Color4f (r, g, b, a))
 { }
 
 void
-SFColorRGBA::setR (const scalar_type & r)
+SFColorRGBA::setR (const value_type & r)
 {
 	get () .r (r);
 	addEvent ();
 }
 
-typename SFColorRGBA::scalar_type
+typename SFColorRGBA::value_type
 SFColorRGBA::getR () const
 {
 	return getValue () .r ();
 }
 
 void
-SFColorRGBA::setG (const scalar_type & g)
+SFColorRGBA::setG (const value_type & g)
 {
 	get () .g (g);
 	addEvent ();
 }
 
-typename SFColorRGBA::scalar_type
+typename SFColorRGBA::value_type
 SFColorRGBA::getG () const
 {
 	return getValue () .g ();
 }
 
 void
-SFColorRGBA::setB (const scalar_type & b)
+SFColorRGBA::setB (const value_type & b)
 {
 	get () .b (b);
 	addEvent ();
 }
 
-typename SFColorRGBA::scalar_type
+typename SFColorRGBA::value_type
 SFColorRGBA::getB () const
 {
 	return getValue () .b ();
 }
 
 void
-SFColorRGBA::setA (const scalar_type & a)
+SFColorRGBA::setA (const value_type & a)
 {
 	get () .a (a);
 	addEvent ();
 }
 
-typename SFColorRGBA::scalar_type
+typename SFColorRGBA::value_type
 SFColorRGBA::getA () const
 {
 	return getValue () .a ();
 }
 
 void
-SFColorRGBA::set1Value (const size_type & index, const scalar_type & value)
+SFColorRGBA::set1Value (const size_type & index, const value_type & value)
 {
-	get () [index] = math::clamp <scalar_type> (value, 0, 1);
+	get () [index] = math::clamp <value_type> (value, 0, 1);
 	addEvent ();
 }
 
-typename SFColorRGBA::scalar_type
+typename SFColorRGBA::value_type
 SFColorRGBA::get1Value (const size_type & index) const
 {
 	return getValue () [index];
 }
 
 void
-SFColorRGBA::setValue (const scalar_type & r, const scalar_type & g, const scalar_type & b, const scalar_type & a)
+SFColorRGBA::setValue (const value_type & r, const value_type & g, const value_type & b, const value_type & a)
 {
 	setValue (Color4f (r, g, b, a));
 }
 
 void
-SFColorRGBA::getValue (scalar_type & r, scalar_type & g, scalar_type & b, scalar_type & a) const
+SFColorRGBA::getValue (value_type & r, value_type & g, value_type & b, value_type & a) const
 {
 	getValue () .get (r, g, b, a);
 }
 
 void
-SFColorRGBA::setHSV (const scalar_type  & h, const scalar_type  & s, const scalar_type  & v)
+SFColorRGBA::setHSV (const value_type  & h, const value_type  & s, const value_type  & v)
 {
 	get () .setHSV (h, s, v);
 	addEvent ();
 }
 
 void
-SFColorRGBA::getHSV (scalar_type & h, scalar_type & s, scalar_type & v) const
+SFColorRGBA::getHSV (value_type & h, value_type & s, value_type & v) const
 {
 	getValue () .getHSV (h, s, v);
 }
@@ -203,7 +203,7 @@ throw (Error <INVALID_X3D>,
 void
 SFColorRGBA::toStream (std::ostream & ostream) const
 {
-	ostream << Generator::Precision <scalar_type> << getValue ();
+	ostream << Generator::Precision <value_type> << getValue ();
 }
 
 } // X3D

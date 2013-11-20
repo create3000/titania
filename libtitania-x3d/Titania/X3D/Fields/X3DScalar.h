@@ -58,9 +58,9 @@ namespace titania {
 namespace X3D {
 
 extern template class X3DField <bool>;
-extern template class X3DField <Double>;
-extern template class X3DField <Float>;
-extern template class X3DField <Int32>;
+extern template class X3DField <double>;
+extern template class X3DField <float>;
+extern template class X3DField <int32_t>;
 
 template <class ValueType>
 class X3DScalar :
@@ -68,7 +68,7 @@ class X3DScalar :
 {
 public:
 
-	typedef ValueType scalar_type;
+	typedef ValueType value_type;
 
 	using X3DField <ValueType>::addInterest;
 	using X3DField <ValueType>::operator =;
@@ -140,7 +140,7 @@ throw (Error <INVALID_X3D>,
 
 template <>
 void
-X3DScalar <Double>::fromStream (std::istream &)
+X3DScalar <double>::fromStream (std::istream &)
 throw (Error <INVALID_X3D>,
        Error <NOT_SUPPORTED>,
        Error <INVALID_OPERATION_TIMING>,
@@ -148,7 +148,7 @@ throw (Error <INVALID_X3D>,
 
 template <>
 void
-X3DScalar <Float>::fromStream (std::istream &)
+X3DScalar <float>::fromStream (std::istream &)
 throw (Error <INVALID_X3D>,
        Error <NOT_SUPPORTED>,
        Error <INVALID_OPERATION_TIMING>,
@@ -156,7 +156,7 @@ throw (Error <INVALID_X3D>,
 
 template <>
 void
-X3DScalar <Int32>::fromStream (std::istream &)
+X3DScalar <int32_t>::fromStream (std::istream &)
 throw (Error <INVALID_X3D>,
        Error <NOT_SUPPORTED>,
        Error <INVALID_OPERATION_TIMING>,
@@ -168,25 +168,25 @@ X3DScalar <bool>::toStream (std::ostream &) const;
 
 template <>
 void
-X3DScalar <Double>::toStream (std::ostream &) const;
+X3DScalar <double>::toStream (std::ostream &) const;
 
 template <>
 void
-X3DScalar <Float>::toStream (std::ostream &) const;
+X3DScalar <float>::toStream (std::ostream &) const;
 
 template <>
 void
-X3DScalar <Int32>::toStream (std::ostream &) const;
+X3DScalar <int32_t>::toStream (std::ostream &) const;
 
 extern template class X3DScalar <bool>;
-extern template class X3DScalar <Double>;
-extern template class X3DScalar <Float>;
-extern template class X3DScalar <Int32>;
+extern template class X3DScalar <double>;
+extern template class X3DScalar <float>;
+extern template class X3DScalar <int32_t>;
 
-typedef X3DScalar <bool>   SFBool;
-typedef X3DScalar <Double> SFDouble;
-typedef X3DScalar <Float>  SFFloat;
-typedef X3DScalar <Int32>  SFInt32;
+typedef X3DScalar <bool>    SFBool;
+typedef X3DScalar <double>  SFDouble;
+typedef X3DScalar <float>   SFFloat;
+typedef X3DScalar <int32_t> SFInt32;
 
 } // X3D
 } // titania

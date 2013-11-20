@@ -64,8 +64,8 @@ class SFImage :
 {
 public:
 
-	typedef Image::array_type::scalar_type scalar_type;
-	typedef Image::size_type               size_type;
+	typedef Image::array_type::value_type value_type;
+	typedef Image::size_type              size_type;
 
 	using X3DField <Image>::addInterest;
 	using X3DField <Image>::setValue;

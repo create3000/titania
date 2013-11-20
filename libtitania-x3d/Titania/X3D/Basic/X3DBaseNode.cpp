@@ -245,13 +245,13 @@ throw (Error <INVALID_NAME>,
 void
 X3DBaseNode::replace (X3DBaseNode* const node, const std::set <const X3DFieldDefinition*> & exclude)
 {
-	std::vector <SFNode*> parents;
+	std::vector <X3DFieldDefinition*> parents;
 
 	for (auto & parent : node -> getParents ())
 	{
-		auto sfnode = dynamic_cast <SFNode*> (parent);
+		auto sfnode = dynamic_cast <X3DFieldDefinition*> (parent);
 
-		if (sfnode)
+		if (sfnode and sfnode -> getTypeName () == "SFNode")
 		{
 			if (exclude .find (sfnode) == exclude .end ())
 			{
@@ -273,7 +273,7 @@ X3DBaseNode::replace (X3DBaseNode* const node, const std::set <const X3DFieldDef
 
 	for (auto & parent : parents)
 	{
-		parent -> set (this);
+		parent -> write (SFNode (this));
 		parent -> notify ();
 	}
 }

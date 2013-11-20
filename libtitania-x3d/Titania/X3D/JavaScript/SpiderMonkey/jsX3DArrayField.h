@@ -65,9 +65,9 @@ class jsX3DArrayField :
 {
 public:
 
-	typedef Type                            value_type;
-	typedef FieldType                       field_type;
-	typedef typename FieldType::scalar_type field_value_type;
+	typedef Type                           value_type;
+	typedef FieldType                      field_type;
+	typedef typename FieldType::value_type field_value_type;
 
 	static
 	void
