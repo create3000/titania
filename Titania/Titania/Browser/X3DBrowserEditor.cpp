@@ -577,7 +577,7 @@ X3DBrowserEditor::removeNodeFromScene (const X3D::X3DSFNode <X3D::Scene> & scene
 
 	children .erase (node);
 
-	// Remove scene nodes
+	// Filter out scene nodes
 
 	X3D::traverse (scene -> getRootNodes (), [&children] (X3D::SFNode & node)
 	               {
@@ -810,7 +810,7 @@ X3DBrowserEditor::removePrototypes (X3D::X3DExecutionContext* const executionCon
 	                  return true;
 	               });
 	
-	// Remove proto declaration used in scene
+	// Filter out proto declaration used in scene
 
 	X3D::traverse (executionContext -> getRootNodes (), [&protoDeclarations] (X3D::SFNode & child)
 	               {

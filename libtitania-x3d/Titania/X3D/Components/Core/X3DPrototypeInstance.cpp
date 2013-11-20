@@ -215,7 +215,7 @@ X3DPrototypeInstance::saveState ()
 	                  return true;
 						});
 
-	// Remove scene nodes
+	// Filter out scene nodes
 
 	X3D::traverse (getScene () -> getRootNodes (), [&children] (X3D::SFNode & node)
 	               {
