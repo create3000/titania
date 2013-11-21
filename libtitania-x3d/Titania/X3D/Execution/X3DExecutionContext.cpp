@@ -634,19 +634,19 @@ throw (Error <INVALID_NODE>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	auto fields = getRouteId (sourceNode, sourceFieldId, destinationNode, destinationFieldId);
+	auto routeId = getRouteId (sourceNode, sourceFieldId, destinationNode, destinationFieldId);
 
 	try
 	{
 		// Silently return if route already exists.
 
-		return routes .rfind (fields);
+		return routes .rfind (routeId);
 	}
 	catch (const std::out_of_range &)
 	{
 		// Add route.
 
-		routes .push_back (fields, new Route (this, sourceNode, fields .first, destinationNode, fields .second));
+		routes .push_back (routeId, new Route (this, sourceNode, routeId .first, destinationNode, routeId .second));
 		routes .back () .isTainted (true);
 		routes .back () .addParent (this);
 

@@ -345,17 +345,17 @@ X3DTimeDependentNode::removeTimeouts ()
 void
 X3DTimeDependentNode::saveState ()
 {
-	wasActive = isActive ();
-	
-	if (isActive ())
-		stopTime () = getCurrentTime ();
+	wasActive = isActive () and not isPaused ();
+
+	if (wasActive)
+		pauseTime () = getCurrentTime ();
 }
 
 void
 X3DTimeDependentNode::restoreState ()
 {
 	if (wasActive)
-		startTime () = getCurrentTime ();
+		resumeTime () = getCurrentTime ();
 }
 
 // Destruction

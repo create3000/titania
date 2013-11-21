@@ -2360,6 +2360,7 @@
     <None Include="Tests\NURBS\NurbsTrimmedSurface\TrimmingContourExample.x3dv" />
     <None Include="Tests\NURBS\NurbsPatchSurface\Rectangle2D.x3dv" />
     <None Include="Tests\Handles\Inline.wrl" />
+    <None Include="Tests\Scripting\Route.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

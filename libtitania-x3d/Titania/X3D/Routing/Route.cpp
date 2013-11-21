@@ -53,8 +53,6 @@
 #include "../Bits/Error.h"
 #include "../Execution/X3DExecutionContext.h"
 
-#include <iostream>
-
 namespace titania {
 namespace X3D {
 
@@ -62,19 +60,22 @@ const std::string Route::componentName  = "Browser";
 const std::string Route::typeName       = "Route";
 const std::string Route::containerField = "route";
 
+const std::string Route::emptyString;
+
 Route::Route (X3DExecutionContext* const executionContext,
-              const SFNode & _sourceNode,      X3DFieldDefinition* const sourceField,
-              const SFNode & _destinationNode, X3DFieldDefinition* const destinationField) :
+              const SFNode & sourceNode,      X3DFieldDefinition* const sourceField,
+              const SFNode & destinationNode, X3DFieldDefinition* const destinationField) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	      sourceNode (_sourceNode),                                         // SFNode   [ ] sourceNode         NULL
-	 destinationNode (_destinationNode),                                    // SFNode   [ ] destinationNode    NULL
+	      sourceNode (sourceNode),
+	 destinationNode (destinationNode),
 	     sourceField (sourceField),
 	destinationField (destinationField),
 	       connected (false)
 {
-	addChildren (sourceNode, destinationNode);
+	sourceNode      -> shutdown () .addInterest (this, &Route::remove);
+	destinationNode -> shutdown () .addInterest (this, &Route::remove);
 
-	setup ();
+	connect ();
 }
 
 Route*
@@ -109,26 +110,13 @@ throw (Error <INVALID_NAME>,
 	}
 }
 
-void
-Route::initialize ()
-{
-	X3DBaseNode::initialize ();
-	connect ();
-}
-
-bool
-Route::isConnected ()
-{
-	return connected;
-}
-
 RouteId
 Route::getId () const
 {
 	return std::make_pair (sourceField, destinationField);
 }
 
-const SFNode &
+SFNode
 Route::getSourceNode () const
 {
 	return sourceNode;
@@ -137,10 +125,13 @@ Route::getSourceNode () const
 const std::string &
 Route::getSourceField () const
 {
-	return sourceField -> getName ();
+	if (connected)
+		return sourceField -> getName ();
+
+	return emptyString;
 }
 
-const SFNode &
+SFNode
 Route::getDestinationNode () const
 {
 	return destinationNode;
@@ -149,20 +140,23 @@ Route::getDestinationNode () const
 const std::string &
 Route::getDestinationField () const
 {
-	return destinationField -> getName ();
+	if (connected)
+		return destinationField -> getName ();
+
+	return emptyString;
 }
 
 void
 Route::connect ()
 {
-	if (not connected)
-	{
-		sourceField -> addInterest (destinationField);
-		sourceField -> addOutputRoute (this);
-		destinationField -> addInputRoute  (this);
+	if (connected)
+		return;
 
-		connected = true;
-	}
+	sourceField -> addInterest (destinationField);
+	sourceField -> addOutputRoute (this);
+	destinationField -> addInputRoute  (this);
+
+	connected = true;
 }
 
 void
@@ -173,6 +167,12 @@ Route::disconnect ()
 		sourceField -> removeInterest (destinationField);
 		sourceField -> removeOutputRoute (this);
 		destinationField -> removeInputRoute  (this);
+
+		sourceNode      = nullptr;
+		destinationNode = nullptr;
+
+		sourceField      = nullptr;
+		destinationField = nullptr;
 
 		connected = false;
 	}
@@ -242,9 +242,6 @@ void
 Route::dispose ()
 {
 	disconnect ();
-
-	sourceNode      .dispose ();
-	destinationNode .dispose ();
 
 	X3DBaseNode::dispose ();
 }

@@ -1,0 +1,50 @@
+#VRML V2.0 utf8
+
+Transform {
+  translation -2 0 0
+  children [
+    DEF Touch TouchSensor { }
+    Shape {
+      appearance Appearance {
+        material Material { }
+      }
+      geometry Box { }
+    }
+  ]
+}
+
+DEF Debug Script {
+	eventIn SFTime set_time
+	eventIn SFVec3f set_translation
+	field SFNode self USE Debug
+
+	url "vrmlscript:
+var route;
+
+function initialize ()
+{
+	var transform = Browser .currentScene .createNode ('Transform');
+
+	route = Browser .currentScene .addRoute (transform, 'translation', self, 'set_translation');
+	
+	print (route .sourceNode);
+	print (route .sourceField);
+	print (route .destinationNode);
+	print (route .destinationField);
+}
+
+function set_time (value)
+{
+	print (route .sourceNode);
+	print (route .sourceField);
+	print (route .destinationNode);
+	print (route .destinationField);	
+
+	Browser .currentScene .deleteRoute (route);
+}
+"
+}
+
+# 0
+
+ROUTE Touch.touchTime TO Debug.set_time

@@ -966,16 +966,9 @@ X3DBaseNode::toStreamUserDefinedField (std::ostream & ostream, X3DFieldDefinitio
 void
 X3DBaseNode::dispose ()
 {
-	//	try
-	//	{
-	//		__LOG__ << getTypeName () << std::endl;
-	//	}
-	//	catch (...)
-	//	{ }
+	shutdown () .processInterests ();
 
 	X3DChildObject::dispose ();
-
-	shutdownOutput .processInterests ();
 
 	removeEvents ();
 

@@ -103,20 +103,21 @@ public:
 	///  @name Tests
 
 	bool
-	isConnected ();
+	isConnected ()
+	{ return connected; }
 
 	///  @name Member access
 
 	RouteId
 	getId () const;
 
-	const SFNode &
+	SFNode
 	getSourceNode () const;
 
 	const std::string &
 	getSourceField () const;
 
-	const SFNode &
+	SFNode
 	getDestinationNode () const;
 
 	const std::string &
@@ -151,10 +152,6 @@ private:
 	Route*
 	create (X3DExecutionContext* const) const final;
 
-	virtual
-	void
-	initialize () final;
-
 	///  @name Operations
 
 	void
@@ -165,14 +162,16 @@ private:
 	static const std::string componentName;
 	static const std::string typeName;
 	static const std::string containerField;
+	
+	static const std::string emptyString;
 
 	///  @name Members
 
-	SFNode sourceNode;
-	SFNode destinationNode;
+	X3DBaseNode* sourceNode;
+	X3DBaseNode* destinationNode;
 
-	X3DFieldDefinition* const sourceField;
-	X3DFieldDefinition* const destinationField;
+	X3DFieldDefinition* sourceField;
+	X3DFieldDefinition* destinationField;
 
 	bool connected;
 
