@@ -329,8 +329,8 @@ X3DBaseNode::addField (const AccessType accessType, const std::string & name, X3
 	field .setName (name);
 	field .setAliasName (name);
 
-	fieldDefinitions .push_back (&field);
-	fields .insert (std::make_pair (name, &field));
+	fieldDefinitions .emplace_back (&field);
+	fields .emplace (name, &field);
 }
 
 void
@@ -360,7 +360,7 @@ X3DBaseNode::addField (const std::string & name, const std::string & field)
 
 	if (iter not_eq fields .end ())
 	{
-		fieldAliases .insert (std::make_pair (name, field));
+		fieldAliases .emplace (name, field);
 		iter -> second -> setAliasName (name);
 	}
 }
@@ -453,7 +453,7 @@ X3DBaseNode::getInitializeableFields (const bool all) const
 				continue;
 		}
 
-		changedFields .push_back (field);
+		changedFields .emplace_back (field);
 	}
 
 	return changedFields;

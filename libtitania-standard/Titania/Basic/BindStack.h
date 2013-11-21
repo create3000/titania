@@ -181,15 +181,15 @@ private:
 	void
 	push_front (const Type & value)
 	{
-		list .push_front (value);
-		map .insert ({ std::make_pair (value, list .begin ()) });
+		list .emplace_front (value);
+		map .emplace (value, list .begin ());
 	}
 
 	void
 	push_back (const Type & value)
 	{
-		list .push_back (value);
-		map .insert ({ std::make_pair (value, list .begin ()) });
+		list .emplace_back (value);
+		map .emplace (value, list .begin ());
 	}
 
 	void
@@ -197,7 +197,7 @@ private:
 	{
 		list .erase (list_iter);
 
-		list .push_front (value);
+		list .emplace_front (value);
 		list_iter = list .begin ();
 	}
 

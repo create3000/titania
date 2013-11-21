@@ -72,6 +72,8 @@ public:
 	using X3DChildObject::addInterest;
 	using X3DChildObject::removeInterest;
 
+	///  @name Construction
+
 	virtual
 	X3DFieldDefinition*
 	clone () const
@@ -94,6 +96,8 @@ public:
 	X3DFieldDefinition &
 	operator = (const X3DFieldDefinition &);
 
+	///  @name 
+
 	virtual
 	bool
 	isArray () const
@@ -107,18 +111,7 @@ public:
 	bool
 	hasRoots (ChildObjectSet &) override;
 
-	void
-	addReference (X3DFieldDefinition* const);
-
-	void
-	removeReference (X3DFieldDefinition* const);
-
-	void
-	updateReferences ();
-
-	const FieldDefinitionSet &
-	getReferences () const
-	{ return references; }
+	///  @name Member access
 
 	void
 	setAliasName (const std::string & value)
@@ -158,9 +151,26 @@ public:
 	bool
 	operator not_eq (const X3DFieldDefinition &) const = 0;
 
+	///  @name Reference handling
+
+	void
+	addReference (X3DFieldDefinition* const);
+
+	void
+	removeReference (X3DFieldDefinition* const);
+
+	void
+	updateReferences ();
+
+	const FieldDefinitionSet &
+	getReferences () const
+	{ return references; }
+
+	///  @name Route handling
+
 	void
 	addInputRoute (Route* const route)
-	{ inputRoutes .insert (route); }
+	{ inputRoutes .emplace (route); }
 
 	void
 	removeInputRoute (Route* const route)
@@ -172,7 +182,7 @@ public:
 
 	void
 	addOutputRoute (Route* const route)
-	{ outputRoutes .insert (route); }
+	{ outputRoutes .emplace (route); }
 
 	void
 	removeOutputRoute (Route* const route)
@@ -182,25 +192,31 @@ public:
 	getOutputRoutes () const
 	{ return outputRoutes; }
 
-	void
-	addInterest (X3DFieldDefinition* const interest)
-	{ interests .insert (interest); }
+	///  @name Interest handling
 
 	void
-	addInterest (X3DFieldDefinition & interest)
-	{ interests .insert (&interest); }
+	addInterest (X3DFieldDefinition* const);
 
 	void
-	removeInterest (X3DFieldDefinition* const interest)
-	{ interests .erase (interest); }
+	addInterest (X3DFieldDefinition &);
+	
+	void
+	removeInterest (X3DFieldDefinition* const);
 
 	void
-	removeInterest (X3DFieldDefinition & interest)
-	{ interests .erase (&interest); }
+	removeInterest (X3DFieldDefinition &);
+	
+	const FieldDefinitionSet &
+	getInterests () const
+	{ return outputInterests; }
+
+	///  @name Event handling
 
 	virtual
 	void
 	processEvent (const EventPtr &) override;
+
+	///  @name Destruction
 
 	virtual
 	void
@@ -212,13 +228,27 @@ public:
 
 protected:
 
+	///  @name Construction
+
 	X3DFieldDefinition ();
 
 
 private:
 
+	///  @name Reference handling
+
 	void
 	updateReference (X3DFieldDefinition* const);
+
+	///  @name Interest handling
+
+	void
+	addInputInterest (X3DFieldDefinition* const);
+
+	void
+	removeInputInterest (X3DFieldDefinition* const);
+
+	///  @name Members
 
 	FieldDefinitionSet references;
 
@@ -227,7 +257,8 @@ private:
 
 	RouteSet           inputRoutes;
 	RouteSet           outputRoutes;
-	FieldDefinitionSet interests;
+	FieldDefinitionSet inputInterests;
+	FieldDefinitionSet outputInterests;
 
 };
 

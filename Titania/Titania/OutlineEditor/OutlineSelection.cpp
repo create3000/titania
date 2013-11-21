@@ -127,7 +127,7 @@ OutlineSelection::select (X3D::X3DBaseNode* const node, bool value, X3D::ChildOb
 {
 	if (node)
 	{
-		if (not seen .insert (node) .second)
+		if (not seen .emplace (node) .second)
 			return;
 
 		// Select node

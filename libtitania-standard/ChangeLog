@@ -1,3 +1,12 @@
+2013-11-21  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Path.h:
+	* BindStack.h:
+	* Remove.h:
+	* UniqueList.h:
+	* FindDataFile.cpp:
+	* IndexedMultiMap.h: 
+
 2013-11-16  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Box3.h:

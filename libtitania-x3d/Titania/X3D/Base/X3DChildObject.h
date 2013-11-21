@@ -202,7 +202,7 @@ X3DChildObject::findParents (std::deque <Type*> & parents, ChildObjectSet & seen
 	if (dynamic_cast <Root*> (this))
 		return;
 
-	if (not seen .insert (this) .second)
+	if (not seen .emplace (this) .second)
 		return;
 
 	Type* parent = dynamic_cast <Type*> (this);

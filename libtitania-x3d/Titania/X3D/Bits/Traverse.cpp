@@ -62,7 +62,7 @@ traverse (X3D::SFNode & node, const TraverseCallback & callback, bool distinct, 
 	if (not node)
 		return true;
 
-	if (seen .insert (node) .second)
+	if (seen .emplace (node) .second)
 	{
 		for (const auto & field : node -> getFieldDefinitions ())
 		{

@@ -121,10 +121,10 @@ create_data_directories ()
 {
 	FileArray directories;
 
-	directories .push_back (Gio::File::create_for_path (Glib::get_user_data_dir ()));
+	directories .emplace_back (Gio::File::create_for_path (Glib::get_user_data_dir ()));
 
 	for (int i = 0; g_get_system_data_dirs () [i]; ++ i)
-		directories .push_back (Gio::File::create_for_path (g_get_system_data_dirs () [i]));
+		directories .emplace_back (Gio::File::create_for_path (g_get_system_data_dirs () [i]));
 
 	return directories;
 }

@@ -1,3 +1,8 @@
+2013-11-21  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* InputUrlStream.cpp:
+	* InputHTTPStream.cpp: 
+
 2013-11-16  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* configure:

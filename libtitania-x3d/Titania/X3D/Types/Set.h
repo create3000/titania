@@ -184,11 +184,16 @@ public:
 		set .clear ();
 		processInterests ();
 	}
-	
+
 	std::pair <iterator, bool>
 	insert (const value_type & value)
+	{ return emplace (value); }
+
+	template <class ... Args>
+	std::pair <iterator, bool>
+	emplace (Args && ... args)
 	{
-		std::pair <iterator, bool> pair = set .insert (value);
+		std::pair <iterator, bool> pair = set .emplace (std::forward <Args> (args) ...);
 
 		if (pair .second)
 			processInterests ();

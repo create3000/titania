@@ -450,7 +450,7 @@ jsContext::require (const basic::uri & uri, jsval & rval)
 
 		if (success)
 		{
-			files .insert (std::make_pair (resolvedURL, rval));
+			files .emplace (resolvedURL, rval);
 
 			JS_AddValueRoot (context, &files [resolvedURL]);
 
@@ -613,7 +613,7 @@ jsContext::callFunction (jsval function) const
 void
 jsContext::addObject (X3DFieldDefinition* field, JSObject* object)
 {
-	if (not objects .insert (std::make_pair (field, object)) .second)
+	if (not objects .emplace (field, object) .second)
 		throw Error <INVALID_FIELD> ("Object already exists in jsContext.");
 
 	field -> addParent (this);

@@ -134,7 +134,7 @@ Grammar::getFieldType ()
 	std::set <std::string> FieldType;
 
 	for (const auto & field : getBrowser () -> getSupportedFields ())
-		FieldType .insert (field -> getTypeName ());
+		FieldType .emplace (field -> getTypeName ());
 
 	return FieldType;
 }

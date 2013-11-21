@@ -430,7 +430,7 @@ X3DBrowserEditor::toString (X3D::MFNode & nodes) const
 	                  auto protoInstance = dynamic_cast <X3D::X3DPrototypeInstance*> (node .getValue ());
 
 	                  if (protoInstance)
-								protoDeclarations .insert (protoInstance -> getProtoDeclaration ());
+								protoDeclarations .emplace (protoInstance -> getProtoDeclaration ());
 
 	                  return true;
 						});
@@ -441,7 +441,7 @@ X3DBrowserEditor::toString (X3D::MFNode & nodes) const
 
 	X3D::traverse (nodes, [&nodeIndex] (X3D::SFNode & node)
 	               {
-	                  nodeIndex .insert (node);
+	                  nodeIndex .emplace (node);
 	                  return true;
 						});
 
@@ -599,7 +599,7 @@ X3DBrowserEditor::removeNodeFromScene (const X3D::X3DSFNode <X3D::Scene> & scene
 
 	X3D::traverse (node, [&children] (X3D::SFNode & child)
 	               {
-	                  children .insert (child);
+	                  children .emplace (child);
 	                  return true;
 						});
 
@@ -610,10 +610,7 @@ X3DBrowserEditor::removeNodeFromScene (const X3D::X3DSFNode <X3D::Scene> & scene
 	X3D::traverse (scene -> getRootNodes (), [&children] (X3D::SFNode & node)
 	               {
 	                  // If scene node in children, remove from children.
-
-	                  if (children .find (node) not_eq children .end ())
-								children .erase (node);
-
+							children .erase (node);
 	                  return true;
 						});
 
@@ -833,7 +830,7 @@ X3DBrowserEditor::removePrototypes (X3D::X3DExecutionContext* const executionCon
 	                  X3D::X3DSFNode <X3D::X3DPrototypeInstance> instance (child);
 	                  
 	                  if (instance)
-	                     protoDeclarations .insert (instance -> getProtoDeclaration ());
+	                     protoDeclarations .emplace (instance -> getProtoDeclaration ());
 	                  
 	                  return true;
 	               });
@@ -1398,7 +1395,7 @@ X3DBrowserEditor::findModelViewMatrix (X3D::X3DBaseNode* const node) const
 bool
 X3DBrowserEditor::findModelViewMatrix (X3D::X3DBaseNode* const node, X3D::Matrix4f & modelViewMatix, std::set <X3D::X3DBaseNode*> & seen) const
 {
-	if (not seen .insert (node) .second)
+	if (not seen .emplace (node) .second)
 		return false;
 
 	// Do we found the layer?

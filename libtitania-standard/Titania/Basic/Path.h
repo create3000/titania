@@ -297,7 +297,7 @@ basic_path <StringT>::remove_dot_segments () const
 			else
 			{
 				path .value .trailing_separator = false;
-				path .push_back (*first);
+				path .emplace_back (*first);
 			}
 
 			++ first;

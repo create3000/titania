@@ -1,3 +1,22 @@
+2013-11-21  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Debug.h:
+	* Set.h:
+	* Traverse.cpp:
+	* X3DOutput.cpp:
+	* Grammar.cpp:
+	* X3DChildObject.h:
+	* X3DBaseNode.cpp:
+	* X3DScene.cpp:
+	* X3DChildObject.cpp:
+	* Generator.cpp:
+	* X3DFieldDefinition.h:
+	* X3DFieldDefinition.cpp:
+	* Anchor.cpp:
+	* jsContext.cpp:
+	* X3DPrototypeInstance.cpp:
+	* X3DPointingDeviceSensorNode.cpp: 
+
 2013-11-20  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DGroupingNode.cpp: 

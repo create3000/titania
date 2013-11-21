@@ -77,7 +77,7 @@ ifilestream::ifilestream (const basic::uri & url, size_t timeout) :
 ifilestream::ifilestream (const std::string & string) :
 	ifilestream ()
 {
-	file_response_headers .insert (std::make_pair ("Content-Length", std::to_string (string .size ())));
+	file_response_headers .emplace ("Content-Length", std::to_string (string .size ()));
 	data_istream .reset (new std::istringstream (string));
 
 	rdbuf (data_istream -> rdbuf ());
@@ -160,9 +160,9 @@ ifilestream::open (const basic::uri & URL, size_t timeout)
 			// header
 
 			if (not content_type .empty ())
-				file_response_headers .insert (std::make_pair ("Content-Type", content_type));
+				file_response_headers .emplace ("Content-Type", content_type);
 
-			file_response_headers .insert (std::make_pair ("Content-Length", std::to_string (length)));
+			file_response_headers .emplace ("Content-Length", std::to_string (length));
 
 			// stream
 
@@ -260,7 +260,7 @@ ifilestream::guess_content_type (const basic::uri & url, std::istream* const ist
 	bool        result_uncertain;
 	std::string content_type = Gio::content_type_guess (url .path (), (guchar*) data, data_size, result_uncertain);
 
-	file_response_headers .insert (std::make_pair ("Content-Type", content_type));
+	file_response_headers .emplace ("Content-Type", content_type);
 
 	// Reset stream.
 
@@ -286,7 +286,7 @@ ifilestream::request_header (const std::string & header, const std::string & val
 	if (url_istream)
 		return url_istream -> request_header (header, value);
 
-	file_request_headers .insert (std::make_pair (header, value));
+	file_request_headers .emplace (header, value);
 }
 
 const ifilestream::headers_type &

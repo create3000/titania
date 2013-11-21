@@ -141,11 +141,13 @@ void
 ViewpointList::set_viewpoints ()
 {
 	// Clear
+
 	getListStore () -> clear ();
+
+	// Fill the TreeView's model
 
 	guint index = 0;
 
-	// Fill the TreeView's model
 	for (const auto & viewpoint : *getViewpoints ())
 	{
 		if (viewpoint -> description () .length ())

@@ -130,7 +130,7 @@ Anchor::traverse (const TraverseType type)
 		case TraverseType::PICKING:
 		{
 			getBrowser () -> getSensors () .emplace_back ();
-			getBrowser () -> getSensors () .back () .insert (this);
+			getBrowser () -> getSensors () .back () .emplace (this);
 
 			X3DGroupingNode::traverse (type);
 

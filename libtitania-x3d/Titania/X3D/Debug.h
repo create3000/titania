@@ -58,7 +58,7 @@ static
 void
 debug_roots (X3DChildObject* node, std::set <X3DChildObject*> & seen)
 {
-	if (not seen .insert (node) .second)
+	if (not seen .emplace (node) .second)
 		return;
 
 	static int i = 0;

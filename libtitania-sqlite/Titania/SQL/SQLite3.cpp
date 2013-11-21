@@ -176,7 +176,7 @@ sqlite3::map_callback (void* object, int argc, char** argv, char** columns)
 
 	for (int i = 0; i < argc; i ++)
 	{
-		map .insert (std::make_pair (columns [i], argv [i] ? argv [i] : ""));
+		map .emplace (columns [i], argv [i] ? argv [i] : "");
 	}
 
 	self -> array_map .emplace_back (map);

@@ -100,14 +100,14 @@ X3DOutput::insertInterest (const Requester & function, const void* object, const
 	if (requesterIndex .find (requesterPair) == requesterIndex .end ())
 	{
 		requesters .emplace_back (function);
-		requesterIndex .insert (std::make_pair (requesterPair, -- requesters .end ()));
+		requesterIndex .emplace (requesterPair, -- requesters .end ());
 	}
 }
 
 void
 X3DOutput::insertInput (const X3DInput* input, const void* memberFunction) const
 {
-	inputs .insert (input);
+	inputs .emplace (input);
 
 	input -> deleted () .addInterest (this,
 	                                  &X3DOutput::eraseInterest,

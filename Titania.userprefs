@@ -1,15 +1,15 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Browser/X3DBrowserEditor.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Basic/X3DFieldDefinition.cpp">
     <Files>
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="248" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="755" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="246" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="570" Column="1" />
-      <File FileName="Titania/Titania/Undo/UndoHistory.h" Line="89" Column="1" />
-      <File FileName="Titania/Titania/Undo/UndoHistory.cpp" Line="95" Column="1" />
-      <File FileName="Titania/Titania/LibraryView/LibraryView.cpp" Line="1" Column="1" />
-      <File FileName="experimental/main.cpp" Line="376" Column="15" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="108" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="1264" Column="26" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="76" Column="28" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="690" Column="1" />
+      <File FileName="Library/Tests/Handles/OutlineEditor.wrl" Line="11" Column="36" />
+      <File FileName="Titania/Titania/ViewpointList/ViewpointList.h" Line="104" Column="1" />
+      <File FileName="Titania/Titania/ViewpointList/ViewpointList.cpp" Line="95" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DFieldDefinition.cpp" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -20,11 +20,13 @@
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
             <Node name="Tests" expanded="True">
+              <Node name="Handles" expanded="True" />
               <Node name="images" expanded="True" />
               <Node name="NURBS" expanded="True">
                 <Node name="NurbsPatchSurface" expanded="True" />
                 <Node name="NurbsTrimmedSurface" expanded="True" />
               </Node>
+              <Node name="Scripting" expanded="True" />
               <Node name="Shape" expanded="True" />
               <Node name="Texturing" expanded="True" />
             </Node>
@@ -50,39 +52,43 @@
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
-                <Node name="Basic" expanded="True" />
+                <Node name="Basic" expanded="True">
+                  <Node name="X3DFieldDefinition.cpp" selected="True" />
+                </Node>
                 <Node name="Browser" expanded="True">
                   <Node name="Picking" expanded="True" />
+                  <Node name="Viewer" expanded="True" />
                 </Node>
                 <Node name="Components" expanded="True">
+                  <Node name="Core" expanded="True" />
+                  <Node name="EnvironmentalEffects" expanded="True" />
                   <Node name="Grouping" expanded="True" />
+                  <Node name="Networking" expanded="True" />
                   <Node name="NURBS" expanded="True" />
+                  <Node name="Scripting" expanded="True" />
+                  <Node name="Time" expanded="True" />
                 </Node>
-                <Node name="Handles" expanded="True" />
+                <Node name="Configuration" expanded="True" />
               </Node>
             </Node>
           </Node>
-          <Node name="Titania" expanded="True" selected="True">
+          <Node name="Titania" expanded="True">
             <Node name="share" expanded="True">
               <Node name="titania" expanded="True">
                 <Node name="Library" expanded="True">
-                  <Node name="Backgrounds" expanded="True" />
                   <Node name="Prototypes" expanded="True">
                     <Node name="Engines" expanded="True">
                       <Node name="Rotor" expanded="True" />
                     </Node>
+                    <Node name="Time" expanded="True" />
                   </Node>
                 </Node>
                 <Node name="ui" expanded="True" />
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
+              <Node name="Base" expanded="True" />
               <Node name="Browser" expanded="True" />
-              <Node name="LibraryView" expanded="True" />
-              <Node name="OutlineEditor" expanded="True">
-                <Node name="CellRenderer" expanded="True" />
-              </Node>
-              <Node name="Undo" expanded="True" />
               <Node name="ViewpointList" expanded="True" />
             </Node>
           </Node>

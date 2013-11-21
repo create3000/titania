@@ -177,7 +177,7 @@ ihttpstream::parse_response_header ()
 	if (get () not_eq '\n')
 		return close ();
 
-	response_headers_map .insert (std::make_pair (header, value .str ()));
+	response_headers_map .emplace (header, value .str ());
 }
 
 void
@@ -243,7 +243,7 @@ ihttpstream::close ()
 void
 ihttpstream::request_header (const std::string & header, const std::string & value)
 {
-	request_headers_map .insert (std::make_pair (header, value));
+	request_headers_map .emplace (header, value);
 }
 
 ihttpstream::~ihttpstream ()

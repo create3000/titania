@@ -115,7 +115,7 @@ public:
 
 		add_window (browserWindow -> getWindow ());
 
-		browserWindows .insert (std::make_pair (&browserWindow -> getWindow (), browserWindow));
+		browserWindows .emplace (&browserWindow -> getWindow (), browserWindow);
 
 		__LOG__ << browserWindow << std::endl;
 	}

@@ -123,7 +123,7 @@ X3DUserInterface::addDialog (X3DUserInterface* const dialog)
 {
 	dialog -> getWindow () .signal_hide () .connect (sigc::bind (sigc::mem_fun (*this, &X3DUserInterface::removeDialog), dialog));
 	dialog -> getWindow () .present ();
-	dialogs .insert (std::make_pair (dialog, dialog));
+	dialogs .emplace (dialog, dialog);
 }
 
 void

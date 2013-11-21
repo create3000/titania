@@ -71,7 +71,7 @@ X3DChildObject::addEvent (X3DChildObject* const, const EventPtr & event)
 void
 X3DChildObject::addParent (X3DChildObject* const parent)
 {
-	parents  .insert (parent);
+	parents  .emplace (parent);
 }
 
 void
@@ -113,7 +113,7 @@ X3DChildObject::hasRoots (ChildObjectSet & seen)
 	if (parents .empty ())
 		return true;
 		
-	if (seen .insert (this) .second)
+	if (seen .emplace (this) .second)
 	{
 		// First test the good way
 	

@@ -256,7 +256,7 @@ indexed_multimap <Key, ValueType>::push_back (const key_type & key, const value_
 
 	array .emplace_back (element);
 
-	map .insert (std::make_pair (key, element)) -> second;
+	map .emplace (key, element);
 }
 
 template <class Key, class ValueType>

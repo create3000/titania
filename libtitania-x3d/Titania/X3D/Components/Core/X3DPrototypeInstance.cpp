@@ -211,7 +211,7 @@ X3DPrototypeInstance::saveState ()
 
 	X3D::traverse (getRootNodes (), [&children] (X3D::SFNode & child)
 	               {
-	                  children .insert (child);
+	                  children .emplace (child);
 	                  return true;
 						});
 
@@ -220,10 +220,7 @@ X3DPrototypeInstance::saveState ()
 	X3D::traverse (getScene () -> getRootNodes (), [&children] (X3D::SFNode & node)
 	               {
 	                  // If scene node in children, remove from children.
-
-	                  if (children .find (node) not_eq children .end ())
-	                     children .erase (node);
-
+	                  children .erase (node);
 	                  return true;
 						});
 

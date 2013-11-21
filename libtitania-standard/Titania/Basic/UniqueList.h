@@ -134,7 +134,7 @@ unique_list <Type>::push_back (const Type & value)
 	if (map .find (value) == map .end ())
 	{
 		list .emplace_back (value);
-		map .insert (std::make_pair (value, -- list .end ()));
+		map .emplace (value, -- list .end ());
 	}
 }
 

@@ -56,13 +56,14 @@ namespace titania {
 namespace X3D {
 
 X3DFieldDefinition::X3DFieldDefinition () :
-	X3DChildObject (),
-	    references (),
-	    accessType (initializeOnly),
-	     aliasName (),
-	   inputRoutes (),
-	  outputRoutes (),
-	     interests ()
+	 X3DChildObject (),
+	     references (),
+	     accessType (initializeOnly),
+	      aliasName (),
+	    inputRoutes (),
+	   outputRoutes (),
+	 inputInterests (),
+	outputInterests ()
 { }
 
 X3DFieldDefinition &
@@ -89,7 +90,7 @@ X3DFieldDefinition::hasRoots (ChildObjectSet & seen)
 void
 X3DFieldDefinition::addReference (X3DFieldDefinition* const reference)
 {
-	if (references .insert (reference) .second)
+	if (references .emplace (reference) .second)
 	{
 		// Create IS relationship
 
@@ -161,21 +162,61 @@ X3DFieldDefinition::updateReference (X3DFieldDefinition* const reference)
 }
 
 void
+X3DFieldDefinition::addInterest (X3DFieldDefinition* const fieldDefinition)
+{
+	outputInterests .emplace (fieldDefinition);
+	fieldDefinition -> addInputInterest (this);
+}
+
+void
+X3DFieldDefinition::addInterest (X3DFieldDefinition & fieldDefinition)
+{
+	outputInterests .emplace (&fieldDefinition);
+	fieldDefinition .addInputInterest (this);
+}
+
+void
+X3DFieldDefinition::removeInterest (X3DFieldDefinition* const fieldDefinition)
+{
+	outputInterests .erase (fieldDefinition);
+	fieldDefinition -> removeInputInterest (this);
+}
+
+void
+X3DFieldDefinition::removeInterest (X3DFieldDefinition & fieldDefinition)
+{
+	outputInterests .erase (&fieldDefinition);
+	fieldDefinition .removeInputInterest (this);
+}
+
+void
+X3DFieldDefinition::addInputInterest (X3DFieldDefinition* const fieldDefinition)
+{
+	inputInterests .emplace (fieldDefinition);
+}
+
+void
+X3DFieldDefinition::removeInputInterest (X3DFieldDefinition* const fieldDefinition)
+{
+	inputInterests .erase (fieldDefinition);
+}
+
+void
 X3DFieldDefinition::processEvent (const EventPtr & event)
 {
-	if (not event -> sources .insert (this) .second)
+	if (not event -> sources .emplace (this) .second)
 		return;
-		
+
 	isTainted (false);
 
 	if (event -> object not_eq this)
 		write (*event -> object);
 
 	processInterests ();
-	
+
 	bool first = true;
 
-	for (const auto & fieldDefinition : interests)
+	for (const auto & fieldDefinition : outputInterests)
 	{
 		if (first)
 		{
@@ -197,8 +238,15 @@ X3DFieldDefinition::dispose ()
 
 	for (const auto & route : RouteSet (std::move (outputRoutes)))
 		route -> remove ();
+		
+	for (auto & fieldDefinition : FieldDefinitionSet (std::move (inputInterests)))
+		fieldDefinition -> removeInterest (this);
 
-	interests .clear ();
+	for (auto & fieldDefinition : outputInterests) // No copy is made
+		fieldDefinition -> removeInputInterest (this);
+
+	inputInterests  .clear ();
+	outputInterests .clear ();
 
 	X3DChildObject::dispose ();
 }

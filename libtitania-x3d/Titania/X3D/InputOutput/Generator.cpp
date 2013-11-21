@@ -340,7 +340,7 @@ Generator::ExistsNode (const X3DBaseNode* basicNode)
 void
 Generator::AddNode (const X3DBaseNode* basicNode)
 {
-	nodes .insert (basicNode);
+	nodes .emplace (basicNode);
 }
 
 const std::string &
