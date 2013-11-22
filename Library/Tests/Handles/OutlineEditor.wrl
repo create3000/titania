@@ -211,3 +211,8 @@ DEF Inline Transform {
 
 ROUTE _1.isActive TO _2.set_enabled
 ROUTE Rotor.rotation_changed TO Box.set_rotation
+
+ROUTE Inline .translation TO Inline.scale
+
+ROUTE Inline .scale TO Inline.translation
+

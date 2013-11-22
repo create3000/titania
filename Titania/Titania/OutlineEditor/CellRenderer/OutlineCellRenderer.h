@@ -108,7 +108,7 @@ private:
 	get_icon () const;
 
 	const Glib::RefPtr <Gdk::Pixbuf> &
-	get_access_type_icon () const;
+	get_access_type_icon (X3D::AccessType &, size_t &, size_t &) const;
 
 	std::string
 	get_node_name () const;
@@ -152,6 +152,9 @@ private:
 	void
 	render_vfunc (const Cairo::RefPtr <Cairo::Context> &, Gtk::Widget &, const Gdk::Rectangle &, const Gdk::Rectangle &, Gtk::CellRendererState) final;
 
+	void
+	render_routes (const Cairo::RefPtr <Cairo::Context> &, Gtk::Widget &, const Gdk::Rectangle &, const Gdk::Rectangle &, int, Gtk::CellRendererState);
+
 	//	virtual
 	//	bool
 	//	activate_vfunc (GdkEvent*, Gtk::Widget &, const Glib::ustring &, const Gdk::Rectangle &, const Gdk::Rectangle &, Gtk::CellRendererState) final;
@@ -182,7 +185,10 @@ private:
 	Glib::RefPtr <Gdk::Pixbuf> baseNodeImage;
 	FieldTypeImageIndex        fieldTypeImages;
 	AccessTypeImageIndex       accessTypeImages;
-	
+	X3D::AccessType            accessType;
+	size_t                     inputRoutes;
+	size_t                     outputRoutes;
+
 	std::unique_ptr <TextViewEditable> textview;
 
 };

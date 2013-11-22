@@ -684,8 +684,10 @@ throw (Error <INVALID_NODE>,
 	if (not route)
 		throw Error <INVALID_NODE> ("Bad ROUTE specification: route is NULL in deleteRoute.");
 
+	auto routeId = route -> getId ();
+
 	route -> disconnect ();
-	routes .erase (route -> getId ());
+	routes .erase (routeId);
 }
 
 RouteId

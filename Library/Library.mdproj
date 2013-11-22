@@ -2361,6 +2361,7 @@
     <None Include="Tests\NURBS\NurbsPatchSurface\Rectangle2D.x3dv" />
     <None Include="Tests\Handles\Inline.wrl" />
     <None Include="Tests\Scripting\Route.wrl" />
+    <None Include="Tests\Handles\Routes.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
