@@ -1,20 +1,24 @@
 #VRML V2.0 utf8
 
 PROTO Test [
-  exposedField SFBool  enabled TRUE
-  eventIn      SFBool  set_bind
-  eventOut     SFBool  isBound
-  field        SFBool  solid FALSE
-  exposedField MFNode  children [ ]
+  exposedField SFBool enabled TRUE
+  eventIn      SFBool set_bind
+  eventOut     SFBool isBound
+  field        SFBool solid FALSE
+  exposedField MFNode children [ ]
 ]
 {
   Group { }
 }
 
 DEF Test1 Test { }
-DEF Test2 Test { }
+
+Test {
+  children DEF Test2 Test { }
+}
+
 DEF Test3 Test { }
 
 ROUTE Test2.isBound TO Test1.set_bind
 ROUTE Test2.isBound TO Test3.set_bind
-ROUTE Test2.enabled TO Test2.enabled
+ROUTE Test2.enabled_changed TO Test2.set_enabled

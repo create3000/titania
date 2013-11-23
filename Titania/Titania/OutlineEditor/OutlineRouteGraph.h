@@ -98,6 +98,9 @@ private:
 	collapse_node (const Gtk::TreeModel::iterator &);
 
 	void
+	collapse_node (const Gtk::TreeModel::Path &, OutlineTreeData* const, const Gtk::TreeModel::iterator &);
+
+	void
 	collapse_field (const Gtk::TreeModel::iterator &);
 
 	void
