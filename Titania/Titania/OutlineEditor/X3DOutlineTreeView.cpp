@@ -62,6 +62,7 @@ X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DSFNode <X3D::X3DExecutionC
 	              Gtk::TreeView (),
 	X3DOutlineTreeViewInterface (get_ui ("OutlineTreeView.ui"), gconf_dir ()),
 	                      model (OutlineTreeModel::create (getBrowserWindow (), executionContext)),
+	                 routeGraph (this),
 	               cellrenderer (Gtk::manage (new OutlineCellRenderer (getBrowser (), this))),
 	                expandLevel (0)
 {
@@ -78,7 +79,7 @@ X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DSFNode <X3D::X3DExecutionC
 
 	// Columns
 
-	Gtk::TreeViewColumn* treeviewcolumn_name = Gtk::manage (new Gtk::TreeViewColumn ("Tree"));
+	Gtk::TreeViewColumn* treeviewcolumn_name = Gtk::manage (new Gtk::TreeViewColumn (_ ("Tree")));
 	treeviewcolumn_name -> set_expand (false);
 
 	// CellRenderer
@@ -93,6 +94,12 @@ X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DSFNode <X3D::X3DExecutionC
 	// Append column
 
 	append_column (*treeviewcolumn_name);
+
+	//	// Pad column
+	//
+	//	Gtk::TreeViewColumn* treeviewcolumn_pad = Gtk::manage (new Gtk::TreeViewColumn ());
+	//	treeviewcolumn_pad -> set_expand (true);
+	//	append_column (*treeviewcolumn_pad);
 	
 	//
 
@@ -267,6 +274,8 @@ X3DOutlineTreeView::on_row_expanded (const Gtk::TreeModel::iterator & iter, cons
 	set_expanded (iter, true);
 	set_open_path (iter, path);
 
+	routeGraph .expand (iter);
+
 	watch_expanded (iter, path);
 
 	auto_expand (iter);
@@ -284,11 +293,13 @@ X3DOutlineTreeView::on_row_collapsed (const Gtk::TreeModel::iterator & iter, con
 {
 	//__LOG__ << std::endl;
 
-	unwatch_tree (iter);
-	get_model () -> clear (iter);
-
 	set_expanded (iter, false);
 	set_all_expanded (iter, false);
+
+	routeGraph .collapse (iter);
+	unwatch_tree (iter);
+
+	get_model () -> clear (iter);
 
 	toggle_expand (iter, path);
 }

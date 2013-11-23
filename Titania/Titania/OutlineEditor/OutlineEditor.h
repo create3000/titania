@@ -57,7 +57,6 @@
 #include <Titania/X3D.h>
 
 #include <gtkmm.h>
-#include <iostream>
 
 namespace titania {
 namespace puck {

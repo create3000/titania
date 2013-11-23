@@ -59,13 +59,16 @@
 namespace titania {
 namespace puck {
 
+constexpr double M_PI3_2 = 1.5 * M_PI;
+
 constexpr int    NAME_X_PAD        = 1;
 constexpr int    ACCESS_TYPE_X_PAD = 8;
 constexpr int    ROUTE_WIDTH       = 16;
 constexpr int    ROUTE_CURVE_WIDTH = 16;
+constexpr double ROUTE_RADIUS      = 8.5;
 constexpr int    RIGHT_PAD         = 8;
 constexpr double ROUTE_INPUT_PAD   = 14;
-constexpr double ROUTE_Y_PAD       = 3.5;
+constexpr double ROUTE_Y_PAD       = 3.5; // Depends on image
 
 OutlineCellRenderer::OutlineCellRenderer (X3D::X3DBrowser* const browser, X3DOutlineTreeView* const treeView) :
 	             Glib::ObjectBase (typeid (OutlineCellRenderer)),
@@ -79,8 +82,6 @@ OutlineCellRenderer::OutlineCellRenderer (X3D::X3DBrowser* const browser, X3DOut
 	              fieldTypeImages (),
 	             accessTypeImages (),
 	                   accessType (),
-	                  inputRoutes (0),
-	                 outputRoutes (0),
 	                     textview ()
 {
 	// Images
@@ -139,8 +140,6 @@ OutlineCellRenderer::on_data ()
 			property_markup ()                                = _ ("Route from ") + name + "." + route -> getSourceField ();
 			cellrenderer_access_type_icon .property_pixbuf () = accessTypeImages [X3D::inputOnly] [1];
 			accessType                                        = X3D::inputOnly;
-			inputRoutes                                       = 1;
-			outputRoutes                                      = 0;
 			set_alignment (0, 0.5);
 			break;
 		}
@@ -156,8 +155,6 @@ OutlineCellRenderer::on_data ()
 			property_markup ()                                = _ ("Route to ") + name + "." + route -> getDestinationField ();
 			cellrenderer_access_type_icon .property_pixbuf () = accessTypeImages [X3D::outputOnly] [1];
 			accessType                                        = X3D::outputOnly;
-			inputRoutes                                       = 0;
-			outputRoutes                                      = 1;
 			set_alignment (0, 0.5);
 			break;
 		}
@@ -172,7 +169,7 @@ OutlineCellRenderer::on_data ()
 		{
 			property_editable ()                              = false;
 			property_text ()                                  = get_object () -> getName ();
-			cellrenderer_access_type_icon .property_pixbuf () = get_access_type_icon (accessType, inputRoutes, outputRoutes);
+			cellrenderer_access_type_icon .property_pixbuf () = get_access_type_icon (accessType);
 			set_alignment (0, 0.5);
 			break;
 		}
@@ -180,9 +177,6 @@ OutlineCellRenderer::on_data ()
 		{
 			property_editable () = false;
 			property_markup ()   = get_node_name ();
-			accessType           = X3D::initializeOnly;
-			inputRoutes          = 0;
-			outputRoutes         = 0;
 			set_alignment (0, 0.5);
 			break;
 		}
@@ -204,13 +198,17 @@ OutlineCellRenderer::get_object () const
 bool
 OutlineCellRenderer::get_expanded () const
 {
-	return OutlineTreeModel::get_user_data (get_object ()) -> expanded;
+	auto userData = property_data () .get_value () -> get_user_data ();
+
+	return userData -> expanded;
 }
 
 bool
 OutlineCellRenderer::get_all_expanded () const
 {
-	return OutlineTreeModel::get_user_data (get_object ()) -> all_expanded;
+	auto userData = property_data () .get_value () -> get_user_data ();
+
+	return userData -> all_expanded;
 }
 
 const Glib::RefPtr <Gdk::Pixbuf> &
@@ -244,14 +242,14 @@ OutlineCellRenderer::get_icon () const
 }
 
 const Glib::RefPtr <Gdk::Pixbuf> &
-OutlineCellRenderer::get_access_type_icon (X3D::AccessType & accessType, size_t & inputRoutes, size_t & outputRoutes) const
+OutlineCellRenderer::get_access_type_icon (X3D::AccessType & accessType) const
 {
 	auto   field = static_cast <X3D::X3DFieldDefinition*> (get_object ());
 	auto   iter  = accessTypeImages .find (field -> getAccessType ());
 	size_t index = 0;
 
-	inputRoutes  = treeView -> get_model () -> get_input_routes (field);
-	outputRoutes = treeView -> get_model () -> get_output_routes (field);
+	size_t inputRoutes  = treeView -> get_model () -> get_input_routes (field);
+	size_t outputRoutes = treeView -> get_model () -> get_output_routes (field);
 
 	accessType = field -> getAccessType ();
 
@@ -775,12 +773,10 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 
 	switch (get_data_type ())
 	{
-		case OutlineIterType::X3DFieldValue:
-			return;
 		case OutlineIterType::X3DField:
 		{
 			if (get_all_expanded () and get_expanded ())
-				return;
+				break;
 		}
 		case OutlineIterType::X3DInputRoute:
 		case OutlineIterType::X3DOutputRoute:
@@ -791,7 +787,6 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 			Gdk::Rectangle cell_area (x, y, width, height);
 			cellrenderer_access_type_icon .render (context, widget, background_area, cell_area, flags);
 			cellrenderer_access_type_icon .get_preferred_width (widget, minimum_width, natural_width);
-			cellrenderer_access_type_icon .get_preferred_height (widget, minimum_height, natural_height);
 
 			x     += minimum_width;
 			width -= minimum_width;
@@ -804,6 +799,8 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 	// Routes
 
 	{
+		cellrenderer_access_type_icon .get_preferred_height (widget, minimum_height, natural_height);
+
 		Gdk::Rectangle cell_area (x, y, width - RIGHT_PAD, height);
 		render_routes (context, widget, background_area, cell_area, minimum_height, flags);
 	}
@@ -819,16 +816,19 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 {
 	int x      = cell_area .get_x ();
 	int y      = cell_area .get_y ();
-	int width  = cell_area .get_width ();
+	int width  = cell_area .get_width () - ROUTE_CURVE_WIDTH;
 	int height = cell_area .get_height ();
 	int y_pad  = (height - minimum_height) / 2;
 
 	double input_x  = x;
 	double input_y  = y + y_pad + ROUTE_Y_PAD;
-	double input_w  = width - ROUTE_CURVE_WIDTH;
+	double input_w  = width;
 	double output_x = x;
 	double output_y = y + y_pad + minimum_height - ROUTE_Y_PAD;
-	double output_w = width - ROUTE_CURVE_WIDTH;
+	double output_w = width;
+	
+	double radius      = std::min (y_pad + ROUTE_Y_PAD, ROUTE_RADIUS);
+	double connector_x = x + width + radius;
 
 	if (accessType == X3D::inputOutput)
 	{
@@ -836,25 +836,91 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 		input_w += ROUTE_INPUT_PAD;
 	}
 
-	//context -> set_source_rgb (0.9, 0.9, 0.9);
-	//context -> rectangle (x, y + 1, width, height - 2);
-	//context -> fill ();
+	//	context -> set_source_rgb (0.9, 0.9, 0.9);
+	//	context -> rectangle (x, y + 1, width, height - 2);
+	//	context -> fill ();
 
 	context -> reset_clip ();
 	context -> set_operator (Cairo::OPERATOR_OVER);
 	context -> set_source_rgb (0, 0, 0);
 	context -> set_line_width (1);
 
-	if (inputRoutes)
+	auto data = property_data () .get_value ();
+
+	if (not data -> get_inputs_above () .empty () or not data -> get_inputs_below () .empty ())
 	{
 		context -> move_to (input_x, input_y);
 		context -> line_to (input_x + input_w, input_y);
+		
+		// Arc up
+		
+		if (not data -> get_inputs_above () .empty ())
+		{
+			context -> begin_new_sub_path ();
+			context -> arc (input_x + input_w, input_y - radius, radius, 0, M_PI1_2);
+			
+			context -> move_to (connector_x, y);
+			context -> line_to (connector_x, input_y - radius);
+		}
+
+		// Arc down
+
+		if (not data -> get_inputs_below () .empty ())
+		{
+			context -> begin_new_sub_path ();
+			context -> arc (input_x + input_w, input_y + radius, radius, M_PI3_2, M_PI2);
+			
+			context -> move_to (connector_x, input_y + radius);
+			context -> line_to (connector_x, y + height);
+		}
 	}
 
-	if (outputRoutes)
+	if (not data -> get_outputs_above () .empty () or not data -> get_outputs_below () .empty ())
 	{
 		context -> move_to (output_x, output_y);
 		context -> line_to (output_x + output_w, output_y);
+		
+		// Arc up
+		
+		if (not data -> get_outputs_above () .empty ())
+		{
+			context -> begin_new_sub_path ();
+			context -> arc (output_x + output_w, output_y - radius, radius, 0, M_PI1_2);
+			
+			context -> move_to (connector_x, y);
+			context -> line_to (connector_x, output_y - radius);
+		}
+
+		// Arc down
+
+		if (not data -> get_outputs_below () .empty ())
+		{
+			context -> begin_new_sub_path ();
+			context -> arc (output_x + output_w, output_y + radius, radius, M_PI3_2, M_PI2);
+			
+			context -> move_to (connector_x, output_y + radius);
+			context -> line_to (connector_x, y + height);
+		}
+	}
+
+	if (data -> get_self_connection ())
+	{
+		double cy     = (input_y + output_y) / 2;
+		double radius = (input_y + output_y) / 2 - input_y;
+
+		context -> move_to (input_x, input_y);
+		context -> line_to (output_x, input_y);
+
+		context -> begin_new_sub_path ();
+		context -> arc (output_x, cy, radius, M_PI3_2, M_PI1_2);
+	}
+
+	// Connections
+
+	if (not data -> get_connections () .empty ())
+	{
+		context -> move_to (connector_x, y);
+		context -> line_to (connector_x, y + height);
 	}
 
 	context -> stroke ();

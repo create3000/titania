@@ -48,8 +48,10 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_USER_DATA_H__
-#define __TITANIA_OUTLINE_EDITOR_OUTLINE_USER_DATA_H__
+#ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_ROUTE_GRAPH_H__
+#define __TITANIA_OUTLINE_EDITOR_OUTLINE_ROUTE_GRAPH_H__
+
+#include "OutlineTreeData.h"
 
 #include <Titania/X3D.h>
 #include <gtkmm.h>
@@ -57,29 +59,62 @@
 namespace titania {
 namespace puck {
 
-class OutlineUserData :
-	public X3D::X3DBase
+class X3DOutlineTreeView;
+
+class OutlineRouteGraph
 {
 public:
 
-	OutlineUserData () :
-		   open_path (),
-		       paths (),
-		    expanded (false),
-		all_expanded (false),
-		    selected (false)
-	{ }
+	OutlineRouteGraph (X3DOutlineTreeView* const);
 
-	Gtk::TreeModel::Path             open_path; // Path of expanded node/clone
-	std::set <Gtk::TreeModel::Path>  paths;     // All visible paths
+	void
+	expand (const Gtk::TreeModel::iterator &);
 
-	bool expanded;                  // Expanded state
-	bool all_expanded;              // Expanded mode
-	bool selected;                  // Selected state
+	void
+	collapse (const Gtk::TreeModel::iterator &);
+
+
+private:
+
+	void
+	expand_node (const Gtk::TreeModel::iterator &);
+
+	void
+	expand_field (const Gtk::TreeModel::iterator &);
+
+	void
+	add_input_route (const Gtk::TreeModel::Path &, OutlineTreeData* const, X3D::Route* const);
+
+	void
+	add_output_route (const Gtk::TreeModel::Path &, OutlineTreeData* const, X3D::Route* const);
+
+	bool
+	add_connection_above (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &, const Gtk::TreeModel::Path &);
+
+	bool
+	add_connection_below (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &, const Gtk::TreeModel::Path &);
+
+	void
+	collapse_node (const Gtk::TreeModel::iterator &);
+
+	void
+	collapse_field (const Gtk::TreeModel::iterator &);
+
+	void
+	remove_input_route (const Gtk::TreeModel::Path &, OutlineTreeData* const, X3D::Route* const);
+
+	void
+	remove_output_route (const Gtk::TreeModel::Path &, OutlineTreeData* const, X3D::Route* const);
+
+	bool
+	remove_connection_above (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &, const Gtk::TreeModel::Path &);
+
+	bool
+	remove_connection_below (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &, const Gtk::TreeModel::Path &);
+
+	X3DOutlineTreeView* const treeView;
 
 };
-
-typedef std::shared_ptr <OutlineUserData> OutlineUserDataPtr;
 
 } // puck
 } // titania

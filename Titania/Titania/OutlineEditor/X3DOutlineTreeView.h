@@ -52,12 +52,13 @@
 #define __TITANIA_OUTLINE_EDITOR_X3DOUTLINE_TREE_VIEW_H__
 
 #include <gtkmm.h>
-#include <iostream>
 
 #include "../UserInterfaces/X3DOutlineTreeViewInterface.h"
 #include "OutlineTree.h"
 #include "OutlineTreeData.h"
 #include "OutlineUserData.h"
+#include "OutlineRouteGraph.h"
+
 #include <Titania/X3D.h>
 
 namespace titania {
@@ -216,6 +217,7 @@ private:
 	auto_expand (const Gtk::TreeModel::iterator &);
 
 	Glib::RefPtr <OutlineTreeModel> model;
+	OutlineRouteGraph               routeGraph;
 	OutlineCellRenderer*            cellrenderer;
 	size_t                          expandLevel;
 

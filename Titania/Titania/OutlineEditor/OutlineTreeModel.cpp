@@ -93,26 +93,15 @@ OutlineUserDataPtr
 OutlineTreeModel::get_user_data (const iterator & iter) const
 {
 	if (iter_is_valid (iter))
-	{
-		auto object = get_object (iter);
+		return get_data (iter) -> get_user_data ();
 
-		if (get_data_type (iter) == OutlineIterType::X3DBaseNode)
-			object = static_cast <X3D::SFNode*> (object) -> getValue ();
-
-		if (object)
-			return get_user_data (object);
-	}
-
-	return NULL;
+	return nullptr;
 }
 
 OutlineUserDataPtr
 OutlineTreeModel::get_user_data (X3D::X3DChildObject* object)
 {
-	if (not object -> getUserData ())
-		object -> setUserData (X3D::UserDataPtr (new OutlineUserData ()));
-
-	return std::static_pointer_cast <OutlineUserData> (object -> getUserData ());
+	return OutlineTreeData::get_user_data (object);
 }
 
 OutlineIterType
@@ -136,7 +125,7 @@ OutlineTreeModel::get_parents (const iterator & iter) const
 size_t
 OutlineTreeModel::get_input_routes (X3D::X3DFieldDefinition* const field) const
 {
-	bool size = 0;
+	size_t size = 0;
 	
 	for (const auto & route : field -> getInputRoutes ())
 		size += route -> getSourceNode () -> getExecutionContext () == executionContext;
@@ -147,7 +136,7 @@ OutlineTreeModel::get_input_routes (X3D::X3DFieldDefinition* const field) const
 size_t
 OutlineTreeModel::get_output_routes (X3D::X3DFieldDefinition* const field) const
 {
-	bool size = 0;
+	size_t size = 0;
 
 	for (const auto & route : field -> getOutputRoutes ())
 		size += route -> getDestinationNode () -> getExecutionContext () == executionContext;

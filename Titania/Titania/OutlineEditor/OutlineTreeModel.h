@@ -138,6 +138,10 @@ public:
 
 	///  @name Tree node
 
+	static
+	OutlineTreeData*
+	get_data (const iterator &);
+
 	OutlineUserDataPtr
 	get_user_data (const iterator &) const;
 
@@ -194,10 +198,6 @@ private:
 
 	void
 	set_data (iterator &, OutlineTreeData*) const;
-
-	static
-	OutlineTreeData*
-	get_data (const iterator &);
 
 	std::deque <OutlineTreeData*>
 	get_parents (const iterator &) const;

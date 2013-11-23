@@ -51,7 +51,6 @@
 #include "X3DUserInterface.h"
 
 #include "../Configuration/config.h"
-#include <iostream>
 
 namespace titania {
 namespace puck {

@@ -51,8 +51,9 @@
 #ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_TREE_DATA_H__
 #define __TITANIA_OUTLINE_EDITOR_OUTLINE_TREE_DATA_H__
 
+#include "OutlineUserData.h"
+
 #include <Titania/X3D.h>
-#include <deque>
 #include <gtkmm.h>
 
 namespace titania {
@@ -68,33 +69,23 @@ enum class OutlineIterType
 
 };
 
+using OutlineRoute = std::set <std::pair <Gtk::TreeModel::Path, Gtk::TreeModel::Path>>;
+
 class OutlineTreeData :
 	public Glib::Object
 {
 public:
 
-	OutlineTreeData (OutlineIterType type, X3D::X3DChildObject* object, const Gtk::TreeModel::Path & path) :
-		Glib::Object (),
-		      object (object),
-		        type (type),
-		        path (path)
-	{
-		if (type == OutlineIterType::X3DBaseNode)
-			this -> object = new X3D::SFNode (static_cast <X3D::SFNode*> (object) -> getValue ());
-	}
+	///  @name Construction
 
-	OutlineTreeData (const OutlineTreeData & value) :
-		OutlineTreeData (value .type, value .object, value .path)
-	{ }
+	OutlineTreeData (OutlineIterType, X3D::X3DChildObject*, const Gtk::TreeModel::Path &);
+
+	OutlineTreeData (const OutlineTreeData &);
 
 	bool
-	is (X3D::X3DChildObject* const value) const
-	{
-		if (type == OutlineIterType::X3DBaseNode)
-			return static_cast <X3D::SFNode*> (object) -> getValue () == value;
+	is (X3D::X3DChildObject* const) const;
 
-		return object == value;
-	}
+	///  @name Member access
 
 	X3D::X3DChildObject*
 	get_object () const
@@ -108,11 +99,42 @@ public:
 	get_path () const
 	{ return path; }
 
-	~OutlineTreeData ()
-	{
-		if (type == OutlineIterType::X3DBaseNode)
-			delete object;
-	}
+	OutlineUserDataPtr
+	get_user_data () const;
+
+	static
+	OutlineUserDataPtr
+	get_user_data (X3D::X3DChildObject*);
+
+	///  @name Route handling
+
+	OutlineRoute &
+	get_inputs_below ()
+	{ return inputs_below; }
+
+	OutlineRoute &
+	get_inputs_above ()
+	{ return inputs_above; }
+
+	OutlineRoute &
+	get_outputs_below ()
+	{ return outputs_below; }
+
+	OutlineRoute &
+	get_outputs_above ()
+	{ return outputs_above; }
+
+	bool &
+	get_self_connection ()
+	{ return self_connection; }
+
+	OutlineRoute &
+	get_connections ()
+	{ return connections; }
+
+	///  @name Destruction
+
+	~OutlineTreeData ();
 
 protected:
 
@@ -127,6 +149,13 @@ private:
 	X3D::X3DChildObject*       object;
 	const OutlineIterType      type;
 	const Gtk::TreeModel::Path path;
+
+	OutlineRoute inputs_below;
+	OutlineRoute inputs_above;
+	OutlineRoute outputs_below;
+	OutlineRoute outputs_above;
+	bool         self_connection;
+	OutlineRoute connections;
 
 };
 

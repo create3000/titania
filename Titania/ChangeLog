@@ -1,3 +1,22 @@
+2013-11-23  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* X3DUserInterface.cpp:
+	* X3DBrowserWidget.cpp:
+	* OutlineEditor.h:
+	* initializeOnly.png:
+	* OutlineTreeData.h:
+	* OutlineUserData.h:
+	* OutlineTreeModel.h:
+	* OutlineRouteGraph.h:
+	* OutlineTreeData.cpp:
+	* OutlineTreeModel.cpp:
+	* X3DOutlineTreeView.h:
+	* OutlineRouteGraph.cpp:
+	* X3DOutlineTreeView.cpp:
+	* OutlineCellRenderer.h:
+	* OutlineCellRenderer.cpp: 
+
 2013-11-22  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* inputOnly.0.png:

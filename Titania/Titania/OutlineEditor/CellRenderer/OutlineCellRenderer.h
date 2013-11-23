@@ -108,7 +108,7 @@ private:
 	get_icon () const;
 
 	const Glib::RefPtr <Gdk::Pixbuf> &
-	get_access_type_icon (X3D::AccessType &, size_t &, size_t &) const;
+	get_access_type_icon (X3D::AccessType &) const;
 
 	std::string
 	get_node_name () const;
@@ -186,8 +186,6 @@ private:
 	FieldTypeImageIndex        fieldTypeImages;
 	AccessTypeImageIndex       accessTypeImages;
 	X3D::AccessType            accessType;
-	size_t                     inputRoutes;
-	size_t                     outputRoutes;
 
 	std::unique_ptr <TextViewEditable> textview;
 

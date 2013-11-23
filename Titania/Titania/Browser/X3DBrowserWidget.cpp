@@ -58,7 +58,6 @@
 #include <Titania/gzstream.h>
 
 #include <fstream>
-#include <iostream>
 
 #include <gdk/gdkx.h>
 

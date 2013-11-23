@@ -48,40 +48,74 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_USER_DATA_H__
-#define __TITANIA_OUTLINE_EDITOR_OUTLINE_USER_DATA_H__
-
-#include <Titania/X3D.h>
-#include <gtkmm.h>
+#include "OutlineTreeData.h"
 
 namespace titania {
 namespace puck {
 
-class OutlineUserData :
-	public X3D::X3DBase
+OutlineTreeData::OutlineTreeData (OutlineIterType type, X3D::X3DChildObject* object, const Gtk::TreeModel::Path & path) :
+	   Glib::Object (),
+	         object (object),
+	           type (type),
+	           path (path),
+	   inputs_below (),
+	   inputs_above (),
+	  outputs_below (),
+	  outputs_above (),
+	self_connection (false),
+	    connections ()
 {
-public:
+	if (type == OutlineIterType::X3DBaseNode)
+		this -> object = new X3D::SFNode (static_cast <X3D::SFNode*> (object) -> getValue ());
 
-	OutlineUserData () :
-		   open_path (),
-		       paths (),
-		    expanded (false),
-		all_expanded (false),
-		    selected (false)
-	{ }
+	get_user_data () -> paths .emplace (path);
+}
 
-	Gtk::TreeModel::Path             open_path; // Path of expanded node/clone
-	std::set <Gtk::TreeModel::Path>  paths;     // All visible paths
+OutlineTreeData::OutlineTreeData (const OutlineTreeData & value) :
+	OutlineTreeData (value .type, value .object, value .path)
+{ }
 
-	bool expanded;                  // Expanded state
-	bool all_expanded;              // Expanded mode
-	bool selected;                  // Selected state
+bool
+OutlineTreeData::is (X3D::X3DChildObject* const value) const
+{
+	if (type == OutlineIterType::X3DBaseNode)
+		return static_cast <X3D::SFNode*> (object) -> getValue () == value;
 
-};
+	return object == value;
+}
 
-typedef std::shared_ptr <OutlineUserData> OutlineUserDataPtr;
+OutlineUserDataPtr
+OutlineTreeData::get_user_data () const
+{
+	auto object = get_object ();
+
+	if (type == OutlineIterType::X3DBaseNode)
+		object = static_cast <X3D::SFNode*> (object) -> getValue ();
+
+	if (object)
+		return get_user_data (object);
+
+	return get_user_data (get_object ());
+}
+
+OutlineUserDataPtr
+OutlineTreeData::get_user_data (X3D::X3DChildObject* object)
+{
+	if (not object -> getUserData ())
+		object -> setUserData (X3D::UserDataPtr (new OutlineUserData ()));
+
+	return std::static_pointer_cast <OutlineUserData> (object -> getUserData ());
+}
+
+///  @name Destruction
+
+OutlineTreeData::~OutlineTreeData ()
+{
+	get_user_data () -> paths .erase (path);
+
+	if (type == OutlineIterType::X3DBaseNode)
+		delete object;
+}
 
 } // puck
 } // titania
-
-#endif
