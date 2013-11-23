@@ -83,12 +83,26 @@ OutlineRouteGraph::expand (const Gtk::TreeModel::iterator & iter)
 void
 OutlineRouteGraph::expand_node (const Gtk::TreeModel::iterator & parent)
 {
+	auto parentData = treeView -> get_model () -> get_data (parent);
+
+	// Forward connections
+
+	for (const auto & iter : parent -> children ())
+	{
+		auto data = treeView -> get_model () -> get_data (iter);
+
+		for (const auto & connection : parentData -> get_connections ())
+			data -> get_connections () .emplace (connection);
+	}
+
+	// Add routes
+
 	for (const auto & iter : parent -> children ())
 	{
 		auto data     = treeView -> get_model () -> get_data (iter);
 		auto userData = data -> get_user_data ();
 		auto field    = static_cast <X3D::X3DFieldDefinition*> (data -> get_object ());
-	
+
 		for (const auto & path : userData -> paths)
 		{
 			for (const auto & route : field -> getInputRoutes ())
@@ -117,8 +131,8 @@ OutlineRouteGraph::expand_field (const Gtk::TreeModel::iterator & parent)
 	{
 		auto data = treeView -> get_model () -> get_data (iter);
 			
-		for (const auto & route : parentData -> get_connections ())
-			data -> get_connections () .emplace (route);
+		for (const auto & connection : parentData -> get_connections ())
+			data -> get_connections () .emplace (connection);
 	}
 
 	//
@@ -325,9 +339,11 @@ OutlineRouteGraph::add_connection_above (const Gtk::TreeModel::iterator & iter,
                                          const Gtk::TreeModel::Path & sourcePath,
                                          const Gtk::TreeModel::Path & destinationPath)
 {
+	// destinationPath is above sourcePath
+
 	auto path = treeView -> get_model () -> get_path (iter);
 	auto data = treeView -> get_model () -> get_data (iter);
-	
+
 	if (path > destinationPath)
 	{
 		if (path < sourcePath)
@@ -347,6 +363,8 @@ OutlineRouteGraph::add_connection_below (const Gtk::TreeModel::iterator & iter,
                                          const Gtk::TreeModel::Path & sourcePath,
                                          const Gtk::TreeModel::Path & destinationPath)
 {
+	// destinationPath is below sourcePath
+
 	auto path = treeView -> get_model () -> get_path (iter);
 	auto data = treeView -> get_model () -> get_data (iter);
 	
@@ -671,6 +689,8 @@ OutlineRouteGraph::remove_connection_above (const Gtk::TreeModel::iterator & ite
                                             const Gtk::TreeModel::Path & sourcePath,
                                             const Gtk::TreeModel::Path & destinationPath)
 {
+	// destinationPath is above sourcePath
+
 	auto path = treeView -> get_model () -> get_path (iter);
 	auto data = treeView -> get_model () -> get_data (iter);
 	
@@ -693,6 +713,8 @@ OutlineRouteGraph::remove_connection_below (const Gtk::TreeModel::iterator & ite
                                             const Gtk::TreeModel::Path & sourcePath,
                                             const Gtk::TreeModel::Path & destinationPath)
 {
+	// destinationPath is below sourcePath
+
 	auto path = treeView -> get_model () -> get_path (iter);
 	auto data = treeView -> get_model () -> get_data (iter);
 	
