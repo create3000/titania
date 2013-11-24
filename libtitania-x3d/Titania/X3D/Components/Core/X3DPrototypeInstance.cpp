@@ -203,6 +203,11 @@ X3DPrototypeInstance::getRootNode () const
 void
 X3DPrototypeInstance::saveState ()
 {
+	if (isSaved ())
+		return;
+
+	X3DExecutionContext::saveState ();
+
 	// Delete children of node if not in scene
 
 	std::set <X3D::SFNode> children;
@@ -214,6 +219,8 @@ X3DPrototypeInstance::saveState ()
 	                  children .emplace (child);
 	                  return true;
 						});
+	
+	children .erase (this);
 
 	// Filter out scene nodes
 
@@ -237,6 +244,11 @@ X3DPrototypeInstance::saveState ()
 void
 X3DPrototypeInstance::restoreState ()
 {
+	if (not isSaved ())
+		return;
+
+	X3DExecutionContext::restoreState ();
+
 	for (const auto & child : savedChildren)
 		child -> restoreState ();
 	

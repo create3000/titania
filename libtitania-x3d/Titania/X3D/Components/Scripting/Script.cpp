@@ -194,6 +194,11 @@ Script::eventsProcessed ()
 void
 Script::saveState ()
 {
+	if (isSaved ())
+		return;
+
+	X3DScriptNode::saveState ();
+
 	javaScript = getBrowser () -> getJavaScriptEngine () -> createContext (this, "", "", 0);
 
 	setLoadState (NOT_STARTED_STATE);
@@ -202,6 +207,11 @@ Script::saveState ()
 void
 Script::restoreState ()
 {
+	if (not isSaved ())
+		return;
+
+	X3DScriptNode::restoreState ();
+
 	requestImmediateLoad ();
 }
 

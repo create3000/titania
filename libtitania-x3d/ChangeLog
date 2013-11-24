@@ -1,5 +1,15 @@
 2013-11-24  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBaseNode.h:
+	* X3DBaseNode.cpp:
+	* Script.cpp:
+	* Inline.cpp:
+	* X3DBindableNode.cpp:
+	* X3DTimeDependentNode.cpp:
+	* X3DPrototypeInstance.cpp: 
+
+2013-11-24  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Route.h:
 	* Route.cpp:
 	* X3DExecutionContext.cpp: 

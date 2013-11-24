@@ -188,15 +188,19 @@ public:
 	void
 	isInternal (bool);
 	
+	bool
+	isSaved () const
+	{ return saved; }
+
 	virtual
 	void
 	saveState ()
-	{ }
+	{ saved = true; }
 
 	virtual
 	void
 	restoreState ()
-	{ }
+	{ saved = false; }
 
 	///  @name Event handling
 	
@@ -357,6 +361,7 @@ private:
 	size_t               numUserDefinedFields;  // Number of user defined fields
 
 	bool                 internal;
+	bool                 saved;
 	bool                 extendedEventHandling; // Handle initializeOnlys as input events
 	NodeId               nodeId;                // Router eventsProcessed id
 	std::deque <EventId> events;

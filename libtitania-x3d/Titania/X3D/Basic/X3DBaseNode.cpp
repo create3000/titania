@@ -124,6 +124,7 @@ X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const 
 	         fieldAliases (),
 	 numUserDefinedFields (0),
 	             internal (false),
+	                saved (false),
 	extendedEventHandling (true),
 	               nodeId ({ 0 }),
 	   receivedInputEvent (false),

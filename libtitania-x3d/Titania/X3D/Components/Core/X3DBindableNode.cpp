@@ -98,6 +98,11 @@ X3DBindableNode::_set_bind ()
 void
 X3DBindableNode::saveState ()
 {
+	if (isSaved ())
+		return;
+
+	X3DChildNode::saveState ();
+
 	wasBound = isBound ();
 
 	for (auto & layer : getLayers ())
@@ -107,6 +112,11 @@ X3DBindableNode::saveState ()
 void
 X3DBindableNode::restoreState ()
 {
+	if (not isSaved ())
+		return;
+
+	X3DChildNode::restoreState ();
+
 	if (wasBound)
 		set_bind () = true;
 }

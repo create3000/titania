@@ -281,6 +281,11 @@ Inline::set_url ()
 void
 Inline::saveState ()
 {
+	if (isSaved ())
+		return;
+
+	X3DChildNode::saveState ();
+
 	wasLoaded = load ();
 
 	if (load ())
@@ -290,6 +295,11 @@ Inline::saveState ()
 void
 Inline::restoreState ()
 {
+	if (not isSaved ())
+		return;
+
+	X3DChildNode::restoreState ();
+
 	if (wasLoaded)
 		load () = true;
 }
