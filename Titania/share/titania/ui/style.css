@@ -1,17 +1,17 @@
 /*
  * Titania Styles CSS
  */
- 
-/*
-#OutlineTreeViewEditor .textview-editable {
-	background-color: mix (bg[SELECTED], bg[NORMAL], 0.9);
-}
 
-#OutlineTreeViewEditor .textview-editable:selected {
-	color: @selected_fg_color;
-	background-color: @selected_bg_color;
+/*
+* {
+	-GtkTreeView-expander-size: 6;
 }
 */
+
+#OutlineTreeViewEditor column-header .button {
+	border-left-width: 0;
+	border-right-width: 0;
+}
 
 #Console {
 	font-family: monospace;

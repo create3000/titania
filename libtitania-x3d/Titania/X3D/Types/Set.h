@@ -59,7 +59,7 @@ namespace X3D {
 
 template <class Key,
           class Compare   = std::less <Key>,
-          class Allocator = std::allocator <Key>>
+          class Allocator = std::allocator <Key>> 
 class Set :
 	public X3DOutput
 {
@@ -79,25 +79,26 @@ public:
 
 	Set () :
 		X3DOutput (),
-		set ()
+		      set ()
 	{ }
-	
+
 	Set (const Set & value) :
 		X3DOutput (),
-		set (value .set)
+		      set (value .set)
 	{ }
 
 	Set (Set && value) :
 		X3DOutput (),
-		set (std::move (value .set))
+		      set (std::move (value .set))
 	{ }
 
 	//  @name Assignment
-	
+
 	Set &
 	operator = (const Set & value)
 	{
 		set = value .set;
+		processInterests ();
 		return *this;
 	}
 
@@ -105,15 +106,16 @@ public:
 	operator = (Set && value)
 	{
 		set = std::move (value .set);
+		processInterests ();
 		return *this;
 	}
-	
+
 	allocator_type
 	get_allocator () const
 	{ return set .get_allocator (); }
 
 	//  @name Iterators
-	
+
 	iterator
 	begin ()
 	{ return set .begin (); }
@@ -175,7 +177,7 @@ public:
 	size_type
 	max_size () const
 	{ return set .max_size (); }
-	
+
 	//  @name Modifiers
 
 	void
@@ -200,7 +202,7 @@ public:
 
 		return pair;
 	}
-	
+
 	size_type
 	erase (const key_type & key)
 	{

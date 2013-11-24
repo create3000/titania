@@ -1,5 +1,11 @@
 2013-11-24  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Set.h:
+	* X3DOutput.h:
+	* X3DOutput.cpp: 
+
+2013-11-24  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBaseNode.h:
 	* X3DBaseNode.cpp:
 	* Script.cpp:

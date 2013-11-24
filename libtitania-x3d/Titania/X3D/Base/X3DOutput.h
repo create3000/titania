@@ -57,16 +57,18 @@
 #include <map>
 #include <set>
 #include <vector>
+#include <tuple>
 
 namespace titania {
 namespace X3D {
 
 class X3DInput;
+class X3DOutput;
 
 typedef std::function <void (void)>           Requester;
 typedef std::list <Requester>                 RequesterArray;
 typedef RequesterArray::iterator              RequesterId;
-typedef std::pair <const void*, const void*>  RequesterPair;
+typedef std::tuple <const X3DOutput*, const void*, const void*>  RequesterPair;
 typedef std::map <RequesterPair, RequesterId> RequesterIndex;
 
 class X3DOutput :
@@ -107,9 +109,11 @@ public:
 	void
 	addInterest (Class* object, Function && memberFunction, Arguments && ... arguments) const
 	{
-		insertInput (object, reinterpret_cast <void*> (object ->* memberFunction));
-		insertInterest (std::bind (memberFunction, object, std::forward <Arguments> (arguments) ...),
-		                (X3DInput*) object, reinterpret_cast <void*> (object ->* memberFunction));
+		bool inserted = insertInterest (std::bind (memberFunction, object, std::forward <Arguments> (arguments) ...),
+		                                (X3DInput*) object, reinterpret_cast <void*> (object ->* memberFunction));
+
+		if (inserted)
+			insertInput (object, reinterpret_cast <void*> (object ->* memberFunction));
 	}
 
 	template <class Class, class Function, class ... Arguments>
@@ -117,27 +121,33 @@ public:
 	void
 	addInterest (Class & object, Function && memberFunction, Arguments && ... arguments) const
 	{
-		insertInput (&object, reinterpret_cast <void*> (object .* memberFunction));
-		insertInterest (std::bind (memberFunction, object, std::forward <Arguments> (arguments) ...),
-		                (X3DInput*) &object, reinterpret_cast <void*> (object .* memberFunction));
+		bool inserted = insertInterest (std::bind (memberFunction, object, std::forward <Arguments> (arguments) ...),
+		                                (X3DInput*) &object, reinterpret_cast <void*> (object .* memberFunction));
+
+		if (inserted)
+			insertInput (&object, reinterpret_cast <void*> (object .* memberFunction));
 	}
 
 	template <class Class>
 	void
 	addInterest (Class* object, void (Class::* memberFunction) (void)) const
 	{
-		insertInput (object, reinterpret_cast <void*> (object ->* memberFunction));
-		insertInterest (std::bind (memberFunction, object),
-		                (X3DInput*) object, reinterpret_cast <void*> (object ->* memberFunction));
+		bool inserted = insertInterest (std::bind (memberFunction, object),
+		                                (X3DInput*) object, reinterpret_cast <void*> (object ->* memberFunction));
+
+		if (inserted)
+			insertInput (object, reinterpret_cast <void*> (object ->* memberFunction));
 	}
 
 	template <class Class>
 	void
 	addInterest (Class & object, void (Class::* memberFunction) (void)) const
 	{
-		insertInput (&object, reinterpret_cast <void*> (object ->* memberFunction));
-		insertInterest (std::bind (memberFunction, object),
-		                (X3DInput*) &object, reinterpret_cast <void*> (object .* memberFunction));
+		bool inserted = insertInterest (std::bind (memberFunction, object),
+		                                (X3DInput*) &object, reinterpret_cast <void*> (object .* memberFunction));
+
+		if (inserted)
+			insertInput (&object, reinterpret_cast <void*> (object ->* memberFunction));
 	}
 
 	void
@@ -150,7 +160,7 @@ public:
 	void
 	removeInterest (Class* object, Function && memberFunction) const
 	{
-		eraseInput (object);
+		eraseInput (object, reinterpret_cast <void*> (object ->* memberFunction));
 		eraseInterest ((X3DInput*) object, reinterpret_cast <void*> (object ->* memberFunction));
 	}
 
@@ -159,7 +169,7 @@ public:
 	void
 	removeInterest (Class & object, Function && memberFunction) const
 	{
-		eraseInput (&object);
+		eraseInput (&object, reinterpret_cast <void*> (object .* memberFunction));
 		eraseInterest ((X3DInput*) &object, reinterpret_cast <void*> (object .* memberFunction));
 	}
 
@@ -188,13 +198,16 @@ protected:
 
 private:
 
-	typedef std::set <const X3DInput*> InputSet;
+	typedef std::set <std::pair <const X3DInput*, const void*>> InputSet;
 
 	bool
 	hasInterest (const void*, const void*) const;
 
+	///  @name Force add interest
+
 	///  Add basic interest.
-	void
+
+	bool
 	insertInterest (const Requester &, const void*, const void*) const;
 
 	void
@@ -208,11 +221,17 @@ private:
 	eraseInterest (const void*, const void*) const;
 
 	void
-	eraseInput (const X3DInput*) const;
+	eraseInput (const X3DInput*, void*) const;
 
 	void
-	eraseInput (const void*) const
+	eraseInput (const void*, void*) const
 	{ }
+
+	void
+	insertDeleter (const X3DOutput*, const void*, const void*) const;
+
+	void
+	removeDeleter (const X3DOutput*, const void*, const void*) const;
 
 	mutable RequesterArray          requesters;
 	mutable RequesterIndex          requesterIndex;

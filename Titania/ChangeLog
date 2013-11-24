@@ -1,5 +1,18 @@
 2013-11-24  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* style.css:
+	* node.1.1.png:
+	* node.1.0.png:
+	* node.0.0.png:
+	* node.0.1.png:
+	* BrowserWindow.cpp:
+	* X3DOutlineTreeView.h:
+	* OutlineTreeObserver.h:
+	* X3DOutlineTreeView.cpp:
+	* OutlineTreeObserver.cpp: 
+
+2013-11-24  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* OutlineRouteGraph.h:
 	* X3DOutlineTreeView.h:

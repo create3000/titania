@@ -63,9 +63,9 @@ namespace puck {
 X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DSFNode <X3D::X3DExecutionContext> & executionContext) :
 	              Gtk::TreeView (),
 	X3DOutlineTreeViewInterface (get_ui ("OutlineTreeView.ui"), gconf_dir ()),
-	                      model (OutlineTreeModel::create (getBrowserWindow (), executionContext)),
 	               treeObserver (new OutlineTreeObserver (this)),
 	                 routeGraph (new OutlineRouteGraph (this)),
+	                      model (OutlineTreeModel::create (getBrowserWindow (), executionContext)),
 	               cellrenderer (Gtk::manage (new OutlineCellRenderer (getBrowser (), this))),
 	                expandLevel (0)
 {
@@ -98,12 +98,12 @@ X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DSFNode <X3D::X3DExecutionC
 
 	append_column (*treeviewcolumn_name);
 
-	//	// Pad column
-	//
-	//	Gtk::TreeViewColumn* treeviewcolumn_pad = Gtk::manage (new Gtk::TreeViewColumn ());
-	//	treeviewcolumn_pad -> set_expand (true);
-	//	append_column (*treeviewcolumn_pad);
+	// Pad column
 	
+	Gtk::TreeViewColumn* treeviewcolumn_pad = Gtk::manage (new Gtk::TreeViewColumn ());
+	treeviewcolumn_pad -> set_expand (true);
+	append_column (*treeviewcolumn_pad);
+
 	//
 
 	set_execution_context (executionContext);
@@ -252,7 +252,7 @@ X3DOutlineTreeView::set_rootNodes ()
 
 	set_model (get_model ());
 
-	++ expandLevel; // Disable shift key
+	disable_shift_key (); 
 
 	for (auto & iter : get_model () -> children ())
 	{
@@ -262,7 +262,7 @@ X3DOutlineTreeView::set_rootNodes ()
 			expand_row (get_model () -> get_path (iter), false);
 	}
 
-	-- expandLevel; // Enable shift key
+	enable_shift_key ();
 }
 
 bool
@@ -279,7 +279,10 @@ X3DOutlineTreeView::on_test_expand_row (const Gtk::TreeModel::iterator & iter, c
 void
 X3DOutlineTreeView::on_row_expanded (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path)
 {
+	//__LOG__ << path .to_string () << std::endl;
+	
 	// Set expanded first to prevent loop with clones.
+
 	set_expanded (iter, true);
 	set_open_path (iter, path);
 
@@ -310,6 +313,8 @@ X3DOutlineTreeView::on_row_collapsed (const Gtk::TreeModel::iterator & iter, con
 	get_model () -> clear (iter);
 
 	toggle_expand (iter, path);
+	
+	columns_autosize ();
 }
 
 void
@@ -478,7 +483,7 @@ X3DOutlineTreeView::toggle_expand (const Gtk::TreeModel::iterator & iter, const 
 void
 X3DOutlineTreeView::auto_expand (const Gtk::TreeModel::iterator & parent)
 {
-	++ expandLevel;
+	disable_shift_key ();
 
 	switch (get_data_type (parent))
 	{
@@ -556,7 +561,7 @@ X3DOutlineTreeView::auto_expand (const Gtk::TreeModel::iterator & parent)
 		}
 	}
 
-	-- expandLevel;
+	enable_shift_key ();
 }
 
 X3DOutlineTreeView::~X3DOutlineTreeView ()

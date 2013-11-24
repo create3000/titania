@@ -133,6 +133,14 @@ protected:
 	bool
 	get_shift_key ();
 
+	void
+	disable_shift_key ()
+	{ ++ expandLevel; }
+
+	void
+	enable_shift_key ()
+	{ -- expandLevel; }
+
 
 private:
 
@@ -194,11 +202,11 @@ private:
 
 	///  @name Members
 
-	Glib::RefPtr <OutlineTreeModel>             model;
-	const std::unique_ptr <OutlineTreeObserver> treeObserver;
-	const std::unique_ptr <OutlineRouteGraph>   routeGraph;
-	OutlineCellRenderer*                        cellrenderer;
-	size_t                                      expandLevel;
+	std::unique_ptr <OutlineTreeObserver> treeObserver;
+	std::unique_ptr <OutlineRouteGraph>   routeGraph;
+	Glib::RefPtr <OutlineTreeModel>       model;
+	OutlineCellRenderer*                  cellrenderer;
+	size_t                                expandLevel;
 
 };
 

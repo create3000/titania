@@ -11,14 +11,70 @@ PROTO Test [
   Group { }
 }
 
-DEF Test1 Test { }
+DEF Above Test { }
 
-Test {
-  children DEF Test2 Test { }
+DEF Middle Test {
+  children DEF Nested Test { }
 }
 
-DEF Test3 Test { }
+DEF Below Test { }
 
-ROUTE Test2.isBound TO Test1.set_bind
-ROUTE Test2.isBound TO Test3.set_bind
-ROUTE Test2.enabled_changed TO Test2.set_enabled
+DEF Script1 Test { }
+
+DEF Script2 Test { }
+
+DEF Scripting Transform {
+  children [
+    DEF Button1 Transform {
+      children [
+        DEF Box Transform {
+          translation -2 0 0
+          children Shape {
+            appearance Appearance {
+              material Material { }
+            }
+            geometry Box { }
+          }
+        }
+        DEF Touch1 TouchSensor { }
+      ]
+    }
+    DEF Button2 Transform {
+      children [
+        DEF Box1 Transform {
+          translation 2 0 0
+          children Shape {
+            appearance Appearance {
+              material Material { }
+            }
+            geometry Box { }
+          }
+        }
+        DEF Touch2 TouchSensor { }
+      ]
+    }
+    DEF RouteScript Script {
+      eventIn SFTime addRoute
+      eventIn SFTime deleteRoute
+      field   SFNode node1 USE Script1
+      field   SFNode node2 USE Script2
+
+      url "vrmlscript:
+function addRoute ()
+{
+	Browser .addRoute (node1, 'isBound', node2, 'set_bind');
+}
+function deleteRoute ()
+{
+	Browser .deleteRoute (node1, 'isBound', node2, 'set_bind');
+}
+"
+    }
+  ]
+}
+
+ROUTE Nested.isBound TO Above.set_bind
+ROUTE Nested.isBound TO Below.set_bind
+ROUTE Nested.enabled_changed TO Nested.set_enabled
+ROUTE Touch1.touchTime TO RouteScript.addRoute
+ROUTE Touch2.touchTime TO RouteScript.deleteRoute

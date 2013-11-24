@@ -125,6 +125,9 @@ OutlineTreeObserver::watch_child (const Gtk::TreeModel::iterator & iter, const G
 		{
 			auto field = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (iter));
 
+			field -> getInputRoutes ()  .addInterest (this, &OutlineTreeObserver::on_row_changed, path);
+			field -> getOutputRoutes () .addInterest (this, &OutlineTreeObserver::on_row_changed, path);
+
 			switch (field -> getType ())
 			{
 				case X3D::X3DConstants::MFNode:
@@ -175,6 +178,12 @@ OutlineTreeObserver::unwatch_child (const Gtk::TreeModel::iterator & iter, bool 
 		case OutlineIterType::X3DField:
 		{
 			auto field = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (iter));
+
+			if (not root)
+			{
+				field -> getInputRoutes ()  .removeInterest (this, &OutlineTreeObserver::on_row_changed);
+				field -> getOutputRoutes () .removeInterest (this, &OutlineTreeObserver::on_row_changed);
+			}
 
 			field -> getInputRoutes ()  .removeInterest (this, &OutlineTreeObserver::toggle_field);
 			field -> getOutputRoutes () .removeInterest (this, &OutlineTreeObserver::toggle_field);
@@ -241,12 +250,12 @@ OutlineTreeObserver::update_field (const Gtk::TreeModel::Path & path)
 
 	treeView -> get_model () -> row_has_child_toggled (path, iter);
 
-	++ treeView -> expandLevel; // Disable shift key
+	treeView -> disable_shift_key ();
 
 	treeView -> set_all_expanded (iter, all_expanded);
 	treeView -> expand_row (path, false);
 
-	-- treeView -> expandLevel; // Enable shift key
+	treeView -> enable_shift_key ();
 }
 
 void
@@ -256,15 +265,19 @@ OutlineTreeObserver::toggle_field (const Gtk::TreeModel::Path & path)
 
 	Gtk::TreeModel::iterator iter = treeView -> get_model () -> get_iter (path);
 
-	treeView -> Gtk::TreeView::collapse_row (path);
+	treeView -> collapse_row (path);
 	treeView -> get_model () -> row_has_child_toggled (path, iter);
 
-	++ treeView -> expandLevel; // Disable shift key
+	treeView -> disable_shift_key ();
 
 	treeView -> set_all_expanded (iter, true);
 	treeView -> expand_row (path, false);
 
-	-- treeView -> expandLevel; // Enable shift key
+	treeView -> enable_shift_key ();
 }
+
+OutlineTreeObserver::~OutlineTreeObserver ()
+{ }
+
 } // puck
 } // titania

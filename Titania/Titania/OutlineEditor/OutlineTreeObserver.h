@@ -80,6 +80,8 @@ public:
 	void
 	unwatch_tree (const Gtk::TreeModel::iterator &, bool = true);
 
+	virtual
+	~OutlineTreeObserver ();
 
 private:
 

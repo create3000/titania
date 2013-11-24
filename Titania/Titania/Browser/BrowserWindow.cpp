@@ -112,10 +112,13 @@ BrowserWindow::initialize ()
 	getOutlineEditor () .reparent (getOutlineEditorBox (), getWindow ());
 
 	// CSS
-	Glib::RefPtr <Gtk::CssProvider> cssProvider = Gtk::CssProvider::create ();
-	cssProvider -> load_from_path (get_ui ("style.css"));
-	cssProvider -> load_from_data (getStyles ());
-	Gtk::StyleContext::add_provider_for_screen (Gdk::Screen::get_default (), cssProvider, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+	Glib::RefPtr <Gtk::CssProvider> cssProvider1 = Gtk::CssProvider::create ();
+	cssProvider1 -> load_from_path (get_ui ("style.css"));
+	Gtk::StyleContext::add_provider_for_screen (Gdk::Screen::get_default (), cssProvider1, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+
+	Glib::RefPtr <Gtk::CssProvider> cssProvider2 = Gtk::CssProvider::create ();
+	cssProvider2 -> load_from_data (getStyles ());
+	Gtk::StyleContext::add_provider_for_screen (Gdk::Screen::get_default (), cssProvider2, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 
 	// Drag & drop targets
 	std::vector <Gtk::TargetEntry> targets = {
