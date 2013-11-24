@@ -59,7 +59,9 @@
 namespace titania {
 namespace puck {
 
-constexpr double M_PI3_2 = 1.5 * M_PI;
+using math::M_PI1_2;
+using math::M_PI2;
+using math::M_PI3_2;
 
 constexpr int    NAME_X_PAD        = 1;
 constexpr int    ACCESS_TYPE_X_PAD = 8;

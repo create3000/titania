@@ -66,7 +66,11 @@ class OutlineRouteGraph :
 {
 public:
 
+	///  @name Construction
+
 	OutlineRouteGraph (X3DOutlineTreeView* const);
+
+	///  @name Operations
 
 	void
 	expand (const Gtk::TreeModel::iterator &);
@@ -76,6 +80,8 @@ public:
 
 
 private:
+
+	///  @name Operations
 
 	void
 	expand_node (const Gtk::TreeModel::iterator &);
@@ -127,6 +133,8 @@ private:
 
 	void
 	remove_route (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &, const Gtk::TreeModel::Path &, const Gtk::TreeModel::Path &);
+
+	///  @name Members
 
 	X3DOutlineTreeView* const treeView;
 

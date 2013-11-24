@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -57,15 +57,14 @@
 #include "OutlineTree.h"
 #include "OutlineTreeData.h"
 #include "OutlineUserData.h"
-#include "OutlineRouteGraph.h"
-
-#include <Titania/X3D.h>
 
 namespace titania {
 namespace puck {
 
-class OutlineTreeModel;
 class OutlineCellRenderer;
+class OutlineRouteGraph;
+class OutlineTreeModel;
+class OutlineTreeObserver;
 
 class X3DOutlineTreeView :
 	public Gtk::TreeView, public X3DOutlineTreeViewInterface
@@ -123,6 +122,10 @@ protected:
 
 	///  @name Member access
 
+	const std::unique_ptr <OutlineTreeObserver> &
+	get_tree_observer () const
+	{ return treeObserver; }
+
 	OutlineCellRenderer*
 	get_cellrenderer () const
 	{ return cellrenderer; }
@@ -130,16 +133,10 @@ protected:
 	bool
 	get_shift_key ();
 
-	///  @name Operations
-
-	void
-	watch (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
-
-	void
-	unwatch_tree (const Gtk::TreeModel::iterator &, bool = true);
-
 
 private:
+
+	friend class OutlineTreeObserver;
 
 	///  @name Member access
 
@@ -178,27 +175,6 @@ private:
 	on_row_collapsed (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path) final;
 
 	void
-	watch_expanded (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
-
-	void
-	watch_children (const Gtk::TreeModel::iterator &);
-
-	void
-	unwatch (const Gtk::TreeModel::iterator &, bool);
-
-	void
-	on_row_has_child_toggled (const Gtk::TreeModel::Path &);
-
-	void
-	on_row_changed (const Gtk::TreeModel::Path &);
-
-	void
-	update_field (const Gtk::TreeModel::Path &);
-
-	void
-	toggle_field (const Gtk::TreeModel::Path &);
-
-	void
 	collapse_clone (const Gtk::TreeModel::iterator &);
 
 	void
@@ -216,10 +192,13 @@ private:
 	void
 	auto_expand (const Gtk::TreeModel::iterator &);
 
-	Glib::RefPtr <OutlineTreeModel> model;
-	OutlineRouteGraph               routeGraph;
-	OutlineCellRenderer*            cellrenderer;
-	size_t                          expandLevel;
+	///  @name Members
+
+	Glib::RefPtr <OutlineTreeModel>             model;
+	const std::unique_ptr <OutlineTreeObserver> treeObserver;
+	const std::unique_ptr <OutlineRouteGraph>   routeGraph;
+	OutlineCellRenderer*                        cellrenderer;
+	size_t                                      expandLevel;
 
 };
 

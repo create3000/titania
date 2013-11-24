@@ -25,6 +25,7 @@ titania_SOURCES =  \
 	Titania/OutlineEditor/OutlineSelection.cpp \
 	Titania/OutlineEditor/OutlineTreeData.cpp \
 	Titania/OutlineEditor/OutlineTreeModel.cpp \
+	Titania/OutlineEditor/OutlineTreeObserver.cpp \
 	Titania/OutlineEditor/OutlineTreeViewEditor.cpp \
 	Titania/OutlineEditor/X3DOutlineTreeView.cpp \
 	Titania/Undo/UndoGroup.cpp \

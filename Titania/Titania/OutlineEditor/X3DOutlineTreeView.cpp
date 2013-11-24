@@ -54,6 +54,8 @@
 #include "../Configuration/config.h"
 #include "CellRenderer/OutlineCellRenderer.h"
 #include "OutlineTreeModel.h"
+#include "OutlineRouteGraph.h"
+#include "OutlineTreeObserver.h"
 
 namespace titania {
 namespace puck {
@@ -62,7 +64,8 @@ X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DSFNode <X3D::X3DExecutionC
 	              Gtk::TreeView (),
 	X3DOutlineTreeViewInterface (get_ui ("OutlineTreeView.ui"), gconf_dir ()),
 	                      model (OutlineTreeModel::create (getBrowserWindow (), executionContext)),
-	                 routeGraph (this),
+	               treeObserver (new OutlineTreeObserver (this)),
+	                 routeGraph (new OutlineRouteGraph (this)),
 	               cellrenderer (Gtk::manage (new OutlineCellRenderer (getBrowser (), this))),
 	                expandLevel (0)
 {
@@ -217,8 +220,8 @@ X3DOutlineTreeView::set_execution_context (const X3D::X3DSFNode <X3D::X3DExecuti
 
 	for (const auto & child : get_model () -> children ())
 	{
-		routeGraph .collapse (child);
-		unwatch_tree (child);
+		routeGraph -> collapse (child);
+		treeObserver -> unwatch_tree (child);
 	}
 	
 	get_model () -> get_execution_context () -> getRootNodes () .removeInterest (this, &X3DOutlineTreeView::set_rootNodes);
@@ -237,8 +240,8 @@ X3DOutlineTreeView::set_rootNodes ()
 
 	for (const auto & child : get_model () -> children ())
 	{
-		routeGraph .collapse (child);
-		unwatch_tree (child);
+		routeGraph -> collapse (child);
+		treeObserver -> unwatch_tree (child);
 	}
 
 	unset_model ();
@@ -280,9 +283,8 @@ X3DOutlineTreeView::on_row_expanded (const Gtk::TreeModel::iterator & iter, cons
 	set_expanded (iter, true);
 	set_open_path (iter, path);
 
-	routeGraph .expand (iter);
-
-	watch_expanded (iter, path);
+	routeGraph -> expand (iter);
+	treeObserver -> watch (iter, path);
 
 	auto_expand (iter);
 }
@@ -302,218 +304,12 @@ X3DOutlineTreeView::on_row_collapsed (const Gtk::TreeModel::iterator & iter, con
 	set_expanded (iter, false);
 	set_all_expanded (iter, false);
 
-	routeGraph .collapse (iter);
-	unwatch_tree (iter);
+	routeGraph -> collapse (iter);
+	treeObserver -> unwatch_tree (iter);
 
 	get_model () -> clear (iter);
 
 	toggle_expand (iter, path);
-}
-
-void
-X3DOutlineTreeView::watch_expanded (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path)
-{
-	switch (get_data_type (iter))
-	{
-		case OutlineIterType::X3DField:
-		{
-			auto field = static_cast <X3D::X3DFieldDefinition*> (get_object (iter));
-
-			if (get_all_expanded (iter))
-			{
-				field -> getInputRoutes ()  .addInterest (this, &X3DOutlineTreeView::toggle_field, path);
-				field -> getOutputRoutes () .addInterest (this, &X3DOutlineTreeView::toggle_field, path);
-			}
-
-			switch (field -> getType ())
-			{
-				case X3D::X3DConstants::SFNode:
-				case X3D::X3DConstants::MFNode:
-				{
-					field -> addInterest (this, &X3DOutlineTreeView::update_field, path);
-					break;
-				}
-				default:
-					break;
-			}
-
-			break;
-		}
-		default:
-			break;
-	}
-
-	watch_children (iter);
-}
-
-void
-X3DOutlineTreeView::watch_children (const Gtk::TreeModel::iterator & parent)
-{
-	for (const auto & child : parent -> children ())
-		watch (child, get_model () -> get_path (child));
-}
-
-void
-X3DOutlineTreeView::watch (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path)
-{
-	switch (get_data_type (iter))
-	{
-		case OutlineIterType::X3DInputRoute:
-		case OutlineIterType::X3DOutputRoute:
-			break;
-
-		case OutlineIterType::X3DFieldValue:
-		{
-			auto field = static_cast <X3D::X3DFieldDefinition*> (get_object (iter));
-
-			field -> addInterest (this, &X3DOutlineTreeView::on_row_changed, path);
-
-			break;
-		}
-		case OutlineIterType::X3DField:
-		{
-			auto field = static_cast <X3D::X3DFieldDefinition*> (get_object (iter));
-
-			switch (field -> getType ())
-			{
-				case X3D::X3DConstants::MFNode:
-				{
-					X3D::MFNode* mfnode = static_cast <X3D::MFNode*> (field);
-
-					mfnode -> addInterest (this, &X3DOutlineTreeView::on_row_has_child_toggled, path);
-
-					break;
-				}
-				default:
-					break;
-			}
-
-			break;
-		}
-		case OutlineIterType::X3DBaseNode:
-			break;
-	}
-}
-
-void
-X3DOutlineTreeView::unwatch_tree (const Gtk::TreeModel::iterator & iter, bool root)
-{
-	unwatch (iter, root);
-
-	for (const auto & child : iter -> children ())
-		unwatch_tree (child, false);
-}
-
-void
-X3DOutlineTreeView::unwatch (const Gtk::TreeModel::iterator & iter, bool root)
-{
-	switch (get_data_type (iter))
-	{
-		case OutlineIterType::X3DInputRoute:
-		case OutlineIterType::X3DOutputRoute:
-			break;
-
-		case OutlineIterType::X3DFieldValue:
-		{
-			auto field = static_cast <X3D::X3DFieldDefinition*> (get_object (iter));
-
-			field -> removeInterest (this, &X3DOutlineTreeView::on_row_changed);
-
-			break;
-		}
-		case OutlineIterType::X3DField:
-		{
-			auto field = static_cast <X3D::X3DFieldDefinition*> (get_object (iter));
-
-			field -> getInputRoutes ()  .removeInterest (this, &X3DOutlineTreeView::toggle_field);
-			field -> getOutputRoutes () .removeInterest (this, &X3DOutlineTreeView::toggle_field);
-
-			switch (field -> getType ())
-			{
-				case X3D::X3DConstants::SFNode:
-				{
-					field -> removeInterest (this, &X3DOutlineTreeView::update_field);
-					break;
-				}
-				case X3D::X3DConstants::MFNode:
-				{
-					field -> removeInterest (this, &X3DOutlineTreeView::update_field);
-
-					if (not root)
-						field -> removeInterest (this, &X3DOutlineTreeView::on_row_has_child_toggled);
-
-					break;
-				}
-				default:
-					break;
-			}
-
-			break;
-		}
-		case OutlineIterType::X3DBaseNode:
-		{
-			auto open_path = get_open_path (iter);
-
-			if (open_path .size () and open_path == get_model () -> get_path (iter))
-				set_open_path (iter, Gtk::TreeModel::Path ());
-
-			break;
-		}
-	}
-}
-
-void
-X3DOutlineTreeView::on_row_has_child_toggled (const Gtk::TreeModel::Path & path)
-{
-	get_model () -> row_has_child_toggled (path, get_model () -> get_iter (path));
-
-	expand_row (path, false);
-}
-
-void
-X3DOutlineTreeView::on_row_changed (const Gtk::TreeModel::Path & path)
-{
-	//__LOG__ << X3D::SFTime (chrono::now ()) << std::endl;
-
-	get_model () -> row_changed (path, get_model () -> get_iter (path));
-}
-
-void
-X3DOutlineTreeView::update_field (const Gtk::TreeModel::Path & path)
-{
-	//__LOG__ << path .to_string () << std::endl;
-
-	Gtk::TreeModel::iterator iter         = get_model () -> get_iter (path);
-	bool                     all_expanded = get_all_expanded (iter);
-
-	collapse_row (path);
-
-	get_model () -> row_has_child_toggled (path, iter);
-
-	++ expandLevel; // Disable shift key
-
-	set_all_expanded (iter, all_expanded);
-	expand_row (path, false);
-
-	-- expandLevel; // Enable shift key
-}
-
-void
-X3DOutlineTreeView::toggle_field (const Gtk::TreeModel::Path & path)
-{
-	//__LOG__ << std::endl;
-
-	Gtk::TreeModel::iterator iter = get_model () -> get_iter (path);
-
-	Gtk::TreeView::collapse_row (path);
-	get_model () -> row_has_child_toggled (path, iter);
-
-	++ expandLevel; // Disable shift key
-
-	set_all_expanded (iter, true);
-	expand_row (path, false);
-
-	-- expandLevel; // Enable shift key
 }
 
 void

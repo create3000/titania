@@ -48,21 +48,68 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_MATH_CONSTANTS_H__
-#define __TITANIA_MATH_CONSTANTS_H__
+#ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_TREE_OBSERVER_H__
+#define __TITANIA_OUTLINE_EDITOR_OUTLINE_TREE_OBSERVER_H__
 
-#include <cmath>
+#include <gtkmm.h>
+
+#include <Titania/X3D.h>
 
 namespace titania {
-namespace math {
+namespace puck {
 
-constexpr double M_PI1_2 = M_PI / 2;
-constexpr double M_PI2   = 2 * M_PI;
-constexpr double M_PI3_2 = 1.5 * M_PI;
+class X3DOutlineTreeView;
 
-constexpr double M_PHI = 1.6180339887498948482045868343656381177203091798057628;
+class OutlineTreeObserver :
+	public X3D::X3DInput
+{
+public:
 
-} // math
+	///  @name Construction
+
+	OutlineTreeObserver (X3DOutlineTreeView* const);
+
+	///  @name Operations
+
+	void
+	watch (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
+
+	void
+	watch_child (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
+
+	void
+	unwatch_tree (const Gtk::TreeModel::iterator &, bool = true);
+
+
+private:
+
+	///  @name Operations
+
+	void
+	watch_children (const Gtk::TreeModel::iterator &);
+
+	void
+	unwatch_child (const Gtk::TreeModel::iterator &, bool);
+
+	void
+	on_row_has_child_toggled (const Gtk::TreeModel::Path &);
+
+	void
+	on_row_changed (const Gtk::TreeModel::Path &);
+
+	void
+	update_field (const Gtk::TreeModel::Path &);
+
+	void
+	toggle_field (const Gtk::TreeModel::Path &);
+
+	///  @name Members
+
+	X3DOutlineTreeView* const treeView;
+
+};
+
+} // puck
 } // titania
 
 #endif
