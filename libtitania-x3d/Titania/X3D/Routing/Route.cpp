@@ -65,12 +65,13 @@ const std::string Route::emptyString;
 Route::Route (X3DExecutionContext* const executionContext,
               const SFNode & sourceNode,      X3DFieldDefinition* const sourceField,
               const SFNode & destinationNode, X3DFieldDefinition* const destinationField) :
-	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	      sourceNode (sourceNode),
-	 destinationNode (destinationNode),
-	     sourceField (sourceField),
-	destinationField (destinationField),
-	       connected (false)
+	       X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	        sourceNode (sourceNode),
+	   destinationNode (destinationNode),
+	       sourceField (sourceField),
+	  destinationField (destinationField),
+	         connected (false),
+	disconnectedOutput ()
 {
 	sourceNode      -> shutdown () .addInterest (this, &Route::remove);
 	destinationNode -> shutdown () .addInterest (this, &Route::remove);
@@ -175,6 +176,8 @@ Route::disconnect ()
 		destinationField = nullptr;
 
 		connected = false;
+
+		disconnected () .processInterests ();
 	}
 }
 

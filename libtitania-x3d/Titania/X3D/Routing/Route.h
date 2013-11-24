@@ -63,6 +63,16 @@ class Route :
 	public X3DBaseNode
 {
 public:
+	
+	///  @name Fields
+
+	Output &
+	disconnected ()
+	{ return disconnectedOutput; }
+
+	const Output &
+	disconnected () const
+	{ return disconnectedOutput; }
 
 	///  @name Construction
 
@@ -173,7 +183,8 @@ private:
 	X3DFieldDefinition* sourceField;
 	X3DFieldDefinition* destinationField;
 
-	bool connected;
+	bool   connected;
+	Output disconnectedOutput;
 
 };
 

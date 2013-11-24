@@ -216,7 +216,10 @@ X3DOutlineTreeView::set_execution_context (const X3D::X3DSFNode <X3D::X3DExecuti
 	//__LOG__ << std::endl;
 
 	for (const auto & child : get_model () -> children ())
+	{
+		routeGraph .collapse (child);
 		unwatch_tree (child);
+	}
 	
 	get_model () -> get_execution_context () -> getRootNodes () .removeInterest (this, &X3DOutlineTreeView::set_rootNodes);
 
@@ -233,7 +236,10 @@ X3DOutlineTreeView::set_rootNodes ()
 	//__LOG__ << std::endl;
 
 	for (const auto & child : get_model () -> children ())
+	{
+		routeGraph .collapse (child);
 		unwatch_tree (child);
+	}
 
 	unset_model ();
 	get_model () -> clear ();
@@ -291,7 +297,7 @@ X3DOutlineTreeView::on_test_collapse_row (const Gtk::TreeModel::iterator & iter,
 void
 X3DOutlineTreeView::on_row_collapsed (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path)
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << path .to_string () << std::endl;
 
 	set_expanded (iter, false);
 	set_all_expanded (iter, false);
@@ -322,10 +328,6 @@ X3DOutlineTreeView::watch_expanded (const Gtk::TreeModel::iterator & iter, const
 			switch (field -> getType ())
 			{
 				case X3D::X3DConstants::SFNode:
-				{
-					field -> addInterest (this, &X3DOutlineTreeView::update_field, path);
-					break;
-				}
 				case X3D::X3DConstants::MFNode:
 				{
 					field -> addInterest (this, &X3DOutlineTreeView::update_field, path);
@@ -479,7 +481,7 @@ X3DOutlineTreeView::on_row_changed (const Gtk::TreeModel::Path & path)
 void
 X3DOutlineTreeView::update_field (const Gtk::TreeModel::Path & path)
 {
-	//__LOG__ << std::endl;
+	//__LOG__ << path .to_string () << std::endl;
 
 	Gtk::TreeModel::iterator iter         = get_model () -> get_iter (path);
 	bool                     all_expanded = get_all_expanded (iter);

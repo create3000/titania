@@ -50,14 +50,15 @@
 
 #include "OutlineRouteGraph.h"
 
-#include "X3DOutlineTreeView.h"
 #include "OutlineTreeModel.h"
+#include "X3DOutlineTreeView.h"
 
 namespace titania {
 namespace puck {
 
 OutlineRouteGraph::OutlineRouteGraph (X3DOutlineTreeView* const treeView) :
-	treeView (treeView)
+	X3D::X3DInput (),
+	     treeView (treeView)
 { }
 
 void
@@ -67,12 +68,12 @@ OutlineRouteGraph::expand (const Gtk::TreeModel::iterator & iter)
 	{
 		case OutlineIterType::X3DBaseNode:
 		{
-			expand_node (iter);	
+			expand_node (iter);
 			break;
 		}
 		case OutlineIterType::X3DField:
 		{
-			expand_field (iter);	
+			expand_field (iter);
 			break;
 		}
 		default:
@@ -124,27 +125,27 @@ OutlineRouteGraph::expand_field (const Gtk::TreeModel::iterator & parent)
 	auto parentData     = treeView -> get_model () -> get_data (parent);
 	auto parentUserData = parentData -> get_user_data ();
 	auto field          = static_cast <X3D::X3DFieldDefinition*> (parentData -> get_object ());
-	
+
 	// Forward connections
-	
+
 	for (const auto & iter : parent -> children ())
 	{
 		auto data = treeView -> get_model () -> get_data (iter);
-			
+
 		for (const auto & connection : parentData -> get_connections ())
 			data -> get_connections () .emplace (connection);
 	}
 
 	//
-	
+
 	if (parentUserData -> all_expanded)
 	{
 		for (const auto & route : field -> getInputRoutes ())
 			remove_input_route (parentPath, parentData, route);
-		
+
 		for (const auto & route : field -> getOutputRoutes ())
 			remove_output_route (parentPath, parentData, route);
-			
+
 		parentData -> get_self_connection () = false;
 
 		for (const auto & iter : parent -> children ())
@@ -180,10 +181,10 @@ OutlineRouteGraph::expand_field (const Gtk::TreeModel::iterator & parent)
 		for (const auto & iter : parent -> children ())
 		{
 			auto data = treeView -> get_model () -> get_data (iter);
-			
+
 			for (const auto & route : parentData -> get_inputs_below ())
 				data -> get_connections () .emplace (route);
-		
+
 			for (const auto & route : parentData -> get_outputs_below ())
 				data -> get_connections () .emplace (route);
 		}
@@ -197,7 +198,7 @@ OutlineRouteGraph::add_input_route (const Gtk::TreeModel::Path & destinationPath
 
 	if (sourceNode -> getExecutionContext () not_eq treeView -> get_model () -> get_execution_context ())
 		return;
-	
+
 	try
 	{
 		auto sourceField    = sourceNode -> getField (route -> getSourceField ());
@@ -207,7 +208,7 @@ OutlineRouteGraph::add_input_route (const Gtk::TreeModel::Path & destinationPath
 		{
 			auto sourceIter = treeView -> get_model () -> get_iter (sourcePath);
 			auto sourceData = treeView -> get_model () -> get_data (sourceIter);
-			
+
 			// Connect to output route if field is all expanded
 
 			if (sourceData -> get_user_data () -> all_expanded)
@@ -219,7 +220,7 @@ OutlineRouteGraph::add_input_route (const Gtk::TreeModel::Path & destinationPath
 					if (data -> get_type () == OutlineIterType::X3DOutputRoute)
 					{
 						auto outputRoute = static_cast <X3D::Route*> (data -> get_object ());
-					
+
 						if (outputRoute == route)
 						{
 							sourcePath = treeView -> get_model () -> get_path (iter);
@@ -229,9 +230,13 @@ OutlineRouteGraph::add_input_route (const Gtk::TreeModel::Path & destinationPath
 					}
 				}
 			}
-			
+
+			// Register disconnected interest
+
+			route -> disconnected () .addInterest (this, &OutlineRouteGraph::disconnect_route, sourcePath, destinationPath);
+
 			// Add route
-			
+
 			if (sourcePath < destinationPath)
 			{
 				// The destination path is above path
@@ -239,6 +244,7 @@ OutlineRouteGraph::add_input_route (const Gtk::TreeModel::Path & destinationPath
 				sourceData -> get_outputs_below () .emplace (sourcePath, destinationPath);
 
 				treeView -> get_model () -> foreach_iter (sigc::bind (sigc::mem_fun (*this, &OutlineRouteGraph::add_connection_below), sourcePath, destinationPath));
+				treeView -> get_model () -> row_changed (sourcePath, sourceIter);
 			}
 			else if (sourcePath > destinationPath)
 			{
@@ -246,8 +252,9 @@ OutlineRouteGraph::add_input_route (const Gtk::TreeModel::Path & destinationPath
 
 				destinationData -> get_inputs_below () .emplace (sourcePath, destinationPath);
 				sourceData -> get_outputs_above () .emplace (sourcePath, destinationPath);
-				
+
 				treeView -> get_model () -> foreach_iter (sigc::bind (sigc::mem_fun (*this, &OutlineRouteGraph::add_connection_above), sourcePath, destinationPath));
+				treeView -> get_model () -> row_changed (sourcePath, sourceIter);
 			}
 			else
 			{
@@ -279,7 +286,7 @@ OutlineRouteGraph::add_output_route (const Gtk::TreeModel::Path & sourcePath, Ou
 		{
 			auto destinationIter = treeView -> get_model () -> get_iter (destinationPath);
 			auto destinationData = treeView -> get_model () -> get_data (destinationIter);
-			
+
 			// Connect to input route if field is all expanded
 
 			if (destinationData -> get_user_data () -> all_expanded)
@@ -291,7 +298,7 @@ OutlineRouteGraph::add_output_route (const Gtk::TreeModel::Path & sourcePath, Ou
 					if (data -> get_type () == OutlineIterType::X3DInputRoute)
 					{
 						auto inputRoute = static_cast <X3D::Route*> (data -> get_object ());
-					
+
 						if (inputRoute == route)
 						{
 							destinationPath = treeView -> get_model () -> get_path (iter);
@@ -302,6 +309,10 @@ OutlineRouteGraph::add_output_route (const Gtk::TreeModel::Path & sourcePath, Ou
 				}
 			}
 
+			// Register disconnected interest
+
+			route -> disconnected () .addInterest (this, &OutlineRouteGraph::disconnect_route, sourcePath, destinationPath);
+
 			// Add route
 
 			if (destinationPath < sourcePath)
@@ -311,15 +322,17 @@ OutlineRouteGraph::add_output_route (const Gtk::TreeModel::Path & sourcePath, Ou
 				destinationData -> get_inputs_below () .emplace (sourcePath, destinationPath);
 
 				treeView -> get_model () -> foreach_iter (sigc::bind (sigc::mem_fun (*this, &OutlineRouteGraph::add_connection_above), sourcePath, destinationPath));
+				treeView -> get_model () -> row_changed (destinationPath, destinationIter);
 			}
 			else if (destinationPath > sourcePath)
 			{
 				// The destination path is below path
-				
+
 				sourceData -> get_outputs_below () .emplace (sourcePath, destinationPath);
 				destinationData -> get_inputs_above () .emplace (sourcePath, destinationPath);
 
 				treeView -> get_model () -> foreach_iter (sigc::bind (sigc::mem_fun (*this, &OutlineRouteGraph::add_connection_below), sourcePath, destinationPath));
+				treeView -> get_model () -> row_changed (destinationPath, destinationIter);
 			}
 			else
 			{
@@ -349,6 +362,7 @@ OutlineRouteGraph::add_connection_above (const Gtk::TreeModel::iterator & iter,
 		if (path < sourcePath)
 		{
 			data -> get_connections () .emplace (sourcePath, destinationPath);
+			treeView -> get_model () -> row_changed (path, iter);
 			return false;
 		}
 
@@ -367,11 +381,14 @@ OutlineRouteGraph::add_connection_below (const Gtk::TreeModel::iterator & iter,
 
 	auto path = treeView -> get_model () -> get_path (iter);
 	auto data = treeView -> get_model () -> get_data (iter);
-	
+
 	if (path < destinationPath)
 	{
 		if (path > sourcePath)
+		{
 			data -> get_connections () .emplace (sourcePath, destinationPath);
+			treeView -> get_model () -> row_changed (path, iter);
+		}
 
 		return false;
 	}
@@ -417,7 +434,7 @@ OutlineRouteGraph::collapse_node (const Gtk::TreeModel::Path & rootPath, Outline
 		auto data     = treeView -> get_model () -> get_data (child);
 		auto userData = data -> get_user_data ();
 		auto field    = static_cast <X3D::X3DFieldDefinition*> (data -> get_object ());
-		
+
 		if (userData -> all_expanded)
 		{
 			for (const auto & iter : child -> children ())
@@ -432,7 +449,9 @@ OutlineRouteGraph::collapse_node (const Gtk::TreeModel::Path & rootPath, Outline
 						auto route = static_cast <X3D::Route*> (data -> get_object ());
 
 						remove_input_route (path, data, route);
-						//add_output_route (rootPath, rootData, route);
+
+						//if (rootData)
+						// add_output_route (rootPath, rootData, route);
 
 						break;
 					}
@@ -441,7 +460,9 @@ OutlineRouteGraph::collapse_node (const Gtk::TreeModel::Path & rootPath, Outline
 						auto route = static_cast <X3D::Route*> (data -> get_object ());
 
 						remove_output_route (path, data, route);
-						//add_input_route (rootPath, rootData, route);
+
+						//if (rootData)
+						// add_input_route (rootPath, rootData, route);
 
 						break;
 					}
@@ -455,16 +476,20 @@ OutlineRouteGraph::collapse_node (const Gtk::TreeModel::Path & rootPath, Outline
 			for (const auto & route : field -> getInputRoutes ())
 			{
 				remove_input_route (path, data, route);
-				//add_output_route (rootPath, rootData, route);
+
+				//if (rootData)
+				// add_output_route (rootPath, rootData, route);
 			}
 
 			for (const auto & route : field -> getOutputRoutes ())
 			{
 				remove_output_route (path, data, route);
-				//add_input_route (rootPath, rootData, route);
+
+				//if (rootData)
+				//	add_input_route (rootPath, rootData, route);
 			}
 		}
-		
+
 		switch (field -> getType ())
 		{
 			case X3D::X3DConstants::SFNode:
@@ -474,21 +499,15 @@ OutlineRouteGraph::collapse_node (const Gtk::TreeModel::Path & rootPath, Outline
 				{
 					auto data = treeView -> get_model () -> get_data (iter);
 
-					switch (data -> get_type ())
+					if (data -> get_type () == OutlineIterType::X3DBaseNode)
 					{
-						case OutlineIterType::X3DBaseNode:
-						{
-							//auto path = treeView -> get_model () -> get_path (iter);
-							//auto data = treeView -> get_model () -> get_data (iter);
-							
-							collapse_node (rootPath, rootData, iter);
+						//auto path = treeView -> get_model () -> get_path (iter);
+						//auto data = treeView -> get_model () -> get_data (iter);
 
-							break;
-						}
-						default:
-							break;
+						collapse_node (rootPath, rootData, iter);
 					}
 				}
+
 				break;
 			}
 			default:
@@ -533,6 +552,27 @@ OutlineRouteGraph::collapse_field (const Gtk::TreeModel::iterator & parent)
 		}
 	}
 
+	switch (field -> getType ())
+	{
+		case X3D::X3DConstants::SFNode:
+		case X3D::X3DConstants::MFNode:
+		{
+			for (const auto & iter : parent -> children ())
+			{
+				auto data = treeView -> get_model () -> get_data (iter);
+
+				if (data -> get_type () == OutlineIterType::X3DBaseNode)
+				{
+					collapse_node (Gtk::TreeModel::Path (), nullptr, iter);
+				}
+			}
+
+			break;
+		}
+		default:
+			break;
+	}
+
 	for (const auto & route : field -> getInputRoutes ())
 		add_input_route (parentPath, parentData, route);
 
@@ -547,7 +587,11 @@ OutlineRouteGraph::remove_input_route (const Gtk::TreeModel::Path & destinationP
 
 	if (sourceNode -> getExecutionContext () not_eq treeView -> get_model () -> get_execution_context ())
 		return;
-	
+
+	// Remove disconnected interest
+
+	route -> disconnected () .removeInterest (this, &OutlineRouteGraph::disconnect_route);
+
 	try
 	{
 		auto sourceField    = sourceNode -> getField (route -> getSourceField ());
@@ -557,7 +601,7 @@ OutlineRouteGraph::remove_input_route (const Gtk::TreeModel::Path & destinationP
 		{
 			auto sourceIter = treeView -> get_model () -> get_iter (sourcePath);
 			auto sourceData = treeView -> get_model () -> get_data (sourceIter);
-			
+
 			// Connect to output route if field is all expanded
 
 			if (sourceData -> get_user_data () -> all_expanded)
@@ -569,7 +613,7 @@ OutlineRouteGraph::remove_input_route (const Gtk::TreeModel::Path & destinationP
 					if (data -> get_type () == OutlineIterType::X3DOutputRoute)
 					{
 						auto outputRoute = static_cast <X3D::Route*> (data -> get_object ());
-					
+
 						if (outputRoute == route)
 						{
 							sourcePath = treeView -> get_model () -> get_path (iter);
@@ -579,9 +623,9 @@ OutlineRouteGraph::remove_input_route (const Gtk::TreeModel::Path & destinationP
 					}
 				}
 			}
-			
+
 			// Add route
-			
+
 			if (sourcePath < destinationPath)
 			{
 				// The destination path is above path
@@ -596,7 +640,7 @@ OutlineRouteGraph::remove_input_route (const Gtk::TreeModel::Path & destinationP
 
 				destinationData -> get_inputs_below () .erase (std::make_pair (sourcePath, destinationPath));
 				sourceData -> get_outputs_above () .erase (std::make_pair (sourcePath, destinationPath));
-				
+
 				treeView -> get_model () -> foreach_iter (sigc::bind (sigc::mem_fun (*this, &OutlineRouteGraph::remove_connection_above), sourcePath, destinationPath));
 			}
 			else
@@ -620,6 +664,10 @@ OutlineRouteGraph::remove_output_route (const Gtk::TreeModel::Path & sourcePath,
 	if (destinationNode -> getExecutionContext () not_eq treeView -> get_model () -> get_execution_context ())
 		return;
 
+	// Remove disconnected interest
+
+	route -> disconnected () .removeInterest (this, &OutlineRouteGraph::disconnect_route);
+
 	try
 	{
 		auto destinationField    = destinationNode -> getField (route -> getDestinationField ());
@@ -629,7 +677,7 @@ OutlineRouteGraph::remove_output_route (const Gtk::TreeModel::Path & sourcePath,
 		{
 			auto destinationIter = treeView -> get_model () -> get_iter (destinationPath);
 			auto destinationData = treeView -> get_model () -> get_data (destinationIter);
-			
+
 			// Connect to input route if field is all expanded
 
 			if (destinationData -> get_user_data () -> all_expanded)
@@ -641,7 +689,7 @@ OutlineRouteGraph::remove_output_route (const Gtk::TreeModel::Path & sourcePath,
 					if (data -> get_type () == OutlineIterType::X3DInputRoute)
 					{
 						auto inputRoute = static_cast <X3D::Route*> (data -> get_object ());
-					
+
 						if (inputRoute == route)
 						{
 							destinationPath = treeView -> get_model () -> get_path (iter);
@@ -665,7 +713,7 @@ OutlineRouteGraph::remove_output_route (const Gtk::TreeModel::Path & sourcePath,
 			else if (destinationPath > sourcePath)
 			{
 				// The destination path is below path
-				
+
 				sourceData -> get_outputs_below () .erase (std::make_pair (sourcePath, destinationPath));
 				destinationData -> get_inputs_above () .erase (std::make_pair (sourcePath, destinationPath));
 
@@ -693,12 +741,13 @@ OutlineRouteGraph::remove_connection_above (const Gtk::TreeModel::iterator & ite
 
 	auto path = treeView -> get_model () -> get_path (iter);
 	auto data = treeView -> get_model () -> get_data (iter);
-	
+
 	if (path > destinationPath)
 	{
 		if (path < sourcePath)
 		{
 			data -> get_connections () .erase (std::make_pair (sourcePath, destinationPath));
+			treeView -> get_model () -> row_changed (path, iter);
 			return false;
 		}
 
@@ -717,16 +766,92 @@ OutlineRouteGraph::remove_connection_below (const Gtk::TreeModel::iterator & ite
 
 	auto path = treeView -> get_model () -> get_path (iter);
 	auto data = treeView -> get_model () -> get_data (iter);
-	
+
 	if (path < destinationPath)
 	{
 		if (path > sourcePath)
+		{
 			data -> get_connections () .erase (std::make_pair (sourcePath, destinationPath));
+			treeView -> get_model () -> row_changed (path, iter);
+		}
 
 		return false;
 	}
 
 	return true; // exit
+}
+
+void
+OutlineRouteGraph::disconnect_route (const Gtk::TreeModel::Path & sourcePath, const Gtk::TreeModel::Path & destinationPath)
+{
+	__LOG__ << std::endl;
+
+	if (destinationPath < sourcePath)
+		treeView -> get_model () -> foreach_iter (sigc::bind (sigc::mem_fun (*this, &OutlineRouteGraph::remove_route_above), sourcePath, destinationPath));
+
+	else
+		treeView -> get_model () -> foreach_iter (sigc::bind (sigc::mem_fun (*this, &OutlineRouteGraph::remove_route_below), sourcePath, destinationPath));
+}
+
+
+bool
+OutlineRouteGraph::remove_route_above (const Gtk::TreeModel::iterator & iter,
+                                       const Gtk::TreeModel::Path & sourcePath,
+                                       const Gtk::TreeModel::Path & destinationPath)
+{
+	// destinationPath is above sourcePath
+	
+	auto path = treeView -> get_model () -> get_path (iter);
+	
+	if (path < destinationPath)
+		return false;
+	
+	if (path > sourcePath)
+		return true; // exit
+
+	remove_route (iter, path, sourcePath, destinationPath);
+
+	return false;
+}
+
+bool
+OutlineRouteGraph::remove_route_below (const Gtk::TreeModel::iterator & iter,
+                                       const Gtk::TreeModel::Path & sourcePath,
+                                       const Gtk::TreeModel::Path & destinationPath)
+{
+	// destinationPath is below sourcePath
+
+	auto path = treeView -> get_model () -> get_path (iter);
+	
+	if (path < sourcePath)
+		return false;
+	
+	if (path > destinationPath)
+		return true; // exit
+
+	remove_route (iter, path, sourcePath, destinationPath);
+
+	return false;
+}
+
+void
+OutlineRouteGraph::remove_route (const Gtk::TreeModel::iterator & iter,
+                                 const Gtk::TreeModel::Path & path,
+                                 const Gtk::TreeModel::Path & sourcePath,
+                                 const Gtk::TreeModel::Path & destinationPath)
+{
+	auto data       = treeView -> get_model () -> get_data (iter);
+	auto connection = std::make_pair (sourcePath, destinationPath);
+
+	data -> get_inputs_above  () .erase (connection);
+	data -> get_inputs_below  () .erase (connection);
+
+	data -> get_outputs_above () .erase (connection);
+	data -> get_outputs_below () .erase (connection);
+
+	data -> get_connections () .erase (connection);
+
+	treeView -> get_model () -> row_changed (path, iter);
 }
 
 } // puck

@@ -64,7 +64,7 @@
 #include <algorithm>
 #include <iostream>
 
-#include <Titania/Backtrace.h>
+#include "../Debug.h"
 
 namespace titania {
 namespace X3D {

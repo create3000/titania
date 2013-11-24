@@ -61,7 +61,8 @@ namespace puck {
 
 class X3DOutlineTreeView;
 
-class OutlineRouteGraph
+class OutlineRouteGraph :
+	public X3D::X3DInput
 {
 public:
 
@@ -114,6 +115,18 @@ private:
 
 	bool
 	remove_connection_below (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &, const Gtk::TreeModel::Path &);
+
+	void
+	disconnect_route (const Gtk::TreeModel::Path &, const Gtk::TreeModel::Path &);
+
+	bool
+	remove_route_above (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &, const Gtk::TreeModel::Path &);
+
+	bool
+	remove_route_below (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &, const Gtk::TreeModel::Path &);
+
+	void
+	remove_route (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &, const Gtk::TreeModel::Path &, const Gtk::TreeModel::Path &);
 
 	X3DOutlineTreeView* const treeView;
 
