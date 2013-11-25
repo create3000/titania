@@ -61,6 +61,16 @@
 namespace titania {
 namespace puck {
 
+enum class OutlineContent {
+	NONE,
+	ICON,
+	NAME,
+	INPUT,
+	OUTPUT,
+	INPUT_CONNECTOR,
+	OUTPUT_CONNECTOR	
+};
+
 class X3DOutlineTreeView;
 
 class OutlineCellRenderer :
@@ -68,9 +78,12 @@ class OutlineCellRenderer :
 {
 public:
 
+	///  @name Construction
+	
 	OutlineCellRenderer (X3D::X3DBrowser* const, X3DOutlineTreeView* const);
 
-	// Properties
+	///  @name Properties
+	
 	Glib::Property <OutlineTreeData*> &
 	property_data ()
 	{ return data_property; }
@@ -79,9 +92,13 @@ public:
 	property_data () const
 	{ return data_property; }
 
-	// Edited signal
-	typedef sigc::signal <void, const Glib::ustring &, const Glib::ustring &> signal_edited_t;
+	///  @name Operations
+	
+	OutlineContent
+	pick (Gtk::Widget &, const Gdk::Rectangle &, double, double);
 
+	///  @name Destruction
+	
 	virtual
 	~OutlineCellRenderer ()
 	{ }

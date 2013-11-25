@@ -65,12 +65,21 @@ using math::M_PI3_2;
 
 constexpr int    NAME_X_PAD        = 1;
 constexpr int    ACCESS_TYPE_X_PAD = 8;
-constexpr int    ROUTE_WIDTH       = 16;
-constexpr int    ROUTE_CURVE_WIDTH = 16;
+constexpr double ROUTE_WIDTH       = 16;
+constexpr double ROUTE_CURVE_WIDTH = 16;
 constexpr double ROUTE_RADIUS      = 8.5;
 constexpr int    RIGHT_PAD         = 8;
 constexpr double ROUTE_INPUT_PAD   = 14;
 constexpr double ROUTE_Y_PAD       = 3.5; // Depends on image
+constexpr double INPUT_WIDTH       = 13;  // Depends on image
+constexpr double OUTPUT_WIDTH      = 14;  // Depends on image
+constexpr int    ACCESS_PAD        = 1;   // Depends on image
+
+constexpr int    INPUT_PAD        = 9;   // Depends on image
+constexpr int    OUTPUT_PAD       = 8;   // Depends on image
+constexpr int    INPUT_OUTPUT_PAD = 10;  // Depends on image
+constexpr double CONNECTOR_WIDTH  = 4;   // Depends on image
+
 
 OutlineCellRenderer::OutlineCellRenderer (X3D::X3DBrowser* const browser, X3DOutlineTreeView* const treeView) :
 	             Glib::ObjectBase (typeid (OutlineCellRenderer)),
@@ -731,6 +740,217 @@ OutlineCellRenderer::set_field_value (X3D::X3DFieldDefinition* const field, cons
 	return false;
 }
 
+OutlineContent
+OutlineCellRenderer::pick (Gtk::Widget & widget,
+                           const Gdk::Rectangle & cell_area,
+                           double point_x, double point_y)
+{
+	__LOG__ << std::endl;
+	
+	X3D::Vector2f point (point_x, point_y);
+
+	int x              = cell_area .get_x ();
+	int y              = cell_area .get_y ();
+	int height         = cell_area .get_height ();
+	int minimum_width  = 0;
+	int natural_width  = 0;
+	int minimum_height = 0;
+	int natural_height = 0;
+
+	// Icon
+
+	{
+		cellrenderer_icon .get_preferred_width  (widget, minimum_width,  natural_width);
+		cellrenderer_icon .get_preferred_height (widget, minimum_height, natural_height);
+
+		X3D::Box2f box (X3D::Vector2f (minimum_width, minimum_height), X3D::Vector2f (x + minimum_width / 2, y + height / 2));
+		
+		if (box .intersect (point))
+			return OutlineContent::ICON;
+
+		x += minimum_width;
+	}
+
+	// Name or value
+
+	{
+		x += NAME_X_PAD;
+
+		Gtk::CellRendererText::get_preferred_width_vfunc (widget, minimum_width, natural_width);
+
+		X3D::Box2f box (X3D::Vector2f (minimum_width, minimum_height), X3D::Vector2f (x + minimum_width / 2, y + height / 2));
+		
+		if (box .intersect (point))
+			return OutlineContent::NAME;
+
+		x += minimum_width;
+	}
+
+	// Access type and routes
+
+	x += ACCESS_TYPE_X_PAD;
+	cellrenderer_access_type_icon .get_preferred_height (widget, minimum_height, natural_height);
+
+	switch (get_data_type ())
+	{
+		case OutlineIterType::X3DField:
+		{
+			if (get_all_expanded () and get_expanded ())
+			{
+				return OutlineContent::NONE;
+			}
+
+			auto field          = static_cast <X3D::X3DFieldDefinition*> (get_object ());
+			size_t inputRoutes  = treeView -> get_model () -> get_input_routes (field);
+			size_t outputRoutes = treeView -> get_model () -> get_output_routes (field);
+
+			switch (field -> getAccessType ())
+			{
+				case X3D::initializeOnly:
+				{
+					return OutlineContent::NONE;
+				}
+				case X3D::inputOnly:
+				{
+					X3D::Box2f box (X3D::Vector2f (INPUT_WIDTH, minimum_height), X3D::Vector2f (x + INPUT_WIDTH / 2, y + height / 2));
+					
+					if (box .intersect (point))
+						return OutlineContent::INPUT;
+
+					x += INPUT_WIDTH;
+					
+					if (inputRoutes)
+					{
+						x += INPUT_PAD;
+
+						X3D::Box2f box (X3D::Vector2f (CONNECTOR_WIDTH, minimum_height), X3D::Vector2f (x + CONNECTOR_WIDTH / 2, y + height / 2));
+						
+						if (box .intersect (point))
+							return OutlineContent::INPUT_CONNECTOR;
+					}
+					
+					break;
+				}
+				case X3D::outputOnly:
+				{
+					X3D::Box2f box (X3D::Vector2f (OUTPUT_WIDTH, minimum_height), X3D::Vector2f (x + OUTPUT_WIDTH / 2, y + height / 2));
+					
+					if (box .intersect (point))
+						return OutlineContent::OUTPUT;
+
+					x += OUTPUT_WIDTH;
+					
+					if (outputRoutes)
+					{
+						x += OUTPUT_PAD;
+
+						X3D::Box2f box (X3D::Vector2f (CONNECTOR_WIDTH, minimum_height), X3D::Vector2f (x + CONNECTOR_WIDTH / 2, y + height / 2));
+						
+						if (box .intersect (point))
+							return OutlineContent::OUTPUT_CONNECTOR;
+					}
+					break;
+				}
+				case X3D::inputOutput:
+				{
+					{
+						X3D::Box2f box (X3D::Vector2f (INPUT_WIDTH, minimum_height), X3D::Vector2f (x + INPUT_WIDTH / 2, y + height / 2));
+						
+						if (box .intersect (point))
+							return OutlineContent::INPUT;
+
+						x += INPUT_WIDTH;
+					}
+					x += ACCESS_PAD;
+					{
+						X3D::Box2f box (X3D::Vector2f (OUTPUT_WIDTH, minimum_height), X3D::Vector2f (x + OUTPUT_WIDTH / 2, y + height / 2));
+						
+						if (box .intersect (point))
+							return OutlineContent::OUTPUT;
+
+						x += OUTPUT_WIDTH;
+					}
+					
+					bool input = false;
+					
+					if (inputRoutes)
+					{
+						input = true;
+
+						x += INPUT_PAD;
+
+						X3D::Box2f box (X3D::Vector2f (CONNECTOR_WIDTH, minimum_height), X3D::Vector2f (x + CONNECTOR_WIDTH / 2, y + height / 2));
+						
+						if (box .intersect (point))
+							return OutlineContent::INPUT_CONNECTOR;
+
+						x += CONNECTOR_WIDTH;
+					}
+					
+					if (outputRoutes)
+					{
+						x += input ? INPUT_OUTPUT_PAD : OUTPUT_PAD;
+
+						X3D::Box2f box (X3D::Vector2f (CONNECTOR_WIDTH, minimum_height), X3D::Vector2f (x + CONNECTOR_WIDTH / 2, y + height / 2));
+						
+						if (box .intersect (point))
+							return OutlineContent::OUTPUT_CONNECTOR;
+
+						x += CONNECTOR_WIDTH;
+					}
+					break;
+				}
+			}
+
+		}
+		case OutlineIterType::X3DInputRoute:
+		{
+			X3D::Box2f box (X3D::Vector2f (INPUT_WIDTH, minimum_height), X3D::Vector2f (x + INPUT_WIDTH / 2, y + height / 2));
+			
+			if (box .intersect (point))
+				return OutlineContent::INPUT;
+
+			x += INPUT_WIDTH;
+			
+			// Connector
+			{
+				x += INPUT_PAD;
+
+				X3D::Box2f box (X3D::Vector2f (CONNECTOR_WIDTH, minimum_height), X3D::Vector2f (x + CONNECTOR_WIDTH / 2, y + height / 2));
+				
+				if (box .intersect (point))
+					return OutlineContent::INPUT_CONNECTOR;
+			}
+			
+			break;
+		}
+		case OutlineIterType::X3DOutputRoute:
+		{
+			X3D::Box2f box (X3D::Vector2f (OUTPUT_WIDTH, minimum_height), X3D::Vector2f (x + OUTPUT_WIDTH / 2, y + height / 2));
+			
+			if (box .intersect (point))
+				return OutlineContent::OUTPUT;
+
+			x += OUTPUT_WIDTH;
+			
+			// Connector
+			{
+				x += OUTPUT_PAD;
+
+				X3D::Box2f box (X3D::Vector2f (CONNECTOR_WIDTH, minimum_height), X3D::Vector2f (x + CONNECTOR_WIDTH / 2, y + height / 2));
+				
+				if (box .intersect (point))
+					return OutlineContent::OUTPUT_CONNECTOR;
+			}
+			break;
+		}
+		default:
+			break;
+	}
+
+	return OutlineContent::NONE;
+}
+
 void
 OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & context,
                                    Gtk::Widget & widget,
@@ -837,6 +1057,9 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 		input_x -= ROUTE_INPUT_PAD;
 		input_w += ROUTE_INPUT_PAD;
 	}
+	
+	auto fc  = widget .get_style_context () -> get_color (Gtk::STATE_FLAG_NORMAL);
+	auto sfc = widget .get_style_context () -> get_color (Gtk::STATE_FLAG_SELECTED);
 
 	//	context -> set_source_rgb (0.9, 0.9, 0.9);
 	//	context -> rectangle (x, y + 1, width, height - 2);
@@ -844,10 +1067,12 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 
 	context -> reset_clip ();
 	context -> set_operator (Cairo::OPERATOR_OVER);
-	context -> set_source_rgb (0, 0, 0);
+	context -> set_source_rgba (fc .get_red (), fc .get_green (), fc .get_blue (), fc .get_alpha ());
 	context -> set_line_width (1);
 
 	auto data = property_data () .get_value ();
+
+	// Input
 
 	if (not data -> get_inputs_above () .empty () or not data -> get_inputs_below () .empty ())
 	{
@@ -877,6 +1102,8 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 		}
 	}
 
+	// Output
+
 	if (not data -> get_outputs_above () .empty () or not data -> get_outputs_below () .empty ())
 	{
 		context -> move_to (output_x, output_y);
@@ -904,6 +1131,8 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 			context -> line_to (connector_x, y + height);
 		}
 	}
+
+	// Self Connection
 
 	if (data -> get_self_connection ())
 	{

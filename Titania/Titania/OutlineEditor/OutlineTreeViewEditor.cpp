@@ -240,6 +240,62 @@ OutlineTreeViewEditor::on_button_press_event (GdkEventButton* event)
 	return Gtk::TreeView::on_button_press_event (event);
 }
 
+bool
+OutlineTreeViewEditor::on_motion_notify_event (GdkEventMotion* event)
+{
+	Gtk::TreeViewColumn* column = nullptr;
+	Gtk::TreeModel::Path path   = get_path_at_position (event -> x, event -> y, column);
+
+	if (path .size ())
+	{
+		auto iter = get_model () -> get_iter (path);
+		auto data = get_model () -> get_data (iter);
+
+		Gdk::Rectangle cell_area;
+		get_cell_area (path, *column, cell_area);
+
+		get_cellrenderer () -> property_data () .set_value (data);
+
+		switch (get_cellrenderer () -> pick (*this, cell_area, event -> x, event -> y))
+		{
+			case OutlineContent::ICON:
+			{
+				__LOG__ << "ICON" << std::endl;
+				break;
+			}
+			case OutlineContent::NAME:
+			{
+				__LOG__ << "NAME" << std::endl;
+				break;
+			}
+			case OutlineContent::INPUT:
+			{
+				__LOG__ << "INPUT" << std::endl;
+				break;
+			}
+			case OutlineContent::OUTPUT:
+			{
+				__LOG__ << "OUTPUT" << std::endl;
+				break;
+			}
+			case OutlineContent::INPUT_CONNECTOR:
+			{
+				__LOG__ << "INPUT_CONNECTOR" << std::endl;
+				break;
+			}
+			case OutlineContent::OUTPUT_CONNECTOR:	
+			{
+				__LOG__ << "OUTPUT_CONNECTOR" << std::endl;
+				break;
+			}
+			default:
+				break;
+		}
+	}
+
+	return Gtk::TreeView::on_motion_notify_event (event);
+}
+
 void
 OutlineTreeViewEditor::select_node (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path)
 {
@@ -252,14 +308,10 @@ OutlineTreeViewEditor::select_node (const Gtk::TreeModel::iterator & iter, const
 }
 
 bool
-OutlineTreeViewEditor::select_field_value (int x, int y)
+OutlineTreeViewEditor::select_field_value (double x, double y)
 {
-	Gtk::TreeModel::Path path;
 	Gtk::TreeViewColumn* column = nullptr;
-	int                  cell_x = 0;
-	int                  cell_y = 0;
-
-	get_path_at_pos (x, y, path, column, cell_x, cell_y);
+	Gtk::TreeModel::Path path   = get_path_at_position (x, y, column);
 
 	if (path .size ())
 	{

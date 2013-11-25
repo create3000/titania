@@ -105,6 +105,12 @@ public:
 
 	///  @name Operations
 
+	Gtk::TreeModel::Path
+	get_path_at_position (double, double) const;
+
+	Gtk::TreeModel::Path
+	get_path_at_position (double, double, Gtk::TreeViewColumn* &) const;
+
 	void
 	collapse_row (const Gtk::TreeModel::Path &);
 

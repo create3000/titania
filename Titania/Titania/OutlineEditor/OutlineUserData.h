@@ -67,7 +67,7 @@ public:
 		       paths (),
 		    expanded (false),
 		all_expanded (false),
-		    selected (false)
+		    selected (0)
 	{ }
 
 	Gtk::TreeModel::Path             open_path; // Path of expanded node/clone
@@ -75,7 +75,7 @@ public:
 
 	bool expanded;                  // Expanded state
 	bool all_expanded;              // Expanded mode
-	bool selected;                  // Selected state
+	int  selected;                  // Selected state
 
 };
 

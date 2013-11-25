@@ -1,15 +1,17 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Basic/X3DFieldDefinition.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/OutlineEditor/CellRenderer/OutlineCellRenderer.cpp">
     <Files>
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="108" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="1264" Column="26" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="76" Column="28" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="690" Column="1" />
-      <File FileName="Library/Tests/Handles/OutlineEditor.wrl" Line="11" Column="36" />
-      <File FileName="Titania/Titania/ViewpointList/ViewpointList.h" Line="104" Column="1" />
-      <File FileName="Titania/Titania/ViewpointList/ViewpointList.cpp" Line="95" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DFieldDefinition.cpp" Line="1" Column="1" />
+      <File FileName="Library/Tests/Handles/Routes.wrl" Line="69" Column="5" />
+      <File FileName="Titania/Titania/OutlineEditor/X3DOutlineTreeView.h" Line="112" Column="61" />
+      <File FileName="Titania/Titania/OutlineEditor/X3DOutlineTreeView.cpp" Line="122" Column="84" />
+      <File FileName="Titania/Titania/OutlineEditor/OutlineTreeViewEditor.h" Line="122" Column="38" />
+      <File FileName="Titania/Titania/OutlineEditor/OutlineTreeViewEditor.cpp" Line="286" Column="25" />
+      <File FileName="Titania/Titania/OutlineEditor/OutlineRouteGraph.h" Line="118" Column="1" />
+      <File FileName="Titania/Titania/OutlineEditor/OutlineRouteGraph.cpp" Line="437" Column="17" />
+      <File FileName="Titania/Titania/OutlineEditor/CellRenderer/OutlineCellRenderer.h" Line="97" Column="16" />
+      <File FileName="Titania/Titania/OutlineEditor/CellRenderer/OutlineCellRenderer.cpp" Line="742" Column="1" />
+      <File FileName="Titania/Titania/OutlineEditor/OutlineTreeData.h" Line="82" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -31,17 +33,13 @@
               <Node name="Texturing" expanded="True" />
             </Node>
           </Node>
-          <Node name="libtitania-opengl-surface" expanded="True">
-            <Node name="Titania" expanded="True">
-              <Node name="OpenGL" expanded="True" />
-            </Node>
-          </Node>
           <Node name="libtitania-standard" expanded="True">
             <Node name="Titania" expanded="True">
+              <Node name="Basic" expanded="True" />
               <Node name="Math" expanded="True">
                 <Node name="Geometry" expanded="True" />
-                <Node name="Numbers" expanded="True" />
               </Node>
+              <Node name="Physics" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
@@ -52,44 +50,34 @@
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
-                <Node name="Basic" expanded="True">
-                  <Node name="X3DFieldDefinition.cpp" selected="True" />
-                </Node>
-                <Node name="Browser" expanded="True">
-                  <Node name="Picking" expanded="True" />
-                  <Node name="Viewer" expanded="True" />
-                </Node>
+                <Node name="Base" expanded="True" />
+                <Node name="Basic" expanded="True" />
+                <Node name="Bits" expanded="True" />
+                <Node name="Browser" expanded="True" />
                 <Node name="Components" expanded="True">
                   <Node name="Core" expanded="True" />
                   <Node name="EnvironmentalEffects" expanded="True" />
                   <Node name="Grouping" expanded="True" />
                   <Node name="Networking" expanded="True" />
                   <Node name="NURBS" expanded="True" />
+                  <Node name="PointingDeviceSensor" expanded="True" />
                   <Node name="Scripting" expanded="True" />
                   <Node name="Time" expanded="True" />
                 </Node>
-                <Node name="Configuration" expanded="True" />
+                <Node name="Execution" expanded="True" />
+                <Node name="Routing" expanded="True" />
+                <Node name="Types" expanded="True" />
               </Node>
             </Node>
           </Node>
-          <Node name="Titania" expanded="True">
-            <Node name="share" expanded="True">
-              <Node name="titania" expanded="True">
-                <Node name="Library" expanded="True">
-                  <Node name="Prototypes" expanded="True">
-                    <Node name="Engines" expanded="True">
-                      <Node name="Rotor" expanded="True" />
-                    </Node>
-                    <Node name="Time" expanded="True" />
-                  </Node>
-                </Node>
-                <Node name="ui" expanded="True" />
-              </Node>
-            </Node>
+          <Node name="Titania" expanded="True" selected="True">
             <Node name="Titania" expanded="True">
               <Node name="Base" expanded="True" />
               <Node name="Browser" expanded="True" />
-              <Node name="ViewpointList" expanded="True" />
+              <Node name="HistoryEditor" expanded="True" />
+              <Node name="OutlineEditor" expanded="True">
+                <Node name="CellRenderer" expanded="True" />
+              </Node>
             </Node>
           </Node>
         </State>

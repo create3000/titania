@@ -111,11 +111,15 @@ private:
 	bool
 	on_button_press_event (GdkEventButton*) final;
 
+	virtual
+	bool
+	on_motion_notify_event (GdkEventMotion*) final;
+
 	void
 	select_node (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
 
 	bool
-	select_field_value (int x, int y);
+	select_field_value (double x, double y);
 
 	void
 	on_edited (const Glib::ustring &, const Glib::ustring &);

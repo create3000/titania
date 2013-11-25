@@ -109,6 +109,34 @@ X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DSFNode <X3D::X3DExecutionC
 	set_execution_context (executionContext);
 }
 
+
+Gtk::TreeModel::Path
+X3DOutlineTreeView::get_path_at_position (double x, double y) const
+{
+	Gtk::TreeViewColumn* column = nullptr;
+
+	return get_path_at_position (x, y, column);
+}
+
+Gtk::TreeModel::Path
+X3DOutlineTreeView::get_path_at_position (double x, double y, Gtk::TreeViewColumn* & column) const
+{
+	Gtk::TreeModel::Path path;
+	int                  cell_x = 0;
+	int                  cell_y = 0;
+
+	get_path_at_pos (x, y, path, column, cell_x, cell_y);
+
+	return path;
+}
+
+void
+X3DOutlineTreeView::collapse_row (const Gtk::TreeModel::Path & path)
+{
+	if (row_expanded (path))
+		Gtk::TreeView::collapse_row (path);
+}
+
 void
 X3DOutlineTreeView::set_model (const Glib::RefPtr <OutlineTreeModel> & value)
 {
@@ -322,13 +350,6 @@ X3DOutlineTreeView::collapse_clone (const Gtk::TreeModel::iterator & iter)
 {
 	if (get_data_type (iter) == OutlineIterType::X3DBaseNode)
 		collapse_row (get_open_path (iter));
-}
-
-void
-X3DOutlineTreeView::collapse_row (const Gtk::TreeModel::Path & path)
-{
-	if (row_expanded (path))
-		Gtk::TreeView::collapse_row (path);
 }
 
 void

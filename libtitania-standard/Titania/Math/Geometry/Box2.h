@@ -159,6 +159,10 @@ public:
 		return *this;
 	}
 
+	///  Returns true if @a point is inside this box3 min and max extend.
+	bool
+	intersect (const vector2 <Type> &) const;
+
 	///  Returns true if this box contains @a box.
 	bool
 	contains (const box2 & box) const;
@@ -214,6 +218,20 @@ box2 <Type>::operator += (const box2 <Up> & box)
 	auto rhs_max  = box .center () + rsize1_2;
 
 	return *this = box2 (math::min (lhs_min, rhs_min), math::max (lhs_max, rhs_max), true);
+}
+
+template <class Type>
+bool
+box2 <Type>::intersect (const vector2 <Type> & point) const
+{
+	auto size1_2 = size () / Type (2);
+	auto min     = center () - size1_2;
+	auto max     = center () + size1_2;
+
+	return min .x () <= point .x () and
+	       max .x () >= point .x () and
+	       min .y () <= point .y () and
+	       max .y () >= point .y ();
 }
 
 template <class Type>
