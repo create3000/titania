@@ -132,7 +132,7 @@ OutlineSelection::select (X3D::X3DBaseNode* const node, bool value, X3D::ChildOb
 
 		// Select node
 
-		treeView -> get_user_data (node) -> selected = value;
+		select (treeView -> get_user_data (node), value);
 
 		// Select children
 
@@ -146,7 +146,7 @@ OutlineSelection::select (X3D::X3DFieldDefinition* const field, bool value, X3D:
 {
 	// Select field
 
-	treeView -> get_user_data (field) -> selected = value;
+	select (treeView -> get_user_data (field), value);
 
 	// Select children
 
@@ -164,7 +164,7 @@ OutlineSelection::select (X3D::X3DFieldDefinition* const field, bool value, X3D:
 
 			for (auto & sfnode : *mfnode)
 			{
-				treeView -> get_user_data (&sfnode) -> selected = value;
+				select (treeView -> get_user_data (&sfnode), value);
 
 				select (sfnode .getValue (), value, seen);
 			}
@@ -174,6 +174,15 @@ OutlineSelection::select (X3D::X3DFieldDefinition* const field, bool value, X3D:
 		default:
 			break;
 	}
+}
+
+void
+OutlineSelection::select (const OutlineUserDataPtr & userData, bool value) const
+{
+	if (value)
+		userData -> selected |= OUTLINE_SELECTED;
+	else
+		userData -> selected &= ~OUTLINE_SELECTED;
 }
 
 } // puck

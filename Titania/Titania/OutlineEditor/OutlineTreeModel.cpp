@@ -126,10 +126,10 @@ size_t
 OutlineTreeModel::get_input_routes (X3D::X3DFieldDefinition* const field) const
 {
 	size_t size = 0;
-	
+
 	for (const auto & route : field -> getInputRoutes ())
 		size += route -> getSourceNode () -> getExecutionContext () == executionContext;
-	
+
 	return size;
 }
 
@@ -140,7 +140,7 @@ OutlineTreeModel::get_output_routes (X3D::X3DFieldDefinition* const field) const
 
 	for (const auto & route : field -> getOutputRoutes ())
 		size += route -> getDestinationNode () -> getExecutionContext () == executionContext;
-	
+
 	return size;
 }
 
@@ -308,7 +308,8 @@ OutlineTreeModel::get_value_vfunc (const iterator & iter, int column, Glib::Valu
 			auto userData       = get_user_data (iter);
 			auto parentUserData = get_user_data (iter -> parent ());
 
-			val .set ((userData and userData -> selected)or (parentUserData and parentUserData -> selected));
+			val .set ((userData and userData -> selected & OUTLINE_SELECTED) or
+			          (parentUserData and parentUserData -> selected & OUTLINE_SELECTED));
 
 			value .init (SelectedColumn::ValueType::value_type ());
 			value = val;

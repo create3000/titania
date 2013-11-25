@@ -57,6 +57,12 @@
 namespace titania {
 namespace puck {
 
+constexpr int OUTLINE_SELECTED        = 1;
+constexpr int OUTLINE_SELECTED_INPUT  = 1 << 1;
+constexpr int OUTLINE_SELECTED_OUTPUT = 1 << 2;
+constexpr int OUTLINE_OVER_INPUT      = 1 << 3;
+constexpr int OUTLINE_OVER_OUTPUT     = 1 << 4;
+
 class OutlineUserData :
 	public X3D::X3DBase
 {
@@ -70,12 +76,25 @@ public:
 		    selected (0)
 	{ }
 
-	Gtk::TreeModel::Path             open_path; // Path of expanded node/clone
-	std::set <Gtk::TreeModel::Path>  paths;     // All visible paths
+	Gtk::TreeModel::Path            open_path; // Path of expanded node/clone
+	std::set <Gtk::TreeModel::Path> paths;     // All visible paths
 
-	bool expanded;                  // Expanded state
-	bool all_expanded;              // Expanded mode
-	int  selected;                  // Selected state
+	bool expanded;                             // Expanded state
+	bool all_expanded;                         // Expanded mode
+	int  selected;                             // Selected state
+
+
+private:
+
+	OutlineUserData (const OutlineUserData &) = delete;
+
+	OutlineUserData (OutlineUserData &&) = delete;
+
+	OutlineUserData &
+	operator = (const OutlineUserData &) = delete;
+
+	OutlineUserData &
+	operator = (OutlineUserData &&) = delete;
 
 };
 

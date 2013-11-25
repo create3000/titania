@@ -71,10 +71,6 @@ OutlineTreeData::OutlineTreeData (OutlineIterType type, X3D::X3DChildObject* obj
 	get_user_data () -> paths .emplace (path);
 }
 
-OutlineTreeData::OutlineTreeData (const OutlineTreeData & value) :
-	OutlineTreeData (value .type, value .object, value .path)
-{ }
-
 bool
 OutlineTreeData::is (X3D::X3DChildObject* const value) const
 {

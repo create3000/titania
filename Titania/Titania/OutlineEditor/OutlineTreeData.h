@@ -80,8 +80,6 @@ public:
 
 	OutlineTreeData (OutlineIterType, X3D::X3DChildObject*, const Gtk::TreeModel::Path &);
 
-	OutlineTreeData (const OutlineTreeData &);
-
 	bool
 	is (X3D::X3DChildObject* const) const;
 
@@ -136,15 +134,20 @@ public:
 
 	~OutlineTreeData ();
 
-protected:
+
+private:
+
+	OutlineTreeData (const OutlineTreeData &) = delete;
 
 	OutlineTreeData (OutlineTreeData &&) = delete;
 
 	OutlineTreeData &
 	operator = (const OutlineTreeData &) = delete;
 
+	OutlineTreeData &
+	operator = (OutlineTreeData &&) = delete;
 
-private:
+	///  @name Members
 
 	X3D::X3DChildObject*       object;
 	const OutlineIterType      type;

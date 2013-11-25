@@ -113,6 +113,10 @@ private:
 
 	virtual
 	bool
+	on_button_release_event (GdkEventButton*) final;
+
+	virtual
+	bool
 	on_motion_notify_event (GdkEventMotion*) final;
 
 	void
@@ -124,13 +128,28 @@ private:
 	void
 	on_edited (const Glib::ustring &, const Glib::ustring &);
 
+	bool
+	hover_access_type (double, double);
+
+	bool
+	select_access_type (double, double);
+
+	void
+	set_access_type_selection (const OutlineUserDataPtr &, int);
+
+	void
+	clear_access_type_selection (const OutlineUserDataPtr &);
+
 	///  @name Static members
 
 	static const std::string dragDataType;
 
 	///  @name Members
 
-	OutlineSelection selection;
+	OutlineSelection   selection;
+	OutlineUserDataPtr overUserData;
+	OutlineUserDataPtr selectedUserData;
+	int                selectedAccessType;
 
 };
 

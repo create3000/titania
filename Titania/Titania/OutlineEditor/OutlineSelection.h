@@ -52,6 +52,7 @@
 #define __TITANIA_OUTLINE_EDITOR_OUTLINE_SELECTION_H__
 
 #include "../Base/X3DBaseInterface.h"
+#include "OutlineUserData.h"
 
 #include <gtkmm.h>
 
@@ -111,6 +112,9 @@ private:
 
 	void
 	select (X3D::X3DFieldDefinition* const, bool, X3D::ChildObjectSet &) const;
+
+	void
+	select (const OutlineUserDataPtr &, bool) const;
 
 	///  @name Static members
 

@@ -1,5 +1,24 @@
 2013-11-25  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* inputOnly.0.png:
+	* outputOnly.0.png:
+	* OutlineTreeData.h:
+	* inputOutput.0.0.png:
+	* inputOutput.0.2.png:
+	* inputOutput.0.1.png:
+	* inputOutput.1.0.png:
+	* OutlineUserData.h:
+	* OutlineSelection.h:
+	* OutlineTreeData.cpp:
+	* OutlineSelection.cpp:
+	* OutlineTreeModel.cpp:
+	* OutlineTreeViewEditor.h:
+	* OutlineTreeViewEditor.cpp:
+	* OutlineCellRenderer.h:
+	* OutlineCellRenderer.cpp: 
+
+2013-11-25  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* OutlineUserData.h:
 	* X3DOutlineTreeView.h:
 	* X3DOutlineTreeView.cpp:

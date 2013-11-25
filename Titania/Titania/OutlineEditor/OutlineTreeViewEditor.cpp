@@ -67,7 +67,10 @@ OutlineTreeViewEditor::OutlineTreeViewEditor (BrowserWindow* const browserWindow
 	  X3D::X3DBaseNode (browserWindow -> getBrowser (), browserWindow -> getExecutionContext ()),
 	  X3DBaseInterface (browserWindow),
 	X3DOutlineTreeView (executionContext),
-	         selection (browserWindow, this)
+	         selection (browserWindow, this),
+	      overUserData (new OutlineUserData ()),
+	  selectedUserData (new OutlineUserData ()),
+	selectedAccessType (0)
 {
 	set_name ("OutlineTreeViewEditor");
 
@@ -241,57 +244,29 @@ OutlineTreeViewEditor::on_button_press_event (GdkEventButton* event)
 }
 
 bool
+OutlineTreeViewEditor::on_button_release_event (GdkEventButton* event)
+{
+	switch (event -> button)
+	{
+		case 1:
+		{
+			if (select_access_type (event -> x, event -> y))
+				return true;
+
+			break;
+		}
+		default:
+			break;
+	}
+
+	return Gtk::TreeView::on_button_release_event (event);
+}
+
+bool
 OutlineTreeViewEditor::on_motion_notify_event (GdkEventMotion* event)
 {
-	Gtk::TreeViewColumn* column = nullptr;
-	Gtk::TreeModel::Path path   = get_path_at_position (event -> x, event -> y, column);
-
-	if (path .size ())
-	{
-		auto iter = get_model () -> get_iter (path);
-		auto data = get_model () -> get_data (iter);
-
-		Gdk::Rectangle cell_area;
-		get_cell_area (path, *column, cell_area);
-
-		get_cellrenderer () -> property_data () .set_value (data);
-
-		switch (get_cellrenderer () -> pick (*this, cell_area, event -> x, event -> y))
-		{
-			case OutlineContent::ICON:
-			{
-				__LOG__ << "ICON" << std::endl;
-				break;
-			}
-			case OutlineContent::NAME:
-			{
-				__LOG__ << "NAME" << std::endl;
-				break;
-			}
-			case OutlineContent::INPUT:
-			{
-				__LOG__ << "INPUT" << std::endl;
-				break;
-			}
-			case OutlineContent::OUTPUT:
-			{
-				__LOG__ << "OUTPUT" << std::endl;
-				break;
-			}
-			case OutlineContent::INPUT_CONNECTOR:
-			{
-				__LOG__ << "INPUT_CONNECTOR" << std::endl;
-				break;
-			}
-			case OutlineContent::OUTPUT_CONNECTOR:	
-			{
-				__LOG__ << "OUTPUT_CONNECTOR" << std::endl;
-				break;
-			}
-			default:
-				break;
-		}
-	}
+	if (hover_access_type (event -> x, event -> y))
+		return true;
 
 	return Gtk::TreeView::on_motion_notify_event (event);
 }
@@ -339,6 +314,132 @@ OutlineTreeViewEditor::on_edited (const Glib::ustring & string_path, const Glib:
 	get_tree_observer () -> watch_child (iter, path);
 
 	getBrowserWindow () -> enableMenus (true);
+}
+
+bool
+OutlineTreeViewEditor::hover_access_type (double x, double y)
+{
+	Gtk::TreeViewColumn* column = nullptr;
+	Gtk::TreeModel::Path path   = get_path_at_position (x, y, column);
+
+	// Clear over state
+
+	overUserData -> selected &= OUTLINE_SELECTED | OUTLINE_SELECTED_INPUT | OUTLINE_SELECTED_OUTPUT;
+
+	for (const auto & path : overUserData -> paths)
+		get_model () -> row_changed (path, get_model () -> get_iter (path));
+		
+	// Test for over
+
+	if (path .size ())
+	{
+		auto iter = get_model () -> get_iter (path);
+		auto data = get_model () -> get_data (iter);
+
+		switch (data -> get_type ())
+		{
+			case OutlineIterType::X3DInputRoute:
+			case OutlineIterType::X3DOutputRoute:
+			case OutlineIterType::X3DField:
+			{
+				overUserData = data -> get_user_data ();
+
+				Gdk::Rectangle cell_area;
+				get_cell_area (path, *column, cell_area);
+
+				get_cellrenderer () -> property_data () .set_value (data);
+
+				switch (get_cellrenderer () -> pick (*this, cell_area, x, y))
+				{
+					case OutlineCellContent::INPUT:
+					{
+						overUserData -> selected |= OUTLINE_OVER_INPUT;
+						get_model () -> row_changed (path, iter);
+						return true;
+					}
+					case OutlineCellContent::OUTPUT:
+					{
+						overUserData -> selected |= OUTLINE_OVER_OUTPUT;
+						get_model () -> row_changed (path, iter);
+						return true;
+					}
+					default:
+						break;
+				}
+			}
+			default:
+				break;
+		}
+	}
+
+	return false;
+}
+
+bool
+OutlineTreeViewEditor::select_access_type (double x, double y)
+{
+	Gtk::TreeViewColumn* column = nullptr;
+	Gtk::TreeModel::Path path   = get_path_at_position (x, y, column);
+
+	if (path .size ())
+	{
+		auto iter = get_model () -> get_iter (path);
+		auto data = get_model () -> get_data (iter);
+
+		switch (data -> get_type ())
+		{
+			case OutlineIterType::X3DField:
+			{
+				clear_access_type_selection (selectedUserData);
+
+				Gdk::Rectangle cell_area;
+				get_cell_area (path, *column, cell_area);
+
+				get_cellrenderer () -> property_data () .set_value (data);
+				
+				switch (get_cellrenderer () -> pick (*this, cell_area, x, y))
+				{
+					case OutlineCellContent::INPUT:
+					{
+						set_access_type_selection (data -> get_user_data (), OUTLINE_SELECTED_INPUT);
+						return true;
+					}
+					case OutlineCellContent::OUTPUT:
+					{
+						set_access_type_selection (data -> get_user_data (), OUTLINE_SELECTED_OUTPUT);
+						return true;
+					}
+					default:
+						break;
+				}
+			}
+			default:
+				break;
+		}
+	}
+
+	return false;
+}
+
+void
+OutlineTreeViewEditor::set_access_type_selection (const OutlineUserDataPtr & userData, int type)
+{
+	userData -> selected &= OUTLINE_SELECTED;
+	userData -> selected |= type;
+
+	selectedUserData = userData;
+	
+	for (const auto & path : userData -> paths)
+		get_model () -> row_changed (path, get_model () -> get_iter (path));
+}
+
+void
+OutlineTreeViewEditor::clear_access_type_selection (const OutlineUserDataPtr & userData)
+{
+	userData -> selected &= OUTLINE_SELECTED; // clear over state
+	
+	for (const auto & path : userData -> paths)
+		get_model () -> row_changed (path, get_model () -> get_iter (path));
 }
 
 } // puck

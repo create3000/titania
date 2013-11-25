@@ -61,7 +61,7 @@
 namespace titania {
 namespace puck {
 
-enum class OutlineContent {
+enum class OutlineCellContent {
 	NONE,
 	ICON,
 	NAME,
@@ -94,7 +94,7 @@ public:
 
 	///  @name Operations
 	
-	OutlineContent
+	OutlineCellContent
 	pick (Gtk::Widget &, const Gdk::Rectangle &, double, double);
 
 	///  @name Destruction
