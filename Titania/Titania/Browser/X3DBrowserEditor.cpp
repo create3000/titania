@@ -225,9 +225,9 @@ X3DBrowserEditor::import (const basic::uri & worldURL, const bool importAsInline
 		if (importAsInline)
 		{
 			// Imported As Inline
-			
+
 			auto undoStep = std::make_shared <UndoStep> (_ ("Import As Inline"));
-			
+
 			auto relativePath = getBrowser () -> getExecutionContext () -> getWorldURL () .relative_path (worldURL);
 
 			std::string string;
@@ -254,7 +254,7 @@ X3DBrowserEditor::import (const basic::uri & worldURL, const bool importAsInline
 			auto undoStep = std::make_shared <UndoStep> (_ ("Import"));
 
 			import (getBrowser () -> createX3DFromURL ({ worldURL .str () }), undoStep);
-		
+
 			addUndoStep (undoStep);
 		}
 	}
@@ -277,16 +277,16 @@ X3DBrowserEditor::import (const X3D::X3DSFNode <X3D::Scene> & scene, const UndoS
 		// Imported scene
 
 		getBrowser () -> getExecutionContext () -> importScene (scene);
-		
+
 		X3D::MFNode importedNodes (rootNodes .begin () + numRootNodes, rootNodes .end ());
-		
+
 		auto undoRemoveNodes = std::make_shared <UndoStep> ();
-		
+
 		removeNodes (importedNodes, undoRemoveNodes);
-		
+
 		undoStep -> addUndoFunction (std::mem_fn (&UndoStep::redo), undoRemoveNodes);
 		undoStep -> addRedoFunction (std::mem_fn (&UndoStep::undo), undoRemoveNodes);
-		
+
 		undoRemoveNodes -> undo ();
 
 		// Select imported nodes
@@ -610,7 +610,7 @@ X3DBrowserEditor::removeNodeFromScene (const X3D::X3DSFNode <X3D::Scene> & scene
 	X3D::traverse (scene -> getRootNodes (), [&children] (X3D::SFNode & node)
 	               {
 	                  // If scene node in children, remove from children.
-							children .erase (node);
+	                  children .erase (node);
 	                  return true;
 						});
 
@@ -670,7 +670,7 @@ X3DBrowserEditor::removeNodeFromExecutionContext (X3D::X3DExecutionContext* cons
 	// Delete routes from and to node
 
 	deleteRoutes (executionContext, node, undoStep);
-	
+
 	/// Remove unused Prototypes
 
 	removePrototypes (executionContext, node, undoStep);
@@ -799,42 +799,83 @@ X3DBrowserEditor::deleteRoutes (X3D::X3DExecutionContext* const executionContext
 	{
 		if (route -> getSourceNode () == node or route -> getDestinationNode () == node)
 		{
-			undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DExecutionContext::addRoute), executionContext,
-			                             route -> getSourceNode (),
-			                             route -> getSourceField (),
-			                             route -> getDestinationNode (),
-			                             route -> getDestinationField ());
-
-			using deleteRoute = void (X3D::X3DExecutionContext::*) (const X3D::SFNode &, const std::string &, const X3D::SFNode &, const std::string &);
-
-			undoStep -> addRedoFunction (std::mem_fn ((deleteRoute) & X3D::X3DExecutionContext::deleteRoute), executionContext,
-			                             route -> getSourceNode (),
-			                             route -> getSourceField (),
-			                             route -> getDestinationNode (),
-			                             route -> getDestinationField ());
-
-			executionContext -> deleteRoute (route);
+			deleteRoute (executionContext,
+			             route -> getSourceNode (),
+			             route -> getSourceField (),
+			             route -> getDestinationNode (),
+			             route -> getDestinationField (),
+			             undoStep);
 		}
 	}
 }
 
 void
+X3DBrowserEditor::addRoute (X3D::X3DExecutionContext* const executionContext,
+                            const X3D::SFNode & sourceNode,
+                            const std::string & sourceField,
+                            const X3D::SFNode & destinationNode,
+                            const std::string & destinationField,
+                            const UndoStepPtr & undoStep)
+{
+	using deleteRoute = void (X3D::X3DExecutionContext::*) (const X3D::SFNode &, const std::string &, const X3D::SFNode &, const std::string &);
+
+	undoStep -> addUndoFunction (std::mem_fn ((deleteRoute) & X3D::X3DExecutionContext::deleteRoute), executionContext,
+	                             sourceNode,
+	                             sourceField,
+	                             destinationNode,
+	                             destinationField);
+
+	undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DExecutionContext::addRoute), executionContext,
+	                             sourceNode,
+	                             sourceField,
+	                             destinationNode,
+	                             destinationField);
+
+	executionContext -> addRoute (sourceNode, sourceField, destinationNode, destinationField);
+}
+
+void
+X3DBrowserEditor::deleteRoute (X3D::X3DExecutionContext* const executionContext,
+                               const X3D::SFNode & sourceNode,
+                               const std::string & sourceField,
+                               const X3D::SFNode & destinationNode,
+                               const std::string & destinationField,
+                               const UndoStepPtr & undoStep)
+{
+	using deleteRoute = void (X3D::X3DExecutionContext::*) (const X3D::SFNode &, const std::string &, const X3D::SFNode &, const std::string &);
+
+	undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DExecutionContext::addRoute), executionContext,
+	                             sourceNode,
+	                             sourceField,
+	                             destinationNode,
+	                             destinationField);
+
+	undoStep -> addRedoFunction (std::mem_fn ((deleteRoute) & X3D::X3DExecutionContext::deleteRoute), executionContext,
+	                             sourceNode,
+	                             sourceField,
+	                             destinationNode,
+	                             destinationField);
+
+	executionContext -> deleteRoute (sourceNode, sourceField, destinationNode, destinationField);
+}
+
+void
 X3DBrowserEditor::removePrototypes (X3D::X3DExecutionContext* const executionContext, X3D::SFNode & node, const UndoStepPtr & undoStep)
 {
-	std::set <X3D::X3DSFNode <X3D::X3DProto>> protoDeclarations;
+	std::set <X3D::X3DSFNode <X3D::X3DProto>>  protoDeclarations;
 
 	// Find proto declaration used in node and children of node
 
 	X3D::traverse (node, [&protoDeclarations] (X3D::SFNode & child)
 	               {
 	                  X3D::X3DSFNode <X3D::X3DPrototypeInstance> instance (child);
-	                  
+
 	                  if (instance)
-	                     protoDeclarations .emplace (instance -> getProtoDeclaration ());
-	                  
+								protoDeclarations .emplace (instance -> getProtoDeclaration ());
+
 	                  return true;
-	               });
-	
+						});
+
 	// Filter out proto declaration used in scene
 
 	X3D::traverse (executionContext -> getRootNodes (), [&protoDeclarations] (X3D::SFNode & child)
@@ -842,10 +883,10 @@ X3DBrowserEditor::removePrototypes (X3D::X3DExecutionContext* const executionCon
 	                  X3D::X3DSFNode <X3D::X3DPrototypeInstance> instance (child);
 
 	                  if (instance)
-	                     protoDeclarations .erase (instance -> getProtoDeclaration ());
-	                  
+								protoDeclarations .erase (instance -> getProtoDeclaration ());
+
 	                  return true;
-	               });
+						});
 
 	// Remove unused Protos from X3DExecutionContext
 
@@ -929,7 +970,6 @@ X3DBrowserEditor::ungroupNodes (const X3D::MFNode & groups, const UndoStepPtr & 
 	X3D::MFNode children;
 
 	auto scene = getBrowser () -> getExecutionContext ();
-	
 
 	for (const auto & group : groups)
 	{
@@ -982,7 +1022,7 @@ X3DBrowserEditor::ungroupNodes (const X3D::MFNode & groups, const UndoStepPtr & 
 
 				children .emplace_back (child);
 			}
-			
+
 			undoStep -> addRedoFunction (std::mem_fn (&X3D::MFNode::clear), groupingField);
 
 			groupingField -> clear ();
@@ -1111,7 +1151,7 @@ X3DBrowserEditor::detachFromGroup (X3D::MFNode children, bool detachToLayer0, co
 			X3D::Matrix4f childModelViewMatrix = findModelViewMatrix (node);
 
 			childModelViewMatrix .multLeft (transform -> getMatrix ());
-			
+
 			setMatrix (transform, childModelViewMatrix, undoStep);
 		}
 

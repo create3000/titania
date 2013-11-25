@@ -101,6 +101,12 @@ public:
 	void
 	redo ();
 
+	void
+	addRoute (X3D::X3DExecutionContext* const, const X3D::SFNode &, const std::string &, const X3D::SFNode &, const std::string &, const UndoStepPtr &);
+
+	void
+	deleteRoute (X3D::X3DExecutionContext* const, const X3D::SFNode &, const std::string &, const X3D::SFNode &, const std::string &, const UndoStepPtr &);
+
 	/// @name Selection operations
 
 	void
