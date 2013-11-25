@@ -70,7 +70,7 @@ OutlineTreeViewEditor::OutlineTreeViewEditor (BrowserWindow* const browserWindow
 	         selection (browserWindow, this),
 	      overUserData (new OutlineUserData ()),
 	  selectedUserData (new OutlineUserData ()),
-	selectedAccessType (0)
+	matchingAccessType (0)
 {
 	set_name ("OutlineTreeViewEditor");
 
@@ -338,30 +338,39 @@ OutlineTreeViewEditor::hover_access_type (double x, double y)
 
 		switch (data -> get_type ())
 		{
-			case OutlineIterType::X3DInputRoute:
-			case OutlineIterType::X3DOutputRoute:
 			case OutlineIterType::X3DField:
 			{
+				auto field = static_cast <X3D::X3DFieldDefinition*> (data -> get_object ());
+
 				overUserData = data -> get_user_data ();
 
 				Gdk::Rectangle cell_area;
 				get_cell_area (path, *column, cell_area);
-
 				get_cellrenderer () -> property_data () .set_value (data);
 
 				switch (get_cellrenderer () -> pick (*this, cell_area, x, y))
 				{
 					case OutlineCellContent::INPUT:
 					{
-						overUserData -> selected |= OUTLINE_OVER_INPUT;
-						get_model () -> row_changed (path, iter);
-						return true;
+						if (not matchingAccessType or (field -> getAccessType () & (matchingAccessType & X3D::inputOnly) and field -> getType () == matchingFieldType))
+						{
+							overUserData -> selected |= OUTLINE_OVER_INPUT;
+							get_model () -> row_changed (path, iter);
+							return true;
+						}
+						
+						break;
 					}
 					case OutlineCellContent::OUTPUT:
 					{
-						overUserData -> selected |= OUTLINE_OVER_OUTPUT;
-						get_model () -> row_changed (path, iter);
-						return true;
+						if (not matchingAccessType or (field -> getAccessType () & (matchingAccessType & X3D::outputOnly) and field -> getType () == matchingFieldType))
+						{
+							overUserData -> selected |= OUTLINE_OVER_OUTPUT;
+							get_model () -> row_changed (path, iter);
+							return true;
+						}
+						
+						break;
 					}
 					default:
 						break;
@@ -390,26 +399,98 @@ OutlineTreeViewEditor::select_access_type (double x, double y)
 		{
 			case OutlineIterType::X3DField:
 			{
+				auto field = static_cast <X3D::X3DFieldDefinition*> (data -> get_object ());
+	
 				clear_access_type_selection (selectedUserData);
 
 				Gdk::Rectangle cell_area;
 				get_cell_area (path, *column, cell_area);
-
 				get_cellrenderer () -> property_data () .set_value (data);
 				
 				switch (get_cellrenderer () -> pick (*this, cell_area, x, y))
 				{
 					case OutlineCellContent::INPUT:
 					{
+						if (field -> getAccessType () & (matchingAccessType & X3D::inputOnly))
+						{
+							if (field -> getType () == matchingFieldType)
+							{
+								path .up ();
+								auto nodeIter = get_model () -> get_iter (path);
+								auto nodeData = get_model () -> get_data (nodeIter);
+								
+								if (nodeData -> get_type () not_eq OutlineIterType::X3DBaseNode)
+									return false;
+
+								X3D::SFNode destinationNode  = *static_cast <X3D::SFNode*> (nodeData -> get_object ());
+								std::string destinationField = field -> getName ();
+								
+								getBrowser () -> getExecutionContext () -> addRoute (sourceNode, sourceField, destinationNode, destinationField);
+								
+								matchingAccessType = 0;
+								sourceNode         = nullptr;
+
+								return true;
+							}
+						}
+						
+						path .up ();
+						auto nodeIter = get_model () -> get_iter (path);
+						auto nodeData = get_model () -> get_data (nodeIter);
+							
+						if (nodeData -> get_type () not_eq OutlineIterType::X3DBaseNode)
+							return false;
+
+						destinationNode  = *static_cast <X3D::SFNode*> (nodeData -> get_object ());
+						destinationField = field -> getName ();
+
 						set_access_type_selection (data -> get_user_data (), OUTLINE_SELECTED_INPUT);
+						matchingFieldType  = field -> getType ();
+						matchingAccessType = X3D::outputOnly;
 						return true;
 					}
 					case OutlineCellContent::OUTPUT:
 					{
+						if (field -> getAccessType () & (matchingAccessType & X3D::inputOnly))
+						{
+							if (field -> getType () == matchingFieldType)
+							{
+								path .up ();
+								auto nodeIter = get_model () -> get_iter (path);
+								auto nodeData = get_model () -> get_data (nodeIter);
+								
+								if (nodeData -> get_type () not_eq OutlineIterType::X3DBaseNode)
+									return false;
+
+								X3D::SFNode sourceNode  = *static_cast <X3D::SFNode*> (nodeData -> get_object ());
+								std::string sourceField = field -> getName ();
+
+								getBrowser () -> getExecutionContext () -> addRoute (sourceNode, sourceField, destinationNode, destinationField);
+								
+								matchingAccessType = 0;
+								destinationNode    = nullptr;
+
+								return true;
+							}
+						}
+
+						path .up ();
+						auto nodeIter = get_model () -> get_iter (path);
+						auto nodeData = get_model () -> get_data (nodeIter);
+							
+						if (nodeData -> get_type () not_eq OutlineIterType::X3DBaseNode)
+							return false;
+
+						sourceNode  = *static_cast <X3D::SFNode*> (nodeData -> get_object ());
+						sourceField = field -> getName ();
+
 						set_access_type_selection (data -> get_user_data (), OUTLINE_SELECTED_OUTPUT);
+						matchingFieldType  = field -> getType ();
+						matchingAccessType = X3D::inputOnly;
 						return true;
 					}
 					default:
+						matchingAccessType = 0;
 						break;
 				}
 			}
@@ -428,7 +509,7 @@ OutlineTreeViewEditor::set_access_type_selection (const OutlineUserDataPtr & use
 	userData -> selected |= type;
 
 	selectedUserData = userData;
-	
+
 	for (const auto & path : userData -> paths)
 		get_model () -> row_changed (path, get_model () -> get_iter (path));
 }

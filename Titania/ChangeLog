@@ -1,5 +1,11 @@
 2013-11-25  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* OutlineTreeViewEditor.h:
+	* OutlineTreeViewEditor.cpp:
+	* OutlineCellRenderer.cpp: 
+
+2013-11-25  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* inputOnly.0.png:
 	* outputOnly.0.png:
 	* OutlineTreeData.h:

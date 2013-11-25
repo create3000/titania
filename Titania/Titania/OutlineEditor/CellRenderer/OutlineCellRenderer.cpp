@@ -1055,26 +1055,26 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 
 			break;
 		}
-		case OutlineIterType::X3DInputRoute:
-		{
-			if (selected & (OUTLINE_OVER_INPUT | OUTLINE_SELECTED_INPUT))
-			{
-				context -> rectangle (field_x, field_y, FIELD_WIDTH, field_height);
-				context -> fill ();
-			}
-
-			break;
-		}
-		case OutlineIterType::X3DOutputRoute:
-		{
-			if (selected & (OUTLINE_OVER_OUTPUT | OUTLINE_SELECTED_OUTPUT))
-			{
-				context -> rectangle (field_x, field_y, FIELD_WIDTH, field_height);
-				context -> fill ();
-			}
-
-			break;
-		}
+		//		case OutlineIterType::X3DInputRoute:
+		//		{
+		//			if (selected & (OUTLINE_OVER_INPUT | OUTLINE_SELECTED_INPUT))
+		//			{
+		//				context -> rectangle (field_x, field_y, FIELD_WIDTH, field_height);
+		//				context -> fill ();
+		//			}
+		//
+		//			break;
+		//		}
+		//		case OutlineIterType::X3DOutputRoute:
+		//		{
+		//			if (selected & (OUTLINE_OVER_OUTPUT | OUTLINE_SELECTED_OUTPUT))
+		//			{
+		//				context -> rectangle (field_x, field_y, FIELD_WIDTH, field_height);
+		//				context -> fill ();
+		//			}
+		//
+		//			break;
+		//		}
 		default:
 			break;
 	}

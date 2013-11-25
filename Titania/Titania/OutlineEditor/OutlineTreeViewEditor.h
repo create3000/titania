@@ -145,11 +145,18 @@ private:
 	static const std::string dragDataType;
 
 	///  @name Members
+	
+	using FieldType = X3D::X3DConstants::FieldType;
 
 	OutlineSelection   selection;
 	OutlineUserDataPtr overUserData;
 	OutlineUserDataPtr selectedUserData;
-	int                selectedAccessType;
+	FieldType          matchingFieldType;
+	int                matchingAccessType;
+	X3D::SFNode        sourceNode;
+	std::string        sourceField;
+	X3D::SFNode        destinationNode;
+	std::string        destinationField;
 
 };
 
