@@ -117,7 +117,7 @@ Route::getId () const
 	return std::make_pair (sourceField, destinationField);
 }
 
-SFNode
+X3DBaseNode*
 Route::getSourceNode () const
 {
 	return sourceNode;
@@ -132,7 +132,7 @@ Route::getSourceField () const
 	return emptyString;
 }
 
-SFNode
+X3DBaseNode*
 Route::getDestinationNode () const
 {
 	return destinationNode;
@@ -153,11 +153,11 @@ Route::connect ()
 	if (connected)
 		return;
 
+	connected = true;
+
 	sourceField -> addInterest (destinationField);
 	sourceField -> addOutputRoute (this);
 	destinationField -> addInputRoute  (this);
-
-	connected = true;
 }
 
 void
@@ -169,15 +169,15 @@ Route::disconnect ()
 		sourceField -> removeOutputRoute (this);
 		destinationField -> removeInputRoute  (this);
 
+		disconnected () .processInterests ();
+
+		connected = false;
+
 		sourceNode      = nullptr;
 		destinationNode = nullptr;
 
 		sourceField      = nullptr;
 		destinationField = nullptr;
-
-		connected = false;
-
-		disconnected () .processInterests ();
 	}
 }
 

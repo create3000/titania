@@ -121,13 +121,13 @@ public:
 	RouteId
 	getId () const;
 
-	SFNode
+	X3DBaseNode*
 	getSourceNode () const;
 
 	const std::string &
 	getSourceField () const;
 
-	SFNode
+	X3DBaseNode*
 	getDestinationNode () const;
 
 	const std::string &

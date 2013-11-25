@@ -83,7 +83,7 @@ X3DOutput::removeInterest (const Requester & function) const
 }
 
 bool
-X3DOutput::hasInterest (const void* object, const void* memberFunction) const
+X3DOutput::checkInterest (const void* object, const void* memberFunction) const
 {
 	RequesterPair requesterPair (this, memberFunction, object);
 

@@ -90,6 +90,18 @@ private:
 	expand_field (const Gtk::TreeModel::iterator &);
 
 	void
+	forward_connections (const Gtk::TreeModel::iterator &, OutlineTreeData* const);
+
+	void
+	add_routes_for_path (const Gtk::TreeModel::Path &);
+
+	void
+	add_routes (const Gtk::TreeModel::Path &, OutlineTreeData* const, X3D::X3DFieldDefinition* const);
+
+	void
+	remove_routes (const Gtk::TreeModel::Path &, OutlineTreeData* const, X3D::X3DFieldDefinition* const);
+
+	void
 	add_input_route (const Gtk::TreeModel::Path &, OutlineTreeData* const, X3D::Route* const);
 
 	void
@@ -103,9 +115,6 @@ private:
 
 	void
 	collapse_node (const Gtk::TreeModel::iterator &);
-
-	void
-	collapse_node (const Gtk::TreeModel::Path &, OutlineTreeData* const, const Gtk::TreeModel::iterator &);
 
 	void
 	collapse_field (const Gtk::TreeModel::iterator &);

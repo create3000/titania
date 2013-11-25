@@ -87,25 +87,22 @@ public:
 	/// @name Has interest service
 
 	template <class Class, class Function>
-	inline
 	bool
 	hasInterest (Class* object, Function && memberFunction) const
 	{
-		return hasInterest ((X3DInput*) object, reinterpret_cast <void*> (object ->* memberFunction));
+		return checkInterest ((X3DInput*) object, reinterpret_cast <void*> (object ->* memberFunction));
 	}
 
 	template <class Class, class Function>
-	inline
 	bool
 	hasInterest (Class & object, Function && memberFunction) const
 	{
-		return hasInterest ((X3DInput*) &object, reinterpret_cast <void*> (object .* memberFunction));
+		return checkInterest ((X3DInput*) &object, reinterpret_cast <void*> (object .* memberFunction));
 	}
 
 	/// @name Add interest service
 
 	template <class Class, class Function, class ... Arguments>
-	inline
 	void
 	addInterest (Class* object, Function && memberFunction, Arguments && ... arguments) const
 	{
@@ -117,7 +114,6 @@ public:
 	}
 
 	template <class Class, class Function, class ... Arguments>
-	inline
 	void
 	addInterest (Class & object, Function && memberFunction, Arguments && ... arguments) const
 	{
@@ -156,7 +152,6 @@ public:
 	///  @name Remove interest service
 
 	template <class Class, class Function>
-	inline
 	void
 	removeInterest (Class* object, Function && memberFunction) const
 	{
@@ -165,7 +160,6 @@ public:
 	}
 
 	template <class Class, class Function>
-	inline
 	void
 	removeInterest (Class & object, Function && memberFunction) const
 	{
@@ -201,9 +195,7 @@ private:
 	typedef std::set <std::pair <const X3DInput*, const void*>> InputSet;
 
 	bool
-	hasInterest (const void*, const void*) const;
-
-	///  @name Force add interest
+	checkInterest (const void*, const void*) const;
 
 	///  Add basic interest.
 
