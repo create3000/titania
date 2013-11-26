@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -122,8 +122,22 @@ OutlineTreeModel::get_parents (const iterator & iter) const
 	return tree .get_parents (get_path (iter));
 }
 
-size_t
+std::vector <X3D::Route*>
 OutlineTreeModel::get_input_routes (X3D::X3DFieldDefinition* const field) const
+{
+	std::vector <X3D::Route*> routes;
+
+	for (const auto & route : field -> getInputRoutes ())
+	{
+		if (route -> getSourceNode () -> getExecutionContext () == executionContext)
+			routes .emplace_back (route);
+	}
+
+	return routes;
+}
+
+size_t
+OutlineTreeModel::get_input_routes_size (X3D::X3DFieldDefinition* const field) const
 {
 	size_t size = 0;
 
@@ -133,8 +147,22 @@ OutlineTreeModel::get_input_routes (X3D::X3DFieldDefinition* const field) const
 	return size;
 }
 
-size_t
+std::vector <X3D::Route*>
 OutlineTreeModel::get_output_routes (X3D::X3DFieldDefinition* const field) const
+{
+	std::vector <X3D::Route*> routes;
+
+	for (const auto & route : field -> getOutputRoutes ())
+	{
+		if (route -> getDestinationNode () -> getExecutionContext () == executionContext)
+			routes .emplace_back (route);
+	}
+
+	return routes;
+}
+
+size_t
+OutlineTreeModel::get_output_routes_size (X3D::X3DFieldDefinition* const field) const
 {
 	size_t size = 0;
 
@@ -392,7 +420,7 @@ OutlineTreeModel::iter_has_child_vfunc (const iterator & iter) const
 		{
 			auto field = static_cast <X3D::X3DFieldDefinition*> (get_object (iter));
 
-			bool size = get_input_routes (field) + get_output_routes (field);
+			bool size = get_input_routes_size (field) + get_output_routes_size (field);
 
 			switch (field -> getType ())
 			{

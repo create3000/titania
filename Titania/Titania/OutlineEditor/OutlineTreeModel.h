@@ -157,11 +157,17 @@ public:
 	X3D::X3DChildObject*
 	get_object (const iterator &);
 
-	size_t
+	std::vector <X3D::Route*>
 	get_input_routes (X3D::X3DFieldDefinition* const) const;
 
 	size_t
+	get_input_routes_size (X3D::X3DFieldDefinition* const) const;
+
+	std::vector <X3D::Route*>
 	get_output_routes (X3D::X3DFieldDefinition* const) const;
+
+	size_t
+	get_output_routes_size (X3D::X3DFieldDefinition* const) const;
 
 	///  @name Operations
 

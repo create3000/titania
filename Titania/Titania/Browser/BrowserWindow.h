@@ -126,6 +126,10 @@ public:
 
 	/// @name Member access
 
+	X3D::Keys &
+	getKeys ()
+	{ return keys; }
+
 	const X3D::Keys &
 	getKeys () const
 	{ return keys; }

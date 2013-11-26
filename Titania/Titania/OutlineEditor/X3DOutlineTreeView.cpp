@@ -448,7 +448,7 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 						{
 							if (not field -> isInitializeable () or node -> isDefaultValue (field))
 							{
-								if (not get_model () -> get_input_routes (field) and not get_model () -> get_output_routes (field))
+								if (not get_model () -> get_input_routes_size (field) and not get_model () -> get_output_routes_size (field))
 									continue;
 							}
 
@@ -488,16 +488,14 @@ X3DOutlineTreeView::get_fields (X3D::X3DBaseNode* const node) const
 void
 X3DOutlineTreeView::expand_routes (const Gtk::TreeModel::iterator & iter, X3D::X3DFieldDefinition* field)
 {
-	for (const auto & route : field -> getInputRoutes ())
+	for (const auto & route : get_model () -> get_input_routes (field))
 	{
-		if (route -> getSourceNode () -> getExecutionContext () == get_model () -> get_execution_context ())
-			get_model () -> append (iter, OutlineIterType::X3DInputRoute, route);
+		get_model () -> append (iter, OutlineIterType::X3DInputRoute, route);
 	}
 
-	for (const auto & route : field -> getOutputRoutes ())
+	for (const auto & route : get_model () -> get_output_routes (field))
 	{
-		if (route -> getDestinationNode () -> getExecutionContext () == get_model () -> get_execution_context ())
-			get_model () -> append (iter, OutlineIterType::X3DOutputRoute, route);
+		get_model () -> append (iter, OutlineIterType::X3DOutputRoute, route);
 	}
 }
 

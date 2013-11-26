@@ -261,8 +261,8 @@ OutlineCellRenderer::get_access_type_icon (X3D::AccessType & accessType) const
 	auto   iter  = accessTypeImages .find (field -> getAccessType ());
 	size_t index = 0;
 
-	size_t inputRoutes  = treeView -> get_model () -> get_input_routes (field);
-	size_t outputRoutes = treeView -> get_model () -> get_output_routes (field);
+	size_t inputRoutes  = treeView -> get_model () -> get_input_routes_size (field);
+	size_t outputRoutes = treeView -> get_model () -> get_output_routes_size (field);
 
 	accessType = field -> getAccessType ();
 
@@ -809,8 +809,8 @@ OutlineCellRenderer::pick (Gtk::Widget & widget,
 			}
 
 			auto   field        = static_cast <X3D::X3DFieldDefinition*> (get_object ());
-			size_t inputRoutes  = treeView -> get_model () -> get_input_routes (field);
-			size_t outputRoutes = treeView -> get_model () -> get_output_routes (field);
+			size_t inputRoutes  = treeView -> get_model () -> get_input_routes_size (field);
+			size_t outputRoutes = treeView -> get_model () -> get_output_routes_size (field);
 
 			switch (field -> getAccessType ())
 			{
