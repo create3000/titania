@@ -75,16 +75,25 @@ public:
 	shift () const;
 
 	void
+	restore_shift ();
+
+	void
 	control (int);
 
 	int
 	control () const;
 
 	void
+	restore_control ();
+
+	void
 	alt (bool);
 
 	int
 	alt () const;
+
+	void
+	restore_alt ();
 
 	static constexpr int Shift_R   = 1;
 	static constexpr int Shift_L   = 2;
@@ -99,6 +108,10 @@ private:
 	int m_shift;
 	int m_control;
 	bool m_alt;
+
+	int m_saved_shift;
+	int m_saved_control;
+	bool m_saved_alt;
 
 };
 

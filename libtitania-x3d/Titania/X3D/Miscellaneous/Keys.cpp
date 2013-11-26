@@ -54,9 +54,12 @@ namespace titania {
 namespace X3D {
 
 Keys::Keys () :
-	  m_shift (0),
-	m_control (0),
-	    m_alt (false)
+	        m_shift (0),
+	      m_control (0),
+	          m_alt (false),
+	  m_saved_shift (0),
+	m_saved_control (0),
+	    m_saved_alt (false)
 { }
 
 void
@@ -112,7 +115,8 @@ Keys::release (GdkEventKey* event)
 void
 Keys::shift (int value)
 {
-	m_shift = value;
+	m_saved_shift = m_shift;
+	m_shift       = value;
 }
 
 int
@@ -122,9 +126,16 @@ Keys::shift () const
 }
 
 void
+Keys::restore_shift ()
+{
+	m_shift = m_saved_shift;
+}
+
+void
 Keys::control (int value)
 {
-	m_control = value;
+	m_saved_control = m_control;
+	m_control       = value;
 }
 
 int
@@ -134,15 +145,28 @@ Keys::control () const
 }
 
 void
+Keys::restore_control ()
+{
+	m_control = m_saved_control;
+}
+
+void
 Keys::alt (bool value)
 {
-	m_alt = value;
+	m_saved_alt = m_alt;
+	m_alt       = value;
 }
 
 int
 Keys::alt () const
 {
 	return m_alt;
+}
+
+void
+Keys::restore_alt ()
+{
+	m_alt = m_saved_alt;
 }
 
 } // X3D

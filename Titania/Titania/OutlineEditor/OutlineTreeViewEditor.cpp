@@ -582,6 +582,40 @@ OutlineTreeViewEditor::remove_route (double x, double y)
 
 		switch (data -> get_type ())
 		{
+			case OutlineIterType::X3DInputRoute:
+			case OutlineIterType::X3DOutputRoute:
+			{
+				auto route = static_cast <X3D::Route*> (data -> get_object ());
+
+				// Pick
+
+				Gdk::Rectangle cell_area;
+				get_cell_area (path, *column, cell_area);
+				get_cellrenderer () -> property_data () .set_value (data);
+
+				switch (get_cellrenderer () -> pick (*this, cell_area, x, y))
+				{
+					case OutlineCellContent::INPUT:
+					case OutlineCellContent::OUTPUT:
+					{
+						auto undoStep = std::make_shared <UndoStep> (_ ("Remove Route"));
+
+						getBrowserWindow () -> deleteRoute (getBrowser () -> getExecutionContext (),
+						                                    route -> getSourceNode (),
+						                                    route -> getSourceField (),
+						                                    route -> getDestinationNode (),
+						                                    route -> getDestinationField (),
+						                                    undoStep);
+
+						getBrowserWindow () -> addUndoStep (undoStep);
+						return true;
+					}
+					default:
+						break;
+				}
+				
+				return false;
+			}
 			case OutlineIterType::X3DField:
 			{
 				auto field = static_cast <X3D::X3DFieldDefinition*> (data -> get_object ());
@@ -596,87 +630,13 @@ OutlineTreeViewEditor::remove_route (double x, double y)
 				{
 					case OutlineCellContent::INPUT:
 					{
-						auto routes = std::move (get_model () -> get_input_routes (field));
-
-						switch (routes .size ())
-						{
-							case 0:
-								return true;
-							case 1:
-							{
-								try
-								{
-									auto route    = routes [0];
-									auto undoStep = std::make_shared <UndoStep> (_ ("Remove Route"));
-
-									getBrowserWindow () -> deleteRoute (getBrowser () -> getExecutionContext (),
-									                                    route -> getSourceNode (),
-									                                    route -> getSourceField (),
-									                                    route -> getDestinationNode (),
-									                                    route -> getDestinationField (),
-									                                    undoStep);
-
-									getBrowserWindow () -> addUndoStep (undoStep);
-								}
-								catch (const X3D::X3DError &)
-								{ }
-								
-								return true;
-							}
-							default:
-							{
-								auto shift_key = getBrowserWindow () -> getKeys () .shift ();
-								getBrowserWindow () -> getKeys () .shift (X3D::Keys::Shift_L | X3D::Keys::Shift_R);
-
-								expand_row (path, false);
-
-								getBrowserWindow () -> getKeys () .shift (shift_key);
-								return true;
-							}
-						}
+						remove_route (path, get_model () -> get_input_routes (field));
 
 						return true;
 					}
 					case OutlineCellContent::OUTPUT:
 					{
-						auto routes = std::move (get_model () -> get_output_routes (field));
-
-						switch (routes .size ())
-						{
-							case 0:
-								return true;
-							case 1:
-							{
-								try
-								{
-									auto route    = routes [0];
-									auto undoStep = std::make_shared <UndoStep> (_ ("Remove Route"));
-
-									getBrowserWindow () -> deleteRoute (getBrowser () -> getExecutionContext (),
-									                                    route -> getSourceNode (),
-									                                    route -> getSourceField (),
-									                                    route -> getDestinationNode (),
-									                                    route -> getDestinationField (),
-									                                    undoStep);
-
-									getBrowserWindow () -> addUndoStep (undoStep);
-								}
-								catch (const X3D::X3DError &)
-								{ }
-								
-								return true;
-							}
-							default:
-							{
-								auto shift_key = getBrowserWindow () -> getKeys () .shift ();
-								getBrowserWindow () -> getKeys () .shift (X3D::Keys::Shift_L | X3D::Keys::Shift_R);
-
-								expand_row (path, false);
-
-								getBrowserWindow () -> getKeys () .shift (shift_key);
-								return true;
-							}
-						}
+						remove_route (path, get_model () -> get_output_routes (field));
 
 						return true;
 					}
@@ -690,6 +650,50 @@ OutlineTreeViewEditor::remove_route (double x, double y)
 	}
 
 	return false;
+}
+
+void
+OutlineTreeViewEditor::remove_route (const Gtk::TreeModel::Path & path, const std::vector <X3D::Route*> & routes)
+{
+	switch (routes .size ())
+	{
+		case 0:
+			return;
+		case 1:
+		{
+			try
+			{
+				auto route    = routes [0];
+				auto undoStep = std::make_shared <UndoStep> (_ ("Remove Route"));
+
+				getBrowserWindow () -> deleteRoute (getBrowser () -> getExecutionContext (),
+				                                    route -> getSourceNode (),
+				                                    route -> getSourceField (),
+				                                    route -> getDestinationNode (),
+				                                    route -> getDestinationField (),
+				                                    undoStep);
+
+				getBrowserWindow () -> addUndoStep (undoStep);
+			}
+			catch (const X3D::X3DError &)
+			{ }
+
+			return;
+		}
+		default:
+		{
+			collapse_row (path);
+
+			getBrowserWindow () -> getKeys () .shift (X3D::Keys::Shift_L | X3D::Keys::Shift_R);
+
+			expand_row (path, false);
+
+			getBrowserWindow () -> getKeys () .restore_shift ();
+			return;
+		}
+	}
+
+	return;
 }
 
 void

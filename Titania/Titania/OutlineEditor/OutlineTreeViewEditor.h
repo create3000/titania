@@ -147,6 +147,9 @@ private:
 	remove_route (double, double);
 
 	void
+	remove_route (const Gtk::TreeModel::Path &, const std::vector <X3D::Route*> &);
+
+	void
 	set_access_type_selection (const OutlineUserDataPtr &, int);
 
 	void
