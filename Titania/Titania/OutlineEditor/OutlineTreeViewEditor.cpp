@@ -427,9 +427,14 @@ OutlineTreeViewEditor::select_access_type (double x, double y)
 
 								// Add route
 
-								auto undoStep = std::make_shared <UndoStep> (_ ("Add Route"));
-								getBrowserWindow () -> addRoute (getBrowser () -> getExecutionContext (), sourceNode, sourceField, destinationNode, destinationField, undoStep);
-								getBrowserWindow () -> addUndoStep (undoStep);
+								try
+								{
+									auto undoStep = std::make_shared <UndoStep> (_ ("Add Route"));
+									getBrowserWindow () -> addRoute (getBrowser () -> getExecutionContext (), sourceNode, sourceField, destinationNode, destinationField, undoStep);
+									getBrowserWindow () -> addUndoStep (undoStep);
+								}
+								catch (const X3D::X3DError &)
+								{ }
 
 								// Clean up
 
@@ -472,10 +477,15 @@ OutlineTreeViewEditor::select_access_type (double x, double y)
 								std::string sourceField = field -> getName ();
 
 								// Add route
-
-								auto undoStep = std::make_shared <UndoStep> (_ ("Add Route"));
-								getBrowserWindow () -> addRoute (getBrowser () -> getExecutionContext (), sourceNode, sourceField, destinationNode, destinationField, undoStep);
-								getBrowserWindow () -> addUndoStep (undoStep);
+								
+								try
+								{
+									auto undoStep = std::make_shared <UndoStep> (_ ("Add Route"));
+									getBrowserWindow () -> addRoute (getBrowser () -> getExecutionContext (), sourceNode, sourceField, destinationNode, destinationField, undoStep);
+									getBrowserWindow () -> addUndoStep (undoStep);
+								}
+								catch (const X3D::X3DError &)
+								{ }
 
 								// Clean up
 

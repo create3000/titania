@@ -65,6 +65,8 @@ class TransformHandle :
 {
 public:
 
+	///  @name Construction
+
 	TransformHandle (Transform* const, SFBool*, X3DExecutionContext* const);
 
 	///  @name Fields
@@ -202,6 +204,8 @@ public:
 	getTransform () const
 	{ return transform; }
 
+	///  @name Operatations
+
 	virtual
 	void
 	addHandle (SFBool*) final
@@ -225,6 +229,13 @@ public:
 	void
 	traverse (const TraverseType type) final;
 
+	///  @name Destruction
+
+	virtual
+	const Output &
+	shutdown () const final
+	{ return transform -> shutdown (); }
+
 	virtual
 	void
 	dispose () final;
@@ -232,9 +243,13 @@ public:
 
 private:
 
+	///  @name Construction
+
 	virtual
 	void
 	initialize () final;
+
+	///  @name Operatations
 
 	void
 	reshape ();

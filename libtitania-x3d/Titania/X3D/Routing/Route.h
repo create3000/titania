@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -63,7 +63,7 @@ class Route :
 	public X3DBaseNode
 {
 public:
-	
+
 	///  @name Fields
 
 	Output &
@@ -84,13 +84,13 @@ public:
 	Route*
 	clone (X3DExecutionContext* const) const
 	throw (Error <INVALID_NAME>,
-          Error <NOT_SUPPORTED>) final;
+	       Error <NOT_SUPPORTED>) final;
 
 	virtual
 	Route*
 	copy (X3DExecutionContext* const) const
 	throw (Error <INVALID_NAME>,
-          Error <NOT_SUPPORTED>) final;
+	       Error <NOT_SUPPORTED>) final;
 
 	///  @name Common members
 
@@ -121,13 +121,13 @@ public:
 	RouteId
 	getId () const;
 
-	X3DBaseNode*
+	const SFNode &
 	getSourceNode () const;
 
 	const std::string &
 	getSourceField () const;
 
-	X3DBaseNode*
+	const SFNode &
 	getDestinationNode () const;
 
 	const std::string &
@@ -172,15 +172,12 @@ private:
 	static const std::string componentName;
 	static const std::string typeName;
 	static const std::string containerField;
-	
-	static const std::string emptyString;
 
 	///  @name Members
 
-	X3DBaseNode* sourceNode;
-	X3DBaseNode* destinationNode;
-
+	SFNode              sourceNode;
 	X3DFieldDefinition* sourceField;
+	SFNode              destinationNode;
 	X3DFieldDefinition* destinationField;
 
 	bool   connected;

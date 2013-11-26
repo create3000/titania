@@ -187,11 +187,15 @@ OutlineRouteGraph::forward_connections (const Gtk::TreeModel::iterator & parent,
 void
 OutlineRouteGraph::add_routes_for_path (const Gtk::TreeModel::Path & path)
 {
-	auto iter  = treeView -> get_model () -> get_iter (path);
-	auto data  = treeView -> get_model () -> get_data (iter);
-	auto field = static_cast <X3D::X3DFieldDefinition*> (data -> get_object ());
+	auto iter = treeView -> get_model () -> get_iter (path);
+	auto data = treeView -> get_model () -> get_data (iter);
 
-	add_routes (path, data, field);
+	if (data -> get_type () == OutlineIterType::X3DField)
+	{
+		auto field = static_cast <X3D::X3DFieldDefinition*> (data -> get_object ());
+
+		add_routes (path, data, field);
+	}
 }
 
 void
@@ -220,6 +224,9 @@ void
 OutlineRouteGraph::add_input_route (const Gtk::TreeModel::Path & destinationPath, OutlineTreeData* const destinationData, X3D::Route* const route)
 {
 	//__LOG__ << std::endl;
+	
+	if (not route -> isConnected ())
+		return;
 
 	auto sourceNode = route -> getSourceNode ();
 
@@ -301,6 +308,9 @@ void
 OutlineRouteGraph::add_output_route (const Gtk::TreeModel::Path & sourcePath, OutlineTreeData* const sourceData, X3D::Route* const route)
 {
 	//__LOG__ << std::endl;
+	
+	if (not route -> isConnected ())
+		return;
 
 	auto destinationNode = route -> getDestinationNode ();
 
@@ -457,6 +467,9 @@ OutlineRouteGraph::collapse_node (const Gtk::TreeModel::iterator & parent)
 		auto userData = data -> get_user_data ();
 		auto field    = static_cast <X3D::X3DFieldDefinition*> (data -> get_object ());
 
+		field -> getInputRoutes ()  .removeInterest (this, &OutlineRouteGraph::add_routes_for_path);
+		field -> getOutputRoutes () .removeInterest (this, &OutlineRouteGraph::add_routes_for_path);
+
 		if (userData -> all_expanded)
 		{
 			for (const auto & iter : child -> children ())
@@ -589,6 +602,9 @@ void
 OutlineRouteGraph::remove_input_route (const Gtk::TreeModel::Path & destinationPath, OutlineTreeData* const destinationData, X3D::Route* const route)
 {
 	//__LOG__ << std::endl;
+	
+	if (not route -> isConnected ())
+		return;
 
 	auto sourceNode = route -> getSourceNode ();
 
@@ -668,6 +684,9 @@ void
 OutlineRouteGraph::remove_output_route (const Gtk::TreeModel::Path & sourcePath, OutlineTreeData* const sourceData, X3D::Route* const route)
 {
 	//__LOG__ << std::endl;
+	
+	if (not route -> isConnected ())
+		return;
 
 	auto destinationNode = route -> getDestinationNode ();
 

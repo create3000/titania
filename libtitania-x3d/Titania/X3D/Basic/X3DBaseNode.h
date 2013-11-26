@@ -267,6 +267,7 @@ public:
 
 	///  @name Destruction
 
+	virtual
 	const Output &
 	shutdown () const
 	{ return shutdownOutput; }
