@@ -100,11 +100,11 @@ X3DBrowserWidget::set_splashScreen ()
 	getBrowser () -> initialized () .removeInterest (this, &X3DBrowserWidget::set_splashScreen);
 	getBrowser () -> initialized () .addInterest (this, &X3DBrowserWidget::set_initialized);
 
-	if (getConfig () .string ("url") .size ())
-		open (getConfig () .string ("url") .raw ());
+	if (getConfig () .getString ("url") .size ())
+		open (getConfig () .getString ("url") .raw ());
 
-	else if (getConfig () .string ("worldURL") .size ())
-		open (getConfig () .string ("worldURL") .raw ());
+	else if (getConfig () .getString ("worldURL") .size ())
+		open (getConfig () .getString ("worldURL") .raw ());
 
 	else
 		open (get_page ("about/home.wrl"));
@@ -152,60 +152,60 @@ X3DBrowserWidget::restoreSession ()
 
 	// ToolBar
 	if (getConfig () .hasItem ("toolBar"))
-		getToolBarMenuItem () .set_active (getConfig () .boolean ("toolBar"));
+		getToolBarMenuItem () .set_active (getConfig () .getBoolean ("toolBar"));
 
 	// SideBar
 	if (getConfig () .hasItem ("sideBar"))
-		getSideBarMenuItem () .set_active (getConfig () .boolean ("sideBar"));
+		getSideBarMenuItem () .set_active (getConfig () .getBoolean ("sideBar"));
 
 	// Footer
 	if (getConfig () .hasItem ("footer"))
-		getFooterMenuItem () .set_active (getConfig () .boolean ("footer"));
+		getFooterMenuItem () .set_active (getConfig () .getBoolean ("footer"));
 
 	// Shading
-	if (getConfig () .string ("shading") == "PHONG")
+	if (getConfig () .getString ("shading") == "PHONG")
 		getPhongMenuItem () .activate ();
 
-	else if (getConfig () .string ("shading") == "GOURAUD")
+	else if (getConfig () .getString ("shading") == "GOURAUD")
 		getGouraudMenuItem () .activate ();
 
-	else if (getConfig () .string ("shading") == "FLAT")
+	else if (getConfig () .getString ("shading") == "FLAT")
 		getFlatMenuItem () .activate ();
 
-	else if (getConfig () .string ("shading") == "WIREFRAME")
+	else if (getConfig () .getString ("shading") == "WIREFRAME")
 		getWireFrameMenuItem () .activate ();
 
-	else if (getConfig () .string ("shading") == "POINTSET")
+	else if (getConfig () .getString ("shading") == "POINTSET")
 		getPointSetMenuItem () .activate ();
 
 	// PrimitiveQuality
-	if (getConfig () .string ("primitiveQuality") == "HIGH")
+	if (getConfig () .getString ("primitiveQuality") == "HIGH")
 		getHighQualityMenuItem () .activate ();
 
-	else if (getConfig () .string ("primitiveQuality") == "MEDIUM")
+	else if (getConfig () .getString ("primitiveQuality") == "MEDIUM")
 		getMediumQualityMenuItem () .activate ();
 
-	else if (getConfig () .string ("primitiveQuality") == "LOW")
+	else if (getConfig () .getString ("primitiveQuality") == "LOW")
 		getLowQualityMenuItem () .activate ();
 
 	// RenderingProperties
 	if (getConfig () .hasItem ("renderingProperties"))
-		getRenderingPropertiesMenuItem () .set_active (getConfig () .boolean ("renderingProperties"));
+		getRenderingPropertiesMenuItem () .set_active (getConfig () .getBoolean ("renderingProperties"));
 
 	// Rubberband
 	if (getConfig () .hasItem ("rubberBand"))
-		getRubberbandMenuItem () .set_active (getConfig () .boolean ("rubberBand"));
+		getRubberbandMenuItem () .set_active (getConfig () .getBoolean ("rubberBand"));
 
 	// VPaned
 	if (getConfig () .hasItem ("vPaned"))
-		getVPaned () .set_position (getConfig () .integer ("vPaned"));
+		getVPaned () .set_position (getConfig () .getInteger ("vPaned"));
 
 	// HPaned
 	if (getConfig () .hasItem ("hPaned"))
-		getHPaned () .set_position (getConfig () .integer ("hPaned"));
+		getHPaned () .set_position (getConfig () .getInteger ("hPaned"));
 
-	getSideBarNotebook () .set_current_page (getConfig () .integer ("sideBarCurrentPage"));
-	getFooterNotebook ()  .set_current_page (getConfig () .integer ("footerCurrentPage"));
+	getSideBarNotebook () .set_current_page (getConfig () .getInteger ("sideBarCurrentPage"));
+	getFooterNotebook ()  .set_current_page (getConfig () .getInteger ("footerCurrentPage"));
 }
 
 void

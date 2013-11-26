@@ -79,7 +79,7 @@ OutlineTreeViewEditor::OutlineTreeViewEditor (BrowserWindow* const browserWindow
 {
 	set_name ("OutlineTreeViewEditor");
 
-	motion_notify_connection = signal_motion_notify_event () .connect (sigc::mem_fun (*this, &OutlineTreeViewEditor::set_motion_notify_event));
+	watch_motion ();
 
 	get_cellrenderer () -> signal_edited () .connect (sigc::mem_fun (this, &OutlineTreeViewEditor::on_edited));
 
@@ -101,6 +101,18 @@ OutlineTreeViewEditor::OutlineTreeViewEditor (BrowserWindow* const browserWindow
 	drag_dest_set (dest_targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY | Gdk::ACTION_MOVE | Gdk::ACTION_LINK);
 
 	set_reorderable (true);
+}
+
+void
+OutlineTreeViewEditor::watch_motion ()
+{
+	motion_notify_connection = signal_motion_notify_event () .connect (sigc::mem_fun (*this, &OutlineTreeViewEditor::set_motion_notify_event), false);
+}
+
+void
+OutlineTreeViewEditor::unwatch_motion ()
+{
+	motion_notify_connection .disconnect ();
 }
 
 void
@@ -275,7 +287,7 @@ OutlineTreeViewEditor::set_motion_notify_event (GdkEventMotion* event)
 	if (hover_access_type (event -> x, event -> y))
 		return true;
 
-	return Gtk::TreeView::on_motion_notify_event (event);
+	return false;
 }
 
 void
@@ -303,7 +315,7 @@ OutlineTreeViewEditor::select_field_value (double x, double y)
 		{
 			getBrowserWindow () -> enableMenus (false);
 			get_tree_observer () -> unwatch_tree (iter);
-			motion_notify_connection .disconnect ();
+			unwatch_motion ();
 			set_cursor (path, *column, true);
 			return true;
 		}
@@ -322,7 +334,7 @@ OutlineTreeViewEditor::on_edited (const Glib::ustring & string_path, const Glib:
 	get_tree_observer () -> watch_child (iter, path);
 
 	getBrowserWindow () -> enableMenus (true);
-	motion_notify_connection = signal_motion_notify_event () .connect (sigc::mem_fun (*this, &OutlineTreeViewEditor::set_motion_notify_event));
+	watch_motion ();
 }
 
 bool
@@ -396,6 +408,15 @@ OutlineTreeViewEditor::hover_access_type (double x, double y)
 bool
 OutlineTreeViewEditor::select_access_type (double x, double y)
 {
+	if (get_control_key ())
+		return remove_route (x, y);
+		
+	return add_route (x, y);
+}
+
+bool
+OutlineTreeViewEditor::add_route (double x, double y)
+{
 	Gtk::TreeViewColumn* column = nullptr;
 	Gtk::TreeModel::Path path   = get_path_at_position (x, y, column);
 
@@ -410,7 +431,11 @@ OutlineTreeViewEditor::select_access_type (double x, double y)
 			{
 				auto field = static_cast <X3D::X3DFieldDefinition*> (data -> get_object ());
 
+				// Clear selection
+
 				clear_access_type_selection (selectedUserData);
+
+				// Pick
 
 				Gdk::Rectangle cell_area;
 				get_cell_area (path, *column, cell_area);
@@ -420,38 +445,41 @@ OutlineTreeViewEditor::select_access_type (double x, double y)
 				{
 					case OutlineCellContent::INPUT:
 					{
-						if (field -> getAccessType () & (matchingAccessType & X3D::inputOnly))
+						if (matchingAccessType)
 						{
-							if (field -> getType () == matchingFieldType)
+							if (field -> getAccessType () & (matchingAccessType & X3D::inputOnly))
 							{
-								path .up ();
-								auto nodeIter = get_model () -> get_iter (path);
-								auto nodeData = get_model () -> get_data (nodeIter);
-
-								if (nodeData -> get_type () not_eq OutlineIterType::X3DBaseNode)
-									return false;
-
-								X3D::SFNode destinationNode  = *static_cast <X3D::SFNode*> (nodeData -> get_object ());
-								std::string destinationField = field -> getName ();
-
-								// Add route
-
-								try
+								if (field -> getType () == matchingFieldType)
 								{
-									auto undoStep = std::make_shared <UndoStep> (_ ("Add Route"));
-									getBrowserWindow () -> addRoute (getBrowser () -> getExecutionContext (), sourceNode, sourceField, destinationNode, destinationField, undoStep);
-									getBrowserWindow () -> addUndoStep (undoStep);
+									path .up ();
+									auto nodeIter = get_model () -> get_iter (path);
+									auto nodeData = get_model () -> get_data (nodeIter);
+
+									if (nodeData -> get_type () not_eq OutlineIterType::X3DBaseNode)
+										return false;
+
+									X3D::SFNode destinationNode  = *static_cast <X3D::SFNode*> (nodeData -> get_object ());
+									std::string destinationField = field -> getName ();
+
+									// Add route
+
+									try
+									{
+										auto undoStep = std::make_shared <UndoStep> (_ ("Add Route"));
+										getBrowserWindow () -> saveMatrix (destinationNode, undoStep);
+										getBrowserWindow () -> addRoute (getBrowser () -> getExecutionContext (), sourceNode, sourceField, destinationNode, destinationField, undoStep);
+										getBrowserWindow () -> addUndoStep (undoStep);
+									}
+									catch (const X3D::X3DError &)
+									{ }
+
+									// Clear selection
+
+									clear_access_type_selection ();
 								}
-								catch (const X3D::X3DError &)
-								{ }
-
-								// Clean up
-
-								matchingAccessType = 0;
-								sourceNode         = nullptr;
-
-								return true;
 							}
+
+							return true;
 						}
 
 						path .up ();
@@ -467,42 +495,46 @@ OutlineTreeViewEditor::select_access_type (double x, double y)
 						set_access_type_selection (data -> get_user_data (), OUTLINE_SELECTED_INPUT);
 						matchingFieldType  = field -> getType ();
 						matchingAccessType = X3D::outputOnly;
+						
 						return true;
 					}
 					case OutlineCellContent::OUTPUT:
 					{
-						if (field -> getAccessType () & (matchingAccessType & X3D::outputOnly))
+						if (matchingAccessType)
 						{
-							if (field -> getType () == matchingFieldType)
+							if (field -> getAccessType () & (matchingAccessType & X3D::outputOnly))
 							{
-								path .up ();
-								auto nodeIter = get_model () -> get_iter (path);
-								auto nodeData = get_model () -> get_data (nodeIter);
-
-								if (nodeData -> get_type () not_eq OutlineIterType::X3DBaseNode)
-									return false;
-
-								X3D::SFNode sourceNode  = *static_cast <X3D::SFNode*> (nodeData -> get_object ());
-								std::string sourceField = field -> getName ();
-
-								// Add route
-
-								try
+								if (field -> getType () == matchingFieldType)
 								{
-									auto undoStep = std::make_shared <UndoStep> (_ ("Add Route"));
-									getBrowserWindow () -> addRoute (getBrowser () -> getExecutionContext (), sourceNode, sourceField, destinationNode, destinationField, undoStep);
-									getBrowserWindow () -> addUndoStep (undoStep);
+									path .up ();
+									auto nodeIter = get_model () -> get_iter (path);
+									auto nodeData = get_model () -> get_data (nodeIter);
+
+									if (nodeData -> get_type () not_eq OutlineIterType::X3DBaseNode)
+										return false;
+
+									X3D::SFNode sourceNode  = *static_cast <X3D::SFNode*> (nodeData -> get_object ());
+									std::string sourceField = field -> getName ();
+
+									// Add route
+
+									try
+									{
+										auto undoStep = std::make_shared <UndoStep> (_ ("Add Route"));
+										getBrowserWindow () -> saveMatrix (destinationNode, undoStep);
+										getBrowserWindow () -> addRoute (getBrowser () -> getExecutionContext (), sourceNode, sourceField, destinationNode, destinationField, undoStep);
+										getBrowserWindow () -> addUndoStep (undoStep);
+									}
+									catch (const X3D::X3DError &)
+									{ }
+
+									// Clear selection
+
+									clear_access_type_selection ();
 								}
-								catch (const X3D::X3DError &)
-								{ }
-
-								// Clean up
-
-								matchingAccessType = 0;
-								destinationNode    = nullptr;
-
-								return true;
 							}
+
+							return true;
 						}
 
 						path .up ();
@@ -518,10 +550,59 @@ OutlineTreeViewEditor::select_access_type (double x, double y)
 						set_access_type_selection (data -> get_user_data (), OUTLINE_SELECTED_OUTPUT);
 						matchingFieldType  = field -> getType ();
 						matchingAccessType = X3D::inputOnly;
+						
 						return true;
 					}
 					default:
-						matchingAccessType = 0;
+					{
+						clear_access_type_selection ();
+
+						break;
+					}
+				}
+			}
+			default:
+				break;
+		}
+	}
+
+	return false;
+}
+
+bool
+OutlineTreeViewEditor::remove_route (double x, double y)
+{
+	Gtk::TreeViewColumn* column = nullptr;
+	Gtk::TreeModel::Path path   = get_path_at_position (x, y, column);
+
+	if (path .size ())
+	{
+		auto iter = get_model () -> get_iter (path);
+		auto data = get_model () -> get_data (iter);
+
+		switch (data -> get_type ())
+		{
+			case OutlineIterType::X3DField:
+			{
+				auto field = static_cast <X3D::X3DFieldDefinition*> (data -> get_object ());
+
+				// Pick
+
+				Gdk::Rectangle cell_area;
+				get_cell_area (path, *column, cell_area);
+				get_cellrenderer () -> property_data () .set_value (data);
+
+				switch (get_cellrenderer () -> pick (*this, cell_area, x, y))
+				{
+					case OutlineCellContent::INPUT:
+					{
+						return true;
+					}
+					case OutlineCellContent::OUTPUT:
+					{
+						return true;
+					}
+					default:
 						break;
 				}
 			}
@@ -548,10 +629,24 @@ OutlineTreeViewEditor::set_access_type_selection (const OutlineUserDataPtr & use
 void
 OutlineTreeViewEditor::clear_access_type_selection (const OutlineUserDataPtr & userData)
 {
-	userData -> selected &= OUTLINE_SELECTED; // clear over state
+	if (not get_shift_key ())
+	{
+		userData -> selected &= OUTLINE_SELECTED; // clear over state
 
-	for (const auto & path : userData -> paths)
-		get_model () -> row_changed (path, get_model () -> get_iter (path));
+		for (const auto & path : userData -> paths)
+			get_model () -> row_changed (path, get_model () -> get_iter (path));
+	}
+}
+
+void
+OutlineTreeViewEditor::clear_access_type_selection ()
+{
+	if (not get_shift_key ())
+	{
+		matchingAccessType = 0;
+		sourceNode         = nullptr;
+		destinationNode    = nullptr;
+	}
 }
 
 } // puck

@@ -83,6 +83,12 @@ private:
 	get_drag_data_type ()
 	{ return dragDataType; }
 
+	void
+	watch_motion ();
+
+	void
+	unwatch_motion ();
+
 	virtual
 	void
 	on_drag_begin (const Glib::RefPtr <Gdk::DragContext> &) final;
@@ -134,11 +140,20 @@ private:
 	bool
 	select_access_type (double, double);
 
+	bool
+	add_route (double, double);
+
+	bool
+	remove_route (double, double);
+
 	void
 	set_access_type_selection (const OutlineUserDataPtr &, int);
 
 	void
 	clear_access_type_selection (const OutlineUserDataPtr &);
+
+	void
+	clear_access_type_selection ();
 
 	///  @name Static members
 

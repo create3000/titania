@@ -821,6 +821,16 @@ OutlineRouteGraph::disconnect_route (const Gtk::TreeModel::Path & sourcePath, co
 
 	else
 		treeView -> get_model () -> foreach_iter (sigc::bind (sigc::mem_fun (*this, &OutlineRouteGraph::remove_route_below), sourcePath, destinationPath));
+	
+		
+	if (sourcePath == destinationPath)
+	{
+		auto iter = treeView -> get_model () -> get_iter (sourcePath);
+		auto data = treeView -> get_model () -> get_data (iter);
+		
+		if (data)
+			data -> get_self_connection () = false;
+	}
 }
 
 bool

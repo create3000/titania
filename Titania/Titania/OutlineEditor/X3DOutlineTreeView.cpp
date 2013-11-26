@@ -247,6 +247,18 @@ X3DOutlineTreeView::get_shift_key ()
 	return expandLevel == 0 and getBrowserWindow () -> getKeys () .shift ();
 }
 
+bool
+X3DOutlineTreeView::get_control_key ()
+{
+	return getBrowserWindow () -> getKeys () .control ();
+}
+
+bool
+X3DOutlineTreeView::get_alt_key ()
+{
+	return getBrowserWindow () -> getKeys () .alt ();
+}
+
 void
 X3DOutlineTreeView::set_execution_context (const X3D::X3DSFNode <X3D::X3DExecutionContext> & executionContext)
 {

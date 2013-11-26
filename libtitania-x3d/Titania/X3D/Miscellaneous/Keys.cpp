@@ -55,7 +55,8 @@ namespace X3D {
 
 Keys::Keys () :
 	  m_shift (0),
-	m_control (0)
+	m_control (0),
+	    m_alt (false)
 { }
 
 void
@@ -74,6 +75,9 @@ Keys::press (GdkEventKey* event)
 			break;
 		case GDK_KEY_Control_R:
 			m_control |= Control_R;
+			break;
+		case GDK_KEY_Alt_L:
+			m_alt = true;
 			break;
 		default:
 			break;
@@ -96,6 +100,9 @@ Keys::release (GdkEventKey* event)
 			break;
 		case GDK_KEY_Control_R:
 			m_control &= ~Control_R;
+			break;
+		case GDK_KEY_Alt_L:
+			m_alt = false;
 			break;
 		default:
 			break;
@@ -123,7 +130,19 @@ Keys::control (int value)
 int
 Keys::control () const
 {
-	return m_shift;
+	return m_control;
+}
+
+void
+Keys::alt (bool value)
+{
+	m_alt = value;
+}
+
+int
+Keys::alt () const
+{
+	return m_alt;
 }
 
 } // X3D

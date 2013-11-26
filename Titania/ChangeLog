@@ -1,5 +1,20 @@
 2013-11-26  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* BrowserWindow.cpp:
+	* X3DUserInterface.cpp:
+	* X3DBrowserEditor.h:
+	* X3DBrowserWidget.cpp:
+	* X3DBrowserEditor.cpp:
+	* Configuration.h:
+	* Configuration.cpp:
+	* X3DOutlineTreeView.h:
+	* OutlineRouteGraph.cpp:
+	* X3DOutlineTreeView.cpp:
+	* OutlineTreeViewEditor.h:
+	* OutlineTreeViewEditor.cpp: 
+
+2013-11-26  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DOutlineTreeView.cpp:
 	* OutlineTreeViewEditor.h:
 	* OutlineTreeViewEditor.cpp:

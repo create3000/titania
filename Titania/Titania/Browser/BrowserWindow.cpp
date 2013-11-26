@@ -73,7 +73,7 @@ BrowserWindow::BrowserWindow (const X3D::X3DSFNode <X3D::Browser> & browserSurfa
 	            keys (),
 	       importURL ()
 {
-	if (getConfig () .boolean ("transparent"))
+	if (getConfig () .getBoolean ("transparent"))
 		setTransparent (true);
 	else
 		getBrowserSurface () -> set_visual (4); // 4 x Antialiasing
@@ -106,9 +106,9 @@ BrowserWindow::initialize ()
 	getMessageDialog ()         .set_transient_for (getWindow ());
 
 	// Sidebar
-	getLibraryView ()   .reparent (getLibraryViewBox (),   getWindow ());
 	getViewpointList () .reparent (getViewpointListBox (), getWindow ());
 	getHistoryEditor () .reparent (getHistoryEditorBox (), getWindow ());
+	getLibraryView ()   .reparent (getLibraryViewBox (),   getWindow ());
 	getOutlineEditor () .reparent (getOutlineEditorBox (), getWindow ());
 
 	// CSS
@@ -346,7 +346,7 @@ BrowserWindow::on_import ()
 
 	auto importAsInlineButton = getWidget <Gtk::CheckButton> ("ImportAsInlineButton");
 
-	importAsInlineButton -> set_active (getConfig () .boolean ("importAsInline"));
+	importAsInlineButton -> set_active (getConfig () .getBoolean ("importAsInline"));
 
 	auto response_id = fileImportDialog -> run ();
 
@@ -394,7 +394,7 @@ BrowserWindow::dragDataHandling (const Glib::RefPtr <Gdk::DragContext> & context
 						open (uri);
 				}
 				else
-					import (uri, getConfig () .boolean ("importAsInline"));
+					import (uri, getConfig () .getBoolean ("importAsInline"));
 
 				context -> drag_finish (true, false, time);
 				return;
@@ -411,7 +411,7 @@ BrowserWindow::dragDataHandling (const Glib::RefPtr <Gdk::DragContext> & context
 					open (uri);
 			}
 			else
-				import (uri, getConfig () .boolean ("importAsInline"));
+				import (uri, getConfig () .getBoolean ("importAsInline"));
 
 			context -> drag_finish (true, false, time);
 			return;

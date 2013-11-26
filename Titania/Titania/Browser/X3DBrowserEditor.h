@@ -102,31 +102,34 @@ public:
 	redo ();
 
 	void
-	addRoute (X3D::X3DExecutionContext* const, const X3D::SFNode &, const std::string &, const X3D::SFNode &, const std::string &, const UndoStepPtr &)
+	addRoute (X3D::X3DExecutionContext* const, const X3D::SFNode &, const std::string &, const X3D::SFNode &, const std::string &, const UndoStepPtr &) const
 	throw (X3D::Error <X3D::INVALID_NODE>,
 	       X3D::Error <X3D::INVALID_FIELD>,
 	       X3D::Error <X3D::INVALID_OPERATION_TIMING>,
 	       X3D::Error <X3D::DISPOSED>);
 
 	void
-	deleteRoute (X3D::X3DExecutionContext* const, const X3D::SFNode &, const std::string &, const X3D::SFNode &, const std::string &, const UndoStepPtr &);
+	deleteRoute (X3D::X3DExecutionContext* const, const X3D::SFNode &, const std::string &, const X3D::SFNode &, const std::string &, const UndoStepPtr &) const;
 
 	/// @name Selection operations
 
 	void
-	addSelection (const X3D::MFNode &, const UndoStepPtr &);
+	addSelection (const X3D::MFNode &, const UndoStepPtr &) const;
 
 	void
-	removeSelection (const X3D::MFNode &, const UndoStepPtr &);
+	removeSelection (const X3D::MFNode &, const UndoStepPtr &) const;
 
 	void
-	select (const X3D::MFNode &, const UndoStepPtr &);
+	select (const X3D::MFNode &, const UndoStepPtr &) const;
 
 	void
-	selectAll (const UndoStepPtr &);
+	selectAll (const UndoStepPtr &) const;
 
 	void
-	deselectAll (const UndoStepPtr &);
+	deselectAll (const UndoStepPtr &) const;
+	
+	void
+	saveMatrix (const X3D::SFNode &, const UndoStepPtr &) const;
 
 	/// @name Editor handling
 
@@ -156,10 +159,10 @@ protected:
 	/// @name Clipboard operations
 
 	void
-	cutNodes (X3D::MFNode, const UndoStepPtr &);
+	cutNodes (X3D::MFNode, const UndoStepPtr &) const;
 
 	void
-	copyNodes (X3D::MFNode);
+	copyNodes (X3D::MFNode) const;
 
 	void
 	pasteNodes (const X3D::MFNode &, const UndoStepPtr &);
@@ -168,27 +171,27 @@ protected:
 	updatePasteStatus ();
 
 	bool
-	getPasteStatus ();
+	getPasteStatus () const;
 
 	/// @name Edit operations
 
 	void
-	removeNodes (const X3D::MFNode &, const UndoStepPtr &);
+	removeNodes (const X3D::MFNode &, const UndoStepPtr &) const;
 
 	X3D::SFNode
-	groupNodes (const X3D::MFNode &, const UndoStepPtr &);
+	groupNodes (const X3D::MFNode &, const UndoStepPtr &) const;
 
 	X3D::MFNode
-	ungroupNodes (const X3D::MFNode &, const UndoStepPtr &);
+	ungroupNodes (const X3D::MFNode &, const UndoStepPtr &) const;
 
 	bool
-	addToGroup (const X3D::SFNode &, const X3D::MFNode &, const UndoStepPtr &);
+	addToGroup (const X3D::SFNode &, const X3D::MFNode &, const UndoStepPtr &) const;
 
 	void
-	detachFromGroup (X3D::MFNode, bool, const UndoStepPtr &);
+	detachFromGroup (X3D::MFNode, bool, const UndoStepPtr &) const;
 
 	X3D::MFNode
-	createParentGroup (const X3D::MFNode &, const UndoStepPtr &);
+	createParentGroup (const X3D::MFNode &, const UndoStepPtr &) const;
 
 
 private:
@@ -210,48 +213,48 @@ private:
 	// Edit
 
 	void
-	removeNodeFromScene (const X3D::X3DSFNode <X3D::Scene> &, X3D::SFNode, const UndoStepPtr &);
+	removeNodeFromScene (const X3D::X3DSFNode <X3D::Scene> &, X3D::SFNode, const UndoStepPtr &) const;
 
 	void
-	removeExportedNodes (const X3D::X3DSFNode <X3D::Scene> &, const X3D::SFNode &, const UndoStepPtr &);
+	removeExportedNodes (const X3D::X3DSFNode <X3D::Scene> &, const X3D::SFNode &, const UndoStepPtr &) const;
 
 	void
-	removeNodeFromExecutionContext (X3D::X3DExecutionContext* const, X3D::SFNode &, const UndoStepPtr &);
+	removeNodeFromExecutionContext (X3D::X3DExecutionContext* const, X3D::SFNode &, const UndoStepPtr &) const;
 
 	void
-	removeNodeFromSceneGraph (X3D::X3DExecutionContext* const, const X3D::SFNode &, const UndoStepPtr &);
+	removeNodeFromSceneGraph (X3D::X3DExecutionContext* const, const X3D::SFNode &, const UndoStepPtr &) const;
 
 	void
-	removeNodeFromMFNode (X3D::MFNode &, const X3D::SFNode &, const X3D::SFNode &, const UndoStepPtr &);
+	removeNodeFromMFNode (X3D::MFNode &, const X3D::SFNode &, const X3D::SFNode &, const UndoStepPtr &) const;
 
 	void
-	removeNamedNode (X3D::X3DExecutionContext* const, const X3D::SFNode &, const UndoStepPtr &);
+	removeNamedNode (X3D::X3DExecutionContext* const, const X3D::SFNode &, const UndoStepPtr &) const;
 
 	void
-	removeImportedNodes (X3D::X3DExecutionContext* const, const X3D::SFNode &, const UndoStepPtr &);
+	removeImportedNodes (X3D::X3DExecutionContext* const, const X3D::SFNode &, const UndoStepPtr &) const;
 
 	void
-	deleteRoutes (X3D::X3DExecutionContext* const, const X3D::SFNode &, const UndoStepPtr &);
+	deleteRoutes (X3D::X3DExecutionContext* const, const X3D::SFNode &, const UndoStepPtr &) const;
 
 	void
-	removePrototypes (X3D::X3DExecutionContext* const, X3D::SFNode &, const UndoStepPtr &);
+	removePrototypes (X3D::X3DExecutionContext* const, X3D::SFNode &, const UndoStepPtr &) const;
 
 	void
-	createParentGroup (X3D::MFNode &, const X3D::SFNode &, const X3D::SFNode &, X3D::MFNode &, const UndoStepPtr &);
+	createParentGroup (X3D::MFNode &, const X3D::SFNode &, const X3D::SFNode &, X3D::MFNode &, const UndoStepPtr &) const;
 
 	///  @name Undo functions
 
 	void
-	setMatrix (const X3D::X3DSFNode <X3D::X3DTransformNode> &, const X3D::Matrix4f &, const UndoStepPtr &);
+	setMatrix (const X3D::X3DSFNode <X3D::X3DTransformNode> &, const X3D::Matrix4f &, const UndoStepPtr &) const;
 
 	void
-	emplaceBack (X3D::MFNode &, const X3D::SFNode &, const UndoStepPtr &);
+	emplaceBack (X3D::MFNode &, const X3D::SFNode &, const UndoStepPtr &) const;
 
 	void
-	undoInsertNode (X3D::MFNode &, size_t, const X3D::SFNode &);
+	undoInsertNode (X3D::MFNode &, size_t, const X3D::SFNode &) const;
 
 	void
-	undoEraseNode (X3D::MFNode &, const X3D::SFNode &, const std::vector <size_t> &);
+	undoEraseNode (X3D::MFNode &, const X3D::SFNode &, const std::vector <size_t> &) const;
 
 	///  @name Misc
 

@@ -123,19 +123,19 @@ Configuration::setItem (const std::string & name, const std::string & value)
 }
 
 bool
-Configuration::boolean (const std::string & name) const
+Configuration::getBoolean (const std::string & name) const
 {
 	return client -> get_bool (getKey (name));
 }
 
 int
-Configuration::integer (const std::string & name) const
+Configuration::getInteger (const std::string & name) const
 {
 	return client -> get_int (getKey (name));
 }
 
 Glib::ustring
-Configuration::string (const std::string & name) const
+Configuration::getString (const std::string & name) const
 {
 	return client -> get_string (getKey (name));
 }

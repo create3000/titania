@@ -99,13 +99,13 @@ public:
 	/// @name Get configuration value
 
 	bool
-	boolean (const std::string &) const;
+	getBoolean (const std::string &) const;
 
 	int
-	integer (const std::string &) const;
+	getInteger (const std::string &) const;
 
 	Glib::ustring
-	string (const std::string &) const;
+	getString (const std::string &) const;
 
 	/// @name Directory handling
 

@@ -61,7 +61,7 @@ const std::string X3DUserInterface::containerField = "widgets";
 X3DUserInterface::Array X3DUserInterface::userInterfaces;
 
 X3DUserInterface::X3DUserInterface (const std::string & widgetName, const std::string & configKey) :
-         X3DBaseInterface (),
+	      X3DBaseInterface (),
 	                 gconf (configKey, widgetName),
 	initialized_connection (),
 	         userInterface (),
@@ -153,14 +153,14 @@ X3DUserInterface::restoreInterface ()
 {
 	if (getConfig () .hasItem ("x") and getConfig () .hasItem ("y"))
 	{
-		getWindow () .move (getConfig ().integer ("x"),
-		                    getConfig ().integer ("y"));
+		getWindow () .move (getConfig () .getInteger ("x"),
+		                    getConfig () .getInteger ("y"));
 	}
 
-	if (getConfig () .hasItem ("width") and getConfig () .hasItem ("height"))
+	if (getConfig () .getInteger ("width") > 0 and getConfig () .getInteger ("height") > 0)
 	{
-		getWindow () .resize (getConfig ().integer ("width"),
-		                      getConfig ().integer ("height"));
+		getWindow () .resize (getConfig () .getInteger ("width"),
+		                      getConfig () .getInteger ("height"));
 	}
 }
 

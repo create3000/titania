@@ -80,16 +80,25 @@ public:
 	int
 	control () const;
 
+	void
+	alt (bool);
+
+	int
+	alt () const;
+
 	static constexpr int Shift_R   = 1;
 	static constexpr int Shift_L   = 2;
 	static constexpr int Control_R = 1;
 	static constexpr int Control_L = 2;
+	static constexpr int Alt_R     = 1;
+	static constexpr int Alt_L     = 2;
 
 
 private:
 
 	int m_shift;
 	int m_control;
+	bool m_alt;
 
 };
 

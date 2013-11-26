@@ -139,6 +139,12 @@ protected:
 	bool
 	get_shift_key ();
 
+	bool
+	get_control_key ();
+
+	bool
+	get_alt_key ();
+
 	void
 	disable_shift_key ()
 	{ ++ expandLevel; }
