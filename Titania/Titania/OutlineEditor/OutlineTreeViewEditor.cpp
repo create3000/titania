@@ -70,9 +70,16 @@ OutlineTreeViewEditor::OutlineTreeViewEditor (BrowserWindow* const browserWindow
 	         selection (browserWindow, this),
 	      overUserData (new OutlineUserData ()),
 	  selectedUserData (new OutlineUserData ()),
-	matchingAccessType (0)
+	matchingAccessType (0),
+	        sourceNode (),
+	       sourceField (),
+	   destinationNode (),
+	  destinationField (),
+	  motion_notify_connection ()
 {
 	set_name ("OutlineTreeViewEditor");
+
+	motion_notify_connection = signal_motion_notify_event () .connect (sigc::mem_fun (*this, &OutlineTreeViewEditor::set_motion_notify_event));
 
 	get_cellrenderer () -> signal_edited () .connect (sigc::mem_fun (this, &OutlineTreeViewEditor::on_edited));
 
@@ -263,7 +270,7 @@ OutlineTreeViewEditor::on_button_release_event (GdkEventButton* event)
 }
 
 bool
-OutlineTreeViewEditor::on_motion_notify_event (GdkEventMotion* event)
+OutlineTreeViewEditor::set_motion_notify_event (GdkEventMotion* event)
 {
 	if (hover_access_type (event -> x, event -> y))
 		return true;
@@ -296,6 +303,7 @@ OutlineTreeViewEditor::select_field_value (double x, double y)
 		{
 			getBrowserWindow () -> enableMenus (false);
 			get_tree_observer () -> unwatch_tree (iter);
+			motion_notify_connection .disconnect ();
 			set_cursor (path, *column, true);
 			return true;
 		}
@@ -314,6 +322,7 @@ OutlineTreeViewEditor::on_edited (const Glib::ustring & string_path, const Glib:
 	get_tree_observer () -> watch_child (iter, path);
 
 	getBrowserWindow () -> enableMenus (true);
+	motion_notify_connection = signal_motion_notify_event () .connect (sigc::mem_fun (*this, &OutlineTreeViewEditor::set_motion_notify_event));
 }
 
 bool
@@ -477,7 +486,7 @@ OutlineTreeViewEditor::select_access_type (double x, double y)
 								std::string sourceField = field -> getName ();
 
 								// Add route
-								
+
 								try
 								{
 									auto undoStep = std::make_shared <UndoStep> (_ ("Add Route"));

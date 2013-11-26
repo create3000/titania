@@ -63,6 +63,7 @@ using math::M_PI1_2;
 using math::M_PI2;
 using math::M_PI3_2;
 
+constexpr double ICON_X_PAD        = 1;
 constexpr double NAME_X_PAD        = 1;
 constexpr double ACCESS_TYPE_X_PAD = 8;
 
@@ -431,6 +432,9 @@ OutlineCellRenderer::get_preferred_width_vfunc (Gtk::Widget & widget, int & mini
 	// Icon
 
 	{
+		minimum_width += ICON_X_PAD;
+		natural_width += ICON_X_PAD;
+
 		cellrenderer_icon .get_preferred_width (widget, minimum, natural);
 		minimum_width += minimum;
 		natural_width += natural;
@@ -584,6 +588,9 @@ OutlineCellRenderer::get_preferred_width_for_height_vfunc (Gtk::Widget & widget,
 	// Icon
 
 	{
+		minimum_width += ICON_X_PAD;
+		natural_width += ICON_X_PAD;
+
 		cellrenderer_icon .get_preferred_width_for_height (widget, height, minimum, natural);
 		minimum_width += minimum;
 		natural_width += natural;
@@ -642,7 +649,7 @@ OutlineCellRenderer::start_editing_vfunc (GdkEvent* event,
 
 	cellrenderer_icon .get_preferred_width (widget, icon_width, natural_width);
 
-	int x_pad = icon_width + NAME_X_PAD + property_xpad ();
+	int x_pad = ICON_X_PAD + icon_width + NAME_X_PAD + property_xpad ();
 
 	switch (get_data_type ())
 	{
@@ -759,6 +766,8 @@ OutlineCellRenderer::pick (Gtk::Widget & widget,
 	// Icon
 
 	{
+		x += ICON_X_PAD;
+
 		cellrenderer_icon .get_preferred_width  (widget, minimum_width,  natural_width);
 		cellrenderer_icon .get_preferred_height (widget, minimum_height, natural_height);
 
@@ -973,6 +982,9 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 	// Icon
 
 	{
+		x += ICON_X_PAD;
+
+		Gdk::Rectangle cell_area (x, y, width, height);
 		cellrenderer_icon .render (context, widget, background_area, cell_area, flags);
 		cellrenderer_icon .get_preferred_width (widget, minimum_width, natural_width);
 
@@ -1022,12 +1034,13 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 	double field_y      = y + (height - minimum_height) / 2;
 	double field_height = minimum_height;
 
-	auto data     = property_data () .get_value ();
-	int  selected = data -> get_user_data () -> selected;
+	auto      data     = property_data () .get_value ();
+	int       selected = data -> get_user_data () -> selected;
+	Gdk::RGBA color    = selected & OUTLINE_SELECTED ? property_foreground_rgba () : property_cell_background_rgba ();
 
 	context -> reset_clip ();
 	context -> set_operator (Cairo::OPERATOR_OVER);
-	context -> set_source_rgba (1, 0, 0, 1);
+	context -> set_source_rgba (color .get_red (), color .get_green (), color .get_blue (), color .get_alpha ());
 
 	switch (get_data_type ())
 	{
@@ -1055,26 +1068,26 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 
 			break;
 		}
-		//		case OutlineIterType::X3DInputRoute:
-		//		{
-		//			if (selected & (OUTLINE_OVER_INPUT | OUTLINE_SELECTED_INPUT))
-		//			{
-		//				context -> rectangle (field_x, field_y, FIELD_WIDTH, field_height);
-		//				context -> fill ();
-		//			}
-		//
-		//			break;
-		//		}
-		//		case OutlineIterType::X3DOutputRoute:
-		//		{
-		//			if (selected & (OUTLINE_OVER_OUTPUT | OUTLINE_SELECTED_OUTPUT))
-		//			{
-		//				context -> rectangle (field_x, field_y, FIELD_WIDTH, field_height);
-		//				context -> fill ();
-		//			}
-		//
-		//			break;
-		//		}
+		case OutlineIterType::X3DInputRoute:
+		{
+			if (selected & (OUTLINE_OVER_INPUT | OUTLINE_SELECTED_INPUT))
+			{
+				context -> rectangle (field_x, field_y, FIELD_WIDTH, field_height);
+				context -> fill ();
+			}
+
+			break;
+		}
+		case OutlineIterType::X3DOutputRoute:
+		{
+			if (selected & (OUTLINE_OVER_OUTPUT | OUTLINE_SELECTED_OUTPUT))
+			{
+				context -> rectangle (field_x, field_y, FIELD_WIDTH, field_height);
+				context -> fill ();
+			}
+
+			break;
+		}
 		default:
 			break;
 	}
@@ -1120,9 +1133,9 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
                                     Gtk::CellRendererState flags)
 {
 	int x      = cell_area .get_x ();
-	int y      = cell_area .get_y ();
+	int y      = background_area .get_y ();
 	int width  = cell_area .get_width () - ROUTE_CURVE_WIDTH;
-	int height = cell_area .get_height ();
+	int height = background_area .get_height ();
 	int y_pad  = (height - minimum_height) / 2;
 
 	double input_x  = x;
@@ -1141,19 +1154,22 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 		input_w += ROUTE_INPUT_PAD;
 	}
 
-	auto fc  = widget .get_style_context () -> get_color (Gtk::STATE_FLAG_NORMAL);
-	auto sfc = widget .get_style_context () -> get_color (Gtk::STATE_FLAG_SELECTED);
+	auto data = property_data () .get_value ();
+
+	auto foregroundColor         = widget .get_style_context () -> get_color (Gtk::STATE_FLAG_NORMAL);
+	auto selectedForegroundColor = widget .get_style_context () -> get_color (Gtk::STATE_FLAG_SELECTED);
+
+	int  selected = data -> get_user_data () -> selected;
+	auto color    = selected & OUTLINE_SELECTED ? selectedForegroundColor : foregroundColor;
 
 	//	context -> set_source_rgb (0.9, 0.9, 0.9);
-	//	context -> rectangle (x, y + 1, width, height - 2);
+	//	context -> rectangle (x, y , width, height);
 	//	context -> fill ();
 
 	context -> reset_clip ();
 	context -> set_operator (Cairo::OPERATOR_OVER);
-	context -> set_source_rgba (fc .get_red (), fc .get_green (), fc .get_blue (), fc .get_alpha ());
+	context -> set_source_rgba (color .get_red (), color .get_green (), color .get_blue (), color .get_alpha ());
 	context -> set_line_width (1);
-
-	auto data = property_data () .get_value ();
 
 	// Input
 

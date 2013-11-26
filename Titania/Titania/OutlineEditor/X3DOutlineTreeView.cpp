@@ -102,6 +102,12 @@ X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DSFNode <X3D::X3DExecutionC
 	
 	Gtk::TreeViewColumn* treeviewcolumn_pad = Gtk::manage (new Gtk::TreeViewColumn ());
 	treeviewcolumn_pad -> set_expand (true);
+
+	auto padCellrenderer = Gtk::manage (new Gtk::CellRendererText ());
+	treeviewcolumn_pad -> pack_start (*padCellrenderer, false);
+	treeviewcolumn_pad -> add_attribute (*padCellrenderer, "cell-background-set", OutlineTreeModel::SELECTED_COLUMN);
+	padCellrenderer -> property_cell_background_rgba () = selectedBackgroundColor;
+
 	append_column (*treeviewcolumn_pad);
 
 	//

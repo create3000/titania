@@ -117,7 +117,7 @@ private:
 
 	virtual
 	bool
-	on_motion_notify_event (GdkEventMotion*) final;
+	set_motion_notify_event (GdkEventMotion*) final;
 
 	void
 	select_node (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
@@ -157,6 +157,8 @@ private:
 	std::string        sourceField;
 	X3D::SFNode        destinationNode;
 	std::string        destinationField;
+
+	sigc::connection 	motion_notify_connection;
 
 };
 
