@@ -54,6 +54,7 @@
 #include "CellRenderer/OutlineCellRenderer.h"
 #include "OutlineTreeModel.h"
 #include "OutlineTreeObserver.h"
+#include "OutlineSelection.h"
 
 #include <Titania/String.h>
 
@@ -67,7 +68,7 @@ OutlineTreeViewEditor::OutlineTreeViewEditor (BrowserWindow* const browserWindow
 	        X3D::X3DBaseNode (browserWindow -> getBrowser (), browserWindow -> getExecutionContext ()),
 	        X3DBaseInterface (browserWindow),
 	      X3DOutlineTreeView (executionContext),
-	               selection (browserWindow, this),
+	               selection (new OutlineSelection (browserWindow, this)),
 	            overUserData (new OutlineUserData ()),
 	        selectedUserData (new OutlineUserData ()),
 	      matchingAccessType (0),
@@ -85,7 +86,7 @@ OutlineTreeViewEditor::OutlineTreeViewEditor (BrowserWindow* const browserWindow
 
 	// Drag targets
 	std::vector <Gtk::TargetEntry> source_targets = {
-		Gtk::TargetEntry (get_drag_data_type (), Gtk::TARGET_SAME_WIDGET)
+		Gtk::TargetEntry (dragDataType, Gtk::TARGET_SAME_WIDGET)
 	};
 
 	drag_source_set (source_targets, Gdk::BUTTON1_MASK, Gdk::ACTION_COPY | Gdk::ACTION_MOVE | Gdk::ACTION_LINK);
@@ -95,7 +96,7 @@ OutlineTreeViewEditor::OutlineTreeViewEditor (BrowserWindow* const browserWindow
 		Gtk::TargetEntry ("STRING"),
 		Gtk::TargetEntry ("text/plain"),
 		Gtk::TargetEntry ("text/uri-list"),
-		Gtk::TargetEntry (get_drag_data_type (), Gtk::TARGET_SAME_WIDGET)
+		Gtk::TargetEntry (dragDataType, Gtk::TARGET_SAME_WIDGET)
 	};
 
 	drag_dest_set (dest_targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY | Gdk::ACTION_MOVE | Gdk::ACTION_LINK);
@@ -142,7 +143,7 @@ OutlineTreeViewEditor::on_drag_data_received (const Glib::RefPtr <Gdk::DragConte
 {
 	if (selection_data .get_format () == 8 and selection_data .get_length ()) // 8 bit format
 	{
-		if (selection_data .get_data_type () == get_drag_data_type ())
+		if (selection_data .get_data_type () == dragDataType)
 		{
 			TreeModel::Path      path;
 			TreeViewDropPosition pos;
@@ -295,9 +296,9 @@ OutlineTreeViewEditor::select_node (const Gtk::TreeModel::iterator & iter, const
 {
 	if (get_data_type (iter) == OutlineIterType::X3DBaseNode)
 	{
-		selection .set_select_multiple (get_shift_key ());
+		selection -> set_select_multiple (get_shift_key ());
 
-		selection .select (*static_cast <X3D::SFNode*> (get_object (iter)));
+		selection -> select (*static_cast <X3D::SFNode*> (get_object (iter)));
 	}
 }
 
@@ -411,7 +412,7 @@ OutlineTreeViewEditor::select_access_type (double x, double y)
 	if (get_control_key ())
 	{
 		if (get_shift_key ())
-			return expand_matching_field (x, y);
+			return expand_matching_fields (x, y);
 
 		return remove_route (x, y);
 	}
@@ -557,6 +558,16 @@ OutlineTreeViewEditor::add_route (double x, double y)
 						matchingAccessType = X3D::inputOnly;
 
 						return true;
+					}
+					case OutlineCellContent::INPUT_CONNECTOR:
+					{
+						__LOG__ << std::endl;
+						break;
+					}
+					case OutlineCellContent::OUTPUT_CONNECTOR:
+					{
+						__LOG__ << std::endl;
+						break;
 					}
 					default:
 					{
@@ -743,7 +754,7 @@ OutlineTreeViewEditor::remove_route (const Gtk::TreeModel::Path & path, const st
 }
 
 bool
-OutlineTreeViewEditor::expand_matching_field (double x, double y)
+OutlineTreeViewEditor::expand_matching_fields (double x, double y)
 {
 	Gtk::TreeViewColumn* column = nullptr;
 	Gtk::TreeModel::Path path   = get_path_at_position (x, y, column);
@@ -808,13 +819,29 @@ OutlineTreeViewEditor::expand_matching_field (double x, double y)
 				{
 					case OutlineCellContent::INPUT:
 					{
-						expand_matching_field (path, get_model () -> get_input_routes (field), false);
+						for (const auto & route : get_model () -> get_input_routes (field))
+						{
+							try
+							{
+								expand_to (route -> getSourceNode () -> getField (route -> getSourceField ()));
+							}
+							catch (const X3D::X3DError &)
+							{ }
+						}
 
 						return true;
 					}
 					case OutlineCellContent::OUTPUT:
 					{
-						expand_matching_field (path, get_model () -> get_output_routes (field), true);
+						for (const auto & route : get_model () -> get_output_routes (field))
+						{
+							try
+							{
+								expand_to (route -> getDestinationNode () -> getField (route -> getDestinationField ()));
+							}
+							catch (const X3D::X3DError &)
+							{ }
+						}
 
 						return true;
 					}
@@ -830,44 +857,8 @@ OutlineTreeViewEditor::expand_matching_field (double x, double y)
 	return false;
 }
 
-void
-OutlineTreeViewEditor::expand_matching_field (const Gtk::TreeModel::Path & path, const std::vector <X3D::Route*> & routes, bool input)
-{
-	switch (routes .size ())
-	{
-		case 0:
-			return;
-		case 1:
-		{
-			try
-			{
-				auto route = routes [0];
-				auto field = input
-				             ? route -> getDestinationNode () -> getField (route -> getDestinationField ())
-								 : route -> getSourceNode () -> getField (route -> getSourceField ());
-				
-				expand_to (field);
-			}
-			catch (const X3D::X3DError &)
-			{ }
-
-			return;
-		}
-		default:
-		{
-			collapse_row (path);
-
-			getBrowserWindow () -> getKeys () .shift (X3D::Keys::Shift_L | X3D::Keys::Shift_R);
-
-			expand_row (path, false);
-
-			getBrowserWindow () -> getKeys () .restore_shift ();
-			return;
-		}
-	}
-
-	return;
-}
+OutlineTreeViewEditor::~OutlineTreeViewEditor ()
+{ }
 
 } // puck
 } // titania

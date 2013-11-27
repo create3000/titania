@@ -145,16 +145,7 @@ X3DOutlineTreeView::expand_to (X3D::X3DChildObject* const object)
 	auto hierarchy = std::move (X3D::find (getBrowser () -> getExecutionContext () -> getRootNodes (), object));
 
 	if (not hierarchy .empty ())
-	{
-		if (expand_to (get_model () -> children (), hierarchy, path))
-		{
-			scroll_to_row (path, 0.5);
-
-			using scroll_to_row  = void (Gtk::TreeView::*) (const TreeModel::Path &, float);
-
-			Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (*this, (scroll_to_row) &X3DOutlineTreeView::scroll_to_row), path, 0.5));
-		}
-	}
+		expand_to (get_model () -> children (), hierarchy, path);
 
 	enable_shift_key ();
 }

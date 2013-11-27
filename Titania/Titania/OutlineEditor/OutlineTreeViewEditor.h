@@ -53,10 +53,10 @@
 
 #include "X3DOutlineTreeView.h"
 
-#include "OutlineSelection.h"
-
 namespace titania {
 namespace puck {
+
+class OutlineSelection;
 
 class OutlineTreeViewEditor :
 	public X3DOutlineTreeView
@@ -67,21 +67,10 @@ public:
 
 	OutlineTreeViewEditor (BrowserWindow* const, const X3D::X3DSFNode <X3D::X3DExecutionContext> &);
 
+	~OutlineTreeViewEditor ();
+
 
 private:
-
-	OutlineSelection &
-	get_selection ()
-	{ return selection; }
-
-	const OutlineSelection &
-	get_selection () const
-	{ return selection; }
-	
-	static
-	const std::string &
-	get_drag_data_type ()
-	{ return dragDataType; }
 
 	void
 	watch_motion ();
@@ -159,30 +148,27 @@ private:
 	remove_route (const Gtk::TreeModel::Path &, const std::vector <X3D::Route*> &);
 
 	bool
-	expand_matching_field (double, double);
-
-	void
-	expand_matching_field (const Gtk::TreeModel::Path &, const std::vector <X3D::Route*> &, bool);
+	expand_matching_fields (double, double);
 
 	///  @name Static members
 
 	static const std::string dragDataType;
 
 	///  @name Members
-	
+
 	using FieldType = X3D::X3DConstants::FieldType;
 
-	OutlineSelection   selection;
-	OutlineUserDataPtr overUserData;
-	OutlineUserDataPtr selectedUserData;
-	FieldType          matchingFieldType;
-	int                matchingAccessType;
-	X3D::SFNode        sourceNode;
-	std::string        sourceField;
-	X3D::SFNode        destinationNode;
-	std::string        destinationField;
+	std::unique_ptr <OutlineSelection> selection;
+	OutlineUserDataPtr                 overUserData;
+	OutlineUserDataPtr                 selectedUserData;
+	FieldType                          matchingFieldType;
+	int                                matchingAccessType;
+	X3D::SFNode                        sourceNode;
+	std::string                        sourceField;
+	X3D::SFNode                        destinationNode;
+	std::string                        destinationField;
 
-	sigc::connection 	motion_notify_connection;
+	sigc::connection motion_notify_connection;
 
 };
 
