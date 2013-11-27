@@ -1,3 +1,10 @@
+2013-11-27  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DOutlineTreeView.h:
+	* X3DOutlineTreeView.cpp:
+	* OutlineTreeViewEditor.h:
+	* OutlineTreeViewEditor.cpp: 
+
 2013-11-26  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* OutlineTreeViewEditor.h:

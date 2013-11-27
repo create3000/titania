@@ -121,7 +121,7 @@ DEF Rotor Rotor {
 
 DEF Box Transform {
   translation 1.40843 1.10727 0.193803
-  rotation 0 0 1 2.76894
+  rotation 0 0 1 5.20725
   scale 0.2 0.2 0.2
   children Transform {
     children Shape {
@@ -152,6 +152,7 @@ DEF Sphere Transform {
 
 DEF Cone Transform {
   translation 3.05759 1.14098 0
+  rotation 0 0 1 5.51556
   scale 0.2 0.2 0.2
   children Transform {
     children Shape {
@@ -211,8 +212,6 @@ DEF Inline Transform {
 
 ROUTE _1.isActive TO _2.set_enabled
 ROUTE Rotor.rotation_changed TO Box.set_rotation
-
-ROUTE Inline .translation TO Inline.scale
-
-ROUTE Inline .scale TO Inline.translation
-
+ROUTE Inline.translation_changed TO Inline.set_scale
+ROUTE Inline.scale_changed TO Inline.set_translation
+ROUTE Text1.translation_changed TO Inline.set_translation

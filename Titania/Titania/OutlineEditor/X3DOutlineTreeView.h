@@ -112,6 +112,9 @@ public:
 	get_path_at_position (double, double, Gtk::TreeViewColumn* &) const;
 
 	void
+	expand_to (X3D::X3DChildObject* const);
+
+	void
 	collapse_row (const Gtk::TreeModel::Path &);
 
 	///  @name Destruction
@@ -157,6 +160,11 @@ protected:
 private:
 
 	friend class OutlineTreeObserver;
+
+	///  @name Operations
+
+	bool
+	expand_to (const Gtk::TreeModel::Children &, std::deque <X3D::X3DChildObject*> &, Gtk::TreeModel::Path &);
 
 	///  @name Member access
 

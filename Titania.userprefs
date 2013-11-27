@@ -1,17 +1,14 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/OutlineEditor/CellRenderer/OutlineCellRenderer.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/OutlineEditor/OutlineTreeViewEditor.cpp">
     <Files>
       <File FileName="Library/Tests/Handles/Routes.wrl" Line="69" Column="5" />
-      <File FileName="Titania/Titania/OutlineEditor/X3DOutlineTreeView.h" Line="112" Column="61" />
-      <File FileName="Titania/Titania/OutlineEditor/X3DOutlineTreeView.cpp" Line="122" Column="84" />
-      <File FileName="Titania/Titania/OutlineEditor/OutlineTreeViewEditor.h" Line="122" Column="38" />
-      <File FileName="Titania/Titania/OutlineEditor/OutlineTreeViewEditor.cpp" Line="286" Column="25" />
-      <File FileName="Titania/Titania/OutlineEditor/OutlineRouteGraph.h" Line="118" Column="1" />
-      <File FileName="Titania/Titania/OutlineEditor/OutlineRouteGraph.cpp" Line="437" Column="17" />
-      <File FileName="Titania/Titania/OutlineEditor/CellRenderer/OutlineCellRenderer.h" Line="97" Column="16" />
-      <File FileName="Titania/Titania/OutlineEditor/CellRenderer/OutlineCellRenderer.cpp" Line="742" Column="1" />
-      <File FileName="Titania/Titania/OutlineEditor/OutlineTreeData.h" Line="82" Column="1" />
+      <File FileName="Titania/Titania/OutlineEditor/X3DOutlineTreeView.h" Line="147" Column="1" />
+      <File FileName="Titania/Titania/OutlineEditor/X3DOutlineTreeView.cpp" Line="380" Column="1" />
+      <File FileName="Titania/Titania/OutlineEditor/OutlineTreeViewEditor.h" Line="151" Column="1" />
+      <File FileName="Titania/Titania/OutlineEditor/OutlineTreeViewEditor.cpp" Line="598" Column="7" />
+      <File FileName="Titania/Titania/OutlineEditor/CellRenderer/OutlineCellRenderer.h" Line="97" Column="20" />
+      <File FileName="Titania/Titania/OutlineEditor/CellRenderer/OutlineCellRenderer.cpp" Line="66" Column="39" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -65,19 +62,28 @@
                   <Node name="Time" expanded="True" />
                 </Node>
                 <Node name="Execution" expanded="True" />
+                <Node name="Handles" expanded="True" />
+                <Node name="Miscellaneous" expanded="True" />
                 <Node name="Routing" expanded="True" />
-                <Node name="Types" expanded="True" />
               </Node>
             </Node>
           </Node>
-          <Node name="Titania" expanded="True" selected="True">
+          <Node name="Titania" expanded="True">
+            <Node name="share" expanded="True">
+              <Node name="titania" expanded="True">
+                <Node name="ui" expanded="True" />
+              </Node>
+            </Node>
             <Node name="Titania" expanded="True">
               <Node name="Base" expanded="True" />
               <Node name="Browser" expanded="True" />
+              <Node name="Configuration" expanded="True" />
               <Node name="HistoryEditor" expanded="True" />
               <Node name="OutlineEditor" expanded="True">
                 <Node name="CellRenderer" expanded="True" />
+                <Node name="OutlineTreeViewEditor.cpp" selected="True" />
               </Node>
+              <Node name="UserInterfaces" expanded="True" />
             </Node>
           </Node>
         </State>

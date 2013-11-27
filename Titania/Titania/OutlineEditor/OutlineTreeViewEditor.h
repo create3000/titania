@@ -143,12 +143,6 @@ private:
 	bool
 	add_route (double, double);
 
-	bool
-	remove_route (double, double);
-
-	void
-	remove_route (const Gtk::TreeModel::Path &, const std::vector <X3D::Route*> &);
-
 	void
 	set_access_type_selection (const OutlineUserDataPtr &, int);
 
@@ -157,6 +151,18 @@ private:
 
 	void
 	clear_access_type_selection ();
+
+	bool
+	remove_route (double, double);
+
+	void
+	remove_route (const Gtk::TreeModel::Path &, const std::vector <X3D::Route*> &);
+
+	bool
+	expand_matching_field (double, double);
+
+	void
+	expand_matching_field (const Gtk::TreeModel::Path &, const std::vector <X3D::Route*> &, bool);
 
 	///  @name Static members
 

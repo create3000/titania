@@ -53,8 +53,8 @@
 #include "../Browser/BrowserWindow.h"
 #include "../Configuration/config.h"
 #include "CellRenderer/OutlineCellRenderer.h"
-#include "OutlineTreeModel.h"
 #include "OutlineRouteGraph.h"
+#include "OutlineTreeModel.h"
 #include "OutlineTreeObserver.h"
 
 namespace titania {
@@ -99,7 +99,7 @@ X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DSFNode <X3D::X3DExecutionC
 	append_column (*treeviewcolumn_name);
 
 	// Pad column
-	
+
 	Gtk::TreeViewColumn* treeviewcolumn_pad = Gtk::manage (new Gtk::TreeViewColumn ());
 	treeviewcolumn_pad -> set_expand (true);
 
@@ -114,7 +114,6 @@ X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DSFNode <X3D::X3DExecutionC
 
 	set_execution_context (executionContext);
 }
-
 
 Gtk::TreeModel::Path
 X3DOutlineTreeView::get_path_at_position (double x, double y) const
@@ -134,6 +133,63 @@ X3DOutlineTreeView::get_path_at_position (double x, double y, Gtk::TreeViewColum
 	get_path_at_pos (x, y, path, column, cell_x, cell_y);
 
 	return path;
+}
+
+void
+X3DOutlineTreeView::expand_to (X3D::X3DChildObject* const object)
+{
+	Gtk::TreeModel::Path path;
+
+	disable_shift_key ();
+
+	auto hierarchy = std::move (X3D::find (getBrowser () -> getExecutionContext () -> getRootNodes (), object));
+
+	if (not hierarchy .empty ())
+	{
+		if (expand_to (get_model () -> children (), hierarchy, path))
+		{
+			scroll_to_row (path, 0.5);
+
+			using scroll_to_row  = void (Gtk::TreeView::*) (const TreeModel::Path &, float);
+
+			Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (*this, (scroll_to_row) &X3DOutlineTreeView::scroll_to_row), path, 0.5));
+		}
+	}
+
+	enable_shift_key ();
+}
+
+bool
+X3DOutlineTreeView::expand_to (const Gtk::TreeModel::Children & children, std::deque <X3D::X3DChildObject*> & hierarchy, Gtk::TreeModel::Path & path)
+{
+	auto top = hierarchy .front ();
+
+	hierarchy .pop_front ();
+
+	path .push_back (0);
+
+	for (const auto child : children)
+	{
+		auto data   = get_model () -> get_data (child);
+		auto object = data -> get_object ();
+
+		if (data -> get_type () == OutlineIterType::X3DBaseNode)
+			object = static_cast <X3D::SFNode*> (object) -> getValue ();
+
+		if (object == top)
+		{
+			if (hierarchy .empty ())
+				return true;
+
+			expand_row (path, false);
+
+			return expand_to (child -> children (), hierarchy, path);
+		}
+
+		path .next ();
+	}
+
+	return false;
 }
 
 void
@@ -269,7 +325,7 @@ X3DOutlineTreeView::set_execution_context (const X3D::X3DSFNode <X3D::X3DExecuti
 		routeGraph -> collapse (child);
 		treeObserver -> unwatch_tree (child);
 	}
-	
+
 	get_model () -> get_execution_context () -> getRootNodes () .removeInterest (this, &X3DOutlineTreeView::set_rootNodes);
 
 	set_model (OutlineTreeModel::create (getBrowserWindow (), executionContext));
@@ -298,7 +354,7 @@ X3DOutlineTreeView::set_rootNodes ()
 
 	set_model (get_model ());
 
-	disable_shift_key (); 
+	disable_shift_key ();
 
 	for (auto & iter : get_model () -> children ())
 	{
@@ -326,7 +382,7 @@ void
 X3DOutlineTreeView::on_row_expanded (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path)
 {
 	//__LOG__ << path .to_string () << std::endl;
-	
+
 	// Set expanded first to prevent loop with clones.
 
 	set_expanded (iter, true);
@@ -359,7 +415,7 @@ X3DOutlineTreeView::on_row_collapsed (const Gtk::TreeModel::iterator & iter, con
 	get_model () -> clear (iter);
 
 	toggle_expand (iter, path);
-	
+
 	columns_autosize ();
 }
 
@@ -566,7 +622,7 @@ X3DOutlineTreeView::auto_expand (const Gtk::TreeModel::iterator & parent)
 					{
 						auto sfnode = static_cast <X3D::SFNode*> (field);
 
-						if ((field -> isInitializeable () and * sfnode) or get_expanded (child))
+						if ((field -> isInitializeable () and *sfnode) or get_expanded (child))
 						{
 							expand_row (Gtk::TreePath (child), false);
 						}

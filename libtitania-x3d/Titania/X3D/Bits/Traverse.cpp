@@ -68,7 +68,7 @@ traverse (X3D::SFNode & node, const TraverseCallback & callback, bool distinct, 
 		{
 			switch (field -> getType ())
 			{
-				case X3D::X3DConstants::SFNode :
+				case X3DConstants::SFNode :
 					{
 						auto sfnode = static_cast <X3D::SFNode*> (field);
 
@@ -77,7 +77,7 @@ traverse (X3D::SFNode & node, const TraverseCallback & callback, bool distinct, 
 
 						return false;
 					}
-				case X3D::X3DConstants::MFNode:
+				case X3DConstants::MFNode:
 				{
 					auto mfnode = static_cast <X3D::MFNode*> (field);
 
@@ -85,7 +85,7 @@ traverse (X3D::SFNode & node, const TraverseCallback & callback, bool distinct, 
 					{
 						if (traverse (value, callback, distinct, seen))
 							continue;
-						
+
 						return false;
 					}
 
@@ -117,7 +117,7 @@ traverse (X3D::MFNode & nodes, const TraverseCallback & callback, bool distinct)
 	{
 		if (traverse (node, callback, distinct, seen))
 			continue;
-		
+
 		return false;
 	}
 
@@ -130,6 +130,100 @@ traverse (X3D::SFNode & node, const TraverseCallback & callback, bool distinct)
 	NodeSet seen;
 
 	return traverse (node, callback, distinct, seen);
+}
+
+bool
+find (const X3D::SFNode & node, X3DChildObject* const object, std::deque <X3DChildObject*> & hierarchy, NodeSet & seen)
+{
+	if (not node)
+		return true;
+
+	if (not seen .emplace (node) .second)
+		return true;
+
+	hierarchy .emplace_back (node);
+
+	if (node == object)
+		return false;
+
+	for (const auto & field : node -> getFieldDefinitions ())
+	{
+		if (field == object)
+		{
+			hierarchy .emplace_back (field);
+			return false;
+		}
+
+		switch (field -> getType ())
+		{
+			case X3DConstants::SFNode:
+			{
+				hierarchy .emplace_back (field);
+
+				auto sfnode = static_cast <X3D::SFNode*> (field);
+
+				if (find (*sfnode, object, hierarchy, seen))
+				{
+					hierarchy .pop_back ();
+					continue;
+				}
+
+				return false;
+			}
+			case X3DConstants::MFNode:
+			{
+				hierarchy .emplace_back (field);
+
+				auto mfnode = static_cast <X3D::MFNode*> (field);
+
+				for (auto & value : *mfnode)
+				{
+					if (find (value, object, hierarchy, seen))
+						continue;
+
+					return false;
+				}
+
+				hierarchy .pop_back ();
+
+				break;
+			}
+			default:
+				break;
+		}
+	}
+
+	hierarchy .pop_back ();
+
+	return true;
+}
+
+std::deque <X3DChildObject*>
+find (const X3D::MFNode & nodes, X3DChildObject* const object)
+{
+	std::deque <X3DChildObject*> hierarchy;
+	NodeSet                      seen;
+
+	for (auto & node : nodes)
+	{
+		if (find (node, object, hierarchy, seen))
+			continue;
+
+		return hierarchy;
+	}
+
+	return hierarchy;
+}
+
+std::deque <X3DChildObject*>
+find (const X3D::SFNode & node, X3DChildObject* const object)
+{
+	std::deque <X3DChildObject*> hierarchy;
+	NodeSet                      seen;
+
+	find (node, object, hierarchy, seen);
+
+	return hierarchy;
 }
 
 } // X3D

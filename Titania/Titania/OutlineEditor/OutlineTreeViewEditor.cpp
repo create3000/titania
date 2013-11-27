@@ -409,7 +409,12 @@ bool
 OutlineTreeViewEditor::select_access_type (double x, double y)
 {
 	if (get_control_key ())
+	{
+		if (get_shift_key ())
+			return expand_matching_field (x, y);
+
 		return remove_route (x, y);
+	}
 
 	return add_route (x, y);
 }
@@ -569,6 +574,41 @@ OutlineTreeViewEditor::add_route (double x, double y)
 	return false;
 }
 
+void
+OutlineTreeViewEditor::set_access_type_selection (const OutlineUserDataPtr & userData, int type)
+{
+	userData -> selected &= OUTLINE_SELECTED;
+	userData -> selected |= type;
+
+	selectedUserData = userData;
+
+	for (const auto & path : userData -> paths)
+		get_model () -> row_changed (path, get_model () -> get_iter (path));
+}
+
+void
+OutlineTreeViewEditor::clear_access_type_selection (const OutlineUserDataPtr & userData)
+{
+	if (not get_shift_key ())
+	{
+		userData -> selected &= OUTLINE_SELECTED; // clear over state
+
+		for (const auto & path : userData -> paths)
+			get_model () -> row_changed (path, get_model () -> get_iter (path));
+	}
+}
+
+void
+OutlineTreeViewEditor::clear_access_type_selection ()
+{
+	if (not get_shift_key ())
+	{
+		matchingAccessType = 0;
+		sourceNode         = nullptr;
+		destinationNode    = nullptr;
+	}
+}
+
 bool
 OutlineTreeViewEditor::remove_route (double x, double y)
 {
@@ -598,22 +638,28 @@ OutlineTreeViewEditor::remove_route (double x, double y)
 					case OutlineCellContent::INPUT:
 					case OutlineCellContent::OUTPUT:
 					{
-						auto undoStep = std::make_shared <UndoStep> (_ ("Remove Route"));
+						try
+						{
+							auto undoStep = std::make_shared <UndoStep> (_ ("Remove Route"));
 
-						getBrowserWindow () -> deleteRoute (getBrowser () -> getExecutionContext (),
-						                                    route -> getSourceNode (),
-						                                    route -> getSourceField (),
-						                                    route -> getDestinationNode (),
-						                                    route -> getDestinationField (),
-						                                    undoStep);
+							getBrowserWindow () -> deleteRoute (getBrowser () -> getExecutionContext (),
+							                                    route -> getSourceNode (),
+							                                    route -> getSourceField (),
+							                                    route -> getDestinationNode (),
+							                                    route -> getDestinationField (),
+							                                    undoStep);
 
-						getBrowserWindow () -> addUndoStep (undoStep);
+							getBrowserWindow () -> addUndoStep (undoStep);
+						}
+						catch (const X3D::X3DError &)
+						{ }
+
 						return true;
 					}
 					default:
 						break;
 				}
-				
+
 				return false;
 			}
 			case OutlineIterType::X3DField:
@@ -696,39 +742,131 @@ OutlineTreeViewEditor::remove_route (const Gtk::TreeModel::Path & path, const st
 	return;
 }
 
-void
-OutlineTreeViewEditor::set_access_type_selection (const OutlineUserDataPtr & userData, int type)
+bool
+OutlineTreeViewEditor::expand_matching_field (double x, double y)
 {
-	userData -> selected &= OUTLINE_SELECTED;
-	userData -> selected |= type;
+	Gtk::TreeViewColumn* column = nullptr;
+	Gtk::TreeModel::Path path   = get_path_at_position (x, y, column);
 
-	selectedUserData = userData;
+	if (path .size ())
+	{
+		auto iter = get_model () -> get_iter (path);
+		auto data = get_model () -> get_data (iter);
 
-	for (const auto & path : userData -> paths)
-		get_model () -> row_changed (path, get_model () -> get_iter (path));
+		switch (data -> get_type ())
+		{
+			case OutlineIterType::X3DInputRoute:
+			case OutlineIterType::X3DOutputRoute:
+			{
+				auto route = static_cast <X3D::Route*> (data -> get_object ());
+
+				// Pick
+
+				Gdk::Rectangle cell_area;
+				get_cell_area (path, *column, cell_area);
+				get_cellrenderer () -> property_data () .set_value (data);
+
+				switch (get_cellrenderer () -> pick (*this, cell_area, x, y))
+				{
+					case OutlineCellContent::INPUT:
+					{
+						try
+						{
+							expand_to (route -> getSourceNode () -> getField (route -> getSourceField ()));
+						}
+						catch (const X3D::X3DError &)
+						{ }
+						return true;
+					}
+					case OutlineCellContent::OUTPUT:
+					{
+						try
+						{
+							expand_to (route -> getDestinationNode () -> getField (route -> getDestinationField ()));
+						}
+						catch (const X3D::X3DError &)
+						{ }
+						return true;
+					}
+					default:
+						break;
+				}
+
+				return false;
+			}
+			case OutlineIterType::X3DField:
+			{
+				auto field = static_cast <X3D::X3DFieldDefinition*> (data -> get_object ());
+
+				// Pick
+
+				Gdk::Rectangle cell_area;
+				get_cell_area (path, *column, cell_area);
+				get_cellrenderer () -> property_data () .set_value (data);
+
+				switch (get_cellrenderer () -> pick (*this, cell_area, x, y))
+				{
+					case OutlineCellContent::INPUT:
+					{
+						expand_matching_field (path, get_model () -> get_input_routes (field), false);
+
+						return true;
+					}
+					case OutlineCellContent::OUTPUT:
+					{
+						expand_matching_field (path, get_model () -> get_output_routes (field), true);
+
+						return true;
+					}
+					default:
+						break;
+				}
+			}
+			default:
+				break;
+		}
+	}
+
+	return false;
 }
 
 void
-OutlineTreeViewEditor::clear_access_type_selection (const OutlineUserDataPtr & userData)
+OutlineTreeViewEditor::expand_matching_field (const Gtk::TreeModel::Path & path, const std::vector <X3D::Route*> & routes, bool input)
 {
-	if (not get_shift_key ())
+	switch (routes .size ())
 	{
-		userData -> selected &= OUTLINE_SELECTED; // clear over state
+		case 0:
+			return;
+		case 1:
+		{
+			try
+			{
+				auto route = routes [0];
+				auto field = input
+				             ? route -> getDestinationNode () -> getField (route -> getDestinationField ())
+								 : route -> getSourceNode () -> getField (route -> getSourceField ());
+				
+				expand_to (field);
+			}
+			catch (const X3D::X3DError &)
+			{ }
 
-		for (const auto & path : userData -> paths)
-			get_model () -> row_changed (path, get_model () -> get_iter (path));
-	}
-}
+			return;
+		}
+		default:
+		{
+			collapse_row (path);
 
-void
-OutlineTreeViewEditor::clear_access_type_selection ()
-{
-	if (not get_shift_key ())
-	{
-		matchingAccessType = 0;
-		sourceNode         = nullptr;
-		destinationNode    = nullptr;
+			getBrowserWindow () -> getKeys () .shift (X3D::Keys::Shift_L | X3D::Keys::Shift_R);
+
+			expand_row (path, false);
+
+			getBrowserWindow () -> getKeys () .restore_shift ();
+			return;
+		}
 	}
+
+	return;
 }
 
 } // puck
