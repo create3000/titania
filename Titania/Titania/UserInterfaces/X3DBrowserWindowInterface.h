@@ -464,8 +464,12 @@ public:
 	{ return *m_separatorToolItem2; }
 
 	Gtk::ToolButton &
-	getNodePropertiesButton () const
-	{ return *m_nodePropertiesButton; }
+	getNodePropertiesEditorButton () const
+	{ return *m_nodePropertiesEditorButton; }
+
+	Gtk::ToolButton &
+	getMaterialEditorButton () const
+	{ return *m_materialEditorButton; }
 
 	Gtk::Paned &
 	getVPaned () const
@@ -761,7 +765,11 @@ public:
 
 	virtual
 	void
-	on_node_properties () = 0;
+	on_node_properties_editor () = 0;
+
+	virtual
+	void
+	on_material_editor () = 0;
 
 	virtual
 	void
@@ -791,15 +799,10 @@ private:
 	void
 	create (const std::string &);
 
-	static
-	void
-	deleteWidgets (const Glib::RefPtr <Gtk::Builder> &, const std::deque <Gtk::Widget*> &);
-
 	static const std::string m_widgetName;
 
 	std::string                     filename;
 	Glib::RefPtr <Gtk::Builder>     m_builder;
-	std::deque <Gtk::Widget*>       m_widgets;
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterAllFiles;
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterAudio;
 	Glib::RefPtr <Gtk::FileFilter>  m_fileFilterImage;
@@ -893,7 +896,8 @@ private:
 	Gtk::ToolButton*                m_undoButton;
 	Gtk::ToolButton*                m_redoButton;
 	Gtk::SeparatorToolItem*         m_separatorToolItem2;
-	Gtk::ToolButton*                m_nodePropertiesButton;
+	Gtk::ToolButton*                m_nodePropertiesEditorButton;
+	Gtk::ToolButton*                m_materialEditorButton;
 	Gtk::Paned*                     m_vPaned;
 	Gtk::Paned*                     m_hPaned;
 	Gtk::HBox*                      m_surfaceBox;

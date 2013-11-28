@@ -94,23 +94,13 @@ X3DNodePropertiesEditorInterface::create (const std::string & filename)
 	m_nameEntry -> signal_insert_text () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_name_insert_text), false);
 	m_nameEntry -> signal_delete_text () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_name_delete_text), false);
 
-	// Collect deletable widgets
-	m_widgets .emplace_back (m_window);
-
 	// Call construct handler of base class.
 	construct ();
 }
 
-void
-X3DNodePropertiesEditorInterface::deleteWidgets (const Glib::RefPtr <Gtk::Builder> &, const std::deque <Gtk::Widget*> & widgets)
-{
-	for (const auto & widget : widgets)
-		delete widget;
-}
-
 X3DNodePropertiesEditorInterface::~X3DNodePropertiesEditorInterface ()
 {
-	Glib::signal_idle () .connect_once (sigc::bind (sigc::ptr_fun (&X3DNodePropertiesEditorInterface::deleteWidgets), m_builder, m_widgets));
+	delete m_window;
 }
 
 } // puck

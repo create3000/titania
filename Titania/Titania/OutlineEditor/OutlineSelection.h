@@ -70,24 +70,6 @@ public:
 
 	OutlineSelection (BrowserWindow* const browserWindow, OutlineTreeViewEditor* const);
 
-	///  @name Common members
-
-	virtual
-	const std::string &
-	getComponentName () const final
-	{ return componentName; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (X3D::Error <X3D::DISPOSED>) final
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final
-	{ return containerField; }
-
 	///  @name Operations
 
 	void
@@ -115,12 +97,6 @@ private:
 
 	void
 	select (const OutlineUserDataPtr &, bool) const;
-
-	///  @name Static members
-
-	static const std::string componentName;
-	static const std::string typeName;
-	static const std::string containerField;
 
 	///  @name Members
 

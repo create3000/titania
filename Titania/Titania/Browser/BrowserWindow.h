@@ -385,7 +385,11 @@ private:
 	
 	virtual
 	void
-	on_node_properties () final;
+	on_node_properties_editor () final;
+	
+	virtual
+	void
+	on_material_editor () final;
 
 	///  @name Browser dashboard handling
 

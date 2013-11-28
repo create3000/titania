@@ -69,23 +69,13 @@ X3DConsoleInterface::create (const std::string & filename)
 	m_builder -> get_widget ("Widget", m_widget);
 	m_widget -> set_name ("Widget");
 
-	// Collect deletable widgets
-	m_widgets .emplace_back (m_window);
-
 	// Call construct handler of base class.
 	construct ();
 }
 
-void
-X3DConsoleInterface::deleteWidgets (const Glib::RefPtr <Gtk::Builder> &, const std::deque <Gtk::Widget*> & widgets)
-{
-	for (const auto & widget : widgets)
-		delete widget;
-}
-
 X3DConsoleInterface::~X3DConsoleInterface ()
 {
-	Glib::signal_idle () .connect_once (sigc::bind (sigc::ptr_fun (&X3DConsoleInterface::deleteWidgets), m_builder, m_widgets));
+	delete m_window;
 }
 
 } // puck

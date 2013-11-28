@@ -242,8 +242,10 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_redoButton -> set_name ("RedoButton");
 	m_builder -> get_widget ("SeparatorToolItem2", m_separatorToolItem2);
 	m_separatorToolItem2 -> set_name ("SeparatorToolItem2");
-	m_builder -> get_widget ("NodePropertiesButton", m_nodePropertiesButton);
-	m_nodePropertiesButton -> set_name ("NodePropertiesButton");
+	m_builder -> get_widget ("NodePropertiesEditorButton", m_nodePropertiesEditorButton);
+	m_nodePropertiesEditorButton -> set_name ("NodePropertiesEditorButton");
+	m_builder -> get_widget ("MaterialEditorButton", m_materialEditorButton);
+	m_materialEditorButton -> set_name ("MaterialEditorButton");
 	m_builder -> get_widget ("VPaned", m_vPaned);
 	m_vPaned -> set_name ("VPaned");
 	m_builder -> get_widget ("HPaned", m_hPaned);
@@ -382,7 +384,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_refreshButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_revert_to_saved));
 	m_undoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_undo));
 	m_redoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_redo));
-	m_nodePropertiesButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_node_properties));
+	m_nodePropertiesEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_node_properties_editor));
+	m_materialEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_material_editor));
 
 	// Connect object Gtk::HBox with id 'SurfaceBox'.
 	m_surfaceBox -> signal_drag_data_received () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_surface_box_drag_data_received));
@@ -397,29 +400,19 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	// Connect object Gtk::ToggleToolButton with id 'LookAtButton'.
 	m_lookAtButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_look_at_toggled));
 
-	// Collect deletable widgets
-	m_widgets .emplace_back (m_window);
-	m_widgets .emplace_back (m_openLocationDialog);
-	m_widgets .emplace_back (m_fileOpenDialog);
-	m_widgets .emplace_back (m_fileImportDialog);
-	m_widgets .emplace_back (m_messageDialog);
-	m_widgets .emplace_back (m_fileSaveDialog);
-	m_widgets .emplace_back (m_fileSaveWarningDialog);
-
 	// Call construct handler of base class.
 	construct ();
 }
 
-void
-X3DBrowserWindowInterface::deleteWidgets (const Glib::RefPtr <Gtk::Builder> &, const std::deque <Gtk::Widget*> & widgets)
-{
-	for (const auto & widget : widgets)
-		delete widget;
-}
-
 X3DBrowserWindowInterface::~X3DBrowserWindowInterface ()
 {
-	Glib::signal_idle () .connect_once (sigc::bind (sigc::ptr_fun (&X3DBrowserWindowInterface::deleteWidgets), m_builder, m_widgets));
+	delete m_window;
+	delete m_openLocationDialog;
+	delete m_fileOpenDialog;
+	delete m_fileImportDialog;
+	delete m_messageDialog;
+	delete m_fileSaveDialog;
+	delete m_fileSaveWarningDialog;
 }
 
 } // puck

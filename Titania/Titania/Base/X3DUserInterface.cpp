@@ -55,15 +55,12 @@
 namespace titania {
 namespace puck {
 
-const std::string X3DUserInterface::componentName  = "BrowserWindow";
-const std::string X3DUserInterface::containerField = "widgets";
-
-X3DUserInterface::Array X3DUserInterface::userInterfaces;
+X3DUserInterface::UserInterfaceArray X3DUserInterface::userInterfaces;
 
 X3DUserInterface::X3DUserInterface (const std::string & widgetName, const std::string & configKey) :
 	      X3DBaseInterface (),
 	                 gconf (configKey, widgetName),
-	initialized_connection (),
+	constructed_connection (),
 	         userInterface (),
 	               dialogs ()
 { }
@@ -71,7 +68,7 @@ X3DUserInterface::X3DUserInterface (const std::string & widgetName, const std::s
 void
 X3DUserInterface::construct ()
 {
-	initialized_connection = getWidget () .signal_map () .connect (sigc::mem_fun (*this, &X3DUserInterface::set_initialized));
+	constructed_connection = getWidget () .signal_map () .connect (sigc::mem_fun (*this, &X3DUserInterface::set_constructed));
 
 	getWidget () .signal_map ()          .connect (sigc::mem_fun (*this, &X3DUserInterface::on_map));
 	getWindow () .signal_delete_event () .connect (sigc::mem_fun (*this, &X3DUserInterface::on_delete_event), false);
@@ -83,9 +80,9 @@ X3DUserInterface::construct ()
 }
 
 void
-X3DUserInterface::set_initialized ()
+X3DUserInterface::set_constructed ()
 {
-	initialized_connection .disconnect ();
+	constructed_connection .disconnect ();
 
 	std::clog << "Initializing " << getWidgetName () << "." << std::endl;
 
@@ -114,21 +111,22 @@ X3DUserInterface::initialize ()
 bool
 X3DUserInterface::is_initialized ()
 {
-	return not initialized_connection .connected ();
+	return not constructed_connection .connected ();
 }
 
 void
 X3DUserInterface::addDialog (X3DUserInterface* const dialog)
 {
-	dialog -> getWindow () .signal_hide () .connect (sigc::bind (sigc::mem_fun (*this, &X3DUserInterface::removeDialog), dialog));
+	dialogs .emplace (dialog);
+	dialog -> getWindow () .signal_hide () .connect (sigc::bind (sigc::mem_fun (*this, &X3DUserInterface::removeDialog), dialog), false);
 	dialog -> getWindow () .present ();
-	dialogs .emplace (dialog, dialog);
 }
 
 void
 X3DUserInterface::removeDialog (X3DUserInterface* const dialog)
 {
 	dialogs .erase (dialog);
+	delete dialog;
 }
 
 void
@@ -209,9 +207,7 @@ X3DUserInterface::close ()
 
 	saveSession ();
 
-	dispose ();
-
-	getWindow () .hide (); // Hide window at last
+	getWindow () .hide (); // Hide window as last command.
 
 	// Prevent destroying Window.
 	return true;

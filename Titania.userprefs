@@ -1,16 +1,8 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/OutlineEditor/OutlineTreeViewEditor.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Library/Tests/Handles/Routes.wrl">
     <Files>
-      <File FileName="Library/Tests/Handles/Routes.wrl" Line="69" Column="5" />
-      <File FileName="Titania/Titania/OutlineEditor/X3DOutlineTreeView.h" Line="139" Column="17" />
-      <File FileName="Titania/Titania/OutlineEditor/X3DOutlineTreeView.cpp" Line="57" Column="1" />
-      <File FileName="Titania/Titania/OutlineEditor/OutlineTreeViewEditor.h" Line="155" Column="1" />
-      <File FileName="Titania/Titania/OutlineEditor/OutlineTreeViewEditor.cpp" Line="857" Column="40" />
-      <File FileName="Titania/Titania/OutlineEditor/CellRenderer/OutlineCellRenderer.h" Line="102" Column="1" />
-      <File FileName="Titania/Titania/OutlineEditor/CellRenderer/OutlineCellRenderer.cpp" Line="1166" Column="1" />
-      <File FileName="Titania/Titania/OutlineEditor/OutlineRouteGraph.h" Line="150" Column="53" />
-      <File FileName="Titania/Titania/OutlineEditor/OutlineRouteGraph.cpp" Line="947" Column="1" />
+      <File FileName="Library/Tests/Handles/Routes.wrl" Line="44" Column="7" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -70,6 +62,11 @@
               </Node>
             </Node>
           </Node>
+          <Node name="Papers" expanded="True">
+            <Node name="CosmoWorlds" expanded="True">
+              <Node name="CosmoWorldDoc.pdf" selected="True" />
+            </Node>
+          </Node>
           <Node name="Titania" expanded="True">
             <Node name="share" expanded="True">
               <Node name="titania" expanded="True">
@@ -83,7 +80,6 @@
               <Node name="HistoryEditor" expanded="True" />
               <Node name="OutlineEditor" expanded="True">
                 <Node name="CellRenderer" expanded="True" />
-                <Node name="OutlineTreeViewEditor.cpp" selected="True" />
               </Node>
               <Node name="UserInterfaces" expanded="True" />
             </Node>

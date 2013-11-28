@@ -16,6 +16,7 @@ titania_SOURCES =  \
 	Titania/HistoryEditor/HistoryEditor.cpp \
 	Titania/LibraryView/LibraryView.cpp \
 	Titania/main.cpp \
+	Titania/MaterialEditor/MaterialEditor.cpp \
 	Titania/MotionBlurEditor/MotionBlurEditor.cpp \
 	Titania/NodePropertiesEditor/NodePropertiesEditor.cpp \
 	Titania/OutlineEditor/CellRenderer/OutlineCellRenderer.cpp \
@@ -35,6 +36,7 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DConsoleInterface.cpp \
 	Titania/UserInterfaces/X3DHistoryEditorInterface.cpp \
 	Titania/UserInterfaces/X3DLibraryViewInterface.cpp \
+	Titania/UserInterfaces/X3DMaterialEditorInterface.cpp \
 	Titania/UserInterfaces/X3DMotionBlurEditorInterface.cpp \
 	Titania/UserInterfaces/X3DNodePropertiesEditorInterface.cpp \
 	Titania/UserInterfaces/X3DOutlineEditorInterface.cpp \

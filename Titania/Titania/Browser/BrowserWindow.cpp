@@ -52,6 +52,7 @@
 
 #include "../Configuration/config.h"
 #include "../OutlineEditor/OutlineTreeModel.h"
+#include "../MaterialEditor/MaterialEditor.h"
 
 #include <Titania/String.h>
 #include <Titania/X3D/Debug.h>
@@ -61,8 +62,7 @@ namespace titania {
 namespace puck {
 
 BrowserWindow::BrowserWindow (const X3D::X3DSFNode <X3D::Browser> & browserSurface, const basic::uri & worldURL) :
-	     X3DBaseNode (browserSurface, browserSurface),
-	X3DBaseInterface (this),
+	X3DBaseInterface (this, browserSurface),
 	X3DBrowserEditor (worldURL),
 	  browserSurface (browserSurface),
 	motionBlurEditor (this),
@@ -216,7 +216,8 @@ BrowserWindow::set_selection (const X3D::MFNode & children)
 
 	getDeselectAllMenuItem () .set_sensitive (haveSelection);
 
-	getNodePropertiesButton () .set_sensitive (haveSelection);
+	getNodePropertiesEditorButton () .set_sensitive (haveSelection);
+	getMaterialEditorButton ()       .set_sensitive (haveSelection);
 }
 
 // Keys
@@ -764,13 +765,14 @@ BrowserWindow::enableEditor (bool enabled)
 	getPrimitiveQualityMenuItem () .set_visible (enabled);
 	getSelectionMenuItem ()        .set_visible (enabled);
 
-	getImportButton ()         .set_visible (enabled);
-	getSeparatorToolItem1 ()   .set_visible (enabled);
-	getUndoButton ()           .set_visible (enabled);
-	getRedoButton ()           .set_visible (enabled);
-	getSeparatorToolItem2 ()   .set_visible (enabled);
-	getNodePropertiesButton () .set_visible (enabled);
-	getArrowButton ()          .set_visible (enabled);
+	getImportButton ()               .set_visible (enabled);
+	getSeparatorToolItem1 ()         .set_visible (enabled);
+	getUndoButton ()                 .set_visible (enabled);
+	getRedoButton ()                 .set_visible (enabled);
+	getSeparatorToolItem2 ()         .set_visible (enabled);
+	getNodePropertiesEditorButton () .set_visible (enabled);
+	getMaterialEditorButton ()       .set_visible (enabled);
+	getArrowButton ()                .set_visible (enabled);
 
 	getLibraryViewBox ()   .set_visible (enabled);
 	getOutlineEditorBox () .set_visible (enabled);
@@ -940,10 +942,17 @@ BrowserWindow::on_standard_size ()
 /// Toolbar
 
 void
-BrowserWindow::on_node_properties ()
+BrowserWindow::on_node_properties_editor ()
 {
 	if (getBrowser () -> getSelection () -> getChildren () .size ())
 		openNodePropertiesEditor (getBrowser () -> getSelection () -> getChildren () .back ());
+}
+
+
+void
+BrowserWindow::on_material_editor ()
+{
+	addDialog (new MaterialEditor (getBrowserWindow ()));
 }
 
 // Browser dashboard handling

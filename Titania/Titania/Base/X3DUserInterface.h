@@ -64,24 +64,6 @@ class X3DUserInterface :
 {
 public:
 
-	///  @name Common members
-
-	virtual
-	const std::string &
-	getComponentName () const final
-	{ return componentName; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (X3D::Error <X3D::DISPOSED>) final
-	{ return getWidgetName (); }
-
-	virtual
-	const std::string &
-	getContainerField () const final
-	{ return containerField; }
-
 	///  @name Widget members
 
 	virtual
@@ -156,12 +138,12 @@ protected:
 
 private:
 
-	typedef std::list <X3DUserInterface*> Array;
+	typedef std::list <X3DUserInterface*> UserInterfaceArray;
 
 	X3DUserInterface (const X3DUserInterface &) = delete;
 
 	void
-	set_initialized ();
+	set_constructed ();
 
 	void
 	on_map ();
@@ -180,18 +162,15 @@ private:
 
 	///  @name Static members
 
-	static const std::string componentName;
-	static const std::string containerField;
-
-	static Array userInterfaces;
+	static UserInterfaceArray userInterfaces;
 
 	///  @name Members
 
-	Configuration    gconf;
-	sigc::connection initialized_connection;
-	Array::iterator  userInterface;
-	
-	std::map <X3DUserInterface*, X3D::X3DSFNode <X3DUserInterface>> dialogs;
+	Configuration                 gconf;
+	sigc::connection              constructed_connection;
+	UserInterfaceArray::iterator  userInterface;
+
+	std::set <X3DUserInterface*> dialogs;
 
 
 };

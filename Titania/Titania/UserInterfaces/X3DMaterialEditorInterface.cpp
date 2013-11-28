@@ -47,109 +47,61 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#ifndef __TMP_GLAD2CPP_VIEWPOINT_LIST_H__
-#define __TMP_GLAD2CPP_VIEWPOINT_LIST_H__
-
-#include "../Base/X3DUserInterface.h"
-#include <gtkmm.h>
-#include <string>
+#include "X3DMaterialEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-using namespace Gtk;
+const std::string X3DMaterialEditorInterface::m_widgetName = "MaterialEditor";
 
-class X3DViewpointListInterface :
-	public X3DUserInterface
+void
+X3DMaterialEditorInterface::create (const std::string & filename)
 {
-public:
+	// Create Builder.
+	m_builder = Gtk::Builder::create_from_file (filename);
 
-	template <class ... Arguments>
-	X3DViewpointListInterface (const std::string & filename, const Arguments & ... arguments) :
-		X3DUserInterface (m_widgetName, arguments ...),
-		        filename (filename)
-	{ create (filename); }
+	// Get objects.
 
-	const Glib::RefPtr <Gtk::Builder> &
-	getBuilder () const { return m_builder; }
+	// Get widgets.
+	m_builder -> get_widget ("Window", m_window);
+	m_window -> set_name ("Window");
+	m_builder -> get_widget ("Widget", m_widget);
+	m_widget -> set_name ("Widget");
+	m_builder -> get_widget ("PreviewBox", m_previewBox);
+	m_previewBox -> set_name ("PreviewBox");
+	m_builder -> get_widget ("DiffuseScale", m_diffuseScale);
+	m_diffuseScale -> set_name ("DiffuseScale");
+	m_builder -> get_widget ("SpecularScale", m_specularScale);
+	m_specularScale -> set_name ("SpecularScale");
+	m_builder -> get_widget ("EmissiveScale", m_emissiveScale);
+	m_emissiveScale -> set_name ("EmissiveScale");
+	m_builder -> get_widget ("AmbientScale", m_ambientScale);
+	m_ambientScale -> set_name ("AmbientScale");
+	m_builder -> get_widget ("ShininessScale", m_shininessScale);
+	m_shininessScale -> set_name ("ShininessScale");
+	m_builder -> get_widget ("TransparencyScale", m_transparencyScale);
+	m_transparencyScale -> set_name ("TransparencyScale");
+	m_builder -> get_widget ("DiffuseButton", m_diffuseButton);
+	m_diffuseButton -> set_name ("DiffuseButton");
+	m_builder -> get_widget ("SpecularButton", m_specularButton);
+	m_specularButton -> set_name ("SpecularButton");
+	m_builder -> get_widget ("EmissiveButton", m_emissiveButton);
+	m_emissiveButton -> set_name ("EmissiveButton");
+	m_builder -> get_widget ("AmbientButton", m_ambientButton);
+	m_ambientButton -> set_name ("AmbientButton");
+	m_builder -> get_widget ("ShininessButton", m_shininessButton);
+	m_shininessButton -> set_name ("ShininessButton");
+	m_builder -> get_widget ("TransparencyButton", m_transparencyButton);
+	m_transparencyButton -> set_name ("TransparencyButton");
 
-	const std::string &
-	getWidgetName () const { return m_widgetName; }
+	// Call construct handler of base class.
+	construct ();
+}
 
-	void
-	updateWidget (const std::string & name) const
-	{ getBuilder () -> add_from_file (filename, name); }
-
-	template <class Type>
-	Type*
-	getWidget (const std::string & name) const
-	{
-		Type* widget = nullptr;
-
-		m_builder -> get_widget (name, widget);
-		widget -> set_name (name);
-		return widget;
-	}
-
-	const Glib::RefPtr <Gtk::ListStore> &
-	getListStore () const
-	{ return m_listStore; }
-
-	const Glib::RefPtr <Gtk::TreeViewColumn> &
-	getDescriptionColumn () const
-	{ return m_descriptionColumn; }
-
-	const Glib::RefPtr <Gtk::CellRendererText> &
-	getCellRendererDescription () const
-	{ return m_cellRendererDescription; }
-
-	Gtk::Window &
-	getWindow () const
-	{ return *m_window; }
-
-	Gtk::Box &
-	getWidget () const
-	{ return *m_widget; }
-
-	Gtk::ScrolledWindow &
-	getScrolledWindow () const
-	{ return *m_scrolledWindow; }
-
-	Gtk::TreeView &
-	getTreeView () const
-	{ return *m_treeView; }
-
-	virtual
-	void
-	on_map () = 0;
-
-	virtual
-	void
-	on_row_activated (const TreeModel::Path & path, TreeViewColumn* column) = 0;
-
-	~X3DViewpointListInterface ();
-
-
-private:
-
-	void
-	create (const std::string &);
-
-	static const std::string m_widgetName;
-
-	std::string                          filename;
-	Glib::RefPtr <Gtk::Builder>          m_builder;
-	Glib::RefPtr <Gtk::ListStore>        m_listStore;
-	Glib::RefPtr <Gtk::TreeViewColumn>   m_descriptionColumn;
-	Glib::RefPtr <Gtk::CellRendererText> m_cellRendererDescription;
-	Gtk::Window*                         m_window;
-	Gtk::Box*                            m_widget;
-	Gtk::ScrolledWindow*                 m_scrolledWindow;
-	Gtk::TreeView*                       m_treeView;
-
-};
+X3DMaterialEditorInterface::~X3DMaterialEditorInterface ()
+{
+	delete m_window;
+}
 
 } // puck
 } // titania
-
-#endif

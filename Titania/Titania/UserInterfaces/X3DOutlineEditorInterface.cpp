@@ -75,23 +75,13 @@ X3DOutlineEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::Box with id 'Widget'.
 	m_widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_map));
 
-	// Collect deletable widgets
-	m_widgets .emplace_back (m_window);
-
 	// Call construct handler of base class.
 	construct ();
 }
 
-void
-X3DOutlineEditorInterface::deleteWidgets (const Glib::RefPtr <Gtk::Builder> &, const std::deque <Gtk::Widget*> & widgets)
-{
-	for (const auto & widget : widgets)
-		delete widget;
-}
-
 X3DOutlineEditorInterface::~X3DOutlineEditorInterface ()
 {
-	Glib::signal_idle () .connect_once (sigc::bind (sigc::ptr_fun (&X3DOutlineEditorInterface::deleteWidgets), m_builder, m_widgets));
+	delete m_window;
 }
 
 } // puck

@@ -433,17 +433,11 @@ sub generate
 	say OUT "  create (const std::string &);";
 	say OUT "";
 
-	say OUT "  static";
-	say OUT "  void";
-	say OUT "  deleteWidgets (const Glib::RefPtr <Gtk::Builder> &, const std::deque <Gtk::Widget*> &);";
-	say OUT "";
-
 	say OUT "  static const std::string m_widgetName;";
 	say OUT "";
 
 	say OUT "  std::string filename;";
 	say OUT "  Glib::RefPtr <Gtk::Builder> m_builder;";
-	say OUT "  std::deque <Gtk::Widget*> m_widgets;";
 	#say OUT "  std::deque <sigc::connection> m_connections;";
 
 	$parser = new XML::Parser (Handlers => {Start => sub { $self -> h_objects (@_) }});
@@ -519,10 +513,6 @@ sub generate
 	$parser = new XML::Parser (Handlers => {Start => sub { $self -> cpp_signals (@_) }});
 	$parser -> parse ($input, ProtocolEncoding => 'UTF-8');
 
-	say OUT "";
-	say OUT "   // Collect deletable widgets";
-	say OUT "   m_widgets .emplace_back ($_);" foreach keys %{$self->{windows}};
-
 	# Call construct
 	if ($base_class_name)
 	{
@@ -549,18 +539,10 @@ sub generate
 	#$self -> cpp_disconnect_signals ();	
 	#say OUT "}";
 
-	# Delete widgets
-	say OUT "void";
-	say OUT "$self->{class_name}\::deleteWidgets (const Glib::RefPtr <Gtk::Builder> &, const std::deque <Gtk::Widget*> & widgets)";
-	say OUT "{";
-	say OUT "   for (const auto & widget : widgets)";
-	say OUT "      delete widget;";
-	say OUT "}";
-
 	# Destructor
 	say OUT "$self->{class_name}\::~$self->{class_name} ()";
 	say OUT "{";
-	say OUT "    Glib::signal_idle () .connect_once (sigc::bind (sigc::ptr_fun (&$self->{class_name}\::deleteWidgets), m_builder, m_widgets));";
+	say OUT "delete $_;" foreach keys %{$self->{windows}};
 	say OUT "}";
 
 	# Namespaces end

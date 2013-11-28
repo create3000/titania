@@ -72,8 +72,7 @@ constexpr int Bold   = 700;
 };
 
 ViewpointList::ViewpointList (BrowserWindow* const browserWindow) :
-	         X3D::X3DBaseNode (browserWindow -> getBrowser (), browserWindow -> getExecutionContext ()),
-	         X3DBaseInterface (browserWindow),
+	         X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DViewpointListInterface (get_ui ("ViewpointList.ui"), gconf_dir ()),
 	              activeLayer ()
 { }

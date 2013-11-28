@@ -1472,12 +1472,25 @@
               </packing>
             </child>
             <child>
-              <object class="GtkToolButton" id="NodePropertiesButton">
+              <object class="GtkToolButton" id="NodePropertiesEditorButton">
                 <property name="can_focus">True</property>
-                <property name="label" translatable="yes">Box</property>
+                <property name="label" translatable="yes">Node Properties Editor</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-edit</property>
-                <signal name="clicked" handler="on_node_properties" swapped="no"/>
+                <signal name="clicked" handler="on_node_properties_editor" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="MaterialEditorButton">
+                <property name="can_focus">True</property>
+                <property name="label" translatable="yes">Material Editor</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">gtk-select-color</property>
+                <signal name="clicked" handler="on_material_editor" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>

@@ -78,23 +78,13 @@ X3DMotionBlurEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::CheckButton with id 'Enabled'.
 	m_enabled -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DMotionBlurEditorInterface::on_enabled_toggled));
 
-	// Collect deletable widgets
-	m_widgets .emplace_back (m_window);
-
 	// Call construct handler of base class.
 	construct ();
 }
 
-void
-X3DMotionBlurEditorInterface::deleteWidgets (const Glib::RefPtr <Gtk::Builder> &, const std::deque <Gtk::Widget*> & widgets)
-{
-	for (const auto & widget : widgets)
-		delete widget;
-}
-
 X3DMotionBlurEditorInterface::~X3DMotionBlurEditorInterface ()
 {
-	Glib::signal_idle () .connect_once (sigc::bind (sigc::ptr_fun (&X3DMotionBlurEditorInterface::deleteWidgets), m_builder, m_widgets));
+	delete m_window;
 }
 
 } // puck

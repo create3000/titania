@@ -123,15 +123,10 @@ private:
 	void
 	create (const std::string &);
 
-	static
-	void
-	deleteWidgets (const Glib::RefPtr <Gtk::Builder> &, const std::deque <Gtk::Widget*> &);
-
 	static const std::string m_widgetName;
 
 	std::string                 filename;
 	Glib::RefPtr <Gtk::Builder> m_builder;
-	std::deque <Gtk::Widget*>   m_widgets;
 	Gtk::Menu*                  m_popupMenu;
 	Gtk::MenuItem*              m_renameNodeMenuItem;
 	Gtk::ImageMenuItem*         m_editNodeMenuItem;

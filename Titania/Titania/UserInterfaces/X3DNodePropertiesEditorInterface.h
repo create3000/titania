@@ -163,15 +163,10 @@ private:
 	void
 	create (const std::string &);
 
-	static
-	void
-	deleteWidgets (const Glib::RefPtr <Gtk::Builder> &, const std::deque <Gtk::Widget*> &);
-
 	static const std::string m_widgetName;
 
 	std::string                 filename;
 	Glib::RefPtr <Gtk::Builder> m_builder;
-	std::deque <Gtk::Widget*>   m_widgets;
 	Gtk::Dialog*                m_window;
 	Gtk::Button*                m_cancelButton;
 	Gtk::Button*                m_okButton;

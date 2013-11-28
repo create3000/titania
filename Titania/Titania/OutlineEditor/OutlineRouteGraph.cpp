@@ -440,6 +440,8 @@ OutlineRouteGraph::add_connection_below (const Gtk::TreeModel::iterator & iter,
 void
 OutlineRouteGraph::collapse (const Gtk::TreeModel::iterator & iter)
 {
+	//__LOG__ << std::endl;
+
 	switch (treeView -> get_data_type (iter))
 	{
 		case OutlineIterType::X3DBaseNode:

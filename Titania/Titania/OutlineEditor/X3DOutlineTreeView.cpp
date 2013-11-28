@@ -314,6 +314,7 @@ X3DOutlineTreeView::set_execution_context (const X3D::X3DSFNode <X3D::X3DExecuti
 	for (const auto & child : get_model () -> children ())
 	{
 		routeGraph -> collapse (child);
+
 		treeObserver -> unwatch_tree (child);
 	}
 

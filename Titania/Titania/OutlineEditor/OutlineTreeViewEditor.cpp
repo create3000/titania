@@ -66,8 +66,7 @@ const std::string OutlineTreeViewEditor::dragDataType = "titania/outline-tree/ro
 
 OutlineTreeViewEditor::OutlineTreeViewEditor (BrowserWindow* const browserWindow, const X3D::X3DSFNode <X3D::X3DExecutionContext> & executionContext) :
 	        Glib::ObjectBase (typeid (OutlineTreeViewEditor)),
-	        X3D::X3DBaseNode (browserWindow -> getBrowser (), browserWindow -> getExecutionContext ()),
-	        X3DBaseInterface (browserWindow),
+	        X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	      X3DOutlineTreeView (executionContext),
 	               selection (new OutlineSelection (browserWindow, this)),
 	            overUserData (new OutlineUserData ()),

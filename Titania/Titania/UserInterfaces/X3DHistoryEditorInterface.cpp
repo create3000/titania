@@ -85,23 +85,13 @@ X3DHistoryEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::TreeView with id 'TreeView'.
 	m_treeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DHistoryEditorInterface::on_row_activated));
 
-	// Collect deletable widgets
-	m_widgets .emplace_back (m_window);
-
 	// Call construct handler of base class.
 	construct ();
 }
 
-void
-X3DHistoryEditorInterface::deleteWidgets (const Glib::RefPtr <Gtk::Builder> &, const std::deque <Gtk::Widget*> & widgets)
-{
-	for (const auto & widget : widgets)
-		delete widget;
-}
-
 X3DHistoryEditorInterface::~X3DHistoryEditorInterface ()
 {
-	Glib::signal_idle () .connect_once (sigc::bind (sigc::ptr_fun (&X3DHistoryEditorInterface::deleteWidgets), m_builder, m_widgets));
+	delete m_window;
 }
 
 } // puck

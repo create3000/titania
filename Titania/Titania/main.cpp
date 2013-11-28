@@ -109,11 +109,19 @@ public:
 	void
 	add_window (const basic::uri & uri)
 	{
+		__LOG__ << std::endl;
+
 		auto browserWindow = std::make_shared <BrowserWindow> (X3D::createBrowser (), uri);
+
+		__LOG__ << std::endl;
 
 		browserWindow -> getWindow () .show ();
 
+		__LOG__ << std::endl;
+
 		add_window (browserWindow -> getWindow ());
+
+		__LOG__ << std::endl;
 
 		browserWindows .emplace (&browserWindow -> getWindow (), browserWindow);
 

@@ -47,8 +47,8 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#ifndef __TMP_GLAD2CPP_VIEWPOINT_LIST_H__
-#define __TMP_GLAD2CPP_VIEWPOINT_LIST_H__
+#ifndef __TMP_GLAD2CPP_MATERIAL_EDITOR_H__
+#define __TMP_GLAD2CPP_MATERIAL_EDITOR_H__
 
 #include "../Base/X3DUserInterface.h"
 #include <gtkmm.h>
@@ -59,13 +59,13 @@ namespace puck {
 
 using namespace Gtk;
 
-class X3DViewpointListInterface :
+class X3DMaterialEditorInterface :
 	public X3DUserInterface
 {
 public:
 
 	template <class ... Arguments>
-	X3DViewpointListInterface (const std::string & filename, const Arguments & ... arguments) :
+	X3DMaterialEditorInterface (const std::string & filename, const Arguments & ... arguments) :
 		X3DUserInterface (m_widgetName, arguments ...),
 		        filename (filename)
 	{ create (filename); }
@@ -91,18 +91,6 @@ public:
 		return widget;
 	}
 
-	const Glib::RefPtr <Gtk::ListStore> &
-	getListStore () const
-	{ return m_listStore; }
-
-	const Glib::RefPtr <Gtk::TreeViewColumn> &
-	getDescriptionColumn () const
-	{ return m_descriptionColumn; }
-
-	const Glib::RefPtr <Gtk::CellRendererText> &
-	getCellRendererDescription () const
-	{ return m_cellRendererDescription; }
-
 	Gtk::Window &
 	getWindow () const
 	{ return *m_window; }
@@ -111,23 +99,59 @@ public:
 	getWidget () const
 	{ return *m_widget; }
 
-	Gtk::ScrolledWindow &
-	getScrolledWindow () const
-	{ return *m_scrolledWindow; }
+	Gtk::Box &
+	getPreviewBox () const
+	{ return *m_previewBox; }
 
-	Gtk::TreeView &
-	getTreeView () const
-	{ return *m_treeView; }
+	Gtk::Scale &
+	getDiffuseScale () const
+	{ return *m_diffuseScale; }
 
-	virtual
-	void
-	on_map () = 0;
+	Gtk::Scale &
+	getSpecularScale () const
+	{ return *m_specularScale; }
 
-	virtual
-	void
-	on_row_activated (const TreeModel::Path & path, TreeViewColumn* column) = 0;
+	Gtk::Scale &
+	getEmissiveScale () const
+	{ return *m_emissiveScale; }
 
-	~X3DViewpointListInterface ();
+	Gtk::Scale &
+	getAmbientScale () const
+	{ return *m_ambientScale; }
+
+	Gtk::Scale &
+	getShininessScale () const
+	{ return *m_shininessScale; }
+
+	Gtk::Scale &
+	getTransparencyScale () const
+	{ return *m_transparencyScale; }
+
+	Gtk::Button &
+	getDiffuseButton () const
+	{ return *m_diffuseButton; }
+
+	Gtk::Button &
+	getSpecularButton () const
+	{ return *m_specularButton; }
+
+	Gtk::Button &
+	getEmissiveButton () const
+	{ return *m_emissiveButton; }
+
+	Gtk::Button &
+	getAmbientButton () const
+	{ return *m_ambientButton; }
+
+	Gtk::Button &
+	getShininessButton () const
+	{ return *m_shininessButton; }
+
+	Gtk::Button &
+	getTransparencyButton () const
+	{ return *m_transparencyButton; }
+
+	~X3DMaterialEditorInterface ();
 
 
 private:
@@ -137,15 +161,23 @@ private:
 
 	static const std::string m_widgetName;
 
-	std::string                          filename;
-	Glib::RefPtr <Gtk::Builder>          m_builder;
-	Glib::RefPtr <Gtk::ListStore>        m_listStore;
-	Glib::RefPtr <Gtk::TreeViewColumn>   m_descriptionColumn;
-	Glib::RefPtr <Gtk::CellRendererText> m_cellRendererDescription;
-	Gtk::Window*                         m_window;
-	Gtk::Box*                            m_widget;
-	Gtk::ScrolledWindow*                 m_scrolledWindow;
-	Gtk::TreeView*                       m_treeView;
+	std::string                 filename;
+	Glib::RefPtr <Gtk::Builder> m_builder;
+	Gtk::Window*                m_window;
+	Gtk::Box*                   m_widget;
+	Gtk::Box*                   m_previewBox;
+	Gtk::Scale*                 m_diffuseScale;
+	Gtk::Scale*                 m_specularScale;
+	Gtk::Scale*                 m_emissiveScale;
+	Gtk::Scale*                 m_ambientScale;
+	Gtk::Scale*                 m_shininessScale;
+	Gtk::Scale*                 m_transparencyScale;
+	Gtk::Button*                m_diffuseButton;
+	Gtk::Button*                m_specularButton;
+	Gtk::Button*                m_emissiveButton;
+	Gtk::Button*                m_ambientButton;
+	Gtk::Button*                m_shininessButton;
+	Gtk::Button*                m_transparencyButton;
 
 };
 

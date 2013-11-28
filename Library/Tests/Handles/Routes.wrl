@@ -64,6 +64,7 @@ function addRoute ()
 {
 	Browser .addRoute (node1, 'isBound', node2, 'set_bind');
 }
+
 function deleteRoute ()
 {
 	Browser .deleteRoute (node1, 'isBound', node2, 'set_bind');
