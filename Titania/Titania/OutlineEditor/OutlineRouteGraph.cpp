@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -123,7 +123,7 @@ OutlineRouteGraph::expand_field (const Gtk::TreeModel::iterator & parent)
 
 	// Add routes
 
-	if (parentUserData -> all_expanded)
+	if (parentUserData -> full_expanded)
 	{
 		remove_routes (parentPath, parentData, field);
 
@@ -245,7 +245,7 @@ OutlineRouteGraph::add_input_route (const Gtk::TreeModel::Path & destinationPath
 
 			// Connect to output route if field is all expanded
 
-			if (sourceData -> get_user_data () -> all_expanded)
+			if (sourceData -> get_user_data () -> full_expanded)
 			{
 				for (const auto & iter : sourceIter -> children ())
 				{
@@ -329,7 +329,7 @@ OutlineRouteGraph::add_output_route (const Gtk::TreeModel::Path & sourcePath, Ou
 
 			// Connect to input route if field is all expanded
 
-			if (destinationData -> get_user_data () -> all_expanded)
+			if (destinationData -> get_user_data () -> full_expanded)
 			{
 				for (const auto & iter : destinationIter -> children ())
 				{
@@ -470,7 +470,7 @@ OutlineRouteGraph::collapse_node (const Gtk::TreeModel::iterator & parent)
 		field -> getInputRoutes ()  .removeInterest (this, &OutlineRouteGraph::add_routes_for_path);
 		field -> getOutputRoutes () .removeInterest (this, &OutlineRouteGraph::add_routes_for_path);
 
-		if (userData -> all_expanded)
+		if (userData -> full_expanded)
 		{
 			for (const auto & iter : child -> children ())
 			{
@@ -627,7 +627,7 @@ OutlineRouteGraph::remove_input_route (const Gtk::TreeModel::Path & destinationP
 
 			// Connect to output route if field is all expanded
 
-			if (sourceData -> get_user_data () -> all_expanded)
+			if (sourceData -> get_user_data () -> full_expanded)
 			{
 				for (const auto & iter : sourceIter -> children ())
 				{
@@ -709,7 +709,7 @@ OutlineRouteGraph::remove_output_route (const Gtk::TreeModel::Path & sourcePath,
 
 			// Connect to input route if field is all expanded
 
-			if (destinationData -> get_user_data () -> all_expanded)
+			if (destinationData -> get_user_data () -> full_expanded)
 			{
 				for (const auto & iter : destinationIter -> children ())
 				{

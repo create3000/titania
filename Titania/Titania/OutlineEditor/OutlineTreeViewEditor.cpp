@@ -730,11 +730,10 @@ OutlineTreeViewEditor::remove_route (const Gtk::TreeModel::Path & path, const st
 		{
 			collapse_row (path);
 
-			getBrowserWindow () -> getKeys () .shift (X3D::Keys::Shift_L | X3D::Keys::Shift_R);
+			is_full_expanded (get_model () -> get_iter (path), true);
 
 			expand_row (path, false);
 
-			getBrowserWindow () -> getKeys () .restore_shift ();
 			return;
 		}
 	}

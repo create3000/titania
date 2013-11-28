@@ -98,10 +98,16 @@ public:
 	get_object (const Gtk::TreeModel::iterator &) const;
 
 	void
-	set_expanded (const Gtk::TreeModel::iterator &, bool);
+	is_expanded (const Gtk::TreeModel::iterator &, bool);
 
 	bool
-	get_expanded (const Gtk::TreeModel::iterator &) const;
+	is_expanded (const Gtk::TreeModel::iterator &) const;
+
+	void
+	is_full_expanded (const Gtk::TreeModel::iterator &, bool);
+
+	bool
+	is_full_expanded (const Gtk::TreeModel::iterator &) const;
 
 	///  @name Operations
 
@@ -174,12 +180,6 @@ private:
 
 	void
 	set_model (const Glib::RefPtr <OutlineTreeModel> &);
-
-	void
-	set_all_expanded (const Gtk::TreeModel::iterator &, bool);
-
-	bool
-	get_all_expanded (const Gtk::TreeModel::iterator &) const;
 
 	void
 	set_open_path (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);

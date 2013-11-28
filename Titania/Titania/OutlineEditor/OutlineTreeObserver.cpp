@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -70,7 +70,7 @@ OutlineTreeObserver::watch (const Gtk::TreeModel::iterator & iter, const Gtk::Tr
 		{
 			auto field = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (iter));
 
-			if (treeView -> get_all_expanded (iter))
+			if (treeView -> is_full_expanded (iter))
 			{
 				field -> getInputRoutes ()  .addInterest (this, &OutlineTreeObserver::toggle_field, path);
 				field -> getOutputRoutes () .addInterest (this, &OutlineTreeObserver::toggle_field, path);
@@ -251,7 +251,7 @@ OutlineTreeObserver::update_field (const Gtk::TreeModel::Path & path)
 	//__LOG__ << path .to_string () << std::endl;
 
 	Gtk::TreeModel::iterator iter         = treeView -> get_model () -> get_iter (path);
-	bool                     all_expanded = treeView -> get_all_expanded (iter);
+	bool                     full_expanded = treeView -> is_full_expanded (iter);
 
 	treeView -> collapse_row (path);
 
@@ -259,7 +259,7 @@ OutlineTreeObserver::update_field (const Gtk::TreeModel::Path & path)
 
 	treeView -> disable_shift_key ();
 
-	treeView -> set_all_expanded (iter, all_expanded);
+	treeView -> is_full_expanded (iter, full_expanded);
 	treeView -> expand_row (path, false);
 
 	treeView -> enable_shift_key ();
@@ -277,7 +277,7 @@ OutlineTreeObserver::toggle_field (const Gtk::TreeModel::Path & path)
 
 	treeView -> disable_shift_key ();
 
-	treeView -> set_all_expanded (iter, true);
+	treeView -> is_full_expanded (iter, true);
 	treeView -> expand_row (path, false);
 
 	treeView -> enable_shift_key ();

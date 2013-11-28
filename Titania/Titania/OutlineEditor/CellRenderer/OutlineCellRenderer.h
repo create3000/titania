@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -128,10 +128,10 @@ private:
 	get_object () const;
 	
 	bool
-	get_expanded () const;
+	is_expanded () const;
 
 	bool
-	get_all_expanded () const;
+	is_full_expanded () const;
 
 	const Glib::RefPtr <Gdk::Pixbuf> &
 	get_icon () const;

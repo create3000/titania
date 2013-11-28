@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -71,10 +71,10 @@ constexpr double INPUT_WIDTH      = 13;   // Depends on image
 constexpr double OUTPUT_WIDTH     = 14;   // Depends on image
 constexpr double FIELD_WIDTH      = 10;   // Depends on image
 constexpr double FIELD_PAD        = 1;    // Depends on image
-constexpr double INPUT_PAD        = 9;    // Depends on image
-constexpr double OUTPUT_PAD       = 8;    // Depends on image
-constexpr double INPUT_OUTPUT_PAD = 10;   // Depends on image
-constexpr double CONNECTOR_WIDTH  = 4;    // Depends on image
+constexpr double INPUT_PAD        = 8;    // Depends on image (one pixel less)
+constexpr double OUTPUT_PAD       = 7;    // Depends on image (one pixel less)
+constexpr double INPUT_OUTPUT_PAD = 9;    // Depends on image (one pixel less)
+constexpr double CONNECTOR_WIDTH  = 6;    // Depends on image (two pixel more)
 
 constexpr double ROUTE_WIDTH       = 16;
 constexpr double ROUTE_CURVE_WIDTH = 16;
@@ -210,7 +210,7 @@ OutlineCellRenderer::get_object () const
 }
 
 bool
-OutlineCellRenderer::get_expanded () const
+OutlineCellRenderer::is_expanded () const
 {
 	auto userData = property_data () .get_value () -> get_user_data ();
 
@@ -218,11 +218,11 @@ OutlineCellRenderer::get_expanded () const
 }
 
 bool
-OutlineCellRenderer::get_all_expanded () const
+OutlineCellRenderer::is_full_expanded () const
 {
 	auto userData = property_data () .get_value () -> get_user_data ();
 
-	return userData -> all_expanded;
+	return userData -> full_expanded;
 }
 
 const Glib::RefPtr <Gdk::Pixbuf> &
@@ -458,7 +458,7 @@ OutlineCellRenderer::get_preferred_width_vfunc (Gtk::Widget & widget, int & mini
 	{
 		case OutlineIterType::X3DField:
 		{
-			if (get_all_expanded () and get_expanded ())
+			if (is_full_expanded () and is_expanded ())
 				break;
 		}
 		case OutlineIterType::X3DInputRoute:
@@ -512,7 +512,7 @@ OutlineCellRenderer::get_preferred_height_for_width_vfunc (Gtk::Widget & widget,
 	{
 		case OutlineIterType::X3DField:
 		{
-			if (get_all_expanded () and get_expanded ())
+			if (is_full_expanded () and is_expanded ())
 				break;
 		}
 		case OutlineIterType::X3DInputRoute:
@@ -560,7 +560,7 @@ OutlineCellRenderer::get_preferred_height_vfunc (Gtk::Widget & widget, int & min
 	{
 		case OutlineIterType::X3DField:
 		{
-			if (get_all_expanded () and get_expanded ())
+			if (is_full_expanded () and is_expanded ())
 				break;
 		}
 		case OutlineIterType::X3DInputRoute:
@@ -614,7 +614,7 @@ OutlineCellRenderer::get_preferred_width_for_height_vfunc (Gtk::Widget & widget,
 	{
 		case OutlineIterType::X3DField:
 		{
-			if (get_all_expanded () and get_expanded ())
+			if (is_full_expanded () and is_expanded ())
 				break;
 		}
 		case OutlineIterType::X3DInputRoute:
@@ -804,7 +804,7 @@ OutlineCellRenderer::pick (Gtk::Widget & widget,
 	{
 		case OutlineIterType::X3DField:
 		{
-			if (get_all_expanded () and get_expanded ())
+			if (is_full_expanded () and is_expanded ())
 			{
 				return OutlineCellContent::NONE;
 			}
@@ -1013,7 +1013,7 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 	{
 		case OutlineIterType::X3DField:
 		{
-			if (get_all_expanded () and get_expanded ())
+			if (is_full_expanded () and is_expanded ())
 				break;
 		}
 		case OutlineIterType::X3DInputRoute:
@@ -1047,7 +1047,7 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 	{
 		case OutlineIterType::X3DField:
 		{
-			if (get_all_expanded () and get_expanded ())
+			if (is_full_expanded () and is_expanded ())
 				break;
 
 			if (selected & (OUTLINE_OVER_INPUT | OUTLINE_SELECTED_INPUT))
@@ -1099,7 +1099,7 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 	{
 		case OutlineIterType::X3DField:
 		{
-			if (get_all_expanded () and get_expanded ())
+			if (is_full_expanded () and is_expanded ())
 				break;
 		}
 		case OutlineIterType::X3DInputRoute:

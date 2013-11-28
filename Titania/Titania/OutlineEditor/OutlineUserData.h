@@ -69,18 +69,18 @@ class OutlineUserData :
 public:
 
 	OutlineUserData () :
-		   open_path (),
-		       paths (),
-		    expanded (false),
-		all_expanded (false),
-		    selected (0)
+		    open_path (),
+		        paths (),
+		     expanded (false),
+		full_expanded (false),
+		     selected (0)
 	{ }
 
 	Gtk::TreeModel::Path            open_path; // Path of expanded node/clone
 	std::set <Gtk::TreeModel::Path> paths;     // All visible paths
 
 	bool expanded;                             // Expanded state
-	bool all_expanded;                         // Expanded mode
+	bool full_expanded;                        // Expanded mode
 	int  selected;                             // Selected state
 
 
