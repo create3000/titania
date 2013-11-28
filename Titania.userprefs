@@ -3,12 +3,14 @@
   <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/OutlineEditor/OutlineTreeViewEditor.cpp">
     <Files>
       <File FileName="Library/Tests/Handles/Routes.wrl" Line="69" Column="5" />
-      <File FileName="Titania/Titania/OutlineEditor/X3DOutlineTreeView.h" Line="147" Column="1" />
-      <File FileName="Titania/Titania/OutlineEditor/X3DOutlineTreeView.cpp" Line="380" Column="1" />
-      <File FileName="Titania/Titania/OutlineEditor/OutlineTreeViewEditor.h" Line="151" Column="1" />
-      <File FileName="Titania/Titania/OutlineEditor/OutlineTreeViewEditor.cpp" Line="598" Column="7" />
-      <File FileName="Titania/Titania/OutlineEditor/CellRenderer/OutlineCellRenderer.h" Line="97" Column="20" />
-      <File FileName="Titania/Titania/OutlineEditor/CellRenderer/OutlineCellRenderer.cpp" Line="66" Column="39" />
+      <File FileName="Titania/Titania/OutlineEditor/X3DOutlineTreeView.h" Line="139" Column="17" />
+      <File FileName="Titania/Titania/OutlineEditor/X3DOutlineTreeView.cpp" Line="57" Column="1" />
+      <File FileName="Titania/Titania/OutlineEditor/OutlineTreeViewEditor.h" Line="155" Column="1" />
+      <File FileName="Titania/Titania/OutlineEditor/OutlineTreeViewEditor.cpp" Line="857" Column="40" />
+      <File FileName="Titania/Titania/OutlineEditor/CellRenderer/OutlineCellRenderer.h" Line="102" Column="1" />
+      <File FileName="Titania/Titania/OutlineEditor/CellRenderer/OutlineCellRenderer.cpp" Line="1166" Column="1" />
+      <File FileName="Titania/Titania/OutlineEditor/OutlineRouteGraph.h" Line="150" Column="53" />
+      <File FileName="Titania/Titania/OutlineEditor/OutlineRouteGraph.cpp" Line="947" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">

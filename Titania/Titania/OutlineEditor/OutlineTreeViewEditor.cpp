@@ -411,12 +411,7 @@ bool
 OutlineTreeViewEditor::select_access_type (double x, double y)
 {
 	if (get_control_key ())
-	{
-		if (get_shift_key ())
-			return expand_matching_fields (x, y);
-
 		return remove_route (x, y);
-	}
 
 	if (add_route (x, y))
 		return true;
@@ -748,7 +743,7 @@ OutlineTreeViewEditor::remove_route (const Gtk::TreeModel::Path & path, const st
 }
 
 bool
-OutlineTreeViewEditor::expand_matching_fields (double x, double y)
+OutlineTreeViewEditor::select_route (double x, double y)
 {
 	Gtk::TreeViewColumn* column = nullptr;
 	Gtk::TreeModel::Path path   = get_path_at_position (x, y, column);
@@ -773,31 +768,61 @@ OutlineTreeViewEditor::expand_matching_fields (double x, double y)
 
 				switch (get_cellrenderer () -> pick (*this, cell_area, x, y))
 				{
-					case OutlineCellContent::INPUT:
+					case OutlineCellContent::INPUT_CONNECTOR:
 					{
+						// Expand matching field
+					
 						try
 						{
 							expand_to (route -> getSourceNode () -> getField (route -> getSourceField ()));
 						}
 						catch (const X3D::X3DError &)
 						{ }
+
+						// Clear routes
+					
+						OutlineRoutes routes = get_cellrenderer () -> get_routes ();
+						get_cellrenderer () -> clear_routes ();
+						get_route_graph () -> update (routes);
+						
+						// Select routes
+						
+						get_cellrenderer () -> add_routes (data -> get_inputs_above ());
+						get_cellrenderer () -> add_routes (data -> get_inputs_below ());
+						get_route_graph () -> update (get_cellrenderer () -> get_routes ());
+
 						return true;
 					}
-					case OutlineCellContent::OUTPUT:
+					case OutlineCellContent::OUTPUT_CONNECTOR:
 					{
+						// Expand matching field
+					
 						try
 						{
 							expand_to (route -> getDestinationNode () -> getField (route -> getDestinationField ()));
 						}
 						catch (const X3D::X3DError &)
 						{ }
+
+						// Clear routes
+					
+						OutlineRoutes routes = get_cellrenderer () -> get_routes ();
+						get_cellrenderer () -> clear_routes ();
+						get_route_graph () -> update (routes);
+						
+						// Select routes
+						
+						get_cellrenderer () -> add_routes (data -> get_outputs_above ());
+						get_cellrenderer () -> add_routes (data -> get_outputs_below ());
+						get_route_graph () -> update (get_cellrenderer () -> get_routes ());
+
 						return true;
 					}
 					default:
 						break;
 				}
-
-				return false;
+				
+				break;
 			}
 			case OutlineIterType::X3DField:
 			{
@@ -811,8 +836,10 @@ OutlineTreeViewEditor::expand_matching_fields (double x, double y)
 
 				switch (get_cellrenderer () -> pick (*this, cell_area, x, y))
 				{
-					case OutlineCellContent::INPUT:
+					case OutlineCellContent::INPUT_CONNECTOR:
 					{
+						// Expand matching field
+					
 						for (const auto & route : get_model () -> get_input_routes (field))
 						{
 							try
@@ -823,59 +850,6 @@ OutlineTreeViewEditor::expand_matching_fields (double x, double y)
 							{ }
 						}
 
-						return true;
-					}
-					case OutlineCellContent::OUTPUT:
-					{
-						for (const auto & route : get_model () -> get_output_routes (field))
-						{
-							try
-							{
-								expand_to (route -> getDestinationNode () -> getField (route -> getDestinationField ()));
-							}
-							catch (const X3D::X3DError &)
-							{ }
-						}
-
-						return true;
-					}
-					default:
-						break;
-				}
-			}
-			default:
-				break;
-		}
-	}
-
-	return false;
-}
-
-bool
-OutlineTreeViewEditor::select_route (double x, double y)
-{
-	Gtk::TreeViewColumn* column = nullptr;
-	Gtk::TreeModel::Path path   = get_path_at_position (x, y, column);
-
-	if (path .size ())
-	{
-		auto iter = get_model () -> get_iter (path);
-		auto data = get_model () -> get_data (iter);
-
-		switch (data -> get_type ())
-		{
-			case OutlineIterType::X3DField:
-			{
-				// Pick
-
-				Gdk::Rectangle cell_area;
-				get_cell_area (path, *column, cell_area);
-				get_cellrenderer () -> property_data () .set_value (data);
-
-				switch (get_cellrenderer () -> pick (*this, cell_area, x, y))
-				{
-					case OutlineCellContent::INPUT_CONNECTOR:
-					{
 						// Clear routes
 					
 						OutlineRoutes routes = get_cellrenderer () -> get_routes ();
@@ -892,6 +866,18 @@ OutlineTreeViewEditor::select_route (double x, double y)
 					}
 					case OutlineCellContent::OUTPUT_CONNECTOR:
 					{
+						// Expand matching field
+					
+						for (const auto & route : get_model () -> get_output_routes (field))
+						{
+							try
+							{
+								expand_to (route -> getDestinationNode () -> getField (route -> getDestinationField ()));
+							}
+							catch (const X3D::X3DError &)
+							{ }
+						}
+
 						// Clear routes
 					
 						OutlineRoutes routes = get_cellrenderer () -> get_routes ();

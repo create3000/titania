@@ -148,9 +148,6 @@ private:
 	remove_route (const Gtk::TreeModel::Path &, const std::vector <X3D::Route*> &);
 
 	bool
-	expand_matching_fields (double, double);
-
-	bool
 	select_route (double, double);
 
 	///  @name Static members
