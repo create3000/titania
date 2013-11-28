@@ -55,6 +55,7 @@
 #include "OutlineTreeModel.h"
 #include "OutlineTreeObserver.h"
 #include "OutlineSelection.h"
+#include "OutlineRouteGraph.h"
 
 #include <Titania/String.h>
 
@@ -417,7 +418,10 @@ OutlineTreeViewEditor::select_access_type (double x, double y)
 		return remove_route (x, y);
 	}
 
-	return add_route (x, y);
+	if (add_route (x, y))
+		return true;
+
+	return select_route (x, y);
 }
 
 bool
@@ -558,16 +562,6 @@ OutlineTreeViewEditor::add_route (double x, double y)
 						matchingAccessType = X3D::inputOnly;
 
 						return true;
-					}
-					case OutlineCellContent::INPUT_CONNECTOR:
-					{
-						__LOG__ << std::endl;
-						break;
-					}
-					case OutlineCellContent::OUTPUT_CONNECTOR:
-					{
-						__LOG__ << std::endl;
-						break;
 					}
 					default:
 					{
@@ -844,6 +838,73 @@ OutlineTreeViewEditor::expand_matching_fields (double x, double y)
 						}
 
 						return true;
+					}
+					default:
+						break;
+				}
+			}
+			default:
+				break;
+		}
+	}
+
+	return false;
+}
+
+bool
+OutlineTreeViewEditor::select_route (double x, double y)
+{
+	Gtk::TreeViewColumn* column = nullptr;
+	Gtk::TreeModel::Path path   = get_path_at_position (x, y, column);
+
+	if (path .size ())
+	{
+		auto iter = get_model () -> get_iter (path);
+		auto data = get_model () -> get_data (iter);
+
+		switch (data -> get_type ())
+		{
+			case OutlineIterType::X3DField:
+			{
+				// Pick
+
+				Gdk::Rectangle cell_area;
+				get_cell_area (path, *column, cell_area);
+				get_cellrenderer () -> property_data () .set_value (data);
+
+				switch (get_cellrenderer () -> pick (*this, cell_area, x, y))
+				{
+					case OutlineCellContent::INPUT_CONNECTOR:
+					{
+						// Clear routes
+					
+						OutlineRoutes routes = get_cellrenderer () -> get_routes ();
+						get_cellrenderer () -> clear_routes ();
+						get_route_graph () -> update (routes);
+						
+						// Select routes
+						
+						get_cellrenderer () -> add_routes (data -> get_inputs_above ());
+						get_cellrenderer () -> add_routes (data -> get_inputs_below ());
+						get_route_graph () -> update (get_cellrenderer () -> get_routes ());
+
+						return true;;
+					}
+					case OutlineCellContent::OUTPUT_CONNECTOR:
+					{
+						// Clear routes
+					
+						OutlineRoutes routes = get_cellrenderer () -> get_routes ();
+						get_cellrenderer () -> clear_routes ();
+						get_route_graph () -> update (routes);
+						
+						// Select routes
+						
+						get_cellrenderer () -> add_routes (data -> get_outputs_above ());
+						get_cellrenderer () -> add_routes (data -> get_outputs_below ());
+						get_route_graph () -> update (get_cellrenderer () -> get_routes ());
+
+						return true;;
 					}
 					default:
 						break;

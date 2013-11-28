@@ -92,6 +92,18 @@ public:
 	property_data () const
 	{ return data_property; }
 
+	void
+	add_routes (const OutlineRoutes & value)
+	{ routes .insert (value .begin (), value .end ()); }
+
+	const OutlineRoutes &
+	get_routes () const
+	{ return routes; }
+
+	void
+	clear_routes ()
+	{ routes .clear (); }
+
 	///  @name Operations
 	
 	OutlineCellContent
@@ -172,6 +184,9 @@ private:
 	void
 	render_routes (const Cairo::RefPtr <Cairo::Context> &, Gtk::Widget &, const Gdk::Rectangle &, const Gdk::Rectangle &, int, Gtk::CellRendererState);
 
+	bool
+	have_selected_routes (const OutlineRoutes &);
+
 	//	virtual
 	//	bool
 	//	activate_vfunc (GdkEvent*, Gtk::Widget &, const Glib::ustring &, const Gdk::Rectangle &, const Gdk::Rectangle &, Gtk::CellRendererState) final;
@@ -203,6 +218,8 @@ private:
 	FieldTypeImageIndex        fieldTypeImages;
 	AccessTypeImageIndex       accessTypeImages;
 	X3D::AccessType            accessType;
+	
+	OutlineRoutes routes;
 
 	std::unique_ptr <TextViewEditable> textview;
 

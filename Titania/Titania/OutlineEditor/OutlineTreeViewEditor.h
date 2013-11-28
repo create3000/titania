@@ -150,6 +150,9 @@ private:
 	bool
 	expand_matching_fields (double, double);
 
+	bool
+	select_route (double, double);
+
 	///  @name Static members
 
 	static const std::string dragDataType;

@@ -1,3 +1,14 @@
+2013-11-28  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* OutlineTreeData.h:
+	* OutlineRouteGraph.h:
+	* X3DOutlineTreeView.h:
+	* OutlineRouteGraph.cpp:
+	* OutlineTreeViewEditor.h:
+	* OutlineTreeViewEditor.cpp:
+	* OutlineCellRenderer.h:
+	* OutlineCellRenderer.cpp: 
+
 2013-11-27  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DOutlineTreeView.cpp:

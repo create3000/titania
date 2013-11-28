@@ -78,6 +78,9 @@ public:
 	void
 	collapse (const Gtk::TreeModel::iterator &);
 
+	void
+	update (const OutlineRoutes &);
+
 
 private:
 
@@ -142,6 +145,12 @@ private:
 
 	void
 	remove_route (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &, const Gtk::TreeModel::Path &, const Gtk::TreeModel::Path &);
+	
+	bool
+	update_connection_above (const Gtk::TreeModel::Path &, const Gtk::TreeModel::Path &, const Gtk::TreeModel::Path &);
+
+	bool
+	update_connection_below (const Gtk::TreeModel::Path &, const Gtk::TreeModel::Path &, const Gtk::TreeModel::Path &);
 
 	///  @name Members
 

@@ -69,7 +69,7 @@ enum class OutlineIterType
 
 };
 
-using OutlineRoute = std::set <std::pair <Gtk::TreeModel::Path, Gtk::TreeModel::Path>>;
+using OutlineRoutes = std::set <std::pair <Gtk::TreeModel::Path, Gtk::TreeModel::Path>>;
 
 class OutlineTreeData :
 	public Glib::Object
@@ -106,19 +106,19 @@ public:
 
 	///  @name Route handling
 
-	OutlineRoute &
+	OutlineRoutes &
 	get_inputs_below ()
 	{ return inputs_below; }
 
-	OutlineRoute &
+	OutlineRoutes &
 	get_inputs_above ()
 	{ return inputs_above; }
 
-	OutlineRoute &
+	OutlineRoutes &
 	get_outputs_below ()
 	{ return outputs_below; }
 
-	OutlineRoute &
+	OutlineRoutes &
 	get_outputs_above ()
 	{ return outputs_above; }
 
@@ -126,7 +126,7 @@ public:
 	get_self_connection ()
 	{ return self_connection; }
 
-	OutlineRoute &
+	OutlineRoutes &
 	get_connections ()
 	{ return connections; }
 
@@ -153,12 +153,12 @@ private:
 	const OutlineIterType      type;
 	const Gtk::TreeModel::Path path;
 
-	OutlineRoute inputs_below;
-	OutlineRoute inputs_above;
-	OutlineRoute outputs_below;
-	OutlineRoute outputs_above;
-	bool         self_connection;
-	OutlineRoute connections;
+	OutlineRoutes inputs_below;
+	OutlineRoutes inputs_above;
+	OutlineRoutes outputs_below;
+	OutlineRoutes outputs_above;
+	bool          self_connection;
+	OutlineRoutes connections;
 
 };
 

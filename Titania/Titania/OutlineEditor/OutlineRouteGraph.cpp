@@ -893,5 +893,66 @@ OutlineRouteGraph::remove_route (const Gtk::TreeModel::iterator & iter,
 	treeView -> get_model () -> row_changed (path, iter);
 }
 
+void
+OutlineRouteGraph::update (const OutlineRoutes & routes)
+{
+	for (const auto & route : routes)
+	{
+		auto sourceIter      = treeView -> get_model () -> get_iter (route .first);
+		auto destinationIter = treeView -> get_model () -> get_iter (route .second);
+
+		treeView -> get_model () -> row_changed (route .first,  sourceIter);
+		treeView -> get_model () -> row_changed (route .second, destinationIter);
+
+		if (route .first > route .second)
+			treeView -> get_model () -> foreach_path (sigc::bind (sigc::mem_fun (*this, &OutlineRouteGraph::update_connection_above), route .first, route .second));
+		else
+			treeView -> get_model () -> foreach_path (sigc::bind (sigc::mem_fun (*this, &OutlineRouteGraph::update_connection_below), route .first, route .second));
+	}
+}
+
+bool
+OutlineRouteGraph::update_connection_above (const Gtk::TreeModel::Path & path,
+                                            const Gtk::TreeModel::Path & sourcePath,
+                                            const Gtk::TreeModel::Path & destinationPath)
+{
+	// destinationPath is above sourcePath
+
+	if (path > destinationPath)
+	{
+		if (path < sourcePath)
+		{
+			auto iter = treeView -> get_model () -> get_iter (path);
+			treeView -> get_model () -> row_changed (path, iter);
+			return false;
+		}
+
+		return true; // exit
+	}
+
+	return false;
+}
+
+bool
+OutlineRouteGraph::update_connection_below (const Gtk::TreeModel::Path & path,
+                                            const Gtk::TreeModel::Path & sourcePath,
+                                            const Gtk::TreeModel::Path & destinationPath)
+{
+	// destinationPath is below sourcePath
+
+	if (path < destinationPath)
+	{
+		if (path > sourcePath)
+		{
+			auto iter = treeView -> get_model () -> get_iter (path);
+			treeView -> get_model () -> row_changed (path, iter);
+		}
+
+		return false;
+	}
+
+	return true; // exit
+}
+
 } // puck
 } // titania

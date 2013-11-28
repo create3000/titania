@@ -135,6 +135,10 @@ protected:
 	get_tree_observer () const
 	{ return treeObserver; }
 
+	const std::unique_ptr <OutlineRouteGraph> &
+	get_route_graph () const
+	{ return routeGraph; }
+
 	OutlineCellRenderer*
 	get_cellrenderer () const
 	{ return cellrenderer; }

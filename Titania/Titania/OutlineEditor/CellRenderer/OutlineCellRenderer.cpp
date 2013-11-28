@@ -95,6 +95,7 @@ OutlineCellRenderer::OutlineCellRenderer (X3D::X3DBrowser* const browser, X3DOut
 	              fieldTypeImages (),
 	             accessTypeImages (),
 	                   accessType (),
+	                       routes (),
 	                     textview ()
 {
 	// Images
@@ -1159,8 +1160,9 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 	auto foregroundColor         = widget .get_style_context () -> get_color (Gtk::STATE_FLAG_NORMAL);
 	auto selectedForegroundColor = widget .get_style_context () -> get_color (Gtk::STATE_FLAG_SELECTED);
 
-	int  selected = data -> get_user_data () -> selected;
-	auto color    = selected & OUTLINE_SELECTED ? selectedForegroundColor : foregroundColor;
+	int  selected      = data -> get_user_data () -> selected;
+	auto color         = selected & OUTLINE_SELECTED ? selectedForegroundColor : foregroundColor;
+	auto selectedColor = selected & OUTLINE_SELECTED ? selectedForegroundColor : property_cell_background_rgba () .get_value ();
 
 	//	context -> set_source_rgb (0.9, 0.9, 0.9);
 	//	context -> rectangle (x, y , width, height);
@@ -1168,36 +1170,50 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 
 	context -> reset_clip ();
 	context -> set_operator (Cairo::OPERATOR_OVER);
-	context -> set_source_rgba (color .get_red (), color .get_green (), color .get_blue (), color .get_alpha ());
 	context -> set_line_width (1);
 
 	// Input
 
 	if (not data -> get_inputs_above () .empty () or not data -> get_inputs_below () .empty ())
 	{
+		auto selected_above = have_selected_routes (data -> get_inputs_above ());
+		auto selected_below = have_selected_routes (data -> get_inputs_below ());
+
+		auto c = selected_above or selected_below ? selectedColor : foregroundColor;
+		context -> set_source_rgba (c .get_red (), c .get_green (), c .get_blue (), c .get_alpha ());
+
 		context -> move_to (input_x, input_y);
 		context -> line_to (input_x + input_w, input_y);
+		context -> stroke ();
 
 		// Arc up
 
 		if (not data -> get_inputs_above () .empty ())
 		{
+			auto c = selected_above ? selectedColor : foregroundColor;
+			context -> set_source_rgba (c .get_red (), c .get_green (), c .get_blue (), c .get_alpha ());
+
 			context -> begin_new_sub_path ();
 			context -> arc (input_x + input_w, input_y - radius, radius, 0, M_PI1_2);
 
 			context -> move_to (connector_x, y);
 			context -> line_to (connector_x, input_y - radius);
+			context -> stroke ();
 		}
 
 		// Arc down
 
 		if (not data -> get_inputs_below () .empty ())
 		{
+			auto c = selected_below ? selectedColor : foregroundColor;
+			context -> set_source_rgba (c .get_red (), c .get_green (), c .get_blue (), c .get_alpha ());
+
 			context -> begin_new_sub_path ();
 			context -> arc (input_x + input_w, input_y + radius, radius, M_PI3_2, M_PI2);
 
 			context -> move_to (connector_x, input_y + radius);
 			context -> line_to (connector_x, y + height);
+			context -> stroke ();
 		}
 	}
 
@@ -1205,29 +1221,44 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 
 	if (not data -> get_outputs_above () .empty () or not data -> get_outputs_below () .empty ())
 	{
+		auto selected_above = have_selected_routes (data -> get_outputs_above ());
+		auto selected_below = have_selected_routes (data -> get_outputs_below ());
+
+		auto c = selected_above or selected_below ? selectedColor : foregroundColor;
+		context -> set_source_rgba (c .get_red (), c .get_green (), c .get_blue (), c .get_alpha ());
+
 		context -> move_to (output_x, output_y);
 		context -> line_to (output_x + output_w, output_y);
+		context -> stroke ();
 
 		// Arc up
 
 		if (not data -> get_outputs_above () .empty ())
 		{
+			auto c = selected_above ? selectedColor : foregroundColor;
+			context -> set_source_rgba (c .get_red (), c .get_green (), c .get_blue (), c .get_alpha ());
+
 			context -> begin_new_sub_path ();
 			context -> arc (output_x + output_w, output_y - radius, radius, 0, M_PI1_2);
 
 			context -> move_to (connector_x, y);
 			context -> line_to (connector_x, output_y - radius);
+			context -> stroke ();
 		}
 
 		// Arc down
 
 		if (not data -> get_outputs_below () .empty ())
 		{
+			auto c = selected_below ? selectedColor : foregroundColor;
+			context -> set_source_rgba (c .get_red (), c .get_green (), c .get_blue (), c .get_alpha ());
+
 			context -> begin_new_sub_path ();
 			context -> arc (output_x + output_w, output_y + radius, radius, M_PI3_2, M_PI2);
 
 			context -> move_to (connector_x, output_y + radius);
 			context -> line_to (connector_x, y + height);
+			context -> stroke ();
 		}
 	}
 
@@ -1238,22 +1269,39 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 		double cy     = (input_y + output_y) / 2;
 		double radius = (input_y + output_y) / 2 - input_y;
 
+		context -> set_source_rgba (color .get_red (), color .get_green (), color .get_blue (), color .get_alpha ());
+
 		context -> move_to (input_x, input_y);
 		context -> line_to (output_x, input_y);
 
 		context -> begin_new_sub_path ();
 		context -> arc (output_x, cy, radius, M_PI3_2, M_PI1_2);
+		context -> stroke ();
 	}
 
 	// Connections
 
 	if (not data -> get_connections () .empty ())
 	{
+		auto c = have_selected_routes (data -> get_connections ()) ? selectedColor : foregroundColor;
+		context -> set_source_rgba (c .get_red (), c .get_green (), c .get_blue (), c .get_alpha ());
+
 		context -> move_to (connector_x, y);
 		context -> line_to (connector_x, y + height);
+		context -> stroke ();
+	}
+}
+
+bool
+OutlineCellRenderer::have_selected_routes (const OutlineRoutes & set)
+{
+	for (const auto & route : routes)
+	{
+		if (set .find (route) not_eq set .end ())
+			return true;
 	}
 
-	context -> stroke ();
+	return false;
 }
 
 } // puck
