@@ -451,7 +451,10 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 					auto mfnode = static_cast <X3D::MFNode*> (field);
 
 					if (mfnode -> empty () and not get_all_expanded (iter))
+					{
 						expand_routes (iter, field);
+						set_all_expanded (iter, true);
+					}
 
 					for (auto & value : *mfnode)
 						get_model () -> append (iter, OutlineIterType::X3DBaseNode, &value);

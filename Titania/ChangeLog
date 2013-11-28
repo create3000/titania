@@ -1,5 +1,11 @@
 2013-11-28  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* OutlineTreeObserver.h:
+	* X3DOutlineTreeView.cpp:
+	* OutlineTreeObserver.cpp: 
+
+2013-11-28  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* OutlineTreeViewEditor.h:
 	* OutlineTreeViewEditor.cpp: 
 

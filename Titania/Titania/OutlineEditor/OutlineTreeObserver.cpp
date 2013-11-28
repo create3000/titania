@@ -132,9 +132,10 @@ OutlineTreeObserver::watch_child (const Gtk::TreeModel::iterator & iter, const G
 			{
 				case X3D::X3DConstants::MFNode:
 				{
-					X3D::MFNode* mfnode = static_cast <X3D::MFNode*> (field);
+					field -> getInputRoutes ()  .addInterest (this, &OutlineTreeObserver::on_row_has_child_toggled, path, false);
+					field -> getOutputRoutes () .addInterest (this, &OutlineTreeObserver::on_row_has_child_toggled, path, false);
 
-					mfnode -> addInterest (this, &OutlineTreeObserver::on_row_has_child_toggled, path);
+					field -> addInterest (this, &OutlineTreeObserver::on_row_has_child_toggled, path, true);
 
 					break;
 				}
@@ -200,7 +201,12 @@ OutlineTreeObserver::unwatch_child (const Gtk::TreeModel::iterator & iter, bool 
 					field -> removeInterest (this, &OutlineTreeObserver::update_field);
 
 					if (not root)
+					{
+						field -> getInputRoutes ()  .removeInterest (this, &OutlineTreeObserver::on_row_has_child_toggled);
+						field -> getOutputRoutes () .removeInterest (this, &OutlineTreeObserver::on_row_has_child_toggled);
+
 						field -> removeInterest (this, &OutlineTreeObserver::on_row_has_child_toggled);
+					}
 
 					break;
 				}
@@ -223,11 +229,12 @@ OutlineTreeObserver::unwatch_child (const Gtk::TreeModel::iterator & iter, bool 
 }
 
 void
-OutlineTreeObserver::on_row_has_child_toggled (const Gtk::TreeModel::Path & path)
+OutlineTreeObserver::on_row_has_child_toggled (const Gtk::TreeModel::Path & path, bool expand)
 {
 	treeView -> get_model () -> row_has_child_toggled (path, treeView -> get_model () -> get_iter (path));
 
-	treeView -> expand_row (path, false);
+	if (expand)
+		treeView -> expand_row (path, false);
 }
 
 void

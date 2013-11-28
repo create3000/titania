@@ -94,7 +94,7 @@ private:
 	unwatch_child (const Gtk::TreeModel::iterator &, bool);
 
 	void
-	on_row_has_child_toggled (const Gtk::TreeModel::Path &);
+	on_row_has_child_toggled (const Gtk::TreeModel::Path &, bool);
 
 	void
 	on_row_changed (const Gtk::TreeModel::Path &);
