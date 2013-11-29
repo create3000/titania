@@ -128,6 +128,19 @@ private:
 	void
 	on_emissiveColor ();
 	
+	virtual
+	void
+	on_ambient () final;
+
+	virtual
+	void
+	on_shininess () final;
+
+	virtual
+	void
+	on_transparency () final;
+
+	
 	///  @name Back color handler
 
 	virtual
@@ -138,8 +151,9 @@ private:
 	bool
 	on_backDiffuse_released (GdkEventButton*) final;
 
+	virtual
 	void
-	on_backDiffuseColor ();
+	on_backDiffuseColor () final;
 
 	virtual
 	bool
@@ -149,8 +163,9 @@ private:
 	bool
 	on_backSpecular_released (GdkEventButton*) final;
 
+	virtual
 	void
-	on_backSpecularColor ();
+	on_backSpecularColor () final;
 
 	virtual
 	bool
@@ -160,8 +175,21 @@ private:
 	bool
 	on_backEmissive_released (GdkEventButton*) final;
 
+	virtual
 	void
-	on_backEmissiveColor ();
+	on_backEmissiveColor () final;
+
+	virtual
+	void
+	on_backAmbient () final;
+
+	virtual
+	void
+	on_backShininess () final;
+
+	virtual
+	void
+	on_backTransparency () final;
 
 	///  @name Operations for all colors
 
@@ -176,6 +204,9 @@ private:
 
 	void
 	on_color (Gtk::ColorSelectionDialog &, X3D::SFColor &, X3D::SFColor &, Gtk::DrawingArea &);
+
+	void
+	updateAppearance ();
 
 	///  @name Helper functions
 

@@ -232,6 +232,23 @@ MaterialEditor::on_frontAndBackButton_toggled ()
 	getBackDiffuseArea ()  .queue_draw ();
 	getBackSpecularArea () .queue_draw ();
 	getBackEmissiveArea () .queue_draw ();
+	
+	if (getFrontAndBackButton () .get_active ())
+	{
+		getAmbientScale ()      .set_value (twoSidedMaterial -> ambientIntensity ());
+		getShininessScale ()    .set_value (twoSidedMaterial -> shininess ());
+		getTransparencyScale () .set_value (twoSidedMaterial -> transparency ());
+
+		getBackAmbientScale ()      .set_value (twoSidedMaterial -> backAmbientIntensity ());
+		getBackShininessScale ()    .set_value (twoSidedMaterial -> backShininess ());
+		getBackTransparencyScale () .set_value (twoSidedMaterial -> backTransparency ());
+	}
+	else
+	{
+		getAmbientScale ()      .set_value (material -> ambientIntensity ());
+		getShininessScale ()    .set_value (material -> shininess ());
+		getTransparencyScale () .set_value (material -> transparency ());
+	}
 
 	// Back expander
 
@@ -242,7 +259,7 @@ MaterialEditor::on_frontAndBackButton_toggled ()
 	getBrowser () -> update ();
 }
 
-// Diffuse color
+// Front diffuse color
 
 bool
 MaterialEditor::on_diffuse_draw (const Cairo::RefPtr <Cairo::Context> & context)
@@ -262,7 +279,7 @@ MaterialEditor::on_diffuseColor ()
 	on_color (getDiffuseDialog (), twoSidedMaterial -> diffuseColor (), material -> diffuseColor (), getDiffuseArea ());
 }
 
-// Specular color
+// Front specular color
 
 bool
 MaterialEditor::on_specular_draw (const Cairo::RefPtr <Cairo::Context> & context)
@@ -282,7 +299,7 @@ MaterialEditor::on_specularColor ()
 	on_color (getSpecularDialog (), twoSidedMaterial -> specularColor (), material -> specularColor (), getSpecularArea ());
 }
 
-// Emissive color
+// Front emissive color
 
 bool
 MaterialEditor::on_emissive_draw (const Cairo::RefPtr <Cairo::Context> & context)
@@ -301,8 +318,46 @@ MaterialEditor::on_emissiveColor ()
 {
 	on_color (getEmissiveDialog (), twoSidedMaterial -> emissiveColor (), material -> emissiveColor (), getEmissiveArea ());
 }
+	
+// Front scale widgets
 
-// Diffuse color
+void
+MaterialEditor::on_ambient ()
+{
+	if (getFrontAndBackButton () .get_active ())
+		twoSidedMaterial -> ambientIntensity () = getAmbientScale () .get_value ();
+
+	else
+		material -> ambientIntensity () = getAmbientScale () .get_value ();
+	
+	updateAppearance ();
+}
+
+void
+MaterialEditor::on_shininess ()
+{
+	if (getFrontAndBackButton () .get_active ())
+		twoSidedMaterial -> shininess () = getShininessScale () .get_value ();
+
+	else
+		material -> shininess () = getShininessScale () .get_value ();
+	
+	updateAppearance ();
+}
+
+void
+MaterialEditor::on_transparency ()
+{
+	if (getFrontAndBackButton () .get_active ())
+		twoSidedMaterial -> transparency () = getTransparencyScale () .get_value ();
+
+	else
+		material -> transparency () = getTransparencyScale () .get_value ();
+	
+	updateAppearance ();
+}
+
+// Back diffuse color
 
 bool
 MaterialEditor::on_backDiffuse_draw (const Cairo::RefPtr <Cairo::Context> & context)
@@ -322,7 +377,7 @@ MaterialEditor::on_backDiffuseColor ()
 	on_color (getBackDiffuseDialog (), twoSidedMaterial -> backDiffuseColor (), twoSidedMaterial -> backDiffuseColor (), getBackDiffuseArea ());
 }
 
-// Specular color
+// Back specular color
 
 bool
 MaterialEditor::on_backSpecular_draw (const Cairo::RefPtr <Cairo::Context> & context)
@@ -342,7 +397,7 @@ MaterialEditor::on_backSpecularColor ()
 	on_color (getBackSpecularDialog (), twoSidedMaterial -> backSpecularColor (), twoSidedMaterial -> backSpecularColor (), getBackSpecularArea ());
 }
 
-// Emissive color
+// Back emissive color
 
 bool
 MaterialEditor::on_backEmissive_draw (const Cairo::RefPtr <Cairo::Context> & context)
@@ -360,6 +415,32 @@ void
 MaterialEditor::on_backEmissiveColor ()
 {
 	on_color (getBackEmissiveDialog (), twoSidedMaterial -> backEmissiveColor (), twoSidedMaterial -> backEmissiveColor (), getBackEmissiveArea ());
+}
+
+// Back scale widgets
+
+void
+MaterialEditor::on_backAmbient ()
+{
+	twoSidedMaterial -> backAmbientIntensity () = getBackAmbientScale () .get_value ();
+	
+	updateAppearance ();
+}
+
+void
+MaterialEditor::on_backShininess ()
+{
+	twoSidedMaterial -> backShininess () = getBackShininessScale () .get_value ();
+	
+	updateAppearance ();
+}
+
+void
+MaterialEditor::on_backTransparency ()
+{
+	twoSidedMaterial -> backTransparency () = getBackTransparencyScale () .get_value ();
+	
+	updateAppearance ();
 }
 
 // Operations for all colors
@@ -420,16 +501,30 @@ MaterialEditor::on_color (Gtk::ColorSelectionDialog & dialog, X3D::SFColor & two
 	// Update material
 
 	if (getFrontAndBackButton () .get_active ())
-	{
 		twoSidedColor = color3;
 
+	else
+		color = color3;
+
+	// Update materials
+	
+	updateAppearance ();
+
+	drawingArea .queue_draw ();
+}
+
+void
+MaterialEditor::updateAppearance ()
+{
+	// Update material
+
+	if (getFrontAndBackButton () .get_active ())
+	{
 		for (const auto & appearance : appearances)
 			appearance -> material () = twoSidedMaterial;
 	}
 	else
 	{
-		color = color3;
-
 		for (const auto & appearance : appearances)
 			appearance -> material () = material;
 	}
@@ -437,8 +532,6 @@ MaterialEditor::on_color (Gtk::ColorSelectionDialog & dialog, X3D::SFColor & two
 	// Update materials
 
 	getBrowser () -> update ();
-
-	drawingArea .queue_draw ();
 	
 	browserSurface -> addEvent ();
 }

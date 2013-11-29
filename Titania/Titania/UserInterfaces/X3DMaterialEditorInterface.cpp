@@ -61,6 +61,12 @@ X3DMaterialEditorInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
+	m_ambientAdjustment          = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AmbientAdjustment"));
+	m_backAmbientAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BackAmbientAdjustment"));
+	m_backShininessAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BackShininessAdjustment"));
+	m_backTransparencyAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BackTransparencyAdjustment"));
+	m_shininessAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ShininessAdjustment"));
+	m_transparencyAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TransparencyAdjustment"));
 
 	// Get widgets.
 	m_builder -> get_widget ("BackDiffuseDialog", m_backDiffuseDialog);
@@ -95,6 +101,12 @@ X3DMaterialEditorInterface::create (const std::string & filename)
 	m_emissiveEventbox -> set_name ("EmissiveEventbox");
 	m_builder -> get_widget ("EmissiveArea", m_emissiveArea);
 	m_emissiveArea -> set_name ("EmissiveArea");
+	m_builder -> get_widget ("AmbientScale", m_ambientScale);
+	m_ambientScale -> set_name ("AmbientScale");
+	m_builder -> get_widget ("ShininessScale", m_shininessScale);
+	m_shininessScale -> set_name ("ShininessScale");
+	m_builder -> get_widget ("TransparencyScale", m_transparencyScale);
+	m_transparencyScale -> set_name ("TransparencyScale");
 	m_builder -> get_widget ("BackExpander", m_backExpander);
 	m_backExpander -> set_name ("BackExpander");
 	m_builder -> get_widget ("BackDiffuseEventbox", m_backDiffuseEventbox);
@@ -109,6 +121,12 @@ X3DMaterialEditorInterface::create (const std::string & filename)
 	m_backEmissiveEventbox -> set_name ("BackEmissiveEventbox");
 	m_builder -> get_widget ("BackEmissiveArea", m_backEmissiveArea);
 	m_backEmissiveArea -> set_name ("BackEmissiveArea");
+	m_builder -> get_widget ("BackAmbientScale", m_backAmbientScale);
+	m_backAmbientScale -> set_name ("BackAmbientScale");
+	m_builder -> get_widget ("BackShininessScale", m_backShininessScale);
+	m_backShininessScale -> set_name ("BackShininessScale");
+	m_builder -> get_widget ("BackTransparencyScale", m_backTransparencyScale);
+	m_backTransparencyScale -> set_name ("BackTransparencyScale");
 
 	// Connect object Gtk::ToggleButton with id 'FrontAndBackButton'.
 	m_frontAndBackButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_frontAndBackButton_toggled));
@@ -131,6 +149,11 @@ X3DMaterialEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::DrawingArea with id 'EmissiveArea'.
 	m_emissiveArea -> signal_draw () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_emissive_draw));
 
+	// Connect object Gtk::Scale with id 'AmbientScale'.
+	m_ambientScale -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_ambient));
+	m_shininessScale -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_shininess));
+	m_transparencyScale -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_transparency));
+
 	// Connect object Gtk::EventBox with id 'BackDiffuseEventbox'.
 	m_backDiffuseEventbox -> signal_button_release_event () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backDiffuse_released));
 
@@ -148,6 +171,11 @@ X3DMaterialEditorInterface::create (const std::string & filename)
 
 	// Connect object Gtk::DrawingArea with id 'BackEmissiveArea'.
 	m_backEmissiveArea -> signal_draw () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backEmissive_draw));
+
+	// Connect object Gtk::Scale with id 'BackAmbientScale'.
+	m_backAmbientScale -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backAmbient));
+	m_backShininessScale -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backShininess));
+	m_backTransparencyScale -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backTransparency));
 
 	// Call construct handler of base class.
 	construct ();

@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <!-- interface-requires gtk+ 3.0 -->
+  <object class="GtkAdjustment" id="AmbientAdjustment">
+    <property name="upper">1</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.01</property>
+  </object>
+  <object class="GtkAdjustment" id="BackAmbientAdjustment">
+    <property name="upper">1</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.01</property>
+  </object>
   <object class="GtkColorSelectionDialog" id="BackDiffuseDialog">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
@@ -19,6 +29,11 @@
     <property name="skip_pager_hint">True</property>
     <property name="transient_for">Window</property>
   </object>
+  <object class="GtkAdjustment" id="BackShininessAdjustment">
+    <property name="upper">1</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.01</property>
+  </object>
   <object class="GtkColorSelectionDialog" id="BackSpecularDialog">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
@@ -27,6 +42,11 @@
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>
     <property name="transient_for">Window</property>
+  </object>
+  <object class="GtkAdjustment" id="BackTransparencyAdjustment">
+    <property name="upper">1</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.01</property>
   </object>
   <object class="GtkColorSelectionDialog" id="DiffuseDialog">
     <property name="can_focus">False</property>
@@ -46,6 +66,11 @@
     <property name="skip_pager_hint">True</property>
     <property name="transient_for">Window</property>
   </object>
+  <object class="GtkAdjustment" id="ShininessAdjustment">
+    <property name="upper">1</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.01</property>
+  </object>
   <object class="GtkColorSelectionDialog" id="SpecularDialog">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
@@ -54,6 +79,11 @@
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>
     <property name="transient_for">Window</property>
+  </object>
+  <object class="GtkAdjustment" id="TransparencyAdjustment">
+    <property name="upper">1</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.01</property>
   </object>
   <object class="GtkWindow" id="Window">
     <property name="can_focus">False</property>
@@ -237,15 +267,6 @@
                           </packing>
                         </child>
                         <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
                           <object class="GtkEventBox" id="DiffuseEventbox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
@@ -304,6 +325,59 @@
                           <packing>
                             <property name="left_attach">1</property>
                             <property name="top_attach">2</property>
+                            <property name="width">1</property>
+                            <property name="height">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkScale" id="AmbientScale">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="adjustment">AmbientAdjustment</property>
+                            <property name="upper_stepper_sensitivity">off</property>
+                            <property name="digits">2</property>
+                            <property name="value_pos">right</property>
+                            <signal name="value-changed" handler="on_ambient" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">4</property>
+                            <property name="width">1</property>
+                            <property name="height">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkScale" id="ShininessScale">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="adjustment">ShininessAdjustment</property>
+                            <property name="upper_stepper_sensitivity">off</property>
+                            <property name="round_digits">2</property>
+                            <property name="digits">2</property>
+                            <property name="value_pos">right</property>
+                            <signal name="value-changed" handler="on_shininess" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">5</property>
+                            <property name="width">1</property>
+                            <property name="height">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkScale" id="TransparencyScale">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="adjustment">TransparencyAdjustment</property>
+                            <property name="upper_stepper_sensitivity">off</property>
+                            <property name="round_digits">2</property>
+                            <property name="digits">2</property>
+                            <property name="value_pos">right</property>
+                            <signal name="value-changed" handler="on_transparency" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">6</property>
                             <property name="width">1</property>
                             <property name="height">1</property>
                           </packing>
@@ -434,15 +508,6 @@
                           </packing>
                         </child>
                         <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
                           <object class="GtkEventBox" id="BackDiffuseEventbox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
@@ -505,6 +570,60 @@
                             <property name="height">1</property>
                           </packing>
                         </child>
+                        <child>
+                          <object class="GtkScale" id="BackAmbientScale">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="adjustment">BackAmbientAdjustment</property>
+                            <property name="upper_stepper_sensitivity">off</property>
+                            <property name="round_digits">2</property>
+                            <property name="digits">2</property>
+                            <property name="value_pos">right</property>
+                            <signal name="value-changed" handler="on_backAmbient" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">4</property>
+                            <property name="width">1</property>
+                            <property name="height">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkScale" id="BackShininessScale">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="adjustment">BackShininessAdjustment</property>
+                            <property name="upper_stepper_sensitivity">off</property>
+                            <property name="round_digits">2</property>
+                            <property name="digits">2</property>
+                            <property name="value_pos">right</property>
+                            <signal name="value-changed" handler="on_backShininess" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">5</property>
+                            <property name="width">1</property>
+                            <property name="height">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkScale" id="BackTransparencyScale">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="adjustment">BackTransparencyAdjustment</property>
+                            <property name="upper_stepper_sensitivity">off</property>
+                            <property name="round_digits">2</property>
+                            <property name="digits">2</property>
+                            <property name="value_pos">right</property>
+                            <signal name="value-changed" handler="on_backTransparency" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">6</property>
+                            <property name="width">1</property>
+                            <property name="height">1</property>
+                          </packing>
+                        </child>
                       </object>
                     </child>
                     <child type="label">
@@ -537,35 +656,5 @@
         </child>
       </object>
     </child>
-  </object>
-  <object class="GtkAdjustment" id="adjustment1">
-    <property name="upper">1</property>
-    <property name="step_increment">0.01</property>
-    <property name="page_increment">0.01</property>
-  </object>
-  <object class="GtkAdjustment" id="adjustment2">
-    <property name="upper">1</property>
-    <property name="step_increment">0.01</property>
-    <property name="page_increment">0.01</property>
-  </object>
-  <object class="GtkAdjustment" id="adjustment3">
-    <property name="upper">1</property>
-    <property name="step_increment">0.01</property>
-    <property name="page_increment">0.01</property>
-  </object>
-  <object class="GtkAdjustment" id="adjustment4">
-    <property name="upper">1</property>
-    <property name="step_increment">0.01</property>
-    <property name="page_increment">0.01</property>
-  </object>
-  <object class="GtkAdjustment" id="adjustment5">
-    <property name="upper">1</property>
-    <property name="step_increment">0.01</property>
-    <property name="page_increment">0.01</property>
-  </object>
-  <object class="GtkAdjustment" id="adjustment6">
-    <property name="upper">1</property>
-    <property name="step_increment">0.01</property>
-    <property name="page_increment">0.01</property>
   </object>
 </interface>

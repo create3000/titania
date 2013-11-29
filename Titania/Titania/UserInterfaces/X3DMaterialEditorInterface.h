@@ -91,6 +91,30 @@ public:
 		return widget;
 	}
 
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getAmbientAdjustment () const
+	{ return m_ambientAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getBackAmbientAdjustment () const
+	{ return m_backAmbientAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getBackShininessAdjustment () const
+	{ return m_backShininessAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getBackTransparencyAdjustment () const
+	{ return m_backTransparencyAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getShininessAdjustment () const
+	{ return m_shininessAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTransparencyAdjustment () const
+	{ return m_transparencyAdjustment; }
+
 	Gtk::ColorSelectionDialog &
 	getBackDiffuseDialog () const
 	{ return *m_backDiffuseDialog; }
@@ -155,6 +179,18 @@ public:
 	getEmissiveArea () const
 	{ return *m_emissiveArea; }
 
+	Gtk::Scale &
+	getAmbientScale () const
+	{ return *m_ambientScale; }
+
+	Gtk::Scale &
+	getShininessScale () const
+	{ return *m_shininessScale; }
+
+	Gtk::Scale &
+	getTransparencyScale () const
+	{ return *m_transparencyScale; }
+
 	Gtk::Expander &
 	getBackExpander () const
 	{ return *m_backExpander; }
@@ -182,6 +218,18 @@ public:
 	Gtk::DrawingArea &
 	getBackEmissiveArea () const
 	{ return *m_backEmissiveArea; }
+
+	Gtk::Scale &
+	getBackAmbientScale () const
+	{ return *m_backAmbientScale; }
+
+	Gtk::Scale &
+	getBackShininessScale () const
+	{ return *m_backShininessScale; }
+
+	Gtk::Scale &
+	getBackTransparencyScale () const
+	{ return *m_backTransparencyScale; }
 
 	virtual
 	void
@@ -212,6 +260,18 @@ public:
 	on_emissive_draw (const::Cairo::RefPtr < ::Cairo::Context> & cr) = 0;
 
 	virtual
+	void
+	on_ambient () = 0;
+
+	virtual
+	void
+	on_shininess () = 0;
+
+	virtual
+	void
+	on_transparency () = 0;
+
+	virtual
 	bool
 	on_backDiffuse_released (GdkEventButton* event) = 0;
 
@@ -235,6 +295,18 @@ public:
 	bool
 	on_backEmissive_draw (const::Cairo::RefPtr < ::Cairo::Context> & cr) = 0;
 
+	virtual
+	void
+	on_backAmbient () = 0;
+
+	virtual
+	void
+	on_backShininess () = 0;
+
+	virtual
+	void
+	on_backTransparency () = 0;
+
 	~X3DMaterialEditorInterface ();
 
 
@@ -245,31 +317,43 @@ private:
 
 	static const std::string m_widgetName;
 
-	std::string                 filename;
-	Glib::RefPtr <Gtk::Builder> m_builder;
-	Gtk::ColorSelectionDialog*  m_backDiffuseDialog;
-	Gtk::ColorSelectionDialog*  m_backEmissiveDialog;
-	Gtk::ColorSelectionDialog*  m_backSpecularDialog;
-	Gtk::ColorSelectionDialog*  m_diffuseDialog;
-	Gtk::ColorSelectionDialog*  m_emissiveDialog;
-	Gtk::ColorSelectionDialog*  m_specularDialog;
-	Gtk::Window*                m_window;
-	Gtk::Box*                   m_widget;
-	Gtk::Box*                   m_previewBox;
-	Gtk::ToggleButton*          m_frontAndBackButton;
-	Gtk::EventBox*              m_diffuseEventbox;
-	Gtk::DrawingArea*           m_diffuseArea;
-	Gtk::EventBox*              m_specularEventbox;
-	Gtk::DrawingArea*           m_specularArea;
-	Gtk::EventBox*              m_emissiveEventbox;
-	Gtk::DrawingArea*           m_emissiveArea;
-	Gtk::Expander*              m_backExpander;
-	Gtk::EventBox*              m_backDiffuseEventbox;
-	Gtk::DrawingArea*           m_backDiffuseArea;
-	Gtk::EventBox*              m_backSpecularEventbox;
-	Gtk::DrawingArea*           m_backSpecularArea;
-	Gtk::EventBox*              m_backEmissiveEventbox;
-	Gtk::DrawingArea*           m_backEmissiveArea;
+	std::string                    filename;
+	Glib::RefPtr <Gtk::Builder>    m_builder;
+	Glib::RefPtr <Gtk::Adjustment> m_ambientAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_backAmbientAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_backShininessAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_backTransparencyAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_shininessAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_transparencyAdjustment;
+	Gtk::ColorSelectionDialog*     m_backDiffuseDialog;
+	Gtk::ColorSelectionDialog*     m_backEmissiveDialog;
+	Gtk::ColorSelectionDialog*     m_backSpecularDialog;
+	Gtk::ColorSelectionDialog*     m_diffuseDialog;
+	Gtk::ColorSelectionDialog*     m_emissiveDialog;
+	Gtk::ColorSelectionDialog*     m_specularDialog;
+	Gtk::Window*                   m_window;
+	Gtk::Box*                      m_widget;
+	Gtk::Box*                      m_previewBox;
+	Gtk::ToggleButton*             m_frontAndBackButton;
+	Gtk::EventBox*                 m_diffuseEventbox;
+	Gtk::DrawingArea*              m_diffuseArea;
+	Gtk::EventBox*                 m_specularEventbox;
+	Gtk::DrawingArea*              m_specularArea;
+	Gtk::EventBox*                 m_emissiveEventbox;
+	Gtk::DrawingArea*              m_emissiveArea;
+	Gtk::Scale*                    m_ambientScale;
+	Gtk::Scale*                    m_shininessScale;
+	Gtk::Scale*                    m_transparencyScale;
+	Gtk::Expander*                 m_backExpander;
+	Gtk::EventBox*                 m_backDiffuseEventbox;
+	Gtk::DrawingArea*              m_backDiffuseArea;
+	Gtk::EventBox*                 m_backSpecularEventbox;
+	Gtk::DrawingArea*              m_backSpecularArea;
+	Gtk::EventBox*                 m_backEmissiveEventbox;
+	Gtk::DrawingArea*              m_backEmissiveArea;
+	Gtk::Scale*                    m_backAmbientScale;
+	Gtk::Scale*                    m_backShininessScale;
+	Gtk::Scale*                    m_backTransparencyScale;
 
 };
 
