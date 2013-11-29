@@ -83,6 +83,9 @@ private:
 	on_button_release_event (GdkEventButton*);
 
 	bool
+	on_leave_notify_event (GdkEventCrossing*);
+
+	bool
 	pick (const double, const double);
 
 	size_t button;

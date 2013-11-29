@@ -1,0 +1,53 @@
+#X3D V3.3 utf8 Titania
+
+NavigationInfo {
+  type [ "NONE", "ANY" ]
+}
+
+Viewpoint {
+  position 0 0 3
+}
+
+DEF Gray Background {
+  skyColor 0.2 0.2 0.2
+}
+
+DEF Checkerboard Transform {
+  children [
+    Transform {
+      translation 15 15 -2
+      scale 15 15 1
+      children Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 0 0 0
+            emissiveColor 0.5 0.5 0.5
+          }
+        }
+        geometry Rectangle2D { }
+      }
+    }
+    Transform {
+      translation -15 -15 -2
+      scale 15 15 1
+      children Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 0 0 0
+            emissiveColor 0.5 0.5 0.5
+          }
+        }
+        geometry Rectangle2D { }
+      }
+    }
+  ]
+}
+
+DEF Sphere Transform {
+  children Shape {
+    appearance Appearance {
+      material DEF Material Material { }
+    }
+    geometry Sphere { }
+  }
+}

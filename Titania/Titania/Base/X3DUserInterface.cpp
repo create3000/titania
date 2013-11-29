@@ -126,7 +126,7 @@ void
 X3DUserInterface::removeDialog (X3DUserInterface* const dialog)
 {
 	dialogs .erase (dialog);
-	delete dialog;
+	delete dialog; // Or delete in an idle handler
 }
 
 void

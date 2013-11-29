@@ -33,8 +33,8 @@
   </object>
   <object class="GtkWindow" id="Window">
     <property name="can_focus">False</property>
-    <property name="border_width">5</property>
-    <property name="modal">True</property>
+    <property name="border_width">8</property>
+    <property name="title" translatable="yes">Material Editor</property>
     <property name="type_hint">dialog</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>
@@ -50,7 +50,7 @@
             <property name="spacing">8</property>
             <child>
               <object class="GtkBox" id="PreviewBox">
-                <property name="width_request">150</property>
+                <property name="width_request">200</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="orientation">vertical</property>

@@ -93,7 +93,7 @@ public:
 	void
 	on_window_removed (Gtk::Window* window) final
 	{
-		__LOG__ << std::endl;
+		__LOG__ << window << std::endl;
 
 		auto browserWindow = browserWindows .find (window);
 
@@ -113,15 +113,9 @@ public:
 
 		auto browserWindow = std::make_shared <BrowserWindow> (X3D::createBrowser (), uri);
 
-		__LOG__ << std::endl;
-
 		browserWindow -> getWindow () .show ();
 
-		__LOG__ << std::endl;
-
 		add_window (browserWindow -> getWindow ());
-
-		__LOG__ << std::endl;
 
 		browserWindows .emplace (&browserWindow -> getWindow (), browserWindow);
 
@@ -152,15 +146,15 @@ main (int argc, char** argv)
 
 	try
 	{
-		//Gtk::Main kit (argc, argv);
+		Gtk::Main kit (argc, argv);
 
-		//puck::BrowserWindow browserWindow (X3D::createBrowser (), "");
+		puck::BrowserWindow browserWindow (X3D::createBrowser (), "");
 		
-		//Gtk::Main::run (browserWindow .getWindow ());
+		Gtk::Main::run (browserWindow .getWindow ());
 		
-		puck::BrowserApplication browserApplication (argc, argv);
+		//puck::BrowserApplication browserApplication (argc, argv);
 
-		browserApplication .run ();
+		//browserApplication .run ();
 	}
 	catch (const std::exception & error)
 	{

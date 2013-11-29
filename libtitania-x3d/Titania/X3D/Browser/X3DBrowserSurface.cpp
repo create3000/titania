@@ -80,6 +80,7 @@ X3DBrowserSurface::X3DBrowserSurface () :
 	            Gdk::POINTER_MOTION_MASK |
 	            Gdk::POINTER_MOTION_HINT_MASK |
 	            Gdk::BUTTON_RELEASE_MASK |
+	            Gdk::LEAVE_NOTIFY_MASK |
 	            Gdk::SCROLL_MASK |
 	            Gdk::KEY_PRESS_MASK |
 	            Gdk::KEY_RELEASE_MASK);
@@ -152,11 +153,13 @@ X3DBrowserSurface::set_viewer (ViewerType type)
 void
 X3DBrowserSurface::dispose ()
 {
+	makeCurrent ();
+
 	viewer .reset ();
 	pointingDevice .dispose ();
 
-	opengl::Surface::dispose ();
 	X3DBrowser::dispose ();
+	opengl::Surface::dispose ();
 }
 
 } // X3D

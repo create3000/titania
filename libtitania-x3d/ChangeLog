@@ -1,3 +1,16 @@
+2013-11-29  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DBrowser.cpp:
+	* Notification.cpp:
+	* X3DBrowserContext.h:
+	* X3DBrowserSurface.cpp:
+	* X3DBrowserContext.cpp:
+	* Selection.cpp:
+	* Appearance.h:
+	* PointingDevice.h:
+	* PointingDevice.cpp:
+	* RenderingProperties.cpp: 
+
 2013-11-27  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Traverse.h:

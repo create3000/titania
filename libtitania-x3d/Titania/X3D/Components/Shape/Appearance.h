@@ -158,6 +158,22 @@ public:
 	getLineProperties () const final
 	{ return _lineProperties; }
 
+	X3DMaterialNode*
+	getMaterial () const
+	{ return _material; }
+	
+	X3DTextureNode*
+	getTexture () const
+	{ return _texture; }
+	
+	X3DTextureTransformNode*
+	getTextureTransform () const
+	{ return _textureTransform; }
+	
+	X3DShaderNode*
+	getShader () const
+	{ return _shader; }
+
 	///  @name Tests
 
 	virtual

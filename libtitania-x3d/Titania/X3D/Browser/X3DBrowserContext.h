@@ -319,6 +319,9 @@ public:
 	void
 	buttonReleaseEvent ();
 
+	void
+	leaveNotifyEvent ();
+
 	const X3DSFNode <Selection> &
 	getSelection ()
 	{ return selection; }

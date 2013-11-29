@@ -1,3 +1,15 @@
+2013-11-29  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* main.cpp:
+	* Material.x3dv:
+	* BrowserWindow.cpp:
+	* X3DUserInterface.cpp:
+	* MaterialEditor.ui:
+	* X3DBrowserWidget.cpp:
+	* MaterialEditor.h:
+	* OutlineTreeViewEditor.h:
+	* OutlineTreeViewEditor.cpp: 
+
 2013-11-28  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

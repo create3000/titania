@@ -609,6 +609,16 @@ X3DBrowserContext::buttonReleaseEvent ()
 	activeSensors .clear ();
 }
 
+void
+X3DBrowserContext::leaveNotifyEvent ()
+{
+	// Clear hits.
+
+	hits .clear ();
+
+	motionNotifyEvent ();
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void

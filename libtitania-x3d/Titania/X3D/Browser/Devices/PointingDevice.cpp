@@ -69,6 +69,37 @@ PointingDevice::initialize ()
 	getBrowser () -> signal_button_press_event   () .connect (sigc::mem_fun (*this, &PointingDevice::on_button_press_event),   false);
 	getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &PointingDevice::on_button_release_event), false);
 	getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &PointingDevice::on_motion_notify_event));
+	getBrowser () -> signal_leave_notify_event   () .connect (sigc::mem_fun (*this, &PointingDevice::on_leave_notify_event));
+}
+
+bool
+PointingDevice::on_motion_notify_event (GdkEventMotion* event)
+{
+	if (button == 0 or button == 1)
+	{
+		if (pick (event -> x, getBrowser () -> get_height () - event -> y))
+		{
+			if (not isOver)
+			{
+				getBrowser () -> setCursor (Gdk::HAND2);
+				isOver = true;
+			}
+
+			//return true;
+		}
+		else
+		{
+			if (isOver)
+			{
+				getBrowser () -> setCursor (Gdk::ARROW);
+				isOver = false;
+			}
+		}
+
+		getBrowser () -> motionNotifyEvent ();
+	}
+
+	return false;
 }
 
 bool
@@ -79,7 +110,7 @@ PointingDevice::on_button_press_event (GdkEventButton* event)
 	getBrowser () -> grab_focus ();
 
 	if (button == 1)
-	{
+	{	
 		if (pick (event -> x, getBrowser () -> get_height () - event -> y))
 		{
 			getBrowser () -> buttonPressEvent ();
@@ -129,31 +160,9 @@ PointingDevice::on_button_release_event (GdkEventButton* event)
 }
 
 bool
-PointingDevice::on_motion_notify_event (GdkEventMotion* event)
+PointingDevice::on_leave_notify_event (GdkEventCrossing*)
 {
-	if (button == 0 or button == 1)
-	{
-		if (pick (event -> x, getBrowser () -> get_height () - event -> y))
-		{
-			if (not isOver)
-			{
-				getBrowser () -> setCursor (Gdk::HAND2);
-				isOver = true;
-			}
-
-			//return true;
-		}
-		else
-		{
-			if (isOver)
-			{
-				getBrowser () -> setCursor (Gdk::ARROW);
-				isOver = false;
-			}
-		}
-
-		getBrowser () -> motionNotifyEvent ();
-	}
+	getBrowser () -> leaveNotifyEvent ();
 
 	return false;
 }

@@ -76,7 +76,8 @@ OutlineTreeViewEditor::OutlineTreeViewEditor (BrowserWindow* const browserWindow
 	             sourceField (),
 	         destinationNode (),
 	        destinationField (),
-	motion_notify_connection ()
+	motion_notify_connection (),
+	           unwatchMotion (1)
 {
 	set_name ("OutlineTreeViewEditor");
 
@@ -107,12 +108,17 @@ OutlineTreeViewEditor::OutlineTreeViewEditor (BrowserWindow* const browserWindow
 void
 OutlineTreeViewEditor::watch_motion ()
 {
-	motion_notify_connection = signal_motion_notify_event () .connect (sigc::mem_fun (*this, &OutlineTreeViewEditor::set_motion_notify_event), false);
+	-- unwatchMotion;
+
+	if (not unwatchMotion)	
+		motion_notify_connection = signal_motion_notify_event () .connect (sigc::mem_fun (*this, &OutlineTreeViewEditor::set_motion_notify_event), false);
 }
 
 void
 OutlineTreeViewEditor::unwatch_motion ()
 {
+	++ unwatchMotion;
+
 	motion_notify_connection .disconnect ();
 }
 

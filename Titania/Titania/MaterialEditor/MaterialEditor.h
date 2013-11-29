@@ -63,7 +63,7 @@ class MaterialEditor :
 {
 public:
 
-	MaterialEditor (BrowserWindow* const);
+	MaterialEditor (BrowserWindow* const, X3D::MFNode);
 
 	virtual
 	~MaterialEditor ();
@@ -71,7 +71,17 @@ public:
 
 private:
 
+	virtual
+	void
+	initialize () final;
+
+	void
+	set_initialized ();
+
 	///  @name Members
+
+	const X3D::X3DSFNode <X3D::Browser>           browserSurface;
+	std::deque <X3D::X3DSFNode <X3D::Appearance>> appearances;
 
 };
 

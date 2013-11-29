@@ -952,7 +952,8 @@ BrowserWindow::on_node_properties_editor ()
 void
 BrowserWindow::on_material_editor ()
 {
-	addDialog (new MaterialEditor (getBrowserWindow ()));
+	if (getBrowser () -> getSelection () -> getChildren () .size ())
+		addDialog (new MaterialEditor (getBrowserWindow (), getBrowser () -> getSelection () -> getChildren ()));
 }
 
 // Browser dashboard handling

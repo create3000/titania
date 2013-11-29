@@ -452,8 +452,6 @@ X3DBrowser::dispose ()
 {
 	__LOG__ << this << std::endl;
 
-	makeCurrent ();
-
 	scene .dispose ();
 	world .dispose ();
 

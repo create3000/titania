@@ -156,6 +156,8 @@ Selection::clear ()
 void
 Selection::dispose ()
 {
+	getBrowser () -> makeCurrent ();
+
 	removeChildren (MFNode (children));
 
 	children .dispose ();

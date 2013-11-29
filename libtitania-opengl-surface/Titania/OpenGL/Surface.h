@@ -103,6 +103,10 @@ protected:
 	void
 	update (const Cairo::RefPtr <Cairo::Context> &) = 0;
 
+	virtual
+	bool
+	on_unmap_event (GdkEventAny*) override;
+
 
 private:
 

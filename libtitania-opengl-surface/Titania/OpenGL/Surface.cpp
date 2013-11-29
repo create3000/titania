@@ -229,6 +229,14 @@ Surface::dispose ()
 	context .reset ();
 }
 
+bool
+Surface::on_unmap_event (GdkEventAny*)
+{
+	__LOG__ << std::endl;
+
+	return false; // Propagate the event further.
+}
+
 Surface::~Surface ()
 { }
 

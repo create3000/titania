@@ -362,6 +362,8 @@ RenderingProperties::toStream (std::ostream & stream) const
 void
 RenderingProperties::dispose ()
 {
+	getBrowser () -> makeCurrent ();
+
 	world .dispose ();
 
 	X3DNode::dispose ();

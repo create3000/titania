@@ -169,6 +169,7 @@ private:
 	std::string                        destinationField;
 
 	sigc::connection motion_notify_connection;
+	size_t           unwatchMotion;
 
 };
 

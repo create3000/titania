@@ -166,6 +166,8 @@ Notification::display ()
 void
 Notification::dispose ()
 {
+	getBrowser () -> makeCurrent ();
+
 	world .dispose ();
 
 	X3DBaseNode::dispose ();
