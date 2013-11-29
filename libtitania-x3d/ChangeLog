@@ -1,5 +1,10 @@
 2013-11-29  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* TwoSidedMaterial.h:
+	* TwoSidedMaterial.cpp: 
+
+2013-11-29  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBrowser.cpp:
 	* Notification.cpp:
 	* X3DBrowserContext.h:

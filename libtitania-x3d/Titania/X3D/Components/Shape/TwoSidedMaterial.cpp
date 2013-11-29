@@ -60,18 +60,18 @@ const std::string TwoSidedMaterial::typeName       = "TwoSidedMaterial";
 const std::string TwoSidedMaterial::containerField = "material";
 
 TwoSidedMaterial::Fields::Fields () :
+	   separateBackColor (new SFBool ()),
 	    ambientIntensity (new SFFloat (0.2)),
 	        diffuseColor (new SFColor (0.8, 0.8, 0.8)),
+	       specularColor (new SFColor ()),
 	       emissiveColor (new SFColor ()),
 	           shininess (new SFFloat (0.2)),
-	   separateBackColor (new SFBool ()),
-	       specularColor (new SFColor ()),
 	        transparency (new SFFloat ()),
 	backAmbientIntensity (new SFFloat (0.2)),
 	    backDiffuseColor (new SFColor (0.8, 0.8, 0.8)),
+	   backSpecularColor (new SFColor ()),
 	   backEmissiveColor (new SFColor ()),
 	       backShininess (new SFFloat (0.2)),
-	   backSpecularColor (new SFColor ()),
 	    backTransparency (new SFFloat ())
 { }
 
@@ -79,33 +79,36 @@ TwoSidedMaterial::TwoSidedMaterial (X3DExecutionContext* const executionContext)
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	    X3DMaterialNode (),
 	             fields (),
-	              alpha (1),
 	     glAmbientColor (),
 	     glDiffuseColor (),
 	    glSpecularColor (),
 	    glEmissiveColor (),
 	        glShininess (),
-	          backAlpha (1),
+	              alpha (1),
 	 glBackAmbientColor (),
 	 glBackDiffuseColor (),
 	glBackSpecularColor (),
 	glBackEmissiveColor (),
-	    glBackShininess ()
+	    glBackShininess (),
+	          backAlpha (1)
 {
 	addField (inputOutput, "metadata",             metadata ());
+
+	addField (inputOutput, "separateBackColor",    separateBackColor ());
+
 	addField (inputOutput, "ambientIntensity",     ambientIntensity ());
-	addField (inputOutput, "backAmbientIntensity", backAmbientIntensity ());
-	addField (inputOutput, "backDiffuseColor",     backDiffuseColor ());
-	addField (inputOutput, "backEmissiveColor",    backEmissiveColor ());
-	addField (inputOutput, "backShininess",        backShininess ());
-	addField (inputOutput, "backSpecularColor",    backSpecularColor ());
-	addField (inputOutput, "backTransparency",     backTransparency ());
 	addField (inputOutput, "diffuseColor",         diffuseColor ());
+	addField (inputOutput, "specularColor",        specularColor ());
 	addField (inputOutput, "emissiveColor",        emissiveColor ());
 	addField (inputOutput, "shininess",            shininess ());
-	addField (inputOutput, "separateBackColor",    separateBackColor ());
-	addField (inputOutput, "specularColor",        specularColor ());
 	addField (inputOutput, "transparency",         transparency ());
+
+	addField (inputOutput, "backAmbientIntensity", backAmbientIntensity ());
+	addField (inputOutput, "backDiffuseColor",     backDiffuseColor ());
+	addField (inputOutput, "backSpecularColor",    backSpecularColor ());
+	addField (inputOutput, "backEmissiveColor",    backEmissiveColor ());
+	addField (inputOutput, "backShininess",        backShininess ());
+	addField (inputOutput, "backTransparency",     backTransparency ());
 }
 
 X3DBaseNode*

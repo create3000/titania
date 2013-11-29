@@ -63,36 +63,29 @@ X3DMaterialEditorInterface::create (const std::string & filename)
 	// Get objects.
 
 	// Get widgets.
+	m_builder -> get_widget ("DiffuseDialog", m_diffuseDialog);
+	m_diffuseDialog -> set_name ("DiffuseDialog");
 	m_builder -> get_widget ("Window", m_window);
 	m_window -> set_name ("Window");
 	m_builder -> get_widget ("Widget", m_widget);
 	m_widget -> set_name ("Widget");
 	m_builder -> get_widget ("PreviewBox", m_previewBox);
 	m_previewBox -> set_name ("PreviewBox");
-	m_builder -> get_widget ("DiffuseScale", m_diffuseScale);
-	m_diffuseScale -> set_name ("DiffuseScale");
-	m_builder -> get_widget ("SpecularScale", m_specularScale);
-	m_specularScale -> set_name ("SpecularScale");
-	m_builder -> get_widget ("EmissiveScale", m_emissiveScale);
-	m_emissiveScale -> set_name ("EmissiveScale");
-	m_builder -> get_widget ("AmbientScale", m_ambientScale);
-	m_ambientScale -> set_name ("AmbientScale");
-	m_builder -> get_widget ("ShininessScale", m_shininessScale);
-	m_shininessScale -> set_name ("ShininessScale");
-	m_builder -> get_widget ("TransparencyScale", m_transparencyScale);
-	m_transparencyScale -> set_name ("TransparencyScale");
-	m_builder -> get_widget ("DiffuseButton", m_diffuseButton);
-	m_diffuseButton -> set_name ("DiffuseButton");
-	m_builder -> get_widget ("SpecularButton", m_specularButton);
-	m_specularButton -> set_name ("SpecularButton");
-	m_builder -> get_widget ("EmissiveButton", m_emissiveButton);
-	m_emissiveButton -> set_name ("EmissiveButton");
-	m_builder -> get_widget ("AmbientButton", m_ambientButton);
-	m_ambientButton -> set_name ("AmbientButton");
-	m_builder -> get_widget ("ShininessButton", m_shininessButton);
-	m_shininessButton -> set_name ("ShininessButton");
-	m_builder -> get_widget ("TransparencyButton", m_transparencyButton);
-	m_transparencyButton -> set_name ("TransparencyButton");
+	m_builder -> get_widget ("FrontAndBackButton", m_frontAndBackButton);
+	m_frontAndBackButton -> set_name ("FrontAndBackButton");
+	m_builder -> get_widget ("DiffuseEventbox", m_diffuseEventbox);
+	m_diffuseEventbox -> set_name ("DiffuseEventbox");
+	m_builder -> get_widget ("DiffuseArea", m_diffuseArea);
+	m_diffuseArea -> set_name ("DiffuseArea");
+
+	// Connect object Gtk::ToggleButton with id 'FrontAndBackButton'.
+	m_frontAndBackButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_frontAndBackButton_toggled));
+
+	// Connect object Gtk::EventBox with id 'DiffuseEventbox'.
+	m_diffuseEventbox -> signal_button_release_event () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_diffuse_released));
+
+	// Connect object Gtk::DrawingArea with id 'DiffuseArea'.
+	m_diffuseArea -> signal_draw () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_diffuse_draw));
 
 	// Call construct handler of base class.
 	construct ();

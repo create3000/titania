@@ -45,8 +45,8 @@ DEF Checkerboard Transform {
 
 DEF Sphere Transform {
   children Shape {
-    appearance Appearance {
-      material DEF Material Material { }
+    appearance DEF Appearance Appearance {
+      material Material { }
     }
     geometry Sphere { }
   }

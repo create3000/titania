@@ -626,3 +626,5 @@ insert_text
   virtual void on_insert_text(const Glib::ustring& text, int* position);
 delete_text
   virtual void on_delete_text(int start_pos, int end_pos);
+color_set
+  virtual void on_color_set();

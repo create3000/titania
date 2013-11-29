@@ -91,6 +91,10 @@ public:
 		return widget;
 	}
 
+	Gtk::ColorSelectionDialog &
+	getDiffuseDialog () const
+	{ return *m_diffuseDialog; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_window; }
@@ -103,53 +107,29 @@ public:
 	getPreviewBox () const
 	{ return *m_previewBox; }
 
-	Gtk::Scale &
-	getDiffuseScale () const
-	{ return *m_diffuseScale; }
+	Gtk::ToggleButton &
+	getFrontAndBackButton () const
+	{ return *m_frontAndBackButton; }
 
-	Gtk::Scale &
-	getSpecularScale () const
-	{ return *m_specularScale; }
+	Gtk::EventBox &
+	getDiffuseEventbox () const
+	{ return *m_diffuseEventbox; }
 
-	Gtk::Scale &
-	getEmissiveScale () const
-	{ return *m_emissiveScale; }
+	Gtk::DrawingArea &
+	getDiffuseArea () const
+	{ return *m_diffuseArea; }
 
-	Gtk::Scale &
-	getAmbientScale () const
-	{ return *m_ambientScale; }
+	virtual
+	void
+	on_frontAndBackButton_toggled () = 0;
 
-	Gtk::Scale &
-	getShininessScale () const
-	{ return *m_shininessScale; }
+	virtual
+	bool
+	on_diffuse_released (GdkEventButton* event) = 0;
 
-	Gtk::Scale &
-	getTransparencyScale () const
-	{ return *m_transparencyScale; }
-
-	Gtk::Button &
-	getDiffuseButton () const
-	{ return *m_diffuseButton; }
-
-	Gtk::Button &
-	getSpecularButton () const
-	{ return *m_specularButton; }
-
-	Gtk::Button &
-	getEmissiveButton () const
-	{ return *m_emissiveButton; }
-
-	Gtk::Button &
-	getAmbientButton () const
-	{ return *m_ambientButton; }
-
-	Gtk::Button &
-	getShininessButton () const
-	{ return *m_shininessButton; }
-
-	Gtk::Button &
-	getTransparencyButton () const
-	{ return *m_transparencyButton; }
+	virtual
+	bool
+	on_diffuse_draw (const::Cairo::RefPtr < ::Cairo::Context> & cr) = 0;
 
 	~X3DMaterialEditorInterface ();
 
@@ -163,21 +143,13 @@ private:
 
 	std::string                 filename;
 	Glib::RefPtr <Gtk::Builder> m_builder;
+	Gtk::ColorSelectionDialog*  m_diffuseDialog;
 	Gtk::Window*                m_window;
 	Gtk::Box*                   m_widget;
 	Gtk::Box*                   m_previewBox;
-	Gtk::Scale*                 m_diffuseScale;
-	Gtk::Scale*                 m_specularScale;
-	Gtk::Scale*                 m_emissiveScale;
-	Gtk::Scale*                 m_ambientScale;
-	Gtk::Scale*                 m_shininessScale;
-	Gtk::Scale*                 m_transparencyScale;
-	Gtk::Button*                m_diffuseButton;
-	Gtk::Button*                m_specularButton;
-	Gtk::Button*                m_emissiveButton;
-	Gtk::Button*                m_ambientButton;
-	Gtk::Button*                m_shininessButton;
-	Gtk::Button*                m_transparencyButton;
+	Gtk::ToggleButton*          m_frontAndBackButton;
+	Gtk::EventBox*              m_diffuseEventbox;
+	Gtk::DrawingArea*           m_diffuseArea;
 
 };
 

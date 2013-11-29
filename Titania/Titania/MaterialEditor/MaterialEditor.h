@@ -63,7 +63,11 @@ class MaterialEditor :
 {
 public:
 
+	///  @name Construction
+
 	MaterialEditor (BrowserWindow* const, X3D::MFNode);
+
+	///  @name Destruction
 
 	virtual
 	~MaterialEditor ();
@@ -71,17 +75,50 @@ public:
 
 private:
 
+	///  @name Construction
+
 	virtual
 	void
 	initialize () final;
 
+	///  @name Event handlers
+
+	void
+	set_splashScreen ();
+
 	void
 	set_initialized ();
+	
+	virtual
+	void
+	on_frontAndBackButton_toggled () final;
+
+	virtual
+	bool
+	on_diffuse_draw (const Cairo::RefPtr <Cairo::Context> &) final;
+
+	virtual
+	bool
+	on_diffuse_released (GdkEventButton*) final;
+
+	void
+	on_diffuseColor ();
+
+	///  @name Helper functions
+
+	Gdk::Color
+	toColor (const X3D::Color3f &);
+
+	Gdk::Color
+	toColor (float value);
 
 	///  @name Members
 
 	const X3D::X3DSFNode <X3D::Browser>           browserSurface;
 	std::deque <X3D::X3DSFNode <X3D::Appearance>> appearances;
+	
+	X3D::X3DSFNode <X3D::Material>         material;
+	X3D::X3DSFNode <X3D::TwoSidedMaterial> twoSidedMaterial;
 
 };
 

@@ -87,6 +87,14 @@ public:
 
 	///  @name Fields
 
+	SFBool &
+	separateBackColor ()
+	{ return *fields .separateBackColor; }
+
+	const SFBool &
+	separateBackColor () const
+	{ return *fields .separateBackColor; }
+
 	SFFloat &
 	ambientIntensity ()
 	{ return *fields .ambientIntensity; }
@@ -104,6 +112,14 @@ public:
 	{ return *fields .diffuseColor; }
 
 	SFColor &
+	specularColor ()
+	{ return *fields .specularColor; }
+
+	const SFColor &
+	specularColor () const
+	{ return *fields .specularColor; }
+
+	SFColor &
 	emissiveColor ()
 	{ return *fields .emissiveColor; }
 
@@ -118,22 +134,6 @@ public:
 	const SFFloat &
 	shininess () const
 	{ return *fields .shininess; }
-
-	SFBool &
-	separateBackColor ()
-	{ return *fields .separateBackColor; }
-
-	const SFBool &
-	separateBackColor () const
-	{ return *fields .separateBackColor; }
-
-	SFColor &
-	specularColor ()
-	{ return *fields .specularColor; }
-
-	const SFColor &
-	specularColor () const
-	{ return *fields .specularColor; }
 
 	SFFloat &
 	transparency ()
@@ -160,6 +160,14 @@ public:
 	{ return *fields .backDiffuseColor; }
 
 	SFColor &
+	backSpecularColor ()
+	{ return *fields .backSpecularColor; }
+
+	const SFColor &
+	backSpecularColor () const
+	{ return *fields .backSpecularColor; }
+
+	SFColor &
 	backEmissiveColor ()
 	{ return *fields .backEmissiveColor; }
 
@@ -174,14 +182,6 @@ public:
 	const SFFloat &
 	backShininess () const
 	{ return *fields .backShininess; }
-
-	SFColor &
-	backSpecularColor ()
-	{ return *fields .backSpecularColor; }
-
-	const SFColor &
-	backSpecularColor () const
-	{ return *fields .backSpecularColor; }
 
 	SFFloat &
 	backTransparency ()
@@ -226,36 +226,36 @@ private:
 	{
 		Fields ();
 
+		SFBool* const separateBackColor;
 		SFFloat* const ambientIntensity;
 		SFColor* const diffuseColor;
+		SFColor* const specularColor;
 		SFColor* const emissiveColor;
 		SFFloat* const shininess;
-		SFBool* const separateBackColor;
-		SFColor* const specularColor;
 		SFFloat* const transparency;
 		SFFloat* const backAmbientIntensity;
 		SFColor* const backDiffuseColor;
+		SFColor* const backSpecularColor;
 		SFColor* const backEmissiveColor;
 		SFFloat* const backShininess;
-		SFColor* const backSpecularColor;
 		SFFloat* const backTransparency;
 	};
 
 	Fields fields;
 
-	float   alpha;
 	GLfloat glAmbientColor [4];
 	GLfloat glDiffuseColor [4];
 	GLfloat glSpecularColor [4];
 	GLfloat glEmissiveColor [4];
 	GLfloat glShininess;
+	float   alpha;
 
-	float   backAlpha;
 	GLfloat glBackAmbientColor [4];
 	GLfloat glBackDiffuseColor [4];
 	GLfloat glBackSpecularColor [4];
 	GLfloat glBackEmissiveColor [4];
 	GLfloat glBackShininess;
+	float   backAlpha;
 
 };
 
