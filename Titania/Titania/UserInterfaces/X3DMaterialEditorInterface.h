@@ -95,6 +95,14 @@ public:
 	getDiffuseDialog () const
 	{ return *m_diffuseDialog; }
 
+	Gtk::ColorSelectionDialog &
+	getEmissiveDialog () const
+	{ return *m_emissiveDialog; }
+
+	Gtk::ColorSelectionDialog &
+	getSpecularDialog () const
+	{ return *m_specularDialog; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_window; }
@@ -119,6 +127,22 @@ public:
 	getDiffuseArea () const
 	{ return *m_diffuseArea; }
 
+	Gtk::EventBox &
+	getSpecularEventbox () const
+	{ return *m_specularEventbox; }
+
+	Gtk::DrawingArea &
+	getSpecularArea () const
+	{ return *m_specularArea; }
+
+	Gtk::EventBox &
+	getEmissiveEventbox () const
+	{ return *m_emissiveEventbox; }
+
+	Gtk::DrawingArea &
+	getEmissiveArea () const
+	{ return *m_emissiveArea; }
+
 	virtual
 	void
 	on_frontAndBackButton_toggled () = 0;
@@ -130,6 +154,22 @@ public:
 	virtual
 	bool
 	on_diffuse_draw (const::Cairo::RefPtr < ::Cairo::Context> & cr) = 0;
+
+	virtual
+	bool
+	on_specular_released (GdkEventButton* event) = 0;
+
+	virtual
+	bool
+	on_specular_draw (const::Cairo::RefPtr < ::Cairo::Context> & cr) = 0;
+
+	virtual
+	bool
+	on_emissive_released (GdkEventButton* event) = 0;
+
+	virtual
+	bool
+	on_emissive_draw (const::Cairo::RefPtr < ::Cairo::Context> & cr) = 0;
 
 	~X3DMaterialEditorInterface ();
 
@@ -144,12 +184,18 @@ private:
 	std::string                 filename;
 	Glib::RefPtr <Gtk::Builder> m_builder;
 	Gtk::ColorSelectionDialog*  m_diffuseDialog;
+	Gtk::ColorSelectionDialog*  m_emissiveDialog;
+	Gtk::ColorSelectionDialog*  m_specularDialog;
 	Gtk::Window*                m_window;
 	Gtk::Box*                   m_widget;
 	Gtk::Box*                   m_previewBox;
 	Gtk::ToggleButton*          m_frontAndBackButton;
 	Gtk::EventBox*              m_diffuseEventbox;
 	Gtk::DrawingArea*           m_diffuseArea;
+	Gtk::EventBox*              m_specularEventbox;
+	Gtk::DrawingArea*           m_specularArea;
+	Gtk::EventBox*              m_emissiveEventbox;
+	Gtk::DrawingArea*           m_emissiveArea;
 
 };
 

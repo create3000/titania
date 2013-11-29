@@ -65,6 +65,10 @@ X3DMaterialEditorInterface::create (const std::string & filename)
 	// Get widgets.
 	m_builder -> get_widget ("DiffuseDialog", m_diffuseDialog);
 	m_diffuseDialog -> set_name ("DiffuseDialog");
+	m_builder -> get_widget ("EmissiveDialog", m_emissiveDialog);
+	m_emissiveDialog -> set_name ("EmissiveDialog");
+	m_builder -> get_widget ("SpecularDialog", m_specularDialog);
+	m_specularDialog -> set_name ("SpecularDialog");
 	m_builder -> get_widget ("Window", m_window);
 	m_window -> set_name ("Window");
 	m_builder -> get_widget ("Widget", m_widget);
@@ -77,6 +81,14 @@ X3DMaterialEditorInterface::create (const std::string & filename)
 	m_diffuseEventbox -> set_name ("DiffuseEventbox");
 	m_builder -> get_widget ("DiffuseArea", m_diffuseArea);
 	m_diffuseArea -> set_name ("DiffuseArea");
+	m_builder -> get_widget ("SpecularEventbox", m_specularEventbox);
+	m_specularEventbox -> set_name ("SpecularEventbox");
+	m_builder -> get_widget ("SpecularArea", m_specularArea);
+	m_specularArea -> set_name ("SpecularArea");
+	m_builder -> get_widget ("EmissiveEventbox", m_emissiveEventbox);
+	m_emissiveEventbox -> set_name ("EmissiveEventbox");
+	m_builder -> get_widget ("EmissiveArea", m_emissiveArea);
+	m_emissiveArea -> set_name ("EmissiveArea");
 
 	// Connect object Gtk::ToggleButton with id 'FrontAndBackButton'.
 	m_frontAndBackButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_frontAndBackButton_toggled));
@@ -86,6 +98,18 @@ X3DMaterialEditorInterface::create (const std::string & filename)
 
 	// Connect object Gtk::DrawingArea with id 'DiffuseArea'.
 	m_diffuseArea -> signal_draw () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_diffuse_draw));
+
+	// Connect object Gtk::EventBox with id 'SpecularEventbox'.
+	m_specularEventbox -> signal_button_release_event () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_specular_released));
+
+	// Connect object Gtk::DrawingArea with id 'SpecularArea'.
+	m_specularArea -> signal_draw () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_specular_draw));
+
+	// Connect object Gtk::EventBox with id 'EmissiveEventbox'.
+	m_emissiveEventbox -> signal_button_release_event () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_emissive_released));
+
+	// Connect object Gtk::DrawingArea with id 'EmissiveArea'.
+	m_emissiveArea -> signal_draw () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_emissive_draw));
 
 	// Call construct handler of base class.
 	construct ();

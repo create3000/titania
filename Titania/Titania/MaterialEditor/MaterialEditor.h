@@ -104,6 +104,42 @@ private:
 	void
 	on_diffuseColor ();
 
+	virtual
+	bool
+	on_specular_draw (const Cairo::RefPtr <Cairo::Context> &) final;
+
+	virtual
+	bool
+	on_specular_released (GdkEventButton*) final;
+
+	void
+	on_specularColor ();
+
+	virtual
+	bool
+	on_emissive_draw (const Cairo::RefPtr <Cairo::Context> &) final;
+
+	virtual
+	bool
+	on_emissive_released (GdkEventButton*) final;
+
+	void
+	on_emissiveColor ();
+
+	///  @name Operations for all colors
+
+	void
+	initDialog (Gtk::ColorSelectionDialog &, void (MaterialEditor::*callback) ());
+
+	bool
+	on_color_draw (const Cairo::RefPtr <Cairo::Context> &, const X3D::Color3f &, const X3D::Color3f &, Gtk::DrawingArea &);
+
+	bool
+	on_color_released (GdkEventButton*, Gtk::ColorSelectionDialog &, const X3D::Color3f &, const X3D::Color3f &);
+
+	void
+	on_color (Gtk::ColorSelectionDialog &, X3D::SFColor &, X3D::SFColor &, Gtk::DrawingArea &);
+
 	///  @name Helper functions
 
 	Gdk::Color

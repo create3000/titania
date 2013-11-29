@@ -4,6 +4,25 @@
   <object class="GtkColorSelectionDialog" id="DiffuseDialog">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
+    <property name="window_position">center-on-parent</property>
+    <property name="type_hint">dialog</property>
+    <property name="skip_taskbar_hint">True</property>
+    <property name="skip_pager_hint">True</property>
+    <property name="transient_for">Window</property>
+  </object>
+  <object class="GtkColorSelectionDialog" id="EmissiveDialog">
+    <property name="can_focus">False</property>
+    <property name="border_width">5</property>
+    <property name="window_position">center-on-parent</property>
+    <property name="type_hint">dialog</property>
+    <property name="skip_taskbar_hint">True</property>
+    <property name="skip_pager_hint">True</property>
+    <property name="transient_for">Window</property>
+  </object>
+  <object class="GtkColorSelectionDialog" id="SpecularDialog">
+    <property name="can_focus">False</property>
+    <property name="border_width">5</property>
+    <property name="window_position">center-on-parent</property>
     <property name="type_hint">dialog</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>
@@ -200,12 +219,6 @@
                           <placeholder/>
                         </child>
                         <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
                           <object class="GtkEventBox" id="DiffuseEventbox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
@@ -222,6 +235,48 @@
                           <packing>
                             <property name="left_attach">1</property>
                             <property name="top_attach">0</property>
+                            <property name="width">1</property>
+                            <property name="height">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkEventBox" id="SpecularEventbox">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <signal name="button-release-event" handler="on_specular_released" swapped="no"/>
+                            <child>
+                              <object class="GtkDrawingArea" id="SpecularArea">
+                                <property name="width_request">180</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <signal name="draw" handler="on_specular_draw" swapped="no"/>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">1</property>
+                            <property name="width">1</property>
+                            <property name="height">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkEventBox" id="EmissiveEventbox">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <signal name="button-release-event" handler="on_emissive_released" swapped="no"/>
+                            <child>
+                              <object class="GtkDrawingArea" id="EmissiveArea">
+                                <property name="width_request">180</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <signal name="draw" handler="on_emissive_draw" swapped="no"/>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">2</property>
                             <property name="width">1</property>
                             <property name="height">1</property>
                           </packing>
