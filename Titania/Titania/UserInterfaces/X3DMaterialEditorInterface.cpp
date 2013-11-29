@@ -63,6 +63,12 @@ X3DMaterialEditorInterface::create (const std::string & filename)
 	// Get objects.
 
 	// Get widgets.
+	m_builder -> get_widget ("BackDiffuseDialog", m_backDiffuseDialog);
+	m_backDiffuseDialog -> set_name ("BackDiffuseDialog");
+	m_builder -> get_widget ("BackEmissiveDialog", m_backEmissiveDialog);
+	m_backEmissiveDialog -> set_name ("BackEmissiveDialog");
+	m_builder -> get_widget ("BackSpecularDialog", m_backSpecularDialog);
+	m_backSpecularDialog -> set_name ("BackSpecularDialog");
 	m_builder -> get_widget ("DiffuseDialog", m_diffuseDialog);
 	m_diffuseDialog -> set_name ("DiffuseDialog");
 	m_builder -> get_widget ("EmissiveDialog", m_emissiveDialog);
@@ -89,6 +95,20 @@ X3DMaterialEditorInterface::create (const std::string & filename)
 	m_emissiveEventbox -> set_name ("EmissiveEventbox");
 	m_builder -> get_widget ("EmissiveArea", m_emissiveArea);
 	m_emissiveArea -> set_name ("EmissiveArea");
+	m_builder -> get_widget ("BackExpander", m_backExpander);
+	m_backExpander -> set_name ("BackExpander");
+	m_builder -> get_widget ("BackDiffuseEventbox", m_backDiffuseEventbox);
+	m_backDiffuseEventbox -> set_name ("BackDiffuseEventbox");
+	m_builder -> get_widget ("BackDiffuseArea", m_backDiffuseArea);
+	m_backDiffuseArea -> set_name ("BackDiffuseArea");
+	m_builder -> get_widget ("BackSpecularEventbox", m_backSpecularEventbox);
+	m_backSpecularEventbox -> set_name ("BackSpecularEventbox");
+	m_builder -> get_widget ("BackSpecularArea", m_backSpecularArea);
+	m_backSpecularArea -> set_name ("BackSpecularArea");
+	m_builder -> get_widget ("BackEmissiveEventbox", m_backEmissiveEventbox);
+	m_backEmissiveEventbox -> set_name ("BackEmissiveEventbox");
+	m_builder -> get_widget ("BackEmissiveArea", m_backEmissiveArea);
+	m_backEmissiveArea -> set_name ("BackEmissiveArea");
 
 	// Connect object Gtk::ToggleButton with id 'FrontAndBackButton'.
 	m_frontAndBackButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_frontAndBackButton_toggled));
@@ -110,6 +130,24 @@ X3DMaterialEditorInterface::create (const std::string & filename)
 
 	// Connect object Gtk::DrawingArea with id 'EmissiveArea'.
 	m_emissiveArea -> signal_draw () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_emissive_draw));
+
+	// Connect object Gtk::EventBox with id 'BackDiffuseEventbox'.
+	m_backDiffuseEventbox -> signal_button_release_event () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backDiffuse_released));
+
+	// Connect object Gtk::DrawingArea with id 'BackDiffuseArea'.
+	m_backDiffuseArea -> signal_draw () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backDiffuse_draw));
+
+	// Connect object Gtk::EventBox with id 'BackSpecularEventbox'.
+	m_backSpecularEventbox -> signal_button_release_event () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backSpecular_released));
+
+	// Connect object Gtk::DrawingArea with id 'BackSpecularArea'.
+	m_backSpecularArea -> signal_draw () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backSpecular_draw));
+
+	// Connect object Gtk::EventBox with id 'BackEmissiveEventbox'.
+	m_backEmissiveEventbox -> signal_button_release_event () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backEmissive_released));
+
+	// Connect object Gtk::DrawingArea with id 'BackEmissiveArea'.
+	m_backEmissiveArea -> signal_draw () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backEmissive_draw));
 
 	// Call construct handler of base class.
 	construct ();

@@ -92,6 +92,18 @@ public:
 	}
 
 	Gtk::ColorSelectionDialog &
+	getBackDiffuseDialog () const
+	{ return *m_backDiffuseDialog; }
+
+	Gtk::ColorSelectionDialog &
+	getBackEmissiveDialog () const
+	{ return *m_backEmissiveDialog; }
+
+	Gtk::ColorSelectionDialog &
+	getBackSpecularDialog () const
+	{ return *m_backSpecularDialog; }
+
+	Gtk::ColorSelectionDialog &
 	getDiffuseDialog () const
 	{ return *m_diffuseDialog; }
 
@@ -143,6 +155,34 @@ public:
 	getEmissiveArea () const
 	{ return *m_emissiveArea; }
 
+	Gtk::Expander &
+	getBackExpander () const
+	{ return *m_backExpander; }
+
+	Gtk::EventBox &
+	getBackDiffuseEventbox () const
+	{ return *m_backDiffuseEventbox; }
+
+	Gtk::DrawingArea &
+	getBackDiffuseArea () const
+	{ return *m_backDiffuseArea; }
+
+	Gtk::EventBox &
+	getBackSpecularEventbox () const
+	{ return *m_backSpecularEventbox; }
+
+	Gtk::DrawingArea &
+	getBackSpecularArea () const
+	{ return *m_backSpecularArea; }
+
+	Gtk::EventBox &
+	getBackEmissiveEventbox () const
+	{ return *m_backEmissiveEventbox; }
+
+	Gtk::DrawingArea &
+	getBackEmissiveArea () const
+	{ return *m_backEmissiveArea; }
+
 	virtual
 	void
 	on_frontAndBackButton_toggled () = 0;
@@ -171,6 +211,30 @@ public:
 	bool
 	on_emissive_draw (const::Cairo::RefPtr < ::Cairo::Context> & cr) = 0;
 
+	virtual
+	bool
+	on_backDiffuse_released (GdkEventButton* event) = 0;
+
+	virtual
+	bool
+	on_backDiffuse_draw (const::Cairo::RefPtr < ::Cairo::Context> & cr) = 0;
+
+	virtual
+	bool
+	on_backSpecular_released (GdkEventButton* event) = 0;
+
+	virtual
+	bool
+	on_backSpecular_draw (const::Cairo::RefPtr < ::Cairo::Context> & cr) = 0;
+
+	virtual
+	bool
+	on_backEmissive_released (GdkEventButton* event) = 0;
+
+	virtual
+	bool
+	on_backEmissive_draw (const::Cairo::RefPtr < ::Cairo::Context> & cr) = 0;
+
 	~X3DMaterialEditorInterface ();
 
 
@@ -183,6 +247,9 @@ private:
 
 	std::string                 filename;
 	Glib::RefPtr <Gtk::Builder> m_builder;
+	Gtk::ColorSelectionDialog*  m_backDiffuseDialog;
+	Gtk::ColorSelectionDialog*  m_backEmissiveDialog;
+	Gtk::ColorSelectionDialog*  m_backSpecularDialog;
 	Gtk::ColorSelectionDialog*  m_diffuseDialog;
 	Gtk::ColorSelectionDialog*  m_emissiveDialog;
 	Gtk::ColorSelectionDialog*  m_specularDialog;
@@ -196,6 +263,13 @@ private:
 	Gtk::DrawingArea*           m_specularArea;
 	Gtk::EventBox*              m_emissiveEventbox;
 	Gtk::DrawingArea*           m_emissiveArea;
+	Gtk::Expander*              m_backExpander;
+	Gtk::EventBox*              m_backDiffuseEventbox;
+	Gtk::DrawingArea*           m_backDiffuseArea;
+	Gtk::EventBox*              m_backSpecularEventbox;
+	Gtk::DrawingArea*           m_backSpecularArea;
+	Gtk::EventBox*              m_backEmissiveEventbox;
+	Gtk::DrawingArea*           m_backEmissiveArea;
 
 };
 

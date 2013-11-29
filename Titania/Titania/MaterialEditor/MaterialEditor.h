@@ -92,6 +92,8 @@ private:
 	virtual
 	void
 	on_frontAndBackButton_toggled () final;
+	
+	///  @name Front color handler
 
 	virtual
 	bool
@@ -125,6 +127,41 @@ private:
 
 	void
 	on_emissiveColor ();
+	
+	///  @name Back color handler
+
+	virtual
+	bool
+	on_backDiffuse_draw (const Cairo::RefPtr <Cairo::Context> &) final;
+
+	virtual
+	bool
+	on_backDiffuse_released (GdkEventButton*) final;
+
+	void
+	on_backDiffuseColor ();
+
+	virtual
+	bool
+	on_backSpecular_draw (const Cairo::RefPtr <Cairo::Context> &) final;
+
+	virtual
+	bool
+	on_backSpecular_released (GdkEventButton*) final;
+
+	void
+	on_backSpecularColor ();
+
+	virtual
+	bool
+	on_backEmissive_draw (const Cairo::RefPtr <Cairo::Context> &) final;
+
+	virtual
+	bool
+	on_backEmissive_released (GdkEventButton*) final;
+
+	void
+	on_backEmissiveColor ();
 
 	///  @name Operations for all colors
 
@@ -155,6 +192,8 @@ private:
 	
 	X3D::X3DSFNode <X3D::Material>         material;
 	X3D::X3DSFNode <X3D::TwoSidedMaterial> twoSidedMaterial;
+	
+	bool initialized;
 
 };
 

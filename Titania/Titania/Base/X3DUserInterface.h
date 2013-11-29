@@ -113,7 +113,7 @@ protected:
 	initialize ();
 
 	bool
-	is_initialized ();
+	isInitialized ();
 
 	/// @name Member access
 

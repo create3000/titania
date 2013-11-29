@@ -1,6 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <!-- interface-requires gtk+ 3.0 -->
+  <object class="GtkColorSelectionDialog" id="BackDiffuseDialog">
+    <property name="can_focus">False</property>
+    <property name="border_width">5</property>
+    <property name="window_position">center-on-parent</property>
+    <property name="type_hint">dialog</property>
+    <property name="skip_taskbar_hint">True</property>
+    <property name="skip_pager_hint">True</property>
+    <property name="transient_for">Window</property>
+  </object>
+  <object class="GtkColorSelectionDialog" id="BackEmissiveDialog">
+    <property name="can_focus">False</property>
+    <property name="border_width">5</property>
+    <property name="window_position">center-on-parent</property>
+    <property name="type_hint">dialog</property>
+    <property name="skip_taskbar_hint">True</property>
+    <property name="skip_pager_hint">True</property>
+    <property name="transient_for">Window</property>
+  </object>
+  <object class="GtkColorSelectionDialog" id="BackSpecularDialog">
+    <property name="can_focus">False</property>
+    <property name="border_width">5</property>
+    <property name="window_position">center-on-parent</property>
+    <property name="type_hint">dialog</property>
+    <property name="skip_taskbar_hint">True</property>
+    <property name="skip_pager_hint">True</property>
+    <property name="transient_for">Window</property>
+  </object>
   <object class="GtkColorSelectionDialog" id="DiffuseDialog">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
@@ -298,10 +325,11 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkExpander" id="expander2">
+                  <object class="GtkExpander" id="BackExpander">
                     <property name="visible">True</property>
                     <property name="sensitive">False</property>
                     <property name="can_focus">False</property>
+                    <property name="expanded">True</property>
                     <property name="spacing">8</property>
                     <child>
                       <object class="GtkGrid" id="grid2">
@@ -415,13 +443,67 @@
                           <placeholder/>
                         </child>
                         <child>
-                          <placeholder/>
+                          <object class="GtkEventBox" id="BackDiffuseEventbox">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <signal name="button-release-event" handler="on_backDiffuse_released" swapped="no"/>
+                            <child>
+                              <object class="GtkDrawingArea" id="BackDiffuseArea">
+                                <property name="width_request">180</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <signal name="draw" handler="on_backDiffuse_draw" swapped="no"/>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">0</property>
+                            <property name="width">1</property>
+                            <property name="height">1</property>
+                          </packing>
                         </child>
                         <child>
-                          <placeholder/>
+                          <object class="GtkEventBox" id="BackSpecularEventbox">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <signal name="button-release-event" handler="on_backSpecular_released" swapped="no"/>
+                            <child>
+                              <object class="GtkDrawingArea" id="BackSpecularArea">
+                                <property name="width_request">180</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <signal name="draw" handler="on_backSpecular_draw" swapped="no"/>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">1</property>
+                            <property name="width">1</property>
+                            <property name="height">1</property>
+                          </packing>
                         </child>
                         <child>
-                          <placeholder/>
+                          <object class="GtkEventBox" id="BackEmissiveEventbox">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <signal name="button-release-event" handler="on_backEmissive_released" swapped="no"/>
+                            <child>
+                              <object class="GtkDrawingArea" id="BackEmissiveArea">
+                                <property name="width_request">180</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <signal name="draw" handler="on_backEmissive_draw" swapped="no"/>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">2</property>
+                            <property name="width">1</property>
+                            <property name="height">1</property>
+                          </packing>
                         </child>
                       </object>
                     </child>

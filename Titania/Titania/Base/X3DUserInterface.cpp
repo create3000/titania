@@ -109,7 +109,7 @@ X3DUserInterface::initialize ()
 { }
 
 bool
-X3DUserInterface::is_initialized ()
+X3DUserInterface::isInitialized ()
 {
 	return not constructed_connection .connected ();
 }
