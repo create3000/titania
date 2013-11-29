@@ -1,5 +1,15 @@
 2013-11-29  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Material.x3dv:
+	* BrowserWindow.cpp:
+	* MaterialEditor.ui:
+	* MaterialEditor.h:
+	* MaterialEditor.cpp:
+	* X3DMaterialEditorInterface.h:
+	* X3DMaterialEditorInterface.cpp: 
+
+2013-11-29  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* MaterialEditor.ui:
 	* MaterialEditor.h:
 	* MaterialEditor.cpp:

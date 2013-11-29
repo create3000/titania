@@ -76,7 +76,7 @@ BrowserWindow::BrowserWindow (const X3D::X3DSFNode <X3D::Browser> & browserSurfa
 	if (getConfig () .getBoolean ("transparent"))
 		setTransparent (true);
 	else
-		getBrowserSurface () -> set_visual (4); // 4 x Antialiasing
+		getBrowserSurface () -> set_antialiasing (4); // 4 x Antialiasing
 }
 
 void

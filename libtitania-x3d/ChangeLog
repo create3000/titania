@@ -1,5 +1,14 @@
 2013-11-29  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3D.h:
+	* X3D.cpp:
+	* Browser.h:
+	* Browser.cpp:
+	* X3DBrowserSurface.h:
+	* X3DBrowserSurface.cpp: 
+
+2013-11-29  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* TwoSidedMaterial.h:
 	* TwoSidedMaterial.cpp: 
 

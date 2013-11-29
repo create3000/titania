@@ -89,93 +89,93 @@ X3DMaterialEditorInterface::create (const std::string & filename)
 	m_previewBox -> set_name ("PreviewBox");
 	m_builder -> get_widget ("FrontAndBackButton", m_frontAndBackButton);
 	m_frontAndBackButton -> set_name ("FrontAndBackButton");
-	m_builder -> get_widget ("DiffuseEventbox", m_diffuseEventbox);
-	m_diffuseEventbox -> set_name ("DiffuseEventbox");
-	m_builder -> get_widget ("DiffuseArea", m_diffuseArea);
-	m_diffuseArea -> set_name ("DiffuseArea");
-	m_builder -> get_widget ("SpecularEventbox", m_specularEventbox);
-	m_specularEventbox -> set_name ("SpecularEventbox");
-	m_builder -> get_widget ("SpecularArea", m_specularArea);
-	m_specularArea -> set_name ("SpecularArea");
-	m_builder -> get_widget ("EmissiveEventbox", m_emissiveEventbox);
-	m_emissiveEventbox -> set_name ("EmissiveEventbox");
-	m_builder -> get_widget ("EmissiveArea", m_emissiveArea);
-	m_emissiveArea -> set_name ("EmissiveArea");
 	m_builder -> get_widget ("AmbientScale", m_ambientScale);
 	m_ambientScale -> set_name ("AmbientScale");
 	m_builder -> get_widget ("ShininessScale", m_shininessScale);
 	m_shininessScale -> set_name ("ShininessScale");
 	m_builder -> get_widget ("TransparencyScale", m_transparencyScale);
 	m_transparencyScale -> set_name ("TransparencyScale");
+	m_builder -> get_widget ("DiffuseButton", m_diffuseButton);
+	m_diffuseButton -> set_name ("DiffuseButton");
+	m_builder -> get_widget ("DiffuseArea", m_diffuseArea);
+	m_diffuseArea -> set_name ("DiffuseArea");
+	m_builder -> get_widget ("SpecularButton", m_specularButton);
+	m_specularButton -> set_name ("SpecularButton");
+	m_builder -> get_widget ("SpecularArea", m_specularArea);
+	m_specularArea -> set_name ("SpecularArea");
+	m_builder -> get_widget ("EmissiveButton", m_emissiveButton);
+	m_emissiveButton -> set_name ("EmissiveButton");
+	m_builder -> get_widget ("EmissiveArea", m_emissiveArea);
+	m_emissiveArea -> set_name ("EmissiveArea");
 	m_builder -> get_widget ("BackExpander", m_backExpander);
 	m_backExpander -> set_name ("BackExpander");
-	m_builder -> get_widget ("BackDiffuseEventbox", m_backDiffuseEventbox);
-	m_backDiffuseEventbox -> set_name ("BackDiffuseEventbox");
-	m_builder -> get_widget ("BackDiffuseArea", m_backDiffuseArea);
-	m_backDiffuseArea -> set_name ("BackDiffuseArea");
-	m_builder -> get_widget ("BackSpecularEventbox", m_backSpecularEventbox);
-	m_backSpecularEventbox -> set_name ("BackSpecularEventbox");
-	m_builder -> get_widget ("BackSpecularArea", m_backSpecularArea);
-	m_backSpecularArea -> set_name ("BackSpecularArea");
-	m_builder -> get_widget ("BackEmissiveEventbox", m_backEmissiveEventbox);
-	m_backEmissiveEventbox -> set_name ("BackEmissiveEventbox");
-	m_builder -> get_widget ("BackEmissiveArea", m_backEmissiveArea);
-	m_backEmissiveArea -> set_name ("BackEmissiveArea");
 	m_builder -> get_widget ("BackAmbientScale", m_backAmbientScale);
 	m_backAmbientScale -> set_name ("BackAmbientScale");
 	m_builder -> get_widget ("BackShininessScale", m_backShininessScale);
 	m_backShininessScale -> set_name ("BackShininessScale");
 	m_builder -> get_widget ("BackTransparencyScale", m_backTransparencyScale);
 	m_backTransparencyScale -> set_name ("BackTransparencyScale");
+	m_builder -> get_widget ("BackDiffuseButton", m_backDiffuseButton);
+	m_backDiffuseButton -> set_name ("BackDiffuseButton");
+	m_builder -> get_widget ("BackDiffuseArea", m_backDiffuseArea);
+	m_backDiffuseArea -> set_name ("BackDiffuseArea");
+	m_builder -> get_widget ("BackSpecularButton", m_backSpecularButton);
+	m_backSpecularButton -> set_name ("BackSpecularButton");
+	m_builder -> get_widget ("BackSpecularArea", m_backSpecularArea);
+	m_backSpecularArea -> set_name ("BackSpecularArea");
+	m_builder -> get_widget ("BackEmissiveButton", m_backEmissiveButton);
+	m_backEmissiveButton -> set_name ("BackEmissiveButton");
+	m_builder -> get_widget ("BackEmissiveArea", m_backEmissiveArea);
+	m_backEmissiveArea -> set_name ("BackEmissiveArea");
 
 	// Connect object Gtk::ToggleButton with id 'FrontAndBackButton'.
 	m_frontAndBackButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_frontAndBackButton_toggled));
-
-	// Connect object Gtk::EventBox with id 'DiffuseEventbox'.
-	m_diffuseEventbox -> signal_button_release_event () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_diffuse_released));
-
-	// Connect object Gtk::DrawingArea with id 'DiffuseArea'.
-	m_diffuseArea -> signal_draw () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_diffuse_draw));
-
-	// Connect object Gtk::EventBox with id 'SpecularEventbox'.
-	m_specularEventbox -> signal_button_release_event () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_specular_released));
-
-	// Connect object Gtk::DrawingArea with id 'SpecularArea'.
-	m_specularArea -> signal_draw () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_specular_draw));
-
-	// Connect object Gtk::EventBox with id 'EmissiveEventbox'.
-	m_emissiveEventbox -> signal_button_release_event () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_emissive_released));
-
-	// Connect object Gtk::DrawingArea with id 'EmissiveArea'.
-	m_emissiveArea -> signal_draw () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_emissive_draw));
 
 	// Connect object Gtk::Scale with id 'AmbientScale'.
 	m_ambientScale -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_ambient));
 	m_shininessScale -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_shininess));
 	m_transparencyScale -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_transparency));
 
-	// Connect object Gtk::EventBox with id 'BackDiffuseEventbox'.
-	m_backDiffuseEventbox -> signal_button_release_event () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backDiffuse_released));
+	// Connect object Gtk::Button with id 'DiffuseButton'.
+	m_diffuseButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_diffuse_clicked));
 
-	// Connect object Gtk::DrawingArea with id 'BackDiffuseArea'.
-	m_backDiffuseArea -> signal_draw () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backDiffuse_draw));
+	// Connect object Gtk::DrawingArea with id 'DiffuseArea'.
+	m_diffuseArea -> signal_draw () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_diffuse_draw));
 
-	// Connect object Gtk::EventBox with id 'BackSpecularEventbox'.
-	m_backSpecularEventbox -> signal_button_release_event () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backSpecular_released));
+	// Connect object Gtk::Button with id 'SpecularButton'.
+	m_specularButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_specular_clicked));
 
-	// Connect object Gtk::DrawingArea with id 'BackSpecularArea'.
-	m_backSpecularArea -> signal_draw () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backSpecular_draw));
+	// Connect object Gtk::DrawingArea with id 'SpecularArea'.
+	m_specularArea -> signal_draw () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_specular_draw));
 
-	// Connect object Gtk::EventBox with id 'BackEmissiveEventbox'.
-	m_backEmissiveEventbox -> signal_button_release_event () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backEmissive_released));
+	// Connect object Gtk::Button with id 'EmissiveButton'.
+	m_emissiveButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_emissive_clicked));
 
-	// Connect object Gtk::DrawingArea with id 'BackEmissiveArea'.
-	m_backEmissiveArea -> signal_draw () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backEmissive_draw));
+	// Connect object Gtk::DrawingArea with id 'EmissiveArea'.
+	m_emissiveArea -> signal_draw () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_emissive_draw));
 
 	// Connect object Gtk::Scale with id 'BackAmbientScale'.
 	m_backAmbientScale -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backAmbient));
 	m_backShininessScale -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backShininess));
 	m_backTransparencyScale -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backTransparency));
+
+	// Connect object Gtk::Button with id 'BackDiffuseButton'.
+	m_backDiffuseButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backDiffuse_clicked));
+
+	// Connect object Gtk::DrawingArea with id 'BackDiffuseArea'.
+	m_backDiffuseArea -> signal_draw () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backDiffuse_draw));
+
+	// Connect object Gtk::Button with id 'BackSpecularButton'.
+	m_backSpecularButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backSpecular_clicked));
+
+	// Connect object Gtk::DrawingArea with id 'BackSpecularArea'.
+	m_backSpecularArea -> signal_draw () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backSpecular_draw));
+
+	// Connect object Gtk::Button with id 'BackEmissiveButton'.
+	m_backEmissiveButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backEmissive_clicked));
+
+	// Connect object Gtk::DrawingArea with id 'BackEmissiveArea'.
+	m_backEmissiveArea -> signal_draw () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_backEmissive_draw));
 
 	// Call construct handler of base class.
 	construct ();

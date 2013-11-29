@@ -66,9 +66,10 @@ extern "C"
 namespace titania {
 namespace opengl {
 
-Surface::Surface () :
+Surface::Surface (const std::shared_ptr <WindowContext> & sharingContext) :
 	Gtk::DrawingArea (),
-	         context (NULL)
+	         context (),
+	  sharingContext (sharingContext)
 {
 	set_double_buffered (false);
 	set_app_paintable (true);
@@ -81,8 +82,12 @@ Surface::Surface () :
 	map_connection = signal_map_event () .connect (sigc::mem_fun (*this, &Surface::set_map_event));
 }
 
+Surface::Surface (const Surface & sharingSurface) :
+	Surface (sharingSurface .context)
+{ }
+
 void
-Surface::set_visual (int32_t samples)
+Surface::set_antialiasing (int32_t samples)
 {
 	static
 	int32_t visualAttributes [ ] = {
@@ -94,15 +99,15 @@ Surface::set_visual (int32_t samples)
 		GLX_RED_SIZE,         8,
 		GLX_GREEN_SIZE,       8,
 		GLX_BLUE_SIZE,        8,
-		GLX_ALPHA_SIZE,       0, // zero
+		GLX_ALPHA_SIZE,       0,       // zero
 		GLX_ACCUM_RED_SIZE,   8,
 		GLX_ACCUM_GREEN_SIZE, 8,
 		GLX_ACCUM_BLUE_SIZE,  8,
 		GLX_ACCUM_ALPHA_SIZE, 8,
 		GLX_DOUBLEBUFFER,     true,
 		GLX_DEPTH_SIZE,       24,
-		GLX_SAMPLE_BUFFERS,   1,            // Multisampling
-		GLX_SAMPLES,          samples,      // 4 x Antialiasing
+		GLX_SAMPLE_BUFFERS,   1,       // Multisampling
+		GLX_SAMPLES,          samples, // 4 x Antialiasing
 		0
 	};
 
@@ -145,8 +150,17 @@ Surface::set_map_event (GdkEventAny* event)
 {
 	map_connection .disconnect ();
 
-	context .reset (new WindowContext (gdk_x11_display_get_xdisplay (get_display () -> gobj ()),
-	                                   gdk_x11_window_get_xid (get_window () -> gobj ())));
+	if (sharingContext)
+	{
+		context .reset (new WindowContext (gdk_x11_display_get_xdisplay (get_display () -> gobj ()),
+		                                   gdk_x11_window_get_xid (get_window () -> gobj ()),
+		                                   *sharingContext));
+	}
+	else
+	{
+		context .reset (new WindowContext (gdk_x11_display_get_xdisplay (get_display () -> gobj ()),
+		                                   gdk_x11_window_get_xid (get_window () -> gobj ())));
+	}
 
 	if (makeCurrent ())
 	{
@@ -227,6 +241,7 @@ Surface::dispose ()
 	draw_connection .disconnect ();
 
 	context .reset ();
+	sharingContext .reset ();
 }
 
 bool

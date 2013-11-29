@@ -100,8 +100,8 @@ private:
 	on_diffuse_draw (const Cairo::RefPtr <Cairo::Context> &) final;
 
 	virtual
-	bool
-	on_diffuse_released (GdkEventButton*) final;
+	void
+	on_diffuse_clicked () final;
 
 	void
 	on_diffuseColor ();
@@ -111,8 +111,8 @@ private:
 	on_specular_draw (const Cairo::RefPtr <Cairo::Context> &) final;
 
 	virtual
-	bool
-	on_specular_released (GdkEventButton*) final;
+	void
+	on_specular_clicked () final;
 
 	void
 	on_specularColor ();
@@ -122,8 +122,8 @@ private:
 	on_emissive_draw (const Cairo::RefPtr <Cairo::Context> &) final;
 
 	virtual
-	bool
-	on_emissive_released (GdkEventButton*) final;
+	void
+	on_emissive_clicked () final;
 
 	void
 	on_emissiveColor ();
@@ -148,8 +148,8 @@ private:
 	on_backDiffuse_draw (const Cairo::RefPtr <Cairo::Context> &) final;
 
 	virtual
-	bool
-	on_backDiffuse_released (GdkEventButton*) final;
+	void
+	on_backDiffuse_clicked () final;
 
 	virtual
 	void
@@ -160,8 +160,8 @@ private:
 	on_backSpecular_draw (const Cairo::RefPtr <Cairo::Context> &) final;
 
 	virtual
-	bool
-	on_backSpecular_released (GdkEventButton*) final;
+	void
+	on_backSpecular_clicked () final;
 
 	virtual
 	void
@@ -172,8 +172,8 @@ private:
 	on_backEmissive_draw (const Cairo::RefPtr <Cairo::Context> &) final;
 
 	virtual
-	bool
-	on_backEmissive_released (GdkEventButton*) final;
+	void
+	on_backEmissive_clicked () final;
 
 	virtual
 	void
@@ -199,8 +199,8 @@ private:
 	bool
 	on_color_draw (const Cairo::RefPtr <Cairo::Context> &, const X3D::Color3f &, const X3D::Color3f &, Gtk::DrawingArea &);
 
-	bool
-	on_color_released (GdkEventButton*, Gtk::ColorSelectionDialog &, const X3D::Color3f &, const X3D::Color3f &);
+	void
+	on_color_clicked (Gtk::ColorSelectionDialog &, const X3D::Color3f &, const X3D::Color3f &);
 
 	void
 	on_color (Gtk::ColorSelectionDialog &, X3D::SFColor &, X3D::SFColor &, Gtk::DrawingArea &);

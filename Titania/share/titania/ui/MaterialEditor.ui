@@ -267,69 +267,6 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkEventBox" id="DiffuseEventbox">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <signal name="button-release-event" handler="on_diffuse_released" swapped="no"/>
-                            <child>
-                              <object class="GtkDrawingArea" id="DiffuseArea">
-                                <property name="width_request">180</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <signal name="draw" handler="on_diffuse_draw" swapped="no"/>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="left_attach">1</property>
-                            <property name="top_attach">0</property>
-                            <property name="width">1</property>
-                            <property name="height">1</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkEventBox" id="SpecularEventbox">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <signal name="button-release-event" handler="on_specular_released" swapped="no"/>
-                            <child>
-                              <object class="GtkDrawingArea" id="SpecularArea">
-                                <property name="width_request">180</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <signal name="draw" handler="on_specular_draw" swapped="no"/>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="left_attach">1</property>
-                            <property name="top_attach">1</property>
-                            <property name="width">1</property>
-                            <property name="height">1</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkEventBox" id="EmissiveEventbox">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <signal name="button-release-event" handler="on_emissive_released" swapped="no"/>
-                            <child>
-                              <object class="GtkDrawingArea" id="EmissiveArea">
-                                <property name="width_request">180</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <signal name="draw" handler="on_emissive_draw" swapped="no"/>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="left_attach">1</property>
-                            <property name="top_attach">2</property>
-                            <property name="width">1</property>
-                            <property name="height">1</property>
-                          </packing>
-                        </child>
-                        <child>
                           <object class="GtkScale" id="AmbientScale">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
@@ -378,6 +315,73 @@
                           <packing>
                             <property name="left_attach">1</property>
                             <property name="top_attach">6</property>
+                            <property name="width">1</property>
+                            <property name="height">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="DiffuseButton">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="receives_default">True</property>
+                            <signal name="clicked" handler="on_diffuse_clicked" swapped="no"/>
+                            <child>
+                              <object class="GtkDrawingArea" id="DiffuseArea">
+                                <property name="width_request">180</property>
+                                <property name="height_request">12</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <signal name="draw" handler="on_diffuse_draw" swapped="no"/>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">0</property>
+                            <property name="width">1</property>
+                            <property name="height">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="SpecularButton">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="receives_default">True</property>
+                            <signal name="clicked" handler="on_specular_clicked" swapped="no"/>
+                            <child>
+                              <object class="GtkDrawingArea" id="SpecularArea">
+                                <property name="height_request">12</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <signal name="draw" handler="on_specular_draw" swapped="no"/>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">1</property>
+                            <property name="width">1</property>
+                            <property name="height">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="EmissiveButton">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="receives_default">True</property>
+                            <signal name="clicked" handler="on_emissive_clicked" swapped="no"/>
+                            <child>
+                              <object class="GtkDrawingArea" id="EmissiveArea">
+                                <property name="height_request">12</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <signal name="draw" handler="on_emissive_draw" swapped="no"/>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">2</property>
                             <property name="width">1</property>
                             <property name="height">1</property>
                           </packing>
@@ -508,69 +512,6 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkEventBox" id="BackDiffuseEventbox">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <signal name="button-release-event" handler="on_backDiffuse_released" swapped="no"/>
-                            <child>
-                              <object class="GtkDrawingArea" id="BackDiffuseArea">
-                                <property name="width_request">180</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <signal name="draw" handler="on_backDiffuse_draw" swapped="no"/>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="left_attach">1</property>
-                            <property name="top_attach">0</property>
-                            <property name="width">1</property>
-                            <property name="height">1</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkEventBox" id="BackSpecularEventbox">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <signal name="button-release-event" handler="on_backSpecular_released" swapped="no"/>
-                            <child>
-                              <object class="GtkDrawingArea" id="BackSpecularArea">
-                                <property name="width_request">180</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <signal name="draw" handler="on_backSpecular_draw" swapped="no"/>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="left_attach">1</property>
-                            <property name="top_attach">1</property>
-                            <property name="width">1</property>
-                            <property name="height">1</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkEventBox" id="BackEmissiveEventbox">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <signal name="button-release-event" handler="on_backEmissive_released" swapped="no"/>
-                            <child>
-                              <object class="GtkDrawingArea" id="BackEmissiveArea">
-                                <property name="width_request">180</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <signal name="draw" handler="on_backEmissive_draw" swapped="no"/>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="left_attach">1</property>
-                            <property name="top_attach">2</property>
-                            <property name="width">1</property>
-                            <property name="height">1</property>
-                          </packing>
-                        </child>
-                        <child>
                           <object class="GtkScale" id="BackAmbientScale">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
@@ -620,6 +561,73 @@
                           <packing>
                             <property name="left_attach">1</property>
                             <property name="top_attach">6</property>
+                            <property name="width">1</property>
+                            <property name="height">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="BackDiffuseButton">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="receives_default">True</property>
+                            <signal name="clicked" handler="on_backDiffuse_clicked" swapped="no"/>
+                            <child>
+                              <object class="GtkDrawingArea" id="BackDiffuseArea">
+                                <property name="width_request">180</property>
+                                <property name="height_request">12</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <signal name="draw" handler="on_backDiffuse_draw" swapped="no"/>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">0</property>
+                            <property name="width">1</property>
+                            <property name="height">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="BackSpecularButton">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="receives_default">True</property>
+                            <signal name="clicked" handler="on_backSpecular_clicked" swapped="no"/>
+                            <child>
+                              <object class="GtkDrawingArea" id="BackSpecularArea">
+                                <property name="height_request">12</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <signal name="draw" handler="on_backSpecular_draw" swapped="no"/>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">1</property>
+                            <property name="width">1</property>
+                            <property name="height">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="BackEmissiveButton">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="receives_default">True</property>
+                            <signal name="clicked" handler="on_backEmissive_clicked" swapped="no"/>
+                            <child>
+                              <object class="GtkDrawingArea" id="BackEmissiveArea">
+                                <property name="height_request">12</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <signal name="draw" handler="on_backEmissive_draw" swapped="no"/>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">2</property>
                             <property name="width">1</property>
                             <property name="height">1</property>
                           </packing>

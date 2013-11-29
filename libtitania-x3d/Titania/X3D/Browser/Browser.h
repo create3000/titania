@@ -65,6 +65,8 @@ public:
 
 	Browser ();
 
+	Browser (const Browser &);
+
 
 private:
 

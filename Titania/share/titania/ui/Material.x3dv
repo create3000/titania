@@ -51,3 +51,13 @@ DEF Sphere Transform {
     geometry Sphere { }
   }
 }
+
+Script {
+  url "vrmlscript:
+function initialize ()
+{
+	Browser .setBrowserOption ('PrimitiveQuality', 'HIGH');
+}
+"
+  directOutput TRUE
+}

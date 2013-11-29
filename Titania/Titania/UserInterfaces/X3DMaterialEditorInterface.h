@@ -155,30 +155,6 @@ public:
 	getFrontAndBackButton () const
 	{ return *m_frontAndBackButton; }
 
-	Gtk::EventBox &
-	getDiffuseEventbox () const
-	{ return *m_diffuseEventbox; }
-
-	Gtk::DrawingArea &
-	getDiffuseArea () const
-	{ return *m_diffuseArea; }
-
-	Gtk::EventBox &
-	getSpecularEventbox () const
-	{ return *m_specularEventbox; }
-
-	Gtk::DrawingArea &
-	getSpecularArea () const
-	{ return *m_specularArea; }
-
-	Gtk::EventBox &
-	getEmissiveEventbox () const
-	{ return *m_emissiveEventbox; }
-
-	Gtk::DrawingArea &
-	getEmissiveArea () const
-	{ return *m_emissiveArea; }
-
 	Gtk::Scale &
 	getAmbientScale () const
 	{ return *m_ambientScale; }
@@ -191,33 +167,33 @@ public:
 	getTransparencyScale () const
 	{ return *m_transparencyScale; }
 
+	Gtk::Button &
+	getDiffuseButton () const
+	{ return *m_diffuseButton; }
+
+	Gtk::DrawingArea &
+	getDiffuseArea () const
+	{ return *m_diffuseArea; }
+
+	Gtk::Button &
+	getSpecularButton () const
+	{ return *m_specularButton; }
+
+	Gtk::DrawingArea &
+	getSpecularArea () const
+	{ return *m_specularArea; }
+
+	Gtk::Button &
+	getEmissiveButton () const
+	{ return *m_emissiveButton; }
+
+	Gtk::DrawingArea &
+	getEmissiveArea () const
+	{ return *m_emissiveArea; }
+
 	Gtk::Expander &
 	getBackExpander () const
 	{ return *m_backExpander; }
-
-	Gtk::EventBox &
-	getBackDiffuseEventbox () const
-	{ return *m_backDiffuseEventbox; }
-
-	Gtk::DrawingArea &
-	getBackDiffuseArea () const
-	{ return *m_backDiffuseArea; }
-
-	Gtk::EventBox &
-	getBackSpecularEventbox () const
-	{ return *m_backSpecularEventbox; }
-
-	Gtk::DrawingArea &
-	getBackSpecularArea () const
-	{ return *m_backSpecularArea; }
-
-	Gtk::EventBox &
-	getBackEmissiveEventbox () const
-	{ return *m_backEmissiveEventbox; }
-
-	Gtk::DrawingArea &
-	getBackEmissiveArea () const
-	{ return *m_backEmissiveArea; }
 
 	Gtk::Scale &
 	getBackAmbientScale () const
@@ -231,33 +207,33 @@ public:
 	getBackTransparencyScale () const
 	{ return *m_backTransparencyScale; }
 
+	Gtk::Button &
+	getBackDiffuseButton () const
+	{ return *m_backDiffuseButton; }
+
+	Gtk::DrawingArea &
+	getBackDiffuseArea () const
+	{ return *m_backDiffuseArea; }
+
+	Gtk::Button &
+	getBackSpecularButton () const
+	{ return *m_backSpecularButton; }
+
+	Gtk::DrawingArea &
+	getBackSpecularArea () const
+	{ return *m_backSpecularArea; }
+
+	Gtk::Button &
+	getBackEmissiveButton () const
+	{ return *m_backEmissiveButton; }
+
+	Gtk::DrawingArea &
+	getBackEmissiveArea () const
+	{ return *m_backEmissiveArea; }
+
 	virtual
 	void
 	on_frontAndBackButton_toggled () = 0;
-
-	virtual
-	bool
-	on_diffuse_released (GdkEventButton* event) = 0;
-
-	virtual
-	bool
-	on_diffuse_draw (const::Cairo::RefPtr < ::Cairo::Context> & cr) = 0;
-
-	virtual
-	bool
-	on_specular_released (GdkEventButton* event) = 0;
-
-	virtual
-	bool
-	on_specular_draw (const::Cairo::RefPtr < ::Cairo::Context> & cr) = 0;
-
-	virtual
-	bool
-	on_emissive_released (GdkEventButton* event) = 0;
-
-	virtual
-	bool
-	on_emissive_draw (const::Cairo::RefPtr < ::Cairo::Context> & cr) = 0;
 
 	virtual
 	void
@@ -272,28 +248,28 @@ public:
 	on_transparency () = 0;
 
 	virtual
-	bool
-	on_backDiffuse_released (GdkEventButton* event) = 0;
+	void
+	on_diffuse_clicked () = 0;
 
 	virtual
 	bool
-	on_backDiffuse_draw (const::Cairo::RefPtr < ::Cairo::Context> & cr) = 0;
+	on_diffuse_draw (const::Cairo::RefPtr < ::Cairo::Context> & cr) = 0;
+
+	virtual
+	void
+	on_specular_clicked () = 0;
 
 	virtual
 	bool
-	on_backSpecular_released (GdkEventButton* event) = 0;
+	on_specular_draw (const::Cairo::RefPtr < ::Cairo::Context> & cr) = 0;
+
+	virtual
+	void
+	on_emissive_clicked () = 0;
 
 	virtual
 	bool
-	on_backSpecular_draw (const::Cairo::RefPtr < ::Cairo::Context> & cr) = 0;
-
-	virtual
-	bool
-	on_backEmissive_released (GdkEventButton* event) = 0;
-
-	virtual
-	bool
-	on_backEmissive_draw (const::Cairo::RefPtr < ::Cairo::Context> & cr) = 0;
+	on_emissive_draw (const::Cairo::RefPtr < ::Cairo::Context> & cr) = 0;
 
 	virtual
 	void
@@ -306,6 +282,30 @@ public:
 	virtual
 	void
 	on_backTransparency () = 0;
+
+	virtual
+	void
+	on_backDiffuse_clicked () = 0;
+
+	virtual
+	bool
+	on_backDiffuse_draw (const::Cairo::RefPtr < ::Cairo::Context> & cr) = 0;
+
+	virtual
+	void
+	on_backSpecular_clicked () = 0;
+
+	virtual
+	bool
+	on_backSpecular_draw (const::Cairo::RefPtr < ::Cairo::Context> & cr) = 0;
+
+	virtual
+	void
+	on_backEmissive_clicked () = 0;
+
+	virtual
+	bool
+	on_backEmissive_draw (const::Cairo::RefPtr < ::Cairo::Context> & cr) = 0;
 
 	~X3DMaterialEditorInterface ();
 
@@ -335,25 +335,25 @@ private:
 	Gtk::Box*                      m_widget;
 	Gtk::Box*                      m_previewBox;
 	Gtk::ToggleButton*             m_frontAndBackButton;
-	Gtk::EventBox*                 m_diffuseEventbox;
-	Gtk::DrawingArea*              m_diffuseArea;
-	Gtk::EventBox*                 m_specularEventbox;
-	Gtk::DrawingArea*              m_specularArea;
-	Gtk::EventBox*                 m_emissiveEventbox;
-	Gtk::DrawingArea*              m_emissiveArea;
 	Gtk::Scale*                    m_ambientScale;
 	Gtk::Scale*                    m_shininessScale;
 	Gtk::Scale*                    m_transparencyScale;
+	Gtk::Button*                   m_diffuseButton;
+	Gtk::DrawingArea*              m_diffuseArea;
+	Gtk::Button*                   m_specularButton;
+	Gtk::DrawingArea*              m_specularArea;
+	Gtk::Button*                   m_emissiveButton;
+	Gtk::DrawingArea*              m_emissiveArea;
 	Gtk::Expander*                 m_backExpander;
-	Gtk::EventBox*                 m_backDiffuseEventbox;
-	Gtk::DrawingArea*              m_backDiffuseArea;
-	Gtk::EventBox*                 m_backSpecularEventbox;
-	Gtk::DrawingArea*              m_backSpecularArea;
-	Gtk::EventBox*                 m_backEmissiveEventbox;
-	Gtk::DrawingArea*              m_backEmissiveArea;
 	Gtk::Scale*                    m_backAmbientScale;
 	Gtk::Scale*                    m_backShininessScale;
 	Gtk::Scale*                    m_backTransparencyScale;
+	Gtk::Button*                   m_backDiffuseButton;
+	Gtk::DrawingArea*              m_backDiffuseArea;
+	Gtk::Button*                   m_backSpecularButton;
+	Gtk::DrawingArea*              m_backSpecularArea;
+	Gtk::Button*                   m_backEmissiveButton;
+	Gtk::DrawingArea*              m_backEmissiveArea;
 
 };
 

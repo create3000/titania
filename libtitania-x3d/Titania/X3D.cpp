@@ -89,5 +89,17 @@ throw (Error <BROWSER_UNAVAILABLE>)
 	return browser;
 }
 
+///  6.2.3 The createBrowser service creates a new instance of a browser application.
+X3DSFNode <Browser>
+createBrowser (const X3DSFNode <Browser> & sharingBrowser)
+throw (Error <BROWSER_UNAVAILABLE>)
+{
+	std::clog << "Creating Browser ..." << std::endl;
+	X3DSFNode <Browser> browser = new Browser (*sharingBrowser);
+
+	std::clog << "Done creating Browser." << std::endl;
+	return browser;
+}
+
 } // X3D
 } // titania

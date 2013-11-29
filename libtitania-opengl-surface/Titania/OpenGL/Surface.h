@@ -70,7 +70,7 @@ public:
 	~Surface ();
 
 	void
-	set_visual (int32_t = 4);
+	set_antialiasing (int32_t = 4);
 
 	bool
 	makeCurrent () const;
@@ -87,7 +87,9 @@ public:
 
 protected:
 
-	Surface ();
+	Surface (const std::shared_ptr <WindowContext> & = nullptr);
+
+	Surface (const Surface &);
 
 	/// @name OpenGL handler
 
@@ -130,6 +132,7 @@ private:
 	sigc::connection draw_connection;
 
 	std::shared_ptr <WindowContext> context;
+	std::shared_ptr <WindowContext> sharingContext;
 
 };
 

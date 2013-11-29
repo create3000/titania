@@ -58,6 +58,11 @@ Browser::Browser () :
 	X3DBrowserSurface ()
 { }
 
+Browser::Browser (const Browser & sharingBrowser) :
+	      X3DBaseNode (this, this),
+	X3DBrowserSurface (sharingBrowser)
+{ }
+
 X3DBaseNode*
 Browser::create (X3DExecutionContext* const) const
 {

@@ -59,12 +59,14 @@ namespace puck {
 MaterialEditor::MaterialEditor (BrowserWindow* const browserWindow, X3D::MFNode nodes) :
 	          X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DMaterialEditorInterface (get_ui ("MaterialEditor.ui"), gconf_dir ()),
-	            browserSurface (X3D::createBrowser ()),
+	            browserSurface (X3D::createBrowser (browserWindow -> getBrowser ())),
 	               appearances (),
 	                  material (new X3D::Material (browserWindow -> getBrowser () -> getExecutionContext ())),
 	          twoSidedMaterial (new X3D::TwoSidedMaterial (browserWindow -> getBrowser () -> getExecutionContext ())),
 	               initialized (false)
 {
+	browserSurface -> set_antialiasing (4);
+
 	material -> setup ();
 	twoSidedMaterial -> setup ();
 
@@ -267,10 +269,10 @@ MaterialEditor::on_diffuse_draw (const Cairo::RefPtr <Cairo::Context> & context)
 	return on_color_draw (context, twoSidedMaterial -> diffuseColor (), material -> diffuseColor (), getDiffuseArea ());
 }
 
-bool
-MaterialEditor::on_diffuse_released (GdkEventButton* event)
+void
+MaterialEditor::on_diffuse_clicked ()
 {
-	return on_color_released (event, getDiffuseDialog (), twoSidedMaterial -> diffuseColor (), material -> diffuseColor ());
+	on_color_clicked (getDiffuseDialog (), twoSidedMaterial -> diffuseColor (), material -> diffuseColor ());
 }
 
 void
@@ -287,10 +289,10 @@ MaterialEditor::on_specular_draw (const Cairo::RefPtr <Cairo::Context> & context
 	return on_color_draw (context, twoSidedMaterial -> specularColor (), material -> specularColor (), getSpecularArea ());
 }
 
-bool
-MaterialEditor::on_specular_released (GdkEventButton* event)
+void
+MaterialEditor::on_specular_clicked ()
 {
-	return on_color_released (event, getSpecularDialog (), twoSidedMaterial -> specularColor (), material -> specularColor ());
+	on_color_clicked (getSpecularDialog (), twoSidedMaterial -> specularColor (), material -> specularColor ());
 }
 
 void
@@ -307,10 +309,10 @@ MaterialEditor::on_emissive_draw (const Cairo::RefPtr <Cairo::Context> & context
 	return on_color_draw (context, twoSidedMaterial -> emissiveColor (), material -> emissiveColor (), getEmissiveArea ());
 }
 
-bool
-MaterialEditor::on_emissive_released (GdkEventButton* event)
+void
+MaterialEditor::on_emissive_clicked ()
 {
-	return on_color_released (event, getEmissiveDialog (), twoSidedMaterial -> emissiveColor (), material -> emissiveColor ());
+	on_color_clicked (getEmissiveDialog (), twoSidedMaterial -> emissiveColor (), material -> emissiveColor ());
 }
 
 void
@@ -365,10 +367,10 @@ MaterialEditor::on_backDiffuse_draw (const Cairo::RefPtr <Cairo::Context> & cont
 	return on_color_draw (context, twoSidedMaterial -> backDiffuseColor (), twoSidedMaterial -> backDiffuseColor (), getBackDiffuseArea ());
 }
 
-bool
-MaterialEditor::on_backDiffuse_released (GdkEventButton* event)
+void
+MaterialEditor::on_backDiffuse_clicked ()
 {
-	return on_color_released (event, getBackDiffuseDialog (), twoSidedMaterial -> backDiffuseColor (), twoSidedMaterial -> backDiffuseColor ());
+	on_color_clicked (getBackDiffuseDialog (), twoSidedMaterial -> backDiffuseColor (), twoSidedMaterial -> backDiffuseColor ());
 }
 
 void
@@ -385,10 +387,10 @@ MaterialEditor::on_backSpecular_draw (const Cairo::RefPtr <Cairo::Context> & con
 	return on_color_draw (context, twoSidedMaterial -> backSpecularColor (), twoSidedMaterial -> backSpecularColor (), getBackSpecularArea ());
 }
 
-bool
-MaterialEditor::on_backSpecular_released (GdkEventButton* event)
+void
+MaterialEditor::on_backSpecular_clicked ()
 {
-	return on_color_released (event, getBackSpecularDialog (), twoSidedMaterial -> backSpecularColor (), twoSidedMaterial -> backSpecularColor ());
+	on_color_clicked (getBackSpecularDialog (), twoSidedMaterial -> backSpecularColor (), twoSidedMaterial -> backSpecularColor ());
 }
 
 void
@@ -405,10 +407,10 @@ MaterialEditor::on_backEmissive_draw (const Cairo::RefPtr <Cairo::Context> & con
 	return on_color_draw (context, twoSidedMaterial -> backEmissiveColor (), twoSidedMaterial -> backEmissiveColor (), getBackEmissiveArea ());
 }
 
-bool
-MaterialEditor::on_backEmissive_released (GdkEventButton* event)
+void
+MaterialEditor::on_backEmissive_clicked ()
 {
-	return on_color_released (event, getBackEmissiveDialog (), twoSidedMaterial -> backEmissiveColor (), twoSidedMaterial -> backEmissiveColor ());
+	on_color_clicked (getBackEmissiveDialog (), twoSidedMaterial -> backEmissiveColor (), twoSidedMaterial -> backEmissiveColor ());
 }
 
 void
@@ -469,26 +471,21 @@ MaterialEditor::on_color_draw (const Cairo::RefPtr <Cairo::Context> & context, c
 	return true;
 }
 
-bool
-MaterialEditor::on_color_released (GdkEventButton* event, Gtk::ColorSelectionDialog & dialog, const X3D::Color3f & twoSidedColor, const X3D::Color3f & color)
+void
+MaterialEditor::on_color_clicked (Gtk::ColorSelectionDialog & dialog, const X3D::Color3f & twoSidedColor, const X3D::Color3f & color)
 {
-	if (event -> button == 1)
+	if (getFrontAndBackButton () .get_active ())
 	{
-		if (getFrontAndBackButton () .get_active ())
-		{
-			dialog .get_color_selection () -> set_current_color  (toColor (twoSidedColor));
-			dialog .get_color_selection () -> set_previous_color (toColor (twoSidedColor));
-		}
-		else
-		{
-			dialog .get_color_selection () -> set_current_color  (toColor (color));
-			dialog .get_color_selection () -> set_previous_color (toColor (color));
-		}
-
-		dialog .present ();
+		dialog .get_color_selection () -> set_current_color  (toColor (twoSidedColor));
+		dialog .get_color_selection () -> set_previous_color (toColor (twoSidedColor));
+	}
+	else
+	{
+		dialog .get_color_selection () -> set_current_color  (toColor (color));
+		dialog .get_color_selection () -> set_previous_color (toColor (color));
 	}
 
-	return true;
+	dialog .present ();
 }
 
 void

@@ -75,18 +75,16 @@ X3DBrowserSurface::X3DBrowserSurface () :
 	        viewer  (new NoneViewer (this)),
 	      keyDevice (this),
 	pointingDevice  (this)
-{
-	add_events (Gdk::BUTTON_PRESS_MASK |
-	            Gdk::POINTER_MOTION_MASK |
-	            Gdk::POINTER_MOTION_HINT_MASK |
-	            Gdk::BUTTON_RELEASE_MASK |
-	            Gdk::LEAVE_NOTIFY_MASK |
-	            Gdk::SCROLL_MASK |
-	            Gdk::KEY_PRESS_MASK |
-	            Gdk::KEY_RELEASE_MASK);
+{ }
 
-	set_can_focus (true);
-}
+
+X3DBrowserSurface::X3DBrowserSurface (const X3DBrowserSurface & sharingSurface) :
+	opengl::Surface (sharingSurface),
+	     X3DBrowser (),
+	        viewer  (new NoneViewer (this)),
+	      keyDevice (this),
+	pointingDevice  (this)
+{ }
 
 void
 X3DBrowserSurface::initialize ()
@@ -103,6 +101,17 @@ X3DBrowserSurface::initialize ()
 	//changed ()   .addInterest (this, &X3DBrowserSurface::set_changed);
 
 	setCursor (Gdk::ARROW);
+
+	add_events (Gdk::BUTTON_PRESS_MASK |
+	            Gdk::POINTER_MOTION_MASK |
+	            Gdk::POINTER_MOTION_HINT_MASK |
+	            Gdk::BUTTON_RELEASE_MASK |
+	            Gdk::LEAVE_NOTIFY_MASK |
+	            Gdk::SCROLL_MASK |
+	            Gdk::KEY_PRESS_MASK |
+	            Gdk::KEY_RELEASE_MASK);
+
+	set_can_focus (true);
 }
 
 void

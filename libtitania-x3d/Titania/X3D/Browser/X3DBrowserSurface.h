@@ -98,6 +98,8 @@ protected:
 
 	X3DBrowserSurface ();
 
+	X3DBrowserSurface (const X3DBrowserSurface &);
+
 	virtual
 	void
 	initialize () override;

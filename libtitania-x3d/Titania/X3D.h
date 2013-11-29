@@ -86,6 +86,10 @@ X3DSFNode <Browser>
 createBrowser ()
 throw (Error <BROWSER_UNAVAILABLE>);
 
+X3DSFNode <Browser>
+createBrowser (const X3DSFNode <Browser> &)
+throw (Error <BROWSER_UNAVAILABLE>);
+
 } // X3D
 } // titania
 
