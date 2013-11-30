@@ -31,7 +31,12 @@ DEF Scripting Transform {
           translation -2 0 0
           children Shape {
             appearance Appearance {
-              material Material { }
+              material DEF Artdeco1 Material {
+                ambientIntensity 0.25
+                diffuseColor 0.282435 0.0851587 0.134462
+                specularColor 0.276305 0.11431 0.139857
+                shininess 0.127273
+              }
             }
             geometry Box { }
           }
@@ -45,7 +50,7 @@ DEF Scripting Transform {
           translation 2 0 0
           children Shape {
             appearance Appearance {
-              material Material { }
+              material USE Artdeco1
             }
             geometry Box { }
           }

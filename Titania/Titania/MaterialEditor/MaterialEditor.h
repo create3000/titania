@@ -52,6 +52,7 @@
 #define __TITANIA_MATERIAL_EDITOR_MATERIAL_EDITOR_H__
 
 #include "../UserInterfaces/X3DMaterialEditorInterface.h"
+#include "../Undo/UndoStep.h"
 
 namespace titania {
 namespace puck {
@@ -206,6 +207,9 @@ private:
 
 	void
 	updateAppearance ();
+	
+	void
+	updateMaterial ();
 
 	///  @name Helper functions
 
@@ -222,6 +226,8 @@ private:
 	std::deque <X3D::X3DSFNode <X3D::Appearance>>  appearances;
 	X3D::X3DSFNode <X3D::Material>                 material;
 	X3D::X3DSFNode <X3D::TwoSidedMaterial>         twoSidedMaterial;
+	
+	std::shared_ptr <UndoStep> undoStep;
 
 	bool initialized;
 

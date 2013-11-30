@@ -105,6 +105,9 @@ public:
 
 	void
 	addUndoStep (const std::shared_ptr <UndoStep> &);
+	
+	std::shared_ptr <const UndoStep>
+	getLastUndoStep () const;
 
 	void
 	undo ();

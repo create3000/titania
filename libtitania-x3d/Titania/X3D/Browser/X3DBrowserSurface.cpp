@@ -168,7 +168,7 @@ X3DBrowserSurface::dispose ()
 	pointingDevice .dispose ();
 
 	X3DBrowser::dispose ();
-	opengl::Surface::dispose ();
+	opengl::Surface::dispose (); /// XXX
 }
 
 } // X3D

@@ -577,6 +577,24 @@ X3DBrowserEditor::getPasteStatus () const
 // Edit operations
 
 void
+X3DBrowserEditor::replaceNode (const X3D::SFNode & parent, X3D::SFNode & node, const X3D::SFNode & newValue, const UndoStepPtr & undoStep)
+{
+	auto oldValue = node;
+
+	if (oldValue)
+	{
+		if (oldValue -> getNumClones () == 1)
+			removeNodes ({ oldValue }, undoStep);
+	}
+
+	undoStep -> addVariables (parent);
+	undoStep -> addUndoFunction (std::mem_fn (&X3D::SFNode::setValue), std::ref (node), oldValue);
+	undoStep -> addRedoFunction (std::mem_fn (&X3D::SFNode::setValue), std::ref (node), newValue);
+
+	node = newValue;
+}
+
+void
 X3DBrowserEditor::removeNodes (const X3D::MFNode & nodes, const UndoStepPtr & undoStep) const
 {
 	for (const auto & node : nodes)

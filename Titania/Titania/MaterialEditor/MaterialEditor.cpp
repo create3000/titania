@@ -63,6 +63,7 @@ MaterialEditor::MaterialEditor (BrowserWindow* const browserWindow, X3D::MFNode 
 	               appearances (),
 	                  material (new X3D::Material (browserWindow -> getBrowser () -> getExecutionContext ())),
 	          twoSidedMaterial (new X3D::TwoSidedMaterial (browserWindow -> getBrowser () -> getExecutionContext ())),
+	                  undoStep (),
 	               initialized (false)
 {
 	browserSurface -> set_antialiasing (4);
@@ -176,7 +177,7 @@ void
 MaterialEditor::set_initialized ()
 {
 	on_frontAndBackButton_toggled ();
-	
+
 	initialized = true;
 }
 
@@ -208,22 +209,8 @@ MaterialEditor::on_frontAndBackButton_toggled ()
 	}
 
 	// Update material
-
-	try
-	{
-		X3D::X3DSFNode <X3D::Appearance> appearance (browserSurface -> getExecutionContext () -> getNamedNode ("Appearance"));
-
-		if (appearance)
-		{
-			if (getFrontAndBackButton () .get_active ())
-				appearance -> material () = twoSidedMaterial;
-
-			else
-				appearance -> material () = material;
-		}
-	}
-	catch (const X3D::X3DError &)
-	{ }
+	
+	updateMaterial ();
 
 	// Update color buttons
 
@@ -234,7 +221,7 @@ MaterialEditor::on_frontAndBackButton_toggled ()
 	getBackDiffuseArea ()  .queue_draw ();
 	getBackSpecularArea () .queue_draw ();
 	getBackEmissiveArea () .queue_draw ();
-	
+
 	if (getFrontAndBackButton () .get_active ())
 	{
 		getAmbientScale ()      .set_value (twoSidedMaterial -> ambientIntensity ());
@@ -255,7 +242,7 @@ MaterialEditor::on_frontAndBackButton_toggled ()
 	// Back expander
 
 	getBackExpander () .set_sensitive (getFrontAndBackButton () .get_active ());
-	
+
 	// Update browser immediately
 
 	getBrowser () -> update ();
@@ -320,7 +307,7 @@ MaterialEditor::on_emissiveColor ()
 {
 	on_color (getEmissiveDialog (), twoSidedMaterial -> emissiveColor (), material -> emissiveColor (), getEmissiveArea ());
 }
-	
+
 // Front scale widgets
 
 void
@@ -331,7 +318,7 @@ MaterialEditor::on_ambient ()
 
 	else
 		material -> ambientIntensity () = getAmbientScale () .get_value ();
-	
+
 	updateAppearance ();
 }
 
@@ -343,7 +330,7 @@ MaterialEditor::on_shininess ()
 
 	else
 		material -> shininess () = getShininessScale () .get_value ();
-	
+
 	updateAppearance ();
 }
 
@@ -355,7 +342,7 @@ MaterialEditor::on_transparency ()
 
 	else
 		material -> transparency () = getTransparencyScale () .get_value ();
-	
+
 	updateAppearance ();
 }
 
@@ -425,7 +412,7 @@ void
 MaterialEditor::on_backAmbient ()
 {
 	twoSidedMaterial -> backAmbientIntensity () = getBackAmbientScale () .get_value ();
-	
+
 	updateAppearance ();
 }
 
@@ -433,7 +420,7 @@ void
 MaterialEditor::on_backShininess ()
 {
 	twoSidedMaterial -> backShininess () = getBackShininessScale () .get_value ();
-	
+
 	updateAppearance ();
 }
 
@@ -441,7 +428,7 @@ void
 MaterialEditor::on_backTransparency ()
 {
 	twoSidedMaterial -> backTransparency () = getBackTransparencyScale () .get_value ();
-	
+
 	updateAppearance ();
 }
 
@@ -504,7 +491,7 @@ MaterialEditor::on_color (Gtk::ColorSelectionDialog & dialog, X3D::SFColor & two
 		color = color3;
 
 	// Update materials
-	
+
 	updateAppearance ();
 
 	drawingArea .queue_draw ();
@@ -515,22 +502,71 @@ MaterialEditor::updateAppearance ()
 {
 	// Update material
 
-	if (getFrontAndBackButton () .get_active ())
+	auto lastUndoStep = getBrowserWindow () -> getLastUndoStep ();
+
+	if (undoStep and lastUndoStep == undoStep)
 	{
-		for (const auto & appearance : appearances)
-			appearance -> material () = twoSidedMaterial;
+		// Update materials
+
+		getBrowser () -> update ();
+
+		browserSurface -> addEvent ();
 	}
 	else
 	{
-		for (const auto & appearance : appearances)
-			appearance -> material () = material;
+		undoStep = std::make_shared <UndoStep> (_ ("Material Change"));
+
+		undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
+
+		if (getFrontAndBackButton () .get_active ())
+		{
+			twoSidedMaterial = twoSidedMaterial -> copy (twoSidedMaterial -> getExecutionContext ());
+			twoSidedMaterial -> setup ();
+			
+			updateMaterial ();
+
+			for (const auto & appearance : appearances)
+	         getBrowserWindow () -> replaceNode (X3D::SFNode (appearance), appearance -> material (), X3D::SFNode (twoSidedMaterial), undoStep);
+		}
+		else
+		{
+			material = material -> copy (material -> getExecutionContext ());
+			material -> setup ();
+			
+			updateMaterial ();
+
+			for (const auto & appearance : appearances)
+	         getBrowserWindow () -> replaceNode (X3D::SFNode (appearance), appearance -> material (), X3D::SFNode (material), undoStep);
+		}
+
+		undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
+
+		getBrowser () -> update ();
+
+		getBrowserWindow () -> addUndoStep (undoStep);
+
+		browserSurface -> addEvent ();
 	}
+}
 
-	// Update materials
+void
+MaterialEditor::updateMaterial ()
+{
+	try
+	{
+		X3D::X3DSFNode <X3D::Appearance> appearance (browserSurface -> getExecutionContext () -> getNamedNode ("Appearance"));
 
-	getBrowser () -> update ();
-	
-	browserSurface -> addEvent ();
+		if (appearance)
+		{
+			if (getFrontAndBackButton () .get_active ())
+				appearance -> material () = twoSidedMaterial;
+
+			else
+				appearance -> material () = material;
+		}
+	}
+	catch (const X3D::X3DError &)
+	{ }
 }
 
 // Helper functions

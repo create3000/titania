@@ -97,6 +97,10 @@ public:
 	void
 	addUndoStep (const std::shared_ptr <UndoStep> &);
 
+	std::shared_ptr <const UndoStep>
+	getLastUndoStep () const
+	{ return undoHistory .getLastUndoStep (); }
+
 	void
 	undo ();
 
@@ -115,6 +119,9 @@ public:
 	pasteNodes (const X3D::MFNode &, const UndoStepPtr &);
 
 	/// @name Edit operations
+
+	void
+	replaceNode (const X3D::SFNode &, X3D::SFNode &, const X3D::SFNode &, const UndoStepPtr &);
 
 	void
 	removeNodes (const X3D::MFNode &, const UndoStepPtr &) const;

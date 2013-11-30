@@ -70,8 +70,9 @@ X3DUserInterface::construct ()
 {
 	constructed_connection = getWidget () .signal_map () .connect (sigc::mem_fun (*this, &X3DUserInterface::set_constructed));
 
-	getWidget () .signal_map ()          .connect (sigc::mem_fun (*this, &X3DUserInterface::on_map));
-	getWindow () .signal_delete_event () .connect (sigc::mem_fun (*this, &X3DUserInterface::on_delete_event), false);
+	getWidget () .signal_map ()                .connect (sigc::mem_fun (*this, &X3DUserInterface::on_map));
+	getWindow () .signal_window_state_event () .connect (sigc::mem_fun (*this, &X3DUserInterface::on_window_state_event));
+	getWindow () .signal_delete_event ()       .connect (sigc::mem_fun (*this, &X3DUserInterface::on_delete_event), false);
 
 	userInterfaces .emplace_back (this);
 	userInterface = -- userInterfaces .end ();
@@ -99,19 +100,18 @@ X3DUserInterface::on_map ()
 }
 
 bool
+X3DUserInterface::on_window_state_event (GdkEventWindowState* event)
+{
+	getConfig () .setItem ("maximized",  bool (event -> new_window_state & GDK_WINDOW_STATE_MAXIMIZED));
+	getConfig () .setItem ("fullscreen", bool (event -> new_window_state & GDK_WINDOW_STATE_FULLSCREEN));
+
+	return false;
+}
+
+bool
 X3DUserInterface::on_delete_event (GdkEventAny*)
 {
 	return close ();
-}
-
-void
-X3DUserInterface::initialize ()
-{ }
-
-bool
-X3DUserInterface::isInitialized ()
-{
-	return not constructed_connection .connected ();
 }
 
 bool
@@ -165,6 +165,9 @@ X3DUserInterface::restoreInterface ()
 		getWindow () .resize (getConfig () .getInteger ("width"),
 		                      getConfig () .getInteger ("height"));
 	}
+
+	if (isMaximized ())
+		getWindow () .maximize ();
 }
 
 void
@@ -177,15 +180,18 @@ X3DUserInterface::saveInterfaces ()
 void
 X3DUserInterface::saveInterface ()
 {
-	int x, y, width, height;
+	if (not isMaximized () and not isFullscreen ())
+	{
+		int x, y, width, height;
 
-	getWindow () .get_position (x, y);
-	getConfig ().setItem ("x", x);
-	getConfig ().setItem ("y", y);
+		getWindow () .get_position (x, y);
+		getConfig () .setItem ("x", x);
+		getConfig () .setItem ("y", y);
 
-	getWindow () .get_size (width, height);
-	getConfig ().setItem ("width",  width);
-	getConfig ().setItem ("height", height);
+		getWindow () .get_size (width, height);
+		getConfig () .setItem ("width",  width);
+		getConfig () .setItem ("height", height);
+	}
 }
 
 void
@@ -205,7 +211,12 @@ X3DUserInterface::saveSession ()
 bool
 X3DUserInterface::close ()
 {
-	__LOG__ << std::endl;
+	for (const auto & dialog : dialogs)
+	{
+		dialog .second -> saveInterfaces ();
+		dialog .second -> saveInterface ();
+		dialog .second -> saveSession ();
+	}
 
 	dialogs .clear ();
 

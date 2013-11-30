@@ -116,21 +116,7 @@ MagicImport::material (const X3D::X3DSFNode <X3D::Scene> & scene, const UndoStep
 	                  auto appearance = dynamic_cast <X3D::Appearance*> (node .getValue ());
 
 	                  if (appearance)
-	                  {
-	                     auto oldMaterial = appearance -> material ();
-
-	                     if (oldMaterial)
-	                     {
-	                        if (oldMaterial -> getNumClones () == 1)
-										getBrowserWindow () -> removeNodes ({ oldMaterial }, undoStep);
-								}
-
-	                     undoStep -> addVariables (node);
-	                     undoStep -> addUndoFunction (std::mem_fn (&X3D::SFNode::setValue), std::ref (appearance -> material ()), oldMaterial);
-	                     undoStep -> addRedoFunction (std::mem_fn (&X3D::SFNode::setValue), std::ref (appearance -> material ()), material);
-
-	                     appearance -> material () = material;
-							}
+	                     getBrowserWindow () -> replaceNode (node, appearance -> material (), material, undoStep);
 
 	                  return true;
 						});

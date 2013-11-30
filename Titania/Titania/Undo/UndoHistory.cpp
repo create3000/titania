@@ -89,6 +89,15 @@ UndoHistory::addUndoStep (const std::shared_ptr <UndoStep> & undoStep)
 
 	changed () .processInterests ();
 }
+	
+std::shared_ptr <const UndoStep>
+UndoHistory::getLastUndoStep () const
+{
+	if (list .empty ())
+		return std::shared_ptr <const UndoStep> ();
+
+	return std::static_pointer_cast <const UndoStep> (list [index]);
+}
 
 void
 UndoHistory::undo ()

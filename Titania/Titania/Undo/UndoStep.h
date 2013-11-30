@@ -99,10 +99,10 @@ public:
 	{ return undoFunctions .size (); }
 
 	void
-	undo () const;
+	undo ();
 
 	void
-	redo () const;
+	redo ();
 
 
 private:

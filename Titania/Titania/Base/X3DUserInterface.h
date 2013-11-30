@@ -110,15 +110,29 @@ protected:
 
 	virtual
 	void
-	initialize ();
+	initialize ()
+	{ }
 
 	bool
-	isInitialized ();
+	isInitialized () const
+	{ return not constructed_connection .connected (); }
 
 	/// @name Member access
+	
+	bool
+	isMaximized () const
+	{ return getConfig () .getBoolean ("maximized"); }
+
+	bool
+	isFullscreen () const
+	{ return getConfig () .getBoolean ("fullscreen"); }
 
 	Configuration &
 	getConfig ()
+	{ return gconf; }
+
+	const Configuration &
+	getConfig () const
 	{ return gconf; }
 
 	/// @name Dialog handling
@@ -151,6 +165,9 @@ private:
 
 	void
 	on_map ();
+	
+	bool
+	on_window_state_event (GdkEventWindowState*);
 
 	bool
 	on_delete_event (GdkEventAny*);

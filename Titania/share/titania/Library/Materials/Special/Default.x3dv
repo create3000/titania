@@ -1,0 +1,12 @@
+#X3D V3.3 utf8 Titania
+
+META "titania magic" "Material"
+
+Transform {
+  children Shape {
+    appearance Appearance {
+      material DEF Default Material { }
+    }
+    geometry Sphere { }
+  }
+}
