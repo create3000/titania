@@ -122,12 +122,12 @@ protected:
 	{ return gconf; }
 
 	/// @name Dialog handling
+	
+	bool
+	isDialogOpen (const std::string &) const;
 
 	void
-	addDialog (X3DUserInterface* const);
-
-	void
-	removeDialog (X3DUserInterface* const);
+	addDialog (const std::string &, const std::shared_ptr <X3DUserInterface> &);
 
 	/// @name Destruction
 
@@ -140,7 +140,11 @@ private:
 
 	typedef std::list <X3DUserInterface*> UserInterfaceArray;
 
+	///  @name Construction
+
 	X3DUserInterface (const X3DUserInterface &) = delete;
+
+	///  @name Event handlers
 
 	void
 	set_constructed ();
@@ -150,6 +154,11 @@ private:
 
 	bool
 	on_delete_event (GdkEventAny*);
+
+	///  @name Operations
+
+	void
+	removeDialog (const std::string &);
 
 	void
 	restoreInterface ();
@@ -170,7 +179,7 @@ private:
 	sigc::connection              constructed_connection;
 	UserInterfaceArray::iterator  userInterface;
 
-	std::set <X3DUserInterface*> dialogs;
+	std::map <std::string, std::shared_ptr <X3DUserInterface>> dialogs;
 
 
 };

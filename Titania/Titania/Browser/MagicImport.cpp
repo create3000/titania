@@ -109,6 +109,8 @@ MagicImport::material (const X3D::X3DSFNode <X3D::Scene> & scene, const UndoStep
 
 	// Assign material to all appearances in selection
 
+	undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
+
 	X3D::traverse (selection, [this, &material, &undoStep] (X3D::SFNode & node)
 	               {
 	                  auto appearance = dynamic_cast <X3D::Appearance*> (node .getValue ());
@@ -134,6 +136,10 @@ MagicImport::material (const X3D::X3DSFNode <X3D::Scene> & scene, const UndoStep
 						});
 
 	getBrowserWindow () -> select (selection, undoStep);
+
+	undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
+
+	getBrowser () -> update ();
 
 	return true;
 }

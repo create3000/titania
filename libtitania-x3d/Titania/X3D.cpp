@@ -92,13 +92,38 @@ throw (Error <BROWSER_UNAVAILABLE>)
 ///  6.2.3 The createBrowser service creates a new instance of a browser application.
 X3DSFNode <Browser>
 createBrowser (const X3DSFNode <Browser> & sharingBrowser)
-throw (Error <BROWSER_UNAVAILABLE>)
+throw (Error <INVALID_NODE>,
+       Error <BROWSER_UNAVAILABLE>)
 {
+	if (not sharingBrowser)
+		throw Error <INVALID_NODE> ("createBrowser: No sharingBrowser given.");
+
 	std::clog << "Creating Browser ..." << std::endl;
 	X3DSFNode <Browser> browser = new Browser (*sharingBrowser);
 
 	std::clog << "Done creating Browser." << std::endl;
 	return browser;
+}
+
+void
+removeBrowser (X3D::X3DSFNode <X3D::Browser> & browser)
+noexcept (true)
+{
+	if (not browser)
+		return;
+
+	auto xDisplay  = glXGetCurrentDisplay ();
+   auto xDrawable = glXGetCurrentDrawable ();
+	auto xContext  = glXGetCurrentContext ();
+
+	browser -> makeCurrent ();
+
+	auto xBrowserContext = glXGetCurrentContext ();
+
+	browser = nullptr;
+
+   if (xDisplay and xContext not_eq xBrowserContext)
+      glXMakeCurrent (xDisplay, xDrawable, xContext);
 }
 
 } // X3D

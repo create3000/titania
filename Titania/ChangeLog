@@ -1,5 +1,19 @@
 2013-11-30  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DUserInterface.h:
+	* MagicImport.cpp:
+	* X3DBaseInterface.h:
+	* X3DBaseInterface.cpp:
+	* BrowserWindow.cpp:
+	* X3DUserInterface.cpp:
+	* X3DBrowserEditor.h:
+	* X3DBrowserEditor.cpp:
+	* MaterialEditor.h:
+	* MaterialEditor.cpp:
+	* X3DMaterialEditorInterface.cpp: 
+
+2013-11-30  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* materials.pl:
 	* generate_components.pl:

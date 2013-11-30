@@ -60,9 +60,12 @@ namespace puck {
 class BrowserWindow;
 
 class X3DBaseInterface :
-	virtual public X3D::X3DInput, virtual public sigc::trackable
+	virtual public X3D::X3DInput,
+	virtual public sigc::trackable
 {
 public:
+
+	///  @name Member access
 
 	BrowserWindow*
 	getBrowserWindow () const
@@ -72,11 +75,15 @@ public:
 	getBrowser () const
 	{ return browser; }
 
+	///  @name Destruction
+
 	virtual
 	~X3DBaseInterface ();
 
 
 protected:
+
+	///  @name Construction
 
 	X3DBaseInterface (BrowserWindow* const, const X3D::X3DSFNode <X3D::Browser> &);
 
@@ -86,8 +93,10 @@ protected:
 
 private:
 
-	BrowserWindow*                      browserWindow;
-	const X3D::X3DSFNode <X3D::Browser> browser;
+	///  @name Members
+
+	BrowserWindow*                browserWindow;
+	X3D::X3DSFNode <X3D::Browser> browser;
 
 };
 

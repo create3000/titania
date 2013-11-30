@@ -50,7 +50,6 @@
 
 #include "BrowserWindow.h"
 
-#include "../NodePropertiesEditor/NodePropertiesEditor.h"
 #include "MagicImport.h"
 
 namespace titania {
@@ -1351,14 +1350,6 @@ X3DBrowserEditor::deselectAll (const UndoStepPtr & undoStep) const
 	undoStep -> addRedoFunction (std::mem_fn (&X3D::Selection::clear),       selection);
 
 	selection -> clear ();
-}
-
-// Toolbar
-
-void
-X3DBrowserEditor::openNodePropertiesEditor (const X3D::SFNode & node)
-{
-	addDialog (new NodePropertiesEditor (getBrowserWindow (), node));
 }
 
 // Undo functions

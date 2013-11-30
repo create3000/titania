@@ -101,7 +101,9 @@ Context::~Context ()
 {
 	if (xContext)
 	{
-		glXMakeCurrent (xDisplay, None, None);
+		if (glXGetCurrentContext () == xContext)
+			glXMakeCurrent (xDisplay, None, None);
+
 		glXDestroyContext (xDisplay, xContext);
 	}
 }

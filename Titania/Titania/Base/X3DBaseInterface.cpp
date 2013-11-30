@@ -68,6 +68,8 @@ X3DBaseInterface::X3DBaseInterface (BrowserWindow* const browserWindow, const X3
 X3DBaseInterface::~X3DBaseInterface ()
 {
 	X3D::X3DInput::dispose ();
+
+	X3D::removeBrowser (browser);
 }
 
 } // puck

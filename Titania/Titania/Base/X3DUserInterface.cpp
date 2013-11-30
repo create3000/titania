@@ -114,19 +114,24 @@ X3DUserInterface::isInitialized ()
 	return not constructed_connection .connected ();
 }
 
-void
-X3DUserInterface::addDialog (X3DUserInterface* const dialog)
+bool
+X3DUserInterface::isDialogOpen (const std::string & key) const
 {
-	dialogs .emplace (dialog);
-	dialog -> getWindow () .signal_hide () .connect (sigc::bind (sigc::mem_fun (*this, &X3DUserInterface::removeDialog), dialog), false);
+	return dialogs .find (key) not_eq dialogs .end ();
+}
+
+void
+X3DUserInterface::addDialog (const std::string & key, const std::shared_ptr <X3DUserInterface> & dialog)
+{
+	dialogs .emplace (key, dialog);
+	dialog -> getWindow () .signal_hide () .connect (sigc::bind (sigc::mem_fun (*this, &X3DUserInterface::removeDialog), key), false);
 	dialog -> getWindow () .present ();
 }
 
 void
-X3DUserInterface::removeDialog (X3DUserInterface* const dialog)
+X3DUserInterface::removeDialog (const std::string & key)
 {
-	dialogs .erase (dialog);
-	delete dialog; // Or delete in an idle handler
+	dialogs .erase (key);
 }
 
 void
@@ -200,6 +205,10 @@ X3DUserInterface::saveSession ()
 bool
 X3DUserInterface::close ()
 {
+	__LOG__ << std::endl;
+
+	dialogs .clear ();
+
 	if (this == userInterfaces .front ())
 		saveInterfaces ();
 	else

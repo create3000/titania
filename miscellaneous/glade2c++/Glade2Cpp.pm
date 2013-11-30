@@ -16,6 +16,7 @@ my %windows = ();
 $windows {$_} = true foreach qw(
 	Gtk::Window
 	Gtk::FileChooserDialog
+	Gtk::ColorSelectionDialog
 	Gtk::MessageDialog
 	Gtk::Dialog
 );
@@ -314,7 +315,8 @@ sub generate
 	$self -> {h_signal_handler}   = { };
 	$self -> {cpp_signal_handler} = { };
 	$self -> {class_name}         = "$self->{class_prefix}${name}$self->{class_suffix}";
-	
+	$self -> {windows}            = { }; 
+
 	say $self -> {class_name};
 
 	my $h_tmp   = "/tmp/glad2cpp.$name.h";
@@ -542,7 +544,7 @@ sub generate
 	# Destructor
 	say OUT "$self->{class_name}\::~$self->{class_name} ()";
 	say OUT "{";
-	say OUT "delete $_;" foreach keys %{$self->{windows}};
+	say OUT "delete $_;" foreach keys %{$self -> {windows}};
 	say OUT "}";
 
 	# Namespaces end

@@ -556,6 +556,8 @@ MaterialEditor::toColor (float value)
 MaterialEditor::~MaterialEditor ()
 {
 	__LOG__ << std::endl;
+
+	X3D::removeBrowser (browserSurface);
 }
 
 } // puck

@@ -53,6 +53,7 @@
 #include "../Configuration/config.h"
 #include "../OutlineEditor/OutlineTreeModel.h"
 #include "../MaterialEditor/MaterialEditor.h"
+#include "../NodePropertiesEditor/NodePropertiesEditor.h"
 
 #include <Titania/String.h>
 #include <Titania/X3D/Debug.h>
@@ -944,16 +945,21 @@ BrowserWindow::on_standard_size ()
 void
 BrowserWindow::on_node_properties_editor ()
 {
-	if (getBrowser () -> getSelection () -> getChildren () .size ())
-		openNodePropertiesEditor (getBrowser () -> getSelection () -> getChildren () .back ());
-}
+	if (isDialogOpen ("NodePropertiesEditor"))
+		return;
 
+	if (getBrowser () -> getSelection () -> getChildren () .size ())
+		addDialog ("NodePropertiesEditor", std::make_shared <NodePropertiesEditor> (getBrowserWindow (), getBrowser () -> getSelection () -> getChildren () .back ()));
+}
 
 void
 BrowserWindow::on_material_editor ()
 {
+	if (isDialogOpen ("MaterialEditor"))
+		return;
+
 	if (getBrowser () -> getSelection () -> getChildren () .size ())
-		addDialog (new MaterialEditor (getBrowserWindow (), getBrowser () -> getSelection () -> getChildren ()));
+		addDialog ("MaterialEditor", std::make_shared <MaterialEditor> (getBrowserWindow (), getBrowser () -> getSelection () -> getChildren ()));
 }
 
 // Browser dashboard handling

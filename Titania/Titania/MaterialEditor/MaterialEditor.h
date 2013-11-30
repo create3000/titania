@@ -88,11 +88,11 @@ private:
 
 	void
 	set_initialized ();
-	
+
 	virtual
 	void
 	on_frontAndBackButton_toggled () final;
-	
+
 	///  @name Front color handler
 
 	virtual
@@ -127,7 +127,7 @@ private:
 
 	void
 	on_emissiveColor ();
-	
+
 	virtual
 	void
 	on_ambient () final;
@@ -140,7 +140,6 @@ private:
 	void
 	on_transparency () final;
 
-	
 	///  @name Back color handler
 
 	virtual
@@ -194,7 +193,7 @@ private:
 	///  @name Operations for all colors
 
 	void
-	initDialog (Gtk::ColorSelectionDialog &, void (MaterialEditor::*callback) ());
+	initDialog (Gtk::ColorSelectionDialog &, void (MaterialEditor::* callback)());
 
 	bool
 	on_color_draw (const Cairo::RefPtr <Cairo::Context> &, const X3D::Color3f &, const X3D::Color3f &, Gtk::DrawingArea &);
@@ -218,12 +217,12 @@ private:
 
 	///  @name Members
 
-	const X3D::X3DSFNode <X3D::Browser>           browserSurface;
-	std::deque <X3D::X3DSFNode <X3D::Appearance>> appearances;
-	
-	X3D::X3DSFNode <X3D::Material>         material;
-	X3D::X3DSFNode <X3D::TwoSidedMaterial> twoSidedMaterial;
-	
+	X3D::X3DSFNode <X3D::Browser> browserSurface;
+
+	std::deque <X3D::X3DSFNode <X3D::Appearance>>  appearances;
+	X3D::X3DSFNode <X3D::Material>                 material;
+	X3D::X3DSFNode <X3D::TwoSidedMaterial>         twoSidedMaterial;
+
 	bool initialized;
 
 };

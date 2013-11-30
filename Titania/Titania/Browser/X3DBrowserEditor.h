@@ -164,11 +164,6 @@ public:
 	void
 	saveMatrix (const X3D::SFNode &, const UndoStepPtr &) const;
 
-	/// @name Editor handling
-
-	void
-	openNodePropertiesEditor (const X3D::SFNode &);
-
 
 protected:
 
