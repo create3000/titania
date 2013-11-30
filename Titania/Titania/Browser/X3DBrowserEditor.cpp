@@ -51,6 +51,7 @@
 #include "BrowserWindow.h"
 
 #include "../NodePropertiesEditor/NodePropertiesEditor.h"
+#include "MagicImport.h"
 
 namespace titania {
 namespace puck {
@@ -59,9 +60,10 @@ X3DBrowserEditor::X3DBrowserEditor (const basic::uri & worldURL) :
 	X3DBrowserWidget (worldURL),
 	        modified (false),
 	   saveConfirmed (false),
+	           scene (),
+	     magicImport (new MagicImport (getBrowserWindow ())),
 	     undoHistory (),
-	        matrices (),
-	           scene ()
+	        matrices ()
 { }
 
 void
@@ -267,6 +269,9 @@ X3DBrowserEditor::import (const basic::uri & worldURL, const bool importAsInline
 void
 X3DBrowserEditor::import (const X3D::X3DSFNode <X3D::Scene> & scene, const UndoStepPtr & undoStep)
 {
+	if (magicImport -> import (scene, undoStep))
+		return;
+
 	try
 	{
 		undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
@@ -1357,7 +1362,7 @@ X3DBrowserEditor::openNodePropertiesEditor (const X3D::SFNode & node)
 }
 
 // Undo functions
-	
+
 void
 X3DBrowserEditor::saveMatrix (const X3D::SFNode & node, const UndoStepPtr & undoStep) const
 {

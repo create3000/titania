@@ -62,6 +62,7 @@ X3DBaseInterface::X3DBaseInterface (BrowserWindow* const browserWindow, const X3
 	         browser (browser)
 {
 	assert (browserWindow);
+	assert (browser);
 }
 
 X3DBaseInterface::~X3DBaseInterface ()

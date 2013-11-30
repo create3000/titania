@@ -129,6 +129,12 @@ public:
 			getValue () -> addParent (this);
 	}
 
+	template <class Up>
+	explicit
+	X3DSFNode (Up* const value) :
+		X3DSFNode (dynamic_cast <ValueType*> (value))
+	{ }
+
 	///  @name Copy
 
 	virtual
@@ -167,6 +173,10 @@ public:
 	template <class Up>
 	X3DSFNode &
 	operator = (X3DSFNode <Up> &&);
+
+	template <class Up>
+	X3DSFNode &
+	operator = (Up* const);
 
 	///  @name Field services
 
@@ -355,6 +365,16 @@ X3DSFNode <ValueType>::operator = (X3DSFNode <Up> && field)
 {
 	X3DField <ValueType*>::operator = (dynamic_cast <ValueType*> (field .getValue ()));
 	field = nullptr;
+	return *this;
+}
+
+template <class ValueType>
+template <class Up>
+inline
+X3DSFNode <ValueType> &
+X3DSFNode <ValueType>::operator = (Up* const value)
+{
+	X3DField <ValueType*>::operator = (dynamic_cast <ValueType*> (value));
 	return *this;
 }
 

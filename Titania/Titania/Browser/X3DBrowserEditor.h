@@ -57,6 +57,8 @@
 namespace titania {
 namespace puck {
 
+class MagicImport;
+
 class X3DBrowserEditor :
 	public X3DBrowserWidget
 {
@@ -97,9 +99,40 @@ public:
 
 	void
 	undo ();
-	
+
 	void
 	redo ();
+
+	/// @name Clipboard operations
+
+	void
+	cutNodes (X3D::MFNode, const UndoStepPtr &) const;
+
+	void
+	copyNodes (X3D::MFNode) const;
+
+	void
+	pasteNodes (const X3D::MFNode &, const UndoStepPtr &);
+
+	/// @name Edit operations
+
+	void
+	removeNodes (const X3D::MFNode &, const UndoStepPtr &) const;
+
+	X3D::SFNode
+	groupNodes (const X3D::MFNode &, const UndoStepPtr &) const;
+
+	X3D::MFNode
+	ungroupNodes (const X3D::MFNode &, const UndoStepPtr &) const;
+
+	bool
+	addToGroup (const X3D::SFNode &, const X3D::MFNode &, const UndoStepPtr &) const;
+
+	void
+	detachFromGroup (X3D::MFNode, bool, const UndoStepPtr &) const;
+
+	X3D::MFNode
+	createParentGroup (const X3D::MFNode &, const UndoStepPtr &) const;
 
 	void
 	addRoute (X3D::X3DExecutionContext* const, const X3D::SFNode &, const std::string &, const X3D::SFNode &, const std::string &, const UndoStepPtr &) const
@@ -127,7 +160,7 @@ public:
 
 	void
 	deselectAll (const UndoStepPtr &) const;
-	
+
 	void
 	saveMatrix (const X3D::SFNode &, const UndoStepPtr &) const;
 
@@ -152,46 +185,17 @@ protected:
 	restoreSession () final;
 
 	/// @name Undo
-	
+
 	void
 	set_undoHistory ();
 
 	/// @name Clipboard operations
 
 	void
-	cutNodes (X3D::MFNode, const UndoStepPtr &) const;
-
-	void
-	copyNodes (X3D::MFNode) const;
-
-	void
-	pasteNodes (const X3D::MFNode &, const UndoStepPtr &);
-
-	void
 	updatePasteStatus ();
 
 	bool
 	getPasteStatus () const;
-
-	/// @name Edit operations
-
-	void
-	removeNodes (const X3D::MFNode &, const UndoStepPtr &) const;
-
-	X3D::SFNode
-	groupNodes (const X3D::MFNode &, const UndoStepPtr &) const;
-
-	X3D::MFNode
-	ungroupNodes (const X3D::MFNode &, const UndoStepPtr &) const;
-
-	bool
-	addToGroup (const X3D::SFNode &, const X3D::MFNode &, const UndoStepPtr &) const;
-
-	void
-	detachFromGroup (X3D::MFNode, bool, const UndoStepPtr &) const;
-
-	X3D::MFNode
-	createParentGroup (const X3D::MFNode &, const UndoStepPtr &) const;
 
 
 private:
@@ -201,7 +205,7 @@ private:
 
 	void
 	set_shutdown ();
-	
+
 	void
 	set_selection_active (bool);
 
@@ -277,15 +281,17 @@ private:
 
 	///  @name Members
 
-	bool modified;
-	bool saveConfirmed;
-	int  savedIndex;
+	bool                        modified;
+	bool                        saveConfirmed;
+	int                         savedIndex;
+	X3D::X3DSFNode <X3D::Scene> scene;
+
+	std::shared_ptr <MagicImport> magicImport;
+
+	using MatrixIndex = std::map <X3D::TransformHandle*, std::pair <X3D::Matrix4f, X3D::Vector3f>> ;
 
 	UndoHistory undoHistory;
-	
-	std::map <X3D::TransformHandle*, std::pair <X3D::Matrix4f, X3D::Vector3f>> matrices;
-
-	X3D::X3DSFNode <X3D::Scene> scene;
+	MatrixIndex matrices;
 
 };
 

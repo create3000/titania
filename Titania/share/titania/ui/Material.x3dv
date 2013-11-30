@@ -52,7 +52,7 @@ DEF Sphere Transform {
   }
 }
 
-Script {
+DEF PrimitiveQuality Script {
   url "vrmlscript:
 function initialize ()
 {

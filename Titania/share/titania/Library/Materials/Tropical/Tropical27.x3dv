@@ -1,9 +1,11 @@
 #X3D V3.3 utf8 Titania
 
+META "titania magic" "Material"
+
 Transform {
   children Shape {
     appearance Appearance {
-      material Material {
+      material DEF Tropical27 Material {
         ambientIntensity 0.249999
         diffuseColor 0.424238 0.424238 0.424238
         specularColor 0.168 0.168 0.168

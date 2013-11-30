@@ -145,6 +145,8 @@ Selection::setChildren (const MFNode & value)
 
 	removeChildren (difference);
 	addChildren (value);
+
+	children .addEvent ();
 }
 
 void
