@@ -59,7 +59,8 @@ enum class ViewerType
 	NONE,
 	EXAMINE,
 	WALK,
-	FLY
+	FLY,
+	LOOK_AT
 
 };
 

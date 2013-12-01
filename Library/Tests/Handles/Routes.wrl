@@ -79,6 +79,15 @@ function deleteRoute ()
   ]
 }
 
+DEF Sphere Transform {
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry Sphere { }
+  }
+}
+
 ROUTE Nested.isBound TO Above.set_bind
 ROUTE Nested.isBound TO Below.set_bind
 ROUTE Nested.enabled_changed TO Nested.set_enabled

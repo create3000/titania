@@ -180,6 +180,18 @@ MaterialEditor::set_initialized ()
 
 	initialized = true;
 }
+	
+void
+MaterialEditor::on_copy ()
+{
+	__LOG__ << std::endl;
+}
+
+void
+MaterialEditor::on_paste ()
+{
+	__LOG__ << std::endl;
+}
 
 void
 MaterialEditor::on_frontAndBackButton_toggled ()
@@ -439,6 +451,7 @@ MaterialEditor::initDialog (Gtk::ColorSelectionDialog & dialog, void (MaterialEd
 {
 	dialog .get_color_selection () -> set_has_palette (true);
 	dialog .get_color_selection () -> signal_color_changed () .connect (sigc::mem_fun (*this, callback));
+
 	dialog .property_ok_button () .get_value () -> hide ();
 	dialog .property_cancel_button () .get_value () -> hide ();
 }
@@ -506,6 +519,17 @@ MaterialEditor::updateAppearance ()
 
 	if (undoStep and lastUndoStep == undoStep)
 	{
+		if (getFrontAndBackButton () .get_active ())
+		{
+			for (const auto & appearance : appearances)
+				appearance -> material () = twoSidedMaterial;
+		}
+		else
+		{
+			for (const auto & appearance : appearances)
+				appearance -> material () = material;
+		}
+
 		// Update materials
 
 		getBrowser () -> update ();

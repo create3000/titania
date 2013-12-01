@@ -1,3 +1,22 @@
+2013-12-01  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Hit.h:
+	* Hit.cpp:
+	* ViewerType.h:
+	* X3DBrowserContext.h:
+	* X3DBrowserContext.cpp:
+	* X3DBrowserSurface.cpp:
+	* LookAtViewer.h:
+	* X3DFlyViewer.cpp:
+	* LookAtViewer.cpp:
+	* Disk2D.cpp:
+	* PointingDevice.h:
+	* ExamineViewer.cpp:
+	* PointingDevice.cpp:
+	* X3DGeometryNode.cpp: 
+
 2013-11-30  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBrowserSurface.cpp: 

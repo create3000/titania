@@ -48,28 +48,82 @@
  *
  ******************************************************************************/
 
-#include "Hit.h"
+#include "../X3DBrowserSurface.h"
+
+#include "LookAtViewer.h"
 
 namespace titania {
 namespace X3D {
 
-Hit::Hit (const double x, const double y,
-          const Matrix4d & modelViewMatrix,
-          const Line3d & hitRay,
-          const IntersectionPtr & intersection,
-          const NodeSet & sensors,
-          X3DShapeNode* const shape) :
-	              x (x),
-	              y (y),
-	modelViewMatrix (modelViewMatrix),
-	            ray (hitRay),
-	       texCoord (intersection -> hitTexCoord),
-	         normal (intersection -> hitNormal),
-	          point (intersection -> hitPoint),
-	       distance (std::abs (point .z ())),
-	        sensors (sensors),
-	          shape (shape)
+LookAtViewer::LookAtViewer (X3DBrowserSurface* const browser) :
+	X3DViewer (browser),
+	  picking (browser -> getPicking ()),
+	   isOver (false)
 { }
+
+void
+LookAtViewer::initialize ()
+{
+	X3DViewer::initialize ();
+
+	getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &LookAtViewer::on_button_release_event));
+	getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &LookAtViewer::on_motion_notify_event));
+
+	getBrowser () -> setPicking (false);
+}
+
+bool
+LookAtViewer::on_button_release_event (GdkEventButton* event)
+{
+	if (event -> button == 1)
+	{
+		if (pick (event -> x, getBrowser () -> get_height () - event -> y))
+		{
+			auto hit = getBrowser () -> getHits () .front ();
+				
+			getActiveViewpoint () -> lookAt (hit -> shape -> getBBox () * Matrix4f (hit -> modelViewMatrix) * getActiveViewpoint () -> getTransformationMatrix ());
+		}
+	}
+
+	return false;
+}
+
+bool
+LookAtViewer::on_motion_notify_event (GdkEventMotion* event)
+{
+	if (pick (event -> x, getBrowser () -> get_height () - event -> y))
+	{
+		if (not isOver)
+		{
+			getBrowser () -> setCursor (Gdk::TARGET);
+			isOver = true;
+		}
+	}
+	else
+	{
+		if (isOver)
+		{
+			getBrowser () -> setCursor (Gdk::ARROW);
+			isOver = false;
+		}
+	}
+
+	return false;
+}
+
+bool
+LookAtViewer::pick (const double x, const double y)
+{
+	getBrowser () -> pick (x, y);
+
+	return not getBrowser () -> getHits () .empty ();
+}
+
+LookAtViewer::~LookAtViewer ()
+{
+	getBrowser () -> setCursor (Gdk::ARROW);
+	getBrowser () -> setPicking (picking);
+}
 
 } // X3D
 } // titania

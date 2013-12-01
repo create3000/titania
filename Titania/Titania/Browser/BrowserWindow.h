@@ -421,6 +421,10 @@ private:
 
 	virtual
 	void
+	on_viewer_clicked () final;
+
+	virtual
+	void
 	on_examine_viewer_activate () final;
 
 	virtual
@@ -435,12 +439,12 @@ private:
 	void
 	on_none_viewer_activate () final;
 
+	void
+	set_look_at (bool);
+
 	virtual
 	void
 	on_look_at_all_clicked () final;
-
-	void
-	set_look_at (bool);
 
 	virtual
 	void
@@ -463,6 +467,8 @@ private:
 
 	X3D::Keys   keys;
 	basic::uri  importURL;
+	
+	X3D::ViewerType viewer;
 
 };
 

@@ -48,28 +48,66 @@
  *
  ******************************************************************************/
 
-#include "Hit.h"
+#ifndef __TITANIA_X3D_BROWSER_VIEWER_LOOCK_AT_H__
+#define __TITANIA_X3D_BROWSER_VIEWER_LOOCK_AT_H__
+
+#include "../Viewer/X3DViewer.h"
 
 namespace titania {
 namespace X3D {
 
-Hit::Hit (const double x, const double y,
-          const Matrix4d & modelViewMatrix,
-          const Line3d & hitRay,
-          const IntersectionPtr & intersection,
-          const NodeSet & sensors,
-          X3DShapeNode* const shape) :
-	              x (x),
-	              y (y),
-	modelViewMatrix (modelViewMatrix),
-	            ray (hitRay),
-	       texCoord (intersection -> hitTexCoord),
-	         normal (intersection -> hitNormal),
-	          point (intersection -> hitPoint),
-	       distance (std::abs (point .z ())),
-	        sensors (sensors),
-	          shape (shape)
-{ }
+class Browser;
+
+class LookAtViewer :
+	public X3DViewer
+{
+public:
+
+	///  @name Construction
+
+	LookAtViewer (X3DBrowserSurface* const);
+
+	///  @name Member access
+
+	virtual
+	ViewerType
+	getType () const final
+	{ return ViewerType::LOOK_AT; }
+
+	virtual
+	NavigationInfo*
+	getNavigationInfo () const final
+	{ return nullptr; }
+	
+	///  @name Destruction
+	
+	~LookAtViewer ();
+	
+private:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final;
+
+	bool
+	on_button_release_event (GdkEventButton*);
+
+	bool
+	on_motion_notify_event (GdkEventMotion*);
+	
+	bool
+	pick (const double, const double);
+
+	///  @name Members
+
+	bool picking;
+	bool isOver;
+
+};
 
 } // X3D
 } // titania
+
+#endif

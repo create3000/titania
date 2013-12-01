@@ -785,6 +785,10 @@ public:
 
 	virtual
 	void
+	on_viewer_clicked () = 0;
+
+	virtual
+	void
 	on_look_at_all_clicked () = 0;
 
 	virtual

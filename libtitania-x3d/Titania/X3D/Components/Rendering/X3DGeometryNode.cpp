@@ -218,6 +218,39 @@ X3DGeometryNode::intersect (const Line3f & line, std::deque <IntersectionPtr> & 
 
 					break;
 				}
+				case GL_QUAD_STRIP:
+				{
+					for (size_t i = first, size = first + element .count - 2; i < size; i += 2)
+					{
+						if (line .intersect (vertices [i], vertices [i + 1], vertices [i + 2], u, v, t))
+						{
+							Vector4f texCoord = i < texCoordsSize ? (1 - u - v) * texCoords [0] [i] + u * texCoords [0] [i + 1] + v * texCoords [0] [i + 2] : Vector4f (0, 0, 0, 1);
+							Vector3f normal   = (1 - u - v) * normals  [i] + u * normals  [i + 1] + v * normals  [i + 2];
+							Vector3f point    = (1 - u - v) * vertices [i] + u * vertices [i + 1] + v * vertices [i + 2];
+
+							if (isClipped (point, modelViewMatrix))
+								continue;
+
+							intersections .emplace_back (new Intersection { texCoord, normal, point });
+							intersected = true;
+						}
+
+						if (line .intersect (vertices [i + 1], vertices [i + 3], vertices [i + 2], u, v, t))
+						{
+							Vector4f texCoord = i < texCoordsSize ? (1 - u - v) * texCoords [0] [i + 1] + u * texCoords [0] [i + 3] + v * texCoords [0] [i + 2] : Vector4f (0, 0, 0, 1);
+							Vector3f normal   = (1 - u - v) * normals  [i + 1] + u * normals  [i + 3] + v * normals  [i + 2];
+							Vector3f point    = (1 - u - v) * vertices [i + 1] + u * vertices [i + 3] + v * vertices [i + 2];
+
+							if (isClipped (point, modelViewMatrix))
+								continue;
+
+							intersections .emplace_back (new Intersection { texCoord, normal, point });
+							intersected = true;
+						}
+					}
+
+					break;
+				}
 				case GL_POLYGON:
 				{
 					for (int32_t i = first + 1, size = first + element .count - 1; i < size; ++ i)
@@ -284,6 +317,22 @@ X3DGeometryNode::intersect (const Sphere3f & sphere, const Matrix4f & matrix, co
 							return true;
 
 						if (sphere .intersect (vertices [i] * matrix, vertices [i + 2] * matrix, vertices [i + 3] * matrix))
+							return true;
+					}
+
+					break;
+				}
+				case GL_QUAD_STRIP:
+				{
+					for (size_t i = first, size = first + element .count - 2; i < size; i += 4)
+					{
+						if (isClipped (vertices [i], matrix, localObjects))
+							continue;
+						
+						if (sphere .intersect (vertices [i] * matrix, vertices [i + 1] * matrix, vertices [i + 2] * matrix))
+							return true;
+
+						if (sphere .intersect (vertices [i + 1] * matrix, vertices [i + 3] * matrix, vertices [i + 2] * matrix))
 							return true;
 					}
 

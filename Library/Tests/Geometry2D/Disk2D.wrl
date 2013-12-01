@@ -8,7 +8,6 @@ Background {
 
 Viewpoint {
   position 0 1.25 8.38483
-  orientation 0 0 1 0
   centerOfRotation 0 1.25 0
 }
 
@@ -81,7 +80,6 @@ Transform {
   }
 }
 
-
 Transform {
   translation 2.5 2.5 0
   children Shape {
@@ -97,3 +95,4 @@ Transform {
   }
 }
 
+TouchSensor { }

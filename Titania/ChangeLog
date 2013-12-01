@@ -1,3 +1,16 @@
+2013-12-01  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* BrowserWindow.h:
+	* BrowserWindow.ui:
+	* BrowserWindow.cpp:
+	* MaterialEditor.ui:
+	* MaterialEditor.h:
+	* MaterialEditor.cpp:
+	* X3DBrowserWindowInterface.h:
+	* X3DMaterialEditorInterface.h:
+	* X3DBrowserWindowInterface.cpp:
+	* X3DMaterialEditorInterface.cpp: 
+
 2013-11-30  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* UndoStep.h:

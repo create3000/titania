@@ -65,11 +65,35 @@ void
 PointingDevice::initialize ()
 {
 	X3DWidget::initialize ();
+	
+	getBrowser () -> getPicking () .addInterest (this, &PointingDevice::set_picking);
 
-	getBrowser () -> signal_button_press_event   () .connect (sigc::mem_fun (*this, &PointingDevice::on_button_press_event),   false);
-	getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &PointingDevice::on_button_release_event), false);
-	getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &PointingDevice::on_motion_notify_event));
-	getBrowser () -> signal_leave_notify_event   () .connect (sigc::mem_fun (*this, &PointingDevice::on_leave_notify_event));
+	set_picking (getBrowser () -> getPicking ());
+}
+
+void
+PointingDevice::set_picking (bool value)
+{
+	if (value)
+	{
+		button_press_conncection   = getBrowser () -> signal_button_press_event   () .connect (sigc::mem_fun (*this, &PointingDevice::on_button_press_event),   false);
+		button_release_conncection = getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &PointingDevice::on_button_release_event), false);
+		motion_notify_conncection  = getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &PointingDevice::on_motion_notify_event));
+		leave_notify_conncection   = getBrowser () -> signal_leave_notify_event   () .connect (sigc::mem_fun (*this, &PointingDevice::on_leave_notify_event));
+	}
+	else
+	{
+		button_press_conncection   .disconnect ();
+		button_release_conncection .disconnect ();
+		motion_notify_conncection  .disconnect ();
+		leave_notify_conncection   .disconnect ();
+
+		getBrowser () -> setCursor (Gdk::ARROW);
+		isOver = false;
+
+		getBrowser () -> leaveNotifyEvent ();
+		getBrowser () -> buttonReleaseEvent ();
+	}
 }
 
 bool
@@ -162,6 +186,9 @@ PointingDevice::on_button_release_event (GdkEventButton* event)
 bool
 PointingDevice::on_leave_notify_event (GdkEventCrossing*)
 {
+	getBrowser () -> setCursor (Gdk::ARROW);
+	isOver = false;
+
 	getBrowser () -> leaveNotifyEvent ();
 
 	return false;

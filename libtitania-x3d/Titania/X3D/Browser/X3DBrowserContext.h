@@ -80,14 +80,14 @@
 namespace titania {
 namespace X3D {
 
-typedef chrono::clock_base <time_type> X3DClock;
-typedef std::stack <X3DRenderer*>      RendererStack;
-typedef std::stack <X3DLayerNode*>     LayerStack;
-typedef std::stack <X3DLayoutNode*>    LayoutStack;
-typedef std::stack <GLenum>            LightStack;
-typedef std::stack <GLenum>            ClipPlaneStack;
-typedef std::stack <int32_t>           TextureUnitStack;
-typedef std::vector <int32_t>          TextureArray;
+using X3DClock         = chrono::clock_base <time_type>;
+using RendererStack    = std::stack <X3DRenderer*>;
+using LayerStack       = std::stack <X3DLayerNode*>;
+using LayoutStack      = std::stack <X3DLayoutNode*>;
+using LightStack       = std::stack <GLenum>;
+using ClipPlaneStack   = std::stack <GLenum>;
+using TextureUnitStack = std::stack <int32_t>;
+using TextureArray     = std::vector <int32_t>;
 
 class X3DBrowserContext :
 	public X3DExecutionContext
@@ -286,11 +286,19 @@ public:
 
 	///  @name Picking
 
-	bool
-	intersect (const Vector4i &) const;
+	void
+	setPicking (bool value)
+	{ picking = value; }
+
+	const SFBool &
+	getPicking () const
+	{ return picking; }
 
 	void
 	pick (const double, const double);
+
+	bool
+	intersect (const Vector4i &) const;
 
 	std::deque <NodeSet> &
 	getSensors ()
@@ -304,7 +312,7 @@ public:
 	getHitRay () const;
 
 	void
-	addHit (const Matrix4d &, const IntersectionPtr &, X3DBaseNode* const);
+	addHit (const Matrix4d &, const IntersectionPtr &, X3DShapeNode* const);
 
 	const HitArray &
 	getHits () const
@@ -462,6 +470,7 @@ private:
 	X3DKeyDeviceSensorNode* keyDeviceSensorNode;
 	SFTime                  keyDeviceSensorNodeOutput;
 
+	SFBool                picking;
 	double                x;
 	double                y;
 	Line3d                hitRay;

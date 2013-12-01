@@ -85,6 +85,12 @@ X3DMaterialEditorInterface::create (const std::string & filename)
 	m_window -> set_name ("Window");
 	m_builder -> get_widget ("Widget", m_widget);
 	m_widget -> set_name ("Widget");
+	m_builder -> get_widget ("EditMenuItem", m_editMenuItem);
+	m_editMenuItem -> set_name ("EditMenuItem");
+	m_builder -> get_widget ("CopyMenuItem", m_copyMenuItem);
+	m_copyMenuItem -> set_name ("CopyMenuItem");
+	m_builder -> get_widget ("PasteMenuItem", m_pasteMenuItem);
+	m_pasteMenuItem -> set_name ("PasteMenuItem");
 	m_builder -> get_widget ("PreviewBox", m_previewBox);
 	m_previewBox -> set_name ("PreviewBox");
 	m_builder -> get_widget ("FrontAndBackButton", m_frontAndBackButton);
@@ -127,6 +133,10 @@ X3DMaterialEditorInterface::create (const std::string & filename)
 	m_backEmissiveButton -> set_name ("BackEmissiveButton");
 	m_builder -> get_widget ("BackEmissiveArea", m_backEmissiveArea);
 	m_backEmissiveArea -> set_name ("BackEmissiveArea");
+
+	// Connect object Gtk::ImageMenuItem with id 'CopyMenuItem'.
+	m_copyMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_copy));
+	m_pasteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_paste));
 
 	// Connect object Gtk::ToggleButton with id 'FrontAndBackButton'.
 	m_frontAndBackButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DMaterialEditorInterface::on_frontAndBackButton_toggled));

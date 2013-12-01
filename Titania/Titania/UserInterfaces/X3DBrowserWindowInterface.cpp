@@ -394,6 +394,9 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_handButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_hand_button_toggled));
 	m_arrowButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_arrow_button_toggled));
 
+	// Connect object Gtk::MenuToolButton with id 'ViewerButton'.
+	m_viewerButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_viewer_clicked));
+
 	// Connect object Gtk::ToolButton with id 'LookAtAllButton'.
 	m_lookAtAllButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_look_at_all_clicked));
 

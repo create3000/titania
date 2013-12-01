@@ -51,7 +51,7 @@
 #include "X3DFlyViewer.h"
 
 #include "../../Rendering/ViewVolume.h"
-#include "../Browser.h"
+#include "../X3DBrowserSurface.h"
 
 #include <Titania/Chrono/Now.h>
 #include <cmath>

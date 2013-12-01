@@ -1598,6 +1598,7 @@
                                     <property name="label" translatable="yes">Viewer Type</property>
                                     <property name="use_underline">True</property>
                                     <property name="stock_id">ExamineViewer</property>
+                                    <signal name="clicked" handler="on_viewer_clicked" swapped="no"/>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>

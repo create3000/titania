@@ -48,11 +48,11 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_POINTING_DEVICE_H__
-#define __TITANIA_X3D_BROWSER_POINTING_DEVICE_H__
+#ifndef __TITANIA_X3D_BROWSER_DEVICES_POINTING_DEVICE_H__
+#define __TITANIA_X3D_BROWSER_DEVICES_POINTING_DEVICE_H__
 
-#include "../X3DWidget.h"
 #include "../../Fields.h"
+#include "../X3DWidget.h"
 #include <gdkmm.h>
 
 namespace titania {
@@ -65,13 +65,23 @@ class PointingDevice :
 {
 public:
 
+	///  @name Construction
+
 	PointingDevice (X3DBrowserSurface* const);
 
+
 private:
+
+	///  @name Construction
 
 	virtual
 	void
 	initialize () final;
+
+	///  @name Event Handlers
+
+	void
+	set_picking (bool);
 
 	bool
 	on_motion_notify_event (GdkEventMotion*);
@@ -85,8 +95,17 @@ private:
 	bool
 	on_leave_notify_event (GdkEventCrossing*);
 
+	///  @name Operations
+
 	bool
 	pick (const double, const double);
+
+	///  @name Members
+
+	sigc::connection button_press_conncection;
+	sigc::connection button_release_conncection;
+	sigc::connection motion_notify_conncection;
+	sigc::connection leave_notify_conncection;
 
 	size_t button;
 	bool   isOver;

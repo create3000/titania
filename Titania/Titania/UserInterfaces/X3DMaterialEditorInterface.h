@@ -147,6 +147,18 @@ public:
 	getWidget () const
 	{ return *m_widget; }
 
+	Gtk::MenuItem &
+	getEditMenuItem () const
+	{ return *m_editMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getCopyMenuItem () const
+	{ return *m_copyMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getPasteMenuItem () const
+	{ return *m_pasteMenuItem; }
+
 	Gtk::Box &
 	getPreviewBox () const
 	{ return *m_previewBox; }
@@ -230,6 +242,14 @@ public:
 	Gtk::DrawingArea &
 	getBackEmissiveArea () const
 	{ return *m_backEmissiveArea; }
+
+	virtual
+	void
+	on_copy () = 0;
+
+	virtual
+	void
+	on_paste () = 0;
 
 	virtual
 	void
@@ -333,6 +353,9 @@ private:
 	Gtk::ColorSelectionDialog*     m_specularDialog;
 	Gtk::Window*                   m_window;
 	Gtk::Box*                      m_widget;
+	Gtk::MenuItem*                 m_editMenuItem;
+	Gtk::ImageMenuItem*            m_copyMenuItem;
+	Gtk::ImageMenuItem*            m_pasteMenuItem;
 	Gtk::Box*                      m_previewBox;
 	Gtk::ToggleButton*             m_frontAndBackButton;
 	Gtk::Scale*                    m_ambientScale;

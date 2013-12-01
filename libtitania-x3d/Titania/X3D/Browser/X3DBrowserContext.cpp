@@ -101,6 +101,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	                     lookAt (),
 	     activeViewpointChanged (),
 	        keyDeviceSensorNode (nullptr),
+	                    picking (true),
 	                          x (0),
 	                          y (0),
 	                     hitRay (),
@@ -134,6 +135,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	             lookAt,
 	             activeViewpointChanged,
 	             keyDeviceSensorNodeOutput,
+	             picking,
 	             overSensors,
 	             activeSensors,
 	             selection,
@@ -191,21 +193,21 @@ X3DBrowserContext::initialize ()
 
 		// Lights
 
-		for (int32_t i = renderingProperties -> maxLights () - 1; i >= 0 ; -- i)
+		for (int32_t i = renderingProperties -> maxLights () - 1; i >= 0; -- i)
 			lights .push (GL_LIGHT0 + i);
 
 		// ClipPlanes
 
-		for (int32_t i = renderingProperties -> maxClipPlanes () - 1; i >= 0 ; -- i)
+		for (int32_t i = renderingProperties -> maxClipPlanes () - 1; i >= 0; -- i)
 			clipPlanes .push (GL_CLIP_PLANE0 + i);
 
 		// TextureUnits
 
-		for (int32_t i = renderingProperties -> textureUnits () - 1; i >= 0 ; -- i)
-			textureUnits .push (i);                                             // Don't add GL_TEXTURE0
+		for (int32_t i = renderingProperties -> textureUnits () - 1; i >= 0; -- i)
+			textureUnits .push (i);                                                                                                                 // Don't add GL_TEXTURE0
 
 		for (int32_t i = renderingProperties -> textureUnits (); i < renderingProperties -> combinedTextureUnits (); ++ i)
-			combinedTextureUnits .push (i);                                     // Don't add GL_TEXTURE0
+			combinedTextureUnits .push (i);                                                                                                         // Don't add GL_TEXTURE0
 
 		downloadMutexes .resize (std::min <int32_t> (renderingProperties -> maxThreads () * 2, MAX_DOWNLOAD_THREADS));
 	}
@@ -438,14 +440,6 @@ X3DBrowserContext::setKeyDeviceSensorNode (X3DKeyDeviceSensorNode* const value)
 
 // Picking
 
-bool
-X3DBrowserContext::intersect (const Vector4i & scissor) const
-{
-	return
-		x > scissor .x () and x < scissor .x () + scissor .z () and
-		y > scissor .y () and y < scissor .y () + scissor .w ();
-}
-
 void
 X3DBrowserContext::pick (const double _x, const double _y)
 {
@@ -469,6 +463,13 @@ X3DBrowserContext::pick (const double _x, const double _y)
 	enabledSensors = { NodeSet () };
 }
 
+bool
+X3DBrowserContext::intersect (const Vector4i & scissor) const
+{
+	return x > scissor .x () and x < scissor .x () + scissor .z () and
+	       y > scissor .y () and y < scissor .y () + scissor .w ();
+}
+
 Line3d
 X3DBrowserContext::getHitRay () const
 {
@@ -483,7 +484,7 @@ X3DBrowserContext::getHitRay () const
 }
 
 void
-X3DBrowserContext::addHit (const Matrix4d & transformationMatrix, const IntersectionPtr & intersection, X3DBaseNode* const node)
+X3DBrowserContext::addHit (const Matrix4d & transformationMatrix, const IntersectionPtr & intersection, X3DShapeNode* const node)
 {
 	hits .emplace_front (new Hit (x, y, transformationMatrix, hitRay, intersection, enabledSensors .back (), node));
 }

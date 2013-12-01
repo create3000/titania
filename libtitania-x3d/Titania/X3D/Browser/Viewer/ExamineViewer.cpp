@@ -52,7 +52,7 @@
 
 #include "../../Components/Navigation/OrthoViewpoint.h"
 #include "../../Rendering/ViewVolume.h"
-#include "../Browser.h"
+#include "../X3DBrowserSurface.h"
 
 #include <cmath>
 #include <glibmm/main.h>

@@ -82,13 +82,21 @@ private:
 	void
 	initialize () final;
 
-	///  @name Event handlers
-
 	void
 	set_splashScreen ();
 
 	void
 	set_initialized ();
+
+	///  @name Event handlers
+	
+	virtual
+	void
+	on_copy () final;
+	
+	virtual
+	void
+	on_paste () final;
 
 	virtual
 	void
@@ -210,6 +218,7 @@ private:
 	
 	void
 	updateMaterial ();
+
 
 	///  @name Helper functions
 

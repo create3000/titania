@@ -54,6 +54,7 @@
 #include "../Browser/Viewer/FlyViewer.h"
 #include "../Browser/Viewer/NoneViewer.h"
 #include "../Browser/Viewer/WalkViewer.h"
+#include "../Browser/Viewer/LookAtViewer.h"
 #include "../Components/EnvironmentalEffects/Fog.h"
 #include "../Components/EnvironmentalEffects/X3DBackgroundNode.h"
 #include "../Components/Layering/X3DLayerNode.h"
@@ -151,6 +152,11 @@ X3DBrowserSurface::set_viewer (ViewerType type)
 			case ViewerType::FLY:
 			{
 				viewer .reset (new FlyViewer (this, getActiveNavigationInfo ()));
+				break;
+			}
+			case ViewerType::LOOK_AT:
+			{
+				viewer .reset (new LookAtViewer (this));
 				break;
 			}
 		}

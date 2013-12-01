@@ -72,7 +72,8 @@ BrowserWindow::BrowserWindow (const X3D::X3DSFNode <X3D::Browser> & browserSurfa
 	   historyEditor (this),
 	   outlineEditor (this),
 	            keys (),
-	       importURL ()
+	       importURL (),
+	          viewer (X3D::ViewerType::NONE)
 {
 	if (getConfig () .getBoolean ("transparent"))
 		setTransparent (true);
@@ -1000,6 +1001,24 @@ BrowserWindow::set_viewer (X3D::ViewerType type)
 	switch (type)
 	{
 		case X3D::ViewerType::NONE:
+		case X3D::ViewerType::EXAMINE:
+		case X3D::ViewerType::WALK:
+		case X3D::ViewerType::FLY:
+		{
+			viewer = type;
+		
+			if (getLookAtButton () .get_active ())
+				getLookAtButton () .set_active (false);
+
+			break;
+		}
+		case X3D::ViewerType::LOOK_AT:
+			break;
+	}
+
+	switch (type)
+	{
+		case X3D::ViewerType::NONE:
 		{
 			getViewerButton () .set_stock_id (Gtk::StockID ("gtk-cancel"));
 			break;
@@ -1017,6 +1036,13 @@ BrowserWindow::set_viewer (X3D::ViewerType type)
 		case X3D::ViewerType::FLY:
 		{
 			getViewerButton () .set_stock_id (Gtk::StockID ("FlyViewer"));
+			break;
+		}
+		case X3D::ViewerType::LOOK_AT:
+		{
+			if (not getLookAtButton () .get_active ())
+				getLookAtButton () .set_active (true);
+
 			break;
 		}
 	}
@@ -1047,6 +1073,15 @@ BrowserWindow::set_none_viewer (bool value)
 }
 
 void
+BrowserWindow::on_viewer_clicked ()
+{
+	if (getLookAtButton () .get_active ())
+	{
+		getBrowser () -> setViewer (viewer);
+	}
+}
+
+void
 BrowserWindow::on_examine_viewer_activate ()
 {
 	getBrowser () -> setViewer (X3D::ViewerType::EXAMINE);
@@ -1073,13 +1108,6 @@ BrowserWindow::on_none_viewer_activate ()
 // Look at
 
 void
-BrowserWindow::on_look_at_all_clicked ()
-{
-	if (getBrowser () -> getActiveLayer ())
-		getBrowser () -> getActiveLayer () -> lookAt ();
-}
-
-void
 BrowserWindow::set_look_at (bool value)
 {
 	getLookAtAllButton () .set_visible (value);
@@ -1087,9 +1115,25 @@ BrowserWindow::set_look_at (bool value)
 }
 
 void
+BrowserWindow::on_look_at_all_clicked ()
+{
+	if (getBrowser () -> getActiveLayer ())
+		getBrowser () -> getActiveLayer () -> lookAt ();
+}
+
+void
 BrowserWindow::on_look_at_toggled ()
 {
-	__LOG__ << std::endl;
+	if (getLookAtButton () .get_active ())
+	{
+		if (getBrowser () -> getViewer () not_eq X3D::ViewerType::LOOK_AT)
+			getBrowser () -> setViewer (X3D::ViewerType::LOOK_AT);
+	}
+	else
+	{
+		if (getBrowser () -> getViewer () not_eq viewer)
+			getBrowser () -> setViewer (viewer);
+	}
 }
 
 // Dialog response handling
