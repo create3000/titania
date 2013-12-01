@@ -98,11 +98,12 @@ MagicImport::material (const X3D::X3DSFNode <X3D::Scene> & scene, const UndoStep
 	               {
 	                  X3D::X3DSFNode <X3D::Appearance> appearance (node);
 
-	                  if (appearance and appearance -> material ())
+	                  if (appearance and X3D::x3d_cast <X3D::X3DMaterialNode*> (appearance -> material ()))
 	                  {
 	                     X3D::pushContext ();
 	                     getBrowser () -> makeCurrent ();
 	                     
+	                     importProtoDeclaration (appearance -> material ());
 	                     material = appearance -> material () -> copy (getBrowser () -> getExecutionContext ());
 	                     material -> setup ();
 	                     
@@ -152,11 +153,12 @@ MagicImport::texture (const X3D::X3DSFNode <X3D::Scene> & scene, const UndoStepP
 	               {
 	                  X3D::X3DSFNode <X3D::Appearance> appearance (node);
 
-	                  if (appearance and appearance -> texture ())
+	                  if (appearance and X3D::x3d_cast <X3D::X3DTextureNode*> (appearance -> texture ()))
 	                  {
 	                     X3D::pushContext ();
 	                     getBrowser () -> makeCurrent ();
 	                     
+	                     importProtoDeclaration (appearance -> texture ());
 	                     texture = appearance -> texture () -> copy (getBrowser () -> getExecutionContext ());
 	                     texture -> setup ();
 	                     
@@ -188,6 +190,15 @@ MagicImport::texture (const X3D::X3DSFNode <X3D::Scene> & scene, const UndoStepP
 	getBrowser () -> update ();
 
 	return true;
+}
+
+void
+MagicImport::importProtoDeclaration (const X3D::SFNode & node)
+{
+	auto prototypeInstance = dynamic_cast <X3D::X3DPrototypeInstance*> (node .getValue ());
+
+	if (prototypeInstance)
+		prototypeInstance -> getProtoDeclaration () -> copy (getBrowser () -> getExecutionContext ());
 }
 
 MagicImport::~MagicImport ()

@@ -83,7 +83,6 @@ X3DBrowserEditor::initialize ()
 void
 X3DBrowserEditor::restoreSession ()
 {
-	X3DBrowserWidget::restoreSession ();
 
 	// ImportAsInline
 	if (getConfig () .hasItem ("importAsInline"))
@@ -96,6 +95,7 @@ X3DBrowserEditor::restoreSession ()
 	else if (getConfig () .getString ("workspace") == "EDITOR")
 		getEditorMenuItem () .activate ();
 
+	X3DBrowserWidget::restoreSession ();
 }
 
 void
@@ -1014,6 +1014,8 @@ X3DBrowserEditor::ungroupNodes (const X3D::MFNode & groups, const UndoStepPtr & 
 			undoStep -> addVariables (group);
 
 			auto layers = node -> getLayers ();
+			
+			/////
 
 			auto groupingField = getGroupingField (group);
 
@@ -1057,6 +1059,8 @@ X3DBrowserEditor::ungroupNodes (const X3D::MFNode & groups, const UndoStepPtr & 
 			undoStep -> addRedoFunction (std::mem_fn (&X3D::MFNode::clear), groupingField);
 
 			groupingField -> clear ();
+			
+			///////
 
 			// Remove group from scene
 
@@ -1567,11 +1571,26 @@ throw (X3D::Error <X3D::INVALID_NODE>)
 	catch (const X3D::Error <X3D::INVALID_NAME> &)
 	{ }
 
+	// Find appropriate field
+
 	try
 	{
-		return getGroupingField (parent);
+		auto field = parent -> getField ("children");
+
+		if (field -> getType () == X3D::X3DConstants::MFNode)
+			return field;
 	}
-	catch (const X3D::Error <X3D::INVALID_NODE> &)
+	catch (const X3D::Error <X3D::INVALID_NAME> &)
+	{ }
+
+	try
+	{
+		auto field = parent -> getField ("layers");
+
+		if (field -> getType () == X3D::X3DConstants::MFNode)
+			return field;
+	}
+	catch (const X3D::Error <X3D::INVALID_NAME> &)
 	{ }
 
 	try
@@ -1583,6 +1602,22 @@ throw (X3D::Error <X3D::INVALID_NODE>)
 	}
 	catch (const X3D::Error <X3D::INVALID_NAME> &)
 	{ }
+
+	// Find last MFNode
+	
+	for (auto & field : basic::reverse_adapter (parent -> getFieldDefinitions ()))
+	{
+		if (field -> getType () == X3D::X3DConstants::MFNode)
+			return field;
+	}
+	
+	// Find last SFNode not metadata
+	
+	for (auto & field : basic::reverse_adapter (parent -> getFieldDefinitions ()))
+	{
+		if (field -> getType () == X3D::X3DConstants::SFNode and field -> getName () not_eq "metadata")
+			return field;
+	}
 
 	throw X3D::Error <X3D::INVALID_NODE> ("No appropriate container field found.");
 }

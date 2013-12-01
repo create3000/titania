@@ -89,6 +89,9 @@ private:
 	bool
 	texture (const X3D::X3DSFNode <X3D::Scene> &, const UndoStepPtr &);
 
+	void
+	importProtoDeclaration (const X3D::SFNode &);
+
 	///  @name Members
 
 	using ImportFunction = std::function <bool (const X3D::X3DSFNode <X3D::Scene> &, const UndoStepPtr &)>;
