@@ -90,7 +90,7 @@ private:
 	texture (const X3D::X3DSFNode <X3D::Scene> &, const UndoStepPtr &);
 
 	void
-	importProtoDeclaration (const X3D::SFNode &);
+	importProtoDeclaration (const X3D::SFNode &, const UndoStepPtr &);
 
 	///  @name Members
 

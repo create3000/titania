@@ -94,7 +94,7 @@ MagicImport::material (const X3D::X3DSFNode <X3D::Scene> & scene, const UndoStep
 
 	X3D::SFNode material;
 
-	X3D::traverse (scene -> getRootNodes (), [this, &material] (X3D::SFNode & node)
+	X3D::traverse (scene -> getRootNodes (), [this, &material, &undoStep] (X3D::SFNode & node)
 	               {
 	                  X3D::X3DSFNode <X3D::Appearance> appearance (node);
 
@@ -103,7 +103,7 @@ MagicImport::material (const X3D::X3DSFNode <X3D::Scene> & scene, const UndoStep
 	                     X3D::pushContext ();
 	                     getBrowser () -> makeCurrent ();
 	                     
-	                     importProtoDeclaration (appearance -> material ());
+	                     importProtoDeclaration (appearance -> material (), undoStep);
 	                     material = appearance -> material () -> copy (getBrowser () -> getExecutionContext ());
 	                     material -> setup ();
 	                     
@@ -149,7 +149,7 @@ MagicImport::texture (const X3D::X3DSFNode <X3D::Scene> & scene, const UndoStepP
 
 	X3D::SFNode texture;
 
-	X3D::traverse (scene -> getRootNodes (), [this, &texture] (X3D::SFNode & node)
+	X3D::traverse (scene -> getRootNodes (), [this, &texture, &undoStep] (X3D::SFNode & node)
 	               {
 	                  X3D::X3DSFNode <X3D::Appearance> appearance (node);
 
@@ -158,7 +158,7 @@ MagicImport::texture (const X3D::X3DSFNode <X3D::Scene> & scene, const UndoStepP
 	                     X3D::pushContext ();
 	                     getBrowser () -> makeCurrent ();
 	                     
-	                     importProtoDeclaration (appearance -> texture ());
+	                     importProtoDeclaration (appearance -> texture (), undoStep);
 	                     texture = appearance -> texture () -> copy (getBrowser () -> getExecutionContext ());
 	                     texture -> setup ();
 	                     
@@ -193,12 +193,69 @@ MagicImport::texture (const X3D::X3DSFNode <X3D::Scene> & scene, const UndoStepP
 }
 
 void
-MagicImport::importProtoDeclaration (const X3D::SFNode & node)
+MagicImport::importProtoDeclaration (const X3D::SFNode & node, const UndoStepPtr & undoStep)
 {
 	auto prototypeInstance = dynamic_cast <X3D::X3DPrototypeInstance*> (node .getValue ());
 
 	if (prototypeInstance)
-		prototypeInstance -> getProtoDeclaration () -> copy (getBrowser () -> getExecutionContext ());
+	{
+		auto name          = prototypeInstance -> getProtoDeclaration () -> getName ();
+		bool isExternProto = prototypeInstance -> getProtoDeclaration () -> isExternproto ();
+
+		try
+		{
+			auto protoDeclaration = getBrowser () -> getExecutionContext () -> getProtoDeclaration (name);
+			
+			undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DExecutionContext::updateProtoDeclaration),
+			                             getBrowser () -> getExecutionContext (),
+			                             name,
+			                             protoDeclaration);
+		}
+		catch (const X3D::X3DError &)
+		{
+			try
+			{
+				auto externProtoDeclaration = getBrowser () -> getExecutionContext () -> getExternProtoDeclaration (name);
+				
+				undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DExecutionContext::updateExternProtoDeclaration),
+				                             getBrowser () -> getExecutionContext (),
+				                             name,
+				                             externProtoDeclaration);
+			}
+			catch (const X3D::X3DError &)
+			{
+				if (isExternProto)
+				{
+					undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DExecutionContext::removeExternProtoDeclaration),
+					                             getBrowser () -> getExecutionContext (),
+					                             name);
+				}
+				else
+				{
+					undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DExecutionContext::removeProtoDeclaration),
+					                             getBrowser () -> getExecutionContext (),
+					                             name);
+				}
+			}
+		}
+
+		auto proto = prototypeInstance -> getProtoDeclaration () -> copy (getBrowser () -> getExecutionContext ());
+		
+		if (isExternProto)
+		{
+			undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DExecutionContext::updateExternProtoDeclaration),
+			                             getBrowser () -> getExecutionContext (),
+			                             name,
+			                             X3D::X3DSFNode <X3D::ExternProto> (proto));
+		}
+		else
+		{
+			undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DExecutionContext::updateProtoDeclaration),
+			                             getBrowser () -> getExecutionContext (),
+			                             name,
+			                             X3D::X3DSFNode <X3D::Proto> (proto));
+		}	
+	}
 }
 
 MagicImport::~MagicImport ()

@@ -83,7 +83,6 @@ X3DBrowserEditor::initialize ()
 void
 X3DBrowserEditor::restoreSession ()
 {
-
 	// ImportAsInline
 	if (getConfig () .hasItem ("importAsInline"))
 		getImportAsInlineMenuItem () .set_active (getConfig () .getBoolean ("importAsInline"));
@@ -95,6 +94,7 @@ X3DBrowserEditor::restoreSession ()
 	else if (getConfig () .getString ("workspace") == "EDITOR")
 		getEditorMenuItem () .activate ();
 
+	// This must be done after.
 	X3DBrowserWidget::restoreSession ();
 }
 
