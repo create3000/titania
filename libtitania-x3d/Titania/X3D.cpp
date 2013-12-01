@@ -50,10 +50,12 @@
 
 #include "X3D.h"
 
-#include <iostream>
+#include <tuple>
 
 namespace titania {
 namespace X3D {
+
+static std::vector <std::tuple <Display*, GLXDrawable, GLXContext>>  contexts;
 
 ///  6.2.2 The getBrowser service returns a reference to an instance of an X3D browser through which other service
 ///  requests may be processed.  This is a unique identifier per application instance.
@@ -113,7 +115,7 @@ noexcept (true)
 		return;
 
 	auto xDisplay  = glXGetCurrentDisplay ();
-   auto xDrawable = glXGetCurrentDrawable ();
+	auto xDrawable = glXGetCurrentDrawable ();
 	auto xContext  = glXGetCurrentContext ();
 
 	browser -> makeCurrent ();
@@ -122,8 +124,25 @@ noexcept (true)
 
 	browser = nullptr;
 
-   if (xDisplay and xContext not_eq xBrowserContext)
-      glXMakeCurrent (xDisplay, xDrawable, xContext);
+	if (xDisplay and xContext not_eq xBrowserContext)
+		glXMakeCurrent (xDisplay, xDrawable, xContext);
+}
+
+void
+pushContext ()
+noexcept (true)
+{
+	contexts .emplace_back (glXGetCurrentDisplay (), glXGetCurrentDrawable (), glXGetCurrentContext ());
+}
+
+void
+popContext ()
+noexcept (true)
+{
+	if (std::get <0> (contexts .back ()))
+		glXMakeCurrent (std::get <0> (contexts .back ()), std::get <1> (contexts .back ()), std::get <2> (contexts .back ()));
+
+	contexts .pop_back ();
 }
 
 } // X3D

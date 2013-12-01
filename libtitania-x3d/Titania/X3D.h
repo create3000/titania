@@ -95,6 +95,14 @@ void
 removeBrowser (X3D::X3DSFNode <X3D::Browser> &)
 noexcept (true);
 
+void
+pushContext ()
+noexcept (true);
+
+void
+popContext ()
+noexcept (true);
+
 } // X3D
 } // titania
 

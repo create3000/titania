@@ -149,11 +149,11 @@ MagicImport::texture (const X3D::X3DSFNode <X3D::Scene> & scene, const UndoStepP
 
 	                  if (n)
 	                  {
-	                     //X3D::pushContext ();
+	                     X3D::pushContext ();
 	                     getBrowser () -> makeCurrent ();
 	                     texture = n -> copy (getBrowser () -> getExecutionContext ());
 	                     texture -> setup ();
-	                     //X3D::popContext ();
+	                     X3D::popContext ();
 	                     return false;
 							}
 
