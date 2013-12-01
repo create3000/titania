@@ -183,7 +183,11 @@ ProximitySensor::traverse (const TraverseType type)
 			if (inside)
 				break;
 
-			inside = Box3f (size (), center ()) .intersect (inverse (ModelViewMatrix4f ()) .translation ());
+			if (size () == Vector3f (-1, -1, -1))
+				inside = true;
+
+			else
+				inside = Box3f (size (), center ()) .intersect (inverse (ModelViewMatrix4f ()) .translation ());
 
 			break;
 		}

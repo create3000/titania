@@ -109,9 +109,15 @@ VisibilitySensor::traverse (const TraverseType type)
 		{
 			if (not enabled () or visible)
 				break;
+				
+			if (size () == Vector3f (-1, -1, -1))
+				visible = true;
 
-			visible = ViewVolume (getModelViewMatrix (type), ProjectionMatrix4f ())
-			          .intersect (Box3f (size (), center ()));
+			else
+			{
+				visible = ViewVolume (getModelViewMatrix (type), ProjectionMatrix4f ())
+				          .intersect (Box3f (size (), center ()));
+			}
 
 			break;
 		}
