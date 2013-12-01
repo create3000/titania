@@ -1,5 +1,17 @@
 2013-12-01  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* MagicImport.h:
+	* MagicImport.cpp:
+	* BrowserWindow.h:
+	* BrowserWindow.ui:
+	* BrowserWindow.cpp:
+	* X3DBrowserWidget.cpp:
+	* X3DBrowserWindowInterface.h:
+	* X3DBrowserWindowInterface.cpp:
+	* ComposedCubeMapTexture.x3dv: 
+
+2013-12-01  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* BrowserWindow.h:
 	* BrowserWindow.ui:
 	* BrowserWindow.cpp:

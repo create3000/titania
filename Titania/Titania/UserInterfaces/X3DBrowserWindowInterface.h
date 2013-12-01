@@ -127,10 +127,6 @@ public:
 	getFileImportDialog () const
 	{ return *m_fileImportDialog; }
 
-	Gtk::CheckButton &
-	getImportAsInlineButton () const
-	{ return *m_importAsInlineButton; }
-
 	Gtk::Image &
 	getFileImportImage () const
 	{ return *m_fileImportImage; }
@@ -234,6 +230,10 @@ public:
 	Gtk::ImageMenuItem &
 	getImportMenuItem () const
 	{ return *m_importMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getImportAsInlineMenuItem () const
+	{ return *m_importAsInlineMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getSaveMenuItem () const
@@ -613,6 +613,10 @@ public:
 
 	virtual
 	void
+	on_import_as_inline_toggled () = 0;
+
+	virtual
+	void
 	on_save () = 0;
 
 	virtual
@@ -816,7 +820,6 @@ private:
 	Glib::RefPtr <Gtk::AccelGroup>  m_menuAccelGroup;
 	Gtk::Image*                     m_examineViewerImage;
 	Gtk::FileChooserDialog*         m_fileImportDialog;
-	Gtk::CheckButton*               m_importAsInlineButton;
 	Gtk::Image*                     m_fileImportImage;
 	Gtk::FileChooserDialog*         m_fileOpenDialog;
 	Gtk::FileChooserDialog*         m_fileSaveDialog;
@@ -843,6 +846,7 @@ private:
 	Gtk::ImageMenuItem*             m_openMenuItem;
 	Gtk::ImageMenuItem*             m_openLocationMenuItem;
 	Gtk::ImageMenuItem*             m_importMenuItem;
+	Gtk::CheckMenuItem*             m_importAsInlineMenuItem;
 	Gtk::ImageMenuItem*             m_saveMenuItem;
 	Gtk::ImageMenuItem*             m_saveAsMenuItem;
 	Gtk::ImageMenuItem*             m_revertMenuItem;

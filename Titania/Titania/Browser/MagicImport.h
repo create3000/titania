@@ -85,7 +85,10 @@ private:
 
 	bool
 	material (const X3D::X3DSFNode <X3D::Scene> &, const UndoStepPtr &);
-	
+
+	bool
+	texture (const X3D::X3DSFNode <X3D::Scene> &, const UndoStepPtr &);
+
 	///  @name Members
 
 	using ImportFunction = std::function <bool (const X3D::X3DSFNode <X3D::Scene> &, const UndoStepPtr &)>;

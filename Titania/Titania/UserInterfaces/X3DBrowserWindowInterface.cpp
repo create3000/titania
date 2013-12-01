@@ -74,8 +74,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_examineViewerImage -> set_name ("ExamineViewerImage");
 	m_builder -> get_widget ("FileImportDialog", m_fileImportDialog);
 	m_fileImportDialog -> set_name ("FileImportDialog");
-	m_builder -> get_widget ("ImportAsInlineButton", m_importAsInlineButton);
-	m_importAsInlineButton -> set_name ("ImportAsInlineButton");
 	m_builder -> get_widget ("FileImportImage", m_fileImportImage);
 	m_fileImportImage -> set_name ("FileImportImage");
 	m_builder -> get_widget ("FileOpenDialog", m_fileOpenDialog);
@@ -128,6 +126,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_openLocationMenuItem -> set_name ("OpenLocationMenuItem");
 	m_builder -> get_widget ("ImportMenuItem", m_importMenuItem);
 	m_importMenuItem -> set_name ("ImportMenuItem");
+	m_builder -> get_widget ("ImportAsInlineMenuItem", m_importAsInlineMenuItem);
+	m_importAsInlineMenuItem -> set_name ("ImportAsInlineMenuItem");
 	m_builder -> get_widget ("SaveMenuItem", m_saveMenuItem);
 	m_saveMenuItem -> set_name ("SaveMenuItem");
 	m_builder -> get_widget ("SaveAsMenuItem", m_saveAsMenuItem);
@@ -313,6 +313,11 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_openMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_open));
 	m_openLocationMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_open_location));
 	m_importMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_import));
+
+	// Connect object Gtk::CheckMenuItem with id 'ImportAsInlineMenuItem'.
+	m_importAsInlineMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_import_as_inline_toggled));
+
+	// Connect object Gtk::ImageMenuItem with id 'SaveMenuItem'.
 	m_saveMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_save));
 	m_saveAsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_save_as));
 	m_revertMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_revert_to_saved));

@@ -187,6 +187,10 @@ private:
 	virtual
 	void
 	on_import () final;
+	
+	virtual
+	void
+	on_import_as_inline_toggled () final;
 
 	virtual
 	void

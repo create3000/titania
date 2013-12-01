@@ -59,7 +59,8 @@ using namespace std::placeholders;
 
 MagicImport::MagicImport (BrowserWindow* const browserWindow) :
 	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	 importFunctions ({ std::make_pair ("Material", std::bind (std::mem_fn (&MagicImport::material), this, _1, _2)) })
+	 importFunctions ({ std::make_pair ("Material", std::bind (std::mem_fn (&MagicImport::material), this, _1, _2)),
+	                    std::make_pair ("Texture",  std::bind (std::mem_fn (&MagicImport::texture),  this, _1, _2)) })
 { }
 
 bool
@@ -95,11 +96,11 @@ MagicImport::material (const X3D::X3DSFNode <X3D::Scene> & scene, const UndoStep
 
 	X3D::traverse (scene -> getRootNodes (), [this, &material] (X3D::SFNode & node)
 	               {
-	                  X3D::X3DSFNode <X3D::X3DMaterialNode> m (node);
+	                  X3D::X3DSFNode <X3D::X3DMaterialNode> n (node);
 
-	                  if (m)
+	                  if (n)
 	                  {
-	                     material = m -> copy (getBrowser () -> getExecutionContext ());
+	                     material = n -> copy (getBrowser () -> getExecutionContext ());
 	                     material -> setup ();
 	                     return false;
 							}
@@ -117,6 +118,58 @@ MagicImport::material (const X3D::X3DSFNode <X3D::Scene> & scene, const UndoStep
 
 	                  if (appearance)
 	                     getBrowserWindow () -> replaceNode (node, appearance -> material (), material, undoStep);
+
+	                  return true;
+						});
+
+	getBrowserWindow () -> select (selection, undoStep);
+
+	undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
+
+	getBrowser () -> update ();
+
+	return true;
+}
+
+bool
+MagicImport::texture (const X3D::X3DSFNode <X3D::Scene> & scene, const UndoStepPtr & undoStep)
+{
+	auto selection = getBrowser () -> getSelection () -> getChildren ();
+
+	if (selection .empty ())
+		return false;
+
+	// Find first material node in scene
+
+	X3D::SFNode texture;
+
+	X3D::traverse (scene -> getRootNodes (), [this, &texture] (X3D::SFNode & node)
+	               {
+	                  X3D::X3DSFNode <X3D::X3DTextureNode> n (node);
+
+	                  if (n)
+	                  {
+	                     //X3D::pushContext ();
+	                     getBrowser () -> makeCurrent ();
+	                     texture = n -> copy (getBrowser () -> getExecutionContext ());
+	                     texture -> setup ();
+	                     //X3D::popContext ();
+	                     return false;
+							}
+
+	                  return true;
+						});
+
+	// Assign material to all appearances in selection
+
+	undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
+
+	X3D::traverse (selection, [this, &texture, &undoStep] (X3D::SFNode & node)
+	               {
+	                  auto appearance = dynamic_cast <X3D::Appearance*> (node .getValue ());
+
+	                  if (appearance)
+	                     getBrowserWindow () -> replaceNode (node, appearance -> texture (), texture, undoStep);
 
 	                  return true;
 						});

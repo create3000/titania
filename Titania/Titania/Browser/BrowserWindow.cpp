@@ -347,22 +347,22 @@ BrowserWindow::on_import ()
 			fileImportDialog -> set_uri (worldURL .filename () .str ());
 	}
 
-	auto importAsInlineButton = getWidget <Gtk::CheckButton> ("ImportAsInlineButton");
-
-	importAsInlineButton -> set_active (getConfig () .getBoolean ("importAsInline"));
-
 	auto response_id = fileImportDialog -> run ();
 
 	if (response_id == Gtk::RESPONSE_OK)
 	{
 		importURL = Glib::uri_unescape_string (fileImportDialog -> get_uri ());
 
-		import (importURL, importAsInlineButton -> get_active ());
+		import (importURL, getImportAsInlineMenuItem () .get_active ());
 	}
 
-	getConfig () .setItem ("importAsInline", importAsInlineButton -> get_active ());
-
 	delete fileImportDialog;
+}
+
+void
+BrowserWindow::on_import_as_inline_toggled ()
+{
+	getConfig () .setItem ("importAsInline", getImportAsInlineMenuItem () .get_active ());
 }
 
 void

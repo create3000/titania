@@ -1,5 +1,12 @@
 2013-12-01  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* image.wrl:
+	* video.wrl:
+	* LookAtViewer.cpp:
+	* Disk2D.cpp: 
+
+2013-12-01  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* Hit.h:

@@ -96,23 +96,9 @@ Disk2D::initialize ()
 Box3f
 Disk2D::createBBox ()
 {
-	// Circle
+	auto diameter = std::abs (std::max (innerRadius (), outerRadius ())) * 2;
 
-	if (innerRadius () == outerRadius ())
-		return Box3f ();
-
-	// Disk
-
-	if (innerRadius () == 0.0f or outerRadius () == 0.0f)
-	{
-		auto diameter = std::abs (std::max (innerRadius (), outerRadius ())) * 2;
-
-		return Box3f (Vector3f (diameter, diameter, 0), Vector3f ());
-	}
-	
-	// Disk with hole
-
-	return X3DGeometryNode::createBBox ();
+	return Box3f (Vector3f (diameter, diameter, 0), Vector3f ());
 }
 
 void
