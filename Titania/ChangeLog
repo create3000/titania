@@ -1,6 +1,12 @@
 2013-12-01  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* MagicImport.cpp:
+	* X3DBrowserWidget.cpp:
+	* X3DBrowserEditor.cpp: 
+
+2013-12-01  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* MagicImport.cpp:
 	* lena.jpg:
 	* Lena.jpg:
 	* NoTexture.x3dv: 

@@ -151,10 +151,6 @@ X3DBrowserWidget::restoreSession ()
 {
 	// Restore Menu Configuration from Config
 
-	// ImportAsInline
-	if (getConfig () .hasItem ("importAsInline"))
-		getImportAsInlineMenuItem () .set_active (getConfig () .getBoolean ("importAsInline"));
-
 	// ToolBar
 	if (getConfig () .hasItem ("toolBar"))
 		getToolBarMenuItem () .set_active (getConfig () .getBoolean ("toolBar"));

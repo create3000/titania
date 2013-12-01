@@ -96,12 +96,17 @@ MagicImport::material (const X3D::X3DSFNode <X3D::Scene> & scene, const UndoStep
 
 	X3D::traverse (scene -> getRootNodes (), [this, &material] (X3D::SFNode & node)
 	               {
-	                  X3D::X3DSFNode <X3D::X3DMaterialNode> n (node);
+	                  X3D::X3DSFNode <X3D::Appearance> appearance (node);
 
-	                  if (n)
+	                  if (appearance and appearance -> material ())
 	                  {
-	                     material = n -> copy (getBrowser () -> getExecutionContext ());
+	                     X3D::pushContext ();
+	                     getBrowser () -> makeCurrent ();
+	                     
+	                     material = appearance -> material () -> copy (getBrowser () -> getExecutionContext ());
 	                     material -> setup ();
+	                     
+	                     X3D::popContext ();
 	                     return false;
 							}
 
@@ -145,14 +150,16 @@ MagicImport::texture (const X3D::X3DSFNode <X3D::Scene> & scene, const UndoStepP
 
 	X3D::traverse (scene -> getRootNodes (), [this, &texture] (X3D::SFNode & node)
 	               {
-	                  X3D::X3DSFNode <X3D::X3DTextureNode> n (node);
+	                  X3D::X3DSFNode <X3D::Appearance> appearance (node);
 
-	                  if (n)
+	                  if (appearance and appearance -> texture ())
 	                  {
 	                     X3D::pushContext ();
 	                     getBrowser () -> makeCurrent ();
-	                     texture = n -> copy (getBrowser () -> getExecutionContext ());
+	                     
+	                     texture = appearance -> texture () -> copy (getBrowser () -> getExecutionContext ());
 	                     texture -> setup ();
+	                     
 	                     X3D::popContext ();
 	                     return false;
 							}
