@@ -50,7 +50,8 @@
 
 #include "MagicImport.h"
 
-#include "../Browser/BrowserWindow.h"
+#include "BrowserWindow.h"
+#include "BrowserSelection.h"
 
 namespace titania {
 namespace puck {
@@ -128,7 +129,7 @@ MagicImport::material (const X3D::X3DSFNode <X3D::Scene> & scene, const UndoStep
 	                  return true;
 						});
 
-	getBrowserWindow () -> select (selection, undoStep);
+	getBrowserWindow () -> getSelection () -> setChildren (selection, undoStep);
 
 	undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
 
@@ -183,7 +184,7 @@ MagicImport::texture (const X3D::X3DSFNode <X3D::Scene> & scene, const UndoStepP
 	                  return true;
 						});
 
-	getBrowserWindow () -> select (selection, undoStep);
+	getBrowserWindow () -> getSelection () -> setChildren (selection, undoStep);
 
 	undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
 

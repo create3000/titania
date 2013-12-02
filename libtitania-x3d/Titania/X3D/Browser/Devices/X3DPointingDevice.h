@@ -48,115 +48,103 @@
  *
  ******************************************************************************/
 
-#include "Selection.h"
+#ifndef __TITANIA_X3D_BROWSER_DEVICES_X3DPOINTING_DEVICE_H__
+#define __TITANIA_X3D_BROWSER_DEVICES_X3DPOINTING_DEVICE_H__
 
-#include "../../Execution/X3DExecutionContext.h"
-#include "../X3DBrowser.h"
+#include "../X3DWidget.h"
 
-#include "../../Components/Grouping/Transform.h"
+#include <sigc++/sigc++.h>
+#include <gdk/gdk.h>
 
 namespace titania {
 namespace X3D {
 
-const std::string Selection::componentName  = "Browser";
-const std::string Selection::typeName       = "Selection";
-const std::string Selection::containerField = "selection";
+class X3DBrowserSurface;
 
-Selection::Selection (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	     active (),
-	   children ()
+class X3DPointingDevice :
+	virtual public sigc::trackable
 {
-	X3DChildObject::addChildren (active,
-	                             children);
-}
+protected:
 
-X3DBaseNode*
-Selection::create (X3DExecutionContext* const executionContext) const
-{
-	return new Selection (executionContext);
-}
+	///  @name Construction
 
-void
-Selection::initialize ()
-{
-	X3DBaseNode::initialize ();
+	X3DPointingDevice (X3DBrowserSurface* const);
 
-	getBrowser () -> shutdown () .addInterest (this, &Selection::clear);
-}
+	void
+	connect ();
 
-bool
-Selection::isSelected (const SFNode & node) const
-{
-	return std::find (children .begin (), children .end (), node) not_eq children .end ();
-}
+	void
+	disconnect ();
 
-void
-Selection::addChildren (const MFNode & value)
-{
-	if (getBrowser () -> makeCurrent ())
-	{
-		for (const auto & child : value)
-		{
-			if (isSelected (child))
-				continue;
+	///  @name Options
 
-			if (child)
-			{
-				if (child -> getExecutionContext () == getBrowser () -> getExecutionContext ())
-					child -> addHandle (&active);
+	virtual
+	bool
+	trackSensors ()
+	{ return true; }
 
-				children .emplace_back (child);
-			}
-		}
-	}
-}
+	///  @name Event Handlers
 
-void
-Selection::removeChildren (const MFNode & value)
-{
-	if (getBrowser () -> makeCurrent ())
-	{
-		for (const auto & child : value)
-		{
-			if (child)
-			{
-				children .erase (std::remove (children .begin (),
-				                              children .end (),
-				                              child),
-				                 children .end ());
+	virtual
+	void
+	motionNotifyEvent (bool)
+	{ }
 
-				child -> removeHandle ();
-			}
-		}
-	}
-}
+	virtual
+	bool
+	buttonPressEvent (bool)
+	{ return true; }
 
-void
-Selection::setChildren (const MFNode & value)
-{
-	clear ();
+	virtual
+	void
+	buttonReleaseEvent (bool)
+	{ }
+	
+	virtual
+	void
+	leaveNotifyEvent ()
+	{ }
 
-	addChildren (value);
-}
 
-void
-Selection::clear ()
-{
-	removeChildren (MFNode (children)); // Make copy because we erase in children.
-}
+private:
 
-void
-Selection::dispose ()
-{
-	getBrowser () -> makeCurrent ();
+	///  @name Event Handlers
 
-	removeChildren (MFNode (children));
+	bool
+	on_motion_notify_event (GdkEventMotion*);
 
-	children .dispose ();
+	bool
+	on_button_press_event (GdkEventButton*);
 
-	X3DBaseNode::dispose ();
-}
+	bool
+	on_button_release_event (GdkEventButton*);
+
+	bool
+	on_leave_notify_event (GdkEventCrossing*);
+
+	///  @name Operations
+
+	bool
+	pick (const double, const double);
+
+	bool
+	haveSensor ();
+
+	///  @name Members
+	
+	X3DBrowserSurface* const browser;
+
+	sigc::connection button_press_conncection;
+	sigc::connection button_release_conncection;
+	sigc::connection motion_notify_conncection;
+	sigc::connection leave_notify_conncection;
+
+	size_t button;
+	bool   isOver;
+
+};
 
 } // X3D
 } // titania
+
+#endif

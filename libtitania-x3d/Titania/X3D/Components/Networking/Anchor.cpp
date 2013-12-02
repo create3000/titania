@@ -118,7 +118,7 @@ Anchor::set_over (bool value)
 void
 Anchor::set_active (bool value)
 {
-	if (not value)
+	if (isOver and not value)
 		requestImmediateLoad ();
 }
 

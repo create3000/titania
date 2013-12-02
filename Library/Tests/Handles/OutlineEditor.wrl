@@ -64,9 +64,7 @@ PROTO Children1 [
   }
 }
 
-DEF None NavigationInfo {
-  type [ "NONE", "ANY" ]
-}
+DEF None NavigationInfo { }
 
 DEF Sunset Background {
   skyAngle [ 0.8, 1.2, 1.5, 1.55, 1.5708 ]
@@ -86,7 +84,7 @@ Grid {
 }
 
 DEF Text1 Transform {
-  translation 0.659244 0 0
+  translation 0.673213 0.0817185 0
   children Shape {
     appearance Appearance {
       material Material { }
@@ -121,7 +119,7 @@ DEF Rotor Rotor {
 
 DEF Box Transform {
   translation 1.40843 1.10727 0.193803
-  rotation 0 0 1 5.30468
+  rotation 0 0 1 1.29666
   scale 0.2 0.2 0.2
   children Transform {
     children Shape {
@@ -136,7 +134,8 @@ DEF Box Transform {
 }
 
 DEF Sphere Transform {
-  translation 2.31518 0.867383 0
+  translation 2.09462 1.15188 -1.91296e-08
+  rotation -3.46428e-13 -3.62463e-06 1 0.178426
   scale 0.2 0.2 0.2
   children Transform {
     children Shape {
@@ -150,9 +149,9 @@ DEF Sphere Transform {
   }
 }
 
-DEF Cone Transform {
-  translation 3.05759 1.14098 0
-  rotation 0 0 1 5.51556
+DEF RoundedRectangle2D Transform {
+  translation 2.74969 1.3372 0
+  rotation 0 0 -1 0.767625
   scale 0.2 0.2 0.2
   children Transform {
     children Shape {
@@ -170,8 +169,26 @@ DEF Cone Transform {
 
 Children1 {
   children1 [
-    Transform { }
-    Transform { }
+    DEF Cylinder Transform {
+      translation 4.12496 1.06398 0
+      scale 0.18003 0.18003 0.18003
+      children Shape {
+        appearance Appearance {
+          material Material { }
+        }
+        geometry Cylinder { }
+      }
+    }
+    DEF Cone1 Transform {
+      translation 3.31329 0.997151 0
+      scale 0.197378 0.197378 0.197378
+      children Shape {
+        appearance Appearance {
+          material Material { }
+        }
+        geometry Cone { }
+      }
+    }
   ]
 }
 
@@ -203,8 +220,7 @@ Anchor {
 ImageTexture { }
 
 DEF Inline Transform {
-  translation 4.15754 -0.435449 0
-  scale 0.502873 0.502872 1
+  translation 4.15754 -0.435449 1
   children Inline {
     url "Inline.wrl"
   }
@@ -212,6 +228,3 @@ DEF Inline Transform {
 
 ROUTE _1.isActive TO _2.set_enabled
 ROUTE Rotor.rotation_changed TO Box.set_rotation
-ROUTE Inline.translation_changed TO Inline.set_scale
-ROUTE Inline.scale_changed TO Inline.set_translation
-ROUTE Text1.translation_changed TO Inline.set_translation

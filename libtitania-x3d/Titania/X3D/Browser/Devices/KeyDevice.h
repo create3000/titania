@@ -51,10 +51,10 @@
 #ifndef __TITANIA_X3D_BROWSER_DEVICES_KEY_DEVICE_H__
 #define __TITANIA_X3D_BROWSER_DEVICES_KEY_DEVICE_H__
 
-#include "../../Fields.h"
 #include "../X3DWidget.h"
+#include "../../Types/String.h"
 
-#include <gdkmm.h>
+#include <sigc++/sigc++.h>
 #include <gtk/gtk.h>
 
 namespace titania {
@@ -69,6 +69,7 @@ public:
 
 	KeyDevice (X3DBrowserSurface* const);
 
+	virtual
 	~KeyDevice ();
 
 

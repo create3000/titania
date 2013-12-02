@@ -130,6 +130,7 @@
     <None Include="moz-plugin-diamondx-0.1\test\Makefile.in" />
     <None Include="moz-plugin-diamondx-0.1\test\a.diamondx" />
     <None Include="moz-plugin-diamondx-0.1\test\index.htm" />
+    <None Include="xxx\PointingDevice.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Quaternion\" />
@@ -150,5 +151,6 @@
     <Compile Include="xxx\Stream\SocketStreamBuf.cpp" />
     <Compile Include="xxx\Stream\InputUrlStream.cpp" />
     <Compile Include="xxx\Box3.cpp" />
+    <Compile Include="xxx\PointingDevice.cpp" />
   </ItemGroup>
 </Project>

@@ -129,6 +129,97 @@ X3DGeometryNode::setTextureCoordinate (X3DTextureCoordinateNode* value)
 }
 
 bool
+X3DGeometryNode::intersect (const Line3f & line, std::deque <IntersectionPtr> & intersections) const
+{
+	bool     intersected = false;
+	Vector3f temp;
+
+	if (bbox .intersect (line, temp))
+	{
+		Matrix4f modelViewMatrix = ModelViewMatrix4f ();
+
+		size_t first = 0;
+
+		for (const auto & element : elements)
+		{
+			switch (element .vertexMode)
+			{
+				case GL_TRIANGLES :
+					{
+						for (size_t i = first, size = first + element .count; i < size; i += 3)
+						{
+							intersected |= intersect (line, i, i + 1, i + 2, modelViewMatrix, intersections);
+						}
+
+						break;
+					}
+				case GL_QUADS:
+				{
+					for (size_t i = first, size = first + element .count; i < size; i += 4)
+					{
+						intersected |= intersect (line, i, i + 1, i + 2, modelViewMatrix, intersections);
+						intersected |= intersect (line, i, i + 2, i + 3, modelViewMatrix, intersections);
+					}
+
+					break;
+				}
+				case GL_QUAD_STRIP:
+				{
+					for (size_t i = first, size = first + element .count - 2; i < size; i += 2)
+					{
+						intersected |= intersect (line, i,     i + 1, i + 2, modelViewMatrix, intersections);
+						intersected |= intersect (line, i + 1, i + 3, i + 2, modelViewMatrix, intersections);
+					}
+
+					break;
+				}
+				case GL_POLYGON:
+				{
+					for (int32_t i = first + 1, size = first + element .count - 1; i < size; ++ i)
+					{
+						intersected |= intersect (line, first, i, i + 1, modelViewMatrix, intersections);
+					}
+
+					break;
+				}
+				default:
+					break;
+			}
+
+			first += element .count;
+		}
+	}
+
+	return intersected;
+}
+
+bool
+X3DGeometryNode::intersect (const Line3f & line, size_t i1, size_t i2, size_t i3, const Matrix4f & modelViewMatrix, std::deque <IntersectionPtr> & intersections) const
+{
+	float u, v, t;
+
+	if (line .intersect (vertices [i1], vertices [i2], vertices [i3], u, v, t))
+	{
+		Vector4f texCoord (0, 0, 0, 1);
+		size_t   texCoordsSize = texCoords .empty () ? 0 : texCoords [0] .size (); // LineGeometry doesn't have texCoords
+
+		if (i1 < texCoordsSize)
+			texCoord = (1 - u - v) * texCoords [0] [i1] + u * texCoords [0] [i2] + v * texCoords [0] [i3];
+		
+		Vector3f normal = (1 - u - v) * normals  [i1] + u * normals  [i2] + v * normals  [i3];
+		Vector3f point  = (1 - u - v) * vertices [i1] + u * vertices [i2] + v * vertices [i3];
+
+		if (isClipped (point, modelViewMatrix))
+			return false;
+
+		intersections .emplace_back (new Intersection { texCoord, normal, point });
+		return true;
+	}
+
+	return false;
+}
+
+bool
 X3DGeometryNode::isClipped (const Vector3f & point, const Matrix4f & modelViewMatrix) const
 {
 	return isClipped (point, modelViewMatrix, getCurrentLayer () -> getLocalObjects ());
@@ -144,142 +235,6 @@ X3DGeometryNode::isClipped (const Vector3f & point, const Matrix4f & modelViewMa
 	}
 
 	return false;
-}
-
-bool
-X3DGeometryNode::intersect (const Line3f & line, std::deque <IntersectionPtr> & intersections) const
-{
-	bool     intersected = false;
-	Vector3f temp;
-
-	if (bbox .intersect (line, temp))
-	{
-		float u, v, t;
-
-		size_t texCoordsSize = texCoords .empty () ? 0 : texCoords [0] .size (); // LineGeometry doesn't have texCoords
-		size_t first         = 0;
-
-		Matrix4f modelViewMatrix = ModelViewMatrix4f ();
-
-		for (const auto & element : elements)
-		{
-			switch (element .vertexMode)
-			{
-				case GL_TRIANGLES :
-					{
-						for (size_t i = first, size = first + element .count; i < size; i += 3)
-						{
-							if (line .intersect (vertices [i], vertices [i + 1], vertices [i + 2], u, v, t))
-							{
-								Vector4f texCoord = i < texCoordsSize ? (1 - u - v) * texCoords [0] [i] + u * texCoords [0] [i + 1] + v * texCoords [0] [i + 2] : Vector4f (0, 0, 0, 1);
-								Vector3f normal   = (1 - u - v) * normals  [i] + u * normals  [i + 1] + v * normals  [i + 2];
-								Vector3f point    = (1 - u - v) * vertices [i] + u * vertices [i + 1] + v * vertices [i + 2];
-
-								if (isClipped (point, modelViewMatrix))
-									continue;
-
-								intersections .emplace_back (new Intersection { texCoord, normal, point });
-								intersected = true;
-							}
-						}
-
-						break;
-					}
-				case GL_QUADS:
-				{
-					for (size_t i = first, size = first + element .count; i < size; i += 4)
-					{
-						if (line .intersect (vertices [i], vertices [i + 1], vertices [i + 2], u, v, t))
-						{
-							Vector4f texCoord = i < texCoordsSize ? (1 - u - v) * texCoords [0] [i] + u * texCoords [0] [i + 1] + v * texCoords [0] [i + 2] : Vector4f (0, 0, 0, 1);
-							Vector3f normal   = (1 - u - v) * normals  [i] + u * normals  [i + 1] + v * normals  [i + 2];
-							Vector3f point    = (1 - u - v) * vertices [i] + u * vertices [i + 1] + v * vertices [i + 2];
-
-							if (isClipped (point, modelViewMatrix))
-								continue;
-
-							intersections .emplace_back (new Intersection { texCoord, normal, point });
-							intersected = true;
-						}
-
-						if (line .intersect (vertices [i], vertices [i + 2], vertices [i + 3], u, v, t))
-						{
-							Vector4f texCoord = i < texCoordsSize ? (1 - u - v) * texCoords [0] [i] + u * texCoords [0] [i + 2] + v * texCoords [0] [i + 3] : Vector4f (0, 0, 0, 1);
-							Vector3f normal   = (1 - u - v) * normals  [i] + u * normals  [i + 2] + v * normals  [i + 3];
-							Vector3f point    = (1 - u - v) * vertices [i] + u * vertices [i + 2] + v * vertices [i + 3];
-
-							if (isClipped (point, modelViewMatrix))
-								continue;
-
-							intersections .emplace_back (new Intersection { texCoord, normal, point });
-							intersected = true;
-						}
-					}
-
-					break;
-				}
-				case GL_QUAD_STRIP:
-				{
-					for (size_t i = first, size = first + element .count - 2; i < size; i += 2)
-					{
-						if (line .intersect (vertices [i], vertices [i + 1], vertices [i + 2], u, v, t))
-						{
-							Vector4f texCoord = i < texCoordsSize ? (1 - u - v) * texCoords [0] [i] + u * texCoords [0] [i + 1] + v * texCoords [0] [i + 2] : Vector4f (0, 0, 0, 1);
-							Vector3f normal   = (1 - u - v) * normals  [i] + u * normals  [i + 1] + v * normals  [i + 2];
-							Vector3f point    = (1 - u - v) * vertices [i] + u * vertices [i + 1] + v * vertices [i + 2];
-
-							if (isClipped (point, modelViewMatrix))
-								continue;
-
-							intersections .emplace_back (new Intersection { texCoord, normal, point });
-							intersected = true;
-						}
-
-						if (line .intersect (vertices [i + 1], vertices [i + 3], vertices [i + 2], u, v, t))
-						{
-							Vector4f texCoord = i < texCoordsSize ? (1 - u - v) * texCoords [0] [i + 1] + u * texCoords [0] [i + 3] + v * texCoords [0] [i + 2] : Vector4f (0, 0, 0, 1);
-							Vector3f normal   = (1 - u - v) * normals  [i + 1] + u * normals  [i + 3] + v * normals  [i + 2];
-							Vector3f point    = (1 - u - v) * vertices [i + 1] + u * vertices [i + 3] + v * vertices [i + 2];
-
-							if (isClipped (point, modelViewMatrix))
-								continue;
-
-							intersections .emplace_back (new Intersection { texCoord, normal, point });
-							intersected = true;
-						}
-					}
-
-					break;
-				}
-				case GL_POLYGON:
-				{
-					for (int32_t i = first + 1, size = first + element .count - 1; i < size; ++ i)
-					{
-						if (line .intersect (vertices [first], vertices [i], vertices [i + 1], u, v, t))
-						{
-							Vector4f texCoord = (size_t) i < texCoordsSize ? (1 - u - v) * texCoords [0] [first] + u * texCoords [0] [i] + v * texCoords [0] [i + 1] : Vector4f (0, 0, 0, 1);
-							Vector3f normal   = (1 - u - v) * normals  [first] + u * normals  [i] + v * normals  [i + 1];
-							Vector3f point    = (1 - u - v) * vertices [first] + u * vertices [i] + v * vertices [i + 1];
-
-							if (isClipped (point, modelViewMatrix))
-								continue;
-
-							intersections .emplace_back (new Intersection { texCoord, normal, point });
-							intersected = true;
-						}
-					}
-
-					break;
-				}
-				default:
-					break;
-			}
-
-			first += element .count;
-		}
-	}
-
-	return intersected;
 }
 
 bool

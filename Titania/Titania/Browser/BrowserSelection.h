@@ -48,115 +48,78 @@
  *
  ******************************************************************************/
 
-#include "Selection.h"
+#ifndef __TITANIA_BROWSER_BROWSER_SELECTION_H__
+#define __TITANIA_BROWSER_BROWSER_SELECTION_H__
 
-#include "../../Execution/X3DExecutionContext.h"
-#include "../X3DBrowser.h"
-
-#include "../../Components/Grouping/Transform.h"
+#include "../Base/X3DBaseInterface.h"
+#include "../Undo/UndoStep.h"
 
 namespace titania {
-namespace X3D {
+namespace puck {
 
-const std::string Selection::componentName  = "Browser";
-const std::string Selection::typeName       = "Selection";
-const std::string Selection::containerField = "selection";
-
-Selection::Selection (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	     active (),
-	   children ()
+class BrowserSelection :
+	virtual public X3DBaseInterface,
+	public X3D::X3DPointingDevice
 {
-	X3DChildObject::addChildren (active,
-	                             children);
-}
+public:
 
-X3DBaseNode*
-Selection::create (X3DExecutionContext* const executionContext) const
-{
-	return new Selection (executionContext);
-}
+	///  @name Construction
 
-void
-Selection::initialize ()
-{
-	X3DBaseNode::initialize ();
+	BrowserSelection (BrowserWindow* const);
 
-	getBrowser () -> shutdown () .addInterest (this, &Selection::clear);
-}
+	///  @name Operations
+	
+	void
+	setEnabled (bool);
+	
+	bool
+	getEnabled () const
+	{ return enabled; }
 
-bool
-Selection::isSelected (const SFNode & node) const
-{
-	return std::find (children .begin (), children .end (), node) not_eq children .end ();
-}
+	void
+	addChildren (const X3D::MFNode &, const UndoStepPtr &) const;
 
-void
-Selection::addChildren (const MFNode & value)
-{
-	if (getBrowser () -> makeCurrent ())
-	{
-		for (const auto & child : value)
-		{
-			if (isSelected (child))
-				continue;
+	void
+	removeChildren (const X3D::MFNode &, const UndoStepPtr &) const;
 
-			if (child)
-			{
-				if (child -> getExecutionContext () == getBrowser () -> getExecutionContext ())
-					child -> addHandle (&active);
+	void
+	setChildren (const X3D::MFNode &, const UndoStepPtr &) const;
 
-				children .emplace_back (child);
-			}
-		}
-	}
-}
+	void
+	clear (const UndoStepPtr &) const;
 
-void
-Selection::removeChildren (const MFNode & value)
-{
-	if (getBrowser () -> makeCurrent ())
-	{
-		for (const auto & child : value)
-		{
-			if (child)
-			{
-				children .erase (std::remove (children .begin (),
-				                              children .end (),
-				                              child),
-				                 children .end ());
+	///  @name Destruction
 
-				child -> removeHandle ();
-			}
-		}
-	}
-}
+	virtual
+	~BrowserSelection ();
 
-void
-Selection::setChildren (const MFNode & value)
-{
-	clear ();
 
-	addChildren (value);
-}
+private:
 
-void
-Selection::clear ()
-{
-	removeChildren (MFNode (children)); // Make copy because we erase in children.
-}
+	virtual
+	void
+	motionNotifyEvent (bool) final;
 
-void
-Selection::dispose ()
-{
-	getBrowser () -> makeCurrent ();
+	virtual
+	bool
+	buttonPressEvent (bool) final;
 
-	removeChildren (MFNode (children));
+	virtual
+	void
+	buttonReleaseEvent (bool) final;
 
-	children .dispose ();
+	virtual
+	bool
+	trackSensors () final;
 
-	X3DBaseNode::dispose ();
-}
+	///  @name Members
 
-} // X3D
+	bool enabled;
+	bool hasMoved;
+
+};
+
+} // puck
 } // titania
+
+#endif

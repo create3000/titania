@@ -92,6 +92,9 @@ private:
 	initialize () final;
 
 	bool
+	on_button_press_event (GdkEventButton*);
+
+	bool
 	on_button_release_event (GdkEventButton*);
 
 	bool

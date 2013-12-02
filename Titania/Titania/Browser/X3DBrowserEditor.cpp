@@ -51,6 +51,7 @@
 #include "BrowserWindow.h"
 
 #include "MagicImport.h"
+#include "BrowserSelection.h"
 
 namespace titania {
 namespace puck {
@@ -62,7 +63,8 @@ X3DBrowserEditor::X3DBrowserEditor (const basic::uri & worldURL) :
 	           scene (),
 	     magicImport (new MagicImport (getBrowserWindow ())),
 	     undoHistory (),
-	        matrices ()
+	        matrices (),
+	       selection (new BrowserSelection (getBrowserWindow ()))
 { }
 
 void
@@ -300,9 +302,7 @@ X3DBrowserEditor::import (const X3D::X3DSFNode <X3D::Scene> & scene, const UndoS
 
 		// Select imported nodes
 
-		deselectAll (undoStep);
-
-		select (importedNodes, undoStep);
+		getSelection () -> setChildren (importedNodes, undoStep);
 
 		undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
 
@@ -1002,22 +1002,22 @@ X3DBrowserEditor::ungroupNodes (const X3D::MFNode & groups, const UndoStepPtr & 
 
 	auto scene = getBrowser () -> getExecutionContext ();
 
-	for (const auto & group : groups)
+	for (const auto & node : groups)
 	{
 		try
 		{
-			X3D::X3DSFNode <X3D::X3DNode> node (group);
+			X3D::X3DSFNode <X3D::X3DGroupingNode> group (node);
 
-			if (not node)
+			if (not group)
 				continue;
 
-			undoStep -> addVariables (group);
+			undoStep -> addVariables (node);
 
-			auto layers = node -> getLayers ();
+			auto layers = group -> getLayers ();
 			
-			/////
+			// Ungroup children
 
-			auto groupingField = getGroupingField (group);
+			auto groupingField = static_cast <X3D::MFNode*> (node -> getField ("children"));
 
 			for (const auto & child : *groupingField)
 			{
@@ -1059,12 +1059,10 @@ X3DBrowserEditor::ungroupNodes (const X3D::MFNode & groups, const UndoStepPtr & 
 			undoStep -> addRedoFunction (std::mem_fn (&X3D::MFNode::clear), groupingField);
 
 			groupingField -> clear ();
-			
-			///////
 
 			// Remove group from scene
 
-			removeNodeFromScene (scene, group, undoStep);
+			removeNodeFromScene (scene, node, undoStep);
 		}
 		catch (const X3D::Error <X3D::INVALID_NODE> &)
 		{
@@ -1323,62 +1321,6 @@ X3DBrowserEditor::createParentGroup (X3D::MFNode & mfnode, const X3D::SFNode & c
 	}
 }
 
-// Selection operations
-
-void
-X3DBrowserEditor::addSelection (const X3D::MFNode & nodes, const UndoStepPtr & undoStep) const
-{
-	auto selection = getBrowser () -> getSelection ();
-
-	undoStep -> addUndoFunction (std::mem_fn (&X3D::Selection::setChildren), selection, selection -> getChildren ());
-	undoStep -> addRedoFunction (std::mem_fn (&X3D::Selection::addChildren), selection, nodes);
-
-	selection -> addChildren (nodes);
-}
-
-void
-X3DBrowserEditor::removeSelection (const X3D::MFNode & nodes, const UndoStepPtr & undoStep) const
-{
-	auto selection = getBrowser () -> getSelection ();
-
-	undoStep -> addUndoFunction (std::mem_fn (&X3D::Selection::setChildren),    selection, selection -> getChildren ());
-	undoStep -> addRedoFunction (std::mem_fn (&X3D::Selection::removeChildren), selection, nodes);
-
-	selection -> removeChildren (nodes);
-}
-
-void
-X3DBrowserEditor::select (const X3D::MFNode & nodes, const UndoStepPtr & undoStep) const
-{
-	auto selection = getBrowser () -> getSelection ();
-
-	undoStep -> addUndoFunction (std::mem_fn (&X3D::Selection::setChildren), selection, selection -> getChildren ());
-	undoStep -> addRedoFunction (std::mem_fn (&X3D::Selection::setChildren), selection, nodes);
-
-	selection -> setChildren (nodes);
-}
-
-// Undo functions
-
-void
-X3DBrowserEditor::selectAll (const UndoStepPtr & undoStep) const
-{
-	deselectAll (undoStep);
-
-	select (getBrowser () -> getExecutionContext () -> getRootNodes (), undoStep);
-}
-
-void
-X3DBrowserEditor::deselectAll (const UndoStepPtr & undoStep) const
-{
-	auto selection = getBrowser () -> getSelection ();
-
-	undoStep -> addUndoFunction (std::mem_fn (&X3D::Selection::setChildren), selection, selection -> getChildren ());
-	undoStep -> addRedoFunction (std::mem_fn (&X3D::Selection::clear),       selection);
-
-	selection -> clear ();
-}
-
 // Undo functions
 
 void
@@ -1583,26 +1525,6 @@ throw (X3D::Error <X3D::INVALID_NODE>)
 	catch (const X3D::Error <X3D::INVALID_NAME> &)
 	{ }
 
-	try
-	{
-		auto field = parent -> getField ("layers");
-
-		if (field -> getType () == X3D::X3DConstants::MFNode)
-			return field;
-	}
-	catch (const X3D::Error <X3D::INVALID_NAME> &)
-	{ }
-
-	try
-	{
-		auto field = parent -> getField ("shape");
-
-		if (field -> getType () == X3D::X3DConstants::SFNode)
-			return field;
-	}
-	catch (const X3D::Error <X3D::INVALID_NAME> &)
-	{ }
-
 	// Find last MFNode
 	
 	for (auto & field : basic::reverse_adapter (parent -> getFieldDefinitions ()))
@@ -1622,32 +1544,8 @@ throw (X3D::Error <X3D::INVALID_NODE>)
 	throw X3D::Error <X3D::INVALID_NODE> ("No appropriate container field found.");
 }
 
-X3D::MFNode*
-X3DBrowserEditor::getGroupingField (const X3D::SFNode & node) const
-throw (X3D::Error <X3D::INVALID_NODE>)
-{
-	try
-	{
-		auto field = node -> getField ("children");
-
-		if (field -> getType () == X3D::X3DConstants::MFNode)
-			return static_cast <X3D::MFNode*> (field);
-	}
-	catch (const X3D::Error <X3D::INVALID_NAME> &)
-	{ }
-
-	try
-	{
-		auto field = node -> getField ("layers");
-
-		if (field -> getType () == X3D::X3DConstants::MFNode)
-			return static_cast <X3D::MFNode*> (field);
-	}
-	catch (const X3D::Error <X3D::INVALID_NAME> &)
-	{ }
-
-	throw X3D::Error <X3D::INVALID_NODE> ("No appropriate container field found.");
-}
+X3DBrowserEditor::~X3DBrowserEditor ()
+{ }
 
 } // puck
 } // titania

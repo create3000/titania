@@ -1,3 +1,30 @@
+2013-12-02  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Traverse.h:
+	* Traverse.cpp:
+	* TransformTool.wrl:
+	* WalkViewer.h:
+	* Selection.h:
+	* KeyDevice.h:
+	* WalkViewer.cpp:
+	* LookAtViewer.h:
+	* Selection.cpp:
+	* X3DFlyViewer.h:
+	* ExamineViewer.h:
+	* X3DFlyViewer.cpp:
+	* LookAtViewer.cpp:
+	* Anchor.cpp:
+	* ExamineViewer.cpp:
+	* PointingDevice.h:
+	* PointingDevice.cpp:
+	* X3DPointingDevice.h:
+	* X3DPointingDevice.cpp:
+	* X3DGeometryNode.h:
+	* X3DGeometryNode.cpp:
+	* X3DTouchSensorNode.cpp: 
+
 2013-12-01  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* ProximitySensor.cpp:

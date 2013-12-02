@@ -60,12 +60,13 @@
 namespace titania {
 namespace X3D {
 
-static constexpr float SPIN_ANGLE   = 0.006;
-static constexpr float SPIN_FACTOR  = 0.6;
-static constexpr float SCOLL_FACTOR = 1.0f / 50.0f;
-static constexpr float FRAME_RATE   = 60;
+static constexpr float SPIN_RELEASE_TIME = 0.01;
+static constexpr float SPIN_ANGLE        = 0.006;
+static constexpr float SPIN_FACTOR       = 0.6;
+static constexpr float SCOLL_FACTOR      = 1.0f / 50.0f;
+static constexpr float FRAME_RATE        = 60;
 
-ExamineViewer::ExamineViewer (X3DBrowserSurface* const browser, NavigationInfo* navigationInfo) :
+ExamineViewer::ExamineViewer (X3DBrowserSurface* const browser, NavigationInfo* const navigationInfo) :
 	     X3DViewer (browser),
 	navigationInfo (navigationInfo),
 	      distance (),
@@ -73,6 +74,7 @@ ExamineViewer::ExamineViewer (X3DBrowserSurface* const browser, NavigationInfo* 
 	      rotation (),
 	    fromVector (),
 	     fromPoint (),
+	     startTime (0),
 	        button (0),
 	       spin_id ()
 { }
@@ -121,6 +123,8 @@ ExamineViewer::on_button_press_event (GdkEventButton* event)
 
 		fromVector = trackballProjectToSphere (event -> x, event -> y);
 		rotation   = Rotation4f ();
+
+		startTime = 0;
 	}
 
 	else if (button == 2)
@@ -140,7 +144,7 @@ ExamineViewer::on_button_release_event (GdkEventButton* event)
 {
 	if (button == 1)
 	{
-		if (std::abs (rotation .angle ()) > SPIN_ANGLE)
+		if (std::abs (rotation .angle ()) > SPIN_ANGLE and chrono::now () - startTime < SPIN_RELEASE_TIME)
 		{
 			rotation = slerp (Rotation4f (), rotation, SPIN_FACTOR);
 			addSpinning ();
@@ -167,8 +171,10 @@ ExamineViewer::on_motion_notify_event (GdkEventMotion* event)
 		viewpoint -> positionOffset ()    = getPositionOffset ();
 
 		fromVector = toVector;
+		
+		startTime = chrono::now ();
 
-		return true;
+		//return true;
 	}
 
 	else if (button == 2)
@@ -183,7 +189,7 @@ ExamineViewer::on_motion_notify_event (GdkEventMotion* event)
 
 		fromPoint = toPoint;
 
-		return true;
+		//return true;
 	}
 
 	return false;

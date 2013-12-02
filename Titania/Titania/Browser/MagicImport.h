@@ -57,8 +57,6 @@
 namespace titania {
 namespace puck {
 
-class BrowserWindow;
-
 class MagicImport :
 	virtual public X3DBaseInterface
 {

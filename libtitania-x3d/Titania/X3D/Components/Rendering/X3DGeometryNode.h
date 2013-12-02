@@ -213,6 +213,9 @@ private:
 	///  @name Operations
 
 	bool
+	intersect (const Line3f &, size_t, size_t, size_t, const Matrix4f &, std::deque <IntersectionPtr> &) const;
+
+	bool
 	isClipped (const Vector3f &, const Matrix4f &) const;
 
 	bool

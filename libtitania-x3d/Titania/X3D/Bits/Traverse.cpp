@@ -133,7 +133,7 @@ traverse (X3D::SFNode & node, const TraverseCallback & callback, bool distinct)
 }
 
 bool
-find (const X3D::SFNode & node, X3DChildObject* const object, std::deque <X3DChildObject*> & hierarchy, NodeSet & seen)
+find (const X3D::SFNode & node, X3DChildObject* const object, bool inScene, std::deque <X3DChildObject*> & hierarchy, NodeSet & seen)
 {
 	if (not node)
 		return true;
@@ -146,7 +146,7 @@ find (const X3D::SFNode & node, X3DChildObject* const object, std::deque <X3DChi
 	if (node == object)
 		return false;
 
-	for (const auto & field : node -> getFieldDefinitions ())
+	for (const auto & field : inScene ? node -> getFieldDefinitions () : node -> getLocalNode () -> getFieldDefinitions ())
 	{
 		if (field == object)
 		{
@@ -162,7 +162,7 @@ find (const X3D::SFNode & node, X3DChildObject* const object, std::deque <X3DChi
 
 				auto sfnode = static_cast <X3D::SFNode*> (field);
 
-				if (find (*sfnode, object, hierarchy, seen))
+				if (find (*sfnode, object, inScene, hierarchy, seen))
 				{
 					hierarchy .pop_back ();
 					continue;
@@ -178,7 +178,7 @@ find (const X3D::SFNode & node, X3DChildObject* const object, std::deque <X3DChi
 
 				for (auto & value : *mfnode)
 				{
-					if (find (value, object, hierarchy, seen))
+					if (find (value, object, inScene, hierarchy, seen))
 						continue;
 
 					return false;
@@ -199,14 +199,14 @@ find (const X3D::SFNode & node, X3DChildObject* const object, std::deque <X3DChi
 }
 
 std::deque <X3DChildObject*>
-find (const X3D::MFNode & nodes, X3DChildObject* const object)
+find (const X3D::MFNode & nodes, X3DChildObject* const object, bool inScene)
 {
 	std::deque <X3DChildObject*> hierarchy;
 	NodeSet                      seen;
 
 	for (auto & node : nodes)
 	{
-		if (find (node, object, hierarchy, seen))
+		if (find (node, object, inScene, hierarchy, seen))
 			continue;
 
 		return hierarchy;
@@ -216,12 +216,12 @@ find (const X3D::MFNode & nodes, X3DChildObject* const object)
 }
 
 std::deque <X3DChildObject*>
-find (const X3D::SFNode & node, X3DChildObject* const object)
+find (const X3D::SFNode & node, X3DChildObject* const object, bool inScene)
 {
 	std::deque <X3DChildObject*> hierarchy;
 	NodeSet                      seen;
 
-	find (node, object, hierarchy, seen);
+	find (node, object, inScene, hierarchy, seen);
 
 	return hierarchy;
 }

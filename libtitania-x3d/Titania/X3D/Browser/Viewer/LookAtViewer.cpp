@@ -66,6 +66,7 @@ LookAtViewer::initialize ()
 {
 	X3DViewer::initialize ();
 
+	getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &LookAtViewer::on_button_press_event), false);
 	getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &LookAtViewer::on_button_release_event), false);
 	getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &LookAtViewer::on_motion_notify_event),  false);
 
@@ -73,11 +74,19 @@ LookAtViewer::initialize ()
 }
 
 bool
+LookAtViewer::on_button_press_event (GdkEventButton* event)
+{
+	getBrowser () -> grab_focus ();
+
+	return true;
+}
+
+bool
 LookAtViewer::on_button_release_event (GdkEventButton* event)
 {
 	if (event -> button == 1)
 	{
-		if (pick (event -> x, getBrowser () -> get_height () - event -> y))
+		if (pick (event -> x, event -> y))
 		{
 			auto hit = getBrowser () -> getHits () .front ();
 				
@@ -91,7 +100,7 @@ LookAtViewer::on_button_release_event (GdkEventButton* event)
 bool
 LookAtViewer::on_motion_notify_event (GdkEventMotion* event)
 {
-	if (pick (event -> x, getBrowser () -> get_height () - event -> y))
+	if (pick (event -> x, event -> y))
 	{
 		if (not isOver)
 		{
@@ -114,7 +123,7 @@ LookAtViewer::on_motion_notify_event (GdkEventMotion* event)
 bool
 LookAtViewer::pick (const double x, const double y)
 {
-	getBrowser () -> pick (x, y);
+	getBrowser () -> pick (x, getBrowser () -> get_height () - y);
 
 	return not getBrowser () -> getHits () .empty ();
 }

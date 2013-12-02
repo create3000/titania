@@ -27,6 +27,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/Console.cpp \
 	Titania/X3D/Browser/Devices/KeyDevice.cpp \
 	Titania/X3D/Browser/Devices/PointingDevice.cpp \
+	Titania/X3D/Browser/Devices/X3DPointingDevice.cpp \
 	Titania/X3D/Browser/Geometry2D/Arc2DOptions.cpp \
 	Titania/X3D/Browser/Geometry2D/ArcClose2DOptions.cpp \
 	Titania/X3D/Browser/Geometry2D/Circle2DOptions.cpp \

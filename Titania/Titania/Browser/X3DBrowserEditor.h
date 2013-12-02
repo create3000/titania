@@ -58,6 +58,7 @@ namespace titania {
 namespace puck {
 
 class MagicImport;
+class BrowserSelection;
 
 class X3DBrowserEditor :
 	public X3DBrowserWidget
@@ -152,24 +153,20 @@ public:
 	deleteRoute (X3D::X3DExecutionContext* const, const X3D::SFNode &, const std::string &, const X3D::SFNode &, const std::string &, const UndoStepPtr &) const;
 
 	/// @name Selection operations
+	
+	const std::shared_ptr <BrowserSelection> &
+	getSelection () const
+	{ return selection; }
 
-	void
-	addSelection (const X3D::MFNode &, const UndoStepPtr &) const;
-
-	void
-	removeSelection (const X3D::MFNode &, const UndoStepPtr &) const;
-
-	void
-	select (const X3D::MFNode &, const UndoStepPtr &) const;
-
-	void
-	selectAll (const UndoStepPtr &) const;
-
-	void
-	deselectAll (const UndoStepPtr &) const;
+	///  @name Misc
 
 	void
 	saveMatrix (const X3D::SFNode &, const UndoStepPtr &) const;
+	
+	///  @name Destruction
+
+	virtual
+	~X3DBrowserEditor ();
 
 
 protected:
@@ -277,23 +274,19 @@ private:
 	getContainerField (const X3D::SFNode &, const X3D::SFNode &) const
 	throw (X3D::Error <X3D::INVALID_NODE>);
 
-	X3D::MFNode*
-	getGroupingField (const X3D::SFNode & node) const
-	throw (X3D::Error <X3D::INVALID_NODE>);
-
 	///  @name Members
+
+	using UndoMatrixIndex = std::map <X3D::TransformHandle*, std::pair <X3D::Matrix4f, X3D::Vector3f>> ;
 
 	bool                        modified;
 	bool                        saveConfirmed;
 	int                         savedIndex;
 	X3D::X3DSFNode <X3D::Scene> scene;
 
-	std::shared_ptr <MagicImport> magicImport;
-
-	using MatrixIndex = std::map <X3D::TransformHandle*, std::pair <X3D::Matrix4f, X3D::Vector3f>> ;
-
-	UndoHistory undoHistory;
-	MatrixIndex matrices;
+	std::shared_ptr <MagicImport>      magicImport;
+	UndoHistory                        undoHistory;
+	UndoMatrixIndex                    matrices;
+	std::shared_ptr <BrowserSelection> selection;
 
 };
 

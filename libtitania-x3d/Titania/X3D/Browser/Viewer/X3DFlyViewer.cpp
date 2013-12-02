@@ -70,7 +70,7 @@ static constexpr double    FRAME_RATE             = 60;
 
 Vector3f X3DFlyViewer::upVector (0, 1, 0);
 
-X3DFlyViewer::X3DFlyViewer (X3DBrowserSurface* const browser, NavigationInfo* navigationInfo) :
+X3DFlyViewer::X3DFlyViewer (X3DBrowserSurface* const browser, NavigationInfo* const navigationInfo) :
 	          X3DViewer (browser),
 	     navigationInfo (navigationInfo),
 	         fromVector (),
@@ -160,7 +160,7 @@ X3DFlyViewer::on_motion_notify_event (GdkEventMotion* event)
 
 		addFly ();
 
-		return true;
+		//return true;
 	}
 
 	else if (button == 2)
@@ -170,7 +170,7 @@ X3DFlyViewer::on_motion_notify_event (GdkEventMotion* event)
 
 		addPan ();
 
-		return true;
+		//return true;
 	}
 
 	return false;

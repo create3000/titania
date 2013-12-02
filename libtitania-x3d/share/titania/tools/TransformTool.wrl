@@ -146,7 +146,6 @@ PROTO TransformTool [
           DEF Front Transform {
             children Transform {
               children [
-                DEF ModeTouch TouchSensor { }
                 DEF FrontSensor PlaneSensor {
                   autoOffset FALSE
                   isActive IS isActive
@@ -168,7 +167,6 @@ PROTO TransformTool [
             children Transform {
               rotation 0 1 0 1.5708
               children [
-                USE ModeTouch
                 DEF RightSensor PlaneSensor {
                   autoOffset FALSE
                   isActive IS isActive
@@ -181,7 +179,6 @@ PROTO TransformTool [
             children Transform {
               rotation 0 1 0 3.14159
               children [
-                USE ModeTouch
                 DEF BackSensor PlaneSensor {
                   autoOffset FALSE
                   isActive IS isActive
@@ -194,8 +191,7 @@ PROTO TransformTool [
             children Transform {
               rotation 0 -1 0 1.5708
               children [
-                USE ModeTouch
-                DEF LeftSensor PlaneSensor {
+                 DEF LeftSensor PlaneSensor {
                   autoOffset FALSE
                   isActive IS isActive
                 }
@@ -207,7 +203,6 @@ PROTO TransformTool [
             children Transform {
               rotation -1 0 0 1.5708
               children [
-                USE ModeTouch
                 DEF TopSensor PlaneSensor {
                   autoOffset FALSE
                   isActive IS isActive
@@ -220,7 +215,6 @@ PROTO TransformTool [
             children Transform {
               rotation 1 0 0 1.5708
               children [
-                USE ModeTouch
                 DEF BottomSensor PlaneSensor {
                   autoOffset FALSE
                   isActive IS isActive
@@ -236,7 +230,7 @@ PROTO TransformTool [
         children [
           DEF X Group {
             children [
-              USE ModeTouch
+              DEF ModeTouch TouchSensor { }
               DEF XTranslationSensor PlaneSensor {
                 description "x-Axis"
                 autoOffset FALSE
@@ -682,11 +676,15 @@ PROTO TransformTool [
       }
     ]
   }
+  
+  
 
   DEF DoubleClick_1 DoubleClick { }
 
   DEF ModeScript Script {
+    eventIn  SFBool  set_active
     eventIn  SFTime  set_time
+    eventOut SFTime  touchTime
     eventOut SFBool  move
     eventOut SFBool  rotate
     eventOut SFBool  scale
@@ -696,6 +694,12 @@ PROTO TransformTool [
 function initialize (value, time)
 {
 	set_whichChoice (0);
+}
+
+function set_active (value, time)
+{
+	if (! value)
+		touchTime = time;
 }
 
 function set_time (value, time)
@@ -1362,7 +1366,14 @@ function divVec (a, b)
 
   # Mode translate, rotate or scale
 
+  ROUTE FrontSensor.isActive TO ModeScript.set_active
+  ROUTE RightSensor.isActive TO ModeScript.set_active
+  ROUTE BackSensor.isActive TO ModeScript.set_active
+  ROUTE LeftSensor.isActive TO ModeScript.set_active
+  ROUTE TopSensor.isActive TO ModeScript.set_active
+  ROUTE BottomSensor.isActive TO ModeScript.set_active
   ROUTE ModeTouch.touchTime TO DoubleClick_1.set_time
+  ROUTE ModeScript.touchTime TO DoubleClick_1.set_time
   ROUTE DoubleClick_1.doubleClickTime TO ModeScript.set_time
 
   # Mode Switch

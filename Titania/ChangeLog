@@ -1,3 +1,14 @@
+2013-12-02  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* MagicImport.h:
+	* MagicImport.cpp:
+	* BrowserWindow.cpp:
+	* X3DBrowserEditor.h:
+	* BrowserSelection.h:
+	* X3DBrowserEditor.cpp:
+	* BrowserSelection.cpp: 
+
 2013-12-01  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* MagicImport.h:

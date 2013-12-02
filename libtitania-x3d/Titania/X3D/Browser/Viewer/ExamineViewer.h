@@ -66,7 +66,7 @@ class ExamineViewer :
 {
 public:
 
-	ExamineViewer (X3DBrowserSurface* const, NavigationInfo*);
+	ExamineViewer (X3DBrowserSurface* const, NavigationInfo* const);
 
 	virtual
 	ViewerType
@@ -127,12 +127,14 @@ private:
 	float
 	tb_project_to_sphere (const float, const float, const float) const;
 
-	NavigationInfo*  navigationInfo;
+	NavigationInfo* const navigationInfo;
+	
 	Vector3f         distance;
 	Rotation4f       orientation;
 	Rotation4f       rotation;
 	Vector3f         fromVector;
 	Vector3f         fromPoint;
+	time_type        startTime;
 	guint            button;
 	sigc::connection spin_id;
 

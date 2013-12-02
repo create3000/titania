@@ -1,3 +1,9 @@
+2013-12-02  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Papers.mdproj:
+	* PointingDevice.h:
+	* PointingDevice.cpp: 
+
 2013-11-21  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* InputUrlStream.cpp:

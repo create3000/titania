@@ -67,7 +67,7 @@ class X3DFlyViewer :
 {
 public:
 
-	X3DFlyViewer (X3DBrowserSurface* const, NavigationInfo*);
+	X3DFlyViewer (X3DBrowserSurface* const, NavigationInfo* const);
 
 	virtual
 	NavigationInfo*
@@ -131,7 +131,8 @@ private:
 
 	static Vector3f upVector;
 
-	NavigationInfo*  navigationInfo;
+	NavigationInfo* const navigationInfo;
+
 	Vector3f         fromVector;
 	Vector3f         toVector;
 	Vector3f         direction;

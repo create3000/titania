@@ -88,14 +88,6 @@ public:
 	{ return containerField; }
 
 	///  @name Member access
-
-	SFBool &
-	getEnabled ()
-	{ return enabled; }
-
-	const SFBool &
-	getEnabled () const
-	{ return enabled; }
 	
 	SFBool &
 	isActive ()
@@ -149,7 +141,6 @@ private:
 
 	///  @name Members
 
-	SFBool enabled;
 	SFBool active;
 	MFNode children;
 
