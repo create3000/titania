@@ -363,6 +363,10 @@ private:
 	void
 	on_deselect_all_activate () final override;
 
+	virtual
+	void
+	on_select_lowest_toggled () final override;
+
 	///  @name Navigation
 
 	virtual

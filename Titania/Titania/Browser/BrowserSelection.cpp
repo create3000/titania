@@ -152,9 +152,29 @@ BrowserSelection::buttonReleaseEvent (bool picked)
 
 		if (not hierarchy .empty ())
 		{
-			X3D::SFNode highest (hierarchy .front ());
+			X3D::SFNode node (hierarchy .front ());
 
-			getBrowser () -> getSelection () -> setChildren ({ highest });
+			if (getBrowserWindow () -> getConfig () .getBoolean ("selectLowest"))
+			{
+				for (const auto & object : basic::reverse_adapter (hierarchy))
+				{
+					X3D::SFNode lowest (object);
+
+					if (not lowest)
+						continue;
+
+					if (lowest -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
+						continue;
+
+					if (dynamic_cast <X3D::Transform*> (lowest .getValue ()))
+					{
+						node = lowest;
+						break;
+					}
+				}
+			}
+
+			getBrowser () -> getSelection () -> setChildren ({ node });
 			getBrowser () -> update ();
 		}
 	}

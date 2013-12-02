@@ -134,7 +134,7 @@ traverse (X3D::SFNode & node, const TraverseCallback & callback, bool distinct)
 }
 
 bool
-find (const X3D::SFNode & node, X3DChildObject* const object, bool inScene, std::deque <X3DChildObject*> & hierarchy, NodeSet & seen)
+find (X3DBaseNode* const node, X3DChildObject* const object, bool inScene, std::deque <X3DChildObject*> & hierarchy, NodeSet & seen)
 {
 	if (not node)
 		return false;
@@ -146,10 +146,8 @@ find (const X3D::SFNode & node, X3DChildObject* const object, bool inScene, std:
 
 	if (node == object)
 		return true;
-		
-	X3DBaseNode* baseNode = inScene ? node .getValue () : node -> getLocalNode ();
 
-	for (const auto & field : baseNode -> getFieldDefinitions ())
+	for (const auto & field : node -> getFieldDefinitions ())
 	{
 		if (field == object)
 		{
@@ -193,7 +191,10 @@ find (const X3D::SFNode & node, X3DChildObject* const object, bool inScene, std:
 
 	if (not inScene)
 	{
-		Inline* inlineNode = dynamic_cast <Inline*> (baseNode);
+		if (find (node -> getLocalNode (), object, inScene, hierarchy, seen))
+			return true;
+
+		Inline* inlineNode = dynamic_cast <Inline*> (node);
 
 		if (inlineNode)
 		{

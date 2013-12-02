@@ -910,6 +910,12 @@ BrowserWindow::on_deselect_all_activate ()
 	getSelection () -> clear (undoStep);
 }
 
+void
+BrowserWindow::on_select_lowest_toggled ()
+{
+	getConfig () .setItem ("selectLowest", getSelectLowestMenuItem () .get_active ());
+}
+
 // Navigation menu
 
 void

@@ -111,10 +111,10 @@ private:
 	add_output_route (const Gtk::TreeModel::Path &, OutlineTreeData* const, X3D::Route* const);
 
 	bool
-	add_connection_above (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &, const Gtk::TreeModel::Path &);
+	add_connection_above (const Gtk::TreeModel::Path &, const Gtk::TreeModel::Path &, const Gtk::TreeModel::Path &);
 
 	bool
-	add_connection_below (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &, const Gtk::TreeModel::Path &);
+	add_connection_below (const Gtk::TreeModel::Path &, const Gtk::TreeModel::Path &, const Gtk::TreeModel::Path &);
 
 	void
 	collapse_node (const Gtk::TreeModel::iterator &);
@@ -129,19 +129,19 @@ private:
 	remove_output_route (const Gtk::TreeModel::Path &, OutlineTreeData* const, X3D::Route* const);
 
 	bool
-	remove_connection_above (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &, const Gtk::TreeModel::Path &);
+	remove_connection_above (const Gtk::TreeModel::Path &, const Gtk::TreeModel::Path &, const Gtk::TreeModel::Path &);
 
 	bool
-	remove_connection_below (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &, const Gtk::TreeModel::Path &);
+	remove_connection_below (const Gtk::TreeModel::Path &, const Gtk::TreeModel::Path &, const Gtk::TreeModel::Path &);
 
 	void
 	disconnect_route (const Gtk::TreeModel::Path &, const Gtk::TreeModel::Path &);
 
 	bool
-	remove_route_above (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &, const Gtk::TreeModel::Path &);
+	remove_route_above (const Gtk::TreeModel::Path &, const Gtk::TreeModel::Path &, const Gtk::TreeModel::Path &);
 
 	bool
-	remove_route_below (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &, const Gtk::TreeModel::Path &);
+	remove_route_below (const Gtk::TreeModel::Path &, const Gtk::TreeModel::Path &, const Gtk::TreeModel::Path &);
 
 	void
 	remove_route (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &, const Gtk::TreeModel::Path &, const Gtk::TreeModel::Path &);

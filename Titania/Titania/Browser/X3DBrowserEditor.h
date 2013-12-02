@@ -171,6 +171,8 @@ public:
 
 protected:
 
+	friend class BrowserSelection;
+
 	/// @name Construction
 
 	X3DBrowserEditor (const basic::uri &);

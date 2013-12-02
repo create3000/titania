@@ -1,6 +1,19 @@
 2013-12-02  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* BrowserWindow.h:
+	* BrowserWindow.cpp:
+	* BrowserWindow.ui:
+	* X3DBrowserEditor.h:
+	* BrowserSelection.cpp:
+	* X3DBrowserEditor.cpp:
+	* OutlineRouteGraph.h:
+	* OutlineRouteGraph.cpp:
+	* X3DBrowserWindowInterface.h:
+	* X3DBrowserWindowInterface.cpp: 
+
+2013-12-02  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* BrowserWindow.h:
 	* LibraryView.h:
 	* X3DBrowserEditor.h:
 	* BrowserSelection.h:
