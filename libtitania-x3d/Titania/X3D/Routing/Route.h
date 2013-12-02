@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -84,30 +84,30 @@ public:
 	Route*
 	clone (X3DExecutionContext* const) const
 	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) final;
+	       Error <NOT_SUPPORTED>) final override;
 
 	virtual
 	Route*
 	copy (X3DExecutionContext* const) const
 	throw (Error <INVALID_NAME>,
-	       Error <NOT_SUPPORTED>) final;
+	       Error <NOT_SUPPORTED>) final override;
 
 	///  @name Common members
 
 	virtual
 	const std::string &
-	getComponentName () const final
+	getComponentName () const final override
 	{ return componentName; }
 
 	virtual
 	const std::string &
 	getTypeName () const
-	throw (Error <DISPOSED>) final
+	throw (Error <DISPOSED>) final override
 	{ return typeName; }
 
 	virtual
 	const std::string &
-	getContainerField () const final
+	getContainerField () const final override
 	{ return containerField; }
 
 	///  @name Tests
@@ -145,13 +145,13 @@ public:
 
 	virtual
 	void
-	toStream (std::ostream &) const final;
+	toStream (std::ostream &) const final override;
 
 	///  @name Desctuction
 
 	virtual
 	void
-	dispose () final;
+	dispose () final override;
 
 
 private:
@@ -160,7 +160,7 @@ private:
 
 	virtual
 	Route*
-	create (X3DExecutionContext* const) const final;
+	create (X3DExecutionContext* const) const final override;
 
 	///  @name Operations
 

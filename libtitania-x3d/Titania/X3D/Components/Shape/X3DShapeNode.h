@@ -88,7 +88,7 @@ public:
 
 	virtual
 	Box3f
-	getBBox () final;
+	getBBox () final override;
 
 	X3DGeometryNode*
 	getGeometry () const
@@ -98,15 +98,14 @@ public:
 
 	virtual
 	void
-	traverse (const TraverseType) final;
+	traverse (const TraverseType) final override;
+
+	void
+	draw ();
 
 	virtual
 	void
-	draw () final;
-
-	virtual
-	void
-	dispose () final;
+	dispose () final override;
 
 
 protected:
@@ -115,7 +114,7 @@ protected:
 
 	virtual
 	void
-	initialize () final;
+	initialize () final override;
 
 
 private:

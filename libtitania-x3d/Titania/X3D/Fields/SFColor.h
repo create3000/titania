@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -84,7 +84,7 @@ public:
 	virtual
 	SFColor*
 	clone () const
-	throw (Error <NOT_SUPPORTED>) final
+	throw (Error <NOT_SUPPORTED>) final override
 	{ return new SFColor (*this); }
 
 	///  6.7.7 Add field interest.
@@ -144,12 +144,12 @@ public:
 	throw (Error <INVALID_X3D>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final;
+	       Error <DISPOSED>) final override;
 
 	///  @name Output operator.
 	virtual
 	void
-	toStream (std::ostream &) const final;
+	toStream (std::ostream &) const final override;
 
 
 private:

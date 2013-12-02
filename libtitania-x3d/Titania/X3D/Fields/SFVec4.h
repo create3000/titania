@@ -103,7 +103,7 @@ public:
 	virtual
 	SFVec4*
 	clone () const
-	throw (Error <NOT_SUPPORTED>) final;
+	throw (Error <NOT_SUPPORTED>) final override;
 
 	///  6.7.7 Add field interest.
 
@@ -204,12 +204,12 @@ public:
 	throw (Error <INVALID_X3D>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final;
+	       Error <DISPOSED>) final override;
 
 	///  @name Output operator.
 	virtual
 	void
-	toStream (std::ostream &) const final;
+	toStream (std::ostream &) const final override;
 
 
 private:

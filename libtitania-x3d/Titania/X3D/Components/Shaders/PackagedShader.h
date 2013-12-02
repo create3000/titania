@@ -67,44 +67,44 @@ public:
 
 	virtual
 	X3DBaseNode*
-	create (X3DExecutionContext* const) const final;
+	create (X3DExecutionContext* const) const final override;
 
 	///  @name Common members
 
 	virtual
 	const std::string &
-	getComponentName () const final
+	getComponentName () const final override
 	{ return componentName; }
 
 	virtual
 	const std::string &
 	getTypeName () const
-	throw (Error <DISPOSED>) final
+	throw (Error <DISPOSED>) final override
 	{ return typeName; }
 
 	virtual
 	const std::string &
-	getContainerField () const final
+	getContainerField () const final override
 	{ return containerField; }
 
 	virtual
 	void
-	requestImmediateLoad () final;
+	requestImmediateLoad () final override;
 
 	virtual
 	void
-	draw () final;
+	draw () final override;
 
 	virtual
 	void
-	dispose () final;
+	dispose () final override;
 
 
 protected:
 
 	virtual
 	GLuint
-	getShaderProgramId () final
+	getShaderProgramId () final override
 	{ return shaderProgramId; }
 
 
@@ -112,7 +112,7 @@ private:
 
 	virtual
 	void
-	initialize () final;
+	initialize () final override;
 	
 	GLuint shaderProgramId;
 

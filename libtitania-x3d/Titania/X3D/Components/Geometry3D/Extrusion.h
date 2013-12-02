@@ -66,24 +66,24 @@ public:
 
 	virtual
 	X3DBaseNode*
-	create (X3DExecutionContext* const) const final;
+	create (X3DExecutionContext* const) const final override;
 
 	///  @name Common members
 
 	virtual
 	const std::string &
-	getComponentName () const final
+	getComponentName () const final override
 	{ return componentName; }
 
 	virtual
 	const std::string &
 	getTypeName () const
-	throw (Error <DISPOSED>) final
+	throw (Error <DISPOSED>) final override
 	{ return typeName; }
 
 	virtual
 	const std::string &
-	getContainerField () const final
+	getContainerField () const final override
 	{ return containerField; }
 
 	///  @name Fields
@@ -170,13 +170,13 @@ public:
 
 	virtual
 	void
-	dispose () final;
+	dispose () final override;
 
 	///  @name Tests
 
 	virtual
 	bool
-	isLineGeometry () const final
+	isLineGeometry () const final override
 	{ return false; }
 
 
@@ -186,7 +186,7 @@ private:
 
 	virtual
 	void
-	initialize () final;
+	initialize () final override;
 
 	std::vector <Vector3f>
 	createPoints (bool);
@@ -196,7 +196,7 @@ private:
 
 	virtual
 	void
-	build () final;
+	build () final override;
 
 	void
 	tessellateCap (const Tessellator &,

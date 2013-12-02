@@ -98,19 +98,19 @@ private:
 
 	virtual
 	void
-	motionNotifyEvent (bool) final;
+	motionNotifyEvent (bool) final override;
 
 	virtual
 	bool
-	buttonPressEvent (bool) final;
+	buttonPressEvent (bool) final override;
 
 	virtual
 	void
-	buttonReleaseEvent (bool) final;
+	buttonReleaseEvent (bool) final override;
 
 	virtual
 	bool
-	trackSensors () final;
+	trackSensors () final override;
 
 	///  @name Members
 

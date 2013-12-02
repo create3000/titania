@@ -72,15 +72,15 @@ private:
 
 	virtual
 	void
-	initialize () final;
+	initialize () final override;
 
 	virtual
 	void
-	on_enabled_toggled () final;
+	on_enabled_toggled () final override;
 
 	virtual
 	void
-	on_intensity_changed () final;
+	on_intensity_changed () final override;
 
 };
 

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -106,20 +106,20 @@ public:
 	MFNode*
 	clone () const
 	throw (Error <INVALID_NAME>,
-          Error <NOT_SUPPORTED>) final
+          Error <NOT_SUPPORTED>) final override
 	{ return new MFNode (*this); }
 
 	virtual
 	MFNode*
 	clone (X3DExecutionContext* const executionContext) const
 	throw (Error <INVALID_NAME>,
-          Error <NOT_SUPPORTED>) final;
+          Error <NOT_SUPPORTED>) final override;
 
 	virtual
 	void
 	clone (X3DExecutionContext* const, X3DFieldDefinition*) const
 	throw (Error <INVALID_NAME>,
-          Error <NOT_SUPPORTED>) final;
+          Error <NOT_SUPPORTED>) final override;
 
 	MFNode &
 	operator = (const MFNode & field)
@@ -137,7 +137,7 @@ public:
 
 	virtual
 	X3DConstants::FieldType
-	getType () const final
+	getType () const final override
 	{ return X3DConstants::MFNode; }
 
 	///  6.7.7 Add field interest.
@@ -160,11 +160,11 @@ public:
 	throw (Error <INVALID_X3D>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final;
+	       Error <DISPOSED>) final override;
 
 	virtual
 	void
-	toStream (std::ostream &) const final;
+	toStream (std::ostream &) const final override;
 
 };
 

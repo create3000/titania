@@ -179,7 +179,7 @@ public:
 
 	virtual
 	bool
-	isLineGeometry () const final
+	isLineGeometry () const final override
 	{ return false; }
 
 
@@ -212,7 +212,7 @@ private:
 
 	virtual
 	void
-	build () final;
+	build () final override;
 
 	///  @name Tessellator
 	

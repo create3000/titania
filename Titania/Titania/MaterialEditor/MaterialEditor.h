@@ -80,7 +80,7 @@ private:
 
 	virtual
 	void
-	initialize () final;
+	initialize () final override;
 
 	void
 	set_splashScreen ();
@@ -92,112 +92,109 @@ private:
 	
 	virtual
 	void
-	on_copy () final;
+	on_copy () final override;
 	
 	virtual
 	void
-	on_paste () final;
+	on_paste () final override;
 
 	virtual
 	void
-	on_frontAndBackButton_toggled () final;
+	on_frontAndBackButton_toggled () final override;
 
 	///  @name Front color handler
 
 	virtual
 	bool
-	on_diffuse_draw (const Cairo::RefPtr <Cairo::Context> &) final;
+	on_diffuse_draw (const Cairo::RefPtr <Cairo::Context> &) final override;
 
 	virtual
 	void
-	on_diffuse_clicked () final;
+	on_diffuse_clicked () final override;
 
 	void
 	on_diffuseColor ();
 
 	virtual
 	bool
-	on_specular_draw (const Cairo::RefPtr <Cairo::Context> &) final;
+	on_specular_draw (const Cairo::RefPtr <Cairo::Context> &) final override;
 
 	virtual
 	void
-	on_specular_clicked () final;
+	on_specular_clicked () final override;
 
 	void
 	on_specularColor ();
 
 	virtual
 	bool
-	on_emissive_draw (const Cairo::RefPtr <Cairo::Context> &) final;
+	on_emissive_draw (const Cairo::RefPtr <Cairo::Context> &) final override;
 
 	virtual
 	void
-	on_emissive_clicked () final;
+	on_emissive_clicked () final override;
 
 	void
 	on_emissiveColor ();
 
 	virtual
 	void
-	on_ambient () final;
+	on_ambient () final override;
 
 	virtual
 	void
-	on_shininess () final;
+	on_shininess () final override;
 
 	virtual
 	void
-	on_transparency () final;
+	on_transparency () final override;
 
 	///  @name Back color handler
 
 	virtual
 	bool
-	on_backDiffuse_draw (const Cairo::RefPtr <Cairo::Context> &) final;
+	on_backDiffuse_draw (const Cairo::RefPtr <Cairo::Context> &) final override;
 
 	virtual
 	void
-	on_backDiffuse_clicked () final;
+	on_backDiffuse_clicked () final override;
 
-	virtual
 	void
-	on_backDiffuseColor () final;
+	on_backDiffuseColor ();
 
 	virtual
 	bool
-	on_backSpecular_draw (const Cairo::RefPtr <Cairo::Context> &) final;
+	on_backSpecular_draw (const Cairo::RefPtr <Cairo::Context> &) final override;
 
 	virtual
 	void
-	on_backSpecular_clicked () final;
+	on_backSpecular_clicked () final override;
 
-	virtual
 	void
-	on_backSpecularColor () final;
+	on_backSpecularColor ();
 
 	virtual
 	bool
-	on_backEmissive_draw (const Cairo::RefPtr <Cairo::Context> &) final;
+	on_backEmissive_draw (const Cairo::RefPtr <Cairo::Context> &) final override;
 
 	virtual
 	void
-	on_backEmissive_clicked () final;
+	on_backEmissive_clicked () final override;
+
+	void
+	on_backEmissiveColor ();
 
 	virtual
 	void
-	on_backEmissiveColor () final;
+	on_backAmbient () final override;
 
 	virtual
 	void
-	on_backAmbient () final;
+	on_backShininess () final override;
 
 	virtual
 	void
-	on_backShininess () final;
-
-	virtual
-	void
-	on_backTransparency () final;
+	on_backTransparency () final override;
 
 	///  @name Operations for all colors
 

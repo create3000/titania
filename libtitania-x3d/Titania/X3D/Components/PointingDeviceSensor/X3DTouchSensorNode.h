@@ -71,7 +71,7 @@ public:
 
 	virtual
 	void
-	set_active (const HitPtr &, bool) final;
+	set_active (const HitPtr &, bool) final override;
 
 
 protected:

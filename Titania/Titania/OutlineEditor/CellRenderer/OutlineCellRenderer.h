@@ -150,23 +150,23 @@ private:
 
 	virtual
 	void
-	get_preferred_width_vfunc (Gtk::Widget & widget, int & minimum_width, int & natural_width) const final;
+	get_preferred_width_vfunc (Gtk::Widget & widget, int & minimum_width, int & natural_width) const final override;
 
 	virtual
 	void
-	get_preferred_height_for_width_vfunc (Gtk::Widget & widget, int width, int & minimum_height, int & natural_height) const final;
+	get_preferred_height_for_width_vfunc (Gtk::Widget & widget, int width, int & minimum_height, int & natural_height) const final override;
 
 	virtual
 	void
-	get_preferred_height_vfunc (Gtk::Widget & widget, int & minimum_height, int & natural_height) const final;
+	get_preferred_height_vfunc (Gtk::Widget & widget, int & minimum_height, int & natural_height) const final override;
 
 	virtual
 	void
-	get_preferred_width_for_height_vfunc (Gtk::Widget & widget, int height, int & minimum_width, int & natural_width) const final;
+	get_preferred_width_for_height_vfunc (Gtk::Widget & widget, int height, int & minimum_width, int & natural_width) const final override;
 
 	virtual
 	Gtk::CellEditable*
-	start_editing_vfunc (GdkEvent*, Gtk::Widget &, const Glib::ustring &, const Gdk::Rectangle &, const Gdk::Rectangle &, Gtk::CellRendererState) final;
+	start_editing_vfunc (GdkEvent*, Gtk::Widget &, const Glib::ustring &, const Gdk::Rectangle &, const Gdk::Rectangle &, Gtk::CellRendererState) final override;
 
 	void
 	on_editing_done ();
@@ -179,7 +179,7 @@ private:
 
 	virtual
 	void
-	render_vfunc (const Cairo::RefPtr <Cairo::Context> &, Gtk::Widget &, const Gdk::Rectangle &, const Gdk::Rectangle &, Gtk::CellRendererState) final;
+	render_vfunc (const Cairo::RefPtr <Cairo::Context> &, Gtk::Widget &, const Gdk::Rectangle &, const Gdk::Rectangle &, Gtk::CellRendererState) final override;
 
 	void
 	render_routes (const Cairo::RefPtr <Cairo::Context> &, Gtk::Widget &, const Gdk::Rectangle &, const Gdk::Rectangle &, int, Gtk::CellRendererState);
@@ -189,11 +189,11 @@ private:
 
 	//	virtual
 	//	bool
-	//	activate_vfunc (GdkEvent*, Gtk::Widget &, const Glib::ustring &, const Gdk::Rectangle &, const Gdk::Rectangle &, Gtk::CellRendererState) final;
+	//	activate_vfunc (GdkEvent*, Gtk::Widget &, const Glib::ustring &, const Gdk::Rectangle &, const Gdk::Rectangle &, Gtk::CellRendererState) final override;
 	//
 	//	virtual
 	//	Gtk::CellEditable*
-	//	start_editing_vfunc (GdkEvent*, Gtk::Widget &, const Glib::ustring &, const Gdk::Rectangle &, const Gdk::Rectangle &, Gtk::CellRendererState) final;
+	//	start_editing_vfunc (GdkEvent*, Gtk::Widget &, const Glib::ustring &, const Gdk::Rectangle &, const Gdk::Rectangle &, Gtk::CellRendererState) final override;
 	//
 	//	// Manage editing_done event for color_cell_edit_ptr_
 	//	void

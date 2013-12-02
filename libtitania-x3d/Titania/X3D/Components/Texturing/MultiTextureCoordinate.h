@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -65,24 +65,24 @@ public:
 
 	virtual
 	X3DBaseNode*
-	create (X3DExecutionContext* const) const final;
+	create (X3DExecutionContext* const) const final override;
 
 	///  @name Common members
 
 	virtual
 	const std::string &
-	getComponentName () const final
+	getComponentName () const final override
 	{ return componentName; }
 
 	virtual
 	const std::string &
 	getTypeName () const
-	throw (Error <DISPOSED>) final
+	throw (Error <DISPOSED>) final override
 	{ return typeName; }
 
 	virtual
 	const std::string &
-	getContainerField () const final
+	getContainerField () const final override
 	{ return containerField; }
 
 	///  @name Fields
@@ -99,32 +99,32 @@ public:
 
 	virtual
 	void
-	init (TexCoordArray &, size_t) const final;
+	init (TexCoordArray &, size_t) const final override;
 
 	virtual
 	void
-	addTexCoord (size_t, TexCoordArray & texCoords, int32_t) const final;
+	addTexCoord (size_t, TexCoordArray & texCoords, int32_t) const final override;
 
 	virtual
 	void
-	resize (size_t) final;
+	resize (size_t) final override;
 
 	virtual
 	void
-	enable (const TexCoordArray &) const final;
+	enable (const TexCoordArray &) const final override;
 
 	virtual
 	void
-	enable (int32_t, size_t, const TexCoordArray &) const final
+	enable (int32_t, size_t, const TexCoordArray &) const final override
 	{ }
 
 	virtual
 	void
-	disable () const final;
+	disable () const final override;
 
 	virtual
 	void
-	disable (int32_t) const final
+	disable (int32_t) const final override
 	{ }
 
 

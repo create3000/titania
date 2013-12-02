@@ -74,7 +74,7 @@ private:
 
 	virtual
 	X3DBaseNode*
-	create (X3DExecutionContext* const) const final;
+	create (X3DExecutionContext* const) const final override;
 
 };
 

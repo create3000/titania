@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -66,36 +66,36 @@ public:
 
 	virtual
 	X3DBaseNode*
-	create (X3DExecutionContext* const) const final;
+	create (X3DExecutionContext* const) const final override;
 
 	///  @name Common members
 
 	virtual
 	const std::string &
-	getComponentName () const final
+	getComponentName () const final override
 	{ return componentName; }
 
 	virtual
 	const std::string &
 	getTypeName () const
-	throw (Error <DISPOSED>) final
+	throw (Error <DISPOSED>) final override
 	{ return typeName; }
 
 	virtual
 	const std::string &
-	getContainerField () const final
+	getContainerField () const final override
 	{ return containerField; }
 
 	///  @name Fields
 
 	virtual
 	SFBool &
-	enabled () final
+	enabled () final override
 	{ return X3DSensorNode::enabled (); }
 
 	virtual
 	const SFBool &
-	enabled () const final
+	enabled () const final override
 	{ return X3DSensorNode::enabled (); }
 
 	SFTime &
@@ -112,12 +112,12 @@ public:
 
 	virtual
 	SFBool &
-	isActive () final
+	isActive () final override
 	{ return X3DSensorNode::isActive (); }
 
 	virtual
 	const SFBool &
-	isActive () const final
+	isActive () const final override
 	{ return X3DSensorNode::isActive (); }
 
 	const SFFloat &
@@ -137,23 +137,23 @@ private:
 
 	virtual
 	void
-	prepareEvents () final;
+	prepareEvents () final override;
 
 	virtual
 	void
-	set_start () final;
+	set_start () final override;
 
 	virtual
 	void
-	set_stop () final;
+	set_stop () final override;
 
 	virtual
 	void
-	set_pause () final;
+	set_pause () final override;
 
 	virtual
 	void
-	set_resume (time_type) final;
+	set_resume (time_type) final override;
 
 
 	///  @name Static members

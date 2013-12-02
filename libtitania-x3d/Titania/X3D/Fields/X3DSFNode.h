@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -141,20 +141,20 @@ public:
 	X3DSFNode*
 	clone () const
 	throw (Error <INVALID_NAME>,
-          Error <NOT_SUPPORTED>) final
+          Error <NOT_SUPPORTED>) final override
 	{ return new X3DSFNode (*this); }
 
 	virtual
 	X3DSFNode*
 	clone (X3DExecutionContext* const) const
 	throw (Error <INVALID_NAME>,
-          Error <NOT_SUPPORTED>) final;
+          Error <NOT_SUPPORTED>) final override;
 
 	virtual
 	void
 	clone (X3DExecutionContext* const, X3DFieldDefinition*) const
 	throw (Error <INVALID_NAME>,
-          Error <NOT_SUPPORTED>) final;
+          Error <NOT_SUPPORTED>) final override;
 
 	/// @name Assignment operators
 
@@ -182,13 +182,13 @@ public:
 
 	virtual
 	X3DConstants::FieldType
-	getType () const final
+	getType () const final override
 	{ return X3DConstants::SFNode; }
 
 	virtual
 	const std::string &
 	getTypeName () const
-	throw (Error <DISPOSED>) final
+	throw (Error <DISPOSED>) final override
 	{ return typeName; }
 
 	///  @name Node services
@@ -220,15 +220,15 @@ public:
 
 	virtual
 	void
-	set (const internal_type &) final;
+	set (const internal_type &) final override;
 
 	virtual
 	void
-	write (const X3DChildObject &) final;
+	write (const X3DChildObject &) final override;
 	
 	virtual
 	X3DBaseNode*
-	getBaseValue () const final
+	getBaseValue () const final override
 	{ return getValue (); }
 
 	///  @name Boolean operator
@@ -265,18 +265,18 @@ public:
 	throw (Error <INVALID_X3D>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final;
+	       Error <DISPOSED>) final override;
 
 	///  @name Output operator.
 	virtual
 	void
-	toStream (std::ostream &) const final;
+	toStream (std::ostream &) const final override;
 
 	///  @name Dispose
 
 	virtual
 	void
-	dispose () final;
+	dispose () final override;
 
 	virtual
 	~X3DSFNode ();

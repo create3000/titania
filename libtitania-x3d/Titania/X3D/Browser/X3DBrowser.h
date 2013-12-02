@@ -53,18 +53,18 @@ public:
 
 	virtual
 	const std::string &
-	getComponentName () const final
+	getComponentName () const final override
 	{ return componentName; }
 
 	virtual
 	const std::string &
 	getTypeName () const
-	throw (Error <DISPOSED>) final
+	throw (Error <DISPOSED>) final override
 	{ return typeName; }
 
 	virtual
 	const std::string &
-	getContainerField () const final
+	getContainerField () const final override
 	{ return containerField; }
 
 	///  @name Member access
@@ -98,7 +98,7 @@ public:
 	const basic::uri &
 	getWorldURL () const
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final;
+	       Error <DISPOSED>) final override;
 
 	const FieldTypesArray &
 	getSupportedFields () const
@@ -297,7 +297,7 @@ private:
 
 	virtual
 	const X3DSFNode <World> &
-	getWorld () const final
+	getWorld () const final override
 	{ return world; }
 
 	template <typename First, typename ... Args>

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -80,39 +80,38 @@ private:
 
 	virtual
 	void
-	on_drag_begin (const Glib::RefPtr <Gdk::DragContext> &) final;
+	on_drag_begin (const Glib::RefPtr <Gdk::DragContext> &) final override;
 
 	virtual
 	void
-	on_drag_end (const Glib::RefPtr <Gdk::DragContext> &) final;
+	on_drag_end (const Glib::RefPtr <Gdk::DragContext> &) final override;
 
 	virtual
 	void
-	on_drag_data_delete (const Glib::RefPtr <Gdk::DragContext> &) final;
+	on_drag_data_delete (const Glib::RefPtr <Gdk::DragContext> &) final override;
 
 	virtual
 	void
-	on_drag_data_received (const Glib::RefPtr <Gdk::DragContext>&, int, int, const Gtk::SelectionData &, guint info, guint) final;
+	on_drag_data_received (const Glib::RefPtr <Gdk::DragContext>&, int, int, const Gtk::SelectionData &, guint info, guint) final override;
 
 	virtual
 	void
-	on_rename_node_activate () final;
+	on_rename_node_activate () final override;
 
 	virtual
 	void
-	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final;
+	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final override;
 
 	virtual
 	bool
-	on_button_press_event (GdkEventButton*) final;
+	on_button_press_event (GdkEventButton*) final override;
 
 	virtual
 	bool
-	on_button_release_event (GdkEventButton*) final;
+	on_button_release_event (GdkEventButton*) final override;
 
-	virtual
 	bool
-	set_motion_notify_event (GdkEventMotion*) final;
+	set_motion_notify_event (GdkEventMotion*);
 
 	void
 	select_node (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);

@@ -214,6 +214,7 @@ public:
 	setViewer (ViewerType value)
 	{ viewer = value; }
 
+	virtual
 	const X3DScalar <ViewerType> &
 	getViewer () const
 	{ return viewer; }

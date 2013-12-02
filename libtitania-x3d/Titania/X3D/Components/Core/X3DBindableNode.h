@@ -91,11 +91,11 @@ public:
 	
 	virtual
 	void
-	saveState () final;
+	saveState () final override;
 	
 	virtual
 	void
-	restoreState () final;
+	restoreState () final override;
 
 protected:
 

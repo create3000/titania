@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -160,78 +160,78 @@ private:
 
 	virtual
 	bool
-	on_key_press_event (GdkEventKey*) final;
+	on_key_press_event (GdkEventKey*) final override;
 
 	virtual
 	bool
-	on_key_release_event (GdkEventKey*) final;
+	on_key_release_event (GdkEventKey*) final override;
 
 	/// @name File menu
 
 	virtual
 	void
-	on_new () final;
+	on_new () final override;
 
 	virtual
 	void
-	on_open () final;
+	on_open () final override;
 
 	virtual
 	void
-	on_open_location () final;
+	on_open_location () final override;
 
 	virtual
 	void
-	on_toolbar_drag_data_received (const Glib::RefPtr <Gdk::DragContext>&, int, int, const Gtk::SelectionData &, guint info, guint) final;
+	on_toolbar_drag_data_received (const Glib::RefPtr <Gdk::DragContext>&, int, int, const Gtk::SelectionData &, guint info, guint) final override;
 
 	virtual
 	void
-	on_import () final;
+	on_import () final override;
 	
 	virtual
 	void
-	on_import_as_inline_toggled () final;
+	on_import_as_inline_toggled () final override;
 
 	virtual
 	void
-	on_surface_box_drag_data_received (const Glib::RefPtr <Gdk::DragContext>&, int, int, const Gtk::SelectionData &, guint info, guint) final;
+	on_surface_box_drag_data_received (const Glib::RefPtr <Gdk::DragContext>&, int, int, const Gtk::SelectionData &, guint info, guint) final override;
 
 	void
 	dragDataHandling (const Glib::RefPtr <Gdk::DragContext>&, const Gtk::SelectionData &, guint, bool);
 
 	virtual
 	void
-	on_save () final;
+	on_save () final override;
 
 	virtual
 	void
-	on_save_as () final;
+	on_save_as () final override;
 
 	virtual
 	void
-	on_revert_to_saved () final;
+	on_revert_to_saved () final override;
 
 	virtual
 	void
-	on_close () final;
+	on_close () final override;
 
 	/// @name Dialog response
 
 	virtual
 	void
-	on_open_location_entry_changed () final;
+	on_open_location_entry_changed () final override;
 
 	virtual
 	bool
-	on_open_location_entry_key_release_event (GdkEventKey*) final;
+	on_open_location_entry_key_release_event (GdkEventKey*) final override;
 
 	virtual
 	void
-	on_undo () final;
+	on_undo () final override;
 
 	virtual
 	void
-	on_redo () final;
+	on_redo () final override;
 
 	///  @name Clipboard handling
 
@@ -240,63 +240,63 @@ private:
 
 	virtual
 	void
-	on_cut_nodes_activate () final;
+	on_cut_nodes_activate () final override;
 
 	virtual
 	void
-	on_copy_nodes_activate () final;
+	on_copy_nodes_activate () final override;
 
 	virtual
 	void
-	on_paste_nodes_activate () final;
+	on_paste_nodes_activate () final override;
 
 	///  @name Edit menu 
 
 	virtual
 	void
-	on_delete_nodes_activate () final;
+	on_delete_nodes_activate () final override;
 
 	virtual
 	void
-	on_group_selected_nodes_activate () final;
+	on_group_selected_nodes_activate () final override;
 
 	virtual
 	void
-	on_ungroup_node_activate () final;
+	on_ungroup_node_activate () final override;
 
 	virtual
 	void
-	on_add_to_group_activate () final;
+	on_add_to_group_activate () final override;
 
 	virtual
 	void
-	on_detach_from_group_activate () final;
+	on_detach_from_group_activate () final override;
 
 	virtual
 	void
-	on_create_parent_group_activate () final;
+	on_create_parent_group_activate () final override;
 
 	/// @name Bar view handling
 
 	virtual
 	void
-	on_toolBar_toggled () final;
+	on_toolBar_toggled () final override;
 
 	virtual
 	void
-	on_sideBar_toggled () final;
+	on_sideBar_toggled () final override;
 
 	virtual
 	void
-	on_footer_toggled () final;
+	on_footer_toggled () final override;
 
 	virtual
 	void
-	on_browser_toggled () final;
+	on_browser_toggled () final override;
 
 	virtual
 	void
-	on_editor_toggled () final;
+	on_editor_toggled () final override;
 
 	void
 	enableEditor (bool);
@@ -305,95 +305,95 @@ private:
 
 	virtual
 	void
-	phong_activate () final;
+	phong_activate () final override;
 
 	virtual
 	void
-	gouraud_activate () final;
+	gouraud_activate () final override;
 
 	virtual
 	void
-	flat_activate () final;
+	flat_activate () final override;
 
 	virtual
 	void
-	wireframe_activate () final;
+	wireframe_activate () final override;
 
 	virtual
 	void
-	pointset_activate () final;
+	pointset_activate () final override;
 
 	///  @name Rendering quality
 
 	virtual
 	void
-	on_low_quality_activate () final;
+	on_low_quality_activate () final override;
 
 	virtual
 	void
-	on_medium_quality_activate () final;
+	on_medium_quality_activate () final override;
 
 	virtual
 	void
-	on_high_quality_activate () final;
+	on_high_quality_activate () final override;
 
 	///  @name Rendering properties
 
 	virtual
 	void
-	on_rendering_properties_toggled () final;
+	on_rendering_properties_toggled () final override;
 
 	///  @name Fullscreen modus
 
 	virtual
 	void
-	on_fullscreen () final;
+	on_fullscreen () final override;
 
 	virtual
 	void
-	on_unfullscreen () final;
+	on_unfullscreen () final override;
 
 	///  @name Selection
 
 	virtual
 	void
-	on_select_all_activate () final;
+	on_select_all_activate () final override;
 
 	virtual
 	void
-	on_deselect_all_activate () final;
+	on_deselect_all_activate () final override;
 
 	///  @name Navigation
 
 	virtual
 	void
-	on_rubberband_toggled () final;
+	on_rubberband_toggled () final override;
 
 	///  @name Editor handling
 
 	virtual
 	void
-	on_motion_blur_editor_activate () final;
+	on_motion_blur_editor_activate () final override;
 
 	///  @name Help menu
 
 	virtual
 	void
-	on_info () final;
+	on_info () final override;
 
 	virtual
 	void
-	on_standard_size () final;
+	on_standard_size () final override;
 
 	/// Toolbar
 	
 	virtual
 	void
-	on_node_properties_editor () final;
+	on_node_properties_editor () final override;
 	
 	virtual
 	void
-	on_material_editor () final;
+	on_material_editor () final override;
 
 	///  @name Browser dashboard handling
 
@@ -402,11 +402,11 @@ private:
 
 	virtual
 	void
-	on_hand_button_toggled () final;
+	on_hand_button_toggled () final override;
 
 	virtual
 	void
-	on_arrow_button_toggled () final;
+	on_arrow_button_toggled () final override;
 
 	void
 	set_viewer (X3D::ViewerType);
@@ -425,34 +425,34 @@ private:
 
 	virtual
 	void
-	on_viewer_clicked () final;
+	on_viewer_clicked () final override;
 
 	virtual
 	void
-	on_examine_viewer_activate () final;
+	on_examine_viewer_activate () final override;
 
 	virtual
 	void
-	on_walk_viewer_activate () final;
+	on_walk_viewer_activate () final override;
 
 	virtual
 	void
-	on_fly_viewer_activate () final;
+	on_fly_viewer_activate () final override;
 
 	virtual
 	void
-	on_none_viewer_activate () final;
+	on_none_viewer_activate () final override;
 
 	void
 	set_look_at (bool);
 
 	virtual
 	void
-	on_look_at_all_clicked () final;
+	on_look_at_all_clicked () final override;
 
 	virtual
 	void
-	on_look_at_toggled () final;
+	on_look_at_toggled () final override;
 
 	///  @name Dialog response handling
 

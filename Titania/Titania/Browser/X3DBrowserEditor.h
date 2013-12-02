@@ -87,11 +87,11 @@ public:
 
 	virtual
 	void
-	save (const basic::uri &, const bool) final;
+	save (const basic::uri &, const bool) final override;
 
 	virtual
 	bool
-	close () final;
+	close () final override;
 
 	/// @name Undo/Redo operations
 
@@ -181,7 +181,7 @@ protected:
 
 	virtual
 	void
-	restoreSession () final;
+	restoreSession () final override;
 
 	/// @name Undo
 

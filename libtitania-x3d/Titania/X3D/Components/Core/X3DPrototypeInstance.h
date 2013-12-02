@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -70,38 +70,38 @@ public:
 
 	virtual
 	X3DPrototypeInstance*
-	create (X3DExecutionContext* const) const final;
+	create (X3DExecutionContext* const) const final override;
 
 	virtual
 	X3DPrototypeInstance*
 	copy (X3DExecutionContext* const) const
 	throw (Error <INVALID_NAME>,
-          Error <NOT_SUPPORTED>) final;
+          Error <NOT_SUPPORTED>) final override;
 
 	///  @name Common members
 
 	virtual
 	const std::string &
-	getComponentName () const final
+	getComponentName () const final override
 	{ return componentName; }
 
 	virtual
 	const std::string &
 	getTypeName () const
-	throw (Error <DISPOSED>) final;
+	throw (Error <DISPOSED>) final override;
 
 	virtual
 	const X3DBaseNode*
 	getType () const
-	throw (Error <DISPOSED>) final;
+	throw (Error <DISPOSED>) final override;
 
 	virtual
 	X3DBaseNode*
-	getLocalNode () final;
+	getLocalNode () final override;
 
 	virtual
 	const std::string &
-	getContainerField () const final
+	getContainerField () const final override
 	{ return containerField; }
 
 	///  @name Members
@@ -117,27 +117,27 @@ public:
 	
 	virtual
 	void
-	saveState () final;
+	saveState () final override;
 	
 	virtual
 	void
-	restoreState () final;
+	restoreState () final override;
 
 	virtual
 	void
-	traverse (const TraverseType) final;
+	traverse (const TraverseType) final override;
 
 	///  @name Input/Output
 
 	virtual
 	void
-	toStream (std::ostream &) const final;
+	toStream (std::ostream &) const final override;
 
 	///  @name Destruction
 
 	virtual
 	void
-	dispose () final;
+	dispose () final override;
 
 
 private:
@@ -146,7 +146,7 @@ private:
 
 	virtual
 	void
-	initialize () final;
+	initialize () final override;
 
 	///  @name Static members
 

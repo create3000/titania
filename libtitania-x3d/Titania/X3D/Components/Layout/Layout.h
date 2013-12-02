@@ -67,24 +67,24 @@ public:
 
 	virtual
 	X3DBaseNode*
-	create (X3DExecutionContext* const) const final;
+	create (X3DExecutionContext* const) const final override;
 
 	///  @name Common members
 
 	virtual
 	const std::string &
-	getComponentName () const final
+	getComponentName () const final override
 	{ return componentName; }
 
 	virtual
 	const std::string &
 	getTypeName () const
-	throw (Error <DISPOSED>) final
+	throw (Error <DISPOSED>) final override
 	{ return typeName; }
 
 	virtual
 	const std::string &
-	getContainerField () const final
+	getContainerField () const final override
 	{ return containerField; }
 
 	///  @name Fields
@@ -141,21 +141,21 @@ public:
 
 	virtual
 	HorizontalAlignType
-	getAlignX () const final
+	getAlignX () const final override
 	{ return alignX; }
 
 	virtual
 	VerticalAlignType
-	getAlignY () const final
+	getAlignY () const final override
 	{ return alignY; }
 
 	virtual
 	SizeUnitType
-	getOffsetUnitX () const final;
+	getOffsetUnitX () const final override;
 
 	virtual
 	SizeUnitType
-	getOffsetUnitY () const final;
+	getOffsetUnitY () const final override;
 
 	double
 	getOffsetX () const
@@ -167,11 +167,11 @@ public:
 
 	virtual
 	SizeUnitType
-	getSizeUnitX () const final;
+	getSizeUnitX () const final override;
 
 	virtual
 	SizeUnitType
-	getSizeUnitY () const final;
+	getSizeUnitY () const final override;
 
 	double
 	getSizeX () const
@@ -199,7 +199,7 @@ public:
 
 	virtual
 	void
-	transform (const TraverseType type) final;
+	transform (const TraverseType type) final override;
 
 
 private:
@@ -208,7 +208,7 @@ private:
 
 	virtual
 	void
-	initialize () final;
+	initialize () final override;
 
 	///  @name Event handler
 

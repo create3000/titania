@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -84,12 +84,10 @@ TransformHandle::initialize ()
 		scene = getBrowser () -> createX3DFromURL ({ get_tool ("TransformTool.wrl") .str () });
 
 		SFNode handle = scene -> getNamedNode ("Handle");
-		
+
 		handle -> getField ("isActive") -> addInterest (*isActive);
 
-		X3DFieldDefinition* field = handle -> getField ("transform");
-
-		static_cast <SFNode*> (field) -> setValue (transform);
+		handle -> setField <SFNode> ("transform", transform);
 	}
 	catch (const X3DError & error)
 	{
@@ -112,7 +110,7 @@ void
 TransformHandle::setUserData (const UserDataPtr & value)
 {
 	transform -> setUserData (value);
-	
+
 	X3DHandleObject::setUserData (value);
 }
 
@@ -136,57 +134,12 @@ TransformHandle::reshape ()
 		auto handle = scene -> getNamedNode ("Handle");
 		auto bbox   = transform -> X3DGroupingNode::getBBox ();
 
-		try
-		{
-			const Matrix4f & cameraSpaceMatrix = getCameraSpaceMatrix ();
-
-			SFMatrix4f & field = *static_cast <SFMatrix4f*> (handle -> getField ("cameraSpaceMatrix"));
-
-			if (field not_eq cameraSpaceMatrix)
-				field = cameraSpaceMatrix;
-		}
-		catch (const X3DError &)
-		{ }
-
-		try
-		{
-			Matrix4f modelViewMatrix = ModelViewMatrix4f ();
-
-			SFMatrix4f & field = *static_cast <SFMatrix4f*> (handle -> getField ("modelViewMatrix"));
-
-			if (field not_eq modelViewMatrix)
-				field = modelViewMatrix;
-		}
-		catch (const X3DError &)
-		{ }
-
-		try
-		{
-			SFVec3f & field = *static_cast <SFVec3f*> (handle -> getField ("bboxSize"));
-
-			auto size = bbox .size ();
-
-			if (field not_eq size)
-				field = size;
-		}
-		catch (const X3DError &)
-		{ }
-
-		try
-		{
-			SFVec3f & field = *static_cast <SFVec3f*> (handle -> getField ("bboxCenter"));
-
-			if (field not_eq bbox .center ())
-				field = bbox .center ();
-		}
-		catch (const X3DError &)
-		{ }
+		handle -> setField <SFMatrix4f> ("cameraSpaceMatrix", getCameraSpaceMatrix (), true);
+		handle -> setField <SFMatrix4f> ("modelViewMatrix",   ModelViewMatrix4f (),    true);
+		handle -> setField <SFVec3f>    ("bboxSize",          bbox .size (),           true);
+		handle -> setField <SFVec3f>    ("bboxCenter",        bbox .center (),         true);
 	}
-	catch (const X3DError &)
-	{
-		// catch error from getNamedNode
-	}
-	catch (const std::domain_error &)
+	catch (const X3DError & error)
 	{ }
 }
 

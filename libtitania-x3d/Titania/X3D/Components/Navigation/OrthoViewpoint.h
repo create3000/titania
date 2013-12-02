@@ -67,24 +67,24 @@ public:
 
 	virtual
 	X3DBaseNode*
-	create (X3DExecutionContext* const) const final;
+	create (X3DExecutionContext* const) const final override;
 
 	///  @name Common members
 
 	virtual
 	const std::string &
-	getComponentName () const final
+	getComponentName () const final override
 	{ return componentName; }
 
 	virtual
 	const std::string &
 	getTypeName () const
-	throw (Error <DISPOSED>) final
+	throw (Error <DISPOSED>) final override
 	{ return typeName; }
 
 	virtual
 	const std::string &
-	getContainerField () const final
+	getContainerField () const final override
 	{ return containerField; }
 
 	///  @name Fields
@@ -109,11 +109,11 @@ public:
 
 	virtual
 	Vector3f
-	getPosition () const final;
+	getPosition () const final override;
 
 	virtual
 	Vector3d
-	getScreenScale (double, const Vector4i &) const final;
+	getScreenScale (double, const Vector4i &) const final override;
 
 	Vector2d
 	getViewportSize (const Vector4i &) const;
@@ -122,7 +122,7 @@ public:
 
 	virtual
 	void
-	reshape (const float, const float) final;
+	reshape (const float, const float) final override;
 
 
 private:
@@ -151,7 +151,7 @@ private:
 
 	virtual
 	Vector3f
-	getLookAtPositionOffset (Box3f) const final;
+	getLookAtPositionOffset (Box3f) const final override;
 
 
 	///  @name Static members

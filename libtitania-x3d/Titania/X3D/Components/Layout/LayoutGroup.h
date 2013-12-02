@@ -69,24 +69,24 @@ public:
 
 	virtual
 	X3DBaseNode*
-	create (X3DExecutionContext* const) const final;
+	create (X3DExecutionContext* const) const final override;
 
 	///  @name Common members
 
 	virtual
 	const std::string &
-	getComponentName () const final
+	getComponentName () const final override
 	{ return componentName; }
 
 	virtual
 	const std::string &
 	getTypeName () const
-	throw (Error <DISPOSED>) final
+	throw (Error <DISPOSED>) final override
 	{ return typeName; }
 
 	virtual
 	const std::string &
-	getContainerField () const final
+	getContainerField () const final override
 	{ return containerField; }
 
 	///  @name Fields
@@ -111,20 +111,20 @@ public:
 
 	virtual
 	Box3f
-	getBBox () final;
+	getBBox () final override;
 
 	///  @name Operations
 
 	virtual
 	void
-	traverse (const TraverseType) final;
+	traverse (const TraverseType) final override;
 
 
 private:
 
 	virtual
 	void
-	initialize () final;
+	initialize () final override;
 
 	///  @name Event handler
 

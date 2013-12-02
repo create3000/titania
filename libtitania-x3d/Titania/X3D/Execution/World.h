@@ -70,18 +70,18 @@ public:
 
 	virtual
 	const std::string &
-	getComponentName () const final
+	getComponentName () const final override
 	{ return componentName; }
 
 	virtual
 	const std::string &
 	getTypeName () const
-	throw (Error <DISPOSED>) final
+	throw (Error <DISPOSED>) final override
 	{ return typeName; }
 
 	virtual
 	const std::string &
-	getContainerField () const final
+	getContainerField () const final override
 	{ return containerField; }
 
 	///  @name Scene handling
@@ -102,14 +102,14 @@ public:
 
 	virtual
 	void
-	traverse (const TraverseType type) final
+	traverse (const TraverseType type) final override
 	{ layerSet -> traverse (type); }
 
 	///  @name Destruction
 
 	virtual
 	void
-	dispose () final;
+	dispose () final override;
 
 	virtual
 	~World ();
@@ -119,11 +119,11 @@ private:
 
 	virtual
 	World*
-	create (X3DExecutionContext* const) const final;
+	create (X3DExecutionContext* const) const final override;
 
 	virtual
 	void
-	initialize () final;
+	initialize () final override;
 
 	void
 	set_activeLayer ();

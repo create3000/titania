@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -192,22 +192,22 @@ private:
 
 	virtual
 	Gtk::TreeModelFlags
-	get_flags_vfunc () const final;
+	get_flags_vfunc () const final override;
 
 	virtual
 	int
-	get_n_columns_vfunc () const final;
+	get_n_columns_vfunc () const final override;
 
 	virtual GType
-	get_column_type_vfunc (int index) const final;
+	get_column_type_vfunc (int index) const final override;
 
 	virtual
 	void
-	get_value_vfunc (const iterator & iter, int column, Glib::ValueBase & value) const final;
+	get_value_vfunc (const iterator & iter, int column, Glib::ValueBase & value) const final override;
 
 	virtual
 	Path
-	get_path_vfunc (const iterator & iter) const final;
+	get_path_vfunc (const iterator & iter) const final override;
 
 	virtual
 	bool
@@ -215,63 +215,63 @@ private:
 
 	virtual
 	int
-	iter_n_root_children_vfunc () const final;
+	iter_n_root_children_vfunc () const final override;
 
 	virtual
 	bool
-	iter_nth_root_child_vfunc (int n, iterator & iter) const final;
+	iter_nth_root_child_vfunc (int n, iterator & iter) const final override;
 
 	virtual
 	bool
-	iter_has_child_vfunc (const iterator & iter) const final;
+	iter_has_child_vfunc (const iterator & iter) const final override;
 
 	virtual
 	int
-	iter_n_children_vfunc (const iterator & iter) const final;
+	iter_n_children_vfunc (const iterator & iter) const final override;
 
 	virtual
 	bool
-	iter_children_vfunc (const iterator & parent, iterator & iter) const final;
+	iter_children_vfunc (const iterator & parent, iterator & iter) const final override;
 
 	virtual
 	bool
-	iter_nth_child_vfunc (const iterator & parent, int n, iterator & iter) const final;
+	iter_nth_child_vfunc (const iterator & parent, int n, iterator & iter) const final override;
 
 	virtual
 	bool
-	iter_next_vfunc (const iterator & iter, iterator & iter_next) const final;
+	iter_next_vfunc (const iterator & iter, iterator & iter_next) const final override;
 
 	virtual
 	bool
-	iter_parent_vfunc (const iterator & child, iterator & iter) const final;
+	iter_parent_vfunc (const iterator & child, iterator & iter) const final override;
 
 	virtual
 	void
-	ref_node_vfunc (const iterator &) const final;
+	ref_node_vfunc (const iterator &) const final override;
 
 	virtual
 	void
-	unref_node_vfunc (const iterator &) const final;
+	unref_node_vfunc (const iterator &) const final override;
 
 	virtual
 	void
-	on_row_changed (const Path &, const iterator &) final;
+	on_row_changed (const Path &, const iterator &) final override;
 
 	virtual
 	void
-	on_row_inserted (const Path & path, const iterator &) final;
+	on_row_inserted (const Path & path, const iterator &) final override;
 
 	virtual
 	void
-	on_row_has_child_toggled (const Path &, const iterator &) final;
+	on_row_has_child_toggled (const Path &, const iterator &) final override;
 
 	virtual
 	void
-	on_row_deleted (const Path &) final;
+	on_row_deleted (const Path &) final override;
 
 	virtual
 	void
-	on_rows_reordered (const Path &, const iterator &, int*) final;
+	on_rows_reordered (const Path &, const iterator &, int*) final override;
 
 	///  @name Members
 

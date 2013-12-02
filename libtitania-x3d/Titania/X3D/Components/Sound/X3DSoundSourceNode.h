@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -76,12 +76,12 @@ public:
 
 	virtual
 	SFBool &
-	enabled () final
+	enabled () final override
 	{ return *fields .enabled; }
 
 	virtual
 	const SFBool &
-	enabled () const final
+	enabled () const final override
 	{ return *fields .enabled; }
 
 	SFString &
@@ -110,12 +110,12 @@ public:
 
 	virtual
 	SFBool &
-	isActive () final
+	isActive () final override
 	{ return *fields .isActive; }
 
 	virtual
 	const SFBool &
-	isActive () const final
+	isActive () const final override
 	{ return *fields .isActive; }
 
 	SFTime &
@@ -177,19 +177,19 @@ private:
 
 	virtual
 	void
-	set_start () final;
+	set_start () final override;
 
 	virtual
 	void
-	set_stop () final;
+	set_stop () final override;
 
 	virtual
 	void
-	set_pause () final;
+	set_pause () final override;
 
 	virtual
 	void
-	set_resume (time_type) final;
+	set_resume (time_type) final override;
 
 	void
 	set_end ();

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -79,27 +79,27 @@ private:
 
 	virtual
 	void
-	on_type_name_insert_text (const Glib::ustring &, int*) final;
+	on_type_name_insert_text (const Glib::ustring &, int*) final override;
 
 	virtual
 	void
-	on_type_name_delete_text (int, int) final;
+	on_type_name_delete_text (int, int) final override;
 
 	virtual
 	void
-	on_name_insert_text (const Glib::ustring &, int*) final;
+	on_name_insert_text (const Glib::ustring &, int*) final override;
 
 	virtual
 	void
-	on_name_delete_text (int, int) final;
+	on_name_delete_text (int, int) final override;
 
 	virtual
 	void
-	on_ok () final;
+	on_ok () final override;
 
 	virtual
 	void
-	on_cancel () final;
+	on_cancel () final override;
 
 	static
 	void

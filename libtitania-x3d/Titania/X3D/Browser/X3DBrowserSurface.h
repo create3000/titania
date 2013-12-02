@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -78,19 +78,19 @@ public:
 
 	virtual
 	bool
-	makeCurrent () const final
+	makeCurrent () const final override
 	{ return opengl::Surface::makeCurrent (); }
 
 	virtual
 	void
-	swapBuffers () const final
+	swapBuffers () const final override
 	{ opengl::Surface::swapBuffers (); }
 
 	///  @name Destruction
 
 	virtual
 	void
-	dispose () final;
+	dispose () final override;
 
 protected:
 
@@ -111,7 +111,7 @@ private:
 
 	virtual
 	void
-	construct () final
+	construct () final override
 	{ setup (); }
 
 	///  @name Event handler
@@ -126,12 +126,12 @@ private:
 
 	virtual
 	void
-	reshape () final
+	reshape () final override
 	{ X3DBrowser::reshape (); }
 
 	virtual
 	void
-	update (const Cairo::RefPtr <Cairo::Context> &) final
+	update (const Cairo::RefPtr <Cairo::Context> &) final override
 	{ update (); }
 
 	///  @name Members

@@ -68,24 +68,24 @@ public:
 
 	virtual
 	X3DBaseNode*
-	create (X3DExecutionContext* const) const final;
+	create (X3DExecutionContext* const) const final override;
 
 	///  @name Common members
 
 	virtual
 	const std::string &
-	getComponentName () const final
+	getComponentName () const final override
 	{ return componentName; }
 
 	virtual
 	const std::string &
 	getTypeName () const
-	throw (Error <DISPOSED>) final
+	throw (Error <DISPOSED>) final override
 	{ return typeName; }
 
 	virtual
 	const std::string &
-	getContainerField () const final
+	getContainerField () const final override
 	{ return containerField; }
 
 	///  @name Operations
@@ -100,13 +100,13 @@ public:
 
 	virtual
 	void
-	traverse (const TraverseType) final;
+	traverse (const TraverseType) final override;
 
 	///  @name Destruction
 
 	virtual
 	void
-	dispose () final;
+	dispose () final override;
 
 
 private:
@@ -115,21 +115,21 @@ private:
 
 	virtual
 	void
-	initialize () final;
+	initialize () final override;
 
 	///  @name Operations
 
 	virtual
 	void
-	bindToLayer (X3DLayerNode* const) final;
+	bindToLayer (X3DLayerNode* const) final override;
 
 	virtual
 	void
-	unbindFromLayer (X3DLayerNode* const) final;
+	unbindFromLayer (X3DLayerNode* const) final override;
 
 	virtual
 	void
-	removeFromLayer (X3DLayerNode* const) final;
+	removeFromLayer (X3DLayerNode* const) final override;
 
 	///  @name Static members
 

@@ -144,6 +144,13 @@ public:
 
 	///  @name Field handling
 
+	template <class FieldType, class ValueType>
+	void
+	setField (const std::string &, const ValueType &, bool = false)
+	throw (Error <INVALID_NAME>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
 	X3DFieldDefinition*
 	getField (const std::string &) const
 	throw (Error <INVALID_NAME>,
@@ -375,6 +382,31 @@ private:
 	Output shutdownOutput;
 
 };
+
+template <class FieldType, class ValueType>
+void
+X3DBaseNode::setField (const std::string & name, const ValueType & value, bool check)
+throw (Error <INVALID_NAME>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	FieldType* field = dynamic_cast <FieldType*> (getField (name));
+	
+	if (field)
+	{
+		if (check)
+		{
+			if (*field not_eq value)
+				*field = value;
+		}
+		else
+			*field = value;
+
+		return;
+	}
+
+	throw Error <INVALID_NAME> ("Invalid type: Field " + name + " has type " + getField (name) -> getTypeName () + ".");
+}
 
 } // X3D
 } // titania

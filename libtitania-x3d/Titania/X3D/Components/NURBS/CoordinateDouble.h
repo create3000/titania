@@ -65,24 +65,24 @@ public:
 
 	virtual
 	X3DBaseNode*
-	create (X3DExecutionContext* const) const final;
+	create (X3DExecutionContext* const) const final override;
 
 	///  @name Common members
 
 	virtual
 	const std::string &
-	getComponentName () const final
+	getComponentName () const final override
 	{ return componentName; }
 
 	virtual
 	const std::string &
 	getTypeName () const
-	throw (Error <DISPOSED>) final
+	throw (Error <DISPOSED>) final override
 	{ return typeName; }
 
 	virtual
 	const std::string &
-	getContainerField () const final
+	getContainerField () const final override
 	{ return containerField; }
 
 	///  @name Fields
@@ -99,32 +99,32 @@ public:
 
 	virtual
 	Vector3f
-	getNormal (size_t, size_t, size_t) const final;
+	getNormal (size_t, size_t, size_t) const final override;
 
 	virtual
 	void
-	addVertex (opengl::tessellator <size_t> &, int32_t, size_t) const final;
+	addVertex (opengl::tessellator <size_t> &, int32_t, size_t) const final override;
 
 	virtual
 	void
-	addVertex (std::vector <Vector3f>&, int32_t) const final;
+	addVertex (std::vector <Vector3f>&, int32_t) const final override;
 
 	virtual
 	std::vector <Vector4f>
-	getControlPoints (const MFDouble & weight) const final;
+	getControlPoints (const MFDouble & weight) const final override;
 
 	virtual
 	void
-	resize (size_t) final;
+	resize (size_t) final override;
 
 	virtual
 	size_t
-	isEmpty () const final
+	isEmpty () const final override
 	{ return point () .empty (); }
 
 	virtual
 	size_t
-	getSize () const final
+	getSize () const final override
 	{ return point () .size (); }
 
 

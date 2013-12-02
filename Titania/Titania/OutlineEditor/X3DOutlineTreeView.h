@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -192,19 +192,19 @@ private:
 
 	virtual
 	bool
-	on_test_expand_row (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &) final;
+	on_test_expand_row (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &) final override;
 
 	virtual
 	void
-	on_row_expanded (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &) final;
+	on_row_expanded (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &) final override;
 
 	virtual
 	bool
-	on_test_collapse_row (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &) final;
+	on_test_collapse_row (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &) final override;
 
 	virtual
 	void
-	on_row_collapsed (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path) final;
+	on_row_collapsed (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & path) final override;
 
 	void
 	collapse_clone (const Gtk::TreeModel::iterator &);

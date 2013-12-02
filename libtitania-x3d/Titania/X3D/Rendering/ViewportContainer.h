@@ -73,11 +73,11 @@ public:
 
 	virtual
 	void
-	enable () final;
+	enable () final override;
 
 	virtual
 	void
-	disable () final;
+	disable () final override;
 
 
 private:

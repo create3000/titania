@@ -77,24 +77,24 @@ public:
 
 	virtual
 	X3DBaseNode*
-	create (X3DExecutionContext* const) const final;
+	create (X3DExecutionContext* const) const final override;
 
 	///  @name Common members
 
 	virtual
 	const std::string &
-	getComponentName () const final
+	getComponentName () const final override
 	{ return componentName; }
 
 	virtual
 	const std::string &
 	getTypeName () const
-	throw (Error <DISPOSED>) final
+	throw (Error <DISPOSED>) final override
 	{ return typeName; }
 
 	virtual
 	const std::string &
-	getContainerField () const final
+	getContainerField () const final override
 	{ return containerField; }
 
 	///  @name Member access
@@ -115,11 +115,11 @@ public:
 
 	virtual
 	void
-	set_initialized () final;
+	set_initialized () final override;
 
 	virtual
 	void
-	eventsProcessed () final;
+	eventsProcessed () final override;
 
 	void
 	addObject (X3DFieldDefinition*, JSObject*);
@@ -136,7 +136,7 @@ public:
 
 	virtual
 	void
-	dispose () final;
+	dispose () final override;
 
 	virtual
 	~jsContext ();
@@ -146,7 +146,7 @@ private:
 
 	virtual
 	void
-	initialize () final;
+	initialize () final override;
 
 	void
 	initContext ();
@@ -195,12 +195,12 @@ private:
 
 	virtual
 	void
-	addEvent (X3DChildObject* const) final
+	addEvent (X3DChildObject* const) final override
 	{ }
 
 	virtual
 	void
-	addEvent (X3DChildObject* const, const EventPtr &) final
+	addEvent (X3DChildObject* const, const EventPtr &) final override
 	{ }
 
 	void

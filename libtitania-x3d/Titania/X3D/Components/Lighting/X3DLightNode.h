@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -107,16 +107,16 @@ public:
 	
 	virtual
 	bool
-	isCollectable () final
+	isCollectable () final override
 	{ return true; }
 
 	virtual
 	void
-	push (const TraverseType) final;
+	push (const TraverseType) final override;
 
 	virtual
 	void
-	pop (const TraverseType) final;
+	pop (const TraverseType) final override;
 
 	virtual
 	void

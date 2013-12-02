@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -72,11 +72,11 @@ private:
 
 	virtual
 	void
-	on_map () final;
+	on_map () final override;
 
 	virtual
 	void
-	initialize () final;
+	initialize () final override;
 
 	const X3D::X3DSFNode <X3D::ViewpointStack> &
 	getViewpointStack ();
@@ -98,7 +98,7 @@ private:
 
 	virtual
 	void
-	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final;
+	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final override;
 
 	X3D::X3DSFNode <X3D::X3DLayerNode> activeLayer;
 

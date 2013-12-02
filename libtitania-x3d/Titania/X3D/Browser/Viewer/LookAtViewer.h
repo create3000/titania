@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -71,12 +71,12 @@ public:
 
 	virtual
 	ViewerType
-	getType () const final
+	getType () const final override
 	{ return ViewerType::LOOK_AT; }
 
 	virtual
 	NavigationInfo*
-	getNavigationInfo () const final
+	getNavigationInfo () const final override
 	{ return nullptr; }
 	
 	///  @name Destruction
@@ -89,7 +89,7 @@ private:
 
 	virtual
 	void
-	initialize () final;
+	initialize () final override;
 
 	bool
 	on_button_press_event (GdkEventButton*);

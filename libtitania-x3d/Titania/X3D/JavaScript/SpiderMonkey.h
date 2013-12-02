@@ -76,31 +76,31 @@ public:
 
 	virtual
 	const std::string &
-	getComponentName () const final
+	getComponentName () const final override
 	{ return componentName; }
 
 	virtual
 	const std::string &
 	getTypeName () const
-	throw (Error <DISPOSED>) final
+	throw (Error <DISPOSED>) final override
 	{ return typeName; }
 
 	virtual
 	const std::string &
-	getContainerField () const final
+	getContainerField () const final override
 	{ return containerField; }
 
 	///  @name Operations
 
 	virtual
 	X3DSFNode <X3DJavaScriptContext>
-	createContext (Script *, const std::string &, const basic::uri &, size_t) final;
+	createContext (Script *, const std::string &, const basic::uri &, size_t) final override;
 
 	///  @name Input/Output
 
 	virtual
 	void
-	toStream (std::ostream &) const final;
+	toStream (std::ostream &) const final override;
 
 
 private:

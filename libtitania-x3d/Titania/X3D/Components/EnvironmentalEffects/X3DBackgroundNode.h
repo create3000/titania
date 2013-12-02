@@ -116,7 +116,7 @@ public:
 
 	virtual
 	void
-	traverse (const TraverseType) final;
+	traverse (const TraverseType) final override;
 
 	void
 	draw ();
@@ -169,15 +169,15 @@ private:
 
 	virtual
 	void
-	bindToLayer (X3DLayerNode* const) final;
+	bindToLayer (X3DLayerNode* const) final override;
 
 	virtual
 	void
-	unbindFromLayer (X3DLayerNode* const) final;
+	unbindFromLayer (X3DLayerNode* const) final override;
 
 	virtual
 	void
-	removeFromLayer (X3DLayerNode* const) final;
+	removeFromLayer (X3DLayerNode* const) final override;
 
 	static Color3f
 	getColor (float, const MFColor &, const MFFloat &);

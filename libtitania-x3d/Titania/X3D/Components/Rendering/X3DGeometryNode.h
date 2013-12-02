@@ -72,7 +72,7 @@ public:
 
 	virtual
 	void
-	setup () final;
+	setup () final override;
 
 	///  @name Tests
 

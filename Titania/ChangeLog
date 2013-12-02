@@ -1,5 +1,23 @@
 2013-12-02  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* BrowserWindow.h:
+	* LibraryView.h:
+	* X3DBrowserEditor.h:
+	* BrowserSelection.h:
+	* ViewpointList.h:
+	* OutlineEditor.h:
+	* HistoryEditor.h:
+	* MaterialEditor.h:
+	* OutlineTreeModel.h:
+	* X3DOutlineTreeView.h:
+	* MotionBlurEditor.h:
+	* OutlineTreeViewEditor.h:
+	* NodePropertiesEditor.h:
+	* TextViewEditable.h:
+	* OutlineCellRenderer.h: 
+
+2013-12-02  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* MagicImport.h:
 	* MagicImport.cpp:

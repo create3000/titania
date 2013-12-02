@@ -69,25 +69,25 @@ public:
 
 	virtual
 	const std::string &
-	getComponentName () const final
+	getComponentName () const final override
 	{ return componentName; }
 
 	virtual
 	const std::string &
 	getTypeName () const
-	throw (Error <DISPOSED>) final
+	throw (Error <DISPOSED>) final override
 	{ return typeName; }
 
 	virtual
 	const std::string &
-	getContainerField () const final
+	getContainerField () const final override
 	{ return containerField; }
 
 	///  @name Member access
 
 	virtual
 	GLenum
-	getVertexMode () const final
+	getVertexMode () const final override
 	{ return GL_QUADS; }
 
 
@@ -95,19 +95,19 @@ private:
 
 	virtual
 	Rectangle2DOptions*
-	create (X3DExecutionContext* const) const final;
+	create (X3DExecutionContext* const) const final override;
 
 	virtual
 	void
-	initialize () final;
+	initialize () final override;
 
 	virtual
 	void
-	eventsProcessed () final;
+	eventsProcessed () final override;
 
 	virtual
 	void
-	build () final;
+	build () final override;
 
 	///  @name Static members
 

@@ -119,7 +119,7 @@ DEF Rotor Rotor {
 
 DEF Box Transform {
   translation 1.40843 1.10727 0.193803
-  rotation 0 0 1 1.29666
+  rotation 0 0 1 5.64302
   scale 0.2 0.2 0.2
   children Transform {
     children Shape {
@@ -134,7 +134,7 @@ DEF Box Transform {
 }
 
 DEF Sphere Transform {
-  translation 2.09462 1.15188 -1.91296e-08
+  translation 2.22045 1.17457 6.31221e-08
   rotation -3.46428e-13 -3.62463e-06 1 0.178426
   scale 0.2 0.2 0.2
   children Transform {
@@ -150,9 +150,9 @@ DEF Sphere Transform {
 }
 
 DEF RoundedRectangle2D Transform {
-  translation 2.74969 1.3372 0
-  rotation 0 0 -1 0.767625
-  scale 0.2 0.2 0.2
+  translation 2.91175 1.50513 0
+  rotation 1.53721e-06 3.8065e-06 -1 4.14474
+  scale 0.17606 0.17606 0.2
   children Transform {
     children Shape {
       appearance Appearance {
@@ -220,7 +220,9 @@ Anchor {
 ImageTexture { }
 
 DEF Inline Transform {
-  translation 4.15754 -0.435449 1
+  translation 5.51299 0.468949 1
+  scale 0.329804 0.329803 1
+  center -1.99912 -0.520307 0
   children Inline {
     url "Inline.wrl"
   }

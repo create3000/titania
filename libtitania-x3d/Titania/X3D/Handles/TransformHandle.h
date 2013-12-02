@@ -73,126 +73,126 @@ public:
 
 	virtual
 	const SFVec3f &
-	translation () const final
+	translation () const final override
 	{ return transform -> translation (); }
 
 	virtual
 	SFVec3f &
-	translation () final
+	translation () final override
 	{ return transform -> translation (); }
 
 	virtual
 	SFRotation &
-	rotation () final
+	rotation () final override
 	{ return transform -> rotation (); }
 
 	virtual
 	const SFRotation &
-	rotation () const final
+	rotation () const final override
 	{ return transform -> rotation (); }
 
 	virtual
 	SFVec3f &
-	scale () final
+	scale () final override
 	{ return transform -> scale (); }
 
 	virtual
 	const SFVec3f &
-	scale () const final
+	scale () const final override
 	{ return transform -> scale (); }
 
 	virtual
 	SFRotation &
-	scaleOrientation () final
+	scaleOrientation () final override
 	{ return transform -> scaleOrientation (); }
 
 	virtual
 	const SFRotation &
-	scaleOrientation () const final
+	scaleOrientation () const final override
 	{ return transform -> scaleOrientation (); }
 
 	virtual
 	SFVec3f &
-	center () final
+	center () final override
 	{ return transform -> center (); }
 
 	virtual
 	const SFVec3f &
-	center () const final
+	center () const final override
 	{ return transform -> center (); }
 
 	virtual
 	SFVec3f &
-	bboxCenter () final
+	bboxCenter () final override
 	{ return transform -> bboxCenter (); }
 
 	virtual
 	const SFVec3f &
-	bboxCenter () const final
+	bboxCenter () const final override
 	{ return transform -> bboxCenter (); }
 
 	virtual
 	SFVec3f &
-	bboxSize () final
+	bboxSize () final override
 	{ return transform -> bboxSize (); }
 
 	virtual
 	const SFVec3f &
-	bboxSize () const final
+	bboxSize () const final override
 	{ return transform -> bboxSize (); }
 
 	virtual
 	MFNode &
-	addChildren () final
+	addChildren () final override
 	{ return transform -> addChildren (); }
 
 	virtual
 	const MFNode &
-	addChildren () const final
+	addChildren () const final override
 	{ return transform -> addChildren (); }
 
 	virtual
 	MFNode &
-	removeChildren () final
+	removeChildren () final override
 	{ return transform -> removeChildren (); }
 
 	virtual
 	const MFNode &
-	removeChildren () const final
+	removeChildren () const final override
 	{ return transform -> removeChildren (); }
 
 	virtual
 	MFNode &
-	children () final
+	children () final override
 	{ return transform -> children (); }
 
 	virtual
 	const MFNode &
-	children () const final
+	children () const final override
 	{ return transform -> children (); }
 
 	///  @name Member access
 
 	virtual
 	void
-	setName (const std::string &) final;
+	setName (const std::string &) final override;
 
 	virtual
 	void
-	setUserData (const UserDataPtr &) final;
+	setUserData (const UserDataPtr &) final override;
 
 	virtual
 	Box3f
-	getBBox () final;
+	getBBox () final override;
 
 	virtual
 	void
-	setMatrix (const Matrix4f & matrix) final
+	setMatrix (const Matrix4f & matrix) final override
 	{ transform -> setMatrix (matrix);  }
 
 	virtual
 	void
-	setMatrixWithCenter (const Matrix4f & matrix, const Vector3f & center) final
+	setMatrixWithCenter (const Matrix4f & matrix, const Vector3f & center) final override
 	{ transform -> setMatrixWithCenter (matrix, center);  }
 
 	virtual
@@ -208,37 +208,37 @@ public:
 
 	virtual
 	void
-	addHandle (SFBool*) final
+	addHandle (SFBool*) final override
 	{ }
 
 	virtual
 	void
-	removeHandle () final;
+	removeHandle () final override;
 
 	virtual
 	void
-	addEvent (X3DChildObject* const) final
+	addEvent (X3DChildObject* const) final override
 	{ }
 
 	virtual
 	void
-	addEvent (X3DChildObject* const, const EventPtr &) final
+	addEvent (X3DChildObject* const, const EventPtr &) final override
 	{ }
 
 	virtual
 	void
-	traverse (const TraverseType type) final;
+	traverse (const TraverseType type) final override;
 
 	///  @name Destruction
 
 	virtual
 	const Output &
-	shutdown () const final
+	shutdown () const final override
 	{ return transform -> shutdown (); }
 
 	virtual
 	void
-	dispose () final;
+	dispose () final override;
 
 
 private:
@@ -247,7 +247,7 @@ private:
 
 	virtual
 	void
-	initialize () final;
+	initialize () final override;
 
 	///  @name Operatations
 
