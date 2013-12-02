@@ -51,6 +51,7 @@
 #include "Traverse.h"
 
 #include "../Basic/NodeSet.h"
+#include "../Components/Networking/Inline.h"
 
 namespace titania {
 namespace X3D {
@@ -136,22 +137,24 @@ bool
 find (const X3D::SFNode & node, X3DChildObject* const object, bool inScene, std::deque <X3DChildObject*> & hierarchy, NodeSet & seen)
 {
 	if (not node)
-		return true;
+		return false;
 
 	if (not seen .emplace (node) .second)
-		return true;
+		return false;
 
 	hierarchy .emplace_back (node);
 
 	if (node == object)
-		return false;
+		return true;
+		
+	X3DBaseNode* baseNode = inScene ? node .getValue () : node -> getLocalNode ();
 
-	for (const auto & field : inScene ? node -> getFieldDefinitions () : node -> getLocalNode () -> getFieldDefinitions ())
+	for (const auto & field : baseNode -> getFieldDefinitions ())
 	{
 		if (field == object)
 		{
 			hierarchy .emplace_back (field);
-			return false;
+			return true;
 		}
 
 		switch (field -> getType ())
@@ -163,12 +166,10 @@ find (const X3D::SFNode & node, X3DChildObject* const object, bool inScene, std:
 				auto sfnode = static_cast <X3D::SFNode*> (field);
 
 				if (find (*sfnode, object, inScene, hierarchy, seen))
-				{
-					hierarchy .pop_back ();
-					continue;
-				}
+					return true;
 
-				return false;
+				hierarchy .pop_back ();
+				break;
 			}
 			case X3DConstants::MFNode:
 			{
@@ -176,16 +177,13 @@ find (const X3D::SFNode & node, X3DChildObject* const object, bool inScene, std:
 
 				auto mfnode = static_cast <X3D::MFNode*> (field);
 
-				for (auto & value : *mfnode)
+				for (const auto & value : *mfnode)
 				{
 					if (find (value, object, inScene, hierarchy, seen))
-						continue;
-
-					return false;
+						return true;
 				}
 
 				hierarchy .pop_back ();
-
 				break;
 			}
 			default:
@@ -193,9 +191,22 @@ find (const X3D::SFNode & node, X3DChildObject* const object, bool inScene, std:
 		}
 	}
 
-	hierarchy .pop_back ();
+	if (not inScene)
+	{
+		Inline* inlineNode = dynamic_cast <Inline*> (baseNode);
 
-	return true;
+		if (inlineNode)
+		{
+			for (const auto & rootNode : inlineNode -> getRootNodes ())
+			{
+				if (find (rootNode, object, inScene, hierarchy, seen))
+					return true;
+			}
+		}
+	}
+
+	hierarchy .pop_back ();
+	return false;
 }
 
 std::deque <X3DChildObject*>
@@ -204,12 +215,10 @@ find (const X3D::MFNode & nodes, X3DChildObject* const object, bool inScene)
 	std::deque <X3DChildObject*> hierarchy;
 	NodeSet                      seen;
 
-	for (auto & node : nodes)
+	for (const auto & node : nodes)
 	{
 		if (find (node, object, inScene, hierarchy, seen))
-			continue;
-
-		return hierarchy;
+			return hierarchy;
 	}
 
 	return hierarchy;

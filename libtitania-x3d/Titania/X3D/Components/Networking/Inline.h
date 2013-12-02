@@ -113,11 +113,27 @@ public:
 	void
 	requestImmediateLoad () final override;
 
+	///  @name Exported node handling
+
 	const SFNode &
 	getExportedNode (const std::string &) const
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
+
+	///  @name Root node handling
+
+	MFNode &
+	getRootNodes ()
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
+	{ return scene -> getRootNodes (); }
+
+	const MFNode &
+	getRootNodes () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
+	{ return scene -> getRootNodes (); }
 
 	///  @name Operations
 	
