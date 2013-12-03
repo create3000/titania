@@ -399,6 +399,10 @@ public:
 	getSelectLowestMenuItem () const
 	{ return *m_selectLowestMenuItem; }
 
+	Gtk::CheckMenuItem &
+	getFollowPrimarySelectionMenuItem () const
+	{ return *m_followPrimarySelectionMenuItem; }
+
 	Gtk::MenuItem &
 	getNavigationMenuItem () const
 	{ return *m_navigationMenuItem; }
@@ -757,6 +761,10 @@ public:
 
 	virtual
 	void
+	on_follow_primary_selection_toggled () = 0;
+
+	virtual
+	void
 	on_rubberband_toggled () = 0;
 
 	virtual
@@ -896,6 +904,7 @@ private:
 	Gtk::ImageMenuItem*             m_selectAllMenuItem;
 	Gtk::MenuItem*                  m_deselectAllMenuItem;
 	Gtk::CheckMenuItem*             m_selectLowestMenuItem;
+	Gtk::CheckMenuItem*             m_followPrimarySelectionMenuItem;
 	Gtk::MenuItem*                  m_navigationMenuItem;
 	Gtk::CheckMenuItem*             m_rubberbandMenuItem;
 	Gtk::MenuItem*                  m_toolsMenuItem;

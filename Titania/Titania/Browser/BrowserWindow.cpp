@@ -916,6 +916,12 @@ BrowserWindow::on_select_lowest_toggled ()
 	getConfig () .setItem ("selectLowest", getSelectLowestMenuItem () .get_active ());
 }
 
+void
+BrowserWindow::on_follow_primary_selection_toggled ()
+{
+	getConfig () .setItem ("followPrimarySelection", getFollowPrimarySelectionMenuItem () .get_active ());
+}
+
 // Navigation menu
 
 void

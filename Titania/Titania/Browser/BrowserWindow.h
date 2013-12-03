@@ -367,6 +367,10 @@ private:
 	void
 	on_select_lowest_toggled () final override;
 
+	virtual
+	void
+	on_follow_primary_selection_toggled () final override;
+
 	///  @name Navigation
 
 	virtual

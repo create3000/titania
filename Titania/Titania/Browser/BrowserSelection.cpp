@@ -176,6 +176,9 @@ BrowserSelection::buttonReleaseEvent (bool picked)
 
 			getBrowser () -> getSelection () -> setChildren ({ node });
 			getBrowser () -> update ();
+
+			if (getBrowserWindow () -> getConfig () .getBoolean ("followPrimarySelection"))
+				getBrowserWindow () -> getOutlineTreeView () .expand_to (node);
 		}
 	}
 	else

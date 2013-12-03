@@ -210,6 +210,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_deselectAllMenuItem -> set_name ("DeselectAllMenuItem");
 	m_builder -> get_widget ("SelectLowestMenuItem", m_selectLowestMenuItem);
 	m_selectLowestMenuItem -> set_name ("SelectLowestMenuItem");
+	m_builder -> get_widget ("FollowPrimarySelectionMenuItem", m_followPrimarySelectionMenuItem);
+	m_followPrimarySelectionMenuItem -> set_name ("FollowPrimarySelectionMenuItem");
 	m_builder -> get_widget ("NavigationMenuItem", m_navigationMenuItem);
 	m_navigationMenuItem -> set_name ("NavigationMenuItem");
 	m_builder -> get_widget ("RubberbandMenuItem", m_rubberbandMenuItem);
@@ -368,6 +370,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 
 	// Connect object Gtk::CheckMenuItem with id 'SelectLowestMenuItem'.
 	m_selectLowestMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_select_lowest_toggled));
+	m_followPrimarySelectionMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_follow_primary_selection_toggled));
 	m_rubberbandMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_rubberband_toggled));
 
 	// Connect object Gtk::MenuItem with id 'MotionBlurMenuItem'.
