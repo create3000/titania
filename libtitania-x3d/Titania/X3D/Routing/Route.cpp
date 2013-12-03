@@ -109,6 +109,14 @@ throw (Error <INVALID_NAME>,
 	}
 }
 
+bool
+Route::isConnected () const
+{
+	return connected and
+	       not sourceNode      -> getParents () .empty () and
+	       not destinationNode -> getParents () .empty ();
+}
+
 RouteId
 Route::getId () const
 {

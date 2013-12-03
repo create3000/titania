@@ -1,5 +1,12 @@
 2013-12-03  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* BrowserWindow.ui:
+	* BrowserWindow.cpp:
+	* BrowserSelection.cpp:
+	* OutlineRouteGraph.cpp: 
+
+2013-12-03  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* BrowserWindow.h:
 	* BrowserWindow.cpp:
 	* BrowserWindow.ui:

@@ -173,8 +173,19 @@ BrowserSelection::buttonReleaseEvent (bool picked)
 					}
 				}
 			}
+			
+			if (getBrowser () -> getSelection () -> isSelected (node))
+				getBrowser () -> getSelection () -> removeChildren ({ node });
 
-			getBrowser () -> getSelection () -> setChildren ({ node });
+			else
+			{
+				if (getBrowserWindow () -> getKeys () .shift ())
+					getBrowser () -> getSelection () -> addChildren ({ node });
+
+				else
+					getBrowser () -> getSelection () -> setChildren ({ node });
+			}
+
 			getBrowser () -> update ();
 
 			if (getBrowserWindow () -> getConfig () .getBoolean ("followPrimarySelection"))

@@ -113,8 +113,7 @@ public:
 	///  @name Tests
 
 	bool
-	isConnected ()
-	{ return connected; }
+	isConnected () const;
 
 	///  @name Member access
 

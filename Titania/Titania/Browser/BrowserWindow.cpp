@@ -758,10 +758,8 @@ BrowserWindow::on_editor_toggled ()
 void
 BrowserWindow::enableEditor (bool enabled)
 {
-	if (not enabled)
-		getBrowser () -> beginUpdate ();
-
 	getImportMenuItem ()           .set_visible (enabled);
+	getImportAsInlineMenuItem ()   .set_visible (enabled);
 	getEditMenuItem ()             .set_visible (enabled);
 	getBrowserOptionsSeparator ()  .set_visible (enabled);
 	getShadingMenuItem ()          .set_visible (enabled);
