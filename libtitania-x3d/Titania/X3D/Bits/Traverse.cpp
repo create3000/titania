@@ -52,6 +52,7 @@
 
 #include "../Basic/NodeSet.h"
 #include "../Components/Networking/Inline.h"
+#include "../Handles/X3DHandleObject.h"
 
 namespace titania {
 namespace X3D {
@@ -202,6 +203,19 @@ find (X3DBaseNode* const node, X3DChildObject* const object, bool inScene, std::
 			{
 				if (find (rootNode, object, inScene, hierarchy, seen))
 					return true;
+			}
+		}
+		else
+		{
+			X3DHandleObject* handle = dynamic_cast <X3DHandleObject*> (node);
+
+			if (handle)
+			{
+				for (const auto & rootNode : handle -> getRootNodes ())
+				{
+					if (find (rootNode, object, inScene, hierarchy, seen))
+						return true;
+				}
 			}
 		}
 	}

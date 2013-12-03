@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_HANDLES_X3DHANDLE_OBJECT_H__
 
 #include "../Basic/X3DBaseNode.h"
+#include "../Fields.h"
 
 namespace titania {
 namespace X3D {
@@ -61,7 +62,21 @@ class X3DHandleObject :
 {
 public:
 
-	X3DHandleObject ();
+	///  @name Root node handling
+
+	virtual
+	MFNode &
+	getRootNodes ()
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) = 0;
+
+	virtual
+	const MFNode &
+	getRootNodes () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) = 0;
+
+	///  @name Destruction
 
 	virtual
 	void
@@ -69,6 +84,10 @@ public:
 
 
 protected:
+
+	///  @name Construction
+
+	X3DHandleObject ();
 
 	virtual
 	void

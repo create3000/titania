@@ -204,6 +204,20 @@ public:
 	getTransform () const
 	{ return transform; }
 
+	///  @name Root node handling
+
+	virtual
+	MFNode &
+	getRootNodes ()
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override;
+
+	virtual
+	const MFNode &
+	getRootNodes () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override;
+
 	///  @name Operatations
 
 	virtual

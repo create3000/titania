@@ -120,6 +120,22 @@ TransformHandle::getBBox ()
 	return transform -> getBBox ();
 }
 
+MFNode &
+TransformHandle::getRootNodes ()
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	return scene -> getRootNodes ();
+}
+
+const MFNode &
+TransformHandle::getRootNodes () const
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	return scene -> getRootNodes ();
+}
+
 void
 TransformHandle::removeHandle ()
 {
