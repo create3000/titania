@@ -604,6 +604,7 @@ X3DBaseNode::processEvents ()
 	{
 		receivedInputEvent = false;
 		eventsProcessed ();
+		processInterests ();
 	}
 }
 

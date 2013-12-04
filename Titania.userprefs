@@ -1,16 +1,15 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Browser/BrowserSelection.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Browser/Devices/X3DPointingDevice.cpp">
     <Files>
-      <File FileName="Titania/Titania/MaterialEditor/MaterialEditor.h" Line="100" Column="1" />
+      <File FileName="Titania/Titania/MaterialEditor/MaterialEditor.h" Line="185" Column="25" />
       <File FileName="Titania/Titania/MaterialEditor/MaterialEditor.cpp" Line="546" Column="4" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="276" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="1018" Column="23" />
-      <File FileName="Titania/Titania/Browser/BrowserSelection.h" Line="101" Column="19" />
-      <File FileName="Titania/Titania/Browser/BrowserSelection.cpp" Line="150" Column="14" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="996" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Devices/X3DPointingDevice.h" Line="82" Column="6" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Devices/X3DPointingDevice.cpp" Line="103" Column="37" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="175" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="104" Column="52" />
+      <File FileName="Titania/Titania/Browser/BrowserSelection.h" Line="101" Column="42" />
+      <File FileName="Titania/Titania/Browser/BrowserSelection.cpp" Line="179" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Devices/X3DPointingDevice.h" Line="78" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Devices/X3DPointingDevice.cpp" Line="88" Column="25" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -48,27 +47,19 @@
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
+                <Node name="Basic" expanded="True" />
                 <Node name="Bits" expanded="True" />
                 <Node name="Browser" expanded="True">
-                  <Node name="Devices" expanded="True" />
+                  <Node name="Devices" expanded="True">
+                    <Node name="X3DPointingDevice.cpp" selected="True" />
+                  </Node>
                   <Node name="Picking" expanded="True" />
+                  <Node name="Properties" expanded="True" />
                   <Node name="Viewer" expanded="True" />
                 </Node>
-                <Node name="Components" expanded="True">
-                  <Node name="Core" expanded="True" />
-                  <Node name="CubeMapTexturing" expanded="True" />
-                  <Node name="EnvironmentalSensor" expanded="True" />
-                  <Node name="Geometry2D" expanded="True" />
-                  <Node name="Layering" expanded="True" />
-                  <Node name="Navigation" expanded="True" />
-                  <Node name="Networking" expanded="True" />
-                  <Node name="PointingDeviceSensor" expanded="True" />
-                  <Node name="Rendering" expanded="True" />
-                  <Node name="Shape" expanded="True" />
-                </Node>
-                <Node name="Execution" expanded="True" />
-                <Node name="Prototype" expanded="True" />
-                <Node name="Rendering" expanded="True" />
+                <Node name="Components" expanded="True" />
+                <Node name="Handles" expanded="True" />
+                <Node name="Types" expanded="True" />
               </Node>
             </Node>
           </Node>
@@ -76,27 +67,12 @@
           <Node name="Titania" expanded="True">
             <Node name="share" expanded="True">
               <Node name="titania" expanded="True">
-                <Node name="Library" expanded="True">
-                  <Node name="Materials" expanded="True">
-                    <Node name="Artdeco" expanded="True" />
-                    <Node name="Special" expanded="True" />
-                  </Node>
-                  <Node name="Textures" expanded="True">
-                    <Node name="CubeMapTextures" expanded="True">
-                      <Node name="LostValley" expanded="True" />
-                    </Node>
-                    <Node name="People" expanded="True" />
-                    <Node name="Special" expanded="True" />
-                  </Node>
-                </Node>
                 <Node name="ui" expanded="True" />
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="Base" expanded="True" />
-              <Node name="Browser" expanded="True">
-                <Node name="BrowserSelection.cpp" selected="True" />
-              </Node>
+              <Node name="Browser" expanded="True" />
               <Node name="Configuration" expanded="True" />
               <Node name="MaterialEditor" expanded="True" />
               <Node name="OutlineEditor" expanded="True" />

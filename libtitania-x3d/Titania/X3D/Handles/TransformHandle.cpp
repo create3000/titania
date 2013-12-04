@@ -64,8 +64,8 @@ TransformHandle::TransformHandle (Transform* const transform, SFBool* isActive, 
 	      Transform (executionContext),
 	X3DHandleObject (),
 	      transform (transform),
-	          scene (),
-	       isActive (isActive)
+	       isActive (isActive),
+	          scene ()
 {
 	for (auto & field : transform -> getFieldDefinitions ())
 		addField (field -> getAccessType (), field -> getName (), *field);
@@ -170,7 +170,7 @@ TransformHandle::traverse (const TraverseType type)
 
 	glPushMatrix ();
 
-	glMultMatrixf (transform -> getMatrix () .data ());
+	glMultMatrixf (getMatrix () .data ());
 
 	if (type == TraverseType::CAMERA) // Last chance to process events
 		reshape ();

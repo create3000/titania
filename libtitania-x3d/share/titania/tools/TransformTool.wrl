@@ -191,7 +191,7 @@ PROTO TransformTool [
             children Transform {
               rotation 0 -1 0 1.5708
               children [
-                 DEF LeftSensor PlaneSensor {
+                DEF LeftSensor PlaneSensor {
                   autoOffset FALSE
                   isActive IS isActive
                 }
@@ -657,27 +657,27 @@ PROTO TransformTool [
           }
         ]
       }
-      DEF PPoint Transform {
-        children Shape {
-          appearance Appearance {
-            lineProperties LineProperties {
-              linewidthScaleFactor 5
+      Switch {
+        choice DEF PPoint Transform {
+          children Shape {
+            appearance Appearance {
+              lineProperties LineProperties {
+                linewidthScaleFactor 5
+              }
+              material Material {
+                emissiveColor 0 1 1
+              }
             }
-            material Material {
-              emissiveColor 0 1 1
-            }
-          }
-          geometry PointSet {
-            coord Coordinate {
-              point 0 0 0
+            geometry PointSet {
+              coord Coordinate {
+                point 0 0 0
+              }
             }
           }
         }
       }
     ]
   }
-  
-  
 
   DEF DoubleClick_1 DoubleClick { }
 

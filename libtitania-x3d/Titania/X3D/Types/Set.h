@@ -90,7 +90,9 @@ public:
 	Set (Set && value) :
 		X3DOutput (),
 		      set (std::move (value .set))
-	{ }
+	{
+		value .processInterests ();
+	}
 
 	//  @name Assignment
 
@@ -106,6 +108,7 @@ public:
 	operator = (Set && value)
 	{
 		set = std::move (value .set);
+		value .processInterests ();
 		processInterests ();
 		return *this;
 	}

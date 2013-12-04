@@ -1,3 +1,12 @@
+2013-12-04  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Set.h:
+	* X3DBaseNode.cpp:
+	* TransformHandle.h:
+	* TransformTool.wrl:
+	* TransformHandle.cpp:
+	* X3DPointingDevice.cpp: 
+
 2013-12-03  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Traverse.cpp:

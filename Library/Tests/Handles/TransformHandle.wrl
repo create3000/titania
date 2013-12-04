@@ -54,34 +54,6 @@ Grid {
   zDimension 100
 }
 
-DEF _1 Transform {
-  children Transform {
-    scale 2 1 1
-    children Transform {
-      children [
-        Viewpoint {
-          description "Inside 0.5"
-          centerOfRotation 0 0 1
-          retainUserOffsets TRUE
-        }
-        Transform {
-          children Shape {
-            appearance Appearance {
-              material Material {
-                diffuseColor 0.5 0 1
-                transparency 0.5
-              }
-            }
-            geometry Box {
-              size 1 1 1
-            }
-          }
-        }
-      ]
-    }
-  }
-}
-
 Transform {
   translation 2.85535 3.00166 -1.39391
   rotation -0.874927 0.474872 0.0948596 0.44893
@@ -212,4 +184,42 @@ Transform {
 Transform {
   translation -4.0827 0 -0.824179
   scale 3.55814 3.55814 3.55814
+}
+
+DEF A Transform {
+  translation 0 0 -2
+  scale 2 1 1
+  children DEF _1 Transform {
+    scale 2 1 1
+    children Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0.5 0 1
+          transparency 0.5
+        }
+      }
+      geometry Box {
+        size 1 1 1
+      }
+    }
+  }
+}
+
+DEF B Transform {
+  translation 0 0 2
+  scale 0.5 1 1
+  children DEF _2 Transform {
+    scale 2 1 1
+    children Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0.5 0 1
+          transparency 0.5
+        }
+      }
+      geometry Box {
+        size 1 1 1
+      }
+    }
+  }
 }

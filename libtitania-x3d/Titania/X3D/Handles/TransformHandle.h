@@ -270,10 +270,9 @@ private:
 
 	///  @name Members
 
-	Transform*         transform;
+	Transform* const   transform;
+	SFBool* const      isActive;
 	X3DSFNode <Scene>  scene;
-
-	SFBool* isActive;
 
 };
 

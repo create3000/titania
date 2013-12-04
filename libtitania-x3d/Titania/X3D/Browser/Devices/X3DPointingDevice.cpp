@@ -82,7 +82,6 @@ X3DPointingDevice::disconnect ()
 	leave_notify_conncection   .disconnect ();
 }
 
-
 bool
 X3DPointingDevice::on_motion_notify_event (GdkEventMotion* event)
 {
