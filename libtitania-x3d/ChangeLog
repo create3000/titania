@@ -1,5 +1,13 @@
 2013-12-04  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBrowserSurface.cpp:
+	* ExamineViewer.h:
+	* LookAtViewer.cpp:
+	* ExamineViewer.cpp:
+	* X3DPointingDevice.cpp: 
+
+2013-12-04  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Set.h:
 	* X3DBaseNode.cpp:
 	* TransformHandle.h:

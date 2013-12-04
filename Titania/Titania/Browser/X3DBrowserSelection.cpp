@@ -55,6 +55,8 @@
 namespace titania {
 namespace puck {
 
+static constexpr double SELECTION_TIME = 0.01; // Use ExamineViewer SPIN_RELEASE_TIME here.
+
 X3DBrowserSelection::X3DBrowserSelection (BrowserWindow* const browserWindow) :
 	      X3DBaseInterface (),
 	X3D::X3DPointingDevice (browserWindow -> getBrowser ()),
@@ -100,7 +102,7 @@ X3DBrowserSelection::buttonPressEvent (bool)
 void
 X3DBrowserSelection::buttonReleaseEvent (bool picked)
 {
-	if (hasMoved and chrono::now () - pressTime > Gtk::Settings::get_default () -> property_gtk_double_click_time () / 1000.0)
+	if (hasMoved and chrono::now () - pressTime > SELECTION_TIME)
 		return;
 
 	if (picked)

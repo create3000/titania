@@ -62,6 +62,9 @@ class X3DBrowserSelection :
 {
 public:
 
+	using X3D::X3DPointingDevice::connect;
+	using X3D::X3DPointingDevice::disconnect;
+
 	///  @name Operations
 
 	void

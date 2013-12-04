@@ -777,6 +777,11 @@ BrowserWindow::enableEditor (bool enabled)
 
 	getLibraryViewBox ()   .set_visible (enabled);
 	getOutlineEditorBox () .set_visible (enabled);
+
+	if (enabled)
+		getArrowButton () .set_active (true);
+	else
+		getHandButton () .set_active (true);
 }
 
 // Shading menu
@@ -1018,13 +1023,27 @@ BrowserWindow::set_viewer (X3D::ViewerType type)
 		{
 			viewer = type;
 		
+			getHandButton ()  .set_sensitive (true);
+			getArrowButton () .set_sensitive (true);
+
+			if (getArrowButton () .get_active ())
+				getSelection () -> connect ();
+				
 			if (getLookAtButton () .get_active ())
 				getLookAtButton () .set_active (false);
 
 			break;
 		}
 		case X3D::ViewerType::LOOK_AT:
+		{
+			getHandButton ()  .set_sensitive (false);
+			getArrowButton () .set_sensitive (false);
+
+			if (getArrowButton () .get_active ())
+				getSelection () -> disconnect ();
+
 			break;
+		}
 	}
 
 	switch (type)

@@ -130,6 +130,8 @@ X3DBrowserSurface::set_changed ()
 void
 X3DBrowserSurface::set_viewer (ViewerType type)
 {
+	setCursor (Gdk::ARROW);
+
 	if (viewer -> getType () not_eq type or viewer -> getNavigationInfo () not_eq getActiveNavigationInfo ())
 	{
 		switch (type)

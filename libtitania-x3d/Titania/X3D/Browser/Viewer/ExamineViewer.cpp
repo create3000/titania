@@ -60,11 +60,12 @@
 namespace titania {
 namespace X3D {
 
-static constexpr float SPIN_RELEASE_TIME = 0.01;
-static constexpr float SPIN_ANGLE        = 0.006;
-static constexpr float SPIN_FACTOR       = 0.6;
-static constexpr float SCOLL_FACTOR      = 1.0f / 50.0f;
-static constexpr float FRAME_RATE        = 60;
+static constexpr double MOTION_TIME       = 0.05;
+static constexpr double SPIN_RELEASE_TIME = 0.01;
+static constexpr float  SPIN_ANGLE        = 0.006;
+static constexpr float  SPIN_FACTOR       = 0.6;
+static constexpr float  SCOLL_FACTOR      = 1.0f / 50.0f;
+static constexpr float  FRAME_RATE        = 60;
 
 ExamineViewer::ExamineViewer (X3DBrowserSurface* const browser, NavigationInfo* const navigationInfo) :
 	     X3DViewer (browser),
@@ -74,7 +75,8 @@ ExamineViewer::ExamineViewer (X3DBrowserSurface* const browser, NavigationInfo* 
 	      rotation (),
 	    fromVector (),
 	     fromPoint (),
-	     startTime (0),
+	     pressTime (0),
+	    motionTime (0),
 	        button (0),
 	       spin_id ()
 { }
@@ -113,7 +115,8 @@ ExamineViewer::set_viewpoint ()
 bool
 ExamineViewer::on_button_press_event (GdkEventButton* event)
 {
-	button = event -> button;
+	button    = event -> button;
+	pressTime = chrono::now ();
 
 	if (button == 1)
 	{
@@ -124,7 +127,7 @@ ExamineViewer::on_button_press_event (GdkEventButton* event)
 		fromVector = trackballProjectToSphere (event -> x, event -> y);
 		rotation   = Rotation4f ();
 
-		startTime = 0;
+		motionTime = 0;
 	}
 
 	else if (button == 2)
@@ -144,7 +147,7 @@ ExamineViewer::on_button_release_event (GdkEventButton* event)
 {
 	if (button == 1)
 	{
-		if (std::abs (rotation .angle ()) > SPIN_ANGLE and chrono::now () - startTime < SPIN_RELEASE_TIME)
+		if (std::abs (rotation .angle ()) > SPIN_ANGLE and chrono::now () - motionTime < SPIN_RELEASE_TIME)
 		{
 			rotation = slerp (Rotation4f (), rotation, SPIN_FACTOR);
 			addSpinning ();
@@ -166,13 +169,16 @@ ExamineViewer::on_motion_notify_event (GdkEventMotion* event)
 		Vector3f toVector = trackballProjectToSphere (event -> x, event -> y);
 
 		rotation = ~Rotation4f (fromVector, toVector);
+		
+		if (std::abs (rotation .angle ()) < SPIN_ANGLE and chrono::now () - pressTime < MOTION_TIME)
+			return false;
 
 		viewpoint -> orientationOffset () = getOrientationOffset ();
 		viewpoint -> positionOffset ()    = getPositionOffset ();
 
 		fromVector = toVector;
 		
-		startTime = chrono::now ();
+		motionTime = chrono::now ();
 
 		//return true;
 	}

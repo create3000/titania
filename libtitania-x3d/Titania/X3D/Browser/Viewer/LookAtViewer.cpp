@@ -66,7 +66,7 @@ LookAtViewer::initialize ()
 {
 	X3DViewer::initialize ();
 
-	getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &LookAtViewer::on_button_press_event), false);
+	getBrowser () -> signal_button_press_event ()   .connect (sigc::mem_fun (*this, &LookAtViewer::on_button_press_event),   false);
 	getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &LookAtViewer::on_button_release_event), false);
 	getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &LookAtViewer::on_motion_notify_event),  false);
 
@@ -130,7 +130,6 @@ LookAtViewer::pick (const double x, const double y)
 
 LookAtViewer::~LookAtViewer ()
 {
-	getBrowser () -> setCursor (Gdk::ARROW);
 	getBrowser () -> setPicking (picking);
 }
 

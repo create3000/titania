@@ -165,29 +165,29 @@ X3DBrowserWidget::restoreSession ()
 
 	// Shading
 	if (getConfig () .getString ("shading") == "PHONG")
-		getPhongMenuItem () .activate ();
+		getPhongMenuItem () .set_active (true);
 
 	else if (getConfig () .getString ("shading") == "GOURAUD")
-		getGouraudMenuItem () .activate ();
+		getGouraudMenuItem () .set_active (true);
 
 	else if (getConfig () .getString ("shading") == "FLAT")
-		getFlatMenuItem () .activate ();
+		getFlatMenuItem () .set_active (true);
 
 	else if (getConfig () .getString ("shading") == "WIREFRAME")
-		getWireFrameMenuItem () .activate ();
+		getWireFrameMenuItem () .set_active (true);
 
 	else if (getConfig () .getString ("shading") == "POINTSET")
-		getPointSetMenuItem () .activate ();
+		getPointSetMenuItem () .set_active (true);
 
 	// PrimitiveQuality
 	if (getConfig () .getString ("primitiveQuality") == "HIGH")
-		getHighQualityMenuItem () .activate ();
+		getHighQualityMenuItem () .set_active (true);
 
 	else if (getConfig () .getString ("primitiveQuality") == "MEDIUM")
-		getMediumQualityMenuItem () .activate ();
+		getMediumQualityMenuItem () .set_active (true);
 
 	else if (getConfig () .getString ("primitiveQuality") == "LOW")
-		getLowQualityMenuItem () .activate ();
+		getLowQualityMenuItem () .set_active (true);
 
 	// RenderingProperties
 	if (getConfig () .hasItem ("renderingProperties"))
@@ -205,7 +205,7 @@ X3DBrowserWidget::restoreSession ()
 	if (getConfig () .hasItem ("hPaned"))
 		getHPaned () .set_position (getConfig () .getInteger ("hPaned"));
 
-	getSideBarNotebook () .set_current_page (getConfig () .getInteger ("sideBarCurrentPage"));
+	getSideBarNotebook () .set_current_page (getConfig () .getInteger ("sideBarCurrentPage")); // XXX Produces a width/height -1 warning
 	getFooterNotebook ()  .set_current_page (getConfig () .getInteger ("footerCurrentPage"));
 }
 

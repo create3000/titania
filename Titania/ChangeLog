@@ -1,5 +1,13 @@
 2013-12-04  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* BrowserWindow.cpp:
+	* X3DBrowserWidget.cpp:
+	* X3DBrowserEditor.cpp:
+	* X3DBrowserSelection.h:
+	* X3DBrowserSelection.cpp: 
+
+2013-12-04  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* BrowserSelection.h:
 	* X3DBrowserEditor.h:

@@ -134,7 +134,8 @@ private:
 	Rotation4f       rotation;
 	Vector3f         fromVector;
 	Vector3f         fromPoint;
-	time_type        startTime;
+	time_type        pressTime;
+	time_type        motionTime;
 	guint            button;
 	sigc::connection spin_id;
 

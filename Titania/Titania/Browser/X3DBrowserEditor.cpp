@@ -91,10 +91,10 @@ X3DBrowserEditor::restoreSession ()
 
 	// Workspace
 	if (getConfig () .getString ("workspace") == "BROWSER")
-		getBrowserMenuItem () .activate ();
+		getBrowserMenuItem () .set_active (true);
 
 	else if (getConfig () .getString ("workspace") == "EDITOR")
-		getEditorMenuItem () .activate ();
+		getEditorMenuItem () .set_active (true);
 
 	// SelectLowest
 	if (getConfig () .hasItem ("selectLowest"))

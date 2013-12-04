@@ -56,15 +56,21 @@ namespace titania {
 namespace X3D {
 
 X3DPointingDevice::X3DPointingDevice (X3DBrowserSurface* const browser) :
-	sigc::trackable (),
-	        browser (browser),
-	         button (0),
-	         isOver (false)
+	           sigc::trackable (),
+	                   browser (browser),
+	  button_press_conncection (),
+	button_release_conncection (),
+	 motion_notify_conncection (),
+	  leave_notify_conncection (),
+	                    button (0),
+	                    isOver (false)
 { }
 
 void
 X3DPointingDevice::connect ()
 {
+	disconnect ();
+
 	button_press_conncection   = browser -> signal_button_press_event   () .connect (sigc::mem_fun (*this, &PointingDevice::on_button_press_event),   false);
 	button_release_conncection = browser -> signal_button_release_event () .connect (sigc::mem_fun (*this, &PointingDevice::on_button_release_event), false);
 	motion_notify_conncection  = browser -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &PointingDevice::on_motion_notify_event));
@@ -100,11 +106,11 @@ X3DPointingDevice::on_motion_notify_event (GdkEventMotion* event)
 				}
 
 				browser -> motionNotifyEvent ();
-				
+
 				return false;
 			}
 		}
-		
+
 		if (isOver)
 		{
 			browser -> setCursor (Gdk::ARROW);
@@ -129,7 +135,7 @@ X3DPointingDevice::on_button_press_event (GdkEventButton* event)
 	{
 		bool picked = true;
 		bool cursor = true;
-	
+
 		if ((picked = pick (event -> x, event -> y)))
 		{
 			if (haveSensor ())
@@ -172,7 +178,7 @@ X3DPointingDevice::on_button_release_event (GdkEventButton* event)
 		}
 		else
 			buttonReleaseEvent (false);
-			
+
 		// Set cursor
 
 		if (isOver)
