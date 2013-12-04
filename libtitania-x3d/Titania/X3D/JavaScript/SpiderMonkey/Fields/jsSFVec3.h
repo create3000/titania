@@ -94,7 +94,9 @@ private:
 	static JSBool add       (JSContext *, uintN, jsval*);
 	static JSBool subtract  (JSContext *, uintN, jsval*);
 	static JSBool multiply  (JSContext *, uintN, jsval*);
+	static JSBool multVec   (JSContext *, uintN, jsval*);
 	static JSBool divide    (JSContext *, uintN, jsval*);
+	static JSBool divVec    (JSContext *, uintN, jsval*);
 	static JSBool cross     (JSContext *, uintN, jsval*);
 	static JSBool dot       (JSContext *, uintN, jsval*);
 	static JSBool normalize (JSContext *, uintN, jsval*);
@@ -140,7 +142,9 @@ JSFunctionSpec jsSFVec3 <Type>::functions [ ] = {
 	{ "add",         add,         1, 0 },
 	{ "subtract",    subtract,    1, 0 },
 	{ "multiply",    multiply,    1, 0 },
+	{ "multVec",     multVec,     1, 0 },
 	{ "divide",      divide,      1, 0 },
+	{ "divVec",      divVec,      1, 0 },
 	{ "cross",       cross,       1, 0 },
 	{ "normalize",   normalize,   0, 0 },
 	{ "dot",         dot,         1, 0 },
@@ -394,6 +398,34 @@ jsSFVec3 <Type>::multiply (JSContext* context, uintN argc, jsval* vp)
 
 template <class Type>
 JSBool
+jsSFVec3 <Type>::multVec (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 1)
+	{
+		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+
+		JSObject* rhs = nullptr;
+
+		jsval* argv = JS_ARGV (context, vp);
+
+		if (not JS_ConvertArguments (context, argc, argv, "o", &rhs))
+			return JS_FALSE;
+
+		if (JS_InstanceOfError (context, rhs, getClass ()))
+			return JS_FALSE;
+
+		Type* vector = (Type*) JS_GetPrivate (context, rhs);
+
+		return create (context, self -> multiply (*vector), &JS_RVAL (context, vp));
+	}
+
+	JS_ReportError (context, "%s .multVec: wrong number of arguments", getClass () -> name);
+
+	return JS_FALSE;
+}
+
+template <class Type>
+JSBool
 jsSFVec3 <Type>::divide (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
@@ -411,6 +443,34 @@ jsSFVec3 <Type>::divide (JSContext* context, uintN argc, jsval* vp)
 	}
 
 	JS_ReportError (context, "%s .divide: wrong number of arguments", getClass () -> name);
+
+	return JS_FALSE;
+}
+
+template <class Type>
+JSBool
+jsSFVec3 <Type>::divVec (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 1)
+	{
+		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+
+		JSObject* rhs = nullptr;
+
+		jsval* argv = JS_ARGV (context, vp);
+
+		if (not JS_ConvertArguments (context, argc, argv, "o", &rhs))
+			return JS_FALSE;
+
+		if (JS_InstanceOfError (context, rhs, getClass ()))
+			return JS_FALSE;
+
+		Type* vector = (Type*) JS_GetPrivate (context, rhs);
+
+		return create (context, self -> divide (*vector), &JS_RVAL (context, vp));
+	}
+
+	JS_ReportError (context, "%s .divVec: wrong number of arguments", getClass () -> name);
 
 	return JS_FALSE;
 }

@@ -63,7 +63,7 @@ X3DBrowserEditor::X3DBrowserEditor (const basic::uri & worldURL) :
 	           scene (),
 	     magicImport (new MagicImport (getBrowserWindow ())),
 	     undoHistory (),
-	        matrices (),
+	    undoMatrices (),
 	       selection (new BrowserSelection (getBrowserWindow ()))
 { }
 
@@ -143,7 +143,7 @@ X3DBrowserEditor::set_selection_active (bool value)
 			auto transformHandle = X3D::x3d_cast <X3D::TransformHandle*> (child);
 
 			if (transformHandle)
-				matrices [transformHandle] = std::make_pair (transformHandle -> getMatrix (), transformHandle -> center () .getValue ());
+				undoMatrices [transformHandle] = std::make_pair (transformHandle -> getMatrix (), transformHandle -> center () .getValue ());
 		}
 	}
 	else
@@ -158,8 +158,8 @@ X3DBrowserEditor::set_selection_active (bool value)
 			{
 				try
 				{
-					X3D::Matrix4f matrix = matrices .at (transformHandle) .first;
-					X3D::Vector3f center = matrices .at (transformHandle) .second;
+					X3D::Matrix4f matrix = undoMatrices .at (transformHandle) .first;
+					X3D::Vector3f center = undoMatrices .at (transformHandle) .second;
 
 					if (matrix not_eq transformHandle -> getMatrix () or center not_eq transformHandle -> center ())
 					{
@@ -179,7 +179,7 @@ X3DBrowserEditor::set_selection_active (bool value)
 			}
 		}
 
-		matrices .clear ();
+		undoMatrices .clear ();
 
 		addUndoStep (undoStep);
 	}

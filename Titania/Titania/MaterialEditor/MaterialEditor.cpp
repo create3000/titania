@@ -143,6 +143,8 @@ MaterialEditor::MaterialEditor (BrowserWindow* const browserWindow, X3D::MFNode 
 	}
 
 	getFrontAndBackButton () .set_active (twoSidedMaterialIndex < materialIndex);
+
+	on_frontAndBackButton_toggled ();
 }
 
 void
@@ -176,7 +178,7 @@ MaterialEditor::set_splashScreen ()
 void
 MaterialEditor::set_initialized ()
 {
-	on_frontAndBackButton_toggled ();
+	updateMaterial ();
 
 	initialized = true;
 }

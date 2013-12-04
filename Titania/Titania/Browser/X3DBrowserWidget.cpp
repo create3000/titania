@@ -90,8 +90,6 @@ X3DBrowserWidget::initialize ()
 	// Show Surface and start the X3D Main Loop.
 	getBrowserWindow () -> getBrowserSurface () -> show ();
 
-	X3D::getBrowser () -> getBrowserOptions () -> splashScreen () = false;
-
 	restoreSession ();
 }
 
@@ -99,6 +97,9 @@ void
 X3DBrowserWidget::set_splashScreen ()
 {
 	// Initialized
+
+	X3D::getBrowser () -> getBrowserOptions () -> splashScreen () = false;
+
 	getBrowser () -> initialized () .removeInterest (this, &X3DBrowserWidget::set_splashScreen);
 	getBrowser () -> initialized () .addInterest (this, &X3DBrowserWidget::set_initialized);
 

@@ -70,7 +70,7 @@ NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow, 
 }
 
 void
-NodePropertiesEditor::validateInsertId (Gtk::Entry & entry, const Glib::ustring & insert, int position)
+NodePropertiesEditor::validateIdOnInsert (Gtk::Entry & entry, const Glib::ustring & insert, int position)
 {
 	std::string text = entry .get_text () .insert (position, insert);
 
@@ -79,7 +79,7 @@ NodePropertiesEditor::validateInsertId (Gtk::Entry & entry, const Glib::ustring 
 }
 
 void
-NodePropertiesEditor::validateDeleteId (Gtk::Entry & entry, int start_pos, int end_pos)
+NodePropertiesEditor::validateIdOnDelete (Gtk::Entry & entry, int start_pos, int end_pos)
 {
 	std::string text = entry .get_text () .erase (start_pos, end_pos - start_pos);
 
@@ -90,25 +90,25 @@ NodePropertiesEditor::validateDeleteId (Gtk::Entry & entry, int start_pos, int e
 void
 NodePropertiesEditor::on_type_name_insert_text (const Glib::ustring & text, int* position)
 {
-	validateInsertId (getTypeNameEntry (), text, *position);
+	validateIdOnInsert (getTypeNameEntry (), text, *position);
 }
 
 void
 NodePropertiesEditor::on_type_name_delete_text (int start_pos, int end_pos)
 {
-	validateDeleteId (getTypeNameEntry (), start_pos, end_pos);
+	validateIdOnDelete (getTypeNameEntry (), start_pos, end_pos);
 }
 
 void
 NodePropertiesEditor::on_name_insert_text (const Glib::ustring & text, int* position)
 {
-	validateInsertId (getNameEntry (), text, *position);
+	validateIdOnInsert (getNameEntry (), text, *position);
 }
 
 void
 NodePropertiesEditor::on_name_delete_text (int start_pos, int end_pos)
 {
-	validateDeleteId (getNameEntry (), start_pos, end_pos);
+	validateIdOnDelete (getNameEntry (), start_pos, end_pos);
 }
 
 void

@@ -568,8 +568,10 @@ jsContext::eventsProcessed ()
 void
 jsContext::shutdown ()
 {
-	if (not JSVAL_IS_VOID (shutdownFn))
-		callFunction (shutdownFn);
+	// It is not clear what to do here.
+
+	//if (not JSVAL_IS_VOID (shutdownFn))
+	//	callFunction (shutdownFn);
 }
 
 jsval

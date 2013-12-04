@@ -72,10 +72,10 @@ public:
 private:
 
 	void
-	validateInsertId (Gtk::Entry &, const Glib::ustring &, int);
+	validateIdOnInsert (Gtk::Entry &, const Glib::ustring &, int);
 
 	void
-	validateDeleteId (Gtk::Entry &, int, int);
+	validateIdOnDelete (Gtk::Entry &, int, int);
 
 	virtual
 	void

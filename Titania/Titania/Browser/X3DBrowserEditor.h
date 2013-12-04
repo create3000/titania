@@ -288,7 +288,7 @@ private:
 
 	std::shared_ptr <MagicImport>      magicImport;
 	UndoHistory                        undoHistory;
-	UndoMatrixIndex                    matrices;
+	UndoMatrixIndex                    undoMatrices;
 	std::shared_ptr <BrowserSelection> selection;
 
 };

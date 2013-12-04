@@ -396,6 +396,7 @@ PROTO TransformTool [
             ]
           }
           DEF ScaleTool Switch {
+            whichChoice 2
             choice [
               Group { }
               Group { }
@@ -870,7 +871,7 @@ function set_zTranslation (value)
 
 function translate_with_bbox (value)
 {
-	translate (multVec (value, bboxSize));
+	translate (value .multVec (bboxSize));
 }
 
 function translate (value)
@@ -885,13 +886,6 @@ function translate (value)
 	var offset = matrix .multDirMatrix (value);
 
 	transform .translation = transform .translation .add (offset);
-}
-
-function multVec (a, b)
-{
-	return new SFVec3f (a .x * b .x,
-	                    a .y * b .y,
-	                    a .z * b .z);
 }
 "
     directOutput TRUE
@@ -963,8 +957,10 @@ function eventsProcessed ()
 		
 		// Uniform scale circles
 
-		var max    = Math .max (Math .max (scale .x, scale .y), scale .z);
-		var radius = max * Math .max (bboxSize .length () / 2, transform .center .subtract (bboxCenter) .length ());
+		var bboxOuterRadius  = bboxSize .multVec (scale) .length () / 2;
+		var distanceToCenter = transform .center .subtract (bboxCenter) .multVec (scale) .length ();
+
+		var radius = Math .max (bboxOuterRadius, distanceToCenter);
 		var scale  = new SFVec3f (radius, radius, radius);
 
 		xHandle .scale = scale;
@@ -1276,7 +1272,7 @@ function set_active (value, sensor, sensorPosition)
 
 		distanceFromCenter = bboxCenter .subtract (transform .center);
 
-		offset = sensor .trackPoint_changed .subtract (multVec (sensorPosition, bboxSize));
+		offset = sensor .trackPoint_changed .subtract (sensorPosition .multVec (bboxSize));
 	}
 	else
 	{
@@ -1286,7 +1282,7 @@ function set_active (value, sensor, sensorPosition)
 
 function scale (value, sensor, uniform)
 {
-	value = multVec (value, transform .scale);
+	value = value .multVec (transform .scale);
 	value = divVec (value .multiply (2), bboxSize);
 
 	var scale = transform .scale .add (value);
@@ -1333,13 +1329,6 @@ function translate ()
 
 	transform .translation = translation .subtract (centerOffset);
 	transform .center      = center .add (centerOffset);
-}
-
-function multVec (a, b)
-{
-	return new SFVec3f (a .x * b .x,
-	                    a .y * b .y,
-	                    a .z * b .z);
 }
 
 function divVec (a, b)
@@ -1421,7 +1410,7 @@ function divVec (a, b)
 
   # Scale Tool
 
-  ROUTE ModeScript.whichChoice_changed TO ScaleTool.set_whichChoice
+  #ROUTE ModeScript.whichChoice_changed TO ScaleTool.set_whichChoice
 
   #
 
