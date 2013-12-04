@@ -59,6 +59,7 @@ namespace puck {
 
 class MagicImport;
 class BrowserSelection;
+class X3DBrowserSelection;
 
 class X3DBrowserEditor :
 	public X3DBrowserWidget
@@ -171,7 +172,7 @@ public:
 
 protected:
 
-	friend class BrowserSelection;
+	friend class X3DBrowserSelection;
 
 	/// @name Construction
 

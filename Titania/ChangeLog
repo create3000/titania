@@ -1,3 +1,14 @@
+2013-12-04  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* BrowserSelection.h:
+	* X3DBrowserEditor.h:
+	* BrowserSelection.cpp:
+	* X3DBrowserSelection.h:
+	* OutlineTreeData.h:
+	* X3DBrowserSelection.cpp:
+	* OutlineTreeData.cpp: 
+
 2013-12-03  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* BrowserWindow.ui:

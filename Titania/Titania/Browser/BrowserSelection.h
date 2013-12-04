@@ -51,30 +51,20 @@
 #ifndef __TITANIA_BROWSER_BROWSER_SELECTION_H__
 #define __TITANIA_BROWSER_BROWSER_SELECTION_H__
 
-#include "../Base/X3DBaseInterface.h"
 #include "../Undo/UndoStep.h"
+#include "X3DBrowserSelection.h"
 
 namespace titania {
 namespace puck {
 
 class BrowserSelection :
-	virtual public X3DBaseInterface,
-	public X3D::X3DPointingDevice
+	public X3DBrowserSelection
 {
 public:
 
 	///  @name Construction
 
 	BrowserSelection (BrowserWindow* const);
-
-	///  @name Operations
-	
-	void
-	setEnabled (bool);
-	
-	bool
-	getEnabled () const
-	{ return enabled; }
 
 	void
 	addChildren (const X3D::MFNode &, const UndoStepPtr &) const;
@@ -92,30 +82,6 @@ public:
 
 	virtual
 	~BrowserSelection ();
-
-
-private:
-
-	virtual
-	void
-	motionNotifyEvent (bool) final override;
-
-	virtual
-	bool
-	buttonPressEvent (bool) final override;
-
-	virtual
-	void
-	buttonReleaseEvent (bool) final override;
-
-	virtual
-	bool
-	trackSensors () final override;
-
-	///  @name Members
-
-	bool enabled;
-	bool hasMoved;
 
 };
 

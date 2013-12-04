@@ -55,6 +55,7 @@ namespace puck {
 
 OutlineTreeData::OutlineTreeData (OutlineIterType type, X3D::X3DChildObject* object, const Gtk::TreeModel::Path & path) :
 	   Glib::Object (),
+	         parent (),
 	         object (object),
 	           type (type),
 	           path (path),
@@ -65,8 +66,22 @@ OutlineTreeData::OutlineTreeData (OutlineIterType type, X3D::X3DChildObject* obj
 	self_connection (false),
 	    connections ()
 {
-	if (type == OutlineIterType::X3DBaseNode)
-		this -> object = new X3D::SFNode (static_cast <X3D::SFNode*> (object) -> getValue ());
+	switch (type)
+	{
+		case OutlineIterType::X3DField:
+		{
+			static_cast <X3D::X3DFieldDefinition*> (object) -> addParent (&parent);
+			break;
+		}
+		case OutlineIterType::X3DBaseNode:
+		{
+			parent = *static_cast <X3D::SFNode*> (object);
+			object = &parent;
+			break;
+		}
+		default:
+			break;
+	}
 
 	get_user_data () -> paths .emplace (path);
 }
@@ -107,10 +122,18 @@ OutlineTreeData::get_user_data (X3D::X3DChildObject* object)
 
 OutlineTreeData::~OutlineTreeData ()
 {
-	get_user_data () -> paths .erase (path);
+	switch (type)
+	{
+		case OutlineIterType::X3DField:
+		{
+			static_cast <X3D::X3DFieldDefinition*> (object) -> removeParent (&parent);
+			break;
+		}
+		default:
+			break;
+	}
 
-	if (type == OutlineIterType::X3DBaseNode)
-		delete object;
+	get_user_data () -> paths .erase (path);
 }
 
 } // puck

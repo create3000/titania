@@ -11,6 +11,7 @@ titania_SOURCES =  \
 	Titania/Browser/BrowserWindow.cpp \
 	Titania/Browser/MagicImport.cpp \
 	Titania/Browser/X3DBrowserEditor.cpp \
+	Titania/Browser/X3DBrowserSelection.cpp \
 	Titania/Browser/X3DBrowserWidget.cpp \
 	Titania/Configuration/config.cpp \
 	Titania/Configuration/Configuration.cpp \

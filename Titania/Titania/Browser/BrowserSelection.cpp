@@ -56,30 +56,9 @@ namespace titania {
 namespace puck {
 
 BrowserSelection::BrowserSelection (BrowserWindow* const browserWindow) :
-	      X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	X3D::X3DPointingDevice (browserWindow -> getBrowser ()),
-	               enabled (false),
-	              hasMoved (false)
+	   X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	X3DBrowserSelection (browserWindow)
 { }
-
-void
-BrowserSelection::setEnabled (bool value)
-{
-	enabled = value;
-
-	if (enabled)
-	{
-		connect ();
-
-		getBrowser () -> setPicking (false);
-	}
-	else
-	{
-		disconnect ();
-
-		getBrowser () -> setPicking (true);
-	}
-}
 
 void
 BrowserSelection::addChildren (const X3D::MFNode & nodes, const UndoStepPtr & undoStep) const
@@ -123,86 +102,6 @@ BrowserSelection::clear (const UndoStepPtr & undoStep) const
 	undoStep -> addRedoFunction (std::mem_fn (&X3D::Selection::clear),       selection);
 
 	selection -> clear ();
-}
-
-void
-BrowserSelection::motionNotifyEvent (bool)
-{
-	hasMoved = true;
-}
-
-bool
-BrowserSelection::buttonPressEvent (bool)
-{
-	hasMoved = false;
-
-	return false;
-}
-
-void
-BrowserSelection::buttonReleaseEvent (bool picked)
-{
-	if (hasMoved)
-		return;
-
-	if (picked)
-	{
-		auto hit       = getBrowser () -> getHits () .front ();
-		auto hierarchy = std::move (X3D::find (getBrowser () -> getExecutionContext () -> getRootNodes (), hit -> shape, false));
-
-		if (not hierarchy .empty ())
-		{
-			X3D::SFNode node (hierarchy .front ());
-
-			if (getBrowserWindow () -> getConfig () .getBoolean ("selectLowest"))
-			{
-				for (const auto & object : basic::reverse_adapter (hierarchy))
-				{
-					X3D::SFNode lowest (object);
-
-					if (not lowest)
-						continue;
-
-					if (lowest -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
-						continue;
-
-					if (dynamic_cast <X3D::Transform*> (lowest .getValue ()))
-					{
-						node = lowest;
-						break;
-					}
-				}
-			}
-			
-			if (getBrowser () -> getSelection () -> isSelected (node))
-				getBrowser () -> getSelection () -> removeChildren ({ node });
-
-			else
-			{
-				if (getBrowserWindow () -> getKeys () .shift ())
-					getBrowser () -> getSelection () -> addChildren ({ node });
-
-				else
-					getBrowser () -> getSelection () -> setChildren ({ node });
-			}
-
-			getBrowser () -> update ();
-
-			if (getBrowserWindow () -> getConfig () .getBoolean ("followPrimarySelection"))
-				getBrowserWindow () -> getOutlineTreeView () .expand_to (node);
-		}
-	}
-	else
-	{
-		getBrowser () -> getSelection () -> clear ();
-		getBrowser () -> update ();
-	}
-}
-
-bool
-BrowserSelection::trackSensors ()
-{
-	return not (getBrowserWindow () -> getKeys () .shift () or getBrowserWindow () -> getKeys () .control ());
 }
 
 BrowserSelection::~BrowserSelection ()

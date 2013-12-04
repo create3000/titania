@@ -48,118 +48,65 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_TREE_DATA_H__
-#define __TITANIA_OUTLINE_EDITOR_OUTLINE_TREE_DATA_H__
+#ifndef __TITANIA_BROWSER_X3DBROWSER_SELECTION_H__
+#define __TITANIA_BROWSER_X3DBROWSER_SELECTION_H__
 
-#include "OutlineUserData.h"
-
-#include <Titania/X3D.h>
-#include <gtkmm.h>
+#include "../Base/X3DBaseInterface.h"
 
 namespace titania {
 namespace puck {
 
-enum class OutlineIterType
-{
-	X3DInputRoute,
-	X3DOutputRoute,
-	X3DFieldValue,
-	X3DField,
-	X3DBaseNode
-
-};
-
-using OutlineRoutes = std::set <std::pair <Gtk::TreeModel::Path, Gtk::TreeModel::Path>>;
-
-class OutlineTreeData :
-	public Glib::Object
+class X3DBrowserSelection :
+	virtual public X3DBaseInterface,
+	public X3D::X3DPointingDevice
 {
 public:
 
-	///  @name Construction
+	///  @name Operations
 
-	OutlineTreeData (OutlineIterType, X3D::X3DChildObject*, const Gtk::TreeModel::Path &);
+	void
+	setEnabled (bool);
 
 	bool
-	is (X3D::X3DChildObject* const) const;
-
-	///  @name Member access
-
-	X3D::X3DChildObject*
-	get_object () const
-	{ return object; }
-
-	OutlineIterType
-	get_type () const
-	{ return type; }
-
-	const Gtk::TreeModel::Path &
-	get_path () const
-	{ return path; }
-
-	OutlineUserDataPtr
-	get_user_data () const;
-
-	static
-	OutlineUserDataPtr
-	get_user_data (X3D::X3DChildObject*);
-
-	///  @name Route handling
-
-	OutlineRoutes &
-	get_inputs_below ()
-	{ return inputs_below; }
-
-	OutlineRoutes &
-	get_inputs_above ()
-	{ return inputs_above; }
-
-	OutlineRoutes &
-	get_outputs_below ()
-	{ return outputs_below; }
-
-	OutlineRoutes &
-	get_outputs_above ()
-	{ return outputs_above; }
-
-	bool &
-	get_self_connection ()
-	{ return self_connection; }
-
-	OutlineRoutes &
-	get_connections ()
-	{ return connections; }
+	getEnabled () const
+	{ return enabled; }
 
 	///  @name Destruction
 
-	~OutlineTreeData ();
+	virtual
+	~X3DBrowserSelection ();
+
+
+protected:
+
+	///  @name Construction
+
+	X3DBrowserSelection (BrowserWindow* const);
 
 
 private:
 
-	OutlineTreeData (const OutlineTreeData &) = delete;
+	virtual
+	void
+	motionNotifyEvent (bool) final override;
 
-	OutlineTreeData (OutlineTreeData &&) = delete;
+	virtual
+	bool
+	buttonPressEvent (bool) final override;
 
-	OutlineTreeData &
-	operator = (const OutlineTreeData &) = delete;
+	virtual
+	void
+	buttonReleaseEvent (bool) final override;
 
-	OutlineTreeData &
-	operator = (OutlineTreeData &&) = delete;
+	virtual
+	bool
+	trackSensors () final override;
 
 	///  @name Members
 
-	X3D::SFNode                parent;
-	X3D::X3DChildObject*       object;
-	const OutlineIterType      type;
-	const Gtk::TreeModel::Path path;
-
-	OutlineRoutes inputs_below;
-	OutlineRoutes inputs_above;
-	OutlineRoutes outputs_below;
-	OutlineRoutes outputs_above;
-	bool          self_connection;
-	OutlineRoutes connections;
+	bool   enabled;
+	double pressTime;
+	bool   hasMoved;
 
 };
 
