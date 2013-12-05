@@ -102,9 +102,11 @@ DEF Three Transform {
         rotation 4.34001e-07 1 -6.24773e-07 0.669766
         scale 1.4214 0.322302 1
         children [
-          Transform {
-            translation 5 0 0
-            scale 1.29667 1.68472 1.25458
+          DEF _1 Transform {
+            translation 5.00001 -6.97649 4.72069e-05
+            rotation 0 0 1 0
+            scale 1.29667 1.68473 1.25458
+            scaleOrientation 0 0 1 0
             children [
               Viewpoint {
                 description "Inside Three"
@@ -122,9 +124,11 @@ DEF Three Transform {
               }
             ]
           }
-          Transform {
-            translation 6.45879 0 3.18753
-            rotation 0 1 0 2
+          DEF _2 Transform {
+            translation 6.67177 -7.11893 3.34431
+            rotation 3.11361e-11 1 6.47652e-12 2
+            scale 1.00009 1.00007 1.00003
+            scaleOrientation 9.89448e-07 1 1.09528e-05 0.215976
             children Shape {
               appearance Appearance {
                 material Material {
@@ -189,8 +193,9 @@ Transform {
 DEF A Transform {
   translation 0 0 -2
   scale 2 1 1
-  children DEF _1 Transform {
-    scale 2 1 1
+  children Transform {
+    translation 9.79508e-08 0 7.86781e-06
+    scale 2 1 0.999993
     children Shape {
       appearance Appearance {
         material Material {
@@ -208,7 +213,7 @@ DEF A Transform {
 DEF B Transform {
   translation 0 0 2
   scale 0.5 1 1
-  children DEF _2 Transform {
+  children Transform {
     scale 2 1 1
     children Shape {
       appearance Appearance {

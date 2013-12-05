@@ -263,6 +263,12 @@ private:
 	void
 	initialize () final override;
 
+	void
+	addMatrix (const Matrix4f &);
+
+	void
+	interestsProcessed ();
+
 	///  @name Operatations
 
 	void
@@ -273,6 +279,10 @@ private:
 	Transform* const   transform;
 	SFBool* const      isActive;
 	X3DSFNode <Scene>  scene;
+
+	Matrix4f parentMatrix;
+	Matrix4f matrix;
+	size_t   interestEvents;
 
 };
 

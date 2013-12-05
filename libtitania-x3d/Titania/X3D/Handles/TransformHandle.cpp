@@ -65,7 +65,10 @@ TransformHandle::TransformHandle (Transform* const transform, SFBool* isActive, 
 	X3DHandleObject (),
 	      transform (transform),
 	       isActive (isActive),
-	          scene ()
+	          scene (),
+	   parentMatrix (),
+	         matrix (),
+	 interestEvents (0)
 {
 	for (auto & field : transform -> getFieldDefinitions ())
 		addField (field -> getAccessType (), field -> getName (), *field);
@@ -78,6 +81,8 @@ TransformHandle::initialize ()
 {
 	Transform::initialize ();
 	X3DHandleObject::initialize ();
+	
+	transform -> addInterest (this, &TransformHandle::interestsProcessed);
 
 	try
 	{
@@ -142,6 +147,51 @@ TransformHandle::removeHandle ()
 	transform -> removeHandle ();
 }
 
+// T  P
+// P  T'
+// I
+//
+// I * P * T * ~P = T'
+//
+// T = ~P * ~I * T' * P
+//
+// Add to group:
+//
+// childModelViewMatrix = childModelViewMatrix * ~groupModelViewMatrix
+//
+// transform -> setMatrix (childModelViewMatrix);
+
+void
+TransformHandle::addMatrix (const Matrix4f & absoluteMatrix)
+{
+	++ interestEvents;
+
+	transform -> setMatrix (getMatrix () * parentMatrix * absoluteMatrix * ~parentMatrix);
+}
+
+void
+TransformHandle::interestsProcessed ()
+{
+	if (interestEvents)
+		-- interestEvents;
+		
+	else
+	{
+		auto differenceMatrix = ~(matrix * parentMatrix) * getMatrix () * parentMatrix;
+
+		for (const auto & node : getBrowser () -> getSelection () -> getChildren ())
+		{
+			if (node == this)
+				continue;
+			
+			auto handle = dynamic_cast <TransformHandle*> (node .getValue ());
+			
+			if (handle)
+				handle -> addMatrix (differenceMatrix);
+		}
+	}
+}
+
 void
 TransformHandle::reshape ()
 {
@@ -165,6 +215,14 @@ TransformHandle::traverse (const TraverseType type)
 	transform -> traverse (type);
 
 	getCurrentLayer () -> getLocalObjects () .emplace_back (new PolygonModeContainer (GL_FILL));
+	
+	//
+	
+	if (type == TraverseType::CAMERA)
+	{
+		parentMatrix = ModelViewMatrix4f ();
+		matrix       = getMatrix ();
+	}
 
 	// Handle
 

@@ -1,15 +1,13 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Browser/Devices/X3DPointingDevice.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Handles/TransformHandle.cpp">
     <Files>
       <File FileName="Titania/Titania/MaterialEditor/MaterialEditor.h" Line="185" Column="25" />
-      <File FileName="Titania/Titania/MaterialEditor/MaterialEditor.cpp" Line="546" Column="4" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="175" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="104" Column="52" />
-      <File FileName="Titania/Titania/Browser/BrowserSelection.h" Line="101" Column="42" />
-      <File FileName="Titania/Titania/Browser/BrowserSelection.cpp" Line="179" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Devices/X3DPointingDevice.h" Line="78" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Devices/X3DPointingDevice.cpp" Line="88" Column="25" />
+      <File FileName="Titania/Titania/MaterialEditor/MaterialEditor.cpp" Line="170" Column="5" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="102" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Handles/TransformHandle.h" Line="265" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Handles/TransformHandle.cpp" Line="129" Column="2" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="1128" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -34,7 +32,7 @@
             <Node name="Titania" expanded="True">
               <Node name="Basic" expanded="True" />
               <Node name="Math" expanded="True">
-                <Node name="Geometry" expanded="True" />
+                <Node name="Numbers" expanded="True" />
               </Node>
             </Node>
           </Node>
@@ -50,20 +48,25 @@
                 <Node name="Basic" expanded="True" />
                 <Node name="Bits" expanded="True" />
                 <Node name="Browser" expanded="True">
-                  <Node name="Devices" expanded="True">
-                    <Node name="X3DPointingDevice.cpp" selected="True" />
-                  </Node>
+                  <Node name="Devices" expanded="True" />
                   <Node name="Picking" expanded="True" />
-                  <Node name="Properties" expanded="True" />
                   <Node name="Viewer" expanded="True" />
                 </Node>
-                <Node name="Components" expanded="True" />
-                <Node name="Handles" expanded="True" />
+                <Node name="Components" expanded="True">
+                  <Node name="Navigation" expanded="True" />
+                </Node>
+                <Node name="Fields" expanded="True" />
+                <Node name="Handles" expanded="True">
+                  <Node name="TransformHandle.cpp" selected="True" />
+                </Node>
+                <Node name="Routing" expanded="True" />
                 <Node name="Types" expanded="True" />
               </Node>
             </Node>
           </Node>
-          <Node name="Papers" expanded="True" />
+          <Node name="Papers" expanded="True">
+            <Node name="CosmoWorlds" expanded="True" />
+          </Node>
           <Node name="Titania" expanded="True">
             <Node name="share" expanded="True">
               <Node name="titania" expanded="True">
@@ -75,8 +78,7 @@
               <Node name="Browser" expanded="True" />
               <Node name="Configuration" expanded="True" />
               <Node name="MaterialEditor" expanded="True" />
-              <Node name="OutlineEditor" expanded="True" />
-              <Node name="Undo" expanded="True" />
+              <Node name="NodePropertiesEditor" expanded="True" />
             </Node>
           </Node>
         </State>
