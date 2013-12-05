@@ -112,7 +112,7 @@ X3DBrowserSelection::buttonReleaseEvent (bool picked)
 
 		if (not hierarchy .empty ())
 		{
-			X3D::SFNode node (hierarchy .front ());
+			X3D::SFNode node;
 
 			if (getBrowserWindow () -> getConfig () .getBoolean ("selectLowest"))
 			{
@@ -125,6 +125,9 @@ X3DBrowserSelection::buttonReleaseEvent (bool picked)
 
 					if (lowest -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
 						continue;
+						
+					if (not node)
+						node = lowest;
 
 					if (dynamic_cast <X3D::Transform*> (lowest .getValue ()))
 					{
@@ -133,23 +136,72 @@ X3DBrowserSelection::buttonReleaseEvent (bool picked)
 					}
 				}
 			}
-			
-			if (getBrowser () -> getSelection () -> isSelected (node))
-				getBrowser () -> getSelection () -> removeChildren ({ node });
-
 			else
 			{
-				if (getBrowserWindow () -> getKeys () .shift ())
-					getBrowser () -> getSelection () -> addChildren ({ node });
+				// Find highest Transform
+			
+				for (const auto & object : hierarchy)
+				{
+					X3D::SFNode highest (object);
 
-				else
-					getBrowser () -> getSelection () -> setChildren ({ node });
+					if (not highest)
+						continue;
+
+					if (highest -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
+						continue;
+
+					if (not node)
+						node = highest;
+
+					if (dynamic_cast <X3D::Transform*> (highest .getValue ()))
+					{
+						node = highest;
+						break;
+					}
+				}
+
+				// If highest is a LayerSet, no Transform is found and we search for the highest X3DChildNode.
+
+				if (X3D::x3d_cast <X3D::LayerSet*> (node .getValue ()))
+				{
+					for (const auto & object : hierarchy)
+					{
+						X3D::SFNode highest (object);
+
+						if (not highest)
+							continue;
+
+						if (highest -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
+							continue;
+
+						if (X3D::x3d_cast <X3D::X3DChildNode*> (highest .getValue ()))
+						{
+							node = highest;
+							break;
+						}
+					}
+				}
 			}
 
-			getBrowser () -> update ();
+			if (node)
+			{
+				if (getBrowser () -> getSelection () -> isSelected (node))
+					getBrowser () -> getSelection () -> removeChildren ({ node });
 
-			if (getBrowserWindow () -> getConfig () .getBoolean ("followPrimarySelection"))
-				getBrowserWindow () -> getOutlineTreeView () .expand_to (node);
+				else
+				{
+					if (getBrowserWindow () -> getKeys () .shift ())
+						getBrowser () -> getSelection () -> addChildren ({ node });
+
+					else
+						getBrowser () -> getSelection () -> setChildren ({ node });
+				}
+
+				getBrowser () -> update ();
+
+				if (getBrowserWindow () -> getConfig () .getBoolean ("followPrimarySelection"))
+					getBrowserWindow () -> getOutlineTreeView () .expand_to (node);
+			}
 		}
 	}
 	else

@@ -683,8 +683,8 @@
     <accel-groups>
       <group name="MenuAccelGroup"/>
     </accel-groups>
-    <signal name="key-release-event" handler="on_key_release_event" swapped="no"/>
-    <signal name="key-press-event" handler="on_key_press_event" swapped="no"/>
+    <signal name="key-release-event" handler="on_key_release_event" swapped="no" after="yes"/>
+    <signal name="key-press-event" handler="on_key_press_event" swapped="no" after="yes"/>
     <child>
       <object class="GtkVBox" id="Widget">
         <property name="visible">True</property>

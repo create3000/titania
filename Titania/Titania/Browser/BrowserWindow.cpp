@@ -229,6 +229,46 @@ bool
 BrowserWindow::on_key_press_event (GdkEventKey* event)
 {
 	keys .press (event);
+	
+//	float         factor = keys .shift () ? 10 : 1;
+//	X3D::Vector3f nudge;
+//
+//	switch (event -> keyval)
+//	{
+//		case GDK_KEY_Up:
+//		case GDK_KEY_KP_Up:
+//			nudge = X3D::Vector3f (0, 0.001, 0);
+//			break;
+//
+//		case GDK_KEY_Down:
+//		case GDK_KEY_KP_Down:
+//			nudge = X3D::Vector3f (0, -0.001, 0);
+//			break;
+//
+//		case GDK_KEY_Left:
+//		case GDK_KEY_KP_Left:
+//			nudge = X3D::Vector3f (-0.001, 0, 0);
+//			break;
+//
+//		case GDK_KEY_Right:
+//		case GDK_KEY_KP_Right:
+//			nudge = X3D::Vector3f (0.001, 0, 0);
+//			break;
+//	}
+//
+//	if (math::abs (nudge))
+//	{
+//		for (const auto & node : basic::reverse_adapter (getBrowser () -> getSelection () -> getChildren ()))
+//		{
+//			auto handle = dynamic_cast <X3D::TransformHandle*> (node .getValue ());
+//
+//			if (handle)
+//			{
+//				handle -> translation () += nudge * factor;
+//				break;
+//			}
+//		}
+//	}
 
 	return false;
 }

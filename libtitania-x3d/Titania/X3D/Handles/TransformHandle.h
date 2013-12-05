@@ -185,6 +185,9 @@ public:
 	Box3f
 	getBBox () final override;
 
+	void
+	addAbsoluteMatrix (const Matrix4f &);
+
 	virtual
 	void
 	setMatrix (const Matrix4f & matrix) final override
@@ -196,9 +199,13 @@ public:
 	{ transform -> setMatrixWithCenter (matrix, center);  }
 
 	virtual
-	Matrix4f
-	getMatrix ()
+	const Matrix4f &
+	getMatrix () const final override
 	{ return transform -> getMatrix (); }
+
+	const Matrix4f &
+	getParentMatrix () const
+	{ return parentMatrix; }
 
 	Transform*
 	getTransform () const
@@ -262,9 +269,6 @@ private:
 	virtual
 	void
 	initialize () final override;
-
-	void
-	addMatrix (const Matrix4f &);
 
 	void
 	interestsProcessed ();

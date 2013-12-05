@@ -162,7 +162,7 @@ TransformHandle::removeHandle ()
 // transform -> setMatrix (childModelViewMatrix);
 
 void
-TransformHandle::addMatrix (const Matrix4f & absoluteMatrix)
+TransformHandle::addAbsoluteMatrix (const Matrix4f & absoluteMatrix)
 {
 	++ interestEvents;
 
@@ -187,7 +187,7 @@ TransformHandle::interestsProcessed ()
 			auto handle = dynamic_cast <TransformHandle*> (node .getValue ());
 			
 			if (handle)
-				handle -> addMatrix (differenceMatrix);
+				handle -> addAbsoluteMatrix (differenceMatrix);
 		}
 	}
 }

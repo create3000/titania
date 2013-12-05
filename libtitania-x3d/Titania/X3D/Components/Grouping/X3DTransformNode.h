@@ -128,8 +128,8 @@ public:
 	setMatrixWithCenter (const Matrix4f &, const Vector3f &);
 
 	virtual
-	Matrix4f
-	getMatrix ()
+	const Matrix4f &
+	getMatrix () const
 	{ return matrix; }
 
 	///  @name Operations
