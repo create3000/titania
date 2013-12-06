@@ -68,7 +68,7 @@ TransformHandle::TransformHandle (Transform* const transform, SFBool* isActive, 
 	          scene (),
 	   parentMatrix (),
 	         matrix (),
-	 interestEvents (0)
+	 interestEvents (transform -> isTainted ())
 {
 	for (auto & field : transform -> getFieldDefinitions ())
 		addField (field -> getAccessType (), field -> getName (), *field);

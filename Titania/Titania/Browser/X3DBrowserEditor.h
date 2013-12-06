@@ -153,6 +153,9 @@ public:
 	void
 	deleteRoute (X3D::X3DExecutionContext* const, const X3D::SFNode &, const std::string &, const X3D::SFNode &, const std::string &, const UndoStepPtr &) const;
 
+	void
+	setMatrix (const X3D::X3DSFNode <X3D::X3DTransformNode> &, const X3D::Matrix4f &, const UndoStepPtr &) const;
+
 	/// @name Selection operations
 	
 	const std::shared_ptr <BrowserSelection> &
@@ -249,9 +252,6 @@ private:
 	createParentGroup (X3D::MFNode &, const X3D::SFNode &, const X3D::SFNode &, X3D::MFNode &, const UndoStepPtr &) const;
 
 	///  @name Undo functions
-
-	void
-	setMatrix (const X3D::X3DSFNode <X3D::X3DTransformNode> &, const X3D::Matrix4f &, const UndoStepPtr &) const;
 
 	void
 	emplaceBack (X3D::MFNode &, const X3D::SFNode &, const UndoStepPtr &) const;

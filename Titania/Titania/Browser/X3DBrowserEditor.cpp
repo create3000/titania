@@ -297,8 +297,6 @@ X3DBrowserEditor::import (const X3D::X3DSFNode <X3D::Scene> & scene, const UndoS
 
 	try
 	{
-		undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
-
 		auto & rootNodes    = getBrowser () -> getExecutionContext () -> getRootNodes ();
 		size_t numRootNodes = rootNodes .size ();
 
@@ -320,10 +318,6 @@ X3DBrowserEditor::import (const X3D::X3DSFNode <X3D::Scene> & scene, const UndoS
 		// Select imported nodes
 
 		getSelection () -> setChildren (importedNodes, undoStep);
-
-		undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
-
-		getBrowser () -> update ();
 	}
 	catch (const X3D::X3DError & error)
 	{
@@ -442,6 +436,8 @@ X3DBrowserEditor::copyNodes (X3D::MFNode nodes) const
 	// Undo detach from group
 
 	undoDetachFromGroup -> undo ();
+
+	getBrowser () -> update ();
 }
 
 std::string
@@ -624,6 +620,9 @@ X3DBrowserEditor::removeNodes (const X3D::MFNode & nodes, const UndoStepPtr & un
 		if (node)
 			removeNodeFromScene (getBrowser () -> getExecutionContext (), node, undoStep);
 	}
+
+	undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
+	getBrowser () -> update ();
 }
 
 void

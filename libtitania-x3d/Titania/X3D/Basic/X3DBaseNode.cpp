@@ -591,7 +591,12 @@ X3DBaseNode::addEvent (X3DChildObject* const object, const EventPtr & event)
 	receivedInputEvent |= object -> isInput () or (extendedEventHandling and not object -> isOutput ());
 
 	if (not nodeId .time)
+	{
+		if (receivedInputEvent)
+			isTainted (true);
+
 		nodeId = getBrowser () -> getRouter () .addNode (this);
+	}
 }
 
 void
@@ -603,6 +608,7 @@ X3DBaseNode::processEvents ()
 	if (receivedInputEvent)
 	{
 		receivedInputEvent = false;
+		isTainted (false);
 		eventsProcessed ();
 		processInterests ();
 	}

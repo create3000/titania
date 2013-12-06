@@ -362,6 +362,11 @@ public:
 	update ();
 
 	virtual
+	void
+	traverse (const TraverseType type) final override
+	{ getWorld () -> traverse (type); }
+
+	virtual
 	bool
 	makeCurrent () const
 	{ return true; }
@@ -373,9 +378,11 @@ public:
 
 	///  @name Destruction
 
+	virtual
 	void
-	dispose ();
+	dispose () override;
 
+	virtual
 	~X3DBrowserContext ();
 
 

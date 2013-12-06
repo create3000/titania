@@ -273,19 +273,23 @@ BrowserWindow::on_key_press_event (GdkEventKey* event)
 	{
 		for (const auto & node : basic::reverse_adapter (getBrowser () -> getSelection () -> getChildren ()))
 		{
-			auto handle = dynamic_cast <X3D::TransformHandle*> (node .getValue ());
+			X3D::X3DSFNode <X3D::X3DTransformNode> transform (node);
 
-			if (handle)
+			if (transform)
 			{
 				using setValue = void (X3D::SFVec3f::*) (const X3D::Vector3f &);
 			
 				auto undoStep = std::make_shared <UndoStep> (_ ("Nudge"));
-				
-				undoStep -> addVariables (node);
-				undoStep -> addUndoFunction (std::mem_fn ((setValue) &X3D::SFVec3f::setValue), std::ref (handle -> translation ()), handle -> translation ());
-				undoStep -> addRedoFunction (std::mem_fn ((setValue) &X3D::SFVec3f::setValue), std::ref (handle -> translation ()), handle -> translation () + nudge * factor);
 
-				handle -> translation () += nudge * factor;
+				getSelection () -> redoRestoreSelection (undoStep);
+
+				//undoStep -> addVariables (node);
+				undoStep -> addUndoFunction (std::mem_fn ((setValue) &X3D::SFVec3f::setValue), std::ref (transform -> translation ()), transform -> translation ());
+				undoStep -> addRedoFunction (std::mem_fn ((setValue) &X3D::SFVec3f::setValue), std::ref (transform -> translation ()), transform -> translation () + nudge * factor);
+
+				transform -> translation () += nudge * factor;
+
+				getSelection () -> undoRestoreSelection (undoStep);
 
 				addUndoStep (undoStep);
 				break;
@@ -592,16 +596,12 @@ BrowserWindow::on_cut_nodes_activate ()
 		return;
 
 	auto undoStep = std::make_shared <UndoStep> (_ ("Cut"));
-	undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
 
 	getSelection () -> clear (undoStep);
 
 	cutNodes (selection, undoStep);
 
 	getSelection () -> undoRestoreSelection (undoStep);
-
-	undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
-	getBrowser () -> update ();
 
 	addUndoStep (undoStep);
 }
@@ -615,8 +615,6 @@ BrowserWindow::on_copy_nodes_activate ()
 		return;
 
 	copyNodes (selection);
-
-	getBrowser () -> update ();
 }
 
 void
@@ -625,12 +623,8 @@ BrowserWindow::on_paste_nodes_activate ()
 	const auto selection = getBrowser () -> getSelection () -> getChildren ();
 
 	auto undoStep = std::make_shared <UndoStep> (_ ("Paste"));
-	undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
 
 	pasteNodes (selection, undoStep);
-
-	undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
-	getBrowser () -> update ();
 
 	addUndoStep (undoStep);
 }
@@ -646,14 +640,10 @@ BrowserWindow::on_delete_nodes_activate ()
 		return;
 
 	auto undoStep = std::make_shared <UndoStep> (_ ("Delete"));
-	undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
 
 	getSelection () -> clear (undoStep);
 
 	removeNodes (selection, undoStep);
-
-	undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
-	getBrowser () -> update ();
 
 	addUndoStep (undoStep);
 }
@@ -667,13 +657,9 @@ BrowserWindow::on_group_selected_nodes_activate ()
 		return;
 
 	auto undoStep = std::make_shared <UndoStep> (_ ("Group"));
-	undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
 
 	getSelection () -> clear (undoStep);
 	getSelection () -> setChildren ({ groupNodes (selection, undoStep) }, undoStep);
-
-	undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
-	getBrowser () -> update ();
 
 	addUndoStep (undoStep);
 }
@@ -687,13 +673,9 @@ BrowserWindow::on_ungroup_node_activate ()
 		return;
 
 	auto undoStep = std::make_shared <UndoStep> (_ ("Ungroup"));
-	undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
 
 	getSelection () -> clear (undoStep);
 	getSelection () -> setChildren (ungroupNodes (selection, undoStep), undoStep);
-
-	undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
-	getBrowser () -> update ();
 
 	addUndoStep (undoStep);
 }
@@ -707,7 +689,6 @@ BrowserWindow::on_add_to_group_activate ()
 		return;
 
 	auto undoStep = std::make_shared <UndoStep> (_ ("Add To Group"));
-	undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
 
 	getSelection () -> clear (undoStep);
 
@@ -717,9 +698,6 @@ BrowserWindow::on_add_to_group_activate ()
 	if (addToGroup (group, selection, undoStep))
 	{
 		getSelection () -> setChildren ({ group }, undoStep);
-
-		undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
-		getBrowser () -> update ();
 
 		addUndoStep (undoStep);
 	}
@@ -734,16 +712,12 @@ BrowserWindow::on_detach_from_group_activate ()
 		return;
 
 	auto undoStep = std::make_shared <UndoStep> (_ ("Detach From Group"));
-	undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
 
 	getSelection () -> redoRestoreSelection (undoStep);
 
 	detachFromGroup (selection, getKeys () .shift (), undoStep);
 
 	getSelection () -> undoRestoreSelection (undoStep);
-
-	undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
-	getBrowser () -> update ();
 
 	addUndoStep (undoStep);
 }
@@ -757,16 +731,12 @@ BrowserWindow::on_create_parent_group_activate ()
 		return;
 
 	auto undoStep = std::make_shared <UndoStep> (_ ("Create Parent Group"));
-	undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
 
 	getSelection () -> clear (undoStep);
 
 	X3D::MFNode groups = createParentGroup (selection, undoStep);
 
 	getSelection () -> setChildren (groups, undoStep);
-
-	undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
-	getBrowser () -> update ();
 
 	addUndoStep (undoStep);
 

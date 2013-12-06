@@ -65,10 +65,15 @@ BrowserSelection::addChildren (const X3D::MFNode & nodes, const UndoStepPtr & un
 {
 	auto selection = getBrowser () -> getSelection ();
 
+	undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
+
 	undoStep -> addUndoFunction (std::mem_fn (&X3D::Selection::setChildren), selection, selection -> getChildren ());
 	undoStep -> addRedoFunction (std::mem_fn (&X3D::Selection::addChildren), selection, nodes);
 
 	selection -> addChildren (nodes);
+
+	undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
+	getBrowser () -> update ();
 }
 
 void
@@ -76,21 +81,33 @@ BrowserSelection::removeChildren (const X3D::MFNode & nodes, const UndoStepPtr &
 {
 	auto selection = getBrowser () -> getSelection ();
 
+	undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
+
 	undoStep -> addUndoFunction (std::mem_fn (&X3D::Selection::setChildren),    selection, selection -> getChildren ());
 	undoStep -> addRedoFunction (std::mem_fn (&X3D::Selection::removeChildren), selection, nodes);
 
 	selection -> removeChildren (nodes);
+
+	undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
+	getBrowser () -> update ();
 }
 
 void
 BrowserSelection::setChildren (const X3D::MFNode & nodes, const UndoStepPtr & undoStep) const
 {
+	__LOG__ << std::endl;
+
 	auto selection = getBrowser () -> getSelection ();
+
+	undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
 
 	undoStep -> addUndoFunction (std::mem_fn (&X3D::Selection::setChildren), selection, selection -> getChildren ());
 	undoStep -> addRedoFunction (std::mem_fn (&X3D::Selection::setChildren), selection, nodes);
 
 	selection -> setChildren (nodes);
+
+	undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
+	getBrowser () -> update ();
 }
 
 void
@@ -99,25 +116,38 @@ BrowserSelection::redoRestoreSelection (const UndoStepPtr & undoStep) const
 	undoStep -> addRedoFunction (std::mem_fn (&X3D::Selection::setChildren),
 	                             getBrowser () -> getSelection (),
 	                             getBrowser () -> getSelection () -> getChildren ());
+
+	undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
 }
 
 void
 BrowserSelection::undoRestoreSelection (const UndoStepPtr & undoStep) const
 {
+	undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
+
 	undoStep -> addUndoFunction (std::mem_fn (&X3D::Selection::setChildren),
 	                             getBrowser () -> getSelection (),
 	                             getBrowser () -> getSelection () -> getChildren ());
+
+	getBrowser () -> update ();
 }
 
 void
 BrowserSelection::clear (const UndoStepPtr & undoStep) const
 {
+	__LOG__ << std::endl;
+
 	auto selection = getBrowser () -> getSelection ();
 
+	undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
+
 	undoStep -> addUndoFunction (std::mem_fn (&X3D::Selection::setChildren), selection, selection -> getChildren ());
-	undoStep -> addRedoFunction (std::mem_fn (&X3D::Selection::clear),       selection);
+	undoStep -> addRedoFunction (std::mem_fn (&X3D::Selection::clear), selection);
 
 	selection -> clear ();
+
+	undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
+	getBrowser () -> update ();
 }
 
 BrowserSelection::~BrowserSelection ()

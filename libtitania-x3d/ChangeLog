@@ -1,5 +1,12 @@
 2013-12-06  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBaseNode.cpp:
+	* X3DBrowserContext.h:
+	* TransformHandle.cpp:
+	* Selection.cpp: 
+
+2013-12-06  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* TransformHandle.h:
 	* TransformHandle.cpp:
 	* Selection.cpp: 
