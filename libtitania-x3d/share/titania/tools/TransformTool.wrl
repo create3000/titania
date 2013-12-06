@@ -693,7 +693,7 @@ PROTO TransformTool [
     url "vrmlscript:
 function initialize (value, time)
 {
-	set_whichChoice (1);
+	set_whichChoice (0);
 }
 
 function set_active (value, time)
