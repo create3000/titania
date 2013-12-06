@@ -140,38 +140,44 @@ X3DBrowserEditor::set_selection_active (bool value)
 	{
 		for (const auto & child : getBrowser () -> getSelection () -> getChildren ())
 		{
-			auto transformHandle = X3D::x3d_cast <X3D::TransformHandle*> (child);
+			X3D::X3DSFNode <X3D::X3DTransformNode> transform (child);
 
-			if (transformHandle)
-				undoMatrices [transformHandle] = std::make_pair (transformHandle -> getMatrix (), transformHandle -> center () .getValue ());
+			if (transform)
+				undoMatrices [transform] = std::make_pair (transform -> getMatrix (), transform -> center () .getValue ());
 		}
 	}
 	else
 	{
+		bool changed = false;
+	
 		auto undoStep = std::make_shared <UndoStep> (_ ("Edit Transform"));
+	
+		getSelection () -> redoRestoreSelection (undoStep);
 
 		for (const auto & child : getBrowser () -> getSelection () -> getChildren ())
 		{
-			auto transformHandle = X3D::x3d_cast <X3D::TransformHandle*> (child);
+			X3D::X3DSFNode <X3D::X3DTransformNode> transform (child);
 
-			if (transformHandle)
+			if (transform)
 			{
 				try
 				{
-					X3D::Matrix4f matrix = undoMatrices .at (transformHandle) .first;
-					X3D::Vector3f center = undoMatrices .at (transformHandle) .second;
+					X3D::Matrix4f matrix = undoMatrices .at (transform) .first;
+					X3D::Vector3f center = undoMatrices .at (transform) .second;
 
-					if (matrix not_eq transformHandle -> getMatrix () or center not_eq transformHandle -> center ())
+					if (matrix not_eq transform -> getMatrix () or center not_eq transform -> center ())
 					{
-						undoStep -> addUndoFunction (std::mem_fn (&X3D::Transform::setMatrixWithCenter),
-						                             X3D::X3DSFNode <X3D::Transform> (transformHandle -> getTransform ()),
+						changed = true;
+					
+						undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DTransformNode::setMatrixWithCenter),
+						                             transform,
 						                             matrix,
 						                             center);
 
-						undoStep -> addRedoFunction (std::mem_fn (&X3D::Transform::setMatrixWithCenter),
-						                             transformHandle -> getTransform (),
-						                             transformHandle -> getMatrix (),
-						                             transformHandle -> center ());
+						undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DTransformNode::setMatrixWithCenter),
+						                             transform,
+						                             transform -> getMatrix (),
+						                             transform -> center ());
 					}
 				}
 				catch (const std::out_of_range &)
@@ -181,7 +187,10 @@ X3DBrowserEditor::set_selection_active (bool value)
 
 		undoMatrices .clear ();
 
-		addUndoStep (undoStep);
+		getSelection () -> undoRestoreSelection (undoStep);
+
+		if (changed)
+			addUndoStep (undoStep);
 	}
 }
 

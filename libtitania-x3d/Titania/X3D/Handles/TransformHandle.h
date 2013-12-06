@@ -190,13 +190,11 @@ public:
 
 	virtual
 	void
-	setMatrix (const Matrix4f & matrix) final override
-	{ transform -> setMatrix (matrix);  }
+	setMatrix (const Matrix4f &) final override;
 
 	virtual
 	void
-	setMatrixWithCenter (const Matrix4f & matrix, const Vector3f & center) final override
-	{ transform -> setMatrixWithCenter (matrix, center);  }
+	setMatrixWithCenter (const Matrix4f &, const Vector3f &) final override;
 
 	virtual
 	const Matrix4f &
@@ -206,10 +204,6 @@ public:
 	const Matrix4f &
 	getParentMatrix () const
 	{ return parentMatrix; }
-
-	Transform*
-	getTransform () const
-	{ return transform; }
 
 	///  @name Root node handling
 

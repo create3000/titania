@@ -78,6 +78,12 @@ public:
 	void
 	clear (const UndoStepPtr &) const;
 
+	void
+	redoRestoreSelection (const UndoStepPtr & undoStep) const;
+
+	void
+	undoRestoreSelection (const UndoStepPtr & undoStep) const;
+
 	///  @name Destruction
 
 	virtual

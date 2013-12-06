@@ -170,6 +170,22 @@ TransformHandle::addAbsoluteMatrix (const Matrix4f & absoluteMatrix)
 }
 
 void
+TransformHandle::setMatrix (const Matrix4f & matrix)
+{
+	++ interestEvents;
+
+	transform -> setMatrix (matrix);
+}
+
+void
+TransformHandle::setMatrixWithCenter (const Matrix4f & matrix, const Vector3f & center)
+{
+	++ interestEvents;
+
+	transform -> setMatrixWithCenter (matrix, center);
+}
+
+void
 TransformHandle::interestsProcessed ()
 {
 	if (interestEvents)

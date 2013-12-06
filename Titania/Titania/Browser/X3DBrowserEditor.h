@@ -279,7 +279,7 @@ private:
 
 	///  @name Members
 
-	using UndoMatrixIndex = std::map <X3D::TransformHandle*, std::pair <X3D::Matrix4f, X3D::Vector3f>> ;
+	using UndoMatrixIndex = std::map <X3D::X3DSFNode <X3D::X3DTransformNode>, std::pair <X3D::Matrix4f, X3D::Vector3f>> ;
 
 	bool                        modified;
 	bool                        saveConfirmed;

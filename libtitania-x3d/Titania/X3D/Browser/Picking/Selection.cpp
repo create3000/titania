@@ -135,7 +135,15 @@ Selection::removeChildren (const MFNode & value)
 void
 Selection::setChildren (const MFNode & value)
 {
-	clear ();
+	MFNode difference;
+
+	std::set_difference (children .begin (), children .end (),
+	                     value .begin (), value .end (),
+	                     std::back_inserter (difference));
+
+	removeChildren (difference);
+
+	children .clear ();
 
 	addChildren (value);
 }
