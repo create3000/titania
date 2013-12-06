@@ -98,16 +98,16 @@ Selection::addChildren (const MFNode & value)
 	{
 		for (const auto & child : value)
 		{
+			if (not child)
+				continue;
+
 			if (isSelected (child))
 				continue;
 
-			if (child)
-			{
-				if (child -> getExecutionContext () == getBrowser () -> getExecutionContext ())
-					child -> addHandle (&active);
+			if (child -> getExecutionContext () == getBrowser () -> getExecutionContext ())
+				child -> addHandle (&active);
 
-				children .emplace_back (child);
-			}
+			children .emplace_back (child);
 		}
 	}
 }

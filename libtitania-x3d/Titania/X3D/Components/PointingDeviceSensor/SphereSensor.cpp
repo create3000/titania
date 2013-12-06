@@ -72,7 +72,8 @@ SphereSensor::SphereSensor (X3DExecutionContext* const executionContext) :
 	                zPlane (),
 	                behind (false),
 	            fromVector (),
-	            startPoint ()
+	            startPoint (),
+	inverseModelViewMatrix ()
 {
 	addField (inputOutput, "metadata",           metadata ());
 	addField (inputOutput, "enabled",            enabled ());
@@ -116,7 +117,7 @@ SphereSensor::set_active (const HitPtr & hit, bool active)
 	{
 		if (isActive ())
 		{
-			const auto inverseModelViewMatrix = ~getModelViewMatrix ();
+			inverseModelViewMatrix = ~getModelViewMatrix ();
 
 			const auto hitPoint = hit -> point * inverseModelViewMatrix;
 			const auto center   = Vector3d ();
@@ -145,8 +146,6 @@ SphereSensor::set_motion (const HitPtr & hit)
 {
 	try
 	{
-		const auto inverseModelViewMatrix = ~getModelViewMatrix ();
-
 		auto       hitRay     = hit -> ray * inverseModelViewMatrix;
 		const auto startPoint = this -> startPoint * inverseModelViewMatrix;
 

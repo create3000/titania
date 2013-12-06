@@ -1,5 +1,19 @@
 2013-12-06  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Router.cpp:
+	* X3DBaseNode.h:
+	* X3DBaseNode.cpp:
+	* TransformTool.wrl:
+	* Selection.cpp:
+	* PlaneSensor.h:
+	* SphereSensor.h:
+	* PlaneSensor.cpp:
+	* CylinderSensor.h:
+	* SphereSensor.cpp:
+	* CylinderSensor.cpp: 
+
+2013-12-06  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBaseNode.cpp:
 	* X3DBrowserContext.h:
 	* TransformHandle.cpp:

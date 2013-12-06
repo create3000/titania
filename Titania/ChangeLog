@@ -2,6 +2,12 @@
 
 	* BrowserWindow.cpp:
 	* X3DBrowserEditor.h:
+	* X3DBrowserEditor.cpp: 
+
+2013-12-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* BrowserWindow.cpp:
+	* X3DBrowserEditor.h:
 	* X3DBrowserEditor.cpp:
 	* BrowserSelection.cpp: 
 

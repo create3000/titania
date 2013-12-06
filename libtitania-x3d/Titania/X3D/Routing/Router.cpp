@@ -81,9 +81,9 @@ Router::removeEvent (const EventId & event)
 EventList
 Router::getEvents ()
 {
-	//std::lock_guard <std::mutex> lock (mutex);
+	// Invalidate all iterators
 
-	eventTime = chrono::now (); // Invalidate all iterators
+	eventTime = chrono::now ();
 
 	return std::move (events);
 }
@@ -106,9 +106,9 @@ Router::removeNode (const NodeId & node)
 NodeList
 Router::getNodes ()
 {
-	//std::lock_guard <std::mutex> lock (mutex);
+	// Invalidate all iterators
 
-	nodeTime = chrono::now (); // Invalidate all iterators
+	nodeTime = chrono::now ();
 
 	return std::move (nodes);
 }
@@ -116,18 +116,6 @@ Router::getNodes ()
 void
 Router::processEvents ()
 {
-	//	while (not empty ())
-	//	{
-	//		for (auto & event : events)
-	//		{
-	//			event .first -> processEvent (event .second);
-	//		}
-	//
-	//		events .clear ();
-	//
-	//		eventsProcessed ();
-	//	}
-
 	while (not empty ())
 	{
 		do
@@ -153,16 +141,12 @@ Router::eventsProcessed ()
 bool
 Router::empty () const
 {
-	//std::lock_guard <std::mutex> lock (mutex);
-
 	return events .empty ();
 }
 
 size_t
 Router::size () const
 {
-	//std::lock_guard <std::mutex> lock (mutex);
-
 	return events .size ();
 }
 

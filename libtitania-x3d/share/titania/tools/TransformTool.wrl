@@ -396,7 +396,6 @@ PROTO TransformTool [
             ]
           }
           DEF ScaleTool Switch {
-            whichChoice 2
             choice [
               Group { }
               Group { }
@@ -694,7 +693,7 @@ PROTO TransformTool [
     url "vrmlscript:
 function initialize (value, time)
 {
-	set_whichChoice (0);
+	set_whichChoice (1);
 }
 
 function set_active (value, time)
@@ -811,6 +810,7 @@ function eventsProcessed ()
   }
 
   DEF MoveScript Script {
+    eventIn      SFBool  set_active
     eventIn      SFVec3f set_frontTranslation
     eventIn      SFVec3f set_rightTranslation
     eventIn      SFVec3f set_backTranslation
@@ -822,8 +822,15 @@ function eventsProcessed ()
     eventIn      SFVec3f set_zTranslation
     exposedField SFVec3f bboxSize IS bboxSize
     exposedField SFNode  transform IS transform
+    field        SFVec3f translation 0 0 0
 
     url "vrmlscript:
+function set_active (value)
+{
+	if (value)
+		translation = transform .translation;
+}
+
 function set_frontTranslation (value)
 {
 	translate_with_bbox (new SFVec3f (value .x, value .y, 0));
@@ -885,7 +892,7 @@ function translate (value)
 
 	var offset = matrix .multDirMatrix (value);
 
-	transform .translation = transform .translation .add (offset);
+	transform .translation = translation .add (offset);
 }
 "
     directOutput TRUE
@@ -1019,26 +1026,34 @@ function isActive (sensorA, sensorB, sensorC)
   }
 
   DEF RotateScript Script {
+    eventIn      SFBool     set_active
     eventIn      SFRotation set_rotation
     eventIn      SFRotation set_xRotation
     eventIn      SFRotation set_yRotation
     eventIn      SFRotation set_zRotation
     exposedField SFNode     transform IS transform
+    field        SFRotation rotation 0 0 1 0
 
     url "vrmlscript:
+function set_active (value)
+{
+	if (value)
+		rotation = transform .rotation;
+}
+
 function set_xRotation (value)
 {
-	transform .rotation = value .multiply (transform .rotation);
+	transform .rotation = value .multiply (rotation);
 }
 
 function set_yRotation (value)
 {
-	transform .rotation = value .multiply (transform .rotation);
+	transform .rotation = value .multiply (rotation);
 }
 
 function set_zRotation (value)
 {
-	transform .rotation = value .multiply (transform .rotation);
+	transform .rotation = value .multiply (rotation);
 }
 "
     directOutput TRUE
@@ -1096,17 +1111,7 @@ function eventsProcessed ()
   }
 
   DEF ScaleScript Script {
-    eventIn      SFBool     set_xActive
-    eventIn      SFBool     set_yActive
-    eventIn      SFBool     set_zActive
-    eventIn      SFBool     set_active1
-    eventIn      SFBool     set_active2
-    eventIn      SFBool     set_active3
-    eventIn      SFBool     set_active4
-    eventIn      SFBool     set_active5
-    eventIn      SFBool     set_active6
-    eventIn      SFBool     set_active7
-    eventIn      SFBool     set_active8
+    eventIn      SFBool     set_active
     eventIn      SFVec3f    set_xScale
     eventIn      SFVec3f    set_yScale
     eventIn      SFVec3f    set_zScale
@@ -1119,7 +1124,7 @@ function eventsProcessed ()
     eventIn      SFVec3f    set_scale7
     eventIn      SFVec3f    set_scale8
     exposedField SFFloat    minScale 0.001
-    exposedField SFBool     scaleAroundBBoxCenter TRUE
+    exposedField SFBool     scaleAroundBBoxCenter FALSE
     exposedField SFNode     transform IS transform
     exposedField SFVec3f    bboxSize IS bboxSize
     exposedField SFVec3f    bboxCenter IS bboxCenter
@@ -1128,10 +1133,6 @@ function eventsProcessed ()
     field        SFVec3f    center 0 0 0
     field        SFVec3f    distanceFromCenter 0 0 0
     field        SFMatrix4f matrix 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-    field        SFVec3f    offset 0 0 0
-    field        SFNode     xSensor USE XScaleSensor
-    field        SFNode     ySensor USE YScaleSensor
-    field        SFNode     zSensor USE ZScaleSensor
     field        SFNode     sensor1 USE ScaleSensor1
     field        SFNode     sensor2 USE ScaleSensor2
     field        SFNode     sensor3 USE ScaleSensor3
@@ -1142,121 +1143,8 @@ function eventsProcessed ()
     field        SFNode     sensor8 USE ScaleSensor8
 
     url "vrmlscript:
-// isActive
-    
-function set_xActive (value)
-{
-	set_active (value, xSensor, new SFVec3f (0.5, 0, 0));
-}
-
-function set_yActive (value)
-{
-	set_active (value, ySensor, new SFVec3f (0, 0.5, 0));
-}
-
-function set_zActive (value)
-{
-	set_active (value, zSensor, new SFVec3f (0, 0, 0.5));
-}
-
-function set_active1 (value)
-{
-	set_active (value, sensor1, new SFVec3f ());
-}
-
-function set_active2 (value)
-{
-	set_active (value, sensor2, new SFVec3f ());
-}
-
-function set_active3 (value)
-{
-	set_active (value, sensor3, new SFVec3f ());
-}
-
-function set_active4 (value)
-{
-	set_active (value, sensor4, new SFVec3f ());
-}
-
-function set_active5 (value)
-{
-	set_active (value, sensor5, new SFVec3f ());
-}
-
-function set_active6 (value)
-{
-	set_active (value, sensor6, new SFVec3f ());
-}
-
-function set_active7 (value)
-{
-	set_active (value, sensor7, new SFVec3f ());
-}
-
-function set_active8 (value)
-{
-	set_active (value, sensor8, new SFVec3f ());
-}
-
-// scale
-
-function set_xScale (value)
-{
-	scale (new SFVec3f (value .x, 0, 0), xSensor, false);
-}
-
-function set_yScale (value)
-{
-	scale (new SFVec3f (0, value .y, 0), ySensor, false);
-}
-
-function set_zScale (value)
-{
-	scale (new SFVec3f (0, 0, value .z), zSensor, false);
-}
-
-function set_scale1 (value)
-{
-	scale (value, sensor1, true);
-}
-
-function set_scale2 (value)
-{
-	scale (new SFVec3f (-value .x, value .y, value .z), sensor2, true);
-}
-
-function set_scale3 (value)
-{
-	scale (new SFVec3f (-value .x, -value .y, value .z), sensor3, true);
-}
-
-function set_scale4 (value)
-{
-	scale (new SFVec3f (value .x, -value .y, value .z), sensor4, true);
-}
-
-function set_scale5 (value)
-{
-	scale (new SFVec3f (value .x, value .y, -value .z), sensor5, true);
-}
-
-function set_scale6 (value)
-{
-	scale (new SFVec3f (-value .x, value .y, -value .z), sensor6, true);
-}
-
-function set_scale7 (value)
-{
-	scale (new SFVec3f (-value .x, -value .y, -value .z), sensor7, true);
-}
-
-function set_scale8 (value)
-{
-	scale (new SFVec3f (value .x, -value .y, -value .z), sensor8, true);
-}
-
-function set_active (value, sensor, sensorPosition)
+	
+function set_active (value)
 {
 	if (value)
 	{
@@ -1271,46 +1159,81 @@ function set_active (value, sensor, sensorPosition)
 		                      transform .center);
 
 		distanceFromCenter = bboxCenter .subtract (transform .center);
-
-		offset = sensor .trackPoint_changed .subtract (sensorPosition .multVec (bboxSize));
-	}
-	else
-	{
-		sensor .offset = new SFVec3f ();	
 	}
 }
 
-function scale (value, sensor, uniform)
+// isActive
+
+
+function set_xScale (value)
 {
-	value = value .multVec (transform .scale);
-	value = divVec (value .multiply (2), bboxSize);
+	scale (new SFVec3f (1 + 2 * value .x / bboxSize .x, 1, 1));
+}
 
-	var scale = transform .scale .add (value);
+function set_yScale (value)
+{
+	scale (new SFVec3f (1, 1 + 2 * value .y / bboxSize .y, 1));
+}
 
-	var min = Math .min (scale .x, scale .y, scale .z);
+function set_zScale (value)
+{
+	scale (new SFVec3f (1, 1, 1 + 2 * value .z / bboxSize .z));
+}
 
-	if (uniform)
-	{
-		if (min < minScale)
-			scale = scale .multiply (minScale / min);
-	}
-	else
-	{
-		if (scale .x <= minScale)
-			scale .x = minScale;
+function set_scale1 (value)
+{
+	set_scale (value, sgn (sensor1 .trackPoint_changed .x))
+}
 
-		if (scale .y <= minScale)
-			scale .y = minScale;
+function set_scale2 (value)
+{
+	set_scale (value, sgn (sensor2 .trackPoint_changed .x))
+}
 
-		if (scale .z <= minScale)
-			scale .z = minScale;	
-	}
+function set_scale3 (value)
+{
+	set_scale (value, sgn (sensor3 .trackPoint_changed .x))
+}
 
-	var factor = divVec (scale, scaleFactor);
+function set_scale4 (value)
+{
+	set_scale (value, sgn (sensor4 .trackPoint_changed .x))
+}
 
-	transform .scale = scale;
+function set_scale5 (value)
+{
+	set_scale (value, sgn (sensor5 .trackPoint_changed .x))
+}
 
-	sensor .offset = offset .subtract (divVec (offset, factor));
+function set_scale6 (value)
+{
+	set_scale (value, sgn (sensor6 .trackPoint_changed .x))
+}
+
+function set_scale7 (value)
+{
+	set_scale (value, sgn (sensor7 .trackPoint_changed .x))
+}
+
+function set_scale8 (value)
+{
+	set_scale (value, sgn (sensor8 .trackPoint_changed .x))
+}
+
+function set_scale (value, sgn)
+{
+	var size = 1 + 2 * sgn * value .length () / bboxSize .length ();
+	
+	scale (new SFVec3f (size, size, size));
+}
+
+function scale (value)
+{
+	value .x = Math .abs (value .x);
+	value .y = Math .abs (value .y);
+	value .z = Math .abs (value .z);
+	
+	transform .scale = scaleFactor .multVec (value);
 
 	if (scaleAroundBBoxCenter)
 		translate ();
@@ -1331,11 +1254,9 @@ function translate ()
 	transform .center      = center .add (centerOffset);
 }
 
-function divVec (a, b)
+function sgn (value)
 {
-	return new SFVec3f (b .x ? a .x / b .x : 0,
-	                    b .y ? a .y / b .y : 0,
-	                    b .z ? a .z / b .z : 0);
+	return value < 0 ? -1 : value > 0 ? 1 : 0;
 }
 "
     directOutput TRUE
@@ -1380,6 +1301,18 @@ function divVec (a, b)
 
   # Move Tool
 
+  ROUTE FrontSensor.isActive TO MoveScript.set_active
+  ROUTE RightSensor.isActive TO MoveScript.set_active
+  ROUTE BackSensor.isActive TO MoveScript.set_active
+  ROUTE LeftSensor.isActive TO MoveScript.set_active
+  ROUTE TopSensor.isActive TO MoveScript.set_active
+  ROUTE BottomSensor.isActive TO MoveScript.set_active
+  ROUTE XTranslationSensor.isActive TO MoveScript.set_active
+  ROUTE YTranslationSensor.isActive TO MoveScript.set_active
+  ROUTE ZTranslationSensor.isActive TO MoveScript.set_active
+
+  #
+
   ROUTE XTranslationSensor.translation_changed TO MoveScript.set_xTranslation
   ROUTE YTranslationSensor.translation_changed TO MoveScript.set_yTranslation
   ROUTE ZTranslationSensor.translation_changed TO MoveScript.set_zTranslation
@@ -1404,27 +1337,33 @@ function divVec (a, b)
 
   #
 
+  ROUTE XRotationSensor.isActive TO RotateScript.set_active
+  ROUTE YRotationSensor.isActive TO RotateScript.set_active
+  ROUTE ZRotationSensor.isActive TO RotateScript.set_active
+
+  #
+
   ROUTE XRotationSensor.rotation_changed TO RotateScript.set_xRotation
   ROUTE YRotationSensor.rotation_changed TO RotateScript.set_yRotation
   ROUTE ZRotationSensor.rotation_changed TO RotateScript.set_zRotation
 
   # Scale Tool
 
-  #ROUTE ModeScript.whichChoice_changed TO ScaleTool.set_whichChoice
+  ROUTE ModeScript.whichChoice_changed TO ScaleTool.set_whichChoice
 
   #
 
-  ROUTE XScaleSensor.isActive TO ScaleScript.set_xActive
-  ROUTE YScaleSensor.isActive TO ScaleScript.set_yActive
-  ROUTE ZScaleSensor.isActive TO ScaleScript.set_zActive
-  ROUTE ScaleSensor1.isActive TO ScaleScript.set_active1
-  ROUTE ScaleSensor2.isActive TO ScaleScript.set_active2
-  ROUTE ScaleSensor3.isActive TO ScaleScript.set_active3
-  ROUTE ScaleSensor4.isActive TO ScaleScript.set_active4
-  ROUTE ScaleSensor5.isActive TO ScaleScript.set_active5
-  ROUTE ScaleSensor6.isActive TO ScaleScript.set_active6
-  ROUTE ScaleSensor7.isActive TO ScaleScript.set_active7
-  ROUTE ScaleSensor8.isActive TO ScaleScript.set_active8
+  ROUTE XScaleSensor.isActive TO ScaleScript.set_active
+  ROUTE YScaleSensor.isActive TO ScaleScript.set_active
+  ROUTE ZScaleSensor.isActive TO ScaleScript.set_active
+  ROUTE ScaleSensor1.isActive TO ScaleScript.set_active
+  ROUTE ScaleSensor2.isActive TO ScaleScript.set_active
+  ROUTE ScaleSensor3.isActive TO ScaleScript.set_active
+  ROUTE ScaleSensor4.isActive TO ScaleScript.set_active
+  ROUTE ScaleSensor5.isActive TO ScaleScript.set_active
+  ROUTE ScaleSensor6.isActive TO ScaleScript.set_active
+  ROUTE ScaleSensor7.isActive TO ScaleScript.set_active
+  ROUTE ScaleSensor8.isActive TO ScaleScript.set_active
 
   #
 

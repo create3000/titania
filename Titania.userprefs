@@ -2,15 +2,11 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
   <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/share/titania/tools/TransformTool.wrl">
     <Files>
-      <File FileName="Titania/Titania/MaterialEditor/MaterialEditor.h" Line="185" Column="25" />
-      <File FileName="Titania/Titania/MaterialEditor/MaterialEditor.cpp" Line="170" Column="5" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="102" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Handles/TransformHandle.h" Line="207" Column="26" />
-      <File FileName="libtitania-x3d/Titania/X3D/Handles/TransformHandle.cpp" Line="192" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="1121" Column="6" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="272" Column="1" />
-      <File FileName="libtitania-x3d/share/titania/tools/TransformTool.wrl" Line="1305" Column="28" />
+      <File FileName="libtitania-x3d/share/titania/tools/TransformTool.wrl" Line="1027" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/PlaneSensor.h" Line="183" Column="34" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/PlaneSensor.cpp" Line="112" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/CylinderSensor.h" Line="190" Column="35" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/CylinderSensor.cpp" Line="202" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -47,14 +43,19 @@
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
+                <Node name="Basic" expanded="True" />
                 <Node name="Browser" expanded="True">
                   <Node name="Devices" expanded="True" />
+                  <Node name="Picking" expanded="True" />
                 </Node>
                 <Node name="Components" expanded="True">
                   <Node name="Grouping" expanded="True" />
                   <Node name="KeyDeviceSensor" expanded="True" />
+                  <Node name="PointingDeviceSensor" expanded="True" />
                 </Node>
+                <Node name="Fields" expanded="True" />
                 <Node name="Handles" expanded="True" />
+                <Node name="Routing" expanded="True" />
               </Node>
             </Node>
           </Node>
@@ -73,7 +74,6 @@
               <Node name="Configuration" expanded="True" />
               <Node name="MaterialEditor" expanded="True" />
               <Node name="NodePropertiesEditor" expanded="True" />
-              <Node name="UserInterfaces" expanded="True" />
             </Node>
           </Node>
         </State>

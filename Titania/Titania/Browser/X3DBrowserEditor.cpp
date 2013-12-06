@@ -1340,6 +1340,35 @@ X3DBrowserEditor::createParentGroup (X3D::MFNode & mfnode, const X3D::SFNode & c
 // Undo functions
 
 void
+X3DBrowserEditor::translateSelection (const X3D::Vector3f & translation, bool alongFrontPlane)
+{
+	for (const auto & node : basic::reverse_adapter (getBrowser () -> getSelection () -> getChildren ()))
+	{
+		X3D::X3DSFNode <X3D::X3DTransformNode> transform (node);
+
+		if (transform)
+		{
+			using setValue = void (X3D::SFVec3f::*) (const X3D::Vector3f &);
+		
+			auto undoStep = std::make_shared <UndoStep> (_ ("Nudge"));
+
+			getSelection () -> redoRestoreSelection (undoStep);
+
+			//undoStep -> addVariables (node);
+			undoStep -> addUndoFunction (std::mem_fn ((setValue) &X3D::SFVec3f::setValue), std::ref (transform -> translation ()), transform -> translation ());
+			undoStep -> addRedoFunction (std::mem_fn ((setValue) &X3D::SFVec3f::setValue), std::ref (transform -> translation ()), transform -> translation () + translation);
+
+			transform -> translation () += translation;
+
+			getSelection () -> undoRestoreSelection (undoStep);
+
+			addUndoStep (undoStep);
+			break;
+		}
+	}
+}
+
+void
 X3DBrowserEditor::saveMatrix (const X3D::SFNode & node, const UndoStepPtr & undoStep) const
 {
 	X3D::X3DSFNode <X3D::X3DTransformNode> transform (node);

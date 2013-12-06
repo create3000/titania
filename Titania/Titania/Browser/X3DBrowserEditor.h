@@ -154,6 +154,9 @@ public:
 	deleteRoute (X3D::X3DExecutionContext* const, const X3D::SFNode &, const std::string &, const X3D::SFNode &, const std::string &, const UndoStepPtr &) const;
 
 	void
+	translateSelection (const X3D::Vector3f &, bool);
+
+	void
 	setMatrix (const X3D::X3DSFNode <X3D::X3DTransformNode> &, const X3D::Matrix4f &, const UndoStepPtr &) const;
 
 	/// @name Selection operations

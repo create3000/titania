@@ -373,7 +373,6 @@ private:
 	bool                 extendedEventHandling; // Handle initializeOnlys as input events
 	NodeId               nodeId;                // Router eventsProcessed id
 	std::deque <EventId> events;
-	bool                 receivedInputEvent;
 
 	X3DBaseNode*             handle;
 	std::deque <std::string> comments;

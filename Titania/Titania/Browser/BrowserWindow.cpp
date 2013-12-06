@@ -230,8 +230,11 @@ BrowserWindow::on_key_press_event (GdkEventKey* event)
 {
 	keys .press (event);
 	
-	float         factor = keys .shift () ? 10 : 1;
-	X3D::Vector3f nudge;
+	static constexpr float NUDGE_STEP   = 0.001;
+	static constexpr float NUDGE_FACTOR = 10;
+
+	float nudge           = NUDGE_STEP * (keys .shift () ? NUDGE_FACTOR : 1);
+	bool  alongFrontPlane = false;
 
 	switch (event -> keyval)
 	{
@@ -239,64 +242,34 @@ BrowserWindow::on_key_press_event (GdkEventKey* event)
 		case GDK_KEY_KP_Up:
 		{
 			if (keys .control ())
-				nudge = X3D::Vector3f (0, 0, -0.001);
+				translateSelection (X3D::Vector3f (0, 0, -nudge), alongFrontPlane);
 			else
-				nudge = X3D::Vector3f (0, 0.001, 0);
-			break;
+				translateSelection (X3D::Vector3f (0, nudge, 0), alongFrontPlane);
+			return true;
 		}
 		case GDK_KEY_Down:
 		case GDK_KEY_KP_Down:
 		{
 			if (keys .control ())
-				nudge = X3D::Vector3f (0, 0, 0.001);
+				translateSelection (X3D::Vector3f (0, 0, nudge), alongFrontPlane);
 			else
-				nudge = X3D::Vector3f (0, -0.001, 0);
-			break;
+				translateSelection (X3D::Vector3f (0, -nudge, 0), alongFrontPlane);
+			return true;
 		}
 		case GDK_KEY_Left:
 		case GDK_KEY_KP_Left:
 		{
-			nudge = X3D::Vector3f (-0.001, 0, 0);
-			break;
+			translateSelection (X3D::Vector3f (-nudge, 0, 0), alongFrontPlane);
+			return true;
 		}
 		case GDK_KEY_Right:
 		case GDK_KEY_KP_Right:
 		{
-			nudge = X3D::Vector3f (0.001, 0, 0);
-			break;
+			translateSelection (X3D::Vector3f (nudge, 0, 0), alongFrontPlane);
+			return true;
 		}
 		default:
 			break;
-	}
-
-	if (math::abs (nudge))
-	{
-		for (const auto & node : basic::reverse_adapter (getBrowser () -> getSelection () -> getChildren ()))
-		{
-			X3D::X3DSFNode <X3D::X3DTransformNode> transform (node);
-
-			if (transform)
-			{
-				using setValue = void (X3D::SFVec3f::*) (const X3D::Vector3f &);
-			
-				auto undoStep = std::make_shared <UndoStep> (_ ("Nudge"));
-
-				getSelection () -> redoRestoreSelection (undoStep);
-
-				//undoStep -> addVariables (node);
-				undoStep -> addUndoFunction (std::mem_fn ((setValue) &X3D::SFVec3f::setValue), std::ref (transform -> translation ()), transform -> translation ());
-				undoStep -> addRedoFunction (std::mem_fn ((setValue) &X3D::SFVec3f::setValue), std::ref (transform -> translation ()), transform -> translation () + nudge * factor);
-
-				transform -> translation () += nudge * factor;
-
-				getSelection () -> undoRestoreSelection (undoStep);
-
-				addUndoStep (undoStep);
-				break;
-			}
-		}
-
-		return true;
 	}
 
 	return false;

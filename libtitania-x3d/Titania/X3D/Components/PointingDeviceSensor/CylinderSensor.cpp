@@ -69,15 +69,16 @@ CylinderSensor::Fields::Fields () :
 { }
 
 CylinderSensor::CylinderSensor (X3DExecutionContext* const executionContext) :
-	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DDragSensorNode (),
-	           fields (),
-	         cylinder (),
-	             disk (false),
-	           yPlane (),
-	           zPlane (),
-	           behind (false),
-	       fromVector ()
+	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	     X3DDragSensorNode (),
+	                fields (),
+	              cylinder (),
+	                  disk (false),
+	                yPlane (),
+	                zPlane (),
+	                behind (false),
+	            fromVector (),
+	inverseModelViewMatrix ()
 {
 	addField (inputOutput, "metadata",           metadata ());
 	addField (inputOutput, "enabled",            enabled ());
@@ -156,7 +157,7 @@ CylinderSensor::set_active (const HitPtr & hit, bool active)
 	{
 		if (isActive ())
 		{
-			const auto inverseModelViewMatrix = ~getModelViewMatrix ();
+			inverseModelViewMatrix = ~getModelViewMatrix ();
 
 			const auto hitRay   = hit -> ray * inverseModelViewMatrix;
 			const auto hitPoint = hit -> point * inverseModelViewMatrix;
@@ -198,8 +199,6 @@ CylinderSensor::set_motion (const HitPtr & hit)
 {
 	try
 	{
-		const auto inverseModelViewMatrix = ~getModelViewMatrix ();
-
 		const auto hitRay = hit -> ray * inverseModelViewMatrix;
 
 		Vector3d trackPoint;
@@ -236,9 +235,9 @@ CylinderSensor::set_motion (const HitPtr & hit)
 
 		trackPoint_changed () = trackPoint;
 
-		const auto toVector   = getVector (hitRay, trackPoint);
-		const auto offset     = Rotation4d (cylinder .axis () .direction (), this -> offset ());
-		auto       rotation   = Rotation4d (fromVector, toVector);
+		const auto toVector = getVector (hitRay, trackPoint);
+		const auto offset   = Rotation4d (cylinder .axis () .direction (), this -> offset ());
+		auto       rotation = Rotation4d (fromVector, toVector);
 
 		if (behind and not disk)
 			rotation .inverse ();

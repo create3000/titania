@@ -179,6 +179,8 @@ private:
 	Line3d   line;
 	Plane3d  plane;
 	Vector3d startPoint;
+	Matrix4d modelViewMatrix;
+	Matrix4d inverseModelViewMatrix;
 
 };
 
