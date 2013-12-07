@@ -93,7 +93,7 @@ UndoHistory::addUndoStep (const std::shared_ptr <UndoStep> & undoStep)
 std::shared_ptr <const UndoStep>
 UndoHistory::getLastUndoStep () const
 {
-	if (list .empty ())
+	if (list .empty () or index < 0)
 		return std::shared_ptr <const UndoStep> ();
 
 	return std::static_pointer_cast <const UndoStep> (list [index]);

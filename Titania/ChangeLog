@@ -1,3 +1,9 @@
+2013-12-07  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* UndoHistory.cpp:
+	* TextureEditor.ui:
+	* MaterialEditor.ui: 
+
 2013-12-06  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* BrowserWindow.cpp:
