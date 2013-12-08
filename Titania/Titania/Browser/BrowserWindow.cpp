@@ -53,6 +53,7 @@
 #include "../Configuration/config.h"
 #include "../OutlineEditor/OutlineTreeModel.h"
 #include "../MaterialEditor/MaterialEditor.h"
+#include "../TextureEditor/TextureEditor.h"
 #include "../NodePropertiesEditor/NodePropertiesEditor.h"
 #include "BrowserSelection.h"
 
@@ -221,6 +222,7 @@ BrowserWindow::set_selection (const X3D::MFNode & children)
 
 	getNodePropertiesEditorButton () .set_sensitive (haveSelection);
 	getMaterialEditorButton ()       .set_sensitive (haveSelection);
+	getTextureEditorButton ()        .set_sensitive (haveSelection);
 }
 
 // Keys
@@ -785,6 +787,7 @@ BrowserWindow::enableEditor (bool enabled)
 	getSeparatorToolItem2 ()         .set_visible (enabled);
 	getNodePropertiesEditorButton () .set_visible (enabled);
 	getMaterialEditorButton ()       .set_visible (enabled);
+	getTextureEditorButton ()        .set_visible (enabled);
 	getArrowButton ()                .set_visible (enabled);
 
 	getLibraryViewBox ()   .set_visible (enabled);
@@ -977,7 +980,7 @@ BrowserWindow::on_node_properties_editor ()
 	if (isDialogOpen ("NodePropertiesEditor"))
 		return;
 
-	if (getBrowser () -> getSelection () -> getChildren () .size ())
+	if (not getBrowser () -> getSelection () -> getChildren () .empty ())
 		addDialog ("NodePropertiesEditor", std::make_shared <NodePropertiesEditor> (getBrowserWindow (), getBrowser () -> getSelection () -> getChildren () .back ()));
 }
 
@@ -987,8 +990,18 @@ BrowserWindow::on_material_editor ()
 	if (isDialogOpen ("MaterialEditor"))
 		return;
 
-	if (getBrowser () -> getSelection () -> getChildren () .size ())
+	if (not getBrowser () -> getSelection () -> getChildren () .empty ())
 		addDialog ("MaterialEditor", std::make_shared <MaterialEditor> (getBrowserWindow (), getBrowser () -> getSelection () -> getChildren ()));
+}
+
+void
+BrowserWindow::on_texture_editor ()
+{
+	if (isDialogOpen ("TextureEditor"))
+		return;
+
+	if (not getBrowser () -> getSelection () -> getChildren () .empty ())
+		addDialog ("TextureEditor", std::make_shared <TextureEditor> (getBrowserWindow ()));
 }
 
 // Browser dashboard handling

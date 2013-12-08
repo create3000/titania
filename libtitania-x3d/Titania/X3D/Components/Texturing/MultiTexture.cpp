@@ -157,15 +157,15 @@ void
 MultiTexture::set_mode ()
 {
 	static std::map <std::string, ModeType> map = {
-		std::make_pair ("MODULATE",                  ModeType::MODULATE),
 		std::make_pair ("REPLACE",                   ModeType::REPLACE),
+		std::make_pair ("MODULATE",                  ModeType::MODULATE),
 		std::make_pair ("MODULATE2X",                ModeType::MODULATE2X),
 		std::make_pair ("MODULATE4X",                ModeType::MODULATE4X),
 		std::make_pair ("ADD",                       ModeType::ADD),
 		std::make_pair ("ADDSIGNED",                 ModeType::ADDSIGNED),
 		std::make_pair ("ADDSIGNED2X",               ModeType::ADDSIGNED2X),
-		std::make_pair ("SUBTRACT",                  ModeType::SUBTRACT),
 		std::make_pair ("ADDSMOOTH",                 ModeType::ADDSMOOTH),
+		std::make_pair ("SUBTRACT",                  ModeType::SUBTRACT),
 		std::make_pair ("BLENDDIFFUSEALPHA",         ModeType::BLENDDIFFUSEALPHA),
 		std::make_pair ("BLENDTEXTUREALPHA",         ModeType::BLENDTEXTUREALPHA),
 		std::make_pair ("BLENDFACTORALPHA",          ModeType::BLENDFACTORALPHA),
@@ -173,10 +173,10 @@ MultiTexture::set_mode ()
 		std::make_pair ("MODULATEALPHA_ADDCOLOR",    ModeType::MODULATEALPHA_ADDCOLOR),
 		std::make_pair ("MODULATEINVALPHA_ADDCOLOR", ModeType::MODULATEINVALPHA_ADDCOLOR),
 		std::make_pair ("MODULATEINVCOLOR_ADDALPHA", ModeType::MODULATEINVCOLOR_ADDALPHA),
-		std::make_pair ("OFF",                       ModeType::OFF),
+		std::make_pair ("DOTPRODUCT3",               ModeType::DOTPRODUCT3),
 		std::make_pair ("SELECTARG1",                ModeType::SELECTARG1),
 		std::make_pair ("SELECTARG2",                ModeType::SELECTARG2),
-		std::make_pair ("DOTPRODUCT3",               ModeType::DOTPRODUCT3)
+		std::make_pair ("OFF",                       ModeType::OFF)
 	};
 
 	modes .clear ();
@@ -388,14 +388,14 @@ MultiTexture::draw ()
 
 			switch (getMode (index))
 			{
-				case ModeType::MODULATE:
-				{
-					glTexEnvi (GL_TEXTURE_ENV, GL_COMBINE_RGB, GL_MODULATE);
-					break;
-				}
 				case ModeType::REPLACE:
 				{
 					glTexEnvi (GL_TEXTURE_ENV, GL_COMBINE_RGB, GL_REPLACE);
+					break;
+				}
+				case ModeType::MODULATE:
+				{
+					glTexEnvi (GL_TEXTURE_ENV, GL_COMBINE_RGB, GL_MODULATE);
 					break;
 				}
 				case ModeType::MODULATE2X:
@@ -426,15 +426,15 @@ MultiTexture::draw ()
 					glTexEnvi (GL_TEXTURE_ENV, GL_RGB_SCALE, 2);
 					break;
 				}
-				case ModeType::SUBTRACT:
-				{
-					glTexEnvi (GL_TEXTURE_ENV, GL_COMBINE_RGB, GL_SUBTRACT);
-					break;
-				}
 				case ModeType::ADDSMOOTH:
 				{
 					// Unsupported
 					glTexEnvi (GL_TEXTURE_ENV, GL_COMBINE_RGB, GL_MODULATE);
+					break;
+				}
+				case ModeType::SUBTRACT:
+				{
+					glTexEnvi (GL_TEXTURE_ENV, GL_COMBINE_RGB, GL_SUBTRACT);
 					break;
 				}
 				case ModeType::BLENDDIFFUSEALPHA:
@@ -487,27 +487,6 @@ MultiTexture::draw ()
 					glTexEnvi (GL_TEXTURE_ENV, GL_COMBINE_RGB, GL_MODULATE);
 					break;
 				}
-				case ModeType::OFF:
-				{
-					glTexEnvi (GL_TEXTURE_ENV, GL_COMBINE_RGB,  GL_REPLACE);
-					glTexEnvi (GL_TEXTURE_ENV, GL_SOURCE0_RGB,  GL_PREVIOUS);
-					glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND0_RGB, GL_SRC_COLOR);
-
-					break;
-				}
-				case ModeType::SELECTARG1:
-				{
-					glTexEnvi (GL_TEXTURE_ENV, GL_COMBINE_RGB, GL_REPLACE);
-					break;
-				}
-				case ModeType::SELECTARG2:
-				{
-					glTexEnvi (GL_TEXTURE_ENV, GL_COMBINE_RGB,  GL_REPLACE);
-					glTexEnvi (GL_TEXTURE_ENV, GL_SOURCE0_RGB,  arg2_rgb_source);
-					glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND0_RGB, arg2_rgb_operand);
-
-					break;
-				}
 				case ModeType::DOTPRODUCT3:
 				{
 					if (GLEW_ARB_texture_env_dot3)
@@ -526,18 +505,39 @@ MultiTexture::draw ()
 
 					break;
 				}
+				case ModeType::SELECTARG1:
+				{
+					glTexEnvi (GL_TEXTURE_ENV, GL_COMBINE_RGB, GL_REPLACE);
+					break;
+				}
+				case ModeType::SELECTARG2:
+				{
+					glTexEnvi (GL_TEXTURE_ENV, GL_COMBINE_RGB,  GL_REPLACE);
+					glTexEnvi (GL_TEXTURE_ENV, GL_SOURCE0_RGB,  arg2_rgb_source);
+					glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND0_RGB, arg2_rgb_operand);
+
+					break;
+				}
+				case ModeType::OFF:
+				{
+					glTexEnvi (GL_TEXTURE_ENV, GL_COMBINE_RGB,  GL_REPLACE);
+					glTexEnvi (GL_TEXTURE_ENV, GL_SOURCE0_RGB,  GL_PREVIOUS);
+					glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND0_RGB, GL_SRC_COLOR);
+
+					break;
+				}
 			}
 
 			switch (getAlphaMode (index))
 			{
-				case ModeType::MODULATE:
-				{
-					glTexEnvi (GL_TEXTURE_ENV, GL_COMBINE_ALPHA, GL_MODULATE);
-					break;
-				}
 				case ModeType::REPLACE:
 				{
 					glTexEnvi (GL_TEXTURE_ENV, GL_COMBINE_ALPHA, GL_REPLACE);
+					break;
+				}
+				case ModeType::MODULATE:
+				{
+					glTexEnvi (GL_TEXTURE_ENV, GL_COMBINE_ALPHA, GL_MODULATE);
 					break;
 				}
 				case ModeType::MODULATE2X:
@@ -568,15 +568,15 @@ MultiTexture::draw ()
 					glTexEnvi (GL_TEXTURE_ENV, GL_ALPHA_SCALE, 2);
 					break;
 				}
-				case ModeType::SUBTRACT:
-				{
-					glTexEnvi (GL_TEXTURE_ENV, GL_COMBINE_ALPHA, GL_SUBTRACT);
-					break;
-				}
 				case ModeType::ADDSMOOTH:
 				{
 					// Unsupported
 					glTexEnvi (GL_TEXTURE_ENV, GL_COMBINE_ALPHA, GL_MODULATE);
+					break;
+				}
+				case ModeType::SUBTRACT:
+				{
+					glTexEnvi (GL_TEXTURE_ENV, GL_COMBINE_ALPHA, GL_SUBTRACT);
 					break;
 				}
 				case ModeType::BLENDDIFFUSEALPHA:
@@ -629,12 +629,8 @@ MultiTexture::draw ()
 					glTexEnvi (GL_TEXTURE_ENV, GL_COMBINE_ALPHA, GL_MODULATE);
 					break;
 				}
-				case ModeType::OFF:
+				case ModeType::DOTPRODUCT3:
 				{
-					glTexEnvi (GL_TEXTURE_ENV, GL_COMBINE_ALPHA,  GL_REPLACE);
-					glTexEnvi (GL_TEXTURE_ENV, GL_SOURCE0_ALPHA,  GL_PREVIOUS);
-					glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND0_ALPHA, GL_SRC_ALPHA);
-
 					break;
 				}
 				case ModeType::SELECTARG1:
@@ -650,8 +646,12 @@ MultiTexture::draw ()
 
 					break;
 				}
-				case ModeType::DOTPRODUCT3:
+				case ModeType::OFF:
 				{
+					glTexEnvi (GL_TEXTURE_ENV, GL_COMBINE_ALPHA,  GL_REPLACE);
+					glTexEnvi (GL_TEXTURE_ENV, GL_SOURCE0_ALPHA,  GL_PREVIOUS);
+					glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND0_ALPHA, GL_SRC_ALPHA);
+
 					break;
 				}
 			}

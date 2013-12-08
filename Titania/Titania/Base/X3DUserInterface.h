@@ -88,12 +88,10 @@ public:
 
 	///  @name Destruction
 
-	void
-	saveSession (const std::string &);
-
 	virtual
 	void
-	saveSession ();
+	saveSession ()
+	{ }
 
 	virtual
 	~X3DUserInterface ();
@@ -111,6 +109,11 @@ protected:
 	virtual
 	void
 	initialize ()
+	{ }
+
+	virtual
+	void
+	restoreSession ()
 	{ }
 
 	bool
@@ -142,9 +145,6 @@ protected:
 
 	void
 	addDialog (const std::string &, const std::shared_ptr <X3DUserInterface> &);
-	
-	void
-	setGridLabels (Gtk::Widget &) const;
 
 	/// @name Destruction
 
@@ -179,9 +179,6 @@ private:
 
 	void
 	removeDialog (const std::string &);
-
-	void
-	getLabels (Gtk::Widget* const widget, std::vector <Gtk::Label*> & labels) const;
 
 	void
 	restoreInterface ();

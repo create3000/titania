@@ -89,8 +89,6 @@ X3DBrowserWidget::initialize ()
 
 	// Show Surface and start the X3D Main Loop.
 	getBrowserWindow () -> getBrowserSurface () -> show ();
-
-	restoreSession ();
 }
 
 void

@@ -250,6 +250,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_nodePropertiesEditorButton -> set_name ("NodePropertiesEditorButton");
 	m_builder -> get_widget ("MaterialEditorButton", m_materialEditorButton);
 	m_materialEditorButton -> set_name ("MaterialEditorButton");
+	m_builder -> get_widget ("TextureEditorButton", m_textureEditorButton);
+	m_textureEditorButton -> set_name ("TextureEditorButton");
 	m_builder -> get_widget ("VPaned", m_vPaned);
 	m_vPaned -> set_name ("VPaned");
 	m_builder -> get_widget ("HPaned", m_hPaned);
@@ -397,6 +399,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_redoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_redo));
 	m_nodePropertiesEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_node_properties_editor));
 	m_materialEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_material_editor));
+	m_textureEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_editor));
 
 	// Connect object Gtk::HBox with id 'SurfaceBox'.
 	m_surfaceBox -> signal_drag_data_received () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_surface_box_drag_data_received));

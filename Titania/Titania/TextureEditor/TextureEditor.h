@@ -48,69 +48,39 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BROWSER_X3DBROWSER_WIDGET_H__
-#define __TITANIA_BROWSER_X3DBROWSER_WIDGET_H__
+#ifndef __TITANIA_TEXTURE_EDITOR_TEXTURE_EDITOR_H__
+#define __TITANIA_TEXTURE_EDITOR_TEXTURE_EDITOR_H__
 
-#include "../UserInterfaces/X3DBrowserWindowInterface.h"
-#include <gtkmm.h>
-#include <memory>
+#include "../Undo/UndoStep.h"
+#include "../UserInterfaces/X3DTextureEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-class X3DBrowserWidget :
-	public X3DBrowserWindowInterface
+class BrowserWindow;
+
+class TextureEditor :
+	public X3DTextureEditorInterface
 {
 public:
 
-	///  @name Operations
+	///  @name Construction
 
-	void
-	blank ();
+	TextureEditor (BrowserWindow* const);
 
-	virtual
-	void
-	open (const basic::uri &);
+	///  @name Destruction
 
 	virtual
-	void
-	save (const basic::uri &, bool);
-
-	void
-	reload ();
-
-	virtual
-	~X3DBrowserWidget ();
-
-
-protected:
-
-	X3DBrowserWidget (const basic::uri &);
-
-	virtual
-	void
-	initialize () override;
-
-	virtual
-	void
-	restoreSession () override;
-
-	virtual
-	void
-	saveSession () override;
-
-	void
-	updateTitle (bool) const;
-
-	void
-	setTransparent (bool);
+	~TextureEditor ();
 
 
 private:
 
-	//	void
-	//	parseOptions (int &, char** &);
-	// Glib::OptionGroup::vecustrings remainingOptions;
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
 
 	void
 	set_splashScreen ();
@@ -118,22 +88,11 @@ private:
 	void
 	set_initialized ();
 
-	void
-	set_console ();
-
-	void
-	set_urlError (const X3D::MFString &);
-
-	void
-	loadIcon ();
-
-	bool
-	statistics ();
-
 	///  @name Members
 
-	double           loadTime;
-	sigc::connection timeout;
+	X3D::X3DSFNode <X3D::Browser> browserSurface;
+
+	bool initialized;
 
 };
 

@@ -479,6 +479,10 @@ public:
 	getMaterialEditorButton () const
 	{ return *m_materialEditorButton; }
 
+	Gtk::ToolButton &
+	getTextureEditorButton () const
+	{ return *m_textureEditorButton; }
+
 	Gtk::Paned &
 	getVPaned () const
 	{ return *m_vPaned; }
@@ -793,6 +797,10 @@ public:
 
 	virtual
 	void
+	on_texture_editor () = 0;
+
+	virtual
+	void
 	on_surface_box_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y, const SelectionData & selection_data, guint info, guint time) = 0;
 
 	virtual
@@ -924,6 +932,7 @@ private:
 	Gtk::SeparatorToolItem*         m_separatorToolItem2;
 	Gtk::ToolButton*                m_nodePropertiesEditorButton;
 	Gtk::ToolButton*                m_materialEditorButton;
+	Gtk::ToolButton*                m_textureEditorButton;
 	Gtk::Paned*                     m_vPaned;
 	Gtk::Paned*                     m_hPaned;
 	Gtk::HBox*                      m_surfaceBox;

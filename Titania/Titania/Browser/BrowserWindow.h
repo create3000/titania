@@ -402,6 +402,10 @@ private:
 	virtual
 	void
 	on_material_editor () final override;
+	
+	virtual
+	void
+	on_texture_editor () final override;
 
 	///  @name Browser dashboard handling
 

@@ -50,7 +50,7 @@
 #ifndef __TMP_GLAD2CPP_NODE_PROPERTIES_EDITOR_H__
 #define __TMP_GLAD2CPP_NODE_PROPERTIES_EDITOR_H__
 
-#include "../Base/X3DUserInterface.h"
+#include "../Base/X3DDialogInterface.h"
 #include <gtkmm.h>
 #include <string>
 
@@ -60,14 +60,14 @@ namespace puck {
 using namespace Gtk;
 
 class X3DNodePropertiesEditorInterface :
-	public X3DUserInterface
+	public X3DDialogInterface
 {
 public:
 
 	template <class ... Arguments>
 	X3DNodePropertiesEditorInterface (const std::string & filename, const Arguments & ... arguments) :
-		X3DUserInterface (m_widgetName, arguments ...),
-		        filename (filename)
+		X3DDialogInterface (m_widgetName, arguments ...),
+		          filename (filename)
 	{ create (filename); }
 
 	const Glib::RefPtr <Gtk::Builder> &

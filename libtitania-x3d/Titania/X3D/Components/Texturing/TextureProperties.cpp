@@ -166,16 +166,16 @@ TextureProperties::getMinificationFilter () const
 	if (minificationFilter () == "NEAREST_PIXEL")
 		return GL_NEAREST;
 
-	if (minificationFilter () == "DEFAULT")
-		return x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties ()) -> getMinificationFilter ();
+	if (minificationFilter () == "NICEST")
+		return generateMipMaps ()
+		       ? GL_LINEAR_MIPMAP_LINEAR
+				 : GL_LINEAR;
 
 	if (minificationFilter () == "FASTEST")
 		return GL_NEAREST;
 
-	// NICEST
-	return generateMipMaps ()
-	       ? GL_LINEAR_MIPMAP_LINEAR
-			 : GL_LINEAR;
+	// DEFAULT
+	return x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties ()) -> getMinificationFilter ();
 }
 
 GLenum
@@ -187,14 +187,14 @@ TextureProperties::getMagnificationFilter () const
 	if (magnificationFilter () == "NEAREST_PIXEL")
 		return GL_NEAREST;
 
-	if (magnificationFilter () == "DEFAULT")
-		return x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties ()) -> getMagnificationFilter ();
+	if (magnificationFilter () == "NICEST")
+		return GL_LINEAR;
 
 	if (magnificationFilter () == "FASTEST")
 		return GL_NEAREST;
 
-	// NICEST
-	return GL_LINEAR;
+	// DEFAULT
+	return x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties ()) -> getMagnificationFilter ();
 }
 
 CompressionMode
@@ -209,15 +209,14 @@ TextureProperties::getTextureCompression () const
 	if (textureCompression () == "LOW")
 		return CompressionMode::LOW;
 
-	if (textureCompression () == "DEFAULT")
-		return x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties ()) -> getTextureCompression ();
-
 	if (textureCompression () == "FASTEST")
 		return CompressionMode::FASTEST;
 
-	// NICEST
-	return CompressionMode::NICEST;
+	if (textureCompression () == "NICEST")
+		return CompressionMode::NICEST;
 
+	// DEFAULT
+	return x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties ()) -> getTextureCompression ();
 }
 
 GLenum

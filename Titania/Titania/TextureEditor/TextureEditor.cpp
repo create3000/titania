@@ -48,96 +48,65 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BROWSER_X3DBROWSER_WIDGET_H__
-#define __TITANIA_BROWSER_X3DBROWSER_WIDGET_H__
+#include "TextureEditor.h"
 
-#include "../UserInterfaces/X3DBrowserWindowInterface.h"
-#include <gtkmm.h>
-#include <memory>
+#include "../Browser/BrowserWindow.h"
+#include "../Configuration/config.h"
 
 namespace titania {
 namespace puck {
 
-class X3DBrowserWidget :
-	public X3DBrowserWindowInterface
+TextureEditor::TextureEditor (BrowserWindow* const browserWindow) :
+	         X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
+	X3DTextureEditorInterface (get_ui ("Dialogs/TextureEditor.ui"), gconf_dir ()),
+	           browserSurface (X3D::createBrowser (browserWindow -> getBrowser ())),
+	              initialized (false)
 {
-public:
+	browserSurface -> set_antialiasing (4);
 
-	///  @name Operations
+	getWindow () .set_transient_for (getBrowserWindow () -> getWindow ());
+}
 
-	void
-	blank ();
+void
+TextureEditor::initialize ()
+{
+	X3DTextureEditorInterface::initialize ();
 
-	virtual
-	void
-	open (const basic::uri &);
+	browserSurface -> initialized () .addInterest (this, &TextureEditor::set_splashScreen);
 
-	virtual
-	void
-	save (const basic::uri &, bool);
+	// Insert Surface, this will initialize the Browser.
+	getPreviewBox () .pack_start (*browserSurface, true, true, 0);
 
-	void
-	reload ();
+	// Show Surface and start the X3D Main Loop.
+	browserSurface -> show ();
+}
 
-	virtual
-	~X3DBrowserWidget ();
+void
+TextureEditor::set_splashScreen ()
+{
+	browserSurface -> initialized () .removeInterest (this, &TextureEditor::set_splashScreen);
+	browserSurface -> initialized () .addInterest (this, &TextureEditor::set_initialized);
 
+	try
+	{
+		browserSurface -> loadURL ({ find_data_file ("ui/Dialogs/Material.x3dv") });
+	}
+	catch (const X3D::X3DError &)
+	{ }
+}
 
-protected:
+void
+TextureEditor::set_initialized ()
+{
+	initialized = true;
+}
 
-	X3DBrowserWidget (const basic::uri &);
+TextureEditor::~TextureEditor ()
+{
+	__LOG__ << std::endl;
 
-	virtual
-	void
-	initialize () override;
-
-	virtual
-	void
-	restoreSession () override;
-
-	virtual
-	void
-	saveSession () override;
-
-	void
-	updateTitle (bool) const;
-
-	void
-	setTransparent (bool);
-
-
-private:
-
-	//	void
-	//	parseOptions (int &, char** &);
-	// Glib::OptionGroup::vecustrings remainingOptions;
-
-	void
-	set_splashScreen ();
-
-	void
-	set_initialized ();
-
-	void
-	set_console ();
-
-	void
-	set_urlError (const X3D::MFString &);
-
-	void
-	loadIcon ();
-
-	bool
-	statistics ();
-
-	///  @name Members
-
-	double           loadTime;
-	sigc::connection timeout;
-
-};
+	X3D::removeBrowser (browserSurface);
+}
 
 } // puck
 } // titania
-
-#endif

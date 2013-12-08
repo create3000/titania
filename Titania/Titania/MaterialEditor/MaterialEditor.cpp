@@ -58,7 +58,7 @@ namespace puck {
 
 MaterialEditor::MaterialEditor (BrowserWindow* const browserWindow, X3D::MFNode nodes) :
 	          X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	X3DMaterialEditorInterface (get_ui ("MaterialEditor.ui"), gconf_dir ()),
+	X3DMaterialEditorInterface (get_ui ("Dialogs/MaterialEditor.ui"), gconf_dir ()),
 	            browserSurface (X3D::createBrowser (browserWindow -> getBrowser ())),
 	               appearances (),
 	                  material (new X3D::Material (browserWindow -> getBrowser () -> getExecutionContext ())),
@@ -67,9 +67,6 @@ MaterialEditor::MaterialEditor (BrowserWindow* const browserWindow, X3D::MFNode 
 	               initialized (false)
 {
 	browserSurface -> set_antialiasing (4);
-
-	material -> setup ();
-	twoSidedMaterial -> setup ();
 
 	getWindow () .set_transient_for (getBrowserWindow () -> getWindow ());
 
@@ -80,6 +77,9 @@ MaterialEditor::MaterialEditor (BrowserWindow* const browserWindow, X3D::MFNode 
 	initDialog (getBackDiffuseDialog (),  &MaterialEditor::on_backDiffuseColor);
 	initDialog (getBackSpecularDialog (), &MaterialEditor::on_backSpecularColor);
 	initDialog (getBackEmissiveDialog (), &MaterialEditor::on_backEmissiveColor);
+
+	material -> setup ();
+	twoSidedMaterial -> setup ();
 
 	// Find Appearances
 
@@ -159,8 +159,6 @@ MaterialEditor::initialize ()
 
 	// Show Surface and start the X3D Main Loop.
 	browserSurface -> show ();
-
-	setGridLabels (getWidget ());
 }
 
 void
@@ -171,7 +169,7 @@ MaterialEditor::set_splashScreen ()
 
 	try
 	{
-		browserSurface -> loadURL ({ find_data_file ("ui/Material.x3dv") });
+		browserSurface -> loadURL ({ find_data_file ("ui/Dialogs/Material.x3dv") });
 	}
 	catch (const X3D::X3DError &)
 	{ }

@@ -1,5 +1,35 @@
 2013-12-08  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* Material.x3dv:
+	* X3DUserInterface.h:
+	* BrowserWindow.h:
+	* X3DUserInterface.cpp:
+	* TextureEditor.ui:
+	* BrowserWindow.cpp:
+	* BrowserWindow.ui:
+	* MaterialEditor.ui:
+	* X3DBrowserWidget.h:
+	* X3DDialogInterface.cpp:
+	* X3DBrowserWidget.cpp:
+	* TextureEditor.h:
+	* Material.x3dv:
+	* X3DUserInterface (Kopie).h:
+	* TextureEditor.cpp:
+	* NodePropertiesEditor.ui:
+	* MaterialEditor.cpp:
+	* TextureEditor.ui:
+	* MaterialEditor.ui:
+	* NodePropertiesEditor.ui:
+	* X3DBrowserWindowInterface.h:
+	* X3DTextureEditorInterface.h:
+	* X3DMaterialEditorInterface.h:
+	* X3DBrowserWindowInterface.cpp:
+	* X3DTextureEditorInterface.cpp:
+	* X3DNodePropertiesEditorInterface.h: 
+
+2013-12-08  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* style.css:
 	* X3DUserInterface.h:
 	* TextureEditor.ui:

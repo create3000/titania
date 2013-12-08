@@ -48,96 +48,92 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BROWSER_X3DBROWSER_WIDGET_H__
-#define __TITANIA_BROWSER_X3DBROWSER_WIDGET_H__
+#include "X3DDialogInterface.h"
 
-#include "../UserInterfaces/X3DBrowserWindowInterface.h"
-#include <gtkmm.h>
-#include <memory>
+#include "../Configuration/config.h"
 
 namespace titania {
 namespace puck {
 
-class X3DBrowserWidget :
-	public X3DBrowserWindowInterface
+X3DDialogInterface::X3DDialogInterface (const std::string & widgetName, const std::string & configKey) :
+	      X3DUserInterface (widgetName, configKey)
+{ }
+
+void
+X3DDialogInterface::restoreSession ()
 {
-public:
+	setGridLabels (getWidget ());
 
-	///  @name Operations
+	X3DUserInterface::restoreSession ();
+}
 
-	void
-	blank ();
+void
+X3DDialogInterface::saveSession ()
+{
+	X3DUserInterface::saveSession ();
+}
 
-	virtual
-	void
-	open (const basic::uri &);
+void
+X3DDialogInterface::setGridLabels (Gtk::Widget & widget) const
+{
+	std::vector <Gtk::Label*> labels;
 
-	virtual
-	void
-	save (const basic::uri &, bool);
+	getLabels (&widget, labels);
 
-	void
-	reload ();
+	int maxWidth = 0;
+	
+	for (auto & label : labels)
+		maxWidth = std::max (maxWidth, label -> get_width ());
+	
+	for (auto & label : labels)
+	{
+		label -> set_size_request (maxWidth, -1);
+		label -> set_alignment (1, 0.5);
+	}
+}
 
-	virtual
-	~X3DBrowserWidget ();
+void
+X3DDialogInterface::getLabels (Gtk::Widget* const widget, std::vector <Gtk::Label*> & labels) const
+{
+	if (not widget)
+		return;
 
+	auto grid = dynamic_cast <Gtk::Grid*> (widget);
+	
+	if (grid)
+	{
+		for (auto & child : grid -> get_children ())
+		{
+			auto label = dynamic_cast <Gtk::Label*> (child);
+			
+			if (label)
+				labels .emplace_back (label);
+		}
 
-protected:
+		return;
+	}
+	
+	auto bin = dynamic_cast <Gtk::Bin*> (widget);
+	
+	if (bin)
+	{
+		getLabels (bin -> get_child (), labels);
+		return;
+	}
+	
+	auto container = dynamic_cast <Gtk::Container*> (widget);
+	
+	if (container)
+	{
+		for (auto & child : container -> get_children ())
+			getLabels (child, labels);
 
-	X3DBrowserWidget (const basic::uri &);
+		return;
+	}
+}
 
-	virtual
-	void
-	initialize () override;
-
-	virtual
-	void
-	restoreSession () override;
-
-	virtual
-	void
-	saveSession () override;
-
-	void
-	updateTitle (bool) const;
-
-	void
-	setTransparent (bool);
-
-
-private:
-
-	//	void
-	//	parseOptions (int &, char** &);
-	// Glib::OptionGroup::vecustrings remainingOptions;
-
-	void
-	set_splashScreen ();
-
-	void
-	set_initialized ();
-
-	void
-	set_console ();
-
-	void
-	set_urlError (const X3D::MFString &);
-
-	void
-	loadIcon ();
-
-	bool
-	statistics ();
-
-	///  @name Members
-
-	double           loadTime;
-	sigc::connection timeout;
-
-};
+X3DDialogInterface::~X3DDialogInterface ()
+{ }
 
 } // puck
 } // titania
-
-#endif
