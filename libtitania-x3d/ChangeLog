@@ -1,3 +1,14 @@
+2013-12-08  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* TextureLoader.h:
+	* Texture.h:
+	* TextureLoader.cpp:
+	* Texture.cpp:
+	* ImageTexture.cpp:
+	* PixelTexture.cpp:
+	* TwoSidedMaterial.cpp:
+	* X3DTexture2DNode.cpp: 
+
 2013-12-06  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* TransformTool.wrl: 

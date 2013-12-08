@@ -57,14 +57,13 @@ namespace X3D {
 
 TextureLoader::TextureLoader (X3DExecutionContext* const executionContext,
                               const MFString & url,
-                              const Color4f & borderColor, size_t borderWidth,
                               size_t minTextureSize, size_t maxTextureSize,
                               const Callback & callback) :
 	         browser (executionContext -> getBrowser ()),
 	executionContext (executionContext),
 	        callback (callback),
 	         running (true),
-	          future (getFuture (url, borderColor, borderWidth, minTextureSize, maxTextureSize))
+	          future (getFuture (url, minTextureSize, maxTextureSize))
 {
 	browser -> prepareEvents () .addInterest (this, &TextureLoader::prepareEvents);
 	browser -> addEvent ();
@@ -79,7 +78,6 @@ TextureLoader::cancel ()
 
 std::future <TexturePtr>
 TextureLoader::getFuture (const MFString & url,
-                          const Color4f & borderColor, size_t borderWidth,
                           size_t minTextureSize, size_t maxTextureSize)
 {
 	if (url .empty ())
@@ -87,13 +85,11 @@ TextureLoader::getFuture (const MFString & url,
 
 	return std::async (std::launch::async, std::mem_fn (&TextureLoader::loadAsync), this,
 	                   url,
-	                   borderColor, borderWidth,
 	                   minTextureSize, maxTextureSize);
 }
 
 TexturePtr
 TextureLoader::loadAsync (const MFString & url,
-                          const Color4f & borderColor, size_t borderWidth,
                           size_t minTextureSize, size_t maxTextureSize)
 {
 	for (const auto & URL : url)
@@ -108,7 +104,7 @@ TextureLoader::loadAsync (const MFString & url,
 				texture .reset (new Texture (Loader (executionContext) .loadDocument (URL)));
 
 			if (running)
-				texture -> process (borderColor, borderWidth, minTextureSize, maxTextureSize);
+				texture -> process (minTextureSize, maxTextureSize);
 
 			return texture;
 		}

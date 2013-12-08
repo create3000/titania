@@ -192,9 +192,7 @@ PixelTexture::update ()
 
 	TexturePtr texture (new Texture (mimage));
 
-	texture -> process (getTextureProperties () -> borderColor (),
-	                    getTextureProperties () -> borderWidth (),
-	                    getBrowser () -> getBrowserOptions () -> minTextureSize (),
+	texture -> process (getBrowser () -> getBrowserOptions () -> minTextureSize (),
 	                    getBrowser () -> getRenderingProperties () -> maxTextureSize ());
 
 	setTexture (texture);

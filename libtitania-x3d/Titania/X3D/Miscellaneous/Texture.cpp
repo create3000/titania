@@ -71,10 +71,9 @@ Texture::Texture (const std::string & data) :
 { }
 
 void
-Texture::process (const Color4f & borderColor, size_type borderWidth,
-                  size_type minTextureSize, size_type maxTextureSize)
+Texture::process (size_type minTextureSize, size_type maxTextureSize)
 {
-	addBorder (borderColor, borderWidth);
+	//addBorder (borderColor, borderWidth);
 
 	tryScaleImage (minTextureSize, maxTextureSize);
 

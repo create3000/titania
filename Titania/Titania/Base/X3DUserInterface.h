@@ -142,6 +142,9 @@ protected:
 
 	void
 	addDialog (const std::string &, const std::shared_ptr <X3DUserInterface> &);
+	
+	void
+	setGridLabels (Gtk::Widget &) const;
 
 	/// @name Destruction
 
@@ -176,6 +179,9 @@ private:
 
 	void
 	removeDialog (const std::string &);
+
+	void
+	getLabels (Gtk::Widget* const widget, std::vector <Gtk::Label*> & labels) const;
 
 	void
 	restoreInterface ();

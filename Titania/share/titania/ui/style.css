@@ -8,6 +8,14 @@
 }
 */
 
+GtkExpander > GtkLabel {
+	font-weight: bold;
+}
+
+GtkSeparator {
+	border-width: 1px;
+}
+
 #OutlineTreeViewEditor column-header .button {
 	border-left-width: 0;
 	border-right-width: 0;
@@ -15,4 +23,9 @@
 
 #Console {
 	font-family: monospace;
+}
+
+.titania-header {
+	font-size: 120%;
+	font-weight: bold;
 }

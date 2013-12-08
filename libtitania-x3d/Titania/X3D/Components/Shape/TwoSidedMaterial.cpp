@@ -138,7 +138,7 @@ TwoSidedMaterial::eventsProcessed ()
 	glAmbientColor [2] = ambientIntensity () * diffuseColor () .getB ();
 	glAmbientColor [3] = alpha;
 
-	glDiffuseColor [0] = diffuseColor ().getR ();
+	glDiffuseColor [0] = diffuseColor () .getR ();
 	glDiffuseColor [1] = diffuseColor () .getG ();
 	glDiffuseColor [2] = diffuseColor () .getB ();
 	glDiffuseColor [3] = alpha;
@@ -156,30 +156,57 @@ TwoSidedMaterial::eventsProcessed ()
 	glShininess = math::clamp <float> (shininess (), 0, 1) * 128;
 
 	// Back
+	
+	if (separateBackColor ())
+	{
+		backAlpha = 1 - math::clamp <float> (backTransparency (), 0, 1);
 
-	backAlpha = 1 - math::clamp <float> (backTransparency (), 0, 1);
+		glBackAmbientColor [0] = backAmbientIntensity () * backDiffuseColor () .getR ();
+		glBackAmbientColor [1] = backAmbientIntensity () * backDiffuseColor () .getG ();
+		glBackAmbientColor [2] = backAmbientIntensity () * backDiffuseColor () .getB ();
+		glBackAmbientColor [3] = backAlpha;
 
-	glBackAmbientColor [0] = backAmbientIntensity () * backDiffuseColor () .getR ();
-	glBackAmbientColor [1] = backAmbientIntensity () * backDiffuseColor () .getG ();
-	glBackAmbientColor [2] = backAmbientIntensity () * backDiffuseColor () .getB ();
-	glBackAmbientColor [3] = backAlpha;
+		glBackDiffuseColor [0] = backDiffuseColor () .getR ();
+		glBackDiffuseColor [1] = backDiffuseColor () .getG ();
+		glBackDiffuseColor [2] = backDiffuseColor () .getB ();
+		glBackDiffuseColor [3] = backAlpha;
 
-	glBackDiffuseColor [0] = backDiffuseColor () .getR ();
-	glBackDiffuseColor [1] = backDiffuseColor () .getG ();
-	glBackDiffuseColor [2] = backDiffuseColor () .getB ();
-	glBackDiffuseColor [3] = backAlpha;
+		glBackSpecularColor [0] = backSpecularColor () .getR ();
+		glBackSpecularColor [1] = backSpecularColor () .getG ();
+		glBackSpecularColor [2] = backSpecularColor () .getB ();
+		glBackSpecularColor [3] = backAlpha;
 
-	glBackSpecularColor [0] = backSpecularColor () .getR ();
-	glBackSpecularColor [1] = backSpecularColor () .getG ();
-	glBackSpecularColor [2] = backSpecularColor () .getB ();
-	glBackSpecularColor [3] = backAlpha;
+		glBackEmissiveColor [0] = backEmissiveColor () .getR ();
+		glBackEmissiveColor [1] = backEmissiveColor () .getG ();
+		glBackEmissiveColor [2] = backEmissiveColor () .getB ();
+		glBackEmissiveColor [3] = backAlpha;
 
-	glBackEmissiveColor [0] = backEmissiveColor () .getR ();
-	glBackEmissiveColor [1] = backEmissiveColor () .getG ();
-	glBackEmissiveColor [2] = backEmissiveColor () .getB ();
-	glBackEmissiveColor [3] = backAlpha;
+		glBackShininess = math::clamp <float> (backShininess (), 0, 1) * 128;
+	}
+	else
+	{
+		glBackAmbientColor [0] = ambientIntensity () * diffuseColor () .getR ();
+		glBackAmbientColor [1] = ambientIntensity () * diffuseColor () .getG ();
+		glBackAmbientColor [2] = ambientIntensity () * diffuseColor () .getB ();
+		glBackAmbientColor [3] = alpha;
 
-	glBackShininess = math::clamp <float> (backShininess (), 0, 1) * 128;
+		glBackDiffuseColor [0] = diffuseColor () .getR ();
+		glBackDiffuseColor [1] = diffuseColor () .getG ();
+		glBackDiffuseColor [2] = diffuseColor () .getB ();
+		glBackDiffuseColor [3] = alpha;
+
+		glBackSpecularColor [0] = specularColor () .getR ();
+		glBackSpecularColor [1] = specularColor () .getG ();
+		glBackSpecularColor [2] = specularColor () .getB ();
+		glBackSpecularColor [3] = alpha;
+
+		glBackEmissiveColor [0] = emissiveColor () .getR ();
+		glBackEmissiveColor [1] = emissiveColor () .getG ();
+		glBackEmissiveColor [2] = emissiveColor () .getB ();
+		glBackEmissiveColor [3] = alpha;
+
+		glBackShininess = math::clamp <float> (shininess (), 0, 1) * 128;
+	}
 }
 
 void

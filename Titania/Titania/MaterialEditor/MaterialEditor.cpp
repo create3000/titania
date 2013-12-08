@@ -159,6 +159,8 @@ MaterialEditor::initialize ()
 
 	// Show Surface and start the X3D Main Loop.
 	browserSurface -> show ();
+
+	setGridLabels (getWidget ());
 }
 
 void

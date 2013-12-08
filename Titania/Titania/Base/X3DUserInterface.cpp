@@ -135,6 +135,65 @@ X3DUserInterface::removeDialog (const std::string & key)
 }
 
 void
+X3DUserInterface::setGridLabels (Gtk::Widget & widget) const
+{
+	std::vector <Gtk::Label*> labels;
+
+	getLabels (&widget, labels);
+
+	int maxWidth = 0;
+	
+	for (auto & label : labels)
+		maxWidth = std::max (maxWidth, label -> get_width ());
+	
+	for (auto & label : labels)
+	{
+		label -> set_size_request (maxWidth, -1);
+		label -> set_alignment (1, 0.5);
+	}
+}
+
+void
+X3DUserInterface::getLabels (Gtk::Widget* const widget, std::vector <Gtk::Label*> & labels) const
+{
+	if (not widget)
+		return;
+
+	auto grid = dynamic_cast <Gtk::Grid*> (widget);
+	
+	if (grid)
+	{
+		for (auto & child : grid -> get_children ())
+		{
+			auto label = dynamic_cast <Gtk::Label*> (child);
+			
+			if (label)
+				labels .emplace_back (label);
+		}
+
+		return;
+	}
+	
+	auto bin = dynamic_cast <Gtk::Bin*> (widget);
+	
+	if (bin)
+	{
+		getLabels (bin -> get_child (), labels);
+		return;
+	}
+	
+	auto container = dynamic_cast <Gtk::Container*> (widget);
+	
+	if (container)
+	{
+		for (auto & child : container -> get_children ())
+			getLabels (child, labels);
+
+		return;
+	}
+}
+
+void
 X3DUserInterface::reparent (Gtk::Widget & widget, Gtk::Window & window)
 {
 	getWindow () .set_transient_for (window);

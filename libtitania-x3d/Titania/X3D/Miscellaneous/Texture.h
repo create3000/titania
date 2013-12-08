@@ -92,7 +92,7 @@ public:
 	{ return blob .data (); }
 
 	void
-	process (const Color4f &, size_type, size_type, size_type);
+	process (size_type, size_type);
 
 	virtual
 	~Texture ()

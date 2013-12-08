@@ -134,6 +134,8 @@ X3DTexture2DNode::setImage (GLenum internalFormat, size_t comp, GLint w, GLint h
 	height      = h;
 	components  = comp;
 	transparent = math::is_even (comp);
+	
+	auto textureProperties = getTextureProperties ();
 
 	glBindTexture (GL_TEXTURE_2D, getTextureId ());
 
@@ -143,7 +145,7 @@ X3DTexture2DNode::setImage (GLenum internalFormat, size_t comp, GLint w, GLint h
 	              0,     // This texture is level 0 in mimpap generation.
 	              internalFormat,
 	              width, height,
-	              false, // border
+	              clamp <int> (textureProperties -> borderWidth (), 0, 1),
 	              format, GL_UNSIGNED_BYTE,
 	              data);
 
