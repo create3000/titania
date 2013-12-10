@@ -1,5 +1,9 @@
 2013-12-10  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBrowser.cpp: 
+
+2013-12-10  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* Texture3D.h:
