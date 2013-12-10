@@ -133,10 +133,10 @@ PixelTexture::update ()
 			for (const auto & pixel : image () .getArray ())
 			{
 				uint8_t color = pixel >> 8;
-				array .push_back (color);
-				array .push_back (color);
-				array .push_back (color);
-				array .push_back (pixel);
+				array .emplace_back (color);
+				array .emplace_back (color);
+				array .emplace_back (color);
+				array .emplace_back (pixel);
 			}
 
 			Magick::Blob blob (array .data (), pixels * 4);
@@ -154,9 +154,9 @@ PixelTexture::update ()
 
 			for (const auto & pixel : image () .getArray ())
 			{
-				array .push_back (pixel >> 16);
-				array .push_back (pixel >> 8);
-				array .push_back (pixel);
+				array .emplace_back (pixel >> 16);
+				array .emplace_back (pixel >> 8);
+				array .emplace_back (pixel);
 			}
 
 			Magick::Blob blob (array .data (), pixels * 3);
@@ -172,10 +172,10 @@ PixelTexture::update ()
 
 			for (const auto & pixel : image () .getArray ())
 			{
-				array .push_back (pixel >> 24);
-				array .push_back (pixel >> 16);
-				array .push_back (pixel >> 8);
-				array .push_back (pixel);
+				array .emplace_back (pixel >> 24);
+				array .emplace_back (pixel >> 16);
+				array .emplace_back (pixel >> 8);
+				array .emplace_back (pixel);
 			}
 
 			Magick::Blob blob (array .data (), pixels * 4);

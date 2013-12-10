@@ -111,6 +111,10 @@ public:
 
 private:
 
+	virtual
+	void
+	update () final override
+	{ }
 
 	///  @name Static members
 

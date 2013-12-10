@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,93 +48,40 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_TEXTURING3D_X3DTEXTURE3DNODE_H__
-#define __TITANIA_X3D_COMPONENTS_TEXTURING3D_X3DTEXTURE3DNODE_H__
+#ifndef __TITANIA_X3D_MISCELLANEOUS_TEXTURE3D_H__
+#define __TITANIA_X3D_MISCELLANEOUS_TEXTURE3D_H__
 
-#include "../Texturing/X3DTextureNode.h"
-#include "../../Miscellaneous/Texture3D.h"
+#include "../Rendering/OpenGL.h"
+#include "../Types/Numbers.h"
+
+#include <Magick++.h>
+#include <memory>
+#include <string>
 
 namespace titania {
 namespace X3D {
 
-class X3DTexture3DNode :
-	public X3DTextureNode
+using MagickImageArray    = std::list <Magick::Image>;
+using MagickImageArrayPtr = std::shared_ptr <MagickImageArray>;
+
+class Texture3D
 {
 public:
 
-	///  @name Fields
+	typedef int32_t size_type;
 
-	SFBool &
-	repeatS ()
-	{ return *fields .repeatS; }
-
-	const SFBool &
-	repeatS () const
-	{ return *fields .repeatS; }
-
-	SFBool &
-	repeatT ()
-	{ return *fields .repeatT; }
-
-	const SFBool &
-	repeatT () const
-	{ return *fields .repeatT; }
-
-	SFBool &
-	repeatR ()
-	{ return *fields .repeatR; }
-
-	const SFBool &
-	repeatR () const
-	{ return *fields .repeatR; }
-
-	SFNode &
-	textureProperties ()
-	{ return *fields .textureProperties; }
-
-	const SFNode &
-	textureProperties () const
-	{ return *fields .textureProperties; }
+	Texture3D (const MagickImageArrayPtr &);
 
 	virtual
-	void
-	draw () override;
-
-
-protected:
-
-	///  @name Construction
-
-	X3DTexture3DNode ();
-
-	///  @name Operations
-
-	virtual
-	void
-	setTexture (const Texture3DPtr &);
-
-	virtual
-	void
-	update () = 0;
+	~Texture3D ()
+	{ }
 
 
 private:
 
-	///  @name Members
-
-	struct Fields
-	{
-		Fields ();
-
-		SFBool* const repeatS;
-		SFBool* const repeatT;
-		SFBool* const repeatR;
-		SFNode* const textureProperties;
-	};
-
-	Fields fields;
-
 };
+
+typedef std::unique_ptr <Texture3D> Texture3DPtr;
 
 } // X3D
 } // titania

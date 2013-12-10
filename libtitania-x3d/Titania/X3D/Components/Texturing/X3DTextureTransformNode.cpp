@@ -75,9 +75,9 @@ X3DTextureTransformNode::initialize ()
 }
 
 void
-X3DTextureTransformNode::setMatrix (const Matrix4f & m)
+X3DTextureTransformNode::setMatrix (const Matrix4f & value)
 {
-	matrix = m * textureMatrix;
+	matrix = value * textureMatrix;
 }
 
 void

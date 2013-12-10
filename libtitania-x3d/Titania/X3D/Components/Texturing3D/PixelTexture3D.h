@@ -111,6 +111,13 @@ public:
 
 private:
 
+	virtual
+	void
+	initialize () final override;
+
+	virtual
+	void
+	update () final override;
 
 	///  @name Static members
 

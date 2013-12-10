@@ -431,6 +431,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Miscellaneous/Keys.cpp \
 	Titania/X3D/Miscellaneous/MediaStream.cpp \
 	Titania/X3D/Miscellaneous/Texture.cpp \
+	Titania/X3D/Miscellaneous/Texture3D.cpp \
 	Titania/X3D/Parser/Filter.cpp \
 	Titania/X3D/Parser/Grammar.cpp \
 	Titania/X3D/Parser/Parser.cpp \

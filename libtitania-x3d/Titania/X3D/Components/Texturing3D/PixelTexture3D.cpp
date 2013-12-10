@@ -73,14 +73,138 @@ PixelTexture3D::PixelTexture3D (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "repeatS",           repeatS ());
 	addField (initializeOnly, "repeatT",           repeatT ());
 	addField (initializeOnly, "repeatR",           repeatR ());
-	addField (initializeOnly, "textureProperties", textureProperties ());
 	addField (inputOutput,    "image",             image ());
+	addField (initializeOnly, "textureProperties", textureProperties ());
 }
 
 X3DBaseNode*
 PixelTexture3D::create (X3DExecutionContext* const executionContext) const
 {
 	return new PixelTexture3D (executionContext);
+}
+
+void
+PixelTexture3D::initialize ()
+{
+	X3DTexture3DNode::initialize ();
+
+	image () .addInterest (this, &PixelTexture3D::update);
+
+	update ();
+}
+
+void
+PixelTexture3D::update ()
+{
+	if (image () .size () < 4 or image () [0] < 1 or image () [0] > 4 or image () [1] <= 0 or image () [2] <= 0 or image () [3] <= 1)
+	{
+		setTexture (Texture3DPtr ());
+		return;
+	}
+
+	size_t components  = image () [0];
+	size_t width       = image () [1];
+	size_t height      = image () [2];
+	size_t depth       = image () [3];
+	size_t pixels      = width * height;
+	size_t pixels3D    = width * height * depth;
+
+	if (image () .size () < 4 + pixels3D)
+		image () .resize (4 + pixels3D);
+
+	MagickImageArrayPtr mimages (new MagickImageArray ());
+
+	for (size_t d = 0; d < depth; ++ d)
+	{
+		mimages -> emplace_back ();
+		mimages -> back () .depth (8);
+		mimages -> back () .size (Magick::Geometry (width, height));
+
+		switch (components)
+		{
+			case 1:
+			{
+				std::vector <uint8_t> array;
+				array .reserve (pixels);
+
+				array .assign (image () .begin () + 4,
+				               image () .end ());
+
+				Magick::Blob blob (array .data (), pixels);
+				mimages -> back () .magick ("GRAY");
+				mimages -> back () .read (blob);
+
+				break;
+			}
+			case 2:
+			{
+				std::vector <uint8_t> array;
+				array .reserve (pixels * 2);
+
+				for (const auto & pixel : basic::adapter (image () .begin () + 4, image () .end ()))
+				{
+					uint8_t color = pixel >> 8;
+					array .emplace_back (color);
+					array .emplace_back (color);
+					array .emplace_back (color);
+					array .emplace_back (pixel);
+				}
+
+				Magick::Blob blob (array .data (), pixels * 4);
+				mimages -> back () .magick ("RGBA");
+				mimages -> back () .read (blob);
+
+				mimages -> back () .type (Magick::GrayscaleMatteType);
+
+				break;
+			}
+			case 3:
+			{
+				std::vector <uint8_t> array;
+				array .reserve (pixels * 3);
+
+				for (const auto & pixel : basic::adapter (image () .begin () + 4, image () .end ()))
+				{
+					array .emplace_back (pixel >> 16);
+					array .emplace_back (pixel >> 8);
+					array .emplace_back (pixel);
+				}
+
+				Magick::Blob blob (array .data (), pixels * 3);
+				mimages -> back () .magick ("RGB");
+				mimages -> back () .read (blob);
+
+				break;
+			}
+			case 4:
+			{
+				std::vector <uint8_t> array;
+				array .reserve (pixels * 4);
+
+				for (const auto & pixel : basic::adapter (image () .begin () + 4, image () .end ()))
+				{
+					array .emplace_back (pixel >> 24);
+					array .emplace_back (pixel >> 16);
+					array .emplace_back (pixel >> 8);
+					array .emplace_back (pixel);
+				}
+
+				Magick::Blob blob (array .data (), pixels * 4);
+				mimages -> back () .magick ("RGBA");
+				mimages -> back () .read (blob);
+
+				break;
+			}
+			default:
+				break;
+		}
+
+		mimages -> back () .flip ();
+	}
+
+	Texture3DPtr texture (new Texture3D (mimages));
+
+	setTexture (texture);
 }
 
 } // X3D

@@ -68,6 +68,12 @@ X3DTexture3DNode::X3DTexture3DNode () :
 }
 
 void
+X3DTexture3DNode::setTexture (const Texture3DPtr &)
+{
+
+}
+
+void
 X3DTexture3DNode::draw ()
 { }
 

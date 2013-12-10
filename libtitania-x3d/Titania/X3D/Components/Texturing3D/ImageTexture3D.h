@@ -113,6 +113,11 @@ public:
 
 private:
 
+	virtual
+	void
+	update () final override
+	{ }
+
 	///  @name Construction
 
 	virtual
