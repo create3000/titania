@@ -1,3 +1,16 @@
+2013-12-10  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* run.pl:
+	* BrowserWindow.cpp:
+	* X3DDialogInterface.cpp:
+	* TextureEditor.ui:
+	* MaterialEditor.cpp:
+	* MaterialEditor.ui:
+	* X3DTextureEditorInterface.h:
+	* X3DMaterialEditorInterface.h:
+	* X3DTextureEditorInterface.cpp:
+	* X3DMaterialEditorInterface.cpp: 
+
 2013-12-08  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

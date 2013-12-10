@@ -1,12 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/share/titania/tools/TransformTool.wrl">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/TextureEditor/TextureEditor.cpp">
     <Files>
-      <File FileName="libtitania-x3d/share/titania/tools/TransformTool.wrl" Line="1027" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/PlaneSensor.h" Line="183" Column="34" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/PlaneSensor.cpp" Line="112" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/CylinderSensor.h" Line="190" Column="35" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/CylinderSensor.cpp" Line="202" Column="1" />
+      <File FileName="Titania/Titania/MaterialEditor/MaterialEditor.h" Line="84" Column="1" />
+      <File FileName="Titania/Titania/MaterialEditor/MaterialEditor.cpp" Line="61" Column="39" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/TextureProperties.cpp" Line="176" Column="1" />
+      <File FileName="Titania/Titania/TextureEditor/TextureEditor.h" Line="69" Column="37" />
+      <File FileName="Titania/Titania/TextureEditor/TextureEditor.cpp" Line="84" Column="5" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -36,9 +36,7 @@
             <Node name="share" expanded="True">
               <Node name="titania" expanded="True">
                 <Node name="goldengate" expanded="True" />
-                <Node name="tools" expanded="True">
-                  <Node name="TransformTool.wrl" selected="True" />
-                </Node>
+                <Node name="tools" expanded="True" />
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
@@ -52,10 +50,13 @@
                   <Node name="Grouping" expanded="True" />
                   <Node name="KeyDeviceSensor" expanded="True" />
                   <Node name="PointingDeviceSensor" expanded="True" />
+                  <Node name="Shape" expanded="True" />
+                  <Node name="Texturing" expanded="True" />
                 </Node>
-                <Node name="Fields" expanded="True" />
                 <Node name="Handles" expanded="True" />
+                <Node name="Miscellaneous" expanded="True" />
                 <Node name="Routing" expanded="True" />
+                <Node name="Thread" expanded="True" />
               </Node>
             </Node>
           </Node>
@@ -65,7 +66,9 @@
           <Node name="Titania" expanded="True">
             <Node name="share" expanded="True">
               <Node name="titania" expanded="True">
-                <Node name="ui" expanded="True" />
+                <Node name="ui" expanded="True">
+                  <Node name="Dialogs" expanded="True" />
+                </Node>
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
@@ -73,7 +76,10 @@
               <Node name="Browser" expanded="True" />
               <Node name="Configuration" expanded="True" />
               <Node name="MaterialEditor" expanded="True" />
-              <Node name="NodePropertiesEditor" expanded="True" />
+              <Node name="TextureEditor" expanded="True">
+                <Node name="TextureEditor.cpp" selected="True" />
+              </Node>
+              <Node name="UserInterfaces" expanded="True" />
             </Node>
           </Node>
         </State>

@@ -167,6 +167,10 @@ public:
 	getFrontAndBackButton () const
 	{ return *m_frontAndBackButton; }
 
+	Gtk::Expander &
+	getFrontExpander () const
+	{ return *m_frontExpander; }
+
 	Gtk::Scale &
 	getAmbientScale () const
 	{ return *m_ambientScale; }
@@ -358,6 +362,7 @@ private:
 	Gtk::ImageMenuItem*            m_pasteMenuItem;
 	Gtk::Box*                      m_previewBox;
 	Gtk::ToggleButton*             m_frontAndBackButton;
+	Gtk::Expander*                 m_frontExpander;
 	Gtk::Scale*                    m_ambientScale;
 	Gtk::Scale*                    m_shininessScale;
 	Gtk::Scale*                    m_transparencyScale;

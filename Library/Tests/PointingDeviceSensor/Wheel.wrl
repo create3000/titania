@@ -1,47 +1,47 @@
 #VRML V2.0 utf8 Titania
 
-META "title" "Wheel"
+META "title" "WheelSensor"
 
-PROTO Wheel [
-  exposedField SFString description ""
+PROTO WheelSensor [
+  exposedField SFString   description ""
   exposedField SFRotation axisRotation 0 0 1 0
-  eventIn      MFNode   addChilren
-  eventIn      MFNode   removeChildren
-  eventOut     SFFloat  value_changed
-  exposedField MFNode   children [ ]
+  exposedField SFFloat    offset 0
+  eventOut     SFRotation rotation_changed
+  eventOut     SFFloat    value_changed
 ]
 {
-  DEF Button Transform {
-    children [
-      DEF CylinderTouch CylinderSensor {
-        description IS description
-        axisRotation IS axisRotation
-        autoOffset FALSE
-      }
-      Transform {
-        addChildren IS addChilren
-        removeChildren IS removeChildren
-        children IS children
-      }
-    ]
+  DEF CylinderTouch CylinderSensor {
+    description IS description
+    axisRotation IS axisRotation
+    offset IS offset
+    rotation_changed IS rotation_changed
   }
 
   DEF Wheel Script {
-    eventIn  SFRotation set_rotation
-    eventOut SFFloat    value_changed IS value_changed
+    eventIn      SFRotation set_rotation
     exposedField SFRotation axisRotation IS axisRotation
-    field    SFNode     transform USE Button
+    exposedField SFFloat    offset IS offset
+    eventOut     SFFloat    value_changed IS value_changed
+    field        SFVec3f    startVector 0 0 1
 
     url "vrmlscript:
-function set_rotation (rotation)
+function initialize ()
 {
+	startVector = axisRotation .multVec (new SFVec3f (0, 0, 1));
+}
+
+function set_rotation (value)
+{
+	var endVector     = value .multVec (new SFVec3f (0, 0, 1));
+	var deltaRotation = new SFRotation (startVector, endVector);
+
+	startVector = endVector;
+
 	var axis  = axisRotation .multVec (new SFVec3f (0, 1, 0));
-	var angle = axis .dot (rotation .getAxis ());
+	var angle = axis .dot (deltaRotation .getAxis ());
 	var sign  = angle < 0 ? 1 : -1;
-
-	value_changed += sign * rotation .angle;
-
-	transform .rotation = rotation .multiply (transform .rotation);
+	
+	value_changed += sign * deltaRotation .angle;
 }
 "
   }
@@ -60,21 +60,7 @@ Viewpoint {
   position 0 0 8
 }
 
-DEF Wheel Wheel {
-  description "Wheel"
-  children DEF XForm Transform {
-    children Shape {
-      appearance Appearance {
-        texture ImageTexture {
-          url "../images/image.png"
-        }
-      }
-      geometry Cylinder { }
-    }
-  }
-}
-
-DEF Text Transform {
+DEF Text_1 Transform {
   translation 0 0 -2
   rotation -1 0 0 1.5708
   children Shape {
@@ -82,8 +68,9 @@ DEF Text Transform {
       material Material { }
     }
     geometry DEF Text Text {
-      string "3D Text"
+      string "0.00"
       fontStyle FontStyle {
+        family "TYPEWRITER"
         justify [ "MIDDLE", "MIDDLE" ]
       }
     }
@@ -91,15 +78,61 @@ DEF Text Transform {
 }
 
 DEF Debug Script {
-eventIn SFFloat set_value
-eventOut MFString  string_changed
-url "vrmlscript:
+  eventIn  SFFloat  set_value
+  eventOut MFString string_changed
+
+  url "vrmlscript:
 function set_value (value)
 {
-	string_changed = new MFString (Math .floor (value * 100) / 100);
+	var count = 2;
+
+	var factor = Math .pow (10, count);
+	var string = String (Math .floor (value * factor) / factor);
+	
+	var point = string .indexOf ('.');
+	
+	if (point < 0)
+	{
+		string += '.';
+
+		for (var i = 0; i < count; ++ i)
+			string += '0';	
+	}
+	else
+	{
+		var size = count - (string .length - point - 1);
+		
+		print (size);
+
+		for (var i = 0; i < size; ++ i)
+			string += '0';
+	}
+
+	string_changed = new MFString (string);
 }
 "
 }
 
-ROUTE Wheel.value_changed TO Debug.set_value
+DEF Wheel_1 Transform {
+  children [
+    DEF WheelSensor WheelSensor {
+      description "Wheel"
+      offset -0.0087619
+    }
+    DEF XForm Transform {
+      rotation 0 -1 0 0.0087619
+      children Shape {
+        appearance Appearance {
+          texture ImageTexture {
+            url "../images/image.png"
+          }
+        }
+        geometry Cylinder { }
+      }
+    }
+  ]
+}
+
+ROUTE WheelSensor.value_changed TO Debug.set_value
 ROUTE Debug.string_changed TO Text.set_string
+ROUTE WheelSensor.rotation_changed TO XForm.set_rotation

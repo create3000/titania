@@ -787,7 +787,7 @@ BrowserWindow::enableEditor (bool enabled)
 	getSeparatorToolItem2 ()         .set_visible (enabled);
 	getNodePropertiesEditorButton () .set_visible (enabled);
 	getMaterialEditorButton ()       .set_visible (enabled);
-	getTextureEditorButton ()        .set_visible (enabled);
+	getTextureEditorButton ()        .set_visible (false);
 	getArrowButton ()                .set_visible (enabled);
 
 	getLibraryViewBox ()   .set_visible (enabled);

@@ -95,6 +95,8 @@ X3DMaterialEditorInterface::create (const std::string & filename)
 	m_previewBox -> set_name ("PreviewBox");
 	m_builder -> get_widget ("FrontAndBackButton", m_frontAndBackButton);
 	m_frontAndBackButton -> set_name ("FrontAndBackButton");
+	m_builder -> get_widget ("FrontExpander", m_frontExpander);
+	m_frontExpander -> set_name ("FrontExpander");
 	m_builder -> get_widget ("AmbientScale", m_ambientScale);
 	m_ambientScale -> set_name ("AmbientScale");
 	m_builder -> get_widget ("ShininessScale", m_shininessScale);

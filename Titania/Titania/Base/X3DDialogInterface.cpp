@@ -56,13 +56,14 @@ namespace titania {
 namespace puck {
 
 X3DDialogInterface::X3DDialogInterface (const std::string & widgetName, const std::string & configKey) :
-	      X3DUserInterface (widgetName, configKey)
+	X3DUserInterface (widgetName, configKey)
 { }
 
 void
 X3DDialogInterface::restoreSession ()
 {
-	setGridLabels (getWidget ());
+	setupGridLabels (getWidget ());
+	//restoreExpander (getWidget ());
 
 	X3DUserInterface::restoreSession ();
 }
@@ -70,21 +71,23 @@ X3DDialogInterface::restoreSession ()
 void
 X3DDialogInterface::saveSession ()
 {
+	saveExpander (getWidget ());
+
 	X3DUserInterface::saveSession ();
 }
 
 void
-X3DDialogInterface::setGridLabels (Gtk::Widget & widget) const
+X3DDialogInterface::setupGridLabels (Gtk::Widget & widget)
 {
 	std::vector <Gtk::Label*> labels;
 
 	getLabels (&widget, labels);
 
 	int maxWidth = 0;
-	
+
 	for (auto & label : labels)
 		maxWidth = std::max (maxWidth, label -> get_width ());
-	
+
 	for (auto & label : labels)
 	{
 		label -> set_size_request (maxWidth, -1);
@@ -93,36 +96,28 @@ X3DDialogInterface::setGridLabels (Gtk::Widget & widget) const
 }
 
 void
-X3DDialogInterface::getLabels (Gtk::Widget* const widget, std::vector <Gtk::Label*> & labels) const
+X3DDialogInterface::getLabels (Gtk::Widget* const widget, std::vector <Gtk::Label*> & labels)
 {
 	if (not widget)
 		return;
 
 	auto grid = dynamic_cast <Gtk::Grid*> (widget);
-	
+
 	if (grid)
 	{
 		for (auto & child : grid -> get_children ())
 		{
 			auto label = dynamic_cast <Gtk::Label*> (child);
-			
+
 			if (label)
 				labels .emplace_back (label);
 		}
 
 		return;
 	}
-	
-	auto bin = dynamic_cast <Gtk::Bin*> (widget);
-	
-	if (bin)
-	{
-		getLabels (bin -> get_child (), labels);
-		return;
-	}
-	
+
 	auto container = dynamic_cast <Gtk::Container*> (widget);
-	
+
 	if (container)
 	{
 		for (auto & child : container -> get_children ())
@@ -130,6 +125,28 @@ X3DDialogInterface::getLabels (Gtk::Widget* const widget, std::vector <Gtk::Labe
 
 		return;
 	}
+}
+
+void
+X3DDialogInterface::restoreExpander (Gtk::Widget & widget) const
+{
+	std::vector <Gtk::Expander*> expanders;
+
+	getWidgets <Gtk::Expander> (&widget, expanders);
+
+	for (auto & expander : expanders)
+		expander -> set_expanded (getConfig () .getBoolean (expander -> get_name ()));
+}
+
+void
+X3DDialogInterface::saveExpander (Gtk::Widget & widget)
+{
+	std::vector <Gtk::Expander*> expanders;
+
+	getWidgets <Gtk::Expander> (&widget, expanders);
+
+	for (auto & expander : expanders)
+		getConfig () .setItem (expander -> get_name (), expander -> get_expanded ());
 }
 
 X3DDialogInterface::~X3DDialogInterface ()

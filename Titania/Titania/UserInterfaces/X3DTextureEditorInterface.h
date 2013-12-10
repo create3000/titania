@@ -147,10 +147,6 @@ public:
 	getTexturePriorityAdjustment () const
 	{ return m_texturePriorityAdjustment; }
 
-	const Glib::RefPtr <Gtk::ListStore> &
-	getTextureUnitListStore () const
-	{ return m_textureUnitListStore; }
-
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getTranslateSAdjustment () const
 	{ return m_translateSAdjustment; }
@@ -158,6 +154,10 @@ public:
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getTranslateTAdjustment () const
 	{ return m_translateTAdjustment; }
+
+	const Glib::RefPtr <Gtk::ListStore> &
+	getTextureUnitListStore () const
+	{ return m_textureUnitListStore; }
 
 	Gtk::Window &
 	getWindow () const
@@ -178,6 +178,22 @@ public:
 	Gtk::Box &
 	getPreviewBox () const
 	{ return *m_previewBox; }
+
+	Gtk::Expander &
+	getMultiTextureExpander () const
+	{ return *m_multiTextureExpander; }
+
+	Gtk::Expander &
+	getTextureExpander () const
+	{ return *m_textureExpander; }
+
+	Gtk::Expander &
+	getTexturePropertiesExpander () const
+	{ return *m_texturePropertiesExpander; }
+
+	Gtk::Expander &
+	getTextureTransformExpander () const
+	{ return *m_textureTransformExpander; }
 
 	Gtk::SpinButton &
 	getScaleTButton () const
@@ -225,14 +241,18 @@ private:
 	Glib::RefPtr <Gtk::ListStore>  m_sourceListStore;
 	Glib::RefPtr <Gtk::ListStore>  m_textureCompressionListStore;
 	Glib::RefPtr <Gtk::Adjustment> m_texturePriorityAdjustment;
-	Glib::RefPtr <Gtk::ListStore>  m_textureUnitListStore;
 	Glib::RefPtr <Gtk::Adjustment> m_translateSAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_translateTAdjustment;
+	Glib::RefPtr <Gtk::ListStore>  m_textureUnitListStore;
 	Gtk::Window*                   m_window;
 	Gtk::Box*                      m_widget;
 	Gtk::ImageMenuItem*            m_copyMenuItem;
 	Gtk::ImageMenuItem*            m_pasteMenuItem;
 	Gtk::Box*                      m_previewBox;
+	Gtk::Expander*                 m_multiTextureExpander;
+	Gtk::Expander*                 m_textureExpander;
+	Gtk::Expander*                 m_texturePropertiesExpander;
+	Gtk::Expander*                 m_textureTransformExpander;
 	Gtk::SpinButton*               m_scaleTButton;
 	Gtk::SpinButton*               m_scaleSButton;
 	Gtk::Scale*                    m_rotationScale;
