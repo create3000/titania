@@ -65,14 +65,53 @@
 namespace titania {
 namespace puck {
 
-X3DBrowserWidget::X3DBrowserWidget (const basic::uri & worldURL) :
+X3DBrowserWidget::X3DBrowserWidget (int argc, char** argv) :
 	X3DBrowserWindowInterface (get_ui ("BrowserWindow.ui"), gconf_dir ())
 {
-	// User interface
-	getConfig () .setItem ("url", worldURL);
+	parseOptions (argc, argv);
 
 	// Browser
 	X3D::getBrowser () -> getBrowserOptions () -> splashScreen () = true;
+}
+
+void
+X3DBrowserWidget::parseOptions (int argc, char** argv)
+{
+	// Create and intialize option parser.
+
+	// Add Remaining options to option group.
+
+	Glib::OptionGroup mainGroup ("example_group", "description of example group", "help description of example group");
+
+	Glib::OptionEntry              remaining;
+	Glib::OptionGroup::vecustrings remainingOptions;
+
+	remaining .set_long_name (G_OPTION_REMAINING);
+	remaining .set_arg_description (G_OPTION_REMAINING);
+
+	mainGroup .add_entry (remaining, remainingOptions);
+
+	// Intialize OptionContext.
+
+	Glib::OptionContext optionContext;
+
+	optionContext .set_main_group (mainGroup);
+
+	// Parse options.
+
+	try
+	{
+		optionContext .parse (argc, argv);
+
+		if (remainingOptions .empty ())
+			getConfig () .setItem ("url", "");
+		else
+			getConfig () .setItem ("url", remainingOptions [0]);
+	}
+	catch (const Glib::Error & error)
+	{
+		std::clog << "Exception: " << error .what () << std::endl;
+	}
 }
 
 void
@@ -103,48 +142,18 @@ X3DBrowserWidget::set_splashScreen ()
 	getBrowser () -> initialized () .addInterest (this, &X3DBrowserWidget::set_initialized);
 
 	if (getConfig () .getString ("url") .size ())
-		open (getConfig () .getString ("url") .raw ());
-
+	{
+		if (getConfig () .getString ("url") == "about:blank")
+			blank ();
+		else
+			open (getConfig () .getString ("url") .raw ());
+	}
 	else if (getConfig () .getString ("worldURL") .size ())
 		open (getConfig () .getString ("worldURL") .raw ());
 
 	else
 		open (get_page ("about/home.wrl"));
 }
-
-//void
-//X3DBrowserWidget::parseOptions (int & argc, char** & argv)
-//{
-//	// Create and intialize option parser.
-//
-//	// Add Remaining options to option group.
-//
-//	Glib::OptionGroup mainGroup ("example_group", "description of example group", "help description of example group");
-//
-//	Glib::OptionEntry remaining;
-//
-//	remaining .set_long_name (G_OPTION_REMAINING);
-//	remaining .set_arg_description (G_OPTION_REMAINING);
-//
-//	mainGroup .add_entry (remaining, remainingOptions);
-//
-//	// Intialize OptionContext.
-//
-//	Glib::OptionContext optionContext;
-//
-//	optionContext .set_main_group (mainGroup);
-//
-//	// Parse options.
-//
-//	try
-//	{
-//		optionContext .parse (argc, argv);
-//	}
-//	catch (const Glib::Error & error)
-//	{
-//		std::clog << "Exception: " << error .what () << std::endl;
-//	}
-//}
 
 void
 X3DBrowserWidget::restoreSession ()

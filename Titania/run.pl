@@ -25,7 +25,7 @@ if ($min > 16 and $min < 20)
 $ENV {UBUNTU_MENUPROXY} = "libappmenu.so";
 $ENV {XDG_DATA_DIRS}    = "/home/holger/Projekte/Titania/Titania/share:/home/holger/Projekte/Titania/libtitania-x3d/share:$ENV{XDG_DATA_DIRS}";
 
-system "./titania";
+system "./titania", @ARGV;
 
 if (-d "/home/holger/.config/Titania.O")
 {

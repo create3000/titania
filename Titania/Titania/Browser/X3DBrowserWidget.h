@@ -85,7 +85,7 @@ public:
 
 protected:
 
-	X3DBrowserWidget (const basic::uri &);
+	X3DBrowserWidget (int, char**);
 
 	virtual
 	void
@@ -108,9 +108,8 @@ protected:
 
 private:
 
-	//	void
-	//	parseOptions (int &, char** &);
-	// Glib::OptionGroup::vecustrings remainingOptions;
+	void
+	parseOptions (int, char**);
 
 	void
 	set_splashScreen ();

@@ -68,7 +68,7 @@ public:
 
 	/// @name Construction
 
-	BrowserWindow (const X3D::X3DSFNode <X3D::Browser> &, const basic::uri &);
+	BrowserWindow (const X3D::X3DSFNode <X3D::Browser> &, int, char**);
 
 	/// @name Widgets
 	

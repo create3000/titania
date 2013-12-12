@@ -52,84 +52,84 @@
 #include "Configuration/config.h"
 #include <Titania/OS/Env.h>
 
-namespace titania {
-namespace puck {
-
-class BrowserApplication :
-	public Gtk::Application
-{
-public:
-
-	using Gtk::Application::add_window;
-
-	BrowserApplication (int & argc, char** & argv) :
-		Gtk::Application (argc, argv, "de.create3000.titania", Gio::APPLICATION_HANDLES_OPEN)
-	{ }
-
-	virtual
-	void
-	on_activate () final
-	{
-		__LOG__ << std::endl;
-
-		if (browserWindows .empty ())
-			add_window ("");
-
-		else
-			add_window (get_page ("about/blank.wrl"));
-	}
-
-	virtual
-	void
-	on_open (const Gio::Application::type_vec_files & files, const Glib::ustring & hint) final
-	{
-		__LOG__ << std::endl;
-
-		for (const auto & file : files)
-			add_window (Glib::uri_unescape_string (file -> get_uri ()));
-	}
-
-	virtual
-	void
-	on_window_removed (Gtk::Window* window) final
-	{
-		__LOG__ << window << std::endl;
-
-		auto browserWindow = browserWindows .find (window);
-
-		if (browserWindow not_eq browserWindows .end ())
-			browserWindows .erase (browserWindow);
-
-		if (browserWindows .empty ())
-			quit ();
-
-		__LOG__ << std::endl;
-	}
-
-	void
-	add_window (const basic::uri & uri)
-	{
-		__LOG__ << std::endl;
-
-		auto browserWindow = std::make_shared <BrowserWindow> (X3D::createBrowser (), uri);
-
-		browserWindow -> getWindow () .show ();
-
-		add_window (browserWindow -> getWindow ());
-
-		browserWindows .emplace (&browserWindow -> getWindow (), browserWindow);
-
-		__LOG__ << browserWindow << std::endl;
-	}
-
-private:
-
-	std::map <Gtk::Window*, std::shared_ptr <BrowserWindow>> browserWindows;
-
-};
-
-} // puck
-} // titania
+//namespace titania {
+//namespace puck {
+//
+//class BrowserApplication :
+//	public Gtk::Application
+//{
+//public:
+//
+//	using Gtk::Application::add_window;
+//
+//	BrowserApplication (int & argc, char** & argv) :
+//		Gtk::Application (argc, argv, "de.create3000.titania", Gio::APPLICATION_HANDLES_OPEN)
+//	{ }
+//
+//	virtual
+//	void
+//	on_activate () final
+//	{
+//		__LOG__ << std::endl;
+//
+//		if (browserWindows .empty ())
+//			add_window ("");
+//
+//		else
+//			add_window (get_page ("about/blank.wrl"));
+//	}
+//
+//	virtual
+//	void
+//	on_open (const Gio::Application::type_vec_files & files, const Glib::ustring & hint) final
+//	{
+//		__LOG__ << std::endl;
+//
+//		for (const auto & file : files)
+//			add_window (Glib::uri_unescape_string (file -> get_uri ()));
+//	}
+//
+//	virtual
+//	void
+//	on_window_removed (Gtk::Window* window) final
+//	{
+//		__LOG__ << window << std::endl;
+//
+//		auto browserWindow = browserWindows .find (window);
+//
+//		if (browserWindow not_eq browserWindows .end ())
+//			browserWindows .erase (browserWindow);
+//
+//		if (browserWindows .empty ())
+//			quit ();
+//
+//		__LOG__ << std::endl;
+//	}
+//
+//	void
+//	add_window (const basic::uri & uri)
+//	{
+//		__LOG__ << std::endl;
+//
+//		auto browserWindow = std::make_shared <BrowserWindow> (X3D::createBrowser (), uri);
+//
+//		browserWindow -> getWindow () .show ();
+//
+//		add_window (browserWindow -> getWindow ());
+//
+//		browserWindows .emplace (&browserWindow -> getWindow (), browserWindow);
+//
+//		__LOG__ << browserWindow << std::endl;
+//	}
+//
+//private:
+//
+//	std::map <Gtk::Window*, std::shared_ptr <BrowserWindow>> browserWindows;
+//
+//};
+//
+//} // puck
+//} // titania
 
 int
 main (int argc, char** argv)
@@ -142,14 +142,13 @@ main (int argc, char** argv)
 		<< std::endl;
 
 	std::setlocale (LC_ALL, os::env ("LANG") .c_str ());
-	//os::env ("UBUNTU_MENUPROXY", "");
 
 	try
 	{
 		Gtk::Main kit (argc, argv);
 
-		puck::BrowserWindow browserWindow (X3D::createBrowser (), "");
-		
+		puck::BrowserWindow browserWindow (X3D::createBrowser (), argc, argv);
+
 		Gtk::Main::run (browserWindow .getWindow ());
 		
 		//puck::BrowserApplication browserApplication (argc, argv);

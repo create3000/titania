@@ -9,6 +9,47 @@ Terminal=false
 StartupNotify=false
 Icon=titania
 Categories=Graphics;GNOME;GTK;
-MimeType=model/vrml;model/x3d+vrml;x-world/x-vrml;model/x3d+xml;
-
+MimeType=x-world/x-vrml;model/vrml;model/x3d+vrml;model/x3d+xml;
 GenericName=Titania X3D Browser
+
+
+[Desktop Action NewWindow]
+Name=Open a New Window
+Name[ar]=افتح نافذة جديدة
+Name[ast]=Abrir una ventana nueva
+Name[bn]=Abrir una ventana nueva
+Name[ca]=Obre una finestra nova
+Name[cs]=Otevřít nové okno
+Name[da]=Åbn et nyt vindue
+Name[de]=Ein neues Fenster öffnen
+Name[el]=Άνοιγμα νέου παραθύρου
+Name[es]=Abrir una ventana nueva
+Name[fi]=Avaa uusi ikkuna
+Name[fr]=Ouvrir une nouvelle fenêtre
+Name[gl]=Abrir unha nova xanela
+Name[he]=פתיחת חלון חדש
+Name[hr]=Otvori novi prozor
+Name[hu]=Új ablak nyitása
+Name[it]=Apri una nuova finestra
+Name[ja]=新しいウィンドウを開く
+Name[ko]=새 창 열기
+Name[ku]=Paceyeke nû veke
+Name[lt]=Atverti naują langą
+Name[nb]=Åpne et nytt vindu
+Name[nl]=Nieuw venster openen
+Name[pt]=Abrir nova janela
+Name[pt_BR]=Abrir nova janela
+Name[ro]=Deschide o fereastră nouă
+Name[ru]=Новое окно
+Name[sk]=Otvoriť nové okno
+Name[sl]=Odpri novo okno
+Name[sv]=Öppna ett nytt fönster
+Name[tr]=Yeni pencere aç 
+Name[ug]=يېڭى كۆزنەك ئېچىش
+Name[uk]=Відкрити нове вікно
+Name[vi]=Mở cửa sổ mới
+Name[zh_CN]=新建窗口
+Name[zh_TW]=開啟新視窗
+Exec=titania "about:blank"
+OnlyShowIn=Unity;
+

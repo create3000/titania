@@ -56,8 +56,8 @@
 namespace titania {
 namespace puck {
 
-X3DBrowserEditor::X3DBrowserEditor (const basic::uri & worldURL) :
-	X3DBrowserWidget (worldURL),
+X3DBrowserEditor::X3DBrowserEditor (int argc, char** argv) :
+	X3DBrowserWidget (argc, argv),
 	        modified (false),
 	   saveConfirmed (false),
 	           scene (),

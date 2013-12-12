@@ -182,7 +182,7 @@ protected:
 
 	/// @name Construction
 
-	X3DBrowserEditor (const basic::uri &);
+	X3DBrowserEditor (int, char**);
 
 	virtual
 	void

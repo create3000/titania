@@ -1,5 +1,18 @@
 2013-12-12  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* run.pl:
+	* main.cpp:
+	* BrowserWindow.h:
+	* BrowserWindow.cpp:
+	* X3DBrowserWidget.h:
+	* info.wrl:
+	* X3DBrowserEditor.h:
+	* titania.desktop:
+	* X3DBrowserEditor.cpp:
+	* X3DBrowserWidget.cpp: 
+
+2013-12-12  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* BrowserWindow.h:
 	* BrowserWindow.cpp:
 	* X3DBrowserEditor.h:

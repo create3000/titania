@@ -64,9 +64,9 @@
 namespace titania {
 namespace puck {
 
-BrowserWindow::BrowserWindow (const X3D::X3DSFNode <X3D::Browser> & browserSurface, const basic::uri & worldURL) :
+BrowserWindow::BrowserWindow (const X3D::X3DSFNode <X3D::Browser> & browserSurface, int argc, char** argv) :
 	X3DBaseInterface (this, browserSurface),
-	X3DBrowserEditor (worldURL),
+	X3DBrowserEditor (argc, argv),
 	  browserSurface (browserSurface),
 	motionBlurEditor (this),
 	     libraryView (this),
@@ -684,14 +684,14 @@ BrowserWindow::on_add_to_group_activate ()
 
 	auto undoStep = std::make_shared <UndoStep> (_ ("Add To Group"));
 
-	getSelection () -> clear (undoStep);
+	getSelection () -> undoRestoreSelection (undoStep);
 
 	auto group = selection .back ();
 	selection .pop_back ();
 
 	if (addToGroup (group, selection, undoStep))
 	{
-		getSelection () -> setChildren ({ group }, undoStep);
+		getSelection () -> setChildren (selection, undoStep);
 
 		addUndoStep (undoStep);
 	}
