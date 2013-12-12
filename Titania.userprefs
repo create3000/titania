@@ -6,7 +6,7 @@
       <File FileName="Titania/Titania/MaterialEditor/MaterialEditor.cpp" Line="61" Column="39" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/TextureProperties.cpp" Line="176" Column="1" />
       <File FileName="Titania/Titania/TextureEditor/TextureEditor.h" Line="69" Column="37" />
-      <File FileName="Titania/Titania/TextureEditor/TextureEditor.cpp" Line="84" Column="5" />
+      <File FileName="Titania/Titania/TextureEditor/TextureEditor.cpp" Line="72" Column="2" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">

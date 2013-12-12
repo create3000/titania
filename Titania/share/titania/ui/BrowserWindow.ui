@@ -1002,7 +1002,7 @@
                       <object class="GtkCheckMenuItem" id="FooterMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Console</property>
+                        <property name="label" translatable="yes">Footer</property>
                         <property name="use_underline">True</property>
                         <signal name="toggled" handler="on_footer_toggled" swapped="no"/>
                       </object>

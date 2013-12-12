@@ -1,5 +1,10 @@
 2013-12-12  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* BrowserWindow.ui:
+	* titania.desktop: 
+
+2013-12-12  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* run.pl:
 	* main.cpp:
 	* BrowserWindow.h:
