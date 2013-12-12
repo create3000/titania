@@ -481,8 +481,7 @@ private:
 	HistoryEditor    historyEditor;
 	OutlineEditor    outlineEditor;
 
-	X3D::Keys   keys;
-	basic::uri  importURL;
+	X3D::Keys keys;
 	
 	X3D::ViewerType viewer;
 

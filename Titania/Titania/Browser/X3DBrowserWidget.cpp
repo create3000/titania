@@ -54,6 +54,7 @@
 #include "../Browser/Image.h"
 #include "../Configuration/config.h"
 
+#include <Titania/OS.h>
 #include <Titania/String.h>
 #include <Titania/gzstream.h>
 
@@ -285,6 +286,14 @@ X3DBrowserWidget::set_initialized ()
 
 	loadIcon ();
 	updateTitle (false);
+
+	basic::uri worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
+
+	if (not worldURL .empty () and worldURL .is_local ())
+		getFileOpenDialog () .set_uri (worldURL .str ());
+
+	else
+		getFileOpenDialog () .set_current_folder (os::home ());
 }
 
 bool

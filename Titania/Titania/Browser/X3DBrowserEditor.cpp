@@ -243,7 +243,7 @@ X3DBrowserEditor::isModified (bool value)
 // File operations
 
 void
-X3DBrowserEditor::import (const basic::uri & worldURL, const bool importAsInline)
+X3DBrowserEditor::import (const std::deque <basic::uri> & uris, const bool importAsInline)
 {
 	try
 	{
@@ -253,22 +253,27 @@ X3DBrowserEditor::import (const basic::uri & worldURL, const bool importAsInline
 
 			auto undoStep = std::make_shared <UndoStep> (_ ("Import As Inline"));
 
-			auto relativePath = getBrowser () -> getExecutionContext () -> getWorldURL () .relative_path (worldURL);
+			getSelection () -> clear (undoStep);
+			
+			for (const auto & worldURL : uris)
+			{
+				auto relativePath = getBrowser () -> getExecutionContext () -> getWorldURL () .relative_path (worldURL);
 
-			std::string string;
+				std::string string;
 
-			string += "DEF " + X3D::get_name_from_uri (worldURL) + " Transform {";
-			string += "  children Inline {";
-			string += "    url [";
-			string += "      \"" + relativePath + "\"";
-			string += "      \"" + worldURL + "\"";
-			string += "    ]";
-			string += "  }";
-			string += "}";
+				string += "DEF " + X3D::get_name_from_uri (worldURL) + " Transform {";
+				string += "  children Inline {";
+				string += "    url [";
+				string += "      \"" + relativePath + "\"";
+				string += "      \"" + worldURL + "\"";
+				string += "    ]";
+				string += "  }";
+				string += "}";
 
-			auto scene = getBrowser () -> createX3DFromString (string);
+				auto scene = getBrowser () -> createX3DFromString (string);
 
-			import (scene, undoStep);
+				import (scene, undoStep);
+			}
 
 			addUndoStep (undoStep);
 		}
@@ -278,7 +283,10 @@ X3DBrowserEditor::import (const basic::uri & worldURL, const bool importAsInline
 
 			auto undoStep = std::make_shared <UndoStep> (_ ("Import"));
 
-			import (getBrowser () -> createX3DFromURL ({ worldURL .str () }), undoStep);
+			getSelection () -> clear (undoStep);
+			
+			for (const auto & worldURL : uris)
+				import (getBrowser () -> createX3DFromURL ({ worldURL .str () }), undoStep);
 
 			addUndoStep (undoStep);
 		}
@@ -317,7 +325,7 @@ X3DBrowserEditor::import (const X3D::X3DSFNode <X3D::Scene> & scene, const UndoS
 
 		// Select imported nodes
 
-		getSelection () -> setChildren (importedNodes, undoStep);
+		getSelection () -> addChildren (importedNodes, undoStep);
 	}
 	catch (const X3D::X3DError & error)
 	{
@@ -552,7 +560,13 @@ X3DBrowserEditor::pasteNodes (const X3D::MFNode & nodes, const UndoStepPtr & und
 					std::string worldURL;
 
 					if (X3D::Grammar::comment (text, worldURL))
-						import (getBrowser () -> createX3DFromStream (worldURL, text), undoStep);
+					{
+						auto scene = getBrowser () -> createX3DFromStream (worldURL, text);
+					
+						getSelection () -> clear (undoStep);
+
+						import (scene, undoStep);
+					}
 				}
 			}
 		}

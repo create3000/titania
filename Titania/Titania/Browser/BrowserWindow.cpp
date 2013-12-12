@@ -57,9 +57,9 @@
 #include "../NodePropertiesEditor/NodePropertiesEditor.h"
 #include "BrowserSelection.h"
 
+#include <Titania/OS.h>
 #include <Titania/String.h>
 #include <Titania/X3D/Debug.h>
-#include <Titania/X3D/Handles/TransformHandle.h>
 
 namespace titania {
 namespace puck {
@@ -74,7 +74,6 @@ BrowserWindow::BrowserWindow (const X3D::X3DSFNode <X3D::Browser> & browserSurfa
 	   historyEditor (this),
 	   outlineEditor (this),
 	            keys (),
-	       importURL (),
 	          viewer (X3D::ViewerType::NONE)
 {
 	if (getConfig () .getBoolean ("transparent"))
@@ -307,13 +306,11 @@ BrowserWindow::on_open ()
 		fileOpenDialog -> add_filter (getFileFilterAudio ());
 		fileOpenDialog -> add_filter (getFileFilterVideo ());
 		fileOpenDialog -> set_filter (getFileFilterX3D ());
-
-		basic::uri worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
-
-		if (worldURL .size () and worldURL .is_local ())
-		{
-			fileOpenDialog -> set_uri (worldURL .filename () .str ());
-		}
+	
+		if (getFileOpenDialog () .get_uri () .empty ())
+			fileOpenDialog -> set_current_folder (os::home ());
+		else
+			fileOpenDialog -> set_uri (getFileOpenDialog () .get_uri ());
 
 		auto response_id = fileOpenDialog -> run ();
 
@@ -372,34 +369,33 @@ BrowserWindow::on_import ()
 	updateWidget ("FileImportDialog");
 	auto fileImportDialog = getWidget <Gtk::FileChooserDialog> ("FileImportDialog");
 
-
-
 	fileImportDialog -> add_filter (getFileFilterX3D ());
 	fileImportDialog -> add_filter (getFileFilterImage ());
 	fileImportDialog -> add_filter (getFileFilterAudio ());
 	fileImportDialog -> add_filter (getFileFilterVideo ());
 	fileImportDialog -> set_filter (getFileFilterX3D ());
 
-	if (importURL .size () and importURL .is_local ())
+	if (getFileImportDialog () .get_uri () .empty ())
 	{
-		fileImportDialog -> set_uri (importURL .filename () .str ());
+		if (getFileOpenDialog () .get_uri () .empty ())
+			fileImportDialog -> set_current_folder (os::home ());
+		else
+			fileImportDialog -> set_uri (getFileOpenDialog () .get_uri ());
 	}
 	else
-	{
-		basic::uri worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
-
-		if (worldURL .size () and worldURL .is_local ())
-			fileImportDialog -> set_uri (worldURL .filename () .str ());
-	}
+		fileImportDialog -> set_uri (getFileImportDialog () .get_uri ());
 
 	auto response_id = fileImportDialog -> run ();
 
 	if (response_id == Gtk::RESPONSE_OK)
 	{
-		importURL = Glib::uri_unescape_string (fileImportDialog -> get_uri ());
+		auto uri = Glib::uri_unescape_string (fileImportDialog -> get_uri ());
 
-		import (importURL, getImportAsInlineMenuItem () .get_active ());
+		import ({ uri }, getImportAsInlineMenuItem () .get_active ());
 	}
+
+	if (not fileImportDialog -> get_uri () .empty ())
+		getFileImportDialog () .set_uri (fileImportDialog -> get_uri ());
 
 	delete fileImportDialog;
 }
@@ -430,19 +426,21 @@ BrowserWindow::dragDataHandling (const Glib::RefPtr <Gdk::DragContext> & context
 	{
 		if (selection_data .get_data_type () == "text/uri-list")
 		{
-			auto uris = selection_data .get_uris ();
+			std::deque <basic::uri> uris;
+			auto strings = selection_data .get_uris ();
+
+			for (auto & string : strings)
+				uris .emplace_back (Glib::uri_unescape_string (string)); // ???
 
 			if (uris .size ())
 			{
-				auto uri = Glib::uri_unescape_string (uris [0]);
-
 				if (do_open)
 				{
 					if (isSaved ())
-						open (uri);
+						open (uris [0]);
 				}
 				else
-					import (uri, getConfig () .getBoolean ("importAsInline"));
+					import (uris, getConfig () .getBoolean ("importAsInline"));
 
 				context -> drag_finish (true, false, time);
 				return;
@@ -451,18 +449,25 @@ BrowserWindow::dragDataHandling (const Glib::RefPtr <Gdk::DragContext> & context
 
 		if (selection_data .get_data_type () == "STRING")
 		{
-			auto uri = Glib::uri_unescape_string (basic::trim (selection_data .get_data_as_string ()));
+			std::deque <basic::uri> uris;
+			auto strings = basic::split (basic::trim (selection_data .get_data_as_string ()), "\r\n");
 
-			if (do_open)
+			for (auto & string : strings)
+				uris .emplace_back (Glib::uri_unescape_string (string));
+
+			if (uris .size ())
 			{
-				if (isSaved ())
-					open (uri);
-			}
-			else
-				import (uri, getConfig () .getBoolean ("importAsInline"));
+				if (do_open)
+				{
+					if (isSaved ())
+						open (uris [0]);
+				}
+				else
+					import (uris, getConfig () .getBoolean ("importAsInline"));
 
-			context -> drag_finish (true, false, time);
-			return;
+				context -> drag_finish (true, false, time);
+				return;
+			}
 		}
 	}
 
@@ -488,10 +493,21 @@ BrowserWindow::on_save_as ()
 
 	auto fileSaveDialog = getWidget <Gtk::FileChooserDialog> ("FileSaveDialog");
 
-	basic::uri worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
+	fileSaveDialog -> add_filter (getFileFilterX3D ());
+	fileSaveDialog -> set_filter (getFileFilterX3D ());
 
-	if (worldURL .size () and worldURL .is_local ())
-		fileSaveDialog -> set_uri (worldURL .filename () .str ());
+	if (getFileSaveDialog () .get_uri () .empty ())
+	{
+		if (getFileOpenDialog () .get_uri () .empty ())
+		{
+			fileSaveDialog -> set_current_folder (os::home ());
+			fileSaveDialog -> set_current_name (getBrowser () -> getExecutionContext () -> getWorldURL () .basename (false) + ".x3dv");
+		}
+		else
+			fileSaveDialog -> set_uri (getFileOpenDialog () .get_uri ());
+	}
+	else
+		fileSaveDialog -> set_uri (getFileSaveDialog () .get_uri ());
 
 	auto saveCompressedButton = getWidget <Gtk::CheckButton> ("SaveCompressedButton");
 
@@ -503,6 +519,9 @@ BrowserWindow::on_save_as ()
 	{
 		save (Glib::uri_unescape_string (fileSaveDialog -> get_uri ()), saveCompressedButton -> get_active ());
 	}
+
+	if (not fileSaveDialog -> get_uri () .empty ())
+		getFileSaveDialog () .set_uri (fileSaveDialog -> get_uri ());
 
 	delete fileSaveDialog;
 }
