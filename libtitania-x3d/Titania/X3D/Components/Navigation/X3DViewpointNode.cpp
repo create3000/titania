@@ -244,11 +244,15 @@ X3DViewpointNode::straighten ()
 	scaleInterpolator            -> value_changed () .addInterest (scaleOffset ());
 	scaleOrientationInterpolator -> value_changed () .addInterest (scaleOrientationOffset ());
 
+	auto deltaRotation = ~orientationOffset () * rotation;
+
+	centerOfRotationOffset () = getUserPosition () + deltaRotation * (getUserCenterOfRotation () - getUserPosition ()) - centerOfRotation ();
+
 	set_bind () = true;
 }
 
 void
-X3DViewpointNode::lookAt (Box3f bbox, float factor)
+X3DViewpointNode::lookAt (Box3f bbox, float distance)
 {
 	try
 	{
@@ -272,7 +276,7 @@ X3DViewpointNode::lookAt (Box3f bbox, float factor)
 		
 		easeInEaseOut -> easeInEaseOut () = { SFVec2f (0, 1), SFVec2f (1, 0) };
 	
-		auto translation = lerp <Vector3f> (positionOffset (), getLookAtPositionOffset (bbox), factor);
+		auto translation = lerp <Vector3f> (positionOffset (), getLookAtPositionOffset (bbox), distance);
 		auto direction   = getPosition () + translation - bbox .center ();
 		auto rotation    = orientationOffset () * Rotation4f (getUserOrientation () * Vector3f (0, 0, 1), direction);
 
