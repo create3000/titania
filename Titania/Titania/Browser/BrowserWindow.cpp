@@ -1058,6 +1058,8 @@ BrowserWindow::on_arrow_button_toggled ()
 void
 BrowserWindow::set_viewer (X3D::ViewerType type)
 {
+	getStraightenButton () .set_visible (type not_eq X3D::ViewerType::NONE);
+
 	switch (type)
 	{
 		case X3D::ViewerType::NONE:
