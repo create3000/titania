@@ -1,3 +1,9 @@
+2013-12-13  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* LookAtViewer.cpp:
+	* X3DViewpointNode.h:
+	* X3DViewpointNode.cpp: 
+
 2013-12-11  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBrowser.cpp: 

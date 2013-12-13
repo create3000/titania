@@ -221,7 +221,7 @@ X3DViewpointNode::straighten ()
 { }
 
 void
-X3DViewpointNode::lookAt (Box3f bbox)
+X3DViewpointNode::lookAt (Box3f bbox, float factor)
 {
 	try
 	{
@@ -244,9 +244,13 @@ X3DViewpointNode::lookAt (Box3f bbox)
 		timeSensor -> isActive () .addInterest (this, &X3DViewpointNode::set_isActive);
 		
 		easeInEaseOut -> easeInEaseOut () = { SFVec2f (0, 1), SFVec2f (1, 0) };
+	
+		auto translation = lerp <Vector3f> (positionOffset (), getLookAtPositionOffset (bbox), factor);
+		auto direction   = getPosition () + translation - bbox .center ();
+		auto rotation    = orientationOffset () * Rotation4f (getUserOrientation () * Vector3f (0, 0, 1), direction);
 
-		positionInterpolator         -> keyValue () = { positionOffset (), getLookAtPositionOffset (bbox) };
-		orientationInterpolator      -> keyValue () = { orientationOffset (), orientationOffset () };
+		positionInterpolator         -> keyValue () = { positionOffset (), translation };
+		orientationInterpolator      -> keyValue () = { orientationOffset (), rotation };
 		scaleInterpolator            -> keyValue () = { scaleOffset (), scaleOffset () };
 		scaleOrientationInterpolator -> keyValue () = { scaleOrientationOffset (), scaleOrientationOffset () };
 

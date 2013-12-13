@@ -160,9 +160,8 @@ public:
 	void
 	straighten ();
 
-	virtual
 	void
-	lookAt (Box3f);
+	lookAt (Box3f, float = 1);
 
 	void
 	transitionStart (X3DViewpointNode*);
