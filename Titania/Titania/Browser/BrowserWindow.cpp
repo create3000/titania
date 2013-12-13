@@ -1179,6 +1179,13 @@ BrowserWindow::on_none_viewer_activate ()
 	getBrowser () -> setViewer (X3D::ViewerType::NONE);
 }
 
+void
+BrowserWindow::on_straighten_clicked ()
+{
+	if (getBrowser () -> getActiveLayer ())
+		getBrowser () -> getActiveLayer () -> getViewpoint () -> straighten ();
+}
+
 // Look at
 
 void

@@ -58,6 +58,7 @@
       <source stock-id="ExamineViewer" filename="icons/ExamineViewer.svg"/>
       <source stock-id="Hand" filename="icons/Hand.png"/>
       <source stock-id="Arrow" filename="icons/Arrow.png"/>
+      <source stock-id="Straighten" filename="icons/Straighten.svg"/>
     </sources>
   </object>
   <object class="GtkFileChooserDialog" id="FileImportDialog">
@@ -1632,6 +1633,23 @@
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkToolButton" id="StraightenButton">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="has_tooltip">True</property>
+                                    <property name="tooltip_markup" translatable="yes">Straighten camera.</property>
+                                    <property name="tooltip_text" translatable="yes">Straighten camera.</property>
+                                    <property name="label" translatable="yes">Straighten Camera</property>
+                                    <property name="use_underline">True</property>
+                                    <property name="stock_id">Straighten</property>
+                                    <signal name="clicked" handler="on_straighten_clicked" swapped="no"/>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="homogeneous">True</property>
                                   </packing>
                                 </child>
                                 <child>

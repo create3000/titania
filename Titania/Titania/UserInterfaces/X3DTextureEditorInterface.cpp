@@ -75,9 +75,9 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_sourceListStore              = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("SourceListStore"));
 	m_textureCompressionListStore  = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("TextureCompressionListStore"));
 	m_texturePriorityAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TexturePriorityAdjustment"));
+	m_textureUnitListStore         = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("TextureUnitListStore"));
 	m_translateSAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TranslateSAdjustment"));
 	m_translateTAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TranslateTAdjustment"));
-	m_textureUnitListStore         = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("TextureUnitListStore"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_window);
@@ -94,20 +94,24 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_multiTextureExpander -> set_name ("MultiTextureExpander");
 	m_builder -> get_widget ("TextureExpander", m_textureExpander);
 	m_textureExpander -> set_name ("TextureExpander");
+	m_builder -> get_widget ("TextureGrid", m_textureGrid);
+	m_textureGrid -> set_name ("TextureGrid");
 	m_builder -> get_widget ("TexturePropertiesExpander", m_texturePropertiesExpander);
 	m_texturePropertiesExpander -> set_name ("TexturePropertiesExpander");
 	m_builder -> get_widget ("TextureTransformExpander", m_textureTransformExpander);
 	m_textureTransformExpander -> set_name ("TextureTransformExpander");
-	m_builder -> get_widget ("ScaleTButton", m_scaleTButton);
-	m_scaleTButton -> set_name ("ScaleTButton");
-	m_builder -> get_widget ("ScaleSButton", m_scaleSButton);
-	m_scaleSButton -> set_name ("ScaleSButton");
-	m_builder -> get_widget ("RotationScale", m_rotationScale);
-	m_rotationScale -> set_name ("RotationScale");
-	m_builder -> get_widget ("TranslateTButton", m_translateTButton);
-	m_translateTButton -> set_name ("TranslateTButton");
+	m_builder -> get_widget ("TextureTranformGrid", m_textureTranformGrid);
+	m_textureTranformGrid -> set_name ("TextureTranformGrid");
 	m_builder -> get_widget ("TranslateSButton", m_translateSButton);
 	m_translateSButton -> set_name ("TranslateSButton");
+	m_builder -> get_widget ("TranslateTButton", m_translateTButton);
+	m_translateTButton -> set_name ("TranslateTButton");
+	m_builder -> get_widget ("RotationScale", m_rotationScale);
+	m_rotationScale -> set_name ("RotationScale");
+	m_builder -> get_widget ("ScaleSButton", m_scaleSButton);
+	m_scaleSButton -> set_name ("ScaleSButton");
+	m_builder -> get_widget ("ScaleTButton", m_scaleTButton);
+	m_scaleTButton -> set_name ("ScaleTButton");
 
 	// Call construct handler of base class.
 	construct ();

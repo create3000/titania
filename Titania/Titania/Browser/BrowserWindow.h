@@ -455,6 +455,10 @@ private:
 	void
 	on_none_viewer_activate () final override;
 
+	virtual
+	void
+	on_straighten_clicked () final override;
+
 	void
 	set_look_at (bool);
 

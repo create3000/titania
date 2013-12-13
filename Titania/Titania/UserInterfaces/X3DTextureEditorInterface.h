@@ -147,6 +147,10 @@ public:
 	getTexturePriorityAdjustment () const
 	{ return m_texturePriorityAdjustment; }
 
+	const Glib::RefPtr <Gtk::ListStore> &
+	getTextureUnitListStore () const
+	{ return m_textureUnitListStore; }
+
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getTranslateSAdjustment () const
 	{ return m_translateSAdjustment; }
@@ -154,10 +158,6 @@ public:
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getTranslateTAdjustment () const
 	{ return m_translateTAdjustment; }
-
-	const Glib::RefPtr <Gtk::ListStore> &
-	getTextureUnitListStore () const
-	{ return m_textureUnitListStore; }
 
 	Gtk::Window &
 	getWindow () const
@@ -187,6 +187,10 @@ public:
 	getTextureExpander () const
 	{ return *m_textureExpander; }
 
+	Gtk::Grid &
+	getTextureGrid () const
+	{ return *m_textureGrid; }
+
 	Gtk::Expander &
 	getTexturePropertiesExpander () const
 	{ return *m_texturePropertiesExpander; }
@@ -195,25 +199,29 @@ public:
 	getTextureTransformExpander () const
 	{ return *m_textureTransformExpander; }
 
-	Gtk::SpinButton &
-	getScaleTButton () const
-	{ return *m_scaleTButton; }
+	Gtk::Grid &
+	getTextureTranformGrid () const
+	{ return *m_textureTranformGrid; }
 
 	Gtk::SpinButton &
-	getScaleSButton () const
-	{ return *m_scaleSButton; }
+	getTranslateSButton () const
+	{ return *m_translateSButton; }
+
+	Gtk::SpinButton &
+	getTranslateTButton () const
+	{ return *m_translateTButton; }
 
 	Gtk::Scale &
 	getRotationScale () const
 	{ return *m_rotationScale; }
 
 	Gtk::SpinButton &
-	getTranslateTButton () const
-	{ return *m_translateTButton; }
+	getScaleSButton () const
+	{ return *m_scaleSButton; }
 
 	Gtk::SpinButton &
-	getTranslateSButton () const
-	{ return *m_translateSButton; }
+	getScaleTButton () const
+	{ return *m_scaleTButton; }
 
 	~X3DTextureEditorInterface ();
 
@@ -241,9 +249,9 @@ private:
 	Glib::RefPtr <Gtk::ListStore>  m_sourceListStore;
 	Glib::RefPtr <Gtk::ListStore>  m_textureCompressionListStore;
 	Glib::RefPtr <Gtk::Adjustment> m_texturePriorityAdjustment;
+	Glib::RefPtr <Gtk::ListStore>  m_textureUnitListStore;
 	Glib::RefPtr <Gtk::Adjustment> m_translateSAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_translateTAdjustment;
-	Glib::RefPtr <Gtk::ListStore>  m_textureUnitListStore;
 	Gtk::Window*                   m_window;
 	Gtk::Box*                      m_widget;
 	Gtk::ImageMenuItem*            m_copyMenuItem;
@@ -251,13 +259,15 @@ private:
 	Gtk::Box*                      m_previewBox;
 	Gtk::Expander*                 m_multiTextureExpander;
 	Gtk::Expander*                 m_textureExpander;
+	Gtk::Grid*                     m_textureGrid;
 	Gtk::Expander*                 m_texturePropertiesExpander;
 	Gtk::Expander*                 m_textureTransformExpander;
-	Gtk::SpinButton*               m_scaleTButton;
-	Gtk::SpinButton*               m_scaleSButton;
-	Gtk::Scale*                    m_rotationScale;
-	Gtk::SpinButton*               m_translateTButton;
+	Gtk::Grid*                     m_textureTranformGrid;
 	Gtk::SpinButton*               m_translateSButton;
+	Gtk::SpinButton*               m_translateTButton;
+	Gtk::Scale*                    m_rotationScale;
+	Gtk::SpinButton*               m_scaleSButton;
+	Gtk::SpinButton*               m_scaleTButton;
 
 };
 

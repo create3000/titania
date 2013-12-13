@@ -1,5 +1,17 @@
 2013-12-13  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* BrowserWindow.h:
+	* BrowserWindow.ui:
+	* BrowserWindow.cpp:
+	* WalkViewer.svg:
+	* Straighten.svg:
+	* X3DTextureEditorInterface.h:
+	* X3DBrowserWindowInterface.h:
+	* X3DBrowserWindowInterface.cpp:
+	* X3DTextureEditorInterface.cpp: 
+
+2013-12-13  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* BrowserWindow.ui: 
 
 2013-12-12  Holger Seelig  <holger.seelig@yahoo.de>

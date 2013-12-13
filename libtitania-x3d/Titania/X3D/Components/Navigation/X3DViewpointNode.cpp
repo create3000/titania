@@ -218,7 +218,34 @@ X3DViewpointNode::resetUserOffsets ()
 
 void
 X3DViewpointNode::straighten ()
-{ }
+{
+	__LOG__ << std::endl;
+
+	for (const auto & layer : getLayers ())
+		layer -> getNavigationInfo () -> transitionStart () = true;
+
+	timeSensor -> cycleInterval () = 0.2;
+	timeSensor -> stopTime ()      = getCurrentTime ();
+	timeSensor -> startTime ()     = getCurrentTime ();
+	timeSensor -> isActive () .addInterest (this, &X3DViewpointNode::set_isActive);
+	
+	easeInEaseOut -> easeInEaseOut () = { SFVec2f (0, 1), SFVec2f (1, 0) };
+
+	auto direction = cross (Vector3f (0, 1, 0), cross (getUserOrientation () * Vector3f (0, 0, 1), Vector3f (0, 1, 0)));
+	auto rotation  = ~orientation () * Rotation4f (Vector3f (0, 0, 1), direction);
+
+	positionInterpolator         -> keyValue () = { positionOffset (), positionOffset () };
+	orientationInterpolator      -> keyValue () = { orientationOffset (), rotation };
+	scaleInterpolator            -> keyValue () = { scaleOffset (), scaleOffset () };
+	scaleOrientationInterpolator -> keyValue () = { scaleOrientationOffset (), scaleOrientationOffset () };
+
+	positionInterpolator         -> value_changed () .addInterest (positionOffset ());
+	orientationInterpolator      -> value_changed () .addInterest (orientationOffset ());
+	scaleInterpolator            -> value_changed () .addInterest (scaleOffset ());
+	scaleOrientationInterpolator -> value_changed () .addInterest (scaleOrientationOffset ());
+
+	set_bind () = true;
+}
 
 void
 X3DViewpointNode::lookAt (Box3f bbox, float factor)

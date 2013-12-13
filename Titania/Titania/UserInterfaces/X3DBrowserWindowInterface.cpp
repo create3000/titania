@@ -268,6 +268,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_arrowButton -> set_name ("ArrowButton");
 	m_builder -> get_widget ("ViewerButton", m_viewerButton);
 	m_viewerButton -> set_name ("ViewerButton");
+	m_builder -> get_widget ("StraightenButton", m_straightenButton);
+	m_straightenButton -> set_name ("StraightenButton");
 	m_builder -> get_widget ("LookAtAllButton", m_lookAtAllButton);
 	m_lookAtAllButton -> set_name ("LookAtAllButton");
 	m_builder -> get_widget ("LookAtButton", m_lookAtButton);
@@ -411,7 +413,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	// Connect object Gtk::MenuToolButton with id 'ViewerButton'.
 	m_viewerButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_viewer_clicked));
 
-	// Connect object Gtk::ToolButton with id 'LookAtAllButton'.
+	// Connect object Gtk::ToolButton with id 'StraightenButton'.
+	m_straightenButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_straighten_clicked));
 	m_lookAtAllButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_look_at_all_clicked));
 
 	// Connect object Gtk::ToggleToolButton with id 'LookAtButton'.

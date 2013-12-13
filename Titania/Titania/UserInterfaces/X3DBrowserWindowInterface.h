@@ -516,6 +516,10 @@ public:
 	{ return *m_viewerButton; }
 
 	Gtk::ToolButton &
+	getStraightenButton () const
+	{ return *m_straightenButton; }
+
+	Gtk::ToolButton &
 	getLookAtAllButton () const
 	{ return *m_lookAtAllButton; }
 
@@ -817,6 +821,10 @@ public:
 
 	virtual
 	void
+	on_straighten_clicked () = 0;
+
+	virtual
+	void
 	on_look_at_all_clicked () = 0;
 
 	virtual
@@ -941,6 +949,7 @@ private:
 	Gtk::RadioToolButton*           m_handButton;
 	Gtk::RadioToolButton*           m_arrowButton;
 	Gtk::MenuToolButton*            m_viewerButton;
+	Gtk::ToolButton*                m_straightenButton;
 	Gtk::ToolButton*                m_lookAtAllButton;
 	Gtk::ToggleToolButton*          m_lookAtButton;
 	Gtk::Box*                       m_footer;
