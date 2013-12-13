@@ -231,8 +231,9 @@ X3DViewpointNode::straighten ()
 	
 	easeInEaseOut -> easeInEaseOut () = { SFVec2f (0, 1), SFVec2f (1, 0) };
 
-	auto direction = cross (Vector3f (0, 1, 0), cross (getUserOrientation () * Vector3f (0, 0, 1), Vector3f (0, 1, 0)));
-	auto rotation  = ~orientation () * Rotation4f (Vector3f (0, 0, 1), direction);
+	auto direction      = cross (Vector3f (0, 1, 0), cross (getUserOrientation () * Vector3f (0, 0, 1), Vector3f (0, 1, 0)));
+	auto newOrientation = Rotation4f (Vector3f (0, 0, 1), direction);
+	auto rotation       = ~orientation () * newOrientation;
 
 	positionInterpolator         -> keyValue () = { positionOffset (), positionOffset () };
 	orientationInterpolator      -> keyValue () = { orientationOffset (), rotation };
@@ -243,10 +244,10 @@ X3DViewpointNode::straighten ()
 	orientationInterpolator      -> value_changed () .addInterest (orientationOffset ());
 	scaleInterpolator            -> value_changed () .addInterest (scaleOffset ());
 	scaleOrientationInterpolator -> value_changed () .addInterest (scaleOrientationOffset ());
+	
+	auto distanceToCenter = abs (getUserCenterOfRotation () - getUserPosition ());
 
-	auto deltaRotation = ~orientationOffset () * rotation;
-
-	centerOfRotationOffset () = getUserPosition () + deltaRotation * (getUserCenterOfRotation () - getUserPosition ()) - centerOfRotation ();
+	centerOfRotationOffset () = getUserPosition () + newOrientation * Vector3f (0, 0, -1) * distanceToCenter - centerOfRotation ();
 
 	set_bind () = true;
 }
