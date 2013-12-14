@@ -97,6 +97,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	              examineViewer (),
 	                 walkViewer (),
 	                  flyViewer (),
+	                planeViewer (),
 	                 noneViewer (),
 	                     lookAt (),
 	     activeViewpointChanged (),
@@ -131,6 +132,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	             examineViewer,
 	             walkViewer,
 	             flyViewer,
+	             planeViewer,
 	             noneViewer,
 	             lookAt,
 	             activeViewpointChanged,
@@ -362,6 +364,11 @@ X3DBrowserContext::set_navigationInfo_type ()
 				viewer = ViewerType::FLY;
 				goto END;
 			}
+			else if (type == "PLANE")
+			{
+				viewer = ViewerType::PLANE;
+				goto END;
+			}
 			else if (type == "LOOKAT")
 				;
 			else if (type == "ANY")
@@ -397,6 +404,9 @@ END:;
 			else if (type == "FLY")
 				flyViewer = true;
 
+			else if (type == "PLANE")
+				planeViewer = true;
+
 			else if (type == "LOOKAT")
 				lookAt = true;
 
@@ -405,6 +415,7 @@ END:;
 				examineViewer = true;
 				walkViewer    = true;
 				flyViewer     = true;
+				planeViewer   = true;
 				lookAt        = true;
 				noneViewer    = true;
 			}
@@ -418,6 +429,7 @@ END:;
 		examineViewer = false;
 		walkViewer    = false;
 		flyViewer     = false;
+		planeViewer   = false;
 		noneViewer    = false;
 		lookAt        = false;
 	}

@@ -86,6 +86,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_fileSaveWarningDialog -> set_name ("FileSaveWarningDialog");
 	m_builder -> get_widget ("FlyViewerImage", m_flyViewerImage);
 	m_flyViewerImage -> set_name ("FlyViewerImage");
+	m_builder -> get_widget ("PlaneViewerImage", m_planeViewerImage);
+	m_planeViewerImage -> set_name ("PlaneViewerImage");
 	m_builder -> get_widget ("ImportImage", m_importImage);
 	m_importImage -> set_name ("ImportImage");
 	m_builder -> get_widget ("MessageDialog", m_messageDialog);
@@ -108,6 +110,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_walkViewerMenuItem -> set_name ("WalkViewerMenuItem");
 	m_builder -> get_widget ("FlyViewerMenuItem", m_flyViewerMenuItem);
 	m_flyViewerMenuItem -> set_name ("FlyViewerMenuItem");
+	m_builder -> get_widget ("PlaneViewerMenuItem", m_planeViewerMenuItem);
+	m_planeViewerMenuItem -> set_name ("PlaneViewerMenuItem");
 	m_builder -> get_widget ("NoneViewerMenuItem", m_noneViewerMenuItem);
 	m_noneViewerMenuItem -> set_name ("NoneViewerMenuItem");
 	m_builder -> get_widget ("Window", m_window);
@@ -310,6 +314,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_examineViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_examine_viewer_activate));
 	m_walkViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_walk_viewer_activate));
 	m_flyViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_fly_viewer_activate));
+	m_planeViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_plane_viewer_activate));
 	m_noneViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_none_viewer_activate));
 
 	// Connect object Gtk::Window with id 'Window'.

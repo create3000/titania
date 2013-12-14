@@ -148,6 +148,7 @@ BrowserWindow::initialize ()
 	getBrowser () -> getExamineViewer () .addInterest (this, &BrowserWindow::set_examine_viewer);
 	getBrowser () -> getWalkViewer ()    .addInterest (this, &BrowserWindow::set_walk_viewer);
 	getBrowser () -> getFlyViewer ()     .addInterest (this, &BrowserWindow::set_fly_viewer);
+	getBrowser () -> getPlaneViewer ()   .addInterest (this, &BrowserWindow::set_plane_viewer);
 	getBrowser () -> getNoneViewer ()    .addInterest (this, &BrowserWindow::set_none_viewer);
 	getBrowser () -> getLookAt ()        .addInterest (this, &BrowserWindow::set_look_at);
 	getViewerButton () .set_menu (getViewerTypeMenu ());
@@ -1058,14 +1059,34 @@ BrowserWindow::on_arrow_button_toggled ()
 void
 BrowserWindow::set_viewer (X3D::ViewerType type)
 {
-	getStraightenButton () .set_visible (type not_eq X3D::ViewerType::NONE);
+	switch (type)
+	{
+		case X3D::ViewerType::PLANE:
+		case X3D::ViewerType::NONE:
+		{
+			getStraightenButton () .set_visible (false);
+			break;
+		}
+		default:
+		{
+			getStraightenButton () .set_visible (true);
+			break;
+		}
+	}
 
 	switch (type)
 	{
-		case X3D::ViewerType::NONE:
-		case X3D::ViewerType::EXAMINE:
-		case X3D::ViewerType::WALK:
-		case X3D::ViewerType::FLY:
+		case X3D::ViewerType::LOOK_AT:
+		{
+			getHandButton ()  .set_sensitive (false);
+			getArrowButton () .set_sensitive (false);
+
+			if (getArrowButton () .get_active ())
+				getSelection () -> disconnect ();
+
+			break;
+		}
+		default:
 		{
 			viewer = type;
 		
@@ -1077,16 +1098,6 @@ BrowserWindow::set_viewer (X3D::ViewerType type)
 				
 			if (getLookAtButton () .get_active ())
 				getLookAtButton () .set_active (false);
-
-			break;
-		}
-		case X3D::ViewerType::LOOK_AT:
-		{
-			getHandButton ()  .set_sensitive (false);
-			getArrowButton () .set_sensitive (false);
-
-			if (getArrowButton () .get_active ())
-				getSelection () -> disconnect ();
 
 			break;
 		}
@@ -1112,6 +1123,11 @@ BrowserWindow::set_viewer (X3D::ViewerType type)
 		case X3D::ViewerType::FLY:
 		{
 			getViewerButton () .set_stock_id (Gtk::StockID ("FlyViewer"));
+			break;
+		}
+		case X3D::ViewerType::PLANE:
+		{
+			getViewerButton () .set_stock_id (Gtk::StockID ("PlaneViewer"));
 			break;
 		}
 		case X3D::ViewerType::LOOK_AT:
@@ -1140,6 +1156,12 @@ void
 BrowserWindow::set_fly_viewer (bool value)
 {
 	getFlyViewerMenuItem () .set_visible (value);
+}
+
+void
+BrowserWindow::set_plane_viewer (bool value)
+{
+	getPlaneViewerMenuItem () .set_visible (value);
 }
 
 void
@@ -1173,6 +1195,12 @@ void
 BrowserWindow::on_fly_viewer_activate ()
 {
 	getBrowser () -> setViewer (X3D::ViewerType::FLY);
+}
+
+void
+BrowserWindow::on_plane_viewer_activate ()
+{
+	getBrowser () -> setViewer (X3D::ViewerType::PLANE);
 }
 
 void

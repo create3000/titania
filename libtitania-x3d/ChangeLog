@@ -1,5 +1,31 @@
 2013-12-14  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* X3DViewer.h:
+	* ViewerType.h:
+	* X3DBrowserContext.h:
+	* X3DViewer.cpp:
+	* PlaneViewer.h:
+	* X3DBrowserContext.cpp:
+	* X3DBrowserSurface.cpp:
+	* Viewport.h:
+	* PlaneViewer.cpp:
+	* ExamineViewer.h:
+	* ViewportContainer.cpp:
+	* LookAtViewer.cpp:
+	* Viewport.cpp:
+	* ExamineViewer.cpp:
+	* X3DLayerNode.h:
+	* Viewpoint.cpp:
+	* X3DViewportNode.h:
+	* OrthoViewpoint.h:
+	* OrthoViewpoint.cpp:
+	* X3DViewpointNode.h:
+	* X3DViewpointNode.cpp: 
+
+2013-12-14  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DViewer.h:
 	* X3DViewer.cpp:
 	* LookAtViewer.h:

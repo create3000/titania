@@ -148,6 +148,10 @@ public:
 
 	///  @name Bindable node stack handling
 
+	X3DViewportNode*
+	getViewport () const
+	{ return currentViewport; }
+
 	NavigationInfo*
 	getNavigationInfo () const;
 

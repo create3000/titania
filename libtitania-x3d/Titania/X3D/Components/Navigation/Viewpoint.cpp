@@ -132,8 +132,9 @@ Viewpoint::reshape (const float zNear, const float zFar)
 	size_t width  = viewport [2];
 	size_t height = viewport [3];
 
-	float fov = fieldOfView () > 0 and fieldOfView () < M_PI ? fieldOfView () :
-						M_PI / 4;
+	float fov = fieldOfView () * fieldOfViewScale ();
+	fov = fov > 0 and fov < M_PI ? fov : M_PI / 4;
+
 	float ratio = std::tan (fov / 2) * zNear;
 
 	if (width > height)

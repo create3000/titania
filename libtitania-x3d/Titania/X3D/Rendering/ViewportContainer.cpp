@@ -65,16 +65,14 @@ ViewportContainer::ViewportContainer (Viewport* const node) :
 void
 ViewportContainer::scale ()
 {
-	// The clipBoundary field of a Viewport node is specified in fractions of the -normal-render-surface-.
+	const auto & browserViewport = node -> getBrowser () -> getViewport ();
 
-	const auto & viewport = node -> getBrowser () -> getViewport ();
+	auto viewport = node -> getViewport (browserViewport [2], browserViewport [3]);
 
-	int left   = viewport [2] * node -> getLeft ();
-	int right  = viewport [2] * node -> getRight ();
-	int bottom = viewport [3] * node -> getBottom ();
-	int top    = viewport [3] * node -> getTop ();
-
-	glViewport (left, bottom, right - left, top - bottom);
+	glViewport (viewport [0],
+	            viewport [1],
+	            viewport [2],
+	            viewport [3]);
 }
 
 void
@@ -89,16 +87,9 @@ ViewportContainer::unscale ()
 void
 ViewportContainer::enable ()
 {
-	// The clipBoundary field of a Viewport node is specified in fractions of the -normal-render-surface-.
+	const auto & browserViewport = node -> getBrowser () -> getViewport ();
 
-	const auto & viewport = node -> getBrowser () -> getViewport ();
-
-	int left   = viewport [2] * node -> getLeft ();
-	int right  = viewport [2] * node -> getRight ();
-	int bottom = viewport [3] * node -> getBottom ();
-	int top    = viewport [3] * node -> getTop ();
-
-	Vector4i scissor (left, bottom, right - left, top - bottom);
+	Vector4i scissor = node -> getViewport (browserViewport [2], browserViewport [3]);
 
 	if (scissor not_eq viewport)
 	{

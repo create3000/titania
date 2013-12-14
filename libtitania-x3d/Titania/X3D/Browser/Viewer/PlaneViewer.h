@@ -48,20 +48,71 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_VIEWER_VIEWER_TYPE_H__
-#define __TITANIA_X3D_BROWSER_VIEWER_VIEWER_TYPE_H__
+#ifndef __TITANIA_X3D_BROWSER_VIEWER_PLANE_VIEWER_H__
+#define __TITANIA_X3D_BROWSER_VIEWER_PLANE_VIEWER_H__
+
+#include "../Viewer/X3DViewer.h"
 
 namespace titania {
 namespace X3D {
 
-enum class ViewerType
+class Browser;
+
+class PlaneViewer :
+	public X3DViewer
 {
-	NONE,
-	EXAMINE,
-	WALK,
-	FLY,
-	PLANE,
-	LOOK_AT
+public:
+
+	///  @name Construction
+
+	PlaneViewer (X3DBrowserSurface* const, NavigationInfo* const);
+
+	///  @name Member access
+
+	virtual
+	ViewerType
+	getType () const final override
+	{ return ViewerType::PLANE; }
+
+	virtual
+	NavigationInfo*
+	getNavigationInfo () const final override
+	{ return navigationInfo; }
+
+	///  @name Destruction
+
+	~PlaneViewer ();
+
+
+private:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+	bool
+	on_button_press_event (GdkEventButton*);
+
+	bool
+	on_button_release_event (GdkEventButton*);
+
+	bool
+	on_motion_notify_event (GdkEventMotion*);
+
+	bool
+	on_scroll_event (GdkEventScroll*);
+
+	void
+	constrainFieldOfViewScale () const;
+
+	///  @name Members
+
+	NavigationInfo* const navigationInfo;
+
+	Vector3f fromPoint;
+	guint    button;
 
 };
 

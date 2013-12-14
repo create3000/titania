@@ -83,6 +83,12 @@ protected:
 	getActiveViewpoint () const;
 
 	Vector3f
+	getPointOnCenterPlane (const double, const double);
+
+	Vector3f
+	getDistanceToCenter () const;
+
+	Vector3f
 	trackballProjectToSphere (double, double) const;
 
 

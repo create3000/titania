@@ -52,6 +52,9 @@
 
 #include "X3DViewer.h"
 
+#include "../../Components/Navigation/OrthoViewpoint.h"
+#include "../../Rendering/ViewVolume.h"
+
 namespace titania {
 namespace X3D {
 
@@ -63,6 +66,50 @@ X3DViewpointNode*
 X3DViewer::getActiveViewpoint () const
 {
 	return getBrowser () -> getActiveLayer () -> getViewpoint ();
+}
+
+/// Returns the picking point on the center plane.
+Vector3f
+X3DViewer::getPointOnCenterPlane (const double x, const double y)
+{
+	if (getBrowser () -> makeCurrent ())
+	{
+		try
+		{
+			auto viewpoint = getActiveViewpoint ();
+
+			viewpoint -> reshape (getNavigationInfo () -> getNearPlane (), getNavigationInfo () -> getFarPlane ());
+
+			Matrix4d modelview; // Use identity
+			Matrix4d projection = ProjectionMatrix4d ();
+
+			auto viewport = getBrowser () -> getActiveLayer () -> getViewport () -> getViewport (getBrowser () -> get_width (),
+			                                                                                     getBrowser () -> get_height ());
+	
+			// Far plane point
+			Vector3d far = ViewVolume::unProjectPoint (x, getBrowser () -> get_height () - y, 0.9, modelview, projection, viewport);
+
+			if (dynamic_cast <OrthoViewpoint*> (viewpoint))
+				return Vector3f (far .x (), far .y (), -abs (getDistanceToCenter ()));
+
+			Vector3f direction = normalize (far);
+
+			return direction * abs (getDistanceToCenter ()) / dot (direction, Vector3f (0, 0, -1));
+		}
+		catch (const std::domain_error & error)
+		{ }
+	}
+
+	return Vector3f ();
+}
+
+Vector3f
+X3DViewer::getDistanceToCenter () const
+{
+	auto viewpoint = getActiveViewpoint ();
+
+	return ~viewpoint -> orientationOffset () * (viewpoint -> getUserPosition ()
+	                                             - viewpoint -> getUserCenterOfRotation ());
 }
 
 Vector3f

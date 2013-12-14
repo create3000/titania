@@ -62,6 +62,10 @@ class X3DViewportNode :
 public:
 
 	virtual
+	Vector4i
+	getViewport (int, int) const = 0;
+
+	virtual
 	void
 	enable () = 0;
 

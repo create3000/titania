@@ -116,7 +116,7 @@ LookAtViewer::on_button_release_event (GdkEventButton* event)
 			auto hit  = getBrowser () -> getHits () .front ();
 			auto bbox = hit -> shape -> getBBox () * Matrix4f (hit -> modelViewMatrix) * getActiveViewpoint () -> getTransformationMatrix ();
 
-			getActiveViewpoint () -> lookAt (bbox);
+			getActiveViewpoint () -> lookAt (bbox, 1.0 / 3.0);
 		}
 	}
 

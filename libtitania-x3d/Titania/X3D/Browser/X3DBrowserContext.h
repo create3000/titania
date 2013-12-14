@@ -232,6 +232,10 @@ public:
 	{ return flyViewer; }
 
 	const SFBool &
+	getPlaneViewer () const
+	{ return planeViewer; }
+
+	const SFBool &
 	getNoneViewer () const
 	{ return noneViewer; }
 
@@ -471,6 +475,7 @@ private:
 	SFBool                   examineViewer;
 	SFBool                   walkViewer;
 	SFBool                   flyViewer;
+	SFBool                   planeViewer;
 	SFBool                   noneViewer;
 	SFBool                   lookAt;
 	SFTime                   activeViewpointChanged;

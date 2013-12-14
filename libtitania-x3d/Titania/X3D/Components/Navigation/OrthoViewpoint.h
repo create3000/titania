@@ -142,12 +142,10 @@ private:
 	getMaximumY () const;
 
 	double
-	getSizeX () const
-	{ return getMaximumX () - getMinimumX (); }
+	getSizeX () const;
 
 	double
-	getSizeY () const
-	{ return getMaximumY () - getMinimumY (); }
+	getSizeY () const;
 
 	virtual
 	Vector3f

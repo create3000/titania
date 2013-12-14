@@ -433,6 +433,9 @@ private:
 	set_fly_viewer (bool);
 
 	void
+	set_plane_viewer (bool);
+
+	void
 	set_none_viewer (bool);
 
 	virtual
@@ -450,6 +453,10 @@ private:
 	virtual
 	void
 	on_fly_viewer_activate () final override;
+
+	virtual
+	void
+	on_plane_viewer_activate () final override;
 
 	virtual
 	void

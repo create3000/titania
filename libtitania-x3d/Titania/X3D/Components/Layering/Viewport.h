@@ -102,17 +102,9 @@ public:
 
 	///  @name Member access
 
-	float
-	getLeft () const;
-
-	float
-	getRight () const;
-
-	float
-	getBottom () const;
-
-	float
-	getTop () const;
+	virtual
+	Vector4i
+	getViewport (int, int) const ;
 
 	///  @name Operations
 
@@ -138,6 +130,24 @@ public:
 
 
 private:
+
+	///  @name Member access
+
+	virtual
+	float
+	getLeft () const;
+
+	virtual
+	float
+	getRight () const;
+
+	virtual
+	float
+	getBottom () const;
+
+	virtual
+	float
+	getTop () const;
 
 	///  @name Static members
 

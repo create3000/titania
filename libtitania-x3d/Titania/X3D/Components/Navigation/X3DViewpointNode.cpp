@@ -67,7 +67,8 @@ X3DViewpointNode::Fields::Fields () :
 	     orientationOffset (),
 	           scaleOffset (1, 1, 1),
 	scaleOrientationOffset (),
-	centerOfRotationOffset ()
+	centerOfRotationOffset (),
+	      fieldOfViewScale (1)
 { }
 
 X3DViewpointNode::X3DViewpointNode () :
@@ -91,6 +92,7 @@ X3DViewpointNode::X3DViewpointNode () :
 	             scaleOffset (),
 	             scaleOrientationOffset (),
 	             centerOfRotationOffset (),
+	             fieldOfViewScale (),
 	             timeSensor,
 	             easeInEaseOut,
 	             positionInterpolator,

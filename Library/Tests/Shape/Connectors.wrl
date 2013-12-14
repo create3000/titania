@@ -153,7 +153,7 @@ function initialize ()
 	sensor .offset = translation;
 }
 "
-  directOutput TRUE
+    directOutput TRUE
   }
 
   ROUTE PlaneSensor.translation_changed TO Node.set_translation
@@ -225,95 +225,87 @@ function set_translation ()
 }
 
 NavigationInfo {
-  type [ "NONE", "EXAMINE" ]
+  type [ "PLANE", "ANY" ]
 }
 
 Background {
   skyColor 0.2 0.2 0.2
 }
 
+OrthoViewpoint {
+  description "OthoViewpoint"
+  fieldOfView [ 0, 0, 10, 10 ]
+}
+
 Viewpoint {
-  description "Front view"
+  description "Viewpoint"
 }
 
-Route {
-  output DEF N1 Node {
-    translation -5.75227 2.86491 0
-  }
-  input DEF N2 Node {
-    translation -1.53844 2.80322 0
-  }
+DEF Connectors Transform {
+  children [
+    Route {
+      output DEF N1 Node {
+        translation -5.75227 2.86491 0
+      }
+      input DEF N2 Node {
+        translation -1.53844 2.80322 0
+      }
+    }
+    Route {
+      output USE N1
+      input DEF N3 Node {
+        translation -1.43095 1.13914 0
+      }
+    }
+    Route {
+      output USE N1
+      input DEF N4 Node {
+        translation -1.37751 -0.5 0
+      }
+    }
+    Route {
+      output USE N1
+      input DEF N5 Node {
+        translation -1.37751 -2 0
+      }
+    }
+    Route {
+      output USE N2
+      input DEF N6 Node {
+        translation 2.91794 2.15675 0
+      }
+    }
+    Route {
+      output USE N3
+      input USE N6
+    }
+    Route {
+      output USE N4
+      input DEF N7 Node {
+        translation 2.74369 -0.349726 0
+      }
+    }
+    Route {
+      output USE N5
+      input USE N7
+    }
+    Route {
+      output USE N6
+      input DEF N8 Node {
+        translation 6.45227 0.499754 0
+      }
+    }
+    Route {
+      output USE N7
+      input USE N8
+    }
+    USE N1
+    USE N2
+    USE N3
+    USE N4
+    USE N5
+    USE N6
+    USE N7
+    USE N8
+  ]
 }
-
-Route {
-  output USE N1
-  input DEF N3 Node {
-    translation -1.43095 1.13914 0
-  }
-}
-
-Route {
-  output USE N1
-  input DEF N4 Node {
-    translation -1.37751 -0.5 0
-  }
-}
-
-Route {
-  output USE N1
-  input DEF N5 Node {
-    translation -1.37751 -2 0
-  }
-}
-
-Route {
-  output USE N2
-  input DEF N6 Node {
-    translation 2 1 0
-  }
-}
-
-Route {
-  output USE N3
-  input USE N6
-}
-
-Route {
-  output USE N4
-  input DEF N7 Node {
-    translation 2 -0.5 0
-  }
-}
-
-Route {
-  output USE N5
-  input USE N7
-}
-
-Route {
-  output USE N6
-  input DEF N8 Node {
-    translation 5.22887 0.156809 0
-  }
-}
-
-Route {
-  output USE N7
-  input USE N8
-}
-
-USE N1
-
-USE N2
-
-USE N3
-
-USE N4
-
-USE N5
-
-USE N6
-
-USE N7
-
-USE N8

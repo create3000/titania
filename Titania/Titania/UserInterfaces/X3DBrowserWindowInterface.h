@@ -152,6 +152,10 @@ public:
 	{ return *m_flyViewerImage; }
 
 	Gtk::Image &
+	getPlaneViewerImage () const
+	{ return *m_planeViewerImage; }
+
+	Gtk::Image &
 	getImportImage () const
 	{ return *m_importImage; }
 
@@ -194,6 +198,10 @@ public:
 	Gtk::ImageMenuItem &
 	getFlyViewerMenuItem () const
 	{ return *m_flyViewerMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getPlaneViewerMenuItem () const
+	{ return *m_planeViewerMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getNoneViewerMenuItem () const
@@ -601,6 +609,10 @@ public:
 
 	virtual
 	void
+	on_plane_viewer_activate () = 0;
+
+	virtual
+	void
 	on_none_viewer_activate () = 0;
 
 	virtual
@@ -858,6 +870,7 @@ private:
 	Gtk::CheckButton*               m_saveCompressedButton;
 	Gtk::Dialog*                    m_fileSaveWarningDialog;
 	Gtk::Image*                     m_flyViewerImage;
+	Gtk::Image*                     m_planeViewerImage;
 	Gtk::Image*                     m_importImage;
 	Gtk::MessageDialog*             m_messageDialog;
 	Gtk::Image*                     m_noneViewerImage;
@@ -869,6 +882,7 @@ private:
 	Gtk::ImageMenuItem*             m_examineViewerMenuItem;
 	Gtk::ImageMenuItem*             m_walkViewerMenuItem;
 	Gtk::ImageMenuItem*             m_flyViewerMenuItem;
+	Gtk::ImageMenuItem*             m_planeViewerMenuItem;
 	Gtk::ImageMenuItem*             m_noneViewerMenuItem;
 	Gtk::Window*                    m_window;
 	Gtk::VBox*                      m_widget;

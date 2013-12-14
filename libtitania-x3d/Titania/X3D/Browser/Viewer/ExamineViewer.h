@@ -110,16 +110,10 @@ private:
 	addSpinning ();
 
 	Vector3f
-	getDistance () const;
-
-	Vector3f
 	getPositionOffset () const;
 
 	Rotation4f
 	getOrientationOffset ();
-
-	Vector3f
-	getPoint (const double, const double);
 
 	NavigationInfo* const navigationInfo;
 	

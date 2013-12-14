@@ -56,6 +56,7 @@
       <source stock-id="OutlineEditor" filename="icons/OutlineEditor.png"/>
       <source stock-id="ViewpointList" filename="icons/ViewpointList.png"/>
       <source stock-id="ExamineViewer" filename="icons/ExamineViewer.svg"/>
+      <source stock-id="PlaneViewer" filename="icons/PlaneViewer.svg"/>
       <source stock-id="Hand" filename="icons/Hand.png"/>
       <source stock-id="Arrow" filename="icons/Arrow.png"/>
       <source stock-id="Straighten" filename="icons/Straighten.svg"/>
@@ -450,6 +451,11 @@
     <property name="can_focus">False</property>
     <property name="stock">FlyViewer</property>
   </object>
+  <object class="GtkImage" id="PlaneViewerImage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">PlaneViewer</property>
+  </object>
   <object class="GtkImage" id="ImportImage">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -656,6 +662,16 @@
         <property name="image">FlyViewerImage</property>
         <property name="use_stock">False</property>
         <signal name="activate" handler="on_fly_viewer_activate" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="PlaneViewerMenuItem">
+        <property name="label" translatable="yes">Plane Viewer</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">PlaneViewerImage</property>
+        <property name="use_stock">False</property>
+        <signal name="activate" handler="on_plane_viewer_activate" swapped="no"/>
       </object>
     </child>
     <child>

@@ -118,6 +118,14 @@ public:
 	centerOfRotationOffset () const
 	{ return fields .centerOfRotationOffset; }
 
+	SFFloat &
+	fieldOfViewScale ()
+	{ return fields .fieldOfViewScale; }
+
+	const SFFloat &
+	fieldOfViewScale () const
+	{ return fields .fieldOfViewScale; }
+
 	///  @name Member access
 
 	virtual
@@ -274,6 +282,7 @@ private:
 		SFVec3f scaleOffset;
 		SFRotation scaleOrientationOffset;
 		SFVec3f centerOfRotationOffset;
+		SFFloat fieldOfViewScale;
 	};
 
 	Fields fields;

@@ -50,8 +50,6 @@
 
 #include "ExamineViewer.h"
 
-#include "../../Components/Navigation/OrthoViewpoint.h"
-#include "../../Rendering/ViewVolume.h"
 #include "../X3DBrowserSurface.h"
 
 #include <cmath>
@@ -64,7 +62,7 @@ static constexpr double MOTION_TIME       = 0.05;
 static constexpr double SPIN_RELEASE_TIME = 0.01;
 static constexpr float  SPIN_ANGLE        = 0.006;
 static constexpr float  SPIN_FACTOR       = 0.6;
-static constexpr float  SCOLL_FACTOR      = 1.0f / 50.0f;
+static constexpr float  SCROLL_FACTOR      = 1.0f / 50.0f;
 static constexpr float  FRAME_RATE        = 60;
 
 ExamineViewer::ExamineViewer (X3DBrowserSurface* const browser, NavigationInfo* const navigationInfo) :
@@ -109,7 +107,7 @@ ExamineViewer::set_viewpoint ()
 	auto viewpoint = getActiveViewpoint ();
 
 	orientation = viewpoint -> getUserOrientation ();
-	distance    = getDistance ();
+	distance    = getDistanceToCenter ();
 }
 
 bool
@@ -136,7 +134,7 @@ ExamineViewer::on_button_press_event (GdkEventButton* event)
 
 		set_viewpoint ();
 
-		fromPoint = getPoint (event -> x, event -> y);
+		fromPoint = getPointOnCenterPlane (event -> x, event -> y);
 	}
 
 	return false;
@@ -179,23 +177,19 @@ ExamineViewer::on_motion_notify_event (GdkEventMotion* event)
 		fromVector = toVector;
 		
 		motionTime = chrono::now ();
-
-		//return true;
 	}
 
 	else if (button == 2)
 	{
 		const auto & viewpoint = getActiveViewpoint ();
 
-		Vector3f toPoint     = getPoint (event -> x, event -> y);
-		Vector3f translation = viewpoint -> getUserOrientation () * (toPoint - fromPoint);
+		Vector3f toPoint     = getPointOnCenterPlane (event -> x, event -> y);
+		Vector3f translation = viewpoint -> getUserOrientation () * (fromPoint - toPoint);
 
 		viewpoint -> positionOffset ()         += translation;
 		viewpoint -> centerOfRotationOffset () += translation;
 
 		fromPoint = toPoint;
-
-		//return true;
 	}
 
 	return false;
@@ -208,7 +202,7 @@ ExamineViewer::on_scroll_event (GdkEventScroll* event)
 
 	viewpoint -> transitionStop ();
 
-	Vector3f step           = distance * SCOLL_FACTOR;
+	Vector3f step           = getDistanceToCenter () * SCROLL_FACTOR;
 	Vector3f positionOffset = viewpoint -> getUserOrientation () * Vector3f (0, 0, abs (step));
 
 	if (event -> direction == 0)      // Move backwards.
@@ -221,7 +215,7 @@ ExamineViewer::on_scroll_event (GdkEventScroll* event)
 		viewpoint -> positionOffset () -= positionOffset;
 	}
 
-	distance = getDistance ();
+	distance = getDistanceToCenter ();
 
 	return false;
 }
@@ -245,15 +239,6 @@ ExamineViewer::addSpinning ()
 }
 
 Vector3f
-ExamineViewer::getDistance () const
-{
-	auto viewpoint = getActiveViewpoint ();
-
-	return ~viewpoint -> orientationOffset () * (viewpoint -> getUserPosition ()
-	                                             - viewpoint -> getUserCenterOfRotation ());
-}
-
-Vector3f
 ExamineViewer::getPositionOffset () const
 {
 	auto viewpoint = getActiveViewpoint ();
@@ -273,37 +258,6 @@ ExamineViewer::getOrientationOffset ()
 
 	orientation = rotation * orientation;
 	return ~viewpoint -> orientation () * orientation;
-}
-
-/// Returns the picking point on the center plane.
-Vector3f
-ExamineViewer::getPoint (const double x, const double y)
-{
-	try
-	{
-		auto viewpoint = getActiveViewpoint ();
-
-		viewpoint -> reshape (navigationInfo -> getNearPlane (), navigationInfo -> getFarPlane ());
-
-		Matrix4d modelview; // Use identity
-		Matrix4d projection = ProjectionMatrix4d ();
-		Vector4i viewport   = Viewport4i ();
-
-		// Far plane point
-		Vector3d far = ViewVolume::unProjectPoint (x, y, 0.9, modelview, projection, viewport);
-
-		if (dynamic_cast <OrthoViewpoint*> (viewpoint))
-			return Vector3f (-far .x (), far .y (), -abs (distance));
-
-		Vector3f direction = normalize (Vector3f (-far .x (), far .y (), far .z ()));
-
-		return direction * abs (distance) / dot (direction, Vector3f (0, 0, -1));
-	}
-	catch (const std::domain_error & error)
-	{
-		__LOG__ << error .what () << std::endl;
-		return Vector3f ();
-	}
 }
 
 } // X3D

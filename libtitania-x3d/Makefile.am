@@ -50,6 +50,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/Viewer/FlyViewer.cpp \
 	Titania/X3D/Browser/Viewer/LookAtViewer.cpp \
 	Titania/X3D/Browser/Viewer/NoneViewer.cpp \
+	Titania/X3D/Browser/Viewer/PlaneViewer.cpp \
 	Titania/X3D/Browser/Viewer/WalkViewer.cpp \
 	Titania/X3D/Browser/Viewer/X3DFlyViewer.cpp \
 	Titania/X3D/Browser/Viewer/X3DViewer.cpp \
