@@ -65,5 +65,34 @@ X3DViewer::getActiveViewpoint () const
 	return getBrowser () -> getActiveLayer () -> getViewpoint ();
 }
 
+Vector3f
+X3DViewer::trackballProjectToSphere (double x, double y) const
+{
+	x = x / getBrowser () -> get_width () - 0.5;
+	y = -y / getBrowser () -> get_height () + 0.5;
+
+	return Vector3f (x, y, tb_project_to_sphere (0.5, x, y));
+}
+
+float
+X3DViewer::tb_project_to_sphere (const float r, const float x, const float y)
+{
+	float z = 0;
+
+	float d = std::sqrt (x * x + y * y);
+
+	if (d < r * std::sqrt (0.5)) // Inside sphere
+	{
+		z = std::sqrt (r * r - d * d);
+	}
+	else                         // On hyperbola
+	{
+		float t = r / std::sqrt (2);
+		z = t * t / d;
+	}
+
+	return z;
+}
+
 } // X3D
 } // titania

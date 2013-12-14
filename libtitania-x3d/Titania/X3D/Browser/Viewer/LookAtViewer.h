@@ -91,6 +91,9 @@ private:
 	void
 	initialize () final override;
 
+	void
+	set_viewpoint ();
+
 	bool
 	on_button_press_event (GdkEventButton*);
 
@@ -100,6 +103,9 @@ private:
 	bool
 	on_motion_notify_event (GdkEventMotion*);
 	
+	Rotation4f
+	getOrientationOffset ();
+
 	bool
 	pick (const double, const double);
 
@@ -107,6 +113,12 @@ private:
 
 	bool picking;
 	bool isOver;
+
+	Rotation4f orientation;
+	Rotation4f rotation;
+	Vector3f   fromVector;
+	guint      button;
+	bool       motion;
 
 };
 

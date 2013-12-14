@@ -82,6 +82,16 @@ protected:
 	X3DViewpointNode*
 	getActiveViewpoint () const;
 
+	Vector3f
+	trackballProjectToSphere (double, double) const;
+
+
+private:
+
+	static
+	float
+	tb_project_to_sphere (const float, const float, const float);
+
 };
 
 } // X3D

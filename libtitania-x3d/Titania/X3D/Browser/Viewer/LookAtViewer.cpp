@@ -70,13 +70,38 @@ LookAtViewer::initialize ()
 	getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &LookAtViewer::on_button_release_event), false);
 	getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &LookAtViewer::on_motion_notify_event),  false);
 
+	getBrowser () -> getActiveViewpointChanged () .addInterest (this, &LookAtViewer::set_viewpoint);
+
 	getBrowser () -> setPicking (false);
+}
+
+void
+LookAtViewer::set_viewpoint ()
+{
+	// Update orientationOffset.
+
+	auto viewpoint = getActiveViewpoint ();
+
+	orientation = viewpoint -> getUserOrientation ();
 }
 
 bool
 LookAtViewer::on_button_press_event (GdkEventButton* event)
 {
+	button = event -> button;
+	motion = false;
+
 	getBrowser () -> grab_focus ();
+
+	if (event -> button == 1)
+	{
+		getActiveViewpoint () -> transitionStop ();
+
+		set_viewpoint ();
+
+		fromVector = trackballProjectToSphere (event -> x, event -> y);
+		rotation   = Rotation4f ();
+	}
 
 	return true;
 }
@@ -86,14 +111,16 @@ LookAtViewer::on_button_release_event (GdkEventButton* event)
 {
 	if (event -> button == 1)
 	{
-		if (pick (event -> x, event -> y))
+		if (not motion and pick (event -> x, event -> y))
 		{
 			auto hit  = getBrowser () -> getHits () .front ();
 			auto bbox = hit -> shape -> getBBox () * Matrix4f (hit -> modelViewMatrix) * getActiveViewpoint () -> getTransformationMatrix ();
 
-			getActiveViewpoint () -> lookAt (bbox, 1.0 / 3.0);
+			getActiveViewpoint () -> lookAt (bbox);
 		}
 	}
+
+	button = 0;
 
 	return true;
 }
@@ -118,7 +145,32 @@ LookAtViewer::on_motion_notify_event (GdkEventMotion* event)
 		}
 	}
 
+	if (button == 1)
+	{
+		motion = true;
+
+		const auto & viewpoint = getActiveViewpoint ();
+
+		Vector3f toVector = trackballProjectToSphere (event -> x, event -> y);
+
+		rotation = ~Rotation4f (fromVector, toVector);
+
+		viewpoint -> orientationOffset () = getOrientationOffset ();
+
+		fromVector = toVector;
+	}
+
 	return true;
+}
+
+Rotation4f
+LookAtViewer::getOrientationOffset ()
+{
+	auto viewpoint = getActiveViewpoint ();
+
+	orientation = rotation * orientation;
+
+	return ~viewpoint -> orientation () * orientation;
 }
 
 bool

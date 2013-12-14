@@ -121,12 +121,6 @@ private:
 	Vector3f
 	getPoint (const double, const double);
 
-	Vector3f
-	trackballProjectToSphere (const double, const double) const;
-
-	float
-	tb_project_to_sphere (const float, const float, const float) const;
-
 	NavigationInfo* const navigationInfo;
 	
 	Vector3f         distance;

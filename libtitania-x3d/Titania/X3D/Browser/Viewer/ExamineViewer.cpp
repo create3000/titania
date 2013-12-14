@@ -306,33 +306,5 @@ ExamineViewer::getPoint (const double x, const double y)
 	}
 }
 
-Vector3f
-ExamineViewer::trackballProjectToSphere (const double x, const double y) const
-{
-	return Vector3f (x / getBrowser () -> get_width () - 0.5f,
-	                 -y / getBrowser () -> get_height () + 0.5f,
-	                 tb_project_to_sphere (0.5, 0, 0));
-}
-
-float
-ExamineViewer::tb_project_to_sphere (const float r, const float x, const float y) const
-{
-	float z = 0;
-
-	float d = std::sqrt (x * x + y * y);
-
-	if (d < r * std::sqrt (0.5)) // Inside sphere
-	{
-		z = std::sqrt (r * r - d * d);
-	}
-	else                         // On hyperbola
-	{
-		float t = r / std::sqrt (2);
-		z = t * t / d;
-	}
-
-	return z;
-}
-
 } // X3D
 } // titania
