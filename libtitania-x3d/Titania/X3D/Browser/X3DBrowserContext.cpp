@@ -364,7 +364,7 @@ X3DBrowserContext::set_navigationInfo_type ()
 				viewer = ViewerType::FLY;
 				goto END;
 			}
-			else if (type == "PLANE")
+			else if (type == "PLANE_create3000.de")
 			{
 				viewer = ViewerType::PLANE;
 				goto END;

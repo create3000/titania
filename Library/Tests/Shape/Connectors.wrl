@@ -225,7 +225,7 @@ function set_translation ()
 }
 
 NavigationInfo {
-  type [ "PLANE", "ANY" ]
+  type [ "PLANE_create3000.de", "ANY" ]
 }
 
 Background {
