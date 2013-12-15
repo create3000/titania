@@ -84,7 +84,7 @@ PlaneViewer::on_button_press_event (GdkEventButton* event)
 {
 	button = event -> button;
 
-	if (button == 1)
+	if (button == 1 or button == 2)
 	{
 		getActiveViewpoint () -> transitionStop ();
 
@@ -104,7 +104,7 @@ PlaneViewer::on_button_release_event (GdkEventButton* event)
 bool
 PlaneViewer::on_motion_notify_event (GdkEventMotion* event)
 {
-	if (button == 1)
+	if (button == 1 or button == 2)
 	{
 		const auto & viewpoint = getActiveViewpoint ();
 
@@ -143,8 +143,6 @@ PlaneViewer::on_scroll_event (GdkEventScroll* event)
 
 	Vector3f toPoint     = getPointOnCenterPlane (event -> x, event -> y);
 	Vector3f translation = viewpoint -> getUserOrientation () * (fromPoint - toPoint);
-
-	__LOG__ << translation << std::endl;
 
 	viewpoint -> positionOffset ()         += translation;
 	viewpoint -> centerOfRotationOffset () += translation;

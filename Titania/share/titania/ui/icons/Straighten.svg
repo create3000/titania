@@ -33,7 +33,7 @@
      id="namedview3312"
      showgrid="false"
      inkscape:zoom="4"
-     inkscape:cx="13.858478"
+     inkscape:cx="-28.766522"
      inkscape:cy="59.958639"
      inkscape:window-x="59"
      inkscape:window-y="24"
@@ -1006,41 +1006,45 @@
      id="layer7"
      inkscape:label="Object"
      style="display:inline">
-    <path
-       style="fill:#000000;fill-opacity:0.75925927;stroke:none"
-       d="m 37.90625,16.21875 a 2.0002,2.0002 0 0 0 -1.78125,2 L 36,79.59375 A 4.0004,4.0004 0 0 0 35.9375,80 L 8,80 l 0,8 72,0 0,-8 0,-8 -8,0 0,8 -26.5625,0 38.03125,-44.53125 a 4.0004,4.0004 0 0 0 -3.4375,-6.625 4.0004,4.0004 0 0 0 -2.65625,1.4375 L 40,74.03125 40.125,18.25 a 2.0002,2.0002 0 0 0 -2.21875,-2.03125 z"
-       id="rect4694"
-       inkscape:connector-curvature="0" />
-    <path
-       sodipodi:type="arc"
-       style="fill:#000000;fill-opacity:0.76078431;stroke:none"
-       id="path4787"
-       sodipodi:cx="57.761784"
-       sodipodi:cy="12.517205"
-       sodipodi:rx="3.8890872"
-       sodipodi:ry="3.8890872"
-       d="m 61.650871,12.517205 a 3.8890872,3.8890872 0 1 1 -7.778175,0 3.8890872,3.8890872 0 1 1 7.778175,0 z"
-       transform="matrix(1.028519,0,0,1.028519,-9.284092,1.8758167)" />
-    <path
-       sodipodi:type="arc"
-       style="fill:#000000;fill-opacity:0.76078431;stroke:none;display:inline"
-       id="path4787-1"
-       sodipodi:cx="57.761784"
-       sodipodi:cy="12.517205"
-       sodipodi:rx="3.8890872"
-       sodipodi:ry="3.8890872"
-       d="m 61.650871,12.517205 a 3.8890872,3.8890872 0 1 1 -7.778175,0 3.8890872,3.8890872 0 1 1 7.778175,0 z"
-       transform="matrix(1.028519,0,0,1.028519,3.090909,2.3758171)" />
-    <path
-       sodipodi:type="arc"
-       style="fill:#000000;fill-opacity:0.76078431;stroke:none;display:inline"
-       id="path4787-1-1"
-       sodipodi:cx="57.761784"
-       sodipodi:cy="12.517205"
-       sodipodi:rx="3.8890872"
-       sodipodi:ry="3.8890872"
-       d="m 61.650871,12.517205 a 3.8890872,3.8890872 0 1 1 -7.778175,0 3.8890872,3.8890872 0 1 1 7.778175,0 z"
-       transform="matrix(1.028519,0,0,1.028519,15.715909,7.875817)" />
+    <g
+       id="g7029"
+       style="fill:#747474;fill-opacity:1;filter:url(#filter4092)">
+      <path
+         inkscape:connector-curvature="0"
+         id="rect4694"
+         d="m 37.90625,16.21875 a 2.0002,2.0002 0 0 0 -1.78125,2 L 36,79.59375 A 4.0004,4.0004 0 0 0 35.9375,80 L 8,80 l 0,8 72,0 0,-8 0,-8 -8,0 0,8 -26.5625,0 38.03125,-44.53125 a 4.0004,4.0004 0 0 0 -3.4375,-6.625 4.0004,4.0004 0 0 0 -2.65625,1.4375 L 40,74.03125 40.125,18.25 a 2.0002,2.0002 0 0 0 -2.21875,-2.03125 z"
+         style="fill:#747474;fill-opacity:1;stroke:none" />
+      <path
+         transform="matrix(1.028519,0,0,1.028519,-9.284092,1.8758167)"
+         d="m 61.650871,12.517205 a 3.8890872,3.8890872 0 1 1 -7.778175,0 3.8890872,3.8890872 0 1 1 7.778175,0 z"
+         sodipodi:ry="3.8890872"
+         sodipodi:rx="3.8890872"
+         sodipodi:cy="12.517205"
+         sodipodi:cx="57.761784"
+         id="path4787"
+         style="fill:#747474;fill-opacity:1;stroke:none"
+         sodipodi:type="arc" />
+      <path
+         transform="matrix(1.028519,0,0,1.028519,3.090909,2.3758171)"
+         d="m 61.650871,12.517205 a 3.8890872,3.8890872 0 1 1 -7.778175,0 3.8890872,3.8890872 0 1 1 7.778175,0 z"
+         sodipodi:ry="3.8890872"
+         sodipodi:rx="3.8890872"
+         sodipodi:cy="12.517205"
+         sodipodi:cx="57.761784"
+         id="path4787-1"
+         style="fill:#747474;fill-opacity:1;stroke:none;display:inline"
+         sodipodi:type="arc" />
+      <path
+         transform="matrix(1.028519,0,0,1.028519,15.715909,7.875817)"
+         d="m 61.650871,12.517205 a 3.8890872,3.8890872 0 1 1 -7.778175,0 3.8890872,3.8890872 0 1 1 7.778175,0 z"
+         sodipodi:ry="3.8890872"
+         sodipodi:rx="3.8890872"
+         sodipodi:cy="12.517205"
+         sodipodi:cx="57.761784"
+         id="path4787-1-1"
+         style="fill:#747474;fill-opacity:1;stroke:none;display:inline"
+         sodipodi:type="arc" />
+    </g>
   </g>
   <g
      inkscape:groupmode="layer"
