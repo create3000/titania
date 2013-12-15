@@ -56,17 +56,19 @@
 #include "../Layering/X3DLayerNode.h"
 #include "../Navigation/X3DViewpointNode.h"
 
-// LOW
-//#define SPHERE_USEG 16
-
-// HIGH
-//#define SPHERE_USEG 32
-
-// MEDIUM
-#define SPHERE_USEG 22
-
 namespace titania {
 namespace X3D {
+
+static constexpr float SIZE = 10000;
+
+// LOW
+//static constexpr int SPHERE_USEG = 16;
+
+// HIGH
+//static constexpr int SPHERE_USEG = 32;
+
+// MEDIUM
+static constexpr int SPHERE_USEG = 22;
 
 X3DBackgroundNode::Fields::Fields () :
 	groundAngle (new MFFloat ()),
@@ -231,7 +233,7 @@ X3DBackgroundNode::build ()
 	{
 		// Draw cube
 
-		float r = 10000;
+		float r = SIZE;
 
 		const Color3f & c = skyColor () [0];
 
@@ -280,7 +282,7 @@ X3DBackgroundNode::build ()
 	{
 		// Draw sphere
 
-		float radius = std::sqrt (2 * std::pow (10000, 2));
+		float radius = std::sqrt (2 * std::pow (SIZE, 2));
 
 		if (skyColor () .size () > skyAngle () .size ())
 		{
@@ -339,6 +341,19 @@ X3DBackgroundNode::draw ()
 {
 	PolygonMode polygonMode (GL_FILL);
 
+	// Scale background
+
+	auto viewport = Viewport4i ();
+	auto scale = getCurrentViewpoint () -> getScreenScale (SIZE, viewport);
+	
+	scale *= double (viewport [2] > viewport [3] ? viewport [2] : viewport [3]);
+
+	getCurrentViewpoint () -> reshape (1, std::max (1.0, 2 * SIZE * scale .z ()));
+
+	glScalef (scale .x (), scale .y (), scale .z ());
+	
+	// Draw
+	
 	drawSphere ();
 	drawCube ();
 }
@@ -348,10 +363,6 @@ X3DBackgroundNode::drawSphere ()
 {
 	if (transparency () >= 1.0f)
 		return;
-
-	// Draw
-
-	getCurrentViewpoint () -> reshape (1, 20000);
 
 	// Rotate background
 

@@ -73,7 +73,6 @@ Surface::Surface (const std::shared_ptr <WindowContext> & sharingContext) :
 {
 	set_double_buffered (false);
 	set_app_paintable (true);
-	//set_visual (4); // 4 x Antialiasing
 
 	// Enable map_event.
 	add_events (Gdk::STRUCTURE_MASK);
@@ -93,13 +92,14 @@ Surface::set_antialiasing (int32_t samples)
 	int32_t visualAttributes [ ] = {
 		//		GLX_X_RENDERABLE,     true,
 		//		GLX_DRAWABLE_TYPE,    GLX_WINDOW_BIT,
-		//		GLX_RENDER_TYPE,      GLX_RGBA_BIT,
 		GLX_X_VISUAL_TYPE,    GLX_TRUE_COLOR,
+		//GLX_TRANSPARENT_TYPE, GLX_TRANSPARENT_RGB,
+		//GLX_RENDER_TYPE,      GLX_RGBA_BIT,
 		GLX_RGBA,
 		GLX_RED_SIZE,         8,
 		GLX_GREEN_SIZE,       8,
 		GLX_BLUE_SIZE,        8,
-		GLX_ALPHA_SIZE,       0,       // zero
+		GLX_ALPHA_SIZE,       8,       // zero
 		GLX_ACCUM_RED_SIZE,   8,
 		GLX_ACCUM_GREEN_SIZE, 8,
 		GLX_ACCUM_BLUE_SIZE,  8,

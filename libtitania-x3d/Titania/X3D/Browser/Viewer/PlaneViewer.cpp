@@ -84,7 +84,7 @@ PlaneViewer::on_button_press_event (GdkEventButton* event)
 {
 	button = event -> button;
 
-	if (button == 1 or button == 2)
+	if (button == 2)
 	{
 		getActiveViewpoint () -> transitionStop ();
 
@@ -104,7 +104,7 @@ PlaneViewer::on_button_release_event (GdkEventButton* event)
 bool
 PlaneViewer::on_motion_notify_event (GdkEventMotion* event)
 {
-	if (button == 1 or button == 2)
+	if (button == 2)
 	{
 		const auto & viewpoint = getActiveViewpoint ();
 
@@ -131,7 +131,7 @@ PlaneViewer::on_scroll_event (GdkEventScroll* event)
 
 	if (event -> direction == 0)      // Move backwards.
 	{
-		viewpoint -> fieldOfViewScale () = viewpoint -> fieldOfViewScale () * (1 - SCROLL_FACTOR);
+		viewpoint -> fieldOfViewScale () = std::max (0.00001f, viewpoint -> fieldOfViewScale () * (1 - SCROLL_FACTOR));
 	}
 
 	else if (event -> direction == 1) // Move forwards.

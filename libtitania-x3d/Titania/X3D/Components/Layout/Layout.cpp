@@ -90,7 +90,7 @@ Layout::Layout (X3DExecutionContext* const executionContext) :
 	       scaleModeY (ScaleModeType::NONE),
 	           parent (nullptr),
 	         viewport (),
-	rectangleCenter (),
+	  rectangleCenter (),
 	    rectangleSize ()
 {
 	addField (inputOutput, "metadata",    metadata ());

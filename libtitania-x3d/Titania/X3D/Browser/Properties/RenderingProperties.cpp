@@ -213,30 +213,33 @@ RenderingProperties::hasExtension (const std::string & name)
 size_t
 RenderingProperties::getAvailableTextureMemory ()
 {
-	if (hasExtension ("GL_NVX_gpu_memory_info"))
+	if (getBrowser () -> makeCurrent ())
 	{
-		GLint kbytes = 0;
+		if (hasExtension ("GL_NVX_gpu_memory_info"))
+		{
+			GLint kbytes = 0;
 
-		glGetIntegerv (GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &kbytes); // in KBytes
-		return 1024 * kbytes;
-	}
+			glGetIntegerv (GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &kbytes); // in KBytes
+			return 1024 * kbytes;
+		}
 
-	//http://www.opengl.org/registry/specs/ATI/meminfo.txt
-	if (hasExtension ("GL_ATI_meminfo"))
-	{
-		// VBO_FREE_MEMORY_ATI                     0x87FB
-		// TEXTURE_FREE_MEMORY_ATI                 0x87FC
-		// RENDERBUFFER_FREE_MEMORY_ATI            0x87FD
-		//
-		// param[0] - total memory free in the pool
-		// param[1] - largest available free block in the pool
-		// param[2] - total auxiliary memory free
-		// param[3] - largest auxiliary free block
+		//http://www.opengl.org/registry/specs/ATI/meminfo.txt
+		if (hasExtension ("GL_ATI_meminfo"))
+		{
+			// VBO_FREE_MEMORY_ATI                     0x87FB
+			// TEXTURE_FREE_MEMORY_ATI                 0x87FC
+			// RENDERBUFFER_FREE_MEMORY_ATI            0x87FD
+			//
+			// param[0] - total memory free in the pool
+			// param[1] - largest available free block in the pool
+			// param[2] - total auxiliary memory free
+			// param[3] - largest auxiliary free block
 
-		GLint kbytes [4] = { 0, 0, 0, 0 };
+			GLint kbytes [4] = { 0, 0, 0, 0 };
 
-		// glGetIntegerv (TEXTURE_FREE_MEMORY_ATI, &kbytes); // in KBytes
-		return 1024 * kbytes [0];
+			// glGetIntegerv (TEXTURE_FREE_MEMORY_ATI, &kbytes); // in KBytes
+			return 1024 * kbytes [0];
+		}
 	}
 
 	return 0;
@@ -300,6 +303,11 @@ RenderingProperties::display ()
 void
 RenderingProperties::build ()
 {
+	GLint sampleBuffers, samples;
+
+	glGetIntegerv (GL_SAMPLE_BUFFERS, &sampleBuffers);
+	glGetIntegerv (GL_SAMPLES, &samples);
+
 	try
 	{
 		auto statistics = world -> getExecutionContext () -> getNamedNode ("StatisticsTool");
@@ -319,7 +327,7 @@ RenderingProperties::build ()
 			string -> emplace_back (basic::sprintf ("Max threads:               %d", maxThreads () .getValue ()));
 			string -> emplace_back (basic::sprintf ("Texture units:             %d / %d", textureUnits () .getValue (), combinedTextureUnits () - textureUnits ()));
 			string -> emplace_back (basic::sprintf ("Max texture size:          %d × %d pixel", maxTextureSize () .getValue (), maxTextureSize () .getValue ()));
-			string -> emplace_back (basic::sprintf ("Antialiased:               %s", antialiased () .toString () .c_str ()));
+			string -> emplace_back (basic::sprintf ("Antialiased:               %s (%d/%d)", antialiased () .toString () .c_str (), sampleBuffers, samples));
 			string -> emplace_back (basic::sprintf ("Max lights:                %d", maxLights () .getValue ()));
 			string -> emplace_back (basic::sprintf ("Max clip planes:           %d", maxClipPlanes () .getValue ()));
 			string -> emplace_back (basic::sprintf ("Color depth:               %d bits", colorDepth () .getValue ()));
