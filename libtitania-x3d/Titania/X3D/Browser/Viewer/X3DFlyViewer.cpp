@@ -73,6 +73,7 @@ Vector3f X3DFlyViewer::upVector (0, 1, 0);
 X3DFlyViewer::X3DFlyViewer (X3DBrowserSurface* const browser, NavigationInfo* const navigationInfo) :
 	          X3DViewer (browser),
 	     navigationInfo (navigationInfo),
+	        orientation (),
 	         fromVector (),
 	           toVector (),
 	          direction (),
@@ -96,15 +97,15 @@ X3DFlyViewer::initialize ()
 	getBrowser () -> signal_key_press_event      () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_key_press_event));
 	getBrowser () -> signal_key_release_event    () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_key_release_event));
 
-	getActiveViewpoint () -> straighten (true);
+	//getActiveViewpoint () -> straighten (true);
 }
 
 bool
 X3DFlyViewer::on_button_press_event (GdkEventButton* event)
 {
-	button = event -> button;
-
 	disconnect ();
+
+	button = event -> button;
 
 	getBrowser () -> addEvent ();
 
@@ -112,10 +113,19 @@ X3DFlyViewer::on_button_press_event (GdkEventButton* event)
 	{
 		getActiveViewpoint () -> transitionStop ();
 
-		fromVector = toVector = Vector3f (event -> x, 0, event -> y);
+		if (keys .control ())
+		{
+			orientation = getActiveViewpoint () -> getUserOrientation ();
+			
+			fromVector = trackballProjectToSphere (event -> x, event -> y);
+		}
+		else
+		{
+			fromVector = toVector = Vector3f (event -> x, 0, event -> y);
 
-		if (getBrowser () -> getBrowserOptions () -> rubberBand ())
-			getBrowser () -> displayed () .addInterest (this, &X3DFlyViewer::display);
+			if (getBrowser () -> getBrowserOptions () -> rubberBand ())
+				getBrowser () -> displayed () .addInterest (this, &X3DFlyViewer::display);
+		}
 	}
 
 	else if (button == 2)
@@ -133,18 +143,6 @@ X3DFlyViewer::on_button_release_event (GdkEventButton* event)
 {
 	disconnect ();
 
-	getBrowser () -> addEvent ();
-
-	if (button == 1)
-	{
-		getBrowser () -> displayed () .removeInterest (this, &X3DFlyViewer::display);
-	}
-
-	else if (button == 2)
-	{ }
-
-	button = 0;
-
 	return false;
 }
 
@@ -155,12 +153,24 @@ X3DFlyViewer::on_motion_notify_event (GdkEventMotion* event)
 
 	if (button == 1)
 	{
-		toVector  = Vector3f (event -> x, 0, event -> y);
-		direction = (toVector - fromVector) * (SPEED_FACTOR * navigationInfo -> speed ());
+		if (keys .control ())
+		{
+			Vector3f toVector = trackballProjectToSphere (event -> x, event -> y);
+			
+			orientation = Rotation4f (toVector, fromVector) * orientation;
+			orientation = orientation * X3DViewpointNode::straightenHorizon (orientation);
 
-		addFly ();
+			getActiveViewpoint () -> orientationOffset () = ~getActiveViewpoint () -> orientation () * orientation;
 
-		//return true;
+			fromVector = toVector;
+		}
+		else
+		{
+			toVector  = Vector3f (event -> x, 0, event -> y);
+			direction = (toVector - fromVector) * (SPEED_FACTOR * navigationInfo -> speed ());
+
+			addFly ();
+		}
 	}
 
 	else if (button == 2)
@@ -169,8 +179,6 @@ X3DFlyViewer::on_motion_notify_event (GdkEventMotion* event)
 		direction = (toVector - fromVector) * (SPEED_FACTOR * navigationInfo -> speed ());
 
 		addPan ();
-
-		//return true;
 	}
 
 	return false;
@@ -204,6 +212,19 @@ bool
 X3DFlyViewer::on_key_press_event (GdkEventKey* event)
 {
 	keys .press (event);
+	
+	switch (event -> keyval)
+	{
+		case GDK_KEY_Control_L:
+		case GDK_KEY_Control_R:
+		{
+			disconnect ();
+			break;
+		}
+		default:
+			break;
+	}
+
 	return false;
 }
 
@@ -211,6 +232,19 @@ bool
 X3DFlyViewer::on_key_release_event (GdkEventKey* event)
 {
 	keys .release (event);
+
+	switch (event -> keyval)
+	{
+		case GDK_KEY_Control_L:
+		case GDK_KEY_Control_R:
+		{
+			disconnect ();
+			break;
+		}
+		default:
+			break;
+	}
+
 	return false;
 }
 
@@ -329,6 +363,18 @@ X3DFlyViewer::addRoll ()
 void
 X3DFlyViewer::disconnect ()
 {
+	getBrowser () -> addEvent ();
+
+	if (button == 1)
+	{
+		getBrowser () -> displayed () .removeInterest (this, &X3DFlyViewer::display);
+	}
+
+	else if (button == 2)
+	{ }
+
+	button = 0;
+
 	fly_id  .disconnect ();
 	pan_id  .disconnect ();
 	roll_id .disconnect ();

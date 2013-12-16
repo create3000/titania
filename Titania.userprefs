@@ -1,18 +1,26 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/TextureEditor/TextureEditor.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Browser/Viewer/X3DFlyViewer.cpp">
     <Files>
-      <File FileName="Titania/Titania/MaterialEditor/MaterialEditor.h" Line="84" Column="1" />
-      <File FileName="Titania/Titania/MaterialEditor/MaterialEditor.cpp" Line="61" Column="39" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/TextureProperties.cpp" Line="176" Column="1" />
-      <File FileName="Titania/Titania/TextureEditor/TextureEditor.h" Line="69" Column="37" />
-      <File FileName="Titania/Titania/TextureEditor/TextureEditor.cpp" Line="72" Column="2" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="460" Column="1" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="84" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Viewer/X3DFlyViewer.h" Line="136" Column="30" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Viewer/X3DFlyViewer.cpp" Line="76" Column="25" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/X3DViewpointNode.h" Line="174" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/X3DViewpointNode.cpp" Line="266" Column="25" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Viewer/LookAtViewer.h" Line="93" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Viewer/LookAtViewer.cpp" Line="160" Column="40" />
+      <File FileName="libtitania-x3d/Titania/X3D/Miscellaneous/Keys.cpp" Line="88" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="miscellaneous" expanded="True">
             <Node name="glade2c++" expanded="True" />
+            <Node name="logo" expanded="True" />
+          </Node>
+          <Node name="build" expanded="True">
+            <Node name="debian" expanded="True" />
           </Node>
           <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
@@ -22,6 +30,12 @@
                 <Node name="NurbsPatchSurface" expanded="True" />
                 <Node name="NurbsTrimmedSurface" expanded="True" />
               </Node>
+              <Node name="PointingDeviceSensor" expanded="True" />
+            </Node>
+          </Node>
+          <Node name="libtitania-opengl-surface" expanded="True">
+            <Node name="Titania" expanded="True">
+              <Node name="OpenGL" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-standard" expanded="True">
@@ -30,6 +44,9 @@
               <Node name="Math" expanded="True">
                 <Node name="Numbers" expanded="True" />
               </Node>
+              <Node name="OS" expanded="True" />
+              <Node name="String" expanded="True" />
+              <Node name="Utility" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
@@ -43,18 +60,24 @@
               <Node name="X3D" expanded="True">
                 <Node name="Basic" expanded="True" />
                 <Node name="Browser" expanded="True">
-                  <Node name="Devices" expanded="True" />
                   <Node name="Picking" expanded="True" />
+                  <Node name="Properties" expanded="True" />
+                  <Node name="Viewer" expanded="True">
+                    <Node name="X3DFlyViewer.cpp" selected="True" />
+                  </Node>
                 </Node>
                 <Node name="Components" expanded="True">
-                  <Node name="Grouping" expanded="True" />
-                  <Node name="KeyDeviceSensor" expanded="True" />
+                  <Node name="EnvironmentalEffects" expanded="True" />
+                  <Node name="Layering" expanded="True" />
+                  <Node name="Layout" expanded="True" />
+                  <Node name="Navigation" expanded="True" />
                   <Node name="PointingDeviceSensor" expanded="True" />
                   <Node name="Shape" expanded="True" />
                   <Node name="Texturing" expanded="True" />
+                  <Node name="Texturing3D" expanded="True" />
                 </Node>
-                <Node name="Handles" expanded="True" />
                 <Node name="Miscellaneous" expanded="True" />
+                <Node name="Rendering" expanded="True" />
                 <Node name="Routing" expanded="True" />
                 <Node name="Thread" expanded="True" />
               </Node>
@@ -65,9 +88,11 @@
           </Node>
           <Node name="Titania" expanded="True">
             <Node name="share" expanded="True">
+              <Node name="applications" expanded="True" />
               <Node name="titania" expanded="True">
                 <Node name="ui" expanded="True">
                   <Node name="Dialogs" expanded="True" />
+                  <Node name="icons" expanded="True" />
                 </Node>
               </Node>
             </Node>
@@ -75,11 +100,11 @@
               <Node name="Base" expanded="True" />
               <Node name="Browser" expanded="True" />
               <Node name="Configuration" expanded="True" />
+              <Node name="LibraryView" expanded="True" />
               <Node name="MaterialEditor" expanded="True" />
-              <Node name="TextureEditor" expanded="True">
-                <Node name="TextureEditor.cpp" selected="True" />
-              </Node>
-              <Node name="UserInterfaces" expanded="True" />
+              <Node name="NodePropertiesEditor" expanded="True" />
+              <Node name="OutlineEditor" expanded="True" />
+              <Node name="TextureEditor" expanded="True" />
             </Node>
           </Node>
         </State>

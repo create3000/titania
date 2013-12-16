@@ -70,19 +70,7 @@ LookAtViewer::initialize ()
 	getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &LookAtViewer::on_button_release_event), false);
 	getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &LookAtViewer::on_motion_notify_event),  false);
 
-	getBrowser () -> getActiveViewpointChanged () .addInterest (this, &LookAtViewer::set_viewpoint);
-
 	getBrowser () -> setPicking (false);
-}
-
-void
-LookAtViewer::set_viewpoint ()
-{
-	// Update orientationOffset.
-
-	auto viewpoint = getActiveViewpoint ();
-
-	orientation = viewpoint -> getUserOrientation ();
 }
 
 bool
@@ -97,10 +85,9 @@ LookAtViewer::on_button_press_event (GdkEventButton* event)
 	{
 		getActiveViewpoint () -> transitionStop ();
 
-		set_viewpoint ();
+		orientation = getActiveViewpoint () -> getUserOrientation ();
 
 		fromVector = trackballProjectToSphere (event -> x, event -> y);
-		rotation   = Rotation4f ();
 	}
 
 	return true;
@@ -153,7 +140,7 @@ LookAtViewer::on_motion_notify_event (GdkEventMotion* event)
 
 		Vector3f toVector = trackballProjectToSphere (event -> x, event -> y);
 
-		rotation = ~Rotation4f (fromVector, toVector);
+		rotation = Rotation4f (toVector, fromVector);
 
 		viewpoint -> orientationOffset () = getOrientationOffset ();
 

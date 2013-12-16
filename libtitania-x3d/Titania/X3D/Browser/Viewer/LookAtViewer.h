@@ -91,9 +91,6 @@ private:
 	void
 	initialize () final override;
 
-	void
-	set_viewpoint ();
-
 	bool
 	on_button_press_event (GdkEventButton*);
 

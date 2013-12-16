@@ -168,6 +168,10 @@ public:
 	void
 	straighten (bool = false);
 
+	static
+	Rotation4f
+	straightenHorizon (const Rotation4f &);
+
 	void
 	lookAt (Box3f, float = 1, bool = false);
 
@@ -241,10 +245,6 @@ private:
 
 	void
 	getRelativeTransformation (X3DViewpointNode*, Vector3f &, Rotation4f &, Vector3f &, Rotation4f &) const;
-
-	static
-	Rotation4f
-	straightenHorizon (const Rotation4f &);
 
 	virtual
 	Vector3f

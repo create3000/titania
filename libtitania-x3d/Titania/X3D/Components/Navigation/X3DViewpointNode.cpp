@@ -59,6 +59,9 @@
 namespace titania {
 namespace X3D {
 
+static constexpr Vector3f upVector (0, 1, 0);
+static constexpr Vector3f zAxis (0, 0, 1);
+
 X3DViewpointNode::Fields::Fields () :
 	           orientation (new SFRotation ()),
 	      centerOfRotation (new SFVec3f ()),
@@ -226,8 +229,6 @@ X3DViewpointNode::resetUserOffsets ()
 void
 X3DViewpointNode::straighten (bool horizon)
 {
-	__LOG__ << std::endl;
-
 	for (const auto & layer : getLayers ())
 		layer -> getNavigationInfo () -> transitionStart () = true;
 
@@ -238,18 +239,9 @@ X3DViewpointNode::straighten (bool horizon)
 
 	easeInEaseOut -> easeInEaseOut () = { SFVec2f (0, 1), SFVec2f (1, 0) };
 
-	Rotation4f newOrientation;
-
-	if (horizon)
-		newOrientation = straightenHorizon (getUserOrientation ());
-
-	else
-	{
-		auto direction = cross (Vector3f (0, 1, 0), cross (getUserOrientation () * Vector3f (0, 0, 1), Vector3f (0, 1, 0)));
-		newOrientation = Rotation4f (Vector3f (0, 0, 1), direction);
-	}
-	
-	auto rotation = ~orientation () * newOrientation;
+	Rotation4f rotation = horizon
+	                      ? orientationOffset () * straightenHorizon (getUserOrientation ())
+	                      : Rotation4f (getUserOrientation () * upVector, upVector);
 
 	positionInterpolator         -> keyValue () = { positionOffset (), positionOffset () };
 	orientationInterpolator      -> keyValue () = { orientationOffset (), rotation };
@@ -263,7 +255,7 @@ X3DViewpointNode::straighten (bool horizon)
 
 	auto distanceToCenter = abs (getUserCenterOfRotation () - getUserPosition ());
 
-	centerOfRotationOffset () = getUserPosition () + newOrientation* Vector3f (0, 0, -1) * distanceToCenter - centerOfRotation ();
+	centerOfRotationOffset () = getUserPosition () + (orientation () * rotation) * Vector3f (0, 0, -1) * distanceToCenter - centerOfRotation ();
 
 	set_bind () = true;
 }
@@ -271,14 +263,13 @@ X3DViewpointNode::straighten (bool horizon)
 Rotation4f
 X3DViewpointNode::straightenHorizon (const Rotation4f & orientation)
 {
-	auto direction = orientation * Vector3f (0, 0, 1);
-	auto rA        = Rotation4f (Vector3f (0, 0, 1), direction);
-	auto cameraUp  = rA * Vector3f (0, 1, 0);
-	auto N2        = cross (direction, Vector3f (0, 1, 0));
-	auto N1        = cross (direction, cameraUp);
-	auto rB        = Rotation4f (N1, N2);
+	// Taken from Billboard
 
-	return rA * rB;
+	Vector3f direction = orientation * zAxis;
+	Vector3f normal    = cross (direction, upVector);
+	Vector3f vector    = cross (direction, orientation * upVector);
+
+	return Rotation4f (vector, normal);
 }
 
 void
