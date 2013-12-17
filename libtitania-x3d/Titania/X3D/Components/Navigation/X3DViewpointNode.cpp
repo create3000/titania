@@ -239,9 +239,9 @@ X3DViewpointNode::straighten (bool horizon)
 
 	easeInEaseOut -> easeInEaseOut () = { SFVec2f (0, 1), SFVec2f (1, 0) };
 
-	Rotation4f rotation = horizon
-	                      ? orientationOffset () * straightenHorizon (getUserOrientation ())
-	                      : Rotation4f (getUserOrientation () * upVector, upVector);
+	Rotation4f rotation = orientationOffset () * (horizon
+	                                              ? straightenHorizon (getUserOrientation ())
+																 : Rotation4f (getUserOrientation () * upVector, upVector));
 
 	positionInterpolator         -> keyValue () = { positionOffset (), positionOffset () };
 	orientationInterpolator      -> keyValue () = { orientationOffset (), rotation };

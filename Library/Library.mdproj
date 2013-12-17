@@ -2000,11 +2000,7 @@
     <None Include="Prototypes\Composer\ComposeSFVec2f\ComposeSFVec2f.wrl" />
     <None Include="Tests\Rendering\TriangleFanSet.wrl" />
     <None Include="Tests\Rendering\TriangleStripSet.wrl" />
-    <None Include="Examples\WTC\wtc.wrl" />
-    <None Include="Examples\WTC\wtc.wrl.gz" />
     <None Include="Tests\PROTO\SimpleExternproto.wrl" />
-    <None Include="Examples\WTC\facade.wrl.gz" />
-    <None Include="Examples\WTC\facade.wrl" />
     <None Include="Tests\CADGeometry\IndexedQuadSet.wrl" />
     <None Include="Tests\Rendering\IndexedTriangleSet.wrl" />
     <None Include="Tests\Rendering\IndexedTriangleFanSet.wrl" />
@@ -2470,7 +2466,6 @@
     <Folder Include="Prototypes\Composer\ComposeSFVec3f\" />
     <Folder Include="Prototypes\Composer\ComposeSFVec2f\" />
     <Folder Include="Examples\DLMF\" />
-    <Folder Include="Examples\WTC\" />
     <Folder Include="Tests\Scripting\external\" />
     <Folder Include="Prototypes\Converter\" />
     <Folder Include="Prototypes\Converter\SFInt32Converter\" />

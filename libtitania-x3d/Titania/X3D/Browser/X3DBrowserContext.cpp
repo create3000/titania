@@ -387,6 +387,7 @@ END:;
 		examineViewer = activeNavigationInfo -> type () .empty ();
 		walkViewer    = false;
 		flyViewer     = false;
+		planeViewer   = false;
 		noneViewer    = false;
 		lookAt        = false;
 

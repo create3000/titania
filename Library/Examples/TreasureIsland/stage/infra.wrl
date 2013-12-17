@@ -4522,19 +4522,16 @@ Group {
 		  position	-64.31 36.07 -66.696
 		  orientation	-0.0148043 0.99704 0.0754407  2.72446
 		  fieldOfView	0.785398
-		  description	"viewpoint1"
 		}
 		DEF VP2 Viewpoint {
 		  position	-106.28 5.83335 -84.4778
 		  orientation	-0.963153 -0.23549 0.129927  0.0724344
 		  fieldOfView	0.785398
-		  description	"viewpoint2"
 		}
 		DEF VP3 Viewpoint {
 		  position	57.0004 3.0852 74.9056
 		  orientation	0.168226 0.972164 0.163089  4.60559
 		  fieldOfView	0.785398
-		  description	"viewpoint3"
 		}
 		Transform {
 		  children	[

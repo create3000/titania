@@ -57,5 +57,15 @@ WalkViewer::WalkViewer (X3DBrowserSurface* const browser, NavigationInfo* const 
 	X3DFlyViewer (browser, navigationInfo)
 { }
 
+Vector3f
+WalkViewer::getTranslationOffset (const Vector3f & velocity)
+{
+	auto viewpoint = getActiveViewpoint ();
+
+	Rotation4f orientation = viewpoint -> getUserOrientation () * Rotation4f (viewpoint -> getUserOrientation () * upVector, upVector);
+
+	return orientation * velocity;
+}
+
 } // X3D
 } // titania

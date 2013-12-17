@@ -68,6 +68,13 @@ public:
 	getType () const final override
 	{ return ViewerType::WALK; }
 
+
+private:
+
+	virtual
+	Vector3f
+	getTranslationOffset (const Vector3f &) final override;
+
 };
 
 } // X3D

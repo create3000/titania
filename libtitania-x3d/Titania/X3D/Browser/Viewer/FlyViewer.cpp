@@ -57,5 +57,11 @@ FlyViewer::FlyViewer (X3DBrowserSurface* const browser, NavigationInfo* navigati
 	X3DFlyViewer (browser, navigationInfo)
 { }
 
+Vector3f
+FlyViewer::getTranslationOffset (const Vector3f & velocity)
+{
+	return getActiveViewpoint () -> getUserOrientation () * velocity;
+}
+
 } // X3D
 } // titania
