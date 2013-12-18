@@ -119,7 +119,7 @@ DEF Rotor Rotor {
 
 DEF Box Transform {
   translation 1.40843 1.10727 0.193803
-  rotation 0 0 1 5.64302
+  rotation 0 0 1 0.453442
   scale 0.2 0.2 0.2
   children Transform {
     children Shape {
@@ -225,6 +225,25 @@ DEF Inline Transform {
   center -1.99912 -0.520307 0
   children Inline {
     url "Inline.wrl"
+  }
+}
+
+DEF Text3 Transform {
+  translation 0.673213 -0.0752815 0
+  scale 1 -1 1
+  children Shape {
+    appearance Appearance {
+      material Material {
+        transparency 0.57
+      }
+    }
+    geometry DEF Text2 Text {
+      string "OutlineEditor"
+      fontStyle FontStyle {
+        family "PT Sans Narrow"
+        style "BOLD"
+      }
+    }
   }
 }
 

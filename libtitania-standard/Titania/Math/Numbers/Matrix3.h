@@ -279,7 +279,11 @@ public:
 	///  @name  Arithmetic operations
 	///  All these operators modify this matrix4 inplace.
 
-	///  Returns the deteminant of this matrix.
+	///  Returns the determinant of the 2x2 sub-matrix.
+	Type
+	determinant2 () const;
+
+	///  Returns the determinant of this matrix.
 	Type
 	determinant () const;
 
@@ -364,9 +368,6 @@ private:
 	        matrix3 & rotation,
 	        vector2 <Type> & scale,
 	        matrix3 & scaleOrientation) const;
-
-	Type
-	det2 () const;
 
 	union
 	{
@@ -608,7 +609,7 @@ matrix3 <Type>::factor (vector2 <Type> & translation,
 	a .value [2] [2] = 1;
 
 	// (3) Compute det A. If negative, set sign = -1, else sign = 1
-	Type det      = a .det2 ();
+	Type det      = a .determinant2 ();
 	Type det_sign = (det < 0 ? -1 : 1);
 
 	if (det_sign * det == 0)
@@ -647,7 +648,7 @@ matrix3 <Type>::factor (vector2 <Type> & translation,
 
 template <class Type>
 Type
-matrix3 <Type>::det2 () const
+matrix3 <Type>::determinant2 () const
 {
 	return
 	   array [0] * array [4] -

@@ -70,14 +70,11 @@ namespace X3D {
  */
 
 ViewVolume::ViewVolume () :
-	ViewVolume (ModelViewMatrix4d (), ProjectionMatrix4d ())
+	planes (6),
+	 valid (false)
 { }
 
-ViewVolume::ViewVolume (const Matrix4d & modelview) :
-	ViewVolume (modelview, ProjectionMatrix4d ())
-{ }
-
-ViewVolume::ViewVolume (const Matrix4d & modelview, const Matrix4d & projection) :
+ViewVolume::ViewVolume (const Matrix4d & projection) :
 	planes (),
 	 valid (true)
 {
@@ -90,7 +87,7 @@ ViewVolume::ViewVolume (const Matrix4d & modelview, const Matrix4d & projection)
 		int y1 = viewport [1];
 		int y2 = viewport [1] + viewport [3];
 
-		Matrix4d matrix = ~(modelview * projection);
+		Matrix4d matrix = ~projection;
 
 		Vector3f p1 = unProjectPoint (x1, y2, 1, matrix, viewport);
 		Vector3f p2 = unProjectPoint (x1, y1, 1, matrix, viewport);

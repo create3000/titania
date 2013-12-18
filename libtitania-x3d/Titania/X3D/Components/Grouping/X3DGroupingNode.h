@@ -103,13 +103,6 @@ public:
 	virtual
 	Box3f
 	getBBox () override;
-	
-	void
-	setVisible (const MFBool &);
-
-	const MFBool &
-	getVisible () const
-	{ return visible; }
 
 	///  @name Operations
 
@@ -135,6 +128,22 @@ protected:
 	void
 	initialize () override;
 
+	///  @name Visibility
+
+	void
+	setDisplay (const bool);
+
+	bool
+	getDisplay () const
+	{ return display; }
+
+	void
+	setVisible (const MFBool &);
+
+	const MFBool &
+	getVisible () const
+	{ return visible; }
+
 
 private:
 
@@ -149,6 +158,9 @@ private:
 
 	void
 	add (const MFNode &);
+	
+	void
+	clear ();
 
 	struct Fields
 	{
@@ -161,6 +173,7 @@ private:
 
 	Fields fields;
 
+	bool                                       display;
 	MFBool                                     visible;
 	std::vector <X3DPointingDeviceSensorNode*> pointingDeviceSensors;
 	std::vector <LocalFog*>                    localFogs;

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -65,14 +65,15 @@ X3DGroupingNode::Fields::Fields () :
 { }
 
 X3DGroupingNode::X3DGroupingNode () :
-	    X3DChildNode (),
-	X3DBoundedObject (),
-	 fields (),
-visible (),
+	         X3DChildNode (),
+	     X3DBoundedObject (),
+	               fields (),
+	              display (true),
+	              visible (),
 	pointingDeviceSensors (),
-	localFogs (),
-	collectables (),
-	childNodes ()
+	            localFogs (),
+	         collectables (),
+	           childNodes ()
 {
 	addNodeType (X3DConstants::X3DGroupingNode);
 
@@ -103,6 +104,17 @@ X3DGroupingNode::getBBox ()
 }
 
 void
+X3DGroupingNode::setDisplay (const bool value)
+{
+	if (value not_eq display)
+	{
+		display = value;
+
+		set_children ();
+	}
+}
+
+void
 X3DGroupingNode::setVisible (const MFBool & value)
 {
 	visible = value;
@@ -116,7 +128,7 @@ X3DGroupingNode::set_addChildren ()
 	if (not addChildren () .empty ())
 	{
 		MFNode childrenToAdd;
-		
+
 		std::set_difference (addChildren () .begin (), addChildren () .end (),
 		                     children () .begin (), children () .end (),
 		                     std::back_inserter (childrenToAdd));
@@ -148,17 +160,16 @@ X3DGroupingNode::set_removeChildren ()
 void
 X3DGroupingNode::set_children ()
 {
-	pointingDeviceSensors .clear ();
-	localFogs    .clear ();
-	collectables .clear ();
-	childNodes   .clear ();
-
+	clear ();
 	add (children ());
 }
 
 void
 X3DGroupingNode::add (const MFNode & children)
 {
+	if (not display)
+		return;
+
 	size_t i = 0;
 
 	for (const auto & child : children)
@@ -183,7 +194,7 @@ X3DGroupingNode::add (const MFNode & children)
 				{
 					if (childNode -> isCollectable ())
 						collectables .emplace_back (childNode);
-				
+
 					if (i >= visible .size () or visible [i])
 						childNodes .emplace_back (childNode);
 				}
@@ -192,6 +203,15 @@ X3DGroupingNode::add (const MFNode & children)
 
 		++ i;
 	}
+}
+
+void
+X3DGroupingNode::clear ()
+{
+	pointingDeviceSensors .clear ();
+	localFogs    .clear ();
+	collectables .clear ();
+	childNodes   .clear ();
 }
 
 void

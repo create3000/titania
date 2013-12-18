@@ -66,7 +66,10 @@ public:
 
 	ViewVolume (const Matrix4d &);
 
-	ViewVolume (const Matrix4d &, const Matrix4d &);
+	ViewVolume (const ViewVolume &) = default;
+
+	ViewVolume &
+	operator = (const ViewVolume &) = default;
 
 	bool
 	intersect (const Box3f &) const;

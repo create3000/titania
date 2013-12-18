@@ -96,9 +96,9 @@ Switch::getBBox ()
 
 			if (child)
 				return child -> getBBox ();
-
-			return Box3f ();
 		}
+
+		return Box3f ();
 	}
 
 	return Box3f (bboxSize (), bboxCenter ());

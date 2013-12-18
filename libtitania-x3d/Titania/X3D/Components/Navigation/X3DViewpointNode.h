@@ -51,6 +51,7 @@
 #ifndef __TITANIA_X3D_COMPONENTS_NAVIGATION_X3DVIEWPOINT_NODE_H__
 #define __TITANIA_X3D_COMPONENTS_NAVIGATION_X3DVIEWPOINT_NODE_H__
 
+#include "../../Rendering/ViewVolume.h"
 #include "../../Types/Geometry.h"
 #include "../Core/X3DBindableNode.h"
 #include "../Navigation/X3DViewpointObject.h"
@@ -155,6 +156,10 @@ public:
 	const Matrix4f &
 	getParentMatrix () const
 	{ return parentMatrix; }
+	
+	ViewVolume
+	getViewVolume () const
+	{ return viewVolume; }
 
 	virtual
 	Vector3d
@@ -290,6 +295,8 @@ private:
 	Matrix4f parentMatrix;
 	Matrix4f transformationMatrix;
 	Matrix4f inverseTransformationMatrix;
+	
+	ViewVolume viewVolume;
 
 	X3DSFNode <TimeSensor>              timeSensor;
 	X3DSFNode <EaseInEaseOut>           easeInEaseOut;

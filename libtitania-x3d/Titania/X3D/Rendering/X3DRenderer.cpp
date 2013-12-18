@@ -95,7 +95,7 @@ X3DRenderer::addShape (X3DShapeNode* shape)
 
 	if (distance < 0)
 	{
-		if (ViewVolume (matrix) .intersect (shape -> getBBox ()))
+		if (getCurrentViewpoint () -> getViewVolume () .intersect (shape -> getBBox () * matrix))
 		{
 			X3DFogObject* fog = getCurrentLayer () -> getFog ();
 
@@ -131,7 +131,7 @@ X3DRenderer::addCollision (X3DShapeNode* shape)
 
 	if (distance < 0)
 	{
-		if (ViewVolume (matrix) .intersect (shape -> getBBox ()))
+		if (getCurrentViewpoint () -> getViewVolume () .intersect (shape -> getBBox () * matrix))
 		{
 			const CollisionArray & collisions = getCurrentLayer () -> getCollisions ();
 

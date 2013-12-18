@@ -61,8 +61,8 @@ const std::string ScreenGroup::typeName       = "ScreenGroup";
 const std::string ScreenGroup::containerField = "children";
 
 ScreenGroup::ScreenGroup (X3DExecutionContext* const executionContext) :
-	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	 X3DGroupingNode ()
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DGroupingNode ()
 {
 	addField (inputOutput,    "metadata",       metadata ());
 	addField (initializeOnly, "bboxSize",       bboxSize ());
@@ -90,14 +90,18 @@ ScreenGroup::scale (const TraverseType type) const
 {
 	Matrix4d modelViewMatrix = getModelViewMatrix (type);
 
-	Vector3d translation;
+	Vector3d   translation, scale;
 	Rotation4d rotation;
-	modelViewMatrix .get (translation, rotation);
 
-	double distance = math::abs (modelViewMatrix .translation ());
+	modelViewMatrix .get (translation, rotation, scale);
+
+	double   distance    = math::abs (modelViewMatrix .translation ());
+	Vector3f screenScale = getCurrentViewpoint () -> getScreenScale (distance, Viewport4i ());
 
 	Matrix4d matrix;
-	matrix .set (translation, rotation, getCurrentViewpoint () -> getScreenScale (distance, Viewport4i ()));
+	matrix .set (translation, rotation, Vector3f (screenScale .x () * signum (scale .x ()),
+	                                              screenScale .y () * signum (scale .y ()),
+	                                              screenScale .z () * signum (scale .z ())));
 
 	glLoadMatrixd (matrix .data ());
 }

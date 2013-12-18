@@ -308,12 +308,13 @@ public:
 	///  @name  Arithmetic operations
 	///  All these operators modify this matrix4 inplace.
 
-	///  Returns the deteminant of this matrix.
-	Type
-	determinant () const;
-
+	///  Returns the determinant of the 3x3 sub-matrix.
 	Type
 	determinant3 () const;
+
+	///  Returns the determinant of this matrix.
+	Type
+	determinant () const;
 
 	///  Returns this matrix transposed.
 	matrix4 &

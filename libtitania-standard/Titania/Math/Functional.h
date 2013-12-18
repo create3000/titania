@@ -53,12 +53,37 @@
 
 #include "../Math/Constants.h"
 #include <cmath>
+#include <type_traits>
 #include <stdexcept>
 
 namespace titania {
 namespace math {
 
 using std::abs;
+
+template <typename Type>
+inline
+constexpr int
+signum (Type x, std::false_type is_signed)
+{
+	return Type (0) < x;
+}
+
+template <typename Type>
+inline
+constexpr int
+signum (Type x, std::true_type is_signed)
+{
+	return (Type (0) < x) - (x < Type (0));
+}
+
+template <typename Type>
+inline
+constexpr int
+signum (Type x)
+{
+	return signum (x, std::is_signed <Type> ());
+}
 
 template <class Type>
 inline

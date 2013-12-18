@@ -112,9 +112,8 @@ PROTO TransformTool [
     children [
       Transform {
         translation IS bboxCenter
-        scale IS bboxSize
         children [
-          DEF BBox Shape {
+          Shape {
             appearance Appearance {
               material Material {
                 emissiveColor 0.35 1 0.7
@@ -122,27 +121,23 @@ PROTO TransformTool [
             }
             geometry IndexedLineSet {
               coordIndex [ 0, 1, 2, 3, 0, -1, 4, 5, 6, 7, 4, -1, 0, 4, -1, 3, 7, -1, 1, 5, -1, 2, 6, -1 ]
-              coord Coordinate {
+              coord DEF BBox Coordinate {
                 point [ -0.5 0.5 0.5, -0.5 -0.5 0.5, 0.5 -0.5 0.5, 0.5 0.5 0.5, -0.5 0.5 -0.5, -0.5 -0.5 -0.5, 0.5 -0.5 -0.5, 0.5 0.5 -0.5 ]
               }
             }
           }
-          DEF Axes Shape {
+          Shape {
             geometry IndexedLineSet {
               colorPerVertex FALSE
               coordIndex [ 0, 1, -1, 0, 2, -1, 0, 3, -1 ]
               color Color {
                 color [ 1 0 0, 0 1 0, 0 0 1 ]
               }
-              coord Coordinate {
+              coord DEF Axes Coordinate {
                 point [ 0 0 0, 0.5 0 0, 0 0.5 0, 0 0 0.5, 0 0 0 ]
               }
             }
           }
-        ]
-      }
-      DEF Planes Group {
-        children [
           DEF Front Transform {
             children Transform {
               children [
@@ -693,7 +688,7 @@ PROTO TransformTool [
     url "vrmlscript:
 function initialize (value, time)
 {
-	set_whichChoice (0);
+	set_whichChoice (2);
 }
 
 function set_active (value, time)
@@ -732,12 +727,13 @@ function set_whichChoice (value)
 "
   }
 
-  DEF PlanesScript Script {
+  DEF BBoxScript Script {
     exposedField SFMatrix4f cameraSpaceMatrix IS cameraSpaceMatrix
     exposedField SFMatrix4f modelViewMatrix IS modelViewMatrix
     exposedField SFVec3f    bboxSize IS bboxSize
-    exposedField SFVec3f    bboxCenter IS bboxCenter
     field        SFFloat    offset 0.01
+    field        SFNode     bbox USE BBox
+    field        SFNode     axes USE Axes
     field        SFNode     front USE Front
     field        SFNode     right USE Right
     field        SFNode     back USE Back
@@ -754,21 +750,43 @@ function set_whichChoice (value)
     url "vrmlscript:
 function eventsProcessed ()
 {
+	var bboxSize1_2 = bboxSize .divide (2);
+
+	// Axes
+	
+	axes .point = new MFVec3f (new SFVec3f (0, 0, 0),
+	                           new SFVec3f (bboxSize1_2 .x, 0, 0),
+	                           new SFVec3f (0, bboxSize1_2 .y, 0), 
+	                           new SFVec3f (0, 0, bboxSize1_2 .z), 
+	                           new SFVec3f (0, 0, 0));
+
+
+	// BBox
+
+	bbox .point = new MFVec3f (new SFVec3f (-bboxSize1_2 .x,  bboxSize1_2 .y,  bboxSize1_2 .z),
+	                           new SFVec3f (-bboxSize1_2 .x, -bboxSize1_2 .y,  bboxSize1_2 .z), 
+	                           new SFVec3f ( bboxSize1_2 .x, -bboxSize1_2 .y,  bboxSize1_2 .z), 
+	                           new SFVec3f ( bboxSize1_2 .x,  bboxSize1_2 .y,  bboxSize1_2 .z), 
+	                           new SFVec3f (-bboxSize1_2 .x,  bboxSize1_2 .y, -bboxSize1_2 .z), 
+	                           new SFVec3f (-bboxSize1_2 .x, -bboxSize1_2 .y, -bboxSize1_2 .z), 
+	                           new SFVec3f ( bboxSize1_2 .x, -bboxSize1_2 .y, -bboxSize1_2 .z), 
+	                           new SFVec3f ( bboxSize1_2 .x,  bboxSize1_2 .y, -bboxSize1_2 .z));
+
 	// Position and scale planes
 
 	var scale = new SFVec3f ();
 	modelViewMatrix .multRight (cameraSpaceMatrix) .getTransform (null, null, scale);
 
-	var x = offset / scale .x;
-	var y = offset / scale .y;
-	var z = offset / scale .z;
+	var x = offset / Math .abs (scale .x);
+	var y = offset / Math .abs (scale .y);
+	var z = offset / Math .abs (scale .z);
 
-	front  .translation = bboxCenter .add (new SFVec3f ( 0,  0,  z + bboxSize .z * 0.5));
-	right  .translation = bboxCenter .add (new SFVec3f ( x + bboxSize .x * 0.5,  0,  0));
-	back   .translation = bboxCenter .add (new SFVec3f ( 0,  0, -z - bboxSize .z * 0.5));
-	left   .translation = bboxCenter .add (new SFVec3f (-x - bboxSize .x * 0.5,  0,  0));
-	top    .translation = bboxCenter .add (new SFVec3f ( 0,  y + bboxSize .y * 0.5,  0));
-	bottom .translation = bboxCenter .add (new SFVec3f ( 0, -y - bboxSize .y * 0.5,  0));
+	front  .translation = new SFVec3f ( 0,  0,  z + bboxSize1_2 .z);
+	right  .translation = new SFVec3f ( x + bboxSize1_2 .x,  0,  0);
+	back   .translation = new SFVec3f ( 0,  0, -z - bboxSize1_2 .z);
+	left   .translation = new SFVec3f (-x - bboxSize1_2 .x,  0,  0);
+	top    .translation = new SFVec3f ( 0,  y + bboxSize1_2 .y,  0);
+	bottom .translation = new SFVec3f ( 0, -y - bboxSize1_2 .y,  0);
 	
 	front  .scale = new SFVec3f (bboxSize .x, bboxSize .y, 1);
 	right  .scale = new SFVec3f (1, bboxSize .y, bboxSize .z);
@@ -776,13 +794,6 @@ function eventsProcessed ()
 	left   .scale = new SFVec3f (1, bboxSize .y, bboxSize .z);
 	top    .scale = new SFVec3f (bboxSize .x, 1, bboxSize .z);
 	bottom .scale = new SFVec3f (bboxSize .x, 1, bboxSize .z);
-
-	frontSensor  .enabled = bboxSize .x && bboxSize .y;
-	rightSensor  .enabled = bboxSize .y && bboxSize .z;
-	backSensor   .enabled = bboxSize .x && bboxSize .y;
-	leftSensor   .enabled = bboxSize .y && bboxSize .z;
-	topSensor    .enabled = bboxSize .x && bboxSize .z;
-	bottomSensor .enabled = bboxSize .x && bboxSize .z;
 }
 "
     directOutput TRUE
@@ -800,6 +811,8 @@ function eventsProcessed ()
 	// Position arrows
 	
 	var bboxSize1_2 = bboxSize .divide (2);
+	
+	print (bboxSize1_2);
 
 	x .translation = new SFVec3f (bboxSize1_2 .x, 0, 0);
 	y .translation = new SFVec3f (0, bboxSize1_2 .y, 0);
@@ -1124,7 +1137,7 @@ function eventsProcessed ()
     eventIn      SFVec3f    set_scale7
     eventIn      SFVec3f    set_scale8
     exposedField SFFloat    minScale 0.001
-    exposedField SFBool     scaleAroundBBoxCenter FALSE
+    exposedField SFBool     scaleAroundBBoxCenter TRUE
     exposedField SFNode     transform IS transform
     exposedField SFVec3f    bboxSize IS bboxSize
     exposedField SFVec3f    bboxCenter IS bboxCenter
@@ -1187,12 +1200,12 @@ function set_scale1 (value)
 
 function set_scale2 (value)
 {
-	set_scale (value, sgn (sensor2 .trackPoint_changed .x))
+	set_scale (value, sgn (-sensor2 .trackPoint_changed .x))
 }
 
 function set_scale3 (value)
 {
-	set_scale (value, sgn (sensor3 .trackPoint_changed .x))
+	set_scale (value, sgn (-sensor3 .trackPoint_changed .x))
 }
 
 function set_scale4 (value)
@@ -1207,12 +1220,12 @@ function set_scale5 (value)
 
 function set_scale6 (value)
 {
-	set_scale (value, sgn (sensor6 .trackPoint_changed .x))
+	set_scale (value, sgn (-sensor6 .trackPoint_changed .x))
 }
 
 function set_scale7 (value)
 {
-	set_scale (value, sgn (sensor7 .trackPoint_changed .x))
+	set_scale (value, sgn (-sensor7 .trackPoint_changed .x))
 }
 
 function set_scale8 (value)
@@ -1229,14 +1242,15 @@ function set_scale (value, sgn)
 
 function scale (value)
 {
-	value .x = Math .abs (value .x);
-	value .y = Math .abs (value .y);
-	value .z = Math .abs (value .z);
+	var scale = scaleFactor .multVec (value);
 	
-	transform .scale = scaleFactor .multVec (value);
+	if (scale .x && scale .y && scale .z)
+	{
+		transform .scale = scale;
 
-	if (scaleAroundBBoxCenter)
-		translate ();
+		if (scaleAroundBBoxCenter)
+			translate ();
+	}
 }
 
 function translate ()
@@ -1273,6 +1287,13 @@ function sgn (value)
   ROUTE YScaleSensor.trackPoint_changed TO PPoint.set_translation
   ROUTE ZScaleSensor.trackPoint_changed TO PPoint.set_translation
   ROUTE ScaleSensor1.trackPoint_changed TO PPoint.set_translation
+  ROUTE ScaleSensor2.trackPoint_changed TO PPoint.set_translation
+  ROUTE ScaleSensor3.trackPoint_changed TO PPoint.set_translation
+  ROUTE ScaleSensor4.trackPoint_changed TO PPoint.set_translation
+  ROUTE ScaleSensor5.trackPoint_changed TO PPoint.set_translation
+  ROUTE ScaleSensor6.trackPoint_changed TO PPoint.set_translation
+  ROUTE ScaleSensor7.trackPoint_changed TO PPoint.set_translation
+  ROUTE ScaleSensor8.trackPoint_changed TO PPoint.set_translation
 
   # Mode translate, rotate or scale
 

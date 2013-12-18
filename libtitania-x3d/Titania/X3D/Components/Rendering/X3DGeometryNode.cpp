@@ -548,7 +548,7 @@ X3DGeometryNode::draw (bool solid, bool texture, bool lighting)
 	else
 		glDisable (GL_CULL_FACE);
 
-	glFrontFace (ccw);
+	glFrontFace (ModelViewMatrix4f () .determinant3 () > 0 ? ccw : (ccw == GL_CCW ? GL_CW : GL_CCW));
 
 	if (texture)
 	{

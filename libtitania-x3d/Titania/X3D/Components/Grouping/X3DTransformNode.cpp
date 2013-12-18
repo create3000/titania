@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -80,7 +80,10 @@ X3DTransformNode::initialize ()
 Box3f
 X3DTransformNode::getBBox ()
 {
-	return X3DGroupingNode::getBBox () * matrix;
+	if (getDisplay ())
+		return X3DGroupingNode::getBBox () * matrix;
+	
+	return Box3f ();
 }
 
 void
@@ -108,6 +111,10 @@ void
 X3DTransformNode::eventsProcessed ()
 {
 	X3DGroupingNode::eventsProcessed ();
+
+	setDisplay (scale () .getX () not_eq 0 and
+	            scale () .getY () not_eq 0 and
+	            scale () .getZ () not_eq 0);
 
 	matrix .set (translation (),
 	             rotation (),

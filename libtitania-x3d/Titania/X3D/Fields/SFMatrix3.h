@@ -182,6 +182,14 @@ public:
 	              value_type &,
 	              vector2_type &) const;
 
+	value_type
+	determinant2 () const
+	{ return getValue () .determinant2 (); }
+
+	value_type
+	determinant () const
+	{ return getValue () .determinant (); }
+
 	SFMatrix3*
 	inverse () const;
 

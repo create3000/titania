@@ -81,6 +81,7 @@ X3DViewpointNode::X3DViewpointNode () :
 	                parentMatrix (),
 	        transformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 10, 1),
 	 inverseTransformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, -10, 1),
+	                  viewVolume (),
 	                  timeSensor (new TimeSensor (getExecutionContext ())),
 	               easeInEaseOut (new EaseInEaseOut (getExecutionContext ())),
 	        positionInterpolator (new PositionInterpolator (getExecutionContext ())),
@@ -487,6 +488,8 @@ X3DViewpointNode::reshape ()
 	NavigationInfo* navigationInfo = getCurrentLayer () -> getNavigationInfo ();
 
 	reshape (navigationInfo -> getNearPlane (), navigationInfo -> getFarPlane ());
+	
+	viewVolume = ViewVolume (ProjectionMatrix4d ());
 }
 
 void

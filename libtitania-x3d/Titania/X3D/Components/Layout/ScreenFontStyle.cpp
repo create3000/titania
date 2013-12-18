@@ -299,15 +299,18 @@ ScreenText::scale () const
 {
 	Matrix4d modelViewMatrix = ModelViewMatrix4d ();
 
-	Vector3d   translation;
+	Vector3d   translation, scale;
 	Rotation4d rotation;
 
-	modelViewMatrix .get (translation, rotation);
+	modelViewMatrix .get (translation, rotation, scale);
 
-	double distance = math::abs (modelViewMatrix .translation ());
+	double   distance    = math::abs (modelViewMatrix .translation ());
+	Vector3f screenScale = fontStyle -> getCurrentViewpoint () -> getScreenScale (distance, Viewport4i ());
 
 	Matrix4d matrix;
-	matrix .set (translation, rotation, fontStyle -> getCurrentViewpoint () -> getScreenScale (distance, Viewport4i ()));
+	matrix .set (translation, rotation, Vector3f (screenScale .x () * signum (scale .x ()),
+	                                              screenScale .y () * signum (scale .y ()),
+	                                              screenScale .z () * signum (scale .z ())));
 
 	glLoadMatrixd (matrix .data ());
 }

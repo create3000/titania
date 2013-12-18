@@ -115,8 +115,7 @@ VisibilitySensor::traverse (const TraverseType type)
 
 			else
 			{
-				visible = ViewVolume (getModelViewMatrix (type), ProjectionMatrix4f ())
-				          .intersect (Box3f (size (), center ()));
+				visible = getCurrentViewpoint () -> getViewVolume () .intersect (Box3f (size (), center ()) * getModelViewMatrix (type));
 			}
 
 			break;

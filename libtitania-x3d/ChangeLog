@@ -1,3 +1,26 @@
+2013-12-18  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* SFMatrix4.h:
+	* SFMatrix3.h:
+	* ViewVolume.h:
+	* ViewVolume.cpp:
+	* X3DRenderer.cpp:
+	* TransformTool.wrl:
+	* LOD.cpp:
+	* Switch.cpp:
+	* X3DShapeNode.cpp:
+	* ScreenGroup.cpp:
+	* CADLayer.cpp:
+	* X3DFontStyleNode.cpp:
+	* X3DGroupingNode.h:
+	* ScreenFontStyle.cpp:
+	* X3DGroupingNode.cpp:
+	* X3DTransformNode.cpp:
+	* X3DViewpointNode.h:
+	* X3DGeometryNode.cpp:
+	* X3DViewpointNode.cpp:
+	* VisibilitySensor.cpp: 
+
 2013-12-17  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* FlyViewer.h:

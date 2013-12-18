@@ -190,6 +190,14 @@ public:
 	              rotation4f_type &,
 	              vector3_type &) const;
 
+	value_type
+	determinant3 () const
+	{ return getValue () .determinant3 (); }
+
+	value_type
+	determinant () const
+	{ return getValue () .determinant (); }
+
 	SFMatrix4*
 	inverse () const;
 

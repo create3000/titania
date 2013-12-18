@@ -174,7 +174,9 @@ X3DShapeNode::pick ()
 	{
 		if (getBrowser () -> intersect (glIsEnabled (GL_SCISSOR_TEST) ? Scissor4i () : Viewport4i ()))
 		{
-			if (ViewVolume () .intersect (getBBox ()))
+			auto modelViewMatrix = ModelViewMatrix4f ();
+		
+			if (getCurrentViewpoint () -> getViewVolume () .intersect (getBBox () * modelViewMatrix))
 			{
 				Line3f hitRay = getBrowser () -> getHitRay (); // Attention!! returns a Line3d
 
@@ -183,7 +185,7 @@ X3DShapeNode::pick ()
 				if (_geometry -> intersect (hitRay, itersections))
 				{
 					for (auto & itersection : itersections)
-						itersection -> hitPoint = itersection -> hitPoint * ModelViewMatrix4f ();
+						itersection -> hitPoint = itersection -> hitPoint * modelViewMatrix;
 
 					// Sort desc
 					std::sort (itersections .begin (), itersections .end (),
