@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -50,32 +50,132 @@
 
 #include "X3DTexture3DNode.h"
 
+#include "../../Bits/Cast.h"
+#include "../../Browser/X3DBrowser.h"
+
 namespace titania {
 namespace X3D {
 
 X3DTexture3DNode::Fields::Fields () :
-	repeatS (new SFBool ()),
-	repeatT (new SFBool ()),
-	repeatR (new SFBool ()),
+	          repeatS (new SFBool ()),
+	          repeatT (new SFBool ()),
+	          repeatR (new SFBool ()),
 	textureProperties (new SFNode ())
 { }
 
 X3DTexture3DNode::X3DTexture3DNode () :
 	X3DTextureNode (),
-	        fields ()
+	        fields (),
+	         width (0),
+	        height (0),
+	    components (0),
+	   transparent (false)
 {
 	addNodeType (X3DConstants::X3DTexture3DNode);
 }
 
 void
-X3DTexture3DNode::setTexture (const Texture3DPtr &)
+X3DTexture3DNode::initialize ()
 {
+	X3DTextureNode::initialize ();
 
+	notified ()          .addInterest (this, &X3DTexture3DNode::update);
+	repeatS ()           .addInterest (this, &X3DTexture3DNode::updateTextureProperties);
+	repeatT ()           .addInterest (this, &X3DTexture3DNode::updateTextureProperties);
+	textureProperties () .addInterest (this, &X3DTexture3DNode::update);
+}
+
+const TextureProperties*
+X3DTexture3DNode::getTextureProperties () const
+{
+	auto _textureProperties = x3d_cast <TextureProperties*> (textureProperties ());
+
+	if (_textureProperties)
+		return _textureProperties;
+
+	return x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties ());
+}
+
+void
+X3DTexture3DNode::setTexture (const Texture3DPtr & texture)
+{
+	if (texture)
+	{
+		setImage (getInternalFormat (texture -> getComponents ()),
+		          texture -> getComponents (),
+		          texture -> getWidth (), texture -> getHeight (),
+		          texture -> getDepth (),
+		          texture -> getFormat (),
+		          texture -> getData ());
+	}
+	else
+		setImage (getInternalFormat (3), 3, GL_RGB, 0, 0, 0, nullptr);
+}
+
+void
+X3DTexture3DNode::setImage (GLenum internalFormat, size_t comp, GLint w, GLint h, GLint depth, GLenum format, const void* data)
+{
+	// transfer image
+
+	width       = w;
+	height      = h;
+	components  = comp;
+	transparent = math::is_even (comp);
+
+	auto textureProperties = getTextureProperties ();
+
+	glBindTexture (GL_TEXTURE_3D, getTextureId ());
+
+	updateTextureProperties ();
+
+	glTexImage3D (GL_TEXTURE_3D,
+	              0,     // This texture is level 0 in mimpap generation.
+	              internalFormat,
+	              width, height, depth,
+	              clamp <int> (textureProperties -> borderWidth (), 0, 1),
+	              format, GL_UNSIGNED_BYTE,
+	              data);
+
+	for (unsigned char byte : basic::adapter ((unsigned char*) data, ((unsigned char*) data) + width * height * depth * 3))
+		std::clog << std::hex << (unsigned int) byte << " " << std::endl;
+
+	glBindTexture (GL_TEXTURE_3D, 0);
+
+	X3DChildObject::notify ();
+}
+
+void
+X3DTexture3DNode::updateTextureProperties ()
+{
+	X3DTextureNode::updateTextureProperties (GL_TEXTURE_3D, textureProperties (), getTextureProperties (), width, height, repeatS (), repeatT (), repeatR ());
 }
 
 void
 X3DTexture3DNode::draw ()
-{ }
+{
+	glEnable (GL_TEXTURE_3D);
+	glBindTexture (GL_TEXTURE_3D, getTextureId ());
+
+	if (glIsEnabled (GL_LIGHTING))
+	{
+		// Texture color modulates material diffuse color.
+		glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	}
+	else
+	{
+		switch (components)
+		{
+			case 1:
+			case 2:
+				glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+				break;
+			case 3:
+			case 4:
+				glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+				break;
+		}
+	}
+}
 
 } // X3D
 } // titania

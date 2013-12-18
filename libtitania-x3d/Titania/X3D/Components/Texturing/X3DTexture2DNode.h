@@ -51,7 +51,6 @@
 #ifndef __TITANIA_X3D_COMPONENTS_TEXTURING_X3DTEXTURE2DNODE_H__
 #define __TITANIA_X3D_COMPONENTS_TEXTURING_X3DTEXTURE2DNODE_H__
 
-#include "../Texturing/TextureProperties.h"
 #include "../Texturing/X3DTextureNode.h"
 #include "../../Miscellaneous/Texture.h"
 
@@ -163,12 +162,10 @@ private:
 
 	Fields fields;
 
-	static const GLint wrapTypes [2];
-
 	int32_t width;
 	int32_t height;
-	size_t components;
-	bool   transparent;
+	size_t  components;
+	bool    transparent;
 
 };
 

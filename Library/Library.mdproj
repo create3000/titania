@@ -2358,6 +2358,7 @@
     <None Include="Tests\Handles\Inline.wrl" />
     <None Include="Tests\Scripting\Route.wrl" />
     <None Include="Tests\Handles\Routes.wrl" />
+    <None Include="Tests\Texturing3D\PixelTexture3D.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
@@ -2487,6 +2488,7 @@
     <Folder Include="Tests\NURBS\" />
     <Folder Include="Tests\NURBS\NurbsPatchSurface\" />
     <Folder Include="Tests\NURBS\NurbsTrimmedSurface\" />
+    <Folder Include="Tests\Texturing3D\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Navigation\Rotor.wrl" />

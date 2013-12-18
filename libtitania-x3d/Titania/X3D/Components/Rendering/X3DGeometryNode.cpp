@@ -606,6 +606,7 @@ X3DGeometryNode::disableTextures ()
 	if (getBrowser () -> getTextureStages () .empty ())
 	{
 		glDisable (GL_TEXTURE_2D);
+		glDisable (GL_TEXTURE_3D);
 		glDisable (GL_TEXTURE_CUBE_MAP);
 	}
 	else

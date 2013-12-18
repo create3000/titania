@@ -1,0 +1,49 @@
+#VRML V2.0 utf8 Comment
+
+Background {
+  skyColor 0.4 0.4 0.4
+}
+
+Viewpoint {
+  description "Home"
+  position 3.31565 6.65836e-07 1.54787
+  orientation -1.90844e-07 1 2.02396e-08 0.915605
+  centerOfRotation 0 0 -1
+}
+
+DEF Rectangle1 Transform {
+  children Shape {
+    appearance Appearance {
+      material Material { }
+      texture DEF Texture PixelTexture3D {
+        image [ 3, 2, 2, 2, 255, 16711680, 16711680, 255, 16776960, 65280, 65280, 16776960 ]
+      }
+    }
+    geometry IndexedFaceSet {
+      coordIndex [ 0, 1, 2, 3, 0, -1 ]
+      coord DEF Rectangle2D_1 Coordinate {
+        point [ 1 1 0, -1 1 0, -1 -1 0, 1 -1 0 ]
+      }
+    }
+  }
+}
+
+DEF Rectangle2 Transform {
+  translation 0 0 -2
+  children Shape {
+    appearance Appearance {
+      material Material { }
+      texture USE Texture
+    }
+    geometry IndexedFaceSet {
+      texCoordIndex [ 0, 1, 2, 3, 0, -1 ]
+      coordIndex [ 0, 1, 2, 3, 0, -1 ]
+      texCoord TextureCoordinate3D {
+        point [ 1 1 1, 0 1 1, 0 0 1, 1 0 1 ]
+      }
+      coord DEF Rectangle2D Coordinate {
+        point [ 1 1 0, -1 1 0, -1 -1 0, 1 -1 0 ]
+      }
+    }
+  }
+}

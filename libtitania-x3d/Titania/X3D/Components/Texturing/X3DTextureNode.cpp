@@ -50,8 +50,13 @@
 
 #include "X3DTextureNode.h"
 
+#include "../../Bits/Cast.h"
+#include "../../Browser/X3DBrowser.h"
+
 namespace titania {
 namespace X3D {
+
+const GLint X3DTextureNode::wrapTypes [2] = { GL_CLAMP, GL_REPEAT };
 
 X3DTextureNode::X3DTextureNode () :
 	X3DAppearanceChildNode (),
@@ -66,6 +71,56 @@ X3DTextureNode::initialize ()
 	X3DAppearanceChildNode::initialize ();
 
 	glGenTextures (1, &textureId);
+}
+
+void
+X3DTextureNode::updateTextureProperties (GLenum target,
+                                         const bool haveTextureProperties,
+                                         const TextureProperties* textureProperties,
+                                         const int32_t width, 
+                                         const int32_t height, 
+                                         const bool repeatS, 
+                                         const bool repeatT, 
+                                         const bool repeatR)
+{
+	glBindTexture (target, getTextureId ());
+
+	if (std::max (width, height) < getBrowser () -> getBrowserOptions () -> minTextureSize ()
+	    and textureProperties == x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties ()))
+	{
+		glTexParameteri (target, GL_GENERATE_MIPMAP, false);
+		glTexParameteri (target, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri (target, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+		glTexParameteri (target, GL_TEXTURE_WRAP_S, wrapTypes [false]);
+		glTexParameteri (target, GL_TEXTURE_WRAP_T, wrapTypes [false]);
+		glTexParameteri (target, GL_TEXTURE_WRAP_R, wrapTypes [false]);
+	}
+	else
+	{
+		glTexParameteri (target, GL_GENERATE_MIPMAP,    textureProperties -> generateMipMaps ());
+		glTexParameteri (target, GL_TEXTURE_MIN_FILTER, textureProperties -> getMinificationFilter ());
+		glTexParameteri (target, GL_TEXTURE_MAG_FILTER, textureProperties -> getMagnificationFilter ());
+
+		if (haveTextureProperties)
+		{
+			glTexParameteri (target, GL_TEXTURE_WRAP_S, textureProperties -> getBoundaryModeS ());
+			glTexParameteri (target, GL_TEXTURE_WRAP_T, textureProperties -> getBoundaryModeT ());
+			glTexParameteri (target, GL_TEXTURE_WRAP_R, textureProperties -> getBoundaryModeR ());
+		}
+		else
+		{
+			glTexParameteri (target, GL_TEXTURE_WRAP_S, wrapTypes [repeatS]);
+			glTexParameteri (target, GL_TEXTURE_WRAP_T, wrapTypes [repeatT]);
+			glTexParameteri (target, GL_TEXTURE_WRAP_R, wrapTypes [repeatR]);
+		}
+	}
+
+	glTexParameterfv (target, GL_TEXTURE_BORDER_COLOR,       textureProperties -> borderColor () .getValue () .data ());
+	glTexParameterf  (target, GL_TEXTURE_MAX_ANISOTROPY_EXT, textureProperties -> anisotropicDegree ());
+	glTexParameterf  (target, GL_TEXTURE_PRIORITY,           textureProperties -> texturePriority ());
+
+	X3DChildObject::notify ();
 }
 
 void

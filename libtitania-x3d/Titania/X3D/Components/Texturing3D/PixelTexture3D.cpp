@@ -96,7 +96,7 @@ PixelTexture3D::initialize ()
 void
 PixelTexture3D::update ()
 {
-	if (image () .size () < 4 or image () [0] < 1 or image () [0] > 4 or image () [1] <= 0 or image () [2] <= 0 or image () [3] <= 1)
+	if (image () .size () < 4 or image () [0] < 1 or image () [0] > 4 or image () [1] <= 0 or image () [2] <= 0 or image () [3] < 1)
 	{
 		setTexture (Texture3DPtr ());
 		return;
@@ -116,6 +116,9 @@ PixelTexture3D::update ()
 
 	for (size_t d = 0; d < depth; ++ d)
 	{
+		size_t first = 4 + d * pixels;
+		size_t last  = first + pixels;
+	
 		mimages -> emplace_back ();
 		mimages -> back () .depth (8);
 		mimages -> back () .size (Magick::Geometry (width, height));
@@ -127,8 +130,7 @@ PixelTexture3D::update ()
 				std::vector <uint8_t> array;
 				array .reserve (pixels);
 
-				array .assign (image () .begin () + 4,
-				               image () .end ());
+				array .assign (image () .begin () + first, image () .begin () + last);
 
 				Magick::Blob blob (array .data (), pixels);
 				mimages -> back () .magick ("GRAY");
@@ -139,9 +141,9 @@ PixelTexture3D::update ()
 			case 2:
 			{
 				std::vector <uint8_t> array;
-				array .reserve (pixels * 2);
+				array .reserve (pixels * 4);
 
-				for (const auto & pixel : basic::adapter (image () .begin () + 4, image () .end ()))
+				for (const auto & pixel : basic::adapter (image () .begin () + first, image () .begin () + last))
 				{
 					uint8_t color = pixel >> 8;
 					array .emplace_back (color);
@@ -163,7 +165,7 @@ PixelTexture3D::update ()
 				std::vector <uint8_t> array;
 				array .reserve (pixels * 3);
 
-				for (const auto & pixel : basic::adapter (image () .begin () + 4, image () .end ()))
+				for (const auto & pixel : basic::adapter (image () .begin () + first, image () .begin () + last))
 				{
 					array .emplace_back (pixel >> 16);
 					array .emplace_back (pixel >> 8);
@@ -181,7 +183,7 @@ PixelTexture3D::update ()
 				std::vector <uint8_t> array;
 				array .reserve (pixels * 4);
 
-				for (const auto & pixel : basic::adapter (image () .begin () + 4, image () .end ()))
+				for (const auto & pixel : basic::adapter (image () .begin () + first, image () .begin () + last))
 				{
 					array .emplace_back (pixel >> 24);
 					array .emplace_back (pixel >> 16);

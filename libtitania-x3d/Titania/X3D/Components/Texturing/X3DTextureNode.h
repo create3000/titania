@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_COMPONENTS_TEXTURING_X3DTEXTURE_NODE_H__
 
 #include "../Shape/X3DAppearanceChildNode.h"
+#include "../Texturing/TextureProperties.h"
 
 namespace titania {
 namespace X3D {
@@ -61,9 +62,7 @@ class X3DTextureNode :
 {
 public:
 
-	GLuint
-	getTextureId () const
-	{ return textureId; }
+	///  @name Member access
 
 	virtual
 	bool
@@ -73,18 +72,40 @@ public:
 	const X3DScalar <LoadState> &
 	checkLoadState () const = 0;
 
+	GLuint
+	getTextureId () const
+	{ return textureId; }
+
+	///  @name Destruction
+
 	virtual
 	void
-	dispose ();
+	dispose () override;
 
 
 protected:
+
+	///  @name Construction
 
 	X3DTextureNode ();
 
 	virtual
 	void
 	initialize () override;
+
+	///  @name Operations
+
+	void
+	updateTextureProperties (GLenum, const bool, const TextureProperties*, const int32_t, const int32_t, const bool, const bool, const bool);
+
+
+private:
+
+	///  @name Static members
+
+	static const GLint wrapTypes [2];
+
+	///  @name Members
 
 	GLuint textureId;
 

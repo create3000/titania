@@ -1,5 +1,20 @@
 2013-12-18  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Texture3D.h:
+	* TransformTool.wrl:
+	* Texture3D.cpp:
+	* X3DTextureNode.h:
+	* PixelTexture.cpp:
+	* X3DTexture2DNode.h:
+	* X3DTextureNode.cpp:
+	* X3DGeometryNode.cpp:
+	* PixelTexture3D.cpp:
+	* X3DTexture2DNode.cpp:
+	* X3DTexture3DNode.h:
+	* X3DTexture3DNode.cpp: 
+
+2013-12-18  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* SFMatrix4.h:
 	* SFMatrix3.h:
 	* ViewVolume.h:

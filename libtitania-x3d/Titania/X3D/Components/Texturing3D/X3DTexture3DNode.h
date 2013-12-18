@@ -96,6 +96,15 @@ public:
 	textureProperties () const
 	{ return *fields .textureProperties; }
 
+	///  @name Member access
+
+	virtual
+	bool
+	isTransparent () const override
+	{ return transparent; }
+
+	///  @name Operations
+
 	virtual
 	void
 	draw () override;
@@ -106,6 +115,10 @@ protected:
 	///  @name Construction
 
 	X3DTexture3DNode ();
+
+	virtual
+	void
+	initialize () override;
 
 	///  @name Operations
 
@@ -120,6 +133,21 @@ protected:
 
 private:
 
+	///  @name Operations
+
+	GLenum
+	getInternalFormat (size_t components) const
+	{ return getTextureProperties () -> getInternalFormat (components); }
+
+	const TextureProperties*
+	getTextureProperties () const;
+
+	void
+	setImage (GLenum, size_t, GLint w, GLint, GLint, GLenum, const void*);
+
+	void
+	updateTextureProperties ();
+
 	///  @name Members
 
 	struct Fields
@@ -133,6 +161,11 @@ private:
 	};
 
 	Fields fields;
+
+	int32_t width;
+	int32_t height;
+	size_t  components;
+	bool    transparent;
 
 };
 

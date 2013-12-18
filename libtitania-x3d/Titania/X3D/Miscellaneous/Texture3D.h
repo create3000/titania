@@ -72,12 +72,55 @@ public:
 
 	Texture3D (const MagickImageArrayPtr &);
 
+	GLenum
+	getFormat ()
+	{ return format; }
+
+	size_type
+	getWidth () const
+	{ return width; }
+
+	size_type
+	getHeight () const
+	{ return height; }
+
+	size_type
+	getComponents () const
+	{ return components; }
+
+	size_type
+	getDepth () const
+	{ return depth; }
+
+	const void*
+	getData ()
+	{ return data .data (); }
+
 	virtual
 	~Texture3D ()
 	{ }
 
 
 private:
+
+	void
+	refineImageFormats (const MagickImageArrayPtr &);
+
+	void
+	setData (const MagickImageArrayPtr &);
+
+	void
+	addImage (Magick::Image &, size_t);
+
+	MagickImageArrayPtr images;
+	
+	GLenum    format;
+	size_type width;
+	size_type height;
+	size_type components;
+	size_type depth;
+
+	std::vector <char> data;
 
 };
 

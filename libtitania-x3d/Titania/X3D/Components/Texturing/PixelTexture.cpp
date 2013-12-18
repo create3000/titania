@@ -128,7 +128,7 @@ PixelTexture::update ()
 		case 2:
 		{
 			std::vector <uint8_t> array;
-			array .reserve (pixels * 2);
+			array .reserve (pixels * 4);
 
 			for (const auto & pixel : image () .getArray ())
 			{

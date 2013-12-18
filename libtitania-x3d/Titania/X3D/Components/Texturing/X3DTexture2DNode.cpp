@@ -69,8 +69,6 @@ namespace X3D {
 //constant[2] = 0.5f + 0.5f * BLUE_SATURATION_WEIGHT;
 //constant[3] = 1.0;
 
-const GLint X3DTexture2DNode::wrapTypes [2] = { GL_CLAMP, GL_REPEAT };
-
 X3DTexture2DNode::Fields::Fields () :
 	          repeatS (new SFBool (true)),
 	          repeatT (new SFBool (true)),
@@ -155,6 +153,12 @@ X3DTexture2DNode::setImage (GLenum internalFormat, size_t comp, GLint w, GLint h
 }
 
 void
+X3DTexture2DNode::updateTextureProperties ()
+{
+	X3DTextureNode::updateTextureProperties (GL_TEXTURE_2D, textureProperties (), getTextureProperties (), width, height, repeatS (), repeatT (), false);
+}
+
+void
 X3DTexture2DNode::updateImage (GLenum format, GLint width, GLint height, const void* data)
 {
 	// update image
@@ -162,51 +166,6 @@ X3DTexture2DNode::updateImage (GLenum format, GLint width, GLint height, const v
 	glBindTexture (GL_TEXTURE_2D, getTextureId ());
 	glTexSubImage2D (GL_TEXTURE_2D, 0, 0, 0, width, height, format, GL_UNSIGNED_BYTE, data);
 	glBindTexture (GL_TEXTURE_2D, 0);
-
-	X3DChildObject::notify ();
-}
-
-void
-X3DTexture2DNode::updateTextureProperties ()
-{
-	auto textureProperties = getTextureProperties ();
-
-	glBindTexture (GL_TEXTURE_2D, getTextureId ());
-
-	if (std::max (width, height) < getBrowser () -> getBrowserOptions () -> minTextureSize ()
-	    and textureProperties == x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties ()))
-	{
-		glTexParameteri (GL_TEXTURE_2D, GL_GENERATE_MIPMAP, false);
-		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapTypes [false]);
-		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapTypes [false]);
-		//glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, wrapTypes [false]);
-	}
-	else
-	{
-		glTexParameteri (GL_TEXTURE_2D, GL_GENERATE_MIPMAP,    textureProperties -> generateMipMaps ());
-		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, textureProperties -> getMinificationFilter ());
-		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, textureProperties -> getMagnificationFilter ());
-
-		if (this -> textureProperties ())
-		{
-			glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, textureProperties -> getBoundaryModeS ());
-			glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, textureProperties -> getBoundaryModeT ());
-			//glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, textureProperties -> getBoundaryModeR ());
-		}
-		else
-		{
-			glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapTypes [repeatS ()]);
-			glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapTypes [repeatT ()]);
-			//glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, wrapTypes [true]);
-		}
-	}
-
-	glTexParameterfv (GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR,       textureProperties -> borderColor () .getValue () .data ());
-	glTexParameterf  (GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, textureProperties -> anisotropicDegree ());
-	glTexParameterf  (GL_TEXTURE_2D, GL_TEXTURE_PRIORITY,           textureProperties -> texturePriority ());
 
 	X3DChildObject::notify ();
 }
