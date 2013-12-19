@@ -107,14 +107,14 @@ public:
 	void
 	requestAsyncLoad ();
 
+	///  @name Destruction
+	
 	virtual
 	void
 	dispose () final override;
 
 
 private:
-
-	using X3DTexture2DNode::setImage;
 
 	///  @name Construction
 

@@ -433,6 +433,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Miscellaneous/MediaStream.cpp \
 	Titania/X3D/Miscellaneous/Texture.cpp \
 	Titania/X3D/Miscellaneous/Texture3D.cpp \
+	Titania/X3D/Miscellaneous/X3DTexture.cpp \
 	Titania/X3D/Parser/Filter.cpp \
 	Titania/X3D/Parser/Grammar.cpp \
 	Titania/X3D/Parser/Parser.cpp \
@@ -457,6 +458,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Routing/Router.cpp \
 	Titania/X3D/Routing/RouteSet.cpp \
 	Titania/X3D/Thread/SceneLoader.cpp \
+	Titania/X3D/Thread/Texture3DLoader.cpp \
 	Titania/X3D/Thread/TextureLoader.cpp \
 	Titania/X3D/Types/Image.cpp
 

@@ -48,49 +48,49 @@
  *
  ******************************************************************************/
 
-#include "TextureLoader.h"
+#include "Texture3DLoader.h"
 
 #include "../InputOutput/Loader.h"
 
 namespace titania {
 namespace X3D {
 
-TextureLoader::TextureLoader (X3DExecutionContext* const executionContext,
-                              const MFString & url,
-                              size_t minTextureSize, size_t maxTextureSize,
-                              const Callback & callback) :
+Texture3DLoader::Texture3DLoader (X3DExecutionContext* const executionContext,
+                                  const MFString & url,
+                                  size_t minTextureSize, size_t maxTextureSize,
+                                  const Callback & callback) :
 	         browser (executionContext -> getBrowser ()),
 	executionContext (executionContext),
 	        callback (callback),
 	         running (true),
 	          future (getFuture (url, minTextureSize, maxTextureSize))
 {
-	browser -> prepareEvents () .addInterest (this, &TextureLoader::prepareEvents);
+	browser -> prepareEvents () .addInterest (this, &Texture3DLoader::prepareEvents);
 	browser -> addEvent ();
 }
 
 void
-TextureLoader::cancel ()
+Texture3DLoader::cancel ()
 {
 	running = false;
-	browser -> prepareEvents () .removeInterest (this, &TextureLoader::prepareEvents);
+	browser -> prepareEvents () .removeInterest (this, &Texture3DLoader::prepareEvents);
 }
 
-std::future <TexturePtr>
-TextureLoader::getFuture (const MFString & url,
-                          size_t minTextureSize, size_t maxTextureSize)
+std::future <Texture3DPtr>
+Texture3DLoader::getFuture (const MFString & url,
+                            size_t minTextureSize, size_t maxTextureSize)
 {
 	if (url .empty ())
 		std::async (std::launch::deferred, [ ] (){ return nullptr; });
 
-	return std::async (std::launch::async, std::mem_fn (&TextureLoader::loadAsync), this,
+	return std::async (std::launch::async, std::mem_fn (&Texture3DLoader::loadAsync), this,
 	                   url,
 	                   minTextureSize, maxTextureSize);
 }
 
-TexturePtr
-TextureLoader::loadAsync (const MFString & url,
-                          size_t minTextureSize, size_t maxTextureSize)
+Texture3DPtr
+Texture3DLoader::loadAsync (const MFString & url,
+                            size_t minTextureSize, size_t maxTextureSize)
 {
 	for (const auto & URL : url)
 	{
@@ -98,10 +98,10 @@ TextureLoader::loadAsync (const MFString & url,
 		{
 			std::lock_guard <std::mutex> lock (browser -> getDownloadMutex ());
 
-			TexturePtr texture;
+			Texture3DPtr texture;
 
 			if (running)
-				texture .reset (new Texture (Loader (executionContext) .loadDocument (URL)));
+				texture .reset (new Texture3D (Loader (executionContext) .loadDocument (URL)));
 
 			if (running)
 				texture -> process (minTextureSize, maxTextureSize);
@@ -125,7 +125,7 @@ TextureLoader::loadAsync (const MFString & url,
 }
 
 void
-TextureLoader::prepareEvents ()
+Texture3DLoader::prepareEvents ()
 {
 	browser -> addEvent ();
 
@@ -135,13 +135,13 @@ TextureLoader::prepareEvents ()
 
 		if (status == std::future_status::ready)
 		{
-			browser -> prepareEvents () .removeInterest (this, &TextureLoader::prepareEvents);
+			browser -> prepareEvents () .removeInterest (this, &Texture3DLoader::prepareEvents);
 			callback (future .get ());
 		}
 	}
 }
 
-TextureLoader::~TextureLoader ()
+Texture3DLoader::~Texture3DLoader ()
 {
 	cancel ();
 

@@ -53,6 +53,7 @@
 
 #include "../Networking/X3DUrlObject.h"
 #include "../Texturing3D/X3DTexture3DNode.h"
+#include "../../Thread/Texture3DLoader.h"
 
 namespace titania {
 namespace X3D {
@@ -91,11 +92,6 @@ public:
 	///  @name Member access
 	
 	virtual
-	bool
-	isTransparent () const final override
-	{ return false; }
-	
-	virtual
 	const X3DScalar <LoadState> &
 	checkLoadState () const final override
 	{ return X3DUrlObject::checkLoadState (); }
@@ -106,6 +102,11 @@ public:
 	void
 	requestImmediateLoad () final override;
 
+	void
+	requestAsyncLoad ();
+
+	///  @name Destruction
+	
 	virtual
 	void
 	dispose () final override;
@@ -113,22 +114,31 @@ public:
 
 private:
 
-	virtual
-	void
-	update () final override
-	{ }
-
 	///  @name Construction
 
 	virtual
 	void
 	initialize () final override;
 
+	///  @name Operations
+	
+	virtual
+	void
+	setTexture (const Texture3DPtr &) final override;
+
+	virtual
+	void
+	update () final override;
+
 	///  @name Static members
 
 	static const std::string componentName;
 	static const std::string typeName;
 	static const std::string containerField;
+
+	///  @name Members
+	
+	std::unique_ptr <Texture3DLoader> future;
 
 
 };

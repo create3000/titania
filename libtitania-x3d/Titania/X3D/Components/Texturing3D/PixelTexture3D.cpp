@@ -50,6 +50,7 @@
 
 #include "PixelTexture3D.h"
 
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -204,7 +205,10 @@ PixelTexture3D::update ()
 		mimages -> back () .flip ();
 	}
 
-	Texture3DPtr texture (new Texture3D (mimages));
+	Texture3DPtr texture (new Texture3D (std::move (mimages)));
+
+	texture -> process (getBrowser () -> getBrowserOptions () -> minTextureSize (),
+	                    getBrowser () -> getRenderingProperties () -> maxTextureSize ());
 
 	setTexture (texture);
 }

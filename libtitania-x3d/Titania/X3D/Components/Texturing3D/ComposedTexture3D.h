@@ -99,10 +99,6 @@ public:
 
 	///  @name Member access
 
-	bool
-	isTransparent () const final override
-	{ return false; }
-
 	virtual
 	const X3DScalar <LoadState> &
 	checkLoadState () const final override

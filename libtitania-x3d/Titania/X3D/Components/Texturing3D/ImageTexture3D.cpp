@@ -50,6 +50,7 @@
 
 #include "ImageTexture3D.h"
 
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -62,7 +63,8 @@ const std::string ImageTexture3D::containerField = "texture";
 ImageTexture3D::ImageTexture3D (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DTexture3DNode (),
-	    X3DUrlObject ()
+	    X3DUrlObject (),
+	          future ()
 {
 	addField (inputOutput,    "metadata",          metadata ());
 	addField (inputOutput,    "url",               url ());
@@ -83,15 +85,62 @@ ImageTexture3D::initialize ()
 {
 	X3DTexture3DNode::initialize ();
 	X3DUrlObject::initialize ();
+
+	url () .addInterest (this, &ImageTexture3D::update);
+
+	requestAsyncLoad ();
+}
+
+void
+ImageTexture3D::setTexture (const Texture3DPtr & texture)
+{
+	X3DTexture3DNode::setTexture (texture);
+
+	if (texture)
+		setLoadState (COMPLETE_STATE);
+
+	else
+		setLoadState (FAILED_STATE);
 }
 
 void
 ImageTexture3D::requestImmediateLoad ()
-{ }
+{
+	requestAsyncLoad ();
+	future .get ();
+}
+
+void
+ImageTexture3D::requestAsyncLoad ()
+{
+	using namespace std::placeholders;
+
+	if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)
+		return;
+
+	setLoadState (IN_PROGRESS_STATE);
+
+	future .reset (new Texture3DLoader (getExecutionContext (),
+	                                    url (),
+	                                    getBrowser () -> getBrowserOptions () -> minTextureSize (),
+	                                    getBrowser () -> getRenderingProperties () -> maxTextureSize (),
+	                                    std::bind (std::mem_fn (&ImageTexture3D::setTexture), this, _1)));
+}
+
+void
+ImageTexture3D::update ()
+{
+	setLoadState (NOT_STARTED_STATE);
+
+	requestAsyncLoad ();
+}
 
 void
 ImageTexture3D::dispose ()
 {
+	if (future)
+		future -> cancel ();
+
 	X3DUrlObject::dispose ();
 	X3DTexture3DNode::dispose ();
 }

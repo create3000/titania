@@ -136,8 +136,8 @@ X3DTexture3DNode::setImage (GLenum internalFormat, size_t comp, GLint w, GLint h
 	              format, GL_UNSIGNED_BYTE,
 	              data);
 
-	for (unsigned char byte : basic::adapter ((unsigned char*) data, ((unsigned char*) data) + width * height * depth * 3))
-		std::clog << std::hex << (unsigned int) byte << " " << std::endl;
+	//	for (unsigned char byte : basic::adapter ((unsigned char*) data, ((unsigned char*) data) + width * height * depth * 4))
+	//		std::clog << std::hex << (unsigned int) byte << " " << std::endl;
 
 	glBindTexture (GL_TEXTURE_3D, 0);
 

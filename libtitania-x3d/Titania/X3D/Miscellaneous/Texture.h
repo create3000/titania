@@ -48,51 +48,22 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BITS_TEXTURE_H__
-#define __TITANIA_X3D_BITS_TEXTURE_H__
+#ifndef __TITANIA_X3D_MISCELLANEOUS_TEXTURE_H__
+#define __TITANIA_X3D_MISCELLANEOUS_TEXTURE_H__
 
-#include "../Rendering/OpenGL.h"
-#include "../Types/Numbers.h"
-
-#include <Magick++.h>
-#include <string>
-#include <memory>
+#include "X3DTexture.h"
 
 namespace titania {
 namespace X3D {
 
-class Texture
+class Texture :
+	public X3DTexture
 {
 public:
 
-	typedef int32_t size_type;
-
-	Texture (const Magick::Image &);
+	Texture (MagickImageArrayPtr &&);
 
 	Texture (const std::string &);
-
-	GLenum
-	getFormat ()
-	{ return format; }
-
-	size_type
-	getWidth () const
-	{ return image .size () .width (); }
-
-	size_type
-	getHeight () const
-	{ return image .size () .height (); }
-
-	size_type
-	getComponents () const
-	{ return components; }
-
-	const void*
-	getData ()
-	{ return blob .data (); }
-
-	void
-	process (size_type, size_type);
 
 	virtual
 	~Texture ()
@@ -101,31 +72,9 @@ public:
 
 private:
 
-	static
-	Magick::Image
-	getImage (const std::string &);
-
-	void
-	addBorder (const Color4f &, size_type);
-
-	void
-	tryScaleImage (size_type, size_type);
-
-	void
-	scaleImage (size_type, size_type);
-
-	void
-	refineImageFormat ();
-
-	void
-	writeBlob ();
-
-	///  @name Properties
-
-	Magick::Image image;
-	GLenum        format;
-	size_type     components;
-	Magick::Blob  blob;
+	virtual
+	MagickImageArrayPtr
+	readImages (const std::string &) final override;
 
 };
 

@@ -1,3 +1,26 @@
+2013-12-19  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Texture.h:
+	* Texture3DLoader.h:
+	* TextureLoader.cpp:
+	* TransformTool.wrl:
+	* Texture3D.h:
+	* Texture.cpp:
+	* X3DTexture.h:
+	* Texture3DLoader.cpp:
+	* Texture3D.cpp:
+	* X3DTexture.cpp:
+	* ImageTexture.h:
+	* PixelTexture.cpp:
+	* ImageTexture3D.h:
+	* PixelTexture3D.h:
+	* ImageTexture3D.cpp:
+	* PixelTexture3D.cpp:
+	* ComposedTexture3D.h:
+	* X3DTexture3DNode.cpp: 
+
 2013-12-18  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Texture3D.h:

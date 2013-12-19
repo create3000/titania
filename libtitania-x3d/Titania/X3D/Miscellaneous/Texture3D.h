@@ -51,50 +51,19 @@
 #ifndef __TITANIA_X3D_MISCELLANEOUS_TEXTURE3D_H__
 #define __TITANIA_X3D_MISCELLANEOUS_TEXTURE3D_H__
 
-#include "../Rendering/OpenGL.h"
-#include "../Types/Numbers.h"
-
-#include <Magick++.h>
-#include <memory>
-#include <string>
+#include "X3DTexture.h"
 
 namespace titania {
 namespace X3D {
 
-using MagickImageArray    = std::list <Magick::Image>;
-using MagickImageArrayPtr = std::shared_ptr <MagickImageArray>;
-
-class Texture3D
+class Texture3D :
+	public X3DTexture
 {
 public:
 
-	typedef int32_t size_type;
+	Texture3D (MagickImageArrayPtr &&);
 
-	Texture3D (const MagickImageArrayPtr &);
-
-	GLenum
-	getFormat ()
-	{ return format; }
-
-	size_type
-	getWidth () const
-	{ return width; }
-
-	size_type
-	getHeight () const
-	{ return height; }
-
-	size_type
-	getComponents () const
-	{ return components; }
-
-	size_type
-	getDepth () const
-	{ return depth; }
-
-	const void*
-	getData ()
-	{ return data .data (); }
+	Texture3D (const std::string &);
 
 	virtual
 	~Texture3D ()
@@ -103,24 +72,9 @@ public:
 
 private:
 
-	void
-	refineImageFormats (const MagickImageArrayPtr &);
-
-	void
-	setData (const MagickImageArrayPtr &);
-
-	void
-	addImage (Magick::Image &, size_t);
-
-	MagickImageArrayPtr images;
-	
-	GLenum    format;
-	size_type width;
-	size_type height;
-	size_type components;
-	size_type depth;
-
-	std::vector <char> data;
+	virtual
+	MagickImageArrayPtr
+	readImages (const std::string &) final override;
 
 };
 

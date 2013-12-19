@@ -20,6 +20,7 @@ DEF Rectangle1 Transform {
       }
     }
     geometry IndexedFaceSet {
+      solid FALSE
       coordIndex [ 0, 1, 2, 3, 0, -1 ]
       coord DEF Rectangle2D_1 Coordinate {
         point [ 1 1 0, -1 1 0, -1 -1 0, 1 -1 0 ]
@@ -36,6 +37,7 @@ DEF Rectangle2 Transform {
       texture USE Texture
     }
     geometry IndexedFaceSet {
+      solid FALSE
       texCoordIndex [ 0, 1, 2, 3, 0, -1 ]
       coordIndex [ 0, 1, 2, 3, 0, -1 ]
       texCoord TextureCoordinate3D {

@@ -610,6 +610,8 @@
     <None Include="Titania\X3D\Browser\Devices\X3DPointingDevice.h" />
     <None Include="Titania\X3D\Miscellaneous\Texture3D.h" />
     <None Include="Titania\X3D\Browser\Viewer\PlaneViewer.h" />
+    <None Include="Titania\X3D\Thread\Texture3DLoader.h" />
+    <None Include="Titania\X3D\Miscellaneous\X3DTexture.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1066,6 +1068,8 @@
     <Compile Include="Titania\X3D\Browser\Devices\X3DPointingDevice.cpp" />
     <Compile Include="Titania\X3D\Miscellaneous\Texture3D.cpp" />
     <Compile Include="Titania\X3D\Browser\Viewer\PlaneViewer.cpp" />
+    <Compile Include="Titania\X3D\Thread\Texture3DLoader.cpp" />
+    <Compile Include="Titania\X3D\Miscellaneous\X3DTexture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

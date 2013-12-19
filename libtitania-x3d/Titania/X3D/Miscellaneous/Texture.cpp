@@ -50,203 +50,34 @@
 
 #include "Texture.h"
 
-#include <iomanip>
-#include <iostream>
-
 namespace titania {
 namespace X3D {
 
-Texture::Texture (const Magick::Image & image) :
-	     image (image),
-	    format (GL_RGB),
-	components (3),
-	      blob ()
+Texture::Texture (MagickImageArrayPtr && images) :
+	X3DTexture (std::move (images))
 { }
 
-Texture::Texture (const std::string & data) :
-	     image (getImage (data)),
-	    format (GL_RGB),
-	components (3),
-	      blob ()
+Texture::Texture (const std::string & document) :
+	X3DTexture (readImages (document))
 { }
 
-void
-Texture::process (size_type minTextureSize, size_type maxTextureSize)
+MagickImageArrayPtr
+Texture::readImages (const std::string & data)
 {
-	//addBorder (borderColor, borderWidth);
+	MagickImageArrayPtr images (X3DTexture::readImages (data));
 
-	tryScaleImage (minTextureSize, maxTextureSize);
-
-	refineImageFormat ();
-
-	writeBlob ();
-}
-
-Magick::Image
-Texture::getImage (const std::string & data)
-{
-	std::list <Magick::Image> images;
-	Magick::readImages (&images, Magick::Blob (data .c_str (), data .length ()));
-
-	switch (images .size ())
+	switch (images -> size ())
 	{
 		case 0:  // I have no idea what to do now.
 			throw std::domain_error ("Image contains nothing.");
 
 		case 1:
-		{
-			// Image with one layer image.
-			return images .back ();
-		}
+			return images;
+
 		default:
-		{
-			// Flatten image with more than one layer.
-			Magick::Image image;
-			Magick::flattenImages (&image, images .begin (), images .end ());
-			return image;
-		}
+			images -> erase (++ images -> begin (), images -> end ());
+			return images;
 	}
-}
-
-void
-Texture::addBorder (const Color4f & borderColor, size_type borderWidth)
-{
-	if (borderWidth > 0)
-	{
-		std::ostringstream color;
-
-		color
-			<< std::hex
-			<< '#'
-			<< std::setfill ('0')
-			<< std::setw (2) << (int) (uint8_t) (borderColor .r () * 255)
-			<< std::setw (2) << (int) (uint8_t) (borderColor .g () * 255)
-			<< std::setw (2) << (int) (uint8_t) (borderColor .b () * 255)
-			<< std::setw (2) << (int) (uint8_t) (borderColor .a () * 255);
-
-		image .borderColor (Magick::Color (color .str ()));
-		
-		if (borderColor .a () < 1)
-			image .matte (true);
-
-		image .border (Magick::Geometry (borderWidth, borderWidth));
-	}
-}
-
-void
-Texture::tryScaleImage (size_type minTextureSize, size_type maxTextureSize)
-{
-	size_type width  = getWidth ();
-	size_type height = getHeight ();
-
-	if (std::max (width, height) < minTextureSize)
-		return;
-
-	bool needsScaling = false;
-
-	if (not math::is_power_of_two (width))
-	{
-		width        = std::min (math::next_power_of_two (width), maxTextureSize);
-		needsScaling = true;
-	}
-
-	if (not math::is_power_of_two (height))
-	{
-		height       = std::min (math::next_power_of_two (height), maxTextureSize);
-		needsScaling = true;
-	}
-
-	if (needsScaling)
-	{
-//		std::clog
-//			<< "Warning: Texture needs scaling: scaling texture from "
-//			<< getWidth () << " x " << getHeight ()
-//			<< " to " << width << " x " << height << " pixel."
-//			<< std::endl;
-
-		scaleImage (width, height);
-	}
-}
-
-void
-Texture::scaleImage (size_type width, size_type height)
-{
-	Magick::Geometry geometry (width, height);
-
-	geometry .aspect (true);
-	image .filterType (Magick::LanczosFilter);
-	image .zoom (geometry);
-}
-
-void
-Texture::refineImageFormat ()
-{
-	switch (image .type ())
-	{
-		case Magick::GrayscaleType:
-		{
-			if (not image .matte ())
-			{
-				image .colorSpace (Magick::GRAYColorspace);
-				image .magick ("GRAY");
-				format     = GL_LUMINANCE;
-				components = 1;
-				return;
-			}
-		}
-		case Magick::GrayscaleMatteType:
-		{
-			image .colorSpace (Magick::GRAYColorspace);
-			image .type (Magick::TrueColorMatteType);
-			image .magick ("RGBA");
-			format     = GL_RGBA;
-			components = 2;
-			return;
-		}
-		case Magick::TrueColorType:
-		{
-			if (not image .matte ())
-			{
-				image .colorSpace (Magick::RGBColorspace);
-				image .magick ("RGB");
-				format     = GL_RGB;
-				components = 3;
-				return;
-			}
-		}
-		case Magick::TrueColorMatteType:
-		{
-			image .colorSpace (Magick::RGBColorspace);
-			image .magick ("RGBA");
-			format     = GL_RGBA;
-			components = 4;
-			return;
-		}
-		default:
-		{
-			if (image .matte ())
-			{
-				image .type (Magick::TrueColorMatteType);
-				refineImageFormat ();
-				return;
-			}
-			else
-			{
-				image .type (Magick::TrueColorType);
-				refineImageFormat ();
-				return;
-			}
-		}
-	}
-}
-
-void
-Texture::writeBlob ()
-{
-	image .interlaceType (Magick::NoInterlace);
-	image .endian (Magick::LSBEndian);
-	image .depth (8);
-	image .write (&blob);
 }
 
 } // X3D

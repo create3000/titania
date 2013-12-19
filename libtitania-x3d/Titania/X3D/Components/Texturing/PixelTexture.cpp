@@ -50,7 +50,6 @@
 
 #include "PixelTexture.h"
 
-#include "../../Miscellaneous/Texture.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
@@ -104,8 +103,11 @@ PixelTexture::update ()
 	}
 
 	size_t pixels = image () .getWidth () * image () .getHeight ();
+	
+	MagickImageArrayPtr mimages (new MagickImageArray ());
+	mimages -> emplace_back ();
 
-	Magick::Image mimage;
+	Magick::Image & mimage = mimages -> front ();
 	mimage .depth (8);
 	mimage .size (Magick::Geometry (image () .getWidth (), image () .getHeight ()));
 
@@ -190,7 +192,7 @@ PixelTexture::update ()
 
 	mimage .flip ();
 
-	TexturePtr texture (new Texture (mimage));
+	TexturePtr texture (new Texture (std::move (mimages)));
 
 	texture -> process (getBrowser () -> getBrowserOptions () -> minTextureSize (),
 	                    getBrowser () -> getRenderingProperties () -> maxTextureSize ());

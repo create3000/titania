@@ -2359,6 +2359,8 @@
     <None Include="Tests\Scripting\Route.wrl" />
     <None Include="Tests\Handles\Routes.wrl" />
     <None Include="Tests\Texturing3D\PixelTexture3D.wrl" />
+    <None Include="Tests\Texturing3D\ImageTexture3D.wrl" />
+    <None Include="Tests\Texturing3D\head.psd" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

@@ -50,127 +50,34 @@
 
 #include "Texture3D.h"
 
-#include <Titania/Utility/Adapter.h>
-
 namespace titania {
 namespace X3D {
 
-Texture3D::Texture3D (const MagickImageArrayPtr & images) :
-	     width (images -> front () .size () .width ()),
-	    height (images -> front () .size () .height ()),
-	components (0),
-	     depth (images -> size ())
-{
-	refineImageFormats (images);
-	setData (images);
-}
+Texture3D::Texture3D (MagickImageArrayPtr && images) :
+	X3DTexture (std::move (images))
+{ }
 
-void
-Texture3D::refineImageFormats (const MagickImageArrayPtr & images)
-{
-	Magick::Image & image = images -> front ();
+Texture3D::Texture3D (const std::string & document) :
+	X3DTexture (readImages (document))
+{ }
 
-	switch (image .type ())
+MagickImageArrayPtr
+Texture3D::readImages (const std::string & data)
+{
+	MagickImageArrayPtr images (X3DTexture::readImages (data));
+
+	switch (images -> size ())
 	{
-		case Magick::GrayscaleType:
-		{
-			if (not image .matte ())
-			{
-				image .colorSpace (Magick::GRAYColorspace);
-				image .magick ("GRAY");
-				format     = GL_LUMINANCE;
-				components = 1;
-				break;
-			}
-		}
-		case Magick::GrayscaleMatteType:
-		{
-			image .colorSpace (Magick::GRAYColorspace);
-			image .type (Magick::TrueColorMatteType);
-			image .magick ("RGBA");
-			format     = GL_RGBA;
-			components = 2;
-			break;
-		}
-		case Magick::TrueColorType:
-		{
-			if (not image .matte ())
-			{
-				image .colorSpace (Magick::RGBColorspace);
-				image .magick ("RGB");
-				format     = GL_RGB;
-				components = 3;
-				break;
-			}
-		}
-		case Magick::TrueColorMatteType:
-		{
-			image .colorSpace (Magick::RGBColorspace);
-			image .magick ("RGBA");
-			format     = GL_RGBA;
-			components = 4;
-			break;
-		}
+		case 0:  // I have no idea what to do now.
+			throw std::domain_error ("Image contains nothing.");
+
+		case 1:
+			return images;
+
 		default:
-		{
-			if (image .matte ())
-			{
-				image .type (Magick::TrueColorMatteType);
-				refineImageFormats (images);
-				return;
-			}
-			else
-			{
-				image .type (Magick::TrueColorType);
-				refineImageFormats (images);
-				return;
-			}
-		}
+			images -> pop_front ();
+			return images;
 	}
-	
-	for (Magick::Image & next : basic::adapter (++ images -> begin (), images -> end ()))
-	{
-		next .colorSpace (image .colorSpace ());
-		next .type (image .type ());
-		next .magick (image .magick ());
-	}
-}
-
-
-void
-Texture3D::setData (const MagickImageArrayPtr & images)
-{
-	size_t bytes = width * height;
-
-	switch (format)
-	{
-		case GL_RGB:
-			bytes *= 3;
-			break;
-		case GL_RGBA:
-			bytes *= 4;
-			break;
-		default:
-			break;
-	}
-
-	data .reserve (images -> size () * bytes);
-
-	for (Magick::Image & image : *images)
-		addImage (image, bytes);
-}
-
-void
-Texture3D::addImage (Magick::Image & image, size_t bytes)
-{
-	Magick::Blob blob;
-
-	image .interlaceType (Magick::NoInterlace);
-	image .endian (Magick::LSBEndian);
-	image .depth (8);
-	image .write (&blob);
-
-	data .insert (data .end (), (char*) blob .data (), ((char*) blob .data ()) + bytes);
 }
 
 } // X3D
