@@ -82,6 +82,7 @@ X3DTexture3DNode::initialize ()
 	notified ()          .addInterest (this, &X3DTexture3DNode::update);
 	repeatS ()           .addInterest (this, &X3DTexture3DNode::updateTextureProperties);
 	repeatT ()           .addInterest (this, &X3DTexture3DNode::updateTextureProperties);
+	repeatR ()           .addInterest (this, &X3DTexture3DNode::updateTextureProperties);
 	textureProperties () .addInterest (this, &X3DTexture3DNode::update);
 }
 

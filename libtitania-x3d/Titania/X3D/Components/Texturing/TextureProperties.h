@@ -72,6 +72,8 @@ class TextureProperties :
 {
 public:
 
+	///  @name Construction
+
 	TextureProperties (X3DExecutionContext* const);
 
 	virtual
@@ -114,6 +116,38 @@ public:
 	borderWidth () const
 	{ return *fields .borderWidth; }
 
+	SFFloat &
+	anisotropicDegree ()
+	{ return *fields .anisotropicDegree; }
+
+	const SFFloat &
+	anisotropicDegree () const
+	{ return *fields .anisotropicDegree; }
+
+	SFBool &
+	generateMipMaps ()
+	{ return *fields .generateMipMaps; }
+
+	const SFBool &
+	generateMipMaps () const
+	{ return *fields .generateMipMaps; }
+
+	SFString &
+	minificationFilter ()
+	{ return *fields .minificationFilter; }
+
+	const SFString &
+	minificationFilter () const
+	{ return *fields .minificationFilter; }
+
+	SFString &
+	magnificationFilter ()
+	{ return *fields .magnificationFilter; }
+
+	const SFString &
+	magnificationFilter () const
+	{ return *fields .magnificationFilter; }
+
 	SFString &
 	boundaryModeS ()
 	{ return *fields .boundaryModeS; }
@@ -139,44 +173,12 @@ public:
 	{ return *fields .boundaryModeR; }
 
 	SFString &
-	minificationFilter ()
-	{ return *fields .minificationFilter; }
-
-	const SFString &
-	minificationFilter () const
-	{ return *fields .minificationFilter; }
-
-	SFString &
-	magnificationFilter ()
-	{ return *fields .magnificationFilter; }
-
-	const SFString &
-	magnificationFilter () const
-	{ return *fields .magnificationFilter; }
-
-	SFString &
 	textureCompression ()
 	{ return *fields .textureCompression; }
 
 	const SFString &
 	textureCompression () const
 	{ return *fields .textureCompression; }
-
-	SFBool &
-	generateMipMaps ()
-	{ return *fields .generateMipMaps; }
-
-	const SFBool &
-	generateMipMaps () const
-	{ return *fields .generateMipMaps; }
-
-	SFFloat &
-	anisotropicDegree ()
-	{ return *fields .anisotropicDegree; }
-
-	const SFFloat &
-	anisotropicDegree () const
-	{ return *fields .anisotropicDegree; }
 
 	SFFloat &
 	texturePriority ()
@@ -186,9 +188,7 @@ public:
 	texturePriority () const
 	{ return *fields .texturePriority; }
 
-	virtual
-	void
-	initialize () final override;
+	///  @name Member access
 
 	GLenum
 	getBoundaryModeS () const;
@@ -214,9 +214,16 @@ public:
 
 private:
 
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+	///  @name Member access
+
 	GLenum
 	getBoundaryMode (const std::string &) const;
-
 
 	///  @name Static members
 
@@ -232,14 +239,14 @@ private:
 
 		SFColorRGBA* const borderColor;
 		SFInt32* const borderWidth;
+		SFFloat* const anisotropicDegree;
+		SFBool* const generateMipMaps;
+		SFString* const minificationFilter;
+		SFString* const magnificationFilter;
 		SFString* const boundaryModeS;
 		SFString* const boundaryModeT;
 		SFString* const boundaryModeR;
-		SFString* const minificationFilter;
-		SFString* const magnificationFilter;
 		SFString* const textureCompression;
-		SFBool* const generateMipMaps;
-		SFFloat* const anisotropicDegree;
 		SFFloat* const texturePriority;
 	};
 

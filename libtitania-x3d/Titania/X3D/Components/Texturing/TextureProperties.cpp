@@ -66,14 +66,14 @@ const std::string TextureProperties::containerField = "textureProperties";
 TextureProperties::Fields::Fields () :
 	        borderColor (new SFColorRGBA ()),
 	        borderWidth (new SFInt32 ()),
+	  anisotropicDegree (new SFFloat (1)),
+	    generateMipMaps (new SFBool ()),
+	 minificationFilter (new SFString ("FASTEST")),
+	magnificationFilter (new SFString ("FASTEST")),
 	      boundaryModeS (new SFString ("REPEAT")),
 	      boundaryModeT (new SFString ("REPEAT")),
 	      boundaryModeR (new SFString ("REPEAT")),
-	 minificationFilter (new SFString ("FASTEST")),
-	magnificationFilter (new SFString ("FASTEST")),
 	 textureCompression (new SFString ("FASTEST")),
-	    generateMipMaps (new SFBool ()),
-	  anisotropicDegree (new SFFloat (1)),
 	    texturePriority (new SFFloat ())
 { }
 
@@ -85,14 +85,14 @@ TextureProperties::TextureProperties (X3DExecutionContext* const executionContex
 	addField (inputOutput,    "metadata",            metadata ());
 	addField (inputOutput,    "borderColor",         borderColor ());
 	addField (inputOutput,    "borderWidth",         borderWidth ());
+	addField (inputOutput,    "anisotropicDegree",   anisotropicDegree ());
+	addField (initializeOnly, "generateMipMaps",     generateMipMaps ());
+	addField (inputOutput,    "minificationFilter",  minificationFilter ());
+	addField (inputOutput,    "magnificationFilter", magnificationFilter ());
 	addField (inputOutput,    "boundaryModeS",       boundaryModeS ());
 	addField (inputOutput,    "boundaryModeT",       boundaryModeT ());
 	addField (inputOutput,    "boundaryModeR",       boundaryModeR ());
-	addField (inputOutput,    "minificationFilter",  minificationFilter ());
-	addField (inputOutput,    "magnificationFilter", magnificationFilter ());
 	addField (inputOutput,    "textureCompression",  textureCompression ());
-	addField (initializeOnly, "generateMipMaps",     generateMipMaps ());
-	addField (inputOutput,    "anisotropicDegree",   anisotropicDegree ());
 	addField (inputOutput,    "texturePriority",     texturePriority ());
 }
 

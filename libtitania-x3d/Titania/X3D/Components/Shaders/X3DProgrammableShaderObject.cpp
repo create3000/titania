@@ -54,6 +54,7 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../CubeMapTexturing/X3DEnvironmentTextureNode.h"
 #include "../Texturing/X3DTexture2DNode.h"
+#include "../Texturing3D/X3DTexture3DNode.h"
 
 namespace titania {
 namespace X3D {
@@ -173,6 +174,9 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 
 				if (x3d_cast <X3DTexture2DNode*> (texture))
 					glBindTexture (GL_TEXTURE_2D, texture -> getTextureId ());
+
+				else if (x3d_cast <X3DTexture3DNode*> (texture))
+					glBindTexture (GL_TEXTURE_3D, texture -> getTextureId ());
 
 				else if (x3d_cast <X3DEnvironmentTextureNode*> (texture))
 					glBindTexture (GL_TEXTURE_CUBE_MAP, texture -> getTextureId ());
@@ -379,6 +383,9 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 
 					if (x3d_cast <X3DTexture2DNode*> (texture))
 						glBindTexture (GL_TEXTURE_2D, texture -> getTextureId ());
+
+					else if (x3d_cast <X3DTexture3DNode*> (texture))
+						glBindTexture (GL_TEXTURE_3D, texture -> getTextureId ());
 
 					else if (x3d_cast <X3DEnvironmentTextureNode*> (texture))
 						glBindTexture (GL_TEXTURE_CUBE_MAP, texture -> getTextureId ());

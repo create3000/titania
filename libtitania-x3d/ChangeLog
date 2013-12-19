@@ -1,5 +1,12 @@
 2013-12-19  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* TextureProperties.h:
+	* TextureProperties.cpp:
+	* X3DTexture3DNode.cpp:
+	* X3DProgrammableShaderObject.cpp: 
+
+2013-12-19  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DTexture.h:
 	* X3DTextureNode.h:
 	* PixelTexture.cpp:
