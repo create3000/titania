@@ -53,21 +53,8 @@
 #include "../../Bits/Cast.h"
 #include "../../Browser/X3DBrowser.h"
 
-#include <Titania/Math/Functional.h>
-#include <Titania/Utility/Adapter.h>
-
 namespace titania {
 namespace X3D {
-
-//#define RED_SATURATION_WEIGHT   0.30
-//#define GREEN_SATURATION_WEIGHT 0.59
-//#define BLUE_SATURATION_WEIGHT  0.11
-//
-//GLfloat constant[4];
-//constant[0] = 0.5f + 0.5f * RED_SATURATION_WEIGHT;
-//constant[1] = 0.5f + 0.5f * GREEN_SATURATION_WEIGHT;
-//constant[2] = 0.5f + 0.5f * BLUE_SATURATION_WEIGHT;
-//constant[3] = 1.0;
 
 X3DTexture2DNode::Fields::Fields () :
 	          repeatS (new SFBool (true)),
@@ -173,28 +160,7 @@ X3DTexture2DNode::updateImage (GLenum format, GLint width, GLint height, const v
 void
 X3DTexture2DNode::draw ()
 {
-	glEnable (GL_TEXTURE_2D);
-	glBindTexture (GL_TEXTURE_2D, getTextureId ());
-
-	if (glIsEnabled (GL_LIGHTING))
-	{
-		// Texture color modulates material diffuse color.
-		glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-	}
-	else
-	{
-		switch (components)
-		{
-			case 1:
-			case 2:
-				glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-				break;
-			case 3:
-			case 4:
-				glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-				break;
-		}
-	}
+	X3DTextureNode::draw (GL_TEXTURE_2D, components);
 }
 
 } // X3D

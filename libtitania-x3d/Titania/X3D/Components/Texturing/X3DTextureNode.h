@@ -62,6 +62,8 @@ class X3DTextureNode :
 {
 public:
 
+	using X3DAppearanceChildNode::draw;
+
 	///  @name Member access
 
 	virtual
@@ -97,6 +99,9 @@ protected:
 
 	void
 	updateTextureProperties (GLenum, const bool, const TextureProperties*, const int32_t, const int32_t, const bool, const bool, const bool);
+
+	void
+	draw (GLenum, size_t);
 
 
 private:

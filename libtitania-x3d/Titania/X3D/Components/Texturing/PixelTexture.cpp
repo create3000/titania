@@ -197,6 +197,8 @@ PixelTexture::update ()
 	texture -> process (getBrowser () -> getBrowserOptions () -> minTextureSize (),
 	                    getBrowser () -> getRenderingProperties () -> maxTextureSize ());
 
+	texture -> setComponents (image () .getComponents ());
+
 	setTexture (texture);
 }
 

@@ -1,5 +1,15 @@
 2013-12-19  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DTexture.h:
+	* X3DTextureNode.h:
+	* PixelTexture.cpp:
+	* X3DTextureNode.cpp:
+	* PixelTexture3D.cpp:
+	* X3DTexture2DNode.cpp:
+	* X3DTexture3DNode.cpp: 
+
+2013-12-19  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* Texture.h:

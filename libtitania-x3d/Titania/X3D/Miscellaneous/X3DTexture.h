@@ -84,6 +84,10 @@ public:
 	getHeight () const
 	{ return height; }
 
+	void
+	setComponents (size_type value)
+	{ components = value; }
+
 	size_type
 	getComponents () const
 	{ return components; }

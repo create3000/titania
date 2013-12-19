@@ -97,16 +97,21 @@ PixelTexture3D::initialize ()
 void
 PixelTexture3D::update ()
 {
-	if (image () .size () < 4 or image () [0] < 1 or image () [0] > 4 or image () [1] <= 0 or image () [2] <= 0 or image () [3] < 1)
+	constexpr size_t COMPONENTS = 0;
+	constexpr size_t WIDTH      = 1;
+	constexpr size_t HEIGHT     = 2;
+	constexpr size_t DEPTH      = 3;
+
+	if (image () .size () < 4 or image () [COMPONENTS] < 1 or image () [COMPONENTS] > 4 or image () [WIDTH] <= 0 or image () [HEIGHT] <= 0 or image () [DEPTH] < 1)
 	{
 		setTexture (Texture3DPtr ());
 		return;
 	}
 
-	size_t components  = image () [0];
-	size_t width       = image () [1];
-	size_t height      = image () [2];
-	size_t depth       = image () [3];
+	size_t components  = image () [COMPONENTS];
+	size_t width       = image () [WIDTH];
+	size_t height      = image () [HEIGHT];
+	size_t depth       = image () [DEPTH];
 	size_t pixels      = width * height;
 	size_t pixels3D    = width * height * depth;
 
@@ -209,6 +214,8 @@ PixelTexture3D::update ()
 
 	texture -> process (getBrowser () -> getBrowserOptions () -> minTextureSize (),
 	                    getBrowser () -> getRenderingProperties () -> maxTextureSize ());
+
+	texture -> setComponents (components);
 
 	setTexture (texture);
 }
