@@ -74,6 +74,7 @@ BrowserWindow::BrowserWindow (const X3D::X3DSFNode <X3D::Browser> & browserSurfa
 	   historyEditor (this),
 	   outlineEditor (this),
 	            keys (),
+	       shortcuts (true),
 	          viewer (X3D::ViewerType::NONE)
 {
 	if (getConfig () .getBoolean ("transparent"))
@@ -184,8 +185,10 @@ BrowserWindow::getStyles () const
 // Menu
 
 void
-BrowserWindow::enableMenus (bool enable) const
+BrowserWindow::hasShortcuts (bool value)
 {
+	shortcuts = value;
+
 	for (const auto & child : getMenuBar () .get_children ())
 	{
 		auto menuItem = dynamic_cast <Gtk::MenuItem*> (child);
@@ -195,7 +198,7 @@ BrowserWindow::enableMenus (bool enable) const
 			auto menu = menuItem -> get_submenu ();
 
 			if (menu)
-				menu -> set_sensitive (enable);
+				menu -> set_sensitive (shortcuts);
 		}
 	}
 }
@@ -230,48 +233,54 @@ BrowserWindow::set_selection (const X3D::MFNode & children)
 bool
 BrowserWindow::on_key_press_event (GdkEventKey* event)
 {
-	keys .press (event);
-	
-	static constexpr float NUDGE_STEP   = 0.001;
-	static constexpr float NUDGE_FACTOR = 10;
-
-	float nudge           = NUDGE_STEP * (keys .shift () ? NUDGE_FACTOR : 1);
-	bool  alongFrontPlane = false;
-
-	switch (event -> keyval)
+	if (shortcuts)
 	{
-		case GDK_KEY_Up:
-		case GDK_KEY_KP_Up:
+		keys .press (event);
+
+		if (not getBrowser () -> getSelection () -> getChildren () .empty ())
 		{
-			if (keys .control ())
-				translateSelection (X3D::Vector3f (0, 0, -nudge), alongFrontPlane);
-			else
-				translateSelection (X3D::Vector3f (0, nudge, 0), alongFrontPlane);
-			return true;
+			static constexpr float NUDGE_STEP   = 0.001;
+			static constexpr float NUDGE_FACTOR = 10;
+
+			float nudge           = NUDGE_STEP * (keys .shift () ? NUDGE_FACTOR : 1);
+			bool  alongFrontPlane = false;
+
+			switch (event -> keyval)
+			{
+				case GDK_KEY_Up:
+				case GDK_KEY_KP_Up:
+				{
+					if (keys .control ())
+						translateSelection (X3D::Vector3f (0, 0, -nudge), alongFrontPlane);
+					else
+						translateSelection (X3D::Vector3f (0, nudge, 0), alongFrontPlane);
+					return true;
+				}
+				case GDK_KEY_Down:
+				case GDK_KEY_KP_Down:
+				{
+					if (keys .control ())
+						translateSelection (X3D::Vector3f (0, 0, nudge), alongFrontPlane);
+					else
+						translateSelection (X3D::Vector3f (0, -nudge, 0), alongFrontPlane);
+					return true;
+				}
+				case GDK_KEY_Left:
+				case GDK_KEY_KP_Left:
+				{
+					translateSelection (X3D::Vector3f (-nudge, 0, 0), alongFrontPlane);
+					return true;
+				}
+				case GDK_KEY_Right:
+				case GDK_KEY_KP_Right:
+				{
+					translateSelection (X3D::Vector3f (nudge, 0, 0), alongFrontPlane);
+					return true;
+				}
+				default:
+					break;
+			}
 		}
-		case GDK_KEY_Down:
-		case GDK_KEY_KP_Down:
-		{
-			if (keys .control ())
-				translateSelection (X3D::Vector3f (0, 0, nudge), alongFrontPlane);
-			else
-				translateSelection (X3D::Vector3f (0, -nudge, 0), alongFrontPlane);
-			return true;
-		}
-		case GDK_KEY_Left:
-		case GDK_KEY_KP_Left:
-		{
-			translateSelection (X3D::Vector3f (-nudge, 0, 0), alongFrontPlane);
-			return true;
-		}
-		case GDK_KEY_Right:
-		case GDK_KEY_KP_Right:
-		{
-			translateSelection (X3D::Vector3f (nudge, 0, 0), alongFrontPlane);
-			return true;
-		}
-		default:
-			break;
 	}
 
 	return false;

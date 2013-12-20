@@ -137,7 +137,7 @@ public:
 	/// @name Menu
 
 	void
-	enableMenus (bool) const;
+	hasShortcuts (bool);
 
 
 private:
@@ -493,6 +493,7 @@ private:
 	OutlineEditor    outlineEditor;
 
 	X3D::Keys keys;
+	bool      shortcuts;
 	
 	X3D::ViewerType viewer;
 

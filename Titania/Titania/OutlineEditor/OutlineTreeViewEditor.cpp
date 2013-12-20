@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -320,7 +320,7 @@ OutlineTreeViewEditor::select_field_value (double x, double y)
 
 		if (get_data_type (iter) == OutlineIterType::X3DFieldValue)
 		{
-			getBrowserWindow () -> enableMenus (false);
+			getBrowserWindow () -> hasShortcuts (false);
 			get_tree_observer () -> unwatch_tree (iter);
 			unwatch_motion ();
 			set_cursor (path, *column, true);
@@ -340,7 +340,7 @@ OutlineTreeViewEditor::on_edited (const Glib::ustring & string_path, const Glib:
 	get_model () -> row_changed (path, iter);
 	get_tree_observer () -> watch_child (iter, path);
 
-	getBrowserWindow () -> enableMenus (true);
+	getBrowserWindow () -> hasShortcuts (true);
 	watch_motion ();
 }
 
