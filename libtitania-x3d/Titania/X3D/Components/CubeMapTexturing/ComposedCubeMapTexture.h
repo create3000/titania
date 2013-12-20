@@ -52,7 +52,6 @@
 #define __TITANIA_X3D_COMPONENTS_CUBE_MAP_TEXTURING_COMPOSED_CUBE_MAP_TEXTURE_H__
 
 #include "../CubeMapTexturing/X3DEnvironmentTextureNode.h"
-#include "../Texturing/X3DTexture2DNode.h"
 
 namespace titania {
 namespace X3D {
@@ -188,7 +187,8 @@ private:
 
 	Fields fields;
 
-	bool transparent;
+	bool   transparent;
+	size_t components;
 
 };
 

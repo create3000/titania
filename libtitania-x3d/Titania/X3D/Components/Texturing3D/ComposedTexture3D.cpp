@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -50,7 +50,9 @@
 
 #include "ComposedTexture3D.h"
 
+#include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Texturing/X3DTexture2DNode.h"
 
 namespace titania {
 namespace X3D {
@@ -81,6 +83,60 @@ X3DBaseNode*
 ComposedTexture3D::create (X3DExecutionContext* const executionContext) const
 {
 	return new ComposedTexture3D (executionContext);
+}
+
+void
+ComposedTexture3D::initialize ()
+{
+	X3DTexture3DNode::initialize ();
+
+	if (glXGetCurrentContext ())
+	{
+		texture ()  .addInterest (this, &ComposedTexture3D::update);
+		notified () .addInterest (this, &ComposedTexture3D::update);
+
+		update ();
+	}
+}
+
+void
+ComposedTexture3D::update ()
+{
+	size_t width      = 0;
+	size_t height     = 0;
+	size_t components = 0;
+	size_t depth      = 0;
+
+	std::vector <char> image;
+
+	for (const auto & node : texture ())
+	{
+		auto texture = x3d_cast <X3DTexture2DNode*> (node);
+
+		if (texture)
+		{
+			++ depth;
+
+			// Get texture 2d data
+
+			components = std::max (components, texture -> getComponents ());
+
+			width  = texture -> getWidth ();
+			height = texture -> getHeight ();
+
+			size_t first = image .size ();
+			image .resize (first + width * height * 4);
+
+			glBindTexture (GL_TEXTURE_2D, texture -> getTextureId ());
+			glGetTexImage (GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, image .data () + first);
+		}
+	}
+
+	glBindTexture (GL_TEXTURE_2D, 0);
+
+	image .resize (width * height * depth * 4, 0xFF);
+
+	setImage (getInternalFormat (components), components, width, height, depth, GL_RGBA, image .data ());
 }
 
 } // X3D

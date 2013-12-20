@@ -52,6 +52,7 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Texturing/X3DTexture2DNode.h"
 
 namespace titania {
 namespace X3D {
@@ -73,7 +74,8 @@ ComposedCubeMapTexture::ComposedCubeMapTexture (X3DExecutionContext* const execu
 	              X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DEnvironmentTextureNode (),
 	                   fields (),
-	              transparent (false)
+	              transparent (false),
+	               components (0)
 {
 	addField (inputOutput, "metadata", metadata ());
 	addField (inputOutput, "front",    front ());
@@ -122,6 +124,9 @@ ComposedCubeMapTexture::initialize ()
 void
 ComposedCubeMapTexture::set_texture ()
 {
+	transparent = false;
+	components  = 0;
+
 	setTexture (GL_TEXTURE_CUBE_MAP_POSITIVE_Z, front ());
 	setTexture (GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, back ());
 	setTexture (GL_TEXTURE_CUBE_MAP_NEGATIVE_X, right ());
@@ -131,25 +136,23 @@ ComposedCubeMapTexture::set_texture ()
 }
 
 void
-ComposedCubeMapTexture::setTexture (GLenum target, const SFNode & field)
+ComposedCubeMapTexture::setTexture (GLenum target, const SFNode & node)
 {
-	auto texture = x3d_cast <X3DTexture2DNode*> (field .getValue ());
+	auto texture = x3d_cast <X3DTexture2DNode*> (node);
 
 	if (texture)
 	{
 		// Get texture 2d data
 
-		transparent = texture -> isTransparent ();
+		transparent = transparent or texture -> isTransparent ();
+		components  = std::max (components, texture -> getComponents ());
 
-		GLint width = 0, height = 0;
-
-		glBindTexture (GL_TEXTURE_2D, texture -> getTextureId ());
-
-		glGetTexLevelParameteriv (GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH,  &width);
-		glGetTexLevelParameteriv (GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &height);
-
+		size_t width  = texture -> getWidth ();
+		size_t height = texture -> getHeight ();
+	
 		std::vector <char> image (width * height * 4);
 
+		glBindTexture (GL_TEXTURE_2D, texture -> getTextureId ());
 		glGetTexImage (GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, image .data ());
 		glBindTexture (GL_TEXTURE_2D, 0);
 
@@ -162,8 +165,6 @@ ComposedCubeMapTexture::setTexture (GLenum target, const SFNode & field)
 	}
 	else
 	{
-		transparent = false;
-
 		glBindTexture (GL_TEXTURE_CUBE_MAP, getTextureId ());
 		glTexImage2D (target, 0, GL_RGBA, 0, 0, false, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
 		glBindTexture (GL_TEXTURE_CUBE_MAP, 0);
@@ -177,18 +178,7 @@ ComposedCubeMapTexture::draw ()
 	glScalef (-1, -1, 1);
 	glMatrixMode (GL_MODELVIEW);
 
-	glEnable (GL_TEXTURE_CUBE_MAP);
-	glBindTexture (GL_TEXTURE_CUBE_MAP, getTextureId ());
-
-	if (glIsEnabled (GL_LIGHTING))
-	{
-		// Texture color modulates material diffuse color.
-		glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-	}
-	else
-	{
-		glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-	}
+	X3DEnvironmentTextureNode::draw (GL_TEXTURE_CUBE_MAP, components);
 }
 
 } // X3D

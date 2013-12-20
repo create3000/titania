@@ -1,3 +1,13 @@
+2013-12-20  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DTexture2DNode.h:
+	* X3DTexture3DNode.h:
+	* X3DTexture2DNode.cpp:
+	* ComposedTexture3D.h:
+	* ComposedTexture3D.cpp:
+	* ComposedCubeMapTexture.h:
+	* ComposedCubeMapTexture.cpp: 
+
 2013-12-19  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* TextureProperties.h:

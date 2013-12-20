@@ -68,17 +68,18 @@ Background {
 
 Viewpoint {
   description "Home"
+  position 0 0 5
 }
 
 DEF VisibleClipPlane Transform {
   children [
     DEF PlaneSensor PlaneSensor {
       axisRotation 0 1 0 1.5708
-      offset 1.49948e-06 0 0.41369
+      offset 2.01022e-06 0 0.5546
       maxPosition -1 0
     }
     DEF Rectangle2D Transform {
-      translation 1.49948e-06 0 0.41369
+      translation 2.01022e-06 0 0.5546
       scale 0.5 0.5 1
       children Shape {
         appearance Appearance {
@@ -114,12 +115,10 @@ function set_translation (value)
 
 Transform {
   children [
-    DEF _1 Transform {
-      scale 1.3 1.52613 1
+    Transform {
       children Volume {
         dimension 200
-        voxels DEF Texture ImageTexture3D {
-          url "head.psd"
+        voxels DEF Texture ComposedTexture3D {
           textureProperties TextureProperties {
             generateMipMaps TRUE
             minificationFilter "AVG_PIXEL"
@@ -128,15 +127,23 @@ Transform {
             boundaryModeT "CLAMP_TO_EDGE"
             boundaryModeR "CLAMP_TO_EDGE"
           }
+          texture [
+            ImageTexture {
+              url "../images/lena.jpg"
+            }
+            ImageTexture {
+              url "../images/ubuntu.png"
+            }
+          ]
         }
       }
     }
-    DEF _2 ClipPlane {
-      plane 0 0 -1 0.41369
+    DEF _1 ClipPlane {
+      plane 0 0 -1 0.5546
     }
   ]
 }
 
 ROUTE PlaneSensor.translation_changed TO ClipPlaneScript.set_translation
 ROUTE PlaneSensor.translation_changed TO Rectangle2D.set_translation
-ROUTE ClipPlaneScript.plane_changed TO _2.set_plane
+ROUTE ClipPlaneScript.plane_changed TO _1.set_plane

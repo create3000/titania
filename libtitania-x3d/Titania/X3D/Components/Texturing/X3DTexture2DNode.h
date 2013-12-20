@@ -94,6 +94,18 @@ public:
 	bool
 	isTransparent () const override
 	{ return transparent; }
+	
+	size_t
+	getWidth () const
+	{ return width; }
+	
+	size_t
+	getHeight () const
+	{ return height; }
+	
+	size_t
+	getComponents () const
+	{ return components; }
 
 	///  @name Operations
 
@@ -162,10 +174,10 @@ private:
 
 	Fields fields;
 
-	int32_t width;
-	int32_t height;
-	size_t  components;
-	bool    transparent;
+	bool   transparent;
+	size_t width;
+	size_t height;
+	size_t components;
 
 };
 

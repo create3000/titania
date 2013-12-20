@@ -122,9 +122,16 @@ protected:
 
 	///  @name Operations
 
+	GLenum
+	getInternalFormat (size_t components) const
+	{ return getTextureProperties () -> getInternalFormat (components); }
+
 	virtual
 	void
 	setTexture (const Texture3DPtr &);
+
+	void
+	setImage (GLenum, size_t, GLint w, GLint, GLint, GLenum, const void*);
 
 	virtual
 	void
@@ -135,15 +142,8 @@ private:
 
 	///  @name Operations
 
-	GLenum
-	getInternalFormat (size_t components) const
-	{ return getTextureProperties () -> getInternalFormat (components); }
-
 	const TextureProperties*
 	getTextureProperties () const;
-
-	void
-	setImage (GLenum, size_t, GLint w, GLint, GLint, GLenum, const void*);
 
 	void
 	updateTextureProperties ();

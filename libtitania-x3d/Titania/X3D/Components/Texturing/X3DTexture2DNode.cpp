@@ -65,10 +65,10 @@ X3DTexture2DNode::Fields::Fields () :
 X3DTexture2DNode::X3DTexture2DNode () :
 	X3DTextureNode (),
 	        fields (),
+	   transparent (false),
 	         width (0),
 	        height (0),
-	    components (0),
-	   transparent (false)
+	    components (0)
 {
 	addNodeType (X3DConstants::X3DTexture2DNode);
 }

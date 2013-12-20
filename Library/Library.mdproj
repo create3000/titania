@@ -2361,6 +2361,7 @@
     <None Include="Tests\Texturing3D\PixelTexture3D.wrl" />
     <None Include="Tests\Texturing3D\ImageTexture3D.wrl" />
     <None Include="Tests\Texturing3D\head.psd" />
+    <None Include="Tests\Texturing3D\ComposedTexture3D.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
