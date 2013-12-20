@@ -50,6 +50,8 @@
 
 #include "Texture3D.h"
 
+#include <Titania/LOG.h>
+
 namespace titania {
 namespace X3D {
 
@@ -75,8 +77,12 @@ Texture3D::readImages (const std::string & data)
 			return images;
 
 		default:
-			images -> pop_front ();
+		{
+			if (images -> front () .magick () == "PSD")
+				images -> pop_front ();
+
 			return images;
+		}
 	}
 }
 

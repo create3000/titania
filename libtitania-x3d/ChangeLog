@@ -1,5 +1,11 @@
 2013-12-20  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Texture.cpp:
+	* Texture3D.cpp:
+	* X3DTexture3DNode.cpp: 
+
+2013-12-20  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DTexture2DNode.h:
 	* X3DTexture3DNode.h:
 	* X3DTexture2DNode.cpp:

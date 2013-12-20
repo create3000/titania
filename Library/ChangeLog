@@ -1,6 +1,15 @@
 2013-12-20  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Library.mdproj:
+	* image.xcf:
+	* head.xcf:
+	* image.psd:
+	* image.xcf:
+	* ImageTexture3D.wrl: 
+
+2013-12-20  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Library.mdproj:
 	* ImageTexture3D.wrl:
 	* ComposedTexture3D.wrl: 
 

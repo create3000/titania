@@ -50,6 +50,8 @@
 
 #include "Texture.h"
 
+#include <Titania/LOG.h>
+
 namespace titania {
 namespace X3D {
 
@@ -75,8 +77,13 @@ Texture::readImages (const std::string & data)
 			return images;
 
 		default:
+		{
+			if (images -> front () .magick () not_eq "PSD")
+				Magick::flattenImages (&images -> front (), images -> begin (), images -> end ());
+	
 			images -> erase (++ images -> begin (), images -> end ());
 			return images;
+		}
 	}
 }
 
