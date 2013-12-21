@@ -1,7 +1,6 @@
 #X3D V3.3 utf8 Titania
 
 DEF _1 LoadSensor {
-  timeOut 5
   watchList [
     Inline {
       url "Cube.wrl"
@@ -66,7 +65,7 @@ DEF Text Transform {
       material Material { }
     }
     geometry DEF _3 Text {
-      string "1"
+      string "5"
       solid TRUE
       fontStyle FontStyle {
         justify "MIDDLE"

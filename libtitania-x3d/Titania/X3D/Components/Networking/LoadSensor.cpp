@@ -147,8 +147,6 @@ LoadSensor::set_watchList ()
 void
 LoadSensor::set_loadState (X3DUrlObject* const urlObject)
 {
-	__LOG__ << urlObject -> url () << " : " << (int) urlObject -> checkLoadState () << std::endl;
-
 	if (isActive ())
 	{
 		switch (urlObject -> checkLoadState ())
@@ -158,8 +156,6 @@ LoadSensor::set_loadState (X3DUrlObject* const urlObject)
 				complete .emplace (urlObject);
 
 				progress () = float (complete.size ()) / float (urlObjects .size ());
-
-				__LOG__ << progress () << std::endl;
 
 				if (complete .size () == urlObjects .size ())
 				{
@@ -183,9 +179,23 @@ LoadSensor::set_loadState (X3DUrlObject* const urlObject)
 	}
 	else
 	{
-		__LOG__ << std::endl;
-		if (loaded .find (urlObject) not_eq loaded .end ())
-			reset ();
+		switch (urlObject -> checkLoadState ())
+		{
+			case COMPLETE_STATE:
+			case FAILED_STATE:
+			{
+				if (loaded .find (urlObject) == loaded .end ())
+					break;
+				// Proceed with next step
+			}
+			case IN_PROGRESS_STATE:
+			{
+				reset ();			
+				break;
+			}
+			default:
+				break;
+		}
 	}
 
 	switch (urlObject -> checkLoadState ())
@@ -207,7 +217,9 @@ LoadSensor::abort ()
 	timeOut_connection .disconnect ();
 
 	isActive () = false;
-	isLoaded () = false;
+	
+	if (enabled ())
+		isLoaded () = false;
 
 	return false;
 }

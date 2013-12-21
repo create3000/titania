@@ -129,6 +129,9 @@ Loader::loadURL (const MFString & url, const MFString & parameter)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>)
 {
+	if (url .empty ())
+		return;
+
 	for (const auto & URL : url)
 	{
 		try

@@ -1,6 +1,11 @@
 2013-12-21  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Loader.cpp:
+	* LoadSensor.cpp: 
+
+2013-12-21  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Loader.cpp:
 	* Anchor.cpp:
 	* LoadSensor.h:
 	* LoadSensor.cpp: 
