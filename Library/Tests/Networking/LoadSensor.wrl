@@ -14,11 +14,38 @@ DEF _1 LoadSensor {
     ImageTexture {
       url "http://titania.create3000.de/Library/Examples/earth.png"
     }
+    ImageTexture3D {
+      url "../Texturing3D/head.psd"
+    }
+    ShaderPart {
+      url "data:text/plain,
+#version 120
+
+void main (void)
+{
+	gl_Position     = ftransform ();
+	gl_TexCoord [0] = gl_TextureMatrix [0] * gl_MultiTexCoord0;
+}
+"
+    }
+    ShaderProgram {
+      url "data:text/plain,
+#version 120
+
+void main (void)
+{
+	gl_Position = ftransform ();
+}
+"
+    }
+    AudioClip {
+      url "../Sound/04. Like A Virgin.mp3"
+    }
     MovieTexture {
       url "../../Examples/Vattenfall/stage/film6.mpv"
     }
-    ImageTexture3D {
-      url "../Texturing3D/head.psd"
+    Script {
+      url "vrmlscript:"
     }
   ]
 }

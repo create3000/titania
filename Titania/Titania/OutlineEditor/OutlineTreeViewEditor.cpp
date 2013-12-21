@@ -441,10 +441,6 @@ OutlineTreeViewEditor::add_route (double x, double y)
 			{
 				auto field = static_cast <X3D::X3DFieldDefinition*> (data -> get_object ());
 
-				// Clear selection
-
-				clear_access_type_selection (selectedUserData);
-
 				// Pick
 
 				Gdk::Rectangle cell_area;
@@ -485,7 +481,7 @@ OutlineTreeViewEditor::add_route (double x, double y)
 
 									// Clear selection
 
-									clear_access_type_selection ();
+									clear_access_type_selection (selectedUserData);
 								}
 							}
 
@@ -540,7 +536,7 @@ OutlineTreeViewEditor::add_route (double x, double y)
 
 									// Clear selection
 
-									clear_access_type_selection ();
+									clear_access_type_selection (selectedUserData);
 								}
 							}
 
@@ -565,8 +561,7 @@ OutlineTreeViewEditor::add_route (double x, double y)
 					}
 					default:
 					{
-						clear_access_type_selection ();
-
+						clear_access_type_selection (selectedUserData);
 						break;
 					}
 				}
@@ -600,14 +595,7 @@ OutlineTreeViewEditor::clear_access_type_selection (const OutlineUserDataPtr & u
 
 		for (const auto & path : userData -> paths)
 			get_model () -> row_changed (path, get_model () -> get_iter (path));
-	}
-}
 
-void
-OutlineTreeViewEditor::clear_access_type_selection ()
-{
-	if (not get_shift_key ())
-	{
 		matchingAccessType = 0;
 		sourceNode         = nullptr;
 		destinationNode    = nullptr;

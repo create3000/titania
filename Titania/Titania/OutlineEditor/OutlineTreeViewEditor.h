@@ -137,9 +137,6 @@ private:
 	void
 	clear_access_type_selection (const OutlineUserDataPtr &);
 
-	void
-	clear_access_type_selection ();
-
 	bool
 	remove_route (double, double);
 
