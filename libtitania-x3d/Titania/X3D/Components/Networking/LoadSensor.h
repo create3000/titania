@@ -160,6 +160,9 @@ private:
 	set_loadState (X3DUrlObject* const);
 	
 	///  @name Operations
+
+	void
+	start ();
 	
 	bool
 	abort ();
@@ -192,6 +195,7 @@ private:
 	Fields fields;
 
 	MFNode                  urlObjects;
+	time_type               startTime;
 	std::set <X3DBaseNode*> loaded;
 	std::set <X3DBaseNode*> complete;
 	sigc::connection        timeOut_connection;

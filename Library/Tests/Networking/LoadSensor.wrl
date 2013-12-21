@@ -65,7 +65,7 @@ DEF Text Transform {
       material Material { }
     }
     geometry DEF _3 Text {
-      string "5"
+      string "1"
       solid TRUE
       fontStyle FontStyle {
         justify "MIDDLE"
@@ -74,8 +74,32 @@ DEF Text Transform {
   }
 }
 
+DEF _4 Anchor {
+  url "#Viewpoint"
+  children DEF Sphere Transform {
+    translation 0 -1.1894 0
+    scale 0.230247 0.230247 0.230247
+    children Shape {
+      appearance Appearance {
+        material Material { }
+      }
+      geometry Sphere { }
+    }
+  }
+}
+
+DEF _5 LoadSensor {
+  watchList USE _4
+}
+
+DEF Viewpoint Viewpoint { }
+
 ROUTE _1.isActive TO _2.set_active
 ROUTE _1.isLoaded TO _2.set_loaded
 ROUTE _1.progress TO _2.set_progress
 ROUTE _1.loadTime TO _2.set_loadTime
 ROUTE _2.string_changed TO _3.set_string
+ROUTE _5.isActive TO _2.set_active
+ROUTE _5.isLoaded TO _2.set_loaded
+ROUTE _5.progress TO _2.set_progress
+ROUTE _5.loadTime TO _2.set_loadTime
