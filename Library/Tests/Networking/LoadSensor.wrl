@@ -1,0 +1,82 @@
+#X3D V3.3 utf8 Titania
+
+DEF _1 LoadSensor {
+  timeOut 5
+  watchList [
+    Inline {
+      url "Cube.wrl"
+    }
+    ImageTexture {
+      url "../images/lena.jpg"
+    }
+    ImageTexture {
+      url "http://titania.create3000.de/Library/Examples/earth.jpg"
+    }
+    ImageTexture {
+      url "http://titania.create3000.de/Library/Examples/earth.png"
+    }
+    MovieTexture {
+      url "../../Examples/Vattenfall/stage/film6.mpv"
+    }
+    ImageTexture3D {
+      url "../Texturing3D/head.psd"
+    }
+  ]
+}
+
+DEF _2 Script {
+  inputOnly  SFBool   set_active
+  inputOnly  SFBool   set_loaded
+  inputOnly  SFFloat  set_progress
+  inputOnly  SFTime   set_loadTime
+  outputOnly MFString string_changed
+
+  url "vrmlscript:
+function initialize ()
+{
+	set_progress (0);
+}
+
+function set_active (value, time)
+{
+	print ('isActive: ', value);
+}
+
+function set_loaded (value, time)
+{
+	print ('isLoaded: ', value);
+}
+
+function set_progress (value, time)
+{
+	print ('progress: ', value);
+	string_changed = new MFString (value);
+}
+
+function set_loadTime (value, time)
+{
+	print ('loadTime: ', value);
+}
+"
+}
+
+DEF Text Transform {
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry DEF _3 Text {
+      string "1"
+      solid TRUE
+      fontStyle FontStyle {
+        justify "MIDDLE"
+      }
+    }
+  }
+}
+
+ROUTE _1.isActive TO _2.set_active
+ROUTE _1.isLoaded TO _2.set_loaded
+ROUTE _1.progress TO _2.set_progress
+ROUTE _1.loadTime TO _2.set_loadTime
+ROUTE _2.string_changed TO _3.set_string

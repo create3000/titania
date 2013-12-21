@@ -1,3 +1,10 @@
+2013-12-21  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Loader.cpp:
+	* Anchor.cpp:
+	* LoadSensor.h:
+	* LoadSensor.cpp: 
+
 2013-12-20  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Texture.cpp:

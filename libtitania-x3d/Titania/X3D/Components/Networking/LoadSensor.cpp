@@ -50,7 +50,10 @@
 
 #include "LoadSensor.h"
 
+#include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
+
+#include <gdk/gdk.h>
 
 namespace titania {
 namespace X3D {
@@ -60,32 +63,214 @@ const std::string LoadSensor::typeName       = "LoadSensor";
 const std::string LoadSensor::containerField = "children";
 
 LoadSensor::Fields::Fields () :
-	timeOut (new SFTime ()),
-	watchList (new MFNode ()),
-	isLoaded (new SFBool ()),
-	loadTime (new SFTime ()),
-	progress (new SFFloat ())
+	  timeOut (new SFTime ()),
+	 isLoaded (new SFBool ()),
+	 progress (new SFFloat ()),
+	 loadTime (new SFTime ()),
+	watchList (new MFNode ())
 { }
 
 LoadSensor::LoadSensor (X3DExecutionContext* const executionContext) :
 	         X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DNetworkSensorNode (),
-	              fields ()
+	              fields (),
+	          urlObjects (),
+	              loaded (),
+	            complete (),
+	  timeOut_connection ()
 {
 	addField (inputOutput, "metadata",  metadata ());
 	addField (inputOutput, "enabled",   enabled ());
-	addField (outputOnly,  "isActive",  isActive ());
 	addField (inputOutput, "timeOut",   timeOut ());
-	addField (inputOutput, "watchList", watchList ());
+	addField (outputOnly,  "isActive",  isActive ());
 	addField (outputOnly,  "isLoaded",  isLoaded ());
-	addField (outputOnly,  "loadTime",  loadTime ());
 	addField (outputOnly,  "progress",  progress ());
+	addField (outputOnly,  "loadTime",  loadTime ());
+	addField (inputOutput, "watchList", watchList ());
+
+	addChildren (urlObjects);
 }
 
 X3DBaseNode*
 LoadSensor::create (X3DExecutionContext* const executionContext) const
 {
 	return new LoadSensor (executionContext);
+}
+
+void
+LoadSensor::initialize ()
+{
+	X3DNetworkSensorNode::initialize ();
+
+	enabled ()   .addInterest (this, &LoadSensor::set_enabled);
+	timeOut ()   .addInterest (this, &LoadSensor::set_timeOut);
+	watchList () .addInterest (this, &LoadSensor::set_watchList);
+
+	set_watchList ();
+}
+
+void
+LoadSensor::set_enabled ()
+{
+	if (enabled ())
+		reset ();
+
+	else
+	{
+		abort ();
+		remove ();
+	}
+}
+
+void
+LoadSensor::set_timeOut ()
+{
+	if (isActive ())
+	{
+		timeOut_connection .disconnect ();
+
+		if (timeOut () > 0)
+		{
+			timeOut_connection = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &LoadSensor::abort),
+			                                                       timeOut () * 1000,
+			                                                       GDK_PRIORITY_REDRAW); // GDK_PRIORITY_REDRAW is very important
+		}
+	}
+}
+
+void
+LoadSensor::set_watchList ()
+{
+	reset ();
+}
+
+void
+LoadSensor::set_loadState (X3DUrlObject* const urlObject)
+{
+	__LOG__ << urlObject -> url () << " : " << (int) urlObject -> checkLoadState () << std::endl;
+
+	if (isActive ())
+	{
+		switch (urlObject -> checkLoadState ())
+		{
+			case COMPLETE_STATE:
+			{
+				complete .emplace (urlObject);
+
+				progress () = float (complete.size ()) / float (urlObjects .size ());
+
+				__LOG__ << progress () << std::endl;
+
+				if (complete .size () == urlObjects .size ())
+				{
+					timeOut_connection .disconnect ();
+
+					isActive () = false;
+					isLoaded () = true;
+					loadTime () = getCurrentTime ();
+				}
+
+				break;
+			}
+			case FAILED_STATE:
+			{
+				abort ();
+				break;
+			}
+			default:
+				break;
+		}
+	}
+	else
+	{
+		__LOG__ << std::endl;
+		if (loaded .find (urlObject) not_eq loaded .end ())
+			reset ();
+	}
+
+	switch (urlObject -> checkLoadState ())
+	{
+		case COMPLETE_STATE:
+		case FAILED_STATE:
+		{
+			loaded .emplace (urlObject);
+			break;
+		}
+		default:
+			break;
+	}
+}
+
+bool
+LoadSensor::abort ()
+{
+	timeOut_connection .disconnect ();
+
+	isActive () = false;
+	isLoaded () = false;
+
+	return false;
+}
+
+void
+LoadSensor::reset ()
+{
+	remove ();
+
+	if (enabled ())
+	{
+		isActive () = true;
+		progress () = 0;
+		
+		loaded   .clear ();
+		complete .clear ();
+
+		set_timeOut ();
+
+		for (const auto & node : watchList ())
+		{
+			auto urlObject = x3d_cast <X3DUrlObject*> (node);
+
+			if (urlObject)
+			{
+				urlObjects .emplace_back (urlObject);
+
+				urlObject -> checkLoadState () .addInterest (this, &LoadSensor::set_loadState, urlObject);
+			}
+		}
+
+		for (const auto & node : urlObjects)
+		{
+			auto urlObject = x3d_cast <X3DUrlObject*> (node);
+
+			set_loadState (urlObject);
+		}
+	}
+}
+
+void
+LoadSensor::remove ()
+{
+	timeOut_connection .disconnect ();
+
+	for (const auto & node : urlObjects)
+	{
+		auto urlObject = x3d_cast <X3DUrlObject*> (node);
+
+		urlObject -> checkLoadState () .removeInterest (this, &LoadSensor::set_loadState);
+	}
+
+	urlObjects .clear ();
+}
+
+void
+LoadSensor::dispose ()
+{
+	timeOut_connection .disconnect ();
+
+	urlObjects .dispose ();
+
+	X3DNetworkSensorNode::dispose ();
 }
 
 } // X3D

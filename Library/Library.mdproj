@@ -2365,6 +2365,7 @@
     <None Include="Tests\Texturing3D\head.xcf" />
     <None Include="Tests\Texturing3D\image.psd" />
     <None Include="Tests\Texturing3D\image.xcf" />
+    <None Include="Tests\Networking\LoadSensor.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

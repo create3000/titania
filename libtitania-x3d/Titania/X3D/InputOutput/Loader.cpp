@@ -141,11 +141,13 @@ throw (Error <INVALID_URL>,
 			else
 				getBrowser () -> loadURL ({ referer .transform (uri) .str () }, parameter);
 
-			break;
+			return;
 		}
 		catch (const X3DError &)
 		{ }
 	}
+
+	throw Error <URL_UNAVAILABLE> ("Couldn't load any URL of " + url .toString ());
 }
 
 void

@@ -100,7 +100,18 @@ Anchor::initialize ()
 void
 Anchor::requestImmediateLoad ()
 {
-	Loader (getExecutionContext ()) .loadURL (url (), parameter ());
+	try
+	{
+		setLoadState (IN_PROGRESS_STATE);
+
+		Loader (getExecutionContext ()) .loadURL (url (), parameter ());
+
+		setLoadState (COMPLETE_STATE);
+	}
+	catch (const X3DError &)
+	{
+		setLoadState (FAILED_STATE);
+	}
 }
 
 void

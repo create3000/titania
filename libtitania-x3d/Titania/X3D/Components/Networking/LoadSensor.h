@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_COMPONENTS_NETWORKING_LOAD_SENSOR_H__
 
 #include "../Networking/X3DNetworkSensorNode.h"
+#include "../Networking/X3DUrlObject.h"
 
 namespace titania {
 namespace X3D {
@@ -60,6 +61,8 @@ class LoadSensor :
 	public X3DNetworkSensorNode
 {
 public:
+
+	///  @name Construction
 
 	LoadSensor (X3DExecutionContext* const);
 
@@ -95,14 +98,6 @@ public:
 	timeOut () const
 	{ return *fields .timeOut; }
 
-	MFNode &
-	watchList ()
-	{ return *fields .watchList; }
-
-	const MFNode &
-	watchList () const
-	{ return *fields .watchList; }
-
 	SFBool &
 	isLoaded ()
 	{ return *fields .isLoaded; }
@@ -110,14 +105,6 @@ public:
 	const SFBool &
 	isLoaded () const
 	{ return *fields .isLoaded; }
-
-	SFTime &
-	loadTime ()
-	{ return *fields .loadTime; }
-
-	const SFTime &
-	loadTime () const
-	{ return *fields .loadTime; }
 
 	SFFloat &
 	progress ()
@@ -127,9 +114,61 @@ public:
 	progress () const
 	{ return *fields .progress; }
 
+	SFTime &
+	loadTime ()
+	{ return *fields .loadTime; }
+
+	const SFTime &
+	loadTime () const
+	{ return *fields .loadTime; }
+
+	MFNode &
+	watchList ()
+	{ return *fields .watchList; }
+
+	const MFNode &
+	watchList () const
+	{ return *fields .watchList; }
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override;
+
 
 private:
 
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+	///  @name Event handlers
+
+	void
+	set_enabled ();
+	
+	void
+	set_timeOut ();
+	
+	void
+	set_watchList ();
+
+	void
+	set_loadState (X3DUrlObject* const);
+	
+	///  @name Operations
+	
+	bool
+	abort ();
+
+	void
+	reset ();
+	
+	void
+	remove ();
 
 	///  @name Static members
 
@@ -144,13 +183,18 @@ private:
 		Fields ();
 
 		SFTime* const timeOut;
-		MFNode* const watchList;
 		SFBool* const isLoaded;
-		SFTime* const loadTime;
 		SFFloat* const progress;
+		SFTime* const loadTime;
+		MFNode* const watchList;
 	};
 
 	Fields fields;
+
+	MFNode                  urlObjects;
+	std::set <X3DBaseNode*> loaded;
+	std::set <X3DBaseNode*> complete;
+	sigc::connection        timeOut_connection;
 
 };
 
