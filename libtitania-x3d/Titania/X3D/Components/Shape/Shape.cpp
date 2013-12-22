@@ -58,8 +58,6 @@
 #include "../../Types/Geometry.h"
 #include "../Rendering/X3DGeometryNode.h"
 #include "../Shape/Appearance.h"
-#include "../Shape/FillProperties.h"
-#include "../Shape/LineProperties.h"
 
 namespace titania {
 namespace X3D {
@@ -71,8 +69,7 @@ const std::string Shape::containerField = "children";
 Shape::Shape (X3DExecutionContext* const executionContext) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DShapeNode (),
-	 _appearance (NULL),
-	   _geometry (NULL)
+	geometryNode (nullptr)
 {
 	addField (inputOutput,    "metadata",   metadata ());
 	addField (initializeOnly, "bboxSize",   bboxSize ());
@@ -92,23 +89,33 @@ Shape::initialize ()
 {
 	X3DShapeNode::initialize ();
 
-	appearance () .addInterest (this, &Shape::set_appearance);
-	geometry ()   .addInterest (this, &Shape::set_geometry);
+	geometry () .addInterest (this, &Shape::set_geometry);
 
-	set_appearance ();
 	set_geometry ();
+}
+
+void
+Shape::set_geometry ()
+{
+	geometryNode = x3d_cast <X3DGeometryNode*> (geometry ());
 }
 
 bool
 Shape::isTransparent () const
 {
-	if (_appearance -> isTransparent ())
+	if (getAppearance () -> isTransparent ())
 		return true;
 
-	if (_geometry and _geometry -> isTransparent ())
+	if (geometryNode and geometryNode -> isTransparent ())
 		return true;
 
 	return false;
+}
+
+bool
+Shape::isLineGeometry () const
+{
+	return geometryNode -> isLineGeometry ();
 }
 
 Box3f
@@ -116,8 +123,8 @@ Shape::getBBox ()
 {
 	if (bboxSize () == Vector3f (-1, -1, -1))
 	{
-		if (_geometry)
-			return _geometry -> getBBox ();
+		if (geometryNode)
+			return geometryNode -> getBBox ();
 
 		else
 			return Box3f ();
@@ -126,27 +133,10 @@ Shape::getBBox ()
 	return Box3f (bboxSize (), bboxCenter ());
 }
 
-void
-Shape::set_appearance ()
-{
-	_appearance = x3d_cast <X3DAppearanceNode*> (appearance ());
-
-	if (_appearance)
-		return;
-
-	_appearance = getBrowser () -> getBrowserOptions () -> appearance ();
-}
-
-void
-Shape::set_geometry ()
-{
-	_geometry = x3d_cast <X3DGeometryNode*> (geometry ());
-}
-
 bool
 Shape::intersect (const Sphere3f & sphere, const Matrix4f & matrix, const CollectableObjectArray & localObjects)
 {
-	return _geometry -> intersect (sphere, matrix, localObjects);
+	return geometryNode -> intersect (sphere, matrix, localObjects);
 }
 
 void
@@ -162,14 +152,14 @@ Shape::traverse (const TraverseType type)
 		case TraverseType::NAVIGATION:
 		case TraverseType::COLLISION:
 		{
-			if (_geometry)
+			if (geometryNode)
 				getBrowser () -> getRenderers () .top () -> addCollision (this);
 
 			break;
 		}
 		case TraverseType::COLLECT:
 		{
-			if (_geometry)
+			if (geometryNode)
 				getBrowser () -> getRenderers () .top () -> addShape (this);
 
 			break;
@@ -184,7 +174,7 @@ Shape::pick ()
 {
 	// All geometries must be picked
 
-	if (_geometry)
+	if (geometryNode)
 	{
 		if (getBrowser () -> intersect (glIsEnabled (GL_SCISSOR_TEST) ? Scissor4i () : Viewport4i ()))
 		{
@@ -196,7 +186,7 @@ Shape::pick ()
 
 				std::deque <IntersectionPtr> itersections;
 
-				if (_geometry -> intersect (hitRay, itersections))
+				if (geometryNode -> intersect (hitRay, itersections))
 				{
 					for (auto & itersection : itersections)
 						itersection -> hitPoint = itersection -> hitPoint * modelViewMatrix;
@@ -224,60 +214,15 @@ Shape::pick ()
 }
 
 void
-Shape::draw ()
+Shape::drawCollision ()
 {
-	_appearance -> draw ();
-
-	if (_geometry -> isLineGeometry ())
-	{
-		_appearance -> getLineProperties () -> enable ();
-		_geometry -> draw ();
-		_appearance -> getLineProperties () -> disable ();
-	}
-	else
-	{
-		if (_appearance -> getFillProperties () -> filled ())
-			_geometry -> draw ();
-
-		// Draw hatch on top of whatever appearance is specified.
-
-		GLint polygonMode [2]; // Front and back value.
-		glGetIntegerv (GL_POLYGON_MODE, polygonMode);
-
-		if (polygonMode [0] == GL_FILL)
-		{
-			if (_appearance -> getFillProperties () -> hatched ())
-			{
-				_appearance -> getFillProperties () -> enable ();
-				_geometry -> draw ();
-				_appearance -> getFillProperties () -> disable ();
-			}
-		}
-
-		// Draw line geometry on top of whatever appearance is specified.
-
-		if (_appearance -> getLineProperties () -> applied ())
-		{
-			if (polygonMode [0] == GL_FILL)
-				glPolygonMode (GL_FRONT_AND_BACK, GL_LINE);
-
-			_appearance -> getLineProperties () -> enable ();
-			_geometry   -> draw ();
-			_appearance -> getLineProperties () -> disable ();
-
-			glPolygonMode (GL_FRONT, polygonMode [0]);
-			glPolygonMode (GL_BACK,  polygonMode [1]);
-		}
-	}
-
-	glDisable (GL_FOG);
-	glDisable (GL_COLOR_MATERIAL);
+	geometryNode -> draw (false, false, false);
 }
 
 void
 Shape::drawGeometry ()
 {
-	_geometry -> draw (false, false, false);
+	geometryNode -> draw ();
 }
 
 } // X3D

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 cp "$1" /tmp/uncrustify-last-document.txt
 
@@ -173,4 +173,7 @@ perl -e '
 
 mv /tmp/uncrustify.txt "$1"
 
-rename-header-guards.pl /home/holger/Projekte/Titania/ "$1"
+if [[ "$1" == *.h ]]
+then
+	rename-header-guards.pl /home/holger/Projekte/Titania/ "$1"
+fi

@@ -125,6 +125,8 @@ ParticleSystem::ParticleSystem (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "texCoordRamp",      texCoordRamp ());
 	addField (inputOutput,    "appearance",        appearance ());
 	addField (inputOutput,    "geometry",          geometry ());
+
+	addChildren (shader);
 }
 
 X3DBaseNode*
@@ -143,7 +145,7 @@ ParticleSystem::initialize ()
 		// Generate buffers
 
 		Particle particles [maxParticles () .getValue ()];
-	
+
 		glGenBuffers (2, particleBufferId .data ());
 		glGenTransformFeedbacks (2, transformFeedbackId .data ());
 
@@ -170,13 +172,42 @@ ParticleSystem::initialize ()
 		shader -> parts () .emplace_back (vertexShader);
 		shader -> setTransformFeedbackVaryings ({ "lifetime0", "position0", "velocity0" });
 		shader -> setup ();
+		
+		// Setup
+		
+		geometry () .addInterest (this, &ParticleSystem::set_geometry);
+
+		set_enabled ();
+		set_geometry ();
 	}
+}
+
+void
+ParticleSystem::set_enabled ()
+{
+	if (enabled ())
+		getBrowser () -> sensors () .addInterest (this, &ParticleSystem::update);
+	
+	else
+		getBrowser () -> sensors () .removeInterest (this, &ParticleSystem::update);
+}
+
+void
+ParticleSystem::set_geometry ()
+{
+
 }
 
 bool
 ParticleSystem::isTransparent () const
 {
 	return false;
+}
+	
+bool
+ParticleSystem::isLineGeometry () const
+{
+	return true;
 }
 
 Box3f
@@ -267,15 +298,14 @@ ParticleSystem::update ()
 }
 
 void
-ParticleSystem::draw ()
-{
-	update ();
+ParticleSystem::drawCollision ()
+{ }
 
+void
+ParticleSystem::drawGeometry ()
+{
 	__LOG__ << std::endl;
 	GL_ERROR;
-
-	glDisable (GL_LIGHTING);
-	glColor4f (1, 1, 1, 1);
 
 	glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [readBuffer]);
 
@@ -291,12 +321,10 @@ ParticleSystem::draw ()
 }
 
 void
-ParticleSystem::drawGeometry ()
-{ }
-
-void
 ParticleSystem::dispose ()
 {
+	__LOG__ << std::endl;
+
 	if (transformFeedbackId [0])
 		glDeleteTransformFeedbacks (2, transformFeedbackId .data ());
 

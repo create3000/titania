@@ -1,3 +1,9 @@
 #X3D V3.3 utf8 Titania
 
-ParticleSystem { }
+ParticleSystem {
+  appearance Appearance {
+    lineProperties LineProperties {
+      linewidthScaleFactor 5
+    }
+  }
+}

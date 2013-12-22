@@ -56,6 +56,8 @@
 namespace titania {
 namespace X3D {
 
+class X3DGeometryNode;
+
 class Shape :
 	public X3DShapeNode
 {
@@ -109,11 +111,7 @@ public:
 
 	virtual
 	void
-	draw () final override;
-
-	virtual
-	void
-	drawGeometry () final override;
+	drawCollision () final override;
 
 
 private:
@@ -127,15 +125,20 @@ private:
 	///  @name Event handlers
 
 	void
-	set_appearance ();
-
-	void
 	set_geometry ();
 
 	///  @name Operations
+	
+	virtual
+	bool
+	isLineGeometry () const final override;
 
 	void
 	pick ();
+
+	virtual
+	void
+	drawGeometry () final override;
 
 	///  @name Static members
 
@@ -145,8 +148,7 @@ private:
 
 	///  @name Members
 
-	X3DAppearanceNode* _appearance;
-	X3DGeometryNode*   _geometry;
+	X3DGeometryNode* geometryNode;
 
 };
 

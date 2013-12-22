@@ -226,11 +226,7 @@ public:
 
 	virtual
 	void
-	draw () final override;
-
-	virtual
-	void
-	drawGeometry () final override;
+	drawCollision () final override;
 
 	///  @name Destruction
 
@@ -246,9 +242,27 @@ private:
 	virtual
 	void
 	initialize () final override;
+	
+	///  @name Event handlers
+
+	void
+	set_enabled ();
+
+	void
+	set_geometry ();
+
+	///  @name Operations
+
+	virtual
+	bool
+	isLineGeometry () const final override;
 
 	void
 	update ();
+
+	virtual
+	void
+	drawGeometry () final override;
 
 	///  @name Static members
 

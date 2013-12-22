@@ -59,7 +59,6 @@ namespace titania {
 namespace X3D {
 
 class X3DAppearanceNode;
-class X3DGeometryNode;
 
 class X3DShapeNode :
 	virtual public X3DChildNode, public X3DBoundedObject
@@ -96,11 +95,11 @@ public:
 
 	virtual
 	void
-	draw () = 0;
+	draw ();
 
 	virtual
 	void
-	drawGeometry () = 0;
+	drawCollision () = 0;
 
 	///  @name Destruction
 
@@ -118,9 +117,35 @@ protected:
 	virtual
 	void
 	initialize () override;
+	
+	///  @name Member access
+	
+	X3DAppearanceNode*
+	getAppearance () const
+	{ return appearanceNode; }
+	
+	///  @name Operations
+	
+	virtual
+	bool
+	isLineGeometry () const = 0;
+
+	virtual
+	void
+	drawGeometry () = 0;
 
 
 private:
+
+	///  @name Event handlers
+
+	void
+	set_appearance ();
+
+	///  @name Operations
+	
+	void
+	disableTextures ();
 
 	///  @name Members
 
@@ -133,6 +158,8 @@ private:
 	};
 
 	Fields fields;
+
+	X3DAppearanceNode* appearanceNode;
 
 };
 

@@ -57,7 +57,7 @@
 namespace titania {
 namespace X3D {
 
-#define GL_ERROR  debug_gl_error (std::string (__FILE__) +  ":" + std::to_string (__LINE__) + ": in function '" + __func__)
+#define GL_ERROR  debug_gl_error (std::string (__FILE__) + ":" + std::to_string (__LINE__) + ": in function '" + __func__)
 
 static
 void

@@ -107,28 +107,25 @@ ShaderProgram::getShaderType () const
 {
 	// http://www.opengl.org/wiki/Shader
 
-	if (type () == "VERTEX")
-		return GL_VERTEX_SHADER;
+	static const std::map <std::string, GLenum> shaderTypes {
+		std::make_pair ("VERTEX",          GL_VERTEX_SHADER),
+		std::make_pair ("TESS_CONTROL",    GL_TESS_CONTROL_SHADER),
+		std::make_pair ("TESS_EVALUATION", GL_TESS_EVALUATION_SHADER),
+		std::make_pair ("GEOMETRY",        GL_GEOMETRY_SHADER),
+		std::make_pair ("FRAGMENT",        GL_FRAGMENT_SHADER)
 
-	if (type () == "TESS_CONTROL")
-		return GL_TESS_CONTROL_SHADER;
+		#ifdef GL_COMPUTE_SHADER
+		// Requires GL 4.3 or ARB_compute_shader
 
-	if (type () == "TESS_EVALUATION")
-		return GL_TESS_EVALUATION_SHADER;
+		, std::make_pair ("COMPUTE", GL_COMPUTE_SHADER)
 
-	if (type () == "GEOMETRY")
-		return GL_GEOMETRY_SHADER;
+		#endif
+	};
 
-	if (type () == "FRAGMENT")
-		return GL_FRAGMENT_SHADER;
+	auto shaderType = shaderTypes .find (type ());
 
-	#ifdef GL_COMPUTE_SHADER
-
-	// Requires GL 4.3 or ARB_compute_shader
-	if (type () == "COMPUTE")
-		return GL_COMPUTE_SHADER;
-
-	#endif
+	if (shaderType not_eq shaderTypes .end ())
+		return shaderType -> second;
 
 	return GL_VERTEX_SHADER;
 }

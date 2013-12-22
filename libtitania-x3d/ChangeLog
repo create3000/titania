@@ -1,6 +1,23 @@
 2013-12-22  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Debug.h:
+	* Shape.h:
+	* Text.cpp:
+	* Shape.cpp:
+	* CollisionShape.cpp:
+	* X3DShapeNode.h:
+	* Appearance.cpp:
+	* X3DShapeNode.cpp:
+	* ShaderPart.cpp:
+	* ShaderProgram.cpp:
+	* X3DGeometryNode.h:
+	* X3DGeometryNode.cpp:
+	* ParticleSystem.h:
+	* ParticleSystem.cpp: 
+
+2013-12-22  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Debug.h:
 	* libtitania-x3d.cproj:
 	* config.h:
 	* config.cpp:

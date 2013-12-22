@@ -164,8 +164,6 @@ void
 Text::draw ()
 {
 	text -> display ();
-
-	disableTextures ();
 }
 
 void

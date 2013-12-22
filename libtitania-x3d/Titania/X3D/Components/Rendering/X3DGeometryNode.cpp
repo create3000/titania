@@ -588,47 +588,16 @@ X3DGeometryNode::draw (bool solid, bool texture, bool lighting)
 	// Texture
 
 	if (texture)
-		disableTextures ();
+	{
+		if (textureCoordinate)
+			textureCoordinate -> disable ();
+	}
 
 	// Other arrays
 
 	glDisableClientState (GL_COLOR_ARRAY);
 	glDisableClientState (GL_NORMAL_ARRAY);
 	glDisableClientState (GL_VERTEX_ARRAY);
-}
-
-void
-X3DGeometryNode::disableTextures ()
-{
-	if (textureCoordinate)
-		textureCoordinate -> disable ();
-
-	if (getBrowser () -> getTextureStages () .empty ())
-	{
-		glDisable (GL_TEXTURE_2D);
-		glDisable (GL_TEXTURE_3D);
-		glDisable (GL_TEXTURE_CUBE_MAP);
-	}
-	else
-	{
-		for (const auto & unit : basic::reverse_adapter (getBrowser () -> getTextureStages ()))
-		{
-			if (unit < 0)
-				continue;
-
-			glActiveTexture (GL_TEXTURE0 + unit);
-
-			glDisable (GL_TEXTURE_2D);
-			glDisable (GL_TEXTURE_CUBE_MAP);
-
-			getBrowser () -> getTextureUnits () .push (unit);
-		}
-
-		getBrowser () -> getTextureStages () .clear ();
-		glActiveTexture (GL_TEXTURE0);
-	}
-
-	getBrowser () -> isEnabledTexture (false);
 }
 
 } // X3D

@@ -50,6 +50,12 @@
 
 #include "X3DShapeNode.h"
 
+#include "../../Bits/Cast.h"
+#include "../../Browser/X3DBrowser.h"
+#include "../Shape/Appearance.h"
+#include "../Shape/FillProperties.h"
+#include "../Shape/LineProperties.h"
+
 namespace titania {
 namespace X3D {
 
@@ -61,7 +67,8 @@ X3DShapeNode::Fields::Fields () :
 X3DShapeNode::X3DShapeNode () :
 	    X3DChildNode (),
 	X3DBoundedObject (),
-	          fields ()
+	          fields (),
+	  appearanceNode (nullptr)
 {
 	addNodeType (X3DConstants::X3DShapeNode);
 }
@@ -71,6 +78,111 @@ X3DShapeNode::initialize ()
 {
 	X3DChildNode::initialize ();
 	X3DBoundedObject::initialize ();
+
+	appearance () .addInterest (this, &X3DShapeNode::set_appearance);
+
+	set_appearance ();
+}
+
+void
+X3DShapeNode::set_appearance ()
+{
+	appearanceNode = x3d_cast <X3DAppearanceNode*> (appearance ());
+
+	if (appearanceNode)
+		return;
+
+	appearanceNode = getBrowser () -> getBrowserOptions () -> appearance ();
+}
+
+void
+X3DShapeNode::draw ()
+{
+	appearanceNode -> draw ();
+
+	if (isLineGeometry ())
+	{
+		appearanceNode -> getLineProperties () -> enable ();
+		drawGeometry ();
+		disableTextures ();
+		appearanceNode -> getLineProperties () -> disable ();
+	}
+	else
+	{
+		if (appearanceNode -> getFillProperties () -> filled ())
+		{
+			drawGeometry ();
+			disableTextures ();
+		}
+
+		// Draw hatch on top of whatever appearance is specified.
+
+		GLint polygonMode [2]; // Front and back value.
+		glGetIntegerv (GL_POLYGON_MODE, polygonMode);
+
+		if (polygonMode [0] == GL_FILL)
+		{
+			if (appearanceNode -> getFillProperties () -> hatched ())
+			{
+				appearanceNode -> getFillProperties () -> enable ();
+				drawGeometry ();
+				appearanceNode -> getFillProperties () -> disable ();
+			}
+		}
+
+		// Draw line geometry on top of whatever appearance is specified.
+
+		if (appearanceNode -> getLineProperties () -> applied ())
+		{
+			if (polygonMode [0] == GL_FILL)
+				glPolygonMode (GL_FRONT_AND_BACK, GL_LINE);
+
+			appearanceNode -> getLineProperties () -> enable ();
+			drawGeometry ();
+			appearanceNode -> getLineProperties () -> disable ();
+
+			glPolygonMode (GL_FRONT, polygonMode [0]);
+			glPolygonMode (GL_BACK,  polygonMode [1]);
+		}
+	}
+
+	glDisable (GL_FOG);
+	glDisable (GL_COLOR_MATERIAL);
+
+	glUseProgram (0);
+	glBindProgramPipeline (0);
+}
+
+void
+X3DShapeNode::disableTextures ()
+{
+	if (getBrowser () -> getTextureStages () .empty ())
+	{
+		glDisable (GL_TEXTURE_2D);
+		glDisable (GL_TEXTURE_3D);
+		glDisable (GL_TEXTURE_CUBE_MAP);
+	}
+	else
+	{
+		for (const auto & unit : basic::reverse_adapter (getBrowser () -> getTextureStages ()))
+		{
+			if (unit < 0)
+				continue;
+
+			glActiveTexture (GL_TEXTURE0 + unit);
+
+			glDisable (GL_TEXTURE_2D);
+			glDisable (GL_TEXTURE_3D);
+			glDisable (GL_TEXTURE_CUBE_MAP);
+
+			getBrowser () -> getTextureUnits () .push (unit);
+		}
+
+		getBrowser () -> getTextureStages () .clear ();
+		glActiveTexture (GL_TEXTURE0);
+	}
+
+	getBrowser () -> isEnabledTexture (false);
 }
 
 void
