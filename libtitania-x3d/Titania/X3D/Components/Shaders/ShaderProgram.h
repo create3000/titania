@@ -63,6 +63,8 @@ class ShaderProgram :
 {
 public:
 
+	///  @name Construction
+
 	ShaderProgram (X3DExecutionContext* const);
 
 	virtual
@@ -98,21 +100,23 @@ public:
 	{ return *fields .type; }
 	
 	///  @name Member access
-	
-	virtual
-	GLuint
-	getShaderProgramId () final override
-	{ return shaderProgramId; }
 
 	bool
 	isValid () const
 	{ return valid; }
+
+	virtual
+	GLuint
+	getProgramId () const final override
+	{ return programId; }
 
 	///  @name Operations
 
 	virtual
 	void
 	requestImmediateLoad () final override;
+
+	///  @name Destruction
 
 	virtual
 	void
@@ -121,9 +125,13 @@ public:
 
 private:
 
+	///  @name Construction
+
 	virtual
 	void
 	initialize () final override;
+
+	///  @name Operations
 
 	GLenum
 	getShaderType () const;
@@ -131,9 +139,10 @@ private:
 	void
 	printProgramInfoLog () const;
 
+	///  @name Event handlers
+
 	void
 	set_url ();
-
 
 	///  @name Static members
 
@@ -152,7 +161,7 @@ private:
 
 	Fields fields;
 	
-	GLuint shaderProgramId;
+	GLuint programId;
 	bool   valid;
 
 };

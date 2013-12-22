@@ -99,15 +99,27 @@ public:
 
 	virtual
 	void
+	enable () = 0;
+
+	virtual
+	void
+	disable () = 0;
+
+	virtual
+	void
 	draw () override;
 
 
 protected:
 
+	///  @name Construction
+
 	X3DShaderNode ();
 
 
 private:
+
+	///  @name Members
 
 	struct Fields
 	{

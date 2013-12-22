@@ -2366,6 +2366,7 @@
     <None Include="Tests\Texturing3D\image.psd" />
     <None Include="Tests\Texturing3D\image.xcf" />
     <None Include="Tests\Networking\LoadSensor.wrl" />
+    <None Include="Tests\ParticleSystems\ParticleSystem.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
@@ -2496,6 +2497,7 @@
     <Folder Include="Tests\NURBS\NurbsPatchSurface\" />
     <Folder Include="Tests\NURBS\NurbsTrimmedSurface\" />
     <Folder Include="Tests\Texturing3D\" />
+    <Folder Include="Tests\ParticleSystems\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Navigation\Rotor.wrl" />

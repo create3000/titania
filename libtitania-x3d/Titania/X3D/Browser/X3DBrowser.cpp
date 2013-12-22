@@ -418,7 +418,6 @@ X3DBrowser::beginUpdate ()
 throw (Error <DISPOSED>)
 {
 	std::clog << "Browser begin update." << std::endl;
-	setEnabled (true);
 	addEvent ();
 }
 
@@ -427,7 +426,6 @@ X3DBrowser::endUpdate ()
 throw (Error <DISPOSED>)
 {
 	std::clog << "Browser end update." << std::endl;
-	setEnabled (false);
 }
 
 void

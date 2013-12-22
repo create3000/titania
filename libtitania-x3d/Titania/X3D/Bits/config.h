@@ -60,6 +60,9 @@ basic::uri
 get_page (const std::string &);
 
 basic::uri
+get_shader (const std::string &);
+
+basic::uri
 get_tool (const std::string &);
 
 } // X3D

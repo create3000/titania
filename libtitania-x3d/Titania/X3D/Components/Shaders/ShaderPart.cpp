@@ -146,7 +146,7 @@ ShaderPart::requestImmediateLoad ()
 			std::string shaderSource = Loader (getExecutionContext ()) .loadDocument (URL);
 			const char* string       = shaderSource .c_str ();
 
-			glShaderSource  (shaderId, 1, &string, NULL);
+			glShaderSource  (shaderId, 1, &string, nullptr);
 			glCompileShader (shaderId);
 
 			glGetShaderiv (shaderId, GL_COMPILE_STATUS, &valid);

@@ -61,6 +61,8 @@ class X3DParticleEmitterNode :
 {
 public:
 
+	///  @name Fields
+
 	SFFloat &
 	speed ()
 	{ return *fields .speed; }
@@ -68,14 +70,6 @@ public:
 	const SFFloat &
 	speed () const
 	{ return *fields .speed; }
-
-	SFFloat &
-	variation ()
-	{ return *fields .variation; }
-
-	const SFFloat &
-	variation () const
-	{ return *fields .variation; }
 
 	SFFloat &
 	mass ()
@@ -93,22 +87,34 @@ public:
 	surfaceArea () const
 	{ return *fields .surfaceArea; }
 
+	SFFloat &
+	variation ()
+	{ return *fields .variation; }
+
+	const SFFloat &
+	variation () const
+	{ return *fields .variation; }
+
 
 protected:
+
+	///  @name Construction
 
 	X3DParticleEmitterNode ();
 
 
 private:
 
+	///  @name Members
+
 	struct Fields
 	{
 		Fields ();
 
 		SFFloat* const speed;
-		SFFloat* const variation;
 		SFFloat* const mass;
 		SFFloat* const surfaceArea;
+		SFFloat* const variation;
 	};
 
 	Fields fields;

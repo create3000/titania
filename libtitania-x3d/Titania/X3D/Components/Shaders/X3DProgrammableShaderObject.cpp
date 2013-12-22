@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -61,6 +61,7 @@ namespace X3D {
 
 X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	 X3DBaseNode (),
+	 transformFeedbackVaryings (),
    textureUnits ()
 {
 	addNodeType (X3DConstants::X3DProgrammableShaderObject);
@@ -69,6 +70,22 @@ X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 void
 X3DProgrammableShaderObject::initialize ()
 {
+}
+
+void
+X3DProgrammableShaderObject::applyTransformFeedbackVaryings () const
+{
+	if (not transformFeedbackVaryings .empty ())
+	{
+		size_t size = transformFeedbackVaryings .size ();
+
+		const GLchar* varyings [size];
+
+		for (size_t i = 0; i < size; ++ i)
+			varyings [i] = transformFeedbackVaryings [i] .c_str ();
+
+		glTransformFeedbackVaryings (getProgramId (), size, varyings, GL_INTERLEAVED_ATTRIBS);
+	}
 }
 
 void
@@ -85,9 +102,9 @@ X3DProgrammableShaderObject::setFields ()
 void
 X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 {
-	glUseProgram (getShaderProgramId ());
+	glUseProgram (getProgramId ());
 
-	GLint location = glGetUniformLocation (getShaderProgramId (), field -> getName () .c_str ());
+	GLint location = glGetUniformLocation (getProgramId (), field -> getName () .c_str ());
 
 	if (location not_eq - 1)
 	{
@@ -156,7 +173,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 				auto node = static_cast <SFNode*> (field);
 
 				GLint textureUnit = 0;
-				glGetUniformiv (getShaderProgramId (), location, &textureUnit);
+				glGetUniformiv (getProgramId (), location, &textureUnit);
 
 				if (not textureUnit)
 				{
@@ -342,11 +359,11 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 					{
 						GLint textureUnit = 0;
 
-						GLint location = glGetUniformLocation (getShaderProgramId (), (field -> getName () [0] + "[" + std::to_string (i) + "]") .c_str ());
+						GLint location = glGetUniformLocation (getProgramId (), (field -> getName () [0] + "[" + std::to_string (i) + "]") .c_str ());
 
 						if (location not_eq - 1)
 						{
-							glGetUniformiv (getShaderProgramId (), location, &textureUnit);
+							glGetUniformiv (getProgramId (), location, &textureUnit);
 
 							if (textureUnit)
 								textureUnits .emplace_back (textureUnit);

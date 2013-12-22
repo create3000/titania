@@ -612,6 +612,7 @@
     <None Include="Titania\X3D\Browser\Viewer\PlaneViewer.h" />
     <None Include="Titania\X3D\Thread\Texture3DLoader.h" />
     <None Include="Titania\X3D\Miscellaneous\X3DTexture.h" />
+    <None Include="share\titania\shaders\ParticleSystems\emitter.vs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1104,6 +1105,8 @@
     <Folder Include="share\icons\" />
     <Folder Include="share\titania\tools\" />
     <Folder Include="share\titania\tools\library\" />
+    <Folder Include="share\titania\shaders\" />
+    <Folder Include="share\titania\shaders\ParticleSystems\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

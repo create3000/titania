@@ -63,7 +63,7 @@ main (int argc, char** argv)
 	AnyOption options;
 
 	options .addUsage ("NAME");
-	options .addUsage ("       x3dtidy - X3D/VRML beautifer");
+	options .addUsage ("       x3dtidy - X3D/VRML beautifier");
 	options .addUsage ("");
 	options .addUsage ("SYNOPSIS");
 	options .addUsage ("       x3dtidy [OPTIONS] FILE [OUTFILE]");

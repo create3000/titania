@@ -51,8 +51,23 @@
 #ifndef __TITANIA_X3D_DEBUG_H__
 #define __TITANIA_X3D_DEBUG_H__
 
+#include "Fields.h"
+#include "Rendering/OpenGL.h"
+
 namespace titania {
 namespace X3D {
+
+#define GL_ERROR  debug_gl_error (std::string (__FILE__) +  ":" + std::to_string (__LINE__) + ": in function '" + __func__)
+
+static
+void
+debug_gl_error (const std::string & identifer)
+{
+	GLenum errorNum = glGetError ();
+
+	if (errorNum not_eq GL_NO_ERROR)
+		std::clog << "OpenGL Error at " << identifer << ": " << gluErrorString (errorNum) << std::endl;
+}
 
 static
 void

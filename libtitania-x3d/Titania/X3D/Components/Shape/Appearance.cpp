@@ -236,14 +236,11 @@ Appearance::draw ()
 
 	// Shader
 
+	glUseProgram (0);
+	glBindProgramPipeline (0);
+
 	if (_shader)
 		_shader -> draw ();
-
-	else
-	{
-		glUseProgram (0);
-		glBindProgramPipeline (0);
-	}
 }
 
 } // X3D

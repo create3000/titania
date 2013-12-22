@@ -61,6 +61,8 @@ class PointEmitter :
 {
 public:
 
+	///  @name Construction
+
 	PointEmitter (X3DExecutionContext* const);
 
 	virtual
@@ -88,14 +90,6 @@ public:
 	///  @name Fields
 
 	SFVec3f &
-	direction ()
-	{ return *fields .direction; }
-
-	const SFVec3f &
-	direction () const
-	{ return *fields .direction; }
-
-	SFVec3f &
 	position ()
 	{ return *fields .position; }
 
@@ -103,9 +97,16 @@ public:
 	position () const
 	{ return *fields .position; }
 
+	SFVec3f &
+	direction ()
+	{ return *fields .direction; }
+
+	const SFVec3f &
+	direction () const
+	{ return *fields .direction; }
+
 
 private:
-
 
 	///  @name Static members
 
@@ -119,8 +120,8 @@ private:
 	{
 		Fields ();
 
-		SFVec3f* const direction;
 		SFVec3f* const position;
+		SFVec3f* const direction;
 	};
 
 	Fields fields;

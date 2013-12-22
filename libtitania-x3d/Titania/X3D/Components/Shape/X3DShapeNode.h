@@ -53,6 +53,7 @@
 
 #include "../Core/X3DChildNode.h"
 #include "../Grouping/X3DBoundedObject.h"
+#include "../../Rendering/X3DCollectableObject.h"
 
 namespace titania {
 namespace X3D {
@@ -64,6 +65,8 @@ class X3DShapeNode :
 	virtual public X3DChildNode, public X3DBoundedObject
 {
 public:
+
+	///  @name Fields
 
 	SFNode &
 	appearance ()
@@ -81,52 +84,45 @@ public:
 	geometry () const
 	{ return *fields .geometry; }
 
-	///  @name Member access
-
-	bool
-	isTransparent () const;
-
-	virtual
-	Box3f
-	getBBox () final override;
-
-	X3DGeometryNode*
-	getGeometry () const
-	{ return _geometry; }
-	
 	///  @name Operations
 
 	virtual
-	void
-	traverse (const TraverseType) final override;
-
-	void
-	draw ();
+	bool
+	isTransparent () const = 0;
+	
+	virtual
+	bool
+	intersect (const Sphere3f &, const Matrix4f &, const CollectableObjectArray &) = 0;
 
 	virtual
 	void
-	dispose () final override;
+	draw () = 0;
+
+	virtual
+	void
+	drawGeometry () = 0;
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () override;
 
 
 protected:
+
+	///  @name Construction
 
 	X3DShapeNode ();
 
 	virtual
 	void
-	initialize () final override;
+	initialize () override;
 
 
 private:
 
-	void
-	set_appearance ();
-
-	void
-	set_geometry ();
-
-	void
-	pick ();
+	///  @name Members
 
 	struct Fields
 	{
@@ -137,9 +133,6 @@ private:
 	};
 
 	Fields fields;
-
-	X3DAppearanceNode* _appearance;
-	X3DGeometryNode*   _geometry;
 
 };
 

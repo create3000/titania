@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,7 +51,10 @@
 #ifndef __TITANIA_X3D_COMPONENTS_PARTICLE_SYSTEMS_PARTICLE_SYSTEM_H__
 #define __TITANIA_X3D_COMPONENTS_PARTICLE_SYSTEMS_PARTICLE_SYSTEM_H__
 
+#include "../Shaders/ComposedShader.h"
 #include "../Shape/X3DShapeNode.h"
+
+#include <array>
 
 namespace titania {
 namespace X3D {
@@ -60,6 +63,8 @@ class ParticleSystem :
 	public X3DShapeNode
 {
 public:
+
+	///  @name Construction
 
 	ParticleSystem (X3DExecutionContext* const);
 
@@ -88,14 +93,6 @@ public:
 	///  @name Fields
 
 	SFBool &
-	createParticles ()
-	{ return *fields .createParticles; }
-
-	const SFBool &
-	createParticles () const
-	{ return *fields .createParticles; }
-
-	SFBool &
 	enabled ()
 	{ return *fields .enabled; }
 
@@ -103,13 +100,21 @@ public:
 	enabled () const
 	{ return *fields .enabled; }
 
-	SFFloat &
-	lifetimeVariation ()
-	{ return *fields .lifetimeVariation; }
+	SFString &
+	geometryType ()
+	{ return *fields .geometryType; }
 
-	const SFFloat &
-	lifetimeVariation () const
-	{ return *fields .lifetimeVariation; }
+	const SFString &
+	geometryType () const
+	{ return *fields .geometryType; }
+
+	SFBool &
+	createParticles ()
+	{ return *fields .createParticles; }
+
+	const SFBool &
+	createParticles () const
+	{ return *fields .createParticles; }
 
 	SFInt32 &
 	maxParticles ()
@@ -127,6 +132,14 @@ public:
 	particleLifetime () const
 	{ return *fields .particleLifetime; }
 
+	SFFloat &
+	lifetimeVariation ()
+	{ return *fields .lifetimeVariation; }
+
+	const SFFloat &
+	lifetimeVariation () const
+	{ return *fields .lifetimeVariation; }
+
 	SFVec2f &
 	particleSize ()
 	{ return *fields .particleSize; }
@@ -134,22 +147,6 @@ public:
 	const SFVec2f &
 	particleSize () const
 	{ return *fields .particleSize; }
-
-	SFBool &
-	isActive ()
-	{ return *fields .isActive; }
-
-	const SFBool &
-	isActive () const
-	{ return *fields .isActive; }
-
-	SFNode &
-	colorRamp ()
-	{ return *fields .colorRamp; }
-
-	const SFNode &
-	colorRamp () const
-	{ return *fields .colorRamp; }
 
 	MFFloat &
 	colorKey ()
@@ -159,21 +156,21 @@ public:
 	colorKey () const
 	{ return *fields .colorKey; }
 
-	SFNode &
-	emitter ()
-	{ return *fields .emitter; }
+	MFFloat &
+	texCoordKey ()
+	{ return *fields .texCoordKey; }
 
-	const SFNode &
-	emitter () const
-	{ return *fields .emitter; }
+	const MFFloat &
+	texCoordKey () const
+	{ return *fields .texCoordKey; }
 
-	SFString &
-	geometryType ()
-	{ return *fields .geometryType; }
+	SFBool &
+	isActive ()
+	{ return *fields .isActive; }
 
-	const SFString &
-	geometryType () const
-	{ return *fields .geometryType; }
+	const SFBool &
+	isActive () const
+	{ return *fields .isActive; }
 
 	MFNode &
 	physics ()
@@ -184,6 +181,22 @@ public:
 	{ return *fields .physics; }
 
 	SFNode &
+	emitter ()
+	{ return *fields .emitter; }
+
+	const SFNode &
+	emitter () const
+	{ return *fields .emitter; }
+
+	SFNode &
+	colorRamp ()
+	{ return *fields .colorRamp; }
+
+	const SFNode &
+	colorRamp () const
+	{ return *fields .colorRamp; }
+
+	SFNode &
 	texCoordRamp ()
 	{ return *fields .texCoordRamp; }
 
@@ -191,17 +204,51 @@ public:
 	texCoordRamp () const
 	{ return *fields .texCoordRamp; }
 
-	MFFloat &
-	texCoordKey ()
-	{ return *fields .texCoordKey; }
+	///  @name Member access
 
-	const MFFloat &
-	texCoordKey () const
-	{ return *fields .texCoordKey; }
+	virtual
+	bool
+	isTransparent () const final override;
+
+	virtual
+	Box3f
+	getBBox () final override;
+
+	///  @name Operations
+
+	virtual
+	bool
+	intersect (const Sphere3f &, const Matrix4f &, const CollectableObjectArray &) final override;
+
+	virtual
+	void
+	traverse (const TraverseType) final override;
+
+	virtual
+	void
+	draw () final override;
+
+	virtual
+	void
+	drawGeometry () final override;
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override;
 
 
 private:
 
+	///  @name Constuction
+
+	virtual
+	void
+	initialize () final override;
+
+	void
+	update ();
 
 	///  @name Static members
 
@@ -215,23 +262,30 @@ private:
 	{
 		Fields ();
 
-		SFBool* const createParticles;
 		SFBool* const enabled;
-		SFFloat* const lifetimeVariation;
+		SFString* const geometryType;
+		SFBool* const createParticles;
 		SFInt32* const maxParticles;
 		SFFloat* const particleLifetime;
+		SFFloat* const lifetimeVariation;
 		SFVec2f* const particleSize;
-		SFBool* const isActive;
-		SFNode* const colorRamp;
 		MFFloat* const colorKey;
-		SFNode* const emitter;
-		SFString* const geometryType;
-		MFNode* const physics;
-		SFNode* const texCoordRamp;
 		MFFloat* const texCoordKey;
+		SFBool* const isActive;
+		MFNode* const physics;
+		SFNode* const emitter;
+		SFNode* const colorRamp;
+		SFNode* const texCoordRamp;
 	};
 
 	Fields fields;
+
+	bool                       firstTime;
+	size_t                     readBuffer;
+	size_t                     writeBuffer;
+	std::array <GLuint, 2>     transformFeedbackId;
+	std::array <GLuint, 2>     particleBufferId;
+	X3DSFNode <ComposedShader> shader;
 
 };
 

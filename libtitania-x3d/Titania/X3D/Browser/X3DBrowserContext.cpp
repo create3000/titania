@@ -70,7 +70,6 @@ X3DBrowserContext::X3DBrowserContext () :
 	          browserProperties (new BrowserProperties   (this)),          // SFNode  [ ]       browserProperties   NULL   [BrowserProperties]
 	             browserOptions (new BrowserOptions      (this)),          // SFNode  [ ]       browserOptions      NULL   [BrowserOptions]
 	           javaScriptEngine (new SpiderMonkey        (this)),          // SFNode  [ ]       javaScriptEngine    NULL   [JavaScriptEngine]
-	                    enabled (true),
 	          initializedOutput (),                                        // SFTime [out]  initialized
 	               pickedOutput (),                                        // [out]  picked
 	             reshapedOutput (),                                        // [out]  reshaped
@@ -464,6 +463,8 @@ X3DBrowserContext::pick (const double _x, const double _y)
 	hits .clear ();
 
 	// Pick.
+	
+	update ();
 
 	getWorld () -> traverse (TraverseType::PICKING);
 
@@ -676,9 +677,7 @@ X3DBrowserContext::update ()
 
 			advanceClock ();
 
-			if (enabled)
-				prepareEvents () .processInterests ();
-
+			prepareEvents () .processInterests ();
 			router .processEvents ();
 
 			getWorld () -> traverse (TraverseType::CAMERA);

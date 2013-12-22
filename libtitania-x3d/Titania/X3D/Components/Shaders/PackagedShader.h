@@ -63,6 +63,8 @@ class PackagedShader :
 {
 public:
 
+	///  @name Construction
+
 	PackagedShader (X3DExecutionContext* const);
 
 	virtual
@@ -87,34 +89,45 @@ public:
 	getContainerField () const final override
 	{ return containerField; }
 
+	///  @name Member access
+
+	virtual
+	GLuint
+	getProgramId () const final override
+	{ return programId; }
+
+	///  @name Operations
+
 	virtual
 	void
 	requestImmediateLoad () final override;
 
 	virtual
 	void
+	enable () final override;
+
+	virtual
+	void
+	disable () final override;
+
+	virtual
+	void
 	draw () final override;
+
+	///  @name Destruction
 
 	virtual
 	void
 	dispose () final override;
 
 
-protected:
-
-	virtual
-	GLuint
-	getShaderProgramId () final override
-	{ return shaderProgramId; }
-
-
 private:
+
+	///  @name Construction
 
 	virtual
 	void
 	initialize () final override;
-	
-	GLuint shaderProgramId;
 
 	///  @name Static members
 
@@ -122,6 +135,9 @@ private:
 	static const std::string typeName;
 	static const std::string containerField;
 
+	///  @name Members
+
+	GLuint programId;
 
 };
 

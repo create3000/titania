@@ -50,7 +50,14 @@
 
 #include "ParticleSystem.h"
 
+#include "../../Bits/config.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Shaders/ShaderPart.h"
+
+#include <cstddef>
+
+#include "../../Debug.h"
 
 namespace titania {
 namespace X3D {
@@ -59,53 +66,246 @@ const std::string ParticleSystem::componentName  = "ParticleSystems";
 const std::string ParticleSystem::typeName       = "ParticleSystem";
 const std::string ParticleSystem::containerField = "children";
 
+struct Particle
+{
+	float lifetime;
+	Vector3f position;
+	Vector3f velocity;
+
+};
+
 ParticleSystem::Fields::Fields () :
-	createParticles (new SFBool (true)),
-	enabled (new SFBool (true)),
+	          enabled (new SFBool (true)),
+	     geometryType (new SFString ("QUAD")),
+	  createParticles (new SFBool (true)),
+	     maxParticles (new SFInt32 (200)),
+	 particleLifetime (new SFFloat (5)),
 	lifetimeVariation (new SFFloat (0.25)),
-	maxParticles (new SFInt32 (200)),
-	particleLifetime (new SFFloat (5)),
-	particleSize (new SFVec2f (0.02, 0.02)),
-	isActive (new SFBool ()),
-	colorRamp (new SFNode ()),
-	colorKey (new MFFloat ()),
-	emitter (new SFNode ()),
-	geometryType (new SFString ("QUAD")),
-	physics (new MFNode ()),
-	texCoordRamp (new SFNode ()),
-	texCoordKey (new MFFloat ())
+	     particleSize (new SFVec2f (0.02, 0.02)),
+	         colorKey (new MFFloat ()),
+	      texCoordKey (new MFFloat ()),
+	         isActive (new SFBool ()),
+	          physics (new MFNode ()),
+	          emitter (new SFNode ()),
+	        colorRamp (new SFNode ()),
+	     texCoordRamp (new SFNode ())
 { }
 
 ParticleSystem::ParticleSystem (X3DExecutionContext* const executionContext) :
-	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DShapeNode (),
-	      fields ()
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	       X3DShapeNode (),
+	             fields (),
+	          firstTime (true),
+	         readBuffer (0),
+	        writeBuffer (1),
+	transformFeedbackId ({0, 0}),
+	   particleBufferId ({0, 0}),
+	             shader ()
 {
 	addField (inputOutput,    "metadata",          metadata ());
+	addField (inputOutput,    "enabled",           enabled ());
+
+	addField (initializeOnly, "geometryType",      geometryType ());
+	addField (inputOutput,    "createParticles",   createParticles ());
+	addField (inputOutput,    "maxParticles",      maxParticles ());
+
+	addField (inputOutput,    "particleLifetime",  particleLifetime ());
+	addField (inputOutput,    "lifetimeVariation", lifetimeVariation ());
+	addField (inputOutput,    "particleSize",      particleSize ());
+
+	addField (initializeOnly, "colorKey",          colorKey ());
+	addField (initializeOnly, "texCoordKey",       texCoordKey ());
+	addField (outputOnly,     "isActive",          isActive ());
+
 	addField (initializeOnly, "bboxSize",          bboxSize ());
 	addField (initializeOnly, "bboxCenter",        bboxCenter ());
+	addField (initializeOnly, "physics",           physics ());
+	addField (initializeOnly, "emitter",           emitter ());
+	addField (initializeOnly, "colorRamp",         colorRamp ());
+	addField (initializeOnly, "texCoordRamp",      texCoordRamp ());
 	addField (inputOutput,    "appearance",        appearance ());
 	addField (inputOutput,    "geometry",          geometry ());
-	addField (inputOutput,    "createParticles",   createParticles ());
-	addField (inputOutput,    "enabled",           enabled ());
-	addField (inputOutput,    "lifetimeVariation", lifetimeVariation ());
-	addField (inputOutput,    "maxParticles",      maxParticles ());
-	addField (inputOutput,    "particleLifetime",  particleLifetime ());
-	addField (inputOutput,    "particleSize",      particleSize ());
-	addField (outputOnly,     "isActive",          isActive ());
-	addField (initializeOnly, "colorRamp",         colorRamp ());
-	addField (initializeOnly, "colorKey",          colorKey ());
-	addField (initializeOnly, "emitter",           emitter ());
-	addField (initializeOnly, "geometryType",      geometryType ());
-	addField (initializeOnly, "physics",           physics ());
-	addField (initializeOnly, "texCoordRamp",      texCoordRamp ());
-	addField (initializeOnly, "texCoordKey",       texCoordKey ());
 }
 
 X3DBaseNode*
 ParticleSystem::create (X3DExecutionContext* const executionContext) const
 {
 	return new ParticleSystem (executionContext);
+}
+
+void
+ParticleSystem::initialize ()
+{
+	X3DShapeNode::initialize ();
+
+	if (glXGetCurrentContext ())
+	{
+		// Generate buffers
+
+		Particle particles [maxParticles () .getValue ()];
+	
+		glGenBuffers (2, particleBufferId .data ());
+		glGenTransformFeedbacks (2, transformFeedbackId .data ());
+
+		for (size_t i = 0; i < 2; ++ i)
+		{
+			glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [i]);
+			glBufferData (GL_ARRAY_BUFFER, sizeof (particles), particles, GL_DYNAMIC_DRAW);
+
+			glBindTransformFeedback (GL_TRANSFORM_FEEDBACK, transformFeedbackId [i]);
+			glBindBufferBase (GL_TRANSFORM_FEEDBACK_BUFFER, 0, particleBufferId [i]);
+		}
+
+		glBindBuffer (GL_ARRAY_BUFFER, 0);
+		glBindTransformFeedback (GL_TRANSFORM_FEEDBACK, 0);
+
+		// Shader
+
+		X3DSFNode <ShaderPart> vertexShader = new ShaderPart (getExecutionContext ());
+		vertexShader -> url () = { get_shader ("ParticleSystems/emitter.vs") .str () };
+		vertexShader -> setup ();
+
+		shader                = new ComposedShader (getExecutionContext ());
+		shader -> language () = "GLSL";
+		shader -> parts () .emplace_back (vertexShader);
+		shader -> setTransformFeedbackVaryings ({ "lifetime0", "position0", "velocity0" });
+		shader -> setup ();
+	}
+}
+
+bool
+ParticleSystem::isTransparent () const
+{
+	return false;
+}
+
+Box3f
+ParticleSystem::getBBox ()
+{
+	if (bboxSize () == Vector3f (-1, -1, -1))
+	{
+		return Box3f ();
+	}
+
+	return Box3f (bboxSize (), bboxCenter ());
+}
+
+bool
+ParticleSystem::intersect (const Sphere3f & sphere, const Matrix4f & matrix, const CollectableObjectArray & localObjects)
+{
+	return false;
+}
+
+void
+ParticleSystem::traverse (const TraverseType type)
+{
+	switch (type)
+	{
+		case TraverseType::PICKING:
+		{
+			break;
+		}
+		case TraverseType::NAVIGATION:
+		case TraverseType::COLLISION:
+		{
+			break;
+		}
+		case TraverseType::COLLECT:
+		{
+			getBrowser () -> getRenderers () .top () -> addShape (this);
+			break;
+		}
+		default:
+			break;
+	}
+}
+
+void
+ParticleSystem::update ()
+{
+	__LOG__ << std::endl;
+	GL_ERROR;
+
+	shader -> enable ();
+
+	glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [readBuffer]);
+
+	glEnableVertexAttribArray (0);
+	glEnableVertexAttribArray (1);
+	glEnableVertexAttribArray (2);
+
+	glVertexAttribPointer (0, 1, GL_FLOAT, GL_FALSE, sizeof (Particle), (const GLvoid*) offsetof (Particle, lifetime));
+	glVertexAttribPointer (1, 3, GL_FLOAT, GL_FALSE, sizeof (Particle), (const GLvoid*) offsetof (Particle, position));
+	glVertexAttribPointer (2, 3, GL_FLOAT, GL_FALSE, sizeof (Particle), (const GLvoid*) offsetof (Particle, velocity));
+
+	glEnable (GL_RASTERIZER_DISCARD);
+	glBindTransformFeedback (GL_TRANSFORM_FEEDBACK, transformFeedbackId [writeBuffer]);
+	glBeginTransformFeedback (GL_POINTS);
+
+	if (firstTime)
+	{
+		firstTime = false;
+		glDrawArrays (GL_POINTS, 0, 1);
+	}
+	else
+		glDrawTransformFeedback (GL_POINTS, transformFeedbackId [readBuffer]);
+
+	glEndTransformFeedback ();
+	glBindTransformFeedback (GL_TRANSFORM_FEEDBACK, 0);
+	glDisable (GL_RASTERIZER_DISCARD);
+
+	glDisableVertexAttribArray (0);
+	glDisableVertexAttribArray (1);
+	glDisableVertexAttribArray (2);
+	glBindBuffer (GL_ARRAY_BUFFER, 0);
+
+	shader -> disable ();
+
+	std::swap (readBuffer, writeBuffer);
+
+	GL_ERROR;
+}
+
+void
+ParticleSystem::draw ()
+{
+	update ();
+
+	__LOG__ << std::endl;
+	GL_ERROR;
+
+	glDisable (GL_LIGHTING);
+	glColor4f (1, 1, 1, 1);
+
+	glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [readBuffer]);
+
+	glEnableVertexAttribArray (0);
+	glVertexAttribPointer (0, 3, GL_FLOAT, GL_FALSE, sizeof (Particle), (const GLvoid*) offsetof (Particle, position));
+
+	glDrawTransformFeedback (GL_POINTS, transformFeedbackId [readBuffer]);
+
+	glDisableVertexAttribArray (0);
+	glBindBuffer (GL_ARRAY_BUFFER, 0);
+
+	GL_ERROR;
+}
+
+void
+ParticleSystem::drawGeometry ()
+{ }
+
+void
+ParticleSystem::dispose ()
+{
+	if (transformFeedbackId [0])
+		glDeleteTransformFeedbacks (2, transformFeedbackId .data ());
+
+	if (particleBufferId [0])
+		glDeleteBuffers (2, particleBufferId .data ());
+
+	shader .dispose ();
+
+	X3DShapeNode::dispose ();
 }
 
 } // X3D

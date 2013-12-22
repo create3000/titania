@@ -63,7 +63,22 @@ namespace X3D {
 class X3DProgrammableShaderObject :
 	virtual public X3DBaseNode
 {
+public:
+
+	///  @name Member access
+
+	virtual
+	GLuint
+	getProgramId () const = 0;
+	
+	void
+	setTransformFeedbackVaryings (const std::vector <std::string> & value)
+	{ transformFeedbackVaryings = value; }
+
+
 protected:
+
+	///  @name Construction
 
 	X3DProgrammableShaderObject ();
 
@@ -71,32 +86,37 @@ protected:
 	void
 	initialize () override;
 
+	///  @name Operations
+	
+	void
+	applyTransformFeedbackVaryings () const;
+
 	virtual
 	bool
 	hasUserDefinedFields () const final override
 	{ return true; }
 
-	virtual
-	GLuint
-	getShaderProgramId () = 0;
+	void
+	setFields ();
+
+	///  @name Destructions
 
 	virtual
 	void
 	dispose () override;
 
 
-protected:
-
-	void
-	setFields ();
-
-
 private:
+
+	///  @name Event handlers
 
 	void
 	set_field (X3DFieldDefinition* const);
 
-	std::deque <size_t> textureUnits;
+	///  @name Members
+
+	std::vector <std::string> transformFeedbackVaryings;
+	std::deque <size_t>       textureUnits;
 
 };
 

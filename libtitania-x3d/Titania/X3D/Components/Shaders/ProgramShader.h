@@ -61,6 +61,8 @@ class ProgramShader :
 {
 public:
 
+	///  @name Construction
+
 	ProgramShader (X3DExecutionContext* const);
 
 	virtual
@@ -95,9 +97,21 @@ public:
 	programs () const
 	{ return *fields .programs; }
 
+	///  @name Operations
+
+	virtual
+	void
+	enable () final override;
+
+	virtual
+	void
+	disable () final override;
+
 	virtual
 	void
 	draw () final override;
+
+	///  @name Destruction
 
 	virtual
 	void
@@ -106,15 +120,21 @@ public:
 
 private:
 
+	///  @name Construction
+
 	virtual
 	void
 	initialize () final override;
+
+	///  @name Operations
 
 	GLint
 	getProgramStageBit (const String &);
 
 	void
 	requestExplicitRelink ();
+
+	///  @name Event handlers
 
 	void
 	set_activate ();

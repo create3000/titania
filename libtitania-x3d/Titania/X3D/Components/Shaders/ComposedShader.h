@@ -62,6 +62,8 @@ class ComposedShader :
 {
 public:
 
+	///  @name Construction
+
 	ComposedShader (X3DExecutionContext* const);
 
 	virtual
@@ -96,28 +98,43 @@ public:
 	parts () const
 	{ return *fields .parts; }
 
+	///  @name Member access
+
+	virtual
+	GLuint
+	getProgramId () const final override
+	{ return programId; }
+
+	///  @name Operations
+
+	virtual
+	void
+	enable () final override;
+
+	virtual
+	void
+	disable () final override;
+
 	virtual
 	void
 	draw () final override;
+
+	///  @name Destruction
 
 	virtual
 	void
 	dispose () final override;
 
 
-protected:
-
-	virtual
-	GLuint
-	getShaderProgramId () final override
-	{ return shaderProgramId; }
-
-
 private:
+
+	///  @name Construction
 
 	virtual
 	void
 	initialize () final override;
+
+	///  @name Operations
 
 	void
 	requestExplicitRelink ();
@@ -146,7 +163,7 @@ private:
 
 	Fields fields;
 
-	GLuint shaderProgramId;
+	GLuint programId;
 
 };
 

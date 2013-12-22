@@ -54,10 +54,10 @@ namespace titania {
 namespace X3D {
 
 X3DParticleEmitterNode::Fields::Fields () :
-	speed (new SFFloat ()),
-	variation (new SFFloat (0.25)),
-	mass (new SFFloat ()),
-	surfaceArea (new SFFloat ())
+	      speed (new SFFloat ()),
+	       mass (new SFFloat ()),
+	surfaceArea (new SFFloat ()),
+	  variation (new SFFloat (0.25))
 { }
 
 X3DParticleEmitterNode::X3DParticleEmitterNode () :

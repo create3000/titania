@@ -62,9 +62,6 @@
 #include <Titania/Utility/Adapter.h>
 
 #include <algorithm>
-#include <iostream>
-
-#include "../Debug.h"
 
 namespace titania {
 namespace X3D {

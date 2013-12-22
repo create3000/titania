@@ -60,8 +60,8 @@ const std::string PointEmitter::typeName       = "PointEmitter";
 const std::string PointEmitter::containerField = "emitter";
 
 PointEmitter::Fields::Fields () :
-	direction (new SFVec3f (0, 1, 0)),
-	position (new SFVec3f ())
+	 position (new SFVec3f ()),
+	direction (new SFVec3f (0, 1, 0))
 { }
 
 PointEmitter::PointEmitter (X3DExecutionContext* const executionContext) :
@@ -70,12 +70,12 @@ PointEmitter::PointEmitter (X3DExecutionContext* const executionContext) :
 	                fields ()
 {
 	addField (inputOutput,    "metadata",    metadata ());
+	addField (inputOutput,    "position",    position ());
+	addField (inputOutput,    "direction",   direction ());
 	addField (inputOutput,    "speed",       speed ());
-	addField (inputOutput,    "variation",   variation ());
 	addField (initializeOnly, "mass",        mass ());
 	addField (initializeOnly, "surfaceArea", surfaceArea ());
-	addField (inputOutput,    "direction",   direction ());
-	addField (inputOutput,    "position",    position ());
+	addField (inputOutput,    "variation",   variation ());
 }
 
 X3DBaseNode*

@@ -71,7 +71,7 @@ ComposedShader::ComposedShader (X3DExecutionContext* const executionContext) :
 	              X3DShaderNode (),
 	X3DProgrammableShaderObject (),
 	                     fields (),
-	            shaderProgramId (0)
+	                  programId (0)
 {
 	addField (inputOutput,    "metadata",   metadata ());
 	addField (inputOnly,      "activate",   activate ());
@@ -106,10 +106,10 @@ ComposedShader::requestExplicitRelink ()
 {
 	if (language () == "GLSL")
 	{
-		if (shaderProgramId)
-			glDeleteProgram (shaderProgramId);		
+		if (programId)
+			glDeleteProgram (programId);
 
-		shaderProgramId = glCreateProgram ();
+		programId = glCreateProgram ();
 
 		// Attach shader
 
@@ -118,19 +118,23 @@ ComposedShader::requestExplicitRelink ()
 			auto _part = x3d_cast <ShaderPart*> (part);
 
 			if (_part)
-				glAttachShader (shaderProgramId, _part -> getShaderId ());
+				glAttachShader (programId, _part -> getShaderId ());
 		}
+
+		// TransformFeedbackVaryings
+
+		applyTransformFeedbackVaryings ();
 
 		// Link program
 
-		glLinkProgram (shaderProgramId);
+		glLinkProgram (programId);
 
 		// Check for link status
 
 		GLint linkStatus;
 
-		glGetProgramiv (shaderProgramId, GL_LINK_STATUS, &linkStatus);
-		
+		glGetProgramiv (programId, GL_LINK_STATUS, &linkStatus);
+
 		isValid () = linkStatus;
 
 		// Initialize uniform variables
@@ -141,7 +145,7 @@ ComposedShader::requestExplicitRelink ()
 		// Print info log
 
 		printProgramInfoLog ();
-		
+
 		// Detach shader
 
 		// Detaching and deleting is not necessary and could, if the program is setup manually, simply be left out.
@@ -152,12 +156,12 @@ ComposedShader::requestExplicitRelink ()
 			auto _part = x3d_cast <ShaderPart*> (part);
 
 			if (_part)
-				glDetachShader (shaderProgramId, _part -> getShaderId ());
+				glDetachShader (programId, _part -> getShaderId ());
 		}
 	}
 	else
 		isValid () = false;
-		
+
 	if (not isValid () and isSelected ())
 		isSelected () = false;
 
@@ -171,18 +175,18 @@ ComposedShader::printProgramInfoLog () const
 	{
 		GLint infoLogLength;
 
-		glGetProgramiv (shaderProgramId, GL_INFO_LOG_LENGTH, &infoLogLength);
+		glGetProgramiv (programId, GL_INFO_LOG_LENGTH, &infoLogLength);
 
 		if (infoLogLength > 1)
 		{
 			char infoLog [infoLogLength];
 
-			glGetProgramInfoLog (shaderProgramId, infoLogLength, 0, infoLog);
+			glGetProgramInfoLog (programId, infoLogLength, 0, infoLog);
 
 			getBrowser () -> print (std::string (80, '#'), '\n',
-											"ComposedShader InfoLog:\n",
-											std::string (infoLog),
-											std::string (80, '#'), '\n');
+			                        "ComposedShader InfoLog:\n",
+			                        std::string (infoLog),
+			                        std::string (80, '#'), '\n');
 		}
 	}
 }
@@ -192,8 +196,20 @@ ComposedShader::set_activate ()
 {
 	if (not activate ())
 		return;
-		
+
 	requestExplicitRelink ();
+}
+
+void
+ComposedShader::enable ()
+{
+	glUseProgram (programId);
+}
+
+void
+ComposedShader::disable ()
+{
+	glUseProgram (0);
 }
 
 void
@@ -201,14 +217,14 @@ ComposedShader::draw ()
 {
 	X3DShaderNode::draw ();
 
-	glUseProgram (shaderProgramId);
+	glUseProgram (programId);
 }
 
 void
 ComposedShader::dispose ()
 {
-	if (shaderProgramId)
-		glDeleteProgram (shaderProgramId);
+	if (programId)
+		glDeleteProgram (programId);
 
 	X3DProgrammableShaderObject::dispose ();
 	X3DShaderNode::dispose ();

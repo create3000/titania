@@ -1,3 +1,42 @@
+2013-12-22  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Debug.h:
+	* libtitania-x3d.cproj:
+	* config.h:
+	* config.cpp:
+	* X3DBrowser.cpp:
+	* Shape.h:
+	* Shape.cpp:
+	* X3DBrowserContext.h:
+	* CollisionShape.cpp:
+	* X3DBrowserContext.cpp:
+	* ShaderPart.h:
+	* Appearance.cpp:
+	* X3DShapeNode.h:
+	* X3DExecutionContext.cpp:
+	* ShaderPart.cpp:
+	* X3DShapeNode.cpp:
+	* X3DShaderNode.h:
+	* ShaderProgram.h:
+	* ProgramShader.h:
+	* PackagedShader.h:
+	* ComposedShader.h:
+	* ProgramShader.cpp:
+	* emitter.vs:
+	* ShaderProgram.cpp:
+	* ComposedShader.cpp:
+	* PackagedShader.cpp:
+	* PointEmitter.h:
+	* X3DTexture2DNode.cpp:
+	* X3DTexture3DNode.cpp:
+	* PointEmitter.cpp:
+	* ParticleSystem.h:
+	* ParticleSystem.cpp:
+	* X3DProgrammableShaderObject.h:
+	* X3DProgrammableShaderObject.cpp:
+	* X3DParticleEmitterNode.h:
+	* X3DParticleEmitterNode.cpp: 
+
 2013-12-21  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* LoadSensor.h:

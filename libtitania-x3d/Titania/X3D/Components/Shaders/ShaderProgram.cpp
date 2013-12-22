@@ -73,7 +73,7 @@ ShaderProgram::ShaderProgram (X3DExecutionContext* const executionContext) :
 	               X3DUrlObject (),
 	X3DProgrammableShaderObject (),
 	                     fields (),
-	            shaderProgramId (0),
+	                  programId (0),
 	                      valid (false)
 {
 	addField (inputOutput,    "metadata", metadata ());
@@ -147,11 +147,11 @@ ShaderProgram::requestImmediateLoad ()
 
 	setLoadState (IN_PROGRESS_STATE);
 
-	if (shaderProgramId)
+	if (programId)
 	{
-		glDeleteProgram (shaderProgramId);
+		glDeleteProgram (programId);
 
-		shaderProgramId = 0;
+		programId = 0;
 	}
 
 	for (const auto & URL : url ())
@@ -163,13 +163,13 @@ ShaderProgram::requestImmediateLoad ()
 			std::string shaderSource = Loader (getExecutionContext ()) .loadDocument (URL);
 			const char* string       = shaderSource .c_str ();
 
-			shaderProgramId = glCreateShaderProgramv (getShaderType (), 1, &string);
+			programId = glCreateShaderProgramv (getShaderType (), 1, &string);
 
 			// Check for link status
 
 			GLint linkStatus;
 
-			glGetProgramiv (shaderProgramId, GL_LINK_STATUS, &linkStatus);
+			glGetProgramiv (programId, GL_LINK_STATUS, &linkStatus);
 
 			valid = linkStatus;
 
@@ -200,13 +200,13 @@ ShaderProgram::printProgramInfoLog () const
 	{
 		GLint infoLogLength;
 
-		glGetProgramiv (shaderProgramId, GL_INFO_LOG_LENGTH, &infoLogLength);
+		glGetProgramiv (programId, GL_INFO_LOG_LENGTH, &infoLogLength);
 
 		if (infoLogLength > 1)
 		{
 			char infoLog [infoLogLength];
 
-			glGetProgramInfoLog (shaderProgramId, infoLogLength, 0, infoLog);
+			glGetProgramInfoLog (programId, infoLogLength, 0, infoLog);
 
 			getBrowser () -> print (std::string (80, '#'), '\n',
 			                        "ShaderProgram InfoLog (", type (), "):\n",
@@ -227,8 +227,8 @@ ShaderProgram::set_url ()
 void
 ShaderProgram::dispose ()
 {
-	if (shaderProgramId)
-		glDeleteProgram (shaderProgramId);
+	if (programId)
+		glDeleteProgram (programId);
 
 	X3DProgrammableShaderObject::dispose ();
 	X3DUrlObject::dispose ();

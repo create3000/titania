@@ -87,7 +87,7 @@ CollisionShape::intersect (const Sphere3f & sphere) const
 	if (collisions .empty ())
 		return false;
 
-	return shape -> getGeometry () -> intersect (sphere, matrix, localObjects);
+	return shape -> intersect (sphere, matrix, localObjects);
 }
 
 void
@@ -98,7 +98,7 @@ CollisionShape::draw ()
 
 	glLoadMatrixf (matrix .data ());
 
-	shape -> getGeometry () -> draw (false, false, false);
+	shape -> drawGeometry ();
 
 	for (const auto & object : basic::reverse_adapter (localObjects))
 		object -> disable ();

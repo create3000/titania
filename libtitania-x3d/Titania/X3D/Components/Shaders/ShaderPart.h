@@ -62,6 +62,8 @@ class ShaderPart :
 {
 public:
 
+	///  @name Construction
+
 	ShaderPart (X3DExecutionContext* const);
 
 	virtual
@@ -96,17 +98,23 @@ public:
 	type () const
 	{ return *fields .type; }
 
-	GLint
-	getShaderId () const
-	{ return shaderId; }
+	///  @name Member access
 
 	bool
 	isValid () const
 	{ return valid; }
 
+	GLint
+	getShaderId () const
+	{ return shaderId; }
+
+	///  @name Operations
+
 	virtual
 	void
 	requestImmediateLoad () final override;
+
+	///  @name Destruction
 
 	virtual
 	void
@@ -115,8 +123,13 @@ public:
 
 private:
 
+	///  @name Construction
+
+	virtual
 	void
-	initialize ();
+	initialize () final override;
+
+	///  @name Operations
 
 	GLenum
 	getShaderType () const;
@@ -124,9 +137,10 @@ private:
 	void
 	printShaderInfoLog () const;
 
+	///  @name Event handlers
+
 	void
 	set_url ();
-
 
 	///  @name Static members
 

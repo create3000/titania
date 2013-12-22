@@ -107,7 +107,7 @@ X3DTexture2DNode::setTexture (const TexturePtr & texture)
 		          texture -> getData ());
 	}
 	else
-		setImage (getInternalFormat (3), 3, GL_RGB, 0, 0, nullptr);
+		setImage (getInternalFormat (3), 3, 0, 0, GL_RGB, nullptr);
 }
 
 void

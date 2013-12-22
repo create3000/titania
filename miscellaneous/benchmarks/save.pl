@@ -5,14 +5,24 @@ use v5.10.0;
 
 use LWP::Simple;
 
+open LOG, ">>", "$ENV{HOME}/.xsession-errors";
+
+sub debug {
+	print @_;
+	print LOG @_;
+
+	$| = 1;
+	select ((select (LOG), $|=1) [0])
+}
+
 sub find {
 	my $name = "";
 
-	print @_;
+	debug (@_);
 
 	while (<>)
 	{
-		print $_; $| = 1;
+		debug ($_);
 		$name = $1, last if $_ =~ /^Statistics for: (.*)$/;
 	}
 
@@ -26,7 +36,7 @@ sub save {
 
 	# Load Time
 	my $line = <>;
-	print $line; $| = 1;
+	debug ($line);
 
 	$line =~ m/Load Time:\s*([\d.]+)/; my $value = $1;
 	return unless $value;
@@ -39,7 +49,7 @@ sub save {
 
 	# FPS
 	my $line = <>;
-	print $line; $| = 1;
+	debug ($line);
 
 	$line =~ m/FPS:\s*([\d.]+)/; my $value = $1;
 	return unless $value;
@@ -54,3 +64,5 @@ sub save {
 ########################################################################################################################
 
 find ($_) while <>;
+
+close LOG;

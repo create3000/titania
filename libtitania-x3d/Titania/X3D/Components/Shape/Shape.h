@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -61,6 +61,8 @@ class Shape :
 {
 public:
 
+	///  @name Constuction
+
 	Shape (X3DExecutionContext* const);
 
 	virtual
@@ -85,7 +87,55 @@ public:
 	getContainerField () const final override
 	{ return containerField; }
 
+	///  @name Member access
+
+	virtual
+	bool
+	isTransparent () const final override;
+
+	virtual
+	Box3f
+	getBBox () final override;
+
+	///  @name Operations
+
+	virtual
+	bool
+	intersect (const Sphere3f &, const Matrix4f &, const CollectableObjectArray &) final override;
+
+	virtual
+	void
+	traverse (const TraverseType) final override;
+
+	virtual
+	void
+	draw () final override;
+
+	virtual
+	void
+	drawGeometry () final override;
+
+
 private:
+
+	///  @name Constuction
+
+	virtual
+	void
+	initialize () final override;
+
+	///  @name Event handlers
+
+	void
+	set_appearance ();
+
+	void
+	set_geometry ();
+
+	///  @name Operations
+
+	void
+	pick ();
 
 	///  @name Static members
 
@@ -93,6 +143,10 @@ private:
 	static const std::string typeName;
 	static const std::string containerField;
 
+	///  @name Members
+
+	X3DAppearanceNode* _appearance;
+	X3DGeometryNode*   _geometry;
 
 };
 

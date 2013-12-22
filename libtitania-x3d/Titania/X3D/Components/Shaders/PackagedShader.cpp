@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -64,7 +64,7 @@ PackagedShader::PackagedShader (X3DExecutionContext* const executionContext) :
 	              X3DShaderNode (),
 	               X3DUrlObject (),
 	X3DProgrammableShaderObject (),
-	              shaderProgramId (0)
+	                  programId (0)
 {
 	addField (inputOutput,    "metadata",   metadata ());
 	addField (inputOutput,    "url",        url ());
@@ -90,6 +90,14 @@ PackagedShader::initialize ()
 
 void
 PackagedShader::requestImmediateLoad ()
+{ }
+
+void
+PackagedShader::enable ()
+{ }
+
+void
+PackagedShader::disable ()
 { }
 
 void

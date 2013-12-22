@@ -59,7 +59,6 @@
 
 #include <Titania/OS.h>
 #include <Titania/String.h>
-#include <Titania/X3D/Debug.h>
 
 namespace titania {
 namespace puck {
