@@ -805,8 +805,6 @@ function eventsProcessed ()
 	// Position arrows
 	
 	var bboxSize1_2 = bboxSize .divide (2);
-	
-	print (bboxSize1_2);
 
 	x .translation = new SFVec3f (bboxSize1_2 .x, 0, 0);
 	y .translation = new SFVec3f (0, bboxSize1_2 .y, 0);

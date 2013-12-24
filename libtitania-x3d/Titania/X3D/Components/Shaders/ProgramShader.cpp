@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -93,7 +93,7 @@ void
 ProgramShader::initialize ()
 {
 	X3DShaderNode::initialize ();
-	
+
 	if (glXGetCurrentContext ())
 	{
 		activate () .addInterest (this, &ProgramShader::set_activate);
@@ -105,28 +105,27 @@ ProgramShader::initialize ()
 GLint
 ProgramShader::getProgramStageBit (const String & type)
 {
-	if (type == "VERTEX")
-		return GL_VERTEX_SHADER_BIT;
+	// http://www.opengl.org/wiki/Rendering_Pipeline_Overview
 
-	if (type == "TESS_CONTROL")
-		return GL_TESS_CONTROL_SHADER_BIT;
+	static const std::map <std::string, GLenum> programStageBits = {
+		std::make_pair ("VERTEX",          GL_VERTEX_SHADER_BIT),
+		std::make_pair ("TESS_CONTROL",    GL_TESS_CONTROL_SHADER_BIT),
+		std::make_pair ("TESS_EVALUATION", GL_TESS_EVALUATION_SHADER_BIT),
+		std::make_pair ("GEOMETRY",        GL_GEOMETRY_SHADER_BIT),
+		std::make_pair ("FRAGMENT",        GL_FRAGMENT_SHADER_BIT)
 
-	if (type == "TESS_EVALUATION")
-		return GL_TESS_EVALUATION_SHADER_BIT;
+		#ifdef GL_COMPUTE_SHADER_BIT
+		// Requires GL 4.3 or ARB_compute_shader
 
-	if (type == "GEOMETRY")
-		return GL_GEOMETRY_SHADER_BIT;
+		, std::make_pair ("COMPUTE", GL_COMPUTE_SHADER_BIT),
 
-	if (type == "FRAGMENT")
-		return GL_FRAGMENT_SHADER_BIT;
+		#endif
+	};
 
-	#ifdef GL_COMPUTE_SHADER_BIT
+	auto programStageBit = programStageBits .find (type);
 
-	// Requires GL 4.3 or ARB_compute_shader
-	if (type == "COMPUTE")
-		return GL_COMPUTE_SHADER_BIT;
-
-	#endif
+	if (programStageBit not_eq programStageBits .end ())
+		return programStageBit -> second;
 
 	return GL_VERTEX_SHADER_BIT;
 }

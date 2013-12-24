@@ -58,6 +58,7 @@
 #include "../../Components/Texturing/TextureCoordinate.h"
 #include "../../Components/Texturing/TextureProperties.h"
 #include "../../Components/Texturing/TextureTransform.h"
+#include "../../Components/ParticleSystems/PointEmitter.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Geometry2D/Arc2DOptions.h"
 #include "../Geometry2D/ArcClose2DOptions.h"
@@ -118,6 +119,7 @@ BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
 	        fillProperties (new FillProperties (executionContext)),
 	     textureProperties (new TextureProperties (executionContext)),
 	      textureTransform (new TextureTransform (executionContext)),
+	               emitter (new PointEmitter (executionContext)),
 	                 arc2D (new Arc2DOptions (executionContext)),
 	            arcClose2D (new ArcClose2DOptions (executionContext)),
 	              circle2D (new Circle2DOptions (executionContext)),
@@ -157,6 +159,7 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 	             fillProperties (),
 	             textureProperties (),
 	             textureTransform (),
+	             emitter (),
 	             arc2D (),
 	             arcClose2D (),
 	             circle2D (),
@@ -186,6 +189,7 @@ BrowserOptions::initialize ()
 	fillProperties ()    -> setup ();
 	textureProperties () -> setup ();
 	textureTransform ()  -> setup ();
+	emitter ()           -> setup ();
 	arc2D ()             -> setup ();
 	arcClose2D ()        -> setup ();
 	circle2D ()          -> setup ();
@@ -399,6 +403,7 @@ BrowserOptions::dispose ()
 	fillProperties ()    .dispose ();
 	textureProperties () .dispose ();
 	textureTransform ()  .dispose ();
+	emitter ()           .dispose ();
 	arc2D ()             .dispose ();
 	arcClose2D ()        .dispose ();
 	circle2D ()          .dispose ();

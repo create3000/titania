@@ -80,6 +80,7 @@ class FillProperties;
 class X3DFontStyleNode;
 class TextureProperties;
 class X3DTextureTransformNode;
+class X3DParticleEmitterNode;
 class Arc2DOptions;
 class ArcClose2DOptions;
 class Circle2DOptions;
@@ -274,6 +275,14 @@ public:
 	textureTransform () const
 	{ return fields .textureTransform; }
 
+	X3DSFNode <X3DParticleEmitterNode> &
+	emitter ()
+	{ return fields .emitter; }
+
+	const X3DSFNode <X3DParticleEmitterNode> &
+	emitter () const
+	{ return fields .emitter; }
+
 	X3DSFNode <Arc2DOptions> &
 	arc2D ()
 	{ return fields .arc2D; }
@@ -411,6 +420,7 @@ private:
 		X3DSFNode <FillProperties> fillProperties;
 		X3DSFNode <TextureProperties> textureProperties;
 		X3DSFNode <X3DTextureTransformNode> textureTransform;
+		X3DSFNode <X3DParticleEmitterNode> emitter;
 		X3DSFNode <Arc2DOptions> arc2D;
 		X3DSFNode <ArcClose2DOptions> arcClose2D;
 		X3DSFNode <Circle2DOptions> circle2D;

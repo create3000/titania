@@ -104,6 +104,7 @@ GLenum
 ShaderPart::getShaderType () const
 {
 	// http://www.opengl.org/wiki/Shader
+	// http://www.opengl.org/wiki/Rendering_Pipeline_Overview
 
 	static const std::map <std::string, GLenum> shaderTypes {
 		std::make_pair ("VERTEX",          GL_VERTEX_SHADER),

@@ -50,14 +50,17 @@
 
 #include "ParticleSystem.h"
 
+#include "../../Bits/Cast.h"
 #include "../../Bits/config.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Shaders/ShaderPart.h"
 
 #include <cstddef>
+#include <random>
 
 #include "../../Debug.h"
+#include "PointEmitter.h"
 
 namespace titania {
 namespace X3D {
@@ -66,11 +69,26 @@ const std::string ParticleSystem::componentName  = "ParticleSystems";
 const std::string ParticleSystem::typeName       = "ParticleSystem";
 const std::string ParticleSystem::containerField = "children";
 
+static
+float
+random ()
+{
+	static std::uniform_real_distribution <float> distribution (-1, 1);
+	static std::default_random_engine             engine;
+	return distribution (engine);
+}
+
 struct Particle
 {
-	float lifetime;
+	Particle () :
+		 position (random (), random (), random ()),
+		 velocity (),
+		startTime (0)
+	{ }
+
 	Vector3f position;
 	Vector3f velocity;
+	double   startTime;
 
 };
 
@@ -95,12 +113,14 @@ ParticleSystem::ParticleSystem (X3DExecutionContext* const executionContext) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	       X3DShapeNode (),
 	             fields (),
-	          firstTime (true),
 	         readBuffer (0),
 	        writeBuffer (1),
-	transformFeedbackId ({0, 0}),
-	   particleBufferId ({0, 0}),
-	             shader ()
+	transformFeedbackId ({ 0, 0 }),
+	   particleBufferId ({ 0, 0 }),
+	             shader (),
+	        emitterNode (nullptr),
+	          particles (0),
+	       creationTime (0)
 {
 	addField (inputOutput,    "metadata",          metadata ());
 	addField (inputOutput,    "enabled",           enabled ());
@@ -142,23 +162,17 @@ ParticleSystem::initialize ()
 
 	if (glXGetCurrentContext ())
 	{
-		// Generate buffers
-
-		Particle particles [maxParticles () .getValue ()];
+		// Generate transform buffers
 
 		glGenBuffers (2, particleBufferId .data ());
 		glGenTransformFeedbacks (2, transformFeedbackId .data ());
-
+	
 		for (size_t i = 0; i < 2; ++ i)
 		{
-			glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [i]);
-			glBufferData (GL_ARRAY_BUFFER, sizeof (particles), particles, GL_DYNAMIC_DRAW);
-
 			glBindTransformFeedback (GL_TRANSFORM_FEEDBACK, transformFeedbackId [i]);
 			glBindBufferBase (GL_TRANSFORM_FEEDBACK_BUFFER, 0, particleBufferId [i]);
 		}
 
-		glBindBuffer (GL_ARRAY_BUFFER, 0);
 		glBindTransformFeedback (GL_TRANSFORM_FEEDBACK, 0);
 
 		// Shader
@@ -167,17 +181,32 @@ ParticleSystem::initialize ()
 		vertexShader -> url () = { get_shader ("ParticleSystems/emitter.vs") .str () };
 		vertexShader -> setup ();
 
-		shader                = new ComposedShader (getExecutionContext ());
+		shader = new ComposedShader (getExecutionContext ());
+		shader -> addUserDefinedField (inputOutput, "particleLifetime",  new SFFloat ());
+		shader -> addUserDefinedField (inputOutput, "lifetimeVariation", new SFFloat ());
+		shader -> addUserDefinedField (inputOutput, "position",          new SFVec3f ());
+		shader -> addUserDefinedField (inputOutput, "direction",         new SFVec3f ());
+		shader -> addUserDefinedField (inputOutput, "speed",             new SFFloat ());
+		shader -> addUserDefinedField (inputOutput, "variation",         new SFFloat ());
+		shader -> addUserDefinedField (inputOutput, "random",            new SFFloat ());
+		shader -> addUserDefinedField (inputOutput, "frameRate",         new SFFloat ());
+		shader -> addUserDefinedField (inputOutput, "time",              new SFTime ());
+
 		shader -> language () = "GLSL";
 		shader -> parts () .emplace_back (vertexShader);
-		shader -> setTransformFeedbackVaryings ({ "lifetime0", "position0", "velocity0" });
+		shader -> setTransformFeedbackVaryings ({ "To.position", "To.velocity", "To.startTime" });
 		shader -> setup ();
-		
+
 		// Setup
-		
-		geometry () .addInterest (this, &ParticleSystem::set_geometry);
+
+		enabled ()          .addInterest (this, &ParticleSystem::set_enabled);
+		maxParticles ()     .addInterest (this, &ParticleSystem::set_array_buffers);
+		particleLifetime () .addInterest (this, &ParticleSystem::set_array_buffers);
+		emitter ()          .addInterest (this, &ParticleSystem::set_emitter);
+		geometry ()         .addInterest (this, &ParticleSystem::set_geometry);
 
 		set_enabled ();
+		set_emitter ();
 		set_geometry ();
 	}
 }
@@ -186,16 +215,57 @@ void
 ParticleSystem::set_enabled ()
 {
 	if (enabled ())
-		getBrowser () -> sensors () .addInterest (this, &ParticleSystem::update);
-	
+	{
+		getBrowser () -> prepareEvents () .addInterest (this, &ParticleSystem::prepareEvents);
+		getBrowser () -> sensors ()       .addInterest (this, &ParticleSystem::update);
+
+		set_array_buffers ();
+
+		isActive () = true;
+	}
 	else
-		getBrowser () -> sensors () .removeInterest (this, &ParticleSystem::update);
+	{
+		getBrowser () -> prepareEvents () .removeInterest (this, &ParticleSystem::prepareEvents);
+		getBrowser () -> sensors ()       .removeInterest (this, &ParticleSystem::update);
+
+		particles = 0;
+		
+		isActive () = false;
+	}
+}
+
+void
+ParticleSystem::set_emitter ()
+{
+	emitterNode = x3d_cast <X3DParticleEmitterNode*> (emitter ());
+
+	if (emitterNode)
+		return;
+
+	emitterNode = getBrowser () -> getBrowserOptions () -> emitter ();
 }
 
 void
 ParticleSystem::set_geometry ()
-{
+{ }
 
+void
+ParticleSystem::set_array_buffers ()
+{
+	// Initialize array buffers
+
+	Particle array [std::max (0, maxParticles () .getValue ())];
+
+	for (size_t i = 0; i < 2; ++ i)
+	{
+		glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [i]);
+		glBufferData (GL_ARRAY_BUFFER, sizeof (array), array, GL_DYNAMIC_DRAW);
+	}
+
+	glBindBuffer (GL_ARRAY_BUFFER, 0);
+
+	particles    = 0;
+	creationTime = getCurrentTime ();
 }
 
 bool
@@ -203,7 +273,7 @@ ParticleSystem::isTransparent () const
 {
 	return false;
 }
-	
+
 bool
 ParticleSystem::isLineGeometry () const
 {
@@ -252,11 +322,35 @@ ParticleSystem::traverse (const TraverseType type)
 }
 
 void
+ParticleSystem::prepareEvents ()
+{
+	int32_t createParticles = (getCurrentTime () - creationTime) * maxParticles () / particleLifetime ();
+
+	if (createParticles)
+		creationTime = getCurrentTime ();
+
+	particles = std::min (std::max (0, maxParticles () .getValue ()), createParticles + particles);
+
+	auto pointEmitter = dynamic_cast <PointEmitter*> (emitterNode);
+
+	if (pointEmitter)
+	{
+		shader -> setField <SFVec3f> ("position",  pointEmitter -> position (),  true);
+		shader -> setField <SFVec3f> ("direction", pointEmitter -> direction (), true);
+		shader -> setField <SFFloat> ("speed",     pointEmitter -> speed (),     true);
+		shader -> setField <SFFloat> ("variation", pointEmitter -> variation (), true);
+	}
+
+	shader -> setField <SFFloat> ("particleLifetime",  particleLifetime (),  true);
+	shader -> setField <SFFloat> ("lifetimeVariation", lifetimeVariation (), true);
+
+	shader -> setField <SFFloat> ("frameRate", float (getBrowser () -> getCurrentFrameRate ()));
+	shader -> setField <SFTime>  ("time",      getBrowser () -> getCurrentTime ());
+}
+
+void
 ParticleSystem::update ()
 {
-	__LOG__ << std::endl;
-	GL_ERROR;
-
 	shader -> enable ();
 
 	glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [readBuffer]);
@@ -265,21 +359,15 @@ ParticleSystem::update ()
 	glEnableVertexAttribArray (1);
 	glEnableVertexAttribArray (2);
 
-	glVertexAttribPointer (0, 1, GL_FLOAT, GL_FALSE, sizeof (Particle), (const GLvoid*) offsetof (Particle, lifetime));
-	glVertexAttribPointer (1, 3, GL_FLOAT, GL_FALSE, sizeof (Particle), (const GLvoid*) offsetof (Particle, position));
-	glVertexAttribPointer (2, 3, GL_FLOAT, GL_FALSE, sizeof (Particle), (const GLvoid*) offsetof (Particle, velocity));
+	glVertexAttribPointer  (0, 3, GL_FLOAT,  GL_FALSE, sizeof (Particle), (const GLvoid*) offsetof (Particle, position));
+	glVertexAttribPointer  (1, 3, GL_FLOAT,  GL_FALSE, sizeof (Particle), (const GLvoid*) offsetof (Particle, velocity));
+	glVertexAttribLPointer (2, 1, GL_DOUBLE, sizeof (Particle), (const GLvoid*) offsetof (Particle, startTime));
 
 	glEnable (GL_RASTERIZER_DISCARD);
 	glBindTransformFeedback (GL_TRANSFORM_FEEDBACK, transformFeedbackId [writeBuffer]);
 	glBeginTransformFeedback (GL_POINTS);
 
-	if (firstTime)
-	{
-		firstTime = false;
-		glDrawArrays (GL_POINTS, 0, 1);
-	}
-	else
-		glDrawTransformFeedback (GL_POINTS, transformFeedbackId [readBuffer]);
+	glDrawArrays (GL_POINTS, 0, particles);
 
 	glEndTransformFeedback ();
 	glBindTransformFeedback (GL_TRANSFORM_FEEDBACK, 0);
@@ -293,8 +381,6 @@ ParticleSystem::update ()
 	shader -> disable ();
 
 	std::swap (readBuffer, writeBuffer);
-
-	GL_ERROR;
 }
 
 void
@@ -304,34 +390,27 @@ ParticleSystem::drawCollision ()
 void
 ParticleSystem::drawGeometry ()
 {
-	__LOG__ << std::endl;
-	GL_ERROR;
-
 	glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [readBuffer]);
 
 	glEnableVertexAttribArray (0);
 	glVertexAttribPointer (0, 3, GL_FLOAT, GL_FALSE, sizeof (Particle), (const GLvoid*) offsetof (Particle, position));
 
-	glDrawTransformFeedback (GL_POINTS, transformFeedbackId [readBuffer]);
+	glDrawArrays (GL_POINTS, 0, particles);
 
 	glDisableVertexAttribArray (0);
 	glBindBuffer (GL_ARRAY_BUFFER, 0);
-
-	GL_ERROR;
 }
 
 void
 ParticleSystem::dispose ()
 {
-	__LOG__ << std::endl;
+	shader .dispose ();
 
 	if (transformFeedbackId [0])
 		glDeleteTransformFeedbacks (2, transformFeedbackId .data ());
 
 	if (particleBufferId [0])
 		glDeleteBuffers (2, particleBufferId .data ());
-
-	shader .dispose ();
 
 	X3DShapeNode::dispose ();
 }

@@ -53,6 +53,7 @@
 
 #include "../Shaders/ComposedShader.h"
 #include "../Shape/X3DShapeNode.h"
+#include "../ParticleSystems/X3DParticleEmitterNode.h"
 
 #include <array>
 
@@ -249,13 +250,22 @@ private:
 	set_enabled ();
 
 	void
+	set_emitter ();
+
+	void
 	set_geometry ();
+
+	void
+	set_array_buffers ();
 
 	///  @name Operations
 
 	virtual
 	bool
 	isLineGeometry () const final override;
+
+	void
+	prepareEvents ();
 
 	void
 	update ();
@@ -294,12 +304,15 @@ private:
 
 	Fields fields;
 
-	bool                       firstTime;
 	size_t                     readBuffer;
 	size_t                     writeBuffer;
 	std::array <GLuint, 2>     transformFeedbackId;
 	std::array <GLuint, 2>     particleBufferId;
 	X3DSFNode <ComposedShader> shader;
+	X3DParticleEmitterNode*    emitterNode;
+
+	int32_t   particles;
+	time_type creationTime;
 
 };
 

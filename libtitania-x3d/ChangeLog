@@ -1,3 +1,15 @@
+2013-12-24  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* TransformTool.wrl:
+	* ShaderPart.cpp:
+	* BrowserOptions.h:
+	* ShaderProgram.cpp:
+	* emitter.vs:
+	* ProgramShader.cpp:
+	* BrowserOptions.cpp:
+	* ParticleSystem.h:
+	* ParticleSystem.cpp: 
+
 2013-12-22  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Debug.h:
