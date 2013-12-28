@@ -61,6 +61,8 @@ class PolylineEmitter :
 {
 public:
 
+	///  @name Construction
+
 	PolylineEmitter (X3DExecutionContext* const);
 
 	virtual
@@ -119,9 +121,14 @@ public:
 	coordIndex () const
 	{ return *fields .coordIndex; }
 
+	///  @name Operations
+
+	virtual
+	MFString
+	getShaderUrl () const final override;
+
 
 private:
-
 
 	///  @name Static members
 

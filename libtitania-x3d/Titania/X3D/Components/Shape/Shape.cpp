@@ -68,8 +68,7 @@ const std::string Shape::containerField = "children";
 
 Shape::Shape (X3DExecutionContext* const executionContext) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DShapeNode (),
-	geometryNode (nullptr)
+	X3DShapeNode ()
 {
 	addField (inputOutput,    "metadata",   metadata ());
 	addField (initializeOnly, "bboxSize",   bboxSize ());
@@ -84,29 +83,13 @@ Shape::create (X3DExecutionContext* const executionContext) const
 	return new Shape (executionContext);
 }
 
-void
-Shape::initialize ()
-{
-	X3DShapeNode::initialize ();
-
-	geometry () .addInterest (this, &Shape::set_geometry);
-
-	set_geometry ();
-}
-
-void
-Shape::set_geometry ()
-{
-	geometryNode = x3d_cast <X3DGeometryNode*> (geometry ());
-}
-
 bool
 Shape::isTransparent () const
 {
 	if (getAppearance () -> isTransparent ())
 		return true;
 
-	if (geometryNode and geometryNode -> isTransparent ())
+	if (getGeometry () and getGeometry () -> isTransparent ())
 		return true;
 
 	return false;
@@ -115,7 +98,7 @@ Shape::isTransparent () const
 bool
 Shape::isLineGeometry () const
 {
-	return geometryNode -> isLineGeometry ();
+	return getGeometry () -> isLineGeometry ();
 }
 
 Box3f
@@ -123,8 +106,8 @@ Shape::getBBox ()
 {
 	if (bboxSize () == Vector3f (-1, -1, -1))
 	{
-		if (geometryNode)
-			return geometryNode -> getBBox ();
+		if (getGeometry ())
+			return getGeometry () -> getBBox ();
 
 		else
 			return Box3f ();
@@ -136,7 +119,7 @@ Shape::getBBox ()
 bool
 Shape::intersect (const Sphere3f & sphere, const Matrix4f & matrix, const CollectableObjectArray & localObjects)
 {
-	return geometryNode -> intersect (sphere, matrix, localObjects);
+	return getGeometry () -> intersect (sphere, matrix, localObjects);
 }
 
 void
@@ -152,14 +135,14 @@ Shape::traverse (const TraverseType type)
 		case TraverseType::NAVIGATION:
 		case TraverseType::COLLISION:
 		{
-			if (geometryNode)
+			if (getGeometry ())
 				getBrowser () -> getRenderers () .top () -> addCollision (this);
 
 			break;
 		}
 		case TraverseType::COLLECT:
 		{
-			if (geometryNode)
+			if (getGeometry ())
 				getBrowser () -> getRenderers () .top () -> addShape (this);
 
 			break;
@@ -174,7 +157,7 @@ Shape::pick ()
 {
 	// All geometries must be picked
 
-	if (geometryNode)
+	if (getGeometry ())
 	{
 		if (getBrowser () -> intersect (glIsEnabled (GL_SCISSOR_TEST) ? Scissor4i () : Viewport4i ()))
 		{
@@ -186,7 +169,7 @@ Shape::pick ()
 
 				std::deque <IntersectionPtr> itersections;
 
-				if (geometryNode -> intersect (hitRay, itersections))
+				if (getGeometry () -> intersect (hitRay, itersections))
 				{
 					for (auto & itersection : itersections)
 						itersection -> hitPoint = itersection -> hitPoint * modelViewMatrix;
@@ -216,13 +199,13 @@ Shape::pick ()
 void
 Shape::drawCollision ()
 {
-	geometryNode -> draw (false, false, false);
+	getGeometry () -> draw (false, false, false);
 }
 
 void
 Shape::drawGeometry ()
 {
-	geometryNode -> draw ();
+	getGeometry () -> draw ();
 }
 
 } // X3D

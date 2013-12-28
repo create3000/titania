@@ -50,6 +50,7 @@
 
 #include "PointEmitter.h"
 
+#include "../../Bits/config.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -73,15 +74,30 @@ PointEmitter::PointEmitter (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "position",    position ());
 	addField (inputOutput,    "direction",   direction ());
 	addField (inputOutput,    "speed",       speed ());
+	addField (inputOutput,    "variation",   variation ());
 	addField (initializeOnly, "mass",        mass ());
 	addField (initializeOnly, "surfaceArea", surfaceArea ());
-	addField (inputOutput,    "variation",   variation ());
 }
 
 X3DBaseNode*
 PointEmitter::create (X3DExecutionContext* const executionContext) const
 {
 	return new PointEmitter (executionContext);
+}
+
+MFString
+PointEmitter::getShaderUrl () const
+{
+	return { get_shader ("ParticleSystems/PointEmitter.vs") .str () };
+}
+
+void
+PointEmitter::setShaderFields (const X3DSFNode <ComposedShader> & shader, const Vector3f & momentum) const
+{
+	X3DParticleEmitterNode::setShaderFields (shader, momentum);
+
+	shader -> setField <SFVec3f> ("position",  position (), true);
+	shader -> setField <SFVec3f> ("direction", normalize (direction () .getValue ()), true);
 }
 
 } // X3D

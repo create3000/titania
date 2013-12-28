@@ -84,13 +84,11 @@ TwoSidedMaterial::TwoSidedMaterial (X3DExecutionContext* const executionContext)
 	    glSpecularColor (),
 	    glEmissiveColor (),
 	        glShininess (),
-	              alpha (1),
 	 glBackAmbientColor (),
 	 glBackDiffuseColor (),
 	glBackSpecularColor (),
 	glBackEmissiveColor (),
-	    glBackShininess (),
-	          backAlpha (1)
+	    glBackShininess ()
 {
 	addField (inputOutput, "metadata",             metadata ());
 
@@ -131,7 +129,7 @@ TwoSidedMaterial::eventsProcessed ()
 
 	// Front
 
-	alpha = 1 - math::clamp <float> (transparency (), 0, 1);
+	float alpha = 1 - math::clamp <float> (transparency (), 0, 1);
 
 	glAmbientColor [0] = ambientIntensity () * diffuseColor () .getR ();
 	glAmbientColor [1] = ambientIntensity () * diffuseColor () .getG ();
@@ -159,7 +157,7 @@ TwoSidedMaterial::eventsProcessed ()
 	
 	if (separateBackColor ())
 	{
-		backAlpha = 1 - math::clamp <float> (backTransparency (), 0, 1);
+		float backAlpha = 1 - math::clamp <float> (backTransparency (), 0, 1);
 
 		glBackAmbientColor [0] = backAmbientIntensity () * backDiffuseColor () .getR ();
 		glBackAmbientColor [1] = backAmbientIntensity () * backDiffuseColor () .getG ();

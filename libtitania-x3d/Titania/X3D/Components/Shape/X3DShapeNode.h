@@ -59,6 +59,7 @@ namespace titania {
 namespace X3D {
 
 class X3DAppearanceNode;
+class X3DGeometryNode;
 
 class X3DShapeNode :
 	virtual public X3DChildNode, public X3DBoundedObject
@@ -124,6 +125,10 @@ protected:
 	getAppearance () const
 	{ return appearanceNode; }
 	
+	X3DGeometryNode*
+	getGeometry () const
+	{ return geometryNode; }
+	
 	///  @name Operations
 	
 	virtual
@@ -141,6 +146,9 @@ private:
 
 	void
 	set_appearance ();
+
+	void
+	set_geometry ();
 
 	///  @name Operations
 	
@@ -160,6 +168,9 @@ private:
 	Fields fields;
 
 	X3DAppearanceNode* appearanceNode;
+	X3DGeometryNode*   geometryNode;
+
+	std::function <void (GLuint)> glBindProgramPipeline;
 
 };
 

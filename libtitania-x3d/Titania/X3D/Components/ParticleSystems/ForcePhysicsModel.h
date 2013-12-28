@@ -94,6 +94,12 @@ public:
 	const SFVec3f &
 	force () const
 	{ return *fields .force; }
+	
+	/// @name Operations
+	
+	virtual
+	Vector3f
+	getForce (X3DParticleEmitterNode* const) const final override;
 
 
 private:

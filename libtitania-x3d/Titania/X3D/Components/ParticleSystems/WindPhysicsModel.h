@@ -61,6 +61,8 @@ class WindPhysicsModel :
 {
 public:
 
+	///  @name Construction
+
 	WindPhysicsModel (X3DExecutionContext* const);
 
 	virtual
@@ -96,14 +98,6 @@ public:
 	{ return *fields .direction; }
 
 	SFFloat &
-	gustiness ()
-	{ return *fields .gustiness; }
-
-	const SFFloat &
-	gustiness () const
-	{ return *fields .gustiness; }
-
-	SFFloat &
 	speed ()
 	{ return *fields .speed; }
 
@@ -112,16 +106,37 @@ public:
 	{ return *fields .speed; }
 
 	SFFloat &
+	gustiness ()
+	{ return *fields .gustiness; }
+
+	const SFFloat &
+	gustiness () const
+	{ return *fields .gustiness; }
+
+	SFFloat &
 	turbulence ()
 	{ return *fields .turbulence; }
 
 	const SFFloat &
 	turbulence () const
 	{ return *fields .turbulence; }
+	
+	/// @name Operations
+	
+	virtual
+	Vector3f
+	getForce (X3DParticleEmitterNode* const) const final override;
 
 
 private:
 
+	static
+	float
+	getRandomValue (float, float);
+
+	static
+	Vector3f
+	getRandomNormal ();
 
 	///  @name Static members
 
@@ -136,8 +151,8 @@ private:
 		Fields ();
 
 		SFVec3f* const direction;
-		SFFloat* const gustiness;
 		SFFloat* const speed;
+		SFFloat* const gustiness;
 		SFFloat* const turbulence;
 	};
 

@@ -85,8 +85,7 @@ Appearance::Appearance (X3DExecutionContext* const executionContext) :
 	        _material (nullptr),
 	         _texture (nullptr),
 	_textureTransform (nullptr),
-	          _shader (nullptr),
-glBindProgramPipeline ()
+	          _shader (nullptr)
 {
 	addField (inputOutput, "metadata",         metadata ());
 	addField (inputOutput, "fillProperties",   fillProperties ());
@@ -107,11 +106,6 @@ void
 Appearance::initialize ()
 {
 	X3DAppearanceNode::initialize ();
-
-	if (getBrowser () -> getRenderingProperties () -> hasExtension ("GL_ARB_separate_shader_objects"))
-		glBindProgramPipeline = ::glBindProgramPipeline;
-	else
-		glBindProgramPipeline = [ ] (GLuint) { };
 
 	fillProperties ()   .addInterest (this, &Appearance::set_fillProperties);
 	lineProperties ()   .addInterest (this, &Appearance::set_lineProperties);

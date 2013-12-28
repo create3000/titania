@@ -61,6 +61,8 @@ class BoundedPhysicsModel :
 {
 public:
 
+	///  @name Construction
+
 	BoundedPhysicsModel (X3DExecutionContext* const);
 
 	virtual
@@ -94,6 +96,12 @@ public:
 	const SFNode &
 	geometry () const
 	{ return *fields .geometry; }
+	
+	/// @name Operations
+	
+	virtual
+	Vector3f
+	getForce (X3DParticleEmitterNode* const) const final override;
 
 
 private:

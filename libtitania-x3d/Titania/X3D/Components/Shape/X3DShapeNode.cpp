@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,6 +55,7 @@
 #include "../Shape/Appearance.h"
 #include "../Shape/FillProperties.h"
 #include "../Shape/LineProperties.h"
+#include "../Rendering/X3DGeometryNode.h"
 
 namespace titania {
 namespace X3D {
@@ -65,10 +66,12 @@ X3DShapeNode::Fields::Fields () :
 { }
 
 X3DShapeNode::X3DShapeNode () :
-	    X3DChildNode (),
-	X3DBoundedObject (),
-	          fields (),
-	  appearanceNode (nullptr)
+	         X3DChildNode (),
+	     X3DBoundedObject (),
+	               fields (),
+	       appearanceNode (nullptr),
+	         geometryNode (nullptr),
+	glBindProgramPipeline ()
 {
 	addNodeType (X3DConstants::X3DShapeNode);
 }
@@ -79,9 +82,16 @@ X3DShapeNode::initialize ()
 	X3DChildNode::initialize ();
 	X3DBoundedObject::initialize ();
 
+	if (getBrowser () -> getRenderingProperties () -> hasExtension ("GL_ARB_separate_shader_objects"))
+		glBindProgramPipeline = ::glBindProgramPipeline;
+	else
+		glBindProgramPipeline = [ ] (GLuint) { };
+
 	appearance () .addInterest (this, &X3DShapeNode::set_appearance);
+	geometry ()   .addInterest (this, &X3DShapeNode::set_geometry);
 
 	set_appearance ();
+	set_geometry ();
 }
 
 void
@@ -96,6 +106,12 @@ X3DShapeNode::set_appearance ()
 }
 
 void
+X3DShapeNode::set_geometry ()
+{
+	geometryNode = x3d_cast <X3DGeometryNode*> (geometry ());
+}
+
+void
 X3DShapeNode::draw ()
 {
 	appearanceNode -> draw ();
@@ -103,6 +119,7 @@ X3DShapeNode::draw ()
 	if (isLineGeometry ())
 	{
 		appearanceNode -> getLineProperties () -> enable ();
+		glDisable (GL_LIGHTING);
 		drawGeometry ();
 		disableTextures ();
 		appearanceNode -> getLineProperties () -> disable ();

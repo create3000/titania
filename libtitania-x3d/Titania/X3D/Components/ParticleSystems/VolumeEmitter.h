@@ -61,6 +61,8 @@ class VolumeEmitter :
 {
 public:
 
+	///  @name Construction
+
 	VolumeEmitter (X3DExecutionContext* const);
 
 	virtual
@@ -127,9 +129,14 @@ public:
 	internal () const
 	{ return *fields .internal; }
 
+	///  @name Operations
+
+	virtual
+	MFString
+	getShaderUrl () const final override;
+
 
 private:
-
 
 	///  @name Static members
 

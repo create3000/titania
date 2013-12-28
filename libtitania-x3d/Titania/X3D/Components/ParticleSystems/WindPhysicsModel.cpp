@@ -51,6 +51,7 @@
 #include "WindPhysicsModel.h"
 
 #include "../../Execution/X3DExecutionContext.h"
+#include "ParticleSystem.h"
 
 namespace titania {
 namespace X3D {
@@ -60,9 +61,9 @@ const std::string WindPhysicsModel::typeName       = "WindPhysicsModel";
 const std::string WindPhysicsModel::containerField = "physics";
 
 WindPhysicsModel::Fields::Fields () :
-	direction (new SFVec3f ()),
-	gustiness (new SFFloat (0.1)),
-	speed (new SFFloat (0.1)),
+	 direction (new SFVec3f ()),
+	     speed (new SFFloat (0.1)),
+	 gustiness (new SFFloat (0.1)),
 	turbulence (new SFFloat ())
 { }
 
@@ -74,8 +75,8 @@ WindPhysicsModel::WindPhysicsModel (X3DExecutionContext* const executionContext)
 	addField (inputOutput, "metadata",   metadata ());
 	addField (inputOutput, "enabled",    enabled ());
 	addField (inputOutput, "direction",  direction ());
-	addField (inputOutput, "gustiness",  gustiness ());
 	addField (inputOutput, "speed",      speed ());
+	addField (inputOutput, "gustiness",  gustiness ());
 	addField (inputOutput, "turbulence", turbulence ());
 }
 
@@ -83,6 +84,35 @@ X3DBaseNode*
 WindPhysicsModel::create (X3DExecutionContext* const executionContext) const
 {
 	return new WindPhysicsModel (executionContext);
+}
+
+Vector3f
+WindPhysicsModel::getForce (X3DParticleEmitterNode* const emitter) const
+{
+	float randomSpeed = std::abs (getRandomValue (speed (), gustiness ()));
+	float pressure    = std::pow (10, 2 * std::log (randomSpeed)) * 0.64615;
+
+	Vector3f dir = direction () == Vector3f () ? getRandomNormal () : normalize (direction () .getValue ());
+
+	return emitter -> surfaceArea () * pressure * dir;
+}
+
+float
+WindPhysicsModel::getRandomValue (float value, float variation)
+{
+	return value + value * variation * ParticleSystem::random1 ();
+}
+
+Vector3f
+WindPhysicsModel::getRandomNormal ()
+{
+	float theta = ParticleSystem::random1 () * M_PI;
+	float phi   = std::acos (ParticleSystem::random1 ());
+	float r     = std::sin (phi);
+
+	return Vector3f (-std::sin (theta) * r,
+	                  std::cos (phi),
+	                 -std::cos (theta) * r);
 }
 
 } // X3D

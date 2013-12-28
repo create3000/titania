@@ -55,9 +55,9 @@ namespace X3D {
 
 X3DParticleEmitterNode::Fields::Fields () :
 	      speed (new SFFloat ()),
+	  variation (new SFFloat (0.25)),
 	       mass (new SFFloat ()),
-	surfaceArea (new SFFloat ()),
-	  variation (new SFFloat (0.25))
+	surfaceArea (new SFFloat ())
 { }
 
 X3DParticleEmitterNode::X3DParticleEmitterNode () :
@@ -65,6 +65,14 @@ X3DParticleEmitterNode::X3DParticleEmitterNode () :
 	 fields ()
 {
 	addNodeType (X3DConstants::X3DParticleEmitterNode);
+}
+
+void
+X3DParticleEmitterNode::setShaderFields (const X3DSFNode <ComposedShader> & shader, const Vector3f & momentum) const
+{
+	shader -> setField <SFFloat> ("speed",     speed (),     true);
+	shader -> setField <SFFloat> ("variation", variation (), true);
+	shader -> setField <SFVec3f> ("velocity",  mass () ? momentum / mass () .getValue () : Vector3f (), true);
 }
 
 } // X3D

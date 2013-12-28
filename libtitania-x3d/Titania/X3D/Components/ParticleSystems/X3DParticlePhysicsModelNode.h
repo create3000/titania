@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_COMPONENTS_PARTICLE_SYSTEMS_X3DPARTICLE_PHYSICS_MODEL_NODE_H__
 
 #include "../Core/X3DNode.h"
+#include "X3DParticleEmitterNode.h"
 
 namespace titania {
 namespace X3D {
@@ -61,6 +62,8 @@ class X3DParticlePhysicsModelNode :
 {
 public:
 
+	///  @name Fields
+
 	SFBool &
 	enabled ()
 	{ return *fields .enabled; }
@@ -68,14 +71,24 @@ public:
 	const SFBool &
 	enabled () const
 	{ return *fields .enabled; }
+	
+	/// @name Operations
+	
+	virtual
+	Vector3f
+	getForce (X3DParticleEmitterNode* const) const = 0;
 
 
 protected:
+
+	///  @name Construction
 
 	X3DParticlePhysicsModelNode ();
 
 
 private:
+
+	///  @name Members
 
 	struct Fields
 	{

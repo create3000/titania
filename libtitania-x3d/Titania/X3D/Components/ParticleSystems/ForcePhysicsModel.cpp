@@ -79,5 +79,11 @@ ForcePhysicsModel::create (X3DExecutionContext* const executionContext) const
 	return new ForcePhysicsModel (executionContext);
 }
 
+Vector3f
+ForcePhysicsModel::getForce (X3DParticleEmitterNode* const) const
+{
+	return force ();
+}
+
 } // X3D
 } // titania

@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_COMPONENTS_PARTICLE_SYSTEMS_X3DPARTICLE_EMITTER_NODE_H__
 
 #include "../Core/X3DNode.h"
+#include "../Shaders/ComposedShader.h"
 
 namespace titania {
 namespace X3D {
@@ -72,6 +73,14 @@ public:
 	{ return *fields .speed; }
 
 	SFFloat &
+	variation ()
+	{ return *fields .variation; }
+
+	const SFFloat &
+	variation () const
+	{ return *fields .variation; }
+
+	SFFloat &
 	mass ()
 	{ return *fields .mass; }
 
@@ -87,13 +96,15 @@ public:
 	surfaceArea () const
 	{ return *fields .surfaceArea; }
 
-	SFFloat &
-	variation ()
-	{ return *fields .variation; }
+	///  @name Operations
 
-	const SFFloat &
-	variation () const
-	{ return *fields .variation; }
+	virtual
+	MFString
+	getShaderUrl () const = 0;
+
+	virtual
+	void
+	setShaderFields (const X3DSFNode <ComposedShader> &, const Vector3f &) const;	
 
 
 protected:
@@ -112,9 +123,9 @@ private:
 		Fields ();
 
 		SFFloat* const speed;
+		SFFloat* const variation;
 		SFFloat* const mass;
 		SFFloat* const surfaceArea;
-		SFFloat* const variation;
 	};
 
 	Fields fields;

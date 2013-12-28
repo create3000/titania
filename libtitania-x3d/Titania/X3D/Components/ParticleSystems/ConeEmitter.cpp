@@ -50,6 +50,7 @@
 
 #include "ConeEmitter.h"
 
+#include "../../Bits/config.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -84,6 +85,12 @@ X3DBaseNode*
 ConeEmitter::create (X3DExecutionContext* const executionContext) const
 {
 	return new ConeEmitter (executionContext);
+}
+
+MFString
+ConeEmitter::getShaderUrl () const
+{
+	return { get_shader ("ParticleSystems/PointEmitter.vs") .str () };
 }
 
 } // X3D

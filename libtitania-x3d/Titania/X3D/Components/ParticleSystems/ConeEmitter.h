@@ -61,6 +61,8 @@ class ConeEmitter :
 {
 public:
 
+	///  @name Construction
+
 	ConeEmitter (X3DExecutionContext* const);
 
 	virtual
@@ -111,9 +113,14 @@ public:
 	position () const
 	{ return *fields .position; }
 
+	///  @name Operations
+
+	virtual
+	MFString
+	getShaderUrl () const final override;
+
 
 private:
-
 
 	///  @name Static members
 

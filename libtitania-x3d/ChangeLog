@@ -1,3 +1,43 @@
+2013-12-28  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-x3d.cproj:
+	* Shape.h:
+	* Shape.cpp:
+	* Material.h:
+	* Appearance.h:
+	* Material.cpp:
+	* X3DShapeNode.h:
+	* Appearance.cpp:
+	* X3DShapeNode.cpp:
+	* TwoSidedMaterial.h:
+	* emitter.vs:
+	* TwoSidedMaterial.cpp:
+	* ConeEmitter.h:
+	* PointEmitter.h:
+	* PointEmitter.vs:
+	* ConeEmitter.cpp:
+	* VolumeEmitter.h:
+	* SurfaceEmitter.h:
+	* ParticleSystem.h:
+	* PointEmitter.cpp:
+	* VolumeEmitter.cpp:
+	* PolylineEmitter.h:
+	* SurfaceEmitter.cpp:
+	* ParticleSystem.cpp:
+	* WindPhysicsModel.h:
+	* ExplosionEmitter.h:
+	* PolylineEmitter.cpp:
+	* ForcePhysicsModel.h:
+	* WindPhysicsModel.cpp:
+	* ExplosionEmitter.cpp:
+	* BoundedPhysicsModel.h:
+	* ForcePhysicsModel.cpp:
+	* BoundedPhysicsModel.cpp:
+	* X3DParticleEmitterNode.h:
+	* X3DParticleEmitterNode.cpp:
+	* X3DBackgroundNode.cpp:
+	* X3DParticlePhysicsModelNode.h: 
+
 2013-12-24  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* TransformTool.wrl:

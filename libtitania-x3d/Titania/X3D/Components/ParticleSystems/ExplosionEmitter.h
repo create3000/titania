@@ -61,6 +61,8 @@ class ExplosionEmitter :
 {
 public:
 
+	///  @name Construction
+
 	ExplosionEmitter (X3DExecutionContext* const);
 
 	virtual
@@ -95,9 +97,14 @@ public:
 	position () const
 	{ return *fields .position; }
 
+	///  @name Operations
+
+	virtual
+	MFString
+	getShaderUrl () const final override;
+
 
 private:
-
 
 	///  @name Static members
 

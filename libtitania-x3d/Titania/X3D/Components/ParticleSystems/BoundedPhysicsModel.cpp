@@ -79,5 +79,11 @@ BoundedPhysicsModel::create (X3DExecutionContext* const executionContext) const
 	return new BoundedPhysicsModel (executionContext);
 }
 
+Vector3f
+BoundedPhysicsModel::getForce (X3DParticleEmitterNode* const) const
+{
+	return Vector3f ();
+}
+
 } // X3D
 } // titania

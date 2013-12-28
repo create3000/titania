@@ -51,9 +51,8 @@
 #ifndef __TITANIA_X3D_COMPONENTS_PARTICLE_SYSTEMS_PARTICLE_SYSTEM_H__
 #define __TITANIA_X3D_COMPONENTS_PARTICLE_SYSTEMS_PARTICLE_SYSTEM_H__
 
-#include "../Shaders/ComposedShader.h"
-#include "../Shape/X3DShapeNode.h"
 #include "../ParticleSystems/X3DParticleEmitterNode.h"
+#include "../Shape/X3DShapeNode.h"
 
 #include <array>
 
@@ -229,6 +228,10 @@ public:
 	void
 	drawCollision () final override;
 
+	static
+	float
+	random1 ();
+
 	///  @name Destruction
 
 	virtual
@@ -238,19 +241,37 @@ public:
 
 private:
 
+	enum class GeometryType
+	{
+		POINT,
+		LINE,
+		TRIANGLE,
+		QUAD,
+		SPRITE,
+		GEOMETRY,
+	};
+
+	class Particle;
+
 	///  @name Constuction
 
 	virtual
 	void
 	initialize () final override;
-	
+
 	///  @name Event handlers
 
 	void
 	set_enabled ();
 
 	void
+	set_geometryType ();
+
+	void
 	set_emitter ();
+
+	void
+	set_transform_shader ();
 
 	void
 	set_geometry ();
@@ -304,11 +325,12 @@ private:
 
 	Fields fields;
 
+	GeometryType               geometryTypeId;
 	size_t                     readBuffer;
 	size_t                     writeBuffer;
 	std::array <GLuint, 2>     transformFeedbackId;
 	std::array <GLuint, 2>     particleBufferId;
-	X3DSFNode <ComposedShader> shader;
+	X3DSFNode <ComposedShader> transformShader;
 	X3DParticleEmitterNode*    emitterNode;
 
 	int32_t   particles;

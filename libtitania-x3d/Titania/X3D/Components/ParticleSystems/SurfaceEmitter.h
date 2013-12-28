@@ -61,6 +61,8 @@ class SurfaceEmitter :
 {
 public:
 
+	///  @name Construction
+
 	SurfaceEmitter (X3DExecutionContext* const);
 
 	virtual
@@ -111,9 +113,14 @@ public:
 	surface () const
 	{ return *fields .surface; }
 
+	///  @name Operations
+
+	virtual
+	MFString
+	getShaderUrl () const final override;
+
 
 private:
-
 
 	///  @name Static members
 

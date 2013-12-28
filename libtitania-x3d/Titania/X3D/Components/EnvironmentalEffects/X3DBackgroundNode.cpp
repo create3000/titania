@@ -231,7 +231,7 @@ X3DBackgroundNode::build ()
 
 	if (groundColor () .empty () and skyColor () .size () == 1)
 	{
-		// Draw cube
+		// Build cube
 
 		float r = SIZE;
 
@@ -280,7 +280,7 @@ X3DBackgroundNode::build ()
 	}
 	else
 	{
-		// Draw sphere
+		// Build sphere
 
 		float radius = std::sqrt (2 * std::pow (SIZE, 2));
 

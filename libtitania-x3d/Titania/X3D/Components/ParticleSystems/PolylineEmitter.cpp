@@ -50,6 +50,7 @@
 
 #include "PolylineEmitter.h"
 
+#include "../../Bits/config.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -86,6 +87,12 @@ X3DBaseNode*
 PolylineEmitter::create (X3DExecutionContext* const executionContext) const
 {
 	return new PolylineEmitter (executionContext);
+}
+
+MFString
+PolylineEmitter::getShaderUrl () const
+{
+	return { get_shader ("ParticleSystems/PointEmitter.vs") .str () };
 }
 
 } // X3D

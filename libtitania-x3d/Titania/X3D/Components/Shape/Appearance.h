@@ -235,8 +235,6 @@ private:
 	X3DTextureTransformNode* _textureTransform;
 	X3DShaderNode*           _shader;
 
-	std::function <void (GLuint)> glBindProgramPipeline;
-
 };
 
 } // X3D

@@ -248,14 +248,12 @@ private:
 	GLfloat glSpecularColor [4];
 	GLfloat glEmissiveColor [4];
 	GLfloat glShininess;
-	float   alpha;
 
 	GLfloat glBackAmbientColor [4];
 	GLfloat glBackDiffuseColor [4];
 	GLfloat glBackSpecularColor [4];
 	GLfloat glBackEmissiveColor [4];
 	GLfloat glBackShininess;
-	float   backAlpha;
 
 };
 

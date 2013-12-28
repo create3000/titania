@@ -73,7 +73,6 @@ Material::Material (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DMaterialNode (),
 	         fields (),
-	          alpha (1),
 	 glAmbientColor (),
 	 glDiffuseColor (),
 	glSpecularColor (),
@@ -107,7 +106,7 @@ Material::eventsProcessed ()
 {
 	X3DMaterialNode::eventsProcessed ();
 
-	alpha = 1 - math::clamp <float> (transparency (), 0, 1);
+	float alpha = 1 - math::clamp <float> (transparency (), 0, 1);
 
 	glAmbientColor [0] = ambientIntensity () * diffuseColor () .getR ();
 	glAmbientColor [1] = ambientIntensity () * diffuseColor () .getG ();

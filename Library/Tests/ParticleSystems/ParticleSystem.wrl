@@ -1,29 +1,41 @@
 #X3D V3.3 utf8 Titania
 
+DEF Gray Background {
+  skyColor 0.2 0.2 0.2
+}
+
+Viewpoint {
+  description "Viewpoint"
+  position 0 0 55
+}
+
 ParticleSystem {
-  maxParticles 1000000
-  particleLifetime 40
-  lifetimeVariation 10
+  geometryType "POINT"
+  maxParticles 10000
+  particleLifetime 3
+  lifetimeVariation 1
+  physics [
+    WindPhysicsModel {
+      speed 0.2
+      gustiness 12
+    }
+    ForcePhysicsModel {
+      force 0 0.5 0
+    }
+  ]
   emitter PointEmitter {
     direction 0 0 0
+    speed 1
+    variation 0.5
+    mass 0.1
+    surfaceArea 0.1
   }
   appearance Appearance {
     lineProperties LineProperties {
-      linewidthScaleFactor 1
+      linewidthScaleFactor 2
     }
-  }
-}
-
-DEF Box Transform {
-  scale 10 10 10
-  children Shape {
-    appearance Appearance {
-      material Material {
-        transparency 0.5
-      }
-    }
-    geometry Box {
-      solid FALSE
+    material Material {
+      transparency 0.94
     }
   }
 }

@@ -56,8 +56,6 @@
 namespace titania {
 namespace X3D {
 
-class X3DGeometryNode;
-
 class Shape :
 	public X3DShapeNode
 {
@@ -116,17 +114,6 @@ public:
 
 private:
 
-	///  @name Constuction
-
-	virtual
-	void
-	initialize () final override;
-
-	///  @name Event handlers
-
-	void
-	set_geometry ();
-
 	///  @name Operations
 	
 	virtual
@@ -145,10 +132,6 @@ private:
 	static const std::string componentName;
 	static const std::string typeName;
 	static const std::string containerField;
-
-	///  @name Members
-
-	X3DGeometryNode* geometryNode;
 
 };
 

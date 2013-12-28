@@ -105,6 +105,16 @@ public:
 	direction () const
 	{ return *fields .direction; }
 
+	///  @name Operations
+
+	virtual
+	MFString
+	getShaderUrl () const final override;
+
+	virtual
+	void
+	setShaderFields (const X3DSFNode <ComposedShader> &, const Vector3f &) const final override;
+
 
 private:
 
