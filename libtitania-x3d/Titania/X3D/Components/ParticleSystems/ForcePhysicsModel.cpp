@@ -79,10 +79,14 @@ ForcePhysicsModel::create (X3DExecutionContext* const executionContext) const
 	return new ForcePhysicsModel (executionContext);
 }
 
-Vector3f
-ForcePhysicsModel::getForce (X3DParticleEmitterNode* const) const
+void
+ForcePhysicsModel::getForce (X3DParticleEmitterNode* const, MFVec3f & force, MFFloat & turbulence) const
 {
-	return force ();
+	if (enabled ())
+	{
+		force      .emplace_back (this -> force ());
+		turbulence .emplace_back (0);
+	}
 }
 
 } // X3D

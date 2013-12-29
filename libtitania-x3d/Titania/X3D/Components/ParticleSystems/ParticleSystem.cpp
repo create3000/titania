@@ -75,16 +75,18 @@ const std::string ParticleSystem::containerField = "children";
 struct ParticleSystem::Particle
 {
 	Particle () :
+		     seed (random1 () * 0x7fffffff),
 		 lifetime (0),
-		 position (random1 (), random1 (), random1 ()),
+		 position (),
 		 velocity (),
 		startTime (0)
 	{ }
 
-	float lifetime;
+	GLint    seed;
+	float    lifetime;
 	Vector3f position;
 	Vector3f velocity;
-	double startTime;
+	double   startTime;
 
 };
 
@@ -266,11 +268,13 @@ ParticleSystem::set_transform_shader ()
 	transformShader -> addUserDefinedField (inputOutput, "direction",         new SFVec3f ());
 	transformShader -> addUserDefinedField (inputOutput, "speed",             new SFFloat ());
 	transformShader -> addUserDefinedField (inputOutput, "variation",         new SFFloat ());
-	transformShader -> addUserDefinedField (inputOutput, "velocity",          new SFVec3f ());
+	transformShader -> addUserDefinedField (inputOutput, "velocity",          new MFVec3f ());
+	transformShader -> addUserDefinedField (inputOutput, "turbulence",        new MFFloat ());
+	transformShader -> addUserDefinedField (inputOutput, "forces",            new SFInt32 ());
 
 	transformShader -> language () = "GLSL";
 	transformShader -> parts () .emplace_back (vertexShader);
-	transformShader -> setTransformFeedbackVaryings ({ "To.lifetime", "To.position", "To.velocity", "gl_SkipComponents1", "To.startTime" });
+	transformShader -> setTransformFeedbackVaryings ({ "To.seed", "To.lifetime", "To.position", "To.velocity", /*"gl_SkipComponents1",*/ "To.startTime",  });
 	transformShader -> setup ();
 }
 
@@ -381,17 +385,30 @@ ParticleSystem::prepareEvents ()
 	transformShader -> setField <SFFloat> ("particleLifetime",  particleLifetime (),  true);
 	transformShader -> setField <SFFloat> ("lifetimeVariation", lifetimeVariation (), true);
 
-	Vector3f force;
+	emitterNode -> setShaderFields (transformShader);
+	
+	MFVec3f velocity;
+	MFFloat turbulence;
 
 	for (const auto & node : physics ())
 	{
-		auto physic = x3d_cast <X3DParticlePhysicsModelNode*> (node);
+		auto physics = x3d_cast <X3DParticlePhysicsModelNode*> (node);
 
-		if (physic and physic -> enabled ())
-			force += physic -> getForce (emitterNode);
+		if (physics)
+			physics -> getForce (emitterNode, velocity, turbulence);
 	}
 
-	emitterNode -> setShaderFields (transformShader, force * deltaTime);
+	if (emitterNode -> mass ())
+	{
+		for (auto & v : velocity)
+			v = v * deltaTime / emitterNode -> mass () .getValue ();
+
+		transformShader -> setField <MFVec3f> ("velocity",   velocity,                    true);
+		transformShader -> setField <MFFloat> ("turbulence", turbulence,                  true);
+		transformShader -> setField <SFInt32> ("forces",     int32_t (velocity .size ()), true);
+	}
+	else
+		transformShader -> setField <SFInt32> ("forces", 0, true);
 }
 
 void
@@ -416,11 +433,13 @@ ParticleSystem::update ()
 	glEnableVertexAttribArray (1);
 	glEnableVertexAttribArray (2);
 	glEnableVertexAttribArray (3);
+	glEnableVertexAttribArray (4);
 
-	glVertexAttribPointer  (0, 1, GL_FLOAT,  GL_FALSE, sizeof (Particle), (const GLvoid*) offsetof (Particle, lifetime));
-	glVertexAttribPointer  (1, 3, GL_FLOAT,  GL_FALSE, sizeof (Particle), (const GLvoid*) offsetof (Particle, position));
-	glVertexAttribPointer  (2, 3, GL_FLOAT,  GL_FALSE, sizeof (Particle), (const GLvoid*) offsetof (Particle, velocity));
-	glVertexAttribLPointer (3, 1, GL_DOUBLE, sizeof (Particle), (const GLvoid*) offsetof (Particle, startTime));
+	glVertexAttribIPointer (0, 1, GL_INT,    sizeof (Particle), (const GLvoid*) offsetof (Particle, seed));
+	glVertexAttribPointer  (1, 1, GL_FLOAT,  GL_FALSE, sizeof (Particle), (const GLvoid*) offsetof (Particle, lifetime));
+	glVertexAttribPointer  (2, 3, GL_FLOAT,  GL_FALSE, sizeof (Particle), (const GLvoid*) offsetof (Particle, position));
+	glVertexAttribPointer  (3, 3, GL_FLOAT,  GL_FALSE, sizeof (Particle), (const GLvoid*) offsetof (Particle, velocity));
+	glVertexAttribLPointer (4, 1, GL_DOUBLE, sizeof (Particle), (const GLvoid*) offsetof (Particle, startTime));
 
 	glEnable (GL_RASTERIZER_DISCARD);
 	glBindTransformFeedback (GL_TRANSFORM_FEEDBACK, transformFeedbackId [writeBuffer]);
@@ -436,6 +455,7 @@ ParticleSystem::update ()
 	glDisableVertexAttribArray (1);
 	glDisableVertexAttribArray (2);
 	glDisableVertexAttribArray (3);
+	glDisableVertexAttribArray (4);
 	glBindBuffer (GL_ARRAY_BUFFER, 0);
 
 	transformShader -> disable ();

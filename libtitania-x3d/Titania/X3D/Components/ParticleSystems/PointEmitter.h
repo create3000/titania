@@ -113,7 +113,7 @@ public:
 
 	virtual
 	void
-	setShaderFields (const X3DSFNode <ComposedShader> &, const Vector3f &) const final override;
+	setShaderFields (const X3DSFNode <ComposedShader> &) const final override;
 
 
 private:

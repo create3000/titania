@@ -92,9 +92,9 @@ PointEmitter::getShaderUrl () const
 }
 
 void
-PointEmitter::setShaderFields (const X3DSFNode <ComposedShader> & shader, const Vector3f & momentum) const
+PointEmitter::setShaderFields (const X3DSFNode <ComposedShader> & shader) const
 {
-	X3DParticleEmitterNode::setShaderFields (shader, momentum);
+	X3DParticleEmitterNode::setShaderFields (shader);
 
 	shader -> setField <SFVec3f> ("position",  position (), true);
 	shader -> setField <SFVec3f> ("direction", normalize (direction () .getValue ()), true);

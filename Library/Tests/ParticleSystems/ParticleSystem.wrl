@@ -11,20 +11,20 @@ Viewpoint {
 
 ParticleSystem {
   geometryType "POINT"
-  maxParticles 10000
+  maxParticles 1000000
   particleLifetime 3
   lifetimeVariation 1
   physics [
-    WindPhysicsModel {
-      speed 0.2
-      gustiness 12
-    }
     ForcePhysicsModel {
-      force 0 0.5 0
+      force 0 0.2 0
+    }
+    WindPhysicsModel {
+      speed 1
+      gustiness 1
+      turbulence 0.2
     }
   ]
   emitter PointEmitter {
-    direction 0 0 0
     speed 1
     variation 0.5
     mass 0.1
@@ -35,7 +35,7 @@ ParticleSystem {
       linewidthScaleFactor 2
     }
     material Material {
-      transparency 0.94
+      transparency 0.96
     }
   }
 }

@@ -124,8 +124,8 @@ public:
 	/// @name Operations
 	
 	virtual
-	Vector3f
-	getForce (X3DParticleEmitterNode* const) const final override;
+	void
+	getForce (X3DParticleEmitterNode* const, MFVec3f &, MFFloat &) const final override;
 
 
 private:

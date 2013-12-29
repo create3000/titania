@@ -1,3 +1,19 @@
+2013-12-29  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* PointEmitter.h:
+	* PointEmitter.vs:
+	* PointEmitter.cpp:
+	* ParticleSystem.cpp:
+	* WindPhysicsModel.h:
+	* ForcePhysicsModel.h:
+	* WindPhysicsModel.cpp:
+	* ForcePhysicsModel.cpp:
+	* BoundedPhysicsModel.h:
+	* BoundedPhysicsModel.cpp:
+	* X3DParticleEmitterNode.h:
+	* X3DParticleEmitterNode.cpp:
+	* X3DParticlePhysicsModelNode.h: 
+
 2013-12-28  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* libtitania-x3d.cproj:

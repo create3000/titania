@@ -86,15 +86,19 @@ WindPhysicsModel::create (X3DExecutionContext* const executionContext) const
 	return new WindPhysicsModel (executionContext);
 }
 
-Vector3f
-WindPhysicsModel::getForce (X3DParticleEmitterNode* const emitter) const
+void
+WindPhysicsModel::getForce (X3DParticleEmitterNode* const emitter, MFVec3f & force, MFFloat & turbulence) const
 {
-	float randomSpeed = std::abs (getRandomValue (speed (), gustiness ()));
-	float pressure    = std::pow (10, 2 * std::log (randomSpeed)) * 0.64615;
+	if (enabled ())
+	{
+		float randomSpeed = std::abs (getRandomValue (speed (), gustiness ()));
+		float pressure    = std::pow (10, 2 * std::log (randomSpeed)) * 0.64615;
 
-	Vector3f dir = direction () == Vector3f () ? getRandomNormal () : normalize (direction () .getValue ());
+		Vector3f dir = direction () == Vector3f () ? getRandomNormal () : normalize (direction () .getValue ());
 
-	return emitter -> surfaceArea () * pressure * dir;
+		force      .emplace_back (emitter -> surfaceArea () * pressure * dir);
+		turbulence .emplace_back (this -> turbulence ());
+	}
 }
 
 float
@@ -107,12 +111,13 @@ Vector3f
 WindPhysicsModel::getRandomNormal ()
 {
 	float theta = ParticleSystem::random1 () * M_PI;
-	float phi   = std::acos (ParticleSystem::random1 ());
+	float cphi  = ParticleSystem::random1 ();
+	float phi   = std::acos (cphi);
 	float r     = std::sin (phi);
 
-	return Vector3f (-std::sin (theta) * r,
-	                  std::cos (phi),
-	                 -std::cos (theta) * r);
+	return Vector3f (std::sin (theta) * r,
+	                 std::cos (theta) * r,
+	                 cphi);
 }
 
 } // X3D

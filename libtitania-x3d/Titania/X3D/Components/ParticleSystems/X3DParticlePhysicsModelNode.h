@@ -75,8 +75,8 @@ public:
 	/// @name Operations
 	
 	virtual
-	Vector3f
-	getForce (X3DParticleEmitterNode* const) const = 0;
+	void
+	getForce (X3DParticleEmitterNode* const, MFVec3f &, MFFloat &) const = 0;
 
 
 protected:
