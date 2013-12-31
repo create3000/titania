@@ -613,6 +613,7 @@
     <None Include="Titania\X3D\Thread\Texture3DLoader.h" />
     <None Include="Titania\X3D\Miscellaneous\X3DTexture.h" />
     <None Include="share\titania\shaders\ParticleSystems\PointEmitter.vs" />
+    <None Include="share\titania\shaders\ParticleSystems\PointShader.vs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

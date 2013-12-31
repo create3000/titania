@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html class="js activeSlide" dir="ltr" lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="canonical" href="https://developer.nvidia.com/content/fluid-simulation-alice-madness-returns">
+<link rel="shortcut icon" href="https://developer.nvidia.com/sites/all/themes/devzone/favicon.ico" type="image/x-icon">
+<meta name="description" content="by Simon Green, Richard Tonge, Miguel Sainz, Dane Johnston, and David Schoemehl Note: This is a technical article that complements our consumer-oriented article on GeForce.com, &quot;Alice: Madness Returns PhysX Comparison.&quot; A PDF version of the article can be found here.">
+<meta name="dcterms.description" content="by Simon Green, Richard Tonge, Miguel Sainz, Dane Johnston, and David Schoemehl Note: This is a technical article that complements our consumer-oriented article on GeForce.com, &quot;Alice: Madness Returns PhysX Comparison.&quot; A PDF version of the article can be found here.">
+<link rel="canonical" href="https://developer.nvidia.com/content/fluid-simulation-alice-madness-returns">
+<meta name="revisit-after" content="1 day">
+    <link type="text/css" rel="stylesheet" media="all" href="Fluid%20Simulation%20in%20Alice:%20Madness%20Returns%20%7C%20NVIDIA%20Developer%20Zone-Dateien/nvidia_helper.css">
+<link type="text/css" rel="stylesheet" media="all" href="Fluid%20Simulation%20in%20Alice:%20Madness%20Returns%20%7C%20NVIDIA%20Developer%20Zone-Dateien/css_554018dee13eb4b75826d875bc914c4a.css">
+<link type="text/css" rel="stylesheet" media="screen" href="Fluid%20Simulation%20in%20Alice:%20Madness%20Returns%20%7C%20NVIDIA%20Developer%20Zone-Dateien/css_40c75ebb84d7278683d4fe50be793fa0.css">
+<link type="text/css" rel="stylesheet" media="print" href="Fluid%20Simulation%20in%20Alice:%20Madness%20Returns%20%7C%20NVIDIA%20Developer%20Zone-Dateien/css_222122a19e61805d670967be582a682b.css">
+<link type="text/css" rel="stylesheet" media="all" href="Fluid%20Simulation%20in%20Alice:%20Madness%20Returns%20%7C%20NVIDIA%20Developer%20Zone-Dateien/blog_styles.css">
+		<link href="Fluid%20Simulation%20in%20Alice:%20Madness%20Returns%20%7C%20NVIDIA%20Developer%20Zone-Dateien/css.css" rel="stylesheet" type="text/css">
+	<title>Fluid Simulation in Alice: Madness Returns  | NVIDIA Developer Zone</title>
+</head>
+<body class="not-front not-logged-in page-node node-type-blog one-sidebar sidebar-right tao">
+    <div id="branding">
+		<div class="limiter clear-block">
+			<h1 class="site-name"><a onclick='s_objectID="https://developer.nvidia.com/_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/">NVIDIA Developer Zone</a></h1>			<div class="block block-theme"><form action="/content/fluid-simulation-alice-madness-returns" accept-charset="UTF-8" method="post" id="search-theme-form">
+<div><div id="search" class="container-inline">
+  <div class="form-item form-item-labeled" id="edit-search-theme-form-1-wrapper">
+      <label for="edit-search-theme-form-1">Search this site: </label>
+    <input style="color: rgb(158, 158, 158);" maxlength="128" name="search_theme_form" id="edit-search-theme-form-1" size="15" value="Search DevZone" title="Enter the terms you wish to search for." class="form-text" type="text">  </div>
+<span class="button"><span><input name="op" id="edit-submit" value="Search" class="form-submit" type="submit">
+</span></span><input name="form_build_id" id="form-2c997740b960b27069c8d8ee8432cbaa" value="form-2c997740b960b27069c8d8ee8432cbaa" type="hidden">
+<input name="form_id" id="edit-search-theme-form" value="search_theme_form" type="hidden">
+</div>
+
+</div></form>
+</div>							  <div class="block block-nice_menus" id="block-nice_menus-1">
+  <div class="block-content clear-block">
+    <ul class="nice-menu nice-menu-down sf-js-enabled" id="nice-menu-1"><li class="menu-328 menuparent menu-path-front first odd "><a onclick='s_objectID="https://developer.nvidia.com/_2";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/" title="">Developer Centers</a><ul style="display: none; visibility: hidden;"><li class="menu-1191 menu-path-taxonomy-term-1 first  odd "><a onclick='s_objectID="https://developer.nvidia.com/category/zone/game-graphics-development_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/category/zone/game-graphics-development" title="">Game &amp; Graphics</a></li>
+<li class="menu-1192 menu-path-taxonomy-term-2 even "><a onclick='s_objectID="https://developer.nvidia.com/category/zone/cuda-zone_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/category/zone/cuda-zone" title="">CUDA Zone</a></li>
+<li class="menu-1193 menu-path-taxonomy-term-3 odd "><a onclick='s_objectID="https://developer.nvidia.com/category/zone/mobile-development_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/category/zone/mobile-development" title="">Mobile</a></li>
+<li class="menu-1194 menu-path-taxonomy-term-4 even  last "><a onclick='s_objectID="https://developer.nvidia.com/category/zone/professional-graphics_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/category/zone/professional-graphics" title="">Professional Graphics</a></li>
+</ul>
+</li>
+<li class="menu-1444 menuparent menu-path-technologies even "><a onclick='s_objectID="https://developer.nvidia.com/technologies_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/technologies" title="">Technologies</a><ul style="display: none; visibility: hidden;"><li class="menu-1445 menu-path-node-18281 first  odd "><a onclick='s_objectID="https://developer.nvidia.com/apex_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/apex" title="">APEX</a></li>
+<li class="menu-1447 menu-path-node-185356 even "><a onclick='s_objectID="https://developer.nvidia.com/gpu-accelerated-libraries_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/gpu-accelerated-libraries" title="">CUDA Libraries</a></li>
+<li class="menu-1451 menu-path-node-18941 odd "><a onclick='s_objectID="https://developer.nvidia.com/application-engine-introduction_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/application-engine-introduction" title="">Engines</a></li>
+<li class="menu-3586 menu-path-node-9896 even "><a onclick='s_objectID="https://developer.nvidia.com/gpudirect_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/gpudirect" title="">GPUDirect</a></li>
+<li class="menu-1446 menu-path-technologies-languages_apis odd "><a onclick='s_objectID="https://developer.nvidia.com/technologies/languages_apis_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/technologies/languages_apis" title="">Languages &amp; APIs</a></li>
+<li class="menu-1448 menu-path-technologies-physx even "><a onclick='s_objectID="https://developer.nvidia.com/technologies/physx_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/technologies/physx" title="">PhysX</a></li>
+<li class="menu-1449 menu-path-technologies-sdks odd  last "><a onclick='s_objectID="https://developer.nvidia.com/technologies/sdks_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/technologies/sdks" title="">Samples and SDKs</a></li>
+</ul>
+</li>
+<li class="menu-329 menuparent menu-path-tools odd "><a onclick='s_objectID="https://developer.nvidia.com/tools_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/tools" title="">Tools</a><ul style="display: none; visibility: hidden;"><li class="menu-3606 menu-path-node-9140 first  odd "><a onclick='s_objectID="https://developer.nvidia.com/cuda-gdb_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/cuda-gdb" title="">CUDA-GDB</a></li>
+<li class="menu-4151 menu-path-node-21291 even "><a onclick='s_objectID="https://developer.nvidia.com/cuda-memcheck_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/cuda-memcheck" title="CUDA-MEMCHECK">CUDA-MEMCHECK</a></li>
+<li class="menu-3611 menu-path-node-18866 odd "><a onclick='s_objectID="https://developer.nvidia.com/cuda-toolkit_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/cuda-toolkit" title="">CUDA Toolkit &amp; SDK</a></li>
+<li class="menu-3616 menu-path-node-18466 even "><a onclick='s_objectID="https://developer.nvidia.com/nvapi_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/nvapi" title="">NVAPI</a></li>
+<li class="menu-4146 menu-path-node-9148 odd "><a onclick='s_objectID="https://developer.nvidia.com/nvidia-visual-profiler_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/nvidia-visual-profiler" title="NVIDIA Visual Profiler">NVIDIA Visual Profiler</a></li>
+<li class="menu-19386 menu-path-node-504181 even "><a onclick='s_objectID="https://developer.nvidia.com/nsight-eclipse-edition_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/nsight-eclipse-edition" title="">Nsight Eclipse Edition</a></li>
+<li class="menu-3626 menu-path-node-18511 odd "><a onclick='s_objectID="https://developer.nvidia.com/nvidia-nsight-visual-studio-edition_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/nvidia-nsight-visual-studio-edition" title="">Nsight Visual Studio Edition</a></li>
+<li class="menu-19396 menu-path-node-541421 even "><a onclick='s_objectID="https://developer.nvidia.com/nvidia-nsight-tegra_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/nvidia-nsight-tegra" title="">Nsight Tegra, Visual Studio Edition</a></li>
+<li class="menu-25032 menu-path-node-89121 odd "><a onclick='s_objectID="https://developer.nvidia.com/tegra-android-development-pack_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/tegra-android-development-pack" title="">Tegra Android Development Pack</a></li>
+<li class="menu-3621 menu-path-node-22561 even "><a onclick='s_objectID="https://developer.nvidia.com/openautomate_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/openautomate" title="">OpenAutomate</a></li>
+<li class="menu-3631 menu-path-node-18541 odd "><a onclick='s_objectID="https://developer.nvidia.com/nvidia-perfkit_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/nvidia-perfkit" title="">PerfKit</a></li>
+<li class="menu-3636 menu-path-node-19221 even "><a onclick='s_objectID="https://developer.nvidia.com/nvidia-perfhud-es_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/nvidia-perfhud-es" title="">PerfHUD ES</a></li>
+<li class="menu-3646 menu-path-node-18316 odd "><a onclick='s_objectID="https://developer.nvidia.com/physx-visual-debugger_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/physx-visual-debugger" title="">PhysX Visual Debugger</a></li>
+<li class="menu-3641 menu-path-node-18306 even "><a onclick='s_objectID="https://developer.nvidia.com/physxapex-dcc-tools_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/physxapex-dcc-tools" title="">PhysX/APEX DCC Tools</a></li>
+<li class="menu-19391 menu-path-node-431686 odd  last "><a onclick='s_objectID="https://developer.nvidia.com/tegra-system-profiler_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/tegra-system-profiler" title="">Tegra Profiler</a></li>
+</ul>
+</li>
+<li class="menu-330 menuparent menu-path-suggested-reading even "><a onclick='s_objectID="https://developer.nvidia.com/suggested-reading_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/suggested-reading" title="">Resources</a><ul style="display: none; visibility: hidden;"><li class="menu-1433 menu-path-suggested-reading first  odd "><a onclick='s_objectID="https://developer.nvidia.com/suggested-reading_2";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/suggested-reading" title="">Suggested Reading</a></li>
+<li class="menu-1429 menu-path-node-76 even "><a onclick='s_objectID="https://developer.nvidia.com/content/cg-tutorial-chapter-1-introduction_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/content/cg-tutorial-chapter-1-introduction" title="">Cg Tutorial</a></li>
+<li class="menu-4212 menu-path-node-156342 odd "><a onclick='s_objectID="https://developer.nvidia.com/nvidia-gpu-programming-guide_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/nvidia-gpu-programming-guide" title="">GPU Programming Guide</a></li>
+<li class="menu-1432 menu-path-https--developernvidiacom-gpu-gems even "><a onclick='s_objectID="https://developer.nvidia.com/gpu-gems_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/gpu-gems" title="">GPU Gems</a></li>
+<li class="menu-1430 menu-path-node-146 odd  last "><a onclick='s_objectID="https://developer.nvidia.com/content/gpu-gems-3_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/content/gpu-gems-3" title="">GPU Gems 3</a></li>
+</ul>
+</li>
+<li class="menu-331 menuparent menu-path-front odd last "><a onclick='s_objectID="https://developer.nvidia.com/_3";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/" title="">Community</a><ul style="display: none; visibility: hidden;"><li class="menu-3651 menu-path-blog first  odd "><a onclick='s_objectID="https://developer.nvidia.com/blog_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog" title="">DevZone Blog</a></li>
+<li class="menu-20230 menu-path-devtalknvidiacom even  last "><a onclick='s_objectID="http://devtalk.nvidia.com/_1";return this.s_oc?this.s_oc(e):true' href="http://devtalk.nvidia.com/" title="">Developer Zone Forums</a></li>
+</ul>
+</li>
+</ul>
+  </div>
+</div>  <div class="block block-nice_menus" id="block-nice_menus-2">
+  <h2 class="block-title"><span class="nice-menu-hide-title">Secondary links</span></h2>
+  <div class="block-content clear-block">
+    <ul class="nice-menu nice-menu-down sf-js-enabled" id="nice-menu-2"><li class="menu-1395 menu-path-user-login first  odd  last "><a onclick='s_objectID="https://developer.nvidia.com/user/login_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/user/login" title="">Log In</a></li>
+</ul>
+  </div>
+</div>					</div>
+	</div>
+			<div id="sub-nav" class="limiter">
+							<div id="zone-title">
+					Games &amp; Graphics				</div>
+					</div>
+		<div id="header-divider" <div="">
+			<div id="breadcrumb">
+			<div class="breadcrumb"><a onclick='s_objectID="https://developer.nvidia.com/_4";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/">Home</a> &gt; <span class="zone-logo games-amp-graphics"><a onclick='s_objectID="https://developer.nvidia.com/category/zone/game-graphics-development_2";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/category/zone/game-graphics-development">Games &amp; Graphics</a></span> &gt; <a onclick='s_objectID="https://developer.nvidia.com/blog/term/1_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/term/1">Blog</a></div>		</div>
+	  <div id="page">
+		<div class="limiter clear-block">
+						<div id="main" class="clear-block">
+				
+				<h1 class="page-title">Fluid Simulation in Alice: Madness Returns </h1>												
+				
+				<div id="content" class="clear-block">
+  
+  <div id="node-96151" class="node node-blog">
+              <div class="blog-page">
+        <h2 class="blog-title"></h2>
+                  <span class="submitted">By David Weller, posted Jun 23 2011 at 05:14PM</span>
+                        <p></p>
+      </div>
+      <div class="node-content clear-block prose">
+                  <div class="product-image"><a onclick='s_objectID="https://developer.nvidia.com/sites/default/files/akamai/tools/images/alice_screen_cap_thumb.png_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/sites/default/files/akamai/tools/images/alice_screen_cap_thumb.png" class="imagecache imagecache-Blog_image imagecache-imagelink imagecache-Blog_image_imagelink"><img src="Fluid%20Simulation%20in%20Alice:%20Madness%20Returns%20%7C%20NVIDIA%20Developer%20Zone-Dateien/alice_screen_cap_thumb.png" alt="" title="" class="imagecache imagecache-Blog_image" height="190" width="340"></a></div>
+                <div class="product-body"><p>by Simon Green, Richard Tonge, Miguel Sainz, Dane Johnston, and David Schoemehl</p>
+<p>Note: This is a technical article that complements our consumer-oriented article on GeForce.com, "<a onclick='s_objectID="http://www.geforce.com/News/articles/physx-in-alice-madness-returns_1";return this.s_oc?this.s_oc(e):true' href="http://www.geforce.com/News/articles/physx-in-alice-madness-returns" target="_blank">Alice: Madness Returns PhysX Comparison</a>."</p>
+<p>A PDF version of the article can be found <a onclick='s_objectID="http://developer.nvidia.com/sites/default/files/akamai/tools/docs/Fluid_Rendering_Alice.pdf_1";return this.s_oc?this.s_oc(e):true' href="http://developer.nvidia.com/sites/default/files/akamai/tools/docs/Fluid_Rendering_Alice.pdf">here</a>.</p>
+<h3>
+	<strong>Overview</strong></h3>
+<p>If you’ve had a chance to play “Alice: Madness Returns” with the high
+ NVIDIA® PhysX® setting you’ve undoubtedly noticed the black goop oozing
+ from the various Doom enemies.&nbsp; Developer Spicy Horse Games was 
+originally working on such an effect for their game but struggling with a
+ solution that provided both the look and performance needed on consoles
+ and PC.&nbsp; By working with NVIDIA's Developer Technology (DevTech) 
+team they were able to create a convincing fluid effect using a 
+simulation technique called Smoothed Particle Hydrodynamics and an image
+ based rendering technique both accelerated on the GPU.&nbsp; Simulating
+ fluid as a set of particles that interact with each other, rather than 
+moving independently as in other games, Smoothed Particle Hydrodynamics 
+allows fluid to collide with and flow over the static environment and 
+move realistically when a solid object or character interacts with it. 
+The density of the fluid is constantly measured at each particle based 
+on the number of neighboring particles within a certain radius. The 
+particles move in such a way to keep the density constant. When an 
+object or the ground interrupts the motion of the fluid, the shifted 
+particles become temporarily denser than the main body of the liquid, 
+resulting in a puddle or splash depending on the calculated forces. In 
+Alice, a complex scene can have over 10,000 simultaneous particles being
+ simulated and rendered in total. These kind of effects can only be 
+achieved at interactive framerates by leveraging the massively parallel 
+power of the GPU.</p>
+<p>Explaining the difference between the fluid in Alice: Madness Returns
+ and fluids in other games (such as Portal 2's gels, which impressed 
+many a player and were achieved even on consoles), NVIDIA's David 
+Schoemehl explains that, "the most noticeable difference with the fluid 
+in Alice is that it does not become a decal when it hits the ground; it 
+is constantly interacting with the ground, objects and player in order 
+to provide the user with a truly immersive effect." Since these kind of 
+PhysX effects can be taxing on a machine without proper GPU acceleration
+ this effect was offered as a feature on the high PhysX setting.&nbsp;</p>
+<h3>
+	<strong>Creating Content for the Fluid Effect</strong></h3>
+<p>Creating the oil effect for Alice: Madness Returns was a multiple 
+step process.&nbsp;The DevTech team started by getting the visual effect
+ correct based on the artwork and assets that Spicy Horse had already 
+created.&nbsp;The emphasis here is on getting the colors, the 
+reflections, and the thickness all setup so that the oil will fit with 
+the existing oil effects in the game.&nbsp;Once the visuals look 
+correct, the physical fluid parameters are adjusted so that the fluid 
+behaves correctly.&nbsp;This involves adjusting a small set of 
+parameters on the fluid simulation so that you get proper viscosity, 
+friction and density of the fluid.&nbsp;Changing these parameters can 
+make the fluid feel thicker or change how quickly it flows over a 
+surface.&nbsp;This will also have an impact on how it reacts when a 
+player runs through it or when other objects come into contact with the 
+fluid. Once everything is tuned, it is simply a matter of connecting it 
+into the game so that the black oil will spawn at the appropriate times.
+ This pattern can be easily replicated for fluids of other viscosity and
+ stickiness.</p>
+<p align="center"><img alt="" src="Fluid%20Simulation%20in%20Alice:%20Madness%20Returns%20%7C%20NVIDIA%20Developer%20Zone-Dateien/liquidcollage.jpg" width="650"></p>
+<h3>
+	<strong>Making Fluid Behave Like Fluid</strong></h3>
+<p>Smoothed Particle Hydrodynamics(SPH) is a method for simulating a fluid as a set of moving particles. A <a onclick='s_objectID="http://www.youtube.com/watch?v=ok8ThRR-59Q_1";return this.s_oc?this.s_oc(e):true' href="http://www.youtube.com/watch?v=ok8ThRR-59Q" target="_blank">YouTube video can be seen here</a>
+ that shows simulated water flow effects using SPH. Representing fluids 
+as particles is quite convenient, as games have a long history of using 
+particles for other types of effects. The kinds of fluids we like to 
+simulate in games (such as water and goop) are almost incompressible in 
+real life, but with a particle system it is natural to model them as 
+compressible fluids that happen to be very stiff. The “nature” of an SPH
+ fluid is determined by a so called equation of state and the equation 
+of state used by PhysX is one that drives the particles towards a 
+desired rest spacing, or rest density. Maintaining the target rest 
+density gives the illusion that the fluid is incompressible.</p>
+<p>In PhysX, fluids are simulated using the following 3 Stage process:</p>
+<p>First, we check particles for collision against the static 
+environment and if necessary move them out of solid 
+objects.&nbsp;Responding to such collisions allows the fluid to interact
+ with the terrain, objects and characters in the scene providing a more 
+immersive experience for the user. In Alice: Madness Returns you can see
+ this as the black goop hits the ground or characters walk through it.</p>
+<p align="center"><img src="Fluid%20Simulation%20in%20Alice:%20Madness%20Returns%20%7C%20NVIDIA%20Developer%20Zone-Dateien/SPH_Collision.png"></p>
+<p>Second, while the previous step is common to other types of particle 
+systems, this step is where the real SPH work happens. The goal is to 
+drive the particles towards a desired rest density, so we must first 
+define what we mean by density, and then calculate that at each particle
+ position in the fluid. We want the density at each particle to be 
+influenced by the number of neighboring particles within a certain 
+radius. That is the closer a particle is to its neighbors, the higher we
+ want the measured density to be.&nbsp;Also, we'd like this density to 
+vary smoothly as the particles move around.&nbsp;In SPH, the density at 
+each point (the density field) is calculated by placing a Gaussian 
+shaped splat at each particle position and summing them together. The 
+following graph shows how this works in 1D. The X axis is distance from 
+the origin, and the Y axis is the density. Notice that the density is 
+highest for the two particles in the center that are closest together.</p>
+<p align="center"><img alt="" src="Fluid%20Simulation%20in%20Alice:%20Madness%20Returns%20%7C%20NVIDIA%20Developer%20Zone-Dateien/SPH_Density_Curve.png"></p>
+<p>Third, once we know the density at each particle, we apply the 
+equation of state to calculate the pressure at each particle. In PhysX, 
+the equation of state is simply the distance the density is from the 
+rest density scaled by a constant. We then apply forces to move the 
+particles from areas of high pressure to areas of low pressure.</p>
+<p align="center"><img alt="" src="Fluid%20Simulation%20in%20Alice:%20Madness%20Returns%20%7C%20NVIDIA%20Developer%20Zone-Dateien/SPH_Density_Curve_Move.png"></p>
+<p>When particles hit a static object (stage 1), their densities become 
+temporarily larger than the rest density (stage 2), so the only way to 
+maintain the rest density (stage 3) is for this stage to move them 
+sideways. This results in a puddle or splash, which shows the 
+incompressible nature of the fluid and adds to the realism of the scene.</p>
+<p align="center"><img alt="" src="Fluid%20Simulation%20in%20Alice:%20Madness%20Returns%20%7C%20NVIDIA%20Developer%20Zone-Dateien/SPH_Density_Rest.png"></p>
+<p>The PhysX SPH simulation is implemented on the GPU using the CUDA 
+programming language, using a GPU thread for each individual particle. 
+This enables tens of thousands of particles to be computed in parallel.</p>
+<p>The amount of particles used to simulate the goop in Alice: Madness 
+Returns can reach over 10,000.&nbsp;When running with NVIDIA GPUs this 
+simulation is hardware accelerated, which provides a considerable 
+performance boost.&nbsp;The hardware acceleration is what allows Alice: 
+Madness Returns to maintain a smooth frame rate while running this 
+complex simulation with this high number of particles.</p>
+<p>The video below highlights the fluid effects we will discuss in detail below.</p>
+<p align="center"><iframe allowfullscreen="" src="Fluid%20Simulation%20in%20Alice:%20Madness%20Returns%20%7C%20NVIDIA%20Developer%20Zone-Dateien/3Y23IfCCmlM.html" frameborder="0" height="349" width="560"></iframe></p>
+<h3>
+	Rendering of Fluid Particles</h3>
+<p>Rendering particle based fluids is quite difficult, since the 
+simulation does not naturally generate a surface. The focus of the 
+simulation is on particle positions and density.</p>
+<p>The traditional approach is to use marching cubes by generating a 
+density field from the particles, and the extract a polygon mesh “iso 
+surface”. This is a very expensive process that although can be done in 
+the GPU, it will not produce the desired detail while keeping the frame 
+rate at playable levels.</p>
+<p>The approached followed in Alice is to use a screen space fluid 
+rendering technique that will generate the surface closest to the point 
+of view of the player.</p>
+<p align="center"><img alt="" src="Fluid%20Simulation%20in%20Alice:%20Madness%20Returns%20%7C%20NVIDIA%20Developer%20Zone-Dateien/flowchart_01.png" width="666"></p>
+<p>As illustrated in the figure, the first step of the algorithm is to 
+generate a depth buffer that will contain the pixels of the surface of 
+the fluid. This is achieved by rendering the particles as point sprites 
+(quads) with a variable size in screen space (but constant in world 
+space). In the pixel shader we compute the real depth of each pixel of 
+the spheres and output it to a floating point render target.</p>
+<p align="center"><img alt="" src="Fluid%20Simulation%20in%20Alice:%20Madness%20Returns%20%7C%20NVIDIA%20Developer%20Zone-Dateien/point_sprite_spheres_02.png" width="650"></p>
+<p>Once we have the depth buffer of the pixel on the surface of the 
+fluid, we blur it to generate a smooth surface and remove the appearance
+ of the individual spheres. We do this by applying a two pass bilateral 
+filter that preserves sharp discontinuities in depth, while blurring the
+ smoothly varying depth areas.</p>
+<p align="center"><img alt="" src="Fluid%20Simulation%20in%20Alice:%20Madness%20Returns%20%7C%20NVIDIA%20Developer%20Zone-Dateien/sphere_depth_03.png" width="650"></p>
+<p>As we can see above, the result of a naïve blurring does produce a 
+overall smoother image, but does blur the edges between overlapping 
+layers of fluid, which is not desirable.&nbsp;The bilateral filter, does
+ not smooth as strong but does preserve edges, hence this is the chosen 
+solution. The effect&nbsp;can be seen in the diffuse shaded images 
+below.</p>
+<p align="center"><img alt="" src="Fluid%20Simulation%20in%20Alice:%20Madness%20Returns%20%7C%20NVIDIA%20Developer%20Zone-Dateien/diffuse_shaded_08.png" width="325"><img alt="" src="Fluid%20Simulation%20in%20Alice:%20Madness%20Returns%20%7C%20NVIDIA%20Developer%20Zone-Dateien/diffuse_shaded_filtered_09.png" width="325"></p>
+<p>In order to shade fluid surface, we need a smooth surface normal, so 
+in a second full screen pass, the normal of each pixel is computed from 
+the depth and written to a separate render target. This normal is 
+computed using partial differences of the depth, by looking at the depth
+ values of neighboring pixels. Edges can be tricky and need to be 
+treated separately.&nbsp;</p>
+<p align="center"><img alt="" src="Fluid%20Simulation%20in%20Alice:%20Madness%20Returns%20%7C%20NVIDIA%20Developer%20Zone-Dateien/sphere_normals_from_depth_04.png" width="650"></p>
+<p>At this point we have a smooth surface position (calculated from the 
+depth) and normal, and can proceed to shading the surface by rendering a
+ full screen quad and computing fluid color per pixel. We can easily add
+ effects like Fresnel and reflections on top of the diffuse pass</p>
+<h4>
+	Original particle simulation rendered as spheres</h4>
+<p align="center"><img alt="" src="Fluid%20Simulation%20in%20Alice:%20Madness%20Returns%20%7C%20NVIDIA%20Developer%20Zone-Dateien/point_sprite_spheres_02.png" width="666"></p>
+<h4>
+	Depth buffer of the particles</h4>
+<p align="center"><img alt="" src="Fluid%20Simulation%20in%20Alice:%20Madness%20Returns%20%7C%20NVIDIA%20Developer%20Zone-Dateien/sphere_depth_03.png" width="666"></p>
+<h4>
+	Normal buffer of the particles</h4>
+<p align="center"><img alt="" src="Fluid%20Simulation%20in%20Alice:%20Madness%20Returns%20%7C%20NVIDIA%20Developer%20Zone-Dateien/normal_buffer_10.png" width="650"></p>
+<h4>
+	Diffuse shading N dot L</h4>
+<p align="center"><img alt="" src="Fluid%20Simulation%20in%20Alice:%20Madness%20Returns%20%7C%20NVIDIA%20Developer%20Zone-Dateien/diffuse_shading_ndotl_11.png" width="650"></p>
+<h4>
+	Wrapped diffuse shading&nbsp;(N dot L ) * 0.5 + 0.5</h4>
+<p align="center"><img alt="" src="Fluid%20Simulation%20in%20Alice:%20Madness%20Returns%20%7C%20NVIDIA%20Developer%20Zone-Dateien/wrapped_diffuse_shading__12.png" width="650"></p>
+<h4>
+	Specular</h4>
+<p align="center"><img alt="" src="Fluid%20Simulation%20in%20Alice:%20Madness%20Returns%20%7C%20NVIDIA%20Developer%20Zone-Dateien/specular_shading_13.png" width="650"></p>
+<h4>
+	Fresnel</h4>
+<p align="center"><img alt="" src="Fluid%20Simulation%20in%20Alice:%20Madness%20Returns%20%7C%20NVIDIA%20Developer%20Zone-Dateien/fresnel_shading_14.png" width="650"></p>
+<h4>
+	Cubemap reflection</h4>
+<p align="center"><img alt="" src="Fluid%20Simulation%20in%20Alice:%20Madness%20Returns%20%7C%20NVIDIA%20Developer%20Zone-Dateien/cubemap_reflection_15.png" width="650"></p>
+<h4>
+	Cubemap reflection * Fresnel</h4>
+<p align="center"><img alt="" src="Fluid%20Simulation%20in%20Alice:%20Madness%20Returns%20%7C%20NVIDIA%20Developer%20Zone-Dateien/cubemap_reflection_and_Fresnel_16.png" width="650"></p>
+<h4>
+	All together</h4>
+<p align="center"><img alt="" src="Fluid%20Simulation%20in%20Alice:%20Madness%20Returns%20%7C%20NVIDIA%20Developer%20Zone-Dateien/combined_17.png" width="650"></p>
+<p>Fluids are often transparent, but this rendering approach only 
+generates the surface of the fluid closest to the camera, which can 
+produce an unnatural look if transparency is enabled. The solution is to
+ add an additional pass parallel to the generation of the depth surface 
+to compute a thickness parameter for the fluid. Then we can render it as
+ a semi-opaque surface using this thickness to attenuate the color.</p>
+<p>To generate the thickness, we render all the particles using additive
+ blending (no depth test). Particles are rendered as discs and the 
+result is then blurred. We only need an approximation; so to make this 
+very expensive pass we can even compute it at lower resolution.</p>
+<p align="center"><img alt="" src="Fluid%20Simulation%20in%20Alice:%20Madness%20Returns%20%7C%20NVIDIA%20Developer%20Zone-Dateien/transparency_01.png" width="325"><img alt="" src="Fluid%20Simulation%20in%20Alice:%20Madness%20Returns%20%7C%20NVIDIA%20Developer%20Zone-Dateien/transparency_02.png" width="325"><br>
+	<img alt="" src="Fluid%20Simulation%20in%20Alice:%20Madness%20Returns%20%7C%20NVIDIA%20Developer%20Zone-Dateien/transparency_03.png" width="325"><img alt="" src="Fluid%20Simulation%20in%20Alice:%20Madness%20Returns%20%7C%20NVIDIA%20Developer%20Zone-Dateien/transparency_04.png" width="325"></p>
+<h3>
+	Conclusion</h3>
+<p>Simulating and rendering fluids is a challenging problem which up 
+until recently required minutes or hours per frame to compute. It is 
+only thanks to the massive parallelism and performance of modern GPUs 
+that it has become possible in real-time. NVIDIA has shown several 
+real-time fluid demos over the years. However, it is one thing to 
+produce a technical demo, but is much harder to integrate fluid 
+simulation into a commercial game. NVIDIA was happy to work with 
+&nbsp;Spicy Horse in order to enhance Alice: Madness Returns with this 
+advanced effect and bring the final product closer to their original 
+artistic vision.&nbsp;</p>
+<h3>
+	Additional Reading</h3>
+<ul>
+	<li>
+		<a onclick='s_objectID="http://www.matthiasmueller.info/publications/sca03.pdf_1";return this.s_oc?this.s_oc(e):true' href="http://www.matthiasmueller.info/publications/sca03.pdf">Particle-Based Fluid Simulation for Interactive Applications</a>, Matthias Müller, David Charypar and Markus Gross, Eurographics/SIGGRAPH Symposium on Computer Animation (2003)</li>
+	<li>
+		<a onclick='s_objectID="http://developer.download.nvidia.com/presentations/2010/gdc/Direct3D_Effects.pdf_1";return this.s_oc?this.s_oc(e):true' href="http://developer.download.nvidia.com/presentations/2010/gdc/Direct3D_Effects.pdf">Screen Space Fluid Rendering for Games</a>, Simon Green, Game Developers Conference (2010)</li>
+</ul>
+</div>
+        <div class="product-body"></div>
+      </div>
+    
+      </div>
+  </div>
+			</div>
+							<div id="right" class="clear-block">  <div class="block block-nvidia_blog" id="block-nvidia_blog-0">
+  <div class="block-content clear-block">
+    <a onclick='s_objectID="https://developer.nvidia.com/blog?term=1_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog?term=1"><img src="Fluid%20Simulation%20in%20Alice:%20Madness%20Returns%20%7C%20NVIDIA%20Developer%20Zone-Dateien/blog_category_1.jpg" alt="Game &amp; Graphics Development" title="Your center for all things game-related.  DirectX, OpenGL, Cg, Performance Tools, Tips &amp; Tricks, and Graphics SDKs." height="128" width="196"></a>  </div>
+</div>  <div class="block block-block" id="block-block-8">
+  <h2 class="block-title">NVIDIA Developer Programs</h2>
+  <div class="block-content clear-block">
+    <p>Get exclusive access to the latest software, report bugs and receive notifications for special events.</p>
+    <a onclick='s_objectID="https://developer.nvidia.com/registered-developer-programs_1";return this.s_oc?this.s_oc(e):true' class="button" href="https://developer.nvidia.com/registered-developer-programs">Learn more and Register</a>  </div>
+</div>  <div class="block block-views" id="block-views--exp-devzone_blogs-page_2">
+  <div class="block-content clear-block">
+    <form action="/blog-search" accept-charset="UTF-8" method="get" id="views-exposed-form-devzone-blogs-page-2">
+<div><div class="views-exposed-form">
+  <div class="views-exposed-widgets clear-block">
+          <div class="views-exposed-widget views-widget-filter-body">
+                        <div class="views-widget">
+          <div class="form-item" id="edit-body-wrapper">
+    <input maxlength="128" name="body" id="edit-body" size="30" value="Search Blogs" class="form-text" type="text">  </div>
+        </div>
+      </div>
+        <div class="views-exposed-widget views-submit-button">
+      <span class="button"><span><input id="edit-submit-devzone-blogs" value="Go" class="form-submit" type="submit">
+</span></span>    </div>
+  </div>
+</div>
+
+</div></form>
+  </div>
+</div>  <div class="block block-views" id="block-views-SlideShow-block_2">
+  <h2 class="block-title">Featured Articles</h2>
+  <div class="block-content clear-block">
+    <div class="view view-SlideShow view-id-SlideShow view-display-id-block_2 view-dom-id-4">
+    
+  
+  
+      <div class="view-content">
+      
+
+
+<div id="views_slideshow_singleframe_main_SlideShow-block_2" class="views_slideshow_singleframe_main views_slideshow_main viewsSlideshowSingleFrame-processed"><div style="position: relative; width: 220px; height: 173px;" id="views_slideshow_singleframe_teaser_section_SlideShow-block_2" class="views_slideshow_singleframe_teaser_section"><div style="position: absolute; top: 0px; left: 0px; display: none; z-index: 4; opacity: 0; width: 220px; height: 173px;" class="views_slideshow_singleframe_slide views_slideshow_slide views-row-1 views-row-odd" id="views_slideshow_singleframe_div_SlideShow-block_2_0"><div class="views-row views-row-0 views-row-first views-row-odd">
+  
+  <div class="views-field-field-ext-reference-url">
+                <span class="field-content"></span>
+  </div>
+  
+  <div class="views-field-field-mini-slide-fid">
+                <span class="field-content"><a onclick='s_objectID="https://developer.nvidia.com/develop-for-tegra-note-7_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/develop-for-tegra-note-7"><img src="Fluid%20Simulation%20in%20Alice:%20Madness%20Returns%20%7C%20NVIDIA%20Developer%20Zone-Dateien/TegraNOTE_Android_BuildDebugProfile_340x190.png" alt="" title="" class="imagecache imagecache-minislideshow imagecache-default imagecache-minislideshow_default" height="125" width="220"></a></span>
+  </div>
+  
+  <div class="views-field-title">
+                <span class="field-content"><a onclick='s_objectID="https://developer.nvidia.com/develop-for-tegra-note-7_2";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/develop-for-tegra-note-7">Develop For Tegra NOTE 7</a></span>
+  </div>
+
+</div>
+</div>
+<div style="position: absolute; top: 0px; left: 0px; display: none; z-index: 4; opacity: 0; width: 220px; height: 173px;" class="views_slideshow_singleframe_slide views_slideshow_slide views-row-2 views_slideshow_singleframe_hidden views-row-even" id="views_slideshow_singleframe_div_SlideShow-block_2_1"><div class="views-row views-row-0 views-row-first views-row-odd">
+  
+  <div class="views-field-field-ext-reference-url">
+                <span class="field-content"></span>
+  </div>
+  
+  <div class="views-field-field-mini-slide-fid">
+                <span class="field-content"><a onclick='s_objectID="https://developer.nvidia.com/content/nvidia-nsight-visual-studio-edition-3_2-available-now-window_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/content/nvidia-nsight-visual-studio-edition-3_2-available-now-windows-81-support"><img src="Fluid%20Simulation%20in%20Alice:%20Madness%20Returns%20%7C%20NVIDIA%20Developer%20Zone-Dateien/NSight_VSE_340x190.jpg" alt="" title="" class="imagecache imagecache-minislideshow imagecache-default imagecache-minislideshow_default" height="125" width="220"></a></span>
+  </div>
+  
+  <div class="views-field-title">
+                <span class="field-content"><a onclick='s_objectID="https://developer.nvidia.com/content/nvidia-nsight-visual-studio-edition-3_2-available-now-window_2";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/content/nvidia-nsight-visual-studio-edition-3_2-available-now-windows-81-support">NVIDIA Nsight Visual Studio Edition 3.2 Available...</a></span>
+  </div>
+
+</div>
+</div>
+<div style="position: absolute; top: 0px; left: 0px; display: block; z-index: 5; opacity: 1; width: 220px; height: 173px;" class="views_slideshow_singleframe_slide views_slideshow_slide views-row-3 views_slideshow_singleframe_hidden views-row-odd" id="views_slideshow_singleframe_div_SlideShow-block_2_2"><div class="views-row views-row-0 views-row-first views-row-odd">
+  
+  <div class="views-field-field-ext-reference-url">
+                <span class="field-content"></span>
+  </div>
+  
+  <div class="views-field-field-mini-slide-fid">
+                <span class="field-content"><a onclick='s_objectID="https://developer.nvidia.com/develop4shield_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/develop4shield"><img src="Fluid%20Simulation%20in%20Alice:%20Madness%20Returns%20%7C%20NVIDIA%20Developer%20Zone-Dateien/Shield_TADP_220x125.jpg" alt="" title="" class="imagecache imagecache-minislideshow imagecache-default imagecache-minislideshow_default" height="125" width="220"></a></span>
+  </div>
+  
+  <div class="views-field-title">
+                <span class="field-content"><a onclick='s_objectID="https://developer.nvidia.com/develop4shield_2";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/develop4shield">Develop for SHIELD</a></span>
+  </div>
+
+</div>
+</div>
+<div style="position: absolute; top: 0px; left: 0px; display: none; z-index: 4; opacity: 0; width: 220px; height: 173px;" class="views_slideshow_singleframe_slide views_slideshow_slide views-row-4 views_slideshow_singleframe_hidden views-row-even" id="views_slideshow_singleframe_div_SlideShow-block_2_3"><div class="views-row views-row-0 views-row-first views-row-odd">
+  
+  <div class="views-field-field-ext-reference-url">
+                <span class="field-content"></span>
+  </div>
+  
+  <div class="views-field-field-mini-slide-fid">
+                <span class="field-content"><a onclick='s_objectID="https://developer.nvidia.com/geforce-experience_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/geforce-experience"><img src="Fluid%20Simulation%20in%20Alice:%20Madness%20Returns%20%7C%20NVIDIA%20Developer%20Zone-Dateien/gfe_banner_mini.jpg" alt="" title="" class="imagecache imagecache-minislideshow imagecache-default imagecache-minislideshow_default" height="125" width="220"></a></span>
+  </div>
+  
+  <div class="views-field-title">
+                <span class="field-content"><a onclick='s_objectID="https://developer.nvidia.com/geforce-experience_2";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/geforce-experience">GeForce Experience</a></span>
+  </div>
+
+</div>
+</div>
+</div>
+</div>
+  <div class="views-slideshow-controls-bottom clear-block">
+    <div style="display: block;" class="views_slideshow_singleframe_controls views_slideshow_controls" id="views_slideshow_singleframe_controls_SlideShow-block_2"><a onclick='s_objectID="https://developer.nvidia.com/content/fluid-simulation-alice-madness-returns#_1";return this.s_oc?this.s_oc(e):true' href="#%20" class="views_slideshow_singleframe_previous views_slideshow_previous" id="views_slideshow_singleframe_prev_SlideShow-block_2">Previous</a><a onclick='s_objectID="https://developer.nvidia.com/content/fluid-simulation-alice-madness-returns#_2";return this.s_oc?this.s_oc(e):true' href="#%20" class="views_slideshow_singleframe_pause views_slideshow_pause" id="views_slideshow_singleframe_playpause_SlideShow-block_2">Pause</a><a onclick='s_objectID="https://developer.nvidia.com/content/fluid-simulation-alice-madness-returns#_3";return this.s_oc?this.s_oc(e):true' href="#%20" class="views_slideshow_singleframe_next views_slideshow_next" id="views_slideshow_singleframe_next_SlideShow-block_2">Next</a></div>
+          </div>
+    </div>
+  
+  
+  
+  
+  
+  
+</div>   </div>
+</div>  <div class="block block-views" id="block-views-devzone_blogs-block_5">
+  <h2 class="block-title">Tag Index</h2>
+  <div class="block-content clear-block">
+    <div class="view view-devzone-blogs view-id-devzone_blogs view-display-id-block_5 view-dom-id-2">
+
+  
+  
+  
+  
+      <div class="view-content">
+        <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/321?display[%24ne]=defaultnppopenaccopengl-driversites%2Fd_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/321?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">accelerometer</a>
+          (1)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/496?display[%24ne]=defaultnppopenaccopengl-driversites%2Fd_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/496?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">Android</a>
+          (1)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4867?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4867?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">ANR</a>
+          (1)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/436?display[%24ne]=defaultnppopenaccopengl-driversites%2Fd_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/436?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">Audi</a>
+          (1)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4786?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4786?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">Automotive &amp; Embedded </a>
+          (1)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4905?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4905?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">Blog</a>
+          (24)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4917?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4917?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">Blog</a>
+          (24)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4925?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4925?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">Blog</a>
+          (1)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4860?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4860?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">competition</a>
+          (1)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/166?display[%24ne]=defaultnppopenaccopengl-driversites%2Fd_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/166?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">CUDA</a>
+          (3)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4631?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4631?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">CUDA 4.1</a>
+          (1)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/466?display[%24ne]=defaultnppopenaccopengl-driversites%2Fd_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/466?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">CUDA Profiler</a>
+          (1)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/2?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdef_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/2?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">CUDA Zone</a>
+          (2)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4166?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4166?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">Debug</a>
+          (1)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4372?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4372?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">Debugger</a>
+          (1)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4521?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4521?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">Debugging</a>
+          (4)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4983?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4983?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">depth of field</a>
+          (1)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4915?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4915?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">Develop 4 Shield</a>
+          (2)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/276?display[%24ne]=defaultnppopenaccopengl-driversites%2Fd_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/276?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">development kit</a>
+          (1)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4131?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4131?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">DirectCompute</a>
+          (1)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/3131?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/3131?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">DirectX</a>
+          (3)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4984?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4984?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">dynamic shadows</a>
+          (1)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4811?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4811?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">Eclipse</a>
+          (1)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/1?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdef_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/1?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">Game &amp; Graphics Development</a>
+          (48)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4978?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4978?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">Game and Graphics</a>
+          (1)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4982?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4982?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">Games</a>
+          (1)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4977?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4977?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">Games and Graphics</a>
+          (16)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4948?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4948?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">GeForce Developer Stories</a>
+          (2)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4201?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4201?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">google io</a>
+          (1)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4066?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4066?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">HDR</a>
+          (1)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4862?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4862?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">Kepler</a>
+          (1)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/431?display[%24ne]=defaultnppopenaccopengl-driversites%2Fd_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/431?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">Lamborghini</a>
+          (1)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4911?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4911?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">Mobile</a>
+          (1)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/3?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdef_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/3?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">Mobile Development</a>
+          (34)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4866?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4866?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">native_app_glue</a>
+          (1)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/296?display[%24ne]=defaultnppopenaccopengl-driversites%2Fd_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/296?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">NDK</a>
+          (1)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4776?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4776?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">Nsight</a>
+          (2)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4938?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4938?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">Nsight Tegra</a>
+          (3)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4903?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4903?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">Nsight Visual Studio Edition</a>
+          (2)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4979?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4979?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">Nsight Visual Studio Edition</a>
+          (1)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4626?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4626?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">NVIDIA Parallel Nsight</a>
+          (1)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4863?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4863?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">NVIDIA Shield</a>
+          (4)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4993?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4993?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">NVIDIA Tegra NOTE 7</a>
+          (1)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/3356?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/3356?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">OpenGL</a>
+          (3)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/311?display[%24ne]=defaultnppopenaccopengl-driversites%2Fd_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/311?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">OpenGL ES</a>
+          (1)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4986?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4986?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">OTA</a>
+          (1)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4880?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4880?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">Parallel Forall</a>
+          (1)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/176?display[%24ne]=defaultnppopenaccopengl-driversites%2Fd_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/176?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">Parallel Nsight</a>
+          (1)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4831?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4831?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">PerfHUD ES</a>
+          (2)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4987?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4987?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">PerfHUDES</a>
+          (2)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdef_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">Professional Graphics</a>
+          (6)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4526?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4526?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">Profiling</a>
+          (1)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4995?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4995?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">Release Announcements</a>
+          (1)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4963?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4963?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">Shader debugging</a>
+          (1)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4854?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4854?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">Shield</a>
+          (3)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/316?display[%24ne]=defaultnppopenaccopengl-driversites%2Fd_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/316?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">tablet</a>
+          (1)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4865?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4865?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">TADP</a>
+          (3)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/221?display[%24ne]=defaultnppopenaccopengl-driversites%2Fd_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/221?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">Technologies</a>
+          (6)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/51?display[%24ne]=defaultnppopenaccopengl-driversites%2Fde_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/51?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">tegra</a>
+          (6)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4914?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4914?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">Tegra Android Developer Pack</a>
+          (2)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4989?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4989?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">Tegra Android Developer Pack</a>
+          (1)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4940?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4940?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">Tegra Android Development Pack</a>
+          (1)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4988?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4988?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">Tegra Developer News</a>
+          (1)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4971?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4971?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">Tegra Developer Stories</a>
+          (2)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4939?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4939?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">Tegra Profiler</a>
+          (3)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4913?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4913?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">Tegra Resources</a>
+          (1)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4397?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4397?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">Tegra Zone</a>
+          (1)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/50?display[%24ne]=defaultnppopenaccopengl-driversites%2Fde_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/50?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">Tools</a>
+          (14)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4861?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4861?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">Toradex</a>
+          (1)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4161?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4161?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">Visual Studio</a>
+          (3)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4945?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4945?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">Windows 8</a>
+          (1)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4985?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4985?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">Windows 8.1</a>
+          (1)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4211?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4211?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">xoom</a>
+          (1)
+      </span>  <span class="views-summary views-summary-unformatted">        <a onclick='s_objectID="https://developer.nvidia.com/blog/tags/4392?display[%24ne]=defaultnppopenaccopengl-driversites%2F_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/blog/tags/4392?display[%24ne]=defaultnppopenaccopengl-driversites%2Fdefault%2Ffiles%2Fakamai%2Fcuda%2Fimages%2Fparallel-forall%2Fcudasourceview.png">Zone In</a>
+          (1)
+      </span>    </div>
+  
+  
+  
+  
+  
+  
+</div>   </div>
+</div>  <div class="block block-views" id="block-views--exp-devzone_blogs-page_3">
+  <div class="block-content clear-block">
+    <form action="/blog-archives" accept-charset="UTF-8" method="get" id="views-exposed-form-devzone-blogs-page-3">
+<div><div class="views-exposed-form">
+  <div class="views-exposed-widgets clear-block">
+          <div class="views-exposed-widget views-widget-filter-date_filter">
+                        <div class="views-widget">
+          <div class="date-views-filter-wrapper">
+<div class="container-inline-date date-clear">
+</div>
+<div class="date-clear form-item"><div class="description">
+  <div class="container-inline-date date-clear-block"><div class="form-item" id="edit-date-filter-value-wrapper">
+    <div class="date-year"><div class="form-item" id="edit-date-filter-value-year-wrapper">
+    <select name="date_filter[value][year]" class="form-select  date-year" id="edit-date-filter-value-year"><option selected="selected" value="">-Year</option><option value="2010">2010</option><option value="2011">2011</option><option value="2012">2012</option><option value="2013">2013</option></select>  </div>
+</div><div class="date-month"><div class="form-item" id="edit-date-filter-value-month-wrapper">
+    <select name="date_filter[value][month]" class="form-select  date-month" id="edit-date-filter-value-month"><option selected="selected" value="">-Month</option><option value="1">Jan</option><option value="2">Feb</option><option value="3">Mar</option><option value="4">Apr</option><option value="5">May</option><option value="6">Jun</option><option value="7">Jul</option><option value="8">Aug</option><option value="9">Sep</option><option value="10">Oct</option><option value="11">Nov</option><option value="12">Dec</option></select>  </div>
+</div>  </div>
+</div></div>
+</div>
+</div>        </div>
+      </div>
+        <div class="views-exposed-widget views-submit-button">
+      <span class="button"><span><input id="edit-submit-devzone-blogs" value="Go" class="form-submit" type="submit">
+</span></span>    </div>
+  </div>
+</div>
+
+</div></form>
+  </div>
+</div></div>
+					</div>
+	</div>
+
+	<div id="footer">
+		<div class="limiter clear-block">
+			<div class="block block-menu" id="block-menu-menu-footer-menu">
+				<div class="block-content clear-block">
+					<ul class="menu"><li class="leaf first"><a onclick='s_objectID="http://www.nvidia.com/page/companyinfo.html_1";return this.s_oc?this.s_oc(e):true' href="http://www.nvidia.com/page/companyinfo.html" title="">About</a></li>
+						<li class="leaf last"><a onclick='s_objectID="https://developer.nvidia.com/contact_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/contact" title="">Contact</a></li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="block block-menu" id="block-menu-menu-footer-links">
+
+				<div class="block-content clear-block">
+					<ul class="menu">
+						<li class="leaf first">Copyright © 2013 NVIDIA Corporation</li>
+						<li class="leaf"><a onclick='s_objectID="http://www.nvidia.com/object/legal_info.html_1";return this.s_oc?this.s_oc(e):true' href="http://www.nvidia.com/object/legal_info.html" title="">Legal Information</a></li>
+						<li class="leaf"><a onclick='s_objectID="http://www.nvidia.com/object/privacy_policy.html_1";return this.s_oc?this.s_oc(e):true' href="http://www.nvidia.com/object/privacy_policy.html" title="">Privacy Policy</a></li>
+						<li class="leaf last"><a onclick='s_objectID="https://developer.nvidia.com/code-of-conduct_1";return this.s_oc?this.s_oc(e):true' href="https://developer.nvidia.com/code-of-conduct" title="Code of Conduct">Code of Conduct</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="Fluid%20Simulation%20in%20Alice:%20Madness%20Returns%20%7C%20NVIDIA%20Developer%20Zone-Dateien/ga.js" async="" type="text/javascript"></script><script type="text/javascript" src="Fluid%20Simulation%20in%20Alice:%20Madness%20Returns%20%7C%20NVIDIA%20Developer%20Zone-Dateien/js_a06cd60c7c35c6feff92b6dcbb7a1325.js"></script>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+jQuery.extend(Drupal.settings, { "basePath": "/", "googleanalytics": { "trackOutbound": 1, "trackMailto": 1, "trackDownload": 1, "trackDownloadExtensions": "7z|aac|arc|arj|asf|asx|avi|bin|csv|doc|exe|flv|gif|gz|gzip|hqx|jar|jpe?g|js|mp(2|3|4|e?g)|mov(ie)?|msi|msp|pdf|phps|png|ppt|qtm?|ra(m|r)?|sea|sit|tar|tgz|torrent|txt|wav|wma|wmv|wpd|xls|xml|z|zip" }, "googleAnalyticsReportsAjaxUrl": "/google-analytics-reports/ajax", "nice_menus_options": { "delay": "800", "speed": "fast" }, "prettify": { "linenums": false, "match": "#content", "nocode": "no-code", "custom": [  ], "markup": { "code": true, "pre": true, "precode": false } }, "thickbox": { "close": "Close", "next": "Next \x3e", "prev": "\x3c Prev", "esc_key": "or Esc Key", "next_close": "Next / Close on last", "image_count": "Image !current of !total" }, "nvidia_quick_survey_settings": { "surveyDelay": 500 }, "viewsSlideshowSingleFrame": { "#views_slideshow_singleframe_main_SlideShow-block_2": { "num_divs": 4, "id_prefix": "#views_slideshow_singleframe_main_", "div_prefix": "#views_slideshow_singleframe_div_", "vss_id": "SlideShow-block_2", "timeout": 5000, "sort": 1, "effect": "fade", "speed": 700, "start_paused": 0, "delay": 0, "fixed_height": 1, "random": 0, "pause": 1, "pause_on_click": 1, "pause_when_hidden": 0, "pause_when_hidden_type": "full", "amount_allowed_visible": "", "remember_slide": 0, "remember_slide_days": 1, "controls": 2, "items_per_slide": 1, "pager": 0, "pager_type": "Numbered", "pager_hover": 2, "pager_click_to_page": 0, "image_count": 0, "nowrap": 0, "sync": 2, "advanced": "", "ie": { "cleartype": "true", "cleartypenobg": "false" } } } });
+//--><!]]>
+</script>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+window.google_analytics_uacct = "UA-1273456-46";
+//--><!]]>
+</script>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+$(document).ready(function() {
+$(".filefield-source-upload").remove();
+$("#edit-field-file-download-0-imce-source").trigger('click');
+$("#edit-field-cover-book-0-imce-source").trigger('click');
+$("#edit-field-rdp-file-0-imce-source").trigger('click');
+$("#edit-field-product-thumbnail-0-imce-source").trigger('click');
+$("#edit-field-file-download-0-upload-source").click(function () { 
+      alert('This option is no longer supported. Please upload your file via the asset management system');
+$("#edit-field-file-download-0-imce-source").trigger('click');
+    });
+$("#edit-field-thumbnail-0-imce-source").trigger('click');
+$("#edit-field-thumbnail-0-upload-source").click(function () { 
+      alert('This option is no longer supported. Please upload your file via the asset management system');
+$("#edit-field-thumbnail-0-imce-source").trigger('click');
+    });
+});
+
+//--><!]]>
+</script>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+$(document).ready(function() {
+$(".filefield-source-upload").remove();
+$("#edit-field-file-download-0-imce-source").trigger('click');
+$("#edit-field-cover-book-0-imce-source").trigger('click');
+$("#edit-field-rdp-file-0-imce-source").trigger('click');
+$("#edit-field-product-thumbnail-0-imce-source").trigger('click');
+$("#edit-field-file-download-0-upload-source").click(function () { 
+      alert('This option is no longer supported. Please upload your file via the asset management system');
+$("#edit-field-file-download-0-imce-source").trigger('click');
+    });
+$("#edit-field-thumbnail-0-imce-source").trigger('click');
+$("#edit-field-thumbnail-0-upload-source").click(function () { 
+      alert('This option is no longer supported. Please upload your file via the asset management system');
+$("#edit-field-thumbnail-0-imce-source").trigger('click');
+    });
+});
+
+//--><!]]>
+</script>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+$(document).ready(function() {
+$(".filefield-source-upload").remove();
+$("#edit-field-file-download-0-imce-source").trigger('click');
+$("#edit-field-cover-book-0-imce-source").trigger('click');
+$("#edit-field-rdp-file-0-imce-source").trigger('click');
+$("#edit-field-product-thumbnail-0-imce-source").trigger('click');
+$("#edit-field-file-download-0-upload-source").click(function () { 
+      alert('This option is no longer supported. Please upload your file via the asset management system');
+$("#edit-field-file-download-0-imce-source").trigger('click');
+    });
+$("#edit-field-thumbnail-0-imce-source").trigger('click');
+$("#edit-field-thumbnail-0-upload-source").click(function () { 
+      alert('This option is no longer supported. Please upload your file via the asset management system');
+$("#edit-field-thumbnail-0-imce-source").trigger('click');
+    });
+});
+
+//--><!]]>
+</script>
+
+	<!-- SiteCatalyst code version: H.17 Copyright 1997-2009 Omniture, Inc. More info available at http://www.omniture.com -->
+<script type="text/javascript" language="JavaScript" src="Fluid%20Simulation%20in%20Alice:%20Madness%20Returns%20%7C%20NVIDIA%20Developer%20Zone-Dateien/s_code_us_dev_aut1.js"></script>
+<script type="text/javascript" language="JavaScript"><!--
+/************* DO NOT ALTER ANYTHING BELOW THIS LINE ! **************/
+var s_code=s.t();if(s_code)document.write(s_code)//--></script>
+<script language="JavaScript" type="text/javascript"><!--
+if(navigator.appVersion.indexOf('MSIE')>=0)document.write(unescape('%3C')+'\!-'+'-')
+//--></script><noscript><a href="http://www.omniture.com" title="Web Analytics"><img src="https://omniture.nvidia.com/b/ss/nvidiausdev/1/H.17--NS/0/6689200"
+height="1" width="1" border="0" alt="" /></a></noscript><!--/DO NOT REMOVE/-->
+<!-- End SiteCatalyst code version: H.17 -->
+<script type="text/javascript" src="Fluid%20Simulation%20in%20Alice:%20Madness%20Returns%20%7C%20NVIDIA%20Developer%20Zone-Dateien/js_e9cd597fd13b6425d71984831efee7ba.js"></script>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+var _gaq = _gaq || [];_gaq.push(["_setAccount", "UA-1273456-46"]);_gaq.push(['_setCustomVar', 1, "Role by visit", "anonymous user", 1]);_gaq.push(['_setCustomVar', 2, "Role by page", "anonymous user", 3]);_gaq.push(["_trackPageview"]);(function() {var ga = document.createElement("script");ga.type = "text/javascript";ga.async = true;ga.src = "/sites/default/files/googleanalytics/ga.js?t";var s = document.getElementsByTagName("script")[0];s.parentNode.insertBefore(ga, s);})();
+//--><!]]>
+</script>
+
+
+</div></body></html>

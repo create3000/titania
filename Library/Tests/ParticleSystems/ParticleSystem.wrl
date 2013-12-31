@@ -15,27 +15,32 @@ ParticleSystem {
   particleLifetime 3
   lifetimeVariation 1
   physics [
-    ForcePhysicsModel {
-      force 0 0.2 0
+    WindPhysicsModel {
+      direction 0 1 0
+      speed 0.7
+      gustiness 1.7
+      turbulence 0.3
     }
     WindPhysicsModel {
-      speed 1
-      gustiness 1
-      turbulence 0.2
+      direction 1 0 0
+      speed 0.5
+      gustiness 2
     }
   ]
   emitter PointEmitter {
-    speed 1
+    direction 0 0 0
+    speed 0.3
     variation 0.5
     mass 0.1
     surfaceArea 0.1
   }
   appearance Appearance {
     lineProperties LineProperties {
-      linewidthScaleFactor 2
+      linewidthScaleFactor 1
     }
     material Material {
-      transparency 0.96
+      emissiveColor 0.03 0.03 0.03
+      transparency 0.95
     }
   }
 }

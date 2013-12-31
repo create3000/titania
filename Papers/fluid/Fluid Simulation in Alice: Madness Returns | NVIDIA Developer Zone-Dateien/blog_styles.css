@@ -1,0 +1,114 @@
+/**
+ * General styles
+ */
+
+/*
+* Main Bog content
+*/
+.content-article {
+  height: inherit;
+}
+
+/*Search Block*/
+#block-views--exp-devzone_blogs-page_2 .form-item .form-text {
+  background: none repeat scroll 0 0 #F9F9F9;
+  width: 144px;
+  height: 15px;
+}
+
+#right #block-views--exp-devzone_blogs-page_2 .block-content {
+  padding-bottom: 0px;
+}
+
+#content h2 a {
+  color: #000;
+  font-size: 18px;
+  text-transform:capitalize;
+}
+
+#content h2 a:hover {
+  color: #65AD14;
+  text-decoration: underline;
+}
+
+.field-item {
+  float: left;
+  margin-right: 15px;
+}
+
+/*Archive Block*/
+#block-views--exp-devzone_blogs-page_3 .form-item .form-text {
+  background: none repeat scroll 0 0 #F9F9F9;
+  width: 144px;
+  height: 15px;
+}
+
+#right #block-views--exp-devzone_blogs-page_3 .block-content {
+  padding-bottom: 0px;
+}
+
+#block-views--exp-devzone_blogs-page_3 .button {
+  margin-top: 0px;
+}
+
+#block-views--exp-devzone_blogs-page_3 .form-item .description {
+  color: #666;
+  font-size: 11px;
+  padding: 0px;
+}
+
+#block-views--exp-devzone_blogs-page_3 .date-views-filter-wrapper {
+  min-width: 0px;
+}
+
+#block-views--exp-devzone_blogs-page_3 #edit-date-filter-value-month {
+  width: 80px;
+  font-size: 11px;
+  margin-right: 0px;
+}
+
+#block-views--exp-devzone_blogs-page_3 #edit-date-filter-value-year {
+  width: 70px;
+  font-size: 11px;
+  margin-right: 0px;
+}
+
+#block-views--exp-devzone_blogs-page_3 .date-month {
+  float: left;
+}
+
+#block-views--exp-devzone_blogs-page_3 .date-year {
+  float: right;
+}
+
+#block-views--exp-devzone_blogs-page_3 .container-inline-date.date-clear-block {
+  margin-right: 0px;
+}
+
+/*Blog Tags*/
+.blog-table {
+  margin-top: 0px;
+  margin-left: -15px;
+}
+
+.comment_count {
+  float: right;
+}
+
+/*code block*/
+.prose pre, .prose blockquote, .prose div.codeblock {
+  line-height: 20px;
+  background: white;
+  padding: 4px 9px;
+  border: white;
+  border-left: white;
+}
+
+/* Pretty Print */
+pre.prettyprint {
+  border: 1px
+  solid #888;
+  margin: 5px;
+  padding: 10px;
+  overflow: auto;
+}

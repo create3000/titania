@@ -400,27 +400,18 @@ main (int argc, char** argv)
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
 
+	float x = 0;
+	
+	for (;;)
 	{
-		__LOG__ << std::endl;
+		float x1 = x;
+		x += 0.1;
 		
-		std::function <void ()> f;
-
-		__LOG__ << std::endl;
-
-		{
-			__LOG__ << std::endl;
-			
-			f = v (A ());
-			
-			__LOG__ << std::endl;
-		}
-
-		__LOG__ << std::endl;
-		
-		f ();
-		
-		__LOG__ << std::endl;
+		if (x == x1)
+			break;
 	}
+
+	std::clog << x << std::endl;
 
 	std::clog << "Function main done." << std::endl;
 	exit (0);

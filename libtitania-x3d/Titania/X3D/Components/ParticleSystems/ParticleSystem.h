@@ -252,6 +252,7 @@ private:
 	};
 
 	class Particle;
+	class Point;
 
 	///  @name Constuction
 
@@ -330,7 +331,10 @@ private:
 	size_t                     writeBuffer;
 	std::array <GLuint, 2>     transformFeedbackId;
 	std::array <GLuint, 2>     particleBufferId;
+	GLuint                     pointFeedbackId;
+	GLuint                     pointBufferId;
 	X3DSFNode <ComposedShader> transformShader;
+	X3DSFNode <ComposedShader> pointShader;
 	X3DParticleEmitterNode*    emitterNode;
 
 	int32_t   particles;

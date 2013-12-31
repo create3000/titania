@@ -1,0 +1,10 @@
+/* $Id: //mis/devmarketing/projects/devzone/release/devzone-0.9.1/sites/all/modules/custom/nvidia_helper/nvidia_helper.css#1 $ */
+#admin-toolbar.vertical {
+  top: 22px !important;
+}
+#admin-toolbar .nolink-li {
+  background-image: none !important;
+}
+#admin-toolbar .nolink {
+  font-size: 1.2em !important;
+}

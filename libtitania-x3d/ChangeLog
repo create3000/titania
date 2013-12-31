@@ -1,3 +1,11 @@
+2013-12-31  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-x3d.cproj:
+	* PointShader.vs:
+	* PointEmitter.vs:
+	* ParticleSystem.h:
+	* ParticleSystem.cpp: 
+
 2013-12-29  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* PointEmitter.h:

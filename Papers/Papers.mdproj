@@ -131,6 +131,47 @@
     <None Include="moz-plugin-diamondx-0.1\test\a.diamondx" />
     <None Include="moz-plugin-diamondx-0.1\test\index.htm" />
     <None Include="xxx\PointingDevice.h" />
+    <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone.html" />
+    <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone-Dateien\3Y23IfCCmlM.html" />
+    <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone-Dateien\NSight_VSE_340x190.jpg" />
+    <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone-Dateien\SPH_Collision.png" />
+    <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone-Dateien\SPH_Density_Curve.png" />
+    <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone-Dateien\SPH_Density_Curve_Move.png" />
+    <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone-Dateien\SPH_Density_Rest.png" />
+    <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone-Dateien\Shield_TADP_220x125.jpg" />
+    <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone-Dateien\TegraNOTE_Android_BuildDebugProfile_340x190.png" />
+    <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone-Dateien\alice_screen_cap_thumb.png" />
+    <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone-Dateien\blog_category_1.jpg" />
+    <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone-Dateien\blog_styles.css" />
+    <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone-Dateien\combined_17.png" />
+    <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone-Dateien\css.css" />
+    <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone-Dateien\css_222122a19e61805d670967be582a682b.css" />
+    <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone-Dateien\css_40c75ebb84d7278683d4fe50be793fa0.css" />
+    <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone-Dateien\css_554018dee13eb4b75826d875bc914c4a.css" />
+    <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone-Dateien\cubemap_reflection_15.png" />
+    <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone-Dateien\cubemap_reflection_and_Fresnel_16.png" />
+    <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone-Dateien\diffuse_shaded_08.png" />
+    <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone-Dateien\diffuse_shaded_filtered_09.png" />
+    <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone-Dateien\diffuse_shading_ndotl_11.png" />
+    <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone-Dateien\flowchart_01.png" />
+    <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone-Dateien\fresnel_shading_14.png" />
+    <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone-Dateien\ga.js" />
+    <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone-Dateien\gfe_banner_mini.jpg" />
+    <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone-Dateien\js_a06cd60c7c35c6feff92b6dcbb7a1325.js" />
+    <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone-Dateien\js_e9cd597fd13b6425d71984831efee7ba.js" />
+    <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone-Dateien\liquidcollage.jpg" />
+    <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone-Dateien\normal_buffer_10.png" />
+    <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone-Dateien\nvidia_helper.css" />
+    <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone-Dateien\point_sprite_spheres_02.png" />
+    <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone-Dateien\s_code_us_dev_aut1.js" />
+    <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone-Dateien\specular_shading_13.png" />
+    <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone-Dateien\sphere_depth_03.png" />
+    <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone-Dateien\sphere_normals_from_depth_04.png" />
+    <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone-Dateien\transparency_01.png" />
+    <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone-Dateien\transparency_02.png" />
+    <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone-Dateien\transparency_03.png" />
+    <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone-Dateien\transparency_04.png" />
+    <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone-Dateien\wrapped_diffuse_shading__12.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Quaternion\" />
@@ -140,6 +181,7 @@
     <Folder Include="Modern OpenGL-Dateien\" />
     <Folder Include="natsort-0.1.0\" />
     <Folder Include="moz-plugin-diamondx-0.1\" />
+    <Folder Include="fluid\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="xxx\ImageTexture.cpp" />

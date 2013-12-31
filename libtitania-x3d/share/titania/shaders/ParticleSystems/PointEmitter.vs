@@ -1,5 +1,6 @@
 #version 400
 #extension GL_ARB_vertex_attrib_64bit : enable
+#extension GL_ARB_separate_shader_objects : enable
 
 uniform double time;
 uniform float  deltaTime;
@@ -15,6 +16,7 @@ uniform vec3  velocity [32];
 uniform float turbulence [32];
 uniform int   forces;
 
+layout (location = 0)
 in struct From
 {
 	int    seed;
@@ -38,8 +40,8 @@ to;
 /* Math */
 
 float M_PI    = 3.14159265358979323846;
-float M_PI1_2 = M_PI / 2;
-float M_PI2   = 2 * M_PI;
+float M_PI1_2 = M_PI * 0.5;
+float M_PI2   = 2.0f * M_PI;
 
 /* Random number generation */
 
@@ -68,7 +70,7 @@ random1 ()
 float
 random1 (in float min, in float max)
 {
-	return min + (random1 () * 0.5 + 0.5) * (max - min);
+	return min + (random1 () * 0.5f + 0.5f) * (max - min);
 }
 
 vec3
@@ -89,27 +91,27 @@ quaternion (in vec3 fromVector, in vec3 toVector)
 	vec3  crossvec  = normalize (cross (from, to));
 	float crosslen  = length (crossvec);
 
-	if (crosslen == 0.0)
+	if (crosslen == 0.0f)
 	{
-		if (cos_angle > 0.0)
-			return vec4 (0.0, 0.0, 0.0, 1.0);
+		if (cos_angle > 0.0f)
+			return vec4 (0.0f, 0.0f, 0.0f, 1.0f);
 
 		else
 		{
-			vec3 t = cross (from, vec3 (1.0, 0.0, 0.0));
+			vec3 t = cross (from, vec3 (1.0f, 0.0f, 0.0f));
 
-			if (dot (t, t) == 0.0)
-				t = cross (from, vec3 (0.0, 1.0, 0.0));
+			if (dot (t, t) == 0.0f)
+				t = cross (from, vec3 (0.0f, 1.0f, 0.0f));
 
 			t = normalize (t);
 
-			return vec4 (t, 0.0);
+			return vec4 (t, 0.0f);
 		}
 	}
 	else
 	{
-		crossvec *= sqrt (abs (1.0 - cos_angle) * 0.5);
-		return vec4 (crossvec, sqrt (abs (1.0 + cos_angle) / 2.0));
+		crossvec *= sqrt (abs (1.0f - cos_angle) * 0.5f);
+		return vec4 (crossvec, sqrt (abs (1.0f + cos_angle) * 0.5f));
 	}
 }
 
@@ -147,14 +149,14 @@ multRight (in vec4 lhs, in vec4 rhs)
 vec3
 multVec (in vec4 quat, in vec3 vector)
 {
-	vec4 result = multRight (multRight (quat, vec4 (vector, 0.0)), inverse (quat));
+	vec4 result = multRight (multRight (quat, vec4 (vector, 0.0f)), inverse (quat));
 	return result .xyz;
 }
 
 /* main */
 
 float
-getRandomValue (in float value, in float variation)
+random_variation (in float value, in float variation)
 {
 	return value + value * variation * random1 ();
 }
@@ -165,10 +167,10 @@ getRandomValue (in float value, in float variation)
  */
 
 vec3
-getRandomNormal (in float angle)
+random_normal (in float angle)
 {
 	float theta = random1 () * M_PI;
-	float cphi  = random1 (cos (angle), 1);
+	float cphi  = random1 (cos (angle), 1.0f);
 	float phi   = acos (cphi);
 	float r     = sin (phi);
 
@@ -180,10 +182,10 @@ getRandomNormal (in float angle)
 vec3
 getRandomVelocity ()
 {
-	float randomSpeed = abs (getRandomValue (speed, variation));
+	float randomSpeed = abs (random_variation (speed, variation));
 
-	if (direction == vec3 (0, 0, 0))
-		return randomSpeed * getRandomNormal (M_PI);
+	if (direction == vec3 (0.0f, 0.0f, 0.0f))
+		return randomSpeed * random_normal (M_PI);
 
 	return randomSpeed * direction;
 }
@@ -195,7 +197,7 @@ main ()
 
 	if (time - from .startTime > from .lifetime)
 	{
-		to .lifetime  = getRandomValue (particleLifetime, lifetimeVariation);
+		to .lifetime  = random_variation (particleLifetime, lifetimeVariation);
 		to .position  = position;
 		to .velocity  = getRandomVelocity ();
 		to .startTime = time;
@@ -207,12 +209,14 @@ main ()
 
 		for (int i = 0; i < forces; ++ i)
 		{
-			if (length (velocity [i]) < 0.000001)
+			float speed = length (velocity [i]);
+		
+			if (speed < 1e-6f)
 				continue;
 
-			vec4 rotation = quaternion (vec3 (0, 0, 1), velocity [i]);
-			vec3 normal   = multVec (rotation, getRandomNormal (M_PI * turbulence [i]));
-			v += normal * length (velocity [i]);
+			vec4 rotation = quaternion (vec3 (0.0f, 0.0f, 1.0f), velocity [i]);
+			vec3 normal   = multVec (rotation, random_normal (M_PI * turbulence [i]));
+			v += normal * speed;
 		}
 
 		to .lifetime  = from .lifetime;
