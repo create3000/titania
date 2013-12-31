@@ -72,6 +72,7 @@
 #include <thread>
 #include <unordered_set>
 #include <vector>
+#include <ctime>
 
 #include <giomm.h>
 
@@ -170,20 +171,20 @@ using namespace titania::basic;
 //	std::clog << "remove: " << path .remove_dot_segments () << std::endl;
 //
 //}
-//
-//typedef math::quaternion <float> Quaternionf;
-//typedef math::vector2 <float>    Vector2f;
-//typedef math::vector3 <float>    Vector3f;
-//typedef math::vector4 <float>    Vector4f;
-//typedef math::rotation4 <float>  Rotation4f;
-//typedef math::matrix4 <float>    Matrix4f;
-//typedef math::box2 <float>       Box2f;
-//typedef math::box3 <float>       Box3f;
-//typedef math::cylinder3 <float>  Cylinder3f;
-//typedef math::plane3 <float>     Plane3f;
-//typedef math::line3 <float>      Line3f;
-//typedef math::sphere3 <float>    Sphere3f;
-//
+
+typedef math::quaternion <float> Quaternionf;
+typedef math::vector2 <float>    Vector2f;
+typedef math::vector3 <float>    Vector3f;
+typedef math::vector4 <float>    Vector4f;
+typedef math::rotation4 <float>  Rotation4f;
+typedef math::matrix4 <float>    Matrix4f;
+typedef math::box2 <float>       Box2f;
+typedef math::box3 <float>       Box3f;
+typedef math::cylinder3 <float>  Cylinder3f;
+typedef math::plane3 <float>     Plane3f;
+typedef math::line3 <float>      Line3f;
+typedef math::sphere3 <float>    Sphere3f;
+
 //#include <v8.h>
 //
 //// https://www.homepluspower.info/2010/06/v8-javascript-engine-tutorial-part-1.html
@@ -400,18 +401,35 @@ main (int argc, char** argv)
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
 
-	float x = 0;
+	constexpr int N = 1000000000;
 	
-	for (;;)
 	{
-		float x1 = x;
-		x += 0.1;
+		Vector3f x;
+
+		auto begin = chrono::now ();
 		
-		if (x == x1)
-			break;
+		for (int i = 0; i < N; ++ i)
+			x += Vector3f (2.0f, 3.0f, 4.0f);
+
+		auto end = chrono::now ();
+		
+		std::clog << x << std::endl;
+		std::clog << end - begin << std::endl;
 	}
 
-	std::clog << x << std::endl;
+	{
+		Vector3f x;
+		
+		auto begin = chrono::now ();
+		
+		for (int i = 0; i < N; ++ i)
+			x += Vector3f (2, 3, 4);
+		
+		auto end = chrono::now ();
+		
+		std::clog << x << std::endl;
+		std::clog << end - begin << std::endl;
+	}
 
 	std::clog << "Function main done." << std::endl;
 	exit (0);

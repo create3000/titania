@@ -48,68 +48,24 @@
  *
  ******************************************************************************/
 
-#include "Color.h"
+#ifndef __TITANIA_X3D_BITS_RANDOM_H__
+#define __TITANIA_X3D_BITS_RANDOM_H__
 
-#include "../../Execution/X3DExecutionContext.h"
+#include "../Types/Numbers.h"
 
 namespace titania {
 namespace X3D {
 
-const std::string Color::componentName  = "Rendering";
-const std::string Color::typeName       = "Color";
-const std::string Color::containerField = "color";
+float
+random1 ();
 
-Color::Fields::Fields () :
-	color (new MFColor ())
-{ }
+float
+random_variation (float, float);
 
-Color::Color (X3DExecutionContext* const executionContext) :
-	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DColorNode (),
-	      fields ()
-{
-	addField (inputOutput, "metadata", metadata ());
-	addField (inputOutput, "color",    color ());
-}
-
-X3DBaseNode*
-Color::create (X3DExecutionContext* const executionContext) const
-{
-	return new Color (executionContext);
-}
-
-void
-Color::addColor (std::vector <Color4f> & colors, int32_t index) const
-{
-	if (index > -1)
-	{
-		const Color3f & color3 = color () [index];
-
-		colors .emplace_back (color3 .r (), color3 .g (), color3 .b (), 1);
-	}
-	else
-		colors .emplace_back (1, 1, 1, 1);
-}
-
-void
-Color::getColor (MFColorRGBA & value) const
-{
-	for (const Color3f & color3 : color ())
-		value .emplace_back (color3 .r (), color3 .g (), color3 .b (), 1);
-}
-
-void
-Color::resize (size_t size)
-{
-	if (color () .empty ())
-		color () .resize (size, SFColor (1, 1, 1));
-
-	else
-	{
-		if (color () .size () < size)
-			color () .resize (size, color () .back ());
-	}
-}
+Vector3f
+random_normal ();
 
 } // X3D
 } // titania
+
+#endif

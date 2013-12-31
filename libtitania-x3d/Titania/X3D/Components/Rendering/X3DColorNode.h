@@ -68,6 +68,10 @@ public:
 	virtual
 	void
 	addColor (std::vector <Color4f>&, int32_t) const = 0;
+	
+	virtual
+	void
+	getColor (MFColorRGBA &) const = 0;
 
 	virtual
 	void

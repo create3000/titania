@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,67 +48,39 @@
  *
  ******************************************************************************/
 
-#include "Color.h"
+#include "Random.h"
 
-#include "../../Execution/X3DExecutionContext.h"
+#include <random>
 
 namespace titania {
 namespace X3D {
 
-const std::string Color::componentName  = "Rendering";
-const std::string Color::typeName       = "Color";
-const std::string Color::containerField = "color";
+static std::uniform_real_distribution <float> distribution (-1, 1);
+static std::default_random_engine             engine;
 
-Color::Fields::Fields () :
-	color (new MFColor ())
-{ }
-
-Color::Color (X3DExecutionContext* const executionContext) :
-	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DColorNode (),
-	      fields ()
+float
+random1 ()
 {
-	addField (inputOutput, "metadata", metadata ());
-	addField (inputOutput, "color",    color ());
+	return distribution (engine);
 }
 
-X3DBaseNode*
-Color::create (X3DExecutionContext* const executionContext) const
+float
+random_variation (float value, float variation)
 {
-	return new Color (executionContext);
+	return value + value * variation * random1 ();
 }
 
-void
-Color::addColor (std::vector <Color4f> & colors, int32_t index) const
+Vector3f
+random_normal ()
 {
-	if (index > -1)
-	{
-		const Color3f & color3 = color () [index];
+	float theta = random1 () * M_PI;
+	float cphi  = random1 ();
+	float phi   = std::acos (cphi);
+	float r     = std::sin (phi);
 
-		colors .emplace_back (color3 .r (), color3 .g (), color3 .b (), 1);
-	}
-	else
-		colors .emplace_back (1, 1, 1, 1);
-}
-
-void
-Color::getColor (MFColorRGBA & value) const
-{
-	for (const Color3f & color3 : color ())
-		value .emplace_back (color3 .r (), color3 .g (), color3 .b (), 1);
-}
-
-void
-Color::resize (size_t size)
-{
-	if (color () .empty ())
-		color () .resize (size, SFColor (1, 1, 1));
-
-	else
-	{
-		if (color () .size () < size)
-			color () .resize (size, color () .back ());
-	}
+	return Vector3f (std::sin (theta) * r,
+	                 std::cos (theta) * r,
+	                 cphi);
 }
 
 } // X3D

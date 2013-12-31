@@ -50,6 +50,7 @@
 
 #include "WindPhysicsModel.h"
 
+#include "../../Bits/Random.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "ParticleSystem.h"
 
@@ -91,33 +92,14 @@ WindPhysicsModel::getForce (X3DParticleEmitterNode* const emitter, MFVec3f & for
 {
 	if (enabled ())
 	{
-		float randomSpeed = std::abs (getRandomValue (speed (), gustiness ()));
+		float randomSpeed = std::abs (random_variation (speed (), gustiness ()));
 		float pressure    = std::pow (10, 2 * std::log (randomSpeed)) * 0.64615;
 
-		Vector3f dir = direction () == Vector3f () ? getRandomNormal () : normalize (direction () .getValue ());
+		Vector3f dir = direction () == Vector3f () ? random_normal () : normalize (direction () .getValue ());
 
 		force      .emplace_back (emitter -> surfaceArea () * pressure * dir);
-		turbulence .emplace_back (this -> turbulence ());
+		turbulence .emplace_back (M_PI * this -> turbulence ());
 	}
-}
-
-float
-WindPhysicsModel::getRandomValue (float value, float variation)
-{
-	return value + value * variation * ParticleSystem::random1 ();
-}
-
-Vector3f
-WindPhysicsModel::getRandomNormal ()
-{
-	float theta = ParticleSystem::random1 () * M_PI;
-	float cphi  = ParticleSystem::random1 ();
-	float phi   = std::acos (cphi);
-	float r     = std::sin (phi);
-
-	return Vector3f (std::sin (theta) * r,
-	                 std::cos (theta) * r,
-	                 cphi);
 }
 
 } // X3D

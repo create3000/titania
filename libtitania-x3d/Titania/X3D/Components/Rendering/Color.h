@@ -105,6 +105,10 @@ public:
 	virtual
 	void
 	addColor (std::vector <Color4f>&, int32_t) const final override;
+	
+	virtual
+	void
+	getColor (MFColorRGBA &) const final override;
 
 	virtual
 	void

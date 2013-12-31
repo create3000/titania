@@ -89,6 +89,12 @@ ColorRGBA::addColor (std::vector <Color4f> & colors, int32_t index) const
 }
 
 void
+ColorRGBA::getColor (MFColorRGBA & value) const
+{
+	value = color ();
+}
+
+void
 ColorRGBA::resize (size_t size)
 {
 	if (color () .empty ())

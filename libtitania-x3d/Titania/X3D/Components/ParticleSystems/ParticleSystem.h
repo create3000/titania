@@ -53,6 +53,7 @@
 
 #include "../ParticleSystems/X3DParticleEmitterNode.h"
 #include "../Shape/X3DShapeNode.h"
+#include "../Rendering/X3DColorNode.h"
 
 #include <array>
 
@@ -172,14 +173,6 @@ public:
 	isActive () const
 	{ return *fields .isActive; }
 
-	MFNode &
-	physics ()
-	{ return *fields .physics; }
-
-	const MFNode &
-	physics () const
-	{ return *fields .physics; }
-
 	SFNode &
 	emitter ()
 	{ return *fields .emitter; }
@@ -187,6 +180,14 @@ public:
 	const SFNode &
 	emitter () const
 	{ return *fields .emitter; }
+
+	MFNode &
+	physics ()
+	{ return *fields .physics; }
+
+	const MFNode &
+	physics () const
+	{ return *fields .physics; }
 
 	SFNode &
 	colorRamp ()
@@ -228,10 +229,6 @@ public:
 	void
 	drawCollision () final override;
 
-	static
-	float
-	random1 ();
-
 	///  @name Destruction
 
 	virtual
@@ -269,16 +266,34 @@ private:
 	set_geometryType ();
 
 	void
+	set_colorKey ();
+
+	void
+	set_texCoordKey ();
+
+	void
 	set_emitter ();
 
 	void
-	set_transform_shader ();
+	set_colorRamp ();
+	
+	void
+	set_color ();
+
+	void
+	set_texCoordRamp ();
 
 	void
 	set_geometry ();
 
 	void
 	set_array_buffers ();
+
+	void
+	set_transform_shader ();
+
+	void
+	set_point_shader ();
 
 	///  @name Operations
 
@@ -318,8 +333,8 @@ private:
 		MFFloat* const colorKey;
 		MFFloat* const texCoordKey;
 		SFBool* const isActive;
-		MFNode* const physics;
 		SFNode* const emitter;
+		MFNode* const physics;
 		SFNode* const colorRamp;
 		SFNode* const texCoordRamp;
 	};
@@ -336,6 +351,7 @@ private:
 	X3DSFNode <ComposedShader> transformShader;
 	X3DSFNode <ComposedShader> pointShader;
 	X3DParticleEmitterNode*    emitterNode;
+	X3DSFNode <X3DColorNode>   colorRampNode;
 
 	int32_t   particles;
 	time_type creationTime;

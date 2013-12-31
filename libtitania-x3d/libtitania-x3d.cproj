@@ -614,6 +614,7 @@
     <None Include="Titania\X3D\Miscellaneous\X3DTexture.h" />
     <None Include="share\titania\shaders\ParticleSystems\PointEmitter.vs" />
     <None Include="share\titania\shaders\ParticleSystems\PointShader.vs" />
+    <None Include="Titania\X3D\Bits\Random.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1072,6 +1073,7 @@
     <Compile Include="Titania\X3D\Browser\Viewer\PlaneViewer.cpp" />
     <Compile Include="Titania\X3D\Thread\Texture3DLoader.cpp" />
     <Compile Include="Titania\X3D\Miscellaneous\X3DTexture.cpp" />
+    <Compile Include="Titania\X3D\Bits\Random.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

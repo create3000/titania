@@ -45,9 +45,8 @@ float M_PI2   = 2.0f * M_PI;
 
 /* Random number generation */
 
-#define RAND_MAX 0x7fffffff
-
-int seed = 1;
+int RAND_MAX = 0x7fffffff;
+int seed     = 1;
 
 void
 srand (in int value)
@@ -70,13 +69,44 @@ random1 ()
 float
 random1 (in float min, in float max)
 {
-	return min + (random1 () * 0.5f + 0.5f) * (max - min);
+	return min + fract (random1 ()) * (max - min);
+}
+
+/* 
+ * http://www.jasondavies.com/maps/random-points/
+ * http://mathworld.wolfram.com/SpherePointPicking.html
+ */
+
+vec3
+random_normal ()
+{
+	float theta = random1 () * M_PI;
+	float cphi  = random1 ();
+	float phi   = acos (cphi);
+	float r     = sin (phi);
+
+	return vec3 (sin (theta) * r,
+	             cos (theta) * r,
+	             cphi);
 }
 
 vec3
-random3 ()
+random_normal (in float angle)
 {
-	return vec3 (random1 (), random1 (), random1 ());
+	float theta = random1 () * M_PI;
+	float cphi  = random1 (cos (angle), 1.0f);
+	float phi   = acos (cphi);
+	float r     = sin (phi);
+
+	return vec3 (sin (theta) * r,
+	             cos (theta) * r,
+	             cphi);
+}
+
+float
+random_variation (in float value, in float variation)
+{
+	return value + value * variation * random1 ();
 }
 
 /* Rotation */
@@ -155,37 +185,13 @@ multVec (in vec4 quat, in vec3 vector)
 
 /* main */
 
-float
-random_variation (in float value, in float variation)
-{
-	return value + value * variation * random1 ();
-}
-
-/* 
- * http://www.jasondavies.com/maps/random-points/
- * http://mathworld.wolfram.com/SpherePointPicking.html
- */
-
-vec3
-random_normal (in float angle)
-{
-	float theta = random1 () * M_PI;
-	float cphi  = random1 (cos (angle), 1.0f);
-	float phi   = acos (cphi);
-	float r     = sin (phi);
-
-	return vec3 (sin (theta) * r,
-	             cos (theta) * r,
-	             cphi);
-}
-
 vec3
 getRandomVelocity ()
 {
 	float randomSpeed = abs (random_variation (speed, variation));
 
 	if (direction == vec3 (0.0f, 0.0f, 0.0f))
-		return randomSpeed * random_normal (M_PI);
+		return randomSpeed * random_normal ();
 
 	return randomSpeed * direction;
 }
@@ -215,7 +221,7 @@ main ()
 				continue;
 
 			vec4 rotation = quaternion (vec3 (0.0f, 0.0f, 1.0f), velocity [i]);
-			vec3 normal   = multVec (rotation, random_normal (M_PI * turbulence [i]));
+			vec3 normal   = multVec (rotation, random_normal (turbulence [i]));
 			v += normal * speed;
 		}
 

@@ -51,6 +51,7 @@
 #include "ParticleSystem.h"
 
 #include "../../Bits/config.h"
+#include "../../Bits/Random.h"
 #include "../../Bits/Cast.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
@@ -60,7 +61,6 @@
 #include "X3DParticlePhysicsModelNode.h"
 
 #include <cstddef>
-#include <random>
 
 #include "../../Debug.h"
 
@@ -129,8 +129,8 @@ ParticleSystem::Fields::Fields () :
 	         colorKey (new MFFloat ()),
 	      texCoordKey (new MFFloat ()),
 	         isActive (new SFBool ()),
-	          physics (new MFNode ()),
 	          emitter (new SFNode ()),
+	          physics (new MFNode ()),
 	        colorRamp (new SFNode ()),
 	     texCoordRamp (new SFNode ())
 { }
@@ -149,6 +149,7 @@ ParticleSystem::ParticleSystem (X3DExecutionContext* const executionContext) :
 	    transformShader (),
 	        pointShader (),
 	        emitterNode (nullptr),
+	      colorRampNode (),
 	          particles (0),
 	       creationTime (0)
 {
@@ -169,14 +170,14 @@ ParticleSystem::ParticleSystem (X3DExecutionContext* const executionContext) :
 
 	addField (initializeOnly, "bboxSize",          bboxSize ());
 	addField (initializeOnly, "bboxCenter",        bboxCenter ());
-	addField (initializeOnly, "physics",           physics ());
 	addField (initializeOnly, "emitter",           emitter ());
+	addField (initializeOnly, "physics",           physics ());
 	addField (initializeOnly, "colorRamp",         colorRamp ());
 	addField (initializeOnly, "texCoordRamp",      texCoordRamp ());
 	addField (inputOutput,    "appearance",        appearance ());
 	addField (inputOutput,    "geometry",          geometry ());
 
-	addChildren (transformShader, pointShader);
+	addChildren (transformShader, pointShader, colorRampNode);
 }
 
 X3DBaseNode*
@@ -220,14 +221,20 @@ ParticleSystem::initialize ()
 		maxParticles ()      .addInterest (this, &ParticleSystem::set_array_buffers);
 		particleLifetime ()  .addInterest (this, &ParticleSystem::set_array_buffers);
 		lifetimeVariation () .addInterest (this, &ParticleSystem::set_array_buffers);
+		colorKey ()          .addInterest (this, &ParticleSystem::set_colorKey);
+		texCoordKey ()       .addInterest (this, &ParticleSystem::set_texCoordKey);
 		emitter ()           .addInterest (this, &ParticleSystem::set_emitter);
-		emitter ()           .addInterest (this, &ParticleSystem::set_transform_shader);
+		colorRamp ()         .addInterest (this, &ParticleSystem::set_colorRamp);
+		texCoordRamp ()      .addInterest (this, &ParticleSystem::set_texCoordRamp);
 		geometry ()          .addInterest (this, &ParticleSystem::set_geometry);
 
 		set_enabled ();
 		set_geometryType ();
+		set_colorKey ();
+		set_texCoordKey ();
 		set_emitter ();
-		set_transform_shader ();
+		set_colorRamp ();
+		set_texCoordRamp ();
 		set_geometry ();
 	}
 }
@@ -277,19 +284,22 @@ ParticleSystem::set_geometryType ()
 
 	// Shader
 
-	X3DSFNode <ShaderPart> vertexShader = new ShaderPart (getExecutionContext ());
-	vertexShader -> url () = { get_shader ("ParticleSystems/PointShader.vs") .str () };
-	vertexShader -> setup ();
+	set_point_shader ();
+}
 
-	pointShader = new ComposedShader (getExecutionContext ());
-	pointShader -> addUserDefinedField (inputOutput, "time", new SFTime ());
+void
+ParticleSystem::set_colorKey ()
+{
+	pointShader -> setField <MFFloat> ("colorKey", colorKey ());
+	pointShader -> setField <SFInt32> ("colors",   int32_t (colorKey () .size ()));
 
-	pointShader -> language () = "GLSL";
-	pointShader -> parts () .emplace_back (vertexShader);
-	pointShader -> setTransformFeedbackVaryings ({
-		"To.position", "To.color"
-	});
-	pointShader -> setup ();
+	set_color ();
+}
+
+void
+ParticleSystem::set_texCoordKey ()
+{
+
 }
 
 void
@@ -299,40 +309,49 @@ ParticleSystem::set_emitter ()
 
 	emitterNode = x3d_cast <X3DParticleEmitterNode*> (emitter ());
 
-	if (emitterNode)
-		return;
+	if (not emitterNode)
+		emitterNode = getBrowser () -> getBrowserOptions () -> emitter ();
 
-	emitterNode = getBrowser () -> getBrowserOptions () -> emitter ();
+	// Shader
+	
+	set_transform_shader ();
 }
 
 void
-ParticleSystem::set_transform_shader ()
+ParticleSystem::set_colorRamp ()
 {
-	// Shader
+	if (colorRampNode)
+		colorRampNode -> removeInterest (this, &ParticleSystem::set_color);
 
-	X3DSFNode <ShaderPart> vertexShader = new ShaderPart (getExecutionContext ());
-	vertexShader -> url () = emitterNode -> getShaderUrl ();
-	vertexShader -> setup ();
+	colorRampNode = colorRamp ();
+	
+	if (colorRampNode)
+		colorRampNode -> addInterest (this, &ParticleSystem::set_color);
 
-	transformShader = new ComposedShader (getExecutionContext ());
-	transformShader -> addUserDefinedField (inputOutput, "time",              new SFTime ());
-	transformShader -> addUserDefinedField (inputOutput, "deltaTime",         new SFFloat ());
-	transformShader -> addUserDefinedField (inputOutput, "particleLifetime",  new SFFloat ());
-	transformShader -> addUserDefinedField (inputOutput, "lifetimeVariation", new SFFloat ());
-	transformShader -> addUserDefinedField (inputOutput, "position",          new SFVec3f ());
-	transformShader -> addUserDefinedField (inputOutput, "direction",         new SFVec3f ());
-	transformShader -> addUserDefinedField (inputOutput, "speed",             new SFFloat ());
-	transformShader -> addUserDefinedField (inputOutput, "variation",         new SFFloat ());
-	transformShader -> addUserDefinedField (inputOutput, "velocity",          new MFVec3f ());
-	transformShader -> addUserDefinedField (inputOutput, "turbulence",        new MFFloat ());
-	transformShader -> addUserDefinedField (inputOutput, "forces",            new SFInt32 ());
+	set_color ();
+}
 
-	transformShader -> language () = "GLSL";
-	transformShader -> parts () .emplace_back (vertexShader);
-	transformShader -> setTransformFeedbackVaryings ({
-		"To.seed", "To.lifetime", "To.position", "To.velocity", /*"gl_SkipComponents1",*/ "To.startTime"
-	});
-	transformShader -> setup ();
+void
+ParticleSystem::set_color ()
+{
+	if (colorRampNode)
+	{
+		MFColorRGBA color;
+		
+		colorRampNode -> getColor (color);
+		
+		color .resize (colorKey () .size ());
+
+		pointShader -> setField <MFColorRGBA> ("colorRamp", color);
+	}
+	else
+		pointShader -> setField <SFInt32> ("colors", 0);
+}
+
+void
+ParticleSystem::set_texCoordRamp ()
+{
+
 }
 
 void
@@ -371,10 +390,64 @@ ParticleSystem::set_array_buffers ()
 	creationTime = chrono::now ();
 }
 
+void
+ParticleSystem::set_transform_shader ()
+{
+	// Shader
+
+	X3DSFNode <ShaderPart> vertexShader = new ShaderPart (getExecutionContext ());
+	vertexShader -> url () = emitterNode -> getShaderUrl ();
+	vertexShader -> setup ();
+
+	transformShader = new ComposedShader (getExecutionContext ());
+	transformShader -> addUserDefinedField (inputOutput, "time",              new SFTime ());
+	transformShader -> addUserDefinedField (inputOutput, "deltaTime",         new SFFloat ());
+	transformShader -> addUserDefinedField (inputOutput, "particleLifetime",  new SFFloat ());
+	transformShader -> addUserDefinedField (inputOutput, "lifetimeVariation", new SFFloat ());
+	transformShader -> addUserDefinedField (inputOutput, "position",          new SFVec3f ());
+	transformShader -> addUserDefinedField (inputOutput, "direction",         new SFVec3f ());
+	transformShader -> addUserDefinedField (inputOutput, "speed",             new SFFloat ());
+	transformShader -> addUserDefinedField (inputOutput, "variation",         new SFFloat ());
+	transformShader -> addUserDefinedField (inputOutput, "velocity",          new MFVec3f ());
+	transformShader -> addUserDefinedField (inputOutput, "turbulence",        new MFFloat ());
+	transformShader -> addUserDefinedField (inputOutput, "forces",            new SFInt32 ());
+
+	transformShader -> language () = "GLSL";
+	transformShader -> parts () .emplace_back (vertexShader);
+	transformShader -> setTransformFeedbackVaryings ({
+		"To.seed", "To.lifetime", "To.position", "To.velocity", /*"gl_SkipComponents1",*/ "To.startTime"
+	});
+	transformShader -> setup ();
+}
+
+void
+ParticleSystem::set_point_shader ()
+{
+	X3DSFNode <ShaderPart> vertexShader = new ShaderPart (getExecutionContext ());
+	vertexShader -> url () = { get_shader ("ParticleSystems/PointShader.vs") .str () };
+	vertexShader -> setup ();
+
+	pointShader = new ComposedShader (getExecutionContext ());
+	pointShader -> addUserDefinedField (inputOutput, "time",   new SFTime ());
+	pointShader -> addUserDefinedField (inputOutput, "colorKey",  new MFFloat ());
+	pointShader -> addUserDefinedField (inputOutput, "colorRamp", new MFColorRGBA ());
+	pointShader -> addUserDefinedField (inputOutput, "colors",    new SFInt32 ());
+
+	pointShader -> language () = "GLSL";
+	pointShader -> parts () .emplace_back (vertexShader);
+	pointShader -> setTransformFeedbackVaryings ({
+		"To.position", "To.color"
+	});
+	pointShader -> setup ();
+}
+
 bool
 ParticleSystem::isTransparent () const
 {
 	if (getAppearance () -> isTransparent ())
+		return true;
+
+	if (colorRampNode and colorRampNode -> isTransparent ())
 		return true;
 
 	return false;
@@ -580,8 +653,14 @@ ParticleSystem::drawGeometry ()
 	glEnableVertexAttribArray (VERTEX_INDEX);
 	glVertexAttribPointer (VERTEX_INDEX, 3, GL_FLOAT, GL_FALSE, sizeof (Point), (const GLvoid*) offsetof (Point, position));
 
-	glEnableVertexAttribArray (COLOR_INDEX);
-	glVertexAttribPointer (COLOR_INDEX, 4, GL_FLOAT, GL_FALSE, sizeof (Point), (const GLvoid*) offsetof (Point, color));
+	if (colorRampNode and not colorKey () .empty ())
+	{
+		if (colorRampNode -> isTransparent ()) 
+			glEnable (GL_BLEND);
+
+		glEnableVertexAttribArray (COLOR_INDEX);
+		glVertexAttribPointer (COLOR_INDEX, 4, GL_FLOAT, GL_FALSE, sizeof (Point), (const GLvoid*) offsetof (Point, color));
+	}
 
 	glDrawArrays (GL_POINTS, 0, particles);
 
@@ -590,21 +669,12 @@ ParticleSystem::drawGeometry ()
 	glBindBuffer (GL_ARRAY_BUFFER, 0);
 }
 
-float
-ParticleSystem::random1 ()
-{
-	static std::uniform_real_distribution <float> distribution (-1, 1);
-	static std::default_random_engine             engine;
-	return distribution (engine);
-}
-
 void
 ParticleSystem::dispose ()
 {
-	__LOG__ << std::endl;
-
 	transformShader .dispose ();
 	pointShader     .dispose ();
+	colorRampNode   .dispose ();
 
 	if (transformFeedbackId [0])
 		glDeleteTransformFeedbacks (2, transformFeedbackId .data ());

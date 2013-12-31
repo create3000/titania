@@ -1,5 +1,23 @@
 2013-12-31  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Random.h:
+	* Random.cpp:
+	* Color.h:
+	* Color.cpp:
+	* ColorRGBA.h:
+	* ColorRGBA.cpp:
+	* X3DColorNode.h:
+	* PointShader.vs:
+	* PointEmitter.vs:
+	* ParticleSystem.h:
+	* ParticleSystem.cpp:
+	* WindPhysicsModel.h:
+	* WindPhysicsModel.cpp: 
+
+2013-12-31  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* libtitania-x3d.cproj:
 	* PointShader.vs:
 	* PointEmitter.vs:

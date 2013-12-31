@@ -3,6 +3,9 @@
 #extension GL_ARB_separate_shader_objects : enable
 
 uniform double time;
+uniform float  colorKey [128];
+uniform vec4   colorRamp [128];
+uniform int    colors;
 
 layout (location = 0)
 in struct From
@@ -26,5 +29,12 @@ void
 main ()
 {
 	to .position = from .position;
-	to .color    = vec4 (1.0f, 0.0f, 0.0f, 0.05f);
+	
+	if (colors == 0)
+		to .color = vec4 (1.0f, 1.0f, 1.0f, 1.0f);
+
+	else
+	{
+		to .color = colorRamp [0];
+	}
 }

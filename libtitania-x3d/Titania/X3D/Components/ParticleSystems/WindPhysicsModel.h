@@ -130,14 +130,6 @@ public:
 
 private:
 
-	static
-	float
-	getRandomValue (float, float);
-
-	static
-	Vector3f
-	getRandomNormal ();
-
 	///  @name Static members
 
 	static const std::string componentName;
