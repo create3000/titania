@@ -56,6 +56,9 @@
 namespace titania {
 namespace X3D {
 
+int32_t
+randomi ();
+
 float
 random1 ();
 

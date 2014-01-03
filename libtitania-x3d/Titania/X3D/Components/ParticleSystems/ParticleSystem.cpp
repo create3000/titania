@@ -85,16 +85,12 @@ struct ParticleSystem::Particle
 	///  @name Construction
 
 	Particle () :
-		     seed (random1 () * PARTICLE_RAND_MAX),
+		     seed (randomi ()),
 		 lifetime (0),
 		 position (),
 		 velocity (),
 		startTime (0)
 	{ }
-
-	///  @name Static members
-
-	static constexpr int32_t PARTICLE_RAND_MAX = 0x7fffffff;
 
 	///  @name Members
 
@@ -290,9 +286,6 @@ ParticleSystem::set_geometryType ()
 void
 ParticleSystem::set_colorKey ()
 {
-	pointShader -> setField <MFFloat> ("colorKey", colorKey ());
-	pointShader -> setField <SFInt32> ("colors",   int32_t (colorKey () .size ()));
-
 	set_color ();
 }
 
@@ -336,13 +329,15 @@ ParticleSystem::set_color ()
 {
 	if (colorRampNode)
 	{
-		MFColorRGBA color;
+		MFVec4f color;
 		
-		colorRampNode -> getColor (color);
+		colorRampNode -> getHSVA (color);
 		
 		color .resize (colorKey () .size ());
 
-		pointShader -> setField <MFColorRGBA> ("colorRamp", color);
+		pointShader -> setField <MFFloat> ("colorKey",  colorKey ());
+		pointShader -> setField <MFVec4f> ("colorRamp", color);
+		pointShader -> setField <SFInt32> ("colors",    int32_t (colorKey () .size ()));
 	}
 	else
 		pointShader -> setField <SFInt32> ("colors", 0);
@@ -424,13 +419,13 @@ void
 ParticleSystem::set_point_shader ()
 {
 	X3DSFNode <ShaderPart> vertexShader = new ShaderPart (getExecutionContext ());
-	vertexShader -> url () = { get_shader ("ParticleSystems/PointShader.vs") .str () };
+	vertexShader -> url () = { get_shader ("ParticleSystems/ColorShader.vs") .str () };
 	vertexShader -> setup ();
 
 	pointShader = new ComposedShader (getExecutionContext ());
 	pointShader -> addUserDefinedField (inputOutput, "time",   new SFTime ());
 	pointShader -> addUserDefinedField (inputOutput, "colorKey",  new MFFloat ());
-	pointShader -> addUserDefinedField (inputOutput, "colorRamp", new MFColorRGBA ());
+	pointShader -> addUserDefinedField (inputOutput, "colorRamp", new MFVec4f ());
 	pointShader -> addUserDefinedField (inputOutput, "colors",    new SFInt32 ());
 
 	pointShader -> language () = "GLSL";
@@ -553,7 +548,7 @@ ParticleSystem::prepareEvents ()
 	else
 		transformShader -> setField <SFInt32> ("forces", 0, true);
 
-	//pointShader -> setField <SFTime> ("time", getBrowser () -> getCurrentTime ());
+	pointShader -> setField <SFTime> ("time", getBrowser () -> getCurrentTime ());
 }
 
 void
@@ -561,10 +556,11 @@ ParticleSystem::update ()
 {
 	// Create new particles if possible.
 
-	int32_t createParticles = (getCurrentTime () - creationTime) * maxParticles () / particleLifetime ();
+	time_type now             = chrono::now ();
+	int32_t   createParticles = (now - creationTime) * maxParticles () / particleLifetime ();
 
 	if (createParticles)
-		creationTime = getCurrentTime ();
+		creationTime = now;
 
 	particles = std::min (std::max (0, maxParticles () .getValue ()), createParticles + particles);
 

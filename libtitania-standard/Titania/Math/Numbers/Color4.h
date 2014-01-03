@@ -190,7 +190,7 @@ public:
 
 	///  Return hsv components of this color.
 	void
-	setHSV (const Type &, const Type &, const Type &);
+	setHSV (const Type &, Type, Type);
 
 	///  Set hsv components of this color.
 	void
@@ -226,64 +226,64 @@ color4 <Type>::get (T & r, T & g, T & b, T & a) const
 
 template <typename Type>
 void
-color4 <Type>::setHSV (const Type & h, const Type & s, const Type & v)
+color4 <Type>::setHSV (const Type & h, Type s, Type v)
 {
 	// H is given on [0, 2 * Pi]. S and V are given on [0, 1].
 	// RGB are each returned on [0, 1].
 
-	Type _v = clamp (v, Type (), Type (1));
+	v = clamp (v, Type (), Type (1));
 
 	if (s == 0)
 	{
 		// achromatic (grey)
-		value [0] = value [1] = value [2] = _v;
+		value [0] = value [1] = value [2] = v;
 		return;
 	}
 
-	Type _s = clamp (s, Type (), Type (1));
+	s = clamp (s, Type (), Type (1));
 
-	Type w = degree (interval (h, Type (), Type (2 * Type (Type (M_PI))))) / 60; // sector 0 to 5
+	Type w = degree (interval (h, Type (), Type (M_PI2))) / 60; // sector 0 to 5
 
 	Type i = std::floor (w);
-	Type f = w - i;                                                         // factorial part of h
-	Type p = _v * (1 - _s);
-	Type q = _v * (1 - _s * f);
-	Type t = _v * (1 - _s * (1 - f));
+	Type f = w - i;                                             // factorial part of h
+	Type p = v * (1 - s);
+	Type q = v * (1 - s * f);
+	Type t = v * (1 - s * (1 - f));
 
 	switch ((size_t) i)
 	{
 		case 0:
-			value [0] = _v;
+			value [0] = v;
 			value [1] = t;
 			value [2] = p;
 			return;
 
 		case 1:
 			value [0] = q;
-			value [1] = _v;
+			value [1] = v;
 			value [2] = p;
 			return;
 
 		case 2:
 			value [0] = p;
-			value [1] = _v;
+			value [1] = v;
 			value [2] = t;
 			return;
 
 		case 3:
 			value [0] = p;
 			value [1] = q;
-			value [2] = _v;
+			value [2] = v;
 			return;
 
 		case 4:
 			value [0] = t;
 			value [1] = p;
-			value [2] = _v;
+			value [2] = v;
 			return;
 
 		default:
-			value [0] = _v;
+			value [0] = v;
 			value [1] = p;
 			value [2] = q;
 			return;

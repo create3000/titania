@@ -108,7 +108,7 @@ public:
 	
 	virtual
 	void
-	getColor (MFColorRGBA &) const final override;
+	getHSVA (MFVec4f &) const final override;
 
 	virtual
 	void

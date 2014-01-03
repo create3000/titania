@@ -52,7 +52,6 @@
 
 #include "../../Bits/Random.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "ParticleSystem.h"
 
 namespace titania {
 namespace X3D {

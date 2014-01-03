@@ -51,17 +51,25 @@
 #include "Random.h"
 
 #include <random>
+#include <limits>
 
 namespace titania {
 namespace X3D {
 
-static std::uniform_real_distribution <float> distribution (-1, 1);
-static std::default_random_engine             engine;
+static std::uniform_int_distribution <int32_t> uniform_int_distribution (std::numeric_limits <int32_t>::min ());
+static std::uniform_real_distribution <float>  uniform_real_distribution (-1, 1);
+static std::default_random_engine              random_engine;
+
+int32_t
+randomi ()
+{
+	return uniform_int_distribution (random_engine);
+}
 
 float
 random1 ()
 {
-	return distribution (engine);
+	return uniform_real_distribution (random_engine);
 }
 
 float

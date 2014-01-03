@@ -71,7 +71,7 @@ public:
 	
 	virtual
 	void
-	getColor (MFColorRGBA &) const = 0;
+	getHSVA (MFVec4f &) const = 0;
 
 	virtual
 	void

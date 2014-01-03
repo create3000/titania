@@ -196,10 +196,30 @@ getRandomVelocity ()
 	return randomSpeed * direction;
 }
 
+vec3
+getVelocity ()
+{
+	vec3 v = from .velocity;
+
+	for (int i = 0; i < forces; ++ i)
+	{
+		float speed = length (velocity [i]);
+	
+		if (speed < 1e-6f)
+			continue;
+
+		vec4 rotation = quaternion (vec3 (0.0f, 0.0f, 1.0f), velocity [i]);
+		vec3 normal   = multVec (rotation, random_normal (turbulence [i]));
+		v += normal * speed;
+	}
+
+	return v;
+}
+
 void
 main ()
 {
-	srand (from .seed);
+	srand (from .seed + gl_VertexID);
 
 	if (time - from .startTime > from .lifetime)
 	{
@@ -211,23 +231,11 @@ main ()
 	}
 	else
 	{
-		vec3 v = from .velocity;
-
-		for (int i = 0; i < forces; ++ i)
-		{
-			float speed = length (velocity [i]);
-		
-			if (speed < 1e-6f)
-				continue;
-
-			vec4 rotation = quaternion (vec3 (0.0f, 0.0f, 1.0f), velocity [i]);
-			vec3 normal   = multVec (rotation, random_normal (turbulence [i]));
-			v += normal * speed;
-		}
-
+		vec3 velocity = getVelocity ();
+	
 		to .lifetime  = from .lifetime;
-		to .position  = from .position + v * deltaTime;
-		to .velocity  = v;
+		to .position  = from .position + velocity * deltaTime;
+		to .velocity  = velocity;
 		to .startTime = from .startTime;
 		to .seed      = seed;
 	}

@@ -143,13 +143,11 @@ static
 Type
 interval (const Type & value, const Type & low, const Type & high)
 {
-	Type range = high - low;
-
 	if (value >= high)
-		return std::fmod ((value - low), range) + low;
+		return std::fmod ((value - low), high - low) + low;
 
 	if (value < low)
-		return std::fmod ((value - high), range) + high;
+		return std::fmod ((value - high), high - low) + high;
 
 	return value;
 }

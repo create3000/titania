@@ -78,6 +78,12 @@
 
 #include <cstdarg>
 
+#ifdef __APPLE__
+#include <OpenCL/opencl.h>
+#else
+#include <CL/cl.h>
+#endif
+
 using namespace titania;
 using namespace titania::basic;
 
@@ -219,178 +225,6 @@ typedef math::sphere3 <float>    Sphere3f;
 //
 //	return false;
 //}
-//
-//template <class Type>
-//class A
-//{
-//public:
-//
-//	A ()
-//	{
-//		__LOG__ << std::endl;
-//	}
-//
-//	A (const A &)
-//	{
-//		__LOG__ << std::endl;
-//	}
-//
-//	template <class Up>
-//	A (const A <Up> &)
-//	{
-//		__LOG__ << std::endl;
-//	}
-//
-//};
-//
-//std::string
-//sprintf (const char* fmt, ...)
-//{
-//	char*   ret = nullptr;
-//	va_list ap;
-//
-//	va_start (ap, fmt);
-//	int n = vasprintf (&ret, fmt, ap);
-//	va_end (ap);
-//
-//	std::string str (ret, n);
-//	free (ret);
-//
-//	return str;
-//}
-//
-//basic::ifilestream
-//get_stream (const basic::uri & uri)
-//{
-//	basic::ifilestream istream (uri, 3000);
-//
-//	__LOG__ << "bool: " << bool (istream) << std::endl;
-//
-//	istream .send ();
-//	__LOG__ << "bool: " << bool (istream) << std::endl;
-//	__LOG__ << "is_compressed: " << istream .is_compressed () << std::endl;
-//
-//	return istream;
-//}
-//
-//namespace Test {
-//
-//class Box3f
-//{
-//public:
-//
-//	Box3f (const Vector3f & size, const Vector3f & center)
-//	{
-//		matrix = Matrix4f (size .x () * 0.5f, 0, 0, 0,
-//		                   0, size .y () * 0.5f, 0, 0,
-//		                   0, 0, size .z () * 0.5f, 0,
-//		                   center .x (), center .y (), center .z (), 1);
-//	}
-//
-//	void
-//	center () const
-//	{
-//		std::clog << matrix .translation () << std::endl;
-//	}
-//
-//	void
-//	size () const
-//	{
-//		auto x = Vector3f (matrix [0] [0], matrix [0] [1], matrix [0] [2]);
-//		auto y = Vector3f (matrix [1] [0], matrix [1] [1], matrix [1] [2]);
-//		auto z = Vector3f (matrix [2] [0], matrix [2] [1], matrix [2] [2]);
-//
-//		auto r1 =  x + y;
-//		auto r2 = -x + y;
-//		auto r3 = -x - y;
-//		auto r4 =  x - y;
-//
-//		auto p1 = r1 + z;
-//		auto p2 = r2 + z;
-//		auto p3 = r3 + z;
-//		auto p4 = r4 + z;
-//
-//		auto p5 = r1 - z;
-//		auto p6 = r2 - z;
-//		auto p7 = r3 - z;
-//		auto p8 = r4 - z;
-//
-//		auto min = math::min (p1, p2);
-//
-//		min = math::min (min, p3);
-//		min = math::min (min, p4);
-//		min = math::min (min, p5);
-//		min = math::min (min, p6);
-//		min = math::min (min, p7);
-//		min = math::min (min, p8);
-//
-//		auto max = math::max (p1, p2);
-//		max = math::max (max, p3);
-//		max = math::max (max, p4);
-//		max = math::max (max, p5);
-//		max = math::max (max, p6);
-//		max = math::max (max, p7);
-//		max = math::max (max, p8);
-//
-//		std::clog << max - min << std::endl;
-//	}
-//
-//	Box3f &
-//	rotate (const Rotation4f & rotation)
-//	{
-//
-//		matrix = matrix * Matrix4f (rotation);
-//		return *this;
-//	}
-//
-//	void
-//	print () const
-//	{
-//		std::clog << matrix << std::endl;
-//	}
-//
-//private:
-//
-//	Matrix4f matrix;
-//
-//};
-//
-//}
-//
-
-class A
-{
-public:
-
-	A ()
-	{
-		__LOG__ << std::endl;
-	}
-
-	A (const A &)
-	{
-		__LOG__ << std::endl;
-	}
-
-	void
-	f () const
-	{
-		__LOG__ << std::endl;
-	}
-
-	~A ()
-	{
-		__LOG__ << std::endl;
-	}
-
-};
-
-template <class ... Args>
-std::function <void ()>
-v (const Args & ... args)
-{
-	return std::bind ([ ] (const Args & ... args) {  }, std::forward <const Args> (args) ...);
-}
 
 int
 main (int argc, char** argv)
