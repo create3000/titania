@@ -85,11 +85,11 @@ struct ParticleSystem::Particle
 	///  @name Construction
 
 	Particle () :
-		     seed (randomi ()),
-		 lifetime (0),
-		 position (),
-		 velocity (),
-		startTime (0)
+		       seed (randomi ()),
+		   lifetime (0),
+		   position (),
+		   velocity (),
+		elapsedTime (std::numeric_limits <float>::max ())
 	{ }
 
 	///  @name Members
@@ -98,7 +98,7 @@ struct ParticleSystem::Particle
 	float lifetime;
 	Vector3f position;
 	Vector3f velocity;
-	double startTime;
+	float elapsedTime;
 
 };
 
@@ -395,7 +395,6 @@ ParticleSystem::set_transform_shader ()
 	vertexShader -> setup ();
 
 	transformShader = new ComposedShader (getExecutionContext ());
-	transformShader -> addUserDefinedField (inputOutput, "time",              new SFTime ());
 	transformShader -> addUserDefinedField (inputOutput, "deltaTime",         new SFFloat ());
 	transformShader -> addUserDefinedField (inputOutput, "particleLifetime",  new SFFloat ());
 	transformShader -> addUserDefinedField (inputOutput, "lifetimeVariation", new SFFloat ());
@@ -410,7 +409,7 @@ ParticleSystem::set_transform_shader ()
 	transformShader -> language () = "GLSL";
 	transformShader -> parts () .emplace_back (vertexShader);
 	transformShader -> setTransformFeedbackVaryings ({
-		"To.seed", "To.lifetime", "To.position", "To.velocity", /*"gl_SkipComponents1",*/ "To.startTime"
+		"To.seed", "To.lifetime", "To.position", "To.velocity", "To.elapsedTime"
 	});
 	transformShader -> setup ();
 }
@@ -423,7 +422,6 @@ ParticleSystem::set_point_shader ()
 	vertexShader -> setup ();
 
 	pointShader = new ComposedShader (getExecutionContext ());
-	pointShader -> addUserDefinedField (inputOutput, "time",   new SFTime ());
 	pointShader -> addUserDefinedField (inputOutput, "colorKey",  new MFFloat ());
 	pointShader -> addUserDefinedField (inputOutput, "colorRamp", new MFVec4f ());
 	pointShader -> addUserDefinedField (inputOutput, "colors",    new SFInt32 ());
@@ -518,7 +516,6 @@ ParticleSystem::prepareEvents ()
 {
 	float deltaTime = 1 / getBrowser () -> getCurrentFrameRate ();
 
-	transformShader -> setField <SFTime>  ("time",              getBrowser () -> getCurrentTime ());
 	transformShader -> setField <SFFloat> ("deltaTime",         deltaTime);
 	transformShader -> setField <SFFloat> ("particleLifetime",  particleLifetime (),  true);
 	transformShader -> setField <SFFloat> ("lifetimeVariation", lifetimeVariation (), true);
@@ -547,8 +544,6 @@ ParticleSystem::prepareEvents ()
 	}
 	else
 		transformShader -> setField <SFInt32> ("forces", 0, true);
-
-	pointShader -> setField <SFTime> ("time", getBrowser () -> getCurrentTime ());
 }
 
 void
@@ -580,7 +575,7 @@ ParticleSystem::update ()
 	glVertexAttribPointer  (1, 1, GL_FLOAT,  GL_FALSE, sizeof (Particle), (const GLvoid*) offsetof (Particle, lifetime));
 	glVertexAttribPointer  (2, 3, GL_FLOAT,  GL_FALSE, sizeof (Particle), (const GLvoid*) offsetof (Particle, position));
 	glVertexAttribPointer  (3, 3, GL_FLOAT,  GL_FALSE, sizeof (Particle), (const GLvoid*) offsetof (Particle, velocity));
-	glVertexAttribLPointer (4, 1, GL_DOUBLE, sizeof (Particle), (const GLvoid*) offsetof (Particle, startTime));
+	glVertexAttribPointer  (4, 1, GL_FLOAT,  GL_FALSE, sizeof (Particle), (const GLvoid*) offsetof (Particle, elapsedTime));
 
 	glEnable (GL_RASTERIZER_DISCARD);
 	glBindTransformFeedback (GL_TRANSFORM_FEEDBACK, transformFeedbackId [writeBuffer]);
@@ -615,7 +610,7 @@ ParticleSystem::update ()
 
 	glVertexAttribPointer  (0, 1, GL_FLOAT, GL_FALSE, sizeof (Particle), (const GLvoid*) offsetof (Particle, lifetime));
 	glVertexAttribPointer  (1, 3, GL_FLOAT, GL_FALSE, sizeof (Particle), (const GLvoid*) offsetof (Particle, position));
-	glVertexAttribLPointer (2, 1, GL_DOUBLE, sizeof (Particle), (const GLvoid*) offsetof (Particle, startTime));
+	glVertexAttribPointer  (2, 1, GL_FLOAT, GL_FALSE, sizeof (Particle), (const GLvoid*) offsetof (Particle, elapsedTime));
 
 	glEnable (GL_RASTERIZER_DISCARD);
 	glBindTransformFeedback (GL_TRANSFORM_FEEDBACK, pointFeedbackId);
@@ -644,6 +639,16 @@ ParticleSystem::drawCollision ()
 void
 ParticleSystem::drawGeometry ()
 {
+//	glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [readBuffer]);
+//
+//	glEnableVertexAttribArray (VERTEX_INDEX);
+//	glVertexAttribPointer (VERTEX_INDEX, 3, GL_FLOAT, GL_FALSE, sizeof (Particle), (const GLvoid*) offsetof (Particle, position));
+//
+//	glDrawArrays (GL_POINTS, 0, particles);
+//
+//	glDisableVertexAttribArray (VERTEX_INDEX);
+//	glBindBuffer (GL_ARRAY_BUFFER, 0);
+
 	glBindBuffer (GL_ARRAY_BUFFER, pointBufferId);
 
 	glEnableVertexAttribArray (VERTEX_INDEX);

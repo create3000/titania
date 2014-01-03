@@ -1,5 +1,11 @@
 2014-01-03  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* ColorShader.vs:
+	* PointEmitter.vs:
+	* ParticleSystem.cpp: 
+
+2014-01-03  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* libtitania-x3d.cproj:
 	* Random.h:
 	* Random.cpp:

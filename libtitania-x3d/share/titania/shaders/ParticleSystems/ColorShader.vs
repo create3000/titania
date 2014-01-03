@@ -1,20 +1,17 @@
-#version 400
-#extension GL_ARB_vertex_attrib_64bit : enable
-#extension GL_ARB_separate_shader_objects : enable
+#version 330
 
 #define COLOR_MAX 128
 
-uniform double time;
-uniform float  colorKey [COLOR_MAX];
-uniform vec4   colorRamp [COLOR_MAX];
-uniform int    colors;
+uniform float colorKey [COLOR_MAX];
+uniform vec4  colorRamp [COLOR_MAX];
+uniform int   colors;
 
 layout (location = 0)
 in struct From
 {
-	float  lifetime;
-	vec3   position;
-	double startTime;
+	float lifetime;
+	vec3  position;
+	float elapsedTime;
 }
 from;
 
@@ -27,9 +24,9 @@ to;
 
 /* Math */
 
-float M_PI    = 3.14159265358979323846;
-float M_PI1_2 = M_PI * 0.5;
-float M_PI2   = 2.0f * M_PI;
+const float M_PI    = 3.14159265358979323846;
+const float M_PI1_2 = M_PI / 2;
+const float M_PI2   = 2.0f * M_PI;
 
 /* Algorithms */
 
@@ -65,30 +62,6 @@ upper_bound (in float array [COLOR_MAX], in int count, in float value)
 	return first;
 }
 
-float
-lerp (in float source, in float destination, in float t)
-{
-	return source + t * (destination - source);
-}
-
-float
-fmod (in float x, in float y)
-{
-	return x - trunc (x / y) * y;
-}
-
-float
-interval (in float value, in float low, in float high)
-{
-	if (value >= high)
-		return fmod (value - low, high - low) + low;
-
-	if (value < low)
-		return fmod (value - high, high - low) + high;
-
-	return value;
-}
-
 /* Color */
 
 vec4
@@ -97,43 +70,43 @@ HSVA (in float h, in float s, in float v, in float a)
 	// H is given on [0, 2 * Pi]. S and V are given on [0, 1].
 	// RGB are each returned on [0, 1].
 
-	float _v = clamp (v, 0.0f, 1.0f);
+	v = clamp (v, 0.0f, 1.0f);
 
 	if (s == 0.0f)
 	{
 		// achromatic (grey)
-		return vec4 (_v, _v, _v, a);
+		return vec4 (v, v, v, a);
 	}
 
-	float _s = clamp (s, 0.0f, 1.0f);
+	s = clamp (s, 0.0f, 1.0f);
 
-	float w = degree (interval (h, 0, M_PI2)) / 60.0f; // sector 0 to 5
+	float w = degree (h) / 60.0f; // sector 0 to 5
 
 	float i = floor (w);
-	float f = w - i;                                                         // factorial part of h
-	float p = _v * (1 - _s);
-	float q = _v * (1 - _s * f);
-	float t = _v * (1 - _s * (1 - f));
+	float f = w - i;              // factorial part of h
+	float p = v * (1 - s);
+	float q = v * (1 - s * f);
+	float t = v * (1 - s * (1 - f));
 
 	switch (int (i))
 	{
 		case 0:
-			return vec4 (_v, t, p, a);
+			return vec4 (v, t, p, a);
 
 		case 1:
-			return vec4 (q, _v, p, a);
+			return vec4 (q, v, p, a);
 
 		case 2:
-			return vec4 (p, _v, t, a);
+			return vec4 (p, v, t, a);
 
 		case 3:
-			return vec4 (p, q, _v, a);
+			return vec4 (p, q, v, a);
 
 		case 4:
-			return vec4 (t, p, _v, a);
+			return vec4 (t, p, v, a);
 
 		default:
-			return vec4 (_v, p, q, a);
+			return vec4 (v, p, q, a);
 	}
 }
 
@@ -149,10 +122,10 @@ clerp (in vec4 source, in vec4 destination, in float t)
 
 	if (range <= M_PI)
 	{
-		return HSVA (lerp (source [H], destination [H], t),
-		             lerp (source [S], destination [S], t),
-		             lerp (source [V], destination [V], t),
-		             lerp (source [A], destination [A], t));
+		return HSVA (mix (source [H], destination [H], t),
+		             mix (source [S], destination [S], t),
+		             mix (source [V], destination [V], t),
+		             mix (source [A], destination [A], t));
 	}
 	else
 	{
@@ -166,9 +139,9 @@ clerp (in vec4 source, in vec4 destination, in float t)
 			h -= M_PI2;
 
 		return HSVA (h,
-		             lerp (source [S], destination [S], t),
-		             lerp (source [V], destination [V], t),
-		             lerp (source [A], destination [A], t));
+		             mix (source [S], destination [S], t),
+		             mix (source [V], destination [V], t),
+		             mix (source [A], destination [A], t));
 	}
 }
 
@@ -212,10 +185,11 @@ void
 main ()
 {
 	to .position = from .position;
-	
+
+	// Delete this and use not this shader
 	if (colors == 0)
 		to .color = vec4 (1.0f, 1.0f, 1.0f, 1.0f);
 
 	else
-		set_fraction (float (time - from .startTime) / from .lifetime);
+		set_fraction (from .elapsedTime / from .lifetime);
 }

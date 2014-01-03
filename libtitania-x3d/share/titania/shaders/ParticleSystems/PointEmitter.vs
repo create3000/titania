@@ -1,16 +1,15 @@
-#version 400
-#extension GL_ARB_vertex_attrib_64bit : enable
-#extension GL_ARB_separate_shader_objects : enable
+#version 330
 
-uniform double time;
-uniform float  deltaTime;
-uniform float  particleLifetime;
-uniform float  lifetimeVariation;
+#pragma X3D include "Math.h"
 
-uniform vec3   position;
-uniform vec3   direction;
-uniform float  speed;
-uniform float  variation;
+uniform float deltaTime;
+uniform float particleLifetime;
+uniform float lifetimeVariation;
+
+uniform vec3  position;
+uniform vec3  direction;
+uniform float speed;
+uniform float variation;
 
 uniform vec3  velocity [32];
 uniform float turbulence [32];
@@ -19,34 +18,34 @@ uniform int   forces;
 layout (location = 0)
 in struct From
 {
-	int    seed;
-	float  lifetime;
-	vec3   position;
-	vec3   velocity;
-	double startTime;
+	int   seed;
+	float lifetime;
+	vec3  position;
+	vec3  velocity;
+	float elapsedTime;
 }
 from;
 
 out To
 {
-	int    seed;
-	float  lifetime;
-	vec3   position;
-	vec3   velocity;
-	double startTime;
+	int   seed;
+	float lifetime;
+	vec3  position;
+	vec3  velocity;
+	float elapsedTime;
 }
 to;
 
 /* Math */
 
-float M_PI    = 3.14159265358979323846;
-float M_PI1_2 = M_PI * 0.5;
-float M_PI2   = 2.0f * M_PI;
+const float M_PI    = 3.14159265358979323846;
+const float M_PI1_2 = M_PI / 2;
+const float M_PI2   = 2.0f * M_PI;
 
 /* Random number generation */
 
-int RAND_MAX = 0x7fffffff;
-int seed     = 1;
+const int RAND_MAX = 0x7fffffff;
+int seed           = 1;
 
 void
 srand (in int value)
@@ -221,22 +220,22 @@ main ()
 {
 	srand (from .seed + gl_VertexID);
 
-	if (time - from .startTime > from .lifetime)
+	if (from .elapsedTime > from .lifetime)
 	{
-		to .lifetime  = random_variation (particleLifetime, lifetimeVariation);
-		to .position  = position;
-		to .velocity  = getRandomVelocity ();
-		to .startTime = time;
-		to .seed      = seed;
+		to .lifetime    = random_variation (particleLifetime, lifetimeVariation);
+		to .position    = position;
+		to .velocity    = getRandomVelocity ();
+		to .elapsedTime = 0.0f;
+		to .seed        = seed;
 	}
 	else
 	{
 		vec3 velocity = getVelocity ();
-	
-		to .lifetime  = from .lifetime;
-		to .position  = from .position + velocity * deltaTime;
-		to .velocity  = velocity;
-		to .startTime = from .startTime;
-		to .seed      = seed;
+
+		to .lifetime    = from .lifetime;
+		to .position    = from .position + velocity * deltaTime;
+		to .velocity    = velocity;
+		to .elapsedTime = from .elapsedTime + deltaTime;
+		to .seed        = seed;
 	}
 }

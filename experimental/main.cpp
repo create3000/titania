@@ -1,30 +1,52 @@
-/* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
-/*************************************************************************
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * //  * Copyright 1999, 2012 Holger Seelig <holger.seelig@yahoo.de>.
- * //  *
- * //  * Titania - a multi-platform office productivity suite
- * //  *
- * //  * This file is part of the Titania Project.
- * //  *
- * //  * Titania is free software: you can redistribute it and/or modify
- * //  * it under the terms of the GNU Lesser General Public License version 3
- * //  * only, as published by the Free Software Foundation.
- * //  *
- * //  * Titania is distributed in the hope that it will be useful,
- * //  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * //  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * //  * GNU Lesser General Public License version 3 for more details
- * //  * (a copy is included in the LICENSE file that accompanied this code).
- * //  *
- * //  * You should have received a copy of the GNU Lesser General Public License
- * //  * version 3 along with Titania.  If not, see
- * //  * <http://www.gnu.org/licenses/lgpl.html>
- * //  * for a copy of the LGPLv3 License.
- * //  *
- * //  ************************************************************************/
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ *
+ * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
+ *
+ * THIS IS UNPUBLISHED SOURCE CODE OF create3000.
+ *
+ * The copyright notice above does not evidence any actual of intended
+ * publication of such source code, and is an unpublished work by create3000.
+ * This material contains CONFIDENTIAL INFORMATION that is the property of
+ * create3000.
+ *
+ * No permission is granted to copy, distribute, or create derivative works from
+ * the contents of this software, in whole or in part, without the prior written
+ * permission of create3000.
+ *
+ * NON-MILITARY USE ONLY
+ *
+ * All create3000 software are effectively free software with a non-military use
+ * restriction. It is free. Well commented source is provided. You may reuse the
+ * source in any way you please with the exception anything that uses it must be
+ * marked to indicate is contains 'non-military use only' components.
+ *
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * Copyright 1999, 2012 Holger Seelig <holger.seelig@yahoo.de>.
+ *
+ * This file is part of the Titania Project.
+ *
+ * Titania is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License version 3 only, as published by the
+ * Free Software Foundation.
+ *
+ * Titania is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License version 3 for more
+ * details (a copy is included in the LICENSE file that accompanied this code).
+ *
+ * You should have received a copy of the GNU General Public License version 3
+ * along with Titania.  If not, see <http://www.gnu.org/licenses/gpl.html> for a
+ * copy of the GPLv3 License.
+ *
+ * For Silvio, Joy and Adi.
+ *
+ ******************************************************************************/
 
 //#include <Titania/Basic/Geometry/Line3.h>
 
@@ -58,6 +80,7 @@
 #include <array>
 #include <cassert>
 #include <complex>
+#include <ctime>
 #include <deque>
 #include <fstream>
 #include <initializer_list>
@@ -72,17 +95,13 @@
 #include <thread>
 #include <unordered_set>
 #include <vector>
-#include <ctime>
 
 #include <giomm.h>
 
 #include <cstdarg>
 
-#ifdef __APPLE__
-#include <OpenCL/opencl.h>
-#else
-#include <CL/cl.h>
-#endif
+// http://www.khronos.org/registry/cl/api/1.1/cl.hpp
+#include "cl.hpp"
 
 using namespace titania;
 using namespace titania::basic;
@@ -226,6 +245,8 @@ typedef math::sphere3 <float>    Sphere3f;
 //	return false;
 //}
 
+#define __COUT__ (std::cout << "########## " __FILE__ << ":" << __LINE__ << ": in function '" << __func__ << "': ")
+
 int
 main (int argc, char** argv)
 {
@@ -235,34 +256,95 @@ main (int argc, char** argv)
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
 
-	constexpr int N = 1000000000;
-	
+	std::vector <cl::Platform> all_platforms;
+	cl::Platform::get (&all_platforms);
+
+	if (not all_platforms .empty ())
 	{
-		Vector3f x;
+		std::cout << "Platforms: " << all_platforms .size () << std::endl;
+		
+		for (const auto & platform : all_platforms)
+			std::cout << "Platform: " << platform .getInfo <CL_PLATFORM_NAME> () << std::endl;
+__COUT__ << std::endl;
 
-		auto begin = chrono::now ();
-		
-		for (int i = 0; i < N; ++ i)
-			x += Vector3f (2.0f, 3.0f, 4.0f);
+		cl::Platform default_platform = all_platforms [0];
+__COUT__ << std::endl;
 
-		auto end = chrono::now ();
-		
-		std::clog << x << std::endl;
-		std::clog << end - begin << std::endl;
-	}
+		//get default device of the default platform
+		std::vector <cl::Device> all_devices;
+		default_platform .getDevices (CL_DEVICE_TYPE_GPU, &all_devices);
+__COUT__ << std::endl;
 
-	{
-		Vector3f x;
-		
-		auto begin = chrono::now ();
-		
-		for (int i = 0; i < N; ++ i)
-			x += Vector3f (2, 3, 4);
-		
-		auto end = chrono::now ();
-		
-		std::clog << x << std::endl;
-		std::clog << end - begin << std::endl;
+		if (all_devices .size () == 0)
+		{
+__COUT__ << std::endl;
+			std::cout << " No devices found. Check OpenCL installation!\n";
+			exit (1);
+		}
+__COUT__ << std::endl;
+
+		cl::Device default_device = all_devices [0];
+		std::cout << "Using device: " << default_device .getInfo <CL_DEVICE_NAME> () << "\n";
+__LOG__ << std::endl;
+
+		cl::Context context ({ default_device });
+__COUT__ << std::endl;
+
+		// kernel calculates for each element C=A+B
+		std::string kernel_code = " void kernel simple_add (global const int* A, global const int* B, global int* C) "
+		                          " { "
+		                          "    int i = get_global_id (0); "
+		                          "    C [i] = A [i] + B [i]; "
+		                          " } ";
+
+		cl::Program::Sources sources;
+		sources .push_back ({ kernel_code .c_str (), kernel_code .size () });
+
+		cl::Program program (context, sources);
+
+		if (program .build ({ default_device }) not_eq CL_SUCCESS)
+		{
+			std::cout << " Error building: " << program .getBuildInfo <CL_PROGRAM_BUILD_LOG> (default_device) << "\n";
+			exit (1);
+		}
+
+		// create buffers on the device
+		cl::Buffer buffer_A (context, CL_MEM_READ_WRITE, sizeof (int) * 10);
+		cl::Buffer buffer_B (context, CL_MEM_READ_WRITE, sizeof (int) * 10);
+		cl::Buffer buffer_C (context, CL_MEM_READ_WRITE, sizeof (int) * 10);
+
+		int A [ ] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+		int B [ ] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+
+		//create queue to which we will push commands for the device.
+		cl::CommandQueue queue (context, default_device);
+
+		//write arrays A and B to the device
+		queue .enqueueWriteBuffer (buffer_A, CL_TRUE, 0, sizeof (int) * 10, A);
+		queue .enqueueWriteBuffer (buffer_B, CL_TRUE, 0, sizeof (int) * 10, B);
+
+		//run the kernel
+		cl::KernelFunctor simple_add (cl::Kernel (program, "simple_add"), queue, cl::NullRange, cl::NDRange (10), cl::NullRange);
+		simple_add (buffer_A, buffer_B, buffer_C);
+
+		//alternative way to run the kernel
+		/*cl::Kernel kernel_add=cl::Kernel(program,"simple_add");
+		 * kernel_add.setArg(0,buffer_A);
+		 * kernel_add.setArg(1,buffer_B);
+		 * kernel_add.setArg(2,buffer_C);
+		 * queue.enqueueNDRangeKernel(kernel_add,cl::NullRange,cl::NDRange(10),cl::NullRange);
+		 * queue.finish();*/
+
+		int C [10];
+		//read result C from the device to array C
+		queue .enqueueReadBuffer (buffer_C, CL_TRUE, 0, sizeof (int) * 10, C);
+
+		std::cout << " result: \n";
+
+		for (int i = 0; i < 10; i ++)
+		{
+			std::cout << C [i] << " ";
+		}
 	}
 
 	std::clog << "Function main done." << std::endl;
