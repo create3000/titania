@@ -23,6 +23,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Bits/config.cpp \
 	Titania/X3D/Bits/Error.cpp \
 	Titania/X3D/Bits/Random.cpp \
+	Titania/X3D/Bits/Shader.cpp \
 	Titania/X3D/Bits/Traverse.cpp \
 	Titania/X3D/Browser/Browser.cpp \
 	Titania/X3D/Browser/Console.cpp \

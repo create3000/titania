@@ -96,6 +96,7 @@ ComposedShader::initialize ()
 	if (glXGetCurrentContext ())
 	{
 		activate () .addInterest (this, &ComposedShader::set_activate);
+		parts ()    .addInterest (this, &ComposedShader::set_parts);
 
 		requestExplicitRelink ();
 	}
@@ -197,6 +198,12 @@ ComposedShader::set_activate ()
 	if (not activate ())
 		return;
 
+	requestExplicitRelink ();
+}
+
+void
+ComposedShader::set_parts ()
+{
 	requestExplicitRelink ();
 }
 

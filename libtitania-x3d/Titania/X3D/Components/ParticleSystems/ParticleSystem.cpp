@@ -50,9 +50,9 @@
 
 #include "ParticleSystem.h"
 
-#include "../../Bits/config.h"
-#include "../../Bits/Random.h"
 #include "../../Bits/Cast.h"
+#include "../../Bits/Random.h"
+#include "../../Bits/config.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Rendering/X3DGeometryNode.h"
@@ -73,6 +73,9 @@ const std::string ParticleSystem::containerField = "children";
 
 // Special indices for glVertexAttribPointer
 
+static constexpr size_t readBuffer  = 0;
+static constexpr size_t writeBuffer = 1;
+
 static constexpr int VERTEX_INDEX   = 0;
 static constexpr int NORMAL_INDEX   = 1;
 static constexpr int TEXCOORD_INDEX = 2;
@@ -89,22 +92,24 @@ struct ParticleSystem::Particle
 		   lifetime (0),
 		   position (),
 		   velocity (),
+		      color (),
 		elapsedTime (std::numeric_limits <float>::max ())
 	{ }
 
 	///  @name Members
 
-	GLint seed;
+	int32_t seed;
 	float lifetime;
 	Vector3f position;
 	Vector3f velocity;
+	Color4f color;
 	float elapsedTime;
 
 };
 
-struct ParticleSystem::Point
+struct ParticleSystem::Vertex
 {
-	Point () :
+	Vertex () :
 		position (),
 		   color ()
 	{ }
@@ -136,18 +141,22 @@ ParticleSystem::ParticleSystem (X3DExecutionContext* const executionContext) :
 	       X3DShapeNode (),
 	             fields (),
 	     geometryTypeId (GeometryType::QUAD),
+	     glGeometryType (GL_POINTS),
+	        numVertices (0),
+	          particles (0),
+	       creationTime (0),
 	         readBuffer (0),
 	        writeBuffer (1),
 	transformFeedbackId ({ 0, 0 }),
 	   particleBufferId ({ 0, 0 }),
-	    pointFeedbackId (0),
-	      pointBufferId (0),
+	   vertexFeedbackId (0),
+	     vertexBufferId (0),
+	   geometryBufferId (0),
 	    transformShader (),
-	        pointShader (),
+	     geometryShader (),
 	        emitterNode (nullptr),
 	      colorRampNode (),
-	          particles (0),
-	       creationTime (0)
+	          haveColor (false)
 {
 	addField (inputOutput,    "metadata",          metadata ());
 	addField (inputOutput,    "enabled",           enabled ());
@@ -173,7 +182,7 @@ ParticleSystem::ParticleSystem (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "appearance",        appearance ());
 	addField (inputOutput,    "geometry",          geometry ());
 
-	addChildren (transformShader, pointShader, colorRampNode);
+	addChildren (transformShader, geometryShader, colorRampNode);
 }
 
 X3DBaseNode*
@@ -202,13 +211,17 @@ ParticleSystem::initialize ()
 
 		// Generate point buffer
 
-		glGenTransformFeedbacks (1, &pointFeedbackId);
-		glGenBuffers (1, &pointBufferId);
+		glGenTransformFeedbacks (1, &vertexFeedbackId);
+		glGenBuffers (1, &vertexBufferId);
 
-		glBindTransformFeedback (GL_TRANSFORM_FEEDBACK, pointFeedbackId);
-		glBindBufferBase (GL_TRANSFORM_FEEDBACK_BUFFER, 0, pointBufferId);
+		glBindTransformFeedback (GL_TRANSFORM_FEEDBACK, vertexFeedbackId);
+		glBindBufferBase (GL_TRANSFORM_FEEDBACK_BUFFER, 0, vertexBufferId);
 
 		glBindTransformFeedback (GL_TRANSFORM_FEEDBACK, 0);
+
+		// Generate geometry buffer
+
+		glGenBuffers (1, &geometryBufferId);
 
 		// Setup
 
@@ -217,6 +230,7 @@ ParticleSystem::initialize ()
 		maxParticles ()      .addInterest (this, &ParticleSystem::set_array_buffers);
 		particleLifetime ()  .addInterest (this, &ParticleSystem::set_array_buffers);
 		lifetimeVariation () .addInterest (this, &ParticleSystem::set_array_buffers);
+		particleSize ()      .addInterest (this, &ParticleSystem::set_geometry);
 		colorKey ()          .addInterest (this, &ParticleSystem::set_colorKey);
 		texCoordKey ()       .addInterest (this, &ParticleSystem::set_texCoordKey);
 		emitter ()           .addInterest (this, &ParticleSystem::set_emitter);
@@ -224,14 +238,15 @@ ParticleSystem::initialize ()
 		texCoordRamp ()      .addInterest (this, &ParticleSystem::set_texCoordRamp);
 		geometry ()          .addInterest (this, &ParticleSystem::set_geometry);
 
-		set_enabled ();
 		set_geometryType ();
-		set_colorKey ();
-		set_texCoordKey ();
+		set_enabled ();
 		set_emitter ();
+		set_colorKey ();
 		set_colorRamp ();
+		set_texCoordKey ();
 		set_texCoordRamp ();
 		set_geometry ();
+		set_geometry_shader ();
 	}
 }
 
@@ -278,9 +293,27 @@ ParticleSystem::set_geometryType ()
 	else
 		geometryTypeId = GeometryType::QUAD;
 
-	// Shader
+	switch (geometryTypeId)
+	{
+		case GeometryType::POINT:
+			glGeometryType = GL_POINTS;
+			break;
+		case GeometryType::LINE:
+			glGeometryType = GL_LINES;
+			break;
+		case GeometryType::TRIANGLE:
+			glGeometryType = GL_TRIANGLES;
+			break;
+		case GeometryType::QUAD:
+		case GeometryType::SPRITE:
+			glGeometryType = GL_QUADS;
+			break;
+		case GeometryType::GEOMETRY:
+			glGeometryType = GL_TRIANGLES;
+			break;
+	}
 
-	set_point_shader ();
+	set_geometry ();
 }
 
 void
@@ -291,9 +324,7 @@ ParticleSystem::set_colorKey ()
 
 void
 ParticleSystem::set_texCoordKey ()
-{
-
-}
+{ }
 
 void
 ParticleSystem::set_emitter ()
@@ -306,7 +337,7 @@ ParticleSystem::set_emitter ()
 		emitterNode = getBrowser () -> getBrowserOptions () -> emitter ();
 
 	// Shader
-	
+
 	set_transform_shader ();
 }
 
@@ -317,7 +348,7 @@ ParticleSystem::set_colorRamp ()
 		colorRampNode -> removeInterest (this, &ParticleSystem::set_color);
 
 	colorRampNode = colorRamp ();
-	
+
 	if (colorRampNode)
 		colorRampNode -> addInterest (this, &ParticleSystem::set_color);
 
@@ -327,31 +358,82 @@ ParticleSystem::set_colorRamp ()
 void
 ParticleSystem::set_color ()
 {
-	if (colorRampNode)
+	if (colorRampNode and not colorKey () .empty ())
 	{
 		MFVec4f color;
-		
-		colorRampNode -> getHSVA (color);
-		
-		color .resize (colorKey () .size ());
 
-		pointShader -> setField <MFFloat> ("colorKey",  colorKey ());
-		pointShader -> setField <MFVec4f> ("colorRamp", color);
-		pointShader -> setField <SFInt32> ("colors",    int32_t (colorKey () .size ()));
+		colorRampNode -> getHSVA (color);
+
+		color .resize (colorKey () .size (), SFVec4f (0, 1, 1, 1));
+
+		transformShader -> setField <MFFloat> ("colorKey",  colorKey ());
+		transformShader -> setField <MFVec4f> ("colorRamp", color);
+		transformShader -> setField <SFInt32> ("numColors", int32_t (colorKey () .size ()));
+		
+		haveColor = true;
 	}
 	else
-		pointShader -> setField <SFInt32> ("colors", 0);
+	{
+		transformShader -> setField <SFInt32> ("numColors", 0);
+		haveColor = false;
+	}
 }
 
 void
 ParticleSystem::set_texCoordRamp ()
-{
-
-}
+{ }
 
 void
 ParticleSystem::set_geometry ()
-{ }
+{
+	std::vector <Vector3f> vertices;
+
+	Vector2f particleSize1_2 = particleSize () / 2.0f;
+
+	switch (geometryTypeId)
+	{
+		case GeometryType::POINT:
+			numVertices = 0;
+			break;
+		case GeometryType::LINE:
+			numVertices = 2;
+			vertices .resize (numVertices);
+			break;
+		case GeometryType::TRIANGLE:
+			numVertices = 6;
+			vertices .reserve (numVertices);
+			vertices .emplace_back (-particleSize1_2 .x (), -particleSize1_2 .y (), 0);
+			vertices .emplace_back (+particleSize1_2 .x (), -particleSize1_2 .y (), 0);
+			vertices .emplace_back (+particleSize1_2 .x (),  particleSize1_2 .y (), 0);
+
+			vertices .emplace_back (-particleSize1_2 .x (), -particleSize1_2 .y (), 0);
+			vertices .emplace_back (+particleSize1_2 .x (),  particleSize1_2 .y (), 0);
+			vertices .emplace_back (-particleSize1_2 .x (),  particleSize1_2 .y (), 0);
+			break;
+		case GeometryType::QUAD:
+		case GeometryType::SPRITE:
+			numVertices = 4;
+			vertices .reserve (numVertices);
+			vertices .emplace_back (-particleSize1_2 .x (), -particleSize1_2 .y (), 0);
+			vertices .emplace_back (+particleSize1_2 .x (), -particleSize1_2 .y (), 0);
+			vertices .emplace_back (+particleSize1_2 .x (),  particleSize1_2 .y (), 0);
+			vertices .emplace_back (-particleSize1_2 .x (),  particleSize1_2 .y (), 0);
+			break;
+		case GeometryType::GEOMETRY:
+			numVertices = 0;
+			vertices .resize (numVertices);
+			break;
+	}
+
+	glBindBuffer (GL_ARRAY_BUFFER, geometryBufferId);
+	glBufferData (GL_ARRAY_BUFFER, sizeof (Vector3f) * numVertices, vertices .data (), GL_STATIC_DRAW);
+
+	glBindBuffer (GL_ARRAY_BUFFER, 0);
+
+	// Vertex buffer
+
+	set_vertex_buffer ();
+}
 
 void
 ParticleSystem::set_array_buffers ()
@@ -370,19 +452,33 @@ ParticleSystem::set_array_buffers ()
 		glBufferData (GL_ARRAY_BUFFER, sizeof (particleArray), particleArray, GL_DYNAMIC_DRAW);
 	}
 
-	// Point buffer
-
-	Point pointArray [numParticles];
-
-	glBindBuffer (GL_ARRAY_BUFFER, pointBufferId);
-	glBufferData (GL_ARRAY_BUFFER, sizeof (pointArray), pointArray, GL_DYNAMIC_DRAW);
-
 	glBindBuffer (GL_ARRAY_BUFFER, 0);
+
+	// Vertex buffer
+	
+	set_vertex_buffer ();
 
 	// Reset state
 
 	particles    = 0;
 	creationTime = chrono::now ();
+}
+
+void
+ParticleSystem::set_vertex_buffer ()
+{
+	// Initialize array buffers
+
+	size_t numParticles = std::max (0, maxParticles () .getValue ());
+
+	// Vertex buffer
+
+	Vertex vertexArray [numParticles * numVertices];
+
+	glBindBuffer (GL_ARRAY_BUFFER, vertexBufferId);
+	glBufferData (GL_ARRAY_BUFFER, sizeof (vertexArray), vertexArray, GL_DYNAMIC_DRAW);
+
+	glBindBuffer (GL_ARRAY_BUFFER, 0);
 }
 
 void
@@ -398,40 +494,42 @@ ParticleSystem::set_transform_shader ()
 	transformShader -> addUserDefinedField (inputOutput, "deltaTime",         new SFFloat ());
 	transformShader -> addUserDefinedField (inputOutput, "particleLifetime",  new SFFloat ());
 	transformShader -> addUserDefinedField (inputOutput, "lifetimeVariation", new SFFloat ());
+
 	transformShader -> addUserDefinedField (inputOutput, "position",          new SFVec3f ());
 	transformShader -> addUserDefinedField (inputOutput, "direction",         new SFVec3f ());
 	transformShader -> addUserDefinedField (inputOutput, "speed",             new SFFloat ());
 	transformShader -> addUserDefinedField (inputOutput, "variation",         new SFFloat ());
 	transformShader -> addUserDefinedField (inputOutput, "velocity",          new MFVec3f ());
 	transformShader -> addUserDefinedField (inputOutput, "turbulence",        new MFFloat ());
-	transformShader -> addUserDefinedField (inputOutput, "forces",            new SFInt32 ());
+	transformShader -> addUserDefinedField (inputOutput, "numForces",         new SFInt32 ());
+
+	transformShader -> addUserDefinedField (inputOutput, "colorKey",  new MFFloat ());
+	transformShader -> addUserDefinedField (inputOutput, "colorRamp", new MFVec4f ());
+	transformShader -> addUserDefinedField (inputOutput, "numColors", new SFInt32 ());
 
 	transformShader -> language () = "GLSL";
 	transformShader -> parts () .emplace_back (vertexShader);
 	transformShader -> setTransformFeedbackVaryings ({
-		"To.seed", "To.lifetime", "To.position", "To.velocity", "To.elapsedTime"
-	});
+	                                                    "To.seed", "To.lifetime", "To.position", "To.velocity", "To.color", "To.elapsedTime"
+																	 });
 	transformShader -> setup ();
 }
 
 void
-ParticleSystem::set_point_shader ()
+ParticleSystem::set_geometry_shader ()
 {
 	X3DSFNode <ShaderPart> vertexShader = new ShaderPart (getExecutionContext ());
-	vertexShader -> url () = { get_shader ("ParticleSystems/ColorShader.vs") .str () };
+	vertexShader -> url () = { get_shader ("ParticleSystems/Geometry.vs") .str () };
 	vertexShader -> setup ();
 
-	pointShader = new ComposedShader (getExecutionContext ());
-	pointShader -> addUserDefinedField (inputOutput, "colorKey",  new MFFloat ());
-	pointShader -> addUserDefinedField (inputOutput, "colorRamp", new MFVec4f ());
-	pointShader -> addUserDefinedField (inputOutput, "colors",    new SFInt32 ());
+	geometryShader = new ComposedShader (getExecutionContext ());
 
-	pointShader -> language () = "GLSL";
-	pointShader -> parts () .emplace_back (vertexShader);
-	pointShader -> setTransformFeedbackVaryings ({
-		"To.position", "To.color"
-	});
-	pointShader -> setup ();
+	geometryShader -> language () = "GLSL";
+	geometryShader -> parts () .emplace_back (vertexShader);
+	geometryShader -> setTransformFeedbackVaryings ({
+	                                                   "To.position", "To.color"
+																	});
+	geometryShader -> setup ();
 }
 
 bool
@@ -440,7 +538,7 @@ ParticleSystem::isTransparent () const
 	if (getAppearance () -> isTransparent ())
 		return true;
 
-	if (colorRampNode and colorRampNode -> isTransparent ())
+	if (haveColor and colorRampNode -> isTransparent ())
 		return true;
 
 	return false;
@@ -536,14 +634,14 @@ ParticleSystem::prepareEvents ()
 	if (emitterNode -> mass ())
 	{
 		for (auto & v : velocity)
-			v = v * deltaTime / emitterNode -> mass () .getValue ();
+			v *= deltaTime / emitterNode -> mass ();
 
 		transformShader -> setField <MFVec3f> ("velocity",   velocity,                    true);
 		transformShader -> setField <MFFloat> ("turbulence", turbulence,                  true);
-		transformShader -> setField <SFInt32> ("forces",     int32_t (velocity .size ()), true);
+		transformShader -> setField <SFInt32> ("numForces",  int32_t (velocity .size ()), true);
 	}
 	else
-		transformShader -> setField <SFInt32> ("forces", 0, true);
+		transformShader -> setField <SFInt32> ("numForces", 0, true);
 }
 
 void
@@ -563,19 +661,20 @@ ParticleSystem::update ()
 
 	transformShader -> enable ();
 
-	glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [readBuffer]);
-
 	glEnableVertexAttribArray (0);
 	glEnableVertexAttribArray (1);
 	glEnableVertexAttribArray (2);
 	glEnableVertexAttribArray (3);
 	glEnableVertexAttribArray (4);
+	glEnableVertexAttribArray (5);
 
+	glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [readBuffer]);
 	glVertexAttribIPointer (0, 1, GL_INT,    sizeof (Particle), (const GLvoid*) offsetof (Particle, seed));
 	glVertexAttribPointer  (1, 1, GL_FLOAT,  GL_FALSE, sizeof (Particle), (const GLvoid*) offsetof (Particle, lifetime));
 	glVertexAttribPointer  (2, 3, GL_FLOAT,  GL_FALSE, sizeof (Particle), (const GLvoid*) offsetof (Particle, position));
 	glVertexAttribPointer  (3, 3, GL_FLOAT,  GL_FALSE, sizeof (Particle), (const GLvoid*) offsetof (Particle, velocity));
-	glVertexAttribPointer  (4, 1, GL_FLOAT,  GL_FALSE, sizeof (Particle), (const GLvoid*) offsetof (Particle, elapsedTime));
+	glVertexAttribPointer  (4, 4, GL_FLOAT,  GL_FALSE, sizeof (Particle), (const GLvoid*) offsetof (Particle, color));
+	glVertexAttribPointer  (5, 1, GL_FLOAT,  GL_FALSE, sizeof (Particle), (const GLvoid*) offsetof (Particle, elapsedTime));
 
 	glEnable (GL_RASTERIZER_DISCARD);
 	glBindTransformFeedback (GL_TRANSFORM_FEEDBACK, transformFeedbackId [writeBuffer]);
@@ -592,44 +691,65 @@ ParticleSystem::update ()
 	glDisableVertexAttribArray (2);
 	glDisableVertexAttribArray (3);
 	glDisableVertexAttribArray (4);
+	glDisableVertexAttribArray (5);
 	glBindBuffer (GL_ARRAY_BUFFER, 0);
 
 	transformShader -> disable ();
 
 	std::swap (readBuffer, writeBuffer);
 
-	// Point shader
-	
-	pointShader -> enable ();
+	// Geometry shader
+		
+	switch (geometryTypeId)
+	{
+		case GeometryType::POINT:
+			break;
+		case GeometryType::LINE:
+		case GeometryType::TRIANGLE:
+		case GeometryType::QUAD:
+		case GeometryType::SPRITE:
+		case GeometryType::GEOMETRY:
+		{
+			geometryShader -> enable ();
+		
+			glEnableVertexAttribArray (0);
+			glEnableVertexAttribArray (1);
+			glEnableVertexAttribArray (2);
+		
+			glBindBuffer (GL_ARRAY_BUFFER, geometryBufferId);
+			glVertexAttribPointer  (0, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*) 0);
 
-	glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [readBuffer]);
+			glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [readBuffer]);
+			glVertexAttribPointer  (1, 3, GL_FLOAT, GL_FALSE, sizeof (Particle), (const GLvoid*) offsetof (Particle, position));
+			glVertexAttribPointer  (2, 4, GL_FLOAT, GL_FALSE, sizeof (Particle), (const GLvoid*) offsetof (Particle, color));
 
-	glEnableVertexAttribArray (0);
-	glEnableVertexAttribArray (1);
-	glEnableVertexAttribArray (2);
+			glVertexAttribDivisor (1, 1);
+			glVertexAttribDivisor (2, 1);
 
-	glVertexAttribPointer  (0, 1, GL_FLOAT, GL_FALSE, sizeof (Particle), (const GLvoid*) offsetof (Particle, lifetime));
-	glVertexAttribPointer  (1, 3, GL_FLOAT, GL_FALSE, sizeof (Particle), (const GLvoid*) offsetof (Particle, position));
-	glVertexAttribPointer  (2, 1, GL_FLOAT, GL_FALSE, sizeof (Particle), (const GLvoid*) offsetof (Particle, elapsedTime));
+			glEnable (GL_RASTERIZER_DISCARD);
+			glBindTransformFeedback (GL_TRANSFORM_FEEDBACK, vertexFeedbackId);
+			glBeginTransformFeedback (GL_POINTS);
 
-	glEnable (GL_RASTERIZER_DISCARD);
-	glBindTransformFeedback (GL_TRANSFORM_FEEDBACK, pointFeedbackId);
-	glBeginTransformFeedback (GL_POINTS);
+			glDrawArraysInstanced (GL_POINTS, 0, numVertices, particles);
 
-	glDrawArrays (GL_POINTS, 0, particles);
+			glEndTransformFeedback ();
+			glBindTransformFeedback (GL_TRANSFORM_FEEDBACK, 0);
+			glDisable (GL_RASTERIZER_DISCARD);
 
-	glEndTransformFeedback ();
-	glBindTransformFeedback (GL_TRANSFORM_FEEDBACK, 0);
-	glDisable (GL_RASTERIZER_DISCARD);
+			glVertexAttribDivisor (1, 0);
+			glVertexAttribDivisor (2, 0);
 
-	glDisableVertexAttribArray (0);
-	glDisableVertexAttribArray (1);
-	glDisableVertexAttribArray (2);
-	glBindBuffer (GL_ARRAY_BUFFER, 0);
+			glDisableVertexAttribArray (0);
+			glDisableVertexAttribArray (1);
+			glDisableVertexAttribArray (2);
+			glBindBuffer (GL_ARRAY_BUFFER, 0);
+		
+			geometryShader -> disable ();
+			break;
+		}
+	}
 
-	pointShader -> disable ();
-
-GL_ERROR;
+	GL_ERROR;
 }
 
 void
@@ -639,42 +759,66 @@ ParticleSystem::drawCollision ()
 void
 ParticleSystem::drawGeometry ()
 {
-//	glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [readBuffer]);
-//
-//	glEnableVertexAttribArray (VERTEX_INDEX);
-//	glVertexAttribPointer (VERTEX_INDEX, 3, GL_FLOAT, GL_FALSE, sizeof (Particle), (const GLvoid*) offsetof (Particle, position));
-//
-//	glDrawArrays (GL_POINTS, 0, particles);
-//
-//	glDisableVertexAttribArray (VERTEX_INDEX);
-//	glBindBuffer (GL_ARRAY_BUFFER, 0);
-
-	glBindBuffer (GL_ARRAY_BUFFER, pointBufferId);
-
-	glEnableVertexAttribArray (VERTEX_INDEX);
-	glVertexAttribPointer (VERTEX_INDEX, 3, GL_FLOAT, GL_FALSE, sizeof (Point), (const GLvoid*) offsetof (Point, position));
-
-	if (colorRampNode and not colorKey () .empty ())
+	switch (geometryTypeId)
 	{
-		if (colorRampNode -> isTransparent ()) 
-			glEnable (GL_BLEND);
+		case GeometryType::POINT:
+		{
+			glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [readBuffer]);
 
-		glEnableVertexAttribArray (COLOR_INDEX);
-		glVertexAttribPointer (COLOR_INDEX, 4, GL_FLOAT, GL_FALSE, sizeof (Point), (const GLvoid*) offsetof (Point, color));
+			glEnableVertexAttribArray (VERTEX_INDEX);
+			glVertexAttribPointer (VERTEX_INDEX, 3, GL_FLOAT, GL_FALSE, sizeof (Particle), (const GLvoid*) offsetof (Particle, position));
+
+			if (haveColor)
+			{
+				if (glIsEnabled (GL_LIGHTING))
+					glEnable (GL_COLOR_MATERIAL);
+
+				glEnableVertexAttribArray (COLOR_INDEX);
+				glVertexAttribPointer (COLOR_INDEX, 4, GL_FLOAT, GL_FALSE, sizeof (Particle), (const GLvoid*) offsetof (Particle, color));
+			}
+
+			glDrawArrays (GL_POINTS, 0, particles);
+
+			glDisableVertexAttribArray (VERTEX_INDEX);
+			glDisableVertexAttribArray (COLOR_INDEX);
+			glBindBuffer (GL_ARRAY_BUFFER, 0);
+			break;
+		}
+		case GeometryType::LINE:
+		case GeometryType::TRIANGLE:
+		case GeometryType::QUAD:
+		case GeometryType::SPRITE:
+		case GeometryType::GEOMETRY:
+		{
+			glBindBuffer (GL_ARRAY_BUFFER, vertexBufferId);
+		
+			glEnableVertexAttribArray (VERTEX_INDEX);
+			glVertexAttribPointer (VERTEX_INDEX, 3, GL_FLOAT, GL_FALSE, sizeof (Vertex), (const GLvoid*) offsetof (Vertex, position));
+
+			if (haveColor)
+			{
+				if (glIsEnabled (GL_LIGHTING))
+					glEnable (GL_COLOR_MATERIAL);
+
+				glEnableVertexAttribArray (COLOR_INDEX);
+				glVertexAttribPointer (COLOR_INDEX, 4, GL_FLOAT, GL_FALSE, sizeof (Vertex), (const GLvoid*) offsetof (Vertex, color));
+			}
+		
+			glDrawArrays (glGeometryType, 0, particles * numVertices);
+		
+			glDisableVertexAttribArray (VERTEX_INDEX);
+			glDisableVertexAttribArray (COLOR_INDEX);
+			glBindBuffer (GL_ARRAY_BUFFER, 0);
+			break;
+		}
 	}
-
-	glDrawArrays (GL_POINTS, 0, particles);
-
-	glDisableVertexAttribArray (VERTEX_INDEX);
-	glDisableVertexAttribArray (COLOR_INDEX);
-	glBindBuffer (GL_ARRAY_BUFFER, 0);
 }
 
 void
 ParticleSystem::dispose ()
 {
 	transformShader .dispose ();
-	pointShader     .dispose ();
+	geometryShader  .dispose ();
 	colorRampNode   .dispose ();
 
 	if (transformFeedbackId [0])
@@ -683,11 +827,14 @@ ParticleSystem::dispose ()
 	if (particleBufferId [0])
 		glDeleteBuffers (2, particleBufferId .data ());
 
-	if (pointFeedbackId)
-		glDeleteTransformFeedbacks (1, &pointFeedbackId);
+	if (vertexFeedbackId)
+		glDeleteTransformFeedbacks (1, &vertexFeedbackId);
 
-	if (pointBufferId)
-		glDeleteBuffers (1, &pointBufferId);
+	if (vertexBufferId)
+		glDeleteBuffers (1, &vertexBufferId);
+
+	if (geometryBufferId)
+		glDeleteBuffers (1, &geometryBufferId);
 
 	X3DShapeNode::dispose ();
 }

@@ -97,6 +97,7 @@ ProgramShader::initialize ()
 	if (glXGetCurrentContext ())
 	{
 		activate () .addInterest (this, &ProgramShader::set_activate);
+		programs () .addInterest (this, &ProgramShader::set_programs);
 
 		requestExplicitRelink ();
 	}
@@ -177,6 +178,12 @@ ProgramShader::set_activate ()
 {
 	if (activate ())
 		requestExplicitRelink ();
+}
+
+void
+ProgramShader::set_programs ()
+{
+	requestExplicitRelink ();
 }
 
 void

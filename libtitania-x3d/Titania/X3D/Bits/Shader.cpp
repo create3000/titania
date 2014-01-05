@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,122 +48,49 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_SHADERS_PROGRAM_SHADER_H__
-#define __TITANIA_X3D_COMPONENTS_SHADERS_PROGRAM_SHADER_H__
+#include "Shader.h"
 
-#include "../Shaders/X3DShaderNode.h"
+#include "../InputOutput/Loader.h"
+#include <pcrecpp.h>
 
 namespace titania {
 namespace X3D {
 
-class ProgramShader :
-	public X3DShaderNode
+std::string
+preProcessShaderSource (X3DExecutionContext* const executionContext, const std::string & string, const basic::uri & worldURL, size_t level)
+throw (Error <INVALID_URL>,
+       Error <URL_UNAVAILABLE>)
 {
-public:
+	if (level > 1024)
+		throw Error <INVALID_URL> ("Header inclusion depth limit reached, might be caused by cyclic header inclusion.");
 
-	///  @name Construction
+	static const pcrecpp::RE include ("\\A#pragma\\s+X3D\\s+include\\s+\"(.*?)\"$");
 
-	ProgramShader (X3DExecutionContext* const);
+	std::istringstream input (string);
+	std::ostringstream output;
 
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
+	size_t      lineNumber = 1;
+	std::string line;
 
-	///  @name Common members
-
-	virtual
-	const std::string &
-	getComponentName () const final override
-	{ return componentName; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
-
-	///  @name Fields
-
-	MFNode &
-	programs ()
-	{ return *fields .programs; }
-
-	const MFNode &
-	programs () const
-	{ return *fields .programs; }
-
-	///  @name Operations
-
-	virtual
-	void
-	enable () final override;
-
-	virtual
-	void
-	disable () final override;
-
-	virtual
-	void
-	draw () final override;
-
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () final override;
-
-
-private:
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
-
-	///  @name Operations
-
-	GLint
-	getProgramStageBit (const String &);
-
-	void
-	requestExplicitRelink ();
-
-	///  @name Event handlers
-
-	void
-	set_activate ();
-
-	void
-	set_programs ();
-
-	///  @name Static members
-
-	static const std::string componentName;
-	static const std::string typeName;
-	static const std::string containerField;
-
-	///  @name Members
-
-	struct Fields
+	while (std::getline (input, line))
 	{
-		Fields ();
+		std::string filename;
 
-		MFNode* const programs;
-	};
+		if (include .FullMatch (line, &filename))
+		{
+			Loader loader (executionContext);
+			output << preProcessShaderSource (executionContext, loader .loadDocument (worldURL .transform (filename)), loader .getWorldURL (), level + 1) << std::endl;
+		}
+		else
+		{
+			output << line << std::endl;
+		}
 
-	Fields fields;
+		++ lineNumber;
+	}
 
-	GLuint pipelineId;
-
-};
+	return output .str ();
+}
 
 } // X3D
 } // titania
-
-#endif

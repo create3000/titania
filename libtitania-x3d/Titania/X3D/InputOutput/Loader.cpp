@@ -245,13 +245,15 @@ throw (Error <INVALID_URL>,
 
 		if (istream)
 		{
-			worldURL = istream .url ();
-
 			if (worldURL .scheme () not_eq "data")
 			{
+				worldURL = istream .url ();
+
 				std::clog << "\tLoaded URL is '" << worldURL << "': " << std::endl;
 				std::clog << "Done." << std::endl;
 			}
+			else
+				worldURL = referer;
 
 			return istream;
 		}

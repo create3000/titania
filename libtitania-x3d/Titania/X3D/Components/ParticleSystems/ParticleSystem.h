@@ -249,7 +249,7 @@ private:
 	};
 
 	class Particle;
-	class Point;
+	class Vertex;
 
 	///  @name Constuction
 
@@ -290,10 +290,13 @@ private:
 	set_array_buffers ();
 
 	void
+	set_vertex_buffer ();
+
+	void
 	set_transform_shader ();
 
 	void
-	set_point_shader ();
+	set_geometry_shader ();
 
 	///  @name Operations
 
@@ -342,19 +345,22 @@ private:
 	Fields fields;
 
 	GeometryType               geometryTypeId;
+	GLenum                     glGeometryType;
+	size_t                     numVertices;
+	int32_t                    particles;
+	time_type                  creationTime;
 	size_t                     readBuffer;
 	size_t                     writeBuffer;
 	std::array <GLuint, 2>     transformFeedbackId;
 	std::array <GLuint, 2>     particleBufferId;
-	GLuint                     pointFeedbackId;
-	GLuint                     pointBufferId;
+	GLuint                     vertexFeedbackId;
+	GLuint                     vertexBufferId;
+	GLuint                     geometryBufferId;
 	X3DSFNode <ComposedShader> transformShader;
-	X3DSFNode <ComposedShader> pointShader;
+	X3DSFNode <ComposedShader> geometryShader;
 	X3DParticleEmitterNode*    emitterNode;
 	X3DSFNode <X3DColorNode>   colorRampNode;
-
-	int32_t   particles;
-	time_type creationTime;
+	bool                       haveColor;
 
 };
 

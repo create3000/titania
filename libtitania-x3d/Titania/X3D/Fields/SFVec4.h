@@ -167,6 +167,24 @@ public:
 	SFVec4 &
 	operator -= (const ValueType &);
 
+	SFVec4 &
+	operator *= (const SFVec4 &);
+
+	SFVec4 &
+	operator *= (const ValueType &);
+
+	SFVec4 &
+	operator *= (const value_type &);
+
+	SFVec4 &
+	operator /= (const SFVec4 &);
+
+	SFVec4 &
+	operator /= (const ValueType &);
+
+	SFVec4 &
+	operator /= (const value_type &);
+
 	SFVec4*
 	negate () const;
 
@@ -326,6 +344,7 @@ SFVec4 <ValueType>::getValue (value_type & x, value_type & y, value_type & z, va
 }
 
 template <class ValueType>
+inline
 SFVec4 <ValueType> &
 SFVec4 <ValueType>::operator += (const SFVec4 & vector)
 {
@@ -335,6 +354,7 @@ SFVec4 <ValueType>::operator += (const SFVec4 & vector)
 }
 
 template <class ValueType>
+inline
 SFVec4 <ValueType> &
 SFVec4 <ValueType>::operator += (const ValueType & vector)
 {
@@ -344,6 +364,7 @@ SFVec4 <ValueType>::operator += (const ValueType & vector)
 }
 
 template <class ValueType>
+inline
 SFVec4 <ValueType> &
 SFVec4 <ValueType>::operator -= (const SFVec4 & vector)
 {
@@ -353,10 +374,71 @@ SFVec4 <ValueType>::operator -= (const SFVec4 & vector)
 }
 
 template <class ValueType>
+inline
 SFVec4 <ValueType> &
 SFVec4 <ValueType>::operator -= (const ValueType & vector)
 {
 	get () -= vector;
+	addEvent ();
+	return *this;
+}
+
+template <class ValueType>
+inline
+SFVec4 <ValueType> &
+SFVec4 <ValueType>::operator *= (const SFVec4 & vector)
+{
+	get () *= vector .getValue ();
+	addEvent ();
+	return *this;
+}
+
+template <class ValueType>
+inline
+SFVec4 <ValueType> &
+SFVec4 <ValueType>::operator *= (const ValueType & vector)
+{
+	get () *= vector;
+	addEvent ();
+	return *this;
+}
+
+template <class ValueType>
+inline
+SFVec4 <ValueType> &
+SFVec4 <ValueType>::operator *= (const value_type & value)
+{
+	get () *= value;
+	addEvent ();
+	return *this;
+}
+
+template <class ValueType>
+inline
+SFVec4 <ValueType> &
+SFVec4 <ValueType>::operator /= (const SFVec4 & vector)
+{
+	get () /= vector .getValue ();
+	addEvent ();
+	return *this;
+}
+
+template <class ValueType>
+inline
+SFVec4 <ValueType> &
+SFVec4 <ValueType>::operator /= (const ValueType & vector)
+{
+	get () /= vector;
+	addEvent ();
+	return *this;
+}
+
+template <class ValueType>
+inline
+SFVec4 <ValueType> &
+SFVec4 <ValueType>::operator /= (const value_type & value)
+{
+	get () /= value;
 	addEvent ();
 	return *this;
 }
@@ -527,6 +609,68 @@ ValueType
 operator - (const ValueType & lhs, const SFVec4 <ValueType> & rhs)
 {
 	return lhs - rhs .getValue ();
+}
+//@}
+
+//@{
+template <class ValueType>
+inline
+ValueType
+operator * (const SFVec4 <ValueType> & lhs, const SFVec4 <ValueType> & rhs)
+{
+	return lhs .getValue () * rhs .getValue ();
+}
+
+template <class ValueType>
+inline
+ValueType
+operator * (const SFVec4 <ValueType> & lhs, const ValueType & rhs)
+{
+	return lhs .getValue () * rhs;
+}
+
+template <class ValueType>
+inline
+ValueType
+operator * (const ValueType & lhs, const SFVec4 <ValueType> & rhs)
+{
+	return lhs * rhs .getValue ();
+}
+//@}
+
+//@{
+template <class ValueType>
+inline
+ValueType
+operator * (const SFVec4 <ValueType> & lhs, const typename ValueType::value_type & rhs)
+{
+	return lhs .getValue () * rhs;
+}
+
+template <class ValueType>
+inline
+ValueType
+operator * (const typename ValueType::value_type & lhs, const SFVec4 <ValueType> & rhs)
+{
+	return lhs * rhs .getValue ();
+}
+//@}
+
+//@{
+template <class ValueType>
+inline
+ValueType
+operator / (const SFVec4 <ValueType> & lhs, const typename ValueType::value_type & rhs)
+{
+	return lhs .getValue () / rhs;
+}
+
+template <class ValueType>
+inline
+ValueType
+operator / (const typename ValueType::value_type & lhs, const SFVec4 <ValueType> & rhs)
+{
+	return lhs / rhs .getValue ();
 }
 //@}
 

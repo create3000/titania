@@ -71,6 +71,7 @@ public:
 	typedef ValueType value_type;
 
 	using X3DField <ValueType>::addInterest;
+	using X3DField <ValueType>::addEvent;
 	using X3DField <ValueType>::operator =;
 	using X3DField <ValueType>::getValue;
 
@@ -112,6 +113,32 @@ public:
 	addInterest (Class & object, void (Class::* memberFunction) (ValueType)) const
 	{ addInterest (object, memberFunction, std::cref (this -> getValue ())); }
 
+	///  @name Functions
+
+	X3DScalar &
+	operator += (const X3DScalar &);
+
+	X3DScalar &
+	operator += (const ValueType &);
+
+	X3DScalar &
+	operator -= (const X3DScalar &);
+
+	X3DScalar &
+	operator -= (const ValueType &);
+
+	X3DScalar &
+	operator *= (const X3DScalar &);
+
+	X3DScalar &
+	operator *= (const ValueType &);
+
+	X3DScalar &
+	operator /= (const X3DScalar &);
+
+	X3DScalar &
+	operator /= (const ValueType &);
+
 	///  @name Input/Output
 
 	virtual
@@ -128,7 +155,208 @@ public:
 	toStream (std::ostream &) const final override
 	{ }
 
+
+private:
+
+	using X3DField <ValueType>::get;
+
 };
+
+template <class ValueType>
+inline
+X3DScalar <ValueType> &
+X3DScalar <ValueType>::operator += (const X3DScalar & value)
+{
+	get () += value .getValue ();
+	addEvent ();
+	return *this;
+}
+
+template <class ValueType>
+inline
+X3DScalar <ValueType> &
+X3DScalar <ValueType>::operator += (const ValueType & value)
+{
+	get () += value;
+	addEvent ();
+	return *this;
+}
+
+template <class ValueType>
+inline
+X3DScalar <ValueType> &
+X3DScalar <ValueType>::operator -= (const X3DScalar & value)
+{
+	get () -= value .getValue ();
+	addEvent ();
+	return *this;
+}
+
+template <class ValueType>
+inline
+X3DScalar <ValueType> &
+X3DScalar <ValueType>::operator -= (const ValueType & value)
+{
+	get () -= value;
+	addEvent ();
+	return *this;
+}
+
+template <class ValueType>
+inline
+X3DScalar <ValueType> &
+X3DScalar <ValueType>::operator *= (const X3DScalar & value)
+{
+	get () *= value .getValue ();
+	addEvent ();
+	return *this;
+}
+
+template <class ValueType>
+inline
+X3DScalar <ValueType> &
+X3DScalar <ValueType>::operator *= (const ValueType & value)
+{
+	get () *= value;
+	addEvent ();
+	return *this;
+}
+
+template <class ValueType>
+inline
+X3DScalar <ValueType> &
+X3DScalar <ValueType>::operator /= (const X3DScalar & value)
+{
+	get () /= value .getValue ();
+	addEvent ();
+	return *this;
+}
+
+template <class ValueType>
+inline
+X3DScalar <ValueType> &
+X3DScalar <ValueType>::operator /= (const ValueType & value)
+{
+	get () /= value;
+	addEvent ();
+	return *this;
+}
+
+// Aritmetic operators.
+
+//@{
+template <class ValueType>
+inline
+ValueType
+operator - (const X3DScalar <ValueType> & scalar)
+{
+	return -scalar .getValue ();
+}
+//@}
+
+//@{
+template <class ValueType>
+inline
+ValueType
+operator + (const X3DScalar <ValueType> & lhs, const X3DScalar <ValueType> & rhs)
+{
+	return lhs .getValue () + rhs .getValue ();
+}
+
+template <class ValueType>
+inline
+ValueType
+operator + (const X3DScalar <ValueType> & lhs, const ValueType & rhs)
+{
+	return lhs .getValue () + rhs;
+}
+
+template <class ValueType>
+inline
+ValueType
+operator + (const ValueType & lhs, const X3DScalar <ValueType> & rhs)
+{
+	return lhs + rhs .getValue ();
+}
+//@}
+
+//@{
+template <class ValueType>
+inline
+ValueType
+operator - (const X3DScalar <ValueType> & lhs, const X3DScalar <ValueType> & rhs)
+{
+	return lhs .getValue () - rhs .getValue ();
+}
+
+template <class ValueType>
+inline
+ValueType
+operator - (const X3DScalar <ValueType> & lhs, const ValueType & rhs)
+{
+	return lhs .getValue () - rhs;
+}
+
+template <class ValueType>
+inline
+ValueType
+operator - (const ValueType & lhs, const X3DScalar <ValueType> & rhs)
+{
+	return lhs - rhs .getValue ();
+}
+//@}
+
+//@{
+template <class ValueType>
+inline
+ValueType
+operator * (const X3DScalar <ValueType> & lhs, const X3DScalar <ValueType> & rhs)
+{
+	return lhs .getValue () * rhs .getValue ();
+}
+
+template <class ValueType>
+inline
+ValueType
+operator * (const X3DScalar <ValueType> & lhs, const ValueType & rhs)
+{
+	return lhs .getValue () * rhs;
+}
+
+template <class ValueType>
+inline
+ValueType
+operator * (const ValueType & lhs, const X3DScalar <ValueType> & rhs)
+{
+	return lhs * rhs .getValue ();
+}
+//@}
+
+//@{
+template <class ValueType>
+inline
+ValueType
+operator / (const X3DScalar <ValueType> & lhs, const X3DScalar <ValueType> & rhs)
+{
+	return lhs .getValue () / rhs .getValue ();
+}
+
+template <class ValueType>
+inline
+ValueType
+operator / (const X3DScalar <ValueType> & lhs, const ValueType & rhs)
+{
+	return lhs .getValue () / rhs;
+}
+
+template <class ValueType>
+inline
+ValueType
+operator / (const ValueType & lhs, const X3DScalar <ValueType> & rhs)
+{
+	return lhs / rhs .getValue ();
+}
+//@}
 
 template <>
 void

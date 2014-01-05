@@ -145,6 +145,8 @@ private:
 	void
 	set_activate ();
 
+	void
+	set_parts ();
 
 	///  @name Static members
 

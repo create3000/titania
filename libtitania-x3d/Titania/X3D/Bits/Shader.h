@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,120 +48,18 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_SHADERS_PROGRAM_SHADER_H__
-#define __TITANIA_X3D_COMPONENTS_SHADERS_PROGRAM_SHADER_H__
+#ifndef __TITANIA_X3D_BITS_SHADER_H__
+#define __TITANIA_X3D_BITS_SHADER_H__
 
-#include "../Shaders/X3DShaderNode.h"
+#include "../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {
 
-class ProgramShader :
-	public X3DShaderNode
-{
-public:
-
-	///  @name Construction
-
-	ProgramShader (X3DExecutionContext* const);
-
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
-
-	///  @name Common members
-
-	virtual
-	const std::string &
-	getComponentName () const final override
-	{ return componentName; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
-
-	///  @name Fields
-
-	MFNode &
-	programs ()
-	{ return *fields .programs; }
-
-	const MFNode &
-	programs () const
-	{ return *fields .programs; }
-
-	///  @name Operations
-
-	virtual
-	void
-	enable () final override;
-
-	virtual
-	void
-	disable () final override;
-
-	virtual
-	void
-	draw () final override;
-
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () final override;
-
-
-private:
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
-
-	///  @name Operations
-
-	GLint
-	getProgramStageBit (const String &);
-
-	void
-	requestExplicitRelink ();
-
-	///  @name Event handlers
-
-	void
-	set_activate ();
-
-	void
-	set_programs ();
-
-	///  @name Static members
-
-	static const std::string componentName;
-	static const std::string typeName;
-	static const std::string containerField;
-
-	///  @name Members
-
-	struct Fields
-	{
-		Fields ();
-
-		MFNode* const programs;
-	};
-
-	Fields fields;
-
-	GLuint pipelineId;
-
-};
+std::string
+preProcessShaderSource (X3DExecutionContext* const, const std::string &, const basic::uri &, size_t = 0)
+throw (Error <INVALID_URL>,
+       Error <URL_UNAVAILABLE>);
 
 } // X3D
 } // titania

@@ -614,7 +614,12 @@
     <None Include="Titania\X3D\Miscellaneous\X3DTexture.h" />
     <None Include="share\titania\shaders\ParticleSystems\PointEmitter.vs" />
     <None Include="Titania\X3D\Bits\Random.h" />
-    <None Include="share\titania\shaders\ParticleSystems\ColorShader.vs" />
+    <None Include="Titania\X3D\Bits\Shader.h" />
+    <None Include="share\titania\shaders\ParticleSystems\Bits\Math.h" />
+    <None Include="share\titania\shaders\ParticleSystems\Bits\Quaternion.h" />
+    <None Include="share\titania\shaders\ParticleSystems\Bits\Random.h" />
+    <None Include="share\titania\shaders\ParticleSystems\Bits\Color.h" />
+    <None Include="share\titania\shaders\ParticleSystems\Geometry.vs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1074,6 +1079,7 @@
     <Compile Include="Titania\X3D\Thread\Texture3DLoader.cpp" />
     <Compile Include="Titania\X3D\Miscellaneous\X3DTexture.cpp" />
     <Compile Include="Titania\X3D\Bits\Random.cpp" />
+    <Compile Include="Titania\X3D\Bits\Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1110,6 +1116,7 @@
     <Folder Include="share\titania\tools\library\" />
     <Folder Include="share\titania\shaders\" />
     <Folder Include="share\titania\shaders\ParticleSystems\" />
+    <Folder Include="share\titania\shaders\ParticleSystems\Bits\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

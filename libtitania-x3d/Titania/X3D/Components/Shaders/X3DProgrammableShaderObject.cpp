@@ -208,9 +208,8 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 			}
 			case X3DConstants::SFRotation:
 			{
-				float x, y, z, angle;
-				static_cast <SFRotation*> (field) -> getValue (x, y, z, angle);
-				glUniform4f (location, x, y, z, angle);
+				const auto & quat = static_cast <SFRotation*> (field) -> getValue () .quat ();
+				glUniform4f (location, quat .x (), quat .y (), quat .z (), quat .w ());
 				break;
 			}
 			case X3DConstants::SFString:
@@ -427,9 +426,8 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 
 				for (const auto & value :* array)
 				{
-					float x, y, z, angle;
-					value .getValue (x, y, z, angle);
-					vector .emplace_back (x, y, z, angle);
+					const auto & quat = value .getValue () .quat ();
+					vector .emplace_back (quat .x (), quat .y (), quat .z (), quat .w ());
 				}
 
 				glUniform4fv (location, vector .size (), vector [0] .data ());

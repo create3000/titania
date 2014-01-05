@@ -1,3 +1,31 @@
+2014-01-05  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Shader.h:
+	* SFVec3.h:
+	* SFVec2.h:
+	* SFVec4.h:
+	* Shader.cpp:
+	* X3DScalar.h:
+	* Loader.cpp:
+	* ShaderPart.cpp:
+	* ProgramShader.h:
+	* ComposedShader.h:
+	* ShaderProgram.cpp:
+	* ProgramShader.cpp:
+	* Geometry.vs:
+	* Math.h:
+	* ComposedShader.cpp:
+	* Color.h:
+	* Random.h:
+	* ColorShader.vs:
+	* PointEmitter.vs:
+	* ParticleSystem.h:
+	* Quaternion.h:
+	* ParticleSystem.cpp:
+	* X3DProgrammableShaderObject.cpp: 
+
 2014-01-03  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* ColorShader.vs:

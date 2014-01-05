@@ -161,6 +161,24 @@ public:
 	SFVec3 &
 	operator -= (const ValueType &);
 
+	SFVec3 &
+	operator *= (const SFVec3 &);
+
+	SFVec3 &
+	operator *= (const ValueType &);
+
+	SFVec3 &
+	operator *= (const value_type &);
+
+	SFVec3 &
+	operator /= (const SFVec3 &);
+
+	SFVec3 &
+	operator /= (const ValueType &);
+
+	SFVec3 &
+	operator /= (const value_type &);
+
 	SFVec3*
 	negate () const;
 
@@ -304,6 +322,7 @@ SFVec3 <ValueType>::getValue (value_type & x, value_type & y, value_type & z) co
 }
 
 template <class ValueType>
+inline
 SFVec3 <ValueType> &
 SFVec3 <ValueType>::operator += (const SFVec3 & vector)
 {
@@ -313,6 +332,7 @@ SFVec3 <ValueType>::operator += (const SFVec3 & vector)
 }
 
 template <class ValueType>
+inline
 SFVec3 <ValueType> &
 SFVec3 <ValueType>::operator += (const ValueType & vector)
 {
@@ -322,6 +342,7 @@ SFVec3 <ValueType>::operator += (const ValueType & vector)
 }
 
 template <class ValueType>
+inline
 SFVec3 <ValueType> &
 SFVec3 <ValueType>::operator -= (const SFVec3 & vector)
 {
@@ -331,10 +352,71 @@ SFVec3 <ValueType>::operator -= (const SFVec3 & vector)
 }
 
 template <class ValueType>
+inline
 SFVec3 <ValueType> &
 SFVec3 <ValueType>::operator -= (const ValueType & vector)
 {
 	get () -= vector;
+	addEvent ();
+	return *this;
+}
+
+template <class ValueType>
+inline
+SFVec3 <ValueType> &
+SFVec3 <ValueType>::operator *= (const SFVec3 & vector)
+{
+	get () *= vector .getValue ();
+	addEvent ();
+	return *this;
+}
+
+template <class ValueType>
+inline
+SFVec3 <ValueType> &
+SFVec3 <ValueType>::operator *= (const ValueType & vector)
+{
+	get () *= vector;
+	addEvent ();
+	return *this;
+}
+
+template <class ValueType>
+inline
+SFVec3 <ValueType> &
+SFVec3 <ValueType>::operator *= (const value_type & value)
+{
+	get () *= value;
+	addEvent ();
+	return *this;
+}
+
+template <class ValueType>
+inline
+SFVec3 <ValueType> &
+SFVec3 <ValueType>::operator /= (const SFVec3 & vector)
+{
+	get () /= vector .getValue ();
+	addEvent ();
+	return *this;
+}
+
+template <class ValueType>
+inline
+SFVec3 <ValueType> &
+SFVec3 <ValueType>::operator /= (const ValueType & vector)
+{
+	get () /= vector;
+	addEvent ();
+	return *this;
+}
+
+template <class ValueType>
+inline
+SFVec3 <ValueType> &
+SFVec3 <ValueType>::operator /= (const value_type & value)
+{
+	get () /= value;
 	addEvent ();
 	return *this;
 }

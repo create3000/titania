@@ -50,6 +50,7 @@
 
 #include "ShaderPart.h"
 
+#include "../../Bits/Shader.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../InputOutput/Loader.h"
@@ -141,7 +142,8 @@ ShaderPart::requestImmediateLoad ()
 	{
 		try
 		{
-			std::string shaderSource = Loader (getExecutionContext ()) .loadDocument (URL);
+			Loader loader (getExecutionContext ());
+			std::string shaderSource = preProcessShaderSource (getExecutionContext (), loader .loadDocument (URL), loader .getWorldURL ());
 			const char* string       = shaderSource .c_str ();
 
 			glShaderSource  (shaderId, 1, &string, nullptr);

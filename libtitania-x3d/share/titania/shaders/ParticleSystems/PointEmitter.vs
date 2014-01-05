@@ -1,6 +1,6 @@
 #version 330
 
-#pragma X3D include "Math.h"
+#define ARRAY_MAX 128
 
 uniform float deltaTime;
 uniform float particleLifetime;
@@ -13,7 +13,11 @@ uniform float variation;
 
 uniform vec3  velocity [32];
 uniform float turbulence [32];
-uniform int   forces;
+uniform int   numForces;
+
+uniform float colorKey [ARRAY_MAX];
+uniform vec4  colorRamp [ARRAY_MAX];
+uniform int   numColors;
 
 layout (location = 0)
 in struct From
@@ -22,6 +26,7 @@ in struct From
 	float lifetime;
 	vec3  position;
 	vec3  velocity;
+	vec4  color;
 	float elapsedTime;
 }
 from;
@@ -32,155 +37,15 @@ out To
 	float lifetime;
 	vec3  position;
 	vec3  velocity;
+	vec4  color;
 	float elapsedTime;
 }
 to;
 
-/* Math */
-
-const float M_PI    = 3.14159265358979323846;
-const float M_PI1_2 = M_PI / 2;
-const float M_PI2   = 2.0f * M_PI;
-
-/* Random number generation */
-
-const int RAND_MAX = 0x7fffffff;
-int seed           = 1;
-
-void
-srand (in int value)
-{
-	seed = value;
-}
-
-int
-rand ()
-{
-	return seed = seed * 1103515245 + 12345;
-}
-
-float
-random1 ()
-{
-	return float (rand ()) / float (RAND_MAX);
-}
-
-float
-random1 (in float min, in float max)
-{
-	return min + fract (random1 ()) * (max - min);
-}
-
-/* 
- * http://www.jasondavies.com/maps/random-points/
- * http://mathworld.wolfram.com/SpherePointPicking.html
- */
-
-vec3
-random_normal ()
-{
-	float theta = random1 () * M_PI;
-	float cphi  = random1 ();
-	float phi   = acos (cphi);
-	float r     = sin (phi);
-
-	return vec3 (sin (theta) * r,
-	             cos (theta) * r,
-	             cphi);
-}
-
-vec3
-random_normal (in float angle)
-{
-	float theta = random1 () * M_PI;
-	float cphi  = random1 (cos (angle), 1.0f);
-	float phi   = acos (cphi);
-	float r     = sin (phi);
-
-	return vec3 (sin (theta) * r,
-	             cos (theta) * r,
-	             cphi);
-}
-
-float
-random_variation (in float value, in float variation)
-{
-	return value + value * variation * random1 ();
-}
-
-/* Rotation */
-
-vec4
-quaternion (in vec3 fromVector, in vec3 toVector)
-{
-	vec3 from = normalize (fromVector);
-	vec3 to   = normalize (toVector);
-
-	float cos_angle = dot (from, to);
-	vec3  crossvec  = normalize (cross (from, to));
-	float crosslen  = length (crossvec);
-
-	if (crosslen == 0.0f)
-	{
-		if (cos_angle > 0.0f)
-			return vec4 (0.0f, 0.0f, 0.0f, 1.0f);
-
-		else
-		{
-			vec3 t = cross (from, vec3 (1.0f, 0.0f, 0.0f));
-
-			if (dot (t, t) == 0.0f)
-				t = cross (from, vec3 (0.0f, 1.0f, 0.0f));
-
-			t = normalize (t);
-
-			return vec4 (t, 0.0f);
-		}
-	}
-	else
-	{
-		crossvec *= sqrt (abs (1.0f - cos_angle) * 0.5f);
-		return vec4 (crossvec, sqrt (abs (1.0f + cos_angle) * 0.5f));
-	}
-}
-
-vec4
-inverse (in vec4 quat)
-{
-	quat .xyz = -quat .xyz;
-	return quat;
-}
-
-vec4
-multRight (in vec4 lhs, in vec4 rhs)
-{
-	return vec4 (lhs .w * rhs .x +
-	             lhs .x * rhs .w +
-	             lhs .y * rhs .z -
-	             lhs .z * rhs .y,
-
-	             lhs .w * rhs .y +
-	             lhs .y * rhs .w +
-	             lhs .z * rhs .x -
-	             lhs .x * rhs .z,
-
-	             lhs .w * rhs .z +
-	             lhs .z * rhs .w +
-	             lhs .x * rhs .y -
-	             lhs .y * rhs .x,
-
-	             lhs .w * rhs .w -
-	             lhs .x * rhs .x -
-	             lhs .y * rhs .y -
-	             lhs .z * rhs .z);
-}
-
-vec3
-multVec (in vec4 quat, in vec3 vector)
-{
-	vec4 result = multRight (multRight (quat, vec4 (vector, 0.0f)), inverse (quat));
-	return result .xyz;
-}
+#pragma X3D include "Bits/Math.h"
+#pragma X3D include "Bits/Random.h"
+#pragma X3D include "Bits/Quaternion.h"
+#pragma X3D include "Bits/Color.h"
 
 /* main */
 
@@ -200,7 +65,7 @@ getVelocity ()
 {
 	vec3 v = from .velocity;
 
-	for (int i = 0; i < forces; ++ i)
+	for (int i = 0; i < numForces; ++ i)
 	{
 		float speed = length (velocity [i]);
 	
@@ -215,6 +80,41 @@ getVelocity ()
 	return v;
 }
 
+vec4
+clerp (in int index0, in int index1, in float weight)
+{
+	return clerp (colorRamp [index0], colorRamp [index1], weight);
+}
+
+vec4
+getColor (in float elapsedTime)
+{
+	if (numColors == 0)
+		return vec4 (1.0f, 1.0f, 1.0f, 1.0f);
+		
+	float fraction = elapsedTime / from .lifetime;
+
+	if (numColors == 1 || fraction <= colorKey [0])
+		return clerp (0, 0, 0);
+
+	if (fraction >= colorKey [numColors - 1])
+		return clerp (numColors - 2, numColors - 1, 1);
+
+	int index = upper_bound (colorKey, numColors, fraction);
+	
+	if (index < numColors)
+	{
+		int index1 = index;
+		int index0 = index1 - 1;
+
+		float weight = (fraction - colorKey [index0]) / (colorKey [index1] - colorKey [index0]);
+
+		return clerp (index0, index1, clamp (weight, 0.0f, 1.0f));
+	}
+
+	return clerp (0, 0, 0);
+}
+
 void
 main ()
 {
@@ -226,16 +126,19 @@ main ()
 		to .position    = position;
 		to .velocity    = getRandomVelocity ();
 		to .elapsedTime = 0.0f;
-		to .seed        = seed;
+		to .color       = getColor (0);
+		to .seed        = srand ();
 	}
 	else
 	{
-		vec3 velocity = getVelocity ();
+		vec3  velocity    = getVelocity ();
+		float elapsedTime = from .elapsedTime + deltaTime;
 
 		to .lifetime    = from .lifetime;
 		to .position    = from .position + velocity * deltaTime;
 		to .velocity    = velocity;
-		to .elapsedTime = from .elapsedTime + deltaTime;
-		to .seed        = seed;
+		to .color       = getColor (elapsedTime);
+		to .elapsedTime = elapsedTime;
+		to .seed        = srand ();
 	}
 }
