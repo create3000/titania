@@ -619,7 +619,7 @@
     <None Include="share\titania\shaders\ParticleSystems\Bits\Quaternion.h" />
     <None Include="share\titania\shaders\ParticleSystems\Bits\Random.h" />
     <None Include="share\titania\shaders\ParticleSystems\Bits\Color.h" />
-    <None Include="share\titania\shaders\ParticleSystems\Geometry.vs" />
+    <None Include="share\titania\shaders\ParticleSystems\Primitive.vs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

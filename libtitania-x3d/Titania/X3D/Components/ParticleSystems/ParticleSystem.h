@@ -205,11 +205,13 @@ public:
 	texCoordRamp () const
 	{ return *fields .texCoordRamp; }
 
-	///  @name Member access
+	///  @name Tests
 
 	virtual
 	bool
 	isTransparent () const final override;
+
+	///  @name Member access
 
 	virtual
 	Box3f
@@ -257,6 +259,12 @@ private:
 	void
 	initialize () final override;
 
+	///  @name Tests
+
+	virtual
+	bool
+	isLineGeometry () const final override;
+
 	///  @name Event handlers
 
 	void
@@ -299,10 +307,6 @@ private:
 	set_geometry_shader ();
 
 	///  @name Operations
-
-	virtual
-	bool
-	isLineGeometry () const final override;
 
 	void
 	prepareEvents ();
@@ -347,7 +351,7 @@ private:
 	GeometryType               geometryTypeId;
 	GLenum                     glGeometryType;
 	size_t                     numVertices;
-	int32_t                    particles;
+	int32_t                    numParticles;
 	time_type                  creationTime;
 	size_t                     readBuffer;
 	size_t                     writeBuffer;

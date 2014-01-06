@@ -10,8 +10,8 @@ Viewpoint {
 }
 
 ParticleSystem {
-  geometryType "LINE"
-  maxParticles 20000
+  geometryType "POINT"
+  maxParticles 2000
   particleLifetime 4
   lifetimeVariation 0.5
   particleSize 1 1
@@ -41,8 +41,7 @@ ParticleSystem {
   }
   appearance Appearance {
     lineProperties LineProperties {
-      linetype 5
-      linewidthScaleFactor 8
+      linewidthScaleFactor 10
     }
     material Material {
       emissiveColor 0.03 0.03 0.03
