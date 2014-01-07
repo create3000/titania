@@ -318,6 +318,16 @@ private:
 	void
 	drawGeometry () final override;
 
+	Matrix3f
+	getScreenAlignedRotation () const
+	throw (std::domain_error);
+	
+	void
+	enableTexCoord () const;
+	
+	void
+	disableTexCoord () const;
+
 	///  @name Static members
 
 	static const std::string componentName;

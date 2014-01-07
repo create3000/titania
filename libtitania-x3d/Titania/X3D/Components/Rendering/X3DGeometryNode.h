@@ -142,7 +142,7 @@ protected:
 
 	void
 	setCCW (const bool & value)
-	{ ccw = value ? GL_CCW : GL_CW; }
+	{ frontFace = value ? GL_CCW : GL_CW; }
 
 	static
 	GLenum
@@ -230,7 +230,7 @@ private:
 	std::vector <Vector3f>    normals;
 	std::vector <Vector3f>    vertices;
 	bool                      solid;
-	GLenum                    ccw;
+	GLenum                    frontFace;
 	std::deque <Element>      elements;
 
 };

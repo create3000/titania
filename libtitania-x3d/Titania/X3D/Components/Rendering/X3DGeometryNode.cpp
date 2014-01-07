@@ -67,7 +67,7 @@ X3DGeometryNode::X3DGeometryNode () :
 	          normals (),
 	         vertices (),
 	            solid (true),
-	              ccw (GL_CCW),
+	        frontFace (GL_CCW),
 	         elements ()
 {
 	addNodeType (X3DConstants::X3DGeometryNode);
@@ -201,9 +201,9 @@ X3DGeometryNode::intersect (const Line3f & line, size_t i1, size_t i2, size_t i3
 	if (line .intersect (vertices [i1], vertices [i2], vertices [i3], u, v, t))
 	{
 		Vector4f texCoord (0, 0, 0, 1);
-		size_t   texCoordsSize = texCoords .empty () ? 0 : texCoords [0] .size (); // LineGeometry doesn't have texCoords
+		size_t   texCoordSize = texCoords .empty () ? 0 : texCoords [0] .size (); // LineGeometry doesn't have texCoords
 
-		if (i1 < texCoordsSize)
+		if (i1 < texCoordSize)
 			texCoord = (1 - u - v) * texCoords [0] [i1] + u * texCoords [0] [i2] + v * texCoords [0] [i3];
 		
 		Vector3f normal = (1 - u - v) * normals  [i1] + u * normals  [i2] + v * normals  [i3];
@@ -548,7 +548,7 @@ X3DGeometryNode::draw (bool solid, bool texture, bool lighting)
 	else
 		glDisable (GL_CULL_FACE);
 
-	glFrontFace (ModelViewMatrix4f () .determinant3 () > 0 ? ccw : (ccw == GL_CCW ? GL_CW : GL_CCW));
+	glFrontFace (ModelViewMatrix4f () .determinant3 () > 0 ? frontFace : (frontFace == GL_CCW ? GL_CW : GL_CCW));
 
 	if (texture)
 	{

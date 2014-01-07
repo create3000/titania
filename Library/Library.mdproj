@@ -2368,6 +2368,7 @@
     <None Include="Tests\Networking\LoadSensor.wrl" />
     <None Include="Tests\ParticleSystems\ParticleSystem.wrl" />
     <None Include="Tests\ParticleSystems\Fire.wrl" />
+    <None Include="Tests\ParticleSystems\ParticleAtlas.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

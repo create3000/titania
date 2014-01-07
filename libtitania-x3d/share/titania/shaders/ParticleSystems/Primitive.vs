@@ -1,6 +1,8 @@
 #version 330
 
-uniform int geometryType;
+uniform int  geometryType;
+uniform mat3 rotation;
+uniform vec4 texCoord [6];
 
 layout (location = 0)
 in struct From
@@ -16,6 +18,7 @@ out To
 {
 	vec3 position;
 	vec4 color;
+	vec4 texCoord;
 }
 to;
 
@@ -36,12 +39,17 @@ main ()
 		}
 		case TRIANGLE:
 		case QUAD:
-		case SPRITE:
 		{
 			to .position = from .vertex + from .position;
 			break;
 		}
+		case SPRITE:
+		{
+			to .position = rotation * from .vertex  + from .position;
+			break;
+		}
 	}
 
-	to .color = from .color;
+	to .color    = from .color;
+	to .texCoord = texCoord [gl_VertexID];
 }

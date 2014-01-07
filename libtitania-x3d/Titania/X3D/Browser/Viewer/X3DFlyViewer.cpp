@@ -406,26 +406,26 @@ X3DFlyViewer::display ()
 		Matrix4d projection = ProjectionMatrix4d ();
 
 		// From point
-		Vector3d f = ViewVolume::unProjectPoint (fromVector .x (), height - fromVector .z (), 0, modelview, projection, viewport);
+		Vector3d from = ViewVolume::unProjectPoint (fromVector .x (), height - fromVector .z (), 0, modelview, projection, viewport);
 
 		// To point
-		Vector3d t = ViewVolume::unProjectPoint (toVector .x (), height - toVector .z (), 0, modelview, projection, viewport);
+		Vector3d to = ViewVolume::unProjectPoint (toVector .x (), height - toVector .z (), 0, modelview, projection, viewport);
 
 		// Draw a black and a white line
 		glLineWidth (2);
 		glColor3f (0, 0, 0);
 
 		glBegin (GL_LINES);
-		glVertex3f (f .x (), f .y (), f .z ());
-		glVertex3f (t .x (), t .y (), t .z ());
+		glVertex3dv (from .data ());
+		glVertex3dv (to   .data ());
 		glEnd ();
 
 		glLineWidth (1);
 		glColor3f (1, 1, 1);
 
 		glBegin (GL_LINES);
-		glVertex3f (f .x (), f .y (), f .z ());
-		glVertex3f (t .x (), t .y (), t .z ());
+		glVertex3dv (from .data ());
+		glVertex3dv (to   .data ());
 		glEnd ();
 
 		glEnable (GL_DEPTH_TEST);

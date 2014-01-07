@@ -71,15 +71,8 @@ const std::string ParticleSystem::componentName  = "ParticleSystems";
 const std::string ParticleSystem::typeName       = "ParticleSystem";
 const std::string ParticleSystem::containerField = "children";
 
-// Special indices for glVertexAttribPointer
-
-static constexpr size_t readBuffer  = 0;
-static constexpr size_t writeBuffer = 1;
-
-static constexpr int VERTEX_INDEX   = 0;
-static constexpr int NORMAL_INDEX   = 1;
-static constexpr int TEXCOORD_INDEX = 2;
-static constexpr int COLOR_INDEX    = 3;
+static constexpr Vector3f yAxis (0, 1, 0);
+static constexpr Vector3f zAxis (0, 0, 1);
 
 // gcc switch -malign-double
 
@@ -111,11 +104,13 @@ struct ParticleSystem::Vertex
 {
 	Vertex () :
 		position (),
-		   color ()
+		   color (),
+		texCoord ()
 	{ }
 
 	Vector3f position;
 	Color4f color;
+	Vector4f texCoord;
 
 };
 
@@ -227,7 +222,6 @@ ParticleSystem::initialize ()
 
 		enabled ()           .addInterest (this, &ParticleSystem::set_enabled);
 		geometryType ()      .addInterest (this, &ParticleSystem::set_geometryType);
-		geometryType ()      .addInterest (this, &ParticleSystem::set_geometry);
 		maxParticles ()      .addInterest (this, &ParticleSystem::set_array_buffers);
 		particleLifetime ()  .addInterest (this, &ParticleSystem::set_array_buffers);
 		lifetimeVariation () .addInterest (this, &ParticleSystem::set_array_buffers);
@@ -239,6 +233,7 @@ ParticleSystem::initialize ()
 		texCoordRamp ()      .addInterest (this, &ParticleSystem::set_texCoordRamp);
 		geometry ()          .addInterest (this, &ParticleSystem::set_geometry);
 
+		set_geometry_shader ();
 		set_enabled ();
 		set_geometryType ();
 		set_emitter ();
@@ -247,7 +242,6 @@ ParticleSystem::initialize ()
 		set_texCoordKey ();
 		set_texCoordRamp ();
 		set_geometry ();
-		set_geometry_shader ();
 	}
 }
 
@@ -341,40 +335,99 @@ ParticleSystem::set_geometryType ()
 	else
 		geometryTypeId = GeometryType::QUAD;
 
-	switch (geometryTypeId)
-	{
-		case GeometryType::POINT:
-			glGeometryType = GL_POINTS;
-			break;
-		case GeometryType::LINE:
-			glGeometryType = GL_LINES;
-			break;
-		case GeometryType::TRIANGLE:
-			glGeometryType = GL_TRIANGLES;
-			break;
-		case GeometryType::QUAD:
-		case GeometryType::SPRITE:
-			glGeometryType = GL_QUADS;
-			break;
-		case GeometryType::GEOMETRY:
-			glGeometryType = GL_TRIANGLES;
-			break;
-	}
+	//
+
+	MFVec4f                texCoord;
+	std::vector <Vector3f> vertices;
+
+	Vector2f particleSize1_2 = particleSize () / 2.0f;
 
 	switch (geometryTypeId)
 	{
 		case GeometryType::POINT:
+		{
+			glGeometryType = GL_POINTS;
+			numVertices    = 0;
 			break;
+		}
 		case GeometryType::LINE:
+		{
+			glGeometryType = GL_LINES;
+			numVertices    = 2;
+			
+			texCoord .emplace_back (0, 0, 0, 1);
+			texCoord .emplace_back (0, 1, 0, 1);
+
+			vertices .reserve (numVertices);
+			vertices .emplace_back (0, 0, -particleSize1_2 .y ());
+			vertices .emplace_back (0, 0,  particleSize1_2 .y ());
+			break;
+		}
 		case GeometryType::TRIANGLE:
+		{
+			glGeometryType = GL_TRIANGLES;
+			numVertices    = 6;
+			
+			texCoord .emplace_back (0, 0, 0, 1);
+			texCoord .emplace_back (1, 0, 0, 1);
+			texCoord .emplace_back (1, 1, 0, 1);
+	
+			texCoord .emplace_back (0, 0, 0, 1);
+			texCoord .emplace_back (1, 1, 0, 1);
+			texCoord .emplace_back (0, 1, 0, 1);
+
+			vertices .reserve (numVertices);
+			vertices .emplace_back (-particleSize1_2 .x (), -particleSize1_2 .y (), 0);
+			vertices .emplace_back (+particleSize1_2 .x (), -particleSize1_2 .y (), 0);
+			vertices .emplace_back (+particleSize1_2 .x (),  particleSize1_2 .y (), 0);
+
+			vertices .emplace_back (-particleSize1_2 .x (), -particleSize1_2 .y (), 0);
+			vertices .emplace_back (+particleSize1_2 .x (),  particleSize1_2 .y (), 0);
+			vertices .emplace_back (-particleSize1_2 .x (),  particleSize1_2 .y (), 0);
+			break;
+		}
 		case GeometryType::QUAD:
 		case GeometryType::SPRITE:
-			if (geometryShader)
-				geometryShader -> setField <SFInt32> ("geometryType", int32_t (geometryTypeId));
+		{
+			glGeometryType = GL_QUADS;
+			numVertices    = 4;
+			
+			texCoord .emplace_back (0, 0, 0, 1);
+			texCoord .emplace_back (1, 0, 0, 1);
+			texCoord .emplace_back (1, 1, 0, 1);
+			texCoord .emplace_back (0, 1, 0, 1);
+
+			vertices .reserve (numVertices);
+			vertices .emplace_back (-particleSize1_2 .x (), -particleSize1_2 .y (), 0);
+			vertices .emplace_back (+particleSize1_2 .x (), -particleSize1_2 .y (), 0);
+			vertices .emplace_back (+particleSize1_2 .x (),  particleSize1_2 .y (), 0);
+			vertices .emplace_back (-particleSize1_2 .x (),  particleSize1_2 .y (), 0);
 			break;
+		}
 		case GeometryType::GEOMETRY:
+		{
+			glGeometryType = GL_TRIANGLES;
+			numVertices    = 1;
+
+			vertices .resize (numVertices);
 			break;
+		}
 	}
+
+	if (numVertices)
+	{
+		glBindBuffer (GL_ARRAY_BUFFER, geometryBufferId);
+		glBufferData (GL_ARRAY_BUFFER, sizeof (Vector3f) * numVertices, vertices .data (), GL_STATIC_DRAW);
+
+		glBindBuffer (GL_ARRAY_BUFFER, 0);
+
+		// Vertex buffer
+
+		set_vertex_buffer ();
+	}
+
+	geometryShader -> setField <SFInt32> ("geometryType", int32_t (geometryTypeId));
+	geometryShader -> setField <MFVec4f> ("texCoord", texCoord);
 }
 
 void
@@ -447,57 +500,6 @@ ParticleSystem::set_texCoordRamp ()
 void
 ParticleSystem::set_geometry ()
 {
-	std::vector <Vector3f> vertices;
-
-	Vector2f particleSize1_2 = particleSize () / 2.0f;
-
-	switch (geometryTypeId)
-	{
-		case GeometryType::POINT:
-			numVertices = 0;
-			break;
-		case GeometryType::LINE:
-			numVertices = 2;
-			vertices .emplace_back (0, 0, -particleSize1_2 .y ());
-			vertices .emplace_back (0, 0,  particleSize1_2 .y ());
-			break;
-		case GeometryType::TRIANGLE:
-			numVertices = 6;
-			vertices .reserve (numVertices);
-			vertices .emplace_back (-particleSize1_2 .x (), -particleSize1_2 .y (), 0);
-			vertices .emplace_back (+particleSize1_2 .x (), -particleSize1_2 .y (), 0);
-			vertices .emplace_back (+particleSize1_2 .x (),  particleSize1_2 .y (), 0);
-
-			vertices .emplace_back (-particleSize1_2 .x (), -particleSize1_2 .y (), 0);
-			vertices .emplace_back (+particleSize1_2 .x (),  particleSize1_2 .y (), 0);
-			vertices .emplace_back (-particleSize1_2 .x (),  particleSize1_2 .y (), 0);
-			break;
-		case GeometryType::QUAD:
-		case GeometryType::SPRITE:
-			numVertices = 4;
-			vertices .reserve (numVertices);
-			vertices .emplace_back (-particleSize1_2 .x (), -particleSize1_2 .y (), 0);
-			vertices .emplace_back (+particleSize1_2 .x (), -particleSize1_2 .y (), 0);
-			vertices .emplace_back (+particleSize1_2 .x (),  particleSize1_2 .y (), 0);
-			vertices .emplace_back (-particleSize1_2 .x (),  particleSize1_2 .y (), 0);
-			break;
-		case GeometryType::GEOMETRY:
-			numVertices = 1;
-			vertices .resize (numVertices);
-			break;
-	}
-
-	if (numVertices)
-	{
-		glBindBuffer (GL_ARRAY_BUFFER, geometryBufferId);
-		glBufferData (GL_ARRAY_BUFFER, sizeof (Vector3f) * numVertices, vertices .data (), GL_STATIC_DRAW);
-
-		glBindBuffer (GL_ARRAY_BUFFER, 0);
-
-		// Vertex buffer
-
-		set_vertex_buffer ();
-	}
 }
 
 void
@@ -588,12 +590,14 @@ ParticleSystem::set_geometry_shader ()
 	vertexPart -> setup ();
 
 	geometryShader = new ComposedShader (getExecutionContext ());
-	geometryShader -> addUserDefinedField (inputOutput, "geometryType", new SFInt32 (int32_t (geometryTypeId)));
+	geometryShader -> addUserDefinedField (inputOutput, "geometryType", new SFInt32 ());
+	geometryShader -> addUserDefinedField (inputOutput, "rotation",     new SFMatrix3f ());
+	geometryShader -> addUserDefinedField (inputOutput, "texCoord",     new MFVec4f ());
 
 	geometryShader -> language () = "GLSL";
 	geometryShader -> parts () .emplace_back (vertexPart);
 	geometryShader -> setTransformFeedbackVaryings ({
-	                                                   "To.position", "To.color"
+	                                                   "To.position", "To.color", "To.texCoord"
 																	});
 	geometryShader -> setup ();
 }
@@ -786,8 +790,8 @@ ParticleSystem::drawCollision ()
 void
 ParticleSystem::drawGeometry ()
 {
-	bool   solid = false;
-	GLenum ccw   = GL_CCW;
+	bool   solid     = false;
+	GLenum frontFace = GL_CCW;
 
 	if (solid)
 		glEnable (GL_CULL_FACE);
@@ -795,7 +799,7 @@ ParticleSystem::drawGeometry ()
 	else
 		glDisable (GL_CULL_FACE);
 
-	glFrontFace (ModelViewMatrix4f () .determinant3 () > 0 ? ccw : (ccw == GL_CCW ? GL_CW : GL_CCW));
+	glFrontFace (ModelViewMatrix4f () .determinant3 () > 0 ? frontFace : (frontFace == GL_CCW ? GL_CW : GL_CCW));
 
 	glNormal3f (0, 0, 1);
 
@@ -805,51 +809,142 @@ ParticleSystem::drawGeometry ()
 		{
 			glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [readBuffer]);
 
-			glEnableVertexAttribArray (VERTEX_INDEX);
-			glVertexAttribPointer (VERTEX_INDEX, 3, GL_FLOAT, false, sizeof (Particle), (void*) offsetof (Particle, position));
-
 			if (haveColor)
 			{
 				if (glIsEnabled (GL_LIGHTING))
 					glEnable (GL_COLOR_MATERIAL);
 
-				glEnableVertexAttribArray (COLOR_INDEX);
-				glVertexAttribPointer (COLOR_INDEX, 4, GL_FLOAT, false, sizeof (Particle), (void*) offsetof (Particle, color));
+				glEnableClientState (GL_COLOR_ARRAY);
+				glColorPointer (4, GL_FLOAT, sizeof (Particle), (void*) offsetof (Particle, color));
 			}
+
+			glEnableClientState (GL_VERTEX_ARRAY);
+			glVertexPointer (3, GL_FLOAT, sizeof (Particle), (void*) offsetof (Particle, position));
 
 			glDrawArrays (GL_POINTS, 0, numParticles);
 
-			glDisableVertexAttribArray (VERTEX_INDEX);
-			glDisableVertexAttribArray (COLOR_INDEX);
+			glDisableClientState (GL_COLOR_ARRAY);
+			glDisableClientState (GL_VERTEX_ARRAY);
 			glBindBuffer (GL_ARRAY_BUFFER, 0);
 			break;
+		}
+		case GeometryType::SPRITE:
+		{
+			try
+			{
+				Matrix3f rotation = getScreenAlignedRotation ();
+
+				glNormal3fv (rotation [2] .data ());
+
+				geometryShader -> setField <SFMatrix3f> ("rotation", rotation);
+			}
+			catch (const std::domain_error &)
+			{ }
+
+			// Proceed with next case.
 		}
 		case GeometryType::LINE:
 		case GeometryType::TRIANGLE:
 		case GeometryType::QUAD:
-		case GeometryType::SPRITE:
-		case GeometryType::GEOMETRY:
 		{
 			glBindBuffer (GL_ARRAY_BUFFER, vertexBufferId);
-
-			glEnableVertexAttribArray (VERTEX_INDEX);
-			glVertexAttribPointer (VERTEX_INDEX, 3, GL_FLOAT, false, sizeof (Vertex), (void*) offsetof (Vertex, position));
 
 			if (haveColor)
 			{
 				if (glIsEnabled (GL_LIGHTING))
 					glEnable (GL_COLOR_MATERIAL);
 
-				glEnableVertexAttribArray (COLOR_INDEX);
-				glVertexAttribPointer (COLOR_INDEX, 4, GL_FLOAT, false, sizeof (Vertex), (void*) offsetof (Vertex, color));
+				glEnableClientState (GL_COLOR_ARRAY);
+				glColorPointer (4, GL_FLOAT, sizeof (Vertex), (void*) offsetof (Vertex, color));
 			}
+
+			if (getBrowser () -> isEnabledTexture ())
+				enableTexCoord ();
+
+			glEnableClientState (GL_VERTEX_ARRAY);
+			glVertexPointer (3, GL_FLOAT, sizeof (Vertex), (void*) offsetof (Vertex, position));
 
 			glDrawArrays (glGeometryType, 0, numParticles * numVertices);
 
-			glDisableVertexAttribArray (VERTEX_INDEX);
-			glDisableVertexAttribArray (COLOR_INDEX);
+			if (getBrowser () -> isEnabledTexture ())
+				disableTexCoord ();
+
+			glDisableClientState (GL_COLOR_ARRAY);
+			glDisableClientState (GL_VERTEX_ARRAY);
 			glBindBuffer (GL_ARRAY_BUFFER, 0);
 			break;
+		}
+		case GeometryType::GEOMETRY:
+		{
+			break;
+		}
+	}
+}
+
+Matrix3f
+ParticleSystem::getScreenAlignedRotation () const
+throw (std::domain_error)
+{
+	Matrix4f inverseModelViewMatrix = ~ModelViewMatrix4f ();
+
+	Vector3f billboardToScreen = inverseModelViewMatrix .multDirMatrix (zAxis);
+	Vector3f viewerYAxis       = inverseModelViewMatrix .multDirMatrix (yAxis);
+
+	Vector3f x = cross (viewerYAxis, billboardToScreen);
+	Vector3f y = cross (billboardToScreen, x);
+	Vector3f z = billboardToScreen;
+
+	// Compose rotation
+
+	x .normalize ();
+	y .normalize ();
+	z .normalize ();
+
+	return Matrix3f (x [0], x [1], x [2],
+	                 y [0], y [1], y [2],
+	                 z [0], z [1], z [2]);
+}
+
+void
+ParticleSystem::enableTexCoord () const
+{
+	if (getBrowser () -> getTextureStages () .empty ())
+	{
+		glClientActiveTexture (GL_TEXTURE0);
+		glEnableClientState (GL_TEXTURE_COORD_ARRAY);
+		glTexCoordPointer (4, GL_FLOAT, sizeof (Vertex), (void*) offsetof (Vertex, texCoord));
+	}
+	else
+	{
+		for (const auto & unit : getBrowser () -> getTextureStages ())
+		{
+			if (unit >= 0)
+			{
+				glClientActiveTexture (GL_TEXTURE0 + unit);
+				glEnableClientState (GL_TEXTURE_COORD_ARRAY);
+				glTexCoordPointer (4, GL_FLOAT, sizeof (Vertex), (void*) offsetof (Vertex, texCoord));
+			}
+		}
+	}
+}
+
+void
+ParticleSystem::disableTexCoord () const
+{
+	if (getBrowser () -> getTextureStages () .empty ())
+	{
+		glClientActiveTexture (GL_TEXTURE0);
+		glDisableClientState (GL_TEXTURE_COORD_ARRAY);
+	}
+	else
+	{
+		for (const auto & unit : getBrowser () -> getTextureStages ())
+		{
+			if (unit >= 0)
+			{
+				glClientActiveTexture (GL_TEXTURE0 + unit);
+				glDisableClientState (GL_TEXTURE_COORD_ARRAY);
+			}
 		}
 	}
 }

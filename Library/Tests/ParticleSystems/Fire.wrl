@@ -43,10 +43,6 @@ ParticleSystem {
     lineProperties LineProperties {
       linewidthScaleFactor 10
     }
-    material Material {
-      emissiveColor 0.03 0.03 0.03
-      transparency 0.95
-    }
   }
 }
 

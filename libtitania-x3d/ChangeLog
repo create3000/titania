@@ -1,3 +1,13 @@
+2014-01-07  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DFlyViewer.cpp:
+	* Billboard.cpp:
+	* X3DGeometryNode.h:
+	* Primitive.vs:
+	* X3DGeometryNode.cpp:
+	* ParticleSystem.h:
+	* ParticleSystem.cpp: 
+
 2014-01-06  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* libtitania-x3d.cproj:

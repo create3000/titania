@@ -102,13 +102,13 @@ Billboard::rotate (const TraverseType type) const
 
 		if (axisOfRotation () == Vector3f ())
 		{
-			Vector3f viewerYAxis = yAxis * inverseModelViewMatrix;
+			Vector3f viewerYAxis = inverseModelViewMatrix .multDirMatrix (yAxis);
 
 			Vector3f x = cross (viewerYAxis, billboardToViewer);
 			Vector3f y = cross (billboardToViewer, x);
 			Vector3f z = billboardToViewer;
 
-			//
+			// Compose rotation
 
 			x .normalize ();
 			y .normalize ();
@@ -129,13 +129,6 @@ Billboard::rotate (const TraverseType type) const
 			Rotation4f rotation (vector, normal);
 
 			glMultMatrixf (Matrix4f (rotation) .data ());                                // rotate zAxis in plane
-
-			//Vector3f vector = cross (axisOfRotation () .getValue (), billboardToViewer);           // direction vector of plane
-			//float    angle  = std::acos (dot (zAxis, normalize (axisOfRotation () .getValue ()))); // angle between zAxis and axisOfRotation
-			//
-			//Vector3f z = Rotation4f (vector, angle) * axisOfRotation () .getValue ();              // intersection of zAxis and plane
-			//
-			//glMultMatrixf (Matrix4f (Rotation4f (zAxis, z)) .data ());                             // rotate zAxis in plane
 		}
 	}
 	catch (const std::domain_error &)
