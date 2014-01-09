@@ -144,6 +144,7 @@ ParticleSystem::ParticleSystem (X3DExecutionContext* const executionContext) :
 	        writeBuffer (1),
 	transformFeedbackId ({ 0, 0 }),
 	   particleBufferId ({ 0, 0 }),
+	      particleMapId (0),
 	   vertexFeedbackId (0),
 	     vertexBufferId (0),
 	   geometryBufferId (0),
@@ -204,6 +205,10 @@ ParticleSystem::initialize ()
 			glBindBufferBase (GL_TRANSFORM_FEEDBACK_BUFFER, 0, particleBufferId [i]);
 		}
 
+		glGenTextures (1, &particleMapId);
+
+		set_particle_map ();
+
 		// Generate point buffer
 
 		glGenTransformFeedbacks (1, &vertexFeedbackId);
@@ -222,10 +227,10 @@ ParticleSystem::initialize ()
 
 		enabled ()           .addInterest (this, &ParticleSystem::set_enabled);
 		geometryType ()      .addInterest (this, &ParticleSystem::set_geometryType);
-		maxParticles ()      .addInterest (this, &ParticleSystem::set_array_buffers);
-		particleLifetime ()  .addInterest (this, &ParticleSystem::set_array_buffers);
-		lifetimeVariation () .addInterest (this, &ParticleSystem::set_array_buffers);
-		particleSize ()      .addInterest (this, &ParticleSystem::set_geometry);
+		maxParticles ()      .addInterest (this, &ParticleSystem::set_particle_buffers);
+		particleLifetime ()  .addInterest (this, &ParticleSystem::set_particle_buffers);
+		lifetimeVariation () .addInterest (this, &ParticleSystem::set_particle_buffers);
+		particleSize ()      .addInterest (this, &ParticleSystem::set_geometryType);
 		colorKey ()          .addInterest (this, &ParticleSystem::set_colorKey);
 		texCoordKey ()       .addInterest (this, &ParticleSystem::set_texCoordKey);
 		emitter ()           .addInterest (this, &ParticleSystem::set_emitter);
@@ -300,7 +305,7 @@ ParticleSystem::set_enabled ()
 		getBrowser () -> prepareEvents () .addInterest (this, &ParticleSystem::prepareEvents);
 		getBrowser () -> sensors ()       .addInterest (this, &ParticleSystem::update);
 
-		set_array_buffers ();
+		set_particle_buffers ();
 
 		isActive () = true;
 	}
@@ -503,15 +508,15 @@ ParticleSystem::set_geometry ()
 }
 
 void
-ParticleSystem::set_array_buffers ()
+ParticleSystem::set_particle_buffers ()
 {
 	// Initialize array buffers
 
-	size_t numParticles = std::max (0, maxParticles () .getValue ());
+	size_t maxParticles = std::max (0, this -> maxParticles () .getValue ());
 
 	// Particle buffers
 
-	Particle particleArray [numParticles];
+	Particle particleArray [maxParticles];
 
 	for (size_t i = 0; i < 2; ++ i)
 	{
@@ -536,11 +541,11 @@ ParticleSystem::set_vertex_buffer ()
 {
 	// Initialize array buffers
 
-	size_t numParticles = std::max (0, maxParticles () .getValue ());
+	size_t maxParticles = std::max (0, this -> maxParticles () .getValue ());
 
 	// Vertex buffer
 
-	Vertex vertexArray [numParticles * numVertices];
+	Vertex vertexArray [maxParticles * numVertices];
 
 	glBindBuffer (GL_ARRAY_BUFFER, vertexBufferId);
 	glBufferData (GL_ARRAY_BUFFER, sizeof (vertexArray), vertexArray, GL_DYNAMIC_DRAW);
@@ -573,6 +578,14 @@ ParticleSystem::set_transform_shader ()
 	transformShader -> addUserDefinedField (inputOutput, "colorKey",          new MFFloat ());
 	transformShader -> addUserDefinedField (inputOutput, "colorRamp",         new MFVec4f ());
 	transformShader -> addUserDefinedField (inputOutput, "numColors",         new SFInt32 ());
+	
+	transformShader -> addUserDefinedField (inputOutput, "stride",            new SFInt32 (sizeof (Particle) / sizeof (float)));
+	transformShader -> addUserDefinedField (inputOutput, "seedOffset",        new SFInt32 (offsetof (Particle, seed)        / sizeof (float)));
+	transformShader -> addUserDefinedField (inputOutput, "lifetimeOffset",    new SFInt32 (offsetof (Particle, lifetime)    / sizeof (float)));
+	transformShader -> addUserDefinedField (inputOutput, "positionOffset",    new SFInt32 (offsetof (Particle, position)    / sizeof (float)));
+	transformShader -> addUserDefinedField (inputOutput, "velocityOffset",    new SFInt32 (offsetof (Particle, velocity)    / sizeof (float)));
+	transformShader -> addUserDefinedField (inputOutput, "colorOffset",       new SFInt32 (offsetof (Particle, color)       / sizeof (float)));
+	transformShader -> addUserDefinedField (inputOutput, "elapsedTimeOffset", new SFInt32 (offsetof (Particle, elapsedTime) / sizeof (float)));
 
 	transformShader -> language () = "GLSL";
 	transformShader -> parts () .emplace_back (vertexPart);
@@ -580,6 +593,16 @@ ParticleSystem::set_transform_shader ()
 	                                                    "To.seed", "To.lifetime", "To.position", "To.velocity", "To.color", "To.elapsedTime"
 																	 });
 	transformShader -> setup ();
+
+	transformShader -> setTextureBuffer ("particleMap", particleMapId);
+}
+
+void
+ParticleSystem::set_particle_map () 
+{
+	glBindTexture (GL_TEXTURE_BUFFER, particleMapId);
+	glTexBuffer (GL_TEXTURE_BUFFER, GL_R32F, particleBufferId [readBuffer]);
+	glBindTexture (GL_TEXTURE_BUFFER, 0);
 }
 
 void
@@ -684,21 +707,6 @@ ParticleSystem::update ()
 
 	transformShader -> enable ();
 
-	glEnableVertexAttribArray (0);
-	glEnableVertexAttribArray (1);
-	glEnableVertexAttribArray (2);
-	glEnableVertexAttribArray (3);
-	glEnableVertexAttribArray (4);
-	glEnableVertexAttribArray (5);
-
-	glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [readBuffer]);
-	glVertexAttribIPointer (0, 1, GL_INT,             sizeof (Particle), (void*) offsetof (Particle, seed));
-	glVertexAttribPointer  (1, 1, GL_FLOAT, false, sizeof (Particle), (void*) offsetof (Particle, lifetime));
-	glVertexAttribPointer  (2, 3, GL_FLOAT, false, sizeof (Particle), (void*) offsetof (Particle, position));
-	glVertexAttribPointer  (3, 3, GL_FLOAT, false, sizeof (Particle), (void*) offsetof (Particle, velocity));
-	glVertexAttribPointer  (4, 4, GL_FLOAT, false, sizeof (Particle), (void*) offsetof (Particle, color));
-	glVertexAttribPointer  (5, 1, GL_FLOAT, false, sizeof (Particle), (void*) offsetof (Particle, elapsedTime));
-
 	glEnable (GL_RASTERIZER_DISCARD);
 	glBindTransformFeedback (GL_TRANSFORM_FEEDBACK, transformFeedbackId [writeBuffer]);
 	glBeginTransformFeedback (GL_POINTS);
@@ -709,17 +717,10 @@ ParticleSystem::update ()
 	glBindTransformFeedback (GL_TRANSFORM_FEEDBACK, 0);
 	glDisable (GL_RASTERIZER_DISCARD);
 
-	glDisableVertexAttribArray (0);
-	glDisableVertexAttribArray (1);
-	glDisableVertexAttribArray (2);
-	glDisableVertexAttribArray (3);
-	glDisableVertexAttribArray (4);
-	glDisableVertexAttribArray (5);
-	glBindBuffer (GL_ARRAY_BUFFER, 0);
-
 	transformShader -> disable ();
 
 	std::swap (readBuffer, writeBuffer);
+	set_particle_map ();
 
 	// Geometry shader
 
@@ -961,6 +962,9 @@ ParticleSystem::dispose ()
 
 	if (particleBufferId [0])
 		glDeleteBuffers (2, particleBufferId .data ());
+		
+	if (particleMapId)
+		glDeleteTextures (1, &particleMapId);
 
 	if (vertexFeedbackId)
 		glDeleteTransformFeedbacks (1, &vertexFeedbackId);

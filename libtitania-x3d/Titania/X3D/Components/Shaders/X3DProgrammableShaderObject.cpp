@@ -68,11 +68,6 @@ X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 }
 
 void
-X3DProgrammableShaderObject::initialize ()
-{
-}
-
-void
 X3DProgrammableShaderObject::applyTransformFeedbackVaryings () const
 {
 	if (not transformFeedbackVaryings .empty ())
@@ -177,7 +172,12 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 
 				if (not textureUnit)
 				{
-					if (not getBrowser () -> getCombinedTextureUnits () .empty ())
+					if (getBrowser () -> getCombinedTextureUnits () .empty ())
+					{
+						std::clog << "Warning: Not enough combined texture units for uniform variable '" << field -> getName () << "' available." << std::endl;
+						break;
+					}
+					else
 					{
 						textureUnit = getBrowser () -> getCombinedTextureUnits () .top ();
 						getBrowser () -> getCombinedTextureUnits () .pop ();
@@ -386,7 +386,12 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 				{
 					GLint textureUnit = 0;
 
-					if (getBrowser () -> getCombinedTextureUnits () .size ())
+					if (getBrowser () -> getCombinedTextureUnits () .empty ())
+					{
+						std::clog << "Warning: Not enough combined texture units for uniform variable '" << field -> getName () << "' available." << std::endl;
+						break;
+					}
+					else
 					{
 						textureUnit = getBrowser () -> getCombinedTextureUnits () .top ();
 						getBrowser () -> getCombinedTextureUnits () .pop ();
@@ -497,6 +502,46 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 	}
 	else
 		std::clog << "Warning: Uniform variable '" << field -> getName () << "' not found." << std::endl;
+
+	glUseProgram (0);
+}
+
+void
+X3DProgrammableShaderObject::setTextureBuffer (const std::string & name, GLuint textureId)
+{
+	glUseProgram (getProgramId ());
+	
+	GLint location = glGetUniformLocation (getProgramId (), name .c_str ());
+	
+	if (location not_eq -1)
+	{
+		GLint textureUnit = 0;
+		glGetUniformiv (getProgramId (), location, &textureUnit);
+
+		if (not textureUnit)
+		{
+			if (getBrowser () -> getCombinedTextureUnits () .empty ())
+			{
+				std::clog << "Warning: Not enough combined texture units for uniform variable '" << name << "' available." << std::endl;
+				return;
+			}
+			else
+			{
+				textureUnit = getBrowser () -> getCombinedTextureUnits () .top ();
+				getBrowser () -> getCombinedTextureUnits () .pop ();
+				textureUnits .emplace_back (textureUnit);
+			}
+		}
+
+		glActiveTexture (GL_TEXTURE0 + textureUnit);
+		glBindTexture (GL_TEXTURE_BUFFER, textureId);
+
+		glUniform1i (location, textureUnit);
+		glActiveTexture (GL_TEXTURE0);
+
+	}
+	else
+		std::clog << "Warning: Uniform variable '" << name << "' not found." << std::endl;
 
 	glUseProgram (0);
 }

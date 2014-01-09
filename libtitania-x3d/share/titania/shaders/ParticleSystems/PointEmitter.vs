@@ -1,6 +1,7 @@
 #version 330
 
-#define ARRAY_MAX 128
+#define FORCES_MAX  32
+#define ARRAY_MAX   128
 
 uniform float deltaTime;
 uniform float particleLifetime;
@@ -11,25 +12,15 @@ uniform vec3  direction;
 uniform float speed;
 uniform float variation;
 
-uniform vec3  velocity [32];
-uniform float turbulence [32];
+uniform vec3  velocity [FORCES_MAX];
+uniform float turbulence [FORCES_MAX];
 uniform int   numForces;
 
 uniform float colorKey [ARRAY_MAX];
 uniform vec4  colorRamp [ARRAY_MAX];
 uniform int   numColors;
 
-layout (location = 0)
-in struct From
-{
-	int   seed;
-	float lifetime;
-	vec3  position;
-	vec3  velocity;
-	vec4  color;
-	float elapsedTime;
-}
-from;
+/* Transform feedback varyings */
 
 out To
 {
@@ -42,6 +33,7 @@ out To
 }
 to;
 
+#pragma X3D include "Bits/ParticleMap.h"
 #pragma X3D include "Bits/Math.h"
 #pragma X3D include "Bits/Random.h"
 #pragma X3D include "Bits/Quaternion.h"
@@ -63,7 +55,7 @@ getRandomVelocity ()
 vec3
 getVelocity ()
 {
-	vec3 v = from .velocity;
+	vec3 v = getFromVelocity ();
 
 	for (int i = 0; i < numForces; ++ i)
 	{
@@ -90,9 +82,9 @@ vec4
 getColor (in float elapsedTime)
 {
 	if (numColors == 0)
-		return vec4 (1.0f, 1.0f, 1.0f, 1.0f);
-		
-	float fraction = elapsedTime / from .lifetime;
+		return vec4 (1.0f);
+
+	float fraction = elapsedTime / getFromLifetime ();
 
 	if (numColors == 1 || fraction <= colorKey [0])
 		return clerp (0, 0, 0);
@@ -101,7 +93,7 @@ getColor (in float elapsedTime)
 		return clerp (numColors - 2, numColors - 1, 1);
 
 	int index = upper_bound (colorKey, numColors, fraction);
-	
+
 	if (index < numColors)
 	{
 		int index1 = index;
@@ -118,24 +110,26 @@ getColor (in float elapsedTime)
 void
 main ()
 {
-	srand (from .seed + gl_VertexID);
+	setParticleIndex (gl_VertexID);
 
-	if (from .elapsedTime > from .lifetime)
+	srand (getFromSeed () + gl_VertexID);
+
+	if (getFromElapsedTime () > getFromLifetime ())
 	{
 		to .lifetime    = random_variation (particleLifetime, lifetimeVariation);
 		to .position    = position;
 		to .velocity    = getRandomVelocity ();
-		to .elapsedTime = 0.0f;
 		to .color       = getColor (0);
+		to .elapsedTime = 0.0f;
 		to .seed        = srand ();
 	}
 	else
 	{
 		vec3  velocity    = getVelocity ();
-		float elapsedTime = from .elapsedTime + deltaTime;
+		float elapsedTime = getFromElapsedTime () + deltaTime;
 
-		to .lifetime    = from .lifetime;
-		to .position    = from .position + velocity * deltaTime;
+		to .lifetime    = getFromLifetime ();
+		to .position    = getFromPosition () + velocity * deltaTime;
 		to .velocity    = velocity;
 		to .color       = getColor (elapsedTime);
 		to .elapsedTime = elapsedTime;

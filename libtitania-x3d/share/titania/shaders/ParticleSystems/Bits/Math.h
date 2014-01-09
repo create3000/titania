@@ -1,5 +1,8 @@
 /* Math */
 
+const float NAN      = 0.0 / 0.0;
+const float INFINITY = 1.0 / 0.0;
+
 const float M_PI    = 3.14159265358979323846;
 const float M_PI1_2 = M_PI / 2;
 const float M_PI2   = 2.0f * M_PI;

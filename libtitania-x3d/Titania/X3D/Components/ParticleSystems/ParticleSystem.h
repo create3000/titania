@@ -295,13 +295,16 @@ private:
 	set_geometry ();
 
 	void
-	set_array_buffers ();
+	set_particle_buffers ();
 
 	void
 	set_vertex_buffer ();
 
 	void
 	set_transform_shader ();
+
+	void
+	set_particle_map ();
 
 	void
 	set_geometry_shader ();
@@ -367,6 +370,7 @@ private:
 	size_t                     writeBuffer;
 	std::array <GLuint, 2>     transformFeedbackId;
 	std::array <GLuint, 2>     particleBufferId;
+	GLuint                     particleMapId;
 	GLuint                     vertexFeedbackId;
 	GLuint                     vertexBufferId;
 	GLuint                     geometryBufferId;

@@ -75,6 +75,8 @@ public:
 	setTransformFeedbackVaryings (const std::vector <std::string> & value)
 	{ transformFeedbackVaryings = value; }
 
+	void
+	setTextureBuffer (const std::string &, GLuint);
 
 protected:
 
@@ -84,7 +86,8 @@ protected:
 
 	virtual
 	void
-	initialize () override;
+	initialize () override
+	{ }
 
 	///  @name Operations
 	

@@ -4,6 +4,8 @@ uniform int  geometryType;
 uniform mat3 rotation;
 uniform vec4 texCoord [6];
 
+/* Vertex attributes */
+
 layout (location = 0)
 in struct From
 {
@@ -13,6 +15,8 @@ in struct From
 	vec4 color;
 }
 from;
+
+/* Transform feedback varyings */
 
 out To
 {

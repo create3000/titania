@@ -1,3 +1,15 @@
+2014-01-09  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-x3d.cproj:
+	* Math.h:
+	* Primitive.vs:
+	* PointEmitter.vs:
+	* ParticleSystem.h:
+	* ParticleMap.h:
+	* ParticleSystem.cpp:
+	* X3DProgrammableShaderObject.h:
+	* X3DProgrammableShaderObject.cpp: 
+
 2014-01-07  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DFlyViewer.cpp:

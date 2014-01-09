@@ -351,6 +351,8 @@ Gtk::TreeModel::Path
 OutlineTreeModel::get_path_vfunc (const iterator & iter) const
 {
 	//__LOG__ << std::endl;
+	
+	assert (get_data (iter));
 
 	return get_data (iter) -> get_path ();
 }
