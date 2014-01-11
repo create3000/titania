@@ -53,8 +53,8 @@
 
 #include "../Math/Constants.h"
 #include <cmath>
-#include <type_traits>
 #include <stdexcept>
+#include <type_traits>
 
 namespace titania {
 namespace math {
@@ -241,29 +241,28 @@ simple_slerp (const Type & source, const Type & destination, T t)
 	return (scale0 * source + scale1 * destination) / sinom;
 }
 
-///  Returns true if @a i is a power of two otherwise false.
+///  Returns true if @a n is a power of two otherwise false.
 template <class Type>
 inline
 constexpr bool
-is_power_of_two (Type i)
+is_power_of_two (Type n)
 {
-	return ((i - 1) & i) == 0;
+	return ((n - 1) & n) == 0;
 }
 
-///  Returns the next power of @a i.
+///  Returns the next power of @a n. If n is a power of two it returns @a n.
+///  If n is zero it returns zero.
 template <class Type>
 static
 Type
-next_power_of_two (Type i)
+next_power_of_two (Type n)
 {
-	-- i;
-	i |= i >> 16;
-	i |= i >> 8;
-	i |= i >> 4;
-	i |= i >> 2;
-	i |= i >> 1;
-	++ i;
-	return i;
+	-- n;
+
+	for (Type k = 1; not (k & (1 << (sizeof (n) + 1))); k <<= 1)
+		n |= n >> k;
+
+	return ++ n;
 }
 
 } // math

@@ -152,7 +152,10 @@ ParticleSystem::ParticleSystem (X3DExecutionContext* const executionContext) :
 	     geometryShader (),
 	        emitterNode (nullptr),
 	      colorRampNode (),
-	          haveColor (false)
+	          haveColor (false),
+	          stepsLeft (0),
+	               pass (0),
+	              stage (0)
 {
 	addField (inputOutput,    "metadata",          metadata ());
 	addField (inputOutput,    "enabled",           enabled ());
@@ -227,7 +230,7 @@ ParticleSystem::initialize ()
 
 		enabled ()           .addInterest (this, &ParticleSystem::set_enabled);
 		geometryType ()      .addInterest (this, &ParticleSystem::set_geometryType);
-		maxParticles ()      .addInterest (this, &ParticleSystem::set_particle_buffers);
+		maxParticles ()      .addInterest (this, &ParticleSystem::set_enabled);
 		particleLifetime ()  .addInterest (this, &ParticleSystem::set_particle_buffers);
 		lifetimeVariation () .addInterest (this, &ParticleSystem::set_particle_buffers);
 		particleSize ()      .addInterest (this, &ParticleSystem::set_geometryType);
@@ -300,21 +303,19 @@ ParticleSystem::getBBox ()
 void
 ParticleSystem::set_enabled ()
 {
-	if (enabled ())
+	if (enabled () and maxParticles ())
 	{
 		getBrowser () -> prepareEvents () .addInterest (this, &ParticleSystem::prepareEvents);
 		getBrowser () -> sensors ()       .addInterest (this, &ParticleSystem::update);
 
-		set_particle_buffers ();
-
 		isActive () = true;
+
+		set_particle_buffers ();
 	}
 	else
 	{
 		getBrowser () -> prepareEvents () .removeInterest (this, &ParticleSystem::prepareEvents);
 		getBrowser () -> sensors ()       .removeInterest (this, &ParticleSystem::update);
-
-		numParticles = 0;
 
 		isActive () = false;
 	}
@@ -359,7 +360,7 @@ ParticleSystem::set_geometryType ()
 		{
 			glGeometryType = GL_LINES;
 			numVertices    = 2;
-			
+
 			texCoord .emplace_back (0, 0, 0, 1);
 			texCoord .emplace_back (0, 1, 0, 1);
 
@@ -372,11 +373,11 @@ ParticleSystem::set_geometryType ()
 		{
 			glGeometryType = GL_TRIANGLES;
 			numVertices    = 6;
-			
+
 			texCoord .emplace_back (0, 0, 0, 1);
 			texCoord .emplace_back (1, 0, 0, 1);
 			texCoord .emplace_back (1, 1, 0, 1);
-	
+
 			texCoord .emplace_back (0, 0, 0, 1);
 			texCoord .emplace_back (1, 1, 0, 1);
 			texCoord .emplace_back (0, 1, 0, 1);
@@ -396,7 +397,7 @@ ParticleSystem::set_geometryType ()
 		{
 			glGeometryType = GL_QUADS;
 			numVertices    = 4;
-			
+
 			texCoord .emplace_back (0, 0, 0, 1);
 			texCoord .emplace_back (1, 0, 0, 1);
 			texCoord .emplace_back (1, 1, 0, 1);
@@ -504,8 +505,7 @@ ParticleSystem::set_texCoordRamp ()
 
 void
 ParticleSystem::set_geometry ()
-{
-}
+{ }
 
 void
 ParticleSystem::set_particle_buffers ()
@@ -578,14 +578,18 @@ ParticleSystem::set_transform_shader ()
 	transformShader -> addUserDefinedField (inputOutput, "colorKey",          new MFFloat ());
 	transformShader -> addUserDefinedField (inputOutput, "colorRamp",         new MFVec4f ());
 	transformShader -> addUserDefinedField (inputOutput, "numColors",         new SFInt32 ());
-	
+
+	transformShader -> addUserDefinedField (inputOutput, "modelViewMatrix",   new SFMatrix4f ());
 	transformShader -> addUserDefinedField (inputOutput, "stride",            new SFInt32 (sizeof (Particle) / sizeof (float)));
-	transformShader -> addUserDefinedField (inputOutput, "seedOffset",        new SFInt32 (offsetof (Particle, seed)        / sizeof (float)));
-	transformShader -> addUserDefinedField (inputOutput, "lifetimeOffset",    new SFInt32 (offsetof (Particle, lifetime)    / sizeof (float)));
-	transformShader -> addUserDefinedField (inputOutput, "positionOffset",    new SFInt32 (offsetof (Particle, position)    / sizeof (float)));
-	transformShader -> addUserDefinedField (inputOutput, "velocityOffset",    new SFInt32 (offsetof (Particle, velocity)    / sizeof (float)));
-	transformShader -> addUserDefinedField (inputOutput, "colorOffset",       new SFInt32 (offsetof (Particle, color)       / sizeof (float)));
+	transformShader -> addUserDefinedField (inputOutput, "seedOffset",        new SFInt32 (offsetof (Particle, seed) / sizeof (float)));
+	transformShader -> addUserDefinedField (inputOutput, "lifetimeOffset",    new SFInt32 (offsetof (Particle, lifetime) / sizeof (float)));
+	transformShader -> addUserDefinedField (inputOutput, "positionOffset",    new SFInt32 (offsetof (Particle, position) / sizeof (float)));
+	transformShader -> addUserDefinedField (inputOutput, "velocityOffset",    new SFInt32 (offsetof (Particle, velocity) / sizeof (float)));
+	transformShader -> addUserDefinedField (inputOutput, "colorOffset",       new SFInt32 (offsetof (Particle, color) / sizeof (float)));
 	transformShader -> addUserDefinedField (inputOutput, "elapsedTimeOffset", new SFInt32 (offsetof (Particle, elapsedTime) / sizeof (float)));
+
+	transformShader -> addUserDefinedField (inputOutput, "Param",             new SFVec4f ());
+	transformShader -> addUserDefinedField (inputOutput, "size",              new SFInt32 ());
 
 	transformShader -> language () = "GLSL";
 	transformShader -> parts () .emplace_back (vertexPart);
@@ -598,7 +602,7 @@ ParticleSystem::set_transform_shader ()
 }
 
 void
-ParticleSystem::set_particle_map () 
+ParticleSystem::set_particle_map ()
 {
 	glBindTexture (GL_TEXTURE_BUFFER, particleMapId);
 	glTexBuffer (GL_TEXTURE_BUFFER, GL_R32F, particleBufferId [readBuffer]);
@@ -658,6 +662,18 @@ ParticleSystem::traverse (const TraverseType type)
 void
 ParticleSystem::prepareEvents ()
 {
+	// Create new particles if possible.
+
+	time_type now             = chrono::now ();
+	int32_t   createParticles = (now - creationTime) * maxParticles () / particleLifetime ();
+
+	if (createParticles)
+		creationTime = now;
+
+	numParticles = std::min (std::max (0, maxParticles () .getValue ()), createParticles + numParticles);
+
+	// Update shader
+
 	float deltaTime = 1 / getBrowser () -> getCurrentFrameRate ();
 
 	transformShader -> setField <SFFloat> ("deltaTime",         deltaTime);
@@ -688,21 +704,62 @@ ParticleSystem::prepareEvents ()
 	}
 	else
 		transformShader -> setField <SFInt32> ("numForces", 0, true);
+
+	// Sort step
+
+	oddEvenMergeSort (numParticles);
+}
+
+void
+ParticleSystem::oddEvenMergeSort (int32_t size)
+{
+	if (size < maxParticles ())
+		return;
+
+	if (stepsLeft <= 0)
+	{
+		transformShader -> setField <SFInt32> ("size", size, true);
+
+		// Reset
+
+		int fieldSize = next_power_of_two (int (std::ceil (std::sqrt (size))));
+		
+		if (fieldSize)
+		{
+			int logFieldSize = std::log2 (fieldSize);
+
+			stepsLeft = logFieldSize * (2 * logFieldSize + 1);
+		}
+
+		stage = pass = -1;
+	}
+
+	// Sort pass
+
+	-- pass;
+
+	if (pass < 0)
+	{
+		// next stage
+		++ stage;
+		pass = stage;
+	}
+
+	// Sort step
+
+	int pstage = 1 << stage;
+	int ppass  = 1 << pass;
+
+	transformShader -> setField <SFVec4f> ("Param", Vector4f (pstage + pstage, ppass % pstage, (pstage + pstage) - (ppass % pstage) - 1, ppass));
+
+	//
+
+	-- stepsLeft;
 }
 
 void
 ParticleSystem::update ()
 {
-	// Create new particles if possible.
-
-	time_type now             = chrono::now ();
-	int32_t   createParticles = (now - creationTime) * maxParticles () / particleLifetime ();
-
-	if (createParticles)
-		creationTime = now;
-
-	numParticles = std::min (std::max (0, maxParticles () .getValue ()), createParticles + numParticles);
-
 	// Transform particles.
 
 	transformShader -> enable ();
@@ -880,6 +937,8 @@ ParticleSystem::drawGeometry ()
 			break;
 		}
 	}
+
+	transformShader -> setField <SFMatrix4f> ("modelViewMatrix", ModelViewMatrix4f ());
 }
 
 Matrix3f
@@ -962,7 +1021,7 @@ ParticleSystem::dispose ()
 
 	if (particleBufferId [0])
 		glDeleteBuffers (2, particleBufferId .data ());
-		
+
 	if (particleMapId)
 		glDeleteTextures (1, &particleMapId);
 

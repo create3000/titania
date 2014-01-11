@@ -185,11 +185,8 @@ X3DTexture::tryScaleImages (size_type minTextureSize, size_type maxTextureSize)
 {
 	if (std::max (width, height) >= minTextureSize)
 	{
-		if (not math::is_power_of_two (width))
-			width = std::min (math::next_power_of_two (width), maxTextureSize);
-
-		if (not math::is_power_of_two (height))
-			height = std::min (math::next_power_of_two (height), maxTextureSize);
+		width  = std::min (math::next_power_of_two (width),  maxTextureSize);
+		height = std::min (math::next_power_of_two (height), maxTextureSize);
 	}
 
 	scaleImages ();

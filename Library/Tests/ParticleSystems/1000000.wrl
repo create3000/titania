@@ -11,15 +11,15 @@ Viewpoint {
 
 ParticleSystem {
   geometryType "POINT"
-  maxParticles 1000000
+  maxParticles 1048576
   particleLifetime 10
-  lifetimeVariation 0.1
+  lifetimeVariation 0.01
   particleSize 0.1 0.1
   colorKey [ 0, 0.1, 0.4, 1 ]
   emitter PointEmitter {
     direction 0 0 0
     speed 3
-    variation 0.1
+    variation 0
     mass 0.1
     surfaceArea 0.1
   }

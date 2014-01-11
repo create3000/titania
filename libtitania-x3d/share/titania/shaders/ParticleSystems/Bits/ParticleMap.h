@@ -1,12 +1,13 @@
 /* Particle map */
 
-uniform int stride;
-uniform int seedOffset;
-uniform int lifetimeOffset;
-uniform int positionOffset;
-uniform int velocityOffset;
-uniform int colorOffset;
-uniform int elapsedTimeOffset;
+uniform mat4 modelViewMatrix;
+uniform int  stride;
+uniform int  seedOffset;
+uniform int  lifetimeOffset;
+uniform int  positionOffset;
+uniform int  velocityOffset;
+uniform int  colorOffset;
+uniform int  elapsedTimeOffset;
 
 uniform samplerBuffer particleMap;
 
@@ -54,4 +55,14 @@ float
 getFromElapsedTime ()
 {
 	return texelFetch (particleMap, particleIndex + elapsedTimeOffset) .x;
+}
+
+float
+getDistance (in int vertexId)
+{
+	setParticleIndex (vertexId);
+
+	vec4 position = modelViewMatrix * vec4 (getFromPosition (), 1);
+
+	return position .z / position .w;
 }

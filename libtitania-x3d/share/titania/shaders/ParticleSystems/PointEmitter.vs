@@ -39,6 +39,50 @@ to;
 #pragma X3D include "Bits/Quaternion.h"
 #pragma X3D include "Bits/Color.h"
 
+/* Odd even merge sort */
+
+uniform vec4 Param;
+uniform int  size;
+
+/* contents of the uniform data fields */
+#define TwoStage       Param .x
+#define Pass_mod_Stage Param .y
+#define TwoStage_PmS_1 Param .z
+#define Pass           Param .w
+
+int
+odd_even_merge_sort (in int self)
+{
+	// my position within the range to merge
+	float j = floor (mod (self, TwoStage));
+
+	if ((j < Pass_mod_Stage) || (j > TwoStage_PmS_1))
+	{
+		// must copy
+		return self;
+	}
+
+	// must sort
+
+	bool compare = true;
+	int  partner = self;
+
+	if (mod ((j + Pass_mod_Stage) / Pass, 2.0) < 1.0)
+	{
+		// we are on the left side -> compare with partner on the right
+		partner += int (Pass);
+	}
+	else
+	{
+		// we are on the right side -> compare with partner on the left
+		compare  = false;
+		partner -= int (Pass);
+	}
+
+	// on the left its a < operation, on the right its a >= operation
+	return (getDistance (self) < getDistance (partner)) == compare ? self : partner;
+}
+
 /* main */
 
 vec3
@@ -110,7 +154,7 @@ getColor (in float elapsedTime)
 void
 main ()
 {
-	setParticleIndex (gl_VertexID);
+	setParticleIndex (odd_even_merge_sort (gl_VertexID));
 
 	srand (getFromSeed () + gl_VertexID);
 

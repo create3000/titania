@@ -315,6 +315,9 @@ private:
 	prepareEvents ();
 
 	void
+	oddEvenMergeSort (int32_t);
+
+	void
 	update ();
 
 	virtual
@@ -379,6 +382,10 @@ private:
 	X3DParticleEmitterNode*    emitterNode;
 	X3DSFNode <X3DColorNode>   colorRampNode;
 	bool                       haveColor;
+
+	int stepsLeft;
+	int pass;
+	int stage;
 
 };
 
