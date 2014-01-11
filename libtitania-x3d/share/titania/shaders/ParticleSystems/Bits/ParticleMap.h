@@ -51,6 +51,17 @@ getFromVelocity ()
 	             texelFetch (particleMap, index + 2) .x);
 }
 
+vec4
+getFromColor ()
+{
+	int index = particleIndex + colorOffset;
+
+	return vec4 (texelFetch (particleMap, index + 0) .x,
+	             texelFetch (particleMap, index + 1) .x,
+	             texelFetch (particleMap, index + 2) .x,
+	             texelFetch (particleMap, index + 3) .x);
+}
+
 float
 getFromElapsedTime ()
 {

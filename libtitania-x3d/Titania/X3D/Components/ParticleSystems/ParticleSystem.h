@@ -237,8 +237,11 @@ public:
 	void
 	dispose () final override;
 
+	~ParticleSystem ();
 
 private:
+
+	class OddEvenMergeSort;
 
 	enum class GeometryType
 	{
@@ -304,6 +307,9 @@ private:
 	set_transform_shader ();
 
 	void
+	swap_particle_buffers ();
+
+	void
 	set_particle_map ();
 
 	void
@@ -313,9 +319,6 @@ private:
 
 	void
 	prepareEvents ();
-
-	void
-	oddEvenMergeSort (int32_t);
 
 	void
 	update ();
@@ -371,7 +374,7 @@ private:
 	time_type                  creationTime;
 	size_t                     readBuffer;
 	size_t                     writeBuffer;
-	std::array <GLuint, 2>     transformFeedbackId;
+	std::array <GLuint, 2>     particleFeedbackId;
 	std::array <GLuint, 2>     particleBufferId;
 	GLuint                     particleMapId;
 	GLuint                     vertexFeedbackId;
@@ -383,9 +386,7 @@ private:
 	X3DSFNode <X3DColorNode>   colorRampNode;
 	bool                       haveColor;
 
-	int stepsLeft;
-	int pass;
-	int stage;
+	std::unique_ptr <OddEvenMergeSort> sortAlgorithm;
 
 };
 

@@ -53,34 +53,40 @@ uniform int  size;
 int
 odd_even_merge_sort (in int self)
 {
-	// my position within the range to merge
-	float j = floor (mod (self, TwoStage));
-
-	if ((j < Pass_mod_Stage) || (j > TwoStage_PmS_1))
+	if (self < size) // XXX delete me if you sort complete
 	{
-		// must copy
-		return self;
+		// My position within the range to merge.
+		float j = floor (mod (self, TwoStage));
+
+		if ((j < Pass_mod_Stage) || (j > TwoStage_PmS_1))
+		{
+			// Must copy.
+			return self;
+		}
+
+		// Must sort.
+
+		bool compare = true;
+		int  partner = self;
+
+		if (mod ((j + Pass_mod_Stage) / Pass, 2.0) < 1.0)
+		{
+			// We are on the left side -> compare with partner on the right.
+			partner += int (Pass);
+		}
+		else
+		{
+			// We are on the right side -> compare with partner on the left.
+			compare  = false;
+			partner -= int (Pass);
+		}
+
+		if (partner < size)
+			// On the left its a < operation, on the right its a >= operation.
+			return (getDistance (self) < getDistance (partner)) == compare ? self : partner;
 	}
 
-	// must sort
-
-	bool compare = true;
-	int  partner = self;
-
-	if (mod ((j + Pass_mod_Stage) / Pass, 2.0) < 1.0)
-	{
-		// we are on the left side -> compare with partner on the right
-		partner += int (Pass);
-	}
-	else
-	{
-		// we are on the right side -> compare with partner on the left
-		compare  = false;
-		partner -= int (Pass);
-	}
-
-	// on the left its a < operation, on the right its a >= operation
-	return (getDistance (self) < getDistance (partner)) == compare ? self : partner;
+	return self;
 }
 
 /* main */

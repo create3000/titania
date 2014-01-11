@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -60,9 +60,9 @@ namespace titania {
 namespace X3D {
 
 X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
-	 X3DBaseNode (),
-	 transformFeedbackVaryings (),
-   textureUnits ()
+	              X3DBaseNode (),
+	transformFeedbackVaryings (),
+	             textureUnits ()
 {
 	addNodeType (X3DConstants::X3DProgrammableShaderObject);
 }
@@ -112,16 +112,12 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 			}
 			case X3DConstants::SFColor:
 			{
-				float r, g, b;
-				static_cast <SFColor*> (field) -> getValue (r, g, b);
-				glUniform3f (location, r, g, b);
+				glUniform3fv (location, 1, static_cast <SFColor*> (field) -> getValue () .data ());
 				break;
 			}
 			case X3DConstants::SFColorRGBA:
 			{
-				float r, g, b, a;
-				static_cast <SFColorRGBA*> (field) -> getValue (r, g, b, a);
-				glUniform4f (location, r, g, b, a);
+				glUniform4fv (location, 1, static_cast <SFColorRGBA*> (field) -> getValue () .data ());
 				break;
 			}
 			case X3DConstants::SFDouble:
@@ -197,7 +193,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 
 				else if (x3d_cast <X3DEnvironmentTextureNode*> (texture))
 					glBindTexture (GL_TEXTURE_CUBE_MAP, texture -> getTextureId ());
-					
+
 				else
 					glBindTexture (GL_TEXTURE_2D, 0);
 
@@ -208,8 +204,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 			}
 			case X3DConstants::SFRotation:
 			{
-				const auto & quat = static_cast <SFRotation*> (field) -> getValue () .quat ();
-				glUniform4f (location, quat .x (), quat .y (), quat .z (), quat .w ());
+				glUniform4fv (location, 1, static_cast <SFRotation*> (field) -> getValue () .quat () .data ());
 				break;
 			}
 			case X3DConstants::SFString:
@@ -223,45 +218,33 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 			}
 			case X3DConstants::SFVec2d:
 			{
-				double x, y;
-				static_cast <SFVec2d*> (field) -> getValue (x, y);
-				glUniform2d (location, x, y);
+				glUniform2dv (location, 1, static_cast <SFVec2d*> (field) -> getValue () .data ());
 				break;
 				break;
 			}
 			case X3DConstants::SFVec2f:
 			{
-				float x, y;
-				static_cast <SFVec2f*> (field) -> getValue (x, y);
-				glUniform2f (location, x, y);
+				glUniform2fv (location, 1, static_cast <SFVec2f*> (field) -> getValue () .data ());
 				break;
 			}
 			case X3DConstants::SFVec3d:
 			{
-				double x, y, z;
-				static_cast <SFVec3d*> (field) -> getValue (x, y, z);
-				glUniform3d (location, x, y, z);
+				glUniform3dv (location, 1, static_cast <SFVec3d*> (field) -> getValue () .data ());
 				break;
 			}
 			case X3DConstants::SFVec3f:
 			{
-				float x, y, z;
-				static_cast <SFVec3f*> (field) -> getValue (x, y, z);
-				glUniform3f (location, x, y, z);
+				glUniform3fv (location, 1, static_cast <SFVec3f*> (field) -> getValue () .data ());
 				break;
 			}
 			case X3DConstants::SFVec4d:
 			{
-				double x, y, z, w;
-				static_cast <SFVec4d*> (field) -> getValue (x, y, z, w);
-				glUniform4d (location, x, y, z, w);
+				glUniform4dv (location, 1, static_cast <SFVec4d*> (field) -> getValue () .data ());
 				break;
 			}
 			case X3DConstants::SFVec4f:
 			{
-				float x, y, z, w;
-				static_cast <SFVec4f*> (field) -> getValue (x, y, z, w);
-				glUniform4f (location, x, y, z, w);
+				glUniform4fv (location, 1, static_cast <SFVec4f*> (field) -> getValue () .data ());
 				break;
 			}
 			case X3DConstants::MFBool:
@@ -382,7 +365,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 				std::vector <GLint> vector;
 				vector .reserve (array -> size ());
 
-				for (const auto & node :* array)
+				for (const auto & node : *array)
 				{
 					GLint textureUnit = 0;
 
@@ -410,7 +393,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 
 					else if (x3d_cast <X3DEnvironmentTextureNode*> (texture))
 						glBindTexture (GL_TEXTURE_CUBE_MAP, texture -> getTextureId ());
-						
+
 					else
 						glBindTexture (GL_TEXTURE_2D, 0);
 
@@ -429,7 +412,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 				std::vector <Vector4f> vector;
 				vector .reserve (array -> size ());
 
-				for (const auto & value :* array)
+				for (const auto & value : *array)
 				{
 					const auto & quat = value .getValue () .quat ();
 					vector .emplace_back (quat .x (), quat .y (), quat .z (), quat .w ());
@@ -510,10 +493,10 @@ void
 X3DProgrammableShaderObject::setTextureBuffer (const std::string & name, GLuint textureId)
 {
 	glUseProgram (getProgramId ());
-	
+
 	GLint location = glGetUniformLocation (getProgramId (), name .c_str ());
-	
-	if (location not_eq -1)
+
+	if (location not_eq - 1)
 	{
 		GLint textureUnit = 0;
 		glGetUniformiv (getProgramId (), location, &textureUnit);

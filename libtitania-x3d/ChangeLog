@@ -1,5 +1,15 @@
 2014-01-11  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* libtitania-x3d.cproj:
+	* PointEmitter.vs:
+	* ParticleSystem.h:
+	* ParticleMap.h:
+	* ParticleSystem.cpp:
+	* OddEvenMergeSort.vs:
+	* X3DProgrammableShaderObject.cpp: 
+
+2014-01-11  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DTexture.cpp:
 	* PointEmitter.vs:
 	* ParticleSystem.h:

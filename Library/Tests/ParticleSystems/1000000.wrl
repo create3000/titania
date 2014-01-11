@@ -6,7 +6,7 @@ DEF Gray Background {
 
 Viewpoint {
   description "Viewpoint"
-  position 0 0 55
+  position 0 0 80
 }
 
 ParticleSystem {

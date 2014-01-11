@@ -11,7 +11,7 @@ Viewpoint {
 
 ParticleSystem {
   geometryType "SPRITE"
-  maxParticles 512
+  maxParticles 500
   particleLifetime 20
   lifetimeVariation 0.5
   particleSize 1 1

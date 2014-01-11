@@ -114,6 +114,107 @@ struct ParticleSystem::Vertex
 
 };
 
+class ParticleSystem::OddEvenMergeSort
+{
+public:
+
+	OddEvenMergeSort ();
+
+	void
+	setup (X3DProgrammableShaderObject* const);
+
+	int
+	getStepsLeft () const
+	{ return stepsLeft; }
+
+	void
+	sortStep (X3DProgrammableShaderObject* const, const int32_t);
+
+	void
+	sortStep (X3DProgrammableShaderObject* const);
+
+	void
+	reset (X3DProgrammableShaderObject* const, const int32_t);
+
+	~OddEvenMergeSort ()
+	{ }
+
+
+private:
+
+	int stepsLeft;
+	int pass;
+	int stage;
+
+};
+
+ParticleSystem::OddEvenMergeSort::OddEvenMergeSort () :
+	stepsLeft (0),
+	     pass (0),
+	    stage (0)
+{ }
+
+void
+ParticleSystem::OddEvenMergeSort::setup (X3DProgrammableShaderObject* const shader)
+{
+	shader -> addUserDefinedField (inputOutput, "Param", new SFVec4f ());
+	shader -> addUserDefinedField (inputOutput, "size",  new SFInt32 ());
+}
+
+void
+ParticleSystem::OddEvenMergeSort::sortStep (X3DProgrammableShaderObject* const shader, const int32_t size)
+{
+	if (stepsLeft <= 0)
+		reset (shader, size);
+
+	sortStep (shader);
+}
+
+void
+ParticleSystem::OddEvenMergeSort::sortStep (X3DProgrammableShaderObject* const shader)
+{
+	// Sort pass
+
+	-- pass;
+
+	if (pass < 0)
+	{
+		// Next stage
+		pass = ++ stage;
+	}
+
+	// Sort step
+
+	int pstage = 1 << stage;
+	int ppass  = 1 << pass;
+
+	shader -> setField <SFVec4f> ("Param", Vector4f (pstage + pstage,
+	                                                 ppass % pstage,
+	                                                 (pstage + pstage) - (ppass % pstage) - 1,
+	                                                 ppass));
+
+	//
+
+	-- stepsLeft;
+}
+
+void
+ParticleSystem::OddEvenMergeSort::reset (X3DProgrammableShaderObject* const shader, const int32_t size)
+{
+	int fieldSize = next_power_of_two (int (std::ceil (std::sqrt (size))));
+
+	if (fieldSize)
+	{
+		int logFieldSize = std::log2 (fieldSize);
+
+		stepsLeft = logFieldSize * (2 * logFieldSize + 1);
+	}
+
+	stage = pass = -1;
+
+	shader -> setField <SFInt32> ("size", size, true);
+}
+
 ParticleSystem::Fields::Fields () :
 	          enabled (new SFBool (true)),
 	     geometryType (new SFString ("QUAD")),
@@ -132,30 +233,28 @@ ParticleSystem::Fields::Fields () :
 { }
 
 ParticleSystem::ParticleSystem (X3DExecutionContext* const executionContext) :
-	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	       X3DShapeNode (),
-	             fields (),
-	     geometryTypeId (GeometryType::QUAD),
-	     glGeometryType (GL_POINTS),
-	        numVertices (0),
-	       numParticles (0),
-	       creationTime (0),
-	         readBuffer (0),
-	        writeBuffer (1),
-	transformFeedbackId ({ 0, 0 }),
-	   particleBufferId ({ 0, 0 }),
-	      particleMapId (0),
-	   vertexFeedbackId (0),
-	     vertexBufferId (0),
-	   geometryBufferId (0),
-	    transformShader (),
-	     geometryShader (),
-	        emitterNode (nullptr),
-	      colorRampNode (),
-	          haveColor (false),
-	          stepsLeft (0),
-	               pass (0),
-	              stage (0)
+	       X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	      X3DShapeNode (),
+	            fields (),
+	    geometryTypeId (GeometryType::QUAD),
+	    glGeometryType (GL_POINTS),
+	       numVertices (0),
+	      numParticles (0),
+	      creationTime (0),
+	        readBuffer (0),
+	       writeBuffer (1),
+	particleFeedbackId ({ 0, 0 }),
+	  particleBufferId ({ 0, 0 }),
+	     particleMapId (0),
+	  vertexFeedbackId (0),
+	    vertexBufferId (0),
+	  geometryBufferId (0),
+	   transformShader (),
+	    geometryShader (),
+	       emitterNode (nullptr),
+	     colorRampNode (),
+	         haveColor (false),
+	     sortAlgorithm (new OddEvenMergeSort ())
 {
 	addField (inputOutput,    "metadata",          metadata ());
 	addField (inputOutput,    "enabled",           enabled ());
@@ -199,12 +298,12 @@ ParticleSystem::initialize ()
 	{
 		// Generate transform buffers
 
-		glGenTransformFeedbacks (2, transformFeedbackId .data ());
+		glGenTransformFeedbacks (2, particleFeedbackId .data ());
 		glGenBuffers (2, particleBufferId .data ());
 
 		for (size_t i = 0; i < 2; ++ i)
 		{
-			glBindTransformFeedback (GL_TRANSFORM_FEEDBACK, transformFeedbackId [i]);
+			glBindTransformFeedback (GL_TRANSFORM_FEEDBACK, particleFeedbackId [i]);
 			glBindBufferBase (GL_TRANSFORM_FEEDBACK_BUFFER, 0, particleBufferId [i]);
 		}
 
@@ -556,8 +655,6 @@ ParticleSystem::set_vertex_buffer ()
 void
 ParticleSystem::set_transform_shader ()
 {
-	// Shader
-
 	X3DSFNode <ShaderPart> vertexPart = new ShaderPart (getExecutionContext ());
 	vertexPart -> url () = emitterNode -> getShaderUrl ();
 	vertexPart -> setup ();
@@ -585,20 +682,26 @@ ParticleSystem::set_transform_shader ()
 	transformShader -> addUserDefinedField (inputOutput, "lifetimeOffset",    new SFInt32 (offsetof (Particle, lifetime) / sizeof (float)));
 	transformShader -> addUserDefinedField (inputOutput, "positionOffset",    new SFInt32 (offsetof (Particle, position) / sizeof (float)));
 	transformShader -> addUserDefinedField (inputOutput, "velocityOffset",    new SFInt32 (offsetof (Particle, velocity) / sizeof (float)));
-	transformShader -> addUserDefinedField (inputOutput, "colorOffset",       new SFInt32 (offsetof (Particle, color) / sizeof (float)));
+	//transformShader -> addUserDefinedField (inputOutput, "colorOffset",       new SFInt32 (offsetof (Particle, color) / sizeof (float)));
 	transformShader -> addUserDefinedField (inputOutput, "elapsedTimeOffset", new SFInt32 (offsetof (Particle, elapsedTime) / sizeof (float)));
-
-	transformShader -> addUserDefinedField (inputOutput, "Param",             new SFVec4f ());
-	transformShader -> addUserDefinedField (inputOutput, "size",              new SFInt32 ());
+	
+	sortAlgorithm -> setup (transformShader);
 
 	transformShader -> language () = "GLSL";
 	transformShader -> parts () .emplace_back (vertexPart);
 	transformShader -> setTransformFeedbackVaryings ({
 	                                                    "To.seed", "To.lifetime", "To.position", "To.velocity", "To.color", "To.elapsedTime"
 																	 });
-	transformShader -> setup ();
 
+	transformShader -> setup ();
 	transformShader -> setTextureBuffer ("particleMap", particleMapId);
+}
+
+void
+ParticleSystem::swap_particle_buffers ()
+{
+	std::swap (readBuffer, writeBuffer);
+	set_particle_map ();
 }
 
 void
@@ -704,57 +807,12 @@ ParticleSystem::prepareEvents ()
 	}
 	else
 		transformShader -> setField <SFInt32> ("numForces", 0, true);
-
-	// Sort step
-
-	oddEvenMergeSort (numParticles);
-}
-
-void
-ParticleSystem::oddEvenMergeSort (int32_t size)
-{
-	if (size < maxParticles ())
-		return;
-
-	if (stepsLeft <= 0)
-	{
-		transformShader -> setField <SFInt32> ("size", size, true);
-
-		// Reset
-
-		int fieldSize = next_power_of_two (int (std::ceil (std::sqrt (size))));
 		
-		if (fieldSize)
-		{
-			int logFieldSize = std::log2 (fieldSize);
+	// Update sort algorithm
 
-			stepsLeft = logFieldSize * (2 * logFieldSize + 1);
-		}
-
-		stage = pass = -1;
-	}
-
-	// Sort pass
-
-	-- pass;
-
-	if (pass < 0)
-	{
-		// next stage
-		++ stage;
-		pass = stage;
-	}
-
-	// Sort step
-
-	int pstage = 1 << stage;
-	int ppass  = 1 << pass;
-
-	transformShader -> setField <SFVec4f> ("Param", Vector4f (pstage + pstage, ppass % pstage, (pstage + pstage) - (ppass % pstage) - 1, ppass));
-
-	//
-
-	-- stepsLeft;
+	transformShader -> enable ();
+	sortAlgorithm -> sortStep (transformShader, numParticles);
+	transformShader -> disable ();
 }
 
 void
@@ -765,7 +823,7 @@ ParticleSystem::update ()
 	transformShader -> enable ();
 
 	glEnable (GL_RASTERIZER_DISCARD);
-	glBindTransformFeedback (GL_TRANSFORM_FEEDBACK, transformFeedbackId [writeBuffer]);
+	glBindTransformFeedback (GL_TRANSFORM_FEEDBACK, particleFeedbackId [writeBuffer]);
 	glBeginTransformFeedback (GL_POINTS);
 
 	glDrawArrays (GL_POINTS, 0, numParticles);
@@ -776,8 +834,9 @@ ParticleSystem::update ()
 
 	transformShader -> disable ();
 
-	std::swap (readBuffer, writeBuffer);
-	set_particle_map ();
+	// Swap particle buffers
+
+	swap_particle_buffers ();
 
 	// Geometry shader
 
@@ -1016,8 +1075,8 @@ ParticleSystem::dispose ()
 	geometryShader  .dispose ();
 	colorRampNode   .dispose ();
 
-	if (transformFeedbackId [0])
-		glDeleteTransformFeedbacks (2, transformFeedbackId .data ());
+	if (particleFeedbackId [0])
+		glDeleteTransformFeedbacks (2, particleFeedbackId .data ());
 
 	if (particleBufferId [0])
 		glDeleteBuffers (2, particleBufferId .data ());
@@ -1036,6 +1095,9 @@ ParticleSystem::dispose ()
 
 	X3DShapeNode::dispose ();
 }
+
+ParticleSystem::~ParticleSystem ()
+{ }
 
 } // X3D
 } // titania
