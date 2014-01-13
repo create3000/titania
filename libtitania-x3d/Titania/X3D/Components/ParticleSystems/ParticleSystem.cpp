@@ -87,7 +87,8 @@ struct ParticleSystem::Particle
 		   position (),
 		   velocity (),
 		      color (),
-		elapsedTime (std::numeric_limits <float>::max ())
+		elapsedTime (std::numeric_limits <float>::max ()),
+		   distance (0)
 	{ }
 
 	///  @name Members
@@ -98,6 +99,7 @@ struct ParticleSystem::Particle
 	Vector3f velocity;
 	Color4f color;
 	float elapsedTime;
+	float distance;
 
 };
 
@@ -727,13 +729,20 @@ ParticleSystem::set_transform_shader ()
 	transformShader -> addUserDefinedField (inputOutput, "velocityOffset",    new SFInt32 (offsetof (Particle, velocity) / sizeof (float)));
 	//transformShader -> addUserDefinedField (inputOutput, "colorOffset",       new SFInt32 (offsetof (Particle, color) / sizeof (float)));
 	transformShader -> addUserDefinedField (inputOutput, "elapsedTimeOffset", new SFInt32 (offsetof (Particle, elapsedTime) / sizeof (float)));
+	transformShader -> addUserDefinedField (inputOutput, "distanceOffset",    new SFInt32 (offsetof (Particle, distance) / sizeof (float)));
 
 	sortAlgorithm -> setup (transformShader);
 
 	transformShader -> language () = "GLSL";
 	transformShader -> parts () .emplace_back (vertexPart);
 	transformShader -> setTransformFeedbackVaryings ({
-	                                                    "To.seed", "To.lifetime", "To.position", "To.velocity", "To.color", "To.elapsedTime"
+	                                                    "To.seed",
+	                                                    "To.lifetime", 
+	                                                    "To.position", 
+	                                                    "To.velocity", 
+	                                                    "To.color", 
+	                                                    "To.elapsedTime", 
+	                                                    "To.distance"
 																	 });
 
 	transformShader -> setup ();

@@ -1,5 +1,12 @@
 2014-01-13  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Shader.cpp:
+	* PointEmitter.vs:
+	* ParticleMap.h:
+	* ParticleSystem.cpp: 
+
+2014-01-13  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Math.h:
 	* PointEmitter.vs:
 	* ParticleSystem.h:

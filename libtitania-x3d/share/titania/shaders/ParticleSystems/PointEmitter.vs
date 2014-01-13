@@ -28,6 +28,7 @@ out To
 	vec3  velocity;
 	vec4  color;
 	float elapsedTime;
+	float distance;
 }
 to;
 
@@ -64,8 +65,8 @@ odd_even_merge_sort (in int self)
 
 		// Must sort.
 
-		bool compare = true;
-		int  partner = self;
+		float compare = 1.0f;
+		int   partner = self;
 
 		if (mod ((j + Pass_mod_Stage) / Pass, 2.0) < 1.0)
 		{
@@ -75,13 +76,13 @@ odd_even_merge_sort (in int self)
 		else
 		{
 			// We are on the right side -> compare with partner on the left.
-			compare  = false;
+			compare  = -1.0f;
 			partner -= int (Pass);
 		}
 
 		if (partner < sortSize)
 			// On the left its a < operation, on the right its a >= operation.
-			return (getDistance (self) < getDistance (partner)) == compare ? self : partner;
+			return getDistance (self) * compare < getDistance (partner) * compare ? self : partner;
 	}
 
 	return self;
@@ -157,6 +158,7 @@ main ()
 		to .velocity    = getRandomVelocity ();
 		to .color       = getColor (0);
 		to .elapsedTime = 0.0f;
+		to .distance    = getDistance (position);
 		to .seed        = srand ();
 	}
 	else
@@ -169,6 +171,7 @@ main ()
 		to .velocity    = velocity;
 		to .color       = getColor (elapsedTime);
 		to .elapsedTime = elapsedTime;
+		to .distance    = getDistance (to .position);
 		to .seed        = srand ();
 	}
 }

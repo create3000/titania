@@ -71,6 +71,8 @@ throw (Error <INVALID_URL>,
 
 	size_t      lineNumber = 1;
 	std::string line;
+	
+	output << "#line "<< lineNumber << " \"" << worldURL << "\""  << std::endl;
 
 	while (std::getline (input, line))
 	{
@@ -80,6 +82,7 @@ throw (Error <INVALID_URL>,
 		{
 			Loader loader (executionContext);
 			output << preProcessShaderSource (executionContext, loader .loadDocument (worldURL .transform (filename)), loader .getWorldURL (), level + 1) << std::endl;
+			output << "#line "<< lineNumber + 1 << " \"" << worldURL << "\""  << std::endl;
 		}
 		else
 		{

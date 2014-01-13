@@ -8,6 +8,7 @@ uniform int  positionOffset;
 uniform int  velocityOffset;
 uniform int  colorOffset;
 uniform int  elapsedTimeOffset;
+uniform int  distanceOffset;
 
 uniform samplerBuffer particleMap;
 
@@ -73,7 +74,13 @@ getDistance (in int vertexId)
 {
 	setParticleIndex (vertexId);
 
-	vec4 position = modelViewMatrix * vec4 (getFromPosition (), 1);
+	return texelFetch (particleMap, particleIndex + distanceOffset) .x;
+}
 
-	return position .z / position .w;
+float
+getDistance (in vec3 position)
+{
+	vec4 p = modelViewMatrix * vec4 (position, 1);
+
+	return p .z / p .w;
 }
