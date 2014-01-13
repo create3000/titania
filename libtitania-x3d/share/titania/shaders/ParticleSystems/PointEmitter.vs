@@ -1,7 +1,6 @@
 #version 330
 
 #define FORCES_MAX  32
-#define ARRAY_MAX   128
 
 uniform float deltaTime;
 uniform float particleLifetime;
@@ -16,9 +15,8 @@ uniform vec3  velocity [FORCES_MAX];
 uniform float turbulence [FORCES_MAX];
 uniform int   numForces;
 
-uniform float colorKey [ARRAY_MAX];
-uniform vec4  colorRamp [ARRAY_MAX];
-uniform int   numColors;
+uniform samplerBuffer colorKeyMap;
+uniform samplerBuffer colorRampMap;
 
 /* Transform feedback varyings */
 
@@ -41,19 +39,19 @@ to;
 
 /* Odd even merge sort */
 
-uniform vec4 Param;
-uniform int  size;
+uniform vec4 sortParam;
+uniform int  sortSize;
 
-/* contents of the uniform data fields */
-#define TwoStage       Param .x
-#define Pass_mod_Stage Param .y
-#define TwoStage_PmS_1 Param .z
-#define Pass           Param .w
+/* Contents of the uniform data fields */
+#define TwoStage       sortParam .x
+#define Pass_mod_Stage sortParam .y
+#define TwoStage_PmS_1 sortParam .z
+#define Pass           sortParam .w
 
 int
 odd_even_merge_sort (in int self)
 {
-	if (self < size) // XXX delete me if you sort complete
+	if (self < sortSize)
 	{
 		// My position within the range to merge.
 		float j = floor (mod (self, TwoStage));
@@ -81,7 +79,7 @@ odd_even_merge_sort (in int self)
 			partner -= int (Pass);
 		}
 
-		if (partner < size)
+		if (partner < sortSize)
 			// On the left its a < operation, on the right its a >= operation.
 			return (getDistance (self) < getDistance (partner)) == compare ? self : partner;
 	}
@@ -96,7 +94,7 @@ getRandomVelocity ()
 {
 	float randomSpeed = abs (random_variation (speed, variation));
 
-	if (direction == vec3 (0.0f, 0.0f, 0.0f))
+	if (direction == vec3 (0.0f))
 		return randomSpeed * random_normal ();
 
 	return randomSpeed * direction;
@@ -123,38 +121,26 @@ getVelocity ()
 }
 
 vec4
-clerp (in int index0, in int index1, in float weight)
+getColorValue (in int index)
 {
-	return clerp (colorRamp [index0], colorRamp [index1], weight);
+	return texelFetch (colorRampMap, index);
 }
 
 vec4
 getColor (in float elapsedTime)
 {
+	int numColors = textureSize (colorKeyMap);
+
 	if (numColors == 0)
 		return vec4 (1.0f);
 
-	float fraction = elapsedTime / getFromLifetime ();
+	int   index0 = 0;
+	int   index1 = 0;
+	float weight = 0;
 
-	if (numColors == 1 || fraction <= colorKey [0])
-		return clerp (0, 0, 0);
+	interpolate (colorKeyMap, elapsedTime / getFromLifetime (), index0, index1, weight);
 
-	if (fraction >= colorKey [numColors - 1])
-		return clerp (numColors - 2, numColors - 1, 1);
-
-	int index = upper_bound (colorKey, numColors, fraction);
-
-	if (index < numColors)
-	{
-		int index1 = index;
-		int index0 = index1 - 1;
-
-		float weight = (fraction - colorKey [index0]) / (colorKey [index1] - colorKey [index0]);
-
-		return clerp (index0, index1, clamp (weight, 0.0f, 1.0f));
-	}
-
-	return clerp (0, 0, 0);
+	return clerp (getColorValue (index0), getColorValue (index1), weight);
 }
 
 void

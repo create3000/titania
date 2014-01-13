@@ -380,6 +380,8 @@ private:
 	GLuint                     vertexFeedbackId;
 	GLuint                     vertexBufferId;
 	GLuint                     geometryBufferId;
+	std::array <GLuint, 2>     colorRampMapId;
+	std::array <GLuint, 2>     colorRampBufferId;
 	X3DSFNode <ComposedShader> transformShader;
 	X3DSFNode <ComposedShader> geometryShader;
 	X3DParticleEmitterNode*    emitterNode;

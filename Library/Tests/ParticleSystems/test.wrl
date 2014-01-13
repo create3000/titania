@@ -10,31 +10,24 @@ Viewpoint {
 }
 
 ParticleSystem {
-  maxParticles 500
-  particleLifetime 4
-  lifetimeVariation 0.5
+  geometryType "SPRITE"
+  maxParticles 100
+  particleLifetime 20
+  lifetimeVariation 0
   particleSize 1 1
   colorKey [ 0, 0.2, 0.5, 0.7, 0.8, 1 ]
   emitter PointEmitter {
-    direction 0 0 0
+    direction 1 0 0
     speed 0.5
-    variation 0.5
+    variation 0
     mass 0.1
     surfaceArea 0.1
   }
-  physics [
-    WindPhysicsModel {
-      direction 0 1 0
-      speed 0.7
-      gustiness 1.7
-      turbulence 0.3
+  appearance Appearance {
+    texture ImageTexture {
+      url "ParticleAtlas.png"
     }
-    WindPhysicsModel {
-      direction 1 0 0
-      speed 0.5
-      gustiness 2
-    }
-  ]
+  }
 }
 
 DEF IndexedLineSet Transform {

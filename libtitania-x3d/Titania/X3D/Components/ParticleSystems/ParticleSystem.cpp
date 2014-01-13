@@ -71,10 +71,11 @@ const std::string ParticleSystem::componentName  = "ParticleSystems";
 const std::string ParticleSystem::typeName       = "ParticleSystem";
 const std::string ParticleSystem::containerField = "children";
 
+static constexpr size_t COLOR_RAMP_KEYS   = 0;
+static constexpr size_t COLOR_RAMP_VALUES = 1;
+
 static constexpr Vector3f yAxis (0, 1, 0);
 static constexpr Vector3f zAxis (0, 0, 1);
-
-// gcc switch -malign-double
 
 struct ParticleSystem::Particle
 {
@@ -123,18 +124,8 @@ public:
 	void
 	setup (X3DProgrammableShaderObject* const);
 
-	int
-	getStepsLeft () const
-	{ return stepsLeft; }
-
 	void
 	sortStep (X3DProgrammableShaderObject* const, const int32_t);
-
-	void
-	sortStep (X3DProgrammableShaderObject* const);
-
-	void
-	reset (X3DProgrammableShaderObject* const, const int32_t);
 
 	~OddEvenMergeSort ()
 	{ }
@@ -142,30 +133,41 @@ public:
 
 private:
 
+	void
+	sortStep (X3DProgrammableShaderObject* const);
+
+	void
+	reset (X3DProgrammableShaderObject* const, const int32_t);
+
 	int stepsLeft;
 	int pass;
 	int stage;
+	int size;
 
 };
 
 ParticleSystem::OddEvenMergeSort::OddEvenMergeSort () :
 	stepsLeft (0),
 	     pass (0),
-	    stage (0)
+	    stage (0),
+	     size (0)
 { }
 
 void
 ParticleSystem::OddEvenMergeSort::setup (X3DProgrammableShaderObject* const shader)
 {
-	shader -> addUserDefinedField (inputOutput, "Param", new SFVec4f ());
-	shader -> addUserDefinedField (inputOutput, "size",  new SFInt32 ());
+	shader -> addUserDefinedField (inputOutput, "sortParam", new SFVec4f ());
+	shader -> addUserDefinedField (inputOutput, "sortSize",  new SFInt32 ());
 }
 
 void
-ParticleSystem::OddEvenMergeSort::sortStep (X3DProgrammableShaderObject* const shader, const int32_t size)
+ParticleSystem::OddEvenMergeSort::sortStep (X3DProgrammableShaderObject* const shader, const int32_t currentSize)
 {
 	if (stepsLeft <= 0)
-		reset (shader, size);
+		reset (shader, currentSize);
+
+	if (currentSize < size)
+		shader -> setField <SFInt32> ("sortSize", currentSize, true);
 
 	sortStep (shader);
 }
@@ -188,10 +190,10 @@ ParticleSystem::OddEvenMergeSort::sortStep (X3DProgrammableShaderObject* const s
 	int pstage = 1 << stage;
 	int ppass  = 1 << pass;
 
-	shader -> setField <SFVec4f> ("Param", Vector4f (pstage + pstage,
-	                                                 ppass % pstage,
-	                                                 (pstage + pstage) - (ppass % pstage) - 1,
-	                                                 ppass));
+	shader -> setField <SFVec4f> ("sortParam", Vector4f (pstage + pstage,
+	                                                     ppass % pstage,
+	                                                     (pstage + pstage) - (ppass % pstage) - 1,
+	                                                     ppass));
 
 	//
 
@@ -199,9 +201,9 @@ ParticleSystem::OddEvenMergeSort::sortStep (X3DProgrammableShaderObject* const s
 }
 
 void
-ParticleSystem::OddEvenMergeSort::reset (X3DProgrammableShaderObject* const shader, const int32_t size)
+ParticleSystem::OddEvenMergeSort::reset (X3DProgrammableShaderObject* const shader, const int32_t currentSize)
 {
-	int fieldSize = next_power_of_two (int (std::ceil (std::sqrt (size))));
+	int fieldSize = next_power_of_two (int (std::ceil (std::sqrt (currentSize))));
 
 	if (fieldSize)
 	{
@@ -212,7 +214,11 @@ ParticleSystem::OddEvenMergeSort::reset (X3DProgrammableShaderObject* const shad
 
 	stage = pass = -1;
 
-	shader -> setField <SFInt32> ("size", size, true);
+	// Shader
+
+	shader -> setField <SFInt32> ("sortSize", currentSize, true);
+
+	size = currentSize;
 }
 
 ParticleSystem::Fields::Fields () :
@@ -249,6 +255,8 @@ ParticleSystem::ParticleSystem (X3DExecutionContext* const executionContext) :
 	  vertexFeedbackId (0),
 	    vertexBufferId (0),
 	  geometryBufferId (0),
+	    colorRampMapId ({ 0, 0 }),
+	 colorRampBufferId ({ 0, 0 }),
 	   transformShader (),
 	    geometryShader (),
 	       emitterNode (nullptr),
@@ -324,6 +332,11 @@ ParticleSystem::initialize ()
 		// Generate geometry buffer
 
 		glGenBuffers (1, &geometryBufferId);
+		
+		// Color ramp
+
+		glGenTextures (2, colorRampMapId .data ());
+		glGenBuffers  (2, colorRampBufferId .data ());
 
 		// Setup
 
@@ -522,7 +535,7 @@ ParticleSystem::set_geometryType ()
 	if (numVertices)
 	{
 		glBindBuffer (GL_ARRAY_BUFFER, geometryBufferId);
-		glBufferData (GL_ARRAY_BUFFER, sizeof (Vector3f) * numVertices, vertices .data (), GL_STATIC_DRAW);
+		glBufferData (GL_ARRAY_BUFFER, sizeof (Vector3f) * numVertices, vertices .data (), GL_STATIC_COPY);
 
 		glBindBuffer (GL_ARRAY_BUFFER, 0);
 
@@ -579,21 +592,55 @@ ParticleSystem::set_color ()
 {
 	if (colorRampNode and not colorKey () .empty ())
 	{
+		// Keys
+
+		std::vector <float> colorKeysArray (colorKey () .begin (), colorKey () .end ());
+
+		glBindBuffer (GL_TEXTURE_BUFFER, colorRampBufferId [COLOR_RAMP_KEYS]);
+		glBufferData (GL_TEXTURE_BUFFER, colorKeysArray .size () * sizeof (float), colorKeysArray .data (), GL_STATIC_COPY);
+
+		// Values
 		MFVec4f color;
 
 		colorRampNode -> getHSVA (color);
-
 		color .resize (colorKey () .size (), SFVec4f (0, 1, 1, 1));
 
-		transformShader -> setField <MFFloat> ("colorKey",  colorKey ());
-		transformShader -> setField <MFVec4f> ("colorRamp", color);
-		transformShader -> setField <SFInt32> ("numColors", int32_t (colorKey () .size ()));
+		std::vector <Vector4f> colorValuesArray (color .begin (), color .end ());
+
+		glBindBuffer (GL_TEXTURE_BUFFER, colorRampBufferId [COLOR_RAMP_VALUES]);
+		glBufferData (GL_TEXTURE_BUFFER, colorValuesArray .size () * sizeof (Vector4f), colorValuesArray .data (), GL_STATIC_COPY);
+
+		// Update textures
+
+		glBindTexture (GL_TEXTURE_BUFFER, colorRampMapId [COLOR_RAMP_KEYS]);
+		glBindBuffer (GL_TEXTURE_BUFFER, colorRampBufferId [COLOR_RAMP_KEYS]);
+		glTexBuffer (GL_TEXTURE_BUFFER, GL_R32F, colorRampBufferId [COLOR_RAMP_KEYS]);
+
+		glBindTexture (GL_TEXTURE_BUFFER, colorRampMapId [COLOR_RAMP_VALUES]);
+		glBindBuffer (GL_TEXTURE_BUFFER, colorRampBufferId [COLOR_RAMP_VALUES]);
+		glTexBuffer (GL_TEXTURE_BUFFER, GL_RGBA32F, colorRampBufferId [COLOR_RAMP_VALUES]);
+
+		glBindBuffer (GL_TEXTURE_BUFFER, 0);
+		glBindTexture (GL_TEXTURE_BUFFER, 0);
+
+		//
 
 		haveColor = true;
 	}
 	else
 	{
-		transformShader -> setField <SFInt32> ("numColors", 0);
+		// Clear buffers
+
+		for (size_t i = 0; i < 2; ++ i)
+		{
+			glBindBuffer (GL_TEXTURE_BUFFER, colorRampBufferId [i]);
+			glBufferData (GL_TEXTURE_BUFFER, 0, 0, GL_STATIC_COPY);
+		}
+
+		glBindBuffer (GL_TEXTURE_BUFFER, 0);
+
+		//
+
 		haveColor = false;
 	}
 }
@@ -620,7 +667,7 @@ ParticleSystem::set_particle_buffers ()
 	for (size_t i = 0; i < 2; ++ i)
 	{
 		glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [i]);
-		glBufferData (GL_ARRAY_BUFFER, sizeof (particleArray), particleArray, GL_DYNAMIC_DRAW);
+		glBufferData (GL_ARRAY_BUFFER, sizeof (particleArray), particleArray, GL_STATIC_COPY);
 	}
 
 	glBindBuffer (GL_ARRAY_BUFFER, 0);
@@ -647,7 +694,7 @@ ParticleSystem::set_vertex_buffer ()
 	Vertex vertexArray [maxParticles * numVertices];
 
 	glBindBuffer (GL_ARRAY_BUFFER, vertexBufferId);
-	glBufferData (GL_ARRAY_BUFFER, sizeof (vertexArray), vertexArray, GL_DYNAMIC_DRAW);
+	glBufferData (GL_ARRAY_BUFFER, sizeof (vertexArray), vertexArray, GL_STATIC_COPY);
 
 	glBindBuffer (GL_ARRAY_BUFFER, 0);
 }
@@ -672,10 +719,6 @@ ParticleSystem::set_transform_shader ()
 	transformShader -> addUserDefinedField (inputOutput, "turbulence",        new MFFloat ());
 	transformShader -> addUserDefinedField (inputOutput, "numForces",         new SFInt32 ());
 
-	transformShader -> addUserDefinedField (inputOutput, "colorKey",          new MFFloat ());
-	transformShader -> addUserDefinedField (inputOutput, "colorRamp",         new MFVec4f ());
-	transformShader -> addUserDefinedField (inputOutput, "numColors",         new SFInt32 ());
-
 	transformShader -> addUserDefinedField (inputOutput, "modelViewMatrix",   new SFMatrix4f ());
 	transformShader -> addUserDefinedField (inputOutput, "stride",            new SFInt32 (sizeof (Particle) / sizeof (float)));
 	transformShader -> addUserDefinedField (inputOutput, "seedOffset",        new SFInt32 (offsetof (Particle, seed) / sizeof (float)));
@@ -684,7 +727,7 @@ ParticleSystem::set_transform_shader ()
 	transformShader -> addUserDefinedField (inputOutput, "velocityOffset",    new SFInt32 (offsetof (Particle, velocity) / sizeof (float)));
 	//transformShader -> addUserDefinedField (inputOutput, "colorOffset",       new SFInt32 (offsetof (Particle, color) / sizeof (float)));
 	transformShader -> addUserDefinedField (inputOutput, "elapsedTimeOffset", new SFInt32 (offsetof (Particle, elapsedTime) / sizeof (float)));
-	
+
 	sortAlgorithm -> setup (transformShader);
 
 	transformShader -> language () = "GLSL";
@@ -694,7 +737,9 @@ ParticleSystem::set_transform_shader ()
 																	 });
 
 	transformShader -> setup ();
-	transformShader -> setTextureBuffer ("particleMap", particleMapId);
+	transformShader -> setTextureBuffer ("particleMap",  particleMapId);
+	transformShader -> setTextureBuffer ("colorKeyMap",  colorRampMapId [COLOR_RAMP_KEYS]);
+	transformShader -> setTextureBuffer ("colorRampMap", colorRampMapId [COLOR_RAMP_VALUES]);
 }
 
 void
@@ -767,13 +812,16 @@ ParticleSystem::prepareEvents ()
 {
 	// Create new particles if possible.
 
-	time_type now             = chrono::now ();
-	int32_t   createParticles = (now - creationTime) * maxParticles () / particleLifetime ();
+	if (numParticles < maxParticles ())
+	{
+		time_type now          = chrono::now ();
+		int32_t   newParticles = (now - creationTime) * maxParticles () / particleLifetime ();
 
-	if (createParticles)
-		creationTime = now;
+		if (newParticles)
+			creationTime = now;
 
-	numParticles = std::min (std::max (0, maxParticles () .getValue ()), createParticles + numParticles);
+		numParticles = std::min (std::max (0, maxParticles () .getValue ()), newParticles + numParticles);
+	}
 
 	// Update shader
 
@@ -785,19 +833,19 @@ ParticleSystem::prepareEvents ()
 
 	emitterNode -> setShaderFields (transformShader);
 
-	MFVec3f velocity;
-	MFFloat turbulence;
-
-	for (const auto & node : physics ())
-	{
-		auto physics = x3d_cast <X3DParticlePhysicsModelNode*> (node);
-
-		if (physics)
-			physics -> getForce (emitterNode, velocity, turbulence);
-	}
-
 	if (emitterNode -> mass ())
 	{
+		MFVec3f velocity;
+		MFFloat turbulence;
+
+		for (const auto & node : physics ())
+		{
+			auto physics = x3d_cast <X3DParticlePhysicsModelNode*> (node);
+
+			if (physics)
+				physics -> getForce (emitterNode, velocity, turbulence);
+		}
+
 		for (auto & v : velocity)
 			v *= deltaTime / emitterNode -> mass ();
 
@@ -807,12 +855,10 @@ ParticleSystem::prepareEvents ()
 	}
 	else
 		transformShader -> setField <SFInt32> ("numForces", 0, true);
-		
+
 	// Update sort algorithm
 
-	transformShader -> enable ();
 	sortAlgorithm -> sortStep (transformShader, numParticles);
-	transformShader -> disable ();
 }
 
 void
@@ -1074,15 +1120,19 @@ ParticleSystem::dispose ()
 	transformShader .dispose ();
 	geometryShader  .dispose ();
 	colorRampNode   .dispose ();
+	
+	// Particle buffer
 
 	if (particleFeedbackId [0])
 		glDeleteTransformFeedbacks (2, particleFeedbackId .data ());
 
+	if (particleMapId)
+		glDeleteTextures (1, &particleMapId);
+
 	if (particleBufferId [0])
 		glDeleteBuffers (2, particleBufferId .data ());
 
-	if (particleMapId)
-		glDeleteTextures (1, &particleMapId);
+	// Vertex buffer
 
 	if (vertexFeedbackId)
 		glDeleteTransformFeedbacks (1, &vertexFeedbackId);
@@ -1090,8 +1140,20 @@ ParticleSystem::dispose ()
 	if (vertexBufferId)
 		glDeleteBuffers (1, &vertexBufferId);
 
+	// Primitive geometry buffer
+
 	if (geometryBufferId)
 		glDeleteBuffers (1, &geometryBufferId);
+
+	// Color ramp texture buffer
+
+	if (colorRampMapId [0])
+		glDeleteTextures (1, colorRampMapId .data ());
+
+	if (colorRampBufferId [0])
+		glDeleteBuffers (2, colorRampBufferId .data ());
+
+	// Dispose base
 
 	X3DShapeNode::dispose ();
 }

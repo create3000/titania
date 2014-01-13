@@ -95,8 +95,6 @@ BrowserSelection::removeChildren (const X3D::MFNode & nodes, const UndoStepPtr &
 void
 BrowserSelection::setChildren (const X3D::MFNode & nodes, const UndoStepPtr & undoStep) const
 {
-	__LOG__ << std::endl;
-
 	auto selection = getBrowser () -> getSelection ();
 
 	undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
@@ -135,8 +133,6 @@ BrowserSelection::undoRestoreSelection (const UndoStepPtr & undoStep) const
 void
 BrowserSelection::clear (const UndoStepPtr & undoStep) const
 {
-	__LOG__ << std::endl;
-
 	auto selection = getBrowser () -> getSelection ();
 
 	undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());

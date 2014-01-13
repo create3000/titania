@@ -172,6 +172,49 @@
     <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone-Dateien\transparency_03.png" />
     <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone-Dateien\transparency_04.png" />
     <None Include="fluid\Fluid Simulation in Alice: Madness Returns | NVIDIA Developer Zone-Dateien\wrapped_diffuse_shading__12.png" />
+    <None Include="GPU Gems 2 Chapter 46 - GPU Sort\GLSLShader.cpp" />
+    <None Include="GPU Gems 2 Chapter 46 - GPU Sort\GLSLShader.h" />
+    <None Include="GPU Gems 2 Chapter 46 - GPU Sort\GPUGems.sln" />
+    <None Include="GPU Gems 2 Chapter 46 - GPU Sort\GPUGems.vcproj" />
+    <None Include="GPU Gems 2 Chapter 46 - GPU Sort\GbTimer.h" />
+    <None Include="GPU Gems 2 Chapter 46 - GPU Sort\Makefile" />
+    <None Include="GPU Gems 2 Chapter 46 - GPU Sort\README" />
+    <None Include="GPU Gems 2 Chapter 46 - GPU Sort\RenderTexture.cpp" />
+    <None Include="GPU Gems 2 Chapter 46 - GPU Sort\RenderTexture.h" />
+    <None Include="GPU Gems 2 Chapter 46 - GPU Sort\Sort.exe" />
+    <None Include="GPU Gems 2 Chapter 46 - GPU Sort\Sort_Linux" />
+    <None Include="GPU Gems 2 Chapter 46 - GPU Sort\_windows.h" />
+    <None Include="GPU Gems 2 Chapter 46 - GPU Sort\defines.h" />
+    <None Include="GPU Gems 2 Chapter 46 - GPU Sort\main.cpp" />
+    <None Include="GPU Gems 2 Chapter 46 - GPU Sort\Linux\bin\glewinfo" />
+    <None Include="GPU Gems 2 Chapter 46 - GPU Sort\Linux\bin\visualinfo" />
+    <None Include="GPU Gems 2 Chapter 46 - GPU Sort\Linux\lib\libGLEW.a" />
+    <None Include="GPU Gems 2 Chapter 46 - GPU Sort\Linux\lib\libGLEW.so.1.2.4" />
+    <None Include="GPU Gems 2 Chapter 46 - GPU Sort\Linux\lib\libglut.a" />
+    <None Include="GPU Gems 2 Chapter 46 - GPU Sort\Linux\lib\libglut.so.3.7" />
+    <None Include="GPU Gems 2 Chapter 46 - GPU Sort\Windows\glew32.dll" />
+    <None Include="GPU Gems 2 Chapter 46 - GPU Sort\Windows\glew32.exp" />
+    <None Include="GPU Gems 2 Chapter 46 - GPU Sort\Windows\glew32.lib" />
+    <None Include="GPU Gems 2 Chapter 46 - GPU Sort\Windows\glew32s.lib" />
+    <None Include="GPU Gems 2 Chapter 46 - GPU Sort\Windows\glewinfo.exe" />
+    <None Include="GPU Gems 2 Chapter 46 - GPU Sort\Windows\glut32.dll" />
+    <None Include="GPU Gems 2 Chapter 46 - GPU Sort\Windows\glut32.lib" />
+    <None Include="GPU Gems 2 Chapter 46 - GPU Sort\Windows\visualinfo.exe" />
+    <None Include="GPU Gems 2 Chapter 46 - GPU Sort\include\GL\glew.h" />
+    <None Include="GPU Gems 2 Chapter 46 - GPU Sort\include\GL\glext.h" />
+    <None Include="GPU Gems 2 Chapter 46 - GPU Sort\include\GL\glut.h" />
+    <None Include="GPU Gems 2 Chapter 46 - GPU Sort\include\GL\glxew.h" />
+    <None Include="GPU Gems 2 Chapter 46 - GPU Sort\include\GL\wglew.h" />
+    <None Include="GPU Gems 2 Chapter 46 - GPU Sort\shader\bitonicMergeSort.vs" />
+    <None Include="GPU Gems 2 Chapter 46 - GPU Sort\shader\bitonicMergeSort_Col.fs" />
+    <None Include="GPU Gems 2 Chapter 46 - GPU Sort\shader\bitonicMergeSort_Row01.fs" />
+    <None Include="GPU Gems 2 Chapter 46 - GPU Sort\shader\bitonicMergeSort_RowN.fs" />
+    <None Include="GPU Gems 2 Chapter 46 - GPU Sort\shader\oddevenMergeSort.fs" />
+    <None Include="GPU Gems 2 Chapter 46 - GPU Sort\shader\oddevenMergeSort.vs" />
+    <None Include="GPU Gems 2 Chapter 46 - GPU Sort\shader\renderRGBA16f.fs" />
+    <None Include="GPU Gems 2 Chapter 46 - GPU Sort\shader\renderRGBA16f.vs" />
+    <None Include="GPU Gems 2 Chapter 46 - GPU Sort\shader\transitionSort.fs" />
+    <None Include="GPU Gems 2 Chapter 46 - GPU Sort\shader\transitionSort.vs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Quaternion\" />
@@ -182,6 +225,7 @@
     <Folder Include="natsort-0.1.0\" />
     <Folder Include="moz-plugin-diamondx-0.1\" />
     <Folder Include="fluid\" />
+    <Folder Include="GPU Gems 2 Chapter 46 - GPU Sort\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="xxx\ImageTexture.cpp" />
