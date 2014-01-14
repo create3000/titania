@@ -2371,6 +2371,9 @@
     <None Include="Tests\ParticleSystems\ParticleAtlas.png" />
     <None Include="Tests\ParticleSystems\1000000.wrl" />
     <None Include="Tests\ParticleSystems\test.wrl" />
+    <None Include="Tests\ParticleSystems\Fire2.wrl" />
+    <None Include="Tests\ParticleSystems\max.wrl" />
+    <None Include="Tests\ParticleSystems\ParticleAtlas.xcf" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

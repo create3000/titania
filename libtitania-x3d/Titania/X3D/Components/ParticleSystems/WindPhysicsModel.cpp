@@ -97,7 +97,7 @@ WindPhysicsModel::getForce (X3DParticleEmitterNode* const emitter, MFVec3f & for
 		Vector3f dir = direction () == Vector3f () ? random_normal () : normalize (direction () .getValue ());
 
 		force      .emplace_back (emitter -> surfaceArea () * pressure * dir);
-		turbulence .emplace_back (M_PI * this -> turbulence ());
+		turbulence .emplace_back (M_PI * clamp <float> (this -> turbulence (), 0, 1));
 	}
 }
 

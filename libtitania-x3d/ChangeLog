@@ -1,5 +1,9 @@
 2014-01-14  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* WindPhysicsModel.cpp: 
+
+2014-01-14  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Color.h:
 	* Color.cpp:
 	* ColorRGBA.h:
