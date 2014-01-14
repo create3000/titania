@@ -71,11 +71,18 @@ const std::string ParticleSystem::componentName  = "ParticleSystems";
 const std::string ParticleSystem::typeName       = "ParticleSystem";
 const std::string ParticleSystem::containerField = "children";
 
+// Constants
+
 static constexpr size_t COLOR_RAMP_KEYS   = 0;
 static constexpr size_t COLOR_RAMP_VALUES = 1;
 
+static constexpr size_t TEXCOORD_RAMP_KEYS   = 0;
+static constexpr size_t TEXCOORD_RAMP_VALUES = 1;
+
 static constexpr Vector3f yAxis (0, 1, 0);
 static constexpr Vector3f zAxis (0, 0, 1);
+
+// Particle
 
 struct ParticleSystem::Particle
 {
@@ -103,6 +110,8 @@ struct ParticleSystem::Particle
 
 };
 
+// Vertex
+
 struct ParticleSystem::Vertex
 {
 	Vertex () :
@@ -116,6 +125,8 @@ struct ParticleSystem::Vertex
 	Vector4f texCoord;
 
 };
+
+// OddEvenMergeSort
 
 class ParticleSystem::OddEvenMergeSort
 {
@@ -223,6 +234,8 @@ ParticleSystem::OddEvenMergeSort::reset (X3DProgrammableShaderObject* const shad
 	size = currentSize;
 }
 
+// ParticleSystem
+
 ParticleSystem::Fields::Fields () :
 	          enabled (new SFBool (true)),
 	     geometryType (new SFString ("QUAD")),
@@ -241,30 +254,33 @@ ParticleSystem::Fields::Fields () :
 { }
 
 ParticleSystem::ParticleSystem (X3DExecutionContext* const executionContext) :
-	       X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	      X3DShapeNode (),
-	            fields (),
-	    geometryTypeId (GeometryType::QUAD),
-	    glGeometryType (GL_POINTS),
-	       numVertices (0),
-	      numParticles (0),
-	      creationTime (0),
-	        readBuffer (0),
-	       writeBuffer (1),
-	particleFeedbackId ({ 0, 0 }),
-	  particleBufferId ({ 0, 0 }),
-	     particleMapId (0),
-	  vertexFeedbackId (0),
-	    vertexBufferId (0),
-	  geometryBufferId (0),
-	    colorRampMapId ({ 0, 0 }),
-	 colorRampBufferId ({ 0, 0 }),
-	   transformShader (),
-	    geometryShader (),
-	       emitterNode (nullptr),
-	     colorRampNode (),
-	         haveColor (false),
-	     sortAlgorithm (new OddEvenMergeSort ())
+	         X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	        X3DShapeNode (),
+	              fields (),
+	      geometryTypeId (GeometryType::QUAD),
+	      glGeometryType (GL_POINTS),
+	         numVertices (0),
+	        numParticles (0),
+	        creationTime (0),
+	          readBuffer (0),
+	         writeBuffer (1),
+	  particleFeedbackId ({ 0, 0 }),
+	    particleBufferId ({ 0, 0 }),
+	       particleMapId (0),
+	    vertexFeedbackId (0),
+	      vertexBufferId (0),
+	    geometryBufferId (0),
+	      colorRampMapId ({ 0, 0 }),
+	   colorRampBufferId ({ 0, 0 }),
+	   texCoordRampMapId ({ 0, 0 }),
+	texCoordRampBufferId ({ 0, 0 }),
+	     transformShader (),
+	      geometryShader (),
+	         emitterNode (nullptr),
+	       colorRampNode (),
+	    texCoordRampNode (),
+	           haveColor (false),
+	       sortAlgorithm (new OddEvenMergeSort ())
 {
 	addField (inputOutput,    "metadata",          metadata ());
 	addField (inputOutput,    "enabled",           enabled ());
@@ -290,7 +306,7 @@ ParticleSystem::ParticleSystem (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "appearance",        appearance ());
 	addField (inputOutput,    "geometry",          geometry ());
 
-	addChildren (transformShader, geometryShader, colorRampNode);
+	addChildren (transformShader, geometryShader, colorRampNode, texCoordRampNode);
 }
 
 X3DBaseNode*
@@ -334,11 +350,16 @@ ParticleSystem::initialize ()
 		// Generate geometry buffer
 
 		glGenBuffers (1, &geometryBufferId);
-		
+
 		// Color ramp
 
 		glGenTextures (2, colorRampMapId .data ());
 		glGenBuffers  (2, colorRampBufferId .data ());
+
+		// Texture coordinate ramp
+
+		glGenTextures (2, texCoordRampMapId .data ());
+		glGenBuffers  (2, texCoordRampBufferId .data ());
 
 		// Setup
 
@@ -545,9 +566,12 @@ ParticleSystem::set_geometryType ()
 
 		set_vertex_buffer ();
 	}
+	
+	set_texCoord ();
 
+	geometryShader -> setField <SFInt32> ("numVertices",  int32_t (numVertices));
 	geometryShader -> setField <SFInt32> ("geometryType", int32_t (geometryTypeId));
-	geometryShader -> setField <MFVec4f> ("texCoord", texCoord);
+	geometryShader -> setField <MFVec4f> ("texCoord",     texCoord);
 }
 
 void
@@ -558,7 +582,9 @@ ParticleSystem::set_colorKey ()
 
 void
 ParticleSystem::set_texCoordKey ()
-{ }
+{
+	set_texCoord ();
+}
 
 void
 ParticleSystem::set_emitter ()
@@ -602,32 +628,22 @@ ParticleSystem::set_color ()
 		glBufferData (GL_TEXTURE_BUFFER, colorKeysArray .size () * sizeof (float), colorKeysArray .data (), GL_STATIC_COPY);
 
 		// Values
-		MFVec4f color;
 
-		colorRampNode -> getHSVA (color);
-		color .resize (colorKey () .size (), SFVec4f (0, 1, 1, 1));
+		std::vector <Vector4f> colorValuesArray;
 
-		std::vector <Vector4f> colorValuesArray (color .begin (), color .end ());
+		colorRampNode -> getHSVA (colorValuesArray);
+		colorValuesArray .resize (colorKey () .size (), Vector4f (0, 1, 1, 1));
 
 		glBindBuffer (GL_TEXTURE_BUFFER, colorRampBufferId [COLOR_RAMP_VALUES]);
 		glBufferData (GL_TEXTURE_BUFFER, colorValuesArray .size () * sizeof (Vector4f), colorValuesArray .data (), GL_STATIC_COPY);
 
-		// Update textures
-
-		glBindTexture (GL_TEXTURE_BUFFER, colorRampMapId [COLOR_RAMP_KEYS]);
-		glBindBuffer (GL_TEXTURE_BUFFER, colorRampBufferId [COLOR_RAMP_KEYS]);
-		glTexBuffer (GL_TEXTURE_BUFFER, GL_R32F, colorRampBufferId [COLOR_RAMP_KEYS]);
-
-		glBindTexture (GL_TEXTURE_BUFFER, colorRampMapId [COLOR_RAMP_VALUES]);
-		glBindBuffer (GL_TEXTURE_BUFFER, colorRampBufferId [COLOR_RAMP_VALUES]);
-		glTexBuffer (GL_TEXTURE_BUFFER, GL_RGBA32F, colorRampBufferId [COLOR_RAMP_VALUES]);
-
-		glBindBuffer (GL_TEXTURE_BUFFER, 0);
-		glBindTexture (GL_TEXTURE_BUFFER, 0);
-
 		//
 
 		haveColor = true;
+
+		// Shader
+
+		transformShader -> setField <SFInt32> ("numColors", int32_t (colorKey () .size ()));
 	}
 	else
 	{
@@ -639,17 +655,119 @@ ParticleSystem::set_color ()
 			glBufferData (GL_TEXTURE_BUFFER, 0, 0, GL_STATIC_COPY);
 		}
 
-		glBindBuffer (GL_TEXTURE_BUFFER, 0);
-
 		//
 
 		haveColor = false;
+
+		// Shader
+
+		transformShader -> setField <SFInt32> ("numColors", 0);
 	}
+
+	// Update textures
+
+	glBindTexture (GL_TEXTURE_BUFFER, colorRampMapId [COLOR_RAMP_KEYS]);
+	glBindBuffer (GL_TEXTURE_BUFFER, colorRampBufferId [COLOR_RAMP_KEYS]);
+	glTexBuffer (GL_TEXTURE_BUFFER, GL_R32F, colorRampBufferId [COLOR_RAMP_KEYS]);
+
+	glBindTexture (GL_TEXTURE_BUFFER, colorRampMapId [COLOR_RAMP_VALUES]);
+	glBindBuffer (GL_TEXTURE_BUFFER, colorRampBufferId [COLOR_RAMP_VALUES]);
+	glTexBuffer (GL_TEXTURE_BUFFER, GL_RGBA32F, colorRampBufferId [COLOR_RAMP_VALUES]);
+
+	glBindBuffer (GL_TEXTURE_BUFFER, 0);
+	glBindTexture (GL_TEXTURE_BUFFER, 0);
 }
 
 void
 ParticleSystem::set_texCoordRamp ()
-{ }
+{
+	if (texCoordRampNode)
+		texCoordRampNode -> removeInterest (this, &ParticleSystem::set_texCoord);
+
+	texCoordRampNode = texCoordRamp ();
+
+	if (texCoordRampNode)
+		texCoordRampNode -> addInterest (this, &ParticleSystem::set_texCoord);
+
+	set_texCoord ();
+}
+
+void
+ParticleSystem::set_texCoord ()
+{
+	if (texCoordRampNode and not texCoordKey () .empty () and numVertices)
+	{
+		// Keys
+
+		std::vector <float> texCoordKeysArray (texCoordKey () .begin (), texCoordKey () .end ());
+
+		glBindBuffer (GL_TEXTURE_BUFFER, texCoordRampBufferId [TEXCOORD_RAMP_KEYS]);
+		glBufferData (GL_TEXTURE_BUFFER, texCoordKeysArray .size () * sizeof (float), texCoordKeysArray .data (), GL_STATIC_COPY);
+
+		// Values
+
+		std::vector <Vector4f> texCoord;
+		std::vector <Vector4f> texCoordValuesArray;
+
+		texCoordRampNode -> getTexCoord (texCoord);
+
+		if (geometryTypeId == GeometryType::TRIANGLE)
+		{
+			static constexpr size_t numVertices = 4;
+
+			texCoord .resize (texCoordKey () .size () * numVertices, Vector4f (0, 0, 0, 1));
+
+			for (size_t n = 0, size = texCoordKey () .size () * numVertices; n < size; n += numVertices)
+			{
+				for (size_t i = 1; i < 3; ++ i)
+				{
+					texCoordValuesArray .emplace_back (texCoord [n]);
+					texCoordValuesArray .emplace_back (texCoord [n + i]);
+					texCoordValuesArray .emplace_back (texCoord [n + i + 1]);
+				}
+			}
+		}
+		else
+		{
+			texCoord .resize (texCoordKey () .size () * numVertices, Vector4f (0, 0, 0, 1));
+			texCoordValuesArray = std::move (texCoord);
+		}
+
+		glBindBuffer (GL_TEXTURE_BUFFER, texCoordRampBufferId [TEXCOORD_RAMP_VALUES]);
+		glBufferData (GL_TEXTURE_BUFFER, texCoordValuesArray .size () * sizeof (Vector4f), texCoordValuesArray .data (), GL_STATIC_COPY);
+
+		// Shader
+
+		geometryShader -> setField <SFInt32> ("numTexCoord", int32_t (texCoordKey () .size ()));
+	}
+	else
+	{
+		// Clear buffers
+
+		for (size_t i = 0; i < 2; ++ i)
+		{
+			glBindBuffer (GL_TEXTURE_BUFFER, texCoordRampBufferId [i]);
+			glBufferData (GL_TEXTURE_BUFFER, 0, 0, GL_STATIC_COPY);
+		}
+
+		// Shader
+
+		geometryShader -> setField <SFInt32> ("numTexCoord", 0);
+	}
+
+	// Update textures
+
+	glBindTexture (GL_TEXTURE_BUFFER, texCoordRampMapId [TEXCOORD_RAMP_KEYS]);
+	glBindBuffer (GL_TEXTURE_BUFFER, texCoordRampBufferId [TEXCOORD_RAMP_KEYS]);
+	glTexBuffer (GL_TEXTURE_BUFFER, GL_R32F, texCoordRampBufferId [TEXCOORD_RAMP_KEYS]);
+
+	glBindTexture (GL_TEXTURE_BUFFER, texCoordRampMapId [TEXCOORD_RAMP_VALUES]);
+	glBindBuffer (GL_TEXTURE_BUFFER, texCoordRampBufferId [TEXCOORD_RAMP_VALUES]);
+	glTexBuffer (GL_TEXTURE_BUFFER, GL_RGBA32F, texCoordRampBufferId [TEXCOORD_RAMP_VALUES]);
+
+	glBindBuffer (GL_TEXTURE_BUFFER, 0);
+	glBindTexture (GL_TEXTURE_BUFFER, 0);
+}
 
 void
 ParticleSystem::set_geometry ()
@@ -731,17 +849,19 @@ ParticleSystem::set_transform_shader ()
 	transformShader -> addUserDefinedField (inputOutput, "elapsedTimeOffset", new SFInt32 (offsetof (Particle, elapsedTime) / sizeof (float)));
 	transformShader -> addUserDefinedField (inputOutput, "distanceOffset",    new SFInt32 (offsetof (Particle, distance) / sizeof (float)));
 
+	transformShader -> addUserDefinedField (inputOutput, "numColors",         new SFInt32 ());
+
 	sortAlgorithm -> setup (transformShader);
 
 	transformShader -> language () = "GLSL";
 	transformShader -> parts () .emplace_back (vertexPart);
 	transformShader -> setTransformFeedbackVaryings ({
 	                                                    "To.seed",
-	                                                    "To.lifetime", 
-	                                                    "To.position", 
-	                                                    "To.velocity", 
-	                                                    "To.color", 
-	                                                    "To.elapsedTime", 
+	                                                    "To.lifetime",
+	                                                    "To.position",
+	                                                    "To.velocity",
+	                                                    "To.color",
+	                                                    "To.elapsedTime",
 	                                                    "To.distance"
 																	 });
 
@@ -774,9 +894,11 @@ ParticleSystem::set_geometry_shader ()
 	vertexPart -> setup ();
 
 	geometryShader = new ComposedShader (getExecutionContext ());
+	geometryShader -> addUserDefinedField (inputOutput, "numVertices",  new SFInt32 ());
 	geometryShader -> addUserDefinedField (inputOutput, "geometryType", new SFInt32 ());
 	geometryShader -> addUserDefinedField (inputOutput, "rotation",     new SFMatrix3f ());
 	geometryShader -> addUserDefinedField (inputOutput, "texCoord",     new MFVec4f ());
+	geometryShader -> addUserDefinedField (inputOutput, "numTexCoord",  new SFInt32 ());
 
 	geometryShader -> language () = "GLSL";
 	geometryShader -> parts () .emplace_back (vertexPart);
@@ -784,6 +906,8 @@ ParticleSystem::set_geometry_shader ()
 	                                                   "To.position", "To.color", "To.texCoord"
 																	});
 	geometryShader -> setup ();
+	geometryShader -> setTextureBuffer ("texCoordKeyMap",  texCoordRampMapId [TEXCOORD_RAMP_KEYS]);
+	geometryShader -> setTextureBuffer ("texCoordRampMap", texCoordRampMapId [TEXCOORD_RAMP_VALUES]);
 }
 
 bool
@@ -910,18 +1034,24 @@ ParticleSystem::update ()
 			glEnableVertexAttribArray (1);
 			glEnableVertexAttribArray (2);
 			glEnableVertexAttribArray (3);
+			glEnableVertexAttribArray (4);
+			glEnableVertexAttribArray (5);
 
 			glBindBuffer (GL_ARRAY_BUFFER, geometryBufferId);
 			glVertexAttribPointer (0, 3, GL_FLOAT, false, 0, (void*) 0);
 
 			glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [readBuffer]);
-			glVertexAttribPointer (1, 3, GL_FLOAT, false, sizeof (Particle), (void*) offsetof (Particle, position));
-			glVertexAttribPointer (2, 3, GL_FLOAT, false, sizeof (Particle), (void*) offsetof (Particle, velocity));
-			glVertexAttribPointer (3, 4, GL_FLOAT, false, sizeof (Particle), (void*) offsetof (Particle, color));
+			glVertexAttribPointer (1, 1, GL_FLOAT, false, sizeof (Particle), (void*) offsetof (Particle, lifetime));
+			glVertexAttribPointer (2, 3, GL_FLOAT, false, sizeof (Particle), (void*) offsetof (Particle, position));
+			glVertexAttribPointer (3, 3, GL_FLOAT, false, sizeof (Particle), (void*) offsetof (Particle, velocity));
+			glVertexAttribPointer (4, 4, GL_FLOAT, false, sizeof (Particle), (void*) offsetof (Particle, color));
+			glVertexAttribPointer (5, 1, GL_FLOAT, false, sizeof (Particle), (void*) offsetof (Particle, elapsedTime));
 
 			glVertexAttribDivisor (1, 1);
 			glVertexAttribDivisor (2, 1);
 			glVertexAttribDivisor (3, 1);
+			glVertexAttribDivisor (4, 1);
+			glVertexAttribDivisor (5, 1);
 
 			glEnable (GL_RASTERIZER_DISCARD);
 			glBindTransformFeedback (GL_TRANSFORM_FEEDBACK, vertexFeedbackId);
@@ -936,11 +1066,15 @@ ParticleSystem::update ()
 			glVertexAttribDivisor (1, 0);
 			glVertexAttribDivisor (2, 0);
 			glVertexAttribDivisor (3, 0);
+			glVertexAttribDivisor (4, 0);
+			glVertexAttribDivisor (5, 0);
 
 			glDisableVertexAttribArray (0);
 			glDisableVertexAttribArray (1);
 			glDisableVertexAttribArray (2);
 			glDisableVertexAttribArray (3);
+			glDisableVertexAttribArray (4);
+			glDisableVertexAttribArray (5);
 			glBindBuffer (GL_ARRAY_BUFFER, 0);
 
 			geometryShader -> disable ();
@@ -1126,10 +1260,11 @@ ParticleSystem::disableTexCoord () const
 void
 ParticleSystem::dispose ()
 {
-	transformShader .dispose ();
-	geometryShader  .dispose ();
-	colorRampNode   .dispose ();
-	
+	transformShader  .dispose ();
+	geometryShader   .dispose ();
+	colorRampNode    .dispose ();
+	texCoordRampNode .dispose ();
+
 	// Particle buffer
 
 	if (particleFeedbackId [0])
@@ -1161,6 +1296,14 @@ ParticleSystem::dispose ()
 
 	if (colorRampBufferId [0])
 		glDeleteBuffers (2, colorRampBufferId .data ());
+
+	// Color ramp texture buffer
+
+	if (texCoordRampMapId [0])
+		glDeleteTextures (1, texCoordRampMapId .data ());
+
+	if (texCoordRampBufferId [0])
+		glDeleteBuffers (2, texCoordRampBufferId .data ());
 
 	// Dispose base
 

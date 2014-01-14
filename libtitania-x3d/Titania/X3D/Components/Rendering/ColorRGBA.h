@@ -108,7 +108,7 @@ public:
 	
 	virtual
 	void
-	getHSVA (MFVec4f &) const final override;
+	getHSVA (std::vector <Vector4f> &) const final override;
 
 	virtual
 	void

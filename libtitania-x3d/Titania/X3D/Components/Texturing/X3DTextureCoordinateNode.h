@@ -78,6 +78,10 @@ public:
 
 	virtual
 	void
+	getTexCoord (std::vector <Vector4f> &) const = 0;
+
+	virtual
+	void
 	resize (size_t) = 0;
 
 	virtual

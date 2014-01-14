@@ -95,6 +95,15 @@ TextureCoordinate4D::addTexCoord (size_t channel, TexCoordArray & texCoords, int
 }
 
 void
+TextureCoordinate4D::getTexCoord (std::vector <Vector4f> & texCoords) const
+{
+	texCoords .reserve (point () .size ());
+
+	for (const Vector4f & point4 : point ())
+		texCoords .emplace_back (point4);	
+}
+
+void
 TextureCoordinate4D::resize (size_t size)
 {
 	if (point () .empty ())

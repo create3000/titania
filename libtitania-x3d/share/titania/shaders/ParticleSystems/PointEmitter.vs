@@ -1,3 +1,4 @@
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-*/
 #version 330
 
 #define FORCES_MAX  32
@@ -17,6 +18,7 @@ uniform int   numForces;
 
 uniform samplerBuffer colorKeyMap;
 uniform samplerBuffer colorRampMap;
+uniform int           numColors;
 
 /* Transform feedback varyings */
 
@@ -55,7 +57,7 @@ odd_even_merge_sort (in int self)
 	if (self < sortSize)
 	{
 		// My position within the range to merge.
-		float j = floor (mod (self, TwoStage));
+		float j = mod (self, TwoStage); // float j = floor (mod (self, TwoStage));
 
 		if ((j < Pass_mod_Stage) || (j > TwoStage_PmS_1))
 		{
@@ -128,18 +130,18 @@ getColorValue (in int index)
 }
 
 vec4
-getColor (in float elapsedTime)
+getColor (in float elapsedTime, in float lifetime)
 {
-	int numColors = textureSize (colorKeyMap);
-
 	if (numColors == 0)
 		return vec4 (1.0f);
 
+	float fraction = elapsedTime / lifetime;
+
 	int   index0 = 0;
 	int   index1 = 0;
-	float weight = 0;
+	float weight = 0.0f;
 
-	interpolate (colorKeyMap, elapsedTime / getFromLifetime (), index0, index1, weight);
+	interpolate (colorKeyMap, fraction, index0, index1, weight);
 
 	return clerp (getColorValue (index0), getColorValue (index1), weight);
 }
@@ -156,7 +158,7 @@ main ()
 		to .lifetime    = random_variation (particleLifetime, lifetimeVariation);
 		to .position    = position;
 		to .velocity    = getRandomVelocity ();
-		to .color       = getColor (0);
+		to .color       = getColor (0.0f, to .lifetime);
 		to .elapsedTime = 0.0f;
 		to .distance    = getDistance (position);
 		to .seed        = srand ();
@@ -169,7 +171,7 @@ main ()
 		to .lifetime    = getFromLifetime ();
 		to .position    = getFromPosition () + velocity * deltaTime;
 		to .velocity    = velocity;
-		to .color       = getColor (elapsedTime);
+		to .color       = getColor (elapsedTime, to .lifetime);
 		to .elapsedTime = elapsedTime;
 		to .distance    = getDistance (to .position);
 		to .seed        = srand ();

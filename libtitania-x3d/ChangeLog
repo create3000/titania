@@ -1,3 +1,30 @@
+2014-01-14  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Color.h:
+	* Color.cpp:
+	* ColorRGBA.h:
+	* ColorRGBA.cpp:
+	* X3DColorNode.h:
+	* Math.h:
+	* Primitive.vs:
+	* Color.h:
+	* Random.h:
+	* TextureCoordinate.h:
+	* PointEmitter.vs:
+	* TextureCoordinate.cpp:
+	* ParticleSystem.h:
+	* Quaternion.h:
+	* TextureCoordinate4D.h:
+	* TextureCoordinate3D.h:
+	* ParticleMap.h:
+	* MultiTextureCoordinate.h:
+	* ParticleSystem.cpp:
+	* TextureCoordinate3D.cpp:
+	* TextureCoordinate4D.cpp:
+	* X3DTextureCoordinateNode.h:
+	* TextureCoordinateGenerator.h:
+	* OddEvenMergeSort.vs: 
+
 2014-01-13  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Shader.cpp:

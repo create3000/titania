@@ -98,6 +98,15 @@ TextureCoordinate3D::addTexCoord (size_t channel, TexCoordArray & texCoords, int
 }
 
 void
+TextureCoordinate3D::getTexCoord (std::vector <Vector4f> & texCoords) const
+{
+	texCoords .reserve (point () .size ());
+
+	for (const Vector3f & point3 : point ())
+		texCoords .emplace_back (point3 .x (), point3 .y (), point3 .z (), 1);	
+}
+
+void
 TextureCoordinate3D::resize (size_t size)
 {
 	if (point () .empty ())

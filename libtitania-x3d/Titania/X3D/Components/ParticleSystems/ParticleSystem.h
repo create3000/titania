@@ -52,8 +52,9 @@
 #define __TITANIA_X3D_COMPONENTS_PARTICLE_SYSTEMS_PARTICLE_SYSTEM_H__
 
 #include "../ParticleSystems/X3DParticleEmitterNode.h"
-#include "../Shape/X3DShapeNode.h"
 #include "../Rendering/X3DColorNode.h"
+#include "../Shape/X3DShapeNode.h"
+#include "../Texturing/X3DTextureCoordinateNode.h"
 
 #include <array>
 
@@ -239,6 +240,7 @@ public:
 
 	~ParticleSystem ();
 
+
 private:
 
 	class OddEvenMergeSort;
@@ -287,12 +289,15 @@ private:
 
 	void
 	set_colorRamp ();
-	
+
 	void
 	set_color ();
 
 	void
 	set_texCoordRamp ();
+
+	void
+	set_texCoord ();
 
 	void
 	set_geometry ();
@@ -330,10 +335,10 @@ private:
 	Matrix3f
 	getScreenAlignedRotation () const
 	throw (std::domain_error);
-	
+
 	void
 	enableTexCoord () const;
-	
+
 	void
 	disableTexCoord () const;
 
@@ -367,26 +372,29 @@ private:
 
 	Fields fields;
 
-	GeometryType               geometryTypeId;
-	GLenum                     glGeometryType;
-	size_t                     numVertices;
-	int32_t                    numParticles;
-	time_type                  creationTime;
-	size_t                     readBuffer;
-	size_t                     writeBuffer;
-	std::array <GLuint, 2>     particleFeedbackId;
-	std::array <GLuint, 2>     particleBufferId;
-	GLuint                     particleMapId;
-	GLuint                     vertexFeedbackId;
-	GLuint                     vertexBufferId;
-	GLuint                     geometryBufferId;
-	std::array <GLuint, 2>     colorRampMapId;
-	std::array <GLuint, 2>     colorRampBufferId;
-	X3DSFNode <ComposedShader> transformShader;
-	X3DSFNode <ComposedShader> geometryShader;
-	X3DParticleEmitterNode*    emitterNode;
-	X3DSFNode <X3DColorNode>   colorRampNode;
-	bool                       haveColor;
+	GeometryType                         geometryTypeId;
+	GLenum                               glGeometryType;
+	size_t                               numVertices;
+	int32_t                              numParticles;
+	time_type                            creationTime;
+	size_t                               readBuffer;
+	size_t                               writeBuffer;
+	std::array <GLuint, 2>               particleFeedbackId;
+	std::array <GLuint, 2>               particleBufferId;
+	GLuint                               particleMapId;
+	GLuint                               vertexFeedbackId;
+	GLuint                               vertexBufferId;
+	GLuint                               geometryBufferId;
+	std::array <GLuint, 2>               colorRampMapId;
+	std::array <GLuint, 2>               colorRampBufferId;
+	std::array <GLuint, 2>               texCoordRampMapId;
+	std::array <GLuint, 2>               texCoordRampBufferId;
+	X3DSFNode <ComposedShader>           transformShader;
+	X3DSFNode <ComposedShader>           geometryShader;
+	X3DParticleEmitterNode*              emitterNode;
+	X3DSFNode <X3DColorNode>             colorRampNode;
+	X3DSFNode <X3DTextureCoordinateNode> texCoordRampNode;
+	bool                                 haveColor;
 
 	std::unique_ptr <OddEvenMergeSort> sortAlgorithm;
 

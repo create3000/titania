@@ -89,13 +89,15 @@ ColorRGBA::addColor (std::vector <Color4f> & colors, int32_t index) const
 }
 
 void
-ColorRGBA::getHSVA (MFVec4f & value) const
+ColorRGBA::getHSVA (std::vector <Vector4f> & colors) const
 {
+	colors .reserve (color () .size ());
+
 	for (const Color4f & color4 : color ())
 	{
 		float h, s, v;
 		color4 .getHSV (h, s, v);
-		value .emplace_back (h, s, v, color4 .a ());
+		colors .emplace_back (h, s, v, color4 .a ());
 	}
 }
 

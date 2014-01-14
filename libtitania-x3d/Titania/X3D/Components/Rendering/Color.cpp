@@ -92,13 +92,15 @@ Color::addColor (std::vector <Color4f> & colors, int32_t index) const
 }
 
 void
-Color::getHSVA (MFVec4f & value) const
+Color::getHSVA (std::vector <Vector4f> & colors) const
 {
+	colors .reserve (color () .size ());
+
 	for (const Color3f & color3 : color ())
 	{
 		float h, s, v;
 		color3 .getHSV (h, s, v);
-		value .emplace_back (h, s, v, 1);
+		colors .emplace_back (h, s, v, 1);
 	}
 }
 

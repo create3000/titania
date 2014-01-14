@@ -71,7 +71,7 @@ public:
 	
 	virtual
 	void
-	getHSVA (MFVec4f &) const = 0;
+	getHSVA (std::vector <Vector4f> &) const = 0;
 
 	virtual
 	void
