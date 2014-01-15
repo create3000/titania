@@ -1,3 +1,11 @@
+2014-01-15  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-x3d.cproj:
+	* PointEmitter.vs:
+	* ParticleSystem.cpp:
+	* OddEvenMergeSort.h:
+	* OddEvenMergeSort.vs: 
+
 2014-01-14  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* WindPhysicsModel.cpp: 

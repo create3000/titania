@@ -253,8 +253,16 @@ main (int argc, char** argv)
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
 	
-	for (int i = 0; i < 100; ++ i)
-		std::clog << i << " : " << math::next_power_of_two (i) << std::endl;
+	std::vector <float> array (100000);
+	
+	for (auto & value : array)
+		value = rand ();
+
+	double t0 = chrono::now ();
+	
+	std::sort (array .begin (), array .end ());
+	
+	std::clog << chrono::now () - t0 << std::endl;
 
 	std::clog << "Function main done." << std::endl;
 	exit (0);

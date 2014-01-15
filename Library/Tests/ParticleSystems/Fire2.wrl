@@ -25,13 +25,13 @@ ParticleSystem {
   physics [
     WindPhysicsModel {
       direction 0 1 0
-      speed 0.6
-      gustiness 1.5
+      speed 0.5
+      gustiness 1.9
     }
     WindPhysicsModel {
-      direction 1 0 0
-      speed 0.2
-      gustiness 5
+      direction 1 -1 0
+      speed 0.15
+      gustiness 7
     }
   ]
   texCoordRamp TextureCoordinate {

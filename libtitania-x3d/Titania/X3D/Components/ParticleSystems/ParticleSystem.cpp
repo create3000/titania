@@ -667,15 +667,13 @@ ParticleSystem::set_color ()
 	// Update textures
 
 	glBindTexture (GL_TEXTURE_BUFFER, colorRampMapId [COLOR_RAMP_KEYS]);
-	glBindBuffer (GL_TEXTURE_BUFFER, colorRampBufferId [COLOR_RAMP_KEYS]);
 	glTexBuffer (GL_TEXTURE_BUFFER, GL_R32F, colorRampBufferId [COLOR_RAMP_KEYS]);
 
 	glBindTexture (GL_TEXTURE_BUFFER, colorRampMapId [COLOR_RAMP_VALUES]);
-	glBindBuffer (GL_TEXTURE_BUFFER, colorRampBufferId [COLOR_RAMP_VALUES]);
 	glTexBuffer (GL_TEXTURE_BUFFER, GL_RGBA32F, colorRampBufferId [COLOR_RAMP_VALUES]);
 
-	glBindBuffer (GL_TEXTURE_BUFFER, 0);
 	glBindTexture (GL_TEXTURE_BUFFER, 0);
+	glBindBuffer (GL_TEXTURE_BUFFER, 0);
 }
 
 void
@@ -758,15 +756,13 @@ ParticleSystem::set_texCoord ()
 	// Update textures
 
 	glBindTexture (GL_TEXTURE_BUFFER, texCoordRampMapId [TEXCOORD_RAMP_KEYS]);
-	glBindBuffer (GL_TEXTURE_BUFFER, texCoordRampBufferId [TEXCOORD_RAMP_KEYS]);
 	glTexBuffer (GL_TEXTURE_BUFFER, GL_R32F, texCoordRampBufferId [TEXCOORD_RAMP_KEYS]);
 
 	glBindTexture (GL_TEXTURE_BUFFER, texCoordRampMapId [TEXCOORD_RAMP_VALUES]);
-	glBindBuffer (GL_TEXTURE_BUFFER, texCoordRampBufferId [TEXCOORD_RAMP_VALUES]);
 	glTexBuffer (GL_TEXTURE_BUFFER, GL_RGBA32F, texCoordRampBufferId [TEXCOORD_RAMP_VALUES]);
 
-	glBindBuffer (GL_TEXTURE_BUFFER, 0);
 	glBindTexture (GL_TEXTURE_BUFFER, 0);
+	glBindBuffer (GL_TEXTURE_BUFFER, 0);
 }
 
 void
