@@ -68,7 +68,7 @@ public:
 	virtual
 	void
 	addColor (std::vector <Color4f>&, int32_t) const = 0;
-	
+
 	virtual
 	void
 	getHSVA (std::vector <Vector4f> &) const = 0;
@@ -78,7 +78,7 @@ public:
 	resize (size_t) = 0;
 
 	virtual
-	size_t
+	bool
 	isEmpty () const = 0;
 
 	virtual

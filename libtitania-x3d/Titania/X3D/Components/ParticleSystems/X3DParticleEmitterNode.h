@@ -104,6 +104,10 @@ public:
 
 	virtual
 	void
+	addShaderFields (const X3DSFNode <ComposedShader> &) const;	
+
+	virtual
+	void
 	setShaderFields (const X3DSFNode <ComposedShader> &) const;	
 
 

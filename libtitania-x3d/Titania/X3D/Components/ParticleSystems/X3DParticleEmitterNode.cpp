@@ -68,6 +68,13 @@ X3DParticleEmitterNode::X3DParticleEmitterNode () :
 }
 
 void
+X3DParticleEmitterNode::addShaderFields (const X3DSFNode <ComposedShader> & shader) const
+{
+	shader -> addUserDefinedField (inputOutput, "speed",     new SFFloat ());
+	shader -> addUserDefinedField (inputOutput, "variation", new SFFloat ());
+}
+
+void
 X3DParticleEmitterNode::setShaderFields (const X3DSFNode <ComposedShader> & shader) const
 {
 	shader -> setField <SFFloat> ("speed",     speed (),     true);

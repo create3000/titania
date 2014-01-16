@@ -132,6 +132,16 @@ public:
 	disable (int32_t) const final override
 	{ }
 
+	virtual
+	bool
+	isEmpty () const final override
+	{ return true; }
+
+	virtual
+	size_t
+	getSize () const final override
+	{ return 0; }
+
 
 private:
 

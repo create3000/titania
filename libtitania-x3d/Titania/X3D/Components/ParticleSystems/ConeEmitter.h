@@ -89,13 +89,13 @@ public:
 
 	///  @name Fields
 
-	SFFloat &
-	angle ()
-	{ return *fields .angle; }
+	SFVec3f &
+	position ()
+	{ return *fields .position; }
 
-	const SFFloat &
-	angle () const
-	{ return *fields .angle; }
+	const SFVec3f &
+	position () const
+	{ return *fields .position; }
 
 	SFVec3f &
 	direction ()
@@ -105,19 +105,27 @@ public:
 	direction () const
 	{ return *fields .direction; }
 
-	SFVec3f &
-	position ()
-	{ return *fields .position; }
+	SFFloat &
+	angle ()
+	{ return *fields .angle; }
 
-	const SFVec3f &
-	position () const
-	{ return *fields .position; }
+	const SFFloat &
+	angle () const
+	{ return *fields .angle; }
 
 	///  @name Operations
 
 	virtual
 	MFString
 	getShaderUrl () const final override;
+
+	virtual
+	void
+	addShaderFields (const X3DSFNode <ComposedShader> &) const final override;
+
+	virtual
+	void
+	setShaderFields (const X3DSFNode <ComposedShader> &) const final override;
 
 
 private:
@@ -134,9 +142,9 @@ private:
 	{
 		Fields ();
 
-		SFFloat* const angle;
-		SFVec3f* const direction;
 		SFVec3f* const position;
+		SFVec3f* const direction;
+		SFFloat* const angle;
 	};
 
 	Fields fields;

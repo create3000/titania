@@ -2374,6 +2374,9 @@
     <None Include="Tests\ParticleSystems\Fire2.wrl" />
     <None Include="Tests\ParticleSystems\max.wrl" />
     <None Include="Tests\ParticleSystems\ParticleAtlas.xcf" />
+    <None Include="Tests\ParticleSystems\ConeEmitter.wrl" />
+    <None Include="Tests\ParticleSystems\Fontaine.wrl" />
+    <None Include="Tests\ParticleSystems\Smoke.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

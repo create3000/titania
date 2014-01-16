@@ -115,7 +115,7 @@ public:
 	resize (size_t) final override;
 
 	virtual
-	size_t
+	bool
 	isEmpty () const final override
 	{ return color () .empty (); }
 

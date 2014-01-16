@@ -121,6 +121,16 @@ public:
 	void
 	disable (int32_t) const final override;
 
+	virtual
+	bool
+	isEmpty () const final override
+	{ return point () .empty (); }
+
+	virtual
+	size_t
+	getSize () const final override
+	{ return point () .size (); }
+
 
 private:
 

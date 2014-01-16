@@ -618,11 +618,14 @@ ParticleSystem::set_colorRamp ()
 void
 ParticleSystem::set_color ()
 {
-	if (colorRampNode and not colorKey () .empty ())
+	if (colorRampNode and not colorKey () .empty () and not colorRampNode -> isEmpty ())
 	{
+		size_t size = std::min (colorKey () .size (), colorRampNode -> getSize ());
+	
 		// Keys
 
 		std::vector <float> colorKeysArray (colorKey () .begin (), colorKey () .end ());
+		colorKeysArray .resize (size);
 
 		glBindBuffer (GL_TEXTURE_BUFFER, colorRampBufferId [COLOR_RAMP_KEYS]);
 		glBufferData (GL_TEXTURE_BUFFER, colorKeysArray .size () * sizeof (float), colorKeysArray .data (), GL_STATIC_COPY);
@@ -632,7 +635,7 @@ ParticleSystem::set_color ()
 		std::vector <Vector4f> colorValuesArray;
 
 		colorRampNode -> getHSVA (colorValuesArray);
-		colorValuesArray .resize (colorKey () .size (), Vector4f (0, 1, 1, 1));
+		colorValuesArray .resize (size);
 
 		glBindBuffer (GL_TEXTURE_BUFFER, colorRampBufferId [COLOR_RAMP_VALUES]);
 		glBufferData (GL_TEXTURE_BUFFER, colorValuesArray .size () * sizeof (Vector4f), colorValuesArray .data (), GL_STATIC_COPY);
@@ -693,11 +696,14 @@ ParticleSystem::set_texCoordRamp ()
 void
 ParticleSystem::set_texCoord ()
 {
-	if (texCoordRampNode and not texCoordKey () .empty () and numVertices)
+	if (texCoordRampNode and not texCoordKey () .empty () and not texCoordRampNode -> isEmpty () and numVertices)
 	{
+		size_t size = std::min (texCoordKey () .size (), texCoordRampNode -> getSize ());
+
 		// Keys
 
 		std::vector <float> texCoordKeysArray (texCoordKey () .begin (), texCoordKey () .end ());
+		texCoordKeysArray .resize (size);
 
 		glBindBuffer (GL_TEXTURE_BUFFER, texCoordRampBufferId [TEXCOORD_RAMP_KEYS]);
 		glBufferData (GL_TEXTURE_BUFFER, texCoordKeysArray .size () * sizeof (float), texCoordKeysArray .data (), GL_STATIC_COPY);
@@ -713,7 +719,7 @@ ParticleSystem::set_texCoord ()
 		{
 			static constexpr size_t numVertices = 4;
 
-			texCoord .resize (texCoordKey () .size () * numVertices, Vector4f (0, 0, 0, 1));
+			texCoord .resize (size * numVertices);
 
 			for (size_t n = 0, size = texCoordKey () .size () * numVertices; n < size; n += numVertices)
 			{
@@ -727,7 +733,7 @@ ParticleSystem::set_texCoord ()
 		}
 		else
 		{
-			texCoord .resize (texCoordKey () .size () * numVertices, Vector4f (0, 0, 0, 1));
+			texCoord .resize (size * numVertices);
 			texCoordValuesArray = std::move (texCoord);
 		}
 
@@ -822,18 +828,24 @@ ParticleSystem::set_transform_shader ()
 	vertexPart -> url () = emitterNode -> getShaderUrl ();
 	vertexPart -> setup ();
 
+	// Transform shader
+
 	transformShader = new ComposedShader (getExecutionContext ());
 	transformShader -> addUserDefinedField (inputOutput, "deltaTime",         new SFFloat ());
 	transformShader -> addUserDefinedField (inputOutput, "particleLifetime",  new SFFloat ());
 	transformShader -> addUserDefinedField (inputOutput, "lifetimeVariation", new SFFloat ());
 
-	transformShader -> addUserDefinedField (inputOutput, "position",          new SFVec3f ());
-	transformShader -> addUserDefinedField (inputOutput, "direction",         new SFVec3f ());
-	transformShader -> addUserDefinedField (inputOutput, "speed",             new SFFloat ());
-	transformShader -> addUserDefinedField (inputOutput, "variation",         new SFFloat ());
+	// Emitter
+
+	emitterNode -> addShaderFields (transformShader);
+
+	// Forces
+
 	transformShader -> addUserDefinedField (inputOutput, "velocity",          new MFVec3f ());
 	transformShader -> addUserDefinedField (inputOutput, "turbulence",        new MFFloat ());
 	transformShader -> addUserDefinedField (inputOutput, "numForces",         new SFInt32 ());
+
+	// Particle map
 
 	transformShader -> addUserDefinedField (inputOutput, "modelViewMatrix",   new SFMatrix4f ());
 	transformShader -> addUserDefinedField (inputOutput, "stride",            new SFInt32 (sizeof (Particle) / sizeof (float)));
@@ -841,13 +853,19 @@ ParticleSystem::set_transform_shader ()
 	transformShader -> addUserDefinedField (inputOutput, "lifetimeOffset",    new SFInt32 (offsetof (Particle, lifetime) / sizeof (float)));
 	transformShader -> addUserDefinedField (inputOutput, "positionOffset",    new SFInt32 (offsetof (Particle, position) / sizeof (float)));
 	transformShader -> addUserDefinedField (inputOutput, "velocityOffset",    new SFInt32 (offsetof (Particle, velocity) / sizeof (float)));
-	//transformShader -> addUserDefinedField (inputOutput, "colorOffset",       new SFInt32 (offsetof (Particle, color) / sizeof (float)));
+	//transformShader -> addUserDefinedField (inputOutput, "colorOffset",     new SFInt32 (offsetof (Particle, color) / sizeof (float)));
 	transformShader -> addUserDefinedField (inputOutput, "elapsedTimeOffset", new SFInt32 (offsetof (Particle, elapsedTime) / sizeof (float)));
 	transformShader -> addUserDefinedField (inputOutput, "distanceOffset",    new SFInt32 (offsetof (Particle, distance) / sizeof (float)));
 
+	// Color ramp
+
 	transformShader -> addUserDefinedField (inputOutput, "numColors",         new SFInt32 ());
 
+	// Sort algorithm
+
 	sortAlgorithm -> setup (transformShader);
+
+	// Setup
 
 	transformShader -> language () = "GLSL";
 	transformShader -> parts () .emplace_back (vertexPart);
@@ -862,6 +880,9 @@ ParticleSystem::set_transform_shader ()
 																	 });
 
 	transformShader -> setup ();
+
+	// Color ramp
+
 	transformShader -> setTextureBuffer ("particleMap",  particleMapId);
 	transformShader -> setTextureBuffer ("colorKeyMap",  colorRampMapId [COLOR_RAMP_KEYS]);
 	transformShader -> setTextureBuffer ("colorRampMap", colorRampMapId [COLOR_RAMP_VALUES]);

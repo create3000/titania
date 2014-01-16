@@ -1,3 +1,33 @@
+2014-01-16  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-x3d.cproj:
+	* Loader.cpp:
+	* Color.h:
+	* Normal.h:
+	* ColorRGBA.h:
+	* Coordinate.h:
+	* X3DColorNode.h:
+	* CoordinateDouble.h:
+	* X3DNormalNode.h:
+	* GeoCoordinate.h:
+	* ConeEmitter.vs:
+	* TextureCoordinate.h:
+	* X3DCoordinateNode.h:
+	* ConeEmitter.h:
+	* PointEmitter.h:
+	* PointEmitter.vs:
+	* ConeEmitter.cpp:
+	* PointEmitter.cpp:
+	* TextureCoordinate3D.h:
+	* TextureCoordinate4D.h:
+	* MultiTextureCoordinate.h:
+	* ParticleSystem.cpp:
+	* X3DTextureCoordinateNode.h:
+	* TextureCoordinateGenerator.h:
+	* X3DParticleEmitterNode.h:
+	* X3DParticleEmitterNode.cpp:
+	* X3DParticleEmitterNode.h: 
+
 2014-01-15  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* libtitania-x3d.cproj:

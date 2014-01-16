@@ -61,9 +61,9 @@ const std::string ConeEmitter::typeName       = "ConeEmitter";
 const std::string ConeEmitter::containerField = "emitter";
 
 ConeEmitter::Fields::Fields () :
-	angle (new SFFloat (0.785398)),
+	 position (new SFVec3f ()),
 	direction (new SFVec3f (0, 1, 0)),
-	position (new SFVec3f ())
+	    angle (new SFFloat (0.785398))
 { }
 
 ConeEmitter::ConeEmitter (X3DExecutionContext* const executionContext) :
@@ -72,13 +72,13 @@ ConeEmitter::ConeEmitter (X3DExecutionContext* const executionContext) :
 	                fields ()
 {
 	addField (inputOutput,    "metadata",    metadata ());
+	addField (inputOutput,    "position",    position ());
+	addField (inputOutput,    "direction",   direction ());
+	addField (inputOutput,    "angle",       angle ());
 	addField (inputOutput,    "speed",       speed ());
 	addField (inputOutput,    "variation",   variation ());
 	addField (initializeOnly, "mass",        mass ());
 	addField (initializeOnly, "surfaceArea", surfaceArea ());
-	addField (inputOutput,    "angle",       angle ());
-	addField (inputOutput,    "direction",   direction ());
-	addField (inputOutput,    "position",    position ());
 }
 
 X3DBaseNode*
@@ -90,7 +90,27 @@ ConeEmitter::create (X3DExecutionContext* const executionContext) const
 MFString
 ConeEmitter::getShaderUrl () const
 {
-	return { get_shader ("ParticleSystems/PointEmitter.vs") .str () };
+	return { get_shader ("ParticleSystems/ConeEmitter.vs") .str () };
+}
+
+void
+ConeEmitter::addShaderFields (const X3DSFNode <ComposedShader> & shader) const
+{
+	X3DParticleEmitterNode::addShaderFields (shader);
+
+	shader -> addUserDefinedField (inputOutput, "position",  new SFVec3f ());
+	shader -> addUserDefinedField (inputOutput, "direction", new SFVec3f ());
+	shader -> addUserDefinedField (inputOutput, "angle",     new SFFloat ());
+}
+
+void
+ConeEmitter::setShaderFields (const X3DSFNode <ComposedShader> & shader) const
+{
+	X3DParticleEmitterNode::setShaderFields (shader);
+
+	shader -> setField <SFVec3f> ("position",  position (), true);
+	shader -> setField <SFVec3f> ("direction", normalize (direction () .getValue ()), true);
+	shader -> setField <SFFloat> ("angle",     clamp <float> (angle (), 0, M_PI), true);
 }
 
 } // X3D

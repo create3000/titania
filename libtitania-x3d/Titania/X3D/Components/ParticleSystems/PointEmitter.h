@@ -113,6 +113,10 @@ public:
 
 	virtual
 	void
+	addShaderFields (const X3DSFNode <ComposedShader> &) const final override;
+
+	virtual
+	void
 	setShaderFields (const X3DSFNode <ComposedShader> &) const final override;
 
 

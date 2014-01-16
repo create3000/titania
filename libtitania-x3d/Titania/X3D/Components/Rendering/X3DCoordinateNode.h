@@ -85,7 +85,7 @@ public:
 	resize (size_t) = 0;
 
 	virtual
-	size_t
+	bool
 	isEmpty () const = 0;
 
 	virtual

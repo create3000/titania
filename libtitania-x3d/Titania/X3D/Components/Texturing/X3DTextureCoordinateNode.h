@@ -100,6 +100,14 @@ public:
 	void
 	disable (int32_t) const = 0;
 
+	virtual
+	bool
+	isEmpty () const = 0;
+
+	virtual
+	size_t
+	getSize () const = 0;
+
 
 protected:
 

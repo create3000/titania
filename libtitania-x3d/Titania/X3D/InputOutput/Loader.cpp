@@ -245,7 +245,7 @@ throw (Error <INVALID_URL>,
 
 		if (istream)
 		{
-			if (worldURL .scheme () not_eq "data")
+			if (istream .url () .scheme () not_eq "data")
 			{
 				worldURL = istream .url ();
 
