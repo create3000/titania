@@ -33,12 +33,12 @@ out To
 }
 to;
 
-#pragma X3D include "ParticleMap.h"
-#pragma X3D include "Math.h"
-#pragma X3D include "Random.h"
-#pragma X3D include "Quaternion.h"
-#pragma X3D include "Color.h"
-#pragma X3D include "OddEvenMergeSort.h"
+#pragma X3D include "Bits/ParticleMap.h"
+#pragma X3D include "Bits/Math.h"
+#pragma X3D include "Bits/Random.h"
+#pragma X3D include "Bits/Quaternion.h"
+#pragma X3D include "Bits/Color.h"
+#pragma X3D include "Bits/OddEvenMergeSort.h"
 
 vec3
 getRandomPosition ();
@@ -47,6 +47,22 @@ vec3
 getRandomVelocity ();
 
 /* main */
+
+float
+getRandomLifetime ()
+{
+	float v = particleLifetime * lifetimeVariation;
+
+	return random1 (max (0.0f, particleLifetime - v), particleLifetime + v);
+}
+
+float
+getRandomSpeed ()
+{
+	float v = speed * variation;
+
+	return random1 (max (0.0f, speed - v), speed + v);
+}
 
 vec3
 getVelocity ()
@@ -57,7 +73,7 @@ getVelocity ()
 	{
 		float speed = length (velocity [i]);
 	
-		if (speed < 1e-6f)
+		if (speed < 1e-7f)
 			continue;
 
 		vec4 rotation = quaternion (vec3 (0.0f, 0.0f, 1.0f), velocity [i]);
@@ -100,7 +116,7 @@ main ()
 
 	if (getFromElapsedTime () > getFromLifetime ())
 	{
-		to .lifetime    = random_variation (particleLifetime, lifetimeVariation);
+		to .lifetime    = getRandomLifetime ();
 		to .position    = getRandomPosition ();
 		to .velocity    = getRandomVelocity ();
 		to .color       = getColor (0.0f, to .lifetime);

@@ -73,9 +73,9 @@ random1 ()
 }
 
 float
-random_variation (float value, float variation)
+random1 (float min, float max)
 {
-	return value + value * variation * random1 ();
+	return min + ((random1 () + 1) / 2) * (max - min);
 }
 
 Vector3f

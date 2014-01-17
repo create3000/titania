@@ -65,9 +65,3 @@ random_normal (in float angle)
 	             cos (theta) * r,
 	             cphi);
 }
-
-float
-random_variation (in float value, in float variation)
-{
-	return value + value * variation * random1 ();
-}

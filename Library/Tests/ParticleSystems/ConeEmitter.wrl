@@ -17,6 +17,7 @@ ParticleSystem {
   particleSize 0.1 0.1
   colorKey [ 0, 0.1, 0.4, 1 ]
   emitter ConeEmitter {
+    direction 1 1 0
     speed 0.1
   }
   colorRamp ColorRGBA {

@@ -48,38 +48,32 @@
  *
  ******************************************************************************/
 
-#include "X3DParticleEmitterNode.h"
+#ifndef __TITANIA_MATH_UTILITY_AREA_H__
+#define __TITANIA_MATH_UTILITY_AREA_H__
+
+#include "../Numbers/Vector3.h"
 
 namespace titania {
-namespace X3D {
+namespace math {
 
-X3DParticleEmitterNode::Fields::Fields () :
-	      speed (new SFFloat ()),
-	  variation (new SFFloat (0.25)),
-	       mass (new SFFloat ()),
-	surfaceArea (new SFFloat ())
-{ }
+// v2
+//  | \
+//  |   \
+//  |     \
+//  |       \
+//  ----------
+// v1         v2
 
-X3DParticleEmitterNode::X3DParticleEmitterNode () :
-	X3DNode (),
-	 fields ()
+///  Returns the area of the triangle with the vertices @a v1, @a v2 and @a v3.
+template <class Type>
+inline
+float
+area (const vector3 <Type> & v1, const vector3 <Type> & v2, const vector3 <Type> & v3)
 {
-	addNodeType (X3DConstants::X3DParticleEmitterNode);
+	return abs (cross ((v2 - v1), (v3 - v1))) / 2;
 }
 
-void
-X3DParticleEmitterNode::addShaderFields (const X3DSFNode <ComposedShader> & shader) const
-{
-	shader -> addUserDefinedField (inputOutput, "speed",     new SFFloat (speed ()));
-	shader -> addUserDefinedField (inputOutput, "variation", new SFFloat (variation ()));
-}
-
-void
-X3DParticleEmitterNode::setShaderFields (const X3DSFNode <ComposedShader> & shader) const
-{
-	shader -> setField <SFFloat> ("speed",     std::max <float> (0, speed ()),     true);
-	shader -> setField <SFFloat> ("variation", std::max <float> (0, variation ()), true);
-}
-
-} // X3D
+} // math
 } // titania
+
+#endif

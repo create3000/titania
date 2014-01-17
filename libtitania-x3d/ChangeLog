@@ -1,5 +1,26 @@
 2014-01-17  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* libtitania-x3d.cproj:
+	* Random.h:
+	* Random.cpp:
+	* Random.h:
+	* ConeEmitter.vs:
+	* PointEmitter.vs:
+	* ConeEmitter.cpp:
+	* Quaternion.h:
+	* PointEmitter.cpp:
+	* ParticleSystem.h:
+	* PolylineEmitter.vs:
+	* ParticleSystem.cpp:
+	* WindPhysicsModel.h:
+	* PolylineEmitter.cpp:
+	* WindPhysicsModel.cpp:
+	* X3DParticleEmitterNode.h:
+	* X3DParticleEmitterNode.cpp:
+	* X3DParticleEmitterNode.h: 
+
+2014-01-17  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* ConeEmitter.vs:
 	* PointEmitter.vs:
 	* PolylineEmitter.vs:

@@ -130,6 +130,11 @@ public:
 
 private:
 
+	///  @name Operations
+
+	float
+	getRandomSpeed () const;
+
 	///  @name Static members
 
 	static const std::string componentName;

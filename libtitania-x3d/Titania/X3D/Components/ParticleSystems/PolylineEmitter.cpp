@@ -180,8 +180,8 @@ PolylineEmitter::addShaderFields (const X3DSFNode <ComposedShader> & shader) con
 {
 	X3DParticleEmitterNode::addShaderFields (shader);
 
-	shader -> addUserDefinedField (inputOutput, "pointEmitter", new SFBool ());
-	shader -> addUserDefinedField (inputOutput, "direction",    new SFVec3f ());
+	shader -> addUserDefinedField (inputOutput, "pointEmitter", new SFBool (pointEmitter));
+	shader -> addUserDefinedField (inputOutput, "direction",    new SFVec3f (normalize (direction () .getValue ())));
 }
 
 void

@@ -394,7 +394,8 @@ private:
 	X3DParticleEmitterNode*              emitterNode;
 	X3DSFNode <X3DColorNode>             colorRampNode;
 	X3DSFNode <X3DTextureCoordinateNode> texCoordRampNode;
-	bool                                 haveColor;
+	size_t                               numColors;
+	size_t                               numTexCoord;
 
 	std::unique_ptr <OddEvenMergeSort> sortAlgorithm;
 

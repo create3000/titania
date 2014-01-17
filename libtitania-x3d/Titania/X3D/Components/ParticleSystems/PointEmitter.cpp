@@ -96,8 +96,8 @@ PointEmitter::addShaderFields (const X3DSFNode <ComposedShader> & shader) const
 {
 	X3DParticleEmitterNode::addShaderFields (shader);
 
-	shader -> addUserDefinedField (inputOutput, "position",  new SFVec3f ());
-	shader -> addUserDefinedField (inputOutput, "direction", new SFVec3f ());
+	shader -> addUserDefinedField (inputOutput, "position",  new SFVec3f (position ()));
+	shader -> addUserDefinedField (inputOutput, "direction", new SFVec3f (normalize (direction () .getValue ())));
 }
 
 void

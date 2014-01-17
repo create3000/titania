@@ -4,7 +4,7 @@
 uniform vec3 position;
 uniform vec3 direction;
 
-#pragma X3D include "Bits/X3DParticleEmitterNode.h"
+#pragma X3D include "X3DParticleEmitterNode.h"
 
 /* PointEmitter */
 
@@ -17,7 +17,7 @@ getRandomPosition ()
 vec3
 getRandomVelocity ()
 {
-	float randomSpeed = abs (random_variation (speed, variation));
+	float randomSpeed = getRandomSpeed ();
 
 	if (direction == vec3 (0.0f))
 		return randomSpeed * random_normal ();

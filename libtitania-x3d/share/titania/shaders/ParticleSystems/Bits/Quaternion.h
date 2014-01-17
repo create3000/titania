@@ -9,7 +9,7 @@ quaternion (in vec3 fromVector, in vec3 toVector)
 	vec3 to   = normalize (toVector);
 
 	float cos_angle = dot (from, to);
-	vec3  crossvec  = normalize (cross (from, to));
+	vec3  crossvec  = cross (from, to);
 	float crosslen  = length (crossvec);
 
 	if (crosslen == 0.0f)
@@ -31,6 +31,7 @@ quaternion (in vec3 fromVector, in vec3 toVector)
 	}
 	else
 	{
+		crossvec  = normalize (crossvec);
 		crossvec *= sqrt (abs (1.0f - cos_angle) * 0.5f);
 		return vec4 (crossvec, sqrt (abs (1.0f + cos_angle) * 0.5f));
 	}
