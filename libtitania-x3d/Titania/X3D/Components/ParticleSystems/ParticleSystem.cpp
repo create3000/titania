@@ -886,6 +886,15 @@ ParticleSystem::set_transform_shader ()
 	transformShader -> setTextureBuffer ("particleMap",  particleMapId);
 	transformShader -> setTextureBuffer ("colorKeyMap",  colorRampMapId [COLOR_RAMP_KEYS]);
 	transformShader -> setTextureBuffer ("colorRampMap", colorRampMapId [COLOR_RAMP_VALUES]);
+
+	// Emitter
+
+	emitterNode -> setTextureBuffer (transformShader);
+	
+	//
+
+	//set_color ();
+	//set_texCoord ();
 }
 
 void

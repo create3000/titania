@@ -624,6 +624,7 @@
     <None Include="share\titania\shaders\ParticleSystems\Bits\OddEvenMergeSort.h" />
     <None Include="share\titania\shaders\ParticleSystems\ConeEmitter.vs" />
     <None Include="share\titania\shaders\ParticleSystems\Bits\X3DParticleEmitterNode.h" />
+    <None Include="share\titania\shaders\ParticleSystems\PolylineEmitter.vs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

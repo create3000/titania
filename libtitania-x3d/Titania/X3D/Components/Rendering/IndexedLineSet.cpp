@@ -64,12 +64,12 @@ const std::string IndexedLineSet::containerField = "geometry";
 
 IndexedLineSet::Fields::Fields () :
 	colorPerVertex (new SFBool (true)),
-	colorIndex (new MFInt32 ()),
-	coordIndex (new MFInt32 ()),
-	attrib (new MFNode ()),
-	fogCoord (new SFNode ()),
-	color (new SFNode ()),
-	coord (new SFNode ())
+	    colorIndex (new MFInt32 ()),
+	    coordIndex (new MFInt32 ()),
+	        attrib (new MFNode ()),
+	      fogCoord (new SFNode ()),
+	         color (new SFNode ()),
+	         coord (new SFNode ())
 { }
 
 IndexedLineSet::IndexedLineSet (X3DExecutionContext* const executionContext) :
@@ -115,11 +115,11 @@ IndexedLineSet::isTransparent () const
 	return _color and _color -> isTransparent ();
 }
 
-std::deque <std::deque <size_t>>
+std::deque <std::deque <size_t>> 
 IndexedLineSet::getPolylines () const
 {
-	std::deque <std::deque <size_t>> polylines;
-	std::deque <size_t>              polyline;
+	std::deque <std::deque <size_t>>  polylines;
+	std::deque <size_t>               polyline;
 
 	if (not coordIndex () .empty ())
 	{

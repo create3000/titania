@@ -61,26 +61,32 @@ const std::string PolylineEmitter::typeName       = "PolylineEmitter";
 const std::string PolylineEmitter::containerField = "emitter";
 
 PolylineEmitter::Fields::Fields () :
-	set_coordinate (new SFInt32 ()),
-	coord (new SFNode ()),
-	direction (new SFVec3f (0, 1, 0)),
-	coordIndex (new MFInt32 ({ -1 }))
+	 direction (new SFVec3f (0, 1, 0)),
+	coordIndex (new MFInt32 ({ -1 })),
+	     coord (new SFNode ())
 { }
 
 PolylineEmitter::PolylineEmitter (X3DExecutionContext* const executionContext) :
 	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DParticleEmitterNode (),
-	                fields ()
+	                fields (),
+	         polylineMapId (0),
+	      polylineBufferId (0),
+	           lengthMapId (0),
+	        lengthBufferId (0),
+	             coordNode (),
+	          pointEmitter (false)
 {
 	addField (inputOutput,    "metadata",       metadata ());
+	addField (inputOutput,    "direction",      direction ());
 	addField (inputOutput,    "speed",          speed ());
 	addField (inputOutput,    "variation",      variation ());
 	addField (initializeOnly, "mass",           mass ());
 	addField (initializeOnly, "surfaceArea",    surfaceArea ());
-	addField (inputOnly,      "set_coordinate", set_coordinate ());
+	addField (inputOutput,    "coordIndex",     coordIndex ());
 	addField (inputOutput,    "coord",          coord ());
-	addField (inputOutput,    "direction",      direction ());
-	addField (initializeOnly, "coordIndex",     coordIndex ());
+
+	addChildren (coordNode);
 }
 
 X3DBaseNode*
@@ -89,10 +95,235 @@ PolylineEmitter::create (X3DExecutionContext* const executionContext) const
 	return new PolylineEmitter (executionContext);
 }
 
+void
+PolylineEmitter::initialize ()
+{
+	X3DParticleEmitterNode::initialize ();
+
+	// Polyline map
+
+	glGenTextures (1, &polylineMapId);
+	glGenBuffers  (1, &polylineBufferId);
+
+	glGenTextures (1, &lengthMapId);
+	glGenBuffers  (1, &lengthBufferId);
+
+	// Setup
+
+	coordIndex () .addInterest (this, &PolylineEmitter::set_coordIndex);
+	coordIndex () .addInterest (this, &PolylineEmitter::set_polyline);
+	coord ()      .addInterest (this, &PolylineEmitter::set_coord);
+	coord ()      .addInterest (this, &PolylineEmitter::set_coordIndex);
+	coord ()      .addInterest (this, &PolylineEmitter::set_polyline);
+
+	set_coord ();
+	set_coordIndex ();
+	set_polyline ();
+}
+
+std::deque <std::deque <size_t>> 
+PolylineEmitter::getPolylines () const
+{
+	std::deque <std::deque <size_t>>  polylines;
+	std::deque <size_t>               polyline;
+
+	if (not coordIndex () .empty ())
+	{
+		size_t i = 0;
+
+		for (const auto & index : coordIndex ())
+		{
+			if (index >= 0)
+				// Add vertex.
+				polyline .emplace_back (i);
+
+			else
+			{
+				// Negativ index.
+
+				if (not polyline .empty ())
+				{
+					if (polyline .size () > 1)
+					{
+						// Add polylines.
+						polylines .emplace_back (std::move (polyline));
+					}
+
+					polyline .clear ();
+				}
+			}
+
+			++ i;
+		}
+
+		if (coordIndex () .back () >= 0)
+		{
+			if (not polyline .empty ())
+			{
+				if (polyline .size () > 1)
+					polylines .emplace_back (std::move (polyline));
+			}
+		}
+	}
+
+	return polylines;
+}
+
 MFString
 PolylineEmitter::getShaderUrl () const
 {
-	return { get_shader ("ParticleSystems/PointEmitter.vs") .str () };
+	return { get_shader ("ParticleSystems/PolylineEmitter.vs") .str () };
+}
+
+void
+PolylineEmitter::addShaderFields (const X3DSFNode <ComposedShader> & shader) const
+{
+	X3DParticleEmitterNode::addShaderFields (shader);
+
+	shader -> addUserDefinedField (inputOutput, "pointEmitter", new SFBool ());
+	shader -> addUserDefinedField (inputOutput, "direction",    new SFVec3f ());
+}
+
+void
+PolylineEmitter::setTextureBuffer (const X3DSFNode <ComposedShader> & shader) const
+{
+	shader -> setTextureBuffer ("polylineMap", polylineMapId);
+	shader -> setTextureBuffer ("lengthMap",   lengthMapId);
+}
+
+void
+PolylineEmitter::setShaderFields (const X3DSFNode <ComposedShader> & shader) const
+{
+	X3DParticleEmitterNode::setShaderFields (shader);
+
+	shader -> setField <SFBool>  ("pointEmitter", pointEmitter, true);
+	shader -> setField <SFVec3f> ("direction",    normalize (direction () .getValue ()), true);
+}
+
+void
+PolylineEmitter::set_coordIndex ()
+{
+	if (coordNode)
+	{
+		if (not coordIndex () .empty ())
+		{
+			// Determine number of points and polygons.
+
+			int32_t numPoints = -1;
+
+			for (const auto & index : coordIndex ())
+				numPoints = std::max <int32_t> (numPoints, index);
+
+			++ numPoints;
+
+			// Resize coord .point if to small
+			coordNode -> resize (numPoints);
+		}
+	}
+}
+
+void
+PolylineEmitter::set_coord ()
+{
+	if (coordNode)
+		coordNode -> removeInterest (this, &PolylineEmitter::set_polyline);
+
+	coordNode = coord ();
+
+	if (coordNode)
+		coordNode -> addInterest (this, &PolylineEmitter::set_polyline);
+}
+
+void
+PolylineEmitter::set_polyline ()
+{
+	auto polylines = std::move (getPolylines ());	
+	
+	if (polylines .empty ())
+	{
+		pointEmitter = true;
+
+		glBindBuffer (GL_TEXTURE_BUFFER, polylineBufferId);
+		glBufferData (GL_TEXTURE_BUFFER, 0, 0, GL_STATIC_COPY);
+
+		glBindBuffer (GL_TEXTURE_BUFFER, lengthBufferId);
+		glBufferData (GL_TEXTURE_BUFFER, 0, 0, GL_STATIC_COPY);
+	}
+	else
+	{
+		pointEmitter = false;
+		
+		// Polyline map
+
+		std::vector <Vector3f> polylineArray;
+
+		for (const auto polyline : polylines)
+		{
+			// Create two vertices for each line.
+
+			for (size_t line = 0, end = polyline .size () - 1; line < end; ++ line)
+			{
+				for (size_t index = line, end = line + 2; index < end; ++ index)
+				{
+					auto i = polyline [index];
+
+					coordNode -> addVertex (polylineArray, coordIndex () [i]);
+				}
+			}
+		}
+
+		glBindBuffer (GL_TEXTURE_BUFFER, polylineBufferId);
+		glBufferData (GL_TEXTURE_BUFFER, polylineArray .size () * sizeof (Vector3f), polylineArray .data (), GL_STATIC_COPY);
+
+		// Length map
+
+		float length = 0;
+		std::vector <float> lengthArray (1);
+		
+		for (size_t i = 0, size = polylineArray .size (); i < size; i += 2)
+		{
+			length += abs (polylineArray [i + 1] - polylineArray [i]);
+			lengthArray .emplace_back (length);
+		}
+
+		glBindBuffer (GL_TEXTURE_BUFFER, lengthBufferId);
+		glBufferData (GL_TEXTURE_BUFFER, lengthArray .size () * sizeof (float), lengthArray .data (), GL_STATIC_COPY);
+	}
+
+	// Update textures
+
+	glBindTexture (GL_TEXTURE_BUFFER, polylineMapId);
+	glTexBuffer (GL_TEXTURE_BUFFER, GL_RGB32F, polylineBufferId);
+
+	glBindTexture (GL_TEXTURE_BUFFER, lengthMapId);
+	glTexBuffer (GL_TEXTURE_BUFFER, GL_R32F, lengthBufferId);
+
+	glBindTexture (GL_TEXTURE_BUFFER, 0);
+	glBindBuffer (GL_TEXTURE_BUFFER, 0);
+}
+
+void
+PolylineEmitter::dispose ()
+{
+	coordNode .dispose ();
+
+	// Polyline map
+
+	if (polylineMapId)
+		glDeleteTextures (1, &polylineMapId);
+
+	if (polylineBufferId)
+		glDeleteBuffers (1, &polylineBufferId);
+
+	if (lengthMapId)
+		glDeleteTextures (1, &lengthMapId);
+
+	if (lengthBufferId)
+		glDeleteBuffers (1, &lengthBufferId);
+
+	// Dispose base
+
+	X3DParticleEmitterNode::dispose ();
 }
 
 } // X3D

@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_COMPONENTS_PARTICLE_SYSTEMS_POLYLINE_EMITTER_H__
 
 #include "../ParticleSystems/X3DParticleEmitterNode.h"
+#include "../Rendering/X3DCoordinateNode.h"
 
 namespace titania {
 namespace X3D {
@@ -89,22 +90,6 @@ public:
 
 	///  @name Fields
 
-	SFInt32 &
-	set_coordinate ()
-	{ return *fields .set_coordinate; }
-
-	const SFInt32 &
-	set_coordinate () const
-	{ return *fields .set_coordinate; }
-
-	SFNode &
-	coord ()
-	{ return *fields .coord; }
-
-	const SFNode &
-	coord () const
-	{ return *fields .coord; }
-
 	SFVec3f &
 	direction ()
 	{ return *fields .direction; }
@@ -121,14 +106,62 @@ public:
 	coordIndex () const
 	{ return *fields .coordIndex; }
 
+	SFNode &
+	coord ()
+	{ return *fields .coord; }
+
+	const SFNode &
+	coord () const
+	{ return *fields .coord; }
+
 	///  @name Operations
 
 	virtual
 	MFString
 	getShaderUrl () const final override;
 
+	virtual
+	void
+	addShaderFields (const X3DSFNode <ComposedShader> &) const final override;
+
+	virtual
+	void
+	setTextureBuffer (const X3DSFNode <ComposedShader> &) const final override;
+
+	virtual
+	void
+	setShaderFields (const X3DSFNode <ComposedShader> &) const final override;
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override;
+
 
 private:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+	///  @name Operations
+
+	std::deque <std::deque <size_t>> 
+	getPolylines () const;
+
+	///  @name Event handlers
+
+	void
+	set_coordIndex ();
+
+	void
+	set_coord ();
+
+	void
+	set_polyline ();
 
 	///  @name Static members
 
@@ -142,13 +175,19 @@ private:
 	{
 		Fields ();
 
-		SFInt32* const set_coordinate;
-		SFNode* const coord;
 		SFVec3f* const direction;
 		MFInt32* const coordIndex;
+		SFNode* const coord;
 	};
 
 	Fields fields;
+
+	GLuint                        polylineMapId;
+	GLuint                        polylineBufferId;
+	GLuint                        lengthMapId;
+	GLuint                        lengthBufferId;
+	X3DSFNode <X3DCoordinateNode> coordNode;
+	bool                          pointEmitter;
 
 };
 
