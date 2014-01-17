@@ -32,3 +32,93 @@ out To
 	float distance;
 }
 to;
+
+#pragma X3D include "ParticleMap.h"
+#pragma X3D include "Math.h"
+#pragma X3D include "Random.h"
+#pragma X3D include "Quaternion.h"
+#pragma X3D include "Color.h"
+#pragma X3D include "OddEvenMergeSort.h"
+
+vec3
+getRandomPosition ();
+
+vec3
+getRandomVelocity ();
+
+/* main */
+
+vec3
+getVelocity ()
+{
+	vec3 v = getFromVelocity ();
+
+	for (int i = 0; i < numForces; ++ i)
+	{
+		float speed = length (velocity [i]);
+	
+		if (speed < 1e-6f)
+			continue;
+
+		vec4 rotation = quaternion (vec3 (0.0f, 0.0f, 1.0f), velocity [i]);
+		vec3 normal   = multVec (rotation, random_normal (turbulence [i]));
+		v += normal * speed;
+	}
+
+	return v;
+}
+
+vec4
+getColorValue (in int index)
+{
+	return texelFetch (colorRampMap, index);
+}
+
+vec4
+getColor (in float elapsedTime, in float lifetime)
+{
+	if (numColors == 0)
+		return vec4 (1.0f);
+
+	float fraction = elapsedTime / lifetime;
+
+	int   index0 = 0;
+	int   index1 = 0;
+	float weight = 0.0f;
+
+	interpolate (colorKeyMap, fraction, index0, index1, weight);
+
+	return clerp (getColorValue (index0), getColorValue (index1), weight);
+}
+
+void
+main ()
+{
+	setParticleIndex (odd_even_merge_sort (gl_VertexID));
+
+	srand (getFromSeed () + gl_VertexID);
+
+	if (getFromElapsedTime () > getFromLifetime ())
+	{
+		to .lifetime    = random_variation (particleLifetime, lifetimeVariation);
+		to .position    = getRandomPosition ();
+		to .velocity    = getRandomVelocity ();
+		to .color       = getColor (0.0f, to .lifetime);
+		to .elapsedTime = 0.0f;
+		to .distance    = getDistance (to .position);
+		to .seed        = srand ();
+	}
+	else
+	{
+		vec3  velocity    = getVelocity ();
+		float elapsedTime = getFromElapsedTime () + deltaTime;
+
+		to .lifetime    = getFromLifetime ();
+		to .position    = getFromPosition () + velocity * deltaTime;
+		to .velocity    = velocity;
+		to .color       = getColor (elapsedTime, to .lifetime);
+		to .elapsedTime = elapsedTime;
+		to .distance    = getDistance (to .position);
+		to .seed        = srand ();
+	}
+}

@@ -226,12 +226,18 @@ void
 PolylineEmitter::set_coord ()
 {
 	if (coordNode)
+	{
+		coordNode -> removeInterest (this, &PolylineEmitter::set_coordIndex);
 		coordNode -> removeInterest (this, &PolylineEmitter::set_polyline);
+	}
 
 	coordNode = coord ();
 
 	if (coordNode)
+	{
+		coordNode -> addInterest (this, &PolylineEmitter::set_coordIndex);
 		coordNode -> addInterest (this, &PolylineEmitter::set_polyline);
+	}
 }
 
 void
