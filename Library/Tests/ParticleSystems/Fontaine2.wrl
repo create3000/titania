@@ -1,0 +1,61 @@
+#X3D V3.3 utf8 Titania
+
+DEF Gray Background {
+  skyColor 0.2 0.2 0.2
+}
+
+Viewpoint {
+  description "Viewpoint"
+  position 0 0.6 2
+}
+
+ParticleSystem {
+  geometryType "LINE"
+  maxParticles 10000
+  particleLifetime 1
+  lifetimeVariation 0.1
+  particleSize 0.15 0.2
+  colorKey [ 0, 0.1, 0.4, 1 ]
+  emitter ConeEmitter {
+    angle 0.1
+    speed 5
+    variation 0.01
+    mass 0.01
+    surfaceArea 0.1
+  }
+  physics [
+    ForcePhysicsModel {
+      force 0 -0.098 0
+    }
+    WindPhysicsModel {
+      direction 1 0 0
+      speed 0.45
+      gustiness 1
+      turbulence 0.5
+    }
+  ]
+  colorRamp ColorRGBA {
+    color [ 0 0.38 1 0.1, 0 0.58 1 0.1, 0 0.37 1 0.1, 0 0.1 1 0.1 ]
+  }
+  appearance Appearance {
+    lineProperties LineProperties {
+      linewidthScaleFactor 4
+    }
+  }
+}
+
+DEF IndexedLineSet Transform {
+  children Shape {
+    geometry IndexedLineSet {
+      colorPerVertex FALSE
+      colorIndex [ 0, 1, 2 ]
+      coordIndex [ 0, 1, -1, 2, 3, -1, 4, 5, -1 ]
+      color Color {
+        color [ 1 0 0, 0 1 0, 0 0 1 ]
+      }
+      coord Coordinate {
+        point [ -1 0 0, 1 0 0, 0 -1 0, 0 1 0, 0 0 -1, 0 0 1 ]
+      }
+    }
+  }
+}

@@ -606,7 +606,7 @@ ParticleSystem::set_colorRamp ()
 	if (colorRampNode)
 		colorRampNode -> removeInterest (this, &ParticleSystem::set_color);
 
-	colorRampNode = colorRamp ();
+	colorRampNode = x3d_cast <X3DColorNode*> (colorRamp ());
 
 	if (colorRampNode)
 		colorRampNode -> addInterest (this, &ParticleSystem::set_color);
@@ -678,7 +678,7 @@ ParticleSystem::set_texCoordRamp ()
 	if (texCoordRampNode)
 		texCoordRampNode -> removeInterest (this, &ParticleSystem::set_texCoord);
 
-	texCoordRampNode = texCoordRamp ();
+	texCoordRampNode = x3d_cast <X3DTextureCoordinateNode*> (texCoordRamp ());
 
 	if (texCoordRampNode)
 		texCoordRampNode -> addInterest (this, &ParticleSystem::set_texCoord);

@@ -244,6 +244,17 @@ typedef math::sphere3 <float>    Sphere3f;
 
 #define __COUT__ (std::cout << "########## " __FILE__ << ":" << __LINE__ << ": in function '" << __func__ << "': ")
 
+
+float
+random1 ()
+{
+	static std::uniform_real_distribution <float>  uniform_real_distribution (0, 1);
+	static std::default_random_engine              random_engine;
+
+	return uniform_real_distribution (random_engine);
+}
+
+
 int
 main (int argc, char** argv)
 {
@@ -252,17 +263,29 @@ main (int argc, char** argv)
 	#ifdef _GLIBCXX_PARALLEL
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
-	
-	std::vector <float> array (100000);
-	
-	for (auto & value : array)
-		value = rand ();
 
-	double t0 = chrono::now ();
+
+	Vector3f normal1 (-1, 1, 0);
+	Vector3f normal2 (1, 1, 0);
+	Vector3f normal3 (0, 1, -1);
 	
-	std::sort (array .begin (), array .end ());
-	
-	std::clog << chrono::now () - t0 << std::endl;
+	normal1 .normalize ();
+	normal2 .normalize ();
+	normal3 .normalize ();
+
+	float u = random1 ();
+	float v = random1 ();
+
+	if (u + v > 1.0f)
+	{
+		u = 1.0f - u;
+		v = 1.0f - v;
+	}
+
+	Vector3f direction = (1 - u - v) * normal1 + u * normal2 + v * normal3;
+
+	std::clog << random1 () << std::endl;
+	std::clog << abs (direction) << std::endl;
 
 	std::clog << "Function main done." << std::endl;
 	exit (0);

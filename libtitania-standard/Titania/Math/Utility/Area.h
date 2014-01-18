@@ -57,10 +57,10 @@ namespace titania {
 namespace math {
 
 // v2
-//  | \
-//  |   \
-//  |     \
-//  |       \
+//  |
+//  |
+//  |
+//  |
 //  ----------
 // v1         v2
 

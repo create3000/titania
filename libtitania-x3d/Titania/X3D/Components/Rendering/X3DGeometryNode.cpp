@@ -86,9 +86,9 @@ X3DGeometryNode::setup ()
 void
 X3DGeometryNode::eventsProcessed ()
 {
-	X3DNode::eventsProcessed ();
-
 	update ();
+
+	X3DNode::eventsProcessed ();
 }
 
 const Box3f
@@ -200,14 +200,16 @@ X3DGeometryNode::intersect (const Line3f & line, size_t i1, size_t i2, size_t i3
 
 	if (line .intersect (vertices [i1], vertices [i2], vertices [i3], u, v, t))
 	{
+		float t = 1 - u - v;
+	
 		Vector4f texCoord (0, 0, 0, 1);
 		size_t   texCoordSize = texCoords .empty () ? 0 : texCoords [0] .size (); // LineGeometry doesn't have texCoords
 
 		if (i1 < texCoordSize)
-			texCoord = (1 - u - v) * texCoords [0] [i1] + u * texCoords [0] [i2] + v * texCoords [0] [i3];
-		
-		Vector3f normal = (1 - u - v) * normals  [i1] + u * normals  [i2] + v * normals  [i3];
-		Vector3f point  = (1 - u - v) * vertices [i1] + u * vertices [i2] + v * vertices [i3];
+			texCoord = t * texCoords [0] [i1] + u * texCoords [0] [i2] + v * texCoords [0] [i3];
+
+		Vector3f normal = normalize (t * normals  [i1] + u * normals  [i2] + v * normals  [i3]);
+		Vector3f point  = t * vertices [i1] + u * vertices [i2] + v * vertices [i3];
 
 		if (isClipped (point, modelViewMatrix))
 			return false;
@@ -315,6 +317,89 @@ X3DGeometryNode::intersect (const Sphere3f & sphere, const Matrix4f & matrix, co
 	}
 
 	return false;
+}
+
+void
+X3DGeometryNode::triangulate (std::vector <Color4f> & _colors, TexCoordArray & _texCoords, std::vector <Vector3f> & _normals, std::vector <Vector3f> & _vertices) const
+{
+	size_t first = 0;
+
+	for (const auto & element : elements)
+	{
+		switch (element .vertexMode)
+		{
+			case GL_TRIANGLES:
+			{
+				for (size_t i = first, size = first + element .count; i < size; i += 3)
+				{
+					triangulate (i, i + 1, i + 2, _colors, _texCoords, _normals, _vertices);
+				}
+
+				break;
+			}
+			case GL_QUADS:
+			{
+				for (size_t i = first, size = first + element .count; i < size; i += 4)
+				{
+					triangulate (i, i + 1, i + 2, _colors, _texCoords, _normals, _vertices);
+
+					triangulate (i, i + 2, i + 3, _colors, _texCoords, _normals, _vertices);
+				}
+
+				break;
+			}
+			case GL_QUAD_STRIP:
+			{
+				for (size_t i = first, size = first + element .count - 2; i < size; i += 4)
+				{
+					triangulate (i, i + 1, i + 2, _colors, _texCoords, _normals, _vertices);
+
+					triangulate (i + 1, i + 3, i + 2, _colors, _texCoords, _normals, _vertices);
+				}
+
+				break;
+			}
+			case GL_POLYGON:
+			{
+				for (int32_t i = first + 1, size = first + element .count - 1; i < size; ++ i)
+				{
+					triangulate (first, i, i + 1, _colors, _texCoords, _normals, _vertices);
+				}
+
+				break;
+			}
+			default:
+				break;
+		}
+
+		first += element .count;
+	}
+}
+
+void
+X3DGeometryNode::triangulate (size_t i1, size_t i2, size_t i3, std::vector <Color4f> & _colors, TexCoordArray & _texCoords, std::vector <Vector3f> & _normals, std::vector <Vector3f> & _vertices) const
+{
+	if (not colors .empty ())
+	{
+		_colors .emplace_back (colors [i1]);
+		_colors .emplace_back (colors [i2]);
+		_colors .emplace_back (colors [i3]);
+	}
+	
+	for (size_t t = 0, size = texCoords .size (); t < size; ++ t)
+	{
+		_texCoords [t] .emplace_back (texCoords [t] [i1]);
+		_texCoords [t] .emplace_back (texCoords [t] [i2]);
+		_texCoords [t] .emplace_back (texCoords [t] [i3]);
+	}
+
+	_normals .emplace_back (normals [i1]);
+	_normals .emplace_back (normals [i2]);
+	_normals .emplace_back (normals [i3]);
+
+	_vertices .emplace_back (vertices [i1]);
+	_vertices .emplace_back (vertices [i2]);
+	_vertices .emplace_back (vertices [i3]);
 }
 
 void

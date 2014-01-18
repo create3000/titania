@@ -2378,6 +2378,7 @@
     <None Include="Tests\ParticleSystems\Fontaine.wrl" />
     <None Include="Tests\ParticleSystems\Smoke.wrl" />
     <None Include="Tests\ParticleSystems\PolylineEmitter.wrl" />
+    <None Include="Tests\ParticleSystems\Fontaine2.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

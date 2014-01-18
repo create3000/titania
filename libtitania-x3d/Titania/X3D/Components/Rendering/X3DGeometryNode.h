@@ -89,6 +89,18 @@ public:
 
 	const Box3f
 	getBBox ();
+	
+	bool
+	getSolid () const
+	{ return solid; }
+
+	bool
+	getCCW () const
+	{ return frontFace == GL_CCW; }
+
+	size_t
+	getMultiTexCoords () const
+	{ return texCoords .size (); }
 
 	///  @name Operations
 
@@ -97,6 +109,9 @@ public:
 
 	bool
 	intersect (const Sphere3f &, const Matrix4f &, const CollectableObjectArray &) const;
+
+	void
+	triangulate (std::vector <Color4f> &, TexCoordArray &, std::vector <Vector3f> &, std::vector <Vector3f> &) const;
 
 	virtual
 	void
@@ -217,6 +232,9 @@ private:
 
 	bool
 	isClipped (const Vector3f &, const Matrix4f &, const CollectableObjectArray &) const;
+
+	void
+	triangulate (size_t, size_t, size_t, std::vector <Color4f> &, TexCoordArray &, std::vector <Vector3f> &, std::vector <Vector3f> &) const;
 
 	void
 	clear ();

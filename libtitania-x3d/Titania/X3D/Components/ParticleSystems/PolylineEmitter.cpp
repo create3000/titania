@@ -51,6 +51,7 @@
 #include "PolylineEmitter.h"
 
 #include "../../Bits/config.h"
+#include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -231,7 +232,7 @@ PolylineEmitter::set_coord ()
 		coordNode -> removeInterest (this, &PolylineEmitter::set_polyline);
 	}
 
-	coordNode = coord ();
+	coordNode = x3d_cast <X3DCoordinateNode*> (coord ());
 
 	if (coordNode)
 	{

@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_COMPONENTS_PARTICLE_SYSTEMS_SURFACE_EMITTER_H__
 
 #include "../ParticleSystems/X3DParticleEmitterNode.h"
+#include "../Rendering/X3DGeometryNode.h"
 
 namespace titania {
 namespace X3D {
@@ -89,22 +90,6 @@ public:
 
 	///  @name Fields
 
-	SFInt32 &
-	set_coordinate ()
-	{ return *fields .set_coordinate; }
-
-	const SFInt32 &
-	set_coordinate () const
-	{ return *fields .set_coordinate; }
-
-	MFInt32 &
-	coordIndex ()
-	{ return *fields .coordIndex; }
-
-	const MFInt32 &
-	coordIndex () const
-	{ return *fields .coordIndex; }
-
 	SFNode &
 	surface ()
 	{ return *fields .surface; }
@@ -119,8 +104,40 @@ public:
 	MFString
 	getShaderUrl () const final override;
 
+	virtual
+	void
+	addShaderFields (const X3DSFNode <ComposedShader> &) const final override;
+
+	virtual
+	void
+	setTextureBuffer (const X3DSFNode <ComposedShader> &) const final override;
+
+	virtual
+	void
+	setShaderFields (const X3DSFNode <ComposedShader> &) const final override;
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override;
+
 
 private:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+	///  @name Event handlers
+
+	void
+	set_surface ();
+	
+	void
+	set_geometry ();
 
 	///  @name Static members
 
@@ -134,12 +151,20 @@ private:
 	{
 		Fields ();
 
-		SFInt32* const set_coordinate;
-		MFInt32* const coordIndex;
 		SFNode* const surface;
 	};
 
 	Fields fields;
+
+	GLuint                      normalMapId;
+	GLuint                      normalBufferId;
+	GLuint                      surfaceMapId;
+	GLuint                      surfaceBufferId;
+	GLuint                      surfaceAreaMapId;
+	GLuint                      surfaceAreaBufferId;
+	X3DSFNode <X3DGeometryNode> surfaceNode;
+	bool                        pointEmitter;
+	bool                        solid;
 
 };
 
