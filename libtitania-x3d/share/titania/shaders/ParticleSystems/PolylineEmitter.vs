@@ -10,27 +10,34 @@ uniform samplerBuffer lengthMap;
 
 /* PolylineEmitter */
 
+ivec2
+random_line (in samplerBuffer lengthMap, inout float weight)
+{
+	int numLength = textureSize (lengthMap);
+
+	float fraction = random1 (0, texelFetch (lengthMap, numLength - 1) .x);
+
+	int index0 = 0;
+	int index1 = 0;
+
+	interpolate (lengthMap, fraction, index0, index1, weight);
+
+	index0 *= 2;
+	
+	return ivec2 (index0, index0 + 1);
+}
+
 vec3
 getRandomPosition ()
 {
 	if (pointEmitter == 1)
 		return vec3 (0.0f);
 
-	int numLength = textureSize (lengthMap);
-
-	float fraction = random1 (0, texelFetch (lengthMap, numLength - 1) .x);
-
-	int   index0 = 0;
-	int   index1 = 0;
 	float weight = 0.0f;
+	ivec2 index  = random_line (lengthMap, weight);
 
-	interpolate (lengthMap, fraction, index0, index1, weight);
-
-	index0 *= 2;
-	index1  = index0 + 1;
-	
-	vec3 vertex1 = texelFetch (polylineMap, index0) .xyz;
-	vec3 vertex2 = texelFetch (polylineMap, index1) .xyz;
+	vec3 vertex1 = texelFetch (polylineMap, index .x) .xyz;
+	vec3 vertex2 = texelFetch (polylineMap, index .y) .xyz;
 
 	return vertex1 + (vertex2 - vertex1) * weight;
 }

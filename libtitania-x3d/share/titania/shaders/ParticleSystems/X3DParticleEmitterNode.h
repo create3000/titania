@@ -36,17 +36,34 @@ to;
 #pragma X3D include "Bits/ParticleMap.h"
 #pragma X3D include "Bits/Math.h"
 #pragma X3D include "Bits/Random.h"
-#pragma X3D include "Bits/Quaternion.h"
 #pragma X3D include "Bits/Color.h"
 #pragma X3D include "Bits/OddEvenMergeSort.h"
+
+ivec3
+random_triangle (in samplerBuffer surfaceAreaMap)
+{
+	int numSurfaceAreas = textureSize (surfaceAreaMap);
+
+	float fraction = random1 (0, texelFetch (surfaceAreaMap, numSurfaceAreas - 1) .x);
+
+	int   index0 = 0;
+	int   index1 = 0;
+	float weight = 0.0f;
+
+	interpolate (surfaceAreaMap, fraction, index0, index1, weight);
+
+	index0 *= 3;
+
+	return ivec3 (index0, index0 + 1, index0 + 2);
+}
+
+/* main */
 
 vec3
 getRandomPosition ();
 
 vec3
 getRandomVelocity ();
-
-/* main */
 
 float
 getRandomLifetime ()
@@ -76,9 +93,7 @@ getVelocity ()
 		if (speed < 1e-7f)
 			continue;
 
-		vec4 rotation = quaternion (vec3 (0.0f, 0.0f, 1.0f), velocity [i]);
-		vec3 normal   = multVec (rotation, random_normal (turbulence [i]));
-		v += normal * speed;
+		v += random_normal (velocity [i], turbulence [i]) * speed;
 	}
 
 	return v;

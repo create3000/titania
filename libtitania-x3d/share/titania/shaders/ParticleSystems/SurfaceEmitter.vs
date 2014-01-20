@@ -11,7 +11,7 @@ uniform samplerBuffer surfaceAreaMap;
 
 /* PolylineEmitter */
 
-vec3 direction = vec3 (0.0f, 1.0f, 0.0f);
+vec3 direction = vec3 (0.0f);
 
 vec3
 getRandomPosition ()
@@ -19,50 +19,28 @@ getRandomPosition ()
 	if (pointEmitter == 1)
 		return vec3 (0.0f);
 
-	int numSurfaceAreas = textureSize (surfaceAreaMap);
-
-	float fraction = random1 (0, texelFetch (surfaceAreaMap, numSurfaceAreas - 1) .x);
-
-	int   index0 = 0;
-	int   index1 = 0;
-	int   index2 = 0;
-	float weight = 0.0f;
-
-	interpolate (surfaceAreaMap, fraction, index0, index1, weight);
-
-	index0 *= 3;
-	index1  = index0 + 1;
-	index2  = index0 + 2;
+	ivec3 index = random_triangle (surfaceAreaMap);
 	
-	vec3 normal1 = texelFetch (normalMap, index0) .xyz;
-	vec3 normal2 = texelFetch (normalMap, index1) .xyz;
-	vec3 normal3 = texelFetch (normalMap, index2) .xyz;
+	vec3 normal1 = texelFetch (normalMap, index .x) .xyz;
+	vec3 normal2 = texelFetch (normalMap, index .y) .xyz;
+	vec3 normal3 = texelFetch (normalMap, index .z) .xyz;
 
-	vec3 vertex1 = texelFetch (surfaceMap, index0) .xyz;
-	vec3 vertex2 = texelFetch (surfaceMap, index1) .xyz;
-	vec3 vertex3 = texelFetch (surfaceMap, index2) .xyz;
+	vec3 vertex1 = texelFetch (surfaceMap, index .x) .xyz;
+	vec3 vertex2 = texelFetch (surfaceMap, index .y) .xyz;
+	vec3 vertex3 = texelFetch (surfaceMap, index .z) .xyz;
 
 	// Random barycentric coordinates.
 
-	float u = fract (random1 ());
-	float v = fract (random1 ());
-
-	if (u + v > 1.0f)
-	{
-		u = 1.0f - u;
-		v = 1.0f - v;
-	}
-
-	float t = 1 - u - v;
+	vec3 coord = random_barycentric ();
 
 	// Calculate direction and position
 
-	direction = normalize (t * normal1 + u * normal2 + v * normal3);
+	direction = normalize (coord .x * normal1 + coord .y * normal2 + coord .z * normal3);
 
 	if (solid == 0 && random1 () > 0.0f)
 		direction = -direction;
-	
-	return t * vertex1 + u * vertex2 + v * vertex3;
+
+	return coord .x * vertex1 + coord .y * vertex2 + coord .z * vertex3;
 }
 
 vec3

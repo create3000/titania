@@ -163,13 +163,13 @@ SurfaceEmitter::set_geometry ()
 		solid        = surfaceNode -> getSolid ();
 
 		glBindBuffer (GL_TEXTURE_BUFFER, normalBufferId);
-		glBufferData (GL_TEXTURE_BUFFER, normals .size () * sizeof (Vector3f), normals .data (), GL_STATIC_COPY);
+		glBufferData (GL_TEXTURE_BUFFER, normals .size () * sizeof (Vector3f), pointEmitter ? 0 : normals .data (), GL_STATIC_COPY);
 
 		glBindBuffer (GL_TEXTURE_BUFFER, surfaceBufferId);
-		glBufferData (GL_TEXTURE_BUFFER, vertices .size () * sizeof (Vector3f), vertices .data (), GL_STATIC_COPY);
+		glBufferData (GL_TEXTURE_BUFFER, vertices .size () * sizeof (Vector3f), pointEmitter ? 0 : vertices .data (), GL_STATIC_COPY);
 
 		glBindBuffer (GL_TEXTURE_BUFFER, surfaceAreaBufferId);
-		glBufferData (GL_TEXTURE_BUFFER, surfaceAreas .size () * sizeof (float), surfaceAreas .data (), GL_STATIC_COPY);
+		glBufferData (GL_TEXTURE_BUFFER, surfaceAreas .size () * sizeof (float), pointEmitter ? 0 : surfaceAreas .data (), GL_STATIC_COPY);
 	}
 	else
 	{

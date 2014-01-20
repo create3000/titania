@@ -1,0 +1,52 @@
+#X3D V3.3 utf8 Titania
+
+DEF Gray Background {
+  skyColor 0.2 0.2 0.2
+}
+
+Viewpoint {
+  description "Viewpoint"
+  position 0 0 8
+}
+
+ParticleSystem {
+  geometryType "POINT"
+  maxParticles 10000
+  particleLifetime 60
+  lifetimeVariation 0.01
+  particleSize 0.1 0.1
+  colorKey [ 0, 0.1, 0.4, 1 ]
+  emitter VolumeEmitter {
+    direction 0 0 0
+    mass 0.01
+    surfaceArea 0.01
+    coordIndex [ 0, 1, 2, 3, 4, 5, 6, 7, -1, 15, 14, 13, 12, 11, 10, 9, 8, -1, 8, 9, 1, 0, -1, 9, 10, 2, 1, -1, 3, 2, 10, 11, -1, 4, 3, 11, 12, -1, 12, 13, 5, 4, -1, 6, 5, 13, 14, -1, 7, 6, 14, 15, -1, 0, 7, 15, 8, -1 ]
+    coord Coordinate {
+      point [ -2 1 1, -2 -1 1, 2 -1 1, 2 1 1, 1 1 1, 1 0 1, -1 0 1, -1 1 1, -2 1 -1, -2 -1 -1, 2 -1 -1, 2 1 -1, 1 1 -1, 1 0 -1, -1 0 -1, -1 1 -1 ]
+    }
+  }
+  colorRamp ColorRGBA {
+    color [ 1 0.38 0 1, 1 0.58 0.06 1, 1 0.37 0 1, 1 0.05 0 1 ]
+  }
+  appearance Appearance {
+    lineProperties LineProperties {
+      linewidthScaleFactor 2
+    }
+  }
+}
+
+DEF IndexedLineSet Transform {
+  children Shape {
+    geometry IndexedLineSet {
+      colorPerVertex FALSE
+      colorIndex [ 0, 1, 2 ]
+      coordIndex [ 0, 1, -1, 2, 3, -1, 4, 5, -1 ]
+      color Color {
+        color [ 1 0 0, 0 1 0, 0 0 1 ]
+      }
+      coord Coordinate {
+        point [ -1 0 0, 1 0 0, 0 -1 0, 0 1 0, 0 0 -1, 0 0 1 ]
+      }
+    }
+  }
+}

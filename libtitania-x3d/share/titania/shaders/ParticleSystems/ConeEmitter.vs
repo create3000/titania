@@ -23,8 +23,5 @@ getRandomVelocity ()
 	if (direction == vec3 (0.0f))
 		return randomSpeed * random_normal ();
 
-	vec4 rotation = quaternion (vec3 (0.0f, 0.0f, 1.0f), direction);
-	vec3 normal   = multVec (rotation, random_normal (angle));
-
-	return randomSpeed * normal;
+	return randomSpeed * random_normal (direction, angle);
 }

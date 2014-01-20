@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -50,15 +50,21 @@
 
 #include "Random.h"
 
-#include <random>
 #include <limits>
+#include <random>
+#include <chrono>
 
 namespace titania {
 namespace X3D {
 
-static std::uniform_int_distribution <int32_t> uniform_int_distribution (std::numeric_limits <int32_t>::min ());
-static std::uniform_real_distribution <float>  uniform_real_distribution (-1, 1);
-static std::default_random_engine              random_engine;
+static std::uniform_int_distribution <int32_t>
+uniform_int_distribution (std::numeric_limits <int32_t>::min ());
+
+static std::uniform_real_distribution <float>
+uniform_real_distribution (-1, 1);
+
+static std::default_random_engine
+random_engine (std::chrono::system_clock::now () .time_since_epoch () .count ());
 
 int32_t
 randomi ()

@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_COMPONENTS_PARTICLE_SYSTEMS_VOLUME_EMITTER_H__
 
 #include "../ParticleSystems/X3DParticleEmitterNode.h"
+#include "../Geometry3D/IndexedFaceSet.h"
 
 namespace titania {
 namespace X3D {
@@ -89,21 +90,13 @@ public:
 
 	///  @name Fields
 
-	SFInt32 &
-	set_coordinate ()
-	{ return *fields .set_coordinate; }
+	SFBool &
+	internal ()
+	{ return *fields .internal; }
 
-	const SFInt32 &
-	set_coordinate () const
-	{ return *fields .set_coordinate; }
-
-	SFNode &
-	coord ()
-	{ return *fields .coord; }
-
-	const SFNode &
-	coord () const
-	{ return *fields .coord; }
+	const SFBool &
+	internal () const
+	{ return *fields .internal; }
 
 	SFVec3f &
 	direction ()
@@ -121,13 +114,13 @@ public:
 	coordIndex () const
 	{ return *fields .coordIndex; }
 
-	SFBool &
-	internal ()
-	{ return *fields .internal; }
+	SFNode &
+	coord ()
+	{ return *fields .coord; }
 
-	const SFBool &
-	internal () const
-	{ return *fields .internal; }
+	const SFNode &
+	coord () const
+	{ return *fields .coord; }
 
 	///  @name Operations
 
@@ -135,8 +128,37 @@ public:
 	MFString
 	getShaderUrl () const final override;
 
+	virtual
+	void
+	addShaderFields (const X3DSFNode <ComposedShader> &) const final override;
+
+	virtual
+	void
+	setTextureBuffer (const X3DSFNode <ComposedShader> &) const final override;
+
+	virtual
+	void
+	setShaderFields (const X3DSFNode <ComposedShader> &) const final override;
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override;
+
 
 private:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+	///  @name Event handlers
+
+	void
+	set_geometry ();
 
 	///  @name Static members
 
@@ -150,14 +172,23 @@ private:
 	{
 		Fields ();
 
-		SFInt32* const set_coordinate;
-		SFNode* const coord;
+		SFBool* const internal;
 		SFVec3f* const direction;
 		MFInt32* const coordIndex;
-		SFBool* const internal;
+		SFNode* const coord;
 	};
 
 	Fields fields;
+
+	GLuint                     normalMapId;
+	GLuint                     normalBufferId;
+	GLuint                     surfaceMapId;
+	GLuint                     surfaceBufferId;
+	GLuint                     surfaceAreaMapId;
+	GLuint                     surfaceAreaBufferId;
+	X3DSFNode <IndexedFaceSet> surfaceNode;
+	bool                       pointEmitter;
+	bool                       solid;
 
 };
 

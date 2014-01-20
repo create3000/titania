@@ -53,6 +53,8 @@
 #include "../../Bits/config.h"
 #include "../../Execution/X3DExecutionContext.h"
 
+#include <Titania/Math/Utility/Area.h>
+
 namespace titania {
 namespace X3D {
 
@@ -61,28 +63,37 @@ const std::string VolumeEmitter::typeName       = "VolumeEmitter";
 const std::string VolumeEmitter::containerField = "emitter";
 
 VolumeEmitter::Fields::Fields () :
-	set_coordinate (new SFInt32 ()),
-	coord (new SFNode ()),
-	direction (new SFVec3f (0, 1, 0)),
+	  internal (new SFBool (true)),
+	 direction (new SFVec3f (0, 1, 0)),
 	coordIndex (new MFInt32 ({ -1 })),
-	internal (new SFBool (true))
+	     coord (new SFNode ())
 { }
 
 VolumeEmitter::VolumeEmitter (X3DExecutionContext* const executionContext) :
 	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DParticleEmitterNode (),
-	                fields ()
+	                fields (),
+	           normalMapId (0),
+	        normalBufferId (0),
+	          surfaceMapId (0),
+	       surfaceBufferId (0),
+	      surfaceAreaMapId (0),
+	   surfaceAreaBufferId (0),
+	           surfaceNode (new IndexedFaceSet (getExecutionContext ())),
+	          pointEmitter (false),
+	                 solid (true)
 {
 	addField (inputOutput,    "metadata",       metadata ());
+	addField (initializeOnly, "internal",       internal ());
+	addField (inputOutput,    "direction",      direction ());
 	addField (inputOutput,    "speed",          speed ());
 	addField (inputOutput,    "variation",      variation ());
 	addField (initializeOnly, "mass",           mass ());
 	addField (initializeOnly, "surfaceArea",    surfaceArea ());
-	addField (inputOnly,      "set_coordinate", set_coordinate ());
+	addField (inputOutput,    "coordIndex",     coordIndex ());
 	addField (inputOutput,    "coord",          coord ());
-	addField (inputOutput,    "direction",      direction ());
-	addField (initializeOnly, "coordIndex",     coordIndex ());
-	addField (initializeOnly, "internal",       internal ());
+	
+	addChildren (surfaceNode);
 }
 
 X3DBaseNode*
@@ -91,10 +102,149 @@ VolumeEmitter::create (X3DExecutionContext* const executionContext) const
 	return new VolumeEmitter (executionContext);
 }
 
+void
+VolumeEmitter::initialize ()
+{
+	X3DParticleEmitterNode::initialize ();
+
+	// Surface map
+
+	glGenTextures (1, &normalMapId);
+	glGenBuffers  (1, &normalBufferId);
+
+	glGenTextures (1, &surfaceMapId);
+	glGenBuffers  (1, &surfaceBufferId);
+
+	glGenTextures (1, &surfaceAreaMapId);
+	glGenBuffers  (1, &surfaceAreaBufferId);
+
+	// Setup
+
+	coordIndex () .addInterest (surfaceNode -> coordIndex ());
+	coord ()      .addInterest (surfaceNode -> coord ());
+
+	surfaceNode -> isInternal (true);
+	surfaceNode -> creaseAngle () = 0;
+	surfaceNode -> convex ()      = false;
+	surfaceNode -> coordIndex ()  = coordIndex ();
+	surfaceNode -> coord ()       = coord ();
+	surfaceNode -> addInterest (this, &VolumeEmitter::set_geometry);
+
+	surfaceNode -> setup ();
+
+	set_geometry ();
+}
+
+void
+VolumeEmitter::set_geometry ()
+{
+	// Triangulate
+
+	std::vector <Color4f>  colors;
+	TexCoordArray          texCoords (surfaceNode -> getMultiTexCoords ());
+	std::vector <Vector3f> normals;
+	std::vector <Vector3f> vertices;
+
+	surfaceNode -> triangulate (colors, texCoords, normals, vertices);
+
+	float surfaceArea = 0;
+	std::vector <float> surfaceAreas (1);
+	
+	for (size_t i = 0, size = vertices .size (); i < size; i += 3)
+	{
+		surfaceArea += area (vertices [i], vertices [i + 1], vertices [i + 2]);
+		surfaceAreas .emplace_back (surfaceArea);
+	}
+
+	// Upload
+
+	pointEmitter = vertices .empty ();
+	solid        = surfaceNode -> getSolid ();
+
+	glBindBuffer (GL_TEXTURE_BUFFER, normalBufferId);
+	glBufferData (GL_TEXTURE_BUFFER, normals .size () * sizeof (Vector3f), pointEmitter ? 0 : normals .data (), GL_STATIC_COPY);
+
+	glBindBuffer (GL_TEXTURE_BUFFER, surfaceBufferId);
+	glBufferData (GL_TEXTURE_BUFFER, vertices .size () * sizeof (Vector3f), pointEmitter ? 0 : vertices .data (), GL_STATIC_COPY);
+
+	glBindBuffer (GL_TEXTURE_BUFFER, surfaceAreaBufferId);
+	glBufferData (GL_TEXTURE_BUFFER, surfaceAreas .size () * sizeof (float), pointEmitter ? 0 : surfaceAreas .data (), GL_STATIC_COPY);
+
+	// Update textures
+
+	glBindTexture (GL_TEXTURE_BUFFER, normalMapId);
+	glTexBuffer (GL_TEXTURE_BUFFER, GL_RGB32F, normalBufferId);
+
+	glBindTexture (GL_TEXTURE_BUFFER, surfaceMapId);
+	glTexBuffer (GL_TEXTURE_BUFFER, GL_RGB32F, surfaceBufferId);
+
+	glBindTexture (GL_TEXTURE_BUFFER, surfaceAreaMapId);
+	glTexBuffer (GL_TEXTURE_BUFFER, GL_R32F, surfaceAreaBufferId);
+
+	glBindTexture (GL_TEXTURE_BUFFER, 0);
+	glBindBuffer (GL_TEXTURE_BUFFER, 0);
+}
+
 MFString
 VolumeEmitter::getShaderUrl () const
 {
-	return { get_shader ("ParticleSystems/PointEmitter.vs") .str () };
+	return { get_shader ("ParticleSystems/VolumeEmitter.vs") .str () };
+}
+
+void
+VolumeEmitter::addShaderFields (const X3DSFNode <ComposedShader> & shader) const
+{
+	X3DParticleEmitterNode::addShaderFields (shader);
+
+	shader -> addUserDefinedField (inputOutput, "pointEmitter", new SFBool (pointEmitter));
+	shader -> addUserDefinedField (inputOutput, "direction",    new SFVec3f (normalize (direction () .getValue ())));
+}
+
+void
+VolumeEmitter::setTextureBuffer (const X3DSFNode <ComposedShader> & shader) const
+{
+	shader -> setTextureBuffer ("normalMap",      normalMapId);
+	shader -> setTextureBuffer ("surfaceMap",     surfaceMapId);
+	shader -> setTextureBuffer ("surfaceAreaMap", surfaceAreaMapId);
+}
+
+void
+VolumeEmitter::setShaderFields (const X3DSFNode <ComposedShader> & shader) const
+{
+	X3DParticleEmitterNode::setShaderFields (shader);
+
+	shader -> setField <SFBool>  ("pointEmitter", pointEmitter, true);
+	shader -> setField <SFVec3f> ("direction",    normalize (direction () .getValue ()), true);
+}
+
+void
+VolumeEmitter::dispose ()
+{
+	surfaceNode .dispose ();
+
+	// Surface map
+
+	if (normalMapId)
+		glDeleteTextures (1, &normalMapId);
+
+	if (normalBufferId)
+		glDeleteBuffers (1, &normalBufferId);
+
+	if (surfaceMapId)
+		glDeleteTextures (1, &surfaceMapId);
+
+	if (surfaceBufferId)
+		glDeleteBuffers (1, &surfaceBufferId);
+
+	if (surfaceAreaMapId)
+		glDeleteTextures (1, &surfaceAreaMapId);
+
+	if (surfaceAreaBufferId)
+		glDeleteBuffers (1, &surfaceAreaBufferId);
+
+	// Dispose base
+
+	X3DParticleEmitterNode::dispose ();
 }
 
 } // X3D

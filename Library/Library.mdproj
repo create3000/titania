@@ -2379,6 +2379,13 @@
     <None Include="Tests\ParticleSystems\Smoke.wrl" />
     <None Include="Tests\ParticleSystems\PolylineEmitter.wrl" />
     <None Include="Tests\ParticleSystems\Fontaine2.wrl" />
+    <None Include="Tests\ParticleSystems\Beethoven.wrl" />
+    <None Include="Tests\ParticleSystems\SurfaceEmitter.wrl" />
+    <None Include="Tests\ParticleSystems\snowflake.png" />
+    <None Include="Tests\ParticleSystems\Snow.wrl" />
+    <None Include="Tests\ParticleSystems\BeethovenVolume.wrl" />
+    <None Include="Tests\ParticleSystems\VolumeEmitter.wrl" />
+    <None Include="Tests\ParticleSystems\U-Volume.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
