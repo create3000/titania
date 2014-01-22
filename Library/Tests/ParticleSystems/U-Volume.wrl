@@ -30,7 +30,7 @@ ParticleSystem {
   }
   appearance Appearance {
     lineProperties LineProperties {
-      linewidthScaleFactor 2
+      linewidthScaleFactor 1
     }
   }
 }

@@ -627,6 +627,7 @@
     <None Include="share\titania\shaders\ParticleSystems\X3DParticleEmitterNode.h" />
     <None Include="share\titania\shaders\ParticleSystems\SurfaceEmitter.vs" />
     <None Include="share\titania\shaders\ParticleSystems\VolumeEmitter.vs" />
+    <None Include="share\titania\shaders\ParticleSystems\Bits\TriangleTree.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

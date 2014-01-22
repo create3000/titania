@@ -2386,6 +2386,7 @@
     <None Include="Tests\ParticleSystems\BeethovenVolume.wrl" />
     <None Include="Tests\ParticleSystems\VolumeEmitter.wrl" />
     <None Include="Tests\ParticleSystems\U-Volume.wrl" />
+    <None Include="Tests\ParticleSystems\SphereEmitter.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

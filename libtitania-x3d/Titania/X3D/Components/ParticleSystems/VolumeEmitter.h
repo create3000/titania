@@ -186,6 +186,8 @@ private:
 	GLuint                     surfaceBufferId;
 	GLuint                     surfaceAreaMapId;
 	GLuint                     surfaceAreaBufferId;
+	GLuint                     triangleTreeMapId;
+	GLuint                     triangleTreeBufferId;
 	X3DSFNode <IndexedFaceSet> surfaceNode;
 	bool                       pointEmitter;
 	bool                       solid;

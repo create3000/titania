@@ -127,6 +127,7 @@
     <None Include="Titania\String\naturally_compare.h" />
     <None Include="Titania\Algorithm\IndicesOf.h" />
     <None Include="Titania\Math\Utility\Area.h" />
+    <None Include="Titania\Math\Utility\Types.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />

@@ -1,3 +1,15 @@
+2014-01-22  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-x3d.cproj:
+	* X3DFontStyleNode.cpp:
+	* ScreenFontStyle.cpp:
+	* X3DGeometryNode.cpp:
+	* VolumeEmitter.vs:
+	* VolumeEmitter.h:
+	* VolumeEmitter.cpp:
+	* TriangleTree.h:
+	* X3DNurbsControlCurveNode.cpp: 
+
 2014-01-20  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* libtitania-x3d.cproj:

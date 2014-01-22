@@ -195,7 +195,7 @@ X3DTextGeometry::initialize (Text* const text, const X3DFontStyleNode* const fon
 
 		setBBox (Box3d (Vector3d (min .x (), min .y (), 0),
 		                Vector3d (max .x (), max .y (), 0),
-		                true));
+		                math::min_max_type ()));
 	}
 }
 

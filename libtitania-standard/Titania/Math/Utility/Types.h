@@ -48,39 +48,18 @@
  *
  ******************************************************************************/
 
-#include "X3DNurbsControlCurveNode.h"
+#ifndef __TITANIA_MATH_UTILITY_TYPES_H__
+#define __TITANIA_MATH_UTILITY_TYPES_H__
+
+#include "../Numbers/Vector3.h"
 
 namespace titania {
-namespace X3D {
+namespace math {
 
-X3DNurbsControlCurveNode::Fields::Fields () :
-	controlPoint (new MFVec2d ())
-{ }
+struct iterator_type { };
+struct min_max_type { };
 
-X3DNurbsControlCurveNode::X3DNurbsControlCurveNode () :
-	X3DPropertyNode (),
-	         fields ()
-{
-	addNodeType (X3DConstants::X3DNurbsControlCurveNode);
-}
-
-Box2f
-X3DNurbsControlCurveNode::getBBox () const
-{
-	if (controlPoint () .empty ())
-		return Box2f ();
-
-	Vector2d min = controlPoint () [0];
-	Vector2d max = min;
-
-	for (const auto & point : controlPoint ())
-	{
-		min = math::min (min, point .getValue ());
-		max = math::max (max, point .getValue ());
-	}
-
-	return Box2f (min, max, math::min_max_type ());
-}
-
-} // X3D
+} // math
 } // titania
+
+#endif

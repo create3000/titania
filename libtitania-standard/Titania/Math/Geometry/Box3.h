@@ -56,6 +56,8 @@
 #include "../Geometry/Sphere3.h"
 #include "../Numbers/Matrix4.h"
 #include "../Numbers/Vector3.h"
+#include "../Utility/Types.h"
+#include "../../Utility/Adapter.h"
 #include <array>
 
 namespace titania {
@@ -98,9 +100,28 @@ public:
 
 	///  Constructs a box of min @a min and max @a max.
 	constexpr
-	box3 (const vector3 <Type> & min, const vector3 <Type> & max, bool) :
+	box3 (const vector3 <Type> & min, const vector3 <Type> & max, const min_max_type &) :
 		box3 (max - min, (max + min) / Type (2))
 	{ }
+
+	template <class InputIterator>
+	box3 (const InputIterator & begin, const InputIterator & end, const iterator_type &) :
+		box3 ()
+	{
+		if (begin == end)
+			return;
+
+		vector3 <Type> min = *begin;
+		vector3 <Type> max = min;
+
+		for (const auto & vertex : basic::adapter (begin, end))
+		{
+			min = math::min (min, vertex);
+			max = math::max (max, vertex);
+		}
+
+		*this = box3 (min, max, min_max_type ());
+	}
 
 	///  @name Assignment operator
 
@@ -252,7 +273,7 @@ box3 <Type>::operator += (const box3 <Up> & box)
 	auto rhs_min  = box .center () - rsize1_2;
 	auto rhs_max  = box .center () + rsize1_2;
 
-	return *this = box3 (math::min (lhs_min, rhs_min), math::max (lhs_max, rhs_max), true);
+	return *this = box3 (math::min (lhs_min, rhs_min), math::max (lhs_max, rhs_max), min_max_type ());
 }
 
 template <class Type>

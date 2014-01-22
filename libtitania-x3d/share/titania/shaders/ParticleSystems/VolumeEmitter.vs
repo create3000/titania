@@ -8,6 +8,7 @@ uniform samplerBuffer surfaceMap;
 uniform samplerBuffer surfaceAreaMap;
 
 #pragma X3D include "X3DParticleEmitterNode.h"
+#pragma X3D include "Bits/TriangleTree.h"
 
 /* Line */
 
@@ -104,6 +105,157 @@ distance (in Plane3 plane, in vec3 point)
 	return dot (point, plane .normal) - plane .distanceFromOrigin;
 }
 
+bool
+intersect (in Plane3 plane, in Line3 line, out vec3 point)
+{
+	point = vec3 (0.0f);
+
+	// Check if the line is parallel to the plane.
+	float theta = dot (line .direction, plane .normal);
+
+	// Plane and line are parallel.
+	if (theta == 0.0f)
+		return false;
+
+	// Plane and line are not parallel. The intersection point can be calculated now.
+	float t = (plane .distanceFromOrigin - dot (plane .normal, line .point)) / theta;
+
+	point = line .point + line .direction * t;
+
+	return true;
+}
+
+/* Box3 */
+
+const vec3 box3_normals [5] = vec3 [ ] (
+	vec3 ( 0.0f,  0.0f,  1.0f),
+	vec3 ( 0.0f,  0.0f, -1.0f),
+	vec3 ( 0.0f,  1.0f,  0.0f),
+	vec3 ( 0.0f, -1.0f,  0.0f),
+	vec3 ( 1.0f,  0.0f,  0.0f)
+);
+
+bool
+intersect (in vec3 min, in vec3 max, in Line3 line)
+{
+	vec3 center = (min + max) / 2.0f;
+
+	vec3 points [5] = vec3 [ ] (
+		vec3 (center .x, center .y, max .z), // right
+		vec3 (center .x, center .y, min .z), // left
+
+		vec3 (center .x, max .y, center .z), // top
+		vec3 (center .x, min .y, center .z), // bottom
+
+		vec3 (max .x, center .y, center .z)  // front
+	);
+
+	vec3 intersection = vec3 (0.0f);
+
+	for (int i = 0; i < 5; ++ i)
+	{
+		if (intersect (plane3 (points [i], box3_normals [i]), line, intersection))
+		{
+			switch (i)
+			{
+				case 0:
+				case 1:
+
+					if (intersection .x >= min .x && intersection .x <= max .x &&
+					    intersection .y >= min .y && intersection .y <= max .y)
+						return true;
+
+					break;
+				case 2:
+				case 3:
+
+					if (intersection .x >= min .x && intersection .x <= max .x &&
+					    intersection .z >= min .z && intersection .z <= max .z)
+						return true;
+
+					break;
+				case 4:
+
+					if (intersection .y >= min .y && intersection .y <= max .y &&
+					    intersection .z >= min .z && intersection .z <= max .z)
+						return true;
+
+					break;
+			}
+		}
+	}
+
+	return false;
+}
+
+/*  */
+
+int debug = 0;
+
+int
+getTriangleTreeIntersections (in Line3 line, in samplerBuffer surfaceMap, out vec3 points [32])
+{
+	int current = getTriangleTreeRoot ();
+	int index   = 0;
+	int id      = -1;
+	int stack [32];
+
+	for (int i = 0; i < 32; ++ i)
+		stack [i] = -1;
+
+	while (id >= 0 || current >= 0)
+	{
+		if (current >= 0)
+		{
+			setTriangleTreeIndex (current);
+
+			if (getTriangleTreeType () == TRIANGLE_TREE_NODE)
+			{
+				// Node
+			
+				++ debug;
+
+				if (intersect (getTriangleTreeMin (), getTriangleTreeMax (), line))
+				{
+					stack [++ id] = current;
+
+					current = getTriangleTreeLeft ();
+				}
+				else
+					current = -1;
+			}
+			else
+			{			
+				++ debug;
+
+				// Triangle
+			
+				current = -1;
+
+				int   i = getTriangleTreeLeft ();
+				float u = 0, v = 0;
+
+				vec3 a = texelFetch (surfaceMap, i) .xyz;
+				vec3 b = texelFetch (surfaceMap, i + 1) .xyz;
+				vec3 c = texelFetch (surfaceMap, i + 2) .xyz;
+
+				if (intersect (line, a, b, c, u, v))
+					points [index ++] = (1 - u - v) * a + u * b + v * c;
+			}
+		}
+		else
+		{
+			current = stack [id --];
+
+			setTriangleTreeIndex (current);
+
+			current = getTriangleTreeRight ();
+		}
+	}
+
+	return index;
+}
+
 /* CombSort */
 
 void
@@ -178,7 +330,9 @@ getRandomPosition ()
 	Line3 line = Line3 (point, random_normal (normal, M_PI1_2 * 0.66666));
 
 	vec3 points [32];
-	int  intersections = intersect (line, surfaceMap, points);
+	int  intersections = getTriangleTreeIntersections (line, surfaceMap, points);
+
+	//return vec3 (float (debug) / float (textureSize (surfaceAreaMap) - 1), 0.1f, 0.0f);
 
 	if (intersections == 0)
 		return vec3 (INFINITY);

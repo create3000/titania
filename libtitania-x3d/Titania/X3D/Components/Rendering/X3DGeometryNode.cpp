@@ -103,19 +103,7 @@ X3DGeometryNode::getBBox ()
 Box3f
 X3DGeometryNode::createBBox ()
 {
-	if (vertices .empty ())
-		return Box3f ();
-
-	Vector3f min = vertices [0];
-	Vector3f max = min;
-
-	for (const auto & vertex : vertices)
-	{
-		min = math::min (min, vertex);
-		max = math::max (max, vertex);
-	}
-
-	return Box3f (min, max, true);
+	return Box3f (vertices .begin (), vertices .end (), math::iterator_type ());
 }
 
 void

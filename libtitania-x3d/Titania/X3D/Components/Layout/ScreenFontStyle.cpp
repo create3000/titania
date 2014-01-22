@@ -154,7 +154,7 @@ ScreenText::setTextBounds ()
 
 	text -> origin () = Vector3d (min .x (), max .y (), 0);
 
-	setBBox (Box3d (min, max, true));
+	setBBox (Box3d (min, max, math::min_max_type ()));
 }
 
 void
