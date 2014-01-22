@@ -1,12 +1,16 @@
 #X3D V3.3 utf8 Titania
 
+NavigationInfo {
+  avatarSize [ 0.05, 1.6, 0.75 ]
+}
+
 DEF Gray Background {
   skyColor 0.2 0.2 0.2
 }
 
 Viewpoint {
   description "Viewpoint"
-  position 0 0 2
+  position 0 0.05 0.13
 }
 
 ParticleSystem {
@@ -41,6 +45,57 @@ DEF IndexedLineSet Transform {
       colorPerVertex FALSE
       colorIndex [ 0, 1, 2 ]
       coordIndex [ 0, 1, -1, 2, 3, -1, 4, 5, -1 ]
+      color Color {
+        color [ 1 0 0, 0 1 0, 0 0 1 ]
+      }
+      coord Coordinate {
+        point [ -1 0 0, 1 0 0, 0 -1 0, 0 1 0, 0 0 -1, 0 0 1 ]
+      }
+    }
+  }
+}
+
+DEF IndexedLineSet1 Transform {
+  translation 0.001 0 0
+  children Shape {
+    geometry IndexedLineSet {
+      colorPerVertex FALSE
+      colorIndex 1
+      coordIndex [ 2, 3, -1 ]
+      color Color {
+        color [ 1 0 0, 0 1 0, 0 0 1 ]
+      }
+      coord Coordinate {
+        point [ -1 0 0, 1 0 0, 0 -1 0, 0 1 0, 0 0 -1, 0 0 1 ]
+      }
+    }
+  }
+}
+
+DEF IndexedLineSet2 Transform {
+  translation 0.004 0 0
+  children Shape {
+    geometry IndexedLineSet {
+      colorPerVertex FALSE
+      colorIndex 1
+      coordIndex [ 2, 3, -1 ]
+      color Color {
+        color [ 1 0 0, 0 1 0, 0 0 1 ]
+      }
+      coord Coordinate {
+        point [ -1 0 0, 1 0 0, 0 -1 0, 0 1 0, 0 0 -1, 0 0 1 ]
+      }
+    }
+  }
+}
+
+DEF IndexedLineSet3 Transform {
+  translation 0.013 0 0
+  children Shape {
+    geometry IndexedLineSet {
+      colorPerVertex FALSE
+      colorIndex 1
+      coordIndex [ 2, 3, -1 ]
       color Color {
         color [ 1 0 0, 0 1 0, 0 0 1 ]
       }

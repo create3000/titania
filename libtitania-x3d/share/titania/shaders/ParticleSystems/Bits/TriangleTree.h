@@ -11,6 +11,8 @@ uniform int ttRightOffset;
 
 uniform samplerBuffer triangleTreeMap;
 
+#pragma X3D include "Box3.h"
+
 #define TRIANGLE_TREE_NODE      0
 #define TRIANGLE_TREE_TRIANGLE  1
 
@@ -64,4 +66,73 @@ int
 getTriangleTreeRight ()
 {
 	return floatBitsToInt (texelFetch (triangleTreeMap, ttNodeIndex + ttRightOffset) .x);
+}
+
+/* intersection */
+
+int debug = 0;
+#define TT_STACK_SIZE  64
+
+int
+getTriangleTreeIntersections (in Line3 line, in samplerBuffer surfaceMap, out vec3 points [32])
+{
+	int current = getTriangleTreeRoot ();
+	int count   = 0;
+	int id      = -1;
+	int stack [TT_STACK_SIZE];
+
+	for (int i = 0; i < TT_STACK_SIZE; ++ i)
+		stack [i] = -1;
+
+	while (id >= 0 || current >= 0)
+	{
+		if (current >= 0)
+		{
+			setTriangleTreeIndex (current);
+
+			if (getTriangleTreeType () == TRIANGLE_TREE_NODE)
+			{
+				// Node
+			
+				++ debug;
+
+				if (intersect (getTriangleTreeMin (), getTriangleTreeMax (), line))
+				{
+					stack [++ id] = current;
+
+					current = getTriangleTreeLeft ();
+				}
+				else
+					current = -1;
+			}
+			else
+			{			
+				++ debug;
+
+				// Triangle
+			
+				current = -1;
+
+				int   i = getTriangleTreeLeft ();
+				float u = 0, v = 0;
+
+				vec3 a = texelFetch (surfaceMap, i) .xyz;
+				vec3 b = texelFetch (surfaceMap, i + 1) .xyz;
+				vec3 c = texelFetch (surfaceMap, i + 2) .xyz;
+
+				if (intersect (line, a, b, c, u, v))
+					points [count ++] = (1 - u - v) * a + u * b + v * c;
+			}
+		}
+		else
+		{
+			current = stack [id --];
+
+			setTriangleTreeIndex (current);
+
+			current = getTriangleTreeRight ();
+		}
+	}
+
+	return count;
 }

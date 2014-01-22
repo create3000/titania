@@ -6,14 +6,14 @@ DEF Gray Background {
 
 Viewpoint {
   description "Viewpoint"
-  position 0 0 3
+  position 0 0.5 1.25
 }
 
 ParticleSystem {
   geometryType "POINT"
   maxParticles 100000
-  particleLifetime 60
-  lifetimeVariation 0.01
+  particleLifetime 30
+  lifetimeVariation 0
   particleSize 0.1 0.1
   colorKey [ 0, 0.1, 0.4, 1 ]
   emitter VolumeEmitter {
@@ -41,6 +41,74 @@ DEF IndexedLineSet Transform {
       colorPerVertex FALSE
       colorIndex [ 0, 1, 2 ]
       coordIndex [ 0, 1, -1, 2, 3, -1, 4, 5, -1 ]
+      color Color {
+        color [ 1 0 0, 0 1 0, 0 0 1 ]
+      }
+      coord Coordinate {
+        point [ -1 0 0, 1 0 0, 0 -1 0, 0 1 0, 0 0 -1, 0 0 1 ]
+      }
+    }
+  }
+}
+
+DEF Max Transform {
+  translation 0.34301 0 0
+  children Shape {
+    geometry IndexedLineSet {
+      colorPerVertex FALSE
+      colorIndex [ 0, 1, 2 ]
+      coordIndex [ 2, 3, -1 ]
+      color Color {
+        color [ 1 0 0, 0 1 0, 0 0 1 ]
+      }
+      coord Coordinate {
+        point [ -1 0 0, 1 0 0, 0 -1 0, 0 1 0, 0 0 -1, 0 0 1 ]
+      }
+    }
+  }
+}
+
+DEF Min Transform {
+  translation 0.0640089 0 0
+  children Shape {
+    geometry IndexedLineSet {
+      colorPerVertex FALSE
+      colorIndex [ 0, 1, 2 ]
+      coordIndex [ 2, 3, -1 ]
+      color Color {
+        color [ 1 0 0, 0 1 0, 0 0 1 ]
+      }
+      coord Coordinate {
+        point [ -1 0 0, 1 0 0, 0 -1 0, 0 1 0, 0 0 -1, 0 0 1 ]
+      }
+    }
+  }
+}
+
+DEF Max1 Transform {
+  translation 0.270009 0 0
+  children Shape {
+    geometry IndexedLineSet {
+      colorPerVertex FALSE
+      colorIndex 1
+      coordIndex [ 2, 3, -1 ]
+      color Color {
+        color [ 1 0 0, 0 1 0, 0 0 1 ]
+      }
+      coord Coordinate {
+        point [ -1 0 0, 1 0 0, 0 -1 0, 0 1 0, 0 0 -1, 0 0 1 ]
+      }
+    }
+  }
+}
+
+DEF Min1 Transform {
+  translation 0.0910089 0 0
+  children Shape {
+    geometry IndexedLineSet {
+      colorPerVertex FALSE
+      colorIndex 1
+      coordIndex [ 2, 3, -1 ]
       color Color {
         color [ 1 0 0, 0 1 0, 0 0 1 ]
       }

@@ -17,7 +17,7 @@ odd_even_merge_sort (in int self)
 	if (self < sortSize)
 	{
 		// My position within the range to merge.
-		float j = mod (self, TwoStage); // float j = floor (mod (self, TwoStage));
+		float j = floor (mod (self, TwoStage));
 
 		if ((j < Pass_mod_Stage) || (j > TwoStage_PmS_1))
 		{
@@ -30,7 +30,7 @@ odd_even_merge_sort (in int self)
 		float compare = 1.0f;
 		int   partner = self;
 
-		if (mod ((j + Pass_mod_Stage) / Pass, 2.0) < 1.0)
+		if (mod ((j + Pass_mod_Stage) / Pass, 2.0f) < 1.0f)
 		{
 			// We are on the left side -> compare with partner on the right.
 			partner += int (Pass);

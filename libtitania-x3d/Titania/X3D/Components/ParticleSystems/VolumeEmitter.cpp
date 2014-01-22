@@ -95,7 +95,8 @@ public:
 
 private:
 
-	class Comparator;
+	class SortComparator;
+	class MedianComparator;
 
 	class X3DNode;
 	class Triangle;
@@ -108,16 +109,74 @@ private:
 
 };
 
-struct TriangleTree::Comparator
+struct TriangleTree::SortComparator
 {
-	Comparator (TriangleTree* const tree) :
+	SortComparator (TriangleTree* const tree) :
 		tree (tree)
 	{ }
 
 	bool
 	operator () (const size_t & a, const size_t & b, size_t axis) const
 	{
-		return tree -> vertices [a * 3] [axis] < tree -> vertices [b * 3] [axis];
+		return min (a, axis) < min (b, axis);
+		return center (a, axis) < center (b, axis);
+	}
+	
+	float
+	min (size_t triangle, size_t axis) const
+	{
+		size_t i = triangle * 3;
+
+		return std::min ({ tree -> vertices [i] [axis],
+			                tree -> vertices [i + 1] [axis],
+			                tree -> vertices [i + 2] [axis] });
+	}
+	
+	float
+	center (size_t triangle, size_t axis) const
+	{
+		size_t i = triangle * 3;
+
+		return (tree -> vertices [i] [axis] +
+			     tree -> vertices [i + 1] [axis] +
+			     tree -> vertices [i + 2] [axis]) / 3;
+	}
+
+	TriangleTree* const tree;
+
+};
+
+struct TriangleTree::MedianComparator
+{
+	MedianComparator (TriangleTree* const tree) :
+		tree (tree)
+	{ }
+
+	bool
+	operator () (const size_t & a, const float & value, size_t axis) const
+	{
+		return min (a, axis) < value;
+		return center (a, axis) < value;
+	}
+
+	float
+	min (size_t triangle, size_t axis) const
+	{
+		size_t i = triangle * 3;
+
+		return std::min ({ tree -> vertices [i] [axis],
+			                tree -> vertices [i + 1] [axis],
+			                tree -> vertices [i + 2] [axis] });
+	}
+	
+	float
+	center (size_t triangle, size_t axis) const
+	{
+		size_t i = triangle * 3;
+
+		return (tree -> vertices [i] [axis] +
+			     tree -> vertices [i + 1] [axis] +
+			     tree -> vertices [i + 2] [axis]) / 3;
 	}
 
 	TriangleTree* const tree;
@@ -137,6 +196,16 @@ public:
 	const Vector3f &
 	getVertex (size_t triangle, size_t index) const
 	{ return tree -> vertices [triangle * 3 + index]; }
+
+	float
+	getMin (size_t triangle, size_t axis) const
+	{
+		size_t i = triangle * 3;
+
+		return std::min ({ tree -> vertices [i] [axis],
+			                tree -> vertices [i + 1] [axis],
+			                tree -> vertices [i + 2] [axis] });
+	}
 
 	virtual
 	size_t
@@ -182,9 +251,10 @@ class TriangleTree::Node :
 {
 public:
 
-	Node (TriangleTree* const tree, std::vector <size_t> & triangles, size_t first, size_t size, size_t depth) :
+	Node (TriangleTree* const tree, std::vector <size_t> & triangles, size_t first, size_t size) :
 		X3DNode (tree),
-		   bbox (),
+		    min (),
+		    max (),
 		   left (),
 		  right ()
 	{
@@ -196,8 +266,8 @@ public:
 	
 		// Calculate bbox
 
-		Vector3f min = getVertex (*begin, 0);
-		Vector3f max = min;
+		min = getVertex (*begin, 0);
+		max = min;
 
 		for (const auto & triangle : basic::adapter (begin, end))
 		{
@@ -209,23 +279,21 @@ public:
 			}
 		}
 
-		bbox = Box3f (min, max, min_max_type ());
-
 		// Sort array
 		
-		//size_t axis = getLongestAxis ();
-		size_t axis = depth % 3;
+		size_t axis = getLongestAxis (min, max);
 
-		std::sort (begin, end, std::bind (Comparator (tree), _1, _2, axis));
-		
+		std::sort (begin, end, std::bind (SortComparator (tree), _1, _2, axis));
+
 		// Split array
 
 		size_t leftSize = 0;
 
-		if (size > 3 and 1)
+		if (size > 2)
 		{
-			float value = (min [axis] + max [axis]) / 2;
-			auto  iter  = std::lower_bound (begin, end, value, std::bind (Comparator (tree), _1, _2, axis));
+			//float value = (min [axis] + max [axis]) / 2;
+			float value = (getMin (*begin, axis) + getMin (*(end - 1), axis)) / 2;
+			auto  iter  = std::lower_bound (begin, end, value, std::bind (MedianComparator (tree), _1, _2, axis));
 			leftSize    = iter - begin;
 
 			if (leftSize == 0 or leftSize == size)
@@ -233,28 +301,41 @@ public:
 		}
 		else
 			leftSize = size >> 1;
-	
+
 		size_t rightSize = size - leftSize;
 
 		// Construct left and right node
-		
-		__LOG__ << depth << " : " << max - min << " : " << first << " : " << last << std::endl;
 
 		if (leftSize > 1)
-			left  .reset (new Node (tree, triangles, first, leftSize, depth + 1));
+			left  .reset (new Node (tree, triangles, first, leftSize));
 		else
 			left .reset (new Triangle (tree, triangles [first] * 3));
 			
 		if (rightSize > 1)
-			right .reset (new Node (tree, triangles, first + leftSize, rightSize, depth + 1));
+			right .reset (new Node (tree, triangles, first + leftSize, rightSize));
 		else
 			right .reset (new Triangle (tree, triangles [first + leftSize] * 3));
 	}
-	
+
+	virtual
 	size_t
-	getLongestAxis () const
+	toArray (std::vector <ArrayValue> & array) const
 	{
-		Vector3f size = bbox .size ();
+		size_t leftIndex  = left -> toArray (array);
+		size_t rightIndex = right -> toArray (array);
+		size_t index      = array .size ();
+
+		array .emplace_back (TRIANGLE_TREE_NODE, min, max, leftIndex, rightIndex);
+
+		return index;
+	}
+
+private:
+
+	size_t
+	getLongestAxis (const Vector3f & min, const Vector3f & max) const
+	{
+		Vector3f size = max - min;
 
 		if (size .x () < size .y ())
 		{
@@ -272,26 +353,10 @@ public:
 		}
 	}
 
-	virtual
-	size_t
-	toArray (std::vector <ArrayValue> & array) const
-	{
-		Vector3f size1_2 = bbox .size () / 2.0f;
-		Vector3f min     = bbox .center () - size1_2;
-		Vector3f max     = bbox .center () + size1_2;
-	
-		size_t leftIndex  = left -> toArray (array);
-		size_t rightIndex = right -> toArray (array);
-		size_t index      = array .size ();
-
-		array .emplace_back (TRIANGLE_TREE_NODE, min, max, leftIndex, rightIndex);
-
-		return index;
-	}
-
 	// Members
 
-	Box3f bbox;
+	Vector3f min;
+	Vector3f max;
 
 	std::unique_ptr <X3DNode> left;
 	std::unique_ptr <X3DNode> right;
@@ -305,8 +370,6 @@ TriangleTree::TriangleTree (std::vector <Vector3f>&& _vertices) :
 	    root ()
 {
 	size_t size = vertices .size () / 3;
-
-	__LOG__ << size << std::endl;
 
 	switch (size)
 	{
@@ -322,7 +385,7 @@ TriangleTree::TriangleTree (std::vector <Vector3f>&& _vertices) :
 			std::vector <size_t> triangles (size);
 			std::iota (triangles .begin (), triangles .end (), 0);
 
-			root .reset (new TriangleTree::Node (this, triangles, 0, size, 0));
+			root .reset (new TriangleTree::Node (this, triangles, 0, size));
 			break;
 		}
 	}
@@ -462,9 +525,6 @@ VolumeEmitter::set_geometry ()
 
 	glBindBuffer (GL_TEXTURE_BUFFER, triangleTreeBufferId);
 	glBufferData (GL_TEXTURE_BUFFER, treeArray .size () * sizeof (TriangleTree::ArrayValue), pointEmitter ? 0 : treeArray .data (), GL_STATIC_COPY);
-
-	__LOG__ << treeArray .size () << std::endl;
-	__LOG__ << treeArray .size () * sizeof (TriangleTree::ArrayValue) << std::endl;
 
 	// Update textures
 

@@ -200,8 +200,8 @@ ParticleSystem::OddEvenMergeSort::sortStep (X3DProgrammableShaderObject* const s
 
 	// Sort step
 
-	int pstage = 1 << stage;
-	int ppass  = 1 << pass;
+	const int pstage = 1 << stage;
+	const int ppass  = 1 << pass;
 
 	shader -> setField <SFVec4f> ("sortParam", Vector4f (pstage + pstage,
 	                                                     ppass % pstage,
@@ -216,11 +216,11 @@ ParticleSystem::OddEvenMergeSort::sortStep (X3DProgrammableShaderObject* const s
 void
 ParticleSystem::OddEvenMergeSort::reset (X3DProgrammableShaderObject* const shader, const int32_t currentSize)
 {
-	int fieldSize = next_power_of_two (int (std::ceil (std::sqrt (currentSize))));
+	const int fieldSize = next_power_of_two (int (std::ceil (std::sqrt (currentSize))));
 
 	if (fieldSize)
 	{
-		int logFieldSize = std::log2 (fieldSize);
+		const int logFieldSize = std::log2 (fieldSize);
 
 		stepsLeft = logFieldSize * (2 * logFieldSize + 1);
 	}
