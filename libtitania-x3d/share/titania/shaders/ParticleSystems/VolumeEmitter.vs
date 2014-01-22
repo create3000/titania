@@ -12,11 +12,13 @@ uniform samplerBuffer surfaceAreaMap;
 
 /*  */
 
-/* CombSort */
+/* CombSort points along a line */
 
 void
-sort (inout vec3 array [32], in int length, in Plane3 plane)
+sort (inout vec3 array [32], in int length, in Line3 line)
 {
+	Plane3 plane = plane3 (line .point, line .direction);
+
 	const float shrinkFactor = 0.801711847137793;
 
 	int  gap       = length;
@@ -49,29 +51,6 @@ sort (inout vec3 array [32], in int length, in Plane3 plane)
 
 /* PolylineEmitter */
 
-void
-random_point_on_surface (in samplerBuffer surfaceAreaMap, in samplerBuffer surfaceMap, in samplerBuffer normalMap, out vec3 position, out vec3 normal)
-{
-	ivec3 index = random_triangle (surfaceAreaMap);
-
-	vec3 vertex1 = texelFetch (surfaceMap, index .x) .xyz;
-	vec3 vertex2 = texelFetch (surfaceMap, index .y) .xyz;
-	vec3 vertex3 = texelFetch (surfaceMap, index .z) .xyz;
-
-	vec3 normal1 = texelFetch (normalMap, index .x) .xyz;
-	vec3 normal2 = texelFetch (normalMap, index .y) .xyz;
-	vec3 normal3 = texelFetch (normalMap, index .z) .xyz;
-
-	// Random barycentric coordinates.
-
-	vec3 coord = random_barycentric ();
-
-	// Calculate direction and position
-
-	normal   = normalize (coord .x * normal1 + coord .y * normal2 + coord .z * normal3);
-	position = coord .x * vertex1 + coord .y * vertex2 + coord .z * vertex3;
-}
-
 vec3
 getRandomPosition ()
 {
@@ -83,7 +62,7 @@ getRandomPosition ()
 
 	random_point_on_surface (surfaceAreaMap, surfaceMap, normalMap, point, normal);
 
-	Line3 line = Line3 (point, random_normal (normal, M_PI1_2 * 0.66666));
+	Line3 line = Line3 (point, random_normal (normal));
 
 	vec3 points [32];
 	int  intersections = getTriangleTreeIntersections (line, surfaceMap, points);
@@ -93,8 +72,8 @@ getRandomPosition ()
 	if (intersections == 0)
 		return vec3 (INFINITY);
 
-	sort (points, intersections, plane3 (line .point, line .direction));
-	
+	sort (points, intersections, line);
+
 	int index = int (round (random1 (0, intersections / 2 - 1))) * 2;
 
 	return points [index] + (points [index + 1] - points [index]) * fract (random1 ());

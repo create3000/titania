@@ -80,8 +80,26 @@ random_normal (in vec3 direction, in float angle)
 	return multVec (rotation, random_normal (angle));
 }
 
+/* Generate a random normal for VolumeEmitter. */
+
+vec3
+random_normal (in vec3 direction)
+{
+	float theta = random1 () * M_PI;
+	float cphi  = pow (random1 (), 1 / 3.0f); /* I don't why this, but its almost uniform. */
+	float phi   = acos (cphi);
+	float r     = sin (phi);
+
+	vec3 normal = vec3 (sin (theta) * r,
+	                    cos (theta) * r,
+	                    cphi);
+
+	vec4 rotation = quaternion (vec3 (0.0f, 0.0f, 1.0f), direction);
+	return multVec (rotation, normal);
+}
+
 // Returns uniform distributed random barycentric coordinates for interpolation on a triangle.
-// Use vertex = coord .x * vertex1 + coord .y * vertex2 + coord .z * vertex3 to get the resulting vertex.
+// Use point = coord .x * vertex1 + coord .y * vertex2 + coord .z * vertex3 to get the resulting point.
 vec3
 random_barycentric ()
 {

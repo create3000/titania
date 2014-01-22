@@ -15,7 +15,7 @@ Viewpoint {
 
 ParticleSystem {
   geometryType "POINT"
-  maxParticles 10000
+  maxParticles 80000
   particleLifetime 40
   lifetimeVariation 0.01
   particleSize 0.1 0.1

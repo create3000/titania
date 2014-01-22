@@ -1,5 +1,13 @@
 2014-01-22  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Random.h:
+	* VolumeEmitter.vs:
+	* SurfaceEmitter.vs:
+	* VolumeEmitter.cpp:
+	* X3DParticleEmitterNode.h: 
+
+2014-01-22  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* libtitania-x3d.cproj:
 	* Box3.h:
 	* Line3.h:
