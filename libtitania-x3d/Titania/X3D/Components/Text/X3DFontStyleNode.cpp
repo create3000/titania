@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -145,7 +145,7 @@ X3DTextGeometry::initialize (Text* const text, const X3DFontStyleNode* const fon
 
 			// Calculate center.
 
-			Vector2d center = Vector2d (min .x (), min .y ()) + size / 2.0;
+			Vector2d center = min + size / 2.0;
 
 			// Add bbox.
 
@@ -195,7 +195,7 @@ X3DTextGeometry::initialize (Text* const text, const X3DFontStyleNode* const fon
 
 		setBBox (Box3d (Vector3d (min .x (), min .y (), 0),
 		                Vector3d (max .x (), max .y (), 0),
-		                math::min_max_type ()));
+		                extends_type ()));
 	}
 }
 

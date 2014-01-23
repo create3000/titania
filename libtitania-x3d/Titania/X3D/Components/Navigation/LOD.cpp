@@ -131,7 +131,7 @@ LOD::getDistance (const TraverseType type) const
 
 	modelViewMatrix .translate (center ());
 
-	return math::abs (modelViewMatrix .translation ());
+	return math::abs (modelViewMatrix .origin ());
 }
 
 void

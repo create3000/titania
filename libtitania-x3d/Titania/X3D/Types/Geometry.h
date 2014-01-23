@@ -57,6 +57,7 @@
 #include <Titania/Math/Geometry/Line3.h>
 #include <Titania/Math/Geometry/Plane3.h>
 #include <Titania/Math/Geometry/Sphere3.h>
+#include <Titania/Math/Geometry/Triangle3.h>
 
 namespace titania {
 namespace X3D {

@@ -54,6 +54,7 @@
 #include "../Numbers/Matrix3.h"
 #include "../Numbers/Vector2.h"
 #include "../Utility/Types.h"
+#include "../Functional.h"
 #include "../../Utility/Adapter.h"
 #include <array>
 
@@ -95,27 +96,27 @@ public:
 
 	///  Constructs a box of min @a min and max @a max.
 	constexpr
-	box2 (const vector2 <Type> & min, const vector2 <Type> & max, const min_max_type &) :
+	box2 (const vector2 <Type> & min, const vector2 <Type> & max, const extends_type &) :
 		box2 (max - min, (max + min) / Type (2))
 	{ }
 
 	template <class InputIterator>
-	box2 (const InputIterator & begin, const InputIterator & end, const iterator_type &) :
+	box2 (InputIterator first, InputIterator last, const iterator_type &) :
 		box2 ()
 	{
-		if (begin == end)
+		if (first == last)
 			return;
 
-		vector2 <Type> min = *begin;
+		vector2 <Type> min = *first;
 		vector2 <Type> max = min;
 
-		for (const auto & vertex : basic::adapter (begin, end))
+		while (++ first not_eq last)
 		{
-			min = math::min (min, vertex);
-			max = math::max (max, vertex);
+			min = math::min (min, *first);
+			max = math::max (max, *first);
 		}
 
-		*this = box2 (min, max, min_max_type ());
+		*this = box2 (min, max, extends_type ());
 	}
 
 	///  @name Assignment operator
@@ -135,16 +136,20 @@ public:
 	matrix () const
 	{ return value; }
 
-	///  Return the size of this box.
+	///  Returns the min and max extends of this box.
+	void
+	extends (vector2 <Type> &, vector2 <Type> &) const;
+
+	///  Returns the size of this box.
 	vector2 <Type>
 	size () const;
 
-	///  Return the center of this box.
+	///  Returns the center of this box.
 	vector2 <Type>
 	center () const
-	{ return value .translation (); }
+	{ return value .origin (); }
 
-	///  Return whether this box is an empty box.
+	///  Returns whether this box is an empty box.
 	bool
 	empty () const
 	{ return value [2] [2] == 0; }
@@ -190,33 +195,51 @@ public:
 
 private:
 
+	///  Returns the absolute min and max extends of this box.
+	void
+	absolute_extends (vector2 <Type> &, vector2 <Type> &) const;
+
 	matrix3 <Type> value;
 
 };
 
 template <class Type>
+inline
+void
+box2 <Type>::extends (vector2 <Type> & min, vector2 <Type> & max) const
+{
+	absolute_extends (min, max);
+
+	min += center ();
+	max += center ();
+}
+
+template <class Type>
+inline
 vector2 <Type>
 box2 <Type>::size () const
 {
-	vector2 <Type> x (value [0] [0], value [0] [1]);
-	vector2 <Type> y (value [1] [0], value [1] [1]);
-
-	auto p1 =  x + y;
-	auto p2 = -x + y;
-	auto p3 = -x - y;
-	auto p4 =  x - y;
-
 	vector2 <Type> min, max;
 
-	min = math::min (p1, p2);
-	min = math::min (min, p3);
-	min = math::min (min, p4);
-
-	max = math::max (p1, p2);
-	max = math::max (max, p3);
-	max = math::max (max, p4);
+	absolute_extends (min, max);
 
 	return max - min;
+}
+
+template <class Type>
+void
+box2 <Type>::absolute_extends (vector2 <Type> & min, vector2 <Type> & max) const
+{
+	vector2 <Type> x (value .x ());
+	vector2 <Type> y (value .y ());
+
+	auto p1 = x + y;
+	auto p2 = y - x;
+	auto p3 = -p1;
+	auto p4 = -p2;
+
+	min = math::min ({ p1, p2, p3, p4 });
+	max = math::max ({ p1, p2, p3, p4 });
 }
 
 template <class Type>
@@ -230,24 +253,21 @@ box2 <Type>::operator += (const box2 <Up> & box)
 	if (box .empty ())
 		return *this;
 
-	auto lsize1_2 = size () / Type (2);
-	auto lhs_min  = center () - lsize1_2;
-	auto lhs_max  = center () + lsize1_2;
+	vector2 <Type> lhs_min, lhs_max, rhs_min, rhs_max;
+	
+	extends (lhs_min, lhs_max);
+	box .extends (rhs_min, rhs_max);
 
-	auto rsize1_2 = box .size () / Type (2);
-	auto rhs_min  = box .center () - rsize1_2;
-	auto rhs_max  = box .center () + rsize1_2;
-
-	return *this = box2 (math::min (lhs_min, rhs_min), math::max (lhs_max, rhs_max), min_max_type ());
+	return *this = box2 (math::min (lhs_min, rhs_min), math::max (lhs_max, rhs_max), extends_type ());
 }
 
 template <class Type>
 bool
 box2 <Type>::intersect (const vector2 <Type> & point) const
 {
-	auto size1_2 = size () / Type (2);
-	auto min     = center () - size1_2;
-	auto max     = center () + size1_2;
+	vector2 <Type> min, max;
+
+	extends (min, max);
 
 	return min .x () <= point .x () and
 	       max .x () >= point .x () and
@@ -262,17 +282,10 @@ box2 <Type>::contains (const box2 <Type> & box) const
 	if (empty () or box .empty ())
 		return false;
 
-	auto size1   = size () / Type (2);
-	auto center1 = center ();
+	vector2 <Type> min1, max1, min2, max2;
 
-	auto min1 = center1 - size1;
-	auto max1 = center1 + size1;
-
-	auto size2   = box .size () / Type (2);
-	auto center2 = box .center ();
-
-	auto min2 = center2 - size2;
-	auto max2 = center2 + size2;
+	extends (min1, max1);
+	box .extends (min2, max2);
 
 	if (min2 .x () < min1 .x () or min2 .y () < min1 .y ())
 		return false;

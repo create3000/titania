@@ -265,6 +265,42 @@ next_power_of_two (Type n)
 	return ++ n;
 }
 
+template <class Type>
+Type
+min (std::initializer_list <Type> ilist)
+{
+	auto first = ilist .begin ();
+	auto last  = ilist .end ();
+
+	if (first == last)
+		return *first;
+
+	Type result = *first;
+
+	while (++ first not_eq last)
+		result = min (result, *first);
+
+	return result;
+}
+
+template <class Type>
+Type
+max (std::initializer_list <Type> ilist)
+{
+	auto first = ilist .begin ();
+	auto last  = ilist .end ();
+
+	if (first == last)
+		return *first;
+
+	Type result = *first;
+
+	while (++ first not_eq last)
+		result = max (result, *first);
+
+	return result;
+}
+
 } // math
 } // titania
 

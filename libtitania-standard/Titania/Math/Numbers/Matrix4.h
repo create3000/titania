@@ -206,7 +206,19 @@ public:
 	///  @name Element access
 
 	vector3_type
-	translation () const
+	x () const
+	{ return vector3_type (array [0], array [1], array [2]); }
+
+	vector3_type
+	y () const
+	{ return vector3_type (array [4], array [5], array [6]); }
+
+	vector3_type
+	z () const
+	{ return vector3_type (array [8], array [9], array [10]); }
+
+	vector3_type
+	origin () const
 	{ return vector3_type (array [12], array [13], array [14]); }
 
 	void
@@ -647,7 +659,7 @@ template <class T>
 void
 matrix4 <Type>::get (vector3 <T> & translation) const
 {
-	translation = this -> translation ();
+	translation = origin ();
 }
 
 template <class Type>
@@ -714,14 +726,14 @@ matrix4 <Type>::factor (vector3 <Type> & translation,
                         vector3 <Type> & scale,
                         matrix4 & scaleOrientation) const
 {
+	// (1) Get translation.
+	translation = origin ();
+
+	// (2) Create 3x3 matrix.
 	matrix4 a (*this);
 
-	// (2) Get translation and create 3x3 matrix.
 	for (size_t i = 0; i < 3; ++ i)
-	{
-		translation [i]  = value [3] [i];
 		a .value [3] [i] = a .value [i] [3] = 0;
-	}
 
 	a .value [3] [3] = 1;
 

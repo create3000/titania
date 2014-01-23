@@ -127,6 +127,8 @@ struct ParticleSystem::Vertex
 };
 
 // OddEvenMergeSort
+// http://http.developer.nvidia.com/GPUGems2/gpugems2_chapter46.html
+// http://http.download.nvidia.com/developer/GPU_Gems_2/CD/Index.html
 
 class ParticleSystem::OddEvenMergeSort
 {

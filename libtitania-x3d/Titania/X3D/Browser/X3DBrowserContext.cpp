@@ -240,7 +240,7 @@ X3DBrowserContext::advanceClock ()
 	clock -> advance ();
 
 	if (getActiveLayer ())
-		currentSpeed .setPosition (getActiveLayer () -> getViewpoint () -> getTransformationMatrix () .translation (), currentFrameRate);
+		currentSpeed .setPosition (getActiveLayer () -> getViewpoint () -> getTransformationMatrix () .origin (), currentFrameRate);
 
 	else
 		currentSpeed .setPosition (Vector3f (), 0);
@@ -464,7 +464,7 @@ X3DBrowserContext::pick (const double _x, const double _y)
 
 	// Pick.
 	
-	update ();
+	//update (); // We cannot make an update here
 
 	getWorld () -> traverse (TraverseType::PICKING);
 

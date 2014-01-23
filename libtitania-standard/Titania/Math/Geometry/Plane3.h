@@ -52,8 +52,8 @@
 #define __TITANIA_MATH_GEOMETRY_PLANE3_H__
 
 #include "../Geometry/Line3.h"
+#include "../Geometry/Triangle3.h"
 #include "../Numbers/Vector3.h"
-#include "../Utility/Normal.h"
 
 namespace titania {
 namespace math {

@@ -1,3 +1,25 @@
+2014-01-23  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Geometry.h:
+	* Sound.cpp:
+	* LOD.cpp:
+	* X3DBrowserContext.cpp:
+	* ScreenGroup.cpp:
+	* Billboard.cpp:
+	* Coordinate.cpp:
+	* X3DFontStyleNode.cpp:
+	* ScreenFontStyle.cpp:
+	* CoordinateDouble.cpp:
+	* GeoCoordinate.cpp:
+	* X3DGeometryNode.cpp:
+	* VolumeEmitter.vs:
+	* VolumeEmitter.cpp:
+	* TriangleTree.h:
+	* X3DNurbsControlCurveNode.cpp:
+	* ParticleSystem.cpp:
+	* SurfaceEmitter.cpp:
+	* ProximitySensor.cpp: 
+
 2014-01-22  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Random.h:

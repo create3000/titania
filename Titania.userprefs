@@ -1,13 +1,14 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/ParticleSystems/VolumeEmitter.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Rendering/Coordinate.cpp">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Components/ParticleSystems/ParticleSystem.h" Line="324" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/ParticleSystems/ParticleSystem.cpp" Line="591" Column="17" />
-      <File FileName="libtitania-x3d/share/titania/shaders/ParticleSystems/Bits/Random.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/share/titania/shaders/ParticleSystems/VolumeEmitter.vs" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/ParticleSystems/VolumeEmitter.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/ParticleSystems/VolumeEmitter.cpp" Line="126" Column="35" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/ParticleSystems/ParticleSystem.h" Line="394" Column="48" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/ParticleSystems/ParticleSystem.cpp" Line="133" Column="39" />
+      <File FileName="libtitania-standard/Titania/Math/Geometry/Triangle3.h" Line="65" Column="17" />
+      <File FileName="libtitania-standard/Titania/Math/Geometry/Plane3.h" Line="44" Column="81" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geospatial/GeoCoordinate.cpp" Line="55" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/NURBS/CoordinateDouble.cpp" Line="55" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/Coordinate.cpp" Line="116" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -23,8 +24,10 @@
           <Node name="libtitania-standard" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="Math" expanded="True">
-                <Node name="Numbers" expanded="True" />
+                <Node name="Geometry" expanded="True" />
+                <Node name="Utility" expanded="True" />
               </Node>
+              <Node name="Utility" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
@@ -45,16 +48,25 @@
                 <Node name="Browser" expanded="True">
                   <Node name="Geometry3D" expanded="True" />
                   <Node name="Properties" expanded="True" />
+                  <Node name="Viewer" expanded="True" />
                 </Node>
                 <Node name="Components" expanded="True">
+                  <Node name="CADGeometry" expanded="True" />
                   <Node name="Core" expanded="True" />
+                  <Node name="EnvironmentalSensor" expanded="True" />
+                  <Node name="Geospatial" expanded="True" />
+                  <Node name="Grouping" expanded="True" />
+                  <Node name="Layout" expanded="True" />
                   <Node name="Navigation" expanded="True" />
-                  <Node name="ParticleSystems" expanded="True">
-                    <Node name="VolumeEmitter.cpp" selected="True" />
+                  <Node name="NURBS" expanded="True" />
+                  <Node name="ParticleSystems" expanded="True" />
+                  <Node name="Rendering" expanded="True">
+                    <Node name="Coordinate.cpp" selected="True" />
                   </Node>
-                  <Node name="Rendering" expanded="True" />
                   <Node name="Shaders" expanded="True" />
                   <Node name="Shape" expanded="True" />
+                  <Node name="Sound" expanded="True" />
+                  <Node name="Text" expanded="True" />
                   <Node name="Texturing3D" expanded="True" />
                 </Node>
                 <Node name="Execution" expanded="True" />
@@ -68,7 +80,11 @@
               </Node>
             </Node>
           </Node>
-          <Node name="Papers" expanded="True" />
+          <Node name="Papers" expanded="True">
+            <Node name="GPU Gems 2 Chapter 46 - GPU Sort" expanded="True">
+              <Node name="shader" expanded="True" />
+            </Node>
+          </Node>
           <Node name="Titania" expanded="True">
             <Node name="share" expanded="True">
               <Node name="applications" expanded="True" />

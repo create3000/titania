@@ -100,27 +100,27 @@ public:
 
 	///  Constructs a box of min @a min and max @a max.
 	constexpr
-	box3 (const vector3 <Type> & min, const vector3 <Type> & max, const min_max_type &) :
+	box3 (const vector3 <Type> & min, const vector3 <Type> & max, const extends_type &) :
 		box3 (max - min, (max + min) / Type (2))
 	{ }
 
 	template <class InputIterator>
-	box3 (const InputIterator & begin, const InputIterator & end, const iterator_type &) :
+	box3 (InputIterator first, InputIterator last, const iterator_type &) :
 		box3 ()
 	{
-		if (begin == end)
+		if (first == last)
 			return;
 
-		vector3 <Type> min = *begin;
+		vector3 <Type> min = *first;
 		vector3 <Type> max = min;
 
-		for (const auto & vertex : basic::adapter (begin, end))
+		while (++ first not_eq last)
 		{
-			min = math::min (min, vertex);
-			max = math::max (max, vertex);
+			min = math::min (min, *first);
+			max = math::max (max, *first);
 		}
 
-		*this = box3 (min, max, min_max_type ());
+		*this = box3 (min, max, extends_type ());
 	}
 
 	///  @name Assignment operator
@@ -140,16 +140,20 @@ public:
 	matrix () const
 	{ return value; }
 
-	///  Return the size of this box.
+	///  Returns the min and max extends of this box.
+	void
+	extends (vector3 <Type> &, vector3 <Type> &) const;
+
+	///  Returns the size of this box.
 	vector3 <Type>
 	size () const;
 
-	///  Return the center of this box.
+	///  Returns the center of this box.
 	vector3 <Type>
 	center () const
-	{ return value .translation (); }
+	{ return value .origin (); }
 
-	///  Return whether this box is an empty box.
+	///  Returns whether this box is an empty box.
 	bool
 	empty () const
 	{ return value [3] [3] == 0; }
@@ -193,7 +197,7 @@ public:
 
 	///  Returns true if @a line intersects with this box3.
 	bool
-	intersect (const line3 <Type> &, vector3 <Type> &) const;
+	intersect (const line3 <Type> &) const;
 
 	///  Returns true if @a sphere intersects with this box3.
 	bool
@@ -206,52 +210,60 @@ public:
 
 private:
 
+	///  Returns the absolute min and max extends of this box.
+	void
+	absolute_extends (vector3 <Type> &, vector3 <Type> &) const;
+
 	matrix4 <Type> value;
 
 };
 
 template <class Type>
+inline
+void
+box3 <Type>::extends (vector3 <Type> & min, vector3 <Type> & max) const
+{
+	absolute_extends (min, max);
+
+	min += center ();
+	max += center ();
+}
+
+template <class Type>
+inline
 vector3 <Type>
 box3 <Type>::size () const
 {
-	vector3 <Type> x (value [0] [0], value [0] [1], value [0] [2]);
-	vector3 <Type> y (value [1] [0], value [1] [1], value [1] [2]);
-	vector3 <Type> z (value [2] [0], value [2] [1], value [2] [2]);
-
-	auto r1 =  x + y;
-	auto r2 = -x + y;
-	auto r3 = -x - y;
-	auto r4 =  x - y;
-
-	auto p1 = r1 + z;
-	auto p2 = r2 + z;
-	auto p3 = r3 + z;
-	auto p4 = r4 + z;
-
-	auto p5 = r1 - z;
-	auto p6 = r2 - z;
-	auto p7 = r3 - z;
-	auto p8 = r4 - z;
-
 	vector3 <Type> min, max;
 
-	min = math::min (p1, p2);
-	min = math::min (min, p3);
-	min = math::min (min, p4);
-	min = math::min (min, p5);
-	min = math::min (min, p6);
-	min = math::min (min, p7);
-	min = math::min (min, p8);
-
-	max = math::max (p1, p2);
-	max = math::max (max, p3);
-	max = math::max (max, p4);
-	max = math::max (max, p5);
-	max = math::max (max, p6);
-	max = math::max (max, p7);
-	max = math::max (max, p8);
+	absolute_extends (min, max);
 
 	return max - min;
+}
+
+template <class Type>
+void
+box3 <Type>::absolute_extends (vector3 <Type> & min, vector3 <Type> & max) const
+{
+	vector3 <Type> x (value .x ());
+	vector3 <Type> y (value .y ());
+	vector3 <Type> z (value .z ());
+
+	auto r1 = y + z;
+	auto r2 = z - y;
+
+	auto p1 =  x + r1;
+	auto p2 = r1 -  x;
+	auto p3 = r2 -  x;
+	auto p4 =  x + r2;
+
+	auto p5 = -p3;
+	auto p6 = -p4;
+	auto p7 = -p1;
+	auto p8 = -p2;
+
+	min = math::min ({ p1, p2, p3, p4, p5, p6, p7, p8 });
+	max = math::max ({ p1, p2, p3, p4, p5, p6, p7, p8 });
 }
 
 template <class Type>
@@ -265,24 +277,21 @@ box3 <Type>::operator += (const box3 <Up> & box)
 	if (box .empty ())
 		return *this;
 
-	auto lsize1_2 = size () / 2.0f;
-	auto lhs_min  = center () - lsize1_2;
-	auto lhs_max  = center () + lsize1_2;
+	vector3 <Type> lhs_min, lhs_max, rhs_min, rhs_max;
+	
+	extends (lhs_min, lhs_max);
+	box .extends (rhs_min, rhs_max);
 
-	auto rsize1_2 = box .size () / 2.0f;
-	auto rhs_min  = box .center () - rsize1_2;
-	auto rhs_max  = box .center () + rsize1_2;
-
-	return *this = box3 (math::min (lhs_min, rhs_min), math::max (lhs_max, rhs_max), min_max_type ());
+	return *this = box3 (math::min (lhs_min, rhs_min), math::max (lhs_max, rhs_max), extends_type ());
 }
 
 template <class Type>
 bool
 box3 <Type>::intersect (const vector3 <Type> & point) const
 {
-	auto size1_2 = size () / Type (2);
-	auto min     = center () - size1_2;
-	auto max     = center () + size1_2;
+	vector3 <Type> min, max;
+
+	extends (min, max);
 
 	return min .x () <= point .x () and
 	       max .x () >= point .x () and
@@ -294,35 +303,35 @@ box3 <Type>::intersect (const vector3 <Type> & point) const
 
 template <class Type>
 bool
-box3 <Type>::intersect (const line3 <Type> & line, vector3 <Type> & intersection) const
+box3 <Type>::intersect (const line3 <Type> & line) const
 {
-	auto size1_2 = size () / Type (2);
-	auto min     = center () - size1_2;
-	auto max     = center () + size1_2;
+	auto center = this -> center (); 
 
-	vector3 <Type> center = (min + max) / Type (2);
+	vector3 <Type> min, max;
 
-	vector3 <Type> points [6] = {
+	extends (min, max);
+
+	vector3 <Type> points [5] = {
 		vector3 <Type> (center .x (), center .y (), max .z ()), // right
 		vector3 <Type> (center .x (), center .y (), min .z ()), // left
 
 		vector3 <Type> (center .x (), max .y (), center .z ()), // top
 		vector3 <Type> (center .x (), min .y (), center .z ()), // bottom
 
-		vector3 <Type> (max .x (), center .y (), center .z ()), // front
-		vector3 <Type> (min .x (), center .y (), center .z ())  // back
+		vector3 <Type> (max .x (), center .y (), center .z ())  // front
 	};
 
-	static const vector3 <Type> normals [6] = {
+	static const vector3 <Type> normals [5] = {
 		vector3 <Type> (0,  0,  1),
 		vector3 <Type> (0,  0, -1),
 		vector3 <Type> (0,  1,  0),
 		vector3 <Type> (0, -1,  0),
-		vector3 <Type> (1,  0,  0),
-		vector3 <Type> (-1,  0,  0)
+		vector3 <Type> (1,  0,  0)
 	};
+	
+	vector3 <Type> intersection;
 
-	for (size_t i = 0; i < 6; ++ i)
+	for (size_t i = 0; i < 5; ++ i)
 	{
 		if (plane3 <Type> (points [i], normals [i]) .intersect (line, intersection))
 		{
@@ -330,28 +339,30 @@ box3 <Type>::intersect (const line3 <Type> & line, vector3 <Type> & intersection
 			{
 				case 0:
 				case 1:
-
+				{
 					if (intersection .x () >= min .x () and intersection .x () <= max .x () and
 					    intersection .y () >= min .y () and intersection .y () <= max .y ())
 						return true;
 
 					break;
+				}
 				case 2:
 				case 3:
-
+				{
 					if (intersection .x () >= min .x () and intersection .x () <= max .x () and
 					    intersection .z () >= min .z () and intersection .z () <= max .z ())
 						return true;
 
 					break;
+				}
 				case 4:
-				case 5:
-
+				{
 					if (intersection .y () >= min .y () and intersection .y () <= max .y () and
 					    intersection .z () >= min .z () and intersection .z () <= max .z ())
 						return true;
 
 					break;
+				}
 			}
 		}
 	}
@@ -363,9 +374,9 @@ template <class Type>
 bool
 box3 <Type>::intersect (const sphere3 <Type> & sphere) const
 {
-	auto size1_2 = size () / Type (2);
-	auto min     = center () - size1_2;
-	auto max     = center () + size1_2;
+	vector3 <Type> min, max;
+
+	extends (min, max);
 
 	vector3 <Type> center = sphere .center ();
 	Type           radius = sphere .radius ();
@@ -385,17 +396,10 @@ box3 <Type>::contains (const box3 <Type> & box) const
 	if (empty () or box .empty ())
 		return false;
 
-	auto size1   = size () / Type (2);
-	auto center1 = center ();
+	vector3 <Type> min1, max1, min2, max2;
 
-	auto min1 = center1 - size1;
-	auto max1 = center1 + size1;
-
-	auto size2   = box .size () / Type (2);
-	auto center2 = box .center ();
-
-	auto min2 = center2 - size2;
-	auto max2 = center2 + size2;
+	extends (min1, max1);
+	box .extends (min2, max2);
 
 	if (min2 .x () < min1 .x () or min2 .y () < min1 .y () or min2 .z () < min1 .z ())
 		return false;

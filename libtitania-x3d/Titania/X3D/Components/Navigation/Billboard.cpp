@@ -98,7 +98,7 @@ Billboard::rotate (const TraverseType type) const
 		Matrix4f modelViewMatrix        = getModelViewMatrix (type);
 		Matrix4f inverseModelViewMatrix = ~modelViewMatrix;
 
-		Vector3f billboardToViewer = inverseModelViewMatrix .translation ();
+		Vector3f billboardToViewer = inverseModelViewMatrix .origin ();
 
 		if (axisOfRotation () == Vector3f ())
 		{

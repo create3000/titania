@@ -193,7 +193,16 @@ public:
 	///  @name Element access
 
 	vector2 <Type>
-	translation () const;
+	x () const
+	{ return vector2 <Type> (array [0], array [1]); }
+
+	vector2 <Type>
+	y () const
+	{ return vector2 <Type> (array [3], array [4]); }
+
+	vector2 <Type>
+	origin () const
+	{ return vector2 <Type> (array [6], array [7]); }
 
 	void
 	rotation (const Type &);
@@ -404,14 +413,6 @@ matrix3 <Type>::operator = (const matrix3 <Type> & matrix)
 }
 
 template <class Type>
-vector2 <Type>
-matrix3 <Type>::translation () const
-{
-	return vector2 <Type> (array [6],
-	                       array [7]);
-}
-
-template <class Type>
 void
 matrix3 <Type>::rotation (const Type & rotation)
 {
@@ -534,7 +535,7 @@ template <class Type>
 void
 matrix3 <Type>::get (vector2 <Type> & translation) const
 {
-	translation = this -> translation ();
+	translation = origin ();
 }
 
 template <class Type>
@@ -597,14 +598,14 @@ matrix3 <Type>::factor (vector2 <Type> & translation,
                         vector2 <Type> & scale,
                         matrix3 & scaleOrientation) const
 {
+	// (1) Get translation.
+	translation = origin ();
+
+	// (2) Create 2x2 matrix.
 	matrix3 a (*this);
 
-	// (2) Get translation and create 3x3 matrix.
 	for (size_t i = 0; i < 2; ++ i)
-	{
-		translation [i]  = value [2] [i];
 		a .value [2] [i] = a .value [i] [2] = 0;
-	}
 
 	a .value [2] [2] = 1;
 

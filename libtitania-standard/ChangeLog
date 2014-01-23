@@ -1,3 +1,17 @@
+2014-01-23  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* libtitania-standard.cproj:
+	* Functional.h:
+	* Area.h:
+	* Types.h:
+	* Box2.h:
+	* Box3.h:
+	* Normal.h:
+	* Plane3.h:
+	* Matrix3.h:
+	* Matrix4.h:
+	* Triangle3.h: 
+
 2014-01-22  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* libtitania-standard.cproj:

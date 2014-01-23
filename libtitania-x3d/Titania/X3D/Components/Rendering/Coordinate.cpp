@@ -51,7 +51,7 @@
 #include "Coordinate.h"
 
 #include "../../Execution/X3DExecutionContext.h"
-#include <Titania/Math/Utility/Normal.h>
+#include "../../Types/Geometry.h"
 
 namespace titania {
 namespace X3D {

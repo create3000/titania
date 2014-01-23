@@ -128,7 +128,7 @@ ProximitySensor::update ()
 			Rotation4f rotation;
 			modelViewMatrix .get (translation, rotation, scale);
 
-			Vector3f   position    = inverse (modelViewMatrix) .translation ();
+			Vector3f   position    = inverse (modelViewMatrix) .origin ();
 			Rotation4f orientation = ~rotation;
 
 			if (not isActive ())
@@ -187,7 +187,7 @@ ProximitySensor::traverse (const TraverseType type)
 				inside = true;
 
 			else
-				inside = Box3f (size (), center ()) .intersect (inverse (ModelViewMatrix4f ()) .translation ());
+				inside = Box3f (size (), center ()) .intersect (inverse (ModelViewMatrix4f ()) .origin ());
 
 			break;
 		}

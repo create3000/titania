@@ -15,7 +15,7 @@ uniform samplerBuffer surfaceAreaMap;
 /* CombSort points along a line */
 
 void
-sort (inout vec3 array [32], in int length, in Line3 line)
+sort (inout vec3 array [INTERSECTIONS_SIZE], in int length, in Line3 line)
 {
 	Plane3 plane = plane3 (line .point, line .direction);
 
@@ -64,7 +64,7 @@ getRandomPosition ()
 
 	Line3 line = Line3 (point, random_normal (normal));
 
-	vec3 points [32];
+	vec3 points [INTERSECTIONS_SIZE];
 	int  intersections = getTriangleTreeIntersections (line, surfaceMap, points);
 
 	//return vec3 (float (debug) / float (textureSize (surfaceAreaMap) - 1), float (gl_VertexID) / 100000.0f, 0.0f);

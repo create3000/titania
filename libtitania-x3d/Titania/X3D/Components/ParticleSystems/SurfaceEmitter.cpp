@@ -53,8 +53,7 @@
 #include "../../Bits/config.h"
 #include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
-
-#include <Titania/Math/Utility/Area.h>
+#include "../../Types/Geometry.h"
 
 namespace titania {
 namespace X3D {

@@ -57,7 +57,7 @@ namespace titania {
 namespace math {
 
 struct iterator_type { };
-struct min_max_type { };
+struct extends_type { };
 
 } // math
 } // titania

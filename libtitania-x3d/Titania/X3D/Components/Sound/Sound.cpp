@@ -122,26 +122,31 @@ Sound::traverse (const TraverseType type)
 	{
 		if (_source)
 		{
-			float minRadius, maxRadius, minDistance, maxDistance;
-
-			getEllipsoidParameter (maxBack (), maxFront (), maxRadius, maxDistance);
-			getEllipsoidParameter (minBack (), minFront (), minRadius, minDistance);
-
-			if (maxDistance < maxRadius)
+			try
 			{
-				if (minDistance < minRadius)
-					_source -> setVolume (intensity ());
+				float minRadius, maxRadius, minDistance, maxDistance;
 
-				else
+				getEllipsoidParameter (maxBack (), maxFront (), maxRadius, maxDistance);
+				getEllipsoidParameter (minBack (), minFront (), minRadius, minDistance);
+
+				if (maxDistance < maxRadius)
 				{
-					float d1 = maxRadius - maxDistance;
-					float d2 = maxRadius - minRadius;
+					if (minDistance < minRadius)
+						_source -> setVolume (intensity ());
 
-					_source -> setVolume (intensity () * (d1 / d2));
+					else
+					{
+						float d1 = maxRadius - maxDistance;
+						float d2 = maxRadius - minRadius;
+
+						_source -> setVolume (intensity () * (d1 / d2));
+					}
 				}
+				else
+					_source -> setVolume (0);
 			}
-			else
-				_source -> setVolume (0);
+			catch (const std::domain_error &)
+			{ }
 		}
 	}
 }
@@ -150,6 +155,7 @@ Sound::traverse (const TraverseType type)
 
 void
 Sound::getEllipsoidParameter (const float & back, const float & front, float & radius, float & distance)
+// throw (std::domain_error)
 {
 	float a = (back + front) / 2;
 	float e = a - back;
@@ -163,7 +169,7 @@ Sound::getEllipsoidParameter (const float & back, const float & front, float & r
 	transformationMatrix .translate (Vector3f (0, 0, e));
 	transformationMatrix .scale (Vector3f (1, 1, b / a));
 
-	Vector3f viewer = inverse (transformationMatrix) .translation ();
+	Vector3f viewer = inverse (transformationMatrix) .origin ();
 
 	radius   = b;
 	distance = abs (viewer);

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -113,14 +113,7 @@ ScreenText::setTextBounds ()
 {
 	text -> textBounds () = math::ceil (text -> textBounds () .getValue ());
 
-	Box3d bbox = getBBox ();
-
-	Vector3d size    = bbox .size ();
-	Vector3d size1_2 = size / 2.0;
-	Vector3d center  = bbox .center ();
-
-	min = center - size1_2;
-	max = center + size1_2;
+	getBBox () .extends (min, max);
 
 	switch (fontStyle -> getMajorAlignment ())
 	{
@@ -154,7 +147,7 @@ ScreenText::setTextBounds ()
 
 	text -> origin () = Vector3d (min .x (), max .y (), 0);
 
-	setBBox (Box3d (min, max, math::min_max_type ()));
+	setBBox (Box3d (min, max, extends_type ()));
 }
 
 void
@@ -304,7 +297,7 @@ ScreenText::scale () const
 
 	modelViewMatrix .get (translation, rotation, scale);
 
-	double   distance    = math::abs (modelViewMatrix .translation ());
+	double   distance    = math::abs (modelViewMatrix .origin ());
 	Vector3f screenScale = fontStyle -> getCurrentViewpoint () -> getScreenScale (distance, Viewport4i ());
 
 	Matrix4d matrix;

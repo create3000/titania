@@ -95,7 +95,7 @@ ScreenGroup::scale (const TraverseType type) const
 
 	modelViewMatrix .get (translation, rotation, scale);
 
-	double   distance    = math::abs (modelViewMatrix .translation ());
+	double   distance    = math::abs (modelViewMatrix .origin ());
 	Vector3f screenScale = getCurrentViewpoint () -> getScreenScale (distance, Viewport4i ());
 
 	Matrix4d matrix;

@@ -10,6 +10,10 @@ DEF Gray Background {
 
 Viewpoint {
   description "Viewpoint"
+}
+
+Viewpoint {
+  description "Debug"
   position 0 0.05 0.13
 }
 

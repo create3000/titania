@@ -119,10 +119,9 @@ X3DGeometryNode::setTextureCoordinate (X3DTextureCoordinateNode* value)
 bool
 X3DGeometryNode::intersect (const Line3f & line, std::deque <IntersectionPtr> & intersections) const
 {
-	bool     intersected = false;
-	Vector3f temp;
+	bool intersected = false;
 
-	if (bbox .intersect (line, temp))
+	if (bbox .intersect (line))
 	{
 		Matrix4f modelViewMatrix = ModelViewMatrix4f ();
 

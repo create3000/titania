@@ -68,13 +68,15 @@ getTriangleTreeRight ()
 	return floatBitsToInt (texelFetch (triangleTreeMap, ttNodeIndex + ttRightOffset) .x);
 }
 
-/* intersection */
+/* Ray triangle intersection test */
+
+#define INTERSECTIONS_SIZE  32
+#define TT_STACK_SIZE       64
 
 int debug = 0;
-#define TT_STACK_SIZE  64
 
 int
-getTriangleTreeIntersections (in Line3 line, in samplerBuffer surfaceMap, out vec3 points [32])
+getTriangleTreeIntersections (in Line3 line, in samplerBuffer surfaceMap, out vec3 points [INTERSECTIONS_SIZE])
 {
 	int current = getTriangleTreeRoot ();
 	int count   = 0;

@@ -48,13 +48,30 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_MATH_UTILITY_NORMAL_H__
-#define __TITANIA_MATH_UTILITY_NORMAL_H__
+#ifndef __TITANIA_MATH_GEOMETRY_TRIANGLE3_H__
+#define __TITANIA_MATH_GEOMETRY_TRIANGLE3_H__
 
 #include "../Numbers/Vector3.h"
 
 namespace titania {
 namespace math {
+
+// v1
+//  |
+//  |
+//  |
+//  |
+//  ----------
+// v2         v3
+
+///  Returns the area of the triangle with the vertices @a v1, @a v2 and @a v3.
+template <class Type>
+inline
+Type
+area (const vector3 <Type> & v1, const vector3 <Type> & v2, const vector3 <Type> & v3)
+{
+	return abs (cross (v2 - v1, v3 - v1)) / 2;
+}
 
 // v1
 //  |

@@ -100,7 +100,6 @@
     <None Include="Titania\Math\Constants.h" />
     <None Include="Titania\Math\Functional.h" />
     <None Include="Titania\Physics\Constants.h" />
-    <None Include="Titania\Math\Utility\Normal.h" />
     <None Include="Titania\Math\Geometry\Cylinder3.h" />
     <None Include="Titania\InputOutput.h" />
     <None Include="Titania\InputOutput\Character.h" />
@@ -126,8 +125,8 @@
     <None Include="Titania\String\trim.h" />
     <None Include="Titania\String\naturally_compare.h" />
     <None Include="Titania\Algorithm\IndicesOf.h" />
-    <None Include="Titania\Math\Utility\Area.h" />
     <None Include="Titania\Math\Utility\Types.h" />
+    <None Include="Titania\Math\Geometry\Triangle3.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />
@@ -192,7 +191,7 @@
           <GacRefVar />
           <AsmRefVar />
           <ProjectRefVar />
-          <MessageRegex Name="gcc" />
+          <MessageRegex Error="^\s*(?&lt;file&gt;[^:]*):(?&lt;line&gt;\d*){1}(:(?&lt;column&gt;\d*))?\s*:\s*(fatal error|error)\s*:\s(?&lt;message&gt;.*)" Warning="^\s*(?&lt;file&gt;[^:]*):(?&lt;line&gt;\d*){1}(:(?&lt;column&gt;\d*))?\s*:\s*(warning|note)\s*:\s(?&lt;message&gt;.*)" Name="Custom" />
         </MonoDevelop.Autotools.MakefileInfo>
       </Properties>
     </MonoDevelop>
