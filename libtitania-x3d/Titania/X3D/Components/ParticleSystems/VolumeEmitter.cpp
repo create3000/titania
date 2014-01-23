@@ -248,29 +248,31 @@ public:
 
 		for (const auto & triangle : basic::adapter (begin, end))
 		{
-		for (size_t i = 0; i < 3; ++ i)
-		{
-			Vector3f vertex (getVertex (triangle, i));
-			min = math::min (min, vertex);
-			max = math::max (max, vertex);
+			for (size_t i = 0; i < 3; ++ i)
+			{
+				Vector3f vertex (getVertex (triangle, i));
+				min = math::min (min, vertex);
+				max = math::max (max, vertex);
+			}
 		}
-		}
 
-		// Sort array
-
-		size_t axis = getLongestAxis (min, max);
-
-		std::sort (begin, end, std::bind (SortComparator (tree), _1, _2, axis));
-
-		// Split array
+		// Sort and split array
 
 		size_t leftSize = 0;
 
 		if (size > 2)
 		{
-			//float value = (min [axis] + max [axis]) / 2;
+			// Sort array
+
+			size_t axis = getLongestAxis (min, max);
+
+			std::sort (begin, end, std::bind (SortComparator (tree), _1, _2, axis));
+
+			// Split array
+
 			float value = (getMin (*begin, axis) + getMin (*(end - 1), axis)) / 2;
 			auto  iter  = std::lower_bound (begin, end, value, std::bind (MedianComparator (tree), _1, _2, axis));
+
 			leftSize = iter - begin;
 
 			if (leftSize == 0 or leftSize == size)

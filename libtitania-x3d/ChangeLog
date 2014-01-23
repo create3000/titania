@@ -1,5 +1,13 @@
 2014-01-23  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBrowserContext.cpp:
+	* Random.h:
+	* VolumeEmitter.vs:
+	* VolumeEmitter.cpp:
+	* ParticleSystem.cpp: 
+
+2014-01-23  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Geometry.h:
 	* Sound.cpp:
 	* LOD.cpp:

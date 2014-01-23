@@ -464,7 +464,7 @@ X3DBrowserContext::pick (const double _x, const double _y)
 
 	// Pick.
 	
-	//update (); // We cannot make an update here
+	//update (); // We cannot make an update here because of gravity.
 
 	getWorld () -> traverse (TraverseType::PICKING);
 

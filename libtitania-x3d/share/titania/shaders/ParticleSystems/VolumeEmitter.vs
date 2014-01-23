@@ -10,9 +10,7 @@ uniform samplerBuffer surfaceAreaMap;
 #pragma X3D include "X3DParticleEmitterNode.h"
 #pragma X3D include "Bits/TriangleTree.h"
 
-/*  */
-
-/* CombSort points along a line */
+/* CombSort: sort points along a line */
 
 void
 sort (inout vec3 array [INTERSECTIONS_SIZE], in int length, in Line3 line)
