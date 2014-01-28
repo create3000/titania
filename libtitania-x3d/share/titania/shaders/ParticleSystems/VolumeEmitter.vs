@@ -6,9 +6,10 @@ uniform vec3          direction;
 uniform samplerBuffer normalMap;
 uniform samplerBuffer surfaceMap;
 uniform samplerBuffer surfaceAreaMap;
+uniform samplerBuffer volumeMap;
 
 #pragma X3D include "X3DParticleEmitterNode.h"
-#pragma X3D include "Bits/TriangleTree.h"
+#pragma X3D include "Bits/BVH.h"
 
 /* CombSort: sort points along a line */
 
@@ -63,9 +64,10 @@ getRandomPosition ()
 	Line3 line = Line3 (point, random_normal (normal));
 
 	vec3 points [INTERSECTIONS_SIZE];
-	int  intersections = getTriangleTreeIntersections (line, surfaceMap, points);
+	int  intersections = getIntersections (volumeMap, line, surfaceMap, points);
 
-	//return vec3 (float (debug) / float (textureSize (surfaceAreaMap) - 1), float (gl_VertexID) / 100000.0f, 0.0f);
+	// Debug
+	//return vec3 (float (bvhDebug) / float (textureSize (surfaceAreaMap) - 1), float (gl_VertexID) / 100000.0f, 0.0f);
 
 	if (intersections == 0)
 		return vec3 (INFINITY);
@@ -73,6 +75,22 @@ getRandomPosition ()
 	sort (points, intersections, line);
 
 	int index = int (round (random1 (0, intersections / 2 - 1))) * 2;
+
+	//	// Debug
+	//	if (getFromElapsedTime () == 0.0f)
+	//	{
+	//		int maxParticles = textureSize (particleMap) / stride;
+	//		int fieldSize    = int (sqrt (maxParticles));
+	//
+	//		return vec3 ((gl_VertexID % fieldSize) / float (fieldSize - 1),
+	//		             gl_VertexID / fieldSize / float (fieldSize - 1),
+	//		             0.0f);
+	//	}
+	//	else
+	//	{
+	//		return getFromPosition ();
+	//	}
+	//	//
 
 	return points [index] + (points [index + 1] - points [index]) * fract (random1 ());
 }

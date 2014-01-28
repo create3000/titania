@@ -150,9 +150,11 @@ main ()
 {
 	setParticleIndex (odd_even_merge_sort (gl_VertexID));
 
-	srand (getFromSeed () + gl_VertexID);
+	srand (getFromSeed ());
 
-	if (getFromElapsedTime () > getFromLifetime ())
+	float elapsedTime = getFromElapsedTime () + deltaTime;
+
+	if (elapsedTime > getFromLifetime ())
 	{
 		to .lifetime    = getRandomLifetime ();
 		to .position    = getRandomPosition ();
@@ -164,8 +166,7 @@ main ()
 	}
 	else
 	{
-		vec3  velocity    = getVelocity ();
-		float elapsedTime = getFromElapsedTime () + deltaTime;
+		vec3 velocity = getVelocity ();
 
 		to .lifetime    = getFromLifetime ();
 		to .position    = getFromPosition () + velocity * deltaTime;
@@ -175,4 +176,8 @@ main ()
 		to .distance    = getDistance (to .position);
 		to .seed        = srand ();
 	}
+
+	// Debug
+	//to .position .y = getFromElapsedTime () / particleLifetime;
+	//to .position .z = float (gl_VertexID) / float (textureSize (particleMap) / stride);
 }

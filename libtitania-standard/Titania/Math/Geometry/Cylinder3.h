@@ -132,8 +132,7 @@ cylinder3 <Type>::intersect (const line3 <Type> & line, vector3 <Type> & enter, 
 
 	// rotation to y axis
 	rotation4 <Type> rotToYAxis (axis () .direction (), vector3 <Type> (0, 1, 0));
-	matrix4 <Type>   mtxToYAxis;
-	mtxToYAxis .rotation (rotToYAxis);
+	matrix4 <Type>   mtxToYAxis (rotToYAxis);
 
 	// scale to unit space
 	Type           scaleFactor = 1 / radius ();

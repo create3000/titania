@@ -52,6 +52,7 @@
 
 #include "../../Bits/config.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Miscellaneous/BVH.h"
 
 namespace titania {
 namespace X3D {
@@ -59,329 +60,6 @@ namespace X3D {
 const std::string VolumeEmitter::componentName  = "ParticleSystems";
 const std::string VolumeEmitter::typeName       = "VolumeEmitter";
 const std::string VolumeEmitter::containerField = "emitter";
-
-// TriangleTree
-
-static constexpr int32_t TRIANGLE_TREE_NODE     = 0;
-static constexpr int32_t TRIANGLE_TREE_TRIANGLE = 1;
-
-class TriangleTree
-{
-public:
-
-	struct ArrayValue
-	{
-		ArrayValue (int32_t type, Vector3f min, Vector3f max, int32_t left, int32_t right) :
-			 type (type),
-			  min (min),
-			  max (max),
-			 left (left),
-			right (right)
-	     	{ }
-
-		int32_t type;
-		Vector3f min;
-		Vector3f max;
-		int32_t left;
-		int32_t right;
-	};
-
-	TriangleTree (std::vector <Vector3f>&&);
-
-	std::vector <ArrayValue>
-	toArray () const;
-
-
-private:
-
-	class SortComparator;
-	class MedianComparator;
-
-	class X3DNode;
-	class Triangle;
-	class Node;
-
-	// Members
-
-	std::vector <Vector3f>    vertices;
-	std::unique_ptr <X3DNode> root;
-
-};
-
-struct TriangleTree::SortComparator
-{
-	SortComparator (TriangleTree* const tree) :
-		tree (tree)
-	{ }
-
-	bool
-	operator () (const size_t & a, const size_t & b, size_t axis) const
-	{
-		return min (a, axis) < min (b, axis);
-	}
-
-	float
-	min (size_t triangle, size_t axis) const
-	{
-		size_t i = triangle * 3;
-
-		return std::min ({ tree -> vertices [i] [axis],
-		                   tree -> vertices [i + 1] [axis],
-		                   tree -> vertices [i + 2] [axis] });
-	}
-
-	TriangleTree* const tree;
-
-};
-
-struct TriangleTree::MedianComparator
-{
-	MedianComparator (TriangleTree* const tree) :
-		tree (tree)
-	{ }
-
-	bool
-	operator () (const size_t & a, const float & value, size_t axis) const
-	{
-		return min (a, axis) < value;
-	}
-
-	float
-	min (size_t triangle, size_t axis) const
-	{
-		size_t i = triangle * 3;
-
-		return std::min ({ tree -> vertices [i] [axis],
-		                   tree -> vertices [i + 1] [axis],
-		                   tree -> vertices [i + 2] [axis] });
-	}
-
-	TriangleTree* const tree;
-
-};
-
-// TriangleTree::X3DNode
-
-class TriangleTree::X3DNode
-{
-public:
-
-	X3DNode (TriangleTree* const tree) :
-		tree (tree)
-	{ }
-
-	const Vector3f &
-	getVertex (size_t triangle, size_t index) const
-	{ return tree -> vertices [triangle * 3 + index]; }
-
-	float
-	getMin (size_t triangle, size_t axis) const
-	{
-		size_t i = triangle * 3;
-
-		return std::min ({ tree -> vertices [i] [axis],
-		                   tree -> vertices [i + 1] [axis],
-		                   tree -> vertices [i + 2] [axis] });
-	}
-
-	virtual
-	size_t
-	toArray (std::vector <ArrayValue> &) const = 0;
-
-	// Members
-
-	TriangleTree* const tree;
-
-};
-
-// TriangleTree::Triangle
-
-class TriangleTree::Triangle :
-	public X3DNode
-{
-public:
-
-	Triangle (TriangleTree* const tree, size_t triangle) :
-		 X3DNode (tree),
-		triangle (triangle)
-	{ }
-
-	virtual
-	size_t
-	toArray (std::vector <ArrayValue> & array) const
-	{
-		size_t index = array .size ();
-
-		array .emplace_back (TRIANGLE_TREE_TRIANGLE, Vector3f (), Vector3f (), triangle, 0);
-
-		return index;
-	}
-
-	size_t triangle;
-
-};
-
-// TriangleTree::Node
-
-class TriangleTree::Node :
-	public X3DNode
-{
-public:
-
-	Node (TriangleTree* const tree, std::vector <size_t> & triangles, size_t first, size_t size) :
-		X3DNode (tree),
-		    min (),
-		    max (),
-		   left (),
-		  right ()
-	{
-		using namespace std::placeholders;
-
-		size_t last  = first + size;
-		auto   begin = triangles .begin () + first;
-		auto   end   = triangles .begin () + last;
-
-		// Calculate bbox
-
-		min = getVertex (*begin, 0);
-		max = min;
-
-		for (const auto & triangle : basic::adapter (begin, end))
-		{
-			for (size_t i = 0; i < 3; ++ i)
-			{
-				Vector3f vertex (getVertex (triangle, i));
-				min = math::min (min, vertex);
-				max = math::max (max, vertex);
-			}
-		}
-
-		// Sort and split array
-
-		size_t leftSize = 0;
-
-		if (size > 2)
-		{
-			// Sort array
-
-			size_t axis = getLongestAxis (min, max);
-
-			std::sort (begin, end, std::bind (SortComparator (tree), _1, _2, axis));
-
-			// Split array
-
-			float value = (getMin (*begin, axis) + getMin (*(end - 1), axis)) / 2;
-			auto  iter  = std::lower_bound (begin, end, value, std::bind (MedianComparator (tree), _1, _2, axis));
-
-			leftSize = iter - begin;
-
-			if (leftSize == 0 or leftSize == size)
-				leftSize = size >> 1;
-		}
-		else
-			leftSize = size >> 1;
-
-		size_t rightSize = size - leftSize;
-
-		// Construct left and right node
-
-		if (leftSize > 1)
-			left  .reset (new Node (tree, triangles, first, leftSize));
-		else
-			left .reset (new Triangle (tree, triangles [first] * 3));
-
-		if (rightSize > 1)
-			right .reset (new Node (tree, triangles, first + leftSize, rightSize));
-		else
-			right .reset (new Triangle (tree, triangles [first + leftSize] * 3));
-	}
-
-	virtual
-	size_t
-	toArray (std::vector <ArrayValue> & array) const
-	{
-		size_t leftIndex  = left -> toArray (array);
-		size_t rightIndex = right -> toArray (array);
-		size_t index      = array .size ();
-
-		array .emplace_back (TRIANGLE_TREE_NODE, min, max, leftIndex, rightIndex);
-
-		return index;
-	}
-
-private:
-
-	size_t
-	getLongestAxis (const Vector3f & min, const Vector3f & max) const
-	{
-		Vector3f size = max - min;
-
-		if (size .x () < size .y ())
-		{
-			if (size .y () < size .z ())
-				return 2;
-			else
-				return 1;
-		}
-		else
-		{
-			if (size .x () < size .z ())
-				return 2;
-			else
-				return 0;
-		}
-	}
-
-	// Members
-
-	Vector3f min;
-	Vector3f max;
-
-	std::unique_ptr <X3DNode> left;
-	std::unique_ptr <X3DNode> right;
-
-};
-
-// TriangleTree
-
-TriangleTree::TriangleTree (std::vector <Vector3f>&& _vertices) :
-	vertices (std::move (_vertices)),
-	    root ()
-{
-	size_t size = vertices .size () / 3;
-
-	switch (size)
-	{
-		case 0:
-			break;
-		case 1:
-		{
-			root .reset (new TriangleTree::Triangle (this, 0));
-			break;
-		}
-		default:
-		{
-			std::vector <size_t> triangles (size);
-			std::iota (triangles .begin (), triangles .end (), 0);
-
-			root .reset (new TriangleTree::Node (this, triangles, 0, size));
-			break;
-		}
-	}
-}
-
-std::vector <TriangleTree::ArrayValue>
-TriangleTree::toArray () const
-{
-	std::vector <ArrayValue> array;
-
-	if (root)
-		root -> toArray (array);
-
-	return array;
-}
-
-// VolumeEmitter
 
 VolumeEmitter::Fields::Fields () :
 	  internal (new SFBool (true)),
@@ -400,8 +78,8 @@ VolumeEmitter::VolumeEmitter (X3DExecutionContext* const executionContext) :
 	       surfaceBufferId (0),
 	      surfaceAreaMapId (0),
 	   surfaceAreaBufferId (0),
-	     triangleTreeMapId (0),
-	  triangleTreeBufferId (0),
+	           volumeMapId (0),
+	        volumeBufferId (0),
 	           surfaceNode (new IndexedFaceSet (getExecutionContext ())),
 	          pointEmitter (false),
 	                 solid (true)
@@ -441,8 +119,8 @@ VolumeEmitter::initialize ()
 	glGenTextures (1, &surfaceAreaMapId);
 	glGenBuffers  (1, &surfaceAreaBufferId);
 
-	glGenTextures (1, &triangleTreeMapId);
-	glGenBuffers  (1, &triangleTreeBufferId);
+	glGenTextures (1, &volumeMapId);
+	glGenBuffers  (1, &volumeBufferId);
 
 	// Setup
 
@@ -498,12 +176,12 @@ VolumeEmitter::set_geometry ()
 
 	// Triangle tree
 
-	TriangleTree tree (std::move (vertices));
+	BVH tree (std::move (vertices));
 
 	auto treeArray = std::move (tree .toArray ());
 
-	glBindBuffer (GL_TEXTURE_BUFFER, triangleTreeBufferId);
-	glBufferData (GL_TEXTURE_BUFFER, treeArray .size () * sizeof (TriangleTree::ArrayValue), pointEmitter ? 0 : treeArray .data (), GL_STATIC_COPY);
+	glBindBuffer (GL_TEXTURE_BUFFER, volumeBufferId);
+	glBufferData (GL_TEXTURE_BUFFER, treeArray .size () * sizeof (BVH::ArrayValue), pointEmitter ? 0 : treeArray .data (), GL_STATIC_COPY);
 
 	// Update textures
 
@@ -516,8 +194,8 @@ VolumeEmitter::set_geometry ()
 	glBindTexture (GL_TEXTURE_BUFFER, surfaceAreaMapId);
 	glTexBuffer (GL_TEXTURE_BUFFER, GL_R32F, surfaceAreaBufferId);
 
-	glBindTexture (GL_TEXTURE_BUFFER, triangleTreeMapId);
-	glTexBuffer (GL_TEXTURE_BUFFER, GL_R32F, triangleTreeBufferId);
+	glBindTexture (GL_TEXTURE_BUFFER, volumeMapId);
+	glTexBuffer (GL_TEXTURE_BUFFER, GL_R32F, volumeBufferId);
 
 	glBindTexture (GL_TEXTURE_BUFFER, 0);
 	glBindBuffer (GL_TEXTURE_BUFFER, 0);
@@ -537,12 +215,12 @@ VolumeEmitter::addShaderFields (const X3DSFNode <ComposedShader> & shader) const
 	shader -> addUserDefinedField (inputOutput, "pointEmitter", new SFBool (pointEmitter));
 	shader -> addUserDefinedField (inputOutput, "direction",    new SFVec3f (normalize (direction () .getValue ())));
 
-	shader -> addUserDefinedField (inputOutput, "ttStride",      new SFInt32 (sizeof (TriangleTree::ArrayValue) / sizeof (float)));
-	shader -> addUserDefinedField (inputOutput, "ttTypeOffset",  new SFInt32 (offsetof (TriangleTree::ArrayValue, type) / sizeof (float)));
-	shader -> addUserDefinedField (inputOutput, "ttMinOffset",   new SFInt32 (offsetof (TriangleTree::ArrayValue, min) / sizeof (float)));
-	shader -> addUserDefinedField (inputOutput, "ttMaxOffset",   new SFInt32 (offsetof (TriangleTree::ArrayValue, max) / sizeof (float)));
-	shader -> addUserDefinedField (inputOutput, "ttLeftOffset",  new SFInt32 (offsetof (TriangleTree::ArrayValue, left) / sizeof (float)));
-	shader -> addUserDefinedField (inputOutput, "ttRightOffset", new SFInt32 (offsetof (TriangleTree::ArrayValue, right) / sizeof (float)));
+	shader -> addUserDefinedField (inputOutput, "bvhStride",      new SFInt32 (sizeof (BVH::ArrayValue) / sizeof (float)));
+	shader -> addUserDefinedField (inputOutput, "bvhTypeOffset",  new SFInt32 (offsetof (BVH::ArrayValue, type) / sizeof (float)));
+	shader -> addUserDefinedField (inputOutput, "bvhMinOffset",   new SFInt32 (offsetof (BVH::ArrayValue, min) / sizeof (float)));
+	shader -> addUserDefinedField (inputOutput, "bvhMaxOffset",   new SFInt32 (offsetof (BVH::ArrayValue, max) / sizeof (float)));
+	shader -> addUserDefinedField (inputOutput, "bvhLeftOffset",  new SFInt32 (offsetof (BVH::ArrayValue, left) / sizeof (float)));
+	shader -> addUserDefinedField (inputOutput, "bvhRightOffset", new SFInt32 (offsetof (BVH::ArrayValue, right) / sizeof (float)));
 }
 
 void
@@ -551,7 +229,7 @@ VolumeEmitter::setTextureBuffer (const X3DSFNode <ComposedShader> & shader) cons
 	shader -> setTextureBuffer ("normalMap",       normalMapId);
 	shader -> setTextureBuffer ("surfaceMap",      surfaceMapId);
 	shader -> setTextureBuffer ("surfaceAreaMap",  surfaceAreaMapId);
-	shader -> setTextureBuffer ("triangleTreeMap", triangleTreeMapId);
+	shader -> setTextureBuffer ("volumeMap",       volumeMapId);
 }
 
 void
@@ -588,11 +266,11 @@ VolumeEmitter::dispose ()
 	if (surfaceAreaBufferId)
 		glDeleteBuffers (1, &surfaceAreaBufferId);
 
-	if (triangleTreeMapId)
-		glDeleteTextures (1, &triangleTreeMapId);
+	if (volumeMapId)
+		glDeleteTextures (1, &volumeMapId);
 
-	if (triangleTreeBufferId)
-		glDeleteBuffers (1, &triangleTreeBufferId);
+	if (volumeBufferId)
+		glDeleteBuffers (1, &volumeBufferId);
 
 	// Dispose base
 

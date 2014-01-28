@@ -5,33 +5,21 @@
 /* Box3 */
 
 const vec3 box3_normals [5] = vec3 [ ] (
-	vec3 ( 0.0f,  0.0f,  1.0f),
-	vec3 ( 0.0f,  0.0f, -1.0f),
-	vec3 ( 0.0f,  1.0f,  0.0f),
-	vec3 ( 0.0f, -1.0f,  0.0f),
-	vec3 ( 1.0f,  0.0f,  0.0f)
+	vec3 (0.0f,  0.0f,  1.0f), // front
+	vec3 (0.0f,  0.0f, -1.0f), // back
+	vec3 (0.0f,  1.0f,  0.0f), // top
+	vec3 (0.0f, -1.0f,  0.0f), // bottom
+	vec3 (1.0f,  0.0f,  0.0f)  // right
 );
 
 bool
 intersect (in vec3 min, in vec3 max, in Line3 line)
 {
-	vec3 center = (min + max) / 2.0f;
-
-	vec3 points [5] = vec3 [ ] (
-		vec3 (center .x, center .y, max .z), // right
-		vec3 (center .x, center .y, min .z), // left
-
-		vec3 (center .x, max .y, center .z), // top
-		vec3 (center .x, min .y, center .z), // bottom
-
-		vec3 (max .x, center .y, center .z)  // front
-	);
-
 	vec3 intersection = vec3 (0.0f);
 
 	for (int i = 0; i < 5; ++ i)
 	{
-		if (intersect (plane3 (points [i], box3_normals [i]), line, intersection))
+		if (intersect (plane3 (i % 2 == 1 ? min : max, box3_normals [i]), line, intersection))
 		{
 			switch (i)
 			{

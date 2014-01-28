@@ -59,7 +59,7 @@ namespace math {
 // This algorithm is taken from SGI's OpenInventor Matrix4 implementation.
 // The original name of this function is 'jacobi'.
 
-template <class MatrixType, size_t JacobiRank = MatrixType::order () - 1>
+template <class MatrixType, size_t JacobiRank = MatrixType::order ()>
 void
 eigen_decomposition (MatrixType matrix,
                      typename MatrixType::value_type evalues [JacobiRank],
@@ -105,7 +105,7 @@ eigen_decomposition (MatrixType matrix,
 			return;
 
 		thresh = i < 3 ?
-		         .2 * sm / (JacobiRank * JacobiRank) :
+		         sm / (JacobiRank * JacobiRank) / 5:
 		         0;
 
 		for (size_t p = 0; p < JacobiRank - 1; p ++)
@@ -125,7 +125,7 @@ eigen_decomposition (MatrixType matrix,
 						t = a [p] [q] / h;
 					else
 					{
-						theta = .5 * h / a [p] [q];
+						theta = h / a [p] [q] / 2;
 						t     = 1 / (std::abs (theta) + std::sqrt (1 + theta * theta));
 
 						if (theta < 0)

@@ -206,6 +206,8 @@ typedef math::cylinder3 <float>  Cylinder3f;
 typedef math::plane3 <float>     Plane3f;
 typedef math::line3 <float>      Line3f;
 typedef math::sphere3 <float>    Sphere3f;
+typedef math::matrix3 <float>    Matrix3f;
+typedef math::matrix4 <float>    Matrix4f;
 
 //#include <v8.h>
 //
@@ -255,6 +257,54 @@ random1 ()
 }
 
 
+Matrix3f
+multiply (const Vector3f & lhs, const Vector3f & rhs)
+{
+	Matrix3f result;
+	
+	result [0] = lhs [0] * rhs;
+	result [1] = lhs [1] * rhs;
+	result [2] = lhs [2] * rhs;
+
+	return result;
+}
+
+void
+obb (const std::vector <Vector3f> & points)
+{
+	std::clog << std::endl;
+	std::clog << std::endl;
+
+	Box3f    aabb (points .begin (), points .end (), math::iterator_type ());
+	Vector3f center (aabb .center ());
+
+	Vector3f min, max;
+	aabb .extends (min, max);
+
+	std::clog << aabb << std::endl;
+
+	Matrix3f covariance (0,0,0, 0,0,0, 0,0,0);
+	
+	for (const auto & point : points)
+		covariance += multiply (point - min, point - min);
+
+	//covariance /= points .size ();
+
+	//covariance -= multiply (min, min);
+
+	std::clog << covariance << std::endl;
+
+	float evalues [3];
+	float evectors [3] [3];
+
+	eigen_decomposition (covariance, evalues, evectors);
+	
+	std::clog << Vector3f (evectors [0] [0], evectors [0] [1], evectors [0] [2]) << std::endl;
+	std::clog << Vector3f (evectors [1] [0], evectors [1] [1], evectors [1] [2]) << std::endl;
+	std::clog << Vector3f (evectors [2] [0], evectors [2] [1], evectors [2] [2]) << std::endl;
+	std::clog << std::endl;
+}
+
 int
 main (int argc, char** argv)
 {
@@ -264,31 +314,22 @@ main (int argc, char** argv)
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
 
+	obb (std::vector <Vector3f> {
+		Vector3f (1, 0, 0),
+		Vector3f (2, 1, 0),
+		Vector3f (1, 2, 0),
+		Vector3f (0, 1, 0)
+	});
 
-	Vector3f normal1 (-1, 1, 0);
-	Vector3f normal2 (1, 1, 0);
-	Vector3f normal3 (0, 1, -1);
-	
-	normal1 .normalize ();
-	normal2 .normalize ();
-	normal3 .normalize ();
+	obb (std::vector <Vector3f> {
+		Vector3f ( 0,    0,   0),
+		Vector3f (-1,   -0.5, 0),
+		Vector3f (-0.5, -1.5, 0),
+		Vector3f ( 0.5, -1,   0)
+	});
 
-	float u = random1 ();
-	float v = random1 ();
-
-	if (u + v > 1.0f)
-	{
-		u = 1.0f - u;
-		v = 1.0f - v;
-	}
-
-	Vector3f direction = (1 - u - v) * normal1 + u * normal2 + v * normal3;
-
-	std::clog << random1 () << std::endl;
-	std::clog << abs (direction) << std::endl;
 
 	std::clog << "Function main done." << std::endl;
-	exit (0);
 	return 0;
 }
 

@@ -2388,6 +2388,7 @@
     <None Include="Tests\ParticleSystems\U-Volume.wrl" />
     <None Include="Tests\ParticleSystems\SphereEmitter.wrl" />
     <None Include="Tests\ParticleSystems\BoxEmitter.wrl" />
+    <None Include="Tests\ParticleSystems\Earth.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

@@ -21,7 +21,7 @@ ParticleSystem {
   geometryType "POINT"
   maxParticles 80000
   particleLifetime 40
-  lifetimeVariation 0.01
+  lifetimeVariation 1
   particleSize 0.1 0.1
   colorKey [ 0, 0.1, 0.4, 1 ]
   emitter VolumeEmitter {
@@ -34,11 +34,11 @@ ParticleSystem {
     }
   }
   colorRamp ColorRGBA {
-    color [ 1 0.38 0 1, 1 0.58 0.06 1, 1 0.37 0 1, 1 0.05 0 1 ]
+    color [ 1 0.38 0 0.5, 1 0.58 0.06 0.5, 1 0.37 0 0.5, 1 0.05 0 0.5 ]
   }
   appearance Appearance {
     lineProperties LineProperties {
-      linewidthScaleFactor 2
+      linewidthScaleFactor 1
     }
   }
 }

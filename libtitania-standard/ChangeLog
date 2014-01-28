@@ -1,3 +1,17 @@
+2014-01-28  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Functional.h:
+	* libtitania-standard.cproj:
+	* Box3.h:
+	* strtol.h:
+	* StrToL.h:
+	* Matrix4.h:
+	* Matrix3.h:
+	* Plane3.h:
+	* Rotation4.h:
+	* Cylinder3.h:
+	* EigenDecomposition.h: 
+
 2014-01-23  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* libtitania-standard.cproj:

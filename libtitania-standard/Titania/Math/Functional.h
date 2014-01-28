@@ -168,7 +168,7 @@ maximum_norm (const Type & value)
 {
 	typename Type::value_type norm = std::abs (value [0]);
 
-	for (size_t i = 1; i < value .size (); ++ i)
+	for (size_t i = 1, size = value .size (); i < size; ++ i)
 	{
 		norm = std::max (norm, std::abs (value [i]));
 	}

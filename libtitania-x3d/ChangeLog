@@ -1,3 +1,37 @@
+2014-01-28  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Random.h:
+	* Shader.h:
+	* Shader.cpp:
+	* Random.cpp:
+	* Linetypes.h:
+	* BVH.h:
+	* BVH.cpp:
+	* Random.h:
+	* Shader.h:
+	* Random.cpp:
+	* Shader.cpp:
+	* ShaderPart.cpp:
+	* ClipPlane.cpp:
+	* ShaderProgram.cpp:
+	* BVH.h:
+	* Math.h:
+	* Box3.h:
+	* Color.h:
+	* Random.h:
+	* TextureTransform.cpp:
+	* VolumeEmitter.vs:
+	* VolumeEmitter.h:
+	* VolumeEmitter.cpp:
+	* ParticleMap.h:
+	* ParticleSystem.cpp:
+	* TriangleTree.h:
+	* WindPhysicsModel.cpp:
+	* OddEvenMergeSort.h:
+	* X3DParticleEmitterNode.h: 
+
 2014-01-23  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBrowserContext.cpp:

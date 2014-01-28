@@ -11,13 +11,16 @@ uniform int  sortSize;
 #define TwoStage_PmS_1 sortParam .z
 #define Pass           sortParam .w
 
+float
+getDistance (in int);
+
 int
 odd_even_merge_sort (in int self)
 {
 	if (self < sortSize)
 	{
 		// My position within the range to merge.
-		float j = floor (mod (self, TwoStage));
+		float j = mod (self, TwoStage); //float j = floor (mod (self, TwoStage));
 
 		if ((j < Pass_mod_Stage) || (j > TwoStage_PmS_1))
 		{
@@ -27,8 +30,8 @@ odd_even_merge_sort (in int self)
 
 		// Must sort.
 
-		float compare = 1.0f;
-		int   partner = self;
+		bool compare = true;
+		int  partner = self;
 
 		if (mod ((j + Pass_mod_Stage) / Pass, 2.0f) < 1.0f)
 		{
@@ -38,13 +41,18 @@ odd_even_merge_sort (in int self)
 		else
 		{
 			// We are on the right side -> compare with partner on the left.
-			compare  = -1.0f;
+			compare  = false;
 			partner -= int (Pass);
 		}
 
 		if (partner < sortSize)
+		{
 			// On the left its a < operation, on the right its a >= operation.
-			return getDistance (self) * compare < getDistance (partner) * compare ? self : partner;
+			if (compare)
+				return getDistance (self) < getDistance (partner) ? self : partner;
+			else
+				return getDistance (self) > getDistance (partner) ? self : partner;
+		}
 	}
 
 	return self;

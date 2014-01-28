@@ -85,12 +85,14 @@ transpose (const matrix4 <Type> & matrix);
 template <class Type>
 inline
 matrix4 <Type>
-operator ~ (const matrix4 <Type> & matrix);
+operator ~ (const matrix4 <Type> & matrix)
+throw (std::domain_error);
 
 template <class Type>
 inline
 matrix4 <Type>
-inverse (const matrix4 <Type> & matrix);
+inverse (const matrix4 <Type> & matrix)
+throw (std::domain_error);
 
 template <class Type>
 inline
@@ -183,18 +185,35 @@ public:
 	{ }
 
 	///  Constructs a matrix4 from a rotation4.
-	matrix4 (const rotation4 <Type> & rot)
-	{ rotation (rot); }
+	explicit
+	matrix4 (const rotation4 <Type> & rot) :
+		matrix4 (matrix3 <Type> (rot))
+	{ }
 
-	///  Constructs a matrix4 from a matrix3.
-	matrix4 (const matrix3 <Type> & matrix)
-	{ *this = matrix; }
+	///  Constructs a matrix4 from a matrix3 rotation matrix.
+	explicit
+	constexpr
+	matrix4 (const matrix3 <Type> & matrix) :
+		array
+	{
+		matrix [0] [0],
+		matrix [0] [1],
+		matrix [0] [2],
+		0,
+		matrix [1] [0],
+		matrix [1] [1],
+		matrix [1] [2],
+		0,
+		matrix [2] [0],
+		matrix [2] [1],
+		matrix [2] [2],
+		0,
+		0, 0, 0, 1,
+	}
+
+	{ }
 
 	///  @name Assignment operators
-
-	template <class Up>
-	matrix4 &
-	operator = (const matrix3 <Up> &);
 
 	template <class Up>
 	matrix4 &
@@ -205,27 +224,25 @@ public:
 
 	///  @name Element access
 
+	constexpr
 	vector3_type
 	x () const
 	{ return vector3_type (array [0], array [1], array [2]); }
 
+	constexpr
 	vector3_type
 	y () const
 	{ return vector3_type (array [4], array [5], array [6]); }
 
+	constexpr
 	vector3_type
 	z () const
 	{ return vector3_type (array [8], array [9], array [10]); }
 
+	constexpr
 	vector3_type
 	origin () const
 	{ return vector3_type (array [12], array [13], array [14]); }
-
-	void
-	rotation (const rotation4 <Type> &);
-
-	rotation4 <Type>
-	rotation () const;
 
 	void
 	set ();
@@ -284,6 +301,12 @@ public:
 	operator [ ] (const size_type index) const
 	{ return value [index]; }
 
+	constexpr
+	operator matrix3 <Type> () const
+	{ return matrix3 <Type> (array [0], array [1], array [2],
+	                         array [4], array [5], array [6],
+	                         array [8], array [9], array [10]); }
+
 	///  Returns pointer to the underlying array serving as element storage.
 	///  Specifically the pointer is such that range [data (); data () + size ()) is valid.
 	Type*
@@ -334,7 +357,18 @@ public:
 
 	///  Returns this matrix inversed.
 	matrix4 &
-	inverse ();
+	inverse ()
+	throw (std::domain_error);
+
+	///  Add @a matrix to this matrix.
+	template <class T>
+	matrix4 &
+	operator += (const matrix4 <T> &);
+
+	///  Add @a matrix to this matrix.
+	template <class T>
+	matrix4 &
+	operator -= (const matrix4 <T> &);
 
 	///  Returns this matrix multiplies by @a scalar.
 	matrix4 &
@@ -406,9 +440,9 @@ private:
 
 	bool
 	factor (vector3 <Type> & translation,
-	        matrix4 & rotation,
+	        matrix3 <Type> & rotation,
 	        vector3 <Type> & scale,
-	        matrix4 & scaleOrientation) const;
+	        matrix3 <Type> & scaleOrientation) const;
 
 	Type
 	determinant3 (int r1, int r2, int r3, int c1, int c2, int c3) const;
@@ -431,34 +465,6 @@ const matrix4 <Type> matrix4 <Type>::Identity = { 1, 0, 0, 0,
 
 template <class Type>
 template <class Up>
-matrix4 <Type> &
-matrix4 <Type>::operator = (const matrix3 <Up> & matrix)
-{
-	array [ 0] = matrix [0] [0];
-	array [ 1] = matrix [0] [1];
-	array [ 2] = 0;
-	array [ 3] = matrix [0] [2];
-
-	array [ 4] = matrix [1] [0];
-	array [ 5] = matrix [1] [1];
-	array [ 6] = 0;
-	array [ 7] = matrix [1] [2];
-
-	array [ 8] = 0;
-	array [ 9] = 0;
-	array [10] = 1;
-	array [11] = 0;
-
-	array [12] = matrix [2] [0];
-	array [13] = matrix [2] [1];
-	array [14] = 0;
-	array [15] = matrix [2] [2];
-
-	return *this;
-}
-
-template <class Type>
-template <class Up>
 inline
 matrix4 <Type> &
 matrix4 <Type>::operator = (const matrix4 <Up> & matrix)
@@ -477,85 +483,7 @@ matrix4 <Type>::operator = (const matrix4 <Type> & matrix)
 }
 
 template <class Type>
-void
-matrix4 <Type>::rotation (const rotation4 <Type> & r)
-{
-	Type x = r .quat () .x ();
-	Type y = r .quat () .y ();
-	Type z = r .quat () .z ();
-	Type w = r .quat () .w ();
-
-	array [ 0] = 1 - 2 * (y * y + z * z);
-	array [ 1] =     2 * (x * y + z * w);
-	array [ 2] =     2 * (z * x - y * w);
-	array [ 3] = 0;
-
-	array [ 4] =     2 * (x * y - z * w);
-	array [ 5] = 1 - 2 * (z * z + x * x);
-	array [ 6] =     2 * (y * z + x * w);
-	array [ 7] = 0;
-
-	array [ 8] =     2 * (z * x + y * w);
-	array [ 9] =     2 * (y * z - x * w);
-	array [10] = 1 - 2 * (y * y + x * x);
-	array [11] = 0;
-
-	array [12] = 0;
-	array [13] = 0;
-	array [14] = 0;
-	array [15] = 1;
-}
-
-template <class Type>
-rotation4 <Type>
-matrix4 <Type>::rotation () const
-{
-	Type quat [4];
-
-	int i;
-
-	// First, find largest diagonal in matrix:
-	if (value [0] [0] > value [1] [1])
-	{
-		i = value [0] [0] > value [2] [2] ? 0 : 2;
-	}
-	else
-	{
-		i = value [1] [1] > value [2] [2] ? 1 : 2;
-	}
-
-	Type scalerow = value [0] [0] + value [1] [1] + value [2] [2];
-
-	if (scalerow > value [i] [i])
-	{
-		// Compute w first:
-		quat [3] = std::sqrt (scalerow + value [3] [3]) / 2;
-
-		// And compute other values:
-		quat [0] = (value [1] [2] - value [2] [1]) / (4 * quat [3]);
-		quat [1] = (value [2] [0] - value [0] [2]) / (4 * quat [3]);
-		quat [2] = (value [0] [1] - value [1] [0]) / (4 * quat [3]);
-	}
-	else
-	{
-		// Compute x, y, or z first:
-		int j = (i + 1) % 3;
-		int k = (i + 2) % 3;
-
-		// Compute first value:
-		quat [i] = std::sqrt (value [i] [i] - value [j] [j] - value [k] [k] + value [3] [3]) / 2;
-
-		// And the others:
-		quat [j] = (value [i] [j] + value [j] [i]) / (4 * quat [i]);
-		quat [k] = (value [i] [k] + value [k] [i]) / (4 * quat [i]);
-
-		quat [3] = (value [j] [k] - value [k] [j]) / (4 * quat [i]);
-	}
-
-	return rotation4 <Type> (quaternion <Type> (quat [0], quat [1], quat [2], quat [3]));
-}
-
-template <class Type>
+inline
 void
 matrix4 <Type>::set ()
 {
@@ -656,6 +584,7 @@ matrix4 <Type>::set (const vector3 <Type> & translation,
 
 template <class Type>
 template <class T>
+inline
 void
 matrix4 <Type>::get (vector3 <T> & translation) const
 {
@@ -668,10 +597,10 @@ void
 matrix4 <Type>::get (vector3 <T> & translation,
                      rotation4 <R> & rotation) const
 {
-	matrix4 <Type> so, rot;
+	matrix3 <Type> so, rot;
 	vector3 <Type> scaleFactor;
 	factor (translation, rot, scaleFactor, so);
-	rotation = rot .rotation ();
+	rotation = rotation4 <R> (rot);
 }
 
 template <class Type>
@@ -681,9 +610,9 @@ matrix4 <Type>::get (vector3 <T> & translation,
                      rotation4 <R> & rotation,
                      vector3 <S> & scaleFactor) const
 {
-	matrix4 <Type> so, rot;
+	matrix3 <Type> so, rot;
 	factor (translation, rot, scaleFactor, so);
-	rotation = rot .rotation ();
+	rotation = rotation4 <R> (rot);
 }
 
 template <class Type>
@@ -694,10 +623,10 @@ matrix4 <Type>::get (vector3 <T> & translation,
                      vector3 <S> & scaleFactor,
                      rotation4 <SO> & scaleOrientation) const
 {
-	matrix4 <Type> so, rot;
+	matrix3 <Type> so, rot;
 	factor (translation, rot, scaleFactor, so);
-	rotation         = rot .rotation ();
-	scaleOrientation = so .rotation ();
+	rotation         = rotation4 <R> (rot);
+	scaleOrientation = rotation4 <R> (so);
 }
 
 template <class Type>
@@ -722,30 +651,25 @@ matrix4 <Type>::get (vector3 <T> & translation,
 template <class Type>
 bool
 matrix4 <Type>::factor (vector3 <Type> & translation,
-                        matrix4 & rotation,
+                        matrix3 <Type> & rotation,
                         vector3 <Type> & scale,
-                        matrix4 & scaleOrientation) const
+                        matrix3 <Type> & scaleOrientation) const
 {
 	// (1) Get translation.
 	translation = origin ();
 
 	// (2) Create 3x3 matrix.
-	matrix4 a (*this);
-
-	for (size_t i = 0; i < 3; ++ i)
-		a .value [3] [i] = a .value [i] [3] = 0;
-
-	a .value [3] [3] = 1;
+	matrix3 <Type> a (*this);
 
 	// (3) Compute det A. If negative, set sign = -1, else sign = 1
-	Type det      = a .determinant3 ();
-	Type det_sign = (det < 0 ? -1 : 1);
+	Type det      = a .determinant ();
+	Type det_sign = det < 0 ? -1 : 1;
 
 	if (det_sign * det == 0)
 		return false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        // singular
 
 	// (4) B = A * !A  (here !A means A transpose)
-	matrix4 b = a * ! a;
+	matrix3 <Type> b = a * ! a;
 
 	Type evalues [3];
 	Type evectors [3] [3];
@@ -754,18 +678,17 @@ matrix4 <Type>::factor (vector3 <Type> & translation,
 
 	// find min / max eigenvalues and do ratio test to determine singularity
 
-	scaleOrientation = matrix4 (evectors [0] [0], evectors [0] [1], evectors [0] [2], 0,
-	                            evectors [1] [0], evectors [1] [1], evectors [1] [2], 0,
-	                            evectors [2] [0], evectors [2] [1], evectors [2] [2], 0,
-	                            0, 0, 0, 1);
+	scaleOrientation = matrix3 <Type> (evectors [0] [0], evectors [0] [1], evectors [0] [2],
+	                                   evectors [1] [0], evectors [1] [1], evectors [1] [2],
+	                                   evectors [2] [0], evectors [2] [1], evectors [2] [2]);
 
 	// Compute s = sqrt(evalues), with sign. Set si = s-inverse
-	matrix4 si;
+	matrix3 <Type> si;
 
 	for (size_t i = 0; i < 3; ++ i)
 	{
-		scale [i]         = det_sign * std::sqrt (evalues [i]);
-		si .value [i] [i] = 1 / scale [i];
+		scale [i]  = det_sign * std::sqrt (evalues [i]);
+		si [i] [i] = 1 / scale [i];
 	}
 
 	// (5) Compute U = !R ~S R A.
@@ -828,6 +751,7 @@ matrix4 <Type>::transpose ()
 template <class Type>
 matrix4 <Type> &
 matrix4 <Type>::inverse ()
+throw (std::domain_error)
 {
 	Type det = determinant ();
 
@@ -850,6 +774,26 @@ matrix4 <Type>::inverse ()
 	                               determinant3 (0, 2, 3, 0, 1, 2) / det,
 	                               -determinant3 (0, 1, 3, 0, 1, 2) / det,
 	                               determinant3 (0, 1, 2, 0, 1, 2) / det);
+}
+
+template <class Type>
+template <class T>
+inline
+matrix4 <Type> &
+matrix4 <Type>::operator += (const matrix4 <T> & matrix)
+{
+	value += matrix .vector ();
+	return *this;
+}
+
+template <class Type>
+template <class T>
+inline
+matrix4 <Type> &
+matrix4 <Type>::operator -= (const matrix4 <T> & matrix)
+{
+	value -= matrix .vector ();
+	return *this;
 }
 
 template <class Type>
@@ -1145,6 +1089,7 @@ template <class Type>
 inline
 matrix4 <Type>
 operator ~ (const matrix4 <Type> & matrix)
+throw (std::domain_error)
 {
 	return matrix4 <Type> (matrix) .inverse ();
 }
@@ -1154,8 +1099,27 @@ template <class Type>
 inline
 matrix4 <Type>
 inverse (const matrix4 <Type> & matrix)
+throw (std::domain_error)
 {
 	return matrix4 <Type> (matrix) .inverse ();
+}
+
+///  Returns new matrix value @a a plus @a rhs.
+template <class Type>
+inline
+matrix4 <Type>
+operator + (const matrix4 <Type> & lhs, const matrix4 <Type> & rhs)
+{
+	return matrix4 <Type> (lhs) + (rhs);
+}
+
+///  Returns new matrix value @a a minus @a rhs.
+template <class Type>
+inline
+matrix4 <Type>
+operator - (const matrix4 <Type> & lhs, const matrix4 <Type> & rhs)
+{
+	return matrix4 <Type> (lhs) - (rhs);
 }
 
 ///  Return matrix value @a lhs right multiplied by @a rhs.

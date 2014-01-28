@@ -48,52 +48,67 @@
  *
  ******************************************************************************/
 
-#include "Shader.h"
+#ifndef __TITANIA_X3D_MISCELLANEOUS_BVH_H__
+#define __TITANIA_X3D_MISCELLANEOUS_BVH_H__
 
-#include "../InputOutput/Loader.h"
-#include <pcrecpp.h>
+#include "../Types/Numbers.h"
+
+#include <memory>
+#include <vector>
 
 namespace titania {
 namespace X3D {
 
-std::string
-preProcessShaderSource (X3DExecutionContext* const executionContext, const std::string & string, const basic::uri & worldURL, size_t level)
-throw (Error <INVALID_URL>,
-       Error <URL_UNAVAILABLE>)
+/**
+ *  BVH - class to represent a Bounded volume hierarchy.
+ */
+
+class BVH
 {
-	if (level > 1024)
-		throw Error <INVALID_URL> ("Header inclusion depth limit reached, might be caused by cyclic header inclusion.");
+public:
 
-	static const pcrecpp::RE include ("\\A#pragma\\s+X3D\\s+include\\s+\"(.*?)\"$");
-
-	std::istringstream input (string);
-	std::ostringstream output;
-
-	size_t      lineNumber = 1;
-	std::string line;
-	
-	output << "#line "<< lineNumber << " \"" << worldURL << "\""  << std::endl;
-
-	while (std::getline (input, line))
+	struct ArrayValue
 	{
-		std::string filename;
+		ArrayValue (int32_t type, Vector3f min, Vector3f max, int32_t left, int32_t right) :
+			 type (type),
+			  min (min),
+			  max (max),
+			 left (left),
+			right (right)
+	     	{ }
 
-		if (include .FullMatch (line, &filename))
-		{
-			Loader loader (executionContext);
-			output << preProcessShaderSource (executionContext, loader .loadDocument (worldURL .transform (filename)), loader .getWorldURL (), level + 1) << std::endl;
-			output << "#line "<< lineNumber + 1 << " \"" << worldURL << "\""  << std::endl;
-		}
-		else
-		{
-			output << line << std::endl;
-		}
+		int32_t type;
+		Vector3f min;
+		Vector3f max;
+		int32_t left;
+		int32_t right;
+	};
 
-		++ lineNumber;
-	}
+	BVH (std::vector <Vector3f>&&);
 
-	return output .str ();
-}
+	std::vector <ArrayValue>
+	toArray () const;
+
+	virtual
+	~BVH ();
+
+private:
+
+	class SortComparator;
+	class MedianComparator;
+
+	class X3DNode;
+	class Triangle;
+	class Node;
+
+	// Members
+
+	std::vector <Vector3f>    vertices;
+	std::unique_ptr <X3DNode> root;
+
+};
 
 } // X3D
 } // titania
+
+#endif

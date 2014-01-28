@@ -50,10 +50,10 @@
 
 #include "ShaderPart.h"
 
-#include "../../Bits/Shader.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../InputOutput/Loader.h"
+#include "../../Miscellaneous/Shader.h"
 
 namespace titania {
 namespace X3D {

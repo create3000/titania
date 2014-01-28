@@ -8,7 +8,7 @@ hsva (in float h, in float s, in float v, in float a)
 	// H is given on [0, 2 * Pi]. S and V are given on [0, 1].
 	// RGB are each returned on [0, 1].
 
-	v = clamp (v, 0.0f, 1.0f);
+	//v = clamp (v, 0.0f, 1.0f);
 
 	if (s == 0.0f)
 	{
@@ -16,9 +16,9 @@ hsva (in float h, in float s, in float v, in float a)
 		return vec4 (v, v, v, a);
 	}
 
-	s = clamp (s, 0.0f, 1.0f);
+	//s = clamp (s, 0.0f, 1.0f);
 
-	float w = degree (h) / 60.0f; // sector 0 to 5
+	float w = degrees (h) / 60.0f; // sector 0 to 5
 
 	float i = floor (w);
 	float f = w - i;              // factorial part of h

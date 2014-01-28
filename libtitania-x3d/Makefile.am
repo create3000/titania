@@ -22,8 +22,6 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Basic/X3DFieldDefinition.cpp \
 	Titania/X3D/Bits/config.cpp \
 	Titania/X3D/Bits/Error.cpp \
-	Titania/X3D/Bits/Random.cpp \
-	Titania/X3D/Bits/Shader.cpp \
 	Titania/X3D/Bits/Traverse.cpp \
 	Titania/X3D/Browser/Browser.cpp \
 	Titania/X3D/Browser/Console.cpp \
@@ -429,10 +427,13 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/JavaScript/SpiderMonkey/jsX3DScene.cpp \
 	Titania/X3D/JavaScript/X3DJavaScriptContext.cpp \
 	Titania/X3D/JavaScript/X3DJavaScriptEngine.cpp \
+	Titania/X3D/Miscellaneous/BVH.cpp \
 	Titania/X3D/Miscellaneous/FontConfig.cpp \
 	Titania/X3D/Miscellaneous/GoldenGate.cpp \
 	Titania/X3D/Miscellaneous/Keys.cpp \
 	Titania/X3D/Miscellaneous/MediaStream.cpp \
+	Titania/X3D/Miscellaneous/Random.cpp \
+	Titania/X3D/Miscellaneous/Shader.cpp \
 	Titania/X3D/Miscellaneous/Texture.cpp \
 	Titania/X3D/Miscellaneous/Texture3D.cpp \
 	Titania/X3D/Miscellaneous/X3DTexture.cpp \

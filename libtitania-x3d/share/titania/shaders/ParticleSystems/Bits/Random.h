@@ -21,21 +21,21 @@ srand (in int value)
 	seed = value;
 }
 
-// Return a uniform distributed random integer number between RAND_MIN and RAND_MAX.
+// Return a uniform distributed random integral number in the interval [RAND_MIN, RAND_MAX].
 int
 rand ()
 {
 	return seed = seed * 1103515245 + 12345;
 }
 
-// Return a uniform distributed random float number between -1 and 1.
+// Return a uniform distributed random floating point number in the interval [-1, 1].
 float
 random1 ()
 {
 	return float (rand ()) / float (RAND_MAX);
 }
 
-// Return a uniform distributed random float number between min and max.
+// Return a uniform distributed random floating point number in the interval [min, max].
 float
 random1 (in float min, in float max)
 {
@@ -99,7 +99,7 @@ random_normal (in vec3 direction)
 }
 
 // Returns uniform distributed random barycentric coordinates for interpolation on a triangle.
-// Use point = coord .x * vertex1 + coord .y * vertex2 + coord .z * vertex3 to get the resulting point.
+// Use point = rand .x * vertex1 + rand .y * vertex2 + rand .z * vertex3 to get the resulting point.
 vec3
 random_barycentric ()
 {

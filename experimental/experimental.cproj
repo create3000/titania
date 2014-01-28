@@ -54,9 +54,10 @@
     <None Include="General\X3D\InputOutput\Encodings\ClassicVrml\NumPunct.h" />
     <None Include="General\X3D\InputOutput\Encodings\ClassicVrml\CType.h" />
     <None Include="General\X3D\InputOutput\Encodings\ClassicVrml\AccessTypes.h" />
-    <None Include="URI.h" />
     <None Include="Makefile.am" />
     <None Include="cl.hpp" />
+    <None Include="OddEvenMergeSort.h" />
+    <None Include="URI.h" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

@@ -84,5 +84,5 @@ getDistance (in vec3 position)
 {
 	vec4 p = modelViewMatrix * vec4 (position, 1);
 
-	return p .z / p .w;
+	return p .z; // p .z / p .w
 }

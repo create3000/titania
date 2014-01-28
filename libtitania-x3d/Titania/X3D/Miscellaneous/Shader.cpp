@@ -48,66 +48,64 @@
  *
  ******************************************************************************/
 
-#include "WindPhysicsModel.h"
+#include "Shader.h"
 
-#include "../../Execution/X3DExecutionContext.h"
-#include "../../Miscellaneous/Random.h"
+#include "../InputOutput/Loader.h"
+#include <pcrecpp.h>
 
 namespace titania {
 namespace X3D {
 
-const std::string WindPhysicsModel::componentName  = "ParticleSystems";
-const std::string WindPhysicsModel::typeName       = "WindPhysicsModel";
-const std::string WindPhysicsModel::containerField = "physics";
-
-WindPhysicsModel::Fields::Fields () :
-	 direction (new SFVec3f ()),
-	     speed (new SFFloat (0.1)),
-	 gustiness (new SFFloat (0.1)),
-	turbulence (new SFFloat ())
-{ }
-
-WindPhysicsModel::WindPhysicsModel (X3DExecutionContext* const executionContext) :
-	                X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DParticlePhysicsModelNode (),
-	                     fields ()
+std::string
+preProcessShaderSource (X3DExecutionContext* const executionContext, const std::string & string, const basic::uri & worldURL, size_t level, std::set <basic::uri> & files)
+throw (Error <INVALID_URL>,
+       Error <URL_UNAVAILABLE>)
 {
-	addField (inputOutput, "metadata",   metadata ());
-	addField (inputOutput, "enabled",    enabled ());
-	addField (inputOutput, "direction",  direction ());
-	addField (inputOutput, "speed",      speed ());
-	addField (inputOutput, "gustiness",  gustiness ());
-	addField (inputOutput, "turbulence", turbulence ());
-}
+	if (not files .insert (worldURL) .second)
+		return "";
 
-X3DBaseNode*
-WindPhysicsModel::create (X3DExecutionContext* const executionContext) const
-{
-	return new WindPhysicsModel (executionContext);
-}
+	if (level > 1024)
+		throw Error <INVALID_URL> ("Header inclusion depth limit reached, might be caused by cyclic header inclusion.");
 
-float
-WindPhysicsModel::getRandomSpeed () const
-{
-	float s           = std::max <float> (0, speed ());
-	float variation   = s * std::max <float> (0, gustiness ());
+	static const pcrecpp::RE include ("\\A#pragma\\s+X3D\\s+include\\s+\"(.*?)\"$");
 
-	return random1 (std::max (0.0f, s - variation), s + variation);
-}
+	std::istringstream input (string);
+	std::ostringstream output;
 
-void
-WindPhysicsModel::getForce (X3DParticleEmitterNode* const emitter, MFVec3f & force, MFFloat & turbulence) const
-{
-	if (enabled ())
+	size_t      lineNumber = 1;
+	std::string line;
+	
+	output << "#line "<< lineNumber << " \"" << worldURL << "\""  << std::endl;
+
+	while (std::getline (input, line))
 	{
-		float randomSpeed = getRandomSpeed ();
-		float pressure    = std::pow (10, 2 * std::log (randomSpeed)) * 0.64615;
+		std::string filename;
 
-		Vector3f normal = direction () == Vector3f () ? random_normal () : normalize (direction () .getValue ());
+		if (include .FullMatch (line, &filename))
+		{
+			Loader loader (executionContext);
+			output << preProcessShaderSource (executionContext, loader .loadDocument (worldURL .transform (filename)), loader .getWorldURL (), level + 1, files) << std::endl;
+			output << "#line "<< lineNumber + 1 << " \"" << worldURL << "\""  << std::endl;
+		}
+		else
+		{
+			output << line << std::endl;
+		}
 
-		force      .emplace_back (emitter -> surfaceArea () * pressure * normal);
-		turbulence .emplace_back (M_PI * clamp <float> (this -> turbulence (), 0, 1));
+		++ lineNumber;
 	}
+
+	return output .str ();
+}
+
+std::string
+preProcessShaderSource (X3DExecutionContext* const executionContext, const std::string & string, const basic::uri & worldURL, size_t level)
+throw (Error <INVALID_URL>,
+       Error <URL_UNAVAILABLE>)
+{
+	std::set <basic::uri> files;
+	
+	return preProcessShaderSource (executionContext, string, worldURL, level, files);
 }
 
 } // X3D

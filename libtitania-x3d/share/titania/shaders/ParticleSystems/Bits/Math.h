@@ -11,12 +11,6 @@ const float M_PI2   = 2.0f * M_PI;
 
 /* Algorithms */
 
-float
-degree (in float value)
-{
-	return value * (180 / M_PI);
-}
-
 int
 upper_bound (in samplerBuffer array, in float value)
 {

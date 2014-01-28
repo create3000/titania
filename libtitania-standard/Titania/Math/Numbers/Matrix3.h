@@ -82,12 +82,14 @@ transpose (const matrix3 <Type> & matrix);
 template <class Type>
 inline
 matrix3 <Type>
-operator ~ (const matrix3 <Type> & matrix);
+operator ~ (const matrix3 <Type> & matrix)
+throw (std::domain_error);
 
 template <class Type>
 inline
 matrix3 <Type>
-inverse (const matrix3 <Type> & matrix);
+inverse (const matrix3 <Type> & matrix)
+throw (std::domain_error);
 
 template <class Type>
 inline
@@ -192,23 +194,20 @@ public:
 
 	///  @name Element access
 
+	constexpr
 	vector2 <Type>
 	x () const
 	{ return vector2 <Type> (array [0], array [1]); }
 
+	constexpr
 	vector2 <Type>
 	y () const
 	{ return vector2 <Type> (array [3], array [4]); }
 
+	constexpr
 	vector2 <Type>
 	origin () const
 	{ return vector2 <Type> (array [6], array [7]); }
-
-	void
-	rotation (const Type &);
-
-	Type
-	rotation () const;
 
 	void
 	set ();
@@ -302,7 +301,18 @@ public:
 
 	///  Returns this matrix inversed.
 	matrix3 &
-	inverse ();
+	inverse ()
+	throw (std::domain_error);
+
+	///  Add @a matrix to this matrix.
+	template <class T>
+	matrix3 &
+	operator += (const matrix3 <T> &);
+
+	///  Add @a matrix to this matrix.
+	template <class T>
+	matrix3 &
+	operator -= (const matrix3 <T> &);
 
 	///  Returns this matrix multiplies by @a scalar.
 	matrix3 &
@@ -372,6 +382,12 @@ public:
 
 private:
 
+	void
+	rotation (const Type &);
+
+	Type
+	rotation () const;
+
 	bool
 	factor (vector2 <Type> & translation,
 	        matrix3 & rotation,
@@ -435,6 +451,7 @@ matrix3 <Type>::rotation () const
 }
 
 template <class Type>
+inline
 void
 matrix3 <Type>::set ()
 {
@@ -532,6 +549,7 @@ matrix3 <Type>::set (const vector2 <Type> & translation,
 }
 
 template <class Type>
+inline
 void
 matrix3 <Type>::get (vector2 <Type> & translation) const
 {
@@ -611,7 +629,7 @@ matrix3 <Type>::factor (vector2 <Type> & translation,
 
 	// (3) Compute det A. If negative, set sign = -1, else sign = 1
 	Type det      = a .determinant2 ();
-	Type det_sign = (det < 0 ? -1 : 1);
+	Type det_sign = det < 0 ? -1 : 1;
 
 	if (det_sign * det == 0)
 		return false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  // singular
@@ -622,7 +640,7 @@ matrix3 <Type>::factor (vector2 <Type> & translation,
 	Type evalues [2];
 	Type evectors [2] [2];
 
-	eigen_decomposition (b, evalues, evectors);
+	eigen_decomposition <matrix3, 2> (b, evalues, evectors);
 
 	// find min / max eigenvalues and do ratio test to determine singularity
 
@@ -677,6 +695,7 @@ matrix3 <Type>::transpose ()
 template <class Type>
 matrix3 <Type> &
 matrix3 <Type>::inverse ()
+throw (std::domain_error)
 {
 	Type m00 = array [0];
 	Type m01 = array [1];
@@ -713,6 +732,26 @@ matrix3 <Type>::inverse ()
 	                               (t10 - t14) / d,
 	                               -(t6 - t12) / d,
 	                               (t4 - t8) / d);
+}
+
+template <class Type>
+template <class T>
+inline
+matrix3 <Type> &
+matrix3 <Type>::operator += (const matrix3 <T> & matrix)
+{
+	value += matrix .vector ();
+	return *this;
+}
+
+template <class Type>
+template <class T>
+inline
+matrix3 <Type> &
+matrix3 <Type>::operator -= (const matrix3 <T> & matrix)
+{
+	value -= matrix .vector ();
+	return *this;
 }
 
 template <class Type>
@@ -939,6 +978,7 @@ template <class Type>
 inline
 matrix3 <Type>
 operator ~ (const matrix3 <Type> & matrix)
+throw (std::domain_error)
 {
 	return matrix3 <Type> (matrix) .inverse ();
 }
@@ -948,8 +988,27 @@ template <class Type>
 inline
 matrix3 <Type>
 inverse (const matrix3 <Type> & matrix)
+throw (std::domain_error)
 {
 	return matrix3 <Type> (matrix) .inverse ();
+}
+
+///  Returns new matrix value @a a plus @a rhs.
+template <class Type>
+inline
+matrix3 <Type>
+operator + (const matrix3 <Type> & lhs, const matrix3 <Type> & rhs)
+{
+	return matrix3 <Type> (lhs) + (rhs);
+}
+
+///  Returns new matrix value @a a minus @a rhs.
+template <class Type>
+inline
+matrix3 <Type>
+operator - (const matrix3 <Type> & lhs, const matrix3 <Type> & rhs)
+{
+	return matrix3 <Type> (lhs) - (rhs);
 }
 
 ///  Return matrix value @a lhs right multiplied by @a rhs.

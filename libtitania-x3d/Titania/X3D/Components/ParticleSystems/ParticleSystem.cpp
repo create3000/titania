@@ -51,10 +51,10 @@
 #include "ParticleSystem.h"
 
 #include "../../Bits/Cast.h"
-#include "../../Bits/Random.h"
 #include "../../Bits/config.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Miscellaneous/Random.h"
 #include "../Rendering/X3DGeometryNode.h"
 #include "../Shaders/ShaderPart.h"
 #include "../Shape/X3DAppearanceNode.h"
@@ -90,11 +90,11 @@ struct ParticleSystem::Particle
 
 	Particle () :
 		       seed (randomi ()),
-		   lifetime (0),
+		   lifetime (-1),
 		   position (),
 		   velocity (),
 		      color (),
-		elapsedTime (std::numeric_limits <float>::max ()),
+		elapsedTime (0),
 		   distance (0)
 	{ }
 
@@ -155,10 +155,10 @@ private:
 	void
 	reset (X3DProgrammableShaderObject* const, const int32_t);
 
-	int stepsLeft;
-	int pass;
-	int stage;
-	int size;
+	int32_t stepsLeft;
+	int32_t pass;
+	int32_t stage;
+	int32_t size;
 
 };
 
@@ -203,8 +203,8 @@ ParticleSystem::OddEvenMergeSort::sortStep (X3DProgrammableShaderObject* const s
 
 	// Sort step
 
-	const int pstage = 1 << stage;
-	const int ppass  = 1 << pass;
+	const int32_t pstage = 1 << stage;
+	const int32_t ppass  = 1 << pass;
 
 	shader -> setField <SFVec4f> ("sortParam", Vector4f (pstage + pstage,
 	                                                     ppass % pstage,
@@ -219,11 +219,11 @@ ParticleSystem::OddEvenMergeSort::sortStep (X3DProgrammableShaderObject* const s
 void
 ParticleSystem::OddEvenMergeSort::reset (X3DProgrammableShaderObject* const shader, const int32_t currentSize)
 {
-	const int fieldSize = next_power_of_two (int (std::ceil (std::sqrt (currentSize))));
+	const int32_t fieldSize = next_power_of_two (int32_t (std::ceil (std::sqrt (currentSize))));
 
 	if (fieldSize)
 	{
-		const int logFieldSize = std::log2 (fieldSize);
+		const int32_t logFieldSize = std::log2 (fieldSize);
 
 		stepsLeft = logFieldSize * (2 * logFieldSize + 1);
 	}
@@ -968,7 +968,7 @@ ParticleSystem::prepareEvents ()
 	if (numParticles < maxParticles ())
 	{
 		time_type now          = chrono::now ();
-		int32_t   newParticles = (now - creationTime) * maxParticles () / particleLifetime ();
+		int32_t   newParticles = std::ceil ((now - creationTime) * maxParticles () / particleLifetime ());
 
 		if (newParticles)
 			creationTime = now;
@@ -1335,3 +1335,23 @@ ParticleSystem::~ParticleSystem ()
 
 } // X3D
 } // titania
+
+
+//
+	
+//	glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [readBuffer]);
+//	Particle* particle = (Particle*) glMapBufferRange (GL_ARRAY_BUFFER, 0, sizeof (Particle) * numParticles, GL_MAP_READ_BIT);
+//
+//	int c = 0;
+//
+//	for (int i = 0; i < numParticles; ++ i)
+//	{
+//		c += particle -> elapsedTime == 0;
+//		++ particle;
+//	}
+//	
+//	__LOG__ << numParticles << " : " << c << std::endl;
+//
+//	glUnmapBuffer (GL_ARRAY_BUFFER);
+//	glBindBuffer (GL_ARRAY_BUFFER, 0);
+	

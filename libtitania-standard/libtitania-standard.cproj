@@ -116,7 +116,6 @@
     <None Include="Titania\OS\LoadFile.h" />
     <None Include="Titania\Chrono.h" />
     <None Include="Titania\OS\FileExists.h" />
-    <None Include="Titania\Math\Utility\StrToL.h" />
     <None Include="Titania\OS\Popen2.h" />
     <None Include="Titania\String\sprintf.h" />
     <None Include="Titania\String\join.h" />
@@ -127,6 +126,7 @@
     <None Include="Titania\Algorithm\IndicesOf.h" />
     <None Include="Titania\Math\Utility\Types.h" />
     <None Include="Titania\Math\Geometry\Triangle3.h" />
+    <None Include="Titania\Math\Utility\strtol.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />

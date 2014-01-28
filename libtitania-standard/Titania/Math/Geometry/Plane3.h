@@ -138,15 +138,16 @@ public:
 	///  Transform this line by @a matrix.
 	plane3 &
 	operator *= (const matrix4 <Type> & matrix)
-	{
-		return multPlaneMatrix (matrix);
-	}
+	throw (std::domain_error)
+	{ return multPlaneMatrix (matrix); }
 
 	plane3 &
-	multPlaneMatrix (const matrix4 <Type> &);
+	multPlaneMatrix (const matrix4 <Type> &)
+	throw (std::domain_error);
 
 	plane3 &
-	multMatrixPlane (const matrix4 <Type> &);
+	multMatrixPlane (const matrix4 <Type> &)
+	throw (std::domain_error);
 
 	//  @name Distance
 
@@ -186,6 +187,7 @@ private:
 template <class Type>
 plane3 <Type> &
 plane3 <Type>::multPlaneMatrix (const matrix4 <Type> & matrix)
+throw (std::domain_error)
 {
     // Find the point on the plane along the normal from the origin
     auto	point = distance_from_origin () * normal ();
@@ -193,8 +195,9 @@ plane3 <Type>::multPlaneMatrix (const matrix4 <Type> & matrix)
     // Transform the plane normal by the matrix
     // to get the new normal. Use the inverse transpose
     // of the matrix so that normals are not scaled incorrectly.
-    auto invTran   = transpose (inverse (matrix));
-    auto newNormal = normalize (invTran .multDirMatrix (normal ()));
+    // n' = n * !~m = ~m * n
+    auto inv       = inverse (matrix);
+    auto newNormal = normalize (inv .multMatrixDir (normal ()));
 
     // Transform the point by the matrix
     point = matrix .multVecMatrix (point);
@@ -208,6 +211,7 @@ plane3 <Type>::multPlaneMatrix (const matrix4 <Type> & matrix)
 template <class Type>
 plane3 <Type> &
 plane3 <Type>::multMatrixPlane (const matrix4 <Type> & matrix)
+throw (std::domain_error)
 {
     // Find the point on the plane along the normal from the origin
     auto	point = distance_from_origin () * normal ();
@@ -215,8 +219,9 @@ plane3 <Type>::multMatrixPlane (const matrix4 <Type> & matrix)
     // Transform the plane normal by the matrix
     // to get the new normal. Use the inverse transpose
     // of the matrix so that normals are not scaled incorrectly.
-    auto invTran   = transpose (inverse (matrix));
-    auto newNormal = normalize (invTran .multMatrixDir (normal ()));
+    // n' = !~m * n = n * ~m
+    auto inv       = inverse (matrix);
+    auto newNormal = normalize (inv .multDirMatrix (normal ()));
 
     // Transform the point by the matrix
     point = matrix .multMatrixVec (point);
@@ -267,6 +272,7 @@ plane3 <Type>::intersect (const line3 <Type> & line, vector3 <Type> & point) con
 template <class Type>
 plane3 <Type>
 operator * (const plane3 <Type> & plane, const matrix4 <Type> & matrix)
+throw (std::domain_error)
 {
 	return plane3 <Type> (plane) .multPlaneMatrix (matrix);
 }
@@ -274,6 +280,7 @@ operator * (const plane3 <Type> & plane, const matrix4 <Type> & matrix)
 template <class Type>
 plane3 <Type>
 operator * (const matrix4 <Type> & matrix, const plane3 <Type> & plane)
+throw (std::domain_error)
 {
 	return plane3 <Type> (plane) .multMatrixPlane (matrix);
 }

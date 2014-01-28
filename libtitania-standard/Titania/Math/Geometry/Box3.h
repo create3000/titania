@@ -253,14 +253,14 @@ box3 <Type>::absolute_extends (vector3 <Type> & min, vector3 <Type> & max) const
 	auto r2 = z - y;
 
 	auto p1 =  x + r1;
-	auto p2 = r1 -  x;
-	auto p3 = r2 -  x;
-	auto p4 =  x + r2;
+	auto p2 =  x + r2;
+	auto p3 = r1 -  x;
+	auto p4 = r2 -  x;
 
-	auto p5 = -p3;
-	auto p6 = -p4;
-	auto p7 = -p1;
-	auto p8 = -p2;
+	auto p5 = -p1;
+	auto p6 = -p2;
+	auto p7 = -p3;
+	auto p8 = -p4;
 
 	min = math::min ({ p1, p2, p3, p4, p5, p6, p7, p8 });
 	max = math::max ({ p1, p2, p3, p4, p5, p6, p7, p8 });
@@ -305,35 +305,24 @@ template <class Type>
 bool
 box3 <Type>::intersect (const line3 <Type> & line) const
 {
-	auto center = this -> center (); 
-
 	vector3 <Type> min, max;
 
 	extends (min, max);
 
-	vector3 <Type> points [5] = {
-		vector3 <Type> (center .x (), center .y (), max .z ()), // right
-		vector3 <Type> (center .x (), center .y (), min .z ()), // left
-
-		vector3 <Type> (center .x (), max .y (), center .z ()), // top
-		vector3 <Type> (center .x (), min .y (), center .z ()), // bottom
-
-		vector3 <Type> (max .x (), center .y (), center .z ())  // front
-	};
-
 	static const vector3 <Type> normals [5] = {
-		vector3 <Type> (0,  0,  1),
-		vector3 <Type> (0,  0, -1),
-		vector3 <Type> (0,  1,  0),
-		vector3 <Type> (0, -1,  0),
-		vector3 <Type> (1,  0,  0)
+		vector3 <Type> (0,  0,  1), // front
+		vector3 <Type> (0,  0, -1), // back
+		vector3 <Type> (0,  1,  0), // top
+		vector3 <Type> (0, -1,  0), // bottom
+		vector3 <Type> (1,  0,  0)  // right
+		// left: We do not have to test for left.
 	};
-	
+
 	vector3 <Type> intersection;
 
 	for (size_t i = 0; i < 5; ++ i)
 	{
-		if (plane3 <Type> (points [i], normals [i]) .intersect (line, intersection))
+		if (plane3 <Type> (is_odd (i) ? min : max, normals [i]) .intersect (line, intersection))
 		{
 			switch (i)
 			{

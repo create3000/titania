@@ -59,6 +59,7 @@
 #include "../../Utility/MemberValue.h"
 #include "../Functional.h"
 #include "Quaternion.h"
+#include "Matrix3.h"
 #include "Vector3.h"
 
 namespace titania {
@@ -129,12 +130,23 @@ public:
 	template <class T>
 	rotation4 (const vector3 <T> & fromVector, const vector3 <T> & toVector);
 
+	///  Construct a rotation from @a matrix3.
+	template <class Up>
+	explicit
+	rotation4 (const matrix3 <Up> & matrix)
+	{ *this = matrix; }
+
 	///  @name Assignment operator
 
 	///  Assign @a rotation to this rotation.
-	template <class T>
+	template <class Up>
 	rotation4 &
-	operator = (const rotation4 <T> &);
+	operator = (const rotation4 <Up> &);
+
+	///  Assign @a rotation to this rotation.
+	template <class Up>
+	rotation4 &
+	operator = (const matrix3 <Up> &);
 
 	///  @name Element access
 
@@ -188,6 +200,8 @@ public:
 
 	Type
 	operator [ ] (const size_type) const;
+
+	operator matrix3 <Type> () const;
 
 	///  Get @a x, @a y, @a z and @a angle componentwise.
 	template <class T>
@@ -300,12 +314,64 @@ rotation4 <Type>::rotation4 (const vector3 <T> & fromVector, const vector3 <T> &
 }
 
 template <class Type>
-template <class T>
+template <class Up>
 inline
 rotation4 <Type> &
-rotation4 <Type>::operator = (const rotation4 <T> & rotation)
+rotation4 <Type>::operator = (const rotation4 <Up> & rotation)
 {
 	value = rotation .quat ();
+	return *this;
+}
+
+template <class Type>
+template <class Up>
+inline
+rotation4 <Type> &
+rotation4 <Type>::operator = (const matrix3 <Up> & matrix)
+{
+	Type quat [4];
+
+	int i;
+
+	// First, find largest diagonal in matrix:
+	if (matrix [0] [0] > matrix [1] [1])
+	{
+		i = matrix [0] [0] > matrix [2] [2] ? 0 : 2;
+	}
+	else
+	{
+		i = matrix [1] [1] > matrix [2] [2] ? 1 : 2;
+	}
+
+	Type scalerow = matrix [0] [0] + matrix [1] [1] + matrix [2] [2];
+
+	if (scalerow > matrix [i] [i])
+	{
+		// Compute w first:
+		quat [3] = std::sqrt (scalerow + 1) / 2;
+
+		// And compute other values:
+		quat [0] = (matrix [1] [2] - matrix [2] [1]) / (4 * quat [3]);
+		quat [1] = (matrix [2] [0] - matrix [0] [2]) / (4 * quat [3]);
+		quat [2] = (matrix [0] [1] - matrix [1] [0]) / (4 * quat [3]);
+	}
+	else
+	{
+		// Compute x, y, or z first:
+		int j = (i + 1) % 3;
+		int k = (i + 2) % 3;
+
+		// Compute first value:
+		quat [i] = std::sqrt (matrix [i] [i] - matrix [j] [j] - matrix [k] [k] + 1) / 2;
+
+		// And the others:
+		quat [j] = (matrix [i] [j] + matrix [j] [i]) / (4 * quat [i]);
+		quat [k] = (matrix [i] [k] + matrix [k] [i]) / (4 * quat [i]);
+
+		quat [3] = (matrix [j] [k] - matrix [k] [j]) / (4 * quat [i]);
+	}
+
+	value = quaternion <Type> (quat [0], quat [1], quat [2], quat [3]);
 	return *this;
 }
 
@@ -401,6 +467,41 @@ rotation4 <Type>::operator [ ] (const size_type index) const
 
 	throw std::out_of_range ("index out of range");
 }
+
+///  Convert this rotation to a matrix3.
+template <class Type>
+rotation4 <Type>::operator matrix3 <Type> () const
+{
+	Type x = quat () .x ();
+	Type y = quat () .y ();
+	Type z = quat () .z ();
+	Type w = quat () .w ();
+
+	Type a = x * x;
+	Type b = x * y;
+	Type c = y * y;
+	Type d = y * z;
+	Type e = z * x;
+	Type f = z * z;
+	Type g = w * x;
+	Type h = w * y;
+	Type i = w * z;
+
+	return matrix3 <Type> (
+		1 - 2 * (c + f),
+		    2 * (b + i),
+		    2 * (e - h),
+
+		    2 * (b - i),
+		1 - 2 * (f + a),
+		    2 * (d + g),
+
+		    2 * (e + h),
+		    2 * (d - g),
+		1 - 2 * (c + a)
+	);
+}
+
 
 template <class Type>
 template <class T>

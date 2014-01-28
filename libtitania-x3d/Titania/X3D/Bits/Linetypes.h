@@ -53,7 +53,7 @@
 
 #include "../Rendering/OpenGL.h"
 
-#include <Titania/Math/Utility/StrToL.h>
+#include <Titania/Math/Utility/strtol.h>
 
 namespace titania {
 namespace X3D {
