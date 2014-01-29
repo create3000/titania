@@ -31,6 +31,7 @@ libtitania_standard_la_SOURCES =  \
 	Titania/Math/Image.cpp \
 	Titania/Math/Numbers/Color3.cpp \
 	Titania/Math/Numbers/Color4.cpp \
+	Titania/Math/Numbers/Matrix2.cpp \
 	Titania/Math/Numbers/Matrix3.cpp \
 	Titania/Math/Numbers/Matrix4.cpp \
 	Titania/Math/Numbers/Quaternion.cpp \

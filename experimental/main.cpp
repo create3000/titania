@@ -256,19 +256,6 @@ random1 ()
 	return uniform_real_distribution (random_engine);
 }
 
-
-Matrix3f
-multiply (const Vector3f & lhs, const Vector3f & rhs)
-{
-	Matrix3f result;
-	
-	result [0] = lhs [0] * rhs;
-	result [1] = lhs [1] * rhs;
-	result [2] = lhs [2] * rhs;
-
-	return result;
-}
-
 void
 obb (const std::vector <Vector3f> & points)
 {
@@ -328,6 +315,23 @@ main (int argc, char** argv)
 		Vector3f ( 0.5, -1,   0)
 	});
 
+
+	Vector2f t (1, 2);
+	float r = 2;	
+	Vector2f s (3, 4);
+	float so = 3;	
+
+	Matrix3f m;
+	m .set (t, r, s, so);
+	m .get (t, r, s, so);
+	
+	std::clog << t << std::endl;
+	std::clog << r << std::endl;
+	std::clog << s << std::endl;
+	std::clog << so << std::endl;
+
+	std::clog << m << std::endl;
+	std::clog << inverse (m) << std::endl;
 
 	std::clog << "Function main done." << std::endl;
 	return 0;

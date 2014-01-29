@@ -70,36 +70,6 @@ namespace titania {
 namespace math {
 
 template <class Type>
-class matrix4;
-
-template <class Type>
-inline
-matrix4 <Type>
-operator ! (const matrix4 <Type> & matrix);
-
-template <class Type>
-inline
-matrix4 <Type>
-transpose (const matrix4 <Type> & matrix);
-
-template <class Type>
-inline
-matrix4 <Type>
-operator ~ (const matrix4 <Type> & matrix)
-throw (std::domain_error);
-
-template <class Type>
-inline
-matrix4 <Type>
-inverse (const matrix4 <Type> & matrix)
-throw (std::domain_error);
-
-template <class Type>
-inline
-matrix4 <Type>
-operator * (const matrix4 <Type> & lhs, const matrix4 <Type> & rhs);
-
-template <class Type>
 class matrix4
 {
 private:
@@ -1066,6 +1036,24 @@ operator not_eq (const matrix4 <Type> & lhs, const matrix4 <Type> & rhs)
 ///  @relates matrix4
 ///  @name Arithmetic operations
 
+///  Returns the determinant of the 3x3 submatrix of @a matrix.
+template <class Type>
+inline
+Type
+determinant3 (const matrix4 <Type> & matrix)
+{
+	return matrix .determinant3 ();
+}
+
+///  Returns the determinant of the @a matrix.
+template <class Type>
+inline
+Type
+determinant (const matrix4 <Type> & matrix)
+{
+	return matrix .determinant ();
+}
+
 ///  Returns the transpose of the @a matrix.
 template <class Type>
 inline
@@ -1131,6 +1119,24 @@ operator * (const matrix4 <Type> & lhs, const matrix4 <Type> & rhs)
 	return matrix4 <Type> (lhs) .multRight (rhs);
 }
 
+///  Return matrix value @a lhs right multiplied by scalar @a rhs.
+template <class Type>
+inline
+matrix4 <Type>
+operator * (const matrix4 <Type> & lhs, const Type & rhs)
+{
+	return matrix4 <Type> (lhs) *= rhs;
+}
+
+///  Return matrix value @a lhs right multiplied by scalar @a rhs.
+template <class Type>
+inline
+matrix4 <Type>
+operator * (const Type & lhs, const matrix4 <Type> & rhs)
+{
+	return matrix4 <Type> (rhs) *= lhs;
+}
+
 ///  Return vector value @a rhs multiplied by @a lhs.
 template <class Type>
 inline
@@ -1165,6 +1171,30 @@ vector4 <Type>
 operator * (const vector4 <Type> & lhs, const matrix4 <Type> & rhs)
 {
 	return rhs .multVecMatrix (lhs);
+}
+
+///  Return column vector @a rhs multiplied by row vector @a lhs.
+template <class Type>
+matrix4 <Type>
+multiply (const vector4 <Type> & lhs, const vector4 <Type> & rhs)
+{
+	matrix4 <Type> result;
+	
+	result [0] = lhs [0] * rhs;
+	result [1] = lhs [1] * rhs;
+	result [2] = lhs [2] * rhs;
+	result [3] = lhs [3] * rhs;
+
+	return result;
+}
+
+///  Return matrix value @a lhs right divided by scalar @a rhs.
+template <class Type>
+inline
+matrix4 <Type>
+operator / (const matrix4 <Type> & lhs, const Type & rhs)
+{
+	return matrix4 <Type> (lhs) /= rhs;
 }
 
 ///  @relates matrix4

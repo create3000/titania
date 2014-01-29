@@ -60,41 +60,12 @@
 
 #include "Vector2.h"
 #include "Vector3.h"
+#include "Matrix2.h"
 
 #include "../Algorithms/EigenDecomposition.h"
 
 namespace titania {
 namespace math {
-
-template <class Type>
-class matrix3;
-
-template <class Type>
-inline
-matrix3 <Type>
-operator ! (const matrix3 <Type> & matrix);
-
-template <class Type>
-inline
-matrix3 <Type>
-transpose (const matrix3 <Type> & matrix);
-
-template <class Type>
-inline
-matrix3 <Type>
-operator ~ (const matrix3 <Type> & matrix)
-throw (std::domain_error);
-
-template <class Type>
-inline
-matrix3 <Type>
-inverse (const matrix3 <Type> & matrix)
-throw (std::domain_error);
-
-template <class Type>
-inline
-matrix3 <Type>
-operator * (const matrix3 <Type> & lhs, const matrix3 <Type> & rhs);
 
 template <class Type>
 class matrix3
@@ -183,6 +154,23 @@ public:
 	matrix3 (const Type & rot)
 	{ rotation (rot); }
 
+	///  Constructs a matrix2 from a matrix2 rotation matrix.
+	explicit
+	constexpr
+	matrix3 (const matrix2 <Type> & matrix) :
+		array
+	{
+		matrix [0] [0],
+		matrix [0] [1],
+		0,
+		matrix [1] [0],
+		matrix [1] [1],
+		0,
+		0, 0, 1,
+	}
+
+	{ }
+
 	///  @name Assignment operators
 
 	template <class T>
@@ -250,6 +238,11 @@ public:
 	const vector3_type &
 	operator [ ] (const size_type index) const
 	{ return value [index]; }
+
+	constexpr
+	operator matrix2 <Type> () const
+	{ return matrix2 <Type> (array [0], array [1],
+	                         array [3], array [4]); }
 
 	///  Returns pointer to the underlying array serving as element storage.
 	///  Specifically the pointer is such that range [data (); data () + size ()) is valid.
@@ -389,10 +382,10 @@ private:
 	rotation () const;
 
 	bool
-	factor (vector2 <Type> & translation,
-	        matrix3 & rotation,
-	        vector2 <Type> & scale,
-	        matrix3 & scaleOrientation) const;
+	factor (vector2 <Type> &,
+	        matrix2 <Type> &,
+	        vector2 <Type> &,
+	        matrix2 <Type> &) const;
 
 	union
 	{
@@ -561,10 +554,10 @@ void
 matrix3 <Type>::get (vector2 <Type> & translation,
                      Type & rotation) const
 {
-	matrix3 <Type> so, rot;
+	matrix2 <Type> so, rot;
 	vector2 <Type> scaleFactor;
 	factor (translation, rot, scaleFactor, so);
-	rotation = rot .rotation ();
+	rotation = std::atan2 (rot [0] [1], rot [0] [0]);
 }
 
 template <class Type>
@@ -573,9 +566,9 @@ matrix3 <Type>::get (vector2 <Type> & translation,
                      Type & rotation,
                      vector2 <Type> & scaleFactor) const
 {
-	matrix3 <Type> so, rot;
+	matrix2 <Type> so, rot;
 	factor (translation, rot, scaleFactor, so);
-	rotation = rot .rotation ();
+	rotation = std::atan2 (rot [0] [1], rot [0] [0]);
 }
 
 template <class Type>
@@ -585,10 +578,10 @@ matrix3 <Type>::get (vector2 <Type> & translation,
                      vector2 <Type> & scaleFactor,
                      Type & scaleOrientation) const
 {
-	matrix3 <Type> so, rot;
+	matrix2 <Type> so, rot;
 	factor (translation, rot, scaleFactor, so);
-	rotation         = rot .rotation ();
-	scaleOrientation = so .rotation ();
+	rotation         = std::atan2 (rot [0] [1], rot [0] [0]);
+	scaleOrientation = std::atan2 (so [0] [1], so [0] [0]);
 }
 
 template <class Type>
@@ -612,50 +605,41 @@ matrix3 <Type>::get (vector2 <Type> & translation,
 template <class Type>
 bool
 matrix3 <Type>::factor (vector2 <Type> & translation,
-                        matrix3 & rotation,
+                        matrix2 <Type> & rotation,
                         vector2 <Type> & scale,
-                        matrix3 & scaleOrientation) const
+                        matrix2 <Type> & scaleOrientation) const
 {
 	// (1) Get translation.
 	translation = origin ();
 
 	// (2) Create 2x2 matrix.
-	matrix3 a (*this);
-
-	for (size_t i = 0; i < 2; ++ i)
-		a .value [2] [i] = a .value [i] [2] = 0;
-
-	a .value [2] [2] = 1;
+	matrix2 <Type> a (*this);
 
 	// (3) Compute det A. If negative, set sign = -1, else sign = 1
-	Type det      = a .determinant2 ();
+	Type det      = a .determinant ();
 	Type det_sign = det < 0 ? -1 : 1;
 
 	if (det_sign * det == 0)
 		return false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  // singular
 
 	// (4) B = A * !A  (here !A means A transpose)
-	matrix3 b = a * ! a;
+	matrix2 <Type> b = a * ! a;
 
 	Type evalues [2];
 	Type evectors [2] [2];
 
-	eigen_decomposition <matrix3, 2> (b, evalues, evectors);
+	eigen_decomposition (b, evalues, evectors);
 
 	// find min / max eigenvalues and do ratio test to determine singularity
 
-	scaleOrientation = matrix3 (evectors [0] [0], evectors [0] [1], 0,
-	                            evectors [1] [0], evectors [1] [1], 0,
-	                            0, 0, 1);
+	scaleOrientation = matrix2 <Type> (evectors [0] [0], evectors [0] [1],
+	                                   evectors [1] [0], evectors [1] [1]);
 
 	// Compute s = sqrt(evalues), with sign. Set si = s-inverse
-	matrix3 si;
+	matrix2 <Type> si;
 
-	for (size_t i = 0; i < 2; ++ i)
-	{
-		scale [i]         = det_sign * std::sqrt (evalues [i]);
-		si .value [i] [i] = 1 / scale [i];
-	}
+	scale [0]  = det_sign * std::sqrt (evalues [0]);
+	si [0] [0] = 1 / scale [0];
 
 	// (5) Compute U = !R ~S R A.
 	rotation = scaleOrientation * si * ! scaleOrientation * a;
@@ -955,6 +939,24 @@ operator not_eq (const matrix3 <Type> & lhs, const matrix3 <Type> & rhs)
 ///  @relates matrix3
 ///  @name Arithmetic operations
 
+///  Returns the determinant of the 2x2 submatrix of @a matrix.
+template <class Type>
+inline
+Type
+determinant2 (const matrix3 <Type> & matrix)
+{
+	return matrix .determinant2 ();
+}
+
+///  Returns the determinant of the @a matrix.
+template <class Type>
+inline
+Type
+determinant (const matrix3 <Type> & matrix)
+{
+	return matrix .determinant ();
+}
+
 ///  Returns the transpose of the @a matrix.
 template <class Type>
 inline
@@ -1020,6 +1022,24 @@ operator * (const matrix3 <Type> & lhs, const matrix3 <Type> & rhs)
 	return matrix3 <Type> (lhs) .multRight (rhs);
 }
 
+///  Return matrix value @a lhs right multiplied by scalar @a rhs.
+template <class Type>
+inline
+matrix3 <Type>
+operator * (const matrix3 <Type> & lhs, const Type & rhs)
+{
+	return matrix3 <Type> (lhs) *= rhs;
+}
+
+///  Return matrix value @a lhs right multiplied by scalar @a rhs.
+template <class Type>
+inline
+matrix3 <Type>
+operator * (const Type & lhs, const matrix3 <Type> & rhs)
+{
+	return matrix3 <Type> (rhs) *= lhs;
+}
+
 ///  Return vector value @a rhs multiplied by @a lhs.
 template <class Type>
 inline
@@ -1054,6 +1074,29 @@ vector3 <Type>
 operator * (const vector3 <Type> & lhs, const matrix3 <Type> & rhs)
 {
 	return rhs .multVecMatrix (lhs);
+}
+
+///  Return column vector @a rhs multiplied by row vector @a lhs.
+template <class Type>
+matrix3 <Type>
+multiply (const vector3 <Type> & lhs, const vector3 <Type> & rhs)
+{
+	matrix3 <Type> result;
+	
+	result [0] = lhs [0] * rhs;
+	result [1] = lhs [1] * rhs;
+	result [2] = lhs [2] * rhs;
+
+	return result;
+}
+
+///  Return matrix value @a lhs right divided by scalar @a rhs.
+template <class Type>
+inline
+matrix3 <Type>
+operator / (const matrix3 <Type> & lhs, const Type & rhs)
+{
+	return matrix3 <Type> (lhs) /= rhs;
 }
 
 ///  @relates matrix3

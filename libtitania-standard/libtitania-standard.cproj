@@ -127,6 +127,7 @@
     <None Include="Titania\Math\Utility\Types.h" />
     <None Include="Titania\Math\Geometry\Triangle3.h" />
     <None Include="Titania\Math\Utility\strtol.h" />
+    <None Include="Titania\Math\Numbers\Matrix2.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />
@@ -179,6 +180,7 @@
     <Compile Include="Titania\String\split.cpp" />
     <Compile Include="Titania\String\trim.cpp" />
     <Compile Include="Titania\String\naturally_compare.cpp" />
+    <Compile Include="Titania\Math\Numbers\Matrix2.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
