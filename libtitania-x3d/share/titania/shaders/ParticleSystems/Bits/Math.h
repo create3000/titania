@@ -22,7 +22,7 @@ upper_bound (in samplerBuffer array, in float value)
 	{
 		int index = first;
 
-		step = count / 2; 
+		step = count >> 1; 
 
 		index += step;
 

@@ -51,125 +51,20 @@
 #ifndef __TITANIA_X3D_FIELDS_MFNODE_H__
 #define __TITANIA_X3D_FIELDS_MFNODE_H__
 
-#include "../Basic/X3DArrayField.h"
 #include "../Fields/SFNode.h"
-#include "../InputOutput/Generator.h"
-
-#include <Titania/Utility/Adapter.h>
+#include "../Fields/X3DMFNode.h"
 
 namespace titania {
 namespace X3D {
 
+typedef X3DMFNode <X3DBaseNode> MFNode;
+
 //extern template class Array <SFNode>;
 extern template class X3DField <Array <SFNode>>;
 extern template class X3DArrayField <SFNode>;
-
-class MFNode :
-	public X3DArrayField <SFNode>
-{
-private:
-
-	typedef X3DArrayField <SFNode> ArrayField;
-
-
-public:
-
-	using X3DArrayField <SFNode>::operator =;
-	using X3DArrayField <SFNode>::addInterest;
-
-	MFNode () :
-		ArrayField ()
-	{ }
-
-	MFNode (const MFNode & field) :
-		ArrayField (field)
-	{ }
-
-	MFNode (MFNode && field) :
-		ArrayField (std::move (field))
-	{ }
-
-	MFNode (std::initializer_list <SFNode> initializer_list) :
-		ArrayField (initializer_list)
-	{ }
-
-	MFNode (std::initializer_list <const typename SFNode::internal_type> initializer_list) :
-		ArrayField (initializer_list)
-	{ }
-
-	template <class InputIterator>
-	MFNode (InputIterator first, InputIterator last) :
-		ArrayField (first, last)
-	{ }
-
-	virtual
-	MFNode*
-	clone () const
-	throw (Error <INVALID_NAME>,
-          Error <NOT_SUPPORTED>) final override
-	{ return new MFNode (*this); }
-
-	virtual
-	MFNode*
-	clone (X3DExecutionContext* const executionContext) const
-	throw (Error <INVALID_NAME>,
-          Error <NOT_SUPPORTED>) final override;
-
-	virtual
-	void
-	clone (X3DExecutionContext* const, X3DFieldDefinition*) const
-	throw (Error <INVALID_NAME>,
-          Error <NOT_SUPPORTED>) final override;
-
-	MFNode &
-	operator = (const MFNode & field)
-	{
-		ArrayField::operator = (field);
-		return *this;
-	}
-
-	MFNode &
-	operator = (MFNode && field)
-	{
-		ArrayField::operator = (std::move (field));
-		return *this;
-	}
-
-	virtual
-	X3DConstants::FieldType
-	getType () const final override
-	{ return X3DConstants::MFNode; }
-
-	///  6.7.7 Add field interest.
-
-	template <class Class>
-	void
-	addInterest (Class* object, void (Class::* memberFunction) (const MFNode &)) const
-	{ addInterest (object, memberFunction, std::cref (*this)); }
-
-	template <class Class>
-	void
-	addInterest (Class & object, void (Class::* memberFunction) (const MFNode &)) const
-	{ addInterest (object, memberFunction, std::cref (*this)); }
-
-	///  Input/Output
-
-	virtual
-	void
-	fromStream (std::istream &)
-	throw (Error <INVALID_X3D>,
-	       Error <NOT_SUPPORTED>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override;
-
-	virtual
-	void
-	toStream (std::ostream &) const final override;
-
-};
+extern template class X3DMFNode <X3DBaseNode>;
 
 } // X3D
-
 } // titania
 
 #endif

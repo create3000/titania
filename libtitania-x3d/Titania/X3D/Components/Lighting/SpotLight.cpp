@@ -120,7 +120,7 @@ SpotLight::eventsProcessed ()
 	glDiffuseSpecular [3] = 1;
 
 	glSpotExponent = math::clamp <float> (beamWidth () ? 0.5f / beamWidth () : 0.0f, 0, 128);
-	glSpotCutOff   = math::clamp <float> (math::degree <float> (cutOffAngle ()), 0, 90);
+	glSpotCutOff   = math::clamp <float> (math::degrees <float> (cutOffAngle ()), 0, 90);
 
 	glPosition [0] = location () .getX ();
 	glPosition [1] = location () .getY ();

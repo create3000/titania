@@ -632,6 +632,7 @@
     <None Include="Titania\X3D\Miscellaneous\Shader.h" />
     <None Include="Titania\X3D\Miscellaneous\BVH.h" />
     <None Include="share\titania\shaders\ParticleSystems\Bits\BVH.h" />
+    <None Include="Titania\X3D\Fields\X3DMFNode.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

@@ -12,7 +12,7 @@ PROTO Proto [
   field SFMatrix3f  SFMatrix3f 1 2 3 4 5 6 7 8 9.12346
   field SFMatrix4d  SFMatrix4d 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16.1235
   field SFMatrix4f  SFMatrix4f 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16.1235
-  field SFNode      SFNode DEF _2 Group { }
+  field SFNode      SFNode DEF _1 Group { }
   field SFRotation  SFRotation 0.267261 0.534522 0.801784 4
   field SFString    SFString "abc'\"'\\'abc"
   field SFTime      SFTime 0.123457
@@ -33,10 +33,10 @@ PROTO Proto [
   field MFMatrix3f  MFMatrix3f [ ]
   field MFMatrix4d  MFMatrix4d [ ]
   field MFMatrix4f  MFMatrix4f [ ]
-  field MFNode      MFNode [
-    DEF _0 Group { }
-    DEF _1 Group { }
-  ]
+  field MFNode      MFNode [ 
+      DEF _2 Group { }
+      DEF _3 Group { }
+     ]
   field MFRotation  MFRotation [ ]
   field MFString    MFString [ ]
   field MFTime      MFTime [ ]
@@ -97,7 +97,7 @@ PROTO Proto [
   }
 }
 
-DEF _3 Proto {
+Proto {
   SFImage 2 2 0 0 0 0 0
   MFColor 0 0 0
   MFColorRGBA 0 0 0 0

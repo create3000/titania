@@ -19,7 +19,7 @@ intersect (in vec3 min, in vec3 max, in Line3 line)
 
 	for (int i = 0; i < 5; ++ i)
 	{
-		if (intersect (plane3 (i % 2 == 1 ? min : max, box3_normals [i]), line, intersection))
+		if (intersect (plane3 ((i & 1) == 1 ? min : max, box3_normals [i]), line, intersection))
 		{
 			switch (i)
 			{

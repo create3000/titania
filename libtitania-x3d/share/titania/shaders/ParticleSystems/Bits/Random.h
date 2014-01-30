@@ -80,13 +80,13 @@ random_normal (in vec3 direction, in float angle)
 	return multVec (rotation, random_normal (angle));
 }
 
-/* Generate a random normal for VolumeEmitter. */
+// Generate a random normal for VolumeEmitter.
 
 vec3
 random_normal (in vec3 direction)
 {
 	float theta = random1 () * M_PI;
-	float cphi  = pow (fract (random1 ()), 1 / 3.0f); /* I don't why this, but its almost uniform. */
+	float cphi  = pow (fract (random1 ()), 1 / 3.0f); // I don't why this, but its almost uniform.
 	float phi   = acos (cphi);
 	float r     = sin (phi);
 

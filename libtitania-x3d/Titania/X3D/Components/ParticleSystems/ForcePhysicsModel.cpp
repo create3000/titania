@@ -80,7 +80,7 @@ ForcePhysicsModel::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-ForcePhysicsModel::getForce (X3DParticleEmitterNode* const, MFVec3f & force, MFFloat & turbulence) const
+ForcePhysicsModel::addForce (X3DParticleEmitterNode* const, MFVec3f & force, MFFloat & turbulence) const
 {
 	if (enabled ())
 	{

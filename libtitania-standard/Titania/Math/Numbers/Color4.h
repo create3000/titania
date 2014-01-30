@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -242,7 +242,7 @@ color4 <Type>::setHSV (const Type & h, Type s, Type v)
 
 	s = clamp (s, Type (), Type (1));
 
-	Type w = degree (interval (h, Type (), Type (M_PI2))) / 60; // sector 0 to 5
+	Type w = degrees (interval (h, Type (), Type (M_PI2))) / 60; // sector 0 to 5
 
 	Type i = std::floor (w);
 	Type f = w - i;                                             // factorial part of h
@@ -318,7 +318,7 @@ color4 <Type>::getHSV (Type & h, Type & s, Type & v) const
 	else
 		h = 4 + (r () - g ()) / delta;  // between magenta & cyan
 
-	h *= Type (Type (M_PI)) / 3;                     // radiants
+	h *= Type (Type (M_PI)) / 3;                     // radians
 
 	if (h < 0)
 		h += 2 * Type (Type (M_PI));

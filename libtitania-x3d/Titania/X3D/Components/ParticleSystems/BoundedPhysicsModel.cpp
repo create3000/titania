@@ -80,7 +80,7 @@ BoundedPhysicsModel::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-BoundedPhysicsModel::getForce (X3DParticleEmitterNode* const, MFVec3f &, MFFloat &) const
+BoundedPhysicsModel::addTriangles (std::vector <Vector3f> & triangles) const
 { }
 
 } // X3D

@@ -315,24 +315,6 @@ main (int argc, char** argv)
 		Vector3f ( 0.5, -1,   0)
 	});
 
-
-	Vector2f t (1, 2);
-	float r = 2;	
-	Vector2f s (3, 4);
-	float so = 3;	
-
-	Matrix3f m;
-	m .set (t, r, s, so);
-	m .get (t, r, s, so);
-	
-	std::clog << t << std::endl;
-	std::clog << r << std::endl;
-	std::clog << s << std::endl;
-	std::clog << so << std::endl;
-
-	std::clog << m << std::endl;
-	std::clog << inverse (m) << std::endl;
-
 	std::clog << "Function main done." << std::endl;
 	return 0;
 }

@@ -51,6 +51,7 @@
 #include "BVH.h"
 
 #include <Titania/Utility/Adapter.h>
+#include <Titania/LOG.h>
 #include <algorithm>
 
 namespace titania {

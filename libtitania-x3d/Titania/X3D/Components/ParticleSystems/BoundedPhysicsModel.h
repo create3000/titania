@@ -101,7 +101,11 @@ public:
 	
 	virtual
 	void
-	getForce (X3DParticleEmitterNode* const, MFVec3f &, MFFloat &) const final override;
+	addForce (X3DParticleEmitterNode* const, MFVec3f &, MFFloat &) const final override
+	{ }
+
+	void
+	addTriangles (std::vector <Vector3f> &) const;
 
 
 private:

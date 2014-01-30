@@ -1188,7 +1188,23 @@ multiply (const vector4 <Type> & lhs, const vector4 <Type> & rhs)
 	return result;
 }
 
-///  Return matrix value @a lhs right divided by scalar @a rhs.
+///  Return scalar value @a lhs  divided by matrix @a rhs.
+template <class Type>
+inline
+matrix4 <Type>
+operator / (const Type & lhs, const matrix4 <Type> & rhs)
+{
+	matrix4 <Type> result (rhs);
+
+	result [0] = lhs / result [0];
+	result [1] = lhs / result [1];
+	result [2] = lhs / result [2];
+	result [3] = lhs / result [3];
+
+	return result;
+}
+
+///  Return matrix value @a lhs divided by scalar @a rhs.
 template <class Type>
 inline
 matrix4 <Type>

@@ -99,7 +99,7 @@ public:
 	
 	virtual
 	void
-	getForce (X3DParticleEmitterNode* const, MFVec3f &, MFFloat &) const final override;
+	addForce (X3DParticleEmitterNode* const, MFVec3f &, MFFloat &) const final override;
 
 
 private:

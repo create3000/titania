@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -96,7 +96,7 @@ WindPhysicsModel::getRandomSpeed () const
 }
 
 void
-WindPhysicsModel::getForce (X3DParticleEmitterNode* const emitter, MFVec3f & force, MFFloat & turbulence) const
+WindPhysicsModel::addForce (X3DParticleEmitterNode* const emitter, MFVec3f & force, MFFloat & turbulence) const
 {
 	if (enabled ())
 	{

@@ -251,40 +251,42 @@ ParticleSystem::Fields::Fields () :
 	      texCoordKey (new MFFloat ()),
 	         isActive (new SFBool ()),
 	          emitter (new SFNode ()),
-	          physics (new MFNode ()),
 	        colorRamp (new SFNode ()),
-	     texCoordRamp (new SFNode ())
+	     texCoordRamp (new SFNode ()),
+	          physics (new MFNode ())
 { }
 
 ParticleSystem::ParticleSystem (X3DExecutionContext* const executionContext) :
-	         X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	        X3DShapeNode (),
-	              fields (),
-	      geometryTypeId (GeometryType::QUAD),
-	      glGeometryType (GL_POINTS),
-	         numVertices (0),
-	        numParticles (0),
-	        creationTime (0),
-	          readBuffer (0),
-	         writeBuffer (1),
-	  particleFeedbackId ({ 0, 0 }),
-	    particleBufferId ({ 0, 0 }),
-	       particleMapId (0),
-	    vertexFeedbackId (0),
-	      vertexBufferId (0),
-	    geometryBufferId (0),
-	      colorRampMapId ({ 0, 0 }),
-	   colorRampBufferId ({ 0, 0 }),
-	   texCoordRampMapId ({ 0, 0 }),
-	texCoordRampBufferId ({ 0, 0 }),
-	     transformShader (),
-	      geometryShader (),
-	         emitterNode (nullptr),
-	       colorRampNode (),
-	    texCoordRampNode (),
-	           numColors (0),
-	         numTexCoord (0),
-	       sortAlgorithm (new OddEvenMergeSort ())
+	             X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	            X3DShapeNode (),
+	                  fields (),
+	          geometryTypeId (GeometryType::QUAD),
+	          glGeometryType (GL_POINTS),
+	             numVertices (0),
+	            numParticles (0),
+	            creationTime (0),
+	              readBuffer (0),
+	             writeBuffer (1),
+	      particleFeedbackId ({ 0, 0 }),
+	        particleBufferId ({ 0, 0 }),
+	           particleMapId (0),
+	        vertexFeedbackId (0),
+	          vertexBufferId (0),
+	        geometryBufferId (0),
+	          colorRampMapId ({ 0, 0 }),
+	       colorRampBufferId ({ 0, 0 }),
+	       texCoordRampMapId ({ 0, 0 }),
+	    texCoordRampBufferId ({ 0, 0 }),
+	         transformShader (),
+	          geometryShader (),
+	             emitterNode (),
+	           colorRampNode (),
+	        texCoordRampNode (),
+	               numColors (0),
+	             numTexCoord (0),
+	       physicsModelNodes (),
+	boundedPhysicsModelNodes (),
+	           sortAlgorithm (new OddEvenMergeSort ())
 {
 	addField (inputOutput,    "metadata",          metadata ());
 	addField (inputOutput,    "enabled",           enabled ());
@@ -304,13 +306,19 @@ ParticleSystem::ParticleSystem (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "bboxSize",          bboxSize ());
 	addField (initializeOnly, "bboxCenter",        bboxCenter ());
 	addField (initializeOnly, "emitter",           emitter ());
-	addField (initializeOnly, "physics",           physics ());
 	addField (initializeOnly, "colorRamp",         colorRamp ());
 	addField (initializeOnly, "texCoordRamp",      texCoordRamp ());
 	addField (inputOutput,    "appearance",        appearance ());
 	addField (inputOutput,    "geometry",          geometry ());
+	addField (initializeOnly, "physics",           physics ());
 
-	addChildren (transformShader, geometryShader, colorRampNode, texCoordRampNode);
+	addChildren (transformShader,
+	             geometryShader,
+	             emitterNode,
+	             colorRampNode,
+	             texCoordRampNode,
+	             physicsModelNodes,
+	             boundedPhysicsModelNodes);
 }
 
 X3DBaseNode*
@@ -379,6 +387,7 @@ ParticleSystem::initialize ()
 		colorRamp ()         .addInterest (this, &ParticleSystem::set_colorRamp);
 		texCoordRamp ()      .addInterest (this, &ParticleSystem::set_texCoordRamp);
 		geometry ()          .addInterest (this, &ParticleSystem::set_geometry);
+		physics ()           .addInterest (this, &ParticleSystem::set_physics);
 
 		set_geometry_shader ();
 		set_enabled ();
@@ -387,6 +396,7 @@ ParticleSystem::initialize ()
 		set_colorRamp ();
 		set_texCoordRamp ();
 		set_geometry ();
+		set_physics ();
 	}
 }
 
@@ -568,7 +578,7 @@ ParticleSystem::set_geometryType ()
 
 		set_vertex_buffer ();
 	}
-	
+
 	set_texCoord ();
 
 	geometryShader -> setField <SFInt32> ("numVertices",  int32_t (numVertices));
@@ -623,7 +633,7 @@ ParticleSystem::set_color ()
 	if (colorRampNode and not colorKey () .empty () and not colorRampNode -> isEmpty ())
 	{
 		numColors = std::min (colorKey () .size (), colorRampNode -> getSize ());
-	
+
 		// Keys
 
 		std::vector <float> colorKeysArray (colorKey () .begin (), colorKey () .end ());
@@ -743,7 +753,7 @@ ParticleSystem::set_texCoord ()
 	else
 	{
 		numTexCoord = 0;
-	
+
 		// Clear buffers
 
 		for (size_t i = 0; i < 2; ++ i)
@@ -772,6 +782,48 @@ ParticleSystem::set_texCoord ()
 void
 ParticleSystem::set_geometry ()
 { }
+
+void
+ParticleSystem::set_physics ()
+{
+	// X3DParticlePhysicsModelNode
+
+	physicsModelNodes .clear ();
+	
+	for (auto & node : physics ())
+	{
+		auto physicsNode = x3d_cast <X3DParticlePhysicsModelNode*> (node);
+
+		if (physicsNode)
+			physicsModelNodes .emplace_back (physicsNode);
+	}
+
+	// BoundedPhysicsModel
+
+	for (auto & physicsNode : boundedPhysicsModelNodes)
+		physicsNode -> removeInterest (this, &ParticleSystem::set_boundedPhysicsModel);
+
+	boundedPhysicsModelNodes .clear ();
+
+	for (auto & node : physics ())
+	{
+		auto physicsNode = x3d_cast <BoundedPhysicsModel*> (node);
+
+		if (physicsNode)
+		{
+			boundedPhysicsModelNodes .emplace_back (physicsNode);
+			physicsNode -> addInterest (this, &ParticleSystem::set_boundedPhysicsModel);
+		}
+	}
+
+	set_boundedPhysicsModel ();
+}
+
+void
+ParticleSystem::set_boundedPhysicsModel ()
+{
+	__LOG__ << std::endl;
+}
 
 void
 ParticleSystem::set_particle_buffers ()
@@ -953,6 +1005,7 @@ ParticleSystem::traverse (const TraverseType type)
 		{
 			if (isActive ())
 				getBrowser () -> getRenderers () .top () -> addShape (this);
+
 			break;
 		}
 		default:
@@ -968,7 +1021,7 @@ ParticleSystem::prepareEvents ()
 	if (numParticles < maxParticles ())
 	{
 		time_type now          = chrono::now ();
-		int32_t   newParticles = std::ceil ((now - creationTime) * maxParticles () / particleLifetime ());
+		int32_t   newParticles = (now - creationTime) * maxParticles () / particleLifetime ();
 
 		if (newParticles)
 			creationTime = now;
@@ -991,13 +1044,8 @@ ParticleSystem::prepareEvents ()
 		MFVec3f velocity;
 		MFFloat turbulence;
 
-		for (const auto & node : physics ())
-		{
-			auto physics = x3d_cast <X3DParticlePhysicsModelNode*> (node);
-
-			if (physics)
-				physics -> getForce (emitterNode, velocity, turbulence);
-		}
+		for (const auto & physicsModelNode : physicsModelNodes)
+			physicsModelNode -> addForce (emitterNode, velocity, turbulence);
 
 		for (auto & v : velocity)
 			v *= deltaTime / emitterNode -> mass ();
@@ -1280,10 +1328,13 @@ ParticleSystem::disableTexCoord () const
 void
 ParticleSystem::dispose ()
 {
-	transformShader  .dispose ();
-	geometryShader   .dispose ();
-	colorRampNode    .dispose ();
-	texCoordRampNode .dispose ();
+	transformShader          .dispose ();
+	geometryShader           .dispose ();
+	emitterNode              .dispose ();
+	colorRampNode            .dispose ();
+	texCoordRampNode         .dispose ();
+	physicsModelNodes        .dispose ();
+	boundedPhysicsModelNodes .dispose ();
 
 	// Particle buffer
 
@@ -1336,9 +1387,8 @@ ParticleSystem::~ParticleSystem ()
 } // X3D
 } // titania
 
-
 //
-	
+
 //	glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [readBuffer]);
 //	Particle* particle = (Particle*) glMapBufferRange (GL_ARRAY_BUFFER, 0, sizeof (Particle) * numParticles, GL_MAP_READ_BIT);
 //
@@ -1349,9 +1399,8 @@ ParticleSystem::~ParticleSystem ()
 //		c += particle -> elapsedTime == 0;
 //		++ particle;
 //	}
-//	
+//
 //	__LOG__ << numParticles << " : " << c << std::endl;
 //
 //	glUnmapBuffer (GL_ARRAY_BUFFER);
 //	glBindBuffer (GL_ARRAY_BUFFER, 0);
-	

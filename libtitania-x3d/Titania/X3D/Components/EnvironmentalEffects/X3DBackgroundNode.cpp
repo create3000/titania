@@ -373,7 +373,7 @@ X3DBackgroundNode::drawSphere ()
 	matrix .get (translation, rotation);
 	rotation .get (x, y, z, angle);
 
-	glRotatef (math::degree (angle), x, y, z);
+	glRotatef (math::degrees (angle), x, y, z);
 
 	// Draw
 

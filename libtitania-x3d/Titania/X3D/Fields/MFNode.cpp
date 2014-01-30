@@ -53,97 +53,10 @@
 namespace titania {
 namespace X3D {
 
-template <>
-const std::string X3DField <Array <SFNode>>::typeName ("MFNode");
-
-template <>
-const X3DConstants::FieldType X3DField <Array <SFNode>>::type = X3DConstants::MFNode;
-
-//template class Array <X3D::SFNode>;
+//template class Array <SFNode>;
 template class X3DField <Array <SFNode>>;
 template class X3DArrayField <SFNode>;
-
-MFNode*
-MFNode::clone (X3DExecutionContext* const executionContext) const
-throw (Error <INVALID_NAME>,
-       Error <NOT_SUPPORTED>)
-{
-	MFNode* field = new MFNode ();
-
-	clone (executionContext, field);
-
-	return field;
-}
-
-void
-MFNode::clone (X3DExecutionContext* const executionContext, X3DFieldDefinition* fieldDefinition) const
-throw (Error <INVALID_NAME>,
-       Error <NOT_SUPPORTED>)
-{
-	MFNode* field = static_cast <MFNode*> (fieldDefinition);
-
-	for (const auto & value :* this)
-	{
-		if (value)
-			field -> emplace_back (value -> clone (executionContext));
-
-		else
-			field -> emplace_back ();
-	}
-}
-
-void
-MFNode::fromStream (std::istream & istream)
-throw (Error <INVALID_X3D>,
-       Error <NOT_SUPPORTED>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{ }
-
-void
-MFNode::toStream (std::ostream & ostream) const
-{
-	if (size () > 1)
-	{
-		Generator::PushContext ();
-
-		ostream
-			<< '['
-			<< Generator::TidyBreak
-			<< Generator::IncIndent;
-
-		for (const auto & field : basic::adapter (cbegin (), cend () - 1))
-		{
-			ostream
-				<< Generator::Indent
-				<< field
-				<< Generator::TidyBreak;
-		}
-
-		ostream
-			<< Generator::Indent
-			<< back ()
-			<< Generator::TidyBreak
-			<< Generator::DecIndent
-			<< Generator::Indent
-			<< ']';
-
-		Generator::PopContext ();
-
-		return;
-	}
-
-	if (size () == 1)
-	{
-		Generator::PushContext ();
-		ostream << front ();
-		Generator::PopContext ();
-
-		return;
-	}
-
-	ostream << Generator::EmptyBrackets;
-}
+template class X3DMFNode <X3DBaseNode>;
 
 } // X3D
 } // titania

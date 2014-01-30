@@ -110,22 +110,22 @@ sqr (const Type & value)
 	return value * value;
 }
 
-///  Convert @a value from degrees to radiants.
+///  Convert @a value from degrees to radians.
 template <class Type>
 inline
 constexpr Type
-radiant (const Type & value)
+radians (const Type & value)
 {
-	return value * (M_PI / 180);
+	return value * Type (M_PI / 180);
 }
 
-///  Convert @a value from radiants to degrees.
+///  Convert @a value from radians to degrees.
 template <class Type>
 inline
 constexpr Type
-degree (const Type & value)
+degrees (const Type & value)
 {
-	return value * (180 / M_PI);
+	return value * Type (180 / M_PI);
 }
 
 ///  Clamp @a value in the range @a low and @a high.

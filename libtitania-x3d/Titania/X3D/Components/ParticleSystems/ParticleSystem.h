@@ -51,6 +51,7 @@
 #ifndef __TITANIA_X3D_COMPONENTS_PARTICLE_SYSTEMS_PARTICLE_SYSTEM_H__
 #define __TITANIA_X3D_COMPONENTS_PARTICLE_SYSTEMS_PARTICLE_SYSTEM_H__
 
+#include "../ParticleSystems/BoundedPhysicsModel.h"
 #include "../ParticleSystems/X3DParticleEmitterNode.h"
 #include "../Rendering/X3DColorNode.h"
 #include "../Shape/X3DShapeNode.h"
@@ -182,14 +183,6 @@ public:
 	emitter () const
 	{ return *fields .emitter; }
 
-	MFNode &
-	physics ()
-	{ return *fields .physics; }
-
-	const MFNode &
-	physics () const
-	{ return *fields .physics; }
-
 	SFNode &
 	colorRamp ()
 	{ return *fields .colorRamp; }
@@ -205,6 +198,14 @@ public:
 	const SFNode &
 	texCoordRamp () const
 	{ return *fields .texCoordRamp; }
+
+	MFNode &
+	physics ()
+	{ return *fields .physics; }
+
+	const MFNode &
+	physics () const
+	{ return *fields .physics; }
 
 	///  @name Tests
 
@@ -288,6 +289,12 @@ private:
 	set_emitter ();
 
 	void
+	set_physics ();
+
+	void
+	set_boundedPhysicsModel ();
+
+	void
 	set_colorRamp ();
 
 	void
@@ -365,37 +372,39 @@ private:
 		MFFloat* const texCoordKey;
 		SFBool* const isActive;
 		SFNode* const emitter;
-		MFNode* const physics;
 		SFNode* const colorRamp;
 		SFNode* const texCoordRamp;
+		MFNode* const physics;
 	};
 
 	Fields fields;
 
-	GeometryType                         geometryTypeId;
-	GLenum                               glGeometryType;
-	size_t                               numVertices;
-	int32_t                              numParticles;
-	time_type                            creationTime;
-	size_t                               readBuffer;
-	size_t                               writeBuffer;
-	std::array <GLuint, 2>               particleFeedbackId;
-	std::array <GLuint, 2>               particleBufferId;
-	GLuint                               particleMapId;
-	GLuint                               vertexFeedbackId;
-	GLuint                               vertexBufferId;
-	GLuint                               geometryBufferId;
-	std::array <GLuint, 2>               colorRampMapId;
-	std::array <GLuint, 2>               colorRampBufferId;
-	std::array <GLuint, 2>               texCoordRampMapId;
-	std::array <GLuint, 2>               texCoordRampBufferId;
-	X3DSFNode <ComposedShader>           transformShader;
-	X3DSFNode <ComposedShader>           geometryShader;
-	X3DParticleEmitterNode*              emitterNode;
-	X3DSFNode <X3DColorNode>             colorRampNode;
-	X3DSFNode <X3DTextureCoordinateNode> texCoordRampNode;
-	size_t                               numColors;
-	size_t                               numTexCoord;
+	GeometryType                            geometryTypeId;
+	GLenum                                  glGeometryType;
+	size_t                                  numVertices;
+	int32_t                                 numParticles;
+	time_type                               creationTime;
+	size_t                                  readBuffer;
+	size_t                                  writeBuffer;
+	std::array <GLuint, 2>                  particleFeedbackId;
+	std::array <GLuint, 2>                  particleBufferId;
+	GLuint                                  particleMapId;
+	GLuint                                  vertexFeedbackId;
+	GLuint                                  vertexBufferId;
+	GLuint                                  geometryBufferId;
+	std::array <GLuint, 2>                  colorRampMapId;
+	std::array <GLuint, 2>                  colorRampBufferId;
+	std::array <GLuint, 2>                  texCoordRampMapId;
+	std::array <GLuint, 2>                  texCoordRampBufferId;
+	X3DSFNode <ComposedShader>              transformShader;
+	X3DSFNode <ComposedShader>              geometryShader;
+	X3DSFNode <X3DParticleEmitterNode>      emitterNode;
+	X3DSFNode <X3DColorNode>                colorRampNode;
+	X3DSFNode <X3DTextureCoordinateNode>    texCoordRampNode;
+	size_t                                  numColors;
+	size_t                                  numTexCoord;
+	X3DMFNode <X3DParticlePhysicsModelNode> physicsModelNodes;
+	X3DMFNode <BoundedPhysicsModel>         boundedPhysicsModelNodes;
 
 	std::unique_ptr <OddEvenMergeSort> sortAlgorithm;
 
