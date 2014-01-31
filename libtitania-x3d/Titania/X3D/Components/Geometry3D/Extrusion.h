@@ -62,6 +62,8 @@ class Extrusion :
 {
 public:
 
+	///  @name Construction
+
 	Extrusion (X3DExecutionContext* const);
 
 	virtual
@@ -184,9 +186,13 @@ private:
 
 	typedef opengl::tessellator <size_t, size_t> Tessellator;
 
+	///  @name Construction
+
 	virtual
 	void
 	initialize () final override;
+
+	///  @name Operations
 
 	std::vector <Vector3f>
 	createPoints (bool);

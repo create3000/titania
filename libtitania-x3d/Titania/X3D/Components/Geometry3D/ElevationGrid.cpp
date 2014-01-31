@@ -127,15 +127,6 @@ ElevationGrid::isTransparent () const
 	return _color and _color -> isTransparent ();
 }
 
-float
-ElevationGrid::getHeight (size_t index) const
-{
-	if (index < height () .size ())
-		return height () [index];
-
-	return 0;
-}
-
 Box3f
 ElevationGrid::createBBox ()
 {
@@ -162,6 +153,15 @@ ElevationGrid::createBBox ()
 	Vector3f center = Vector3f (x / 2, miny + y / 2, z / 2);
 
 	return Box3f (size, center);
+}
+
+float
+ElevationGrid::getHeight (size_t index) const
+{
+	if (index < height () .size ())
+		return height () [index];
+
+	return 0;
 }
 
 std::vector <Vector4f>

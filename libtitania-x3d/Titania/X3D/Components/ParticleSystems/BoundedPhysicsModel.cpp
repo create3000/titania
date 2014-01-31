@@ -108,7 +108,7 @@ BoundedPhysicsModel::set_geometry ()
 void
 BoundedPhysicsModel::set_geometryNode ()
 {
-	geometryNode .addEvent ();
+	addEvent ();
 }
 
 void

@@ -19,14 +19,53 @@ Transform {
       }
     }
     geometry IndexedFaceSet {
-      texCoordIndex [ 0, 1, 2, 3, -1 ]
-      coordIndex [ 0, 1, 2, 3, -1 ]
+      texCoordIndex [
+        0,
+        1,
+        2,
+        3,
+        -1
+      ]
+      coordIndex [
+        0,
+        1,
+        2,
+        3,
+        -1
+      ]
       texCoord TextureCoordinate {
-        point [ 0 0, 0.5 0, 0.5 0.5, 0 0.5 ]
+        point [
+          0 0,
+          0.5 0,
+          0.5 0.5,
+          0 0.5
+        ]
       }
       coord Coordinate {
-        point [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+        point [
+          -1 -1 0,
+          1 -1 0,
+          1 1 0,
+          -1 1 0
+        ]
       }
     }
+  }
+}
+
+Transform {
+  translation 6 5 -10
+  children Shape {
+    appearance Appearance {
+      material Material { }
+      texture PixelTexture {
+        image 2 4 4
+          0xff0000ff 0xff00dd
+          0xffcc 0xffffaa
+          0xff00ff88 0xffff0066
+          0xff800044 0xff008022
+      }
+    }
+    geometry Box { }
   }
 }

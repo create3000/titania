@@ -90,16 +90,16 @@ Box::initialize ()
 	getBrowser () -> getBrowserOptions () -> box () .addInterest (this, &Box::set_properties);
 }
 
+void
+Box::set_properties ()
+{
+	addEvent ();
+}
+
 Box3f
 Box::createBBox ()
 {
 	return Box3f (size (), Vector3f ());
-}
-
-void
-Box::set_properties ()
-{
-	update ();
 }
 
 void

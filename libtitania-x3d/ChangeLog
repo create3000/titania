@@ -1,5 +1,41 @@
 2014-01-31  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DMFNode.h:
+	* SFImage.cpp:
+	* X3DBaseNode.h:
+	* X3DChildObject.h:
+	* X3DArrayField.h:
+	* X3DBaseNode.cpp:
+	* TransformHandle.h:
+	* Box.h:
+	* Cone.h:
+	* Arc2D.h:
+	* Box.cpp:
+	* Disk2D.h:
+	* Sphere.h:
+	* Arc2D.cpp:
+	* Cylinder.h:
+	* Sphere.cpp:
+	* Circle2D.h:
+	* Disk2D.cpp:
+	* Extrusion.h:
+	* Polyline2D.h:
+	* Circle2D.cpp:
+	* ArcClose2D.h:
+	* Rectangle2D.h:
+	* jsContext.h:
+	* Polypoint2D.h:
+	* ArcClose2D.cpp:
+	* ElevationGrid.h:
+	* TriangleSet2D.h:
+	* Rectangle2D.cpp:
+	* IndexedFaceSet.h:
+	* ElevationGrid.cpp:
+	* X3DParticleEmitterNode.h:
+	* BoundedPhysicsModel.cpp: 
+
+2014-01-31  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* BVH.h:
 	* Math.h:
 	* Box3.h:

@@ -218,41 +218,43 @@ SFImage::toStream (std::ostream & ostream) const
 			<< Generator::ListBreak
 			<< Generator::IncIndent;
 
-		Image::size_type y;
+		Image::size_type y = 0;
 
-		for (y = 0; y < image .height () - 1; ++ y)
+		for (; y < image .height () - 1; ++ y)
 		{
 			if (Generator::HasListBreak ())
 				ostream << Generator::Indent;
 
-			Image::size_type x;
+			Image::size_type s = y * image .width ();
+			Image::size_type x = 0;
 
-			for (x = 0; x < image .width () - 1; ++ x)
+			for (Image::size_type size = image .width () - 1; x < size; ++ x)
 			{
 				ostream
-					<< image .array () .at (x + y * image .width ())
+					<< image .array () [x + s]
 					<< Generator::Space;
 			}
 
 			ostream
-				<< image .array () .at (x + y * image .width ())
+				<< image .array () [x + s]
 				<< Generator::ListBreak;
 		}
 
 		if (Generator::HasListBreak ())
 			ostream << Generator::Indent;
 
-		Image::size_type x;
+		Image::size_type s = y * image .width ();
+		Image::size_type x = 0;
 
-		for (x = 0; x < image .width () - 1; ++ x)
+		for (Image::size_type size = image .width () - 1; x < size; ++ x)
 		{
 			ostream
-				<< image .array () .at (x + y * image .width ())
+				<< image .array () [x + s]
 				<< Generator::Space;
 		}
 
 		ostream
-			<< image .array () .at (x + y * image .width ())
+			<< image .array () [x + s]
 			<< Generator::DecIndent
 			<< std::dec;
 	}

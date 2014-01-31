@@ -61,6 +61,8 @@ class Sphere :
 {
 public:
 
+	///  @name Construction
+
 	Sphere (X3DExecutionContext* const);
 
 	virtual
@@ -113,12 +115,18 @@ public:
 
 private:
 
+	///  @name Construction
+
 	virtual
 	void
 	initialize () final override;
 
+	///  @name Event handlers
+
 	void
 	set_properties ();
+
+	///  @name Operations
 
 	virtual
 	Box3f

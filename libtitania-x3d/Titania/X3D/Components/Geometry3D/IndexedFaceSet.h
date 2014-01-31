@@ -62,6 +62,8 @@ class IndexedFaceSet :
 {
 public:
 
+	///  @name Construction
+
 	IndexedFaceSet (X3DExecutionContext* const);
 
 	virtual
@@ -164,9 +166,13 @@ private:
 
 	typedef std::deque <Polygon> PolygonArray;
 
+	///  @name Construction
+
 	virtual
 	void
 	initialize () final override;
+
+	///  @name Event handlers
 
 	void
 	set_coordIndex ();
@@ -179,6 +185,8 @@ private:
 
 	void
 	set_normalIndex ();
+
+	///  @name Operations
 
 	virtual
 	void

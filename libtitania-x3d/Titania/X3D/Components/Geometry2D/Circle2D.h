@@ -61,6 +61,8 @@ class Circle2D :
 {
 public:
 
+	///  @name Construction
+
 	Circle2D (X3DExecutionContext* const);
 
 	virtual
@@ -111,16 +113,22 @@ public:
 
 private:
 
+	///  @name Construction
+
 	virtual
 	void
 	initialize () final override;
 
-	virtual
-	Box3f
-	createBBox () final override;
+	///  @name Event handlers
 
 	void
 	set_properties ();
+
+	///  @name Operations
+
+	virtual
+	Box3f
+	createBBox () final override;
 
 	virtual
 	void

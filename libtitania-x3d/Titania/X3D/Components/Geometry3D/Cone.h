@@ -61,6 +61,8 @@ class Cone :
 {
 public:
 
+	///  @name Construction
+
 	Cone (X3DExecutionContext* const);
 
 	virtual
@@ -136,6 +138,8 @@ public:
 
 
 private:
+
+	///  @name Operations
 
 	virtual
 	Box3f

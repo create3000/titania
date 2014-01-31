@@ -93,7 +93,7 @@ Sphere::initialize ()
 void
 Sphere::set_properties ()
 {
-	update ();
+	addEvent ();
 }
 
 Box3f

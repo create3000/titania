@@ -61,6 +61,8 @@ class Arc2D :
 {
 public:
 
+	///  @name Construction
+
 	Arc2D (X3DExecutionContext* const);
 
 	virtual
@@ -127,15 +129,21 @@ public:
 
 private:
 
+	///  @name Construction
+
 	virtual
 	void
 	initialize () final override;
 
-	float
-	getAngle ();
+	///  @name Event handlers
 
 	void
 	set_properties ();
+
+	///  @name Operations
+
+	float
+	getAngle ();
 
 	virtual
 	void

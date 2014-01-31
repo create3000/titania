@@ -815,26 +815,31 @@ template <class ValueType>
 void
 X3DArrayField <ValueType>::toStream (std::ostream & ostream) const
 {
-	if (size () > 1)
+	switch (size ())
 	{
-		ostream << Generator::OpenBracket;
+		case 0:
+		{
+			ostream << Generator::EmptyBrackets;
+			return;
+		}
+		case 1:
+		{
+			ostream << front ();
+			return;
+		}
+		default:
+		{
+			ostream << Generator::OpenBracket;
 
-		std::copy (begin (),
-		           end () - 1,
-		           Generator::ListSeparator <ValueType> (ostream));
+			std::copy (begin (),
+			           end () - 1,
+			           Generator::ListSeparator <ValueType> (ostream));
 
-		ostream << back () << Generator::CloseBracket;
+			ostream << back () << Generator::CloseBracket;
 
-		return;
+			return;
+		}
 	}
-
-	if (size () == 1)
-	{
-		ostream << front ();
-		return;
-	}
-
-	ostream << Generator::EmptyBrackets;
 }
 
 template <class ValueType>

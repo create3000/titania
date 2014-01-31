@@ -232,6 +232,11 @@ public:
 
 	virtual
 	void
+	addEvent () final override
+	{ }
+
+	virtual
+	void
 	addEvent (X3DChildObject* const) final override
 	{ }
 

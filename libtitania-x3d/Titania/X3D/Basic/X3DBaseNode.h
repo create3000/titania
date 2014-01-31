@@ -228,6 +228,10 @@ public:
 	void
 	addEvent (X3DChildObject* const, const EventPtr &) override;
 
+	virtual
+	void
+	addEvent () override;
+
 	void
 	processEvents ();
 

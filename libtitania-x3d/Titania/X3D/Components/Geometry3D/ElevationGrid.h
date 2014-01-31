@@ -62,6 +62,8 @@ class ElevationGrid :
 {
 public:
 
+	///  @name Construction
+
 	ElevationGrid (X3DExecutionContext* const);
 
 	virtual
@@ -222,16 +224,20 @@ public:
 
 private:
 
+	///  @name Construction
+
 	virtual
 	void
 	initialize () final override;
 	
-	float
-	getHeight (size_t) const;
+	///  @name Operations
 
 	virtual
 	Box3f
 	createBBox () final override;
+
+	float
+	getHeight (size_t) const;
 
 	std::vector <Vector4f>
 	createTexCoord () const;

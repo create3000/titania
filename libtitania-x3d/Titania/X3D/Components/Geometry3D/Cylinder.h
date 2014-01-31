@@ -61,6 +61,8 @@ class Cylinder :
 {
 public:
 
+	///  @name Construction
+
 	Cylinder (X3DExecutionContext* const);
 
 	virtual
@@ -144,6 +146,8 @@ public:
 
 
 private:
+
+	///  @name Operations
 
 	virtual
 	Box3f

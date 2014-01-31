@@ -61,6 +61,8 @@ class Polyline2D :
 {
 public:
 
+	///  @name Construction
+
 	Polyline2D (X3DExecutionContext* const);
 
 	virtual
@@ -110,6 +112,8 @@ public:
 
 
 private:
+
+	///  @name Operations
 
 	virtual
 	void

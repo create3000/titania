@@ -113,6 +113,7 @@ public:
 	notify ();
 
 	///  Notify object about a change and add an event.
+	virtual
 	void
 	addEvent ();
 

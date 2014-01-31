@@ -594,6 +594,18 @@ X3DBaseNode::addEvent (X3DChildObject* const object, const EventPtr & event)
 }
 
 void
+X3DBaseNode::addEvent ()
+{
+	isTainted (true);
+
+	if (not nodeId .time)
+	{
+		getBrowser () -> addEvent ();
+		nodeId = getBrowser () -> getRouter () .addNode (this);
+	}
+}
+
+void
 X3DBaseNode::processEvents ()
 {
 	events .clear ();

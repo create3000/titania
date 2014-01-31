@@ -9,6 +9,21 @@ Viewpoint {
   position 0 20 55
 }
 
+DEF Ceiling Transform {
+  children Shape {
+    geometry DEF Plane IndexedFaceSet {
+      solid FALSE
+      colorPerVertex FALSE
+      texCoordIndex [ 0, 1, 3, 2, -1, 0, 1, 3, 2, -1, 0, 1, 3, 2, -1, 0, 1, 3, 2, -1, 0, 1, 3, 2, -1, 0, 1, 3, 2, -1 ]
+      colorIndex [ 0, 1, 2, 3, 4, 5 ]
+      coordIndex [ 0, 1, 2, 3, -1 ]
+      coord Coordinate {
+        point [ -10 20 10, 10 20 10, 10 20 -10, -10 20 -10 ]
+      }
+    }
+  }
+}
+
 ParticleSystem {
   geometryType "POINT"
   maxParticles 4000
@@ -23,6 +38,15 @@ ParticleSystem {
     mass 0.1
     surfaceArea 0.1
   }
+  appearance Appearance {
+    lineProperties LineProperties {
+      linewidthScaleFactor 8
+    }
+    material Material {
+      emissiveColor 0.0437445 0.0437445 0.0437445
+      transparency 0.96
+    }
+  }
   physics [
     WindPhysicsModel {
       direction 0 1 0
@@ -35,16 +59,10 @@ ParticleSystem {
       speed 0.5
       gustiness 2
     }
+    BoundedPhysicsModel {
+      geometry USE Plane
+    }
   ]
-  appearance Appearance {
-    lineProperties LineProperties {
-      linewidthScaleFactor 8
-    }
-    material Material {
-      emissiveColor 0.0437445 0.0437445 0.0437445
-      transparency 0.96
-    }
-  }
 }
 
 DEF IndexedLineSet Transform {

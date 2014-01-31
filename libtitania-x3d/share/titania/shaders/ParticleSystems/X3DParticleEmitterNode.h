@@ -117,7 +117,7 @@ getRandomSpeed ()
 vec3
 getVelocity ()
 {
-	vec3 v = getFromVelocity ();
+	vec3 toVelocity = getFromVelocity ();
 
 	for (int i = 0; i < numForces; ++ i)
 	{
@@ -126,10 +126,10 @@ getVelocity ()
 		if (speed < 1e-7f)
 			continue;
 
-		v += random_normal (velocity [i], turbulence [i]) * speed;
+		toVelocity += random_normal (velocity [i], turbulence [i]) * speed;
 	}
 
-	return v;
+	return toVelocity;
 }
 
 /* CombSort: sort points along a line */
@@ -200,11 +200,11 @@ upper_bound (inout vec3 points [INTERSECTIONS_SIZE], in int count, in float valu
 	return first;
 }
 
-bool
-bounce (in vec3 fromPosition, in vec3 toPosition, in vec3 velocity, in float deltaTime)
+void
+bounce (in vec3 fromPosition, in vec3 toPosition, in vec3 velocity)
 {
 	if (boundedVolume == 0)
-		return false;
+		return;
 
 	Line3 line = line3 (fromPosition, toPosition);
 
@@ -225,29 +225,22 @@ bounce (in vec3 fromPosition, in vec3 toPosition, in vec3 velocity, in float del
 			if (sign (distance (plane, fromPosition)) != sign (distance (plane, toPosition)))
 			{
 				to .velocity = reflect (velocity, normals [index]);	
-				to .position = points [index] + to .velocity * deltaTime;
-				return true;
+				to .position = points [index] + normalize (to .velocity) * length (points [index] - fromPosition);
+				return;
 			}
 		}
-	
-		//to .position .x = -1.0f;
 	}
-
-	return false;
 }
 
 void
 animate ()
 {
-	vec3 velocity     = getVelocity ();
 	vec3 fromPosition = getFromPosition ();
-	vec3 toPosition   = fromPosition + velocity * deltaTime;
 
-	if (bounce (fromPosition, toPosition, velocity, deltaTime))
-		return;
+	to .velocity = getVelocity ();
+	to .position = fromPosition + to .velocity * deltaTime;
 
-	to .position = toPosition;
-	to .velocity = velocity;
+	bounce (fromPosition, to .position, to .velocity);
 }
 
 vec4

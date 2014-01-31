@@ -90,16 +90,16 @@ Rectangle2D::initialize ()
 	getBrowser () -> getBrowserOptions () -> rectangle2D () .addInterest (this, &Rectangle2D::set_properties);
 }
 
+void
+Rectangle2D::set_properties ()
+{
+	addEvent ();
+}
+
 Box3f
 Rectangle2D::createBBox ()
 {
 	return Box3f (Vector3f (size () .getX (), size () .getY (), 0), Vector3f ());
-}
-
-void
-Rectangle2D::set_properties ()
-{
-	update ();
 }
 
 void

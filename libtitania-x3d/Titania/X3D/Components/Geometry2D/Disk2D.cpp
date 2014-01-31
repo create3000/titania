@@ -93,18 +93,18 @@ Disk2D::initialize ()
 	getBrowser () -> getBrowserOptions () -> disc2D () .addInterest (this, &Disk2D::set_properties);
 }
 
+void
+Disk2D::set_properties ()
+{
+	addEvent ();
+}
+
 Box3f
 Disk2D::createBBox ()
 {
 	auto diameter = std::abs (std::max (innerRadius (), outerRadius ())) * 2;
 
 	return Box3f (Vector3f (diameter, diameter, 0), Vector3f ());
-}
-
-void
-Disk2D::set_properties ()
-{
-	update ();
 }
 
 void

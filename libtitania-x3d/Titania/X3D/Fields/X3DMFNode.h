@@ -229,46 +229,51 @@ template <class ValueType>
 void
 X3DMFNode <ValueType>::toStream (std::ostream & ostream) const
 {
-	if (size () > 1)
+	switch (size ())
 	{
-		Generator::PushContext ();
-
-		ostream
-			<< Generator::OpenBracket
-			<< Generator::TidyBreak
-			<< Generator::IncIndent;
-
-		for (const auto & field : basic::adapter (cbegin (), cend () - 1))
+		case 0:
 		{
+			ostream << Generator::EmptyBrackets;
+			return;
+		}
+		case 1:
+		{
+			Generator::PushContext ();
+			ostream << front ();
+			Generator::PopContext ();
+
+			return;
+		}
+		default:
+		{
+			Generator::PushContext ();
+
+			ostream
+				<< '['
+				<< Generator::TidyBreak
+				<< Generator::IncIndent;
+
+			for (const auto & field : basic::adapter (cbegin (), cend () - 1))
+			{
+				ostream
+					<< Generator::Indent
+					<< field
+					<< Generator::TidyBreak;
+			}
+
 			ostream
 				<< Generator::Indent
-				<< field
-				<< Generator::TidyBreak;
+				<< back ()
+				<< Generator::TidyBreak
+				<< Generator::DecIndent
+				<< Generator::Indent
+				<< ']';
+
+			Generator::PopContext ();
+
+			return;
 		}
-
-		ostream
-			<< Generator::Indent
-			<< back ()
-			<< Generator::TidyBreak
-			<< Generator::DecIndent
-			<< Generator::Indent
-			<< Generator::CloseBracket;
-
-		Generator::PopContext ();
-
-		return;
 	}
-
-	if (size () == 1)
-	{
-		Generator::PushContext ();
-		ostream << front ();
-		Generator::PopContext ();
-
-		return;
-	}
-
-	ostream << Generator::EmptyBrackets;
 }
 
 } // X3D

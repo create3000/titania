@@ -88,18 +88,18 @@ Circle2D::initialize ()
 	getBrowser () -> getBrowserOptions () -> circle2D () .addInterest (this, &Circle2D::set_properties);
 }
 
+void
+Circle2D::set_properties ()
+{
+	addEvent ();
+}
+
 Box3f
 Circle2D::createBBox ()
 {
 	float diameter = std::abs (radius ()) * 2;
 
 	return Box3f (Vector3f (diameter, diameter, 0), Vector3f ());
-}
-
-void
-Circle2D::set_properties ()
-{
-	update ();
 }
 
 void

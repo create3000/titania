@@ -61,6 +61,8 @@ class Polypoint2D :
 {
 public:
 
+	///  @name Construction
+
 	Polypoint2D (X3DExecutionContext* const);
 
 	virtual
@@ -108,6 +110,8 @@ public:
 
 
 private:
+
+	///  @name Operations
 
 	virtual
 	void

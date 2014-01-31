@@ -98,6 +98,12 @@ ArcClose2D::initialize ()
 	getBrowser () -> getBrowserOptions () -> arcClose2D () .addInterest (this, &ArcClose2D::set_properties);
 }
 
+void
+ArcClose2D::set_properties ()
+{
+	addEvent ();
+}
+
 float
 ArcClose2D::getAngle ()
 {
@@ -113,12 +119,6 @@ ArcClose2D::getAngle ()
 		return M_PI2 - difference;
 
 	return difference;
-}
-
-void
-ArcClose2D::set_properties ()
-{
-	update ();
 }
 
 void
