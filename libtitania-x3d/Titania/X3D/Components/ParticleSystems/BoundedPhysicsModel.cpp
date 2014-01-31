@@ -50,6 +50,7 @@
 
 #include "BoundedPhysicsModel.h"
 
+#include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -66,11 +67,14 @@ BoundedPhysicsModel::Fields::Fields () :
 BoundedPhysicsModel::BoundedPhysicsModel (X3DExecutionContext* const executionContext) :
 	                X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DParticlePhysicsModelNode (),
-	                     fields ()
+	                     fields (),
+	               geometryNode ()
 {
 	addField (inputOutput, "metadata", metadata ());
 	addField (inputOutput, "enabled",  enabled ());
 	addField (inputOutput, "geometry", geometry ());
+	
+	addChildren (geometryNode);
 }
 
 X3DBaseNode*
@@ -80,8 +84,52 @@ BoundedPhysicsModel::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-BoundedPhysicsModel::addTriangles (std::vector <Vector3f> & triangles) const
-{ }
+BoundedPhysicsModel::initialize () 
+{
+	X3DParticlePhysicsModelNode::initialize ();
+
+	geometry () .addInterest (this, &BoundedPhysicsModel::set_geometry);
+
+	set_geometry ();
+}
+
+void
+BoundedPhysicsModel::set_geometry ()
+{
+	if (geometryNode)
+		geometryNode -> removeInterest (this, &BoundedPhysicsModel::set_geometryNode);
+
+	geometryNode = x3d_cast <X3DGeometryNode*> (geometry ());
+
+	if (geometryNode)
+		geometryNode -> addInterest (this, &BoundedPhysicsModel::set_geometryNode);
+}
+
+void
+BoundedPhysicsModel::set_geometryNode ()
+{
+	geometryNode .addEvent ();
+}
+
+void
+BoundedPhysicsModel::addTriangles (std::vector <Vector3f> & normals, std::vector <Vector3f> & vertices) const
+{
+	if (enabled () and geometryNode)
+	{
+		std::vector <Color4f> colors;
+		TexCoordArray         texCoords (geometryNode -> getMultiTexCoords ());
+
+		geometryNode -> triangulate (colors, texCoords, normals, vertices);
+	}
+}
+
+void
+BoundedPhysicsModel::dispose () 
+{
+	geometryNode .dispose ();
+
+	X3DParticlePhysicsModelNode::dispose (); 
+}
 
 } // X3D
 } // titania

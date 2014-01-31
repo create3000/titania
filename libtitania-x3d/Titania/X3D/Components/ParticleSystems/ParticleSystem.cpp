@@ -54,6 +54,7 @@
 #include "../../Bits/config.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Miscellaneous/BVH.h"
 #include "../../Miscellaneous/Random.h"
 #include "../Rendering/X3DGeometryNode.h"
 #include "../Shaders/ShaderPart.h"
@@ -286,6 +287,12 @@ ParticleSystem::ParticleSystem (X3DExecutionContext* const executionContext) :
 	             numTexCoord (0),
 	       physicsModelNodes (),
 	boundedPhysicsModelNodes (),
+	      boundedNormalMapId (0),
+	   boundedNormalBufferId (0),
+	     boundedSurfaceMapId (0),
+	  boundedSurfaceBufferId (0),
+	      boundedVolumeMapId (0),
+	   boundedVolumeBufferId (0),
 	           sortAlgorithm (new OddEvenMergeSort ())
 {
 	addField (inputOutput,    "metadata",          metadata ());
@@ -372,6 +379,17 @@ ParticleSystem::initialize ()
 
 		glGenTextures (2, texCoordRampMapId .data ());
 		glGenBuffers  (2, texCoordRampBufferId .data ());
+
+		// Bounded physics model
+
+		glGenTextures (1, &boundedNormalMapId);
+		glGenBuffers  (1, &boundedNormalBufferId);
+
+		glGenTextures (1, &boundedSurfaceMapId);
+		glGenBuffers  (1, &boundedSurfaceBufferId);
+
+		glGenTextures (1, &boundedVolumeMapId);
+		glGenBuffers  (1, &boundedVolumeBufferId);
 
 		// Setup
 
@@ -789,7 +807,7 @@ ParticleSystem::set_physics ()
 	// X3DParticlePhysicsModelNode
 
 	physicsModelNodes .clear ();
-	
+
 	for (auto & node : physics ())
 	{
 		auto physicsNode = x3d_cast <X3DParticlePhysicsModelNode*> (node);
@@ -823,6 +841,56 @@ void
 ParticleSystem::set_boundedPhysicsModel ()
 {
 	__LOG__ << std::endl;
+
+	// Triangulate
+
+	std::vector <Vector3f> normals;
+	std::vector <Vector3f> vertices;
+
+	__LOG__ << boundedPhysicsModelNodes .size () << std::endl;
+
+	for (auto & physicsNode : boundedPhysicsModelNodes)
+		physicsNode -> addTriangles (normals, vertices);
+
+	__LOG__ << normals .size () << std::endl;
+	__LOG__ << vertices .size () << std::endl;
+
+	// Update shader
+
+	transformShader -> setField <SFBool> ("boundedVolume", not vertices .empty (), true);
+
+	// Upload
+
+	glBindBuffer (GL_TEXTURE_BUFFER, boundedNormalBufferId);
+	glBufferData (GL_TEXTURE_BUFFER, normals .size () * sizeof (Vector3f), normals .empty () ? 0 : normals .data (), GL_STATIC_COPY);
+
+	glBindBuffer (GL_TEXTURE_BUFFER, boundedSurfaceBufferId);
+	glBufferData (GL_TEXTURE_BUFFER, vertices .size () * sizeof (Vector3f), vertices .empty () ? 0 : vertices .data (), GL_STATIC_COPY);
+
+	// BVH
+
+	BVH tree (std::move (vertices));
+
+	auto treeArray = std::move (tree .toArray ());
+
+	__LOG__ << treeArray .size () << std::endl;
+
+	glBindBuffer (GL_TEXTURE_BUFFER, boundedVolumeBufferId);
+	glBufferData (GL_TEXTURE_BUFFER, treeArray .size () * sizeof (BVH::ArrayValue), treeArray .empty () ? 0 : treeArray .data (), GL_STATIC_COPY);
+
+	// Update textures
+
+	glBindTexture (GL_TEXTURE_BUFFER, boundedNormalMapId);
+	glTexBuffer (GL_TEXTURE_BUFFER, GL_RGB32F, boundedNormalBufferId);
+
+	glBindTexture (GL_TEXTURE_BUFFER, boundedSurfaceMapId);
+	glTexBuffer (GL_TEXTURE_BUFFER, GL_RGB32F, boundedSurfaceBufferId);
+
+	glBindTexture (GL_TEXTURE_BUFFER, boundedVolumeMapId);
+	glTexBuffer (GL_TEXTURE_BUFFER, GL_R32F, boundedVolumeBufferId);
+
+	glBindTexture (GL_TEXTURE_BUFFER, 0);
+	glBindBuffer (GL_TEXTURE_BUFFER, 0);
 }
 
 void
@@ -889,12 +957,6 @@ ParticleSystem::set_transform_shader ()
 
 	emitterNode -> addShaderFields (transformShader);
 
-	// Forces
-
-	transformShader -> addUserDefinedField (inputOutput, "velocity",          new MFVec3f ());
-	transformShader -> addUserDefinedField (inputOutput, "turbulence",        new MFFloat ());
-	transformShader -> addUserDefinedField (inputOutput, "numForces",         new SFInt32 ());
-
 	// Particle map
 
 	transformShader -> addUserDefinedField (inputOutput, "modelViewMatrix",   new SFMatrix4f ());
@@ -909,7 +971,23 @@ ParticleSystem::set_transform_shader ()
 
 	// Color ramp
 
-	transformShader -> addUserDefinedField (inputOutput, "numColors",         new SFInt32 (numColors));
+	transformShader -> addUserDefinedField (inputOutput, "numColors", new SFInt32 (numColors));
+
+	// Forces
+
+	transformShader -> addUserDefinedField (inputOutput, "velocity",      new MFVec3f ());
+	transformShader -> addUserDefinedField (inputOutput, "turbulence",    new MFFloat ());
+	transformShader -> addUserDefinedField (inputOutput, "numForces",     new SFInt32 ());
+	transformShader -> addUserDefinedField (inputOutput, "boundedVolume", new SFBool ());
+
+	// BHV
+
+	transformShader -> addUserDefinedField (inputOutput, "bvhStride",      new SFInt32 (sizeof (BVH::ArrayValue) / sizeof (float)));
+	transformShader -> addUserDefinedField (inputOutput, "bvhTypeOffset",  new SFInt32 (offsetof (BVH::ArrayValue, type) / sizeof (float)));
+	transformShader -> addUserDefinedField (inputOutput, "bvhMinOffset",   new SFInt32 (offsetof (BVH::ArrayValue, min) / sizeof (float)));
+	transformShader -> addUserDefinedField (inputOutput, "bvhMaxOffset",   new SFInt32 (offsetof (BVH::ArrayValue, max) / sizeof (float)));
+	transformShader -> addUserDefinedField (inputOutput, "bvhLeftOffset",  new SFInt32 (offsetof (BVH::ArrayValue, left) / sizeof (float)));
+	transformShader -> addUserDefinedField (inputOutput, "bvhRightOffset", new SFInt32 (offsetof (BVH::ArrayValue, right) / sizeof (float)));
 
 	// Sort algorithm
 
@@ -936,6 +1014,10 @@ ParticleSystem::set_transform_shader ()
 	transformShader -> setTextureBuffer ("particleMap",  particleMapId);
 	transformShader -> setTextureBuffer ("colorKeyMap",  colorRampMapId [COLOR_RAMP_KEYS]);
 	transformShader -> setTextureBuffer ("colorRampMap", colorRampMapId [COLOR_RAMP_VALUES]);
+
+	transformShader -> setTextureBuffer ("boundedNormalMap",  boundedNormalMapId);
+	transformShader -> setTextureBuffer ("boundedSurfaceMap", boundedSurfaceMapId);
+	transformShader -> setTextureBuffer ("boundedVolumeMap",  boundedVolumeMapId);
 
 	// Emitter
 
@@ -1375,6 +1457,26 @@ ParticleSystem::dispose ()
 
 	if (texCoordRampBufferId [0])
 		glDeleteBuffers (2, texCoordRampBufferId .data ());
+
+	// Bounded texture buffers
+
+	if (boundedNormalMapId)
+		glDeleteTextures (1, &boundedNormalMapId);
+
+	if (boundedNormalBufferId)
+		glDeleteBuffers (1, &boundedNormalBufferId);
+
+	if (boundedSurfaceMapId)
+		glDeleteTextures (1, &boundedSurfaceMapId);
+
+	if (boundedSurfaceBufferId)
+		glDeleteBuffers (1, &boundedSurfaceBufferId);
+
+	if (boundedVolumeMapId)
+		glDeleteTextures (1, &boundedVolumeMapId);
+
+	if (boundedVolumeBufferId)
+		glDeleteBuffers (1, &boundedVolumeBufferId);
 
 	// Dispose base
 

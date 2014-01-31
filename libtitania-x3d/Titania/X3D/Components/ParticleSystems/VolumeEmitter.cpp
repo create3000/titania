@@ -174,7 +174,7 @@ VolumeEmitter::set_geometry ()
 	glBindBuffer (GL_TEXTURE_BUFFER, surfaceAreaBufferId);
 	glBufferData (GL_TEXTURE_BUFFER, surfaceAreas .size () * sizeof (float), pointEmitter ? 0 : surfaceAreas .data (), GL_STATIC_COPY);
 
-	// Triangle tree
+	// BVH
 
 	BVH tree (std::move (vertices));
 
@@ -214,13 +214,6 @@ VolumeEmitter::addShaderFields (const X3DSFNode <ComposedShader> & shader) const
 
 	shader -> addUserDefinedField (inputOutput, "pointEmitter", new SFBool (pointEmitter));
 	shader -> addUserDefinedField (inputOutput, "direction",    new SFVec3f (normalize (direction () .getValue ())));
-
-	shader -> addUserDefinedField (inputOutput, "bvhStride",      new SFInt32 (sizeof (BVH::ArrayValue) / sizeof (float)));
-	shader -> addUserDefinedField (inputOutput, "bvhTypeOffset",  new SFInt32 (offsetof (BVH::ArrayValue, type) / sizeof (float)));
-	shader -> addUserDefinedField (inputOutput, "bvhMinOffset",   new SFInt32 (offsetof (BVH::ArrayValue, min) / sizeof (float)));
-	shader -> addUserDefinedField (inputOutput, "bvhMaxOffset",   new SFInt32 (offsetof (BVH::ArrayValue, max) / sizeof (float)));
-	shader -> addUserDefinedField (inputOutput, "bvhLeftOffset",  new SFInt32 (offsetof (BVH::ArrayValue, left) / sizeof (float)));
-	shader -> addUserDefinedField (inputOutput, "bvhRightOffset", new SFInt32 (offsetof (BVH::ArrayValue, right) / sizeof (float)));
 }
 
 void

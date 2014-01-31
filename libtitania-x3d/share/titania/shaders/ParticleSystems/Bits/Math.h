@@ -12,7 +12,7 @@ const float M_PI2   = 2.0f * M_PI;
 /* Algorithms */
 
 int
-upper_bound (in samplerBuffer array, in float value)
+upper_bound (inout samplerBuffer array, in float value)
 {
 	int first = 0;
 	int step  = 0;

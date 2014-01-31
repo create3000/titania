@@ -6,11 +6,12 @@ DEF Gray Background {
 
 Viewpoint {
   description "Viewpoint"
-  position 0 0 4
+  position 0 0 15
 }
 
 ParticleSystem {
   geometryType "POINT"
+  maxParticles 3200
   particleLifetime 30
   lifetimeVariation 0
   particleSize 0.1 0.1
@@ -29,9 +30,16 @@ ParticleSystem {
       linewidthScaleFactor 4
     }
   }
-  physics BoundedPhysicsModel {
-    geometry Sphere { }
-  }
+  physics [ 
+      BoundedPhysicsModel {
+        geometry Sphere { }
+      }
+      BoundedPhysicsModel {
+        geometry Box {
+          size 7 7 7
+        }
+      }
+     ]
 }
 
 DEF IndexedLineSet Transform {
@@ -53,8 +61,23 @@ DEF IndexedLineSet Transform {
 DEF Sphere Transform {
   children Shape {
     appearance Appearance {
-      material Material { }
+      material Material {
+        transparency 0.5
+      }
     }
     geometry Sphere { }
+  }
+}
+
+DEF Box Transform {
+  children Shape {
+    appearance Appearance {
+      material Material {
+        transparency 0.49
+      }
+    }
+    geometry Box {
+      size 7 7 7
+    }
   }
 }

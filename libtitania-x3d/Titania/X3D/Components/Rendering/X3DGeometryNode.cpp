@@ -329,7 +329,6 @@ X3DGeometryNode::triangulate (std::vector <Color4f> & _colors, TexCoordArray & _
 				for (size_t i = first, size = first + element .count; i < size; i += 4)
 				{
 					triangulate (i, i + 1, i + 2, _colors, _texCoords, _normals, _vertices);
-
 					triangulate (i, i + 2, i + 3, _colors, _texCoords, _normals, _vertices);
 				}
 
@@ -339,8 +338,7 @@ X3DGeometryNode::triangulate (std::vector <Color4f> & _colors, TexCoordArray & _
 			{
 				for (size_t i = first, size = first + element .count - 2; i < size; i += 4)
 				{
-					triangulate (i, i + 1, i + 2, _colors, _texCoords, _normals, _vertices);
-
+					triangulate (i + 0, i + 1, i + 2, _colors, _texCoords, _normals, _vertices);
 					triangulate (i + 1, i + 3, i + 2, _colors, _texCoords, _normals, _vertices);
 				}
 

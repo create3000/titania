@@ -405,6 +405,12 @@ private:
 	size_t                                  numTexCoord;
 	X3DMFNode <X3DParticlePhysicsModelNode> physicsModelNodes;
 	X3DMFNode <BoundedPhysicsModel>         boundedPhysicsModelNodes;
+	GLuint                                  boundedNormalMapId;
+	GLuint                                  boundedNormalBufferId;
+	GLuint                                  boundedSurfaceMapId;
+	GLuint                                  boundedSurfaceBufferId;
+	GLuint                                  boundedVolumeMapId;
+	GLuint                                  boundedVolumeBufferId;
 
 	std::unique_ptr <OddEvenMergeSort> sortAlgorithm;
 

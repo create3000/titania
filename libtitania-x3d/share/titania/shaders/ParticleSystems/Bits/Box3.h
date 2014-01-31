@@ -4,7 +4,7 @@
 
 /* Box3 */
 
-const vec3 box3_normals [5] = vec3 [ ] (
+/* const */ vec3 BOX3_NORMALS [5] = vec3 [ ] (
 	vec3 (0.0f,  0.0f,  1.0f), // front
 	vec3 (0.0f,  0.0f, -1.0f), // back
 	vec3 (0.0f,  1.0f,  0.0f), // top
@@ -19,7 +19,7 @@ intersect (in vec3 min, in vec3 max, in Line3 line)
 
 	for (int i = 0; i < 5; ++ i)
 	{
-		if (intersect (plane3 ((i & 1) == 1 ? min : max, box3_normals [i]), line, intersection))
+		if (intersect (plane3 ((i & 1) == 1 ? min : max, BOX3_NORMALS [i]), line, intersection))
 		{
 			switch (i)
 			{

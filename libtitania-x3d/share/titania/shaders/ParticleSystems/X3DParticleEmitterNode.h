@@ -11,13 +11,18 @@ uniform float lifetimeVariation;
 uniform float speed;
 uniform float variation;
 
+uniform samplerBuffer colorKeyMap;
+uniform samplerBuffer colorRampMap;
+uniform int           numColors;
+
 uniform vec3  velocity [FORCES_MAX];
 uniform float turbulence [FORCES_MAX];
 uniform int   numForces;
 
-uniform samplerBuffer colorKeyMap;
-uniform samplerBuffer colorRampMap;
-uniform int           numColors;
+uniform int           boundedVolume;
+uniform samplerBuffer boundedNormalMap;
+uniform samplerBuffer boundedSurfaceMap;
+uniform samplerBuffer boundedVolumeMap;
 
 /* Transform feedback varyings */
 
@@ -38,6 +43,9 @@ to;
 #pragma X3D include "Bits/Random.h"
 #pragma X3D include "Bits/Color.h"
 #pragma X3D include "Bits/OddEvenMergeSort.h"
+#pragma X3D include "Bits/BVH.h"
+
+/* Select random triangle from surfaceAreaMap. */
 
 ivec3
 random_triangle (in samplerBuffer surfaceAreaMap)
@@ -56,6 +64,8 @@ random_triangle (in samplerBuffer surfaceAreaMap)
 
 	return ivec3 (index0, index0 + 1, index0 + 2);
 }
+
+/* Select random point from surfaceAreaMap. */
 
 void
 random_point_on_surface (in samplerBuffer surfaceAreaMap, in samplerBuffer surfaceMap, in samplerBuffer normalMap, out vec3 position, out vec3 normal)
@@ -122,6 +132,124 @@ getVelocity ()
 	return v;
 }
 
+/* CombSort: sort points along a line */
+
+void
+sort (inout vec3 normals [INTERSECTIONS_SIZE], inout vec3 points [INTERSECTIONS_SIZE], in int length, in Line3 line)
+{
+	Plane3 plane = plane3 (line .point, line .direction);
+
+	const float shrinkFactor = 0.801711847137793;
+
+	int  gap       = length;
+	bool exchanged = false;
+
+	do
+	{
+		exchanged = false;
+		
+		if (gap > 1)
+			gap = int (gap * shrinkFactor);
+
+		for (int i = 0; i + gap < length; ++ i)
+		{
+			int j = i + gap;
+		
+			if (distance (plane, points [j]) < distance (plane, points [i]))
+			{
+				vec3 tmp = points [i];
+				points [i] = points [j];
+				points [j] = tmp;
+
+				tmp         = normals [i];
+				normals [i] = normals [j];
+				normals [j] = tmp;
+
+				exchanged = true;
+			}
+		}
+	}
+	while (exchanged || gap > 1);
+}
+
+int
+upper_bound (inout vec3 points [INTERSECTIONS_SIZE], in int count, in float value, in Line3 line)
+{
+	Plane3 plane = plane3 (line .point, line .direction);
+
+	int first = 0;
+	int step  = 0;
+
+	while (count > 0)
+	{
+		int index = first;
+
+		step = count >> 1; 
+
+		index += step;
+
+		if (value < distance (plane, points [index]))
+			count = step;
+		else
+		{
+			first  = ++ index;
+			count -= step + 1;
+		}
+	}
+
+	return first;
+}
+
+bool
+bounce (in vec3 fromPosition, in vec3 toPosition, in vec3 velocity, in float deltaTime)
+{
+	if (boundedVolume == 0)
+		return false;
+
+	Line3 line = line3 (fromPosition, toPosition);
+
+	vec3 normals [INTERSECTIONS_SIZE];
+	vec3 points  [INTERSECTIONS_SIZE];
+	int  intersections = getIntersections (boundedVolumeMap, line, boundedNormalMap, boundedSurfaceMap, normals, points);
+
+	if (intersections > 0)
+	{
+		sort (normals, points, intersections, line);
+
+		int index = upper_bound (points, intersections, 0, line);
+		
+		if (index < intersections)
+		{
+			Plane3 plane = plane3 (points [index], normals [index]);
+
+			if (sign (distance (plane, fromPosition)) != sign (distance (plane, toPosition)))
+			{
+				to .velocity = reflect (velocity, normals [index]);	
+				to .position = points [index] + to .velocity * deltaTime;
+				return true;
+			}
+		}
+	
+		//to .position .x = -1.0f;
+	}
+
+	return false;
+}
+
+void
+animate ()
+{
+	vec3 velocity     = getVelocity ();
+	vec3 fromPosition = getFromPosition ();
+	vec3 toPosition   = fromPosition + velocity * deltaTime;
+
+	if (bounce (fromPosition, toPosition, velocity, deltaTime))
+		return;
+
+	to .position = toPosition;
+	to .velocity = velocity;
+}
+
 vec4
 getColorValue (in int index)
 {
@@ -166,11 +294,8 @@ main ()
 	}
 	else
 	{
-		vec3 velocity = getVelocity ();
-
+		animate ();
 		to .lifetime    = getFromLifetime ();
-		to .position    = getFromPosition () + velocity * deltaTime;
-		to .velocity    = velocity;
 		to .color       = getColor (elapsedTime, to .lifetime);
 		to .elapsedTime = elapsedTime;
 		to .distance    = getDistance (to .position);

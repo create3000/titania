@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_COMPONENTS_PARTICLE_SYSTEMS_BOUNDED_PHYSICS_MODEL_H__
 
 #include "../ParticleSystems/X3DParticlePhysicsModelNode.h"
+#include "../Rendering/X3DGeometryNode.h"
 
 namespace titania {
 namespace X3D {
@@ -105,11 +106,28 @@ public:
 	{ }
 
 	void
-	addTriangles (std::vector <Vector3f> &) const;
+	addTriangles (std::vector <Vector3f> &, std::vector <Vector3f> &) const;
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override;
 
 
 private:
 
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+	void
+	set_geometry ();
+
+	void
+	set_geometryNode ();
 
 	///  @name Static members
 
@@ -127,6 +145,8 @@ private:
 	};
 
 	Fields fields;
+
+	X3DSFNode <X3DGeometryNode> geometryNode;
 
 };
 
