@@ -51,7 +51,6 @@
 #include "PolylineEmitter.h"
 
 #include "../../Bits/config.h"
-#include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -75,7 +74,7 @@ PolylineEmitter::PolylineEmitter (X3DExecutionContext* const executionContext) :
 	      polylineBufferId (0),
 	           lengthMapId (0),
 	        lengthBufferId (0),
-	             coordNode (),
+	          polylineNode (new IndexedLineSet (executionContext)),
 	          pointEmitter (false)
 {
 	addField (inputOutput,    "metadata",       metadata ());
@@ -87,7 +86,7 @@ PolylineEmitter::PolylineEmitter (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "coordIndex",     coordIndex ());
 	addField (inputOutput,    "coord",          coord ());
 
-	addChildren (coordNode);
+	addChildren (polylineNode);
 }
 
 X3DBaseNode*
@@ -111,63 +110,17 @@ PolylineEmitter::initialize ()
 
 	// Setup
 
-	coordIndex () .addInterest (this, &PolylineEmitter::set_coordIndex);
-	coordIndex () .addInterest (this, &PolylineEmitter::set_polyline);
-	coord ()      .addInterest (this, &PolylineEmitter::set_coord);
-	coord ()      .addInterest (this, &PolylineEmitter::set_coordIndex);
-	coord ()      .addInterest (this, &PolylineEmitter::set_polyline);
+	coordIndex () .addInterest (polylineNode -> coordIndex ());
+	coord ()      .addInterest (polylineNode -> coord ());
 
-	set_coord ();
-	set_coordIndex ();
+	polylineNode -> isInternal (true);
+	polylineNode -> coordIndex ()  = coordIndex ();
+	polylineNode -> coord ()       = coord ();
+	polylineNode -> addInterest (this, &PolylineEmitter::set_polyline);
+
+	polylineNode -> setup ();
+
 	set_polyline ();
-}
-
-std::deque <std::deque <size_t>> 
-PolylineEmitter::getPolylines () const
-{
-	std::deque <std::deque <size_t>>  polylines;
-	std::deque <size_t>               polyline;
-
-	if (not coordIndex () .empty ())
-	{
-		size_t i = 0;
-
-		for (const auto & index : coordIndex ())
-		{
-			if (index >= 0)
-				// Add vertex.
-				polyline .emplace_back (i);
-
-			else
-			{
-				// Negativ index.
-
-				if (not polyline .empty ())
-				{
-					if (polyline .size () > 1)
-					{
-						// Add polylines.
-						polylines .emplace_back (std::move (polyline));
-					}
-
-					polyline .clear ();
-				}
-			}
-
-			++ i;
-		}
-
-		if (coordIndex () .back () >= 0)
-		{
-			if (not polyline .empty ())
-			{
-				if (polyline .size () > 1)
-					polylines .emplace_back (std::move (polyline));
-			}
-		}
-	}
-
-	return polylines;
 }
 
 MFString
@@ -202,51 +155,11 @@ PolylineEmitter::setShaderFields (const X3DSFNode <ComposedShader> & shader) con
 }
 
 void
-PolylineEmitter::set_coordIndex ()
-{
-	if (coordNode)
-	{
-		if (not coordIndex () .empty ())
-		{
-			// Determine number of points and polygons.
-
-			int32_t numPoints = -1;
-
-			for (const auto & index : coordIndex ())
-				numPoints = std::max <int32_t> (numPoints, index);
-
-			++ numPoints;
-
-			// Resize coord .point if to small
-			coordNode -> resize (numPoints);
-		}
-	}
-}
-
-void
-PolylineEmitter::set_coord ()
-{
-	if (coordNode)
-	{
-		coordNode -> removeInterest (this, &PolylineEmitter::set_coordIndex);
-		coordNode -> removeInterest (this, &PolylineEmitter::set_polyline);
-	}
-
-	coordNode = x3d_cast <X3DCoordinateNode*> (coord ());
-
-	if (coordNode)
-	{
-		coordNode -> addInterest (this, &PolylineEmitter::set_coordIndex);
-		coordNode -> addInterest (this, &PolylineEmitter::set_polyline);
-	}
-}
-
-void
 PolylineEmitter::set_polyline ()
 {
-	auto polylines = std::move (getPolylines ());	
+	auto polylineArray = std::move (polylineNode -> getPolylines ());	
 	
-	if (polylines .empty ())
+	if (polylineArray .empty ())
 	{
 		pointEmitter = true;
 
@@ -259,25 +172,6 @@ PolylineEmitter::set_polyline ()
 	else
 	{
 		pointEmitter = false;
-		
-		// Polyline map
-
-		std::vector <Vector3f> polylineArray;
-
-		for (const auto polyline : polylines)
-		{
-			// Create two vertices for each line.
-
-			for (size_t line = 0, end = polyline .size () - 1; line < end; ++ line)
-			{
-				for (size_t index = line, end = line + 2; index < end; ++ index)
-				{
-					auto i = polyline [index];
-
-					coordNode -> addVertex (polylineArray, coordIndex () [i]);
-				}
-			}
-		}
 
 		glBindBuffer (GL_TEXTURE_BUFFER, polylineBufferId);
 		glBufferData (GL_TEXTURE_BUFFER, polylineArray .size () * sizeof (Vector3f), polylineArray .data (), GL_STATIC_COPY);
@@ -312,7 +206,7 @@ PolylineEmitter::set_polyline ()
 void
 PolylineEmitter::dispose ()
 {
-	coordNode .dispose ();
+	polylineNode .dispose ();
 
 	// Polyline map
 

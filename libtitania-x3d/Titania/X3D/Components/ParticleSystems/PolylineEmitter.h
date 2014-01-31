@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_COMPONENTS_PARTICLE_SYSTEMS_POLYLINE_EMITTER_H__
 
 #include "../ParticleSystems/X3DParticleEmitterNode.h"
-#include "../Rendering/X3DCoordinateNode.h"
+#include "../Rendering/IndexedLineSet.h"
 
 namespace titania {
 namespace X3D {
@@ -147,18 +147,7 @@ private:
 	void
 	initialize () final override;
 
-	///  @name Operations
-
-	std::deque <std::deque <size_t>> 
-	getPolylines () const;
-
 	///  @name Event handlers
-
-	void
-	set_coordIndex ();
-
-	void
-	set_coord ();
 
 	void
 	set_polyline ();
@@ -182,12 +171,12 @@ private:
 
 	Fields fields;
 
-	GLuint                        polylineMapId;
-	GLuint                        polylineBufferId;
-	GLuint                        lengthMapId;
-	GLuint                        lengthBufferId;
-	X3DSFNode <X3DCoordinateNode> coordNode;
-	bool                          pointEmitter;
+	GLuint                     polylineMapId;
+	GLuint                     polylineBufferId;
+	GLuint                     lengthMapId;
+	GLuint                     lengthBufferId;
+	X3DSFNode <IndexedLineSet> polylineNode;
+	bool                       pointEmitter;
 
 };
 

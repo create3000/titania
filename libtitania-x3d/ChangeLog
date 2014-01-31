@@ -1,5 +1,14 @@
 2014-01-31  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* IndexedLineSet.h:
+	* IndexedLineSet.cpp:
+	* VolumeEmitter.cpp:
+	* PolylineEmitter.h:
+	* ParticleSystem.cpp:
+	* PolylineEmitter.cpp: 
+
+2014-01-31  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DMFNode.h:
 	* SFImage.cpp:
 	* X3DBaseNode.h:

@@ -840,20 +840,13 @@ ParticleSystem::set_physics ()
 void
 ParticleSystem::set_boundedPhysicsModel ()
 {
-	__LOG__ << std::endl;
-
 	// Triangulate
 
 	std::vector <Vector3f> normals;
 	std::vector <Vector3f> vertices;
 
-	__LOG__ << boundedPhysicsModelNodes .size () << std::endl;
-
 	for (auto & physicsNode : boundedPhysicsModelNodes)
 		physicsNode -> addTriangles (normals, vertices);
-
-	__LOG__ << normals .size () << std::endl;
-	__LOG__ << vertices .size () << std::endl;
 
 	// Update shader
 
@@ -872,8 +865,6 @@ ParticleSystem::set_boundedPhysicsModel ()
 	BVH tree (std::move (vertices));
 
 	auto treeArray = std::move (tree .toArray ());
-
-	__LOG__ << treeArray .size () << std::endl;
 
 	glBindBuffer (GL_TEXTURE_BUFFER, boundedVolumeBufferId);
 	glBufferData (GL_TEXTURE_BUFFER, treeArray .size () * sizeof (BVH::ArrayValue), treeArray .empty () ? 0 : treeArray .data (), GL_STATIC_COPY);

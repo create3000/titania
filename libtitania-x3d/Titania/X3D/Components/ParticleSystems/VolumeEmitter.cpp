@@ -80,7 +80,7 @@ VolumeEmitter::VolumeEmitter (X3DExecutionContext* const executionContext) :
 	   surfaceAreaBufferId (0),
 	           volumeMapId (0),
 	        volumeBufferId (0),
-	           surfaceNode (new IndexedFaceSet (getExecutionContext ())),
+	           surfaceNode (new IndexedFaceSet (executionContext)),
 	          pointEmitter (false),
 	                 solid (true)
 {

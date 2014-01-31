@@ -61,6 +61,8 @@ class IndexedLineSet :
 {
 public:
 
+	///  @name Construction
+
 	IndexedLineSet (X3DExecutionContext* const);
 
 	virtual
@@ -156,6 +158,9 @@ public:
 
 	///  @name Operations
 
+	std::vector <Vector3f> 
+	getPolylines () const;
+
 	virtual
 	void
 	draw () final override;
@@ -163,18 +168,26 @@ public:
 
 private:
 
+	///  @name Construction
+
 	virtual
 	void
 	initialize () final override;
 
+	///  @name Operations
+
 	std::deque <std::deque <size_t>>
-	getPolylines () const;
+	getPolylineIndices () const;
+
+	///  @name Event handlers
 
 	void
 	set_coordIndex ();
 
 	void
 	set_colorIndex ();
+
+	///  @name Operations
 
 	virtual
 	void
