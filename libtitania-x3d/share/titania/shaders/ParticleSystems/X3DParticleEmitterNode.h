@@ -3,8 +3,10 @@
 /* X3DParticleEmitterNode.h */
 
 #define FORCES_MAX  32
+#define ARRAY_SIZE  32
 
 uniform float deltaTime;
+uniform int   createParticles;
 uniform float particleLifetime;
 uniform float lifetimeVariation;
 
@@ -44,51 +46,6 @@ to;
 #pragma X3D include "Bits/Color.h"
 #pragma X3D include "Bits/OddEvenMergeSort.h"
 #pragma X3D include "Bits/BVH.h"
-
-/* Select random triangle from surfaceAreaMap. */
-
-ivec3
-random_triangle (in samplerBuffer surfaceAreaMap)
-{
-	int numSurfaceAreas = textureSize (surfaceAreaMap);
-
-	float fraction = random1 (0, texelFetch (surfaceAreaMap, numSurfaceAreas - 1) .x);
-
-	int   index0 = 0;
-	int   index1 = 0;
-	float weight = 0.0f;
-
-	interpolate (surfaceAreaMap, fraction, index0, index1, weight);
-
-	index0 *= 3;
-
-	return ivec3 (index0, index0 + 1, index0 + 2);
-}
-
-/* Select random point from surfaceAreaMap. */
-
-void
-random_point_on_surface (in samplerBuffer surfaceAreaMap, in samplerBuffer surfaceMap, in samplerBuffer normalMap, out vec3 position, out vec3 normal)
-{
-	ivec3 index = random_triangle (surfaceAreaMap);
-
-	vec3 vertex1 = texelFetch (surfaceMap, index .x) .xyz;
-	vec3 vertex2 = texelFetch (surfaceMap, index .y) .xyz;
-	vec3 vertex3 = texelFetch (surfaceMap, index .z) .xyz;
-
-	vec3 normal1 = texelFetch (normalMap, index .x) .xyz;
-	vec3 normal2 = texelFetch (normalMap, index .y) .xyz;
-	vec3 normal3 = texelFetch (normalMap, index .z) .xyz;
-
-	// Random barycentric coordinates.
-
-	vec3 coord = random_barycentric ();
-
-	// Calculate direction and position
-
-	normal   = normalize (coord .x * normal1 + coord .y * normal2 + coord .z * normal3);
-	position = coord .x * vertex1 + coord .y * vertex2 + coord .z * vertex3;
-}
 
 /* main */
 
@@ -132,72 +89,27 @@ getVelocity ()
 	return toVelocity;
 }
 
-/* CombSort: sort points along a line */
-
-void
-sort (inout vec3 normals [INTERSECTIONS_SIZE], inout vec3 points [INTERSECTIONS_SIZE], in int length, in Line3 line)
+vec4
+getColorValue (in int index)
 {
-	Plane3 plane = plane3 (line .point, line .direction);
-
-	const float shrinkFactor = 0.801711847137793;
-
-	int  gap       = length;
-	bool exchanged = false;
-
-	do
-	{
-		exchanged = false;
-		
-		if (gap > 1)
-			gap = int (gap * shrinkFactor);
-
-		for (int i = 0; i + gap < length; ++ i)
-		{
-			int j = i + gap;
-		
-			if (distance (plane, points [j]) < distance (plane, points [i]))
-			{
-				vec3 tmp = points [i];
-				points [i] = points [j];
-				points [j] = tmp;
-
-				tmp         = normals [i];
-				normals [i] = normals [j];
-				normals [j] = tmp;
-
-				exchanged = true;
-			}
-		}
-	}
-	while (exchanged || gap > 1);
+	return texelFetch (colorRampMap, index);
 }
 
-int
-upper_bound (inout vec3 points [INTERSECTIONS_SIZE], in int count, in float value, in Line3 line)
+vec4
+getColor (in float elapsedTime, in float lifetime)
 {
-	Plane3 plane = plane3 (line .point, line .direction);
+	if (numColors == 0)
+		return vec4 (1.0f);
 
-	int first = 0;
-	int step  = 0;
+	float fraction = elapsedTime / lifetime;
 
-	while (count > 0)
-	{
-		int index = first;
+	int   index0 = 0;
+	int   index1 = 0;
+	float weight = 0.0f;
 
-		step = count >> 1; 
+	interpolate (colorKeyMap, fraction, index0, index1, weight);
 
-		index += step;
-
-		if (value < distance (plane, points [index]))
-			count = step;
-		else
-		{
-			first  = ++ index;
-			count -= step + 1;
-		}
-	}
-
-	return first;
+	return clerp (getColorValue (index0), getColorValue (index1), weight);
 }
 
 void
@@ -208,15 +120,17 @@ bounce (in vec3 fromPosition, in vec3 toPosition, in vec3 velocity)
 
 	Line3 line = line3 (fromPosition, toPosition);
 
-	vec3 normals [INTERSECTIONS_SIZE];
-	vec3 points  [INTERSECTIONS_SIZE];
+	vec3 normals [ARRAY_SIZE];
+	vec3 points  [ARRAY_SIZE];
 	int  intersections = getIntersections (boundedVolumeMap, line, boundedNormalMap, boundedSurfaceMap, normals, points);
 
 	if (intersections > 0)
 	{
-		sort (normals, points, intersections, line);
+		Plane3 plane = plane3 (line .point, line .direction);
 
-		int index = upper_bound (points, intersections, 0, line);
+		sort (normals, points, intersections, plane);
+
+		int index = upper_bound (points, intersections, 0, plane);
 		
 		if (index < intersections)
 		{
@@ -243,29 +157,6 @@ animate ()
 	bounce (fromPosition, to .position, to .velocity);
 }
 
-vec4
-getColorValue (in int index)
-{
-	return texelFetch (colorRampMap, index);
-}
-
-vec4
-getColor (in float elapsedTime, in float lifetime)
-{
-	if (numColors == 0)
-		return vec4 (1.0f);
-
-	float fraction = elapsedTime / lifetime;
-
-	int   index0 = 0;
-	int   index1 = 0;
-	float weight = 0.0f;
-
-	interpolate (colorKeyMap, fraction, index0, index1, weight);
-
-	return clerp (getColorValue (index0), getColorValue (index1), weight);
-}
-
 void
 main ()
 {
@@ -278,7 +169,7 @@ main ()
 	if (elapsedTime > getFromLifetime ())
 	{
 		to .lifetime    = getRandomLifetime ();
-		to .position    = getRandomPosition ();
+		to .position    = createParticles == 1 ? getRandomPosition () : vec3 (INFINITY);
 		to .velocity    = getRandomVelocity ();
 		to .color       = getColor (0.0f, to .lifetime);
 		to .elapsedTime = 0.0f;

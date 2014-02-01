@@ -280,6 +280,9 @@ private:
 	set_geometryType ();
 
 	void
+	set_createParticles ();
+
+	void
 	set_colorKey ();
 
 	void

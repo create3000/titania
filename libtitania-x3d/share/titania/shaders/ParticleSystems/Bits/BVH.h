@@ -11,11 +11,9 @@ uniform int bvhRightOffset;
 
 #pragma X3D include "Box3.h"
 
-#define INTERSECTIONS_SIZE  32
-#define TT_STACK_SIZE       64
-
-#define BVH_NODE      0
-#define BVH_TRIANGLE  1
+#define BVH_NODE        0
+#define BVH_TRIANGLE    1
+#define BVH_STACK_SIZE  64
 
 int bvhDebug     = 0;
 int bvhNodeIndex = 0;
@@ -73,14 +71,14 @@ getBVHRight (in samplerBuffer bvh)
 /* Ray triangle intersection test */
 
 int
-getIntersections (in samplerBuffer bvh, in Line3 line, in samplerBuffer surfaceMap, out vec3 points [INTERSECTIONS_SIZE])
+getIntersections (in samplerBuffer bvh, in Line3 line, in samplerBuffer surfaceMap, out vec3 points [ARRAY_SIZE])
 {
 	int current = getBVHRoot (bvh);
 	int count   = 0;
 	int id      = -1;
-	int stack [TT_STACK_SIZE];
+	int stack [BVH_STACK_SIZE];
 
-	for (int i = 0; i < TT_STACK_SIZE; ++ i)
+	for (int i = 0; i < BVH_STACK_SIZE; ++ i)
 		stack [i] = -1;
 
 	while (id >= 0 || current >= 0)
@@ -137,14 +135,14 @@ getIntersections (in samplerBuffer bvh, in Line3 line, in samplerBuffer surfaceM
 }
 
 int
-getIntersections (in samplerBuffer bvh, in Line3 line, in samplerBuffer normalMap, in samplerBuffer surfaceMap, out vec3 normals [INTERSECTIONS_SIZE], out vec3 points [INTERSECTIONS_SIZE])
+getIntersections (in samplerBuffer bvh, in Line3 line, in samplerBuffer normalMap, in samplerBuffer surfaceMap, out vec3 normals [ARRAY_SIZE], out vec3 points [ARRAY_SIZE])
 {
 	int current = getBVHRoot (bvh);
 	int count   = 0;
 	int id      = -1;
-	int stack [TT_STACK_SIZE];
+	int stack [BVH_STACK_SIZE];
 
-	for (int i = 0; i < TT_STACK_SIZE; ++ i)
+	for (int i = 0; i < BVH_STACK_SIZE; ++ i)
 		stack [i] = -1;
 
 	while (id >= 0 || current >= 0)

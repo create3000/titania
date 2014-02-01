@@ -395,6 +395,7 @@ ParticleSystem::initialize ()
 
 		enabled ()           .addInterest (this, &ParticleSystem::set_enabled);
 		geometryType ()      .addInterest (this, &ParticleSystem::set_geometryType);
+		createParticles ()   .addInterest (this, &ParticleSystem::set_createParticles);
 		maxParticles ()      .addInterest (this, &ParticleSystem::set_enabled);
 		particleLifetime ()  .addInterest (this, &ParticleSystem::set_particle_buffers);
 		lifetimeVariation () .addInterest (this, &ParticleSystem::set_particle_buffers);
@@ -602,6 +603,12 @@ ParticleSystem::set_geometryType ()
 	geometryShader -> setField <SFInt32> ("numVertices",  int32_t (numVertices));
 	geometryShader -> setField <SFInt32> ("geometryType", int32_t (geometryTypeId));
 	geometryShader -> setField <MFVec4f> ("texCoord",     texCoord);
+}
+
+void
+ParticleSystem::set_createParticles ()
+{
+	transformShader -> setField <SFBool> ("createParticles", createParticles ());
 }
 
 void
@@ -941,6 +948,7 @@ ParticleSystem::set_transform_shader ()
 
 	transformShader = new ComposedShader (getExecutionContext ());
 	transformShader -> addUserDefinedField (inputOutput, "deltaTime",         new SFFloat (0.001));
+	transformShader -> addUserDefinedField (inputOutput, "createParticles",   new SFBool (createParticles ()));
 	transformShader -> addUserDefinedField (inputOutput, "particleLifetime",  new SFFloat (particleLifetime ()));
 	transformShader -> addUserDefinedField (inputOutput, "lifetimeVariation", new SFFloat (lifetimeVariation ()));
 

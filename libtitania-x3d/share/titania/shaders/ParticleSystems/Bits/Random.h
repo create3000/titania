@@ -1,6 +1,7 @@
 /* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-*/
 
 #pragma X3D include "Quaternion.h"
+#pragma X3D include "Math.h"
 
 /* Random number generation */
 
@@ -116,4 +117,49 @@ random_barycentric ()
 	float t = 1 - u - v;
 
 	return vec3 (t, u, v);
+}
+
+/* Select random triangle from surfaceAreaMap. */
+
+ivec3
+random_triangle (in samplerBuffer surfaceAreaMap)
+{
+	int numSurfaceAreas = textureSize (surfaceAreaMap);
+
+	float fraction = random1 (0, texelFetch (surfaceAreaMap, numSurfaceAreas - 1) .x);
+
+	int   index0 = 0;
+	int   index1 = 0;
+	float weight = 0.0f;
+
+	interpolate (surfaceAreaMap, fraction, index0, index1, weight);
+
+	index0 *= 3;
+
+	return ivec3 (index0, index0 + 1, index0 + 2);
+}
+
+/* Select random point from surfaceAreaMap. */
+
+void
+random_point_on_surface (in samplerBuffer surfaceAreaMap, in samplerBuffer surfaceMap, in samplerBuffer normalMap, out vec3 position, out vec3 normal)
+{
+	ivec3 index = random_triangle (surfaceAreaMap);
+
+	vec3 vertex1 = texelFetch (surfaceMap, index .x) .xyz;
+	vec3 vertex2 = texelFetch (surfaceMap, index .y) .xyz;
+	vec3 vertex3 = texelFetch (surfaceMap, index .z) .xyz;
+
+	vec3 normal1 = texelFetch (normalMap, index .x) .xyz;
+	vec3 normal2 = texelFetch (normalMap, index .y) .xyz;
+	vec3 normal3 = texelFetch (normalMap, index .z) .xyz;
+
+	// Random barycentric coordinates.
+
+	vec3 coord = random_barycentric ();
+
+	// Calculate direction and position
+
+	normal   = normalize (coord .x * normal1 + coord .y * normal2 + coord .z * normal3);
+	position = coord .x * vertex1 + coord .y * vertex2 + coord .z * vertex3;
 }

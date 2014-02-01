@@ -9,7 +9,17 @@ Viewpoint {
   position 0 0 15
 }
 
-ParticleSystem {
+DEF _1 TimeSensor {
+  cycleInterval 20
+  loop TRUE
+}
+
+DEF _2 BooleanSequencer {
+  key [ 0, 0.3, 1 ]
+  keyValue [ TRUE, FALSE ]
+}
+
+DEF _3 ParticleSystem {
   geometryType "POINT"
   maxParticles 4000
   particleLifetime 30
@@ -19,8 +29,8 @@ ParticleSystem {
   emitter ConeEmitter {
     position 0 -3 0
     angle 0.4
-    speed 0.5
-    mass 1
+    speed 0.2
+    mass 3200
   }
   colorRamp ColorRGBA {
     color [ 1 0.38 0 0.5, 1 0.58 0.06 0.5, 1 0.37 0 0.5, 1 0.05 0 0.5 ]
@@ -30,19 +40,19 @@ ParticleSystem {
       linewidthScaleFactor 4
     }
   }
-  physics [ 
-      BoundedPhysicsModel {
-        geometry DEF _1 Sphere { }
+  physics [
+    BoundedPhysicsModel {
+      geometry DEF _4 Sphere { }
+    }
+    BoundedPhysicsModel {
+      geometry DEF _5 Box {
+        size 7 7 7
       }
-      BoundedPhysicsModel {
-        geometry DEF _2 Box {
-          size 7 7 7
-        }
-      }
-      ForcePhysicsModel {
-        force 0 -0.098 0
-      }
-     ]
+    }
+    ForcePhysicsModel {
+      force 0 -0.098 0
+    }
+  ]
 }
 
 DEF IndexedLineSet Transform {
@@ -68,7 +78,7 @@ DEF Sphere Transform {
         transparency 0.5
       }
     }
-    geometry USE _1
+    geometry USE _4
   }
 }
 
@@ -79,6 +89,9 @@ DEF Box Transform {
         transparency 0.49
       }
     }
-    geometry USE _2
+    geometry USE _5
   }
 }
+
+ROUTE _1.fraction_changed TO _2.set_fraction
+ROUTE _2.value_changed TO _3.set_createParticles

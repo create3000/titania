@@ -11,43 +11,6 @@ uniform samplerBuffer volumeMap;
 #pragma X3D include "X3DParticleEmitterNode.h"
 #pragma X3D include "Bits/BVH.h"
 
-/* CombSort: sort points along a line */
-
-void
-sort (inout vec3 array [INTERSECTIONS_SIZE], in int length, in Line3 line)
-{
-	Plane3 plane = plane3 (line .point, line .direction);
-
-	const float shrinkFactor = 0.801711847137793;
-
-	int  gap       = length;
-	bool exchanged = false;
-
-	do
-	{
-		exchanged = false;
-		
-		if (gap > 1)
-			gap = int (gap * shrinkFactor);
-
-		for (int i = 0; i + gap < length; ++ i)
-		{
-			int j = i + gap;
-		
-			if (distance (plane, array [j]) < distance (plane, array [i]))
-			{
-				vec3 tmp = array [i];
-
-				array [i] = array [j];
-				array [j] = tmp;
-
-				exchanged = true;
-			}
-		}
-	}
-	while (exchanged || gap > 1);
-}
-
 /* PolylineEmitter */
 
 vec3
@@ -63,7 +26,7 @@ getRandomPosition ()
 
 	Line3 line = Line3 (point, random_normal (normal));
 
-	vec3 points [INTERSECTIONS_SIZE];
+	vec3 points [ARRAY_SIZE];
 	int  intersections = getIntersections (volumeMap, line, surfaceMap, points);
 
 	// Debug
@@ -72,7 +35,7 @@ getRandomPosition ()
 	if (intersections == 0)
 		return vec3 (INFINITY);
 
-	sort (points, intersections, line);
+	sort (points, intersections, plane3 (line .point, line .direction));
 
 	int index = int (round (random1 (0, intersections / 2 - 1))) * 2;
 

@@ -11,6 +11,8 @@ const float M_PI2   = 2.0f * M_PI;
 
 /* Algorithms */
 
+
+/* Find find the first element that is greater than value. */
 int
 upper_bound (inout samplerBuffer array, in float value)
 {

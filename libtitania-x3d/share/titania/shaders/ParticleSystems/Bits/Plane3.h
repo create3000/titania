@@ -23,7 +23,6 @@ distance (in Plane3 plane, in vec3 point)
 }
 
 /* Plane intersect line */
-
 bool
 intersect (in Plane3 plane, in Line3 line, out vec3 point)
 {
@@ -42,4 +41,103 @@ intersect (in Plane3 plane, in Line3 line, out vec3 point)
 	point = line .point + line .direction * t;
 
 	return true;
+}
+
+/* Find find the first point that is farther to the plane than value. */
+int
+upper_bound (inout vec3 points [ARRAY_SIZE], in int count, in float value, in Plane3 plane)
+{
+	int first = 0;
+	int step  = 0;
+
+	while (count > 0)
+	{
+		int index = first;
+
+		step = count >> 1; 
+
+		index += step;
+
+		if (value < distance (plane, points [index]))
+			count = step;
+		else
+		{
+			first  = ++ index;
+			count -= step + 1;
+		}
+	}
+
+	return first;
+}
+
+/* CombSort: sort points in distance to a plane. */
+void
+sort (inout vec3 array [ARRAY_SIZE], in int length, in Plane3 plane)
+{
+	const float shrinkFactor = 0.801711847137793;
+
+	int  gap       = length;
+	bool exchanged = false;
+
+	do
+	{
+		exchanged = false;
+		
+		if (gap > 1)
+			gap = int (gap * shrinkFactor);
+
+		for (int i = 0; i + gap < length; ++ i)
+		{
+			int j = i + gap;
+		
+			if (distance (plane, array [j]) < distance (plane, array [i]))
+			{
+				vec3 tmp = array [i];
+
+				array [i] = array [j];
+				array [j] = tmp;
+
+				exchanged = true;
+			}
+		}
+	}
+	while (exchanged || gap > 1);
+}
+
+
+/* CombSort: sort points and normals in distance to a plane. */
+void
+sort (inout vec3 normals [ARRAY_SIZE], inout vec3 points [ARRAY_SIZE], in int length, in Plane3 plane)
+{
+	const float shrinkFactor = 0.801711847137793;
+
+	int  gap       = length;
+	bool exchanged = false;
+
+	do
+	{
+		exchanged = false;
+		
+		if (gap > 1)
+			gap = int (gap * shrinkFactor);
+
+		for (int i = 0; i + gap < length; ++ i)
+		{
+			int j = i + gap;
+		
+			if (distance (plane, points [j]) < distance (plane, points [i]))
+			{
+				vec3 tmp = points [i];
+				points [i] = points [j];
+				points [j] = tmp;
+
+				tmp         = normals [i];
+				normals [i] = normals [j];
+				normals [j] = tmp;
+
+				exchanged = true;
+			}
+		}
+	}
+	while (exchanged || gap > 1);
 }
