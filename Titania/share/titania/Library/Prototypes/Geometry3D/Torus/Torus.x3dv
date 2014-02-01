@@ -6,16 +6,13 @@ PROTO Torus [
   exposedField SFInt32 minorDimension 10
   exposedField SFInt32 majorDimension 10
   field SFBool  solid TRUE
-  field SFBool  ccw TRUE
-  field SFFloat creaseAngle 3.14159
 ]
 {
   DEF Geometry Extrusion {
     beginCap FALSE
     endCap FALSE
     solid IS solid
-    ccw IS ccw
-    creaseAngle IS creaseAngle
+    creaseAngle 3.14159
   }
 
   Script {

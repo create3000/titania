@@ -1,0 +1,36 @@
+#X3D V3.3 utf8 Titania
+
+META "title" "IcoSphere Prototype"
+
+EXTERNPROTO IcoSphere [
+  inputOutput    SFString type
+  inputOutput    SFInt32  order
+  inputOutput    SFFloat  radius
+  initializeOnly SFBool   solid
+]
+[
+  "IcoSphere.x3dv",
+  "file:///usr/share/titania/Library/Prototypes/Geometry3D/IcoSphere/IcoSphere.x3dv"
+]
+
+DEF Icosahedron Transform {
+  translation -1 0 0
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry IcoSphere { }
+  }
+}
+
+DEF Octahedron Transform {
+  translation 1 0 0
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry IcoSphere {
+      type "OCTAHEDRON"
+    }
+  }
+}

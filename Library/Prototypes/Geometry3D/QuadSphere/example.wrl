@@ -3,12 +3,10 @@
 META "title" "QuadSphere"
 
 EXTERNPROTO QuadSphere [
-  field SFInt32 uDimension
-  field SFInt32 vDimension
-  field SFFloat radius
-  field SFBool  solid
-  field SFBool  ccw
-  field SFFloat creaseAngle
+  exposedField SFInt32 uDimension
+  exposedField SFInt32 vDimension
+  exposedField SFFloat radius
+  field        SFBool  solid
 ]
 "QuadSphere.wrl"
 
@@ -25,11 +23,7 @@ Transform {
           url "earth.png"
         }
       }
-      geometry QuadSphere {
-        uDimension 8
-        vDimension 5
-        creaseAngle 0
-      }
+      geometry QuadSphere { }
     }
     Shape {
       geometry IndexedLineSet {

@@ -1,5 +1,9 @@
 2014-02-01  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DParticleEmitterNode.h: 
+
+2014-02-01  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* BVH.h:
 	* Math.h:
 	* Plane3.h:

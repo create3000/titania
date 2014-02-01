@@ -1,10 +1,10 @@
-#VRML V2.0 utf8
+#X3D V3.3 utf8 Titania
 
 PROTO QuadSphere [
-  exposedField SFInt32 uDimension 20
-  exposedField SFInt32 vDimension 10
-  exposedField SFFloat radius 1
-  field        SFBool  solid TRUE
+  inputOutput    SFInt32 uDimension 20
+  inputOutput    SFInt32 vDimension 10
+  inputOutput    SFFloat radius 1
+  initializeOnly SFBool  solid TRUE
 ]
 {
   DEF Geometry IndexedFaceSet {
@@ -15,10 +15,10 @@ PROTO QuadSphere [
   }
 
   DEF QuadSphere Script {
-    exposedField SFInt32 uDimension IS uDimension
-    exposedField SFInt32 vDimension IS vDimension
-    exposedField SFFloat radius IS radius
-    field        SFNode  geometry USE Geometry
+    inputOutput    SFInt32 uDimension IS uDimension
+    inputOutput    SFInt32 vDimension IS vDimension
+    inputOutput    SFFloat radius IS radius
+    initializeOnly SFNode  geometry USE Geometry
 
     url "vrmlscript:
 function initialize ()

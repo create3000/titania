@@ -179,6 +179,7 @@ main ()
 	else
 	{
 		animate ();
+
 		to .lifetime    = getFromLifetime ();
 		to .color       = getColor (elapsedTime, to .lifetime);
 		to .elapsedTime = elapsedTime;

@@ -8,8 +8,6 @@ EXTERNPROTO Torus [
   exposedField SFInt32 minorDimension
   exposedField SFInt32 majorDimension
   field SFBool  solid
-  field SFBool  ccw
-  field SFFloat creaseAngle
 ]
 [
   "Torus.x3dv",
