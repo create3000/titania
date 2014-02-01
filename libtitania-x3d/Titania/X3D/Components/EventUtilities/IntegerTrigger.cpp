@@ -60,8 +60,8 @@ const std::string IntegerTrigger::typeName       = "IntegerTrigger";
 const std::string IntegerTrigger::containerField = "children";
 
 IntegerTrigger::Fields::Fields () :
-	set_boolean (new SFBool ()),
-	integerKey (new SFInt32 ()),
+	 set_boolean (new SFBool ()),
+	  integerKey (new SFInt32 ()),
 	triggerValue (new SFInt32 ())
 { }
 

@@ -61,6 +61,8 @@ class X3DTriggerNode :
 {
 protected:
 
+	///  @name Construction
+
 	X3DTriggerNode ();
 
 };

@@ -145,7 +145,7 @@ X3DSequencerNode::set_next ()
 void
 X3DSequencerNode::set_index ()
 {
-	index = 0;
+	index = -1;
 }
 
 } // X3D

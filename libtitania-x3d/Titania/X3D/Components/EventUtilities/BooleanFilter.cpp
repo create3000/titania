@@ -61,8 +61,8 @@ const std::string BooleanFilter::containerField = "children";
 
 BooleanFilter::Fields::Fields () :
 	set_boolean (new SFBool ()),
-	inputTrue (new SFBool ()),
-	inputFalse (new SFBool ()),
+	  inputTrue (new SFBool ()),
+	 inputFalse (new SFBool ()),
 	inputNegate (new SFBool ())
 { }
 

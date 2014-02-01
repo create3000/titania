@@ -61,6 +61,8 @@ class TimeTrigger :
 {
 public:
 
+	///  @name Construction
+
 	TimeTrigger (X3DExecutionContext* const);
 
 	virtual
@@ -106,13 +108,16 @@ public:
 
 private:
 
+	///  @name Construction
+
 	virtual
 	void
 	initialize () final override;
 
+	///  @name Event handlers
+
 	void
 	_set_boolean ();
-
 
 	///  @name Static members
 

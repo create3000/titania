@@ -61,7 +61,7 @@ const std::string BooleanTrigger::containerField = "children";
 
 BooleanTrigger::Fields::Fields () :
 	set_triggerTime (new SFTime ()),
-	triggerTrue (new SFBool ())
+	    triggerTrue (new SFBool ())
 { }
 
 BooleanTrigger::BooleanTrigger (X3DExecutionContext* const executionContext) :

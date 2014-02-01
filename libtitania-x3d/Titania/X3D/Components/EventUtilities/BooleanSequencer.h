@@ -124,7 +124,6 @@ private:
 	void
 	sequence (size_t) final override;
 
-
 	///  @name Static members
 
 	static const std::string componentName;

@@ -1,5 +1,21 @@
 2014-02-01  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* TimeTrigger.h:
+	* BooleanToggle.h:
+	* BooleanFilter.h:
+	* BooleanTrigger.h:
+	* X3DTriggerNode.h:
+	* IntegerTrigger.h:
+	* BooleanToggle.cpp:
+	* BooleanFilter.cpp:
+	* BooleanSequencer.h:
+	* BooleanTrigger.cpp:
+	* IntegerTrigger.cpp:
+	* IntegerSequencer.h:
+	* X3DSequencerNode.cpp: 
+
+2014-02-01  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* IntegerSequencer.h:
 	* BooleanSequencer.h:
 	* X3DSequencerNode.h:

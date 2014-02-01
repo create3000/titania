@@ -61,7 +61,7 @@ const std::string BooleanToggle::containerField = "children";
 
 BooleanToggle::Fields::Fields () :
 	set_boolean (new SFBool ()),
-	toggle (new SFBool ())
+	     toggle (new SFBool ())
 { }
 
 BooleanToggle::BooleanToggle (X3DExecutionContext* const executionContext) :
