@@ -1,5 +1,14 @@
 2014-02-01  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* IntegerSequencer.h:
+	* BooleanSequencer.h:
+	* X3DSequencerNode.h:
+	* X3DSequencerNode.cpp:
+	* BooleanSequencer.cpp:
+	* IntegerSequencer.cpp: 
+
+2014-02-01  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DParticleEmitterNode.h: 
 
 2014-02-01  Holger Seelig  <holger.seelig@yahoo.de>

@@ -60,7 +60,7 @@ const std::string BooleanSequencer::typeName       = "BooleanSequencer";
 const std::string BooleanSequencer::containerField = "children";
 
 BooleanSequencer::Fields::Fields () :
-	keyValue (new MFBool ()),
+	     keyValue (new MFBool ()),
 	value_changed (new SFBool ())
 { }
 
@@ -82,6 +82,14 @@ X3DBaseNode*
 BooleanSequencer::create (X3DExecutionContext* const executionContext) const
 {
 	return new BooleanSequencer (executionContext);
+}
+
+void
+BooleanSequencer::initialize ()
+{
+	X3DSequencerNode::initialize ();
+
+	keyValue () .addInterest (this, &BooleanSequencer::set_index);
 }
 
 size_t

@@ -1,5 +1,13 @@
 #X3D V3.3 utf8 Titania
 
+EXTERNPROTO IcoSphere [
+  inputOutput    SFString type
+  inputOutput    SFInt32  order
+  inputOutput    SFFloat  radius
+  initializeOnly SFBool   solid
+]
+[ "../../../Titania/share/titania/Library/Prototypes/Geometry3D/IcoSphere/IcoSphere.x3dv", "file:///usr/share/titania/Library/Prototypes/Geometry3D/IcoSphere/IcoSphere.x3dv" ]
+
 DEF Gray Background {
   skyColor 0.2 0.2 0.2
 }
@@ -9,18 +17,41 @@ Viewpoint {
   position 0 0 15
 }
 
-DEF _1 TimeSensor {
+DEF Box Transform {
+  children Shape {
+    appearance Appearance {
+      material Material {
+        transparency 0.49
+      }
+    }
+    geometry DEF _1 Box {
+      size 7 7 7
+    }
+  }
+}
+
+DEF Icosahedron Transform {
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry DEF _2 IcoSphere { }
+  }
+}
+
+DEF _3 TimeSensor {
   cycleInterval 20
   loop TRUE
 }
 
-DEF _2 BooleanSequencer {
+DEF _4 BooleanSequencer {
   key [ 0, 0.3, 1 ]
   keyValue [ TRUE, FALSE ]
 }
 
-DEF _3 ParticleSystem {
+DEF _5 ParticleSystem {
   geometryType "POINT"
+  createParticles FALSE
   maxParticles 4000
   particleLifetime 30
   lifetimeVariation 0
@@ -42,12 +73,10 @@ DEF _3 ParticleSystem {
   }
   physics [
     BoundedPhysicsModel {
-      geometry DEF _4 Sphere { }
+      geometry USE _2
     }
     BoundedPhysicsModel {
-      geometry DEF _5 Box {
-        size 7 7 7
-      }
+      geometry USE _1
     }
     ForcePhysicsModel {
       force 0 -0.098 0
@@ -71,27 +100,5 @@ DEF IndexedLineSet Transform {
   }
 }
 
-DEF Sphere Transform {
-  children Shape {
-    appearance Appearance {
-      material Material {
-        transparency 0.5
-      }
-    }
-    geometry USE _4
-  }
-}
-
-DEF Box Transform {
-  children Shape {
-    appearance Appearance {
-      material Material {
-        transparency 0.49
-      }
-    }
-    geometry USE _5
-  }
-}
-
-ROUTE _1.fraction_changed TO _2.set_fraction
-ROUTE _2.value_changed TO _3.set_createParticles
+ROUTE _3.fraction_changed TO _4.set_fraction
+ROUTE _4.value_changed TO _5.set_createParticles

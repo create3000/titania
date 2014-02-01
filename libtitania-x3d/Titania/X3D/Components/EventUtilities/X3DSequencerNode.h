@@ -61,6 +61,8 @@ class X3DSequencerNode :
 {
 public:
 
+	///  @name Fields
+
 	SFFloat &
 	set_fraction ()
 	{ return *fields .set_fraction; }
@@ -93,18 +95,23 @@ public:
 	key () const
 	{ return *fields .key; }
 
-	virtual
-	void
-	setup () final override;
-
 
 protected:
+
+	///  @name Construction
 
 	X3DSequencerNode ();
 
 	virtual
 	void
-	initialize ();
+	initialize () override;
+
+	///  @name Event handlers
+
+	void
+	set_index ();
+
+	///  @name Operations
 
 	virtual
 	size_t
@@ -117,14 +124,18 @@ protected:
 
 private:
 
-	void
-	_set_previous ();
-
-	void
-	_set_next ();
+	///  @name Event handlers
 
 	void
 	_set_fraction ();
+
+	void
+	set_previous ();
+
+	void
+	set_next ();
+
+	///  @name Members
 
 	struct Fields
 	{

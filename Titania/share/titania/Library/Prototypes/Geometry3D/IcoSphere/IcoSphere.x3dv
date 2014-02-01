@@ -225,8 +225,8 @@ IcoSphere .prototype .getMiddlePoint = function (p1, p2)
 	
 	// Add middle point, makes sure point is on unit sphere
 	var index = this .addPoint ((point1 .x + point2 .x) / 2,
-	                           (point1 .y + point2 .y) / 2,
-	                           (point1 .z + point2 .z) / 2);
+	                            (point1 .y + point2 .y) / 2,
+	                            (point1 .z + point2 .z) / 2);
 
 	// Store it, return index
 	this .middlePointIndexCache [key] = index;

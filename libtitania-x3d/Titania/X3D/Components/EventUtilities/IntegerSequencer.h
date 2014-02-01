@@ -61,6 +61,8 @@ class IntegerSequencer :
 {
 public:
 
+	///  @name Construction
+
 	IntegerSequencer (X3DExecutionContext* const);
 
 	virtual
@@ -105,6 +107,14 @@ public:
 
 
 private:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+	///  @name Operations
 
 	virtual
 	size_t

@@ -60,7 +60,7 @@ const std::string IntegerSequencer::typeName       = "IntegerSequencer";
 const std::string IntegerSequencer::containerField = "children";
 
 IntegerSequencer::Fields::Fields () :
-	keyValue (new MFInt32 ()),
+	     keyValue (new MFInt32 ()),
 	value_changed (new SFInt32 ())
 { }
 
@@ -82,6 +82,14 @@ X3DBaseNode*
 IntegerSequencer::create (X3DExecutionContext* const executionContext) const
 {
 	return new IntegerSequencer (executionContext);
+}
+
+void
+IntegerSequencer::initialize ()
+{
+	X3DSequencerNode::initialize ();
+
+	keyValue () .addInterest (this, &IntegerSequencer::set_index);
 }
 
 size_t

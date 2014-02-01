@@ -61,6 +61,8 @@ class BooleanSequencer :
 {
 public:
 
+	///  @name Construction
+
 	BooleanSequencer (X3DExecutionContext* const);
 
 	virtual
@@ -105,6 +107,14 @@ public:
 
 
 private:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+	///  @name Operations
 
 	virtual
 	size_t

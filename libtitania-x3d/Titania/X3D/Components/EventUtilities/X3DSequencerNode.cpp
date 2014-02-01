@@ -55,30 +55,17 @@ namespace X3D {
 
 X3DSequencerNode::Fields::Fields () :
 	set_fraction (new SFFloat ()),
-	previous (new SFBool ()),
-	next (new SFBool ()),
-	key (new MFFloat ())
+	    previous (new SFBool ()),
+	        next (new SFBool ()),
+	         key (new MFFloat ())
 { }
 
 X3DSequencerNode::X3DSequencerNode () :
 	X3DChildNode (),
 	      fields (),
-	       index (0)
+	       index (-1)
 {
 	addNodeType (X3DConstants::X3DSequencerNode);
-}
-
-void
-X3DSequencerNode::setup ()
-{
-	// If an X3DInterpolatorNode value_changed outputOnly field is read before it receives any inputs,
-	// keyValue[0] is returned if keyValue is not empty. If keyValue is empty (i.e., [ ]), the initial
-	// value for the respective field type is returned (EXAMPLE  (0, 0, 0) for SFVec3f);
-
-	if (getSize () > 0)
-		sequence (0);
-
-	X3DChildNode::setup ();
 }
 
 void
@@ -87,8 +74,9 @@ X3DSequencerNode::initialize ()
 	X3DChildNode::initialize ();
 
 	set_fraction () .addInterest (this, &X3DSequencerNode::_set_fraction);
-	previous () .addInterest (this, &X3DSequencerNode::_set_previous);
-	next () .addInterest (this, &X3DSequencerNode::_set_next);
+	previous ()     .addInterest (this, &X3DSequencerNode::set_previous);
+	next ()         .addInterest (this, &X3DSequencerNode::set_next);
+	key ()          .addInterest (this, &X3DSequencerNode::set_index);
 }
 
 void
@@ -102,7 +90,7 @@ X3DSequencerNode::_set_fraction ()
 	if (key () .size () == 1 or set_fraction () <= key () [0])
 		i = 0;
 
-	else if (set_fraction () >= key () .at (key () .size () - 1))
+	else if (set_fraction () >= key () [key () .size () - 1])
 		i = getSize () - 1;
 
 	else
@@ -112,9 +100,9 @@ X3DSequencerNode::_set_fraction ()
 		i = iter - key () .cbegin () - 1;
 	}
 
-	if (i < getSize ())
+	if (i not_eq index)
 	{
-		if (i not_eq index)
+		if (i < getSize ())
 		{
 			index = i;
 			sequence (index);
@@ -123,27 +111,41 @@ X3DSequencerNode::_set_fraction ()
 }
 
 void
-X3DSequencerNode::_set_previous ()
+X3DSequencerNode::set_previous ()
 {
-	if (index == 0)
-		index = getSize () - 1;
+	if (previous ())
+	{
+		if (index == 0)
+			index = getSize () - 1;
 
-	else
-		-- index;
+		else
+			-- index;
 
-	sequence (index);
+		if (index < getSize ())
+			sequence (index);
+	}
 }
 
 void
-X3DSequencerNode::_set_next ()
+X3DSequencerNode::set_next ()
 {
-	if (index == getSize () - 1)
-		index = 0;
+	if (next ())
+	{
+		if (index == getSize () - 1)
+			index = 0;
 
-	else
-		++ index;
+		else
+			++ index;
 
-	sequence (index);
+		if (index < getSize ())
+			sequence (index);
+	}
+}
+
+void
+X3DSequencerNode::set_index ()
+{
+	index = 0;
 }
 
 } // X3D
