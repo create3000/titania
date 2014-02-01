@@ -1,7 +1,5 @@
 #X3D V3.3 utf8 Titania
 
-META "title" "IcoSphere Prototype"
-
 EXTERNPROTO IcoSphere [
   inputOutput    SFString type
   inputOutput    SFInt32  order

@@ -1,7 +1,5 @@
 #X3D V3.3 utf8 Titania
 
-META "title" "RoundedRectangle2D Prototype"
-
 PROTO RoundedRectangle2D [
   inputOutput    SFFloat cornerRadius 1
   inputOutput    SFVec2f size 2 2

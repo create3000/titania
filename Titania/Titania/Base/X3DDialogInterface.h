@@ -48,55 +48,83 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BROWSER_MAGIC_IMPORT_H__
-#define __TITANIA_BROWSER_MAGIC_IMPORT_H__
+#ifndef __TITANIA_BASE_X3DDIALOG_INTERFACE_H__
+#define __TITANIA_BASE_X3DDIALOG_INTERFACE_H__
 
-#include "../Base/X3DBaseInterface.h"
-#include "../Undo/UndoStep.h"
+#include "../Base/X3DUserInterface.h"
+#include "../Configuration/Configuration.h"
+#include <gtkmm.h>
+#include <string>
 
 namespace titania {
 namespace puck {
 
-class MagicImport :
-	virtual public X3DBaseInterface
+class X3DDialogInterface :
+	public X3DUserInterface
 {
 public:
 
-	///  @name Construction
+	virtual
+	~X3DDialogInterface ();
 
-	MagicImport (BrowserWindow* const);
-	
-	///  @name Operations
 
-	bool
-	import (X3D::MFNode &, const X3D::X3DSFNode <X3D::Scene> &, const UndoStepPtr &);
+protected:
 
-	///  @name Destruction
+	/// @name Construction
+
+	X3DDialogInterface (const std::string &, const std::string &);
 
 	virtual
-	~MagicImport ();
+	void
+	restoreSession () override;
+
+	virtual
+	void
+	saveSession () override;
 
 
 private:
+	
+	static
+	void
+	setupGridLabels (Gtk::Widget &);
 
-	///  @name Magic handlers
-
-	bool
-	material (X3D::MFNode &, const X3D::X3DSFNode <X3D::Scene> &, const UndoStepPtr &);
-
-	bool
-	texture (X3D::MFNode &, const X3D::X3DSFNode <X3D::Scene> &, const UndoStepPtr &);
+	static
+	void
+	getLabels (Gtk::Widget* const widget, std::vector <Gtk::Label*> & labels);
+	
+	void
+	restoreExpander (Gtk::Widget &) const;
 
 	void
-	importProtoDeclaration (const X3D::SFNode &, const UndoStepPtr &);
+	saveExpander (Gtk::Widget &);
 
-	///  @name Members
-
-	using ImportFunction = std::function <bool (X3D::MFNode &, const X3D::X3DSFNode <X3D::Scene> &, const UndoStepPtr &)>;
-	
-	std::map <std::string, ImportFunction> importFunctions;
+	template <class Type>
+	static
+	void
+	getWidgets (Gtk::Widget*, std::vector <Type*> &);
 
 };
+
+template <class Type>
+void
+X3DDialogInterface::getWidgets (Gtk::Widget* widget, std::vector <Type*> & types)
+{
+	Type* type = dynamic_cast <Type*> (widget);
+	
+	if (type)
+		types .emplace_back (type);
+
+	auto container = dynamic_cast <Gtk::Container*> (widget);
+	
+	if (container)
+	{
+		for (auto & child : container -> get_children ())
+			getWidgets (child, types);
+
+		return;
+	}	
+}
 
 } // puck
 } // titania

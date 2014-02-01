@@ -2392,6 +2392,7 @@
     <None Include="Tests\ParticleSystems\BoundedPhysicsModel.wrl" />
     <None Include="Tests\ParticleSystems\Torus.wrl" />
     <None Include="Tests\ParticleSystems\Tunnel.wrl" />
+    <None Include="Tests\ParticleSystems\Geometry.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

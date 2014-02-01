@@ -60,13 +60,16 @@ using namespace std::placeholders;
 
 MagicImport::MagicImport (BrowserWindow* const browserWindow) :
 	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
-	 importFunctions ({ std::make_pair ("Material", std::bind (std::mem_fn (&MagicImport::material), this, _1, _2)),
-	                    std::make_pair ("Texture",  std::bind (std::mem_fn (&MagicImport::texture),  this, _1, _2)) })
+	 importFunctions ({ std::make_pair ("Material", std::bind (std::mem_fn (&MagicImport::material), this, _1, _2, _3)),
+	                    std::make_pair ("Texture",  std::bind (std::mem_fn (&MagicImport::texture),  this, _1, _2, _3)) })
 { }
 
 bool
-MagicImport::import (const X3D::X3DSFNode <X3D::Scene> & scene, const UndoStepPtr & undoStep)
+MagicImport::import (X3D::MFNode & selection, const X3D::X3DSFNode <X3D::Scene> & scene, const UndoStepPtr & undoStep)
 {
+	if (selection .empty ())
+		return false;
+
 	try
 	{
 		std::string magic          = scene -> getMetaData ("titania magic");
@@ -75,7 +78,7 @@ MagicImport::import (const X3D::X3DSFNode <X3D::Scene> & scene, const UndoStepPt
 		if (importFunction == importFunctions .end ())
 			return false;
 
-		return importFunction -> second (scene, undoStep);
+		return importFunction -> second (selection, scene, undoStep);
 	}
 	catch (const X3D::Error <X3D::INVALID_NAME> &)
 	{
@@ -84,13 +87,8 @@ MagicImport::import (const X3D::X3DSFNode <X3D::Scene> & scene, const UndoStepPt
 }
 
 bool
-MagicImport::material (const X3D::X3DSFNode <X3D::Scene> & scene, const UndoStepPtr & undoStep)
+MagicImport::material (X3D::MFNode & selection, const X3D::X3DSFNode <X3D::Scene> & scene, const UndoStepPtr & undoStep)
 {
-	auto selection = getBrowser () -> getSelection () -> getChildren ();
-
-	if (selection .empty ())
-		return false;
-
 	// Find first material node in scene
 
 	X3D::SFNode material;
@@ -139,13 +137,8 @@ MagicImport::material (const X3D::X3DSFNode <X3D::Scene> & scene, const UndoStep
 }
 
 bool
-MagicImport::texture (const X3D::X3DSFNode <X3D::Scene> & scene, const UndoStepPtr & undoStep)
+MagicImport::texture (X3D::MFNode & selection, const X3D::X3DSFNode <X3D::Scene> & scene, const UndoStepPtr & undoStep)
 {
-	auto selection = getBrowser () -> getSelection () -> getChildren ();
-
-	if (selection .empty ())
-		return false;
-
 	// Find first material node in scene
 
 	X3D::SFNode texture;

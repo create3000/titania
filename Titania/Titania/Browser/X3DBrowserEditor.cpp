@@ -281,12 +281,20 @@ X3DBrowserEditor::import (const std::deque <basic::uri> & uris, const bool impor
 		{
 			// Imported file
 
-			auto undoStep = std::make_shared <UndoStep> (_ ("Import"));
+			auto undoStep  = std::make_shared <UndoStep> (_ ("Import"));
+			auto selection = getBrowser () -> getSelection () -> getChildren ();
 
 			getSelection () -> clear (undoStep);
 			
 			for (const auto & worldURL : uris)
-				import (getBrowser () -> createX3DFromURL ({ worldURL .str () }), undoStep);
+			{
+				auto scene = getBrowser () -> createX3DFromURL ({ worldURL .str () });
+
+				if (magicImport -> import (selection, scene, undoStep))
+					continue;
+
+				import (scene, undoStep);
+			}
 
 			addUndoStep (undoStep);
 		}
@@ -300,9 +308,6 @@ X3DBrowserEditor::import (const std::deque <basic::uri> & uris, const bool impor
 void
 X3DBrowserEditor::import (const X3D::X3DSFNode <X3D::Scene> & scene, const UndoStepPtr & undoStep)
 {
-	if (magicImport -> import (scene, undoStep))
-		return;
-
 	try
 	{
 		auto & rootNodes    = getBrowser () -> getExecutionContext () -> getRootNodes ();

@@ -1,7 +1,5 @@
 #X3D V3.3 utf8 Titania
 
-META "title" "Rotor Prototype"
-
 PROTO Rotor [
   inputOutput SFBool     enabled TRUE
   inputOutput SFTime     cycleInterval 1
@@ -13,6 +11,7 @@ PROTO Rotor [
   inputOutput SFTime     resumeTime 0
   inputOutput SFTime     stopTime 0
   outputOnly  SFBool     isActive
+  outputOnly  SFTime     cycleInterval
   outputOnly  SFRotation rotation_changed
 ]
 {
@@ -25,6 +24,7 @@ PROTO Rotor [
     resumeTime IS resumeTime
     stopTime IS stopTime
     isActive IS isActive
+    cycleInterval IS cycleInterval
   }
 
   DEF Interpolator OrientationInterpolator {

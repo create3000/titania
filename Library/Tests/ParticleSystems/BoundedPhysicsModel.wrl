@@ -35,7 +35,9 @@ DEF Icosahedron Transform {
     appearance Appearance {
       material Material { }
     }
-    geometry DEF _2 IcoSphere { }
+    geometry DEF _2 IcoSphere {
+      order 3
+    }
   }
 }
 
@@ -59,6 +61,7 @@ DEF _5 ParticleSystem {
   colorKey [ 0, 0.1, 0.4, 1 ]
   emitter ConeEmitter {
     position 0 -3 0
+    direction 1 4 0
     angle 0.4
     speed 0.2
     mass 3200

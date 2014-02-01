@@ -1,5 +1,20 @@
 2014-02-01  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* MagicImport.h:
+	* MagicImport.cpp:
+	* X3DDialogInterface.h:
+	* X3DBrowserEditor.cpp:
+	* Rotor.x3dv:
+	* ExternProto.x3dv:
+	* Externproto.x3dv:
+	* Externproto.x3dv:
+	* Externproto.x3dv:
+	* Externproto.x3dv:
+	* Externproto.x3dv:
+	* RoundedRectangle2D.x3dv: 
+
+2014-02-01  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* IcoSphere.x3dv: 
 
 2014-02-01  Holger Seelig  <holger.seelig@yahoo.de>

@@ -1,7 +1,5 @@
 #X3D V3.3 utf8 Titania
 
-META "title" "RoundedRectangle2D Prototype"
-
 EXTERNPROTO Torus [
   exposedField SFFloat minorRadius
   exposedField SFFloat majorRadius

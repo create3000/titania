@@ -579,7 +579,7 @@ ParticleSystem::set_geometryType ()
 		case GeometryType::GEOMETRY:
 		{
 			glGeometryType = GL_TRIANGLES;
-			numVertices    = 1;
+			numVertices    = 0;
 
 			vertices .resize (numVertices);
 			break;
@@ -854,6 +854,8 @@ ParticleSystem::set_boundedPhysicsModel ()
 
 	for (auto & physicsNode : boundedPhysicsModelNodes)
 		physicsNode -> addTriangles (normals, vertices);
+
+	__LOG__ << vertices .size () / 3 << std::endl;
 
 	// Update shader
 
@@ -1331,6 +1333,36 @@ ParticleSystem::drawGeometry ()
 		}
 		case GeometryType::GEOMETRY:
 		{
+			auto geometryNode = x3d_cast <X3DGeometryNode*> (geometry ());
+
+			if (geometryNode)
+			{
+				std::vector <Vector3f> positions;
+				positions .reserve (numParticles);
+
+				glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [readBuffer]);
+				auto particles = static_cast <const Particle*> (glMapBufferRange (GL_ARRAY_BUFFER, 0, sizeof (Particle) * numParticles, GL_MAP_READ_BIT));
+
+				for (const auto & particle : basic::adapter (particles, particles + numParticles))
+					positions .emplace_back (particle .position);
+
+				glUnmapBuffer (GL_ARRAY_BUFFER);
+				glBindBuffer (GL_ARRAY_BUFFER, 0);
+
+				for (const auto & position : positions)
+				{
+					glPushMatrix ();
+
+					glTranslatef (position .x (),
+					              position .y (),
+					              position .z ());
+
+					geometryNode -> draw ();
+
+					glPopMatrix ();
+				}
+			}
+
 			break;
 		}
 	}
@@ -1487,21 +1519,3 @@ ParticleSystem::~ParticleSystem ()
 
 } // X3D
 } // titania
-
-//
-
-//	glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [readBuffer]);
-//	Particle* particle = (Particle*) glMapBufferRange (GL_ARRAY_BUFFER, 0, sizeof (Particle) * numParticles, GL_MAP_READ_BIT);
-//
-//	int c = 0;
-//
-//	for (int i = 0; i < numParticles; ++ i)
-//	{
-//		c += particle -> elapsedTime == 0;
-//		++ particle;
-//	}
-//
-//	__LOG__ << numParticles << " : " << c << std::endl;
-//
-//	glUnmapBuffer (GL_ARRAY_BUFFER);
-//	glBindBuffer (GL_ARRAY_BUFFER, 0);
