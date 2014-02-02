@@ -1,5 +1,10 @@
 2014-02-02  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* ExplosionEmitter.vs:
+	* X3DParticleEmitterNode.h: 
+
+2014-02-02  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* libtitania-x3d.cproj:
 	* X3DOutput.h:
 	* X3DBaseNode.h:

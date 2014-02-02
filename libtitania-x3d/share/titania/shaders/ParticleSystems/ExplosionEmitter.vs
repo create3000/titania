@@ -21,6 +21,42 @@ getRandomVelocity ()
 }
 
 void
+ExplosionEmitter ()
+{
+	setParticleIndex (odd_even_merge_sort (gl_VertexID));
+
+	srand (getFromSeed ());
+
+	float elapsedTime = getFromElapsedTime () + deltaTime;
+
+	if (reset == 1)
+	{
+		to .lifetime    = getRandomLifetime ();
+		to .position    = createParticles == 1 ? getRandomPosition () : vec3 (INFINITY);
+		to .velocity    = getRandomVelocity ();
+		to .elapsedTime = 0.0f;
+	}
+	else if (elapsedTime > getFromLifetime ())
+	{
+		to .lifetime    = getFromLifetime ();
+		to .position    = vec3 (INFINITY);
+		to .velocity    = vec3 (0.0f);
+		to .elapsedTime = elapsedTime;
+	}
+	else
+	{
+		animate ();
+
+		to .lifetime    = getFromLifetime ();
+		to .elapsedTime = elapsedTime;
+	}
+
+	to .color    = getColor (to .elapsedTime, to .lifetime);
+	to .distance = getDistance (to .position);
+	to .seed     = srand ();
+}
+
+void
 main ()
 {
 	ExplosionEmitter ();
