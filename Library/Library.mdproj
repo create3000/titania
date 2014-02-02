@@ -2393,6 +2393,8 @@
     <None Include="Tests\ParticleSystems\Torus.wrl" />
     <None Include="Tests\ParticleSystems\Tunnel.wrl" />
     <None Include="Tests\ParticleSystems\Geometry.wrl" />
+    <None Include="Tests\ParticleSystems\Bubbles.wrl" />
+    <None Include="Tests\ParticleSystems\ExplosionEmitter.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

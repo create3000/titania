@@ -28,11 +28,11 @@ function initialize ()
 
 function eventsProcessed ()
 {
-	geometry .set_texCoordIndex = texCoordIndex ();
 	geometry .texCoord .point   = texCoord ();
-	
-	geometry .set_coordIndex    = coordIndex ();
 	geometry .coord .point      = points ();
+
+	geometry .set_texCoordIndex = texCoordIndex ();
+	geometry .set_coordIndex    = coordIndex ();
 }
 
 function texCoordIndex ()

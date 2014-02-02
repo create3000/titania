@@ -83,9 +83,6 @@ public:
 	void
 	import (const std::deque <basic::uri> &, const bool);
 
-	void
-	import (const X3D::X3DSFNode <X3D::Scene> &, const UndoStepPtr &);
-
 	virtual
 	void
 	save (const basic::uri &, const bool) final override;
@@ -216,6 +213,11 @@ private:
 
 	void
 	set_selection_active (bool);
+
+	// File
+
+	void
+	import (const X3D::X3DSFNode <X3D::Scene> &, const UndoStepPtr &);
 
 	// Clipboard
 

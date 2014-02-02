@@ -282,7 +282,10 @@ void
 X3DBaseNode::assign (const X3DBaseNode* value)
 {
 	for (const auto & field : getFieldDefinitions ())
-		*field = *value -> getField (field -> getName ());
+	{
+		if (*field not_eq *value -> getField (field -> getName ()))
+			*field = *value -> getField (field -> getName ());
+	}
 }
 
 void

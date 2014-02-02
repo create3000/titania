@@ -37,23 +37,7 @@ getRandomPosition ()
 
 	sort (points, intersections, plane3 (line .point, line .direction));
 
-	int index = int (round (random1 (0, intersections / 2 - 1))) * 2;
-
-	//	// Debug
-	//	if (getFromElapsedTime () == 0.0f)
-	//	{
-	//		int maxParticles = textureSize (particleMap) / stride;
-	//		int fieldSize    = int (sqrt (maxParticles));
-	//
-	//		return vec3 ((gl_VertexID % fieldSize) / float (fieldSize - 1),
-	//		             gl_VertexID / fieldSize / float (fieldSize - 1),
-	//		             0.0f);
-	//	}
-	//	else
-	//	{
-	//		return getFromPosition ();
-	//	}
-	//	//
+	int index = int (round (random1 (0, intersections / 2 - 1))) * 2; // Select random intersection.
 
 	return points [index] + (points [index + 1] - points [index]) * fract (random1 ());
 }
@@ -67,4 +51,10 @@ getRandomVelocity ()
 		return randomSpeed * random_normal ();
 
 	return randomSpeed * direction;
+}
+
+void
+main ()
+{
+	ConstantEmitter ();
 }

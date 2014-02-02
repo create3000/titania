@@ -158,7 +158,7 @@ animate ()
 }
 
 void
-main ()
+ConstantEmitter ()
 {
 	setParticleIndex (odd_even_merge_sort (gl_VertexID));
 
@@ -171,23 +171,57 @@ main ()
 		to .lifetime    = getRandomLifetime ();
 		to .position    = createParticles == 1 ? getRandomPosition () : vec3 (INFINITY);
 		to .velocity    = getRandomVelocity ();
-		to .color       = getColor (0.0f, to .lifetime);
 		to .elapsedTime = 0.0f;
-		to .distance    = getDistance (to .position);
-		to .seed        = srand ();
 	}
 	else
 	{
 		animate ();
 
 		to .lifetime    = getFromLifetime ();
-		to .color       = getColor (elapsedTime, to .lifetime);
 		to .elapsedTime = elapsedTime;
-		to .distance    = getDistance (to .position);
-		to .seed        = srand ();
 	}
+
+	to .color    = getColor (to .elapsedTime, to .lifetime);
+	to .distance = getDistance (to .position);
+	to .seed     = srand ();
 
 	// Debug
 	//to .position .y = getFromElapsedTime () / particleLifetime;
 	//to .position .z = float (gl_VertexID) / float (textureSize (particleMap) / stride);
+}
+
+void
+ExplosionEmitter ()
+{
+	setParticleIndex (odd_even_merge_sort (gl_VertexID));
+
+	srand (getFromSeed ());
+
+	float elapsedTime = getFromElapsedTime () + deltaTime;
+
+	if (reset == 1)
+	{
+		to .lifetime    = getRandomLifetime ();
+		to .position    = createParticles == 1 ? getRandomPosition () : vec3 (INFINITY);
+		to .velocity    = getRandomVelocity ();
+		to .elapsedTime = 0.0f;
+	}
+	else if (elapsedTime > getFromLifetime ())
+	{
+		to .lifetime    = getFromLifetime ();
+		to .position    = vec3 (INFINITY);
+		to .velocity    = vec3 (0.0f);
+		to .elapsedTime = elapsedTime;
+	}
+	else
+	{
+		animate ();
+
+		to .lifetime    = getFromLifetime ();
+		to .elapsedTime = elapsedTime;
+	}
+
+	to .color    = getColor (to .elapsedTime, to .lifetime);
+	to .distance = getDistance (to .position);
+	to .seed     = srand ();
 }

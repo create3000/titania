@@ -25,3 +25,9 @@ getRandomVelocity ()
 
 	return randomSpeed * random_normal (direction, angle);
 }
+
+void
+main ()
+{
+	ConstantEmitter ();
+}

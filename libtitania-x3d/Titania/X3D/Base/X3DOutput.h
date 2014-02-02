@@ -96,9 +96,7 @@ public:
 	template <class Class, class Function>
 	bool
 	hasInterest (Class & object, Function && memberFunction) const
-	{
-		return checkInterest ((X3DInput*) &object, reinterpret_cast <void*> (object .* memberFunction));
-	}
+	{ return hasInterest (&object, memberFunction); }
 
 	/// @name Add interest service
 
@@ -116,13 +114,7 @@ public:
 	template <class Class, class Function, class ... Arguments>
 	void
 	addInterest (Class & object, Function && memberFunction, Arguments && ... arguments) const
-	{
-		bool inserted = insertInterest (std::bind (memberFunction, object, std::forward <Arguments> (arguments) ...),
-		                                (X3DInput*) &object, reinterpret_cast <void*> (object .* memberFunction));
-
-		if (inserted)
-			insertInput (&object, reinterpret_cast <void*> (object .* memberFunction));
-	}
+	{ addInterest (&object, memberFunction, std::forward <Arguments> (arguments) ...); }
 
 	template <class Class>
 	void
@@ -138,13 +130,7 @@ public:
 	template <class Class>
 	void
 	addInterest (Class & object, void (Class::* memberFunction) (void)) const
-	{
-		bool inserted = insertInterest (std::bind (memberFunction, object),
-		                                (X3DInput*) &object, reinterpret_cast <void*> (object .* memberFunction));
-
-		if (inserted)
-			insertInput (&object, reinterpret_cast <void*> (object ->* memberFunction));
-	}
+	{ addInterest (&object, memberFunction); }
 
 	void
 	addInterest (const Requester &) const;
@@ -162,10 +148,7 @@ public:
 	template <class Class, class Function>
 	void
 	removeInterest (Class & object, Function && memberFunction) const
-	{
-		eraseInput (&object, reinterpret_cast <void*> (object .* memberFunction));
-		eraseInterest ((X3DInput*) &object, reinterpret_cast <void*> (object .* memberFunction));
-	}
+	{ removeInterest (&object, memberFunction); }
 
 	void
 	removeInterest (const Requester &) const;

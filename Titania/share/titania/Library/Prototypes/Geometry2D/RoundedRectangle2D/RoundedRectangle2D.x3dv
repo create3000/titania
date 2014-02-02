@@ -37,8 +37,6 @@ function eventsProcessed ()
 
 	for (var i = 0; i < cornerDimension * 4; ++ i)
 		coordIndex [coordIndex .length] = i;
-		
-	geometry .coordIndex = coordIndex;
 
 	for (var i = 0; i < cornerDimension; ++i)
 		corner [i] = startRotation .slerp (endRotation, i / (cornerDimension - 1)) .multVec (point);
@@ -66,7 +64,8 @@ function eventsProcessed ()
 	for (var i = 0; i < cornerDimension; ++ i)
 		points [points .length] = rotation .multVec (corner [i]) .add (translation);
 
-	geometry .coord .point = points;
+	geometry .coord .point = points;	
+	geometry .coordIndex   = coordIndex;
 }
 "
     directOutput TRUE

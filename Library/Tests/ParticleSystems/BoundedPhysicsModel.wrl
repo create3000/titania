@@ -75,10 +75,10 @@ DEF _5 ParticleSystem {
     }
   }
   physics [
-    BoundedPhysicsModel {
+    DEF BoundedSphere BoundedPhysicsModel {
       geometry USE _2
     }
-    BoundedPhysicsModel {
+    DEF BoundedBox BoundedPhysicsModel {
       geometry USE _1
     }
     ForcePhysicsModel {

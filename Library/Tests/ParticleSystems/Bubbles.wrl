@@ -11,9 +11,9 @@ Viewpoint {
 
 ParticleSystem {
   geometryType "GEOMETRY"
-  maxParticles 10
-  particleLifetime 4
-  lifetimeVariation 0.5
+  maxParticles 500
+  particleLifetime 8
+  lifetimeVariation 0.8
   particleSize 1 1
   emitter PointEmitter {
     direction 0 0 0
@@ -23,30 +23,25 @@ ParticleSystem {
     surfaceArea 0.1
   }
   appearance Appearance {
-    texture MultiTexture {
-      mode [ "MODULATE", "MODULATE" ]
-      texture [
-        ImageTexture {
-          url "../images/image.png"
-        }
-        ImageTexture {
-          url "../images/lena.jpg"
-        }
-      ]
+    material Material {
+      ambientIntensity 0.25
+      diffuseColor 1 0.520125 0.73699
+      specularColor 0.951515 0.951515 0.951515
+      shininess 0.557576
+      transparency 0.58
     }
   }
-  geometry Cone { }
+  geometry Sphere { }
   physics [
     WindPhysicsModel {
       direction 0 1 0
-      speed 0.7
+      speed 0.6
       gustiness 1.7
       turbulence 0.3
     }
     WindPhysicsModel {
-      direction 1 0 0
-      speed 0.5
-      gustiness 2
+      speed 1
+      gustiness 1.5
     }
   ]
 }
@@ -64,25 +59,5 @@ DEF IndexedLineSet Transform {
         point [ -1 0 0, 1 0 0, 0 -1 0, 0 1 0, 0 0 -1, 0 0 1 ]
       }
     }
-  }
-}
-
-DEF Lena Transform {
-  scale 0.173397 0.175741 1
-  children Shape {
-    appearance Appearance { }
-    geometry Rectangle2D {
-      solid FALSE
-    }
-  }
-}
-
-DEF Box Transform {
-  translation -4.50006 25.3436 0
-  children Shape {
-    appearance Appearance {
-      material Material { }
-    }
-    geometry Box { }
   }
 }

@@ -99,6 +99,11 @@ public:
 	///  @name Operations
 
 	virtual
+	bool
+	isExplosive ()
+	{ return false; }
+
+	virtual
 	MFString
 	getShaderUrl () const = 0;
 
@@ -113,7 +118,12 @@ public:
 
 	virtual
 	void
-	setShaderFields (const X3DSFNode <ComposedShader> &) const;	
+	setShaderFields (const X3DSFNode <ComposedShader> &) const;
+
+	virtual
+	void
+	resetShader ()
+	{ }
 
 
 protected:

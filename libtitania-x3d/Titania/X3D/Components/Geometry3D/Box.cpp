@@ -87,13 +87,13 @@ Box::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	getBrowser () -> getBrowserOptions () -> box () .addInterest (this, &Box::set_properties);
+	//getBrowser () -> getBrowserOptions () -> box () .addInterest (this, &Box::set_properties);
 }
 
 void
 Box::set_properties ()
 {
-	addEvent ();
+	//addEvent ();
 }
 
 Box3f

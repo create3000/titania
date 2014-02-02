@@ -80,6 +80,9 @@ class X3DBaseNode :
 {
 public:
 
+	using X3DChildObject::addInterest;
+	using X3DChildObject::removeInterest;
+
 	///  @name Construction
 
 	virtual
@@ -210,6 +213,36 @@ public:
 	{ saved = false; }
 
 	///  @name Event handling
+
+	void
+	addInterest (X3DBaseNode* object) const
+	{ addInterest (object, (void (X3DBaseNode::*) ()) &X3DBaseNode::addEvent); }
+	
+	template <class ValueType>
+	void
+	addInterest (X3DField <ValueType>* object) const
+	{ addInterest (object, (void (X3DField <ValueType>::*) ()) &X3DField <ValueType>::addEvent); }
+
+	template <class ValueType>
+	void
+	addInterest (X3DField <ValueType> & object) const
+	{ addInterest (&object);}
+
+	void
+	removeInterest (X3DBaseNode* object) const
+	{ removeInterest (object, (void (X3DBaseNode::*) ()) &X3DBaseNode::addEvent); }
+
+	template <class ValueType>
+	void
+	removeInterest (X3DField <ValueType>* object) const
+	{ removeInterest (object, (void (X3DField <ValueType>::*) ()) &X3DField <ValueType>::addEvent); }
+
+	template <class ValueType>
+	void
+	removeInterest (X3DField <ValueType> & object) const
+	{ removeInterest (&object);}
+
+	///  @name Event handling
 	
 	virtual
 	void
@@ -219,7 +252,7 @@ public:
 	const SFTime &
 	notified () const
 	{ return notifyOutput; }
-
+	
 	virtual
 	void
 	addEvent (X3DChildObject* const) override;

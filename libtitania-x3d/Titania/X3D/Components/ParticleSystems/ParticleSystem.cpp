@@ -407,6 +407,8 @@ ParticleSystem::initialize ()
 		texCoordRamp ()      .addInterest (this, &ParticleSystem::set_texCoordRamp);
 		geometry ()          .addInterest (this, &ParticleSystem::set_geometry);
 		physics ()           .addInterest (this, &ParticleSystem::set_physics);
+		
+		boundedPhysicsModelNodes .addInterest (this, &ParticleSystem::set_boundedPhysicsModel);
 
 		set_geometry_shader ();
 		set_enabled ();
@@ -826,7 +828,7 @@ ParticleSystem::set_physics ()
 	// BoundedPhysicsModel
 
 	for (auto & physicsNode : boundedPhysicsModelNodes)
-		physicsNode -> removeInterest (this, &ParticleSystem::set_boundedPhysicsModel);
+		physicsNode -> removeInterest (boundedPhysicsModelNodes);
 
 	boundedPhysicsModelNodes .clear ();
 
@@ -837,11 +839,9 @@ ParticleSystem::set_physics ()
 		if (physicsNode)
 		{
 			boundedPhysicsModelNodes .emplace_back (physicsNode);
-			physicsNode -> addInterest (this, &ParticleSystem::set_boundedPhysicsModel);
+			physicsNode -> addInterest (boundedPhysicsModelNodes);
 		}
 	}
-
-	set_boundedPhysicsModel ();
 }
 
 void
@@ -1101,15 +1101,37 @@ ParticleSystem::prepareEvents ()
 {
 	// Create new particles if possible.
 
-	if (numParticles < maxParticles ())
+	if (emitterNode -> isExplosive ())
 	{
-		time_type now          = chrono::now ();
-		int32_t   newParticles = (now - creationTime) * maxParticles () / particleLifetime ();
+		time_type now = chrono::now ();
 
-		if (newParticles)
+		if (numParticles < maxParticles ())
+		{
 			creationTime = now;
+			numParticles = maxParticles ();
+			emitterNode -> resetShader ();
+		}
+		else
+		{
+			if (now - creationTime > particleLifetime () + particleLifetime () * lifetimeVariation ())
+			{
+				creationTime = now;
+				emitterNode -> resetShader ();
+			}
+		}
+	}
+	else
+	{
+		if (numParticles < maxParticles ())
+		{
+			time_type now          = chrono::now ();
+			int32_t   newParticles = (now - creationTime) * maxParticles () / particleLifetime ();
 
-		numParticles = std::min (std::max (0, maxParticles () .getValue ()), newParticles + numParticles);
+			if (newParticles)
+				creationTime = now;
+
+			numParticles = std::min (std::max (0, maxParticles () .getValue ()), newParticles + numParticles);
+		}
 	}
 
 	// Update shader
@@ -1339,6 +1361,8 @@ ParticleSystem::drawGeometry ()
 			{
 				std::vector <Vector3f> positions;
 				positions .reserve (numParticles);
+				
+				// Copy positions
 
 				glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [readBuffer]);
 				auto particles = static_cast <const Particle*> (glMapBufferRange (GL_ARRAY_BUFFER, 0, sizeof (Particle) * numParticles, GL_MAP_READ_BIT));
@@ -1348,6 +1372,8 @@ ParticleSystem::drawGeometry ()
 
 				glUnmapBuffer (GL_ARRAY_BUFFER);
 				glBindBuffer (GL_ARRAY_BUFFER, 0);
+
+				// Draw geometries
 
 				for (const auto & position : positions)
 				{

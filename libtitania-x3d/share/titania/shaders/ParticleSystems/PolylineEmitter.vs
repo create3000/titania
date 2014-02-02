@@ -52,3 +52,9 @@ getRandomVelocity ()
 
 	return randomSpeed * direction;
 }
+
+void
+main ()
+{
+	ConstantEmitter ();
+}

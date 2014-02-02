@@ -394,11 +394,11 @@ function eventsProcessed ()
 {
 	var icoSphere = new IcoSphere (type, order, radius);
 
-	geometry .set_texCoordIndex = icoSphere .getTexCoordIndex ();
-	geometry .texCoord .point   = icoSphere .getTexPoint ();
+	geometry .texCoord .point = icoSphere .getTexPoint ();
+	geometry .coord .point    = icoSphere .getPoint ();
 
-	geometry .set_coordIndex = icoSphere .getCoordIndex ();
-	geometry .coord .point   = icoSphere .getPoint ();
+	geometry .set_texCoordIndex = icoSphere .getTexCoordIndex ();
+	geometry .set_coordIndex    = icoSphere .getCoordIndex ();
 }
 "
     directOutput TRUE

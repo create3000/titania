@@ -67,14 +67,15 @@ ExplosionEmitter::Fields::Fields () :
 ExplosionEmitter::ExplosionEmitter (X3DExecutionContext* const executionContext) :
 	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DParticleEmitterNode (),
-	                fields ()
+	                fields (),
+	                 reset (false)
 {
 	addField (inputOutput,    "metadata",    metadata ());
+	addField (inputOutput,    "position",    position ());
 	addField (inputOutput,    "speed",       speed ());
 	addField (inputOutput,    "variation",   variation ());
 	addField (initializeOnly, "mass",        mass ());
 	addField (initializeOnly, "surfaceArea", surfaceArea ());
-	addField (inputOutput,    "position",    position ());
 }
 
 X3DBaseNode*
@@ -86,7 +87,33 @@ ExplosionEmitter::create (X3DExecutionContext* const executionContext) const
 MFString
 ExplosionEmitter::getShaderUrl () const
 {
-	return { get_shader ("ParticleSystems/PointEmitter.vs") .str () };
+	return { get_shader ("ParticleSystems/ExplosionEmitter.vs") .str () };
+}
+
+void
+ExplosionEmitter::addShaderFields (const X3DSFNode <ComposedShader> & shader) const
+{
+	X3DParticleEmitterNode::addShaderFields (shader);
+
+	shader -> addUserDefinedField (inputOutput, "reset",    new SFBool ());
+	shader -> addUserDefinedField (inputOutput, "position", new SFVec3f (position ()));
+}
+
+void
+ExplosionEmitter::setShaderFields (const X3DSFNode <ComposedShader> & shader) const
+{
+	X3DParticleEmitterNode::setShaderFields (shader);
+
+	shader -> setField <SFVec3f> ("position", position (), true);
+	shader -> setField <SFBool>  ("reset",    reset,       true);
+	
+	const_cast <ExplosionEmitter*> (this) -> reset = false;
+}
+
+void
+ExplosionEmitter::resetShader ()
+{
+	reset = true;
 }
 
 } // X3D

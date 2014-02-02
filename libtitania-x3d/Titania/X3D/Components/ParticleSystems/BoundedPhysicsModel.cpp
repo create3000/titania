@@ -97,18 +97,12 @@ void
 BoundedPhysicsModel::set_geometry ()
 {
 	if (geometryNode)
-		geometryNode -> removeInterest (this, &BoundedPhysicsModel::set_geometryNode);
+		geometryNode -> removeInterest (this);
 
 	geometryNode = x3d_cast <X3DGeometryNode*> (geometry ());
 
 	if (geometryNode)
-		geometryNode -> addInterest (this, &BoundedPhysicsModel::set_geometryNode);
-}
-
-void
-BoundedPhysicsModel::set_geometryNode ()
-{
-	addEvent ();
+		geometryNode -> addInterest (this);
 }
 
 void

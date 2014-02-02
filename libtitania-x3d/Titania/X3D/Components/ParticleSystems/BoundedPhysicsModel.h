@@ -126,9 +126,6 @@ private:
 	void
 	set_geometry ();
 
-	void
-	set_geometryNode ();
-
 	///  @name Static members
 
 	static const std::string componentName;

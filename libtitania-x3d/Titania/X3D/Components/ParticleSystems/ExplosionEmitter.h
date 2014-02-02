@@ -100,8 +100,25 @@ public:
 	///  @name Operations
 
 	virtual
+	bool
+	isExplosive () final override
+	{ return true; }
+
+	virtual
 	MFString
 	getShaderUrl () const final override;
+
+	virtual
+	void
+	addShaderFields (const X3DSFNode <ComposedShader> &) const final override;
+
+	virtual
+	void
+	setShaderFields (const X3DSFNode <ComposedShader> &) const final override;
+
+	virtual
+	void
+	resetShader () final override;
 
 
 private:
@@ -122,6 +139,8 @@ private:
 	};
 
 	Fields fields;
+	
+	bool reset;
 
 };
 
