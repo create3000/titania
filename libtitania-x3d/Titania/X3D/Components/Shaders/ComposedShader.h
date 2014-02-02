@@ -165,6 +165,7 @@ private:
 
 	Fields fields;
 
+	MFNode partNodes;
 	GLuint programId;
 
 };

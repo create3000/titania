@@ -57,8 +57,8 @@
 #include "../Shape/FillProperties.h"
 #include "../Shape/LineProperties.h"
 #include "../Shape/X3DMaterialNode.h"
-#include "../Texturing/X3DTextureNode.h"
 #include "../Texturing/TextureTransform.h"
+#include "../Texturing/X3DTextureNode.h"
 
 namespace titania {
 namespace X3D {
@@ -77,15 +77,16 @@ Appearance::Fields::Fields () :
 { }
 
 Appearance::Appearance (X3DExecutionContext* const executionContext) :
-	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DAppearanceNode (),
-	           fields (),
-	  _fillProperties (nullptr),
-	  _lineProperties (nullptr),
-	        _material (nullptr),
-	         _texture (nullptr),
-	_textureTransform (nullptr),
-	          _shader (nullptr)
+	         X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	   X3DAppearanceNode (),
+	              fields (),
+	  fillPropertiesNode (nullptr),
+	  linePropertiesNode (nullptr),
+	        materialNode (nullptr),
+	         textureNode (nullptr),
+	textureTransformNode (nullptr),
+	         shaderNodes (),
+	          shaderNode (nullptr)
 {
 	addField (inputOutput, "metadata",         metadata ());
 	addField (inputOutput, "fillProperties",   fillProperties ());
@@ -94,6 +95,8 @@ Appearance::Appearance (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "texture",          texture ());
 	addField (inputOutput, "textureTransform", textureTransform ());
 	addField (inputOutput, "shaders",          shaders ());
+	
+	addChildren (shaderNodes);
 }
 
 X3DBaseNode*
@@ -125,13 +128,13 @@ Appearance::initialize ()
 bool
 Appearance::isTransparent () const
 {
-	if (_material and _material -> isTransparent ())
+	if (materialNode and materialNode -> isTransparent ())
 		return true;
 
-	if (_texture and _texture -> isTransparent ())
+	if (textureNode and textureNode -> isTransparent ())
 		return true;
 
-	if (_shader)
+	if (shaderNode)
 		return true;
 
 	return false;
@@ -140,66 +143,82 @@ Appearance::isTransparent () const
 void
 Appearance::set_fillProperties ()
 {
-	_fillProperties = x3d_cast <FillProperties*> (fillProperties ());
+	fillPropertiesNode = x3d_cast <FillProperties*> (fillProperties ());
 
-	if (_fillProperties)
+	if (fillPropertiesNode)
 		return;
 
-	_fillProperties = getBrowser () -> getBrowserOptions () -> fillProperties ();
+	fillPropertiesNode = getBrowser () -> getBrowserOptions () -> fillProperties ();
 }
 
 void
 Appearance::set_lineProperties ()
 {
-	_lineProperties = x3d_cast <LineProperties*> (lineProperties ());
+	linePropertiesNode = x3d_cast <LineProperties*> (lineProperties ());
 
-	if (_lineProperties)
+	if (linePropertiesNode)
 		return;
 
-	_lineProperties = getBrowser () -> getBrowserOptions () -> lineProperties ();
+	linePropertiesNode = getBrowser () -> getBrowserOptions () -> lineProperties ();
 }
 
 void
 Appearance::set_material ()
 {
-	_material = x3d_cast <X3DMaterialNode*> (material ());
+	materialNode = x3d_cast <X3DMaterialNode*> (material ());
 }
 
 void
 Appearance::set_texture ()
 {
-	_texture = x3d_cast <X3DTextureNode*> (texture ());
+	textureNode = x3d_cast <X3DTextureNode*> (texture ());
 }
 
 void
 Appearance::set_textureTransform ()
 {
-	_textureTransform = x3d_cast <X3DTextureTransformNode*> (textureTransform ());
+	textureTransformNode = x3d_cast <X3DTextureTransformNode*> (textureTransform ());
 
-	if (_textureTransform)
+	if (textureTransformNode)
 		return;
 
-	_textureTransform = getBrowser () -> getBrowserOptions () -> textureTransform ();
+	textureTransformNode = getBrowser () -> getBrowserOptions () -> textureTransform ();
 }
 
 void
 Appearance::set_shaders ()
 {
-	for (const auto & shader : shaders ())
+	for (const auto & node : shaderNodes)
+		node -> removeInterest (this, &Appearance::set_shader);
+
+	shaderNodes = shaders ();
+
+	for (const auto & node : shaderNodes)
+		node -> addInterest (this, &Appearance::set_shader);
+
+	set_shader ();
+}
+
+void
+Appearance::set_shader ()
+{
+	// Select shader
+
+	for (const auto & node : shaders ())
 	{
-		auto shaderNode = x3d_cast <X3DShaderNode*> (shader);
+		auto shader = x3d_cast <X3DShaderNode*> (node);
 
-		if (shaderNode and shaderNode -> isValid ())
+		if (shader and shader -> isValid ())
 		{
-			shaderNode -> isSelected () = true;
+			shader -> isSelected () = true;
 
-			_shader = shaderNode;
+			shaderNode = shader;
 
 			return;
 		}
 	}
 
-	_shader = nullptr;	
+	shaderNode = nullptr;
 }
 
 void
@@ -207,8 +226,8 @@ Appearance::draw ()
 {
 	// Material
 
-	if (_material)
-		_material -> draw ();
+	if (materialNode)
+		materialNode -> draw ();
 
 	else
 	{
@@ -218,20 +237,28 @@ Appearance::draw ()
 
 	// Texture
 
-	if (_texture)
+	if (textureNode)
 	{
-		_texture -> draw ();
+		textureNode -> draw ();
 		getBrowser () -> isEnabledTexture (true);
 	}
 
 	// TextureTransform
 
-	_textureTransform -> draw ();
+	textureTransformNode -> draw ();
 
 	// Shader
 
-	if (_shader)
-		_shader -> draw ();
+	if (shaderNode)
+		shaderNode -> draw ();
+}
+
+void
+Appearance::dispose ()
+{
+	shaderNodes .dispose ();
+
+	X3DAppearanceNode::dispose ();
 }
 
 } // X3D

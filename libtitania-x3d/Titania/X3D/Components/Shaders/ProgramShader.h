@@ -159,6 +159,7 @@ private:
 
 	Fields fields;
 
+	MFNode programNodes;
 	GLuint pipelineId;
 
 };

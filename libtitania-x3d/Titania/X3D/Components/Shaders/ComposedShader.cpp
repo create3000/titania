@@ -71,6 +71,7 @@ ComposedShader::ComposedShader (X3DExecutionContext* const executionContext) :
 	              X3DShaderNode (),
 	X3DProgrammableShaderObject (),
 	                     fields (),
+	                  partNodes (),
 	                  programId (0)
 {
 	addField (inputOutput,    "metadata",   metadata ());
@@ -79,6 +80,8 @@ ComposedShader::ComposedShader (X3DExecutionContext* const executionContext) :
 	addField (outputOnly,     "isValid",    isValid ());
 	addField (initializeOnly, "language",   language ());
 	addField (inputOutput,    "parts",      parts ());
+	
+	addChildren (partNodes);
 }
 
 X3DBaseNode*
@@ -98,7 +101,9 @@ ComposedShader::initialize ()
 		activate () .addInterest (this, &ComposedShader::set_activate);
 		parts ()    .addInterest (this, &ComposedShader::set_parts);
 
-		requestExplicitRelink ();
+		partNodes .addInterest (this, &ComposedShader::requestExplicitRelink);
+
+		set_parts ();
 	}
 }
 
@@ -116,10 +121,10 @@ ComposedShader::requestExplicitRelink ()
 
 		for (const auto & part : parts ())
 		{
-			auto _part = x3d_cast <ShaderPart*> (part);
+			auto partNode = x3d_cast <ShaderPart*> (part);
 
-			if (_part)
-				glAttachShader (programId, _part -> getShaderId ());
+			if (partNode)
+				glAttachShader (programId, partNode -> getShaderId ());
 		}
 
 		// TransformFeedbackVaryings
@@ -154,10 +159,10 @@ ComposedShader::requestExplicitRelink ()
 
 		for (const auto & part : parts ())
 		{
-			auto _part = x3d_cast <ShaderPart*> (part);
+			auto partNode = x3d_cast <ShaderPart*> (part);
 
-			if (_part)
-				glDetachShader (programId, _part -> getShaderId ());
+			if (partNode)
+				glDetachShader (programId, partNode -> getShaderId ());
 		}
 	}
 	else
@@ -165,8 +170,6 @@ ComposedShader::requestExplicitRelink ()
 
 	if (not isValid () and isSelected ())
 		isSelected () = false;
-
-	X3DChildObject::addEvent ();
 }
 
 void
@@ -195,15 +198,21 @@ ComposedShader::printProgramInfoLog () const
 void
 ComposedShader::set_activate ()
 {
-	if (not activate ())
-		return;
-
-	requestExplicitRelink ();
+	if (activate ())
+		requestExplicitRelink ();
 }
 
 void
 ComposedShader::set_parts ()
 {
+	for (const auto & node : partNodes)
+		node -> removeInterest (partNodes);
+
+	partNodes .set (parts ());
+
+	for (const auto & node : partNodes)
+		node -> addInterest (partNodes);
+
 	requestExplicitRelink ();
 }
 
@@ -230,6 +239,8 @@ ComposedShader::draw ()
 void
 ComposedShader::dispose ()
 {
+	partNodes .dispose ();
+
 	if (programId)
 		glDeleteProgram (programId);
 

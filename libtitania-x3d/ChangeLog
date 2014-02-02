@@ -1,5 +1,14 @@
 2014-02-02  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Appearance.h:
+	* Appearance.cpp:
+	* ProgramShader.h:
+	* ComposedShader.h:
+	* ProgramShader.cpp:
+	* ComposedShader.cpp: 
+
+2014-02-02  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* ExplosionEmitter.vs:
 	* X3DParticleEmitterNode.h: 
 

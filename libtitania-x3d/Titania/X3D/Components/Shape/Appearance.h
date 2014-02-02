@@ -66,6 +66,8 @@ class Appearance :
 {
 public:
 
+	///  @name Construction
+
 	Appearance (X3DExecutionContext* const);
 
 	virtual
@@ -151,28 +153,28 @@ public:
 	virtual
 	FillProperties*
 	getFillProperties () const final override
-	{ return _fillProperties; }
+	{ return fillPropertiesNode; }
 
 	virtual
 	LineProperties*
 	getLineProperties () const final override
-	{ return _lineProperties; }
+	{ return linePropertiesNode; }
 
 	X3DMaterialNode*
 	getMaterial () const
-	{ return _material; }
+	{ return materialNode; }
 	
 	X3DTextureNode*
 	getTexture () const
-	{ return _texture; }
+	{ return textureNode; }
 	
 	X3DTextureTransformNode*
 	getTextureTransform () const
-	{ return _textureTransform; }
+	{ return textureTransformNode; }
 	
 	X3DShaderNode*
 	getShader () const
-	{ return _shader; }
+	{ return shaderNode; }
 
 	///  @name Tests
 
@@ -180,12 +182,22 @@ public:
 	void
 	draw () final override;
 
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override;
+
 
 private:
+
+	///  @name Construction
 
 	virtual
 	void
 	initialize () final override;
+
+	///  @name Event handlers
 
 	void
 	set_lineProperties ();
@@ -205,6 +217,8 @@ private:
 	void
 	set_shaders ();
 
+	void
+	set_shader ();
 
 	///  @name Static members
 
@@ -228,12 +242,13 @@ private:
 
 	Fields fields;
 
-	FillProperties*          _fillProperties;
-	LineProperties*          _lineProperties;
-	X3DMaterialNode*         _material;
-	X3DTextureNode*          _texture;
-	X3DTextureTransformNode* _textureTransform;
-	X3DShaderNode*           _shader;
+	FillProperties*          fillPropertiesNode;
+	LineProperties*          linePropertiesNode;
+	X3DMaterialNode*         materialNode;
+	X3DTextureNode*          textureNode;
+	X3DTextureTransformNode* textureTransformNode;
+	MFNode                   shaderNodes;
+	X3DShaderNode*           shaderNode;
 
 };
 

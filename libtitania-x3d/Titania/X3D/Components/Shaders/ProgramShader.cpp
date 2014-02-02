@@ -73,6 +73,7 @@ ProgramShader::ProgramShader (X3DExecutionContext* const executionContext) :
 	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DShaderNode (),
 	       fields (),
+	 programNodes (),
 	   pipelineId (0)
 {
 	addField (inputOutput,    "metadata",   metadata ());
@@ -81,6 +82,8 @@ ProgramShader::ProgramShader (X3DExecutionContext* const executionContext) :
 	addField (outputOnly,     "isValid",    isValid ());
 	addField (initializeOnly, "language",   language ());
 	addField (inputOutput,    "programs",   programs ());
+	
+	addChildren (programNodes);
 }
 
 X3DBaseNode*
@@ -99,7 +102,9 @@ ProgramShader::initialize ()
 		activate () .addInterest (this, &ProgramShader::set_activate);
 		programs () .addInterest (this, &ProgramShader::set_programs);
 
-		requestExplicitRelink ();
+		programNodes .addInterest (this, &ProgramShader::requestExplicitRelink);
+
+		set_programs ();
 	}
 }
 
@@ -169,8 +174,6 @@ ProgramShader::requestExplicitRelink ()
 
 	if (not isValid () and isSelected ())
 		isSelected () = false;
-
-	X3DChildObject::addEvent ();
 }
 
 void
@@ -183,6 +186,14 @@ ProgramShader::set_activate ()
 void
 ProgramShader::set_programs ()
 {
+	for (const auto & node : programNodes)
+		node -> removeInterest (programNodes);
+
+	programNodes .set (programs ());
+
+	for (const auto & node : programNodes)
+		node -> addInterest (programNodes);
+
 	requestExplicitRelink ();
 }
 
@@ -209,6 +220,8 @@ ProgramShader::draw ()
 void
 ProgramShader::dispose ()
 {
+	programNodes .dispose ();
+
 	if (pipelineId)
 		glDeleteProgramPipelines (1, &pipelineId);
 
