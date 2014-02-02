@@ -73,7 +73,7 @@ ProgramShader::ProgramShader (X3DExecutionContext* const executionContext) :
 	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DShaderNode (),
 	       fields (),
-	 programNodes (),
+	   loadSensor (new LoadSensor (executionContext)),
 	   pipelineId (0)
 {
 	addField (inputOutput,    "metadata",   metadata ());
@@ -83,7 +83,7 @@ ProgramShader::ProgramShader (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "language",   language ());
 	addField (inputOutput,    "programs",   programs ());
 	
-	addChildren (programNodes);
+	addChildren (loadSensor);
 }
 
 X3DBaseNode*
@@ -97,15 +97,13 @@ ProgramShader::initialize ()
 {
 	X3DShaderNode::initialize ();
 
-	if (glXGetCurrentContext ())
-	{
-		activate () .addInterest (this, &ProgramShader::set_activate);
-		programs () .addInterest (this, &ProgramShader::set_programs);
+	activate () .addInterest (this, &ProgramShader::set_activate);
+	programs () .addInterest (loadSensor -> watchList ());
 
-		programNodes .addInterest (this, &ProgramShader::requestExplicitRelink);
-
-		set_programs ();
-	}
+	loadSensor -> isInternal (true);
+	loadSensor -> watchList () = programs ();
+	loadSensor -> isActive () .addInterest (this, &ProgramShader::requestExplicitRelink);
+	loadSensor -> setup ();
 }
 
 GLint
@@ -139,6 +137,9 @@ ProgramShader::getProgramStageBit (const String & type)
 void
 ProgramShader::requestExplicitRelink ()
 {
+	if (loadSensor -> isActive ())
+		return;
+
 	if (not getBrowser () -> getRenderingProperties () -> hasExtension ("GL_ARB_separate_shader_objects"))
 	{
 		isValid () = false;
@@ -151,7 +152,7 @@ ProgramShader::requestExplicitRelink ()
 		pipelineId = 0;
 	}
 
-	if (language () == "GLSL")
+	if (loadSensor -> progress () == 1.0f and (language () == "" or language () == "GLSL"))
 	{
 		glGenProgramPipelines (1, &pipelineId);
 
@@ -159,10 +160,10 @@ ProgramShader::requestExplicitRelink ()
 
 		for (const auto & program : programs ())
 		{
-			auto _program = x3d_cast <ShaderProgram*> (program);
+			auto programNode = x3d_cast <ShaderProgram*> (program);
 
-			if (_program)
-				glUseProgramStages (pipelineId, getProgramStageBit (_program -> type ()), _program -> getProgramId ());
+			if (programNode)
+				glUseProgramStages (pipelineId, getProgramStageBit (programNode -> type ()), programNode -> getProgramId ());
 		}
 
 		isValid () = true;
@@ -172,8 +173,12 @@ ProgramShader::requestExplicitRelink ()
 	else
 		isValid () = false;
 
-	if (not isValid () and isSelected ())
+	if (isSelected ())
 		isSelected () = false;
+	
+	// Propagate event further.
+
+	addEvent ();
 }
 
 void
@@ -181,20 +186,6 @@ ProgramShader::set_activate ()
 {
 	if (activate ())
 		requestExplicitRelink ();
-}
-
-void
-ProgramShader::set_programs ()
-{
-	for (const auto & node : programNodes)
-		node -> removeInterest (programNodes);
-
-	programNodes .set (programs ());
-
-	for (const auto & node : programNodes)
-		node -> addInterest (programNodes);
-
-	requestExplicitRelink ();
 }
 
 void
@@ -220,7 +211,7 @@ ProgramShader::draw ()
 void
 ProgramShader::dispose ()
 {
-	programNodes .dispose ();
+	loadSensor .dispose ();
 
 	if (pipelineId)
 		glDeleteProgramPipelines (1, &pipelineId);

@@ -1,41 +1,52 @@
 #X3D V3.0 utf8
 
-META "title" "Shader Test"
-
-Background {
-  skyColor 0.2 0.2 0.2
-}
+META "title" "ComposedShader"
 
 Transform {
+  translation -2 0 0
   children Shape {
     appearance Appearance {
-      shaders ComposedShader {
-        language "GLSL"
-        parts [
-          ShaderPart {
-            url "data:text/plain,
-#version 120
+      shaders [
+        ComposedShader {
+          initializeOnly MFColorRGBA color [ 1 1 0 1, 1 0 0 1 ]
 
-void main (void)
-{
-	gl_Position = ftransform ();
-}
-"
-          }
-          ShaderPart {
+          language "GLSL"
+          parts ShaderPart {
             type "FRAGMENT"
             url "data:text/plain,
 #version 120
 
-void main (void)
-{
-	gl_FragColor = vec4 (1, 0, 0, 0.5);
+AN PARSER ERROR IS GENERATED HERE AND SECOND SHADER IS SELECTED
+
+uniform vec4 color [2];
+
+void main (void)  
+{     
+   gl_FragColor = color [0];  
 }
 "
           }
-        ]
-      }
+        }
+        ComposedShader {
+          initializeOnly MFColorRGBA color [ 1 1 0 1, 1 0 0 1 ]
+
+          language "GLSL"
+          parts ShaderPart {
+            type "FRAGMENT"
+            url "data:text/plain,
+#version 120
+
+uniform vec4 color [2];
+
+void main (void)  
+{     
+   gl_FragColor = color [1];  
+}
+"
+          }
+        }
+      ]
     }
     geometry Sphere { }
-  } 
+  }
 }

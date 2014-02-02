@@ -117,6 +117,8 @@ Appearance::initialize ()
 	textureTransform () .addInterest (this, &Appearance::set_textureTransform);
 	shaders ()          .addInterest (this, &Appearance::set_shaders);
 
+	shaderNodes .addInterest (this, &Appearance::set_shader);
+
 	set_lineProperties ();
 	set_fillProperties ();
 	set_material ();
@@ -188,15 +190,23 @@ Appearance::set_textureTransform ()
 void
 Appearance::set_shaders ()
 {
-	for (const auto & node : shaderNodes)
-		node -> removeInterest (this, &Appearance::set_shader);
+	using addEvent = void (X3DMFNode <X3DShaderNode>::*) ();
 
-	shaderNodes = shaders ();
+	for (const auto & shaderNode : shaderNodes)
+		shaderNode -> isValid () .removeInterest (shaderNodes, (addEvent) &X3DMFNode <X3DShaderNode>::addEvent);
 
-	for (const auto & node : shaderNodes)
-		node -> addInterest (this, &Appearance::set_shader);
+	shaderNodes .clear ();
 
-	set_shader ();
+	for (const auto & node : shaders ())
+	{
+		auto shaderNode = x3d_cast <X3DShaderNode*> (node);
+
+		if (shaderNode)
+		{
+			shaderNodes .emplace_back (shaderNode);
+			shaderNode -> isValid () .addInterest (shaderNodes, (addEvent) &X3DMFNode <X3DShaderNode>::addEvent);
+		}
+	}
 }
 
 void
@@ -204,11 +214,9 @@ Appearance::set_shader ()
 {
 	// Select shader
 
-	for (const auto & node : shaders ())
+	for (const auto & shader : shaderNodes)
 	{
-		auto shader = x3d_cast <X3DShaderNode*> (node);
-
-		if (shader and shader -> isValid ())
+		if (shader -> isValid ())
 		{
 			shader -> isSelected () = true;
 

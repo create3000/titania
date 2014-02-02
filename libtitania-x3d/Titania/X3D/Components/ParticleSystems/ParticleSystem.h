@@ -322,6 +322,9 @@ private:
 	set_transform_shader ();
 
 	void
+	set_transform_shader_texture_buffers ();
+
+	void
 	swap_particle_buffers ();
 
 	void
@@ -329,6 +332,9 @@ private:
 
 	void
 	set_geometry_shader ();
+
+	void
+	set_geometry_shader_texture_buffers ();
 
 	///  @name Operations
 

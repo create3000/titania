@@ -1008,8 +1008,13 @@ ParticleSystem::set_transform_shader ()
 	                                                    "To.distance"
 																	 });
 
+	transformShader -> isValid () .addInterest (this, &ParticleSystem::set_transform_shader_texture_buffers);
 	transformShader -> setup ();
+}
 
+void
+ParticleSystem::set_transform_shader_texture_buffers ()
+{
 	// Color ramp
 
 	transformShader -> setTextureBuffer ("particleMap",  particleMapId);
@@ -1059,7 +1064,14 @@ ParticleSystem::set_geometry_shader ()
 	geometryShader -> setTransformFeedbackVaryings ({
 	                                                   "To.position", "To.color", "To.texCoord"
 																	});
+
+	geometryShader -> isValid () .addInterest (this, &ParticleSystem::set_geometry_shader_texture_buffers);
 	geometryShader -> setup ();
+}
+
+void
+ParticleSystem::set_geometry_shader_texture_buffers ()
+{
 	geometryShader -> setTextureBuffer ("texCoordKeyMap",  texCoordRampMapId [TEXCOORD_RAMP_KEYS]);
 	geometryShader -> setTextureBuffer ("texCoordRampMap", texCoordRampMapId [TEXCOORD_RAMP_VALUES]);
 }

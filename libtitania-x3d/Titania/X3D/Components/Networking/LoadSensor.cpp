@@ -107,7 +107,7 @@ LoadSensor::initialize ()
 	timeOut ()   .addInterest (this, &LoadSensor::set_timeOut);
 	watchList () .addInterest (this, &LoadSensor::set_watchList);
 
-	set_watchList ();
+	watchList () .addEvent ();
 }
 
 void
@@ -158,7 +158,7 @@ LoadSensor::set_loadState (X3DUrlObject* const urlObject)
 			{
 				complete .emplace (urlObject);
 
-				progress () = float (complete.size ()) / float (urlObjects .size ());
+				progress () = float (complete .size ()) / float (urlObjects .size ());
 
 				if (complete .size () == urlObjects .size ())
 				{

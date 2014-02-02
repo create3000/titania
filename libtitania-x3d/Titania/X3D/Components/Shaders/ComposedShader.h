@@ -51,6 +51,7 @@
 #ifndef __TITANIA_X3D_COMPONENTS_SHADERS_COMPOSED_SHADER_H__
 #define __TITANIA_X3D_COMPONENTS_SHADERS_COMPOSED_SHADER_H__
 
+#include "../Networking/LoadSensor.h"
 #include "../Shaders/X3DProgrammableShaderObject.h"
 #include "../Shaders/X3DShaderNode.h"
 
@@ -145,9 +146,6 @@ private:
 	void
 	set_activate ();
 
-	void
-	set_parts ();
-
 	///  @name Static members
 
 	static const std::string componentName;
@@ -165,8 +163,8 @@ private:
 
 	Fields fields;
 
-	MFNode partNodes;
-	GLuint programId;
+	X3DSFNode <LoadSensor> loadSensor;
+	GLuint                 programId;
 
 };
 

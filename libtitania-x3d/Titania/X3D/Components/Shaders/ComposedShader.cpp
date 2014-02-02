@@ -71,7 +71,7 @@ ComposedShader::ComposedShader (X3DExecutionContext* const executionContext) :
 	              X3DShaderNode (),
 	X3DProgrammableShaderObject (),
 	                     fields (),
-	                  partNodes (),
+	                 loadSensor (new LoadSensor (executionContext)),
 	                  programId (0)
 {
 	addField (inputOutput,    "metadata",   metadata ());
@@ -81,7 +81,7 @@ ComposedShader::ComposedShader (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "language",   language ());
 	addField (inputOutput,    "parts",      parts ());
 	
-	addChildren (partNodes);
+	addChildren (loadSensor);
 }
 
 X3DBaseNode*
@@ -96,21 +96,22 @@ ComposedShader::initialize ()
 	X3DShaderNode::initialize ();
 	X3DProgrammableShaderObject::initialize ();
 
-	if (glXGetCurrentContext ())
-	{
-		activate () .addInterest (this, &ComposedShader::set_activate);
-		parts ()    .addInterest (this, &ComposedShader::set_parts);
+	activate () .addInterest (this, &ComposedShader::set_activate);
+	parts ()    .addInterest (loadSensor -> watchList ());
 
-		partNodes .addInterest (this, &ComposedShader::requestExplicitRelink);
-
-		set_parts ();
-	}
+	loadSensor -> isInternal (true);
+	loadSensor -> watchList () = parts ();
+	loadSensor -> isActive () .addInterest (this, &ComposedShader::requestExplicitRelink);
+	loadSensor -> setup ();
 }
 
 void
 ComposedShader::requestExplicitRelink ()
 {
-	if (language () == "GLSL")
+	if (loadSensor -> isActive ())
+		return;
+
+	if (loadSensor -> progress () == 1.0f and (language () == "" or language () == "GLSL"))
 	{
 		if (programId)
 			glDeleteProgram (programId);
@@ -168,8 +169,12 @@ ComposedShader::requestExplicitRelink ()
 	else
 		isValid () = false;
 
-	if (not isValid () and isSelected ())
+	if (isSelected ())
 		isSelected () = false;
+	
+	// Propagate event further.
+
+	addEvent ();
 }
 
 void
@@ -203,20 +208,6 @@ ComposedShader::set_activate ()
 }
 
 void
-ComposedShader::set_parts ()
-{
-	for (const auto & node : partNodes)
-		node -> removeInterest (partNodes);
-
-	partNodes .set (parts ());
-
-	for (const auto & node : partNodes)
-		node -> addInterest (partNodes);
-
-	requestExplicitRelink ();
-}
-
-void
 ComposedShader::enable ()
 {
 	glUseProgram (programId);
@@ -239,7 +230,7 @@ ComposedShader::draw ()
 void
 ComposedShader::dispose ()
 {
-	partNodes .dispose ();
+	loadSensor .dispose ();
 
 	if (programId)
 		glDeleteProgram (programId);

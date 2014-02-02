@@ -4,6 +4,18 @@
 	* Appearance.cpp:
 	* ProgramShader.h:
 	* ComposedShader.h:
+	* LoadSensor.cpp:
+	* ProgramShader.cpp:
+	* ComposedShader.cpp:
+	* ParticleSystem.h:
+	* ParticleSystem.cpp: 
+
+2014-02-02  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Appearance.h:
+	* Appearance.cpp:
+	* ProgramShader.h:
+	* ComposedShader.h:
 	* ProgramShader.cpp:
 	* ComposedShader.cpp: 
 
