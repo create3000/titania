@@ -78,7 +78,7 @@ public:
 
 	///  @name Construction
 
-	OutlineTreeData (OutlineIterType, X3D::X3DChildObject*, const Gtk::TreeModel::Path &);
+	OutlineTreeData (const OutlineIterType, X3D::X3DChildObject* const, const Gtk::TreeModel::Path &);
 
 	bool
 	is (X3D::X3DChildObject* const) const;
@@ -102,7 +102,7 @@ public:
 
 	static
 	OutlineUserDataPtr
-	get_user_data (X3D::X3DChildObject*);
+	get_user_data (X3D::X3DChildObject* const);
 
 	///  @name Route handling
 

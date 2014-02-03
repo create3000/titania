@@ -1,3 +1,9 @@
+2014-02-03  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* OutlineTreeData.h:
+	* OutlineTreeData.cpp:
+	* OutlineSelection.cpp: 
+
 2014-02-02  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBrowserEditor.h:

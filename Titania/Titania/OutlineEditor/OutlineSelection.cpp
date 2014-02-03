@@ -106,6 +106,8 @@ OutlineSelection::select (const X3D::SFNode & node)
 
 		if (not isSelected)
 			selection -> addChildren ({ node });
+
+		getBrowser () -> update ();
 	}
 }
 

@@ -165,7 +165,7 @@ throw (Error <INVALID_NAME>,
 	X3DBaseNode* copy = create (executionContext);
 
 	if (not getName () .empty ())
-		executionContext -> updateNamedNode (getName (), copy); // executionContext -> getUniqueName (getName (), true)
+		executionContext -> updateNamedNode (getName (), copy);
 
 	for (const auto & fieldDefinition : fieldDefinitions)
 	{
@@ -259,9 +259,9 @@ X3DBaseNode::replace (X3DBaseNode* const node, const std::set <const X3DFieldDef
 
 				for (auto & secondParent : sfnode -> getParents ())
 				{
-					auto mfnode = dynamic_cast <MFNode*> (secondParent);
+					auto mfnode = dynamic_cast <X3DFieldDefinition*> (secondParent);
 
-					if (mfnode)
+					if (mfnode and mfnode -> getType () == X3DConstants::MFNode)
 						insert = exclude .find (mfnode) == exclude .end ();
 				}
 
@@ -274,17 +274,19 @@ X3DBaseNode::replace (X3DBaseNode* const node, const std::set <const X3DFieldDef
 	for (auto & parent : parents)
 	{
 		parent -> write (SFNode (this));
-		parent -> notify ();
+		parent -> addEvent ();
 	}
 }
 
 void
-X3DBaseNode::assign (const X3DBaseNode* value)
+X3DBaseNode::assign (const X3DBaseNode* node)
 {
-	for (const auto & field : getFieldDefinitions ())
+	for (const auto & lhs : getFieldDefinitions ())
 	{
-		if (*field not_eq *value -> getField (field -> getName ()))
-			*field = *value -> getField (field -> getName ());
+		auto rhs = node -> getField (lhs -> getName ());
+	
+		if (*lhs not_eq *rhs)
+			*lhs = *rhs;
 	}
 }
 
@@ -351,20 +353,21 @@ X3DBaseNode::removeField (const std::string & name)
 		}
 
 		fieldDefinitions .erase (iter);
-		fields .erase (field);
+
 		field -> second -> removeParent (this);
+		fields .erase (field);
 	}
 }
 
 void
-X3DBaseNode::addField (const std::string & name, const std::string & field)
+X3DBaseNode::addField (const std::string & alias, const std::string & name)
 {
-	const auto iter = fields .find (field);
+	const auto iter = fields .find (name);
 
 	if (iter not_eq fields .end ())
 	{
-		fieldAliases .emplace (name, field);
-		iter -> second -> setAliasName (name);
+		fieldAliases .emplace (alias, name);
+		iter -> second -> setAliasName (alias);
 	}
 }
 
