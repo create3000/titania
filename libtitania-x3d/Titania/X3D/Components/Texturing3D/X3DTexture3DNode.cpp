@@ -139,7 +139,7 @@ X3DTexture3DNode::setImage (GLenum internalFormat, size_t comp, GLint w, GLint h
 
 	glBindTexture (GL_TEXTURE_3D, 0);
 
-	X3DChildObject::notify ();
+	addEvent ();
 }
 
 void

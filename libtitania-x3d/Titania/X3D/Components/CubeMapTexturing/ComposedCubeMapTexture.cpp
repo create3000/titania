@@ -61,6 +61,16 @@ const std::string ComposedCubeMapTexture::componentName  = "CubeMapTexturing";
 const std::string ComposedCubeMapTexture::typeName       = "ComposedCubeMapTexture";
 const std::string ComposedCubeMapTexture::containerField = "texture";
 
+const GLenum ComposedCubeMapTexture::targets [6] = {
+	GL_TEXTURE_CUBE_MAP_POSITIVE_Z,
+	GL_TEXTURE_CUBE_MAP_NEGATIVE_Z,
+	GL_TEXTURE_CUBE_MAP_NEGATIVE_X,
+	GL_TEXTURE_CUBE_MAP_POSITIVE_X,
+	GL_TEXTURE_CUBE_MAP_NEGATIVE_Y,
+	GL_TEXTURE_CUBE_MAP_POSITIVE_Y
+
+};
+
 ComposedCubeMapTexture::Fields::Fields () :
 	 front (new SFNode ()),
 	  back (new SFNode ()),
@@ -74,6 +84,7 @@ ComposedCubeMapTexture::ComposedCubeMapTexture (X3DExecutionContext* const execu
 	              X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DEnvironmentTextureNode (),
 	                   fields (),
+	                    nodes (),
 	              transparent (false),
 	               components (0)
 {
@@ -84,6 +95,8 @@ ComposedCubeMapTexture::ComposedCubeMapTexture (X3DExecutionContext* const execu
 	addField (inputOutput, "right",    right ());
 	addField (inputOutput, "bottom",   bottom ());
 	addField (inputOutput, "top",      top ());
+
+	addChildren (nodes);
 }
 
 X3DBaseNode*
@@ -109,47 +122,66 @@ ComposedCubeMapTexture::initialize ()
 
 		glBindTexture (GL_TEXTURE_CUBE_MAP, 0);
 
-		front ()    .addInterest (this, &ComposedCubeMapTexture::set_texture);
-		back ()     .addInterest (this, &ComposedCubeMapTexture::set_texture);
-		left ()     .addInterest (this, &ComposedCubeMapTexture::set_texture);
-		right ()    .addInterest (this, &ComposedCubeMapTexture::set_texture);
-		bottom ()   .addInterest (this, &ComposedCubeMapTexture::set_texture);
-		top ()      .addInterest (this, &ComposedCubeMapTexture::set_texture);
-		notified () .addInterest (this, &ComposedCubeMapTexture::set_texture);
-	
-		set_texture ();
+		front ()  .addInterest (this, &ComposedCubeMapTexture::set_texture, 0, std::cref (front ()));
+		back ()   .addInterest (this, &ComposedCubeMapTexture::set_texture, 1, std::cref (back ()));
+		left ()   .addInterest (this, &ComposedCubeMapTexture::set_texture, 2, std::cref (left ()));
+		right ()  .addInterest (this, &ComposedCubeMapTexture::set_texture, 3, std::cref (right ()));
+		bottom () .addInterest (this, &ComposedCubeMapTexture::set_texture, 4, std::cref (bottom ()));
+		top ()    .addInterest (this, &ComposedCubeMapTexture::set_texture, 5, std::cref (top ()));
+		
+		nodes .resize (6);
+
+		set_texture (0, front ());
+		set_texture (1, back ());
+		set_texture (2, right ());
+		set_texture (3, left ());
+		set_texture (4, bottom ());
+		set_texture (5, top ());
 	}
 }
 
 void
-ComposedCubeMapTexture::set_texture ()
+ComposedCubeMapTexture::set_texture (const size_t index, const SFNode & node)
 {
-	transparent = false;
-	components  = 0;
+	if (nodes [index])
+		nodes [index] -> removeInterest (this, &ComposedCubeMapTexture::set_texture);
 
-	setTexture (GL_TEXTURE_CUBE_MAP_POSITIVE_Z, front ());
-	setTexture (GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, back ());
-	setTexture (GL_TEXTURE_CUBE_MAP_NEGATIVE_X, right ());
-	setTexture (GL_TEXTURE_CUBE_MAP_POSITIVE_X, left ());
-	setTexture (GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, bottom ());
-	setTexture (GL_TEXTURE_CUBE_MAP_POSITIVE_Y, top ());
+	nodes [index] = node;
+
+	if (nodes [index])
+		nodes [index] -> addInterest (this, &ComposedCubeMapTexture::set_texture, index, std::cref (node));
+
+	setTexture (targets [index], node);
 }
 
 void
-ComposedCubeMapTexture::setTexture (GLenum target, const SFNode & node)
+ComposedCubeMapTexture::setTexture (const GLenum target, const SFNode & node)
 {
 	auto texture = x3d_cast <X3DTexture2DNode*> (node);
 
 	if (texture)
 	{
-		// Get texture 2d data
+		// Get transparent and components
 
-		transparent = transparent or texture -> isTransparent ();
-		components  = std::max (components, texture -> getComponents ());
+		transparent = false;
+		components  = 0;
+
+		for (const auto & node : nodes)
+		{
+				auto texture = x3d_cast <X3DTexture2DNode*> (node);
+
+				if (texture)
+				{
+					transparent = transparent or texture -> isTransparent ();
+					components  = std::max (components, texture -> getComponents ());
+				}
+		}
+
+		// Get texture 2d data
 
 		size_t width  = texture -> getWidth ();
 		size_t height = texture -> getHeight ();
-	
+
 		std::vector <char> image (width * height * 4);
 
 		glBindTexture (GL_TEXTURE_2D, texture -> getTextureId ());
@@ -179,6 +211,14 @@ ComposedCubeMapTexture::draw ()
 	glMatrixMode (GL_MODELVIEW);
 
 	X3DEnvironmentTextureNode::draw (GL_TEXTURE_CUBE_MAP, components);
+}
+
+void
+ComposedCubeMapTexture::dispose ()
+{
+	nodes .dispose ();
+
+	X3DEnvironmentTextureNode::dispose ();
 }
 
 } // X3D

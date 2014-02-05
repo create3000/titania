@@ -109,17 +109,17 @@ public:
 
 	virtual
 	void
-	requestImmediateLoad ();
+	requestImmediateLoad () final override;
 	
 	virtual
 	void
-	draw ();
+	draw () final override;
 
 	///  @name Destruction
 
 	virtual
 	void
-	dispose ();
+	dispose () final override;
 
 
 private:
@@ -128,7 +128,7 @@ private:
 
 	virtual
 	void
-	initialize ();
+	initialize () final override;
 
 	///  @name Static members
 

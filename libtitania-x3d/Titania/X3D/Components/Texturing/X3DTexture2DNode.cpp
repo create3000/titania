@@ -136,7 +136,7 @@ X3DTexture2DNode::setImage (GLenum internalFormat, size_t comp, GLint w, GLint h
 
 	glBindTexture (GL_TEXTURE_2D, 0);
 
-	X3DChildObject::notify ();
+	addEvent ();
 }
 
 void
@@ -154,7 +154,7 @@ X3DTexture2DNode::updateImage (GLenum format, GLint width, GLint height, const v
 	glTexSubImage2D (GL_TEXTURE_2D, 0, 0, 0, width, height, format, GL_UNSIGNED_BYTE, data);
 	glBindTexture (GL_TEXTURE_2D, 0);
 
-	X3DChildObject::notify ();
+	addEvent ();
 }
 
 void

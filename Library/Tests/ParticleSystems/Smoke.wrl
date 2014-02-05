@@ -12,6 +12,7 @@ Viewpoint {
 DEF Ceiling Transform {
   children Shape {
     geometry DEF Plane IndexedFaceSet {
+      solid FALSE
       coordIndex [ 0, 1, 2, 3, -1 ]
       coord Coordinate {
         point [ -10 10 10, 10 10 10, 10 10 -10, -10 10 -10 ]

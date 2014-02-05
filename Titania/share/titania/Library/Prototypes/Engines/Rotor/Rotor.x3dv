@@ -11,7 +11,7 @@ PROTO Rotor [
   inputOutput SFTime     resumeTime 0
   inputOutput SFTime     stopTime 0
   outputOnly  SFBool     isActive
-  outputOnly  SFTime     cycleInterval
+  outputOnly  SFTime     cycleTime
   outputOnly  SFRotation rotation_changed
 ]
 {
@@ -24,7 +24,7 @@ PROTO Rotor [
     resumeTime IS resumeTime
     stopTime IS stopTime
     isActive IS isActive
-    cycleInterval IS cycleInterval
+    cycleTime IS cycleTime
   }
 
   DEF Interpolator OrientationInterpolator {

@@ -141,12 +141,16 @@ public:
 
 	virtual
 	bool
-	isTransparent () const
+	isTransparent () const final override
 	{ return transparent; }
 
 	virtual
 	void
-	draw ();
+	draw () final override;
+
+	virtual
+	void
+	dispose () final override;
 
 
 private:
@@ -155,21 +159,23 @@ private:
 
 	virtual
 	void
-	initialize ();
+	initialize () final override;
 
 	///  @name Event handlers
 
 	void
-	set_texture ();
+	set_texture (const size_t, const SFNode &);
 
 	void
-	setTexture (GLenum, const SFNode &);
+	setTexture (const GLenum, const SFNode &);
 
 	///  @name Static members
 
 	static const std::string componentName;
 	static const std::string typeName;
 	static const std::string containerField;
+
+	static const GLenum targets [6];
 
 	///  @name Members
 
@@ -187,6 +193,7 @@ private:
 
 	Fields fields;
 
+	MFNode nodes;
 	bool   transparent;
 	size_t components;
 
