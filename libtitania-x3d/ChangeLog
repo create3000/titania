@@ -1,5 +1,11 @@
 2014-02-05  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* ComposedTexture3D.h:
+	* ComposedTexture3D.cpp:
+	* ComposedCubeMapTexture.h: 
+
+2014-02-05  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DGroupingNode.cpp:
 	* X3DTexture2DNode.cpp:
 	* X3DTexture3DNode.cpp:

@@ -69,7 +69,8 @@ ComposedTexture3D::ComposedTexture3D (X3DExecutionContext* const executionContex
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DTexture3DNode (),
 	          fields (),
-	       loadState (COMPLETE_STATE)
+	       loadState (COMPLETE_STATE),
+	    textureNodes ()
 {
 	addField (inputOutput,    "metadata",          metadata ());
 	addField (initializeOnly, "repeatS",           repeatS ());
@@ -77,6 +78,8 @@ ComposedTexture3D::ComposedTexture3D (X3DExecutionContext* const executionContex
 	addField (initializeOnly, "repeatR",           repeatR ());
 	addField (initializeOnly, "textureProperties", textureProperties ());
 	addField (inputOutput,    "texture",           texture ());
+	
+	addChildren (textureNodes);
 }
 
 X3DBaseNode*
@@ -92,11 +95,24 @@ ComposedTexture3D::initialize ()
 
 	if (glXGetCurrentContext ())
 	{
-		texture ()  .addInterest (this, &ComposedTexture3D::update);
-		notified () .addInterest (this, &ComposedTexture3D::update);
+		texture () .addInterest (this, &ComposedTexture3D::set_texture);
 
-		update ();
+		textureNode .addInterest (this, &ComposedTexture3D::update);
+
+		set_texture ();
 	}
+}
+
+void
+ComposedTexture3D::set_texture ()
+{
+	for (const auto & node : textureNodes)
+		node -> removeInterest (textureNodes);
+
+	textureNodes = texture ();
+
+	for (const auto & node : textureNodes)
+		node -> addInterest (textureNodes);
 }
 
 void
@@ -137,6 +153,14 @@ ComposedTexture3D::update ()
 	image .resize (width * height * depth * 4, 0xFF);
 
 	setImage (getInternalFormat (components), components, width, height, depth, GL_RGBA, image .data ());
+}
+
+void
+ComposedTexture3D::dispose ()
+{
+	textureNodes .dispose ();
+	
+	X3DTexture3DNode::dispose ();
 }
 
 } // X3D

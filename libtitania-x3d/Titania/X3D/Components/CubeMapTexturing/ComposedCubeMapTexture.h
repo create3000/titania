@@ -148,6 +148,8 @@ public:
 	void
 	draw () final override;
 
+	///  @name Destruction
+
 	virtual
 	void
 	dispose () final override;

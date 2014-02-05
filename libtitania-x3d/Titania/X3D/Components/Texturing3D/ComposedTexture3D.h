@@ -104,6 +104,12 @@ public:
 	checkLoadState () const final override
 	{ return loadState; }
 
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override;
+
 
 private:
 
@@ -111,9 +117,12 @@ private:
 
 	virtual
 	void
-	initialize ();
+	initialize () final override;
 
 	///  @name Event handlers
+
+	void
+	set_texture ();
 
 	virtual
 	void
@@ -137,6 +146,7 @@ private:
 	Fields fields;
 
 	X3DScalar <LoadState> loadState;
+	MFNode                textureNodes;
 
 };
 
