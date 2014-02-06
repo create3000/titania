@@ -1,5 +1,15 @@
 2014-02-06  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Appearance.h:
+	* Appearance.cpp:
+	* X3DShaderNode.h:
+	* X3DShaderNode.cpp:
+	* ProgramShader.cpp:
+	* ComposedShader.cpp:
+	* X3DComposedGeometryNode.cpp: 
+
+2014-02-06  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Debug.h:
 	* X3DObject.cpp:
 	* X3DSFNode.h:

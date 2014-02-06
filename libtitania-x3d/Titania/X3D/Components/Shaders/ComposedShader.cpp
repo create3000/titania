@@ -168,9 +168,6 @@ ComposedShader::requestExplicitRelink ()
 	}
 	else
 		isValid () = false;
-
-	if (isSelected ())
-		isSelected () = false;
 	
 	// Propagate event further.
 

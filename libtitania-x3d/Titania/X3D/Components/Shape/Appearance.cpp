@@ -80,13 +80,13 @@ Appearance::Appearance (X3DExecutionContext* const executionContext) :
 	         X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	   X3DAppearanceNode (),
 	              fields (),
-	  fillPropertiesNode (nullptr),
-	  linePropertiesNode (nullptr),
-	        materialNode (nullptr),
-	         textureNode (nullptr),
-	textureTransformNode (nullptr),
+	  fillPropertiesNode (),
+	  linePropertiesNode (),
+	        materialNode (),
+	         textureNode (),
+	textureTransformNode (),
 	         shaderNodes (),
-	          shaderNode (nullptr)
+	          shaderNode ()
 {
 	addField (inputOutput, "metadata",         metadata ());
 	addField (inputOutput, "fillProperties",   fillProperties ());
@@ -95,8 +95,14 @@ Appearance::Appearance (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "texture",          texture ());
 	addField (inputOutput, "textureTransform", textureTransform ());
 	addField (inputOutput, "shaders",          shaders ());
-	
-	addChildren (shaderNodes);
+
+	addChildren (fillPropertiesNode,
+	             linePropertiesNode,
+	             materialNode,
+	             textureNode,
+	             textureTransformNode,
+	             shaderNodes,
+	             shaderNode);
 }
 
 X3DBaseNode*
@@ -193,7 +199,7 @@ Appearance::set_shaders ()
 	using addEvent = void (X3DMFNode <X3DShaderNode>::*) ();
 
 	for (const auto & shaderNode : shaderNodes)
-		shaderNode -> isValid () .removeInterest (shaderNodes, (addEvent) &X3DMFNode <X3DShaderNode>::addEvent);
+		shaderNode -> isValid () .removeInterest (shaderNodes, (addEvent) & X3DMFNode <X3DShaderNode>::addEvent);
 
 	shaderNodes .clear ();
 
@@ -204,7 +210,7 @@ Appearance::set_shaders ()
 		if (shaderNode)
 		{
 			shaderNodes .emplace_back (shaderNode);
-			shaderNode -> isValid () .addInterest (shaderNodes, (addEvent) &X3DMFNode <X3DShaderNode>::addEvent);
+			shaderNode -> isValid () .addInterest (shaderNodes, (addEvent) & X3DMFNode <X3DShaderNode>::addEvent);
 		}
 	}
 }
@@ -212,15 +218,18 @@ Appearance::set_shaders ()
 void
 Appearance::set_shader ()
 {
+	if (shaderNode)
+		shaderNode -> deselect ();
+
 	// Select shader
 
 	for (const auto & shader : shaderNodes)
 	{
 		if (shader -> isValid ())
 		{
-			shader -> isSelected () = true;
-
 			shaderNode = shader;
+
+			shaderNode -> select ();
 
 			return;
 		}
@@ -264,7 +273,13 @@ Appearance::draw ()
 void
 Appearance::dispose ()
 {
-	shaderNodes .dispose ();
+	fillPropertiesNode   .dispose ();
+	linePropertiesNode   .dispose ();
+	materialNode         .dispose ();
+	textureNode          .dispose ();
+	textureTransformNode .dispose ();
+	shaderNodes          .dispose ();
+	shaderNode           .dispose ();
 
 	X3DAppearanceNode::dispose ();
 }

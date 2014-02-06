@@ -105,6 +105,12 @@ public:
 	void
 	disable () = 0;
 
+	void
+	select ();
+
+	void
+	deselect ();
+
 	virtual
 	void
 	draw () override;
@@ -132,6 +138,8 @@ private:
 	};
 
 	Fields fields;
+	
+	size_t selected;
 
 };
 

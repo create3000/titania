@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -163,15 +163,15 @@ public:
 	X3DMaterialNode*
 	getMaterial () const
 	{ return materialNode; }
-	
+
 	X3DTextureNode*
 	getTexture () const
 	{ return textureNode; }
-	
+
 	X3DTextureTransformNode*
 	getTextureTransform () const
 	{ return textureTransformNode; }
-	
+
 	X3DShaderNode*
 	getShader () const
 	{ return shaderNode; }
@@ -242,13 +242,13 @@ private:
 
 	Fields fields;
 
-	FillProperties*           fillPropertiesNode;
-	LineProperties*           linePropertiesNode;
-	X3DMaterialNode*          materialNode;
-	X3DTextureNode*           textureNode;
-	X3DTextureTransformNode*  textureTransformNode;
-	X3DMFNode <X3DShaderNode> shaderNodes;
-	X3DShaderNode*            shaderNode;
+	X3DSFNode <FillProperties>          fillPropertiesNode;
+	X3DSFNode <LineProperties>          linePropertiesNode;
+	X3DSFNode <X3DMaterialNode>         materialNode;
+	X3DSFNode <X3DTextureNode>          textureNode;
+	X3DSFNode <X3DTextureTransformNode> textureTransformNode;
+	X3DMFNode <X3DShaderNode>           shaderNodes;
+	X3DSFNode <X3DShaderNode>           shaderNode;
 
 };
 

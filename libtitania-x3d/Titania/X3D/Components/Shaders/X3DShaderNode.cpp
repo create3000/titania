@@ -64,9 +64,31 @@ X3DShaderNode::Fields::Fields () :
 
 X3DShaderNode::X3DShaderNode () :
 	X3DAppearanceChildNode (),
-	                fields ()
+	                fields (),
+	              selected (0)
 {
 	addNodeType (X3DConstants::X3DShaderNode);
+}
+
+void
+X3DShaderNode::select ()
+{
+	++ selected;
+
+	if (not isSelected ())
+		isSelected () = true;
+}
+
+void
+X3DShaderNode::deselect ()
+{
+	-- selected;
+	
+	if (not selected)
+	{
+		if (isSelected ())
+			isSelected () = false;	
+	}
 }
 
 void

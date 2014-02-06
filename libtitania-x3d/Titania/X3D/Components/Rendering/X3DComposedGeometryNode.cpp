@@ -82,15 +82,15 @@ X3DComposedGeometryNode::X3DComposedGeometryNode () :
 bool
 X3DComposedGeometryNode::isTransparent () const
 {
-	auto _color = x3d_cast <X3DColorNode*> (color ());
+	auto colorNode = x3d_cast <X3DColorNode*> (color ());
 
-	return _color and _color -> isTransparent ();
+	return colorNode and colorNode -> isTransparent ();
 }
 
 void
 X3DComposedGeometryNode::set_index (const MFInt32 & index)
 {
-	auto _coord = x3d_cast <X3DCoordinateNode*> (coord ());
+	auto coordNode = x3d_cast <X3DCoordinateNode*> (coord ());
 
 	if (not index .empty ())
 	{
@@ -106,16 +106,16 @@ X3DComposedGeometryNode::set_index (const MFInt32 & index)
 		++ numPoints;
 
 		// Resize coord .point if to small
-		_coord -> resize (numPoints);
+		coordNode -> resize (numPoints);
 	}
 }
 
 void
 X3DComposedGeometryNode::buildPolygons (size_t vertexCount, size_t size)
 {
-	auto _coord = x3d_cast <X3DCoordinateNode*> (coord ());
+	auto coordNode = x3d_cast <X3DCoordinateNode*> (coord ());
 
-	if (not _coord or _coord -> isEmpty ())
+	if (not coordNode or coordNode -> isEmpty ())
 		return;
 
 	size_t faces = size / vertexCount; // Integer division
@@ -126,32 +126,32 @@ X3DComposedGeometryNode::buildPolygons (size_t vertexCount, size_t size)
 
 	// Color
 
-	auto _color = x3d_cast <X3DColorNode*> (color ());
+	auto colorNode = x3d_cast <X3DColorNode*> (color ());
 
-	if (_color)
+	if (colorNode)
 	{
-		_color -> resize (colorPerVertex () ? size : faces);
+		colorNode -> resize (colorPerVertex () ? size : faces);
 		getColors () .reserve (size);
 	}
 
 	// TextureCoordinate
 
-	auto _textureCoordinate = x3d_cast <X3DTextureCoordinateNode*> (texCoord ());
+	auto textureCoordinateNode = x3d_cast <X3DTextureCoordinateNode*> (texCoord ());
 
-	if (_textureCoordinate)
+	if (textureCoordinateNode)
 	{
-		_textureCoordinate -> init (getTexCoord (), size);
-		_textureCoordinate -> resize (size);
+		textureCoordinateNode -> init (getTexCoord (), size);
+		textureCoordinateNode -> resize (size);
 	}
 	else
-		getTexCoord () .emplace_back ();	
+		getTexCoord () .emplace_back ();
 
 	// Normal
 
-	auto _normal = x3d_cast <X3DNormalNode*> (normal ());
+	auto normalNode = x3d_cast <X3DNormalNode*> (normal ());
 
-	if (_normal)
-		_normal -> resize (normalPerVertex () ? size : faces);
+	if (normalNode)
+		normalNode -> resize (normalPerVertex () ? size : faces);
 
 	getNormals () .reserve (size);
 
@@ -166,44 +166,44 @@ X3DComposedGeometryNode::buildPolygons (size_t vertexCount, size_t size)
 		for (size_t v = 0; v < vertexCount; ++ v, ++ i)
 		{
 			size_t index = getIndex (i);
-		
-			if (_color)
+
+			if (colorNode)
 			{
 				if (colorPerVertex ())
-					_color -> addColor (getColors (), index);
+					colorNode -> addColor (getColors (), index);
 
 				else
-					_color -> addColor (getColors (), face);
+					colorNode -> addColor (getColors (), face);
 			}
 
-			if (_textureCoordinate)
-				_textureCoordinate -> addTexCoord (getTexCoord (), index);
+			if (textureCoordinateNode)
+				textureCoordinateNode -> addTexCoord (getTexCoord (), index);
 
-			if (_normal)
+			if (normalNode)
 			{
 				if (normalPerVertex ())
-					_normal -> addVector (getNormals (), index);
+					normalNode -> addVector (getNormals (), index);
 
 				else
-					_normal -> addVector (getNormals (), face);
+					normalNode -> addVector (getNormals (), face);
 			}
 
-			_coord -> addVertex (getVertices (), index);
+			coordNode -> addVertex (getVertices (), index);
 		}
 	}
 
 	// Autogenerate normal and texCoord if not specified
 
-	if (not _textureCoordinate)
+	if (not textureCoordinateNode)
 		buildTexCoord ();
 
-	if (not _normal)
+	if (not normalNode)
 		buildNormals (vertexCount, size);
 
 	addElements (getVertexMode (vertexCount), getVertices () .size ());
 	setSolid (solid ());
 	setCCW (ccw ());
-	setTextureCoordinate (_textureCoordinate);
+	setTextureCoordinate (textureCoordinateNode);
 }
 
 void
@@ -225,7 +225,7 @@ X3DComposedGeometryNode::buildNormals (size_t vertexCount, size_t size)
 void
 X3DComposedGeometryNode::buildFaceNormals (size_t vertexCount, size_t size)
 {
-	auto _coord = x3d_cast <X3DCoordinateNode*> (coord ());
+	auto coordNode = x3d_cast <X3DCoordinateNode*> (coord ());
 
 	for (size_t index = 0; index < size; index += vertexCount)
 	{
@@ -234,9 +234,9 @@ X3DComposedGeometryNode::buildFaceNormals (size_t vertexCount, size_t size)
 		for (size_t i = 1, size = vertexCount - 1; i < size; ++ i)
 		{
 			// Determine polygon normal.
-			normal += _coord -> getNormal (getIndex (index),
-			                               getIndex (index + i),
-			                               getIndex (index + i + 1));
+			normal += coordNode -> getNormal (getIndex (index),
+			                                  getIndex (index + i),
+			                                  getIndex (index + i + 1));
 		}
 
 		getNormals () .resize (getNormals () .size () + vertexCount, vertexCount == 3 ? normal : normalize (normal));
