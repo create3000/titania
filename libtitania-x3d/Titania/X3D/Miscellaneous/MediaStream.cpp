@@ -78,17 +78,16 @@ MediaStream::MediaStream () :
 
 	// Construct
 
-	player = Gst::PlayBin::create ("player");
+	player = Gst::PlayBin2::create ("player");
 	vsink  = Gst::XImageSink::create ("vsink");
 
 	player -> set_property ("video-sink", vsink);
 	player -> set_property ("volume", 0.0);
-	//player -> set_property ("mute", false);
 
-	//auto bus = player -> get_bus ();
+	auto bus = player -> get_bus ();
 
-	//bus -> enable_sync_message_emission ();
-	//bus -> signal_sync_message ().connect (sigc::mem_fun (*this, &MediaStream::on_bus_message_sync));
+	bus -> enable_sync_message_emission ();
+	bus -> signal_sync_message () .connect (sigc::mem_fun (*this, &MediaStream::on_bus_message_sync));
 }
 
 void
@@ -101,14 +100,12 @@ MediaStream::setup ()
 
 	if (display)
 		pixmap = XCreatePixmap (display, 0, 0, 0, 0);
-
-	if (pixmap)
-		vsink -> set_xwindow_id (pixmap);
 }
 
 bool
 MediaStream::setUri (const basic::uri & uri)
 {
+	player -> set_state (Gst::STATE_NULL);
 	player -> set_property ("uri", uri .str ());
 	player -> set_state (Gst::STATE_PAUSED);
 
@@ -146,11 +143,11 @@ MediaStream::getState () const
 	}
 	else if (ret == Gst::STATE_CHANGE_ASYNC)
 	{
-		//Log::debug ("Query state failed, still performing change");
+		__LOG__ << "Query state failed, still performing change" << std::endl;
 	}
 	else
 	{
-		//Log::debug ("Query state failed, hard failure");
+		__LOG__ << "Query state failed, hard failure" << std::endl;
 	}
 
 	return Gst::STATE_NULL;

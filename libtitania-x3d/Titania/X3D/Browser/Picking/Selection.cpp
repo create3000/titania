@@ -82,7 +82,7 @@ Selection::initialize ()
 {
 	X3DBaseNode::initialize ();
 
-	getBrowser () -> shutdown () .addInterest (this, &Selection::clear);
+	getBrowser () -> initialized () .addInterest (this, &Selection::clear);
 }
 
 bool
@@ -160,10 +160,6 @@ Selection::clear ()
 void
 Selection::dispose ()
 {
-	getBrowser () -> makeCurrent ();
-
-	removeChildren (MFNode (children));
-
 	children .dispose ();
 
 	X3DBaseNode::dispose ();

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,8 +51,8 @@
 #ifndef __TITANIA_X3D_COMPONENTS_TEXTURING_X3DTEXTURE2DNODE_H__
 #define __TITANIA_X3D_COMPONENTS_TEXTURING_X3DTEXTURE2DNODE_H__
 
-#include "../Texturing/X3DTextureNode.h"
 #include "../../Miscellaneous/Texture.h"
+#include "../Texturing/X3DTextureNode.h"
 
 namespace titania {
 namespace X3D {
@@ -94,15 +94,15 @@ public:
 	bool
 	isTransparent () const override
 	{ return transparent; }
-	
+
 	size_t
 	getWidth () const
 	{ return width; }
-	
+
 	size_t
 	getHeight () const
 	{ return height; }
-	
+
 	size_t
 	getComponents () const
 	{ return components; }
@@ -112,6 +112,12 @@ public:
 	virtual
 	void
 	draw () override;
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () override;
 
 
 protected:
@@ -124,11 +130,6 @@ protected:
 	void
 	initialize () override;
 
-	///  @name Member access
-
-	const TextureProperties*
-	getTextureProperties () const;
-
 	///  @name Operations
 
 	virtual
@@ -136,10 +137,10 @@ protected:
 	setTexture (const TexturePtr &);
 
 	void
-	setImage (GLenum, size_t, GLint, GLint, GLenum, const void*);
+	setImage (const GLenum, size_t, const GLint, const GLint, const GLenum, const void*);
 
 	void
-	updateImage (GLenum, GLint, GLint, const void*);
+	updateImage (const GLenum, const GLint, const GLint, const void*);
 
 	///  @name Operations
 
@@ -150,11 +151,16 @@ protected:
 
 private:
 
+	///  @name Event handlers
+
+	void
+	set_textureProperties ();
+
 	///  @name Member access
 
 	GLenum
-	getInternalFormat (size_t components) const
-	{ return getTextureProperties () -> getInternalFormat (components); }
+	getInternalFormat (const size_t components) const
+	{ return texturePropertiesNode -> getInternalFormat (components); }
 
 	///  @name Operations
 
@@ -174,10 +180,11 @@ private:
 
 	Fields fields;
 
-	bool   transparent;
-	size_t width;
-	size_t height;
-	size_t components;
+	bool                          transparent;
+	size_t                        width;
+	size_t                        height;
+	size_t                        components;
+	X3DSFNode <TextureProperties> texturePropertiesNode;
 
 };
 

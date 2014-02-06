@@ -59,13 +59,13 @@ namespace titania {
 namespace X3D {
 
 X3DTimeDependentNode::Fields::Fields () :
-	loop (new SFBool ()),
-	startTime (new SFTime ()),
-	pauseTime (new SFTime ()),
-	resumeTime (new SFTime ()),
-	stopTime (new SFTime ()),
-	isPaused (new SFBool ()),
-	cycleTime (new SFTime ()),
+	       loop (new SFBool ()),
+	  startTime (new SFTime ()),
+	  pauseTime (new SFTime ()),
+	 resumeTime (new SFTime ()),
+	   stopTime (new SFTime ()),
+	   isPaused (new SFBool ()),
+	  cycleTime (new SFTime ()),
 	elapsedTime (new SFTime ())
 { }
 
@@ -87,7 +87,7 @@ X3DTimeDependentNode::X3DTimeDependentNode () :
 	      wasActive (false)
 {
 	addNodeType (X3DConstants::X3DTimeDependentNode);
-	
+
 	addChildren (initialized);
 }
 
@@ -108,7 +108,7 @@ X3DTimeDependentNode::initialize ()
 	pauseTimeValue  = pauseTime ();
 	resumeTimeValue = resumeTime ();
 	stopTimeValue   = stopTime ();
-	
+
 	initialized = getCurrentTime ();
 }
 
@@ -153,7 +153,7 @@ X3DTimeDependentNode::set_startTime ()
 
 	if (not enabled ())
 		return;
-		
+
 	startTimeout .disconnect ();
 
 	if (startTimeValue <= getCurrentTime ())
@@ -170,7 +170,7 @@ X3DTimeDependentNode::set_pauseTime ()
 
 	if (not enabled ())
 		return;
-		
+
 	pauseTimeout .disconnect ();
 
 	if (pauseTimeValue <= resumeTimeValue)
@@ -190,7 +190,7 @@ X3DTimeDependentNode::set_resumeTime ()
 
 	if (not enabled ())
 		return;
-		
+
 	resumeTimeout .disconnect ();
 
 	if (resumeTimeValue <= pauseTimeValue)
@@ -210,7 +210,7 @@ X3DTimeDependentNode::set_stopTime ()
 
 	if (not enabled ())
 		return;
-		
+
 	stopTimeout .disconnect ();
 
 	if (stopTimeValue <= startTimeValue)
@@ -341,7 +341,7 @@ X3DTimeDependentNode::removeTimeouts ()
 	resumeTimeout .disconnect ();
 	stopTimeout   .disconnect ();
 }
-	
+
 void
 X3DTimeDependentNode::saveState ()
 {

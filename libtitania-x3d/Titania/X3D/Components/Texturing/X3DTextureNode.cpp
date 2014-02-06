@@ -74,9 +74,9 @@ X3DTextureNode::initialize ()
 }
 
 void
-X3DTextureNode::updateTextureProperties (GLenum target,
+X3DTextureNode::updateTextureProperties (const GLenum target,
                                          const bool haveTextureProperties,
-                                         const TextureProperties* textureProperties,
+                                         const X3DSFNode <TextureProperties> & textureProperties,
                                          const int32_t width, 
                                          const int32_t height, 
                                          const bool repeatS, 
@@ -120,11 +120,13 @@ X3DTextureNode::updateTextureProperties (GLenum target,
 	glTexParameterf  (target, GL_TEXTURE_MAX_ANISOTROPY_EXT, textureProperties -> anisotropicDegree ());
 	glTexParameterf  (target, GL_TEXTURE_PRIORITY,           textureProperties -> texturePriority ());
 
-	X3DChildObject::notify ();
+	glBindTexture (target, 0);
+
+	addEvent ();
 }
 
 void
-X3DTextureNode::draw (GLenum target, size_t components)
+X3DTextureNode::draw (const GLenum target, const size_t components)
 {
 	glEnable (target);
 	glBindTexture (target, getTextureId ());

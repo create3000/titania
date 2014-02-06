@@ -95,6 +95,14 @@ debug_roots (X3DChildObject* node, std::set <X3DChildObject*> & seen)
 	__LOG__ << node -> getTypeName () << " : " << node -> getName () << std::endl;
 }
 
+static
+void
+debug_roots (X3DChildObject* node)
+{
+	std::set <X3DChildObject*> seen;
+	debug_roots (node, seen);
+}
+
 // prints all parent nodes of a nodes parent fields
 static
 void

@@ -63,14 +63,17 @@ X3DTexture2DNode::Fields::Fields () :
 { }
 
 X3DTexture2DNode::X3DTexture2DNode () :
-	X3DTextureNode (),
-	        fields (),
-	   transparent (false),
-	         width (0),
-	        height (0),
-	    components (0)
+	       X3DTextureNode (),
+	               fields (),
+	          transparent (false),
+	                width (0),
+	               height (0),
+	           components (0),
+	texturePropertiesNode ()
 {
 	addNodeType (X3DConstants::X3DTexture2DNode);
+
+	addChildren (texturePropertiesNode);
 }
 
 void
@@ -78,21 +81,27 @@ X3DTexture2DNode::initialize ()
 {
 	X3DTextureNode::initialize ();
 
-	notified ()          .addInterest (this, &X3DTexture2DNode::update);
 	repeatS ()           .addInterest (this, &X3DTexture2DNode::updateTextureProperties);
 	repeatT ()           .addInterest (this, &X3DTexture2DNode::updateTextureProperties);
-	textureProperties () .addInterest (this, &X3DTexture2DNode::update);
+	textureProperties () .addInterest (this, &X3DTexture2DNode::set_textureProperties);
+
+	set_textureProperties ();
 }
 
-const TextureProperties*
-X3DTexture2DNode::getTextureProperties () const
+void
+X3DTexture2DNode::set_textureProperties ()
 {
-	auto _textureProperties = x3d_cast <TextureProperties*> (textureProperties ());
+	if (texturePropertiesNode)
+		texturePropertiesNode -> removeInterest (this, &X3DTexture2DNode::updateTextureProperties);
 
-	if (_textureProperties)
-		return _textureProperties;
+	texturePropertiesNode = x3d_cast <TextureProperties*> (textureProperties ());
 
-	return x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties ());
+	if (not texturePropertiesNode)
+		texturePropertiesNode = x3d_cast <TextureProperties*> (getBrowser () -> getBrowserOptions () -> textureProperties ());
+
+	texturePropertiesNode -> addInterest (this, &X3DTexture2DNode::updateTextureProperties);
+
+	updateTextureProperties ();
 }
 
 void
@@ -111,7 +120,7 @@ X3DTexture2DNode::setTexture (const TexturePtr & texture)
 }
 
 void
-X3DTexture2DNode::setImage (GLenum internalFormat, size_t comp, GLint w, GLint h, GLenum format, const void* data)
+X3DTexture2DNode::setImage (const GLenum internalFormat, const size_t comp, const GLint w, const GLint h, const GLenum format, const void* data)
 {
 	// transfer image
 
@@ -119,18 +128,16 @@ X3DTexture2DNode::setImage (GLenum internalFormat, size_t comp, GLint w, GLint h
 	height      = h;
 	components  = comp;
 	transparent = math::is_even (comp);
-	
-	auto textureProperties = getTextureProperties ();
-
-	glBindTexture (GL_TEXTURE_2D, getTextureId ());
 
 	updateTextureProperties ();
+
+	glBindTexture (GL_TEXTURE_2D, getTextureId ());
 
 	glTexImage2D (GL_TEXTURE_2D,
 	              0,     // This texture is level 0 in mimpap generation.
 	              internalFormat,
 	              width, height,
-	              clamp <int> (textureProperties -> borderWidth (), 0, 1),
+	              0, /* clamp <int> (texturePropertiesNode -> borderWidth (), 0, 1), */ // This value must be 0.
 	              format, GL_UNSIGNED_BYTE,
 	              data);
 
@@ -142,7 +149,7 @@ X3DTexture2DNode::setImage (GLenum internalFormat, size_t comp, GLint w, GLint h
 void
 X3DTexture2DNode::updateTextureProperties ()
 {
-	X3DTextureNode::updateTextureProperties (GL_TEXTURE_2D, textureProperties (), getTextureProperties (), width, height, repeatS (), repeatT (), false);
+	X3DTextureNode::updateTextureProperties (GL_TEXTURE_2D, textureProperties (), texturePropertiesNode, width, height, repeatS (), repeatT (), false);
 }
 
 void
@@ -161,6 +168,14 @@ void
 X3DTexture2DNode::draw ()
 {
 	X3DTextureNode::draw (GL_TEXTURE_2D, components);
+}
+
+void
+X3DTexture2DNode::dispose ()
+{
+	texturePropertiesNode .dispose ();
+
+	X3DTextureNode::dispose ();
 }
 
 } // X3D

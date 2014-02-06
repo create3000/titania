@@ -95,10 +95,6 @@ public:
 	void
 	addHandle (SFBool*) override;
 
-	virtual
-	void
-	dispose () override;
-
 
 protected:
 
@@ -106,8 +102,6 @@ protected:
 
 
 private:
-
-	X3DSFNode <TransformHandle> handle;
 
 	///  @name Static members
 

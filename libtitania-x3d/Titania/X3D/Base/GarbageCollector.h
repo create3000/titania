@@ -98,12 +98,9 @@ private:
 	GarbageCollector &
 	operator = (const GarbageCollector &) = delete;
 
-	ObjectArray
-	getObjects ();
-
 	static
 	void
-	deleteObjects (ObjectArray &&);
+	deleteObjects (ObjectArray);
 
 	ObjectArray         objects;
 	mutable std::mutex  mutex;

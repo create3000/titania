@@ -129,7 +129,6 @@ X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const 
 	               nodeId ({ 0 }),
 	               handle (NULL),
 	             comments (),
-	         notifyOutput (),
 	       shutdownOutput ()
 {
 	assert (browser);
@@ -303,8 +302,6 @@ X3DBaseNode::setup ()
 		field -> updateReferences ();
 		field -> isTainted (false);
 	}
-
-	addChildren (notifyOutput);
 
 	initialize ();
 }
@@ -656,7 +653,6 @@ X3DBaseNode::removeHandle ()
 	if (handle)
 	{
 		replace (handle);
-		handle -> removeParent (this);
 		handle = nullptr;
 	}
 }

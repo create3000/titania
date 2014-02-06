@@ -1559,7 +1559,7 @@
               <object class="GtkPaned" id="VPaned">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="position">774</property>
+                <property name="position">660</property>
                 <property name="position_set">True</property>
                 <child>
                   <object class="GtkPaned" id="HPaned">

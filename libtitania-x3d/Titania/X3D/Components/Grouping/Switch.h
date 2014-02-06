@@ -105,11 +105,6 @@ public:
 
 	virtual
 	void
-	notify () final override
-	{ }
-
-	virtual
-	void
 	traverse (const TraverseType) final override;
 
 

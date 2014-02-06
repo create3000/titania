@@ -107,11 +107,6 @@ public:
 	write (const X3DChildObject &)
 	{ }
 
-	///  Notify object about a change without adding an event.
-	virtual
-	void
-	notify ();
-
 	///  Notify object about a change and add an event.
 	virtual
 	void

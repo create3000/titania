@@ -71,7 +71,7 @@ public:
 	void
 	setup ();
 
-	const Glib::RefPtr <Gst::PlayBin> &
+	const Glib::RefPtr <Gst::PlayBin2> &
 	getPlayer () const
 	{ return player; }
 
@@ -114,7 +114,7 @@ public:
 
 private:
 
-	Glib::RefPtr <Gst::PlayBin>    player;
+	Glib::RefPtr <Gst::PlayBin2>   player;
 	Glib::RefPtr <Gst::XImageSink> vsink;
 
 	Pixmap   pixmap;

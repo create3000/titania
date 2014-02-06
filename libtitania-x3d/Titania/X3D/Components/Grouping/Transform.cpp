@@ -63,8 +63,7 @@ const std::string Transform::containerField = "children";
 
 Transform::Transform (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DTransformNode (),
-	          handle ()
+	X3DTransformNode ()
 {
 	addField (inputOutput,    "metadata",         metadata ());
 	addField (inputOutput,    "translation",      translation ());
@@ -77,8 +76,6 @@ Transform::Transform (X3DExecutionContext* const executionContext) :
 	addField (inputOnly,      "addChildren",      addChildren ());
 	addField (inputOnly,      "removeChildren",   removeChildren ());
 	addField (inputOutput,    "children",         children ());
-
-	addChildren (handle);
 }
 
 X3DBaseNode*
@@ -91,14 +88,6 @@ void
 Transform::addHandle (SFBool* isActive)
 {
 	X3DTransformNode::addHandle (new TransformHandle (this, isActive, getExecutionContext ()));
-}
-
-void
-Transform::dispose ()
-{
-	handle .dispose ();
-
-	X3DTransformNode::dispose ();
 }
 
 } // X3D

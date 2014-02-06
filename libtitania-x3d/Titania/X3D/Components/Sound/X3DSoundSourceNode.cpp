@@ -59,11 +59,11 @@ namespace titania {
 namespace X3D {
 
 X3DSoundSourceNode::Fields::Fields () :
-	enabled (new SFBool (true)),
-	description (new SFString ()),
-	speed (new SFFloat (1)),
-	pitch (new SFFloat (1)),
-	isActive (new SFBool ()),
+	         enabled (new SFBool (true)),
+	     description (new SFString ()),
+	           speed (new SFFloat (1)),
+	           pitch (new SFFloat (1)),
+	        isActive (new SFBool ()),
 	duration_changed (new SFTime (-1))
 { }
 

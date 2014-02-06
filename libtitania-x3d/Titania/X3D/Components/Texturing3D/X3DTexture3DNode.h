@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,8 +51,8 @@
 #ifndef __TITANIA_X3D_COMPONENTS_TEXTURING3D_X3DTEXTURE3DNODE_H__
 #define __TITANIA_X3D_COMPONENTS_TEXTURING3D_X3DTEXTURE3DNODE_H__
 
-#include "../Texturing/X3DTextureNode.h"
 #include "../../Miscellaneous/Texture3D.h"
+#include "../Texturing/X3DTextureNode.h"
 
 namespace titania {
 namespace X3D {
@@ -109,6 +109,12 @@ public:
 	void
 	draw () override;
 
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () override;
+
 
 protected:
 
@@ -123,15 +129,15 @@ protected:
 	///  @name Operations
 
 	GLenum
-	getInternalFormat (size_t components) const
-	{ return getTextureProperties () -> getInternalFormat (components); }
+	getInternalFormat (const size_t components) const
+	{ return texturePropertiesNode -> getInternalFormat (components); }
 
 	virtual
 	void
 	setTexture (const Texture3DPtr &);
 
 	void
-	setImage (GLenum, size_t, GLint w, GLint, GLint, GLenum, const void*);
+	setImage (const GLenum, size_t, const GLint w, const GLint, const GLint, const GLenum, const void*);
 
 	virtual
 	void
@@ -140,10 +146,10 @@ protected:
 
 private:
 
-	///  @name Operations
+	///  @name Event handlers
 
-	const TextureProperties*
-	getTextureProperties () const;
+	void
+	set_textureProperties ();
 
 	void
 	updateTextureProperties ();
@@ -162,10 +168,11 @@ private:
 
 	Fields fields;
 
-	int32_t width;
-	int32_t height;
-	size_t  components;
-	bool    transparent;
+	int32_t                       width;
+	int32_t                       height;
+	size_t                        components;
+	bool                          transparent;
+	X3DSFNode <TextureProperties> texturePropertiesNode;
 
 };
 

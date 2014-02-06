@@ -401,10 +401,10 @@ X3DSFNode <ValueType>::addNode (ValueType* const value)
 {
 	if (getValue () not_eq value)
 	{
-		removeNode (getValue ());
-
 		if (value)
 			value -> addParent (this);
+
+		removeNode (getValue ());
 	}
 }
 

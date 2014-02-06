@@ -73,7 +73,8 @@ TransformHandle::TransformHandle (Transform* const transform, SFBool* isActive, 
 	for (auto & field : transform -> getFieldDefinitions ())
 		addField (field -> getAccessType (), field -> getName (), *field);
 
-	X3DChildObject::addChildren (*transform, scene);
+	X3DChildObject::addChildren (scene);
+	transform -> addParent (this);
 }
 
 void
@@ -263,7 +264,7 @@ TransformHandle::traverse (const TraverseType type)
 void
 TransformHandle::dispose ()
 {
-	X3DChildObject::removeChildren (*transform);
+	transform -> removeParent (this);
 	scene .dispose ();
 
 	X3DHandleObject::dispose ();

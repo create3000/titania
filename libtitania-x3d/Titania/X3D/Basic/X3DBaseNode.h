@@ -246,15 +246,6 @@ public:
 	
 	virtual
 	void
-	notify () override
-	{ notifyOutput = getCurrentTime (); }
-
-	const SFTime &
-	notified () const
-	{ return notifyOutput; }
-	
-	virtual
-	void
 	addEvent (X3DChildObject* const) override;
 
 	virtual
@@ -414,7 +405,6 @@ private:
 	X3DBaseNode*             handle;
 	std::deque <std::string> comments;
 
-	SFTime notifyOutput;
 	Output shutdownOutput;
 
 };

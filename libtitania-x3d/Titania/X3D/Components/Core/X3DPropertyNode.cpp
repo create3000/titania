@@ -63,8 +63,6 @@ void
 X3DPropertyNode::eventsProcessed ()
 {
 	X3DNode::eventsProcessed ();
-
-	X3DChildObject::notify ();
 }
 
 } // X3D

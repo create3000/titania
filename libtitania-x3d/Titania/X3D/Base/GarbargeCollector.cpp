@@ -93,16 +93,8 @@ GarbageCollector::addObject (X3DObject* object)
 	objects .emplace_back (object);
 }
 
-ObjectArray
-GarbageCollector::getObjects ()
-{
-	std::lock_guard <std::mutex> lock (mutex);
-
-	return std::move (objects);
-}
-
 void
-GarbageCollector::deleteObjects (ObjectArray && objects)
+GarbageCollector::deleteObjects (ObjectArray objects)
 {
 	for (const auto & object : objects)
 		delete object;
@@ -111,8 +103,10 @@ GarbageCollector::deleteObjects (ObjectArray && objects)
 void
 GarbageCollector::dispose ()
 {
-	if (not empty ())
-		std::thread (&GarbageCollector::deleteObjects, std::move (getObjects ())) .detach ();
+	std::lock_guard <std::mutex> lock (mutex);
+
+	if (not objects .empty ())
+		std::thread (&GarbageCollector::deleteObjects, std::move (objects)) .detach ();
 }
 
 bool
@@ -133,7 +127,7 @@ GarbageCollector::size () const
 
 GarbageCollector::~GarbageCollector ()
 {
-	deleteObjects (std::move (getObjects ()));
+	deleteObjects (std::move (objects));
 }
 
 } // X3D

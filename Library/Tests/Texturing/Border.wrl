@@ -2,28 +2,78 @@
 
 META "title" "Texture Test"
 
-DEF _0 Background {
+Background {
   skyColor 0.4 0.4 0.4
 }
 
-DEF _1 Viewpoint {
+Viewpoint {
   description "Home"
 }
 
-DEF _2 Transform {
+DEF PixelTexture Transform {
+  translation -1 0 0
   children Shape {
     appearance Appearance {
       material Material { }
       texture PixelTexture {
-        image 1 3 1 0xff 0x88 0
+        image 2 3 4 0xff 0x88 0 0xff 0x88 0
         textureProperties TextureProperties {
-          borderColor 0 1 1 0.5
-          borderWidth 1
+          borderColor 1 0 0 0.5
+          boundaryModeS "CLAMP_TO_BOUNDARY"
+          boundaryModeT "CLAMP_TO_BOUNDARY"
+          boundaryModeR "CLAMP_TO_BOUNDARY"
         }
       }
-      textureTransform TextureTransform { }
+      textureTransform TextureTransform {
+        translation -0.25 -0.25
+        scale 2 2
+      }
     }
     geometry Box {
+      solid FALSE
+    }
+  }
+}
+
+DEF ImageTexture Transform {
+  translation 1 0 0
+  children Shape {
+    appearance Appearance {
+      material Material { }
+      texture ImageTexture {
+        url [ "../../../Titania/share/titania/Library/Textures/People/Lena.jpg", "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/People/Lena.jpg" ]
+        repeatS FALSE
+        repeatT FALSE
+        textureProperties TextureProperties {
+          borderColor 1 0 0 1
+          boundaryModeS "CLAMP_TO_BOUNDARY"
+          boundaryModeT "CLAMP_TO_BOUNDARY"
+          boundaryModeR "CLAMP_TO_BOUNDARY"
+        }
+      }
+      textureTransform TextureTransform {
+        translation -0.25 -0.25
+        scale 2 2
+      }
+    }
+    geometry Box {
+      solid FALSE
+    }
+  }
+}
+
+DEF Lena Transform {
+  translation 0 -1.714 0
+  scale 0.173397 0.175741 1
+  children Shape {
+    appearance Appearance {
+      texture ImageTexture {
+        url [ "../../../Titania/share/titania/Library/Textures/People/Lena.jpg", "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/People/Lena.jpg" ]
+        repeatS FALSE
+        repeatT FALSE
+      }
+    }
+    geometry Rectangle2D {
       solid FALSE
     }
   }

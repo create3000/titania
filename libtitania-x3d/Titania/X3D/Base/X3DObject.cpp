@@ -52,9 +52,6 @@
 
 #include <sstream>
 
-#include "../Fields/ArrayFields.h"
-#include "../Parser/Grammar.h"
-
 namespace titania {
 namespace X3D {
 

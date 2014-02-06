@@ -98,10 +98,10 @@ protected:
 	///  @name Operations
 
 	void
-	updateTextureProperties (GLenum, const bool, const TextureProperties*, const int32_t, const int32_t, const bool, const bool, const bool);
+	updateTextureProperties (const GLenum, const bool, const X3DSFNode <TextureProperties> &, const int32_t, const int32_t, const bool, const bool, const bool);
 
 	void
-	draw (GLenum, size_t);
+	draw (const GLenum, const size_t);
 
 
 private:

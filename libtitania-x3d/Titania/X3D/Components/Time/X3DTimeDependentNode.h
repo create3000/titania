@@ -195,6 +195,14 @@ protected:
 	void
 	set_stop () = 0;
 
+	// Wrapper functions
+
+	void
+	do_start ();
+	
+	void
+	do_stop ();
+
 	void
 	stop ();
 
@@ -226,16 +234,10 @@ private:
 	// Wrapper functions
 
 	void
-	do_start ();
-
-	void
 	do_pause ();
 
 	void
 	do_resume ();
-	
-	void
-	do_stop ();
 
 	// Timeout
 

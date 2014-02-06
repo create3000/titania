@@ -2,24 +2,26 @@
 
 META "title" "MovieTexture"
 
-DEF _0 Background {
+Background {
   skyColor 0.2 0.2 0.2
 }
 
-DEF _1 Viewpoint {
+Viewpoint {
   description "Home"
 }
 
-DEF _2 Transform {
+Transform {
   children Shape {
     appearance Appearance {
       material Material { }
       texture DEF Movie MovieTexture {
         url [
+          "http://www.web3d.org/x3d/content/examples/Basic/StudentProjects/flames.mpg",
           "../../Examples/Vattenfall/stage/film6.mpv",
           "http://www.visionbakery.com/content/dynamic/videos/project_574_video_1350486246_mod.mp4"
         ]
         loop TRUE
+        startTime 1391656630.1284
         repeatS FALSE
         repeatT FALSE
       }
@@ -31,11 +33,13 @@ DEF _2 Transform {
   }
 }
 
-DEF _3 Transform {
+Transform {
   translation -1 -3 0
   scale 0.2 0.2 0.2
   children [
-    DEF Play TouchSensor { }
+    DEF Play TouchSensor {
+      description "play"
+    }
     Shape {
       appearance Appearance {
         material Material {
@@ -47,11 +51,13 @@ DEF _3 Transform {
   ]
 }
 
-DEF _4 Transform {
+Transform {
   translation -0.33 -3 0
   scale 0.2 0.2 0.2
   children [
-    DEF Pause TouchSensor { }
+    DEF Pause TouchSensor {
+      description "pause"
+    }
     Shape {
       appearance Appearance {
         material Material {
@@ -63,11 +69,13 @@ DEF _4 Transform {
   ]
 }
 
-DEF _5 Transform {
+Transform {
   translation 0.33 -3 0
   scale 0.2 0.2 0.2
   children [
-    DEF Resume TouchSensor { }
+    DEF Resume TouchSensor {
+      description "resume"
+    }
     Shape {
       appearance Appearance {
         material Material {
@@ -79,11 +87,13 @@ DEF _5 Transform {
   ]
 }
 
-DEF _6 Transform {
+Transform {
   translation 1 -3 0
   scale 0.2 0.2 0.2
   children [
-    DEF Stop TouchSensor { }
+    DEF Stop TouchSensor {
+      description "stop"
+    }
     Shape {
       appearance Appearance {
         material Material {
@@ -95,7 +105,7 @@ DEF _6 Transform {
   ]
 }
 
-DEF _7 Transform {
+Transform {
   translation -1 -2 0
   scale 0.2 0.2 0.2
   children [
@@ -111,7 +121,7 @@ DEF _7 Transform {
   ]
 }
 
-DEF _8 Transform {
+Transform {
   translation -0.33 -2 0
   scale 0.2 0.2 0.2
   children [
@@ -120,7 +130,7 @@ DEF _8 Transform {
   ]
 }
 
-DEF _9 Transform {
+Transform {
   translation 0.33 -2 0
   scale 0.2 0.2 0.2
   children [
@@ -129,7 +139,7 @@ DEF _9 Transform {
   ]
 }
 
-DEF _10 Transform {
+Transform {
   translation 1 -2 0
   scale 0.2 0.2 0.2
   children [
@@ -138,7 +148,7 @@ DEF _10 Transform {
   ]
 }
 
-DEF _11 Transform {
+Transform {
   translation -2 -2 0
   scale 0.2 0.2 0.2
   children [

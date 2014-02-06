@@ -28,11 +28,6 @@
 
 #include "X3DChildObject.h"
 
-#include "../Fields/SFNode.h"
-
-#include <algorithm>
-
-
 namespace titania {
 namespace X3D {
 
@@ -44,13 +39,6 @@ X3DChildObject::X3DChildObject () :
 { }
 
 // Object
-
-void
-X3DChildObject::notify ()
-{
-	for (const auto & parent : parents)
-		parent -> notify ();
-}
 
 void
 X3DChildObject::addEvent ()

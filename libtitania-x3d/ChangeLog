@@ -1,3 +1,37 @@
+2014-02-06  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Debug.h:
+	* X3DObject.cpp:
+	* X3DSFNode.h:
+	* X3DBaseNode.h:
+	* X3DBaseNode.cpp:
+	* X3DChildObject.h:
+	* GarbageCollector.h:
+	* X3DChildObject.cpp:
+	* GarbargeCollector.cpp:
+	* LOD.h:
+	* MediaStream.h:
+	* TransformHandle.cpp:
+	* Switch.h:
+	* MediaStream.cpp:
+	* Selection.cpp:
+	* AudioClip.cpp:
+	* Transform.h:
+	* Transform.cpp:
+	* X3DPropertyNode.cpp:
+	* X3DTextureNode.h:
+	* MovieTexture.cpp:
+	* X3DTimeDependentNode.h:
+	* X3DTextureNode.cpp:
+	* X3DTexture2DNode.h:
+	* X3DSoundSourceNode.cpp:
+	* X3DTimeDependentNode.cpp:
+	* X3DTexture2DNode.cpp:
+	* X3DTexture3DNode.h:
+	* X3DTexture3DNode.cpp:
+	* ComposedTexture3D.cpp:
+	* PolylineEmitter.cpp: 
+
 2014-02-05  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* ComposedTexture3D.h:

@@ -97,7 +97,7 @@ ComposedTexture3D::initialize ()
 	{
 		texture () .addInterest (this, &ComposedTexture3D::set_texture);
 
-		textureNode .addInterest (this, &ComposedTexture3D::update);
+		textureNodes .addInterest (this, &ComposedTexture3D::update);
 
 		set_texture ();
 	}

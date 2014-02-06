@@ -192,6 +192,17 @@ MovieTexture::update ()
 	setLoadState (NOT_STARTED_STATE);
 
 	requestImmediateLoad ();
+
+	if (isActive () and not isPaused ())
+	{
+		if (loop ())
+		{
+			do_stop ();
+			do_start ();
+		}
+		else
+			do_stop ();
+	}
 }
 
 void

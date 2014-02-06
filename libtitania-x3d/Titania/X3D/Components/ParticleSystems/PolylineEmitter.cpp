@@ -114,8 +114,8 @@ PolylineEmitter::initialize ()
 	coord ()      .addInterest (polylineNode -> coord ());
 
 	polylineNode -> isInternal (true);
-	polylineNode -> coordIndex ()  = coordIndex ();
-	polylineNode -> coord ()       = coord ();
+	polylineNode -> coordIndex () = coordIndex ();
+	polylineNode -> coord ()      = coord ();
 	polylineNode -> addInterest (this, &PolylineEmitter::set_polyline);
 
 	polylineNode -> setup ();
