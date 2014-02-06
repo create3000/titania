@@ -106,9 +106,7 @@ TriangleStripSet::initialize ()
 void
 TriangleStripSet::set_stripCount ()
 {
-	auto _coord = x3d_cast <X3DCoordinateNode*> (coord ());
-
-	if (not _coord or _coord -> isEmpty ())
+	if (not getCoord () or getCoord () -> isEmpty ())
 		return;
 
 	// Build coordIndex
@@ -131,7 +129,7 @@ TriangleStripSet::set_stripCount ()
 
 	// Resize coord if to small
 	if (not coordIndex .empty ())
-		_coord -> resize (index);
+		getCoord () -> resize (index);
 }
 
 void

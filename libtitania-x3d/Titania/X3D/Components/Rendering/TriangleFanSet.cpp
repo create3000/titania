@@ -107,9 +107,7 @@ TriangleFanSet::initialize ()
 void
 TriangleFanSet::set_fanCount ()
 {
-	auto _coord = x3d_cast <X3DCoordinateNode*> (coord ());
-
-	if (not _coord or _coord -> isEmpty ())
+	if (not getCoord () or getCoord () -> isEmpty ())
 		return;
 
 	// Build coordIndex
@@ -134,7 +132,7 @@ TriangleFanSet::set_fanCount ()
 
 	// Resize coord if to small
 	if (not coordIndex .empty ())
-		_coord -> resize (index);
+		getCoord () -> resize (index);
 }
 
 void

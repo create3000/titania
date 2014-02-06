@@ -331,7 +331,6 @@ private:
 	static JSBool X3DPointingDeviceSensorNode  (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool X3DProductStructureChildNode (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool X3DProgrammableShaderObject  (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DPropertyNode              (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool X3DPrototypeInstance         (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool X3DRigidJointNode            (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool X3DScriptNode                (JSContext *, JSObject *, jsid, jsval*);

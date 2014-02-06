@@ -134,8 +134,12 @@ Router::processEvents ()
 void
 Router::eventsProcessed ()
 {
-	for (const auto & node : getNodes ())
-		node -> processEvents ();
+	do
+	{
+		for (const auto & node : getNodes ())
+			node -> processEvents ();
+	}
+	while (empty () and not nodes .empty ());
 }
 
 bool

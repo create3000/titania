@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -109,9 +109,9 @@ Rectangle2D::build ()
 
 	size_t elements = solid () ? 1 : 2;
 
-	getTexCoord () .emplace_back ();
-	getTexCoord () [0] .reserve (elements * properties -> getTexCoord () .size ());
-	getTexCoord () [0] = properties -> getTexCoord ();
+	getTexCoords () .emplace_back ();
+	getTexCoords () [0] .reserve (elements * properties -> getTexCoords () .size ());
+	getTexCoords () [0] = properties -> getTexCoords ();
 
 	getNormals () .reserve (elements * properties -> getNormals  () .size ());
 	getNormals () = properties -> getNormals  ();

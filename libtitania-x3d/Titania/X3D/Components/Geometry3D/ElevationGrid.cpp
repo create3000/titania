@@ -52,9 +52,6 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "../Rendering/X3DColorNode.h"
-#include "../Rendering/X3DNormalNode.h"
-#include "../Texturing/X3DTextureCoordinateNode.h"
 
 namespace titania {
 namespace X3D {
@@ -84,7 +81,11 @@ ElevationGrid::Fields::Fields () :
 ElevationGrid::ElevationGrid (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DGeometryNode (),
-	         fields ()
+	         fields (),
+	   texCoordNode (),
+	      colorNode (),
+	     normalNode (),
+	    transparent (false)
 {
 	addField (inputOutput,    "metadata",        metadata ());
 
@@ -105,6 +106,10 @@ ElevationGrid::ElevationGrid (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "color",           color ());
 	addField (inputOutput,    "normal",          normal ());
 	addField (inputOutput,    "height",          height ());
+
+	addChildren (texCoordNode,
+	             colorNode,
+	             normalNode);
 }
 
 X3DBaseNode*
@@ -117,14 +122,54 @@ void
 ElevationGrid::initialize ()
 {
 	X3DGeometryNode::initialize ();
+
+	texCoord () .addInterest (this, &ElevationGrid::set_texCoord);
+	color ()    .addInterest (this, &ElevationGrid::set_color);
+	normal ()   .addInterest (this, &ElevationGrid::set_normal);
+
+	set_texCoord ();
+	set_color ();
+	set_normal ();
 }
 
-bool
-ElevationGrid::isTransparent () const
+void
+ElevationGrid::set_texCoord ()
 {
-	auto _color = x3d_cast <X3DColorNode*> (color ());
+	if (texCoordNode)
+		texCoordNode -> removeInterest (this);
 
-	return _color and _color -> isTransparent ();
+	texCoordNode .set (x3d_cast <X3DTextureCoordinateNode*> (texCoord ()));
+
+	if (texCoordNode)
+		texCoordNode -> addInterest (this);
+}
+
+void
+ElevationGrid::set_color ()
+{
+	if (colorNode)
+		colorNode -> removeInterest (this);
+
+	colorNode .set (x3d_cast <X3DColorNode*> (color ()));
+
+	if (colorNode)
+		colorNode -> addInterest (this);
+
+	// Transparent
+
+	transparent = colorNode and colorNode -> isTransparent ();
+}
+
+void
+ElevationGrid::set_normal ()
+{
+	if (normalNode)
+		normalNode -> removeInterest (this);
+
+	normalNode .set (x3d_cast <X3DNormalNode*> (normal ()));
+
+	if (normalNode)
+		normalNode -> addInterest (this);
 }
 
 Box3f
@@ -217,8 +262,8 @@ ElevationGrid::createNormals (const std::vector <Vector3f> & points, const std::
 std::vector <size_t>
 ElevationGrid::createCoordIndex () const
 {
-	std::vector <size_t> _coordIndex;
-	_coordIndex .reserve ((xDimension () - 1) * (zDimension () - 1) * 6);
+	std::vector <size_t> coordIndex;
+	coordIndex .reserve ((xDimension () - 1) * (zDimension () - 1) * 6);
 
 	for (int32_t j = 0; j < zDimension () - 1; ++ j)
 	{
@@ -244,12 +289,12 @@ ElevationGrid::createCoordIndex () const
 					case 5: index = (j + 1) * xDimension () + i; break;         // P2
 				}
 
-				_coordIndex .push_back (index);
+				coordIndex .push_back (index);
 			}
 		}
 	}
 
-	return _coordIndex;
+	return coordIndex;
 }
 
 std::vector <Vector3f>
@@ -285,49 +330,51 @@ ElevationGrid::build ()
 
 	getVertices () .reserve (coordIndex .size ());
 
-	std::vector <Vector4f> _texCoord;
+	// TexCoord
 
-	auto _textureCoordinate = x3d_cast <X3DTextureCoordinateNode*> (texCoord ());
+	std::vector <Vector4f> texCoords;
 
-	if (_textureCoordinate)
+	if (texCoordNode)
 	{
-		_textureCoordinate -> init (getTexCoord (), coordIndex .size ());
-		_textureCoordinate -> resize (vertices);
+		texCoordNode -> init (getTexCoords (), coordIndex .size ());
+		texCoordNode -> resize (vertices);
 	}
-	else 
+	else
 	{
-		_texCoord = std::move (createTexCoord ());
-		getTexCoord () .emplace_back ();
-		getTexCoord () [0] .reserve (coordIndex .size ());
+		texCoords = std::move (createTexCoord ());
+		getTexCoords () .emplace_back ();
+		getTexCoords () [0] .reserve (coordIndex .size ());
 	}
 
-	auto _color = x3d_cast <X3DColorNode*> (color ());
+	// Color
 
-	if (_color)
+	if (colorNode)
 	{
 		if (colorPerVertex ())
-			_color -> resize (vertices);
+			colorNode -> resize (vertices);
 
 		else
-			_color -> resize (faces);
+			colorNode -> resize (faces);
 
 		getColors () .reserve (coordIndex .size ());
 	}
 
-	auto _normal = x3d_cast <X3DNormalNode*> (normal ());
+	// Normals
 
-	if (_normal)
+	if (normalNode)
 	{
 		if (normalPerVertex ())
-			_normal -> resize (vertices);
+			normalNode -> resize (vertices);
 
 		else
-			_normal -> resize (faces);
+			normalNode -> resize (faces);
 	}
 	else
 		getNormals () = std::move (createNormals (points, coordIndex));
 
 	getNormals () .reserve (coordIndex .size ());
+
+	// Build geometry
 
 	int32_t face = 0;
 
@@ -337,28 +384,28 @@ ElevationGrid::build ()
 	{
 		for (int32_t p = 0; p < 6; ++ p, ++ index)
 		{
-			if (_textureCoordinate)
-				_textureCoordinate -> addTexCoord (getTexCoord (), *index);
+			if (texCoordNode)
+				texCoordNode -> addTexCoord (getTexCoords (), *index);
 
 			else
-				getTexCoord () [0] .emplace_back (_texCoord [*index]);
+				getTexCoords () [0] .emplace_back (texCoords [*index]);
 
-			if (_color)
+			if (colorNode)
 			{
 				if (colorPerVertex ())
-					_color -> addColor (getColors (), *index);
+					colorNode -> addColor (getColors (), *index);
 
 				else
-					_color -> addColor (getColors (), face);
+					colorNode -> addColor (getColors (), face);
 			}
 
-			if (_normal)
+			if (normalNode)
 			{
 				if (normalPerVertex ())
-					_normal -> addVector (getNormals (), *index);
+					normalNode -> addVector (getNormals (), *index);
 
 				else
-					_normal -> addVector (getNormals (), face);
+					normalNode -> addVector (getNormals (), face);
 			}
 
 			getVertices  () .emplace_back (points [*index]);
@@ -368,7 +415,17 @@ ElevationGrid::build ()
 	addElements (GL_TRIANGLES, getVertices () .size ());
 	setSolid (solid ());
 	setCCW (ccw ());
-	setTextureCoordinate (_textureCoordinate);
+	setTextureCoordinate (texCoordNode);
+}
+
+void
+ElevationGrid::dispose ()
+{
+	texCoordNode .dispose ();
+	colorNode    .dispose ();
+	normalNode   .dispose ();
+
+	X3DGeometryNode::dispose ();
 }
 
 } // X3D

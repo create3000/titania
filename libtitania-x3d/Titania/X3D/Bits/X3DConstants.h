@@ -201,7 +201,6 @@ enum NodeType
 	X3DPointingDeviceSensorNode,
 	X3DProductStructureChildNode,
 	X3DProgrammableShaderObject,
-	X3DPropertyNode,
 	X3DPrototypeInstance,
 	X3DRigidJointNode,
 	X3DScriptNode,

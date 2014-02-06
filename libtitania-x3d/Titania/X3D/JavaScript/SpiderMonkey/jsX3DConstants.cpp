@@ -191,7 +191,6 @@ JSPropertySpec jsX3DConstants::properties [ ] = {
 	{ "X3DPointingDeviceSensorNode",  X3D_POINTINGDEVICESENSOR_NODE,  JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DPointingDeviceSensorNode,  NULL },
 	{ "X3DProductStructureChildNode", X3D_PRODUCTSTRUCTURECHILD_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DProductStructureChildNode, NULL },
 	{ "X3DProgrammableShaderObject",  X3D_PROGRAMMABLESHADER_OBJECT,  JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DProgrammableShaderObject,  NULL },
-	{ "X3DPropertyNode",              X3D_PROPERTY_NODE,              JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DPropertyNode,              NULL },
 	{ "X3DPrototypeInstance",         X3D_PROTOTYPE_INSTANCE,         JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DPrototypeInstance,         NULL },
 	{ "X3DRigidJointNode",            X3D_RIGIDJOINT_NODE,            JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DRigidJointNode,            NULL },
 	{ "X3DScriptNode",                X3D_SCRIPT_NODE,                JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DScriptNode,                NULL },
@@ -833,12 +832,6 @@ JSBool
 jsX3DConstants::X3DProgrammableShaderObject (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	return JS_NewNumberValue (context, X3DConstants::X3DProgrammableShaderObject, vp);
-}
-
-JSBool
-jsX3DConstants::X3DPropertyNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
-{
-	return JS_NewNumberValue (context, X3DConstants::X3DPropertyNode, vp);
 }
 
 JSBool

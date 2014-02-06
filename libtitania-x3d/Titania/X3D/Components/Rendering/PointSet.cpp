@@ -52,8 +52,6 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "../Rendering/X3DColorNode.h"
-#include "../Rendering/X3DCoordinateNode.h"
 
 namespace titania {
 namespace X3D {
@@ -63,22 +61,28 @@ const std::string PointSet::typeName       = "PointSet";
 const std::string PointSet::containerField = "geometry";
 
 PointSet::Fields::Fields () :
-	attrib (new MFNode ()),
-	color (new SFNode ()),
-	coord (new SFNode ()),
+	  attrib (new MFNode ()),
+	   color (new SFNode ()),
+	   coord (new SFNode ()),
 	fogCoord (new SFNode ())
 { }
 
 PointSet::PointSet (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DGeometryNode (),
-	         fields ()
+	         fields (),
+	      colorNode (),
+	      coordNode (),
+	    transparent (false)
 {
 	addField (inputOutput, "metadata", metadata ());
 	addField (inputOutput, "attrib",   attrib ());
 	addField (inputOutput, "color",    color ());
 	addField (inputOutput, "coord",    coord ());
 	addField (inputOutput, "fogCoord", fogCoord ());
+
+	addChildren (colorNode,
+	             coordNode);
 }
 
 X3DBaseNode*
@@ -87,36 +91,64 @@ PointSet::create (X3DExecutionContext* const executionContext) const
 	return new PointSet (executionContext);
 }
 
-bool
-PointSet::isTransparent () const
+void
+PointSet::initialize ()
 {
-	auto _color = x3d_cast <X3DColorNode*> (color ());
+	X3DGeometryNode::initialize ();
 
-	return _color and _color -> isTransparent ();
+	color () .addInterest (this, &PointSet::set_color);
+	coord () .addInterest (this, &PointSet::set_coord);
+
+	set_color ();
+	set_coord ();
+}
+
+void
+PointSet::set_color ()
+{
+	if (colorNode)
+		colorNode -> removeInterest (this);
+
+	colorNode .set (x3d_cast <X3DColorNode*> (color ()));
+
+	if (colorNode)
+		colorNode -> addInterest (this);
+
+	// Transparent
+
+	transparent = colorNode and colorNode -> isTransparent ();
+}
+
+void
+PointSet::set_coord ()
+{
+	if (coordNode)
+		coordNode -> removeInterest (this);
+
+	coordNode .set (x3d_cast <X3DCoordinateNode*> (coord ()));
+
+	if (coordNode)
+		coordNode -> addInterest (this);
 }
 
 void
 PointSet::build ()
 {
-	auto _coord = x3d_cast <X3DCoordinateNode*> (coord ());
-
-	if (not _coord)
+	if (not coordNode)
 		return;
 
-	auto _color = x3d_cast <X3DColorNode*> (color ());
-
-	if (_color)
+	if (colorNode)
 	{
-		getColors () .reserve (_coord -> getSize ());
-		
-		for (size_t i = 0, size = _color -> getSize (); i < size; ++ i)
-			_color -> addColor (getColors (), i);
-		
-		getColors () .resize  (_coord -> getSize (), Color4f (1, 1, 1, 1));
+		getColors () .reserve (coordNode -> getSize ());
+
+		for (size_t i = 0, size = colorNode -> getSize (); i < size; ++ i)
+			colorNode -> addColor (getColors (), i);
+
+		getColors () .resize  (coordNode -> getSize (), Color4f (1, 1, 1, 1));
 	}
 
-	for (size_t i = 0, size = _coord -> getSize (); i < size; ++ i)
-		_coord -> addVertex (getVertices (), i);
+	for (size_t i = 0, size = coordNode -> getSize (); i < size; ++ i)
+		coordNode -> addVertex (getVertices (), i);
 
 	addElements (GL_POINTS, getVertices () .size ());
 	setSolid (false);
@@ -127,6 +159,15 @@ PointSet::draw ()
 {
 	glDisable (GL_LIGHTING);
 	X3DGeometryNode::draw ();
+}
+
+void
+PointSet::dispose ()
+{
+	colorNode .dispose ();
+	coordNode .dispose ();
+
+	X3DGeometryNode::dispose ();
 }
 
 } // X3D

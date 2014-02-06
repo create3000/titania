@@ -62,6 +62,8 @@ class Text :
 {
 public:
 
+	///  @name Construction
+
 	Text (X3DExecutionContext* const);
 
 	virtual
@@ -175,6 +177,8 @@ public:
 	void
 	draw () final override;
 
+	///  @name Destruction
+
 	virtual
 	void
 	dispose () final override;
@@ -182,8 +186,18 @@ public:
 
 private:
 
-	const X3DFontStyleNode*
-	getFontStyle () const;
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+	///  @name Event handlers
+
+	void
+	set_fontStyle ();
+
+	///  @name Operations
 
 	virtual
 	Box3f
@@ -218,6 +232,7 @@ private:
 	Fields fields;
 
 	std::shared_ptr <X3DTextGeometry> text;
+	X3DSFNode <X3DFontStyleNode>      fontStyleNode;
 
 };
 

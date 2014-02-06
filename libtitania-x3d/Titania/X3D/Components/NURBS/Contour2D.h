@@ -51,14 +51,13 @@
 #ifndef __TITANIA_X3D_COMPONENTS_NURBS_CONTOUR2D_H__
 #define __TITANIA_X3D_COMPONENTS_NURBS_CONTOUR2D_H__
 
-#include "../Core/X3DPropertyNode.h"
 #include "../NURBS/X3DNurbsControlCurveNode.h"
 
 namespace titania {
 namespace X3D {
 
 class Contour2D :
-	virtual public X3DPropertyNode
+	virtual public X3DNode
 {
 public:
 

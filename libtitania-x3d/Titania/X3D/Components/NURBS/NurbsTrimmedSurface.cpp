@@ -124,7 +124,7 @@ NurbsTrimmedSurface::set_removeTrimmingContour ()
 void
 NurbsTrimmedSurface::set_trimmingContour ()
 {
-
+	// Watch contours!!!
 }
 
 std::vector <Contour2D*>

@@ -397,11 +397,11 @@ X3DGeometryNode::buildTexCoord ()
 
 	getTexCoordParams (min, Ssize, Sindex, Tindex);
 
-	getTexCoord () [0] .reserve (getVertices () .size ());
+	getTexCoords () [0] .reserve (getVertices () .size ());
 
 	for (const auto & vertex : getVertices ())
 	{
-		getTexCoord () [0] .emplace_back ((vertex [Sindex] - min [Sindex]) / Ssize,
+		getTexCoords () [0] .emplace_back ((vertex [Sindex] - min [Sindex]) / Ssize,
 		                                  (vertex [Tindex] - min [Tindex]) / Ssize,
 		                                  0,
 		                                  1);

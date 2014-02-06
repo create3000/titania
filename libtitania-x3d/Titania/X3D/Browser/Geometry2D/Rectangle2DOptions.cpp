@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -89,24 +89,24 @@ Rectangle2DOptions::eventsProcessed ()
 void
 Rectangle2DOptions::build ()
 {
-	getTexCoord () .reserve (4);
+	getTexCoords () .reserve (4);
 	getNormals  () .reserve (4);
 	getVertices () .reserve (4);
 
 	// Front Face
-	getTexCoord () .emplace_back (0, 0, 0, 1);
+	getTexCoords () .emplace_back (0, 0, 0, 1);
 	getNormals  () .emplace_back (0, 0, 1);
 	getVertices () .emplace_back (-1, -1, 0);
 
-	getTexCoord () .emplace_back (1, 0, 0, 1);
+	getTexCoords () .emplace_back (1, 0, 0, 1);
 	getNormals  () .emplace_back (0, 0, 1);
 	getVertices () .emplace_back (1, -1, 0);
 
-	getTexCoord () .emplace_back (1, 1, 0, 1);
+	getTexCoords () .emplace_back (1, 1, 0, 1);
 	getNormals  () .emplace_back (0, 0, 1);
 	getVertices () .emplace_back (1, 1, 0);
 
-	getTexCoord () .emplace_back (0, 1, 0, 1);
+	getTexCoords () .emplace_back (0, 1, 0, 1);
 	getNormals  () .emplace_back (0, 0, 1);
 	getVertices () .emplace_back (-1, 1, 0);
 }

@@ -52,8 +52,6 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "../Rendering/X3DColorNode.h"
-#include "../Rendering/X3DCoordinateNode.h"
 
 namespace titania {
 namespace X3D {
@@ -64,16 +62,19 @@ const std::string LineSet::containerField = "geometry";
 
 LineSet::Fields::Fields () :
 	vertexCount (new MFInt32 ()),
-	attrib (new MFNode ()),
-	fogCoord (new SFNode ()),
-	color (new SFNode ()),
-	coord (new SFNode ())
+	     attrib (new MFNode ()),
+	   fogCoord (new SFNode ()),
+	      color (new SFNode ()),
+	      coord (new SFNode ())
 { }
 
 LineSet::LineSet (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DGeometryNode (),
-	         fields ()
+	         fields (),
+	      colorNode (),
+	      coordNode (),
+	    transparent (false)
 {
 	addField (inputOutput, "metadata",    metadata ());
 	addField (inputOutput, "vertexCount", vertexCount ());
@@ -81,6 +82,9 @@ LineSet::LineSet (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "fogCoord",    fogCoord ());
 	addField (inputOutput, "color",       color ());
 	addField (inputOutput, "coord",       coord ());
+
+	addChildren (colorNode,
+	             coordNode);
 }
 
 X3DBaseNode*
@@ -89,33 +93,61 @@ LineSet::create (X3DExecutionContext* const executionContext) const
 	return new LineSet (executionContext);
 }
 
-bool
-LineSet::isTransparent () const
+void
+LineSet::initialize ()
 {
-	auto _color = x3d_cast <X3DColorNode*> (color ());
+	X3DGeometryNode::initialize ();
 
-	return _color and _color -> isTransparent ();
+	color () .addInterest (this, &LineSet::set_color);
+	coord () .addInterest (this, &LineSet::set_coord);
+
+	set_color ();
+	set_coord ();
+}
+
+void
+LineSet::set_color ()
+{
+	if (colorNode)
+		colorNode -> removeInterest (this);
+
+	colorNode .set (x3d_cast <X3DColorNode*> (color ()));
+
+	if (colorNode)
+		colorNode -> addInterest (this);
+
+	// Transparent
+
+	transparent = colorNode and colorNode -> isTransparent ();
+}
+
+void
+LineSet::set_coord ()
+{
+	if (coordNode)
+		coordNode -> removeInterest (this);
+
+	coordNode .set (x3d_cast <X3DCoordinateNode*> (coord ()));
+
+	if (coordNode)
+		coordNode -> addInterest (this);
 }
 
 void
 LineSet::build ()
 {
-	auto _coord = x3d_cast <X3DCoordinateNode*> (coord ());
-
-	if (not _coord or _coord -> isEmpty ())
+	if (not coordNode or coordNode -> isEmpty ())
 		return;
 
 	// Color
 
-	auto _color = x3d_cast <X3DColorNode*> (color ());
-
-	if (_color)
-		_color -> resize (_coord -> getSize ());
+	if (colorNode)
+		colorNode -> resize (coordNode -> getSize ());
 
 	// Fill GeometryNode
 
 	size_t index = 0;
-	size_t size  = _coord -> getSize ();
+	size_t size  = coordNode -> getSize ();
 
 	for (const auto count : vertexCount ())
 	{
@@ -128,10 +160,10 @@ LineSet::build ()
 		{
 			for (size_t i = 0; i < (size_t) count; ++ i, ++ index)
 			{
-				if (_color)
-					_color -> addColor (getColors (), index);
+				if (colorNode)
+					colorNode -> addColor (getColors (), index);
 
-				_coord -> addVertex (getVertices (), index);
+				coordNode -> addVertex (getVertices (), index);
 			}
 
 			addElements (GL_LINE_STRIP, count);
@@ -151,6 +183,15 @@ LineSet::draw ()
 {
 	glDisable (GL_LIGHTING);
 	X3DGeometryNode::draw ();
+}
+
+void
+LineSet::dispose ()
+{
+	colorNode .dispose ();
+	coordNode .dispose ();
+
+	X3DGeometryNode::dispose ();
 }
 
 } // X3D

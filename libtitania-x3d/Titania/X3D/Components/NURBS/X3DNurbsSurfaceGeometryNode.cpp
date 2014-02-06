@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,8 +51,6 @@
 #include "X3DNurbsSurfaceGeometryNode.h"
 
 #include "../../Bits/Cast.h"
-#include "../Rendering/X3DCoordinateNode.h"
-#include "../Texturing/X3DTextureCoordinateNode.h"
 
 namespace titania {
 namespace X3D {
@@ -77,6 +75,8 @@ X3DNurbsSurfaceGeometryNode::Fields::Fields () :
 X3DNurbsSurfaceGeometryNode::X3DNurbsSurfaceGeometryNode () :
 	X3DParametricGeometryNode (),
 	                   fields (),
+	             texCoordNode (),
+	         controlPointNode (),
 	                     type (0),
 	                texCoords (),
 	                  normals (),
@@ -85,6 +85,45 @@ X3DNurbsSurfaceGeometryNode::X3DNurbsSurfaceGeometryNode () :
 	              numVertices (0)
 {
 	addNodeType (X3DConstants::X3DNurbsSurfaceGeometryNode);
+	
+	addChildren (texCoordNode,
+	             controlPointNode);
+}
+
+void
+X3DNurbsSurfaceGeometryNode::initialize ()
+{
+	X3DParametricGeometryNode::initialize ();
+
+	texCoord ()     .addInterest (this, &X3DNurbsSurfaceGeometryNode::set_texCoord);
+	controlPoint () .addInterest (this, &X3DNurbsSurfaceGeometryNode::set_controlPoint);
+	
+	set_texCoord ();
+	set_controlPoint ();
+}
+
+void
+X3DNurbsSurfaceGeometryNode::set_texCoord ()
+{
+	if (texCoordNode)
+		texCoordNode -> removeInterest (this);
+
+	texCoordNode .set (x3d_cast <X3DTextureCoordinateNode*> (texCoord ()));
+
+	if (texCoordNode)
+		texCoordNode -> addInterest (this);
+}
+
+void
+X3DNurbsSurfaceGeometryNode::set_controlPoint ()
+{
+	if (controlPointNode)
+		controlPointNode -> removeInterest (this);
+
+	controlPointNode .set (x3d_cast <X3DCoordinateNode*> (controlPoint ()));
+
+	if (controlPointNode)
+		controlPointNode -> addInterest (this);
 }
 
 size_t
@@ -186,17 +225,15 @@ X3DNurbsSurfaceGeometryNode::build ()
 	if (vDimension () < vOrder ())
 		return;
 
-	auto coordinate = x3d_cast <X3DCoordinateNode*> (controlPoint ());
-
-	if (not coordinate)
+	if (not controlPointNode)
 		return;
 
-	if (coordinate -> getSize () not_eq size_t (uDimension () * vDimension ()))
+	if (controlPointNode -> getSize () not_eq size_t (uDimension () * vDimension ()))
 		return;
 
 	// ControlPoints
 
-	std::vector <Vector4f> controlPoints = std::move (coordinate -> getControlPoints (weight ()));
+	std::vector <Vector4f> controlPoints = std::move (controlPointNode -> getControlPoints (weight ()));
 
 	// Knots
 
@@ -211,9 +248,9 @@ X3DNurbsSurfaceGeometryNode::build ()
 	//	auto _textureCoordinate = x3d_cast <X3DTextureCoordinateNode*> (texCoord ());
 	//
 	//	if (_textureCoordinate)
-	//		_textureCoordinate -> init (getTexCoord (), reserve);
+	//		_textureCoordinate -> init (getTexCoords (), reserve);
 	//	else
-	getTexCoord () .emplace_back ();
+	getTexCoords () .emplace_back ();
 
 	// Default unit square
 	std::vector <Vector4f> texControlPoints;
@@ -377,9 +414,9 @@ X3DNurbsSurfaceGeometryNode::tessEndData (X3DNurbsSurfaceGeometryNode* self)
 				size_t i2 = i;
 				size_t i3 = i + 1;
 
-				self -> getTexCoord () [0] .emplace_back (self -> texCoords [i1]);
-				self -> getTexCoord () [0] .emplace_back (self -> texCoords [i2]);
-				self -> getTexCoord () [0] .emplace_back (self -> texCoords [i3]);
+				self -> getTexCoords () [0] .emplace_back (self -> texCoords [i1]);
+				self -> getTexCoords () [0] .emplace_back (self -> texCoords [i2]);
+				self -> getTexCoords () [0] .emplace_back (self -> texCoords [i3]);
 
 				self -> getNormals () .emplace_back (self -> normals [i1]);
 				self -> getNormals () .emplace_back (self -> normals [i2]);
@@ -411,9 +448,9 @@ X3DNurbsSurfaceGeometryNode::tessEndData (X3DNurbsSurfaceGeometryNode* self)
 					i3 = i + 1;
 				}
 
-				self -> getTexCoord () [0] .emplace_back (self -> texCoords [i1]);
-				self -> getTexCoord () [0] .emplace_back (self -> texCoords [i2]);
-				self -> getTexCoord () [0] .emplace_back (self -> texCoords [i3]);
+				self -> getTexCoords () [0] .emplace_back (self -> texCoords [i1]);
+				self -> getTexCoords () [0] .emplace_back (self -> texCoords [i2]);
+				self -> getTexCoords () [0] .emplace_back (self -> texCoords [i3]);
 
 				self -> getNormals () .emplace_back (self -> normals [i1]);
 				self -> getNormals () .emplace_back (self -> normals [i2]);
@@ -430,7 +467,7 @@ X3DNurbsSurfaceGeometryNode::tessEndData (X3DNurbsSurfaceGeometryNode* self)
 		case GL_TRIANGLES:
 		   //__LOG__ << "GL_TRIANGLES" << std::endl;
 			
-			self -> getTexCoord () [0] .insert (self -> getTexCoord () [0] .end (), 
+			self -> getTexCoords () [0] .insert (self -> getTexCoords () [0] .end (), 
 			                                    self -> texCoords .begin (),
 			                                    self -> texCoords .end ());
 
@@ -455,10 +492,10 @@ X3DNurbsSurfaceGeometryNode::tessEndData (X3DNurbsSurfaceGeometryNode* self)
 				size_t i3 = i + 3;
 				size_t i4 = i + 2;
 
-				self -> getTexCoord () [0] .emplace_back (self -> texCoords [i1]);
-				self -> getTexCoord () [0] .emplace_back (self -> texCoords [i2]);
-				self -> getTexCoord () [0] .emplace_back (self -> texCoords [i3]);
-				self -> getTexCoord () [0] .emplace_back (self -> texCoords [i4]);
+				self -> getTexCoords () [0] .emplace_back (self -> texCoords [i1]);
+				self -> getTexCoords () [0] .emplace_back (self -> texCoords [i2]);
+				self -> getTexCoords () [0] .emplace_back (self -> texCoords [i3]);
+				self -> getTexCoords () [0] .emplace_back (self -> texCoords [i4]);
 
 				self -> getNormals () .emplace_back (self -> normals [i1]);
 				self -> getNormals () .emplace_back (self -> normals [i2]);
@@ -484,6 +521,15 @@ void
 X3DNurbsSurfaceGeometryNode::tessError (GLenum errorCode)
 {
 	__LOG__ << gluErrorString (errorCode) << std::endl;
+}
+
+void
+X3DNurbsSurfaceGeometryNode::dispose ()
+{
+	texCoordNode     .dispose ();
+	controlPointNode .dispose ();
+	
+	X3DParametricGeometryNode::dispose ();
 }
 
 } // X3D

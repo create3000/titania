@@ -69,10 +69,10 @@ Contour2D::Fields::Fields () :
 { }
 
 Contour2D::Contour2D (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DPropertyNode (),
-	         fields (),
-	         curves ()
+	X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	    X3DNode (),
+	     fields (),
+	     curves ()
 {
 	addField (inputOutput, "metadata",       metadata ());
 	addField (inputOnly,   "addChildren",    addChildren ());
@@ -89,12 +89,12 @@ Contour2D::create (X3DExecutionContext* const executionContext) const
 void
 Contour2D::initialize ()
 {
-	X3DPropertyNode::initialize ();
-	 
+	X3DNode::initialize ();
+
 	addChildren ()    .addInterest (this, &Contour2D::set_addChildren);
 	removeChildren () .addInterest (this, &Contour2D::set_removeChildren);
 	children ()       .addInterest (this, &Contour2D::set_children);
-	
+
 	set_children ();
 }
 
@@ -102,14 +102,14 @@ bool
 Contour2D::isClosed () const
 {
 	Vector2d last = curves .back () -> controlPoint () .back ();
-	
+
 	for (const auto & curve : curves)
 	{
 		Vector2d first = curve -> controlPoint () .front ();
-		
+
 		if (last not_eq first)
 			return false;
-		
+
 		last = curve -> controlPoint () .back ();
 	}
 
@@ -140,15 +140,11 @@ Contour2D::trimSurface (GLUnurbs* nurbsRenderer) const
 
 void
 Contour2D::set_addChildren ()
-{
-
-}
+{ }
 
 void
 Contour2D::set_removeChildren ()
-{
-
-}
+{ }
 
 void
 Contour2D::set_children ()
@@ -158,7 +154,7 @@ Contour2D::set_children ()
 	for (const auto & child : children ())
 	{
 		auto curve = x3d_cast <X3DNurbsControlCurveNode*> (child);
-		
+
 		if (curve)
 		{
 			if (curve -> controlPoint () .empty ())

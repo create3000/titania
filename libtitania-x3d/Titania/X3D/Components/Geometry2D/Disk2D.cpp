@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -145,9 +145,9 @@ Disk2D::build ()
 
 		size_t elements = solid () ? 1 : 2;
 
-		getTexCoord () .emplace_back ();
-		getTexCoord () [0] .reserve (elements * properties -> getTexCoord () .size ());
-		getTexCoord () [0] = properties -> getTexCoord ();
+		getTexCoords () .emplace_back ();
+		getTexCoords () [0] .reserve (elements * properties -> getTexCoords () .size ());
+		getTexCoords () [0] = properties -> getTexCoords ();
 
 		getNormals () .reserve (elements * properties -> getNormals  () .size ());
 		getNormals () = properties -> getNormals  ();
@@ -181,8 +181,8 @@ Disk2D::build ()
 
 	size_t elements = solid () ? 1 : 2;
 
-	getTexCoord () .emplace_back ();
-	getTexCoord () [0] .reserve (elements * (properties -> getTexCoord () .size () + 2));
+	getTexCoords () .emplace_back ();
+	getTexCoords () [0] .reserve (elements * (properties -> getTexCoords () .size () + 2));
 
 	getNormals  () .reserve (elements * (properties -> getNormals  () .size () + 2));
 	getVertices () .reserve (elements * (properties -> getVertices () .size () + 2));
@@ -193,10 +193,10 @@ Disk2D::build ()
 	auto minRadius = std::abs (std::min (innerRadius (), outerRadius ()));
 	auto scale     = minRadius / maxRadius;
 
-	for (const auto & texCoord : properties -> getTexCoord ())
+	for (const auto & texCoord : properties -> getTexCoords ())
 	{
-		getTexCoord () [0] .emplace_back (texCoord .x () * scale + (1 - scale) / 2, texCoord .y () * scale + (1 - scale) / 2, 0, 1);
-		getTexCoord () [0] .emplace_back (texCoord);
+		getTexCoords () [0] .emplace_back (texCoord .x () * scale + (1 - scale) / 2, texCoord .y () * scale + (1 - scale) / 2, 0, 1);
+		getTexCoords () [0] .emplace_back (texCoord);
 	}
 
 	// Normals
@@ -216,8 +216,8 @@ Disk2D::build ()
 	}
 
 	// The last two vertices are the first two.
-	getTexCoord () [0] .emplace_back (getTexCoord () [0] [0]);
-	getTexCoord () [0] .emplace_back (getTexCoord () [0] [1]);
+	getTexCoords () [0] .emplace_back (getTexCoords () [0] [0]);
+	getTexCoords () [0] .emplace_back (getTexCoords () [0] [1]);
 	getNormals  () .emplace_back (getNormals  () [0]);
 	getNormals  () .emplace_back (getNormals  () [1]);
 	getVertices () .emplace_back (getVertices () [0]);

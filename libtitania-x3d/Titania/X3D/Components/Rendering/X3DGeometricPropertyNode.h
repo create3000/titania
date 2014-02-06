@@ -51,13 +51,13 @@
 #ifndef __TITANIA_X3D_COMPONENTS_RENDERING_X3DGEOMETRIC_PROPERTY_NODE_H__
 #define __TITANIA_X3D_COMPONENTS_RENDERING_X3DGEOMETRIC_PROPERTY_NODE_H__
 
-#include "../Core/X3DPropertyNode.h"
+#include "../Core/X3DNode.h"
 
 namespace titania {
 namespace X3D {
 
 class X3DGeometricPropertyNode :
-	public X3DPropertyNode
+	public X3DNode
 {
 protected:
 

@@ -51,14 +51,14 @@
 #ifndef __TITANIA_X3D_COMPONENTS_NURBS_X3DNURBS_CONTROL_CURVE_NODE_H__
 #define __TITANIA_X3D_COMPONENTS_NURBS_X3DNURBS_CONTROL_CURVE_NODE_H__
 
-#include "../Core/X3DPropertyNode.h"
+#include "../Core/X3DNode.h"
 #include "../../Types/Geometry.h"
 
 namespace titania {
 namespace X3D {
 
 class X3DNurbsControlCurveNode :
-	virtual public X3DPropertyNode
+	virtual public X3DNode
 {
 public:
 

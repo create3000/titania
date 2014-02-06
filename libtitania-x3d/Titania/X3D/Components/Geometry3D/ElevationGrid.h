@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,8 +51,11 @@
 #ifndef __TITANIA_X3D_COMPONENTS_GEOMETRY3D_ELEVATION_GRID_H__
 #define __TITANIA_X3D_COMPONENTS_GEOMETRY3D_ELEVATION_GRID_H__
 
+#include "../Rendering/X3DColorNode.h"
 #include "../Rendering/X3DGeometryNode.h"
+#include "../Rendering/X3DNormalNode.h"
 #include "../Texturing/TextureCoordinateGenerator.h"
+#include "../Texturing/X3DTextureCoordinateNode.h"
 
 namespace titania {
 namespace X3D {
@@ -214,12 +217,19 @@ public:
 
 	virtual
 	bool
-	isTransparent () const final override;
+	isTransparent () const final override
+	{ return transparent; }
 
 	virtual
 	bool
 	isLineGeometry () const final override
 	{ return false; }
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override;
 
 
 private:
@@ -229,7 +239,18 @@ private:
 	virtual
 	void
 	initialize () final override;
-	
+
+	///  @name Event handlers
+
+	void
+	set_texCoord ();
+
+	void
+	set_color ();
+
+	void
+	set_normal ();
+
 	///  @name Operations
 
 	virtual
@@ -254,7 +275,6 @@ private:
 	virtual
 	void
 	build () final override;
-
 
 	///  @name Static members
 
@@ -286,6 +306,11 @@ private:
 	};
 
 	Fields fields;
+
+	X3DSFNode <X3DTextureCoordinateNode> texCoordNode;
+	X3DSFNode <X3DColorNode>             colorNode;
+	X3DSFNode <X3DNormalNode>            normalNode;
+	bool                                 transparent;
 
 };
 

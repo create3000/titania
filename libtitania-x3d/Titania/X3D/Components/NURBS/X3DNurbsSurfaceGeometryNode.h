@@ -52,6 +52,8 @@
 #define __TITANIA_X3D_COMPONENTS_NURBS_X3DNURBS_SURFACE_GEOMETRY_NODE_H__
 
 #include "../NURBS/X3DParametricGeometryNode.h"
+#include "../Rendering/X3DCoordinateNode.h"
+#include "../Texturing/X3DTextureCoordinateNode.h"
 
 namespace titania {
 namespace X3D {
@@ -182,12 +184,22 @@ public:
 	isLineGeometry () const final override
 	{ return false; }
 
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () override;
+
 
 protected:
 
 	///  @name Construction
 
 	X3DNurbsSurfaceGeometryNode ();
+
+	virtual
+	void
+	initialize () override;
 
 	///  @name Operations
 
@@ -198,6 +210,14 @@ protected:
 
 
 private:
+
+	///  @name Event handlers
+
+	void
+	set_texCoord ();
+
+	void
+	set_controlPoint ();
 
 	///  @name Operations
 
@@ -240,6 +260,8 @@ private:
 	void
 	tessError (GLenum);
 
+	///  @name Members
+	
 	struct Fields
 	{
 		Fields ();
@@ -261,6 +283,9 @@ private:
 	};
 
 	Fields fields;
+	
+	X3DSFNode <X3DTextureCoordinateNode> texCoordNode;
+	X3DSFNode <X3DCoordinateNode>        controlPointNode;
 
 	GLenum type;
 	std::vector <Vector4f> texCoords;

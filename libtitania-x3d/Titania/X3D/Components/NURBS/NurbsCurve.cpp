@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -62,10 +62,10 @@ const std::string NurbsCurve::containerField = "geometry";
 NurbsCurve::Fields::Fields () :
 	controlPoint (new SFNode ()),
 	tessellation (new SFInt32 ()),
-	weight (new MFDouble ()),
-	closed (new SFBool ()),
-	knot (new MFDouble ()),
-	order (new SFInt32 (3))
+	      weight (new MFDouble ()),
+	      closed (new SFBool ()),
+	        knot (new MFDouble ()),
+	       order (new SFInt32 (3))
 { }
 
 NurbsCurve::NurbsCurve (X3DExecutionContext* const executionContext) :

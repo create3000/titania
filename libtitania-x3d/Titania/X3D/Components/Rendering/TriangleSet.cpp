@@ -91,10 +91,8 @@ TriangleSet::create (X3DExecutionContext* const executionContext) const
 void
 TriangleSet::build ()
 {
-	auto _coord = x3d_cast <X3DCoordinateNode*> (coord ());
-
-	if (_coord)
-		buildPolygons (3, _coord -> getSize ());
+	if (getCoord ())
+		buildPolygons (3, getCoord () -> getSize ());
 }
 
 void

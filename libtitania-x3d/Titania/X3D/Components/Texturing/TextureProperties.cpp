@@ -78,9 +78,9 @@ TextureProperties::Fields::Fields () :
 { }
 
 TextureProperties::TextureProperties (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DPropertyNode (),
-	         fields ()
+	X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	    X3DNode (),
+	     fields ()
 {
 	addField (inputOutput,    "metadata",            metadata ());
 	addField (inputOutput,    "borderColor",         borderColor ());
@@ -105,7 +105,7 @@ TextureProperties::create (X3DExecutionContext* const executionContext) const
 void
 TextureProperties::initialize ()
 {
-	X3DPropertyNode::initialize ();
+	X3DNode::initialize ();
 }
 
 GLenum

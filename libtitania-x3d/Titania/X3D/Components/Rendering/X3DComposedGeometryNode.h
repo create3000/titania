@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -66,6 +66,8 @@ class X3DComposedGeometryNode :
 	public X3DGeometryNode
 {
 public:
+
+	///  @name Fields
 
 	SFBool &
 	colorPerVertex ()
@@ -151,20 +153,67 @@ public:
 
 	virtual
 	bool
-	isTransparent () const final override;
+	isTransparent () const final override
+	{ return transparent; }
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () override;
 
 
 protected:
 
+	///  @name Construction
+
 	X3DComposedGeometryNode ();
+
+	virtual
+	void
+	initialize () override;
+
+	///  @name Event handlers
+
+	void
+	set_texCoord ();
+
+	void
+	set_color ();
+
+	void
+	set_normal ();
+
+	void
+	set_coord ();
 
 	void
 	set_index (const MFInt32 &);
+
+	///  @name Member access
+
+	const X3DSFNode <X3DTextureCoordinateNode> &
+	getTexCoord () const
+	{ return texCoordNode; }
+
+	const X3DSFNode <X3DColorNode> &
+	getColor () const
+	{ return colorNode; }
+
+	const X3DSFNode <X3DNormalNode> &
+	getNormal () const
+	{ return normalNode; }
+
+	const X3DSFNode <X3DCoordinateNode> &
+	getCoord () const
+	{ return coordNode; }
 
 	virtual
 	size_t
 	getIndex (size_t index)
 	{ return index; }
+
+	///  @name Operations
 
 	void
 	buildPolygons (size_t, size_t);
@@ -178,6 +227,8 @@ protected:
 
 
 private:
+
+	///  @name Members
 
 	struct Fields
 	{
@@ -196,6 +247,12 @@ private:
 	};
 
 	Fields fields;
+
+	X3DSFNode <X3DTextureCoordinateNode> texCoordNode;
+	X3DSFNode <X3DColorNode>             colorNode;
+	X3DSFNode <X3DNormalNode>            normalNode;
+	X3DSFNode <X3DCoordinateNode>        coordNode;
+	bool                                 transparent;
 
 };
 

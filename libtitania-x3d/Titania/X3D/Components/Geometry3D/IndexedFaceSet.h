@@ -223,8 +223,12 @@ private:
 	};
 
 	Fields fields;
-
-	size_t numPolygons;
+	
+	int32_t numTexCoord;
+	int32_t numColors;
+	int32_t numNormals;
+	int32_t numPoints;
+	int32_t numPolygons;
 
 };
 

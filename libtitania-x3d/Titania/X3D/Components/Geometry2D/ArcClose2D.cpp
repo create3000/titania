@@ -134,8 +134,8 @@ ArcClose2D::build ()
 	size_t vertices = segments + 2;
 	size_t reserve  = elements * vertices;
 
-	getTexCoord () .emplace_back ();
-	getTexCoord () [0] .reserve (reserve);
+	getTexCoords () .emplace_back ();
+	getTexCoords () [0] .reserve (reserve);
 
 	getNormals  () .reserve (reserve);
 	getVertices () .reserve (reserve);
@@ -146,7 +146,7 @@ ArcClose2D::build ()
 
 		if (closureType () not_eq "CHORD")
 		{
-			getTexCoord () [0] .emplace_back (0.5, 0.5, 0, 1);
+			getTexCoords () [0] .emplace_back (0.5, 0.5, 0, 1);
 			getNormals  () .emplace_back (0, 0, 1);
 			getVertices () .emplace_back (0, 0, 0);
 		}
@@ -161,7 +161,7 @@ ArcClose2D::build ()
 		auto texCoord = std::polar (0.5f, theta) + std::complex <float> (0.5f, 0.5f);
 		auto point    = std::polar (std::abs (radius ()), theta);
 
-		getTexCoord () [0] .emplace_back (texCoord .real (), texCoord .imag (), 0, 1);
+		getTexCoords () [0] .emplace_back (texCoord .real (), texCoord .imag (), 0, 1);
 		getNormals  () .emplace_back (0, 0, 1);
 		getVertices () .emplace_back (point .real (), point .imag (), 0);
 	}

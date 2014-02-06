@@ -133,7 +133,7 @@ protected:
 	///  @name Member access
 
 	TexCoordArray &
-	getTexCoord ()
+	getTexCoords ()
 	{ return texCoords; }
 
 	void

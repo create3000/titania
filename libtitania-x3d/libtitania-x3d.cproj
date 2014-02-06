@@ -399,7 +399,6 @@
     <None Include="Titania\X3D\Fields\SFTime.h" />
     <None Include="Titania\X3D\Rendering\ViewVolume.h" />
     <None Include="Titania\X3D\Fields\X3DScalar.h" />
-    <None Include="Titania\X3D\Components\Core\X3DPropertyNode.h" />
     <None Include="Titania\X3D\Browser\X3DBrowser.h" />
     <None Include="Titania\X3D\Rendering\X3DRenderer.h" />
     <None Include="Titania\X3D\Base\X3DOutput.h" />
@@ -705,7 +704,6 @@
     <Compile Include="Titania\X3D\Components\Core\X3DInfoNode.cpp" />
     <Compile Include="Titania\X3D\Components\Core\X3DMetadataObject.cpp" />
     <Compile Include="Titania\X3D\Components\Core\X3DNode.cpp" />
-    <Compile Include="Titania\X3D\Components\Core\X3DPropertyNode.cpp" />
     <Compile Include="Titania\X3D\Components\Core\X3DPrototypeInstance.cpp" />
     <Compile Include="Titania\X3D\Components\Core\X3DSensorNode.cpp" />
     <Compile Include="Titania\X3D\Components\CubeMapTexturing\ComposedCubeMapTexture.cpp" />

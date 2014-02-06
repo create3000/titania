@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -54,8 +54,6 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
-#include "../Text/FontStyle.h"
-
 namespace titania {
 namespace X3D {
 
@@ -78,7 +76,8 @@ Text::Text (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DGeometryNode (),
 	         fields (),
-	           text ()
+	           text (),
+	  fontStyleNode ()
 {
 	addField (inputOutput,    "metadata",   metadata ());
 	addField (inputOutput,    "string",     string ());
@@ -89,12 +88,39 @@ Text::Text (X3DExecutionContext* const executionContext) :
 	addField (outputOnly,     "textBounds", textBounds ());
 	addField (outputOnly,     "lineBounds", lineBounds ());
 	addField (inputOutput,    "fontStyle",  fontStyle ());
+	
+	addChildren (fontStyleNode);
 }
 
 X3DBaseNode*
 Text::create (X3DExecutionContext* const executionContext) const
 {
 	return new Text (executionContext);
+}
+
+void
+Text::initialize ()
+{
+	X3DGeometryNode::initialize ();
+
+	fontStyle () .addInterest (this, &Text::set_fontStyle);
+
+	set_fontStyle ();
+}
+
+void
+Text::set_fontStyle ()
+{
+	if (fontStyleNode)
+		fontStyleNode -> removeInterest (this);
+
+	fontStyleNode .set (x3d_cast <X3DFontStyleNode*> (fontStyle ()));
+
+	if (not fontStyleNode)
+		fontStyleNode .set (getBrowser () -> getBrowserOptions () -> fontStyle ());
+
+	if (fontStyleNode)
+		fontStyleNode -> addInterest (this);
 }
 
 float
@@ -104,17 +130,6 @@ Text::getLength (const size_t index)
 		return length () [index];
 
 	return 0;
-}
-
-const X3DFontStyleNode*
-Text::getFontStyle () const
-{
-	auto _fontStyle = x3d_cast <X3DFontStyleNode*> (fontStyle ());
-
-	if (_fontStyle)
-		return _fontStyle;
-
-	return getBrowser () -> getBrowserOptions () -> fontStyle ();
 }
 
 Box3f
@@ -128,7 +143,7 @@ Text::build ()
 {
 	//
 
-	text = getFontStyle () -> getTextGeometry (this);
+	text = fontStyleNode -> getTextGeometry (this);
 
 	// We cannot access the geometry thus we add a simple rectangle to the geometry to enable picking.
 
@@ -139,21 +154,21 @@ Text::build ()
 	auto min     = center - size1_2;
 	auto max     = center + size1_2;
 
-	getTexCoord () .emplace_back ();
+	getTexCoords () .emplace_back ();
 
-	getTexCoord () [0] .emplace_back (0, 0, 0, 1);
+	getTexCoords () [0] .emplace_back (0, 0, 0, 1);
 	getNormals  () .emplace_back (0, 0, 1);
 	getVertices () .emplace_back (min);
 
-	getTexCoord () [0] .emplace_back (1, 0, 0, 1);
+	getTexCoords () [0] .emplace_back (1, 0, 0, 1);
 	getNormals  () .emplace_back (0, 0, 1);
 	getVertices () .emplace_back (max .x (), min .y (), min .z ());
 
-	getTexCoord () [0] .emplace_back (1, 1, 0, 1);
+	getTexCoords () [0] .emplace_back (1, 1, 0, 1);
 	getNormals  () .emplace_back (0, 0, 1);
 	getVertices () .emplace_back (max);
 
-	getTexCoord () [0] .emplace_back (0, 1, 0, 1);
+	getTexCoords () [0] .emplace_back (0, 1, 0, 1);
 	getNormals  () .emplace_back (0, 0, 1);
 	getVertices () .emplace_back (min .x (), max .y (), min .z ());
 
@@ -170,6 +185,7 @@ void
 Text::dispose ()
 {
 	text .reset ();
+	fontStyleNode .dispose ();
 
 	X3DGeometryNode::dispose ();
 }

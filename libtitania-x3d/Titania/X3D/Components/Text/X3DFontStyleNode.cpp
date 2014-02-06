@@ -259,7 +259,7 @@ X3DFontStyleNode::Fields::Fields () :
 { }
 
 X3DFontStyleNode::X3DFontStyleNode () :
-	X3DPropertyNode (),
+	X3DNode (),
 	         fields (),
 	         italic (false),
 	           bold (false),
@@ -271,7 +271,7 @@ X3DFontStyleNode::X3DFontStyleNode () :
 void
 X3DFontStyleNode::initialize ()
 {
-	X3DPropertyNode::initialize ();
+	X3DNode::initialize ();
 
 	style ()   .addInterest (this, &X3DFontStyleNode::set_style);
 	justify () .addInterest (this, &X3DFontStyleNode::set_justify);

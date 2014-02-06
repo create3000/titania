@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -108,7 +108,7 @@ Disk2DOptions::build ()
 		std::complex <float> texCoord = std::polar <float> (0.5, theta) + std::complex <float> (0.5, 0.5);
 		std::complex <float> point    = std::polar <float> (1, theta);
 
-		getTexCoord () .emplace_back (texCoord .real (), texCoord .imag (), 0, 1);
+		getTexCoords () .emplace_back (texCoord .real (), texCoord .imag (), 0, 1);
 		getNormals  () .emplace_back (0, 0, 1);
 		getVertices () .emplace_back (point .real (), point .imag (), 0);
 	}

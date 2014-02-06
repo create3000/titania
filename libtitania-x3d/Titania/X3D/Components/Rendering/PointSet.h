@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,6 +51,8 @@
 #ifndef __TITANIA_X3D_COMPONENTS_RENDERING_POINT_SET_H__
 #define __TITANIA_X3D_COMPONENTS_RENDERING_POINT_SET_H__
 
+#include "../Rendering/X3DColorNode.h"
+#include "../Rendering/X3DCoordinateNode.h"
 #include "../Rendering/X3DGeometryNode.h"
 
 namespace titania {
@@ -59,20 +61,9 @@ namespace X3D {
 class PointSet :
 	public X3DGeometryNode
 {
-	///  @name Tests
-
-	virtual
-	bool
-	isLineGeometry () const final override
-	{ return true; }
-
-	///  @name Operations
-
-	void
-	build ();
-
-
 public:
+
+	///  @name Construction
 
 	PointSet (X3DExecutionContext* const);
 
@@ -132,19 +123,52 @@ public:
 	fogCoord () const
 	{ return *fields .fogCoord; }
 
-	///  @name Operations
+	///  @name Test
 
 	virtual
 	bool
-	isTransparent () const final override;
+	isTransparent () const final override
+	{ return transparent; }
+
+	virtual
+	bool
+	isLineGeometry () const final override
+	{ return true; }
+
+	///  @name Operations
 
 	virtual
 	void
-	draw ();
+	draw () final override;
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override;
 
 
 private:
 
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+	///  @name Event handler
+
+	void
+	set_color ();
+
+	void
+	set_coord ();
+
+	///  @name Operations
+
+	virtual
+	void
+	build () final override;
 
 	///  @name Static members
 
@@ -165,6 +189,10 @@ private:
 	};
 
 	Fields fields;
+
+	X3DSFNode <X3DColorNode>      colorNode;
+	X3DSFNode <X3DCoordinateNode> coordNode;
+	bool                          transparent;
 
 };
 

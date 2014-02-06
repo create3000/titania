@@ -77,7 +77,6 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Components/Core/X3DInfoNode.cpp \
 	Titania/X3D/Components/Core/X3DMetadataObject.cpp \
 	Titania/X3D/Components/Core/X3DNode.cpp \
-	Titania/X3D/Components/Core/X3DPropertyNode.cpp \
 	Titania/X3D/Components/Core/X3DPrototypeInstance.cpp \
 	Titania/X3D/Components/Core/X3DSensorNode.cpp \
 	Titania/X3D/Components/CubeMapTexturing/ComposedCubeMapTexture.cpp \

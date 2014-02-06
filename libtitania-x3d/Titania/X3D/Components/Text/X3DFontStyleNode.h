@@ -51,8 +51,8 @@
 #ifndef __TITANIA_X3D_COMPONENTS_TEXT_X3DFONT_STYLE_NODE_H__
 #define __TITANIA_X3D_COMPONENTS_TEXT_X3DFONT_STYLE_NODE_H__
 
+#include "../Core/X3DNode.h"
 #include "../../Types/Geometry.h"
-#include "../Core/X3DPropertyNode.h"
 #include "../../Miscellaneous/FontConfig.h"
 
 namespace titania {
@@ -136,7 +136,7 @@ private:
 };
 
 class X3DFontStyleNode :
-	public X3DPropertyNode
+	public X3DNode
 {
 public:
 

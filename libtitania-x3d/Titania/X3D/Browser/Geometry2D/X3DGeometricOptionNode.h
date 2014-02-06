@@ -64,7 +64,7 @@ class X3DGeometricOptionNode :
 public:
 
 	const std::vector <Vector4f> &
-	getTexCoord () const
+	getTexCoords () const
 	{ return texCoord; }
 
 	const std::vector <Vector3f> &
@@ -85,7 +85,7 @@ protected:
 	X3DGeometricOptionNode ();
 
 	std::vector <Vector4f> &
-	getTexCoord ()
+	getTexCoords ()
 	{ return texCoord; }
 
 	std::vector <Vector3f> &

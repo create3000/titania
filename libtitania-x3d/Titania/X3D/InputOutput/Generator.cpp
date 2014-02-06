@@ -151,7 +151,6 @@ Generator::NodeTypesIndex::NodeTypesIndex ()
 	emplace_back ("X3DPointingDeviceSensorNode");
 	emplace_back ("X3DProductStructureChildNode");
 	emplace_back ("X3DProgrammableShaderObject");
-	emplace_back ("X3DPropertyNode");
 	emplace_back ("X3DPrototypeInstance");
 	emplace_back ("X3DRigidJointNode");
 	emplace_back ("X3DScriptNode");

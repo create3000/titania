@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -86,8 +86,8 @@ TriangleSet2D::build ()
 	size_t elements = solid () ? 1 : 2;
 	size_t reserve  = elements * vertices () .size ();
 
-	getTexCoord () .emplace_back ();
-	getTexCoord () [0] .reserve (reserve);
+	getTexCoords () .emplace_back ();
+	getTexCoords () [0] .reserve (reserve);
 
 	getNormals  () .reserve (reserve);
 	getVertices () .reserve (reserve);
@@ -116,7 +116,7 @@ TriangleSet2D::build ()
 void
 TriangleSet2D::buildTexCoord ()
 {
-	getTexCoord () [0] .reserve (getVertices () .size ());
+	getTexCoords () [0] .reserve (getVertices () .size ());
 
 	Vector3f min;
 	float    Ssize;
@@ -126,7 +126,7 @@ TriangleSet2D::buildTexCoord ()
 
 	for (const auto & point : getVertices ())
 	{
-		getTexCoord () [0] .emplace_back ((point [0] - min [0]) / Ssize,
+		getTexCoords () [0] .emplace_back ((point [0] - min [0]) / Ssize,
 		                                  (point [1] - min [1]) / Ssize,
 		                                  0,
 		                                  1);

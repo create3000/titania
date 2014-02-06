@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,6 +51,8 @@
 #ifndef __TITANIA_X3D_COMPONENTS_RENDERING_INDEXED_LINE_SET_H__
 #define __TITANIA_X3D_COMPONENTS_RENDERING_INDEXED_LINE_SET_H__
 
+#include "../Rendering/X3DColorNode.h"
+#include "../Rendering/X3DCoordinateNode.h"
 #include "../Rendering/X3DGeometryNode.h"
 
 namespace titania {
@@ -149,7 +151,8 @@ public:
 
 	virtual
 	bool
-	isTransparent () const final override;
+	isTransparent () const final override
+	{ return transparent; }
 
 	virtual
 	bool
@@ -158,12 +161,18 @@ public:
 
 	///  @name Operations
 
-	std::vector <Vector3f> 
+	std::vector <Vector3f>
 	getPolylines () const;
 
 	virtual
 	void
 	draw () final override;
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override;
 
 
 private:
@@ -173,13 +182,8 @@ private:
 	virtual
 	void
 	initialize () final override;
-
-	///  @name Operations
-
-	std::deque <std::deque <size_t>>
-	getPolylineIndices () const;
-
-	///  @name Event handlers
+	
+	///  @name Event handler
 
 	void
 	set_coordIndex ();
@@ -187,12 +191,20 @@ private:
 	void
 	set_colorIndex ();
 
+	void
+	set_color ();
+
+	void
+	set_coord ();
+
 	///  @name Operations
+
+	std::deque <std::deque <size_t>> 
+	getPolylineIndices () const;
 
 	virtual
 	void
 	build () final override;
-
 
 	///  @name Static members
 
@@ -216,8 +228,13 @@ private:
 	};
 
 	Fields fields;
-	
-	size_t numPolylines;
+
+	X3DSFNode <X3DColorNode>      colorNode;
+	X3DSFNode <X3DCoordinateNode> coordNode;
+	int32_t                       numColors;
+	int32_t                       numPoints;
+	int32_t                       numPolylines;
+	bool                          transparent;
 
 };
 

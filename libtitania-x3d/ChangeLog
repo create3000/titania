@@ -1,5 +1,65 @@
 2014-02-06  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Router.cpp:
+	* X3DConstants.h:
+	* Text.h:
+	* Text.cpp:
+	* Generator.cpp:
+	* Contour2D.h:
+	* Box.cpp:
+	* Cone.cpp:
+	* LineSet.h:
+	* Contour2D.cpp:
+	* NurbsCurve.cpp:
+	* PointSet.h:
+	* Sphere.cpp:
+	* LineSet.cpp:
+	* Disk2D.cpp:
+	* BoxOptions.cpp:
+	* PointSet.cpp:
+	* X3DPropertyNode.h:
+	* X3DFontStyleNode.h:
+	* QuadSet.cpp:
+	* Cylinder.cpp:
+	* Extrusion.cpp:
+	* X3DPropertyNode.cpp:
+	* ArcClose2D.cpp:
+	* X3DFontStyleNode.cpp:
+	* Disk2DOptions.cpp:
+	* TriangleSet.cpp:
+	* ElevationGrid.h:
+	* IndexedLineSet.h:
+	* Rectangle2D.cpp:
+	* IndexedFaceSet.h:
+	* X3DGeometryNode.h:
+	* ElevationGrid.cpp:
+	* TriangleSet2D.cpp:
+	* IndexedLineSet.cpp:
+	* TriangleFanSet.cpp:
+	* TextureProperties.h:
+	* X3DGeometryNode.cpp:
+	* jsX3DConstants.h:
+	* NurbsTrimmedSurface.cpp:
+	* IndexedFaceSet.cpp:
+	* QuadSphereOptions.cpp:
+	* TriangleStripSet.cpp:
+	* Rectangle2DOptions.cpp:
+	* TextureProperties.cpp:
+	* jsX3DConstants.cpp:
+	* X3DNurbsControlCurveNode.h:
+	* X3DGeometricOptionNode.h:
+	* X3DNurbsControlCurveNode.cpp:
+	* X3DComposedGeometryNode.h:
+	* X3DNurbsSurfaceGeometryNode.h:
+	* X3DGeometricPropertyNode.h:
+	* X3DNurbsSurfaceGeometryNode.cpp:
+	* X3DComposedGeometryNode.cpp:
+	* X3DGeometricPropertyNode.cpp: 
+
+2014-02-06  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Appearance.h:
 	* Appearance.cpp:
 	* X3DShaderNode.h:
