@@ -70,19 +70,15 @@ public:
 
 	virtual
 	void
-	addVertex (opengl::tessellator <size_t> &, int32_t, size_t) const = 0;
+	addVertex (opengl::tessellator <size_t> &, size_t, size_t) const = 0;
 
 	virtual
 	void
-	addVertex (std::vector <Vector3f>&, int32_t) const = 0;
+	addVertex (std::vector <Vector3f>&, size_t) const = 0;
 	
 	virtual
 	std::vector <Vector4f>
 	getControlPoints (const MFDouble & weight) const = 0;
-
-	virtual
-	void
-	resize (size_t) = 0;
 
 	virtual
 	bool

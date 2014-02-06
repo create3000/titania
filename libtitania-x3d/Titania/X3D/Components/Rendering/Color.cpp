@@ -79,9 +79,9 @@ Color::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-Color::addColor (std::vector <Color4f> & colors, int32_t index) const
+Color::addColor (std::vector <Color4f> & colors, size_t index) const
 {
-	if (index > -1)
+	if (index < color () .size ())
 	{
 		const Color3f & color3 = color () [index];
 
@@ -101,19 +101,6 @@ Color::getHSVA (std::vector <Vector4f> & colors) const
 		float h, s, v;
 		color3 .getHSV (h, s, v);
 		colors .emplace_back (h, s, v, 1);
-	}
-}
-
-void
-Color::resize (size_t size)
-{
-	if (color () .empty ())
-		color () .resize (size, SFColor (1, 1, 1));
-
-	else
-	{
-		if (color () .size () < size)
-			color () .resize (size, color () .back ());
 	}
 }
 

@@ -76,8 +76,6 @@ IndexedLineSet::IndexedLineSet (X3DExecutionContext* const executionContext) :
 	         fields (),
 	      colorNode (),
 	      coordNode (),
-	      numColors (0),
-	      numPoints (0),
 	   numPolylines (0),
 	    transparent (false)
 {
@@ -127,9 +125,9 @@ IndexedLineSet::getPolylines () const
 	if (not coordNode or coordNode -> isEmpty ())
 		return polylines;
 
-	auto polylineIdices = std::move (getPolylineIndices ());
+	auto polylineIndices = std::move (getPolylineIndices ());
 
-	for (const auto polyline : polylineIdices)
+	for (const auto polyline : polylineIndices)
 	{
 		// Create two vertices for each line.
 
@@ -207,17 +205,11 @@ IndexedLineSet::set_coordIndex ()
 		{
 			// Determine number of points and polygons.
 
-			numPoints = -1;
-
 			for (const auto & index : coordIndex ())
 			{
-				numPoints = std::max <int32_t> (numPoints, index);
-
 				if (index < 0)
 					++ numPolylines;
 			}
-
-			++ numPoints;
 
 			if (coordIndex () .back () > -1)
 				++ numPolylines;
@@ -249,17 +241,6 @@ IndexedLineSet::set_colorIndex ()
 				colorIndex () .emplace_back (i);
 			}
 		}
-
-		// Determine number of used colors.
-
-		numColors = -1;
-
-		for (const auto & index : colorIndex ())
-		{
-			numColors = std::max <int32_t> (numColors, index);
-		}
-
-		++ numColors;
 	}
 }
 
@@ -298,13 +279,6 @@ IndexedLineSet::build ()
 		return;
 
 	auto polylines = std::move (getPolylineIndices ());
-
-	coordNode -> resize (numPoints);
-
-	// Color
-
-	if (colorNode)
-		colorNode -> resize (numColors);
 
 	// Fill GeometryNode
 

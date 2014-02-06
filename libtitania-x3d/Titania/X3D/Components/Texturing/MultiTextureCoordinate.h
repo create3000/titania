@@ -103,16 +103,12 @@ public:
 
 	virtual
 	void
-	addTexCoord (size_t, TexCoordArray & texCoords, int32_t) const final override;
+	addTexCoord (size_t, TexCoordArray & texCoords, size_t) const final override;
 
 	virtual
 	void
 	getTexCoord (std::vector <Vector4f> &) const final override
 	{ }
-
-	virtual
-	void
-	resize (size_t) final override;
 
 	virtual
 	void

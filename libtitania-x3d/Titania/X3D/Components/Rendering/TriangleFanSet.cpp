@@ -129,10 +129,6 @@ TriangleFanSet::set_fanCount ()
 
 		index += vertexCount;
 	}
-
-	// Resize coord if to small
-	if (not coordIndex .empty ())
-		getCoord () -> resize (index);
 }
 
 void

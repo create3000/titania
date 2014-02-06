@@ -92,9 +92,9 @@ GeoCoordinate::getNormal (size_t index1, size_t index2, size_t index3) const
 }
 
 void
-GeoCoordinate::addVertex (opengl::tessellator <size_t> & tessellator, int32_t index, size_t i) const
+GeoCoordinate::addVertex (opengl::tessellator <size_t> & tessellator, size_t index, size_t i) const
 {
-	if (index > -1)
+	if (index < point () .size ())
 		tessellator .add_vertex (point () [index] .getValue (), i);
 
 	else
@@ -102,9 +102,9 @@ GeoCoordinate::addVertex (opengl::tessellator <size_t> & tessellator, int32_t in
 }
 
 void
-GeoCoordinate::addVertex (std::vector <Vector3f> & vertices, int32_t index) const
+GeoCoordinate::addVertex (std::vector <Vector3f> & vertices, size_t index) const
 {
-	if (index > -1)
+	if (index < point () .size ())
 		vertices .emplace_back (point () [index] .getValue ());
 
 	else
@@ -136,13 +136,6 @@ GeoCoordinate::getControlPoints (const MFDouble & weight) const
 	}
 
 	return controlPoints;
-}
-
-void
-GeoCoordinate::resize (size_t size)
-{
-	if (point () .size () < size)
-		point () .resize (size);
 }
 
 } // X3D

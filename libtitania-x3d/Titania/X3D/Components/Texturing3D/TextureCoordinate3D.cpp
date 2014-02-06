@@ -86,9 +86,9 @@ TextureCoordinate3D::init (TexCoordArray & texCoords, size_t reserve) const
 }
 
 void
-TextureCoordinate3D::addTexCoord (size_t channel, TexCoordArray & texCoords, int32_t index) const
+TextureCoordinate3D::addTexCoord (size_t channel, TexCoordArray & texCoords, size_t index) const
 {
-	if (index > -1)
+	if (index < point () .size ())
 	{
 		const Vector3f & point3 = point () [index];
 		texCoords [channel] .emplace_back (point3 .x (), point3 .y (), point3 .z (), 1);
@@ -104,19 +104,6 @@ TextureCoordinate3D::getTexCoord (std::vector <Vector4f> & texCoords) const
 
 	for (const Vector3f & point3 : point ())
 		texCoords .emplace_back (point3 .x (), point3 .y (), point3 .z (), 1);	
-}
-
-void
-TextureCoordinate3D::resize (size_t size)
-{
-	if (point () .empty ())
-		point () .resize (size);
-
-	else
-	{
-		if (point () .size () < size)
-			point () .resize (size, point () .back ());
-	}
 }
 
 void

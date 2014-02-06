@@ -105,8 +105,6 @@ public:
 
 private:
 
-	using X3DComposedGeometryNode::set_index;
-
 	virtual
 	void
 	initialize () final override;

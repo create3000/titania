@@ -77,10 +77,6 @@ IndexedFaceSet::IndexedFaceSet (X3DExecutionContext* const executionContext) :
 	            X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DComposedGeometryNode (),
 	                 fields (),
-	            numTexCoord (0),
-	              numColors (0),
-	             numNormals (0),
-	              numPoints (0),
 	            numPolygons (0)
 {
 	addField (inputOutput,    "metadata",          metadata ());
@@ -133,19 +129,13 @@ IndexedFaceSet::set_coordIndex ()
 	{
 		if (not coordIndex () .empty ())
 		{
-			// Determine number of points and polygons.
-
-			numPoints = -1;
+			// Determine number of polygons.
 
 			for (const auto & index : coordIndex ())
 			{
-				numPoints = std::max <int32_t> (numPoints, index);
-
 				if (index < 0)
 					++ numPolygons;
 			}
-
-			++ numPoints;
 
 			if (coordIndex () .back () > -1)
 				++ numPolygons;
@@ -167,17 +157,6 @@ IndexedFaceSet::set_texCoordIndex ()
 		{
 			texCoordIndex () .emplace_back (coordIndex () [i]);
 		}
-
-		// Determine number of used texCoords.
-
-		numTexCoord = -1;
-
-		for (const auto & index : texCoordIndex ())
-		{
-			numTexCoord = std::max <int32_t> (numTexCoord, index);
-		}
-
-		++ numTexCoord;
 	}
 }
 
@@ -201,17 +180,6 @@ IndexedFaceSet::set_colorIndex ()
 				colorIndex () .emplace_back (i);
 			}
 		}
-
-		// Determine number of used colors.
-
-		numColors = -1;
-
-		for (const auto & index : colorIndex ())
-		{
-			numColors = std::max <int32_t> (numColors, index);
-		}
-
-		++ numColors;
 	}
 }
 
@@ -235,17 +203,6 @@ IndexedFaceSet::set_normalIndex ()
 				normalIndex () .emplace_back (i);
 			}
 		}
-
-		// Determine number of used normals.
-
-		numNormals = -1;
-
-		for (const auto & index : normalIndex ())
-		{
-			numNormals = std::max <int32_t> (numNormals, index);
-		}
-
-		++ numNormals;
 	}
 }
 
@@ -264,30 +221,19 @@ IndexedFaceSet::build ()
 	if (not getCoord () or polygons .empty ())
 		return;
 
-	getCoord () -> resize (numPoints);
-
 	// Color
 
 	if (getColor ())
-	{
-		getColor () -> resize (numColors);
 		getColors () .reserve (reserve);
-	}
 
 	// TextureCoordinate
 
 	if (getTexCoord ())
-	{
 		getTexCoord () -> init (getTexCoords (), reserve);
-		getTexCoord () -> resize (numTexCoord);
-	}
 	else
 		getTexCoords () .emplace_back ();
 
 	// Normal
-
-	if (getNormal ())
-		getNormal () -> resize (numNormals);
 
 	getNormals () .reserve (reserve);
 

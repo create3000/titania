@@ -88,9 +88,9 @@ CoordinateDouble::getNormal (size_t index1, size_t index2, size_t index3) const
 }
 
 void
-CoordinateDouble::addVertex (opengl::tessellator <size_t> & tessellator, int32_t index, size_t i) const
+CoordinateDouble::addVertex (opengl::tessellator <size_t> & tessellator, size_t index, size_t i) const
 {
-	if (index > -1)
+	if (index < point () .size ())
 		tessellator .add_vertex (point () [index] .getValue (), i);
 
 	else
@@ -98,9 +98,9 @@ CoordinateDouble::addVertex (opengl::tessellator <size_t> & tessellator, int32_t
 }
 
 void
-CoordinateDouble::addVertex (std::vector <Vector3f> & vertices, int32_t index) const
+CoordinateDouble::addVertex (std::vector <Vector3f> & vertices, size_t index) const
 {
-	if (index > -1)
+	if (index < point () .size ())
 		vertices .emplace_back (point () [index] .getValue ());
 
 	else
@@ -132,13 +132,6 @@ CoordinateDouble::getControlPoints (const MFDouble & weight) const
 	}
 
 	return controlPoints;
-}
-
-void
-CoordinateDouble::resize (size_t size)
-{
-	if (point () .size () < size)
-		point () .resize (size);
 }
 
 } // X3D

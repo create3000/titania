@@ -93,16 +93,6 @@ IndexedTriangleSet::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-IndexedTriangleSet::initialize ()
-{
-	X3DComposedGeometryNode::initialize ();
-
-	index () .addInterest (static_cast <X3DComposedGeometryNode*> (this), &IndexedTriangleSet::set_index);
-
-	set_index (index ());
-}
-
-void
 IndexedTriangleSet::build ()
 {
 	buildPolygons (3, index () .size ());

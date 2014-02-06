@@ -1,5 +1,52 @@
 2014-02-06  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Color.h:
+	* Normal.h:
+	* Color.cpp:
+	* Normal.cpp:
+	* LineSet.cpp:
+	* ColorRGBA.h:
+	* Coordinate.h:
+	* ColorRGBA.cpp:
+	* Coordinate.cpp:
+	* X3DColorNode.h:
+	* CoordinateDouble.h:
+	* X3DNormalNode.h:
+	* GeoCoordinate.h:
+	* CoordinateDouble.cpp:
+	* IndexedLineSet.h:
+	* IndexedFaceSet.h:
+	* RoundedRectangle2D.x3dv:
+	* IndexedQuadSet.h:
+	* ElevationGrid.cpp:
+	* TriangleFanSet.cpp:
+	* IndexedLineSet.cpp:
+	* GeoCoordinate.cpp:
+	* TextureCoordinate.h:
+	* IndexedFaceSet.cpp:
+	* X3DCoordinateNode.h:
+	* TriangleStripSet.cpp:
+	* IndexedQuadSet.cpp:
+	* IndexedTriangleSet.h:
+	* TextureCoordinate.cpp:
+	* IndexedTriangleSet.cpp:
+	* TextureCoordinate3D.h:
+	* IndexedTriangleFanSet.h:
+	* TextureCoordinate4D.h:
+	* MultiTextureCoordinate.h:
+	* TextureCoordinate3D.cpp:
+	* TextureCoordinate4D.cpp:
+	* IndexedTriangleStripSet.h:
+	* X3DComposedGeometryNode.h:
+	* IndexedTriangleFanSet.cpp:
+	* MultiTextureCoordinate.cpp:
+	* X3DTextureCoordinateNode.h:
+	* IndexedTriangleStripSet.cpp:
+	* X3DComposedGeometryNode.cpp:
+	* TextureCoordinateGenerator.h: 
+
+2014-02-06  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* Router.cpp:

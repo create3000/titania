@@ -69,20 +69,16 @@ public:
 	init (TexCoordArray &, size_t) const = 0;
 
 	void
-	addTexCoord (TexCoordArray & texCoord, int32_t index) const
+	addTexCoord (TexCoordArray & texCoord, size_t index) const
 	{ addTexCoord (0, texCoord, index); }
 
 	virtual
 	void
-	addTexCoord (size_t, TexCoordArray &, int32_t) const = 0;
+	addTexCoord (size_t, TexCoordArray &, size_t) const = 0;
 
 	virtual
 	void
 	getTexCoord (std::vector <Vector4f> &) const = 0;
-
-	virtual
-	void
-	resize (size_t) = 0;
 
 	virtual
 	void

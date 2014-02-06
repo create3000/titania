@@ -65,11 +65,7 @@ public:
 
 	virtual
 	void
-	addVector (std::vector <Vector3f>&, int32_t) const = 0;
-
-	virtual
-	void
-	resize (size_t) = 0;
+	addVector (std::vector <Vector3f>&, size_t) const = 0;
 
 	virtual
 	bool

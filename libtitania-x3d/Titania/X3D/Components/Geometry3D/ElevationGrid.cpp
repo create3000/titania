@@ -322,9 +322,6 @@ ElevationGrid::build ()
 	if (xDimension () < 2 or zDimension () < 2)
 		return;
 
-	size_t vertices = xDimension () * zDimension ();
-	size_t faces    = (xDimension () - 1) * (zDimension () - 1);
-
 	std::vector <size_t>   coordIndex = createCoordIndex ();
 	std::vector <Vector3f> points     = createPoints ();
 
@@ -335,10 +332,7 @@ ElevationGrid::build ()
 	std::vector <Vector4f> texCoords;
 
 	if (texCoordNode)
-	{
 		texCoordNode -> init (getTexCoords (), coordIndex .size ());
-		texCoordNode -> resize (vertices);
-	}
 	else
 	{
 		texCoords = std::move (createTexCoord ());
@@ -349,30 +343,15 @@ ElevationGrid::build ()
 	// Color
 
 	if (colorNode)
-	{
-		if (colorPerVertex ())
-			colorNode -> resize (vertices);
-
-		else
-			colorNode -> resize (faces);
-
 		getColors () .reserve (coordIndex .size ());
-	}
 
 	// Normals
 
 	if (normalNode)
-	{
-		if (normalPerVertex ())
-			normalNode -> resize (vertices);
-
-		else
-			normalNode -> resize (faces);
-	}
+		getNormals () .reserve (coordIndex .size ());
 	else
 		getNormals () = std::move (createNormals (points, coordIndex));
 
-	getNormals () .reserve (coordIndex .size ());
 
 	// Build geometry
 

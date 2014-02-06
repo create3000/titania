@@ -94,16 +94,6 @@ IndexedQuadSet::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-IndexedQuadSet::initialize ()
-{
-	X3DComposedGeometryNode::initialize ();
-
-	index () .addInterest (static_cast <X3DComposedGeometryNode*> (this), &IndexedQuadSet::set_index);
-
-	set_index (index ());
-}
-
-void
 IndexedQuadSet::build ()
 {
 	buildPolygons (4, index () .size ());

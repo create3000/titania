@@ -187,9 +187,6 @@ protected:
 	void
 	set_coord ();
 
-	void
-	set_index (const MFInt32 &);
-
 	///  @name Member access
 
 	const X3DSFNode <X3DTextureCoordinateNode> &

@@ -126,10 +126,6 @@ TriangleStripSet::set_stripCount ()
 
 		index += vertexCount;
 	}
-
-	// Resize coord if to small
-	if (not coordIndex .empty ())
-		getCoord () -> resize (index);
 }
 
 void

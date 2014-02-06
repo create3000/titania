@@ -104,15 +104,11 @@ public:
 	
 	virtual
 	void
-	addColor (std::vector <Color4f>&, int32_t) const final override;
+	addColor (std::vector <Color4f>&, size_t) const final override;
 	
 	virtual
 	void
 	getHSVA (std::vector <Vector4f> &) const final override;
-
-	virtual
-	void
-	resize (size_t) final override;
 
 	virtual
 	bool

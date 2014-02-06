@@ -98,7 +98,7 @@ MultiTextureCoordinate::init (TexCoordArray & texCoords, size_t reserve) const
 }
 
 void
-MultiTextureCoordinate::addTexCoord (size_t channel, TexCoordArray & texCoords, int32_t index) const
+MultiTextureCoordinate::addTexCoord (size_t channel, TexCoordArray & texCoords, size_t index) const
 {
 	channel = 0;
 
@@ -114,18 +114,6 @@ MultiTextureCoordinate::addTexCoord (size_t channel, TexCoordArray & texCoords, 
 			textureCoordinate -> addTexCoord (channel, texCoords, index);
 			++ channel;
 		}
-	}
-}
-
-void
-MultiTextureCoordinate::resize (size_t size)
-{
-	for (const auto & node : texCoord ())
-	{
-		auto texCoord = x3d_cast <X3DTextureCoordinateNode*> (node);
-
-		if (texCoord)
-			texCoord -> resize (size);
 	}
 }
 

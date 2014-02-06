@@ -119,19 +119,15 @@ public:
 
 	virtual
 	void
-	addVertex (opengl::tessellator <size_t> &, int32_t, size_t) const final override;
+	addVertex (opengl::tessellator <size_t> &, size_t, size_t) const final override;
 
 	virtual
 	void
-	addVertex (std::vector <Vector3f>&, int32_t) const final override;
+	addVertex (std::vector <Vector3f>&, size_t) const final override;
 
 	virtual
 	std::vector <Vector4f>
 	getControlPoints (const MFDouble & weight) const final override;
-
-	virtual
-	void
-	resize (size_t) final override;
 
 	virtual
 	bool

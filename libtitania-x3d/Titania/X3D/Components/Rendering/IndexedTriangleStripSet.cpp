@@ -105,8 +105,6 @@ IndexedTriangleStripSet::initialize ()
 void
 IndexedTriangleStripSet::set_index ()
 {
-	set_index (index ());
-
 	// Build coordIndex
 
 	coordIndex .clear ();

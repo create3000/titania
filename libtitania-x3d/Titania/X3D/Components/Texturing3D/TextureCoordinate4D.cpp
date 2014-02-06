@@ -86,9 +86,9 @@ TextureCoordinate4D::init (TexCoordArray & texCoords, size_t reserve) const
 }
 
 void
-TextureCoordinate4D::addTexCoord (size_t channel, TexCoordArray & texCoords, int32_t index) const
+TextureCoordinate4D::addTexCoord (size_t channel, TexCoordArray & texCoords, size_t index) const
 {
-	if (index > -1)
+	if (index < point () .size ())
 		texCoords [channel] .emplace_back (point () [index]);
 	else
 		texCoords [channel] .emplace_back (0, 0, 0, 1);
@@ -101,19 +101,6 @@ TextureCoordinate4D::getTexCoord (std::vector <Vector4f> & texCoords) const
 
 	for (const Vector4f & point4 : point ())
 		texCoords .emplace_back (point4);	
-}
-
-void
-TextureCoordinate4D::resize (size_t size)
-{
-	if (point () .empty ())
-		point () .resize (size);
-
-	else
-	{
-		if (point () .size () < size)
-			point () .resize (size, point () .back ());
-	}
 }
 
 void

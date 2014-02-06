@@ -231,8 +231,6 @@ private:
 
 	X3DSFNode <X3DColorNode>      colorNode;
 	X3DSFNode <X3DCoordinateNode> coordNode;
-	int32_t                       numColors;
-	int32_t                       numPoints;
 	int32_t                       numPolylines;
 	bool                          transparent;
 

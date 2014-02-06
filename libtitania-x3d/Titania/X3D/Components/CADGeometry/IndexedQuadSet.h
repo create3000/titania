@@ -106,10 +106,6 @@ public:
 private:
 
 	virtual
-	void
-	initialize () final override;
-
-	virtual
 	size_t
 	getIndex (size_t i)
 	{ return index () [i]; }

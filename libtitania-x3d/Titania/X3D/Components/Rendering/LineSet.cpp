@@ -139,11 +139,6 @@ LineSet::build ()
 	if (not coordNode or coordNode -> isEmpty ())
 		return;
 
-	// Color
-
-	if (colorNode)
-		colorNode -> resize (coordNode -> getSize ());
-
 	// Fill GeometryNode
 
 	size_t index = 0;

@@ -154,63 +154,28 @@ X3DComposedGeometryNode::set_coord ()
 }
 
 void
-X3DComposedGeometryNode::set_index (const MFInt32 & index)
-{
-	if (coordNode or coordNode -> isEmpty ())
-	{
-		if (not index .empty ())
-		{
-			// Determine number of points and polygons.
-
-			int32_t numPoints = -1;
-
-			for (const auto & i : index)
-			{
-				numPoints = std::max <int32_t> (numPoints, i);
-			}
-
-			++ numPoints;
-
-			// Resize coord .point if to small
-			coordNode -> resize (numPoints);
-		}
-	}
-}
-
-void
 X3DComposedGeometryNode::buildPolygons (size_t vertexCount, size_t size)
 {
 	if (not coordNode or coordNode -> isEmpty ())
 		return;
 
-	size_t faces = size / vertexCount; // Integer division
-
 	// Set size to a multiple of vertexCount.
 
-	size = faces * vertexCount;
+	size -= size % vertexCount;
 
 	// Color
 
 	if (colorNode)
-	{
-		colorNode -> resize (colorPerVertex () ? size : faces);
 		getColors () .reserve (size);
-	}
 
 	// TextureCoordinate
 
 	if (texCoordNode)
-	{
 		texCoordNode -> init (getTexCoords (), size);
-		texCoordNode -> resize (size);
-	}
 	else
 		getTexCoords () .emplace_back ();
 
 	// Normal
-
-	if (normalNode)
-		normalNode -> resize (normalPerVertex () ? size : faces);
 
 	getNormals () .reserve (size);
 
