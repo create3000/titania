@@ -599,6 +599,8 @@ X3DBaseNode::addEvent (X3DChildObject* const object, const EventPtr & event)
 void
 X3DBaseNode::addEvent ()
 {
+	__LOG__ << getTypeName () << std::endl;
+
 	isTainted (true);
 
 	if (not nodeId .time)

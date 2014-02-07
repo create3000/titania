@@ -139,7 +139,7 @@ private:
 
 	Fields fields;
 
-	std::deque <int32_t> coordIndex;
+	std::vector <int32_t> coordIndex;
 
 };
 

@@ -153,7 +153,7 @@ public:
 
 	///  @name Operations
 
-	std::deque <Gtk::TreeModel::iterator>
+	std::vector <Gtk::TreeModel::iterator>
 	get_iters (X3D::X3DChildObject* const) const;
 
 	iterator
@@ -187,7 +187,7 @@ private:
 	void
 	set_data (iterator &, OutlineTreeData*) const;
 
-	std::deque <OutlineTreeData*>
+	std::vector <OutlineTreeData*>
 	get_parents (const iterator &) const;
 
 	virtual

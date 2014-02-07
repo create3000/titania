@@ -227,11 +227,11 @@ IndexedLineSet::getPolylines () const
 	return polylines;
 }
 
-std::deque <std::deque <size_t>> 
+std::vector <std::vector <size_t>> 
 IndexedLineSet::getPolylineIndices () const
 {
-	std::deque <std::deque <size_t>>  polylines;
-	std::deque <size_t>               polyline;
+	std::vector <std::vector <size_t>>  polylines;
+	std::vector <size_t>               polyline;
 
 	if (not coordIndex () .empty ())
 	{

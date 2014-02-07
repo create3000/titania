@@ -123,16 +123,16 @@ private:
 	void
 	eventsProcessed () final override;
 
-	std::deque <int32_t>
+	std::vector <int32_t>
 	createTexIndices ();
 
-	std::deque <Vector4f>
+	std::vector <Vector4f>
 	createTexCoord ();
 
-	std::deque <int32_t>
+	std::vector <int32_t>
 	createCoordIndices ();
 
-	std::deque <Vector3f>
+	std::vector <Vector3f>
 	createPoints ();
 
 	virtual

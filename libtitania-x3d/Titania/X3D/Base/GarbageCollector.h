@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_BASE_GARBAGE_COLLECTOR_H__
 
 #include <cstddef>
-#include <deque>
+#include <vector>
 #include <mutex>
 
 namespace titania {
@@ -60,7 +60,7 @@ namespace X3D {
 
 class X3DObject;
 
-typedef std::deque <X3DObject*> ObjectArray;
+typedef std::vector <X3DObject*> ObjectArray;
 
 class GarbageCollector
 {

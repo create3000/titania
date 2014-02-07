@@ -135,7 +135,7 @@ public:
 
 	///  @name Member accesss
 
-	const std::deque <X3DViewpointObject*>
+	const std::vector <X3DViewpointObject*>
 	getViewpointObjects () const;
 
 	///  @name Rendering
@@ -196,7 +196,7 @@ private:
 	Fields fields;
 
 	X3DSFNode <ProximitySensor>     proximitySensor;
-	std::deque <X3DViewpointObject*> viewpointObjects;
+	std::vector <X3DViewpointObject*> viewpointObjects;
 
 };
 

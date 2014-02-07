@@ -229,7 +229,7 @@ private:
 
 	X3D::X3DSFNode <X3D::Browser> browserSurface;
 
-	std::deque <X3D::X3DSFNode <X3D::Appearance>>  appearances;
+	std::vector <X3D::X3DSFNode <X3D::Appearance>> appearances;
 	X3D::X3DSFNode <X3D::Material>                 material;
 	X3D::X3DSFNode <X3D::TwoSidedMaterial>         twoSidedMaterial;
 	

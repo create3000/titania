@@ -335,7 +335,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 			{
 				// Push back texture units
 				{
-					std::deque <size_t> textureUnits;
+					std::vector <size_t> textureUnits;
 
 					for (size_t i = 0; ; ++ i)
 					{

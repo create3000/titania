@@ -65,10 +65,10 @@ traverse (MFNode &, const TraverseCallback &, bool = true);
 bool
 traverse (SFNode &, const TraverseCallback &, bool = true);
 
-std::deque <X3DChildObject*>
+std::vector <X3DChildObject*>
 find (const X3D::MFNode &, X3DChildObject* const, bool = true);
 
-std::deque <X3DChildObject*>
+std::vector <X3DChildObject*>
 find (const X3D::SFNode &, X3DChildObject* const, bool = true);
 
 } // X3D

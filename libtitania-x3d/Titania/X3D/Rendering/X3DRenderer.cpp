@@ -318,7 +318,7 @@ X3DRenderer::collide ()
 {
 	// Collision
 
-	std::deque <Collision*> collisions;
+	std::vector <Collision*> collisions;
 
 	Sphere3f collisionSphere (getCurrentNavigationInfo () -> getCollisionRadius () * 1.1f, Vector3f ());
 
@@ -333,10 +333,10 @@ X3DRenderer::collide ()
 
 	// Set isActive to FALSE for appropriate nodes
 
-	std::deque <Collision*> difference;
+	std::vector <Collision*> difference;
 
 	if (collisions .empty ())
-		difference .assign (activeCollisions .begin (), activeCollisions .end ());
+		difference = std::move (activeCollisions);
 
 	else
 	{
@@ -355,7 +355,7 @@ X3DRenderer::collide ()
 
 	// Set isActive to TRUE for appropriate nodes
 
-	activeCollisions .assign (collisions .begin (), collisions .end ());
+	activeCollisions = std::move (collisions);
 
 	for (const auto & collision : activeCollisions)
 	{

@@ -1,5 +1,22 @@
 2014-02-07  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* UndoHistory.h:
+	* LibraryView.h:
+	* BrowserWindow.cpp:
+	* X3DBrowserEditor.h:
+	* LibraryView.cpp:
+	* OutlineTree.h:
+	* X3DBrowserEditor.cpp:
+	* Configuration.h:
+	* MaterialEditor.h:
+	* OutlineTreeModel.h:
+	* X3DOutlineTreeView.h:
+	* OutlineTreeModel.cpp:
+	* X3DOutlineTreeView.cpp:
+	* OutlineCellRenderer.h: 
+
+2014-02-07  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBrowserEditor.cpp: 
 
 2014-02-06  Holger Seelig  <holger.seelig@yahoo.de>

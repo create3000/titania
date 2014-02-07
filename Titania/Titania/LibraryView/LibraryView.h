@@ -85,7 +85,7 @@ private:
 	std::string
 	getFilename (Gtk::TreeModel::Path path) const;
 
-	std::deque <Glib::RefPtr <Gio::FileInfo>>
+	std::vector <Glib::RefPtr <Gio::FileInfo>>
 	children (const Glib::RefPtr <Gio::File> &) const;
 
 	void

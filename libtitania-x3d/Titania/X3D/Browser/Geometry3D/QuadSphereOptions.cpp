@@ -102,10 +102,10 @@ QuadSphereOptions::eventsProcessed ()
 	update ();
 }
 
-std::deque <int32_t>
+std::vector <int32_t>
 QuadSphereOptions::createTexIndices ()
 {
-	std::deque <int32_t> texIndices;
+	std::vector <int32_t> texIndices;
 
 	for (int32_t p = 0, v = 0; v < vDimension () - 1; ++ v, ++ p)
 	{
@@ -121,10 +121,10 @@ QuadSphereOptions::createTexIndices ()
 	return texIndices;
 }
 
-std::deque <Vector4f>
+std::vector <Vector4f>
 QuadSphereOptions::createTexCoord ()
 {
-	std::deque <Vector4f> texCoord;
+	std::vector <Vector4f> texCoord;
 
 	for (int32_t v = 0; v < vDimension (); ++ v)
 	{
@@ -142,10 +142,10 @@ QuadSphereOptions::createTexCoord ()
 	return texCoord;
 }
 
-std::deque <int32_t>
+std::vector <int32_t>
 QuadSphereOptions::createCoordIndices ()
 {
-	std::deque <int32_t> indices;
+	std::vector <int32_t> indices;
 
 	for (int32_t p = 0, v = 0; v < vDimension () - 1; ++ v, ++ p)
 	{
@@ -166,10 +166,10 @@ QuadSphereOptions::createCoordIndices ()
 	return indices;
 }
 
-std::deque <Vector3f>
+std::vector <Vector3f>
 QuadSphereOptions::createPoints ()
 {
-	std::deque <Vector3f> points;
+	std::vector <Vector3f> points;
 
 	// north pole
 	for (int32_t u = 0; u < uDimension () - 1; ++ u)
@@ -198,10 +198,10 @@ QuadSphereOptions::createPoints ()
 void
 QuadSphereOptions::build ()
 {
-	std::deque <int32_t>  texIndices = createTexIndices ();
-	std::deque <Vector4f> texCoord   = createTexCoord ();
-	std::deque <int32_t>  indices    = createCoordIndices ();
-	std::deque <Vector3f> points     = createPoints ();
+	std::vector <int32_t>  texIndices = std::move (createTexIndices ());
+	std::vector <Vector4f> texCoord   = std::move (createTexCoord ());
+	std::vector <int32_t>  indices    = std::move (createCoordIndices ());
+	std::vector <Vector3f> points     = std::move (createPoints ());
 
 	auto index    = indices .begin ();
 	auto texIndex = texIndices .begin ();

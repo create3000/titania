@@ -279,10 +279,10 @@ public:
 	///  @name Comment handling
 
 	void
-	addInnerComments (const std::deque <std::string> & value)
+	addInnerComments (const std::vector <std::string> & value)
 	{ comments .insert (comments .end (), value .begin (), value .end ()); }
 
-	const std::deque <std::string> &
+	const std::vector <std::string> &
 	getInnerComments () const
 	{ return comments; }
 
@@ -396,14 +396,14 @@ private:
 	FieldAliasesMap      fieldAliases;          // VRML names
 	size_t               numUserDefinedFields;  // Number of user defined fields
 
-	bool                 internal;
-	bool                 saved;
-	bool                 extendedEventHandling; // Handle initializeOnlys as input events
-	NodeId               nodeId;                // Router eventsProcessed id
-	std::deque <EventId> events;
+	bool                  internal;
+	bool                  saved;
+	bool                  extendedEventHandling; // Handle initializeOnlys as input events
+	NodeId                nodeId;                // Router eventsProcessed id
+	std::vector <EventId> events;
 
-	X3DBaseNode*             handle;
-	std::deque <std::string> comments;
+	X3DBaseNode*              handle;
+	std::vector <std::string> comments;
 
 	Output shutdownOutput;
 

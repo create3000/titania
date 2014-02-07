@@ -203,7 +203,7 @@ private:
 	Box3f
 	createBBox () final override;
 
-	std::deque <std::deque <size_t>> 
+	std::vector <std::vector <size_t>> 
 	getPolylineIndices () const;
 
 	virtual

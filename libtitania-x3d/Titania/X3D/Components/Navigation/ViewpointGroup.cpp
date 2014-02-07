@@ -118,7 +118,7 @@ ViewpointGroup::initialize ()
 	set_children ();
 }
 
-const std::deque <X3DViewpointObject*>
+const std::vector <X3DViewpointObject*>
 ViewpointGroup::getViewpointObjects () const
 {
 	return viewpointObjects;

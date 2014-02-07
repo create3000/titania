@@ -105,7 +105,7 @@ public:
 	///  @name Operations
 
 	bool
-	intersect (const Line3f &, std::deque <IntersectionPtr> &) const;
+	intersect (const Line3f &, std::vector <IntersectionPtr> &) const;
 
 	bool
 	intersect (const Sphere3f &, const Matrix4f &, const CollectableObjectArray &) const;
@@ -124,7 +124,7 @@ public:
 
 protected:
 
-	typedef std::map <size_t, std::deque <size_t>>  NormalIndex;
+	typedef std::map <size_t, std::vector <size_t>>  NormalIndex;
 
 	///  @name Construction
 
@@ -225,7 +225,7 @@ private:
 	///  @name Operations
 
 	bool
-	intersect (const Line3f &, size_t, size_t, size_t, const Matrix4f &, std::deque <IntersectionPtr> &) const;
+	intersect (const Line3f &, size_t, size_t, size_t, const Matrix4f &, std::vector <IntersectionPtr> &) const;
 
 	bool
 	isClipped (const Vector3f &, const Matrix4f &) const;
@@ -249,7 +249,7 @@ private:
 	std::vector <Vector3f>    vertices;
 	bool                      solid;
 	GLenum                    frontFace;
-	std::deque <Element>      elements;
+	std::vector <Element>     elements;
 
 };
 

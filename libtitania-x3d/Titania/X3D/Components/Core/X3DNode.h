@@ -85,7 +85,7 @@ public:
 	Scene*
 	getScene () const;
 
-	std::deque <X3DLayerNode*>
+	std::vector <X3DLayerNode*>
 	getLayers () const;
 
 

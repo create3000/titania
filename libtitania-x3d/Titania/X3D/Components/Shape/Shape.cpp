@@ -167,7 +167,7 @@ Shape::pick ()
 			{
 				Line3f hitRay = getBrowser () -> getHitRay (); // Attention!! returns a Line3d
 
-				std::deque <IntersectionPtr> itersections;
+				std::vector <IntersectionPtr> itersections;
 
 				if (getGeometry () -> intersect (hitRay, itersections))
 				{

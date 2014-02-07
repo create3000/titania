@@ -1,5 +1,50 @@
 2014-02-07  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Traverse.h:
+	* Parser.h:
+	* X3DObject.h:
+	* Traverse.cpp:
+	* X3DBaseNode.h:
+	* X3DProto.h:
+	* X3DChildObject.h:
+	* X3DBaseNode.cpp:
+	* NodeTypeArray.h:
+	* X3DRenderer.h:
+	* Tessellator.h:
+	* NodeTypeArray.cpp:
+	* GarbageCollector.h:
+	* X3DNode.h:
+	* X3DRenderer.cpp:
+	* Shape.cpp:
+	* X3DNode.cpp:
+	* X3DBrowserContext.h:
+	* FieldDefinitionArray.h:
+	* X3DBrowserContext.cpp:
+	* Selection.cpp:
+	* LayerSet.h:
+	* FieldDefinitionArray.cpp:
+	* X3DFontStyleNode.h:
+	* X3DLayerNode.h:
+	* jsContext.h:
+	* TriangleFanSet.h:
+	* IndexedLineSet.h:
+	* X3DGeometryNode.h:
+	* QuadSphereOptions.h:
+	* IndexedFaceSet.h:
+	* ViewpointGroup.h:
+	* IndexedLineSet.cpp:
+	* X3DGroupingNode.cpp:
+	* TriangleStripSet.h:
+	* X3DGeometryNode.cpp:
+	* ViewpointGroup.cpp:
+	* QuadSphereOptions.cpp:
+	* IndexedTriangleFanSet.h:
+	* IndexedTriangleStripSet.h:
+	* X3DProgrammableShaderObject.h:
+	* X3DProgrammableShaderObject.cpp: 
+
+2014-02-07  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* GarbargeCollector.cpp:
 	* Disk2DOptions.cpp:
 	* X3DTimeDependentNode.h:
