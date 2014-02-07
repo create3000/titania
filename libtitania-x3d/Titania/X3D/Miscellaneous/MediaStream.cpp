@@ -67,7 +67,8 @@ MediaStream::MediaStream () :
 	 player (),
 	  vsink (),
 	 pixmap (0),
-	display (nullptr)
+	display (nullptr),
+	 volume (0)
 {
 	// Static init
 
@@ -82,7 +83,7 @@ MediaStream::MediaStream () :
 	vsink  = Gst::XImageSink::create ("vsink");
 
 	player -> set_property ("video-sink", vsink);
-	player -> set_property ("volume", 0.0);
+	player -> set_property ("volume", volume);
 
 	auto bus = player -> get_bus ();
 
@@ -127,7 +128,13 @@ MediaStream::getDuration () const
 void
 MediaStream::setVolume (double value)
 {
-	player -> set_property ("volume", math::clamp (value, 0.0, 1.0));
+	value = math::clamp (value, 0.0, 1.0);
+	
+	if (value != volume)
+	{
+		volume = value;
+		player -> set_property ("volume", volume);
+	}
 }
 
 Gst::State
@@ -192,7 +199,7 @@ MediaStream::sync () const
 }
 
 void
-MediaStream::start (double speed, double position)
+MediaStream::start (const double speed, const double position)
 {
 	auto format = Gst::FORMAT_TIME;
 
