@@ -344,11 +344,11 @@ X3DBackgroundNode::draw ()
 	// Scale background
 
 	auto viewport = Viewport4i ();
-	auto scale = getCurrentViewpoint () -> getScreenScale (SIZE, viewport);
+	auto scale    = getCurrentViewpoint () -> getScreenScale (SIZE, viewport);
 	
 	scale *= double (viewport [2] > viewport [3] ? viewport [2] : viewport [3]);
 
-	getCurrentViewpoint () -> reshape (1, std::max (1.0, 2 * SIZE * scale .z ()));
+	getCurrentViewpoint () -> reshape (1, std::max (2.0, 2 * SIZE * scale .z ()));
 
 	glScalef (scale .x (), scale .y (), scale .z ());
 	

@@ -127,7 +127,7 @@ MediaStream::getDuration () const
 void
 MediaStream::setVolume (double value)
 {
-	player -> set_property ("volume", value);
+	player -> set_property ("volume", math::clamp (value, 0.0, 1.0));
 }
 
 Gst::State

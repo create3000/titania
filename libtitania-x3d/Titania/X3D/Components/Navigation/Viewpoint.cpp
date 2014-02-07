@@ -89,12 +89,20 @@ Viewpoint::create (X3DExecutionContext* const executionContext) const
 	return new Viewpoint (executionContext);
 }
 
+float
+Viewpoint::getFieldOfView () const
+{
+	float fov = fieldOfView () * fieldOfViewScale ();
+
+	return fov > 0 and fov < M_PI ? fov : M_PI / 4;
+}
+
 Vector3d
 Viewpoint::getScreenScale (double distance, const Vector4i & viewport) const
 {
 	int    width  = viewport [2];
 	int    height = viewport [3];
-	double size   = distance * std::tan (fieldOfView () / 2) * 2;
+	double size   = distance * std::tan (getFieldOfView () / 2) * 2;
 
 	if (width > height)
 		size /= height;
@@ -110,7 +118,7 @@ Viewpoint::getLookAtPositionOffset (Box3f bbox) const
 {
 	if (getBrowser () -> getActiveLayer ())
 	{
-		float distance    = (abs (bbox .size ()) / 2) / std::tan (fieldOfView () / 2);
+		float distance    = (abs (bbox .size ()) / 2) / std::tan (getFieldOfView () / 2);
 		float minDistance = getBrowser () -> getActiveLayer () -> getNavigationInfo () -> getNearPlane () * 2;
 
 		return bbox .center ()
@@ -132,10 +140,7 @@ Viewpoint::reshape (const float zNear, const float zFar)
 	size_t width  = viewport [2];
 	size_t height = viewport [3];
 
-	float fov = fieldOfView () * fieldOfViewScale ();
-	fov = fov > 0 and fov < M_PI ? fov : M_PI / 4;
-
-	float ratio = std::tan (fov / 2) * zNear;
+	float ratio = std::tan (getFieldOfView () / 2) * zNear;
 
 	if (width > height)
 	{

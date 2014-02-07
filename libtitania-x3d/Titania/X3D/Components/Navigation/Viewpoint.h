@@ -127,9 +127,11 @@ private:
 
 	///  @name Member access
 
+	float
+	getFieldOfView () const;
+
 	Vector3f
 	getLookAtPositionOffset (Box3f) const;
-
 
 	///  @name Static members
 
