@@ -83,6 +83,12 @@ GeoCoordinate::create (X3DExecutionContext* const executionContext) const
 	return new GeoCoordinate (executionContext);
 }
 
+Box3f
+GeoCoordinate::getBBox () const
+{
+	return Box3d (point () .begin (), point () .end (), math::iterator_type ());
+}
+
 Vector3f
 GeoCoordinate::getNormal (size_t index1, size_t index2, size_t index3) const
 {

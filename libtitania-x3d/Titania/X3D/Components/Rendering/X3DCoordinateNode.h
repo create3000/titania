@@ -53,6 +53,7 @@
 
 #include "../Rendering/X3DGeometricPropertyNode.h"
 #include "../../Rendering/Tessellator.h"
+#include "../../Types/Geometry.h"
 
 namespace titania {
 namespace X3D {
@@ -63,6 +64,10 @@ class X3DCoordinateNode :
 public:
 
 	///  @name Operations
+
+	virtual
+	Box3f
+	getBBox () const = 0;
 
 	virtual
 	Vector3f

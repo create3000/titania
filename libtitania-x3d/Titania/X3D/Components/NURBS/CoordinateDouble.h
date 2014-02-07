@@ -98,6 +98,10 @@ public:
 	///  @name Operations
 
 	virtual
+	Box3f
+	getBBox () const final override;
+
+	virtual
 	Vector3f
 	getNormal (size_t, size_t, size_t) const final override;
 

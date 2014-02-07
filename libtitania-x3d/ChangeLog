@@ -1,3 +1,15 @@
+2014-02-07  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Coordinate.h:
+	* CoordinateDouble.h:
+	* Coordinate.cpp:
+	* GeoCoordinate.h:
+	* CoordinateDouble.cpp:
+	* GeoCoordinate.cpp:
+	* X3DCoordinateNode.h:
+	* X3DComposedGeometryNode.h:
+	* X3DComposedGeometryNode.cpp: 
+
 2014-02-06  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Color.h:

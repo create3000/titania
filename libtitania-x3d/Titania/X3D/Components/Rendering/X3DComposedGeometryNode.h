@@ -212,6 +212,10 @@ protected:
 
 	///  @name Operations
 
+	virtual
+	Box3f
+	createBBox () final override;
+
 	void
 	buildPolygons (size_t, size_t);
 

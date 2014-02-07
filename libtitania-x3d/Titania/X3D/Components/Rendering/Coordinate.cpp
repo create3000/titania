@@ -79,6 +79,12 @@ Coordinate::create (X3DExecutionContext* const executionContext) const
 	return new Coordinate (executionContext);
 }
 
+Box3f
+Coordinate::getBBox () const
+{
+	return Box3f (point () .begin (), point () .end (), math::iterator_type ());
+}
+
 Vector3f
 Coordinate::getNormal (size_t index1, size_t index2, size_t index3) const
 {

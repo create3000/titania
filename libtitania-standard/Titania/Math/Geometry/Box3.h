@@ -116,8 +116,8 @@ public:
 
 		while (++ first not_eq last)
 		{
-			min = math::min (min, *first);
-			max = math::max (max, *first);
+			min = math::min (min, (vector3 <Type>) *first);
+			max = math::max (max, (vector3 <Type>) *first);
 		}
 
 		*this = box3 (min, max, extends_type ());
