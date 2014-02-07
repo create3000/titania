@@ -199,6 +199,10 @@ private:
 
 	///  @name Operations
 
+	virtual
+	Box3f
+	createBBox () final override;
+
 	std::deque <std::deque <size_t>> 
 	getPolylineIndices () const;
 

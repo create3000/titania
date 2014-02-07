@@ -147,10 +147,6 @@ public:
 
 	virtual
 	void
-	build () final override;
-
-	virtual
-	void
 	draw () final override;
 
 	///  @name Destruction
@@ -175,6 +171,16 @@ private:
 
 	void
 	set_coord ();
+
+	///  @name Operations
+
+	virtual
+	Box3f
+	createBBox () final override;
+
+	virtual
+	void
+	build () final override;
 
 	///  @name Static members
 

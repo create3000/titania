@@ -133,6 +133,15 @@ LineSet::set_coord ()
 		coordNode -> addInterest (this);
 }
 
+Box3f
+LineSet::createBBox ()
+{
+	if (coordNode)
+		return coordNode -> getBBox ();
+
+	return Box3f ();
+}
+
 void
 LineSet::build ()
 {

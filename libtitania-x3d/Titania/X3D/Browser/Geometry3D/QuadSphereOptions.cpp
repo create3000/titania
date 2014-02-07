@@ -213,8 +213,8 @@ QuadSphereOptions::build ()
 			const auto & point = points [*index];
 
 			getTexCoords () .emplace_back (texCoord [*texIndex]);
-			getNormals  () .emplace_back (point);
-			getVertices () .emplace_back (point);
+			getNormals   () .emplace_back (point);
+			getVertices  () .emplace_back (point);
 		}
 	}
 }

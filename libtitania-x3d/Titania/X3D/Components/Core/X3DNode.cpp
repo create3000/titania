@@ -80,7 +80,7 @@ X3DNode::getScene () const
 std::deque <X3DLayerNode*>
 X3DNode::getLayers () const
 {
-	return findParents <Scene, X3DLayerNode> ();
+	return findParents <X3DBrowser, X3DLayerNode> ();
 }
 
 X3DLayerNode*

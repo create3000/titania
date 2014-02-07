@@ -108,9 +108,94 @@ IndexedLineSet::initialize ()
 	color ()      .addInterest (this, &IndexedLineSet::set_color);
 	coord ()      .addInterest (this, &IndexedLineSet::set_coord);
 
-	set_coordIndex ();
 	set_color ();
 	set_coord ();
+	set_coordIndex ();
+}
+
+void
+IndexedLineSet::set_coordIndex ()
+{
+	numPolylines = 0;
+
+	if (coordNode)
+	{
+		if (not coordIndex () .empty ())
+		{
+			// Determine number of points and polygons.
+
+			for (const auto & index : coordIndex ())
+			{
+				if (index < 0)
+					++ numPolylines;
+			}
+
+			if (coordIndex () .back () > -1)
+				++ numPolylines;
+
+			set_colorIndex ();
+		}
+	}
+}
+
+void
+IndexedLineSet::set_colorIndex ()
+{
+	if (colorNode)
+	{
+		// Fill up colorIndex if to small.
+		if (colorPerVertex ())
+		{
+			for (int32_t i = colorIndex () .size (), size = coordIndex () .size (); i < size; ++ i)
+			{
+				colorIndex () .emplace_back (coordIndex () [i]);
+			}
+		}
+		else
+		{
+			for (int32_t i = colorIndex () .size (), size = numPolylines; i < size; ++ i)
+			{
+				colorIndex () .emplace_back (i);
+			}
+		}
+	}
+}
+
+void
+IndexedLineSet::set_color ()
+{
+	if (colorNode)
+		colorNode -> removeInterest (this);
+
+	colorNode .set (x3d_cast <X3DColorNode*> (color ()));
+
+	if (colorNode)
+		colorNode -> addInterest (this);
+
+	// Transparent
+
+	transparent = colorNode and colorNode -> isTransparent ();
+}
+
+void
+IndexedLineSet::set_coord ()
+{
+	if (coordNode)
+		coordNode -> removeInterest (this);
+
+	coordNode .set (x3d_cast <X3DCoordinateNode*> (coord ()));
+
+	if (coordNode)
+		coordNode -> addInterest (this);
+}
+
+Box3f
+IndexedLineSet::createBBox ()
+{
+	if (coordNode)
+		return coordNode -> getBBox ();
+
+	return Box3f ();
 }
 
 std::vector <Vector3f>
@@ -119,8 +204,6 @@ IndexedLineSet::getPolylines () const
 	// Polyline map
 
 	std::vector <Vector3f> polylines;
-
-	auto coordNode = x3d_cast <X3DCoordinateNode*> (coord ());
 
 	if (not coordNode or coordNode -> isEmpty ())
 		return polylines;
@@ -190,86 +273,6 @@ IndexedLineSet::getPolylineIndices () const
 	}
 
 	return polylines;
-}
-
-void
-IndexedLineSet::set_coordIndex ()
-{
-	auto coordNode = x3d_cast <X3DCoordinateNode*> (coord ());
-
-	numPolylines = 0;
-
-	if (coordNode)
-	{
-		if (not coordIndex () .empty ())
-		{
-			// Determine number of points and polygons.
-
-			for (const auto & index : coordIndex ())
-			{
-				if (index < 0)
-					++ numPolylines;
-			}
-
-			if (coordIndex () .back () > -1)
-				++ numPolylines;
-
-			set_colorIndex ();
-		}
-	}
-}
-
-void
-IndexedLineSet::set_colorIndex ()
-{
-	auto colorNode = x3d_cast <X3DColorNode*> (color ());
-
-	if (colorNode)
-	{
-		// Fill up colorIndex if to small.
-		if (colorPerVertex ())
-		{
-			for (int32_t i = colorIndex () .size (), size = coordIndex () .size (); i < size; ++ i)
-			{
-				colorIndex () .emplace_back (coordIndex () [i]);
-			}
-		}
-		else
-		{
-			for (int32_t i = colorIndex () .size (), size = numPolylines; i < size; ++ i)
-			{
-				colorIndex () .emplace_back (i);
-			}
-		}
-	}
-}
-
-void
-IndexedLineSet::set_color ()
-{
-	if (colorNode)
-		colorNode -> removeInterest (this);
-
-	colorNode .set (x3d_cast <X3DColorNode*> (color ()));
-
-	if (colorNode)
-		colorNode -> addInterest (this);
-
-	// Transparent
-
-	transparent = colorNode and colorNode -> isTransparent ();
-}
-
-void
-IndexedLineSet::set_coord ()
-{
-	if (coordNode)
-		coordNode -> removeInterest (this);
-
-	coordNode .set (x3d_cast <X3DCoordinateNode*> (coord ()));
-
-	if (coordNode)
-		coordNode -> addInterest (this);
 }
 
 void

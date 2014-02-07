@@ -116,7 +116,7 @@ Router::getNodes ()
 void
 Router::processEvents ()
 {
-	while (not empty ())
+	do
 	{
 		do
 		{
@@ -129,6 +129,7 @@ Router::processEvents ()
 
 		eventsProcessed ();
 	}
+	while (not empty ());
 }
 
 void
@@ -139,7 +140,7 @@ Router::eventsProcessed ()
 		for (const auto & node : getNodes ())
 			node -> processEvents ();
 	}
-	while (empty () and not nodes .empty ());
+	while (not nodes .empty () and empty ());
 }
 
 bool
