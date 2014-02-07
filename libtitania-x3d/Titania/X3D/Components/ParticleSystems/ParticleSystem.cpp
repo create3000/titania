@@ -1477,6 +1477,38 @@ ParticleSystem::disableTexCoord () const
 }
 
 void
+ParticleSystem::saveState ()
+{
+	if (isSaved ())
+		return;
+
+	X3DShapeNode::saveState ();
+
+	if (enabled () and maxParticles ())
+	{
+		getBrowser () -> prepareEvents () .removeInterest (this, &ParticleSystem::prepareEvents);
+		getBrowser () -> sensors ()       .removeInterest (this, &ParticleSystem::update);
+	}
+}
+
+void
+ParticleSystem::restoreState ()
+{
+	if (not isSaved ())
+		return;
+
+	X3DShapeNode::restoreState ();
+
+	if (enabled () and maxParticles ())
+	{
+		getBrowser () -> prepareEvents () .addInterest (this, &ParticleSystem::prepareEvents);
+		getBrowser () -> sensors ()       .addInterest (this, &ParticleSystem::update);
+
+		set_particle_buffers ();
+	}
+}
+
+void
 ParticleSystem::dispose ()
 {
 	transformShader          .dispose ();

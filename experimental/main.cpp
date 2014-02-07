@@ -292,6 +292,27 @@ obb (const std::vector <Vector3f> & points)
 	std::clog << std::endl;
 }
 
+class A
+{
+public:
+	
+	A ()
+	{ __LOG__ << std::endl; }
+	
+	A (const A &)
+	{ __LOG__ << std::endl; }
+	
+	A (A &&)
+	{ __LOG__ << std::endl; }
+
+};
+
+void
+deleteObjects (A a)
+{
+	__LOG__ << &a << std::endl;
+}
+
 int
 main (int argc, char** argv)
 {
@@ -301,19 +322,13 @@ main (int argc, char** argv)
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
 
-	obb (std::vector <Vector3f> {
-		Vector3f (1, 0, 0),
-		Vector3f (2, 1, 0),
-		Vector3f (1, 2, 0),
-		Vector3f (0, 1, 0)
-	});
+	A objects;
 
-	obb (std::vector <Vector3f> {
-		Vector3f ( 0,    0,   0),
-		Vector3f (-1,   -0.5, 0),
-		Vector3f (-0.5, -1.5, 0),
-		Vector3f ( 0.5, -1,   0)
-	});
+	__LOG__ << &objects << std::endl;
+
+	std::thread (&deleteObjects, std::move (objects)) .join ();
+	
+	deleteObjects (std::move (objects));
 
 	std::clog << "Function main done." << std::endl;
 	return 0;

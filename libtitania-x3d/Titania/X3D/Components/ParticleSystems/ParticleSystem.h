@@ -232,6 +232,14 @@ public:
 	virtual
 	void
 	drawCollision () final override;
+	
+	virtual
+	void
+	saveState () final override;
+	
+	virtual
+	void
+	restoreState () final override;
 
 	///  @name Destruction
 
@@ -239,6 +247,7 @@ public:
 	void
 	dispose () final override;
 
+	virtual
 	~ParticleSystem ();
 
 

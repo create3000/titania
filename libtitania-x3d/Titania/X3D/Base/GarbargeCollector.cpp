@@ -105,8 +105,10 @@ GarbageCollector::dispose ()
 {
 	std::lock_guard <std::mutex> lock (mutex);
 
-	if (not objects .empty ())
-		std::thread (&GarbageCollector::deleteObjects, std::move (objects)) .detach ();
+	if (objects .empty ())
+		return;
+
+	std::thread (&GarbageCollector::deleteObjects, std::move (objects)) .detach ();
 }
 
 bool
@@ -127,6 +129,8 @@ GarbageCollector::size () const
 
 GarbageCollector::~GarbageCollector ()
 {
+	std::lock_guard <std::mutex> lock (mutex);
+
 	deleteObjects (std::move (objects));
 }
 

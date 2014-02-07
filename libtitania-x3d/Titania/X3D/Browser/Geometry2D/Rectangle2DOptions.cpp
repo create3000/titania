@@ -95,20 +95,20 @@ Rectangle2DOptions::build ()
 
 	// Front Face
 	getTexCoords () .emplace_back (0, 0, 0, 1);
-	getNormals  () .emplace_back (0, 0, 1);
-	getVertices () .emplace_back (-1, -1, 0);
+	getNormals   () .emplace_back (0, 0, 1);
+	getVertices  () .emplace_back (-1, -1, 0);
 
 	getTexCoords () .emplace_back (1, 0, 0, 1);
-	getNormals  () .emplace_back (0, 0, 1);
-	getVertices () .emplace_back (1, -1, 0);
+	getNormals   () .emplace_back (0, 0, 1);
+	getVertices  () .emplace_back (1, -1, 0);
 
 	getTexCoords () .emplace_back (1, 1, 0, 1);
-	getNormals  () .emplace_back (0, 0, 1);
-	getVertices () .emplace_back (1, 1, 0);
+	getNormals   () .emplace_back (0, 0, 1);
+	getVertices  () .emplace_back (1, 1, 0);
 
 	getTexCoords () .emplace_back (0, 1, 0, 1);
-	getNormals  () .emplace_back (0, 0, 1);
-	getVertices () .emplace_back (-1, 1, 0);
+	getNormals   () .emplace_back (0, 0, 1);
+	getVertices  () .emplace_back (-1, 1, 0);
 }
 
 } // X3D

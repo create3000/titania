@@ -711,26 +711,17 @@ X3DBrowserEditor::removeExportedNodes (const X3D::X3DSFNode <X3D::Scene> & scene
 void
 X3DBrowserEditor::removeNodeFromExecutionContext (X3D::X3DExecutionContext* const executionContext, X3D::SFNode & node, const UndoStepPtr & undoStep) const
 {
+	undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
+
 	undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DBaseNode::restoreState), node);
 	undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DBaseNode::saveState),    node);
 	node -> saveState ();
 
-	undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DBrowser::update), getBrowser ());
-
-	// Delete node in scene graph
+	// Remove node from scene graph
 
 	removeNodeFromSceneGraph (executionContext, node, undoStep);
-
-	// Remove named node
-
 	removeNamedNode (executionContext, node, undoStep);
-
-	// Remove nodes imported from node
-
 	removeImportedNodes (executionContext, node, undoStep);
-
-	// Delete routes from and to node
-
 	deleteRoutes (executionContext, node, undoStep);
 
 	/// Remove unused Prototypes

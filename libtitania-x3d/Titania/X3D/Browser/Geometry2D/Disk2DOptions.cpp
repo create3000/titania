@@ -109,8 +109,8 @@ Disk2DOptions::build ()
 		std::complex <float> point    = std::polar <float> (1, theta);
 
 		getTexCoords () .emplace_back (texCoord .real (), texCoord .imag (), 0, 1);
-		getNormals  () .emplace_back (0, 0, 1);
-		getVertices () .emplace_back (point .real (), point .imag (), 0);
+		getNormals   () .emplace_back (0, 0, 1);
+		getVertices  () .emplace_back (point .real (), point .imag (), 0);
 	}
 }
 
