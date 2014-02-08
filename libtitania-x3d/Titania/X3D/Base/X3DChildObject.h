@@ -93,7 +93,7 @@ public:
 	///  @name Event Handling
 
 	void
-	isTainted (bool value)
+	isTainted (const bool value)
 	{ tainted = value; }
 
 	///  Returns true if this objects has unprocessed events otherwise false.

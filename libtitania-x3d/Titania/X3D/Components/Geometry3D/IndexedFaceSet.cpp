@@ -353,7 +353,6 @@ IndexedFaceSet::buildNormals (const PolygonArray & polygons)
 			}
 		}
 	}
-
 }
 
 void
@@ -405,6 +404,10 @@ IndexedFaceSet::tessellate (PolygonArray & polygons, size_t & numVertices)
 
 						// Tessellate polygons.
 						polygons .emplace_back (std::move (vertices), std::move (tessellate (vertices)));
+
+						// Sometimes there are no elements, propbably due to the need of a combine callback.
+						if (polygons .back () .elements .empty ())
+							polygons .pop_back ();
 					}
 
 					else

@@ -1,5 +1,16 @@
 2014-02-08  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Event.h:
+	* X3DOutput.h:
+	* X3DOutput.cpp:
+	* X3DChildObject.h:
+	* GarbageCollector.h:
+	* X3DChildObject.cpp:
+	* GarbargeCollector.cpp:
+	* IndexedFaceSet.cpp: 
+
+2014-02-08  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Console.h:
 	* Console.cpp:
 	* X3DBaseNode.h:

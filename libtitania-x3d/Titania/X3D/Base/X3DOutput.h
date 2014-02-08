@@ -88,7 +88,7 @@ public:
 
 	template <class Class, class Function>
 	bool
-	hasInterest (Class* object, Function && memberFunction) const
+	hasInterest (Class* const object, Function && memberFunction) const
 	{
 		return checkInterest ((X3DInput*) object, reinterpret_cast <void*> (object ->* memberFunction));
 	}
@@ -102,7 +102,7 @@ public:
 
 	template <class Class, class Function, class ... Arguments>
 	void
-	addInterest (Class* object, Function && memberFunction, Arguments && ... arguments) const
+	addInterest (Class* const object, Function && memberFunction, Arguments && ... arguments) const
 	{
 		bool inserted = insertInterest (std::bind (memberFunction, object, std::forward <Arguments> (arguments) ...),
 		                                (X3DInput*) object, reinterpret_cast <void*> (object ->* memberFunction));
@@ -118,7 +118,7 @@ public:
 
 	template <class Class>
 	void
-	addInterest (Class* object, void (Class::* memberFunction) (void)) const
+	addInterest (Class* const object, void (Class::* memberFunction) (void)) const
 	{
 		bool inserted = insertInterest (std::bind (memberFunction, object),
 		                                (X3DInput*) object, reinterpret_cast <void*> (object ->* memberFunction));
@@ -139,7 +139,7 @@ public:
 
 	template <class Class, class Function>
 	void
-	removeInterest (Class* object, Function && memberFunction) const
+	removeInterest (Class* const object, Function && memberFunction) const
 	{
 		eraseInput (object, reinterpret_cast <void*> (object ->* memberFunction));
 		eraseInterest ((X3DInput*) object, reinterpret_cast <void*> (object ->* memberFunction));
@@ -178,35 +178,35 @@ private:
 	typedef std::set <std::pair <const X3DInput*, const void*>> InputSet;
 
 	bool
-	checkInterest (const void*, const void*) const;
+	checkInterest (const void* const, const void* const) const;
 
 	///  Add basic interest.
 
 	bool
-	insertInterest (const Requester &, const void*, const void*) const;
+	insertInterest (const Requester &, const void* const, const void* const) const;
 
 	void
-	insertInput (const X3DInput*, const void*) const;
+	insertInput (const X3DInput* const, const void* const) const;
 
 	void
-	insertInput (const void*, const void*) const
+	insertInput (const void* const, const void* const) const
 	{ }
 
 	void
-	eraseInterest (const void*, const void*) const;
+	eraseInterest (const void* const, const void* const) const;
 
 	void
-	eraseInput (const X3DInput*, void*) const;
+	eraseInput (const X3DInput* const, void* const) const;
 
 	void
-	eraseInput (const void*, void*) const
+	eraseInput (const void* const, void* const) const
 	{ }
 
 	void
-	insertDeleter (const X3DOutput*, const void*, const void*) const;
+	insertDeleter (const X3DOutput* const, const void* const, const void* const) const;
 
 	void
-	removeDeleter (const X3DOutput*, const void*, const void*) const;
+	removeDeleter (const X3DOutput* const, const void* const, const void* const) const;
 
 	mutable RequesterArray          requesters;
 	mutable RequesterIndex          requesterIndex;

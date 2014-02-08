@@ -77,7 +77,16 @@ public:
 	trimFreeMemory ();
 
 	void
-	addObject (X3DObject*);
+	addObject (X3DObject* const);
+
+	template <class InputIt>
+	void
+	addObjects (const InputIt & first, const InputIt & last)
+	{
+		std::lock_guard <std::mutex> lock (mutex);
+
+		objects .insert (objects .end (), first, last);
+	}
 
 	void
 	dispose ();
