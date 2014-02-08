@@ -617,7 +617,6 @@ X3DBaseNode::processEvents ()
 	if (isTainted ())
 	{
 		isTainted (false);
-		eventsProcessed ();
 		processInterests ();
 	}
 }

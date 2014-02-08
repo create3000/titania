@@ -79,22 +79,6 @@ Disk2DOptions::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-Disk2DOptions::initialize ()
-{
-	X3DGeometricOptionNode::initialize ();
-
-	build ();
-}
-
-void
-Disk2DOptions::eventsProcessed ()
-{
-	X3DGeometricOptionNode::eventsProcessed ();
-
-	update ();
-}
-
-void
 Disk2DOptions::build ()
 {
 	getVertices () .reserve (segments ());

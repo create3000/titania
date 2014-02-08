@@ -134,10 +134,6 @@ protected:
 
 	///  @name Event handling
 
-	virtual
-	void
-	eventsProcessed () override;
-
 	void
 	set_frontTexture (X3DTextureNode* const value)
 	{ frontTexture = value; }

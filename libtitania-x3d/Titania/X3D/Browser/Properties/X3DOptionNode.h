@@ -59,15 +59,23 @@ namespace X3D {
 class X3DOptionNode :
 	virtual public X3DBaseNode
 {
-public:
-
-	void
-	eventsProcessed () override;
-
-
 protected:
 
+	///  @name Construction
+
 	X3DOptionNode ();
+
+	virtual
+	void
+	initialize () override;
+
+
+private:
+
+	///  @name Event handlers
+
+	void
+	eventsProcessed ();
 
 };
 

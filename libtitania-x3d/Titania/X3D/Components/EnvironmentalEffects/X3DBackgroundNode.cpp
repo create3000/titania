@@ -95,14 +95,9 @@ void
 X3DBackgroundNode::initialize ()
 {
 	X3DBindableNode::initialize ();
+	
+	addInterest (this, &X3DBackgroundNode::build);
 
-	build ();
-}
-
-void
-X3DBackgroundNode::eventsProcessed ()
-{
-	X3DBindableNode::eventsProcessed ();
 	build ();
 }
 

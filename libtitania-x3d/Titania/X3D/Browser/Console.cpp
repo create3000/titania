@@ -86,6 +86,8 @@ Console::initialize ()
 	X3DBaseNode::initialize ();
 
 	set_string () .addInterest (this, &Console::_set_string);
+	
+	addInterest (this, &Console::eventsProcessed);
 }
 
 void
@@ -98,8 +100,6 @@ Console::_set_string ()
 void
 Console::eventsProcessed ()
 {
-	X3DBaseNode::eventsProcessed ();
-
 	string_changed () = string;
 	string .clear ();
 }

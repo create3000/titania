@@ -88,14 +88,15 @@ void
 DirectionalLight::initialize ()
 {
 	X3DLightNode::initialize ();
+
+	addInterest (this, &DirectionalLight::eventsProcessed);
+
 	eventsProcessed ();
 }
 
 void
 DirectionalLight::eventsProcessed ()
 {
-	X3DLightNode::eventsProcessed ();
-
 	float glAmbientIntensity = math::clamp <float> (ambientIntensity (), 0, 1);
 	float glIntensity        = math::clamp <float> (intensity (), 0, 1);
 

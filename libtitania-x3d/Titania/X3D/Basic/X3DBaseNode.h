@@ -349,11 +349,6 @@ protected:
 	initialize ()
 	{ }
 
-	virtual
-	void
-	eventsProcessed ()
-	{ }
-
 	void
 	addHandle (X3DBaseNode* const);
 

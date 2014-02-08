@@ -203,10 +203,6 @@ protected:
 	void
 	build () = 0;
 
-	virtual
-	void
-	eventsProcessed () override;
-
 
 private:
 

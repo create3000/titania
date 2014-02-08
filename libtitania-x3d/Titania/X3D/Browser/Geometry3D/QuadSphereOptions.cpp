@@ -86,22 +86,6 @@ QuadSphereOptions::create (X3DExecutionContext* const executionContext) const
 	return new QuadSphereOptions (executionContext);
 }
 
-void
-QuadSphereOptions::initialize ()
-{
-	X3DSphereOptionNode::initialize ();
-
-	build ();
-}
-
-void
-QuadSphereOptions::eventsProcessed ()
-{
-	X3DSphereOptionNode::eventsProcessed ();
-
-	update ();
-}
-
 std::vector <int32_t>
 QuadSphereOptions::createTexIndices ()
 {

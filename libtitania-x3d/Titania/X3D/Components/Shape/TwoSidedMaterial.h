@@ -61,6 +61,8 @@ class TwoSidedMaterial :
 {
 public:
 
+	///  @name Construction
+
 	TwoSidedMaterial (X3DExecutionContext* const);
 
 	virtual
@@ -205,14 +207,16 @@ public:
 
 private:
 
+	///  @name Construction
+
 	virtual
 	void
 	initialize () final override;
 
-	virtual
-	void
-	eventsProcessed () final override;
+	///  @name Event handlers
 
+	void
+	eventsProcessed ();
 
 	///  @name Static members
 

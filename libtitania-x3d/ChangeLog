@@ -1,5 +1,53 @@
 2014-02-08  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Console.h:
+	* Console.cpp:
+	* X3DBaseNode.h:
+	* X3DBaseNode.cpp:
+	* Material.h:
+	* Material.cpp:
+	* Script.h:
+	* BoxOptions.h:
+	* Script.cpp:
+	* SpotLight.h:
+	* PointLight.h:
+	* SpotLight.cpp:
+	* X3DJavaScriptContext.h:
+	* BoxOptions.cpp:
+	* X3DOptionNode.h:
+	* Disk2DOptions.h:
+	* PointLight.cpp:
+	* TwoSidedMaterial.h:
+	* Circle2DOptions.h:
+	* Disk2DOptions.cpp:
+	* X3DOptionNode.cpp:
+	* TwoSidedMaterial.cpp:
+	* X3DGeometryNode.h:
+	* Circle2DOptions.cpp:
+	* X3DTransformNode.h:
+	* QuadSphereOptions.h:
+	* DirectionalLight.h:
+	* TextureTransform.h:
+	* Rectangle2DOptions.h:
+	* X3DTransformNode.cpp:
+	* QuadSphereOptions.cpp:
+	* X3DGeometryNode.cpp:
+	* DirectionalLight.cpp:
+	* TextureTransform.cpp:
+	* Rectangle2DOptions.cpp:
+	* TextureTransform3D.h:
+	* X3DGeometricOptionNode.h:
+	* TextureTransform3D.cpp:
+	* X3DGeometricOptionNode.cpp:
+	* X3DTextureTransformNode.h:
+	* X3DTextureTransformNode.cpp:
+	* TextureTransformMatrix3D.h:
+	* X3DBackgroundNode.h:
+	* TextureTransformMatrix3D.cpp:
+	* X3DBackgroundNode.cpp: 
+
+2014-02-08  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Sound.h:
 	* Sound.cpp: 
 

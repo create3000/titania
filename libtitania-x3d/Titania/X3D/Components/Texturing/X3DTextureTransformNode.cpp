@@ -67,14 +67,6 @@ X3DTextureTransformNode::X3DTextureTransformNode () :
 }
 
 void
-X3DTextureTransformNode::initialize ()
-{
-	X3DAppearanceChildNode::initialize ();
-
-	eventsProcessed ();
-}
-
-void
 X3DTextureTransformNode::setMatrix (const Matrix4f & value)
 {
 	matrix = value * textureMatrix;

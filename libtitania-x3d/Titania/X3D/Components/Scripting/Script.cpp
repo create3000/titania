@@ -95,6 +95,8 @@ Script::initialize ()
 	X3DScriptNode::initialize ();
 	
 	url () .addInterest (this, &Script::set_url);
+	
+	addInterest (this, &Script::eventsProcessed);
 
 	requestImmediateLoad ();
 }
@@ -185,8 +187,6 @@ Script::set_url ()
 void
 Script::eventsProcessed ()
 {
-	X3DScriptNode::eventsProcessed ();
-
 	if (checkLoadState () == COMPLETE_STATE)
 		javaScript -> eventsProcessed ();
 }

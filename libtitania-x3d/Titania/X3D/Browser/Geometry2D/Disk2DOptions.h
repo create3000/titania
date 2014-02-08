@@ -63,6 +63,8 @@ class Disk2DOptions :
 {
 public:
 
+	///  @name Construction
+
 	Disk2DOptions (X3DExecutionContext* const);
 
 	///  @name Common members
@@ -101,17 +103,13 @@ public:
 
 private:
 
+	///  @name Construction
+
 	virtual
 	Disk2DOptions*
 	create (X3DExecutionContext* const) const final override;
 
-	virtual
-	void
-	initialize () final override;
-
-	virtual
-	void
-	eventsProcessed () final override;
+	///  @name Operations
 
 	virtual
 	void

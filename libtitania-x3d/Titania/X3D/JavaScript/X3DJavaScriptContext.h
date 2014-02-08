@@ -65,8 +65,9 @@ public:
 	void
 	set_initialized () = 0;
 
-	using X3DBaseNode::eventsProcessed;
-
+	virtual
+	void
+	eventsProcessed () = 0;
 
 protected:
 

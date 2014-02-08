@@ -85,10 +85,18 @@ TextureTransform3D::create (X3DExecutionContext* const executionContext) const
 }
 
 void
+TextureTransform3D::initialize ()
+{
+	X3DTextureTransformNode::initialize ();
+
+	addInterest (this, &TextureTransform3D::eventsProcessed);
+
+	eventsProcessed ();
+}
+
+void
 TextureTransform3D::eventsProcessed ()
 {
-	X3DTextureTransformNode::eventsProcessed ();
-
 	// Tc' = -C × S × R × C × T × Tc
 
 	Matrix4f matrix;
