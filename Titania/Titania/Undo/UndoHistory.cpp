@@ -81,7 +81,7 @@ UndoHistory::addUndoStep (const std::shared_ptr <UndoStep> & undoStep)
 	if (index < savedIndex)
 		savedIndex = -2;
 
-	list .erase (list .begin () + (index + 1), list .end ());
+	list .resize (index + 1);
 
 	list .emplace_back (undoStep);
 
