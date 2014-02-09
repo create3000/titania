@@ -230,13 +230,13 @@ template <class Type>
 void
 box2 <Type>::absolute_extends (vector2 <Type> & min, vector2 <Type> & max) const
 {
-	vector2 <Type> x (value .x ());
-	vector2 <Type> y (value .y ());
+	const vector2 <Type> x (value .x ());
+	const vector2 <Type> y (value .y ());
 
-	auto p1 = x + y;
-	auto p2 = y - x;
-	auto p3 = -p1;
-	auto p4 = -p2;
+	const auto p1 = x + y;
+	const auto p2 = y - x;
+	const auto p3 = -p1;
+	const auto p4 = -p2;
 
 	min = math::min ({ p1, p2, p3, p4 });
 	max = math::max ({ p1, p2, p3, p4 });

@@ -415,7 +415,7 @@ private:
 	        matrix3 <Type> & scaleOrientation) const;
 
 	Type
-	determinant3 (int r1, int r2, int r3, int c1, int c2, int c3) const;
+	determinant3 (const int r1, const int r2, const int r3, const int c1, const int c2, const int c3) const;
 
 	union
 	{
@@ -629,17 +629,17 @@ matrix4 <Type>::factor (vector3 <Type> & translation,
 	translation = origin ();
 
 	// (2) Create 3x3 matrix.
-	matrix3 <Type> a (*this);
+	const matrix3 <Type> a (*this);
 
 	// (3) Compute det A. If negative, set sign = -1, else sign = 1
-	Type det      = a .determinant ();
-	Type det_sign = det < 0 ? -1 : 1;
+	const Type det      = a .determinant ();
+	const Type det_sign = det < 0 ? -1 : 1;
 
 	if (det_sign * det == 0)
 		return false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        // singular
 
 	// (4) B = A * !A  (here !A means A transpose)
-	matrix3 <Type> b = a * ! a;
+	const matrix3 <Type> b = a * ! a;
 
 	Type evalues [3];
 	Type evectors [3] [3];
@@ -679,21 +679,21 @@ matrix4 <Type>::determinant3 () const
 
 template <class Type>
 Type
-matrix4 <Type>::determinant3 (int r1, int r2, int r3, int c1, int c2, int c3) const
+matrix4 <Type>::determinant3 (const int r1, const int r2, const int r3, const int c1, const int c2, const int c3) const
 {
-	Type a11 = value [r1] [c1];
-	Type a12 = value [r1] [c2];
-	Type a13 = value [r1] [c3];
-	Type a21 = value [r2] [c1];
-	Type a22 = value [r2] [c2];
-	Type a23 = value [r2] [c3];
-	Type a31 = value [r3] [c1];
-	Type a32 = value [r3] [c2];
-	Type a33 = value [r3] [c3];
+	const Type a11 = value [r1] [c1];
+	const Type a12 = value [r1] [c2];
+	const Type a13 = value [r1] [c3];
+	const Type a21 = value [r2] [c1];
+	const Type a22 = value [r2] [c2];
+	const Type a23 = value [r2] [c3];
+	const Type a31 = value [r3] [c1];
+	const Type a32 = value [r3] [c2];
+	const Type a33 = value [r3] [c3];
 
-	Type M11 =   a22 * a33 - a32 * a23;
-	Type M21 = -(a12 * a33 - a32 * a13);
-	Type M31 =   a12 * a23 - a22 * a13;
+	const Type M11 =   a22 * a33 - a32 * a23;
+	const Type M21 = -(a12 * a33 - a32 * a13);
+	const Type M31 =   a12 * a23 - a22 * a13;
 
 	return (a11 * M11 + a21 * M21 + a31 * M31);
 }
@@ -723,7 +723,7 @@ matrix4 <Type> &
 matrix4 <Type>::inverse ()
 throw (std::domain_error)
 {
-	Type det = determinant ();
+	const Type det = determinant ();
 
 	if (det == 0)
 		throw std::domain_error ("matrix4::inverse: determinant is 0.");
@@ -880,7 +880,7 @@ template <class T>
 vector3 <Type>
 matrix4 <Type>::multVecMatrix (const vector3 <T> & vector) const
 {
-	Type w = vector .x () * array [3] + vector .y () * array [7] + vector .z () * array [11] + array [15];
+	const Type w = vector .x () * array [3] + vector .y () * array [7] + vector .z () * array [11] + array [15];
 
 	return vector3 <Type> ((vector .x () * array [0] + vector .y () * array [4] + vector .z () * array [ 8] + array [12]) / w,
 	                       (vector .x () * array [1] + vector .y () * array [5] + vector .z () * array [ 9] + array [13]) / w,
@@ -909,7 +909,7 @@ template <class T>
 vector3 <Type>
 matrix4 <Type>::multMatrixVec (const vector3 <T> & vector) const
 {
-	Type w = vector .x () * array [12] + vector .y () * array [13] + vector .z () * array [14] + array [15];
+	const Type w = vector .x () * array [12] + vector .y () * array [13] + vector .z () * array [14] + array [15];
 
 	return vector3 <Type> ((vector .x () * array [0] + vector .y () * array [1] + vector .z () * array [ 2] + array [ 3]) / w,
 	                       (vector .x () * array [4] + vector .y () * array [5] + vector .z () * array [ 6] + array [ 7]) / w,

@@ -114,7 +114,7 @@ public:
 
 	virtual
 	Vector3d
-	getScreenScale (double, const Vector4i &) const final override;
+	getScreenScale (const double, const Vector4i &) const final override;
 
 	///  @name Operations
 
@@ -131,7 +131,7 @@ private:
 	getFieldOfView () const;
 
 	Vector3f
-	getLookAtPositionOffset (Box3f) const;
+	getLookAtPositionOffset (const Box3f &) const;
 
 	///  @name Static members
 

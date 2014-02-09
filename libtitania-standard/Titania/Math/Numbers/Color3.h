@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -225,13 +225,13 @@ color3 <Type>::setHSV (const Type & h, Type s, Type v)
 
 	s = clamp (s, Type (), Type (1));
 
-	Type w = degrees (interval (h, Type (), Type (M_PI2))) / 60; // sector 0 to 5
+	const Type w = degrees (interval (h, Type (), Type (M_PI2))) / 60; // sector 0 to 5
 
-	Type i = std::floor (w);
-	Type f = w - i;                                             // factorial part of h
-	Type p = v * (1 - s);
-	Type q = v * (1 - s * f);
-	Type t = v * (1 - s * (1 - f));
+	const Type i = std::floor (w);
+	const Type f = w - i;                                              // factorial part of h
+	const Type p = v * (1 - s);
+	const Type q = v * (1 - s * f);
+	const Type t = v * (1 - s * (1 - f));
 
 	switch ((size_t) i)
 	{
@@ -277,12 +277,12 @@ template <typename Type>
 void
 color3 <Type>::getHSV (Type & h, Type & s, Type & v) const
 {
-	Type min = std::min ({ r (), g (), b () });
-	Type max = std::max ({ r (), g (), b () });
+	const Type min = std::min ({ r (), g (), b () });
+	const Type max = std::max ({ r (), g (), b () });
 
 	v = max;                           // v
 
-	Type delta = max - min;
+	const Type delta = max - min;
 
 	if (max not_eq 0 and delta not_eq 0)
 		s = delta / max;                // s
@@ -342,7 +342,7 @@ clerp (const color3 <Type> & source, const color3 <Type> & destination, const Ty
 	source      .getHSV (a_h, a_s, a_v);
 	destination .getHSV (b_h, b_s, b_v);
 
-	Type range = std::abs (b_h - a_h);
+	const Type range = std::abs (b_h - a_h);
 
 	if (range <= Type (M_PI))
 	{
@@ -352,8 +352,8 @@ clerp (const color3 <Type> & source, const color3 <Type> & destination, const Ty
 	}
 	else
 	{
-		Type step = (Type (M_PI2) - range) * t;
-		Type h    = a_h < b_h ? a_h - step : a_h + step;
+		const Type step = (Type (M_PI2) - range) * t;
+		Type       h    = a_h < b_h ? a_h - step : a_h + step;
 
 		if (h < 0)
 			h += Type (M_PI2);
@@ -375,7 +375,7 @@ hsv_lerp (const Type & a_h, const Type & a_s, const Type & a_v,
           const Type & t,
           Type & r_h, Type & r_s, Type & r_v)
 {
-	Type range = std::abs (b_h - a_h);
+	const Type range = std::abs (b_h - a_h);
 
 	if (range <= Type (M_PI))
 	{
@@ -385,8 +385,8 @@ hsv_lerp (const Type & a_h, const Type & a_s, const Type & a_v,
 	}
 	else
 	{
-		Type step = (Type (M_PI2) - range) * t;
-		Type h    = a_h < b_h ? a_h - step : a_h + step;
+		const Type step = (Type (M_PI2) - range) * t;
+		Type       h    = a_h < b_h ? a_h - step : a_h + step;
 
 		if (h < 0)
 			h += Type (M_PI2);

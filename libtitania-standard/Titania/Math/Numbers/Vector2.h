@@ -286,7 +286,7 @@ template <class Type>
 vector2 <Type> &
 vector2 <Type>::normalize ()
 {
-	Type length = abs (*this);
+	const Type length = abs (*this);
 
 	if (length)
 		return *this /= length;

@@ -410,7 +410,7 @@ matrix2 <Type> &
 matrix2 <Type>::inverse ()
 throw (std::domain_error)
 {
-	Type d = determinant ();
+	const Type d = determinant ();
 
 	if (d == 0)
 		throw std::domain_error ("matrix2::inverse: determinant is 0.");
@@ -507,7 +507,7 @@ template <class Type>
 Type
 matrix2 <Type>::multVecMatrix (const Type & vector) const
 {
-	Type w = vector * array [1] + array [3];
+	const Type w = vector * array [1] + array [3];
 
 	return (vector * array [0] + array [2]) / w;
 }
@@ -525,7 +525,7 @@ template <class Type>
 Type
 matrix2 <Type>::multMatrixVec (const Type & vector) const
 {
-	Type w = vector * array [2] + array [3];
+	const Type w = vector * array [2] + array [3];
 
 	return (vector * array [0] + array [1]) / w;
 }

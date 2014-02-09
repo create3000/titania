@@ -113,7 +113,7 @@ public:
 
 	virtual
 	Vector3d
-	getScreenScale (double, const Vector4i &) const final override;
+	getScreenScale (const double, const Vector4i &) const final override;
 
 	Vector2d
 	getViewportSize (const Vector4i &) const;
@@ -149,8 +149,7 @@ private:
 
 	virtual
 	Vector3f
-	getLookAtPositionOffset (Box3f) const final override;
-
+	getLookAtPositionOffset (const Box3f &) const final override;
 
 	///  @name Static members
 

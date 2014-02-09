@@ -249,18 +249,18 @@ box3 <Type>::absolute_extends (vector3 <Type> & min, vector3 <Type> & max) const
 	vector3 <Type> y (value .y ());
 	vector3 <Type> z (value .z ());
 
-	auto r1 = y + z;
-	auto r2 = z - y;
+	const auto r1 = y + z;
+	const auto r2 = z - y;
 
-	auto p1 =  x + r1;
-	auto p2 =  x + r2;
-	auto p3 = r1 -  x;
-	auto p4 = r2 -  x;
+	const auto p1 =  x + r1;
+	const auto p2 =  x + r2;
+	const auto p3 = r1 -  x;
+	const auto p4 = r2 -  x;
 
-	auto p5 = -p1;
-	auto p6 = -p2;
-	auto p7 = -p3;
-	auto p8 = -p4;
+	const auto p5 = -p1;
+	const auto p6 = -p2;
+	const auto p7 = -p3;
+	const auto p8 = -p4;
 
 	min = math::min ({ p1, p2, p3, p4, p5, p6, p7, p8 });
 	max = math::max ({ p1, p2, p3, p4, p5, p6, p7, p8 });
@@ -367,8 +367,8 @@ box3 <Type>::intersect (const sphere3 <Type> & sphere) const
 
 	extends (min, max);
 
-	vector3 <Type> center = sphere .center ();
-	Type           radius = sphere .radius ();
+	const vector3 <Type> center = sphere .center ();
+	const Type           radius = sphere .radius ();
 
 	return min .x () <= center .x () + radius and
 	       max .x () >= center .x () - radius and

@@ -162,7 +162,7 @@ X3DViewpointNode::getUserCenterOfRotation () const
 }
 
 void
-X3DViewpointNode::getRelativeTransformation (X3DViewpointNode* fromViewpoint,
+X3DViewpointNode::getRelativeTransformation (X3DViewpointNode* const fromViewpoint,
                                              Vector3f & relativePosition,
                                              Rotation4f & relativeOrientation,
                                              Vector3f & relativeScale,
@@ -228,7 +228,7 @@ X3DViewpointNode::resetUserOffsets ()
 }
 
 void
-X3DViewpointNode::straighten (bool horizon)
+X3DViewpointNode::straighten (const bool horizon)
 {
 	for (const auto & layer : getLayers ())
 		layer -> getNavigationInfo () -> transitionStart () = true;
@@ -274,7 +274,7 @@ X3DViewpointNode::straightenHorizon (const Rotation4f & orientation)
 }
 
 void
-X3DViewpointNode::lookAt (Box3f bbox, float distance, bool straighten)
+X3DViewpointNode::lookAt (Box3f bbox, const float distance, const bool straighten)
 {
 	try
 	{
@@ -325,7 +325,7 @@ X3DViewpointNode::lookAt (Box3f bbox, float distance, bool straighten)
 }
 
 void
-X3DViewpointNode::transitionStart (X3DViewpointNode* fromViewpoint)
+X3DViewpointNode::transitionStart (X3DViewpointNode* const fromViewpoint)
 {
 	try
 	{
@@ -428,7 +428,7 @@ X3DViewpointNode::transitionStop ()
 
 // Notify NavigationInfos when transitions are complete.
 void
-X3DViewpointNode::set_isActive (bool value)
+X3DViewpointNode::set_isActive (const bool value)
 {
 	if (not value)
 	{

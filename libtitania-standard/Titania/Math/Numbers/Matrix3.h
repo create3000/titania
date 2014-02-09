@@ -425,8 +425,8 @@ template <class Type>
 void
 matrix3 <Type>::rotation (const Type & rotation)
 {
-	Type sinAngle = std::sin (rotation);
-	Type cosAngle = std::cos (rotation);
+	const Type sinAngle = std::sin (rotation);
+	const Type cosAngle = std::cos (rotation);
 
 	*this = Identity;
 
@@ -613,17 +613,17 @@ matrix3 <Type>::factor (vector2 <Type> & translation,
 	translation = origin ();
 
 	// (2) Create 2x2 matrix.
-	matrix2 <Type> a (*this);
+	const matrix2 <Type> a (*this);
 
 	// (3) Compute det A. If negative, set sign = -1, else sign = 1
-	Type det      = a .determinant ();
-	Type det_sign = det < 0 ? -1 : 1;
+	const Type det      = a .determinant ();
+	const Type det_sign = det < 0 ? -1 : 1;
 
 	if (det_sign * det == 0)
 		return false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  // singular
 
 	// (4) B = A * !A  (here !A means A transpose)
-	matrix2 <Type> b = a * ! a;
+	const matrix2 <Type> b = a * ! a;
 
 	Type evalues [2];
 	Type evectors [2] [2];
@@ -681,26 +681,26 @@ matrix3 <Type> &
 matrix3 <Type>::inverse ()
 throw (std::domain_error)
 {
-	Type m00 = array [0];
-	Type m01 = array [1];
-	Type m02 = array [2];
+	const Type m00 = array [0];
+	const Type m01 = array [1];
+	const Type m02 = array [2];
 
-	Type m10 = array [3];
-	Type m11 = array [4];
-	Type m12 = array [5];
+	const Type m10 = array [3];
+	const Type m11 = array [4];
+	const Type m12 = array [5];
 
-	Type m20 = array [6];
-	Type m21 = array [7];
-	Type m22 = array [8];
+	const Type m20 = array [6];
+	const Type m21 = array [7];
+	const Type m22 = array [8];
 
-	Type t4  = m00 * m11;
-	Type t6  = m00 * m21;
-	Type t8  = m10 * m01;
-	Type t10 = m10 * m21;
-	Type t12 = m20 * m01;
-	Type t14 = m20 * m11;
+	const Type t4  = m00 * m11;
+	const Type t6  = m00 * m21;
+	const Type t8  = m10 * m01;
+	const Type t10 = m10 * m21;
+	const Type t12 = m20 * m01;
+	const Type t14 = m20 * m11;
 
-	Type d = (t4 * m22 - t6 * m12 - t8 * m22 + t10 * m02 + t12 * m12 - t14 * m02);
+	const Type d = (t4 * m22 - t6 * m12 - t8 * m22 + t10 * m02 + t12 * m12 - t14 * m02);
 
 	if (d == 0)
 		throw std::domain_error ("matrix3::inverse: determinant is 0.");
@@ -823,7 +823,7 @@ template <class T>
 vector2 <Type>
 matrix3 <Type>::multVecMatrix (const vector2 <T> & vector) const
 {
-	Type w = vector .x () * array [2] + vector .y () * array [5] + array [8];
+	const Type w = vector .x () * array [2] + vector .y () * array [5] + array [8];
 
 	return vector2 <Type> ((vector .x () * array [0] + vector .y () * array [3] + array [6]) / w,
 	                       (vector .x () * array [1] + vector .y () * array [4] + array [7]) / w);
@@ -844,7 +844,7 @@ template <class T>
 vector2 <Type>
 matrix3 <Type>::multMatrixVec (const vector2 <T> & vector) const
 {
-	Type w = vector .x () * array [6] + vector .y () * array [7] + array [8];
+	const Type w = vector .x () * array [6] + vector .y () * array [7] + array [8];
 
 	return vector2 <Type> ((vector .x () * array [0] + vector .y () * array [1] + array [2]) / w,
 	                       (vector .x () * array [3] + vector .y () * array [4] + array [5]) / w);

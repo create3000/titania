@@ -1,3 +1,24 @@
+2014-02-09  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Functional.h:
+	* Box3.h:
+	* Box2.h:
+	* Color3.h:
+	* Color4.h:
+	* Line3.h:
+	* Matrix4.h:
+	* Matrix3.h:
+	* Vector2.h:
+	* Vector4.h:
+	* Vector3.h:
+	* Plane3.h:
+	* Matrix2.h:
+	* Sphere3.h:
+	* Rotation4.h:
+	* Quaternion.h:
+	* Cylinder3.h:
+	* CatmullRomSplineInterpolator.h: 
+
 2014-02-07  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Matrix2.h: 

@@ -156,7 +156,7 @@ public:
 	vector3 <Type>
 	perpendicular_vector (const vector3 <Type> & point) const
 	{
-		vector3 <Type> d = this -> point () - point;
+		const vector3 <Type> d = this -> point () - point;
 		return d - dot (d, direction ()) * direction ();
 	}
 
@@ -164,15 +164,15 @@ public:
 	vector3 <Type>
 	perpendicular_vector (const line3 <Type> & line) const
 	{
-		vector3 <Type> d = point () - line .point ();
+		const vector3 <Type> d = point () - line .point ();
 
-		Type re1 = dot (d, direction ());
-		Type re2 = dot (d, line .direction ());
-		Type e12 = dot (direction (), line .direction ());
-		Type E12 = std::pow (e12, 2);
+		const Type re1 = dot (d, direction ());
+		const Type re2 = dot (d, line .direction ());
+		const Type e12 = dot (direction (), line .direction ());
+		const Type E12 = std::pow (e12, 2);
 
-		Type a = (re1 - re2 * e12) / (1 - E12);
-		Type b = -(re2 - re1 * e12) / (1 - E12);
+		const Type a = (re1 - re2 * e12) / (1 - E12);
+		const Type b = -(re2 - re1 * e12) / (1 - E12);
 
 		return d + b* line .direction () - a*
 		       direction ();
@@ -196,11 +196,12 @@ public:
 		const auto & d1 = direction ();
 		const auto & d2 = line .direction ();
 
-		auto u = p2 - p1;
 		Type t = dot (d1, d2);
 
 		if (std::abs (t) >= 1)
 			return false;  // lines are parallel
+
+		const auto u = p2 - p1;
 
 		t     = (dot (u, d1) - t * dot (u, d2)) / (1 - t * t);
 		point = p1 + t * d1;
@@ -234,24 +235,24 @@ line3 <Type>::intersect (const vector3 <Type> & A, const vector3 <Type> & B, con
                          Type & u, Type & v, Type & t) const
 {
 	// find vectors for two edges sharing vert0
-	vector3 <Type> edge1 = B - A;
-	vector3 <Type> edge2 = C - A;
+	const vector3 <Type> edge1 = B - A;
+	const vector3 <Type> edge2 = C - A;
 
 	// begin calculating determinant - also used to calculate U parameter
-	vector3 <Type> pvec = cross (direction (), edge2);
+	const vector3 <Type> pvec = cross (direction (), edge2);
 
 	// if determinant is near zero, ray lies in plane of triangle
-	Type det = dot (edge1, pvec);
+	const Type det = dot (edge1, pvec);
 
 	// Non culling intersection
 
 	if (det == 0)
 		return false;
 
-	Type inv_det = 1 / det;
+	const Type inv_det = 1 / det;
 
 	// calculate distance from vert0 to ray point
-	vector3 <Type> tvec = point () - A;
+	const vector3 <Type> tvec = point () - A;
 
 	// calculate U parameter and test bounds
 	u = dot (tvec, pvec) * inv_det;
@@ -260,7 +261,7 @@ line3 <Type>::intersect (const vector3 <Type> & A, const vector3 <Type> & B, con
 		return false;
 
 	// prepare to test V parameter
-	vector3 <Type> qvec = cross (tvec, edge1);
+	const vector3 <Type> qvec = cross (tvec, edge1);
 
 	// calculate V parameter and test bounds
 	v = dot (direction (), qvec) * inv_det;

@@ -407,7 +407,7 @@ template <class Type>
 quaternion <Type> &
 quaternion <Type>::normalize ()
 {
-	Type length = abs (*this);
+	const Type length = abs (*this);
 
 	if (length)
 		return *this /= length;
@@ -662,12 +662,12 @@ template <class Type>
 quaternion <Type>
 pow (const quaternion <Type> & base, const Type & exponent)
 {
-	Type n     = norm (base);
-	Type theta = std::acos (base .w () / n);
-	Type ni    = norm (imag (base));
-	Type ntov  = std::pow (n, exponent);
-	Type vt    = exponent * theta;
-	Type scale = ntov / ni* std::sin (vt);
+	const Type n     = norm (base);
+	const Type theta = std::acos (base .w () / n);
+	const Type ni    = norm (imag (base));
+	const Type ntov  = std::pow (n, exponent);
+	const Type vt    = exponent * theta;
+	const Type scale = ntov / ni* std::sin (vt);
 
 	return quaternion <Type> (base .x () * scale,
 	                          base .y () * scale,
@@ -691,9 +691,9 @@ log (const quaternion <Type> & quad)
 			return quaternion <Type> (M_PI, 0, 0, std::log (-quad .w ()));
 	}
 
-	Type vl = norm (imag (quad)); // mod of quat part
-	Type vs = std::atan2 (vl, quad .w ()) / vl;
-	Type ln = std::log (norm (quad));
+	const Type vl = norm (imag (quad)); // mod of quat part
+	const Type vs = std::atan2 (vl, quad .w ()) / vl;
+	const Type ln = std::log (norm (quad));
 
 	return quaternion <Type> (vs * quad .x (),
 	                          vs * quad .y (),
@@ -709,15 +709,15 @@ exp (const quaternion <Type> & quad)
 	if (is_real (quad))
 		return quaternion <Type> (0, 0, 0, std::exp (quad .w ()));
 
-	Type vl = norm (imag (quad)); // length of pure-quat part
+	const Type vl = norm (imag (quad)); // length of pure-quat part
 
 	// unit vector
-	Type ux = quad .x () / vl;
-	Type uy = quad .y () / vl;
-	Type uz = quad .z () / vl;
+	const Type ux = quad .x () / vl;
+	const Type uy = quad .y () / vl;
+	const Type uz = quad .z () / vl;
 
-	Type ws = std::exp (quad .w ());
-	Type vs = ws * std::sin (vl);
+	const Type ws = std::exp (quad .w ());
+	const Type vs = ws * std::sin (vl);
 
 	return quaternion <Type> (vs * ux,
 	                          vs * uy,
@@ -747,9 +747,9 @@ bezier (const quaternion <Type> & q0,
         const quaternion <Type> & q1,
         Type t)
 {
-	quaternion <Type> q11 = simple_slerp (q0, a, t);
-	quaternion <Type> q12 = simple_slerp (a, b, t);
-	quaternion <Type> q13 = simple_slerp (b, q1, t);
+	const quaternion <Type> q11 = simple_slerp (q0, a, t);
+	const quaternion <Type> q12 = simple_slerp (a, b, t);
+	const quaternion <Type> q13 = simple_slerp (b, q1, t);
 
 	return simple_slerp (simple_slerp (q11, q12, t), simple_slerp (q12, q13, t), t);
 }
@@ -762,7 +762,7 @@ spline (const quaternion <Type> & q0,
         const quaternion <Type> & q1,
         const quaternion <Type> & q2)
 {
-	quaternion <Type> q1_i = ~q1;
+	const quaternion <Type> q1_i = ~q1;
 
 	return normalize (q1 * exp ((log (q1_i * q2) + log (q1_i * q0)) * Type (-0.25)));
 }

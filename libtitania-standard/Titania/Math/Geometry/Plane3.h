@@ -196,8 +196,8 @@ throw (std::domain_error)
     // to get the new normal. Use the inverse transpose
     // of the matrix so that normals are not scaled incorrectly.
     // n' = n * !~m = ~m * n
-    auto inv       = inverse (matrix);
-    auto newNormal = normalize (inv .multMatrixDir (normal ()));
+    const auto inv       = inverse (matrix);
+    const auto newNormal = normalize (inv .multMatrixDir (normal ()));
 
     // Transform the point by the matrix
     point = matrix .multVecMatrix (point);
@@ -220,8 +220,8 @@ throw (std::domain_error)
     // to get the new normal. Use the inverse transpose
     // of the matrix so that normals are not scaled incorrectly.
     // n' = !~m * n = n * ~m
-    auto inv       = inverse (matrix);
-    auto newNormal = normalize (inv .multDirMatrix (normal ()));
+    const auto inv       = inverse (matrix);
+    const auto newNormal = normalize (inv .multDirMatrix (normal ()));
 
     // Transform the point by the matrix
     point = matrix .multMatrixVec (point);
@@ -251,14 +251,14 @@ bool
 plane3 <Type>::intersect (const line3 <Type> & line, vector3 <Type> & point) const
 {
 	// Check if the line is parallel to the plane.
-	Type theta = dot (line .direction (), normal ());
+	const Type theta = dot (line .direction (), normal ());
 
 	// Plane and line are parallel.
 	if (theta == 0)
 		return false;
 
 	// Plane and line are not parallel. The intersection point can be calculated now.
-	Type t = (distance_from_origin () - dot (normal (), line .point ())) / theta;
+	const Type t = (distance_from_origin () - dot (normal (), line .point ())) / theta;
 
 	point = line .point () + line .direction () * t;
 
