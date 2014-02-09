@@ -92,7 +92,7 @@ X3DPointingDeviceSensorNode::set_enabled ()
 }
 
 void
-X3DPointingDeviceSensorNode::set_over (const HitPtr &, bool value)
+X3DPointingDeviceSensorNode::set_over (const HitPtr &, const bool value)
 {
 	if (value not_eq isOver ())
 	{
@@ -104,7 +104,7 @@ X3DPointingDeviceSensorNode::set_over (const HitPtr &, bool value)
 }
 
 void
-X3DPointingDeviceSensorNode::set_active (const HitPtr &, bool value)
+X3DPointingDeviceSensorNode::set_active (const HitPtr &, const bool value)
 {
 	if (value not_eq isActive ())
 		isActive () = value;

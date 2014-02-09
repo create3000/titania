@@ -61,6 +61,8 @@ class TouchSensor :
 {
 public:
 
+	///  @name Construction
+
 	TouchSensor (X3DExecutionContext* const);
 
 	virtual
@@ -113,11 +115,10 @@ public:
 
 	virtual
 	void
-	set_over (const HitPtr &, bool) final override;
+	set_over (const HitPtr &, const bool) final override;
 
 
 private:
-
 
 	///  @name Static members
 

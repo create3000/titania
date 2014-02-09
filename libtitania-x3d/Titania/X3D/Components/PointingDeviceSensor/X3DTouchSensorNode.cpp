@@ -65,7 +65,7 @@ X3DTouchSensorNode::X3DTouchSensorNode () :
 }
 
 void
-X3DTouchSensorNode::set_active (const HitPtr & hit, bool value)
+X3DTouchSensorNode::set_active (const HitPtr & hit, const bool value)
 {
 	X3DPointingDeviceSensorNode::set_active (hit, value);
 

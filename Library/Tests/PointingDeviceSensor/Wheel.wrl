@@ -20,7 +20,6 @@ PROTO WheelSensor [
   DEF Wheel Script {
     eventIn      SFRotation set_rotation
     exposedField SFRotation axisRotation IS axisRotation
-    exposedField SFFloat    offset IS offset
     eventOut     SFFloat    value_changed IS value_changed
     field        SFVec3f    startVector 0 0 1
 

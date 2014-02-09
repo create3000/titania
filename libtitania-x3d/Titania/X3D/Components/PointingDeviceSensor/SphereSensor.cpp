@@ -73,6 +73,7 @@ SphereSensor::SphereSensor (X3DExecutionContext* const executionContext) :
 	                behind (false),
 	            fromVector (),
 	            startPoint (),
+	           startOffset (),
 	inverseModelViewMatrix ()
 {
 	addField (inputOutput, "metadata",           metadata ());
@@ -93,7 +94,7 @@ SphereSensor::create (X3DExecutionContext* const executionContext) const
 }
 
 bool
-SphereSensor::getTrackPoint (const Line3d & hitRay, Vector3d & trackPoint, bool behind) const
+SphereSensor::getTrackPoint (const Line3d & hitRay, Vector3d & trackPoint, const bool behind) const
 {
 	Vector3d exit;
 
@@ -109,7 +110,7 @@ SphereSensor::getTrackPoint (const Line3d & hitRay, Vector3d & trackPoint, bool 
 }
 
 void
-SphereSensor::set_active (const HitPtr & hit, bool active)
+SphereSensor::set_active (const HitPtr & hit, const bool active)
 {
 	X3DDragSensorNode::set_active (hit, active);
 
@@ -128,6 +129,7 @@ SphereSensor::set_active (const HitPtr & hit, bool active)
 
 			fromVector            = hitPoint - sphere .center ();
 			startPoint            = hit -> point;
+			startOffset           = offset () .getValue ();
 			trackPoint_changed () = hitPoint;
 			rotation_changed ()   = offset ();
 		}
@@ -186,7 +188,7 @@ SphereSensor::set_motion (const HitPtr & hit)
 		if (behind)
 			rotation .inverse ();
 
-		rotation_changed () = Rotation4d (offset () .getValue ()) * rotation;
+		rotation_changed () = startOffset * rotation;
 	}
 	catch (const std::domain_error &)
 	{
