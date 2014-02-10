@@ -359,10 +359,6 @@ public:
 	iterator
 	insert (iterator, InputIterator, InputIterator);
 
-	size_type
-	max_size () const
-	{ return getValue () .max_size (); }
-
 	void
 	pop_front ();
 
@@ -407,13 +403,27 @@ public:
 	crend () const
 	{ return const_reverse_iterator (getValue () .crend ()); }
 
-	//	void reserve (size_type size) { get () .reserve (size); };
+	void
+	reserve (size_type size)
+	{ get () .reserve (size); };
+
+	size_type
+	capacity () const
+	{ return getValue () .capacity (); };
+
+	void
+	shrink_to_fit ()
+	{ get () .shrink_to_fit (); };
 
 	void
 	resize (size_type);
 
 	void
 	resize (size_type, const ValueType &);
+
+	size_type
+	max_size () const
+	{ return getValue () .max_size (); }
 
 	size_type
 	size () const
@@ -625,7 +635,7 @@ X3DArrayField <ValueType>::insert (iterator location, size_type count, const Val
 {
 	size_type pos = location - begin ();
 
-	get () .insert (location .base (), count, NULL);
+	get () .insert (location .base (), count, nullptr);
 
 	auto iter = get () .begin () + pos;
 
@@ -648,7 +658,7 @@ X3DArrayField <ValueType>::insert (iterator location, InputIterator first, Input
 	size_type pos   = location - begin ();
 	size_type count = last - first;
 
-	get () .insert (location .base (), count, NULL);
+	get () .insert (location .base (), count, nullptr);
 
 	auto iter = get () .begin () + pos;
 
@@ -671,7 +681,7 @@ X3DArrayField <ValueType>::pop_front ()
 {
 	removeChild (get () .front ());
 
-	get () .pop_front ();
+	get () .erase (get () .begin ());
 
 	addEvent ();
 }
@@ -708,7 +718,7 @@ X3DArrayField <ValueType>::emplace_front (Args && ... args)
 {
 	ValueType* field = new ValueType (args ...);
 
-	get () .emplace_front (field);
+	get () .insert (get () .begin (), field);
 
 	addChild (field);
 
@@ -745,7 +755,7 @@ X3DArrayField <ValueType>::resize (size_type count, const ValueType & value)
 
 	if (count > currentSize)
 	{
-		get () .resize (count, NULL);
+		get () .resize (count, nullptr);
 
 		for (auto & field : basic::adapter (get () .begin () + currentSize, get () .end ()))
 		{
