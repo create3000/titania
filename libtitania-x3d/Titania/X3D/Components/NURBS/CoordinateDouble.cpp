@@ -88,9 +88,14 @@ CoordinateDouble::getBBox () const
 Vector3f
 CoordinateDouble::getNormal (size_t index1, size_t index2, size_t index3) const
 {
-	return math::normal <double> (point () [index1],
-	                              point () [index2],
-	                              point () [index3]);
+	size_t size = point () .size ();
+
+	if (index1 < size and index2 < size and index3 < size)
+		return math::normal <double> (point () [index1],
+		                              point () [index2],
+		                              point () [index3]);
+
+	return Vector3f (0, 0, 1);
 }
 
 void

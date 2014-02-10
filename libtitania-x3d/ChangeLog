@@ -1,5 +1,13 @@
 2014-02-10  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Coordinate.cpp:
+	* CoordinateDouble.cpp:
+	* GeoCoordinate.cpp:
+	* IndexedFaceSet.cpp:
+	* ParticleSystem.h: 
+
+2014-02-10  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Array.h:
 	* Parser.cpp:
 	* X3DArrayField.h: 
