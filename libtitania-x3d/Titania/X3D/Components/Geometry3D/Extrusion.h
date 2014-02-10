@@ -195,7 +195,7 @@ private:
 	///  @name Operations
 
 	std::vector <Vector3f>
-	createPoints (bool);
+	createPoints (const bool);
 
 	std::vector <Matrix4f>
 	createRotations ();

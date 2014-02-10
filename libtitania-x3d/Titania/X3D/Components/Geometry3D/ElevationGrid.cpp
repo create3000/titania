@@ -178,10 +178,10 @@ ElevationGrid::createBBox ()
 	if (xDimension () < 2 or zDimension () < 2)
 		return Box3f ();
 
-	size_t vertices = xDimension () * zDimension ();
+	const size_t vertices = xDimension () * zDimension ();
 
-	float x = xSpacing () * (xDimension () - 1);
-	float z = zSpacing () * (zDimension () - 1);
+	const float x = xSpacing () * (xDimension () - 1);
+	const float z = zSpacing () * (zDimension () - 1);
 
 	float miny = getHeight (0);
 	float maxy = getHeight (0);
@@ -192,16 +192,16 @@ ElevationGrid::createBBox ()
 		maxy = std::max <float> (maxy, getHeight (i));
 	}
 
-	float y = maxy - miny;
+	const float y = maxy - miny;
 
-	Vector3f size   = Vector3f (x, y, z);
-	Vector3f center = Vector3f (x / 2, miny + y / 2, z / 2);
+	const Vector3f size   = Vector3f (x, y, z);
+	const Vector3f center = Vector3f (x / 2, miny + y / 2, z / 2);
 
 	return Box3f (size, center);
 }
 
 float
-ElevationGrid::getHeight (size_t index) const
+ElevationGrid::getHeight (const size_t index) const
 {
 	if (index < height () .size ())
 		return height () [index];
@@ -246,12 +246,12 @@ ElevationGrid::createNormals (const std::vector <Vector3f> & points, const std::
 		const Vector3f & p2 = points [*(index + 1)];
 		const Vector3f & p4 = points [*(index + 2)];
 
-		Vector3f normal = cross (p3 - p1, p4 - p2);
+		const Vector3f normal = normalize (cross (p3 - p1, p4 - p2));
 
 		for (size_t i = 0; i < 6; ++ i)
 			normalIndex [*(index + i)] .push_back (normals .size () + i);
 
-		normals .resize (normals .size () + 6, normalize (normal));
+		normals .resize (normals .size () + 6, normal);
 	}
 
 	refineNormals (normalIndex, normals, creaseAngle (), ccw ());
@@ -322,8 +322,8 @@ ElevationGrid::build ()
 	if (xDimension () < 2 or zDimension () < 2)
 		return;
 
-	std::vector <size_t>   coordIndex = createCoordIndex ();
-	std::vector <Vector3f> points     = createPoints ();
+	const std::vector <size_t>   coordIndex = std::move (createCoordIndex ());
+	const std::vector <Vector3f> points     = std::move (createPoints ());
 
 	getVertices () .reserve (coordIndex .size ());
 
@@ -363,16 +363,18 @@ ElevationGrid::build ()
 	{
 		for (int32_t p = 0; p < 6; ++ p, ++ index)
 		{
+			const size_t i = *index;
+		
 			if (texCoordNode)
-				texCoordNode -> addTexCoord (getTexCoords (), *index);
+				texCoordNode -> addTexCoord (getTexCoords (), i);
 
 			else
-				getTexCoords () [0] .emplace_back (texCoords [*index]);
+				getTexCoords () [0] .emplace_back (texCoords [i]);
 
 			if (colorNode)
 			{
 				if (colorPerVertex ())
-					colorNode -> addColor (getColors (), *index);
+					colorNode -> addColor (getColors (), i);
 
 				else
 					colorNode -> addColor (getColors (), face);
@@ -381,13 +383,13 @@ ElevationGrid::build ()
 			if (normalNode)
 			{
 				if (normalPerVertex ())
-					normalNode -> addVector (getNormals (), *index);
+					normalNode -> addVector (getNormals (), i);
 
 				else
 					normalNode -> addVector (getNormals (), face);
 			}
 
-			getVertices  () .emplace_back (points [*index]);
+			getVertices  () .emplace_back (points [i]);
 		}
 	}
 

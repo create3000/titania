@@ -557,7 +557,7 @@ X3DGeometryNode::addMirrorVertices (GLenum vertexMode, const bool convex)
 
 		default:
 		{
-			size_t offset = convex ? 0 : 1;
+			const size_t offset = convex ? 0 : 1;
 
 			if (not convex)
 			{

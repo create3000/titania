@@ -1,5 +1,22 @@
 2014-02-10  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Box.cpp:
+	* Cone.cpp:
+	* Arc2D.cpp:
+	* Disk2D.cpp:
+	* Sphere.cpp:
+	* Extrusion.h:
+	* Cylinder.cpp:
+	* Circle2D.cpp:
+	* Extrusion.cpp:
+	* ArcClose2D.cpp:
+	* Rectangle2D.cpp:
+	* ElevationGrid.h:
+	* ElevationGrid.cpp:
+	* X3DGeometryNode.cpp: 
+
+2014-02-10  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Error.h:
 	* Traverse.h:
 	* Linetypes.h:

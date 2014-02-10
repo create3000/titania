@@ -105,7 +105,7 @@ Box::createBBox ()
 void
 Box::build ()
 {
-	const BoxOptions* properties = getBrowser () -> getBrowserOptions () -> box ();
+	const BoxOptions* const properties = getBrowser () -> getBrowserOptions () -> box ();
 
 	getTexCoords () .emplace_back ();
 	getTexCoords () [0] .reserve (properties -> getTexCoords () .size ());
@@ -121,7 +121,7 @@ Box::build ()
 	{
 		getVertices () .reserve (properties -> getVertices () .size ());
 
-		auto size1_2 = size () / 2.0f;
+		const auto size1_2 = size () / 2.0f;
 
 		for (const auto & vertex : properties -> getVertices ())
 			getVertices () .emplace_back (vertex * size1_2);
