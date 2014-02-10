@@ -65,7 +65,7 @@ public:
 
 	virtual
 	void
-	addVector (std::vector <Vector3f>&, size_t) const = 0;
+	addVector (std::vector <Vector3f> &, const size_t) const = 0;
 
 	virtual
 	bool

@@ -65,7 +65,8 @@ public:
 
 	///  Get the current cycle of this clock.
 	constexpr Type
-	cycle () const { return value .real (); }
+	cycle () const
+	{ return value .real (); }
 
 	///  Assignment operator for clocks.
 	clock_base &
@@ -77,17 +78,20 @@ public:
 
 	///  Compares if the cycle of this clock is before the cycle of @a clock.
 	constexpr bool
-	before (const clock_base & clock) const { return before (clock .cycle ()); }
+	before (const clock_base & clock) const
+	{ return before (clock .cycle ()); }
 
 	///  Compares if the cycle of this clock is before @a value.
 	virtual
 	bool
-	before (const Type & value) const { return cycle () < value; }
+	before (const Type & value) const
+	{ return cycle () < value; }
 
 	///  Get the last interval of this clock.  The interval is the amount of time between two cycles.
 	///  A steady clock will alway have a constant interval.
 	constexpr Type
-	interval () const { return value .imag (); }
+	interval () const
+	{ return value .imag (); }
 
 	///  Get the current interval of this clock.  This is the amount of time between now and the last cycle.
 	constexpr Type
@@ -97,10 +101,12 @@ public:
 	///  Advance this clock.  This will set the cycle of this clock to the new count.
 	virtual
 	void
-	advance () { cycle (count ()); }
+	advance ()
+	{ cycle (count ()); }
 
 	virtual
-	~clock_base () { }
+	~clock_base ()
+	{ }
 
 
 protected:
@@ -108,23 +114,27 @@ protected:
 	///  Component constructor.  Sets the value for this clock to @a cycle and @a interval.
 	constexpr
 	clock_base (const Type & cycle, const Type & interval) :
-		value (cycle, interval) { }
+		value (cycle, interval)
+	{ }
 
 	///  Copy constructor.
 	constexpr
 	clock_base (const clock_base & clock) :
-		value (clock .value) { }
+		value (clock .value)
+		{ }
 
 	///  Set the last interval of this clock.
 	void
-	interval (const Type & interval) { value .imag (interval); }
+	interval (const Type & interval)
+	{ value .imag (interval); }
 
 
 private:
 
 	///  Set the cycle of this clock.
 	void
-	cycle (const Type & cycle) { return value .real (cycle); }
+	cycle (const Type & cycle)
+	{ return value .real (cycle); }
 
 	///  Get the count of this clock.
 	virtual

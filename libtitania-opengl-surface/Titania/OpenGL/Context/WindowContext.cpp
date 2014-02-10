@@ -57,10 +57,10 @@
 namespace titania {
 namespace opengl {
 
-WindowContext::WindowContext (Display* display,
-                              GLXWindow xWindow,
+WindowContext::WindowContext (Display* const display,
+                              const GLXWindow xWindow,
                               const Context & sharingContext,
-                              bool direct) :
+                              const bool direct) :
 	Context (display),
 	xWindow (xWindow)
 {
@@ -68,9 +68,9 @@ WindowContext::WindowContext (Display* display,
 	setDrawable (xWindow);
 }
 
-WindowContext::WindowContext (Display* display,
-                              GLXWindow xWindow,
-                              bool direct) :
+WindowContext::WindowContext (Display* const display,
+                              const GLXWindow xWindow,
+                              const bool direct) :
 	Context (display),
 	xWindow (xWindow)
 {
@@ -79,7 +79,7 @@ WindowContext::WindowContext (Display* display,
 }
 
 void
-WindowContext::swapInterval (unsigned int interval) const
+WindowContext::swapInterval (const size_t interval) const
 {
 	if (makeCurrent ())
 	{
@@ -110,7 +110,7 @@ WindowContext::swapInterval (unsigned int interval) const
 }
 
 GLXContext
-WindowContext::create (GLXContext sharingContext, bool direct)
+WindowContext::create (const GLXContext sharingContext, const bool direct)
 {
 	XWindowAttributes attributes;
 

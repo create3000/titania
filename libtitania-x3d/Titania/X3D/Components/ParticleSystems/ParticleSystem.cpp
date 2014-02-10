@@ -99,13 +99,13 @@ struct ParticleSystem::Particle
 
 	///  @name Members
 
-	int32_t seed;
-	float lifetime;
-	Vector3f position;
-	Vector3f velocity;
-	Color4f color;
-	float elapsedTime;
-	float distance;
+	const int32_t seed;
+	const float lifetime;
+	const Vector3f position;
+	const Vector3f velocity;
+	const Color4f color;
+	const float elapsedTime;
+	const float distance;
 
 };
 
@@ -113,15 +113,19 @@ struct ParticleSystem::Particle
 
 struct ParticleSystem::Vertex
 {
+	///  @name Construction
+
 	Vertex () :
 		position (),
 		   color (),
 		texCoord ()
 	{ }
 
-	Vector3f position;
-	Color4f color;
-	Vector4f texCoord;
+	///  @name Members
+
+	const Vector3f position;
+	const Color4f color;
+	const Vector4f texCoord;
 
 };
 

@@ -88,7 +88,7 @@ X3DGeometryNode::setup ()
 	}
 }
 
-const Box3f
+Box3f
 X3DGeometryNode::getBBox ()
 {
 	if (bbox .empty ())
@@ -104,7 +104,7 @@ X3DGeometryNode::createBBox ()
 }
 
 void
-X3DGeometryNode::setTextureCoordinate (X3DTextureCoordinateNode* value)
+X3DGeometryNode::setTextureCoordinate (X3DTextureCoordinateNode* const value)
 {
 	if (value)
 		textureCoordinate = value;
@@ -120,7 +120,7 @@ X3DGeometryNode::intersect (const Line3f & line, std::vector <IntersectionPtr> &
 
 	if (bbox .intersect (line))
 	{
-		Matrix4f modelViewMatrix = ModelViewMatrix4f ();
+		const Matrix4f modelViewMatrix = ModelViewMatrix4f ();
 
 		size_t first = 0;
 
@@ -184,10 +184,10 @@ X3DGeometryNode::intersect (const Line3f & line, size_t i1, size_t i2, size_t i3
 
 	if (line .intersect (vertices [i1], vertices [i2], vertices [i3], u, v, t))
 	{
-		float t = 1 - u - v;
+		const float t = 1 - u - v;
 	
 		Vector4f texCoord (0, 0, 0, 1);
-		size_t   texCoordSize = texCoords .empty () ? 0 : texCoords [0] .size (); // LineGeometry doesn't have texCoords
+		const size_t texCoordSize = texCoords .empty () ? 0 : texCoords [0] .size (); // LineGeometry doesn't have texCoords
 
 		if (i1 < texCoordSize)
 			texCoord = t * texCoords [0] [i1] + u * texCoords [0] [i2] + v * texCoords [0] [i3];
@@ -408,14 +408,14 @@ X3DGeometryNode::buildTexCoord ()
 void
 X3DGeometryNode::getTexCoordParams (Vector3f & min, float & Ssize, int & Sindex, int & Tindex)
 {
-	Box3f bbox = getBBox ();
-	auto  size = bbox .size ();
+	const Box3f bbox = getBBox ();
+	const auto  size = bbox .size ();
 
 	min = bbox .center () - size / 2.0f;
 
-	float Xsize = size .x ();
-	float Ysize = size .y ();
-	float Zsize = size .z ();
+	const float Xsize = size .x ();
+	const float Ysize = size .y ();
+	const float Zsize = size .z ();
 
 	if ((Xsize >= Ysize) and (Xsize >= Zsize))
 	{
@@ -496,7 +496,7 @@ X3DGeometryNode::refineNormals (const NormalIndex & normalIndex, std::vector <Ve
 	if (creaseAngle == 0.0f)
 		return;
 
-	float cosCreaseAngle = std::cos (creaseAngle);
+	const float cosCreaseAngle = std::cos (creaseAngle);
 
 	std::vector <Vector3f> _normals (normals .size ());
 
@@ -607,7 +607,7 @@ X3DGeometryNode::draw ()
 }
 
 void
-X3DGeometryNode::draw (bool solid, bool texture, bool lighting)
+X3DGeometryNode::draw (const bool solid, const bool texture, const bool lighting)
 {
 	if (solid)
 		glEnable (GL_CULL_FACE);

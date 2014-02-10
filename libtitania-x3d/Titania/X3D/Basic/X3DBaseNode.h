@@ -102,7 +102,7 @@ public:
           Error <NOT_SUPPORTED>);
 
 	void
-	assign (const X3DBaseNode*);
+	assign (const X3DBaseNode* const);
 
 	virtual
 	void
@@ -149,7 +149,7 @@ public:
 
 	template <class FieldType, class ValueType>
 	void
-	setField (const std::string &, const ValueType &, bool = false)
+	setField (const std::string &, const ValueType &, const bool = false)
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
@@ -215,12 +215,12 @@ public:
 	///  @name Event handling
 
 	void
-	addInterest (X3DBaseNode* object) const
+	addInterest (X3DBaseNode* const object) const
 	{ addInterest (object, (void (X3DBaseNode::*) ()) &X3DBaseNode::addEvent); }
 	
 	template <class ValueType>
 	void
-	addInterest (X3DField <ValueType>* object) const
+	addInterest (X3DField <ValueType>* const object) const
 	{ addInterest (object, (void (X3DField <ValueType>::*) ()) &X3DField <ValueType>::addEvent); }
 
 	template <class ValueType>
@@ -229,12 +229,12 @@ public:
 	{ addInterest (&object);}
 
 	void
-	removeInterest (X3DBaseNode* object) const
+	removeInterest (X3DBaseNode* const object) const
 	{ removeInterest (object, (void (X3DBaseNode::*) ()) &X3DBaseNode::addEvent); }
 
 	template <class ValueType>
 	void
-	removeInterest (X3DField <ValueType>* object) const
+	removeInterest (X3DField <ValueType>* const object) const
 	{ removeInterest (object, (void (X3DField <ValueType>::*) ()) &X3DField <ValueType>::addEvent); }
 
 	template <class ValueType>
@@ -263,7 +263,8 @@ public:
 
 	virtual
 	void
-	traverse (const TraverseType) { }
+	traverse (const TraverseType)
+	{ }
 
 	///  @name Handle handling
 
@@ -337,7 +338,7 @@ protected:
 	addField (const std::string &, const std::string &);
 
 	void
-	setExtendedEventHandling (bool value)
+	setExtendedEventHandling (const bool value)
 	{ extendedEventHandling = value; }
 
 	bool
@@ -374,10 +375,10 @@ private:
 	///  @name Input/Output
 
 	void
-	toStreamUserDefinedField (std::ostream &, X3DFieldDefinition* const, size_t, size_t) const;
+	toStreamUserDefinedField (std::ostream &, X3DFieldDefinition* const, const size_t, const size_t) const;
 
 	void
-	toStreamField (std::ostream &, X3DFieldDefinition* const, size_t, size_t) const;
+	toStreamField (std::ostream &, X3DFieldDefinition* const, const size_t, const size_t) const;
 
 	///  @name Members
 
@@ -406,7 +407,7 @@ private:
 
 template <class FieldType, class ValueType>
 void
-X3DBaseNode::setField (const std::string & name, const ValueType & value, bool check)
+X3DBaseNode::setField (const std::string & name, const ValueType & value, const bool check)
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)

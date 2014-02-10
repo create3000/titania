@@ -1,5 +1,56 @@
 2014-02-10  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Error.h:
+	* Traverse.h:
+	* Linetypes.h:
+	* Traverse.cpp:
+	* HatchStyles.h:
+	* X3DBaseNode.h:
+	* X3DArrayField.h:
+	* X3DBaseNode.cpp:
+	* Color.h:
+	* Normal.h:
+	* Color.cpp:
+	* Normal.cpp:
+	* ColorRGBA.h:
+	* LineSet.cpp:
+	* Coordinate.h:
+	* ColorRGBA.cpp:
+	* X3DColorNode.h:
+	* Coordinate.cpp:
+	* CoordinateDouble.h:
+	* X3DNormalNode.h:
+	* GeoCoordinate.h:
+	* CoordinateDouble.cpp:
+	* X3DGeometryNode.h:
+	* X3DTexture2DNode.h:
+	* IndexedLineSet.cpp:
+	* GeoCoordinate.cpp:
+	* TextureCoordinate.h:
+	* X3DGeometryNode.cpp:
+	* X3DCoordinateNode.h:
+	* X3DTexture2DNode.cpp:
+	* X3DTexture3DNode.h:
+	* TextureCoordinate.cpp:
+	* X3DTexture3DNode.cpp:
+	* TextureCoordinate4D.h:
+	* TextureCoordinate3D.h:
+	* MultiTextureTransform.h:
+	* MultiTextureCoordinate.h:
+	* ParticleSystem.cpp:
+	* TextureCoordinate3D.cpp:
+	* TextureCoordinate4D.cpp:
+	* X3DComposedGeometryNode.h:
+	* X3DTextureTransformNode.h:
+	* X3DTextureCoordinateNode.h:
+	* MultiTextureCoordinate.cpp:
+	* X3DComposedGeometryNode.cpp:
+	* X3DTextureTransformNode.cpp:
+	* TextureCoordinateGenerator.h:
+	* TextureCoordinateGenerator.cpp: 
+
+2014-02-10  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* SFMatrix4.h:
 	* SFMatrix3.h:
 	* X3DGeometryNode.cpp:

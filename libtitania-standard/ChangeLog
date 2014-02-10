@@ -1,5 +1,24 @@
 2014-02-10  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* URI.h:
+	* Popen2.h:
+	* Now.h:
+	* Image.h:
+	* Popen2.cpp:
+	* trim.cpp:
+	* sprintf.h:
+	* Adapter.h:
+	* BindStack.h:
+	* sprintf.cpp:
+	* ClockBase.h:
+	* UniqueList.h:
+	* SystemClock.h:
+	* MemberValue.h:
+	* CountingClock.h:
+	* ReferenceIterator.h: 
+
+2014-02-10  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Box3.h:
 	* Box2.h:
 	* Line3.h:

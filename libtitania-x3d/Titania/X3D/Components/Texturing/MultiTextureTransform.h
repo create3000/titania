@@ -105,7 +105,7 @@ public:
 
 	virtual
 	void
-	draw (int32_t) final override
+	draw (const int32_t) final override
 	{ }
 
 

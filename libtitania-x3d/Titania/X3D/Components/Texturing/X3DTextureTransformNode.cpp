@@ -89,7 +89,7 @@ X3DTextureTransformNode::draw ()
 }
 
 void
-X3DTextureTransformNode::draw (int32_t unit)
+X3DTextureTransformNode::draw (const int32_t unit)
 {
 	glActiveTexture (GL_TEXTURE0 + unit);
 

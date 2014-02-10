@@ -82,27 +82,34 @@ public:
 	/// @name Iterators
 
 	const_iterator
-	begin () const { return list .cbegin (); }
+	begin () const
+	{ return list .cbegin (); }
 
 	const_iterator
-	cbegin () const { return list .cbegin (); }
+	cbegin () const
+	{ return list .cbegin (); }
 
 	const_iterator
-	end () const { return list .cend (); }
+	end () const
+	{ return list .cend (); }
 
 	const_iterator
-	cend () const { return list .cend (); }
+	cend () const
+	{ return list .cend (); }
 
 	/// @name Capacity
 
 	bool
-	empty () const { return list .empty (); }
+	empty () const
+	{ return list .empty (); }
 
 	size_type
-	size () const { return list .size (); }
+	size () const
+	{ return list .size (); }
 
 	size_type
-	max_size () const { return list .max_size (); }
+	max_size () const
+	{ return list .max_size (); }
 
 	/// @name Modifiers
 
@@ -117,7 +124,8 @@ public:
 
 	/// @name Destructor
 
-	~unique_list () { }
+	~unique_list ()
+	{ }
 
 
 private:

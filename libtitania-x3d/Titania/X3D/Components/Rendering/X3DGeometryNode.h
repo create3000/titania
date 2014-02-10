@@ -87,7 +87,7 @@ public:
 
 	///  @name Member access
 
-	const Box3f
+	Box3f
 	getBBox ();
 	
 	bool
@@ -119,7 +119,7 @@ public:
 
 	// Used in CollisionShape
 	void
-	draw (bool, bool, bool);
+	draw (const bool, const bool, const bool);
 
 
 protected:
@@ -137,7 +137,7 @@ protected:
 	{ return texCoords; }
 
 	void
-	setTextureCoordinate (X3DTextureCoordinateNode*);
+	setTextureCoordinate (X3DTextureCoordinateNode* const);
 
 	std::vector <Color4f> &
 	getColors ()

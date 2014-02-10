@@ -240,7 +240,7 @@ public:
 
 	template <class Class>
 	void
-	addInterest (Class* object, void (Class::* memberFunction) (const X3DArrayField &)) const
+	addInterest (Class* const object, void (Class::* memberFunction) (const X3DArrayField &)) const
 	{ addInterest (object, memberFunction, std::cref (*this)); }
 
 	template <class Class>
@@ -575,7 +575,7 @@ X3DArrayField <ValueType>::set (InputIterator first, InputIterator last)
 
 		for ( ; first not_eq last; ++ first)
 		{
-			ValueType* field = new ValueType (*first);
+			ValueType* const field = new ValueType (*first);
 
 			get () .emplace_back (field);
 
@@ -599,7 +599,7 @@ X3DArrayField <ValueType>::erase (iterator location)
 {
 	removeChild (*location .base ());
 
-	auto iter = get () .erase (location .base ());
+	const auto iter = get () .erase (location .base ());
 
 	addEvent ();
 	return iterator (iter);
@@ -611,7 +611,7 @@ X3DArrayField <ValueType>::erase (iterator first, iterator last)
 {
 	removeChildren (first .base (), last .base ());
 
-	auto iter = get () .erase (first .base (), last .base ());
+	const auto iter = get () .erase (first .base (), last .base ());
 
 	addEvent ();
 	return iterator (iter);
@@ -621,7 +621,7 @@ template <class ValueType>
 typename X3DArrayField <ValueType>::iterator
 X3DArrayField <ValueType>::insert (iterator location, const ValueType & value)
 {
-	auto iter = get () .insert (location .base (), new ValueType (value));
+	const auto iter = get () .insert (location .base (), new ValueType (value));
 
 	addChild (*iter);
 
@@ -633,11 +633,11 @@ template <class ValueType>
 typename X3DArrayField <ValueType>::iterator
 X3DArrayField <ValueType>::insert (iterator location, size_type count, const ValueType & value)
 {
-	size_type pos = location - begin ();
+	const size_type pos = location - begin ();
 
 	get () .insert (location .base (), count, nullptr);
 
-	auto iter = get () .begin () + pos;
+	const auto iter = get () .begin () + pos;
 
 	for (auto & field : basic::adapter (iter, iter + count))
 	{
@@ -655,12 +655,12 @@ template <class InputIterator>
 typename X3DArrayField <ValueType>::iterator
 X3DArrayField <ValueType>::insert (iterator location, InputIterator first, InputIterator last)
 {
-	size_type pos   = location - begin ();
-	size_type count = last - first;
+	const size_type pos   = location - begin ();
+	const size_type count = last - first;
 
 	get () .insert (location .base (), count, nullptr);
 
-	auto iter = get () .begin () + pos;
+	const auto iter = get () .begin () + pos;
 
 	for (auto & field : basic::adapter (iter, iter + count))
 	{
@@ -716,7 +716,7 @@ template <class ... Args>
 void
 X3DArrayField <ValueType>::emplace_front (Args && ... args)
 {
-	ValueType* field = new ValueType (args ...);
+	ValueType* const field = new ValueType (args ...);
 
 	get () .insert (get () .begin (), field);
 
@@ -730,7 +730,7 @@ template <class ... Args>
 void
 X3DArrayField <ValueType>::emplace_back (Args && ... args)
 {
-	ValueType* field = new ValueType (args ...);
+	ValueType* const field = new ValueType (args ...);
 
 	get () .emplace_back (field);
 
@@ -751,7 +751,7 @@ template <class ValueType>
 void
 X3DArrayField <ValueType>::resize (size_type count, const ValueType & value)
 {
-	size_type currentSize = size ();
+	const size_type currentSize = size ();
 
 	if (count > currentSize)
 	{

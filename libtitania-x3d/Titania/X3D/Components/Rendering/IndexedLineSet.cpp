@@ -208,7 +208,7 @@ IndexedLineSet::getPolylines () const
 	if (not coordNode or coordNode -> isEmpty ())
 		return polylines;
 
-	auto polylineIndices = std::move (getPolylineIndices ());
+	const auto polylineIndices = std::move (getPolylineIndices ());
 
 	for (const auto polyline : polylineIndices)
 	{
@@ -281,7 +281,7 @@ IndexedLineSet::build ()
 	if (not coordNode or coordNode -> isEmpty ())
 		return;
 
-	auto polylines = std::move (getPolylineIndices ());
+	const auto polylines = std::move (getPolylineIndices ());
 
 	// Fill GeometryNode
 
@@ -295,7 +295,7 @@ IndexedLineSet::build ()
 		{
 			for (size_t index = line, end = line + 2; index < end; ++ index)
 			{
-				auto i = polyline [index];
+				const auto i = polyline [index];
 
 				if (colorNode)
 				{

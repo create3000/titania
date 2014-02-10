@@ -113,7 +113,8 @@ public:
 	}
 
 	void
-	pop () { erase (top ()); }
+	pop ()
+	{ erase (top ()); }
 
 	void
 	erase (const Type & value)

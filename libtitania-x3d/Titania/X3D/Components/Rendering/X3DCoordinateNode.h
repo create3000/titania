@@ -71,15 +71,15 @@ public:
 
 	virtual
 	Vector3f
-	getNormal (size_t, size_t, size_t) const = 0;
+	getNormal (const size_t, const size_t, const size_t) const = 0;
 
 	virtual
 	void
-	addVertex (opengl::tessellator <size_t> &, size_t, size_t) const = 0;
+	addVertex (opengl::tessellator <size_t> &, const size_t, const size_t) const = 0;
 
 	virtual
 	void
-	addVertex (std::vector <Vector3f>&, size_t) const = 0;
+	addVertex (std::vector <Vector3f>&, const size_t) const = 0;
 	
 	virtual
 	std::vector <Vector4f>

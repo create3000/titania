@@ -58,7 +58,7 @@
 namespace titania {
 namespace X3D {
 
-static std::vector <GLushort> linetypes = {
+static const std::vector <GLushort> linetypes = {
 	math::strtol ("0000000000000000", 2), // 0 None
 	math::strtol ("1111111111111111", 2), // 1 Solid
 	math::strtol ("1111111110000000", 2), // 2 Dashed
