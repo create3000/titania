@@ -92,7 +92,7 @@ protected:
 
 	virtual
 	void
-	interpolate (size_t, size_t, float) = 0;
+	interpolate (size_t, size_t, const float) = 0;
 
 
 private:

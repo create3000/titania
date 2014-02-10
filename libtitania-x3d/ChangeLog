@@ -1,5 +1,55 @@
 2014-02-10  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* SFVec2.h:
+	* SFVec4.h:
+	* SFTime.h:
+	* SFVec3.h:
+	* SFImage.h:
+	* SFColor.h:
+	* SFString.h:
+	* X3DSFNode.h:
+	* X3DScalar.h:
+	* SFMatrix4.h:
+	* SFMatrix3.h:
+	* X3DMFNode.h:
+	* SFRotation4.h:
+	* SFColorRGBA.h:
+	* LOD.cpp:
+	* Billboard.cpp:
+	* X3DGroupingNode.cpp:
+	* EaseInEaseOut.h:
+	* EaseInEaseOut.cpp:
+	* X3DViewpointNode.cpp:
+	* ColorInterpolator.h:
+	* NormalInterpolator.h:
+	* ScalarInterpolator.h:
+	* ColorInterpolator.cpp:
+	* X3DInterpolatorNode.h:
+	* GeoPositionInterpolator.h:
+	* PositionInterpolator.h:
+	* NormalInterpolator.cpp:
+	* ScalarInterpolator.cpp:
+	* CoordinateInterpolator.h:
+	* PositionInterpolator.cpp:
+	* PositionInterpolator2D.h:
+	* GeoPositionInterpolator.cpp:
+	* OrientationInterpolator.h:
+	* PositionInterpolator2D.cpp:
+	* SplineScalarInterpolator.h:
+	* CoordinateInterpolator.cpp:
+	* CoordinateInterpolator2D.h:
+	* OrientationInterpolator.cpp:
+	* SplinePositionInterpolator.h:
+	* SplineScalarInterpolator.cpp:
+	* CoordinateInterpolator2D.cpp:
+	* SplinePositionInterpolator.cpp:
+	* SquadOrientationInterpolator.h:
+	* SplinePositionInterpolator2D.h:
+	* SplinePositionInterpolator2D.cpp:
+	* SquadOrientationInterpolator.cpp: 
+
+2014-02-10  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Box.cpp:
 	* Cone.cpp:
 	* Arc2D.cpp:

@@ -98,7 +98,7 @@ ScalarInterpolator::set_keyValue ()
 }
 
 void
-ScalarInterpolator::interpolate (size_t index0, size_t index1, float weight)
+ScalarInterpolator::interpolate (size_t index0, size_t index1, const float weight)
 {
 	value_changed () = math::lerp <float> (keyValue () [index0], keyValue () [index1], weight);
 }

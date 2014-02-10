@@ -250,7 +250,7 @@ public:
 
 	template <class Class>
 	void
-	addInterest (Class* object, void (Class::* memberFunction) (const X3DSFNode &)) const
+	addInterest (Class* const object, void (Class::* memberFunction) (const X3DSFNode &)) const
 	{ addInterest (object, memberFunction, std::cref (*this)); }
 
 	template <class Class>
@@ -306,7 +306,7 @@ X3DSFNode <ValueType>::clone (X3DExecutionContext* const executionContext) const
 throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>)
 {
-	X3DSFNode* field = new X3DSFNode ();
+	X3DSFNode* const field = new X3DSFNode ();
 
 	clone (executionContext, field);
 
@@ -319,7 +319,7 @@ X3DSFNode <ValueType>::clone (X3DExecutionContext* const executionContext, X3DFi
 throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>)
 {
-	X3DSFNode* field = static_cast <X3DSFNode*> (fieldDefinition);
+	X3DSFNode* const field = static_cast <X3DSFNode*> (fieldDefinition);
 
 	if (getValue ())
 		field -> set (dynamic_cast <ValueType*> (getValue () -> clone (executionContext)));

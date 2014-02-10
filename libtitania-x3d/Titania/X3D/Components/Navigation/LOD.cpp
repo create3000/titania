@@ -98,11 +98,11 @@ LOD::getBBox ()
 {
 	if (bboxSize () == Vector3f (-1, -1, -1))
 	{
-		size_t level = level_changed ();
+		const size_t level = level_changed ();
 
 		if (level < children () .size ())
 		{
-			auto child = x3d_cast <X3DBoundedObject*> (children () [level]);
+			const auto child = x3d_cast <X3DBoundedObject*> (children () [level]);
 
 			if (child)
 				return child -> getBBox ();
@@ -117,9 +117,9 @@ LOD::getBBox ()
 size_t
 LOD::getLevel (const TraverseType type) const
 {
-	float distance = getDistance (type);
+	const float distance = getDistance (type);
 
-	auto iter = std::upper_bound (range () .cbegin (), range () .cend (), distance);
+	const auto iter = std::upper_bound (range () .cbegin (), range () .cend (), distance);
 
 	return iter - range () .cbegin ();
 }
@@ -137,7 +137,7 @@ LOD::getDistance (const TraverseType type) const
 void
 LOD::traverse (const TraverseType type)
 {
-	size_t level = getLevel (type);
+	const size_t level = getLevel (type);
 
 	if (type == TraverseType::CAMERA)
 	{
