@@ -115,25 +115,24 @@ public:
 	line3 &
 	operator *= (const matrix4 <Type> & matrix)
 	{
-		return multLineMatrix (matrix);
+		multLineMatrix (matrix);
+		return *this;
 	}
 
 	///  Transform this box by @a matrix.
-	line3 &
+	void
 	multMatrixLine (const matrix4 <Type> & matrix)
 	{
 		value .point     = matrix .multMatrixVec (value .point);
 		value .direction = normalize (matrix .multMatrixDir (value .direction));
-		return *this;
 	}
 
 	///  Transform this box by @a matrix.
-	line3 &
+	void
 	multLineMatrix (const matrix4 <Type> & matrix)
 	{
 		value .point     = matrix .multVecMatrix (value .point);
 		value .direction = normalize (matrix .multDirMatrix (value .direction));
-		return *this;
 	}
 
 	//  @name Distance
@@ -283,7 +282,9 @@ inline
 line3 <Type>
 operator * (const line3 <Type> & lhs, const matrix4 <Type> & rhs)
 {
-	return line3 <Type> (lhs) .multLineMatrix (rhs);
+	line3 <Type> result (lhs);
+	result .multLineMatrix (rhs);
+	return result;
 }
 
 ///  Return new line3 value @a rhs transformed by matrix @a lhs.
@@ -292,7 +293,9 @@ inline
 line3 <Type>
 operator * (const matrix4 <Type> & lhs, const line3 <Type> & rhs)
 {
-	return line3 <Type> (rhs) .multMatrixLine (lhs);
+	line3 <Type> result (rhs);
+	result .multMatrixLine (lhs);
+	return result;
 }
 
 ///  @relates line3

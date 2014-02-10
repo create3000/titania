@@ -222,7 +222,7 @@ public:
 	///  @name Arithmetic operations
 
 	///  Invert this quaternion in place.
-	rotation4 &
+	void
 	inverse ();
 
 	///  Multiply this rotation by @a rotation.
@@ -527,11 +527,10 @@ rotation4 <Type>::get (T & x, T & y, T & z, T & angle) const
 
 template <class Type>
 inline
-rotation4 <Type> &
+void
 rotation4 <Type>::inverse ()
 {
 	value .inverse ();
-	return *this;
 }
 
 template <class Type>
@@ -586,7 +585,20 @@ inline
 rotation4 <Type>
 operator ~ (const rotation4 <Type> & rotation)
 {
-	return rotation4 <Type> (rotation) .inverse ();
+	rotation4 <Type> result (rotation);
+	result .inverse ();
+	return result;
+}
+
+///  Returns the inverse rotation for @a rotation.
+template <class Type>
+inline
+rotation4 <Type>
+inverse (const rotation4 <Type> & rotation)
+{
+	rotation4 <Type> result (rotation);
+	result .inverse ();
+	return result;
 }
 
 ///  Left multiply @a lhs by @a rhs.

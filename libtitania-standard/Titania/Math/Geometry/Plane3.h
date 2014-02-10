@@ -139,13 +139,18 @@ public:
 	plane3 &
 	operator *= (const matrix4 <Type> & matrix)
 	throw (std::domain_error)
-	{ return multPlaneMatrix (matrix); }
+	{
+		multPlaneMatrix (matrix);
+		return *this;
+	}
 
-	plane3 &
+	///  Transform this plane by @a matrix.
+	void
 	multPlaneMatrix (const matrix4 <Type> &)
 	throw (std::domain_error);
 
-	plane3 &
+	///  Transform this plane by @a matrix.
+	void
 	multMatrixPlane (const matrix4 <Type> &)
 	throw (std::domain_error);
 
@@ -185,7 +190,7 @@ private:
 
 ///  Transform a plane by the given matrix
 template <class Type>
-plane3 <Type> &
+void
 plane3 <Type>::multPlaneMatrix (const matrix4 <Type> & matrix)
 throw (std::domain_error)
 {
@@ -205,11 +210,11 @@ throw (std::domain_error)
     // The new distance is the projected distance of the vector to the
     // transformed point onto the (unit) transformed normal. This is
     // just a dot product.
-    return *this = plane3 (point, newNormal);
+    *this = plane3 (point, newNormal);
 }
 
 template <class Type>
-plane3 <Type> &
+void
 plane3 <Type>::multMatrixPlane (const matrix4 <Type> & matrix)
 throw (std::domain_error)
 {
@@ -229,7 +234,7 @@ throw (std::domain_error)
     // The new distance is the projected distance of the vector to the
     // transformed point onto the (unit) transformed normal. This is
     // just a dot product.
-    return *this = plane3 (point, newNormal);
+    *this = plane3 (point, newNormal);
 }
 
 ///  Returns the distance from @a point.
@@ -274,7 +279,9 @@ plane3 <Type>
 operator * (const plane3 <Type> & plane, const matrix4 <Type> & matrix)
 throw (std::domain_error)
 {
-	return plane3 <Type> (plane) .multPlaneMatrix (matrix);
+	plane3 <Type> result (plane);
+	result .multPlaneMatrix (matrix);
+	return result;
 }
 
 template <class Type>
@@ -282,7 +289,9 @@ plane3 <Type>
 operator * (const matrix4 <Type> & matrix, const plane3 <Type> & plane)
 throw (std::domain_error)
 {
-	return plane3 <Type> (plane) .multMatrixPlane (matrix);
+	plane3 <Type> result (plane);
+	result .multMatrixPlane (matrix);
+	return result;
 }
 
 ///  @relates plane3

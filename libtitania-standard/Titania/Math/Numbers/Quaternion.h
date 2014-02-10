@@ -207,11 +207,11 @@ public:
 	///  All these operators modify this quaternion inplace.
 
 	///  Negates this quaternion in place.
-	quaternion &
+	void
 	negate ();
 
 	///  Invert this quaternion in place.
-	quaternion &
+	void
 	inverse ();
 
 	///  Add @a quaternion to this quaternion.
@@ -239,16 +239,16 @@ public:
 
 	///  Left multiply this quaternion by @a quaternion.
 	template <class T>
-	quaternion &
+	void
 	multLeft (const quaternion <T> &);
 
 	///  Right multiply this quaternion by @a quaternion.
 	template <class T>
-	quaternion &
+	void
 	multRight (const quaternion <T> &);
 
 	///  Normalize this quaternion in place.
-	quaternion &
+	void
 	normalize ();
 
 
@@ -277,24 +277,22 @@ quaternion <Type>::operator = (const quaternion <T> & quat)
 }
 
 template <class Type>
-quaternion <Type> &
+void
 quaternion <Type>::negate ()
 {
 	value [0] = -value [0];
 	value [1] = -value [1];
 	value [2] = -value [2];
 	value [3] = -value [3];
-	return *this;
 }
 
 template <class Type>
-quaternion <Type> &
+void
 quaternion <Type>::inverse ()
 {
 	value [0] = -value [0];
 	value [1] = -value [1];
 	value [2] = -value [2];
-	return *this;
 }
 
 template <class Type>
@@ -353,10 +351,10 @@ quaternion <Type>::operator /= (const Type & t)
 
 template <class Type>
 template <class T>
-quaternion <Type> &
+void
 quaternion <Type>::multLeft (const quaternion <T> & quat)
 {
-	return *this = quaternion <Type> (quat .w () * x () +
+	*this = quaternion <Type> (quat .w () * x () +
 	                                  quat .x () * w () +
 	                                  quat .y () * z () -
 	                                  quat .z () * y (),
@@ -379,10 +377,10 @@ quaternion <Type>::multLeft (const quaternion <T> & quat)
 
 template <class Type>
 template <class T>
-quaternion <Type> &
+void
 quaternion <Type>::multRight (const quaternion <T> & quat)
 {
-	return *this = quaternion <Type> (w () * quat .x () +
+	*this = quaternion <Type> (w () * quat .x () +
 	                                  x () * quat .w () +
 	                                  y () * quat .z () -
 	                                  z () * quat .y (),
@@ -404,15 +402,13 @@ quaternion <Type>::multRight (const quaternion <T> & quat)
 }
 
 template <class Type>
-quaternion <Type> &
+void
 quaternion <Type>::normalize ()
 {
 	const Type length = abs (*this);
 
 	if (length)
-		return *this /= length;
-
-	return *this;
+		*this /= length;
 }
 
 ///  @name Element access
@@ -479,18 +475,24 @@ operator + (const quaternion <Type> & quat)
 
 ///  Returns quaternion negation of @a quaternion.
 template <class Type>
+inline
 quaternion <Type>
 operator - (const quaternion <Type> & quat)
 {
-	return quaternion <Type> (quat) .negate ();
+	quaternion <Type> result (quat);
+	result .negate ();
+	return result;
 }
 
 ///  Returns the inverse quaternion for @a quaternion.
 template <class Type>
+inline
 quaternion <Type>
 operator ~ (const quaternion <Type> & quat)
 {
-	return quaternion <Type> (quat) .inverse ();
+	quaternion <Type> result (quat);
+	result .inverse ();
+	return result;
 }
 
 ///  Returns new quaternion value @a lhs plus @a rhs.
@@ -513,10 +515,13 @@ operator - (const quaternion <Type> & lhs, const quaternion <Type> & rhs)
 
 ///  Returns new quaternion value @a lhs left multiplied by @a rhs.
 template <class Type>
-constexpr quaternion <Type>
+inline
+quaternion <Type>
 operator * (const quaternion <Type> & lhs, const quaternion <Type> & rhs)
 {
-	return quaternion <Type> (lhs) .multRight (rhs);
+	quaternion <Type> result (lhs);
+	result .multRight (rhs);
+	return result;
 }
 
 ///  Returns new quaternion value @a lhs right multiplied @a rhs.
@@ -540,7 +545,7 @@ operator * (const Type & lhs, const quaternion <Type> & rhs)
 ///  Returns new vector value @a vector multiplied by @a quaternion.
 template <class Type>
 inline
-constexpr vector3 <Type>
+vector3 <Type>
 operator * (const quaternion <Type> & quat, const vector3 <Type> & vector)
 {
 	return imag (quat * quaternion <Type> (vector, Type ()) * ~quat);
@@ -644,11 +649,14 @@ inline
 quaternion <Type>
 normalize (const quaternion <Type> & quat)
 {
-	return quaternion <Type> (quat) .normalize ();
+	quaternion <Type> result (quat);
+	result .normalize ();
+	return result;
 }
 
 ///  Raise @a quaternion to @a quaternion power.
 template <class Type>
+inline
 quaternion <Type>
 pow (const quaternion <Type> & base, const quaternion <Type> & exponent)
 {

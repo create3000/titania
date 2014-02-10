@@ -166,24 +166,19 @@ public:
 	box2 &
 	operator *= (const matrix3 <Type> & matrix)
 	{
-		return multBoxMatrix (matrix);
+		multBoxMatrix (matrix);
+		return *this;
 	}
 
 	///  Transform this box by matrix.
-	box2 &
+	void
 	multMatrixBox (const matrix3 <Type> & matrix)
-	{
-		value .multLeft (matrix);
-		return *this;
-	}
+	{ value .multLeft (matrix); }
 
 	///  Transform this box by matrix.
-	box2 &
+	void
 	multBoxMatrix (const matrix3 <Type> & matrix)
-	{
-		value .multRight (matrix);
-		return *this;
-	}
+	{ value .multRight (matrix); }
 
 	///  Returns true if @a point is inside this box3 min and max extend.
 	bool
@@ -335,7 +330,9 @@ inline
 box2 <Type>
 operator * (const box2 <Type> & lhs, const matrix3 <Type> & rhs)
 {
-	return box2 <Type> (lhs) .multBoxMatrix (rhs);
+	box2 <Type> result (lhs);
+	result .multBoxMatrix (rhs);
+	return result;
 }
 
 ///  Return new box2 value @a rhs transformed by matrix @a lhs.
@@ -344,7 +341,9 @@ inline
 box2 <Type>
 operator * (const matrix3 <Type> & lhs, const box2 <Type> & rhs)
 {
-	return box2 <Type> (rhs) .multMatrixBox (lhs);
+	box2 <Type> result (rhs);
+	result .multMatrixBox (lhs);
+	return result;
 }
 
 ///  @relates box2

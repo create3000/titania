@@ -513,7 +513,7 @@ X3DGeometryNode::refineNormals (const NormalIndex & normalIndex, std::vector <Ve
 					n += normals [index];
 			}
 
-			_normals [index] = n .normalize ();
+			_normals [index] = normalize (n);
 		}
 	}
 

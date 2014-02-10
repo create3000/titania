@@ -170,24 +170,19 @@ public:
 	box3 &
 	operator *= (const matrix4 <Type> & matrix)
 	{
-		return multBoxMatrix (matrix);
+		multBoxMatrix (matrix);
+		return *this;
 	}
 
 	///  Transform this box by @a matrix.
-	box3 &
+	void
 	multMatrixBox (const matrix4 <Type> & matrix)
-	{
-		value .multLeft (matrix);
-		return *this;
-	}
+	{ value .multLeft (matrix); }
 
 	///  Transform this box by @a matrix.
-	box3 &
+	void
 	multBoxMatrix (const matrix4 <Type> & matrix)
-	{
-		value .multRight (matrix);
-		return *this;
-	}
+	{ value .multRight (matrix); }
 
 	///  @name Intersection
 
@@ -438,7 +433,9 @@ inline
 box3 <Type>
 operator * (const box3 <Type> & lhs, const matrix4 <Type> & rhs)
 {
-	return box3 <Type> (lhs) .multBoxMatrix (rhs);
+	box3 <Type> result (lhs);
+	result .multBoxMatrix (rhs);
+	return result;
 }
 
 ///  Return new box3 value @a rhs transformed by matrix @a lhs.
@@ -447,7 +444,9 @@ inline
 box3 <Type>
 operator * (const matrix4 <Type> & lhs, const box3 <Type> & rhs)
 {
-	return box3 <Type> (rhs) .multMatrixBox (lhs);
+	box3 <Type> result (rhs);
+	result .multMatrixBox (lhs);
+	return result;
 }
 
 ///  @relates box3

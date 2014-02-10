@@ -1,3 +1,18 @@
+2014-02-10  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Box3.h:
+	* Box2.h:
+	* Line3.h:
+	* Vector2.h:
+	* Vector3.h:
+	* Vector4.h:
+	* Matrix4.h:
+	* Matrix2.h:
+	* Plane3.h:
+	* Matrix3.h:
+	* Rotation4.h:
+	* Quaternion.h: 
+
 2014-02-09  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Functional.h:

@@ -440,7 +440,9 @@ inline
 SFMatrix3 <ValueType>*
 SFMatrix3 <ValueType>::multLeft (const SFMatrix3 & value) const
 {
-	return new SFMatrix3 (ValueType (getValue ()) .multLeft (value .getValue ()));
+	ValueType result (getValue ());
+	result .multLeft (value .getValue ());
+	return new SFMatrix3 (result);
 }
 
 template <class ValueType>
@@ -448,7 +450,9 @@ inline
 SFMatrix3 <ValueType>*
 SFMatrix3 <ValueType>::multRight (const SFMatrix3 & value) const
 {
-	return new SFMatrix3 (ValueType (getValue ()) .multRight (value .getValue ()));
+	ValueType result (getValue ());
+	result .multRight (value .getValue ());
+	return new SFMatrix3 (result);
 }
 
 template <class ValueType>

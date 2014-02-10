@@ -1,5 +1,12 @@
 2014-02-10  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* SFMatrix4.h:
+	* SFMatrix3.h:
+	* X3DGeometryNode.cpp:
+	* jsSFMatrix4.h: 
+
+2014-02-10  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Coordinate.cpp:
 	* CoordinateDouble.cpp:
 	* GeoCoordinate.cpp:
