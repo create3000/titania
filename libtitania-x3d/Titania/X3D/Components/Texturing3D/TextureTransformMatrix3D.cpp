@@ -79,18 +79,10 @@ TextureTransformMatrix3D::create (X3DExecutionContext* const executionContext) c
 }
 
 void
-TextureTransformMatrix3D::initialize ()
-{
-	X3DTextureTransformNode::initialize ();
-
-	addInterest (this, &TextureTransformMatrix3D::eventsProcessed);
-
-	eventsProcessed ();
-}
-
-void
 TextureTransformMatrix3D::eventsProcessed ()
 {
+	X3DTextureTransformNode::eventsProcessed ();
+
 	setMatrix (matrix ());
 }
 

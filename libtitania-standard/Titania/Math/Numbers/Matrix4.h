@@ -274,8 +274,8 @@ public:
 	constexpr
 	operator matrix3 <Type> () const
 	{ return matrix3 <Type> (array [0], array [1], array [2],
-		                      array [4], array [5], array [6],
-		                      array [8], array [9], array [10]); }
+	                         array [4], array [5], array [6],
+	                         array [8], array [9], array [10]); }
 
 	///  Returns pointer to the underlying array serving as element storage.
 	///  Specifically the pointer is such that range [data (); data () + size ()) is valid.
@@ -321,16 +321,12 @@ public:
 	Type
 	determinant () const;
 
-	///  Transposes this matrx in place;
-	void
+	///  Returns this matrix transposed.
+	matrix4 &
 	transpose ();
 
-	///  Negates this matrix in place.
-	void
-	negate ();
-
-	///  Inverses this matrix in place.
-	void
+	///  Returns this matrix inversed.
+	matrix4 &
 	inverse ()
 	throw (std::domain_error);
 
@@ -359,12 +355,12 @@ public:
 
 	///  Returns this matrix left multiplied by @a matrix.
 	template <class T>
-	void
+	matrix4 &
 	multLeft (const matrix4 <T> &);
 
 	///  Returns this matrix right multiplied by @a matrix.
 	template <class T>
-	void
+	matrix4 &
 	multRight (const matrix4 <T> &);
 
 	///  Returns a new vector that is @vector multiplies by matrix.
@@ -398,15 +394,15 @@ public:
 	multMatrixDir (const vector3 <T> &) const;
 
 	///  Returns this matrix translated by @a translation.
-	void
+	matrix4 &
 	translate (const vector3 <Type> &);
 
 	///  Returns this matrix rotated by @a rotation.
-	void
+	matrix4 &
 	rotate (const rotation4 <Type> &);
 
 	///  Returns this matrix scaled by @a scale.
-	void
+	matrix4 &
 	scale (const vector3 <Type> &);
 
 
@@ -419,7 +415,7 @@ private:
 	        matrix3 <Type> & scaleOrientation) const;
 
 	Type
-	determinant3 (const int r1, const int r2, const int r3, const int c1, const int c2, const int c3) const;
+	determinant3 (int r1, int r2, int r3, int c1, int c2, int c3) const;
 
 	union
 	{
@@ -633,17 +629,17 @@ matrix4 <Type>::factor (vector3 <Type> & translation,
 	translation = origin ();
 
 	// (2) Create 3x3 matrix.
-	const matrix3 <Type> a (*this);
+	matrix3 <Type> a (*this);
 
 	// (3) Compute det A. If negative, set sign = -1, else sign = 1
-	const Type det      = a .determinant ();
-	const Type det_sign = det < 0 ? -1 : 1;
+	Type det      = a .determinant ();
+	Type det_sign = det < 0 ? -1 : 1;
 
 	if (det_sign * det == 0)
-		return false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             // singular
+		return false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        // singular
 
 	// (4) B = A * !A  (here !A means A transpose)
-	const matrix3 <Type> b = a * ! a;
+	matrix3 <Type> b = a * ! a;
 
 	Type evalues [3];
 	Type evectors [3] [3];
@@ -683,21 +679,21 @@ matrix4 <Type>::determinant3 () const
 
 template <class Type>
 Type
-matrix4 <Type>::determinant3 (const int r1, const int r2, const int r3, const int c1, const int c2, const int c3) const
+matrix4 <Type>::determinant3 (int r1, int r2, int r3, int c1, int c2, int c3) const
 {
-	const Type a11 = value [r1] [c1];
-	const Type a12 = value [r1] [c2];
-	const Type a13 = value [r1] [c3];
-	const Type a21 = value [r2] [c1];
-	const Type a22 = value [r2] [c2];
-	const Type a23 = value [r2] [c3];
-	const Type a31 = value [r3] [c1];
-	const Type a32 = value [r3] [c2];
-	const Type a33 = value [r3] [c3];
+	Type a11 = value [r1] [c1];
+	Type a12 = value [r1] [c2];
+	Type a13 = value [r1] [c3];
+	Type a21 = value [r2] [c1];
+	Type a22 = value [r2] [c2];
+	Type a23 = value [r2] [c3];
+	Type a31 = value [r3] [c1];
+	Type a32 = value [r3] [c2];
+	Type a33 = value [r3] [c3];
 
-	const Type M11 =   a22 * a33 - a32 * a23;
-	const Type M21 = -(a12 * a33 - a32 * a13);
-	const Type M31 =   a12 * a23 - a22 * a13;
+	Type M11 =   a22 * a33 - a32 * a23;
+	Type M21 = -(a12 * a33 - a32 * a13);
+	Type M31 =   a12 * a23 - a22 * a13;
 
 	return (a11 * M11 + a21 * M21 + a31 * M31);
 }
@@ -713,51 +709,41 @@ matrix4 <Type>::determinant () const
 }
 
 template <class Type>
-void
+matrix4 <Type> &
 matrix4 <Type>::transpose ()
 {
-	*this = matrix4 <Type> (array [0], array [4], array [8],  array [12],
-	                        array [1], array [5], array [9],  array [13],
-	                        array [2], array [6], array [10], array [14],
-	                        array [3], array [7], array [11], array [15]);
+	return *this = matrix4 <Type> (array [0], array [4], array [8],  array [12],
+	                               array [1], array [5], array [9],  array [13],
+	                               array [2], array [6], array [10], array [14],
+	                               array [3], array [7], array [11], array [15]);
 }
 
 template <class Type>
-void
-matrix4 <Type>::negate ()
-{
-	*this = matrix4 <Type> (-array [ 0], -array [ 1], -array [ 2], -array [ 3],
-	                        -array [ 4], -array [ 5], -array [ 6], -array [ 7],
-	                        -array [ 8], -array [ 9], -array [10], -array [11],
-	                        -array [12], -array [13], -array [14], -array [15]);
-}
-
-template <class Type>
-void
+matrix4 <Type> &
 matrix4 <Type>::inverse ()
 throw (std::domain_error)
 {
-	const Type det = determinant ();
+	Type det = determinant ();
 
 	if (det == 0)
 		throw std::domain_error ("matrix4::inverse: determinant is 0.");
 
-	*this = matrix4 <Type> (determinant3 (1, 2, 3, 1, 2, 3) / det,
-	                        -determinant3 (0, 2, 3, 1, 2, 3) / det,
-	                        determinant3 (0, 1, 3, 1, 2, 3) / det,
-	                        -determinant3 (0, 1, 2, 1, 2, 3) / det,
-	                        -determinant3 (1, 2, 3, 0, 2, 3) / det,
-	                        determinant3 (0, 2, 3, 0, 2, 3) / det,
-	                        -determinant3 (0, 1, 3, 0, 2, 3) / det,
-	                        determinant3 (0, 1, 2, 0, 2, 3) / det,
-	                        determinant3 (1, 2, 3, 0, 1, 3) / det,
-	                        -determinant3 (0, 2, 3, 0, 1, 3) / det,
-	                        determinant3 (0, 1, 3, 0, 1, 3) / det,
-	                        -determinant3 (0, 1, 2, 0, 1, 3) / det,
-	                        -determinant3 (1, 2, 3, 0, 1, 2) / det,
-	                        determinant3 (0, 2, 3, 0, 1, 2) / det,
-	                        -determinant3 (0, 1, 3, 0, 1, 2) / det,
-	                        determinant3 (0, 1, 2, 0, 1, 2) / det);
+	return *this = matrix4 <Type> (determinant3 (1, 2, 3, 1, 2, 3) / det,
+	                               -determinant3 (0, 2, 3, 1, 2, 3) / det,
+	                               determinant3 (0, 1, 3, 1, 2, 3) / det,
+	                               -determinant3 (0, 1, 2, 1, 2, 3) / det,
+	                               -determinant3 (1, 2, 3, 0, 2, 3) / det,
+	                               determinant3 (0, 2, 3, 0, 2, 3) / det,
+	                               -determinant3 (0, 1, 3, 0, 2, 3) / det,
+	                               determinant3 (0, 1, 2, 0, 2, 3) / det,
+	                               determinant3 (1, 2, 3, 0, 1, 3) / det,
+	                               -determinant3 (0, 2, 3, 0, 1, 3) / det,
+	                               determinant3 (0, 1, 3, 0, 1, 3) / det,
+	                               -determinant3 (0, 1, 2, 0, 1, 3) / det,
+	                               -determinant3 (1, 2, 3, 0, 1, 2) / det,
+	                               determinant3 (0, 2, 3, 0, 1, 2) / det,
+	                               -determinant3 (0, 1, 3, 0, 1, 2) / det,
+	                               determinant3 (0, 1, 2, 0, 1, 2) / det);
 }
 
 template <class Type>
@@ -794,12 +780,10 @@ matrix4 <Type>::operator *= (const Type & t)
 
 template <class Type>
 template <class T>
-inline
 matrix4 <Type> &
 matrix4 <Type>::operator *= (const matrix4 <T> & matrix)
 {
-	multRight (matrix);
-	return *this;
+	return multRight (matrix);
 }
 
 template <class Type>
@@ -819,7 +803,7 @@ matrix4 <Type>::operator /= (const Type & t)
  */
 template <class Type>
 template <class T>
-void
+matrix4 <Type> &
 matrix4 <Type>::multLeft (const matrix4 <T> & matrix)
 {
 	#define MULT_LEFT(i, j) \
@@ -828,25 +812,25 @@ matrix4 <Type>::multLeft (const matrix4 <T> & matrix)
 	    array [2 * 4 + j] * matrix .array [i * 4 + 2] +   \
 	    array [3 * 4 + j] * matrix .array [i * 4 + 3])
 
-	*this = matrix4 <Type> (MULT_LEFT (0, 0),
-	                        MULT_LEFT (0, 1),
-	                        MULT_LEFT (0, 2),
-	                        MULT_LEFT (0, 3),
+	return *this = matrix4 <Type> (MULT_LEFT (0, 0),
+	                               MULT_LEFT (0, 1),
+	                               MULT_LEFT (0, 2),
+	                               MULT_LEFT (0, 3),
 
-	                        MULT_LEFT (1, 0),
-	                        MULT_LEFT (1, 1),
-	                        MULT_LEFT (1, 2),
-	                        MULT_LEFT (1, 3),
+	                               MULT_LEFT (1, 0),
+	                               MULT_LEFT (1, 1),
+	                               MULT_LEFT (1, 2),
+	                               MULT_LEFT (1, 3),
 
-	                        MULT_LEFT (2, 0),
-	                        MULT_LEFT (2, 1),
-	                        MULT_LEFT (2, 2),
-	                        MULT_LEFT (2, 3),
+	                               MULT_LEFT (2, 0),
+	                               MULT_LEFT (2, 1),
+	                               MULT_LEFT (2, 2),
+	                               MULT_LEFT (2, 3),
 
-	                        MULT_LEFT (3, 0),
-	                        MULT_LEFT (3, 1),
-	                        MULT_LEFT (3, 2),
-	                        MULT_LEFT (3, 3));
+	                               MULT_LEFT (3, 0),
+	                               MULT_LEFT (3, 1),
+	                               MULT_LEFT (3, 2),
+	                               MULT_LEFT (3, 3));
 
 	#undef MULT_LEFT
 }
@@ -856,7 +840,7 @@ matrix4 <Type>::multLeft (const matrix4 <T> & matrix)
  */
 template <class Type>
 template <class T>
-void
+matrix4 <Type> &
 matrix4 <Type>::multRight (const matrix4 <T> & matrix)
 {
 	#define MULT_RIGHT(i, j) \
@@ -865,25 +849,25 @@ matrix4 <Type>::multRight (const matrix4 <T> & matrix)
 	    array [i * 4 + 2] * matrix .array [2 * 4 + j] +   \
 	    array [i * 4 + 3] * matrix .array [3 * 4 + j])
 
-	*this = matrix4 <Type> (MULT_RIGHT (0, 0),
-	                        MULT_RIGHT (0, 1),
-	                        MULT_RIGHT (0, 2),
-	                        MULT_RIGHT (0, 3),
+	return *this = matrix4 <Type> (MULT_RIGHT (0, 0),
+	                               MULT_RIGHT (0, 1),
+	                               MULT_RIGHT (0, 2),
+	                               MULT_RIGHT (0, 3),
 
-	                        MULT_RIGHT (1, 0),
-	                        MULT_RIGHT (1, 1),
-	                        MULT_RIGHT (1, 2),
-	                        MULT_RIGHT (1, 3),
+	                               MULT_RIGHT (1, 0),
+	                               MULT_RIGHT (1, 1),
+	                               MULT_RIGHT (1, 2),
+	                               MULT_RIGHT (1, 3),
 
-	                        MULT_RIGHT (2, 0),
-	                        MULT_RIGHT (2, 1),
-	                        MULT_RIGHT (2, 2),
-	                        MULT_RIGHT (2, 3),
+	                               MULT_RIGHT (2, 0),
+	                               MULT_RIGHT (2, 1),
+	                               MULT_RIGHT (2, 2),
+	                               MULT_RIGHT (2, 3),
 
-	                        MULT_RIGHT (3, 0),
-	                        MULT_RIGHT (3, 1),
-	                        MULT_RIGHT (3, 2),
-	                        MULT_RIGHT (3, 3));
+	                               MULT_RIGHT (3, 0),
+	                               MULT_RIGHT (3, 1),
+	                               MULT_RIGHT (3, 2),
+	                               MULT_RIGHT (3, 3));
 
 	#undef MULT_RIGHT
 }
@@ -896,7 +880,7 @@ template <class T>
 vector3 <Type>
 matrix4 <Type>::multVecMatrix (const vector3 <T> & vector) const
 {
-	const Type w = vector .x () * array [3] + vector .y () * array [7] + vector .z () * array [11] + array [15];
+	Type w = vector .x () * array [3] + vector .y () * array [7] + vector .z () * array [11] + array [15];
 
 	return vector3 <Type> ((vector .x () * array [0] + vector .y () * array [4] + vector .z () * array [ 8] + array [12]) / w,
 	                       (vector .x () * array [1] + vector .y () * array [5] + vector .z () * array [ 9] + array [13]) / w,
@@ -925,7 +909,7 @@ template <class T>
 vector3 <Type>
 matrix4 <Type>::multMatrixVec (const vector3 <T> & vector) const
 {
-	const Type w = vector .x () * array [12] + vector .y () * array [13] + vector .z () * array [14] + array [15];
+	Type w = vector .x () * array [12] + vector .y () * array [13] + vector .z () * array [14] + array [15];
 
 	return vector3 <Type> ((vector .x () * array [0] + vector .y () * array [1] + vector .z () * array [ 2] + array [ 3]) / w,
 	                       (vector .x () * array [4] + vector .y () * array [5] + vector .z () * array [ 6] + array [ 7]) / w,
@@ -976,7 +960,7 @@ matrix4 <Type>::multMatrixDir (const vector3 <T> & vector) const
  * It takes 9 multiplies and 15 adds.
  */
 template <class Type>
-void
+matrix4 <Type> &
 matrix4 <Type>::translate (const vector3 <Type> & translation)
 {
 	#define TRANSLATE(i) \
@@ -989,6 +973,8 @@ matrix4 <Type>::translate (const vector3 <Type> & translation)
 	value [3] [2] += TRANSLATE (2);
 
 	#undef TRANSLATE
+
+	return *this;
 }
 
 /**
@@ -996,17 +982,17 @@ matrix4 <Type>::translate (const vector3 <Type> & translation)
  */
 template <class Type>
 inline
-void
+matrix4 <Type> &
 matrix4 <Type>::rotate (const rotation4 <Type> & rotation)
 {
-	multLeft (matrix4 <Type> (rotation));
+	return multLeft (matrix4 <Type> (rotation));
 }
 
 /**
  * It takes 9 multiplies.
  */
 template <class Type>
-void
+matrix4 <Type> &
 matrix4 <Type>::scale (const vector3 <Type> & scaleFactor)
 {
 	value [0] [0] *= scaleFactor .x ();
@@ -1020,6 +1006,8 @@ matrix4 <Type>::scale (const vector3 <Type> & scaleFactor)
 	value [2] [0] *= scaleFactor .z ();
 	value [2] [1] *= scaleFactor .z ();
 	value [2] [2] *= scaleFactor .z ();
+
+	return *this;
 }
 
 ///  @relates matrix4
@@ -1072,9 +1060,7 @@ inline
 matrix4 <Type>
 operator ! (const matrix4 <Type> & matrix)
 {
-	matrix4 <Type> result (matrix);
-	result .transpose ();
-	return result;
+	return matrix4 <Type> (matrix) .transpose ();
 }
 
 ///  Returns the transpose of the @a matrix.
@@ -1083,31 +1069,7 @@ inline
 matrix4 <Type>
 transpose (const matrix4 <Type> & matrix)
 {
-	matrix4 <Type> result (matrix);
-	result .transpose ();
-	return result;
-}
-
-///  Returns matrix negation of @a matrix.
-template <class Type>
-inline
-matrix4 <Type>
-operator - (const matrix4 <Type> & matrix)
-{
-	matrix4 <Type> result (matrix);
-	result .negate ();
-	return result;
-}
-
-///  Returns matrix negation of @a matrix.
-template <class Type>
-inline
-matrix4 <Type>
-negate (const matrix4 <Type> & matrix)
-{
-	matrix4 <Type> result (matrix);
-	result .negate ();
-	return result;
+	return matrix4 <Type> (matrix) .transpose ();
 }
 
 ///  Returns the inverse of the @a matrix.
@@ -1117,9 +1079,7 @@ matrix4 <Type>
 operator ~ (const matrix4 <Type> & matrix)
 throw (std::domain_error)
 {
-	matrix4 <Type> result (matrix);
-	result .inverse ();
-	return result;
+	return matrix4 <Type> (matrix) .inverse ();
 }
 
 ///  Returns the inverse of the @a matrix.
@@ -1129,9 +1089,7 @@ matrix4 <Type>
 inverse (const matrix4 <Type> & matrix)
 throw (std::domain_error)
 {
-	matrix4 <Type> result (matrix);
-	result .inverse ();
-	return result;
+	return matrix4 <Type> (matrix) .inverse ();
 }
 
 ///  Returns new matrix value @a a plus @a rhs.
@@ -1140,7 +1098,7 @@ inline
 matrix4 <Type>
 operator + (const matrix4 <Type> & lhs, const matrix4 <Type> & rhs)
 {
-	return matrix4 <Type> (lhs) += rhs;
+	return matrix4 <Type> (lhs) + (rhs);
 }
 
 ///  Returns new matrix value @a a minus @a rhs.
@@ -1149,7 +1107,7 @@ inline
 matrix4 <Type>
 operator - (const matrix4 <Type> & lhs, const matrix4 <Type> & rhs)
 {
-	return matrix4 <Type> (lhs) -= rhs;
+	return matrix4 <Type> (lhs) - (rhs);
 }
 
 ///  Return matrix value @a lhs right multiplied by @a rhs.
@@ -1158,9 +1116,7 @@ inline
 matrix4 <Type>
 operator * (const matrix4 <Type> & lhs, const matrix4 <Type> & rhs)
 {
-	matrix4 <Type> result (lhs);
-	result .multRight (rhs);
-	return result;
+	return matrix4 <Type> (lhs) .multRight (rhs);
 }
 
 ///  Return matrix value @a lhs right multiplied by scalar @a rhs.
@@ -1223,7 +1179,7 @@ matrix4 <Type>
 multiply (const vector4 <Type> & lhs, const vector4 <Type> & rhs)
 {
 	matrix4 <Type> result;
-
+	
 	result [0] = lhs [0] * rhs;
 	result [1] = lhs [1] * rhs;
 	result [2] = lhs [2] * rhs;

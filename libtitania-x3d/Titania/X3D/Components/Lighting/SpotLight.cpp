@@ -62,11 +62,11 @@ const std::string SpotLight::containerField = "children";
 
 SpotLight::Fields::Fields () :
 	attenuation (new SFVec3f (1, 0, 0)),
-	  beamWidth (new SFFloat ()),
+	beamWidth (new SFFloat ()),
 	cutOffAngle (new SFFloat (0.785398)),
-	  direction (new SFVec3f (0, 0, -1)),
-	   location (new SFVec3f ()),
-	     radius (new SFFloat (100))
+	direction (new SFVec3f (0, 0, -1)),
+	location (new SFVec3f ()),
+	radius (new SFFloat (100))
 { }
 
 SpotLight::SpotLight (X3DExecutionContext* const executionContext) :
@@ -98,15 +98,14 @@ void
 SpotLight::initialize ()
 {
 	X3DLightNode::initialize ();
-
-	addInterest (this, &SpotLight::eventsProcessed);
-
 	eventsProcessed ();
 }
 
 void
 SpotLight::eventsProcessed ()
 {
+	X3DLightNode::eventsProcessed ();
+
 	float glAmbientIntensity = math::clamp <float> (ambientIntensity (), 0, 1);
 	float glIntensity        = math::clamp <float> (intensity (), 0, 1);
 

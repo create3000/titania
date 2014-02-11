@@ -95,14 +95,14 @@ Billboard::rotate (const TraverseType type) const
 {
 	try
 	{
-		const Matrix4f modelViewMatrix        = getModelViewMatrix (type);
-		const Matrix4f inverseModelViewMatrix = ~modelViewMatrix;
+		Matrix4f modelViewMatrix        = getModelViewMatrix (type);
+		Matrix4f inverseModelViewMatrix = ~modelViewMatrix;
 
-		const Vector3f billboardToViewer = inverseModelViewMatrix .origin ();
+		Vector3f billboardToViewer = inverseModelViewMatrix .origin ();
 
 		if (axisOfRotation () == Vector3f ())
 		{
-			const Vector3f viewerYAxis = inverseModelViewMatrix .multDirMatrix (yAxis);
+			Vector3f viewerYAxis = inverseModelViewMatrix .multDirMatrix (yAxis);
 
 			Vector3f x = cross (viewerYAxis, billboardToViewer);
 			Vector3f y = cross (billboardToViewer, x);
@@ -123,12 +123,12 @@ Billboard::rotate (const TraverseType type) const
 		}
 		else
 		{
-			const Vector3f normal = cross (axisOfRotation () .getValue (), billboardToViewer); // normal vector of plane
-			const Vector3f vector = cross (axisOfRotation () .getValue (), zAxis);             // normal vector of plane between axisOfRotation and zAxis
+			Vector3f normal = cross (axisOfRotation () .getValue (), billboardToViewer); // normal vector of plane
+			Vector3f vector = cross (axisOfRotation () .getValue (), zAxis);             // normal vector of plane between axisOfRotation and zAxis
 
-			const Rotation4f rotation (vector, normal);
+			Rotation4f rotation (vector, normal);
 
-			glMultMatrixf (Matrix4f (rotation) .data ());                                      // rotate zAxis in plane
+			glMultMatrixf (Matrix4f (rotation) .data ());                                // rotate zAxis in plane
 		}
 	}
 	catch (const std::domain_error &)

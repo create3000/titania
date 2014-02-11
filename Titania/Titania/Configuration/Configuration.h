@@ -61,7 +61,7 @@ class Configuration
 {
 public:
 
-	typedef std::vector <Configuration> Array;
+	typedef std::deque <Configuration> Array;
 
 	Configuration (const std::string &, const std::string & = "");
 

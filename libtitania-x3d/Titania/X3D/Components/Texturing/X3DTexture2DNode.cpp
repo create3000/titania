@@ -120,7 +120,7 @@ X3DTexture2DNode::setTexture (const TexturePtr & texture)
 }
 
 void
-X3DTexture2DNode::setImage (const GLenum internalFormat, const size_t comp, const GLint w, const GLint h, const GLenum format, const void* const data)
+X3DTexture2DNode::setImage (const GLenum internalFormat, const size_t comp, const GLint w, const GLint h, const GLenum format, const void* data)
 {
 	// transfer image
 
@@ -153,7 +153,7 @@ X3DTexture2DNode::updateTextureProperties ()
 }
 
 void
-X3DTexture2DNode::updateImage (GLenum format, GLint width, GLint height, const void* const data)
+X3DTexture2DNode::updateImage (GLenum format, GLint width, GLint height, const void* data)
 {
 	// update image
 

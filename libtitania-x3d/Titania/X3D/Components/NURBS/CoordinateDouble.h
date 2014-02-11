@@ -103,15 +103,15 @@ public:
 
 	virtual
 	Vector3f
-	getNormal (const size_t, const size_t, const size_t) const final override;
+	getNormal (size_t, size_t, size_t) const final override;
 
 	virtual
 	void
-	addVertex (opengl::tessellator <size_t> &, const size_t, const size_t) const final override;
+	addVertex (opengl::tessellator <size_t> &, size_t, size_t) const final override;
 
 	virtual
 	void
-	addVertex (std::vector <Vector3f>&, const size_t) const final override;
+	addVertex (std::vector <Vector3f>&, size_t) const final override;
 
 	virtual
 	std::vector <Vector4f>

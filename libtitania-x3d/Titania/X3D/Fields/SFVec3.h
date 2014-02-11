@@ -109,7 +109,7 @@ public:
 
 	template <class Class>
 	void
-	addInterest (Class* const object, void (Class::* memberFunction) (const SFVec3 &)) const
+	addInterest (Class* object, void (Class::* memberFunction) (const SFVec3 &)) const
 	{ addInterest (object, memberFunction, std::cref (*this)); }
 
 	template <class Class>

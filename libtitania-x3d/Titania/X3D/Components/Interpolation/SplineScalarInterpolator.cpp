@@ -119,7 +119,7 @@ SplineScalarInterpolator::set_keyVelocity ()
 }
 
 void
-SplineScalarInterpolator::interpolate (size_t index0, size_t index1, const float weight)
+SplineScalarInterpolator::interpolate (size_t index0, size_t index1, float weight)
 {
 	value_changed () = spline .evaluate (index0, index1, weight, keyValue ());
 }

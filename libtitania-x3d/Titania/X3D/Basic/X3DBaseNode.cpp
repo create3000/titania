@@ -172,7 +172,7 @@ throw (Error <INVALID_NAME>,
 		{
 			// Default fields
 
-			X3DFieldDefinition* const field = copy -> getField (fieldDefinition -> getName ());
+			X3DFieldDefinition* field = copy -> getField (fieldDefinition -> getName ());
 
 			if (field -> getAccessType () == fieldDefinition -> getAccessType () and field -> getType () == fieldDefinition -> getType ())
 			{
@@ -215,7 +215,7 @@ throw (Error <INVALID_NAME>,
 			{
 				// IS relationship
 
-				X3DFieldDefinition* const field = fieldDefinition -> clone ();
+				X3DFieldDefinition* field = fieldDefinition -> clone ();
 
 				copy -> addUserDefinedField (fieldDefinition -> getAccessType (),
 				                             fieldDefinition -> getName (),
@@ -278,11 +278,11 @@ X3DBaseNode::replace (X3DBaseNode* const node, const std::set <const X3DFieldDef
 }
 
 void
-X3DBaseNode::assign (const X3DBaseNode* const node)
+X3DBaseNode::assign (const X3DBaseNode* node)
 {
 	for (const auto & lhs : getFieldDefinitions ())
 	{
-		X3DFieldDefinition* const rhs = node -> getField (lhs -> getName ());
+		auto rhs = node -> getField (lhs -> getName ());
 	
 		if (*lhs not_eq *rhs)
 			*lhs = *rhs;
@@ -338,11 +338,11 @@ X3DBaseNode::addField (const AccessType accessType, const std::string & name, X3
 void
 X3DBaseNode::removeField (const std::string & name)
 {
-	const auto field = fields .find (name);
+	auto field = fields .find (name);
 
 	if (field not_eq fields .end ())
 	{
-		const auto iter = std::find (fieldDefinitions .begin (), fieldDefinitions .end (), field -> second);
+		auto iter = std::find (fieldDefinitions .begin (), fieldDefinitions .end (), field -> second);
 
 		if (fieldDefinitions .end () - iter <= FieldDefinitionArray::difference_type (numUserDefinedFields))
 		{
@@ -374,14 +374,14 @@ throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	const auto field = fields .find (getFieldName (name));
+	auto field = fields .find (getFieldName (name));
 
 	if (field not_eq fields .end ())
 		return field -> second;
 
 	if (name .substr (0, 4) == "set_")
 	{
-		const auto field = fields .find (getFieldName (name .substr (4)));
+		auto field = fields .find (getFieldName (name .substr (4)));
 
 		if (field not_eq fields .end () and field -> second -> getAccessType () == inputOutput)
 			return field -> second;
@@ -389,7 +389,7 @@ throw (Error <INVALID_NAME>,
 
 	if (name .size () > 8 and name .substr (name .size () - 8) == "_changed")
 	{
-		const auto field = fields .find (getFieldName (name .substr (0, name .size () - 8)));
+		auto field = fields .find (getFieldName (name .substr (0, name .size () - 8)));
 
 		if (field not_eq fields .end () and field -> second -> getAccessType () == inputOutput)
 			return field -> second;
@@ -401,7 +401,7 @@ throw (Error <INVALID_NAME>,
 const std::string &
 X3DBaseNode::getFieldName (const std::string & name) const
 {
-	const auto fieldAlias = fieldAliases .find (name);
+	auto fieldAlias = fieldAliases .find (name);
 
 	if (fieldAlias not_eq fieldAliases .end ())
 		return fieldAlias -> second;
@@ -617,6 +617,7 @@ X3DBaseNode::processEvents ()
 	if (isTainted ())
 	{
 		isTainted (false);
+		eventsProcessed ();
 		processInterests ();
 	}
 }
@@ -671,7 +672,7 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 {
 	Generator::PushContext ();
 
-	const std::string name = Generator::GetName (this);
+	std::string name = Generator::GetName (this);
 
 	if (not name .empty ())
 	{
@@ -824,7 +825,7 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 }
 
 void
-X3DBaseNode::toStreamField (std::ostream & ostream, X3DFieldDefinition* const field, const size_t fieldTypeLength, const size_t accessTypeLength) const
+X3DBaseNode::toStreamField (std::ostream & ostream, X3DFieldDefinition* const field, size_t fieldTypeLength, size_t accessTypeLength) const
 {
 	for (const auto & comment : field -> getComments ())
 	{
@@ -873,7 +874,7 @@ X3DBaseNode::toStreamField (std::ostream & ostream, X3DFieldDefinition* const fi
 }
 
 void
-X3DBaseNode::toStreamUserDefinedField (std::ostream & ostream, X3DFieldDefinition* const field, const size_t fieldTypeLength, const size_t accessTypeLength) const
+X3DBaseNode::toStreamUserDefinedField (std::ostream & ostream, X3DFieldDefinition* const field, size_t fieldTypeLength, size_t accessTypeLength) const
 {
 	for (const auto & comment : field -> getComments ())
 	{

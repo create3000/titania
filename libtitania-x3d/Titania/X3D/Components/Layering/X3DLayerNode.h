@@ -83,8 +83,8 @@ typedef X3DBindableNodeList <X3DBackgroundNode> BackgroundList;
 typedef X3DBindableNodeList <Fog>               FogList;
 typedef X3DBindableNodeList <X3DViewpointNode>  ViewpointList;
 
-typedef std::vector <X3D::X3DViewpointNode*> UserViewpointList;
-typedef std::stack <LocalFog*>               LocalFogStack;
+typedef std::deque <X3D::X3DViewpointNode*> UserViewpointList;
+typedef std::stack <LocalFog*>              LocalFogStack;
 
 class X3DLayerNode :
 	virtual public X3DNode, public X3DRenderer

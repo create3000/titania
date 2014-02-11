@@ -195,7 +195,7 @@ catmull_rom_spline_interpolator <Type, Scalar>::evaluate (size_type index0,
                                                           const Scalar & weight,
                                                           const KeyValue & keyValue)
 {
-	const vector4 <Scalar> S (std::pow (weight, 3), math::sqr (weight), weight, 1);
+	vector4 <Scalar> S (std::pow (weight, 3), math::sqr (weight), weight, 1);
 
 	static matrix4 <Scalar> H (2, -2,  1,  1,
 	                           -3,  3, -2, -1,
@@ -209,7 +209,7 @@ catmull_rom_spline_interpolator <Type, Scalar>::evaluate (size_type index0,
 
 	// vs = S^T H C
 
-	const vector4 <Scalar> SH = S * H;
+	vector4 <Scalar> SH = S * H;
 
 	// Taking dot product from SH and C;
 

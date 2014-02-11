@@ -84,7 +84,7 @@ public:
 
 private:
 
-	const std::string message;
+	std::string message;
 
 };
 

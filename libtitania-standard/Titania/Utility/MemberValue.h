@@ -85,9 +85,9 @@ public:
 
 private:
 
-	setter_type  setter;
-	getter_type  getter;
-	Class* const object;
+	setter_type setter;
+	getter_type getter;
+	Class*      object;
 
 };
 

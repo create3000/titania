@@ -61,12 +61,12 @@ class Event
 {
 public:
 
-	Event (X3DChildObject* const object) :
+	Event (X3DChildObject* object) :
 		object (object)
 	{ }
 
-	X3DChildObject* const object;
-	ChildObjectSet        sources;
+	X3DChildObject* object;
+	ChildObjectSet  sources;
 
 };
 

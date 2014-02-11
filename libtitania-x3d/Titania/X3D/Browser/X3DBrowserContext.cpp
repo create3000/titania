@@ -508,15 +508,13 @@ X3DBrowserContext::motionNotifyEvent ()
 {
 	// Set isOver to FALSE for appropriate nodes
 
-	std::vector <X3DBaseNode*> difference;
+	std::deque <X3DBaseNode*> difference;
 
 	if (getHits () .empty ())
 		difference .assign (overSensors .begin (), overSensors .end ());
 
 	else
 	{
-		// overSensors and sensors are always sorted.
-	
 		std::set_difference (overSensors .begin (), overSensors .end (),
 		                     getHits () .front () -> sensors .begin (), getHits () .front () -> sensors .end (),
 		                     std::back_inserter (difference));

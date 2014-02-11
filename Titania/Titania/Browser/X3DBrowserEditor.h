@@ -81,7 +81,7 @@ public:
 	/// @name File operations
 
 	void
-	import (const std::vector <basic::uri> &, const bool);
+	import (const std::deque <basic::uri> &, const bool);
 
 	virtual
 	void
@@ -275,7 +275,7 @@ private:
 	bool
 	findModelViewMatrix (X3D::X3DBaseNode* const, X3D::Matrix4f &, std::set <X3D::X3DBaseNode*> &) const;
 
-	std::vector <X3D::X3DBaseNode*>
+	std::deque <X3D::X3DBaseNode*>
 	getParentNodes (X3D::X3DBaseNode* const) const;
 
 	X3D::X3DFieldDefinition*

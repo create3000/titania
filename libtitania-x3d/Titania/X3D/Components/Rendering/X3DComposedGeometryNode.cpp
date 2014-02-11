@@ -163,7 +163,7 @@ X3DComposedGeometryNode::createBBox ()
 }
 
 void
-X3DComposedGeometryNode::buildPolygons (const size_t vertexCount, size_t size)
+X3DComposedGeometryNode::buildPolygons (size_t vertexCount, size_t size)
 {
 	if (not coordNode or coordNode -> isEmpty ())
 		return;
@@ -198,7 +198,7 @@ X3DComposedGeometryNode::buildPolygons (const size_t vertexCount, size_t size)
 	{
 		for (size_t v = 0; v < vertexCount; ++ v, ++ i)
 		{
-			const size_t index = getIndex (i);
+			size_t index = getIndex (i);
 
 			if (colorNode)
 			{
@@ -240,7 +240,7 @@ X3DComposedGeometryNode::buildPolygons (const size_t vertexCount, size_t size)
 }
 
 void
-X3DComposedGeometryNode::buildNormals (const size_t vertexCount, const size_t size)
+X3DComposedGeometryNode::buildNormals (size_t vertexCount, size_t size)
 {
 	buildFaceNormals (vertexCount, size);
 
@@ -256,7 +256,7 @@ X3DComposedGeometryNode::buildNormals (const size_t vertexCount, const size_t si
 }
 
 void
-X3DComposedGeometryNode::buildFaceNormals (const size_t vertexCount, const size_t size)
+X3DComposedGeometryNode::buildFaceNormals (size_t vertexCount, size_t size)
 {
 	for (size_t index = 0; index < size; index += vertexCount)
 	{

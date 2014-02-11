@@ -258,7 +258,7 @@ private:
 	createBBox () final override;
 
 	float
-	getHeight (const size_t) const;
+	getHeight (size_t) const;
 
 	std::vector <Vector4f>
 	createTexCoord () const;

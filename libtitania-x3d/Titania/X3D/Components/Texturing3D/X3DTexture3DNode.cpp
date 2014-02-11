@@ -123,7 +123,7 @@ X3DTexture3DNode::setTexture (const Texture3DPtr & texture)
 }
 
 void
-X3DTexture3DNode::setImage (const GLenum internalFormat, const size_t comp, const GLint w, const GLint h, const GLint depth, const GLenum format, const void* const data)
+X3DTexture3DNode::setImage (const GLenum internalFormat, const size_t comp, const GLint w, const GLint h, const GLint depth, const GLenum format, const void* data)
 {
 	// transfer image
 

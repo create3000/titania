@@ -224,16 +224,12 @@ public:
 	Type
 	determinant () const;
 
-	///  Transposes this matrx in place;
-	void
+	///  Returns this matrix transposed.
+	matrix2 &
 	transpose ();
 
-	///  Negates this matrix in place.
-	void
-	negate ();
-
-	///  Inverses this matrix in place.
-	void
+	///  Returns this matrix inversed.
+	matrix2 &
 	inverse ()
 	throw (std::domain_error);
 
@@ -262,12 +258,12 @@ public:
 
 	///  Returns this matrix left multiplied by @a matrix.
 	template <class T>
-	void
+	matrix2 &
 	multLeft (const matrix2 <T> &);
 
 	///  Returns this matrix right multiplied by @a matrix.
 	template <class T>
-	void
+	matrix2 &
 	multRight (const matrix2 <T> &);
 
 	///  Returns a new vector that is @vector multiplies by matrix.
@@ -297,11 +293,11 @@ public:
 	multMatrixDir (const Type &) const;
 
 	///  Returns this matrix translated by @a translation.
-	void
+	matrix2 &
 	translate (const Type &);
 
 	///  Returns this matrix scaled by @a scale.
-	void
+	matrix2 &
 	scale (const Type &);
 
 
@@ -402,33 +398,25 @@ matrix2 <Type>::determinant () const
 }
 
 template <class Type>
-void
+matrix2 <Type> &
 matrix2 <Type>::transpose ()
 {
-	*this = matrix2 <Type> (array [0], array [2],
-	                        array [1], array [3]);
+	return *this = matrix2 <Type> (array [0], array [2],
+	                               array [1], array [3]);
 }
 
 template <class Type>
-void
-matrix2 <Type>::negate ()
-{
-	*this = matrix2 <Type> (-array [0], -array [1],
-	                        -array [2], -array [3]);
-}
-
-template <class Type>
-void
+matrix2 <Type> &
 matrix2 <Type>::inverse ()
 throw (std::domain_error)
 {
-	const Type d = determinant ();
+	Type d = determinant ();
 
 	if (d == 0)
 		throw std::domain_error ("matrix2::inverse: determinant is 0.");
 
-	*this = matrix2 <Type> (array [0] / d, -array [1] / d,
-	                        -array [2] / d, array [3] / d);
+	return *this = matrix2 <Type> (array [0] / d, -array [1] / d,
+	                               -array [2] / d, array [3] / d);
 }
 
 template <class Type>
@@ -463,12 +451,10 @@ matrix2 <Type>::operator *= (const Type & t)
 
 template <class Type>
 template <class T>
-inline
 matrix2 <Type> &
 matrix2 <Type>::operator *= (const matrix2 <T> & matrix)
 {
-	multRight (matrix);
-	return *this;
+	return multRight (matrix);
 }
 
 template <class Type>
@@ -483,36 +469,36 @@ matrix2 <Type>::operator /= (const Type & t)
 
 template <class Type>
 template <class T>
-void
+matrix2 <Type> &
 matrix2 <Type>::multLeft (const matrix2 <T> & matrix)
 {
 	#define MULT_LEFT(i, j) \
 	   (array [0 * 2 + j] * matrix .array [i * 2 + 0] +   \
 	    array [1 * 2 + j] * matrix .array [i * 2 + 1])
 
-	*this = matrix2 <Type> (MULT_LEFT (0, 0),
-	                        MULT_LEFT (0, 1),
+	return *this = matrix2 <Type> (MULT_LEFT (0, 0),
+	                               MULT_LEFT (0, 1),
 
-	                        MULT_LEFT (1, 0),
-	                        MULT_LEFT (1, 1));
+	                               MULT_LEFT (1, 0),
+	                               MULT_LEFT (1, 1));
 
 	#undef MULT_LEFT
 }
 
 template <class Type>
 template <class T>
-void
+matrix2 <Type> &
 matrix2 <Type>::multRight (const matrix2 <T> & matrix)
 {
 	#define MULT_RIGHT(i, j) \
 	   (array [i * 2 + 0] * matrix .array [0 * 2 + j] +   \
 	    array [i * 2 + 1] * matrix .array [1 * 2 + j])
 
-	*this = matrix2 <Type> (MULT_RIGHT (0, 0),
-	                        MULT_RIGHT (0, 1),
+	return *this = matrix2 <Type> (MULT_RIGHT (0, 0),
+	                               MULT_RIGHT (0, 1),
 
-	                        MULT_RIGHT (1, 0),
-	                        MULT_RIGHT (1, 1));
+	                               MULT_RIGHT (1, 0),
+	                               MULT_RIGHT (1, 1));
 
 	#undef MULT_RIGHT
 }
@@ -521,7 +507,7 @@ template <class Type>
 Type
 matrix2 <Type>::multVecMatrix (const Type & vector) const
 {
-	const Type w = vector * array [1] + array [3];
+	Type w = vector * array [1] + array [3];
 
 	return (vector * array [0] + array [2]) / w;
 }
@@ -539,7 +525,7 @@ template <class Type>
 Type
 matrix2 <Type>::multMatrixVec (const Type & vector) const
 {
-	const Type w = vector * array [2] + array [3];
+	Type w = vector * array [2] + array [3];
 
 	return (vector * array [0] + array [1]) / w;
 }
@@ -568,7 +554,7 @@ matrix2 <Type>::multMatrixDir (const Type & vector) const
 }
 
 template <class Type>
-void
+matrix2 <Type> &
 matrix2 <Type>::translate (const Type & translation)
 {
 	#define TRANSLATE(i) \
@@ -577,13 +563,17 @@ matrix2 <Type>::translate (const Type & translation)
 	value [1] [0] += TRANSLATE (0);
 
 	#undef TRANSLATE
+
+	return *this;
 }
 
 template <class Type>
-void
+matrix2 <Type> &
 matrix2 <Type>::scale (const Type & scaleFactor)
 {
 	value [0] [0] *= scaleFactor;
+
+	return *this;
 }
 
 ///  @relates matrix2
@@ -635,9 +625,7 @@ inline
 matrix2 <Type>
 operator ! (const matrix2 <Type> & matrix)
 {
-	matrix2 <Type> result (matrix);
-	result .transpose ();
-	return result;
+	return matrix2 <Type> (matrix) .transpose ();
 }
 
 ///  Returns the transpose of the @a matrix.
@@ -646,31 +634,7 @@ inline
 matrix2 <Type>
 transpose (const matrix2 <Type> & matrix)
 {
-	matrix2 <Type> result (matrix);
-	result .transpose ();
-	return result;
-}
-
-///  Returns matrix negation of @a matrix.
-template <class Type>
-inline
-matrix2 <Type>
-operator - (const matrix2 <Type> & matrix)
-{
-	matrix2 <Type> result (matrix);
-	result .negate ();
-	return result;
-}
-
-///  Returns matrix negation of @a matrix.
-template <class Type>
-inline
-matrix2 <Type>
-negate (const matrix2 <Type> & matrix)
-{
-	matrix2 <Type> result (matrix);
-	result .negate ();
-	return result;
+	return matrix2 <Type> (matrix) .transpose ();
 }
 
 ///  Returns the inverse of the @a matrix.
@@ -680,9 +644,7 @@ matrix2 <Type>
 operator ~ (const matrix2 <Type> & matrix)
 throw (std::domain_error)
 {
-	matrix2 <Type> result (matrix);
-	result .inverse ();
-	return result;
+	return matrix2 <Type> (matrix) .inverse ();
 }
 
 ///  Returns the inverse of the @a matrix.
@@ -692,9 +654,7 @@ matrix2 <Type>
 inverse (const matrix2 <Type> & matrix)
 throw (std::domain_error)
 {
-	matrix2 <Type> result (matrix);
-	result .inverse ();
-	return result;
+	return matrix2 <Type> (matrix) .inverse ();
 }
 
 ///  Returns new matrix value @a a plus @a rhs.
@@ -703,7 +663,7 @@ inline
 matrix2 <Type>
 operator + (const matrix2 <Type> & lhs, const matrix2 <Type> & rhs)
 {
-	return matrix2 <Type> (lhs) += rhs;
+	return matrix2 <Type> (lhs) + (rhs);
 }
 
 ///  Returns new matrix value @a a minus @a rhs.
@@ -712,7 +672,7 @@ inline
 matrix2 <Type>
 operator - (const matrix2 <Type> & lhs, const matrix2 <Type> & rhs)
 {
-	return matrix2 <Type> (lhs) -= rhs;
+	return matrix2 <Type> (lhs) - (rhs);
 }
 
 ///  Return matrix value @a lhs right multiplied by @a rhs.
@@ -721,12 +681,10 @@ inline
 matrix2 <Type>
 operator * (const matrix2 <Type> & lhs, const matrix2 <Type> & rhs)
 {
-	matrix2 <Type> result (lhs);
-	result .multRight (rhs);
-	return result;
+	return matrix2 <Type> (lhs) .multRight (rhs);
 }
 
-///  Return matrix value @a lhs multiplied by scalar @a rhs.
+///  Return matrix value @a lhs right multiplied by scalar @a rhs.
 template <class Type>
 inline
 matrix2 <Type>
@@ -735,7 +693,7 @@ operator * (const matrix2 <Type> & lhs, const Type & rhs)
 	return matrix2 <Type> (lhs) *= rhs;
 }
 
-///  Return matrix value @a lhs multiplied by scalar @a rhs.
+///  Return matrix value @a lhs right multiplied by scalar @a rhs.
 template <class Type>
 inline
 matrix2 <Type>
@@ -750,9 +708,7 @@ inline
 vector2 <Type>
 operator * (const matrix2 <Type> & lhs, const vector2 <Type> & rhs)
 {
-	matrix2 <Type> result (lhs);
-	result *= rhs;
-	return result;
+	return lhs .multMatrixVec (rhs);
 }
 
 ///  Return vector value @a rhs multiplied by @a lhs.
@@ -770,7 +726,7 @@ matrix2 <Type>
 multiply (const vector2 <Type> & lhs, const vector2 <Type> & rhs)
 {
 	matrix2 <Type> result;
-
+	
 	result [0] = lhs [0] * rhs;
 	result [1] = lhs [1] * rhs;
 
@@ -784,7 +740,7 @@ matrix2 <Type>
 operator / (const Type & lhs, const matrix2 <Type> & rhs)
 {
 	matrix2 <Type> result (rhs);
-
+	
 	result [0] = lhs / result [0];
 	result [1] = lhs / result [1];
 

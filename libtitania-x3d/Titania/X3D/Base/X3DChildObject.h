@@ -56,7 +56,7 @@
 #include "../Base/X3DObject.h"
 
 #include <Titania/Utility/Pass.h>
-#include <vector>
+#include <deque>
 
 namespace titania {
 namespace X3D {
@@ -87,13 +87,13 @@ public:
 	hasRoots (ChildObjectSet &);
 
 	template <class Root, class Type>
-	std::vector <Type*>
+	std::deque <Type*>
 	findParents () const;
 
 	///  @name Event Handling
 
 	void
-	isTainted (const bool value)
+	isTainted (bool value)
 	{ tainted = value; }
 
 	///  Returns true if this objects has unprocessed events otherwise false.
@@ -170,7 +170,7 @@ private:
 
 	template <class Root, class Type>
 	void
-	findParents (std::vector <Type*> &, ChildObjectSet &);
+	findParents (std::deque <Type*> &, ChildObjectSet &);
 
 	ChildObjectSet  parents;
 	X3DChildObject* root;
@@ -179,11 +179,11 @@ private:
 };
 
 template <class Root, class Type>
-std::vector <Type*>
+std::deque <Type*>
 X3DChildObject::findParents () const
 {
-	std::vector <Type*> parents;
-	ChildObjectSet      seen;
+	std::deque <Type*> parents;
+	ChildObjectSet     seen;
 
 	for (const auto & object : getParents ())
 		object -> findParents <Root, Type> (parents, seen);
@@ -193,7 +193,7 @@ X3DChildObject::findParents () const
 
 template <class Root, class Type>
 void
-X3DChildObject::findParents (std::vector <Type*> & parents, ChildObjectSet & seen)
+X3DChildObject::findParents (std::deque <Type*> & parents, ChildObjectSet & seen)
 {
 	if (dynamic_cast <Root*> (this))
 		return;

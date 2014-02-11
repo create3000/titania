@@ -97,7 +97,7 @@ Circle2D::set_properties ()
 Box3f
 Circle2D::createBBox ()
 {
-	const float diameter = std::abs (radius ()) * 2;
+	float diameter = std::abs (radius ()) * 2;
 
 	return Box3f (Vector3f (diameter, diameter, 0), Vector3f ());
 }
@@ -105,7 +105,7 @@ Circle2D::createBBox ()
 void
 Circle2D::build ()
 {
-	const Circle2DOptions* const properties = getBrowser () -> getBrowserOptions () -> circle2D ();
+	const Circle2DOptions* properties = getBrowser () -> getBrowserOptions () -> circle2D ();
 
 	if (std::abs (radius ()) == 1.0f)
 		getVertices () = properties -> getVertices ();

@@ -99,11 +99,11 @@ public:
 
 	virtual
 	void
-	init (TexCoordArray &, const size_t) const final override;
+	init (TexCoordArray &, size_t) const final override;
 
 	virtual
 	void
-	addTexCoord (const size_t, TexCoordArray &, const size_t) const final override;
+	addTexCoord (size_t, TexCoordArray &, size_t) const final override;
 
 	virtual
 	void
@@ -111,11 +111,11 @@ public:
 
 	virtual
 	void
-	enable (const int32_t, const size_t, const TexCoordArray &) const final override;
+	enable (int32_t, size_t, const TexCoordArray &) const final override;
 
 	virtual
 	void
-	disable (const int32_t) const final override;
+	disable (int32_t) const final override;
 
 	virtual
 	bool

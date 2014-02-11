@@ -109,7 +109,7 @@ public:
 
 	template <class Class>
 	void
-	addInterest (Class* const object, void (Class::* memberFunction) (const SFMatrix4 &)) const
+	addInterest (Class* object, void (Class::* memberFunction) (const SFMatrix4 &)) const
 	{ addInterest (object, memberFunction, std::cref (*this)); }
 
 	template <class Class>
@@ -469,9 +469,7 @@ inline
 SFMatrix4 <ValueType>*
 SFMatrix4 <ValueType>::multLeft (const SFMatrix4 & value) const
 {
-	ValueType result (getValue ());
-	result .multLeft (value .getValue ());
-	return new SFMatrix4 (result);
+	return new SFMatrix4 (ValueType (getValue ()) .multLeft (value .getValue ()));
 }
 
 template <class ValueType>
@@ -479,9 +477,7 @@ inline
 SFMatrix4 <ValueType>*
 SFMatrix4 <ValueType>::multRight (const SFMatrix4 & value) const
 {
-	ValueType result (getValue ());
-	result .multRight (value .getValue ());
-	return new SFMatrix4 (result);
+	return new SFMatrix4 (ValueType (getValue ()) .multRight (value .getValue ()));
 }
 
 template <class ValueType>

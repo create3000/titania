@@ -62,20 +62,21 @@ static constexpr size_t READ  = 0;
 static constexpr size_t WRITE = 1;
 
 pid_t
-popen2 (const char* const command, int* const stdin, int* const stdout)
+popen2 (const char* command, int* stdin, int* stdout)
 {
 	return popen3 (command, stdin, stdout, nullptr);
 }
 
 pid_t
-popen3 (const char* const command, int* const stdin, int* const stdout, int* const stderr)
+popen3 (const char* command, int* stdin, int* stdout, int* stderr)
 {
-	int input [2], output [2], error [2];
+	int   input [2], output [2], error [2];
+	pid_t pid;
 
 	if (pipe (output) not_eq 0 or pipe (input) not_eq 0 or pipe (error) not_eq 0)
 		return -1;
 
-	const pid_t pid = fork ();
+	pid = fork ();
 
 	if (pid < 0)
 		return pid;

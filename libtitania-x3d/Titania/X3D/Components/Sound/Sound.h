@@ -183,8 +183,7 @@ private:
 	set_source ();
 
 	void
-	getEllipsoidParameter (const float &, const float &, float &, float &)
-	throw (std::domain_error);
+	getEllipsoidParameter (const float &, const float &, float &, float &);
 
 
 	///  @name Static members

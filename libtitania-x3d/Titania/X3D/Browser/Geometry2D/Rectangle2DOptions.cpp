@@ -71,6 +71,22 @@ Rectangle2DOptions::create (X3DExecutionContext* const executionContext) const
 }
 
 void
+Rectangle2DOptions::initialize ()
+{
+	X3DGeometricOptionNode::initialize ();
+
+	build ();
+}
+
+void
+Rectangle2DOptions::eventsProcessed ()
+{
+	X3DGeometricOptionNode::eventsProcessed ();
+
+	update ();
+}
+
+void
 Rectangle2DOptions::build ()
 {
 	getTexCoords () .reserve (4);

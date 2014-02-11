@@ -114,6 +114,10 @@ public:
 	virtual
 	void
 	requestImmediateLoad () final override;
+
+	virtual
+	void
+	eventsProcessed () final override;
 	
 	virtual
 	void
@@ -143,8 +147,6 @@ private:
 	void
 	set_url ();
 
-	void
-	eventsProcessed ();
 
 	///  @name Static members
 

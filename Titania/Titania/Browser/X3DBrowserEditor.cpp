@@ -243,7 +243,7 @@ X3DBrowserEditor::isModified (bool value)
 // File operations
 
 void
-X3DBrowserEditor::import (const std::vector <basic::uri> & uris, const bool importAsInline)
+X3DBrowserEditor::import (const std::deque <basic::uri> & uris, const bool importAsInline)
 {
 	try
 	{
@@ -482,7 +482,7 @@ X3DBrowserEditor::toString (X3D::MFNode & nodes) const
 
 	// Find connected routes
 
-	std::vector <X3D::Route*> routes;
+	std::deque <X3D::Route*> routes;
 
 	X3D::traverse (nodes, [this, &nodeIndex, &routes] (X3D::SFNode & node)
 	               {
@@ -1512,10 +1512,10 @@ X3DBrowserEditor::findModelViewMatrix (X3D::X3DBaseNode* const node, X3D::Matrix
 	return false;
 }
 
-std::vector <X3D::X3DBaseNode*>
+std::deque <X3D::X3DBaseNode*>
 X3DBrowserEditor::getParentNodes (X3D::X3DBaseNode* const node) const
 {
-	std::vector <X3D::X3DBaseNode*> parentNodes;
+	std::deque <X3D::X3DBaseNode*> parentNodes;
 
 	for (const auto & parent : node -> getParents ())
 	{

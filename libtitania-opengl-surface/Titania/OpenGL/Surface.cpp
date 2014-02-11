@@ -86,7 +86,7 @@ Surface::Surface (const Surface & sharingSurface) :
 { }
 
 void
-Surface::set_antialiasing (const int32_t samples)
+Surface::set_antialiasing (int32_t samples)
 {
 	static
 	int32_t visualAttributes [ ] = {
@@ -146,7 +146,7 @@ Surface::glew ()
 }
 
 bool
-Surface::set_map_event (GdkEventAny* const event)
+Surface::set_map_event (GdkEventAny* event)
 {
 	map_connection .disconnect ();
 
@@ -175,7 +175,7 @@ Surface::set_map_event (GdkEventAny* const event)
 }
 
 bool
-Surface::set_configure_event (GdkEventConfigure* const event)
+Surface::set_configure_event (GdkEventConfigure* event)
 {
 	if (makeCurrent ())
 	{
@@ -224,7 +224,7 @@ Surface::makeCurrent () const
 }
 
 void
-Surface::swapInterval (const size_t interval) const
+Surface::swapInterval (unsigned int interval) const
 {
 	context -> swapInterval (interval);
 }

@@ -61,8 +61,6 @@ class PointLight :
 {
 public:
 
-	///  @name Construction
-
 	PointLight (X3DExecutionContext* const);
 
 	virtual
@@ -113,25 +111,21 @@ public:
 	radius () const
 	{ return *fields .radius; }
 
-	///  @name Operations
+	virtual
+	void
+	eventsProcessed ();
 
 	virtual
 	void
-	draw (GLenum) final override;
+	draw (GLenum);
 
 
 private:
 
-	///  @name Construction
-
 	virtual
 	void
-	initialize () final override;
+	initialize ();
 
-	///  @name Event handlers
-
-	void
-	eventsProcessed ();
 
 	///  @name Static members
 

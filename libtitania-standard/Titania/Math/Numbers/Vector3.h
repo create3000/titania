@@ -172,7 +172,7 @@ public:
 	///  All these operators modify this vector2 inplace.
 
 	///  Negates this vector.
-	void
+	vector3 &
 	negate ();
 
 	///  Add @a vector to this vector.
@@ -204,7 +204,7 @@ public:
 	operator /= (const Type &);
 
 	///  Normalize this vector in place.
-	void
+	vector3 &
 	normalize ();
 
 
@@ -226,12 +226,13 @@ vector3 <Type>::operator = (const vector3 <T> & vector)
 }
 
 template <class Type>
-void
+vector3 <Type> &
 vector3 <Type>::negate ()
 {
 	value [0] = -value [0];
 	value [1] = -value [1];
 	value [2] = -value [2];
+	return *this;
 }
 
 template <class Type>
@@ -289,6 +290,7 @@ vector3 <Type>::operator /= (const vector3 <T> & vector)
 }
 
 template <class Type>
+inline
 vector3 <Type> &
 vector3 <Type>::operator /= (const Type & t)
 {
@@ -299,13 +301,15 @@ vector3 <Type>::operator /= (const Type & t)
 }
 
 template <class Type>
-void
+vector3 <Type> &
 vector3 <Type>::normalize ()
 {
-	const Type length = abs (*this);
+	Type length = abs (*this);
 
 	if (length)
-		*this /= length;
+		return *this /= length;
+
+	return *this;
 }
 
 ///  @relates vector3
@@ -338,7 +342,6 @@ operator not_eq (const vector3 <Type> & lhs, const vector3 <Type> & rhs)
 
 ///  Returns a copy @a vector.
 template <class Type>
-inline
 constexpr vector3 <Type>
 operator + (const vector3 <Type> & vector)
 {
@@ -347,24 +350,10 @@ operator + (const vector3 <Type> & vector)
 
 ///  Returns vector negation of @a vector.
 template <class Type>
-inline
 vector3 <Type>
 operator - (const vector3 <Type> & vector)
 {
-	vector3 <Type> result (vector);
-	result .negate ();
-	return result;
-}
-
-///  Returns vector negation of @a vector.
-template <class Type>
-inline
-vector3 <Type>
-negate (const vector3 <Type> & vector)
-{
-	vector3 <Type> result (vector);
-	result .negate ();
-	return result;
+	return vector3 <Type> (vector) .negate ();
 }
 
 ///  Returns new vector value @a lhs plus @a rhs.
@@ -484,9 +473,7 @@ inline
 vector3 <Type>
 normalize (const vector3 <Type> & vector)
 {
-	vector3 <Type> result (vector);
-	result .normalize ();
-	return result;
+	return vector3 <Type> (vector) .normalize ();
 }
 
 /**

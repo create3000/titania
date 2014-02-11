@@ -62,8 +62,8 @@ const std::string PointLight::containerField = "children";
 
 PointLight::Fields::Fields () :
 	attenuation (new SFVec3f (1, 0, 0)),
-	   location (new SFVec3f ()),
-	     radius (new SFFloat (100))
+	location (new SFVec3f ()),
+	radius (new SFFloat (100))
 { }
 
 PointLight::PointLight (X3DExecutionContext* const executionContext) :
@@ -92,15 +92,14 @@ void
 PointLight::initialize ()
 {
 	X3DLightNode::initialize ();
-
-	addInterest (this, &PointLight::eventsProcessed);
-
 	eventsProcessed ();
 }
 
 void
 PointLight::eventsProcessed ()
 {
+	X3DLightNode::eventsProcessed ();
+
 	float glAmbientIntensity = math::clamp <float> (ambientIntensity (), 0, 1);
 	float glIntensity        = math::clamp <float> (intensity (), 0, 1);
 

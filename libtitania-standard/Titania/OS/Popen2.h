@@ -57,10 +57,10 @@ namespace titania {
 namespace os {
 
 pid_t
-popen2 (const char* const, int* const, int* const);
+popen2 (const char*, int*, int*);
 
 pid_t
-popen3 (const char*, int* const, int* const, int* const);
+popen3 (const char*, int*, int*, int*);
 
 } // os
 } // titania

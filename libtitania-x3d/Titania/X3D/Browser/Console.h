@@ -62,8 +62,6 @@ class Console :
 {
 public:
 
-	///  @name Construction
-
 	Console (X3DExecutionContext* const);
 
 	virtual
@@ -109,19 +107,16 @@ public:
 
 private:
 
-	///  @name Construction
-
 	virtual
 	void
 	initialize () final override;
 
-	///  @name Event handlers
-
 	void
 	_set_string ();
 
+	virtual
 	void
-	eventsProcessed ();
+	eventsProcessed () final override;
 
 	///  @name Static members
 

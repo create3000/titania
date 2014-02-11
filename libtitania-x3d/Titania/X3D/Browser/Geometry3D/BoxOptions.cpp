@@ -71,6 +71,22 @@ BoxOptions::create (X3DExecutionContext* const executionContext) const
 }
 
 void
+BoxOptions::initialize ()
+{
+	X3DGeometricOptionNode::initialize ();
+
+	build ();
+}
+
+void
+BoxOptions::eventsProcessed ()
+{
+	X3DGeometricOptionNode::eventsProcessed ();
+
+	update ();
+}
+
+void
 BoxOptions::build ()
 {
 	getTexCoords () .reserve (24);

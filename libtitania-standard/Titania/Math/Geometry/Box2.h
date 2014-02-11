@@ -166,19 +166,24 @@ public:
 	box2 &
 	operator *= (const matrix3 <Type> & matrix)
 	{
-		multBoxMatrix (matrix);
+		return multBoxMatrix (matrix);
+	}
+
+	///  Transform this box by matrix.
+	box2 &
+	multMatrixBox (const matrix3 <Type> & matrix)
+	{
+		value .multLeft (matrix);
 		return *this;
 	}
 
 	///  Transform this box by matrix.
-	void
-	multMatrixBox (const matrix3 <Type> & matrix)
-	{ value .multLeft (matrix); }
-
-	///  Transform this box by matrix.
-	void
+	box2 &
 	multBoxMatrix (const matrix3 <Type> & matrix)
-	{ value .multRight (matrix); }
+	{
+		value .multRight (matrix);
+		return *this;
+	}
 
 	///  Returns true if @a point is inside this box3 min and max extend.
 	bool
@@ -225,13 +230,13 @@ template <class Type>
 void
 box2 <Type>::absolute_extends (vector2 <Type> & min, vector2 <Type> & max) const
 {
-	const vector2 <Type> x (value .x ());
-	const vector2 <Type> y (value .y ());
+	vector2 <Type> x (value .x ());
+	vector2 <Type> y (value .y ());
 
-	const auto p1 = x + y;
-	const auto p2 = y - x;
-	const auto p3 = -p1;
-	const auto p4 = -p2;
+	auto p1 = x + y;
+	auto p2 = y - x;
+	auto p3 = -p1;
+	auto p4 = -p2;
 
 	min = math::min ({ p1, p2, p3, p4 });
 	max = math::max ({ p1, p2, p3, p4 });
@@ -330,9 +335,7 @@ inline
 box2 <Type>
 operator * (const box2 <Type> & lhs, const matrix3 <Type> & rhs)
 {
-	box2 <Type> result (lhs);
-	result .multBoxMatrix (rhs);
-	return result;
+	return box2 <Type> (lhs) .multBoxMatrix (rhs);
 }
 
 ///  Return new box2 value @a rhs transformed by matrix @a lhs.
@@ -341,9 +344,7 @@ inline
 box2 <Type>
 operator * (const matrix3 <Type> & lhs, const box2 <Type> & rhs)
 {
-	box2 <Type> result (rhs);
-	result .multMatrixBox (lhs);
-	return result;
+	return box2 <Type> (rhs) .multMatrixBox (lhs);
 }
 
 ///  @relates box2

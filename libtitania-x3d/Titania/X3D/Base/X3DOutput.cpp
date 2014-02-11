@@ -83,7 +83,7 @@ X3DOutput::removeInterest (const Requester & function) const
 }
 
 bool
-X3DOutput::checkInterest (const void* const object, const void* const memberFunction) const
+X3DOutput::checkInterest (const void* object, const void* memberFunction) const
 {
 	RequesterPair requesterPair (this, memberFunction, object);
 
@@ -91,7 +91,7 @@ X3DOutput::checkInterest (const void* const object, const void* const memberFunc
 }
 
 bool
-X3DOutput::insertInterest (const Requester & function, const void* const object, const void* const memberFunction) const
+X3DOutput::insertInterest (const Requester & function, const void* object, const void* memberFunction) const
 {
 	// Insert only when not in index.
 
@@ -109,7 +109,7 @@ X3DOutput::insertInterest (const Requester & function, const void* const object,
 }
 
 void
-X3DOutput::insertInput (const X3DInput* const input, const void* const memberFunction) const
+X3DOutput::insertInput (const X3DInput* input, const void* memberFunction) const
 {
 	inputs .emplace (input, memberFunction);
 
@@ -117,7 +117,7 @@ X3DOutput::insertInput (const X3DInput* const input, const void* const memberFun
 }
 
 void
-X3DOutput::eraseInterest (const void* const object, const void* const memberFunction) const
+X3DOutput::eraseInterest (const void* object, const void* memberFunction) const
 {
 	RequesterPair requesterPair (this, memberFunction, object);
 
@@ -134,13 +134,13 @@ X3DOutput::eraseInterest (const void* const object, const void* const memberFunc
 }
 
 void
-X3DOutput::eraseInput (const X3DInput* const input, void* const memberFunction) const
+X3DOutput::eraseInput (const X3DInput* input, void* memberFunction) const
 {
 	input -> deleted () .removeDeleter (this, input, memberFunction);
 }
 
 void
-X3DOutput::insertDeleter (const X3DOutput* const output, const void* const input, const void* const memberFunction) const
+X3DOutput::insertDeleter (const X3DOutput* output, const void* input, const void* memberFunction) const
 {
 	RequesterPair requesterPair (output, input, memberFunction); // Reversed
 
@@ -154,7 +154,7 @@ X3DOutput::insertDeleter (const X3DOutput* const output, const void* const input
 }
 
 void
-X3DOutput::removeDeleter (const X3DOutput* const output, const void* const input, const void* const memberFunction) const
+X3DOutput::removeDeleter (const X3DOutput* output, const void* input, const void* memberFunction) const
 {
 	RequesterPair requesterPair (output, input, memberFunction); // Reversed
 

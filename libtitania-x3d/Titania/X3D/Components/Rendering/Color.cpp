@@ -79,7 +79,7 @@ Color::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-Color::addColor (std::vector <Color4f> & colors, const size_t index) const
+Color::addColor (std::vector <Color4f> & colors, size_t index) const
 {
 	if (index < color () .size ())
 	{

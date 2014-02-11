@@ -774,28 +774,20 @@ public:
 		SFMatrix4f (e11, e12, e13, e14, e21, e22, e23, e24, e31, e32, e33, e34, e41, e42, e43, e44) { }
 
 	VrmlMatrix*
-	transpose () const
-	{ return new VrmlMatrix (!getValue ()); }
+	inverse () const
+	{ return new VrmlMatrix (! getValue ()); }
 
 	VrmlMatrix*
-	inverse () const
+	transpose () const
 	{ return new VrmlMatrix (~getValue ()); }
 
 	VrmlMatrix*
 	multLeft (const VrmlMatrix & value) const
-	{
-		internal_type result (getValue ());
-		result .multLeft (value .getValue ());
-		return new VrmlMatrix (result);
-	}
+	{ return new VrmlMatrix (internal_type (getValue ()) .multLeft (value .getValue ())); }
 
 	VrmlMatrix*
 	multRight (const VrmlMatrix & value) const
-	{
-		internal_type result (getValue ());
-		result .multRight (value .getValue ());
-		return new VrmlMatrix (result);
-	}
+	{ return new VrmlMatrix (internal_type (getValue ()) .multRight (value .getValue ())); }
 
 };
 

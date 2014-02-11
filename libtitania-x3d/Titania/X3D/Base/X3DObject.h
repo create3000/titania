@@ -90,10 +90,10 @@ public:
 	///  @name Comment handling
 
 	void
-	addComments (const std::vector <std::string> & value)
+	addComments (const std::deque <std::string> & value)
 	{ comments .insert (comments .end (), value .begin (), value .end ()); }
 
-	const std::vector <std::string> &
+	const std::deque <std::string> &
 	getComments () const
 	{ return comments; }
 
@@ -155,9 +155,9 @@ private:
 
 	static GarbageCollector garbageCollector;
 
-	std::string               name;
-	std::vector <std::string> comments;
-	UserDataPtr               userData;
+	std::string              name;
+	std::deque <std::string> comments;
+	UserDataPtr              userData;
 
 };
 

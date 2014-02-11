@@ -79,6 +79,22 @@ Circle2DOptions::create (X3DExecutionContext* const executionContext) const
 }
 
 void
+Circle2DOptions::initialize ()
+{
+	X3DGeometricOptionNode::initialize ();
+
+	build ();
+}
+
+void
+Circle2DOptions::eventsProcessed ()
+{
+	X3DGeometricOptionNode::eventsProcessed ();
+
+	update ();
+}
+
+void
 Circle2DOptions::build ()
 {
 	getVertices () .reserve (segments ());

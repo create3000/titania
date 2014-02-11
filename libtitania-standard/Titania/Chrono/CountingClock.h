@@ -65,8 +65,7 @@ public:
 	///  Default constructor.  Sets the value for this clock to cycle to 0 and for interval to 1.
 	constexpr
 	counting_clock () :
-		clock_base <Type> (0, 1)
-	{ }
+		clock_base <Type> (0, 1) { }
 
 	///  Component constructor.  Sets the value for this clock to @a cycle and @a interval.
 	constexpr
@@ -83,8 +82,7 @@ private:
 
 	///  Get the current count of this clock.
 	virtual Type
-	count () const
-	{ return counting_clock::cycle () + counting_clock::interval (); }
+	count () const { return counting_clock::cycle () + counting_clock::interval (); }
 
 };
 

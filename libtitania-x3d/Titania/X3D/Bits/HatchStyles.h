@@ -58,7 +58,7 @@
 namespace titania {
 namespace X3D {
 
-static const std::vector <std::vector <GLubyte>> hatchStyles = {
+static std::vector <std::vector <GLubyte>> hatchStyles = {
 
 	// 0 - None
 

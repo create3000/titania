@@ -56,7 +56,7 @@
 namespace titania {
 namespace opengl {
 
-Context::Context (Display* const xDisplay) :
+Context::Context (Display* xDisplay) :
 	xDisplay (xDisplay),
 	xContext (nullptr)
 { }
@@ -68,13 +68,13 @@ Context::getDisplay () const
 }
 
 void
-Context::setDrawable (const GLXDrawable value)
+Context::setDrawable (GLXDrawable value)
 {
 	xDrawable = value;
 }
 
 void
-Context::setContext (const GLXContext value)
+Context::setContext (GLXContext value)
 {
 	xContext = value;
 }

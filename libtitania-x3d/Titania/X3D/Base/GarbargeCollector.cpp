@@ -86,7 +86,7 @@ GarbageCollector::trimFreeMemory ()
 }
 
 void
-GarbageCollector::addObject (X3DObject* const object)
+GarbageCollector::addObject (X3DObject* object)
 {
 	std::lock_guard <std::mutex> lock (mutex);
 
@@ -129,18 +129,9 @@ GarbageCollector::size () const
 
 GarbageCollector::~GarbageCollector ()
 {
-	ObjectArray final;
+	std::lock_guard <std::mutex> lock (mutex);
 
-	while (not empty ())
-	{
-		{
-			std::lock_guard <std::mutex> lock (mutex);
-
-			final = std::move (objects);
-		}
-
-		deleteObjects (std::move (final));
-	}
+	deleteObjects (std::move (objects));
 }
 
 } // X3D

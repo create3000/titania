@@ -121,19 +121,14 @@ public:
 	center () const
 	{ return *fields .center; }
 
+	///  @name Operations
 
-private:
-
-	///  @name Construction
-	
 	virtual
 	void
-	initialize () final override;
-
-	///  @name Event handlers
-
-	void
 	eventsProcessed ();
+
+
+private:
 
 	///  @name Static members
 

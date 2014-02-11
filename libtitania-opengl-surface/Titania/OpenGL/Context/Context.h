@@ -86,23 +86,23 @@ public:
 
 protected:
 
-	Context (Display* const);
+	Context (Display*);
 
 	Display*
 	getDisplay () const;
 
 	void
-	setDrawable (const GLXDrawable);
+	setDrawable (GLXDrawable);
 
 	void
-	setContext (const GLXContext);
+	setContext (GLXContext);
 
 
 private:
 
-	Display* const xDisplay;
-	GLXDrawable    xDrawable;
-	GLXContext     xContext;
+	Display*    xDisplay;
+	GLXDrawable xDrawable;
+	GLXContext  xContext;
 
 };
 

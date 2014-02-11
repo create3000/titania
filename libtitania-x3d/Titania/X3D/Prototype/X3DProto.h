@@ -94,10 +94,10 @@ public:
 	///  @name Comment handling
 
 	void
-	addInterfaceComments (const std::vector <std::string> & value)
+	addInterfaceComments (const std::deque <std::string> & value)
 	{ comments .insert (comments .end (), value .begin (), value .end ()); }
 
-	const std::vector <std::string> &
+	const std::deque <std::string> &
 	getInterfaceComments () const
 	{ return comments; }
 
@@ -113,7 +113,7 @@ private:
 
 	///  @name Members
 
-	std::vector <std::string> comments;
+	std::deque <std::string> comments;
 
 };
 

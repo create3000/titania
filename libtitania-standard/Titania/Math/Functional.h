@@ -207,11 +207,11 @@ slerp (const Type & source, Type destination, const T & t)
 		destination = -destination;
 	}
 
-	const T omega = std::acos (cosom);
-	const T sinom = std::sin  (omega);
+	T omega = std::acos (cosom);
+	T sinom = std::sin  (omega);
 
-	const T scale0 = std::sin ((1 - t) * omega);
-	const T scale1 = std::sin (t * omega);
+	T scale0 = std::sin ((1 - t) * omega);
+	T scale1 = std::sin (t * omega);
 
 	return (scale0 * source + scale1 * destination) / sinom;
 }
@@ -224,7 +224,7 @@ static
 Type
 simple_slerp (const Type & source, const Type & destination, T t)
 {
-	const T cosom = dot (source, destination);
+	T cosom = dot (source, destination);
 
 	if (cosom <= -1)
 		throw std::domain_error ("slerp is not possible: vectors are inverse collinear.");
@@ -232,11 +232,11 @@ simple_slerp (const Type & source, const Type & destination, T t)
 	if (cosom >= 1) // both normal vectors are equal
 		return source;
 
-	const T omega = std::acos (cosom);
-	const T sinom = std::sin  (omega);
+	T omega = std::acos (cosom);
+	T sinom = std::sin  (omega);
 
-	const T scale0 = std::sin ((1 - t) * omega);
-	const T scale1 = std::sin (t * omega);
+	T scale0 = std::sin ((1 - t) * omega);
+	T scale1 = std::sin (t * omega);
 
 	return (scale0 * source + scale1 * destination) / sinom;
 }
@@ -269,8 +269,8 @@ template <class Type>
 Type
 min (std::initializer_list <Type> ilist)
 {
-	auto       first = ilist .begin ();
-	const auto last  = ilist .end ();
+	auto first = ilist .begin ();
+	auto last  = ilist .end ();
 
 	if (first == last)
 		return *first;
@@ -287,8 +287,8 @@ template <class Type>
 Type
 max (std::initializer_list <Type> ilist)
 {
-	auto       first = ilist .begin ();
-	const auto last  = ilist .end ();
+	auto first = ilist .begin ();
+	auto last  = ilist .end ();
 
 	if (first == last)
 		return *first;

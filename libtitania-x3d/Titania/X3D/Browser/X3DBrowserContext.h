@@ -305,7 +305,7 @@ public:
 	bool
 	intersect (const Vector4i &) const;
 
-	std::vector <NodeSet> &
+	std::deque <NodeSet> &
 	getSensors ()
 	{ return enabledSensors; }
 
@@ -477,16 +477,16 @@ private:
 	X3DKeyDeviceSensorNode* keyDeviceSensorNode;
 	SFTime                  keyDeviceSensorNodeOutput;
 
-	SFBool                 picking;
-	double                 x;
-	double                 y;
-	Line3d                 hitRay;
-	HitArray               hits;
-	HitComp                hitComp;
-	std::vector <NodeSet>  enabledSensors;
-	MFNode                 overSensors;
-	MFNode                 activeSensors;
-	X3DSFNode <Selection>  selection;
+	SFBool                picking;
+	double                x;
+	double                y;
+	Line3d                hitRay;
+	HitArray              hits;
+	HitComp               hitComp;
+	std::deque <NodeSet>  enabledSensors;
+	MFNode                overSensors;
+	MFNode                activeSensors;
+	X3DSFNode <Selection> selection;
 
 	time_type      changedTime;
 	Speed <double> currentSpeed;

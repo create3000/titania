@@ -119,7 +119,7 @@ private:
 	///  @name Members
 
 	std::vector <std::string> transformFeedbackVaryings;
-	std::vector <size_t>      textureUnits;
+	std::deque <size_t>       textureUnits;
 
 };
 

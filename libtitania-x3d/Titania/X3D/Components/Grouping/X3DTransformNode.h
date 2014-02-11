@@ -149,10 +149,11 @@ protected:
 	void
 	initialize () override;
 
-	///  @name Event handlers
+	///  @name Operations
 
+	virtual
 	void
-	eventsProcessed ();
+	eventsProcessed () override;
 
 
 private:

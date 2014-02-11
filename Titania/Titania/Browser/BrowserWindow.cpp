@@ -435,7 +435,7 @@ BrowserWindow::dragDataHandling (const Glib::RefPtr <Gdk::DragContext> & context
 	{
 		if (selection_data .get_data_type () == "text/uri-list")
 		{
-			std::vector <basic::uri> uris;
+			std::deque <basic::uri> uris;
 			auto strings = selection_data .get_uris ();
 
 			for (auto & string : strings)
@@ -458,7 +458,7 @@ BrowserWindow::dragDataHandling (const Glib::RefPtr <Gdk::DragContext> & context
 
 		if (selection_data .get_data_type () == "STRING")
 		{
-			std::vector <basic::uri> uris;
+			std::deque <basic::uri> uris;
 			auto strings = basic::split (basic::trim (selection_data .get_data_as_string ()), "\r\n");
 
 			for (auto & string : strings)

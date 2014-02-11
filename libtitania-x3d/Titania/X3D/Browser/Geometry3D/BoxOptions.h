@@ -63,8 +63,6 @@ class BoxOptions :
 {
 public:
 
-	///  @name Construction
-
 	BoxOptions (X3DExecutionContext* const);
 
 	///  @name Common members
@@ -95,13 +93,17 @@ public:
 
 private:
 
-	///  @name Construction
-
 	virtual
 	BoxOptions*
 	create (X3DExecutionContext* const) const final override;
 
-	///  @name Operations
+	virtual
+	void
+	initialize () final override;
+
+	virtual
+	void
+	eventsProcessed () final override;
 
 	virtual
 	void

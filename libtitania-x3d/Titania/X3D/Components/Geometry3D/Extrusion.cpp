@@ -107,7 +107,7 @@ Extrusion::initialize ()
 }
 
 std::vector <Vector3f>
-Extrusion::createPoints (const bool hasCaps)
+Extrusion::createPoints (bool hasCaps)
 {
 	size_t reserve = spine () .size () * crossSection () .size ();
 
@@ -156,7 +156,7 @@ Extrusion::createPoints (const bool hasCaps)
 
 	if (hasCaps)
 	{
-		const auto last = points .end () - crossSection () .size ();
+		auto last = points .end () - crossSection () .size ();
 
 		if (beginCap ())
 		{
@@ -182,7 +182,7 @@ Extrusion::createRotations ()
 
 	// calculate SCP rotations
 
-	const bool closedSpine = spine () .front () == spine () .back ();
+	bool closedSpine = spine () .front () == spine () .back ();
 
 	Vector3f SCPyAxisPrevious;
 	Vector3f SCPzAxisPrevious;
@@ -293,12 +293,12 @@ Extrusion::build ()
 
 	getTexCoords () .emplace_back ();
 
-	const size_t crossSectionSize = crossSection () .size (); // This one is used only in the INDEX macro.
+	size_t crossSectionSize = crossSection () .size (); // This one is used only in the INDEX macro.
 
 	#define INDEX(n, k) ((n) * crossSectionSize + (k))
 
-	const bool closedSpine        = spine () .front () == spine () .back ();
-	const bool closedCrossSection = crossSection () .front () == crossSection () .back ();
+	bool closedSpine        = spine () .front () == spine () .back ();
+	bool closedCrossSection = crossSection () .front () == crossSection () .back ();
 
 	// For caps calculation
 
@@ -311,10 +311,10 @@ Extrusion::build ()
 		max = math::max <float> (max, crossSection () [k]);
 	}
 
-	const Vector2f capSize = max - min;
+	Vector2f capSize = max - min;
 
-	const bool hasCaps        = capSize .x () and capSize .y ();
-	const size_t numCapPoints = closedCrossSection ? crossSection () .size () - 1 : crossSection () .size ();
+	bool hasCaps        = capSize .x () and capSize .y ();
+	size_t numCapPoints = closedCrossSection ? crossSection () .size () - 1 : crossSection () .size ();
 
 	// Create
 
@@ -390,7 +390,7 @@ Extrusion::build ()
 	{
 		if (beginCap ())
 		{
-			const size_t j = spine () .size ();
+			size_t j = spine () .size ();
 
 			if (convex ())
 			{
@@ -423,7 +423,7 @@ Extrusion::build ()
 
 		if (endCap ())
 		{
-			const size_t j = spine () .size () + beginCap ();
+			size_t j = spine () .size () + beginCap ();
 
 			if (convex ())
 			{
@@ -471,7 +471,7 @@ Extrusion::tessellateCap (const Tessellator & tessellator,
 	#define I 0
 	#define K 1
 
-	const size_t size = getVertices () .size ();
+	size_t size = getVertices () .size ();
 
 	Vector3f normal;
 

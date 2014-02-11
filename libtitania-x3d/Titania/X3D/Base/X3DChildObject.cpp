@@ -90,7 +90,8 @@ X3DChildObject::removeParent (X3DChildObject* const parent)
 		for (auto & child : circle)
 			child -> dispose ();
 
-		getGarbageCollector () .addObjects (circle .begin (), circle .end ());
+		for (auto & child : circle)
+			getGarbageCollector () .addObject (child);
 	}
 }
 

@@ -322,40 +322,13 @@ main (int argc, char** argv)
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
 
-	constexpr int N = 1000000;
-	constexpr int S = 1280;
+	A objects;
 
-	{
-		std::vector <int*> v;
-	
-		double t0 = chrono::now ();
-		
-		for (int i = 0; i < N; ++ i)
-		{
-			for (int a = 0; a < S; ++ a)
-				v .emplace_back (nullptr);
-			
-			v .clear ();
-		}
-		
-		__LOG__ << chrono::now () - t0 << std::endl;
-	}
+	__LOG__ << &objects << std::endl;
 
-	{
-		std::deque <int*> v;
+	std::thread (&deleteObjects, std::move (objects)) .join ();
 	
-		double t0 = chrono::now ();
-		
-		for (int i = 0; i < N; ++ i)
-		{
-			for (int a = 0; a < S; ++ a)
-				v .emplace_back (nullptr);
-			
-			v .clear ();
-		}
-		
-		__LOG__ << chrono::now () - t0 << std::endl;
-	}
+	deleteObjects (std::move (objects));
 
 	std::clog << "Function main done." << std::endl;
 	return 0;

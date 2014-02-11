@@ -145,7 +145,7 @@ private:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	std::vector <std::string>
+	std::deque <std::string>
 	getComments ()
 	{ return std::move (currentComments); }
 
@@ -540,11 +540,11 @@ private:
 
 	///  @name Members
 
-	std::istream &            istream;
-	X3DScene*                 scene;
-	ExecutionContextStack     executionContextStack;
-	std::vector <std::string> currentComments;
-	std::string               whitespaces;
+	std::istream &           istream;
+	X3DScene*                scene;
+	ExecutionContextStack    executionContextStack;
+	std::deque <std::string> currentComments;
+	std::string              whitespaces;
 
 };
 

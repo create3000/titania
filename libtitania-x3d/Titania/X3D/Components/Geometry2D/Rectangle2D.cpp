@@ -105,7 +105,7 @@ Rectangle2D::createBBox ()
 void
 Rectangle2D::build ()
 {
-	const Rectangle2DOptions* const properties = getBrowser () -> getBrowserOptions () -> rectangle2D ();
+	const Rectangle2DOptions* properties = getBrowser () -> getBrowserOptions () -> rectangle2D ();
 
 	size_t elements = solid () ? 1 : 2;
 
@@ -125,7 +125,7 @@ Rectangle2D::build ()
 	{
 		getVertices () .reserve (properties -> getVertices () .size ());
 
-		const auto size1_2 = Vector3f (size () .getX (), size () .getY (), 0) / 2.0f;
+		auto size1_2 = Vector3f (size () .getX (), size () .getY (), 0) / 2.0f;
 
 		for (const auto & vertex : properties -> getVertices ())
 			getVertices () .emplace_back (vertex * size1_2);

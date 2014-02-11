@@ -56,8 +56,8 @@ namespace basic {
 std::string
 trim (const std::string & string, const std::string::value_type* charlist)
 {
-	const std::string::size_type first = string .find_first_not_of (charlist);
-	const std::string::size_type last  = string .find_last_not_of  (charlist);
+	std::string::size_type first = string .find_first_not_of (charlist);
+	std::string::size_type last  = string .find_last_not_of  (charlist);
 
 	if (first == std::string::npos or last == std::string::npos)
 		return std::string ();

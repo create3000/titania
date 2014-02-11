@@ -163,7 +163,7 @@ public:
 
 	virtual
 	Vector3d
-	getScreenScale (const double, const Vector4i &) const = 0;
+	getScreenScale (double, const Vector4i &) const = 0;
 
 	///  @name Operations
 
@@ -171,17 +171,17 @@ public:
 	resetUserOffsets ();
 
 	void
-	straighten (const bool = false);
+	straighten (bool = false);
 
 	static
 	Rotation4f
 	straightenHorizon (const Rotation4f &);
 
 	void
-	lookAt (Box3f, const float = 1, const bool = false);
+	lookAt (Box3f, float = 1, bool = false);
 
 	void
-	transitionStart (X3DViewpointNode* const);
+	transitionStart (X3DViewpointNode*);
 
 	void
 	transitionStop ();
@@ -249,11 +249,11 @@ private:
 	///  @name Operations
 
 	void
-	getRelativeTransformation (X3DViewpointNode* const, Vector3f &, Rotation4f &, Vector3f &, Rotation4f &) const;
+	getRelativeTransformation (X3DViewpointNode*, Vector3f &, Rotation4f &, Vector3f &, Rotation4f &) const;
 
 	virtual
 	Vector3f
-	getLookAtPositionOffset (const Box3f &) const = 0;
+	getLookAtPositionOffset (Box3f) const = 0;
 
 	virtual
 	void
@@ -268,7 +268,7 @@ private:
 	removeFromLayer (X3DLayerNode* const) final override;
 
 	void
-	set_isActive (const bool);
+	set_isActive (bool);
 
 	void
 	_set_bind ();

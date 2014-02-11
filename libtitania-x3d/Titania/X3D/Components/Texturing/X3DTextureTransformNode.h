@@ -65,11 +65,11 @@ public:
 
 	virtual
 	void
-	draw () override;
+	draw ();
 
 	virtual
 	void
-	draw (const int32_t);
+	draw (int32_t);
 
 
 protected:
@@ -77,6 +77,10 @@ protected:
 	///  @name Construction
 
 	X3DTextureTransformNode ();
+
+	virtual
+	void
+	initialize () final override;
 
 	void
 	setMatrix (const Matrix4f &);

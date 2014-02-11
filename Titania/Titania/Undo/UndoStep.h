@@ -54,7 +54,7 @@
 #include <Titania/LOG.h>
 
 #include <string>
-#include <vector>
+#include <deque>
 #include <memory>
 
 namespace titania {
@@ -83,7 +83,7 @@ public:
 	template <class ... Args>
 	void
 	addUndoFunction (Args && ... args)
-	{ undoFunctions .emplace_back (std::bind (std::forward <Args> (args) ...)); }
+	{ undoFunctions .emplace_front (std::bind (std::forward <Args> (args) ...)); }
 
 	template <class ... Args>
 	void
@@ -111,10 +111,10 @@ private:
 	using UndoFunction = std::function <void ()>;
 	using RedoFunction = std::function <void ()>;
 
-	const std::string          description;
-	std::vector <Variables>    variables;
-	std::vector <UndoFunction> undoFunctions;
-	std::vector <RedoFunction> redoFunctions;
+	const std::string         description;
+	std::deque <Variables>    variables;
+	std::deque <UndoFunction> undoFunctions;
+	std::deque <RedoFunction> redoFunctions;
 
 };
 

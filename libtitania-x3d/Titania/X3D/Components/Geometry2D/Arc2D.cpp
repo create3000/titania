@@ -101,13 +101,13 @@ Arc2D::set_properties ()
 float
 Arc2D::getAngle ()
 {
-	const float start = math::interval <float> (startAngle (), 0, M_PI2);
-	const float end   = math::interval <float> (endAngle (),   0, M_PI2);
+	float start = math::interval <float> (startAngle (), 0, M_PI2);
+	float end   = math::interval <float> (endAngle (),   0, M_PI2);
 
 	if (start == end)
 		return M_PI2;
 
-	const float difference = std::min (std::abs (end - start), float (M_PI2));
+	float difference = std::min (std::abs (end - start), float (M_PI2));
 
 	if (start > end)
 		return M_PI2 - difference;
@@ -120,14 +120,14 @@ Arc2D::build ()
 {
 	const Arc2DOptions* properties = getBrowser () -> getBrowserOptions () -> arc2D ();
 
-	const float  difference = getAngle ();
-	size_t       segments   = std::ceil (difference / properties -> minAngle ());
-	const float  angle      = difference / segments;
-	GLenum       vertexMode = GL_LINE_LOOP;
+	float  difference = getAngle ();
+	size_t segments   = std::ceil (difference / properties -> minAngle ());
+	float  angle      = difference / segments;
+	GLenum vertexMode = GL_LINE_LOOP;
 
 	getVertices () .reserve (segments + 1);
 
-	if (difference < float (M_PI2))
+	if (difference < float (2 * M_PI))
 	{
 		++ segments;
 		vertexMode = GL_LINE_STRIP;
@@ -137,9 +137,9 @@ Arc2D::build ()
 
 	for (size_t n = 0; n < segments; ++ n)
 	{
-		const float theta = startAngle () + angle * n;
+		float theta = startAngle () + angle * n;
 
-		const auto point = std::polar (std::abs (radius ()), theta);
+		auto point = std::polar (std::abs (radius ()), theta);
 
 		getVertices () .emplace_back (point .real (), point .imag (), 0);
 	}

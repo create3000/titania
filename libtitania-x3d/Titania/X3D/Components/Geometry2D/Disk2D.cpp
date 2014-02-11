@@ -102,7 +102,7 @@ Disk2D::set_properties ()
 Box3f
 Disk2D::createBBox ()
 {
-	const auto diameter = std::abs (std::max (innerRadius (), outerRadius ())) * 2;
+	auto diameter = std::abs (std::max (innerRadius (), outerRadius ())) * 2;
 
 	return Box3f (Vector3f (diameter, diameter, 0), Vector3f ());
 }
@@ -110,13 +110,13 @@ Disk2D::createBBox ()
 void
 Disk2D::build ()
 {
-	const Disk2DOptions* const properties = getBrowser () -> getBrowserOptions () -> disc2D ();
+	const Disk2DOptions* properties = getBrowser () -> getBrowserOptions () -> disc2D ();
 
 	if (innerRadius () == outerRadius ())
 	{
 		// Circle
 
-		const auto radius = std::abs (outerRadius ());
+		auto radius = std::abs (outerRadius ());
 
 		if (radius == 1)
 			getVertices () = properties -> getVertices ();
@@ -141,9 +141,9 @@ Disk2D::build ()
 	{
 		// Disk
 
-		const auto radius = std::abs (std::max (innerRadius (), outerRadius ()));
+		auto radius = std::abs (std::max (innerRadius (), outerRadius ()));
 
-		const size_t elements = solid () ? 1 : 2;
+		size_t elements = solid () ? 1 : 2;
 
 		getTexCoords () .emplace_back ();
 		getTexCoords () [0] .reserve (elements * properties -> getTexCoords () .size ());
@@ -179,7 +179,7 @@ Disk2D::build ()
 
 	// Disk with hole
 
-	const size_t elements = solid () ? 1 : 2;
+	size_t elements = solid () ? 1 : 2;
 
 	getTexCoords () .emplace_back ();
 	getTexCoords () [0] .reserve (elements * (properties -> getTexCoords () .size () + 2));
@@ -189,9 +189,9 @@ Disk2D::build ()
 
 	// Texture Coordinates
 
-	const auto maxRadius = std::abs (std::max (innerRadius (), outerRadius ()));
-	const auto minRadius = std::abs (std::min (innerRadius (), outerRadius ()));
-	const auto scale     = minRadius / maxRadius;
+	auto maxRadius = std::abs (std::max (innerRadius (), outerRadius ()));
+	auto minRadius = std::abs (std::min (innerRadius (), outerRadius ()));
+	auto scale     = minRadius / maxRadius;
 
 	for (const auto & texCoord : properties -> getTexCoords ())
 	{

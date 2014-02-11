@@ -170,19 +170,24 @@ public:
 	box3 &
 	operator *= (const matrix4 <Type> & matrix)
 	{
-		multBoxMatrix (matrix);
+		return multBoxMatrix (matrix);
+	}
+
+	///  Transform this box by @a matrix.
+	box3 &
+	multMatrixBox (const matrix4 <Type> & matrix)
+	{
+		value .multLeft (matrix);
 		return *this;
 	}
 
 	///  Transform this box by @a matrix.
-	void
-	multMatrixBox (const matrix4 <Type> & matrix)
-	{ value .multLeft (matrix); }
-
-	///  Transform this box by @a matrix.
-	void
+	box3 &
 	multBoxMatrix (const matrix4 <Type> & matrix)
-	{ value .multRight (matrix); }
+	{
+		value .multRight (matrix);
+		return *this;
+	}
 
 	///  @name Intersection
 
@@ -244,18 +249,18 @@ box3 <Type>::absolute_extends (vector3 <Type> & min, vector3 <Type> & max) const
 	vector3 <Type> y (value .y ());
 	vector3 <Type> z (value .z ());
 
-	const auto r1 = y + z;
-	const auto r2 = z - y;
+	auto r1 = y + z;
+	auto r2 = z - y;
 
-	const auto p1 =  x + r1;
-	const auto p2 =  x + r2;
-	const auto p3 = r1 -  x;
-	const auto p4 = r2 -  x;
+	auto p1 =  x + r1;
+	auto p2 =  x + r2;
+	auto p3 = r1 -  x;
+	auto p4 = r2 -  x;
 
-	const auto p5 = -p1;
-	const auto p6 = -p2;
-	const auto p7 = -p3;
-	const auto p8 = -p4;
+	auto p5 = -p1;
+	auto p6 = -p2;
+	auto p7 = -p3;
+	auto p8 = -p4;
 
 	min = math::min ({ p1, p2, p3, p4, p5, p6, p7, p8 });
 	max = math::max ({ p1, p2, p3, p4, p5, p6, p7, p8 });
@@ -362,8 +367,8 @@ box3 <Type>::intersect (const sphere3 <Type> & sphere) const
 
 	extends (min, max);
 
-	const vector3 <Type> center = sphere .center ();
-	const Type           radius = sphere .radius ();
+	vector3 <Type> center = sphere .center ();
+	Type           radius = sphere .radius ();
 
 	return min .x () <= center .x () + radius and
 	       max .x () >= center .x () - radius and
@@ -433,9 +438,7 @@ inline
 box3 <Type>
 operator * (const box3 <Type> & lhs, const matrix4 <Type> & rhs)
 {
-	box3 <Type> result (lhs);
-	result .multBoxMatrix (rhs);
-	return result;
+	return box3 <Type> (lhs) .multBoxMatrix (rhs);
 }
 
 ///  Return new box3 value @a rhs transformed by matrix @a lhs.
@@ -444,9 +447,7 @@ inline
 box3 <Type>
 operator * (const matrix4 <Type> & lhs, const box3 <Type> & rhs)
 {
-	box3 <Type> result (rhs);
-	result .multMatrixBox (lhs);
-	return result;
+	return box3 <Type> (rhs) .multMatrixBox (lhs);
 }
 
 ///  @relates box3

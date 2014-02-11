@@ -118,13 +118,13 @@ TextureCoordinateGenerator::set_mode ()
 }
 
 void
-TextureCoordinateGenerator::init (TexCoordArray & texCoords, const size_t) const
+TextureCoordinateGenerator::init (TexCoordArray & texCoords, size_t) const
 {
 	texCoords .emplace_back ();
 }
 
 void
-TextureCoordinateGenerator::enable (const int32_t unit, const size_t, const TexCoordArray &) const
+TextureCoordinateGenerator::enable (int32_t unit, size_t, const TexCoordArray &) const
 {
 	glActiveTexture (GL_TEXTURE0 + unit);
 
@@ -158,7 +158,7 @@ TextureCoordinateGenerator::enable (const int32_t unit, const size_t, const TexC
 }
 
 void
-TextureCoordinateGenerator::disable (const int32_t unit) const
+TextureCoordinateGenerator::disable (int32_t unit) const
 {
 	glActiveTexture (GL_TEXTURE0 + unit);
 

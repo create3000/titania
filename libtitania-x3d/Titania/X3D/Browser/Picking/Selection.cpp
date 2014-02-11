@@ -137,14 +137,10 @@ Selection::setChildren (const MFNode & value)
 {
 	if (not children .empty ())
 	{
-		MFNode sortedValue = value;
 		MFNode difference;
-		
-		std::sort (children .begin (), children .end ());
-		std::sort (sortedValue .begin (), sortedValue .end ());
 
 		std::set_difference (children .begin (), children .end (),
-		                     sortedValue .begin (), sortedValue .end (),
+		                     value .begin (), value .end (),
 		                     std::back_inserter (difference));
 
 		removeChildren (difference);

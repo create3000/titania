@@ -263,7 +263,7 @@ public:
 
 	///  Returns the path of this URI.
 	string_type
-	path (const bool = false) const;
+	path (bool = false) const;
 
 	///  Set the query of this URI.
 	void
@@ -340,11 +340,11 @@ public:
 
 	///  Returns the full basename of this URI.
 	basic_uri
-	filename (const bool = false) const;
+	filename (bool = false) const;
 
 	///  Returns the full basename of this URI.
 	string_type
-	basename (const bool = true) const;
+	basename (bool = true) const;
 
 	///  Returns the basename of this URI.
 	string_type
@@ -399,28 +399,28 @@ private:
 		uriString (size_type first) const;
 
 		size_type
-		scheme (const size_type) const;
+		scheme (size_type) const;
 
 		size_type
-		authority (const size_type) const;
+		authority (size_type) const;
 
 		void
-		host (const string_type &, const size_type, const size_type) const;
+		host (const string_type &, size_type, size_type) const;
 
 		void
-		port (string_type &, const size_type, const size_type) const;
+		port (string_type &, size_type, size_type) const;
 
 		void
 		tidyUpAuthority (const string_type &, string_type &) const;
 
 		void
-		path (const size_type) const;
+		path (size_type) const;
 
 		void
-		query (const size_type) const;
+		query (size_type) const;
 
 		void
-		fragment (const size_type) const;
+		fragment (size_type) const;
 
 		basic_uri &         uri;
 		const string_type & string;
@@ -571,7 +571,7 @@ basic_uri <StringT>::well_known_port () const
 
 template <class StringT>
 typename basic_uri <StringT>::string_type
-basic_uri <StringT>::path (const bool q) const
+basic_uri <StringT>::path (bool q) const
 {
 	string_type string = value .path;
 
@@ -735,7 +735,7 @@ basic_uri <StringT>::relative_path (const basic_uri & descendant) const
 
 template <class StringT>
 basic_uri <StringT>
-basic_uri <StringT>::filename (const bool q) const
+basic_uri <StringT>::filename (bool q) const
 {
 	return basic_uri ({ is_local (),
 	                    is_absolute (),
@@ -750,7 +750,7 @@ basic_uri <StringT>::filename (const bool q) const
 
 template <class StringT>
 typename basic_uri <StringT>::string_type
-basic_uri <StringT>::basename (const bool suf) const
+basic_uri <StringT>::basename (bool suf) const
 {
 	if (suf)
 	{
@@ -860,7 +860,7 @@ basic_uri <StringT>::to_string () const
 
 template <class StringT>
 void
-basic_uri <StringT>::parser::parse (basic_uri & uri, const string_type &string, const size_type first)
+basic_uri <StringT>::parser::parse (basic_uri & uri, const string_type &string, size_type first)
 {
 	if (string .size ())
 	{
@@ -930,7 +930,7 @@ basic_uri <StringT>::parser::uriString (size_type first) const
 
 template <class StringT>
 typename StringT::size_type
-basic_uri <StringT>::parser::scheme (const size_type first) const
+basic_uri <StringT>::parser::scheme (size_type first) const
 {
 	if (std::isalpha (string [0]))
 	{
@@ -949,7 +949,7 @@ basic_uri <StringT>::parser::scheme (const size_type first) const
 
 template <class StringT>
 typename StringT::size_type
-basic_uri <StringT>::parser::authority (const size_type first) const
+basic_uri <StringT>::parser::authority (size_type first) const
 {
 	size_type last = string .find_first_of (Signs::SlashQuestionNumber, first, 3);
 
@@ -962,7 +962,7 @@ basic_uri <StringT>::parser::authority (const size_type first) const
 
 	string_type authority = std::move (string .substr (first, last - first));
 
-	const size_type colon = authority .find (Signs::Colon);
+	size_type colon = authority .find (Signs::Colon);
 
 	if (colon not_eq string_type::npos)
 	{
@@ -979,14 +979,14 @@ basic_uri <StringT>::parser::authority (const size_type first) const
 
 template <class StringT>
 void
-basic_uri <StringT>::parser::host (const string_type &authority, const size_type first, const size_type last) const
+basic_uri <StringT>::parser::host (const string_type &authority, size_type first, size_type last) const
 {
 	uri .value .host = std::move (authority .substr (first, last - first));
 }
 
 template <class StringT>
 void
-basic_uri <StringT>::parser::port (string_type & authority, const size_type first, const size_type last) const
+basic_uri <StringT>::parser::port (string_type & authority, size_type first, size_type last) const
 {
 	size_type pos = first;
 
@@ -1021,7 +1021,7 @@ basic_uri <StringT>::parser::tidyUpAuthority (const string_type &portString, str
 
 template <class StringT>
 void
-basic_uri <StringT>::parser::path (const size_type first) const
+basic_uri <StringT>::parser::path (size_type first) const
 {
 	size_type last = string .find_first_of (Signs::QuestionNumber, first, 2);
 
@@ -1043,7 +1043,7 @@ basic_uri <StringT>::parser::path (const size_type first) const
 
 template <class StringT>
 void
-basic_uri <StringT>::parser::query (const size_type first) const
+basic_uri <StringT>::parser::query (size_type first) const
 {
 	size_type last = string .find (Signs::NumberSign, first);
 
@@ -1059,7 +1059,7 @@ basic_uri <StringT>::parser::query (const size_type first) const
 template <class StringT>
 inline
 void
-basic_uri <StringT>::parser::fragment (const size_type first) const
+basic_uri <StringT>::parser::fragment (size_type first) const
 {
 	uri .value .fragment = std::move (string .substr (first));
 }

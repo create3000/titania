@@ -95,19 +95,14 @@ public:
 	matrix () const
 	{ return *fields .matrix; }
 
+	///  @name Operations
 
-private:
-
-	///  @name Construction
-	
 	virtual
 	void
-	initialize () final override;
-
-	///  @name Event handlers
-
-	void
 	eventsProcessed ();
+
+
+private:
 
 	///  @name Static members
 

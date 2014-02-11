@@ -41,13 +41,14 @@ Transform {
       children [
         DEF Touch1 CylinderSensor {
           description "CylinderSensor Test"
-          axisRotation 0 0 1 1.5708
+          offset 1.5708
         
           #minAngle -1
           #maxAngle 1
           #diskAngle 2.8
         }
         DEF Shape1 Transform {
+          rotation 0 1 0 1.5708
           children Transform {
             translation 2 0 0
             children Shape {
@@ -61,7 +62,7 @@ Transform {
           }
         }
         DEF TrackPoint Transform {
-          translation 0.262648 1.51216 0.853617
+          translation 2.08396 0.031615 0.983302
           scaleOrientation -0.357407 0.862856 -0.357407 4.51948
           children Shape {
             appearance Appearance {

@@ -89,20 +89,12 @@ Viewpoint::create (X3DExecutionContext* const executionContext) const
 	return new Viewpoint (executionContext);
 }
 
-float
-Viewpoint::getFieldOfView () const
-{
-	const float fov = fieldOfView () * fieldOfViewScale ();
-
-	return fov > 0 and fov < M_PI ? fov : M_PI / 4;
-}
-
 Vector3d
-Viewpoint::getScreenScale (const double distance, const Vector4i & viewport) const
+Viewpoint::getScreenScale (double distance, const Vector4i & viewport) const
 {
-	const int width  = viewport [2];
-	const int height = viewport [3];
-	double    size   = distance * std::tan (getFieldOfView () / 2) * 2;
+	int    width  = viewport [2];
+	int    height = viewport [3];
+	double size   = distance * std::tan (fieldOfView () / 2) * 2;
 
 	if (width > height)
 		size /= height;
@@ -114,12 +106,12 @@ Viewpoint::getScreenScale (const double distance, const Vector4i & viewport) con
 }
 
 Vector3f
-Viewpoint::getLookAtPositionOffset (const Box3f & bbox) const
+Viewpoint::getLookAtPositionOffset (Box3f bbox) const
 {
 	if (getBrowser () -> getActiveLayer ())
 	{
-		const float distance    = (abs (bbox .size ()) / 2) / std::tan (getFieldOfView () / 2);
-		const float minDistance = getBrowser () -> getActiveLayer () -> getNavigationInfo () -> getNearPlane () * 2;
+		float distance    = (abs (bbox .size ()) / 2) / std::tan (fieldOfView () / 2);
+		float minDistance = getBrowser () -> getActiveLayer () -> getNavigationInfo () -> getNearPlane () * 2;
 
 		return bbox .center ()
 		       + getUserOrientation () * Vector3f (0, 0, std::max (distance, minDistance))
@@ -135,21 +127,24 @@ Viewpoint::reshape (const float zNear, const float zFar)
 	glMatrixMode (GL_PROJECTION);
 	glLoadIdentity ();
 
-	const Vector4i viewport = Viewport4i ();
+	Vector4i viewport = Viewport4i ();
 
-	const size_t width  = viewport [2];
-	const size_t height = viewport [3];
+	size_t width  = viewport [2];
+	size_t height = viewport [3];
 
-	const float ratio = std::tan (getFieldOfView () / 2) * zNear;
+	float fov = fieldOfView () * fieldOfViewScale ();
+	fov = fov > 0 and fov < M_PI ? fov : M_PI / 4;
+
+	float ratio = std::tan (fov / 2) * zNear;
 
 	if (width > height)
 	{
-		const float aspect = width * ratio / height;
+		float aspect = width * ratio / height;
 		glFrustum (-aspect, aspect, -ratio, ratio, zNear, zFar);
 	}
 	else
 	{
-		const float aspect = height * ratio / width;
+		float aspect = height * ratio / width;
 		glFrustum (-ratio, ratio, -aspect, aspect, zNear, zFar);
 	}
 

@@ -11,9 +11,8 @@ Transform {
   children Shape {
     appearance Appearance {
       material TwoSidedMaterial {
-        separateBackColor TRUE
-        diffuseColor 1 0 0
         backDiffuseColor 0 1 0
+        diffuseColor 1 0 0
       }
     }
     geometry IndexedFaceSet {
@@ -26,15 +25,13 @@ Transform {
     }
   }
 }
-
 Transform {
   translation 2 0 0
   children Shape {
     appearance Appearance {
       material TwoSidedMaterial {
-        separateBackColor TRUE
-        diffuseColor 1 0 0
         backDiffuseColor 0 1 0
+        diffuseColor 1 0 0
       }
     }
     geometry Rectangle2D {

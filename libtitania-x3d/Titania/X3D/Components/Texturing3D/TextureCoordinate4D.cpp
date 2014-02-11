@@ -79,14 +79,14 @@ TextureCoordinate4D::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-TextureCoordinate4D::init (TexCoordArray & texCoords, const size_t reserve) const
+TextureCoordinate4D::init (TexCoordArray & texCoords, size_t reserve) const
 {
 	texCoords .emplace_back ();
 	texCoords .back () .reserve (reserve);
 }
 
 void
-TextureCoordinate4D::addTexCoord (const size_t channel, TexCoordArray & texCoords, const size_t index) const
+TextureCoordinate4D::addTexCoord (size_t channel, TexCoordArray & texCoords, size_t index) const
 {
 	if (index < point () .size ())
 		texCoords [channel] .emplace_back (point () [index]);
@@ -104,7 +104,7 @@ TextureCoordinate4D::getTexCoord (std::vector <Vector4f> & texCoords) const
 }
 
 void
-TextureCoordinate4D::enable (const int32_t unit, const size_t channel, const TexCoordArray & texCoords) const
+TextureCoordinate4D::enable (int32_t unit, size_t channel, const TexCoordArray & texCoords) const
 {
 	glClientActiveTexture (GL_TEXTURE0 + unit);
 	glEnableClientState (GL_TEXTURE_COORD_ARRAY);
@@ -112,7 +112,7 @@ TextureCoordinate4D::enable (const int32_t unit, const size_t channel, const Tex
 }
 
 void
-TextureCoordinate4D::disable (const int32_t unit) const
+TextureCoordinate4D::disable (int32_t unit) const
 {
 	glClientActiveTexture (GL_TEXTURE0 + unit);
 	glDisableClientState (GL_TEXTURE_COORD_ARRAY);

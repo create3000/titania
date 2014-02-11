@@ -82,7 +82,7 @@ public:
 
 	///  @name Iter access
 
-	std::vector <Gtk::TreeModel::iterator>
+	std::deque <Gtk::TreeModel::iterator>
 	get_iters (X3D::X3DChildObject* const) const;
 
 	OutlineUserDataPtr
@@ -174,7 +174,7 @@ private:
 	///  @name Operations
 
 	bool
-	expand_to (const Gtk::TreeModel::Children &, std::vector <X3D::X3DChildObject*> &, Gtk::TreeModel::Path &);
+	expand_to (const Gtk::TreeModel::Children &, std::deque <X3D::X3DChildObject*> &, Gtk::TreeModel::Path &);
 
 	///  @name Member access
 

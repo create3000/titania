@@ -61,8 +61,6 @@ class Material :
 {
 public:
 
-	///  @name Construction
-
 	Material (X3DExecutionContext* const);
 
 	virtual
@@ -151,16 +149,14 @@ public:
 
 private:
 
-	///  @name Construction
-
 	virtual
 	void
 	initialize () final override;
 
-	///  @name Event handlers
-
+	virtual
 	void
-	eventsProcessed ();
+	eventsProcessed () final override;
+
 
 	///  @name Static members
 

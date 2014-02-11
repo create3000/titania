@@ -119,7 +119,7 @@ SquadOrientationInterpolator::set_keyValue ()
 //}
 
 void
-SquadOrientationInterpolator::interpolate (size_t index0, size_t index1, const float weight)
+SquadOrientationInterpolator::interpolate (size_t index0, size_t index1, float weight)
 {
 	value_changed () = squad .evaluate (index0, index1, weight, keyValue ());
 }

@@ -79,7 +79,7 @@ Normal::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-Normal::addVector (std::vector <Vector3f> & normals, const size_t index) const
+Normal::addVector (std::vector <Vector3f> & normals, size_t index) const
 {
 	if (index < vector () .size ())
 		normals .emplace_back (vector () [index]);

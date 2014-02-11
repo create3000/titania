@@ -70,13 +70,13 @@ public:
 	~Surface ();
 
 	void
-	set_antialiasing (const int32_t = 4);
+	set_antialiasing (int32_t = 4);
 
 	bool
 	makeCurrent () const;
 
 	void
-	swapInterval (const size_t) const;
+	swapInterval (unsigned int) const;
 
 	void
 	swapBuffers () const;
@@ -116,13 +116,13 @@ private:
 	glew ();
 
 	bool
-	set_map_event (GdkEventAny* const);
+	set_map_event (GdkEventAny*);
 
 	bool
 	set_construct (const Cairo::RefPtr <Cairo::Context> &);
 
 	bool
-	set_configure_event (GdkEventConfigure* const);
+	set_configure_event (GdkEventConfigure*);
 
 	bool
 	set_draw (const Cairo::RefPtr <Cairo::Context> &);

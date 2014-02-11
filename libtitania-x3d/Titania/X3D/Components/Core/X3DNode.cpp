@@ -77,7 +77,7 @@ X3DNode::getScene () const
 	return static_cast <Scene*> (executionContext);
 }
 
-std::vector <X3DLayerNode*>
+std::deque <X3DLayerNode*>
 X3DNode::getLayers () const
 {
 	return findParents <X3DBrowser, X3DLayerNode> ();

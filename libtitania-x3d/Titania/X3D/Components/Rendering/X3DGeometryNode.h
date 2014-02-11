@@ -87,7 +87,7 @@ public:
 
 	///  @name Member access
 
-	Box3f
+	const Box3f
 	getBBox ();
 	
 	bool
@@ -105,7 +105,7 @@ public:
 	///  @name Operations
 
 	bool
-	intersect (const Line3f &, std::vector <IntersectionPtr> &) const;
+	intersect (const Line3f &, std::deque <IntersectionPtr> &) const;
 
 	bool
 	intersect (const Sphere3f &, const Matrix4f &, const CollectableObjectArray &) const;
@@ -119,12 +119,12 @@ public:
 
 	// Used in CollisionShape
 	void
-	draw (const bool, const bool, const bool);
+	draw (bool, bool, bool);
 
 
 protected:
 
-	typedef std::map <size_t, std::vector <size_t>>  NormalIndex;
+	typedef std::map <size_t, std::deque <size_t>>  NormalIndex;
 
 	///  @name Construction
 
@@ -137,7 +137,7 @@ protected:
 	{ return texCoords; }
 
 	void
-	setTextureCoordinate (X3DTextureCoordinateNode* const);
+	setTextureCoordinate (X3DTextureCoordinateNode*);
 
 	std::vector <Color4f> &
 	getColors ()
@@ -203,6 +203,10 @@ protected:
 	void
 	build () = 0;
 
+	virtual
+	void
+	eventsProcessed () override;
+
 
 private:
 
@@ -221,7 +225,7 @@ private:
 	///  @name Operations
 
 	bool
-	intersect (const Line3f &, size_t, size_t, size_t, const Matrix4f &, std::vector <IntersectionPtr> &) const;
+	intersect (const Line3f &, size_t, size_t, size_t, const Matrix4f &, std::deque <IntersectionPtr> &) const;
 
 	bool
 	isClipped (const Vector3f &, const Matrix4f &) const;
@@ -245,7 +249,7 @@ private:
 	std::vector <Vector3f>    vertices;
 	bool                      solid;
 	GLenum                    frontFace;
-	std::vector <Element>     elements;
+	std::deque <Element>      elements;
 
 };
 

@@ -99,7 +99,7 @@ Sphere::set_properties ()
 Box3f
 Sphere::createBBox ()
 {
-	const float diameter = 2 * radius ();
+	float diameter = 2 * radius ();
 
 	return Box3f (Vector3f (diameter, diameter, diameter), Vector3f ());
 }
@@ -107,7 +107,7 @@ Sphere::createBBox ()
 void
 Sphere::build ()
 {
-	const X3DSphereOptionNode* const properties = getBrowser () -> getBrowserOptions () -> sphere ();
+	const X3DSphereOptionNode* properties = getBrowser () -> getBrowserOptions () -> sphere ();
 
 	getTexCoords () .emplace_back ();
 	getTexCoords () [0] .reserve (properties -> getTexCoords () .size ());

@@ -98,15 +98,14 @@ void
 Material::initialize ()
 {
 	X3DMaterialNode::initialize ();
-
-	addInterest (this, &Material::eventsProcessed);
-
 	eventsProcessed ();
 }
 
 void
 Material::eventsProcessed ()
 {
+	X3DMaterialNode::eventsProcessed ();
+
 	float alpha = 1 - math::clamp <float> (transparency (), 0, 1);
 
 	glAmbientColor [0] = ambientIntensity () * diffuseColor () .getR ();

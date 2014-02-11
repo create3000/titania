@@ -51,13 +51,13 @@
 #ifndef __TITANIA_X3D_TYPES_ARRAY_H__
 #define __TITANIA_X3D_TYPES_ARRAY_H__
 
-#include <vector>
+#include <deque>
 
 namespace titania {
 namespace X3D {
 
 template <class Type>
-using Array = std::vector <Type*>;
+using Array = std::deque <Type*>;
 
 } // X3D
 } // titania

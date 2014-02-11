@@ -148,9 +148,9 @@ public:
 
 private:
 
-	typedef std::vector <size_t>  Vertices;
-	typedef std::vector <size_t>  Element;
-	typedef std::vector <Element> ElementArray;
+	typedef std::deque <size_t>  Vertices;
+	typedef std::deque <size_t>  Element;
+	typedef std::deque <Element> ElementArray;
 
 	struct Polygon
 	{
@@ -164,7 +164,7 @@ private:
 
 	};
 
-	typedef std::vector <Polygon> PolygonArray;
+	typedef std::deque <Polygon> PolygonArray;
 
 	///  @name Construction
 

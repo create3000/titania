@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_RENDERING_TESSELATOR_H__
 
 #include <Titania/Math/Numbers/Vector3.h>
-#include <vector>
+#include <deque>
 #include <iostream>
 #include <tuple>
 
@@ -101,8 +101,8 @@ class polygon_element
 {
 public:
 
-	typedef tessellator_vertex <Args ...>   Vertex;
-	typedef std::vector <Vertex*>           VertexArray;
+	typedef tessellator_vertex <Args ...>    Vertex;
+	typedef std::deque <Vertex*>            VertexArray;
 	typedef typename VertexArray::size_type size_type;
 
 	polygon_element (GLenum type) :
@@ -134,7 +134,7 @@ class tessellator
 {
 public:
 
-	typedef std::vector <polygon_element <Args ...>> Polygon;
+	typedef std::deque <polygon_element <Args ...>> Polygon;
 	typedef tessellator_vertex <Args ...>             Vertex;
 
 	tessellator ();
@@ -165,9 +165,9 @@ private:
 
 	static void tessError (GLenum);
 
-	GLUtesselator*       tess;
-	std::vector <Vertex> vertices;
-	Polygon              tessellatedPolygon;
+	GLUtesselator*      tess;
+	std::deque <Vertex> vertices;
+	Polygon             tessellatedPolygon;
 
 };
 

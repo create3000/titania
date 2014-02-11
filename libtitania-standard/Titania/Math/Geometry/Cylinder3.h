@@ -131,11 +131,11 @@ cylinder3 <Type>::intersect (const line3 <Type> & line, vector3 <Type> & enter, 
 	// space, then intersect, then transform the results back.
 
 	// rotation to y axis
-	const rotation4 <Type> rotToYAxis (axis () .direction (), vector3 <Type> (0, 1, 0));
-	const matrix4 <Type>   mtxToYAxis (rotToYAxis);
+	rotation4 <Type> rotToYAxis (axis () .direction (), vector3 <Type> (0, 1, 0));
+	matrix4 <Type>   mtxToYAxis (rotToYAxis);
 
 	// scale to unit space
-	const Type     scaleFactor = 1 / radius ();
+	Type           scaleFactor = 1 / radius ();
 	matrix4 <Type> toUnitCylSpace;
 	toUnitCylSpace .scale (vector3 <Type> (scaleFactor, scaleFactor, scaleFactor));
 	toUnitCylSpace .multLeft (mtxToYAxis);
@@ -143,14 +143,14 @@ cylinder3 <Type>::intersect (const line3 <Type> & line, vector3 <Type> & enter, 
 	// find the given line un-translated
 	vector3 <Type> point = line .point ();
 	point -= axis () .point ();
-	const line3 <Type> noTranslationLine (point, line .direction ());
+	line3 <Type> noTranslationLine (point, line .direction ());
 
 	// find the un-translated line in unit cylinder's space
-	const line3 <Type> cylLine = noTranslationLine * toUnitCylSpace;
+	line3 <Type> cylLine = noTranslationLine .multLineMatrix (toUnitCylSpace);
 
 	// find the intersection on the unit cylinder
 	vector3 <Type> cylEnter, cylExit;
-	const bool     intersected = unit_cylinder_intersect (cylLine, cylEnter, cylExit);
+	bool           intersected = unit_cylinder_intersect (cylLine, cylEnter, cylExit);
 
 	if (intersected)
 	{
@@ -171,23 +171,25 @@ template <class Type>
 bool
 cylinder3 <Type>::unit_cylinder_intersect (const line3 <Type> & line, vector3 <Type> & enter, vector3 <Type> & exit) const
 {
-	Type t0, t1;
+	Type A, B, C, discr, sqroot, t0, t1;
 
 	const vector3 <Type> & pos = line .point ();
 	const vector3 <Type> & dir = line .direction ();
 
-	const Type A = dir [0] * dir [0] + dir [2] * dir [2];
-	const Type B = 2 * (pos [0] * dir [0] + pos [2] * dir [2]);
-	const Type C = pos [0] * pos [0] + pos [2] * pos [2] - 1;
+	A = dir [0] * dir [0] + dir [2] * dir [2];
+
+	B = 2 * (pos [0] * dir [0] + pos [2] * dir [2]);
+
+	C = pos [0] * pos [0] + pos [2] * pos [2] - 1;
 
 	// discriminant = B^2 - 4AC
-	const Type discr = B * B - 4 * A * C;
+	discr = B * B - 4 * A * C;
 
 	// if discriminant is negative, no intersection
 	if (discr < 0)
 		return false;
 
-	const Type sqroot = std::sqrt (discr);
+	sqroot = std::sqrt (discr);
 
 	// magic to stabilize the answer
 	if (B > 0)

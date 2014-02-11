@@ -232,11 +232,11 @@ public:
 	virtual
 	void
 	drawCollision () final override;
-
+	
 	virtual
 	void
 	saveState () final override;
-
+	
 	virtual
 	void
 	restoreState () final override;
@@ -253,8 +253,6 @@ public:
 
 private:
 
-	class Particle;
-	class Vertex;
 	class OddEvenMergeSort;
 
 	enum class GeometryType
@@ -266,6 +264,9 @@ private:
 		SPRITE,
 		GEOMETRY,
 	};
+
+	class Particle;
+	class Vertex;
 
 	///  @name Constuction
 

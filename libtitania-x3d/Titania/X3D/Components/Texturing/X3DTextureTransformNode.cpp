@@ -67,6 +67,14 @@ X3DTextureTransformNode::X3DTextureTransformNode () :
 }
 
 void
+X3DTextureTransformNode::initialize ()
+{
+	X3DAppearanceChildNode::initialize ();
+
+	eventsProcessed ();
+}
+
+void
 X3DTextureTransformNode::setMatrix (const Matrix4f & value)
 {
 	matrix = value * textureMatrix;
@@ -89,7 +97,7 @@ X3DTextureTransformNode::draw ()
 }
 
 void
-X3DTextureTransformNode::draw (const int32_t unit)
+X3DTextureTransformNode::draw (int32_t unit)
 {
 	glActiveTexture (GL_TEXTURE0 + unit);
 

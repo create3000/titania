@@ -98,7 +98,7 @@ ColorInterpolator::set_keyValue ()
 }
 
 void
-ColorInterpolator::interpolate (size_t index0, size_t index1, const float weight)
+ColorInterpolator::interpolate (size_t index0, size_t index1, float weight)
 {
 	value_changed () = math::clerp <float> (keyValue () [index0], keyValue () [index1], weight);
 }

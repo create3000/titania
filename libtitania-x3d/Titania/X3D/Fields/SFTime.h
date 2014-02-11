@@ -101,7 +101,7 @@ public:
 
 	template <class Class>
 	void
-	addInterest (Class* const object, void (Class::* memberFunction) (const SFTime &)) const
+	addInterest (Class* object, void (Class::* memberFunction) (const SFTime &)) const
 	{ addInterest (object, memberFunction, std::cref (*this)); }
 
 	template <class Class>
@@ -111,7 +111,7 @@ public:
 
 	template <class Class>
 	void
-	addInterest (Class* const object, void (Class::* memberFunction) (time_type)) const
+	addInterest (Class* object, void (Class::* memberFunction) (time_type)) const
 	{ addInterest (object, memberFunction, std::cref (this -> getValue ())); }
 
 	template <class Class>

@@ -367,7 +367,7 @@ X3DLayerNode::collision ()
 
 	float zNear           = navigationInfo -> getNearPlane ();
 	float zFar            = navigationInfo -> getFarPlane ();
-	float collisionRadius = zNear / std::sqrt (2.0f); // Use zNear instead of navigationInfo -> getCollisionRatius ();
+	float collisionRadius = navigationInfo -> getCollisionRadius () / std::sqrt (2.0f);
 
 	// Reshape viewpoint
 

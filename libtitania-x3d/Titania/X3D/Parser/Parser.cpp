@@ -2229,7 +2229,7 @@ Parser::sfimageValue (SFImage* _field)
 {
 	//__LOG__ << this << " " << std::endl;
 
-	int32_t width, height, components, pixel;
+	int32_t width, height, components, size, pixel;
 	MFInt32 array;
 
 	if (Int32 (width))
@@ -2238,9 +2238,7 @@ Parser::sfimageValue (SFImage* _field)
 		{
 			if (Int32 (components))
 			{
-				int32_t size = height * width;
-
-				array .reserve (size);
+				size = height * width;
 
 				for (int32_t i = 0; i < size; ++ i)
 				{

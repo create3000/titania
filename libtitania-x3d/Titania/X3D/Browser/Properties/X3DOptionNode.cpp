@@ -58,16 +58,10 @@ X3DOptionNode::X3DOptionNode () :
 { }
 
 void
-X3DOptionNode::initialize ()
-{
-	X3DBaseNode::initialize ();
-
-	addInterest (this, &X3DOptionNode::eventsProcessed);
-}
-
-void
 X3DOptionNode::eventsProcessed ()
 {
+	X3DBaseNode::eventsProcessed ();
+
 	X3DChildObject::addEvent ();
 }
 

@@ -79,14 +79,14 @@ TextureCoordinate::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-TextureCoordinate::init (TexCoordArray & texCoords, const size_t reserve) const
+TextureCoordinate::init (TexCoordArray & texCoords, size_t reserve) const
 {
 	texCoords .emplace_back ();
 	texCoords .back () .reserve (reserve);
 }
 
 void
-TextureCoordinate::addTexCoord (const size_t channel, TexCoordArray & texCoords, const size_t index) const
+TextureCoordinate::addTexCoord (size_t channel, TexCoordArray & texCoords, size_t index) const
 {
 	if (index < point () .size ())
 	{
@@ -107,7 +107,7 @@ TextureCoordinate::getTexCoord (std::vector <Vector4f> & texCoords) const
 }
 
 void
-TextureCoordinate::enable (const int32_t unit, const size_t channel, const TexCoordArray & texCoords) const
+TextureCoordinate::enable (int32_t unit, size_t channel, const TexCoordArray & texCoords) const
 {
 	glClientActiveTexture (GL_TEXTURE0 + unit);
 	glEnableClientState (GL_TEXTURE_COORD_ARRAY);

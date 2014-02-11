@@ -86,20 +86,15 @@ Coordinate::getBBox () const
 }
 
 Vector3f
-Coordinate::getNormal (const size_t index1, const size_t index2, const size_t index3) const
+Coordinate::getNormal (size_t index1, size_t index2, size_t index3) const
 {
-	const size_t size = point () .size ();
-
-	if (index1 < size and index2 < size and index3 < size)
-		return math::normal <float> (point () [index1],
-		                             point () [index2],
-		                             point () [index3]);
-
-	return Vector3f (0, 0, 1);
+	return math::normal <float> (point () [index1],
+	                             point () [index2],
+	                             point () [index3]);
 }
 
 void
-Coordinate::addVertex (opengl::tessellator <size_t> & tessellator, const size_t index, const size_t i) const
+Coordinate::addVertex (opengl::tessellator <size_t> & tessellator, size_t index, size_t i) const
 {
 	if (index < point () .size ())
 		tessellator .add_vertex (point () [index], i);
@@ -109,7 +104,7 @@ Coordinate::addVertex (opengl::tessellator <size_t> & tessellator, const size_t 
 }
 
 void
-Coordinate::addVertex (std::vector <Vector3f> & vertices, const size_t index) const
+Coordinate::addVertex (std::vector <Vector3f> & vertices, size_t index) const
 {
 	if (index < point () .size ())
 		vertices .emplace_back (point () [index]);

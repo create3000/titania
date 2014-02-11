@@ -1,5 +1,6 @@
-2014-02-10  Holger Seelig  <holger.seelig@yahoo.de>
+2014-02-11  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* ChangeLog:
 	* Surface.h:
 	* Surface.cpp:
 	* Context.h:

@@ -147,7 +147,7 @@ public:
 	}
 
 	reference
-	operator [ ] (const size_type i)
+	operator [ ] (size_type i)
 	{ return *iter [i]; }
 
 

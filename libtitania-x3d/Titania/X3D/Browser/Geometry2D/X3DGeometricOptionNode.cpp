@@ -61,16 +61,6 @@ X3DGeometricOptionNode::X3DGeometricOptionNode () :
 { }
 
 void
-X3DGeometricOptionNode::initialize ()
-{
-	X3DOptionNode::initialize ();
-
-	addInterest (this, &X3DGeometricOptionNode::update);
-
-	update ();
-}
-
-void
 X3DGeometricOptionNode::update ()
 {
 	texCoord .clear ();

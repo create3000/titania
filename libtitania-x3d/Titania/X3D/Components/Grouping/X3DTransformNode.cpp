@@ -73,8 +73,6 @@ void
 X3DTransformNode::initialize ()
 {
 	X3DGroupingNode::initialize ();
-	
-	addInterest (this, &X3DTransformNode::eventsProcessed);
 
 	eventsProcessed ();
 }
@@ -112,6 +110,8 @@ X3DTransformNode::setMatrixWithCenter (const Matrix4f & matrix, const Vector3f &
 void
 X3DTransformNode::eventsProcessed ()
 {
+	X3DGroupingNode::eventsProcessed ();
+
 	setDisplay (scale () .getX () not_eq 0 and
 	            scale () .getY () not_eq 0 and
 	            scale () .getZ () not_eq 0);
