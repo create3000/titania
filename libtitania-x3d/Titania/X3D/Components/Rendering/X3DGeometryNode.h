@@ -87,8 +87,9 @@ public:
 
 	///  @name Member access
 
-	const Box3f
-	getBBox ();
+	const Box3f &
+	getBBox () const
+	{ return bbox; }
 	
 	bool
 	getSolid () const
@@ -105,7 +106,7 @@ public:
 	///  @name Operations
 
 	bool
-	intersect (const Line3f &, std::deque <IntersectionPtr> &) const;
+	intersect (const Line3f &, std::vector <IntersectionPtr> &) const;
 
 	bool
 	intersect (const Sphere3f &, const Matrix4f &, const CollectableObjectArray &) const;
@@ -119,12 +120,12 @@ public:
 
 	// Used in CollisionShape
 	void
-	draw (bool, bool, bool);
+	draw (const bool, const bool, const bool);
 
 
 protected:
 
-	typedef std::map <size_t, std::deque <size_t>>  NormalIndex;
+	typedef std::map <size_t, std::vector <size_t>>  NormalIndex;
 
 	///  @name Construction
 
@@ -137,7 +138,7 @@ protected:
 	{ return texCoords; }
 
 	void
-	setTextureCoordinate (X3DTextureCoordinateNode*);
+	setTextureCoordinate (X3DTextureCoordinateNode* const);
 
 	std::vector <Color4f> &
 	getColors ()
@@ -185,9 +186,6 @@ protected:
 	createBBox ();
 
 	void
-	buildTexCoord ();
-
-	void
 	getTexCoordParams (Vector3f &, float &, int &, int &);
 
 	void
@@ -202,10 +200,6 @@ protected:
 	virtual
 	void
 	build () = 0;
-
-	virtual
-	void
-	eventsProcessed () override;
 
 
 private:
@@ -225,7 +219,7 @@ private:
 	///  @name Operations
 
 	bool
-	intersect (const Line3f &, size_t, size_t, size_t, const Matrix4f &, std::deque <IntersectionPtr> &) const;
+	intersect (const Line3f &, size_t, size_t, size_t, const Matrix4f &, std::vector <IntersectionPtr> &) const;
 
 	bool
 	isClipped (const Vector3f &, const Matrix4f &) const;
@@ -239,17 +233,21 @@ private:
 	void
 	clear ();
 
+	virtual
+	void
+	buildTexCoords ();
+
 	///  @name Members
 
 	Box3f                     bbox;
+	X3DTextureCoordinateNode* texCoordNode;
 	TexCoordArray             texCoords;
-	X3DTextureCoordinateNode* textureCoordinate;
 	std::vector <Color4f>     colors;
 	std::vector <Vector3f>    normals;
 	std::vector <Vector3f>    vertices;
 	bool                      solid;
 	GLenum                    frontFace;
-	std::deque <Element>      elements;
+	std::vector <Element>     elements;
 
 };
 

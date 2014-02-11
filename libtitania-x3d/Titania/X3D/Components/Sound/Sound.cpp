@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -62,16 +62,16 @@ const std::string Sound::typeName       = "Sound";
 const std::string Sound::containerField = "children";
 
 Sound::Fields::Fields () :
-	intensity (new SFFloat (1)),
+	 intensity (new SFFloat (1)),
 	spatialize (new SFBool (true)),
-	location (new SFVec3f ()),
-	direction (new SFVec3f (0, 0, 1)),
-	minBack (new SFFloat (1)),
-	minFront (new SFFloat (1)),
-	maxBack (new SFFloat (10)),
-	maxFront (new SFFloat (10)),
-	priority (new SFFloat ()),
-	source (new SFNode ())
+	  location (new SFVec3f ()),
+	 direction (new SFVec3f (0, 0, 1)),
+	   minBack (new SFFloat (1)),
+	  minFront (new SFFloat (1)),
+	   maxBack (new SFFloat (10)),
+	  maxFront (new SFFloat (10)),
+	  priority (new SFFloat ()),
+	    source (new SFNode ())
 { }
 
 Sound::Sound (X3DExecutionContext* const executionContext) :
@@ -151,11 +151,16 @@ Sound::traverse (const TraverseType type)
 	}
 }
 
-// http://de.wikipedia.org/wiki/Ellipse
+/*
+ * http://de.wikipedia.org/wiki/Ellipse
+ *
+ * The ellipsoid is transformed to a sphere for easier calculation and then the viewer position is
+ * transformed into this coordinate system. The radius and distance can then be obtained.
+ */
 
 void
 Sound::getEllipsoidParameter (const float & back, const float & front, float & radius, float & distance)
-// throw (std::domain_error)
+throw (std::domain_error)
 {
 	float a = (back + front) / 2;
 	float e = a - back;

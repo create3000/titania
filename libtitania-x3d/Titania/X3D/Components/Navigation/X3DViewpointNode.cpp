@@ -162,7 +162,7 @@ X3DViewpointNode::getUserCenterOfRotation () const
 }
 
 void
-X3DViewpointNode::getRelativeTransformation (X3DViewpointNode* fromViewpoint,
+X3DViewpointNode::getRelativeTransformation (X3DViewpointNode* const fromViewpoint,
                                              Vector3f & relativePosition,
                                              Rotation4f & relativeOrientation,
                                              Vector3f & relativeScale,
@@ -228,7 +228,7 @@ X3DViewpointNode::resetUserOffsets ()
 }
 
 void
-X3DViewpointNode::straighten (bool horizon)
+X3DViewpointNode::straighten (const bool horizon)
 {
 	for (const auto & layer : getLayers ())
 		layer -> getNavigationInfo () -> transitionStart () = true;
@@ -240,9 +240,9 @@ X3DViewpointNode::straighten (bool horizon)
 
 	easeInEaseOut -> easeInEaseOut () = { SFVec2f (0, 1), SFVec2f (1, 0) };
 
-	Rotation4f rotation = orientationOffset () * (horizon
-	                                              ? straightenHorizon (getUserOrientation ())
-																 : Rotation4f (getUserOrientation () * upVector, upVector));
+	const Rotation4f rotation = orientationOffset () * (horizon
+	                                                    ? straightenHorizon (getUserOrientation ())
+																       : Rotation4f (getUserOrientation () * upVector, upVector));
 
 	positionInterpolator         -> keyValue () = { positionOffset (), positionOffset () };
 	orientationInterpolator      -> keyValue () = { orientationOffset (), rotation };
@@ -254,7 +254,7 @@ X3DViewpointNode::straighten (bool horizon)
 	//scaleInterpolator            -> value_changed () .addInterest (scaleOffset ());
 	//scaleOrientationInterpolator -> value_changed () .addInterest (scaleOrientationOffset ());
 
-	auto distanceToCenter = abs (getUserCenterOfRotation () - getUserPosition ());
+	const auto distanceToCenter = abs (getUserCenterOfRotation () - getUserPosition ());
 
 	centerOfRotationOffset () = getUserPosition () + (orientation () * rotation) * Vector3f (0, 0, -1) * distanceToCenter - centerOfRotation ();
 
@@ -274,7 +274,7 @@ X3DViewpointNode::straightenHorizon (const Rotation4f & orientation)
 }
 
 void
-X3DViewpointNode::lookAt (Box3f bbox, float distance, bool straighten)
+X3DViewpointNode::lookAt (Box3f bbox, const float distance, const bool straighten)
 {
 	try
 	{
@@ -298,9 +298,9 @@ X3DViewpointNode::lookAt (Box3f bbox, float distance, bool straighten)
 
 		easeInEaseOut -> easeInEaseOut () = { SFVec2f (0, 1), SFVec2f (1, 0) };
 
-		auto translation = lerp <Vector3f> (positionOffset (), getLookAtPositionOffset (bbox), distance);
-		auto direction   = getPosition () + translation - bbox .center ();
-		auto rotation    = orientationOffset () * Rotation4f (getUserOrientation () * Vector3f (0, 0, 1), direction);
+		const auto translation = lerp <Vector3f> (positionOffset (), getLookAtPositionOffset (bbox), distance);
+		const auto direction   = getPosition () + translation - bbox .center ();
+		auto       rotation    = orientationOffset () * Rotation4f (getUserOrientation () * Vector3f (0, 0, 1), direction);
 
 		if (straighten)
 			rotation = ~orientation () * straightenHorizon (orientation () * rotation);
@@ -310,22 +310,17 @@ X3DViewpointNode::lookAt (Box3f bbox, float distance, bool straighten)
 		scaleInterpolator            -> keyValue () = { scaleOffset (), scaleOffset () };
 		scaleOrientationInterpolator -> keyValue () = { scaleOrientationOffset (), scaleOrientationOffset () };
 
-		//positionInterpolator         -> value_changed () .addInterest (positionOffset ());
-		//orientationInterpolator      -> value_changed () .addInterest (orientationOffset ());
-		//scaleInterpolator            -> value_changed () .addInterest (scaleOffset ());
-		//scaleOrientationInterpolator -> value_changed () .addInterest (scaleOrientationOffset ());
-
 		centerOfRotationOffset () = bbox .center () - centerOfRotation ();
 		set_bind ()               = true;
 	}
 	catch (const std::domain_error &)
 	{
-		// Catch error from ~getParentMatrix ()
+		// Catch error from matrix inverse.
 	}
 }
 
 void
-X3DViewpointNode::transitionStart (X3DViewpointNode* fromViewpoint)
+X3DViewpointNode::transitionStart (X3DViewpointNode* const fromViewpoint)
 {
 	try
 	{
@@ -376,15 +371,15 @@ X3DViewpointNode::transitionStart (X3DViewpointNode* fromViewpoint)
 			Rotation4f relativeOrientation, relativeScaleOrientation;
 			getRelativeTransformation (fromViewpoint, relativePosition, relativeOrientation, relativeScale, relativeScaleOrientation);
 
-			Vector3f   startPosition         = relativePosition;
-			Rotation4f startOrientation      = relativeOrientation;
-			Vector3f   startScale            = relativeScale;
-			Rotation4f startScaleOrientation = relativeScaleOrientation;
+			const Vector3f   startPosition         = relativePosition;
+			const Rotation4f startOrientation      = relativeOrientation;
+			const Vector3f   startScale            = relativeScale;
+			const Rotation4f startScaleOrientation = relativeScaleOrientation;
 
-			Vector3f   endPosition         = positionOffset ();
-			Rotation4f endOrientation      = orientationOffset ();
-			Vector3f   endScale            = scaleOffset ();
-			Rotation4f endScaleOrientation = scaleOrientationOffset ();
+			const Vector3f   endPosition         = positionOffset ();
+			const Rotation4f endOrientation      = orientationOffset ();
+			const Vector3f   endScale            = scaleOffset ();
+			const Rotation4f endScaleOrientation = scaleOrientationOffset ();
 
 			positionOffset ()         = startPosition;
 			orientationOffset ()      = startOrientation;
@@ -428,7 +423,7 @@ X3DViewpointNode::transitionStop ()
 
 // Notify NavigationInfos when transitions are complete.
 void
-X3DViewpointNode::set_isActive (bool value)
+X3DViewpointNode::set_isActive (const bool value)
 {
 	if (not value)
 	{

@@ -107,13 +107,13 @@ ArcClose2D::set_properties ()
 float
 ArcClose2D::getAngle ()
 {
-	float start = math::interval <float> (startAngle (), 0, M_PI2);
-	float end   = math::interval <float> (endAngle (),   0, M_PI2);
+	const float start = math::interval <float> (startAngle (), 0, M_PI2);
+	const float end   = math::interval <float> (endAngle (),   0, M_PI2);
 
 	if (start == end)
 		return M_PI2;
 
-	float difference = std::min (std::abs (end - start), float (M_PI2));
+	const float difference = std::min (std::abs (end - start), float (M_PI2));
 
 	if (start > end)
 		return M_PI2 - difference;
@@ -124,15 +124,15 @@ ArcClose2D::getAngle ()
 void
 ArcClose2D::build ()
 {
-	const ArcClose2DOptions* properties = getBrowser () -> getBrowserOptions () -> arcClose2D ();
+	const ArcClose2DOptions* const properties = getBrowser () -> getBrowserOptions () -> arcClose2D ();
 
-	float  difference = getAngle ();
-	size_t segments   = std::ceil (difference / properties -> minAngle ());
-	float  angle      = difference / segments;
+	const float  difference = getAngle ();
+	size_t       segments   = std::ceil (difference / properties -> minAngle ());
+	const float  angle      = difference / segments;
 
-	size_t elements = solid () ? 1 : 2;
-	size_t vertices = segments + 2;
-	size_t reserve  = elements * vertices;
+	const size_t elements = solid () ? 1 : 2;
+	const size_t vertices = segments + 2;
+	const size_t reserve  = elements * vertices;
 
 	getTexCoords () .emplace_back ();
 	getTexCoords () [0] .reserve (reserve);
@@ -140,7 +140,7 @@ ArcClose2D::build ()
 	getNormals  () .reserve (reserve);
 	getVertices () .reserve (reserve);
 
-	if (difference < float (2 * M_PI))
+	if (difference < float (M_PI2))
 	{
 		// If it is a arc, add a center point otherwise it is a circle.
 
@@ -156,10 +156,10 @@ ArcClose2D::build ()
 
 	for (size_t n = 0; n < segments; ++ n)
 	{
-		float theta = startAngle () + angle * n;
+		const float theta = startAngle () + angle * n;
 
-		auto texCoord = std::polar (0.5f, theta) + std::complex <float> (0.5f, 0.5f);
-		auto point    = std::polar (std::abs (radius ()), theta);
+		const auto texCoord = std::polar (0.5f, theta) + std::complex <float> (0.5f, 0.5f);
+		const auto point    = std::polar (std::abs (radius ()), theta);
 
 		getTexCoords () [0] .emplace_back (texCoord .real (), texCoord .imag (), 0, 1);
 		getNormals  () .emplace_back (0, 0, 1);

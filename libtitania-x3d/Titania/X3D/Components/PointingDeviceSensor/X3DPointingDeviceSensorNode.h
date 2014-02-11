@@ -85,11 +85,11 @@ public:
 
 	virtual
 	void
-	set_over (const HitPtr &, bool);
+	set_over (const HitPtr &, const bool);
 
 	virtual
 	void
-	set_active (const HitPtr &, bool);
+	set_active (const HitPtr &, const bool);
 
 	void
 	push ();

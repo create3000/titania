@@ -63,8 +63,6 @@
 
 #include <cstddef>
 
-#include "../../Debug.h"
-
 namespace titania {
 namespace X3D {
 
@@ -101,13 +99,13 @@ struct ParticleSystem::Particle
 
 	///  @name Members
 
-	int32_t seed;
-	float lifetime;
-	Vector3f position;
-	Vector3f velocity;
-	Color4f color;
-	float elapsedTime;
-	float distance;
+	const int32_t seed;
+	const float lifetime;
+	const Vector3f position;
+	const Vector3f velocity;
+	const Color4f color;
+	const float elapsedTime;
+	const float distance;
 
 };
 
@@ -115,15 +113,19 @@ struct ParticleSystem::Particle
 
 struct ParticleSystem::Vertex
 {
+	///  @name Construction
+
 	Vertex () :
 		position (),
 		   color (),
 		texCoord ()
 	{ }
 
-	Vector3f position;
-	Color4f color;
-	Vector4f texCoord;
+	///  @name Members
+
+	const Vector3f position;
+	const Color4f color;
+	const Vector4f texCoord;
 
 };
 
@@ -855,8 +857,6 @@ ParticleSystem::set_boundedPhysicsModel ()
 	for (auto & physicsNode : boundedPhysicsModelNodes)
 		physicsNode -> addTriangles (normals, vertices);
 
-	__LOG__ << vertices .size () / 3 << std::endl;
-
 	// Update shader
 
 	transformShader -> setField <SFBool> ("boundedVolume", not vertices .empty (), true);
@@ -871,7 +871,7 @@ ParticleSystem::set_boundedPhysicsModel ()
 
 	// BVH
 
-	BVH tree (std::move (vertices));
+	const BVH tree (std::move (vertices));
 
 	auto treeArray = std::move (tree .toArray ());
 
@@ -1115,7 +1115,7 @@ ParticleSystem::prepareEvents ()
 
 	if (emitterNode -> isExplosive ())
 	{
-		time_type now = chrono::now ();
+		const time_type now = chrono::now ();
 
 		if (numParticles < maxParticles ())
 		{
@@ -1136,8 +1136,8 @@ ParticleSystem::prepareEvents ()
 	{
 		if (numParticles < maxParticles ())
 		{
-			time_type now          = chrono::now ();
-			int32_t   newParticles = (now - creationTime) * maxParticles () / particleLifetime ();
+			const time_type now          = chrono::now ();
+			int32_t         newParticles = (now - creationTime) * maxParticles () / particleLifetime ();
 
 			if (newParticles)
 				creationTime = now;
@@ -1148,7 +1148,7 @@ ParticleSystem::prepareEvents ()
 
 	// Update shader
 
-	float deltaTime = 1 / getBrowser () -> getCurrentFrameRate ();
+	const float deltaTime = 1 / getBrowser () -> getCurrentFrameRate ();
 
 	transformShader -> setField <SFFloat> ("deltaTime",         deltaTime);
 	transformShader -> setField <SFFloat> ("particleLifetime",  particleLifetime (),  true);
@@ -1270,8 +1270,6 @@ ParticleSystem::update ()
 			break;
 		}
 	}
-
-	GL_ERROR;
 }
 
 void
@@ -1281,8 +1279,8 @@ ParticleSystem::drawCollision ()
 void
 ParticleSystem::drawGeometry ()
 {
-	bool   solid     = false;
-	GLenum frontFace = GL_CCW;
+	const bool   solid     = false;
+	const GLenum frontFace = GL_CCW;
 
 	if (solid)
 		glEnable (GL_CULL_FACE);
@@ -1412,10 +1410,10 @@ Matrix3f
 ParticleSystem::getScreenAlignedRotation () const
 throw (std::domain_error)
 {
-	Matrix4f inverseModelViewMatrix = ~ModelViewMatrix4f ();
+	const Matrix4f inverseModelViewMatrix = ~ModelViewMatrix4f ();
 
-	Vector3f billboardToScreen = inverseModelViewMatrix .multDirMatrix (zAxis);
-	Vector3f viewerYAxis       = inverseModelViewMatrix .multDirMatrix (yAxis);
+	const Vector3f billboardToScreen = inverseModelViewMatrix .multDirMatrix (zAxis);
+	const Vector3f viewerYAxis       = inverseModelViewMatrix .multDirMatrix (yAxis);
 
 	Vector3f x = cross (viewerYAxis, billboardToScreen);
 	Vector3f y = cross (billboardToScreen, x);

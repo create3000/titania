@@ -61,6 +61,8 @@ class SphereSensor :
 {
 public:
 
+	///  @name Construction
+
 	SphereSensor (X3DExecutionContext* const);
 
 	virtual
@@ -105,7 +107,7 @@ public:
 
 	virtual
 	void
-	set_active (const HitPtr &, bool) final override;
+	set_active (const HitPtr &, const bool) final override;
 
 	virtual
 	void
@@ -115,8 +117,7 @@ public:
 private:
 
 	bool
-	getTrackPoint (const Line3d &, Vector3d &, bool = false) const;
-
+	getTrackPoint (const Line3d &, Vector3d &, const bool = false) const;
 
 	///  @name Static members
 
@@ -141,6 +142,7 @@ private:
 	bool       behind;
 	Vector3d   fromVector;
 	Vector3d   startPoint;
+	Rotation4d startOffset;
 	Matrix4d   inverseModelViewMatrix;
 
 };

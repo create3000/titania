@@ -135,23 +135,23 @@ template <class Type>
 bool
 sphere3 <Type>::intersect (const line3 <Type> & line, vector3 <Type> & intersection1, vector3 <Type> & intersection2) const
 {
-	auto L   = center () - line .point ();
-	Type tca = dot (L, line .direction ());
+	const auto L   = center () - line .point ();
+	const Type tca = dot (L, line .direction ());
 
 	if (tca < 0)
 		// there is no intersection
 		return false;
 
-	Type d2 = dot (L, L) - std::pow (tca, 2);
-	Type r2 = std::pow (radius (), 2);
+	const Type d2 = dot (L, L) - std::pow (tca, 2);
+	const Type r2 = std::pow (radius (), 2);
 
 	if (d2 > r2)
 		return false;
 
-	Type thc = std::sqrt (r2 - d2);
+	const Type thc = std::sqrt (r2 - d2);
 
-	Type t1 = tca - thc;
-	Type t2 = tca + thc;
+	const Type t1 = tca - thc;
+	const Type t2 = tca + thc;
 
 	intersection1 = line .point () + line .direction () * t1;
 	intersection2 = line .point () + line .direction () * t2;
@@ -165,56 +165,56 @@ template <class Type>
 bool
 sphere3 <Type>::intersect (vector3 <Type> A, vector3 <Type> B, vector3 <Type> C) const
 {
-	auto P = center ();
-	auto r = radius ();
+	const auto P = center ();
+	const auto r = radius ();
 
 	A = A - P;
 	B = B - P;
 	C = C - P;
 
 	// Testing if sphere lies outside the triangle plane.
-	auto rr   = r * r;
-	auto V    = cross (B - A, C - A);
-	auto d    = dot (A, V);
-	auto e    = dot (V, V);
-	auto sep1 = d * d > rr * e;
+	const auto rr   = r * r;
+	const auto V    = cross (B - A, C - A);
+	const auto d    = dot (A, V);
+	const auto e    = dot (V, V);
+	const auto sep1 = d * d > rr * e;
 
 	if (sep1)
 		return false;
 
 	// Testing if sphere lies outside a triangle vertex.
-	auto aa   = dot (A, A);
-	auto ab   = dot (A, B);
-	auto ac   = dot (A, C);
-	auto bb   = dot (B, B);
-	auto bc   = dot (B, C);
-	auto cc   = dot (C, C);
-	auto sep2 = (aa > rr) and (ab > aa) and (ac > aa);
-	auto sep3 = (bb > rr) and (ab > bb) and (bc > bb);
-	auto sep4 = (cc > rr) and (ac > cc) and (bc > cc);
+	const auto aa   = dot (A, A);
+	const auto ab   = dot (A, B);
+	const auto ac   = dot (A, C);
+	const auto bb   = dot (B, B);
+	const auto bc   = dot (B, C);
+	const auto cc   = dot (C, C);
+	const auto sep2 = (aa > rr) and (ab > aa) and (ac > aa);
+	const auto sep3 = (bb > rr) and (ab > bb) and (bc > bb);
+	const auto sep4 = (cc > rr) and (ac > cc) and (bc > cc);
 
 	if (sep2 or sep3 or sep4)
 		return false;
 
 	// Testing if sphere lies outside a triangle edge.
 	auto AB   = B - A;
-	auto BC   = C - B;
-	auto CA   = A - C;
-	auto d1   = ab - aa;
-	auto d2   = bc - bb;
-	auto d3   = ac - cc;
-	auto e1   = dot (AB, AB);
-	auto e2   = dot (BC, BC);
-	auto e3   = dot (CA, CA);
-	auto Q1   = A * e1 - d1 * AB;
-	auto Q2   = B * e2 - d2 * BC;
-	auto Q3   = C * e3 - d3 * CA;
-	auto QC   = C * e1 - Q1;
-	auto QA   = A * e2 - Q2;
-	auto QB   = B * e3 - Q3;
-	auto sep5 = (dot (Q1, Q1) > rr * e1 * e1) and (dot (Q1, QC) > 0);
-	auto sep6 = (dot (Q2, Q2) > rr * e2 * e2) and (dot (Q2, QA) > 0);
-	auto sep7 = (dot (Q3, Q3) > rr * e3 * e3) and (dot (Q3, QB) > 0);
+	const auto BC   = C - B;
+	const auto CA   = A - C;
+	const auto d1   = ab - aa;
+	const auto d2   = bc - bb;
+	const auto d3   = ac - cc;
+	const auto e1   = dot (AB, AB);
+	const auto e2   = dot (BC, BC);
+	const auto e3   = dot (CA, CA);
+	const auto Q1   = A * e1 - d1 * AB;
+	const auto Q2   = B * e2 - d2 * BC;
+	const auto Q3   = C * e3 - d3 * CA;
+	const auto QC   = C * e1 - Q1;
+	const auto QA   = A * e2 - Q2;
+	const auto QB   = B * e3 - Q3;
+	const auto sep5 = (dot (Q1, Q1) > rr * e1 * e1) and (dot (Q1, QC) > 0);
+	const auto sep6 = (dot (Q2, Q2) > rr * e2 * e2) and (dot (Q2, QA) > 0);
+	const auto sep7 = (dot (Q3, Q3) > rr * e3 * e3) and (dot (Q3, QB) > 0);
 
 	if (sep5 or sep6 or sep7)
 		return false;

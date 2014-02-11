@@ -139,13 +139,18 @@ public:
 	plane3 &
 	operator *= (const matrix4 <Type> & matrix)
 	throw (std::domain_error)
-	{ return multPlaneMatrix (matrix); }
+	{
+		multPlaneMatrix (matrix);
+		return *this;
+	}
 
-	plane3 &
+	///  Transform this plane by @a matrix.
+	void
 	multPlaneMatrix (const matrix4 <Type> &)
 	throw (std::domain_error);
 
-	plane3 &
+	///  Transform this plane by @a matrix.
+	void
 	multMatrixPlane (const matrix4 <Type> &)
 	throw (std::domain_error);
 
@@ -185,7 +190,7 @@ private:
 
 ///  Transform a plane by the given matrix
 template <class Type>
-plane3 <Type> &
+void
 plane3 <Type>::multPlaneMatrix (const matrix4 <Type> & matrix)
 throw (std::domain_error)
 {
@@ -196,8 +201,8 @@ throw (std::domain_error)
     // to get the new normal. Use the inverse transpose
     // of the matrix so that normals are not scaled incorrectly.
     // n' = n * !~m = ~m * n
-    auto inv       = inverse (matrix);
-    auto newNormal = normalize (inv .multMatrixDir (normal ()));
+    const auto inv       = inverse (matrix);
+    const auto newNormal = normalize (inv .multMatrixDir (normal ()));
 
     // Transform the point by the matrix
     point = matrix .multVecMatrix (point);
@@ -205,11 +210,11 @@ throw (std::domain_error)
     // The new distance is the projected distance of the vector to the
     // transformed point onto the (unit) transformed normal. This is
     // just a dot product.
-    return *this = plane3 (point, newNormal);
+    *this = plane3 (point, newNormal);
 }
 
 template <class Type>
-plane3 <Type> &
+void
 plane3 <Type>::multMatrixPlane (const matrix4 <Type> & matrix)
 throw (std::domain_error)
 {
@@ -220,8 +225,8 @@ throw (std::domain_error)
     // to get the new normal. Use the inverse transpose
     // of the matrix so that normals are not scaled incorrectly.
     // n' = !~m * n = n * ~m
-    auto inv       = inverse (matrix);
-    auto newNormal = normalize (inv .multDirMatrix (normal ()));
+    const auto inv       = inverse (matrix);
+    const auto newNormal = normalize (inv .multDirMatrix (normal ()));
 
     // Transform the point by the matrix
     point = matrix .multMatrixVec (point);
@@ -229,7 +234,7 @@ throw (std::domain_error)
     // The new distance is the projected distance of the vector to the
     // transformed point onto the (unit) transformed normal. This is
     // just a dot product.
-    return *this = plane3 (point, newNormal);
+    *this = plane3 (point, newNormal);
 }
 
 ///  Returns the distance from @a point.
@@ -251,14 +256,14 @@ bool
 plane3 <Type>::intersect (const line3 <Type> & line, vector3 <Type> & point) const
 {
 	// Check if the line is parallel to the plane.
-	Type theta = dot (line .direction (), normal ());
+	const Type theta = dot (line .direction (), normal ());
 
 	// Plane and line are parallel.
 	if (theta == 0)
 		return false;
 
 	// Plane and line are not parallel. The intersection point can be calculated now.
-	Type t = (distance_from_origin () - dot (normal (), line .point ())) / theta;
+	const Type t = (distance_from_origin () - dot (normal (), line .point ())) / theta;
 
 	point = line .point () + line .direction () * t;
 
@@ -274,7 +279,9 @@ plane3 <Type>
 operator * (const plane3 <Type> & plane, const matrix4 <Type> & matrix)
 throw (std::domain_error)
 {
-	return plane3 <Type> (plane) .multPlaneMatrix (matrix);
+	plane3 <Type> result (plane);
+	result .multPlaneMatrix (matrix);
+	return result;
 }
 
 template <class Type>
@@ -282,7 +289,9 @@ plane3 <Type>
 operator * (const matrix4 <Type> & matrix, const plane3 <Type> & plane)
 throw (std::domain_error)
 {
-	return plane3 <Type> (plane) .multMatrixPlane (matrix);
+	plane3 <Type> result (plane);
+	result .multMatrixPlane (matrix);
+	return result;
 }
 
 ///  @relates plane3

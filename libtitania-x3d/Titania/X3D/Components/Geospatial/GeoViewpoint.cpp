@@ -109,7 +109,7 @@ GeoViewpoint::getPosition () const
 }
 
 Vector3f
-GeoViewpoint::getLookAtPositionOffset (Box3f bbox) const
+GeoViewpoint::getLookAtPositionOffset (const Box3f & bbox) const
 {
 	return bbox .center ()
 	       + getUserOrientation () * (Vector3f (0, 0, (math::abs (bbox .size ()) / 2) / std::tan (fieldOfView () / 2)))
@@ -117,7 +117,7 @@ GeoViewpoint::getLookAtPositionOffset (Box3f bbox) const
 }
 
 Vector3d
-GeoViewpoint::getScreenScale (double, const Vector4i & viewport) const
+GeoViewpoint::getScreenScale (const double, const Vector4i & viewport) const
 {
 	return Vector3d (1, 1, 1);
 }

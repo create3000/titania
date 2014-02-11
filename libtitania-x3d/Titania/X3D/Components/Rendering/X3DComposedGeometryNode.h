@@ -217,14 +217,14 @@ protected:
 	createBBox () final override;
 
 	void
-	buildPolygons (size_t, size_t);
+	buildPolygons (const size_t, size_t);
 
 	virtual
 	void
-	buildNormals (size_t, size_t);
+	buildNormals (const size_t, const size_t);
 
 	void
-	buildFaceNormals (size_t, size_t);
+	buildFaceNormals (const size_t, const size_t);
 
 
 private:

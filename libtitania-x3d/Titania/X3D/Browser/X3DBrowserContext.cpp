@@ -120,6 +120,8 @@ X3DBrowserContext::X3DBrowserContext () :
 	               notification (new Notification (this)),
 	                    console (new Console (this))                       // SFNode  [ ]   console    NULL  [Console]
 {
+	initialized () .setName ("initialized");
+
 	addChildren (initialized (),
 	             renderingProperties,
 	             browserProperties,
@@ -508,13 +510,15 @@ X3DBrowserContext::motionNotifyEvent ()
 {
 	// Set isOver to FALSE for appropriate nodes
 
-	std::deque <X3DBaseNode*> difference;
+	std::vector <X3DBaseNode*> difference;
 
 	if (getHits () .empty ())
 		difference .assign (overSensors .begin (), overSensors .end ());
 
 	else
 	{
+		// overSensors and sensors are always sorted.
+	
 		std::set_difference (overSensors .begin (), overSensors .end (),
 		                     getHits () .front () -> sensors .begin (), getHits () .front () -> sensors .end (),
 		                     std::back_inserter (difference));

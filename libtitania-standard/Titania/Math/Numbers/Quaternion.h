@@ -207,11 +207,11 @@ public:
 	///  All these operators modify this quaternion inplace.
 
 	///  Negates this quaternion in place.
-	quaternion &
+	void
 	negate ();
 
 	///  Invert this quaternion in place.
-	quaternion &
+	void
 	inverse ();
 
 	///  Add @a quaternion to this quaternion.
@@ -239,16 +239,16 @@ public:
 
 	///  Left multiply this quaternion by @a quaternion.
 	template <class T>
-	quaternion &
+	void
 	multLeft (const quaternion <T> &);
 
 	///  Right multiply this quaternion by @a quaternion.
 	template <class T>
-	quaternion &
+	void
 	multRight (const quaternion <T> &);
 
 	///  Normalize this quaternion in place.
-	quaternion &
+	void
 	normalize ();
 
 
@@ -277,24 +277,22 @@ quaternion <Type>::operator = (const quaternion <T> & quat)
 }
 
 template <class Type>
-quaternion <Type> &
+void
 quaternion <Type>::negate ()
 {
 	value [0] = -value [0];
 	value [1] = -value [1];
 	value [2] = -value [2];
 	value [3] = -value [3];
-	return *this;
 }
 
 template <class Type>
-quaternion <Type> &
+void
 quaternion <Type>::inverse ()
 {
 	value [0] = -value [0];
 	value [1] = -value [1];
 	value [2] = -value [2];
-	return *this;
 }
 
 template <class Type>
@@ -353,10 +351,10 @@ quaternion <Type>::operator /= (const Type & t)
 
 template <class Type>
 template <class T>
-quaternion <Type> &
+void
 quaternion <Type>::multLeft (const quaternion <T> & quat)
 {
-	return *this = quaternion <Type> (quat .w () * x () +
+	*this = quaternion <Type> (quat .w () * x () +
 	                                  quat .x () * w () +
 	                                  quat .y () * z () -
 	                                  quat .z () * y (),
@@ -379,10 +377,10 @@ quaternion <Type>::multLeft (const quaternion <T> & quat)
 
 template <class Type>
 template <class T>
-quaternion <Type> &
+void
 quaternion <Type>::multRight (const quaternion <T> & quat)
 {
-	return *this = quaternion <Type> (w () * quat .x () +
+	*this = quaternion <Type> (w () * quat .x () +
 	                                  x () * quat .w () +
 	                                  y () * quat .z () -
 	                                  z () * quat .y (),
@@ -404,15 +402,13 @@ quaternion <Type>::multRight (const quaternion <T> & quat)
 }
 
 template <class Type>
-quaternion <Type> &
+void
 quaternion <Type>::normalize ()
 {
-	Type length = abs (*this);
+	const Type length = abs (*this);
 
 	if (length)
-		return *this /= length;
-
-	return *this;
+		*this /= length;
 }
 
 ///  @name Element access
@@ -479,18 +475,24 @@ operator + (const quaternion <Type> & quat)
 
 ///  Returns quaternion negation of @a quaternion.
 template <class Type>
+inline
 quaternion <Type>
 operator - (const quaternion <Type> & quat)
 {
-	return quaternion <Type> (quat) .negate ();
+	quaternion <Type> result (quat);
+	result .negate ();
+	return result;
 }
 
 ///  Returns the inverse quaternion for @a quaternion.
 template <class Type>
+inline
 quaternion <Type>
 operator ~ (const quaternion <Type> & quat)
 {
-	return quaternion <Type> (quat) .inverse ();
+	quaternion <Type> result (quat);
+	result .inverse ();
+	return result;
 }
 
 ///  Returns new quaternion value @a lhs plus @a rhs.
@@ -513,10 +515,13 @@ operator - (const quaternion <Type> & lhs, const quaternion <Type> & rhs)
 
 ///  Returns new quaternion value @a lhs left multiplied by @a rhs.
 template <class Type>
-constexpr quaternion <Type>
+inline
+quaternion <Type>
 operator * (const quaternion <Type> & lhs, const quaternion <Type> & rhs)
 {
-	return quaternion <Type> (lhs) .multRight (rhs);
+	quaternion <Type> result (lhs);
+	result .multRight (rhs);
+	return result;
 }
 
 ///  Returns new quaternion value @a lhs right multiplied @a rhs.
@@ -540,7 +545,7 @@ operator * (const Type & lhs, const quaternion <Type> & rhs)
 ///  Returns new vector value @a vector multiplied by @a quaternion.
 template <class Type>
 inline
-constexpr vector3 <Type>
+vector3 <Type>
 operator * (const quaternion <Type> & quat, const vector3 <Type> & vector)
 {
 	return imag (quat * quaternion <Type> (vector, Type ()) * ~quat);
@@ -644,11 +649,14 @@ inline
 quaternion <Type>
 normalize (const quaternion <Type> & quat)
 {
-	return quaternion <Type> (quat) .normalize ();
+	quaternion <Type> result (quat);
+	result .normalize ();
+	return result;
 }
 
 ///  Raise @a quaternion to @a quaternion power.
 template <class Type>
+inline
 quaternion <Type>
 pow (const quaternion <Type> & base, const quaternion <Type> & exponent)
 {
@@ -662,12 +670,12 @@ template <class Type>
 quaternion <Type>
 pow (const quaternion <Type> & base, const Type & exponent)
 {
-	Type n     = norm (base);
-	Type theta = std::acos (base .w () / n);
-	Type ni    = norm (imag (base));
-	Type ntov  = std::pow (n, exponent);
-	Type vt    = exponent * theta;
-	Type scale = ntov / ni* std::sin (vt);
+	const Type n     = norm (base);
+	const Type theta = std::acos (base .w () / n);
+	const Type ni    = norm (imag (base));
+	const Type ntov  = std::pow (n, exponent);
+	const Type vt    = exponent * theta;
+	const Type scale = ntov / ni* std::sin (vt);
 
 	return quaternion <Type> (base .x () * scale,
 	                          base .y () * scale,
@@ -691,9 +699,9 @@ log (const quaternion <Type> & quad)
 			return quaternion <Type> (M_PI, 0, 0, std::log (-quad .w ()));
 	}
 
-	Type vl = norm (imag (quad)); // mod of quat part
-	Type vs = std::atan2 (vl, quad .w ()) / vl;
-	Type ln = std::log (norm (quad));
+	const Type vl = norm (imag (quad)); // mod of quat part
+	const Type vs = std::atan2 (vl, quad .w ()) / vl;
+	const Type ln = std::log (norm (quad));
 
 	return quaternion <Type> (vs * quad .x (),
 	                          vs * quad .y (),
@@ -709,15 +717,15 @@ exp (const quaternion <Type> & quad)
 	if (is_real (quad))
 		return quaternion <Type> (0, 0, 0, std::exp (quad .w ()));
 
-	Type vl = norm (imag (quad)); // length of pure-quat part
+	const Type vl = norm (imag (quad)); // length of pure-quat part
 
 	// unit vector
-	Type ux = quad .x () / vl;
-	Type uy = quad .y () / vl;
-	Type uz = quad .z () / vl;
+	const Type ux = quad .x () / vl;
+	const Type uy = quad .y () / vl;
+	const Type uz = quad .z () / vl;
 
-	Type ws = std::exp (quad .w ());
-	Type vs = ws * std::sin (vl);
+	const Type ws = std::exp (quad .w ());
+	const Type vs = ws * std::sin (vl);
 
 	return quaternion <Type> (vs * ux,
 	                          vs * uy,
@@ -747,9 +755,9 @@ bezier (const quaternion <Type> & q0,
         const quaternion <Type> & q1,
         Type t)
 {
-	quaternion <Type> q11 = simple_slerp (q0, a, t);
-	quaternion <Type> q12 = simple_slerp (a, b, t);
-	quaternion <Type> q13 = simple_slerp (b, q1, t);
+	const quaternion <Type> q11 = simple_slerp (q0, a, t);
+	const quaternion <Type> q12 = simple_slerp (a, b, t);
+	const quaternion <Type> q13 = simple_slerp (b, q1, t);
 
 	return simple_slerp (simple_slerp (q11, q12, t), simple_slerp (q12, q13, t), t);
 }
@@ -762,7 +770,7 @@ spline (const quaternion <Type> & q0,
         const quaternion <Type> & q1,
         const quaternion <Type> & q2)
 {
-	quaternion <Type> q1_i = ~q1;
+	const quaternion <Type> q1_i = ~q1;
 
 	return normalize (q1 * exp ((log (q1_i * q2) + log (q1_i * q0)) * Type (-0.25)));
 }

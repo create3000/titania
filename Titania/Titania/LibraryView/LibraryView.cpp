@@ -104,10 +104,10 @@ LibraryView::getFilename (Gtk::TreeModel::Path path) const
 	return getRoot () + '/' + filename .substr (0, filename .size () - 1);
 }
 
-std::deque <Glib::RefPtr <Gio::FileInfo>>
+std::vector <Glib::RefPtr <Gio::FileInfo>>
 LibraryView::children (const Glib::RefPtr <Gio::File> & directory) const
 {
-	std::deque <Glib::RefPtr <Gio::FileInfo>> fileInfos;
+	std::vector <Glib::RefPtr <Gio::FileInfo>> fileInfos;
 
 	try
 	{

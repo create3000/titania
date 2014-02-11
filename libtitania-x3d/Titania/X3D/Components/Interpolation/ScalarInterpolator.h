@@ -116,8 +116,7 @@ private:
 
 	virtual
 	void
-	interpolate (size_t, size_t, float);
-
+	interpolate (size_t, size_t, const float);
 
 	///  @name Static members
 

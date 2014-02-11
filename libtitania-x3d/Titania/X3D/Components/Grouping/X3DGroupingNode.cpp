@@ -126,11 +126,12 @@ X3DGroupingNode::set_addChildren ()
 {
 	if (not addChildren () .empty ())
 	{
-		MFNode childrenToAdd;
+		MFNode childrenToAdd = addChildren ();
 
-		std::set_difference (addChildren () .begin (), addChildren () .end (),
-		                     children () .begin (), children () .end (),
-		                     std::back_inserter (childrenToAdd));
+		const auto new_end = basic::remove (childrenToAdd .begin (), childrenToAdd .end (),
+		                                    children () .begin (), children () .end ());
+
+		childrenToAdd .erase (new_end, childrenToAdd .end ());
 
 		add (childrenToAdd);
 
@@ -145,8 +146,8 @@ X3DGroupingNode::set_removeChildren ()
 {
 	if (not removeChildren () .empty ())
 	{
-		auto new_end = basic::remove (children () .begin (), children () .end (),
-		                              removeChildren () .begin (), removeChildren () .end ());
+		const auto new_end = basic::remove (children () .begin (), children () .end (),
+		                                    removeChildren () .begin (), removeChildren () .end ());
 
 		children () .erase (new_end, children () .end ());
 
@@ -173,21 +174,21 @@ X3DGroupingNode::add (const MFNode & children)
 
 	for (const auto & child : children)
 	{
-		auto pointingDeviceSensorNode = x3d_cast <X3DPointingDeviceSensorNode*> (child);
+		const auto pointingDeviceSensorNode = x3d_cast <X3DPointingDeviceSensorNode*> (child);
 
 		if (pointingDeviceSensorNode)
 			pointingDeviceSensors .emplace_back (pointingDeviceSensorNode);
 
 		else
 		{
-			auto localFog = x3d_cast <LocalFog*> (child);
+			const auto localFog = x3d_cast <LocalFog*> (child);
 
 			if (localFog)
 				localFogs .emplace_back (localFog);
 
 			else
 			{
-				auto childNode = x3d_cast <X3DChildNode*> (child);
+				const auto childNode = x3d_cast <X3DChildNode*> (child);
 
 				if (childNode)
 				{

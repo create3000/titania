@@ -150,8 +150,8 @@ LineSet::build ()
 
 	// Fill GeometryNode
 
-	size_t index = 0;
-	size_t size  = coordNode -> getSize ();
+	size_t       index = 0;
+	const size_t size  = coordNode -> getSize ();
 
 	for (const auto count : vertexCount ())
 	{

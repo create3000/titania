@@ -119,7 +119,7 @@ public:
 	getActiveLayer () const
 	{ return activeLayerNode; }
 
-	const std::deque <X3DLayerNode*> &
+	const std::vector <X3DLayerNode*> &
 	getLayers () const
 	{ return children; }
 
@@ -164,7 +164,7 @@ private:
 
 	Fields fields;
 
-	std::deque <X3DLayerNode*> children;
+	std::vector <X3DLayerNode*> children;
 	X3DSFNode <X3DLayerNode>   layer0;
 	X3DSFNode <X3DLayerNode>   activeLayerNode;
 

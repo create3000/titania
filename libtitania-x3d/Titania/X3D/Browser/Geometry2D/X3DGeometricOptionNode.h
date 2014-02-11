@@ -63,6 +63,8 @@ class X3DGeometricOptionNode :
 {
 public:
 
+	///  @name Member access
+
 	const std::vector <Vector4f> &
 	getTexCoords () const
 	{ return texCoord; }
@@ -82,7 +84,15 @@ public:
 
 protected:
 
+	///  @name Construction
+
 	X3DGeometricOptionNode ();
+
+	virtual
+	void
+	initialize () override;
+
+	///  @name Member access
 
 	std::vector <Vector4f> &
 	getTexCoords ()
@@ -96,6 +106,8 @@ protected:
 	getVertices ()
 	{ return vertices; }
 
+	///  @name Operations
+
 	void
 	update ();
 
@@ -105,6 +117,8 @@ protected:
 
 
 private:
+
+	///  @name Members
 
 	std::vector <Vector4f> texCoord;
 	std::vector <Vector3f> normals;

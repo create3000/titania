@@ -65,10 +65,12 @@ public:
 	{ }
 
 	Iterator
-	begin () { return m_begin; }
+	begin () const
+	{ return m_begin; }
 
 	Iterator
-	end () { return m_end; }
+	end () const
+	{ return m_end; }
 
 
 private:

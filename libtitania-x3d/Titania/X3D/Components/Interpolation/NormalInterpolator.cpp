@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -93,7 +93,7 @@ NormalInterpolator::set_keyValue ()
 { }
 
 void
-NormalInterpolator::interpolate (size_t index0, size_t index1, float weight)
+NormalInterpolator::interpolate (size_t index0, size_t index1, const float weight)
 {
 	size_t size = key () .size () > 1 ? keyValue () .size () / key () .size () : 0;
 

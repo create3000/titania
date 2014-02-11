@@ -121,8 +121,9 @@ private:
 	void
 	build () final override;
 
+	virtual
 	void
-	buildTexCoord ();
+	buildTexCoords () final override;
 
 
 	///  @name Static members

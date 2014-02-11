@@ -62,6 +62,8 @@
 namespace titania {
 namespace X3D {
 
+// std::deque is used here for objects because it is much more faster than std::vector!
+
 GarbageCollector::GarbageCollector () :
 	objects (),
 	  mutex ()
@@ -86,7 +88,7 @@ GarbageCollector::trimFreeMemory ()
 }
 
 void
-GarbageCollector::addObject (X3DObject* object)
+GarbageCollector::addObject (X3DObject* const object)
 {
 	std::lock_guard <std::mutex> lock (mutex);
 
@@ -129,9 +131,18 @@ GarbageCollector::size () const
 
 GarbageCollector::~GarbageCollector ()
 {
-	std::lock_guard <std::mutex> lock (mutex);
+	ObjectArray final;
 
-	deleteObjects (std::move (objects));
+	while (not empty ())
+	{
+		{
+			std::lock_guard <std::mutex> lock (mutex);
+
+			final = std::move (objects);
+		}
+
+		deleteObjects (std::move (final));
+	}
 }
 
 } // X3D

@@ -468,8 +468,8 @@ X3DNurbsSurfaceGeometryNode::tessEndData (X3DNurbsSurfaceGeometryNode* self)
 		   //__LOG__ << "GL_TRIANGLES" << std::endl;
 			
 			self -> getTexCoords () [0] .insert (self -> getTexCoords () [0] .end (), 
-			                                    self -> texCoords .begin (),
-			                                    self -> texCoords .end ());
+			                                     self -> texCoords .begin (),
+			                                     self -> texCoords .end ());
 
 			self -> getNormals () .insert (self -> getNormals () .end (), 
 			                               self -> normals .begin (),

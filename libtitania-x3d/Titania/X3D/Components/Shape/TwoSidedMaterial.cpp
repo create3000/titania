@@ -119,14 +119,15 @@ void
 TwoSidedMaterial::initialize ()
 {
 	X3DMaterialNode::initialize ();
+
+	addInterest (this, &TwoSidedMaterial::eventsProcessed);
+
 	eventsProcessed ();
 }
 
 void
 TwoSidedMaterial::eventsProcessed ()
 {
-	X3DMaterialNode::eventsProcessed ();
-
 	// Front
 
 	float alpha = 1 - math::clamp <float> (transparency (), 0, 1);

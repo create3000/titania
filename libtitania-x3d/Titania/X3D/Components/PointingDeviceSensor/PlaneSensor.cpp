@@ -68,6 +68,8 @@ PlaneSensor::Fields::Fields () :
 	translation_changed (new SFVec3f ())
 { }
 
+std::map <X3DBaseNode*, Vector3d> currentOffset;
+
 PlaneSensor::PlaneSensor (X3DExecutionContext* const executionContext) :
 	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	     X3DDragSensorNode (),
@@ -76,6 +78,7 @@ PlaneSensor::PlaneSensor (X3DExecutionContext* const executionContext) :
 	                  line (),
 	                 plane (),
 	            startPoint (),
+	           startOffset (),
 	       modelViewMatrix (),
 	inverseModelViewMatrix ()
 {
@@ -111,7 +114,7 @@ throw (std::domain_error)
 }
 
 void
-PlaneSensor::set_active (const HitPtr & hit, bool active)
+PlaneSensor::set_active (const HitPtr & hit, const bool active)
 {
 	X3DDragSensorNode::set_active (hit, active);
 
@@ -192,6 +195,7 @@ PlaneSensor::set_active (const HitPtr & hit, bool active)
 void
 PlaneSensor::trackStart (const Vector3d & trackPoint)
 {
+	startOffset            = offset () .getValue ();
 	trackPoint_changed ()  = trackPoint;
 	translation_changed () = offset ();
 }
@@ -247,7 +251,7 @@ PlaneSensor::set_motion (const HitPtr & hit)
 void
 PlaneSensor::track (const Vector3d & endPoint, const Vector3d & trackPoint)
 {
-	auto translation = Rotation4d (~axisRotation ()) * (Vector3d (offset () .getValue ()) + endPoint - startPoint);
+	auto translation = Rotation4d (~axisRotation ()) * (startOffset + endPoint - startPoint);
 
 	// X component
 

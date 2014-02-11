@@ -76,36 +76,40 @@ public:
 
 	image (const size_type width, const size_type height, const size_type components, const Array & array) :
 		value  ({ width, height, components, array })
-	{
-		resize ();
-	}
+	{ resize (); }
 
 	void
 	width (const size_type);
 
 	size_type
-	width () const { return value .width; }
+	width () const
+	{ return value .width; }
 
 	void
 	height (const size_type);
 
 	size_type
-	height () const { return value .height; }
+	height () const
+	{ return value .height; }
 
 	void
-	components (const size_type components) { value .components = components; }
+	components (const size_type components)
+	{ value .components = components; }
 
 	size_type
-	components () const { return value .components; }
+	components () const
+	{ return value .components; }
 
 	void
 	array (const Array &);
 
 	Array &
-	array () { return value .array; }
+	array ()
+	{ return value .array; }
 
 	const Array &
-	array () const { return value .array; }
+	array () const
+	{ return value .array; }
 
 	void
 	set (const size_type, const size_type, const size_type, const Array &);
@@ -121,9 +125,7 @@ private:
 
 	void
 	resize ()
-	{
-		value .array .resize (value .width * value .height);
-	}
+	{ value .array .resize (value .width * value .height); }
 
 	struct Value
 	{

@@ -51,11 +51,6 @@ Transform {
             rotation 0 0 1 0.78
             scale 0.5 0.5 0.5
             children Shape {
-              appearance Appearance {
-                material Material {
-                  transparency 0.5
-                }
-              }
               geometry IndexedFaceSet {
                 solid FALSE
                 colorPerVertex FALSE

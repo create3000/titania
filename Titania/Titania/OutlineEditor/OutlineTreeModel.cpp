@@ -111,7 +111,7 @@ OutlineTreeModel::get_object (const iterator & iter)
 	return get_data (iter) -> get_object ();
 }
 
-std::deque <OutlineTreeData*>
+std::vector <OutlineTreeData*>
 OutlineTreeModel::get_parents (const iterator & iter) const
 {
 	return tree .get_parents (get_path (iter));
@@ -193,10 +193,10 @@ OutlineTreeModel::get_data (const iterator & iter)
 	return static_cast <OutlineTreeData*> (iter .gobj () -> user_data);
 }
 
-std::deque <Gtk::TreeModel::iterator>
+std::vector <Gtk::TreeModel::iterator>
 OutlineTreeModel::get_iters (X3D::X3DChildObject* const object) const
 {
-	std::deque <Gtk::TreeModel::iterator> iters;
+	std::vector <Gtk::TreeModel::iterator> iters;
 
 	for (const auto & node : tree .find (object))
 	{

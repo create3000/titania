@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -98,7 +98,7 @@ PositionInterpolator::set_keyValue ()
 }
 
 void
-PositionInterpolator::interpolate (size_t index0, size_t index1, float weight)
+PositionInterpolator::interpolate (size_t index0, size_t index1, const float weight)
 {
 	value_changed () = math::lerp <Vector3f> (keyValue () [index0], keyValue () [index1], weight);
 }

@@ -53,6 +53,7 @@
 
 #include "OutlineTreeData.h"
 #include <deque>
+#include <vector>
 #include <gtkmm.h>
 #include <memory>
 
@@ -100,9 +101,9 @@ public:
 protected:
 
 	void
-	find (X3D::X3DChildObject* const object, std::deque <const OutlineNode*> & nodes) const
+	find (X3D::X3DChildObject* const object, std::vector <const OutlineNode*> & nodes) const
 	{
-		if (data and data  -> is (object))
+		if (data and data -> is (object))
 			nodes .emplace_back (this);
 
 		for (const auto & child : children)
@@ -127,11 +128,11 @@ public:
 		OutlineNode ()
 	{ }
 
-	std::deque <OutlineTreeData*>
+	std::vector <OutlineTreeData*>
 	get_parents (const Gtk::TreePath & path) const
 	throw (std::out_of_range)
 	{
-		std::deque <OutlineTreeData*> parents;
+		std::vector <OutlineTreeData*> parents;
 
 		const OutlineNode* node = this;
 
@@ -170,10 +171,10 @@ public:
 		return const_cast <OutlineTree*> (this) -> get_node (path, false);
 	}
 
-	std::deque <const OutlineNode*>
+	std::vector <const OutlineNode*>
 	find (X3D::X3DChildObject* const object) const
 	{
-		std::deque <const OutlineNode*> nodes;
+		std::vector <const OutlineNode*> nodes;
 
 		find (object, nodes);
 

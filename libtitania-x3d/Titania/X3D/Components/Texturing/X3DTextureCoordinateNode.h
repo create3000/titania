@@ -66,15 +66,15 @@ public:
 
 	virtual
 	void
-	init (TexCoordArray &, size_t) const = 0;
+	init (TexCoordArray &, const size_t) const = 0;
 
 	void
-	addTexCoord (TexCoordArray & texCoord, size_t index) const
+	addTexCoord (TexCoordArray & texCoord, const size_t index) const
 	{ addTexCoord (0, texCoord, index); }
 
 	virtual
 	void
-	addTexCoord (size_t, TexCoordArray &, size_t) const = 0;
+	addTexCoord (const size_t, TexCoordArray &, const size_t) const = 0;
 
 	virtual
 	void
@@ -86,7 +86,7 @@ public:
 
 	virtual
 	void
-	enable (int32_t, size_t, const TexCoordArray &) const = 0;
+	enable (const int32_t, const size_t, const TexCoordArray &) const = 0;
 
 	virtual
 	void
@@ -94,7 +94,7 @@ public:
 
 	virtual
 	void
-	disable (int32_t) const = 0;
+	disable (const int32_t) const = 0;
 
 	virtual
 	bool

@@ -61,17 +61,17 @@ class WindowContext :
 {
 public:
 
-	WindowContext (Display*,
-	               GLXWindow,
+	WindowContext (Display* const,
+	               const GLXWindow,
 	               const Context &,
-	               bool = true);
+	               const bool = true);
 
-	WindowContext (Display*,
-	               GLXWindow,
-	               bool = true);
+	WindowContext (Display* const,
+	               const GLXWindow,
+	               const bool = true);
 
 	void
-	swapInterval (unsigned int) const;
+	swapInterval (const size_t) const;
 
 	virtual
 	~WindowContext ();
@@ -80,9 +80,9 @@ public:
 private:
 
 	GLXContext
-	create (GLXContext, bool);
+	create (const GLXContext, const bool);
 
-	GLXWindow xWindow;
+	const GLXWindow xWindow;
 
 };
 

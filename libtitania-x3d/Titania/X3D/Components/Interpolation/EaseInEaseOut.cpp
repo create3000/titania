@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -98,7 +98,7 @@ EaseInEaseOut::set_keyValue ()
 }
 
 void
-EaseInEaseOut::interpolate (size_t index0, size_t index1, float weight)
+EaseInEaseOut::interpolate (size_t index0, size_t index1, const float weight)
 {
 	float easeOut = easeInEaseOut () [index0] .getY ();
 	float easeIn  = easeInEaseOut () [index1] .getX ();

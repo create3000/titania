@@ -92,7 +92,7 @@ protected:
 	setBBox (const Box3d & value)
 	{ bbox = value; }
 	
-	const std::deque <double> &
+	const std::vector <double> &
 	getCharSpacing () const
 	{ return charSpacings; }
 	
@@ -104,7 +104,7 @@ protected:
 	getMinorAlignment () const
 	{ return minorAlignment; }
 	
-	const std::deque <Vector2d> &
+	const std::vector <Vector2d> &
 	getTranslation () const
 	{ return translation; }
 
@@ -127,11 +127,11 @@ private:
 
 	Box3d bbox;
 
-	std::deque <double>   charSpacings;
-	Vector2d              bearing;
-	Vector2d              minorAlignment;
-	std::deque <Vector2d> translation;
-	GLuint                listId;
+	std::vector <double>   charSpacings;
+	Vector2d               bearing;
+	Vector2d               minorAlignment;
+	std::vector <Vector2d> translation;
+	GLuint                 listId;
 
 };
 

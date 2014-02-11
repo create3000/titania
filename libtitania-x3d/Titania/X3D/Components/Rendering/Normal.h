@@ -99,7 +99,7 @@ public:
 
 	virtual
 	void
-	addVector (std::vector <Vector3f>&, size_t) const final override;
+	addVector (std::vector <Vector3f>&, const size_t) const final override;
 
 	virtual
 	bool

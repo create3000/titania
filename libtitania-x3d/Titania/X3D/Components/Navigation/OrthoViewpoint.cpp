@@ -131,10 +131,10 @@ OrthoViewpoint::getSizeY () const
 }
 
 Vector3d
-OrthoViewpoint::getScreenScale (double, const Vector4i & viewport) const
+OrthoViewpoint::getScreenScale (const double, const Vector4i & viewport) const
 {
-	int width  = viewport [2];
-	int height = viewport [3];
+	const int width  = viewport [2];
+	const int height = viewport [3];
 
 	if (width > height)
 		return Vector3d (getSizeX () / height, getSizeY () / height, getSizeY () / height);
@@ -145,8 +145,8 @@ OrthoViewpoint::getScreenScale (double, const Vector4i & viewport) const
 Vector2d
 OrthoViewpoint::getViewportSize (const Vector4i & viewport) const
 {
-	int width  = viewport [2];
-	int height = viewport [3];
+	const int width  = viewport [2];
+	const int height = viewport [3];
 
 	if (width > height)
 	{
@@ -161,7 +161,7 @@ OrthoViewpoint::getViewportSize (const Vector4i & viewport) const
 }
 
 Vector3f
-OrthoViewpoint::getLookAtPositionOffset (Box3f bbox) const
+OrthoViewpoint::getLookAtPositionOffset (const Box3f & bbox) const
 {
 	return bbox .center ()
 	       + getUserOrientation () * (Vector3f (0, 0, abs (bbox .size ()) / 2 + 10))
@@ -171,34 +171,25 @@ OrthoViewpoint::getLookAtPositionOffset (Box3f bbox) const
 void
 OrthoViewpoint::reshape (const float zNear, const float zFar)
 {
-	//	glMatrixMode (GL_PROJECTION);
-	//	glLoadIdentity ();
-	//
-	//	Vector2f size_2 = getViewportSize (Viewport4i ()) * 0.5f;
-	//
-	//	glOrtho (-size_2 .x (), size_2 .x (), -size_2 .y (), size_2 .y (), zNear, zFar);
-	//
-	//	glMatrixMode (GL_MODELVIEW);
-
 	glMatrixMode (GL_PROJECTION);
 	glLoadIdentity ();
 	
-	Vector4i viewport = Viewport4i ();
+	const Vector4i viewport = Viewport4i ();
 
-	int width  = viewport [2];
-	int height = viewport [3];
+	const int width  = viewport [2];
+	const int height = viewport [3];
 
-	Vector2d size = getViewportSize (viewport);
+	const Vector2d size = getViewportSize (viewport);
 
 	if (width > height)
 	{
-		double left = getMinimumX () + (getMaximumX () - getMinimumX ()) / 2 - size .x () / 2;
+		const double left = getMinimumX () + (getMaximumX () - getMinimumX ()) / 2 - size .x () / 2;
 
 		glOrtho (left, left + size .x (), getMinimumY (), getMaximumY (), zNear, zFar);
 	}
 	else
 	{
-		double bottom = getMinimumY () + (getMaximumY () - getMinimumY ()) / 2 - size .y () / 2;
+		const double bottom = getMinimumY () + (getMaximumY () - getMinimumY ()) / 2 - size .y () / 2;
 
 		glOrtho (getMinimumX (), getMaximumX (), bottom, bottom + size .y (), zNear, zFar);
 	}

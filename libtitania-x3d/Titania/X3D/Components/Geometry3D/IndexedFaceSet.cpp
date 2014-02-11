@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -230,8 +230,6 @@ IndexedFaceSet::build ()
 
 	if (getTexCoord ())
 		getTexCoord () -> init (getTexCoords (), reserve);
-	else
-		getTexCoords () .emplace_back ();
 
 	// Normal
 
@@ -297,10 +295,7 @@ IndexedFaceSet::build ()
 
 	addElements (vertexMode, getVertices () .size () - vertices);
 
-	// Autogenerate normal and texCoord if not specified
-
-	if (not getTexCoord ())
-		buildTexCoord ();
+	// Autogenerate normal if not specified.
 
 	if (not getNormal ())
 		buildNormals (polygons);
@@ -327,8 +322,8 @@ IndexedFaceSet::buildNormals (const PolygonArray & polygons)
 			for (size_t i = 1, size = element .size () - 1; i < size; ++ i)
 			{
 				normal += getCoord () -> getNormal (coordIndex () [element [0]],
-				                               coordIndex () [element [i]],
-				                               coordIndex () [element [i + 1]]);
+				                                    coordIndex () [element [i]],
+				                                    coordIndex () [element [i + 1]]);
 			}
 		}
 
@@ -353,7 +348,6 @@ IndexedFaceSet::buildNormals (const PolygonArray & polygons)
 			}
 		}
 	}
-
 }
 
 void
@@ -405,6 +399,10 @@ IndexedFaceSet::tessellate (PolygonArray & polygons, size_t & numVertices)
 
 						// Tessellate polygons.
 						polygons .emplace_back (std::move (vertices), std::move (tessellate (vertices)));
+
+						// Sometimes there are no elements, propbably due to the need of a combine callback.
+						if (polygons .back () .elements .empty ())
+							polygons .pop_back ();
 					}
 
 					else
@@ -481,7 +479,7 @@ IndexedFaceSet::tessellate (const Vertices & vertices)
 }
 
 //void
-//IndexedFaceSet::buildTexCoord (const PolygonArray & polygons)
+//IndexedFaceSet::buildTexCoords (const PolygonArray & polygons)
 //{
 //	Vector3f min;
 //

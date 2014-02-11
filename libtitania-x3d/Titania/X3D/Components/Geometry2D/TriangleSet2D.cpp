@@ -83,11 +83,8 @@ TriangleSet2D::create (X3DExecutionContext* const executionContext) const
 void
 TriangleSet2D::build ()
 {
-	size_t elements = solid () ? 1 : 2;
-	size_t reserve  = elements * vertices () .size ();
-
-	getTexCoords () .emplace_back ();
-	getTexCoords () [0] .reserve (reserve);
+	const size_t elements = solid () ? 1 : 2;
+	const size_t reserve  = elements * vertices () .size ();
 
 	getNormals  () .reserve (reserve);
 	getVertices () .reserve (reserve);
@@ -98,24 +95,20 @@ TriangleSet2D::build ()
 		getVertices () .emplace_back (vertex .getX (), vertex .getY (), 0);
 	}
 
-	size_t resize = vertices () .size () - (vertices () .size () % 3); // Resize to a factor of 3.
+	const size_t resize = vertices () .size () - (vertices () .size () % 3); // Resize to a factor of 3.
 
 	getNormals  () .resize (resize);
 	getVertices () .resize (resize);
 
-	buildTexCoord ();
-
 	addElements (GL_TRIANGLES, getVertices () .size ());
 	setSolid (true);
 	setTextureCoordinate (nullptr);
-
-	if (not solid ())
-		addMirrorVertices (GL_TRIANGLES, true);
 }
 
 void
-TriangleSet2D::buildTexCoord ()
+TriangleSet2D::buildTexCoords ()
 {
+	getTexCoords () .emplace_back ();
 	getTexCoords () [0] .reserve (getVertices () .size ());
 
 	Vector3f min;
@@ -124,13 +117,18 @@ TriangleSet2D::buildTexCoord ()
 
 	getTexCoordParams (min, Ssize, Sindex, Tindex);
 
-	for (const auto & point : getVertices ())
+	for (const auto & vertex : getVertices ())
 	{
-		getTexCoords () [0] .emplace_back ((point [0] - min [0]) / Ssize,
-		                                  (point [1] - min [1]) / Ssize,
-		                                  0,
-		                                  1);
+		getTexCoords () [0] .emplace_back ((vertex [0] - min [0]) / Ssize,
+		                                   (vertex [1] - min [1]) / Ssize,
+		                                   0,
+		                                   1);
 	}
+
+	// This function is always called and we can now savely add the back vertices.
+
+	if (not solid ())
+		addMirrorVertices (GL_TRIANGLES, true);
 }
 
 } // X3D

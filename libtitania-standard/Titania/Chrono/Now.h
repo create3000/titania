@@ -59,6 +59,7 @@ namespace chrono {
 using namespace std::chrono;
 
 template <class Type>
+inline
 Type
 basic_now ()
 {

@@ -63,6 +63,8 @@ class Circle2DOptions :
 {
 public:
 
+	///  @name Construction
+
 	Circle2DOptions (X3DExecutionContext* const);
 
 	///  @name Common members
@@ -101,17 +103,13 @@ public:
 
 private:
 
+	///  @name Construction
+
 	virtual
 	Circle2DOptions*
 	create (X3DExecutionContext* const) const final override;
 
-	virtual
-	void
-	initialize () final override;
-
-	virtual
-	void
-	eventsProcessed () final override;
+	///  @name Operations
 
 	virtual
 	void

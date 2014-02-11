@@ -61,8 +61,8 @@ namespace X3D {
 X3DGeometryNode::X3DGeometryNode () :
 	          X3DNode (),
 	             bbox (),
+	     texCoordNode (nullptr),
 	        texCoords (),
-	textureCoordinate (nullptr),
 	           colors (),
 	          normals (),
 	         vertices (),
@@ -79,25 +79,13 @@ X3DGeometryNode::setup ()
 	X3DNode::setup ();
 
 	// Update only initalized nodes
+
 	if (not getExecutionContext () -> isProto ())
+	{
+		addInterest (this, &X3DGeometryNode::update);
+
 		update ();
-}
-
-void
-X3DGeometryNode::eventsProcessed ()
-{
-	update ();
-
-	X3DNode::eventsProcessed ();
-}
-
-const Box3f
-X3DGeometryNode::getBBox ()
-{
-	if (bbox .empty ())
-		return bbox = createBBox ();
-
-	return bbox;
+	}
 }
 
 Box3f
@@ -107,23 +95,23 @@ X3DGeometryNode::createBBox ()
 }
 
 void
-X3DGeometryNode::setTextureCoordinate (X3DTextureCoordinateNode* value)
+X3DGeometryNode::setTextureCoordinate (X3DTextureCoordinateNode* const value)
 {
 	if (value)
-		textureCoordinate = value;
+		texCoordNode = value;
 
 	else
-		textureCoordinate = getBrowser () -> getBrowserOptions () -> texCoord ();
+		texCoordNode = getBrowser () -> getBrowserOptions () -> texCoord ();
 }
 
 bool
-X3DGeometryNode::intersect (const Line3f & line, std::deque <IntersectionPtr> & intersections) const
+X3DGeometryNode::intersect (const Line3f & line, std::vector <IntersectionPtr> & intersections) const
 {
 	bool intersected = false;
 
 	if (bbox .intersect (line))
 	{
-		Matrix4f modelViewMatrix = ModelViewMatrix4f ();
+		const Matrix4f modelViewMatrix = ModelViewMatrix4f ();
 
 		size_t first = 0;
 
@@ -181,16 +169,16 @@ X3DGeometryNode::intersect (const Line3f & line, std::deque <IntersectionPtr> & 
 }
 
 bool
-X3DGeometryNode::intersect (const Line3f & line, size_t i1, size_t i2, size_t i3, const Matrix4f & modelViewMatrix, std::deque <IntersectionPtr> & intersections) const
+X3DGeometryNode::intersect (const Line3f & line, size_t i1, size_t i2, size_t i3, const Matrix4f & modelViewMatrix, std::vector <IntersectionPtr> & intersections) const
 {
 	float u, v, t;
 
 	if (line .intersect (vertices [i1], vertices [i2], vertices [i3], u, v, t))
 	{
-		float t = 1 - u - v;
+		const float t = 1 - u - v;
 	
 		Vector4f texCoord (0, 0, 0, 1);
-		size_t   texCoordSize = texCoords .empty () ? 0 : texCoords [0] .size (); // LineGeometry doesn't have texCoords
+		const size_t texCoordSize = texCoords .empty () ? 0 : texCoords [0] .size (); // LineGeometry doesn't have texCoords
 
 		if (i1 < texCoordSize)
 			texCoord = t * texCoords [0] [i1] + u * texCoords [0] [i2] + v * texCoords [0] [i3];
@@ -388,12 +376,14 @@ X3DGeometryNode::triangulate (size_t i1, size_t i2, size_t i3, std::vector <Colo
 }
 
 void
-X3DGeometryNode::buildTexCoord ()
+X3DGeometryNode::buildTexCoords ()
 {
-	Vector3f min;
+	getTexCoords () .emplace_back ();
+	getTexCoords () .reserve (getVertices () .size ());
 
-	float Ssize;
-	int   Sindex, Tindex;
+	Vector3f min;
+	float    Ssize;
+	int      Sindex, Tindex;
 
 	getTexCoordParams (min, Ssize, Sindex, Tindex);
 
@@ -411,14 +401,14 @@ X3DGeometryNode::buildTexCoord ()
 void
 X3DGeometryNode::getTexCoordParams (Vector3f & min, float & Ssize, int & Sindex, int & Tindex)
 {
-	Box3f bbox = getBBox ();
-	auto  size = bbox .size ();
+	const Box3f bbox = getBBox ();
+	const auto  size = bbox .size ();
 
 	min = bbox .center () - size / 2.0f;
 
-	float Xsize = size .x ();
-	float Ysize = size .y ();
-	float Zsize = size .z ();
+	const float Xsize = size .x ();
+	const float Ysize = size .y ();
+	const float Zsize = size .z ();
 
 	if ((Xsize >= Ysize) and (Xsize >= Zsize))
 	{
@@ -499,7 +489,7 @@ X3DGeometryNode::refineNormals (const NormalIndex & normalIndex, std::vector <Ve
 	if (creaseAngle == 0.0f)
 		return;
 
-	float cosCreaseAngle = std::cos (creaseAngle);
+	const float cosCreaseAngle = std::cos (creaseAngle);
 
 	std::vector <Vector3f> _normals (normals .size ());
 
@@ -516,7 +506,7 @@ X3DGeometryNode::refineNormals (const NormalIndex & normalIndex, std::vector <Ve
 					n += normals [index];
 			}
 
-			_normals [index] = n .normalize ();
+			_normals [index] = normalize (n);
 		}
 	}
 
@@ -560,8 +550,6 @@ X3DGeometryNode::addMirrorVertices (GLenum vertexMode, const bool convex)
 
 		default:
 		{
-			size_t offset = convex ? 0 : 1;
-
 			if (not convex)
 			{
 				texCoords .emplace_back (1 - texCoords .front () .x (), texCoords .front () .y (), texCoords .front () .z (), texCoords .front () .w ());
@@ -569,15 +557,13 @@ X3DGeometryNode::addMirrorVertices (GLenum vertexMode, const bool convex)
 				getVertices () .emplace_back (getVertices () .front ());
 			}
 
-			for (const auto & texCoord : basic::adapter (texCoords .crbegin () + offset, texCoords .crend () - offset))
-			{
-				texCoords .emplace_back (1 - texCoord .x (), texCoord .y (), texCoord .z (), texCoord .w ());
-			}
+			const int32_t offset = convex ? 0 : 1;
 
-			for (const auto & vertex : basic::adapter (getVertices () .crbegin () + offset, getVertices () .crend () - offset))
+			for (int32_t i = getVertices () .size () - 1 - offset; i >= offset; -- i)
 			{
+				texCoords .emplace_back (1 - texCoords [i] .x (), texCoords [i] .y (), texCoords [i] .z (), texCoords [i] .w ());
 				getNormals  () .emplace_back (0, 0, -1);
-				getVertices () .emplace_back (vertex);
+				getVertices () .emplace_back (getVertices () [i]);
 			}
 		}
 	}
@@ -588,19 +574,27 @@ X3DGeometryNode::update ()
 {
 	clear ();
 	build ();
+
+	bbox = createBBox ();
+
+	if (not isLineGeometry ())
+	{
+		// Autogenerate texCoords if not specified.
+
+		if (texCoords .empty ())
+			buildTexCoords ();
+	}
 }
 
 void
 X3DGeometryNode::clear ()
 {
-	bbox = Box3f ();
-
+	texCoordNode = nullptr;
 	texCoords .clear ();
-	textureCoordinate = nullptr;
-	colors   .clear ();
-	normals  .clear ();
-	vertices .clear ();
-	elements .clear ();
+	colors    .clear ();
+	normals   .clear ();
+	vertices  .clear ();
+	elements  .clear ();
 }
 
 void
@@ -610,7 +604,7 @@ X3DGeometryNode::draw ()
 }
 
 void
-X3DGeometryNode::draw (bool solid, bool texture, bool lighting)
+X3DGeometryNode::draw (const bool solid, const bool texture, const bool lighting)
 {
 	if (solid)
 		glEnable (GL_CULL_FACE);
@@ -622,8 +616,8 @@ X3DGeometryNode::draw (bool solid, bool texture, bool lighting)
 
 	if (texture)
 	{
-		if (textureCoordinate)
-			textureCoordinate -> enable (texCoords);
+		if (texCoordNode)
+			texCoordNode -> enable (texCoords);
 	}
 
 	if (not colors .empty ())
@@ -659,8 +653,8 @@ X3DGeometryNode::draw (bool solid, bool texture, bool lighting)
 
 	if (texture)
 	{
-		if (textureCoordinate)
-			textureCoordinate -> disable ();
+		if (texCoordNode)
+			texCoordNode -> disable ();
 	}
 
 	// Other arrays

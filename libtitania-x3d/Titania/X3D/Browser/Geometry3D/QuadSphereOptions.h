@@ -65,6 +65,8 @@ class QuadSphereOptions :
 {
 public:
 
+	///  @name Construction
+
 	QuadSphereOptions (X3DExecutionContext* const);
 
 	///  @name Common members
@@ -111,28 +113,24 @@ public:
 
 private:
 
+	///  @name Construction
+
 	virtual
 	QuadSphereOptions*
 	create (X3DExecutionContext* const) const final override;
 
-	virtual
-	void
-	initialize () final override;
+	///  @name Operations
 
-	virtual
-	void
-	eventsProcessed () final override;
-
-	std::deque <int32_t>
+	std::vector <int32_t>
 	createTexIndices ();
 
-	std::deque <Vector4f>
+	std::vector <Vector4f>
 	createTexCoord ();
 
-	std::deque <int32_t>
+	std::vector <int32_t>
 	createCoordIndices ();
 
-	std::deque <Vector3f>
+	std::vector <Vector3f>
 	createPoints ();
 
 	virtual

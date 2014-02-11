@@ -222,7 +222,7 @@ public:
 	///  @name Arithmetic operations
 
 	///  Invert this quaternion in place.
-	rotation4 &
+	void
 	inverse ();
 
 	///  Multiply this rotation by @a rotation.
@@ -250,7 +250,7 @@ rotation4 <Type>::rotation4 (const Type & x, const Type & y, const Type & z, con
 
 	// Calculate quaternion
 
-	Type halfTheta = angle / 2;
+	const Type halfTheta = angle / 2;
 	scale = std::sin (halfTheta) / scale;
 
 	value = quaternion <Type> (x * scale,
@@ -273,8 +273,8 @@ rotation4 <Type>::rotation4 (const vector3 <T> & fromVector, const vector3 <T> &
 {
 	// https://bitbucket.org/Coin3D/coin/src/abc9f50968c9/src/base/SbRotation.cpp
 
-	vector3 <Type> from (normalize (fromVector));
-	vector3 <Type> to (normalize (toVector));
+	const vector3 <Type> from (normalize (fromVector));
+	const vector3 <Type> to (normalize (toVector));
 
 	const Type     cos_angle = dot (from, to);
 	vector3 <Type> crossvec  = normalize (cross (from, to));
@@ -343,7 +343,7 @@ rotation4 <Type>::operator = (const matrix3 <Up> & matrix)
 		i = matrix [1] [1] > matrix [2] [2] ? 1 : 2;
 	}
 
-	Type scalerow = matrix [0] [0] + matrix [1] [1] + matrix [2] [2];
+	const Type scalerow = matrix [0] [0] + matrix [1] [1] + matrix [2] [2];
 
 	if (scalerow > matrix [i] [i])
 	{
@@ -358,8 +358,8 @@ rotation4 <Type>::operator = (const matrix3 <Up> & matrix)
 	else
 	{
 		// Compute x, y, or z first:
-		int j = (i + 1) % 3;
-		int k = (i + 2) % 3;
+		const int j = (i + 1) % 3;
+		const int k = (i + 2) % 3;
 
 		// Compute first value:
 		quat [i] = std::sqrt (matrix [i] [i] - matrix [j] [j] - matrix [k] [k] + 1) / 2;
@@ -527,11 +527,10 @@ rotation4 <Type>::get (T & x, T & y, T & z, T & angle) const
 
 template <class Type>
 inline
-rotation4 <Type> &
+void
 rotation4 <Type>::inverse ()
 {
 	value .inverse ();
-	return *this;
 }
 
 template <class Type>
@@ -586,7 +585,20 @@ inline
 rotation4 <Type>
 operator ~ (const rotation4 <Type> & rotation)
 {
-	return rotation4 <Type> (rotation) .inverse ();
+	rotation4 <Type> result (rotation);
+	result .inverse ();
+	return result;
+}
+
+///  Returns the inverse rotation for @a rotation.
+template <class Type>
+inline
+rotation4 <Type>
+inverse (const rotation4 <Type> & rotation)
+{
+	rotation4 <Type> result (rotation);
+	result .inverse ();
+	return result;
 }
 
 ///  Left multiply @a lhs by @a rhs.

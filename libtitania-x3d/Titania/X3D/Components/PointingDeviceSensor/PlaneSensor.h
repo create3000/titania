@@ -133,7 +133,7 @@ public:
 
 	virtual
 	void
-	set_active (const HitPtr &, bool) final override;
+	set_active (const HitPtr &, const bool) final override;
 
 	virtual
 	void
@@ -179,6 +179,7 @@ private:
 	Line3d   line;
 	Plane3d  plane;
 	Vector3d startPoint;
+	Vector3d startOffset;
 	Matrix4d modelViewMatrix;
 	Matrix4d inverseModelViewMatrix;
 

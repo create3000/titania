@@ -151,11 +151,11 @@ X3DOutlineTreeView::expand_to (X3D::X3DChildObject* const object)
 }
 
 bool
-X3DOutlineTreeView::expand_to (const Gtk::TreeModel::Children & children, std::deque <X3D::X3DChildObject*> & hierarchy, Gtk::TreeModel::Path & path)
+X3DOutlineTreeView::expand_to (const Gtk::TreeModel::Children & children, std::vector <X3D::X3DChildObject*> & hierarchy, Gtk::TreeModel::Path & path)
 {
 	auto top = hierarchy .front ();
 
-	hierarchy .pop_front ();
+	hierarchy .erase (hierarchy .begin ());
 
 	path .push_back (0);
 
@@ -198,7 +198,7 @@ X3DOutlineTreeView::set_model (const Glib::RefPtr <OutlineTreeModel> & value)
 	model = value;
 }
 
-std::deque <Gtk::TreeModel::iterator>
+std::vector <Gtk::TreeModel::iterator>
 X3DOutlineTreeView::get_iters (X3D::X3DChildObject* const object) const
 {
 	return get_model () -> get_iters (object);

@@ -95,7 +95,7 @@ public:
 	sync () const;
 
 	void
-	start (double speed, double position);
+	start (const double speed, const double position);
 
 	void
 	pause ();
@@ -119,6 +119,8 @@ private:
 
 	Pixmap   pixmap;
 	Display* display;
+	
+	double volume;
 
 };
 

@@ -221,12 +221,12 @@ private:
 
 	///  @name Members
 
-	JSRuntime*              runtime;
-	JSContext*              context;
-	JSObject*               global;
-	Script*                 script;
-	std::deque <basic::uri> worldURL;
-	size_t                  index;
+	JSRuntime*               runtime;
+	JSContext*               context;
+	JSObject*                global;
+	Script*                  script;
+	std::vector <basic::uri> worldURL;
+	size_t                   index;
 
 	jsval initializeFn;
 	jsval prepareEventsFn;

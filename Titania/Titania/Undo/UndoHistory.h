@@ -83,7 +83,7 @@ public:
 	getIndex () const
 	{ return index; }
 	
-	const std::deque <std::shared_ptr <UndoStep>> &
+	const std::vector <std::shared_ptr <UndoStep>> &
 	getList () const
 	{ return list; }
 
@@ -131,7 +131,7 @@ private:
 
 	///  @name Members
 
-	std::deque <std::shared_ptr <UndoStep>>  list;
+	std::vector <std::shared_ptr <UndoStep>>  list;
 
 	int         index;
 	int         savedIndex;

@@ -61,6 +61,8 @@ class CylinderSensor :
 {
 public:
 
+	///  @name Construction
+
 	CylinderSensor (X3DExecutionContext* const);
 
 	virtual
@@ -137,7 +139,7 @@ public:
 
 	virtual
 	void
-	set_active (const HitPtr &, bool) final override;
+	set_active (const HitPtr &, const bool) final override;
 
 	virtual
 	void
@@ -153,7 +155,7 @@ private:
 	getVector (const Line3d &, const Vector3d &) const;
 
 	bool
-	getTrackPoint (const Line3d &, Vector3d &, bool = false) const;
+	getTrackPoint (const Line3d &, Vector3d &, const bool = false) const;
 
 	double
 	getAngle (const Rotation4d &) const;
@@ -187,6 +189,7 @@ private:
 	Plane3d    zPlane;
 	bool       behind;
 	Vector3d   fromVector;
+	Rotation4d startOffset;
 	Matrix4d   inverseModelViewMatrix;
 
 };

@@ -60,16 +60,16 @@ namespace X3D {
 typedef std::function <bool (X3D::SFNode &)> TraverseCallback;
 
 bool
-traverse (MFNode &, const TraverseCallback &, bool = true);
+traverse (MFNode &, const TraverseCallback &, const bool = true);
 
 bool
-traverse (SFNode &, const TraverseCallback &, bool = true);
+traverse (SFNode &, const TraverseCallback &, const bool = true);
 
-std::deque <X3DChildObject*>
-find (const X3D::MFNode &, X3DChildObject* const, bool = true);
+std::vector <X3DChildObject*>
+find (const X3D::MFNode &, X3DChildObject* const, const bool = true);
 
-std::deque <X3DChildObject*>
-find (const X3D::SFNode &, X3DChildObject* const, bool = true);
+std::vector <X3DChildObject*>
+find (const X3D::SFNode &, X3DChildObject* const, const bool = true);
 
 } // X3D
 } // titania

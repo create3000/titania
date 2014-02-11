@@ -90,15 +90,20 @@ GeoCoordinate::getBBox () const
 }
 
 Vector3f
-GeoCoordinate::getNormal (size_t index1, size_t index2, size_t index3) const
+GeoCoordinate::getNormal (const size_t index1, const size_t index2, const size_t index3) const
 {
-	return math::normal <double> (point () [index1],
-	                              point () [index2],
-	                              point () [index3]);
+	const size_t size = point () .size ();
+
+	if (index1 < size and index2 < size and index3 < size)
+		return math::normal <double> (point () [index1],
+		                              point () [index2],
+		                              point () [index3]);
+
+	return Vector3f (0, 0, 1);
 }
 
 void
-GeoCoordinate::addVertex (opengl::tessellator <size_t> & tessellator, size_t index, size_t i) const
+GeoCoordinate::addVertex (opengl::tessellator <size_t> & tessellator, const size_t index, const size_t i) const
 {
 	if (index < point () .size ())
 		tessellator .add_vertex (point () [index] .getValue (), i);
@@ -108,7 +113,7 @@ GeoCoordinate::addVertex (opengl::tessellator <size_t> & tessellator, size_t ind
 }
 
 void
-GeoCoordinate::addVertex (std::vector <Vector3f> & vertices, size_t index) const
+GeoCoordinate::addVertex (std::vector <Vector3f> & vertices, const size_t index) const
 {
 	if (index < point () .size ())
 		vertices .emplace_back (point () [index] .getValue ());

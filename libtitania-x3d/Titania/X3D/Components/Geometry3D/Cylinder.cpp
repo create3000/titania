@@ -94,7 +94,7 @@ Cylinder::create (X3DExecutionContext* const executionContext) const
 Box3f
 Cylinder::createBBox ()
 {
-	float diameter = radius () * 2;
+	const float diameter = radius () * 2;
 
 	if (not top () and not side () and not bottom ())
 		return Box3f ();
@@ -114,22 +114,22 @@ Cylinder::build ()
 {
 	getTexCoords () .emplace_back ();
 
-	float y1 = height () / 2;
-	float y2 = -y1;
+	const float y1 = height () / 2;
+	const float y2 = -y1;
 
 	if (side ())
 	{
 		for (int i = 0; i < SEGMENTS; ++ i)
 		{
-			float u1     = i / SEGMENTS;
-			float theta1 = 2 * M_PI * u1;
-			float x1     = -std::sin (theta1);
-			float z1     = -std::cos (theta1);
+			const float u1     = i / SEGMENTS;
+			const float theta1 = 2 * M_PI * u1;
+			const float x1     = -std::sin (theta1);
+			const float z1     = -std::cos (theta1);
 
-			float u2     = (i + 1) / SEGMENTS;
-			float theta2 = 2 * M_PI * u2;
-			float x2     = -std::sin (theta2);
-			float z2     = -std::cos (theta2);
+			const float u2     = (i + 1) / SEGMENTS;
+			const float theta2 = 2 * M_PI * u2;
+			const float x2     = -std::sin (theta2);
+			const float z2     = -std::cos (theta2);
 
 			// p1 - p4
 			//  |   |
@@ -163,10 +163,10 @@ Cylinder::build ()
 	{
 		for (int i = 0; i < SEGMENTS; ++ i)
 		{
-			float u1     = i / SEGMENTS;
-			float theta1 = 2 * M_PI * u1;
-			float x1     = -std::sin (theta1);
-			float z1     = -std::cos (theta1);
+			const float u1     = i / SEGMENTS;
+			const float theta1 = 2 * M_PI * u1;
+			const float x1     = -std::sin (theta1);
+			const float z1     = -std::cos (theta1);
 
 			getTexCoords () [0] .emplace_back (+(x1 + 1) / 2, -(z1 - 1) / 2, 0, 1);
 			getNormals  () .emplace_back (0, 1, 0);
@@ -180,10 +180,10 @@ Cylinder::build ()
 	{
 		for (int i = SEGMENTS - 1; i > -1; -- i)
 		{
-			float u1     = i / SEGMENTS;
-			float theta1 = 2 * M_PI * u1;
-			float x1     = -std::sin (theta1);
-			float z1     = -std::cos (theta1);
+			const float u1     = i / SEGMENTS;
+			const float theta1 = 2 * M_PI * u1;
+			const float x1     = -std::sin (theta1);
+			const float z1     = -std::cos (theta1);
 
 			getTexCoords () [0] .emplace_back ((x1 + 1) / 2, (z1 + 1) / 2, 0, 1);
 			getNormals  () .emplace_back (0, -1, 0);

@@ -140,11 +140,11 @@ private:
 	CollectableObjectArray globalObjects;
 	CollectableObjectArray localObjects;
 
-	ShapeContainerArray     shapes;
-	ShapeContainerArray     transparentShapes;
-	ShapeContainerComp      shapeComare;
-	CollisionShapeArray     collisionShapes;
-	std::deque <Collision*> activeCollisions;
+	ShapeContainerArray      shapes;
+	ShapeContainerArray      transparentShapes;
+	ShapeContainerComp       shapeComare;
+	CollisionShapeArray      collisionShapes;
+	std::vector <Collision*> activeCollisions;
 
 	std::unique_ptr <DepthBuffer> depthBuffer;
 	float                         speed;

@@ -61,6 +61,8 @@ class DirectionalLight :
 {
 public:
 
+	///  @name Construction
+
 	DirectionalLight (X3DExecutionContext* const);
 
 	virtual
@@ -95,21 +97,25 @@ public:
 	direction () const
 	{ return *fields .direction; }
 
-	virtual
-	void
-	eventsProcessed ();
+	///  @name Operations
 
 	virtual
 	void
-	draw (GLenum);
+	draw (GLenum) final override;
 
 
 private:
 
+	///  @name Construction
+
 	virtual
 	void
-	initialize ();
+	initialize () final override;
 
+	///  @name Event handlers
+
+	void
+	eventsProcessed ();
 
 	///  @name Static members
 

@@ -99,7 +99,7 @@ public:
 
 	template <class Class>
 	void
-	addInterest (Class* object, void (Class::* memberFunction) (const SFRotation4 &)) const
+	addInterest (Class* const object, void (Class::* memberFunction) (const SFRotation4 &)) const
 	{ addInterest (object, memberFunction, std::cref (*this)); }
 
 	template <class Class>
