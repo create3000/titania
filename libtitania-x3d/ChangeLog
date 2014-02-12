@@ -1,5 +1,12 @@
 2014-02-12  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* VolumeEmitter.cpp:
+	* SurfaceEmitter.cpp:
+	* ParticleSystem.cpp:
+	* PolylineEmitter.cpp: 
+
+2014-02-12  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBrowser.cpp: 
 
 2014-02-12  Holger Seelig  <holger.seelig@yahoo.de>

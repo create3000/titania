@@ -52,6 +52,7 @@
 
 #include "../../Bits/config.h"
 #include "../../Bits/Cast.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Types/Geometry.h"
 
@@ -100,6 +101,12 @@ void
 SurfaceEmitter::initialize ()
 {
 	X3DParticleEmitterNode::initialize ();
+
+	if (not glXGetCurrentContext ())
+		return;
+
+	if (not getBrowser () -> getRenderingProperties () -> hasExtension ("GL_ARB_texture_buffer_object"))
+		return;
 
 	// Surface map
 

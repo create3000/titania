@@ -341,86 +341,92 @@ ParticleSystem::initialize ()
 {
 	X3DShapeNode::initialize ();
 
-	if (glXGetCurrentContext ())
+	if (not glXGetCurrentContext ())
+		return;
+
+	if (not getBrowser () -> getRenderingProperties () -> hasExtension ("GL_ARB_texture_buffer_object"))
+		return;
+
+	if (not getBrowser () -> getRenderingProperties () -> hasExtension ("GL_ARB_transform_feedback3"))
+		return;
+
+	// Generate transform buffers
+
+	glGenTransformFeedbacks (2, particleFeedbackId .data ());
+	glGenBuffers (2, particleBufferId .data ());
+
+	for (size_t i = 0; i < 2; ++ i)
 	{
-		// Generate transform buffers
-
-		glGenTransformFeedbacks (2, particleFeedbackId .data ());
-		glGenBuffers (2, particleBufferId .data ());
-
-		for (size_t i = 0; i < 2; ++ i)
-		{
-			glBindTransformFeedback (GL_TRANSFORM_FEEDBACK, particleFeedbackId [i]);
-			glBindBufferBase (GL_TRANSFORM_FEEDBACK_BUFFER, 0, particleBufferId [i]);
-		}
-
-		glGenTextures (1, &particleMapId);
-
-		set_particle_map ();
-
-		// Generate point buffer
-
-		glGenTransformFeedbacks (1, &vertexFeedbackId);
-		glGenBuffers (1, &vertexBufferId);
-
-		glBindTransformFeedback (GL_TRANSFORM_FEEDBACK, vertexFeedbackId);
-		glBindBufferBase (GL_TRANSFORM_FEEDBACK_BUFFER, 0, vertexBufferId);
-
-		glBindTransformFeedback (GL_TRANSFORM_FEEDBACK, 0);
-
-		// Generate geometry buffer
-
-		glGenBuffers (1, &geometryBufferId);
-
-		// Color ramp
-
-		glGenTextures (2, colorRampMapId .data ());
-		glGenBuffers  (2, colorRampBufferId .data ());
-
-		// Texture coordinate ramp
-
-		glGenTextures (2, texCoordRampMapId .data ());
-		glGenBuffers  (2, texCoordRampBufferId .data ());
-
-		// Bounded physics model
-
-		glGenTextures (1, &boundedNormalMapId);
-		glGenBuffers  (1, &boundedNormalBufferId);
-
-		glGenTextures (1, &boundedSurfaceMapId);
-		glGenBuffers  (1, &boundedSurfaceBufferId);
-
-		glGenTextures (1, &boundedVolumeMapId);
-		glGenBuffers  (1, &boundedVolumeBufferId);
-
-		// Setup
-
-		enabled ()           .addInterest (this, &ParticleSystem::set_enabled);
-		geometryType ()      .addInterest (this, &ParticleSystem::set_geometryType);
-		createParticles ()   .addInterest (this, &ParticleSystem::set_createParticles);
-		maxParticles ()      .addInterest (this, &ParticleSystem::set_enabled);
-		particleLifetime ()  .addInterest (this, &ParticleSystem::set_particle_buffers);
-		lifetimeVariation () .addInterest (this, &ParticleSystem::set_particle_buffers);
-		particleSize ()      .addInterest (this, &ParticleSystem::set_geometryType);
-		colorKey ()          .addInterest (this, &ParticleSystem::set_colorKey);
-		texCoordKey ()       .addInterest (this, &ParticleSystem::set_texCoordKey);
-		emitter ()           .addInterest (this, &ParticleSystem::set_emitter);
-		colorRamp ()         .addInterest (this, &ParticleSystem::set_colorRamp);
-		texCoordRamp ()      .addInterest (this, &ParticleSystem::set_texCoordRamp);
-		geometry ()          .addInterest (this, &ParticleSystem::set_geometry);
-		physics ()           .addInterest (this, &ParticleSystem::set_physics);
-
-		boundedPhysicsModelNodes .addInterest (this, &ParticleSystem::set_boundedPhysicsModel);
-
-		set_geometry_shader ();
-		set_enabled ();
-		set_geometryType ();
-		set_emitter ();
-		set_colorRamp ();
-		set_texCoordRamp ();
-		set_geometry ();
-		set_physics ();
+		glBindTransformFeedback (GL_TRANSFORM_FEEDBACK, particleFeedbackId [i]);
+		glBindBufferBase (GL_TRANSFORM_FEEDBACK_BUFFER, 0, particleBufferId [i]);
 	}
+
+	glGenTextures (1, &particleMapId);
+
+	set_particle_map ();
+
+	// Generate point buffer
+
+	glGenTransformFeedbacks (1, &vertexFeedbackId);
+	glGenBuffers (1, &vertexBufferId);
+
+	glBindTransformFeedback (GL_TRANSFORM_FEEDBACK, vertexFeedbackId);
+	glBindBufferBase (GL_TRANSFORM_FEEDBACK_BUFFER, 0, vertexBufferId);
+
+	glBindTransformFeedback (GL_TRANSFORM_FEEDBACK, 0);
+
+	// Generate geometry buffer
+
+	glGenBuffers (1, &geometryBufferId);
+
+	// Color ramp
+
+	glGenTextures (2, colorRampMapId .data ());
+	glGenBuffers  (2, colorRampBufferId .data ());
+
+	// Texture coordinate ramp
+
+	glGenTextures (2, texCoordRampMapId .data ());
+	glGenBuffers  (2, texCoordRampBufferId .data ());
+
+	// Bounded physics model
+
+	glGenTextures (1, &boundedNormalMapId);
+	glGenBuffers  (1, &boundedNormalBufferId);
+
+	glGenTextures (1, &boundedSurfaceMapId);
+	glGenBuffers  (1, &boundedSurfaceBufferId);
+
+	glGenTextures (1, &boundedVolumeMapId);
+	glGenBuffers  (1, &boundedVolumeBufferId);
+
+	// Setup
+
+	enabled ()           .addInterest (this, &ParticleSystem::set_enabled);
+	geometryType ()      .addInterest (this, &ParticleSystem::set_geometryType);
+	createParticles ()   .addInterest (this, &ParticleSystem::set_createParticles);
+	maxParticles ()      .addInterest (this, &ParticleSystem::set_enabled);
+	particleLifetime ()  .addInterest (this, &ParticleSystem::set_particle_buffers);
+	lifetimeVariation () .addInterest (this, &ParticleSystem::set_particle_buffers);
+	particleSize ()      .addInterest (this, &ParticleSystem::set_geometryType);
+	colorKey ()          .addInterest (this, &ParticleSystem::set_colorKey);
+	texCoordKey ()       .addInterest (this, &ParticleSystem::set_texCoordKey);
+	emitter ()           .addInterest (this, &ParticleSystem::set_emitter);
+	colorRamp ()         .addInterest (this, &ParticleSystem::set_colorRamp);
+	texCoordRamp ()      .addInterest (this, &ParticleSystem::set_texCoordRamp);
+	geometry ()          .addInterest (this, &ParticleSystem::set_geometry);
+	physics ()           .addInterest (this, &ParticleSystem::set_physics);
+
+	boundedPhysicsModelNodes .addInterest (this, &ParticleSystem::set_boundedPhysicsModel);
+
+	set_geometry_shader ();
+	set_enabled ();
+	set_geometryType ();
+	set_emitter ();
+	set_colorRamp ();
+	set_texCoordRamp ();
+	set_geometry ();
+	set_physics ();
 }
 
 bool

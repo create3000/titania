@@ -51,6 +51,7 @@
 #include "VolumeEmitter.h"
 
 #include "../../Bits/config.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Miscellaneous/BVH.h"
 
@@ -107,6 +108,12 @@ void
 VolumeEmitter::initialize ()
 {
 	X3DParticleEmitterNode::initialize ();
+
+	if (not glXGetCurrentContext ())
+		return;
+
+	if (not getBrowser () -> getRenderingProperties () -> hasExtension ("GL_ARB_texture_buffer_object"))
+		return;
 
 	// Surface map
 

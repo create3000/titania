@@ -51,6 +51,7 @@
 #include "PolylineEmitter.h"
 
 #include "../../Bits/config.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -99,6 +100,12 @@ void
 PolylineEmitter::initialize ()
 {
 	X3DParticleEmitterNode::initialize ();
+
+	if (not glXGetCurrentContext ())
+		return;
+
+	if (not getBrowser () -> getRenderingProperties () -> hasExtension ("GL_ARB_texture_buffer_object"))
+		return;
 
 	// Polyline map
 
