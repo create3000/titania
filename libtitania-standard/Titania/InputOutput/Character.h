@@ -64,6 +64,7 @@ class basic_character
 {
 public:
 
+	constexpr
 	basic_character (const CharT &);
 
 	bool
@@ -74,11 +75,13 @@ private:
 
 	typedef typename std::basic_istream <CharT, Traits>::int_type int_type;
 
-	CharT value;
+	const CharT value;
 
 };
 
 template <class CharT, class Traits>
+inline
+constexpr
 basic_character <CharT, Traits>::basic_character (const CharT & value) :
 	value (value)
 { }

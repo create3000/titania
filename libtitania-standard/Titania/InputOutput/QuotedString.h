@@ -63,6 +63,7 @@ class basic_quoted_string
 {
 public:
 
+	constexpr
 	basic_quoted_string (const CharT &);
 
 	bool
@@ -73,11 +74,13 @@ private:
 
 	typedef typename std::basic_istream <CharT, Traits>::int_type int_type;
 
-	CharT delimiter;
+	const CharT delimiter;
 
 };
 
 template <class CharT, class Traits>
+inline
+constexpr
 basic_quoted_string <CharT, Traits>::basic_quoted_string (const CharT & delimiter) :
 	delimiter (delimiter)
 { }

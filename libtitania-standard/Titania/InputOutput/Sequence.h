@@ -73,11 +73,12 @@ private:
 
 	typedef typename std::basic_istream <CharT, Traits>::int_type int_type;
 
-	std::set <CharT>          value;
+	const std::set <CharT> value;
 
 };
 
 template <class CharT, class Traits>
+inline
 basic_sequence <CharT, Traits>::basic_sequence (const std::basic_string <CharT> & value) :
 	value (value .begin (), value .end ())
 { }

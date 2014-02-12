@@ -1,5 +1,16 @@
 2014-02-12  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* IndexedLineSet.h:
+	* IndexedFaceSet.h:
+	* IndexedLineSet.cpp:
+	* IndexedFaceSet.cpp:
+	* VolumeEmitter.cpp:
+	* ParticleSystem.cpp:
+	* IndexedTriangleFanSet.cpp:
+	* IndexedTriangleStripSet.cpp: 
+
+2014-02-12  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Grammar.cpp:
 	* GarbargeCollector.cpp:
 	* LayerSet.cpp:

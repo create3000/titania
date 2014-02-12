@@ -166,27 +166,22 @@ private:
 
 	typedef std::vector <Polygon> PolygonArray;
 
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
-
-	///  @name Event handlers
-
-	void
-	set_coordIndex ();
-
-	void
-	set_texCoordIndex ();
-
-	void
-	set_colorIndex ();
-
-	void
-	set_normalIndex ();
-
 	///  @name Operations
+
+	size_t
+	getTexCoordIndex (const size_t) const;
+
+	size_t
+	getColorIndex (const size_t, const bool) const;
+
+	size_t
+	getColorIndex (const size_t) const;
+
+	size_t
+	getNormalIndex (const size_t, const bool) const;
+
+	size_t
+	getNormalIndex (const size_t) const;
 
 	virtual
 	void
@@ -223,8 +218,6 @@ private:
 	};
 
 	Fields fields;
-	
-	int32_t numPolygons;
 
 };
 

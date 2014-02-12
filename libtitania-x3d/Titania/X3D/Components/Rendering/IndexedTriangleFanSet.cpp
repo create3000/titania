@@ -115,11 +115,11 @@ IndexedTriangleFanSet::set_index ()
 
 		++ i;
 
-		if (i <size and index () [i]>-1)
+		if (i < size and index () [i] > -1)
 		{
 			int32_t second = index () [i];
 
-			for (++ i; i <size and index () [i]>-1; ++ i)
+			for (++ i; i < size and index () [i] > -1; ++ i)
 			{
 				coordIndex .emplace_back (first);
 				coordIndex .emplace_back (second);

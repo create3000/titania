@@ -57,19 +57,16 @@ namespace basic {
 template <class Type, class Class>
 class member_value
 {
-private:
-
-	typedef Type (Class::* getter_type)() const;
-	typedef void (Class::* setter_type) (const Type &);
-
-
 public:
 
+	using getter_type = Type (Class::*)() const;
+	using setter_type = void (Class::*) (const Type &);
+
 	constexpr
-	member_value (setter_type setter, getter_type getter, Class* object) :
+	member_value (Class* const object, const setter_type setter, const getter_type getter) :
+		object (object),
 		setter (setter),
-		getter (getter),
-		object (object)
+		getter (getter)
 	{ }
 
 	member_value &
@@ -79,15 +76,15 @@ public:
 		return *this;
 	}
 
-	operator Type ()
+	operator Type () const
 	{ return (object ->* getter)(); }
 
 
 private:
 
-	setter_type  setter;
-	getter_type  getter;
-	Class* const object;
+	Class* const      object;
+	const setter_type setter;
+	const getter_type getter;
 
 };
 

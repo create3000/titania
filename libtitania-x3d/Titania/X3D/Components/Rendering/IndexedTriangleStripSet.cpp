@@ -115,13 +115,13 @@ IndexedTriangleStripSet::set_index ()
 
 		++ i;
 
-		if (i <size and index () [i]>-1)
+		if (i < size and index () [i] > -1)
 		{
 			int32_t second = index () [i];
 
 			++ i;
 
-			for (size_t face = 0; i <size and index () [i]>-1; ++ i, ++ face)
+			for (size_t face = 0; i < size and index () [i] > -1; ++ i, ++ face)
 			{
 				coordIndex .emplace_back (first);
 				coordIndex .emplace_back (second);

@@ -443,10 +443,10 @@ rotation4 <Type>::operator [ ] (const size_type index)
 {
 	switch (index)
 	{
-		case 0: return member_value_type (&rotation4::x, &rotation4::x, this);
-		case 1: return member_value_type (&rotation4::y, &rotation4::y, this);
-		case 2: return member_value_type (&rotation4::z, &rotation4::z, this);
-		case 3: return member_value_type (&rotation4::angle, &rotation4::angle, this);
+		case 0: return member_value_type (this, &rotation4::x, &rotation4::x);
+		case 1: return member_value_type (this, &rotation4::y, &rotation4::y);
+		case 2: return member_value_type (this, &rotation4::z, &rotation4::z);
+		case 3: return member_value_type (this, &rotation4::angle, &rotation4::angle);
 	}
 
 	throw std::out_of_range ("index out of range");

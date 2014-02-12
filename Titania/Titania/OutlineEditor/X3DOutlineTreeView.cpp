@@ -142,7 +142,7 @@ X3DOutlineTreeView::expand_to (X3D::X3DChildObject* const object)
 
 	disable_shift_key ();
 
-	auto hierarchy = std::move (X3D::find (getBrowser () -> getExecutionContext () -> getRootNodes (), object));
+	auto hierarchy = X3D::find (getBrowser () -> getExecutionContext () -> getRootNodes (), object);
 
 	if (not hierarchy .empty ())
 		expand_to (get_model () -> children (), hierarchy, path);

@@ -76,8 +76,7 @@ IndexedFaceSet::Fields::Fields () :
 IndexedFaceSet::IndexedFaceSet (X3DExecutionContext* const executionContext) :
 	            X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DComposedGeometryNode (),
-	                 fields (),
-	            numPolygons (0)
+	                 fields ()
 {
 	addField (inputOutput,    "metadata",          metadata ());
 
@@ -107,103 +106,49 @@ IndexedFaceSet::create (X3DExecutionContext* const executionContext) const
 	return new IndexedFaceSet (executionContext);
 }
 
-void
-IndexedFaceSet::initialize ()
+size_t
+IndexedFaceSet::getTexCoordIndex (const size_t index) const
 {
-	X3DComposedGeometryNode::initialize ();
+	if (index < texCoordIndex () .size ())
+		return texCoordIndex () [index];
 
-	texCoordIndex () .addInterest (this, &IndexedFaceSet::set_texCoordIndex);
-	colorIndex ()    .addInterest (this, &IndexedFaceSet::set_colorIndex);
-	normalIndex ()   .addInterest (this, &IndexedFaceSet::set_normalIndex);
-	coordIndex ()    .addInterest (this, &IndexedFaceSet::set_coordIndex);
-
-	set_coordIndex ();
+	return coordIndex () [index];
 }
 
-void
-IndexedFaceSet::set_coordIndex ()
+size_t
+IndexedFaceSet::getColorIndex (const size_t index, const bool) const
 {
-	numPolygons = 0;
+	if (index < colorIndex () .size ())
+		return colorIndex () [index];
 
-	if (getCoord ())
-	{
-		if (not coordIndex () .empty ())
-		{
-			// Determine number of polygons.
-
-			for (const auto & index : coordIndex ())
-			{
-				if (index < 0)
-					++ numPolygons;
-			}
-
-			if (coordIndex () .back () > -1)
-				++ numPolygons;
-
-			set_texCoordIndex ();
-			set_colorIndex    ();
-			set_normalIndex   ();
-		}
-	}
+	return coordIndex () [index];
 }
 
-void
-IndexedFaceSet::set_texCoordIndex ()
+size_t
+IndexedFaceSet::getColorIndex (const size_t index) const
 {
-	if (getTexCoord ())
-	{
-		// Fill up texCoordIndex if to small.
-		for (int32_t i = texCoordIndex () .size (), size = coordIndex () .size (); i < size; ++ i)
-		{
-			texCoordIndex () .emplace_back (coordIndex () [i]);
-		}
-	}
+	if (index < colorIndex () .size ())
+		return colorIndex () [index];
+
+	return index;
 }
 
-void
-IndexedFaceSet::set_colorIndex ()
+size_t
+IndexedFaceSet::getNormalIndex (const size_t index, const bool) const
 {
-	if (getColor ())
-	{
-		// Fill up colorIndex if to small.
-		if (colorPerVertex ())
-		{
-			for (int32_t i = colorIndex () .size (), size = coordIndex () .size (); i < size; ++ i)
-			{
-				colorIndex () .emplace_back (coordIndex () [i]);
-			}
-		}
-		else
-		{
-			for (int32_t i = colorIndex () .size (); i < numPolygons; ++ i)
-			{
-				colorIndex () .emplace_back (i);
-			}
-		}
-	}
+	if (index < normalIndex () .size ())
+		return normalIndex () [index];
+
+	return coordIndex () [index];
 }
 
-void
-IndexedFaceSet::set_normalIndex ()
+size_t
+IndexedFaceSet::getNormalIndex (const size_t index) const
 {
-	if (getNormal ())
-	{
-		// Fill up normalIndex if to small.
-		if (normalPerVertex ())
-		{
-			for (int32_t i = normalIndex () .size (), size = coordIndex () .size (); i < size; ++ i)
-			{
-				normalIndex () .emplace_back (coordIndex () [i]);
-			}
-		}
-		else
-		{
-			for (int32_t i = normalIndex () .size (); i < numPolygons; ++ i)
-			{
-				normalIndex () .emplace_back (i);
-			}
-		}
-	}
+	if (index < normalIndex () .size ())
+		return normalIndex () [index];
+
+	return index;
 }
 
 void
@@ -265,25 +210,25 @@ IndexedFaceSet::build ()
 
 			for (const auto & i : element)
 			{
+				if (getTexCoord ())
+					getTexCoord () -> addTexCoord (getTexCoords (), getTexCoordIndex (i));
+
 				if (getColor ())
 				{
 					if (colorPerVertex ())
-						getColor () -> addColor (getColors (), colorIndex () [i]);
+						getColor () -> addColor (getColors (), getColorIndex (i, true));
 
 					else
-						getColor () -> addColor (getColors (), colorIndex () [face]);
+						getColor () -> addColor (getColors (), getColorIndex (face));
 				}
-
-				if (getTexCoord ())
-					getTexCoord () -> addTexCoord (getTexCoords (), texCoordIndex () [i]);
 
 				if (getNormal ())
 				{
 					if (normalPerVertex ())
-						getNormal () -> addVector (getNormals (), normalIndex () [i]);
+						getNormal () -> addVector (getNormals (), getNormalIndex (i, true));
 
 					else
-						getNormal () -> addVector (getNormals (), normalIndex () [face]);
+						getNormal () -> addVector (getNormals (), getNormalIndex (face));
 				}
 
 				getCoord () -> addVertex (getVertices (), coordIndex () [i]);

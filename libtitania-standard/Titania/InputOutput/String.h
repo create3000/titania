@@ -74,12 +74,13 @@ private:
 
 	typedef typename std::basic_istream <CharT, Traits>::int_type int_type;
 
-	std::basic_string <CharT> value;
-	size_t                    size;
+	const std::basic_string <CharT> value;
+	const size_t                    size;
 
 };
 
 template <class CharT, class Traits>
+inline
 basic_string <CharT, Traits>::basic_string (const std::basic_string <CharT> & value) :
 	value (value),
 	 size (value .size ())

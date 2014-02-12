@@ -409,7 +409,7 @@ ParticleSystem::initialize ()
 		texCoordRamp ()      .addInterest (this, &ParticleSystem::set_texCoordRamp);
 		geometry ()          .addInterest (this, &ParticleSystem::set_geometry);
 		physics ()           .addInterest (this, &ParticleSystem::set_physics);
-		
+
 		boundedPhysicsModelNodes .addInterest (this, &ParticleSystem::set_boundedPhysicsModel);
 
 		set_geometry_shader ();
@@ -871,7 +871,7 @@ ParticleSystem::set_boundedPhysicsModel ()
 
 	// BVH
 
-	const BVH tree (std::move (vertices));
+	const BVH  tree (std::move (vertices));
 	const auto treeArray = tree .toArray ();
 
 	glBindBuffer (GL_TEXTURE_BUFFER, boundedVolumeBufferId);
@@ -1370,7 +1370,7 @@ ParticleSystem::drawGeometry ()
 			{
 				std::vector <Vector3f> positions;
 				positions .reserve (numParticles);
-				
+
 				// Copy positions
 
 				glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [readBuffer]);

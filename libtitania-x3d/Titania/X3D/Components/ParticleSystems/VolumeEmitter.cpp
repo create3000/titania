@@ -176,7 +176,7 @@ VolumeEmitter::set_geometry ()
 
 	// BVH
 
-	const BVH tree (std::move (vertices));
+	const BVH  tree (std::move (vertices));
 	const auto treeArray = tree .toArray ();
 
 	glBindBuffer (GL_TEXTURE_BUFFER, volumeBufferId);

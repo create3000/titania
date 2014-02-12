@@ -186,12 +186,6 @@ private:
 	///  @name Event handler
 
 	void
-	set_coordIndex ();
-
-	void
-	set_colorIndex ();
-
-	void
 	set_color ();
 
 	void
@@ -202,6 +196,12 @@ private:
 	virtual
 	Box3f
 	createBBox () final override;
+
+	size_t
+	getColorIndex (const size_t, const bool) const;
+
+	size_t
+	getColorIndex (const size_t) const;
 
 	std::vector <std::vector <size_t>> 
 	getPolylineIndices () const;
@@ -235,7 +235,6 @@ private:
 
 	X3DSFNode <X3DColorNode>      colorNode;
 	X3DSFNode <X3DCoordinateNode> coordNode;
-	int32_t                       numPolylines;
 	bool                          transparent;
 
 };

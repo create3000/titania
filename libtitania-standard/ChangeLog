@@ -1,3 +1,14 @@
+2014-02-12  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* URI.h:
+	* String.h:
+	* MemberValue.h:
+	* Comment.h:
+	* Sequence.h:
+	* Character.h:
+	* Rotation4.h:
+	* QuotedString.h: 
+
 2014-02-11  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* ChangeLog:

@@ -483,6 +483,7 @@ std::map <typename basic_uri <StringT>::string_type, typename basic_uri <StringT
 };
 
 template <class StringT>
+inline
 basic_uri <StringT>::basic_uri (Value && value) :
 	value (value)
 {
@@ -491,6 +492,7 @@ basic_uri <StringT>::basic_uri (Value && value) :
 }
 
 template <class StringT>
+inline
 basic_uri <StringT>::basic_uri (const string_type & string)
 throw (parse_error) :
 	basic_uri ()
@@ -499,6 +501,7 @@ throw (parse_error) :
 }
 
 template <class StringT>
+inline
 basic_uri <StringT>::basic_uri (const char_type* string)
 throw (parse_error) :
 	basic_uri ()
@@ -507,12 +510,14 @@ throw (parse_error) :
 }
 
 template <class StringT>
+inline
 basic_uri <StringT>::basic_uri (const basic_uri & base, const basic_uri & uri)
 {
 	*this = std::move (base .transform (uri));
 }
 
 template <class StringT>
+inline
 typename basic_uri <StringT>::basic_uri &
 basic_uri <StringT>::operator = (const basic_uri & uri)
 {
@@ -521,6 +526,7 @@ basic_uri <StringT>::operator = (const basic_uri & uri)
 }
 
 template <class StringT>
+inline
 typename basic_uri <StringT>::basic_uri &
 basic_uri <StringT>::operator = (basic_uri && uri)
 {
@@ -700,6 +706,7 @@ basic_uri <StringT>::transform (const basic_uri & reference) const
 }
 
 template <class StringT>
+inline
 typename basic_uri <StringT>::string_type
 basic_uri <StringT>::remove_dot_segments (const string_type & path) const
 {
@@ -978,6 +985,7 @@ basic_uri <StringT>::parser::authority (const size_type first) const
 }
 
 template <class StringT>
+inline
 void
 basic_uri <StringT>::parser::host (const string_type &authority, const size_type first, const size_type last) const
 {
@@ -1070,6 +1078,7 @@ basic_uri <StringT>::parser::fragment (const size_type first) const
 ///  Compares two basic_uri's.
 ///  Return true if @a a is equal to @a b.
 template <class StringT>
+inline
 constexpr bool
 operator == (const basic_uri <StringT> & lhs, const basic_uri <StringT> & rhs)
 {

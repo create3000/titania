@@ -76,7 +76,6 @@ IndexedLineSet::IndexedLineSet (X3DExecutionContext* const executionContext) :
 	         fields (),
 	      colorNode (),
 	      coordNode (),
-	   numPolylines (0),
 	    transparent (false)
 {
 	addField (inputOutput,    "metadata",       metadata ());
@@ -103,62 +102,11 @@ IndexedLineSet::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	coordIndex () .addInterest (this, &IndexedLineSet::set_coordIndex);
-	colorIndex () .addInterest (this, &IndexedLineSet::set_colorIndex);
-	color ()      .addInterest (this, &IndexedLineSet::set_color);
-	coord ()      .addInterest (this, &IndexedLineSet::set_coord);
+	color () .addInterest (this, &IndexedLineSet::set_color);
+	coord () .addInterest (this, &IndexedLineSet::set_coord);
 
 	set_color ();
 	set_coord ();
-	set_coordIndex ();
-}
-
-void
-IndexedLineSet::set_coordIndex ()
-{
-	numPolylines = 0;
-
-	if (coordNode)
-	{
-		if (not coordIndex () .empty ())
-		{
-			// Determine number of points and polygons.
-
-			for (const auto & index : coordIndex ())
-			{
-				if (index < 0)
-					++ numPolylines;
-			}
-
-			if (coordIndex () .back () > -1)
-				++ numPolylines;
-
-			set_colorIndex ();
-		}
-	}
-}
-
-void
-IndexedLineSet::set_colorIndex ()
-{
-	if (colorNode)
-	{
-		// Fill up colorIndex if to small.
-		if (colorPerVertex ())
-		{
-			for (int32_t i = colorIndex () .size (), size = coordIndex () .size (); i < size; ++ i)
-			{
-				colorIndex () .emplace_back (coordIndex () [i]);
-			}
-		}
-		else
-		{
-			for (int32_t i = colorIndex () .size (), size = numPolylines; i < size; ++ i)
-			{
-				colorIndex () .emplace_back (i);
-			}
-		}
-	}
 }
 
 void
@@ -196,6 +144,24 @@ IndexedLineSet::createBBox ()
 		return coordNode -> getBBox ();
 
 	return Box3f ();
+}
+
+size_t
+IndexedLineSet::getColorIndex (const size_t index, const bool) const
+{
+	if (index < colorIndex () .size ())
+		return colorIndex () [index];
+
+	return coordIndex () [index];
+}
+
+size_t
+IndexedLineSet::getColorIndex (const size_t index) const
+{
+	if (index < colorIndex () .size ())
+		return colorIndex () [index];
+
+	return index;
 }
 
 std::vector <Vector3f>
@@ -300,10 +266,10 @@ IndexedLineSet::build ()
 				if (colorNode)
 				{
 					if (colorPerVertex ())
-						colorNode -> addColor (getColors (), colorIndex () [i]);
+						colorNode -> addColor (getColors (), getColorIndex (i, true));
 
 					else
-						colorNode -> addColor (getColors (), colorIndex () [face]);
+						colorNode -> addColor (getColors (), getColorIndex (face));
 				}
 
 				coordNode -> addVertex (getVertices (), coordIndex () [i]);

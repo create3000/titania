@@ -61,6 +61,7 @@ class basic_comment
 {
 public:
 
+	constexpr
 	basic_comment (const CharT &);
 
 	bool
@@ -71,11 +72,13 @@ private:
 
 	typedef typename std::basic_istream <CharT, Traits>::int_type int_type;
 
-	CharT start;
+	const CharT start;
 
 };
 
 template <class CharT, class Traits>
+inline
+constexpr
 basic_comment <CharT, Traits>::basic_comment (const CharT & start) :
 	start (start)
 { }

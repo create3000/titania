@@ -108,7 +108,7 @@ X3DBrowserSelection::buttonReleaseEvent (bool picked)
 	if (picked)
 	{
 		auto hit       = getBrowser () -> getHits () .front ();
-		auto hierarchy = std::move (X3D::find (getBrowser () -> getExecutionContext () -> getRootNodes (), hit -> shape, false));
+		auto hierarchy = X3D::find (getBrowser () -> getExecutionContext () -> getRootNodes (), hit -> shape, false);
 
 		if (not hierarchy .empty ())
 		{
