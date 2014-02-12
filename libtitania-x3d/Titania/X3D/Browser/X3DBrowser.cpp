@@ -53,6 +53,7 @@ X3DBrowser::X3DBrowser () :
 	        description (),
 	              scene (createScene ()),
 	              world (),
+	               root (),
 	           urlError (),
 	         inShutdown ()
 {
@@ -66,6 +67,7 @@ X3DBrowser::X3DBrowser () :
 	addChildren (description,
 	             scene,
 	             world,
+	             root,
 	             urlError);
 
 	std::clog << "\tDone constructing Browser." << std::endl;
@@ -77,6 +79,10 @@ X3DBrowser::initialize ()
 	std::clog << "Initializing Browser ..." << std::endl;
 
 	X3DBrowserContext::initialize ();
+
+	// Replace world service.
+
+	scene .addInterest (this, &X3DBrowser::set_scene);
 
 	// Initialize scene
 
@@ -96,10 +102,6 @@ X3DBrowser::initialize ()
 
 		update ();
 	}
-
-	// Replace world service.
-
-	scene .addInterest (this, &X3DBrowser::set_scene);
 
 	// Welcome
 
@@ -232,7 +234,7 @@ throw (Error <INVALID_SCENE>,
 	{
 		// Process shutdown.
 
-		if (initialized ())
+		if (initialized ()) // Don't do this if browser is not initialized.
 		{
 			if (not inShutdown)
 			{
@@ -254,6 +256,10 @@ throw (Error <INVALID_SCENE>,
 			}
 			else
 				++ inShutdown;
+
+			// Generate initialized event immediately upon receiving this service.
+
+			initialized () = getCurrentTime ();
 		}
 
 		// Process as normal.
@@ -270,11 +276,6 @@ throw (Error <INVALID_SCENE>,
 			world -> setup ();
 		}
 
-		// Generate initialized event immediately upon receiving this service.
-
-		if (initialized ())
-			initialized () = getCurrentTime ();
-
 		print ("*** The browser is requested to replace the world with '", scene -> getWorldURL (), "'.\n");
 
 		return;
@@ -286,6 +287,10 @@ throw (Error <INVALID_SCENE>,
 void
 X3DBrowser::set_scene ()
 {
+	std::clog << "Replacing world done." << std::endl;
+
+	root = world;
+
 	std::clog << "Replacing world done." << std::endl;
 }
 
@@ -452,6 +457,7 @@ X3DBrowser::dispose ()
 
 	scene .dispose ();
 	world .dispose ();
+	root  .dispose ();
 
 	supportedFields     .dispose ();
 	supportedNodes      .dispose ();

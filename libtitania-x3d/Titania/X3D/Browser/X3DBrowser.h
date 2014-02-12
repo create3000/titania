@@ -330,6 +330,7 @@ private:
 
 	X3DSFNode <Scene> scene;
 	X3DSFNode <World> world;
+	X3DSFNode <World> root;
 	MFString          urlError;
 	size_t            inShutdown;
 
