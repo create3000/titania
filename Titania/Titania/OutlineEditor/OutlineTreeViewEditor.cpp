@@ -320,11 +320,16 @@ OutlineTreeViewEditor::select_field_value (double x, double y)
 
 		if (get_data_type (iter) == OutlineIterType::X3DFieldValue)
 		{
-			getBrowserWindow () -> hasShortcuts (false);
-			get_tree_observer () -> unwatch_tree (iter);
-			unwatch_motion ();
-			set_cursor (path, *column, true);
-			return true;
+			X3D::X3DFieldDefinition* const field = static_cast <X3D::X3DFieldDefinition*> (get_object (iter));
+
+			if (field -> getAccessType () not_eq X3D::outputOnly)
+			{
+				getBrowserWindow () -> hasShortcuts (false);
+				get_tree_observer () -> unwatch_tree (iter);
+				unwatch_motion ();
+				set_cursor (path, *column, true);
+				return true;
+			}
 		}
 	}
 
