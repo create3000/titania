@@ -215,12 +215,15 @@ ElevationGrid::createTexCoord () const
 	std::vector <Vector4f> texCoord;
 	texCoord .reserve (xDimension () * zDimension ());
 
-	for (float j = 0; j < zDimension (); ++ j)
+	const float xSize = xDimension () - 1;
+	const float zSize = zDimension () - 1;
+
+	for (int32_t z = 0; z < zDimension (); ++ z)
 	{
-		for (float i = 0; i < xDimension (); ++ i)
+		for (int32_t x = 0; x < xDimension (); ++ x)
 		{
-			texCoord .emplace_back (i / (xDimension () - 1),
-			                        j / (zDimension () - 1),
+			texCoord .emplace_back (x / xSize,
+			                        z / zSize,
 			                        0,
 			                        1);
 		}
@@ -239,17 +242,13 @@ ElevationGrid::createNormals (const std::vector <Vector3f> & points, const std::
 
 	for (auto index = coordIndex .cbegin (); index not_eq coordIndex .cend (); index += 6)
 	{
-		// p1, p2, p4, p3
-		const Vector3f & p1 = points [*(index)];
-		const Vector3f & p3 = points [*(index + 3)];
-
-		const Vector3f & p2 = points [*(index + 1)];
-		const Vector3f & p4 = points [*(index + 2)];
-
-		const Vector3f normal = normalize (cross (p3 - p1, p4 - p2));
-
 		for (size_t i = 0; i < 6; ++ i)
-			normalIndex [*(index + i)] .push_back (normals .size () + i);
+			normalIndex [*(index + i)] .emplace_back (normals .size () + i);
+
+		const Vector3f normal = math::normal (points [*(index)],
+		                                      points [*(index + 1)],
+		                                      points [*(index + 3)],
+		                                      points [*(index + 2)]);
 
 		normals .resize (normals .size () + 6, normal);
 	}
@@ -265,32 +264,19 @@ ElevationGrid::createCoordIndex () const
 	std::vector <size_t> coordIndex;
 	coordIndex .reserve ((xDimension () - 1) * (zDimension () - 1) * 6);
 
-	for (int32_t j = 0; j < zDimension () - 1; ++ j)
+	for (int32_t z = 0, size = zDimension () - 1; z < size; ++ z)
 	{
-		for (int32_t i = 0; i < xDimension () - 1; ++ i)
+		for (int32_t x = 0, size = xDimension () - 1; x < size; ++ x)
 		{
-			for (int32_t p = 0; p < 6; ++ p)
-			{
-				// P1 - P4
-				// |  / |
-				// P2 - P3
+			// Triangle one
+			coordIndex .emplace_back (      z * xDimension () + x);         // P1
+			coordIndex .emplace_back ((z + 1) * xDimension () + x);         // P2
+			coordIndex .emplace_back (      z * xDimension () + (x + 1));   // P4
 
-				size_t index;
-
-				switch (p)
-				{
-					// triangle one
-					case 0: index =       j * xDimension () + i; break;         // P1
-					case 1: index = (j + 1) * xDimension () + i; break;         // P2
-					case 2: index =       j * xDimension () + (i + 1); break;   // P4
-					// triangle two
-					case 3: index = (j + 1) * xDimension () + (i + 1); break;   // P3
-					case 4: index =       j * xDimension () + (i + 1); break;   // P4
-					case 5: index = (j + 1) * xDimension () + i; break;         // P2
-				}
-
-				coordIndex .push_back (index);
-			}
+			// Triangle two
+			coordIndex .emplace_back ((z + 1) * xDimension () + (x + 1));   // P3
+			coordIndex .emplace_back (      z * xDimension () + (x + 1));   // P4
+			coordIndex .emplace_back ((z + 1) * xDimension () + x);         // P2
 		}
 	}
 
@@ -303,13 +289,13 @@ ElevationGrid::createPoints () const
 	std::vector <Vector3f> points;
 	points .reserve (xDimension () * zDimension ());
 
-	for (int32_t j = 0; j < zDimension (); ++ j)
+	for (int32_t z = 0; z < zDimension (); ++ z)
 	{
-		for (int32_t i = 0; i < xDimension (); ++ i)
+		for (int32_t x = 0; x < xDimension (); ++ x)
 		{
-			points .push_back (Vector3f (xSpacing () * i,
-			                             getHeight (i + j * xDimension ()),
-			                             zSpacing () * j));
+			points .emplace_back (Vector3f (xSpacing () * x,
+			                                getHeight (x + z * xDimension ()),
+			                                zSpacing () * z));
 		}
 	}
 
@@ -352,7 +338,6 @@ ElevationGrid::build ()
 	else
 		getNormals () = std::move (createNormals (points, coordIndex));
 
-
 	// Build geometry
 
 	int32_t face = 0;
@@ -364,7 +349,7 @@ ElevationGrid::build ()
 		for (int32_t p = 0; p < 6; ++ p, ++ index)
 		{
 			const size_t i = *index;
-		
+
 			if (texCoordNode)
 				texCoordNode -> addTexCoord (getTexCoords (), i);
 

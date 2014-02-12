@@ -199,8 +199,8 @@ IndexedFaceSet::build ()
 
 			if (currentVertexMode not_eq vertexMode or vertexMode == GL_POLYGON)
 			{
-				size_t size  = getVertices () .size ();
-				size_t count = size - vertices;
+				const size_t size  = getVertices () .size ();
+				const size_t count = size - vertices;
 
 				addElements (vertexMode, count);
 

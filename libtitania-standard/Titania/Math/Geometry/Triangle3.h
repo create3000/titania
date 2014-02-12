@@ -101,7 +101,7 @@ vector3 <Type>
 normal (const vector3 <Type> & v1, const vector3 <Type> & v2, const vector3 <Type> & v3, const vector3 <Type> & v4)
 {
 	// (p3 - p1) x (p4 - p2)
-	return normalize (cross (v3 - v1, v4 - v1));
+	return normalize (cross (v3 - v1, v4 - v2));
 }
 
 } // math
