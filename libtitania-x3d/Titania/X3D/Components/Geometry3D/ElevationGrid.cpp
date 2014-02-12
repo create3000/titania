@@ -322,8 +322,8 @@ ElevationGrid::build ()
 	if (xDimension () < 2 or zDimension () < 2)
 		return;
 
-	const std::vector <size_t>   coordIndex = std::move (createCoordIndex ());
-	const std::vector <Vector3f> points     = std::move (createPoints ());
+	const std::vector <size_t>   coordIndex = createCoordIndex ();
+	const std::vector <Vector3f> points     = createPoints ();
 
 	getVertices () .reserve (coordIndex .size ());
 

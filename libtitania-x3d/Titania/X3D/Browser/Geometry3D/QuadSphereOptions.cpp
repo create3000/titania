@@ -182,10 +182,10 @@ QuadSphereOptions::createPoints ()
 void
 QuadSphereOptions::build ()
 {
-	std::vector <int32_t>  texIndices = std::move (createTexIndices ());
-	std::vector <Vector4f> texCoord   = std::move (createTexCoord ());
-	std::vector <int32_t>  indices    = std::move (createCoordIndices ());
-	std::vector <Vector3f> points     = std::move (createPoints ());
+	const std::vector <int32_t>  texIndices = createTexIndices ();
+	const std::vector <Vector4f> texCoord   = createTexCoord ();
+	const std::vector <int32_t>  indices    = createCoordIndices ();
+	const std::vector <Vector3f> points     = createPoints ();
 
 	auto index    = indices .begin ();
 	auto texIndex = texIndices .begin ();

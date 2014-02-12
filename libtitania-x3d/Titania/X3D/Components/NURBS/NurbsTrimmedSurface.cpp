@@ -149,7 +149,7 @@ NurbsTrimmedSurface::getContours () const
 void
 NurbsTrimmedSurface::trimSurface (GLUnurbs* nurbsRenderer) const
 {
-	std::vector <Contour2D*> contours = std::move (getContours ());
+	std::vector <Contour2D*> contours = getContours ();
 	
 	if (contours .size () < 2)
 		return;

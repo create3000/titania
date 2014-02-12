@@ -62,7 +62,7 @@
 namespace titania {
 namespace X3D {
 
-// std::deque is used here for objects because it is much more faster than std::vector!
+// Important: std::deque is used here for objects because it is much more faster than std::vector!
 
 GarbageCollector::GarbageCollector () :
 	objects (),

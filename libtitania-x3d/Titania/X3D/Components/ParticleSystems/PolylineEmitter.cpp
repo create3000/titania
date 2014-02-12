@@ -157,7 +157,7 @@ PolylineEmitter::setShaderFields (const X3DSFNode <ComposedShader> & shader) con
 void
 PolylineEmitter::set_polyline ()
 {
-	auto polylineArray = std::move (polylineNode -> getPolylines ());	
+	const auto polylineArray = polylineNode -> getPolylines ();	
 	
 	if (polylineArray .empty ())
 	{

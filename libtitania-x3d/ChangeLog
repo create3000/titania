@@ -1,3 +1,21 @@
+2014-02-12  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Grammar.cpp:
+	* GarbargeCollector.cpp:
+	* LayerSet.cpp:
+	* NurbsCurve2D.cpp:
+	* Extrusion.cpp:
+	* X3DFontStyleNode.cpp:
+	* IndexedLineSet.cpp:
+	* ElevationGrid.cpp:
+	* ViewpointGroup.cpp:
+	* NurbsTrimmedSurface.cpp:
+	* QuadSphereOptions.cpp:
+	* VolumeEmitter.cpp:
+	* ParticleSystem.cpp:
+	* PolylineEmitter.cpp:
+	* X3DNurbsSurfaceGeometryNode.cpp: 
+
 2014-02-11  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* ChangeLog:

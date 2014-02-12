@@ -125,7 +125,7 @@ Extrusion::createPoints (const bool hasCaps)
 
 	// calculate SCP rotations
 
-	std::vector <Matrix4f> rotations = std::move (createRotations ());
+	std::vector <Matrix4f> rotations = createRotations ();
 
 	// calculate vertices.
 
@@ -318,7 +318,7 @@ Extrusion::build ()
 
 	// Create
 
-	std::vector <Vector3f> points = std::move (createPoints (hasCaps));
+	std::vector <Vector3f> points = createPoints (hasCaps);
 	std::vector <size_t> coordIndex;
 	NormalIndex normalIndex;
 

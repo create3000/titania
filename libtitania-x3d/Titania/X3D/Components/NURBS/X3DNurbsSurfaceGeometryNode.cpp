@@ -233,15 +233,15 @@ X3DNurbsSurfaceGeometryNode::build ()
 
 	// ControlPoints
 
-	std::vector <Vector4f> controlPoints = std::move (controlPointNode -> getControlPoints (weight ()));
+	std::vector <Vector4f> controlPoints = controlPointNode -> getControlPoints (weight ());
 
 	// Knots
 
-	std::vector <float> uKnots = std::move (getKnots (uKnot (), uOrder (), uDimension ()));
-	std::vector <float> vKnots = std::move (getKnots (vKnot (), vOrder (), vDimension ()));
-	
-	float uScale = uKnots .back () - uKnots .front ();
-	float vScale = vKnots .back () - vKnots .front ();
+	std::vector <float> uKnots = getKnots (uKnot (), uOrder (), uDimension ());
+	std::vector <float> vKnots = getKnots (vKnot (), vOrder (), vDimension ());
+
+	const float uScale = uKnots .back () - uKnots .front ();
+	const float vScale = vKnots .back () - vKnots .front ();
 
 	// TextureCoordinate
 

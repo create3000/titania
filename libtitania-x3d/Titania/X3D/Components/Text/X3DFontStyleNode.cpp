@@ -74,6 +74,9 @@ X3DTextGeometry::initialize (Text* const text, const X3DFontStyleNode* const fon
 	charSpacings .clear ();
 	translation  .clear ();
 
+	charSpacings .reserve (text -> string () .size ());
+	translation  .reserve (text -> string () .size ());
+
 	if (text -> string () .empty ())
 	{
 		text -> origin ()     = Vector3d ();

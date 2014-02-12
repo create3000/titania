@@ -92,7 +92,7 @@ io::string Grammar::eventIn ("eventIn");
 io::string Grammar::eventOut ("eventOut");
 io::string Grammar::exposedField ("exposedField");
 
-std::set <std::string> Grammar::FieldType = std::move (getFieldType ());
+std::set <std::string> Grammar::FieldType = getFieldType ();
 
 // Terminal symbols
 io::character Grammar::OpenBrace ('{');

@@ -134,6 +134,7 @@ void
 LayerSet::set_layers ()
 {
 	children .resize (1);
+	children .reserve (layers () .size () + 1);
 
 	for (const auto & layer : layers ())
 	{

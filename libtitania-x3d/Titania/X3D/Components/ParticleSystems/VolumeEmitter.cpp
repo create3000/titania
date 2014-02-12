@@ -176,9 +176,8 @@ VolumeEmitter::set_geometry ()
 
 	// BVH
 
-	BVH tree (std::move (vertices));
-
-	auto treeArray = std::move (tree .toArray ());
+	const BVH tree (std::move (vertices));
+	const auto treeArray = tree .toArray ();
 
 	glBindBuffer (GL_TEXTURE_BUFFER, volumeBufferId);
 	glBufferData (GL_TEXTURE_BUFFER, treeArray .size () * sizeof (BVH::ArrayValue), pointEmitter ? 0 : treeArray .data (), GL_STATIC_COPY);

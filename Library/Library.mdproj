@@ -2395,6 +2395,7 @@
     <None Include="Tests\ParticleSystems\Geometry.wrl" />
     <None Include="Tests\ParticleSystems\Bubbles.wrl" />
     <None Include="Tests\ParticleSystems\ExplosionEmitter.wrl" />
+    <None Include="Tests\Geometry3D\vertabrae.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

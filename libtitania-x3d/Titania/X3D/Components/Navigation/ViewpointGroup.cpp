@@ -148,6 +148,7 @@ void
 ViewpointGroup::set_children ()
 {
 	viewpointObjects .clear ();
+	viewpointObjects .reserve (children () .size ());
 
 	for (const auto & child : children ())
 	{

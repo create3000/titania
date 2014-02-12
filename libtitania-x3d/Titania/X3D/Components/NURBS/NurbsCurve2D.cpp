@@ -160,9 +160,8 @@ NurbsCurve2D::draw (GLUnurbs* nurbsRenderer) const
 	if (controlPoint () .size () < (size_t) order ())
 		return;
 
-	std::vector <float> knots = std::move (getKnots (knot (), order (), controlPoint () .size ()));
-
-	std::vector <Vector3f> controlPoints = std::move (getControlPoints ());
+	std::vector <float>    knots         = getKnots (knot (), order (), controlPoint () .size ());
+	std::vector <Vector3f> controlPoints = getControlPoints ();
 
 	gluNurbsCurve (nurbsRenderer,
 	               knots .size (), knots .data (),
