@@ -1,5 +1,12 @@
 2014-02-13  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Traverse.h:
+	* Parser.cpp:
+	* X3DChildObject.h:
+	* X3DNode.cpp: 
+
+2014-02-13  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* ParticleSystem.cpp: 
 
 2014-02-12  Holger Seelig  <holger.seelig@yahoo.de>

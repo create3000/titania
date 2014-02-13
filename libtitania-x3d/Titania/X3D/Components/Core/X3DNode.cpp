@@ -50,6 +50,7 @@
 
 #include "X3DNode.h"
 
+#include "../../Bits/Traverse.h"
 #include "../../Browser/X3DBrowser.h"
 
 namespace titania {
@@ -80,7 +81,7 @@ X3DNode::getScene () const
 std::vector <X3DLayerNode*>
 X3DNode::getLayers () const
 {
-	return findParents <X3DBrowser, X3DLayerNode> ();
+	return X3D::findParents <X3DLayerNode> (this);
 }
 
 X3DLayerNode*

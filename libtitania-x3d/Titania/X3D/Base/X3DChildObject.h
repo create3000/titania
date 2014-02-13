@@ -86,10 +86,6 @@ public:
 	bool
 	hasRoots (ChildObjectSet &);
 
-	template <class Root, class Type>
-	std::vector <Type*>
-	findParents () const;
-
 	///  @name Event Handling
 
 	void
@@ -168,50 +164,11 @@ private:
 
 	typedef std::vector <X3DChildObject*> ChildObjectArray;
 
-	template <class Root, class Type>
-	void
-	findParents (std::vector <Type*> &, ChildObjectSet &);
-
 	ChildObjectSet  parents;
 	X3DChildObject* root;
 	bool            tainted;
 
 };
-
-template <class Root, class Type>
-std::vector <Type*>
-X3DChildObject::findParents () const
-{
-	std::vector <Type*> parents;
-	ChildObjectSet      seen;
-
-	for (const auto & object : getParents ())
-		object -> findParents <Root, Type> (parents, seen);
-
-	return parents;
-}
-
-template <class Root, class Type>
-void
-X3DChildObject::findParents (std::vector <Type*> & parents, ChildObjectSet & seen)
-{
-	if (dynamic_cast <Root*> (this))
-		return;
-
-	if (not seen .emplace (this) .second)
-		return;
-
-	Type* parent = dynamic_cast <Type*> (this);
-
-	if (parent)
-	{
-		parents .push_back (parent);
-		return;
-	}
-
-	for (const auto & object : getParents ())
-		object -> findParents <Root, Type> (parents, seen);
-}
 
 } // X3D
 } // titania

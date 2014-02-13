@@ -93,7 +93,7 @@ basic_comment <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> &
 
 		while (istream)
 		{
-			int_type c = istream .peek ();
+			const int_type c = istream .peek ();
 
 			switch (c)
 			{

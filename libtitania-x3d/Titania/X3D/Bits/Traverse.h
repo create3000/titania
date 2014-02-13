@@ -51,8 +51,13 @@
 #ifndef __TITANIA_X3D_BITS_TRAVERSE_H__
 #define __TITANIA_X3D_BITS_TRAVERSE_H__
 
+#include "../Base/X3DChildObject.h"
+#include "../Execution/Scene.h"
+
 #include "../Fields/MFNode.h"
 #include "../Fields/SFNode.h"
+
+#include <vector>
 
 namespace titania {
 namespace X3D {
@@ -70,6 +75,52 @@ find (const X3D::MFNode &, X3DChildObject* const, const bool = true);
 
 std::vector <X3DChildObject*>
 find (const X3D::SFNode &, X3DChildObject* const, const bool = true);
+
+template <class Type>
+void
+findParents (X3DChildObject* const self, std::vector <Type*> & parents, ChildObjectSet & seen)
+{
+	if (not seen .emplace (self) .second)
+		return;
+
+	const auto basenode = dynamic_cast <X3DBaseNode*> (self);
+
+	if (basenode)
+	{
+		if (dynamic_cast <X3DScene*> (basenode))
+			return;
+
+		if (dynamic_cast <X3DBrowser*> (basenode))
+			return;
+
+		if (not dynamic_cast <X3DNode*> (basenode))
+			return;
+	}
+
+	Type* const parent = dynamic_cast <Type*> (self);
+
+	if (parent)
+	{
+		parents .emplace_back (parent);
+		return;
+	}
+
+	for (const auto & object : self -> getParents ())
+		X3D::findParents <Type> (object, parents, seen);
+}
+
+template <class Type>
+std::vector <Type*>
+findParents (const X3DNode* const self)
+{
+	std::vector <Type*> parents;
+	ChildObjectSet      seen;
+
+	for (const auto & object : self -> getParents ())
+		X3D::findParents <Type> (object, parents, seen);
+
+	return parents;
+}
 
 } // X3D
 } // titania

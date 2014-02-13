@@ -90,7 +90,7 @@ template <class CharT, class Traits>
 bool
 basic_string <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> & istream)
 {
-	auto state = istream .rdstate ();
+	const auto state = istream .rdstate ();
 
 	for (size_t i = 0; i < size; ++ i)
 	{

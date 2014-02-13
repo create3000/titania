@@ -289,7 +289,7 @@ Parser::x3dScene ()
 
 	popExecutionContext ();
 
-	if (istream .get () == std::char_traits <char>::eof ())
+	if (istream .peek () == std::char_traits <char>::eof ())
 		return;
 
 	throw Error <INVALID_X3D> ("Unknown statement.");
@@ -316,8 +316,6 @@ Parser::comment ()
 	if (Grammar::comment (istream, _comment))
 	{
 		currentComments .push_back (_comment);
-		whitespaces .push_back ('\n');
-
 		return true;
 	}
 
@@ -333,8 +331,6 @@ Parser::headerStatement (std::string & _encoding, std::string & _specificationVe
 
 	if (Grammar::comment (istream, _header))
 	{
-		whitespaces .push_back ('\n');
-
 		if (Grammar::Header .FullMatch (_header, &_encoding, &_specificationVersion, &_characterEncoding, &_comment))
 			return true;
 	}
@@ -1380,6 +1376,7 @@ Parser::scriptBodyElement (X3DBaseNode* const _basicNode)
 
 	auto state = istream .rdstate ();
 	auto pos   = istream .tellg ();
+	auto ws    = whitespaces .size ();
 
 	std::string _accessTypeId;
 
@@ -1478,10 +1475,13 @@ Parser::scriptBodyElement (X3DBaseNode* const _basicNode)
 				}
 			}
 		}
-	}
 
-	istream .clear (state);
-	istream .seekg (pos - istream .tellg (), std::ios_base::cur);
+		// Reset stream position.
+
+		istream .clear (state);
+		istream .seekg (pos - istream .tellg (), std::ios_base::cur);
+		whitespaces .resize (ws);
+	}
 
 	X3DFieldDefinition* _field = interfaceDeclaration ();
 
@@ -1902,7 +1902,10 @@ Parser::String (std::string & _value)
 	comments ();
 
 	if (Grammar::string (istream, _value))
+	{
+		whitespaces .append (_value);
 		return true;
+	}
 
 	istream .clear ();
 

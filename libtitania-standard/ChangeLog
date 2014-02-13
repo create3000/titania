@@ -1,3 +1,10 @@
+2014-02-13  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* String.h:
+	* Comment.h:
+	* Sequence.h:
+	* QuotedString.h: 
+
 2014-02-12  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Triangle3.h: 

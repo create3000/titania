@@ -89,7 +89,7 @@ basic_sequence <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> 
 {
 	while (istream)
 	{
-		int_type c = istream .peek ();
+		const int_type c = istream .peek ();
 
 		if (value .find (c) == value .end ())
 			break;
@@ -97,10 +97,7 @@ basic_sequence <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> 
 		string .push_back (istream .get ());
 	}
 
-	if (string .size ())
-		return true;
-
-	return false;
+	return not string .empty ();
 }
 
 typedef basic_sequence <char>    sequence;

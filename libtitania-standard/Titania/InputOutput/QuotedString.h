@@ -97,7 +97,7 @@ basic_quoted_string <CharT, Traits>::operator () (std::basic_istream <CharT, Tra
 
 		while (istream)
 		{
-			int_type c = istream .peek ();
+			const int_type c = istream .peek ();
 	
 			if (istream .eof ())
 			{
@@ -109,7 +109,7 @@ basic_quoted_string <CharT, Traits>::operator () (std::basic_istream <CharT, Tra
 			{
 				istream .get ();
 
-				c = istream .peek ();
+				const int_type c = istream .peek ();
 
 				if (istream .eof ())
 				{
