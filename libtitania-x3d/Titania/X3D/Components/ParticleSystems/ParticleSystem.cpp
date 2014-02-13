@@ -1487,7 +1487,7 @@ ParticleSystem::saveState ()
 
 	X3DShapeNode::saveState ();
 
-	if (enabled () and maxParticles ())
+	if (isActive () and maxParticles ())
 	{
 		getBrowser () -> prepareEvents () .removeInterest (this, &ParticleSystem::prepareEvents);
 		getBrowser () -> sensors ()       .removeInterest (this, &ParticleSystem::update);
@@ -1502,7 +1502,7 @@ ParticleSystem::restoreState ()
 
 	X3DShapeNode::restoreState ();
 
-	if (enabled () and maxParticles ())
+	if (isActive () and maxParticles ())
 	{
 		getBrowser () -> prepareEvents () .addInterest (this, &ParticleSystem::prepareEvents);
 		getBrowser () -> sensors ()       .addInterest (this, &ParticleSystem::update);
