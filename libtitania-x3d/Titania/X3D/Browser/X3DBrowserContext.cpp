@@ -285,6 +285,20 @@ X3DBrowserContext::getDownloadMutex ()
 }
 
 void
+X3DBrowserContext::lock ()
+{
+	for (auto & downloadMutex : downloadMutexes)
+		downloadMutex .lock ();
+}
+
+void
+X3DBrowserContext::unlock ()
+{
+	for (auto & downloadMutex : downloadMutexes)
+		downloadMutex .unlock ();
+}
+
+void
 X3DBrowserContext::set_activeLayer ()
 {
 	if (activeLayer not_eq getWorld () -> getActiveLayer ())
@@ -753,9 +767,6 @@ X3DBrowserContext::dispose ()
 
 X3DBrowserContext::~X3DBrowserContext ()
 {
-	for (auto & downloadMutex : downloadMutexes)
-		downloadMutex .lock ();
-
 	__LOG__ << std::endl;
 }
 

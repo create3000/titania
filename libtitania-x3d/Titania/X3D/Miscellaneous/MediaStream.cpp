@@ -79,7 +79,7 @@ MediaStream::MediaStream () :
 
 	// Construct
 
-	player = Gst::PlayBin2::create ("player");
+	player = Player::create ("player");
 	vsink  = Gst::XImageSink::create ("vsink");
 
 	player -> set_property ("video-sink", vsink);

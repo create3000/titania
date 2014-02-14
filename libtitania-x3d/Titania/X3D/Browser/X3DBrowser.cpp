@@ -456,6 +456,8 @@ X3DBrowser::dispose ()
 {
 	__LOG__ << this << std::endl;
 
+	lock ();
+
 	scene .dispose ();
 	world .dispose ();
 	root  .dispose ();
@@ -466,6 +468,8 @@ X3DBrowser::dispose ()
 	supportedProfiles   .dispose ();
 
 	X3DBrowserContext::dispose ();
+
+	unlock ();
 
 	__LOG__ << std::endl;
 }

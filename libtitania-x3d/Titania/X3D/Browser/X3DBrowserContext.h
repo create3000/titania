@@ -412,6 +412,12 @@ protected:
 	NavigationInfo*
 	getActiveNavigationInfo () const
 	{ return activeNavigationInfo; }
+	
+	void
+	lock ();
+	
+	void
+	unlock ();
 
 
 private:
