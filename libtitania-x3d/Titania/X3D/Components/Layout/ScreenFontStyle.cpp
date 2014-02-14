@@ -155,6 +155,9 @@ ScreenText::setTextBounds ()
 void
 ScreenText::build ()
 {
+	const bool topToBottom = fontStyle -> topToBottom ();
+	const bool leftToRight = fontStyle -> leftToRight ();
+
 	// Create context
 
 	auto surface = Cairo::ImageSurface::create (Cairo::FORMAT_ARGB32,
@@ -174,13 +177,22 @@ ScreenText::build ()
 	{
 		case X3DFontStyleNode::Alignment::BEGIN:
 		case X3DFontStyleNode::Alignment::FIRST:
+		{
+			if (not leftToRight)
+				alignment += Vector2d (text -> textBounds () .getX (), 0);
 			break;
+		}
 		case X3DFontStyleNode::Alignment::MIDDLE:
+		{
 			alignment += Vector2d (text -> textBounds () .getX () / 2, 0);
 			break;
+		}
 		case X3DFontStyleNode::Alignment::END:
-			alignment += Vector2d (text -> textBounds () .getX (), 0);
+		{
+			if (leftToRight)
+				alignment += Vector2d (text -> textBounds () .getX (), 0);
 			break;
+		}
 	}
 
 	auto                             font = context -> get_scaled_font ();
@@ -189,8 +201,6 @@ ScreenText::build ()
 	Cairo::TextClusterFlags          cluster_flags;
 
 	// Render lines.
-	const bool topToBottom = fontStyle -> topToBottom ();
-	const bool leftToRight = fontStyle -> leftToRight ();
 	const int  first       = topToBottom ? 0 : text -> string () .size () - 1;
 	const int  last        = topToBottom ? text -> string () .size () : -1;
 	const int  step        = topToBottom ? 1 : -1;

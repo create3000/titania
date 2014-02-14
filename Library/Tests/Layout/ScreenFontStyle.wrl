@@ -33,7 +33,7 @@ DEF Lena Anchor {
     children Shape {
       appearance Appearance {
         texture ImageTexture {
-          url [ "../../../Titania/share/titania/Library/Textures/People/lena.jpg", "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/People/lena.jpg" ]
+          url [ "../../../Titania/share/titania/Library/Textures/People/Lena.jpg", "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/People/Lena.jpg" ]
           repeatS FALSE
           repeatT FALSE
         }
@@ -78,13 +78,14 @@ DEF Text Transform {
         pointSize 11
         spacing 1.2
         justify [ "BEGIN", "BEGIN" ]
+        leftToRight FALSE
       }
     }
   }
 }
 
 DEF Debug Script {
-url "vrmlscript:
+  url "vrmlscript:
 function initialize ()
 {
 	var text = Browser .createVrmlFromString ('Text { string [\"M\", \"M\"] fontStyle ScreenFontStyle { pointSize 12 } }') [0];
