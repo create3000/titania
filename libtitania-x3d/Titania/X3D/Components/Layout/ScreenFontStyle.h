@@ -86,7 +86,7 @@ private:
 
 	virtual
 	void
-	getLineBounds (const std::string &, Vector2d &, Vector2d &) const final override;
+	getLineExtends (const String &, Vector2d &, Vector2d &) const final override;
 
 	void
 	setTextBounds ();

@@ -57,7 +57,7 @@ DEF Text1 Transform {
       fontStyle FontStyle {
         family "Ubuntu Mono"
         style "BOLDITALIC"
-        justify [ "BEGIN", "BEGIN" ]
+        justify [ "FIRST", "END" ]
       }
     }
   }
@@ -121,6 +121,7 @@ DEF YellowBox Transform {
 }
 
 DEF LineBounds Transform {
+  translation 0 3.65 0
   children [
     BBox2 {
       scale 0.505 0.495 1
@@ -145,6 +146,7 @@ DEF LineBounds Transform {
 }
 
 DEF TextBounds Transform {
+  translation 0 3.65 0
   scale 12 3.65 1
   children BBox2 { }
 }

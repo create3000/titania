@@ -50,8 +50,8 @@
 
 #include "FontStyle.h"
 
-#include "../Text/Text.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Text/Text.h"
 
 namespace titania {
 namespace X3D {
@@ -78,11 +78,16 @@ PolygonText::PolygonText (Text* const text, const FontStyle* const fontStyle) :
 }
 
 void
-PolygonText::getLineBounds (const std::string & line, Vector2d & min, Vector2d & max) const
+PolygonText::getLineExtends (const String & line, Vector2d & min, Vector2d & max) const
 {
-	FTBBox  ftbbox = fontStyle -> getPolygonFont () -> BBox (line .c_str ());
-	FTPoint ftmin  = ftbbox .Lower ();
-	FTPoint ftmax  = ftbbox .Upper ();
+	const bool leftToRight = fontStyle -> leftToRight ();
+
+	const FTBBox ftbbox = fontStyle -> getPolygonFont () -> BBox (leftToRight
+	                                                              ? line .c_str ()
+																					  : String (line .rbegin (), line .rend ()) .c_str ());
+
+	const FTPoint ftmin = ftbbox .Lower ();
+	const FTPoint ftmax = ftbbox .Upper ();
 
 	min = Vector2d (ftmin .X (), ftmin .Y ());
 	max = Vector2d (ftmax .X (), ftmax .Y ());
@@ -98,22 +103,29 @@ PolygonText::draw ()
 	{
 		glTranslatef (getMinorAlignment () .x (), getMinorAlignment () .y (), 0);
 
-		double size = fontStyle -> getScale ();
+		const double size = fontStyle -> getScale ();
 
 		glScalef (size, size, size);
 
 		// Render lines.
-		size_t i = 0;
+		const bool topToBottom = fontStyle -> topToBottom ();
+		const bool leftToRight = fontStyle -> leftToRight ();
+		const int  first       = topToBottom ? 0 : text -> string () .size () - 1;
+		const int  last        = topToBottom ? text -> string () .size () : -1;
+		const int  step        = topToBottom ? 1 : -1;
 
-		for (const auto & line : text -> string ())
+		for (int i = first; i not_eq last; i += step)
 		{
-			fontStyle -> getPolygonFont () -> Render (line .getValue () .c_str (),
+			const auto & line = text -> string () [i] .getValue ();
+
+			fontStyle -> getPolygonFont () -> Render (leftToRight
+	                                                ? line .c_str ()
+	                                                : String (line .rbegin (), line .rend ()) .c_str (),
 			                                          -1,
 			                                          FTPoint (getTranslation () [i] .x (), getTranslation () [i] .y (), 0),
 			                                          FTPoint (getCharSpacing () [i], 0, 0),
 			                                          FTGL::RENDER_ALL);
 
-			++ i;
 		}
 	}
 	glPopMatrix ();

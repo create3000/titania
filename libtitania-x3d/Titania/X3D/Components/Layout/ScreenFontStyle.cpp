@@ -85,7 +85,7 @@ ScreenText::ScreenText (Text* const text, const ScreenFontStyle* const fontStyle
 void
 ScreenText::configure (const Cairo::RefPtr <Cairo::Context> & context)
 {
-	ScreenFontPtr font = fontStyle -> getScreenFont ();
+	const ScreenFontPtr font = fontStyle -> getScreenFont ();
 	auto fontFace = Cairo::FtFontFace::create (font -> getPattern () .get ());
 
 	context -> set_font_face (fontFace);
@@ -98,11 +98,13 @@ ScreenText::configure (const Cairo::RefPtr <Cairo::Context> & context)
 }
 
 void
-ScreenText::getLineBounds (const std::string & line, Vector2d & min, Vector2d & max) const
+ScreenText::getLineExtends (const String & line, Vector2d & min, Vector2d & max) const
 {
+	const bool leftToRight = fontStyle -> leftToRight ();
+
 	Cairo::TextExtents textExtents;
 
-	context -> get_text_extents (line, textExtents);
+	context -> get_text_extents (leftToRight ? line : String (line .rbegin (), line .rend ()), textExtents);
 
 	min = Vector2d (textExtents .x_bearing, -textExtents .y_bearing - textExtents .height);
 	max = min + Vector2d (textExtents .width, textExtents .height);
@@ -186,35 +188,60 @@ ScreenText::build ()
 	std::vector <Cairo::TextCluster> clusters;
 	Cairo::TextClusterFlags          cluster_flags;
 
-	size_t i = 0;
+	// Render lines.
+	const bool topToBottom = fontStyle -> topToBottom ();
+	const bool leftToRight = fontStyle -> leftToRight ();
+	const int  first       = topToBottom ? 0 : text -> string () .size () - 1;
+	const int  last        = topToBottom ? text -> string () .size () : -1;
+	const int  step        = topToBottom ? 1 : -1;
 
-	for (const auto & line : text -> string ())
+	for (int i = first; i not_eq last; i += step)
 	{
+		const auto & line = text -> string () [i] .getValue ();
+
 		try
 		{
 			if (not line .empty ())
 			{
-				double x = alignment .x () + getTranslation () [i] .x ();
-				double y = -(alignment .y () + getTranslation () [i] .y ());
-
-				font -> text_to_glyphs (x, y, line, glyphs, clusters, cluster_flags);
-
-				double space       = 0;
-				double charSpacing = getCharSpacing () [i];
-
-				for (auto & glyph : glyphs)
+				const double x = alignment .x () + getTranslation () [i] .x ();
+				const double y = -(alignment .y () + getTranslation () [i] .y ());
+				
+				if (leftToRight)
 				{
-					glyph .x += space;
-					space    += charSpacing;
-				}
+					font -> text_to_glyphs (x, y, line, glyphs, clusters, cluster_flags);
 
-				context -> show_text_glyphs (line, glyphs, clusters, cluster_flags);
+					double       space       = 0;
+					const double charSpacing = getCharSpacing () [i];
+
+					for (auto & glyph : glyphs)
+					{
+						glyph .x += space;
+						space    += charSpacing;
+					}
+
+					context -> show_text_glyphs (line, glyphs, clusters, cluster_flags);
+				}
+				else
+				{
+					String reversed (line .rbegin (), line .rend ());
+	
+					font -> text_to_glyphs (x, y, reversed, glyphs, clusters, cluster_flags);
+
+					double       space       = 0;
+					const double charSpacing = getCharSpacing () [i];
+
+					for (auto & glyph : glyphs)
+					{
+						glyph .x += space;
+						space    += charSpacing;
+					}
+
+					context -> show_text_glyphs (reversed, glyphs, clusters, cluster_flags);
+				}
 			}
 		}
 		catch (...)
 		{ }
-
-		++ i;
 	}
 
 	//if (surface -> get_width () and surface -> get_height ())
@@ -222,15 +249,17 @@ ScreenText::build ()
 
 	// Set RGB to white
 
-	unsigned char* first = surface -> get_data ();
-	unsigned char* last  = first + 4 * surface -> get_width () * surface -> get_height ();
-
-	while (first < last)
 	{
-		*first ++ = 255;
-		*first ++ = 255;
-		*first ++ = 255;
-		++ first;
+		unsigned char* first = surface -> get_data ();
+		unsigned char* last  = first + 4 * surface -> get_width () * surface -> get_height ();
+
+		while (first not_eq last)
+		{
+			*first ++ = 255;
+			*first ++ = 255;
+			*first ++ = 255;
+			++ first;
+		}
 	}
 
 	// Upload texture
@@ -290,15 +319,15 @@ ScreenText::draw ()
 void
 ScreenText::scale () const
 {
-	Matrix4d modelViewMatrix = ModelViewMatrix4d ();
+	const Matrix4d modelViewMatrix = ModelViewMatrix4d ();
 
 	Vector3d   translation, scale;
 	Rotation4d rotation;
 
 	modelViewMatrix .get (translation, rotation, scale);
 
-	double   distance    = math::abs (modelViewMatrix .origin ());
-	Vector3f screenScale = fontStyle -> getCurrentViewpoint () -> getScreenScale (distance, Viewport4i ());
+	const double   distance    = math::abs (modelViewMatrix .origin ());
+	const Vector3f screenScale = fontStyle -> getCurrentViewpoint () -> getScreenScale (distance, Viewport4i ());
 
 	Matrix4d matrix;
 	matrix .set (translation, rotation, Vector3f (screenScale .x () * signum (scale .x ()),
@@ -382,8 +411,8 @@ ScreenFontStyle::getSize () const
 {
 	if (glXGetCurrentContext ())
 	{
-		double height   = Gdk::Screen::get_default () -> get_height ();
-		double height_m = Gdk::Screen::get_default () -> get_height_mm () / 1000.0;
+		const double height   = Gdk::Screen::get_default () -> get_height ();
+		const double height_m = Gdk::Screen::get_default () -> get_height_mm () / 1000.0;
 
 		return M_POINT * pointSize () * height / height_m;
 	}

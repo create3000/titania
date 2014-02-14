@@ -110,7 +110,7 @@ protected:
 
 	virtual
 	void
-	getLineBounds (const std::string &, Vector2d &, Vector2d &) const = 0;
+	getLineExtends (const String &, Vector2d &, Vector2d &) const = 0;
 
 	void
 	compile (Text* const);
@@ -123,7 +123,7 @@ protected:
 private:
 
 	void
-	getLineBounds (const X3DFontStyleNode* const, const std::string &, Vector2d &, Vector2d &) const;
+	getLineExtends (const X3DFontStyleNode* const, const String &, Vector2d &, Vector2d &) const;
 
 	Box3d bbox;
 
