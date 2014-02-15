@@ -70,14 +70,14 @@ DEF Text Transform {
       }
     }
     geometry Text {
-      string [ "", "ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ", "Aabcdefghijklmnopqrstuvwxyzäöü", "0123456789!\"§$%&/()=?", "Image of Lena" ]
-      length [ 0, 350, 350, 350 ]
-      maxExtent 300
+      string [ "ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ", "Aabcdefghijklmnopqrstuvwxyzäöü", "0123456789!\"§$%&/()=?", "Image of Lena", "اهلا وسهلا بكم في مطعم شادي الشرقي", "وبتقديم اكلات فلسطينيه بيتيه وشعبيه وباجود البهارت الفلسطينيه" ]
+      length [ 300, 300, 300 ]
       fontStyle ScreenFontStyle {
-        family [ "Test-XXX", "../../../Titania/share/titania/fonts/pt-sans/PTN57F.ttf", "SANS" ]
+        family [ "Test-XXX", "-../../../Titania/share/titania/fonts/pt-sans/PTN57F.ttf", "SANS" ]
         pointSize 11
         spacing 1.2
         justify [ "BEGIN", "BEGIN" ]
+        topToBottom FALSE
         leftToRight FALSE
       }
     }

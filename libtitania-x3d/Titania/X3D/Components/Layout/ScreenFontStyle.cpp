@@ -177,22 +177,13 @@ ScreenText::build ()
 	{
 		case X3DFontStyleNode::Alignment::BEGIN:
 		case X3DFontStyleNode::Alignment::FIRST:
-		{
-			if (not leftToRight)
-				alignment += Vector2d (text -> textBounds () .getX (), 0);
 			break;
-		}
 		case X3DFontStyleNode::Alignment::MIDDLE:
-		{
 			alignment += Vector2d (text -> textBounds () .getX () / 2, 0);
 			break;
-		}
 		case X3DFontStyleNode::Alignment::END:
-		{
-			if (leftToRight)
-				alignment += Vector2d (text -> textBounds () .getX (), 0);
+			alignment += Vector2d (text -> textBounds () .getX (), 0);
 			break;
-		}
 	}
 
 	auto                             font = context -> get_scaled_font ();
@@ -254,6 +245,7 @@ ScreenText::build ()
 		{ }
 	}
 
+	// Debug
 	//if (surface -> get_width () and surface -> get_height ())
 	//	surface -> write_to_png ("/home/holger/test.png");
 

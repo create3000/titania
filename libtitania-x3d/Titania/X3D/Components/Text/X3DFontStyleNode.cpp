@@ -86,7 +86,6 @@ X3DTextGeometry::initialize (Text* const text, const X3DFontStyleNode* const fon
 		Box2d bbox;
 
 		const bool   topToBottom = fontStyle -> topToBottom ();
-		const bool   leftToRight = fontStyle -> leftToRight ();
 		const double lineHeight  = fontStyle -> getLineHeight ();
 		const double scale       = fontStyle -> getScale ();
 
@@ -140,13 +139,13 @@ X3DTextGeometry::initialize (Text* const text, const X3DFontStyleNode* const fon
 			{
 				case X3DFontStyleNode::Alignment::BEGIN:
 				case X3DFontStyleNode::Alignment::FIRST:
-					translation [i] = Vector2d (leftToRight ? 0 : -min .x () - size .x (), -(lineNumber * lineHeight));
+					translation [i] = Vector2d (0, -(lineNumber * lineHeight));
 					break;
 				case X3DFontStyleNode::Alignment::MIDDLE:
 					translation [i] = Vector2d (-min .x () - size .x () / 2, -(lineNumber * lineHeight));
 					break;
 				case X3DFontStyleNode::Alignment::END:
-					translation [i] = Vector2d (leftToRight ? -min .x () - size .x () : 0, -(lineNumber * lineHeight));
+					translation [i] = Vector2d (-min .x () - size .x (), -(lineNumber * lineHeight));
 					break;
 			}
 
@@ -172,34 +171,17 @@ X3DTextGeometry::initialize (Text* const text, const X3DFontStyleNode* const fon
 		switch (fontStyle -> getMinorAlignment ())
 		{
 			case X3DFontStyleNode::Alignment::BEGIN:
-			{
-				if (topToBottom)
-					minorAlignment = Vector2d (0, -max .y ());
-				else
-					minorAlignment = Vector2d (0, (text -> string () .size () - 1) * lineHeight * scale); // END
+				minorAlignment = Vector2d (0, -max .y ());
 				break;
-			}
 			case X3DFontStyleNode::Alignment::FIRST:
-			{
-				if (topToBottom)
-					minorAlignment = Vector2d ();
-				else
-					minorAlignment = Vector2d (0, (text -> string () .size () - 1) * lineHeight * scale); // END
+				minorAlignment = Vector2d ();
 				break;
-			}
 			case X3DFontStyleNode::Alignment::MIDDLE:
-			{
 				minorAlignment = Vector2d (0, text -> textBounds () .getY () / 2 - max .y ());
 				break;
-			}
 			case X3DFontStyleNode::Alignment::END:
-			{
-				if (topToBottom)
-					minorAlignment = Vector2d (0, (text -> string () .size () - 1) * lineHeight * scale);
-				else
-					minorAlignment = Vector2d (0, -max .y ()); // BEGIN
+				minorAlignment = Vector2d (0, (text -> string () .size () - 1) * lineHeight * scale);
 				break;
-			}
 		}
 
 		// Translate bbox by minorAlignment
@@ -289,27 +271,50 @@ X3DFontStyleNode::initialize ()
 {
 	X3DNode::initialize ();
 
-	style ()   .addInterest (this, &X3DFontStyleNode::set_style);
-	justify () .addInterest (this, &X3DFontStyleNode::set_justify);
+	style ()       .addInterest (this, &X3DFontStyleNode::set_style);
+	justify ()     .addInterest (this, &X3DFontStyleNode::set_justify);
+	topToBottom () .addInterest (this, &X3DFontStyleNode::set_justify);
+	leftToRight () .addInterest (this, &X3DFontStyleNode::set_justify);
 
 	set_style ();
 	set_justify ();
 }
 
 X3DFontStyleNode::Alignment
-X3DFontStyleNode::getAlignment (const size_t index) const
+X3DFontStyleNode::getAlignment (const size_t index, const bool normal) const
 {
-	if (justify () [index] == "BEGIN")
-		return Alignment::BEGIN;
+	if (normal)
+	{
+		// Return for west-european normal alignment.
 
-	if (justify () [index] == "FIRST")
-		return Alignment::FIRST;
+		static const std::map <std::string, Alignment> alignments = {
+			std::make_pair ("BEGIN",  Alignment::BEGIN),
+			std::make_pair ("FIRST",  Alignment::FIRST),
+			std::make_pair ("MIDDLE", Alignment::MIDDLE),
+			std::make_pair ("END",    Alignment::END)
+		};
 
-	if (justify () [index] == "MIDDLE")
-		return Alignment::MIDDLE;
+		const auto alignment = alignments .find (justify () [index]);
 
-	if (justify () [index] == "END")
-		return Alignment::END;
+		if (alignment not_eq alignments .end ())
+			return alignment -> second;
+	}
+	else
+	{
+		// Return appropriate alignment if topToBottom or leftToRight are FALSE.
+
+		static const std::map <std::string, Alignment> ralignments = {
+			std::make_pair ("BEGIN",  Alignment::END),
+			std::make_pair ("FIRST",  Alignment::END),
+			std::make_pair ("MIDDLE", Alignment::MIDDLE),
+			std::make_pair ("END",    Alignment::BEGIN)
+		};
+
+		const auto ralignment = ralignments .find (justify () [index]);
+
+		if (ralignment not_eq ralignments .end ())
+			return ralignment -> second;
+	}
 
 	return index ? Alignment::FIRST : Alignment::BEGIN;
 }
@@ -375,12 +380,12 @@ void
 X3DFontStyleNode::set_justify ()
 {
 	alignments [0] = justify () .size () > 0
-	                 ? getAlignment (0)
-						  : Alignment::BEGIN;
+	                 ? getAlignment (0, leftToRight ())
+						  : leftToRight () ? Alignment::BEGIN : Alignment::END;
 
 	alignments [1] = justify () .size () > 1
-	                 ? getAlignment (1)
-						  : Alignment::FIRST;
+	                 ? getAlignment (1, topToBottom ())
+						  : topToBottom () ? Alignment::FIRST : Alignment::END;
 }
 
 } // X3D

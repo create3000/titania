@@ -267,7 +267,7 @@ private:
 	///  @name Member access
 
 	Alignment
-	getAlignment (const size_t) const;
+	getAlignment (const size_t, const bool) const;
 
 	///  @name Event handlers
 
