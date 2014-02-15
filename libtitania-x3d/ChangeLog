@@ -1,5 +1,11 @@
 2014-02-15  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Text.h:
+	* Text.cpp:
+	* X3DFontStyleNode.cpp: 
+
+2014-02-15  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DFontStyleNode.h:
 	* X3DFontStyleNode.cpp:
 	* ScreenFontStyle.cpp: 

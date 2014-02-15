@@ -76,7 +76,7 @@ Text::Text (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DGeometryNode (),
 	         fields (),
-	           text (),
+	   textGeometry (),
 	  fontStyleNode ()
 {
 	addField (inputOutput,    "metadata",   metadata ());
@@ -135,24 +135,23 @@ Text::getLength (const size_t index)
 Box3f
 Text::createBBox ()
 {
-	return text -> getBBox ();
+	return textGeometry -> getBBox ();
 }
 
 void
 Text::build ()
 {
-	//
+	// Let the fontStyle build the text geometry.
 
-	text = fontStyleNode -> getTextGeometry (this);
+	textGeometry = fontStyleNode -> getTextGeometry (this);
 
 	// We cannot access the geometry thus we add a simple rectangle to the geometry to enable picking.
 
-	Box3f bbox = text -> getBBox ();
+	const Box3f bbox = textGeometry -> getBBox ();
 
-	auto size1_2 = bbox .size () / 2.0f;
-	auto center  = bbox .center ();
-	auto min     = center - size1_2;
-	auto max     = center + size1_2;
+	Vector3f min, max;
+
+	bbox .extends (min, max);
 
 	getTexCoords () .emplace_back ();
 
@@ -178,13 +177,13 @@ Text::build ()
 void
 Text::draw ()
 {
-	text -> display ();
+	textGeometry -> display ();
 }
 
 void
 Text::dispose ()
 {
-	text .reset ();
+	textGeometry .reset ();
 	fontStyleNode .dispose ();
 
 	X3DGeometryNode::dispose ();

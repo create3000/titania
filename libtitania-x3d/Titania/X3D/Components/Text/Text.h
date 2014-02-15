@@ -159,7 +159,7 @@ public:
 	virtual
 	bool
 	isTransparent () const
-	{ return text -> isTransparent (); }
+	{ return textGeometry -> isTransparent (); }
 
 	virtual
 	bool
@@ -231,7 +231,7 @@ private:
 
 	Fields fields;
 
-	std::shared_ptr <X3DTextGeometry> text;
+	std::shared_ptr <X3DTextGeometry> textGeometry;
 	X3DSFNode <X3DFontStyleNode>      fontStyleNode;
 
 };

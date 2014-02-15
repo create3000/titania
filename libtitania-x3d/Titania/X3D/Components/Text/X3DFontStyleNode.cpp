@@ -70,9 +70,11 @@ X3DTextGeometry::X3DTextGeometry () :
 void
 X3DTextGeometry::initialize (Text* const text, const X3DFontStyleNode* const fontStyle)
 {
-	text -> lineBounds () .resize (text -> string () .size ());
-	charSpacings .resize (text -> string () .size ());
-	translation  .resize (text -> string () .size ());
+	const size_t numLines = text -> string () .size ();
+
+	text -> lineBounds () .resize (numLines);
+	charSpacings .resize (numLines);
+	translation  .resize (numLines);
 
 	if (text -> string () .empty ())
 	{
@@ -91,8 +93,8 @@ X3DTextGeometry::initialize (Text* const text, const X3DFontStyleNode* const fon
 
 		// Calculate bboxes.
 
-		const int first = topToBottom ? 0 : text -> string () .size () - 1;
-		const int last  = topToBottom ? text -> string () .size () : -1;
+		const int first = topToBottom ? 0 : numLines - 1;
+		const int last  = topToBottom ? numLines : -1;
 		const int step  = topToBottom ? 1 : -1;
 
 		for (int i = first; i not_eq last; i += step)
@@ -133,7 +135,7 @@ X3DTextGeometry::initialize (Text* const text, const X3DFontStyleNode* const fon
 
 			// Calculate line translation.
 			
-			const size_t lineNumber = topToBottom ? i : text -> string () .size () - i - 1;
+			const size_t lineNumber = topToBottom ? i : numLines - i - 1;
 
 			switch (fontStyle -> getMajorAlignment ())
 			{
@@ -180,7 +182,7 @@ X3DTextGeometry::initialize (Text* const text, const X3DFontStyleNode* const fon
 				minorAlignment = Vector2d (0, text -> textBounds () .getY () / 2 - max .y ());
 				break;
 			case X3DFontStyleNode::Alignment::END:
-				minorAlignment = Vector2d (0, (text -> string () .size () - 1) * lineHeight * scale);
+				minorAlignment = Vector2d (0, (numLines - 1) * lineHeight * scale);
 				break;
 		}
 
