@@ -80,14 +80,14 @@ SpiderMonkey::initialize ()
 {
 	X3DJavaScriptEngine::initialize ();
 
-	JSRuntime* javaScriptRuntime = JS_NewRuntime (64 * 1024 * 1024); // 64 MB runtime memory
+	JSRuntime* const javaScriptRuntime = JS_NewRuntime (64 * 1024 * 1024); // 64 MB runtime memory
 
 	if (javaScriptRuntime)
 	{
 		vendor = "Mozilla Foundation";
 		name   = "SpiderMonkey";
 
-		JSContext* javaScriptContext = JS_NewContext (javaScriptRuntime, 1024);
+		JSContext* const javaScriptContext = JS_NewContext (javaScriptRuntime, 1024);
 
 		if (javaScriptContext)
 		{

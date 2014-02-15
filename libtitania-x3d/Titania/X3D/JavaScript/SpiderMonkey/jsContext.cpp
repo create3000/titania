@@ -99,7 +99,7 @@ JSClass jsContext::global_class = {
 
 };
 
-jsContext::jsContext (Script* script, const std::string & ecmascript, const basic::uri & uri, size_t index) :
+jsContext::jsContext (Script* const script, const std::string & ecmascript, const basic::uri & uri, const size_t index) :
 	         X3DBaseNode (script -> getBrowser (), script -> getExecutionContext ()),
 	X3DJavaScriptContext (),
 	             runtime (nullptr),
@@ -299,11 +299,11 @@ jsContext::addUserDefinedField (X3DFieldDefinition* const field)
 }
 
 void
-jsContext::defineProperty (JSContext* context,
-                           JSObject* obj,
+jsContext::defineProperty (JSContext* const context,
+                           JSObject* const obj,
                            X3DFieldDefinition* const field,
                            const std::string & name,
-                           uintN attrs)
+                           const uintN attrs)
 {
 	switch (field -> getType ())
 	{
@@ -347,9 +347,9 @@ jsContext::initEventHandler ()
 			case inputOnly   :
 			case inputOutput :
 				{
-					jsval function = field -> getAccessType () == inputOnly
-					                 ? getFunction (field -> getName ())
-										  : getFunction ("set_" + field -> getName ());
+					const jsval function = field -> getAccessType () == inputOnly
+					                       ? getFunction (field -> getName ())
+										        : getFunction ("set_" + field -> getName ());
 
 					if (not JSVAL_IS_VOID (function))
 					{
@@ -372,9 +372,9 @@ jsContext::getBuildInProperty (JSContext* context, JSObject* obj, jsid id, jsval
 
 	if (JS_IdToValue (context, id, &name))
 	{
-		jsContext*          javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
-		Script*             script     = javaScript -> getNode ();
-		X3DFieldDefinition* field      = script -> getField (JS_GetString (context, name));
+		jsContext* const          javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
+		Script* const             script     = javaScript -> getNode ();
+		X3DFieldDefinition* const field      = script -> getField (JS_GetString (context, name));
 
 		return JS_NewFieldValue (context, field, vp);
 	}
@@ -389,7 +389,7 @@ jsContext::getProperty (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 
 	if (JS_IdToValue (context, id, &name))
 	{
-		jsContext* javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
+		jsContext* const javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
 
 		*vp = javaScript -> fields [JS_GetString (context, name)];
 		return JS_TRUE;
@@ -405,9 +405,9 @@ jsContext::setProperty (JSContext* context, JSObject* obj, jsid id, JSBool stric
 
 	if (JS_IdToValue (context, id, &name))
 	{
-		Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+		Script* const script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
-		X3DFieldDefinition* field = script -> getField (JS_GetString (context, name));
+		X3DFieldDefinition* const field = script -> getField (JS_GetString (context, name));
 
 		return JS_ValueToField (context, field, vp);
 	}
@@ -422,11 +422,11 @@ jsContext::require (const basic::uri & uri, jsval & rval)
 	{
 		// Resolve uri
 
-		basic::uri resolvedURL = worldURL .back () .transform (uri);
+		const basic::uri resolvedURL = worldURL .back () .transform (uri);
 
 		// Get cached result
 
-		auto file = files .find (resolvedURL);
+		const auto file = files .find (resolvedURL);
 
 		if (file not_eq files .end ())
 		{
@@ -436,13 +436,13 @@ jsContext::require (const basic::uri & uri, jsval & rval)
 
 		// Load document
 
-		std::string document = Loader (getExecutionContext ()) .loadDocument (resolvedURL);
+		const std::string document = Loader (getExecutionContext ()) .loadDocument (resolvedURL);
 
 		// Evaluate script
 
 		worldURL .emplace_back (resolvedURL);
 
-		auto success = evaluate (document, resolvedURL, rval);
+		const auto success = evaluate (document, resolvedURL, rval);
 
 		worldURL .pop_back ();
 
@@ -486,11 +486,11 @@ jsContext::evaluate (const std::string & string, const std::string & filename, j
 		return JS_FALSE;
 	}
 
-	JSBool retval = JS_EvaluateUCScript (context, global,
-	                                     utf16_string, items_written,
-	                                     filename .empty () ? nullptr : filename .c_str (),
-	                                     1,
-	                                     &rval);
+	const JSBool retval = JS_EvaluateUCScript (context, global,
+	                                           utf16_string, items_written,
+	                                           filename .empty () ? nullptr : filename .c_str (),
+	                                           1,
+	                                           &rval);
 
 	g_free (utf16_string);
 
@@ -498,32 +498,13 @@ jsContext::evaluate (const std::string & string, const std::string & filename, j
 }
 
 void
-jsContext::set_field (X3DFieldDefinition* field)
+jsContext::set_field (X3DFieldDefinition* const field)
 {
 	//std::lock_guard <std::mutex> lock (mutex);
 
 	field -> isTainted (true);
 
 	jsval argv [2];
-
-	//	switch (field -> getType ())
-	//	{
-	//		case X3DConstants::SFBool:
-	//		case X3DConstants::SFDouble:
-	//		case X3DConstants::SFFloat:
-	//		case X3DConstants::SFInt32:
-	//		case X3DConstants::SFString:
-	//		case X3DConstants::SFTime:
-	//		{
-	//			JS_NewFieldValue (context, field, &argv [0], true);
-	//			break;
-	//		}
-	//		default:
-	//		{
-	//			JS_NewFieldValue (context, field -> clone (), &argv [0], true);
-	//			break;
-	//		}
-	//	}
 
 	JS_NewFieldValue (context, field, &argv [0], true);
 	JS_NewNumberValue (context, getCurrentTime (), &argv [1]);
@@ -613,7 +594,7 @@ jsContext::callFunction (jsval function) const
 }
 
 void
-jsContext::addObject (X3DFieldDefinition* field, JSObject* object)
+jsContext::addObject (X3DFieldDefinition* const field, JSObject* const object)
 {
 	if (not objects .emplace (field, object) .second)
 		throw Error <INVALID_FIELD> ("Object already exists in jsContext.");
@@ -622,14 +603,14 @@ jsContext::addObject (X3DFieldDefinition* field, JSObject* object)
 }
 
 void
-jsContext::removeObject (X3DFieldDefinition* field)
+jsContext::removeObject (X3DFieldDefinition* const field)
 {
 	if (objects .erase (field))
 		field -> removeParent (this);
 }
 
 JSObject*
-jsContext::getObject (X3DFieldDefinition* field)
+jsContext::getObject (X3DFieldDefinition* const field)
 {
 	return objects .at (field);
 }

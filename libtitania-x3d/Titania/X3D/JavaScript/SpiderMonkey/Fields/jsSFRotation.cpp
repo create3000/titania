@@ -98,7 +98,7 @@ JSFunctionSpec jsSFRotation::functions [ ] = {
 };
 
 void
-jsSFRotation::init (JSContext* context, JSObject* global)
+jsSFRotation::init (JSContext* const context, JSObject* const global)
 {
 	JSObject* proto = JS_InitClass (context, global, NULL, &static_class, construct,
 	                                0, properties, functions, NULL, NULL);
@@ -110,9 +110,9 @@ jsSFRotation::init (JSContext* context, JSObject* global)
 }
 
 JSBool
-jsSFRotation::create (JSContext* context, SFRotation4f* field, jsval* vp, const bool seal)
+jsSFRotation::create (JSContext* const context, SFRotation4f* const field, jsval* const vp, const bool seal)
 {
-	auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
+	const auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
 
 	try
 	{
@@ -120,7 +120,7 @@ jsSFRotation::create (JSContext* context, SFRotation4f* field, jsval* vp, const 
 	}
 	catch (const std::out_of_range &)
 	{
-		JSObject* result = JS_NewObject (context, &static_class, NULL, NULL);
+		JSObject* const result = JS_NewObject (context, &static_class, NULL, NULL);
 
 		if (result == NULL)
 			return JS_FALSE;
@@ -149,7 +149,7 @@ jsSFRotation::construct (JSContext* context, uintN argc, jsval* vp)
 	{
 		JSObject* obj2 = nullptr;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ValueToObject (context, argv [0], &obj2))
 			return JS_FALSE;
@@ -172,13 +172,13 @@ jsSFRotation::construct (JSContext* context, uintN argc, jsval* vp)
 				return JS_FALSE;
 			}
 
-			SFVec3f* vector = (SFVec3f*) JS_GetPrivate (context, obj2);
+			SFVec3f* const vector = (SFVec3f*) JS_GetPrivate (context, obj2);
 
 			return create (context, new SFRotation (*vector, angle), &JS_RVAL (context, vp));
 		}
 
-		SFVec3f* fromVec = (SFVec3f*) JS_GetPrivate (context, obj2);
-		SFVec3f* toVec   = (SFVec3f*) JS_GetPrivate (context, obj3);
+		SFVec3f* const fromVec = (SFVec3f*) JS_GetPrivate (context, obj2);
+		SFVec3f* const toVec   = (SFVec3f*) JS_GetPrivate (context, obj3);
 
 		return create (context, new SFRotation (*fromVec, *toVec), &JS_RVAL (context, vp));
 	}
@@ -186,7 +186,7 @@ jsSFRotation::construct (JSContext* context, uintN argc, jsval* vp)
 	{
 		jsdouble x, y, z, angle;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "dddd", &x, &y, &z, &angle))
 			return JS_FALSE;
@@ -252,7 +252,7 @@ jsSFRotation::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op,
 JSBool
 jsSFRotation::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	SFRotation4f* sfrotation = (SFRotation4f*) JS_GetPrivate (context, obj);
+	SFRotation4f* const sfrotation = (SFRotation4f*) JS_GetPrivate (context, obj);
 
 	return JS_NewNumberValue (context, sfrotation -> get1Value (JSID_TO_INT (id)), vp);
 }
@@ -260,7 +260,7 @@ jsSFRotation::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 JSBool
 jsSFRotation::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
-	SFRotation4f* sfrotation = (SFRotation4f*) JS_GetPrivate (context, obj);
+	SFRotation4f* const sfrotation = (SFRotation4f*) JS_GetPrivate (context, obj);
 
 	jsdouble value;
 
@@ -277,7 +277,7 @@ jsSFRotation::getAxis (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		SFRotation4f* sfrotation = (SFRotation4f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		SFRotation4f* const sfrotation = (SFRotation4f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		return jsSFVec3f::create (context, sfrotation -> getAxis (), &JS_RVAL (context, vp));
 	}
@@ -292,11 +292,11 @@ jsSFRotation::setAxis (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		SFRotation4f* sfrotation = (SFRotation4f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		SFRotation4f* const sfrotation = (SFRotation4f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		JSObject* obj = nullptr;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "o", &obj))
 			return JS_FALSE;
@@ -304,7 +304,7 @@ jsSFRotation::setAxis (JSContext* context, uintN argc, jsval* vp)
 		if (JS_InstanceOfError (context, obj, jsSFVec3f::getClass ()))
 			return JS_FALSE;
 
-		SFVec3f* sfvec3f = (SFVec3f*) JS_GetPrivate (context, obj);
+		SFVec3f* const sfvec3f = (SFVec3f*) JS_GetPrivate (context, obj);
 
 		sfrotation -> setAxis (*sfvec3f);
 
@@ -323,7 +323,7 @@ jsSFRotation::inverse (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		SFRotation4f* sfrotation = (SFRotation4f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		SFRotation4f* const sfrotation = (SFRotation4f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		return create (context, sfrotation -> inverse (), &JS_RVAL (context, vp));
 	}
@@ -338,11 +338,11 @@ jsSFRotation::multiply (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		SFRotation4f* sfrotation1 = (SFRotation4f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		SFRotation4f* const sfrotation1 = (SFRotation4f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		JSObject* obj = nullptr;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "o", &obj))
 			return JS_FALSE;
@@ -350,7 +350,7 @@ jsSFRotation::multiply (JSContext* context, uintN argc, jsval* vp)
 		if (JS_InstanceOfError (context, obj, getClass ()))
 			return JS_FALSE;
 
-		SFRotation4f* sfrotation2 = (SFRotation4f*) JS_GetPrivate (context, obj);
+		SFRotation4f* const sfrotation2 = (SFRotation4f*) JS_GetPrivate (context, obj);
 
 		return create (context, sfrotation1 -> multiply (*sfrotation2), &JS_RVAL (context, vp));
 	}
@@ -365,11 +365,11 @@ jsSFRotation::multVec (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		SFRotation4f* sfrotation = (SFRotation4f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		SFRotation4f* const sfrotation = (SFRotation4f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		JSObject* obj = nullptr;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "o", &obj))
 			return JS_FALSE;
@@ -390,7 +390,7 @@ jsSFRotation::multVec (JSContext* context, uintN argc, jsval* vp)
 		if (JS_InstanceOfError (context, obj, jsSFVec3d::getClass ()))
 			return JS_FALSE;
 
-		SFVec3d* sfvec3d = (SFVec3d*) JS_GetPrivate (context, obj);
+		SFVec3d* const sfvec3d = (SFVec3d*) JS_GetPrivate (context, obj);
 
 		return jsSFVec3d::create (context, SFRotation4d (sfrotation -> getValue ()) .multVec (*sfvec3d), &JS_RVAL (context, vp));
 	}
@@ -407,12 +407,12 @@ jsSFRotation::slerp (JSContext* context, uintN argc, jsval* vp)
 	{
 		try
 		{
-			SFRotation4f* sfrotation = (SFRotation4f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+			SFRotation4f* const sfrotation = (SFRotation4f*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 			JSObject* obj = nullptr;
 			jsdouble  t;
 
-			jsval* argv = JS_ARGV (context, vp);
+			jsval* const argv = JS_ARGV (context, vp);
 
 			if (not JS_ConvertArguments (context, argc, argv, "od", &obj, &t))
 				return JS_FALSE;
@@ -420,7 +420,7 @@ jsSFRotation::slerp (JSContext* context, uintN argc, jsval* vp)
 			if (JS_InstanceOfError (context, obj, getClass ()))
 				return JS_FALSE;
 
-			SFRotation4f* dest = (SFRotation4f*) JS_GetPrivate (context, obj);
+			SFRotation4f* const dest = (SFRotation4f*) JS_GetPrivate (context, obj);
 
 			return create (context, sfrotation -> slerp (*dest, t), &JS_RVAL (context, vp));
 		}

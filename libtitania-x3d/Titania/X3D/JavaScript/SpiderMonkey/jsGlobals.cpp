@@ -80,7 +80,7 @@ JSFunctionSpec jsGlobals::functions [ ] = {
 jsval jsGlobals::X3D_JS_NULL = JSVAL_VOID;
 
 void
-jsGlobals::init (JSContext* context, JSObject* global)
+jsGlobals::init (JSContext* const context, JSObject* const global)
 {
 	JS_DefineProperties (context, global, properties);
 	JS_DefineFunctions (context, global, functions);
@@ -112,12 +112,12 @@ jsGlobals::_true (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 JSBool
 jsGlobals::require (JSContext* context, uintN argc, jsval* vp)
 {
-	auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
+	const auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
 
 	JSBool success = JS_FALSE;
 
-	jsval* argv = JS_ARGV (context, vp);
-	jsval  rval = JSVAL_VOID;
+	jsval* const argv = JS_ARGV (context, vp);
+	jsval        rval = JSVAL_VOID;
 
 	for (uintN i = 0; i < argc; ++ i)
 	{
@@ -135,9 +135,9 @@ jsGlobals::require (JSContext* context, uintN argc, jsval* vp)
 JSBool
 jsGlobals::print (JSContext* context, uintN argc, jsval* vp)
 {
-	X3DBrowser* browser = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getBrowser ();
+	X3DBrowser* const browser = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getBrowser ();
 
-	jsval* argv = JS_ARGV (context, vp);
+	jsval* const argv = JS_ARGV (context, vp);
 
 	for (uintN i = 0; i < argc; ++ i)
 		browser -> print (JS_GetString (context, argv [i]));

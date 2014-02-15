@@ -72,16 +72,16 @@ JSPropertySpec jsX3DFieldDefinition::properties [ ] = {
 };
 
 void
-jsX3DFieldDefinition::init (JSContext* context, JSObject* global)
+jsX3DFieldDefinition::init (JSContext* const context, JSObject* const global)
 {
 	JS_InitClass (context, global, NULL, &static_class, NULL,
 	              0, properties, NULL, NULL, NULL);
 }
 
 JSBool
-jsX3DFieldDefinition::create (JSContext* context, X3DFieldDefinition* field, jsval* vp, const bool seal)
+jsX3DFieldDefinition::create (JSContext* const context, X3DFieldDefinition* const field, jsval* const vp, const bool seal)
 {
-	JSObject* result = JS_NewObject (context, &static_class, NULL, NULL);
+	JSObject* const result = JS_NewObject (context, &static_class, NULL, NULL);
 
 	if (result == NULL)
 		return JS_FALSE;
@@ -99,7 +99,7 @@ jsX3DFieldDefinition::create (JSContext* context, X3DFieldDefinition* field, jsv
 JSBool
 jsX3DFieldDefinition::name (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	auto field = static_cast <X3DFieldDefinition*> (JS_GetPrivate (context, obj));
+	const auto field = static_cast <X3DFieldDefinition*> (JS_GetPrivate (context, obj));
 
 	return JS_NewStringValue (context, field -> getName (), vp);
 }
@@ -107,7 +107,7 @@ jsX3DFieldDefinition::name (JSContext* context, JSObject* obj, jsid id, jsval* v
 JSBool
 jsX3DFieldDefinition::accessType (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	auto field = static_cast <X3DFieldDefinition*> (JS_GetPrivate (context, obj));
+	const auto field = static_cast <X3DFieldDefinition*> (JS_GetPrivate (context, obj));
 
 	return JS_NewNumberValue (context, field -> getAccessType (), vp);
 }
@@ -115,7 +115,7 @@ jsX3DFieldDefinition::accessType (JSContext* context, JSObject* obj, jsid id, js
 JSBool
 jsX3DFieldDefinition::dataType (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	auto field = static_cast <X3DFieldDefinition*> (JS_GetPrivate (context, obj));
+	const auto field = static_cast <X3DFieldDefinition*> (JS_GetPrivate (context, obj));
 
 	return JS_NewNumberValue (context, field -> getType (), vp);
 }
@@ -123,8 +123,8 @@ jsX3DFieldDefinition::dataType (JSContext* context, JSObject* obj, jsid id, jsva
 void
 jsX3DFieldDefinition:: finalize (JSContext* context, JSObject* obj)
 {
-	auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
-	auto field      = static_cast <X3DFieldDefinition*> (JS_GetPrivate (context, obj));
+	const auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
+	const auto field      = static_cast <X3DFieldDefinition*> (JS_GetPrivate (context, obj));
 
 	// Proto objects have no private
 

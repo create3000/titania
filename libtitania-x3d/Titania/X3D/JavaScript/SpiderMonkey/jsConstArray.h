@@ -63,11 +63,11 @@ public:
 
 	static
 	void
-	init (JSContext*, JSObject*);
+	init (JSContext* const, JSObject* const);
 
 	static
 	JSBool
-	create (JSContext*, const Type*, jsval*, const bool = false);
+	create (JSContext* const, const Type* const, jsval* const, const bool = false);
 
 	static
 	JSClass*
@@ -116,7 +116,7 @@ JSFunctionSpec jsConstArray <Type, ValueType>::functions [ ] = {
 
 template <class Type, class ValueType>
 void
-jsConstArray <Type, ValueType>::init (JSContext* context, JSObject* global)
+jsConstArray <Type, ValueType>::init (JSContext* const context, JSObject* const global)
 {
 	JS_InitClass (context, global, NULL, &static_class, NULL,
 	              0, properties, functions, NULL, NULL);
@@ -124,9 +124,9 @@ jsConstArray <Type, ValueType>::init (JSContext* context, JSObject* global)
 
 template <class Type, class ValueType>
 JSBool
-jsConstArray <Type, ValueType>::create (JSContext* context, const Type* array, jsval* vp, const bool seal)
+jsConstArray <Type, ValueType>::create (JSContext* const context, const Type* const array, jsval* const vp, const bool seal)
 {
-	JSObject* result = JS_NewObject (context, &static_class, NULL, NULL);
+	JSObject* const result = JS_NewObject (context, &static_class, NULL, NULL);
 
 	if (result == NULL)
 		return JS_FALSE;
@@ -145,7 +145,7 @@ template <class Type, class ValueType>
 JSBool
 jsConstArray <Type, ValueType>::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op, jsval* statep, jsid* idp)
 {
-	auto array = static_cast <Type*> (JS_GetPrivate (context, obj));
+	const auto array = static_cast <Type*> (JS_GetPrivate (context, obj));
 
 	if (not array)
 	{
@@ -201,9 +201,9 @@ jsConstArray <Type, ValueType>::get1Value (JSContext* context, JSObject* obj, js
 	if (not JSID_IS_INT (id))
 		return JS_TRUE;
 
-	int32 index = JSID_TO_INT (id);
+	const int32 index = JSID_TO_INT (id);
 
-	auto array = static_cast <Type*> (JS_GetPrivate (context, obj));
+	const auto array = static_cast <Type*> (JS_GetPrivate (context, obj));
 
 	if (index < 0 and index >= (int32) array -> size ())
 	{
@@ -218,7 +218,7 @@ template <class Type, class ValueType>
 JSBool
 jsConstArray <Type, ValueType>::length (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	auto array = static_cast <Type*> (JS_GetPrivate (context, obj));
+	const auto array = static_cast <Type*> (JS_GetPrivate (context, obj));
 
 	return JS_NewNumberValue (context, array -> size (), vp);
 }

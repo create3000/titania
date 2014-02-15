@@ -85,21 +85,21 @@ JSFunctionSpec jsX3DScene::functions [ ] = {
 };
 
 void
-jsX3DScene::init (JSContext* context, JSObject* global, JSObject* executionContext)
+jsX3DScene::init (JSContext* const context, JSObject* const global, JSObject* const executionContext)
 {
 	JS_InitClass (context, global, executionContext, &static_class, NULL,
 	              0, properties, functions, NULL, NULL);
 }
 
 JSBool
-jsX3DScene::create (JSContext* context, X3DScene* scene, jsval* vp, const bool seal)
+jsX3DScene::create (JSContext* const context, X3DScene* const scene, jsval* const vp, const bool seal)
 {
-	JSObject* result = JS_NewObject (context, &static_class, NULL, NULL);
+	JSObject* const result = JS_NewObject (context, &static_class, NULL, NULL);
 
 	if (result == NULL)
 		return JS_FALSE;
 
-	auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
+	const auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
 
 	if (scene not_eq javaScript -> getExecutionContext ())
 		scene -> addParent (javaScript);
@@ -119,7 +119,7 @@ jsX3DScene::rootNodes (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	// Differs from X3DExecutionContext rootNodes!!!
 
-	auto scene = static_cast <X3DScene*> (JS_GetPrivate (context, obj));
+	const auto scene = static_cast <X3DScene*> (JS_GetPrivate (context, obj));
 
 	return jsMFNode::create (context, &scene -> getRootNodes (), vp, true);
 }
@@ -127,7 +127,7 @@ jsX3DScene::rootNodes (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 JSBool
 jsX3DScene::rootNodes (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
-	auto scene = static_cast <X3DScene*> (JS_GetPrivate (context, obj));
+	const auto scene = static_cast <X3DScene*> (JS_GetPrivate (context, obj));
 
 	JSObject* omfnode = nullptr;
 
@@ -147,15 +147,15 @@ jsX3DScene::setMetaData (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 2)
 	{
-		JSString* key;
-		JSString* value;
+		JSString* key   = nullptr;
+		JSString* value = nullptr;
 
 		jsval* argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "SS", &key, &value))
 			return JS_FALSE;
 
-		auto scene = static_cast <X3DScene*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+		const auto scene = static_cast <X3DScene*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
 
 		scene -> setMetaData (JS_GetString (context, key), JS_GetString (context, value));
 
@@ -174,7 +174,7 @@ jsX3DScene::getMetaData (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		JSString* key;
+		JSString* key = nullptr;
 
 		jsval* argv = JS_ARGV (context, vp);
 
@@ -183,7 +183,7 @@ jsX3DScene::getMetaData (JSContext* context, uintN argc, jsval* vp)
 
 		try
 		{
-			auto scene = static_cast <X3DScene*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+			const auto scene = static_cast <X3DScene*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
 
 			return JS_NewStringValue (context, scene -> getMetaData (JS_GetString (context, key)), &JS_RVAL (context, vp));
 		}
@@ -203,10 +203,10 @@ jsX3DScene::addExportedNode (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 2)
 	{
-		JSString* exportedName;
-		JSObject* oNode = nullptr;
+		JSString* exportedName = nullptr;
+		JSObject* oNode        = nullptr;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "So", &exportedName, &oNode))
 			return JS_FALSE;
@@ -218,7 +218,7 @@ jsX3DScene::addExportedNode (JSContext* context, uintN argc, jsval* vp)
 
 		try
 		{
-			auto scene = static_cast <X3DScene*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+			const auto scene = static_cast <X3DScene*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
 
 			scene -> addExportedNode (JS_GetString (context, exportedName), node);
 
@@ -243,7 +243,7 @@ jsX3DScene::removeExportedNode (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		JSString* exportedName;
+		JSString* exportedName = nullptr;
 
 		jsval* argv = JS_ARGV (context, vp);
 
@@ -252,7 +252,7 @@ jsX3DScene::removeExportedNode (JSContext* context, uintN argc, jsval* vp)
 
 		try
 		{
-			auto scene = static_cast <X3DScene*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+			const auto scene = static_cast <X3DScene*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
 
 			scene -> removeImportedNode (JS_GetString (context, exportedName));
 
@@ -277,10 +277,10 @@ jsX3DScene::updateExportedNode (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 2)
 	{
-		JSString* exportedName;
-		JSObject* oNode = nullptr;
+		JSString* exportedName = nullptr;
+		JSObject* oNode        = nullptr;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "So", &exportedName, &oNode))
 			return JS_FALSE;
@@ -292,7 +292,7 @@ jsX3DScene::updateExportedNode (JSContext* context, uintN argc, jsval* vp)
 
 		try
 		{
-			auto scene = static_cast <X3DScene*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+			const auto scene = static_cast <X3DScene*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
 
 			scene -> updateExportedNode (JS_GetString (context, exportedName), node);
 
@@ -317,16 +317,16 @@ jsX3DScene::getExportedNode (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		JSString* exportedName;
+		JSString* exportedName = nullptr;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "S", &exportedName))
 			return JS_FALSE;
 
 		try
 		{
-			auto scene = static_cast <X3DScene*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+			const auto scene = static_cast <X3DScene*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
 
 			const auto & namedNode = scene -> getExportedNode (JS_GetString (context, exportedName));
 
@@ -347,8 +347,8 @@ jsX3DScene::getExportedNode (JSContext* context, uintN argc, jsval* vp)
 void
 jsX3DScene::finalize (JSContext* context, JSObject* obj)
 {
-	auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
-	auto scene      = static_cast <X3DScene*> (JS_GetPrivate (context, obj));
+	const auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
+	const auto scene      = static_cast <X3DScene*> (JS_GetPrivate (context, obj));
 
 	if (scene)
 	{

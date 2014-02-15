@@ -79,14 +79,14 @@ JSFunctionSpec jsProfileInfo::functions [ ] = {
 };
 
 void
-jsProfileInfo::init (JSContext* context, JSObject* global)
+jsProfileInfo::init (JSContext* const context, JSObject* const global)
 {
 	JS_InitClass (context, global, NULL, &static_class, NULL,
 	              0, properties, functions, NULL, NULL);
 }
 
 JSBool
-jsProfileInfo::create (JSContext* context, const ProfileInfo* profileInfo, jsval* vp, const bool seal)
+jsProfileInfo::create (JSContext* const context, const ProfileInfo* const profileInfo, jsval* const vp, const bool seal)
 {
 	JSObject* result = JS_NewObject (context, &static_class, NULL, NULL);
 

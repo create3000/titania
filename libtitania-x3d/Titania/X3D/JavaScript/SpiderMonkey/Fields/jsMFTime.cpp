@@ -72,9 +72,9 @@ jsX3DArrayField <jsSFTime, MFTime>::construct (JSContext* context, uintN argc, j
 	}
 	else
 	{
-		MFTime* field = new MFTime ();
+		MFTime* const field = new MFTime ();
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		for (uintN i = 0; i < argc; ++ i)
 		{
@@ -99,7 +99,7 @@ jsX3DArrayField <jsSFTime, MFTime>::set1Value (JSContext* context, JSObject* obj
 	if (not JSID_IS_INT (id))
 		return JS_TRUE;
 
-	int32 index = JSID_TO_INT (id);
+	const int32 index = JSID_TO_INT (id);
 
 	if (index < 0)
 	{
@@ -112,7 +112,7 @@ jsX3DArrayField <jsSFTime, MFTime>::set1Value (JSContext* context, JSObject* obj
 	if (not JS_ValueToNumber (context, *vp, &number))
 		return JS_FALSE;
 
-	MFTime* field = (MFTime*) JS_GetPrivate (context, obj);
+	MFTime* const field = (MFTime*) JS_GetPrivate (context, obj);
 
 	field -> set1Value (index, number);
 
@@ -129,12 +129,12 @@ jsX3DArrayField <jsSFTime, MFTime>::unshift (JSContext* context, uintN argc, jsv
 	{
 		jsdouble value;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "d", &value))
 			return JS_FALSE;
 
-		MFTime* field = (MFTime*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		MFTime* const field = (MFTime*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		field -> emplace_front (value);
 
@@ -154,12 +154,12 @@ jsX3DArrayField <jsSFTime, MFTime>::push (JSContext* context, uintN argc, jsval*
 	{
 		jsdouble value;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "d", &value))
 			return JS_FALSE;
 
-		MFTime* field = (MFTime*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		MFTime* const field = (MFTime*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		field -> emplace_back (value);
 

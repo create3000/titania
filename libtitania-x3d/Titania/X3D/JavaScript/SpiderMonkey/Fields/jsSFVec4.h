@@ -69,11 +69,11 @@ public:
 
 	static
 	void
-	init (JSContext*, JSObject*);
+	init (JSContext* const, JSObject* const);
 
 	static
 	JSBool
-	create (JSContext*, Type*, jsval*, const bool = false);
+	create (JSContext* const, Type*, jsval* const, const bool = false);
 
 	static
 	JSClass*
@@ -157,10 +157,10 @@ JSFunctionSpec jsSFVec4 <Type>::functions [ ] = {
 
 template <class Type>
 void
-jsSFVec4 <Type>::init (JSContext* context, JSObject* global)
+jsSFVec4 <Type>::init (JSContext* const context, JSObject* const global)
 {
-	JSObject* proto = JS_InitClass (context, global, NULL, &static_class, construct,
-	                                0, properties, functions, NULL, NULL);
+	JSObject* const proto = JS_InitClass (context, global, NULL, &static_class, construct,
+	                                      0, properties, functions, NULL, NULL);
 
 	JS_DefineProperty (context, proto, (char*) X, JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
 	JS_DefineProperty (context, proto, (char*) Y, JSVAL_VOID, get1Value, set1Value, JSPROP_INDEX | JSPROP_SHARED | JSPROP_PERMANENT | JSPROP_ENUMERATE);
@@ -170,9 +170,9 @@ jsSFVec4 <Type>::init (JSContext* context, JSObject* global)
 
 template <class Type>
 JSBool
-jsSFVec4 <Type>::create (JSContext* context, Type* field, jsval* vp, const bool seal)
+jsSFVec4 <Type>::create (JSContext* const context, Type* const field, jsval* const vp, const bool seal)
 {
-	auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
+	const auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
 
 	try
 	{
@@ -180,7 +180,7 @@ jsSFVec4 <Type>::create (JSContext* context, Type* field, jsval* vp, const bool 
 	}
 	catch (const std::out_of_range &)
 	{
-		JSObject* result = JS_NewObject (context, &static_class, NULL, NULL);
+		JSObject* const result = JS_NewObject (context, &static_class, NULL, NULL);
 
 		if (result == NULL)
 			return JS_FALSE;
@@ -213,7 +213,7 @@ jsSFVec4 <Type>::construct (JSContext* context, uintN argc, jsval* vp)
 		jsdouble z = 0;
 		jsdouble w = 0;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "dddd", &x, &y, &z, &w))
 			return JS_FALSE;
@@ -281,7 +281,7 @@ template <class Type>
 JSBool
 jsSFVec4 <Type>::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	Type* self = (Type*) JS_GetPrivate (context, obj);
+	Type* const self = (Type*) JS_GetPrivate (context, obj);
 
 	return JS_NewNumberValue (context, self -> get1Value (JSID_TO_INT (id)), vp);
 }
@@ -290,7 +290,7 @@ template <class Type>
 JSBool
 jsSFVec4 <Type>::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
-	Type* self = (Type*) JS_GetPrivate (context, obj);
+	Type* const self = (Type*) JS_GetPrivate (context, obj);
 
 	jsdouble value;
 
@@ -308,7 +308,7 @@ jsSFVec4 <Type>::negate (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		Type* const self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		return create (context, self -> negate (), &JS_RVAL (context, vp));
 	}
@@ -324,11 +324,11 @@ jsSFVec4 <Type>::add (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		Type* const self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		JSObject* rhs = nullptr;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "o", &rhs))
 			return JS_FALSE;
@@ -336,7 +336,7 @@ jsSFVec4 <Type>::add (JSContext* context, uintN argc, jsval* vp)
 		if (JS_InstanceOfError (context, rhs, getClass ()))
 			return JS_FALSE;
 
-		Type* vector = (Type*) JS_GetPrivate (context, rhs);
+		Type* const vector = (Type*) JS_GetPrivate (context, rhs);
 
 		return create (context, self -> add (*vector), &JS_RVAL (context, vp));
 	}
@@ -352,11 +352,11 @@ jsSFVec4 <Type>::subtract (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		Type* const self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		JSObject* rhs = nullptr;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "o", &rhs))
 			return JS_FALSE;
@@ -364,7 +364,7 @@ jsSFVec4 <Type>::subtract (JSContext* context, uintN argc, jsval* vp)
 		if (JS_InstanceOfError (context, rhs, getClass ()))
 			return JS_FALSE;
 
-		Type* vector = (Type*) JS_GetPrivate (context, rhs);
+		Type* const vector = (Type*) JS_GetPrivate (context, rhs);
 
 		return create (context, self -> subtract (*vector), &JS_RVAL (context, vp));
 	}
@@ -380,11 +380,11 @@ jsSFVec4 <Type>::multiply (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		Type* const self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		jsdouble value;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "d", &value))
 			return JS_FALSE;
@@ -403,11 +403,11 @@ jsSFVec4 <Type>::multVec (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		Type* const self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		JSObject* rhs = nullptr;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "o", &rhs))
 			return JS_FALSE;
@@ -415,7 +415,7 @@ jsSFVec4 <Type>::multVec (JSContext* context, uintN argc, jsval* vp)
 		if (JS_InstanceOfError (context, rhs, getClass ()))
 			return JS_FALSE;
 
-		Type* vector = (Type*) JS_GetPrivate (context, rhs);
+		Type* const vector = (Type*) JS_GetPrivate (context, rhs);
 
 		return create (context, self -> multiply (*vector), &JS_RVAL (context, vp));
 	}
@@ -431,11 +431,11 @@ jsSFVec4 <Type>::divide (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		Type* const self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		jsdouble value;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "d", &value))
 			return JS_FALSE;
@@ -454,11 +454,11 @@ jsSFVec4 <Type>::divVec (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		Type* const self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		JSObject* rhs = nullptr;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "o", &rhs))
 			return JS_FALSE;
@@ -466,7 +466,7 @@ jsSFVec4 <Type>::divVec (JSContext* context, uintN argc, jsval* vp)
 		if (JS_InstanceOfError (context, rhs, getClass ()))
 			return JS_FALSE;
 
-		Type* vector = (Type*) JS_GetPrivate (context, rhs);
+		Type* const vector = (Type*) JS_GetPrivate (context, rhs);
 
 		return create (context, self -> divide (*vector), &JS_RVAL (context, vp));
 	}
@@ -482,11 +482,11 @@ jsSFVec4 <Type>::dot (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		Type* const self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		JSObject* rhs = nullptr;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "o", &rhs))
 			return JS_FALSE;
@@ -494,7 +494,7 @@ jsSFVec4 <Type>::dot (JSContext* context, uintN argc, jsval* vp)
 		if (JS_InstanceOfError (context, rhs, getClass ()))
 			return JS_FALSE;
 
-		Type* vector = (Type*) JS_GetPrivate (context, rhs);
+		Type* const vector = (Type*) JS_GetPrivate (context, rhs);
 
 		return JS_NewNumberValue (context, self -> dot (*vector), &JS_RVAL (context, vp));
 	}
@@ -510,7 +510,7 @@ jsSFVec4 <Type>::normalize (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		Type* const self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		return create (context, self -> normalize (), &JS_RVAL (context, vp));
 	}
@@ -526,7 +526,7 @@ jsSFVec4 <Type>::length (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		Type* const self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		return JS_NewNumberValue (context, self -> length (), &JS_RVAL (context, vp));
 	}

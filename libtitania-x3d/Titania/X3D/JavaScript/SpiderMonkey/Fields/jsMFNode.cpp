@@ -72,9 +72,9 @@ jsX3DArrayField <jsSFNode, MFNode>::construct (JSContext* context, uintN argc, j
 	}
 	else
 	{
-		field_type* field = new field_type ();
+		field_type* const field = new field_type ();
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		for (uintN i = 0; i < argc; ++ i)
 		{
@@ -107,7 +107,7 @@ jsX3DArrayField <jsSFNode, MFNode>::set1Value (JSContext* context, JSObject* obj
 	if (not JSID_IS_INT (id))
 		return JS_TRUE;
 
-	int32 index = JSID_TO_INT (id);
+	const int32 index = JSID_TO_INT (id);
 
 	if (index < 0)
 	{
@@ -115,7 +115,7 @@ jsX3DArrayField <jsSFNode, MFNode>::set1Value (JSContext* context, JSObject* obj
 		return JS_FALSE;
 	}
 
-	MFNode* field = (MFNode*) JS_GetPrivate (context, obj);
+	MFNode* const field = (MFNode*) JS_GetPrivate (context, obj);
 
 	JSObject* value = nullptr;
 
@@ -143,7 +143,7 @@ jsX3DArrayField <jsSFNode, MFNode>::unshift (JSContext* context, uintN argc, jsv
 {
 	if (argc == 1)
 	{
-		MFNode* field = (MFNode*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		MFNode* const field = (MFNode*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		JSObject* value = nullptr;
 
@@ -176,11 +176,11 @@ jsX3DArrayField <jsSFNode, MFNode>::push (JSContext* context, uintN argc, jsval*
 {
 	if (argc == 1)
 	{
-		MFNode* field = (MFNode*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		MFNode* const field = (MFNode*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		JSObject* value = nullptr;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "o", &value))
 			return JS_FALSE;

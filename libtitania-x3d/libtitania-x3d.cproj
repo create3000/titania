@@ -633,6 +633,7 @@
     <None Include="share\titania\shaders\ParticleSystems\Bits\BVH.h" />
     <None Include="Titania\X3D\Fields\X3DMFNode.h" />
     <None Include="share\titania\shaders\ParticleSystems\ExplosionEmitter.vs" />
+    <None Include="Titania\X3D\Fields\VrmlMatrix.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

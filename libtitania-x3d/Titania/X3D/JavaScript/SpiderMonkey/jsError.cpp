@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 JSBool
-JS_InstanceOfError (JSContext* context, JSObject* object, JSClass* class_type)
+JS_InstanceOfError (JSContext* const context, JSObject* const object, JSClass* const class_type)
 {
 	if (not object)
 	{

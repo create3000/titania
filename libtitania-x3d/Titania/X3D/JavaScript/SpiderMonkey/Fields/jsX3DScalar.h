@@ -58,7 +58,7 @@
 namespace titania {
 namespace X3D {
 
-// Dummy class for scalar field types.
+// Template class for javascript scalar field types.
 
 template <class Type>
 class jsScalar
@@ -69,32 +69,33 @@ public:
 
 	static
 	JSBool
-	create (JSContext* context, const field_type* field, jsval* vp, const bool = false)
+	create (JSContext* const context, const field_type* const field, jsval* const vp)
 	{
-		return JS_NewNumberValue (context, *field, vp);
+		return JS_NewNumberValue (context, field -> getValue (), vp);
 	}
 
 	static
 	JSClass*
-	getClass () { return NULL; }
+	getClass ()
+	{ return nullptr; }
 
 };
 
 template <>
 inline
 JSBool
-jsScalar <SFBool>::create (JSContext* context, const field_type* field, jsval* vp, const bool)
+jsScalar <SFBool>::create (JSContext* const context, const field_type* const field, jsval* const vp)
 {
-	*vp = *field ? JSVAL_TRUE : JSVAL_FALSE;
+	*vp = field -> getValue () ? JSVAL_TRUE : JSVAL_FALSE;
 	return JS_TRUE;
 }
 
 template <>
 inline
 JSBool
-jsScalar <SFString>::create (JSContext* context, const field_type* field, jsval* vp, const bool)
+jsScalar <SFString>::create (JSContext* const context, const field_type* const field, jsval* vp)
 {
-	return JS_NewStringValue (context, *field, vp);
+	return JS_NewStringValue (context, field -> getValue (), vp);
 }
 
 typedef jsScalar <SFBool>   jsSFBool;

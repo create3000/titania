@@ -71,11 +71,11 @@ public:
 
 	static
 	void
-	init (JSContext*, JSObject*);
+	init (JSContext* const, JSObject* const);
 
 	static
 	JSBool
-	create (JSContext*, FieldType*, jsval*, const bool = false);
+	create (JSContext* const, FieldType* const, jsval* const, const bool = false);
 
 	static
 	JSClass*
@@ -147,7 +147,7 @@ JSFunctionSpec jsX3DArrayField <Type, FieldType>::functions [ ] = {
 
 template <class Type, class FieldType>
 void
-jsX3DArrayField <Type, FieldType>::init (JSContext* context, JSObject* global)
+jsX3DArrayField <Type, FieldType>::init (JSContext* const context, JSObject* const global)
 {
 	JS_InitClass (context, global, NULL, &static_class, construct,
 	              0, properties, functions, NULL, NULL);
@@ -155,9 +155,9 @@ jsX3DArrayField <Type, FieldType>::init (JSContext* context, JSObject* global)
 
 template <class Type, class FieldType>
 JSBool
-jsX3DArrayField <Type, FieldType>::create (JSContext* context, FieldType* field, jsval* vp, const bool seal)
+jsX3DArrayField <Type, FieldType>::create (JSContext* const context, FieldType* const field, jsval* const vp, const bool seal)
 {
-	auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
+	const auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
 
 	try
 	{
@@ -165,7 +165,7 @@ jsX3DArrayField <Type, FieldType>::create (JSContext* context, FieldType* field,
 	}
 	catch (const std::out_of_range &)
 	{
-		JSObject* result = JS_NewObject (context, &static_class, NULL, NULL);
+		JSObject* const result = JS_NewObject (context, &static_class, NULL, NULL);
 
 		if (result == NULL)
 			return JS_FALSE;
@@ -193,9 +193,9 @@ jsX3DArrayField <Type, FieldType>::construct (JSContext* context, uintN argc, js
 	}
 	else
 	{
-		field_type* field = new field_type ();
+		field_type* const field = new field_type ();
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		for (uintN i = 0; i < argc; ++ i)
 		{
@@ -220,7 +220,7 @@ template <class Type, class FieldType>
 JSBool
 jsX3DArrayField <Type, FieldType>::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op, jsval* statep, jsid* idp)
 {
-	FieldType* field = static_cast <FieldType*> (JS_GetPrivate (context, obj));
+	FieldType* const field = static_cast <FieldType*> (JS_GetPrivate (context, obj));
 
 	if (not field)
 	{
@@ -276,7 +276,7 @@ jsX3DArrayField <Type, FieldType>::get1Value (JSContext* context, JSObject* obj,
 	if (not JSID_IS_INT (id))
 		return JS_TRUE;
 
-	int32 index = JSID_TO_INT (id);
+	const int32 index = JSID_TO_INT (id);
 
 	if (index < 0)
 	{
@@ -296,7 +296,7 @@ jsX3DArrayField <Type, FieldType>::set1Value (JSContext* context, JSObject* obj,
 	if (not JSID_IS_INT (id))
 		return JS_TRUE;
 
-	int32 index = JSID_TO_INT (id);
+	const int32 index = JSID_TO_INT (id);
 
 	if (index < 0)
 	{
@@ -312,7 +312,7 @@ jsX3DArrayField <Type, FieldType>::set1Value (JSContext* context, JSObject* obj,
 	if (JS_InstanceOfError (context, value, value_type::getClass ()))
 		return JS_FALSE;
 
-	FieldType* field = (FieldType*) JS_GetPrivate (context, obj);
+	FieldType* const field = (FieldType*) JS_GetPrivate (context, obj);
 
 	field -> set1Value (index, *(field_value_type*) JS_GetPrivate (context, value));
 
@@ -329,7 +329,7 @@ jsX3DArrayField <Type, FieldType>::unshift (JSContext* context, uintN argc, jsva
 	{
 		JSObject* value = nullptr;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "o", &value))
 			return JS_FALSE;
@@ -337,7 +337,7 @@ jsX3DArrayField <Type, FieldType>::unshift (JSContext* context, uintN argc, jsva
 		if (JS_InstanceOfError (context, value, value_type::getClass ()))
 			return JS_FALSE;
 
-		FieldType* field = (FieldType*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		FieldType* const field = (FieldType*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		field -> emplace_front (*(field_value_type*) JS_GetPrivate (context, value));
 
@@ -357,7 +357,7 @@ jsX3DArrayField <Type, FieldType>::push (JSContext* context, uintN argc, jsval* 
 	{
 		JSObject* value = nullptr;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "o", &value))
 			return JS_FALSE;
@@ -365,7 +365,7 @@ jsX3DArrayField <Type, FieldType>::push (JSContext* context, uintN argc, jsval* 
 		if (JS_InstanceOfError (context, value, value_type::getClass ()))
 			return JS_FALSE;
 
-		FieldType* field = (FieldType*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		FieldType* const field = (FieldType*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		field -> emplace_back (*(field_value_type*) JS_GetPrivate (context, value));
 
@@ -383,7 +383,7 @@ jsX3DArrayField <Type, FieldType>::shift (JSContext* context, uintN argc, jsval*
 {
 	if (argc == 0)
 	{
-		FieldType* field = (FieldType*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		FieldType* const field = (FieldType*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		if (field -> empty ())
 		{
@@ -392,7 +392,7 @@ jsX3DArrayField <Type, FieldType>::shift (JSContext* context, uintN argc, jsval*
 			return JS_TRUE;
 		}
 
-		auto value = new field_value_type (field -> front ());
+		const auto value = new field_value_type (field -> front ());
 
 		field -> pop_front ();
 
@@ -410,7 +410,7 @@ jsX3DArrayField <Type, FieldType>::pop (JSContext* context, uintN argc, jsval* v
 {
 	if (argc == 0)
 	{
-		FieldType* field = (FieldType*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		FieldType* const field = (FieldType*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		if (field -> empty ())
 		{
@@ -419,7 +419,7 @@ jsX3DArrayField <Type, FieldType>::pop (JSContext* context, uintN argc, jsval* v
 			return JS_TRUE;
 		}
 
-		auto value = new field_value_type (field -> back ());
+		const auto value = new field_value_type (field -> back ());
 
 		field -> pop_back ();
 
@@ -435,7 +435,7 @@ template <class Type, class FieldType>
 JSBool
 jsX3DArrayField <Type, FieldType>::length (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	FieldType* field = static_cast <FieldType*> (JS_GetPrivate (context, obj));
+	FieldType* const field = static_cast <FieldType*> (JS_GetPrivate (context, obj));
 
 	return JS_NewNumberValue (context, field -> size (), vp);
 }
@@ -444,7 +444,7 @@ template <class Type, class FieldType>
 JSBool
 jsX3DArrayField <Type, FieldType>::length (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
-	FieldType* field = static_cast <FieldType*> (JS_GetPrivate (context, obj));
+	FieldType* const field = static_cast <FieldType*> (JS_GetPrivate (context, obj));
 
 	uint32 value;
 

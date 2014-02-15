@@ -57,7 +57,7 @@ namespace titania {
 namespace X3D {
 
 JSBool
-JS_NewStringValue (JSContext* context, const std::string & string, jsval* vp)
+JS_NewStringValue (JSContext* const context, const std::string & string, jsval* const vp)
 {
 	glong   items_read    = 0;
 	glong   items_written = 0;
@@ -71,7 +71,7 @@ JS_NewStringValue (JSContext* context, const std::string & string, jsval* vp)
 		return JS_FALSE;
 	}
 
-	JSString* result = JS_NewUCStringCopyN (context, utf16_string, items_written);
+	JSString* const result = JS_NewUCStringCopyN (context, utf16_string, items_written);
 
 	g_free (utf16_string);
 
@@ -86,7 +86,7 @@ JS_NewStringValue (JSContext* context, const std::string & string, jsval* vp)
 }
 
 std::string
-JS_GetString (JSContext* context, JSString* jsstring)
+JS_GetString (JSContext* const context, JSString* const jsstring)
 {
 	if (jsstring)
 	{
@@ -98,7 +98,7 @@ JS_GetString (JSContext* context, JSString* jsstring)
 		glong   items_written = 0;
 		GError* error         = nullptr;
 
-		char* utf8_string = g_utf16_to_utf8 (utf16_string, utf16_length, &items_read, &items_written, &error);
+		char* const utf8_string = g_utf16_to_utf8 (utf16_string, utf16_length, &items_read, &items_written, &error);
 
 		if (error)
 		{

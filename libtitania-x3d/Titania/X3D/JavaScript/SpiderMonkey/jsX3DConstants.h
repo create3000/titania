@@ -63,7 +63,7 @@ public:
 
 	static
 	void
-	init (JSContext*, JSObject*);
+	init (JSContext* const, JSObject* const);
 
 	static
 	JSClass*

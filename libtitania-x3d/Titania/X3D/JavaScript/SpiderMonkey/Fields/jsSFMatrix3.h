@@ -77,11 +77,11 @@ public:
 
 	static
 	void
-	init (JSContext*, JSObject*);
+	init (JSContext* const, JSObject* const);
 
 	static
 	JSBool
-	create (JSContext*, Type*, jsval*, const bool = false);
+	create (JSContext* const, Type* const, jsval* const, const bool = false);
 
 	static
 	JSClass*
@@ -155,7 +155,7 @@ JSFunctionSpec jsSFMatrix3 <Type>::functions [ ] = {
 
 template <class Type>
 void
-jsSFMatrix3 <Type>::init (JSContext* context, JSObject* global)
+jsSFMatrix3 <Type>::init (JSContext* const context, JSObject* const global)
 {
 	JS_InitClass (context, global, NULL, &static_class, construct,
 	              0, NULL, functions, NULL, NULL);
@@ -163,9 +163,9 @@ jsSFMatrix3 <Type>::init (JSContext* context, JSObject* global)
 
 template <class Type>
 JSBool
-jsSFMatrix3 <Type>::create (JSContext* context, Type* field, jsval* vp, const bool seal)
+jsSFMatrix3 <Type>::create (JSContext* const context, Type* const field, jsval* const vp, const bool seal)
 {
-	auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
+	const auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
 
 	try
 	{
@@ -173,7 +173,7 @@ jsSFMatrix3 <Type>::create (JSContext* context, Type* field, jsval* vp, const bo
 	}
 	catch (const std::out_of_range &)
 	{
-		JSObject* result = JS_NewObject (context, &static_class, NULL, NULL);
+		JSObject* const result = JS_NewObject (context, &static_class, NULL, NULL);
 
 		if (result == NULL)
 			return JS_FALSE;
@@ -203,7 +203,7 @@ jsSFMatrix3 <Type>::construct (JSContext* context, uintN argc, jsval* vp)
 	{
 		jsdouble m11, m12, m13, m21, m22, m23, m31, m32, m33;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "ddddddddd",
 		                             &m11, &m12, &m13, &m21, &m22, &m23, &m31, &m32, &m33))
@@ -275,7 +275,7 @@ jsSFMatrix3 <Type>::resolve (JSContext* context, JSObject* obj, jsid id)
 	if (not JSID_IS_INT (id))
 		return JS_TRUE;
 
-	size_t index = JSID_TO_INT (id);
+	const size_t index = JSID_TO_INT (id);
 
 	if (index >= 0 and index < size)
 	{
@@ -294,7 +294,7 @@ template <class Type>
 JSBool
 jsSFMatrix3 <Type>::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	Type* self = (Type*) JS_GetPrivate (context, obj);
+	Type* const self = (Type*) JS_GetPrivate (context, obj);
 
 	return JS_NewNumberValue (context, self -> get1Value (JSID_TO_INT (id)), vp);
 }
@@ -303,7 +303,7 @@ template <class Type>
 JSBool
 jsSFMatrix3 <Type>::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
-	Type* self = (Type*) JS_GetPrivate (context, obj);
+	Type* const self = (Type*) JS_GetPrivate (context, obj);
 
 	jsdouble value;
 
@@ -321,11 +321,11 @@ jsSFMatrix3 <Type>::setTransform (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc >= 0 or argc <= 5)
 	{
-		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		Type* const self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		JSObject* translationObj, * rotationObj, * scaleObj, * scaleOrientationObj, * centerObj;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "/ooooo", &translationObj, &rotationObj, &scaleObj, &scaleOrientationObj, &centerObj))
 			return JS_FALSE;
@@ -412,7 +412,7 @@ jsSFMatrix3 <Type>::getTransform (JSContext* context, uintN argc, jsval* vp)
 
 		JSObject* translationObj, * rotationObj, * scaleObj;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "ooo", &translationObj, &rotationObj, &scaleObj))
 			return JS_FALSE;
@@ -446,7 +446,7 @@ jsSFMatrix3 <Type>::transpose (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		Type* const self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		return create (context, self -> transpose (), &JS_RVAL (context, vp));
 	}
@@ -464,7 +464,7 @@ jsSFMatrix3 <Type>::inverse (JSContext* context, uintN argc, jsval* vp)
 	{
 		try
 		{
-			Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+			Type* const self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 			return create (context, self -> inverse (), &JS_RVAL (context, vp));
 		}
@@ -486,11 +486,11 @@ jsSFMatrix3 <Type>::multLeft (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		Type* const self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		JSObject* rhs = nullptr;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "o", &rhs))
 			return JS_FALSE;
@@ -498,7 +498,7 @@ jsSFMatrix3 <Type>::multLeft (JSContext* context, uintN argc, jsval* vp)
 		if (JS_InstanceOfError (context, rhs, getClass ()))
 			return JS_FALSE;
 
-		Type* matrix = (Type*) JS_GetPrivate (context, rhs);
+		Type* const matrix = (Type*) JS_GetPrivate (context, rhs);
 
 		return create (context, self -> multLeft (*matrix), &JS_RVAL (context, vp));
 	}
@@ -514,11 +514,11 @@ jsSFMatrix3 <Type>::multRight (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		Type* const self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		JSObject* rhs = nullptr;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "o", &rhs))
 			return JS_FALSE;
@@ -526,7 +526,7 @@ jsSFMatrix3 <Type>::multRight (JSContext* context, uintN argc, jsval* vp)
 		if (JS_InstanceOfError (context, rhs, getClass ()))
 			return JS_FALSE;
 
-		Type* matrix = (Type*) JS_GetPrivate (context, rhs);
+		Type* const matrix = (Type*) JS_GetPrivate (context, rhs);
 
 		return create (context, self -> multRight (*matrix), &JS_RVAL (context, vp));
 	}
@@ -542,11 +542,11 @@ jsSFMatrix3 <Type>::multVecMatrix (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		Type* const self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		JSObject* rhs = nullptr;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "o", &rhs))
 			return JS_FALSE;
@@ -554,7 +554,7 @@ jsSFMatrix3 <Type>::multVecMatrix (JSContext* context, uintN argc, jsval* vp)
 		if (JS_InstanceOfError (context, rhs, vector2_type::getClass ()))
 			return JS_FALSE;
 
-		vector2_field_type* vector = (vector2_field_type*) JS_GetPrivate (context, rhs);
+		vector2_field_type* const vector = (vector2_field_type*) JS_GetPrivate (context, rhs);
 
 		return vector2_type::create (context, self -> multVecMatrix (*vector), &JS_RVAL (context, vp));
 	}
@@ -570,11 +570,11 @@ jsSFMatrix3 <Type>::multMatrixVec (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		Type* const self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		JSObject* rhs = nullptr;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "o", &rhs))
 			return JS_FALSE;
@@ -582,7 +582,7 @@ jsSFMatrix3 <Type>::multMatrixVec (JSContext* context, uintN argc, jsval* vp)
 		if (JS_InstanceOfError (context, rhs, vector2_type::getClass ()))
 			return JS_FALSE;
 
-		vector2_field_type* vector = (vector2_field_type*) JS_GetPrivate (context, rhs);
+		vector2_field_type* const vector = (vector2_field_type*) JS_GetPrivate (context, rhs);
 
 		return vector2_type::create (context, self -> multMatrixVec (*vector), &JS_RVAL (context, vp));
 	}
@@ -598,11 +598,11 @@ jsSFMatrix3 <Type>::multDirMatrix (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		Type* const self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		JSObject* rhs = nullptr;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "o", &rhs))
 			return JS_FALSE;
@@ -610,7 +610,7 @@ jsSFMatrix3 <Type>::multDirMatrix (JSContext* context, uintN argc, jsval* vp)
 		if (JS_InstanceOfError (context, rhs, vector2_type::getClass ()))
 			return JS_FALSE;
 
-		vector2_field_type* vector = (vector2_field_type*) JS_GetPrivate (context, rhs);
+		vector2_field_type* const vector = (vector2_field_type*) JS_GetPrivate (context, rhs);
 
 		return vector2_type::create (context, self -> multDirMatrix (*vector), &JS_RVAL (context, vp));
 	}
@@ -626,11 +626,11 @@ jsSFMatrix3 <Type>::multMatrixDir (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		Type* self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		Type* const self = (Type*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		JSObject* rhs = nullptr;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "o", &rhs))
 			return JS_FALSE;
@@ -638,7 +638,7 @@ jsSFMatrix3 <Type>::multMatrixDir (JSContext* context, uintN argc, jsval* vp)
 		if (JS_InstanceOfError (context, rhs, vector2_type::getClass ()))
 			return JS_FALSE;
 
-		vector2_field_type* vector = (vector2_field_type*) JS_GetPrivate (context, rhs);
+		vector2_field_type* const vector = (vector2_field_type*) JS_GetPrivate (context, rhs);
 
 		return vector2_type::create (context, self -> multMatrixDir (*vector), &JS_RVAL (context, vp));
 	}

@@ -66,11 +66,11 @@ public:
 
 	static
 	void
-	init (JSContext*, JSObject*);
+	init (JSContext* const, JSObject* const);
 
 	static
 	JSBool
-	create (JSContext*, SFRotation4f*, jsval*, const bool = false);
+	create (JSContext* const, SFRotation4f* const, jsval* const, const bool = false);
 
 	static
 	JSClass*

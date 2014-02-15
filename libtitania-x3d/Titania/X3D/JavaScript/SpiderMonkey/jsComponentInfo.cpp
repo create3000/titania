@@ -88,7 +88,7 @@ jsComponentInfo::init (JSContext* context, JSObject* global)
 JSBool
 jsComponentInfo::create (JSContext* context, const ComponentInfo* componentInfo, jsval* vp, const bool seal)
 {
-	JSObject* result = JS_NewObject (context, &static_class, NULL, NULL);
+	JSObject* const result = JS_NewObject (context, &static_class, NULL, NULL);
 
 	if (result == NULL)
 		return JS_FALSE;
@@ -106,7 +106,7 @@ jsComponentInfo::create (JSContext* context, const ComponentInfo* componentInfo,
 JSBool
 jsComponentInfo::name (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	auto componentInfo = static_cast <ComponentInfo*> (JS_GetPrivate (context, obj));
+	const auto componentInfo = static_cast <ComponentInfo*> (JS_GetPrivate (context, obj));
 
 	return JS_NewStringValue (context, componentInfo -> getName (), vp);
 }
@@ -114,7 +114,7 @@ jsComponentInfo::name (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 JSBool
 jsComponentInfo::level (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	auto componentInfo = static_cast <ComponentInfo*> (JS_GetPrivate (context, obj));
+	const auto componentInfo = static_cast <ComponentInfo*> (JS_GetPrivate (context, obj));
 
 	return JS_NewNumberValue (context, componentInfo -> getLevel (), vp);
 }
@@ -122,7 +122,7 @@ jsComponentInfo::level (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 JSBool
 jsComponentInfo::title (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	auto componentInfo = static_cast <ComponentInfo*> (JS_GetPrivate (context, obj));
+	const auto componentInfo = static_cast <ComponentInfo*> (JS_GetPrivate (context, obj));
 
 	return JS_NewStringValue (context, componentInfo -> getTitle (), vp);
 }
@@ -130,7 +130,7 @@ jsComponentInfo::title (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 JSBool
 jsComponentInfo::providerUrl (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	auto componentInfo = static_cast <ComponentInfo*> (JS_GetPrivate (context, obj));
+	const auto componentInfo = static_cast <ComponentInfo*> (JS_GetPrivate (context, obj));
 
 	return JS_NewStringValue (context, componentInfo -> getProviderUrl (), vp);
 }

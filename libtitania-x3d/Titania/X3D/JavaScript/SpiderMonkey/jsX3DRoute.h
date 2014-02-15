@@ -63,11 +63,11 @@ public:
 
 	static
 	void
-	init (JSContext*, JSObject*);
+	init (JSContext* const, JSObject* const);
 
 	static
 	JSBool
-	create (JSContext*, const X3DSFNode <Route> &, jsval*, const bool = false);
+	create (JSContext* const, const X3DSFNode <Route> &, jsval* const, const bool = false);
 
 	static
 	JSClass*
@@ -90,7 +90,9 @@ private:
 	static JSBool destinationNode  (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool destinationField (JSContext *, JSObject *, jsid, jsval*);
 
-	static void finalize (JSContext*, JSObject*);
+	static
+	void
+	finalize (JSContext*, JSObject*);
 
 	static JSClass        static_class;
 	static JSPropertySpec properties [ ];

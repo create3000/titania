@@ -63,11 +63,11 @@ public:
 
 	static
 	void
-	init (JSContext*, JSObject*);
+	init (JSContext* const, JSObject* const);
 
 	static
 	JSBool
-	create (JSContext*, const X3DSFNode <Proto> &, jsval*, const bool = false);
+	create (JSContext* const, const X3DSFNode <Proto> &, jsval* const, const bool = false);
 
 	static
 	JSClass*
@@ -90,7 +90,8 @@ private:
 
 	static JSBool newInstance (JSContext *, uintN, jsval*);
 
-	static void
+	static
+	void
 	finalize (JSContext*, JSObject*);
 
 	static JSClass        static_class;

@@ -72,9 +72,9 @@ jsX3DArrayField <jsSFInt32, MFInt32>::construct (JSContext* context, uintN argc,
 	}
 	else
 	{
-		MFInt32* field = new MFInt32 ();
+		MFInt32* const field = new MFInt32 ();
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		for (uintN i = 0; i < argc; ++ i)
 		{
@@ -99,7 +99,7 @@ jsX3DArrayField <jsSFInt32, MFInt32>::set1Value (JSContext* context, JSObject* o
 	if (not JSID_IS_INT (id))
 		return JS_TRUE;
 
-	int32 index = JSID_TO_INT (id);
+	const int32 index = JSID_TO_INT (id);
 
 	if (index < 0)
 	{
@@ -112,7 +112,7 @@ jsX3DArrayField <jsSFInt32, MFInt32>::set1Value (JSContext* context, JSObject* o
 	if (not JS_ValueToECMAInt32 (context, *vp, &number))
 		return JS_FALSE;
 
-	MFInt32* field = (MFInt32*) JS_GetPrivate (context, obj);
+	MFInt32* const field = (MFInt32*) JS_GetPrivate (context, obj);
 
 	field -> set1Value (index, number);
 
@@ -129,12 +129,12 @@ jsX3DArrayField <jsSFInt32, MFInt32>::unshift (JSContext* context, uintN argc, j
 	{
 		int32 value;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "i", &value))
 			return JS_FALSE;
 
-		MFInt32* field = (MFInt32*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		MFInt32* const field = (MFInt32*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		field -> emplace_front (value);
 
@@ -154,12 +154,12 @@ jsX3DArrayField <jsSFInt32, MFInt32>::push (JSContext* context, uintN argc, jsva
 	{
 		int32 value;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "i", &value))
 			return JS_FALSE;
 
-		MFInt32* field = (MFInt32*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		MFInt32* const field = (MFInt32*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		field -> emplace_back (value);
 

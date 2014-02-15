@@ -58,21 +58,21 @@ namespace titania {
 namespace X3D {
 
 JSBool
-JS_NewStringValue (JSContext*, const std::string &, jsval*);
+JS_NewStringValue (JSContext* const, const std::string &, jsval*);
 
 std::string
 JS_GetString (JSContext*, JSString*);
 
 inline
 std::string
-JS_GetString (JSContext* context, jsval & value)
+JS_GetString (JSContext* const context, jsval & value)
 {
 	return JS_GetString (context, JS_ValueToString (context, value));
 }
 
 inline
 std::string
-JS_GetString (JSContext* context, jsid & value)
+JS_GetString (JSContext* const context, jsid & value)
 {
 	return JS_GetString (context, JSID_TO_STRING (value));
 }

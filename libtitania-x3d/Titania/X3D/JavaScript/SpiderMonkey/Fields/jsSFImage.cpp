@@ -90,16 +90,16 @@ JSFunctionSpec jsSFImage::functions [ ] = {
 };
 
 void
-jsSFImage::init (JSContext* context, JSObject* global)
+jsSFImage::init (JSContext* const context, JSObject* const global)
 {
 	JS_InitClass (context, global, NULL, &static_class, construct,
 	              0, properties, functions, NULL, NULL);
 }
 
 JSBool
-jsSFImage::create (JSContext* context, SFImage* field, jsval* vp, const bool seal)
+jsSFImage::create (JSContext* const context, SFImage* const field, jsval* const vp, const bool seal)
 {
-	auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
+	const auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
 
 	try
 	{
@@ -107,7 +107,7 @@ jsSFImage::create (JSContext* context, SFImage* field, jsval* vp, const bool sea
 	}
 	catch (const std::out_of_range &)
 	{
-		JSObject* result = JS_NewObject (context, &static_class, NULL, NULL);
+		JSObject* const result = JS_NewObject (context, &static_class, NULL, NULL);
 
 		if (result == NULL)
 			return JS_FALSE;
@@ -137,7 +137,7 @@ jsSFImage::construct (JSContext* context, uintN argc, jsval* vp)
 		uint32    width, height, comp;
 		JSObject* obj2 = nullptr;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "uuuo", &width, &height, &comp, &obj2))
 			return JS_FALSE;
@@ -145,7 +145,7 @@ jsSFImage::construct (JSContext* context, uintN argc, jsval* vp)
 		if (JS_InstanceOfError (context, obj2, jsMFInt32::getClass ()))
 			return JS_FALSE;
 
-		MFInt32* array = (MFInt32*) JS_GetPrivate (context, obj2);
+		MFInt32* const array = (MFInt32*) JS_GetPrivate (context, obj2);
 
 		return create (context, new SFImage (width, height, comp, *array), &JS_RVAL (context, vp));
 	}
@@ -158,7 +158,7 @@ jsSFImage::construct (JSContext* context, uintN argc, jsval* vp)
 JSBool
 jsSFImage::width (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	SFImage* sfimage = (SFImage*) JS_GetPrivate (context, obj);
+	SFImage* const sfimage = (SFImage*) JS_GetPrivate (context, obj);
 
 	return JS_NewNumberValue (context, sfimage -> getWidth (), vp);
 }
@@ -166,7 +166,7 @@ jsSFImage::width (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 JSBool
 jsSFImage::width (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
-	SFImage* sfimage = (SFImage*) JS_GetPrivate (context, obj);
+	SFImage* const sfimage = (SFImage*) JS_GetPrivate (context, obj);
 
 	uint32 value;
 
@@ -181,7 +181,7 @@ jsSFImage::width (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsv
 JSBool
 jsSFImage::height (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	SFImage* sfimage = (SFImage*) JS_GetPrivate (context, obj);
+	SFImage* const sfimage = (SFImage*) JS_GetPrivate (context, obj);
 
 	return JS_NewNumberValue (context, sfimage -> getHeight (), vp);
 }
@@ -189,7 +189,7 @@ jsSFImage::height (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 JSBool
 jsSFImage::height (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
-	SFImage* sfimage = (SFImage*) JS_GetPrivate (context, obj);
+	SFImage* const sfimage = (SFImage*) JS_GetPrivate (context, obj);
 
 	uint32 value;
 
@@ -204,7 +204,7 @@ jsSFImage::height (JSContext* context, JSObject* obj, jsid id, JSBool strict, js
 JSBool
 jsSFImage::comp (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	SFImage* sfimage = (SFImage*) JS_GetPrivate (context, obj);
+	SFImage* const sfimage = (SFImage*) JS_GetPrivate (context, obj);
 
 	return JS_NewNumberValue (context, sfimage -> getComponents (), vp);
 }
@@ -212,7 +212,7 @@ jsSFImage::comp (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 JSBool
 jsSFImage::comp (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
-	SFImage* sfimage = (SFImage*) JS_GetPrivate (context, obj);
+	SFImage* const sfimage = (SFImage*) JS_GetPrivate (context, obj);
 
 	uint32 value;
 
@@ -227,7 +227,7 @@ jsSFImage::comp (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsva
 JSBool
 jsSFImage::array (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	SFImage* sfimage = (SFImage*) JS_GetPrivate (context, obj);
+	SFImage* const sfimage = (SFImage*) JS_GetPrivate (context, obj);
 
 	return jsMFInt32::create (context, &sfimage -> getArray (), vp);
 }
@@ -235,7 +235,7 @@ jsSFImage::array (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 JSBool
 jsSFImage::array (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
-	SFImage* sfimage = (SFImage*) JS_GetPrivate (context, obj);
+	SFImage* const sfimage = (SFImage*) JS_GetPrivate (context, obj);
 
 	JSObject* obj2 = nullptr;
 

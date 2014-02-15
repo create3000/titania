@@ -72,9 +72,9 @@ jsX3DArrayField <jsSFDouble, MFDouble>::construct (JSContext* context, uintN arg
 	}
 	else
 	{
-		MFDouble* field = new MFDouble ();
+		MFDouble* const field = new MFDouble ();
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		for (uintN i = 0; i < argc; ++ i)
 		{
@@ -99,7 +99,7 @@ jsX3DArrayField <jsSFDouble, MFDouble>::set1Value (JSContext* context, JSObject*
 	if (not JSID_IS_INT (id))
 		return JS_TRUE;
 
-	int32 index = JSID_TO_INT (id);
+	const int32 index = JSID_TO_INT (id);
 
 	if (index < 0)
 	{
@@ -112,7 +112,7 @@ jsX3DArrayField <jsSFDouble, MFDouble>::set1Value (JSContext* context, JSObject*
 	if (not JS_ValueToNumber (context, *vp, &number))
 		return JS_FALSE;
 
-	MFDouble* field = (MFDouble*) JS_GetPrivate (context, obj);
+	MFDouble* const field = (MFDouble*) JS_GetPrivate (context, obj);
 
 	field -> set1Value (index, number);
 
@@ -129,12 +129,12 @@ jsX3DArrayField <jsSFDouble, MFDouble>::unshift (JSContext* context, uintN argc,
 	{
 		jsdouble value;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "d", &value))
 			return JS_FALSE;
 
-		MFDouble* field = (MFDouble*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		MFDouble* const field = (MFDouble*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		field -> emplace_front (value);
 
@@ -154,12 +154,12 @@ jsX3DArrayField <jsSFDouble, MFDouble>::push (JSContext* context, uintN argc, js
 	{
 		jsdouble value;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "d", &value))
 			return JS_FALSE;
 
-		MFDouble* field = (MFDouble*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		MFDouble* const field = (MFDouble*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		field -> emplace_back (value);
 

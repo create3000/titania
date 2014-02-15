@@ -65,11 +65,11 @@ public:
 
 	static
 	void
-	init (JSContext*, JSObject*, JSObject*);
+	init (JSContext* const, JSObject* const, JSObject* const);
 
 	static
 	JSBool
-	create (JSContext*, X3DScene*, jsval*, const bool = false);
+	create (JSContext* const, X3DScene* const, jsval* const, const bool = false);
 
 	static
 	JSClass*

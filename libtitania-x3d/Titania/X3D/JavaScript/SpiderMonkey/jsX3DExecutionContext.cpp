@@ -117,16 +117,16 @@ JSFunctionSpec jsX3DExecutionContext::functions [ ] = {
 };
 
 JSObject*
-jsX3DExecutionContext::init (JSContext* context, JSObject* global)
+jsX3DExecutionContext::init (JSContext* const context, JSObject* const global)
 {
 	return JS_InitClass (context, global, NULL, &static_class, NULL,
 	                     0, properties, functions, NULL, NULL);
 }
 
 JSBool
-jsX3DExecutionContext::create (JSContext* context, X3DExecutionContext* executionContext, jsval* vp, const bool seal)
+jsX3DExecutionContext::create (JSContext* const context, X3DExecutionContext* const executionContext, jsval* const vp, const bool seal)
 {
-	JSObject* result = JS_NewObject (context, &static_class, NULL, NULL);
+	JSObject* const result = JS_NewObject (context, &static_class, NULL, NULL);
 
 	if (result == NULL)
 		return JS_FALSE;
@@ -146,7 +146,7 @@ jsX3DExecutionContext::create (JSContext* context, X3DExecutionContext* executio
 JSBool
 jsX3DExecutionContext::specificationVersion (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, obj));
+	const auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, obj));
 
 	return JS_NewStringValue (context, executionContext -> getSpecificationVersion (), vp);
 }
@@ -154,7 +154,7 @@ jsX3DExecutionContext::specificationVersion (JSContext* context, JSObject* obj, 
 JSBool
 jsX3DExecutionContext::encoding (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, obj));
+	const auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, obj));
 
 	return JS_NewStringValue (context, executionContext -> getEncoding (), vp);
 }
@@ -162,7 +162,7 @@ jsX3DExecutionContext::encoding (JSContext* context, JSObject* obj, jsid id, jsv
 JSBool
 jsX3DExecutionContext::worldURL (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, obj));
+	const auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, obj));
 
 	return JS_NewStringValue (context, executionContext -> getWorldURL (), vp);
 }
@@ -170,9 +170,9 @@ jsX3DExecutionContext::worldURL (JSContext* context, JSObject* obj, jsid id, jsv
 JSBool
 jsX3DExecutionContext::profile (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, obj));
+	const auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, obj));
 
-	auto profile = executionContext -> getProfile ();
+	const auto profile = executionContext -> getProfile ();
 
 	if (profile)
 		return jsProfileInfo::create (context, profile, vp);
@@ -185,7 +185,7 @@ jsX3DExecutionContext::profile (JSContext* context, JSObject* obj, jsid id, jsva
 JSBool
 jsX3DExecutionContext::components (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, obj));
+	const auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, obj));
 
 	return jsComponentInfoArray::create (context, &executionContext -> getComponents (), vp);
 }
@@ -193,7 +193,7 @@ jsX3DExecutionContext::components (JSContext* context, JSObject* obj, jsid id, j
 JSBool
 jsX3DExecutionContext::externprotos (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, obj));
+	const auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, obj));
 
 	return jsExternProtoDeclarationArray::create (context, &executionContext -> getExternProtoDeclarations (), vp);
 }
@@ -201,7 +201,7 @@ jsX3DExecutionContext::externprotos (JSContext* context, JSObject* obj, jsid id,
 JSBool
 jsX3DExecutionContext::protos (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, obj));
+	const auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, obj));
 
 	return jsProtoDeclarationArray::create (context, &executionContext -> getProtoDeclarations (), vp);
 }
@@ -209,7 +209,7 @@ jsX3DExecutionContext::protos (JSContext* context, JSObject* obj, jsid id, jsval
 JSBool
 jsX3DExecutionContext::rootNodes (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, obj));
+	const auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, obj));
 
 	return jsMFNode::create (context, new MFNode (executionContext -> getRootNodes ()), vp, true);
 }
@@ -217,7 +217,7 @@ jsX3DExecutionContext::rootNodes (JSContext* context, JSObject* obj, jsid id, js
 JSBool
 jsX3DExecutionContext::routes (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, obj));
+	const auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, obj));
 
 	return jsRouteArray::create (context, &executionContext -> getRoutes (), vp);
 }
@@ -231,14 +231,14 @@ jsX3DExecutionContext::createNode (JSContext* context, uintN argc, jsval* vp)
 	{
 		try
 		{
-			JSString* name;
+			JSString* name = nullptr;
 
-			jsval* argv = JS_ARGV (context, vp);
+			jsval* const argv = JS_ARGV (context, vp);
 
 			if (not JS_ConvertArguments (context, argc, argv, "S", &name))
 				return JS_FALSE;
 
-			auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+			const auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
 
 			SFNode node = executionContext -> createNode (JS_GetString (context, name));
 
@@ -265,15 +265,15 @@ jsX3DExecutionContext::createProto (JSContext* context, uintN argc, jsval* vp)
 	{
 		try
 		{
-			JSString* name;
+			JSString* name = nullptr;
 
-			jsval* argv = JS_ARGV (context, vp);
+			jsval* const argv = JS_ARGV (context, vp);
 
 			if (not JS_ConvertArguments (context, argc, argv, "S", &name))
 				return JS_FALSE;
 
-			auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
-			auto node             = executionContext -> createProtoInstance (JS_GetString (context, name));
+			const auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+			const auto node             = executionContext -> createProtoInstance (JS_GetString (context, name));
 
 			node -> setup ();
 
@@ -296,10 +296,10 @@ jsX3DExecutionContext::addNamedNode (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 2)
 	{
-		JSString* name;
+		JSString* name  = nullptr;
 		JSObject* oNode = nullptr;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "So", &name, &oNode))
 			return JS_FALSE;
@@ -336,9 +336,9 @@ jsX3DExecutionContext::removeNamedNode (JSContext* context, uintN argc, jsval* v
 {
 	if (argc == 1)
 	{
-		JSString* name;
+		JSString* name = nullptr;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "S", &name))
 			return JS_FALSE;
@@ -370,10 +370,10 @@ jsX3DExecutionContext::updateNamedNode (JSContext* context, uintN argc, jsval* v
 {
 	if (argc == 2)
 	{
-		JSString* name;
+		JSString* name  = nullptr;
 		JSObject* oNode = nullptr;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "So", &name, &oNode))
 			return JS_FALSE;
@@ -410,9 +410,9 @@ jsX3DExecutionContext::getNamedNode (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		JSString* name;
+		JSString* name = nullptr;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "S", &name))
 			return JS_FALSE;
@@ -442,9 +442,9 @@ jsX3DExecutionContext::addImportedNode (JSContext* context, uintN argc, jsval* v
 {
 	if (argc == 2 or argc == 3)
 	{
-		JSObject* oInline = nullptr;
-		JSString* exportedName;
-		JSString* importedName;
+		JSObject* oInline      = nullptr;
+		JSString* exportedName = nullptr;
+		JSString* importedName = nullptr;
 
 		jsval* argv = JS_ARGV (context, vp);
 
@@ -454,8 +454,8 @@ jsX3DExecutionContext::addImportedNode (JSContext* context, uintN argc, jsval* v
 		if (JS_InstanceOfError (context, oInline, jsSFNode::getClass ()))
 			return JS_FALSE;
 
-		auto & node       = *static_cast <SFNode*> (JS_GetPrivate (context, oInline));
-		auto   inlineNode = x3d_cast <Inline*> (node);
+		auto &     node       = *static_cast <SFNode*> (JS_GetPrivate (context, oInline));
+		const auto inlineNode = x3d_cast <Inline*> (node);
 
 		if (inlineNode)
 		{
@@ -496,9 +496,9 @@ jsX3DExecutionContext::removeImportedNode (JSContext* context, uintN argc, jsval
 {
 	if (argc == 1)
 	{
-		JSString* importedName;
+		JSString* importedName = nullptr;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "S", &importedName))
 			return JS_FALSE;
@@ -530,11 +530,11 @@ jsX3DExecutionContext::updateImportedNode (JSContext* context, uintN argc, jsval
 {
 	if (argc == 2 or argc == 3)
 	{
-		JSObject* oInline = nullptr;
-		JSString* exportedName;
-		JSString* importedName;
+		JSObject* oInline      = nullptr;
+		JSString* exportedName = nullptr;
+		JSString* importedName = nullptr;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "oS/S", &oInline, &exportedName, &importedName))
 			return JS_FALSE;
@@ -542,8 +542,8 @@ jsX3DExecutionContext::updateImportedNode (JSContext* context, uintN argc, jsval
 		if (JS_InstanceOfError (context, oInline, jsSFNode::getClass ()))
 			return JS_FALSE;
 
-		auto & node       = *static_cast <SFNode*> (JS_GetPrivate (context, oInline));
-		auto   inlineNode = x3d_cast <Inline*> (node);
+		auto & node           = *static_cast <SFNode*> (JS_GetPrivate (context, oInline));
+		const auto inlineNode = x3d_cast <Inline*> (node);
 
 		if (inlineNode)
 		{
@@ -584,9 +584,9 @@ jsX3DExecutionContext::getImportedNode (JSContext* context, uintN argc, jsval* v
 {
 	if (argc == 1)
 	{
-		JSString* importedName;
+		JSString* importedName = nullptr;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "S", &importedName))
 			return JS_FALSE;
@@ -616,14 +616,14 @@ jsX3DExecutionContext::addRoute (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 4)
 	{
-		Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+		const Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
-		JSObject* ofromNode = nullptr;
-		JSObject* otoNode = nullptr;
-		JSString* fromEventOut;
-		JSString* toEventIn;
+		JSObject* ofromNode    = nullptr;
+		JSObject* otoNode      = nullptr;
+		JSString* fromEventOut = nullptr;
+		JSString* toEventIn    = nullptr;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "oSoS", &ofromNode, &fromEventOut, &otoNode, &toEventIn))
 			return JS_FALSE;
@@ -640,8 +640,8 @@ jsX3DExecutionContext::addRoute (JSContext* context, uintN argc, jsval* vp)
 
 		try
 		{
-			X3DSFNode <Route> route = script -> getExecutionContext () -> addRoute (fromNode, JS_GetString (context, fromEventOut),
-			                                                                        toNode,   JS_GetString (context, toEventIn));
+			const X3DSFNode <Route> & route = script -> getExecutionContext () -> addRoute (fromNode, JS_GetString (context, fromEventOut),
+			                                                                                toNode,   JS_GetString (context, toEventIn));
 
 			return jsX3DRoute::create (context, route, &JS_RVAL (context, vp));
 		}
@@ -662,11 +662,11 @@ jsX3DExecutionContext::deleteRoute (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 1)
 	{
-		Script* script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+		Script* const script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
 		JSObject* oRoute = nullptr;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "o", &oRoute))
 			return JS_FALSE;
@@ -701,7 +701,7 @@ jsX3DExecutionContext::toVRMLString (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+		const auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
 
 		return JS_NewStringValue (context, executionContext -> toString (), &JS_RVAL (context, vp));
 	}

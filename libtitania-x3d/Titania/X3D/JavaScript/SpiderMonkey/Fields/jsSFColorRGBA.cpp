@@ -91,7 +91,7 @@ JSFunctionSpec jsSFColorRGBA::functions [ ] = {
 };
 
 void
-jsSFColorRGBA::init (JSContext* context, JSObject* global)
+jsSFColorRGBA::init (JSContext* const context, JSObject* const global)
 {
 	JSObject* proto = JS_InitClass (context, global, NULL, &static_class, construct,
 	                                0, properties, functions, NULL, NULL);
@@ -103,9 +103,9 @@ jsSFColorRGBA::init (JSContext* context, JSObject* global)
 }
 
 JSBool
-jsSFColorRGBA::create (JSContext* context, SFColorRGBA* field, jsval* vp, const bool seal)
+jsSFColorRGBA::create (JSContext* const context, SFColorRGBA* const field, jsval* const vp, const bool seal)
 {
-	auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
+	const auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
 
 	try
 	{
@@ -113,7 +113,7 @@ jsSFColorRGBA::create (JSContext* context, SFColorRGBA* field, jsval* vp, const 
 	}
 	catch (const std::out_of_range &)
 	{
-		JSObject* result = JS_NewObject (context, &static_class, NULL, NULL);
+		JSObject* const result = JS_NewObject (context, &static_class, NULL, NULL);
 
 		if (result == NULL)
 			return JS_FALSE;
@@ -142,7 +142,7 @@ jsSFColorRGBA::construct (JSContext* context, uintN argc, jsval* vp)
 	{
 		jsdouble r, g, b, a;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "dddd", &r, &g, &b, &a))
 			return JS_FALSE;
@@ -208,7 +208,7 @@ jsSFColorRGBA::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op
 JSBool
 jsSFColorRGBA::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	SFColorRGBA* sfcolorrgba = (SFColorRGBA*) JS_GetPrivate (context, obj);
+	SFColorRGBA* const sfcolorrgba = (SFColorRGBA*) JS_GetPrivate (context, obj);
 
 	return JS_NewNumberValue (context, sfcolorrgba -> get1Value (JSID_TO_INT (id)), vp);
 }
@@ -216,7 +216,7 @@ jsSFColorRGBA::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 JSBool
 jsSFColorRGBA::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
-	SFColorRGBA* sfcolorrgba = (SFColorRGBA*) JS_GetPrivate (context, obj);
+	SFColorRGBA* const sfcolorrgba = (SFColorRGBA*) JS_GetPrivate (context, obj);
 
 	jsdouble value;
 
@@ -233,7 +233,7 @@ jsSFColorRGBA::getHSV (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		SFColorRGBA* sfcolorrgba = (SFColorRGBA*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		SFColorRGBA* const sfcolorrgba = (SFColorRGBA*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		float h, s, v;
 
@@ -250,7 +250,7 @@ jsSFColorRGBA::getHSV (JSContext* context, uintN argc, jsval* vp)
 		if (not JS_NewNumberValue (context, v, &vector [2]))
 			return JS_FALSE;
 
-		JSObject* result = JS_NewArrayObject (context, 3, vector);
+		JSObject* const result = JS_NewArrayObject (context, 3, vector);
 
 		JS_SET_RVAL (context, vp, OBJECT_TO_JSVAL (result));
 
@@ -267,7 +267,7 @@ jsSFColorRGBA::setHSV (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 3)
 	{
-		SFColorRGBA* sfcolorrgba = (SFColorRGBA*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		SFColorRGBA* const sfcolorrgba = (SFColorRGBA*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		jsdouble h, s, v;
 

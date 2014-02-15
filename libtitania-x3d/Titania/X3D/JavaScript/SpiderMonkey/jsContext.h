@@ -73,7 +73,9 @@ public:
 	using X3DJavaScriptContext::addField;
 	using X3DJavaScriptContext::removeField;
 
-	jsContext (Script*, const std::string &, const basic::uri &, size_t);
+	///  @name Construction
+
+	jsContext (Script* const, const std::string &, const basic::uri &, const size_t);
 
 	virtual
 	X3DBaseNode*
@@ -122,13 +124,13 @@ public:
 	eventsProcessed () final override;
 
 	void
-	addObject (X3DFieldDefinition*, JSObject*);
+	addObject (X3DFieldDefinition* const, JSObject* const);
 
 	void
 	removeObject (X3DFieldDefinition*);
 
 	JSObject*
-	getObject (X3DFieldDefinition*);
+	getObject (X3DFieldDefinition* const);
 	
 	std::unique_ptr <SceneLoader> &
 	getFuture ()
@@ -159,7 +161,7 @@ private:
 
 	static
 	void
-	defineProperty (JSContext *, JSObject *, X3DFieldDefinition * const, const std::string &, uintN);
+	defineProperty (JSContext* const, JSObject* const, X3DFieldDefinition * const, const std::string &, const uintN);
 
 	void
 	initEventHandler ();

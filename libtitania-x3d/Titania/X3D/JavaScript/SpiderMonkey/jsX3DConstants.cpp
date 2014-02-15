@@ -225,7 +225,7 @@ JSFunctionSpec jsX3DConstants::functions [ ] = {
 };
 
 void
-jsX3DConstants::init (JSContext* context, JSObject* global)
+jsX3DConstants::init (JSContext* const context, JSObject* const global)
 {
 	JS_InitClass (context, global, NULL, &static_class, NULL,
 	              0, properties, functions, NULL, NULL);

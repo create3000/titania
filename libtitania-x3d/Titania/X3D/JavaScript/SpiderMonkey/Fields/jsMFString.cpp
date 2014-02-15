@@ -74,9 +74,9 @@ jsX3DArrayField <jsSFString, MFString>::construct (JSContext* context, uintN arg
 	}
 	else
 	{
-		MFString* field = new MFString ();
+		MFString* const field = new MFString ();
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		for (uintN i = 0; i < argc; ++ i)
 			field -> emplace_back (JS_GetString (context, argv [i]));
@@ -94,7 +94,7 @@ jsX3DArrayField <jsSFString, MFString>::set1Value (JSContext* context, JSObject*
 	if (not JSID_IS_INT (id))
 		return JS_TRUE;
 
-	int32 index = JSID_TO_INT (id);
+	const int32 index = JSID_TO_INT (id);
 
 	if (index < 0)
 	{
@@ -102,7 +102,7 @@ jsX3DArrayField <jsSFString, MFString>::set1Value (JSContext* context, JSObject*
 		return JS_FALSE;
 	}
 
-	MFString* field = (MFString*) JS_GetPrivate (context, obj);
+	MFString* const field = (MFString*) JS_GetPrivate (context, obj);
 
 	field -> set1Value (index, JS_GetString (context, *vp));
 
@@ -119,12 +119,12 @@ jsX3DArrayField <jsSFString, MFString>::unshift (JSContext* context, uintN argc,
 	{
 		JSString* value;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "S", &value))
 			return JS_FALSE;
 
-		MFString* field = (MFString*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		MFString* const field = (MFString*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		field -> emplace_front (JS_GetString (context, value));
 
@@ -144,12 +144,12 @@ jsX3DArrayField <jsSFString, MFString>::push (JSContext* context, uintN argc, js
 	{
 		JSString* value;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "S", &value))
 			return JS_FALSE;
 
-		MFString* field = (MFString*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		MFString* const field = (MFString*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		field -> emplace_back (JS_GetString (context, value));
 

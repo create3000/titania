@@ -48,36 +48,59 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_GLOBALS_H__
-#define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_GLOBALS_H__
+#ifndef __TITANIA_X3D_FIELDS_VRML_MATRIX_H__
+#define __TITANIA_X3D_FIELDS_VRML_MATRIX_H__
 
-#include <iostream>
-#include <jsapi.h>
+#include "SFMatrix4.h"
 
 namespace titania {
 namespace X3D {
 
-class jsGlobals
+class VrmlMatrix :
+	public SFMatrix4f
 {
 public:
 
-	static void
-	init (JSContext* const, JSObject* const);
+	VrmlMatrix () :
+		SFMatrix4f () { }
 
+	explicit
+	VrmlMatrix (const internal_type & value) :
+		SFMatrix4f (value) { }
 
-private:
+	VrmlMatrix (const value_type & e11, const value_type & e12, const value_type & e13, const value_type & e14,
+	            const value_type & e21, const value_type & e22, const value_type & e23, const value_type & e24,
+	            const value_type & e31, const value_type & e32, const value_type & e33, const value_type & e34,
+	            const value_type & e41, const value_type & e42, const value_type & e43, const value_type & e44) :
+		SFMatrix4f (e11, e12, e13, e14, e21, e22, e23, e24, e31, e32, e33, e34, e41, e42, e43, e44) { }
 
-	static JSBool _null  (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool _false (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool _true  (JSContext *, JSObject *, jsid, jsval*);
+	VrmlMatrix*
+	transpose () const
+	{ return new VrmlMatrix (! getValue ()); }
 
-	static JSBool require (JSContext *, uintN, jsval*);
-	static JSBool print   (JSContext *, uintN, jsval*);
+	VrmlMatrix*
+	inverse () const
+	{ return new VrmlMatrix (~getValue ()); }
 
-	static JSPropertySpec properties [ ];
-	static JSFunctionSpec functions [ ];
+	VrmlMatrix*
+	multLeft (const VrmlMatrix & value) const
+	{
+		internal_type result (getValue ());
 
-	static jsval X3D_JS_NULL;
+		result .multLeft (value .getValue ());
+
+		return new VrmlMatrix (result);
+	}
+
+	VrmlMatrix*
+	multRight (const VrmlMatrix & value) const
+	{
+		internal_type result (getValue ());
+
+		result .multRight (value .getValue ());
+
+		return new VrmlMatrix (result);
+	}
 
 };
 

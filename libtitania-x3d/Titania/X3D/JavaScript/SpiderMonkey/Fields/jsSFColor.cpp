@@ -101,9 +101,9 @@ jsSFColor::init (JSContext* context, JSObject* global)
 }
 
 JSBool
-jsSFColor::create (JSContext* context, SFColor* field, jsval* vp, const bool seal)
+jsSFColor::create (JSContext* const context, SFColor* const field, jsval* const vp, const bool seal)
 {
-	auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
+	const auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
 
 	try
 	{
@@ -111,7 +111,7 @@ jsSFColor::create (JSContext* context, SFColor* field, jsval* vp, const bool sea
 	}
 	catch (const std::out_of_range &)
 	{
-		JSObject* result = JS_NewObject (context, &static_class, NULL, NULL);
+		JSObject* const result = JS_NewObject (context, &static_class, NULL, NULL);
 
 		if (result == NULL)
 			return JS_FALSE;
@@ -140,7 +140,7 @@ jsSFColor::construct (JSContext* context, uintN argc, jsval* vp)
 	{
 		jsdouble r, g, b;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "ddd", &r, &g, &b))
 			return JS_FALSE;
@@ -206,7 +206,7 @@ jsSFColor::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op, js
 JSBool
 jsSFColor::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	SFColor* sfcolor = (SFColor*) JS_GetPrivate (context, obj);
+	SFColor* const sfcolor = (SFColor*) JS_GetPrivate (context, obj);
 
 	return JS_NewNumberValue (context, sfcolor -> get1Value (JSID_TO_INT (id)), vp);
 }
@@ -214,7 +214,7 @@ jsSFColor::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 JSBool
 jsSFColor::set1Value (JSContext* context, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
-	SFColor* sfcolor = (SFColor*) JS_GetPrivate (context, obj);
+	SFColor* const sfcolor = (SFColor*) JS_GetPrivate (context, obj);
 
 	jsdouble value;
 
@@ -231,7 +231,7 @@ jsSFColor::getHSV (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		SFColor* sfcolor = (SFColor*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		SFColor* const sfcolor = (SFColor*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		float h, s, v;
 
@@ -248,7 +248,7 @@ jsSFColor::getHSV (JSContext* context, uintN argc, jsval* vp)
 		if (not JS_NewNumberValue (context, v, &vector [2]))
 			return JS_FALSE;
 
-		JSObject* result = JS_NewArrayObject (context, 3, vector);
+		JSObject* const result = JS_NewArrayObject (context, 3, vector);
 
 		JS_SET_RVAL (context, vp, OBJECT_TO_JSVAL (result));
 
@@ -265,11 +265,11 @@ jsSFColor::setHSV (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 3)
 	{
-		SFColor* sfcolor = (SFColor*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		SFColor* const sfcolor = (SFColor*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		jsdouble h, s, v;
 
-		jsval* argv = JS_ARGV (context, vp);
+		jsval* const argv = JS_ARGV (context, vp);
 
 		if (not JS_ConvertArguments (context, argc, argv, "ddd", &h, &s, &v))
 			return JS_FALSE;

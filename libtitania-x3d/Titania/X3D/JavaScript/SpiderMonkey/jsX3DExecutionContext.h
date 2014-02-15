@@ -63,11 +63,11 @@ public:
 
 	static
 	JSObject*
-	init (JSContext*, JSObject*);
+	init (JSContext* const, JSObject* const);
 
 	static
 	JSBool
-	create (JSContext*, X3DExecutionContext*, jsval*, const bool = false);
+	create (JSContext* const, X3DExecutionContext* const, jsval* const, const bool = false);
 
 	static
 	JSClass*

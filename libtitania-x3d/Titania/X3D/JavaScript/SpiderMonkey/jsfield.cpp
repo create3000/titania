@@ -57,7 +57,7 @@ namespace titania {
 namespace X3D {
 
 JSBool
-JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
+JS_ValueToField (JSContext* const context, X3DFieldDefinition* const field, jsval* const vp)
 {
 	switch (field -> getType ())
 	{
@@ -639,135 +639,135 @@ JS_ValueToField (JSContext* context, X3DFieldDefinition* field, jsval* vp)
 }
 
 JSBool
-JS_NewFieldValue (JSContext* context, X3DFieldDefinition* field, jsval* vp, const bool seal)
+JS_NewFieldValue (JSContext* const context, X3DFieldDefinition* const field, jsval* const vp, const bool seal)
 {
 	switch (field -> getType ())
 	{
 		case X3DConstants::SFBool:
-			return jsSFBool::create (context, (SFBool*) field, vp, seal);
+			return jsSFBool::create (context, static_cast <SFBool*> (field), vp);
 
 		case X3DConstants::SFColor:
-			return jsSFColor::create (context, (SFColor*) field, vp, seal);
+			return jsSFColor::create (context, static_cast <SFColor*> (field), vp, seal);
 
 		case X3DConstants::SFColorRGBA:
-			return jsSFColorRGBA::create (context, (SFColorRGBA*) field, vp, seal);
+			return jsSFColorRGBA::create (context, static_cast <SFColorRGBA*> (field), vp, seal);
 
 		case X3DConstants::SFDouble:
-			return JS_NewNumberValue (context, ((SFDouble*) field) -> getValue (), vp);
+			return jsSFDouble::create (context, static_cast <SFDouble*> (field), vp);
 
 		case X3DConstants::SFFloat:
-			return JS_NewNumberValue (context, ((SFFloat*) field) -> getValue (), vp);
+			return jsSFFloat::create (context, static_cast <SFFloat*> (field), vp);
 
 		case X3DConstants::SFInt32:
-			return JS_NewNumberValue (context, ((SFInt32*) field) -> getValue (), vp);
+			return jsSFInt32::create (context, static_cast <SFInt32*> (field), vp);
 
 		case X3DConstants::SFImage:
-			return jsSFImage::create (context, (SFImage*) field, vp, seal);
+			return jsSFImage::create (context, static_cast <SFImage*> (field), vp, seal);
 
 		case X3DConstants::SFMatrix3d:
-			return jsSFMatrix3d::create (context, (SFMatrix3d*) field, vp, seal);
+			return jsSFMatrix3d::create (context, static_cast <SFMatrix3d*> (field), vp, seal);
 
 		case X3DConstants::SFMatrix3f:
-			return jsSFMatrix3f::create (context, (SFMatrix3f*) field, vp, seal);
+			return jsSFMatrix3f::create (context, static_cast <SFMatrix3f*> (field), vp, seal);
 
 		case X3DConstants::SFMatrix4d:
-			return jsSFMatrix4d::create (context, (SFMatrix4d*) field, vp, seal);
+			return jsSFMatrix4d::create (context, static_cast <SFMatrix4d*> (field), vp, seal);
 
 		case X3DConstants::SFMatrix4f:
-			return jsSFMatrix4f::create (context, (SFMatrix4f*) field, vp, seal);
+			return jsSFMatrix4f::create (context, static_cast <SFMatrix4f*> (field), vp, seal);
 
 		case X3DConstants::SFNode:
-			return jsSFNode::create (context, (SFNode*) field, vp, seal);
+			return jsSFNode::create (context, static_cast <SFNode*> (field), vp, seal);
 
 		case X3DConstants::SFRotation:
-			return jsSFRotation::create (context, (SFRotation*) field, vp, seal);
+			return jsSFRotation::create (context, static_cast <SFRotation*> (field), vp, seal);
 
 		case X3DConstants::SFString:
-			return JS_NewStringValue (context, ((SFString*) field) -> getValue (), vp);
+			return jsSFString::create (context, static_cast <SFString*> (field), vp);
 
 		case X3DConstants::SFTime:
-			return JS_NewNumberValue (context, ((SFTime*) field) -> getValue (), vp);
+			return jsSFTime::create (context, static_cast <SFTime*> (field), vp);
 
 		case X3DConstants::SFVec2d:
-			return jsSFVec2d::create (context, (SFVec2d*) field, vp, seal);
+			return jsSFVec2d::create (context, static_cast <SFVec2d*> (field), vp, seal);
 
 		case X3DConstants::SFVec2f:
-			return jsSFVec2f::create (context, (SFVec2f*) field, vp, seal);
+			return jsSFVec2f::create (context, static_cast <SFVec2f*> (field), vp, seal);
 
 		case X3DConstants::SFVec3d:
-			return jsSFVec3d::create (context, (SFVec3d*) field, vp, seal);
+			return jsSFVec3d::create (context, static_cast <SFVec3d*> (field), vp, seal);
 
 		case X3DConstants::SFVec3f:
-			return jsSFVec3f::create (context, (SFVec3f*) field, vp, seal);
+			return jsSFVec3f::create (context, static_cast <SFVec3f*> (field), vp, seal);
 
 		case X3DConstants::SFVec4d:
-			return jsSFVec4d::create (context, (SFVec4d*) field, vp, seal);
+			return jsSFVec4d::create (context, static_cast <SFVec4d*> (field), vp, seal);
 
 		case X3DConstants::SFVec4f:
-			return jsSFVec4f::create (context, (SFVec4f*) field, vp, seal);
+			return jsSFVec4f::create (context, static_cast <SFVec4f*> (field), vp, seal);
 
 		case X3DConstants::MFBool:
-			return jsMFBool::create (context, (MFBool*) field, vp, seal);
+			return jsMFBool::create (context, static_cast <MFBool*> (field), vp, seal);
 
 		case X3DConstants::MFColor:
-			return jsMFColor::create (context, (MFColor*) field, vp, seal);
+			return jsMFColor::create (context, static_cast <MFColor*> (field), vp, seal);
 
 		case X3DConstants::MFColorRGBA:
-			return jsMFColorRGBA::create (context, (MFColorRGBA*) field, vp, seal);
+			return jsMFColorRGBA::create (context, static_cast <MFColorRGBA*> (field), vp, seal);
 
 		case X3DConstants::MFDouble:
-			return jsMFDouble::create (context, (MFDouble*) field, vp, seal);
+			return jsMFDouble::create (context, static_cast <MFDouble*> (field), vp, seal);
 
 		case X3DConstants::MFFloat:
-			return jsMFFloat::create (context, (MFFloat*) field, vp, seal);
+			return jsMFFloat::create (context, static_cast <MFFloat*> (field), vp, seal);
 
 		case X3DConstants::MFImage:
-			return jsMFImage::create (context, (MFImage*) field, vp, seal);
+			return jsMFImage::create (context, static_cast <MFImage*> (field), vp, seal);
 
 		case X3DConstants::MFInt32:
-			return jsMFInt32::create (context, (MFInt32*) field, vp, seal);
+			return jsMFInt32::create (context, static_cast <MFInt32*> (field), vp, seal);
 
 		case X3DConstants::MFMatrix3d:
-			return jsMFMatrix3d::create (context, (MFMatrix3d*) field, vp, seal);
+			return jsMFMatrix3d::create (context, static_cast <MFMatrix3d*> (field), vp, seal);
 
 		case X3DConstants::MFMatrix3f:
-			return jsMFMatrix3f::create (context, (MFMatrix3f*) field, vp, seal);
+			return jsMFMatrix3f::create (context, static_cast <MFMatrix3f*> (field), vp, seal);
 
 		case X3DConstants::MFMatrix4d:
-			return jsMFMatrix4d::create (context, (MFMatrix4d*) field, vp, seal);
+			return jsMFMatrix4d::create (context, static_cast <MFMatrix4d*> (field), vp, seal);
 
 		case X3DConstants::MFMatrix4f:
-			return jsMFMatrix4f::create (context, (MFMatrix4f*) field, vp, seal);
+			return jsMFMatrix4f::create (context, static_cast <MFMatrix4f*> (field), vp, seal);
 
 		case X3DConstants::MFNode:
-			return jsMFNode::create (context, (MFNode*) field, vp, seal);
+			return jsMFNode::create (context, static_cast <MFNode*> (field), vp, seal);
 
 		case X3DConstants::MFRotation:
-			return jsMFRotation::create (context, (MFRotation*) field, vp, seal);
+			return jsMFRotation::create (context, static_cast <MFRotation*> (field), vp, seal);
 
 		case X3DConstants::MFString:
-			return jsMFString::create (context, (MFString*) field, vp, seal);
+			return jsMFString::create (context, static_cast <MFString*> (field), vp, seal);
 
 		case X3DConstants::MFTime:
-			return jsMFTime::create (context, (MFTime*) field, vp, seal);
+			return jsMFTime::create (context, static_cast <MFTime*> (field), vp, seal);
 
 		case X3DConstants::MFVec2d:
-			return jsMFVec2d::create (context, (MFVec2d*) field, vp, seal);
+			return jsMFVec2d::create (context, static_cast <MFVec2d*> (field), vp, seal);
 
 		case X3DConstants::MFVec2f:
-			return jsMFVec2f::create (context, (MFVec2f*) field, vp, seal);
+			return jsMFVec2f::create (context, static_cast <MFVec2f*> (field), vp, seal);
 
 		case X3DConstants::MFVec3d:
-			return jsMFVec3d::create (context, (MFVec3d*) field, vp, seal);
+			return jsMFVec3d::create (context, static_cast <MFVec3d*> (field), vp, seal);
 
 		case X3DConstants::MFVec3f:
-			return jsMFVec3f::create (context, (MFVec3f*) field, vp, seal);
+			return jsMFVec3f::create (context, static_cast <MFVec3f*> (field), vp, seal);
 
 		case X3DConstants::MFVec4d:
-			return jsMFVec4d::create (context, (MFVec4d*) field, vp, seal);
+			return jsMFVec4d::create (context, static_cast <MFVec4d*> (field), vp, seal);
 
 		case X3DConstants::MFVec4f:
-			return jsMFVec4f::create (context, (MFVec4f*) field, vp, seal);
+			return jsMFVec4f::create (context, static_cast <MFVec4f*> (field), vp, seal);
 	}
 
 	return JS_TRUE;

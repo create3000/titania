@@ -64,11 +64,11 @@ public:
 
 	static
 	void
-	init (JSContext*, JSObject*);
+	init (JSContext* const, JSObject* const);
 
 	static
 	JSBool
-	create (JSContext*, X3DFieldDefinition*, jsval*, const bool = false);
+	create (JSContext* const, X3DFieldDefinition* const, jsval* const, const bool = false);
 
 	static
 	JSClass*
@@ -82,7 +82,8 @@ public:
 
 protected:
 
-	static void
+	static
+	void
 	finalize (JSContext*, JSObject*);
 
 

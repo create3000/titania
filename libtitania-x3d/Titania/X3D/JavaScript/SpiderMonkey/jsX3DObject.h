@@ -79,7 +79,7 @@ jsX3DObject::getName (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		Type* value = static_cast <Type*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+		const Type* const value = static_cast <Type*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
 
 		return JS_NewStringValue (context, value -> getName (), vp);
 	}
@@ -95,7 +95,7 @@ jsX3DObject::getTypeName (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		Type* value = static_cast <Type*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+		const Type* const value = static_cast <Type*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
 
 		return JS_NewStringValue (context, value -> getTypeName (), vp);
 	}
@@ -111,7 +111,7 @@ jsX3DObject::toString (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		Type* value = static_cast <Type*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
+		const Type* const value = static_cast <Type*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
 
 		return JS_NewStringValue (context, value -> toString (), vp);
 	}

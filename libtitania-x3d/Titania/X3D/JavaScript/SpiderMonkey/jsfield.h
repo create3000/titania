@@ -58,10 +58,10 @@ namespace titania {
 namespace X3D {
 
 JSBool
-JS_ValueToField (JSContext*, X3DFieldDefinition*, jsval*);
+JS_ValueToField (JSContext* const, X3DFieldDefinition* const, jsval* const);
 
 JSBool
-JS_NewFieldValue (JSContext*, X3DFieldDefinition*, jsval*, const bool = false);
+JS_NewFieldValue (JSContext* const, X3DFieldDefinition* const, jsval*, const bool = false);
 
 } // X3D
 } // titania
