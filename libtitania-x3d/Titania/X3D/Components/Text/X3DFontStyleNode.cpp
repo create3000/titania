@@ -76,7 +76,7 @@ X3DTextGeometry::initialize (Text* const text, const X3DFontStyleNode* const fon
 	charSpacings .resize (numLines);
 	translation  .resize (numLines);
 
-	if (text -> string () .empty ())
+	if (numLines == 0)
 	{
 		text -> origin ()     = Vector3d ();
 		text -> textBounds () = Vector2d ();
@@ -160,11 +160,11 @@ X3DTextGeometry::initialize (Text* const text, const X3DFontStyleNode* const fon
 			bbox += Box2d (size * scale, (center + translation [i]) * scale);
 		}
 
-		const Vector2d size    = bbox .size ();
-		const Vector2d size1_2 = size / 2.0;
-		Vector2d       center  = bbox .center ();
-		Vector2d       min     = center - size1_2;
-		Vector2d       max     = center + size1_2;
+		Vector2d min, max;
+	
+		bbox .extends (min, max);
+		
+		const Vector2d size = max - min;
 
 		text -> textBounds () = size;
 
@@ -173,7 +173,7 @@ X3DTextGeometry::initialize (Text* const text, const X3DFontStyleNode* const fon
 		switch (fontStyle -> getMinorAlignment ())
 		{
 			case X3DFontStyleNode::Alignment::BEGIN:
-				minorAlignment = Vector2d (0, -max .y ());
+				minorAlignment = bearing;
 				break;
 			case X3DFontStyleNode::Alignment::FIRST:
 				minorAlignment = Vector2d ();
@@ -187,9 +187,8 @@ X3DTextGeometry::initialize (Text* const text, const X3DFontStyleNode* const fon
 		}
 
 		// Translate bbox by minorAlignment
-		center += minorAlignment;
-		min     = center - size1_2;
-		max     = center + size1_2;
+		min += minorAlignment;
+		max += minorAlignment;
 
 		text -> origin () = Vector3d (min .x (), max .y (), 0);
 
