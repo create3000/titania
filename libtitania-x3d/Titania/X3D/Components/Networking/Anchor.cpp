@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -63,7 +63,7 @@ const std::string Anchor::containerField = "children";
 
 Anchor::Fields::Fields () :
 	description (new SFString ()),
-	parameter (new MFString ())
+	  parameter (new MFString ())
 { }
 
 Anchor::Anchor (X3DExecutionContext* const executionContext) :
@@ -98,6 +98,25 @@ Anchor::initialize ()
 }
 
 void
+Anchor::set_over (const bool value)
+{
+	if (value not_eq isOver)
+	{
+		isOver = value;
+
+		if (isOver and not description () .empty ())
+			getBrowser () -> getNotification () -> string () = description ();
+	}
+}
+
+void
+Anchor::set_active (const bool value)
+{
+	if (isOver and not value)
+		requestImmediateLoad ();
+}
+
+void
 Anchor::requestImmediateLoad ()
 {
 	try
@@ -112,25 +131,6 @@ Anchor::requestImmediateLoad ()
 	{
 		setLoadState (FAILED_STATE);
 	}
-}
-
-void
-Anchor::set_over (bool value)
-{
-	if (value not_eq isOver)
-	{
-		isOver = value;
-		
-		if (isOver and not description () .empty ())
-			getBrowser () -> getNotification () -> string () = description ();
-	}
-}
-
-void
-Anchor::set_active (bool value)
-{
-	if (isOver and not value)
-		requestImmediateLoad ();
 }
 
 void

@@ -100,7 +100,7 @@ throw (Error <INVALID_NAME>)
 {
 	try
 	{
-		auto node = scene -> getNamedNode (getNode () -> getName ());
+		const auto node = scene -> getNamedNode (getNode () -> getName ());
 
 		return scene -> addExportedNode (exportedName, node) .getValue ();
 	}

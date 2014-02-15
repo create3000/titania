@@ -435,11 +435,11 @@ Layout::transform (const TraverseType type)
 		// Calculate rectangleSize
 
 		viewport = Viewport4i ();
-		int viewportWidth  = viewport [2];
-		int viewportHeight = viewport [3];
+		const int viewportWidth  = viewport [2];
+		const int viewportHeight = viewport [3];
 
-		Vector2d viewportSize        = viewpoint -> getViewportSize (viewport);
-		Vector2d parentRectangleSize = parent ? parent -> getRectangleSize () : viewportSize;
+		const Vector2d viewportSize        = viewpoint -> getViewportSize (viewport);
+		const Vector2d parentRectangleSize = parent ? parent -> getRectangleSize () : viewportSize;
 
 		switch (getSizeUnitX ())
 		{
@@ -532,7 +532,7 @@ Layout::transform (const TraverseType type)
 		Vector3d   currentTranslation, currentScale;
 		Rotation4d currentRotation;
 
-		Matrix4d modelViewMatrix = getModelViewMatrix (type);
+		const Matrix4d modelViewMatrix = getModelViewMatrix (type);
 		modelViewMatrix .get (currentTranslation, currentRotation, currentScale);
 
 		switch (getScaleModeX ())

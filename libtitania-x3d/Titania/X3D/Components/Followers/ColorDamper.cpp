@@ -113,10 +113,10 @@ ColorDamper::initialize ()
 }
 
 bool
-ColorDamper::equals (const Color3f & lhs, const Color3f & rhs, float tolerance) const
+ColorDamper::equals (const Color3f & lhs, const Color3f & rhs, const float tolerance) const
 {
-	Vector3f a (lhs .r (), lhs .g (), lhs .b ());
-	Vector3f b (rhs .r (), rhs .g (), rhs .b ());
+	const Vector3f a (lhs .r (), lhs .g (), lhs .b ());
+	const Vector3f b (rhs .r (), rhs .g (), rhs .b ());
 
 	return abs (a - b) < tolerance;
 }
@@ -153,9 +153,9 @@ ColorDamper::prepareEvents ()
 
 	if (tau ())
 	{
-		time_type delta = 1 / getBrowser () -> getCurrentFrameRate ();
+		const time_type delta = 1 / getBrowser () -> getCurrentFrameRate ();
 
-		float alpha = std::exp (-delta / tau ());
+		const float alpha = std::exp (-delta / tau ());
 		
 		for (size_t i = 0; i < order; ++ i)
 		{

@@ -218,7 +218,7 @@ public:
 	///  @name Operations
 
 	Vector3f
-	getTranslation (const Vector3f &, float, float, const Vector3f &);
+	getTranslation (const Vector3f &, const float, const float, const Vector3f &);
 
 	void
 	lookAt ();
@@ -259,7 +259,7 @@ private:
 	///  @name Member access
 
 	float
-	getDistance (const Vector3f &, float, float, const Vector3f &);
+	getDistance (const Vector3f &, const float, const float, const Vector3f &);
 
 	///  @name Operations
 

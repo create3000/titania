@@ -83,11 +83,11 @@ Circle2DOptions::build ()
 {
 	getVertices () .reserve (segments ());
 
-	float angle = M_PI2 / segments ();
+	const float angle = M_PI2 / segments ();
 
 	for (int32_t n = 0; n < segments (); ++ n)
 	{
-		std::complex <float> point = std::polar <float> (1, angle * n);
+		const std::complex <float> point = std::polar <float> (1, angle * n);
 
 		getVertices () .emplace_back (point .real (), point .imag (), 0);
 	}

@@ -57,7 +57,7 @@ namespace X3D {
 
 TextureLoader::TextureLoader (X3DExecutionContext* const executionContext,
                               const MFString & url,
-                              size_t minTextureSize, size_t maxTextureSize,
+                              const size_t minTextureSize, const size_t maxTextureSize,
                               const Callback & callback) :
 	         browser (executionContext -> getBrowser ()),
 	executionContext (executionContext),
@@ -78,7 +78,7 @@ TextureLoader::cancel ()
 
 std::future <TexturePtr>
 TextureLoader::getFuture (const MFString & url,
-                          size_t minTextureSize, size_t maxTextureSize)
+                          const size_t minTextureSize, const size_t maxTextureSize)
 {
 	if (url .empty ())
 		std::async (std::launch::deferred, [ ] (){ return nullptr; });
@@ -90,7 +90,7 @@ TextureLoader::getFuture (const MFString & url,
 
 TexturePtr
 TextureLoader::loadAsync (const MFString & url,
-                          size_t minTextureSize, size_t maxTextureSize)
+                          const size_t minTextureSize, const size_t maxTextureSize)
 {
 	for (const auto & URL : url)
 	{
@@ -131,7 +131,7 @@ TextureLoader::prepareEvents ()
 
 	if (future .valid ())
 	{
-		auto status = future .wait_for (std::chrono::milliseconds (0));
+		const auto status = future .wait_for (std::chrono::milliseconds (0));
 
 		if (status == std::future_status::ready)
 		{

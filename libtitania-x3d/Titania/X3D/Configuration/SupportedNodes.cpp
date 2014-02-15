@@ -290,7 +290,7 @@ SupportedNodes::SupportedNodes (X3DExecutionContext* const executionContext)
 }
 
 void
-SupportedNodes::add (const std::string & name, X3DBaseNode* node)
+SupportedNodes::add (const std::string & name, X3DBaseNode* const node)
 {
 	//std::clog << "\tAdding node type " << name << ": " << std::flush;
 

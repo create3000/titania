@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -85,12 +85,12 @@ ScreenText::ScreenText (Text* const text, const ScreenFontStyle* const fontStyle
 void
 ScreenText::configure (const Cairo::RefPtr <Cairo::Context> & context)
 {
-	const ScreenFontPtr font = fontStyle -> getScreenFont ();
-	auto fontFace = Cairo::FtFontFace::create (font -> getPattern () .get ());
+	const ScreenFontPtr font     = fontStyle -> getScreenFont ();
+	auto                fontFace = Cairo::FtFontFace::create (font -> getPattern () .get ());
 
 	context -> set_font_face (fontFace);
 	context -> set_font_size (fontStyle -> getSize ());
-	
+
 	Cairo::FontOptions options;
 	options .set_hint_style (Cairo::HINT_STYLE_MEDIUM);
 
@@ -192,9 +192,9 @@ ScreenText::build ()
 	Cairo::TextClusterFlags          cluster_flags;
 
 	// Render lines.
-	const int  first       = topToBottom ? 0 : text -> string () .size () - 1;
-	const int  last        = topToBottom ? text -> string () .size () : -1;
-	const int  step        = topToBottom ? 1 : -1;
+	const int first = topToBottom ? 0 : text -> string () .size () - 1;
+	const int last  = topToBottom ? text -> string () .size () : -1;
+	const int step  = topToBottom ? 1 : -1;
 
 	for (int i = first; i not_eq last; i += step)
 	{
@@ -206,7 +206,7 @@ ScreenText::build ()
 			{
 				const double x = alignment .x () + getTranslation () [i] .x ();
 				const double y = -(alignment .y () + getTranslation () [i] .y ());
-				
+
 				if (leftToRight)
 				{
 					font -> text_to_glyphs (x, y, line, glyphs, clusters, cluster_flags);
@@ -225,7 +225,7 @@ ScreenText::build ()
 				else
 				{
 					String reversed (line .rbegin (), line .rend ());
-	
+
 					font -> text_to_glyphs (x, y, reversed, glyphs, clusters, cluster_flags);
 
 					double       space       = 0;
@@ -413,8 +413,8 @@ ScreenFontStyle::getSize () const
 {
 	if (glXGetCurrentContext ())
 	{
-		const double height   = Gdk::Screen::get_default () -> get_height ();
-		const double height_m = Gdk::Screen::get_default () -> get_height_mm () / 1000.0;
+		const double height   = Gdk::Screen::get_default () -> get_height ();             // Height in pixel
+		const double height_m = Gdk::Screen::get_default () -> get_height_mm () / 1000.0; // Height in meter
 
 		return M_POINT * pointSize () * height / height_m;
 	}

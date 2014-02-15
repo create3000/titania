@@ -64,8 +64,8 @@ class X3DBindableNodeList :
 {
 public:
 
-	typedef Type*                              value_type;
-	typedef std::vector <value_type>           list_type;
+	typedef Type*                              pointer_type;
+	typedef std::vector <pointer_type>         list_type;
 	typedef typename list_type::const_iterator const_iterator;
 	typedef typename list_type::size_type      size_type;
 
@@ -129,11 +129,11 @@ public:
 
 	///  @name Member access
 
-	const value_type &
+	const pointer_type &
 	operator [ ] (const size_type & index) const
 	{ return list [index]; }
 
-	const value_type &
+	const pointer_type &
 	at (const size_type & index) const
 	{ return list .at (index); }
 
@@ -153,7 +153,7 @@ public:
 
 	/// @name Modifiers
 
-	value_type
+	const pointer_type &
 	bound () const
 	{
 		for (const auto & node : list)
@@ -173,7 +173,7 @@ public:
 	}
 
 	void
-	push_back (value_type node)
+	push_back (const pointer_type & node)
 	{ temp .emplace_back (node); }
 
 	void
@@ -196,7 +196,7 @@ public:
 	}
 
 	void
-	erase (value_type node)
+	erase (const pointer_type & node)
 	{
 		auto end = std::remove (list .begin (), list .end (), node);
 

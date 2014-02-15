@@ -78,16 +78,16 @@ ViewVolume::ViewVolume (const Matrix4d & projection) :
 	planes (),
 	 valid (true)
 {
-	Vector4i viewport = Viewport4i ();
+	const Vector4i viewport = Viewport4i ();
 
 	try
 	{
-		int x1 = viewport [0];
-		int x2 = viewport [0] + viewport [2];
-		int y1 = viewport [1];
-		int y2 = viewport [1] + viewport [3];
+		const int x1 = viewport [0];
+		const int x2 = viewport [0] + viewport [2];
+		const int y1 = viewport [1];
+		const int y2 = viewport [1] + viewport [3];
 
-		Matrix4d matrix = ~projection;
+		const Matrix4d matrix = ~projection;
 
 		Vector3f p1 = unProjectPoint (x1, y2, 1, matrix, viewport);
 		Vector3f p2 = unProjectPoint (x1, y1, 1, matrix, viewport);
@@ -115,7 +115,7 @@ ViewVolume::intersect (const Box3f & bbox) const
 {
 	if (valid)
 	{
-		float nradius = math::abs (bbox .size ()) / 2;
+		const float nradius = math::abs (bbox .size ()) / 2;
 
 		for (const auto & plane : planes)
 		{
@@ -135,7 +135,7 @@ throw (std::domain_error)
 {
 	// Calculation for inverting a matrix, compute projection x modelview
 	// and store in A
-	Matrix4d matrix = ~(modelview * projection);
+	const Matrix4d matrix = ~(modelview * projection);
 
 	return unProjectPoint (winx, winy, winz, matrix, viewport);
 }
@@ -156,7 +156,7 @@ throw (std::domain_error)
 	if (in .w () == 0)
 		throw std::domain_error ("Couldn't unproject point: divisor is 0.");
 
-	double d = 1 / in .w ();
+	const double d = 1 / in .w ();
 
 	return Vector3d (in .x () * d, in .y () * d, in . z () * d);
 }
@@ -165,10 +165,10 @@ Line3d
 ViewVolume::unProjectLine (double winx, double winy, const Matrix4d & modelview, const Matrix4d & projection, const Vector4i & viewport)
 throw (std::domain_error)
 {
-	Matrix4d matrix = ~(modelview * projection);
+	const Matrix4d matrix = ~(modelview * projection);
 
-	Vector3f near = ViewVolume::unProjectPoint (winx, winy, 0.0, matrix, viewport);
-	Vector3f far  = ViewVolume::unProjectPoint (winx, winy, 0.9, matrix, viewport);
+	const Vector3f near = ViewVolume::unProjectPoint (winx, winy, 0.0, matrix, viewport);
+	const Vector3f far  = ViewVolume::unProjectPoint (winx, winy, 0.9, matrix, viewport);
 
 	return Line3d (near, far, true);
 }
@@ -184,7 +184,7 @@ throw (std::domain_error)
 	if (in .w () == 0)
 		throw std::domain_error ("Couldn't project point: divisor is 0.");
 
-	double d = 1 / in .w ();
+	const double d = 1 / in .w ();
 
 	return Vector3d ((in .x () * d * 0.5 + 0.5) * viewport [2] + viewport [0],
 	                 (in .y () * d * 0.5 + 0.5) * viewport [3] + viewport [1],

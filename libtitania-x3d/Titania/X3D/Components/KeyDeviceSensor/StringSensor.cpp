@@ -85,13 +85,13 @@ StringSensor::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-StringSensor::set_actionKeyPressEvent (int keyval)
+StringSensor::set_actionKeyPressEvent (const int keyval)
 {
 
 }
 
 void
-StringSensor::set_actionKeyReleaseEvent (int keyval)
+StringSensor::set_actionKeyReleaseEvent (const int keyval)
 {
 
 }

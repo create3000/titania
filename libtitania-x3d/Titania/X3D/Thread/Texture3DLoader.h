@@ -69,7 +69,7 @@ public:
 	typedef std::function <void (const Texture3DPtr &)> Callback;
 
 	Texture3DLoader (X3DExecutionContext* const executionContext,
-	                 const MFString &, size_t, size_t,
+	                 const MFString &, const size_t, const size_t,
 	                 const Callback &);
 
 	void
@@ -82,10 +82,10 @@ public:
 private:
 
 	std::future <Texture3DPtr>
-	getFuture (const MFString &, size_t, size_t);
+	getFuture (const MFString &, const size_t, const size_t);
 
 	Texture3DPtr
-	loadAsync (const MFString &, size_t, size_t);
+	loadAsync (const MFString &, const size_t, const size_t);
 
 	void
 	prepareEvents ();

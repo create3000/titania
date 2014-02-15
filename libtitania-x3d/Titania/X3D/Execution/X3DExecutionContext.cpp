@@ -431,7 +431,7 @@ throw (Error <INVALID_NODE>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	auto importedName = importedNames .find (node);
+	const auto importedName = importedNames .find (node);
 
 	if (importedName not_eq importedNames .end ())
 		return importedName -> second;
@@ -631,7 +631,7 @@ throw (Error <INVALID_NODE>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	auto routeId = getRouteId (sourceNode, sourceFieldId, destinationNode, destinationFieldId);
+	const auto routeId = getRouteId (sourceNode, sourceFieldId, destinationNode, destinationFieldId);
 
 	try
 	{
@@ -661,7 +661,7 @@ throw (Error <INVALID_NODE>,
 {
 	try
 	{
-		auto routeId = getRouteId (sourceNode, sourceFieldId, destinationNode, destinationFieldId);
+		const auto routeId = getRouteId (sourceNode, sourceFieldId, destinationNode, destinationFieldId);
 
 		routes .rfind (routeId) -> disconnect ();
 		routes .erase (routeId);
@@ -681,7 +681,7 @@ throw (Error <INVALID_NODE>,
 	if (not route)
 		throw Error <INVALID_NODE> ("Bad ROUTE specification: route is NULL in deleteRoute.");
 
-	auto routeId = route -> getId ();
+	const auto routeId = route -> getId ();
 
 	route -> disconnect ();
 	routes .erase (routeId);
@@ -793,7 +793,7 @@ throw (Error <INVALID_NAME>,
 {
 	try
 	{
-		auto viewpoint = x3d_cast <X3DViewpointNode*> (getNamedNode (name));
+		const auto viewpoint = x3d_cast <X3DViewpointNode*> (getNamedNode (name));
 
 		if (viewpoint)
 			viewpoint -> set_bind () = true;

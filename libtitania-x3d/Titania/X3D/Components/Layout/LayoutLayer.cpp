@@ -93,7 +93,7 @@ LayoutLayer::initialize ()
 {
 	X3DLayerNode::initialize ();
 
-	LayoutGroup* group = dynamic_cast <LayoutGroup*> (getGroup () .getValue ());
+	LayoutGroup* const group = dynamic_cast <LayoutGroup*> (getGroup () .getValue ());
 
 	layout () .addInterest (group -> layout ());
 

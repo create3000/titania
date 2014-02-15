@@ -108,8 +108,8 @@ PlaneViewer::on_motion_notify_event (GdkEventMotion* event)
 	{
 		const auto & viewpoint = getActiveViewpoint ();
 
-		Vector3f toPoint     = getPointOnCenterPlane (event -> x, event -> y);
-		Vector3f translation = viewpoint -> getUserOrientation () * (fromPoint - toPoint);
+		const Vector3f toPoint     = getPointOnCenterPlane (event -> x, event -> y);
+		const Vector3f translation = viewpoint -> getUserOrientation () * (fromPoint - toPoint);
 
 		viewpoint -> positionOffset ()         += translation;
 		viewpoint -> centerOfRotationOffset () += translation;
@@ -123,7 +123,7 @@ PlaneViewer::on_motion_notify_event (GdkEventMotion* event)
 bool
 PlaneViewer::on_scroll_event (GdkEventScroll* event)
 {
-	auto viewpoint = getActiveViewpoint ();
+	const auto viewpoint = getActiveViewpoint ();
 
 	viewpoint -> transitionStop ();
 
@@ -141,8 +141,8 @@ PlaneViewer::on_scroll_event (GdkEventScroll* event)
 		constrainFieldOfViewScale ();
 	}
 
-	Vector3f toPoint     = getPointOnCenterPlane (event -> x, event -> y);
-	Vector3f translation = viewpoint -> getUserOrientation () * (fromPoint - toPoint);
+	const Vector3f toPoint     = getPointOnCenterPlane (event -> x, event -> y);
+	const Vector3f translation = viewpoint -> getUserOrientation () * (fromPoint - toPoint);
 
 	viewpoint -> positionOffset ()         += translation;
 	viewpoint -> centerOfRotationOffset () += translation;
@@ -153,9 +153,9 @@ PlaneViewer::on_scroll_event (GdkEventScroll* event)
 void
 PlaneViewer::constrainFieldOfViewScale () const
 {
-	auto viewpointNode = getActiveViewpoint ();
+	const auto viewpointNode = getActiveViewpoint ();
 
-	auto viewpoint = dynamic_cast <Viewpoint*> (viewpointNode);
+	const auto viewpoint = dynamic_cast <Viewpoint*> (viewpointNode);
 
 	if (viewpoint)
 	{
@@ -164,7 +164,7 @@ PlaneViewer::constrainFieldOfViewScale () const
 	}
 	else
 	{
-		auto geoViewpoint = dynamic_cast <GeoViewpoint*> (viewpointNode);
+		const auto geoViewpoint = dynamic_cast <GeoViewpoint*> (viewpointNode);
 
 		if (geoViewpoint)
 		{

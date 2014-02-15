@@ -222,8 +222,8 @@ template <class ... Args>
 void
 tessellator <Args ...>::tessVertexData (void* vertex_data, void* polygon_data)
 {
-	Polygon* polygon = (Polygon*) polygon_data;
-	Vertex*  vertex  = (Vertex*) vertex_data;
+	Polygon* const polygon = (Polygon*) polygon_data;
+	Vertex*  const vertex  = (Vertex*) vertex_data;
 
 	polygon -> back () .m_vertices .emplace_back (vertex);
 }

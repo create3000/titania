@@ -57,7 +57,7 @@ namespace titania {
 namespace X3D {
 
 std::string
-preProcessShaderSource (X3DExecutionContext* const executionContext, const std::string & string, const basic::uri & worldURL, size_t level, std::set <basic::uri> & files)
+preProcessShaderSource (X3DExecutionContext* const executionContext, const std::string & string, const basic::uri & worldURL, const size_t level, std::set <basic::uri> & files)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>)
 {
@@ -99,7 +99,7 @@ throw (Error <INVALID_URL>,
 }
 
 std::string
-preProcessShaderSource (X3DExecutionContext* const executionContext, const std::string & string, const basic::uri & worldURL, size_t level)
+preProcessShaderSource (X3DExecutionContext* const executionContext, const std::string & string, const basic::uri & worldURL, const size_t level)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>)
 {

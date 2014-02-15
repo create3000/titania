@@ -61,6 +61,8 @@ class X3DSoundNode :
 {
 protected:
 
+	///  @name Construction
+
 	X3DSoundNode ();
 
 };

@@ -61,6 +61,8 @@ class X3DInfoNode :
 {
 protected:
 
+	///  @name Construction
+
 	X3DInfoNode ();
 
 };

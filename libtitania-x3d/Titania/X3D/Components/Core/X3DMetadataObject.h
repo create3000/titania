@@ -63,6 +63,8 @@ class X3DMetadataObject :
 {
 public:
 
+	///  @name Fields
+
 	SFString &
 	name ()
 	{ return *fields .name; }
@@ -79,12 +81,16 @@ public:
 	reference () const
 	{ return *fields .reference; }
 
+	///  @name Destruction
+
 	virtual
 	void
 	dispose () override;
 
 
 protected:
+
+	///  @name Construction
 
 	X3DMetadataObject ();
 
@@ -94,6 +100,8 @@ protected:
 
 
 private:
+
+	///  @name Members
 
 	struct Fields
 	{

@@ -89,6 +89,8 @@ public:
 
 protected:
 
+	///  @name Construction
+
 	X3DAppearanceNode ();
 
 };

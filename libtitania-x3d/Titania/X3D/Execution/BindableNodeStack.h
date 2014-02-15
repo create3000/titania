@@ -69,6 +69,8 @@ public:
 	typedef basic::bind_stack <pointer_type> stack_type;
 	typedef typename stack_type::size_type   size_type;
 
+	///  @name Construction
+
 	X3DBindableNodeStack (X3DExecutionContext* const executionContext, const pointer_type & node) :
 		X3DBaseNode (executionContext -> getBrowser (), executionContext),
 		fields (),
@@ -193,12 +195,12 @@ public:
 	}
 
 	void
-	erase (pointer_type node)
+	erase (const pointer_type & node)
 	{
 		if (not pop (node))
 			stack .erase (node);
 	}
-	
+
 	virtual
 	void
 	dispose () final override

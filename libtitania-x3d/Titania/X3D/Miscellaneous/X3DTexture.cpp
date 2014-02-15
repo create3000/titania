@@ -169,7 +169,7 @@ X3DTexture::refineImageFormats ()
 }
 
 void
-X3DTexture::process (size_type minTextureSize, size_type maxTextureSize)
+X3DTexture::process (const size_type minTextureSize, const size_type maxTextureSize)
 {
 	refineImageFormats ();
 
@@ -181,7 +181,7 @@ X3DTexture::process (size_type minTextureSize, size_type maxTextureSize)
 }
 
 void
-X3DTexture::tryScaleImages (size_type minTextureSize, size_type maxTextureSize)
+X3DTexture::tryScaleImages (const size_type minTextureSize, const size_type maxTextureSize)
 {
 	if (std::max (width, height) >= minTextureSize)
 	{
@@ -201,8 +201,8 @@ X3DTexture::scaleImages ()
 
 	for (Magick::Image & image : *images)
 	{
-		size_type w = image .size () .width ();
-		size_type h = image .size () .height ();
+		const size_type w = image .size () .width ();
+		const size_type h = image .size () .height ();
 	
 		if (w not_eq width or h not_eq height)
 		{

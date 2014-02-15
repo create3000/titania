@@ -100,8 +100,8 @@ LookAtViewer::on_button_release_event (GdkEventButton* event)
 	{
 		if (not motion and pick (event -> x, event -> y))
 		{
-			auto hit  = getBrowser () -> getHits () .front ();
-			auto bbox = hit -> shape -> getBBox () * Matrix4f (hit -> modelViewMatrix) * getActiveViewpoint () -> getTransformationMatrix ();
+			const auto hit  = getBrowser () -> getHits () .front ();
+			const auto bbox = hit -> shape -> getBBox () * Matrix4f (hit -> modelViewMatrix) * getActiveViewpoint () -> getTransformationMatrix ();
 
 			getActiveViewpoint () -> lookAt (bbox, 1.0 / 3.0);
 		}
@@ -138,7 +138,7 @@ LookAtViewer::on_motion_notify_event (GdkEventMotion* event)
 
 		const auto & viewpoint = getActiveViewpoint ();
 
-		Vector3f toVector = trackballProjectToSphere (event -> x, event -> y);
+		const Vector3f toVector = trackballProjectToSphere (event -> x, event -> y);
 
 		rotation = Rotation4f (toVector, fromVector);
 
@@ -153,7 +153,7 @@ LookAtViewer::on_motion_notify_event (GdkEventMotion* event)
 Rotation4f
 LookAtViewer::getOrientationOffset ()
 {
-	auto viewpoint = getActiveViewpoint ();
+	const auto viewpoint = getActiveViewpoint ();
 
 	orientation = rotation * orientation;
 

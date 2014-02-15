@@ -61,6 +61,8 @@ class X3DSensorNode :
 {
 public:
 
+	///  @name Fields
+
 	SFBool &
 	enabled ()
 	{ return *fields .enabled; }
@@ -80,10 +82,14 @@ public:
 
 protected:
 
+	///  @name Construction
+
 	X3DSensorNode ();
 
 
 private:
+
+	///  @name Members
 
 	struct Fields
 	{

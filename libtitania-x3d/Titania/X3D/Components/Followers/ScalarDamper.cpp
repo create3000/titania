@@ -113,7 +113,7 @@ ScalarDamper::initialize ()
 }
 
 bool
-ScalarDamper::equals (const float & lhs, const float & rhs, float tolerance) const
+ScalarDamper::equals (const float & lhs, const float & rhs, const float tolerance) const
 {
 	return abs (lhs - rhs) < tolerance;
 }
@@ -150,9 +150,9 @@ ScalarDamper::prepareEvents ()
 
 	if (tau ())
 	{
-		time_type delta = 1 / getBrowser () -> getCurrentFrameRate ();
+		const time_type delta = 1 / getBrowser () -> getCurrentFrameRate ();
 
-		float alpha = std::exp (-delta / tau ());
+		const float alpha = std::exp (-delta / tau ());
 		
 		for (size_t i = 0; i < order; ++ i)
 		{

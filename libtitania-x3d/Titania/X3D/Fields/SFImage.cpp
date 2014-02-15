@@ -225,8 +225,8 @@ SFImage::toStream (std::ostream & ostream) const
 			if (Generator::HasListBreak ())
 				ostream << Generator::Indent;
 
-			Image::size_type s = y * image .width ();
-			Image::size_type x = 0;
+			const Image::size_type s = y * image .width ();
+			Image::size_type       x = 0;
 
 			for (Image::size_type size = image .width () - 1; x < size; ++ x)
 			{
@@ -243,8 +243,8 @@ SFImage::toStream (std::ostream & ostream) const
 		if (Generator::HasListBreak ())
 			ostream << Generator::Indent;
 
-		Image::size_type s = y * image .width ();
-		Image::size_type x = 0;
+		const Image::size_type s = y * image .width ();
+		Image::size_type       x = 0;
 
 		for (Image::size_type size = image .width () - 1; x < size; ++ x)
 		{

@@ -145,8 +145,8 @@ golden_text (basic::ifilestream && istream)
 
 	// Save current state of stream.
 
-	auto state = istream .rdstate ();
-	auto pos   = istream .tellg ();
+	const auto state = istream .rdstate ();
+	const auto pos   = istream .tellg ();
 
 	// Read indentifer.
 
@@ -171,7 +171,7 @@ static
 basic::ifilestream
 golden_image (const basic::uri & uri)
 {
-	auto locale = std::locale::global (std::locale::classic ());
+	const auto locale = std::locale::global (std::locale::classic ());
 
 	try
 	{
@@ -179,8 +179,8 @@ golden_image (const basic::uri & uri)
 		image .read (uri);
 		image .resolutionUnits (Magick::PixelsPerInchResolution);
 
-		float width  = (float) image .size () .width  () / (float) image .density () .width  () * M_INCH;
-		float height = (float) image .size () .height () / (float) image .density () .height () * M_INCH;
+		const float width  = (float) image .size () .width  () / (float) image .density () .width  () * M_INCH;
+		const float height = (float) image .size () .height () / (float) image .density () .height () * M_INCH;
 
 		std::string file = os::load_file (os::find_data_file ("titania/goldengate/image.wrl"));
 
@@ -234,7 +234,7 @@ golden_video (const basic::uri & uri)
 		height = (float) mediaStream .getVideoSink () -> get_height () / 72.0f * M_INCH;
 	}
 
-	auto locale = std::locale::global (std::locale::classic ());
+	const auto locale = std::locale::global (std::locale::classic ());
 
 	Name        .GlobalReplace (get_name_from_uri (uri), &file);
 	Description .GlobalReplace (SFString (uri .basename (false)) .toString (), &file);
@@ -252,7 +252,7 @@ golden_gate (const basic::uri & uri, basic::ifilestream && istream)
 {
 	try
 	{
-		std::string contentType = istream .response_headers () .at ("Content-Type");
+		const std::string contentType = istream .response_headers () .at ("Content-Type");
 	
 		__LOG__ << contentType << " : " << uri << std::endl;
 

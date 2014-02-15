@@ -61,6 +61,8 @@ class TransformSensor :
 {
 public:
 
+	///  @name Construction
+
 	TransformSensor (X3DExecutionContext* const);
 
 	virtual
@@ -113,7 +115,6 @@ public:
 
 
 private:
-
 
 	///  @name Static members
 

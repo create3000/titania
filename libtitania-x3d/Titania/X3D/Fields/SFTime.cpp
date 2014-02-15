@@ -84,14 +84,12 @@ SFTime::toLocaleString () const
 std::string
 SFTime::toUTCString () const
 {
-	auto locale = std::locale::global (std::locale::classic ());
-
-	time_t time = getValue ();
-
-	char   buffer [80];
-	size_t size = std::strftime (buffer, 80, "%a, %d %b %Y %H:%M:%S %Z", std::gmtime (&time));
-
-	std::string string (buffer, buffer + size);
+	const auto   locale = std::locale::global (std::locale::classic ());
+	const time_t time   = getValue ();
+	
+	char buffer [80];
+	const size_t size = std::strftime (buffer, 80, "%a, %d %b %Y %H:%M:%S %Z", std::gmtime (&time));
+	const std::string string (buffer, buffer + size);
 
 	std::locale::global (locale);
 

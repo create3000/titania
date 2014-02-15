@@ -107,8 +107,8 @@ SpotLight::initialize ()
 void
 SpotLight::eventsProcessed ()
 {
-	float glAmbientIntensity = math::clamp <float> (ambientIntensity (), 0, 1);
-	float glIntensity        = math::clamp <float> (intensity (), 0, 1);
+	const float glAmbientIntensity = math::clamp <float> (ambientIntensity (), 0, 1);
+	const float glIntensity        = math::clamp <float> (intensity (), 0, 1);
 
 	glAmbient [0] = color () .getR () * glAmbientIntensity;
 	glAmbient [1] = color () .getG () * glAmbientIntensity;

@@ -60,9 +60,9 @@ WalkViewer::WalkViewer (X3DBrowserSurface* const browser, NavigationInfo* const 
 Vector3f
 WalkViewer::getTranslationOffset (const Vector3f & velocity)
 {
-	auto viewpoint = getActiveViewpoint ();
+	const auto viewpoint = getActiveViewpoint ();
 
-	Rotation4f orientation = viewpoint -> getUserOrientation () * Rotation4f (viewpoint -> getUserOrientation () * upVector, upVector);
+	const Rotation4f orientation = viewpoint -> getUserOrientation () * Rotation4f (viewpoint -> getUserOrientation () * upVector, upVector);
 
 	return orientation * velocity;
 }

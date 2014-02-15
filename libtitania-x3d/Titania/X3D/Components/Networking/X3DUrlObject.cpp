@@ -74,7 +74,7 @@ X3DUrlObject::copy (X3DExecutionContext* const executionContext) const
 throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>)
 {
-	X3DUrlObject* copy = dynamic_cast <X3DUrlObject*> (X3DBaseNode::copy (executionContext));
+	X3DUrlObject* const copy = dynamic_cast <X3DUrlObject*> (X3DBaseNode::copy (executionContext));
 
 	transform (copy -> url (), getExecutionContext (), executionContext);
 
@@ -86,11 +86,11 @@ X3DUrlObject::transform (MFString & url, X3DExecutionContext* const oldExecution
 {
 	for (auto & value : url)
 	{
-		basic::uri URL = value .str ();
+		const basic::uri URL = value .str ();
 	
 		if (URL .is_relative ())
 		{
-			auto transformed = oldExecutionContext -> getWorldURL () .transform (URL);
+			const auto transformed = oldExecutionContext -> getWorldURL () .transform (URL);
 
 			value = newExecutionContext -> getWorldURL () .relative_path (transformed) .str ();
 		}

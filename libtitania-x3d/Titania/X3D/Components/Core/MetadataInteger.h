@@ -62,6 +62,8 @@ class MetadataInteger :
 {
 public:
 
+	///  @name Construction
+
 	MetadataInteger (X3DExecutionContext* const);
 
 	virtual
@@ -96,6 +98,8 @@ public:
 	value () const
 	{ return *fields .value; }
 
+	///  @name Destruction
+
 	virtual
 	void
 	dispose () final override;
@@ -103,10 +107,11 @@ public:
 
 private:
 
+	///  @name Construction
+
 	virtual
 	void
 	initialize () final override;
-
 
 	///  @name Static members
 

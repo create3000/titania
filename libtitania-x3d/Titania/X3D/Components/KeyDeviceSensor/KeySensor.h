@@ -61,6 +61,8 @@ class KeySensor :
 {
 public:
 
+	///  @name Construction
+
 	KeySensor (X3DExecutionContext* const);
 
 	virtual
@@ -143,13 +145,15 @@ public:
 	keyRelease () const
 	{ return *fields .keyRelease; }
 
-	virtual
-	void
-	set_actionKeyPressEvent (int) final override;
+	///  @name Event handlers
 
 	virtual
 	void
-	set_actionKeyReleaseEvent (int) final override;
+	set_actionKeyPressEvent (const int) final override;
+
+	virtual
+	void
+	set_actionKeyReleaseEvent (const int) final override;
 
 	virtual
 	void
@@ -161,12 +165,6 @@ public:
 
 
 private:
-
-	static constexpr int Shift_R   = 1;
-	static constexpr int Shift_L   = 2;
-	static constexpr int Control_R = 1;
-	static constexpr int Control_L = 2;
-
 
 	///  @name Static members
 

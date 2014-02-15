@@ -70,7 +70,7 @@ Texture3D::readImages (const std::string & data)
 
 	switch (images -> size ())
 	{
-		case 0:  // I have no idea what to do now.
+		case 0:
 			throw std::domain_error ("Image contains nothing.");
 
 		case 1:

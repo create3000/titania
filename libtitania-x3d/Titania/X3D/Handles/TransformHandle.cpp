@@ -59,7 +59,7 @@
 namespace titania {
 namespace X3D {
 
-TransformHandle::TransformHandle (Transform* const transform, SFBool* isActive, X3DExecutionContext* const executionContext) :
+TransformHandle::TransformHandle (Transform* const transform, SFBool* const isActive, X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	      Transform (executionContext),
 	X3DHandleObject (),
@@ -89,7 +89,7 @@ TransformHandle::initialize ()
 	{
 		scene = getBrowser () -> createX3DFromURL ({ get_tool ("TransformTool.wrl") .str () });
 
-		SFNode handle = scene -> getNamedNode ("Handle");
+		const SFNode & handle = scene -> getNamedNode ("Handle");
 
 		handle -> getField ("isActive") -> addInterest (*isActive);
 
@@ -194,14 +194,14 @@ TransformHandle::interestsProcessed ()
 		
 	else
 	{
-		auto differenceMatrix = ~(matrix * parentMatrix) * getMatrix () * parentMatrix;
+		const auto differenceMatrix = ~(matrix * parentMatrix) * getMatrix () * parentMatrix;
 
 		for (const auto & node : getBrowser () -> getSelection () -> getChildren ())
 		{
 			if (node == this)
 				continue;
 			
-			auto handle = dynamic_cast <TransformHandle*> (node .getValue ());
+			const auto handle = dynamic_cast <TransformHandle*> (node .getValue ());
 			
 			if (handle)
 				handle -> addAbsoluteMatrix (differenceMatrix);
@@ -214,8 +214,8 @@ TransformHandle::reshape ()
 {
 	try
 	{
-		auto handle = scene -> getNamedNode ("Handle");
-		auto bbox   = transform -> X3DGroupingNode::getBBox ();
+		const auto & handle = scene -> getNamedNode ("Handle");
+		const auto   bbox   = transform -> X3DGroupingNode::getBBox ();
 
 		handle -> setField <SFMatrix4f> ("cameraSpaceMatrix", getCameraSpaceMatrix (), true);
 		handle -> setField <SFMatrix4f> ("modelViewMatrix",   ModelViewMatrix4f (),    true);

@@ -61,6 +61,8 @@ class X3DNetworkSensorNode :
 {
 protected:
 
+	///  @name Construction
+
 	X3DNetworkSensorNode ();
 
 };

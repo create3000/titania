@@ -113,7 +113,7 @@ public:
 		NodeTypesIndex ();
 
 		const std::string &
-		operator [ ] (const X3DBaseNode*) const;
+		operator [ ] (const X3DBaseNode* const) const;
 
 	};
 
@@ -182,23 +182,23 @@ public:
 
 	static
 	bool
-	ExistsNode (const X3DBaseNode*);
+	ExistsNode (const X3DBaseNode* const);
 
 	static
 	void
-	AddNode (const X3DBaseNode*);
+	AddNode (const X3DBaseNode* const);
 
 	static
 	const std::string &
-	GetName (const X3DBaseNode*);
+	GetName (const X3DBaseNode* const);
 
 	static
 	void
-	AddImportedNode (const X3DBaseNode*, const std::string &);
+	AddImportedNode (const X3DBaseNode* const, const std::string &);
 
 	static
 	const std::string &
-	GetLocalName (const X3DBaseNode*);
+	GetLocalName (const X3DBaseNode* const);
 
 	static const VrmlAccessTypesIndex VrmlAccessTypes;
 	static const AccessTypesIndex     AccessTypes;

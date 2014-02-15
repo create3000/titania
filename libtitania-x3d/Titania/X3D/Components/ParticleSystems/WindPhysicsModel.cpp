@@ -89,8 +89,8 @@ WindPhysicsModel::create (X3DExecutionContext* const executionContext) const
 float
 WindPhysicsModel::getRandomSpeed () const
 {
-	float s           = std::max <float> (0, speed ());
-	float variation   = s * std::max <float> (0, gustiness ());
+	const float s           = std::max <float> (0, speed ());
+	const float variation   = s * std::max <float> (0, gustiness ());
 
 	return random1 (std::max (0.0f, s - variation), s + variation);
 }
@@ -100,10 +100,10 @@ WindPhysicsModel::addForce (X3DParticleEmitterNode* const emitter, MFVec3f & for
 {
 	if (enabled ())
 	{
-		float randomSpeed = getRandomSpeed ();
-		float pressure    = std::pow (10, 2 * std::log (randomSpeed)) * 0.64615;
+		const float randomSpeed = getRandomSpeed ();
+		const float pressure    = std::pow (10, 2 * std::log (randomSpeed)) * 0.64615;
 
-		Vector3f normal = direction () == Vector3f () ? random_normal () : normalize (direction () .getValue ());
+		const Vector3f normal = direction () == Vector3f () ? random_normal () : normalize (direction () .getValue ());
 
 		force      .emplace_back (emitter -> surfaceArea () * pressure * normal);
 		turbulence .emplace_back (M_PI * clamp <float> (this -> turbulence (), 0, 1));

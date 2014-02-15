@@ -61,12 +61,16 @@ class X3DAppearanceChildNode :
 {
 public:
 
+	///  @name Operations
+
 	virtual
 	void
 	draw () = 0;
 
 
 protected:
+
+	///  @name Construction
 
 	X3DAppearanceChildNode ();
 

@@ -117,10 +117,10 @@ X3DNode::getInverseCameraSpaceMatrix () const
 Matrix4f
 X3DNode::getModelViewMatrix (const TraverseType type) const
 {
-	Matrix4f modelViewMatrix = ModelViewMatrix4f ();
+	const Matrix4f modelViewMatrix = ModelViewMatrix4f ();
 
 	if (type == TraverseType::CAMERA)
-		modelViewMatrix *= getInverseCameraSpaceMatrix ();
+		return modelViewMatrix * getInverseCameraSpaceMatrix ();
 	
 	return modelViewMatrix;
 }

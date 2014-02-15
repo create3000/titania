@@ -129,6 +129,8 @@ private:
 	void
 	_set_bind ();
 
+	///  @name Members
+
 	struct Fields
 	{
 		Fields ();

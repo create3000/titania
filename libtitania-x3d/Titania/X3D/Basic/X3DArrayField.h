@@ -143,7 +143,7 @@ public:
 	{
 		for (const auto & value : basic::adapter (first, last))
 		{
-			ValueType* field = new ValueType (value);
+			ValueType* const field = new ValueType (value);
 
 			get () .emplace_back (field);
 
@@ -556,14 +556,14 @@ X3DArrayField <ValueType>::set (InputIterator first, InputIterator last)
 {
 	iterator current = begin ();
 
-	for (auto end = this -> end (); first not_eq last && current not_eq end; ++ current, ++ first)
+	for (const auto end = this -> end (); first not_eq last && current not_eq end; ++ current, ++ first)
 		current -> set (*first);
 
 	if (first == last)
 	{
 		// Remove trailing fields
 
-		size_t count = current - begin ();
+		const size_t count = current - begin ();
 
 		removeChildren (get () .begin () + count, get () .end ());
 

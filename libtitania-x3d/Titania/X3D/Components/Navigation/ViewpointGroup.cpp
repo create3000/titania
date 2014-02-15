@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -62,10 +62,10 @@ const std::string ViewpointGroup::containerField = "children";
 
 ViewpointGroup::Fields::Fields () :
 	displayed (new SFBool (true)),
-	size (new SFVec3f ()),
-	center (new SFVec3f ()),
-	children (new MFNode ()),
-	isActive ()
+	     size (new SFVec3f ()),
+	   center (new SFVec3f ()),
+	 children (new MFNode ()),
+	 isActive ()
 { }
 
 ViewpointGroup::ViewpointGroup (X3DExecutionContext* const executionContext) :
@@ -73,7 +73,7 @@ ViewpointGroup::ViewpointGroup (X3DExecutionContext* const executionContext) :
 	      X3DChildNode (),
 	X3DViewpointObject (),
 	            fields (),
-	  proximitySensor (new ProximitySensor (executionContext)),
+	   proximitySensor (new ProximitySensor (executionContext)),
 	  viewpointObjects ()
 {
 	addField (inputOutput, "metadata",          metadata ());
@@ -105,7 +105,7 @@ ViewpointGroup::initialize ()
 
 	size ()   .addInterest (proximitySensor -> size ());
 	center () .addInterest (proximitySensor -> center ());
-	
+
 	proximitySensor -> size ()   = size ();
 	proximitySensor -> center () = center ();
 

@@ -115,10 +115,10 @@ ColorChaser::initialize ()
 }
 
 bool
-ColorChaser::equals (const Color3f & lhs, const Color3f & rhs, float tolerance) const
+ColorChaser::equals (const Color3f & lhs, const Color3f & rhs, const float tolerance) const
 {
-	Vector3f a (lhs .r (), lhs .g (), lhs .b ());
-	Vector3f b (rhs .r (), rhs .g (), rhs .b ());
+	const Vector3f a (lhs .r (), lhs .g (), lhs .b ());
+	const Vector3f b (rhs .r (), rhs .g (), rhs .b ());
 
 	return abs (a - b) < tolerance;
 }
@@ -150,7 +150,7 @@ ColorChaser::_set_destination ()
 void
 ColorChaser::prepareEvents ()
 {
-	float fraction = updateBuffer ();
+	const float fraction = updateBuffer ();
 
 	auto output = clerp (previousValue, buffer [buffer .size () - 1], stepResponse ((buffer .size () - 1 + fraction) * getStepTime ()));
 	
@@ -165,7 +165,7 @@ ColorChaser::prepareEvents ()
 		buffer [i] .getHSV (h, s, v);
 		buffer [i + 1] .getHSV (h1, s1, v1);
 		
-		float t = stepResponse ((i + fraction) * getStepTime ());
+		const float t = stepResponse ((i + fraction) * getStepTime ());
 	
 		hsv_lerp (ho, so, vo,
 		          interval (ho + h - h1, 0.0f, float (2 * M_PI)),
@@ -202,7 +202,7 @@ ColorChaser::updateBuffer ()
 
 			for (size_t i = 0; i < seconds; ++ i)
 			{
-				float alpha = i / seconds;
+				const float alpha = i / seconds;
 
 				buffer [i] = clerp (set_destination () .getValue (), buffer [seconds], alpha);
  			}

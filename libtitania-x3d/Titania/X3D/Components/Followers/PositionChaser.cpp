@@ -115,7 +115,7 @@ PositionChaser::initialize ()
 }
 
 bool
-PositionChaser::equals (const Vector3f & lhs, const Vector3f & rhs, float tolerance) const
+PositionChaser::equals (const Vector3f & lhs, const Vector3f & rhs, const float tolerance) const
 {
 	return abs (lhs - rhs) < tolerance;
 }
@@ -148,15 +148,15 @@ PositionChaser::_set_destination ()
 void
 PositionChaser::prepareEvents ()
 {
-	float fraction = updateBuffer ();
+	const float fraction = updateBuffer ();
 
 	auto output = lerp (previousValue, buffer [buffer .size () - 1], stepResponse ((buffer .size () - 1 + fraction) * getStepTime ()));
 
 	for (int32_t i = buffer .size () - 2; i >= 0; -- i)
 	{
-		auto deltaIn = buffer [i] - buffer [i + 1];
+		const auto deltaIn = buffer [i] - buffer [i + 1];
 
-		auto deltaOut = deltaIn * stepResponse ((i + fraction) * getStepTime ());
+		const auto deltaOut = deltaIn * stepResponse ((i + fraction) * getStepTime ());
 
 		output += deltaOut;
 	}
@@ -188,7 +188,7 @@ PositionChaser::updateBuffer ()
 
 			for (size_t i = 0; i < seconds; ++ i)
 			{
-				float alpha = i / seconds;
+				const float alpha = i / seconds;
 
 				buffer [i] = lerp (set_destination () .getValue (), buffer [seconds], alpha);
  			}

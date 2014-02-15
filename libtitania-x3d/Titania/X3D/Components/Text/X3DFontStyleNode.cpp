@@ -103,7 +103,7 @@ X3DTextGeometry::initialize (Text* const text, const X3DFontStyleNode* const fon
 
 			// Get line extends.
 
-			Vector2d min, max;
+			/* const */ Vector2d min, max;
 			getLineExtends (fontStyle, line .getValue (), min, max);
 
 			Vector2d size = max - min;
@@ -134,7 +134,7 @@ X3DTextGeometry::initialize (Text* const text, const X3DFontStyleNode* const fon
 			text -> lineBounds () [i] = lineBound;
 
 			// Calculate line translation.
-			
+
 			const size_t lineNumber = topToBottom ? i : numLines - i - 1;
 
 			switch (fontStyle -> getMajorAlignment ())
@@ -161,14 +161,12 @@ X3DTextGeometry::initialize (Text* const text, const X3DFontStyleNode* const fon
 		}
 
 		Vector2d min, max;
-	
 		bbox .extends (min, max);
-		
+
 		const Vector2d size = max - min;
 
 		text -> textBounds () = size;
-
-		bearing = Vector2d (0, -max .y ());
+		bearing               = Vector2d (0, -max .y ());
 
 		switch (fontStyle -> getMinorAlignment ())
 		{
@@ -186,7 +184,8 @@ X3DTextGeometry::initialize (Text* const text, const X3DFontStyleNode* const fon
 				break;
 		}
 
-		// Translate bbox by minorAlignment
+		// Translate bbox by minorAlignment.
+
 		min += minorAlignment;
 		max += minorAlignment;
 
@@ -373,8 +372,8 @@ X3DFontStyleNode::getFont (const String & familyName, bool & isExactMatch) const
 void
 X3DFontStyleNode::set_style ()
 {
-	italic = style () == "ITALIC" or style () == "BOLDITALIC";
-	bold   = style () == "BOLD"   or style () == "BOLDITALIC";
+	italic = (style () == "ITALIC" or style () == "BOLDITALIC");
+	bold   = (style () == "BOLD"   or style () == "BOLDITALIC");
 }
 
 void

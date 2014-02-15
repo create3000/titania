@@ -113,9 +113,9 @@ OrientationDamper::initialize ()
 }
 
 bool
-OrientationDamper::equals (const Rotation4f & lhs, const Rotation4f & rhs, float tolerance) const
+OrientationDamper::equals (const Rotation4f & lhs, const Rotation4f & rhs, const float tolerance) const
 {
-	Rotation4f d = ~rhs * lhs;
+	const Rotation4f d = ~rhs * lhs;
 
 	return abs (d .angle ()) < tolerance;
 }
@@ -152,9 +152,9 @@ OrientationDamper::prepareEvents ()
 
 	if (tau ())
 	{
-		time_type delta = 1 / getBrowser () -> getCurrentFrameRate ();
+		const time_type delta = 1 / getBrowser () -> getCurrentFrameRate ();
 
-		float alpha = std::exp (-delta / tau ());
+		const float alpha = std::exp (-delta / tau ());
 		
 		for (size_t i = 0; i < order; ++ i)
 		{

@@ -107,7 +107,7 @@ Material::initialize ()
 void
 Material::eventsProcessed ()
 {
-	float alpha = 1 - math::clamp <float> (transparency (), 0, 1);
+	const float alpha = 1 - math::clamp <float> (transparency (), 0, 1);
 
 	glAmbientColor [0] = ambientIntensity () * diffuseColor () .getR ();
 	glAmbientColor [1] = ambientIntensity () * diffuseColor () .getG ();

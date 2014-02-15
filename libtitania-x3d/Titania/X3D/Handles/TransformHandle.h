@@ -67,7 +67,7 @@ public:
 
 	///  @name Construction
 
-	TransformHandle (Transform* const, SFBool*, X3DExecutionContext* const);
+	TransformHandle (Transform* const, SFBool* const, X3DExecutionContext* const);
 
 	///  @name Fields
 
@@ -223,7 +223,7 @@ public:
 
 	virtual
 	void
-	addHandle (SFBool*) final override
+	addHandle (SFBool* const) final override
 	{ }
 
 	virtual

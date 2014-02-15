@@ -63,9 +63,9 @@ const std::string TimeSensor::typeName       = "TimeSensor";
 const std::string TimeSensor::containerField = "children";
 
 TimeSensor::Fields::Fields () :
-	cycleInterval (new SFTime (1)),
+	   cycleInterval (new SFTime (1)),
 	fraction_changed (new SFFloat ()),
-	time (new SFTime ())
+	            time (new SFTime ())
 { }
 
 TimeSensor::TimeSensor (X3DExecutionContext* const executionContext) :
@@ -101,7 +101,7 @@ TimeSensor::create (X3DExecutionContext* const executionContext) const
 void
 TimeSensor::prepareEvents ()
 {
-   // The event order below is very important.
+	// The event order below is very important.
 
 	if (getCurrentTime () - cycle >= interval)
 	{

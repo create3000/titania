@@ -76,23 +76,23 @@ X3DViewer::getPointOnCenterPlane (const double x, const double y)
 	{
 		try
 		{
-			auto viewpoint = getActiveViewpoint ();
+			const auto viewpoint = getActiveViewpoint ();
 
 			viewpoint -> reshape (getNavigationInfo () -> getNearPlane (), getNavigationInfo () -> getFarPlane ());
 
-			Matrix4d modelview; // Use identity
-			Matrix4d projection = ProjectionMatrix4d ();
+			const Matrix4d modelview; // Use identity
+			const Matrix4d projection = ProjectionMatrix4d ();
 
-			auto viewport = getBrowser () -> getActiveLayer () -> getViewport () -> getViewport (getBrowser () -> get_width (),
-			                                                                                     getBrowser () -> get_height ());
+			const auto viewport = getBrowser () -> getActiveLayer () -> getViewport () -> getViewport (getBrowser () -> get_width (),
+			                                                                                           getBrowser () -> get_height ());
 	
 			// Far plane point
-			Vector3d far = ViewVolume::unProjectPoint (x, getBrowser () -> get_height () - y, 0.9, modelview, projection, viewport);
+			const Vector3d far = ViewVolume::unProjectPoint (x, getBrowser () -> get_height () - y, 0.9, modelview, projection, viewport);
 
 			if (dynamic_cast <OrthoViewpoint*> (viewpoint))
 				return Vector3f (far .x (), far .y (), -abs (getDistanceToCenter ()));
 
-			Vector3f direction = normalize (far);
+			const Vector3f direction = normalize (far);
 
 			return direction * abs (getDistanceToCenter ()) / dot (direction, Vector3f (0, 0, -1));
 		}
@@ -106,7 +106,7 @@ X3DViewer::getPointOnCenterPlane (const double x, const double y)
 Vector3f
 X3DViewer::getDistanceToCenter () const
 {
-	auto viewpoint = getActiveViewpoint ();
+	const auto viewpoint = getActiveViewpoint ();
 
 	return ~viewpoint -> orientationOffset () * (viewpoint -> getUserPosition ()
 	                                             - viewpoint -> getUserCenterOfRotation ());
@@ -124,21 +124,17 @@ X3DViewer::trackballProjectToSphere (double x, double y) const
 float
 X3DViewer::tb_project_to_sphere (const float r, const float x, const float y)
 {
-	float z = 0;
-
-	float d = std::sqrt (x * x + y * y);
+	const float d = std::sqrt (x * x + y * y);
 
 	if (d < r * std::sqrt (0.5)) // Inside sphere
 	{
-		z = std::sqrt (r * r - d * d);
-	}
-	else                         // On hyperbola
-	{
-		float t = r / std::sqrt (2);
-		z = t * t / d;
+		return std::sqrt (r * r - d * d);
 	}
 
-	return z;
+	// On hyperbola
+
+	const float t = r / std::sqrt (2);
+	return t * t / d;
 }
 
 } // X3D

@@ -209,7 +209,7 @@ SupportedProfiles::add (const std::string & name, std::initializer_list <const C
 }
 
 void
-SupportedProfiles::add (const ProfileInfo* profile)
+SupportedProfiles::add (const ProfileInfo* const profile)
 {
 	profiles .push_back (profile -> getName (), profile);
 }

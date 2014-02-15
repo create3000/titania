@@ -63,11 +63,11 @@ public:
 
 	virtual
 	void
-	set_actionKeyPressEvent (int) = 0;
+	set_actionKeyPressEvent (const int) = 0;
 
 	virtual
 	void
-	set_actionKeyReleaseEvent (int) = 0;
+	set_actionKeyReleaseEvent (const int) = 0;
 
 	virtual
 	void

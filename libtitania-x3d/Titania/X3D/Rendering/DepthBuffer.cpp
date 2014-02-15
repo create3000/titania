@@ -97,7 +97,7 @@ DepthBuffer::getDistance (float zNear, float zFar)
 {
 	glReadPixels (0, 0, width, height, GL_DEPTH_COMPONENT, GL_FLOAT, depth .data ());
 
-	auto distance = std::min_element (depth .begin (), depth .end ());
+	const auto distance = std::min_element (depth .begin (), depth .end ());
 
 	return zNear + (zFar - zNear) * *distance;
 }

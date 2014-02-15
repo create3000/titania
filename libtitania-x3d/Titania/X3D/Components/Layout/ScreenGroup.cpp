@@ -88,15 +88,15 @@ ScreenGroup::getBBox ()
 void
 ScreenGroup::scale (const TraverseType type) const
 {
-	Matrix4d modelViewMatrix = getModelViewMatrix (type);
+	const Matrix4d modelViewMatrix = getModelViewMatrix (type);
 
 	Vector3d   translation, scale;
 	Rotation4d rotation;
 
 	modelViewMatrix .get (translation, rotation, scale);
 
-	double   distance    = math::abs (modelViewMatrix .origin ());
-	Vector3f screenScale = getCurrentViewpoint () -> getScreenScale (distance, Viewport4i ());
+	const double   distance    = math::abs (modelViewMatrix .origin ());
+	const Vector3f screenScale = getCurrentViewpoint () -> getScreenScale (distance, Viewport4i ());
 
 	Matrix4d matrix;
 	matrix .set (translation, rotation, Vector3f (screenScale .x () * signum (scale .x ()),

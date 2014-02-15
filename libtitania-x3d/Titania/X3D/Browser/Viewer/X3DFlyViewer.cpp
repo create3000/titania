@@ -155,7 +155,7 @@ X3DFlyViewer::on_motion_notify_event (GdkEventMotion* event)
 	{
 		if (keys .control ())
 		{
-			Vector3f toVector = trackballProjectToSphere (event -> x, event -> y);
+			const Vector3f toVector = trackballProjectToSphere (event -> x, event -> y);
 			
 			orientation = Rotation4f (toVector, fromVector) * orientation;
 			orientation = orientation * X3DViewpointNode::straightenHorizon (orientation);
@@ -187,7 +187,7 @@ X3DFlyViewer::on_motion_notify_event (GdkEventMotion* event)
 bool
 X3DFlyViewer::on_scroll_event (GdkEventScroll* event)
 {
-	auto viewpoint = getActiveViewpoint ();
+	const auto viewpoint = getActiveViewpoint ();
 	
 	viewpoint  -> transitionStop ();
 
@@ -251,16 +251,16 @@ X3DFlyViewer::on_key_release_event (GdkEventKey* event)
 bool
 X3DFlyViewer::fly ()
 {
-	time_type now = chrono::now ();
-	float     dt  = now - startTime;
+	const time_type now = chrono::now ();
+	const float     dt  = now - startTime;
 
-	auto viewpoint = getActiveViewpoint ();
+	const auto viewpoint = getActiveViewpoint ();
 
 	// Orientation offset
 
-	Rotation4f rotation = direction .z () > 0
-	                      ? Rotation4f (direction, Vector3f (0, 0, 1))
-								 : Rotation4f (Vector3f (0, 0, -1), direction);
+	const Rotation4f rotation = direction .z () > 0
+	                            ? Rotation4f (direction, Vector3f (0, 0, 1))
+								       : Rotation4f (Vector3f (0, 0, -1), direction);
 
 	viewpoint -> orientationOffset () *= math::slerp <float> (Rotation4f (), rotation, math::abs (direction) / navigationInfo -> getAvatarHeight () * ROTATION_SPEED_FACTOR * dt);
 
@@ -269,7 +269,7 @@ X3DFlyViewer::fly ()
 	float speed_factor = keys .shift () ? SHIFT_SPEED_FACTOR : 1.0;
 	speed_factor *= 1 - rotation .angle () / M_PI1_2;
 
-	Vector3f translation = getTranslationOffset (direction * (speed_factor * dt));
+	const Vector3f translation = getTranslationOffset (direction * (speed_factor * dt));
 
 	viewpoint -> positionOffset () += getTranslation (translation);
 
@@ -280,15 +280,15 @@ X3DFlyViewer::fly ()
 bool
 X3DFlyViewer::pan ()
 {
-	time_type now = chrono::now ();
-	float     dt  = now - startTime;
+	const time_type now = chrono::now ();
+	const float     dt  = now - startTime;
 
-	auto viewpoint = getActiveViewpoint ();
+	const auto viewpoint = getActiveViewpoint ();
 
-	float speed_factor = keys .shift () ? PAN_SHIFT_SPEED_FACTOR : 1.0;
+	const float speed_factor = keys .shift () ? PAN_SHIFT_SPEED_FACTOR : 1.0;
 
-	Rotation4f orientation = viewpoint -> getUserOrientation () * Rotation4f (viewpoint -> getUserOrientation () * upVector, upVector);
-	Vector3f   translation = orientation * direction * (speed_factor * dt);
+	const Rotation4f orientation = viewpoint -> getUserOrientation () * Rotation4f (viewpoint -> getUserOrientation () * upVector, upVector);
+	const Vector3f   translation = orientation * direction * (speed_factor * dt);
 
 	viewpoint -> positionOffset () += getTranslation (translation);
 
@@ -299,12 +299,12 @@ X3DFlyViewer::pan ()
 bool
 X3DFlyViewer::roll ()
 {
-	time_type elapsedTime = chrono::now () - startTime;
+	const time_type elapsedTime = chrono::now () - startTime;
 
 	if (elapsedTime > ROLL_TIME)
 		return false;
 
-	auto viewpoint = getActiveViewpoint ();
+	const auto viewpoint = getActiveViewpoint ();
 
 	viewpoint -> orientationOffset () = math::slerp <float> (sourceRotation, destinationRotation, elapsedTime / ROLL_TIME);
 
@@ -316,13 +316,13 @@ X3DFlyViewer::getTranslation (const Vector3f & translation) const
 {
 	// Get position offset
 
-	float collisionRadius = navigationInfo -> getCollisionRadius ();
-	float positionOffset  = (collisionRadius + navigationInfo -> getAvatarHeight () - navigationInfo -> getStepHeight ()) / 2 - collisionRadius;
+	const float collisionRadius = navigationInfo -> getCollisionRadius ();
+	const float positionOffset  = (collisionRadius + navigationInfo -> getAvatarHeight () - navigationInfo -> getStepHeight ()) / 2 - collisionRadius;
 
 	// Get width and height of camera
 
-	float width  = collisionRadius * 2;
-	float height = collisionRadius + navigationInfo -> getAvatarHeight () - navigationInfo -> getStepHeight ();
+	const float width  = collisionRadius * 2;
+	const float height = collisionRadius + navigationInfo -> getAvatarHeight () - navigationInfo -> getStepHeight ();
 
 	return getBrowser () -> getActiveLayer () -> getTranslation (Vector3f (0, -positionOffset, 0), width, height, translation);
 }
@@ -386,10 +386,10 @@ X3DFlyViewer::display ()
 	{
 		// Configure HUD
 
-		Vector4i viewport = Viewport4i ();
+		const Vector4i viewport = Viewport4i ();
 
-		int width  = viewport [2];
-		int height = viewport [3];
+		const int width  = viewport [2];
+		const int height = viewport [3];
 
 		glDisable (GL_DEPTH_TEST);
 

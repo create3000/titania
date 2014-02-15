@@ -63,13 +63,13 @@ public:
 	Keys ();
 
 	void
-	press (GdkEventKey* event);
+	press (GdkEventKey* const);
 
 	void
-	release (GdkEventKey*);
+	release (GdkEventKey* const);
 
 	void
-	shift (int);
+	shift (const int);
 
 	int
 	shift () const;
@@ -78,7 +78,7 @@ public:
 	restore_shift ();
 
 	void
-	control (int);
+	control (const int);
 
 	int
 	control () const;
@@ -87,7 +87,7 @@ public:
 	restore_control ();
 
 	void
-	alt (bool);
+	alt (const bool);
 
 	int
 	alt () const;

@@ -205,7 +205,7 @@ Appearance::set_shaders ()
 
 	for (const auto & node : shaders ())
 	{
-		auto shaderNode = x3d_cast <X3DShaderNode*> (node);
+		const auto shaderNode = x3d_cast <X3DShaderNode*> (node);
 
 		if (shaderNode)
 		{

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -71,22 +71,22 @@ static constexpr float SIZE = 10000;
 static constexpr int SPHERE_USEG = 22;
 
 X3DBackgroundNode::Fields::Fields () :
-	groundAngle (new MFFloat ()),
-	groundColor (new MFColor ()),
-	skyAngle (new MFFloat ()),
-	skyColor (new MFColor ({ SFColor () })),
+	 groundAngle (new MFFloat ()),
+	 groundColor (new MFColor ()),
+	    skyAngle (new MFFloat ()),
+	    skyColor (new MFColor ({ SFColor () })),
 	transparency (new SFFloat ())
 { }
 
 X3DBackgroundNode::X3DBackgroundNode () :
 	X3DBindableNode (),
 	         fields (),
-	     frontTexture (nullptr),
-	      backTexture (nullptr),
-	      leftTexture (nullptr),
-	     rightTexture (nullptr),
-	       topTexture (nullptr),
-	    bottomTexture (nullptr)
+	   frontTexture (nullptr),
+	    backTexture (nullptr),
+	    leftTexture (nullptr),
+	   rightTexture (nullptr),
+	     topTexture (nullptr),
+	  bottomTexture (nullptr)
 {
 	addNodeType (X3DConstants::X3DBackgroundNode);
 }
@@ -95,7 +95,7 @@ void
 X3DBackgroundNode::initialize ()
 {
 	X3DBindableNode::initialize ();
-	
+
 	addInterest (this, &X3DBackgroundNode::build);
 
 	build ();
@@ -120,24 +120,23 @@ X3DBackgroundNode::removeFromLayer (X3DLayerNode* const layer)
 }
 
 Color3f
-X3DBackgroundNode::getColor (float theta, const MFColor & color, const MFFloat & angle)
+X3DBackgroundNode::getColor (const float theta, const MFColor & color, const MFFloat & angle)
 {
-	auto iter = std::upper_bound (angle .cbegin (), angle .cend (), theta);
+	const auto   iter  = std::upper_bound (angle .cbegin (), angle .cend (), theta);
+	const size_t index = iter - angle .cbegin ();
 
-	size_t i = iter - angle .cbegin ();
-
-	return color [i];
+	return color [index];
 }
 
 void
-X3DBackgroundNode::build (float radius, const MFFloat & vangle, const MFFloat & angle, const MFColor & color, float opacity, bool bottom)
+X3DBackgroundNode::build (const float radius, const MFFloat & vangle, const MFFloat & angle, const MFColor & color, const float opacity, const bool bottom)
 {
 	// p1 --- p4
 	//  |     |
 	//  |     |
 	// p2 --- p3
 
-	float useg1 = SPHERE_USEG - 1;
+	const float useg1 = SPHERE_USEG - 1;
 
 	for (size_t v = 0, size = vangle .size () - 1; v < size; ++ v)
 	{
@@ -150,19 +149,19 @@ X3DBackgroundNode::build (float radius, const MFFloat & vangle, const MFFloat & 
 			theta1 = M_PI - theta1;
 		}
 
-		float y  = cos (theta);
-		float y1 = cos (theta1);
+		const float y  = cos (theta);
+		const float y1 = cos (theta1);
 
-		float r  = sin (theta);
-		float r1 = sin (theta1);
+		const float r  = sin (theta);
+		const float r1 = sin (theta1);
 
-		Color3f c  = getColor (vangle [v],     color, angle);
-		Color3f c1 = getColor (vangle [v + 1], color, angle);
+		const Color3f c  = getColor (vangle [v],     color, angle);
+		const Color3f c1 = getColor (vangle [v + 1], color, angle);
 
 		for (size_t u = 0; u < useg1; ++ u)
 		{
 			// The last point is the first one.
-			size_t u1 = u < useg1 - 1 ? u + 1 : 0;
+			const size_t u1 = u < useg1 - 1 ? u + 1 : 0;
 
 			float    x, z, phi;
 			Vector3f p;
@@ -222,13 +221,13 @@ X3DBackgroundNode::build ()
 	if (transparency () >= 1.0f)
 		return;
 
-	float opacity = 1 - math::clamp <float> (transparency (), 0, 1);
+	const float opacity = 1 - math::clamp <float> (transparency (), 0, 1);
 
 	if (groundColor () .empty () and skyColor () .size () == 1)
 	{
 		// Build cube
 
-		float r = SIZE;
+		const float r = SIZE;
 
 		const Color3f & c = skyColor () [0];
 
@@ -277,7 +276,7 @@ X3DBackgroundNode::build ()
 	{
 		// Build sphere
 
-		float radius = std::sqrt (2 * std::pow (SIZE, 2));
+		const float radius = std::sqrt (2 * std::pow (SIZE, 2));
 
 		if (skyColor () .size () > skyAngle () .size ())
 		{
@@ -338,17 +337,17 @@ X3DBackgroundNode::draw ()
 
 	// Scale background
 
-	auto viewport = Viewport4i ();
-	auto scale    = getCurrentViewpoint () -> getScreenScale (SIZE, viewport);
-	
+	const auto viewport = Viewport4i ();
+	auto       scale    = getCurrentViewpoint () -> getScreenScale (SIZE, viewport);
+
 	scale *= double (viewport [2] > viewport [3] ? viewport [2] : viewport [3]);
 
 	getCurrentViewpoint () -> reshape (1, std::max (2.0, 2 * SIZE * scale .z ()));
 
 	glScalef (scale .x (), scale .y (), scale .z ());
-	
+
 	// Draw
-	
+
 	drawSphere ();
 	drawCube ();
 }
@@ -401,8 +400,8 @@ X3DBackgroundNode::drawSphere ()
 void
 X3DBackgroundNode::drawCube ()
 {
-	float radius = 10000;
-	float s      = std::sqrt (std::pow (2 * radius, 2) / 2) / 2;
+	const float radius = 10000;
+	const float s      = std::sqrt (std::pow (2 * radius, 2) / 2) / 2;
 
 	glDisable (GL_DEPTH_TEST);
 	glDepthMask (GL_FALSE);

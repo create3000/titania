@@ -61,6 +61,8 @@ class X3DChildNode :
 {
 public:
 
+	///  @name Operations
+
 	virtual
 	bool
 	isCollectable ()
@@ -78,6 +80,8 @@ public:
 
 
 protected:
+
+	///  @name Construction
 
 	X3DChildNode ();
 

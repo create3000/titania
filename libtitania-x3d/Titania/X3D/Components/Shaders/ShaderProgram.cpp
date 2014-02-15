@@ -124,7 +124,7 @@ ShaderProgram::getShaderType () const
 		#endif
 	};
 
-	auto shaderType = shaderTypes .find (type ());
+	const auto shaderType = shaderTypes .find (type ());
 
 	if (shaderType not_eq shaderTypes .end ())
 		return shaderType -> second;

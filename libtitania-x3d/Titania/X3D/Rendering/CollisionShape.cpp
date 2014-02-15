@@ -55,11 +55,11 @@
 namespace titania {
 namespace X3D {
 
-CollisionShape::CollisionShape (X3DShapeNode* shape,
+CollisionShape::CollisionShape (X3DShapeNode* const shape,
                                 const CollisionArray & collisions,
                                 const CollectableObjectArray & localObjects,
                                 const Matrix4f & matrix,
-                                float distance) :
+                                const float distance) :
 	       shape (shape),
 	  collisions (collisions),
 	localObjects (localObjects),
@@ -68,11 +68,11 @@ CollisionShape::CollisionShape (X3DShapeNode* shape,
 { }
 
 void
-CollisionShape::assign (X3DShapeNode* shape,
+CollisionShape::assign (X3DShapeNode* const shape,
                         const CollisionArray & collisions,
                         const CollectableObjectArray & localObjects,
                         const Matrix4f & matrix,
-                        float distance)
+                        const float distance)
 {
 	this -> shape        = shape;
 	this -> collisions   = collisions;

@@ -67,18 +67,18 @@ class ShapeContainer
 {
 public:
 
-	ShapeContainer (X3DShapeNode*,
-	                X3DFogObject*,
+	ShapeContainer (X3DShapeNode* const,
+	                X3DFogObject* const,
 	                const CollectableObjectArray &,
 	                const Matrix4f &,
-	                float);
+	                const float);
 
 	void
-	assign (X3DShapeNode*,
-	        X3DFogObject*,
+	assign (X3DShapeNode* const,
+	        X3DFogObject* const,
 	        const CollectableObjectArray &,
 	        const Matrix4f &,
-	        float);
+	        const float);
 
 	float
 	getDistance () const
@@ -90,8 +90,8 @@ public:
 
 private:
 
-	X3DShapeNode*             shape;
-	X3DFogObject*             fog;
+	X3DShapeNode*          shape;
+	X3DFogObject*          fog;
 	CollectableObjectArray localObjects;
 
 	Matrix4f matrix;

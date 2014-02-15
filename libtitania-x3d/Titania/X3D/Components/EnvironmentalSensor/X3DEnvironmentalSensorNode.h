@@ -61,6 +61,8 @@ class X3DEnvironmentalSensorNode :
 {
 public:
 
+	///  @name Fields
+
 	SFVec3f &
 	center ()
 	{ return *fields .center; }
@@ -96,10 +98,14 @@ public:
 
 protected:
 
+	///  @name Construction
+
 	X3DEnvironmentalSensorNode ();
 
 
 private:
+
+	///  @name Members
 
 	struct Fields
 	{

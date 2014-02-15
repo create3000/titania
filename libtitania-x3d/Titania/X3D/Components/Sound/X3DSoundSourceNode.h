@@ -74,6 +74,8 @@ class X3DSoundSourceNode :
 {
 public:
 
+	///  @name Fields
+
 	virtual
 	SFBool &
 	enabled () final override
@@ -129,7 +131,7 @@ public:
 	///  @name Modifiers
 
 	void
-	setVolume (float);
+	setVolume (const float);
 
 	///  @name Destruction
 
@@ -137,15 +139,21 @@ public:
 	void
 	dispose () override;
 
+	virtual
 	~X3DSoundSourceNode ();
 
+
 protected:
+
+	///  @name Construction
 
 	X3DSoundSourceNode ();
 
 	virtual
 	void
 	initialize () override;
+
+	///  @name Opertions
 
 	void
 	setUri (const basic::uri &);
@@ -159,12 +167,16 @@ protected:
 	bool
 	sync () const;
 
+	///  @name Event handlers
+
 	virtual
 	void
 	prepareEvents () override;
 
 
 private:
+
+	///  @name Event handlers
 
 	void
 	on_message (const Glib::RefPtr <Gst::Message> &);
@@ -199,6 +211,8 @@ private:
 
 	void
 	remove_signal_watch ();
+
+	///  @name Members
 
 	struct Fields
 	{

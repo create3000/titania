@@ -150,13 +150,13 @@ X3DLayerNode::getBBox ()
 }
 
 Vector3f
-X3DLayerNode::getTranslation (const Vector3f & positionOffset, float width, float height, const Vector3f & translation)
+X3DLayerNode::getTranslation (const Vector3f & positionOffset, const float width, const float height, const Vector3f & translation)
 {
-	float zFar            = getNavigationInfo () -> getFarPlane ();
-	float collisionRadius = getNavigationInfo () -> getCollisionRadius ();
+	const float zFar            = getNavigationInfo () -> getFarPlane ();
+	const float collisionRadius = getNavigationInfo () -> getCollisionRadius ();
 
-	float distance = getDistance (positionOffset, width, height, translation);
-	float length   = math::abs (translation);
+	float       distance = getDistance (positionOffset, width, height, translation);
+	const float length   = math::abs (translation);
 
 	if (zFar - distance > 0) // Are there polygons under the viewer
 	{
@@ -186,13 +186,13 @@ X3DLayerNode::getTranslation (const Vector3f & positionOffset, float width, floa
 }
 
 float
-X3DLayerNode::getDistance (const Vector3f & positionOffset, float width, float height, const Vector3f & direction)
+X3DLayerNode::getDistance (const Vector3f & positionOffset, const float width, const float height, const Vector3f & direction)
 {
-	float width1_2  = width / 2;
-	float height1_2 = height / 2;
+	const float width1_2  = width / 2;
+	const float height1_2 = height / 2;
 
-	float zNear = getNavigationInfo () -> getNearPlane ();
-	float zFar  = getNavigationInfo () -> getFarPlane ();
+	const float zNear = getNavigationInfo () -> getNearPlane ();
+	const float zFar  = getNavigationInfo () -> getFarPlane ();
 
 	// Reshape camera
 
@@ -363,11 +363,11 @@ X3DLayerNode::collision ()
 {
 	// Get NavigationInfo values
 
-	auto navigationInfo = getCurrentNavigationInfo ();
+	const auto navigationInfo = getCurrentNavigationInfo ();
 
-	float zNear           = navigationInfo -> getNearPlane ();
-	float zFar            = navigationInfo -> getFarPlane ();
-	float collisionRadius = zNear / std::sqrt (2.0f); // Use zNear instead of navigationInfo -> getCollisionRatius ();
+	const float zNear           = navigationInfo -> getNearPlane ();
+	const float zFar            = navigationInfo -> getFarPlane ();
+	const float collisionRadius = zNear / std::sqrt (2.0f); // Use zNear instead of navigationInfo -> getCollisionRatius ();
 
 	// Reshape viewpoint
 
@@ -378,7 +378,7 @@ X3DLayerNode::collision ()
 
 	// Transform viewpoint
 
-	auto viewpoint = getViewpoint ();
+	const auto viewpoint = getViewpoint ();
 
 	Matrix4f parentMatrix = viewpoint -> getParentMatrix ();
 

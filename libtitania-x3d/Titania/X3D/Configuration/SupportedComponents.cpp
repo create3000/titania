@@ -119,7 +119,7 @@ const ComponentInfo*
 SupportedComponents::get (const std::string & name, const size_t level) const
 throw (Error <NOT_SUPPORTED>)
 {
-	const ComponentInfo* component = get (name);
+	const ComponentInfo* const component = get (name);
 
 	if (level <= component -> getLevel ())
 		return component;

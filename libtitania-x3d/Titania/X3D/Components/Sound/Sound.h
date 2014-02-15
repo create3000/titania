@@ -62,6 +62,8 @@ class Sound :
 {
 public:
 
+	///  @name Construction
+
 	Sound (X3DExecutionContext* const);
 
 	virtual
@@ -168,6 +170,8 @@ public:
 	source () const
 	{ return *fields .source; }
 
+	///  @name Operations
+
 	virtual
 	void
 	traverse (const TraverseType) final override;
@@ -175,17 +179,22 @@ public:
 
 private:
 
+	///  @name Construction
+
 	virtual
 	void
 	initialize () final override;
 
+	///  @name Event handlers
+
 	void
 	set_source ();
+
+	///  @name Operations
 
 	void
 	getEllipsoidParameter (const float &, const float &, float &, float &)
 	throw (std::domain_error);
-
 
 	///  @name Static members
 

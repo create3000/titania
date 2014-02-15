@@ -156,22 +156,22 @@ CoordinateChaser::prepareEvents ()
 {
 	std::vector <Vector3f> output (set_destination () .size ());
 
-	float fraction = updateBuffer ();
+	const float fraction = updateBuffer ();
 
-	float alpha = stepResponse ((buffer .size () - 1 + fraction) * getStepTime ());
+	const float alpha = stepResponse ((buffer .size () - 1 + fraction) * getStepTime ());
 
 	for (size_t j = 0, size = set_destination () .size (); j < size; ++ j)
 		output [j] = lerp (previousValue [j], buffer [buffer .size () - 1] [j], alpha);
 
 	for (int32_t i = buffer .size () - 2; i >= 0; -- i)
 	{
-		float alpha = stepResponse ((i + fraction) * getStepTime ());
+		const float alpha = stepResponse ((i + fraction) * getStepTime ());
 	
 		for (size_t j = 0, size = set_destination () .size (); j < size; ++ j)
 		{
-			auto deltaIn = buffer [i] [j] - buffer [i + 1] [j];
+			const auto deltaIn = buffer [i] [j] - buffer [i + 1] [j];
 
-			auto deltaOut = deltaIn * alpha;
+			const auto deltaOut = deltaIn * alpha;
 
 			output [j] += deltaOut;
 		}
@@ -207,7 +207,7 @@ CoordinateChaser::updateBuffer ()
 
 			for (size_t i = 0; i < seconds; ++ i)
 			{
-				float alpha = i / seconds;
+				const float alpha = i / seconds;
 
 				for (size_t j = 0, size = set_destination () .size (); j < size; ++ j)
 				{

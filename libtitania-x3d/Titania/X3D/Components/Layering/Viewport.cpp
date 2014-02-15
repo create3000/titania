@@ -151,7 +151,7 @@ void
 Viewport::push (const TraverseType)
 {
 	viewports .emplace_back (new ViewportContainer (this));
-	getCurrentLayer () -> getLocalObjects () .emplace_back (viewports .back () );
+	getCurrentLayer () -> getLocalObjects () .emplace_back (viewports .back ());
 }
 
 void

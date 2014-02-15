@@ -310,11 +310,11 @@ RenderingProperties::build ()
 
 	try
 	{
-		auto statistics = world -> getExecutionContext () -> getNamedNode ("StatisticsTool");
+		const auto statistics = world -> getExecutionContext () -> getNamedNode ("StatisticsTool");
 
 		try
 		{
-			MFString* string = static_cast <MFString*> (statistics -> getField ("string"));
+			MFString* const string = static_cast <MFString*> (statistics -> getField ("string"));
 
 			string -> clear ();
 

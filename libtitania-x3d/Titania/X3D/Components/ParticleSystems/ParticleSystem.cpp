@@ -66,10 +66,6 @@
 namespace titania {
 namespace X3D {
 
-const std::string ParticleSystem::componentName  = "ParticleSystems";
-const std::string ParticleSystem::typeName       = "ParticleSystem";
-const std::string ParticleSystem::containerField = "children";
-
 // Constants
 
 static constexpr size_t COLOR_RAMP_KEYS   = 0;
@@ -241,6 +237,10 @@ ParticleSystem::OddEvenMergeSort::reset (X3DProgrammableShaderObject* const shad
 }
 
 // ParticleSystem
+
+const std::string ParticleSystem::componentName  = "ParticleSystems";
+const std::string ParticleSystem::typeName       = "ParticleSystem";
+const std::string ParticleSystem::containerField = "children";
 
 ParticleSystem::Fields::Fields () :
 	          enabled (new SFBool (true)),

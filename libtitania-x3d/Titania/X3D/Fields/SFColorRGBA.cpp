@@ -182,10 +182,10 @@ throw (Error <INVALID_X3D>,
 
 	if (Grammar::Hex (istream, value))
 	{
-		float r = (value >> 24 & 0xff) / 255.0f;
-		float g = (value >> 16 & 0xff) / 255.0f;
-		float b = (value >> 8 & 0xff) / 255.0f;
-		float a = (value & 0xff) / 255.0f;
+		const float r = (value >> 24 & 0xff) / 255.0f;
+		const float g = (value >> 16 & 0xff) / 255.0f;
+		const float b = (value >> 8 & 0xff) / 255.0f;
+		const float a = (value & 0xff) / 255.0f;
 
 		get () .set (r, g, b, a);
 

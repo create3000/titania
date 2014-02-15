@@ -139,7 +139,7 @@ private:
 	///  @name Operations
 
 	bool
-	equals (const Color3f &, const Color3f &, float) const;
+	equals (const Color3f &, const Color3f &, const float) const;
 
 	///  @name Event handlers
 	

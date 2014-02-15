@@ -62,6 +62,8 @@ class ProximitySensor :
 {
 public:
 
+	///  @name Construction
+
 	ProximitySensor (X3DExecutionContext* const);
 
 	virtual
@@ -119,16 +121,19 @@ public:
 
 private:
 
+	///  @name Construction
+
 	virtual
 	void
 	initialize ();
+
+	///  @name Event handlers
 
 	void
 	set_enabled ();
 
 	void
 	update ();
-
 
 	///  @name Static members
 

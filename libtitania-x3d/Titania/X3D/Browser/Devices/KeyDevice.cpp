@@ -136,7 +136,7 @@ KeyDevice::on_key_release_event (GdkEventKey* event)
 void
 KeyDevice::on_commit (GtkIMContext*, gchar* string, gpointer user_data)
 {
-	String* key = static_cast <String*> (user_data);
+	String* const key = static_cast <String*> (user_data);
 
 	*key = string;
 }

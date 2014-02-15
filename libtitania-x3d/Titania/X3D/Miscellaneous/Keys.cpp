@@ -63,7 +63,7 @@ Keys::Keys () :
 { }
 
 void
-Keys::press (GdkEventKey* event)
+Keys::press (GdkEventKey* const event)
 {
 	switch (event -> keyval)
 	{
@@ -88,7 +88,7 @@ Keys::press (GdkEventKey* event)
 }
 
 void
-Keys::release (GdkEventKey* event)
+Keys::release (GdkEventKey* const event)
 {
 	switch (event -> keyval)
 	{
@@ -113,7 +113,7 @@ Keys::release (GdkEventKey* event)
 }
 
 void
-Keys::shift (int value)
+Keys::shift (const int value)
 {
 	m_saved_shift = m_shift;
 	m_shift       = value;
@@ -132,7 +132,7 @@ Keys::restore_shift ()
 }
 
 void
-Keys::control (int value)
+Keys::control (const int value)
 {
 	m_saved_control = m_control;
 	m_control       = value;
@@ -151,7 +151,7 @@ Keys::restore_control ()
 }
 
 void
-Keys::alt (bool value)
+Keys::alt (const bool value)
 {
 	m_saved_alt = m_alt;
 	m_alt       = value;

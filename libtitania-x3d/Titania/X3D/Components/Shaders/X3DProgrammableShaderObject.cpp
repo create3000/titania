@@ -72,7 +72,7 @@ X3DProgrammableShaderObject::applyTransformFeedbackVaryings () const
 {
 	if (not transformFeedbackVaryings .empty ())
 	{
-		size_t size = transformFeedbackVaryings .size ();
+		const size_t size = transformFeedbackVaryings .size ();
 
 		const GLchar* varyings [size];
 
@@ -99,7 +99,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 {
 	glUseProgram (getProgramId ());
 
-	GLint location = glGetUniformLocation (getProgramId (), field -> getName () .c_str ());
+	const GLint location = glGetUniformLocation (getProgramId (), field -> getName () .c_str ());
 
 	if (location not_eq - 1)
 	{
@@ -161,7 +161,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 			}
 			case X3DConstants::SFNode:
 			{
-				auto node = static_cast <SFNode*> (field);
+				const auto node = static_cast <SFNode*> (field);
 
 				GLint textureUnit = 0;
 				glGetUniformiv (getProgramId (), location, &textureUnit);
@@ -183,7 +183,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 
 				glActiveTexture (GL_TEXTURE0 + textureUnit);
 
-				auto texture = x3d_cast <X3DTextureNode*> (*node);
+				const auto texture = x3d_cast <X3DTextureNode*> (*node);
 
 				if (x3d_cast <X3DTexture2DNode*> (texture))
 					glBindTexture (GL_TEXTURE_2D, texture -> getTextureId ());
@@ -249,7 +249,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 			}
 			case X3DConstants::MFBool:
 			{
-				auto array = static_cast <MFBool*> (field);
+				const auto array = static_cast <MFBool*> (field);
 
 				std::vector <GLint> vector (array -> begin (), array -> end ());
 				glUniform1iv (location, vector .size (), vector .data ());
@@ -257,7 +257,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 			}
 			case X3DConstants::MFColor:
 			{
-				auto array = static_cast <MFColor*> (field);
+				const auto array = static_cast <MFColor*> (field);
 
 				std::vector <Color3f> vector (array -> begin (), array -> end ());
 				glUniform3fv (location, vector .size (), vector [0] .data ());
@@ -265,7 +265,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 			}
 			case X3DConstants::MFColorRGBA:
 			{
-				auto array = static_cast <MFColorRGBA*> (field);
+				const auto array = static_cast <MFColorRGBA*> (field);
 
 				std::vector <Color4f> vector (array -> begin (), array -> end ());
 				glUniform4fv (location, vector .size (), vector [0] .data ());
@@ -273,7 +273,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 			}
 			case X3DConstants::MFDouble:
 			{
-				auto array = static_cast <MFDouble*> (field);
+				const auto array = static_cast <MFDouble*> (field);
 
 				std::vector <GLdouble> vector (array -> begin (), array -> end ());
 				glUniform1dv (location, vector .size (), vector .data ());
@@ -281,7 +281,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 			}
 			case X3DConstants::MFFloat:
 			{
-				auto array = static_cast <MFFloat*> (field);
+				const auto array = static_cast <MFFloat*> (field);
 
 				std::vector <GLfloat> vector (array -> begin (), array -> end ());
 				glUniform1fv (location, vector .size (), vector .data ());
@@ -293,7 +293,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 			}
 			case X3DConstants::MFInt32:
 			{
-				auto array = static_cast <MFInt32*> (field);
+				const auto array = static_cast <MFInt32*> (field);
 
 				std::vector <GLint> vector (array -> begin (), array -> end ());
 				glUniform1iv (location, vector .size (), vector .data ());
@@ -301,7 +301,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 			}
 			case X3DConstants::MFMatrix3d:
 			{
-				auto array = static_cast <MFMatrix3d*> (field);
+				const auto array = static_cast <MFMatrix3d*> (field);
 
 				std::vector <Matrix3d> vector (array -> begin (), array -> end ());
 				glUniformMatrix3dv (location, vector .size (), false, vector [0] .data ());
@@ -309,7 +309,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 			}
 			case X3DConstants::MFMatrix3f:
 			{
-				auto array = static_cast <MFMatrix3f*> (field);
+				const auto array = static_cast <MFMatrix3f*> (field);
 
 				std::vector <Matrix3f> vector (array -> begin (), array -> end ());
 				glUniformMatrix3fv (location, vector .size (), false, vector [0] .data ());
@@ -317,7 +317,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 			}
 			case X3DConstants::MFMatrix4d:
 			{
-				auto array = static_cast <MFMatrix4d*> (field);
+				const auto array = static_cast <MFMatrix4d*> (field);
 
 				std::vector <Matrix4d> vector (array -> begin (), array -> end ());
 				glUniformMatrix4dv (location, vector .size (), false, vector [0] .data ());
@@ -325,7 +325,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 			}
 			case X3DConstants::MFMatrix4f:
 			{
-				auto array = static_cast <MFMatrix4f*> (field);
+				const auto array = static_cast <MFMatrix4f*> (field);
 
 				std::vector <Matrix4f> vector (array -> begin (), array -> end ());
 				glUniformMatrix4fv (location, vector .size (), false, vector [0] .data ());
@@ -341,7 +341,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 					{
 						GLint textureUnit = 0;
 
-						GLint location = glGetUniformLocation (getProgramId (), (field -> getName () [0] + "[" + std::to_string (i) + "]") .c_str ());
+						const GLint location = glGetUniformLocation (getProgramId (), (field -> getName () [0] + "[" + std::to_string (i) + "]") .c_str ());
 
 						if (location not_eq - 1)
 						{
@@ -360,7 +360,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 
 				// Set uniform variable;
 
-				auto array = static_cast <MFNode*> (field);
+				const auto array = static_cast <MFNode*> (field);
 
 				std::vector <GLint> vector;
 				vector .reserve (array -> size ());
@@ -383,7 +383,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 
 					glActiveTexture (GL_TEXTURE0 + textureUnit);
 
-					auto texture = x3d_cast <X3DTextureNode*> (node);
+					const auto texture = x3d_cast <X3DTextureNode*> (node);
 
 					if (x3d_cast <X3DTexture2DNode*> (texture))
 						glBindTexture (GL_TEXTURE_2D, texture -> getTextureId ());
@@ -407,7 +407,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 			}
 			case X3DConstants::MFRotation:
 			{
-				auto array = static_cast <MFRotation*> (field);
+				const auto array = static_cast <MFRotation*> (field);
 
 				std::vector <Vector4f> vector;
 				vector .reserve (array -> size ());
@@ -427,7 +427,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 			}
 			case X3DConstants::MFTime:
 			{
-				auto array = static_cast <MFTime*> (field);
+				const auto array = static_cast <MFTime*> (field);
 
 				std::vector <GLdouble> vector (array -> begin (), array -> end ());
 				glUniform1dv (location, vector .size (), vector .data ());
@@ -435,7 +435,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 			}
 			case X3DConstants::MFVec2d:
 			{
-				auto array = static_cast <MFVec2d*> (field);
+				const auto array = static_cast <MFVec2d*> (field);
 
 				std::vector <Vector2d> vector (array -> begin (), array -> end ());
 				glUniform2dv (location, vector .size (), vector [0] .data ());
@@ -443,7 +443,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 			}
 			case X3DConstants::MFVec2f:
 			{
-				auto array = static_cast <MFVec2f*> (field);
+				const auto array = static_cast <MFVec2f*> (field);
 
 				std::vector <Vector2f> vector (array -> begin (), array -> end ());
 				glUniform2fv (location, vector .size (), vector [0] .data ());
@@ -451,7 +451,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 			}
 			case X3DConstants::MFVec3d:
 			{
-				auto array = static_cast <MFVec3d*> (field);
+				const auto array = static_cast <MFVec3d*> (field);
 
 				std::vector <Vector3d> vector (array -> begin (), array -> end ());
 				glUniform3dv (location, vector .size (), vector [0] .data ());
@@ -459,7 +459,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 			}
 			case X3DConstants::MFVec3f:
 			{
-				auto array = static_cast <MFVec3f*> (field);
+				const auto array = static_cast <MFVec3f*> (field);
 
 				std::vector <Vector3f> vector (array -> begin (), array -> end ());
 				glUniform3fv (location, vector .size (), vector [0] .data ());
@@ -467,7 +467,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 			}
 			case X3DConstants::MFVec4d:
 			{
-				auto array = static_cast <MFVec4d*> (field);
+				const auto array = static_cast <MFVec4d*> (field);
 
 				std::vector <Vector4d> vector (array -> begin (), array -> end ());
 				glUniform4dv (location, vector .size (), vector [0] .data ());
@@ -475,7 +475,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 			}
 			case X3DConstants::MFVec4f:
 			{
-				auto array = static_cast <MFVec4f*> (field);
+				const auto array = static_cast <MFVec4f*> (field);
 
 				std::vector <Vector4f> vector (array -> begin (), array -> end ());
 				glUniform4fv (location, vector .size (), vector [0] .data ());
@@ -494,7 +494,7 @@ X3DProgrammableShaderObject::setTextureBuffer (const std::string & name, GLuint 
 {
 	glUseProgram (getProgramId ());
 
-	GLint location = glGetUniformLocation (getProgramId (), name .c_str ());
+	const GLint location = glGetUniformLocation (getProgramId (), name .c_str ());
 
 	if (location not_eq - 1)
 	{

@@ -274,7 +274,7 @@ LoadSensor::reset ()
 		
 		for (const auto & node : watchList ())
 		{
-			auto urlObject = x3d_cast <X3DUrlObject*> (node);
+			const auto urlObject = x3d_cast <X3DUrlObject*> (node);
 
 			if (urlObject)
 			{
@@ -286,7 +286,7 @@ LoadSensor::reset ()
 
 		for (const auto & node : urlObjects)
 		{
-			auto urlObject = x3d_cast <X3DUrlObject*> (node);
+			const auto urlObject = x3d_cast <X3DUrlObject*> (node);
 
 			set_loadState (urlObject);
 		}
@@ -300,7 +300,7 @@ LoadSensor::remove ()
 
 	for (const auto & node : urlObjects)
 	{
-		auto urlObject = x3d_cast <X3DUrlObject*> (node);
+		const auto urlObject = x3d_cast <X3DUrlObject*> (node);
 
 		urlObject -> checkLoadState () .removeInterest (this, &LoadSensor::set_loadState);
 	}

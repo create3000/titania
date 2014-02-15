@@ -120,7 +120,7 @@ public:
 
 	virtual
 	void
-	draw (GLenum) = 0;
+	draw (const GLenum) = 0;
 
 
 protected:

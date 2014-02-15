@@ -61,6 +61,8 @@ class StringSensor :
 {
 public:
 
+	///  @name Construction
+
 	StringSensor (X3DExecutionContext* const);
 
 	virtual
@@ -111,13 +113,15 @@ public:
 	finalText () const
 	{ return *fields . finalText; }
 
-	virtual
-	void
-	set_actionKeyPressEvent (int) final override;
+	///  @name Event handlers
 
 	virtual
 	void
-	set_actionKeyReleaseEvent (int) final override;
+	set_actionKeyPressEvent (const int) final override;
+
+	virtual
+	void
+	set_actionKeyReleaseEvent (const int) final override;
 
 	virtual
 	void
@@ -129,7 +133,6 @@ public:
 
 
 private:
-
 
 	///  @name Static members
 

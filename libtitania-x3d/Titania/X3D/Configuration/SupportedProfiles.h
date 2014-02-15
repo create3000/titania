@@ -67,7 +67,7 @@ public:
 	SupportedProfiles (X3DExecutionContext* const, const SupportedComponents &);
 
 	void
-	add (const ProfileInfo*);
+	add (const ProfileInfo* const);
 
 	const ProfileInfo*
 	get (const std::string &) const

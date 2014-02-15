@@ -141,7 +141,7 @@ public:
 
 	virtual
 	void
-	draw (GLenum) final override;
+	draw (const GLenum) final override;
 
 
 private:

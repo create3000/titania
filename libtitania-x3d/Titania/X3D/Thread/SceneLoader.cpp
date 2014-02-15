@@ -113,7 +113,7 @@ SceneLoader::prepareEvents ()
 
 	if (future .valid ())
 	{
-		auto status = future .wait_for (std::chrono::milliseconds (0));
+		const auto status = future .wait_for (std::chrono::milliseconds (0));
 
 		if (status == std::future_status::ready)
 		{
@@ -121,7 +121,7 @@ SceneLoader::prepareEvents ()
 
 			try
 			{
-				X3DSFNode <Scene> scene = future .get ();
+				const X3DSFNode <Scene> scene = future .get ();
 
 				callback (scene);
 			}

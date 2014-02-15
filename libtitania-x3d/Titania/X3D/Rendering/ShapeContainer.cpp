@@ -55,11 +55,11 @@
 namespace titania {
 namespace X3D {
 
-ShapeContainer::ShapeContainer (X3DShapeNode* shape,
-                                X3DFogObject* fog,
+ShapeContainer::ShapeContainer (X3DShapeNode* const shape,
+                                X3DFogObject* const fog,
                                 const CollectableObjectArray & localObjects,
                                 const Matrix4f & matrix,
-                                float distance) :
+                                const float distance) :
 	       shape (shape),
 	         fog (fog),
 	localObjects (localObjects),
@@ -68,11 +68,11 @@ ShapeContainer::ShapeContainer (X3DShapeNode* shape,
 { }
 
 void
-ShapeContainer::assign (X3DShapeNode* shape,
-                        X3DFogObject* fog,
+ShapeContainer::assign (X3DShapeNode* const shape,
+                        X3DFogObject* const fog,
                         const CollectableObjectArray & localObjects,
                         const Matrix4f & matrix,
-                        float distance)
+                        const float distance)
 {
 	this -> shape        = shape;
 	this -> fog          = fog;

@@ -99,7 +99,7 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	X3DSFNode <Scene> scene = getBrowser () -> createScene ();
+	const X3DSFNode <Scene> scene = getBrowser () -> createScene ();
 
 	basic::ifilestream goldenistream = golden_gate ("<stream>", std::move (istream));
 
@@ -115,7 +115,7 @@ Loader::createX3DFromURL (const MFString & url)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>)
 {
-	X3DSFNode <Scene> scene = getBrowser () -> createScene ();
+	const X3DSFNode <Scene> scene = getBrowser () -> createScene ();
 
 	parseIntoScene (scene, url);
 
@@ -136,7 +136,7 @@ throw (Error <INVALID_URL>,
 	{
 		try
 		{
-			basic::uri uri = URL .str ();
+			const basic::uri uri = URL .str ();
 
 			if (uri .filename () .empty ())
 				getExecutionContext () -> changeViewpoint (uri .fragment ());
@@ -230,7 +230,7 @@ throw (Error <INVALID_URL>,
 	if (uri .scheme () not_eq "data")
 		std::clog << "Trying to load URI '" << uri << "': " << std::endl;
 
-	basic::uri transformedURL = referer .transform (uri);
+	const basic::uri transformedURL = referer .transform (uri);
 
 	if (transformedURL .scheme () not_eq "data")
 		std::clog << "\tTransformed URL is '" << transformedURL << "'" << std::endl;

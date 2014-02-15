@@ -161,11 +161,11 @@ Shape::pick ()
 	{
 		if (getBrowser () -> intersect (glIsEnabled (GL_SCISSOR_TEST) ? Scissor4i () : Viewport4i ()))
 		{
-			auto modelViewMatrix = ModelViewMatrix4f ();
+			const auto modelViewMatrix = ModelViewMatrix4f ();
 
 			if (getCurrentViewpoint () -> getViewVolume () .intersect (getBBox () * modelViewMatrix))
 			{
-				Line3f hitRay = getBrowser () -> getHitRay (); // Attention!! returns a Line3d
+				const Line3f hitRay = getBrowser () -> getHitRay (); // Attention!! returns a Line3d
 
 				std::vector <IntersectionPtr> itersections;
 
@@ -182,11 +182,11 @@ Shape::pick ()
 								  });
 
 					// Find first point that is not greater than near plane;
-					auto itersection = std::lower_bound (itersections .cbegin (), itersections .cend (), -getCurrentNavigationInfo () -> getNearPlane (),
-					                                     [ ] (const IntersectionPtr &lhs, const float & rhs) -> bool
-					                                     {
-					                                        return lhs -> hitPoint .z () > rhs;
-																	 });
+					const auto itersection = std::lower_bound (itersections .cbegin (), itersections .cend (), -getCurrentNavigationInfo () -> getNearPlane (),
+					                                          [ ] (const IntersectionPtr &lhs, const float & rhs) -> bool
+					                                          {
+					                                             return lhs -> hitPoint .z () > rhs;
+																	      });
 
 					if (itersection not_eq itersections .end ())
 						getBrowser () -> addHit (ModelViewMatrix4d (), *itersection, this);

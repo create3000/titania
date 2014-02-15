@@ -74,8 +74,8 @@ void
 Rectangle2DOptions::build ()
 {
 	getTexCoords () .reserve (4);
-	getNormals  () .reserve (4);
-	getVertices () .reserve (4);
+	getNormals   () .reserve (4);
+	getVertices  () .reserve (4);
 
 	// Front Face
 	getTexCoords () .emplace_back (0, 0, 0, 1);

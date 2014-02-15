@@ -62,6 +62,8 @@ class AudioClip :
 {
 public:
 
+	///  @name Construction
+
 	AudioClip (X3DExecutionContext* const);
 
 	virtual
@@ -86,9 +88,13 @@ public:
 	getContainerField () const final override
 	{ return containerField; }
 
+	///  @name Operations
+
 	virtual
 	void
 	requestImmediateLoad () final override;
+
+	///  @name Destruction
 
 	virtual
 	void
@@ -97,9 +103,13 @@ public:
 
 private:
 
+	///  @name Construction
+
 	virtual
 	void
 	initialize () final override;
+
+	///  @name Event handlers
 
 	void
 	set_url ();

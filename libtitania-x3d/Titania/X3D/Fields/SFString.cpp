@@ -75,12 +75,12 @@ SFString::SFString (const String & value) :
 	X3DField <String> (value)
 { }
 
-SFString::SFString (const char_type* value) :
+SFString::SFString (const char_type* const value) :
 	X3DField <String> (value)
 { }
 
 SFString &
-SFString::operator = (const char_type* value)
+SFString::operator = (const char_type* const value)
 {
 	setValue (value);
 	return *this;

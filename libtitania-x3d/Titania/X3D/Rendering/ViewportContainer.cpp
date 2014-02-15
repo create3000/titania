@@ -67,7 +67,7 @@ ViewportContainer::scale ()
 {
 	const auto & browserViewport = node -> getBrowser () -> getViewport ();
 
-	auto viewport = node -> getViewport (browserViewport [2], browserViewport [3]);
+	const auto viewport = node -> getViewport (browserViewport [2], browserViewport [3]);
 
 	glViewport (viewport [0],
 	            viewport [1],
@@ -89,7 +89,7 @@ ViewportContainer::enable ()
 {
 	const auto & browserViewport = node -> getBrowser () -> getViewport ();
 
-	Vector4i scissor = node -> getViewport (browserViewport [2], browserViewport [3]);
+	const Vector4i scissor = node -> getViewport (browserViewport [2], browserViewport [3]);
 
 	if (scissor not_eq viewport)
 	{

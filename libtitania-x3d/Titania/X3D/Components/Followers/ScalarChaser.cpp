@@ -115,7 +115,7 @@ ScalarChaser::initialize ()
 }
 
 bool
-ScalarChaser::equals (const float & lhs, const float & rhs, float tolerance) const
+ScalarChaser::equals (const float & lhs, const float & rhs, const float tolerance) const
 {
 	return abs (lhs - rhs) < tolerance;
 }
@@ -148,7 +148,7 @@ ScalarChaser::_set_destination ()
 void
 ScalarChaser::prepareEvents ()
 {
-	float fraction = updateBuffer ();
+	const float fraction = updateBuffer ();
 
 	auto output = lerp (previousValue, buffer [buffer .size () - 1], stepResponse ((buffer .size () - 1 + fraction) * getStepTime ()));
 
@@ -188,7 +188,7 @@ ScalarChaser::updateBuffer ()
 
 			for (size_t i = 0; i < seconds; ++ i)
 			{
-				float alpha = i / seconds;
+				const float alpha = i / seconds;
 
 				buffer [i] = lerp (set_destination () .getValue (), buffer [seconds], alpha);
  			}

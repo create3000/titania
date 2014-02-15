@@ -79,7 +79,7 @@ random1 ()
 }
 
 float
-random1 (float min, float max)
+random1 (const float min, const float max)
 {
 	return min + ((random1 () + 1) / 2) * (max - min);
 }
@@ -87,10 +87,10 @@ random1 (float min, float max)
 Vector3f
 random_normal ()
 {
-	float theta = random1 () * M_PI;
-	float cphi  = random1 ();
-	float phi   = std::acos (cphi);
-	float r     = std::sin (phi);
+	const float theta = random1 () * M_PI;
+	const float cphi  = random1 ();
+	const float phi   = std::acos (cphi);
+	const float r     = std::sin (phi);
 
 	return Vector3f (std::sin (theta) * r,
 	                 std::cos (theta) * r,

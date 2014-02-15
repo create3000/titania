@@ -90,14 +90,14 @@ X3DRenderer::initialize ()
 void
 X3DRenderer::addShape (X3DShapeNode* shape)
 {
-	auto matrix   = ModelViewMatrix4f ();
-	auto distance = getDistance (shape, matrix);
+	const auto matrix   = ModelViewMatrix4f ();
+	const auto distance = getDistance (shape, matrix);
 
 	if (distance < 0)
 	{
 		if (getCurrentViewpoint () -> getViewVolume () .intersect (shape -> getBBox () * matrix))
 		{
-			X3DFogObject* fog = getCurrentLayer () -> getFog ();
+			X3DFogObject* const fog = getCurrentLayer () -> getFog ();
 
 			if (shape -> isTransparent ())
 			{
@@ -126,8 +126,8 @@ X3DRenderer::addShape (X3DShapeNode* shape)
 void
 X3DRenderer::addCollision (X3DShapeNode* shape)
 {
-	auto matrix   = ModelViewMatrix4f ();
-	auto distance = getDistance (shape, matrix);
+	const auto matrix   = ModelViewMatrix4f ();
+	const auto distance = getDistance (shape, matrix);
 
 	if (distance < 0)
 	{
@@ -149,8 +149,8 @@ X3DRenderer::addCollision (X3DShapeNode* shape)
 float
 X3DRenderer::getDistance (X3DShapeNode* shape, const Matrix4f & matrix)
 {
-	Box3f bbox  = shape -> getBBox () * matrix;
-	float depth = bbox .size () .z () / 2;
+	const Box3f bbox  = shape -> getBBox () * matrix;
+	const float depth = bbox .size () .z () / 2;
 
 	return bbox .center () .z () - depth;
 }
@@ -300,10 +300,10 @@ X3DRenderer::navigation ()
 
 	// Get NavigationInfo values
 
-	auto navigationInfo = getCurrentNavigationInfo ();
+	const auto navigationInfo = getCurrentNavigationInfo ();
 
-	float zNear = navigationInfo -> getNearPlane ();
-	float zFar  = navigationInfo -> getFarPlane ();
+	const float zNear = navigationInfo -> getNearPlane ();
+	const float zFar  = navigationInfo -> getFarPlane ();
 
 	// Render all objects
 
@@ -320,7 +320,7 @@ X3DRenderer::collide ()
 
 	std::vector <Collision*> collisions;
 
-	Sphere3f collisionSphere (getCurrentNavigationInfo () -> getCollisionRadius () * 1.1f, Vector3f ());
+	const Sphere3f collisionSphere (getCurrentNavigationInfo () -> getCollisionRadius () * 1.1f, Vector3f ());
 
 	for (const auto & shape : basic::adapter (collisionShapes .cbegin (), collisionShapes .cbegin () + numCollisionShapes))
 	{
@@ -374,12 +374,12 @@ X3DRenderer::gravite ()
 
 	// Get NavigationInfo values
 
-	auto navigationInfo = getCurrentNavigationInfo ();
+	const auto navigationInfo = getCurrentNavigationInfo ();
 
-	float zNear      = navigationInfo -> getNearPlane ();
-	float zFar       = navigationInfo -> getFarPlane ();
-	float height     = navigationInfo -> getAvatarHeight ();
-	float stepHeight = navigationInfo -> getStepHeight ();
+	const float zNear      = navigationInfo -> getNearPlane ();
+	const float zFar       = navigationInfo -> getFarPlane ();
+	const float height     = navigationInfo -> getAvatarHeight ();
+	const float stepHeight = navigationInfo -> getStepHeight ();
 
 	// Bind buffer
 
@@ -406,7 +406,7 @@ X3DRenderer::gravite ()
 		{
 			// Gravite
 
-			float currentFrameRate = speed ? getBrowser () -> getCurrentFrameRate () : 1000000.0;
+			const float currentFrameRate = speed ? getBrowser () -> getCurrentFrameRate () : 1000000.0;
 
 			speed -= getBrowser () -> getBrowserOptions () -> gravity () / currentFrameRate;
 
@@ -428,7 +428,7 @@ X3DRenderer::gravite ()
 			if (-distance > 0.01 and - distance < stepHeight)
 			{
 				// Get size of camera
-				float size = getCurrentNavigationInfo () -> getCollisionRadius () * 2;
+				const float size = getCurrentNavigationInfo () -> getCollisionRadius () * 2;
 
 				// Step up
 				Vector3f translation = getCurrentLayer () -> getTranslation (Vector3f (), size, size, Vector3f (0, -distance, 0));

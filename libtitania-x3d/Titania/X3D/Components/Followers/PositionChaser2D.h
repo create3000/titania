@@ -139,7 +139,7 @@ private:
 	///  @name Operations
 
 	bool
-	equals (const Vector2f &, const Vector2f &, float) const;
+	equals (const Vector2f &, const Vector2f &, const float) const;
 
 	///  @name Event handlers
 

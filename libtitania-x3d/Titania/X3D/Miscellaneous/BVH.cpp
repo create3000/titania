@@ -103,7 +103,7 @@ struct BVH::MedianComparator
 	float
 	min (size_t triangle, size_t axis) const
 	{
-		size_t i = triangle * 3;
+		const size_t i = triangle * 3;
 
 		return std::min ({ tree -> vertices [i] [axis],
 		                   tree -> vertices [i + 1] [axis],
@@ -131,7 +131,7 @@ public:
 	float
 	getMin (size_t triangle, size_t axis) const
 	{
-		size_t i = triangle * 3;
+		const size_t i = triangle * 3;
 
 		return std::min ({ tree -> vertices [i] [axis],
 		                   tree -> vertices [i + 1] [axis],
@@ -164,7 +164,7 @@ public:
 	size_t
 	toArray (std::vector <ArrayValue> & array) const
 	{
-		size_t index = array .size ();
+		const size_t index = array .size ();
 
 		array .emplace_back (BVH_TRIANGLE, Vector3f (), Vector3f (), triangle, 0);
 
@@ -191,9 +191,9 @@ public:
 	{
 		using namespace std::placeholders;
 
-		size_t last  = first + size;
-		auto   begin = triangles .begin () + first;
-		auto   end   = triangles .begin () + last;
+		const size_t last  = first + size;
+		const auto   begin = triangles .begin () + first;
+		const auto   end   = triangles .begin () + last;
 
 		// Calculate bbox
 
@@ -218,14 +218,14 @@ public:
 		{
 			// Sort array
 
-			size_t axis = getLongestAxis (min, max);
+			const size_t axis = getLongestAxis (min, max);
 
 			std::sort (begin, end, std::bind (SortComparator (tree), _1, _2, axis));
 
 			// Split array
 
-			float value = (getMin (*begin, axis) + getMin (*(end - 1), axis)) / 2;
-			auto  iter  = std::lower_bound (begin, end, value, std::bind (MedianComparator (tree), _1, _2, axis));
+			const float value = (getMin (*begin, axis) + getMin (*(end - 1), axis)) / 2;
+			const auto  iter  = std::lower_bound (begin, end, value, std::bind (MedianComparator (tree), _1, _2, axis));
 
 			leftSize = iter - begin;
 
@@ -254,9 +254,9 @@ public:
 	size_t
 	toArray (std::vector <ArrayValue> & array) const
 	{
-		size_t leftIndex  = left -> toArray (array);
-		size_t rightIndex = right -> toArray (array);
-		size_t index      = array .size ();
+		const size_t leftIndex  = left -> toArray (array);
+		const size_t rightIndex = right -> toArray (array);
+		const size_t index      = array .size ();
 
 		array .emplace_back (BVH_NODE, min, max, leftIndex, rightIndex);
 
@@ -268,7 +268,7 @@ private:
 	size_t
 	getLongestAxis (const Vector3f & min, const Vector3f & max) const
 	{
-		Vector3f size = max - min;
+		const Vector3f size = max - min;
 
 		if (size .x () < size .y ())
 		{
@@ -302,7 +302,7 @@ BVH::BVH (std::vector <Vector3f>&& _vertices) :
 	vertices (std::move (_vertices)),
 	    root ()
 {
-	size_t size = vertices .size () / 3;
+	const size_t size = vertices .size () / 3;
 
 	switch (size)
 	{

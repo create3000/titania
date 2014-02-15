@@ -63,7 +63,7 @@ float
 random1 ();
 
 float
-random1 (float, float);
+random1 (const float, const float);
 
 Vector3f
 random_normal ();

@@ -176,7 +176,7 @@ Generator::NodeTypesIndex::NodeTypesIndex ()
 }
 
 const std::string &
-Generator::NodeTypesIndex::operator [ ] (const X3DBaseNode* basicNode) const
+Generator::NodeTypesIndex::operator [ ] (const X3DBaseNode* const basicNode) const
 {
 	return operator [ ] (basicNode -> getNodeType () .back ());
 }
@@ -331,19 +331,19 @@ Generator::PopContext ()
 }
 
 bool
-Generator::ExistsNode (const X3DBaseNode* basicNode)
+Generator::ExistsNode (const X3DBaseNode* const basicNode)
 {
 	return nodes .find (basicNode) not_eq nodes .end ();
 }
 
 void
-Generator::AddNode (const X3DBaseNode* basicNode)
+Generator::AddNode (const X3DBaseNode* const basicNode)
 {
 	nodes .emplace (basicNode);
 }
 
 const std::string &
-Generator::GetName (const X3DBaseNode* basicNode)
+Generator::GetName (const X3DBaseNode* const basicNode)
 {
 	// Is the node already in index
 
@@ -433,7 +433,7 @@ Generator::getUniqueName ()
 }
 
 void
-Generator::AddImportedNode (const X3DBaseNode* exportedNode, const std::string & importedName)
+Generator::AddImportedNode (const X3DBaseNode* const exportedNode, const std::string & importedName)
 {
 	importedNames [exportedNode] = importedName;
 }

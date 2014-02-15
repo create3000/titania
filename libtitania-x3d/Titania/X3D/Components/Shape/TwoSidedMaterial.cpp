@@ -130,7 +130,7 @@ TwoSidedMaterial::eventsProcessed ()
 {
 	// Front
 
-	float alpha = 1 - math::clamp <float> (transparency (), 0, 1);
+	const float alpha = 1 - math::clamp <float> (transparency (), 0, 1);
 
 	glAmbientColor [0] = ambientIntensity () * diffuseColor () .getR ();
 	glAmbientColor [1] = ambientIntensity () * diffuseColor () .getG ();
@@ -158,7 +158,7 @@ TwoSidedMaterial::eventsProcessed ()
 	
 	if (separateBackColor ())
 	{
-		float backAlpha = 1 - math::clamp <float> (backTransparency (), 0, 1);
+		const float backAlpha = 1 - math::clamp <float> (backTransparency (), 0, 1);
 
 		glBackAmbientColor [0] = backAmbientIntensity () * backDiffuseColor () .getR ();
 		glBackAmbientColor [1] = backAmbientIntensity () * backDiffuseColor () .getG ();

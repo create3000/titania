@@ -64,7 +64,7 @@ public:
 	SupportedFields (X3DExecutionContext* const);
 
 	void
-	add (X3DFieldDefinition*);
+	add (X3DFieldDefinition* const);
 
 	const X3DFieldDefinition*
 	get (const std::string &) const

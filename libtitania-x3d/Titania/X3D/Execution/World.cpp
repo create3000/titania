@@ -106,14 +106,14 @@ World::initialize ()
 void
 World::set_rootNodes ()
 {
-	X3DSFNode <LayerSet> oldLayerSet = layerSet;
+	const X3DSFNode <LayerSet> oldLayerSet = layerSet;
 	layerSet = defaultLayerSet;
 
 	layer0 -> children () = scene -> getRootNodes ();
 
 	for (const auto & rootNode : scene -> getRootNodes ())
 	{
-		LayerSet* rootLayerSet = x3d_cast <LayerSet*> (rootNode);
+		LayerSet* const rootLayerSet = x3d_cast <LayerSet*> (rootNode);
 
 		if (rootLayerSet)
 		{
@@ -142,23 +142,23 @@ World::bind ()
 {
 	layerSet -> traverse (TraverseType::CAMERA);
 
-	for (auto & layer : layerSet -> getLayers ())
+	for (const auto & layer : layerSet -> getLayers ())
 	{
 		if (not layer -> getNavigationInfos () -> empty ())
 		{
-			auto navigationInfo = layer -> getNavigationInfos () -> bound ();
+			const auto navigationInfo = layer -> getNavigationInfos () -> bound ();
 			layer -> getNavigationInfoStack () -> force_push (navigationInfo);
 		}
 
 		if (not layer -> getBackgrounds () -> empty ())
 		{
-			auto background = layer -> getBackgrounds () -> bound ();
+			const auto background = layer -> getBackgrounds () -> bound ();
 			layer -> getBackgroundStack () -> force_push (background);
 		}
 
 		if (not layer -> getFogs () -> empty ())
 		{
-			auto fog = layer -> getFogs () -> bound ();
+			const auto fog = layer -> getFogs () -> bound ();
 			layer -> getFogStack () -> force_push (fog);
 		}
 
@@ -166,7 +166,7 @@ World::bind ()
 
 		if (not layer -> getViewpoints () -> empty ())
 		{
-			auto viewpoint = layer -> getViewpoints () -> bound ();
+			const auto viewpoint = layer -> getViewpoints () -> bound ();
 			layer -> getViewpointStack () -> force_push (viewpoint);
 		}
 		

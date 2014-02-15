@@ -270,7 +270,7 @@ public:
 
 	virtual
 	void
-	addHandle (SFBool*)
+	addHandle (SFBool* const)
 	{ }
 
 	virtual

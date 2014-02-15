@@ -61,12 +61,16 @@ class X3DMaterialNode :
 {
 public:
 
+	///  @name Tests
+
 	virtual
 	bool
 	isTransparent () const = 0;
 
 
 protected:
+
+	///  @name Construction
 
 	X3DMaterialNode ();
 

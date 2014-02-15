@@ -95,7 +95,7 @@ X3DSequencerNode::_set_fraction ()
 
 	else
 	{
-		auto iter = std::upper_bound (key () .cbegin (), key () .cend (), set_fraction ());
+		const auto iter = std::upper_bound (key () .cbegin (), key () .cend (), set_fraction ());
 
 		i = iter - key () .cbegin () - 1;
 	}

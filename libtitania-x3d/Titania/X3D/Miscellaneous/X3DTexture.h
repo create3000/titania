@@ -103,7 +103,7 @@ public:
 	///  @name Operations
 
 	void
-	process (size_type, size_type);
+	process (const size_type, const size_type);
 
 	///  @name Destruction
 
@@ -133,7 +133,7 @@ private:
 	refineImageFormats ();
 
 	void
-	tryScaleImages (size_type, size_type);
+	tryScaleImages (const size_type, const size_type);
 
 	void
 	scaleImages ();

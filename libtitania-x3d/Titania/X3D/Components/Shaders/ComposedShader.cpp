@@ -122,7 +122,7 @@ ComposedShader::requestExplicitRelink ()
 
 		for (const auto & part : parts ())
 		{
-			auto partNode = x3d_cast <ShaderPart*> (part);
+			const auto partNode = x3d_cast <ShaderPart*> (part);
 
 			if (partNode)
 				glAttachShader (programId, partNode -> getShaderId ());
@@ -160,7 +160,7 @@ ComposedShader::requestExplicitRelink ()
 
 		for (const auto & part : parts ())
 		{
-			auto partNode = x3d_cast <ShaderPart*> (part);
+			const auto partNode = x3d_cast <ShaderPart*> (part);
 
 			if (partNode)
 				glDetachShader (programId, partNode -> getShaderId ());

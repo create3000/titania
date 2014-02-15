@@ -140,7 +140,7 @@ private:
 
 	template <class LHS, class RHS>
 	bool
-	equals (const LHS & lhs, const RHS & rhs, float tolerance) const
+	equals (const LHS & lhs, const RHS & rhs, const float tolerance) const
 	{
 		float distance = 0;
 

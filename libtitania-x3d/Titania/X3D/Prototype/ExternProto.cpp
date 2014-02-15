@@ -102,7 +102,7 @@ ExternProto::copy (X3DExecutionContext* const executionContext) const
 throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>)
 {
-	ExternProto* copy = create (executionContext);
+	ExternProto* const copy = create (executionContext);
 
 	copy -> setName (getName ());
 
@@ -169,9 +169,9 @@ ExternProto::requestImmediateLoad ()
 		throw Error <URL_UNAVAILABLE> ("Couldn't load any URL specified for EXTERNPROTO '" + getName () + "'\n" + error .what ());
 	}
 
-	std::string protoName = loader .getWorldURL () .fragment () .empty ()
-	                        ? getName ()
-									: loader .getWorldURL () .fragment ();
+	const std::string protoName = loader .getWorldURL () .fragment () .empty ()
+	                              ? getName ()
+								       	: loader .getWorldURL () .fragment ();
 
 	proto = scene -> getProtoDeclaration (protoName);
 
@@ -181,7 +181,7 @@ ExternProto::requestImmediateLoad ()
 		{
 			try
 			{
-				X3DFieldDefinition* protoField = proto -> getField (fieldDefinition -> getName ());
+				X3DFieldDefinition* const protoField = proto -> getField (fieldDefinition -> getName ());
 
 				if (protoField -> getAccessType () == fieldDefinition -> getAccessType ())
 				{

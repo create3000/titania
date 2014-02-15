@@ -157,7 +157,7 @@ ComposedCubeMapTexture::set_texture (const size_t index, const SFNode & node)
 void
 ComposedCubeMapTexture::setTexture (const GLenum target, const SFNode & node)
 {
-	auto texture = x3d_cast <X3DTexture2DNode*> (node);
+	const auto texture = x3d_cast <X3DTexture2DNode*> (node);
 
 	if (texture)
 	{
@@ -168,7 +168,7 @@ ComposedCubeMapTexture::setTexture (const GLenum target, const SFNode & node)
 
 		for (const auto & node : nodes)
 		{
-				auto texture = x3d_cast <X3DTexture2DNode*> (node);
+				const auto texture = x3d_cast <X3DTexture2DNode*> (node);
 
 				if (texture)
 				{
@@ -179,8 +179,8 @@ ComposedCubeMapTexture::setTexture (const GLenum target, const SFNode & node)
 
 		// Get texture 2d data
 
-		size_t width  = texture -> getWidth ();
-		size_t height = texture -> getHeight ();
+		const size_t width  = texture -> getWidth ();
+		const size_t height = texture -> getHeight ();
 
 		std::vector <char> image (width * height * 4);
 

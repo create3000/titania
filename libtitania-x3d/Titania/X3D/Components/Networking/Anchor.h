@@ -62,6 +62,8 @@ class Anchor :
 {
 public:
 
+	///  @name Construction
+
 	Anchor (X3DExecutionContext* const);
 
 	virtual
@@ -104,30 +106,38 @@ public:
 	parameter () const
 	{ return *fields .parameter; }
 
-	virtual
-	void
-	requestImmediateLoad ();
+	///  @name Event handlers
 
 	void
-	set_over (bool);
+	set_over (const bool);
 
 	void
-	set_active (bool);
+	set_active (const bool);
 
-	virtual
-	void
-	traverse (const TraverseType);
+	///  @name Operations
 
 	virtual
 	void
-	dispose ();
+	requestImmediateLoad () final override;
+
+	virtual
+	void
+	traverse (const TraverseType) final override;
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override;
 
 
 private:
 
-	void
-	initialize ();
+	///  @name Construction
 
+	virtual
+	void
+	initialize () final override;
 
 	///  @name Static members
 

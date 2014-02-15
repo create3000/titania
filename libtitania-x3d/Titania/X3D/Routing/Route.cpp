@@ -186,8 +186,8 @@ Route::toStream (std::ostream & ostream) const
 {
 	try
 	{
-		std::string sourceNodeName      = Generator::GetLocalName (getSourceNode ());
-		std::string destinationNodeName = Generator::GetLocalName (getDestinationNode ());
+		const std::string sourceNodeName      = Generator::GetLocalName (getSourceNode ());
+		const std::string destinationNodeName = Generator::GetLocalName (getDestinationNode ());
 
 		if (not getComments () .empty ())
 		{

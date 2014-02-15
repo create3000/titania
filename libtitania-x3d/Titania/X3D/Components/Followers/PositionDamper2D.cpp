@@ -113,7 +113,7 @@ PositionDamper2D::initialize ()
 }
 
 bool
-PositionDamper2D::equals (const Vector2f & lhs, const Vector2f & rhs, float tolerance) const
+PositionDamper2D::equals (const Vector2f & lhs, const Vector2f & rhs, const float tolerance) const
 {
 	return abs (lhs - rhs) < tolerance;
 }
@@ -150,9 +150,9 @@ PositionDamper2D::prepareEvents ()
 
 	if (tau ())
 	{
-		time_type delta = 1 / getBrowser () -> getCurrentFrameRate ();
+		const time_type delta = 1 / getBrowser () -> getCurrentFrameRate ();
 
-		float alpha = std::exp (-delta / tau ());
+		const float alpha = std::exp (-delta / tau ());
 		
 		for (size_t i = 0; i < order; ++ i)
 		{

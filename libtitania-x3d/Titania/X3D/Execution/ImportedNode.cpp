@@ -96,7 +96,7 @@ throw (Error <INVALID_NAME>,
 {
 	try
 	{
-		auto localInlineNode = x3d_cast <Inline*> (executionContext -> getNamedNode (inlineNode -> getName ()));
+		const auto localInlineNode = x3d_cast <Inline*> (executionContext -> getNamedNode (inlineNode -> getName ()));
 
 		return executionContext -> addImportedNode (localInlineNode, exportedName, importedName) .getValue ();
 	}

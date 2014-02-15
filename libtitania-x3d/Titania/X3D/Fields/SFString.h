@@ -79,7 +79,7 @@ public:
 	SFString (const String &);
 
 	explicit
-	SFString (const char_type*);
+	SFString (const char_type* const);
 
 	virtual
 	SFString*
@@ -102,7 +102,7 @@ public:
 	///  Functions
 
 	SFString &
-	operator = (const char_type*);
+	operator = (const char_type* const);
 
 	operator const std::string & () const;
 

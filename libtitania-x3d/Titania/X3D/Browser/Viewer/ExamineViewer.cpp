@@ -104,7 +104,7 @@ ExamineViewer::set_viewpoint ()
 
 	spin_id .disconnect ();
 
-	auto viewpoint = getActiveViewpoint ();
+	const auto viewpoint = getActiveViewpoint ();
 
 	orientation = viewpoint -> getUserOrientation ();
 	distance    = getDistanceToCenter ();
@@ -164,7 +164,7 @@ ExamineViewer::on_motion_notify_event (GdkEventMotion* event)
 	{
 		const auto & viewpoint = getActiveViewpoint ();
 
-		Vector3f toVector = trackballProjectToSphere (event -> x, event -> y);
+		const Vector3f toVector = trackballProjectToSphere (event -> x, event -> y);
 
 		rotation = ~Rotation4f (fromVector, toVector);
 		
@@ -198,12 +198,12 @@ ExamineViewer::on_motion_notify_event (GdkEventMotion* event)
 bool
 ExamineViewer::on_scroll_event (GdkEventScroll* event)
 {
-	auto viewpoint = getActiveViewpoint ();
+	const auto viewpoint = getActiveViewpoint ();
 
 	viewpoint -> transitionStop ();
 
-	Vector3f step           = getDistanceToCenter () * SCROLL_FACTOR;
-	Vector3f positionOffset = viewpoint -> getUserOrientation () * Vector3f (0, 0, abs (step));
+	const Vector3f step           = getDistanceToCenter () * SCROLL_FACTOR;
+	const Vector3f positionOffset = viewpoint -> getUserOrientation () * Vector3f (0, 0, abs (step));
 
 	if (event -> direction == 0)      // Move backwards.
 	{
@@ -223,7 +223,7 @@ ExamineViewer::on_scroll_event (GdkEventScroll* event)
 bool
 ExamineViewer::spin ()
 {
-	auto viewpoint = getActiveViewpoint ();
+	const auto viewpoint = getActiveViewpoint ();
 
 	viewpoint -> orientationOffset () = getOrientationOffset ();
 	viewpoint -> positionOffset ()    = getPositionOffset ();
@@ -241,7 +241,7 @@ ExamineViewer::addSpinning ()
 Vector3f
 ExamineViewer::getPositionOffset () const
 {
-	auto viewpoint = getActiveViewpoint ();
+	const auto viewpoint = getActiveViewpoint ();
 
 	// The new positionOffset is calculated here by calculating the new position and
 	// then subtracting the viewpoints position to get the new positionOffset.

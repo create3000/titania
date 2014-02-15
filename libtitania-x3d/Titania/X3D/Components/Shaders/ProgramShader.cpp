@@ -126,7 +126,7 @@ ProgramShader::getProgramStageBit (const String & type)
 		#endif
 	};
 
-	auto programStageBit = programStageBits .find (type);
+	const auto programStageBit = programStageBits .find (type);
 
 	if (programStageBit not_eq programStageBits .end ())
 		return programStageBit -> second;
@@ -160,7 +160,7 @@ ProgramShader::requestExplicitRelink ()
 
 		for (const auto & program : programs ())
 		{
-			auto programNode = x3d_cast <ShaderProgram*> (program);
+			const auto programNode = x3d_cast <ShaderProgram*> (program);
 
 			if (programNode)
 				glUseProgramStages (pipelineId, getProgramStageBit (programNode -> type ()), programNode -> getProgramId ());

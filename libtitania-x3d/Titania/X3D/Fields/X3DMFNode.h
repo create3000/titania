@@ -191,7 +191,7 @@ X3DMFNode <ValueType>::clone (X3DExecutionContext* const executionContext) const
 throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>)
 {
-	X3DMFNode* field = new X3DMFNode ();
+	X3DMFNode* const field = new X3DMFNode ();
 
 	clone (executionContext, field);
 
@@ -204,7 +204,7 @@ X3DMFNode <ValueType>::clone (X3DExecutionContext* const executionContext, X3DFi
 throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>)
 {
-	X3DMFNode* field = static_cast <X3DMFNode*> (fieldDefinition);
+	X3DMFNode* const field = static_cast <X3DMFNode*> (fieldDefinition);
 
 	for (const auto & value : *this)
 	{

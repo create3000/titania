@@ -120,7 +120,7 @@ Font::setStyle (const std::string & value)
 }
 
 void
-Font::setScalable (bool value)
+Font::setScalable (const bool value)
 {
 	FcPatternAddBool (pattern .get (), FC_SCALABLE, value ? FcTrue : FcFalse);
 }

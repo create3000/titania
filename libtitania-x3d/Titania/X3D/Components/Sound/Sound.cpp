@@ -136,8 +136,8 @@ Sound::traverse (const TraverseType type)
 
 					else
 					{
-						float d1 = maxRadius - maxDistance;
-						float d2 = maxRadius - minRadius;
+						const float d1 = maxRadius - maxDistance;
+						const float d2 = maxRadius - minRadius;
 
 						_source -> setVolume (intensity () * (d1 / d2));
 					}
@@ -162,9 +162,9 @@ void
 Sound::getEllipsoidParameter (const float & back, const float & front, float & radius, float & distance)
 throw (std::domain_error)
 {
-	float a = (back + front) / 2;
-	float e = a - back;
-	float b = std::sqrt (a * a - e * e);
+	const float a = (back + front) / 2;
+	const float e = a - back;
+	const float b = std::sqrt (a * a - e * e);
 
 	Matrix4f transformationMatrix = ModelViewMatrix4f ();
 
@@ -174,7 +174,7 @@ throw (std::domain_error)
 	transformationMatrix .translate (Vector3f (0, 0, e));
 	transformationMatrix .scale (Vector3f (1, 1, b / a));
 
-	Vector3f viewer = inverse (transformationMatrix) .origin ();
+	const Vector3f viewer = inverse (transformationMatrix) .origin ();
 
 	radius   = b;
 	distance = abs (viewer);

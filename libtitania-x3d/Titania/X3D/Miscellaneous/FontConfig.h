@@ -119,7 +119,7 @@ public:
 	setStyle (const std::string &);
 
 	void
-	setScalable (bool value);
+	setScalable (const bool value);
 
 	void
 	setFilename (const std::string &);

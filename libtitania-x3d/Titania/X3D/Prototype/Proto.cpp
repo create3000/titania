@@ -92,7 +92,7 @@ Proto::copy (X3DExecutionContext* const executionContext) const
 throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>)
 {
-	Proto* copy = create (executionContext);
+	Proto* const copy = create (executionContext);
 
 	copy -> setName (getName ());
 
@@ -155,7 +155,7 @@ Proto::toStream (std::ostream & ostream) const
 		<< Generator::TidySpace
 		<< '[';
 
-	FieldDefinitionArray fields = getUserDefinedFields ();
+	const FieldDefinitionArray fields = getUserDefinedFields ();
 
 	if (fields .empty ())
 	{

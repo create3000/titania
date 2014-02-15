@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -65,8 +65,8 @@ const std::string ProximitySensor::containerField = "children";
 
 ProximitySensor::Fields::Fields () :
 	centerOfRotation_changed (new SFVec3f ()),
-	orientation_changed (new SFRotation ()),
-	position_changed (new SFVec3f ())
+	     orientation_changed (new SFRotation ()),
+	        position_changed (new SFVec3f ())
 { }
 
 ProximitySensor::ProximitySensor (X3DExecutionContext* const executionContext) :
@@ -128,8 +128,8 @@ ProximitySensor::update ()
 			Rotation4f rotation;
 			modelViewMatrix .get (translation, rotation, scale);
 
-			Vector3f   position    = inverse (modelViewMatrix) .origin ();
-			Rotation4f orientation = ~rotation;
+			const Vector3f   position    = inverse (modelViewMatrix) .origin ();
+			const Rotation4f orientation = ~rotation;
 
 			if (not isActive ())
 			{
@@ -147,10 +147,6 @@ ProximitySensor::update ()
 				if (orientation_changed () not_eq orientation)
 					orientation_changed () = orientation;
 			}
-
-			//		std::clog << "#######################" << std::endl;
-			//		std::clog << position << std::endl;
-			//		std::clog << orientation << std::endl;
 		}
 		else
 		{

@@ -160,15 +160,13 @@ NavigationInfo::getStepHeight () const
 float
 NavigationInfo::getNearPlane () const
 {
-	float zNear = getCollisionRadius ();
+	const float zNear = getCollisionRadius ();
 
 	if (zNear == 0)
-		zNear = std::numeric_limits <float>::epsilon () * 100;
+		return std::numeric_limits <float>::epsilon () * 100;
 
 	else
-		zNear /= 2;
-
-	return zNear;
+		return zNear / 2;
 }
 
 float

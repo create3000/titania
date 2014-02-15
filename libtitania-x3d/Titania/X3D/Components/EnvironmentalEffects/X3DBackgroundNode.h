@@ -176,13 +176,13 @@ private:
 	removeFromLayer (X3DLayerNode* const) final override;
 
 	static Color3f
-	getColor (float, const MFColor &, const MFFloat &);
+	getColor (const float, const MFColor &, const MFFloat &);
 
 	void
 	build ();
 
 	void
-	build (float, const MFFloat &, const MFFloat &, const MFColor &, float, bool);
+	build (const float, const MFFloat &, const MFFloat &, const MFColor &, const float, const bool);
 
 	void
 	drawSphere ();

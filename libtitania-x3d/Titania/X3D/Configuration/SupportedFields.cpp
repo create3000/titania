@@ -72,7 +72,7 @@ SupportedFields::SupportedFields (X3DExecutionContext* const executionContext)
 	add (new SFMatrix3f  ());
 	add (new SFMatrix4d  ());
 	add (new SFMatrix4f  ());
-	add (new SFNode ());
+	add (new SFNode      ());
 	add (new SFRotation  ());
 	add (new SFString    ());
 	add (new SFTime      ());
@@ -95,7 +95,7 @@ SupportedFields::SupportedFields (X3DExecutionContext* const executionContext)
 	add (new MFMatrix3f  ());
 	add (new MFMatrix4d  ());
 	add (new MFMatrix4f  ());
-	add (new MFNode ());
+	add (new MFNode      ());
 	add (new MFRotation  ());
 	add (new MFString    ());
 	add (new MFTime      ());
@@ -110,7 +110,7 @@ SupportedFields::SupportedFields (X3DExecutionContext* const executionContext)
 }
 
 void
-SupportedFields::add (X3DFieldDefinition* field)
+SupportedFields::add (X3DFieldDefinition* const field)
 {
 	//std::clog << "\tAdding field type " << field -> getTypeName () << ": " << std::flush;
 

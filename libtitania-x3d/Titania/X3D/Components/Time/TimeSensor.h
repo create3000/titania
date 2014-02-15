@@ -62,6 +62,8 @@ class TimeSensor :
 {
 public:
 
+	///  @name Construction
+
 	TimeSensor (X3DExecutionContext* const);
 
 	virtual
@@ -135,6 +137,8 @@ public:
 
 private:
 
+	///  @name Event handlers
+
 	virtual
 	void
 	prepareEvents () final override;
@@ -154,7 +158,6 @@ private:
 	virtual
 	void
 	set_resume (time_type) final override;
-
 
 	///  @name Static members
 

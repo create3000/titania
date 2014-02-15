@@ -64,6 +64,8 @@ class X3DScriptNode :
 {
 public:
 
+	///  @name Member access
+
 	const basic::uri &
 	getWorldURL () const
 	{ return worldURL; }
@@ -73,6 +75,8 @@ public:
 	hasUserDefinedFields () const final override
 	{ return true; }
 
+	///  @name Destruction
+
 	virtual
 	void
 	dispose () override;
@@ -80,15 +84,21 @@ public:
 
 protected:
 
+	///  @name Construction
+
 	X3DScriptNode ();
 
 	virtual
 	void
 	initialize () override;
 
+	///  @name Member access
+
 	void
 	setWorldURL (const basic::uri & value)
 	{ worldURL = value; }
+
+	///  @name Members
 
 	basic::uri worldURL;
 

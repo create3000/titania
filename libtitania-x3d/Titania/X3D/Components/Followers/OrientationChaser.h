@@ -139,7 +139,7 @@ private:
 	///  @name Operations
 
 	bool
-	equals (const Rotation4f &, const Rotation4f &, float) const;
+	equals (const Rotation4f &, const Rotation4f &, const float) const;
 
 	///  @name Event handlers
 

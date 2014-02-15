@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -88,7 +88,7 @@ Text::Text (X3DExecutionContext* const executionContext) :
 	addField (outputOnly,     "textBounds", textBounds ());
 	addField (outputOnly,     "lineBounds", lineBounds ());
 	addField (inputOutput,    "fontStyle",  fontStyle ());
-	
+
 	addChildren (fontStyleNode);
 }
 
@@ -149,8 +149,7 @@ Text::build ()
 
 	const Box3f bbox = textGeometry -> getBBox ();
 
-	Vector3f min, max;
-
+	/* const */ Vector3f min, max;
 	bbox .extends (min, max);
 
 	getTexCoords () .emplace_back ();

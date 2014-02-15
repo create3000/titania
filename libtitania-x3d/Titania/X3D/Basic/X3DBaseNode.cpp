@@ -161,7 +161,7 @@ X3DBaseNode::copy (X3DExecutionContext* const executionContext) const
 throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>)
 {
-	X3DBaseNode* copy = create (executionContext);
+	X3DBaseNode* const copy = create (executionContext);
 
 	if (not getName () .empty ())
 		executionContext -> updateNamedNode (getName (), copy);
@@ -248,7 +248,7 @@ X3DBaseNode::replace (X3DBaseNode* const node, const std::set <const X3DFieldDef
 
 	for (auto & parent : node -> getParents ())
 	{
-		auto sfnode = dynamic_cast <X3DFieldDefinition*> (parent);
+		const auto sfnode = dynamic_cast <X3DFieldDefinition*> (parent);
 
 		if (sfnode and sfnode -> getType () == X3DConstants::SFNode)
 		{
@@ -258,7 +258,7 @@ X3DBaseNode::replace (X3DBaseNode* const node, const std::set <const X3DFieldDef
 
 				for (auto & secondParent : sfnode -> getParents ())
 				{
-					auto mfnode = dynamic_cast <X3DFieldDefinition*> (secondParent);
+					const auto mfnode = dynamic_cast <X3DFieldDefinition*> (secondParent);
 
 					if (mfnode and mfnode -> getType () == X3DConstants::MFNode)
 						insert = exclude .find (mfnode) == exclude .end ();
@@ -723,7 +723,7 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 		<< Generator::TidySpace
 		<< '{';
 
-	FieldDefinitionArray userDefinedFields = getUserDefinedFields ();
+	const FieldDefinitionArray userDefinedFields = getUserDefinedFields ();
 
 	size_t fieldTypeLength  = 0;
 	size_t accessTypeLength = 0;
@@ -768,7 +768,7 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 			<< Generator::TidyBreak;
 	}
 
-	FieldDefinitionArray fields = getInitializeableFields (Generator::ExpandNodes ());
+	const FieldDefinitionArray fields = getInitializeableFields (Generator::ExpandNodes ());
 
 	if (fields .empty ())
 	{

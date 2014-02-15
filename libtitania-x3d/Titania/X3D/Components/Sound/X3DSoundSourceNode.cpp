@@ -105,7 +105,7 @@ X3DSoundSourceNode::getDuration () const
 }
 
 void
-X3DSoundSourceNode::setVolume (float value)
+X3DSoundSourceNode::setVolume (const float value)
 {
 	mediaStream -> setVolume (value);
 }
@@ -209,7 +209,7 @@ X3DSoundSourceNode::set_end ()
 void
 X3DSoundSourceNode::add_signal_watch ()
 {
-	auto bus = mediaStream -> getPlayer () -> get_bus ();
+	const auto bus = mediaStream -> getPlayer () -> get_bus ();
 
 	bus -> add_signal_watch ();
 	bus -> signal_message () .connect (sigc::mem_fun (*this, &X3DSoundSourceNode::on_message));
@@ -220,7 +220,7 @@ X3DSoundSourceNode::remove_signal_watch ()
 {
 	// Signal watch must be removed or there will be a memory leak.
 
-	auto bus = mediaStream -> getPlayer () -> get_bus ();
+	const auto bus = mediaStream -> getPlayer () -> get_bus ();
 
 	bus -> remove_signal_watch ();
 }

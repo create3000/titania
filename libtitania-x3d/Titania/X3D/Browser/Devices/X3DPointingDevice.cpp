@@ -93,9 +93,9 @@ X3DPointingDevice::on_motion_notify_event (GdkEventMotion* event)
 {
 	if (button == 0 or button == 1)
 	{
-		bool picked = true;
+		bool picked = pick (event -> x, event -> y);
 
-		if ((picked = pick (event -> x, event -> y)))
+		if (picked)
 		{
 			if (haveSensor ())
 			{
@@ -133,10 +133,9 @@ X3DPointingDevice::on_button_press_event (GdkEventButton* event)
 
 	if (button == 1)
 	{
-		bool picked = true;
-		bool cursor = true;
+		bool picked = pick (event -> x, event -> y);
 
-		if ((picked = pick (event -> x, event -> y)))
+		if (picked)
 		{
 			if (haveSensor ())
 			{
@@ -148,7 +147,7 @@ X3DPointingDevice::on_button_press_event (GdkEventButton* event)
 			}
 		}
 
-		cursor = buttonPressEvent (picked);
+		bool cursor = buttonPressEvent (picked);
 
 		if (cursor)
 			browser -> setCursor (Gdk::FLEUR);
