@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -59,16 +59,16 @@ namespace titania {
 namespace X3D {
 
 X3DGeometryNode::X3DGeometryNode () :
-	          X3DNode (),
-	             bbox (),
-	     texCoordNode (nullptr),
-	        texCoords (),
-	           colors (),
-	          normals (),
-	         vertices (),
-	            solid (true),
-	        frontFace (GL_CCW),
-	         elements ()
+	     X3DNode (),
+	        bbox (),
+	texCoordNode (nullptr),
+	   texCoords (),
+	      colors (),
+	     normals (),
+	    vertices (),
+	       solid (true),
+	   frontFace (GL_CCW),
+	    elements ()
 {
 	addNodeType (X3DConstants::X3DGeometryNode);
 }
@@ -176,8 +176,8 @@ X3DGeometryNode::intersect (const Line3f & line, size_t i1, size_t i2, size_t i3
 	if (line .intersect (vertices [i1], vertices [i2], vertices [i3], u, v, t))
 	{
 		const float t = 1 - u - v;
-	
-		Vector4f texCoord (0, 0, 0, 1);
+
+		Vector4f     texCoord (0, 0, 0, 1);
 		const size_t texCoordSize = texCoords .empty () ? 0 : texCoords [0] .size (); // LineGeometry doesn't have texCoords
 
 		if (i1 < texCoordSize)
@@ -231,7 +231,7 @@ X3DGeometryNode::intersect (const Sphere3f & sphere, const Matrix4f & matrix, co
 						{
 							if (isClipped (vertices [i], matrix, localObjects))
 								continue;
-						
+
 							if (sphere .intersect (vertices [i] * matrix, vertices [i + 1] * matrix, vertices [i + 2] * matrix))
 								return true;
 						}
@@ -244,7 +244,7 @@ X3DGeometryNode::intersect (const Sphere3f & sphere, const Matrix4f & matrix, co
 					{
 						if (isClipped (vertices [i], matrix, localObjects))
 							continue;
-						
+
 						if (sphere .intersect (vertices [i] * matrix, vertices [i + 1] * matrix, vertices [i + 2] * matrix))
 							return true;
 
@@ -260,7 +260,7 @@ X3DGeometryNode::intersect (const Sphere3f & sphere, const Matrix4f & matrix, co
 					{
 						if (isClipped (vertices [i], matrix, localObjects))
 							continue;
-						
+
 						if (sphere .intersect (vertices [i] * matrix, vertices [i + 1] * matrix, vertices [i + 2] * matrix))
 							return true;
 
@@ -276,7 +276,7 @@ X3DGeometryNode::intersect (const Sphere3f & sphere, const Matrix4f & matrix, co
 					{
 						if (isClipped (vertices [first], matrix, localObjects))
 							continue;
-						
+
 						if (sphere .intersect (vertices [first] * matrix, vertices [i] * matrix, vertices [i + 1] * matrix))
 							return true;
 					}
@@ -303,15 +303,15 @@ X3DGeometryNode::triangulate (std::vector <Color4f> & _colors, TexCoordArray & _
 	{
 		switch (element .vertexMode)
 		{
-			case GL_TRIANGLES:
-			{
-				for (size_t i = first, size = first + element .count; i < size; i += 3)
+			case GL_TRIANGLES :
 				{
-					triangulate (i, i + 1, i + 2, _colors, _texCoords, _normals, _vertices);
-				}
+					for (size_t i = first, size = first + element .count; i < size; i += 3)
+					{
+						triangulate (i, i + 1, i + 2, _colors, _texCoords, _normals, _vertices);
+					}
 
-				break;
-			}
+					break;
+				}
 			case GL_QUADS:
 			{
 				for (size_t i = first, size = first + element .count; i < size; i += 4)
@@ -358,7 +358,7 @@ X3DGeometryNode::triangulate (size_t i1, size_t i2, size_t i3, std::vector <Colo
 		_colors .emplace_back (colors [i2]);
 		_colors .emplace_back (colors [i3]);
 	}
-	
+
 	for (size_t t = 0, size = texCoords .size (); t < size; ++ t)
 	{
 		_texCoords [t] .emplace_back (texCoords [t] [i1]);
@@ -392,9 +392,9 @@ X3DGeometryNode::buildTexCoords ()
 	for (const auto & vertex : getVertices ())
 	{
 		getTexCoords () [0] .emplace_back ((vertex [Sindex] - min [Sindex]) / Ssize,
-		                                  (vertex [Tindex] - min [Tindex]) / Ssize,
-		                                  0,
-		                                  1);
+		                                   (vertex [Tindex] - min [Tindex]) / Ssize,
+		                                   0,
+		                                   1);
 	}
 }
 
@@ -481,10 +481,7 @@ void
 X3DGeometryNode::refineNormals (const NormalIndex & normalIndex, std::vector <Vector3f> & normals, float creaseAngle, bool ccw) const
 {
 	if (not ccw)
-	{
-		for (auto & normal : normals)
-			normal .negate ();
-	}
+		std::for_each (normals .begin (), normals .end (), std::mem_fn (&Vector3f::negate));
 
 	if (creaseAngle == 0.0f)
 		return;

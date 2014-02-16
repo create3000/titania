@@ -163,11 +163,11 @@ BrowserWindow::getStyles () const
 {
 	std::string string;
 
-	auto styleContext = getWidget () .get_style_context ();
+	const auto styleContext = getWidget () .get_style_context ();
 
-	auto fg_selected = styleContext -> get_color (Gtk::STATE_FLAG_SELECTED); 
-	auto bg_normal   = styleContext -> get_background_color (Gtk::STATE_FLAG_NORMAL); 
-	auto bg_selected = styleContext -> get_background_color (Gtk::STATE_FLAG_SELECTED); 
+	const auto fg_selected = styleContext -> get_color (Gtk::STATE_FLAG_SELECTED); 
+	const auto bg_normal   = styleContext -> get_background_color (Gtk::STATE_FLAG_NORMAL); 
+	const auto bg_selected = styleContext -> get_background_color (Gtk::STATE_FLAG_SELECTED); 
 
 	string += "#OutlineTreeViewEditor .textview-editable {";
 	string += "  background-color: mix (" + bg_selected .to_string () + ", " + bg_normal .to_string () + ", 0.9);";
@@ -190,11 +190,11 @@ BrowserWindow::hasShortcuts (bool value)
 
 	for (const auto & child : getMenuBar () .get_children ())
 	{
-		auto menuItem = dynamic_cast <Gtk::MenuItem*> (child);
+		const auto menuItem = dynamic_cast <Gtk::MenuItem*> (child);
 
 		if (menuItem and menuItem -> get_visible ())
 		{
-			auto menu = menuItem -> get_submenu ();
+			const auto menu = menuItem -> get_submenu ();
 
 			if (menu)
 				menu -> set_sensitive (shortcuts);
@@ -207,8 +207,8 @@ BrowserWindow::hasShortcuts (bool value)
 void
 BrowserWindow::set_selection (const X3D::MFNode & children)
 {
-	bool haveSelection  = children .size ();
-	bool haveSelections = children .size () > 1;
+	const bool haveSelection  = children .size ();
+	const bool haveSelections = children .size () > 1;
 
 	getCutMenuItem ()    .set_sensitive (haveSelection);
 	getCopyMenuItem ()   .set_sensitive (haveSelection);
@@ -241,8 +241,8 @@ BrowserWindow::on_key_press_event (GdkEventKey* event)
 			static constexpr float NUDGE_STEP   = 0.001;
 			static constexpr float NUDGE_FACTOR = 10;
 
-			float nudge           = NUDGE_STEP * (keys .shift () ? NUDGE_FACTOR : 1);
-			bool  alongFrontPlane = false;
+			const float nudge           = NUDGE_STEP * (keys .shift () ? NUDGE_FACTOR : 1);
+			const bool  alongFrontPlane = false;
 
 			switch (event -> keyval)
 			{
@@ -308,7 +308,7 @@ BrowserWindow::on_open ()
 	if (isSaved ())
 	{
 		updateWidget ("FileOpenDialog");
-		auto fileOpenDialog = getWidget <Gtk::FileChooserDialog> ("FileOpenDialog");
+		const auto fileOpenDialog = getWidget <Gtk::FileChooserDialog> ("FileOpenDialog");
 
 		fileOpenDialog -> add_filter (getFileFilterX3D ());
 		fileOpenDialog -> add_filter (getFileFilterImage ());
@@ -321,7 +321,7 @@ BrowserWindow::on_open ()
 		else
 			fileOpenDialog -> set_uri (getFileOpenDialog () .get_uri ());
 
-		auto response_id = fileOpenDialog -> run ();
+		const auto response_id = fileOpenDialog -> run ();
 
 		if (response_id == Gtk::RESPONSE_OK)
 		{
@@ -337,13 +337,13 @@ BrowserWindow::on_open_location ()
 {
 	if (isSaved ())
 	{
-		Glib::RefPtr <Gtk::Clipboard> clipboard = Gtk::Clipboard::get ();
+		const Glib::RefPtr <Gtk::Clipboard> clipboard = Gtk::Clipboard::get ();
 
 		if (clipboard -> wait_is_text_available ())
 		{
 			static const pcrecpp::RE scheme ("\\A(file|http|https|ftp|smb)$");
 
-			basic::uri uri (clipboard -> wait_for_text ());
+			const basic::uri uri (clipboard -> wait_for_text ());
 
 			if (scheme .FullMatch (uri .scheme ()))
 				getOpenLocationEntry () .set_text (uri .str ());
@@ -351,7 +351,7 @@ BrowserWindow::on_open_location ()
 
 		getOpenLocationDialog () .set_response_sensitive (Gtk::RESPONSE_OK, getOpenLocationEntry () .get_text () .size ());
 
-		auto response_id = getOpenLocationDialog () .run ();
+		const auto response_id = getOpenLocationDialog () .run ();
 
 		getOpenLocationDialog () .hide ();
 
@@ -376,7 +376,8 @@ void
 BrowserWindow::on_import ()
 {
 	updateWidget ("FileImportDialog");
-	auto fileImportDialog = getWidget <Gtk::FileChooserDialog> ("FileImportDialog");
+
+	const auto fileImportDialog = getWidget <Gtk::FileChooserDialog> ("FileImportDialog");
 
 	fileImportDialog -> add_filter (getFileFilterX3D ());
 	fileImportDialog -> add_filter (getFileFilterImage ());
@@ -394,11 +395,11 @@ BrowserWindow::on_import ()
 	else
 		fileImportDialog -> set_uri (getFileImportDialog () .get_uri ());
 
-	auto response_id = fileImportDialog -> run ();
+	const auto response_id = fileImportDialog -> run ();
 
 	if (response_id == Gtk::RESPONSE_OK)
 	{
-		auto uri = Glib::uri_unescape_string (fileImportDialog -> get_uri ());
+		const auto uri = Glib::uri_unescape_string (fileImportDialog -> get_uri ());
 
 		import ({ uri }, getImportAsInlineMenuItem () .get_active ());
 	}
@@ -428,15 +429,15 @@ BrowserWindow::on_surface_box_drag_data_received (const Glib::RefPtr <Gdk::DragC
 void
 BrowserWindow::dragDataHandling (const Glib::RefPtr <Gdk::DragContext> & context,
                                  const Gtk::SelectionData & selection_data,
-                                 guint time,
-                                 bool do_open)
+                                 const guint time,
+                                 const bool do_open)
 {
 	if (selection_data .get_format () == 8 and selection_data .get_length ()) // 8 bit format
 	{
 		if (selection_data .get_data_type () == "text/uri-list")
 		{
 			std::vector <basic::uri> uris;
-			auto strings = selection_data .get_uris ();
+			const auto strings = selection_data .get_uris ();
 
 			for (auto & string : strings)
 				uris .emplace_back (Glib::uri_unescape_string (string)); // ???
@@ -459,7 +460,7 @@ BrowserWindow::dragDataHandling (const Glib::RefPtr <Gdk::DragContext> & context
 		if (selection_data .get_data_type () == "STRING")
 		{
 			std::vector <basic::uri> uris;
-			auto strings = basic::split (basic::trim (selection_data .get_data_as_string ()), "\r\n");
+			const auto strings = basic::split (basic::trim (selection_data .get_data_as_string ()), "\r\n");
 
 			for (auto & string : strings)
 				uris .emplace_back (Glib::uri_unescape_string (string));
@@ -500,7 +501,7 @@ BrowserWindow::on_save_as ()
 {
 	updateWidget ("FileSaveDialog");
 
-	auto fileSaveDialog = getWidget <Gtk::FileChooserDialog> ("FileSaveDialog");
+	const auto fileSaveDialog = getWidget <Gtk::FileChooserDialog> ("FileSaveDialog");
 
 	fileSaveDialog -> add_filter (getFileFilterX3D ());
 	fileSaveDialog -> set_filter (getFileFilterX3D ());
@@ -518,11 +519,11 @@ BrowserWindow::on_save_as ()
 	else
 		fileSaveDialog -> set_uri (getFileSaveDialog () .get_uri ());
 
-	auto saveCompressedButton = getWidget <Gtk::CheckButton> ("SaveCompressedButton");
+	const auto saveCompressedButton = getWidget <Gtk::CheckButton> ("SaveCompressedButton");
 
 	saveCompressedButton -> set_active (getBrowser () -> getExecutionContext () -> isCompressed ());
 
-	auto response_id = fileSaveDialog -> run ();
+	const auto response_id = fileSaveDialog -> run ();
 
 	if (response_id == Gtk::RESPONSE_OK)
 	{
@@ -598,7 +599,7 @@ BrowserWindow::on_cut_nodes_activate ()
 	if (selection .empty ())
 		return;
 
-	auto undoStep = std::make_shared <UndoStep> (_ ("Cut"));
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Cut"));
 
 	getSelection () -> clear (undoStep);
 
@@ -625,7 +626,7 @@ BrowserWindow::on_paste_nodes_activate ()
 {
 	const auto selection = getBrowser () -> getSelection () -> getChildren ();
 
-	auto undoStep = std::make_shared <UndoStep> (_ ("Paste"));
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Paste"));
 
 	pasteNodes (selection, undoStep);
 
@@ -642,7 +643,7 @@ BrowserWindow::on_delete_nodes_activate ()
 	if (selection .empty ())
 		return;
 
-	auto undoStep = std::make_shared <UndoStep> (_ ("Delete"));
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Delete"));
 
 	getSelection () -> clear (undoStep);
 
@@ -659,7 +660,7 @@ BrowserWindow::on_group_selected_nodes_activate ()
 	if (selection .empty ())
 		return;
 
-	auto undoStep = std::make_shared <UndoStep> (_ ("Group"));
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Group"));
 
 	getSelection () -> clear (undoStep);
 	getSelection () -> setChildren ({ groupNodes (selection, undoStep) }, undoStep);
@@ -675,7 +676,7 @@ BrowserWindow::on_ungroup_node_activate ()
 	if (selection .empty ())
 		return;
 
-	auto undoStep = std::make_shared <UndoStep> (_ ("Ungroup"));
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Ungroup"));
 
 	getSelection () -> clear (undoStep);
 	getSelection () -> setChildren (ungroupNodes (selection, undoStep), undoStep);
@@ -691,11 +692,11 @@ BrowserWindow::on_add_to_group_activate ()
 	if (selection .size () < 2)
 		return;
 
-	auto undoStep = std::make_shared <UndoStep> (_ ("Add To Group"));
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Add To Group"));
 
 	getSelection () -> undoRestoreSelection (undoStep);
 
-	auto group = selection .back ();
+	const auto group = selection .back ();
 	selection .pop_back ();
 
 	if (addToGroup (group, selection, undoStep))
@@ -714,7 +715,7 @@ BrowserWindow::on_detach_from_group_activate ()
 	if (selection .empty ())
 		return;
 
-	auto undoStep = std::make_shared <UndoStep> (_ ("Detach From Group"));
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Detach From Group"));
 
 	getSelection () -> redoRestoreSelection (undoStep);
 
@@ -733,7 +734,7 @@ BrowserWindow::on_create_parent_group_activate ()
 	if (selection .empty ())
 		return;
 
-	auto undoStep = std::make_shared <UndoStep> (_ ("Create Parent Group"));
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Create Parent Group"));
 
 	getSelection () -> clear (undoStep);
 
@@ -798,7 +799,7 @@ BrowserWindow::on_editor_toggled ()
 }
 
 void
-BrowserWindow::enableEditor (bool enabled)
+BrowserWindow::enableEditor (const bool enabled)
 {
 	getImportMenuItem ()           .set_visible (enabled);
 	getImportAsInlineMenuItem ()   .set_visible (enabled);
@@ -943,7 +944,7 @@ BrowserWindow::on_unfullscreen ()
 void
 BrowserWindow::on_select_all_activate ()
 {
-	auto undoStep = std::make_shared <UndoStep> ();
+	const auto undoStep = std::make_shared <UndoStep> ();
 
 	getSelection () -> setChildren (getBrowser () -> getExecutionContext () -> getRootNodes (), undoStep);
 }
@@ -951,7 +952,7 @@ BrowserWindow::on_select_all_activate ()
 void
 BrowserWindow::on_deselect_all_activate ()
 {
-	auto undoStep = std::make_shared <UndoStep> ();
+	const auto undoStep = std::make_shared <UndoStep> ();
 
 	getSelection () -> clear (undoStep);
 }
@@ -1035,7 +1036,7 @@ BrowserWindow::on_texture_editor ()
 // Browser dashboard handling
 
 void
-BrowserWindow::set_dashboard (bool value)
+BrowserWindow::set_dashboard (const bool value)
 {
 	getDashboard () .set_visible (value);
 }
@@ -1149,31 +1150,31 @@ BrowserWindow::set_viewer (X3D::ViewerType type)
 }
 
 void
-BrowserWindow::set_examine_viewer (bool value)
+BrowserWindow::set_examine_viewer (const bool value)
 {
 	getExamineViewerMenuItem () .set_visible (value);
 }
 
 void
-BrowserWindow::set_walk_viewer (bool value)
+BrowserWindow::set_walk_viewer (const bool value)
 {
 	getWalkViewerMenuItem () .set_visible (value);
 }
 
 void
-BrowserWindow::set_fly_viewer (bool value)
+BrowserWindow::set_fly_viewer (const bool value)
 {
 	getFlyViewerMenuItem () .set_visible (value);
 }
 
 void
-BrowserWindow::set_plane_viewer (bool value)
+BrowserWindow::set_plane_viewer (const bool value)
 {
 	getPlaneViewerMenuItem () .set_visible (value);
 }
 
 void
-BrowserWindow::set_none_viewer (bool value)
+BrowserWindow::set_none_viewer (const bool value)
 {
 	getNoneViewerMenuItem () .set_visible (value);
 }
@@ -1227,7 +1228,7 @@ BrowserWindow::on_straighten_clicked ()
 // Look at
 
 void
-BrowserWindow::set_look_at (bool value)
+BrowserWindow::set_look_at (const bool value)
 {
 	getLookAtAllButton () .set_visible (value);
 	getLookAtButton ()    .set_visible (value);

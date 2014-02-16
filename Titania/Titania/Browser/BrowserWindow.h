@@ -137,7 +137,7 @@ public:
 	/// @name Menu
 
 	void
-	hasShortcuts (bool);
+	hasShortcuts (const bool);
 
 
 private:
@@ -197,7 +197,7 @@ private:
 	on_surface_box_drag_data_received (const Glib::RefPtr <Gdk::DragContext>&, int, int, const Gtk::SelectionData &, guint info, guint) final override;
 
 	void
-	dragDataHandling (const Glib::RefPtr <Gdk::DragContext>&, const Gtk::SelectionData &, guint, bool);
+	dragDataHandling (const Glib::RefPtr <Gdk::DragContext>&, const Gtk::SelectionData &, const guint, const bool);
 
 	virtual
 	void
@@ -299,7 +299,7 @@ private:
 	on_editor_toggled () final override;
 
 	void
-	enableEditor (bool);
+	enableEditor (const bool);
 
 	/// @name Shading
 
@@ -410,7 +410,7 @@ private:
 	///  @name Browser dashboard handling
 
 	void
-	set_dashboard (bool);
+	set_dashboard (const bool);
 
 	virtual
 	void
@@ -424,19 +424,19 @@ private:
 	set_viewer (X3D::ViewerType);
 
 	void
-	set_examine_viewer (bool);
+	set_examine_viewer (const bool);
 
 	void
-	set_walk_viewer (bool);
+	set_walk_viewer (const bool);
 
 	void
-	set_fly_viewer (bool);
+	set_fly_viewer (const bool);
 
 	void
-	set_plane_viewer (bool);
+	set_plane_viewer (const bool);
 
 	void
-	set_none_viewer (bool);
+	set_none_viewer (const bool);
 
 	virtual
 	void
@@ -467,7 +467,7 @@ private:
 	on_straighten_clicked () final override;
 
 	void
-	set_look_at (bool);
+	set_look_at (const bool);
 
 	virtual
 	void

@@ -154,11 +154,6 @@ private:
 
 	struct Polygon
 	{
-		Polygon (Vertices && vertices, ElementArray && elements) :
-			vertices (std::move (vertices)),
-			elements (std::move (elements))
-		{ }
-
 		Vertices vertices;
 		ElementArray elements;
 
@@ -193,8 +188,8 @@ private:
 	void
 	tessellate (PolygonArray &, size_t &);
 
-	ElementArray
-	tessellate (const Vertices & polygon);
+	void
+	tessellate (PolygonArray &);
 
 
 	///  @name Static members

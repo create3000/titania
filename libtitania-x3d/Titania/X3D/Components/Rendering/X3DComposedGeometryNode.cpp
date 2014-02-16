@@ -269,10 +269,7 @@ X3DComposedGeometryNode::buildFaceNormals (const size_t vertexCount, const size_
 	}
 
 	if (not ccw ())
-	{
-		for (auto & normal : getNormals ())
-			normal .negate ();
-	}
+		std::for_each (getNormals () .begin (), getNormals () .end (), std::mem_fn (&Vector3f::negate));
 }
 
 void

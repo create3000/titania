@@ -101,13 +101,13 @@ X3DDialogInterface::getLabels (Gtk::Widget* const widget, std::vector <Gtk::Labe
 	if (not widget)
 		return;
 
-	auto grid = dynamic_cast <Gtk::Grid*> (widget);
+	const auto grid = dynamic_cast <Gtk::Grid*> (widget);
 
 	if (grid)
 	{
 		for (auto & child : grid -> get_children ())
 		{
-			auto label = dynamic_cast <Gtk::Label*> (child);
+			const auto label = dynamic_cast <Gtk::Label*> (child);
 
 			if (label)
 				labels .emplace_back (label);
@@ -116,7 +116,7 @@ X3DDialogInterface::getLabels (Gtk::Widget* const widget, std::vector <Gtk::Labe
 		return;
 	}
 
-	auto container = dynamic_cast <Gtk::Container*> (widget);
+	const auto container = dynamic_cast <Gtk::Container*> (widget);
 
 	if (container)
 	{

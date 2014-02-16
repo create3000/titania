@@ -294,7 +294,7 @@ IndexedFaceSet::buildNormals (const PolygonArray & polygons)
 		}
 	}
 }
-
+		
 void
 IndexedFaceSet::tessellate (PolygonArray & polygons, size_t & numVertices)
 {
@@ -310,14 +310,17 @@ IndexedFaceSet::tessellate (PolygonArray & polygons, size_t & numVertices)
 		// Construct triangle array and determine the number of used points.
 		size_t i = 0;
 
-		Vertices vertices;
+		polygons .emplace_back ();
 
 		for (const auto & index : coordIndex ())
 		{
+			Vertices & vertices = polygons .back () .vertices;
+		
 			if (index > -1)
-				// Add vertex.
+			{
+				// Add vertex index.
 				vertices .emplace_back (i);
-
+			}
 			else
 			{
 				// Negativ index.
@@ -328,45 +331,72 @@ IndexedFaceSet::tessellate (PolygonArray & polygons, size_t & numVertices)
 					if (vertices .front () == vertices .back ())
 						vertices .pop_back ();
 
-					if (vertices .size () == 3)
+					switch (vertices .size ())
 					{
-						numVertices += 3;
+						case 0:
+						case 1:
+						case 2:
+						{
+							vertices .clear ();
+							break;
+						}
+						case 3:
+						{
+							numVertices += 3;
 
-						// Add polygon with one triangle.
-						polygons .emplace_back (std::move (vertices),
-						                        std::move (ElementArray ({ std::move (Element ({ { vertices [0],
-						                                                                           vertices [1],
-						                                                                           vertices [2] } })) })));
+							// Add polygon with one triangle.
+		
+							ElementArray & elements = polygons .back () .elements;
+
+							elements .emplace_back ();
+							elements .back () .emplace_back (vertices [0]);
+							elements .back () .emplace_back (vertices [1]);
+							elements .back () .emplace_back (vertices [2]);
+
+							polygons .emplace_back ();
+
+							break;
+						}
+						default:
+						{
+							numVertices += convex () ? vertices .size () : (vertices .size () - 2) * 3;
+
+							// Tessellate polygons.
+
+							tessellate (polygons);
+
+							if (polygons .back () .elements .empty ())
+								vertices .clear ();
+							else
+								polygons .emplace_back ();
+
+							break;
+						}
 					}
-					else if (vertices .size () > 3)
-					{
-						numVertices += convex () ? vertices .size () : (vertices .size () - 2) * 3;
-
-						// Tessellate polygons.
-						polygons .emplace_back (std::move (vertices), std::move (tessellate (vertices)));
-
-						// Sometimes there are no elements, propbably due to the need of a combine callback.
-						if (polygons .back () .elements .empty ())
-							polygons .pop_back ();
-					}
-
-					else
-						vertices .clear ();
 				}
 			}
 
 			++ i;
 		}
+
+		// Sometimes there are no elements, propbably due to the need of a combine callback.
+
+		if (polygons .back () .elements .empty ())
+			polygons .pop_back ();
 	}
 }
 
-IndexedFaceSet::ElementArray
-IndexedFaceSet::tessellate (const Vertices & vertices)
+void
+IndexedFaceSet::tessellate (PolygonArray & polygons)
 {
-	if (convex ())
-		return ElementArray { vertices };
+	Vertices &     vertices = polygons .back () .vertices;
+	ElementArray & elements = polygons .back () .elements;
 
-	ElementArray elements;
+	if (convex ())
+	{
+		elements .emplace_back (vertices);
+		return;
+	}
 
 	opengl::tessellator <size_t> tessellator;
 
@@ -379,26 +409,28 @@ IndexedFaceSet::tessellate (const Vertices & vertices)
 	{
 		switch (polygonElement .type ())
 		{
-			case GL_TRIANGLE_FAN :
+			case GL_TRIANGLE_FAN:
+			{
+				for (size_t i = 1, size = polygonElement .size () - 1; i < size; ++ i)
 				{
-					for (size_t i = 1, size = polygonElement .size () - 1; i < size; ++ i)
-					{
-						// Add triangle to polygon.
-						elements .emplace_back (std::move (Element ({ { std::get <0> (polygonElement [0] .data ()),
-						                                                std::get <0> (polygonElement [i] .data ()),
-						                                                std::get <0> (polygonElement [i + 1] .data ()) } })));
-					}
-
-					break;
+					// Add triangle to polygon.
+					elements .emplace_back ();
+					elements .back () .emplace_back (std::get <0> (polygonElement [0] .data ()));
+					elements .back () .emplace_back (std::get <0> (polygonElement [i] .data ()));
+					elements .back () .emplace_back (std::get <0> (polygonElement [i + 1] .data ()));
 				}
+
+				break;
+			}
 			case GL_TRIANGLE_STRIP:
 			{
 				for (size_t i = 0, size = polygonElement .size () - 2; i < size; ++ i)
 				{
 					// Add triangle to polygon.
-					elements .emplace_back (std::move (Element ({ { std::get <0> (polygonElement [is_odd (i) ? i + 1 : i] .data ()),
-					                                                std::get <0> (polygonElement [is_odd (i) ? i : i + 1] .data ()),
-					                                                std::get <0> (polygonElement [i + 2] .data ()) } })));
+					elements .emplace_back ();
+					elements .back () .emplace_back (std::get <0> (polygonElement [is_odd (i) ? i + 1 : i] .data ()));
+					elements .back () .emplace_back (std::get <0> (polygonElement [is_odd (i) ? i : i + 1] .data ()));
+					elements .back () .emplace_back (std::get <0> (polygonElement [i + 2] .data ()));
 				}
 
 				break;
@@ -408,9 +440,10 @@ IndexedFaceSet::tessellate (const Vertices & vertices)
 				for (size_t i = 0, size = polygonElement .size (); i < size; i += 3)
 				{
 					// Add triangle to polygon.
-					elements .emplace_back (std::move (Element ({ { std::get <0> (polygonElement [i] .data ()),
-					                                                std::get <0> (polygonElement [i + 1] .data ()),
-					                                                std::get <0> (polygonElement [i + 2] .data ()) } })));
+					elements .emplace_back ();
+					elements .back () .emplace_back (std::get <0> (polygonElement [i] .data ()));
+					elements .back () .emplace_back (std::get <0> (polygonElement [i + 1] .data ()));
+					elements .back () .emplace_back (std::get <0> (polygonElement [i + 2] .data ()));
 				}
 
 				break;
@@ -419,36 +452,7 @@ IndexedFaceSet::tessellate (const Vertices & vertices)
 				break;
 		}
 	}
-
-	return elements;
 }
-
-//void
-//IndexedFaceSet::buildTexCoords (const PolygonArray & polygons)
-//{
-//	Vector3f min;
-//
-//	float Ssize;
-//	int   Sindex, Tindex;
-//
-//	getTexCoordParams (min, Ssize, Sindex, Tindex);
-//
-//	auto getCoord () = x3d_cast <X3DCoordinateNode*> (coord);
-//
-//	for (const auto & polygon : polygons)
-//	{
-//		for (const auto & element : polygon .elements)
-//		{
-//			for (const auto & i : element)
-//			{
-//				const Vector3f & point = getCoord () -> point [coordIndex [i]];
-//
-//				getTexCoords () .emplace_back ((point [Sindex] - min [Sindex]) / Ssize,
-//				                              (point [Tindex] - min [Tindex]) / Ssize);
-//			}
-//		}
-//	}
-//}
 
 } // X3D
 

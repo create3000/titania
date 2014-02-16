@@ -237,9 +237,9 @@ function initialize ()
 	}
 
 	print ('### Generating gear done.');
-	
-	gear .set_coordIndex = indices;
+
 	gear .coord .point   = points;
+	gear .set_coordIndex = indices;
 }
 "
     directOutput TRUE

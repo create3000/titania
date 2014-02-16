@@ -1,3 +1,11 @@
+2014-02-16  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* BrowserWindow.h:
+	* BrowserWindow.cpp:
+	* gears.wrl:
+	* X3DDialogInterface.cpp:
+	* BrowserSelection.cpp: 
+
 2014-02-12  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* OutlineTreeViewEditor.cpp: 

@@ -307,12 +307,6 @@ public:
 
 };
 
-void
-deleteObjects (A a)
-{
-	__LOG__ << &a << std::endl;
-}
-
 int
 main (int argc, char** argv)
 {
@@ -321,41 +315,6 @@ main (int argc, char** argv)
 	#ifdef _GLIBCXX_PARALLEL
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
-
-	constexpr int N = 1000000;
-	constexpr int S = 1280;
-
-	{
-		std::vector <int*> v;
-	
-		double t0 = chrono::now ();
-		
-		for (int i = 0; i < N; ++ i)
-		{
-			for (int a = 0; a < S; ++ a)
-				v .emplace_back (nullptr);
-			
-			v .clear ();
-		}
-		
-		__LOG__ << chrono::now () - t0 << std::endl;
-	}
-
-	{
-		std::deque <int*> v;
-	
-		double t0 = chrono::now ();
-		
-		for (int i = 0; i < N; ++ i)
-		{
-			for (int a = 0; a < S; ++ a)
-				v .emplace_back (nullptr);
-			
-			v .clear ();
-		}
-		
-		__LOG__ << chrono::now () - t0 << std::endl;
-	}
 
 	std::clog << "Function main done." << std::endl;
 	return 0;
