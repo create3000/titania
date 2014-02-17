@@ -51,9 +51,9 @@
 #ifndef __TITANIA_X3D_COMPONENTS_TEXT_X3DFONT_STYLE_NODE_H__
 #define __TITANIA_X3D_COMPONENTS_TEXT_X3DFONT_STYLE_NODE_H__
 
-#include "../Core/X3DNode.h"
-#include "../../Types/Geometry.h"
 #include "../../Miscellaneous/FontConfig.h"
+#include "../../Types/Geometry.h"
+#include "../Core/X3DNode.h"
 
 namespace titania {
 namespace X3D {
@@ -91,26 +91,26 @@ protected:
 	void
 	setBBox (const Box3d & value)
 	{ bbox = value; }
-	
+
 	const std::vector <double> &
 	getCharSpacing () const
 	{ return charSpacings; }
-	
+
 	const Vector2d &
 	getBearing () const
 	{ return bearing; }
-	
+
 	const Vector2d &
 	getMinorAlignment () const
 	{ return minorAlignment; }
-	
+
 	const std::vector <Vector2d> &
-	getTranslation () const
-	{ return translation; }
+	getTranslations () const
+	{ return translations; }
 
 	virtual
 	void
-	getLineExtends (const String &, Vector2d &, Vector2d &) const = 0;
+	getLineExtents (const String &, Vector2d &, Vector2d &) const = 0;
 
 	void
 	compile (Text* const);
@@ -123,14 +123,23 @@ protected:
 private:
 
 	void
-	getLineExtends (const X3DFontStyleNode* const, const String &, Vector2d &, Vector2d &) const;
+	horizontal (Text* const, const X3DFontStyleNode* const);
+
+	void
+	vertical (Text* const, const X3DFontStyleNode* const);
+
+	void
+	getLineExtents (const X3DFontStyleNode* const, const String &, Vector2d &, Vector2d &) const;
+
+	void
+	getGlyphExtents (const String::value_type &, Vector2d &, Vector2d &) const;
 
 	Box3d bbox;
 
 	std::vector <double>   charSpacings;
 	Vector2d               bearing;
 	Vector2d               minorAlignment;
-	std::vector <Vector2d> translation;
+	std::vector <Vector2d> translations;
 	GLuint                 listId;
 
 };
@@ -149,6 +158,14 @@ public:
 	};
 
 	///  @name Fields
+
+	SFString &
+	language ()
+	{ return *fields .language; }
+
+	const SFString &
+	language () const
+	{ return *fields .language; }
 
 	MFString &
 	family ()
@@ -182,13 +199,13 @@ public:
 	horizontal () const
 	{ return *fields .horizontal; }
 
-	MFString &
-	justify ()
-	{ return *fields .justify; }
+	SFBool &
+	leftToRight ()
+	{ return *fields .leftToRight; }
 
-	const MFString &
-	justify () const
-	{ return *fields .justify; }
+	const SFBool &
+	leftToRight () const
+	{ return *fields .leftToRight; }
 
 	SFBool &
 	topToBottom ()
@@ -198,21 +215,13 @@ public:
 	topToBottom () const
 	{ return *fields .topToBottom; }
 
-	SFBool &
-	leftToRight ()
-	{ return *fields .leftToRight; }
+	MFString &
+	justify ()
+	{ return *fields .justify; }
 
-	const SFBool &
-	leftToRight () const
-	{ return *fields .leftToRight; }
-
-	SFString &
-	language ()
-	{ return *fields .language; }
-
-	const SFString &
-	language () const
-	{ return *fields .language; }
+	const MFString &
+	justify () const
+	{ return *fields .justify; }
 
 	///  @name Member access
 
@@ -283,14 +292,14 @@ private:
 	{
 		Fields ();
 
+		SFString* const language;
 		MFString* const family;
 		SFString* const style;
 		SFFloat* const spacing;
 		SFBool* const horizontal;
-		MFString* const justify;
-		SFBool* const topToBottom;
 		SFBool* const leftToRight;
-		SFString* const language;
+		SFBool* const topToBottom;
+		MFString* const justify;
 	};
 
 	Fields fields;

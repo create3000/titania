@@ -1,3 +1,12 @@
+2014-02-17  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* FontStyle.h:
+	* FontStyle.cpp:
+	* X3DFontStyleNode.h:
+	* ScreenFontStyle.h:
+	* X3DFontStyleNode.cpp:
+	* ScreenFontStyle.cpp: 
+
 2014-02-16  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* IndexedFaceSet.h:

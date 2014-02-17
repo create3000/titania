@@ -63,7 +63,7 @@ X3DTextGeometry::X3DTextGeometry () :
 	  charSpacings (),
 	       bearing (),
 	minorAlignment (),
-	   translation (),
+	  translations (),
 	        listId (glGenLists (1))
 { }
 
@@ -74,7 +74,7 @@ X3DTextGeometry::initialize (Text* const text, const X3DFontStyleNode* const fon
 
 	text -> lineBounds () .resize (numLines);
 	charSpacings .resize (numLines);
-	translation  .resize (numLines);
+	translations .resize (numLines);
 
 	if (numLines == 0)
 	{
@@ -82,126 +82,350 @@ X3DTextGeometry::initialize (Text* const text, const X3DFontStyleNode* const fon
 		text -> textBounds () = Vector2d ();
 
 		setBBox (Box3d ());
+
+		return;
 	}
+
+	if (fontStyle -> horizontal ())
+		horizontal (text, fontStyle);
 	else
-	{
-		Box2d bbox;
-
-		const bool   topToBottom = fontStyle -> topToBottom ();
-		const double lineHeight  = fontStyle -> getLineHeight ();
-		const double scale       = fontStyle -> getScale ();
-
-		// Calculate bboxes.
-
-		const int first = topToBottom ? 0 : numLines - 1;
-		const int last  = topToBottom ? numLines : -1;
-		const int step  = topToBottom ? 1 : -1;
-
-		for (int i = first; i not_eq last; i += step)
-		{
-			const auto & line = text -> string () [i];
-
-			// Get line extends.
-
-			/* const */ Vector2d min, max;
-			getLineExtends (fontStyle, line .getValue (), min, max);
-
-			Vector2d size = max - min;
-
-			// Calculate charSpacing and lineBounds.
-
-			double   charSpacing = 0;
-			Vector2d lineBound   = Vector2d (size .x (), i == 0 ? size .y () : lineHeight) * scale;
-			double   length      = text -> getLength (i);
-
-			if (text -> maxExtent ())
-			{
-				if (length)
-					length = std::min <double> (text -> maxExtent (), length);
-
-				else
-					length = std::min <double> (text -> maxExtent (), size .x () * scale);
-			}
-
-			if (length)
-			{
-				charSpacing = (length - lineBound .x ()) / (line .length () - 1) / scale;
-				lineBound .x (length);
-				size .x (length / scale);
-			}
-
-			charSpacings [i]          = charSpacing;
-			text -> lineBounds () [i] = lineBound;
-
-			// Calculate line translation.
-
-			const size_t lineNumber = topToBottom ? i : numLines - i - 1;
-
-			switch (fontStyle -> getMajorAlignment ())
-			{
-				case X3DFontStyleNode::Alignment::BEGIN:
-				case X3DFontStyleNode::Alignment::FIRST:
-					translation [i] = Vector2d (0, -(lineNumber * lineHeight));
-					break;
-				case X3DFontStyleNode::Alignment::MIDDLE:
-					translation [i] = Vector2d (-min .x () - size .x () / 2, -(lineNumber * lineHeight));
-					break;
-				case X3DFontStyleNode::Alignment::END:
-					translation [i] = Vector2d (-min .x () - size .x (), -(lineNumber * lineHeight));
-					break;
-			}
-
-			// Calculate center.
-
-			const Vector2d center = min + size / 2.0;
-
-			// Add bbox.
-
-			bbox += Box2d (size * scale, (center + translation [i]) * scale);
-		}
-
-		Vector2d min, max;
-		bbox .extends (min, max);
-
-		const Vector2d size = max - min;
-
-		text -> textBounds () = size;
-		bearing               = Vector2d (0, -max .y ());
-
-		switch (fontStyle -> getMinorAlignment ())
-		{
-			case X3DFontStyleNode::Alignment::BEGIN:
-				minorAlignment = bearing;
-				break;
-			case X3DFontStyleNode::Alignment::FIRST:
-				minorAlignment = Vector2d ();
-				break;
-			case X3DFontStyleNode::Alignment::MIDDLE:
-				minorAlignment = Vector2d (0, text -> textBounds () .getY () / 2 - max .y ());
-				break;
-			case X3DFontStyleNode::Alignment::END:
-				minorAlignment = Vector2d (0, (numLines - 1) * lineHeight * scale);
-				break;
-		}
-
-		// Translate bbox by minorAlignment.
-
-		min += minorAlignment;
-		max += minorAlignment;
-
-		text -> origin () = Vector3d (min .x (), max .y (), 0);
-
-		setBBox (Box3d (Vector3d (min .x (), min .y (), 0),
-		                Vector3d (max .x (), max .y (), 0),
-		                extends_type ()));
-	}
+		vertical (text, fontStyle);
 }
 
 void
-X3DTextGeometry::getLineExtends (const X3DFontStyleNode* const fontStyle, const String & line, Vector2d & min, Vector2d & max) const
+X3DTextGeometry::horizontal (Text* const text, const X3DFontStyleNode* const fontStyle)
 {
+	Box2d bbox;
+
+	const size_t numLines    = text -> string () .size ();
+	const bool   topToBottom = fontStyle -> topToBottom ();
+	const double lineHeight  = fontStyle -> getLineHeight ();
+	const double scale       = fontStyle -> getScale ();
+
+	// Calculate bboxes.
+
+	const int first = topToBottom ? 0 : numLines - 1;
+	const int last  = topToBottom ? numLines : -1;
+	const int step  = topToBottom ? 1 : -1;
+
+	for (int l = first; l not_eq last; l += step)
+	{
+		const auto & line = text -> string () [l];
+
+		// Get line extends.
+
+		Vector2d min, max;
+		getLineExtents (fontStyle, line .getValue (), min, max);
+
+		Vector2d size = max - min;
+
+		// Calculate charSpacing and lineBounds.
+
+		const size_t lineNumber = topToBottom ? l : numLines - l - 1;
+
+		double   charSpacing = 0;
+		Vector2d lineBound   = Vector2d (size .x (), lineNumber == 0 ? size .y () : lineHeight) * scale;
+		double   length      = text -> getLength (l);
+
+		if (text -> maxExtent ())
+		{
+			if (length)
+				length = std::min <double> (text -> maxExtent (), length);
+
+			else
+				length = std::min <double> (text -> maxExtent (), size .x () * scale);
+		}
+
+		if (length)
+		{
+			charSpacing = (length - lineBound .x ()) / (line .length () - 1) / scale;
+			lineBound .x (length);
+			size .x (length / scale);
+		}
+
+		charSpacings [l]          = charSpacing;
+		text -> lineBounds () [l] = lineBound;
+
+		// Calculate line translation.
+
+		switch (fontStyle -> getMajorAlignment ())
+		{
+			case X3DFontStyleNode::Alignment::BEGIN:
+			case X3DFontStyleNode::Alignment::FIRST:
+				translations [l] = Vector2d (0, -(lineNumber * lineHeight));
+				break;
+			case X3DFontStyleNode::Alignment::MIDDLE:
+				translations [l] = Vector2d (-min .x () - size .x () / 2, -(lineNumber * lineHeight));
+				break;
+			case X3DFontStyleNode::Alignment::END:
+				translations [l] = Vector2d (-min .x () - size .x (), -(lineNumber * lineHeight));
+				break;
+		}
+
+		// Calculate center.
+
+		const Vector2d center = min + size / 2.0;
+
+		// Add bbox.
+
+		bbox += Box2d (size * scale, (center + translations [l]) * scale);
+	}
+
+	// Get text extends.
+
+	Vector2d min, max;
+	bbox .extends (min, max);
+
+	const Vector2d size = max - min;
+
+	// Calculate text position
+
+	text -> textBounds () = size;
+	bearing               = Vector2d (0, -max .y ());
+
+	switch (fontStyle -> getMinorAlignment ())
+	{
+		case X3DFontStyleNode::Alignment::BEGIN:
+			minorAlignment = bearing;
+			break;
+		case X3DFontStyleNode::Alignment::FIRST:
+			minorAlignment = Vector2d ();
+			break;
+		case X3DFontStyleNode::Alignment::MIDDLE:
+			minorAlignment = Vector2d (0, size .y () / 2 - max .y ());
+			break;
+		case X3DFontStyleNode::Alignment::END:
+			minorAlignment = Vector2d (0, (numLines - 1) * lineHeight * scale);
+			break;
+	}
+
+	// Translate bbox by minorAlignment.
+
+	min += minorAlignment;
+	max += minorAlignment;
+
+	// The value of the origin field represents the upper left corner of the textBounds.
+
+	text -> origin () = Vector3d (min .x (), max .y (), 0);
+
+	setBBox (Box3d (Vector3d (min .x (), min .y (), 0),
+	                Vector3d (max .x (), max .y (), 0),
+	                extends_type ()));
+}
+
+void
+X3DTextGeometry::vertical (Text* const text, const X3DFontStyleNode* const fontStyle)
+{
+	size_t numChars = 0;
+
+	for (const auto & line : text -> string ())
+		numChars += line .getValue () .size ();
+
+	charSpacings .resize (numChars);
+	translations .resize (numChars);
+
+	std::vector <double> yPad (numChars);
+
+	//
+	
+	Box2d bbox;
+
+	const size_t numLines    = text -> string () .size ();
+	const bool   leftToRight = fontStyle -> leftToRight ();
+	const bool   topToBottom = fontStyle -> topToBottom ();
+	const double lineHeight  = fontStyle -> getLineHeight ();
+	const double scale       = fontStyle -> getScale ();
+
+	// Calculate bboxes.
+
+	const int first = leftToRight ? 0 : numLines - 1;
+	const int last  = leftToRight ? numLines : -1;
+	const int step  = leftToRight ? 1 : -1;
+	size_t    t     = 0; // Translation index
+
+	for (int l = first; l not_eq last; l += step)
+	{
+		const auto & line = text -> string () [l] .getValue ();
+		
+		const int    t0       = t;
+		const size_t numChars = line .size ();
+
+		// Calculate line bbox
+
+		Box2d    lineBBox;
+
+		const int first = topToBottom ? 0 : numChars - 1;
+		const int last  = topToBottom ? numChars : -1;
+		const int step  = topToBottom ? 1 : -1;
+
+		for (int g = first; g not_eq last; g += step)
+		{
+			const auto & glyph = line [g];
+
+			// Get glyph extends.
+
+			Vector2d min, max;
+			getGlyphExtents (glyph, min, max);
+
+			const Vector2d size = max - min;
+			
+			// Calculate glyph translation
+			
+			const int glyphNumber = topToBottom ? g : numChars - g - 1;
+
+			translations [t] = Vector2d ((lineHeight - size .x ()) / 2, -(glyphNumber * lineHeight));
+			
+			// Calculate center.
+
+			const Vector2d center = min + size / 2.0 + translations [t];
+
+			// Add bbox.
+
+			lineBBox += Box2d (size, center);
+
+			// Incement translation index
+
+			++ t;
+		}
+	
+		// Get line extends.
+
+		Vector2d min, max;
+		lineBBox .extends (min, max);
+
+		Vector2d size = max - min;
+
+		// Calculate charSpacing and lineBounds.
+
+		const size_t lineNumber = leftToRight ? l : numLines - l - 1;
+		const double padding    = (lineHeight - size .x ()) / 2;
+
+		double   charSpacing = 0;
+		Vector2d lineBound   = Vector2d (l == 0 ? size .x () + padding : lineHeight, size .y ()) * scale;
+		double   length      = text -> getLength (l);
+
+		if (text -> maxExtent ())
+		{
+			if (length)
+				length = std::min <double> (text -> maxExtent (), length);
+
+			else
+				length = std::min <double> (text -> maxExtent (), size .x () * scale);
+		}
+
+		if (length)
+		{
+			charSpacing = (length - lineBound .x ()) / (line .length () - 1) / scale;
+			lineBound .y (length);
+			size .y (length / scale);
+		}
+
+		text -> lineBounds () [l] = lineBound;
+
+		// Calculate line translation.
+		
+		Vector2d translation;
+
+		switch (fontStyle -> getMajorAlignment ())
+		{
+			case X3DFontStyleNode::Alignment::BEGIN:
+			case X3DFontStyleNode::Alignment::FIRST:
+				translation = Vector2d (lineNumber * lineHeight, -lineHeight);
+				break;
+			case X3DFontStyleNode::Alignment::MIDDLE:
+				translation = Vector2d (lineNumber * lineHeight, size .y () / 2 - max .y ());
+				break;
+			case X3DFontStyleNode::Alignment::END:
+				translation = Vector2d (lineNumber * lineHeight, (numChars - 1) * lineHeight);
+				break;
+		}
+
+		// Calculate glyph translation		
+
+		double space = 0;
+
+		for (auto & glyph : basic::adapter (translations .begin () + t0, translations .begin () + t))
+		{
+			glyph += translation;
+
+			glyph .y (glyph .y () + space);
+			space += charSpacing;
+		}
+
+		// Calculate center.
+
+		const Vector2d center = min + size / 2.0;
+
+		// Add bbox.
+			
+		yPad [l] = (topToBottom ? max .y () : min .y ()) + translation .y ();
+
+		bbox += Box2d (size * scale, (center + translation) * scale);
+	}
+
+	// Get text extends.
+
+	Vector2d min, max;
+	bbox .extends (min, max);
+
+	const Vector2d size = max - min;
+	
+	// Extend lineBounds.
+	
+//	if (topToBottom)
+//	{
+//		size_t l = 0;
+//		
+//		for (auto & lineBound : text -> lineBounds ())
+//			lineBound .setY (lineBound .getY () + max .y () - yPad [l ++] * scale);
+//	}
+//	else
+//	{
+//		size_t l = 0;
+//		
+//		for (auto & lineBound : text -> lineBounds ())
+//			lineBound .setY (lineBound .getY () + yPad [l ++] * scale - min .y ());
+//	}
+
+	// Calculate text position
+
+	text -> textBounds () = size;
+	
+	switch (fontStyle -> getMinorAlignment ())
+	{
+		case X3DFontStyleNode::Alignment::BEGIN:
+		case X3DFontStyleNode::Alignment::FIRST:
+			minorAlignment = Vector2d (-min .x (), 0);
+			break;
+		case X3DFontStyleNode::Alignment::MIDDLE:
+			minorAlignment = Vector2d (-min .x () - size .x () / 2, 0);
+			break;
+		case X3DFontStyleNode::Alignment::END:
+			minorAlignment = Vector2d (-min .x () - size .x (), 0);
+			break;
+	}
+
+	// Translate bbox by minorAlignment.
+
+	min += minorAlignment;
+	max += minorAlignment;
+	
+	// The value of the origin field represents the upper left corner of the textBounds.
+
+	text -> origin () = Vector3d (min .x (), max .y (), 0);
+
+	setBBox (Box3d (Vector3d (min .x (), min .y (), 0),
+	                Vector3d (max .x (), max .y (), 0),
+	                extends_type ()));
+}
+
+void
+X3DTextGeometry::getLineExtents (const X3DFontStyleNode* const fontStyle, const String & line, Vector2d & min, Vector2d & max) const
+{
+	const bool normal = fontStyle -> horizontal () ? fontStyle -> leftToRight () : fontStyle -> topToBottom ();
+
 	if (not line .empty ())
-		getLineExtends (line, min, max);
+		getLineExtents (normal ? line : String (line .rbegin (), line .rend ()), min, max);
 
 	switch (fontStyle -> getMajorAlignment ())
 	{
@@ -213,6 +437,12 @@ X3DTextGeometry::getLineExtends (const X3DFontStyleNode* const fontStyle, const 
 		case X3DFontStyleNode::Alignment::END:
 			break;
 	}
+}
+
+void
+X3DTextGeometry::getGlyphExtents (const String::value_type & glyph, Vector2d & min, Vector2d & max) const
+{
+	getLineExtents (String (1, glyph), min, max);
 }
 
 void
@@ -246,14 +476,14 @@ X3DTextGeometry::~X3DTextGeometry ()
 }
 
 X3DFontStyleNode::Fields::Fields () :
+	   language (new SFString ()),
 	     family (new MFString ({ "SERIF" })),
 	      style (new SFString ("PLAIN")),
 	    spacing (new SFFloat (1)),
 	 horizontal (new SFBool (true)),
-	    justify (new MFString ({ "BEGIN" })),
-	topToBottom (new SFBool (true)),
 	leftToRight (new SFBool (true)),
-	   language (new SFString ())
+	topToBottom (new SFBool (true)),
+	    justify (new MFString ({ "BEGIN" }))
 { }
 
 X3DFontStyleNode::X3DFontStyleNode () :
@@ -272,9 +502,9 @@ X3DFontStyleNode::initialize ()
 	X3DNode::initialize ();
 
 	style ()       .addInterest (this, &X3DFontStyleNode::set_style);
-	justify ()     .addInterest (this, &X3DFontStyleNode::set_justify);
-	topToBottom () .addInterest (this, &X3DFontStyleNode::set_justify);
 	leftToRight () .addInterest (this, &X3DFontStyleNode::set_justify);
+	topToBottom () .addInterest (this, &X3DFontStyleNode::set_justify);
+	justify ()     .addInterest (this, &X3DFontStyleNode::set_justify);
 
 	set_style ();
 	set_justify ();
@@ -379,13 +609,17 @@ X3DFontStyleNode::set_style ()
 void
 X3DFontStyleNode::set_justify ()
 {
+	const bool majorNormal = horizontal () ? leftToRight () : topToBottom ();
+
 	alignments [0] = justify () .size () > 0
-	                 ? getAlignment (0, leftToRight ())
-						  : leftToRight () ? Alignment::BEGIN : Alignment::END;
+	                 ? getAlignment (0, majorNormal)
+						  : majorNormal ? Alignment::BEGIN : Alignment::END;
+
+	const bool minorNormal = horizontal () ? topToBottom () : leftToRight ();
 
 	alignments [1] = justify () .size () > 1
-	                 ? getAlignment (1, topToBottom ())
-						  : topToBottom () ? Alignment::FIRST : Alignment::END;
+	                 ? getAlignment (1, minorNormal)
+						  : minorNormal ? Alignment::FIRST : Alignment::END;
 }
 
 } // X3D

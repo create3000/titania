@@ -86,7 +86,7 @@ private:
 
 	virtual
 	void
-	getLineExtends (const String &, Vector2d &, Vector2d &) const final override;
+	getLineExtents (const String &, Vector2d &, Vector2d &) const final override;
 
 	void
 	setTextBounds ();

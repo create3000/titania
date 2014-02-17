@@ -78,13 +78,9 @@ PolygonText::PolygonText (Text* const text, const FontStyle* const fontStyle) :
 }
 
 void
-PolygonText::getLineExtends (const String & line, Vector2d & min, Vector2d & max) const
+PolygonText::getLineExtents (const String & line, Vector2d & min, Vector2d & max) const
 {
-	const bool leftToRight = fontStyle -> leftToRight ();
-
-	const FTBBox ftbbox = fontStyle -> getPolygonFont () -> BBox (leftToRight
-	                                                              ? line .c_str ()
-																					  : String (line .rbegin (), line .rend ()) .c_str ());
+	const FTBBox ftbbox = fontStyle -> getPolygonFont () -> BBox (line .c_str ());
 
 	const FTPoint ftmin = ftbbox .Lower ();
 	const FTPoint ftmax = ftbbox .Upper ();
@@ -100,6 +96,8 @@ PolygonText::draw ()
 		return;
 
 	glPushMatrix ();
+	
+	if (fontStyle -> horizontal ())
 	{
 		glTranslatef (getMinorAlignment () .x (), getMinorAlignment () .y (), 0);
 
@@ -122,12 +120,44 @@ PolygonText::draw ()
 	                                                ? line .c_str ()
 	                                                : String (line .rbegin (), line .rend ()) .c_str (),
 			                                          -1,
-			                                          FTPoint (getTranslation () [i] .x (), getTranslation () [i] .y (), 0),
+			                                          FTPoint (getTranslations () [i] .x (), getTranslations () [i] .y (), 0),
 			                                          FTPoint (getCharSpacing () [i], 0, 0),
 			                                          FTGL::RENDER_ALL);
 
 		}
 	}
+	else
+	{
+		glTranslatef (getMinorAlignment () .x (), getMinorAlignment () .y (), 0);
+
+		const double size = fontStyle -> getScale ();
+
+		glScalef (size, size, size);
+
+		// Render lines.
+
+		const bool leftToRight = fontStyle -> leftToRight ();
+		const bool topToBottom = fontStyle -> topToBottom ();
+		const int  first       = leftToRight ? 0 : text -> string () .size () - 1;
+		const int  last        = leftToRight ? text -> string () .size () : -1;
+		const int  step        = leftToRight ? 1 : -1;
+
+		for (int i = first, g = 0; i not_eq last; i += step)
+		{
+			const auto & line = text -> string () [i] .getValue ();
+
+			for (const auto & glyph : topToBottom ? line : String (line .rbegin (), line .rend ()))
+			{
+				fontStyle -> getPolygonFont () -> Render (String (1, glyph) .c_str (),
+				                                          -1,
+				                                          FTPoint (getTranslations () [g] .x (), getTranslations () [g] .y (), 0),
+				                                          FTPoint (),
+				                                          FTGL::RENDER_ALL);
+				++ g;
+			}
+		}
+	}
+
 	glPopMatrix ();
 }
 
@@ -148,15 +178,15 @@ FontStyle::FontStyle (X3DExecutionContext* const executionContext) :
 	           scale (1)
 {
 	addField (inputOutput,    "metadata",    metadata ());
+	addField (initializeOnly, "language",    language ());
 	addField (initializeOnly, "family",      family ());
 	addField (initializeOnly, "style",       style ());
 	addField (initializeOnly, "size",        size ());
 	addField (initializeOnly, "spacing",     spacing ());
 	addField (initializeOnly, "horizontal",  horizontal ());
-	addField (initializeOnly, "justify",     justify ());
-	addField (initializeOnly, "topToBottom", topToBottom ());
 	addField (initializeOnly, "leftToRight", leftToRight ());
-	addField (initializeOnly, "language",    language ());
+	addField (initializeOnly, "topToBottom", topToBottom ());
+	addField (initializeOnly, "justify",     justify ());
 }
 
 X3DBaseNode*

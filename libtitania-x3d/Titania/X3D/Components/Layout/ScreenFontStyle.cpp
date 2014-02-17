@@ -98,13 +98,11 @@ ScreenText::configure (const Cairo::RefPtr <Cairo::Context> & context)
 }
 
 void
-ScreenText::getLineExtends (const String & line, Vector2d & min, Vector2d & max) const
+ScreenText::getLineExtents (const String & line, Vector2d & min, Vector2d & max) const
 {
-	const bool leftToRight = fontStyle -> leftToRight ();
-
 	Cairo::TextExtents textExtents;
 
-	context -> get_text_extents (leftToRight ? line : String (line .rbegin (), line .rend ()), textExtents);
+	context -> get_text_extents (line, textExtents);
 
 	min = Vector2d (textExtents .x_bearing, -textExtents .y_bearing - textExtents .height);
 	max = min + Vector2d (textExtents .width, textExtents .height);
@@ -204,8 +202,8 @@ ScreenText::build ()
 		{
 			if (not line .empty ())
 			{
-				const double x = alignment .x () + getTranslation () [i] .x ();
-				const double y = -(alignment .y () + getTranslation () [i] .y ());
+				const double x = alignment .x () + getTranslations () [i] .x ();
+				const double y = -(alignment .y () + getTranslations () [i] .y ());
 
 				if (leftToRight)
 				{
@@ -368,15 +366,15 @@ ScreenFontStyle::ScreenFontStyle (X3DExecutionContext* const executionContext) :
 	      screenFont ()
 {
 	addField (inputOutput,    "metadata",    metadata ());
+	addField (initializeOnly, "language",    language ());
 	addField (initializeOnly, "family",      family ());
 	addField (initializeOnly, "style",       style ());
 	addField (initializeOnly, "pointSize",   pointSize ());
 	addField (initializeOnly, "spacing",     spacing ());
 	addField (initializeOnly, "horizontal",  horizontal ());
-	addField (initializeOnly, "justify",     justify ());
-	addField (initializeOnly, "topToBottom", topToBottom ());
 	addField (initializeOnly, "leftToRight", leftToRight ());
-	addField (initializeOnly, "language",    language ());
+	addField (initializeOnly, "topToBottom", topToBottom ());
+	addField (initializeOnly, "justify",     justify ());
 }
 
 X3DBaseNode*
