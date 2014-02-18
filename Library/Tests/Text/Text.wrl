@@ -53,14 +53,12 @@ DEF Text1 Transform {
       }
     }
     geometry DEF Text Text {
-      string [ "!.", "Hällö Wörld!", "This is my line!", "now my new one.", "اهلا وسهلا بكم في مطعم شادي الشرقي", "وبتقديم اكلات فلسطينيه بيتيه وشعبيه وباجود البهارت الفلسطينيه" ]
+      string [ "Read", "somg", "Text", "today!" ]
       fontStyle FontStyle {
         family [ "SANS", "Ubuntu Mono" ]
         style "BOLDITALIC"
         horizontal FALSE
-        leftToRight FALSE
-        topToBottom FALSE
-        justify [ "BEGIN", "END" ]
+        justify [ "MIDDLE", "BEGIN" ]
       }
     }
   }
@@ -128,44 +126,34 @@ DEF YellowBox Transform {
 }
 
 DEF LineBounds Transform {
-  translation 0 60.2255 0
+  translation 0 2.7209 0
   children [
     BBox2 {
-      translation 5.4916 -59.2603 0
-      scale -0.567293 1.11886 1
+      translation 0 0.987072 0
+      scale 0.71122 3.46766 1
       color 1 0 0
     }
     BBox2 {
-      translation 4.92431 -48.9205 0
-      scale -1 11.4587 1
+      translation 0.71122 0.976848 0
+      scale 1 3.48811 1
       color 0 1 0
     }
     BBox2 {
-      translation 3.92431 -44.9205 0
-      scale -1 15.4587 1
+      translation 1.71122 0.991545 0
+      scale 1 3.45872 1
       color 0 0 1
     }
     BBox2 {
-      translation 2.92431 -46.2603 0
-      scale -1 14.1189 1
+      translation 2.71122 0 0
+      scale 1 5.44181 1
       color 1 1 0
-    }
-    BBox2 {
-      translation 1.92431 -27.0886 0
-      scale -1 33.2906 1
-      color 0 1 1
-    }
-    BBox2 {
-      translation 0.924308 0 0
-      scale -1 60.3792 1
-      color 1 0 1
     }
   ]
 }
 
 DEF TextBounds Transform {
-  translation 0 60.2255 0
-  scale 5.4916 60.3792 1
+  translation 0 2.7209 0
+  scale 3.37373 5.44181 1
   children BBox2 { }
 }
 

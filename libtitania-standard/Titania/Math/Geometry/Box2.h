@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -96,7 +96,7 @@ public:
 
 	///  Constructs a box of min @a min and max @a max.
 	constexpr
-	box2 (const vector2 <Type> & min, const vector2 <Type> & max, const extends_type &) :
+	box2 (const vector2 <Type> & min, const vector2 <Type> & max, const extents_type &) :
 		box2 (max - min, (max + min) / Type (2))
 	{ }
 
@@ -116,7 +116,7 @@ public:
 			max = math::max (max, (vector2 <Type>) *first);
 		}
 
-		*this = box2 (min, max, extends_type ());
+		*this = box2 (min, max, extents_type ());
 	}
 
 	///  @name Assignment operator
@@ -136,9 +136,9 @@ public:
 	matrix () const
 	{ return value; }
 
-	///  Returns the min and max extends of this box.
+	///  Returns the min and max extents of this box.
 	void
-	extends (vector2 <Type> &, vector2 <Type> &) const;
+	extents (vector2 <Type> &, vector2 <Type> &) const;
 
 	///  Returns the size of this box.
 	vector2 <Type>
@@ -190,9 +190,9 @@ public:
 
 private:
 
-	///  Returns the absolute min and max extends of this box.
+	///  Returns the absolute min and max extents of this box.
 	void
-	absolute_extends (vector2 <Type> &, vector2 <Type> &) const;
+	absolute_extents (vector2 <Type> &, vector2 <Type> &) const;
 
 	matrix3 <Type> value;
 
@@ -201,9 +201,9 @@ private:
 template <class Type>
 inline
 void
-box2 <Type>::extends (vector2 <Type> & min, vector2 <Type> & max) const
+box2 <Type>::extents (vector2 <Type> & min, vector2 <Type> & max) const
 {
-	absolute_extends (min, max);
+	absolute_extents (min, max);
 
 	min += center ();
 	max += center ();
@@ -216,14 +216,14 @@ box2 <Type>::size () const
 {
 	vector2 <Type> min, max;
 
-	absolute_extends (min, max);
+	absolute_extents (min, max);
 
 	return max - min;
 }
 
 template <class Type>
 void
-box2 <Type>::absolute_extends (vector2 <Type> & min, vector2 <Type> & max) const
+box2 <Type>::absolute_extents (vector2 <Type> & min, vector2 <Type> & max) const
 {
 	const vector2 <Type> x (value .x ());
 	const vector2 <Type> y (value .y ());
@@ -250,10 +250,10 @@ box2 <Type>::operator += (const box2 <Up> & box)
 
 	vector2 <Type> lhs_min, lhs_max, rhs_min, rhs_max;
 	
-	extends (lhs_min, lhs_max);
-	box .extends (rhs_min, rhs_max);
+	extents (lhs_min, lhs_max);
+	box .extents (rhs_min, rhs_max);
 
-	return *this = box2 (math::min (lhs_min, rhs_min), math::max (lhs_max, rhs_max), extends_type ());
+	return *this = box2 (math::min (lhs_min, rhs_min), math::max (lhs_max, rhs_max), extents_type ());
 }
 
 template <class Type>
@@ -262,7 +262,7 @@ box2 <Type>::intersect (const vector2 <Type> & point) const
 {
 	vector2 <Type> min, max;
 
-	extends (min, max);
+	extents (min, max);
 
 	return min .x () <= point .x () and
 	       max .x () >= point .x () and
@@ -279,8 +279,8 @@ box2 <Type>::contains (const box2 <Type> & box) const
 
 	vector2 <Type> min1, max1, min2, max2;
 
-	extends (min1, max1);
-	box .extends (min2, max2);
+	extents (min1, max1);
+	box .extents (min2, max2);
 
 	if (min2 .x () < min1 .x () or min2 .y () < min1 .y ())
 		return false;

@@ -112,7 +112,7 @@ X3DTextGeometry::horizontal (Text* const text, const X3DFontStyleNode* const fon
 	{
 		const auto & line = text -> string () [l];
 
-		// Get line extends.
+		// Get line extents.
 
 		Vector2d min, max;
 		getLineExtents (fontStyle, line .getValue (), min, max);
@@ -171,10 +171,10 @@ X3DTextGeometry::horizontal (Text* const text, const X3DFontStyleNode* const fon
 		bbox += Box2d (size * scale, (center + translations [l]) * scale);
 	}
 
-	// Get text extends.
+	// Get text extents.
 
 	Vector2d min, max;
-	bbox .extends (min, max);
+	bbox .extents (min, max);
 
 	const Vector2d size = max - min;
 
@@ -210,7 +210,7 @@ X3DTextGeometry::horizontal (Text* const text, const X3DFontStyleNode* const fon
 
 	setBBox (Box3d (Vector3d (min .x (), min .y (), 0),
 	                Vector3d (max .x (), max .y (), 0),
-	                extends_type ()));
+	                extents_type ()));
 }
 
 void
@@ -262,7 +262,7 @@ X3DTextGeometry::vertical (Text* const text, const X3DFontStyleNode* const fontS
 		{
 			const auto & glyph = line [g];
 
-			// Get glyph extends.
+			// Get glyph extents.
 
 			Vector2d min, max;
 			getGlyphExtents (glyph, min, max);
@@ -288,10 +288,10 @@ X3DTextGeometry::vertical (Text* const text, const X3DFontStyleNode* const fontS
 			++ t;
 		}
 	
-		// Get line extends.
+		// Get line extents.
 
 		Vector2d min, max;
-		lineBBox .extends (min, max);
+		lineBBox .extents (min, max);
 
 		Vector2d size = max - min;
 
@@ -363,10 +363,10 @@ X3DTextGeometry::vertical (Text* const text, const X3DFontStyleNode* const fontS
 		bbox += Box2d (size * scale, (center + translation) * scale);
 	}
 
-	// Get text extends.
+	// Get text extents.
 
 	Vector2d min, max;
-	bbox .extends (min, max);
+	bbox .extents (min, max);
 
 	const Vector2d size = max - min;
 	
@@ -390,7 +390,21 @@ X3DTextGeometry::vertical (Text* const text, const X3DFontStyleNode* const fontS
 	// Calculate text position
 
 	text -> textBounds () = size;
-	
+
+	switch (fontStyle -> getMajorAlignment ())
+	{
+		case X3DFontStyleNode::Alignment::BEGIN:
+		case X3DFontStyleNode::Alignment::FIRST:
+			bearing = Vector2d (-min .x (), max .y ());
+			break;
+		case X3DFontStyleNode::Alignment::MIDDLE:
+			bearing = Vector2d (-min .x (), 0);
+			break;
+		case X3DFontStyleNode::Alignment::END:
+			bearing = Vector2d (-min .x (), min .y ());
+			break;
+	}
+
 	switch (fontStyle -> getMinorAlignment ())
 	{
 		case X3DFontStyleNode::Alignment::BEGIN:
@@ -416,7 +430,7 @@ X3DTextGeometry::vertical (Text* const text, const X3DFontStyleNode* const fontS
 
 	setBBox (Box3d (Vector3d (min .x (), min .y (), 0),
 	                Vector3d (max .x (), max .y (), 0),
-	                extends_type ()));
+	                extents_type ()));
 }
 
 void
@@ -502,6 +516,7 @@ X3DFontStyleNode::initialize ()
 	X3DNode::initialize ();
 
 	style ()       .addInterest (this, &X3DFontStyleNode::set_style);
+	horizontal ()  .addInterest (this, &X3DFontStyleNode::set_justify);
 	leftToRight () .addInterest (this, &X3DFontStyleNode::set_justify);
 	topToBottom () .addInterest (this, &X3DFontStyleNode::set_justify);
 	justify ()     .addInterest (this, &X3DFontStyleNode::set_justify);

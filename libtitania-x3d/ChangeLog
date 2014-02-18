@@ -1,3 +1,10 @@
+2014-02-18  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Text.cpp:
+	* X3DFontStyleNode.cpp:
+	* ScreenFontStyle.cpp:
+	* X3DNurbsControlCurveNode.cpp: 
+
 2014-02-17  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* FontStyle.h:

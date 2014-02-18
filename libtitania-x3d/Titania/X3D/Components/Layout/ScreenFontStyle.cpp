@@ -113,7 +113,7 @@ ScreenText::setTextBounds ()
 {
 	text -> textBounds () = math::ceil (text -> textBounds () .getValue ());
 
-	getBBox () .extends (min, max);
+	getBBox () .extents (min, max);
 
 	switch (fontStyle -> getMajorAlignment ())
 	{
@@ -147,7 +147,7 @@ ScreenText::setTextBounds ()
 
 	text -> origin () = Vector3d (min .x (), max .y (), 0);
 
-	setBBox (Box3d (min, max, extends_type ()));
+	setBBox (Box3d (min, max, extents_type ()));
 }
 
 void
@@ -169,85 +169,128 @@ ScreenText::build ()
 
 	// Render lines.
 
-	Vector2d alignment = getBearing ();
-
-	switch (fontStyle -> getMajorAlignment ())
-	{
-		case X3DFontStyleNode::Alignment::BEGIN:
-		case X3DFontStyleNode::Alignment::FIRST:
-			break;
-		case X3DFontStyleNode::Alignment::MIDDLE:
-			alignment += Vector2d (text -> textBounds () .getX () / 2, 0);
-			break;
-		case X3DFontStyleNode::Alignment::END:
-			alignment += Vector2d (text -> textBounds () .getX (), 0);
-			break;
-	}
-
 	auto                             font = context -> get_scaled_font ();
 	std::vector <Cairo::Glyph>       glyphs;
 	std::vector <Cairo::TextCluster> clusters;
 	Cairo::TextClusterFlags          cluster_flags;
 
 	// Render lines.
-	const int first = topToBottom ? 0 : text -> string () .size () - 1;
-	const int last  = topToBottom ? text -> string () .size () : -1;
-	const int step  = topToBottom ? 1 : -1;
 
-	for (int i = first; i not_eq last; i += step)
+	if (fontStyle -> horizontal ())
 	{
-		const auto & line = text -> string () [i] .getValue ();
+		Vector2d alignment = getBearing ();
 
-		try
+		switch (fontStyle -> getMajorAlignment ())
 		{
-			if (not line .empty ())
+			case X3DFontStyleNode::Alignment::BEGIN:
+			case X3DFontStyleNode::Alignment::FIRST:
+				break;
+			case X3DFontStyleNode::Alignment::MIDDLE:
+				alignment += Vector2d (text -> textBounds () .getX () / 2, 0);
+				break;
+			case X3DFontStyleNode::Alignment::END:
+				alignment += Vector2d (text -> textBounds () .getX (), 0);
+				break;
+		}
+
+		const int first = topToBottom ? 0 : text -> string () .size () - 1;
+		const int last  = topToBottom ? text -> string () .size () : -1;
+		const int step  = topToBottom ? 1 : -1;
+
+		for (int i = first; i not_eq last; i += step)
+		{
+			const auto & line = text -> string () [i] .getValue ();
+
+			try
 			{
-				const double x = alignment .x () + getTranslations () [i] .x ();
-				const double y = -(alignment .y () + getTranslations () [i] .y ());
-
-				if (leftToRight)
+				if (not line .empty ())
 				{
-					font -> text_to_glyphs (x, y, line, glyphs, clusters, cluster_flags);
+					const double x = alignment .x () + getTranslations () [i] .x ();
+					const double y = -(alignment .y () + getTranslations () [i] .y ());
 
-					double       space       = 0;
-					const double charSpacing = getCharSpacing () [i];
-
-					for (auto & glyph : glyphs)
+					if (leftToRight)
 					{
-						glyph .x += space;
-						space    += charSpacing;
+						font -> text_to_glyphs (x, y, line, glyphs, clusters, cluster_flags);
+
+						double       space       = 0;
+						const double charSpacing = getCharSpacing () [i];
+
+						for (auto & glyph : glyphs)
+						{
+							glyph .x += space;
+							space    += charSpacing;
+						}
+
+						context -> show_text_glyphs (line, glyphs, clusters, cluster_flags);
 					}
-
-					context -> show_text_glyphs (line, glyphs, clusters, cluster_flags);
-				}
-				else
-				{
-					String reversed (line .rbegin (), line .rend ());
-
-					font -> text_to_glyphs (x, y, reversed, glyphs, clusters, cluster_flags);
-
-					double       space       = 0;
-					const double charSpacing = getCharSpacing () [i];
-
-					for (auto & glyph : glyphs)
+					else
 					{
-						glyph .x += space;
-						space    += charSpacing;
-					}
+						String reversed (line .rbegin (), line .rend ());
 
-					context -> show_text_glyphs (reversed, glyphs, clusters, cluster_flags);
+						font -> text_to_glyphs (x, y, reversed, glyphs, clusters, cluster_flags);
+
+						double       space       = 0;
+						const double charSpacing = getCharSpacing () [i];
+
+						for (auto & glyph : glyphs)
+						{
+							glyph .x += space;
+							space    += charSpacing;
+						}
+
+						context -> show_text_glyphs (reversed, glyphs, clusters, cluster_flags);
+					}
 				}
 			}
+			catch (...)
+			{ }
 		}
-		catch (...)
-		{ }
+	}
+	else
+	{
+		Vector2d alignment = getBearing ();
+
+		switch (fontStyle -> getMajorAlignment ())
+		{
+			case X3DFontStyleNode::Alignment::BEGIN:
+			case X3DFontStyleNode::Alignment::FIRST:
+				break;
+			case X3DFontStyleNode::Alignment::MIDDLE:
+				alignment += Vector2d (0, text -> textBounds () .getY () / 2);
+				break;
+			case X3DFontStyleNode::Alignment::END:
+				alignment += Vector2d (0, text -> textBounds () .getY ());
+				break;
+		}
+
+		const bool leftToRight = fontStyle -> leftToRight ();
+		const bool topToBottom = fontStyle -> topToBottom ();
+		const int  first       = leftToRight ? 0 : text -> string () .size () - 1;
+		const int  last        = leftToRight ? text -> string () .size () : -1;
+		const int  step        = leftToRight ? 1 : -1;
+
+		for (int i = first, g = 0; i not_eq last; i += step)
+		{
+			const auto & line = text -> string () [i] .getValue ();
+
+			for (const auto & glyph : topToBottom ? line : String (line .rbegin (), line .rend ()))
+			{
+				const double x = alignment .x () + getTranslations () [g] .x ();
+				const double y = alignment .y () - getTranslations () [g] .y ();
+
+				context -> move_to (x, y);
+				context -> show_text (String (1, glyph));
+
+				++ g;
+			}
+		}
 	}
 
 	// Debug
-	//if (surface -> get_width () and surface -> get_height ())
-	//	surface -> write_to_png ("/home/holger/test.png");
+	if (surface -> get_width () and surface -> get_height ())
+		surface -> write_to_png ("/home/holger/test.png");
 
-	// Set RGB to white
+	// Set RGB to white, but leave alpha channel.
 
 	{
 		unsigned char* first = surface -> get_data ();
