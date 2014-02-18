@@ -45,8 +45,8 @@ Viewpoint {
   centerOfRotation 0 -0.0839844 0
 }
 
-DEF Text1 Transform {
-  children DEF Lines Shape {
+DEF Text_1 Transform {
+  children Shape {
     appearance Appearance {
       material Material {
         diffuseColor 1 0 0
@@ -57,6 +57,7 @@ DEF Text1 Transform {
       fontStyle FontStyle {
         family [ "SANS", "Ubuntu Mono" ]
         style "BOLDITALIC"
+        spacing 2
         horizontal FALSE
         justify [ "END", "BEGIN" ]
       }
@@ -129,23 +130,23 @@ DEF LineBounds Transform {
   translation 0 5.44181 0
   children [
     BBox2 {
-      translation 0 -0.126821 0
-      scale 0.71122 5.45075 1
+      translation 0 -1.97414 0
+      scale 1.21122 3.46766 1
       color 1 0 0
     }
     BBox2 {
-      translation 0.71122 0 0
-      scale 1 5.57757 1
+      translation 1.21122 -1.9537 0
+      scale 2 3.48811 1
       color 0 1 0
     }
     BBox2 {
-      translation 1.71122 -0.135767 0
-      scale 1 5.44181 1
+      translation 3.21122 -1.98309 0
+      scale 2 3.45872 1
       color 0 0 1
     }
     BBox2 {
-      translation 2.71122 -0.135767 0
-      scale 1 5.44181 1
+      translation 5.21122 0 0
+      scale 2 5.44181 1
       color 1 1 0
     }
   ]
@@ -153,7 +154,7 @@ DEF LineBounds Transform {
 
 DEF TextBounds Transform {
   translation 0 5.44181 0
-  scale 3.37373 5.57757 1
+  scale 6.37373 5.44181 1
   children BBox2 { }
 }
 

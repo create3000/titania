@@ -71,12 +71,14 @@ DEF Text Transform {
     }
     geometry Text {
       string [ "Rea", "somg", "Text", "today!" ]
+      length [ 80, 80, 80, 80 ]
+      maxExtent 70
       fontStyle ScreenFontStyle {
         family [ "Test-XXX", "-../../../Titania/share/titania/fonts/pt-sans/PTN57F.ttf", "SANS" ]
         pointSize 11
         spacing 1.2
         horizontal FALSE
-        justify [ "MIDDLE", "BEGIN" ]
+        justify [ "END", "BEGIN" ]
       }
     }
   }

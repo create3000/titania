@@ -219,7 +219,7 @@ X3DTextGeometry::vertical (Text* const text, const X3DFontStyleNode* const fontS
 	size_t numChars = 0;
 
 	for (const auto & line : text -> string ())
-		numChars += line .getValue () .size ();
+		numChars += line .length ();
 
 	charSpacings .resize (numChars);
 	translations .resize (numChars);
@@ -227,7 +227,7 @@ X3DTextGeometry::vertical (Text* const text, const X3DFontStyleNode* const fontS
 	std::vector <double> yPad (numChars);
 
 	//
-	
+
 	Box2d bbox;
 
 	const size_t numLines    = text -> string () .size ();
@@ -235,6 +235,7 @@ X3DTextGeometry::vertical (Text* const text, const X3DFontStyleNode* const fontS
 	const bool   topToBottom = fontStyle -> topToBottom ();
 	const double lineHeight  = fontStyle -> getLineHeight ();
 	const double scale       = fontStyle -> getScale ();
+	const double height      = lineHeight / fontStyle -> spacing ();
 
 	// Calculate bboxes.
 
@@ -248,11 +249,11 @@ X3DTextGeometry::vertical (Text* const text, const X3DFontStyleNode* const fontS
 		const auto & line = text -> string () [l] .getValue ();
 		
 		const int    t0       = t;
-		const size_t numChars = line .size ();
+		const size_t numChars = line .length ();
 
 		// Calculate line bbox
 
-		Box2d    lineBBox;
+		Box2d lineBBox;
 
 		const int first = topToBottom ? 0 : numChars - 1;
 		const int last  = topToBottom ? numChars : -1;
@@ -273,7 +274,7 @@ X3DTextGeometry::vertical (Text* const text, const X3DFontStyleNode* const fontS
 			
 			const int glyphNumber = topToBottom ? g : numChars - g - 1;
 
-			translations [t] = Vector2d ((lineHeight - size .x ()) / 2, -(glyphNumber * lineHeight));
+			translations [t] = Vector2d ((lineHeight - size .x ()) / 2, -(glyphNumber * height));
 			
 			// Calculate center.
 
@@ -310,14 +311,15 @@ X3DTextGeometry::vertical (Text* const text, const X3DFontStyleNode* const fontS
 				length = std::min <double> (text -> maxExtent (), length);
 
 			else
-				length = std::min <double> (text -> maxExtent (), size .x () * scale);
+				length = std::min <double> (text -> maxExtent (), size .y () * scale);
 		}
 
 		if (length)
 		{
-			charSpacing = (length - lineBound .x ()) / (line .length () - 1) / scale;
+			charSpacing = (length - lineBound .y ()) / (line .length () - 1) / scale;
 			lineBound .y (length);
 			size .y (length / scale);
+			min .y (max .y () - size .y ());
 		}
 
 		text -> lineBounds () [l] = lineBound;
@@ -330,14 +332,18 @@ X3DTextGeometry::vertical (Text* const text, const X3DFontStyleNode* const fontS
 		{
 			case X3DFontStyleNode::Alignment::BEGIN:
 			case X3DFontStyleNode::Alignment::FIRST:
-				translation = Vector2d (lineNumber * lineHeight, -lineHeight);
+				translation = Vector2d (lineNumber * lineHeight, -height);
 				break;
 			case X3DFontStyleNode::Alignment::MIDDLE:
 				translation = Vector2d (lineNumber * lineHeight, size .y () / 2 - max .y ());
 				break;
 			case X3DFontStyleNode::Alignment::END:
-				translation = Vector2d (lineNumber * lineHeight, (numChars - 1) * lineHeight);
+			{
+				Vector2d min, v;
+				getGlyphExtents (line [topToBottom ? numChars - 1 : 0], min, v);	
+				translation = Vector2d (lineNumber * lineHeight, size .y () - max .y () + min .y ());
 				break;
+			}
 		}
 
 		// Calculate glyph translation		
@@ -348,7 +354,7 @@ X3DTextGeometry::vertical (Text* const text, const X3DFontStyleNode* const fontS
 		{
 			glyph += translation;
 
-			glyph .y (glyph .y () + space);
+			glyph .y (glyph .y () - space);
 			space += charSpacing;
 		}
 
