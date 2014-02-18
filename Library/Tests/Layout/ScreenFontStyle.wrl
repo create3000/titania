@@ -70,15 +70,13 @@ DEF Text Transform {
       }
     }
     geometry Text {
-      string [ "Rea", "somg", "Text", "today!" ]
-      length [ 80, 80, 80, 80 ]
-      maxExtent 70
+      string [ "上海市第二中级人民法院2月18日对“复旦投毒案”依法公开", "一审宣判，被告人林森浩犯故意杀人罪被判死刑，剥夺政治", "权利终身。2013年4月，复旦大学研究生黄洋因舍友投毒", "死亡，年仅28岁。" ]
       fontStyle ScreenFontStyle {
-        family [ "Test-XXX", "-../../../Titania/share/titania/fonts/pt-sans/PTN57F.ttf", "SANS" ]
+        family [ "Test-XXX", "-../../../Titania/share/titania/fonts/pt-sans/PTN57F.ttf", "Arial Unicode MS" ]
         pointSize 11
-        spacing 1.2
+        spacing 1.8
         horizontal FALSE
-        justify [ "END", "BEGIN" ]
+        justify [ "BEGIN", "BEGIN" ]
       }
     }
   }

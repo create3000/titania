@@ -339,9 +339,9 @@ X3DTextGeometry::vertical (Text* const text, const X3DFontStyleNode* const fontS
 				break;
 			case X3DFontStyleNode::Alignment::END:
 			{
-				Vector2d min, v;
-				getGlyphExtents (line [topToBottom ? numChars - 1 : 0], min, v);	
-				translation = Vector2d (lineNumber * lineHeight, size .y () - max .y () + min .y ());
+				Vector2d glyphMin, v;
+				getGlyphExtents (line [topToBottom ? numChars - 1 : 0], glyphMin, v);	
+				translation = Vector2d (lineNumber * lineHeight, size .y () - max .y () + glyphMin .y ());
 				break;
 			}
 		}

@@ -119,6 +119,7 @@ ScreenText::setTextBounds ()
 	{
 		case X3DFontStyleNode::Alignment::BEGIN:
 		case X3DFontStyleNode::Alignment::FIRST:
+			min .x (std::floor (min .x ()));
 			max .x (min .x () + text -> textBounds () .getX ());
 			break;
 		case X3DFontStyleNode::Alignment::MIDDLE:
@@ -126,6 +127,7 @@ ScreenText::setTextBounds ()
 			max .x (min .x () + text -> textBounds () .getX ());
 			break;
 		case X3DFontStyleNode::Alignment::END:
+			max .x (std::ceil (max .x ()));
 			min .x (max .x () - text -> textBounds () .getX ());
 			break;
 	}
@@ -134,6 +136,7 @@ ScreenText::setTextBounds ()
 	{
 		case X3DFontStyleNode::Alignment::BEGIN:
 		case X3DFontStyleNode::Alignment::FIRST:
+			max .y (std::ceil (max .y ()));
 			min .y (max .y () - text -> textBounds () .getY ());
 			break;
 		case X3DFontStyleNode::Alignment::MIDDLE:
@@ -141,6 +144,7 @@ ScreenText::setTextBounds ()
 			min .y (max .y () - text -> textBounds () .getY ());
 			break;
 		case X3DFontStyleNode::Alignment::END:
+			min .y (std::floor (min .y ()));
 			max .y (min .y () + text -> textBounds () .getY ());
 			break;
 	}
