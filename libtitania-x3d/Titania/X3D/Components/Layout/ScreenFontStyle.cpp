@@ -151,6 +151,33 @@ ScreenText::setTextBounds ()
 
 	text -> origin () = Vector3d (min .x (), max .y (), 0);
 
+	// This switch is not needed if screen elements picking is implemented properly.
+
+	switch (fontStyle -> getMajorAlignment ())
+	{
+		case X3DFontStyleNode::Alignment::BEGIN:
+		case X3DFontStyleNode::Alignment::FIRST:
+		{
+			if (fontStyle -> horizontal ())
+				min .x (0);
+			else
+				max .y (0);
+
+			break;
+		}
+		case X3DFontStyleNode::Alignment::MIDDLE:
+			break;
+		case X3DFontStyleNode::Alignment::END:
+		{
+			if (fontStyle -> horizontal ())
+				max .x (0);
+			else
+				min .y (0);
+
+			break;
+		}
+	}
+
 	setBBox (Box3d (min, max, extents_type ()));
 }
 
