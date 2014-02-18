@@ -67,19 +67,7 @@ X3DNurbsControlCurveNode::X3DNurbsControlCurveNode () :
 Box2f
 X3DNurbsControlCurveNode::getBBox () const
 {
-	if (controlPoint () .empty ())
-		return Box2f ();
-
-	Vector2d min = controlPoint () [0];
-	Vector2d max = min;
-
-	for (const auto & point : controlPoint ())
-	{
-		min = math::min (min, point .getValue ());
-		max = math::max (max, point .getValue ());
-	}
-
-	return Box2f (min, max, extents_type ());
+	return Box2d (controlPoint () .begin (), controlPoint () .end (), iterator_type ());
 }
 
 } // X3D

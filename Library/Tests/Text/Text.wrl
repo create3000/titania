@@ -58,7 +58,7 @@ DEF Text1 Transform {
         family [ "SANS", "Ubuntu Mono" ]
         style "BOLDITALIC"
         horizontal FALSE
-        justify [ "MIDDLE", "BEGIN" ]
+        justify [ "END", "BEGIN" ]
       }
     }
   }
@@ -126,25 +126,25 @@ DEF YellowBox Transform {
 }
 
 DEF LineBounds Transform {
-  translation 0 2.7209 0
+  translation 0 5.44181 0
   children [
     BBox2 {
-      translation 0 0.987072 0
-      scale 0.71122 3.46766 1
+      translation 0 -0.126821 0
+      scale 0.71122 5.45075 1
       color 1 0 0
     }
     BBox2 {
-      translation 0.71122 0.976848 0
-      scale 1 3.48811 1
+      translation 0.71122 0 0
+      scale 1 5.57757 1
       color 0 1 0
     }
     BBox2 {
-      translation 1.71122 0.991545 0
-      scale 1 3.45872 1
+      translation 1.71122 -0.135767 0
+      scale 1 5.44181 1
       color 0 0 1
     }
     BBox2 {
-      translation 2.71122 0 0
+      translation 2.71122 -0.135767 0
       scale 1 5.44181 1
       color 1 1 0
     }
@@ -152,8 +152,8 @@ DEF LineBounds Transform {
 }
 
 DEF TextBounds Transform {
-  translation 0 2.7209 0
-  scale 3.37373 5.44181 1
+  translation 0 5.44181 0
+  scale 3.37373 5.57757 1
   children BBox2 { }
 }
 
@@ -207,7 +207,7 @@ function get_majorAlignment (index)
 		return -text .textBounds .y + text .lineBounds [index] .y;
 
 	if (major == MIDDLE)
-		return (text .textBounds .y - text .lineBounds [index] .y) / 2;
+		return (-text .textBounds .y + text .lineBounds [index] .y) / 2;
 
 	return 0;
 }

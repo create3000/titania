@@ -358,7 +358,18 @@ X3DTextGeometry::vertical (Text* const text, const X3DFontStyleNode* const fontS
 
 		// Add bbox.
 			
-		yPad [l] = (topToBottom ? max .y () : min .y ()) + translation .y ();
+		switch (fontStyle -> getMajorAlignment ())
+		{
+			case X3DFontStyleNode::Alignment::BEGIN:
+			case X3DFontStyleNode::Alignment::FIRST:
+				yPad [l] = max .y () + translation .y ();
+				break;
+			case X3DFontStyleNode::Alignment::MIDDLE:
+				break;
+			case X3DFontStyleNode::Alignment::END:
+				yPad [l] = min .y () + translation .y ();
+				break;
+		}
 
 		bbox += Box2d (size * scale, (center + translation) * scale);
 	}
@@ -372,20 +383,30 @@ X3DTextGeometry::vertical (Text* const text, const X3DFontStyleNode* const fontS
 	
 	// Extend lineBounds.
 	
-//	if (topToBottom)
-//	{
-//		size_t l = 0;
-//		
-//		for (auto & lineBound : text -> lineBounds ())
-//			lineBound .setY (lineBound .getY () + max .y () - yPad [l ++] * scale);
-//	}
-//	else
-//	{
-//		size_t l = 0;
-//		
-//		for (auto & lineBound : text -> lineBounds ())
-//			lineBound .setY (lineBound .getY () + yPad [l ++] * scale - min .y ());
-//	}
+	switch (fontStyle -> getMajorAlignment ())
+	{
+		case X3DFontStyleNode::Alignment::BEGIN:
+		case X3DFontStyleNode::Alignment::FIRST:
+		{
+			size_t l = 0;
+			
+			for (auto & lineBound : text -> lineBounds ())
+				lineBound .setY (lineBound .getY () + max .y () - yPad [l ++] * scale);
+
+			break;
+		}
+		case X3DFontStyleNode::Alignment::MIDDLE:
+			break;
+		case X3DFontStyleNode::Alignment::END:
+		{
+			size_t l = 0;
+			
+			for (auto & lineBound : text -> lineBounds ())
+				lineBound .setY (lineBound .getY () + yPad [l ++] * scale - min .y ());
+
+			break;
+		}
+	}
 
 	// Calculate text position
 
