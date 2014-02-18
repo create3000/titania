@@ -287,8 +287,8 @@ ScreenText::build ()
 	}
 
 	// Debug
-	if (surface -> get_width () and surface -> get_height ())
-		surface -> write_to_png ("/home/holger/test.png");
+	//if (surface -> get_width () and surface -> get_height ())
+	//	surface -> write_to_png ("/home/holger/test.png");
 
 	// Set RGB to white, but leave alpha channel.
 
