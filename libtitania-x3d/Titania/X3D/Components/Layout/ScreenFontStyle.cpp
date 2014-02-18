@@ -151,7 +151,7 @@ ScreenText::setTextBounds ()
 
 	text -> origin () = Vector3d (min .x (), max .y (), 0);
 
-	// This switch is not needed if screen elements picking is implemented properly.
+	// FIX: This switch is not needed if screen elements picking is implemented properly.
 
 	switch (fontStyle -> getMajorAlignment ())
 	{
@@ -159,9 +159,9 @@ ScreenText::setTextBounds ()
 		case X3DFontStyleNode::Alignment::FIRST:
 		{
 			if (fontStyle -> horizontal ())
-				min .x (0);
+				min .x (std::min (0.0, min .x ()));
 			else
-				max .y (0);
+				max .y (std::max (0.0, max .y ()));
 
 			break;
 		}
@@ -170,9 +170,9 @@ ScreenText::setTextBounds ()
 		case X3DFontStyleNode::Alignment::END:
 		{
 			if (fontStyle -> horizontal ())
-				max .x (0);
+				max .x (std::max (0.0, max .x ()));
 			else
-				min .y (0);
+				min .y (std::min (0.0, min .y ()));
 
 			break;
 		}
