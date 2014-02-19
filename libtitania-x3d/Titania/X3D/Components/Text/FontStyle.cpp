@@ -246,14 +246,12 @@ FontStyle::getPolygonFont (const MFString & family) const
 
 	for (const auto & familyName : family)
 	{
-		Font font = getFont (familyName, isExactMatch);
+		const Font font = getFont (familyName, isExactMatch);
 
 		if (isExactMatch)
 		{
-			// Create a pixmap font from a TrueType file.
 			PolygonFontPtr polygonFont (new FTPolygonFont (font .getFilename () .c_str ()));
 
-			// Check for errors
 			if (polygonFont -> Error () == 0)
 				return polygonFont;
 		}

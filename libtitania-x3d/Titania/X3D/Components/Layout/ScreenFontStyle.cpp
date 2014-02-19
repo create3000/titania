@@ -86,7 +86,7 @@ void
 ScreenText::configure (const Cairo::RefPtr <Cairo::Context> & context)
 {
 	const ScreenFontPtr font     = fontStyle -> getScreenFont ();
-	auto                fontFace = Cairo::FtFontFace::create (font -> getPattern () .get ());
+	const auto          fontFace = Cairo::FtFontFace::create (font -> getPattern () .get ());
 
 	context -> set_font_face (fontFace);
 	context -> set_font_size (fontStyle -> getSize ());
@@ -192,7 +192,7 @@ ScreenText::build ()
 
 	// Render lines.
 
-	auto                             font = context -> get_scaled_font ();
+	const auto                       font = context -> get_scaled_font ();
 	std::vector <Cairo::Glyph>       glyphs;
 	std::vector <Cairo::TextCluster> clusters;
 	Cairo::TextClusterFlags          cluster_flags;
@@ -477,8 +477,8 @@ ScreenFontStyle::getSize () const
 {
 	if (glXGetCurrentContext ())
 	{
-		const double height   = Gdk::Screen::get_default () -> get_height ();             // Height in pixel
-		const double height_m = Gdk::Screen::get_default () -> get_height_mm () / 1000.0; // Height in meter
+		const double height   = Gdk::Screen::get_default () -> get_height ();             // Screen height in pixel
+		const double height_m = Gdk::Screen::get_default () -> get_height_mm () / 1000.0; // Screen height in meter
 
 		return M_POINT * pointSize () * height / height_m;
 	}

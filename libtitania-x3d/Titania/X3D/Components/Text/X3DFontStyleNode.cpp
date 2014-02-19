@@ -636,9 +636,9 @@ X3DFontStyleNode::getFont (const String & familyName, bool & isExactMatch) const
 	font .setScalable (true);
 	font .substitute ();
 
-	Font match = font .match ();
+	const Font match = font .match ();
 
-	isExactMatch = font == match;
+	isExactMatch = (font == match);
 
 	return match;
 }
