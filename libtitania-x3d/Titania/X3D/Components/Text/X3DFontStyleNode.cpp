@@ -339,6 +339,7 @@ X3DTextGeometry::vertical (Text* const text, const X3DFontStyleNode* const fontS
 				break;
 			case X3DFontStyleNode::Alignment::END:
 			{
+				// This is needed to make maxExtend and charSpacing work.
 				Vector2d glyphMin, v;
 				getGlyphExtents (line [topToBottom ? numChars - 1 : 0], glyphMin, v);	
 				translation = Vector2d (lineNumber * lineHeight, size .y () - max .y () + glyphMin .y ());
@@ -610,7 +611,8 @@ X3DFontStyleNode::getFont () const
 Font
 X3DFontStyleNode::getFont (const String & familyName, bool & isExactMatch) const
 {
-	// Test if familyName is a valid path
+	// Test if familyName is a valid path local path.
+	// TODO: add support for network paths.
 
 	const basic::uri uri = getExecutionContext () -> getWorldURL () .transform (familyName .raw ());
 

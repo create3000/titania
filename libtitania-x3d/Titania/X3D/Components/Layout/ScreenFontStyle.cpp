@@ -166,16 +166,8 @@ ScreenText::setTextBounds ()
 			break;
 		}
 		case X3DFontStyleNode::Alignment::MIDDLE:
-			break;
 		case X3DFontStyleNode::Alignment::END:
-		{
-			if (fontStyle -> horizontal ())
-				max .x (std::max (0.0, max .x ()));
-			else
-				min .y (std::min (0.0, min .y ()));
-
 			break;
-		}
 	}
 
 	setBBox (Box3d (min, max, extents_type ()));

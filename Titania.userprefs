@@ -1,13 +1,15 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Text/X3DFontStyleNode.cpp">
     <Files>
       <File FileName="libtitania-x3d/Titania/X3D/Components/ParticleSystems/ParticleSystem.h" Line="256" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/ParticleSystems/ParticleSystem.cpp" Line="346" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Base/GarbargeCollector.cpp" Line="136" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.h" Line="420" Column="4" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.cpp" Line="772" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="470" Column="32" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/ParticleSystems/ParticleSystem.cpp" Line="244" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/X3DFontStyleNode.h" Line="168" Column="18" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/X3DFontStyleNode.cpp" Line="221" Column="34" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/FontStyle.h" Line="81" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/FontStyle.cpp" Line="227" Column="39" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Layout/ScreenFontStyle.h" Line="112" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Layout/ScreenFontStyle.cpp" Line="172" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -16,7 +18,9 @@
           <Node name="Library" expanded="True">
             <Node name="Tests" expanded="True">
               <Node name="Basic" expanded="True" />
+              <Node name="ParticleSystems" expanded="True" />
               <Node name="Scripting" expanded="True" />
+              <Node name="Text" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-standard" expanded="True">
@@ -31,33 +35,20 @@
             </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
-            <Node name="share" expanded="True">
-              <Node name="titania" expanded="True">
-                <Node name="shaders" expanded="True">
-                  <Node name="ParticleSystems" expanded="True" />
-                </Node>
-                <Node name="tools" expanded="True" />
-              </Node>
-            </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
-                <Node name="Base" expanded="True" />
-                <Node name="Bits" expanded="True" />
-                <Node name="Browser" expanded="True">
-                  <Node name="Picking" expanded="True" />
-                  <Node name="X3DBrowser.cpp" selected="True" />
-                </Node>
+                <Node name="Browser" expanded="True" />
                 <Node name="Components" expanded="True">
-                  <Node name="Core" expanded="True" />
-                  <Node name="Networking" expanded="True" />
-                  <Node name="ParticleSystems" expanded="True" />
-                  <Node name="Shaders" expanded="True" />
-                  <Node name="Texturing" expanded="True" />
+                  <Node name="Geometry3D" expanded="True" />
+                  <Node name="Layout" expanded="True" />
+                  <Node name="NURBS" expanded="True" />
+                  <Node name="Rendering" expanded="True" />
+                  <Node name="Text" expanded="True">
+                    <Node name="X3DFontStyleNode.cpp" selected="True" />
+                  </Node>
                 </Node>
-                <Node name="Execution" expanded="True" />
+                <Node name="Fields" expanded="True" />
                 <Node name="Miscellaneous" expanded="True" />
-                <Node name="Parser" expanded="True" />
-                <Node name="Thread" expanded="True" />
               </Node>
             </Node>
           </Node>
@@ -65,17 +56,6 @@
             <Node name="Titania" expanded="True">
               <Node name="Base" expanded="True" />
               <Node name="Browser" expanded="True" />
-              <Node name="Configuration" expanded="True" />
-              <Node name="HistoryEditor" expanded="True" />
-              <Node name="LibraryView" expanded="True" />
-              <Node name="MaterialEditor" expanded="True" />
-              <Node name="MotionBlurEditor" expanded="True" />
-              <Node name="NodePropertiesEditor" expanded="True" />
-              <Node name="OutlineEditor" expanded="True" />
-              <Node name="TextureEditor" expanded="True" />
-              <Node name="Undo" expanded="True" />
-              <Node name="UserInterfaces" expanded="True" />
-              <Node name="ViewpointList" expanded="True" />
             </Node>
           </Node>
         </State>

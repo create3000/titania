@@ -67,7 +67,9 @@ Font::Font (const PatternPtr & pattern) :
 
 const Font::PatternPtr &
 Font::getPattern () const
-{ return pattern; }
+{
+	return pattern;
+}
 
 void
 Font::setFamilyName (const std::string & value)

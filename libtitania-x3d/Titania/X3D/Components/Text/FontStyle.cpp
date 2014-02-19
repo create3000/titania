@@ -224,7 +224,7 @@ FontStyle::set_font ()
 	if (polygonFont -> Error () == 0)
 	{
 		polygonFont -> CharMap (ft_encoding_unicode);
-		polygonFont -> UseDisplayList (true);
+		polygonFont -> UseDisplayList (false);
 
 		// Set the font size to large text.
 		polygonFont -> FaceSize (100);
