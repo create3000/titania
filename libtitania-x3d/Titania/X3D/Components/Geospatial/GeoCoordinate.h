@@ -87,14 +87,6 @@ public:
 
 	///  @name Fields
 
-	SFNode &
-	geoOrigin ()
-	{ return *fields .geoOrigin; }
-
-	const SFNode &
-	geoOrigin () const
-	{ return *fields .geoOrigin; }
-
 	MFString &
 	geoSystem ()
 	{ return *fields .geoSystem; }
@@ -110,6 +102,14 @@ public:
 	const MFVec3d &
 	point () const
 	{ return *fields .point; }
+
+	SFNode &
+	geoOrigin ()
+	{ return *fields .geoOrigin; }
+
+	const SFNode &
+	geoOrigin () const
+	{ return *fields .geoOrigin; }
 
 	///  @name Operations
 
@@ -159,9 +159,9 @@ private:
 	{
 		Fields ();
 
-		SFNode* const geoOrigin;
 		MFString* const geoSystem;
 		MFVec3d* const point;
+		SFNode* const geoOrigin;
 	};
 
 	Fields fields;

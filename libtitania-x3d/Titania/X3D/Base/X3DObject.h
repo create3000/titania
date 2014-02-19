@@ -136,7 +136,7 @@ public:
 	void
 	toStream (std::ostream &) const = 0;
 
-	///  @name Destruction Handling
+	///  @name Destruction
 
 	virtual
 	void
@@ -148,12 +148,18 @@ public:
 
 protected:
 
+	///  @name Construction
+
 	X3DObject ();
 
 
 private:
 
+	///  @name Static members
+
 	static GarbageCollector garbageCollector;
+
+	///  @name Members
 
 	std::string               name;
 	std::vector <std::string> comments;
@@ -179,8 +185,6 @@ operator << (std::basic_ostream <CharT, Traits> & ostream, const X3DObject & obj
 
 extern template std::istream & operator >> (std::istream &, X3DObject &);
 extern template std::ostream & operator << (std::ostream &, const X3DObject &);
-//extern template std::wistream & operator >> (std::wistream &, const X3DObject &);
-//extern template std::wostream & operator << (std::wostream &, const X3DObject &);
 
 } // X3D
 } // titania

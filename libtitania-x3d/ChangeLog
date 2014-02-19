@@ -1,5 +1,23 @@
 2014-02-19  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DInput.h:
+	* X3DObject.h:
+	* X3DOutput.h:
+	* X3DInput.cpp:
+	* X3DOutput.cpp:
+	* X3DObject.cpp:
+	* Transform.h:
+	* SupportedNodes.cpp:
+	* GeoOrigin.h:
+	* Transform.cpp:
+	* GeoOrigin.cpp:
+	* GeoMetadata.h:
+	* GeoCoordinate.h:
+	* GeoMetadata.cpp:
+	* GeoCoordinate.cpp: 
+
+2014-02-19  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBrowser.cpp:
 	* FontStyle.cpp:
 	* X3DFontStyleNode.cpp:

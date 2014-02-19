@@ -266,7 +266,7 @@ obb (const std::vector <Vector3f> & points)
 	Vector3f center (aabb .center ());
 
 	Vector3f min, max;
-	aabb .extends (min, max);
+	aabb .extents (min, max);
 
 	std::clog << aabb << std::endl;
 

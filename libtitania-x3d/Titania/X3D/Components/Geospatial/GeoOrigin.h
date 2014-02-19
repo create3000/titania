@@ -87,13 +87,13 @@ public:
 
 	///  @name Fields
 
-	SFVec3d &
-	geoCoords ()
-	{ return *fields .geoCoords; }
+	SFBool &
+	rotateYUp ()
+	{ return *fields .rotateYUp; }
 
-	const SFVec3d &
-	geoCoords () const
-	{ return *fields .geoCoords; }
+	const SFBool &
+	rotateYUp () const
+	{ return *fields .rotateYUp; }
 
 	MFString &
 	geoSystem ()
@@ -103,13 +103,13 @@ public:
 	geoSystem () const
 	{ return *fields .geoSystem; }
 
-	SFBool &
-	rotateYUp ()
-	{ return *fields .rotateYUp; }
+	SFVec3d &
+	geoCoords ()
+	{ return *fields .geoCoords; }
 
-	const SFBool &
-	rotateYUp () const
-	{ return *fields .rotateYUp; }
+	const SFVec3d &
+	geoCoords () const
+	{ return *fields .geoCoords; }
 
 
 private:
@@ -127,9 +127,9 @@ private:
 	{
 		Fields ();
 
-		SFVec3d* const geoCoords;
-		MFString* const geoSystem;
 		SFBool* const rotateYUp;
+		MFString* const geoSystem;
+		SFVec3d* const geoCoords;
 	};
 
 	Fields fields;

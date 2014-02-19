@@ -101,8 +101,6 @@ X3DObject::~X3DObject ()
 
 template std::istream & operator >> (std::istream &, X3DObject &);
 template std::ostream & operator << (std::ostream &, const X3DObject &);
-//template std::wistream & operator >> (std::wistream &, const X3DObject &);
-//template std::wostream & operator << (std::wostream &, const X3DObject &);
 
 } // X3D
 } // titania

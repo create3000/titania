@@ -93,7 +93,7 @@ public:
 
 	virtual
 	void
-	addHandle (SFBool*) override;
+	addHandle (SFBool* const) override;
 
 
 protected:

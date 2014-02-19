@@ -15,9 +15,10 @@ Transform {
       }
     }
     geometry DEF Time Text {
+      string "Mi 19 Feb 2014 09:41:00 CET"
       length 10
       fontStyle FontStyle {
-        family "Ubuntu Mono"
+        family [ "Ubuntu Mono", "TYPEWRITER" ]
         style "BOLD"
         size 0.735
         justify "MIDDLE"
@@ -43,4 +44,4 @@ function set_time (value)
   directOutput TRUE
 }
 
-ROUTE Timer.time TO RandomText.set_time
+ROUTE Timer.cycleTime TO RandomText.set_time

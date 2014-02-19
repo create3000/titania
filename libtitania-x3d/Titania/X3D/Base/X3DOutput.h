@@ -162,7 +162,8 @@ public:
 
 	virtual
 	void
-	dispose ();
+	dispose ()
+	{ clear (); }
 
 	virtual
 	~X3DOutput ();
@@ -207,6 +208,9 @@ private:
 
 	void
 	removeDeleter (const X3DOutput* const, const void* const, const void* const) const;
+
+	void
+	clear ();
 
 	mutable RequesterArray          requesters;
 	mutable RequesterIndex          requesterIndex;

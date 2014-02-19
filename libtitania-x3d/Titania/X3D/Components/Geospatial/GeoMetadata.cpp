@@ -60,9 +60,9 @@ const std::string GeoMetadata::typeName       = "GeoMetadata";
 const std::string GeoMetadata::containerField = "children";
 
 GeoMetadata::Fields::Fields () :
-	data (new MFNode ()),
+	    url (new MFString ()),
 	summary (new MFString ()),
-	url (new MFString ())
+	   data (new MFNode ())
 { }
 
 GeoMetadata::GeoMetadata (X3DExecutionContext* const executionContext) :
@@ -71,9 +71,9 @@ GeoMetadata::GeoMetadata (X3DExecutionContext* const executionContext) :
 	     fields ()
 {
 	addField (inputOutput, "metadata", metadata ());
-	addField (inputOutput, "data",     data ());
-	addField (inputOutput, "summary",  summary ());
 	addField (inputOutput, "url",      url ());
+	addField (inputOutput, "summary",  summary ());
+	addField (inputOutput, "data",     data ());
 }
 
 X3DBaseNode*

@@ -55,14 +55,18 @@
 namespace titania {
 namespace X3D {
 
+// GeoOrigin node usage is deprecated and its use is discouraged. The presence of a GeoOrigin
+// node is tolerated but can be ignored in X3D scenes having version 3.0, 3.1 or 3.2.
+// GeoOrigin node is not allowed in X3D scenes having version 3.3 or higher.
+
 const std::string GeoOrigin::componentName  = "Geospatial";
 const std::string GeoOrigin::typeName       = "GeoOrigin";
 const std::string GeoOrigin::containerField = "geoOrigin";
 
 GeoOrigin::Fields::Fields () :
-	geoCoords (new SFVec3d ()),
+	rotateYUp (new SFBool ()),
 	geoSystem (new MFString ({ "GD", "WE" })),
-	rotateYUp (new SFBool ())
+	geoCoords (new SFVec3d ())
 { }
 
 GeoOrigin::GeoOrigin (X3DExecutionContext* const executionContext) :
@@ -71,9 +75,9 @@ GeoOrigin::GeoOrigin (X3DExecutionContext* const executionContext) :
 	     fields ()
 {
 	addField (inputOutput,    "metadata",  metadata ());
-	addField (inputOutput,    "geoCoords", geoCoords ());
-	addField (initializeOnly, "geoSystem", geoSystem ());
 	addField (initializeOnly, "rotateYUp", rotateYUp ());
+	addField (initializeOnly, "geoSystem", geoSystem ());
+	addField (inputOutput,    "geoCoords", geoCoords ());
 }
 
 X3DBaseNode*

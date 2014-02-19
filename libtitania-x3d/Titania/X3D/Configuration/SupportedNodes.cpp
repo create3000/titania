@@ -133,7 +133,7 @@ SupportedNodes::SupportedNodes (X3DExecutionContext* const executionContext)
 	add ("GeoLOD",                       new GeoLOD                       (executionContext));
 	add ("GeoLocation",                  new GeoLocation                  (executionContext));
 	add ("GeoMetadata",                  new GeoMetadata                  (executionContext));
-	add ("GeoOrigin",                    new GeoOrigin                    (executionContext));
+	add ("GeoOrigin",                    new GeoOrigin                    (executionContext)); // GeoOrigin node is not allowed in X3D scenes having version 3.3 or higher.
 	add ("GeoPositionInterpolator",      new GeoPositionInterpolator      (executionContext));
 	add ("GeoProximitySensor",           new GeoProximitySensor           (executionContext));
 	add ("GeoTouchSensor",               new GeoTouchSensor               (executionContext));

@@ -61,7 +61,7 @@ X3DInput::X3DInput () :
 { }
 
 void
-X3DInput::dispose ()
+X3DInput::clear ()
 {
 	deletedOutput .processInterests ();
 	deletedOutput .dispose ();
@@ -69,7 +69,7 @@ X3DInput::dispose ()
 
 X3DInput::~X3DInput ()
 {
-	X3DInput::dispose ();
+	clear ();
 }
 
 } // X3D

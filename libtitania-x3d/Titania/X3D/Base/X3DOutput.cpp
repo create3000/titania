@@ -173,6 +173,9 @@ X3DOutput::processInterests () const
 	if (requesters .empty ())
 		return;
 
+	// The requesters have to be copied, due to the fact that the requester could
+	// remove itself from the output during the loop call.
+
 	copy .assign (requesters .cbegin (), requesters .cend ());
 
 	for (const auto & requester : copy)
@@ -180,7 +183,7 @@ X3DOutput::processInterests () const
 }
 
 void
-X3DOutput::dispose ()
+X3DOutput::clear ()
 {
 	requesters .clear ();
 	requesterIndex .clear ();
@@ -193,7 +196,7 @@ X3DOutput::dispose ()
 
 X3DOutput::~X3DOutput ()
 {
-	X3DOutput::dispose ();
+	clear ();
 }
 
 } // X3D

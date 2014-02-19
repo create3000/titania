@@ -87,13 +87,13 @@ public:
 
 	///  @name Fields
 
-	MFNode &
-	data ()
-	{ return *fields .data; }
+	MFString &
+	url ()
+	{ return *fields .url; }
 
-	const MFNode &
-	data () const
-	{ return *fields .data; }
+	const MFString &
+	url () const
+	{ return *fields .url; }
 
 	MFString &
 	summary ()
@@ -103,13 +103,13 @@ public:
 	summary () const
 	{ return *fields .summary; }
 
-	MFString &
-	url ()
-	{ return *fields .url; }
+	MFNode &
+	data ()
+	{ return *fields .data; }
 
-	const MFString &
-	url () const
-	{ return *fields .url; }
+	const MFNode &
+	data () const
+	{ return *fields .data; }
 
 
 private:
@@ -127,9 +127,9 @@ private:
 	{
 		Fields ();
 
-		MFNode* const data;
-		MFString* const summary;
 		MFString* const url;
+		MFString* const summary;
+		MFNode* const data;
 	};
 
 	Fields fields;

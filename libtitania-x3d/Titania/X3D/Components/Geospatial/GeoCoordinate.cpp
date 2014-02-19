@@ -61,9 +61,9 @@ const std::string GeoCoordinate::typeName       = "GeoCoordinate";
 const std::string GeoCoordinate::containerField = "coord";
 
 GeoCoordinate::Fields::Fields () :
-	geoOrigin (new SFNode ()),
 	geoSystem (new MFString ({ "GD", "WE" })),
-	    point (new MFVec3d ())
+	    point (new MFVec3d ()),
+	geoOrigin (new SFNode ())
 { }
 
 GeoCoordinate::GeoCoordinate (X3DExecutionContext* const executionContext) :
@@ -72,9 +72,9 @@ GeoCoordinate::GeoCoordinate (X3DExecutionContext* const executionContext) :
 	           fields ()
 {
 	addField (inputOutput,    "metadata",  metadata ());
-	addField (initializeOnly, "geoOrigin", geoOrigin ());
 	addField (initializeOnly, "geoSystem", geoSystem ());
 	addField (inputOutput,    "point",     point ());
+	addField (initializeOnly, "geoOrigin", geoOrigin ());
 }
 
 X3DBaseNode*

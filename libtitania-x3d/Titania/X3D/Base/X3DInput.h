@@ -73,18 +73,22 @@ public:
 
 	virtual
 	void
-	dispose ();
+	dispose ()
+	{ clear (); }
+
+	virtual
+	~X3DInput ();
 
 
 protected:
 
 	X3DInput ();
 
-	virtual
-	~X3DInput ();
-
 
 private:
+
+	void
+	clear ();
 
 	Output deletedOutput;
 
