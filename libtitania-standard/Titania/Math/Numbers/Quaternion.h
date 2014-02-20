@@ -199,7 +199,8 @@ public:
 
 	///  Return number of components.
 	static
-	constexpr size_type
+	constexpr
+	size_type
 	size ()
 	{ return 4; }
 
@@ -426,7 +427,8 @@ real (const quaternion <Type> & quat)
 ///  Returns imaginary part of @a quaternion as vector.
 template <class Type>
 inline
-constexpr vector3 <Type>
+constexpr
+vector3 <Type>
 imag (const quaternion <Type> & quat)
 {
 	return vector3 <Type> (quat .x (), quat .y (), quat .z ());
@@ -438,7 +440,9 @@ imag (const quaternion <Type> & quat)
 ///  Compares two quaternion numbers.
 ///  Returns true if @a lhs is equal to @a rhs.
 template <class Type>
-constexpr bool
+inline
+constexpr
+bool
 operator == (const quaternion <Type> & lhs, const quaternion <Type> & rhs)
 {
 	return
@@ -451,7 +455,9 @@ operator == (const quaternion <Type> & lhs, const quaternion <Type> & rhs)
 ///  Compares two quaternion numbers.
 ///  Returns false if @a lhs is not equal to @a rhs.
 template <class Type>
-constexpr bool
+inline
+constexpr
+bool
 operator not_eq (const quaternion <Type> & lhs, const quaternion <Type> & rhs)
 {
 	return
@@ -467,7 +473,8 @@ operator not_eq (const quaternion <Type> & lhs, const quaternion <Type> & rhs)
 ///  Returns a copy of @a quaternion.
 template <class Type>
 inline
-constexpr Type
+constexpr
+Type
 operator + (const quaternion <Type> & quat)
 {
 	return quat;
@@ -527,7 +534,8 @@ operator * (const quaternion <Type> & lhs, const quaternion <Type> & rhs)
 ///  Returns new quaternion value @a lhs right multiplied @a rhs.
 template <class Type>
 inline
-constexpr quaternion <Type>
+constexpr
+quaternion <Type>
 operator * (const quaternion <Type> & lhs, const Type & rhs)
 {
 	return quaternion <Type> (lhs) *= rhs;
@@ -536,7 +544,8 @@ operator * (const quaternion <Type> & lhs, const Type & rhs)
 ///  Returns new quaternion value @a lhs times @a rhs.
 template <class Type>
 inline
-constexpr quaternion <Type>
+constexpr
+quaternion <Type>
 operator * (const Type & lhs, const quaternion <Type> & rhs)
 {
 	return quaternion <Type> (rhs) *= lhs;
@@ -598,7 +607,8 @@ operator / (const Type & lhs, const quaternion <Type> & rhs)
 
 ///  Returns new quaternion value @a lhs dot @a rhs.
 template <class Type>
-constexpr Type
+constexpr
+Type
 dot (const quaternion <Type> & lhs, const quaternion <Type> & rhs)
 {
 	return lhs .x () * rhs .x () +
@@ -610,7 +620,8 @@ dot (const quaternion <Type> & lhs, const quaternion <Type> & rhs)
 ///  Returns whether @a quaternion is pure real.
 template <class Type>
 inline
-constexpr Type
+constexpr
+Type
 is_real (const quaternion <Type> & quat)
 {
 	return not (quat .x () or quat .y () or quat .z ());
@@ -619,7 +630,8 @@ is_real (const quaternion <Type> & quat)
 ///  Returns whether @a quaternion is pure imaginary.
 template <class Type>
 inline
-constexpr Type
+constexpr
+Type
 is_imag (const quaternion <Type> & quat)
 {
 	return not (quat .w ());
@@ -628,7 +640,8 @@ is_imag (const quaternion <Type> & quat)
 ///  Returns @a quaternion magnitude.
 template <class Type>
 inline
-constexpr Type
+constexpr
+Type
 abs (const quaternion <Type> & quat)
 {
 	return std::sqrt (norm (quat));
@@ -637,7 +650,8 @@ abs (const quaternion <Type> & quat)
 ///  Returns @a quaternion magnitude squared.
 template <class Type>
 inline
-constexpr Type
+constexpr
+Type
 norm (const quaternion <Type> & quat)
 {
 	return dot (quat, quat);

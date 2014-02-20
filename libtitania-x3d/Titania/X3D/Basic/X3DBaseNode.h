@@ -142,7 +142,7 @@ public:
 
 	virtual
 	X3DBaseNode*
-	getLocalNode ()
+	getInnerNode ()
 	{ return this; }
 
 	///  @name Field handling

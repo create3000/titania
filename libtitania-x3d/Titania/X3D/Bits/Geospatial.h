@@ -48,15 +48,71 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TYPES_STRING_H__
-#define __TITANIA_X3D_TYPES_STRING_H__
+#ifndef __TITANIA_X3D_BITS_GEOSPATIAL_H__
+#define __TITANIA_X3D_BITS_GEOSPATIAL_H__
 
-#include <glibmm/ustring.h>
+#include "../Fields.h"
+#include "../Types/Geometry.h"
+
+#include <Titania/Geospatial/BasicConverter.h>
+#include <memory>
 
 namespace titania {
 namespace X3D {
 
-using String = Glib::ustring;
+class Geospatial
+{
+public:
+
+	using ReferenceFramePtr = std::shared_ptr <geospatial::basic_converter <double>> ;
+
+	// Dummy class for geocentric coordinates
+	class Geocentric :
+		public geospatial::basic_converter <double>
+	{
+	public:
+
+		virtual
+		Vector3d
+		convert (const Vector3d & geocentric) const final override
+		{ return geocentric; }
+
+	};
+
+	static
+	ReferenceFramePtr
+	getReferenceFrame (const MFString &);
+
+
+private:
+
+	//  @name Types
+
+	enum class CoordinateSystemType
+	{
+		GD,
+		UTM,
+		GC
+	};
+
+	static
+	CoordinateSystemType
+	getCoordinateSystem (const MFString &);
+
+	static
+	Spheroid3d
+	getEllipsoid (const MFString &);
+
+	static
+	bool
+	getLongitudeFirst (const MFString &);
+
+	//  @name Static members
+
+	static const std::map <std::string, CoordinateSystemType> coordinateSystems;
+	static const std::map <std::string, Spheroid3d>           ellipsoids;
+
+};
 
 } // X3D
 } // titania

@@ -154,7 +154,8 @@ public:
 
 	///  Returns number of components.
 	static
-	constexpr size_type
+	constexpr
+	size_type
 	size ()
 	{ return 2; }
 
@@ -296,7 +297,9 @@ vector2 <Type>::normalize ()
 ///  Compares two vector2 numbers.
 ///  Returns true if @a a is equal to @a rhs.
 template <class Type>
-constexpr bool
+inline
+constexpr
+bool
 operator == (const vector2 <Type> & lhs, const vector2 <Type> & rhs)
 {
 	return
@@ -307,7 +310,9 @@ operator == (const vector2 <Type> & lhs, const vector2 <Type> & rhs)
 ///  Compares two vector2 numbers.
 ///  Returns false if @a a is not equal to @a rhs.
 template <class Type>
-constexpr bool
+inline
+constexpr
+bool
 operator not_eq (const vector2 <Type> & lhs, const vector2 <Type> & rhs)
 {
 	return lhs .x () not_eq rhs .x () or
@@ -320,7 +325,8 @@ operator not_eq (const vector2 <Type> & lhs, const vector2 <Type> & rhs)
 ///  Returns a copy of @a vector.
 template <class Type>
 inline
-constexpr vector2 <Type>
+constexpr
+vector2 <Type>
 operator + (const vector2 <Type> & vector)
 {
 	return vector;
@@ -413,7 +419,8 @@ operator / (const vector2 <Type> & lhs, const Type & rhs)
 
 ///  Returns new vector value @a a divided by @a hs.
 template <class Type>
-constexpr vector2 <Type>
+constexpr
+vector2 <Type>
 operator / (const Type & lhs, const vector2 <Type> & rhs)
 {
 	return vector2 <Type> (lhs / rhs .x (),
@@ -422,7 +429,8 @@ operator / (const Type & lhs, const vector2 <Type> & rhs)
 
 ///  Returns new vector value @a a dot @a rhs.
 template <class Type>
-constexpr Type
+constexpr
+Type
 dot (const vector2 <Type> & lhs, const vector2 <Type> & rhs)
 {
 	return lhs .x () * rhs .x () +
@@ -432,7 +440,8 @@ dot (const vector2 <Type> & lhs, const vector2 <Type> & rhs)
 ///  Returns the @a vector magnitude.
 template <class Type>
 inline
-constexpr Type
+constexpr
+Type
 abs (const vector2 <Type> & vector)
 {
 	return std::sqrt (norm (vector));
@@ -441,7 +450,8 @@ abs (const vector2 <Type> & vector)
 ///  Returns the @a vector magnitude squared.
 template <class Type>
 inline
-constexpr Type
+constexpr
+Type
 norm (const vector2 <Type> & vector)
 {
 	return dot (vector, vector);

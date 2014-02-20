@@ -48,17 +48,14 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TYPES_STRING_H__
-#define __TITANIA_X3D_TYPES_STRING_H__
-
-#include <glibmm/ustring.h>
+#include "UniversalTransverseMercator.h"
 
 namespace titania {
-namespace X3D {
+namespace geospatial {
 
-using String = Glib::ustring;
+template class universal_transverse_mercator <float>;
+template class universal_transverse_mercator <double>;
+template class universal_transverse_mercator <long double>;
 
-} // X3D
+} // math
 } // titania
-
-#endif

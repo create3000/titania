@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,17 +48,14 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TYPES_STRING_H__
-#define __TITANIA_X3D_TYPES_STRING_H__
-
-#include <glibmm/ustring.h>
+#include "BasicConverter.h"
 
 namespace titania {
-namespace X3D {
+namespace geospatial {
 
-using String = Glib::ustring;
+template class basic_converter <float>;
+template class basic_converter <double>;
+template class basic_converter <long double>;
 
-} // X3D
+} // math
 } // titania
-
-#endif

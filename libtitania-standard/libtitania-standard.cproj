@@ -128,6 +128,11 @@
     <None Include="Titania\Math\Geometry\Triangle3.h" />
     <None Include="Titania\Math\Utility\strtol.h" />
     <None Include="Titania\Math\Numbers\Matrix2.h" />
+    <None Include="Titania\Math\Geometry\Spheroid3.h" />
+    <None Include="Titania\Geospatial\Geodetic.h" />
+    <None Include="Titania\Geospatial\ReferenceEllipsoids.h" />
+    <None Include="Titania\Geospatial\UniversalTransverseMercator.h" />
+    <None Include="Titania\Geospatial\BasicConverter.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />
@@ -181,6 +186,10 @@
     <Compile Include="Titania\String\trim.cpp" />
     <Compile Include="Titania\String\naturally_compare.cpp" />
     <Compile Include="Titania\Math\Numbers\Matrix2.cpp" />
+    <Compile Include="Titania\Math\Geometry\Spheroid3.cpp" />
+    <Compile Include="Titania\Geospatial\Geodetic.cpp" />
+    <Compile Include="Titania\Geospatial\UniversalTransverseMercator.cpp" />
+    <Compile Include="Titania\Geospatial\BasicConverter.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
@@ -203,5 +212,6 @@
     <Folder Include="Titania\Physics\" />
     <Folder Include="Titania\Math\Utility\" />
     <Folder Include="Titania\InputOutput\" />
+    <Folder Include="Titania\Geospatial\" />
   </ItemGroup>
 </Project>

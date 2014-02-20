@@ -1560,7 +1560,7 @@ throw (X3D::Error <X3D::INVALID_NODE>)
 {
 	try
 	{
-		auto field = parent -> getField (child -> getLocalNode () -> getContainerField ());
+		auto field = parent -> getField (child -> getInnerNode () -> getContainerField ());
 
 		if (field -> getType () == X3D::X3DConstants::SFNode or field -> getType () == X3D::X3DConstants::MFNode)
 			return field;

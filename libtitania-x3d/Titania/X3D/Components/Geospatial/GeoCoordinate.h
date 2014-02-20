@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_COMPONENTS_GEOSPATIAL_GEO_COORDINATE_H__
 
 #include "../Rendering/X3DCoordinateNode.h"
+#include "../../Bits/Geospatial.h"
 
 namespace titania {
 namespace X3D {
@@ -146,6 +147,12 @@ public:
 
 private:
 
+	virtual
+	void
+	initialize () final override;
+
+	void
+	set_geoSystem ();
 
 	///  @name Static members
 
@@ -165,6 +172,8 @@ private:
 	};
 
 	Fields fields;
+
+	Geospatial::ReferenceFramePtr referenceFrame;
 
 };
 

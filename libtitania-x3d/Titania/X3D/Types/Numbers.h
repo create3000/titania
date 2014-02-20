@@ -68,36 +68,36 @@ namespace X3D {
 
 using namespace titania::math;
 
-typedef color3 <double> Color3d;
-typedef color3 <float>  Color3f;
+using Color3d = color3 <double>;
+using Color3f = color3 <float>;
 
-typedef color4 <double> Color4d;
-typedef color4 <float>  Color4f;
+using Color4d = color4 <double>;
+using Color4f = color4 <float>;
 
 // Image is definied in Image.h because it needs MFInt32
 
-typedef matrix3 <double> Matrix3d;
-typedef matrix3 <float>  Matrix3f;
+using Matrix3d = matrix3 <double>;
+using Matrix3f = matrix3 <float>;
 
-typedef matrix4 <double> Matrix4d;
-typedef matrix4 <float>  Matrix4f;
+using Matrix4d = matrix4 <double>;
+using Matrix4f = matrix4 <float>;
 
-typedef rotation4 <double> Rotation4d;
-typedef rotation4 <float>  Rotation4f;
+using Rotation4d = rotation4 <double>;
+using Rotation4f = rotation4 <float>;
 
 // time_type is defined in Time.h
 
-typedef vector2 <double> Vector2d;
-typedef vector2 <float>  Vector2f;
-typedef vector2 <int>    Vector2i;
+using Vector2d = vector2 <double>;
+using Vector2f = vector2 <float>;
+using Vector2i = vector2 <int>;
 
-typedef vector3 <double> Vector3d;
-typedef vector3 <float>  Vector3f;
-typedef vector3 <int>    Vector3i;
+using Vector3d = vector3 <double>;
+using Vector3f = vector3 <float>;
+using Vector3i = vector3 <int>;
 
-typedef vector4 <double> Vector4d;
-typedef vector4 <float>  Vector4f;
-typedef vector4 <int>    Vector4i;
+using Vector4d = vector4 <double>;
+using Vector4f = vector4 <float>;
+using Vector4i = vector4 <int>;
 
 } // X3D
 } // titania

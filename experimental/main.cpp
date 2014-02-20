@@ -62,12 +62,15 @@
 #include <Titania/Math/Geometry/Cylinder3.h>
 #include <Titania/Math/Geometry/Line3.h>
 #include <Titania/Math/Geometry/Plane3.h>
+#include <Titania/Math/Geometry/Spheroid3.h>
 #include <Titania/Math/Numbers/Matrix3.h>
 #include <Titania/Math/Numbers/Matrix4.h>
 #include <Titania/Math/Numbers/Rotation4.h>
 #include <Titania/Math/Numbers/Vector2.h>
 #include <Titania/Math/Numbers/Vector3.h>
 #include <Titania/Math/Numbers/Vector4.h>
+#include <Titania/Geospatial/ReferenceEllipsoids.h>
+#include <Titania/Geospatial/Geodetic.h>
 #include <Titania/OS.h>
 #include <Titania/Stream/InputFileStream.h>
 #include <Titania/Stream/InputUrlStream.h>
@@ -194,118 +197,33 @@ using namespace titania::basic;
 //
 //}
 
-typedef math::quaternion <float> Quaternionf;
-typedef math::vector2 <float>    Vector2f;
-typedef math::vector3 <float>    Vector3f;
-typedef math::vector4 <float>    Vector4f;
-typedef math::rotation4 <float>  Rotation4f;
-typedef math::matrix4 <float>    Matrix4f;
-typedef math::box2 <float>       Box2f;
-typedef math::box3 <float>       Box3f;
-typedef math::cylinder3 <float>  Cylinder3f;
-typedef math::plane3 <float>     Plane3f;
-typedef math::line3 <float>      Line3f;
-typedef math::sphere3 <float>    Sphere3f;
-typedef math::matrix3 <float>    Matrix3f;
-typedef math::matrix4 <float>    Matrix4f;
-
-//#include <v8.h>
-//
-//// https://www.homepluspower.info/2010/06/v8-javascript-engine-tutorial-part-1.html
-//// https://www.homepluspower.info/2010/06/v8-javascript-engine-tutorial-part-2.html
-//// http://athile.net/library/wiki/index.php/Library/V8/Tutorial
-//// http://www.codeproject.com/Articles/29109/Using-V8-Google-s-Chrome-JavaScript-Virtual-Machin
-//// http://v8.googlecode.com/svn/trunk/samples/shell.cc
-//// http://stackoverflow.com/questions/11387015/calling-a-v8-javascript-function-from-c-with-an-argument
-//
-//#include <Titania/InputOutput.h>
-//
-//bool
-//intersect (const Plane3f & p1, const Plane3f & p2, Line3f & line)
-//{
-//	// http://stackoverflow.com/questions/6408670/intersection-between-two-planes
-//
-//	if (dot (p1 .normal (), p2 .normal ()) < 1)
-//	{
-//		Vector3f direction = normalize (cross (p1 .normal (), p2 .normal ()));
-//
-//		//		float d1 = p1 .distance (c);
-//		//		float d2 = p2 .distance (c);
-//		//
-//		//		Vector3f point = (c - (d1 * p1 .normal ()) - (d2 * p2 .normal ()));
-//
-//		line = Line3f (Vector3f (), direction);
-//
-//		return true;
-//	}
-//
-//	// Planes are parallel
-//
-//	return false;
-//}
-
-#define __COUT__ (std::cout << "########## " __FILE__ << ":" << __LINE__ << ": in function '" << __func__ << "': ")
-
+using Quaternionf = math::quaternion <float>;
+using Vector2f    = math::vector2 <float>;
+using Vector3d    = math::vector3 <double>;
+using Vector3f    = math::vector3 <float>;
+using Vector4f    = math::vector4 <float>;
+using Rotation4f  = math::rotation4 <float>;
+using Matrix4f    = math::matrix4 <float>;
+using Box2f       = math::box2 <float>;
+using Box3f       = math::box3 <float>;
+using Cylinder3f  = math::cylinder3 <float>;
+using Plane3f     = math::plane3 <float>;
+using Line3f      = math::line3 <float>;
+using Sphere3f    = math::sphere3 <float>;
+using Matrix3f    = math::matrix3 <float>;
+using Matrix4f    = math::matrix4 <float>;
+using Spheroid3d  = math::spheroid3 <double>;
 
 float
 random1 ()
 {
-	static std::uniform_real_distribution <float>  uniform_real_distribution (0, 1);
-	static std::default_random_engine              random_engine;
+	static std::uniform_real_distribution <float> uniform_real_distribution (0, 1);
+	static std::default_random_engine             random_engine;
 
 	return uniform_real_distribution (random_engine);
 }
 
-void
-obb (const std::vector <Vector3f> & points)
-{
-	std::clog << std::endl;
-	std::clog << std::endl;
-
-	Box3f    aabb (points .begin (), points .end (), math::iterator_type ());
-	Vector3f center (aabb .center ());
-
-	Vector3f min, max;
-	aabb .extents (min, max);
-
-	std::clog << aabb << std::endl;
-
-	Matrix3f covariance (0,0,0, 0,0,0, 0,0,0);
-	
-	for (const auto & point : points)
-		covariance += multiply (point - min, point - min);
-
-	//covariance /= points .size ();
-
-	//covariance -= multiply (min, min);
-
-	std::clog << covariance << std::endl;
-
-	float evalues [3];
-	float evectors [3] [3];
-
-	eigen_decomposition (covariance, evalues, evectors);
-	
-	std::clog << Vector3f (evectors [0] [0], evectors [0] [1], evectors [0] [2]) << std::endl;
-	std::clog << Vector3f (evectors [1] [0], evectors [1] [1], evectors [1] [2]) << std::endl;
-	std::clog << Vector3f (evectors [2] [0], evectors [2] [1], evectors [2] [2]) << std::endl;
-	std::clog << std::endl;
-}
-
-class A
-{
-public:
-	
-	A ()
-	{ __LOG__ << std::endl; }
-	
-	A (const A &)
-	{ __LOG__ << std::endl; }
-	
-	A (A &&)
-	{ __LOG__ << std::endl; }
-
-};
+using namespace titania::math;
 
 int
 main (int argc, char** argv)
@@ -316,10 +234,23 @@ main (int argc, char** argv)
 	std::clog << "in parallel mode ..." << std::endl;
 	#endif
 
+	std::clog << std::setprecision (std::numeric_limits <double>::digits10);
+
+	auto GD_WE = geospatial::geodetic <double> (geospatial::WE);
+
+	std::clog << geospatial::WE << std::endl;
+	std::clog << GD_WE (Vector3d (radians (37.4506), radians (-122.1834), 0)) << std::endl;
+	std::clog << Vector3d (radians (37.4506), radians (-122.1834), 0) << std::endl;
+
+	//std::clog << geospatial::utm (WE, Vector3d (4145173, 572227, 0)) << std::endl;
+
+	std::clog << Vector3d (-2700301, -4290762, 3857213) << std::endl; // gc: Geocentric coordinates
+
 	std::clog << "Function main done." << std::endl;
 	return 0;
 }
 
+// -2696957.34256132 - 4285448.58338639 3865396.01742163
 
 //// http://www.khronos.org/registry/cl/api/1.1/cl.hpp
 //#include "cl.hpp"
@@ -340,7 +271,7 @@ main (int argc, char** argv)
 //	if (not all_platforms .empty ())
 //	{
 //		std::cout << "Platforms: " << all_platforms .size () << std::endl;
-//		
+//
 //		for (const auto & platform : all_platforms)
 //			std::cout << "Platform: " << platform .getInfo <CL_PLATFORM_NAME> () << std::endl;
 //__COUT__ << std::endl;

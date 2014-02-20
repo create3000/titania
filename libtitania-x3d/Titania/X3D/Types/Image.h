@@ -57,7 +57,7 @@
 namespace titania {
 namespace X3D {
 
-typedef math::image <MFInt32> Image;
+using Image = math::image <MFInt32>;
 
 } // X3D
 

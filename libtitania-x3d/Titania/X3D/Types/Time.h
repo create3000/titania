@@ -54,7 +54,7 @@
 namespace titania {
 namespace X3D {
 
-typedef double time_type;
+using time_type = double;
 
 } // X3D
 } // titania

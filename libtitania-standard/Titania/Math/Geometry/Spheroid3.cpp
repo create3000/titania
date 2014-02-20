@@ -48,17 +48,24 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TYPES_STRING_H__
-#define __TITANIA_X3D_TYPES_STRING_H__
-
-#include <glibmm/ustring.h>
+#include "Spheroid3.h"
 
 namespace titania {
-namespace X3D {
+namespace math {
 
-using String = Glib::ustring;
+template class spheroid3 <float>;
+template class spheroid3 <double>;
+template class spheroid3 <long double>;
 
-} // X3D
+//
+template std::istream & operator >> (std::istream &, spheroid3 <float> &);
+template std::istream & operator >> (std::istream &, spheroid3 <double> &);
+template std::istream & operator >> (std::istream &, spheroid3 <long double> &);
+
+//
+template std::ostream & operator << (std::ostream &, const spheroid3 <float> &);
+template std::ostream & operator << (std::ostream &, const spheroid3 <double> &);
+template std::ostream & operator << (std::ostream &, const spheroid3 <long double> &);
+
+} // math
 } // titania
-
-#endif

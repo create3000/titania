@@ -1,3 +1,24 @@
+2014-02-20  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-standard.cproj:
+	* Geodetic.h:
+	* Matrix4.h:
+	* Matrix3.h:
+	* Matrix2.h:
+	* Vector3.h:
+	* Vector4.h:
+	* Vector2.h:
+	* Geodetic.cpp:
+	* Quaternion.h:
+	* Spheroid3.h:
+	* BasicConverter.h:
+	* Spheroid3.cpp:
+	* BasicConverter.cpp:
+	* ReferenceEllipsoids.h:
+	* UniversalTransverseMercator.h:
+	* UniversalTransverseMercator.cpp: 
+
 2014-02-18  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Box2.h: 

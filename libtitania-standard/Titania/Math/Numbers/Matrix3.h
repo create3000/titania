@@ -281,10 +281,12 @@ public:
 	///  All these operators modify this matrix4 inplace.
 
 	///  Returns the determinant of the 2x2 sub-matrix.
+	constexpr
 	Type
 	determinant2 () const;
 
 	///  Returns the determinant of this matrix.
+	constexpr
 	Type
 	determinant () const;
 
@@ -341,6 +343,7 @@ public:
 
 	///  Returns a new vector that is @vector multiplies by matrix.
 	template <class T>
+	constexpr
 	vector3 <Type>
 	multVecMatrix (const vector3 <T> &) const;
 
@@ -351,16 +354,19 @@ public:
 
 	///  Returns a new vector that is matrix multiplies by @vector.
 	template <class T>
+	constexpr
 	vector3 <Type>
 	multMatrixVec (const vector3 <T> &) const;
 
 	///  Returns a new vector that is @vector (a normal or direction vector) multiplies by matrix.
 	template <class T>
+	constexpr
 	vector2 <Type>
 	multDirMatrix (const vector2 <T> &) const;
 
 	///  Returns a new vector that is matrix multiplies by @vector (a normal or direction vector).
 	template <class T>
+	constexpr
 	vector2 <Type>
 	multMatrixDir (const vector2 <T> &) const;
 
@@ -654,6 +660,7 @@ matrix3 <Type>::factor (vector2 <Type> & translation,
 }
 
 template <class Type>
+constexpr
 Type
 matrix3 <Type>::determinant2 () const
 {
@@ -663,6 +670,7 @@ matrix3 <Type>::determinant2 () const
 }
 
 template <class Type>
+constexpr
 Type
 matrix3 <Type>::determinant () const
 {
@@ -846,6 +854,7 @@ matrix3 <Type>::multVecMatrix (const vector2 <T> & vector) const
 
 template <class Type>
 template <class T>
+constexpr
 vector3 <Type>
 matrix3 <Type>::multVecMatrix (const vector3 <T> & vector) const
 {
@@ -867,6 +876,7 @@ matrix3 <Type>::multMatrixVec (const vector2 <T> & vector) const
 
 template <class Type>
 template <class T>
+constexpr
 vector3 <Type>
 matrix3 <Type>::multMatrixVec (const vector3 <T> & vector) const
 {
@@ -877,6 +887,7 @@ matrix3 <Type>::multMatrixVec (const vector3 <T> & vector) const
 
 template <class Type>
 template <class T>
+constexpr
 vector2 <Type>
 matrix3 <Type>::multDirMatrix (const vector2 <T> & vector) const
 {
@@ -886,6 +897,7 @@ matrix3 <Type>::multDirMatrix (const vector2 <T> & vector) const
 
 template <class Type>
 template <class T>
+constexpr
 vector2 <Type>
 matrix3 <Type>::multMatrixDir (const vector2 <T> & vector) const
 {
@@ -931,6 +943,8 @@ matrix3 <Type>::scale (const vector2 <Type> & scaleFactor)
 ///  Compares two matrix3 numbers.
 ///  Return true if @a a is equal to @a b.
 template <class Type>
+inline
+constexpr
 bool
 operator == (const matrix3 <Type> & lhs, const matrix3 <Type> & rhs)
 {
@@ -941,6 +955,7 @@ operator == (const matrix3 <Type> & lhs, const matrix3 <Type> & rhs)
 ///  Return true if @a a is not equal to @a b.
 template <class Type>
 inline
+constexpr
 bool
 operator not_eq (const matrix3 <Type> & lhs, const matrix3 <Type> & rhs)
 {
@@ -953,6 +968,7 @@ operator not_eq (const matrix3 <Type> & lhs, const matrix3 <Type> & rhs)
 ///  Returns the determinant of the 2x2 submatrix of @a matrix.
 template <class Type>
 inline
+constexpr
 Type
 determinant2 (const matrix3 <Type> & matrix)
 {
@@ -962,6 +978,7 @@ determinant2 (const matrix3 <Type> & matrix)
 ///  Returns the determinant of the @a matrix.
 template <class Type>
 inline
+constexpr
 Type
 determinant (const matrix3 <Type> & matrix)
 {

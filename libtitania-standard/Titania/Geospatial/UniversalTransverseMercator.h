@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,17 +48,70 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TYPES_STRING_H__
-#define __TITANIA_X3D_TYPES_STRING_H__
+#ifndef __TITANIA_GEOSPATIAL_UNIVERSAL_TRANSVERSE_MERCATOR_H__
+#define __TITANIA_GEOSPATIAL_UNIVERSAL_TRANSVERSE_MERCATOR_H__
 
-#include <glibmm/ustring.h>
+#include "BasicConverter.h"
 
 namespace titania {
-namespace X3D {
+namespace geospatial {
 
-using String = Glib::ustring;
+///  @name Convert universal transverse mercator (utm) coordinates to geocentric coordinates
+template <class Type>
+class universal_transverse_mercator :
+	public basic_converter <Type>
+{
+public:
 
-} // X3D
+	constexpr
+	universal_transverse_mercator (const spheroid3 <Type> & spheroid) :
+		a      (spheroid .a ()),
+		a1_2   (a / 2),
+		a2     (a * a),
+		c2     (spheroid .c () * spheroid .c ()),
+		f      (spheroid .f ()),
+		eps2_f (f * (2 - f)),
+		eps1_4 (eps2_f / 4)
+	{ }
+
+	virtual
+	vector3 <Type>
+	convert (const vector3 <Type> & geospatial) const final override
+	{
+		const Type latitude  = geospatial .x ();
+		const Type longitude = geospatial .y ();
+		const Type elevation = geospatial .z ();
+
+		const Type slat  = std::sin (latitude);
+		const Type slat2 = slat * slat;
+
+		const Type clat = std::cos (latitude);
+
+		const Type Rn   = a1_2 / std::sqrt (.25 - eps1_4 * slat2);
+		const Type RnPh = Rn + elevation;
+
+		return vector3 <Type> (RnPh * clat * std::cos (longitude),
+		                       RnPh * clat * std::sin (longitude),
+		                       (c2 / a2 * Rn + elevation) * slat);
+	}
+
+private:
+
+	const Type a;
+	const Type a1_2;
+	const Type a2;
+	const Type c2;
+	const Type f;
+	const Type eps2_f;
+	const Type eps1_4;
+
+};
+
+extern template class universal_transverse_mercator <float>;
+extern template class universal_transverse_mercator <double>;
+extern template class universal_transverse_mercator <long double>;
+
+} // geospatial
 } // titania
 
 #endif

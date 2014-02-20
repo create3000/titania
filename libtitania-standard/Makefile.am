@@ -14,6 +14,9 @@ libtitania_standard_la_SOURCES =  \
 	Titania/Chrono/Now.cpp \
 	Titania/Chrono/StopWatch.cpp \
 	Titania/Chrono/SystemClock.cpp \
+	Titania/Geospatial/BasicConverter.cpp \
+	Titania/Geospatial/Geodetic.cpp \
+	Titania/Geospatial/UniversalTransverseMercator.cpp \
 	Titania/InputOutput/Character.cpp \
 	Titania/InputOutput/Comment.cpp \
 	Titania/InputOutput/Generator.cpp \
@@ -28,6 +31,7 @@ libtitania_standard_la_SOURCES =  \
 	Titania/Math/Geometry/Line3.cpp \
 	Titania/Math/Geometry/Plane3.cpp \
 	Titania/Math/Geometry/Sphere3.cpp \
+	Titania/Math/Geometry/Spheroid3.cpp \
 	Titania/Math/Image.cpp \
 	Titania/Math/Numbers/Color3.cpp \
 	Titania/Math/Numbers/Color4.cpp \

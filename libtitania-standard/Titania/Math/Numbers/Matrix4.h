@@ -374,6 +374,7 @@ public:
 
 	///  Returns a new vector that is @vector multiplies by matrix.
 	template <class T>
+	constexpr
 	vector4 <Type>
 	multVecMatrix (const vector4 <T> &) const;
 
@@ -384,16 +385,19 @@ public:
 
 	///  Returns a new vector that is matrix multiplies by @vector.
 	template <class T>
+	constexpr
 	vector4 <Type>
 	multMatrixVec (const vector4 <T> &) const;
 
 	///  Returns a new vector that is @vector (a normal or direction vector) multiplies by matrix.
 	template <class T>
+	constexpr
 	vector3 <Type>
 	multDirMatrix (const vector3 <T> &) const;
 
 	///  Returns a new vector that is matrix multiplies by @vector (a normal or direction vector).
 	template <class T>
+	constexpr
 	vector3 <Type>
 	multMatrixDir (const vector3 <T> &) const;
 
@@ -908,6 +912,7 @@ matrix4 <Type>::multVecMatrix (const vector3 <T> & vector) const
  */
 template <class Type>
 template <class T>
+constexpr
 vector4 <Type>
 matrix4 <Type>::multVecMatrix (const vector4 <T> & vector) const
 {
@@ -937,6 +942,7 @@ matrix4 <Type>::multMatrixVec (const vector3 <T> & vector) const
  */
 template <class Type>
 template <class T>
+constexpr
 vector4 <Type>
 matrix4 <Type>::multMatrixVec (const vector4 <T> & vector) const
 {
@@ -951,6 +957,7 @@ matrix4 <Type>::multMatrixVec (const vector4 <T> & vector) const
  */
 template <class Type>
 template <class T>
+constexpr
 vector3 <Type>
 matrix4 <Type>::multDirMatrix (const vector3 <T> & vector) const
 {
@@ -964,6 +971,7 @@ matrix4 <Type>::multDirMatrix (const vector3 <T> & vector) const
  */
 template <class Type>
 template <class T>
+constexpr
 vector3 <Type>
 matrix4 <Type>::multMatrixDir (const vector3 <T> & vector) const
 {
@@ -1029,6 +1037,7 @@ matrix4 <Type>::scale (const vector3 <Type> & scaleFactor)
 ///  Return true if @a a is equal to @a b.
 template <class Type>
 inline
+constexpr
 bool
 operator == (const matrix4 <Type> & lhs, const matrix4 <Type> & rhs)
 {
@@ -1039,6 +1048,7 @@ operator == (const matrix4 <Type> & lhs, const matrix4 <Type> & rhs)
 ///  Return true if @a a is not equal to @a b.
 template <class Type>
 inline
+constexpr
 bool
 operator not_eq (const matrix4 <Type> & lhs, const matrix4 <Type> & rhs)
 {

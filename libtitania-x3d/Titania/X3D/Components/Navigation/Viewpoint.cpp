@@ -53,6 +53,9 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
+//
+#include "../../Rendering/OpenGL.h"
+
 namespace titania {
 namespace X3D {
 
@@ -129,11 +132,32 @@ Viewpoint::getLookAtPositionOffset (const Box3f & bbox) const
 	return Vector3f ();
 }
 
+static
+void
+frustum (const double l, const double r, const double b, const double t, const double n, const double f)
+{
+	const double r_l = r - l;
+	const double t_b = t - b;
+	const double f_n = f - n;
+	const double n_2 = 2 * n;
+
+	const double A = (r + l) / r_l;
+	const double B = (t + b) / t_b;
+	const double C = -(f + n) / f_n;
+	const double D = -n_2 * f / f_n;
+	const double E = n_2 / r_l;
+	const double F = n_2 / t_b;
+
+	glLoadMatrixd (Matrix4d (E, 0, 0, 0,
+	                         0, F, 0, 0,
+	                         A, B, C, -1,
+	                         0, 0, D, 0) .data ());
+}
+
 void
 Viewpoint::reshape (const float zNear, const float zFar)
 {
 	glMatrixMode (GL_PROJECTION);
-	glLoadIdentity ();
 
 	const Vector4i viewport = Viewport4i ();
 
@@ -145,12 +169,12 @@ Viewpoint::reshape (const float zNear, const float zFar)
 	if (width > height)
 	{
 		const float aspect = width * ratio / height;
-		glFrustum (-aspect, aspect, -ratio, ratio, zNear, zFar);
+		frustum (-aspect, aspect, -ratio, ratio, zNear, zFar);
 	}
 	else
 	{
 		const float aspect = height * ratio / width;
-		glFrustum (-ratio, ratio, -aspect, aspect, zNear, zFar);
+		frustum (-ratio, ratio, -aspect, aspect, zNear, zFar);
 	}
 
 	glMatrixMode (GL_MODELVIEW);

@@ -97,7 +97,7 @@ public:
 
 	virtual
 	X3DBaseNode*
-	getLocalNode () final override;
+	getInnerNode () final override;
 
 	virtual
 	const std::string &

@@ -66,7 +66,7 @@ public:
 	
 	virtual
 	X3DBaseNode*
-	getBaseValue () const = 0;
+	getBaseNode () const = 0;
 
 
 protected:
@@ -228,7 +228,7 @@ public:
 	
 	virtual
 	X3DBaseNode*
-	getBaseValue () const final override
+	getBaseNode () const final override
 	{ return getValue (); }
 
 	///  @name Boolean operator
@@ -390,7 +390,7 @@ template <class ValueType>
 void
 X3DSFNode <ValueType>::write (const X3DChildObject & field)
 {
-	X3DBaseNode* baseNode = dynamic_cast <const X3DSFNodeBase &> (field) .getBaseValue ();
+	X3DBaseNode* baseNode = dynamic_cast <const X3DSFNodeBase &> (field) .getBaseNode ();
 
 	set (dynamic_cast <internal_type> (baseNode));
 }

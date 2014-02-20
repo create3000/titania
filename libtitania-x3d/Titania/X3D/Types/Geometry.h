@@ -57,6 +57,7 @@
 #include <Titania/Math/Geometry/Line3.h>
 #include <Titania/Math/Geometry/Plane3.h>
 #include <Titania/Math/Geometry/Sphere3.h>
+#include <Titania/Math/Geometry/Spheroid3.h>
 #include <Titania/Math/Geometry/Triangle3.h>
 
 namespace titania {
@@ -64,23 +65,20 @@ namespace X3D {
 
 using namespace titania::math;
 
-typedef box2 <double> Box2d;
-typedef box2 <float>  Box2f;
-
-typedef box3 <double> Box3d;
-typedef box3 <float>  Box3f;
-
-typedef cylinder3 <double> Cylinder3d;
-typedef cylinder3 <float>  Cylinder3f;
-
-typedef line3 <double> Line3d;
-typedef line3 <float>  Line3f;
-
-typedef plane3 <double> Plane3d;
-typedef plane3 <float>  Plane3f;
-
-typedef sphere3 <double> Sphere3d;
-typedef sphere3 <float>  Sphere3f;
+using Box2d      = box2 <double>;
+using Box2f      = box2 <float>;
+using Box3d      = box3 <double>;
+using Box3f      = box3 <float>;
+using Cylinder3d = cylinder3 <double>;
+using Cylinder3f = cylinder3 <float>;
+using Line3d     = line3 <double>;
+using Line3f     = line3 <float>;
+using Plane3d    = plane3 <double>;
+using Plane3f    = plane3 <float>;
+using Sphere3d   = sphere3 <double>;
+using Sphere3f   = sphere3 <float>;
+using Spheroid3d = spheroid3 <double>;
+using Spheroid3f = spheroid3 <double>;
 
 } // X3D
 } // titania

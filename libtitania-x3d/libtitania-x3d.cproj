@@ -634,6 +634,7 @@
     <None Include="Titania\X3D\Fields\X3DMFNode.h" />
     <None Include="share\titania\shaders\ParticleSystems\ExplosionEmitter.vs" />
     <None Include="Titania\X3D\Fields\VrmlMatrix.h" />
+    <None Include="Titania\X3D\Bits\Geospatial.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1094,6 +1095,7 @@
     <Compile Include="Titania\X3D\Miscellaneous\Random.cpp" />
     <Compile Include="Titania\X3D\Miscellaneous\Shader.cpp" />
     <Compile Include="Titania\X3D\Miscellaneous\BVH.cpp" />
+    <Compile Include="Titania\X3D\Bits\Geospatial.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

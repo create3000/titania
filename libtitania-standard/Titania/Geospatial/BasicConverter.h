@@ -48,17 +48,37 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TYPES_STRING_H__
-#define __TITANIA_X3D_TYPES_STRING_H__
+#ifndef __TITANIA_GEOSPATIAL_BASIC_CONVERTER_H__
+#define __TITANIA_GEOSPATIAL_BASIC_CONVERTER_H__
 
-#include <glibmm/ustring.h>
+#include "../Math/Geometry/Spheroid3.h"
+#include "../Math/Numbers/Vector3.h"
 
 namespace titania {
-namespace X3D {
+namespace geospatial {
 
-using String = Glib::ustring;
+using namespace titania::math;
 
-} // X3D
+template <class Type>
+class basic_converter
+{
+public:
+
+	vector3 <Type>
+	operator () (const vector3 <Type> & value) const
+	{ return convert (value); }
+
+	virtual
+	vector3 <Type>
+	convert (const vector3 <Type> &) const = 0;
+
+};
+
+extern template class basic_converter <float>;
+extern template class basic_converter <double>;
+extern template class basic_converter <long double>;
+
+} // geospatial
 } // titania
 
 #endif

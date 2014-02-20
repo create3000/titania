@@ -48,17 +48,14 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TYPES_STRING_H__
-#define __TITANIA_X3D_TYPES_STRING_H__
-
-#include <glibmm/ustring.h>
+#include "Geodetic.h"
 
 namespace titania {
-namespace X3D {
+namespace geospatial {
 
-using String = Glib::ustring;
+template class geodetic <float>;
+template class geodetic <double>;
+template class geodetic <long double>;
 
-} // X3D
+} // math
 } // titania
-
-#endif

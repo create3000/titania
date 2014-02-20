@@ -1,3 +1,25 @@
+2014-02-20  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Cast.h:
+	* Time.h:
+	* Image.h:
+	* String.h:
+	* Numbers.h:
+	* Geometry.h:
+	* Traverse.cpp:
+	* Geospatial.h:
+	* X3DSFNode.h:
+	* Geospatial.cpp:
+	* X3DBaseNode.h:
+	* Viewpoint.cpp:
+	* GeoCoordinate.h:
+	* X3DPrototypeInstance.h:
+	* GeoCoordinate.cpp:
+	* X3DPrototypeInstance.cpp:
+	* X3DTransformNode.cpp: 
+
 2014-02-19  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DInput.h:

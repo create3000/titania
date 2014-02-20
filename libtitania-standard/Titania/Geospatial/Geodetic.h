@@ -48,17 +48,83 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TYPES_STRING_H__
-#define __TITANIA_X3D_TYPES_STRING_H__
+#ifndef __TITANIA_GEOSPATIAL_GEODETIC_H__
+#define __TITANIA_GEOSPATIAL_GEODETIC_H__
 
-#include <glibmm/ustring.h>
+#include "BasicConverter.h"
 
 namespace titania {
-namespace X3D {
+namespace geospatial {
 
-using String = Glib::ustring;
+/**
+ *  Template to convert geodetic coordinates to geocentric coordinates.
+ *
+ *  @param  Type  Type of vector values.
+ */
 
-} // X3D
+template <class Type>
+class geodetic :
+	public basic_converter <Type>
+{
+public:
+
+	constexpr
+	geodetic (const spheroid3 <Type> & spheroid, const bool longitude_first = false) :
+		longitude_first (longitude_first),
+		              a (spheroid .a ()),
+		           a1_2 (a / 2),
+		             a2 (a * a),
+		             c2 (spheroid .c () * spheroid .c ()),
+		              f (spheroid .f ()),
+		         eps2_f (f * (2 - f)),
+		         eps1_4 (eps2_f / 4)
+	{ }
+
+	virtual
+	vector3 <Type>
+	convert (const vector3 <Type> & geospatial) const final override;
+
+
+private:
+
+	const bool longitude_first;
+
+	const Type a;
+	const Type a1_2;
+	const Type a2;
+	const Type c2;
+	const Type f;
+	const Type eps2_f;
+	const Type eps1_4;
+
+};
+
+template <class Type>
+vector3 <Type>
+geodetic <Type>::convert (const vector3 <Type> & geospatial) const
+{
+	const Type latitude  = longitude_first ? geospatial .y () : geospatial .x ();
+	const Type longitude = longitude_first ? geospatial .x () : geospatial .y ();
+	const Type elevation = geospatial .z ();
+
+	const Type slat  = std::sin (latitude);
+	const Type slat2 = slat * slat;
+
+	const Type clat = std::cos (latitude);
+
+	const Type Rn   = a1_2 / std::sqrt (.25 - eps1_4 * slat2);
+	const Type RnPh = Rn + elevation;
+
+	return vector3 <Type> (RnPh * clat * std::cos (longitude),
+	                       RnPh * clat * std::sin (longitude),
+	                       (c2 / a2 * Rn + elevation) * slat);
+}
+
+extern template class geodetic <float>;
+extern template class geodetic <double>;
+extern template class geodetic <long double>;
+
+} // geospatial
 } // titania
 
 #endif

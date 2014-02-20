@@ -164,7 +164,8 @@ public:
 
 	///  Returns number of components.
 	static
-	constexpr size_type
+	constexpr
+	size_type
 	size ()
 	{ return 3; }
 
@@ -314,7 +315,9 @@ vector3 <Type>::normalize ()
 ///  Compares two vector2 numbers.
 ///  Returns true if @a lhs is equal to @a rhs.
 template <class Type>
-constexpr bool
+inline
+constexpr
+bool
 operator == (const vector3 <Type> & lhs, const vector3 <Type> & rhs)
 {
 	return lhs .x () == rhs .x () and
@@ -325,7 +328,9 @@ operator == (const vector3 <Type> & lhs, const vector3 <Type> & rhs)
 ///  Compares two vector2 numbers.
 ///  Returns false if @a lhs is not equal to @a rhs.
 template <class Type>
-constexpr bool
+inline
+constexpr
+bool
 operator not_eq (const vector3 <Type> & lhs, const vector3 <Type> & rhs)
 {
 	return lhs .x () not_eq rhs .x () or
@@ -339,7 +344,8 @@ operator not_eq (const vector3 <Type> & lhs, const vector3 <Type> & rhs)
 ///  Returns a copy @a vector.
 template <class Type>
 inline
-constexpr vector3 <Type>
+constexpr
+vector3 <Type>
 operator + (const vector3 <Type> & vector)
 {
 	return vector;
@@ -432,7 +438,8 @@ operator / (const vector3 <Type> & lhs, const Type & rhs)
 
 ///  Returns new vector value @a lhs divided by @a rhs.
 template <class Type>
-constexpr vector3 <Type>
+constexpr
+vector3 <Type>
 operator / (const Type & lhs, const vector3 <Type> & rhs)
 {
 	return vector3 <Type> (lhs / rhs .x (),
@@ -442,7 +449,8 @@ operator / (const Type & lhs, const vector3 <Type> & rhs)
 
 ///  Returns new vector value @a lhs dot @a rhs.
 template <class Type>
-constexpr Type
+constexpr
+Type
 dot (const vector3 <Type> & lhs, const vector3 <Type> & rhs)
 {
 	return lhs .x () * rhs .x () +
@@ -452,7 +460,8 @@ dot (const vector3 <Type> & lhs, const vector3 <Type> & rhs)
 
 ///  Returns new vector value @a lhs cross @a rhs.
 template <class Type>
-constexpr vector3 <Type>
+constexpr
+vector3 <Type>
 cross (const vector3 <Type> & lhs, const vector3 <Type> & rhs)
 {
 	return vector3 <Type> (lhs .y () * rhs .z () - lhs .z () * rhs .y (),
@@ -463,7 +472,8 @@ cross (const vector3 <Type> & lhs, const vector3 <Type> & rhs)
 ///  Returns the @a vector magnitude.
 template <class Type>
 inline
-constexpr Type
+constexpr
+Type
 abs (const vector3 <Type> & vector)
 {
 	return std::sqrt (norm (vector));
@@ -472,7 +482,8 @@ abs (const vector3 <Type> & vector)
 ///  Returns the @a vector magnitude squared.
 template <class Type>
 inline
-constexpr Type
+constexpr
+Type
 norm (const vector3 <Type> & vector)
 {
 	return dot (vector, vector);

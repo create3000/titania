@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -192,7 +192,7 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const bool inScene,
 
 	if (not inScene)
 	{
-		if (find (node -> getLocalNode (), object, inScene, hierarchy, seen))
+		if (find (node -> getInnerNode (), object, inScene, hierarchy, seen))
 			return true;
 
 		Inline* inlineNode = dynamic_cast <Inline*> (node);

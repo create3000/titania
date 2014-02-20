@@ -105,7 +105,7 @@ X3DTransformNode::setMatrixWithCenter (const Matrix4f & matrix, const Vector3f &
 	translation ()      = t;
 	rotation ()         = r;
 	scale ()            = s;
-	scaleOrientation () = so;
+	scaleOrientation () = s == Vector3f (1, 1, 1) ? Rotation4f () : so;
 	center ()           = c;
 }
 
