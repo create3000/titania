@@ -61,6 +61,8 @@ class GeoOrigin :
 {
 public:
 
+	///  @name Construction
+
 	GeoOrigin (X3DExecutionContext* const);
 
 	virtual
@@ -111,9 +113,13 @@ public:
 	geoCoords () const
 	{ return *fields .geoCoords; }
 
+	///  @name Operations
+
+	Vector3d
+	getOrigin () const;
+
 
 private:
-
 
 	///  @name Static members
 

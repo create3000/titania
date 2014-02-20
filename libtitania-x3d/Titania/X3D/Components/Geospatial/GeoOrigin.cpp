@@ -50,6 +50,7 @@
 
 #include "GeoOrigin.h"
 
+#include "../../Bits/Geospatial.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -84,6 +85,12 @@ X3DBaseNode*
 GeoOrigin::create (X3DExecutionContext* const executionContext) const
 {
 	return new GeoOrigin (executionContext);
+}
+
+Vector3d
+GeoOrigin::getOrigin () const
+{
+	return Geospatial::getReferenceFrame (geoSystem ()) -> convert (geoCoords ());
 }
 
 } // X3D

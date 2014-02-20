@@ -51,6 +51,7 @@
 #ifndef __TITANIA_X3D_COMPONENTS_GEOSPATIAL_GEO_COORDINATE_H__
 #define __TITANIA_X3D_COMPONENTS_GEOSPATIAL_GEO_COORDINATE_H__
 
+#include "../Geospatial/GeoOrigin.h"
 #include "../Rendering/X3DCoordinateNode.h"
 #include "../../Bits/Geospatial.h"
 
@@ -61,6 +62,8 @@ class GeoCoordinate :
 	public X3DCoordinateNode
 {
 public:
+
+	///  @name Construction
 
 	GeoCoordinate (X3DExecutionContext* const);
 
@@ -144,15 +147,31 @@ public:
 	getSize () const final override
 	{ return point () .size (); }
 
+	///  @name Destruction
+	
+	virtual
+	void
+	dispose () final override;
+
 
 private:
+
+	///  @name Construction
 
 	virtual
 	void
 	initialize () final override;
 
+	///  @name Event handlers
+
 	void
 	set_geoSystem ();
+
+	void
+	set_geoOrigin ();
+
+	void
+	set_origin ();
 
 	///  @name Static members
 
@@ -174,6 +193,8 @@ private:
 	Fields fields;
 
 	Geospatial::ReferenceFramePtr referenceFrame;
+	Vector3d                      origin;
+	X3DSFNode <GeoOrigin>         geoOriginNode;
 
 };
 

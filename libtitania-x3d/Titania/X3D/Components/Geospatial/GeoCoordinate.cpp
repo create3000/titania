@@ -50,6 +50,7 @@
 
 #include "GeoCoordinate.h"
 
+#include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Types/Geometry.h"
 
@@ -70,12 +71,16 @@ GeoCoordinate::GeoCoordinate (X3DExecutionContext* const executionContext) :
 	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DCoordinateNode (),
 	           fields (),
-	   referenceFrame ()
+	   referenceFrame (),
+	           origin (),
+	    geoOriginNode ()
 {
 	addField (inputOutput,    "metadata",  metadata ());
 	addField (initializeOnly, "geoSystem", geoSystem ());
 	addField (inputOutput,    "point",     point ());
 	addField (initializeOnly, "geoOrigin", geoOrigin ());
+
+	addChildren (geoOriginNode);
 }
 
 X3DBaseNode*
@@ -90,14 +95,45 @@ GeoCoordinate::initialize ()
 	X3DCoordinateNode::initialize ();
 
 	geoSystem () .addInterest (this, &GeoCoordinate::set_geoSystem);
+	geoOrigin () .addInterest (this, &GeoCoordinate::set_geoOrigin);
 
 	set_geoSystem ();
+	set_geoOrigin ();
 }
 
 void
 GeoCoordinate::set_geoSystem ()
 {
 	referenceFrame = Geospatial::getReferenceFrame (geoSystem ());
+}
+
+void
+GeoCoordinate::set_geoOrigin ()
+{
+	if (geoOriginNode)
+	{
+		geoOriginNode -> removeInterest (this, &GeoCoordinate::set_origin);
+		geoOriginNode -> removeInterest (this);
+	}
+
+	geoOriginNode = x3d_cast <GeoOrigin*> (geoOrigin ());
+
+	if (geoOriginNode)
+	{
+		geoOriginNode -> addInterest (this, &GeoCoordinate::set_origin);
+		geoOriginNode -> addInterest (this);
+	}
+
+	set_origin ();
+}
+
+void
+GeoCoordinate::set_origin ()
+{
+	if (geoOriginNode)
+		origin = geoOriginNode -> getOrigin ();
+	else
+		origin = Vector3d ();
 }
 
 Box3f
@@ -112,9 +148,9 @@ GeoCoordinate::getNormal (const size_t index1, const size_t index2, const size_t
 	const size_t size = point () .size ();
 
 	if (index1 < size and index2 < size and index3 < size)
-		return math::normal (referenceFrame -> convert (point () [index1]),
-		                     referenceFrame -> convert (point () [index2]),
-		                     referenceFrame -> convert (point () [index3]));
+		return math::normal (referenceFrame -> convert (point () [index1]) - origin,
+		                     referenceFrame -> convert (point () [index2]) - origin,
+		                     referenceFrame -> convert (point () [index3]) - origin);
 
 	return Vector3f (0, 0, 1);
 }
@@ -123,20 +159,20 @@ void
 GeoCoordinate::addVertex (opengl::tessellator <size_t> & tessellator, const size_t index, const size_t i) const
 {
 	if (index < point () .size ())
-		tessellator .add_vertex (referenceFrame -> convert (point () [index]), i);
+		tessellator .add_vertex (referenceFrame -> convert (point () [index]) - origin, i);
 
 	else
-		tessellator .add_vertex (referenceFrame -> convert (Vector3f ()), i);
+		tessellator .add_vertex (referenceFrame -> convert (Vector3f ()) - origin, i);
 }
 
 void
 GeoCoordinate::addVertex (std::vector <Vector3f> & vertices, const size_t index) const
 {
 	if (index < point () .size ())
-		vertices .emplace_back (referenceFrame -> convert (point () [index]));
+		vertices .emplace_back (referenceFrame -> convert (point () [index]) - origin);
 
 	else
-		vertices .emplace_back (referenceFrame -> convert (Vector3f ()));
+		vertices .emplace_back (referenceFrame -> convert (Vector3f ()) - origin);
 }
 
 std::vector <Vector4f>
@@ -150,7 +186,7 @@ GeoCoordinate::getControlPoints (const MFDouble & weight) const
 	{
 		for (size_t i = 0; i < point () .size (); i ++)
 		{
-			const auto p = referenceFrame -> convert (point () [i]);
+			const auto p = referenceFrame -> convert (point () [i] - origin);
 
 			controlPoints .emplace_back (p .x (), p .y (), p .z (), 1);
 		}
@@ -159,13 +195,21 @@ GeoCoordinate::getControlPoints (const MFDouble & weight) const
 	{
 		for (size_t i = 0; i < point () .size (); i ++)
 		{
-			const auto p = referenceFrame -> convert (point () [i]);
+			const auto p = referenceFrame -> convert (point () [i] - origin);
 
 			controlPoints .emplace_back (p . x (), p . y (), p . z (), weight [i]);
 		}
 	}
 
 	return controlPoints;
+}
+
+void
+GeoCoordinate::dispose ()
+{
+	geoOriginNode .dispose ();
+
+	X3DCoordinateNode::dispose ();
 }
 
 } // X3D

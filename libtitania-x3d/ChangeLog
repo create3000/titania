@@ -1,5 +1,12 @@
 2014-02-20  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* GeoOrigin.h:
+	* GeoOrigin.cpp:
+	* GeoCoordinate.h:
+	* GeoCoordinate.cpp: 
+
+2014-02-20  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* Cast.h:
