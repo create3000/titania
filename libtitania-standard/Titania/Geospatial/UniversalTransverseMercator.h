@@ -65,88 +65,100 @@ class universal_transverse_mercator :
 public:
 
 	constexpr
-	universal_transverse_mercator (const spheroid3 <Type> & spheroid, const int zone, const bool hemisphere_north = true, const bool easting_first = false) :
-		              zone (zone),
-		  hemisphere_north (hemisphere_north),
-		     easting_first (easting_first),
-		                 a (spheroid .a ()),
-		                 c (spheroid .c ()),
-		                ee (1 - sqr (c / a)),
-		                EE (ee / (1 - ee)),
-		                e1 ((1 - std::sqrt (1 - ee)) / (1 + std::sqrt (1 - ee))),
-		               E11 (3 * e1 / 2 - 7 * e1 * e1 * e1 / 32),
-		               E22 (21 * e1 * e1 / 16 - 55 * e1 * e1 * e1 * e1 / 32),
-		               E33 (151 * e1 * e1 * e1 / 96),
-		               E44 (a * (1 - ee / 4 - 3 * ee * ee / 64 - 5 * ee * ee * ee / 256)),
-		geodetic_converter (spheroid)
+	universal_transverse_mercator (const spheroid3 <Type> & spheroid, const int zone, const bool southern_hemisphere = false, const bool easting_first = false) :
+		southern_hemisphere (southern_hemisphere),
+		      easting_first (easting_first),
+		                  a (spheroid .a ()),
+		                 ee (1 - sqr (spheroid .c () / a)),
+		                 EE (ee / (1 - ee)),
+		                 E8 (8 * EE),
+		                 E9 (9 * EE),
+		               E252 (252 * EE),
+		                 e1 ((1 - std::sqrt (1 - ee)) / (1 + std::sqrt (1 - ee))),
+		                  A (k0 * (a * (1 - ee / 4 - 3 * ee * ee / 64 - 5 * ee * ee * ee / 256))),
+		                  B (3 * e1 / 2 - 7 * e1 * e1 * e1 / 32),
+		                  C (21 * e1 * e1 / 16 - 55 * e1 * e1 * e1 * e1 / 32),
+		                  D (151 * e1 * e1 * e1 / 96),
+		                  E (a * (1 - ee)),
+		         longitude0 (radians (Type (zone) * 6 - 183)),
+		 geodetic_converter (spheroid)
 	{ }
 
 	virtual
 	vector3 <Type>
 	convert (const vector3 <Type> & utm) const final override
 	{
-		static constexpr Type N0 = 1.0e7;
-		static constexpr Type E0 = 5.0e5;
-		static constexpr Type k0 = 0.9996;
+		Type northing = easting_first ? utm .y () : utm .x ();
+		Type easting  = easting_first ? utm .x () : utm .y ();
 
-		Type       northing = easting_first ? utm .y () : utm .x ();
-		const Type easting  = easting_first ? utm .x () : utm .y ();
+		// Check for southern hemisphere.
 
-		bool hn = hemisphere_north;
+		bool S = southern_hemisphere;
 
 		if (northing < 0)
 		{
-			hn       = false;
+			S        = true;
 			northing = -northing;
 		}
 
-		if (not hn)
+		if (S)
 			northing = northing - N0;
 
-		const Type y          = northing;
-		const Type x          = easting - E0;       //remove 500,000 meter offset for longitude
-		const Type longOrigin = radians (zone * 6 - 183); //origin in middle of zone
+		// Begin calculation.
 
-		const Type M  = y / k0;
-		const Type mu = M / E44;
+		easting -= E0;
 
-		const Type phi1Rad = mu + E11* std::sin (2 * mu) + E22* std::sin (4 * mu) + E33* std::sin (6 * mu);
+		const Type mu = northing / A;
 
-		const Type sphi1Rad2 = sqr (std::sin (phi1Rad));
-		const Type cphi1Rad  = std::cos (phi1Rad);
-		const Type tphi1Rad  = std::tan (phi1Rad);
+		const Type phi1 = mu + B* std::sin (2 * mu) + C* std::sin (4 * mu) + D* std::sin (6 * mu);
 
-		const Type N1 = a / std::sqrt (1 - ee * sphi1Rad2);
-		const Type T1 = sqr (tphi1Rad);
-		const Type C1 = EE * sqr (cphi1Rad);
-		const Type R1 = a * (1 - ee) / std::pow (1 - ee * sphi1Rad2, 1.5);
-		const Type D  = x / (N1 * k0);
+		const Type sinphi1 = sqr (std::sin (phi1));
+		const Type cosphi1 = std::cos (phi1);
+		const Type tanphi1 = std::tan (phi1);
 
-		const Type latitude = phi1Rad - (N1 * tphi1Rad / R1) * (D * D / 2 - (5 + 3 * T1 + 10 * C1 - 4 * C1 * C1 - 9 * EE) * std::pow (D, 4) / 24
-		                                                        + (61 + 90 * T1 + 298 * C1 + 45 * T1 * T1 - 252 * EE - 3 * C1 * C1) * std::pow (D, 6) / 720);
+		const Type N1 = a / std::sqrt (1 - ee * sinphi1);
+		const Type T2 = sqr (tanphi1);
+		const Type T8 = std::pow (tanphi1, 8);
+		const Type C1 = EE * T2;
+		const Type C2 = sqr (C1);
+		const Type R1 = E / std::pow (1 - ee * sinphi1, 1.5);
+		const Type I  = easting / (N1 * k0);
 
-		const Type longitude = longOrigin + (D - (1 + 2 * T1 + C1) * std::pow (D, 3) / 6 + (5 - 2 * C1 + 28 * T1 - 3 * C1 * C1 + 8 * EE + 24 * T1 * T1) * std::pow (D, 5) / 120) / cphi1Rad;
+		const Type J = (5 + 3 * T2 + 10 * C1 - 4 * C2 - E9) * std::pow (I, 4) / 24;
+		const Type K = (61 + 90 * T2 + 298 * C1 + 45 * T8 - E252 - 3 * C2) * std::pow (I, 6) / 720;
+		const Type L = (5 - 2 * C1 + 28 * T2 - 3 * C2 + E8 + 24 * T8) * std::pow (I, 5) / 120;
+
+		const Type latitude = phi1 - (N1 * tanphi1 / R1) * (I * I / 2 - J + K);
+
+		const Type longitude = longitude0 + (I - (1 + 2 * T2 + C1) * std::pow (I, 3) / 6 + L) / cosphi1;
 
 		return geodetic_converter (vector3 <Type> (latitude, longitude, utm .z ()));
 	}
 
 private:
 
-	const Type zone;
-	const bool hemisphere_north;
+	static constexpr Type N0 = 1.0e7;
+	static constexpr Type E0 = 5.0e5;
+	static constexpr Type k0 = 0.9996;
+
+	const bool southern_hemisphere;
 	const bool easting_first;
 
 	const Type a;
-	const Type c;
 
 	const Type ee;
 	const Type EE;
+	const Type E8;
+	const Type E9;
+	const Type E252;
 	const Type e1;
 
-	const Type E11;
-	const Type E22;
-	const Type E33;
-	const Type E44;
+	const Type A;
+	const Type B;
+	const Type C;
+	const Type D;
+	const Type E;
+	const Type longitude0;
 
 	geodetic <Type> geodetic_converter;
 

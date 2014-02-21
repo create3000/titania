@@ -117,7 +117,7 @@ private:
 
 	static
 	bool
-	getHemisphereNorth (const MFString &);
+	getSouthernHemisphere (const MFString &);
 
 	//  @name Static members
 

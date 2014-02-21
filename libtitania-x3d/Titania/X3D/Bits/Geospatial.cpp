@@ -113,7 +113,7 @@ Geospatial::getReferenceFrame (const MFString & geoSystem)
 		{
 			return ReferenceFramePtr (new UniversalTransverseMercator (getEllipsoid (geoSystem),
 			                                                           getZone (geoSystem),
-			                                                           getHemisphereNorth (geoSystem),
+			                                                           getSouthernHemisphere (geoSystem),
 			                                                           getEastingFirst (geoSystem)));
 		}
 		case CoordinateSystemType::GC:
@@ -194,15 +194,15 @@ Geospatial::getZone (const MFString & geoSystem)
 }
 
 bool
-Geospatial::getHemisphereNorth (const MFString & geoSystem)
+Geospatial::getSouthernHemisphere (const MFString & geoSystem)
 {
 	for (const auto & string : geoSystem)
 	{
 		if (string == "S")
-			return false;
+			return true;
 	}
 
-	return true;
+	return false;
 }
 
 } // X3D
