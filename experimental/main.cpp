@@ -71,6 +71,7 @@
 #include <Titania/Math/Numbers/Vector4.h>
 #include <Titania/Geospatial/ReferenceEllipsoids.h>
 #include <Titania/Geospatial/Geodetic.h>
+#include <Titania/Geospatial/UniversalTransverseMercator.h>
 #include <Titania/OS.h>
 #include <Titania/Stream/InputFileStream.h>
 #include <Titania/Stream/InputUrlStream.h>
@@ -238,12 +239,14 @@ main (int argc, char** argv)
 
 	auto GD_WE = geospatial::geodetic <double> (geospatial::WE);
 
-	std::clog << geospatial::WE << std::endl;
-	std::clog << GD_WE (Vector3d (radians (37.4506), radians (-122.1834), 0)) << std::endl;
+	std::clog << 0.00669438 << std::endl;
+	std::clog << geospatial::WE .c () << std::endl;
+	std::clog << 1 - std::pow (geospatial::WE .c () / geospatial::WE .a (), 2) << std::endl;
+
 	std::clog << Vector3d (radians (37.4506), radians (-122.1834), 0) << std::endl;
-
-	//std::clog << geospatial::utm (WE, Vector3d (4145173, 572227, 0)) << std::endl;
-
+	
+	std::clog << GD_WE (Vector3d (radians (37.4506), radians (-122.1834), 0)) << std::endl;
+	std::clog << geospatial::universal_transverse_mercator <double> (geospatial::WE, 10) (Vector3d (4145173, 572227, 0)) << std::endl;
 	std::clog << Vector3d (-2700301, -4290762, 3857213) << std::endl; // gc: Geocentric coordinates
 
 	std::clog << "Function main done." << std::endl;

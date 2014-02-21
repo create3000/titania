@@ -107,6 +107,18 @@ private:
 	bool
 	getLongitudeFirst (const MFString &);
 
+	static
+	bool
+	getEastingFirst (const MFString &);
+
+	static
+	int
+	getZone (const MFString &);
+
+	static
+	bool
+	getHemisphereNorth (const MFString &);
+
 	//  @name Static members
 
 	static const std::map <std::string, CoordinateSystemType> coordinateSystems;

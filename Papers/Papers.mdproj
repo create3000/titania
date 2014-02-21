@@ -215,6 +215,7 @@
     <None Include="GPU Gems 2 Chapter 46 - GPU Sort\shader\renderRGBA16f.vs" />
     <None Include="GPU Gems 2 Chapter 46 - GPU Sort\shader\transitionSort.fs" />
     <None Include="GPU Gems 2 Chapter 46 - GPU Sort\shader\transitionSort.vs" />
+    <None Include="xxx\UniversalTransverseMercator.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Quaternion\" />

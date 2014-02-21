@@ -112,7 +112,7 @@ geodetic <Type>::convert (const vector3 <Type> & geospatial) const
 
 	const Type clat = std::cos (latitude);
 
-	const Type Rn   = a1_2 / std::sqrt (.25 - eps1_4 * slat2);
+	const Type Rn   = a1_2 / std::sqrt (0.25 - eps1_4 * slat2);
 	const Type RnPh = Rn + elevation;
 
 	return vector3 <Type> (RnPh * clat * std::cos (longitude),

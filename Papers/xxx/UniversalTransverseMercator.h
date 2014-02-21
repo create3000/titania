@@ -152,6 +152,109 @@ private:
 
 };
 
+/////  @name Convert universal transverse mercator (utm) coordinates to geocentric coordinates
+//template <class Type>
+//class universal_transverse_mercator :
+//	public basic_converter <Type>
+//{
+//public:
+//
+//	constexpr
+//	universal_transverse_mercator (const spheroid3 <Type> & spheroid, const int zone, const bool hemisphere_north = true, const bool easting_first = false) :
+//		              zone (zone),
+//		  hemisphere_north (hemisphere_north),
+//		     easting_first (easting_first),
+//		                 a (spheroid .a ()),
+//		                 f (spheroid .f ()),
+//		geodetic_converter (spheroid)
+//	{ }
+//
+//	virtual
+//	vector3 <Type>
+//	convert (const vector3 <Type> & utm) const final override
+//	{
+//		Type       northing = easting_first ? utm .y () : utm .x ();
+//		const Type easting  = easting_first ? utm .x () : utm .y ();
+//
+//		bool hn = hemisphere_north;
+//
+//		if (northing < 0)
+//		{
+//			hn       = false;
+//			northing = -northing;
+//		}
+//
+//		if (not hn)
+//			northing = northing - 1.0e7;
+//
+//		static constexpr Type N0 = 1.0e7;
+//		static constexpr Type E0 = 5.0e5;
+//		static constexpr Type k0 = 0.9996;
+//
+//		const Type N = f / (2 - f);
+//
+//		const Type A = a / (1 + N) * (1 + std::pow (N, 2) / 4 + std::pow (N, 4) / 64);
+//
+//		const Type b [3] = {
+//			N / 2.0 - 2.0 / 3.0 * N * N + 37.0 / 96.0 * N * N * N,
+//			N * N / 48.0 + N * N * N / 15.0,
+//			17.0 / 480.0 * N * N * N
+//		};
+//
+//		const Type d [3] = {
+//			2 * N - 2.0 / 3.0 * N * N - 2 * N * N * N,
+//			7.0 / 3.0 * N * N - 8.0 / 5.0 * N * N * N,
+//			56.0 / 15.0 * N * N * N
+//		};
+//
+//		const Type e = (northing /* - N0 */) / (k0 * A);
+//		const Type n = (easting - E0) / (k0 * A);
+//
+//		Type te = 0;
+//
+//		for (int j = 1; j < 4; ++ j)
+//			te += b [j - 1] * std::sin (2 * j * e) * std::cosh (2 * j * n);
+//
+//		const Type ee = e - te;
+//
+//		Type tn = 0;
+//
+//		for (int j = 1; j < 4; ++ j)
+//			tn += b [j - 1] * std::cos (2 * j * e) * std::sinh (2 * j * n);
+//
+//		const Type nn = n - tn;
+//
+//		const Type x = std::asin (std::sin (ee) / std::cosh (nn));
+//
+//		Type tx = 0;
+//
+//		for (int j = 1; j < 4; ++ j)
+//			tx += d [j - 1] * std::sin (2 * j * x);
+//
+//		const Type latitude = x + tx;
+//
+//		const Type longitude0 = radians (zone * 6 - 183);
+//		const Type longitude  = longitude0 + std::atan (std::sinh (nn) / std::cos (ee));
+//
+//		__LOG__ << degrees (latitude) << std::endl;
+//		__LOG__ << degrees (longitude) << std::endl;
+//
+//		return geodetic_converter (vector3 <Type> (latitude, longitude, utm .z ()));
+//	}
+//
+//private:
+//
+//	const Type zone;
+//	const bool hemisphere_north;
+//	const bool easting_first;
+//
+//	const Type a;
+//	const Type f;
+//
+//	geodetic <Type> geodetic_converter;
+//
+//};
+
 extern template class universal_transverse_mercator <float>;
 extern template class universal_transverse_mercator <double>;
 extern template class universal_transverse_mercator <long double>;

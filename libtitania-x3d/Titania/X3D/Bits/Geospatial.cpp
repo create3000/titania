@@ -54,6 +54,8 @@
 #include <Titania/Geospatial/ReferenceEllipsoids.h>
 #include <Titania/Geospatial/UniversalTransverseMercator.h>
 
+#include <pcrecpp.h>
+
 namespace titania {
 namespace X3D {
 
@@ -104,13 +106,15 @@ Geospatial::getReferenceFrame (const MFString & geoSystem)
 	{
 		case CoordinateSystemType::GD:
 		{
-			const bool longitude_first = getLongitudeFirst (geoSystem);
-
-			return ReferenceFramePtr (new Geodetic (getEllipsoid (geoSystem), longitude_first));
+			return ReferenceFramePtr (new Geodetic (getEllipsoid (geoSystem),
+			                                        getLongitudeFirst (geoSystem)));
 		}
 		case CoordinateSystemType::UTM:
 		{
-			return ReferenceFramePtr (new UniversalTransverseMercator (geospatial::WE));
+			return ReferenceFramePtr (new UniversalTransverseMercator (getEllipsoid (geoSystem),
+			                                                           getZone (geoSystem),
+			                                                           getHemisphereNorth (geoSystem),
+			                                                           getEastingFirst (geoSystem)));
 		}
 		case CoordinateSystemType::GC:
 		{
@@ -159,6 +163,46 @@ Geospatial::getLongitudeFirst (const MFString & geoSystem)
 	}
 
 	return false;
+}
+
+bool
+Geospatial::getEastingFirst (const MFString & geoSystem)
+{
+	for (const auto & string : geoSystem)
+	{
+		if (string == "easting_first")
+			return true;
+	}
+
+	return false;
+}
+
+int
+Geospatial::getZone (const MFString & geoSystem)
+{
+	static const pcrecpp::RE Zone ("\\AZ(\\d+)$");
+
+	for (const auto & string : geoSystem)
+	{
+		std::string zone;
+
+		if (Zone .FullMatch (string .str (), &zone))
+			return std::atoi (zone .c_str ());
+	}
+
+	return 1;
+}
+
+bool
+Geospatial::getHemisphereNorth (const MFString & geoSystem)
+{
+	for (const auto & string : geoSystem)
+	{
+		if (string == "S")
+			return false;
+	}
+
+	return true;
 }
 
 } // X3D
