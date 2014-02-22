@@ -61,6 +61,14 @@
 namespace titania {
 namespace math {
 
+/**
+ *  Template to represent a cylinder in 3D space.
+ *
+ *  Extern instantiations for float, double, and long double are part of the
+ *  library.  Results with any other type are not guaranteed.
+ *
+ *  @param  Type  Type of matrix values.
+ */
 template <class Type>
 class cylinder3
 {

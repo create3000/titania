@@ -1,5 +1,12 @@
 2014-02-22  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* GeoLocation.h:
+	* GeoLocation.cpp:
+	* X3DTransformNode.cpp:
+	* X3DTransformNode (Kopie).h: 
+
+2014-02-22  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* X3DConstants.h:

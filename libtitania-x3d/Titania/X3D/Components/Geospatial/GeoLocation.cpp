@@ -59,31 +59,85 @@ const std::string GeoLocation::componentName  = "Geospatial";
 const std::string GeoLocation::typeName       = "GeoLocation";
 const std::string GeoLocation::containerField = "children";
 GeoLocation::Fields::Fields () :
-	geoCoords (new SFVec3d ()),
-	geoOrigin (new SFNode ()),
-	geoSystem (new MFString ({ "GD", "WE" }))
+	geoCoords (new SFVec3d ())
 { }
 
 GeoLocation::GeoLocation (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DGroupingNode (),
-	         fields ()
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	    X3DGroupingNode (),
+	X3DGeospatialObject (),
+	             fields (),
+	             matrix ()
 {
 	addField (inputOutput,    "metadata",       metadata ());
+	addField (initializeOnly, "geoSystem",      geoSystem ());
+	addField (inputOutput,    "geoCoords",      geoCoords ());
+	addField (initializeOnly, "geoOrigin",      geoOrigin ());
 	addField (initializeOnly, "bboxSize",       bboxSize ());
 	addField (initializeOnly, "bboxCenter",     bboxCenter ());
 	addField (inputOnly,      "addChildren",    addChildren ());
 	addField (inputOnly,      "removeChildren", removeChildren ());
 	addField (inputOutput,    "children",       children ());
-	addField (inputOutput,    "geoCoords",      geoCoords ());
-	addField (initializeOnly, "geoOrigin",      geoOrigin ());
-	addField (initializeOnly, "geoSystem",      geoSystem ());
 }
 
 X3DBaseNode*
 GeoLocation::create (X3DExecutionContext* const executionContext) const
 {
 	return new GeoLocation (executionContext);
+}
+
+void
+GeoLocation::initialize ()
+{
+	X3DGroupingNode::initialize ();
+	X3DGeospatialObject::initialize ();
+	
+	addInterest (this, &GeoLocation::eventsProcessed);
+
+	eventsProcessed ();
+}
+
+void
+GeoLocation::eventsProcessed ()
+{
+	Vector3d t = convert (geoCoords ());
+
+	Vector3d x = normalize (cross (Vector3d (0, 0, 1), t));
+	Vector3d y = normalize (t);
+	Vector3d z = normalize (cross (t, x));
+
+	matrix = Matrix4d (x [0], x [1], x [2], 0,
+	                   y [0], y [1], y [2], 0,
+	                   z [0], z [1], z [2], 0,
+	                   t [0], t [1], t [2], 1);
+}
+
+Box3f
+GeoLocation::getBBox ()
+{
+	if (getDisplay ())
+		return X3DGroupingNode::getBBox () * Matrix4f (matrix);
+
+	return Box3f ();
+}
+
+void
+GeoLocation::traverse (const TraverseType type)
+{
+	glPushMatrix ();
+
+	glMultMatrixd (matrix .data ());
+
+	X3DGroupingNode::traverse (type);
+
+	glPopMatrix ();
+}
+
+void
+GeoLocation::dispose ()
+{
+	X3DGeospatialObject::dispose ();
+	X3DGroupingNode::dispose ();
 }
 
 } // X3D

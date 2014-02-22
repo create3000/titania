@@ -65,6 +65,19 @@
 namespace titania {
 namespace math {
 
+/**
+ *  Template to represent square matrix of order 2.
+ *
+ *  The matrix is interally stored in Row-Major Order and
+ *  consists of two vectors of type vector2:
+ *  0 [ x-axis 0 ]
+ *  1 [ x      1 ]
+ *
+ *  Extern instantiations for float, double, and long double are part of the
+ *  library.  Results with any other type are not guaranteed.
+ *
+ *  @param  Type  Type of values.
+ */
 template <class Type>
 class matrix2
 {
@@ -87,7 +100,7 @@ public:
 
 	///  Vector typedef.
 	///  This is the type for the vector representation of this matrix.
-	///  The matrix consists of four vectors of type vector3.
+	///  The matrix consists of two vectors of type vector2.
 	///  0 [ x-axis 0 ]
 	///  1 [ x      1 ]
 	typedef vector2 <vector2_type> vector_type;

@@ -216,6 +216,7 @@
     <None Include="GPU Gems 2 Chapter 46 - GPU Sort\shader\transitionSort.fs" />
     <None Include="GPU Gems 2 Chapter 46 - GPU Sort\shader\transitionSort.vs" />
     <None Include="xxx\UniversalTransverseMercator.h" />
+    <None Include="xxx\Geospatial.php" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Quaternion\" />

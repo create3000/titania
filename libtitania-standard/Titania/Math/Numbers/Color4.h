@@ -63,6 +63,14 @@
 namespace titania {
 namespace math {
 
+/**
+ *  Template to represent color4 numbers.
+ *
+ *  Extern instantiations for float, double, and long double are part of the
+ *  library.  Results with any other type are not guaranteed.
+ *
+ *  @param  Type  Type of values r, g, b and a.
+ */
 template <typename Type>
 class color4
 {

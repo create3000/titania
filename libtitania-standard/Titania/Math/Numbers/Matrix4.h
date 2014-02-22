@@ -69,6 +69,21 @@
 namespace titania {
 namespace math {
 
+/**
+ *  Template to represent square matrix of order 4.
+ *
+ *  The matrix is interally stored in Row-Major Order and
+ *  consists of four vectors of type vector4:
+ *  0 [ x-axis 0 ]
+ *  1 [ y-axis 0 ]
+ *  2 [ z-axis 0 ]
+ *  3 [ x y z  1 ]
+ *
+ *  Extern instantiations for float, double, and long double are part of the
+ *  library.  Results with any other type are not guaranteed.
+ *
+ *  @param  Type  Type of values.
+ */
 template <class Type>
 class matrix4
 {

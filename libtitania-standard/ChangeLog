@@ -1,5 +1,19 @@
 2014-02-22  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Box3.h:
+	* Box2.h:
+	* Color3.h:
+	* Color4.h:
+	* Line3.h:
+	* Matrix4.h:
+	* Matrix2.h:
+	* Matrix3.h:
+	* Sphere3.h:
+	* Cylinder3.h:
+	* Spheroid3.h: 
+
+2014-02-22  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* UniversalTransverseMercator.h: 
 
 2014-02-21  Holger Seelig  <holger.seelig@yahoo.de>

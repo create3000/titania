@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,15 +51,18 @@
 #ifndef __TITANIA_X3D_COMPONENTS_GEOSPATIAL_GEO_LOCATION_H__
 #define __TITANIA_X3D_COMPONENTS_GEOSPATIAL_GEO_LOCATION_H__
 
+#include "../Geospatial/X3DGeospatialObject.h"
 #include "../Grouping/X3DGroupingNode.h"
 
 namespace titania {
 namespace X3D {
 
 class GeoLocation :
-	public X3DGroupingNode
+	public X3DGroupingNode, public X3DGeospatialObject
 {
 public:
+
+	///  @name Construction
 
 	GeoLocation (X3DExecutionContext* const);
 
@@ -95,25 +98,37 @@ public:
 	geoCoords () const
 	{ return *fields .geoCoords; }
 
-	SFNode &
-	geoOrigin ()
-	{ return *fields .geoOrigin; }
+	///  @name Member access
 
-	const SFNode &
-	geoOrigin () const
-	{ return *fields .geoOrigin; }
+	virtual
+	Box3f
+	getBBox () final override;
 
-	MFString &
-	geoSystem ()
-	{ return *fields .geoSystem; }
+	///  @name Operations
 
-	const MFString &
-	geoSystem () const
-	{ return *fields .geoSystem; }
+	virtual
+	void
+	traverse (const TraverseType) final override;
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override;
 
 
 private:
 
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+	///  @name Event handlers
+
+	void
+	eventsProcessed ();
 
 	///  @name Static members
 
@@ -128,11 +143,11 @@ private:
 		Fields ();
 
 		SFVec3d* const geoCoords;
-		SFNode* const geoOrigin;
-		MFString* const geoSystem;
 	};
 
 	Fields fields;
+
+	Matrix4d matrix;
 
 };
 

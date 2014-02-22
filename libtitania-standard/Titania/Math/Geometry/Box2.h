@@ -61,6 +61,14 @@
 namespace titania {
 namespace math {
 
+/**
+ *  Template to represent a oriented bounding box in 2D space.
+ *
+ *  Extern instantiations for float, double, and long double are part of the
+ *  library.  Results with any other type are not guaranteed.
+ *
+ *  @param  Type  Type of matrix values.
+ */
 template <class Type>
 class box2
 {
@@ -179,6 +187,23 @@ public:
 	void
 	multBoxMatrix (const matrix3 <Type> & matrix)
 	{ value .multRight (matrix); }
+
+	///  Translate this box by @a translation.
+	void
+	translate (const vector2 <Type> & translation)
+	{ value .translate (translation); }
+
+	///  Rotate this box by @a rotation.
+	void
+	rotate (const Type & rotation)
+	{ value .rotate (rotation); }
+
+	///  Scale this box by @a scaleFactor.
+	void
+	scale (const vector2 <Type> & scaleFactor)
+	{ value .scale (scaleFactor); }
+
+	///  @name Intersection
 
 	///  Returns true if @a point is inside this box3 min and max extend.
 	bool

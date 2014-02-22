@@ -79,6 +79,20 @@ X3DTransformNode::initialize ()
 	eventsProcessed ();
 }
 
+void
+X3DTransformNode::eventsProcessed ()
+{
+	setDisplay (scale () .getX () not_eq 0 and
+	            scale () .getY () not_eq 0 and
+	            scale () .getZ () not_eq 0);
+
+	matrix .set (translation (),
+	             rotation (),
+	             scale (),
+	             scaleOrientation (),
+	             center ());
+}
+
 Box3f
 X3DTransformNode::getBBox ()
 {
@@ -107,20 +121,6 @@ X3DTransformNode::setMatrixWithCenter (const Matrix4f & matrix, const Vector3f &
 	scale ()            = s;
 	scaleOrientation () = s == Vector3f (1, 1, 1) ? Rotation4f () : so;
 	center ()           = c;
-}
-
-void
-X3DTransformNode::eventsProcessed ()
-{
-	setDisplay (scale () .getX () not_eq 0 and
-	            scale () .getY () not_eq 0 and
-	            scale () .getZ () not_eq 0);
-
-	matrix .set (translation (),
-	             rotation (),
-	             scale (),
-	             scaleOrientation (),
-	             center ());
 }
 
 void
