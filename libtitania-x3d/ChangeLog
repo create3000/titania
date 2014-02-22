@@ -1,5 +1,9 @@
 2014-02-22  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* GeoLocation.cpp: 
+
+2014-02-22  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* GeoLocation.h:
 	* GeoLocation.cpp:
 	* X3DTransformNode.cpp:
