@@ -91,7 +91,7 @@ public:
 		Type northing = easting_first ? utm .y () : utm .x ();
 		Type easting  = easting_first ? utm .x () : utm .y ();
 
-		// Check for southern hemisphere.
+		// Check for southern hemisphere and remove offset from easting.
 
 		bool S = southern_hemisphere;
 
@@ -104,9 +104,9 @@ public:
 		if (S)
 			northing = northing - N0;
 
-		// Begin calculation.
-
 		easting -= E0;
+
+		// Begin calculation.
 
 		const Type mu = northing / A;
 

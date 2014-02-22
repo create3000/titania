@@ -176,6 +176,7 @@ enum NodeType
 	X3DFontStyleNode,
 	X3DGeometricPropertyNode,
 	X3DGeometryNode,
+	X3DGeospatialObject,
 	X3DGroupingNode,
 	X3DInfoNode,
 	X3DInterpolatorNode,

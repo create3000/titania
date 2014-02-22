@@ -1,3 +1,17 @@
+2014-02-22  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* X3DConstants.h:
+	* Generator.cpp:
+	* GeoCoordinate.h:
+	* GeoCoordinate.cpp:
+	* jsX3DConstants.h:
+	* ViewpointGroup.cpp:
+	* jsX3DConstants.cpp:
+	* X3DGeospatialObject.h:
+	* X3DGeospatialObject.cpp: 
+
 2014-02-21  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Geospatial.h:

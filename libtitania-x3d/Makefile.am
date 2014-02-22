@@ -153,6 +153,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Components/Geospatial/GeoTouchSensor.cpp \
 	Titania/X3D/Components/Geospatial/GeoTransform.cpp \
 	Titania/X3D/Components/Geospatial/GeoViewpoint.cpp \
+	Titania/X3D/Components/Geospatial/X3DGeospatialObject.cpp \
 	Titania/X3D/Components/Grouping/Group.cpp \
 	Titania/X3D/Components/Grouping/StaticGroup.cpp \
 	Titania/X3D/Components/Grouping/Switch.cpp \

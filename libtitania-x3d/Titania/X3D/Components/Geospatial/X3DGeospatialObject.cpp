@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,123 +48,87 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_GEOSPATIAL_GEO_COORDINATE_H__
-#define __TITANIA_X3D_COMPONENTS_GEOSPATIAL_GEO_COORDINATE_H__
+#include "X3DGeospatialObject.h"
 
-#include "../Geospatial/X3DGeospatialObject.h"
-#include "../Rendering/X3DCoordinateNode.h"
+#include "../../Bits/Cast.h"
+#include "../../Types/Geometry.h"
 
 namespace titania {
 namespace X3D {
 
-class GeoCoordinate :
-	public X3DCoordinateNode, public X3DGeospatialObject
+X3DGeospatialObject::Fields::Fields () :
+	geoSystem (new MFString ({ "GD", "WE" })),
+	geoOrigin (new SFNode ())
+{ }
+
+X3DGeospatialObject::X3DGeospatialObject () :
+	   X3DBaseNode (),
+	        fields (),
+	        origin (),
+	 geoOriginNode (),
+	referenceFrame ()
 {
-public:
+	addNodeType (X3DConstants::X3DGeospatialObject);
 
-	///  @name Construction
+	addChildren (geoOriginNode);
+}
 
-	GeoCoordinate (X3DExecutionContext* const);
+void
+X3DGeospatialObject::initialize ()
+{
+	geoSystem () .addInterest (this, &X3DGeospatialObject::set_geoSystem);
+	geoOrigin () .addInterest (this, &X3DGeospatialObject::set_geoOrigin);
 
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
+	set_geoSystem ();
+	set_geoOrigin ();
+}
 
-	///  @name Common members
+void
+X3DGeospatialObject::set_geoSystem ()
+{
+	referenceFrame = Geospatial::getReferenceFrame (geoSystem ());
+}
 
-	virtual
-	const std::string &
-	getComponentName () const final override
-	{ return componentName; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
-
-	///  @name Fields
-
-	MFVec3d &
-	point ()
-	{ return *fields .point; }
-
-	const MFVec3d &
-	point () const
-	{ return *fields .point; }
-
-	///  @name Operations
-
-	virtual
-	Box3f
-	getBBox () const final override;
-
-	virtual
-	Vector3f
-	getNormal (const size_t, const size_t, const size_t) const final override;
-
-	virtual
-	void
-	addVertex (opengl::tessellator <size_t> &, const size_t, const size_t) const final override;
-
-	virtual
-	void
-	addVertex (std::vector <Vector3f>&, const size_t) const final override;
-
-	virtual
-	std::vector <Vector4f>
-	getControlPoints (const MFDouble & weight) const final override;
-
-	virtual
-	bool
-	isEmpty () const final override
-	{ return point () .empty (); }
-
-	virtual
-	size_t
-	getSize () const final override
-	{ return point () .size (); }
-
-	///  @name Destruction
-	
-	virtual
-	void
-	dispose () final override;
-
-
-private:
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
-
-	///  @name Static members
-
-	static const std::string componentName;
-	static const std::string typeName;
-	static const std::string containerField;
-
-	///  @name Members
-
-	struct Fields
+void
+X3DGeospatialObject::set_geoOrigin ()
+{
+	if (geoOriginNode)
 	{
-		Fields ();
+		geoOriginNode -> removeInterest (this, &X3DGeospatialObject::set_origin);
+		geoOriginNode -> removeInterest (this);
+	}
 
-		MFVec3d* const point;
-	};
+	geoOriginNode = x3d_cast <GeoOrigin*> (geoOrigin ());
 
-	Fields fields;
+	if (geoOriginNode)
+	{
+		geoOriginNode -> addInterest (this, &X3DGeospatialObject::set_origin);
+		geoOriginNode -> addInterest (this);
+	}
 
-};
+	set_origin ();
+}
+
+void
+X3DGeospatialObject::set_origin ()
+{
+	if (geoOriginNode)
+		origin = geoOriginNode -> getOrigin ();
+	else
+		origin = Vector3d ();
+}
+
+Vector3d
+X3DGeospatialObject::convert (const Vector3d & geoPoint) const
+{
+	return referenceFrame -> convert (geoPoint) - origin;
+}
+
+void
+X3DGeospatialObject::dispose ()
+{
+	geoOriginNode .dispose ();
+}
 
 } // X3D
 } // titania
-
-#endif

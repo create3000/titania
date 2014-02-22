@@ -184,8 +184,8 @@ ViewpointGroup::dispose ()
 {
 	proximitySensor .dispose ();
 
-	X3DChildNode::dispose ();
 	X3DViewpointObject::dispose ();
+	X3DChildNode::dispose ();
 }
 
 } // X3D

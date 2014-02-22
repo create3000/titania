@@ -126,6 +126,7 @@ Generator::NodeTypesIndex::NodeTypesIndex ()
 	emplace_back ("X3DFontStyleNode");
 	emplace_back ("X3DGeometricPropertyNode");
 	emplace_back ("X3DGeometryNode");
+	emplace_back ("X3DGeospatialObject");
 	emplace_back ("X3DGroupingNode");
 	emplace_back ("X3DInfoNode");
 	emplace_back ("X3DInterpolatorNode");

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,108 +48,73 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_GEOSPATIAL_GEO_COORDINATE_H__
-#define __TITANIA_X3D_COMPONENTS_GEOSPATIAL_GEO_COORDINATE_H__
+#ifndef __TITANIA_X3D_COMPONENTS_GEOSPATIAL_X3DGEOSPATIAL_OBJECT_H__
+#define __TITANIA_X3D_COMPONENTS_GEOSPATIAL_X3DGEOSPATIAL_OBJECT_H__
 
-#include "../Geospatial/X3DGeospatialObject.h"
-#include "../Rendering/X3DCoordinateNode.h"
+#include "../../Bits/Geospatial.h"
+#include "../Geospatial/GeoOrigin.h"
 
 namespace titania {
 namespace X3D {
 
-class GeoCoordinate :
-	public X3DCoordinateNode, public X3DGeospatialObject
+class X3DGeospatialObject :
+	virtual public X3DBaseNode
 {
 public:
 
-	///  @name Construction
-
-	GeoCoordinate (X3DExecutionContext* const);
-
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
-
-	///  @name Common members
-
-	virtual
-	const std::string &
-	getComponentName () const final override
-	{ return componentName; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
-
 	///  @name Fields
 
-	MFVec3d &
-	point ()
-	{ return *fields .point; }
+	MFString &
+	geoSystem ()
+	{ return *fields .geoSystem; }
 
-	const MFVec3d &
-	point () const
-	{ return *fields .point; }
+	const MFString &
+	geoSystem () const
+	{ return *fields .geoSystem; }
+
+	SFNode &
+	geoOrigin ()
+	{ return *fields .geoOrigin; }
+
+	const SFNode &
+	geoOrigin () const
+	{ return *fields .geoOrigin; }
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () override;
+
+
+protected:
+
+	///  @name Construction
+
+	X3DGeospatialObject ();
+
+	virtual
+	void
+	initialize () override;
 
 	///  @name Operations
 
-	virtual
-	Box3f
-	getBBox () const final override;
-
-	virtual
-	Vector3f
-	getNormal (const size_t, const size_t, const size_t) const final override;
-
-	virtual
-	void
-	addVertex (opengl::tessellator <size_t> &, const size_t, const size_t) const final override;
-
-	virtual
-	void
-	addVertex (std::vector <Vector3f>&, const size_t) const final override;
-
-	virtual
-	std::vector <Vector4f>
-	getControlPoints (const MFDouble & weight) const final override;
-
-	virtual
-	bool
-	isEmpty () const final override
-	{ return point () .empty (); }
-
-	virtual
-	size_t
-	getSize () const final override
-	{ return point () .size (); }
-
-	///  @name Destruction
-	
-	virtual
-	void
-	dispose () final override;
+	Vector3d
+	convert (const Vector3d &) const;
 
 
 private:
 
-	///  @name Construction
+	///  @name Event handlers
 
-	virtual
 	void
-	initialize () final override;
+	set_geoSystem ();
 
-	///  @name Static members
+	void
+	set_geoOrigin ();
 
-	static const std::string componentName;
-	static const std::string typeName;
-	static const std::string containerField;
+	void
+	set_origin ();
 
 	///  @name Members
 
@@ -157,10 +122,15 @@ private:
 	{
 		Fields ();
 
-		MFVec3d* const point;
+		MFString* const geoSystem;
+		SFNode* const geoOrigin;
 	};
 
 	Fields fields;
+
+	Vector3d                      origin;
+	X3DSFNode <GeoOrigin>         geoOriginNode;
+	Geospatial::ReferenceFramePtr referenceFrame;
 
 };
 
