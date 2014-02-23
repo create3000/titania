@@ -62,7 +62,7 @@ static constexpr double MOTION_TIME       = 0.05;
 static constexpr double SPIN_RELEASE_TIME = 0.01;
 static constexpr float  SPIN_ANGLE        = 0.006;
 static constexpr float  SPIN_FACTOR       = 0.6;
-static constexpr float  SCROLL_FACTOR      = 1.0f / 50.0f;
+static constexpr float  SCROLL_FACTOR     = 1.0f / 50.0f;
 static constexpr float  FRAME_RATE        = 60;
 
 ExamineViewer::ExamineViewer (X3DBrowserSurface* const browser, NavigationInfo* const navigationInfo) :
@@ -243,20 +243,18 @@ ExamineViewer::getPositionOffset () const
 {
 	const auto viewpoint = getActiveViewpoint ();
 
-	// The new positionOffset is calculated here by calculating the new position and
-	// then subtracting the viewpoints position to get the new positionOffset.
-
 	return viewpoint -> getUserCenterOfRotation ()
 	       + viewpoint -> orientationOffset () * distance
-	       - (viewpoint -> getUserPosition () - viewpoint -> positionOffset ());
+	       - viewpoint -> getPosition ();
 }
 
 Rotation4f
 ExamineViewer::getOrientationOffset ()
 {
-	auto viewpoint = getActiveViewpoint ();
+	const auto viewpoint = getActiveViewpoint ();
 
 	orientation = rotation * orientation;
+	
 	return ~viewpoint -> orientation () * orientation;
 }
 

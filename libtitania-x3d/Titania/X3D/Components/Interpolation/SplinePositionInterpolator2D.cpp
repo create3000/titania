@@ -121,7 +121,7 @@ SplinePositionInterpolator2D::set_keyVelocity ()
 void
 SplinePositionInterpolator2D::interpolate (size_t index0, size_t index1, const float weight)
 {
-	value_changed () = spline .evaluate (index0, index1, weight, keyValue ());
+	value_changed () = spline .interpolate (index0, index1, weight, keyValue ());
 }
 
 } // X3D

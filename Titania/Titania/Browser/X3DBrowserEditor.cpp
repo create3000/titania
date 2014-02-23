@@ -372,12 +372,16 @@ X3DBrowserEditor::addUndoStep (const std::shared_ptr <UndoStep> & undoStep)
 void
 X3DBrowserEditor::undo ()
 {
+	getBrowser () -> grab_focus ();
+
 	undoHistory .undo ();
 }
 
 void
 X3DBrowserEditor::redo ()
 {
+	getBrowser () -> grab_focus ();
+
 	undoHistory .redo ();
 }
 

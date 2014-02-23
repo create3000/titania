@@ -69,11 +69,11 @@ public:
 
 	template <class Key, class KeyValue>
 	void
-	generate (bool, const Key &, const KeyValue &);
+	generate (const bool, const Key &, const KeyValue &);
 
 	template <class KeyValue>
 	Type
-	evaluate (size_t, size_t, const Scalar &, const KeyValue &);
+	interpolate (const size_t, const size_t, const Scalar &, const KeyValue &);
 
 
 private:
@@ -85,7 +85,7 @@ private:
 template <class Type, class Scalar>
 template <class Key, class KeyValue>
 void
-squad_interpolator <Type, Scalar>::generate (bool closed,
+squad_interpolator <Type, Scalar>::generate (const bool closed,
                                              const Key & key,
                                              const KeyValue & keyValue)
 {
@@ -131,10 +131,10 @@ squad_interpolator <Type, Scalar>::generate (bool closed,
 template <class Type, class Scalar>
 template <class KeyValue>
 Type
-squad_interpolator <Type, Scalar>::evaluate (size_t index0,
-                                             size_t index1,
-                                             const Scalar & weight,
-                                             const KeyValue & keyValue)
+squad_interpolator <Type, Scalar>::interpolate (const size_t index0,
+                                                const size_t index1,
+                                                const Scalar & weight,
+                                                const KeyValue & keyValue)
 {
 	return squad <Scalar> (keyValue [index0], a [index0], a [index1], keyValue [index1], weight);
 }

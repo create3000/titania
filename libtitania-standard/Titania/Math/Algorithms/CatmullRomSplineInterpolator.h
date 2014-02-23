@@ -75,11 +75,11 @@ public:
 
 	template <class Key, class KeyValue, class KeyVelocity>
 	void
-	generate (bool, const Key &, const KeyValue &, const KeyVelocity &, bool);
+	generate (const bool, const Key &, const KeyValue &, const KeyVelocity &, const bool);
 
 	template <class KeyValue>
 	Type
-	evaluate (size_type, size_type, const Scalar &, const KeyValue &);
+	interpolate (const size_type, const size_type, const Scalar &, const KeyValue &);
 
 
 private:
@@ -92,11 +92,11 @@ private:
 template <class Type, class Scalar>
 template <class Key, class KeyValue, class KeyVelocity>
 void
-catmull_rom_spline_interpolator <Type, Scalar>::generate (bool closed,
+catmull_rom_spline_interpolator <Type, Scalar>::generate (const bool closed,
                                                           const Key & key,
                                                           const KeyValue & keyValue,
                                                           const KeyVelocity & keyVelocity,
-                                                          bool normalizeVelocity)
+                                                          const bool normalizeVelocity)
 {
 	std::vector <Type>   T, T0, T1;
 	std::vector <Scalar> Fp, Fm;
@@ -144,10 +144,10 @@ catmull_rom_spline_interpolator <Type, Scalar>::generate (bool closed,
 
 		if (closed)
 		{
-			size_t i_1 = key .size () - 1;
-			size_t i_2 = key .size () - 2;
+			const size_t i_1 = key .size () - 1;
+			const size_t i_2 = key .size () - 2;
 
-			Scalar d = key [1] - key [0] + key [i_1] - key [i_2];
+			const Scalar d = key [1] - key [0] + key [i_1] - key [i_2];
 
 			Fm .emplace_back (2 * (key [1] - key [0]) / d);
 			Fp .emplace_back (2 * (key [i_1] - key [i_2]) / d);
@@ -160,7 +160,7 @@ catmull_rom_spline_interpolator <Type, Scalar>::generate (bool closed,
 
 		for (size_t i = 1, size = key .size () - 1; i < size; ++ i)
 		{
-			Scalar d = key [i + 1] - key [i - 1];
+			const Scalar d = key [i + 1] - key [i - 1];
 
 			Fm .emplace_back (2 * (key [i + 1] - key [i]) / d);
 			Fp .emplace_back (2 * (key [i] - key [i - 1]) / d);
@@ -190,17 +190,17 @@ catmull_rom_spline_interpolator <Type, Scalar>::generate (bool closed,
 template <class Type, class Scalar>
 template <class KeyValue>
 Type
-catmull_rom_spline_interpolator <Type, Scalar>::evaluate (size_type index0,
-                                                          size_type index1,
-                                                          const Scalar & weight,
-                                                          const KeyValue & keyValue)
+catmull_rom_spline_interpolator <Type, Scalar>::interpolate (const size_type index0,
+                                                             const size_type index1,
+                                                             const Scalar & weight,
+                                                             const KeyValue & keyValue)
 {
 	const vector4 <Scalar> S (std::pow (weight, 3), math::sqr (weight), weight, 1);
 
-	static matrix4 <Scalar> H (2, -2,  1,  1,
-	                           -3,  3, -2, -1,
-	                           0,  0,  1,  0,
-	                           1,  0,  0,  0);
+	static const matrix4 <Scalar> H ( 2, -2,  1,  1,
+	                                 -3,  3, -2, -1,
+	                                  0,  0,  1,  0,
+	                                  1,  0,  0,  0);
 
 	const Type & C0 = keyValue [index0];
 	const Type & C1 = keyValue [index1];
