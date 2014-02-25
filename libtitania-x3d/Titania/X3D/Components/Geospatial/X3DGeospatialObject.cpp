@@ -118,6 +118,39 @@ X3DGeospatialObject::set_origin ()
 		origin = Vector3d ();
 }
 
+Matrix4d
+X3DGeospatialObject::getLocationMatrix (const Vector3d & geoPoint) const
+{
+	// Position
+
+	Vector3d p = referenceFrame -> convert (geoPoint);
+	Vector3d t = p - origin;
+
+	// Let's work out the orientation at that location in order
+	// to maintain a view where +Y is in the direction of gravitional
+	// up for that region of the planet's surface. This will be the
+	// value of the matrix for the transform.
+
+	Vector3d y = p;
+	Vector3d x = cross (Vector3d (0, 0, 1), p);
+	
+	// Handle poles
+	
+	if (x == Vector3d ())
+		x = Vector3d (1, 0, 0);
+
+	Vector3d z = cross (x, p);
+
+	x .normalize ();
+	y .normalize ();
+	z .normalize ();
+
+	return Matrix4d (x [0], x [1], x [2], 0,
+	                 y [0], y [1], y [2], 0,
+	                 z [0], z [1], z [2], 0,
+	                 t [0], t [1], t [2], 1);
+}
+
 Vector3d
 X3DGeospatialObject::convert (const Vector3d & geoPoint) const
 {

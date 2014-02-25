@@ -2398,6 +2398,7 @@
     <None Include="Tests\Geometry3D\vertabrae.wrl" />
     <None Include="Tests\ParticleSystems\Rain.wrl" />
     <None Include="Tests\Grouping\StaticGroup.wrl" />
+    <None Include="Tests\Geospatial\GeoCoordinate.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
@@ -2529,6 +2530,7 @@
     <Folder Include="Tests\NURBS\NurbsTrimmedSurface\" />
     <Folder Include="Tests\Texturing3D\" />
     <Folder Include="Tests\ParticleSystems\" />
+    <Folder Include="Tests\Geospatial\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Navigation\Rotor.wrl" />

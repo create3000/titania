@@ -51,15 +51,18 @@
 #ifndef __TITANIA_X3D_COMPONENTS_GEOSPATIAL_GEO_TRANSFORM_H__
 #define __TITANIA_X3D_COMPONENTS_GEOSPATIAL_GEO_TRANSFORM_H__
 
+#include "../Geospatial/X3DGeospatialObject.h"
 #include "../Grouping/X3DGroupingNode.h"
 
 namespace titania {
 namespace X3D {
 
 class GeoTransform :
-	public X3DGroupingNode
+	public X3DGroupingNode, public X3DGeospatialObject
 {
 public:
+
+	///  @name Construction
 
 	GeoTransform (X3DExecutionContext* const);
 
@@ -87,13 +90,13 @@ public:
 
 	///  @name Fields
 
-	SFVec3d &
-	geoCenter ()
-	{ return *fields .geoCenter; }
+	SFVec3f &
+	translation ()
+	{ return *fields .translation; }
 
-	const SFVec3d &
-	geoCenter () const
-	{ return *fields .geoCenter; }
+	const SFVec3f &
+	translation () const
+	{ return *fields .translation; }
 
 	SFRotation &
 	rotation ()
@@ -119,33 +122,44 @@ public:
 	scaleOrientation () const
 	{ return *fields .scaleOrientation; }
 
-	SFVec3f &
-	translation ()
-	{ return *fields .translation; }
+	SFVec3d &
+	geoCenter ()
+	{ return *fields .geoCenter; }
 
-	const SFVec3f &
-	translation () const
-	{ return *fields .translation; }
+	const SFVec3d &
+	geoCenter () const
+	{ return *fields .geoCenter; }
 
-	SFNode &
-	geoOrigin ()
-	{ return *fields .geoOrigin; }
+	///  @name Member access
 
-	const SFNode &
-	geoOrigin () const
-	{ return *fields .geoOrigin; }
+	virtual
+	Box3f
+	getBBox () const final override;
 
-	MFString &
-	geoSystem ()
-	{ return *fields .geoSystem; }
+	///  @name Operations
+	
+	void
+	traverse (const TraverseType) final override;
 
-	const MFString &
-	geoSystem () const
-	{ return *fields .geoSystem; }
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override;
 
 
 private:
 
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+	///  @name Event handlers
+
+	void
+	eventsProcessed ();
 
 	///  @name Static members
 
@@ -159,16 +173,16 @@ private:
 	{
 		Fields ();
 
-		SFVec3d* const geoCenter;
+		SFVec3f* const translation;
 		SFRotation* const rotation;
 		SFVec3f* const scale;
 		SFRotation* const scaleOrientation;
-		SFVec3f* const translation;
-		SFNode* const geoOrigin;
-		MFString* const geoSystem;
+		SFVec3d* const geoCenter;
 	};
 
 	Fields fields;
+
+	Matrix4d matrix;
 
 };
 

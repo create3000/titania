@@ -60,39 +60,91 @@ const std::string GeoTransform::typeName       = "GeoTransform";
 const std::string GeoTransform::containerField = "children";
 
 GeoTransform::Fields::Fields () :
-	geoCenter (new SFVec3d ()),
-	rotation (new SFRotation ()),
-	scale (new SFVec3f (1, 1, 1)),
+	     translation (new SFVec3f ()),
+	        rotation (new SFRotation ()),
+	           scale (new SFVec3f (1, 1, 1)),
 	scaleOrientation (new SFRotation ()),
-	translation (new SFVec3f ()),
-	geoOrigin (new SFNode ()),
-	geoSystem (new MFString ({ "GD", "WE" }))
+	       geoCenter (new SFVec3d ())
 { }
 
 GeoTransform::GeoTransform (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DGroupingNode (),
-	         fields ()
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	    X3DGroupingNode (),
+	X3DGeospatialObject (),
+	             fields (),
+	             matrix ()
 {
 	addField (inputOutput,    "metadata",         metadata ());
+	addField (initializeOnly, "geoSystem",        geoSystem ());
+	addField (inputOutput,    "translation",      translation ());
+	addField (inputOutput,    "rotation",         rotation ());
+	addField (inputOutput,    "scale",            scale ());
+	addField (inputOutput,    "scaleOrientation", scaleOrientation ());
+	addField (inputOutput,    "geoCenter",        geoCenter ());
+	addField (initializeOnly, "geoOrigin",        geoOrigin ());
 	addField (initializeOnly, "bboxSize",         bboxSize ());
 	addField (initializeOnly, "bboxCenter",       bboxCenter ());
 	addField (inputOnly,      "addChildren",      addChildren ());
 	addField (inputOnly,      "removeChildren",   removeChildren ());
 	addField (inputOutput,    "children",         children ());
-	addField (inputOutput,    "geoCenter",        geoCenter ());
-	addField (inputOutput,    "rotation",         rotation ());
-	addField (inputOutput,    "scale",            scale ());
-	addField (inputOutput,    "scaleOrientation", scaleOrientation ());
-	addField (inputOutput,    "translation",      translation ());
-	addField (initializeOnly, "geoOrigin",        geoOrigin ());
-	addField (initializeOnly, "geoSystem",        geoSystem ());
 }
 
 X3DBaseNode*
 GeoTransform::create (X3DExecutionContext* const executionContext) const
 {
 	return new GeoTransform (executionContext);
+}
+
+void
+GeoTransform::initialize ()
+{
+	X3DGroupingNode::initialize ();
+	X3DGeospatialObject::initialize ();
+
+	addInterest (this, &GeoTransform::eventsProcessed);
+
+	eventsProcessed ();
+}
+
+void
+GeoTransform::eventsProcessed ()
+{
+	Matrix4d transformation;
+
+	transformation .set (translation () .getValue (),
+	                     rotation () .getValue (),
+	                     scale () .getValue (),
+	                     scaleOrientation () .getValue ());
+
+	matrix = transformation * getLocationMatrix (geoCenter ());
+}
+
+Box3f
+GeoTransform::getBBox () const
+{
+	if (getDisplay ())
+		return Box3d (X3DGroupingNode::getBBox ()) * matrix;
+
+	return Box3f ();
+}
+
+void
+GeoTransform::traverse (const TraverseType type)
+{
+	getModelViewMatrix () .push ();
+
+	getModelViewMatrix () .multLeft (matrix);
+
+	X3DGroupingNode::traverse (type);
+
+	getModelViewMatrix () .pop ();
+}
+
+void
+GeoTransform::dispose ()
+{
+	X3DGeospatialObject::dispose ();
+	X3DGroupingNode::dispose ();
 }
 
 } // X3D

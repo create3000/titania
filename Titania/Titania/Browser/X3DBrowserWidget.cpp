@@ -275,7 +275,7 @@ X3DBrowserWidget::save (const basic::uri & worldURL, bool compressed)
 	else
 	{
 		std::ofstream file (worldURL .path ());
-		file << X3D::CompactStyle << getBrowser () -> getExecutionContext ();
+		file << X3D::NicestStyle << getBrowser () -> getExecutionContext ();
 	}
 }
 

@@ -100,22 +100,7 @@ GeoLocation::initialize ()
 void
 GeoLocation::eventsProcessed ()
 {
-	Vector3d t = convert (geoCoords ());
-
-	Vector3d x = normalize (cross (Vector3d (0, 0, 1), t));
-	
-	// Handle poles
-	
-	if (x == Vector3d ())
-		x = Vector3d (1, 0, 0);
-
-	Vector3d y = normalize (t);
-	Vector3d z = normalize (cross (x, t));
-
-	matrix = Matrix4d (x [0], x [1], x [2], 0,
-	                   y [0], y [1], y [2], 0,
-	                   z [0], z [1], z [2], 0,
-	                   t [0], t [1], t [2], 1);
+	matrix = getLocationMatrix (geoCoords ());
 }
 
 Box3f

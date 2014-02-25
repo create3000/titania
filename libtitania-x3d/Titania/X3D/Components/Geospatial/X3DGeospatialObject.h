@@ -99,6 +99,9 @@ protected:
 
 	///  @name Operations
 
+	Matrix4d
+	getLocationMatrix (const Vector3d &) const;
+
 	Vector3d
 	convert (const Vector3d &) const;
 
