@@ -84,8 +84,6 @@ X3DExecutionContext::X3DExecutionContext () :
 	           rootNodes (),
 	  uninitializedNodes ()
 {
-	rootNodes .setName ("rootNodes");
-
 	rootNodes          .isTainted (true);
 	uninitializedNodes .isTainted (true);
 

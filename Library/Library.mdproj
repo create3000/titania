@@ -2399,6 +2399,12 @@
     <None Include="Tests\ParticleSystems\Rain.wrl" />
     <None Include="Tests\Grouping\StaticGroup.wrl" />
     <None Include="Tests\Geospatial\GeoCoordinate.wrl" />
+    <None Include="Tests\Geospatial\GeoLOD.wrl" />
+    <None Include="Tests\Geospatial\child1.wrl" />
+    <None Include="Tests\Geospatial\child2.wrl" />
+    <None Include="Tests\Geospatial\child3.wrl" />
+    <None Include="Tests\Geospatial\child4.wrl" />
+    <None Include="Tests\Geospatial\root.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

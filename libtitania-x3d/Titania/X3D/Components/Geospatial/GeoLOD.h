@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -52,15 +52,20 @@
 #define __TITANIA_X3D_COMPONENTS_GEOSPATIAL_GEO_LOD_H__
 
 #include "../Core/X3DChildNode.h"
+#include "../Geospatial/X3DGeospatialObject.h"
+#include "../Grouping/Group.h"
 #include "../Grouping/X3DBoundedObject.h"
+#include "../Networking/Inline.h"
 
 namespace titania {
 namespace X3D {
 
 class GeoLOD :
-	virtual public X3DChildNode, public X3DBoundedObject
+	virtual public X3DChildNode, public X3DBoundedObject, public X3DGeospatialObject
 {
 public:
+
+	///  @name Construction
 
 	GeoLOD (X3DExecutionContext* const);
 
@@ -88,29 +93,13 @@ public:
 
 	///  @name Fields
 
-	MFNode &
-	children ()
-	{ return *fields .children; }
+	MFString &
+	rootUrl ()
+	{ return *fields .rootUrl; }
 
-	const MFNode &
-	children () const
-	{ return *fields .children; }
-
-	SFInt32 &
-	level_changed ()
-	{ return *fields .level_changed; }
-
-	const SFInt32 &
-	level_changed () const
-	{ return *fields .level_changed; }
-
-	SFVec3d &
-	center ()
-	{ return *fields .center; }
-
-	const SFVec3d &
-	center () const
-	{ return *fields .center; }
+	const MFString &
+	rootUrl () const
+	{ return *fields .rootUrl; }
 
 	MFString &
 	child1Url ()
@@ -144,21 +133,13 @@ public:
 	child4Url () const
 	{ return *fields .child4Url; }
 
-	SFNode &
-	geoOrigin ()
-	{ return *fields .geoOrigin; }
+	SFVec3d &
+	center ()
+	{ return *fields .center; }
 
-	const SFNode &
-	geoOrigin () const
-	{ return *fields .geoOrigin; }
-
-	MFString &
-	geoSystem ()
-	{ return *fields .geoSystem; }
-
-	const MFString &
-	geoSystem () const
-	{ return *fields .geoSystem; }
+	const SFVec3d &
+	center () const
+	{ return *fields .center; }
 
 	SFFloat &
 	range ()
@@ -168,13 +149,13 @@ public:
 	range () const
 	{ return *fields .range; }
 
-	MFString &
-	rootUrl ()
-	{ return *fields .rootUrl; }
+	SFInt32 &
+	level_changed ()
+	{ return *fields .level_changed; }
 
-	const MFString &
-	rootUrl () const
-	{ return *fields .rootUrl; }
+	const SFInt32 &
+	level_changed () const
+	{ return *fields .level_changed; }
 
 	MFNode &
 	rootNode ()
@@ -184,9 +165,27 @@ public:
 	rootNode () const
 	{ return *fields .rootNode; }
 
+	MFNode &
+	children ()
+	{ return *fields .children; }
+
+	const MFNode &
+	children () const
+	{ return *fields .children; }
+
+	///  @name Member access
+
 	virtual
 	Box3f
 	getBBox () const final override;
+
+	///  @name Operations
+
+	virtual
+	void
+	traverse (const TraverseType) final override;
+
+	///  @name Destruction
 
 	virtual
 	void
@@ -195,9 +194,27 @@ public:
 
 private:
 
+	///  @name Construction
+
 	virtual
 	void
 	initialize () final override;
+
+	///  @name Event handlers
+
+	void
+	set_rootLoadState ();
+
+	void
+	set_childLoadState ();
+
+	///  @name Operations
+
+	size_t
+	getLevel (const TraverseType) const;
+
+	double
+	getDistance (const TraverseType) const;
 
 	///  @name Static members
 
@@ -211,21 +228,26 @@ private:
 	{
 		Fields ();
 
-		MFNode* const children;
-		SFInt32* const level_changed;
-		SFVec3d* const center;
+		MFString* const rootUrl;
 		MFString* const child1Url;
 		MFString* const child2Url;
 		MFString* const child3Url;
 		MFString* const child4Url;
-		SFNode* const geoOrigin;
-		MFString* const geoSystem;
+		SFVec3d* const center;
 		SFFloat* const range;
-		MFString* const rootUrl;
+		SFInt32* const level_changed;
 		MFNode* const rootNode;
+		MFNode* const children;
 	};
 
 	Fields fields;
+
+	X3DSFNode <Group>  rootGroup;
+	X3DSFNode <Inline> rootInline;
+	X3DSFNode <Inline> child1Inline;
+	X3DSFNode <Inline> child2Inline;
+	X3DSFNode <Inline> child3Inline;
+	X3DSFNode <Inline> child4Inline;
 
 };
 

@@ -241,6 +241,9 @@ Inline::requestUnload ()
 	if (checkLoadState () == NOT_STARTED_STATE or checkLoadState () == FAILED_STATE)
 		return;
 
+	if (future)
+		future -> cancel ();
+
 	setScene (getBrowser () -> createScene ());
 
 	setLoadState (NOT_STARTED_STATE);

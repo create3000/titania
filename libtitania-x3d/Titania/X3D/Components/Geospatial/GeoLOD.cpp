@@ -60,41 +60,48 @@ const std::string GeoLOD::typeName       = "GeoLOD";
 const std::string GeoLOD::containerField = "children";
 
 GeoLOD::Fields::Fields () :
-	children (new MFNode ()),
+	      rootUrl (new MFString ()),
+	    child1Url (new MFString ()),
+	    child2Url (new MFString ()),
+	    child3Url (new MFString ()),
+	    child4Url (new MFString ()),
+	       center (new SFVec3d ()),
+	        range (new SFFloat (10)),
 	level_changed (new SFInt32 ()),
-	center (new SFVec3d ()),
-	child1Url (new MFString ()),
-	child2Url (new MFString ()),
-	child3Url (new MFString ()),
-	child4Url (new MFString ()),
-	geoOrigin (new SFNode ()),
-	geoSystem (new MFString ({ "GD", "WE" })),
-	range (new SFFloat (10)),
-	rootUrl (new MFString ()),
-	rootNode (new MFNode ())
+	     rootNode (new MFNode ()),
+	     children (new MFNode ())
 { }
 
 GeoLOD::GeoLOD (X3DExecutionContext* const executionContext) :
-	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	    X3DChildNode (),
-	X3DBoundedObject (),
-	          fields ()
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	       X3DChildNode (),
+	   X3DBoundedObject (),
+	X3DGeospatialObject (),
+	             fields (),
+	          rootGroup (new Group (executionContext)),
+	         rootInline (new Inline (executionContext)),
+	       child1Inline (new Inline (executionContext)),
+	       child2Inline (new Inline (executionContext)),
+	       child3Inline (new Inline (executionContext)),
+	       child4Inline (new Inline (executionContext))
 {
 	addField (inputOutput,    "metadata",      metadata ());
-	addField (initializeOnly, "bboxSize",      bboxSize ());
-	addField (initializeOnly, "bboxCenter",    bboxCenter ());
-	addField (outputOnly,     "children",      children ());
-	addField (outputOnly,     "level_changed", level_changed ());
-	addField (initializeOnly, "center",        center ());
+	addField (initializeOnly, "geoSystem",     geoSystem ());
+	addField (initializeOnly, "rootUrl",       rootUrl ());
 	addField (initializeOnly, "child1Url",     child1Url ());
 	addField (initializeOnly, "child2Url",     child2Url ());
 	addField (initializeOnly, "child3Url",     child3Url ());
 	addField (initializeOnly, "child4Url",     child4Url ());
-	addField (initializeOnly, "geoOrigin",     geoOrigin ());
-	addField (initializeOnly, "geoSystem",     geoSystem ());
+	addField (initializeOnly, "center",        center ());
 	addField (initializeOnly, "range",         range ());
-	addField (initializeOnly, "rootUrl",       rootUrl ());
+	addField (outputOnly,     "level_changed", level_changed ());
+	addField (initializeOnly, "geoOrigin",     geoOrigin ());
 	addField (initializeOnly, "rootNode",      rootNode ());
+	addField (initializeOnly, "bboxSize",      bboxSize ());
+	addField (initializeOnly, "bboxCenter",    bboxCenter ());
+	addField (outputOnly,     "children",      children ());
+
+	addChildren (rootGroup, rootInline, child1Inline, child2Inline, child3Inline, child4Inline);
 }
 
 X3DBaseNode*
@@ -108,17 +115,219 @@ GeoLOD::initialize ()
 {
 	X3DChildNode::initialize ();
 	X3DBoundedObject::initialize ();
+	X3DGeospatialObject::initialize ();
+
+	rootNode () .addInterest (rootGroup -> children ());
+
+	rootGroup -> isInternal (true);
+	rootGroup -> children () = rootNode ();
+	rootGroup -> setup ();
+
+	rootInline   -> checkLoadState () .addInterest (this, &GeoLOD::set_rootLoadState);
+	child1Inline -> checkLoadState () .addInterest (this, &GeoLOD::set_childLoadState);
+	child2Inline -> checkLoadState () .addInterest (this, &GeoLOD::set_childLoadState);
+	child3Inline -> checkLoadState () .addInterest (this, &GeoLOD::set_childLoadState);
+	child4Inline -> checkLoadState () .addInterest (this, &GeoLOD::set_childLoadState);
+
+	rootUrl ()   .addInterest (rootInline -> url ());
+	child1Url () .addInterest (child1Inline -> url ());
+	child2Url () .addInterest (child2Inline -> url ());
+	child3Url () .addInterest (child3Inline -> url ());
+	child4Url () .addInterest (child4Inline -> url ());
+
+	rootInline   -> load () = true;
+	child1Inline -> load () = false;
+	child2Inline -> load () = false;
+	child3Inline -> load () = false;
+	child4Inline -> load () = false;
+
+	rootInline   -> url () = rootUrl ();
+	child1Inline -> url () = child1Url ();
+	child2Inline -> url () = child2Url ();
+	child3Inline -> url () = child3Url ();
+	child4Inline -> url () = child4Url ();
+
+	rootInline   -> setup ();
+	child1Inline -> setup ();
+	child2Inline -> setup ();
+	child3Inline -> setup ();
+	child4Inline -> setup ();
+}
+
+void
+GeoLOD::set_rootLoadState ()
+{
+	if (level_changed () not_eq 0)
+		return;
+
+	if (not rootNode () .empty ())
+		return;
+
+	if (rootInline -> checkLoadState () == COMPLETE_STATE)
+		children () = rootInline -> getRootNodes ();
+}
+
+void
+GeoLOD::set_childLoadState ()
+{
+	if (level_changed () not_eq 1)
+		return;
+
+	children () .clear ();
+
+	if (child1Inline -> checkLoadState () == COMPLETE_STATE)
+		children () .insert (children () .end (),
+		                     child1Inline -> getRootNodes () .begin (),
+		                     child1Inline -> getRootNodes () .end ());
+
+	if (child2Inline -> checkLoadState () == COMPLETE_STATE)
+		children () .insert (children () .end (),
+		                     child2Inline -> getRootNodes () .begin (),
+		                     child2Inline -> getRootNodes () .end ());
+
+	if (child3Inline -> checkLoadState () == COMPLETE_STATE)
+		children () .insert (children () .end (),
+		                     child3Inline -> getRootNodes () .begin (),
+		                     child3Inline -> getRootNodes () .end ());
+
+	if (child4Inline -> checkLoadState () == COMPLETE_STATE)
+		children () .insert (children () .end (),
+		                     child4Inline -> getRootNodes () .begin (),
+		                     child4Inline -> getRootNodes () .end ());
 }
 
 Box3f
 GeoLOD::getBBox () const
 {
-	return Box3f ();
+	if (bboxSize () == Vector3f (-1, -1, -1))
+	{
+		const size_t level = level_changed ();
+
+		switch (level)
+		{
+			case 0:
+			{
+				if (rootNode () .empty ())
+					return rootInline -> getBBox ();
+
+				return rootGroup -> getBBox ();
+			}
+			case 1:
+			{
+				Box3f bbox;
+				
+				bbox += child1Inline -> getBBox ();
+				bbox += child2Inline -> getBBox ();
+				bbox += child3Inline -> getBBox ();
+				bbox += child4Inline -> getBBox ();
+
+				return bbox;
+			}
+			default:
+				return Box3f ();
+		}
+	}
+
+	return Box3f (bboxSize (), bboxCenter ());
+}
+
+size_t
+GeoLOD::getLevel (const TraverseType type) const
+{
+	const double distance = getDistance (type);
+
+	if (distance < range ())
+		return 1;
+
+	return 0;
+}
+
+double
+GeoLOD::getDistance (const TraverseType type) const
+{
+	Matrix4d modelViewMatrix = getModelViewMatrix (type);
+
+	modelViewMatrix .translate (convert (center ()));
+
+	return math::abs (modelViewMatrix .origin ());
+}
+
+void
+GeoLOD::traverse (const TraverseType type)
+{
+	const size_t level = getLevel (type);
+
+	if (type == TraverseType::CAMERA)
+	{
+		if (level_changed () not_eq (int32_t) level)
+		{
+			level_changed () = level;
+
+			switch (level)
+			{
+				case 0:
+				{
+					if (rootNode () .empty ())
+					{
+						if (rootInline -> checkLoadState () == COMPLETE_STATE)
+							children () = rootInline -> getRootNodes ();
+					}
+					else
+						children () = rootNode ();
+
+					child1Inline -> load () = false;
+					child2Inline -> load () = false;
+					child3Inline -> load () = false;
+					child4Inline -> load () = false;
+
+					break;
+				}
+				case 1:
+				{
+					child1Inline -> load () = true;
+					child2Inline -> load () = true;
+					child3Inline -> load () = true;
+					child4Inline -> load () = true;
+
+					break;
+				}
+			}
+		}
+	}
+
+	switch (level)
+	{
+		case 0:
+		{
+			if (rootNode () .empty ())
+				rootInline -> traverse (type);
+			else
+				rootGroup -> traverse (type);
+
+			break;
+		}
+		case 1:
+		{
+			child1Inline -> traverse (type);
+			child2Inline -> traverse (type);
+			child3Inline -> traverse (type);
+			child4Inline -> traverse (type);
+			break;
+		}
+	}
 }
 
 void
 GeoLOD::dispose ()
 {
+	rootGroup    .dispose ();
+	rootInline   .dispose ();
+	child1Inline .dispose ();
+	child2Inline .dispose ();
+	child3Inline .dispose ();
+	child4Inline .dispose ();
+
+	X3DGeospatialObject::dispose ();
 	X3DBoundedObject::dispose ();
 	X3DChildNode::dispose ();
 }

@@ -1,0 +1,20 @@
+#VRML V2.0 utf8 CosmoWorlds V1.0
+
+NavigationInfo { }
+
+DEF Gray Background {
+  skyColor 0.2 0.2 0.2
+}
+
+Viewpoint {
+  description "Viewpoint"
+}
+
+GeoLOD {
+  geoSystem "GC"
+  rootUrl "root.wrl"
+  child1Url "child1.wrl"
+  child2Url "child2.wrl"
+  child3Url "child3.wrl"
+  child4Url "child4.wrl"
+}

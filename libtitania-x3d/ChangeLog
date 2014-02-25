@@ -1,5 +1,16 @@
 2014-02-25  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* LOD.h:
+	* LOD.cpp:
+	* GeoLOD.h:
+	* Inline.cpp:
+	* GeoLOD.cpp:
+	* X3DExecutionContext.cpp:
+	* GeoTransform.h:
+	* X3DViewpointObject.cpp: 
+
+2014-02-25  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* GeoTransform.h:
 	* GeoLocation.cpp:
 	* GeoTransform.cpp:

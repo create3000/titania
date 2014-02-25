@@ -144,7 +144,6 @@ private:
 	float
 	getDistance (const TraverseType) const;
 
-
 	///  @name Static members
 
 	static const std::string componentName;
