@@ -1566,8 +1566,11 @@ throw (X3D::Error <X3D::INVALID_NODE>)
 	{
 		auto field = parent -> getField (child -> getInnerNode () -> getContainerField ());
 
-		if (field -> getType () == X3D::X3DConstants::SFNode or field -> getType () == X3D::X3DConstants::MFNode)
-			return field;
+		if (field -> getAccessType () == X3D::initializeOnly or field -> getAccessType () == X3D::inputOutput)
+		{
+			if (field -> getType () == X3D::X3DConstants::SFNode or field -> getType () == X3D::X3DConstants::MFNode)
+				return field;
+		}
 	}
 	catch (const X3D::Error <X3D::INVALID_NAME> &)
 	{ }
@@ -1578,8 +1581,11 @@ throw (X3D::Error <X3D::INVALID_NODE>)
 	{
 		auto field = parent -> getField ("children");
 
-		if (field -> getType () == X3D::X3DConstants::MFNode)
-			return field;
+		if (field -> getAccessType () == X3D::initializeOnly or field -> getAccessType () == X3D::inputOutput)
+		{
+			if (field -> getType () == X3D::X3DConstants::MFNode)
+				return field;
+		}
 	}
 	catch (const X3D::Error <X3D::INVALID_NAME> &)
 	{ }
@@ -1588,16 +1594,22 @@ throw (X3D::Error <X3D::INVALID_NODE>)
 	
 	for (auto & field : basic::reverse_adapter (parent -> getFieldDefinitions ()))
 	{
-		if (field -> getType () == X3D::X3DConstants::MFNode)
-			return field;
+		if (field -> getAccessType () == X3D::initializeOnly or field -> getAccessType () == X3D::inputOutput)
+		{
+			if (field -> getType () == X3D::X3DConstants::MFNode)
+				return field;
+		}
 	}
 	
 	// Find last SFNode not metadata
 	
 	for (auto & field : basic::reverse_adapter (parent -> getFieldDefinitions ()))
 	{
-		if (field -> getType () == X3D::X3DConstants::SFNode and field -> getName () not_eq "metadata")
-			return field;
+		if (field -> getAccessType () == X3D::initializeOnly or field -> getAccessType () == X3D::inputOutput)
+		{
+			if (field -> getType () == X3D::X3DConstants::SFNode and field -> getName () not_eq "metadata")
+				return field;
+		}
 	}
 
 	throw X3D::Error <X3D::INVALID_NODE> ("No appropriate container field found.");
