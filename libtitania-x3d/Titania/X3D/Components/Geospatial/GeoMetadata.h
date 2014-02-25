@@ -61,6 +61,8 @@ class GeoMetadata :
 {
 public:
 
+	///  @name Construction
+
 	GeoMetadata (X3DExecutionContext* const);
 
 	virtual
@@ -113,7 +115,6 @@ public:
 
 
 private:
-
 
 	///  @name Static members
 
