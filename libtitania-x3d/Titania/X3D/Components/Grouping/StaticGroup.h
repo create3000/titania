@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_COMPONENTS_GROUPING_STATIC_GROUP_H__
 
 #include "../Core/X3DChildNode.h"
+#include "../Grouping/Group.h"
 #include "../Grouping/X3DBoundedObject.h"
 
 namespace titania {
@@ -108,6 +109,12 @@ public:
 
 	virtual
 	void
+	traverse (const TraverseType) final override;
+
+	///  @name Desruction
+
+	virtual
+	void
 	dispose () final override;
 
 
@@ -135,6 +142,8 @@ private:
 	};
 
 	Fields fields;
+
+	X3DSFNode <Group> group;
 
 };
 

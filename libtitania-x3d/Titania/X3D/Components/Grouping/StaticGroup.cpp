@@ -67,12 +67,15 @@ StaticGroup::StaticGroup (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	    X3DChildNode (),
 	X3DBoundedObject (),
-	          fields ()
+	          fields (),
+	           group (new Group (executionContext))
 {
 	addField (inputOutput,    "metadata",   metadata ());
 	addField (initializeOnly, "bboxSize",   bboxSize ());
 	addField (initializeOnly, "bboxCenter", bboxCenter ());
 	addField (initializeOnly, "children",   children ());
+
+	addChildren (group);
 }
 
 X3DBaseNode*
@@ -86,17 +89,36 @@ StaticGroup::initialize ()
 {
 	X3DChildNode::initialize ();
 	X3DBoundedObject::initialize ();
+
+	bboxSize ()   .addInterest (group -> bboxSize ());
+	bboxCenter () .addInterest (group -> bboxCenter ());
+	children ()   .addInterest (group -> children ());
+
+	group -> bboxSize ()   = bboxSize ();
+	group -> bboxCenter () = bboxCenter ();
+	group -> children ()   = children ();
+
+	group -> isInternal (true);
+	group -> setup ();
 }
 
 Box3f
 StaticGroup::getBBox () const
 {
-	return X3DBoundedObject::getBBox (children ());
+	return group -> getBBox ();
+}
+
+void
+StaticGroup::traverse (const TraverseType type)
+{
+	group -> traverse (type);
 }
 
 void
 StaticGroup::dispose ()
 {
+	group .dispose ();
+
 	X3DBoundedObject::dispose ();
 	X3DChildNode::dispose ();
 }

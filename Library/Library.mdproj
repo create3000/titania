@@ -2397,6 +2397,7 @@
     <None Include="Tests\ParticleSystems\ExplosionEmitter.wrl" />
     <None Include="Tests\Geometry3D\vertabrae.wrl" />
     <None Include="Tests\ParticleSystems\Rain.wrl" />
+    <None Include="Tests\Grouping\StaticGroup.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
