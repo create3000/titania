@@ -75,7 +75,7 @@ X3DNBodyCollidableNode::initialize ()
 }
 
 Box3f
-X3DNBodyCollidableNode::getBBox ()
+X3DNBodyCollidableNode::getBBox () const
 {
 	return Box3f ();
 }

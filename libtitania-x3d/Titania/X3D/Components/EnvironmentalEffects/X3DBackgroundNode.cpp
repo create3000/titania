@@ -322,7 +322,7 @@ X3DBackgroundNode::traverse (const TraverseType type)
 		}
 		case TraverseType::COLLECT:
 		{
-			matrix = ModelViewMatrix4f ();
+			matrix = getModelViewMatrix () .get ();
 			break;
 		}
 		default:

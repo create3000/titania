@@ -81,10 +81,10 @@ public:
 	{ return localObjects; }
 
 	void
-	addShape (X3DShapeNode*);
+	addShape (X3DShapeNode* const);
 
 	void
-	addCollision (X3DShapeNode*);
+	addCollision (X3DShapeNode* const);
 
 	void
 	render (const TraverseType);
@@ -111,12 +111,8 @@ protected:
 
 private:
 
-	typedef std::vector <std::unique_ptr <ShapeContainer>> ShapeContainerArray;
-	typedef std::vector <std::unique_ptr <CollisionShape>> CollisionShapeArray;
-
-	static
-	float
-	getDistance (X3DShapeNode*, const Matrix4f &);
+	using ShapeContainerArray = std::vector <std::unique_ptr <ShapeContainer>>;
+	using CollisionShapeArray = std::vector <std::unique_ptr <CollisionShape>>;
 
 	virtual
 	void

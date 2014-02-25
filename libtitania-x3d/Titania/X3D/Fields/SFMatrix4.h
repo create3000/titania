@@ -69,8 +69,8 @@ class SFMatrix4 :
 public:
 
 	typedef typename ValueType::value_type                   value_type;
-	typedef SFVec3 <typename ValueType::vector3_type>        vector3_type;
-	typedef SFRotation4 <typename ValueType::rotation4_type> rotation4_type;
+	typedef SFVec3 <typename ValueType::point_type>          vector3_type;
+	typedef SFRotation4 <typename ValueType::rotation_type>  rotation4_type;
 	typedef SFRotation4 <Rotation4f>                         rotation4f_type;
 	typedef typename ValueType::size_type                    size_type;
 

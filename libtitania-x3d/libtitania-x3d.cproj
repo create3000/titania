@@ -636,6 +636,7 @@
     <None Include="Titania\X3D\Fields\VrmlMatrix.h" />
     <None Include="Titania\X3D\Bits\Geospatial.h" />
     <None Include="Titania\X3D\Components\Geospatial\X3DGeospatialObject.h" />
+    <None Include="Titania\X3D\Types\MatrixStack.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

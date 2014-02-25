@@ -43,6 +43,7 @@ libtitania_standard_la_SOURCES =  \
 	Titania/Math/Numbers/Vector2.cpp \
 	Titania/Math/Numbers/Vector3.cpp \
 	Titania/Math/Numbers/Vector4.cpp \
+	Titania/Math/Utility/MatrixStack.cpp \
 	Titania/OS/CWD.cpp \
 	Titania/OS/Env.cpp \
 	Titania/OS/FileExists.cpp \

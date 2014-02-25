@@ -94,7 +94,7 @@ LOD::create (X3DExecutionContext* const executionContext) const
 }
 
 Box3f
-LOD::getBBox ()
+LOD::getBBox () const
 {
 	if (bboxSize () == Vector3f (-1, -1, -1))
 	{

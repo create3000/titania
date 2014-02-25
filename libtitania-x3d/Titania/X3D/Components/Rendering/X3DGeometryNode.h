@@ -90,7 +90,7 @@ public:
 	const Box3f &
 	getBBox () const
 	{ return bbox; }
-	
+
 	bool
 	getSolid () const
 	{ return solid; }

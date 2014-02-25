@@ -169,7 +169,7 @@ TransmitterPdu::initialize ()
 }
 
 Box3f
-TransmitterPdu::getBBox ()
+TransmitterPdu::getBBox () const
 {
 	return Box3f ();
 }

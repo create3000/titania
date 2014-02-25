@@ -175,11 +175,11 @@ public:
 
 	virtual
 	void
-	reshape (const float, const float);
+	reshape (const double, const double) final override;
 
 	virtual
 	void
-	traverse (const TraverseType);
+	traverse (const TraverseType) final override;
 
 
 private:

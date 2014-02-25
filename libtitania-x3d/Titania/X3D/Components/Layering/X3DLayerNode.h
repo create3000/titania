@@ -144,7 +144,7 @@ public:
 	{ return layer0; }
 
 	Box3f
-	getBBox ();
+	getBBox () const;
 
 	///  @name Bindable node stack handling
 

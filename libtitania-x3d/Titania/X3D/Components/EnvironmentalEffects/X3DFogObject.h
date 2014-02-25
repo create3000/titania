@@ -65,6 +65,8 @@ class X3DFogObject :
 {
 public:
 
+	///  @name Fields
+
 	SFColor &
 	color ()
 	{ return *fields .color; }
@@ -97,31 +99,41 @@ public:
 	transparency () const
 	{ return fields .transparency; }
 
+	///  @name Operations
+
 	virtual
 	void
 	enable ();
 
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () override;
+
 
 protected:
+
+	///  @name Construction
 
 	X3DFogObject ();
 
 	virtual
 	void
-	initialize ();
-
-	virtual
-	void
-	dispose ();
+	initialize () override;
 
 
 private:
+
+	///  @name Member access
 
 	float
 	getVisibilityRange ();
 
 	float
 	getDensitiy (float);
+
+	///  @name Event handlers
 
 	void
 	set_color ();
@@ -131,6 +143,8 @@ private:
 
 	void
 	set_fogType ();
+
+	///  @name Members
 
 	struct Fields
 	{

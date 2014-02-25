@@ -216,20 +216,20 @@ public:
 	viewpoints () const
 	{ return *fields .viewpoints; }
 
+	virtual
 	Box3f
-	getBBox ();
+	getBBox () const final override;
 
 	virtual
 	void
-	dispose ();
+	dispose () final override;
 
 
 private:
 
 	virtual
 	void
-	initialize ();
-
+	initialize () final override;
 
 	///  @name Static members
 

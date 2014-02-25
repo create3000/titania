@@ -114,7 +114,6 @@ private:
 	void
 	initialize () final override;
 
-
 	///  @name Static members
 
 	static const std::string componentName;

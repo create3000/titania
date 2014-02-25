@@ -1,3 +1,15 @@
+2014-02-25  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* Functional.h:
+	* libtitania-standard.cproj:
+	* Matrix3.h:
+	* Matrix4.h:
+	* Matrix2.h:
+	* Spheroid3.h:
+	* MatrixStack.h:
+	* MatrixStack.cpp: 
+
 2014-02-23  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Rotation4.h:

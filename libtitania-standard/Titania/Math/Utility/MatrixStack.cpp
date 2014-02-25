@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,73 +48,27 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_CADGEOMETRY_QUAD_SET_H__
-#define __TITANIA_X3D_COMPONENTS_CADGEOMETRY_QUAD_SET_H__
-
-#include "../Rendering/X3DComposedGeometryNode.h"
+#include "MatrixStack.h"
 
 namespace titania {
-namespace X3D {
+namespace math {
 
-class QuadSet :
-	public X3DComposedGeometryNode
-{
-public:
+template class matrix_stack <matrix3 <float>>;
+template class matrix_stack <matrix3 <double>>;
+template class matrix_stack <matrix3 <long double>>;
 
-	QuadSet (X3DExecutionContext* const);
+template class matrix_stack <matrix4 <float>>;
+template class matrix_stack <matrix4 <double>>;
+template class matrix_stack <matrix4 <long double>>;
 
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
+//
+template std::ostream & operator << (std::ostream &, const matrix_stack <matrix3 <float>> &);
+template std::ostream & operator << (std::ostream &, const matrix_stack <matrix3 <double>> &);
+template std::ostream & operator << (std::ostream &, const matrix_stack <matrix3 <long double>> &);
 
-	///  @name Common members
+template std::ostream & operator << (std::ostream &, const matrix_stack <matrix4 <float>> &);
+template std::ostream & operator << (std::ostream &, const matrix_stack <matrix4 <double>> &);
+template std::ostream & operator << (std::ostream &, const matrix_stack <matrix4 <long double>> &);
 
-	virtual
-	const std::string &
-	getComponentName () const final override
-	{ return componentName; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
-
-	///  @name Tests
-
-	virtual
-	bool
-	isLineGeometry () const final override
-	{ return false; }
-
-
-private:
-
-	///  @name Operations
-
-	virtual
-	void
-	build () final override;
-
-	virtual
-	void
-	buildNormals (size_t, size_t) final override;
-
-	///  @name Static members
-
-	static const std::string componentName;
-	static const std::string typeName;
-	static const std::string containerField;
-
-
-};
-
-} // X3D
+} // math
 } // titania
-
-#endif

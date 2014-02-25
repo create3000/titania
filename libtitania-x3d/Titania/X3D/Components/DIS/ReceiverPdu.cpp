@@ -137,7 +137,7 @@ ReceiverPdu::initialize ()
 }
 
 Box3f
-ReceiverPdu::getBBox ()
+ReceiverPdu::getBBox () const
 {
 	return Box3f ();
 }

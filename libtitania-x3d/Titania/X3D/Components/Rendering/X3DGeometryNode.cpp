@@ -111,7 +111,7 @@ X3DGeometryNode::intersect (const Line3f & line, std::vector <IntersectionPtr> &
 
 	if (bbox .intersect (line))
 	{
-		const Matrix4f modelViewMatrix = ModelViewMatrix4f ();
+		const Matrix4f modelViewMatrix = getModelViewMatrix () .get ();
 
 		size_t first = 0;
 

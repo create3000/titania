@@ -119,7 +119,7 @@ HAnimHumanoid::initialize ()
 }
 
 Box3f
-HAnimHumanoid::getBBox ()
+HAnimHumanoid::getBBox () const
 {
 	return Box3f ();
 }

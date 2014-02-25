@@ -137,9 +137,13 @@ OrthoViewpoint::getScreenScale (const double, const Vector4i & viewport) const
 	const int height = viewport [3];
 
 	if (width > height)
-		return Vector3d (getSizeX () / height, getSizeY () / height, getSizeY () / height);
+		return Vector3d (getSizeX () / height,
+		                 getSizeY () / height,
+		                 getSizeY () / height);
 
-	return Vector3d (getSizeX () / width, getSizeY () / width, getSizeX () / width);
+	return Vector3d (getSizeX () / width,
+	                 getSizeY () / width,
+	                 getSizeX () / width);
 }
 
 Vector2d
@@ -150,13 +154,13 @@ OrthoViewpoint::getViewportSize (const Vector4i & viewport) const
 
 	if (width > height)
 	{
-		return Vector2d (width * (double) getSizeX () / height,
+		return Vector2d (width * getSizeX () / height,
 		                 getSizeY ());
 	}
 	else
 	{
 		return Vector2d (getSizeX (),
-		                 height * (double) getSizeY () / width);
+		                 height * getSizeY () / width);
 	}
 }
 
@@ -168,12 +172,33 @@ OrthoViewpoint::getLookAtPositionOffset (const Box3f & bbox) const
 	       - position ();
 }
 
+template <class Type>
+static
+matrix4 <Type>
+ortho (const Type & l, const Type & r, const Type & b, const Type & t, const Type & n, const Type & f)
+{
+	const Type r_l = r - l;
+	const Type t_b = t - b;
+	const Type f_n = f - n;
+
+	const Type A =  2 / r_l;
+	const Type B =  2 / t_b;
+	const Type C = -2 / f_n;
+	const Type D = -(r + l) / r_l;
+	const Type E = -(t + b) / t_b;
+	const Type F = -(f + n) / f_n;
+
+	return matrix4 <Type> (A, 0, 0, 0,
+	                       0, B, 0, 0,
+	                       0, 0, C, 0,
+	                       D, E, F, 1);
+}
+
 void
-OrthoViewpoint::reshape (const float zNear, const float zFar)
+OrthoViewpoint::reshape (const double zNear, const double zFar)
 {
 	glMatrixMode (GL_PROJECTION);
-	glLoadIdentity ();
-	
+
 	const Vector4i viewport = Viewport4i ();
 
 	const int width  = viewport [2];
@@ -183,15 +208,15 @@ OrthoViewpoint::reshape (const float zNear, const float zFar)
 
 	if (width > height)
 	{
-		const double left = getMinimumX () + (getMaximumX () - getMinimumX ()) / 2 - size .x () / 2;
+		const double left = getMinimumX () + (getSizeX () - size .x ()) / 2;
 
-		glOrtho (left, left + size .x (), getMinimumY (), getMaximumY (), zNear, zFar);
+		glLoadMatrixd (ortho (left, left + size .x (), getMinimumY (), getMaximumY (), zNear, zFar) .data ());
 	}
 	else
 	{
-		const double bottom = getMinimumY () + (getMaximumY () - getMinimumY ()) / 2 - size .y () / 2;
+		const double bottom = getMinimumY () + (getSizeY () - size .y ()) / 2;
 
-		glOrtho (getMinimumX (), getMaximumX (), bottom, bottom + size .y (), zNear, zFar);
+		glLoadMatrixd (ortho (getMinimumX (), getMaximumX (), bottom, bottom + size .y (), zNear, zFar) .data ());
 	}
 
 	glMatrixMode (GL_MODELVIEW);

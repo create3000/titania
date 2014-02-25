@@ -120,14 +120,14 @@ public:
 
 	virtual
 	void
-	reshape (const float, const float);
+	reshape (const double, const double);
 
 
 private:
 
 	///  @name Member access
 
-	float
+	double
 	getFieldOfView () const;
 
 	Vector3f

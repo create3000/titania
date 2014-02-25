@@ -170,6 +170,7 @@ ScreenText::setTextBounds ()
 			break;
 	}
 
+	//setBBox (Box3d ());
 	setBBox (Box3d (min, max, extents_type ()));
 }
 
@@ -393,10 +394,10 @@ ScreenText::scale () const
 	modelViewMatrix .get (translation, rotation, scale);
 
 	const double   distance    = math::abs (modelViewMatrix .origin ());
-	const Vector3f screenScale = fontStyle -> getCurrentViewpoint () -> getScreenScale (distance, Viewport4i ());
+	const Vector3d screenScale = fontStyle -> getCurrentViewpoint () -> getScreenScale (distance, Viewport4i ());
 
 	Matrix4d matrix;
-	matrix .set (translation, rotation, Vector3f (screenScale .x () * signum (scale .x ()),
+	matrix .set (translation, rotation, Vector3d (screenScale .x () * signum (scale .x ()),
 	                                              screenScale .y () * signum (scale .y ()),
 	                                              screenScale .z () * signum (scale .z ())));
 

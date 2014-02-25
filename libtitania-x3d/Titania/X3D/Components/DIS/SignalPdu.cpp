@@ -137,7 +137,7 @@ SignalPdu::initialize ()
 }
 
 Box3f
-SignalPdu::getBBox ()
+SignalPdu::getBBox () const
 {
 	return Box3f ();
 }

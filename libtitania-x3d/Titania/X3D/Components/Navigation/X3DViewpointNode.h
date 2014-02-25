@@ -191,7 +191,7 @@ public:
 
 	virtual
 	void
-	reshape (const float, const float) = 0;
+	reshape (const double, const double) = 0;
 
 	void
 	transform ();

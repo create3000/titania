@@ -95,7 +95,7 @@ NurbsSet::initialize ()
 }
 
 Box3f
-NurbsSet::getBBox ()
+NurbsSet::getBBox () const
 {
 	return Box3f ();
 }

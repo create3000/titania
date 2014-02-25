@@ -171,7 +171,7 @@ ProximitySensor::traverse (const TraverseType type)
 		case TraverseType::CAMERA:
 		{
 			viewpoint       = getCurrentViewpoint ();
-			modelViewMatrix = ModelViewMatrix4f ();
+			modelViewMatrix = getModelViewMatrix () .get ();
 			break;
 		}
 		case TraverseType::COLLECT:
@@ -183,7 +183,7 @@ ProximitySensor::traverse (const TraverseType type)
 				inside = true;
 
 			else
-				inside = Box3f (size (), center ()) .intersect (inverse (ModelViewMatrix4f ()) .origin ());
+				inside = Box3f (size (), center ()) .intersect (inverse (getModelViewMatrix () .get ()) .origin ());
 
 			break;
 		}

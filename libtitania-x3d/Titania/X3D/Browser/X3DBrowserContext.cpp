@@ -505,7 +505,7 @@ X3DBrowserContext::getHitRay () const
 {
 	try
 	{
-		return ViewVolume::unProjectLine (x, y, ModelViewMatrix4d (), ProjectionMatrix4d (), Viewport4i ());
+		return ViewVolume::unProjectLine (x, y, getModelViewMatrix () .get (), ProjectionMatrix4d (), Viewport4i ());
 	}
 	catch (const std::domain_error &)
 	{

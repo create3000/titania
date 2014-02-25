@@ -118,7 +118,7 @@ X3DPointingDeviceSensorNode::push ()
 		getBrowser () -> getSensors () .back () .emplace (this);
 
 		projectionMatrix = ProjectionMatrix4d ();
-		modelViewMatrix  = ModelViewMatrix4d ();
+		modelViewMatrix  = getModelViewMatrix () .get ();
 		viewport         = Viewport4i ();
 	}
 }

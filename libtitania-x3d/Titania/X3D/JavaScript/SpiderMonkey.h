@@ -111,7 +111,7 @@ private:
 
 	virtual
 	void
-	initialize ();
+	initialize () final override;
 
 	///  @name Static members
 

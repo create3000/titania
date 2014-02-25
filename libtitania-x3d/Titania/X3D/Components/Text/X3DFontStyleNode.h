@@ -67,13 +67,13 @@ public:
 
 	X3DTextGeometry ();
 
-	const Box3d &
-	getBBox () const
-	{ return bbox; }
-
 	virtual
 	bool
 	isTransparent () const = 0;
+
+	const Box3d &
+	getBBox () const
+	{ return bbox; }
 
 	virtual
 	void

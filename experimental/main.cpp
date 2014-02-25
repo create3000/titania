@@ -203,8 +203,8 @@ using Vector2f    = math::vector2 <float>;
 using Vector3d    = math::vector3 <double>;
 using Vector3f    = math::vector3 <float>;
 using Vector4f    = math::vector4 <float>;
+using Rotation4d  = math::rotation4 <double>;
 using Rotation4f  = math::rotation4 <float>;
-using Matrix4f    = math::matrix4 <float>;
 using Box2f       = math::box2 <float>;
 using Box3f       = math::box3 <float>;
 using Cylinder3f  = math::cylinder3 <float>;
@@ -212,6 +212,7 @@ using Plane3f     = math::plane3 <float>;
 using Line3f      = math::line3 <float>;
 using Sphere3f    = math::sphere3 <float>;
 using Matrix3f    = math::matrix3 <float>;
+using Matrix4d    = math::matrix4 <double>;
 using Matrix4f    = math::matrix4 <float>;
 using Spheroid3d  = math::spheroid3 <double>;
 
@@ -237,17 +238,41 @@ main (int argc, char** argv)
 
 	std::clog << std::setprecision (std::numeric_limits <double>::digits10);
 
-	auto GD_WE = geospatial::geodetic <double> (geospatial::WE);
+	static constexpr int N = 100000000;
 
-	std::clog << 0.00669438 << std::endl;
-	std::clog << geospatial::WE .c () << std::endl;
-	std::clog << 1 - std::pow (geospatial::WE .c () / geospatial::WE .a (), 2) << std::endl;
-
-	std::clog << Vector3d (radians (37.4506), radians (-122.1834), 0) << std::endl;
+	{
+		auto t0 = chrono::now ();
 	
-	std::clog << GD_WE (Vector3d (radians (37.4506), radians (-122.1834), 0)) << std::endl;
-	std::clog << geospatial::universal_transverse_mercator <double> (geospatial::WE, 10) (Vector3d (4145173, 572227, 0)) << std::endl;
-	std::clog << Vector3d (-2700301, -4290762, 3857213) << std::endl; // gc: Geocentric coordinates
+		auto m = Matrix4f ();
+		m .set (Vector3f (1,2,3), Rotation4f (1,2,3,4), Vector3f (1,2,3));
+
+		for (int i = 0; i < N; ++ i)
+		{
+			auto r = Matrix4f (Rotation4f (i,2,3,4));
+			
+			m *= r;
+		}
+		
+		__LOG__ << m << std::endl;
+		__LOG__ << chrono::now () - t0 << std::endl;
+	}
+
+	{
+		auto t0 = chrono::now ();
+	
+		auto m = Matrix4d ();
+		m .set (Vector3d (1,2,3), Rotation4d (1,2,3,4), Vector3d (1,2,3));
+
+		for (int i = 0; i < N; ++ i)
+		{
+			auto r = Matrix4d (Rotation4d (i,2,3,4));
+			
+			m *= r;
+		}
+		
+		__LOG__ << m << std::endl;
+		__LOG__ << chrono::now () - t0 << std::endl;
+	}
 
 	std::clog << "Function main done." << std::endl;
 	return 0;

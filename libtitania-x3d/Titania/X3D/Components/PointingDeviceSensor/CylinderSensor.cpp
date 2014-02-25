@@ -158,7 +158,7 @@ CylinderSensor::set_active (const HitPtr & hit, const bool active)
 	{
 		if (isActive ())
 		{
-			inverseModelViewMatrix = ~getModelViewMatrix ();
+			inverseModelViewMatrix = ~getLastModelViewMatrix ();
 
 			const auto hitRay   = hit -> ray * inverseModelViewMatrix;
 			const auto hitPoint = hit -> point * inverseModelViewMatrix;

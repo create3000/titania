@@ -102,13 +102,15 @@ public:
 
 	virtual
 	Box3f
-	getBBox () override;
+	getBBox () const override;
 
 	///  @name Operations
 
 	virtual
 	void
 	traverse (const TraverseType) override;
+
+	///  @name Destruction
 
 	virtual
 	void

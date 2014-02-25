@@ -92,10 +92,10 @@ public:
 	virtual
 	bool
 	isTransparent () const final override;
-
+	
 	virtual
 	Box3f
-	getBBox () final override;
+	getBBox () const final override;
 
 	///  @name Operations
 
@@ -115,7 +115,7 @@ public:
 private:
 
 	///  @name Operations
-	
+
 	virtual
 	bool
 	isLineGeometry () const final override;

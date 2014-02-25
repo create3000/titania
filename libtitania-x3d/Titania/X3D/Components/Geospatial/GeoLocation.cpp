@@ -119,10 +119,10 @@ GeoLocation::eventsProcessed ()
 }
 
 Box3f
-GeoLocation::getBBox ()
+GeoLocation::getBBox () const
 {
 	if (getDisplay ())
-		return X3DGroupingNode::getBBox () * Matrix4f (matrix);
+		return Box3d (X3DGroupingNode::getBBox ()) * matrix;
 
 	return Box3f ();
 }
@@ -130,13 +130,13 @@ GeoLocation::getBBox ()
 void
 GeoLocation::traverse (const TraverseType type)
 {
-	glPushMatrix ();
+	getModelViewMatrix () .push ();
 
-	glMultMatrixd (matrix .data ());
+	getModelViewMatrix () .multLeft (matrix);
 
 	X3DGroupingNode::traverse (type);
 
-	glPopMatrix ();
+	getModelViewMatrix () .pop ();
 }
 
 void

@@ -61,6 +61,8 @@ class Group :
 {
 public:
 
+	///  @name Construction
+
 	Group (X3DExecutionContext* const);
 
 	virtual

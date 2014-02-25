@@ -144,7 +144,7 @@ X3DLayerNode::initialize ()
 }
 
 Box3f
-X3DLayerNode::getBBox ()
+X3DLayerNode::getBBox () const
 {
 	return group -> getBBox ();
 }
@@ -208,7 +208,7 @@ X3DLayerNode::getDistance (const Vector3f & positionOffset, const float width, c
 	parentMatrix .translate (getViewpoint () -> getUserPosition () + positionOffset);
 	parentMatrix .rotate (Rotation4f (Vector3f (0, 0, 1), -direction));
 
-	glLoadMatrixf (inverse (parentMatrix) .data ());
+	getModelViewMatrix () .set (inverse (parentMatrix));
 
 	// Traverse and get distance
 
@@ -320,7 +320,7 @@ X3DLayerNode::pick ()
 {
 	if (isPickable ())
 	{
-		glLoadIdentity ();
+		getModelViewMatrix () .identity ();
 		getViewpoint () -> reshape ();
 		getBrowser ()   -> updateHitRay ();
 
@@ -334,7 +334,7 @@ X3DLayerNode::pick ()
 void
 X3DLayerNode::camera ()
 {
-	glLoadIdentity ();
+	getModelViewMatrix () .identity ();
 	getViewpoint () -> reshape ();
 
 	defaultNavigationInfo -> traverse (TraverseType::CAMERA);
@@ -385,7 +385,7 @@ X3DLayerNode::collision ()
 	parentMatrix .translate (viewpoint -> getUserPosition ());
 	parentMatrix .rotate (viewpoint -> getUserOrientation () * Rotation4f (viewpoint -> getUserOrientation () * Vector3f (0, 0, 1), Vector3f (0, 1, 0)));
 
-	glLoadMatrixf (inverse (parentMatrix) .data ());
+	getModelViewMatrix () .set (inverse (parentMatrix));
 
 	// Render
 
@@ -397,7 +397,7 @@ X3DLayerNode::collect ()
 {
 	glClear (GL_DEPTH_BUFFER_BIT);
 
-	glLoadIdentity ();
+	getModelViewMatrix () .identity ();
 	getBackground () -> draw ();
 
 	getNavigationInfo () -> enable ();

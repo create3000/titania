@@ -119,7 +119,7 @@ Billboard::rotate (const TraverseType type) const
 			                   z [0], z [1], z [2], 0,
 			                   0,     0,     0,     1);
 
-			glMultMatrixf (rotation .data ());
+			getModelViewMatrix () .multLeft (rotation);
 		}
 		else
 		{
@@ -128,7 +128,7 @@ Billboard::rotate (const TraverseType type) const
 
 			const Rotation4f rotation (vector, normal);
 
-			glMultMatrixf (Matrix4f (rotation) .data ());                                      // rotate zAxis in plane
+			getModelViewMatrix () .multLeft (Matrix4f (rotation));                                      // rotate zAxis in plane
 		}
 	}
 	catch (const std::domain_error &)
@@ -138,13 +138,13 @@ Billboard::rotate (const TraverseType type) const
 void
 Billboard::traverse (const TraverseType type)
 {
-	glPushMatrix ();
+	getModelViewMatrix () .push ();
 
 	rotate (type);
 
 	X3DGroupingNode::traverse (type);
 
-	glPopMatrix ();
+	getModelViewMatrix () .pop ();
 }
 
 } // X3D

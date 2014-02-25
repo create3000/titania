@@ -58,7 +58,7 @@ namespace X3D {
 LightContainer::LightContainer (X3DLightNode* const node) :
 	X3DCollectableObject (),
 	                   node (node),
-	        modelViewMatrix (ModelViewMatrix4f ()),
+	        modelViewMatrix (node -> getModelViewMatrix () .get ()),
 	                lightId (0)
 { }
 

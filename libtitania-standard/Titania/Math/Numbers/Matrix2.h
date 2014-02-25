@@ -90,23 +90,31 @@ private:
 public:
 
 	///  Size typedef.  Used for size and indices.
-	typedef size_t size_type;
+	using size_type = size_t;
 
 	///  Value typedef.
-	typedef Type value_type;
-
-	///  Vector2 typedef.
-	typedef vector2 <Type> vector2_type;
-
-	///  Vector typedef.
-	///  This is the type for the vector representation of this matrix.
-	///  The matrix consists of two vectors of type vector2.
-	///  0 [ x-axis 0 ]
-	///  1 [ x      1 ]
-	typedef vector2 <vector2_type> vector_type;
+	using value_type = Type;
 
 	///  Array typedef.
 	typedef Type array_type [Size];
+
+	///  Matrix typedef.
+	using matrix_type = vector2 <vector2 <Type>>;
+
+	///  Translation typedef.
+	using translation_type = Type;
+
+	///  Translation typedef.
+	using scale_type = Type;
+
+	///  Vector typedef.
+	using vector_type = vector2 <Type>;
+
+	///  Point typedef.
+	using point_type = Type;
+
+	///  Normal typedef.
+	using normal_type = Type;
 
 	///  @name Constructors
 
@@ -185,11 +193,11 @@ public:
 	get (Type &, Type &) const;
 
 	///  Access rows by @a index.
-	vector2_type &
+	vector_type &
 	operator [ ] (const size_type index)
 	{ return value [index]; }
 
-	const vector2_type &
+	const vector_type &
 	operator [ ] (const size_type index) const
 	{ return value [index]; }
 
@@ -205,10 +213,10 @@ public:
 
 	///  Get access to the underlying vector representation of this matrix.
 	void
-	vector (const vector_type & vector)
+	vector (const matrix_type & vector)
 	{ value = vector; }
 
-	const vector_type &
+	const matrix_type &
 	vector () const
 	{ return value; }
 
@@ -216,13 +224,15 @@ public:
 
 	///  Returns the order of the matrix.
 	static
-	constexpr size_type
+	constexpr
+	size_type
 	order ()
 	{ return Order; }
 
 	///  Returns the number of elements in the matrix. The size is the same as order () * order ().
 	static
-	constexpr size_type
+	constexpr
+	size_type
 	size ()
 	{ return Size; }
 
@@ -328,7 +338,7 @@ private:
 
 	union
 	{
-		vector_type value;
+		matrix_type value;
 		array_type array;
 	};
 

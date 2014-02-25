@@ -91,11 +91,11 @@ CADFace::initialize ()
 }
 
 Box3f
-CADFace::getBBox ()
+CADFace::getBBox () const
 {
 	if (bboxSize () == Vector3f (-1, -1, -1))
 	{
-		auto boundedObject = x3d_cast <X3DBoundedObject*> (shape ());
+		const auto boundedObject = x3d_cast <X3DBoundedObject*> (shape ());
 
 		if (boundedObject)
 			return boundedObject -> getBBox ();

@@ -179,8 +179,9 @@ public:
 
 	///  @name Destruction
 
+	virtual
 	void
-	dispose ();
+	dispose () final override;
 
 
 protected:

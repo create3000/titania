@@ -64,6 +64,8 @@ class X3DBoundedObject :
 {
 public:
 
+	///  @name Fields
+
 	virtual
 	SFVec3f &
 	bboxCenter ()
@@ -84,16 +86,26 @@ public:
 	bboxSize () const
 	{ return *fields .bboxSize; }
 
+	///  @name Member access
+
 	virtual
 	Box3f
-	getBBox () = 0;
+	getBBox () const = 0;
 
 	static
 	Box3f
 	getBBox (const MFNode &);
 
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () override;
+
 
 protected:
+
+	///  @name Construction
 
 	X3DBoundedObject ();
 
@@ -101,12 +113,10 @@ protected:
 	void
 	initialize () override;
 
-	virtual
-	void
-	dispose () override;
-
 
 private:
+
+	///  @name Members
 
 	struct Fields
 	{

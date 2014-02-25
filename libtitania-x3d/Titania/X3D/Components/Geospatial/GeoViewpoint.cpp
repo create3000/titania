@@ -123,7 +123,7 @@ GeoViewpoint::getScreenScale (const double, const Vector4i & viewport) const
 }
 
 void
-GeoViewpoint::reshape (const float zNear, const float zFar)
+GeoViewpoint::reshape (const double zNear, const double zFar)
 { }
 
 void

@@ -138,11 +138,17 @@ public:
 	const std::vector <X3DViewpointObject*>
 	getViewpointObjects () const;
 
-	///  @name Rendering
+	///  @name Operations
 
 	virtual
 	void
-	traverse (const TraverseType);
+	traverse (const TraverseType) final override;
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override;
 
 
 private:
@@ -151,9 +157,9 @@ private:
 
 	virtual
 	void
-	initialize ();
+	initialize () final override;
 
-	///  @name Field callbacks
+	///  @name Event handlers
 
 	void
 	set_displayed ();
@@ -166,13 +172,6 @@ private:
 
 	void
 	set_isActive ();
-
-	///  @name Destruction
-
-	virtual
-	void
-	dispose ();
-
 
 	///  @name Static members
 

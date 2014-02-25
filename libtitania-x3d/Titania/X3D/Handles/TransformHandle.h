@@ -181,10 +181,6 @@ public:
 	void
 	setUserData (const UserDataPtr &) final override;
 
-	virtual
-	Box3f
-	getBBox () final override;
-
 	void
 	addAbsoluteMatrix (const Matrix4f &);
 
@@ -220,6 +216,10 @@ public:
 	       Error <DISPOSED>) final override;
 
 	///  @name Operatations
+
+	virtual
+	Box3f
+	getBBox () const final override;
 
 	virtual
 	void

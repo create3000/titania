@@ -92,10 +92,10 @@ Viewpoint::create (X3DExecutionContext* const executionContext) const
 	return new Viewpoint (executionContext);
 }
 
-float
+double
 Viewpoint::getFieldOfView () const
 {
-	const float fov = fieldOfView () * fieldOfViewScale ();
+	const double fov = fieldOfView () * fieldOfViewScale ();
 
 	return fov > 0 and fov < M_PI ? fov : M_PI / 4;
 }
@@ -132,30 +132,31 @@ Viewpoint::getLookAtPositionOffset (const Box3f & bbox) const
 	return Vector3f ();
 }
 
+template <class Type>
 static
-void
-frustum (const double l, const double r, const double b, const double t, const double n, const double f)
+matrix4 <Type>
+frustum (const Type & l, const Type & r, const Type & b, const Type & t, const Type & n, const Type & f)
 {
-	const double r_l = r - l;
-	const double t_b = t - b;
-	const double f_n = f - n;
-	const double n_2 = 2 * n;
+	const Type r_l = r - l;
+	const Type t_b = t - b;
+	const Type f_n = f - n;
+	const Type n_2 = 2 * n;
 
-	const double A = (r + l) / r_l;
-	const double B = (t + b) / t_b;
-	const double C = -(f + n) / f_n;
-	const double D = -n_2 * f / f_n;
-	const double E = n_2 / r_l;
-	const double F = n_2 / t_b;
+	const Type A = (r + l) / r_l;
+	const Type B = (t + b) / t_b;
+	const Type C = -(f + n) / f_n;
+	const Type D = -n_2 * f / f_n;
+	const Type E = n_2 / r_l;
+	const Type F = n_2 / t_b;
 
-	glLoadMatrixd (Matrix4d (E, 0, 0, 0,
-	                         0, F, 0, 0,
-	                         A, B, C, -1,
-	                         0, 0, D, 0) .data ());
+	return matrix4 <Type> (E, 0, 0, 0,
+	                       0, F, 0, 0,
+	                       A, B, C, -1,
+	                       0, 0, D, 0);
 }
 
 void
-Viewpoint::reshape (const float zNear, const float zFar)
+Viewpoint::reshape (const double zNear, const double zFar)
 {
 	glMatrixMode (GL_PROJECTION);
 
@@ -164,17 +165,17 @@ Viewpoint::reshape (const float zNear, const float zFar)
 	const size_t width  = viewport [2];
 	const size_t height = viewport [3];
 
-	const float ratio = std::tan (getFieldOfView () / 2) * zNear;
+	const double ratio = std::tan (getFieldOfView () / 2) * zNear;
 
 	if (width > height)
 	{
-		const float aspect = width * ratio / height;
-		frustum (-aspect, aspect, -ratio, ratio, zNear, zFar);
+		const double aspect = width * ratio / height;
+		glLoadMatrixd (frustum (-aspect, aspect, -ratio, ratio, zNear, zFar) .data ());
 	}
 	else
 	{
-		const float aspect = height * ratio / width;
-		frustum (-ratio, ratio, -aspect, aspect, zNear, zFar);
+		const double aspect = height * ratio / width;
+		glLoadMatrixd (frustum (-ratio, ratio, -aspect, aspect, zNear, zFar) .data ());
 	}
 
 	glMatrixMode (GL_MODELVIEW);

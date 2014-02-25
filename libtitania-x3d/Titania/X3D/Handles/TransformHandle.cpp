@@ -121,7 +121,7 @@ TransformHandle::setUserData (const UserDataPtr & value)
 }
 
 Box3f
-TransformHandle::getBBox ()
+TransformHandle::getBBox () const
 {
 	return transform -> getBBox ();
 }
@@ -217,10 +217,10 @@ TransformHandle::reshape ()
 		const auto & handle = scene -> getNamedNode ("Handle");
 		const auto   bbox   = transform -> X3DGroupingNode::getBBox ();
 
-		handle -> setField <SFMatrix4f> ("cameraSpaceMatrix", getCameraSpaceMatrix (), true);
-		handle -> setField <SFMatrix4f> ("modelViewMatrix",   ModelViewMatrix4f (),    true);
-		handle -> setField <SFVec3f>    ("bboxSize",          bbox .size (),           true);
-		handle -> setField <SFVec3f>    ("bboxCenter",        bbox .center (),         true);
+		handle -> setField <SFMatrix4f> ("cameraSpaceMatrix", getCameraSpaceMatrix (),       true);
+		handle -> setField <SFMatrix4f> ("modelViewMatrix",   getModelViewMatrix () .get (), true);
+		handle -> setField <SFVec3f>    ("bboxSize",          bbox .size (),                 true);
+		handle -> setField <SFVec3f>    ("bboxCenter",        bbox .center (),               true);
 	}
 	catch (const X3DError & error)
 	{ }
@@ -237,15 +237,15 @@ TransformHandle::traverse (const TraverseType type)
 	
 	if (type == TraverseType::CAMERA)
 	{
-		parentMatrix = ModelViewMatrix4f ();
+		parentMatrix = getModelViewMatrix () .get ();
 		matrix       = getMatrix ();
 	}
 
 	// Handle
 
-	glPushMatrix ();
+	getModelViewMatrix () .push ();
 
-	glMultMatrixf (getMatrix () .data ());
+	getModelViewMatrix () .multLeft (getMatrix ());
 
 	if (type == TraverseType::CAMERA) // Last chance to process events
 		reshape ();
@@ -256,7 +256,7 @@ TransformHandle::traverse (const TraverseType type)
 			rootNode -> traverse (type);
 	}
 
-	glPopMatrix ();
+	getModelViewMatrix () .pop ();
 
 	getCurrentLayer () -> getLocalObjects () .pop_back ();
 }

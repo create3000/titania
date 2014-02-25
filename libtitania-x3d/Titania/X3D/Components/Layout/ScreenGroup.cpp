@@ -79,7 +79,7 @@ ScreenGroup::create (X3DExecutionContext* const executionContext) const
 }
 
 Box3f
-ScreenGroup::getBBox ()
+ScreenGroup::getBBox () const
 {
 	return Box3f ();
 }
@@ -96,26 +96,26 @@ ScreenGroup::scale (const TraverseType type) const
 	modelViewMatrix .get (translation, rotation, scale);
 
 	const double   distance    = math::abs (modelViewMatrix .origin ());
-	const Vector3f screenScale = getCurrentViewpoint () -> getScreenScale (distance, Viewport4i ());
+	const Vector3d screenScale = getCurrentViewpoint () -> getScreenScale (distance, Viewport4i ());
 
 	Matrix4d matrix;
-	matrix .set (translation, rotation, Vector3f (screenScale .x () * signum (scale .x ()),
+	matrix .set (translation, rotation, Vector3d (screenScale .x () * signum (scale .x ()),
 	                                              screenScale .y () * signum (scale .y ()),
 	                                              screenScale .z () * signum (scale .z ())));
 
-	glLoadMatrixd (matrix .data ());
+	getModelViewMatrix () .set (matrix);
 }
 
 void
 ScreenGroup::traverse (const TraverseType type)
 {
-	glPushMatrix ();
+	getModelViewMatrix () .push ();
 
 	scale (type);
 
 	X3DGroupingNode::traverse (type);
 
-	glPopMatrix ();
+	getModelViewMatrix () .pop ();
 }
 
 } // X3D

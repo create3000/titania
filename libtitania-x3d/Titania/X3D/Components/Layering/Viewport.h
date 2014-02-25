@@ -104,13 +104,13 @@ public:
 
 	virtual
 	Vector4i
-	getViewport (int, int) const ;
+	getViewport (int, int) const final override;
 
 	///  @name Operations
 
 	virtual
 	void
-	traverse (const TraverseType);
+	traverse (const TraverseType) final override;
 
 	virtual
 	void
@@ -133,19 +133,15 @@ private:
 
 	///  @name Member access
 
-	virtual
 	float
 	getLeft () const;
 
-	virtual
 	float
 	getRight () const;
 
-	virtual
 	float
 	getBottom () const;
 
-	virtual
 	float
 	getTop () const;
 

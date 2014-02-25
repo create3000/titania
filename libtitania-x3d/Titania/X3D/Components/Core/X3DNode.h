@@ -56,6 +56,7 @@
 #include "../../Fields.h"
 
 #include "../../Rendering/OpenGL.h"
+#include "../../Types/MatrixStack.h"
 
 namespace titania {
 namespace X3D {
@@ -88,6 +89,11 @@ public:
 	std::vector <X3DLayerNode*>
 	getLayers () const;
 
+	static
+	Matrix4fStack &
+	getModelViewMatrix ()
+	{ return modelViewMatrix; }
+
 
 protected:
 
@@ -117,6 +123,10 @@ protected:
 
 
 private:
+
+	///  @name Static members
+
+	static Matrix4fStack modelViewMatrix;
 
 	///  @name Members
 

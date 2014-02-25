@@ -100,8 +100,9 @@ LookAtViewer::on_button_release_event (GdkEventButton* event)
 	{
 		if (not motion and pick (event -> x, event -> y))
 		{
-			const auto hit  = getBrowser () -> getHits () .front ();
-			const auto bbox = hit -> shape -> getBBox () * Matrix4f (hit -> modelViewMatrix) * getActiveViewpoint () -> getTransformationMatrix ();
+			const auto hit             = getBrowser () -> getHits () .front ();
+			const auto modelViewMatrix = Matrix4f (hit -> modelViewMatrix) * getActiveViewpoint () -> getTransformationMatrix ();
+			const auto bbox            = hit -> shape -> getBBox () * modelViewMatrix;
 
 			getActiveViewpoint () -> lookAt (bbox, 1.0 / 3.0);
 		}

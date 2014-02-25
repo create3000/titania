@@ -101,7 +101,7 @@ public:
 
 	virtual
 	void
-	traverse (const TraverseType);
+	traverse (const TraverseType) final override;
 
 
 private:

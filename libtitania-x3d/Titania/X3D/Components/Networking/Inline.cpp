@@ -161,7 +161,7 @@ Inline::setScene (const X3DSFNode <Scene> & value)
 }
 
 Box3f
-Inline::getBBox ()
+Inline::getBBox () const
 {
 	if (bboxSize () == Vector3f (-1, -1, -1))
 		return group -> getBBox ();

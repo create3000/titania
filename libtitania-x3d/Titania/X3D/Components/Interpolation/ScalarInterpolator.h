@@ -61,6 +61,8 @@ class ScalarInterpolator :
 {
 public:
 
+	///  @name Construction
+
 	ScalarInterpolator (X3DExecutionContext* const);
 
 	virtual
@@ -106,17 +108,23 @@ public:
 
 private:
 
-	virtual
-	void
-	initialize ();
+	///  @name Construction
 
 	virtual
 	void
-	set_keyValue ();
+	initialize () final override;
+
+	///  @name Event handlers
 
 	virtual
 	void
-	interpolate (size_t, size_t, const float);
+	set_keyValue () final override;
+
+	///  @name Operations
+
+	virtual
+	void
+	interpolate (size_t, size_t, const float) final override;
 
 	///  @name Static members
 

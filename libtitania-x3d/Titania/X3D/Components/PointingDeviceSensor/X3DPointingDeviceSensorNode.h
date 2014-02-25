@@ -104,15 +104,15 @@ protected:
 	initialize () override;
 
 	Matrix4d
-	getProjectionMatrix () const
+	getLastProjectionMatrix () const
 	{ return projectionMatrix; }
 
 	Matrix4d
-	getModelViewMatrix () const
+	getLastModelViewMatrix () const
 	{ return modelViewMatrix; }
 
 	Vector4i
-	getViewport () const
+	getLastViewport () const
 	{ return viewport; }
 
 

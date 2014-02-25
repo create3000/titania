@@ -133,6 +133,7 @@
     <None Include="Titania\Geospatial\ReferenceEllipsoids.h" />
     <None Include="Titania\Geospatial\UniversalTransverseMercator.h" />
     <None Include="Titania\Geospatial\BasicConverter.h" />
+    <None Include="Titania\Math\Utility\MatrixStack.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />
@@ -190,6 +191,7 @@
     <Compile Include="Titania\Geospatial\Geodetic.cpp" />
     <Compile Include="Titania\Geospatial\UniversalTransverseMercator.cpp" />
     <Compile Include="Titania\Geospatial\BasicConverter.cpp" />
+    <Compile Include="Titania\Math\Utility\MatrixStack.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

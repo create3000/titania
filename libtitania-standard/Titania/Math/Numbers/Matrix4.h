@@ -96,31 +96,34 @@ private:
 public:
 
 	///  Size typedef.  Used for size and indices.
-	typedef size_t size_type;
+	using size_type = size_t;
 
 	///  Value typedef.
-	typedef Type value_type;
+	using value_type = Type;
 
-	///  Vector2 typedef.
-	typedef vector3 <Type> vector3_type;
-
-	///  Vector3 typedef.
-	typedef rotation4 <Type> rotation4_type;
-
-	///  Vector3 typedef.
-	typedef vector4 <Type> vector4_type;
-
-	///  Vector typedef.
-	///  This is the type for the vector representation of this matrix.
-	///  The matrix consists of four vectors of type vector4.
-	///  0 [ x-axis 0 ]
-	///  1 [ y-axis 0 ]
-	///  2 [ z-axis 0 ]
-	///  3 [ x y z  1 ]
-	typedef vector4 <vector4_type> vector_type;
+	///  Matrix typedef.
+	using matrix_type = vector4 <vector4 <Type>>;
 
 	///  Array typedef.
 	typedef Type array_type [Size];
+
+	///  Translation typedef.
+	using translation_type = vector3 <Type>;
+
+	///  Rotation typedef.
+	using rotation_type = rotation4 <Type>;
+
+	///  Scale typedef.
+	using scale_type = vector3 <Type>;
+
+	///  Vector typedef.
+	using vector_type = vector4 <Type>;
+
+	///  Point typedef.
+	using point_type = vector3 <Type>;
+
+	///  Normal typedef.
+	using normal_type = vector3 <Type>;
 
 	///  @name Constructors
 
@@ -210,24 +213,24 @@ public:
 	///  @name Element access
 
 	constexpr
-	vector3_type
+	point_type
 	x () const
-	{ return vector3_type (array [0], array [1], array [2]); }
+	{ return point_type (array [0], array [1], array [2]); }
 
 	constexpr
-	vector3_type
+	point_type
 	y () const
-	{ return vector3_type (array [4], array [5], array [6]); }
+	{ return point_type (array [4], array [5], array [6]); }
 
 	constexpr
-	vector3_type
+	point_type
 	z () const
-	{ return vector3_type (array [8], array [9], array [10]); }
+	{ return point_type (array [8], array [9], array [10]); }
 
 	constexpr
-	vector3_type
+	point_type
 	origin () const
-	{ return vector3_type (array [12], array [13], array [14]); }
+	{ return point_type (array [12], array [13], array [14]); }
 
 	void
 	set ();
@@ -278,11 +281,11 @@ public:
 	get (vector3 <T> &, rotation4 <R> &, vector3 <S> &, rotation4 <SO> &, const vector3 <C> &) const;
 
 	///  Access rows by @a index.
-	vector4_type &
+	vector_type &
 	operator [ ] (const size_type index)
 	{ return value [index]; }
 
-	const vector4_type &
+	const vector_type &
 	operator [ ] (const size_type index) const
 	{ return value [index]; }
 
@@ -304,10 +307,10 @@ public:
 
 	///  Get access to the underlying vector representation of this matrix.
 	void
-	vector (const vector_type & vector)
+	vector (const matrix_type & vector)
 	{ value = vector; }
 
-	const vector_type &
+	const matrix_type &
 	vector () const
 	{ return value; }
 
@@ -442,7 +445,7 @@ private:
 
 	union
 	{
-		vector_type value;
+		matrix_type value;
 		array_type array;
 	};
 

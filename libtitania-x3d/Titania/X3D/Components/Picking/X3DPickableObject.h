@@ -79,6 +79,10 @@ public:
 	pickable () const
 	{ return *fields .pickable; }
 
+	virtual
+	void
+	dispose () override;
+
 
 protected:
 
@@ -86,11 +90,7 @@ protected:
 
 	virtual
 	void
-	initialize ();
-
-	virtual
-	void
-	dispose ();
+	initialize () override;
 
 
 private:

@@ -107,7 +107,7 @@ public:
 
 	virtual
 	Box3f
-	getBBox () final override;
+	getBBox () const final override;
 
 	virtual
 	void
@@ -136,14 +136,6 @@ public:
 	{ return scene -> getRootNodes (); }
 
 	///  @name Operations
-	
-	virtual
-	void
-	saveState () final override;
-	
-	virtual
-	void
-	restoreState () final override;
 
 	virtual
 	void
@@ -153,6 +145,14 @@ public:
 	void
 	toStream (std::ostream & ostream) const final override
 	{ X3DBaseNode::toStream (ostream); }
+	
+	virtual
+	void
+	saveState () final override;
+	
+	virtual
+	void
+	restoreState () final override;
 
 	///  @name Destruction
 

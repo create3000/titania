@@ -62,6 +62,8 @@ class NurbsSet :
 {
 public:
 
+	///  @name Construction
+
 	NurbsSet (X3DExecutionContext* const);
 
 	virtual
@@ -120,20 +122,26 @@ public:
 	tessellationScale () const
 	{ return *fields .tessellationScale; }
 
+	///  @name Member access
+
+	virtual
 	Box3f
-	getBBox ();
+	getBBox () const final override;
+
+	///  @name Destruction
 
 	virtual
 	void
-	dispose ();
+	dispose () final override;
 
 
 private:
 
+	///  @name Construction
+
 	virtual
 	void
-	initialize ();
-
+	initialize () final override;
 
 	///  @name Static members
 

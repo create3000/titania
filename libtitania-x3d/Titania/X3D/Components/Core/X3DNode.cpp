@@ -56,6 +56,8 @@
 namespace titania {
 namespace X3D {
 
+Matrix4fStack X3DNode::modelViewMatrix;
+
 X3DNode::Fields::Fields () :
 	metadata (new SFNode ())
 { }
@@ -117,12 +119,10 @@ X3DNode::getInverseCameraSpaceMatrix () const
 Matrix4f
 X3DNode::getModelViewMatrix (const TraverseType type) const
 {
-	const Matrix4f modelViewMatrix = ModelViewMatrix4f ();
-
 	if (type == TraverseType::CAMERA)
-		return modelViewMatrix * getInverseCameraSpaceMatrix ();
+		return getModelViewMatrix () .get () * getInverseCameraSpaceMatrix ();
 	
-	return modelViewMatrix;
+	return getModelViewMatrix () .get ();
 }
 
 } // X3D

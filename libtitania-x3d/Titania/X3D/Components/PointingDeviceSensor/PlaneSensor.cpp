@@ -106,9 +106,9 @@ bool
 PlaneSensor::getLineTrackPoint (const HitPtr & hit, const Line3d & line, Vector3d & trackPoint)
 throw (std::domain_error)
 {
-	const auto screenLine     = ViewVolume::projectLine (line, modelViewMatrix, getProjectionMatrix (), getViewport ());
+	const auto screenLine     = ViewVolume::projectLine (line, modelViewMatrix, getLastProjectionMatrix (), getLastViewport ());
 	auto       trackPoint1    = screenLine .closest_point (Vector3d (hit -> x, hit -> y, 0));
-	const auto trackPointLine = ViewVolume::unProjectLine (trackPoint1 .x (), trackPoint1 .y (), modelViewMatrix, getProjectionMatrix (), getViewport ());
+	const auto trackPointLine = ViewVolume::unProjectLine (trackPoint1 .x (), trackPoint1 .y (), modelViewMatrix, getLastProjectionMatrix (), getLastViewport ());
 
 	return line .closest_point (trackPointLine, trackPoint);
 }
@@ -122,8 +122,8 @@ PlaneSensor::set_active (const HitPtr & hit, const bool active)
 	{
 		if (isActive ())
 		{
-			modelViewMatrix        = getModelViewMatrix ();
-			inverseModelViewMatrix = ~getModelViewMatrix ();
+			modelViewMatrix        = getLastModelViewMatrix ();
+			inverseModelViewMatrix = ~getLastModelViewMatrix ();
 
 			const auto hitRay   = hit -> ray * inverseModelViewMatrix;
 			const auto hitPoint = hit -> point * inverseModelViewMatrix;

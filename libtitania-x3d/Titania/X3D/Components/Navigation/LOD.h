@@ -125,7 +125,7 @@ public:
 
 	virtual
 	Box3f
-	getBBox () final override;
+	getBBox () const final override;
 
 	///  @name Operations
 

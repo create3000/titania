@@ -62,6 +62,8 @@ class SquadOrientationInterpolator :
 {
 public:
 
+	///  @name Construction
+
 	SquadOrientationInterpolator (X3DExecutionContext* const);
 
 	virtual
@@ -131,21 +133,26 @@ public:
 
 private:
 
-	virtual
-	void
-	initialize ();
+	///  @name Construction
 
 	virtual
 	void
-	set_keyValue ();
+	initialize () final override;
+
+	///  @name Event handlers
+
+	virtual
+	void
+	set_keyValue () final override;
 
 	//	void
 	//	set_keyVelocity ();
 
+	///  @name Operations
+
 	virtual
 	void
-	interpolate (size_t, size_t, const float);
-
+	interpolate (size_t, size_t, const float) final override;
 
 	///  @name Static members
 

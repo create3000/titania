@@ -466,7 +466,7 @@ ParticleSystem::isLineGeometry () const
 }
 
 Box3f
-ParticleSystem::getBBox ()
+ParticleSystem::getBBox () const
 {
 	if (bboxSize () == Vector3f (-1, -1, -1))
 	{

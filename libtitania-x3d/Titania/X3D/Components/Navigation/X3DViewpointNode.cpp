@@ -460,14 +460,14 @@ X3DViewpointNode::traverse (const TraverseType type)
 		{
 			getCurrentLayer () -> getViewpoints () -> push_back (this);
 
-			setParentMatrix (ModelViewMatrix4f ());
+			setParentMatrix (getModelViewMatrix () .get ());
 
 			if (isBound ())
 			{
 				Matrix4f matrix;
 				matrix .set (getUserPosition (), getUserOrientation (), scaleOffset (), scaleOrientationOffset ());
 
-				setTransformationMatrix (matrix * ModelViewMatrix4f ());
+				setTransformationMatrix (matrix * getModelViewMatrix () .get ());
 			}
 
 			break;
@@ -490,7 +490,7 @@ X3DViewpointNode::reshape ()
 void
 X3DViewpointNode::transform ()
 {
-	glLoadMatrixf (getInverseTransformationMatrix () .data ());
+	getModelViewMatrix () .set (getInverseTransformationMatrix ());
 }
 
 void

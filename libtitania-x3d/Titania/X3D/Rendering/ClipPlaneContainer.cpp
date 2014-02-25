@@ -58,7 +58,7 @@ namespace X3D {
 ClipPlaneContainer::ClipPlaneContainer (ClipPlane* const node) :
 	X3DCollectableObject (),
 	                   node (node),
-	        modelViewMatrix (ModelViewMatrix4f ()),
+	        modelViewMatrix (node -> getModelViewMatrix () .get ()),
 	                planeId (0)
 { }
 

@@ -103,7 +103,7 @@ LayoutGroup::initialize ()
 }
 
 Box3f
-LayoutGroup::getBBox ()
+LayoutGroup::getBBox () const
 {
 	return Box3f ();
 }
@@ -134,7 +134,7 @@ LayoutGroup::traverse (const TraverseType type)
 
 			if (currentLayout)
 			{
-				glPushMatrix ();
+				getModelViewMatrix () .push ();
 
 				currentLayout -> transform (type);
 
@@ -144,7 +144,7 @@ LayoutGroup::traverse (const TraverseType type)
 
 				getBrowser () -> getLayouts () .pop ();
 
-				glPopMatrix ();
+				getModelViewMatrix () .pop ();
 			}
 			else
 				X3DGroupingNode::traverse (type);

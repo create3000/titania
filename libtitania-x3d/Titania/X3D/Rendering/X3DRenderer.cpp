@@ -88,34 +88,36 @@ X3DRenderer::initialize ()
 }
 
 void
-X3DRenderer::addShape (X3DShapeNode* shape)
+X3DRenderer::addShape (X3DShapeNode* const shape)
 {
-	const auto matrix   = ModelViewMatrix4f ();
-	const auto distance = getDistance (shape, matrix);
+	const Box3f bbox   = shape -> getBBox () * getModelViewMatrix () .get ();
+	const float depth  = bbox .size () .z () / 2;
+	const float min    = bbox .center () .z () - depth;
+	const float center = bbox .center () .z ();
 
-	if (distance < 0)
+	if (min < 0)
 	{
-		if (getCurrentViewpoint () -> getViewVolume () .intersect (shape -> getBBox () * matrix))
+		if (getCurrentViewpoint () -> getViewVolume () .intersect (bbox))
 		{
 			X3DFogObject* const fog = getCurrentLayer () -> getFog ();
 
 			if (shape -> isTransparent ())
 			{
 				if (numTransparentShapes < transparentShapes .size ())
-					transparentShapes [numTransparentShapes] -> assign (shape, fog, getLocalObjects (), matrix, distance);
+					transparentShapes [numTransparentShapes] -> assign (shape, fog, getLocalObjects (), getModelViewMatrix () .get (), center);
 
 				else
-					transparentShapes .emplace_back (new ShapeContainer (shape, fog, getLocalObjects (), matrix, distance));
+					transparentShapes .emplace_back (new ShapeContainer (shape, fog, getLocalObjects (), getModelViewMatrix () .get (), center));
 
 				++ numTransparentShapes;
 			}
 			else
 			{
 				if (numOpaqueShapes < shapes .size ())
-					shapes [numOpaqueShapes] -> assign (shape, fog, getLocalObjects (), matrix, distance);
+					shapes [numOpaqueShapes] -> assign (shape, fog, getLocalObjects (), getModelViewMatrix () .get (), center);
 
 				else
-					shapes .emplace_back (new ShapeContainer (shape, fog, getLocalObjects (), matrix, distance));
+					shapes .emplace_back (new ShapeContainer (shape, fog, getLocalObjects (), getModelViewMatrix () .get (), center));
 
 				++ numOpaqueShapes;
 			}
@@ -124,35 +126,28 @@ X3DRenderer::addShape (X3DShapeNode* shape)
 }
 
 void
-X3DRenderer::addCollision (X3DShapeNode* shape)
+X3DRenderer::addCollision (X3DShapeNode* const shape)
 {
-	const auto matrix   = ModelViewMatrix4f ();
-	const auto distance = getDistance (shape, matrix);
+	const Box3f bbox   = shape -> getBBox () * getModelViewMatrix () .get ();
+	const float depth  = bbox .size () .z () / 2;
+	const float min    = bbox .center () .z () - depth;
+	const float center = bbox .center () .z ();
 
-	if (distance < 0)
+	if (min < 0)
 	{
-		if (getCurrentViewpoint () -> getViewVolume () .intersect (shape -> getBBox () * matrix))
+		if (getCurrentViewpoint () -> getViewVolume () .intersect (bbox))
 		{
 			const CollisionArray & collisions = getCurrentLayer () -> getCollisions ();
 
 			if (numCollisionShapes < collisionShapes .size ())
-				collisionShapes [numCollisionShapes] -> assign (shape, collisions, getLocalObjects (), matrix, distance);
+				collisionShapes [numCollisionShapes] -> assign (shape, collisions, getLocalObjects (), getModelViewMatrix () .get (), center);
 
 			else
-				collisionShapes .emplace_back (new CollisionShape (shape, collisions, getLocalObjects (), matrix, distance));
+				collisionShapes .emplace_back (new CollisionShape (shape, collisions, getLocalObjects (), getModelViewMatrix () .get (), center));
 
 			++ numCollisionShapes;
 		}
 	}
-}
-
-float
-X3DRenderer::getDistance (X3DShapeNode* shape, const Matrix4f & matrix)
-{
-	const Box3f bbox  = shape -> getBBox () * matrix;
-	const float depth = bbox .size () .z () / 2;
-
-	return bbox .center () .z () - depth;
 }
 
 void

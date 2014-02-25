@@ -102,7 +102,7 @@ Shape::isLineGeometry () const
 }
 
 Box3f
-Shape::getBBox ()
+Shape::getBBox () const
 {
 	if (bboxSize () == Vector3f (-1, -1, -1))
 	{
@@ -161,9 +161,9 @@ Shape::pick ()
 	{
 		if (getBrowser () -> intersect (glIsEnabled (GL_SCISSOR_TEST) ? Scissor4i () : Viewport4i ()))
 		{
-			const auto modelViewMatrix = ModelViewMatrix4f ();
+			const Box3f bbox = getBBox () * getModelViewMatrix () .get ();
 
-			if (getCurrentViewpoint () -> getViewVolume () .intersect (getBBox () * modelViewMatrix))
+			if (getCurrentViewpoint () -> getViewVolume () .intersect (bbox))
 			{
 				const Line3f hitRay = getBrowser () -> getHitRay (); // Attention!! returns a Line3d
 
@@ -172,7 +172,7 @@ Shape::pick ()
 				if (getGeometry () -> intersect (hitRay, itersections))
 				{
 					for (auto & itersection : itersections)
-						itersection -> hitPoint = itersection -> hitPoint * modelViewMatrix;
+						itersection -> hitPoint = itersection -> hitPoint * getModelViewMatrix () .get ();
 
 					// Sort desc
 					std::sort (itersections .begin (), itersections .end (),
@@ -189,7 +189,7 @@ Shape::pick ()
 																	      });
 
 					if (itersection not_eq itersections .end ())
-						getBrowser () -> addHit (ModelViewMatrix4d (), *itersection, this);
+						getBrowser () -> addHit (getModelViewMatrix () .get (), *itersection, this);
 				}
 			}
 		}

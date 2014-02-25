@@ -62,6 +62,8 @@ class Collision :
 {
 public:
 
+	///  @name Construction
+
 	Collision (X3DExecutionContext* const);
 
 	virtual
@@ -104,23 +106,30 @@ public:
 	proxy () const
 	{ return *fields .proxy; }
 
+	///  @name Event handlers
+
 	void
 	set_active (bool value);
 
+	///  @name Operations
+
 	virtual
 	void
-	traverse (const TraverseType);
+	traverse (const TraverseType) final override;
 
 
 private:
 
+	///  @name Construction
+
 	virtual
 	void
-	initialize ();
+	initialize () final override;
+
+	///  @name Event handlers
 
 	void
 	set_proxy ();
-
 
 	///  @name Static members
 

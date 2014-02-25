@@ -121,7 +121,7 @@ NavigationInfo::initialize ()
 void
 NavigationInfo::set_headlight ()
 {
-	glLoadIdentity ();
+	getModelViewMatrix () .identity ();
 
 	if (headlight ())
 		light .reset (new LightContainer (directionalLight)); // There should always be the indentity matrix

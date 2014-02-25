@@ -122,7 +122,7 @@ public:
 
 	virtual
 	void
-	reshape (const float, const float) final override;
+	reshape (const double, const double) final override;
 
 
 private:

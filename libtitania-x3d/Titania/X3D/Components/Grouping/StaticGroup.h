@@ -102,7 +102,7 @@ public:
 
 	virtual
 	Box3f
-	getBBox () final override;
+	getBBox () const final override;
 
 	///  @name Operations
 
@@ -118,7 +118,6 @@ private:
 	virtual
 	void
 	initialize () final override;
-
 
 	///  @name Static members
 

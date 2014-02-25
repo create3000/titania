@@ -61,6 +61,8 @@ class Switch :
 {
 public:
 
+	///  @name Construction
+
 	Switch (X3DExecutionContext* const);
 
 	virtual
@@ -99,7 +101,7 @@ public:
 
 	virtual
 	Box3f
-	getBBox () final override;
+	getBBox () const final override;
 
 	///  @name Operations
 
@@ -109,7 +111,6 @@ public:
 
 
 private:
-
 
 	///  @name Static members
 

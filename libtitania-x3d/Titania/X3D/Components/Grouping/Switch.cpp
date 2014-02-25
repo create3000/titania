@@ -86,13 +86,13 @@ Switch::create (X3DExecutionContext* const executionContext) const
 }
 
 Box3f
-Switch::getBBox ()
+Switch::getBBox () const
 {
 	if (bboxSize () == Vector3f (-1, -1, -1))
 	{
 		if (whichChoice () >= 0 and whichChoice () < (int32_t) children () .size ())
 		{
-			auto child = x3d_cast <X3DBoundedObject*> (children () [whichChoice ()]);
+			const auto child = x3d_cast <X3DBoundedObject*> (children () [whichChoice ()]);
 
 			if (child)
 				return child -> getBBox ();

@@ -61,6 +61,8 @@ class IndexedQuadSet :
 {
 public:
 
+	///  @name Construction
+
 	IndexedQuadSet (X3DExecutionContext* const);
 
 	virtual
@@ -105,15 +107,16 @@ public:
 
 private:
 
+	///  @name Operations
+
 	virtual
 	size_t
-	getIndex (size_t i)
+	getIndex (size_t i) final override
 	{ return index () [i]; }
 
 	virtual
 	void
 	build () final override;
-
 
 	///  @name Static members
 

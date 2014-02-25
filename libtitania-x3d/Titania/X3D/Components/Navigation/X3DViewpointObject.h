@@ -81,6 +81,12 @@ public:
 	retainUserOffsets () const
 	{ return *fields .retainUserOffsets; }
 
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () override;
+
 
 protected:
 
@@ -90,18 +96,12 @@ protected:
 
 	virtual
 	void
-	initialize ();
+	initialize () override;
 
 	///  @name Event handler
 
 	void
 	set_description ();
-
-	///  @name Destruction
-
-	virtual
-	void
-	dispose ();
 
 
 private:

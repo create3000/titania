@@ -94,8 +94,6 @@ PolygonText::draw ()
 {
 	if (not fontStyle -> getPolygonFont ())
 		return;
-
-	glPushMatrix ();
 	
 	if (fontStyle -> horizontal ())
 	{
@@ -157,8 +155,6 @@ PolygonText::draw ()
 			}
 		}
 	}
-
-	glPopMatrix ();
 }
 
 const std::string FontStyle::componentName  = "Text";

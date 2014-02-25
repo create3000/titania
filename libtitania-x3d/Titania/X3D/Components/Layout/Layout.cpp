@@ -595,7 +595,7 @@ Layout::transform (const TraverseType type)
 		matrix .translate (translation + offset);
 		matrix .scale (scale);
 
-		glLoadMatrixd (matrix .data ());
+		getModelViewMatrix () .set (matrix);
 
 		//__LOG__ << this << " : " << rectangleSize << std::endl;
 		//__LOG__ << this << " : " << scale << std::endl;

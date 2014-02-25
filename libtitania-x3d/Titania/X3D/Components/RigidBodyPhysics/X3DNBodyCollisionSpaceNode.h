@@ -70,12 +70,13 @@ public:
 	enabled () const
 	{ return *fields .enabled; }
 
+	virtual
 	Box3f
-	getBBox ();
+	getBBox () const final override;
 
 	virtual
 	void
-	dispose ();
+	dispose () final override;
 
 
 protected:
@@ -84,7 +85,7 @@ protected:
 
 	virtual
 	void
-	initialize ();
+	initialize () final override;
 
 
 private:

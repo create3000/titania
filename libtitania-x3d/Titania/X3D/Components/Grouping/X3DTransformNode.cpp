@@ -94,7 +94,7 @@ X3DTransformNode::eventsProcessed ()
 }
 
 Box3f
-X3DTransformNode::getBBox ()
+X3DTransformNode::getBBox () const
 {
 	if (getDisplay ())
 		return X3DGroupingNode::getBBox () * matrix;
@@ -126,13 +126,13 @@ X3DTransformNode::setMatrixWithCenter (const Matrix4f & matrix, const Vector3f &
 void
 X3DTransformNode::traverse (const TraverseType type)
 {
-	glPushMatrix ();
+	getModelViewMatrix () .push ();
 
-	glMultMatrixf (matrix .data ());
+	getModelViewMatrix () .multLeft (matrix);
 
 	X3DGroupingNode::traverse (type);
 
-	glPopMatrix ();
+	getModelViewMatrix () .pop ();
 }
 
 } // X3D

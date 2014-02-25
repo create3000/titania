@@ -89,9 +89,9 @@ StaticGroup::initialize ()
 }
 
 Box3f
-StaticGroup::getBBox ()
+StaticGroup::getBBox () const
 {
-	return Box3f ();
+	return X3DBoundedObject::getBBox (children ());
 }
 
 void

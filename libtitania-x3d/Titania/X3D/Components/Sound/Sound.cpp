@@ -166,7 +166,7 @@ throw (std::domain_error)
 	const float e = a - back;
 	const float b = std::sqrt (a * a - e * e);
 
-	Matrix4f transformationMatrix = ModelViewMatrix4f ();
+	Matrix4f transformationMatrix = getModelViewMatrix () .get ();
 
 	transformationMatrix .translate (location () .getValue ());
 	transformationMatrix .rotate (Rotation4f (Vector3f (0, 0, 1), direction () .getValue ()));

@@ -100,17 +100,21 @@ public:
 
 	///  @name Member access
 
+	virtual
 	Box3f
-	getBBox ();
+	getBBox () const final override;
 
 	///  @name Operations
 
+	virtual
 	void
-	traverse (const TraverseType);
+	traverse (const TraverseType) final override;
+
+	///  @name Destruction
 
 	virtual
 	void
-	dispose ();
+	dispose () final override;
 
 
 private:
@@ -119,8 +123,7 @@ private:
 
 	virtual
 	void
-	initialize ();
-
+	initialize () final override;
 
 	///  @name Static members
 

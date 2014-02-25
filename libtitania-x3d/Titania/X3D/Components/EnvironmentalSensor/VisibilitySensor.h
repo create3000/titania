@@ -89,7 +89,7 @@ public:
 
 	virtual
 	void
-	traverse (const TraverseType);
+	traverse (const TraverseType) final override;
 
 
 private:
@@ -98,7 +98,9 @@ private:
 
 	virtual
 	void
-	initialize ();
+	initialize () final override;
+
+	///  @name Event handlers
 
 	void
 	set_enabled ();

@@ -64,7 +64,7 @@ using std::abs;
 template <typename Type>
 inline
 constexpr int
-signum (Type x, std::false_type is_signed)
+signum (const Type & x, std::false_type is_signed)
 {
 	return Type (0) < x;
 }
@@ -72,7 +72,7 @@ signum (Type x, std::false_type is_signed)
 template <typename Type>
 inline
 constexpr int
-signum (Type x, std::true_type is_signed)
+signum (const Type & x, std::true_type is_signed)
 {
 	return (Type (0) < x) - (x < Type (0));
 }
@@ -80,7 +80,7 @@ signum (Type x, std::true_type is_signed)
 template <typename Type>
 inline
 constexpr int
-signum (Type x)
+signum (const Type & x)
 {
 	return signum (x, std::is_signed <Type> ());
 }

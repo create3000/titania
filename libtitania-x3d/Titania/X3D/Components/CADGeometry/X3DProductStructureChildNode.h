@@ -61,6 +61,8 @@ class X3DProductStructureChildNode :
 {
 public:
 
+	///  @name Fields
+
 	SFString &
 	name ()
 	{ return *fields .name; }
@@ -72,10 +74,14 @@ public:
 
 protected:
 
+	///  @name Construction
+
 	X3DProductStructureChildNode ();
 
 
 private:
+
+	///  @name Members
 
 	struct Fields
 	{

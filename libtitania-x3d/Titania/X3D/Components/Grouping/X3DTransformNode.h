@@ -117,7 +117,7 @@ public:
 
 	virtual
 	Box3f
-	getBBox () override;
+	getBBox () const override;
 
 	virtual
 	void

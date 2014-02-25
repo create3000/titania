@@ -61,6 +61,8 @@ class X3DInterpolatorNode :
 {
 public:
 
+	///  @name Fields
+
 	SFFloat &
 	set_fraction ()
 	{ return *fields .set_fraction; }
@@ -77,18 +79,24 @@ public:
 	key () const
 	{ return *fields .key; }
 
+	///  @name Construction
+
 	virtual
 	void
-	setup ();
+	setup () final override;
 
 
 protected:
+
+	///  @name Construction
 
 	X3DInterpolatorNode ();
 
 	virtual
 	void
-	initialize ();
+	initialize () override;
+
+	///  @name Operations
 
 	virtual
 	void
@@ -96,6 +104,8 @@ protected:
 
 
 private:
+
+	///  @name Event handlers
 
 	void
 	_set_fraction ();
@@ -106,6 +116,8 @@ private:
 	virtual
 	void
 	set_keyValue () = 0;
+
+	///  @name Members
 
 	struct Fields
 	{

@@ -111,7 +111,7 @@ GeoLOD::initialize ()
 }
 
 Box3f
-GeoLOD::getBBox ()
+GeoLOD::getBBox () const
 {
 	return Box3f ();
 }
