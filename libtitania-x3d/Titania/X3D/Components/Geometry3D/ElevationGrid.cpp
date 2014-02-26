@@ -258,6 +258,10 @@ ElevationGrid::createNormals (const std::vector <Vector3f> & points, const std::
 	return normals;
 }
 
+// p1 - p4 
+//  |   |
+// p2 - p3
+
 std::vector <size_t>
 ElevationGrid::createCoordIndex () const
 {
@@ -269,14 +273,14 @@ ElevationGrid::createCoordIndex () const
 		for (int32_t x = 0, size = xDimension () - 1; x < size; ++ x)
 		{
 			// Triangle one
-			coordIndex .emplace_back (      z * xDimension () + x);         // P1
-			coordIndex .emplace_back ((z + 1) * xDimension () + x);         // P2
-			coordIndex .emplace_back (      z * xDimension () + (x + 1));   // P4
+			coordIndex .emplace_back (      z * xDimension () + x);         // p1
+			coordIndex .emplace_back ((z + 1) * xDimension () + x);         // p2
+			coordIndex .emplace_back (      z * xDimension () + (x + 1));   // p4
 
 			// Triangle two
-			coordIndex .emplace_back ((z + 1) * xDimension () + (x + 1));   // P3
-			coordIndex .emplace_back (      z * xDimension () + (x + 1));   // P4
-			coordIndex .emplace_back ((z + 1) * xDimension () + x);         // P2
+			coordIndex .emplace_back ((z + 1) * xDimension () + (x + 1));   // p3
+			coordIndex .emplace_back (      z * xDimension () + (x + 1));   // p4
+			coordIndex .emplace_back ((z + 1) * xDimension () + x);         // p2
 		}
 	}
 

@@ -229,10 +229,14 @@ GeoElevationGrid::createNormals (const std::vector <Vector3f> & points, const st
 		normals .resize (normals .size () + 6, normal);
 	}
 
-	refineNormals (normalIndex, normals, creaseAngle (), not ccw ());
+	refineNormals (normalIndex, normals, creaseAngle (), ccw ());
 
 	return normals;
 }
+
+// p2 - p3
+//  |   |
+// p1 - p4 
 
 std::vector <size_t>
 GeoElevationGrid::createCoordIndex () const
@@ -245,14 +249,14 @@ GeoElevationGrid::createCoordIndex () const
 		for (int32_t x = 0, size = xDimension () - 1; x < size; ++ x)
 		{
 			// Triangle one
-			coordIndex .emplace_back (z * xDimension () + x);             // P1
-			coordIndex .emplace_back ((z + 1) * xDimension () + x);       // P2
-			coordIndex .emplace_back (z * xDimension () + (x + 1));       // P4
+			coordIndex .emplace_back (z * xDimension () + x);             // p1
+			coordIndex .emplace_back (z * xDimension () + (x + 1));       // p4
+			coordIndex .emplace_back ((z + 1) * xDimension () + x);       // p2
 
 			// Triangle two
-			coordIndex .emplace_back ((z + 1) * xDimension () + (x + 1)); // P3
-			coordIndex .emplace_back (z * xDimension () + (x + 1));       // P4
-			coordIndex .emplace_back ((z + 1) * xDimension () + x);       // P2
+			coordIndex .emplace_back (z * xDimension () + (x + 1));       // p4
+			coordIndex .emplace_back ((z + 1) * xDimension () + (x + 1)); // p3
+			coordIndex .emplace_back ((z + 1) * xDimension () + x);       // p2
 		}
 	}
 
@@ -378,7 +382,7 @@ GeoElevationGrid::build ()
 
 	addElements (GL_TRIANGLES, getVertices () .size ());
 	setSolid (solid ());
-	setCCW (not ccw ());
+	setCCW (ccw ());
 	setTextureCoordinate (texCoordNode);
 }
 
