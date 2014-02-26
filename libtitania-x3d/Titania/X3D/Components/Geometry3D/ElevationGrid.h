@@ -182,20 +182,20 @@ public:
 	{ return *fields .fogCoord; }
 
 	SFNode &
-	texCoord ()
-	{ return *fields .texCoord; }
-
-	const SFNode &
-	texCoord () const
-	{ return *fields .texCoord; }
-
-	SFNode &
 	color ()
 	{ return *fields .color; }
 
 	const SFNode &
 	color () const
 	{ return *fields .color; }
+
+	SFNode &
+	texCoord ()
+	{ return *fields .texCoord; }
+
+	const SFNode &
+	texCoord () const
+	{ return *fields .texCoord; }
 
 	SFNode &
 	normal ()
@@ -243,10 +243,10 @@ private:
 	///  @name Event handlers
 
 	void
-	set_texCoord ();
+	set_color ();
 
 	void
-	set_color ();
+	set_texCoord ();
 
 	void
 	set_normal ();
@@ -299,16 +299,16 @@ private:
 		SFBool* const normalPerVertex;
 		MFNode* const attrib;
 		SFNode* const fogCoord;
-		SFNode* const texCoord;
 		SFNode* const color;
+		SFNode* const texCoord;
 		SFNode* const normal;
 		MFFloat* const height;
 	};
 
 	Fields fields;
 
-	X3DSFNode <X3DTextureCoordinateNode> texCoordNode;
 	X3DSFNode <X3DColorNode>             colorNode;
+	X3DSFNode <X3DTextureCoordinateNode> texCoordNode;
 	X3DSFNode <X3DNormalNode>            normalNode;
 	bool                                 transparent;
 

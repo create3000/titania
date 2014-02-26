@@ -72,8 +72,8 @@ ElevationGrid::Fields::Fields () :
 	normalPerVertex (new SFBool (true)),
 	         attrib (new MFNode ()),
 	       fogCoord (new SFNode ()),
-	       texCoord (new SFNode ()),
 	          color (new SFNode ()),
+	       texCoord (new SFNode ()),
 	         normal (new SFNode ()),
 	         height (new MFFloat ())
 { }
@@ -82,8 +82,8 @@ ElevationGrid::ElevationGrid (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DGeometryNode (),
 	         fields (),
-	   texCoordNode (),
 	      colorNode (),
+	   texCoordNode (),
 	     normalNode (),
 	    transparent (false)
 {
@@ -102,13 +102,13 @@ ElevationGrid::ElevationGrid (X3DExecutionContext* const executionContext) :
 
 	addField (inputOutput,    "attrib",          attrib ());
 	addField (inputOutput,    "fogCoord",        fogCoord ());
-	addField (inputOutput,    "texCoord",        texCoord ());
 	addField (inputOutput,    "color",           color ());
+	addField (inputOutput,    "texCoord",        texCoord ());
 	addField (inputOutput,    "normal",          normal ());
 	addField (inputOutput,    "height",          height ());
 
-	addChildren (texCoordNode,
-	             colorNode,
+	addChildren (colorNode,
+	             texCoordNode,
 	             normalNode);
 }
 
@@ -123,25 +123,13 @@ ElevationGrid::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	texCoord () .addInterest (this, &ElevationGrid::set_texCoord);
 	color ()    .addInterest (this, &ElevationGrid::set_color);
+	texCoord () .addInterest (this, &ElevationGrid::set_texCoord);
 	normal ()   .addInterest (this, &ElevationGrid::set_normal);
 
-	set_texCoord ();
 	set_color ();
+	set_texCoord ();
 	set_normal ();
-}
-
-void
-ElevationGrid::set_texCoord ()
-{
-	if (texCoordNode)
-		texCoordNode -> removeInterest (this);
-
-	texCoordNode .set (x3d_cast <X3DTextureCoordinateNode*> (texCoord ()));
-
-	if (texCoordNode)
-		texCoordNode -> addInterest (this);
 }
 
 void
@@ -158,6 +146,18 @@ ElevationGrid::set_color ()
 	// Transparent
 
 	transparent = colorNode and colorNode -> isTransparent ();
+}
+
+void
+ElevationGrid::set_texCoord ()
+{
+	if (texCoordNode)
+		texCoordNode -> removeInterest (this);
+
+	texCoordNode .set (x3d_cast <X3DTextureCoordinateNode*> (texCoord ()));
+
+	if (texCoordNode)
+		texCoordNode -> addInterest (this);
 }
 
 void
@@ -293,9 +293,9 @@ ElevationGrid::createPoints () const
 	{
 		for (int32_t x = 0; x < xDimension (); ++ x)
 		{
-			points .emplace_back (Vector3f (xSpacing () * x,
-			                                getHeight (x + z * xDimension ()),
-			                                zSpacing () * z));
+			points .emplace_back (xSpacing () * x,
+			                      getHeight (x + z * xDimension ()),
+			                      zSpacing () * z);
 		}
 	}
 
@@ -313,6 +313,11 @@ ElevationGrid::build ()
 
 	getVertices () .reserve (coordIndex .size ());
 
+	// Color
+
+	if (colorNode)
+		getColors () .reserve (coordIndex .size ());
+
 	// TexCoord
 
 	std::vector <Vector4f> texCoords;
@@ -325,11 +330,6 @@ ElevationGrid::build ()
 		getTexCoords () .emplace_back ();
 		getTexCoords () [0] .reserve (coordIndex .size ());
 	}
-
-	// Color
-
-	if (colorNode)
-		getColors () .reserve (coordIndex .size ());
 
 	// Normals
 
@@ -387,8 +387,8 @@ ElevationGrid::build ()
 void
 ElevationGrid::dispose ()
 {
-	texCoordNode .dispose ();
 	colorNode    .dispose ();
+	texCoordNode .dispose ();
 	normalNode   .dispose ();
 
 	X3DGeometryNode::dispose ();

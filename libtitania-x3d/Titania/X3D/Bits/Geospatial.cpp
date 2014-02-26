@@ -99,6 +99,28 @@ const std::map <std::string, Spheroid3d> Geospatial::ellipsoids = {
 
 };
 
+bool
+Geospatial::getReversedOrder (const MFString & geoSystem)
+{
+	switch (getCoordinateSystem (geoSystem))
+	{
+		case CoordinateSystemType::GD:
+		{
+			return getLongitudeFirst (geoSystem);
+		}
+		case CoordinateSystemType::UTM:
+		{
+			return getEastingFirst (geoSystem);
+		}
+		case CoordinateSystemType::GC:
+		{
+			return false;
+		}
+	}
+
+	return getLongitudeFirst (geoSystem);
+}
+
 Geospatial::ReferenceFramePtr
 Geospatial::getReferenceFrame (const MFString & geoSystem)
 {

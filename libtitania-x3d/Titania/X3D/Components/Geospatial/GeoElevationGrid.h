@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,15 +51,22 @@
 #ifndef __TITANIA_X3D_COMPONENTS_GEOSPATIAL_GEO_ELEVATION_GRID_H__
 #define __TITANIA_X3D_COMPONENTS_GEOSPATIAL_GEO_ELEVATION_GRID_H__
 
+#include "../Geospatial/X3DGeospatialObject.h"
+#include "../Rendering/X3DColorNode.h"
 #include "../Rendering/X3DGeometryNode.h"
+#include "../Rendering/X3DNormalNode.h"
+#include "../Texturing/TextureCoordinateGenerator.h"
+#include "../Texturing/X3DTextureCoordinateNode.h"
 
 namespace titania {
 namespace X3D {
 
 class GeoElevationGrid :
-	public X3DGeometryNode
+	public X3DGeometryNode, public X3DGeospatialObject
 {
 public:
+
+	///  @name Construction
 
 	GeoElevationGrid (X3DExecutionContext* const);
 
@@ -87,62 +94,6 @@ public:
 
 	///  @name Fields
 
-	MFDouble &
-	set_height ()
-	{ return *fields .set_height; }
-
-	const MFDouble &
-	set_height () const
-	{ return *fields .set_height; }
-
-	SFNode &
-	color ()
-	{ return *fields .color; }
-
-	const SFNode &
-	color () const
-	{ return *fields .color; }
-
-	SFNode &
-	normal ()
-	{ return *fields .normal; }
-
-	const SFNode &
-	normal () const
-	{ return *fields .normal; }
-
-	SFNode &
-	texCoord ()
-	{ return *fields .texCoord; }
-
-	const SFNode &
-	texCoord () const
-	{ return *fields .texCoord; }
-
-	SFFloat &
-	yScale ()
-	{ return *fields .yScale; }
-
-	const SFFloat &
-	yScale () const
-	{ return *fields .yScale; }
-
-	SFBool &
-	colorPerVertex ()
-	{ return *fields .colorPerVertex; }
-
-	const SFBool &
-	colorPerVertex () const
-	{ return *fields .colorPerVertex; }
-
-	SFDouble &
-	creaseAngle ()
-	{ return *fields .creaseAngle; }
-
-	const SFDouble &
-	creaseAngle () const
-	{ return *fields .creaseAngle; }
-
 	SFVec3d &
 	geoGridOrigin ()
 	{ return *fields .geoGridOrigin; }
@@ -151,53 +102,13 @@ public:
 	geoGridOrigin () const
 	{ return *fields .geoGridOrigin; }
 
-	SFNode &
-	geoOrigin ()
-	{ return *fields .geoOrigin; }
+	SFFloat &
+	yScale ()
+	{ return *fields .yScale; }
 
-	const SFNode &
-	geoOrigin () const
-	{ return *fields .geoOrigin; }
-
-	MFString &
-	geoSystem ()
-	{ return *fields .geoSystem; }
-
-	const MFString &
-	geoSystem () const
-	{ return *fields .geoSystem; }
-
-	MFDouble &
-	height ()
-	{ return *fields .height; }
-
-	const MFDouble &
-	height () const
-	{ return *fields .height; }
-
-	SFBool &
-	normalPerVertex ()
-	{ return *fields .normalPerVertex; }
-
-	const SFBool &
-	normalPerVertex () const
-	{ return *fields .normalPerVertex; }
-
-	SFBool &
-	solid ()
-	{ return *fields .solid; }
-
-	const SFBool &
-	solid () const
-	{ return *fields .solid; }
-
-	SFBool &
-	ccw ()
-	{ return *fields .ccw; }
-
-	const SFBool &
-	ccw () const
-	{ return *fields .ccw; }
+	const SFFloat &
+	yScale () const
+	{ return *fields .yScale; }
 
 	SFInt32 &
 	xDimension ()
@@ -231,24 +142,136 @@ public:
 	zSpacing () const
 	{ return *fields .zSpacing; }
 
+	SFBool &
+	solid ()
+	{ return *fields .solid; }
+
+	const SFBool &
+	solid () const
+	{ return *fields .solid; }
+
+	SFBool &
+	ccw ()
+	{ return *fields .ccw; }
+
+	const SFBool &
+	ccw () const
+	{ return *fields .ccw; }
+
+	SFDouble &
+	creaseAngle ()
+	{ return *fields .creaseAngle; }
+
+	const SFDouble &
+	creaseAngle () const
+	{ return *fields .creaseAngle; }
+
+	SFBool &
+	colorPerVertex ()
+	{ return *fields .colorPerVertex; }
+
+	const SFBool &
+	colorPerVertex () const
+	{ return *fields .colorPerVertex; }
+
+	SFBool &
+	normalPerVertex ()
+	{ return *fields .normalPerVertex; }
+
+	const SFBool &
+	normalPerVertex () const
+	{ return *fields .normalPerVertex; }
+
+	SFNode &
+	color ()
+	{ return *fields .color; }
+
+	const SFNode &
+	color () const
+	{ return *fields .color; }
+
+	SFNode &
+	texCoord ()
+	{ return *fields .texCoord; }
+
+	const SFNode &
+	texCoord () const
+	{ return *fields .texCoord; }
+
+	SFNode &
+	normal ()
+	{ return *fields .normal; }
+
+	const SFNode &
+	normal () const
+	{ return *fields .normal; }
+
+	MFDouble &
+	height ()
+	{ return *fields .height; }
+
+	const MFDouble &
+	height () const
+	{ return *fields .height; }
+
 	///  @name Tests
 
 	virtual
 	bool
-	isTransparent () const final override;
+	isTransparent () const final override
+	{ return transparent; }
 
 	virtual
 	bool
 	isLineGeometry () const final override
 	{ return false; }
 
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override;
+
 
 private:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+	///  @name Event handlers
+
+	void
+	set_color ();
+
+	void
+	set_texCoord ();
+
+	void
+	set_normal ();
+
+	///  @name Operations
+
+	double
+	getHeight (const size_t) const;
+
+	std::vector <Vector4f>
+	createTexCoord () const;
+
+	std::vector <Vector3f>
+	createNormals (const std::vector <Vector3f> &, const std::vector <size_t> &) const;
+
+	std::vector <size_t>
+	createCoordIndex () const;
+
+	std::vector <Vector3f>
+	createPoints () const;
 
 	virtual
 	void
 	build () final override;
-
 
 	///  @name Static members
 
@@ -262,27 +285,29 @@ private:
 	{
 		Fields ();
 
-		MFDouble* const set_height;
-		SFNode* const color;
-		SFNode* const normal;
-		SFNode* const texCoord;
-		SFFloat* const yScale;
-		SFBool* const colorPerVertex;
-		SFDouble* const creaseAngle;
 		SFVec3d* const geoGridOrigin;
-		SFNode* const geoOrigin;
-		MFString* const geoSystem;
-		MFDouble* const height;
-		SFBool* const normalPerVertex;
-		SFBool* const solid;
-		SFBool* const ccw;
+		SFFloat* const yScale;
 		SFInt32* const xDimension;
 		SFDouble* const xSpacing;
 		SFInt32* const zDimension;
 		SFDouble* const zSpacing;
+		SFBool* const solid;
+		SFBool* const ccw;
+		SFDouble* const creaseAngle;
+		SFBool* const colorPerVertex;
+		SFBool* const normalPerVertex;
+		SFNode* const color;
+		SFNode* const texCoord;
+		SFNode* const normal;
+		MFDouble* const height;
 	};
 
 	Fields fields;
+
+	X3DSFNode <X3DColorNode>             colorNode;
+	X3DSFNode <X3DTextureCoordinateNode> texCoordNode;
+	X3DSFNode <X3DNormalNode>            normalNode;
+	bool                                 transparent;
 
 };
 

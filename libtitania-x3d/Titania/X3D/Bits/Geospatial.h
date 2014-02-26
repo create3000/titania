@@ -80,6 +80,10 @@ public:
 	};
 
 	static
+	bool
+	getReversedOrder (const MFString & geoSystem);
+
+	static
 	ReferenceFramePtr
 	getReferenceFrame (const MFString &);
 

@@ -61,9 +61,9 @@ namespace X3D {
 X3DGeometryNode::X3DGeometryNode () :
 	     X3DNode (),
 	        bbox (),
+	      colors (),
 	texCoordNode (nullptr),
 	   texCoords (),
-	      colors (),
 	     normals (),
 	    vertices (),
 	       solid (true),
@@ -586,9 +586,9 @@ X3DGeometryNode::update ()
 void
 X3DGeometryNode::clear ()
 {
+	colors    .clear ();
 	texCoordNode = nullptr;
 	texCoords .clear ();
-	colors    .clear ();
 	normals   .clear ();
 	vertices  .clear ();
 	elements  .clear ();
@@ -611,12 +611,6 @@ X3DGeometryNode::draw (const bool solid, const bool texture, const bool lighting
 
 	glFrontFace (ModelViewMatrix4f () .determinant3 () > 0 ? frontFace : (frontFace == GL_CCW ? GL_CW : GL_CCW));
 
-	if (texture)
-	{
-		if (texCoordNode)
-			texCoordNode -> enable (texCoords);
-	}
-
 	if (not colors .empty ())
 	{
 		if (lighting)
@@ -624,6 +618,12 @@ X3DGeometryNode::draw (const bool solid, const bool texture, const bool lighting
 
 		glEnableClientState (GL_COLOR_ARRAY);
 		glColorPointer (4, GL_FLOAT, 0, colors .data ());
+	}
+
+	if (texture)
+	{
+		if (texCoordNode)
+			texCoordNode -> enable (texCoords);
 	}
 
 	if (lighting /* or shader */)

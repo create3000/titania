@@ -133,16 +133,16 @@ protected:
 
 	///  @name Member access
 
+	std::vector <Color4f> &
+	getColors ()
+	{ return colors; }
+
 	TexCoordArray &
 	getTexCoords ()
 	{ return texCoords; }
 
 	void
 	setTextureCoordinate (X3DTextureCoordinateNode* const);
-
-	std::vector <Color4f> &
-	getColors ()
-	{ return colors; }
 
 	std::vector <Vector3f> &
 	getNormals ()
@@ -240,9 +240,9 @@ private:
 	///  @name Members
 
 	Box3f                     bbox;
+	std::vector <Color4f>     colors;
 	X3DTextureCoordinateNode* texCoordNode;
 	TexCoordArray             texCoords;
-	std::vector <Color4f>     colors;
 	std::vector <Vector3f>    normals;
 	std::vector <Vector3f>    vertices;
 	bool                      solid;

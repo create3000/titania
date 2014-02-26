@@ -62,8 +62,8 @@ X3DComposedGeometryNode::Fields::Fields () :
 	            ccw (new SFBool (true)),
 	         attrib (new MFNode ()),
 	       fogCoord (new SFNode ()),
-	       texCoord (new SFNode ()),
 	          color (new SFNode ()),
+	       texCoord (new SFNode ()),
 	         normal (new SFNode ()),
 	          coord (new SFNode ())
 { }
@@ -71,16 +71,16 @@ X3DComposedGeometryNode::Fields::Fields () :
 X3DComposedGeometryNode::X3DComposedGeometryNode () :
 	X3DGeometryNode (),
 	         fields (),
-	   texCoordNode (),
 	      colorNode (),
+	   texCoordNode (),
 	     normalNode (),
 	      coordNode (),
 	    transparent (false)
 {
 	addNodeType (X3DConstants::X3DComposedGeometryNode);
 
-	addChildren (texCoordNode,
-	             colorNode,
+	addChildren (colorNode,
+	             texCoordNode,
 	             normalNode,
 	             coordNode);
 }
@@ -90,27 +90,15 @@ X3DComposedGeometryNode::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	texCoord () .addInterest (this, &X3DComposedGeometryNode::set_texCoord);
 	color ()    .addInterest (this, &X3DComposedGeometryNode::set_color);
+	texCoord () .addInterest (this, &X3DComposedGeometryNode::set_texCoord);
 	normal ()   .addInterest (this, &X3DComposedGeometryNode::set_normal);
 	coord ()    .addInterest (this, &X3DComposedGeometryNode::set_coord);
 	
-	set_texCoord ();
 	set_color ();
+	set_texCoord ();
 	set_normal ();
 	set_coord ();
-}
-
-void
-X3DComposedGeometryNode::set_texCoord ()
-{
-	if (texCoordNode)
-		texCoordNode -> removeInterest (this);
-
-	texCoordNode .set (x3d_cast <X3DTextureCoordinateNode*> (texCoord ()));
-
-	if (texCoordNode)
-		texCoordNode -> addInterest (this);
 }
 
 void
@@ -127,6 +115,18 @@ X3DComposedGeometryNode::set_color ()
 	// Transparent
 
 	transparent = colorNode and colorNode -> isTransparent ();
+}
+
+void
+X3DComposedGeometryNode::set_texCoord ()
+{
+	if (texCoordNode)
+		texCoordNode -> removeInterest (this);
+
+	texCoordNode .set (x3d_cast <X3DTextureCoordinateNode*> (texCoord ()));
+
+	if (texCoordNode)
+		texCoordNode -> addInterest (this);
 }
 
 void
@@ -275,8 +275,8 @@ X3DComposedGeometryNode::buildFaceNormals (const size_t vertexCount, const size_
 void
 X3DComposedGeometryNode::dispose ()
 {
-	texCoordNode .dispose ();
 	colorNode    .dispose ();
+	texCoordNode .dispose ();
 	normalNode   .dispose ();
 	coordNode    .dispose ();
 

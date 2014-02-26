@@ -99,6 +99,9 @@ protected:
 
 	///  @name Operations
 
+	bool
+	getReversedOrder () const;
+
 	Matrix4d
 	getLocationMatrix (const Vector3d &) const;
 

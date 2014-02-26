@@ -118,6 +118,12 @@ X3DGeospatialObject::set_origin ()
 		origin = Vector3d ();
 }
 
+bool
+X3DGeospatialObject::getReversedOrder () const
+{
+	return Geospatial::getReversedOrder (geoSystem ());
+}
+
 Matrix4d
 X3DGeospatialObject::getLocationMatrix (const Vector3d & geoPoint) const
 {

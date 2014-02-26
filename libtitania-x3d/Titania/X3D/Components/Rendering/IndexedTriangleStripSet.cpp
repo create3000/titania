@@ -80,8 +80,8 @@ IndexedTriangleStripSet::IndexedTriangleStripSet (X3DExecutionContext* const exe
 
 	addField (inputOutput,    "attrib",          attrib ());
 	addField (inputOutput,    "fogCoord",        fogCoord ());
-	addField (inputOutput,    "texCoord",        texCoord ());
 	addField (inputOutput,    "color",           color ());
+	addField (inputOutput,    "texCoord",        texCoord ());
 	addField (inputOutput,    "normal",          normal ());
 	addField (inputOutput,    "coord",           coord ());
 }

@@ -52,7 +52,6 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "../Rendering/X3DColorNode.h"
 
 namespace titania {
 namespace X3D {
@@ -62,50 +61,58 @@ const std::string GeoElevationGrid::typeName       = "GeoElevationGrid";
 const std::string GeoElevationGrid::containerField = "geometry";
 
 GeoElevationGrid::Fields::Fields () :
-	     set_height (new MFDouble ()),
-	          color (new SFNode ()),
-	         normal (new SFNode ()),
-	       texCoord (new SFNode ()),
-	         yScale (new SFFloat (1)),
-	 colorPerVertex (new SFBool (true)),
-	    creaseAngle (new SFDouble ()),
 	  geoGridOrigin (new SFVec3d ()),
-	      geoOrigin (new SFNode ()),
-	      geoSystem (new MFString ({ "GD", "WE" })),
-	         height (new MFDouble ()),
-	normalPerVertex (new SFBool (true)),
-	          solid (new SFBool (true)),
-	            ccw (new SFBool (true)),
+	         yScale (new SFFloat (1)),
 	     xDimension (new SFInt32 ()),
 	       xSpacing (new SFDouble (1)),
 	     zDimension (new SFInt32 ()),
-	       zSpacing (new SFDouble (1))
+	       zSpacing (new SFDouble (1)),
+	          solid (new SFBool (true)),
+	            ccw (new SFBool (true)),
+	    creaseAngle (new SFDouble ()),
+	 colorPerVertex (new SFBool (true)),
+	normalPerVertex (new SFBool (true)),
+	          color (new SFNode ()),
+	       texCoord (new SFNode ()),
+	         normal (new SFNode ()),
+	         height (new MFDouble ())
 { }
 
 GeoElevationGrid::GeoElevationGrid (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DGeometryNode (),
-	         fields ()
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	    X3DGeometryNode (),
+	X3DGeospatialObject (),
+	             fields (),
+	          colorNode (),
+	       texCoordNode (),
+	         normalNode (),
+	        transparent (false)
 {
 	addField (inputOutput,    "metadata",        metadata ());
-	addField (inputOnly,      "set_height",      set_height ());
-	addField (inputOutput,    "color",           color ());
-	addField (inputOutput,    "normal",          normal ());
-	addField (inputOutput,    "texCoord",        texCoord ());
-	addField (inputOutput,    "yScale",          yScale ());
-	addField (initializeOnly, "ccw",             ccw ());
-	addField (initializeOnly, "colorPerVertex",  colorPerVertex ());
-	addField (initializeOnly, "creaseAngle",     creaseAngle ());
-	addField (initializeOnly, "geoGridOrigin",   geoGridOrigin ());
-	addField (initializeOnly, "geoOrigin",       geoOrigin ());
 	addField (initializeOnly, "geoSystem",       geoSystem ());
-	addField (initializeOnly, "height",          height ());
-	addField (initializeOnly, "normalPerVertex", normalPerVertex ());
-	addField (initializeOnly, "solid",           solid ());
+	addField (initializeOnly, "geoGridOrigin",   geoGridOrigin ());
+
+	addField (inputOutput,    "yScale",          yScale ());
 	addField (initializeOnly, "xDimension",      xDimension ());
 	addField (initializeOnly, "xSpacing",        xSpacing ());
 	addField (initializeOnly, "zDimension",      zDimension ());
 	addField (initializeOnly, "zSpacing",        zSpacing ());
+
+	addField (initializeOnly, "solid",           solid ());
+	addField (initializeOnly, "ccw",             ccw ());
+	addField (initializeOnly, "creaseAngle",     creaseAngle ());
+	addField (initializeOnly, "colorPerVertex",  colorPerVertex ());
+	addField (initializeOnly, "normalPerVertex", normalPerVertex ());
+
+	addField (inputOutput,    "color",           color ());
+	addField (inputOutput,    "texCoord",        texCoord ());
+	addField (inputOutput,    "normal",          normal ());
+	addField (inputOutput,    "height",          height ());
+	addField (initializeOnly, "geoOrigin",       geoOrigin ());
+
+	addChildren (colorNode,
+	             texCoordNode,
+	             normalNode);
 }
 
 X3DBaseNode*
@@ -114,17 +121,277 @@ GeoElevationGrid::create (X3DExecutionContext* const executionContext) const
 	return new GeoElevationGrid (executionContext);
 }
 
-bool
-GeoElevationGrid::isTransparent () const
+void
+GeoElevationGrid::initialize ()
 {
-	auto _color = x3d_cast <X3DColorNode*> (color ());
+	X3DGeometryNode::initialize ();
+	X3DGeospatialObject::initialize ();
 
-	return _color and _color -> isTransparent ();
+	color ()    .addInterest (this, &GeoElevationGrid::set_color);
+	texCoord () .addInterest (this, &GeoElevationGrid::set_texCoord);
+	normal ()   .addInterest (this, &GeoElevationGrid::set_normal);
+
+	set_color ();
+	set_texCoord ();
+	set_normal ();
+}
+
+void
+GeoElevationGrid::set_color ()
+{
+	if (colorNode)
+		colorNode -> removeInterest (this);
+
+	colorNode .set (x3d_cast <X3DColorNode*> (color ()));
+
+	if (colorNode)
+		colorNode -> addInterest (this);
+
+	// Transparent
+
+	transparent = colorNode and colorNode -> isTransparent ();
+}
+
+void
+GeoElevationGrid::set_texCoord ()
+{
+	if (texCoordNode)
+		texCoordNode -> removeInterest (this);
+
+	texCoordNode .set (x3d_cast <X3DTextureCoordinateNode*> (texCoord ()));
+
+	if (texCoordNode)
+		texCoordNode -> addInterest (this);
+}
+
+void
+GeoElevationGrid::set_normal ()
+{
+	if (normalNode)
+		normalNode -> removeInterest (this);
+
+	normalNode .set (x3d_cast <X3DNormalNode*> (normal ()));
+
+	if (normalNode)
+		normalNode -> addInterest (this);
+}
+
+double
+GeoElevationGrid::getHeight (const size_t index) const
+{
+	if (index < height () .size ())
+		return height () [index] * yScale ();
+
+	return 0;
+}
+
+std::vector <Vector4f>
+GeoElevationGrid::createTexCoord () const
+{
+	std::vector <Vector4f> texCoord;
+	texCoord .reserve (xDimension () * zDimension ());
+
+	const double xSize = xDimension () - 1;
+	const double zSize = zDimension () - 1;
+
+	for (int32_t z = 0; z < zDimension (); ++ z)
+	{
+		for (int32_t x = 0; x < xDimension (); ++ x)
+		{
+			texCoord .emplace_back (x / xSize,
+			                        z / zSize,
+			                        0,
+			                        1);
+		}
+	}
+
+	return texCoord;
+}
+
+std::vector <Vector3f>
+GeoElevationGrid::createNormals (const std::vector <Vector3f> & points, const std::vector <size_t> & coordIndex) const
+{
+	std::vector <Vector3f> normals;
+	normals .reserve (coordIndex .size ());
+
+	NormalIndex normalIndex;
+
+	for (auto index = coordIndex .cbegin (); index not_eq coordIndex .cend (); index += 6)
+	{
+		for (size_t i = 0; i < 6; ++ i)
+			normalIndex [*(index + i)] .emplace_back (normals .size () + i);
+
+		const Vector3f normal = math::normal (points [*(index)],
+		                                      points [*(index + 1)],
+		                                      points [*(index + 3)],
+		                                      points [*(index + 2)]);
+
+		normals .resize (normals .size () + 6, normal);
+	}
+
+	refineNormals (normalIndex, normals, creaseAngle (), not ccw ());
+
+	return normals;
+}
+
+std::vector <size_t>
+GeoElevationGrid::createCoordIndex () const
+{
+	std::vector <size_t> coordIndex;
+	coordIndex .reserve ((xDimension () - 1) * (zDimension () - 1) * 6);
+
+	for (int32_t z = 0, size = zDimension () - 1; z < size; ++ z)
+	{
+		for (int32_t x = 0, size = xDimension () - 1; x < size; ++ x)
+		{
+			// Triangle one
+			coordIndex .emplace_back (z * xDimension () + x);             // P1
+			coordIndex .emplace_back ((z + 1) * xDimension () + x);       // P2
+			coordIndex .emplace_back (z * xDimension () + (x + 1));       // P4
+
+			// Triangle two
+			coordIndex .emplace_back ((z + 1) * xDimension () + (x + 1)); // P3
+			coordIndex .emplace_back (z * xDimension () + (x + 1));       // P4
+			coordIndex .emplace_back ((z + 1) * xDimension () + x);       // P2
+		}
+	}
+
+	return coordIndex;
+}
+
+std::vector <Vector3f>
+GeoElevationGrid::createPoints () const
+{
+	std::vector <Vector3f> points;
+	points .reserve (xDimension () * zDimension ());
+
+	// When the geoSystem is "GD", xSpacing refers to the number of units of longitude in angle base units between
+	// adjacent height values and zSpacing refers to the number of units of latitude in angle base units between
+	// vertical height values.
+
+	// When the geoSystem is "UTM", xSpacing refers to the number of eastings (length base units) between adjacent
+	// height values and zSpacing refers to the number of northings (length base units) between vertical height values.
+
+	if (getReversedOrder ())
+	{
+		for (int32_t z = 0; z < zDimension (); ++ z)
+		{
+			for (int32_t x = 0; x < xDimension (); ++ x)
+			{
+				points .emplace_back (convert (Vector3d (xSpacing () * x, // longitude, easting
+				                                         zSpacing () * z, // latitude, northing
+				                                         getHeight (x + z * xDimension ())) + geoGridOrigin ()));
+			}
+		}
+	}
+	else
+	{
+		for (int32_t z = 0; z < zDimension (); ++ z)
+		{
+			for (int32_t x = 0; x < xDimension (); ++ x)
+			{
+				points .emplace_back (convert (Vector3d (zSpacing () * z, // latitude, northing
+				                                         xSpacing () * x, // longitude, easting
+				                                         getHeight (x + z * xDimension ())) + geoGridOrigin ()));
+			}
+		}
+	}
+
+	return points;
 }
 
 void
 GeoElevationGrid::build ()
-{ }
+{
+	if (xDimension () < 2 or zDimension () < 2)
+		return;
+
+	const std::vector <size_t>   coordIndex = createCoordIndex ();
+	const std::vector <Vector3f> points     = createPoints ();
+
+	getVertices () .reserve (coordIndex .size ());
+
+	// Color
+
+	if (colorNode)
+		getColors () .reserve (coordIndex .size ());
+
+	// TexCoord
+
+	std::vector <Vector4f> texCoords;
+
+	if (texCoordNode)
+		texCoordNode -> init (getTexCoords (), coordIndex .size ());
+	else
+	{
+		texCoords = std::move (createTexCoord ());
+		getTexCoords () .emplace_back ();
+		getTexCoords () [0] .reserve (coordIndex .size ());
+	}
+
+	// Normals
+
+	if (normalNode)
+		getNormals () .reserve (coordIndex .size ());
+	else
+		getNormals () = std::move (createNormals (points, coordIndex));
+
+	// Build geometry
+
+	int32_t face = 0;
+
+	std::vector <size_t>::const_iterator index;
+
+	for (index = coordIndex .begin (); index not_eq coordIndex .end (); ++ face)
+	{
+		for (int32_t p = 0; p < 6; ++ p, ++ index)
+		{
+			const size_t i = *index;
+
+			if (texCoordNode)
+				texCoordNode -> addTexCoord (getTexCoords (), i);
+
+			else
+				getTexCoords () [0] .emplace_back (texCoords [i]);
+
+			if (colorNode)
+			{
+				if (colorPerVertex ())
+					colorNode -> addColor (getColors (), i);
+
+				else
+					colorNode -> addColor (getColors (), face);
+			}
+
+			if (normalNode)
+			{
+				if (normalPerVertex ())
+					normalNode -> addVector (getNormals (), i);
+
+				else
+					normalNode -> addVector (getNormals (), face);
+			}
+
+			getVertices  () .emplace_back (points [i]);
+		}
+	}
+
+	addElements (GL_TRIANGLES, getVertices () .size ());
+	setSolid (solid ());
+	setCCW (not ccw ());
+	setTextureCoordinate (texCoordNode);
+}
+
+void
+GeoElevationGrid::dispose ()
+{
+	colorNode    .dispose ();
+	texCoordNode .dispose ();
+	normalNode   .dispose ();
+
+	X3DGeospatialObject::dispose ();
+	X3DGeometryNode::dispose ();
+}
 
 } // X3D
 } // titania

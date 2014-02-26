@@ -118,20 +118,20 @@ public:
 	{ return *fields .fogCoord; }
 
 	SFNode &
-	texCoord ()
-	{ return *fields .texCoord; }
-
-	const SFNode &
-	texCoord () const
-	{ return *fields .texCoord; }
-
-	SFNode &
 	color ()
 	{ return *fields .color; }
 
 	const SFNode &
 	color () const
 	{ return *fields .color; }
+
+	SFNode &
+	texCoord ()
+	{ return *fields .texCoord; }
+
+	const SFNode &
+	texCoord () const
+	{ return *fields .texCoord; }
 
 	SFNode &
 	normal ()
@@ -176,10 +176,10 @@ protected:
 	///  @name Event handlers
 
 	void
-	set_texCoord ();
+	set_color ();
 
 	void
-	set_color ();
+	set_texCoord ();
 
 	void
 	set_normal ();
@@ -189,13 +189,13 @@ protected:
 
 	///  @name Member access
 
-	const X3DSFNode <X3DTextureCoordinateNode> &
-	getTexCoord () const
-	{ return texCoordNode; }
-
 	const X3DSFNode <X3DColorNode> &
 	getColor () const
 	{ return colorNode; }
+
+	const X3DSFNode <X3DTextureCoordinateNode> &
+	getTexCoord () const
+	{ return texCoordNode; }
 
 	const X3DSFNode <X3DNormalNode> &
 	getNormal () const
@@ -241,16 +241,16 @@ private:
 		SFBool* const ccw;
 		MFNode* const attrib;
 		SFNode* const fogCoord;
-		SFNode* const texCoord;
 		SFNode* const color;
+		SFNode* const texCoord;
 		SFNode* const normal;
 		SFNode* const coord;
 	};
 
 	Fields fields;
 
-	X3DSFNode <X3DTextureCoordinateNode> texCoordNode;
 	X3DSFNode <X3DColorNode>             colorNode;
+	X3DSFNode <X3DTextureCoordinateNode> texCoordNode;
 	X3DSFNode <X3DNormalNode>            normalNode;
 	X3DSFNode <X3DCoordinateNode>        coordNode;
 	bool                                 transparent;

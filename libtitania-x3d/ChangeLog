@@ -1,3 +1,27 @@
+2014-02-26  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Geospatial.h:
+	* Geospatial.cpp:
+	* QuadSet.cpp:
+	* TriangleSet.cpp:
+	* ElevationGrid.h:
+	* X3DGeometryNode.h:
+	* TriangleFanSet.cpp:
+	* ElevationGrid.cpp:
+	* X3DGeometryNode.cpp:
+	* IndexedFaceSet.cpp:
+	* GeoElevationGrid.h:
+	* IndexedQuadSet.cpp:
+	* TriangleStripSet.cpp:
+	* GeoElevationGrid.cpp:
+	* X3DGeospatialObject.h:
+	* IndexedTriangleSet.cpp:
+	* X3DGeospatialObject.cpp:
+	* X3DComposedGeometryNode.h:
+	* IndexedTriangleFanSet.cpp:
+	* IndexedTriangleStripSet.cpp:
+	* X3DComposedGeometryNode.cpp: 
+
 2014-02-25  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* LOD.h:
