@@ -242,7 +242,7 @@ X3DViewpointNode::straighten (const bool horizon)
 
 	const Rotation4f rotation = orientationOffset () * (horizon
 	                                                    ? straightenHorizon (getUserOrientation ())
-																       : Rotation4f (getUserOrientation () * upVector, upVector));
+																       : Rotation4f (upVector * getUserOrientation (), upVector));
 
 	positionInterpolator         -> keyValue () = { positionOffset (), positionOffset () };
 	orientationInterpolator      -> keyValue () = { orientationOffset (), rotation };
@@ -256,7 +256,7 @@ X3DViewpointNode::straighten (const bool horizon)
 
 	const auto distanceToCenter = abs (getUserCenterOfRotation () - getUserPosition ());
 
-	centerOfRotationOffset () = getUserPosition () + (orientation () * rotation) * Vector3f (0, 0, -1) * distanceToCenter - centerOfRotation ();
+	centerOfRotationOffset () = getUserPosition () + (Vector3f (0, 0, -1) * distanceToCenter) * (orientation () * rotation) - centerOfRotation ();
 
 	set_bind () = true;
 }
@@ -266,9 +266,9 @@ X3DViewpointNode::straightenHorizon (const Rotation4f & orientation)
 {
 	// Taken from Billboard
 
-	Vector3f direction = orientation * zAxis;
+	Vector3f direction = zAxis * orientation;
 	Vector3f normal    = cross (direction, upVector);
-	Vector3f vector    = cross (direction, orientation * upVector);
+	Vector3f vector    = cross (direction, upVector * orientation);
 
 	return Rotation4f (vector, normal);
 }
@@ -300,7 +300,7 @@ X3DViewpointNode::lookAt (Box3f bbox, const float distance, const bool straighte
 
 		const auto translation = lerp <Vector3f> (positionOffset (), getLookAtPositionOffset (bbox), distance);
 		const auto direction   = getPosition () + translation - bbox .center ();
-		auto       rotation    = orientationOffset () * Rotation4f (getUserOrientation () * Vector3f (0, 0, 1), direction);
+		auto       rotation    = orientationOffset () * Rotation4f (Vector3f (0, 0, 1) * getUserOrientation (), direction);
 
 		if (straighten)
 			rotation = ~orientation () * straightenHorizon (orientation () * rotation);

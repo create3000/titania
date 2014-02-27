@@ -174,19 +174,19 @@ public:
 	box2 &
 	operator *= (const matrix3 <Type> & matrix)
 	{
-		multBoxMatrix (matrix);
+		mult_box_matrix (matrix);
 		return *this;
 	}
 
 	///  Transform this box by matrix.
 	void
-	multMatrixBox (const matrix3 <Type> & matrix)
-	{ value .multLeft (matrix); }
+	mult_matrix_box (const matrix3 <Type> & matrix)
+	{ value .mult_left (matrix); }
 
 	///  Transform this box by matrix.
 	void
-	multBoxMatrix (const matrix3 <Type> & matrix)
-	{ value .multRight (matrix); }
+	mult_box_matrix (const matrix3 <Type> & matrix)
+	{ value .mult_right (matrix); }
 
 	///  Translate this box by @a translation.
 	void
@@ -356,7 +356,7 @@ box2 <Type>
 operator * (const box2 <Type> & lhs, const matrix3 <Type> & rhs)
 {
 	box2 <Type> result (lhs);
-	result .multBoxMatrix (rhs);
+	result .mult_box_matrix (rhs);
 	return result;
 }
 
@@ -367,7 +367,7 @@ box2 <Type>
 operator * (const matrix3 <Type> & lhs, const box2 <Type> & rhs)
 {
 	box2 <Type> result (rhs);
-	result .multMatrixBox (lhs);
+	result .mult_matrix_box (lhs);
 	return result;
 }
 

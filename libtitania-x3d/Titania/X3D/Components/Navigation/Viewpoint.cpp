@@ -125,7 +125,7 @@ Viewpoint::getLookAtPositionOffset (const Box3f & bbox) const
 		const float minDistance = getBrowser () -> getActiveLayer () -> getNavigationInfo () -> getNearPlane () * 2;
 
 		return bbox .center ()
-		       + getUserOrientation () * Vector3f (0, 0, std::max (distance, minDistance))
+		       + Vector3f (0, 0, std::max (distance, minDistance)) * getUserOrientation ()
 		       - position ();
 	}
 

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -70,11 +70,16 @@ namespace math {
 /**
  *  Template to represent square matrix of order 3.
  *
- *  The matrix is interally stored in Row-Major Order and
- *  consists of three vectors of type vector3:
+ *  Matrix3 matrices are organized in row-major fashion.  The first row of the
+ *  matrix stores information for the x dimension, and the second for the
+ *  y dimension.  Since these data types are commonly used for transformation
+ *  matrices, translation values are stored in the third row.
+ *
  *  0 [ x-axis 0 ]
  *  1 [ y-axis 0 ]
  *  2 [ x y    1 ]
+ *
+ *  The default value of a matrix3 number is the identity matrix [1 0 0 0 1 0 0 0 1].
  *
  *  Extern instantiations for float, double, and long double are part of the
  *  library.  Results with any other type are not guaranteed.
@@ -349,46 +354,46 @@ public:
 	///  Returns this matrix left multiplied by @a matrix.
 	template <class T>
 	void
-	multLeft (const matrix3 <T> &);
+	mult_left (const matrix3 <T> &);
 
 	///  Returns this matrix right multiplied by @a matrix.
 	template <class T>
 	void
-	multRight (const matrix3 <T> &);
+	mult_right (const matrix3 <T> &);
 
 	///  Returns a new vector that is @vector multiplies by matrix.
 	template <class T>
 	vector2 <Type>
-	multVecMatrix (const vector2 <T> &) const;
+	mult_vec_matrix (const vector2 <T> &) const;
 
 	///  Returns a new vector that is @vector multiplies by matrix.
 	template <class T>
 	constexpr
 	vector3 <Type>
-	multVecMatrix (const vector3 <T> &) const;
+	mult_vec_matrix (const vector3 <T> &) const;
 
 	///  Returns a new vector that is matrix multiplies by @vector.
 	template <class T>
 	vector2 <Type>
-	multMatrixVec (const vector2 <T> &) const;
+	mult_matrix_vec (const vector2 <T> &) const;
 
 	///  Returns a new vector that is matrix multiplies by @vector.
 	template <class T>
 	constexpr
 	vector3 <Type>
-	multMatrixVec (const vector3 <T> &) const;
+	mult_matrix_vec (const vector3 <T> &) const;
 
 	///  Returns a new vector that is @vector (a normal or direction vector) multiplies by matrix.
 	template <class T>
 	constexpr
 	vector2 <Type>
-	multDirMatrix (const vector2 <T> &) const;
+	mult_dir_matrix (const vector2 <T> &) const;
 
 	///  Returns a new vector that is matrix multiplies by @vector (a normal or direction vector).
 	template <class T>
 	constexpr
 	vector2 <Type>
-	multMatrixDir (const vector2 <T> &) const;
+	mult_matrix_dir (const vector2 <T> &) const;
 
 	///  Returns this matrix translated by @a translation.
 	void
@@ -625,9 +630,9 @@ matrix3 <Type>::get (vector2 <Type> & translation,
 	matrix3 <Type> m, c;
 
 	m .set (-center);
-	m .multLeft (*this);
+	m .mult_left (*this);
 	c .set (center);
-	m .multLeft (c);
+	m .mult_left (c);
 
 	m .get (translation, rotation, scaleFactor, scaleOrientation);
 }
@@ -796,7 +801,7 @@ inline
 matrix3 <Type> &
 matrix3 <Type>::operator *= (const matrix3 <T> & matrix)
 {
-	multRight (matrix);
+	mult_right (matrix);
 	return *this;
 }
 
@@ -814,7 +819,7 @@ matrix3 <Type>::operator /= (const Type & t)
 template <class Type>
 template <class T>
 void
-matrix3 <Type>::multLeft (const matrix3 <T> & matrix)
+matrix3 <Type>::mult_left (const matrix3 <T> & matrix)
 {
 	#define MULT_LEFT(i, j) \
 	   (array [0 * 3 + j] * matrix .array [i * 3 + 0] +   \
@@ -839,7 +844,7 @@ matrix3 <Type>::multLeft (const matrix3 <T> & matrix)
 template <class Type>
 template <class T>
 void
-matrix3 <Type>::multRight (const matrix3 <T> & matrix)
+matrix3 <Type>::mult_right (const matrix3 <T> & matrix)
 {
 	#define MULT_RIGHT(i, j) \
 	   (array [i * 3 + 0] * matrix .array [0 * 3 + j] +   \
@@ -864,7 +869,7 @@ matrix3 <Type>::multRight (const matrix3 <T> & matrix)
 template <class Type>
 template <class T>
 vector2 <Type>
-matrix3 <Type>::multVecMatrix (const vector2 <T> & vector) const
+matrix3 <Type>::mult_vec_matrix (const vector2 <T> & vector) const
 {
 	const Type w = vector .x () * array [2] + vector .y () * array [5] + array [8];
 
@@ -876,7 +881,7 @@ template <class Type>
 template <class T>
 constexpr
 vector3 <Type>
-matrix3 <Type>::multVecMatrix (const vector3 <T> & vector) const
+matrix3 <Type>::mult_vec_matrix (const vector3 <T> & vector) const
 {
 	return vector3 <Type> (vector .x () * array [0] + vector .y () * array [3] + vector .z () * array [6],
 	                       vector .x () * array [1] + vector .y () * array [4] + vector .z () * array [7],
@@ -886,7 +891,7 @@ matrix3 <Type>::multVecMatrix (const vector3 <T> & vector) const
 template <class Type>
 template <class T>
 vector2 <Type>
-matrix3 <Type>::multMatrixVec (const vector2 <T> & vector) const
+matrix3 <Type>::mult_matrix_vec (const vector2 <T> & vector) const
 {
 	const Type w = vector .x () * array [6] + vector .y () * array [7] + array [8];
 
@@ -898,7 +903,7 @@ template <class Type>
 template <class T>
 constexpr
 vector3 <Type>
-matrix3 <Type>::multMatrixVec (const vector3 <T> & vector) const
+matrix3 <Type>::mult_matrix_vec (const vector3 <T> & vector) const
 {
 	return vector3 <Type> (vector .x () * array [0] + vector .y () * array [1] + vector .z () * array [2],
 	                       vector .x () * array [3] + vector .y () * array [4] + vector .z () * array [5],
@@ -909,7 +914,7 @@ template <class Type>
 template <class T>
 constexpr
 vector2 <Type>
-matrix3 <Type>::multDirMatrix (const vector2 <T> & vector) const
+matrix3 <Type>::mult_dir_matrix (const vector2 <T> & vector) const
 {
 	return vector2 <Type> (vector .x () * array [0] + vector .y () * array [3],
 	                       vector .x () * array [1] + vector .y () * array [4]);
@@ -919,7 +924,7 @@ template <class Type>
 template <class T>
 constexpr
 vector2 <Type>
-matrix3 <Type>::multMatrixDir (const vector2 <T> & vector) const
+matrix3 <Type>::mult_matrix_dir (const vector2 <T> & vector) const
 {
 	return vector2 <Type> (vector .x () * array [0] + vector .y () * array [1],
 	                       vector .x () * array [3] + vector .y () * array [4]);
@@ -943,7 +948,7 @@ template <class Type>
 void
 matrix3 <Type>::rotate (const Type & rotation)
 {
-	multLeft (matrix3 <Type> (rotation));
+	mult_left (matrix3 <Type> (rotation));
 }
 
 template <class Type>
@@ -1098,7 +1103,7 @@ matrix3 <Type>
 operator * (const matrix3 <Type> & lhs, const matrix3 <Type> & rhs)
 {
 	matrix3 <Type> result (lhs);
-	result .multRight (rhs);
+	result .mult_right (rhs);
 	return result;
 }
 
@@ -1126,7 +1131,7 @@ inline
 vector2 <Type>
 operator * (const matrix3 <Type> & lhs, const vector2 <Type> & rhs)
 {
-	return lhs .multMatrixVec (rhs);
+	return lhs .mult_matrix_vec (rhs);
 }
 
 ///  Return vector value @a rhs multiplied by @a lhs.
@@ -1135,7 +1140,7 @@ inline
 vector3 <Type>
 operator * (const matrix3 <Type> & lhs, const vector3 <Type> & rhs)
 {
-	return lhs .multMatrixVec (rhs);
+	return lhs .mult_matrix_vec (rhs);
 }
 
 ///  Return vector value @a rhs multiplied by @a lhs.
@@ -1144,7 +1149,7 @@ inline
 vector2 <Type>
 operator * (const vector2 <Type> & lhs, const matrix3 <Type> & rhs)
 {
-	return rhs .multVecMatrix (lhs);
+	return rhs .mult_vec_matrix (lhs);
 }
 
 ///  Return vector value @a rhs multiplied by @a lhs.
@@ -1153,7 +1158,7 @@ inline
 vector3 <Type>
 operator * (const vector3 <Type> & lhs, const matrix3 <Type> & rhs)
 {
-	return rhs .multVecMatrix (lhs);
+	return rhs .mult_vec_matrix (lhs);
 }
 
 ///  Return column vector @a rhs multiplied by row vector @a lhs.

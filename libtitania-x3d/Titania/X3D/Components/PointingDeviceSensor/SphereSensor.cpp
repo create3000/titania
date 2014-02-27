@@ -123,7 +123,7 @@ SphereSensor::set_active (const HitPtr & hit, const bool active)
 			const auto hitPoint = hit -> point * inverseModelViewMatrix;
 			const auto center   = Vector3d ();
 
-			zPlane = Plane3d (center, inverseModelViewMatrix .multDirMatrix (Vector3d (0, 0, 1))); // Screen aligned Z-plane
+			zPlane = Plane3d (center, inverseModelViewMatrix .mult_dir_matrix (Vector3d (0, 0, 1))); // Screen aligned Z-plane
 			sphere = Sphere3d (abs (hitPoint - center), center);
 			behind = zPlane .distance (hitPoint) < 0;
 
@@ -155,7 +155,7 @@ SphereSensor::set_motion (const HitPtr & hit)
 
 		if (getTrackPoint (hitRay, trackPoint, behind))
 		{
-			const auto zAxis = inverseModelViewMatrix .multDirMatrix (Vector3d (0, 0, 1)); // Camera direction
+			const auto zAxis = inverseModelViewMatrix .mult_dir_matrix (Vector3d (0, 0, 1)); // Camera direction
 			zPlane = Plane3d (trackPoint, zAxis);                                          // Screen aligned Z-plane
 		}
 		else

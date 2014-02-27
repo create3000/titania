@@ -60,7 +60,7 @@ FlyViewer::FlyViewer (X3DBrowserSurface* const browser, NavigationInfo* navigati
 Vector3f
 FlyViewer::getTranslationOffset (const Vector3f & velocity)
 {
-	return getActiveViewpoint () -> getUserOrientation () * velocity;
+	return velocity * getActiveViewpoint () -> getUserOrientation ();
 }
 
 } // X3D

@@ -245,7 +245,7 @@ TransformHandle::traverse (const TraverseType type)
 
 	getModelViewMatrix () .push ();
 
-	getModelViewMatrix () .multLeft (getMatrix ());
+	getModelViewMatrix () .mult_left (getMatrix ());
 
 	if (type == TraverseType::CAMERA) // Last chance to process events
 		reshape ();

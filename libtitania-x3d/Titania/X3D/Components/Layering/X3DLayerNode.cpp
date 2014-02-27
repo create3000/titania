@@ -383,7 +383,7 @@ X3DLayerNode::collision ()
 	Matrix4f parentMatrix = viewpoint -> getParentMatrix ();
 
 	parentMatrix .translate (viewpoint -> getUserPosition ());
-	parentMatrix .rotate (viewpoint -> getUserOrientation () * Rotation4f (viewpoint -> getUserOrientation () * Vector3f (0, 0, 1), Vector3f (0, 1, 0)));
+	parentMatrix .rotate (viewpoint -> getUserOrientation () * Rotation4f (Vector3f (0, 0, 1) * viewpoint -> getUserOrientation (), Vector3f (0, 1, 0)));
 
 	getModelViewMatrix () .set (inverse (parentMatrix));
 

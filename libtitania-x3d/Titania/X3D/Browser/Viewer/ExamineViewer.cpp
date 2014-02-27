@@ -184,7 +184,7 @@ ExamineViewer::on_motion_notify_event (GdkEventMotion* event)
 		const auto & viewpoint = getActiveViewpoint ();
 
 		Vector3f toPoint     = getPointOnCenterPlane (event -> x, event -> y);
-		Vector3f translation = viewpoint -> getUserOrientation () * (fromPoint - toPoint);
+		Vector3f translation = (fromPoint - toPoint) * viewpoint -> getUserOrientation ();
 
 		viewpoint -> positionOffset ()         += translation;
 		viewpoint -> centerOfRotationOffset () += translation;
@@ -203,7 +203,7 @@ ExamineViewer::on_scroll_event (GdkEventScroll* event)
 	viewpoint -> transitionStop ();
 
 	const Vector3f step           = getDistanceToCenter () * SCROLL_FACTOR;
-	const Vector3f positionOffset = viewpoint -> getUserOrientation () * Vector3f (0, 0, abs (step));
+	const Vector3f positionOffset = Vector3f (0, 0, abs (step)) * viewpoint -> getUserOrientation ();
 
 	if (event -> direction == 0)      // Move backwards.
 	{
@@ -244,7 +244,7 @@ ExamineViewer::getPositionOffset () const
 	const auto viewpoint = getActiveViewpoint ();
 
 	return viewpoint -> getUserCenterOfRotation ()
-	       + viewpoint -> orientationOffset () * distance
+	       + distance * viewpoint -> orientationOffset ()
 	       - viewpoint -> getPosition ();
 }
 

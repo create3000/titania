@@ -135,7 +135,7 @@ X3DGeospatialObject::getLocationMatrix (const Vector3d & geoPoint) const
 	// Let's work out the orientation at that location in order
 	// to maintain a view where +Y is in the direction of gravitional
 	// up for that region of the planet's surface. This will be the
-	// value of the matrix for the transform.
+	// value of the rotation matrix for the transform.
 
 	Vector3d y = p;
 	Vector3d x = cross (Vector3d (0, 0, 1), p);
@@ -158,9 +158,15 @@ X3DGeospatialObject::getLocationMatrix (const Vector3d & geoPoint) const
 }
 
 Vector3d
-X3DGeospatialObject::convert (const Vector3d & geoPoint) const
+X3DGeospatialObject::getCoord (const Vector3d & geoPoint) const
 {
 	return referenceFrame -> convert (geoPoint) - origin;
+}
+
+Vector3d
+X3DGeospatialObject::getGeoCoord (const Vector3d & point) const
+{
+	return referenceFrame -> apply (point + origin);
 }
 
 void

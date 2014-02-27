@@ -78,7 +78,7 @@ vec3
 random_normal (in vec3 direction, in float angle)
 {
 	vec4 rotation = quaternion (vec3 (0.0f, 0.0f, 1.0f), direction);
-	return multVec (rotation, random_normal (angle));
+	return mult_quat_vec (rotation, random_normal (angle));
 }
 
 // Generate a random normal for VolumeEmitter.
@@ -96,7 +96,7 @@ random_normal (in vec3 direction)
 	                    cphi);
 
 	vec4 rotation = quaternion (vec3 (0.0f, 0.0f, 1.0f), direction);
-	return multVec (rotation, normal);
+	return mult_quat_vec (rotation, normal);
 }
 
 // Returns uniform distributed random barycentric coordinates for interpolation on a triangle.

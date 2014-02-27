@@ -380,7 +380,7 @@ inline
 typename SFRotation4 <ValueType>::vector3_type *
 SFRotation4 <ValueType>::multVec (const vector3_type &value) const
 {
-	return new vector3_type (getValue () * value .getValue ());
+	return new vector3_type (value .getValue () * getValue ());
 }
 
 template <class ValueType>
@@ -457,6 +457,14 @@ operator * (const ValueType & a, const SFRotation4 <ValueType> & b)
 //@}
 
 //@{
+template <class ValueType>
+inline
+typename ValueType::vector3_type
+operator * (const typename ValueType::vector3_type & vector, const SFRotation4 <ValueType> & rotation)
+{
+	return vector * rotation .getValue ();
+}
+
 template <class ValueType>
 inline
 typename ValueType::vector3_type

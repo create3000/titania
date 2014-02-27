@@ -44,8 +44,9 @@ inverse (in vec4 quat)
 	return quat;
 }
 
+// The name is reversed in glsl, because in glsl matrix operations are reversed.
 vec4
-multRight (in vec4 lhs, in vec4 rhs)
+mult_right (in vec4 lhs, in vec4 rhs)
 {
 	return vec4 (lhs .w * rhs .x +
 	             lhs .x * rhs .w +
@@ -68,9 +69,15 @@ multRight (in vec4 lhs, in vec4 rhs)
 	             lhs .z * rhs .z);
 }
 
+// The name is reversed in glsl, because in glsl matrix operations are reversed.
 vec3
-multVec (in vec4 quat, in vec3 vector)
+mult_quat_vec (in vec4 q, in vec3 vector)
 {
-	vec4 result = multRight (multRight (quat, vec4 (vector, 0.0f)), inverse (quat));
-	return result .xyz;
+	float a = q .w * q .w - q .x * q .x - q .y * q .y - q .z * q .z;                     
+	float b = 2 * (vector .x * q .x + vector .y * q .y + vector .z * q .z);  
+	float c = 2 * q .w;                                       
+
+	return vec3 (a * vector .x + b * q .x + c * (q .y * vector .z - q .z * vector .y),
+	             a * vector .y + b * q .y + c * (q .z * vector .x - q .x * vector .z),
+	             a * vector .z + b * q .z + c * (q .x * vector .y - q .y * vector .x));
 }

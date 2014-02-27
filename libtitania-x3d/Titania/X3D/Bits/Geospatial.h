@@ -77,6 +77,11 @@ public:
 		convert (const Vector3d & geocentric) const final override
 		{ return geocentric; }
 
+		virtual
+		Vector3d
+		apply (const Vector3d & geocentric) const final override
+		{ return geocentric; }
+
 	};
 
 	static

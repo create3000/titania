@@ -194,14 +194,14 @@ X3DFlyViewer::on_scroll_event (GdkEventScroll* event)
 	if (event -> direction == GDK_SCROLL_UP)
 	{
 		sourceRotation      = viewpoint -> orientationOffset ();
-		destinationRotation = sourceRotation * Rotation4f (viewpoint -> getUserOrientation () * Vector3f (-1, 0, 0), ROLL_ANGLE);
+		destinationRotation = sourceRotation * Rotation4f (Vector3f (-1, 0, 0) * viewpoint -> getUserOrientation (), ROLL_ANGLE);
 		addRoll ();
 	}
 
 	else if (event -> direction == GDK_SCROLL_DOWN)
 	{
 		sourceRotation      = viewpoint -> orientationOffset ();
-		destinationRotation = sourceRotation * Rotation4f (viewpoint -> getUserOrientation () * Vector3f (1, 0, 0), ROLL_ANGLE);
+		destinationRotation = sourceRotation * Rotation4f (Vector3f (1, 0, 0) * viewpoint -> getUserOrientation (), ROLL_ANGLE);
 		addRoll ();
 	}
 
@@ -287,8 +287,8 @@ X3DFlyViewer::pan ()
 
 	const float speed_factor = keys .shift () ? PAN_SHIFT_SPEED_FACTOR : 1.0;
 
-	const Rotation4f orientation = viewpoint -> getUserOrientation () * Rotation4f (viewpoint -> getUserOrientation () * upVector, upVector);
-	const Vector3f   translation = orientation * direction * (speed_factor * dt);
+	const Rotation4f orientation = viewpoint -> getUserOrientation () * Rotation4f (upVector * viewpoint -> getUserOrientation (), upVector);
+	const Vector3f   translation = (speed_factor * dt) * direction * orientation;
 
 	viewpoint -> positionOffset () += getTranslation (translation);
 

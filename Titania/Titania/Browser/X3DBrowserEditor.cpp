@@ -1004,7 +1004,7 @@ X3DBrowserEditor::groupNodes (const X3D::MFNode & nodes, const UndoStepPtr & und
 
 		if (transform)
 		{
-			childModelViewMatrix .multLeft (transform -> getMatrix ());
+			childModelViewMatrix .mult_left (transform -> getMatrix ());
 
 			setMatrix (transform, childModelViewMatrix, undoStep);
 		}
@@ -1061,7 +1061,7 @@ X3DBrowserEditor::ungroupNodes (const X3D::MFNode & groups, const UndoStepPtr & 
 
 				if (transform)
 				{
-					childModelViewMatrix .multLeft (transform -> getMatrix ());
+					childModelViewMatrix .mult_left (transform -> getMatrix ());
 
 					setMatrix (transform, childModelViewMatrix, undoStep);
 				}
@@ -1131,7 +1131,7 @@ X3DBrowserEditor::addToGroup (const X3D::SFNode & group, const X3D::MFNode & chi
 			X3D::X3DSFNode <X3D::X3DTransformNode> transform (group);
 
 			if (transform)
-				groupModelViewMatrix .multLeft (transform -> getMatrix ());
+				groupModelViewMatrix .mult_left (transform -> getMatrix ());
 
 			// Adjust child transformation
 
@@ -1143,8 +1143,8 @@ X3DBrowserEditor::addToGroup (const X3D::SFNode & group, const X3D::MFNode & chi
 				{
 					try
 					{
-						childModelViewMatrix .multLeft (transform -> getMatrix ());
-						childModelViewMatrix .multRight (~groupModelViewMatrix);
+						childModelViewMatrix .mult_left (transform -> getMatrix ());
+						childModelViewMatrix .mult_right (~groupModelViewMatrix);
 
 						setMatrix (transform, childModelViewMatrix, undoStep);
 					}
@@ -1213,7 +1213,7 @@ X3DBrowserEditor::detachFromGroup (X3D::MFNode children, bool detachToLayer0, co
 		{
 			X3D::Matrix4f childModelViewMatrix = findModelViewMatrix (node);
 
-			childModelViewMatrix .multLeft (transform -> getMatrix ());
+			childModelViewMatrix .mult_left (transform -> getMatrix ());
 
 			setMatrix (transform, childModelViewMatrix, undoStep);
 		}
@@ -1507,7 +1507,7 @@ X3DBrowserEditor::findModelViewMatrix (X3D::X3DBaseNode* const node, X3D::Matrix
 			auto transform = dynamic_cast <X3D::X3DTransformNode*> (node);
 
 			if (transform)
-				modelViewMatix .multLeft (transform -> getMatrix ());
+				modelViewMatix .mult_left (transform -> getMatrix ());
 
 			return true;
 		}

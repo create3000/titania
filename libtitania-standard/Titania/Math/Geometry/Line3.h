@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -123,24 +123,24 @@ public:
 	line3 &
 	operator *= (const matrix4 <Type> & matrix)
 	{
-		multLineMatrix (matrix);
+		mult_line_matrix (matrix);
 		return *this;
 	}
 
 	///  Transform this box by @a matrix.
 	void
-	multMatrixLine (const matrix4 <Type> & matrix)
+	mult_matrix_line (const matrix4 <Type> & matrix)
 	{
-		value .point     = matrix .multMatrixVec (value .point);
-		value .direction = normalize (matrix .multMatrixDir (value .direction));
+		value .point     = matrix .mult_matrix_vec (value .point);
+		value .direction = normalize (matrix .mult_matrix_dir (value .direction));
 	}
 
 	///  Transform this box by @a matrix.
 	void
-	multLineMatrix (const matrix4 <Type> & matrix)
+	mult_line_matrix (const matrix4 <Type> & matrix)
 	{
-		value .point     = matrix .multVecMatrix (value .point);
-		value .direction = normalize (matrix .multDirMatrix (value .direction));
+		value .point     = matrix .mult_vec_matrix (value .point);
+		value .direction = normalize (matrix .mult_dir_matrix (value .direction));
 	}
 
 	//  @name Distance
@@ -291,7 +291,7 @@ line3 <Type>
 operator * (const line3 <Type> & lhs, const matrix4 <Type> & rhs)
 {
 	line3 <Type> result (lhs);
-	result .multLineMatrix (rhs);
+	result .mult_line_matrix (rhs);
 	return result;
 }
 
@@ -302,7 +302,7 @@ line3 <Type>
 operator * (const matrix4 <Type> & lhs, const line3 <Type> & rhs)
 {
 	line3 <Type> result (rhs);
-	result .multMatrixLine (lhs);
+	result .mult_matrix_line (lhs);
 	return result;
 }
 

@@ -235,7 +235,7 @@ GeoElevationGrid::createNormals (const std::vector <Vector3f> & points, const st
 }
 
 // p2 - p3
-//  |   |
+//  | \ |
 // p1 - p4 
 
 std::vector <size_t>
@@ -282,9 +282,9 @@ GeoElevationGrid::createPoints () const
 		{
 			for (int32_t x = 0; x < xDimension (); ++ x)
 			{
-				points .emplace_back (convert (Vector3d (xSpacing () * x, // longitude, easting
-				                                         zSpacing () * z, // latitude, northing
-				                                         getHeight (x + z * xDimension ())) + geoGridOrigin ()));
+				points .emplace_back (getCoord (Vector3d (xSpacing () * x, // longitude, easting
+				                                          zSpacing () * z, // latitude, northing
+				                                          getHeight (x + z * xDimension ())) + geoGridOrigin ()));
 			}
 		}
 	}
@@ -294,9 +294,9 @@ GeoElevationGrid::createPoints () const
 		{
 			for (int32_t x = 0; x < xDimension (); ++ x)
 			{
-				points .emplace_back (convert (Vector3d (zSpacing () * z, // latitude, northing
-				                                         xSpacing () * x, // longitude, easting
-				                                         getHeight (x + z * xDimension ())) + geoGridOrigin ()));
+				points .emplace_back (getCoord (Vector3d (zSpacing () * z, // latitude, northing
+				                                          xSpacing () * x, // longitude, easting
+				                                          getHeight (x + z * xDimension ())) + geoGridOrigin ()));
 			}
 		}
 	}

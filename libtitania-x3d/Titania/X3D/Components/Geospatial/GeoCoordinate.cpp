@@ -100,9 +100,9 @@ GeoCoordinate::getNormal (const size_t index1, const size_t index2, const size_t
 	const size_t size = point () .size ();
 
 	if (index1 < size and index2 < size and index3 < size)
-		return math::normal (convert (point () [index1]),
-		                     convert (point () [index2]),
-		                     convert (point () [index3]));
+		return math::normal (getCoord (point () [index1]),
+		                     getCoord (point () [index2]),
+		                     getCoord (point () [index3]));
 
 	return Vector3f (0, 0, 1);
 }
@@ -111,20 +111,20 @@ void
 GeoCoordinate::addVertex (opengl::tessellator <size_t> & tessellator, const size_t index, const size_t i) const
 {
 	if (index < point () .size ())
-		tessellator .add_vertex (convert (point () [index]), i);
+		tessellator .add_vertex (getCoord (point () [index]), i);
 
 	else
-		tessellator .add_vertex (convert (Vector3f ()), i);
+		tessellator .add_vertex (getCoord (Vector3f ()), i);
 }
 
 void
 GeoCoordinate::addVertex (std::vector <Vector3f> & vertices, const size_t index) const
 {
 	if (index < point () .size ())
-		vertices .emplace_back (convert (point () [index]));
+		vertices .emplace_back (getCoord (point () [index]));
 
 	else
-		vertices .emplace_back (convert (Vector3f ()));
+		vertices .emplace_back (getCoord (Vector3f ()));
 }
 
 std::vector <Vector4f>
@@ -138,7 +138,7 @@ GeoCoordinate::getControlPoints (const MFDouble & weight) const
 	{
 		for (size_t i = 0; i < point () .size (); i ++)
 		{
-			const auto p = convert (point () [i]);
+			const auto p = getCoord (point () [i]);
 
 			controlPoints .emplace_back (p .x (), p .y (), p .z (), 1);
 		}
@@ -147,7 +147,7 @@ GeoCoordinate::getControlPoints (const MFDouble & weight) const
 	{
 		for (size_t i = 0; i < point () .size (); i ++)
 		{
-			const auto p = convert (point () [i]);
+			const auto p = getCoord (point () [i]);
 
 			controlPoints .emplace_back (p . x (), p . y (), p . z (), weight [i]);
 		}

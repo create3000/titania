@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -178,19 +178,19 @@ public:
 	box3 &
 	operator *= (const matrix4 <Type> & matrix)
 	{
-		multBoxMatrix (matrix);
+		mult_box_matrix (matrix);
 		return *this;
 	}
 
 	///  Transform this box by @a matrix.
 	void
-	multMatrixBox (const matrix4 <Type> & matrix)
-	{ value .multLeft (matrix); }
+	mult_matrix_box (const matrix4 <Type> & matrix)
+	{ value .mult_left (matrix); }
 
 	///  Transform this box by @a matrix.
 	void
-	multBoxMatrix (const matrix4 <Type> & matrix)
-	{ value .multRight (matrix); }
+	mult_box_matrix (const matrix4 <Type> & matrix)
+	{ value .mult_right (matrix); }
 
 	///  Translate this box by @a translation.
 	void
@@ -457,7 +457,7 @@ box3 <Type>
 operator * (const box3 <Type> & lhs, const matrix4 <Type> & rhs)
 {
 	box3 <Type> result (lhs);
-	result .multBoxMatrix (rhs);
+	result .mult_box_matrix (rhs);
 	return result;
 }
 
@@ -468,7 +468,7 @@ box3 <Type>
 operator * (const matrix4 <Type> & lhs, const box3 <Type> & rhs)
 {
 	box3 <Type> result (rhs);
-	result .multMatrixBox (lhs);
+	result .mult_matrix_box (lhs);
 	return result;
 }
 

@@ -134,7 +134,7 @@ PlaneSensor::set_active (const HitPtr & hit, const bool active)
 			{
 				planeSensor = false;
 
-				const auto direction = axisRotation * Vector3d (0, std::abs (maxPosition () .getY () - minPosition () .getY ()), 0);
+				const auto direction = Vector3d (0, std::abs (maxPosition () .getY () - minPosition () .getY ()), 0) * axisRotation;
 
 				line = Line3d (hitPoint, normalize (direction));
 			}
@@ -142,14 +142,14 @@ PlaneSensor::set_active (const HitPtr & hit, const bool active)
 			{
 				planeSensor = false;
 
-				const auto direction = axisRotation * Vector3d (std::abs (maxPosition () .getX () - minPosition () .getX ()), 0, 0);
+				const auto direction = Vector3d (std::abs (maxPosition () .getX () - minPosition () .getX ()), 0, 0) * axisRotation;
 
 				line = Line3d (hitPoint, normalize (direction));
 			}
 			else
 			{
 				planeSensor = true;
-				plane       = Plane3d (hitPoint, axisRotation * Vector3d (0, 0, 1));
+				plane       = Plane3d (hitPoint, Vector3d (0, 0, 1) * axisRotation);
 			}
 
 			if (planeSensor)
@@ -251,20 +251,20 @@ PlaneSensor::set_motion (const HitPtr & hit)
 void
 PlaneSensor::track (const Vector3d & endPoint, const Vector3d & trackPoint)
 {
-	auto translation = Rotation4d (~axisRotation ()) * (startOffset + endPoint - startPoint);
+	Vector3d translation = (startOffset + endPoint - startPoint) * Rotation4d (~axisRotation ());
 
 	// X component
 
 	if (not (minPosition () .getX () > maxPosition () .getX ()))
-		translation .x (math::clamp <float> (translation .x (), minPosition () .getX (), maxPosition () .getX ()));
+		translation .x (clamp <float> (translation .x (), minPosition () .getX (), maxPosition () .getX ()));
 
 	// Y component
 
 	if (not (minPosition () .getY () > maxPosition () .getY ()))
-		translation .y (math::clamp <float> (translation .y (), minPosition () .getY (), maxPosition () .getY ()));
+		translation .y (clamp <float> (translation .y (), minPosition () .getY (), maxPosition () .getY ()));
 
 	trackPoint_changed ()  = trackPoint;
-	translation_changed () = Rotation4d (axisRotation () .getValue ()) * translation;
+	translation_changed () = translation * Rotation4d (axisRotation () .getValue ());
 }
 
 } // X3D

@@ -1417,8 +1417,8 @@ throw (std::domain_error)
 {
 	const Matrix4f inverseModelViewMatrix = ~ModelViewMatrix4f ();
 
-	const Vector3f billboardToScreen = inverseModelViewMatrix .multDirMatrix (zAxis);
-	const Vector3f viewerYAxis       = inverseModelViewMatrix .multDirMatrix (yAxis);
+	const Vector3f billboardToScreen = inverseModelViewMatrix .mult_dir_matrix (zAxis);
+	const Vector3f viewerYAxis       = inverseModelViewMatrix .mult_dir_matrix (yAxis);
 
 	Vector3f x = cross (viewerYAxis, billboardToScreen);
 	Vector3f y = cross (billboardToScreen, x);

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -52,14 +52,17 @@
 #define __TITANIA_X3D_COMPONENTS_GEOSPATIAL_GEO_PROXIMITY_SENSOR_H__
 
 #include "../EnvironmentalSensor/X3DEnvironmentalSensorNode.h"
+#include "../Geospatial/X3DGeospatialObject.h"
 
 namespace titania {
 namespace X3D {
 
 class GeoProximitySensor :
-	public X3DEnvironmentalSensorNode
+	public X3DEnvironmentalSensorNode, public X3DGeospatialObject
 {
 public:
+
+	///  @name Construction
 
 	GeoProximitySensor (X3DExecutionContext* const);
 
@@ -88,28 +91,20 @@ public:
 	///  @name Fields
 
 	SFVec3d &
-	geoCenter ()
-	{ return *fields .geoCenter; }
-
-	const SFVec3d &
-	geoCenter () const
-	{ return *fields .geoCenter; }
-
-	SFVec3f &
-	centerOfRotation_changed ()
-	{ return *fields .centerOfRotation_changed; }
-
-	const SFVec3f &
-	centerOfRotation_changed () const
-	{ return *fields .centerOfRotation_changed; }
-
-	SFVec3d &
 	geoCoord_changed ()
 	{ return *fields .geoCoord_changed; }
 
 	const SFVec3d &
 	geoCoord_changed () const
 	{ return *fields .geoCoord_changed; }
+
+	SFVec3f &
+	position_changed ()
+	{ return *fields .position_changed; }
+
+	const SFVec3f &
+	position_changed () const
+	{ return *fields .position_changed; }
 
 	SFRotation &
 	orientation_changed ()
@@ -120,32 +115,27 @@ public:
 	{ return *fields .orientation_changed; }
 
 	SFVec3f &
-	position_changed ()
-	{ return *fields .position_changed; }
+	centerOfRotation_changed ()
+	{ return *fields .centerOfRotation_changed; }
 
 	const SFVec3f &
-	position_changed () const
-	{ return *fields .position_changed; }
+	centerOfRotation_changed () const
+	{ return *fields .centerOfRotation_changed; }
 
-	SFNode &
-	geoOrigin ()
-	{ return *fields .geoOrigin; }
+	///  @name Construction
 
-	const SFNode &
-	geoOrigin () const
-	{ return *fields .geoOrigin; }
-
-	MFString &
-	geoSystem ()
-	{ return *fields .geoSystem; }
-
-	const MFString &
-	geoSystem () const
-	{ return *fields .geoSystem; }
+	virtual
+	void
+	dispose () final override;
 
 
 private:
 
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
 
 	///  @name Static members
 
@@ -159,13 +149,10 @@ private:
 	{
 		Fields ();
 
-		SFVec3d* const geoCenter;
-		SFVec3f* const centerOfRotation_changed;
 		SFVec3d* const geoCoord_changed;
-		SFRotation* const orientation_changed;
 		SFVec3f* const position_changed;
-		SFNode* const geoOrigin;
-		MFString* const geoSystem;
+		SFRotation* const orientation_changed;
+		SFVec3f* const centerOfRotation_changed;
 	};
 
 	Fields fields;

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -146,7 +146,7 @@ cylinder3 <Type>::intersect (const line3 <Type> & line, vector3 <Type> & enter, 
 	const Type     scaleFactor = 1 / radius ();
 	matrix4 <Type> toUnitCylSpace;
 	toUnitCylSpace .scale (vector3 <Type> (scaleFactor, scaleFactor, scaleFactor));
-	toUnitCylSpace .multLeft (mtxToYAxis);
+	toUnitCylSpace .mult_left (mtxToYAxis);
 
 	// find the given line un-translated
 	vector3 <Type> point = line .point ();
@@ -165,10 +165,10 @@ cylinder3 <Type>::intersect (const line3 <Type> & line, vector3 <Type> & enter, 
 		// transform back to original space
 		matrix4 <Type> fromUnitCylSpace = inverse (toUnitCylSpace);
 
-		enter  = fromUnitCylSpace .multVecMatrix (cylEnter);
+		enter  = fromUnitCylSpace .mult_vec_matrix (cylEnter);
 		enter += axis () .point ();
 
-		exit  = fromUnitCylSpace .multVecMatrix (cylExit);
+		exit  = fromUnitCylSpace .mult_vec_matrix (cylExit);
 		exit += axis () .point ();
 	}
 

@@ -87,7 +87,7 @@ public:
 	{
 		internal_type result (getValue ());
 
-		result .multLeft (value .getValue ());
+		result .mult_left (value .getValue ());
 
 		return new VrmlMatrix (result);
 	}
@@ -97,7 +97,7 @@ public:
 	{
 		internal_type result (getValue ());
 
-		result .multRight (value .getValue ());
+		result .mult_right (value .getValue ());
 
 		return new VrmlMatrix (result);
 	}

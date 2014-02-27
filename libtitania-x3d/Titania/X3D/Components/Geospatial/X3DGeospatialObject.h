@@ -106,7 +106,10 @@ protected:
 	getLocationMatrix (const Vector3d &) const;
 
 	Vector3d
-	convert (const Vector3d &) const;
+	getCoord (const Vector3d &) const;
+
+	Vector3d
+	getGeoCoord (const Vector3d &) const;
 
 
 private:

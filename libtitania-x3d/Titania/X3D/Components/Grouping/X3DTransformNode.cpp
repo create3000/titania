@@ -128,7 +128,7 @@ X3DTransformNode::traverse (const TraverseType type)
 {
 	getModelViewMatrix () .push ();
 
-	getModelViewMatrix () .multLeft (matrix);
+	getModelViewMatrix () .mult_left (matrix);
 
 	X3DGroupingNode::traverse (type);
 

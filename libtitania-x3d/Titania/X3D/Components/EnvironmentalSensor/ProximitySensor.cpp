@@ -128,16 +128,18 @@ ProximitySensor::update ()
 			Rotation4f rotation;
 			modelViewMatrix .get (translation, rotation, scale);
 
-			const Vector3f   position    = inverse (modelViewMatrix) .origin ();
-			const Rotation4f orientation = ~rotation;
+			const Vector3f   position         = inverse (modelViewMatrix) .origin ();
+			const Rotation4f orientation      = ~rotation;
+			const Vector3f   centerOfRotation = Vector3f (); /// XXX
 
 			if (not isActive ())
 			{
 				isActive ()  = true;
 				enterTime () = getCurrentTime ();
 
-				position_changed ()    = position;
-				orientation_changed () = orientation;
+				position_changed ()         = position;
+				orientation_changed ()      = orientation;
+				centerOfRotation_changed () = centerOfRotation;
 			}
 			else
 			{
@@ -146,6 +148,9 @@ ProximitySensor::update ()
 
 				if (orientation_changed () not_eq orientation)
 					orientation_changed () = orientation;
+
+				if (centerOfRotation_changed () not_eq centerOfRotation)
+					centerOfRotation_changed () = centerOfRotation;
 			}
 		}
 		else

@@ -86,54 +86,11 @@ public:
 
 	virtual
 	vector3 <Type>
-	convert (const vector3 <Type> & utm) const final override
-	{
-		Type northing = easting_first ? utm .y () : utm .x ();
-		Type easting  = easting_first ? utm .x () : utm .y ();
+	convert (const vector3 <Type> & utm) const final override;
 
-		// Check for southern hemisphere and remove offset from easting.
-
-		bool S = southern_hemisphere;
-
-		if (northing < 0)
-		{
-			S        = true;
-			northing = -northing;
-		}
-
-		if (S)
-			northing = northing - N0;
-
-		easting -= E0;
-
-		// Begin calculation.
-
-		const Type mu = northing / A;
-
-		const Type phi1 = mu + B* std::sin (2 * mu) + C* std::sin (4 * mu) + D* std::sin (6 * mu);
-
-		const Type sinphi1 = sqr (std::sin (phi1));
-		const Type cosphi1 = std::cos (phi1);
-		const Type tanphi1 = std::tan (phi1);
-
-		const Type N1 = a / std::sqrt (1 - ee * sinphi1);
-		const Type T2 = sqr (tanphi1);
-		const Type T8 = std::pow (tanphi1, 8);
-		const Type C1 = EE * T2;
-		const Type C2 = sqr (C1);
-		const Type R1 = E / std::pow (1 - ee * sinphi1, 1.5);
-		const Type I  = easting / (N1 * k0);
-
-		const Type J = (5 + 3 * T2 + 10 * C1 - 4 * C2 - E9) * std::pow (I, 4) / 24;
-		const Type K = (61 + 90 * T2 + 298 * C1 + 45 * T8 - E252 - 3 * C2) * std::pow (I, 6) / 720;
-		const Type L = (5 - 2 * C1 + 28 * T2 - 3 * C2 + E8 + 24 * T8) * std::pow (I, 5) / 120;
-
-		const Type latitude = phi1 - (N1 * tanphi1 / R1) * (I * I / 2 - J + K);
-
-		const Type longitude = longitude0 + (I - (1 + 2 * T2 + C1) * std::pow (I, 3) / 6 + L) / cosphi1;
-
-		return geodetic_converter (vector3 <Type> (latitude, longitude, utm .z ()));
-	}
+	virtual
+	vector3 <Type>
+	apply (const vector3 <Type> & geocentric) const final override;
 
 private:
 
@@ -163,6 +120,64 @@ private:
 	geodetic <Type> geodetic_converter;
 
 };
+
+template <class Type>
+vector3 <Type>
+universal_transverse_mercator	<Type> ::convert (const vector3 <Type> & utm) const
+{
+	Type northing = easting_first ? utm .y () : utm .x ();
+	Type easting  = easting_first ? utm .x () : utm .y ();
+
+	// Check for southern hemisphere and remove offset from easting.
+
+	bool S = southern_hemisphere;
+
+	if (northing < 0)
+	{
+		S        = true;
+		northing = -northing;
+	}
+
+	if (S)
+		northing = northing - N0;
+
+	easting -= E0;
+
+	// Begin calculation.
+
+	const Type mu = northing / A;
+
+	const Type phi1 = mu + B* std::sin (2 * mu) + C* std::sin (4 * mu) + D* std::sin (6 * mu);
+
+	const Type sinphi1 = sqr (std::sin (phi1));
+	const Type cosphi1 = std::cos (phi1);
+	const Type tanphi1 = std::tan (phi1);
+
+	const Type N1 = a / std::sqrt (1 - ee * sinphi1);
+	const Type T2 = sqr (tanphi1);
+	const Type T8 = std::pow (tanphi1, 8);
+	const Type C1 = EE * T2;
+	const Type C2 = sqr (C1);
+	const Type R1 = E / std::pow (1 - ee * sinphi1, 1.5);
+	const Type I  = easting / (N1 * k0);
+
+	const Type J = (5 + 3 * T2 + 10 * C1 - 4 * C2 - E9) * std::pow (I, 4) / 24;
+	const Type K = (61 + 90 * T2 + 298 * C1 + 45 * T8 - E252 - 3 * C2) * std::pow (I, 6) / 720;
+	const Type L = (5 - 2 * C1 + 28 * T2 - 3 * C2 + E8 + 24 * T8) * std::pow (I, 5) / 120;
+
+	const Type latitude = phi1 - (N1 * tanphi1 / R1) * (I * I / 2 - J + K);
+
+	const Type longitude = longitude0 + (I - (1 + 2 * T2 + C1) * std::pow (I, 3) / 6 + L) / cosphi1;
+
+	return geodetic_converter (vector3 <Type> (latitude, longitude, utm .z ()));
+}
+
+template <class Type>
+vector3 <Type>
+universal_transverse_mercator	<Type> ::apply (const vector3 <Type> & geocentric) const
+{
+	return vector3 <Type> ();
+}
 
 extern template class universal_transverse_mercator <float>;
 extern template class universal_transverse_mercator <double>;

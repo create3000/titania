@@ -103,17 +103,17 @@ public:
 	{ }
 
 	///  Copy constructor.
-	template <class T>
+	template <class Up>
 	constexpr
-	rotation4 (const rotation4 <T> & rotation) :
+	rotation4 (const rotation4 <Up> & rotation) :
 		value (rotation .quat ())
 	{ }
 
 	///  Construct a rotation from normalized @a quaternion.
-	template <class T>
+	template <class Up>
 	explicit
 	constexpr
-	rotation4 (const quaternion <T> & quaternion) :
+	rotation4 (const quaternion <Up> & quaternion) :
 		value (quaternion)
 	{ }
 
@@ -121,14 +121,14 @@ public:
 	rotation4 (const Type & x, const Type & y, const Type & z, const Type & angle);
 
 	///  Construct a rotation from @a axis and @a angle.
-	template <class T>
-	rotation4 (const vector3 <T> & axis, const Type & angle);
+	template <class Up>
+	rotation4 (const vector3 <Up> & axis, const Type & angle);
 
 	///  Construct a rotation from @a fromVector and @a toVector.
 	///  The vectors are normalized and the rotation value that would rotate
 	///  from the fromVector to the toVector is stored in the object.
-	template <class T>
-	rotation4 (const vector3 <T> & fromVector, const vector3 <T> & toVector);
+	template <class Up>
+	rotation4 (const vector3 <Up> & fromVector, const vector3 <Up> & toVector);
 
 	///  Construct a rotation from @a matrix3.
 	template <class Up>
@@ -178,9 +178,8 @@ public:
 	{ return axis () .z (); }
 
 	///  Set @a axis of this rotation from vector.
-	template <class T>
 	void
-	axis (const vector3 <T> & value)
+	axis (const vector3 <Type> & value)
 	{ *this = rotation4 (value, angle ()); }
 
 	///  Returns axis of this rotation.
@@ -209,9 +208,8 @@ public:
 	get (T &, T &, T &, T &) const;
 
 	///  Set quaternion of this rotation.
-	template <class T>
 	void
-	quat (const quaternion <T> & q)
+	quat (const quaternion <Type> & q)
 	{ value = q; }
 
 	///  Returns quaternion of this rotation.
@@ -226,9 +224,24 @@ public:
 	inverse ();
 
 	///  Multiply this rotation by @a rotation.
-	template <class T>
 	rotation4 &
-	operator *= (const rotation4 <T> &);
+	operator *= (const rotation4 &);
+
+	///  Left multiply this rotation by @a rotation in place.
+	void
+	mult_left (const rotation4 &);
+
+	///  Right multiply this rotation by @a rotation in place.
+	void
+	mult_right (const rotation4 &);
+
+	///  Returns the value of @a vector left multiplied by the quaternion corresponding to this rotation.
+	vector3 <Type>
+	mult_vec_rot (const vector3 <Type> &) const;
+
+	///  Returns the value of @a vector right multiplied by the quaternion corresponding to this rotation.
+	vector3 <Type>
+	mult_rot_vec (const vector3 <Type> &) const;
 
 
 private:
@@ -260,15 +273,15 @@ rotation4 <Type>::rotation4 (const Type & x, const Type & y, const Type & z, con
 }
 
 template <class Type>
-template <class T>
+template <class Up>
 inline
-rotation4 <Type>::rotation4 (const vector3 <T> & axis, const Type & angle) :
+rotation4 <Type>::rotation4 (const vector3 <Up> & axis, const Type & angle) :
 	rotation4 (axis .x (), axis .y (), axis .z (), angle)
 { }
 
 template <class Type>
-template <class T>
-rotation4 <Type>::rotation4 (const vector3 <T> & fromVector, const vector3 <T> & toVector) :
+template <class Up>
+rotation4 <Type>::rotation4 (const vector3 <Up> & fromVector, const vector3 <Up> & toVector) :
 	rotation4 ()
 {
 	// https://bitbucket.org/Coin3D/coin/src/abc9f50968c9/src/base/SbRotation.cpp
@@ -351,9 +364,10 @@ rotation4 <Type>::operator = (const matrix3 <Up> & matrix)
 		quat [3] = std::sqrt (scalerow + 1) / 2;
 
 		// And compute other values:
-		quat [0] = (matrix [1] [2] - matrix [2] [1]) / (4 * quat [3]);
-		quat [1] = (matrix [2] [0] - matrix [0] [2]) / (4 * quat [3]);
-		quat [2] = (matrix [0] [1] - matrix [1] [0]) / (4 * quat [3]);
+		const Type d = 4 * quat [3];
+		quat [0] = (matrix [1] [2] - matrix [2] [1]) / d;
+		quat [1] = (matrix [2] [0] - matrix [0] [2]) / d;
+		quat [2] = (matrix [0] [1] - matrix [1] [0]) / d;
 	}
 	else
 	{
@@ -365,10 +379,10 @@ rotation4 <Type>::operator = (const matrix3 <Up> & matrix)
 		quat [i] = std::sqrt (matrix [i] [i] - matrix [j] [j] - matrix [k] [k] + 1) / 2;
 
 		// And the others:
-		quat [j] = (matrix [i] [j] + matrix [j] [i]) / (4 * quat [i]);
-		quat [k] = (matrix [i] [k] + matrix [k] [i]) / (4 * quat [i]);
-
-		quat [3] = (matrix [j] [k] - matrix [k] [j]) / (4 * quat [i]);
+		const Type d = 4 * quat [i];
+		quat [j] = (matrix [i] [j] + matrix [j] [i]) / d;
+		quat [k] = (matrix [i] [k] + matrix [k] [i]) / d;
+		quat [3] = (matrix [j] [k] - matrix [k] [j]) / d;
 	}
 
 	value = quaternion <Type> (quat [0], quat [1], quat [2], quat [3]);
@@ -534,14 +548,46 @@ rotation4 <Type>::inverse ()
 }
 
 template <class Type>
-template <class T>
 inline
 rotation4 <Type> &
-rotation4 <Type>::operator *= (const rotation4 <T> & rotation)
+rotation4 <Type>::operator *= (const rotation4 & rotation)
 {
-	value .multLeft (rotation .quat ());
-	value .normalize ();
+	value .mult_right (rotation .quat ());
 	return *this;
+}
+
+template <class Type>
+inline
+void
+rotation4 <Type>::mult_left (const rotation4 & rotation)
+{
+	value .mult_left (rotation .quat ());
+	value .normalize ();
+}
+
+template <class Type>
+inline
+void
+rotation4 <Type>::mult_right (const rotation4 & rotation)
+{
+	value .mult_right (rotation .quat ());
+	value .normalize ();
+}
+
+template <class Type>
+inline
+vector3 <Type>
+rotation4 <Type>::mult_vec_rot (const vector3 <Type> & vector) const
+{
+	return value .mult_vec_quat (vector);
+}
+
+template <class Type>
+inline
+vector3 <Type>
+rotation4 <Type>::mult_rot_vec (const vector3 <Type> & vector) const
+{
+	return value .mult_quat_vec (vector);
 }
 
 ///  @relates rotation4
@@ -608,18 +654,27 @@ inline
 rotation4 <Type>
 operator * (const rotation4 <Type> & lhs, const rotation4 <Type> & rhs)
 {
-	quaternion <Type> result = rhs .quat () * lhs .quat ();
-	result .normalize ();
-	return rotation4 <Type> (result);
+	rotation4 <Type> result (lhs);
+	result .mult_right (rhs);
+	return result;
 }
 
 ///  Returns the value of @a vector left multiplied by the quaternion corresponding to this object's rotation.
 template <class Type>
 inline
 vector3 <Type>
+operator * (const vector3 <Type> & vector, const rotation4 <Type> & rotation)
+{
+	return rotation .mult_vec_rot (vector);
+}
+
+///  Returns the value of @a vector right multiplied by the quaternion corresponding to this object's rotation.
+template <class Type>
+inline
+vector3 <Type>
 operator * (const rotation4 <Type> & rotation, const vector3 <Type> & vector)
 {
-	return rotation .quat () * vector;
+	return rotation .mult_rot_vec (vector);
 }
 
 ///  Spherical linear interpolate between @a source quaternion and @a destination quaternion by an amout of @a t.

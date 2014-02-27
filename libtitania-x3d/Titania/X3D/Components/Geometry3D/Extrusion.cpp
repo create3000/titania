@@ -138,7 +138,7 @@ Extrusion::createPoints (const bool hasCaps)
 		if (orientation () .size ())
 			matrix .rotate (orientation () [std::min (i, orientation () .size () - 1)]);
 
-		matrix .multLeft (rotations [i]);
+		matrix .mult_left (rotations [i]);
 
 		if (scale () .size ())
 		{
@@ -215,7 +215,7 @@ Extrusion::createRotations ()
 
 	// The entire spine is collinear:
 	if (SCPzAxis == Vector3f ())
-		SCPzAxis = Rotation4f (Vector3f (0, 1, 0), SCPyAxis) * Vector3f (0, 0, 1);
+		SCPzAxis = Vector3f (0, 0, 1) * Rotation4f (Vector3f (0, 1, 0), SCPyAxis);
 
 	SCPxAxis = cross (SCPyAxis, SCPzAxis);
 
@@ -328,6 +328,9 @@ Extrusion::build ()
 	getNormals  () .reserve (reserve);
 
 	// Build body.
+	
+	const float maxCrossSection = crossSection () .size () - 1;
+	const float maxSpine        = spine () .size () - 1;
 
 	for (size_t n = 0, size = spine () .size () - 1; n < size; ++ n)
 	{
@@ -345,25 +348,25 @@ Extrusion::build ()
 			// p1 ----- p2   n
 
 			// p1
-			getTexCoords () [0] .emplace_back (k / (float) (crossSection () .size () - 1), n / (float) (spine () .size () - 1), 0, 1);
+			getTexCoords () [0] .emplace_back (k / maxCrossSection, n / maxSpine, 0, 1);
 			coordIndex .emplace_back (INDEX (n, k));
 			normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
 			getNormals () .emplace_back (math::normal (points [INDEX (n1, k)], points [INDEX (n, k)], points [INDEX (n, k1)]));
 
 			// p2
-			getTexCoords () [0] .emplace_back ((k + 1) / (float) (crossSection () .size () - 1), n / (float) (spine () .size () - 1), 0, 1);
+			getTexCoords () [0] .emplace_back ((k + 1) / maxCrossSection, n / maxSpine, 0, 1);
 			coordIndex .emplace_back (INDEX (n, k1));
 			normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
 			getNormals () .emplace_back (math::normal (points [INDEX (n, k)], points [INDEX (n, k1)], points [INDEX (n1, k1)]));
 
 			// p3
-			getTexCoords () [0] .emplace_back ((k + 1) / (float) (crossSection () .size () - 1), (n + 1) / (float) (spine () .size () - 1), 0, 1);
+			getTexCoords () [0] .emplace_back ((k + 1) / maxCrossSection, (n + 1) / maxSpine, 0, 1);
 			coordIndex .emplace_back (INDEX (n1, k1));
 			normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
 			getNormals () .emplace_back (math::normal (points [INDEX (n, k1)], points [INDEX (n1, k1)], points [INDEX (n1, k)]));
 
 			// p4
-			getTexCoords () [0] .emplace_back (k / (float) (crossSection () .size () - 1), (n + 1) / (float) (spine () .size () - 1), 0, 1);
+			getTexCoords () [0] .emplace_back (k / maxCrossSection, (n + 1) / maxSpine, 0, 1);
 			coordIndex .emplace_back (INDEX (n1, k));
 			normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
 			getNormals () .emplace_back (math::normal (points [INDEX (n1, k1)], points [INDEX (n1, k)], points [INDEX (n, k)]));

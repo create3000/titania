@@ -259,7 +259,7 @@ ElevationGrid::createNormals (const std::vector <Vector3f> & points, const std::
 }
 
 // p1 - p4 
-//  |   |
+//  | / |
 // p2 - p3
 
 std::vector <size_t>

@@ -441,7 +441,7 @@ SFMatrix3 <ValueType>*
 SFMatrix3 <ValueType>::multLeft (const SFMatrix3 & value) const
 {
 	ValueType result (getValue ());
-	result .multLeft (value .getValue ());
+	result .mult_left (value .getValue ());
 	return new SFMatrix3 (result);
 }
 
@@ -451,7 +451,7 @@ SFMatrix3 <ValueType>*
 SFMatrix3 <ValueType>::multRight (const SFMatrix3 & value) const
 {
 	ValueType result (getValue ());
-	result .multRight (value .getValue ());
+	result .mult_right (value .getValue ());
 	return new SFMatrix3 (result);
 }
 
@@ -460,7 +460,7 @@ inline
 typename SFMatrix3 <ValueType>::vector2_type *
 SFMatrix3 <ValueType>::multVecMatrix (const vector2_type &value) const
 {
-	return new vector2_type (getValue () .multVecMatrix (value .getValue ()));
+	return new vector2_type (getValue () .mult_vec_matrix (value .getValue ()));
 }
 
 template <class ValueType>
@@ -468,7 +468,7 @@ inline
 typename SFMatrix3 <ValueType>::vector2_type *
 SFMatrix3 <ValueType>::multMatrixVec (const vector2_type &value) const
 {
-	return new vector2_type (getValue () .multMatrixVec (value .getValue ()));
+	return new vector2_type (getValue () .mult_matrix_vec (value .getValue ()));
 }
 
 template <class ValueType>
@@ -476,7 +476,7 @@ inline
 typename SFMatrix3 <ValueType>::vector2_type *
 SFMatrix3 <ValueType>::multDirMatrix (const vector2_type &value) const
 {
-	return new vector2_type (getValue () .multDirMatrix (value .getValue ()));
+	return new vector2_type (getValue () .mult_dir_matrix (value .getValue ()));
 }
 
 template <class ValueType>
@@ -484,7 +484,7 @@ inline
 typename SFMatrix3 <ValueType>::vector2_type *
 SFMatrix3 <ValueType>::multMatrixDir (const vector2_type &value) const
 {
-	return new vector2_type (getValue () .multMatrixDir (value .getValue ()));
+	return new vector2_type (getValue () .mult_matrix_dir (value .getValue ()));
 }
 
 template <class ValueType>

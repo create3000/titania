@@ -108,8 +108,7 @@ X3DViewer::getDistanceToCenter () const
 {
 	const auto viewpoint = getActiveViewpoint ();
 
-	return ~viewpoint -> orientationOffset () * (viewpoint -> getUserPosition ()
-	                                             - viewpoint -> getUserCenterOfRotation ());
+	return (viewpoint -> getUserPosition () - viewpoint -> getUserCenterOfRotation ()) * ~viewpoint -> orientationOffset ();
 }
 
 Vector3f

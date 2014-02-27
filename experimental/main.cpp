@@ -198,6 +198,8 @@ using namespace titania::basic;
 //
 //}
 
+using namespace titania::math;
+
 using Quaternionf = math::quaternion <float>;
 using Vector2f    = math::vector2 <float>;
 using Vector3d    = math::vector3 <double>;
@@ -225,7 +227,46 @@ random1 ()
 	return uniform_real_distribution (random_engine);
 }
 
-using namespace titania::math;
+////
+//// Quaternion multiplication with cartesian vector
+//// v' = q*v*q(star)
+////
+//void mult_vec( const vec3 &src, vec3 &dst ) const
+//{
+//	real v_coef = w * w - x * x - y * y - z * z;                     
+//	real u_coef = GLH_TWO * (src.v[0] * x + src.v[1] * y + src.v[2] * z);  
+//	real c_coef = GLH_TWO * w;                                       
+//
+//	dst.v[0] = v_coef * src.v[0] + u_coef * x + c_coef * (y * src.v[2] - z * src.v[1]);
+//	dst.v[1] = v_coef * src.v[1] + u_coef * y + c_coef * (z * src.v[0] - x * src.v[2]);
+//	dst.v[2] = v_coef * src.v[2] + u_coef * z + c_coef * (x * src.v[1] - y * src.v[0]);
+//}
+
+template <class Type>
+vector3 <Type>
+mult_vec_quat (const vector3 <Type> & vector, const quaternion <Type> & q)
+{
+	const Type a = q .w () * q .w () - q .x () * q .x () - q .y () * q .y () - q .z () * q .z ();                     
+	const Type b = 2 * (vector .x () * q .x () + vector .y () * q .y () + vector .z () * q .z ());  
+	const Type c = 2 * q .w ();                                       
+
+	return vector3 <Type> (a * vector .x () + b * q .x () + c * (q .y () * vector .z () - q .z () * vector .y ()),
+	                       a * vector .y () + b * q .y () + c * (q .z () * vector .x () - q .x () * vector .z ()),
+	                       a * vector .z () + b * q .z () + c * (q .x () * vector .y () - q .y () * vector .x ()));
+}
+
+template <class Type>
+vector3 <Type>
+mult_quat_vec (const quaternion <Type> & q, const vector3 <Type> & vector)
+{
+	const Type a = q .w () * q .w () - q .x () * q .x () - q .y () * q .y () - q .z () * q .z ();                     
+	const Type b = 2 * (vector .x () * q .x () + vector .y () * q .y () + vector .z () * q .z ());  
+	const Type c = 2 * q .w ();                                       
+
+	return vector3 <Type> (a * vector .x () + b * q .x () - c * (q .y () * vector .z () - q .z () * vector .y ()),
+	                       a * vector .y () + b * q .y () - c * (q .z () * vector .x () - q .x () * vector .z ()),
+	                       a * vector .z () + b * q .z () - c * (q .x () * vector .y () - q .y () * vector .x ()));
+}
 
 int
 main (int argc, char** argv)
@@ -238,41 +279,115 @@ main (int argc, char** argv)
 
 	std::clog << std::setprecision (std::numeric_limits <double>::digits10);
 
-	static constexpr int N = 100000000;
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	auto GD_WE  = geospatial::geodetic <double> (geospatial::WE);
+	auto UTM_WE = geospatial::universal_transverse_mercator <double> (geospatial::WE, 10);
+
+	std::clog << Vector3d (radians (37.4506), radians (-122.1834), 0) << std::endl;
+	std::clog << std::endl;
+
+	std::clog << "convert:" << std::endl;
+	std::clog << "GD:  " << GD_WE  .convert (Vector3d (radians (37.4506), radians (-122.1834), 0)) << std::endl;
+	std::clog << "UTM: " << UTM_WE .convert (Vector3d (4145173, 572227, 0)) << std::endl;
+	std::clog << "GC:  " << Vector3d (-2700301, -4290762, 3857213) << std::endl; // gc: Geocentric coordinates
+
+	std::clog << std::endl;
+
+	std::clog << "apply:" << std::endl;
+	std::clog << "GD:  " << GD_WE .convert (GD_WE .apply (Vector3d (-2700301, -4290762, 3857213))) << std::endl;
+	std::clog << "UTM: " << UTM_WE .apply (Vector3d (-2700301, -4290762, 3857213)) << std::endl;
+
+	std::clog << std::setprecision (std::numeric_limits <float>::digits10);
+	
+	std::clog << std::endl;
+	std::clog << std::endl;
 
 	{
-		auto t0 = chrono::now ();
+		Rotation4f r1 (1,2,3,4);
+		Rotation4f r2 (3,4,5,6);
+		Matrix4f m1 (r1);
+		Matrix4f m2 (r2);
+		Vector3f v (2,3,4);
 	
-		auto m = Matrix4f ();
-		m .set (Vector3f (1,2,3), Rotation4f (1,2,3,4), Vector3f (1,2,3));
+		auto q1 = r1 .quat ();
+		auto q2 = r2 .quat ();
 
-		for (int i = 0; i < N; ++ i)
-		{
-			auto r = Matrix4f (Rotation4f (i,2,3,4));
-			
-			m *= r;
-		}
+		std::clog << std::endl;
+		std::clog << mult_vec_quat (v, q2) << std::endl;
+		std::clog << v * q2 << std::endl;
+		std::clog << v * r2 << std::endl;
+		std::clog << v * m2 << std::endl;
+
+		std::clog << std::endl;
+		std::clog << mult_quat_vec (q2, v) << std::endl;
+		std::clog << q2 * v << std::endl;
+		std::clog << r2 * v << std::endl;
+		std::clog << m2 * v << std::endl;
+	
+		q1 .mult_left (q2);
+		r1 .mult_left (r2);
+		m1 .mult_left (m2);
 		
-		__LOG__ << m << std::endl;
-		__LOG__ << chrono::now () - t0 << std::endl;
+		std::clog << std::endl;
+		std::clog << Matrix4f (Rotation4f (q1)) << std::endl;
+		std::clog << Matrix4f (r1) << std::endl;
+		std::clog << m1 << std::endl;
 	}
-
+	
 	{
-		auto t0 = chrono::now ();
-	
-		auto m = Matrix4d ();
-		m .set (Vector3d (1,2,3), Rotation4d (1,2,3,4), Vector3d (1,2,3));
-
-		for (int i = 0; i < N; ++ i)
-		{
-			auto r = Matrix4d (Rotation4d (i,2,3,4));
-			
-			m *= r;
-		}
+		Rotation4f r1 (1,2,3,4);
+		Rotation4f r2 (2,3,4,5);
+		Matrix4f m1 (r1);
+		Matrix4f m2 (r2);
+		Vector3f v (1,2,3);
 		
-		__LOG__ << m << std::endl;
-		__LOG__ << chrono::now () - t0 << std::endl;
+		auto q1 = r1 .quat ();
+		auto q2 = r2 .quat ();
+		
+		q1 .mult_right (q2);
+		r1 .mult_right (r2);
+		m1 .mult_right (m2);
+		
+		std::clog << std::endl;
+		std::clog << Matrix4f (Rotation4f (q1)) << std::endl;
+		std::clog << Matrix4f (r1) << std::endl;
+		std::clog << m1 << std::endl;
 	}
+	
+//	{
+//		Rotation4f r1 (1,2,3,4);
+//		Rotation4f r2 (2,3,4,5);
+//		Matrix4f m1 (r1);
+//		Matrix4f m2 (r2);
+//		Vector3f v (1,2,3);
+//	
+//		std::clog << r2 * v << std::endl;
+//		std::clog << v * m2 << std::endl;
+//		
+//		r1 = r2 *= r1;
+//		m1 .multLeft (m2);
+//		
+//		std::clog << Matrix4f (r1) << std::endl;
+//		std::clog << m1 << std::endl;
+//	}
+//	
+//	{
+//		Rotation4f r1 (1,2,3,4);
+//		Rotation4f r2 (2,3,4,5);
+//		Matrix4f m1 (r1);
+//		Matrix4f m2 (r2);
+//		Vector3f v (1,2,3);
+//		
+//		r1 *= r2;
+//		m1 .multRight (m2);
+//		
+//		std::clog << Matrix4f (r1) << std::endl;
+//		std::clog << m1 << std::endl;
+//	}
+	
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	std::clog << "Function main done." << std::endl;
 	return 0;

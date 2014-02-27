@@ -60,40 +60,53 @@ const std::string GeoProximitySensor::typeName       = "GeoProximitySensor";
 const std::string GeoProximitySensor::containerField = "children";
 
 GeoProximitySensor::Fields::Fields () :
-	geoCenter (new SFVec3d ()),
-	centerOfRotation_changed (new SFVec3f ()),
-	geoCoord_changed (new SFVec3d ()),
-	orientation_changed (new SFRotation ()),
-	position_changed (new SFVec3f ()),
-	geoOrigin (new SFNode ()),
-	geoSystem (new MFString ({ "GD", "WE" }))
+	        geoCoord_changed (new SFVec3d ()),
+	        position_changed (new SFVec3f ()),
+	     orientation_changed (new SFRotation ()),
+	centerOfRotation_changed (new SFVec3f ())
 { }
 
 GeoProximitySensor::GeoProximitySensor (X3DExecutionContext* const executionContext) :
 	               X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DEnvironmentalSensorNode (),
+	       X3DGeospatialObject (),
 	                    fields ()
 {
 	addField (inputOutput,    "metadata",                 metadata ());
 	addField (inputOutput,    "enabled",                  enabled ());
+	addField (initializeOnly, "geoSystem",                geoSystem ());
 	addField (inputOutput,    "size",                     size ());
 	addField (inputOutput,    "center",                   center ());
+	addField (outputOnly,     "isActive",                 isActive ());
 	addField (outputOnly,     "enterTime",                enterTime ());
 	addField (outputOnly,     "exitTime",                 exitTime ());
-	addField (outputOnly,     "isActive",                 isActive ());
-	addField (inputOutput,    "geoCenter",                geoCenter ());
-	addField (outputOnly,     "centerOfRotation_changed", centerOfRotation_changed ());
 	addField (outputOnly,     "geoCoord_changed",         geoCoord_changed ());
-	addField (outputOnly,     "orientation_changed",      orientation_changed ());
 	addField (outputOnly,     "position_changed",         position_changed ());
+	addField (outputOnly,     "orientation_changed",      orientation_changed ());
+	addField (outputOnly,     "centerOfRotation_changed", centerOfRotation_changed ());
 	addField (initializeOnly, "geoOrigin",                geoOrigin ());
-	addField (initializeOnly, "geoSystem",                geoSystem ());
+
+	addField ("geoCenter", "center");
 }
 
 X3DBaseNode*
 GeoProximitySensor::create (X3DExecutionContext* const executionContext) const
 {
 	return new GeoProximitySensor (executionContext);
+}
+
+void
+GeoProximitySensor::initialize ()
+{
+	X3DEnvironmentalSensorNode::initialize ();
+	X3DGeospatialObject::initialize ();
+}
+
+void
+GeoProximitySensor::dispose ()
+{
+	X3DGeospatialObject::dispose ();
+	X3DEnvironmentalSensorNode::dispose ();
 }
 
 } // X3D

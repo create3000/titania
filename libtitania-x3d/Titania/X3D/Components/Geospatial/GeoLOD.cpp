@@ -247,7 +247,7 @@ GeoLOD::getDistance (const TraverseType type) const
 {
 	Matrix4d modelViewMatrix = getModelViewMatrix (type);
 
-	modelViewMatrix .translate (convert (center ()));
+	modelViewMatrix .translate (getCoord (center ()));
 
 	return math::abs (modelViewMatrix .origin ());
 }

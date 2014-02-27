@@ -72,6 +72,10 @@ public:
 	vector3 <Type>
 	convert (const vector3 <Type> &) const = 0;
 
+	virtual
+	vector3 <Type>
+	apply (const vector3 <Type> &) const = 0;
+
 };
 
 extern template class basic_converter <float>;

@@ -163,8 +163,8 @@ CylinderSensor::set_active (const HitPtr & hit, const bool active)
 			const auto hitRay   = hit -> ray * inverseModelViewMatrix;
 			const auto hitPoint = hit -> point * inverseModelViewMatrix;
 
-			const Vector3d yAxis = Rotation4d (axisRotation () .getValue ()) * Vector3d (0, 1, 0);               // Local y-axis
-			const Vector3d zAxis = inverseModelViewMatrix .multDirMatrix (axisRotation () * Vector3f (0, 0, 1)); // Camera direction
+			const Vector3d yAxis = Vector3d (0, 1, 0) * Rotation4d (axisRotation () .getValue ());                 // Local y-axis
+			const Vector3d zAxis = inverseModelViewMatrix .mult_dir_matrix (Vector3f (0, 0, 1) * axisRotation ()); // Camera direction
 
 			const auto axis    = Line3d (Vector3d (), yAxis);
 			const auto pvector = axis .perpendicular_vector (hitPoint);
@@ -207,7 +207,7 @@ CylinderSensor::set_motion (const HitPtr & hit)
 
 		if (getTrackPoint (hitRay, trackPoint, behind))
 		{
-			const auto zAxis = inverseModelViewMatrix .multDirMatrix (axisRotation () * Vector3f (0, 0, 1)); // Camera direction
+			const auto zAxis = inverseModelViewMatrix .mult_dir_matrix (Vector3f (0, 0, 1) * axisRotation ()); // Camera direction
 			zPlane = Plane3d (trackPoint, zAxis);                                                            // Screen aligned Z-plane
 		}
 		else

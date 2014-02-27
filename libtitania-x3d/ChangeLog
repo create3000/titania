@@ -1,3 +1,45 @@
+2014-02-27  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Geospatial.h:
+	* SFMatrix4.h:
+	* SFMatrix3.h:
+	* VrmlMatrix.h:
+	* SFRotation4.h:
+	* X3DRenderer.cpp:
+	* TransformHandle.cpp:
+	* X3DViewer.cpp:
+	* FlyViewer.cpp:
+	* WalkViewer.cpp:
+	* PlaneViewer.cpp:
+	* X3DFlyViewer.cpp:
+	* GeoLOD.cpp:
+	* ExamineViewer.cpp:
+	* ClipPlane.cpp:
+	* Viewpoint.cpp:
+	* Extrusion.cpp:
+	* Billboard.cpp:
+	* X3DLayerNode.cpp:
+	* GeoLocation.cpp:
+	* GeoViewpoint.cpp:
+	* GeoTransform.cpp:
+	* GeoCoordinate.cpp:
+	* ElevationGrid.cpp:
+	* Random.h:
+	* X3DTransformNode.cpp:
+	* OrthoViewpoint.cpp:
+	* GeoElevationGrid.cpp:
+	* GeoProximitySensor.h:
+	* X3DViewpointNode.cpp:
+	* Quaternion.h:
+	* X3DGeospatialObject.h:
+	* GeoProximitySensor.cpp:
+	* X3DGeospatialObject.cpp:
+	* ParticleSystem.cpp:
+	* PlaneSensor.cpp:
+	* SphereSensor.cpp:
+	* ProximitySensor.cpp:
+	* CylinderSensor.cpp: 
+
 2014-02-26  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* ElevationGrid.cpp:

@@ -104,9 +104,9 @@ public:
 	{ }
 
 	///  Copy constructor.
-	template <class T>
+	template <class Up>
 	constexpr
-	quaternion (const quaternion <T> & quat) :
+	quaternion (const quaternion <Up> & quat) :
 		value { quat .x (), quat .y (), quat .z (), quat .w () }
 
 	{ }
@@ -119,9 +119,9 @@ public:
 	{ }
 
 	///  Construct quaternion from vector @a imag and @a w.
-	template <class T>
+	template <class Up>
 	constexpr
-	quaternion (const vector3 <T> & imag, const Type & w) :
+	quaternion (const vector3 <Up> & imag, const Type & w) :
 		value { imag .x (), imag .y (), imag .z (), w }
 
 	{ }
@@ -129,9 +129,9 @@ public:
 	///  @name Assignment operator
 
 	///  Assign @a quaternion to this quaternion.
-	template <class T>
+	template <class Up>
 	quaternion &
-	operator = (const quaternion <T> &);
+	operator = (const quaternion <Up> &);
 
 	///  @name Element access
 
@@ -216,37 +216,40 @@ public:
 	inverse ();
 
 	///  Add @a quaternion to this quaternion.
-	template <class T>
 	quaternion &
-	operator += (const quaternion <T> &);
+	operator += (const quaternion &);
 
 	///  Subtract @a quaternion to this quaternion.
-	template <class T>
 	quaternion &
-	operator -= (const quaternion <T> &);
+	operator -= (const quaternion &);
 
 	///  Multiply this quaternion by @a t.
 	quaternion &
 	operator *= (const Type &);
 
 	///  Left multiply this quaternion by @a quaternion.
-	template <class T>
 	quaternion &
-	operator *= (const quaternion <T> &);
+	operator *= (const quaternion &);
 
 	///  Divide this quaternion by @a t.
 	quaternion &
 	operator /= (const Type &);
 
-	///  Left multiply this quaternion by @a quaternion.
-	template <class T>
+	///  Left multiply this quaternion by @a quaternion in place.
 	void
-	multLeft (const quaternion <T> &);
+	mult_left (const quaternion &);
 
-	///  Right multiply this quaternion by @a quaternion.
-	template <class T>
+	///  Right multiply this quaternion by @a quaternion in place.
 	void
-	multRight (const quaternion <T> &);
+	mult_right (const quaternion &);
+
+	///  Returns the value of @a vector left multiplied by this quaternion.
+	vector3 <Type>
+	mult_vec_quat (const vector3 <Type> &) const;
+
+	///  Returns the value of @a vector right multiplied by this quaternion.
+	vector3 <Type>
+	mult_quat_vec (const vector3 <Type> &) const;
 
 	///  Normalize this quaternion in place.
 	void
@@ -255,20 +258,14 @@ public:
 
 private:
 
-	static
-	quaternion
-	inner_quad_point (const quaternion &,
-	                  const quaternion &,
-	                  const quaternion &);
-
 	Type value [size ()];
 
 };
 
 template <class Type>
-template <class T>
+template <class Up>
 quaternion <Type> &
-quaternion <Type>::operator = (const quaternion <T> & quat)
+quaternion <Type>::operator = (const quaternion <Up> & quat)
 {
 	value [0] = quat .x ();
 	value [1] = quat .y ();
@@ -297,9 +294,8 @@ quaternion <Type>::inverse ()
 }
 
 template <class Type>
-template <class T>
 quaternion <Type> &
-quaternion <Type>::operator += (const quaternion <T> & quat)
+quaternion <Type>::operator += (const quaternion & quat)
 {
 	value [0] += quat .x ();
 	value [1] += quat .y ();
@@ -309,9 +305,8 @@ quaternion <Type>::operator += (const quaternion <T> & quat)
 }
 
 template <class Type>
-template <class T>
 quaternion <Type> &
-quaternion <Type>::operator -= (const quaternion <T> & quat)
+quaternion <Type>::operator -= (const quaternion & quat)
 {
 	value [0] -= quat .x ();
 	value [1] -= quat .y ();
@@ -332,11 +327,11 @@ quaternion <Type>::operator *= (const Type & t)
 }
 
 template <class Type>
-template <class T>
 quaternion <Type> &
-quaternion <Type>::operator *= (const quaternion <T> & quat)
+quaternion <Type>::operator *= (const quaternion & quat)
 {
-	return rightLeft (quat);
+	mult_right (quat);
+	return *this;
 }
 
 template <class Type>
@@ -351,55 +346,87 @@ quaternion <Type>::operator /= (const Type & t)
 }
 
 template <class Type>
-template <class T>
 void
-quaternion <Type>::multLeft (const quaternion <T> & quat)
+quaternion <Type>::mult_left (const quaternion & quat)
 {
-	*this = quaternion <Type> (quat .w () * x () +
-	                                  quat .x () * w () +
-	                                  quat .y () * z () -
-	                                  quat .z () * y (),
+	*this = quaternion (w () * quat .x () +
+	                    x () * quat .w () +
+	                    y () * quat .z () -
+	                    z () * quat .y (),
 
-	                                  quat .w () * y () +
-	                                  quat .y () * w () +
-	                                  quat .z () * x () -
-	                                  quat .x () * z (),
+	                    w () * quat .y () +
+	                    y () * quat .w () +
+	                    z () * quat .x () -
+	                    x () * quat .z (),
 
-	                                  quat .w () * z () +
-	                                  quat .z () * w () +
-	                                  quat .x () * y () -
-	                                  quat .y () * x (),
+	                    w () * quat .z () +
+	                    z () * quat .w () +
+	                    x () * quat .y () -
+	                    y () * quat .x (),
 
-	                                  quat .w () * w () -
-	                                  quat .x () * x () -
-	                                  quat .y () * y () -
-	                                  quat .z () * z ());
+	                    w () * quat .w () -
+	                    x () * quat .x () -
+	                    y () * quat .y () -
+	                    z () * quat .z ());
 }
 
 template <class Type>
-template <class T>
 void
-quaternion <Type>::multRight (const quaternion <T> & quat)
+quaternion <Type>::mult_right (const quaternion & quat)
 {
-	*this = quaternion <Type> (w () * quat .x () +
-	                                  x () * quat .w () +
-	                                  y () * quat .z () -
-	                                  z () * quat .y (),
+	*this = quaternion (quat .w () * x () +
+	                    quat .x () * w () +
+	                    quat .y () * z () -
+	                    quat .z () * y (),
 
-	                                  w () * quat .y () +
-	                                  y () * quat .w () +
-	                                  z () * quat .x () -
-	                                  x () * quat .z (),
+	                    quat .w () * y () +
+	                    quat .y () * w () +
+	                    quat .z () * x () -
+	                    quat .x () * z (),
 
-	                                  w () * quat .z () +
-	                                  z () * quat .w () +
-	                                  x () * quat .y () -
-	                                  y () * quat .x (),
+	                    quat .w () * z () +
+	                    quat .z () * w () +
+	                    quat .x () * y () -
+	                    quat .y () * x (),
 
-	                                  w () * quat .w () -
-	                                  x () * quat .x () -
-	                                  y () * quat .y () -
-	                                  z () * quat .z ());
+	                    quat .w () * w () -
+	                    quat .x () * x () -
+	                    quat .y () * y () -
+	                    quat .z () * z ());
+}
+
+///  Returns new vector value @a vector left multiplied by @a quaternion.
+template <class Type>
+inline
+vector3 <Type>
+quaternion <Type>::mult_vec_quat (const vector3 <Type> & vector) const
+{
+	//return imag (~*this * quaternion <Type> (vector, Type ()) * *this);
+
+	const Type a = w () * w () - x () * x () - y () * y () - z () * z ();                     
+	const Type b = 2 * (vector .x () * x () + vector .y () * y () + vector .z () * z ());  
+	const Type c = 2 * w ();                                       
+
+	return vector3 <Type> (a * vector .x () + b * x () + c * (y () * vector .z () - z () * vector .y ()),
+	                       a * vector .y () + b * y () + c * (z () * vector .x () - x () * vector .z ()),
+	                       a * vector .z () + b * z () + c * (x () * vector .y () - y () * vector .x ()));
+}
+
+///  Returns new vector value @a vector right multiplied by @a quaternion.
+template <class Type>
+inline
+vector3 <Type>
+quaternion <Type>::mult_quat_vec (const vector3 <Type> & vector) const
+{
+	//return imag (*this * quaternion <Type> (vector, Type ()) * ~*this);
+
+	const Type a = w () * w () - x () * x () - y () * y () - z () * z ();                     
+	const Type b = 2 * (vector .x () * x () + vector .y () * y () + vector .z () * z ());  
+	const Type c = 2 * w ();                                       
+
+	return vector3 <Type> (a * vector .x () + b * x () - c * (y () * vector .z () - z () * vector .y ()),
+	                       a * vector .y () + b * y () - c * (z () * vector .x () - x () * vector .z ()),
+	                       a * vector .z () + b * z () - c * (x () * vector .y () - y () * vector .x ()));
 }
 
 template <class Type>
@@ -527,7 +554,7 @@ quaternion <Type>
 operator * (const quaternion <Type> & lhs, const quaternion <Type> & rhs)
 {
 	quaternion <Type> result (lhs);
-	result .multRight (rhs);
+	result .mult_right (rhs);
 	return result;
 }
 
@@ -551,13 +578,22 @@ operator * (const Type & lhs, const quaternion <Type> & rhs)
 	return quaternion <Type> (rhs) *= lhs;
 }
 
-///  Returns new vector value @a vector multiplied by @a quaternion.
+///  Returns the value of @a vector left multiplied by @a quaternion.
+template <class Type>
+inline
+vector3 <Type>
+operator * (const vector3 <Type> & vector, const quaternion <Type> & quat)
+{
+	return quat .mult_vec_quat (vector);
+}
+
+///  Returns the value of @a vector right multiplied by @a quaternion.
 template <class Type>
 inline
 vector3 <Type>
 operator * (const quaternion <Type> & quat, const vector3 <Type> & vector)
 {
-	return imag (quat * quaternion <Type> (vector, Type ()) * ~quat);
+	return quat .mult_quat_vec (vector);
 }
 
 //template <class Type>

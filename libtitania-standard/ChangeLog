@@ -1,3 +1,20 @@
+2014-02-27  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Box2.h:
+	* Box3.h:
+	* Line3.h:
+	* Geodetic.h:
+	* Matrix2.h:
+	* Matrix3.h:
+	* Matrix4.h:
+	* Plane3.h:
+	* Rotation4.h:
+	* Quaternion.h:
+	* Cylinder3.h:
+	* MatrixStack.h:
+	* BasicConverter.h:
+	* UniversalTransverseMercator.h: 
+
 2014-02-25  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Makefile.am:

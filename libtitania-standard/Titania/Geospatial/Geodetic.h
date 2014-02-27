@@ -51,13 +51,14 @@
 #ifndef __TITANIA_GEOSPATIAL_GEODETIC_H__
 #define __TITANIA_GEOSPATIAL_GEODETIC_H__
 
+#include "../Math/Functional.h"
 #include "BasicConverter.h"
 
 namespace titania {
 namespace geospatial {
 
 /**
- *  Template to convert geodetic coordinates to geocentric coordinates.
+ *  Template to convert geodetic coordinates to geocentric coordinates and vice versa.
  *
  *  @param  Type  Type of vector values.
  */
@@ -72,17 +73,17 @@ public:
 	geodetic (const spheroid3 <Type> & spheroid, const bool longitude_first = false) :
 		longitude_first (longitude_first),
 		              a (spheroid .a ()),
-		           a1_2 (a / 2),
-		             a2 (a * a),
-		             c2 (spheroid .c () * spheroid .c ()),
-		              f (spheroid .f ()),
-		         eps2_f (f * (2 - f)),
-		         eps1_4 (eps2_f / 4)
+		           c2a2 (sqr (spheroid .c ()) / sqr (a)),
+		           ecc2 (1 - c2a2)
 	{ }
 
 	virtual
 	vector3 <Type>
 	convert (const vector3 <Type> & geospatial) const final override;
+
+	virtual
+	vector3 <Type>
+	apply (const vector3 <Type> & geocentric) const final override;
 
 
 private:
@@ -90,14 +91,12 @@ private:
 	const bool longitude_first;
 
 	const Type a;
-	const Type a1_2;
-	const Type a2;
-	const Type c2;
-	const Type f;
-	const Type eps2_f;
-	const Type eps1_4;
+	const Type c2a2;
+	const Type ecc2;
 
 };
+
+// http://en.wikipedia.org/wiki/Geodetic_datum#From_geodetic_to_ECEF
 
 template <class Type>
 vector3 <Type>
@@ -108,16 +107,57 @@ geodetic <Type>::convert (const vector3 <Type> & geospatial) const
 	const Type elevation = geospatial .z ();
 
 	const Type slat  = std::sin (latitude);
-	const Type slat2 = slat * slat;
+	const Type slat2 = sqr (slat);
 
 	const Type clat = std::cos (latitude);
 
-	const Type Rn   = a1_2 / std::sqrt (0.25 - eps1_4 * slat2);
-	const Type RnPh = Rn + elevation;
+	const Type N   = a / std::sqrt (1 - ecc2 * slat2);
+	const Type Nhl = (N + elevation) * clat;
 
-	return vector3 <Type> (RnPh * clat * std::cos (longitude),
-	                       RnPh * clat * std::sin (longitude),
-	                       (c2 / a2 * Rn + elevation) * slat);
+	return vector3 <Type> (Nhl * std::cos (longitude),
+	                       Nhl * std::sin (longitude),
+	                       (N * c2a2 + elevation) * slat);
+}
+
+// http://www.ifp.uni-stuttgart.de/publications/software/gcl/index.en.html
+
+template <class Type>
+vector3 <Type>
+geodetic <Type>::apply (const vector3 <Type> & geocentric) const
+{
+	static constexpr Type   EPS_H = 1e-3;
+	static constexpr Type   EPS_P = 1e-10;
+	static constexpr size_t IMAX  = 30;
+
+	const Type x = geocentric .x ();
+	const Type y = geocentric .y ();
+	const Type z = geocentric .z ();
+
+	const Type P = std::sqrt (x * x + y * y);
+
+	const Type l = std::atan2 (y, x);
+	Type       p = 0;
+	Type       h = 0;
+
+	Type N = a;
+
+	for (size_t i = 0; i < IMAX; ++ i)
+	{
+		const Type h0 = h;
+		const Type b0 = p;
+
+		p = std::atan (z / P / (1 - ecc2 * N / (N + h)));
+
+		const Type sin_p = std::sin (p);
+
+		N = a / std::sqrt (1 - ecc2 * sin_p * sin_p);
+		h = P / std::cos (p) - N;
+
+		if (std::abs (h - h0) < EPS_H && std::abs (p - b0) < EPS_P)
+			break;
+	}
+
+	return vector3 <Type> (p, l, h);
 }
 
 extern template class geodetic <float>;

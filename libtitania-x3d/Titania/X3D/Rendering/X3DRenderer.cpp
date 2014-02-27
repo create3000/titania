@@ -431,7 +431,7 @@ X3DRenderer::gravite ()
 				if (getBrowser () -> getBrowserOptions () -> animateStairWalks ())
 				{
 					float step = getBrowser () -> getCurrentSpeed () / getBrowser () -> getCurrentFrameRate ();
-					step = abs (getInverseCameraSpaceMatrix () .multMatrixDir (Vector3f (0, step, 0)));
+					step = abs (getInverseCameraSpaceMatrix () .mult_matrix_dir (Vector3f (0, step, 0)));
 
 					Vector3f offset (0, step, 0);
 

@@ -109,7 +109,7 @@ PlaneViewer::on_motion_notify_event (GdkEventMotion* event)
 		const auto & viewpoint = getActiveViewpoint ();
 
 		const Vector3f toPoint     = getPointOnCenterPlane (event -> x, event -> y);
-		const Vector3f translation = viewpoint -> getUserOrientation () * (fromPoint - toPoint);
+		const Vector3f translation = (fromPoint - toPoint) * viewpoint -> getUserOrientation ();
 
 		viewpoint -> positionOffset ()         += translation;
 		viewpoint -> centerOfRotationOffset () += translation;
@@ -142,7 +142,7 @@ PlaneViewer::on_scroll_event (GdkEventScroll* event)
 	}
 
 	const Vector3f toPoint     = getPointOnCenterPlane (event -> x, event -> y);
-	const Vector3f translation = viewpoint -> getUserOrientation () * (fromPoint - toPoint);
+	const Vector3f translation = (fromPoint - toPoint) * viewpoint -> getUserOrientation ();
 
 	viewpoint -> positionOffset ()         += translation;
 	viewpoint -> centerOfRotationOffset () += translation;
