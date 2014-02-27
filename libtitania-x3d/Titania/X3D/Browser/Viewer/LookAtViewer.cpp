@@ -56,9 +56,14 @@ namespace titania {
 namespace X3D {
 
 LookAtViewer::LookAtViewer (X3DBrowserSurface* const browser) :
-	X3DViewer (browser),
-	  picking (browser -> getPicking ()),
-	   isOver (false)
+	  X3DViewer (browser),
+	    picking (browser -> getPicking ()),
+	     isOver (false),
+	orientation (),
+	   rotation (),
+	 fromVector (),
+	     button (0),
+	     motion (false)
 { }
 
 void

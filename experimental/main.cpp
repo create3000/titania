@@ -355,6 +355,13 @@ main (int argc, char** argv)
 		std::clog << m1 << std::endl;
 	}
 	
+	float inf = 1.0f / 0.0f;
+
+	std::clog << inf << std::endl;
+	std::clog << inf / inf << std::endl;
+	std::clog << abs (Vector3f (inf, inf, inf)) << std::endl;
+	std::clog << normalize (Vector3f (inf, inf, inf)) << std::endl;
+
 //	{
 //		Rotation4f r1 (1,2,3,4);
 //		Rotation4f r2 (2,3,4,5);
