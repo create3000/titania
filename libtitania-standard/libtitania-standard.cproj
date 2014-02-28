@@ -135,6 +135,7 @@
     <None Include="Titania\Geospatial\BasicConverter.h" />
     <None Include="Titania\Math\Utility\MatrixStack.h" />
     <None Include="Titania\Math\Geometry\Camera.h" />
+    <None Include="Titania\Geospatial\Interpolation.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />

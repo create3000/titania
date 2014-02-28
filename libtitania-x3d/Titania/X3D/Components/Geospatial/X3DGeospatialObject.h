@@ -99,18 +99,21 @@ protected:
 
 	///  @name Operations
 
-	bool
-	getReversedOrder () const;
-
-	Matrix4d
-	getLocationMatrix (const Vector3d &) const;
-
 	Vector3d
 	getCoord (const Vector3d &) const;
 
 	Vector3d
 	getGeoCoord (const Vector3d &) const;
 
+	Matrix4d
+	getLocationMatrix (const Vector3d &) const;
+
+	bool
+	getReversedOrder () const
+	{ return reversedOrder; }
+
+	Vector3d
+	lerp (const Vector3d &, const Vector3d &, const double);
 
 private:
 
@@ -125,6 +128,12 @@ private:
 	void
 	set_origin ();
 
+	///  @name Member access
+
+	Geospatial::CoordinateSystemType
+	getCoordinateSystem () const
+	{ return coordinateSystem; }
+
 	///  @name Members
 
 	struct Fields
@@ -137,9 +146,11 @@ private:
 
 	Fields fields;
 
-	Vector3d                      origin;
-	X3DSFNode <GeoOrigin>         geoOriginNode;
-	Geospatial::ReferenceFramePtr referenceFrame;
+	Geospatial::CoordinateSystemType coordinateSystem;
+	Geospatial::ReferenceFramePtr    referenceFrame;
+	bool                             reversedOrder;
+	X3DSFNode <GeoOrigin>            geoOriginNode;
+	Vector3d                         origin;
 
 };
 

@@ -52,12 +52,13 @@
 #define __TITANIA_X3D_COMPONENTS_GEOSPATIAL_GEO_POSITION_INTERPOLATOR_H__
 
 #include "../Interpolation/X3DInterpolatorNode.h"
+#include "../Geospatial/X3DGeospatialObject.h"
 
 namespace titania {
 namespace X3D {
 
 class GeoPositionInterpolator :
-	public X3DInterpolatorNode
+	public X3DInterpolatorNode, public X3DGeospatialObject
 {
 public:
 
@@ -68,6 +69,10 @@ public:
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const final override;
+
+	virtual
+	void
+	setup () final override;
 
 	///  @name Common members
 
@@ -113,21 +118,11 @@ public:
 	value_changed () const
 	{ return *fields .value_changed; }
 
-	SFNode &
-	geoOrigin ()
-	{ return *fields .geoOrigin; }
+	///  @name Destruction
 
-	const SFNode &
-	geoOrigin () const
-	{ return *fields .geoOrigin; }
-
-	MFString &
-	geoSystem ()
-	{ return *fields .geoSystem; }
-
-	const MFString &
-	geoSystem () const
-	{ return *fields .geoSystem; }
+	virtual
+	void
+	dispose () final override;
 
 
 private:
@@ -165,8 +160,6 @@ private:
 		MFVec3d* const keyValue;
 		SFVec3d* const geovalue_changed;
 		SFVec3d* const value_changed;
-		SFNode* const geoOrigin;
-		MFString* const geoSystem;
 	};
 
 	Fields fields;

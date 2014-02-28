@@ -60,7 +60,7 @@ const std::string ColorInterpolator::typeName       = "ColorInterpolator";
 const std::string ColorInterpolator::containerField = "children";
 
 ColorInterpolator::Fields::Fields () :
-	keyValue (new MFColor ()),
+	     keyValue (new MFColor ()),
 	value_changed (new SFColor ())
 { }
 

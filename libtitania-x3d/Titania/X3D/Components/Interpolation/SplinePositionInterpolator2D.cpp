@@ -60,11 +60,11 @@ const std::string SplinePositionInterpolator2D::typeName       = "SplinePosition
 const std::string SplinePositionInterpolator2D::containerField = "children";
 
 SplinePositionInterpolator2D::Fields::Fields () :
-	closed (new SFBool ()),
-	keyValue (new MFVec2f ()),
-	keyVelocity (new MFVec2f ()),
+	           closed (new SFBool ()),
+	         keyValue (new MFVec2f ()),
+	      keyVelocity (new MFVec2f ()),
 	normalizeVelocity (new SFBool ()),
-	value_changed (new SFVec2f ())
+	    value_changed (new SFVec2f ())
 { }
 
 SplinePositionInterpolator2D::SplinePositionInterpolator2D (X3DExecutionContext* const executionContext) :

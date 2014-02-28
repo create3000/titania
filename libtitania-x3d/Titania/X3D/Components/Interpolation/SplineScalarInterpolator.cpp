@@ -60,11 +60,11 @@ const std::string SplineScalarInterpolator::typeName       = "SplineScalarInterp
 const std::string SplineScalarInterpolator::containerField = "children";
 
 SplineScalarInterpolator::Fields::Fields () :
-	closed (new SFBool ()),
-	keyValue (new MFFloat ()),
-	keyVelocity (new MFFloat ()),
+	           closed (new SFBool ()),
+	         keyValue (new MFFloat ()),
+	      keyVelocity (new MFFloat ()),
 	normalizeVelocity (new SFBool ()),
-	value_changed (new SFFloat ())
+	    value_changed (new SFFloat ())
 { }
 
 SplineScalarInterpolator::SplineScalarInterpolator (X3DExecutionContext* const executionContext) :

@@ -60,7 +60,7 @@ const std::string SquadOrientationInterpolator::typeName       = "SquadOrientati
 const std::string SquadOrientationInterpolator::containerField = "children";
 
 SquadOrientationInterpolator::Fields::Fields () :
-	closed (new SFBool ()),
+	  closed (new SFBool ()),
 	keyValue (new MFRotation ()),
 	//	keyVelocity (new MFFloat ()),
 	//	normalizeVelocity (new SFBool ()),

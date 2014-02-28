@@ -66,6 +66,28 @@ public:
 
 	using ReferenceFramePtr = std::shared_ptr <geospatial::basic_converter <double>> ;
 
+	enum class CoordinateSystemType
+	{
+		GD,
+		UTM,
+		GC
+	};
+
+	static
+	CoordinateSystemType
+	getCoordinateSystem (const MFString &);
+
+	static
+	ReferenceFramePtr
+	getReferenceFrame (const MFString &);
+
+	static
+	bool
+	getReversedOrder (const MFString & geoSystem);
+
+
+private:
+
 	// Dummy class for geocentric coordinates
 	class Geocentric :
 		public geospatial::basic_converter <double>
@@ -84,29 +106,7 @@ public:
 
 	};
 
-	static
-	bool
-	getReversedOrder (const MFString & geoSystem);
-
-	static
-	ReferenceFramePtr
-	getReferenceFrame (const MFString &);
-
-
-private:
-
 	//  @name Types
-
-	enum class CoordinateSystemType
-	{
-		GD,
-		UTM,
-		GC
-	};
-
-	static
-	CoordinateSystemType
-	getCoordinateSystem (const MFString &);
 
 	static
 	Spheroid3d

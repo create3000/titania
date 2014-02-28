@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -61,7 +61,7 @@ const std::string OrientationInterpolator::typeName       = "OrientationInterpol
 const std::string OrientationInterpolator::containerField = "children";
 
 OrientationInterpolator::Fields::Fields () :
-	keyValue (new MFRotation ()),
+	     keyValue (new MFRotation ()),
 	value_changed (new SFRotation ())
 { }
 

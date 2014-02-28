@@ -60,7 +60,7 @@ const std::string ScalarInterpolator::typeName       = "ScalarInterpolator";
 const std::string ScalarInterpolator::containerField = "children";
 
 ScalarInterpolator::Fields::Fields () :
-	keyValue (new MFFloat ()),
+	     keyValue (new MFFloat ()),
 	value_changed (new SFFloat ())
 { }
 

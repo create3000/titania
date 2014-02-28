@@ -28721,634 +28721,678 @@ DEF GD Transform {
         }
       }
     }
-    DEF Zero GeoTransform {
-      scale 1e+06 1e+06 1e+06
-      children DEF Axes1 Shape {
-        geometry IndexedLineSet {
-          colorPerVertex FALSE
-          colorIndex [
-            0,
-            1,
-            2
-          ]
-          coordIndex [
-            0,
-            1,
-            -1,
-            0,
-            2,
-            -1,
-            0,
-            3,
-            -1
-          ]
-          color Color {
-            color [
-              1 0 0,
-              0 1 0,
-              0 0 1
-            ]
-          }
-          coord Coordinate {
-            point [
-              0 0 0,
-              1 0 0,
-              0 1 0,
-              0 0 1
-            ]
-          }
-        }
-      }
-    }
-    DEF NorthPole GeoTransform {
-      scale 1e+06 1e+06 1e+06
-      geoCenter 1.57079 0 0
-      children DEF Axes2 Shape {
-        geometry IndexedLineSet {
-          colorPerVertex FALSE
-          colorIndex [
-            0,
-            1,
-            2
-          ]
-          coordIndex [
-            0,
-            1,
-            -1,
-            0,
-            2,
-            -1,
-            0,
-            3,
-            -1
-          ]
-          color Color {
-            color [
-              1 0 0,
-              0 1 0,
-              0 0 1
-            ]
-          }
-          coord Coordinate {
-            point [
-              0 0 0,
-              1 0 0,
-              0 1 0,
-              0 0 1
-            ]
-          }
-        }
-      }
-    }
-    DEF SouthPole GeoTransform {
-      scale 1e+06 1e+06 1e+06
-      geoCenter -1.57079 0 0
-      children DEF Axes3 Shape {
-        geometry IndexedLineSet {
-          colorPerVertex FALSE
-          colorIndex [
-            0,
-            1,
-            2
-          ]
-          coordIndex [
-            0,
-            1,
-            -1,
-            0,
-            2,
-            -1,
-            0,
-            3,
-            -1
-          ]
-          color Color {
-            color [
-              1 0 0,
-              0 1 0,
-              0 0 1
-            ]
-          }
-          coord Coordinate {
-            point [
-              0 0 0,
-              1 0 0,
-              0 1 0,
-              0 0 1
-            ]
-          }
-        }
-      }
-    }
-    DEF London GeoTransform {
-      scale 1e+06 1e+06 1e+06
-      geoCenter 0.89 0 0
-      children DEF Axes4 Shape {
-        geometry IndexedLineSet {
-          colorPerVertex FALSE
-          colorIndex [
-            0,
-            1,
-            2
-          ]
-          coordIndex [
-            0,
-            1,
-            -1,
-            0,
-            2,
-            -1,
-            0,
-            3,
-            -1
-          ]
-          color Color {
-            color [
-              1 0 0,
-              0 1 0,
-              0 0 1
-            ]
-          }
-          coord Coordinate {
-            point [
-              0 0 0,
-              1 0 0,
-              0 1 0,
-              0 0 1
-            ]
-          }
-        }
-      }
-    }
-    DEF Berlin GeoTransform {
-      scale 1e+06 1e+06 1e+06
-      geoCenter 0.907 0.227 0
-      children DEF Axes5 Shape {
-        geometry IndexedLineSet {
-          colorPerVertex FALSE
-          colorIndex [
-            0,
-            1,
-            2
-          ]
-          coordIndex [
-            0,
-            1,
-            -1,
-            0,
-            2,
-            -1,
-            0,
-            3,
-            -1
-          ]
-          color Color {
-            color [
-              1 0 0,
-              0 1 0,
-              0 0 1
-            ]
-          }
-          coord Coordinate {
-            point [
-              0 0 0,
-              1 0 0,
-              0 1 0,
-              0 0 1
-            ]
-          }
-        }
-      }
-    }
-    DEF Nairobi GeoTransform {
-      scale 1e+06 1e+06 1e+06
-      geoCenter -0.0233 0.643 0
-      children DEF Axes6 Shape {
-        geometry IndexedLineSet {
-          colorPerVertex FALSE
-          colorIndex [
-            0,
-            1,
-            2
-          ]
-          coordIndex [
-            0,
-            1,
-            -1,
-            0,
-            2,
-            -1,
-            0,
-            3,
-            -1
-          ]
-          color Color {
-            color [
-              1 0 0,
-              0 1 0,
-              0 0 1
-            ]
-          }
-          coord Coordinate {
-            point [
-              0 0 0,
-              1 0 0,
-              0 1 0,
-              0 0 1
-            ]
-          }
-        }
-      }
-    }
-    DEF NewYork GeoTransform {
-      scale 1e+06 1e+06 1e+06
-      geoCenter 0.698 -1.274 0
-      children DEF Axes7 Shape {
-        geometry IndexedLineSet {
-          colorPerVertex FALSE
-          colorIndex [
-            0,
-            1,
-            2
-          ]
-          coordIndex [
-            0,
-            1,
-            -1,
-            0,
-            2,
-            -1,
-            0,
-            3,
-            -1
-          ]
-          color Color {
-            color [
-              1 0 0,
-              0 1 0,
-              0 0 1
-            ]
-          }
-          coord Coordinate {
-            point [
-              0 0 0,
-              1 0 0,
-              0 1 0,
-              0 0 1
-            ]
-          }
-        }
-      }
-    }
-    DEF RioDeJaneiro GeoTransform {
-      scale 1e+06 1e+06 1e+06
-      geoCenter -0.384 -0.75 0
-      children DEF Axes8 Shape {
-        geometry IndexedLineSet {
-          colorPerVertex FALSE
-          colorIndex [
-            0,
-            1,
-            2
-          ]
-          coordIndex [
-            0,
-            1,
-            -1,
-            0,
-            2,
-            -1,
-            0,
-            3,
-            -1
-          ]
-          color Color {
-            color [
-              1 0 0,
-              0 1 0,
-              0 0 1
-            ]
-          }
-          coord Coordinate {
-            point [
-              0 0 0,
-              1 0 0,
-              0 1 0,
-              0 0 1
-            ]
-          }
-        }
-      }
-    }
-    DEF Sydney GeoTransform {
-      scale 1e+06 1e+06 1e+06
-      geoCenter -0.646 2.513 0
-      children DEF Axes9 Shape {
-        geometry IndexedLineSet {
-          colorPerVertex FALSE
-          colorIndex [
-            0,
-            1,
-            2
-          ]
-          coordIndex [
-            0,
-            1,
-            -1,
-            0,
-            2,
-            -1,
-            0,
-            3,
-            -1
-          ]
-          color Color {
-            color [
-              1 0 0,
-              0 1 0,
-              0 0 1
-            ]
-          }
-          coord Coordinate {
-            point [
-              0 0 0,
-              1 0 0,
-              0 1 0,
-              0 0 1
-            ]
-          }
-        }
-      }
-    }
-    DEF Tokyo GeoTransform {
-      scale 1e+06 1e+06 1e+06
-      geoCenter 0.611 2.426 0
-      children DEF Axes10 Shape {
-        geometry IndexedLineSet {
-          colorPerVertex FALSE
-          colorIndex [
-            0,
-            1,
-            2
-          ]
-          coordIndex [
-            0,
-            1,
-            -1,
-            0,
-            2,
-            -1,
-            0,
-            3,
-            -1
-          ]
-          color Color {
-            color [
-              1 0 0,
-              0 1 0,
-              0 0 1
-            ]
-          }
-          coord Coordinate {
-            point [
-              0 0 0,
-              1 0 0,
-              0 1 0,
-              0 0 1
-            ]
-          }
-        }
-      }
-    }
-    DEF MenloPark GeoTransform {
-      scale 1e+06 1e+06 1e+06
-      geoCenter 0.653636276847388 -2.13250262128124 0
-      children DEF Axes11 Shape {
-        geometry IndexedLineSet {
-          colorPerVertex FALSE
-          colorIndex [
-            0,
-            1,
-            2
-          ]
-          coordIndex [
-            0,
-            1,
-            -1,
-            0,
-            2,
-            -1,
-            0,
-            3,
-            -1
-          ]
-          color Color {
-            color [
-              1 0 0,
-              0 1 0,
-              0 0 1
-            ]
-          }
-          coord Coordinate {
-            point [
-              0 0 0,
-              1 0 0,
-              0 1 0,
-              0 0 1
-            ]
-          }
-        }
-      }
-    }
-    DEF Zero_1 GeoLocation {
-      geoCoords 0 0 1000000
-      children Billboard {
-        axisOfRotation 0 0 0
-        children Shape {
-          appearance Appearance {
-            material Material {
-              diffuseColor 0 0 0
+    DEF Axes_1 Transform {
+      children [
+        DEF Zero GeoTransform {
+          scale 1e+06 1e+06 1e+06
+          children DEF Axes1 Shape {
+            geometry IndexedLineSet {
+              colorPerVertex FALSE
+              colorIndex [
+                0,
+                1,
+                2
+              ]
+              coordIndex [
+                0,
+                1,
+                -1,
+                0,
+                2,
+                -1,
+                0,
+                3,
+                -1
+              ]
+              color Color {
+                color [
+                  1 0 0,
+                  0 1 0,
+                  0 0 1
+                ]
+              }
+              coord Coordinate {
+                point [
+                  0 0 0,
+                  1 0 0,
+                  0 1 0,
+                  0 0 1
+                ]
+              }
             }
           }
-          geometry Text {
-            string "Zero"
-            fontStyle ScreenFontStyle { }
-          }
         }
-      }
-    }
-    DEF NorthPoleText GeoLocation {
-      geoCoords 1.57079 0 1000000
-      children Billboard {
-        axisOfRotation 0 0 0
-        children Shape {
-          appearance Appearance {
-            material Material {
-              diffuseColor 0 0 0
+        DEF NorthPole GeoTransform {
+          scale 1e+06 1e+06 1e+06
+          geoCenter 1.57079 0 0
+          children DEF Axes2 Shape {
+            geometry IndexedLineSet {
+              colorPerVertex FALSE
+              colorIndex [
+                0,
+                1,
+                2
+              ]
+              coordIndex [
+                0,
+                1,
+                -1,
+                0,
+                2,
+                -1,
+                0,
+                3,
+                -1
+              ]
+              color Color {
+                color [
+                  1 0 0,
+                  0 1 0,
+                  0 0 1
+                ]
+              }
+              coord Coordinate {
+                point [
+                  0 0 0,
+                  1 0 0,
+                  0 1 0,
+                  0 0 1
+                ]
+              }
             }
           }
-          geometry Text {
-            string "North Pole"
-            fontStyle ScreenFontStyle { }
-          }
         }
-      }
-    }
-    DEF SouthPoleText GeoLocation {
-      geoCoords -1.57079 0 1000000
-      children Billboard {
-        axisOfRotation 0 0 0
-        children Shape {
-          appearance Appearance {
-            material Material {
-              diffuseColor 0 0 0
+        DEF SouthPole GeoTransform {
+          scale 1e+06 1e+06 1e+06
+          geoCenter -1.57079 0 0
+          children DEF Axes3 Shape {
+            geometry IndexedLineSet {
+              colorPerVertex FALSE
+              colorIndex [
+                0,
+                1,
+                2
+              ]
+              coordIndex [
+                0,
+                1,
+                -1,
+                0,
+                2,
+                -1,
+                0,
+                3,
+                -1
+              ]
+              color Color {
+                color [
+                  1 0 0,
+                  0 1 0,
+                  0 0 1
+                ]
+              }
+              coord Coordinate {
+                point [
+                  0 0 0,
+                  1 0 0,
+                  0 1 0,
+                  0 0 1
+                ]
+              }
             }
           }
-          geometry Text {
-            string "South Pole"
-            fontStyle ScreenFontStyle { }
-          }
         }
-      }
-    }
-    DEF LondonText GeoLocation {
-      geoCoords 0.89 0 1000000
-      children Billboard {
-        axisOfRotation 0 0 0
-        children Shape {
-          appearance Appearance {
-            material Material {
-              diffuseColor 0 0 0
+        DEF London GeoTransform {
+          scale 1e+06 1e+06 1e+06
+          geoCenter 0.89 0 0
+          children DEF Axes4 Shape {
+            geometry IndexedLineSet {
+              colorPerVertex FALSE
+              colorIndex [
+                0,
+                1,
+                2
+              ]
+              coordIndex [
+                0,
+                1,
+                -1,
+                0,
+                2,
+                -1,
+                0,
+                3,
+                -1
+              ]
+              color Color {
+                color [
+                  1 0 0,
+                  0 1 0,
+                  0 0 1
+                ]
+              }
+              coord Coordinate {
+                point [
+                  0 0 0,
+                  1 0 0,
+                  0 1 0,
+                  0 0 1
+                ]
+              }
             }
           }
-          geometry Text {
-            string "London"
-            fontStyle ScreenFontStyle { }
-          }
         }
-      }
-    }
-    DEF BerlinText GeoLocation {
-      geoCoords 0.907 0.227 1000000
-      children Billboard {
-        axisOfRotation 0 0 0
-        children Shape {
-          appearance Appearance {
-            material Material {
-              diffuseColor 0 0 0
+        DEF Berlin GeoTransform {
+          scale 1e+06 1e+06 1e+06
+          geoCenter 0.907 0.227 0
+          children DEF Axes5 Shape {
+            geometry IndexedLineSet {
+              colorPerVertex FALSE
+              colorIndex [
+                0,
+                1,
+                2
+              ]
+              coordIndex [
+                0,
+                1,
+                -1,
+                0,
+                2,
+                -1,
+                0,
+                3,
+                -1
+              ]
+              color Color {
+                color [
+                  1 0 0,
+                  0 1 0,
+                  0 0 1
+                ]
+              }
+              coord Coordinate {
+                point [
+                  0 0 0,
+                  1 0 0,
+                  0 1 0,
+                  0 0 1
+                ]
+              }
             }
           }
-          geometry Text {
-            string "Berlin"
-            fontStyle ScreenFontStyle { }
-          }
         }
-      }
-    }
-    DEF NairobiText GeoLocation {
-      geoCoords -0.0233 0.643 1000000
-      children Billboard {
-        axisOfRotation 0 0 0
-        children Shape {
-          appearance Appearance {
-            material Material {
-              diffuseColor 0 0 0
+        DEF Nairobi GeoTransform {
+          scale 1e+06 1e+06 1e+06
+          geoCenter -0.0233 0.643 0
+          children DEF Axes6 Shape {
+            geometry IndexedLineSet {
+              colorPerVertex FALSE
+              colorIndex [
+                0,
+                1,
+                2
+              ]
+              coordIndex [
+                0,
+                1,
+                -1,
+                0,
+                2,
+                -1,
+                0,
+                3,
+                -1
+              ]
+              color Color {
+                color [
+                  1 0 0,
+                  0 1 0,
+                  0 0 1
+                ]
+              }
+              coord Coordinate {
+                point [
+                  0 0 0,
+                  1 0 0,
+                  0 1 0,
+                  0 0 1
+                ]
+              }
             }
           }
-          geometry Text {
-            string "Nairobi"
-            fontStyle ScreenFontStyle { }
-          }
         }
-      }
-    }
-    DEF NewYorkText GeoLocation {
-      geoCoords 0.698 -1.274 1000000
-      children Billboard {
-        axisOfRotation 0 0 0
-        children Shape {
-          appearance Appearance {
-            material Material {
-              diffuseColor 0 0 0
+        DEF NewYork GeoTransform {
+          scale 1e+06 1e+06 1e+06
+          geoCenter 0.698 -1.274 0
+          children DEF Axes7 Shape {
+            geometry IndexedLineSet {
+              colorPerVertex FALSE
+              colorIndex [
+                0,
+                1,
+                2
+              ]
+              coordIndex [
+                0,
+                1,
+                -1,
+                0,
+                2,
+                -1,
+                0,
+                3,
+                -1
+              ]
+              color Color {
+                color [
+                  1 0 0,
+                  0 1 0,
+                  0 0 1
+                ]
+              }
+              coord Coordinate {
+                point [
+                  0 0 0,
+                  1 0 0,
+                  0 1 0,
+                  0 0 1
+                ]
+              }
             }
           }
-          geometry Text {
-            string "New York"
-            fontStyle ScreenFontStyle { }
-          }
         }
-      }
-    }
-    DEF RioDeJaneiroText GeoLocation {
-      geoCoords -0.384 -0.75 1000000
-      children Billboard {
-        axisOfRotation 0 0 0
-        children Shape {
-          appearance Appearance {
-            material Material {
-              diffuseColor 0 0 0
+        DEF RioDeJaneiro GeoTransform {
+          scale 1e+06 1e+06 1e+06
+          geoCenter -0.384 -0.75 0
+          children DEF Axes8 Shape {
+            geometry IndexedLineSet {
+              colorPerVertex FALSE
+              colorIndex [
+                0,
+                1,
+                2
+              ]
+              coordIndex [
+                0,
+                1,
+                -1,
+                0,
+                2,
+                -1,
+                0,
+                3,
+                -1
+              ]
+              color Color {
+                color [
+                  1 0 0,
+                  0 1 0,
+                  0 0 1
+                ]
+              }
+              coord Coordinate {
+                point [
+                  0 0 0,
+                  1 0 0,
+                  0 1 0,
+                  0 0 1
+                ]
+              }
             }
           }
-          geometry Text {
-            string "Rio de Janeiro"
-            fontStyle ScreenFontStyle { }
-          }
         }
-      }
-    }
-    DEF SydneyText GeoLocation {
-      geoCoords -0.646 2.513 1000000
-      children Billboard {
-        axisOfRotation 0 0 0
-        children Shape {
-          appearance Appearance {
-            material Material {
-              diffuseColor 0 0 0
+        DEF Sydney GeoTransform {
+          scale 1e+06 1e+06 1e+06
+          geoCenter -0.646 2.513 0
+          children DEF Axes9 Shape {
+            geometry IndexedLineSet {
+              colorPerVertex FALSE
+              colorIndex [
+                0,
+                1,
+                2
+              ]
+              coordIndex [
+                0,
+                1,
+                -1,
+                0,
+                2,
+                -1,
+                0,
+                3,
+                -1
+              ]
+              color Color {
+                color [
+                  1 0 0,
+                  0 1 0,
+                  0 0 1
+                ]
+              }
+              coord Coordinate {
+                point [
+                  0 0 0,
+                  1 0 0,
+                  0 1 0,
+                  0 0 1
+                ]
+              }
             }
           }
-          geometry Text {
-            string "Sydney"
-            fontStyle ScreenFontStyle { }
-          }
         }
-      }
-    }
-    DEF TokyoText GeoLocation {
-      geoCoords 0.611 2.426 1000000
-      children Billboard {
-        axisOfRotation 0 0 0
-        children Shape {
-          appearance Appearance {
-            material Material {
-              diffuseColor 0 0 0
+        DEF Tokyo GeoTransform {
+          scale 1e+06 1e+06 1e+06
+          geoCenter 0.611 2.426 0
+          children DEF Axes10 Shape {
+            geometry IndexedLineSet {
+              colorPerVertex FALSE
+              colorIndex [
+                0,
+                1,
+                2
+              ]
+              coordIndex [
+                0,
+                1,
+                -1,
+                0,
+                2,
+                -1,
+                0,
+                3,
+                -1
+              ]
+              color Color {
+                color [
+                  1 0 0,
+                  0 1 0,
+                  0 0 1
+                ]
+              }
+              coord Coordinate {
+                point [
+                  0 0 0,
+                  1 0 0,
+                  0 1 0,
+                  0 0 1
+                ]
+              }
             }
           }
-          geometry Text {
-            string "Tokyo"
-            fontStyle ScreenFontStyle { }
-          }
         }
-      }
-    }
-    DEF MenloParkText GeoLocation {
-      geoCoords 0.653636276847388 -2.13250262128124 1000000
-      children Billboard {
-        axisOfRotation 0 0 0
-        children Shape {
-          appearance Appearance {
-            material Material {
-              diffuseColor 0 0 0
+        DEF MenloPark GeoTransform {
+          scale 1e+06 1e+06 1e+06
+          geoCenter 0.653636276847388 -2.13250262128124 0
+          children DEF Axes11 Shape {
+            geometry IndexedLineSet {
+              colorPerVertex FALSE
+              colorIndex [
+                0,
+                1,
+                2
+              ]
+              coordIndex [
+                0,
+                1,
+                -1,
+                0,
+                2,
+                -1,
+                0,
+                3,
+                -1
+              ]
+              color Color {
+                color [
+                  1 0 0,
+                  0 1 0,
+                  0 0 1
+                ]
+              }
+              coord Coordinate {
+                point [
+                  0 0 0,
+                  1 0 0,
+                  0 1 0,
+                  0 0 1
+                ]
+              }
             }
           }
-          geometry Text {
-            string "Menlo Park"
-            fontStyle ScreenFontStyle { }
+        }
+      ]
+    }
+    DEF Texts Transform {
+      children [
+        DEF Zero_1 GeoLocation {
+          geoCoords 0 0 1000000
+          children Billboard {
+            axisOfRotation 0 0 0
+            children Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0 0 0
+                }
+              }
+              geometry Text {
+                string "Zero"
+                fontStyle ScreenFontStyle { }
+              }
+            }
           }
         }
-      }
+        DEF NorthPoleText GeoLocation {
+          geoCoords 1.57079 0 1000000
+          children Billboard {
+            axisOfRotation 0 0 0
+            children Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0 0 0
+                }
+              }
+              geometry Text {
+                string "North Pole"
+                fontStyle ScreenFontStyle { }
+              }
+            }
+          }
+        }
+        DEF SouthPoleText GeoLocation {
+          geoCoords -1.57079 0 1000000
+          children Billboard {
+            axisOfRotation 0 0 0
+            children Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0 0 0
+                }
+              }
+              geometry Text {
+                string "South Pole"
+                fontStyle ScreenFontStyle { }
+              }
+            }
+          }
+        }
+        DEF LondonText GeoLocation {
+          geoCoords 0.89 0 1000000
+          children Billboard {
+            axisOfRotation 0 0 0
+            children Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0 0 0
+                }
+              }
+              geometry Text {
+                string "London"
+                fontStyle ScreenFontStyle { }
+              }
+            }
+          }
+        }
+        DEF BerlinText GeoLocation {
+          geoCoords 0.907 0.227 1000000
+          children Billboard {
+            axisOfRotation 0 0 0
+            children Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0 0 0
+                }
+              }
+              geometry Text {
+                string "Berlin"
+                fontStyle ScreenFontStyle { }
+              }
+            }
+          }
+        }
+        DEF NairobiText GeoLocation {
+          geoCoords -0.0233 0.643 1000000
+          children Billboard {
+            axisOfRotation 0 0 0
+            children Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0 0 0
+                }
+              }
+              geometry Text {
+                string "Nairobi"
+                fontStyle ScreenFontStyle { }
+              }
+            }
+          }
+        }
+        DEF NewYorkText GeoLocation {
+          geoCoords 0.698 -1.274 1000000
+          children Billboard {
+            axisOfRotation 0 0 0
+            children Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0 0 0
+                }
+              }
+              geometry Text {
+                string "New York"
+                fontStyle ScreenFontStyle { }
+              }
+            }
+          }
+        }
+        DEF RioDeJaneiroText GeoLocation {
+          geoCoords -0.384 -0.75 1000000
+          children Billboard {
+            axisOfRotation 0 0 0
+            children Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0 0 0
+                }
+              }
+              geometry Text {
+                string "Rio de Janeiro"
+                fontStyle ScreenFontStyle { }
+              }
+            }
+          }
+        }
+        DEF SydneyText GeoLocation {
+          geoCoords -0.646 2.513 1000000
+          children Billboard {
+            axisOfRotation 0 0 0
+            children Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0 0 0
+                }
+              }
+              geometry Text {
+                string "Sydney"
+                fontStyle ScreenFontStyle { }
+              }
+            }
+          }
+        }
+        DEF TokyoText GeoLocation {
+          geoCoords 0.611 2.426 1000000
+          children Billboard {
+            axisOfRotation 0 0 0
+            children Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0 0 0
+                }
+              }
+              geometry Text {
+                string "Tokyo"
+                fontStyle ScreenFontStyle { }
+              }
+            }
+          }
+        }
+        DEF MenloParkText GeoLocation {
+          geoCoords 0.653636276847388 -2.13250262128124 1000000
+          children Billboard {
+            axisOfRotation 0 0 0
+            children Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0 0 0
+                }
+              }
+              geometry Text {
+                string "Menlo Park"
+                fontStyle ScreenFontStyle { }
+              }
+            }
+          }
+        }
+      ]
     }
     DEF _1 GeoProximitySensor {
       size -1 -1 -1
+    }
+    DEF Satellite Transform {
+      children [
+        DEF _2 TimeSensor {
+          cycleInterval 10
+          loop TRUE
+        }
+        DEF _3 GeoPositionInterpolator {
+          key [
+            0,
+            0.25,
+            0.5,
+            0.75,
+            1
+          ]
+          keyValue [
+            0 0 1500000,
+            0 1.5707963 1500000,
+            0 3.1415927 1500000,
+            0 -1.5707963 1500000,
+            0 0 1500000
+          ]
+        }
+        DEF _4 GeoTransform {
+          scale 200000 200000 200000
+          geoCenter 0 -1.48463908707588 1500000
+          children Transform {
+            children Shape {
+              appearance Appearance {
+                material Material { }
+              }
+              geometry Sphere { }
+            }
+          }
+        }
+      ]
     }
   ]
 }
@@ -29412,3 +29456,5 @@ function set_geoCoord (value, time)
 }
 
 ROUTE _1.geoCoord_changed TO Debug.set_geoCoord
+ROUTE _3.geovalue_changed TO _4.set_geoCenter
+ROUTE _2.fraction_changed TO _3.set_fraction

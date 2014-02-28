@@ -1,5 +1,28 @@
 2014-02-28  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Geospatial.h:
+	* EaseInEaseOut.cpp:
+	* X3DGeospatialObject.h:
+	* X3DGeospatialObject.cpp:
+	* X3DInterpolatorNode.h:
+	* ColorInterpolator.cpp:
+	* ScalarInterpolator.cpp:
+	* NormalInterpolator.cpp:
+	* GeoPositionInterpolator.h:
+	* X3DInterpolatorNode.cpp:
+	* PositionInterpolator.cpp:
+	* GeoPositionInterpolator.cpp:
+	* PositionInterpolator2D.cpp:
+	* CoordinateInterpolator.cpp:
+	* OrientationInterpolator.cpp:
+	* SplineScalarInterpolator.cpp:
+	* CoordinateInterpolator2D.cpp:
+	* SplinePositionInterpolator.cpp:
+	* SplinePositionInterpolator2D.cpp:
+	* SquadOrientationInterpolator.cpp: 
+
+2014-02-28  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* ProximitySensor.cpp: 
 
 2014-02-28  Holger Seelig  <holger.seelig@yahoo.de>

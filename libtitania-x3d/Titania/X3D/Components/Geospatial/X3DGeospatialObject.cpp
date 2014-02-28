@@ -53,6 +53,8 @@
 #include "../../Bits/Cast.h"
 #include "../../Types/Geometry.h"
 
+#include <Titania/Geospatial/Interpolation.h>
+
 namespace titania {
 namespace X3D {
 
@@ -62,11 +64,13 @@ X3DGeospatialObject::Fields::Fields () :
 { }
 
 X3DGeospatialObject::X3DGeospatialObject () :
-	   X3DBaseNode (),
-	        fields (),
-	        origin (),
-	 geoOriginNode (),
-	referenceFrame ()
+	     X3DBaseNode (),
+	          fields (),
+	coordinateSystem (Geospatial::CoordinateSystemType::GD),
+	  referenceFrame (),
+	   reversedOrder (false),
+	   geoOriginNode (),
+	          origin ()
 {
 	addNodeType (X3DConstants::X3DGeospatialObject);
 
@@ -86,7 +90,9 @@ X3DGeospatialObject::initialize ()
 void
 X3DGeospatialObject::set_geoSystem ()
 {
-	referenceFrame = Geospatial::getReferenceFrame (geoSystem ());
+	coordinateSystem = Geospatial::getCoordinateSystem (geoSystem ());
+	referenceFrame   = Geospatial::getReferenceFrame (geoSystem ());
+	reversedOrder    = Geospatial::getReversedOrder (geoSystem ());
 }
 
 void
@@ -118,10 +124,16 @@ X3DGeospatialObject::set_origin ()
 		origin = Vector3d ();
 }
 
-bool
-X3DGeospatialObject::getReversedOrder () const
+Vector3d
+X3DGeospatialObject::getCoord (const Vector3d & geoPoint) const
 {
-	return Geospatial::getReversedOrder (geoSystem ());
+	return referenceFrame -> convert (geoPoint) - origin;
+}
+
+Vector3d
+X3DGeospatialObject::getGeoCoord (const Vector3d & point) const
+{
+	return referenceFrame -> apply (point + origin);
 }
 
 Matrix4d
@@ -139,9 +151,9 @@ X3DGeospatialObject::getLocationMatrix (const Vector3d & geoPoint) const
 
 	Vector3d y = p;
 	Vector3d x = cross (Vector3d (0, 0, 1), p);
-	
+
 	// Handle poles
-	
+
 	if (x == Vector3d ())
 		x = Vector3d (1, 0, 0);
 
@@ -158,15 +170,19 @@ X3DGeospatialObject::getLocationMatrix (const Vector3d & geoPoint) const
 }
 
 Vector3d
-X3DGeospatialObject::getCoord (const Vector3d & geoPoint) const
+X3DGeospatialObject::lerp (const Vector3d & source, const Vector3d & destination, const double weight)
 {
-	return referenceFrame -> convert (geoPoint) - origin;
-}
+	switch (getCoordinateSystem ())
+	{
+		case Geospatial::CoordinateSystemType::GD:
+			return geospatial::gd_lerp <double> (source, destination, weight, getReversedOrder ());
+		case Geospatial::CoordinateSystemType::UTM:
+			return geospatial::utm_lerp <double> (source, destination, weight);
+		case Geospatial::CoordinateSystemType::GC:
+			return geospatial::gc_lerp <double> (source, destination, weight);
+	}
 
-Vector3d
-X3DGeospatialObject::getGeoCoord (const Vector3d & point) const
-{
-	return referenceFrame -> apply (point + origin);
+	return Vector3d ();
 }
 
 void

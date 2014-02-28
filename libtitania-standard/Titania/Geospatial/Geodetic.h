@@ -102,10 +102,13 @@ template <class Type>
 vector3 <Type>
 geodetic <Type>::convert (const vector3 <Type> & geospatial) const
 {
-	const Type latitude  = longitude_first ? geospatial .y () : geospatial .x ();
-	const Type longitude = longitude_first ? geospatial .x () : geospatial .y ();
+	Type       latitude  = geospatial .x ();
+	Type       longitude = geospatial .y ();
 	const Type elevation = geospatial .z ();
 
+	if (longitude_first)
+		std::swap (latitude, longitude);
+		
 	const Type slat  = std::sin (latitude);
 	const Type slat2 = sqr (slat);
 
@@ -135,9 +138,9 @@ geodetic <Type>::apply (const vector3 <Type> & geocentric) const
 
 	const Type P = std::sqrt (x * x + y * y);
 
-	const Type l = std::atan2 (y, x);
-	Type       p = 0;
-	Type       h = 0;
+	const Type l = std::atan2 (y, x); // longitude
+	Type       p = 0;                 // latitude
+	Type       h = 0;                 // elevation
 
 	Type N = a;
 

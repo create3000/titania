@@ -130,12 +130,17 @@ private:
 
 };
 
+// https://gist.github.com/duedal/840476
+
 template <class Type>
 vector3 <Type>
 universal_transverse_mercator <Type>::convert (const vector3 <Type> & utm) const
 {
-	Type northing = easting_first ? utm .y () : utm .x ();
-	Type easting  = easting_first ? utm .x () : utm .y ();
+	Type northing = utm .x ();
+	Type easting  = utm .y ();
+
+	if (easting_first)
+		std::swap (northing, easting);
 
 	// Check for southern hemisphere and remove offset from easting.
 
@@ -181,6 +186,8 @@ universal_transverse_mercator <Type>::convert (const vector3 <Type> & utm) const
 	return geodetic_converter .convert (vector3 <Type> (latitude, longitude, utm .z ()));
 }
 
+// https://gist.github.com/duedal/840476
+
 template <class Type>
 vector3 <Type>
 universal_transverse_mercator <Type>::apply (const vector3 <Type> & geocentric) const
@@ -189,14 +196,13 @@ universal_transverse_mercator <Type>::apply (const vector3 <Type> & geocentric) 
 
 	const Type latitude  = geodetic .x ();
 	const Type longitude = geodetic .y ();
-	const Type elevation = geodetic .z ();
 
 	const Type tanlat = std::tan (latitude);
 	const Type coslat = std::cos (latitude);
 
 	const Type N  = a / std::sqrt (1 - ecc2 * sqr (std::sin (latitude)));
 	const Type T  = sqr (tanlat);
-	const Type T3 = T * T * T;
+	const Type T6 = T * T * T;
 	const Type C  = EE * sqr (coslat);
 	const Type A  = coslat * (longitude - longitude0);
 
@@ -206,11 +212,11 @@ universal_transverse_mercator <Type>::apply (const vector3 <Type> & geocentric) 
 	                    - Z * std::sin (6 * latitude));
 
 	const Type easting = k0 * N * (A + (1 - T + C) * A * A * A / 6
-	                               + (5 - 18 * T3 + 72 * C - 58 * EE) * std::pow (A, 5) / 120)
+	                               + (5 - 18 * T6 + 72 * C - 58 * EE) * std::pow (A, 5) / 120)
 	                     + E0;
 
 	Type northing = k0 * (M + N * tanlat * (A * A / 2 + (5 - T + 9 * C + 4 * C * C) * std::pow (A, 4) / 24
-	                                        + (61 - 58 * T3 + 600 * C - 330 * EE) * std::pow (A, 6) / 720));
+	                                        + (61 - 58 * T6 + 600 * C - 330 * EE) * std::pow (A, 6) / 720));
 
 	if (latitude < 0)
 	{
@@ -221,9 +227,9 @@ universal_transverse_mercator <Type>::apply (const vector3 <Type> & geocentric) 
 	}
 	
 	if (easting_first)
-		return vector3 <Type> (easting, northing, elevation);
+		return vector3 <Type> (easting, northing, geodetic .z ());
 
-	return vector3 <Type> (northing, easting, elevation);
+	return vector3 <Type> (northing, easting, geodetic .z ());
 }
 
 extern template class universal_transverse_mercator <float>;

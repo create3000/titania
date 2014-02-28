@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -60,32 +60,38 @@ const std::string GeoPositionInterpolator::typeName       = "GeoPositionInterpol
 const std::string GeoPositionInterpolator::containerField = "children";
 
 GeoPositionInterpolator::Fields::Fields () :
-	keyValue (new MFVec3d ()),
+	        keyValue (new MFVec3d ()),
 	geovalue_changed (new SFVec3d ()),
-	value_changed (new SFVec3d ()),
-	geoOrigin (new SFNode ()),
-	geoSystem (new MFString ({ "GD", "WE" }))
+	   value_changed (new SFVec3d ())
 { }
 
 GeoPositionInterpolator::GeoPositionInterpolator (X3DExecutionContext* const executionContext) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DInterpolatorNode (),
+	X3DGeospatialObject (),
 	             fields ()
 {
 	addField (inputOutput,    "metadata",         metadata ());
+	addField (initializeOnly, "geoSystem",        geoSystem ());
 	addField (inputOnly,      "set_fraction",     set_fraction ());
 	addField (inputOutput,    "key",              key ());
 	addField (inputOutput,    "keyValue",         keyValue ());
 	addField (outputOnly,     "geovalue_changed", geovalue_changed ());
 	addField (outputOnly,     "value_changed",    value_changed ());
 	addField (initializeOnly, "geoOrigin",        geoOrigin ());
-	addField (initializeOnly, "geoSystem",        geoSystem ());
 }
 
 X3DBaseNode*
 GeoPositionInterpolator::create (X3DExecutionContext* const executionContext) const
 {
 	return new GeoPositionInterpolator (executionContext);
+}
+
+void
+GeoPositionInterpolator::setup ()
+{
+	X3DGeospatialObject::initialize ();
+	X3DInterpolatorNode::setup ();
 }
 
 void
@@ -105,7 +111,17 @@ GeoPositionInterpolator::set_keyValue ()
 
 void
 GeoPositionInterpolator::interpolate (size_t index0, size_t index1, const float weight)
-{ }
+{
+	geovalue_changed () = lerp (keyValue () [index0], keyValue () [index1], weight);
+	value_changed ()    = getCoord (geovalue_changed ());
+}
+
+void
+GeoPositionInterpolator::dispose ()
+{
+	X3DGeospatialObject::dispose ();
+	X3DInterpolatorNode::dispose ();
+}
 
 } // X3D
 } // titania

@@ -83,7 +83,7 @@ public:
 
 	virtual
 	void
-	setup () final override;
+	setup () override;
 
 
 protected:

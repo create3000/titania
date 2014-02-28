@@ -55,7 +55,7 @@ namespace X3D {
 
 X3DInterpolatorNode::Fields::Fields () :
 	set_fraction (new SFFloat ()),
-	key (new MFFloat ())
+	         key (new MFFloat ())
 { }
 
 X3DInterpolatorNode::X3DInterpolatorNode () :
