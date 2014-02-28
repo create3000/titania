@@ -1,5 +1,10 @@
 2014-02-28  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* GeoProximitySensor.h:
+	* GeoProximitySensor.cpp: 
+
+2014-02-28  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Viewpoint.cpp:
 	* OrthoViewpoint.cpp:
 	* GeoProximitySensor.h:

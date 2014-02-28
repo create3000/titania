@@ -29347,7 +29347,7 @@ DEF GD Transform {
         }
       }
     }
-    GeoProximitySensor {
+    DEF _1 GeoProximitySensor {
       size -1 -1 -1
     }
   ]
@@ -29399,3 +29399,16 @@ DEF UTM Transform {
     }
   ]
 }
+
+DEF Debug Script {
+  eventIn SFVec3d set_geoCoord
+
+  url "vrmlscript:
+function set_geoCoord (value, time)
+{
+	print ('geoCoord: ' + value);
+}
+"
+}
+
+ROUTE _1.geoCoord_changed TO Debug.set_geoCoord

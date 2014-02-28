@@ -60,7 +60,6 @@ const std::string GeoProximitySensor::typeName       = "GeoProximitySensor";
 const std::string GeoProximitySensor::containerField = "children";
 
 GeoProximitySensor::Fields::Fields () :
-	                  center (new SFVec3d ()),
 	        geoCoord_changed (new SFVec3d ()),
 	        position_changed (new SFVec3f ()),
 	     orientation_changed (new SFRotation ()),
@@ -88,9 +87,7 @@ GeoProximitySensor::GeoProximitySensor (X3DExecutionContext* const executionCont
 	addField (outputOnly,     "centerOfRotation_changed", centerOfRotation_changed ());
 	addField (initializeOnly, "geoOrigin",                geoOrigin ());
 
-	addField ("geoCenter", "center");
-
-	addChildren (X3DEnvironmentalSensorNode::center (), proximitySensor);
+	addChildren (proximitySensor);
 }
 
 X3DBaseNode*
@@ -107,6 +104,7 @@ GeoProximitySensor::initialize ()
 
 	enabled () .addInterest (proximitySensor -> enabled ());
 	size ()    .addInterest (proximitySensor -> size ());
+	center ()  .addInterest (proximitySensor -> center ());
 
 	proximitySensor -> isActive ()                 .addInterest (isActive ());
 	proximitySensor -> enterTime ()                .addInterest (enterTime ());
@@ -115,20 +113,13 @@ GeoProximitySensor::initialize ()
 	proximitySensor -> orientation_changed ()      .addInterest (orientation_changed ());
 	proximitySensor -> centerOfRotation_changed () .addInterest (centerOfRotation_changed ());
 
-	center () .addInterest (this, &GeoProximitySensor::set_center);
 	proximitySensor -> position_changed () .addInterest (this, &GeoProximitySensor::set_position);
 
 	proximitySensor -> enabled () = enabled ();
 	proximitySensor -> size ()    = size ();
-	set_center ();
+	proximitySensor -> center ()  = center ();
 
 	proximitySensor -> setup ();
-}
-
-void
-GeoProximitySensor::set_center ()
-{
-	proximitySensor -> center () = getCoord (center ());
 }
 
 void
@@ -146,8 +137,6 @@ GeoProximitySensor::traverse (const TraverseType type)
 void
 GeoProximitySensor::dispose ()
 {
-	X3DEnvironmentalSensorNode::center () .removeParent (this);
-
 	proximitySensor .dispose ();
 
 	X3DGeospatialObject::dispose ();

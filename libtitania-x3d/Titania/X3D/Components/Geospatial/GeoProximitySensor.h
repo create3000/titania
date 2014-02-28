@@ -92,14 +92,6 @@ public:
 	///  @name Fields
 
 	SFVec3d &
-	center ()
-	{ return *fields .center; }
-
-	const SFVec3d &
-	center () const
-	{ return *fields .center; }
-
-	SFVec3d &
 	geoCoord_changed ()
 	{ return *fields .geoCoord_changed; }
 
@@ -155,9 +147,6 @@ private:
 	///  @name Event handlers
 
 	void
-	set_center ();
-
-	void
 	set_position (const Vector3f &);
 
 	///  @name Static members
@@ -172,7 +161,6 @@ private:
 	{
 		Fields ();
 
-		SFVec3d* const center;
 		SFVec3d* const geoCoord_changed;
 		SFVec3f* const position_changed;
 		SFRotation* const orientation_changed;
