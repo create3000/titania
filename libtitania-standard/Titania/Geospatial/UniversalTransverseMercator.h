@@ -66,7 +66,6 @@ public:
 
 	constexpr
 	universal_transverse_mercator (const spheroid3 <Type> & spheroid, const int zone, const bool southern_hemisphere = false, const bool easting_first = false) :
-		               zone (zone),
 		southern_hemisphere (southern_hemisphere),
 		      easting_first (easting_first),
 		                  a (spheroid .a ()),
@@ -104,7 +103,6 @@ private:
 	static constexpr Type E0 = 5.0e5;
 	static constexpr Type k0 = 0.9996;
 
-	const int  zone;
 	const bool southern_hemisphere;
 	const bool easting_first;
 
@@ -221,6 +219,9 @@ universal_transverse_mercator <Type>::apply (const vector3 <Type> & geocentric) 
 		if (not southern_hemisphere)
 			northing = -northing;
 	}
+	
+	if (easting_first)
+		return vector3 <Type> (easting, northing, elevation);
 
 	return vector3 <Type> (northing, easting, elevation);
 }

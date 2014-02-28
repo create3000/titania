@@ -157,6 +157,10 @@ geodetic <Type>::apply (const vector3 <Type> & geocentric) const
 			break;
 	}
 
+	if (longitude_first)
+		// longitude, latitude, elevation
+		return vector3 <Type> (l, p, h);
+
 	// latitude, longitude, elevation
 	return vector3 <Type> (p, l, h);
 }
