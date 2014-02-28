@@ -60,37 +60,71 @@ const std::string GeoTouchSensor::typeName       = "GeoTouchSensor";
 const std::string GeoTouchSensor::containerField = "children";
 
 GeoTouchSensor::Fields::Fields () :
-	hitNormal_changed (new SFVec3f ()),
-	hitPoint_changed (new SFVec3f ()),
 	hitTexCoord_changed (new SFVec2f ()),
-	hitGeoCoord_changed (new SFVec3d ()),
-	geoOrigin (new SFNode ()),
-	geoSystem (new MFString ({ "GD", "WE" }))
+	  hitNormal_changed (new SFVec3f ()),
+	   hitPoint_changed (new SFVec3f ()),
+	hitGeoCoord_changed (new SFVec3d ())
 { }
 
 GeoTouchSensor::GeoTouchSensor (X3DExecutionContext* const executionContext) :
-	       X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DTouchSensorNode (),
-	            fields ()
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	 X3DTouchSensorNode (),
+	X3DGeospatialObject (),
+	             fields ()
 {
 	addField (inputOutput,    "metadata",            metadata ());
 	addField (inputOutput,    "enabled",             enabled ());
+	addField (initializeOnly, "geoSystem",           geoSystem ());
 	addField (inputOutput,    "description",         description ());
-	addField (outputOnly,     "isActive",            isActive ());
-	addField (outputOnly,     "isOver",              isOver ());
-	addField (outputOnly,     "touchTime",           touchTime ());
+	addField (outputOnly,     "hitTexCoord_changed", hitTexCoord_changed ());
 	addField (outputOnly,     "hitNormal_changed",   hitNormal_changed ());
 	addField (outputOnly,     "hitPoint_changed",    hitPoint_changed ());
-	addField (outputOnly,     "hitTexCoord_changed", hitTexCoord_changed ());
 	addField (outputOnly,     "hitGeoCoord_changed", hitGeoCoord_changed ());
+	addField (outputOnly,     "isOver",              isOver ());
+	addField (outputOnly,     "isActive",            isActive ());
+	addField (outputOnly,     "touchTime",           touchTime ());
 	addField (initializeOnly, "geoOrigin",           geoOrigin ());
-	addField (initializeOnly, "geoSystem",           geoSystem ());
 }
 
 X3DBaseNode*
 GeoTouchSensor::create (X3DExecutionContext* const executionContext) const
 {
 	return new GeoTouchSensor (executionContext);
+}
+
+void
+GeoTouchSensor::initialize ()
+{
+	X3DTouchSensorNode::initialize ();
+	X3DGeospatialObject::initialize ();
+}
+
+void
+GeoTouchSensor::set_over (const HitPtr & hit, const bool over)
+{
+	try
+	{
+		X3DTouchSensorNode::set_over (hit, over);
+
+		if (isOver ())
+		{
+			Vector3d hitPoint = hit -> point * ~getLastModelViewMatrix ();
+
+			hitTexCoord_changed () = Vector2f (hit -> texCoord .x (), hit -> texCoord .y ());
+			hitNormal_changed ()   = hit -> normal;
+			hitPoint_changed ()    = hitPoint;
+			hitGeoCoord_changed () = getGeoCoord (hitPoint);
+		}
+	}
+	catch (const std::domain_error &)
+	{ }
+}
+
+void
+GeoTouchSensor::dispose ()
+{
+	X3DGeospatialObject::dispose ();
+	X3DTouchSensorNode::dispose ();
 }
 
 } // X3D

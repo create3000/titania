@@ -29382,15 +29382,56 @@ DEF GD Transform {
         }
         DEF _4 GeoTransform {
           scale 200000 200000 200000
-          geoCenter 0 -1.48463908707588 1500000
-          children Transform {
-            children Shape {
-              appearance Appearance {
-                material Material { }
+          geoCenter 0 1.37944287342571 1500000
+          children [
+            DEF Sphere_1 Transform {
+              children Shape {
+                appearance Appearance {
+                  material Material { }
+                }
+                geometry Sphere { }
               }
-              geometry Sphere { }
             }
-          }
+            DEF Axes_2 Transform {
+              scale 2 2 2
+              children DEF Axes12 Shape {
+                geometry IndexedLineSet {
+                  colorPerVertex FALSE
+                  colorIndex [
+                    0,
+                    1,
+                    2
+                  ]
+                  coordIndex [
+                    0,
+                    1,
+                    -1,
+                    0,
+                    2,
+                    -1,
+                    0,
+                    3,
+                    -1
+                  ]
+                  color Color {
+                    color [
+                      1 0 0,
+                      0 1 0,
+                      0 0 1
+                    ]
+                  }
+                  coord Coordinate {
+                    point [
+                      0 0 0,
+                      1 0 0,
+                      0 1 0,
+                      0 0 1
+                    ]
+                  }
+                }
+              }
+            }
+          ]
         }
       ]
     }

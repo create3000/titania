@@ -1,5 +1,13 @@
 2014-02-28  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* GeoTouchSensor.h:
+	* GeoTouchSensor.cpp:
+	* TouchSensor.h:
+	* GeoPositionInterpolator.h:
+	* GeoPositionInterpolator.cpp: 
+
+2014-02-28  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Geospatial.h:
 	* EaseInEaseOut.cpp:
 	* X3DGeospatialObject.h:

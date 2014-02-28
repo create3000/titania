@@ -51,15 +51,18 @@
 #ifndef __TITANIA_X3D_COMPONENTS_GEOSPATIAL_GEO_TOUCH_SENSOR_H__
 #define __TITANIA_X3D_COMPONENTS_GEOSPATIAL_GEO_TOUCH_SENSOR_H__
 
+#include "../Geospatial/X3DGeospatialObject.h"
 #include "../PointingDeviceSensor/X3DTouchSensorNode.h"
 
 namespace titania {
 namespace X3D {
 
 class GeoTouchSensor :
-	public X3DTouchSensorNode
+	public X3DTouchSensorNode, public X3DGeospatialObject
 {
 public:
+
+	///  @name Construction
 
 	GeoTouchSensor (X3DExecutionContext* const);
 
@@ -87,6 +90,14 @@ public:
 
 	///  @name Fields
 
+	SFVec2f &
+	hitTexCoord_changed ()
+	{ return *fields .hitTexCoord_changed; }
+
+	const SFVec2f &
+	hitTexCoord_changed () const
+	{ return *fields .hitTexCoord_changed; }
+
 	SFVec3f &
 	hitNormal_changed ()
 	{ return *fields .hitNormal_changed; }
@@ -103,14 +114,6 @@ public:
 	hitPoint_changed () const
 	{ return *fields .hitPoint_changed; }
 
-	SFVec2f &
-	hitTexCoord_changed ()
-	{ return *fields .hitTexCoord_changed; }
-
-	const SFVec2f &
-	hitTexCoord_changed () const
-	{ return *fields .hitTexCoord_changed; }
-
 	SFVec3d &
 	hitGeoCoord_changed ()
 	{ return *fields .hitGeoCoord_changed; }
@@ -119,25 +122,26 @@ public:
 	hitGeoCoord_changed () const
 	{ return *fields .hitGeoCoord_changed; }
 
-	SFNode &
-	geoOrigin ()
-	{ return *fields .geoOrigin; }
+	///  @name Event handlers
 
-	const SFNode &
-	geoOrigin () const
-	{ return *fields .geoOrigin; }
+	virtual
+	void
+	set_over (const HitPtr &, const bool) final override;
 
-	MFString &
-	geoSystem ()
-	{ return *fields .geoSystem; }
+	///  @name Destruction
 
-	const MFString &
-	geoSystem () const
-	{ return *fields .geoSystem; }
+	virtual
+	void
+	dispose () final override;
 
 
 private:
 
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
 
 	///  @name Static members
 
@@ -151,12 +155,10 @@ private:
 	{
 		Fields ();
 
+		SFVec2f* const hitTexCoord_changed;
 		SFVec3f* const hitNormal_changed;
 		SFVec3f* const hitPoint_changed;
-		SFVec2f* const hitTexCoord_changed;
 		SFVec3d* const hitGeoCoord_changed;
-		SFNode* const geoOrigin;
-		MFString* const geoSystem;
 	};
 
 	Fields fields;

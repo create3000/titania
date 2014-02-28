@@ -113,6 +113,8 @@ public:
 	hitPoint_changed () const
 	{ return *fields .hitPoint_changed; }
 
+	///  @name Event handlers
+
 	virtual
 	void
 	set_over (const HitPtr &, const bool) final override;

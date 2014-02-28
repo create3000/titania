@@ -61,8 +61,8 @@ const std::string GeoPositionInterpolator::containerField = "children";
 
 GeoPositionInterpolator::Fields::Fields () :
 	        keyValue (new MFVec3d ()),
-	geovalue_changed (new SFVec3d ()),
-	   value_changed (new SFVec3d ())
+	   value_changed (new SFVec3d ()),
+	geovalue_changed (new SFVec3d ())
 { }
 
 GeoPositionInterpolator::GeoPositionInterpolator (X3DExecutionContext* const executionContext) :
@@ -76,8 +76,8 @@ GeoPositionInterpolator::GeoPositionInterpolator (X3DExecutionContext* const exe
 	addField (inputOnly,      "set_fraction",     set_fraction ());
 	addField (inputOutput,    "key",              key ());
 	addField (inputOutput,    "keyValue",         keyValue ());
-	addField (outputOnly,     "geovalue_changed", geovalue_changed ());
 	addField (outputOnly,     "value_changed",    value_changed ());
+	addField (outputOnly,     "geovalue_changed", geovalue_changed ());
 	addField (initializeOnly, "geoOrigin",        geoOrigin ());
 }
 

@@ -103,20 +103,20 @@ public:
 	{ return *fields .keyValue; }
 
 	SFVec3d &
-	geovalue_changed ()
-	{ return *fields .geovalue_changed; }
-
-	const SFVec3d &
-	geovalue_changed () const
-	{ return *fields .geovalue_changed; }
-
-	SFVec3d &
 	value_changed ()
 	{ return *fields .value_changed; }
 
 	const SFVec3d &
 	value_changed () const
 	{ return *fields .value_changed; }
+
+	SFVec3d &
+	geovalue_changed ()
+	{ return *fields .geovalue_changed; }
+
+	const SFVec3d &
+	geovalue_changed () const
+	{ return *fields .geovalue_changed; }
 
 	///  @name Destruction
 
@@ -158,8 +158,8 @@ private:
 		Fields ();
 
 		MFVec3d* const keyValue;
-		SFVec3d* const geovalue_changed;
 		SFVec3d* const value_changed;
+		SFVec3d* const geovalue_changed;
 	};
 
 	Fields fields;
