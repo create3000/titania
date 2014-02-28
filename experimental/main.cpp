@@ -281,117 +281,44 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	auto GD_WE  = geospatial::geodetic <double> (geospatial::WE);
-	auto UTM_WE = geospatial::universal_transverse_mercator <double> (geospatial::WE, 10);
+	auto GD_WE     = geospatial::geodetic <double> (geospatial::WE);
+	auto UTM_WE10N = geospatial::universal_transverse_mercator <double> (geospatial::WE, 10);
 
 	std::clog << Vector3d (radians (37.4506), radians (-122.1834), 0) << std::endl;
 	std::clog << std::endl;
 
 	std::clog << "convert:" << std::endl;
-	std::clog << "GD:  " << GD_WE  .convert (Vector3d (radians (37.4506), radians (-122.1834), 0)) << std::endl;
-	std::clog << "UTM: " << UTM_WE .convert (Vector3d (4145173, 572227, 0)) << std::endl;
+	std::clog << "GD:  " << GD_WE .convert (Vector3d (radians (37.4506), radians (-122.1834), 0)) << std::endl;
+	std::clog << "UTM: " << UTM_WE10N .convert (Vector3d (4145173, 572227, 0)) << std::endl;
 	std::clog << "GC:  " << Vector3d (-2700301, -4290762, 3857213) << std::endl; // gc: Geocentric coordinates
 
 	std::clog << std::endl;
 
 	std::clog << "apply:" << std::endl;
 	std::clog << "GD:  " << GD_WE .convert (GD_WE .apply (Vector3d (-2700301, -4290762, 3857213))) << std::endl;
-	std::clog << "UTM: " << UTM_WE .apply (Vector3d (-2700301, -4290762, 3857213)) << std::endl;
+	std::clog << "UTM: " << UTM_WE10N .convert (UTM_WE10N .apply (Vector3d (-2700301, -4290762, 3857213))) << std::endl;
+
+	{
+		std::clog << std::endl;
+
+		auto UTM_WE60N = geospatial::universal_transverse_mercator <double> (geospatial::WE, 60);
+		auto UTM_WE60S = geospatial::universal_transverse_mercator <double> (geospatial::WE, 60, true);
+
+		std::clog << "UTM: " << UTM_WE60N .convert (Vector3d (-5427419.7, 314369.5, 0)) << std::endl;
+		std::clog << "UTM: " << UTM_WE60S .convert (Vector3d (5427419.7, 314369.5, 0)) << std::endl;
+		
+		std::clog << "UTM: " << UTM_WE60N .apply (UTM_WE60S .convert (Vector3d (5427419.7, 314369.5, 0))) << std::endl;
+		std::clog << "UTM: " << UTM_WE60N .apply (UTM_WE60N .convert (Vector3d (-5427419.7, 314369.5, 0))) << std::endl;
+
+		std::clog << "UTM: " << UTM_WE60S .apply (UTM_WE60S .convert (Vector3d (5427419.7, 314369.5, 0))) << std::endl;
+		std::clog << "UTM: " << UTM_WE60S .apply (UTM_WE60N .convert (Vector3d (-5427419.7, 314369.5, 0))) << std::endl;
+		
+	}
 
 	std::clog << std::setprecision (std::numeric_limits <float>::digits10);
 	
 	std::clog << std::endl;
 	std::clog << std::endl;
-
-	{
-		Rotation4f r1 (1,2,3,4);
-		Rotation4f r2 (3,4,5,6);
-		Matrix4f m1 (r1);
-		Matrix4f m2 (r2);
-		Vector3f v (2,3,4);
-	
-		auto q1 = r1 .quat ();
-		auto q2 = r2 .quat ();
-
-		std::clog << std::endl;
-		std::clog << mult_vec_quat (v, q2) << std::endl;
-		std::clog << v * q2 << std::endl;
-		std::clog << v * r2 << std::endl;
-		std::clog << v * m2 << std::endl;
-
-		std::clog << std::endl;
-		std::clog << mult_quat_vec (q2, v) << std::endl;
-		std::clog << q2 * v << std::endl;
-		std::clog << r2 * v << std::endl;
-		std::clog << m2 * v << std::endl;
-	
-		q1 .mult_left (q2);
-		r1 .mult_left (r2);
-		m1 .mult_left (m2);
-		
-		std::clog << std::endl;
-		std::clog << Matrix4f (Rotation4f (q1)) << std::endl;
-		std::clog << Matrix4f (r1) << std::endl;
-		std::clog << m1 << std::endl;
-	}
-	
-	{
-		Rotation4f r1 (1,2,3,4);
-		Rotation4f r2 (2,3,4,5);
-		Matrix4f m1 (r1);
-		Matrix4f m2 (r2);
-		Vector3f v (1,2,3);
-		
-		auto q1 = r1 .quat ();
-		auto q2 = r2 .quat ();
-		
-		q1 .mult_right (q2);
-		r1 .mult_right (r2);
-		m1 .mult_right (m2);
-		
-		std::clog << std::endl;
-		std::clog << Matrix4f (Rotation4f (q1)) << std::endl;
-		std::clog << Matrix4f (r1) << std::endl;
-		std::clog << m1 << std::endl;
-	}
-	
-	float inf = 1.0f / 0.0f;
-
-	std::clog << inf << std::endl;
-	std::clog << inf / inf << std::endl;
-	std::clog << abs (Vector3f (inf, inf, inf)) << std::endl;
-	std::clog << normalize (Vector3f (inf, inf, inf)) << std::endl;
-
-//	{
-//		Rotation4f r1 (1,2,3,4);
-//		Rotation4f r2 (2,3,4,5);
-//		Matrix4f m1 (r1);
-//		Matrix4f m2 (r2);
-//		Vector3f v (1,2,3);
-//	
-//		std::clog << r2 * v << std::endl;
-//		std::clog << v * m2 << std::endl;
-//		
-//		r1 = r2 *= r1;
-//		m1 .multLeft (m2);
-//		
-//		std::clog << Matrix4f (r1) << std::endl;
-//		std::clog << m1 << std::endl;
-//	}
-//	
-//	{
-//		Rotation4f r1 (1,2,3,4);
-//		Rotation4f r2 (2,3,4,5);
-//		Matrix4f m1 (r1);
-//		Matrix4f m2 (r2);
-//		Vector3f v (1,2,3);
-//		
-//		r1 *= r2;
-//		m1 .multRight (m2);
-//		
-//		std::clog << Matrix4f (r1) << std::endl;
-//		std::clog << m1 << std::endl;
-//	}
 	
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

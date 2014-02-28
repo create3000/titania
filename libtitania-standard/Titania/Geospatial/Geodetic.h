@@ -73,7 +73,7 @@ public:
 	geodetic (const spheroid3 <Type> & spheroid, const bool longitude_first = false) :
 		longitude_first (longitude_first),
 		              a (spheroid .a ()),
-		           c2a2 (sqr (spheroid .c ()) / sqr (a)),
+		           c2a2 (sqr (spheroid .c () / a)),
 		           ecc2 (1 - c2a2)
 	{ }
 
@@ -157,6 +157,7 @@ geodetic <Type>::apply (const vector3 <Type> & geocentric) const
 			break;
 	}
 
+	// latitude, longitude, elevation
 	return vector3 <Type> (p, l, h);
 }
 

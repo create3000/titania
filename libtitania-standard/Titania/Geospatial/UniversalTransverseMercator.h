@@ -66,20 +66,25 @@ public:
 
 	constexpr
 	universal_transverse_mercator (const spheroid3 <Type> & spheroid, const int zone, const bool southern_hemisphere = false, const bool easting_first = false) :
+		               zone (zone),
 		southern_hemisphere (southern_hemisphere),
 		      easting_first (easting_first),
 		                  a (spheroid .a ()),
-		                 ee (1 - sqr (spheroid .c () / a)),
-		                 EE (ee / (1 - ee)),
+		               ecc2 (1 - sqr (spheroid .c () / a)),
+		                 EE (ecc2 / (1 - ecc2)),
 		                 E8 (8 * EE),
 		                 E9 (9 * EE),
 		               E252 (252 * EE),
-		                 e1 ((1 - std::sqrt (1 - ee)) / (1 + std::sqrt (1 - ee))),
-		                  A (k0 * (a * (1 - ee / 4 - 3 * ee * ee / 64 - 5 * ee * ee * ee / 256))),
+		                 e1 ((1 - std::sqrt (1 - ecc2)) / (1 + std::sqrt (1 - ecc2))),
+		                  A (k0 * (a * (1 - ecc2 / 4 - 3 * ecc2 * ecc2 / 64 - 5 * ecc2 * ecc2 * ecc2 / 256))),
 		                  B (3 * e1 / 2 - 7 * e1 * e1 * e1 / 32),
 		                  C (21 * e1 * e1 / 16 - 55 * e1 * e1 * e1 * e1 / 32),
 		                  D (151 * e1 * e1 * e1 / 96),
-		                  E (a * (1 - ee)),
+		                  E (a * (1 - ecc2)),
+		                  W ((1 - ecc2 / 4 - 3 * ecc2 * ecc2 / 64 - 5 * ecc2 * ecc2 * ecc2 / 256)),
+		                  X ((3 * ecc2 / 8 + 3 * ecc2 * ecc2 / 32 + 45 * ecc2 * ecc2 * ecc2 / 1024)),
+		                  Y ((15 * ecc2 * ecc2 / 256 + 45 * ecc2 * ecc2 * ecc2 / 1024)),
+		                  Z ((35 * ecc2 * ecc2 * ecc2 / 3072)),
 		         longitude0 (radians (Type (zone) * 6 - 183)),
 		 geodetic_converter (spheroid)
 	{ }
@@ -92,18 +97,20 @@ public:
 	vector3 <Type>
 	apply (const vector3 <Type> & geocentric) const final override;
 
+
 private:
 
 	static constexpr Type N0 = 1.0e7;
 	static constexpr Type E0 = 5.0e5;
 	static constexpr Type k0 = 0.9996;
 
+	const int  zone;
 	const bool southern_hemisphere;
 	const bool easting_first;
 
 	const Type a;
 
-	const Type ee;
+	const Type ecc2;
 	const Type EE;
 	const Type E8;
 	const Type E9;
@@ -115,6 +122,10 @@ private:
 	const Type C;
 	const Type D;
 	const Type E;
+	const Type W;
+	const Type X;
+	const Type Y;
+	const Type Z;
 	const Type longitude0;
 
 	geodetic <Type> geodetic_converter;
@@ -123,7 +134,7 @@ private:
 
 template <class Type>
 vector3 <Type>
-universal_transverse_mercator	<Type> ::convert (const vector3 <Type> & utm) const
+universal_transverse_mercator <Type>::convert (const vector3 <Type> & utm) const
 {
 	Type northing = easting_first ? utm .y () : utm .x ();
 	Type easting  = easting_first ? utm .x () : utm .y ();
@@ -139,7 +150,7 @@ universal_transverse_mercator	<Type> ::convert (const vector3 <Type> & utm) cons
 	}
 
 	if (S)
-		northing = northing - N0;
+		northing -= N0;
 
 	easting -= E0;
 
@@ -153,12 +164,12 @@ universal_transverse_mercator	<Type> ::convert (const vector3 <Type> & utm) cons
 	const Type cosphi1 = std::cos (phi1);
 	const Type tanphi1 = std::tan (phi1);
 
-	const Type N1 = a / std::sqrt (1 - ee * sinphi1);
+	const Type N1 = a / std::sqrt (1 - ecc2 * sinphi1);
 	const Type T2 = sqr (tanphi1);
 	const Type T8 = std::pow (tanphi1, 8);
 	const Type C1 = EE * T2;
 	const Type C2 = sqr (C1);
-	const Type R1 = E / std::pow (1 - ee * sinphi1, 1.5);
+	const Type R1 = E / std::pow (1 - ecc2 * sinphi1, 1.5);
 	const Type I  = easting / (N1 * k0);
 
 	const Type J = (5 + 3 * T2 + 10 * C1 - 4 * C2 - E9) * std::pow (I, 4) / 24;
@@ -169,14 +180,49 @@ universal_transverse_mercator	<Type> ::convert (const vector3 <Type> & utm) cons
 
 	const Type longitude = longitude0 + (I - (1 + 2 * T2 + C1) * std::pow (I, 3) / 6 + L) / cosphi1;
 
-	return geodetic_converter (vector3 <Type> (latitude, longitude, utm .z ()));
+	return geodetic_converter .convert (vector3 <Type> (latitude, longitude, utm .z ()));
 }
 
 template <class Type>
 vector3 <Type>
-universal_transverse_mercator	<Type> ::apply (const vector3 <Type> & geocentric) const
+universal_transverse_mercator <Type>::apply (const vector3 <Type> & geocentric) const
 {
-	return vector3 <Type> ();
+	const vector3 <Type> geodetic = geodetic_converter .apply (geocentric);
+
+	const Type latitude  = geodetic .x ();
+	const Type longitude = geodetic .y ();
+	const Type elevation = geodetic .z ();
+
+	const Type tanlat = std::tan (latitude);
+	const Type coslat = std::cos (latitude);
+
+	const Type N  = a / std::sqrt (1 - ecc2 * sqr (std::sin (latitude)));
+	const Type T  = sqr (tanlat);
+	const Type T3 = T * T * T;
+	const Type C  = EE * sqr (coslat);
+	const Type A  = coslat * (longitude - longitude0);
+
+	const Type M = a * (W * latitude
+	                    - X * std::sin (2 * latitude)
+	                    + Y * std::sin (4 * latitude)
+	                    - Z * std::sin (6 * latitude));
+
+	const Type easting = k0 * N * (A + (1 - T + C) * A * A * A / 6
+	                               + (5 - 18 * T3 + 72 * C - 58 * EE) * std::pow (A, 5) / 120)
+	                     + E0;
+
+	Type northing = k0 * (M + N * tanlat * (A * A / 2 + (5 - T + 9 * C + 4 * C * C) * std::pow (A, 4) / 24
+	                                        + (61 - 58 * T3 + 600 * C - 330 * EE) * std::pow (A, 6) / 720));
+
+	if (latitude < 0)
+	{
+		northing += N0;
+		
+		if (not southern_hemisphere)
+			northing = -northing;
+	}
+
+	return vector3 <Type> (northing, easting, elevation);
 }
 
 extern template class universal_transverse_mercator <float>;

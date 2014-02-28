@@ -1,5 +1,10 @@
 2014-02-28  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Geodetic.h:
+	* UniversalTransverseMercator.h: 
+
+2014-02-28  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* libtitania-standard.cproj:
 	* Camera.h: 
 
