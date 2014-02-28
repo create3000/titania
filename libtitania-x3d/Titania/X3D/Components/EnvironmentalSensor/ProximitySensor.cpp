@@ -122,6 +122,10 @@ ProximitySensor::update ()
 	{
 		if (inside)
 		{
+			Matrix4f centerOfRotationMatrix = viewpoint -> getParentMatrix ();
+			centerOfRotationMatrix .translate (viewpoint -> getUserCenterOfRotation ());
+			centerOfRotationMatrix *= inverse (modelViewMatrix);
+
 			modelViewMatrix *= viewpoint -> getInverseTransformationMatrix ();
 
 			Vector3f   translation, scale;
@@ -130,7 +134,7 @@ ProximitySensor::update ()
 
 			const Vector3f   position         = inverse (modelViewMatrix) .origin ();
 			const Rotation4f orientation      = ~rotation;
-			const Vector3f   centerOfRotation = Vector3f (); /// XXX
+			const Vector3f   centerOfRotation = centerOfRotationMatrix .origin ();
 
 			if (not isActive ())
 			{
