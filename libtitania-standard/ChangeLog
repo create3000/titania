@@ -1,5 +1,9 @@
 2014-02-28  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Interpolation.h: 
+
+2014-02-28  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* libtitania-standard.cproj:
 	* Geodetic.h:
 	* Interpolation.h:

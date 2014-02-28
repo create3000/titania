@@ -96,10 +96,10 @@ gd_lerp (const vector3 <Type> & source, const vector3 <Type> & destination, cons
 	{
 		Type longitude = source .x () < destination .x () ? source .x () - step : source .x () + step;
 
-		if (longitude < 0)
+		if (longitude < Type (-M_PI))
 			longitude += Type (M_PI2);
 
-		else if (longitude > Type (M_PI2))
+		else if (longitude > Type (M_PI))
 			longitude -= Type (M_PI2);
 
 		return vector3 <Type> (longitude,
@@ -110,10 +110,10 @@ gd_lerp (const vector3 <Type> & source, const vector3 <Type> & destination, cons
 	{
 		Type longitude = source .y () < destination .y () ? source .y () - step : source .y () + step;
 
-		if (longitude < 0)
+		if (longitude < Type (-M_PI))
 			longitude += Type (M_PI2);
 
-		else if (longitude > Type (M_PI2))
+		else if (longitude > Type (M_PI))
 			longitude -= Type (M_PI2);
 
 		return vector3 <Type> (lerp (source .x (), destination .x (), t),
