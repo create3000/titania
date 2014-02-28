@@ -51,6 +51,7 @@
 #ifndef __TITANIA_X3D_COMPONENTS_GEOSPATIAL_GEO_PROXIMITY_SENSOR_H__
 #define __TITANIA_X3D_COMPONENTS_GEOSPATIAL_GEO_PROXIMITY_SENSOR_H__
 
+#include "../EnvironmentalSensor/ProximitySensor.h"
 #include "../EnvironmentalSensor/X3DEnvironmentalSensorNode.h"
 #include "../Geospatial/X3DGeospatialObject.h"
 
@@ -91,6 +92,14 @@ public:
 	///  @name Fields
 
 	SFVec3d &
+	center ()
+	{ return *fields .center; }
+
+	const SFVec3d &
+	center () const
+	{ return *fields .center; }
+
+	SFVec3d &
 	geoCoord_changed ()
 	{ return *fields .geoCoord_changed; }
 
@@ -122,6 +131,12 @@ public:
 	centerOfRotation_changed () const
 	{ return *fields .centerOfRotation_changed; }
 
+	///  @name Operations
+
+	virtual
+	void
+	traverse (const TraverseType) final override;
+
 	///  @name Construction
 
 	virtual
@@ -137,6 +152,14 @@ private:
 	void
 	initialize () final override;
 
+	///  @name Event handlers
+
+	void
+	set_center ();
+
+	void
+	set_position (const Vector3f &);
+
 	///  @name Static members
 
 	static const std::string componentName;
@@ -149,6 +172,7 @@ private:
 	{
 		Fields ();
 
+		SFVec3d* const center;
 		SFVec3d* const geoCoord_changed;
 		SFVec3f* const position_changed;
 		SFRotation* const orientation_changed;
@@ -156,6 +180,8 @@ private:
 	};
 
 	Fields fields;
+
+	X3DSFNode <ProximitySensor> proximitySensor;
 
 };
 

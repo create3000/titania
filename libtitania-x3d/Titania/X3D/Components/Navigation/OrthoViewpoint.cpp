@@ -52,6 +52,8 @@
 
 #include "../../Execution/X3DExecutionContext.h"
 
+#include <Titania/Math/Geometry/Camera.h>
+
 namespace titania {
 namespace X3D {
 
@@ -170,28 +172,6 @@ OrthoViewpoint::getLookAtPositionOffset (const Box3f & bbox) const
 	return bbox .center ()
 	       + Vector3f (0, 0, abs (bbox .size ()) / 2 + 10) * getUserOrientation ()
 	       - position ();
-}
-
-template <class Type>
-static
-matrix4 <Type>
-ortho (const Type & l, const Type & r, const Type & b, const Type & t, const Type & n, const Type & f)
-{
-	const Type r_l = r - l;
-	const Type t_b = t - b;
-	const Type f_n = f - n;
-
-	const Type A =  2 / r_l;
-	const Type B =  2 / t_b;
-	const Type C = -2 / f_n;
-	const Type D = -(r + l) / r_l;
-	const Type E = -(t + b) / t_b;
-	const Type F = -(f + n) / f_n;
-
-	return matrix4 <Type> (A, 0, 0, 0,
-	                       0, B, 0, 0,
-	                       0, 0, C, 0,
-	                       D, E, F, 1);
 }
 
 void

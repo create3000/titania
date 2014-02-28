@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,81 +48,60 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_ENVIRONMENTAL_SENSOR_VISIBILITY_SENSOR_H__
-#define __TITANIA_X3D_COMPONENTS_ENVIRONMENTAL_SENSOR_VISIBILITY_SENSOR_H__
+#ifndef __TITANIA_MATH_GEOMETRY_CAMERA_H__
+#define __TITANIA_MATH_GEOMETRY_CAMERA_H__
 
-#include "../EnvironmentalSensor/X3DEnvironmentalSensorNode.h"
+#include "../Numbers/Matrix4.h"
 
 namespace titania {
-namespace X3D {
+namespace math {
 
-class VisibilitySensor :
-	public X3DEnvironmentalSensorNode
+template <class Type>
+static
+matrix4 <Type>
+frustum (const Type & l, const Type & r, const Type & b, const Type & t, const Type & n, const Type & f)
 {
-public:
+	const Type r_l = r - l;
+	const Type t_b = t - b;
+	const Type f_n = f - n;
+	const Type n_2 = 2 * n;
 
-	///  @name Construction
+	const Type A = (r + l) / r_l;
+	const Type B = (t + b) / t_b;
+	const Type C = -(f + n) / f_n;
+	const Type D = -n_2 * f / f_n;
+	const Type E = n_2 / r_l;
+	const Type F = n_2 / t_b;
 
-	VisibilitySensor (X3DExecutionContext* const);
+	return matrix4 <Type> (E, 0, 0, 0,
+	                       0, F, 0, 0,
+	                       A, B, C, -1,
+	                       0, 0, D, 0);
+}
 
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
+template <class Type>
+static
+matrix4 <Type>
+ortho (const Type & l, const Type & r, const Type & b, const Type & t, const Type & n, const Type & f)
+{
+	const Type r_l = r - l;
+	const Type t_b = t - b;
+	const Type f_n = f - n;
 
-	///  @name Common members
+	const Type A =  2 / r_l;
+	const Type B =  2 / t_b;
+	const Type C = -2 / f_n;
+	const Type D = -(r + l) / r_l;
+	const Type E = -(t + b) / t_b;
+	const Type F = -(f + n) / f_n;
 
-	virtual
-	const std::string &
-	getComponentName () const final override
-	{ return componentName; }
+	return matrix4 <Type> (A, 0, 0, 0,
+	                       0, B, 0, 0,
+	                       0, 0, C, 0,
+	                       D, E, F, 1);
+}
 
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
-
-	///  @name Operations
-
-	virtual
-	void
-	traverse (const TraverseType) final override;
-
-
-private:
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
-
-	///  @name Event handlers
-
-	void
-	set_enabled ();
-
-	void
-	update ();
-
-	///  @name Static members
-
-	static const std::string componentName;
-	static const std::string typeName;
-	static const std::string containerField;
-
-	///  @name Members
-
-	bool visible;
-
-};
-
-} // X3D
+} // math
 } // titania
 
 #endif

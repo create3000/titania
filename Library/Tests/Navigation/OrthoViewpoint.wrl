@@ -12,7 +12,12 @@ Transform {
     children [
       OrthoViewpoint {
         description "OrthoViewpoint"
-        fieldOfView [ -1, -1, 1, 1 ]
+        fieldOfView [
+          0,
+          0,
+          2,
+          2
+        ]
       }
       Viewpoint {
         description "Viewpoint"
@@ -29,17 +34,107 @@ Transform {
     geometry DEF Cube IndexedFaceSet {
       solid FALSE
       colorPerVertex FALSE
-      texCoordIndex [ 0, 1, 3, 2, -1, 0, 1, 3, 2, -1, 0, 1, 3, 2, -1, 0, 1, 3, 2, -1, 0, 1, 3, 2, -1, 0, 1, 3, 2, -1 ]
-      colorIndex [ 0, 1, 2, 3, 4, 5 ]
-      coordIndex [ 0, 1, 3, 2, -1, 4, 5, 7, 6, -1, 6, 7, 1, 0, -1, 2, 3, 5, 4, -1, 6, 0, 2, 4, -1, 1, 7, 5, 3, -1 ]
-      texCoord TextureCoordinate {
-        point [ 0 1, 0 0, 1 1, 1 0 ]
-      }
+      texCoordIndex [
+        0,
+        1,
+        3,
+        2,
+        -1,
+        0,
+        1,
+        3,
+        2,
+        -1,
+        0,
+        1,
+        3,
+        2,
+        -1,
+        0,
+        1,
+        3,
+        2,
+        -1,
+        0,
+        1,
+        3,
+        2,
+        -1,
+        0,
+        1,
+        3,
+        2,
+        -1
+      ]
+      colorIndex [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+      coordIndex [
+        0,
+        1,
+        3,
+        2,
+        -1,
+        4,
+        5,
+        7,
+        6,
+        -1,
+        6,
+        7,
+        1,
+        0,
+        -1,
+        2,
+        3,
+        5,
+        4,
+        -1,
+        6,
+        0,
+        2,
+        4,
+        -1,
+        1,
+        7,
+        5,
+        3,
+        -1
+      ]
       color Color {
-        color [ 1 0 0, 0 1 0, 0 0 1, 1 1 0, 0 1 1, 1 0 1 ]
+        color [
+          1 0 0,
+          0 1 0,
+          0 0 1,
+          1 1 0,
+          0 1 1,
+          1 0 1
+        ]
+      }
+      texCoord TextureCoordinate {
+        point [
+          0 1,
+          0 0,
+          1 1,
+          1 0
+        ]
       }
       coord Coordinate {
-        point [ -1 1 1, -1 -1 1, 1 1 1, 1 -1 1, 1 1 -1, 1 -1 -1, -1 1 -1, -1 -1 -1 ]
+        point [
+          -1 1 1,
+          -1 -1 1,
+          1 1 1,
+          1 -1 1,
+          1 1 -1,
+          1 -1 -1,
+          -1 1 -1,
+          -1 -1 -1
+        ]
       }
     }
   }
@@ -57,7 +152,7 @@ Transform {
       visibilityRange 30
     }
     Transform {
-      children DEF S Shape {
+      children DEF S_1 Shape {
         appearance Appearance {
           material Material {
             diffuseColor 1 0 0
@@ -68,43 +163,43 @@ Transform {
     }
     Transform {
       translation 0 0 -3
-      children USE S
+      children USE S_1
     }
     Transform {
       translation 0 0 -6
-      children USE S
+      children USE S_1
     }
     Transform {
       translation 0 0 -9
-      children USE S
+      children USE S_1
     }
     Transform {
       translation 0 0 -12
-      children USE S
+      children USE S_1
     }
     Transform {
       translation 0 0 -15
-      children USE S
+      children USE S_1
     }
     Transform {
       translation 0 0 -18
-      children USE S
+      children USE S_1
     }
     Transform {
       translation 0 0 -21
-      children USE S
+      children USE S_1
     }
     Transform {
       translation 0 0 -24
-      children USE S
+      children USE S_1
     }
     Transform {
       translation 0 0 -27
-      children USE S
+      children USE S_1
     }
     Transform {
       translation 0 0 -30
-      children USE S
+      children USE S_1
     }
   ]
 }
@@ -117,7 +212,7 @@ Transform {
       visibilityRange 30
     }
     Transform {
-      children DEF S Shape {
+      children DEF S_2 Shape {
         appearance Appearance {
           material Material {
             diffuseColor 1 0 0
@@ -128,43 +223,43 @@ Transform {
     }
     Transform {
       translation 0 0 -3
-      children USE S
+      children USE S_2
     }
     Transform {
       translation 0 0 -6
-      children USE S
+      children USE S_2
     }
     Transform {
       translation 0 0 -9
-      children USE S
+      children USE S_2
     }
     Transform {
       translation 0 0 -12
-      children USE S
+      children USE S_2
     }
     Transform {
       translation 0 0 -15
-      children USE S
+      children USE S_2
     }
     Transform {
       translation 0 0 -18
-      children USE S
+      children USE S_2
     }
     Transform {
       translation 0 0 -21
-      children USE S
+      children USE S_2
     }
     Transform {
       translation 0 0 -24
-      children USE S
+      children USE S_2
     }
     Transform {
       translation 0 0 -27
-      children USE S
+      children USE S_2
     }
     Transform {
       translation 0 0 -30
-      children USE S
+      children USE S_2
     }
   ]
 }

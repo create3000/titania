@@ -29347,6 +29347,9 @@ DEF GD Transform {
         }
       }
     }
+    GeoProximitySensor {
+      size -1 -1 -1
+    }
   ]
 }
 

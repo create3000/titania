@@ -53,8 +53,7 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
-//
-#include "../../Rendering/OpenGL.h"
+#include <Titania/Math/Geometry/Camera.h>
 
 namespace titania {
 namespace X3D {
@@ -130,29 +129,6 @@ Viewpoint::getLookAtPositionOffset (const Box3f & bbox) const
 	}
 
 	return Vector3f ();
-}
-
-template <class Type>
-static
-matrix4 <Type>
-frustum (const Type & l, const Type & r, const Type & b, const Type & t, const Type & n, const Type & f)
-{
-	const Type r_l = r - l;
-	const Type t_b = t - b;
-	const Type f_n = f - n;
-	const Type n_2 = 2 * n;
-
-	const Type A = (r + l) / r_l;
-	const Type B = (t + b) / t_b;
-	const Type C = -(f + n) / f_n;
-	const Type D = -n_2 * f / f_n;
-	const Type E = n_2 / r_l;
-	const Type F = n_2 / t_b;
-
-	return matrix4 <Type> (E, 0, 0, 0,
-	                       0, F, 0, 0,
-	                       A, B, C, -1,
-	                       0, 0, D, 0);
 }
 
 void

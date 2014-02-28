@@ -60,6 +60,7 @@ const std::string GeoProximitySensor::typeName       = "GeoProximitySensor";
 const std::string GeoProximitySensor::containerField = "children";
 
 GeoProximitySensor::Fields::Fields () :
+	                  center (new SFVec3d ()),
 	        geoCoord_changed (new SFVec3d ()),
 	        position_changed (new SFVec3f ()),
 	     orientation_changed (new SFRotation ()),
@@ -70,7 +71,8 @@ GeoProximitySensor::GeoProximitySensor (X3DExecutionContext* const executionCont
 	               X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DEnvironmentalSensorNode (),
 	       X3DGeospatialObject (),
-	                    fields ()
+	                    fields (),
+	           proximitySensor (new ProximitySensor (executionContext))
 {
 	addField (inputOutput,    "metadata",                 metadata ());
 	addField (inputOutput,    "enabled",                  enabled ());
@@ -87,6 +89,8 @@ GeoProximitySensor::GeoProximitySensor (X3DExecutionContext* const executionCont
 	addField (initializeOnly, "geoOrigin",                geoOrigin ());
 
 	addField ("geoCenter", "center");
+
+	addChildren (X3DEnvironmentalSensorNode::center (), proximitySensor);
 }
 
 X3DBaseNode*
@@ -100,11 +104,52 @@ GeoProximitySensor::initialize ()
 {
 	X3DEnvironmentalSensorNode::initialize ();
 	X3DGeospatialObject::initialize ();
+
+	enabled () .addInterest (proximitySensor -> enabled ());
+	size ()    .addInterest (proximitySensor -> size ());
+
+	proximitySensor -> isActive ()                 .addInterest (isActive ());
+	proximitySensor -> enterTime ()                .addInterest (enterTime ());
+	proximitySensor -> exitTime ()                 .addInterest (exitTime ());
+	proximitySensor -> position_changed ()         .addInterest (position_changed ());
+	proximitySensor -> orientation_changed ()      .addInterest (orientation_changed ());
+	proximitySensor -> centerOfRotation_changed () .addInterest (centerOfRotation_changed ());
+
+	center () .addInterest (this, &GeoProximitySensor::set_center);
+	proximitySensor -> position_changed () .addInterest (this, &GeoProximitySensor::set_position);
+
+	proximitySensor -> enabled () = enabled ();
+	proximitySensor -> size ()    = size ();
+	set_center ();
+
+	proximitySensor -> setup ();
+}
+
+void
+GeoProximitySensor::set_center ()
+{
+	proximitySensor -> center () = getCoord (center ());
+}
+
+void
+GeoProximitySensor::set_position (const Vector3f & position)
+{
+	geoCoord_changed () = getGeoCoord (position);
+}
+
+void
+GeoProximitySensor::traverse (const TraverseType type)
+{
+	proximitySensor -> traverse (type);
 }
 
 void
 GeoProximitySensor::dispose ()
 {
+	X3DEnvironmentalSensorNode::center () .removeParent (this);
+
+	proximitySensor .dispose ();
+
 	X3DGeospatialObject::dispose ();
 	X3DEnvironmentalSensorNode::dispose ();
 }

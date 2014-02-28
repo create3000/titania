@@ -114,6 +114,8 @@ public:
 	position_changed () const
 	{ return *fields .position_changed; }
 
+	///  @name Operations
+
 	virtual
 	void
 	traverse (const TraverseType) final override;
