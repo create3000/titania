@@ -51,13 +51,14 @@
 #ifndef __TITANIA_X3D_COMPONENTS_GEOSPATIAL_GEO_VIEWPOINT_H__
 #define __TITANIA_X3D_COMPONENTS_GEOSPATIAL_GEO_VIEWPOINT_H__
 
+#include "../Geospatial/X3DGeospatialObject.h"
 #include "../Navigation/X3DViewpointNode.h"
 
 namespace titania {
 namespace X3D {
 
 class GeoViewpoint :
-	public X3DViewpointNode
+	public X3DViewpointNode, public X3DGeospatialObject
 {
 public:
 
@@ -89,22 +90,6 @@ public:
 
 	///  @name Fields
 
-	SFRotation &
-	set_orientation ()
-	{ return *fields .set_orientation; }
-
-	const SFRotation &
-	set_orientation () const
-	{ return *fields .set_orientation; }
-
-	SFVec3d &
-	set_position ()
-	{ return *fields .set_position; }
-
-	const SFVec3d &
-	set_position () const
-	{ return *fields .set_position; }
-
 	SFFloat &
 	fieldOfView ()
 	{ return *fields .fieldOfView; }
@@ -112,38 +97,6 @@ public:
 	const SFFloat &
 	fieldOfView () const
 	{ return *fields .fieldOfView; }
-
-	SFBool &
-	headlight ()
-	{ return *fields .headlight; }
-
-	const SFBool &
-	headlight () const
-	{ return *fields .headlight; }
-
-	MFString &
-	navType ()
-	{ return *fields .navType; }
-
-	const MFString &
-	navType () const
-	{ return *fields .navType; }
-
-	SFNode &
-	geoOrigin ()
-	{ return *fields .geoOrigin; }
-
-	const SFNode &
-	geoOrigin () const
-	{ return *fields .geoOrigin; }
-
-	MFString &
-	geoSystem ()
-	{ return *fields .geoSystem; }
-
-	const MFString &
-	geoSystem () const
-	{ return *fields .geoSystem; }
 
 	SFVec3d &
 	position ()
@@ -165,11 +118,19 @@ public:
 
 	virtual
 	Vector3f
-	getPosition () const;
+	getPosition () const final override;
+
+	virtual
+	Rotation4f
+	getOrientation () const final override;
 
 	virtual
 	Vector3d
 	getScreenScale (const double, const Vector4i &) const final override;
+
+	virtual
+	Vector3f
+	getUpVector () const final override;
 
 	///  @name Operations
 
@@ -177,17 +138,33 @@ public:
 	void
 	reshape (const double, const double) final override;
 
+	///  @name Destruction
+
 	virtual
 	void
-	traverse (const TraverseType) final override;
+	dispose () final override;
 
 
 private:
 
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
 	///  @name Member access
 
+	double
+	getFieldOfView () const;
+
+	virtual
 	Vector3f
-	getLookAtPositionOffset (const Box3f &) const;
+	getLookAtPositionOffset (const Box3f &) const final override;
+
+	virtual
+	void
+	setTransformationMatrix (const Matrix4f &) final override;
 
 	///  @name Static members
 
@@ -201,14 +178,8 @@ private:
 	{
 		Fields ();
 
-		SFRotation* const set_orientation;
-		SFVec3d* const set_position;
-		SFFloat* const fieldOfView;
-		SFBool* const headlight;
-		MFString* const navType;
-		SFNode* const geoOrigin;
-		MFString* const geoSystem;
 		SFVec3d* const position;
+		SFFloat* const fieldOfView;
 		SFFloat* const speedFactor;
 	};
 

@@ -203,12 +203,13 @@ X3DLayerNode::getDistance (const Vector3f & positionOffset, const float width, c
 
 	// Translate camera
 
-	Matrix4f parentMatrix = getViewpoint () -> getParentMatrix ();
+	Matrix4f modelViewMatrix = getViewpoint () -> getParentMatrix ();
 
-	parentMatrix .translate (getViewpoint () -> getUserPosition () + positionOffset);
-	parentMatrix .rotate (Rotation4f (Vector3f (0, 0, 1), -direction));
+	modelViewMatrix .translate (getViewpoint () -> getUserPosition () + positionOffset);
+	modelViewMatrix .rotate (Rotation4f (Vector3f (0, 0, 1), -direction));
+	modelViewMatrix .inverse ();
 
-	getModelViewMatrix () .set (inverse (parentMatrix));
+	getModelViewMatrix () .set (modelViewMatrix);
 
 	// Traverse and get distance
 
@@ -323,10 +324,13 @@ X3DLayerNode::pick ()
 		getModelViewMatrix () .identity ();
 		getViewpoint () -> reshape ();
 		getBrowser ()   -> updateHitRay ();
-
 		getViewpoint () -> transform ();
+		
+		getViewVolumeStack () .emplace (ProjectionMatrix4d (), currentViewport -> getViewport ());
+		
 		group -> traverse (TraverseType::PICKING);
-
+	
+		getViewVolumeStack () .pop ();
 		getGlobalObjects () .clear ();
 	}
 }
@@ -342,7 +346,11 @@ X3DLayerNode::camera ()
 	defaultFog            -> traverse (TraverseType::CAMERA);
 	defaultViewpoint      -> traverse (TraverseType::CAMERA);
 
+	getViewVolumeStack () .emplace (ProjectionMatrix4d (), currentViewport -> getViewport ());
+
 	group -> traverse (TraverseType::CAMERA);
+
+	getViewVolumeStack () .pop ();
 
 	navigationInfos -> update ();
 	backgrounds     -> update ();
@@ -354,8 +362,11 @@ void
 X3DLayerNode::navigation ()
 {
 	// Render
+	getViewVolumeStack () .emplace (ProjectionMatrix4d (), currentViewport -> getViewport ());
 
 	render (TraverseType::NAVIGATION);
+
+	getViewVolumeStack () .pop ();
 }
 
 void
@@ -388,8 +399,11 @@ X3DLayerNode::collision ()
 	getModelViewMatrix () .set (inverse (parentMatrix));
 
 	// Render
+	getViewVolumeStack () .emplace (ProjectionMatrix4d (), currentViewport -> getViewport ());
 
 	render (TraverseType::COLLISION);
+
+	getViewVolumeStack () .pop ();
 }
 
 void
@@ -404,8 +418,11 @@ X3DLayerNode::collect ()
 	getViewpoint ()      -> reshape ();
 	getViewpoint ()      -> transform ();
 
+	getViewVolumeStack () .emplace (ProjectionMatrix4d (), currentViewport -> getViewport ());
+	
 	render (TraverseType::COLLECT);
 
+	getViewVolumeStack () .pop ();
 	getNavigationInfo () -> disable ();
 }
 

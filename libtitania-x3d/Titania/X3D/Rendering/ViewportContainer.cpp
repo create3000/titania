@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -58,16 +58,14 @@ namespace X3D {
 
 ViewportContainer::ViewportContainer (Viewport* const node) :
 	X3DCollectableObject (),
-	                   node (node),
-	               viewport (Viewport4i ())
+	                node (node),
+	            viewport (Viewport4i ())
 { }
 
 void
 ViewportContainer::scale ()
 {
-	const auto & browserViewport = node -> getBrowser () -> getViewport ();
-
-	const auto viewport = node -> getViewport (browserViewport [2], browserViewport [3]);
+	const auto viewport = node -> getViewport ();
 
 	glViewport (viewport [0],
 	            viewport [1],
@@ -87,9 +85,7 @@ ViewportContainer::unscale ()
 void
 ViewportContainer::enable ()
 {
-	const auto & browserViewport = node -> getBrowser () -> getViewport ();
-
-	const Vector4i scissor = node -> getViewport (browserViewport [2], browserViewport [3]);
+	const Vector4i scissor = node -> getViewport ();
 
 	if (scissor not_eq viewport)
 	{

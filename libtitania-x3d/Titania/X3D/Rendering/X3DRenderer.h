@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -53,15 +53,20 @@
 
 #include "../Base/Output.h"
 #include "../Components/Core/X3DNode.h"
+#include "../Rendering/CollisionArray.h"
 #include "../Rendering/CollisionShape.h"
 #include "../Rendering/DepthBuffer.h"
 #include "../Rendering/ShapeContainer.h"
+#include "../Rendering/ViewVolume.h"
 #include "../Rendering/X3DCollectableObject.h"
 
 #include <memory>
+#include <stack>
 
 namespace titania {
 namespace X3D {
+
+using ViewVolumeStack = std::stack <ViewVolume>;
 
 class X3DRenderer :
 	virtual public X3DNode
@@ -71,14 +76,22 @@ public:
 	float
 	getDistance () const
 	{ return distance; }
-	
+
+	ViewVolumeStack &
+	getViewVolumeStack ()
+	{ return viewVolumeStack; }
+
 	CollectableObjectArray &
 	getGlobalObjects ()
 	{ return globalObjects; }
-	
+
 	CollectableObjectArray &
 	getLocalObjects ()
 	{ return localObjects; }
+
+	CollisionArray &
+	getCollisions ()
+	{ return collisions; }
 
 	void
 	addShape (X3DShapeNode* const);
@@ -108,11 +121,15 @@ protected:
 	void
 	initialize () override;
 
+	virtual
+	X3DFogObject*
+	getFog () const = 0;
+
 
 private:
 
-	using ShapeContainerArray = std::vector <std::unique_ptr <ShapeContainer>>;
-	using CollisionShapeArray = std::vector <std::unique_ptr <CollisionShape>>;
+	using ShapeContainerArray = std::vector <std::unique_ptr <ShapeContainer>> ;
+	using CollisionShapeArray = std::vector <std::unique_ptr <CollisionShape>> ;
 
 	virtual
 	void
@@ -132,9 +149,11 @@ private:
 
 	void
 	addStepUp ();
-	
+
+	ViewVolumeStack        viewVolumeStack;
 	CollectableObjectArray globalObjects;
 	CollectableObjectArray localObjects;
+	CollisionArray         collisions;
 
 	ShapeContainerArray      shapes;
 	ShapeContainerArray      transparentShapes;

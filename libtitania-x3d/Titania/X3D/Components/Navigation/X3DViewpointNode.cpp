@@ -81,7 +81,6 @@ X3DViewpointNode::X3DViewpointNode () :
 	                parentMatrix (),
 	        transformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 10, 1),
 	 inverseTransformationMatrix (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, -10, 1),
-	                  viewVolume (),
 	                  timeSensor (new TimeSensor (getExecutionContext ())),
 	               easeInEaseOut (new EaseInEaseOut (getExecutionContext ())),
 	        positionInterpolator (new PositionInterpolator (getExecutionContext ())),
@@ -152,7 +151,7 @@ X3DViewpointNode::getUserPosition () const
 Rotation4f
 X3DViewpointNode::getUserOrientation () const
 {
-	return orientation () * orientationOffset ();
+	return getOrientation () * orientationOffset ();
 }
 
 Vector3f
@@ -177,7 +176,7 @@ X3DViewpointNode::getRelativeTransformation (X3DViewpointNode* const fromViewpoi
 	Rotation4f rotation;
 	differenceMatrix .get (relativePosition, rotation, relativeScale, relativeScaleOrientation);
 
-	relativeOrientation = ~orientation () * rotation;
+	relativeOrientation = ~getOrientation () * rotation;
 }
 
 void
@@ -256,7 +255,7 @@ X3DViewpointNode::straighten (const bool horizon)
 
 	const auto distanceToCenter = abs (getUserCenterOfRotation () - getUserPosition ());
 
-	centerOfRotationOffset () = getUserPosition () + (Vector3f (0, 0, -1) * distanceToCenter) * (orientation () * rotation) - centerOfRotation ();
+	centerOfRotationOffset () = getUserPosition () + (Vector3f (0, 0, -1) * distanceToCenter) * (getOrientation () * rotation) - centerOfRotation ();
 
 	set_bind () = true;
 }
@@ -303,7 +302,7 @@ X3DViewpointNode::lookAt (Box3f bbox, const float distance, const bool straighte
 		auto       rotation    = orientationOffset () * Rotation4f (Vector3f (0, 0, 1) * getUserOrientation (), direction);
 
 		if (straighten)
-			rotation = ~orientation () * straightenHorizon (orientation () * rotation);
+			rotation = ~getOrientation () * straightenHorizon (getOrientation () * rotation);
 
 		positionInterpolator         -> keyValue () = { positionOffset (), translation };
 		orientationInterpolator      -> keyValue () = { orientationOffset (), rotation };
@@ -483,8 +482,6 @@ X3DViewpointNode::reshape ()
 	NavigationInfo* navigationInfo = getCurrentLayer () -> getNavigationInfo ();
 
 	reshape (navigationInfo -> getNearPlane (), navigationInfo -> getFarPlane ());
-	
-	viewVolume = ViewVolume (ProjectionMatrix4d ());
 }
 
 void

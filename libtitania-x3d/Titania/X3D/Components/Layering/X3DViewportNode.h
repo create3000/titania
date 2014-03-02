@@ -61,6 +61,9 @@ class X3DViewportNode :
 {
 public:
 
+	Vector4i
+	getViewport () const;
+
 	virtual
 	Vector4i
 	getViewport (int, int) const = 0;

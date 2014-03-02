@@ -62,7 +62,8 @@ WalkViewer::getTranslationOffset (const Vector3f & velocity)
 {
 	const auto viewpoint = getActiveViewpoint ();
 
-	const Rotation4f orientation = viewpoint -> getUserOrientation () * Rotation4f (upVector * viewpoint -> getUserOrientation (), upVector);
+	const Rotation4f userOrientation = viewpoint -> getUserOrientation ();
+	const Rotation4f orientation     = userOrientation * Rotation4f (upVector * userOrientation, upVector);
 
 	return velocity * orientation;
 }

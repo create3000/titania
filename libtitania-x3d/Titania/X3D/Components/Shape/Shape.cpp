@@ -163,7 +163,7 @@ Shape::pick ()
 		{
 			const Box3f bbox = getBBox () * getModelViewMatrix () .get ();
 
-			if (getCurrentViewpoint () -> getViewVolume () .intersect (bbox))
+			if (getCurrentLayer () -> getViewVolumeStack () .top () .intersect (bbox))
 			{
 				const Line3f hitRay = getBrowser () -> getHitRay (); // Attention!! returns a Line3d
 

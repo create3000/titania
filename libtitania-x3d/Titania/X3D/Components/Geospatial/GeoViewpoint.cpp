@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -50,7 +50,11 @@
 
 #include "GeoViewpoint.h"
 
+#include "../../Browser/X3DBrowser.h"
+#include "../../Execution/BindableNodeList.h"
 #include "../../Execution/X3DExecutionContext.h"
+
+#include <Titania/Math/Geometry/Camera.h>
 
 namespace titania {
 namespace X3D {
@@ -60,40 +64,32 @@ const std::string GeoViewpoint::typeName       = "GeoViewpoint";
 const std::string GeoViewpoint::containerField = "children";
 
 GeoViewpoint::Fields::Fields () :
-	set_orientation (new SFRotation ()),
-	set_position (new SFVec3d ()),
-	fieldOfView (new SFFloat (0.785398)),
-	headlight (new SFBool (true)),
-	navType (new MFString ({ "EXAMINE", "ANY" })),
-	geoOrigin (new SFNode ()),
-	geoSystem (new MFString ({ "GD", "WE" })),
-	position (new SFVec3d ()),
-	speedFactor (new SFFloat (1))
+	        position (new SFVec3d (0, 0, 100000)),
+	//centerOfRotation (new SFVec3d ()),
+	     fieldOfView (new SFFloat (0.785398)),
+	     speedFactor (new SFFloat (1))
 { }
 
 GeoViewpoint::GeoViewpoint (X3DExecutionContext* const executionContext) :
-	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DViewpointNode (),
-	          fields ()
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	   X3DViewpointNode (),
+	X3DGeospatialObject (),
+	             fields ()
 {
 	addField (inputOutput,    "metadata",          metadata ());
+	addField (initializeOnly, "geoSystem",         geoSystem ());
 	addField (inputOutput,    "description",       description ());
 	addField (inputOnly,      "set_bind",          set_bind ());
-	addField (inputOnly,      "set_position",      set_position ());
-	addField (inputOnly,      "set_orientation",   set_orientation ());
+	addField (inputOutput,    "position",          position ());
+	addField (inputOutput,    "orientation",       orientation ());
 	addField (inputOutput,    "centerOfRotation",  centerOfRotation ());
 	addField (inputOutput,    "fieldOfView",       fieldOfView ());
 	addField (inputOutput,    "jump",              jump ());
 	addField (inputOutput,    "retainUserOffsets", retainUserOffsets ());
-	addField (inputOutput,    "headlight",         headlight ());
-	addField (inputOutput,    "navType",           navType ());
-	addField (initializeOnly, "geoSystem",         geoSystem ());
-	addField (initializeOnly, "geoOrigin",         geoOrigin ());
-	addField (initializeOnly, "position",          position ());
-	addField (initializeOnly, "orientation",       orientation ());
 	addField (initializeOnly, "speedFactor",       speedFactor ());
 	addField (outputOnly,     "isBound",           isBound ());
 	addField (outputOnly,     "bindTime",          bindTime ());
+	addField (initializeOnly, "geoOrigin",         geoOrigin ());
 }
 
 X3DBaseNode*
@@ -102,33 +98,119 @@ GeoViewpoint::create (X3DExecutionContext* const executionContext) const
 	return new GeoViewpoint (executionContext);
 }
 
+void
+GeoViewpoint::initialize ()
+{
+	X3DViewpointNode::initialize ();
+	X3DGeospatialObject::initialize ();
+}
+
 Vector3f
 GeoViewpoint::getPosition () const
 {
-	return position () .getValue ();
+	return getCoord (position ());
+}
+
+Rotation4f
+GeoViewpoint::getOrientation () const
+{
+	Rotation4f localOrientation = Rotation4d (Matrix3d (getLocationMatrix (position ())));
+
+	return orientation () * localOrientation;
+}
+
+double
+GeoViewpoint::getFieldOfView () const
+{
+	const double fov = fieldOfView () * fieldOfViewScale ();
+
+	return fov > 0 and fov < M_PI ? fov : M_PI / 4;
+}
+
+Vector3d
+GeoViewpoint::getScreenScale (const double distance, const Vector4i & viewport) const
+{
+	const int width  = viewport [2];
+	const int height = viewport [3];
+	double    size   = distance * std::tan (getFieldOfView () / 2) * 2;
+
+	if (width > height)
+		size /= height;
+
+	else
+		size /= width;
+
+	return Vector3d (size, size, size);
+}
+
+Vector3f
+GeoViewpoint::getUpVector () const
+{
+	return Vector3f (0, 1, 0);
 }
 
 Vector3f
 GeoViewpoint::getLookAtPositionOffset (const Box3f & bbox) const
 {
-	return bbox .center ()
-	       + Vector3f (0, 0, (math::abs (bbox .size ()) / 2) / std::tan (fieldOfView () / 2)) * getUserOrientation ()
-	       - getPosition ();
+	if (getBrowser () -> getActiveLayer ())
+	{
+		const float distance    = (abs (bbox .size ()) / 2) / std::tan (getFieldOfView () / 2);
+		const float minDistance = getBrowser () -> getActiveLayer () -> getNavigationInfo () -> getNearPlane () * 2;
+
+		return bbox .center ()
+		       + Vector3f (0, 0, std::max (distance, minDistance)) * getUserOrientation ()
+		       - getPosition ();
+	}
+
+	return Vector3f ();
 }
 
-Vector3d
-GeoViewpoint::getScreenScale (const double, const Vector4i & viewport) const
+void
+GeoViewpoint::setTransformationMatrix (const Matrix4f & value)
 {
-	return Vector3d (1, 1, 1);
+	static constexpr double s = 1e6; // abs (position - centerOfRotation)
+
+	Matrix4d transformationMatrix = value;
+
+	transformationMatrix .scale (Vector3d (s, s, s));
+
+	X3DViewpointNode::setTransformationMatrix (transformationMatrix);
 }
 
 void
 GeoViewpoint::reshape (const double zNear, const double zFar)
-{ }
+{
+	const double zFar0 = 1e8;
+
+	glMatrixMode (GL_PROJECTION);
+
+	const Vector4i viewport = Viewport4i ();
+
+	const size_t width  = viewport [2];
+	const size_t height = viewport [3];
+
+	const double ratio = std::tan (getFieldOfView () / 2) * zNear;
+
+	if (width > height)
+	{
+		const double aspect = width * ratio / height;
+		glLoadMatrixd (frustum (-aspect, aspect, -ratio, ratio, zNear, zFar0) .data ());
+	}
+	else
+	{
+		const double aspect = height * ratio / width;
+		glLoadMatrixd (frustum (-ratio, ratio, -aspect, aspect, zNear, zFar0) .data ());
+	}
+
+	glMatrixMode (GL_MODELVIEW);
+}
 
 void
-GeoViewpoint::traverse (const TraverseType)
-{ }
+GeoViewpoint::dispose ()
+{
+	X3DGeospatialObject::dispose ();
+	X3DViewpointNode::dispose ();
+}
 
 } // X3D
 } // titania

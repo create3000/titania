@@ -98,11 +98,11 @@ Billboard::rotate (const TraverseType type) const
 		const Matrix4f modelViewMatrix        = getModelViewMatrix (type);
 		const Matrix4f inverseModelViewMatrix = ~modelViewMatrix;
 
-		const Vector3f billboardToViewer = inverseModelViewMatrix .origin ();
+		const Vector3f billboardToViewer = normalize (inverseModelViewMatrix .origin ());
 
 		if (axisOfRotation () == Vector3f ())
 		{
-			const Vector3f viewerYAxis = inverseModelViewMatrix .mult_dir_matrix (yAxis);
+			const Vector3f viewerYAxis = normalize (inverseModelViewMatrix .mult_dir_matrix (yAxis));
 
 			Vector3f x = cross (viewerYAxis, billboardToViewer);
 			Vector3f y = cross (billboardToViewer, x);
@@ -112,7 +112,6 @@ Billboard::rotate (const TraverseType type) const
 
 			x .normalize ();
 			y .normalize ();
-			z .normalize ();
 
 			Matrix4f rotation (x [0], x [1], x [2], 0,
 			                   y [0], y [1], y [2], 0,

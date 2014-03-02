@@ -255,7 +255,7 @@ ExamineViewer::getOrientationOffset ()
 
 	orientation = rotation * orientation;
 	
-	return ~viewpoint -> orientation () * orientation;
+	return ~viewpoint -> getOrientation () * orientation;
 }
 
 } // X3D

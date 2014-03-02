@@ -2406,6 +2406,7 @@
     <None Include="Tests\Geospatial\child4.wrl" />
     <None Include="Tests\Geospatial\root.wrl" />
     <None Include="Tests\Geospatial\GeoElevationGrid.wrl" />
+    <None Include="Tests\Geospatial\tie.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

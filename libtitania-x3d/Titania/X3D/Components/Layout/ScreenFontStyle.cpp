@@ -397,9 +397,9 @@ ScreenText::scale () const
 	const Vector3d screenScale = fontStyle -> getCurrentViewpoint () -> getScreenScale (distance, Viewport4i ());
 
 	Matrix4d matrix;
-	matrix .set (translation, rotation, Vector3d (screenScale .x () * signum (scale .x ()),
-	                                              screenScale .y () * signum (scale .y ()),
-	                                              screenScale .z () * signum (scale .z ())));
+	matrix .set (translation, rotation, Vector3d (screenScale .x () * (signum (scale .x ()) < 0 ? -1 : 1),
+	                                              screenScale .y () * (signum (scale .y ()) < 0 ? -1 : 1),
+	                                              screenScale .z () * (signum (scale .z ()) < 0 ? -1 : 1)));
 
 	glLoadMatrixd (matrix .data ());
 }

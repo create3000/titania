@@ -1,3 +1,35 @@
+2014-03-02  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* ViewVolume.h:
+	* X3DRenderer.h:
+	* ViewVolume.cpp:
+	* X3DRenderer.cpp:
+	* Shape.cpp:
+	* WalkViewer.cpp:
+	* Viewport.h:
+	* LookAtViewer.cpp:
+	* ViewportContainer.cpp:
+	* X3DFlyViewer.cpp:
+	* Viewport.cpp:
+	* ExamineViewer.cpp:
+	* Viewpoint.h:
+	* ScreenGroup.cpp:
+	* X3DLayerNode.h:
+	* Billboard.cpp:
+	* X3DLayerNode.cpp:
+	* GeoViewpoint.h:
+	* X3DViewportNode.h:
+	* ScreenFontStyle.cpp:
+	* GeoViewpoint.cpp:
+	* OrthoViewpoint.h:
+	* X3DViewportNode.cpp:
+	* GeoTouchSensor.cpp:
+	* X3DViewpointNode.h:
+	* X3DViewpointNode.cpp:
+	* X3DGeospatialObject.cpp:
+	* VisibilitySensor.cpp:
+	* OrientationInterpolator.cpp: 
+
 2014-02-28  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* GeoTouchSensor.h:

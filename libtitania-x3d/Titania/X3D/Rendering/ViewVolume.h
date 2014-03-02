@@ -64,7 +64,7 @@ public:
 
 	ViewVolume ();
 
-	ViewVolume (const Matrix4d &);
+	ViewVolume (const Matrix4d &, const Vector4i &);
 
 	ViewVolume (const ViewVolume &) = default;
 

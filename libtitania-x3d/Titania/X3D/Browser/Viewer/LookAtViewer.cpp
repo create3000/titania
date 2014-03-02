@@ -163,7 +163,7 @@ LookAtViewer::getOrientationOffset ()
 
 	orientation = rotation * orientation;
 
-	return ~viewpoint -> orientation () * orientation;
+	return ~viewpoint -> getOrientation () * orientation;
 }
 
 bool

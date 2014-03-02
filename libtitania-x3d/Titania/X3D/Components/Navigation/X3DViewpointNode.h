@@ -136,14 +136,16 @@ public:
 	Vector3f
 	getUserPosition () const;
 
+	virtual
+	Rotation4f
+	getOrientation () const
+	{ return orientation (); }
+
 	Rotation4f
 	getUserOrientation () const;
 
 	Vector3f
 	getUserCenterOfRotation () const;
-
-	void
-	setTransformationMatrix (const Matrix4f &);
 
 	const Matrix4f &
 	getTransformationMatrix () const
@@ -156,14 +158,14 @@ public:
 	const Matrix4f &
 	getParentMatrix () const
 	{ return parentMatrix; }
-	
-	ViewVolume
-	getViewVolume () const
-	{ return viewVolume; }
 
 	virtual
 	Vector3d
 	getScreenScale (const double, const Vector4i &) const = 0;
+
+	virtual
+	Vector3f
+	getUpVector () const = 0;
 
 	///  @name Operations
 
@@ -198,7 +200,7 @@ public:
 
 	virtual
 	void
-	traverse (const TraverseType) override;
+	traverse (const TraverseType) final override;
 
 	///  @name Destruction
 
@@ -213,16 +215,20 @@ protected:
 
 	X3DViewpointNode ();
 
+	virtual
+	void
+	initialize () override;
+
 	///  @name Member access
 
+	virtual
 	void
-	setParentMatrix (const Matrix4f & value)
-	{ parentMatrix = value; }
+	setTransformationMatrix (const Matrix4f &);
 
 
 private:
 
-	///  @name Private fields
+	///  @name Protected fields
 
 	SFVec3f &
 	scaleOffset ()
@@ -240,11 +246,11 @@ private:
 	scaleOrientationOffset () const
 	{ return fields .scaleOrientationOffset; }
 
-	///  @name Construction
+	///  @name Member access
 
-	virtual
 	void
-	initialize () override;
+	setParentMatrix (const Matrix4f & value)
+	{ parentMatrix = value; }
 
 	///  @name Operations
 
@@ -295,8 +301,6 @@ private:
 	Matrix4f parentMatrix;
 	Matrix4f transformationMatrix;
 	Matrix4f inverseTransformationMatrix;
-	
-	ViewVolume viewVolume;
 
 	X3DSFNode <TimeSensor>              timeSensor;
 	X3DSFNode <EaseInEaseOut>           easeInEaseOut;

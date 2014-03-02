@@ -74,12 +74,10 @@ ViewVolume::ViewVolume () :
 	 valid (false)
 { }
 
-ViewVolume::ViewVolume (const Matrix4d & projection) :
+ViewVolume::ViewVolume (const Matrix4d & projection, const Vector4i & viewport) :
 	planes (),
 	 valid (true)
 {
-	const Vector4i viewport = Viewport4i ();
-
 	try
 	{
 		const int x1 = viewport [0];
@@ -186,17 +184,17 @@ throw (std::domain_error)
 
 	const double d = 1 / in .w ();
 
-	return Vector3d ((in .x () * d * 0.5 + 0.5) * viewport [2] + viewport [0],
-	                 (in .y () * d * 0.5 + 0.5) * viewport [3] + viewport [1],
-	                 (1 + in .z () * d) * 0.5);
+	return Vector3d ((in .x () * d / 2 + 0.5) * viewport [2] + viewport [0],
+	                 (in .y () * d / 2 + 0.5) * viewport [3] + viewport [1],
+	                 (1 + in .z () * d) / 2);
 }
 
 Line3d
 ViewVolume::projectLine (const Line3d & line, const Matrix4d & modelview, const Matrix4d & projection, const Vector4i & viewport)
 throw (std::domain_error)
 {
-	auto point1 = ViewVolume::projectPoint (line .point (),                                     modelview, projection, viewport);
-	auto point2 = ViewVolume::projectPoint (line .point () + line .direction () * 1000000000.0, modelview, projection, viewport);
+	Vector3d point1 = ViewVolume::projectPoint (line .point (),                            modelview, projection, viewport);
+	Vector3d point2 = ViewVolume::projectPoint (line .point () + line .direction () * 1e9, modelview, projection, viewport);
 
 	point1 .z (0);
 	point2 .z (0);

@@ -118,6 +118,11 @@ public:
 	Vector2d
 	getViewportSize (const Vector4i &) const;
 
+	virtual
+	Vector3f
+	getUpVector () const final override
+	{ return Vector3f (0, 1, 0); }
+
 	///  @name Operations
 
 	virtual

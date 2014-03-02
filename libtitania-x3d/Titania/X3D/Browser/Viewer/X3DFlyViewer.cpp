@@ -160,7 +160,7 @@ X3DFlyViewer::on_motion_notify_event (GdkEventMotion* event)
 			orientation = Rotation4f (toVector, fromVector) * orientation;
 			orientation = orientation * X3DViewpointNode::straightenHorizon (orientation);
 
-			getActiveViewpoint () -> orientationOffset () = ~getActiveViewpoint () -> orientation () * orientation;
+			getActiveViewpoint () -> orientationOffset () = ~getActiveViewpoint () -> getOrientation () * orientation;
 
 			fromVector = toVector;
 		}

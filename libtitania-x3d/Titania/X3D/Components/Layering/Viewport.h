@@ -64,6 +64,8 @@ class Viewport :
 {
 public:
 
+	using X3DViewportNode::getViewport;
+
 	///  @name Construction
 
 	Viewport (X3DExecutionContext* const);
@@ -114,14 +116,6 @@ public:
 
 	virtual
 	void
-	push (const TraverseType) final override;
-
-	virtual
-	void
-	pop (const TraverseType) final override;
-
-	virtual
-	void
 	enable () final override;
 
 	virtual
@@ -144,6 +138,12 @@ private:
 
 	float
 	getTop () const;
+
+	void
+	push (const TraverseType);
+
+	void
+	pop (const TraverseType);
 
 	///  @name Static members
 

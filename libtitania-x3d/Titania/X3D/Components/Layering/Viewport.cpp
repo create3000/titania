@@ -151,6 +151,8 @@ void
 Viewport::push (const TraverseType)
 {
 	viewports .emplace_back (new ViewportContainer (this));
+
+	getCurrentLayer () -> getViewVolumeStack () .emplace (ProjectionMatrix4d (), getViewport ());
 	getCurrentLayer () -> getLocalObjects () .emplace_back (viewports .back ());
 }
 
@@ -158,7 +160,9 @@ void
 Viewport::pop (const TraverseType)
 {
 	viewports .pop_back ();
+
 	getCurrentLayer () -> getLocalObjects () .pop_back ();
+	getCurrentLayer () -> getViewVolumeStack () .pop ();
 }
 
 void

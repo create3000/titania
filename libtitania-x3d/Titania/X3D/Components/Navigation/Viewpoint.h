@@ -116,6 +116,11 @@ public:
 	Vector3d
 	getScreenScale (const double, const Vector4i &) const final override;
 
+	virtual
+	Vector3f
+	getUpVector () const final override
+	{ return Vector3f (0, 1, 0); }
+
 	///  @name Operations
 
 	virtual

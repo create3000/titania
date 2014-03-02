@@ -51,7 +51,6 @@
 #ifndef __TITANIA_X3D_COMPONENTS_LAYERING_X3DLAYER_NODE_H__
 #define __TITANIA_X3D_COMPONENTS_LAYERING_X3DLAYER_NODE_H__
 
-#include "../../Rendering/CollisionArray.h"
 #include "../../Rendering/X3DRenderer.h"
 #include "../EnvironmentalEffects/LocalFog.h"
 #include "../Grouping/X3DGroupingNode.h"
@@ -158,9 +157,6 @@ public:
 	X3DBackgroundNode*
 	getBackground () const;
 
-	X3DFogObject*
-	getFog () const;
-
 	X3DViewpointNode*
 	getViewpoint () const;
 
@@ -209,12 +205,6 @@ public:
 	getLocalFogs ()
 	{ return localFogs; }
 
-	///  @name Collision handling
-
-	CollisionArray &
-	getCollisions ()
-	{ return collisions; }
-
 	///  @name Operations
 
 	Vector3f
@@ -252,6 +242,10 @@ protected:
 	const X3DSFNode <X3DGroupingNode>
 	getGroup () const
 	{ return group; }
+
+	virtual
+	X3DFogObject*
+	getFog () const final override;
 
 
 private:
@@ -320,7 +314,6 @@ private:
 	X3DSFNode <ViewpointList>      viewpoints;
 
 	LocalFogStack  localFogs;
-	CollisionArray collisions;
 
 	X3DSFNode <X3DGroupingNode> group;
 

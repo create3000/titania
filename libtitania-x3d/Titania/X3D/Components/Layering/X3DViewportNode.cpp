@@ -50,6 +50,8 @@
 
 #include "X3DViewportNode.h"
 
+#include "../../Browser/X3DBrowser.h"
+
 namespace titania {
 namespace X3D {
 
@@ -57,6 +59,14 @@ X3DViewportNode::X3DViewportNode () :
 	X3DGroupingNode ()
 {
 	addNodeType (X3DConstants::X3DViewportNode);
+}
+
+Vector4i
+X3DViewportNode::getViewport () const
+{
+	const auto & browserViewport = getBrowser () -> getViewport ();
+
+	return getViewport (browserViewport [2], browserViewport [3]);
 }
 
 } // X3D

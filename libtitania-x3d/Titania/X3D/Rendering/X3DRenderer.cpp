@@ -53,7 +53,6 @@
 #include "../Browser/X3DBrowser.h"
 #include "../Components/Navigation/X3DViewpointNode.h"
 #include "../Components/Shape/Appearance.h"
-#include "../Rendering/ViewVolume.h"
 
 #include <Titania/Utility/Adapter.h>
 #include <algorithm>
@@ -66,8 +65,10 @@ static constexpr size_t DEPTH_BUFFER_HEIGHT = 16;
 
 X3DRenderer::X3DRenderer () :
 	             X3DNode (),
+	     viewVolumeStack (),
 	       globalObjects (),
 	        localObjects (),
+	          collisions (),
 	              shapes (),
 	   transparentShapes (),
 	         shapeComare (),
@@ -97,27 +98,25 @@ X3DRenderer::addShape (X3DShapeNode* const shape)
 
 	if (min < 0)
 	{
-		if (getCurrentViewpoint () -> getViewVolume () .intersect (bbox))
+		if (viewVolumeStack .top () .intersect (bbox))
 		{
-			X3DFogObject* const fog = getCurrentLayer () -> getFog ();
-
 			if (shape -> isTransparent ())
 			{
 				if (numTransparentShapes < transparentShapes .size ())
-					transparentShapes [numTransparentShapes] -> assign (shape, fog, getLocalObjects (), getModelViewMatrix () .get (), center);
+					transparentShapes [numTransparentShapes] -> assign (shape, getFog (), getLocalObjects (), getModelViewMatrix () .get (), center);
 
 				else
-					transparentShapes .emplace_back (new ShapeContainer (shape, fog, getLocalObjects (), getModelViewMatrix () .get (), center));
+					transparentShapes .emplace_back (new ShapeContainer (shape, getFog (), getLocalObjects (), getModelViewMatrix () .get (), center));
 
 				++ numTransparentShapes;
 			}
 			else
 			{
 				if (numOpaqueShapes < shapes .size ())
-					shapes [numOpaqueShapes] -> assign (shape, fog, getLocalObjects (), getModelViewMatrix () .get (), center);
+					shapes [numOpaqueShapes] -> assign (shape, getFog (), getLocalObjects (), getModelViewMatrix () .get (), center);
 
 				else
-					shapes .emplace_back (new ShapeContainer (shape, fog, getLocalObjects (), getModelViewMatrix () .get (), center));
+					shapes .emplace_back (new ShapeContainer (shape, getFog (), getLocalObjects (), getModelViewMatrix () .get (), center));
 
 				++ numOpaqueShapes;
 			}
@@ -135,15 +134,13 @@ X3DRenderer::addCollision (X3DShapeNode* const shape)
 
 	if (min < 0)
 	{
-		if (getCurrentViewpoint () -> getViewVolume () .intersect (bbox))
+		if (viewVolumeStack .top () .intersect (bbox))
 		{
-			const CollisionArray & collisions = getCurrentLayer () -> getCollisions ();
-
 			if (numCollisionShapes < collisionShapes .size ())
-				collisionShapes [numCollisionShapes] -> assign (shape, collisions, getLocalObjects (), getModelViewMatrix () .get (), center);
+				collisionShapes [numCollisionShapes] -> assign (shape, getCollisions (), getLocalObjects (), getModelViewMatrix () .get (), center);
 
 			else
-				collisionShapes .emplace_back (new CollisionShape (shape, collisions, getLocalObjects (), getModelViewMatrix () .get (), center));
+				collisionShapes .emplace_back (new CollisionShape (shape, getCollisions (), getLocalObjects (), getModelViewMatrix () .get (), center));
 
 			++ numCollisionShapes;
 		}

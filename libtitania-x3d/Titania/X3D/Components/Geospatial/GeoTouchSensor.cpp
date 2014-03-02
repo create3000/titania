@@ -108,7 +108,7 @@ GeoTouchSensor::set_over (const HitPtr & hit, const bool over)
 
 		if (isOver ())
 		{
-			Vector3d hitPoint = hit -> point * ~getLastModelViewMatrix ();
+			const Vector3d hitPoint = hit -> point * ~getLastModelViewMatrix ();
 
 			hitTexCoord_changed () = Vector2f (hit -> texCoord .x (), hit -> texCoord .y ());
 			hitNormal_changed ()   = hit -> normal;

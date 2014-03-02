@@ -176,8 +176,10 @@ X3DGeospatialObject::lerp (const Vector3d & source, const Vector3d & destination
 	{
 		case Geospatial::CoordinateSystemType::GD:
 			return geospatial::gd_lerp <double> (source, destination, weight, getReversedOrder ());
+
 		case Geospatial::CoordinateSystemType::UTM:
 			return geospatial::utm_lerp <double> (source, destination, weight);
+
 		case Geospatial::CoordinateSystemType::GC:
 			return geospatial::gc_lerp <double> (source, destination, weight);
 	}
