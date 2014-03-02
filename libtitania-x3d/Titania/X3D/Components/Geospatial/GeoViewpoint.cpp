@@ -166,21 +166,9 @@ GeoViewpoint::getLookAtPositionOffset (const Box3f & bbox) const
 }
 
 void
-GeoViewpoint::setTransformationMatrix (const Matrix4f & value)
-{
-	static constexpr double s = 1e6; // abs (position - centerOfRotation)
-
-	Matrix4d transformationMatrix = value;
-
-	transformationMatrix .scale (Vector3d (s, s, s));
-
-	X3DViewpointNode::setTransformationMatrix (transformationMatrix);
-}
-
-void
 GeoViewpoint::reshape (const double zNear, const double zFar)
 {
-	const double zFar0 = 1e8;
+	static constexpr double zFar0 = 1e8;
 
 	glMatrixMode (GL_PROJECTION);
 

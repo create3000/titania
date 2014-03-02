@@ -19,10 +19,64 @@ DEF Gray Background {
   skyColor 0.2 0.2 0.2
 }
 
-GeoViewpoint {
-  description "GeoViewpoint"
-  position 0 0 13621864
-  orientation -1 0 0 1.5708
+DEF GeoViewpoints Transform {
+  children [
+    DEF Zero_1 GeoViewpoint {
+      description "Zero"
+      position 0 0 13621864
+      orientation -1 0 0 1.5708
+    }
+    DEF NorthPole_1 GeoViewpoint {
+      description "North Pole"
+      position 1.57079 0 13621864
+      orientation -1 0 0 1.5708
+    }
+    DEF SouthPole_1 GeoViewpoint {
+      description "South Pole"
+      position -1.57079 0 13621864
+      orientation -1 0 0 1.5708
+    }
+    DEF London_1 GeoViewpoint {
+      description "London"
+      position 0.89 0 13621864
+      orientation -1 0 0 1.5708
+    }
+    DEF Berlin_1 GeoViewpoint {
+      description "Berlin"
+      position 0.907 0.227 13621864
+      orientation -1 0 0 1.5708
+    }
+    DEF Nairobi_1 GeoViewpoint {
+      description "Nairobi"
+      position -0.0233 0.643 13621864
+      orientation -1 0 0 1.5708
+    }
+    DEF NewYork_1 GeoViewpoint {
+      description "New York"
+      position 0.698 -1.274 13621864
+      orientation -1 0 0 1.5708
+    }
+    DEF RioDeJaneiro_1 GeoViewpoint {
+      description "Rio de Janeiro"
+      position -0.384 -0.75 13621864
+      orientation -1 0 0 1.5708
+    }
+    DEF Sydney_1 GeoViewpoint {
+      description "Sydney"
+      position -0.646 2.513 13621864
+      orientation -1 0 0 1.5708
+    }
+    DEF Tokyo_1 GeoViewpoint {
+      description "Tokyo"
+      position 0.611 2.426 13621864
+      orientation -1 0 0 1.5708
+    }
+    DEF MenloPark_1 GeoViewpoint {
+      description "Menlo Park"
+      position 0.653636276847388 -2.13250262128124 13621864
+      orientation -1 0 0 1.5708
+    }
+  ]
 }
 
 Viewpoint {
@@ -29172,7 +29226,7 @@ DEF Axes_1 Transform {
 
 DEF Texts Transform {
   children [
-    DEF Zero_1 GeoLocation {
+    DEF Zero_2 GeoLocation {
       geoCoords 0 0 1000000
       children DEF BZERO Billboard {
         axisOfRotation 0 0 0
@@ -29412,7 +29466,7 @@ DEF Satellite Transform {
     }
     DEF _4 GeoTransform {
       scale 200000 200000 200000
-      geoCenter 0 1.73562471548071 1500000
+      geoCenter 0 2.14802494587569 1500000
       children [
         DEF Axes_2 Transform {
           scale 2 2 2

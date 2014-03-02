@@ -165,7 +165,8 @@ public:
 
 	virtual
 	Vector3f
-	getUpVector () const = 0;
+	getUpVector () const
+	{ return Vector3f (0, 1, 0); }
 
 	///  @name Operations
 
@@ -222,8 +223,9 @@ protected:
 	///  @name Member access
 
 	virtual
-	void
-	setTransformationMatrix (const Matrix4f &);
+	Vector3f
+	getScale () const
+	{ return Vector3f (1, 1, 1); }
 
 
 private:
@@ -247,6 +249,9 @@ private:
 	{ return fields .scaleOrientationOffset; }
 
 	///  @name Member access
+
+	void
+	setTransformationMatrix (Matrix4f);
 
 	void
 	setParentMatrix (const Matrix4f & value)

@@ -56,6 +56,8 @@
 #include "../Layering/X3DLayerNode.h"
 #include "../Navigation/NavigationInfo.h"
 
+#include "../Geospatial/GeoViewpoint.h"
+
 namespace titania {
 namespace X3D {
 
@@ -173,14 +175,14 @@ X3DViewpointNode::getRelativeTransformation (X3DViewpointNode* const fromViewpoi
 	differenceMatrix .inverse ();
 
 	// Get relative transformations from viewpoint.
-	Rotation4f rotation;
-	differenceMatrix .get (relativePosition, rotation, relativeScale, relativeScaleOrientation);
+	differenceMatrix .get (relativePosition, relativeOrientation, relativeScale, relativeScaleOrientation);
 
-	relativeOrientation = ~getOrientation () * rotation;
+	relativeOrientation  = ~getOrientation () * relativeOrientation;
+	relativeScale       /= getScale ();
 }
 
 void
-X3DViewpointNode::setTransformationMatrix (const Matrix4f & value)
+X3DViewpointNode::setTransformationMatrix (Matrix4f value)
 {
 	try
 	{
@@ -188,10 +190,7 @@ X3DViewpointNode::setTransformationMatrix (const Matrix4f & value)
 		inverseTransformationMatrix = ~value;
 	}
 	catch (const std::domain_error &)
-	{
-		transformationMatrix        = Matrix4f ();
-		inverseTransformationMatrix = Matrix4f ();
-	}
+	{ }
 }
 
 void
@@ -368,6 +367,7 @@ X3DViewpointNode::transitionStart (X3DViewpointNode* const fromViewpoint)
 
 			Vector3f   relativePosition, relativeScale;
 			Rotation4f relativeOrientation, relativeScaleOrientation;
+
 			getRelativeTransformation (fromViewpoint, relativePosition, relativeOrientation, relativeScale, relativeScaleOrientation);
 
 			const Vector3f   startPosition         = relativePosition;
@@ -399,6 +399,7 @@ X3DViewpointNode::transitionStart (X3DViewpointNode* const fromViewpoint)
 		{
 			Vector3f   relativePosition, relativeScale;
 			Rotation4f relativeOrientation, relativeScaleOrientation;
+
 			getRelativeTransformation (fromViewpoint, relativePosition, relativeOrientation, relativeScale, relativeScaleOrientation);
 
 			positionOffset ()         = relativePosition;
@@ -464,7 +465,7 @@ X3DViewpointNode::traverse (const TraverseType type)
 			if (isBound ())
 			{
 				Matrix4f matrix;
-				matrix .set (getUserPosition (), getUserOrientation (), scaleOffset (), scaleOrientationOffset ());
+				matrix .set (getUserPosition (), getUserOrientation (), getScale () * scaleOffset (), scaleOrientationOffset ());
 
 				setTransformationMatrix (matrix * getModelViewMatrix () .get ());
 			}

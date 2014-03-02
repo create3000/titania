@@ -155,16 +155,17 @@ private:
 
 	///  @name Member access
 
+	virtual
+	Vector3f
+	getScale () const final override
+	{ return Vector3f (1e6, 1e6, 1e6); }
+
 	double
 	getFieldOfView () const;
 
 	virtual
 	Vector3f
 	getLookAtPositionOffset (const Box3f &) const final override;
-
-	virtual
-	void
-	setTransformationMatrix (const Matrix4f &) final override;
 
 	///  @name Static members
 

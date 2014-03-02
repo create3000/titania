@@ -1,5 +1,14 @@
 2014-03-02  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Viewpoint.h:
+	* GeoViewpoint.h:
+	* OrthoViewpoint.h:
+	* GeoViewpoint.cpp:
+	* X3DViewpointNode.h:
+	* X3DViewpointNode.cpp: 
+
+2014-03-02  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* ViewVolume.h:
 	* X3DRenderer.h:
 	* ViewVolume.cpp:
