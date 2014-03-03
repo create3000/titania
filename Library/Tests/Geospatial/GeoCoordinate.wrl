@@ -16,7 +16,6 @@ NavigationInfo {
     "FLY",
     "ANY"
   ]
-  visibilityLimit 1e+08
 }
 
 DEF Gray Background {
@@ -29478,7 +29477,7 @@ DEF Satellite Transform {
     }
     DEF _4 GeoTransform {
       scale 200000 200000 200000
-      geoCenter 0 -0.702392039158177 1500000
+      geoCenter 0 2.59955404691725 1500000
       children [
         DEF Axes_2 Transform {
           scale 2 2 2

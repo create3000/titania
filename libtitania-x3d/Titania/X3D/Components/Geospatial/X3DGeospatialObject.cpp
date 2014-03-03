@@ -68,6 +68,7 @@ X3DGeospatialObject::X3DGeospatialObject () :
 	          fields (),
 	coordinateSystem (Geospatial::CoordinateSystemType::GD),
 	  referenceFrame (),
+	  elevationFrame (),
 	   reversedOrder (false),
 	   geoOriginNode (),
 	          origin ()
@@ -92,6 +93,7 @@ X3DGeospatialObject::set_geoSystem ()
 {
 	coordinateSystem = Geospatial::getCoordinateSystem (geoSystem ());
 	referenceFrame   = Geospatial::getReferenceFrame (geoSystem ());
+	elevationFrame   = Geospatial::getElevationFrame (geoSystem ());
 	reversedOrder    = Geospatial::getReversedOrder (geoSystem ());
 }
 
@@ -128,6 +130,12 @@ Vector3d
 X3DGeospatialObject::getGeoCoord (const Vector3d & point) const
 {
 	return referenceFrame -> apply (point + origin);
+}
+
+double
+X3DGeospatialObject::getElevation (const Vector3d & point) const
+{
+	return elevationFrame -> apply (point + origin) .z ();
 }
 
 Vector3d

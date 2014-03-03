@@ -148,9 +148,11 @@ Background::initialize ()
 	topTexture    -> url () = topUrl ();
 	bottomTexture -> url () = bottomUrl ();
 
-	textureProperties -> boundaryModeS () = "CLAMP_TO_EDGE";
-	textureProperties -> boundaryModeT () = "CLAMP_TO_EDGE";
-	textureProperties -> boundaryModeR () = "CLAMP_TO_EDGE";
+	textureProperties -> boundaryModeS ()       = "CLAMP_TO_EDGE";
+	textureProperties -> boundaryModeT ()       = "CLAMP_TO_EDGE";
+	textureProperties -> boundaryModeR ()       = "CLAMP_TO_EDGE";
+	textureProperties -> minificationFilter ()  = "NICEST";
+	textureProperties -> magnificationFilter () = "NICEST";
 
 	frontTexture  -> textureProperties () = textureProperties;
 	backTexture   -> textureProperties () = textureProperties;

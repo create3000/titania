@@ -172,7 +172,7 @@ NavigationInfo::getNearPlane () const
 float
 NavigationInfo::getFarPlane () const
 {
-	return visibilityLimit () ? visibilityLimit () : 100000.0f;
+	return visibilityLimit () ? visibilityLimit () : getCurrentViewpoint () -> getMaxZFar ();
 }
 
 TransitionType

@@ -102,6 +102,9 @@ protected:
 	Vector3d
 	getGeoCoord (const Vector3d &) const;
 
+	double
+	getElevation (const Vector3d &) const;
+
 	Vector3d
 	getCoord (const Vector3d &) const;
 
@@ -151,6 +154,7 @@ private:
 
 	Geospatial::CoordinateSystemType coordinateSystem;
 	Geospatial::ReferenceFramePtr    referenceFrame;
+	Geospatial::ReferenceFramePtr    elevationFrame;
 	bool                             reversedOrder;
 	X3DSFNode <GeoOrigin>            geoOriginNode;
 	Vector3d                         origin;

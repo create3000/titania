@@ -152,11 +152,15 @@ X3DLayerNode::getBBox () const
 Vector3f
 X3DLayerNode::getTranslation (const Vector3f & positionOffset, const float width, const float height, const Vector3f & translation)
 {
+	float       distance = getDistance (positionOffset, width, height, translation);
+	const float length   = math::abs (translation);
+
+	getBrowser () -> getLayers () .push (this);
+
 	const float zFar            = getNavigationInfo () -> getFarPlane ();
 	const float collisionRadius = getNavigationInfo () -> getCollisionRadius ();
 
-	float       distance = getDistance (positionOffset, width, height, translation);
-	const float length   = math::abs (translation);
+	getBrowser () -> getLayers () .pop ();
 
 	if (zFar - distance > 0) // Are there polygons under the viewer
 	{
@@ -188,11 +192,15 @@ X3DLayerNode::getTranslation (const Vector3f & positionOffset, const float width
 float
 X3DLayerNode::getDistance (const Vector3f & positionOffset, const float width, const float height, const Vector3f & direction)
 {
+	getBrowser () -> getLayers () .push (this);
+
 	const float width1_2  = width / 2;
 	const float height1_2 = height / 2;
 
 	const float zNear = getNavigationInfo () -> getNearPlane ();
 	const float zFar  = getNavigationInfo () -> getFarPlane ();
+
+	getBrowser () -> getLayers () .pop ();
 
 	// Reshape camera
 

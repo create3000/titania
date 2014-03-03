@@ -82,6 +82,10 @@ public:
 	getReferenceFrame (const MFString &);
 
 	static
+	ReferenceFramePtr
+	getElevationFrame (const MFString &);
+
+	static
 	bool
 	getReversedOrder (const MFString & geoSystem);
 

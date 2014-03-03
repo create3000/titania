@@ -1,5 +1,21 @@
 2014-03-03  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Geospatial.h:
+	* Geospatial.cpp:
+	* GeoViewpoint.h:
+	* X3DLayerNode.cpp:
+	* GeoViewpoint.cpp:
+	* NavigationInfo.cpp:
+	* X3DViewpointNode.h:
+	* X3DViewpointNode.cpp:
+	* X3DGeospatialObject.h:
+	* X3DGeospatialObject.cpp:
+	* Background.cpp:
+	* X3DFogObject.cpp:
+	* X3DBackgroundNode.cpp: 
+
+2014-03-03  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DRenderer.cpp:
 	* X3DBrowserSurface.cpp:
 	* X3DFlyViewer.h:

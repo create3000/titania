@@ -338,13 +338,25 @@ X3DBackgroundNode::draw ()
 	// Scale background
 
 	const auto viewport = Viewport4i ();
-	Vector3d   scale    = getCurrentViewpoint () -> getScreenScale (SIZE, viewport);
+	auto       scale    = getCurrentViewpoint () -> getScreenScale (SIZE, viewport);
 
 	scale *= double (viewport [2] > viewport [3] ? viewport [2] : viewport [3]);
+
+	getCurrentViewpoint () -> reshape (1, std::max (2.0, 2 * SIZE * scale .z ()));
+
+	glLoadIdentity ();
 	glScalef (scale .x (), scale .y (), scale .z ());
 
-	scale *= getCurrentViewpoint () -> getScale ();
-	getCurrentViewpoint () -> reshape (1, std::max (2.0, 2 * SIZE * scale .z ()));
+	// Rotate background
+
+	Vector3d   translation;
+	Rotation4f rotation;
+	float      x, y, z, angle;
+
+	matrix .get (translation, rotation);
+	rotation .get (x, y, z, angle);
+
+	glRotatef (math::degrees (angle), x, y, z);
 
 	// Draw
 
@@ -357,17 +369,6 @@ X3DBackgroundNode::drawSphere ()
 {
 	if (transparency () >= 1.0f)
 		return;
-
-	// Rotate background
-
-	Vector3d   translation;
-	Rotation4f rotation;
-	float      x, y, z, angle;
-
-	matrix .get (translation, rotation);
-	rotation .get (x, y, z, angle);
-
-	glRotatef (math::degrees (angle), x, y, z);
 
 	// Draw
 
@@ -400,7 +401,7 @@ X3DBackgroundNode::drawSphere ()
 void
 X3DBackgroundNode::drawCube ()
 {
-	const float radius = 10000;
+	const float radius = SIZE;
 	const float s      = std::sqrt (std::pow (2 * radius, 2) / 2) / 2;
 
 	glDisable (GL_DEPTH_TEST);

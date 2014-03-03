@@ -177,8 +177,7 @@ X3DViewpointNode::getRelativeTransformation (X3DViewpointNode* const fromViewpoi
 	// Get relative transformations from viewpoint.
 	differenceMatrix .get (relativePosition, relativeOrientation, relativeScale, relativeScaleOrientation);
 
-	relativeOrientation  = ~getOrientation () * relativeOrientation;
-	relativeScale       /= getScale ();
+	relativeOrientation = ~getOrientation () * relativeOrientation;
 }
 
 void
@@ -223,6 +222,7 @@ X3DViewpointNode::resetUserOffsets ()
 	scaleOffset ()            = Vector3f (1, 1, 1);
 	scaleOrientationOffset () = Rotation4f ();
 	centerOfRotationOffset () = Vector3f ();
+	fieldOfViewScale ()       = 1;
 }
 
 void
@@ -474,7 +474,7 @@ X3DViewpointNode::traverse (const TraverseType type)
 			if (isBound ())
 			{
 				Matrix4f matrix;
-				matrix .set (getUserPosition (), getUserOrientation (), getScale () * scaleOffset (), scaleOrientationOffset ());
+				matrix .set (getUserPosition (), getUserOrientation (), scaleOffset (), scaleOrientationOffset ());
 
 				setTransformationMatrix (matrix * getModelViewMatrix () .get ());
 			}
@@ -486,10 +486,18 @@ X3DViewpointNode::traverse (const TraverseType type)
 	}
 }
 
+///  Reshape viewpoint that it suits for X3DBackground.
+///  Overloaded in GeoViewpoint.
+void
+X3DViewpointNode::background (const double zNear, const double zFar)
+{
+	reshape (zNear, zFar);
+}
+
 void
 X3DViewpointNode::reshape ()
 {
-	NavigationInfo* navigationInfo = getCurrentLayer () -> getNavigationInfo ();
+	NavigationInfo* const navigationInfo = getCurrentLayer () -> getNavigationInfo ();
 
 	reshape (navigationInfo -> getNearPlane (), navigationInfo -> getFarPlane ());
 }

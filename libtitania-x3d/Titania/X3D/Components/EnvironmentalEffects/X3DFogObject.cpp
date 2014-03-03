@@ -56,10 +56,10 @@ namespace titania {
 namespace X3D {
 
 X3DFogObject::Fields::Fields () :
-	color (new SFColor (1, 1, 1)),
-	fogType (new SFString ("LINEAR")),
+	          color (new SFColor (1, 1, 1)),
+	        fogType (new SFString ("LINEAR")),
 	visibilityRange (new SFFloat ()),
-	transparency (0)
+	   transparency (0)
 { }
 
 X3DFogObject::X3DFogObject () :

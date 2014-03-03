@@ -118,7 +118,8 @@ public:
 
 	virtual
 	Vector3f
-	getPosition () const final override;
+	getPosition () const final override
+	{ return coord; }
 
 	virtual
 	Rotation4f
@@ -126,18 +127,22 @@ public:
 
 	virtual
 	Vector3f
-	getScale () const final override
-	{ return Vector3f (scale, scale, scale); }
+	getUpVector () const final override;
 
 	virtual
-	Vector3f
-	getUpVector () const final override;
+	float
+	getMaxZFar () const final override
+	{ return 1e9; }
 
 	virtual
 	Vector3d
 	getScreenScale (const double, const Vector4i &) const final override;
 
 	///  @name Operations
+
+	virtual
+	void
+	background (const double, const double) final override;
 
 	virtual
 	void
@@ -158,6 +163,11 @@ private:
 	void
 	initialize () final override;
 
+	///  @name Event handlers
+
+	void
+	set_position ();
+
 	///  @name Member access
 
 	double
@@ -167,13 +177,14 @@ private:
 	Vector3f
 	getLookAtPositionOffset (const Box3f &) const final override;
 
+	void
+	reshape (const double, const double, const bool);
+
 	///  @name Static members
 
 	static const std::string componentName;
 	static const std::string typeName;
 	static const std::string containerField;
-
-	static constexpr double scale = 1e6;
 
 	///  @name Members
 
@@ -187,6 +198,9 @@ private:
 	};
 
 	Fields fields;
+
+	Vector3d coord;
+	double   elevation;
 
 };
 

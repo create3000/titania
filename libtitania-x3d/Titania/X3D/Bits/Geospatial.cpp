@@ -147,6 +147,12 @@ Geospatial::getReferenceFrame (const MFString & geoSystem)
 	return ReferenceFramePtr (new Geodetic (geospatial::WE));
 }
 
+Geospatial::ReferenceFramePtr
+Geospatial::getElevationFrame (const MFString & geoSystem)
+{
+	return ReferenceFramePtr (new Geodetic (getEllipsoid (geoSystem)));
+}
+
 Geospatial::CoordinateSystemType
 Geospatial::getCoordinateSystem (const MFString & geoSystem)
 {

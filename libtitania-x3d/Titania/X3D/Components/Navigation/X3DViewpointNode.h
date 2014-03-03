@@ -149,13 +149,13 @@ public:
 
 	virtual
 	Vector3f
-	getScale () const
-	{ return Vector3f (1, 1, 1); }
-
-	virtual
-	Vector3f
 	getUpVector () const
 	{ return Vector3f (0, 1, 0); }
+
+	virtual
+	float
+	getMaxZFar () const
+	{ return 1e5; }
 
 	const Matrix4f &
 	getTransformationMatrix () const
@@ -196,12 +196,16 @@ public:
 	void
 	transitionStop ();
 
+	virtual
 	void
-	reshape ();
+	background (const double, const double);
 
 	virtual
 	void
 	reshape (const double, const double) = 0;
+
+	void
+	reshape ();
 
 	void
 	transform ();

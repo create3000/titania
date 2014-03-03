@@ -64,17 +64,19 @@ const std::string GeoViewpoint::typeName       = "GeoViewpoint";
 const std::string GeoViewpoint::containerField = "children";
 
 GeoViewpoint::Fields::Fields () :
-	        position (new SFVec3d (0, 0, 100000)),
+	position (new SFVec3d (0, 0, 100000)),
 	//centerOfRotation (new SFVec3d ()),
-	     fieldOfView (new SFFloat (0.785398)),
-	     speedFactor (new SFFloat (1))
+	fieldOfView (new SFFloat (0.785398)),
+	speedFactor (new SFFloat (1))
 { }
 
 GeoViewpoint::GeoViewpoint (X3DExecutionContext* const executionContext) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	   X3DViewpointNode (),
 	X3DGeospatialObject (),
-	             fields ()
+	             fields (),
+	              coord (),
+	          elevation ()
 {
 	addField (inputOutput,    "metadata",          metadata ());
 	addField (initializeOnly, "geoSystem",         geoSystem ());
@@ -103,12 +105,18 @@ GeoViewpoint::initialize ()
 {
 	X3DViewpointNode::initialize ();
 	X3DGeospatialObject::initialize ();
+
+	position ()       .addInterest (this, &GeoViewpoint::set_position);
+	positionOffset () .addInterest (this, &GeoViewpoint::set_position);
+
+	set_position ();
 }
 
-Vector3f
-GeoViewpoint::getPosition () const
+void
+GeoViewpoint::set_position ()
 {
-	return getCoord (position ());
+	coord     = getCoord (position ());
+	elevation = getElevation (coord + Vector3d (positionOffset () .getValue ()));
 }
 
 Rotation4f
@@ -119,6 +127,7 @@ GeoViewpoint::getOrientation () const
 	return orientation () * localOrientation;
 }
 
+// Same as in Viewpoint
 double
 GeoViewpoint::getFieldOfView () const
 {
@@ -133,6 +142,7 @@ GeoViewpoint::getUpVector () const
 	return X3DGeospatialObject::getUpVector (position ());
 }
 
+// Same as in Viewpoint
 Vector3d
 GeoViewpoint::getScreenScale (const double distance, const Vector4i & viewport) const
 {
@@ -149,6 +159,7 @@ GeoViewpoint::getScreenScale (const double distance, const Vector4i & viewport) 
 	return Vector3d (size, size, size);
 }
 
+// Same as in Viewpoint
 Vector3f
 GeoViewpoint::getLookAtPositionOffset (const Box3f & bbox) const
 {
@@ -165,13 +176,24 @@ GeoViewpoint::getLookAtPositionOffset (const Box3f & bbox) const
 	return Vector3f ();
 }
 
+///  Reshape viewpoint that it suits for X3DBackground.
+void
+GeoViewpoint::background (const double zNear, const double zFar)
+{
+	reshape (zNear, zFar, true);
+}
+
 void
 GeoViewpoint::reshape (const double zNear, const double zFar)
 {
-	static constexpr double zFar0 = 1e8;
+	reshape (zNear, zFar, false);
+}
 
-	const double geoZNear = std::max (zNear / scale, std::numeric_limits <float>::epsilon () * 10000.0);
-	const double geoZFar  = zFar / scale;
+void
+GeoViewpoint::reshape (const double zNear, const double zFar, const bool limitZNear)
+{
+	const double geoZNear = limitZNear ? zNear : zNear * std::max (elevation / 100, 1.0);
+	const double geoZFar  = zFar;
 
 	glMatrixMode (GL_PROJECTION);
 
