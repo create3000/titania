@@ -6,37 +6,35 @@ DEF Gray Background {
   skyColor 0.2 0.2 0.2
 }
 
-Viewpoint {
-  description "Viewpoint"
-  position 16775.3 -2212.49 4068.98
-  orientation 0.665807 0.479555 0.571601 1.84431
+GeoViewpoint {
+  description "GeoViewpoint"
+  position 0 0 13000000
+  orientation -1 0 0 1.5708
 }
 
 DEF GeoElevationGrid Transform {
-  scale 0.001 0.001 0.001
   children Shape {
     appearance Appearance {
       material Material { }
       texture ImageTexture {
         url [
-          "../../../Titania/share/titania/Library/Textures/People/Lena.jpg",
-          "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/People/Lena.jpg"
+          "../images/earth.png",
+          "file:///home/holger/Projekte/Titania/Library/Tests/images/earth.png"
         ]
-        repeatS FALSE
-        repeatT FALSE
       }
     }
     geometry GeoElevationGrid {
-      xDimension 10
-      xSpacing 0.1
-      zDimension 10
-      zSpacing 0.1
+      geoGridOrigin -1.570963 3.1415927 0
+      xDimension 201
+      xSpacing 0.031415927
+      zDimension 101
+      zSpacing 0.031415927
     }
   }
 }
 
 DEF IndexedLineSet Transform {
-  scale 1000 1000 1000
+  scale 1e+07 1e+07 1e+07
   children Shape {
     geometry IndexedLineSet {
       colorPerVertex FALSE
@@ -78,7 +76,6 @@ DEF IndexedLineSet Transform {
 }
 
 Transform {
-  scale 0.001 0.001 0.001
   children GeoTransform {
     scale 1e+06 1e+06 1e+06
     children Shape {

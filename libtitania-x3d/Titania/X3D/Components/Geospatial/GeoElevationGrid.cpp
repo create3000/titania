@@ -223,7 +223,7 @@ GeoElevationGrid::createNormals (const std::vector <Vector3f> & points, const st
 
 		const Vector3f normal = math::normal (points [*(index)],
 		                                      points [*(index + 1)],
-		                                      points [*(index + 3)],
+		                                      points [*(index + 4)],
 		                                      points [*(index + 2)]);
 
 		normals .resize (normals .size () + 6, normal);

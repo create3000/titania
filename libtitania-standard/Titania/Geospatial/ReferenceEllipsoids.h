@@ -58,6 +58,8 @@ namespace geospatial {
 
 using namespace titania::math;
 
+// Earth
+
 constexpr spheroid3 <double> AA (6377563.396, 299.3249646,   inv_flattening_type ()); // Airy 1830
 constexpr spheroid3 <double> AM (6377340.189, 299.3249646,   inv_flattening_type ()); // Modified Airy
 constexpr spheroid3 <double> AN (6378160,     298.25,        inv_flattening_type ()); // Australian National
@@ -81,6 +83,21 @@ constexpr spheroid3 <double> RF (6378137,     298.257222101, inv_flattening_type
 constexpr spheroid3 <double> SA (6378160,     298.25,        inv_flattening_type ()); // South American 1969
 constexpr spheroid3 <double> WD (6378135,     298.26,        inv_flattening_type ()); // WGS 72
 constexpr spheroid3 <double> WE (6378137,     298.257223563, inv_flattening_type ()); // WGS 84
+
+// Solar System
+// http://en.wikipedia.de
+// Can someone give me more accurate parameters.
+
+constexpr spheroid3 <double> SUN     (696342000, 1 / 9e-6, inv_flattening_type ());
+constexpr spheroid3 <double> MERCURY (2439700,  2439700);
+constexpr spheroid3 <double> VENUS   (6051800,  6051800);
+constexpr spheroid3 <double> MOON    (1738140,  1735970);
+constexpr spheroid3 <double> MARS    (3395428,  3377678);                             // http://adsabs.harvard.edu/abs/2010EM%26P..106....1A
+constexpr spheroid3 <double> JUPITER (71492000, 66854000);
+constexpr spheroid3 <double> SATURN  (60268000, 54364000);
+constexpr spheroid3 <double> URANUS  (2555000,  24973000);
+constexpr spheroid3 <double> NEPTUNE (24764000, 24341000);
+constexpr spheroid3 <double> PLUTO   (1153000,  1153000);
 
 } // geospatial
 } // titania

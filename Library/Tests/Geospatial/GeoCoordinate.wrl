@@ -41,9 +41,9 @@ DEF GeoViewpoints Transform {
       position 0.89 0 13621864
       orientation -1 0 0 1.5708
     }
-    DEF Berlin_1 GeoViewpoint {
-      description "Berlin"
-      position 0.907 0.227 13621864
+    DEF Leipzig_1 GeoViewpoint {
+      description "Leipzig"
+      position 0.89555602 0.2159173 13621864
       orientation -1 0 0 1.5708
     }
     DEF Nairobi_1 GeoViewpoint {
@@ -28764,7 +28764,7 @@ DEF Points Transform {
           1.5707 0 0,
           -1.5707 0 0,
           0.89 0 0,
-          0.907 0.227 0,
+          0.89555602 0.2159173 0,
           -0.0233 0.643 0,
           0.698 -1.274 0,
           -0.384 -0.75 0,
@@ -28941,9 +28941,9 @@ DEF Axes_1 Transform {
         }
       }
     }
-    DEF Berlin GeoTransform {
+    DEF Leipzig GeoTransform {
       scale 1e+06 1e+06 1e+06
-      geoCenter 0.907 0.227 0
+      geoCenter 0.89555602 0.2159173 0
       children DEF Axes5 Shape {
         geometry IndexedLineSet {
           colorPerVertex FALSE
@@ -29302,8 +29302,8 @@ DEF Texts Transform {
         }
       }
     }
-    DEF BerlinText GeoLocation {
-      geoCoords 0.907 0.227 1000000
+    DEF LeipzigText GeoLocation {
+      geoCoords 0.89555602 0.2159173 1000000
       children Billboard {
         axisOfRotation 0 0 0
         children Shape {
@@ -29313,7 +29313,7 @@ DEF Texts Transform {
             }
           }
           geometry Text {
-            string "Berlin"
+            string "Leipzig"
             fontStyle ScreenFontStyle {
               family "SANS"
             }
@@ -29466,7 +29466,7 @@ DEF Satellite Transform {
     }
     DEF _4 GeoTransform {
       scale 200000 200000 200000
-      geoCenter 0 2.14802494587569 1500000
+      geoCenter 0 3.13533730881491 1500000
       children [
         DEF Axes_2 Transform {
           scale 2 2 2
