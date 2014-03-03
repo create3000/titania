@@ -394,9 +394,11 @@ X3DRenderer::gravite ()
 	{
 		distance -= height;
 
+		const Rotation4f up (Vector3f (0, 1, 0), getCurrentViewpoint () -> getUpVector ());
+
 		if (distance > 0)
 		{
-			// Gravite
+			// Gravite and fall down the floor
 
 			const float currentFrameRate = speed ? getBrowser () -> getCurrentFrameRate () : 1000000.0;
 
@@ -411,7 +413,7 @@ X3DRenderer::gravite ()
 				speed       = 0;
 			}
 
-			getCurrentViewpoint () -> positionOffset () += Vector3f (0, translation, 0);
+			getCurrentViewpoint () -> positionOffset () += Vector3f (0, translation, 0) * up;
 		}
 		else
 		{
@@ -423,14 +425,14 @@ X3DRenderer::gravite ()
 				const float size = getCurrentNavigationInfo () -> getCollisionRadius () * 2;
 
 				// Step up
-				Vector3f translation = getCurrentLayer () -> getTranslation (Vector3f (), size, size, Vector3f (0, -distance, 0));
+				Vector3f translation = getCurrentLayer () -> getTranslation (Vector3f (), size, size, Vector3f (0, -distance, 0) * up);
 
 				if (getBrowser () -> getBrowserOptions () -> animateStairWalks ())
 				{
 					float step = getBrowser () -> getCurrentSpeed () / getBrowser () -> getCurrentFrameRate ();
-					step = abs (getInverseCameraSpaceMatrix () .mult_matrix_dir (Vector3f (0, step, 0)));
+					step = abs (getInverseCameraSpaceMatrix () .mult_matrix_dir (Vector3f (0, step, 0) * up));
 
-					Vector3f offset (0, step, 0);
+					Vector3f offset = Vector3f (0, step, 0) * up;
 
 					if (math::abs (offset) > math::abs (translation) or getBrowser () -> getCurrentSpeed () == 0)
 						offset = translation;

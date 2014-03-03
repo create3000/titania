@@ -77,8 +77,6 @@ public:
 
 protected:
 
-	static Vector3f upVector;
-
 	virtual
 	Vector3f
 	getTranslationOffset (const Vector3f &) = 0;

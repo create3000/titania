@@ -100,10 +100,13 @@ protected:
 	///  @name Operations
 
 	Vector3d
+	getGeoCoord (const Vector3d &) const;
+
+	Vector3d
 	getCoord (const Vector3d &) const;
 
 	Vector3d
-	getGeoCoord (const Vector3d &) const;
+	getUpVector (const Vector3d &) const;
 
 	Matrix4d
 	getLocationMatrix (const Vector3d &) const;

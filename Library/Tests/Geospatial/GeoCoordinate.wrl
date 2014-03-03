@@ -12,6 +12,10 @@ EXTERNPROTO QuadSphere [
 ]
 
 NavigationInfo {
+  type [
+    "FLY",
+    "ANY"
+  ]
   visibilityLimit 1e+08
 }
 
@@ -75,6 +79,14 @@ DEF GeoViewpoints Transform {
       description "Menlo Park"
       position 0.653636276847388 -2.13250262128124 13621864
       orientation -1 0 0 1.5708
+    }
+    DEF Floor GeoViewpoint {
+      description "Floor"
+      position 0 0 10
+    }
+    DEF Leipzig1 GeoViewpoint {
+      description "Leipzig down"
+      position 0.89555602 0.2159173 10
     }
   ]
 }
@@ -29466,7 +29478,7 @@ DEF Satellite Transform {
     }
     DEF _4 GeoTransform {
       scale 200000 200000 200000
-      geoCenter 0 3.13533730881491 1500000
+      geoCenter 0 -0.702392039158177 1500000
       children [
         DEF Axes_2 Transform {
           scale 2 2 2

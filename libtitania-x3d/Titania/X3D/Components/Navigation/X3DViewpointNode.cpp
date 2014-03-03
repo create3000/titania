@@ -61,7 +61,7 @@
 namespace titania {
 namespace X3D {
 
-static constexpr Vector3f upVector (0, 1, 0);
+static constexpr Vector3f yAxis (0, 1, 0);
 static constexpr Vector3f zAxis (0, 0, 1);
 
 X3DViewpointNode::Fields::Fields () :
@@ -240,7 +240,7 @@ X3DViewpointNode::straighten (const bool horizon)
 
 	const Rotation4f rotation = orientationOffset () * (horizon
 	                                                    ? straightenHorizon (getUserOrientation ())
-																       : Rotation4f (upVector * getUserOrientation (), upVector));
+																       : straightenView (getUserOrientation ()));
 
 	positionInterpolator         -> keyValue () = { positionOffset (), positionOffset () };
 	orientationInterpolator      -> keyValue () = { orientationOffset (), rotation };
@@ -259,16 +259,25 @@ X3DViewpointNode::straighten (const bool horizon)
 	set_bind () = true;
 }
 
+///  Returns a relative rotation that can right multiplied with @a orientation to get a straighten horizon.
 Rotation4f
-X3DViewpointNode::straightenHorizon (const Rotation4f & orientation)
+X3DViewpointNode::straightenHorizon (const Rotation4f & orientation) const
 {
 	// Taken from Billboard
 
 	Vector3f direction = zAxis * orientation;
-	Vector3f normal    = cross (direction, upVector);
-	Vector3f vector    = cross (direction, upVector * orientation);
+	Vector3f normal    = cross (direction, getUpVector ());
+	Vector3f vector    = cross (direction, yAxis * orientation);
 
 	return Rotation4f (vector, normal);
+}
+
+///  This function straightens the view in a way that the viewpoint looks along the upVector plane.
+///  Returns a relative rotation that can right multiplied with @a orientation to get a straighten view.
+Rotation4f
+X3DViewpointNode::straightenView (const Rotation4f & orientation) const
+{
+	return Rotation4f (yAxis * orientation, getUpVector ());
 }
 
 void

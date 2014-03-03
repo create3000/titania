@@ -127,6 +127,12 @@ GeoViewpoint::getFieldOfView () const
 	return fov > 0 and fov < M_PI ? fov : M_PI / 4;
 }
 
+Vector3f
+GeoViewpoint::getUpVector () const
+{
+	return X3DGeospatialObject::getUpVector (position ());
+}
+
 Vector3d
 GeoViewpoint::getScreenScale (const double distance, const Vector4i & viewport) const
 {
@@ -141,12 +147,6 @@ GeoViewpoint::getScreenScale (const double distance, const Vector4i & viewport) 
 		size /= width;
 
 	return Vector3d (size, size, size);
-}
-
-Vector3f
-GeoViewpoint::getUpVector () const
-{
-	return Vector3f (0, 1, 0);
 }
 
 Vector3f
@@ -170,6 +170,9 @@ GeoViewpoint::reshape (const double zNear, const double zFar)
 {
 	static constexpr double zFar0 = 1e8;
 
+	const double geoZNear = std::max (zNear / scale, std::numeric_limits <float>::epsilon () * 10000.0);
+	const double geoZFar  = zFar / scale;
+
 	glMatrixMode (GL_PROJECTION);
 
 	const Vector4i viewport = Viewport4i ();
@@ -177,17 +180,17 @@ GeoViewpoint::reshape (const double zNear, const double zFar)
 	const size_t width  = viewport [2];
 	const size_t height = viewport [3];
 
-	const double ratio = std::tan (getFieldOfView () / 2) * zNear;
+	const double ratio = std::tan (getFieldOfView () / 2) * geoZNear;
 
 	if (width > height)
 	{
 		const double aspect = width * ratio / height;
-		glLoadMatrixd (frustum (-aspect, aspect, -ratio, ratio, zNear, zFar0) .data ());
+		glLoadMatrixd (frustum (-aspect, aspect, -ratio, ratio, geoZNear, geoZFar) .data ());
 	}
 	else
 	{
 		const double aspect = height * ratio / width;
-		glLoadMatrixd (frustum (-ratio, ratio, -aspect, aspect, zNear, zFar0) .data ());
+		glLoadMatrixd (frustum (-ratio, ratio, -aspect, aspect, geoZNear, geoZFar) .data ());
 	}
 
 	glMatrixMode (GL_MODELVIEW);

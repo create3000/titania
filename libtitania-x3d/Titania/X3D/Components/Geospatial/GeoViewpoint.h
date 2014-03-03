@@ -125,12 +125,17 @@ public:
 	getOrientation () const final override;
 
 	virtual
-	Vector3d
-	getScreenScale (const double, const Vector4i &) const final override;
+	Vector3f
+	getScale () const final override
+	{ return Vector3f (scale, scale, scale); }
 
 	virtual
 	Vector3f
 	getUpVector () const final override;
+
+	virtual
+	Vector3d
+	getScreenScale (const double, const Vector4i &) const final override;
 
 	///  @name Operations
 
@@ -155,11 +160,6 @@ private:
 
 	///  @name Member access
 
-	virtual
-	Vector3f
-	getScale () const final override
-	{ return Vector3f (1e6, 1e6, 1e6); }
-
 	double
 	getFieldOfView () const;
 
@@ -172,6 +172,8 @@ private:
 	static const std::string componentName;
 	static const std::string typeName;
 	static const std::string containerField;
+
+	static constexpr double scale = 1e6;
 
 	///  @name Members
 

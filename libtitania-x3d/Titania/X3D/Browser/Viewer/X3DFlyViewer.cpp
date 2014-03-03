@@ -68,8 +68,6 @@ static constexpr float     ROLL_ANGLE             = M_PI / 32;
 static constexpr time_type ROLL_TIME              = 0.2;
 static constexpr double    FRAME_RATE             = 60;
 
-Vector3f X3DFlyViewer::upVector (0, 1, 0);
-
 X3DFlyViewer::X3DFlyViewer (X3DBrowserSurface* const browser, NavigationInfo* const navigationInfo) :
 	          X3DViewer (browser),
 	     navigationInfo (navigationInfo),
@@ -155,10 +153,14 @@ X3DFlyViewer::on_motion_notify_event (GdkEventMotion* event)
 	{
 		if (keys .control ())
 		{
+			// Look around
+
+			const auto viewpoint = getActiveViewpoint ();
+
 			const Vector3f toVector = trackballProjectToSphere (event -> x, event -> y);
-			
-			orientation = Rotation4f (toVector, fromVector) * orientation;
-			orientation = orientation * X3DViewpointNode::straightenHorizon (orientation);
+
+			orientation  = Rotation4f (toVector, fromVector) * orientation;
+			orientation *= viewpoint -> straightenHorizon (orientation);
 
 			getActiveViewpoint () -> orientationOffset () = ~getActiveViewpoint () -> getOrientation () * orientation;
 
@@ -166,6 +168,8 @@ X3DFlyViewer::on_motion_notify_event (GdkEventMotion* event)
 		}
 		else
 		{
+			// Fly
+
 			toVector  = Vector3f (event -> x, 0, event -> y);
 			direction = (toVector - fromVector) * (SPEED_FACTOR * navigationInfo -> speed ());
 
@@ -175,6 +179,8 @@ X3DFlyViewer::on_motion_notify_event (GdkEventMotion* event)
 
 	else if (button == 2)
 	{
+		// Pan
+
 		toVector  = Vector3f (event -> x, -event -> y, 0);
 		direction = (toVector - fromVector) * (SPEED_FACTOR * navigationInfo -> speed ());
 
@@ -258,11 +264,15 @@ X3DFlyViewer::fly ()
 
 	// Orientation offset
 
-	const Rotation4f rotation = direction .z () > 0
-	                            ? Rotation4f (direction, Vector3f (0, 0, 1))
-								       : Rotation4f (Vector3f (0, 0, -1), direction);
+	const Rotation4f up (Vector3f (0, 1, 0), viewpoint -> getUpVector ());
 
-	viewpoint -> orientationOffset () *= math::slerp <float> (Rotation4f (), rotation, math::abs (direction) / navigationInfo -> getAvatarHeight () * ROTATION_SPEED_FACTOR * dt);
+	const Rotation4f rotation = direction .z () > 0
+	                            ? Rotation4f (direction * up, Vector3f (0, 0, 1) * up)
+								       : Rotation4f (Vector3f (0, 0, -1) * up, direction * up);
+
+	const float weight = math::abs (direction) / navigationInfo -> getAvatarHeight () * ROTATION_SPEED_FACTOR * dt;
+
+	viewpoint -> orientationOffset () *= math::slerp <float> (Rotation4f (), rotation, weight);
 
 	// Position offset
 
@@ -283,7 +293,8 @@ X3DFlyViewer::pan ()
 	const time_type now = chrono::now ();
 	const float     dt  = now - startTime;
 
-	const auto viewpoint = getActiveViewpoint ();
+	const auto     viewpoint = getActiveViewpoint ();
+	const Vector3f upVector  = viewpoint -> getUpVector ();
 
 	const float speed_factor = keys .shift () ? PAN_SHIFT_SPEED_FACTOR : 1.0;
 

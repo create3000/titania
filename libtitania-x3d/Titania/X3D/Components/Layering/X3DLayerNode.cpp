@@ -391,12 +391,14 @@ X3DLayerNode::collision ()
 
 	const auto viewpoint = getViewpoint ();
 
-	Matrix4f parentMatrix = viewpoint -> getParentMatrix ();
+	Matrix4f   modelViewMatrix = viewpoint -> getParentMatrix ();
+	Rotation4f down (Vector3f (0, 0, 1) * viewpoint -> getUserOrientation (), viewpoint -> getUpVector ());
 
-	parentMatrix .translate (viewpoint -> getUserPosition ());
-	parentMatrix .rotate (viewpoint -> getUserOrientation () * Rotation4f (Vector3f (0, 0, 1) * viewpoint -> getUserOrientation (), Vector3f (0, 1, 0)));
+	modelViewMatrix .translate (viewpoint -> getUserPosition ());
+	modelViewMatrix .rotate (viewpoint -> getUserOrientation () * down);
+	modelViewMatrix .inverse ();
 
-	getModelViewMatrix () .set (inverse (parentMatrix));
+	getModelViewMatrix () .set (modelViewMatrix);
 
 	// Render
 	getViewVolumeStack () .emplace (ProjectionMatrix4d (), currentViewport -> getViewport ());

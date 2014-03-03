@@ -114,6 +114,7 @@ X3DBrowserSurface::initialize ()
 	            Gdk::KEY_RELEASE_MASK);
 
 	set_can_focus (true);
+	grab_focus ();
 }
 
 void

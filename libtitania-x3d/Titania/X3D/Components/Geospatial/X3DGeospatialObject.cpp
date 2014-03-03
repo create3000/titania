@@ -125,15 +125,21 @@ X3DGeospatialObject::set_origin ()
 }
 
 Vector3d
+X3DGeospatialObject::getGeoCoord (const Vector3d & point) const
+{
+	return referenceFrame -> apply (point + origin);
+}
+
+Vector3d
 X3DGeospatialObject::getCoord (const Vector3d & geoPoint) const
 {
 	return referenceFrame -> convert (geoPoint) - origin;
 }
 
 Vector3d
-X3DGeospatialObject::getGeoCoord (const Vector3d & point) const
+X3DGeospatialObject::getUpVector (const Vector3d & geoPoint) const
 {
-	return referenceFrame -> apply (point + origin);
+	return normalize (referenceFrame -> convert (geoPoint));
 }
 
 Matrix4d

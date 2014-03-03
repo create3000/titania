@@ -147,6 +147,16 @@ public:
 	Vector3f
 	getUserCenterOfRotation () const;
 
+	virtual
+	Vector3f
+	getScale () const
+	{ return Vector3f (1, 1, 1); }
+
+	virtual
+	Vector3f
+	getUpVector () const
+	{ return Vector3f (0, 1, 0); }
+
 	const Matrix4f &
 	getTransformationMatrix () const
 	{ return transformationMatrix; }
@@ -163,11 +173,6 @@ public:
 	Vector3d
 	getScreenScale (const double, const Vector4i &) const = 0;
 
-	virtual
-	Vector3f
-	getUpVector () const
-	{ return Vector3f (0, 1, 0); }
-
 	///  @name Operations
 
 	void
@@ -176,9 +181,11 @@ public:
 	void
 	straighten (const bool = false);
 
-	static
 	Rotation4f
-	straightenHorizon (const Rotation4f &);
+	straightenHorizon (const Rotation4f &) const;
+
+	Rotation4f
+	straightenView (const Rotation4f &) const;
 
 	void
 	lookAt (Box3f, const float = 1, const bool = false);
@@ -219,13 +226,6 @@ protected:
 	virtual
 	void
 	initialize () override;
-
-	///  @name Member access
-
-	virtual
-	Vector3f
-	getScale () const
-	{ return Vector3f (1, 1, 1); }
 
 
 private:
