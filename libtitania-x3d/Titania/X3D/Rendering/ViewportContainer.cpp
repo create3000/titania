@@ -63,9 +63,9 @@ ViewportContainer::ViewportContainer (Viewport* const node) :
 { }
 
 void
-ViewportContainer::scale ()
+ViewportContainer::apply ()
 {
-	const auto viewport = node -> getViewport ();
+	const Vector4i viewport = node -> getViewport ();
 
 	glViewport (viewport [0],
 	            viewport [1],
@@ -74,7 +74,7 @@ ViewportContainer::scale ()
 }
 
 void
-ViewportContainer::unscale ()
+ViewportContainer::restore ()
 {
 	glViewport (viewport [0],
 	            viewport [1],

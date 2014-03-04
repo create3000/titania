@@ -1,5 +1,22 @@
 2014-03-04  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* DepthBuffer.h:
+	* X3DRenderer.cpp:
+	* DepthBuffer.cpp:
+	* ViewportContainer.h:
+	* WalkViewer.cpp:
+	* X3DFlyViewer.cpp:
+	* ViewportContainer.cpp:
+	* Viewport.cpp:
+	* GeoViewpoint.h:
+	* X3DLayerNode.cpp:
+	* GeoViewpoint.cpp:
+	* X3DViewpointNode.h:
+	* X3DGeospatialObject.h:
+	* X3DGeospatialObject.cpp: 
+
+2014-03-04  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DFlyViewer.cpp:
 	* ExamineViewer.cpp:
 	* GeoViewpoint.h:

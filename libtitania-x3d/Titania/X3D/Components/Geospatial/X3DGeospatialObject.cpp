@@ -139,15 +139,15 @@ X3DGeospatialObject::getElevation (const Vector3d & point) const
 }
 
 Vector3d
-X3DGeospatialObject::getCoord (const Vector3d & geoPoint) const
+X3DGeospatialObject::getUpVector (const Vector3d & point) const
 {
-	return referenceFrame -> convert (geoPoint) - origin;
+	return normalize (point + origin);
 }
 
 Vector3d
-X3DGeospatialObject::getUpVector (const Vector3d & geoPoint) const
+X3DGeospatialObject::getCoord (const Vector3d & geoPoint) const
 {
-	return normalize (referenceFrame -> convert (geoPoint));
+	return referenceFrame -> convert (geoPoint) - origin;
 }
 
 Matrix4d

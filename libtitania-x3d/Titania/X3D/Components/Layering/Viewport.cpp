@@ -169,13 +169,13 @@ void
 Viewport::enable ()
 {
 	viewports .emplace_back (new ViewportContainer (this));
-	viewports .back () -> scale ();
+	viewports .back () -> apply ();
 }
 
 void
 Viewport::disable ()
 {
-	viewports .back () -> unscale ();
+	viewports .back () -> restore ();
 	viewports .pop_back ();
 }
 

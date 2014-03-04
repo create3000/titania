@@ -65,7 +65,7 @@ public:
 	DepthBuffer (size_t, size_t);
 
 	double
-	getDistance (float, float);
+	getDistance (const double, const double);
 
 	void
 	bind ();

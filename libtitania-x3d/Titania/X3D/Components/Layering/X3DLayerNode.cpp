@@ -58,6 +58,8 @@
 #include "../EnvironmentalEffects/Background.h"
 #include "../Layering/Viewport.h"
 
+#include <Titania/Math/Geometry/Camera.h>
+
 namespace titania {
 namespace X3D {
 
@@ -194,27 +196,27 @@ X3DLayerNode::getDistance (const Vector3f & positionOffset, const float width, c
 {
 	getBrowser () -> getLayers () .push (this);
 
-	const float width1_2  = width / 2;
-	const float height1_2 = height / 2;
+	const double width1_2  = width / 2;
+	const double height1_2 = height / 2;
 
-	const float zNear = getNavigationInfo () -> getNearPlane ();
-	const float zFar  = getNavigationInfo () -> getFarPlane ();
+	const double zNear = getNavigationInfo () -> getNearPlane ();
+	const double zFar  = getNavigationInfo () -> getFarPlane ();
 
 	getBrowser () -> getLayers () .pop ();
 
 	// Reshape camera
 
 	glMatrixMode (GL_PROJECTION);
-	glLoadIdentity ();
-	glOrtho (-width1_2, width1_2, -height1_2, height1_2, zNear, zFar);
+	glLoadMatrixd (ortho (-width1_2, width1_2, -height1_2, height1_2, zNear, zFar) .data ());
 	glMatrixMode (GL_MODELVIEW);
 
 	// Translate camera
 
-	Matrix4f modelViewMatrix = getViewpoint () -> getParentMatrix ();
+	Rotation4f localOrientation = ~getViewpoint () -> orientation () * getViewpoint () -> getOrientation ();
+	Matrix4f   modelViewMatrix  = getViewpoint () -> getParentMatrix ();
 
 	modelViewMatrix .translate (getViewpoint () -> getUserPosition () + positionOffset);
-	modelViewMatrix .rotate (Rotation4f (Vector3f (0, 0, 1), -direction));
+	modelViewMatrix .rotate (Rotation4f (Vector3f (0, 0, 1), -direction) * localOrientation);
 	modelViewMatrix .inverse ();
 
 	getModelViewMatrix () .set (modelViewMatrix);
@@ -384,15 +386,14 @@ X3DLayerNode::collision ()
 
 	const auto navigationInfo = getCurrentNavigationInfo ();
 
-	const float zNear           = navigationInfo -> getNearPlane ();
-	const float zFar            = navigationInfo -> getFarPlane ();
-	const float collisionRadius = zNear / std::sqrt (2.0f); // Use zNear instead of navigationInfo -> getCollisionRatius ();
+	const double zNear           = navigationInfo -> getNearPlane ();
+	const double zFar            = navigationInfo -> getFarPlane ();
+	const double collisionRadius = zNear / std::sqrt (2.0f); // Use zNear instead of navigationInfo -> getCollisionRatius ();
 
 	// Reshape viewpoint
 
 	glMatrixMode (GL_PROJECTION);
-	glLoadIdentity ();
-	glOrtho (-collisionRadius, collisionRadius, -collisionRadius, collisionRadius, zNear, zFar);
+	glLoadMatrixd (ortho (-collisionRadius, collisionRadius, -collisionRadius, collisionRadius, zNear, zFar) .data ());
 	glMatrixMode (GL_MODELVIEW);
 
 	// Transform viewpoint

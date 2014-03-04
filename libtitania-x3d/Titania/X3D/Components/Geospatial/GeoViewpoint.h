@@ -135,6 +135,10 @@ public:
 	{ return 1e9; }
 
 	virtual
+	float
+	getSpeedFactor () const final override;
+
+	virtual
 	Vector3d
 	getScreenScale (const double, const Vector4i &) const final override;
 

@@ -66,10 +66,10 @@ public:
 	ViewportContainer (Viewport* const);
 
 	void
-	scale ();
+	apply ();
 
 	void
-	unscale ();
+	restore ();
 
 	virtual
 	void

@@ -76,7 +76,7 @@ GeoViewpoint::GeoViewpoint (X3DExecutionContext* const executionContext) :
 	X3DGeospatialObject (),
 	             fields (),
 	              coord (),
-	          elevation ()
+	          elevation (0)
 {
 	addField (inputOutput,    "metadata",          metadata ());
 	addField (initializeOnly, "geoSystem",         geoSystem ());
@@ -140,7 +140,13 @@ GeoViewpoint::getFieldOfView () const
 Vector3f
 GeoViewpoint::getUpVector () const
 {
-	return X3DGeospatialObject::getUpVector (position ());
+	return X3DGeospatialObject::getUpVector (coord + Vector3d (positionOffset () .getValue ()));
+}
+
+float
+GeoViewpoint::getSpeedFactor () const
+{
+	return (std::max (elevation, 0.0) + 10) / 10 * speedFactor ();
 }
 
 ///  Same as in Viewpoint

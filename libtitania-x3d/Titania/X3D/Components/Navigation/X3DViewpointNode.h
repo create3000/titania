@@ -157,6 +157,11 @@ public:
 	getMaxZFar () const
 	{ return 1e5; }
 
+	virtual
+	float
+	getSpeedFactor () const
+	{ return 1; }
+
 	const Matrix4f &
 	getTransformationMatrix () const
 	{ return transformationMatrix; }

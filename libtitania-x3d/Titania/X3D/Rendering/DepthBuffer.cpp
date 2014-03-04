@@ -93,7 +93,7 @@ DepthBuffer::DepthBuffer (size_t width, size_t height) :
 }
 
 double
-DepthBuffer::getDistance (float zNear, float zFar)
+DepthBuffer::getDistance (const double zNear, const double zFar)
 {
 	glReadPixels (0, 0, width, height, GL_DEPTH_COMPONENT, GL_FLOAT, depth .data ());
 

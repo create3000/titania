@@ -294,8 +294,8 @@ X3DRenderer::navigation ()
 
 	const auto navigationInfo = getCurrentNavigationInfo ();
 
-	const float zNear = navigationInfo -> getNearPlane ();
-	const float zFar  = navigationInfo -> getFarPlane ();
+	const double zNear = navigationInfo -> getNearPlane ();
+	const double zFar  = navigationInfo -> getFarPlane ();
 
 	// Render all objects
 
