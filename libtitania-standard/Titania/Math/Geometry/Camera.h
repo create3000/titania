@@ -80,6 +80,27 @@ frustum (const Type & l, const Type & r, const Type & b, const Type & t, const T
 }
 
 template <class Type>
+matrix4 <Type>
+perspective (const Type & fieldOfView, const Type & zNear, const Type & zFar, const vector4 <int> & viewport)
+{
+	const int width  = viewport [2];
+	const int height = viewport [3];
+
+	const Type ratio = std::tan (fieldOfView / 2) * zNear;
+
+	if (width > height)
+	{
+		const Type aspect = width * ratio / height;
+		return frustum (-aspect, aspect, -ratio, ratio, zNear, zFar);
+	}
+	else
+	{
+		const Type aspect = height * ratio / width;
+		return frustum (-ratio, ratio, -aspect, aspect, zNear, zFar);
+	}
+}
+
+template <class Type>
 static
 matrix4 <Type>
 ortho (const Type & l, const Type & r, const Type & b, const Type & t, const Type & n, const Type & f)

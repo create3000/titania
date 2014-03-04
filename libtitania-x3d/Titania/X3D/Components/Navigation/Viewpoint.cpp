@@ -136,23 +136,7 @@ Viewpoint::reshape (const double zNear, const double zFar)
 {
 	glMatrixMode (GL_PROJECTION);
 
-	const Vector4i viewport = Viewport4i ();
-
-	const size_t width  = viewport [2];
-	const size_t height = viewport [3];
-
-	const double ratio = std::tan (getFieldOfView () / 2) * zNear;
-
-	if (width > height)
-	{
-		const double aspect = width * ratio / height;
-		glLoadMatrixd (frustum (-aspect, aspect, -ratio, ratio, zNear, zFar) .data ());
-	}
-	else
-	{
-		const double aspect = height * ratio / width;
-		glLoadMatrixd (frustum (-ratio, ratio, -aspect, aspect, zNear, zFar) .data ());
-	}
+	glLoadMatrixd (perspective (getFieldOfView (), zNear, zFar, Viewport4i ()) .data ());
 
 	glMatrixMode (GL_MODELVIEW);
 }

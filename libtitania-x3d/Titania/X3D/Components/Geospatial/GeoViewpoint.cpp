@@ -197,23 +197,7 @@ GeoViewpoint::reshape (const double zNear, const double zFar, const bool limitZN
 
 	glMatrixMode (GL_PROJECTION);
 
-	const Vector4i viewport = Viewport4i ();
-
-	const size_t width  = viewport [2];
-	const size_t height = viewport [3];
-
-	const double ratio = std::tan (getFieldOfView () / 2) * geoZNear;
-
-	if (width > height)
-	{
-		const double aspect = width * ratio / height;
-		glLoadMatrixd (frustum (-aspect, aspect, -ratio, ratio, geoZNear, geoZFar) .data ());
-	}
-	else
-	{
-		const double aspect = height * ratio / width;
-		glLoadMatrixd (frustum (-ratio, ratio, -aspect, aspect, geoZNear, geoZFar) .data ());
-	}
+	glLoadMatrixd (perspective (getFieldOfView (), geoZNear, geoZFar, Viewport4i ()) .data ());
 
 	glMatrixMode (GL_MODELVIEW);
 }
