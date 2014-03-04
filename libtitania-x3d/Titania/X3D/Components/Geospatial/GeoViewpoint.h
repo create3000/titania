@@ -177,9 +177,6 @@ private:
 	Vector3f
 	getLookAtPositionOffset (const Box3f &) const final override;
 
-	void
-	reshape (const double, const double, const bool);
-
 	///  @name Static members
 
 	static const std::string componentName;

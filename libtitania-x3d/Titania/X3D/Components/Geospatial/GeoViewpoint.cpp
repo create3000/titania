@@ -119,15 +119,16 @@ GeoViewpoint::set_position ()
 	elevation = getElevation (coord + Vector3d (positionOffset () .getValue ()));
 }
 
+///  Returns the resulting orientation for this viewpoint.
 Rotation4f
 GeoViewpoint::getOrientation () const
 {
-	Rotation4f localOrientation = Rotation4d (Matrix3d (getLocationMatrix (position ())));
+	Rotation4d localOrientation = Rotation4d (Matrix3d (getLocationMatrix (position ())));
 
-	return orientation () * localOrientation;
+	return Rotation4d (orientation () .getValue ()) * localOrientation;
 }
 
-// Same as in Viewpoint
+///  Same as in Viewpoint
 double
 GeoViewpoint::getFieldOfView () const
 {
@@ -142,7 +143,7 @@ GeoViewpoint::getUpVector () const
 	return X3DGeospatialObject::getUpVector (position ());
 }
 
-// Same as in Viewpoint
+///  Same as in Viewpoint
 Vector3d
 GeoViewpoint::getScreenScale (const double distance, const Vector4i & viewport) const
 {
@@ -159,7 +160,7 @@ GeoViewpoint::getScreenScale (const double distance, const Vector4i & viewport) 
 	return Vector3d (size, size, size);
 }
 
-// Same as in Viewpoint
+///  Same as in Viewpoint
 Vector3f
 GeoViewpoint::getLookAtPositionOffset (const Box3f & bbox) const
 {
@@ -180,19 +181,18 @@ GeoViewpoint::getLookAtPositionOffset (const Box3f & bbox) const
 void
 GeoViewpoint::background (const double zNear, const double zFar)
 {
-	reshape (zNear, zFar, true);
+	glMatrixMode (GL_PROJECTION);
+
+	glLoadMatrixd (perspective (getFieldOfView (), zNear, zFar, Viewport4i ()) .data ());
+
+	glMatrixMode (GL_MODELVIEW);
 }
 
+///  Main reshape function.
 void
 GeoViewpoint::reshape (const double zNear, const double zFar)
 {
-	reshape (zNear, zFar, false);
-}
-
-void
-GeoViewpoint::reshape (const double zNear, const double zFar, const bool limitZNear)
-{
-	const double geoZNear = limitZNear ? zNear : zNear * std::max (elevation / 100, 1.0);
+	const double geoZNear = zNear * std::max (elevation / 100, 1.0);
 	const double geoZFar  = zFar;
 
 	glMatrixMode (GL_PROJECTION);

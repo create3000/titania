@@ -58,12 +58,12 @@
 namespace titania {
 namespace X3D {
 
-static constexpr double MOTION_TIME       = 0.05;
-static constexpr double SPIN_RELEASE_TIME = 0.01;
-static constexpr float  SPIN_ANGLE        = 0.006;
-static constexpr float  SPIN_FACTOR       = 0.6;
-static constexpr float  SCROLL_FACTOR     = 1.0f / 50.0f;
-static constexpr float  FRAME_RATE        = 60;
+static constexpr time_type MOTION_TIME       = 0.05;
+static constexpr time_type SPIN_RELEASE_TIME = 0.01;
+static constexpr float     SPIN_ANGLE        = 0.006;
+static constexpr float     SPIN_FACTOR       = 0.6;
+static constexpr float     SCROLL_FACTOR     = 1.0f / 50.0f;
+static constexpr time_type FRAME_RATE        = 60;
 
 ExamineViewer::ExamineViewer (X3DBrowserSurface* const browser, NavigationInfo* const navigationInfo) :
 	     X3DViewer (browser),
@@ -167,7 +167,7 @@ ExamineViewer::on_motion_notify_event (GdkEventMotion* event)
 		const Vector3f toVector = trackballProjectToSphere (event -> x, event -> y);
 
 		rotation = ~Rotation4f (fromVector, toVector);
-		
+
 		if (std::abs (rotation .angle ()) < SPIN_ANGLE and chrono::now () - pressTime < MOTION_TIME)
 			return false;
 
@@ -175,7 +175,7 @@ ExamineViewer::on_motion_notify_event (GdkEventMotion* event)
 		viewpoint -> positionOffset ()    = getPositionOffset ();
 
 		fromVector = toVector;
-		
+
 		motionTime = chrono::now ();
 	}
 
@@ -244,7 +244,7 @@ ExamineViewer::getPositionOffset () const
 	const auto viewpoint = getActiveViewpoint ();
 
 	return viewpoint -> getUserCenterOfRotation ()
-	       + distance * viewpoint -> orientationOffset ()
+	       + distance* viewpoint -> orientationOffset ()
 	       - viewpoint -> getPosition ();
 }
 
@@ -254,7 +254,7 @@ ExamineViewer::getOrientationOffset ()
 	const auto viewpoint = getActiveViewpoint ();
 
 	orientation = rotation * orientation;
-	
+
 	return ~viewpoint -> getOrientation () * orientation;
 }
 

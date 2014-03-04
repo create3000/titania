@@ -61,12 +61,13 @@ namespace titania {
 namespace X3D {
 
 static constexpr float     SPEED_FACTOR           = 0.007;
-static constexpr float     SHIFT_SPEED_FACTOR     = 4;
-static constexpr float     ROTATION_SPEED_FACTOR  = 0.48;
-static constexpr float     PAN_SHIFT_SPEED_FACTOR = 4;
+static constexpr float     SHIFT_SPEED_FACTOR     = 4 * SPEED_FACTOR;
+static constexpr float     ROTATION_SPEED_FACTOR  = 1.4;
+static constexpr float     PAN_SPEED_FACTOR       = SPEED_FACTOR;
+static constexpr float     PAN_SHIFT_SPEED_FACTOR = 1.4 * PAN_SPEED_FACTOR;
 static constexpr float     ROLL_ANGLE             = M_PI / 32;
 static constexpr time_type ROLL_TIME              = 0.2;
-static constexpr double    FRAME_RATE             = 60;
+static constexpr time_type FRAME_RATE             = 60;
 
 X3DFlyViewer::X3DFlyViewer (X3DBrowserSurface* const browser, NavigationInfo* const navigationInfo) :
 	          X3DViewer (browser),
@@ -171,7 +172,7 @@ X3DFlyViewer::on_motion_notify_event (GdkEventMotion* event)
 			// Fly
 
 			toVector  = Vector3f (event -> x, 0, event -> y);
-			direction = (toVector - fromVector) * (SPEED_FACTOR * navigationInfo -> speed ());
+			direction = toVector - fromVector;
 
 			addFly ();
 		}
@@ -182,7 +183,7 @@ X3DFlyViewer::on_motion_notify_event (GdkEventMotion* event)
 		// Pan
 
 		toVector  = Vector3f (event -> x, -event -> y, 0);
-		direction = (toVector - fromVector) * (SPEED_FACTOR * navigationInfo -> speed ());
+		direction = toVector - fromVector;
 
 		addPan ();
 	}
@@ -270,16 +271,20 @@ X3DFlyViewer::fly ()
 	                            ? Rotation4f (direction * up, Vector3f (0, 0, 1) * up)
 								       : Rotation4f (Vector3f (0, 0, -1) * up, direction * up);
 
-	const float weight = math::abs (direction) / navigationInfo -> getAvatarHeight () * ROTATION_SPEED_FACTOR * dt;
+
+	float weight = ROTATION_SPEED_FACTOR * dt;
+	weight *= abs (direction) / (abs (direction) + 40);
 
 	viewpoint -> orientationOffset () *= math::slerp <float> (Rotation4f (), rotation, weight);
 
 	// Position offset
 
-	float speed_factor = keys .shift () ? SHIFT_SPEED_FACTOR : 1.0;
-	speed_factor *= 1 - rotation .angle () / M_PI1_2;
+	float speedFactor = 1 - rotation .angle () / M_PI1_2;
+	speedFactor *= navigationInfo -> speed ();
+	speedFactor *= keys .shift () ? SHIFT_SPEED_FACTOR : SPEED_FACTOR;
+	speedFactor *= dt;
 
-	const Vector3f translation = getTranslationOffset (direction * (speed_factor * dt));
+	const Vector3f translation = getTranslationOffset (speedFactor * direction);
 
 	viewpoint -> positionOffset () += getTranslation (translation);
 
@@ -296,10 +301,13 @@ X3DFlyViewer::pan ()
 	const auto     viewpoint = getActiveViewpoint ();
 	const Vector3f upVector  = viewpoint -> getUpVector ();
 
-	const float speed_factor = keys .shift () ? PAN_SHIFT_SPEED_FACTOR : 1.0;
+	float speedFactor = 1;
+	speedFactor *= navigationInfo -> speed ();
+	speedFactor *= keys .shift () ? PAN_SHIFT_SPEED_FACTOR : PAN_SPEED_FACTOR;
+	speedFactor *= dt;
 
 	const Rotation4f orientation = viewpoint -> getUserOrientation () * Rotation4f (upVector * viewpoint -> getUserOrientation (), upVector);
-	const Vector3f   translation = (speed_factor * dt) * direction * orientation;
+	const Vector3f   translation = speedFactor * direction * orientation;
 
 	viewpoint -> positionOffset () += getTranslation (translation);
 
