@@ -28685,14 +28685,35 @@ DEF Earth Transform {
   ]
 }
 
+DEF Debug Script {
+  eventIn SFVec3d set_geoCoord
+
+  url "vrmlscript:
+function set_geoCoord (value, time)
+{
+	print ('geoCoord: ' + value);
+}
+"
+}
+
+DEF _1 GeoTouchSensor {
+  geoSystem [
+    "UTM",
+    "WE",
+    "Z32",
+    "S"
+  ]
+}
+
 DEF Zero GeoTransform {
   geoSystem [
     "UTM",
     "WE",
-    "Z32"
+    "Z32",
+    "S"
   ]
   scale 1e+06 1e+06 1e+06
-  geoCenter -8923258.83524919 -5456648.21805109 -31321.6591534968
+  geoCenter 137866.961358416 -1020679.41231902 -28749.7453851365
   children DEF Axes_1 Shape {
     geometry IndexedLineSet {
       colorPerVertex FALSE
@@ -28729,25 +28750,6 @@ DEF Zero GeoTransform {
       }
     }
   }
-}
-
-DEF Debug Script {
-  eventIn SFVec3d set_geoCoord
-
-  url "vrmlscript:
-function set_geoCoord (value, time)
-{
-	print ('geoCoord: ' + value);
-}
-"
-}
-
-DEF _1 GeoTouchSensor {
-  geoSystem [
-    "UTM",
-    "WE",
-    "Z32"
-  ]
 }
 
 ROUTE _1.hitGeoCoord_changed TO Zero.set_geoCenter

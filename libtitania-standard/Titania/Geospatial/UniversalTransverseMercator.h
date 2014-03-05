@@ -148,7 +148,7 @@ universal_transverse_mercator <Type>::convert (const vector3 <Type> & utm) const
 
 	if (northing < 0)
 	{
-		S        = true;
+		S        = not southern_hemisphere;
 		northing = -northing;
 	}
 
@@ -225,7 +225,12 @@ universal_transverse_mercator <Type>::apply (const vector3 <Type> & geocentric) 
 		if (not southern_hemisphere)
 			northing = -northing;
 	}
-	
+	else
+	{
+		if (southern_hemisphere)
+			northing = -northing;		
+	}
+
 	if (easting_first)
 		return vector3 <Type> (easting, northing, geodetic .z ());
 
