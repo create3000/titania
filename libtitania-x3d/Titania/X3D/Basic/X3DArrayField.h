@@ -153,6 +153,11 @@ public:
 
 	virtual
 	X3DArrayField*
+	create () const override
+	{ return new X3DArrayField (); }
+
+	virtual
+	X3DArrayField*
 	clone () const
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>) override

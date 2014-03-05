@@ -98,6 +98,11 @@ public:
 
 	virtual
 	SFMatrix3*
+	create () const final override
+	{ return new SFMatrix3 (); }
+
+	virtual
+	SFMatrix3*
 	clone () const
 	throw (Error <NOT_SUPPORTED>) final override;
 

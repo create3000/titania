@@ -106,6 +106,11 @@ public:
 
 	virtual
 	X3DMFNode*
+	create () const final override
+	{ return new X3DMFNode (); }
+
+	virtual
+	X3DMFNode*
 	clone () const
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>) final override

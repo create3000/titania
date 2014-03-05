@@ -83,6 +83,11 @@ public:
 
 	virtual
 	SFImage*
+	create () const final override
+	{ return new SFImage (); }
+
+	virtual
+	SFImage*
 	clone () const
 	throw (Error <NOT_SUPPORTED>) final override
 	{ return new SFImage (*this); }

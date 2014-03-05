@@ -135,7 +135,12 @@ public:
 		X3DSFNode (dynamic_cast <ValueType*> (value))
 	{ }
 
-	///  @name Copy
+	///  @name Construction
+
+	virtual
+	X3DSFNode*
+	create () const final override
+	{ return new X3DSFNode (); }
 
 	virtual
 	X3DSFNode*

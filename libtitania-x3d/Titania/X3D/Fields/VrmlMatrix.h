@@ -62,17 +62,35 @@ class VrmlMatrix :
 public:
 
 	VrmlMatrix () :
-		SFMatrix4f () { }
+		SFMatrix4f ()
+	{ }
+
+	VrmlMatrix (const VrmlMatrix & field) :
+		SFMatrix4f (field)
+	{ }
 
 	explicit
 	VrmlMatrix (const internal_type & value) :
-		SFMatrix4f (value) { }
+		SFMatrix4f (value)
+	{ }
 
 	VrmlMatrix (const value_type & e11, const value_type & e12, const value_type & e13, const value_type & e14,
 	            const value_type & e21, const value_type & e22, const value_type & e23, const value_type & e24,
 	            const value_type & e31, const value_type & e32, const value_type & e33, const value_type & e34,
 	            const value_type & e41, const value_type & e42, const value_type & e43, const value_type & e44) :
-		SFMatrix4f (e11, e12, e13, e14, e21, e22, e23, e24, e31, e32, e33, e34, e41, e42, e43, e44) { }
+		SFMatrix4f (e11, e12, e13, e14, e21, e22, e23, e24, e31, e32, e33, e34, e41, e42, e43, e44)
+	{ }
+
+	virtual
+	VrmlMatrix*
+	create () const final override
+	{ return new VrmlMatrix (); }
+
+	virtual
+	VrmlMatrix*
+	clone () const
+	throw (Error <NOT_SUPPORTED>) final override
+	{ return new VrmlMatrix (*this); }
 
 	VrmlMatrix*
 	transpose () const

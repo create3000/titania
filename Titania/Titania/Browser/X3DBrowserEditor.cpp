@@ -1088,13 +1088,22 @@ X3DBrowserEditor::unlinkClone (const X3D::MFNode & clones, const UndoStepPtr & u
 											   {
 											      if (not first)
 											      {
+											         // Flat copy clone
+
 											         const X3D::SFNode node = (*sfnode) -> create (scene);
-											         
+
+											         for (const auto & field : (*sfnode) -> getUserDefinedFields ())
+															node -> addUserDefinedField (field -> getAccessType (), field -> getName (), field -> create ());
+
 											         node -> assign (*sfnode);
 											         node -> setup ();
 
-														if (not (*sfnode) -> getName () .empty ())
-															scene -> updateNamedNode (scene -> getUniqueName ((*sfnode) -> getName ()), node);	
+											         // Set name
+
+											         if (not (*sfnode) -> getName () .empty ())
+															scene -> updateNamedNode (scene -> getUniqueName ((*sfnode) -> getName ()), node);
+
+											         // Replace node
 
 											         replaceNode (parent, *sfnode, node, undoStep);
 
@@ -1110,7 +1119,7 @@ X3DBrowserEditor::unlinkClone (const X3D::MFNode & clones, const UndoStepPtr & u
 											{
 											   const auto mfnode  = static_cast <X3D::MFNode*> (field);
 
-												unlinkClone (scene, parent, *mfnode, clone, nodes, first, undoStep);
+											   unlinkClone (scene, parent, *mfnode, clone, nodes, first, undoStep);
 
 											   break;
 											}
@@ -1150,13 +1159,22 @@ X3DBrowserEditor::unlinkClone (const X3D::X3DSFNode <X3D::Scene> & scene,
 	{
 		if (not first)
 		{
+			// Flat copy clone
+
 			const X3D::SFNode node = mfnode [index] -> create (scene);
 
-         node -> assign (mfnode [index]);
-         node -> setup ();
+			for (const auto & field : mfnode [index] -> getUserDefinedFields ())
+				node -> addUserDefinedField (field -> getAccessType (), field -> getName (), field -> create ());
+
+			node -> assign (mfnode [index]);
+			node -> setup ();
+
+			// Set name
 
 			if (not mfnode [index] -> getName () .empty ())
-				scene -> updateNamedNode (scene -> getUniqueName (mfnode [index] -> getName ()), node);	
+				scene -> updateNamedNode (scene -> getUniqueName (mfnode [index] -> getName ()), node);
+
+			// Replace node
 
 			replaceNode (parent, mfnode, index, node, undoStep);
 

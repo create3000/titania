@@ -76,6 +76,10 @@ public:
 
 	virtual
 	X3DFieldDefinition*
+	create () const = 0;
+
+	virtual
+	X3DFieldDefinition*
 	clone () const
 	throw (Error <INVALID_NAME>,
           Error <NOT_SUPPORTED>) = 0;

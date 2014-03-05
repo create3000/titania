@@ -92,6 +92,11 @@ public:
 
 	virtual
 	SFRotation4*
+	create () const final override
+	{ return new SFRotation4 (); }
+
+	virtual
+	SFRotation4*
 	clone () const
 	throw (Error <NOT_SUPPORTED>) final override;
 

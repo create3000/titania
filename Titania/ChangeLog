@@ -1,5 +1,9 @@
 2014-03-05  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBrowserEditor.cpp: 
+
+2014-03-05  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Image.h:
 	* MagicImport.cpp:
 	* History.cpp:

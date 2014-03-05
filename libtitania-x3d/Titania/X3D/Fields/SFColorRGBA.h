@@ -81,6 +81,17 @@ public:
 
 	SFColorRGBA (const value_type &, const value_type &, const value_type &, const value_type &);
 
+	virtual
+	SFColorRGBA*
+	create () const final override
+	{ return new SFColorRGBA (); }
+
+	virtual
+	SFColorRGBA*
+	clone () const
+	throw (Error <NOT_SUPPORTED>) final override
+	{ return new SFColorRGBA (*this); }
+
 	///  6.7.7 Add field interest.
 
 	template <class Class>
@@ -94,12 +105,6 @@ public:
 	{ addInterest (object, memberFunction, std::cref (*this)); }
 
 	///  Functions
-
-	virtual
-	SFColorRGBA*
-	clone () const
-	throw (Error <NOT_SUPPORTED>) final override
-	{ return new SFColorRGBA (*this); }
 
 	void
 	setR (const value_type &);

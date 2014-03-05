@@ -83,6 +83,11 @@ public:
 
 	virtual
 	SFColor*
+	create () const final override
+	{ return new SFColor (); }
+
+	virtual
+	SFColor*
 	clone () const
 	throw (Error <NOT_SUPPORTED>) final override
 	{ return new SFColor (*this); }

@@ -75,6 +75,11 @@ public:
 	explicit
 	SFTime (const time_type);
 
+	virtual
+	SFTime*
+	create () const final override
+	{ return new SFTime (); }
+
 	SFTime*
 	clone () const
 	throw (Error <NOT_SUPPORTED>)

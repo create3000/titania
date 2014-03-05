@@ -102,6 +102,11 @@ public:
 
 	virtual
 	SFVec2*
+	create () const final override
+	{ return new SFVec2 (); }
+
+	virtual
+	SFVec2*
 	clone () const
 	throw (Error <NOT_SUPPORTED>) final override;
 

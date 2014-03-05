@@ -1,5 +1,25 @@
 2014-03-05  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* SFVec2.h:
+	* SFTime.h:
+	* SFVec3.h:
+	* SFVec4.h:
+	* SFImage.h:
+	* SFColor.h:
+	* SFString.h:
+	* X3DScalar.h:
+	* X3DMFNode.h:
+	* X3DSFNode.h:
+	* SFMatrix3.h:
+	* SFMatrix4.h:
+	* VrmlMatrix.h:
+	* SFColorRGBA.h:
+	* SFRotation4.h:
+	* X3DArrayField.h:
+	* X3DFieldDefinition.h: 
+
+2014-03-05  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DGeospatialObject.cpp: 
 
 2014-03-05  Holger Seelig  <holger.seelig@yahoo.de>

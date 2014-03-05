@@ -102,8 +102,13 @@ public:
 
 	virtual
 	SFMatrix4*
+	create () const override
+	{ return new SFMatrix4 (); }
+
+	virtual
+	SFMatrix4*
 	clone () const
-	throw (Error <NOT_SUPPORTED>) final override;
+	throw (Error <NOT_SUPPORTED>) override;
 
 	///  6.7.7 Add field interest.
 

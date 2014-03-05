@@ -75,6 +75,8 @@ public:
 	using X3DField <ValueType>::operator =;
 	using X3DField <ValueType>::getValue;
 
+	///  @name Construction
+
 	X3DScalar () :
 		X3DField <ValueType> () { }
 
@@ -87,9 +89,14 @@ public:
 
 	virtual
 	X3DScalar*
+	create () const final override
+	{ return new X3DScalar (); }
+
+	virtual
+	X3DScalar*
 	clone () const
 	throw (Error <NOT_SUPPORTED>) final override
-	{ return new X3DScalar <ValueType> (*this); }
+	{ return new X3DScalar (*this); }
 
 	///  6.7.7 Add field interest.
 

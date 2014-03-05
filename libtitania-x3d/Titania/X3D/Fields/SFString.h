@@ -83,6 +83,11 @@ public:
 
 	virtual
 	SFString*
+	create () const final override
+	{ return new SFString (); }
+
+	virtual
+	SFString*
 	clone () const
 	throw (Error <NOT_SUPPORTED>) final override
 	{ return new SFString (*this); }
