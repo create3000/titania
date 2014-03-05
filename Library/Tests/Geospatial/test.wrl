@@ -29066,7 +29066,7 @@ DEF Satellite Transform {
     }
     DEF _6 GeoTransform {
       scale 200000 200000 200000
-      geoCenter 0 -1.98052907975001 1500000
+      geoCenter 0 -1.42840311266677 1500000
       children [
         DEF Axes_3 Transform {
           scale 2 2 2

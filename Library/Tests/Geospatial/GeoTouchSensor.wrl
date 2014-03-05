@@ -17,78 +17,10 @@ DEF Gray Background {
   skyColor 0.2 0.2 0.2
 }
 
-DEF GeoViewpoints Transform {
-  children [
-    DEF Zero_1 GeoViewpoint {
-      description "Zero"
-      position 0 0 13621864
-      orientation -1 0 0 1.5708
-    }
-    DEF NorthPole_1 GeoViewpoint {
-      description "North Pole"
-      position 1.57079 0 13621864
-      orientation -1 0 0 1.5708
-    }
-    DEF SouthPole_1 GeoViewpoint {
-      description "South Pole"
-      position -1.57079 0 13621864
-      orientation -1 0 0 1.5708
-    }
-    DEF London_1 GeoViewpoint {
-      description "London"
-      position 0.89 0 13621864
-      orientation -1 0 0 1.5708
-    }
-    DEF Leipzig_1 GeoViewpoint {
-      description "Leipzig"
-      position 0.89555602 0.2159173 13621864
-      orientation -1 0 0 1.5708
-    }
-    DEF Nairobi_1 GeoViewpoint {
-      description "Nairobi"
-      position -0.0233 0.643 13621864
-      orientation -1 0 0 1.5708
-    }
-    DEF NewYork_1 GeoViewpoint {
-      description "New York"
-      position 0.698 -1.274 13621864
-      orientation -1 0 0 1.5708
-    }
-    DEF RioDeJaneiro_1 GeoViewpoint {
-      description "Rio de Janeiro"
-      position -0.384 -0.75 13621864
-      orientation -1 0 0 1.5708
-    }
-    DEF Sydney_1 GeoViewpoint {
-      description "Sydney"
-      position -0.646 2.513 13621864
-      orientation -1 0 0 1.5708
-    }
-    DEF Tokyo_1 GeoViewpoint {
-      description "Tokyo"
-      position 0.611 2.426 13621864
-      orientation -1 0 0 1.5708
-    }
-    DEF MenloPark_1 GeoViewpoint {
-      description "Menlo Park"
-      position 0.653636276847388 -2.13250262128124 13621864
-      orientation -1 0 0 1.5708
-    }
-    DEF Floor GeoViewpoint {
-      description "Floor"
-      position 0 0 10
-    }
-    DEF Leipzig1 GeoViewpoint {
-      description "Leipzig down"
-      position 0.89555602 0.2159173 10
-    }
-  ]
-}
-
-Viewpoint {
-  description "Viewpoint"
-  position 2e+07 0 0
-  orientation 0.5751 0.584481 0.5724 2.09027
+DEF Zero_1 GeoViewpoint {
+  description "Zero"
+  position 0 0 13621864
+  orientation -1 0 0 1.5708
 }
 
 DEF Earth Transform {
@@ -28753,417 +28685,50 @@ DEF Earth Transform {
   ]
 }
 
-DEF Points Transform {
-  children Shape {
-    appearance Appearance {
-      lineProperties LineProperties {
-        linewidthScaleFactor 10
+DEF Zero GeoTransform {
+  geoSystem [
+    "UTM",
+    "WE",
+    "Z32"
+  ]
+  scale 1e+06 1e+06 1e+06
+  geoCenter -8923258.83524919 -5456648.21805109 -31321.6591534968
+  children DEF Axes_1 Shape {
+    geometry IndexedLineSet {
+      colorPerVertex FALSE
+      colorIndex [
+        0,
+        1,
+        2
+      ]
+      coordIndex [
+        0,
+        1,
+        -1,
+        0,
+        2,
+        -1,
+        0,
+        3,
+        -1
+      ]
+      color Color {
+        color [
+          1 0 0,
+          0 1 0,
+          0 0 1
+        ]
       }
-      material Material {
-        emissiveColor 1 0 0
-      }
-    }
-    geometry PointSet {
-      coord GeoCoordinate {
+      coord Coordinate {
         point [
           0 0 0,
-          1.5707 0 0,
-          -1.5707 0 0,
-          0.89 0 0,
-          0.89555602 0.2159173 0,
-          -0.0233 0.643 0,
-          0.698 -1.274 0,
-          -0.384 -0.75 0,
-          -0.646 2.513 0,
-          0.611 2.426 0,
-          0.653636276847388 -2.13250262128124 0
+          1 0 0,
+          0 1 0,
+          0 0 1
         ]
-        geoOrigin GeoOrigin {
-          geoSystem "GC"
-        }
       }
     }
   }
-}
-
-DEF Axes_1 Transform {
-  children [
-    DEF Zero GeoTransform {
-      scale 1e+06 1e+06 1e+06
-      children DEF Axes_2 Shape {
-        geometry IndexedLineSet {
-          colorPerVertex FALSE
-          colorIndex [
-            0,
-            1,
-            2
-          ]
-          coordIndex [
-            0,
-            1,
-            -1,
-            0,
-            2,
-            -1,
-            0,
-            3,
-            -1
-          ]
-          color Color {
-            color [
-              1 0 0,
-              0 1 0,
-              0 0 1
-            ]
-          }
-          coord Coordinate {
-            point [
-              0 0 0,
-              1 0 0,
-              0 1 0,
-              0 0 1
-            ]
-          }
-        }
-      }
-    }
-    DEF NorthPole GeoTransform {
-      scale 1e+06 1e+06 1e+06
-      geoCenter 1.57079 0 0
-      children USE Axes_2
-    }
-    DEF SouthPole GeoTransform {
-      scale 1e+06 1e+06 1e+06
-      geoCenter -1.57079 0 0
-      children USE Axes_2
-    }
-    DEF London GeoTransform {
-      scale 1e+06 1e+06 1e+06
-      geoCenter 0.89 0 0
-      children USE Axes_2
-    }
-    DEF Leipzig GeoTransform {
-      scale 1e+06 1e+06 1e+06
-      geoCenter 0.89555602 0.2159173 0
-      children USE Axes_2
-    }
-    DEF Nairobi GeoTransform {
-      scale 1e+06 1e+06 1e+06
-      geoCenter -0.0233 0.643 0
-      children USE Axes_2
-    }
-    DEF NewYork GeoTransform {
-      scale 1e+06 1e+06 1e+06
-      geoCenter 0.698 -1.274 0
-      children USE Axes_2
-    }
-    DEF RioDeJaneiro GeoTransform {
-      scale 1e+06 1e+06 1e+06
-      geoCenter -0.384 -0.75 0
-      children USE Axes_2
-    }
-    DEF Sydney GeoTransform {
-      scale 1e+06 1e+06 1e+06
-      geoCenter -0.646 2.513 0
-      children USE Axes_2
-    }
-    DEF Tokyo GeoTransform {
-      scale 1e+06 1e+06 1e+06
-      geoCenter 0.611 2.426 0
-      children USE Axes_2
-    }
-    DEF MenloPark GeoTransform {
-      scale 1e+06 1e+06 1e+06
-      geoCenter 0.653636276847388 -2.13250262128124 0
-      children USE Axes_2
-    }
-  ]
-}
-
-DEF Texts Transform {
-  children [
-    DEF Zero_2 GeoLocation {
-      geoCoords 0 0 1000000
-      children DEF BZERO Billboard {
-        axisOfRotation 0 0 0
-        children DEF ZERO Shape {
-          appearance DEF _1 Appearance {
-            material Material {
-              diffuseColor 0 0 0
-            }
-          }
-          geometry Text {
-            string "Zero"
-            fontStyle DEF _2 ScreenFontStyle {
-              family [
-                "Ubuntu Condensed",
-                "Ubuntu",
-                "SANS"
-              ]
-            }
-          }
-        }
-      }
-    }
-    DEF NorthPoleText GeoLocation {
-      geoCoords 1.57079 0 1000000
-      children Billboard {
-        axisOfRotation 0 0 0
-        children Shape {
-          appearance USE _1
-          geometry Text {
-            string "North Pole"
-            fontStyle USE _2
-          }
-        }
-      }
-    }
-    DEF SouthPoleText GeoLocation {
-      geoCoords -1.57079 0 1000000
-      children Billboard {
-        axisOfRotation 0 0 0
-        children Shape {
-          appearance USE _1
-          geometry Text {
-            string "South Pole"
-            fontStyle USE _2
-          }
-        }
-      }
-    }
-    DEF LondonText GeoLocation {
-      geoCoords 0.89 0 1000000
-      children Billboard {
-        axisOfRotation 0 0 0
-        children Shape {
-          appearance USE _1
-          geometry Text {
-            string "London"
-            fontStyle USE _2
-          }
-        }
-      }
-    }
-    DEF LeipzigText GeoLocation {
-      geoCoords 0.89555602 0.2159173 1000000
-      children Billboard {
-        axisOfRotation 0 0 0
-        children Shape {
-          appearance USE _1
-          geometry Text {
-            string "Leipzig"
-            fontStyle USE _2
-          }
-        }
-      }
-    }
-    DEF NairobiText GeoLocation {
-      geoCoords -0.0233 0.643 1000000
-      children Billboard {
-        axisOfRotation 0 0 0
-        children Shape {
-          appearance USE _1
-          geometry Text {
-            string "Nairobi"
-            fontStyle USE _2
-          }
-        }
-      }
-    }
-    DEF NewYorkText GeoLocation {
-      geoCoords 0.698 -1.274 1000000
-      children Billboard {
-        axisOfRotation 0 0 0
-        children Shape {
-          appearance USE _1
-          geometry Text {
-            string "New York"
-            fontStyle USE _2
-          }
-        }
-      }
-    }
-    DEF RioDeJaneiroText GeoLocation {
-      geoCoords -0.384 -0.75 1000000
-      children Billboard {
-        axisOfRotation 0 0 0
-        children Shape {
-          appearance USE _1
-          geometry Text {
-            string "Rio de Janeiro"
-            fontStyle USE _2
-          }
-        }
-      }
-    }
-    DEF SydneyText GeoLocation {
-      geoCoords -0.646 2.513 1000000
-      children Billboard {
-        axisOfRotation 0 0 0
-        children Shape {
-          appearance USE _1
-          geometry Text {
-            string "Sydney"
-            fontStyle USE _2
-          }
-        }
-      }
-    }
-    DEF TokyoText GeoLocation {
-      geoCoords 0.611 2.426 1000000
-      children Billboard {
-        axisOfRotation 0 0 0
-        children Shape {
-          appearance USE _1
-          geometry Text {
-            string "Tokyo"
-            fontStyle USE _2
-          }
-        }
-      }
-    }
-    DEF MenloParkText GeoLocation {
-      geoCoords 0.653636276847388 -2.13250262128124 1000000
-      children Billboard {
-        axisOfRotation 0 0 0
-        children Shape {
-          appearance USE _1
-          geometry Text {
-            string "Menlo Park"
-            fontStyle USE _2
-          }
-        }
-      }
-    }
-  ]
-}
-
-DEF _3 GeoProximitySensor {
-  size -1 -1 -1
-}
-
-DEF Satellite Transform {
-  children [
-    DEF _4 TimeSensor {
-      cycleInterval 10
-      loop TRUE
-    }
-    DEF _5 GeoPositionInterpolator {
-      key [
-        0,
-        0.25,
-        0.5,
-        0.75,
-        1
-      ]
-      keyValue [
-        0 0 1500000,
-        0 1.5707963 1500000,
-        0 3.1415927 1500000,
-        0 -1.5707963 1500000,
-        0 0 1500000
-      ]
-    }
-    DEF _6 GeoTransform {
-      scale 200000 200000 200000
-      geoCenter 0 -1.98052907975001 1500000
-      children [
-        DEF Axes_3 Transform {
-          scale 2 2 2
-          children DEF Axes12 Shape {
-            geometry IndexedLineSet {
-              colorPerVertex FALSE
-              colorIndex [
-                0,
-                1,
-                2
-              ]
-              coordIndex [
-                0,
-                1,
-                -1,
-                0,
-                2,
-                -1,
-                0,
-                3,
-                -1
-              ]
-              color Color {
-                color [
-                  1 0 0,
-                  0 1 0,
-                  0 0 1
-                ]
-              }
-              coord Coordinate {
-                point [
-                  0 0 0,
-                  1 0 0,
-                  0 1 0,
-                  0 0 1
-                ]
-              }
-            }
-          }
-        }
-        DEF tie Transform {
-          children Inline {
-            url [
-              "tie.wrl",
-              "file:///home/holger/Projekte/Titania/Library/Tests/Geospatial/tie.wrl"
-            ]
-          }
-        }
-      ]
-    }
-  ]
-}
-
-DEF UTM Transform {
-  children [
-    Shape {
-      appearance Appearance {
-        lineProperties LineProperties {
-          linewidthScaleFactor 10
-        }
-        material Material {
-          emissiveColor 0 0 1
-        }
-      }
-      geometry PointSet {
-        coord GeoCoordinate {
-          geoSystem [
-            "UTM",
-            "WE",
-            "Z10"
-          ]
-          point 4145173 572227 0
-        }
-      }
-    }
-    Shape {
-      appearance Appearance {
-        lineProperties LineProperties {
-          linewidthScaleFactor 10
-        }
-        material Material {
-          emissiveColor 0 0 1
-        }
-      }
-      geometry PointSet {
-        coord GeoCoordinate {
-          geoSystem [
-            "UTM",
-            "WE",
-            "Z60",
-            "S"
-          ]
-          point 5427419.7 314369.5 0
-        }
-      }
-    }
-  ]
 }
 
 DEF Debug Script {
@@ -29177,6 +28742,12 @@ function set_geoCoord (value, time)
 "
 }
 
-ROUTE _3.geoCoord_changed TO Debug.set_geoCoord
-ROUTE _5.geovalue_changed TO _6.set_geoCenter
-ROUTE _4.fraction_changed TO _5.set_fraction
+DEF _1 GeoTouchSensor {
+  geoSystem [
+    "UTM",
+    "WE",
+    "Z32"
+  ]
+}
+
+ROUTE _1.hitGeoCoord_changed TO Zero.set_geoCenter
