@@ -282,10 +282,13 @@ X3DBaseNode::assign (const X3DBaseNode* const node)
 {
 	for (const auto & lhs : getFieldDefinitions ())
 	{
-		X3DFieldDefinition* const rhs = node -> getField (lhs -> getName ());
-	
-		if (*lhs not_eq *rhs)
-			*lhs = *rhs;
+		if (lhs -> getAccessType () & initializeOnly)
+		{
+			X3DFieldDefinition* const rhs = node -> getField (lhs -> getName ());
+
+			if (*lhs not_eq *rhs)
+				*lhs = *rhs;
+			}
 	}
 }
 

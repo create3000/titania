@@ -120,10 +120,22 @@ public:
 	/// @name Edit operations
 
 	void
-	replaceNode (const X3D::SFNode &, X3D::SFNode &, const X3D::SFNode &, const UndoStepPtr &);
+	replaceNode (const X3D::SFNode &, X3D::SFNode &, const X3D::SFNode &, const UndoStepPtr &) const;
+
+	void
+	replaceNode (const X3D::SFNode &, X3D::MFNode &, const X3D::SFNode &, const X3D::SFNode &, const UndoStepPtr &) const;
+
+	void
+	replaceNode (const X3D::SFNode &, X3D::MFNode &, const size_t, const X3D::SFNode &, const UndoStepPtr &) const;
 
 	void
 	removeNodes (const X3D::MFNode &, const UndoStepPtr &) const;
+
+	void
+	createClone (const X3D::SFNode &, const X3D::MFNode &, const UndoStepPtr &) const;
+
+	X3D::MFNode
+	unlinkClone (const X3D::MFNode &, const UndoStepPtr &) const;
 
 	X3D::SFNode
 	groupNodes (const X3D::MFNode &, const UndoStepPtr &) const;
@@ -252,6 +264,9 @@ private:
 
 	void
 	removePrototypes (X3D::X3DExecutionContext* const, X3D::SFNode &, const UndoStepPtr &) const;
+
+	void
+	unlinkClone (const X3D::X3DSFNode <X3D::Scene> &, const X3D::SFNode &, X3D::MFNode &, const X3D::SFNode &, X3D::MFNode &, bool &, const UndoStepPtr &) const;
 
 	void
 	createParentGroup (X3D::MFNode &, const X3D::SFNode &, const X3D::SFNode &, X3D::MFNode &, const UndoStepPtr &) const;

@@ -287,6 +287,18 @@ public:
 	getDeleteMenuItem () const
 	{ return *m_deleteMenuItem; }
 
+	Gtk::MenuItem &
+	getCloneMenuItem () const
+	{ return *m_cloneMenuItem; }
+
+	Gtk::MenuItem &
+	getCreateCloneMenuItem () const
+	{ return *m_createCloneMenuItem; }
+
+	Gtk::MenuItem &
+	getUnlinkCloneMenuItem () const
+	{ return *m_unlinkCloneMenuItem; }
+
 	Gtk::ImageMenuItem &
 	getGroupSelectedNodesMenuItem () const
 	{ return *m_groupSelectedNodesMenuItem; }
@@ -685,6 +697,14 @@ public:
 
 	virtual
 	void
+	on_create_clone_activate () = 0;
+
+	virtual
+	void
+	on_unlink_clone_activate () = 0;
+
+	virtual
+	void
 	on_group_selected_nodes_activate () = 0;
 
 	virtual
@@ -904,6 +924,9 @@ private:
 	Gtk::ImageMenuItem*             m_copyMenuItem;
 	Gtk::ImageMenuItem*             m_pasteMenuItem;
 	Gtk::ImageMenuItem*             m_deleteMenuItem;
+	Gtk::MenuItem*                  m_cloneMenuItem;
+	Gtk::MenuItem*                  m_createCloneMenuItem;
+	Gtk::MenuItem*                  m_unlinkCloneMenuItem;
 	Gtk::ImageMenuItem*             m_groupSelectedNodesMenuItem;
 	Gtk::ImageMenuItem*             m_ungroupMenuItem;
 	Gtk::MenuItem*                  m_addToGroupMenuItem;

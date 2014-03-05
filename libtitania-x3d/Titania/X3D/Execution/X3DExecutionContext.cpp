@@ -84,6 +84,8 @@ X3DExecutionContext::X3DExecutionContext () :
 	           rootNodes (),
 	  uninitializedNodes ()
 {
+	rootNodes .setName ("rootNodes"); // Set this for numClones.
+
 	rootNodes          .isTainted (true);
 	uninitializedNodes .isTainted (true);
 

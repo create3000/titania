@@ -154,6 +154,12 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_pasteMenuItem -> set_name ("PasteMenuItem");
 	m_builder -> get_widget ("DeleteMenuItem", m_deleteMenuItem);
 	m_deleteMenuItem -> set_name ("DeleteMenuItem");
+	m_builder -> get_widget ("CloneMenuItem", m_cloneMenuItem);
+	m_cloneMenuItem -> set_name ("CloneMenuItem");
+	m_builder -> get_widget ("CreateCloneMenuItem", m_createCloneMenuItem);
+	m_createCloneMenuItem -> set_name ("CreateCloneMenuItem");
+	m_builder -> get_widget ("UnlinkCloneMenuItem", m_unlinkCloneMenuItem);
+	m_unlinkCloneMenuItem -> set_name ("UnlinkCloneMenuItem");
 	m_builder -> get_widget ("GroupSelectedNodesMenuItem", m_groupSelectedNodesMenuItem);
 	m_groupSelectedNodesMenuItem -> set_name ("GroupSelectedNodesMenuItem");
 	m_builder -> get_widget ("UngroupMenuItem", m_ungroupMenuItem);
@@ -341,6 +347,12 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_copyMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_copy_nodes_activate));
 	m_pasteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_paste_nodes_activate));
 	m_deleteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_delete_nodes_activate));
+
+	// Connect object Gtk::MenuItem with id 'CreateCloneMenuItem'.
+	m_createCloneMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_clone_activate));
+	m_unlinkCloneMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_unlink_clone_activate));
+
+	// Connect object Gtk::ImageMenuItem with id 'GroupSelectedNodesMenuItem'.
 	m_groupSelectedNodesMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_group_selected_nodes_activate));
 	m_ungroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_ungroup_node_activate));
 

@@ -67,8 +67,21 @@ PROTO Children1 [
 DEF None NavigationInfo { }
 
 DEF Sunset Background {
-  skyAngle [ 0.8, 1.2, 1.5, 1.55, 1.5708 ]
-  skyColor [ 0.0196078 0.0196078 0.0196078, 0.054902 0.0705882 0.0862745, 0.203922 0.243137 0.313726, 0.541176 0.462745 0.435294, 0.745098 0.541176 0.376471, 0.890196 0.537255 0.172549 ]
+  skyAngle [
+    0.8,
+    1.2,
+    1.5,
+    1.55,
+    1.5708
+  ]
+  skyColor [
+    0.0196078 0.0196078 0.0196078,
+    0.054902 0.0705882 0.0862745,
+    0.203922 0.243137 0.313726,
+    0.541176 0.462745 0.435294,
+    0.745098 0.541176 0.376471,
+    0.890196 0.537255 0.172549
+  ]
   groundColor 0 0 0
 }
 
@@ -119,7 +132,7 @@ DEF Rotor Rotor {
 
 DEF Box Transform {
   translation 1.40843 1.10727 0.193803
-  rotation 0 0 1 0.453442
+  rotation 0 0 1 5.38217
   scale 0.2 0.2 0.2
   children Transform {
     children Shape {
@@ -144,7 +157,7 @@ DEF Sphere Transform {
           diffuseColor 0 0.8 0
         }
       }
-      geometry Sphere { }
+      geometry DEF _3 Sphere { }
     }
   }
 }
@@ -212,7 +225,7 @@ Anchor {
           shininess 0.127273
         }
       }
-      geometry Sphere { }
+      geometry USE _3
     }
   }
 }
@@ -237,13 +250,7 @@ DEF Text3 Transform {
         transparency 0.57
       }
     }
-    geometry DEF Text2 Text {
-      string "OutlineEditor"
-      fontStyle FontStyle {
-        family "PT Sans Narrow"
-        style "BOLD"
-      }
-    }
+    geometry USE Text
   }
 }
 

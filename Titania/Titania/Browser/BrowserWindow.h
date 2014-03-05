@@ -258,6 +258,14 @@ private:
 
 	virtual
 	void
+	on_create_clone_activate () final override;
+
+	virtual
+	void
+	on_unlink_clone_activate () final override;
+
+	virtual
+	void
 	on_group_selected_nodes_activate () final override;
 
 	virtual

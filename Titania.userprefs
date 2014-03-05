@@ -1,16 +1,23 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="experimental/main.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Layering/X3DLayerNode.cpp">
     <Files>
-      <File FileName="experimental/main.cpp" Line="342" Column="20" />
-      <File FileName="libtitania-x3d/Titania/X3D/Bits/Geospatial.h" Line="77" Column="3" />
-      <File FileName="libtitania-x3d/Titania/X3D/Bits/Geospatial.cpp" Line="125" Column="32" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geospatial/X3DGeospatialObject.h" Line="112" Column="13" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geospatial/X3DGeospatialObject.cpp" Line="138" Column="27" />
-      <File FileName="libtitania-standard/Titania/Geospatial/UniversalTransverseMercator.h" Line="181" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geospatial/GeoProximitySensor.h" Line="26" Column="70" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geospatial/GeoProximitySensor.cpp" Line="90" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/EnvironmentalSensor/ProximitySensor.cpp" Line="134" Column="1" />
+      <File FileName="experimental/main.cpp" Line="290" Column="39" />
+      <File FileName="libtitania-x3d/Titania/X3D/Bits/Geospatial.h" Line="87" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Bits/Geospatial.cpp" Line="146" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geospatial/X3DGeospatialObject.h" Line="109" Column="31" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geospatial/X3DGeospatialObject.cpp" Line="146" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geospatial/GeoViewpoint.h" Line="140" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geospatial/GeoViewpoint.cpp" Line="151" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/Viewpoint.h" Line="123" Column="17" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/Viewpoint.cpp" Line="57" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/X3DViewpointNode.h" Line="164" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/X3DViewpointNode.cpp" Line="282" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Viewer/X3DFlyViewer.cpp" Line="67" Column="36" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/X3DLayerNode.cpp" Line="210" Column="35" />
+      <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderer.cpp" Line="298" Column="14" />
+      <File FileName="libtitania-x3d/Titania/X3D/Rendering/DepthBuffer.h" Line="68" Column="41" />
+      <File FileName="libtitania-x3d/Titania/X3D/Rendering/DepthBuffer.cpp" Line="96" Column="59" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -18,8 +25,11 @@
           <Node name="build" expanded="True">
             <Node name="debian" expanded="True" />
           </Node>
-          <Node name="experimental" expanded="True" selected="True" />
+          <Node name="experimental" expanded="True" />
           <Node name="Library" expanded="True">
+            <Node name="Models" expanded="True">
+              <Node name="Vehicles" expanded="True" />
+            </Node>
             <Node name="Prototypes" expanded="True">
               <Node name="Geometry3D" expanded="True">
                 <Node name="QuadSphere" expanded="True" />
@@ -52,44 +62,43 @@
           <Node name="libtitania-x3d" expanded="True">
             <Node name="share" expanded="True">
               <Node name="titania" expanded="True">
+                <Node name="goldengate" expanded="True" />
                 <Node name="shaders" expanded="True">
                   <Node name="ParticleSystems" expanded="True">
                     <Node name="Bits" expanded="True" />
                   </Node>
                 </Node>
+                <Node name="tools" expanded="True" />
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
                 <Node name="Bits" expanded="True" />
                 <Node name="Browser" expanded="True">
+                  <Node name="Picking" expanded="True" />
                   <Node name="Viewer" expanded="True" />
                 </Node>
                 <Node name="Components" expanded="True">
                   <Node name="CADGeometry" expanded="True" />
-                  <Node name="Core" expanded="True" />
-                  <Node name="DIS" expanded="True" />
                   <Node name="EnvironmentalEffects" expanded="True" />
                   <Node name="EnvironmentalSensor" expanded="True" />
-                  <Node name="Geometry3D" expanded="True" />
                   <Node name="Geospatial" expanded="True" />
-                  <Node name="Grouping" expanded="True" />
-                  <Node name="Layering" expanded="True" />
+                  <Node name="Layering" expanded="True">
+                    <Node name="X3DLayerNode.cpp" selected="True" />
+                  </Node>
                   <Node name="Navigation" expanded="True" />
-                  <Node name="Networking" expanded="True" />
-                  <Node name="NURBS" expanded="True" />
-                  <Node name="ParticleSystems" expanded="True" />
-                  <Node name="PointingDeviceSensor" expanded="True" />
-                  <Node name="Rendering" expanded="True" />
                   <Node name="Shape" expanded="True" />
-                  <Node name="Sound" expanded="True" />
-                  <Node name="Text" expanded="True" />
-                  <Node name="Texturing" expanded="True" />
                 </Node>
                 <Node name="Execution" expanded="True" />
                 <Node name="Fields" expanded="True" />
                 <Node name="Handles" expanded="True" />
                 <Node name="InputOutput" expanded="True" />
+                <Node name="JavaScript" expanded="True">
+                  <Node name="SpiderMonkey" expanded="True">
+                    <Node name="Fields" expanded="True" />
+                  </Node>
+                </Node>
+                <Node name="Miscellaneous" expanded="True" />
                 <Node name="Rendering" expanded="True" />
                 <Node name="Types" expanded="True" />
               </Node>
@@ -108,6 +117,9 @@
                   <Node name="Textures" expanded="True">
                     <Node name="People" expanded="True" />
                   </Node>
+                </Node>
+                <Node name="pages" expanded="True">
+                  <Node name="about" expanded="True" />
                 </Node>
               </Node>
             </Node>

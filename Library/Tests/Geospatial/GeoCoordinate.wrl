@@ -11,12 +11,7 @@ EXTERNPROTO QuadSphere [
   "file:///usr/share/titania/Library/Prototypes/Geometry3D/QuadSphere/QuadSphere.x3dv"
 ]
 
-NavigationInfo {
-  type [
-    "FLY",
-    "ANY"
-  ]
-}
+NavigationInfo { }
 
 DEF Gray Background {
   skyColor 0.2 0.2 0.2
@@ -28795,8 +28790,8 @@ DEF Axes_1 Transform {
   children [
     DEF Zero GeoTransform {
       scale 1e+06 1e+06 1e+06
-      children DEF Axes1 Shape {
-        geometry IndexedLineSet {
+      children DEF Axes_2 Shape {
+        geometry DEF _1 IndexedLineSet {
           colorPerVertex FALSE
           colorIndex [
             0,
@@ -28835,402 +28830,52 @@ DEF Axes_1 Transform {
     DEF NorthPole GeoTransform {
       scale 1e+06 1e+06 1e+06
       geoCenter 1.57079 0 0
-      children DEF Axes2 Shape {
-        geometry IndexedLineSet {
-          colorPerVertex FALSE
-          colorIndex [
-            0,
-            1,
-            2
-          ]
-          coordIndex [
-            0,
-            1,
-            -1,
-            0,
-            2,
-            -1,
-            0,
-            3,
-            -1
-          ]
-          color Color {
-            color [
-              1 0 0,
-              0 1 0,
-              0 0 1
-            ]
-          }
-          coord Coordinate {
-            point [
-              0 0 0,
-              1 0 0,
-              0 1 0,
-              0 0 1
-            ]
-          }
-        }
-      }
+      children USE Axes_2
     }
     DEF SouthPole GeoTransform {
       scale 1e+06 1e+06 1e+06
       geoCenter -1.57079 0 0
-      children DEF Axes3 Shape {
-        geometry IndexedLineSet {
-          colorPerVertex FALSE
-          colorIndex [
-            0,
-            1,
-            2
-          ]
-          coordIndex [
-            0,
-            1,
-            -1,
-            0,
-            2,
-            -1,
-            0,
-            3,
-            -1
-          ]
-          color Color {
-            color [
-              1 0 0,
-              0 1 0,
-              0 0 1
-            ]
-          }
-          coord Coordinate {
-            point [
-              0 0 0,
-              1 0 0,
-              0 1 0,
-              0 0 1
-            ]
-          }
-        }
-      }
+      children USE Axes_2
     }
     DEF London GeoTransform {
       scale 1e+06 1e+06 1e+06
       geoCenter 0.89 0 0
-      children DEF Axes4 Shape {
-        geometry IndexedLineSet {
-          colorPerVertex FALSE
-          colorIndex [
-            0,
-            1,
-            2
-          ]
-          coordIndex [
-            0,
-            1,
-            -1,
-            0,
-            2,
-            -1,
-            0,
-            3,
-            -1
-          ]
-          color Color {
-            color [
-              1 0 0,
-              0 1 0,
-              0 0 1
-            ]
-          }
-          coord Coordinate {
-            point [
-              0 0 0,
-              1 0 0,
-              0 1 0,
-              0 0 1
-            ]
-          }
-        }
-      }
+      children USE Axes_2
     }
     DEF Leipzig GeoTransform {
       scale 1e+06 1e+06 1e+06
       geoCenter 0.89555602 0.2159173 0
-      children DEF Axes5 Shape {
-        geometry IndexedLineSet {
-          colorPerVertex FALSE
-          colorIndex [
-            0,
-            1,
-            2
-          ]
-          coordIndex [
-            0,
-            1,
-            -1,
-            0,
-            2,
-            -1,
-            0,
-            3,
-            -1
-          ]
-          color Color {
-            color [
-              1 0 0,
-              0 1 0,
-              0 0 1
-            ]
-          }
-          coord Coordinate {
-            point [
-              0 0 0,
-              1 0 0,
-              0 1 0,
-              0 0 1
-            ]
-          }
-        }
-      }
+      children USE Axes_2
     }
     DEF Nairobi GeoTransform {
       scale 1e+06 1e+06 1e+06
       geoCenter -0.0233 0.643 0
-      children DEF Axes6 Shape {
-        geometry IndexedLineSet {
-          colorPerVertex FALSE
-          colorIndex [
-            0,
-            1,
-            2
-          ]
-          coordIndex [
-            0,
-            1,
-            -1,
-            0,
-            2,
-            -1,
-            0,
-            3,
-            -1
-          ]
-          color Color {
-            color [
-              1 0 0,
-              0 1 0,
-              0 0 1
-            ]
-          }
-          coord Coordinate {
-            point [
-              0 0 0,
-              1 0 0,
-              0 1 0,
-              0 0 1
-            ]
-          }
-        }
-      }
+      children USE Axes_2
     }
     DEF NewYork GeoTransform {
       scale 1e+06 1e+06 1e+06
       geoCenter 0.698 -1.274 0
-      children DEF Axes7 Shape {
-        geometry IndexedLineSet {
-          colorPerVertex FALSE
-          colorIndex [
-            0,
-            1,
-            2
-          ]
-          coordIndex [
-            0,
-            1,
-            -1,
-            0,
-            2,
-            -1,
-            0,
-            3,
-            -1
-          ]
-          color Color {
-            color [
-              1 0 0,
-              0 1 0,
-              0 0 1
-            ]
-          }
-          coord Coordinate {
-            point [
-              0 0 0,
-              1 0 0,
-              0 1 0,
-              0 0 1
-            ]
-          }
-        }
-      }
+      children USE Axes_2
     }
     DEF RioDeJaneiro GeoTransform {
       scale 1e+06 1e+06 1e+06
       geoCenter -0.384 -0.75 0
-      children DEF Axes8 Shape {
-        geometry IndexedLineSet {
-          colorPerVertex FALSE
-          colorIndex [
-            0,
-            1,
-            2
-          ]
-          coordIndex [
-            0,
-            1,
-            -1,
-            0,
-            2,
-            -1,
-            0,
-            3,
-            -1
-          ]
-          color Color {
-            color [
-              1 0 0,
-              0 1 0,
-              0 0 1
-            ]
-          }
-          coord Coordinate {
-            point [
-              0 0 0,
-              1 0 0,
-              0 1 0,
-              0 0 1
-            ]
-          }
-        }
-      }
+      children USE Axes_2
     }
     DEF Sydney GeoTransform {
       scale 1e+06 1e+06 1e+06
       geoCenter -0.646 2.513 0
-      children DEF Axes9 Shape {
-        geometry IndexedLineSet {
-          colorPerVertex FALSE
-          colorIndex [
-            0,
-            1,
-            2
-          ]
-          coordIndex [
-            0,
-            1,
-            -1,
-            0,
-            2,
-            -1,
-            0,
-            3,
-            -1
-          ]
-          color Color {
-            color [
-              1 0 0,
-              0 1 0,
-              0 0 1
-            ]
-          }
-          coord Coordinate {
-            point [
-              0 0 0,
-              1 0 0,
-              0 1 0,
-              0 0 1
-            ]
-          }
-        }
-      }
+      children USE Axes_2
     }
     DEF Tokyo GeoTransform {
       scale 1e+06 1e+06 1e+06
       geoCenter 0.611 2.426 0
-      children DEF Axes10 Shape {
-        geometry IndexedLineSet {
-          colorPerVertex FALSE
-          colorIndex [
-            0,
-            1,
-            2
-          ]
-          coordIndex [
-            0,
-            1,
-            -1,
-            0,
-            2,
-            -1,
-            0,
-            3,
-            -1
-          ]
-          color Color {
-            color [
-              1 0 0,
-              0 1 0,
-              0 0 1
-            ]
-          }
-          coord Coordinate {
-            point [
-              0 0 0,
-              1 0 0,
-              0 1 0,
-              0 0 1
-            ]
-          }
-        }
-      }
+      children USE Axes_2
     }
     DEF MenloPark GeoTransform {
       scale 1e+06 1e+06 1e+06
       geoCenter 0.653636276847388 -2.13250262128124 0
-      children DEF Axes11 Shape {
-        geometry IndexedLineSet {
-          colorPerVertex FALSE
-          colorIndex [
-            0,
-            1,
-            2
-          ]
-          coordIndex [
-            0,
-            1,
-            -1,
-            0,
-            2,
-            -1,
-            0,
-            3,
-            -1
-          ]
-          color Color {
-            color [
-              1 0 0,
-              0 1 0,
-              0 0 1
-            ]
-          }
-          coord Coordinate {
-            point [
-              0 0 0,
-              1 0 0,
-              0 1 0,
-              0 0 1
-            ]
-          }
-        }
-      }
+      children USE Axes_2
     }
   ]
 }
@@ -29249,8 +28894,11 @@ DEF Texts Transform {
           }
           geometry Text {
             string "Zero"
-            fontStyle ScreenFontStyle {
-              family "SANS"
+            fontStyle DEF _2 ScreenFontStyle {
+              family [
+                "Ubuntu",
+                "SANS"
+              ]
             }
           }
         }
@@ -29268,9 +28916,7 @@ DEF Texts Transform {
           }
           geometry Text {
             string "North Pole"
-            fontStyle ScreenFontStyle {
-              family "SANS"
-            }
+            fontStyle USE _2
           }
         }
       }
@@ -29287,9 +28933,7 @@ DEF Texts Transform {
           }
           geometry Text {
             string "South Pole"
-            fontStyle ScreenFontStyle {
-              family "SANS"
-            }
+            fontStyle USE _2
           }
         }
       }
@@ -29306,9 +28950,7 @@ DEF Texts Transform {
           }
           geometry Text {
             string "London"
-            fontStyle ScreenFontStyle {
-              family "SANS"
-            }
+            fontStyle USE _2
           }
         }
       }
@@ -29325,9 +28967,7 @@ DEF Texts Transform {
           }
           geometry Text {
             string "Leipzig"
-            fontStyle ScreenFontStyle {
-              family "SANS"
-            }
+            fontStyle USE _2
           }
         }
       }
@@ -29344,9 +28984,7 @@ DEF Texts Transform {
           }
           geometry Text {
             string "Nairobi"
-            fontStyle ScreenFontStyle {
-              family "SANS"
-            }
+            fontStyle USE _2
           }
         }
       }
@@ -29363,9 +29001,7 @@ DEF Texts Transform {
           }
           geometry Text {
             string "New York"
-            fontStyle ScreenFontStyle {
-              family "SANS"
-            }
+            fontStyle USE _2
           }
         }
       }
@@ -29382,9 +29018,7 @@ DEF Texts Transform {
           }
           geometry Text {
             string "Rio de Janeiro"
-            fontStyle ScreenFontStyle {
-              family "SANS"
-            }
+            fontStyle USE _2
           }
         }
       }
@@ -29401,9 +29035,7 @@ DEF Texts Transform {
           }
           geometry Text {
             string "Sydney"
-            fontStyle ScreenFontStyle {
-              family "SANS"
-            }
+            fontStyle USE _2
           }
         }
       }
@@ -29420,9 +29052,7 @@ DEF Texts Transform {
           }
           geometry Text {
             string "Tokyo"
-            fontStyle ScreenFontStyle {
-              family "SANS"
-            }
+            fontStyle USE _2
           }
         }
       }
@@ -29439,9 +29069,7 @@ DEF Texts Transform {
           }
           geometry Text {
             string "Menlo Park"
-            fontStyle ScreenFontStyle {
-              family "SANS"
-            }
+            fontStyle USE _2
           }
         }
       }
@@ -29449,17 +29077,17 @@ DEF Texts Transform {
   ]
 }
 
-DEF _1 GeoProximitySensor {
+DEF _3 GeoProximitySensor {
   size -1 -1 -1
 }
 
 DEF Satellite Transform {
   children [
-    DEF _2 TimeSensor {
+    DEF _4 TimeSensor {
       cycleInterval 10
       loop TRUE
     }
-    DEF _3 GeoPositionInterpolator {
+    DEF _5 GeoPositionInterpolator {
       key [
         0,
         0.25,
@@ -29475,11 +29103,11 @@ DEF Satellite Transform {
         0 0 1500000
       ]
     }
-    DEF _4 GeoTransform {
+    DEF _6 GeoTransform {
       scale 200000 200000 200000
-      geoCenter 0 2.59955404691725 1500000
+      geoCenter 0 -2.55850689281725 1500000
       children [
-        DEF Axes_2 Transform {
+        DEF Axes_3 Transform {
           scale 2 2 2
           children DEF Axes12 Shape {
             geometry IndexedLineSet {
@@ -29588,6 +29216,6 @@ function set_geoCoord (value, time)
 "
 }
 
-ROUTE _1.geoCoord_changed TO Debug.set_geoCoord
-ROUTE _3.geovalue_changed TO _4.set_geoCenter
-ROUTE _2.fraction_changed TO _3.set_fraction
+ROUTE _3.geoCoord_changed TO Debug.set_geoCoord
+ROUTE _5.geovalue_changed TO _6.set_geoCenter
+ROUTE _4.fraction_changed TO _5.set_fraction

@@ -929,6 +929,47 @@
                         <signal name="activate" handler="on_delete_nodes_activate" swapped="no"/>
                       </object>
                     </child>
+                    
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="separatormenuitem12">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                    </child>
+                    
+                    <child>
+                      <object class="GtkMenuItem" id="CloneMenuItem">
+                        <property name="label" translatable="yes">Clo_ne</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_underline">True</property>
+                        <child type="submenu">
+                          <object class="GtkMenu" id="menu11">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <child>
+                              <object class="GtkMenuItem" id="CreateCloneMenuItem">
+                                <property name="label" translatable="yes">Create Clo_ne</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="use_underline">True</property>
+                                <signal name="activate" handler="on_create_clone_activate" swapped="no"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkMenuItem" id="UnlinkCloneMenuItem">
+                                <property name="label" translatable="yes">Unlin_k Clone</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="use_underline">True</property>
+                                <signal name="activate" handler="on_unlink_clone_activate" swapped="no"/>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    
                     <child>
                       <object class="GtkSeparatorMenuItem" id="separatormenuitem9">
                         <property name="visible">True</property>

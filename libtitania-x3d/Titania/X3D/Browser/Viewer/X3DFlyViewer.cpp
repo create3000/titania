@@ -297,7 +297,7 @@ X3DFlyViewer::fly ()
 	float weight = ROTATION_SPEED_FACTOR * dt;
 	weight *= rubberBandLength / (rubberBandLength + ROTATION_LIMIT);
 
-	viewpoint -> orientationOffset () *= math::slerp <float> (Rotation4f (), rubberBandRotation, weight);
+	viewpoint -> orientationOffset () *= slerp (Rotation4f (), rubberBandRotation, weight);
 
 	// GeoRotation
 
@@ -344,7 +344,7 @@ X3DFlyViewer::roll ()
 
 	const auto viewpoint = getActiveViewpoint ();
 
-	viewpoint -> orientationOffset () = math::slerp <float> (sourceRotation, destinationRotation, elapsedTime / ROLL_TIME);
+	viewpoint -> orientationOffset () = slerp <float> (sourceRotation, destinationRotation, elapsedTime / ROLL_TIME);
 
 	return true;
 }
@@ -352,17 +352,16 @@ X3DFlyViewer::roll ()
 Vector3f
 X3DFlyViewer::getTranslation (const Vector3f & translation) const
 {
-	// Get position offset
-	const auto       viewpoint = getActiveViewpoint ();
-	const Rotation4f up (yAxis, viewpoint -> getUpVector ());
-
 	const float collisionRadius = navigationInfo -> getCollisionRadius ();
-	const float positionOffset  = (collisionRadius + navigationInfo -> getAvatarHeight () - navigationInfo -> getStepHeight ()) / 2 - collisionRadius;
-
+	
 	// Get width and height of camera
 
 	const float width  = collisionRadius * 2;
 	const float height = collisionRadius + navigationInfo -> getAvatarHeight () - navigationInfo -> getStepHeight ();
+
+	// Get position offset
+
+	const float positionOffset  = height / 2 - collisionRadius;
 
 	return getBrowser () -> getActiveLayer () -> getTranslation (Vector3f (0, -positionOffset, 0), width, height, translation);
 }
@@ -431,24 +430,24 @@ X3DFlyViewer::display ()
 		const int width  = viewport [2];
 		const int height = viewport [3];
 
+		const Matrix4d modelview; // Use identity
+		const Matrix4d projection = ortho <float> (0, width, 0, height, -1, 1);
+
 		glDisable (GL_DEPTH_TEST);
 
 		glMatrixMode (GL_PROJECTION);
-		glLoadMatrixf (ortho <float> (0, width, 0, height, -1, 1) .data ());
+		glLoadMatrixd (projection .data ());
 		glMatrixMode (GL_MODELVIEW);
-
-		glLoadIdentity ();
 
 		// Display Rubberband.
 
-		Matrix4d modelview; // Use identity
-		Matrix4d projection = ProjectionMatrix4d ();
+		glLoadIdentity ();
 
 		// From point
-		Vector3d from = ViewVolume::unProjectPoint (fromVector .x (), height - fromVector .z (), 0, modelview, projection, viewport);
+		const Vector3d from = ViewVolume::unProjectPoint (fromVector .x (), height - fromVector .z (), 0, modelview, projection, viewport);
 
 		// To point
-		Vector3d to = ViewVolume::unProjectPoint (toVector .x (), height - toVector .z (), 0, modelview, projection, viewport);
+		const Vector3d to = ViewVolume::unProjectPoint (toVector .x (), height - toVector .z (), 0, modelview, projection, viewport);
 
 		// Draw a black and a white line
 		glLineWidth (2);

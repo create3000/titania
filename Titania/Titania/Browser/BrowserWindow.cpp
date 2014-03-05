@@ -213,6 +213,10 @@ BrowserWindow::set_selection (const X3D::MFNode & children)
 	getCutMenuItem ()    .set_sensitive (haveSelection);
 	getCopyMenuItem ()   .set_sensitive (haveSelection);
 	getDeleteMenuItem () .set_sensitive (haveSelection);
+	
+	getCloneMenuItem ()       .set_sensitive (haveSelection);
+	getCreateCloneMenuItem () .set_sensitive (haveSelections);
+	getUnlinkCloneMenuItem () .set_sensitive (haveSelection);
 
 	getGroupSelectedNodesMenuItem () .set_sensitive (haveSelection);
 	getUngroupMenuItem ()            .set_sensitive (haveSelection);
@@ -653,6 +657,51 @@ BrowserWindow::on_delete_nodes_activate ()
 }
 
 void
+BrowserWindow::on_create_clone_activate ()
+{
+	__LOG__ << std::endl;
+
+	auto selection = getBrowser () -> getSelection () -> getChildren ();
+
+	if (selection .size () < 2)
+		return;
+
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Create Clone"));
+
+	getSelection () -> undoRestoreSelection (undoStep);
+
+	const auto clone = selection .back ();
+	selection .pop_back ();
+
+	createClone (clone, selection, undoStep);
+
+	getSelection () -> setChildren ({ clone }, undoStep);
+
+	addUndoStep (undoStep);
+}
+
+void
+BrowserWindow::on_unlink_clone_activate ()
+{
+	__LOG__ << std::endl;
+
+	const auto selection = getBrowser () -> getSelection () -> getChildren ();
+
+	if (selection .empty ())
+		return;
+
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Unlink Clone"));
+
+	getSelection () -> clear (undoStep);
+
+	X3D::MFNode nodes = unlinkClone (selection, undoStep);
+
+	getSelection () -> setChildren (nodes, undoStep);
+
+	addUndoStep (undoStep);
+}
+
+void
 BrowserWindow::on_group_selected_nodes_activate ()
 {
 	const auto selection = getBrowser () -> getSelection () -> getChildren ();
@@ -717,11 +766,10 @@ BrowserWindow::on_detach_from_group_activate ()
 
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Detach From Group"));
 
+	getSelection () -> undoRestoreSelection (undoStep);
 	getSelection () -> redoRestoreSelection (undoStep);
 
 	detachFromGroup (selection, getKeys () .shift (), undoStep);
-
-	getSelection () -> undoRestoreSelection (undoStep);
 
 	addUndoStep (undoStep);
 }
