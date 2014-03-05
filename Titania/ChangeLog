@@ -1,5 +1,34 @@
 2014-03-05  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Image.h:
+	* MagicImport.cpp:
+	* History.cpp:
+	* BrowserWindow.cpp:
+	* X3DBrowserEditor.h:
+	* LibraryView.cpp:
+	* X3DBrowserWidget.cpp:
+	* X3DBrowserEditor.cpp:
+	* ViewpointList.cpp:
+	* HistoryEditor.cpp:
+	* Configuration.cpp:
+	* X3DBrowserSelection.cpp:
+	* OutlineSelection.h:
+	* MaterialEditor.cpp:
+	* X3DOutlineTreeView.h:
+	* OutlineTreeModel.cpp:
+	* OutlineSelection.cpp:
+	* OutlineTreeObserver.h:
+	* OutlineRouteGraph.cpp:
+	* X3DOutlineTreeView.cpp:
+	* OutlineTreeViewEditor.h:
+	* OutlineTreeObserver.cpp:
+	* OutlineTreeViewEditor.cpp:
+	* NodePropertiesEditor.cpp:
+	* TextViewEditable.cpp:
+	* OutlineCellRenderer.cpp: 
+
+2014-03-05  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* BrowserWindow.h:
 	* BrowserWindow.ui:
 	* BrowserWindow.cpp:

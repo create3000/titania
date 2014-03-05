@@ -68,7 +68,7 @@ OutlineTreeObserver::watch (const Gtk::TreeModel::iterator & iter, const Gtk::Tr
 	{
 		case OutlineIterType::X3DField:
 		{
-			auto field = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (iter));
+			const auto field = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (iter));
 
 			if (treeView -> is_full_expanded (iter))
 			{
@@ -115,7 +115,7 @@ OutlineTreeObserver::watch_child (const Gtk::TreeModel::iterator & iter, const G
 
 		case OutlineIterType::X3DFieldValue:
 		{
-			auto field = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (iter));
+			const auto field = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (iter));
 
 			field -> addInterest (this, &OutlineTreeObserver::on_row_changed, path);
 
@@ -123,7 +123,7 @@ OutlineTreeObserver::watch_child (const Gtk::TreeModel::iterator & iter, const G
 		}
 		case OutlineIterType::X3DField:
 		{
-			auto field = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (iter));
+			const auto field = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (iter));
 
 			field -> getInputRoutes ()  .addInterest (this, &OutlineTreeObserver::on_row_changed, path);
 			field -> getOutputRoutes () .addInterest (this, &OutlineTreeObserver::on_row_changed, path);
@@ -151,7 +151,7 @@ OutlineTreeObserver::watch_child (const Gtk::TreeModel::iterator & iter, const G
 }
 
 void
-OutlineTreeObserver::unwatch_tree (const Gtk::TreeModel::iterator & iter, bool root)
+OutlineTreeObserver::unwatch_tree (const Gtk::TreeModel::iterator & iter, const bool root)
 {
 	unwatch_child (iter, root);
 
@@ -160,7 +160,7 @@ OutlineTreeObserver::unwatch_tree (const Gtk::TreeModel::iterator & iter, bool r
 }
 
 void
-OutlineTreeObserver::unwatch_child (const Gtk::TreeModel::iterator & iter, bool root)
+OutlineTreeObserver::unwatch_child (const Gtk::TreeModel::iterator & iter, const bool root)
 {
 	switch (treeView -> get_data_type (iter))
 	{
@@ -170,7 +170,7 @@ OutlineTreeObserver::unwatch_child (const Gtk::TreeModel::iterator & iter, bool 
 
 		case OutlineIterType::X3DFieldValue:
 		{
-			auto field = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (iter));
+			const auto field = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (iter));
 
 			field -> removeInterest (this, &OutlineTreeObserver::on_row_changed);
 
@@ -178,7 +178,7 @@ OutlineTreeObserver::unwatch_child (const Gtk::TreeModel::iterator & iter, bool 
 		}
 		case OutlineIterType::X3DField:
 		{
-			auto field = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (iter));
+			const auto field = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (iter));
 
 			if (not root)
 			{
@@ -218,7 +218,7 @@ OutlineTreeObserver::unwatch_child (const Gtk::TreeModel::iterator & iter, bool 
 		}
 		case OutlineIterType::X3DBaseNode:
 		{
-			auto open_path = treeView -> get_open_path (iter);
+			const auto open_path = treeView -> get_open_path (iter);
 
 			if (open_path .size () and open_path == treeView -> get_model () -> get_path (iter))
 				treeView -> set_open_path (iter, Gtk::TreeModel::Path ());
@@ -229,7 +229,7 @@ OutlineTreeObserver::unwatch_child (const Gtk::TreeModel::iterator & iter, bool 
 }
 
 void
-OutlineTreeObserver::on_row_has_child_toggled (const Gtk::TreeModel::Path & path, bool expand)
+OutlineTreeObserver::on_row_has_child_toggled (const Gtk::TreeModel::Path & path, const bool expand)
 {
 	treeView -> get_model () -> row_has_child_toggled (path, treeView -> get_model () -> get_iter (path));
 
@@ -250,8 +250,8 @@ OutlineTreeObserver::update_field (const Gtk::TreeModel::Path & path)
 {
 	//__LOG__ << path .to_string () << std::endl;
 
-	Gtk::TreeModel::iterator iter         = treeView -> get_model () -> get_iter (path);
-	bool                     full_expanded = treeView -> is_full_expanded (iter);
+	const Gtk::TreeModel::iterator iter         = treeView -> get_model () -> get_iter (path);
+	const bool                     full_expanded = treeView -> is_full_expanded (iter);
 
 	treeView -> collapse_row (path);
 

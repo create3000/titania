@@ -117,34 +117,34 @@ private:
 	select_node (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
 
 	bool
-	select_field_value (double x, double y);
+	select_field_value (const double x, const double y);
 
 	void
 	on_edited (const Glib::ustring &, const Glib::ustring &);
 
 	bool
-	hover_access_type (double, double);
+	hover_access_type (const double, const double);
 
 	bool
-	select_access_type (double, double);
+	select_access_type (const double, const double);
 
 	bool
-	add_route (double, double);
+	add_route (const double, const double);
 
 	void
-	set_access_type_selection (const OutlineUserDataPtr &, int);
+	set_access_type_selection (const OutlineUserDataPtr &, const int);
 
 	void
 	clear_access_type_selection (const OutlineUserDataPtr &);
 
 	bool
-	remove_route (double, double);
+	remove_route (const double, const double);
 
 	void
 	remove_route (const Gtk::TreeModel::Path &, const std::vector <X3D::Route*> &);
 
 	bool
-	select_route (double, double);
+	select_route (const double, const double);
 
 	///  @name Static members
 

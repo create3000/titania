@@ -60,8 +60,8 @@ namespace puck {
 History::History () :
 	database ()
 {
-	std::string filename     = config_dir ("history.db");
-	bool        have_history = os::file_exists (filename);
+	const std::string filename     = config_dir ("history.db");
+	const bool        have_history = os::file_exists (filename);
 
 	os::system ("mkdir", "-p", config_dir ());
 

@@ -85,7 +85,7 @@ MaterialEditor::MaterialEditor (BrowserWindow* const browserWindow, X3D::MFNode 
 
 	X3D::traverse (nodes, [&] (X3D::SFNode & node)
 	               {
-	                  auto appearance = dynamic_cast <X3D::Appearance*> (node .getValue ());
+	                  const auto appearance = dynamic_cast <X3D::Appearance*> (node .getValue ());
 
 	                  if (appearance)
 								appearances .emplace_back (appearance);
@@ -495,9 +495,9 @@ MaterialEditor::on_color_clicked (Gtk::ColorSelectionDialog & dialog, const X3D:
 void
 MaterialEditor::on_color (Gtk::ColorSelectionDialog & dialog, X3D::SFColor & twoSidedColor, X3D::SFColor & color, Gtk::DrawingArea & drawingArea)
 {
-	auto rgba = dialog .get_color_selection () -> get_current_rgba ();
+	const auto rgba = dialog .get_color_selection () -> get_current_rgba ();
 
-	X3D::Color3f color3 (rgba .get_red (), rgba .get_green (), rgba .get_blue ());
+	const X3D::Color3f color3 (rgba .get_red (), rgba .get_green (), rgba .get_blue ());
 
 	// Update material
 
@@ -519,7 +519,7 @@ MaterialEditor::updateAppearance ()
 {
 	// Update material
 
-	auto lastUndoStep = getBrowserWindow () -> getLastUndoStep ();
+	const auto lastUndoStep = getBrowserWindow () -> getLastUndoStep ();
 
 	if (undoStep and lastUndoStep == undoStep)
 	{
@@ -582,7 +582,7 @@ MaterialEditor::updateMaterial ()
 {
 	try
 	{
-		X3D::X3DSFNode <X3D::Appearance> appearance (browserSurface -> getExecutionContext () -> getNamedNode ("Appearance"));
+		const X3D::X3DSFNode <X3D::Appearance> appearance (browserSurface -> getExecutionContext () -> getNamedNode ("Appearance"));
 
 		if (appearance)
 		{

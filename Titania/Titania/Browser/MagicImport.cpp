@@ -72,8 +72,8 @@ MagicImport::import (X3D::MFNode & selection, const X3D::X3DSFNode <X3D::Scene> 
 
 	try
 	{
-		std::string magic          = scene -> getMetaData ("titania magic");
-		auto        importFunction = importFunctions .find (magic);
+		const std::string magic          = scene -> getMetaData ("titania magic");
+		const auto        importFunction = importFunctions .find (magic);
 
 		if (importFunction == importFunctions .end ())
 			return false;
@@ -95,7 +95,7 @@ MagicImport::material (X3D::MFNode & selection, const X3D::X3DSFNode <X3D::Scene
 
 	X3D::traverse (scene -> getRootNodes (), [this, &material, &undoStep] (X3D::SFNode & node)
 	               {
-	                  X3D::X3DSFNode <X3D::Appearance> appearance (node);
+	                  const X3D::X3DSFNode <X3D::Appearance> appearance (node);
 
 	                  if (appearance and X3D::x3d_cast <X3D::X3DMaterialNode*> (appearance -> material ()))
 	                  {
@@ -119,7 +119,7 @@ MagicImport::material (X3D::MFNode & selection, const X3D::X3DSFNode <X3D::Scene
 
 	X3D::traverse (selection, [this, &material, &undoStep] (X3D::SFNode & node)
 	               {
-	                  auto appearance = dynamic_cast <X3D::Appearance*> (node .getValue ());
+	                  const auto appearance = dynamic_cast <X3D::Appearance*> (node .getValue ());
 
 	                  if (appearance)
 	                     getBrowserWindow () -> replaceNode (node, appearance -> material (), material, undoStep);
@@ -145,7 +145,7 @@ MagicImport::texture (X3D::MFNode & selection, const X3D::X3DSFNode <X3D::Scene>
 
 	X3D::traverse (scene -> getRootNodes (), [this, &texture, &undoStep] (X3D::SFNode & node)
 	               {
-	                  X3D::X3DSFNode <X3D::Appearance> appearance (node);
+	                  const X3D::X3DSFNode <X3D::Appearance> appearance (node);
 
 	                  if (appearance and X3D::x3d_cast <X3D::X3DTextureNode*> (appearance -> texture ()))
 	                  {
@@ -169,7 +169,7 @@ MagicImport::texture (X3D::MFNode & selection, const X3D::X3DSFNode <X3D::Scene>
 
 	X3D::traverse (selection, [this, &texture, &undoStep] (X3D::SFNode & node)
 	               {
-	                  auto appearance = dynamic_cast <X3D::Appearance*> (node .getValue ());
+	                  const auto appearance = dynamic_cast <X3D::Appearance*> (node .getValue ());
 
 	                  if (appearance)
 	                     getBrowserWindow () -> replaceNode (node, appearance -> texture (), texture, undoStep);
@@ -189,16 +189,16 @@ MagicImport::texture (X3D::MFNode & selection, const X3D::X3DSFNode <X3D::Scene>
 void
 MagicImport::importProtoDeclaration (const X3D::SFNode & node, const UndoStepPtr & undoStep)
 {
-	auto prototypeInstance = dynamic_cast <X3D::X3DPrototypeInstance*> (node .getValue ());
+	const auto prototypeInstance = dynamic_cast <X3D::X3DPrototypeInstance*> (node .getValue ());
 
 	if (prototypeInstance)
 	{
-		auto name          = prototypeInstance -> getProtoDeclaration () -> getName ();
-		bool isExternProto = prototypeInstance -> getProtoDeclaration () -> isExternproto ();
+		const auto name          = prototypeInstance -> getProtoDeclaration () -> getName ();
+		const bool isExternProto = prototypeInstance -> getProtoDeclaration () -> isExternproto ();
 
 		try
 		{
-			auto protoDeclaration = getBrowser () -> getExecutionContext () -> getProtoDeclaration (name);
+			const auto protoDeclaration = getBrowser () -> getExecutionContext () -> getProtoDeclaration (name);
 			
 			undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DExecutionContext::updateProtoDeclaration),
 			                             getBrowser () -> getExecutionContext (),
@@ -209,7 +209,7 @@ MagicImport::importProtoDeclaration (const X3D::SFNode & node, const UndoStepPtr
 		{
 			try
 			{
-				auto externProtoDeclaration = getBrowser () -> getExecutionContext () -> getExternProtoDeclaration (name);
+				const auto externProtoDeclaration = getBrowser () -> getExecutionContext () -> getExternProtoDeclaration (name);
 				
 				undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DExecutionContext::updateExternProtoDeclaration),
 				                             getBrowser () -> getExecutionContext (),
@@ -233,7 +233,7 @@ MagicImport::importProtoDeclaration (const X3D::SFNode & node, const UndoStepPtr
 			}
 		}
 
-		auto proto = prototypeInstance -> getProtoDeclaration () -> copy (getBrowser () -> getExecutionContext ());
+		const auto proto = prototypeInstance -> getProtoDeclaration () -> copy (getBrowser () -> getExecutionContext ());
 		
 		if (isExternProto)
 		{

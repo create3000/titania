@@ -107,8 +107,8 @@ X3DBrowserSelection::buttonReleaseEvent (bool picked)
 
 	if (picked)
 	{
-		auto hit       = getBrowser () -> getHits () .front ();
-		auto hierarchy = X3D::find (getBrowser () -> getExecutionContext () -> getRootNodes (), hit -> shape, false);
+		const auto hit       = getBrowser () -> getHits () .front ();
+		const auto hierarchy = X3D::find (getBrowser () -> getExecutionContext () -> getRootNodes (), hit -> shape, false);
 
 		if (not hierarchy .empty ())
 		{
@@ -118,7 +118,7 @@ X3DBrowserSelection::buttonReleaseEvent (bool picked)
 			{
 				for (const auto & object : basic::reverse_adapter (hierarchy))
 				{
-					X3D::SFNode lowest (object);
+					const X3D::SFNode lowest (object);
 
 					if (not lowest)
 						continue;
@@ -142,7 +142,7 @@ X3DBrowserSelection::buttonReleaseEvent (bool picked)
 			
 				for (const auto & object : hierarchy)
 				{
-					X3D::SFNode highest (object);
+					const X3D::SFNode highest (object);
 
 					if (not highest)
 						continue;
@@ -166,7 +166,7 @@ X3DBrowserSelection::buttonReleaseEvent (bool picked)
 				{
 					for (const auto & object : hierarchy)
 					{
-						X3D::SFNode highest (object);
+						const X3D::SFNode highest (object);
 
 						if (not highest)
 							continue;

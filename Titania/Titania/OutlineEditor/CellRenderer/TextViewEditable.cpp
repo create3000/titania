@@ -90,7 +90,7 @@ TextViewEditable::on_grab_focus ()
 {
 	textview .grab_focus ();
 
-	auto buffer = textview .get_buffer ();
+	const auto buffer = textview .get_buffer ();
 
 	buffer -> place_cursor (buffer -> begin ());
 }

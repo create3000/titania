@@ -72,7 +72,7 @@ NodePropertiesEditor::NodePropertiesEditor (BrowserWindow* const browserWindow, 
 void
 NodePropertiesEditor::validateIdOnInsert (Gtk::Entry & entry, const Glib::ustring & insert, int position)
 {
-	std::string text = entry .get_text () .insert (position, insert);
+	const std::string text = entry .get_text () .insert (position, insert);
 
 	if (not X3D::RegEx::Id .FullMatch (text))
 		entry .signal_insert_text () .emission_stop ();
@@ -81,7 +81,7 @@ NodePropertiesEditor::validateIdOnInsert (Gtk::Entry & entry, const Glib::ustrin
 void
 NodePropertiesEditor::validateIdOnDelete (Gtk::Entry & entry, int start_pos, int end_pos)
 {
-	std::string text = entry .get_text () .erase (start_pos, end_pos - start_pos);
+	const std::string text = entry .get_text () .erase (start_pos, end_pos - start_pos);
 
 	if (text .length () and not X3D::RegEx::Id .FullMatch (text))
 		entry .signal_delete_text () .emission_stop ();
@@ -114,11 +114,11 @@ NodePropertiesEditor::on_name_delete_text (int start_pos, int end_pos)
 void
 NodePropertiesEditor::on_ok ()
 {
-	std::string name = getNameEntry () .get_text ();
+	const std::string name = getNameEntry () .get_text ();
 
 	if (name not_eq node -> getName ())
 	{
-		auto undoStep = std::make_shared <UndoStep> (_ ("Edit Node Properties"));
+		const auto undoStep = std::make_shared <UndoStep> (_ ("Edit Node Properties"));
 
 		undoStep -> addUndoFunction (&NodePropertiesEditor::updateNamedNode,
 		                             node -> getName (),

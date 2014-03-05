@@ -77,8 +77,8 @@ X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DSFNode <X3D::X3DExecutionC
 
 	// Color
 
-	auto selectedForegroundColor = get_style_context () -> get_color (Gtk::STATE_FLAG_SELECTED);
-	auto selectedBackgroundColor = get_style_context () -> get_background_color (Gtk::STATE_FLAG_SELECTED);
+	const auto selectedForegroundColor = get_style_context () -> get_color (Gtk::STATE_FLAG_SELECTED);
+	const auto selectedBackgroundColor = get_style_context () -> get_background_color (Gtk::STATE_FLAG_SELECTED);
 
 	// Columns
 
@@ -103,7 +103,7 @@ X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DSFNode <X3D::X3DExecutionC
 	Gtk::TreeViewColumn* treeviewcolumn_pad = Gtk::manage (new Gtk::TreeViewColumn ());
 	treeviewcolumn_pad -> set_expand (true);
 
-	auto padCellrenderer = Gtk::manage (new Gtk::CellRendererText ());
+	const auto padCellrenderer = Gtk::manage (new Gtk::CellRendererText ());
 	treeviewcolumn_pad -> pack_start (*padCellrenderer, false);
 	treeviewcolumn_pad -> add_attribute (*padCellrenderer, "cell-background-set", OutlineTreeModel::SELECTED_COLUMN);
 	padCellrenderer -> property_cell_background_rgba () = selectedBackgroundColor;
@@ -116,7 +116,7 @@ X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DSFNode <X3D::X3DExecutionC
 }
 
 Gtk::TreeModel::Path
-X3DOutlineTreeView::get_path_at_position (double x, double y) const
+X3DOutlineTreeView::get_path_at_position (const double x, const double y) const
 {
 	Gtk::TreeViewColumn* column = nullptr;
 
@@ -124,7 +124,7 @@ X3DOutlineTreeView::get_path_at_position (double x, double y) const
 }
 
 Gtk::TreeModel::Path
-X3DOutlineTreeView::get_path_at_position (double x, double y, Gtk::TreeViewColumn* & column) const
+X3DOutlineTreeView::get_path_at_position (const double x, const double y, Gtk::TreeViewColumn* & column) const
 {
 	Gtk::TreeModel::Path path;
 	int                  cell_x = 0;
@@ -153,7 +153,7 @@ X3DOutlineTreeView::expand_to (X3D::X3DChildObject* const object)
 bool
 X3DOutlineTreeView::expand_to (const Gtk::TreeModel::Children & children, std::vector <X3D::X3DChildObject*> & hierarchy, Gtk::TreeModel::Path & path)
 {
-	auto top = hierarchy .front ();
+	const auto top = hierarchy .front ();
 
 	hierarchy .erase (hierarchy .begin ());
 
@@ -161,8 +161,8 @@ X3DOutlineTreeView::expand_to (const Gtk::TreeModel::Children & children, std::v
 
 	for (const auto child : children)
 	{
-		auto data   = get_model () -> get_data (child);
-		auto object = data -> get_object ();
+		const auto data   = get_model () -> get_data (child);
+		auto       object = data -> get_object ();
 
 		if (data -> get_type () == OutlineIterType::X3DBaseNode)
 			object = static_cast <X3D::SFNode*> (object) -> getValue ();
@@ -231,7 +231,7 @@ X3DOutlineTreeView::get_object (const Gtk::TreeModel::iterator & iter) const
 void
 X3DOutlineTreeView::set_open_path (const Gtk::TreeModel::iterator & iter, const Gtk::TreeModel::Path & value)
 {
-	auto userData = get_user_data (iter);
+	const auto userData = get_user_data (iter);
 
 	if (userData)
 		userData -> open_path = value;
@@ -240,7 +240,7 @@ X3DOutlineTreeView::set_open_path (const Gtk::TreeModel::iterator & iter, const 
 Gtk::TreeModel::Path
 X3DOutlineTreeView::get_open_path (const Gtk::TreeModel::iterator & iter) const
 {
-	auto userData = get_user_data (iter);
+	const auto userData = get_user_data (iter);
 
 	if (userData)
 		return userData -> open_path;
@@ -249,9 +249,9 @@ X3DOutlineTreeView::get_open_path (const Gtk::TreeModel::iterator & iter) const
 }
 
 void
-X3DOutlineTreeView::is_expanded (const Gtk::TreeModel::iterator & iter, bool value)
+X3DOutlineTreeView::is_expanded (const Gtk::TreeModel::iterator & iter, const bool value)
 {
-	auto userData = get_user_data (iter);
+	const auto userData = get_user_data (iter);
 
 	if (userData)
 		userData -> expanded = value;
@@ -260,7 +260,7 @@ X3DOutlineTreeView::is_expanded (const Gtk::TreeModel::iterator & iter, bool val
 bool
 X3DOutlineTreeView::is_expanded (const Gtk::TreeModel::iterator & iter) const
 {
-	auto userData = get_user_data (iter);
+	const auto userData = get_user_data (iter);
 
 	if (userData)
 		return userData -> expanded;
@@ -269,9 +269,9 @@ X3DOutlineTreeView::is_expanded (const Gtk::TreeModel::iterator & iter) const
 }
 
 void
-X3DOutlineTreeView::is_full_expanded (const Gtk::TreeModel::iterator & iter, bool value)
+X3DOutlineTreeView::is_full_expanded (const Gtk::TreeModel::iterator & iter, const bool value)
 {
-	auto userData = get_user_data (iter);
+	const auto userData = get_user_data (iter);
 
 	if (userData)
 		userData -> full_expanded = value;
@@ -280,7 +280,7 @@ X3DOutlineTreeView::is_full_expanded (const Gtk::TreeModel::iterator & iter, boo
 bool
 X3DOutlineTreeView::is_full_expanded (const Gtk::TreeModel::iterator & iter) const
 {
-	auto userData = get_user_data (iter);
+	const auto userData = get_user_data (iter);
 
 	if (userData)
 		return userData -> full_expanded;
@@ -430,7 +430,7 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 
 		case OutlineIterType::X3DField:
 		{
-			auto field = static_cast <X3D::X3DFieldDefinition*> (get_object (iter));
+			const auto field = static_cast <X3D::X3DFieldDefinition*> (get_object (iter));
 
 			if (get_shift_key () or is_full_expanded (iter))
 			{
@@ -449,7 +449,7 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 				}
 				case X3D::X3DConstants::MFNode:
 				{
-					auto mfnode = static_cast <X3D::MFNode*> (field);
+					const auto mfnode = static_cast <X3D::MFNode*> (field);
 
 					if (mfnode -> empty () and not is_full_expanded (iter))
 					{
@@ -473,12 +473,12 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 		}
 		case OutlineIterType::X3DBaseNode:
 		{
-			auto nodeUserData = get_user_data (iter);
+			const auto nodeUserData = get_user_data (iter);
 
 			if (nodeUserData)
 			{
-				auto sfnode = static_cast <X3D::SFNode*> (get_object (iter));
-				auto node   = sfnode -> getValue ();
+				const auto sfnode = static_cast <X3D::SFNode*> (get_object (iter));
+				const auto node   = sfnode -> getValue ();
 
 				if (node)
 				{
@@ -524,8 +524,8 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 X3D::FieldDefinitionArray
 X3DOutlineTreeView::get_fields (X3D::X3DBaseNode* const node) const
 {
-	auto fields            = node -> getPreDefinedFields ();
-	auto userDefinedFields = node -> getUserDefinedFields ();
+	auto       fields            = node -> getPreDefinedFields ();
+	const auto userDefinedFields = node -> getUserDefinedFields ();
 
 	if (dynamic_cast <X3D::X3DNode*> (node))
 		fields .insert (fields .begin () + 1, userDefinedFields .begin (), userDefinedFields .end ());
@@ -609,13 +609,13 @@ X3DOutlineTreeView::auto_expand (const Gtk::TreeModel::iterator & parent)
 		{
 			for (const auto & child : parent -> children ())
 			{
-				auto field = static_cast <X3D::X3DFieldDefinition*> (get_object (child));
+				const auto field = static_cast <X3D::X3DFieldDefinition*> (get_object (child));
 
 				switch (field -> getType ())
 				{
 					case X3D::X3DConstants::SFNode:
 					{
-						auto sfnode = static_cast <X3D::SFNode*> (field);
+						const auto sfnode = static_cast <X3D::SFNode*> (field);
 
 						if ((field -> isInitializeable () and *sfnode) or is_expanded (child))
 						{
@@ -626,7 +626,7 @@ X3DOutlineTreeView::auto_expand (const Gtk::TreeModel::iterator & parent)
 					}
 					case X3D::X3DConstants::MFNode:
 					{
-						auto mfnode = static_cast <X3D::MFNode*> (field);
+						const auto mfnode = static_cast <X3D::MFNode*> (field);
 
 						if (mfnode -> size () and (field -> isInitializeable () or is_expanded (child)))
 						{

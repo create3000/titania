@@ -1,5 +1,9 @@
 2014-03-05  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DGeospatialObject.cpp: 
+
+2014-03-05  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBaseNode.cpp:
 	* X3DFlyViewer.cpp:
 	* X3DExecutionContext.cpp: 

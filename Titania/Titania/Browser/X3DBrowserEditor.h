@@ -72,7 +72,7 @@ public:
 	isSaved ();
 
 	void
-	isModified (bool);
+	isModified (const bool);
 
 	bool
 	isModified () const
@@ -147,7 +147,7 @@ public:
 	addToGroup (const X3D::SFNode &, const X3D::MFNode &, const UndoStepPtr &) const;
 
 	void
-	detachFromGroup (X3D::MFNode, bool, const UndoStepPtr &) const;
+	detachFromGroup (X3D::MFNode, const bool, const UndoStepPtr &) const;
 
 	X3D::MFNode
 	createParentGroup (const X3D::MFNode &, const UndoStepPtr &) const;
@@ -163,7 +163,7 @@ public:
 	deleteRoute (X3D::X3DExecutionContext* const, const X3D::SFNode &, const std::string &, const X3D::SFNode &, const std::string &, const UndoStepPtr &) const;
 
 	void
-	translateSelection (const X3D::Vector3f &, bool);
+	translateSelection (const X3D::Vector3f &, const bool);
 
 	void
 	setMatrix (const X3D::X3DSFNode <X3D::X3DTransformNode> &, const X3D::Matrix4f &, const UndoStepPtr &) const;
@@ -224,7 +224,7 @@ private:
 	set_shutdown ();
 
 	void
-	set_selection_active (bool);
+	set_selection_active (const bool);
 
 	// File
 

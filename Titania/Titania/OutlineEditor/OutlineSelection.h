@@ -73,7 +73,7 @@ public:
 	///  @name Operations
 
 	void
-	set_select_multiple (bool);
+	set_select_multiple (const bool);
 
 	void
 	select (const X3D::SFNode &);
@@ -87,16 +87,16 @@ private:
 	set_children (const X3D::MFNode &);
 
 	void
-	select (X3D::X3DBaseNode* const, bool) const;
+	select (X3D::X3DBaseNode* const, const bool) const;
 
 	void
-	select (X3D::X3DBaseNode* const, bool, X3D::ChildObjectSet &) const;
+	select (X3D::X3DBaseNode* const, const bool, X3D::ChildObjectSet &) const;
 
 	void
-	select (X3D::X3DFieldDefinition* const, bool, X3D::ChildObjectSet &) const;
+	select (X3D::X3DFieldDefinition* const, const bool, X3D::ChildObjectSet &) const;
 
 	void
-	select (const OutlineUserDataPtr &, bool) const;
+	select (const OutlineUserDataPtr &, const bool) const;
 
 	///  @name Members
 

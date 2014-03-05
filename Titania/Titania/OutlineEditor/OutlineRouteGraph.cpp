@@ -86,7 +86,7 @@ OutlineRouteGraph::expand_node (const Gtk::TreeModel::iterator & parent)
 {
 	//__LOG__ << std::endl;
 
-	auto parentData = treeView -> get_model () -> get_data (parent);
+	const auto parentData = treeView -> get_model () -> get_data (parent);
 
 	// Forward connections
 
@@ -96,9 +96,9 @@ OutlineRouteGraph::expand_node (const Gtk::TreeModel::iterator & parent)
 
 	for (const auto & iter : parent -> children ())
 	{
-		auto path  = treeView -> get_model () -> get_path (iter);
-		auto data  = treeView -> get_model () -> get_data (iter);
-		auto field = static_cast <X3D::X3DFieldDefinition*> (data -> get_object ());
+		const auto path  = treeView -> get_model () -> get_path (iter);
+		const auto data  = treeView -> get_model () -> get_data (iter);
+		const auto field = static_cast <X3D::X3DFieldDefinition*> (data -> get_object ());
 
 		field -> getInputRoutes ()  .addInterest (this, &OutlineRouteGraph::add_routes_for_path, path);
 		field -> getOutputRoutes () .addInterest (this, &OutlineRouteGraph::add_routes_for_path, path);
@@ -112,10 +112,10 @@ OutlineRouteGraph::expand_field (const Gtk::TreeModel::iterator & parent)
 {
 	//__LOG__ << std::endl;
 
-	auto parentPath     = treeView -> get_model () -> get_path (parent);
-	auto parentData     = treeView -> get_model () -> get_data (parent);
-	auto parentUserData = parentData -> get_user_data ();
-	auto field          = static_cast <X3D::X3DFieldDefinition*> (parentData -> get_object ());
+	const auto parentPath     = treeView -> get_model () -> get_path (parent);
+	const auto parentData     = treeView -> get_model () -> get_data (parent);
+	const auto parentUserData = parentData -> get_user_data ();
+	const auto field          = static_cast <X3D::X3DFieldDefinition*> (parentData -> get_object ());
 
 	// Forward connections
 
@@ -129,14 +129,14 @@ OutlineRouteGraph::expand_field (const Gtk::TreeModel::iterator & parent)
 
 		for (const auto & iter : parent -> children ())
 		{
-			auto path = treeView -> get_model () -> get_path (iter);
-			auto data = treeView -> get_model () -> get_data (iter);
+			const auto path = treeView -> get_model () -> get_path (iter);
+			const auto data = treeView -> get_model () -> get_data (iter);
 
 			switch (data -> get_type ())
 			{
 				case OutlineIterType::X3DInputRoute:
 				{
-					auto route = static_cast <X3D::Route*> (data -> get_object ());
+					const auto route = static_cast <X3D::Route*> (data -> get_object ());
 
 					add_input_route (path, data, route);
 
@@ -144,7 +144,7 @@ OutlineRouteGraph::expand_field (const Gtk::TreeModel::iterator & parent)
 				}
 				case OutlineIterType::X3DOutputRoute:
 				{
-					auto route = static_cast <X3D::Route*> (data -> get_object ());
+					const auto route = static_cast <X3D::Route*> (data -> get_object ());
 
 					add_output_route (path, data, route);
 
@@ -161,7 +161,7 @@ OutlineRouteGraph::expand_field (const Gtk::TreeModel::iterator & parent)
 	
 		for (const auto & iter : parent -> children ())
 		{
-			auto data = treeView -> get_model () -> get_data (iter);
+			const auto data = treeView -> get_model () -> get_data (iter);
 
 			for (const auto & route : parentData -> get_inputs_below ())
 				data -> get_connections () .emplace (route);
@@ -177,7 +177,7 @@ OutlineRouteGraph::forward_connections (const Gtk::TreeModel::iterator & parent,
 {
 	for (const auto & iter : parent -> children ())
 	{
-		auto data = treeView -> get_model () -> get_data (iter);
+		const auto data = treeView -> get_model () -> get_data (iter);
 
 		for (const auto & connection : parentData -> get_connections ())
 			data -> get_connections () .emplace (connection);
@@ -187,12 +187,12 @@ OutlineRouteGraph::forward_connections (const Gtk::TreeModel::iterator & parent,
 void
 OutlineRouteGraph::add_routes_for_path (const Gtk::TreeModel::Path & path)
 {
-	auto iter = treeView -> get_model () -> get_iter (path);
-	auto data = treeView -> get_model () -> get_data (iter);
+	const auto iter = treeView -> get_model () -> get_iter (path);
+	const auto data = treeView -> get_model () -> get_data (iter);
 
 	if (data -> get_type () == OutlineIterType::X3DField)
 	{
-		auto field = static_cast <X3D::X3DFieldDefinition*> (data -> get_object ());
+		const auto field = static_cast <X3D::X3DFieldDefinition*> (data -> get_object ());
 
 		add_routes (path, data, field);
 	}
@@ -226,20 +226,20 @@ OutlineRouteGraph::add_input_route (const Gtk::TreeModel::Path & destinationPath
 	if (not route -> isConnected ())
 		return;
 	
-	auto sourceNode = route -> getSourceNode ();
+	const auto sourceNode = route -> getSourceNode ();
 
 	if (sourceNode -> getExecutionContext () not_eq treeView -> get_model () -> get_execution_context ())
 		return;
 
 	try
 	{
-		auto sourceField    = sourceNode -> getField (route -> getSourceField ());
-		auto sourceUserData = treeView -> get_user_data (sourceField);
+		const auto sourceField    = sourceNode -> getField (route -> getSourceField ());
+		const auto sourceUserData = treeView -> get_user_data (sourceField);
 
 		for (auto sourcePath : sourceUserData -> paths)
 		{
-			auto sourceIter = treeView -> get_model () -> get_iter (sourcePath);
-			auto sourceData = treeView -> get_model () -> get_data (sourceIter);
+			const auto sourceIter = treeView -> get_model () -> get_iter (sourcePath);
+			auto       sourceData = treeView -> get_model () -> get_data (sourceIter);
 
 			// Connect to output route if field is all expanded
 
@@ -247,11 +247,11 @@ OutlineRouteGraph::add_input_route (const Gtk::TreeModel::Path & destinationPath
 			{
 				for (const auto & iter : sourceIter -> children ())
 				{
-					auto data = treeView -> get_model () -> get_data (iter);
+					const auto data = treeView -> get_model () -> get_data (iter);
 
 					if (data -> get_type () == OutlineIterType::X3DOutputRoute)
 					{
-						auto outputRoute = static_cast <X3D::Route*> (data -> get_object ());
+						const auto outputRoute = static_cast <X3D::Route*> (data -> get_object ());
 
 						if (outputRoute == route)
 						{
@@ -308,20 +308,20 @@ OutlineRouteGraph::add_output_route (const Gtk::TreeModel::Path & sourcePath, Ou
 	if (not route -> isConnected ())
 		return;
 
-	auto destinationNode = route -> getDestinationNode ();
+	const auto destinationNode = route -> getDestinationNode ();
 
 	if (destinationNode -> getExecutionContext () not_eq treeView -> get_model () -> get_execution_context ())
 		return;
 
 	try
 	{
-		auto destinationField    = destinationNode -> getField (route -> getDestinationField ());
-		auto destinationUserData = treeView -> get_user_data (destinationField);
+		const auto destinationField    = destinationNode -> getField (route -> getDestinationField ());
+		const auto destinationUserData = treeView -> get_user_data (destinationField);
 
 		for (auto destinationPath : destinationUserData -> paths)
 		{
-			auto destinationIter = treeView -> get_model () -> get_iter (destinationPath);
-			auto destinationData = treeView -> get_model () -> get_data (destinationIter);
+			const auto destinationIter = treeView -> get_model () -> get_iter (destinationPath);
+			auto       destinationData = treeView -> get_model () -> get_data (destinationIter);
 
 			// Connect to input route if field is all expanded
 
@@ -329,11 +329,11 @@ OutlineRouteGraph::add_output_route (const Gtk::TreeModel::Path & sourcePath, Ou
 			{
 				for (const auto & iter : destinationIter -> children ())
 				{
-					auto data = treeView -> get_model () -> get_data (iter);
+					const auto data = treeView -> get_model () -> get_data (iter);
 
 					if (data -> get_type () == OutlineIterType::X3DInputRoute)
 					{
-						auto inputRoute = static_cast <X3D::Route*> (data -> get_object ());
+						const auto inputRoute = static_cast <X3D::Route*> (data -> get_object ());
 
 						if (inputRoute == route)
 						{
@@ -395,8 +395,8 @@ OutlineRouteGraph::add_connection_above (const Gtk::TreeModel::Path & path,
 	{
 		if (path < sourcePath)
 		{
-			auto iter = treeView -> get_model () -> get_iter (path);
-			auto data = treeView -> get_model () -> get_data (iter);
+			const auto iter = treeView -> get_model () -> get_iter (path);
+			const auto data = treeView -> get_model () -> get_data (iter);
 
 			data -> get_connections () .emplace (sourcePath, destinationPath);
 			treeView -> get_model () -> row_changed (path, iter);
@@ -420,8 +420,8 @@ OutlineRouteGraph::add_connection_below (const Gtk::TreeModel::Path & path,
 	{
 		if (path > sourcePath)
 		{
-			auto iter = treeView -> get_model () -> get_iter (path);
-			auto data = treeView -> get_model () -> get_data (iter);
+			const auto iter = treeView -> get_model () -> get_iter (path);
+			const auto data = treeView -> get_model () -> get_data (iter);
 
 			data -> get_connections () .emplace (sourcePath, destinationPath);
 			treeView -> get_model () -> row_changed (path, iter);
@@ -460,10 +460,10 @@ OutlineRouteGraph::collapse_node (const Gtk::TreeModel::iterator & parent)
 {
 	for (const auto & child : parent -> children ())
 	{
-		auto path     = treeView -> get_model () -> get_path (child);
-		auto data     = treeView -> get_model () -> get_data (child);
-		auto userData = data -> get_user_data ();
-		auto field    = static_cast <X3D::X3DFieldDefinition*> (data -> get_object ());
+		const auto path     = treeView -> get_model () -> get_path (child);
+		const auto data     = treeView -> get_model () -> get_data (child);
+		const auto userData = data -> get_user_data ();
+		const auto field    = static_cast <X3D::X3DFieldDefinition*> (data -> get_object ());
 
 		field -> getInputRoutes ()  .removeInterest (this, &OutlineRouteGraph::add_routes_for_path);
 		field -> getOutputRoutes () .removeInterest (this, &OutlineRouteGraph::add_routes_for_path);
@@ -472,14 +472,14 @@ OutlineRouteGraph::collapse_node (const Gtk::TreeModel::iterator & parent)
 		{
 			for (const auto & iter : child -> children ())
 			{
-				auto path = treeView -> get_model () -> get_path (iter);
-				auto data = treeView -> get_model () -> get_data (iter);
+				const auto path = treeView -> get_model () -> get_path (iter);
+				const auto data = treeView -> get_model () -> get_data (iter);
 
 				switch (data -> get_type ())
 				{
 					case OutlineIterType::X3DInputRoute:
 					{
-						auto route = static_cast <X3D::Route*> (data -> get_object ());
+						const auto route = static_cast <X3D::Route*> (data -> get_object ());
 
 						remove_input_route (path, data, route);
 
@@ -487,7 +487,7 @@ OutlineRouteGraph::collapse_node (const Gtk::TreeModel::iterator & parent)
 					}
 					case OutlineIterType::X3DOutputRoute:
 					{
-						auto route = static_cast <X3D::Route*> (data -> get_object ());
+						const auto route = static_cast <X3D::Route*> (data -> get_object ());
 
 						remove_output_route (path, data, route);
 
@@ -518,7 +518,7 @@ OutlineRouteGraph::collapse_node (const Gtk::TreeModel::iterator & parent)
 			{
 				for (const auto & iter : child -> children ())
 				{
-					auto data = treeView -> get_model () -> get_data (iter);
+					const auto data = treeView -> get_model () -> get_data (iter);
 
 					if (data -> get_type () == OutlineIterType::X3DBaseNode)
 					{
@@ -539,21 +539,21 @@ OutlineRouteGraph::collapse_field (const Gtk::TreeModel::iterator & parent)
 {
 	//__LOG__ << std::endl;
 
-	auto parentPath     = treeView -> get_model () -> get_path (parent);
-	auto parentData     = treeView -> get_model () -> get_data (parent);
-	auto parentUserData = parentData -> get_user_data ();
-	auto field          = static_cast <X3D::X3DFieldDefinition*> (parentData -> get_object ());
+	const auto parentPath     = treeView -> get_model () -> get_path (parent);
+	const auto parentData     = treeView -> get_model () -> get_data (parent);
+	const auto parentUserData = parentData -> get_user_data ();
+	const auto field          = static_cast <X3D::X3DFieldDefinition*> (parentData -> get_object ());
 
 	for (const auto & iter : parent -> children ())
 	{
-		auto path = treeView -> get_model () -> get_path (iter);
-		auto data = treeView -> get_model () -> get_data (iter);
+		const auto path = treeView -> get_model () -> get_path (iter);
+		const auto data = treeView -> get_model () -> get_data (iter);
 
 		switch (data -> get_type ())
 		{
 			case OutlineIterType::X3DInputRoute:
 			{
-				auto route = static_cast <X3D::Route*> (data -> get_object ());
+				const auto route = static_cast <X3D::Route*> (data -> get_object ());
 
 				remove_input_route (path, data, route);
 
@@ -561,7 +561,7 @@ OutlineRouteGraph::collapse_field (const Gtk::TreeModel::iterator & parent)
 			}
 			case OutlineIterType::X3DOutputRoute:
 			{
-				auto route = static_cast <X3D::Route*> (data -> get_object ());
+				const auto route = static_cast <X3D::Route*> (data -> get_object ());
 
 				remove_output_route (path, data, route);
 
@@ -579,7 +579,7 @@ OutlineRouteGraph::collapse_field (const Gtk::TreeModel::iterator & parent)
 		{
 			for (const auto & iter : parent -> children ())
 			{
-				auto data = treeView -> get_model () -> get_data (iter);
+				const auto data = treeView -> get_model () -> get_data (iter);
 
 				if (data -> get_type () == OutlineIterType::X3DBaseNode)
 				{
@@ -604,7 +604,7 @@ OutlineRouteGraph::remove_input_route (const Gtk::TreeModel::Path & destinationP
 	if (not route -> isConnected ())
 		return;
 
-	auto sourceNode = route -> getSourceNode ();
+	const auto sourceNode = route -> getSourceNode ();
 
 	if (sourceNode -> getExecutionContext () not_eq treeView -> get_model () -> get_execution_context ())
 		return;
@@ -615,13 +615,13 @@ OutlineRouteGraph::remove_input_route (const Gtk::TreeModel::Path & destinationP
 
 	try
 	{
-		auto sourceField    = sourceNode -> getField (route -> getSourceField ());
-		auto sourceUserData = treeView -> get_user_data (sourceField);
+		const auto sourceField    = sourceNode -> getField (route -> getSourceField ());
+		const auto sourceUserData = treeView -> get_user_data (sourceField);
 
 		for (auto sourcePath : sourceUserData -> paths)
 		{
-			auto sourceIter = treeView -> get_model () -> get_iter (sourcePath);
-			auto sourceData = treeView -> get_model () -> get_data (sourceIter);
+			const auto sourceIter = treeView -> get_model () -> get_iter (sourcePath);
+			auto       sourceData = treeView -> get_model () -> get_data (sourceIter);
 
 			// Connect to output route if field is all expanded
 
@@ -629,11 +629,11 @@ OutlineRouteGraph::remove_input_route (const Gtk::TreeModel::Path & destinationP
 			{
 				for (const auto & iter : sourceIter -> children ())
 				{
-					auto data = treeView -> get_model () -> get_data (iter);
+					const auto data = treeView -> get_model () -> get_data (iter);
 
 					if (data -> get_type () == OutlineIterType::X3DOutputRoute)
 					{
-						auto outputRoute = static_cast <X3D::Route*> (data -> get_object ());
+						const auto outputRoute = static_cast <X3D::Route*> (data -> get_object ());
 
 						if (outputRoute == route)
 						{
@@ -686,7 +686,7 @@ OutlineRouteGraph::remove_output_route (const Gtk::TreeModel::Path & sourcePath,
 	if (not route -> isConnected ())
 		return;
 
-	auto destinationNode = route -> getDestinationNode ();
+	const auto destinationNode = route -> getDestinationNode ();
 
 	if (destinationNode -> getExecutionContext () not_eq treeView -> get_model () -> get_execution_context ())
 		return;
@@ -697,13 +697,13 @@ OutlineRouteGraph::remove_output_route (const Gtk::TreeModel::Path & sourcePath,
 
 	try
 	{
-		auto destinationField    = destinationNode -> getField (route -> getDestinationField ());
-		auto destinationUserData = treeView -> get_user_data (destinationField);
+		const auto destinationField    = destinationNode -> getField (route -> getDestinationField ());
+		const auto destinationUserData = treeView -> get_user_data (destinationField);
 
 		for (auto destinationPath : destinationUserData -> paths)
 		{
-			auto destinationIter = treeView -> get_model () -> get_iter (destinationPath);
-			auto destinationData = treeView -> get_model () -> get_data (destinationIter);
+			const auto destinationIter = treeView -> get_model () -> get_iter (destinationPath);
+			auto       destinationData = treeView -> get_model () -> get_data (destinationIter);
 
 			// Connect to input route if field is all expanded
 
@@ -711,11 +711,11 @@ OutlineRouteGraph::remove_output_route (const Gtk::TreeModel::Path & sourcePath,
 			{
 				for (const auto & iter : destinationIter -> children ())
 				{
-					auto data = treeView -> get_model () -> get_data (iter);
+					const auto data = treeView -> get_model () -> get_data (iter);
 
 					if (data -> get_type () == OutlineIterType::X3DInputRoute)
 					{
-						auto inputRoute = static_cast <X3D::Route*> (data -> get_object ());
+						const auto inputRoute = static_cast <X3D::Route*> (data -> get_object ());
 
 						if (inputRoute == route)
 						{
@@ -771,8 +771,8 @@ OutlineRouteGraph::remove_connection_above (const Gtk::TreeModel::Path & path,
 	{
 		if (path < sourcePath)
 		{
-			auto iter = treeView -> get_model () -> get_iter (path);
-			auto data = treeView -> get_model () -> get_data (iter);
+			const auto iter = treeView -> get_model () -> get_iter (path);
+			const auto data = treeView -> get_model () -> get_data (iter);
 
 			data -> get_connections () .erase (std::make_pair (sourcePath, destinationPath));
 			treeView -> get_model () -> row_changed (path, iter);
@@ -796,8 +796,8 @@ OutlineRouteGraph::remove_connection_below (const Gtk::TreeModel::Path & path,
 	{
 		if (path > sourcePath)
 		{
-			auto iter = treeView -> get_model () -> get_iter (path);
-			auto data = treeView -> get_model () -> get_data (iter);
+			const auto iter = treeView -> get_model () -> get_iter (path);
+			const auto data = treeView -> get_model () -> get_data (iter);
 
 			data -> get_connections () .erase (std::make_pair (sourcePath, destinationPath));
 			treeView -> get_model () -> row_changed (path, iter);
@@ -823,8 +823,8 @@ OutlineRouteGraph::disconnect_route (const Gtk::TreeModel::Path & sourcePath, co
 		
 	if (sourcePath == destinationPath)
 	{
-		auto iter = treeView -> get_model () -> get_iter (sourcePath);
-		auto data = treeView -> get_model () -> get_data (iter);
+		const auto iter = treeView -> get_model () -> get_iter (sourcePath);
+		const auto data = treeView -> get_model () -> get_data (iter);
 		
 		if (data)
 			data -> get_self_connection () = false;
@@ -844,7 +844,7 @@ OutlineRouteGraph::remove_route_above (const Gtk::TreeModel::Path & path,
 	if (path > sourcePath)
 		return true;  // exit
 
-	auto iter = treeView -> get_model () -> get_iter (path);
+	const auto iter = treeView -> get_model () -> get_iter (path);
 
 	remove_route (iter, path, sourcePath, destinationPath);
 
@@ -864,7 +864,7 @@ OutlineRouteGraph::remove_route_below (const Gtk::TreeModel::Path & path,
 	if (path > destinationPath)
 		return true;  // exit
 
-	auto iter = treeView -> get_model () -> get_iter (path);
+	const auto iter = treeView -> get_model () -> get_iter (path);
 
 	remove_route (iter, path, sourcePath, destinationPath);
 
@@ -877,8 +877,8 @@ OutlineRouteGraph::remove_route (const Gtk::TreeModel::iterator & iter,
                                  const Gtk::TreeModel::Path & sourcePath,
                                  const Gtk::TreeModel::Path & destinationPath)
 {
-	auto data       = treeView -> get_model () -> get_data (iter);
-	auto connection = std::make_pair (sourcePath, destinationPath);
+	const auto data       = treeView -> get_model () -> get_data (iter);
+	const auto connection = std::make_pair (sourcePath, destinationPath);
 
 	data -> get_inputs_above  () .erase (connection);
 	data -> get_inputs_below  () .erase (connection);
@@ -896,8 +896,8 @@ OutlineRouteGraph::update (const OutlineRoutes & routes)
 {
 	for (const auto & route : routes)
 	{
-		auto sourceIter      = treeView -> get_model () -> get_iter (route .first);
-		auto destinationIter = treeView -> get_model () -> get_iter (route .second);
+		const auto sourceIter      = treeView -> get_model () -> get_iter (route .first);
+		const auto destinationIter = treeView -> get_model () -> get_iter (route .second);
 
 		treeView -> get_model () -> row_changed (route .first,  sourceIter);
 		treeView -> get_model () -> row_changed (route .second, destinationIter);
@@ -920,7 +920,7 @@ OutlineRouteGraph::update_connection_above (const Gtk::TreeModel::Path & path,
 	{
 		if (path < sourcePath)
 		{
-			auto iter = treeView -> get_model () -> get_iter (path);
+			const auto iter = treeView -> get_model () -> get_iter (path);
 			treeView -> get_model () -> row_changed (path, iter);
 			return false;
 		}
@@ -942,7 +942,7 @@ OutlineRouteGraph::update_connection_below (const Gtk::TreeModel::Path & path,
 	{
 		if (path > sourcePath)
 		{
-			auto iter = treeView -> get_model () -> get_iter (path);
+			const auto iter = treeView -> get_model () -> get_iter (path);
 			treeView -> get_model () -> row_changed (path, iter);
 		}
 

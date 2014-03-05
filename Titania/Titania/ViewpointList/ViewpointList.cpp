@@ -58,16 +58,16 @@ namespace puck {
 
 namespace Columns {
 
-constexpr int Index       = 0;
-constexpr int Description = 1;
-constexpr int Weight      = 2;
+static constexpr int Index       = 0;
+static constexpr int Description = 1;
+static constexpr int Weight      = 2;
 
 };
 
 namespace Weight {
 
-constexpr int Normal = 400;
-constexpr int Bold   = 700;
+static constexpr int Normal = 400;
+static constexpr int Bold   = 700;
 
 };
 
@@ -151,7 +151,7 @@ ViewpointList::set_viewpoints ()
 	{
 		if (viewpoint -> description () .length ())
 		{
-			auto row = getListStore () -> append ();
+			const auto row = getListStore () -> append ();
 			row -> set_value (Columns::Index,       index);
 			row -> set_value (Columns::Description, Glib::Markup::escape_text (viewpoint -> description ()));
 			row -> set_value (Columns::Weight,      viewpoint -> isBound () .getValue () ? Weight::Bold : Weight::Normal);
@@ -168,8 +168,8 @@ ViewpointList::set_currentViewpoint ()
 {
 	// Update list store
 
-	auto userViewpoints = getUserViewpoints ();
-	auto rows           = getListStore () -> children ();
+	const auto userViewpoints = getUserViewpoints ();
+	const auto rows           = getListStore () -> children ();
 
 	for (size_t i = 0, size = rows .size (); i < size; ++ i)
 	{
@@ -186,7 +186,7 @@ ViewpointList::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeVie
 
 	getListStore () -> get_iter (path) -> get_value (Columns::Index, index);
 
-	auto viewpoint = getViewpoints () -> at (index);
+	const auto viewpoint = getViewpoints () -> at (index);
 
 	if (viewpoint -> isBound ())
 		viewpoint -> transitionStart (viewpoint);

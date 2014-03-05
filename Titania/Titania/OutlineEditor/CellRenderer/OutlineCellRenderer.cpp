@@ -63,25 +63,25 @@ using math::M_PI1_2;
 using math::M_PI2;
 using math::M_PI3_2;
 
-constexpr double ICON_X_PAD        = 1;
-constexpr double NAME_X_PAD        = 1;
-constexpr double ACCESS_TYPE_X_PAD = 8;
+static constexpr double ICON_X_PAD        = 1;
+static constexpr double NAME_X_PAD        = 1;
+static constexpr double ACCESS_TYPE_X_PAD = 8;
 
-constexpr double INPUT_WIDTH      = 13;   // Depends on image
-constexpr double OUTPUT_WIDTH     = 14;   // Depends on image
-constexpr double FIELD_WIDTH      = 10;   // Depends on image
-constexpr double FIELD_PAD        = 1;    // Depends on image
-constexpr double INPUT_PAD        = 8;    // Depends on image (one pixel less)
-constexpr double OUTPUT_PAD       = 7;    // Depends on image (one pixel less)
-constexpr double INPUT_OUTPUT_PAD = 9;    // Depends on image (one pixel less)
-constexpr double CONNECTOR_WIDTH  = 6;    // Depends on image (two pixel more)
+static constexpr double INPUT_WIDTH      = 13;   // Depends on image
+static constexpr double OUTPUT_WIDTH     = 14;   // Depends on image
+static constexpr double FIELD_WIDTH      = 10;   // Depends on image
+static constexpr double FIELD_PAD        = 1;    // Depends on image
+static constexpr double INPUT_PAD        = 8;    // Depends on image (one pixel less)
+static constexpr double OUTPUT_PAD       = 7;    // Depends on image (one pixel less)
+static constexpr double INPUT_OUTPUT_PAD = 9;    // Depends on image (one pixel less)
+static constexpr double CONNECTOR_WIDTH  = 6;    // Depends on image (two pixel more)
 
-constexpr double ROUTE_WIDTH       = 16;
-constexpr double ROUTE_CURVE_WIDTH = 16;
-constexpr double ROUTE_RADIUS      = 8.5;
-constexpr double ROUTE_INPUT_PAD   = 14;
-constexpr double ROUTE_Y_PAD       = 3.5; // Depends on image
-constexpr double RIGHT_PAD         = 8;
+static constexpr double ROUTE_WIDTH       = 16;
+static constexpr double ROUTE_CURVE_WIDTH = 16;
+static constexpr double ROUTE_RADIUS      = 8.5;
+static constexpr double ROUTE_INPUT_PAD   = 14;
+static constexpr double ROUTE_Y_PAD       = 3.5; // Depends on image
+static constexpr double RIGHT_PAD         = 8;
 
 OutlineCellRenderer::OutlineCellRenderer (X3D::X3DBrowser* const browser, X3DOutlineTreeView* const treeView) :
 	             Glib::ObjectBase (typeid (OutlineCellRenderer)),
@@ -144,7 +144,7 @@ OutlineCellRenderer::on_data ()
 	{
 		case OutlineIterType::X3DInputRoute:
 		{
-			auto route = static_cast <X3D::Route*> (get_object ());
+			const auto route = static_cast <X3D::Route*> (get_object ());
 
 			const std::string name = route -> getSourceNode () -> getName () .size ()
 			                         ? route -> getSourceNode () -> getName ()
@@ -159,7 +159,7 @@ OutlineCellRenderer::on_data ()
 		}
 		case OutlineIterType::X3DOutputRoute:
 		{
-			auto route = static_cast <X3D::Route*> (get_object ());
+			const auto route = static_cast <X3D::Route*> (get_object ());
 
 			const std::string name = route -> getDestinationNode () -> getName () .size ()
 			                         ? route -> getDestinationNode () -> getName ()
@@ -212,7 +212,7 @@ OutlineCellRenderer::get_object () const
 bool
 OutlineCellRenderer::is_expanded () const
 {
-	auto userData = property_data () .get_value () -> get_user_data ();
+	const auto userData = property_data () .get_value () -> get_user_data ();
 
 	return userData -> expanded;
 }
@@ -220,7 +220,7 @@ OutlineCellRenderer::is_expanded () const
 bool
 OutlineCellRenderer::is_full_expanded () const
 {
-	auto userData = property_data () .get_value () -> get_user_data ();
+	const auto userData = property_data () .get_value () -> get_user_data ();
 
 	return userData -> full_expanded;
 }
@@ -238,8 +238,8 @@ OutlineCellRenderer::get_icon () const
 		}
 		case OutlineIterType::X3DField:
 		{
-			auto field = static_cast <X3D::X3DFieldDefinition*> (get_object ());
-			auto iter  = fieldTypeImages .find (field -> getType ());
+			const auto field = static_cast <X3D::X3DFieldDefinition*> (get_object ());
+			const auto iter  = fieldTypeImages .find (field -> getType ());
 
 			if (iter not_eq fieldTypeImages .end ())
 				return iter -> second;
@@ -258,12 +258,12 @@ OutlineCellRenderer::get_icon () const
 const Glib::RefPtr <Gdk::Pixbuf> &
 OutlineCellRenderer::get_access_type_icon (X3D::AccessType & accessType) const
 {
-	auto   field = static_cast <X3D::X3DFieldDefinition*> (get_object ());
-	auto   iter  = accessTypeImages .find (field -> getAccessType ());
+	const auto   field = static_cast <X3D::X3DFieldDefinition*> (get_object ());
+	const auto   iter  = accessTypeImages .find (field -> getAccessType ());
 	size_t index = 0;
 
-	size_t inputRoutes  = treeView -> get_model () -> get_input_routes_size (field);
-	size_t outputRoutes = treeView -> get_model () -> get_output_routes_size (field);
+	const size_t inputRoutes  = treeView -> get_model () -> get_input_routes_size (field);
+	const size_t outputRoutes = treeView -> get_model () -> get_output_routes_size (field);
 
 	accessType = field -> getAccessType ();
 
@@ -291,15 +291,15 @@ OutlineCellRenderer::get_access_type_icon (X3D::AccessType & accessType) const
 std::string
 OutlineCellRenderer::get_node_name () const
 {
-	auto sfnode = static_cast <X3D::SFNode*> (get_object ());
+	const auto sfnode = static_cast <X3D::SFNode*> (get_object ());
 
 	if (*sfnode)
 	{
-		X3D::X3DBaseNode* node = sfnode -> getValue ();
+		const X3D::X3DBaseNode* node = sfnode -> getValue ();
 
-		std::string typeName  = Glib::Markup::escape_text (node -> getTypeName ());
-		std::string name      = Glib::Markup::escape_text (node -> getName ());
-		size_t      numClones = node -> getNumClones ();
+		const std::string typeName  = Glib::Markup::escape_text (node -> getTypeName ());
+		std::string       name      = Glib::Markup::escape_text (node -> getName ());
+		const size_t      numClones = node -> getNumClones ();
 
 		X3D::RegEx::_LastNumber .Replace ("", &name);
 
@@ -338,7 +338,7 @@ array_to_string (const Type & array)
 std::string
 OutlineCellRenderer::get_field_value () const
 {
-	auto field = static_cast <X3D::X3DFieldDefinition*> (get_object ());
+	const auto field = static_cast <X3D::X3DFieldDefinition*> (get_object ());
 
 	X3D::Generator::NicestStyle ();
 
@@ -650,13 +650,13 @@ OutlineCellRenderer::start_editing_vfunc (GdkEvent* event,
 
 	cellrenderer_icon .get_preferred_width (widget, icon_width, natural_width);
 
-	int x_pad = ICON_X_PAD + icon_width + NAME_X_PAD + property_xpad ();
+	const int x_pad = ICON_X_PAD + icon_width + NAME_X_PAD + property_xpad ();
 
 	switch (get_data_type ())
 	{
 		case OutlineIterType::X3DFieldValue:
 		{
-			auto field = static_cast <X3D::X3DFieldDefinition*> (get_object ());
+			const auto field = static_cast <X3D::X3DFieldDefinition*> (get_object ());
 
 			textview .reset (new TextViewEditable (property_data (), path, field -> isArray () or dynamic_cast <X3D::SFString*> (field)));
 			textview -> set_text (property_text ());
@@ -682,7 +682,7 @@ OutlineCellRenderer::on_editing_done ()
 	if (textview -> property_editing_canceled () or textview -> get_validated ())
 		return;
 
-	OutlineTreeData* data = textview -> get_data ();
+	OutlineTreeData* const data = textview -> get_data ();
 
 	switch (data -> get_type ())
 	{
@@ -692,7 +692,7 @@ OutlineCellRenderer::on_editing_done ()
 			break;
 		case OutlineIterType::X3DFieldValue:
 		{
-			std::string string = textview -> get_text ();
+			const std::string string = textview -> get_text ();
 
 			if (set_field_value (data -> get_object (), string, data -> get_path ()))
 			{
@@ -714,9 +714,9 @@ OutlineCellRenderer::set_field_value (X3D::X3DChildObject* const object, const s
 	path .up ();
 	path .up ();
 
-	auto parent = treeView -> get_model () -> get_iter (path);
-	auto node   = static_cast <X3D::SFNode*> (treeView -> get_object (parent));
-	auto field  = static_cast <X3D::X3DFieldDefinition*> (object);
+	const auto parent = treeView -> get_model () -> get_iter (path);
+	const auto node   = static_cast <X3D::SFNode*> (treeView -> get_object (parent));
+	const auto field  = static_cast <X3D::X3DFieldDefinition*> (object);
 
 	if (field -> isArray ())
 		return set_field_value (field, "[" + string + "]", *node);
@@ -727,13 +727,13 @@ OutlineCellRenderer::set_field_value (X3D::X3DChildObject* const object, const s
 bool
 OutlineCellRenderer::set_field_value (X3D::X3DFieldDefinition* const field, const std::string & string, const X3D::SFNode & node)
 {
-	std::string value = field -> toString ();
+	const std::string value = field -> toString ();
 
 	if (field -> fromString (string))
 	{
 		if (field -> toString () not_eq value)
 		{
-			auto undoStep = std::make_shared <UndoStep> (_ ("Edit Field Value"));
+			const auto undoStep = std::make_shared <UndoStep> (_ ("Edit Field Value"));
 
 			undoStep -> addVariables (node);
 
@@ -772,7 +772,7 @@ OutlineCellRenderer::pick (Gtk::Widget & widget,
 		cellrenderer_icon .get_preferred_width  (widget, minimum_width,  natural_width);
 		cellrenderer_icon .get_preferred_height (widget, minimum_height, natural_height);
 
-		X3D::Box2f box (X3D::Vector2f (minimum_width, minimum_height), X3D::Vector2f (x + minimum_width / 2, y + height / 2));
+		const X3D::Box2f box (X3D::Vector2f (minimum_width, minimum_height), X3D::Vector2f (x + minimum_width / 2, y + height / 2));
 
 		if (box .intersect (point))
 			return OutlineCellContent::ICON;
@@ -787,7 +787,7 @@ OutlineCellRenderer::pick (Gtk::Widget & widget,
 
 		Gtk::CellRendererText::get_preferred_width_vfunc (widget, minimum_width, natural_width);
 
-		X3D::Box2f box (X3D::Vector2f (minimum_width, minimum_height), X3D::Vector2f (x + minimum_width / 2, y + height / 2));
+		const X3D::Box2f box (X3D::Vector2f (minimum_width, minimum_height), X3D::Vector2f (x + minimum_width / 2, y + height / 2));
 
 		if (box .intersect (point))
 			return OutlineCellContent::NAME;
@@ -809,9 +809,9 @@ OutlineCellRenderer::pick (Gtk::Widget & widget,
 				return OutlineCellContent::NONE;
 			}
 
-			auto   field        = static_cast <X3D::X3DFieldDefinition*> (get_object ());
-			size_t inputRoutes  = treeView -> get_model () -> get_input_routes_size (field);
-			size_t outputRoutes = treeView -> get_model () -> get_output_routes_size (field);
+			const auto   field        = static_cast <X3D::X3DFieldDefinition*> (get_object ());
+			const size_t inputRoutes  = treeView -> get_model () -> get_input_routes_size (field);
+			const size_t outputRoutes = treeView -> get_model () -> get_output_routes_size (field);
 
 			switch (field -> getAccessType ())
 			{
@@ -821,7 +821,7 @@ OutlineCellRenderer::pick (Gtk::Widget & widget,
 				}
 				case X3D::inputOnly:
 				{
-					X3D::Box2f box (X3D::Vector2f (INPUT_WIDTH, minimum_height), X3D::Vector2f (x + INPUT_WIDTH / 2, y + height / 2));
+					const X3D::Box2f box (X3D::Vector2f (INPUT_WIDTH, minimum_height), X3D::Vector2f (x + INPUT_WIDTH / 2, y + height / 2));
 
 					if (box .intersect (point))
 						return OutlineCellContent::INPUT;
@@ -832,7 +832,7 @@ OutlineCellRenderer::pick (Gtk::Widget & widget,
 					{
 						x += INPUT_PAD;
 
-						X3D::Box2f box (X3D::Vector2f (CONNECTOR_WIDTH, minimum_height), X3D::Vector2f (x + CONNECTOR_WIDTH / 2, y + height / 2));
+						const X3D::Box2f box (X3D::Vector2f (CONNECTOR_WIDTH, minimum_height), X3D::Vector2f (x + CONNECTOR_WIDTH / 2, y + height / 2));
 
 						if (box .intersect (point))
 							return OutlineCellContent::INPUT_CONNECTOR;
@@ -842,7 +842,7 @@ OutlineCellRenderer::pick (Gtk::Widget & widget,
 				}
 				case X3D::outputOnly:
 				{
-					X3D::Box2f box (X3D::Vector2f (OUTPUT_WIDTH, minimum_height), X3D::Vector2f (x + OUTPUT_WIDTH / 2, y + height / 2));
+					const X3D::Box2f box (X3D::Vector2f (OUTPUT_WIDTH, minimum_height), X3D::Vector2f (x + OUTPUT_WIDTH / 2, y + height / 2));
 
 					if (box .intersect (point))
 						return OutlineCellContent::OUTPUT;
@@ -864,7 +864,7 @@ OutlineCellRenderer::pick (Gtk::Widget & widget,
 				case X3D::inputOutput:
 				{
 					{
-						X3D::Box2f box (X3D::Vector2f (INPUT_WIDTH, minimum_height), X3D::Vector2f (x + INPUT_WIDTH / 2, y + height / 2));
+						const X3D::Box2f box (X3D::Vector2f (INPUT_WIDTH, minimum_height), X3D::Vector2f (x + INPUT_WIDTH / 2, y + height / 2));
 
 						if (box .intersect (point))
 							return OutlineCellContent::INPUT;
@@ -873,7 +873,7 @@ OutlineCellRenderer::pick (Gtk::Widget & widget,
 					}
 					x += FIELD_PAD;
 					{
-						X3D::Box2f box (X3D::Vector2f (OUTPUT_WIDTH, minimum_height), X3D::Vector2f (x + OUTPUT_WIDTH / 2, y + height / 2));
+						const X3D::Box2f box (X3D::Vector2f (OUTPUT_WIDTH, minimum_height), X3D::Vector2f (x + OUTPUT_WIDTH / 2, y + height / 2));
 
 						if (box .intersect (point))
 							return OutlineCellContent::OUTPUT;
@@ -889,7 +889,7 @@ OutlineCellRenderer::pick (Gtk::Widget & widget,
 
 						x += INPUT_PAD;
 
-						X3D::Box2f box (X3D::Vector2f (CONNECTOR_WIDTH, minimum_height), X3D::Vector2f (x + CONNECTOR_WIDTH / 2, y + height / 2));
+						const X3D::Box2f box (X3D::Vector2f (CONNECTOR_WIDTH, minimum_height), X3D::Vector2f (x + CONNECTOR_WIDTH / 2, y + height / 2));
 
 						if (box .intersect (point))
 							return OutlineCellContent::INPUT_CONNECTOR;
@@ -901,7 +901,7 @@ OutlineCellRenderer::pick (Gtk::Widget & widget,
 					{
 						x += input ? INPUT_OUTPUT_PAD : OUTPUT_PAD;
 
-						X3D::Box2f box (X3D::Vector2f (CONNECTOR_WIDTH, minimum_height), X3D::Vector2f (x + CONNECTOR_WIDTH / 2, y + height / 2));
+						const X3D::Box2f box (X3D::Vector2f (CONNECTOR_WIDTH, minimum_height), X3D::Vector2f (x + CONNECTOR_WIDTH / 2, y + height / 2));
 
 						if (box .intersect (point))
 							return OutlineCellContent::OUTPUT_CONNECTOR;
@@ -917,7 +917,7 @@ OutlineCellRenderer::pick (Gtk::Widget & widget,
 		}
 		case OutlineIterType::X3DInputRoute:
 		{
-			X3D::Box2f box (X3D::Vector2f (INPUT_WIDTH, minimum_height), X3D::Vector2f (x + INPUT_WIDTH / 2, y + height / 2));
+			const X3D::Box2f box (X3D::Vector2f (INPUT_WIDTH, minimum_height), X3D::Vector2f (x + INPUT_WIDTH / 2, y + height / 2));
 
 			if (box .intersect (point))
 				return OutlineCellContent::INPUT;
@@ -928,7 +928,7 @@ OutlineCellRenderer::pick (Gtk::Widget & widget,
 			{
 				x += INPUT_PAD;
 
-				X3D::Box2f box (X3D::Vector2f (CONNECTOR_WIDTH, minimum_height), X3D::Vector2f (x + CONNECTOR_WIDTH / 2, y + height / 2));
+				const X3D::Box2f box (X3D::Vector2f (CONNECTOR_WIDTH, minimum_height), X3D::Vector2f (x + CONNECTOR_WIDTH / 2, y + height / 2));
 
 				if (box .intersect (point))
 					return OutlineCellContent::INPUT_CONNECTOR;
@@ -938,7 +938,7 @@ OutlineCellRenderer::pick (Gtk::Widget & widget,
 		}
 		case OutlineIterType::X3DOutputRoute:
 		{
-			X3D::Box2f box (X3D::Vector2f (OUTPUT_WIDTH, minimum_height), X3D::Vector2f (x + OUTPUT_WIDTH / 2, y + height / 2));
+			const X3D::Box2f box (X3D::Vector2f (OUTPUT_WIDTH, minimum_height), X3D::Vector2f (x + OUTPUT_WIDTH / 2, y + height / 2));
 
 			if (box .intersect (point))
 				return OutlineCellContent::OUTPUT;
@@ -949,7 +949,7 @@ OutlineCellRenderer::pick (Gtk::Widget & widget,
 			{
 				x += OUTPUT_PAD;
 
-				X3D::Box2f box (X3D::Vector2f (CONNECTOR_WIDTH, minimum_height), X3D::Vector2f (x + CONNECTOR_WIDTH / 2, y + height / 2));
+				const X3D::Box2f box (X3D::Vector2f (CONNECTOR_WIDTH, minimum_height), X3D::Vector2f (x + CONNECTOR_WIDTH / 2, y + height / 2));
 
 				if (box .intersect (point))
 					return OutlineCellContent::OUTPUT_CONNECTOR;
@@ -985,7 +985,7 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 	{
 		x += ICON_X_PAD;
 
-		Gdk::Rectangle cell_area (x, y, width, height);
+		const Gdk::Rectangle cell_area (x, y, width, height);
 		cellrenderer_icon .render (context, widget, background_area, cell_area, flags);
 		cellrenderer_icon .get_preferred_width (widget, minimum_width, natural_width);
 
@@ -999,7 +999,7 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 		x     += NAME_X_PAD;
 		width -= NAME_X_PAD;
 
-		Gdk::Rectangle cell_area (x, y, width, height);
+		const Gdk::Rectangle cell_area (x, y, width, height);
 		Gtk::CellRendererText::render_vfunc (context, widget, background_area, cell_area, flags);
 		Gtk::CellRendererText::get_preferred_width_vfunc (widget, minimum_width, natural_width);
 
@@ -1031,13 +1031,13 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 
 	cellrenderer_access_type_icon .get_preferred_height (widget, minimum_height, natural_height);
 
-	double field_x      = x;
-	double field_y      = y + (height - minimum_height) / 2;
-	double field_height = minimum_height;
+	double       field_x      = x;
+	const double field_y      = y + (height - minimum_height) / 2;
+	const double field_height = minimum_height;
 
-	auto      data     = property_data () .get_value ();
-	int       selected = data -> get_user_data () -> selected;
-	Gdk::RGBA color    = selected & OUTLINE_SELECTED ? property_foreground_rgba () : property_cell_background_rgba ();
+	const auto      data     = property_data () .get_value ();
+	const int       selected = data -> get_user_data () -> selected;
+	const Gdk::RGBA color    = selected & OUTLINE_SELECTED ? property_foreground_rgba () : property_cell_background_rgba ();
 
 	context -> reset_clip ();
 	context -> set_operator (Cairo::OPERATOR_OVER);
@@ -1133,21 +1133,21 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
                                     int minimum_height,
                                     Gtk::CellRendererState flags)
 {
-	int x      = cell_area .get_x ();
-	int y      = background_area .get_y ();
-	int width  = cell_area .get_width () - ROUTE_CURVE_WIDTH;
-	int height = background_area .get_height ();
-	int y_pad  = (height - minimum_height) / 2;
+	const int x      = cell_area .get_x ();
+	const int y      = background_area .get_y ();
+	const int width  = cell_area .get_width () - ROUTE_CURVE_WIDTH;
+	const int height = background_area .get_height ();
+	const int y_pad  = (height - minimum_height) / 2;
 
-	double input_x  = x;
-	double input_y  = y + y_pad + ROUTE_Y_PAD;
-	double input_w  = width;
-	double output_x = x;
-	double output_y = y + y_pad + minimum_height - ROUTE_Y_PAD;
-	double output_w = width;
+	double       input_x  = x;
+	const double input_y  = y + y_pad + ROUTE_Y_PAD;
+	double       input_w  = width;
+	const double output_x = x;
+	const double output_y = y + y_pad + minimum_height - ROUTE_Y_PAD;
+	const double output_w = width;
 
-	double radius      = std::min (y_pad + ROUTE_Y_PAD, ROUTE_RADIUS);
-	double connector_x = x + width + radius;
+	const double radius      = std::min (y_pad + ROUTE_Y_PAD, ROUTE_RADIUS);
+	const double connector_x = x + width + radius;
 
 	if (accessType == X3D::inputOutput)
 	{
@@ -1155,14 +1155,14 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 		input_w += ROUTE_INPUT_PAD;
 	}
 
-	auto data = property_data () .get_value ();
+	const auto data = property_data () .get_value ();
 
-	auto foregroundColor         = widget .get_style_context () -> get_color (Gtk::STATE_FLAG_NORMAL);
-	auto selectedForegroundColor = widget .get_style_context () -> get_color (Gtk::STATE_FLAG_SELECTED);
+	const auto foregroundColor         = widget .get_style_context () -> get_color (Gtk::STATE_FLAG_NORMAL);
+	const auto selectedForegroundColor = widget .get_style_context () -> get_color (Gtk::STATE_FLAG_SELECTED);
 
-	int  selected      = data -> get_user_data () -> selected;
-	auto color         = selected & OUTLINE_SELECTED ? selectedForegroundColor : foregroundColor;
-	auto selectedColor = selected & OUTLINE_SELECTED ? selectedForegroundColor : property_cell_background_rgba () .get_value ();
+	const int  selected      = data -> get_user_data () -> selected;
+	const auto color         = selected & OUTLINE_SELECTED ? selectedForegroundColor : foregroundColor;
+	const auto selectedColor = selected & OUTLINE_SELECTED ? selectedForegroundColor : property_cell_background_rgba () .get_value ();
 
 	//	context -> set_source_rgb (0.9, 0.9, 0.9);
 	//	context -> rectangle (x, y , width, height);
@@ -1176,10 +1176,10 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 
 	if (not data -> get_inputs_above () .empty () or not data -> get_inputs_below () .empty ())
 	{
-		auto selected_above = have_selected_routes (data -> get_inputs_above ());
-		auto selected_below = have_selected_routes (data -> get_inputs_below ());
+		const auto selected_above = have_selected_routes (data -> get_inputs_above ());
+		const auto selected_below = have_selected_routes (data -> get_inputs_below ());
 
-		auto c = selected_above or selected_below ? selectedColor : foregroundColor;
+		const auto c = selected_above or selected_below ? selectedColor : foregroundColor;
 		context -> set_source_rgba (c .get_red (), c .get_green (), c .get_blue (), c .get_alpha ());
 
 		context -> move_to (input_x, input_y);
@@ -1190,7 +1190,7 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 
 		if (not data -> get_inputs_above () .empty ())
 		{
-			auto c = selected_above ? selectedColor : foregroundColor;
+			const auto c = selected_above ? selectedColor : foregroundColor;
 			context -> set_source_rgba (c .get_red (), c .get_green (), c .get_blue (), c .get_alpha ());
 
 			context -> begin_new_sub_path ();
@@ -1205,7 +1205,7 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 
 		if (not data -> get_inputs_below () .empty ())
 		{
-			auto c = selected_below ? selectedColor : foregroundColor;
+			const auto c = selected_below ? selectedColor : foregroundColor;
 			context -> set_source_rgba (c .get_red (), c .get_green (), c .get_blue (), c .get_alpha ());
 
 			context -> begin_new_sub_path ();
@@ -1221,10 +1221,10 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 
 	if (not data -> get_outputs_above () .empty () or not data -> get_outputs_below () .empty ())
 	{
-		auto selected_above = have_selected_routes (data -> get_outputs_above ());
-		auto selected_below = have_selected_routes (data -> get_outputs_below ());
+		const auto selected_above = have_selected_routes (data -> get_outputs_above ());
+		const auto selected_below = have_selected_routes (data -> get_outputs_below ());
 
-		auto c = selected_above or selected_below ? selectedColor : foregroundColor;
+		const auto c = selected_above or selected_below ? selectedColor : foregroundColor;
 		context -> set_source_rgba (c .get_red (), c .get_green (), c .get_blue (), c .get_alpha ());
 
 		context -> move_to (output_x, output_y);
@@ -1235,7 +1235,7 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 
 		if (not data -> get_outputs_above () .empty ())
 		{
-			auto c = selected_above ? selectedColor : foregroundColor;
+			const auto c = selected_above ? selectedColor : foregroundColor;
 			context -> set_source_rgba (c .get_red (), c .get_green (), c .get_blue (), c .get_alpha ());
 
 			context -> begin_new_sub_path ();
@@ -1250,7 +1250,7 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 
 		if (not data -> get_outputs_below () .empty ())
 		{
-			auto c = selected_below ? selectedColor : foregroundColor;
+			const auto c = selected_below ? selectedColor : foregroundColor;
 			context -> set_source_rgba (c .get_red (), c .get_green (), c .get_blue (), c .get_alpha ());
 
 			context -> begin_new_sub_path ();
@@ -1266,8 +1266,8 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 
 	if (data -> get_self_connection ())
 	{
-		double cy     = (input_y + output_y) / 2;
-		double radius = (input_y + output_y) / 2 - input_y;
+		const double cy     = (input_y + output_y) / 2;
+		const double radius = (input_y + output_y) / 2 - input_y;
 
 		context -> set_source_rgba (color .get_red (), color .get_green (), color .get_blue (), color .get_alpha ());
 
@@ -1283,7 +1283,7 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 
 	if (not data -> get_connections () .empty ())
 	{
-		auto c = have_selected_routes (data -> get_connections ()) ? selectedColor : foregroundColor;
+		const auto c = have_selected_routes (data -> get_connections ()) ? selectedColor : foregroundColor;
 		context -> set_source_rgba (c .get_red (), c .get_green (), c .get_blue (), c .get_alpha ());
 
 		context -> move_to (connector_x, y);

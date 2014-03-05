@@ -98,13 +98,13 @@ public:
 	get_object (const Gtk::TreeModel::iterator &) const;
 
 	void
-	is_expanded (const Gtk::TreeModel::iterator &, bool);
+	is_expanded (const Gtk::TreeModel::iterator &, const bool);
 
 	bool
 	is_expanded (const Gtk::TreeModel::iterator &) const;
 
 	void
-	is_full_expanded (const Gtk::TreeModel::iterator &, bool);
+	is_full_expanded (const Gtk::TreeModel::iterator &, const bool);
 
 	bool
 	is_full_expanded (const Gtk::TreeModel::iterator &) const;
@@ -112,10 +112,10 @@ public:
 	///  @name Operations
 
 	Gtk::TreeModel::Path
-	get_path_at_position (double, double) const;
+	get_path_at_position (const double, const double) const;
 
 	Gtk::TreeModel::Path
-	get_path_at_position (double, double, Gtk::TreeViewColumn* &) const;
+	get_path_at_position (const double, const double, Gtk::TreeViewColumn* &) const;
 
 	void
 	expand_to (X3D::X3DChildObject* const);

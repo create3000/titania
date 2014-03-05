@@ -155,8 +155,8 @@ X3DGeospatialObject::getLocationMatrix (const Vector3d & geoPoint) const
 {
 	// Position
 
-	Vector3d p = referenceFrame -> convert (geoPoint);
-	Vector3d t = p - origin;
+	const Vector3d p = referenceFrame -> convert (geoPoint);
+	const Vector3d t = p - origin;
 
 	// Let's work out the orientation at that location in order
 	// to maintain a view where +Y is in the direction of gravitional

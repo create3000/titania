@@ -171,7 +171,7 @@ Configuration::getDirectories ()
 
 	for (const auto & subdir : client -> all_dirs (key))
 	{
-		auto dirName = basic::split (subdir, "/");
+		const auto dirName = basic::split (subdir, "/");
 		directories .emplace_back (path, name + '/' + dirName .back ());
 	}
 

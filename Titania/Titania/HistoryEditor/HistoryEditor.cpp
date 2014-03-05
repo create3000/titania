@@ -72,7 +72,7 @@ HistoryEditor::HistoryEditor (BrowserWindow* const browserWindow) :
 
 	for (const auto & item : history .getItems ())
 	{
-		auto row = getListStore () -> append ();
+		const auto row = getListStore () -> append ();
 		row -> set_value (ICON_COLUMN,      std::string ("BlankIcon"));
 		row -> set_value (TITLE_COLUMN,     item .at ("title"));
 		row -> set_value (WORLD_URL_COLUMN, item .at ("worldURL"));
@@ -103,8 +103,8 @@ HistoryEditor::set_splashScreen ()
 void
 HistoryEditor::set_initialized ()
 {
-	std::string title    = getBrowser () -> getExecutionContext () -> getTitle ();
-	basic::uri  worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
+	const std::string title    = getBrowser () -> getExecutionContext () -> getTitle ();
+	const basic::uri  worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
 
 	if (worldURL .empty ())
 		return;
@@ -120,7 +120,7 @@ HistoryEditor::set_initialized ()
 		__LOG__ << std::endl;
 	}
 
-	auto iter = getListStore () -> prepend ();
+	const auto iter = getListStore () -> prepend ();
 	iter -> set_value (ICON_COLUMN,      worldURL .str ());
 	iter -> set_value (TITLE_COLUMN,     title);
 	iter -> set_value (WORLD_URL_COLUMN, worldURL .str ());

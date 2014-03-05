@@ -59,24 +59,27 @@ public:
 	typedef unsigned char value_type;
 	typedef size_t        size_type;
 
-	Image ();
-
 	Image (const std::string &);
 
 	size_type
-	getWidth ();
+	getWidth () const
+	{ return image .size () .width (); }
 
 	size_type
-	getHeight ();
+	getHeight () const
+	{ return image .size () .height (); }
 
 	size_type
-	getComponents ();
+	getComponents () const
+	{ return components; }
 
 	bool
-	getTransparency ();
+	getTransparency () const
+	{ return transparency; }
 
-	const value_type*
-	getData ();
+	const Image::value_type*
+	getData () const
+	{ return static_cast <const value_type*> (blob .data ()); }
 
 	~Image ();
 
@@ -93,12 +96,6 @@ private:
 	bool      transparency;
 
 };
-
-Image::Image () :
-	       image (),
-	  components (0),
-	transparency (false)
-{ }
 
 Image::Image (const std::string & data)
 {
@@ -120,36 +117,6 @@ Image::Image (const std::string & data)
 	}
 
 	getBlob ();
-}
-
-Image::size_type
-Image::getWidth ()
-{
-	return image .size () .width ();
-}
-
-Image::size_type
-Image::getHeight ()
-{
-	return image .size () .height ();
-}
-
-Image::size_type
-Image::getComponents ()
-{
-	return components;
-}
-
-bool
-Image::getTransparency ()
-{
-	return transparency;
-}
-
-const Image::value_type*
-Image::getData ()
-{
-	return (const value_type*) blob .data ();
 }
 
 void

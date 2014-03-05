@@ -248,7 +248,7 @@ OutlineTreeModel::clear ()
 {
 	//__LOG__ << std::endl;
 
-	size_t size = tree .get_children () .size ();
+	const size_t size = tree .get_children () .size ();
 
 	tree .clear ();
 
@@ -262,8 +262,8 @@ OutlineTreeModel::clear ()
 void
 OutlineTreeModel::clear (const iterator & iter)
 {
-	Path   path = get_path (iter);
-	size_t size = tree .get_node (path) .get_children () .size ();
+	Path         path = get_path (iter);
+	const size_t size = tree .get_node (path) .get_children () .size ();
 
 	tree .clear (path);
 
@@ -328,8 +328,8 @@ OutlineTreeModel::get_value_vfunc (const iterator & iter, int column, Glib::Valu
 			SelectedColumn::ValueType val;
 			val .init (SelectedColumn::ValueType::value_type ());
 
-			auto userData       = get_user_data (iter);
-			auto parentUserData = get_user_data (iter -> parent ());
+			const auto userData       = get_user_data (iter);
+			const auto parentUserData = get_user_data (iter -> parent ());
 
 			val .set ((userData and userData -> selected & OUTLINE_SELECTED) or
 			          (parentUserData and parentUserData -> selected & OUTLINE_SELECTED));
@@ -415,9 +415,8 @@ OutlineTreeModel::iter_has_child_vfunc (const iterator & iter) const
 
 		case OutlineIterType::X3DField:
 		{
-			auto field = static_cast <X3D::X3DFieldDefinition*> (get_object (iter));
-
-			bool size = get_input_routes_size (field) + get_output_routes_size (field);
+			const auto field = static_cast <X3D::X3DFieldDefinition*> (get_object (iter));
+			bool       size  = get_input_routes_size (field) + get_output_routes_size (field);
 
 			switch (field -> getType ())
 			{
@@ -437,7 +436,7 @@ OutlineTreeModel::iter_has_child_vfunc (const iterator & iter) const
 		}
 		case OutlineIterType::X3DBaseNode:
 		{
-			auto sfnode = static_cast <X3D::SFNode*> (get_object (iter));
+			const auto sfnode = static_cast <X3D::SFNode*> (get_object (iter));
 
 			// Prevent self referencing traversal
 
@@ -445,7 +444,7 @@ OutlineTreeModel::iter_has_child_vfunc (const iterator & iter) const
 			{
 				if (parent -> get_type () == OutlineIterType::X3DBaseNode)
 				{
-					auto parent_sfnode = static_cast <X3D::SFNode*> (parent -> get_object ());
+					const auto parent_sfnode = static_cast <X3D::SFNode*> (parent -> get_object ());
 
 					if (*sfnode == *parent_sfnode)
 						return 0;

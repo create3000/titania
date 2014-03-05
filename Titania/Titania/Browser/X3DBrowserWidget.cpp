@@ -296,7 +296,7 @@ X3DBrowserWidget::set_initialized ()
 	loadIcon ();
 	updateTitle (false);
 
-	basic::uri worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
+	const basic::uri worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
 
 	if (not worldURL .empty () and worldURL .is_local ())
 		getFileOpenDialog () .set_uri (worldURL .str ());
@@ -327,7 +327,7 @@ X3DBrowserWidget::statistics ()
 void
 X3DBrowserWidget::set_console ()
 {
-	auto buffer = getConsole () .get_buffer ();
+	const auto buffer = getConsole () .get_buffer ();
 
 	// Insert
 
@@ -344,7 +344,7 @@ X3DBrowserWidget::set_console ()
 
 	if (buffer -> size () > CONSOLE_LIMIT)
 	{
-		int char_offset = buffer -> size () - CONSOLE_LIMIT;
+		const int char_offset = buffer -> size () - CONSOLE_LIMIT;
 
 		buffer -> erase (buffer -> begin (), buffer -> get_iter_at_offset (char_offset));
 	}
@@ -366,7 +366,7 @@ X3DBrowserWidget::loadIcon ()
 {
 	const basic::uri & worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
 
-	Gtk::StockID stockId = Gtk::StockID (worldURL .str ());
+	const Gtk::StockID stockId = Gtk::StockID (worldURL .str ());
 
 	Glib::RefPtr <Gtk::IconSet> iconSet;
 
@@ -385,7 +385,7 @@ X3DBrowserWidget::loadIcon ()
 			uri = "/favicon.ico";
 		}
 
-		titania::Image icon (X3D::Loader (getBrowser ()) .loadDocument (uri));
+		const titania::Image icon (X3D::Loader (getBrowser ()) .loadDocument (uri));
 
 		iconSet = Gtk::IconSet::create (Gdk::Pixbuf::create_from_data (icon .getData (),
 		                                                               Gdk::COLORSPACE_RGB,

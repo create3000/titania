@@ -69,7 +69,7 @@ OutlineSelection::OutlineSelection (BrowserWindow* const browserWindow, OutlineT
 }
 
 void
-OutlineSelection::set_select_multiple (bool value)
+OutlineSelection::set_select_multiple (const bool value)
 {
 	selectMultiple = value;
 }
@@ -93,8 +93,8 @@ OutlineSelection::select (const X3D::SFNode & node)
 {
 	if (node)
 	{
-		auto selection  = getBrowser () -> getSelection ();
-		bool isSelected = selection -> isSelected (node);
+		const auto selection  = getBrowser () -> getSelection ();
+		const bool isSelected = selection -> isSelected (node);
 
 		if (selectMultiple)
 		{
@@ -112,7 +112,7 @@ OutlineSelection::select (const X3D::SFNode & node)
 }
 
 void
-OutlineSelection::select (X3D::X3DBaseNode* const node, bool value) const
+OutlineSelection::select (X3D::X3DBaseNode* const node, const bool value) const
 {
 	X3D::ChildObjectSet objects;
 
@@ -120,7 +120,7 @@ OutlineSelection::select (X3D::X3DBaseNode* const node, bool value) const
 }
 
 void
-OutlineSelection::select (X3D::X3DBaseNode* const node, bool value, X3D::ChildObjectSet & seen) const
+OutlineSelection::select (X3D::X3DBaseNode* const node, const bool value, X3D::ChildObjectSet & seen) const
 {
 	if (node)
 	{
@@ -139,7 +139,7 @@ OutlineSelection::select (X3D::X3DBaseNode* const node, bool value, X3D::ChildOb
 }
 
 void
-OutlineSelection::select (X3D::X3DFieldDefinition* const field, bool value, X3D::ChildObjectSet & seen) const
+OutlineSelection::select (X3D::X3DFieldDefinition* const field, const bool value, X3D::ChildObjectSet & seen) const
 {
 	// Select field
 
@@ -151,13 +151,13 @@ OutlineSelection::select (X3D::X3DFieldDefinition* const field, bool value, X3D:
 	{
 		case X3D::X3DConstants::SFNode:
 		{
-			auto sfnode = static_cast <X3D::SFNode*> (field);
+			const auto sfnode = static_cast <X3D::SFNode*> (field);
 			select (sfnode -> getValue (), value, seen);
 			break;
 		}
 		case X3D::X3DConstants::MFNode:
 		{
-			auto mfnode = static_cast <X3D::MFNode*> (field);
+			const auto mfnode = static_cast <X3D::MFNode*> (field);
 
 			for (auto & sfnode : *mfnode)
 			{
@@ -174,7 +174,7 @@ OutlineSelection::select (X3D::X3DFieldDefinition* const field, bool value, X3D:
 }
 
 void
-OutlineSelection::select (const OutlineUserDataPtr & userData, bool value) const
+OutlineSelection::select (const OutlineUserDataPtr & userData, const bool value) const
 {
 	if (value)
 		userData -> selected |= OUTLINE_SELECTED;

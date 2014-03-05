@@ -78,7 +78,7 @@ public:
 	watch_child (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &);
 
 	void
-	unwatch_tree (const Gtk::TreeModel::iterator &, bool = true);
+	unwatch_tree (const Gtk::TreeModel::iterator &, const bool = true);
 
 	virtual
 	~OutlineTreeObserver ();
@@ -91,10 +91,10 @@ private:
 	watch_children (const Gtk::TreeModel::iterator &);
 
 	void
-	unwatch_child (const Gtk::TreeModel::iterator &, bool);
+	unwatch_child (const Gtk::TreeModel::iterator &, const bool);
 
 	void
-	on_row_has_child_toggled (const Gtk::TreeModel::Path &, bool);
+	on_row_has_child_toggled (const Gtk::TreeModel::Path &, const bool);
 
 	void
 	on_row_changed (const Gtk::TreeModel::Path &);

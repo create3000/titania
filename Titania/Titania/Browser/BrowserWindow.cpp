@@ -659,8 +659,6 @@ BrowserWindow::on_delete_nodes_activate ()
 void
 BrowserWindow::on_create_clone_activate ()
 {
-	__LOG__ << std::endl;
-
 	auto selection = getBrowser () -> getSelection () -> getChildren ();
 
 	if (selection .size () < 2)
@@ -683,8 +681,6 @@ BrowserWindow::on_create_clone_activate ()
 void
 BrowserWindow::on_unlink_clone_activate ()
 {
-	__LOG__ << std::endl;
-
 	const auto selection = getBrowser () -> getSelection () -> getChildren ();
 
 	if (selection .empty ())
@@ -692,7 +688,7 @@ BrowserWindow::on_unlink_clone_activate ()
 
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Unlink Clone"));
 
-	getSelection () -> clear (undoStep);
+	getSelection () -> undoRestoreSelection (undoStep);
 
 	X3D::MFNode nodes = unlinkClone (selection, undoStep);
 

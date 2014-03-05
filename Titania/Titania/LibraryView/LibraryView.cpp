@@ -91,7 +91,7 @@ LibraryView::getFilename (Gtk::TreeModel::Path path) const
 
 	while (path .size ())
 	{
-		auto iter = getTreeStore () -> get_iter (path);
+		const auto iter = getTreeStore () -> get_iter (path);
 
 		std::string name;
 		iter -> get_value (NAME_COLUMN, name);
@@ -111,8 +111,8 @@ LibraryView::children (const Glib::RefPtr <Gio::File> & directory) const
 
 	try
 	{
-		Glib::RefPtr <Gio::FileEnumerator> enumerator = directory -> enumerate_children ();
-		Glib::RefPtr <Gio::FileInfo>       fileInfo   = enumerator -> next_file ();
+		const Glib::RefPtr <Gio::FileEnumerator> enumerator = directory -> enumerate_children ();
+		Glib::RefPtr <Gio::FileInfo>             fileInfo   = enumerator -> next_file ();
 
 		while (fileInfo)
 		{
@@ -141,7 +141,7 @@ LibraryView::append (const std::string & path) const
 {
 	try
 	{
-		Glib::RefPtr <Gio::File> directory = Gio::File::create_for_path (path);
+		const Glib::RefPtr <Gio::File> directory = Gio::File::create_for_path (path);
 
 		for (const auto & fileInfo : children (directory))
 		{
@@ -158,7 +158,7 @@ LibraryView::append (const std::string & path) const
 				case Gio::FILE_TYPE_REGULAR:
 				case Gio::FILE_TYPE_SYMBOLIC_LINK:
 				{
-					auto iter = getTreeStore () -> append ();
+					const auto iter = getTreeStore () -> append ();
 					iter -> set_value (ICON_COLUMN, std::string ("gtk-file"));
 					iter -> set_value (NAME_COLUMN, fileInfo -> get_name ());
 					break;
@@ -192,7 +192,7 @@ LibraryView::append (Gtk::TreeModel::iterator & parent, const Glib::RefPtr <Gio:
 				case Gio::FILE_TYPE_REGULAR:
 				case Gio::FILE_TYPE_SYMBOLIC_LINK:
 				{
-					auto iter = getTreeStore () -> append (parent -> children ());
+					const auto iter = getTreeStore () -> append (parent -> children ());
 					iter -> set_value (ICON_COLUMN, std::string ("gtk-file"));
 					iter -> set_value (NAME_COLUMN, fileInfo -> get_name ());
 					break;
@@ -211,7 +211,7 @@ LibraryView::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewC
 {
 	try
 	{
-		Glib::RefPtr <Gio::File> file = Gio::File::create_for_path (getFilename (path));
+		const Glib::RefPtr <Gio::File> file = Gio::File::create_for_path (getFilename (path));
 
 		switch (file -> query_info () -> get_file_type ())
 		{

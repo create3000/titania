@@ -309,7 +309,7 @@ OutlineTreeViewEditor::select_node (const Gtk::TreeModel::iterator & iter, const
 }
 
 bool
-OutlineTreeViewEditor::select_field_value (double x, double y)
+OutlineTreeViewEditor::select_field_value (const double x, const double y)
 {
 	Gtk::TreeViewColumn* column = nullptr;
 	Gtk::TreeModel::Path path   = get_path_at_position (x, y, column);
@@ -350,10 +350,10 @@ OutlineTreeViewEditor::on_edited (const Glib::ustring & string_path, const Glib:
 }
 
 bool
-OutlineTreeViewEditor::hover_access_type (double x, double y)
+OutlineTreeViewEditor::hover_access_type (const double x, const double y)
 {
-	Gtk::TreeViewColumn* column = nullptr;
-	Gtk::TreeModel::Path path   = get_path_at_position (x, y, column);
+	Gtk::TreeViewColumn*       column = nullptr;
+	const Gtk::TreeModel::Path path   = get_path_at_position (x, y, column);
 
 	// Clear over state
 
@@ -366,14 +366,14 @@ OutlineTreeViewEditor::hover_access_type (double x, double y)
 
 	if (path .size ())
 	{
-		auto iter = get_model () -> get_iter (path);
-		auto data = get_model () -> get_data (iter);
+		const auto iter = get_model () -> get_iter (path);
+		const auto data = get_model () -> get_data (iter);
 
 		switch (data -> get_type ())
 		{
 			case OutlineIterType::X3DField:
 			{
-				auto field = static_cast <X3D::X3DFieldDefinition*> (data -> get_object ());
+				const auto field = static_cast <X3D::X3DFieldDefinition*> (data -> get_object ());
 
 				overUserData = data -> get_user_data ();
 
@@ -418,7 +418,7 @@ OutlineTreeViewEditor::hover_access_type (double x, double y)
 }
 
 bool
-OutlineTreeViewEditor::select_access_type (double x, double y)
+OutlineTreeViewEditor::select_access_type (const double x, const double y)
 {
 	if (get_control_key ())
 		return remove_route (x, y);
@@ -430,21 +430,21 @@ OutlineTreeViewEditor::select_access_type (double x, double y)
 }
 
 bool
-OutlineTreeViewEditor::add_route (double x, double y)
+OutlineTreeViewEditor::add_route (const double x, const double y)
 {
 	Gtk::TreeViewColumn* column = nullptr;
 	Gtk::TreeModel::Path path   = get_path_at_position (x, y, column);
 
 	if (path .size ())
 	{
-		auto iter = get_model () -> get_iter (path);
-		auto data = get_model () -> get_data (iter);
+		const auto iter = get_model () -> get_iter (path);
+		const auto data = get_model () -> get_data (iter);
 
 		switch (data -> get_type ())
 		{
 			case OutlineIterType::X3DField:
 			{
-				auto field = static_cast <X3D::X3DFieldDefinition*> (data -> get_object ());
+				const auto field = static_cast <X3D::X3DFieldDefinition*> (data -> get_object ());
 
 				// Pick
 
@@ -463,20 +463,20 @@ OutlineTreeViewEditor::add_route (double x, double y)
 								if (field -> getType () == matchingFieldType)
 								{
 									path .up ();
-									auto nodeIter = get_model () -> get_iter (path);
-									auto nodeData = get_model () -> get_data (nodeIter);
+									const auto nodeIter = get_model () -> get_iter (path);
+									const auto nodeData = get_model () -> get_data (nodeIter);
 
 									if (nodeData -> get_type () not_eq OutlineIterType::X3DBaseNode)
 										return false;
 
-									X3D::SFNode destinationNode  = *static_cast <X3D::SFNode*> (nodeData -> get_object ());
-									std::string destinationField = field -> getName ();
+									const X3D::SFNode destinationNode  = *static_cast <X3D::SFNode*> (nodeData -> get_object ());
+									const std::string destinationField = field -> getName ();
 
 									// Add route
 
 									try
 									{
-										auto undoStep = std::make_shared <UndoStep> (_ ("Add Route"));
+										const auto undoStep = std::make_shared <UndoStep> (_ ("Add Route"));
 										getBrowserWindow () -> saveMatrix (destinationNode, undoStep);
 										getBrowserWindow () -> addRoute (getBrowser () -> getExecutionContext (), sourceNode, sourceField, destinationNode, destinationField, undoStep);
 										getBrowserWindow () -> addUndoStep (undoStep);
@@ -494,8 +494,8 @@ OutlineTreeViewEditor::add_route (double x, double y)
 						}
 
 						path .up ();
-						auto nodeIter = get_model () -> get_iter (path);
-						auto nodeData = get_model () -> get_data (nodeIter);
+						const auto nodeIter = get_model () -> get_iter (path);
+						const auto nodeData = get_model () -> get_data (nodeIter);
 
 						if (nodeData -> get_type () not_eq OutlineIterType::X3DBaseNode)
 							return false;
@@ -518,20 +518,20 @@ OutlineTreeViewEditor::add_route (double x, double y)
 								if (field -> getType () == matchingFieldType)
 								{
 									path .up ();
-									auto nodeIter = get_model () -> get_iter (path);
-									auto nodeData = get_model () -> get_data (nodeIter);
+									const auto nodeIter = get_model () -> get_iter (path);
+									const auto nodeData = get_model () -> get_data (nodeIter);
 
 									if (nodeData -> get_type () not_eq OutlineIterType::X3DBaseNode)
 										return false;
 
-									X3D::SFNode sourceNode  = *static_cast <X3D::SFNode*> (nodeData -> get_object ());
-									std::string sourceField = field -> getName ();
+									const X3D::SFNode sourceNode  = *static_cast <X3D::SFNode*> (nodeData -> get_object ());
+									std::string       sourceField = field -> getName ();
 
 									// Add route
 
 									try
 									{
-										auto undoStep = std::make_shared <UndoStep> (_ ("Add Route"));
+										const auto undoStep = std::make_shared <UndoStep> (_ ("Add Route"));
 										getBrowserWindow () -> saveMatrix (destinationNode, undoStep);
 										getBrowserWindow () -> addRoute (getBrowser () -> getExecutionContext (), sourceNode, sourceField, destinationNode, destinationField, undoStep);
 										getBrowserWindow () -> addUndoStep (undoStep);
@@ -549,8 +549,8 @@ OutlineTreeViewEditor::add_route (double x, double y)
 						}
 
 						path .up ();
-						auto nodeIter = get_model () -> get_iter (path);
-						auto nodeData = get_model () -> get_data (nodeIter);
+						const auto nodeIter = get_model () -> get_iter (path);
+						const auto nodeData = get_model () -> get_data (nodeIter);
 
 						if (nodeData -> get_type () not_eq OutlineIterType::X3DBaseNode)
 							return false;
@@ -580,7 +580,7 @@ OutlineTreeViewEditor::add_route (double x, double y)
 }
 
 void
-OutlineTreeViewEditor::set_access_type_selection (const OutlineUserDataPtr & userData, int type)
+OutlineTreeViewEditor::set_access_type_selection (const OutlineUserDataPtr & userData, const int type)
 {
 	userData -> selected &= OUTLINE_SELECTED;
 	userData -> selected |= type;
@@ -608,22 +608,22 @@ OutlineTreeViewEditor::clear_access_type_selection (const OutlineUserDataPtr & u
 }
 
 bool
-OutlineTreeViewEditor::remove_route (double x, double y)
+OutlineTreeViewEditor::remove_route (const double x, const double y)
 {
 	Gtk::TreeViewColumn* column = nullptr;
 	Gtk::TreeModel::Path path   = get_path_at_position (x, y, column);
 
 	if (path .size ())
 	{
-		auto iter = get_model () -> get_iter (path);
-		auto data = get_model () -> get_data (iter);
+		const auto iter = get_model () -> get_iter (path);
+		const auto data = get_model () -> get_data (iter);
 
 		switch (data -> get_type ())
 		{
 			case OutlineIterType::X3DInputRoute:
 			case OutlineIterType::X3DOutputRoute:
 			{
-				auto route = static_cast <X3D::Route*> (data -> get_object ());
+				const auto route = static_cast <X3D::Route*> (data -> get_object ());
 
 				// Pick
 
@@ -638,7 +638,7 @@ OutlineTreeViewEditor::remove_route (double x, double y)
 					{
 						try
 						{
-							auto undoStep = std::make_shared <UndoStep> (_ ("Remove Route"));
+							const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Route"));
 
 							getBrowserWindow () -> deleteRoute (getBrowser () -> getExecutionContext (),
 							                                    route -> getSourceNode (),
@@ -662,7 +662,7 @@ OutlineTreeViewEditor::remove_route (double x, double y)
 			}
 			case OutlineIterType::X3DField:
 			{
-				auto field = static_cast <X3D::X3DFieldDefinition*> (data -> get_object ());
+				const auto field = static_cast <X3D::X3DFieldDefinition*> (data -> get_object ());
 
 				// Pick
 
@@ -707,8 +707,8 @@ OutlineTreeViewEditor::remove_route (const Gtk::TreeModel::Path & path, const st
 		{
 			try
 			{
-				auto route    = routes [0];
-				auto undoStep = std::make_shared <UndoStep> (_ ("Remove Route"));
+				const auto route    = routes [0];
+				const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Route"));
 
 				getBrowserWindow () -> deleteRoute (getBrowser () -> getExecutionContext (),
 				                                    route -> getSourceNode (),
@@ -740,22 +740,22 @@ OutlineTreeViewEditor::remove_route (const Gtk::TreeModel::Path & path, const st
 }
 
 bool
-OutlineTreeViewEditor::select_route (double x, double y)
+OutlineTreeViewEditor::select_route (const double x, const double y)
 {
-	Gtk::TreeViewColumn* column = nullptr;
-	Gtk::TreeModel::Path path   = get_path_at_position (x, y, column);
+	Gtk::TreeViewColumn*       column = nullptr;
+	const Gtk::TreeModel::Path path   = get_path_at_position (x, y, column);
 
 	if (path .size ())
 	{
-		auto iter = get_model () -> get_iter (path);
-		auto data = get_model () -> get_data (iter);
+		const auto iter = get_model () -> get_iter (path);
+		const auto data = get_model () -> get_data (iter);
 
 		switch (data -> get_type ())
 		{
 			case OutlineIterType::X3DInputRoute:
 			case OutlineIterType::X3DOutputRoute:
 			{
-				auto route = static_cast <X3D::Route*> (data -> get_object ());
+				const auto route = static_cast <X3D::Route*> (data -> get_object ());
 
 				// Pick
 
@@ -823,7 +823,7 @@ OutlineTreeViewEditor::select_route (double x, double y)
 			}
 			case OutlineIterType::X3DField:
 			{
-				auto field = static_cast <X3D::X3DFieldDefinition*> (data -> get_object ());
+				const auto field = static_cast <X3D::X3DFieldDefinition*> (data -> get_object ());
 
 				// Pick
 
@@ -849,7 +849,7 @@ OutlineTreeViewEditor::select_route (double x, double y)
 
 						// Clear routes
 					
-						OutlineRoutes routes = get_cellrenderer () -> get_routes ();
+						const OutlineRoutes routes = get_cellrenderer () -> get_routes ();
 						get_cellrenderer () -> clear_routes ();
 						get_route_graph () -> update (routes);
 						
@@ -877,7 +877,7 @@ OutlineTreeViewEditor::select_route (double x, double y)
 
 						// Clear routes
 					
-						OutlineRoutes routes = get_cellrenderer () -> get_routes ();
+						const OutlineRoutes routes = get_cellrenderer () -> get_routes ();
 						get_cellrenderer () -> clear_routes ();
 						get_route_graph () -> update (routes);
 						
