@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -77,8 +77,8 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 	addNodeType (X3DConstants::X3DPrototypeInstance);
 
 	addField (inputOutput, "metadata", metadata ());
-	
-	Proto* proto = protoDeclaration -> getProto ();
+
+	Proto* const proto = protoDeclaration -> getProto ();
 
 	for (const auto & userDefinedField : proto -> getUserDefinedFields ())
 	{
@@ -101,9 +101,11 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 		setWorldURL (proto -> getWorldURL ());
 
 		setProfile (proto -> getProfile ());
-		
+
 		for (const auto & component : proto -> getComponents ())
 			addComponent (component);
+
+		setUnits (proto -> getUnits ());
 
 		cloneExternProtos (proto);
 		cloneProtos (proto);
@@ -118,10 +120,10 @@ X3DPrototypeInstance::create (X3DExecutionContext* const executionContext) const
 {
 	if (executionContext -> isScene ())
 	{
-		X3DProto* protoDeclaration = executionContext -> findProtoDeclaration (getTypeName ());
-		
+		X3DProto* const protoDeclaration = executionContext -> findProtoDeclaration (getTypeName ());
+
 		protoDeclaration -> requestImmediateLoad ();
-		
+
 		return new X3DPrototypeInstance (executionContext, protoDeclaration);
 	}
 
@@ -137,7 +139,7 @@ throw (Error <INVALID_NAME>,
 
 	try
 	{
-		X3DFieldDefinition* field = copy -> getField ("url");
+		X3DFieldDefinition* const field = copy -> getField ("url");
 
 		if (field -> getType () == X3DConstants::MFString)
 			X3DUrlObject::transform (*static_cast <MFString*> (field), getExecutionContext (), executionContext);
@@ -157,7 +159,7 @@ X3DPrototypeInstance::initialize ()
 	{
 		// Defer assigning imports and routes until now
 
-		Proto* proto = protoDeclaration -> getProto ();
+		Proto* const proto = protoDeclaration -> getProto ();
 
 		copyImportedNodes (proto);
 		copyRoutes (proto);
@@ -221,7 +223,7 @@ X3DPrototypeInstance::saveState ()
 	                  children .emplace (child);
 	                  return true;
 						});
-	
+
 	children .erase (this);
 
 	// Filter out scene nodes
@@ -253,7 +255,7 @@ X3DPrototypeInstance::restoreState ()
 
 	for (const auto & child : savedChildren)
 		child -> restoreState ();
-	
+
 	savedChildren .clear ();
 }
 

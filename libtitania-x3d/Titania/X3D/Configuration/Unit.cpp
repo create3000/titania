@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,126 +48,48 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PROTOTYPE_PROTO_H__
-#define __TITANIA_X3D_PROTOTYPE_PROTO_H__
+#include "Unit.h"
 
-#include "../Execution/X3DExecutionContext.h"
-#include "../Prototype/X3DProto.h"
+#include "../InputOutput/Generator.h"
 
 namespace titania {
 namespace X3D {
 
-class Proto :
-	public X3DProto, public X3DExecutionContext
+Unit::Unit (const std::string & category, const std::string & name, const double conversion) :
+	  category (category),
+	      name (name),
+	conversion (conversion)
+{ }
+
+Unit::Unit (const Unit & unit) :
+	  category (unit .category),
+	      name (unit .name),
+	conversion (unit .conversion)
+{ }
+
+Unit &
+Unit::operator = (const Unit & unit)
 {
-public:
+	category   = unit .category;
+	name       = unit .name;
+	conversion = unit .conversion;
 
-	using X3DProto::createInstance;
-	using X3DExecutionContext::dispose;
+	return *this;
+}
 
-	///  @name Construction
-
-	Proto (X3DExecutionContext* const);
-
-	virtual
-	Proto*
-	create (X3DExecutionContext* const) const final override;
-
-	virtual
-	Proto*
-	clone (X3DExecutionContext* const) const
-	throw (Error <INVALID_NAME>,
-          Error <NOT_SUPPORTED>) final override;
-
-	virtual
-	Proto*
-	copy (X3DExecutionContext* const) const
-	throw (Error <INVALID_NAME>,
-          Error <NOT_SUPPORTED>) final override;
-
-	///  @name Instance construction
-
-	virtual
-	X3DPrototypeInstance*
-	createInstance (X3DExecutionContext* const) final override;
-
-	///  @name Common members
-
-	virtual
-	const std::string &
-	getComponentName () const final override
-	{ return componentName; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
-
-	///  @name Tests
-
-	virtual
-	bool
-	isProto () const final override
-	{ return true; }
-
-	virtual
-	bool
-	isExternproto () const final override
-	{ return false; }
-
-	///  @name Member access
-
-	virtual
-	Proto*
-	getProto () final override
-	{ return this; }
-
-	///  @name RootNodes handling
-
-	X3DBaseNode*
-	getRootNode () const;
-
-	///  @name Input/Output
-
-	virtual
-	void
-	toStream (std::ostream &) const final override;
-
-
-private:
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override
-	{ }
-
-	virtual
-	void
-	addUninitializedNode (X3DBaseNode* const node) final override
-	{ }
-
-	///  @name Input/Output
-
-	void
-	toStreamField (std::ostream &, X3DFieldDefinition* const, size_t, size_t) const;
-
-	///  @name Static members
-
-	static const std::string componentName;
-	static const std::string typeName;
-	static const std::string containerField;
-
-};
+void
+Unit::toStream (std::ostream & ostream) const
+{
+	ostream
+		<< "UNIT"
+		<< Generator::Space
+		<< category
+		<< Generator::Space
+		<< name
+		<< Generator::Space
+		<< Generator::Precision <double>
+		<< conversion;
+}
 
 } // X3D
 } // titania
-
-#endif

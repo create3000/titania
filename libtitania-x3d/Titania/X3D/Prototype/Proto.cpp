@@ -68,7 +68,19 @@ Proto::Proto (X3DExecutionContext* const executionContext) :
 {
 	addField (inputOutput, "metadata", metadata ());
 
+	setEncoding             (executionContext -> getEncoding ());
+	setSpecificationVersion (executionContext -> getSpecificationVersion ());
+	setCharacterEncoding    (executionContext -> getCharacterEncoding ());
+	setComment              (executionContext -> getComment ());
+
 	setWorldURL (executionContext -> getWorldURL ());
+
+	setProfile (executionContext -> getProfile ());
+
+	for (const auto & component : executionContext -> getComponents ())
+		addComponent (component);
+
+	setUnits (executionContext -> getUnits ());
 }
 
 Proto*

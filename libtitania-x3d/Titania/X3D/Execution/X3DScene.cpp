@@ -293,6 +293,25 @@ X3DScene::toStream (std::ostream & ostream) const
 
 		ostream << Generator::TidyBreak;
 	}
+	
+	{ // Unit
+		bool empty = true;
+
+		for (const auto & unit : getUnits ())
+		{
+			if (unit .getConversion () not_eq 1)
+			{
+				empty = false;
+			
+				ostream
+					<< unit
+					<< Generator::Break;
+			}
+		}
+
+		if (not empty)
+			ostream << Generator::TidyBreak;
+	}
 
 	if (not getMetaDatas () .empty ())
 	{

@@ -58,7 +58,7 @@
 namespace titania {
 namespace X3D {
 
-typedef basic::indexed_multimap <std::string, const X3DFieldDefinition*> FieldTypesArray;
+using FieldTypesArray = basic::indexed_multimap <std::string, const X3DFieldDefinition*>;
 
 } // X3D
 

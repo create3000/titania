@@ -1,5 +1,25 @@
 2014-03-06  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Parser.cpp:
+	* Proto.h:
+	* Proto.cpp:
+	* Unit.h:
+	* X3DScene.cpp:
+	* Unit.cpp:
+	* X3DBrowser.cpp:
+	* UnitArray.h:
+	* UnitArray.cpp:
+	* X3DExecutionContext.h:
+	* FieldTypesArray.h:
+	* ProfileInfoArray.h:
+	* X3DExecutionContext.cpp:
+	* ComponentInfoArray.h:
+	* X3DPrototypeInstance.cpp: 
+
+2014-03-06  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Parser.h:
 	* Parser.cpp:
 	* Scene.cpp:

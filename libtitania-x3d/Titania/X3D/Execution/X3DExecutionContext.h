@@ -52,8 +52,9 @@
 #define __TITANIA_X3D_EXECUTION_X3DEXECUTION_CONTEXT_H__
 
 #include "../Components/Core/X3DNode.h"
-#include "../Configuration/SupportedComponents.h"
 #include "../Configuration/ProfileInfo.h"
+#include "../Configuration/SupportedComponents.h"
+#include "../Configuration/UnitArray.h"
 #include "../Execution/ImportedNodeArray.h"
 #include "../Prototype/ExternProtoArray.h"
 #include "../Prototype/ProtoArray.h"
@@ -162,6 +163,18 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>)
 	{ return components .get (); }
+
+	void
+	updateUnit (const std::string &, const std::string &, const double)
+	throw (Error <INVALID_NAME>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	const UnitArray &
+	getUnits () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
+	{ return units; }
 
 	SFNode
 	createNode (const std::string &)
@@ -282,7 +295,7 @@ public:
 	const X3DSFNode <Proto> &
 	addProtoDeclaration (const std::string &, const FieldDefinitionArray &)
 	throw (Error <INVALID_NAME>,
-          Error <INVALID_OPERATION_TIMING>,
+	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
 	void
@@ -294,7 +307,7 @@ public:
 	void
 	updateProtoDeclaration (const std::string &, const X3DSFNode <Proto> &)
 	throw (Error <INVALID_NAME>,
-          Error <INVALID_OPERATION_TIMING>,
+	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
 	const X3DSFNode <Proto> &
@@ -322,7 +335,7 @@ public:
 	const X3DSFNode <ExternProto> &
 	addExternProtoDeclaration (const std::string &, const FieldDefinitionArray &, const MFString &)
 	throw (Error <INVALID_NAME>,
-          Error <INVALID_OPERATION_TIMING>,
+	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
 	void
@@ -334,7 +347,7 @@ public:
 	void
 	updateExternProtoDeclaration (const std::string &, const X3DSFNode <ExternProto> &)
 	throw (Error <INVALID_NAME>,
-          Error <INVALID_OPERATION_TIMING>,
+	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
 	const X3DSFNode <ExternProto> &
@@ -428,6 +441,12 @@ protected:
 	void
 	initialize () override;
 
+	///  @name Unit handling
+	
+	void
+	setUnits (const UnitArray & value)
+	{ units = value; }
+
 	///  @name Import handling
 
 	void
@@ -458,6 +477,10 @@ protected:
 
 private:
 
+	using ImportedNamesIndex = std::map <X3DBaseNode*, std::string>;
+
+	///  @name Operations
+
 	X3DSFNode <Proto>
 	createProtoDeclaration (const std::string &, const FieldDefinitionArray &)
 	throw (Error <INVALID_OPERATION_TIMING>,
@@ -474,7 +497,12 @@ private:
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_FIELD>);
 
-	typedef std::map <X3DBaseNode*, std::string> ImportedNamesIndex;
+	///  @name Static members
+
+	static const UnitIndex unitCategories;
+	static const UnitArray standardUnits;
+
+	///  @name Members
 
 	basic::uri  worldURL;
 	std::string encoding;
@@ -484,6 +512,7 @@ private:
 
 	ProfileInfoPtr      profile;
 	SupportedComponents components;
+	UnitArray           units;
 
 	NamedNodeIndex     namedNodes;
 	ImportedNodeArray  importedNodes;
@@ -494,6 +523,7 @@ private:
 	MFNode             rootNodes;
 
 	MFNode uninitializedNodes;
+
 };
 
 } // X3D

@@ -1,0 +1,26 @@
+#X3D V3.3 utf8 Titania
+
+PROFILE Full
+
+COMPONENT Core : 1
+
+UNIT angle degree 0.0174532925199433
+UNIT force dyne 1e-05
+UNIT length millimetre 0.001
+UNIT mass gram 0.001
+
+META "title" "Unit statement"
+
+Transform {
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry Text {
+      string "Unit statement"
+      fontStyle FontStyle {
+        justify [ "MIDDLE", "MIDDLE" ]
+      }
+    }
+  }
+}

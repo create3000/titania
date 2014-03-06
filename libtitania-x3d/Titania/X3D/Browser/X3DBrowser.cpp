@@ -65,6 +65,8 @@ X3DBrowser::X3DBrowser () :
 	setName ("Titania");
 	setUserAgent (getName () + "/" + getVersion () + " (X3D Browser; +http://titania.create3000.de)");
 
+	addField (inputOutput, "metadata", metadata ());
+
 	addChildren (description,
 	             scene,
 	             world,

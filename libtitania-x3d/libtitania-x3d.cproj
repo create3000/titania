@@ -637,6 +637,8 @@
     <None Include="Titania\X3D\Bits\Geospatial.h" />
     <None Include="Titania\X3D\Components\Geospatial\X3DGeospatialObject.h" />
     <None Include="Titania\X3D\Types\MatrixStack.h" />
+    <None Include="Titania\X3D\Configuration\Unit.h" />
+    <None Include="Titania\X3D\Configuration\UnitArray.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1099,6 +1101,8 @@
     <Compile Include="Titania\X3D\Miscellaneous\BVH.cpp" />
     <Compile Include="Titania\X3D\Bits\Geospatial.cpp" />
     <Compile Include="Titania\X3D\Components\Geospatial\X3DGeospatialObject.cpp" />
+    <Compile Include="Titania\X3D\Configuration\Unit.cpp" />
+    <Compile Include="Titania\X3D\Configuration\UnitArray.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

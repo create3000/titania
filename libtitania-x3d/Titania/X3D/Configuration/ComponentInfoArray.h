@@ -59,7 +59,7 @@
 namespace titania {
 namespace X3D {
 
-typedef basic::indexed_multimap <std::string, ComponentInfoPtr> ComponentInfoArray;
+using ComponentInfoArray = basic::indexed_multimap <std::string, ComponentInfoPtr>;
 
 } // X3D
 

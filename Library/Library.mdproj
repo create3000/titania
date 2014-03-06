@@ -2409,6 +2409,7 @@
     <None Include="Tests\Geospatial\tie.wrl" />
     <None Include="Tests\Geospatial\GeoTouchSensor.wrl" />
     <None Include="Tests\Geospatial\test.wrl" />
+    <None Include="Tests\Basic\UNIT.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

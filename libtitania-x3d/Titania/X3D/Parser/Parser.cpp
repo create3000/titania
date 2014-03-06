@@ -460,7 +460,7 @@ Parser::unitStatement ()
 
 				if (unitConversionFactor (_unitConversionFactor))
 				{
-					// save unit in scene -> updateUnit (_categoryNameId, _unitNameId, _unitConversionFactor);
+					scene -> updateUnit (_categoryNameId, _unitNameId, _unitConversionFactor);
 					return true;
 				}
 				else

@@ -66,6 +66,21 @@
 namespace titania {
 namespace X3D {
 
+const UnitIndex X3DExecutionContext::unitCategories = {
+	std::make_pair ("angle",  UnitCategory::ANGLE),
+	std::make_pair ("force",  UnitCategory::FORCE),
+	std::make_pair ("length", UnitCategory::LENGTH),
+	std::make_pair ("mass",   UnitCategory::MASS)
+
+};
+
+const UnitArray X3DExecutionContext::standardUnits = {
+	Unit ("angle",  "radian",   1),
+	Unit ("force",  "newton",   1),
+	Unit ("length", "metre",    1),
+	Unit ("mass",   "kilogram", 1)
+};
+
 X3DExecutionContext::X3DExecutionContext () :
 	             X3DNode (),
 	            worldURL (),
@@ -73,8 +88,9 @@ X3DExecutionContext::X3DExecutionContext () :
 	specificationVersion ("3.3"),
 	   characterEncoding ("utf8"),
 	             comment ("Titania"),
-	             profile (nullptr),
+	             profile (),
 	          components (),
+	               units (standardUnits),
 	          namedNodes (),
 	       importedNodes (),
 	       importedNames (),
@@ -97,7 +113,7 @@ X3DExecutionContext::initialize ()
 {
 	X3DNode::initialize ();
 
-	//__LOG__ << "Initialize: " << getWorldURL () << std::endl; 
+	//__LOG__ << "Initialize: " << getWorldURL () << std::endl;
 
 	rootNodes .isTainted (false);
 	//uninitializedNodes .isTainted (false);
@@ -108,7 +124,24 @@ X3DExecutionContext::initialize ()
 			uninitializedNode -> setup ();
 	}
 
-	//__LOG__ << "Initialize done: " << getWorldURL () << std::endl; 
+	//__LOG__ << "Initialize done: " << getWorldURL () << std::endl;
+}
+
+void
+X3DExecutionContext::updateUnit (const std::string & category, const std::string & name, const double conversion)
+throw (Error <INVALID_NAME>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	const auto unitCategory = unitCategories .find (category);
+
+	if (unitCategory not_eq unitCategories .end ())
+	{
+		units [size_t (unitCategory -> second)] = Unit (category, name, conversion);
+		return;
+	}
+
+	throw Error <INVALID_NAME> ("Unkown base unit category '" + category + "'.");
 }
 
 SFNode
@@ -285,7 +318,7 @@ X3DExecutionContext::getUniqueName (std::string name, bool hidden) const
 				getNamedNode (newName);
 
 				newName = name;
-				
+
 				if (hidden)
 					newName += '_';
 
@@ -436,7 +469,7 @@ throw (Error <INVALID_NAME>,
 {
 	if (name .empty ())
 		throw Error <INVALID_NAME> ("Couldn't add proto declaration: proto name is empty.");
-	
+
 	protos .push_back (name, createProtoDeclaration (name, interfaceDeclarations));
 	protos .back () .isTainted (true);
 	protos .back () .addParent (this);
@@ -452,7 +485,7 @@ throw (Error <INVALID_NAME>,
 {
 	if (name .empty ())
 		throw Error <INVALID_NAME> ("Couldn't update proto declaration: proto name is empty.");
-	
+
 	protos .erase (protoDeclaration -> getName ());
 	protos .push_back (name, protoDeclaration);
 	protos .back () .isTainted (true);
@@ -484,7 +517,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 {
 	if (name .empty ())
 		throw Error <INVALID_NAME> ("Couldn't create proto declaration: proto name is empty.");
-	
+
 	X3DSFNode <Proto> proto = new Proto (this);
 
 	proto -> setName (name);
@@ -539,7 +572,7 @@ throw (Error <INVALID_NAME>,
 {
 	if (name .empty ())
 		throw Error <INVALID_NAME> ("Couldn't add proto declaration: proto name is empty.");
-	
+
 	externProtos .push_back (name, createExternProtoDeclaration (name, externInterfaceDeclarations, URLList));
 	externProtos .back () .isTainted (true);
 	externProtos .back () .addParent (this);
@@ -555,7 +588,7 @@ throw (Error <INVALID_NAME>,
 {
 	if (name .empty ())
 		throw Error <INVALID_NAME> ("Couldn't update proto declaration: proto name is empty.");
-	
+
 	externProtos .erase (externProtoDeclaration -> getName ());
 	externProtos .push_back (name, externProtoDeclaration);
 	externProtos .back () .isTainted (true);
