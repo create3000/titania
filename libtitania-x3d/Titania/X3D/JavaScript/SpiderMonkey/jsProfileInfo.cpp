@@ -59,7 +59,7 @@ namespace X3D {
 JSClass jsProfileInfo::static_class = {
 	"ProfileInfo", JSCLASS_HAS_PRIVATE,
 	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
-	JS_EnumerateStub, JS_ResolveStub, JS_ConvertStub, JS_FinalizeStub,
+	JS_EnumerateStub, JS_ResolveStub, JS_ConvertStub, finalize,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
@@ -86,14 +86,14 @@ jsProfileInfo::init (JSContext* const context, JSObject* const global)
 }
 
 JSBool
-jsProfileInfo::create (JSContext* const context, const ProfileInfo* const profileInfo, jsval* const vp, const bool seal)
+jsProfileInfo::create (JSContext* const context, const ProfileInfoPtr & profileInfo, jsval* const vp, const bool seal)
 {
 	JSObject* result = JS_NewObject (context, &static_class, NULL, NULL);
 
 	if (result == NULL)
 		return JS_FALSE;
 
-	JS_SetPrivate (context, result, const_cast <ProfileInfo*> (profileInfo));
+	JS_SetPrivate (context, result, new ProfileInfoPtr (profileInfo));
 
 	//if (seal)
 	//	JS_SealObject (context, result, JS_FALSE);
@@ -106,7 +106,7 @@ jsProfileInfo::create (JSContext* const context, const ProfileInfo* const profil
 JSBool
 jsProfileInfo::name (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	auto profileInfo = static_cast <ProfileInfo*> (JS_GetPrivate (context, obj));
+	const auto & profileInfo = *static_cast <ProfileInfoPtr*> (JS_GetPrivate (context, obj));
 
 	return JS_NewStringValue (context, profileInfo -> getName (), vp);
 }
@@ -114,7 +114,7 @@ jsProfileInfo::name (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 JSBool
 jsProfileInfo::title (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	auto profileInfo = static_cast <ProfileInfo*> (JS_GetPrivate (context, obj));
+	const auto & profileInfo = *static_cast <ProfileInfoPtr*> (JS_GetPrivate (context, obj));
 
 	return JS_NewStringValue (context, profileInfo -> getTitle (), vp);
 }
@@ -122,7 +122,7 @@ jsProfileInfo::title (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 JSBool
 jsProfileInfo::providerUrl (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	auto profileInfo = static_cast <ProfileInfo*> (JS_GetPrivate (context, obj));
+	const auto & profileInfo = *static_cast <ProfileInfoPtr*> (JS_GetPrivate (context, obj));
 
 	return JS_NewStringValue (context, profileInfo -> getProviderUrl (), vp);
 }
@@ -130,9 +130,15 @@ jsProfileInfo::providerUrl (JSContext* context, JSObject* obj, jsid id, jsval* v
 JSBool
 jsProfileInfo::components (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	auto profileInfo = static_cast <ProfileInfo*> (JS_GetPrivate (context, obj));
+	const auto & profileInfo = *static_cast <ProfileInfoPtr*> (JS_GetPrivate (context, obj));
 
 	return jsComponentInfoArray::create (context, &profileInfo -> getComponents (), vp);
+}
+
+void
+jsProfileInfo::finalize (JSContext* context, JSObject* obj)
+{
+	delete static_cast <ProfileInfoPtr*> (JS_GetPrivate (context, obj));
 }
 
 } // X3D

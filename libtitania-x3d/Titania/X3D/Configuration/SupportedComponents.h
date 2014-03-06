@@ -57,41 +57,42 @@
 namespace titania {
 namespace X3D {
 
-class Browser;
-
 class SupportedComponents
 {
 public:
 
-	SupportedComponents (X3DExecutionContext* const);
+	///  @name Construction
+
+	SupportedComponents ();
+
+	SupportedComponents (const bool);
+
+	///  @name Operations
 
 	void
-	add (const ComponentInfo*);
+	add (const ComponentInfoPtr &);
 
-	const ComponentInfo*
+	ComponentInfoPtr
 	get (const std::string &, const size_t) const
 	throw (Error <NOT_SUPPORTED>);
 
-	const ComponentInfo*
+	const ComponentInfoPtr &
 	get (const std::string &) const
 	throw (Error <NOT_SUPPORTED>);
 
 	const ComponentInfoArray &
-	get () const;
-
-	void
-	dispose ();
-
-	virtual
-	~SupportedComponents ();
+	get () const
+	{ return components; }
 
 
 private:
 
-	void
-	add (const std::string &, const int32_t);
+	///  @name Operations
 
-	X3DExecutionContext* const executionContext;
+	void
+	add (const std::string &, const std::string &, const int32_t);
+
+	///  @name Members
 
 	ComponentInfoArray components;
 

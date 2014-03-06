@@ -50,32 +50,17 @@
 
 #include "ProfileInfo.h"
 
-#include "../Execution/X3DExecutionContext.h"
 #include "../InputOutput/Generator.h"
 
 namespace titania {
 namespace X3D {
 
-const std::string ProfileInfo::componentName  = "Browser";
-const std::string ProfileInfo::typeName       = "ProfileInfo";
-const std::string ProfileInfo::containerField = "profileInfo";
-
-ProfileInfo::ProfileInfo (X3DExecutionContext* const executionContext, const std::string & name, ComponentInfoArray && components) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	      title (name + " Profile"),
+ProfileInfo::ProfileInfo (const std::string & title, const std::string & name, ComponentInfoArray && components) :
+	      title (title),
+	       name (name),
 	providerUrl ("http://titania.create3000.de"),
 	 components (std::move (components))
-{
-	setName (name);
-}
-
-X3DBaseNode*
-ProfileInfo::create (X3DExecutionContext* const executionContext) const
-{
-	ComponentInfoArray components (getComponents ());
-
-	return new ProfileInfo (executionContext, getName (), std::move (components));
-}
+{ }
 
 void
 ProfileInfo::toStream (std::ostream & ostream) const
@@ -83,14 +68,7 @@ ProfileInfo::toStream (std::ostream & ostream) const
 	ostream
 		<< "PROFILE"
 		<< Generator::Space
-		<< getName ();
-}
-
-void
-ProfileInfo::dispose ()
-{
-	components .clear ();
-	X3DBaseNode::dispose ();
+		<< name;
 }
 
 } // X3D

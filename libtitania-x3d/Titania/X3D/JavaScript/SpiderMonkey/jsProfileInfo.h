@@ -67,7 +67,7 @@ public:
 
 	static
 	JSBool
-	create (JSContext* const, const ProfileInfo* const, jsval* const, const bool = false);
+	create (JSContext* const, const ProfileInfoPtr &, jsval* const, const bool = false);
 
 	static
 	JSClass*
@@ -89,6 +89,8 @@ private:
 	static JSBool title       (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool providerUrl (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool components  (JSContext *, JSObject *, jsid, jsval*);
+
+	static void finalize (JSContext*, JSObject*);
 
 	static JSClass        static_class;
 	static JSPropertySpec properties [ ];

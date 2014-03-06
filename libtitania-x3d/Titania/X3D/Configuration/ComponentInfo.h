@@ -51,76 +51,65 @@
 #ifndef __TITANIA_X3D_CONFIGURATION_COMPONENT_INFO_H__
 #define __TITANIA_X3D_CONFIGURATION_COMPONENT_INFO_H__
 
-#include "../Basic/X3DBaseNode.h"
-#include "../Fields/SFNode.h"
+#include <memory>
+#include <string>
+#include <iostream>
 
 namespace titania {
 namespace X3D {
 
-class ComponentInfo :
-	virtual public X3DBaseNode
+class ComponentInfo
 {
 public:
 
 	///  @name Construction
 
-	ComponentInfo (X3DExecutionContext* const, const std::string &, const size_t);
-
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
-
-	///  @name Common members
-
-	virtual
-	const std::string &
-	getComponentName () const final override
-	{ return componentName; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
+	ComponentInfo (const std::string &, const std::string &, const size_t);
 
 	///  @name Member access
 
+	const std::string &
+	getTitle () const
+	{ return title; }
+
+	const std::string &
+	getName () const
+	{ return name; }
+
 	size_t
-	getLevel () const { return level; }
+	getLevel () const
+	{ return level; }
 
 	const std::string &
-	getTitle () const { return title; }
-
-	const std::string &
-	getProviderUrl () const { return providerUrl; }
+	getProviderUrl () const
+	{ return providerUrl; }
 
 	///  @name Input/Output
 
-	virtual
 	void
-	toStream (std::ostream & ostream) const final override;
+	toStream (std::ostream & ostream) const;
 
 
 private:
 
-	///  @name Static members
-
-	static const std::string componentName;
-	static const std::string typeName;
-	static const std::string containerField;
-
 	///  @name Members
 
-	size_t      level;
-	std::string title;
-	std::string providerUrl;
+	const std::string title;
+	const std::string name;
+	const size_t      level;
+	const std::string providerUrl;
 
 };
+
+template <class CharT, class Traits>
+std::basic_ostream <CharT, Traits> &
+operator << (std::basic_ostream <CharT, Traits> & ostream, const ComponentInfo & componentInfo)
+{
+	componentInfo .toStream (ostream);
+	return ostream;
+}
+
+using ComponentInfoPtr = std::shared_ptr <const ComponentInfo>;
 
 } // X3D
 } // titania

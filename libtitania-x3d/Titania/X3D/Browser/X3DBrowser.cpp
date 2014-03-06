@@ -46,10 +46,10 @@ const std::string X3DBrowser::containerField = "browser";
 
 X3DBrowser::X3DBrowser () :
 	  X3DBrowserContext (),
-	    supportedFields (this),
+	    supportedFields (),
 	     supportedNodes (this),
-	supportedComponents (this),
-	  supportedProfiles (this, supportedComponents),
+	supportedComponents (true),
+	  supportedProfiles (supportedComponents),
 	          userAgent (),
 	        description (),
 	              scene (createScene ()),
@@ -193,14 +193,14 @@ throw (Error <INVALID_NAME>)
 	return supportedNodes .get (name);
 }
 
-const ComponentInfo*
+ComponentInfoPtr
 X3DBrowser::getComponent (const std::string & name, const size_t level) const
 throw (Error <NOT_SUPPORTED>)
 {
 	return supportedComponents .get (name, level);
 }
 
-const ProfileInfo*
+const ProfileInfoPtr &
 X3DBrowser::getProfile (const std::string & name) const
 throw (Error <NOT_SUPPORTED>)
 {
@@ -216,13 +216,17 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 X3DSFNode <Scene>
-X3DBrowser::createScene (const ProfileInfo* profile, const ComponentInfoArray & components) const
+X3DBrowser::createScene (const ProfileInfoPtr & profile, const ComponentInfoArray & components) const
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	X3DSFNode <Scene> scene = createScene ();
+
 	scene -> setProfile (profile);
-	scene -> addComponents (components);
+
+	for (const auto & component : components)
+		scene -> addComponent (component);
+
 	return scene;
 }
 
@@ -462,10 +466,8 @@ X3DBrowser::dispose ()
 	world .dispose ();
 	root  .dispose ();
 
-	supportedFields     .dispose ();
-	supportedNodes      .dispose ();
-	supportedComponents .dispose ();
-	supportedProfiles   .dispose ();
+	supportedFields .dispose ();
+	supportedNodes  .dispose ();
 
 	X3DBrowserContext::dispose ();
 

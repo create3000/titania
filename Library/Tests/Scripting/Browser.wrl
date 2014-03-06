@@ -50,8 +50,8 @@ function set_time ()
 	for (var i in supportedProfiles)
 	{
 		print ();
-		print ('name:        ', supportedProfiles [i] .name);
 		print ('title:       ', supportedProfiles [i] .title);
+		print ('name:        ', supportedProfiles [i] .name);
 		print ('providerUrl: ', supportedProfiles [i] .providerUrl);
 		print ('components:  ', supportedProfiles [i] .components);
 		
@@ -60,9 +60,9 @@ function set_time ()
 		for (var c in components)
 		{
 			print ();
+			print ('\t', 'title:       ', components [c] .title);
 			print ('\t', 'name:        ', components [c] .name);
 			print ('\t', 'level:       ', components [c] .level);
-			print ('\t', 'title:       ', components [c] .title);
 			print ('\t', 'providerUrl: ', components [c] .providerUrl);
 		}
 	}
@@ -77,9 +77,9 @@ function set_time ()
 	for (var i in supportedComponents)
 	{
 		print ();
+		print ('title:       ', supportedComponents [i] .title);
 		print ('name:        ', supportedComponents [i] .name);
 		print ('level:       ', supportedComponents [i] .level);
-		print ('title:       ', supportedComponents [i] .title);
 		print ('providerUrl: ', supportedComponents [i] .providerUrl);
 	}
 	

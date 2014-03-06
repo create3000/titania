@@ -58,11 +58,11 @@
 namespace titania {
 namespace X3D {
 
-typedef basic::indexed_multimap <std::string, const ProfileInfo*> ProfileInfoArray;
+typedef basic::indexed_multimap <std::string, const ProfileInfoPtr> ProfileInfoArray;
 
 } // X3D
 
-extern template class basic::indexed_multimap <std::string, const X3D::ProfileInfo*>;
+extern template class basic::indexed_multimap <std::string, const X3D::ProfileInfoPtr>;
 
 } // titania
 

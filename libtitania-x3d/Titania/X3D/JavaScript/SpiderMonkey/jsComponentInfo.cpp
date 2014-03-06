@@ -59,7 +59,7 @@ namespace X3D {
 JSClass jsComponentInfo::static_class = {
 	"ComponentInfo", JSCLASS_HAS_PRIVATE,
 	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
-	JS_EnumerateStub, JS_ResolveStub, JS_ConvertStub, JS_FinalizeStub,
+	JS_EnumerateStub, JS_ResolveStub, JS_ConvertStub, finalize,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
@@ -79,21 +79,21 @@ JSFunctionSpec jsComponentInfo::functions [ ] = {
 };
 
 void
-jsComponentInfo::init (JSContext* context, JSObject* global)
+jsComponentInfo::init (JSContext* const context, JSObject* const global)
 {
 	JS_InitClass (context, global, NULL, &static_class, NULL,
 	              0, properties, functions, NULL, NULL);
 }
 
 JSBool
-jsComponentInfo::create (JSContext* context, const ComponentInfo* componentInfo, jsval* vp, const bool seal)
+jsComponentInfo::create (JSContext* const context, const ComponentInfoPtr & componentInfo, jsval* const vp, const bool seal)
 {
 	JSObject* const result = JS_NewObject (context, &static_class, NULL, NULL);
 
 	if (result == NULL)
 		return JS_FALSE;
 
-	JS_SetPrivate (context, result, const_cast <ComponentInfo*> (componentInfo));
+	JS_SetPrivate (context, result, new ComponentInfoPtr (componentInfo));
 
 	//if (seal)
 	//	JS_SealObject (context, result, JS_FALSE);
@@ -106,7 +106,7 @@ jsComponentInfo::create (JSContext* context, const ComponentInfo* componentInfo,
 JSBool
 jsComponentInfo::name (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto componentInfo = static_cast <ComponentInfo*> (JS_GetPrivate (context, obj));
+	const auto & componentInfo = *static_cast <ComponentInfoPtr*> (JS_GetPrivate (context, obj));
 
 	return JS_NewStringValue (context, componentInfo -> getName (), vp);
 }
@@ -114,7 +114,7 @@ jsComponentInfo::name (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 JSBool
 jsComponentInfo::level (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto componentInfo = static_cast <ComponentInfo*> (JS_GetPrivate (context, obj));
+	const auto & componentInfo = *static_cast <ComponentInfoPtr*> (JS_GetPrivate (context, obj));
 
 	return JS_NewNumberValue (context, componentInfo -> getLevel (), vp);
 }
@@ -122,7 +122,7 @@ jsComponentInfo::level (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 JSBool
 jsComponentInfo::title (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto componentInfo = static_cast <ComponentInfo*> (JS_GetPrivate (context, obj));
+	const auto & componentInfo = *static_cast <ComponentInfoPtr*> (JS_GetPrivate (context, obj));
 
 	return JS_NewStringValue (context, componentInfo -> getTitle (), vp);
 }
@@ -130,9 +130,15 @@ jsComponentInfo::title (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 JSBool
 jsComponentInfo::providerUrl (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto componentInfo = static_cast <ComponentInfo*> (JS_GetPrivate (context, obj));
+	const auto & componentInfo = *static_cast <ComponentInfoPtr*> (JS_GetPrivate (context, obj));
 
 	return JS_NewStringValue (context, componentInfo -> getProviderUrl (), vp);
+}
+
+void
+jsComponentInfo::finalize (JSContext* context, JSObject* obj)
+{
+	delete static_cast <ComponentInfoPtr*> (JS_GetPrivate (context, obj));
 }
 
 } // X3D

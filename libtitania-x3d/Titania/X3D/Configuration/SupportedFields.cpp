@@ -56,7 +56,7 @@
 namespace titania {
 namespace X3D {
 
-SupportedFields::SupportedFields (X3DExecutionContext* const executionContext)
+SupportedFields::SupportedFields ()
 {
 	//std::clog << "Creating field index:" << std::endl;
 

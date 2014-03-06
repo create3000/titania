@@ -50,30 +50,17 @@
 
 #include "ComponentInfo.h"
 
-#include "../Execution/X3DExecutionContext.h"
 #include "../InputOutput/Generator.h"
 
 namespace titania {
 namespace X3D {
 
-const std::string ComponentInfo::componentName  = "Browser";
-const std::string ComponentInfo::typeName       = "ComponentInfo";
-const std::string ComponentInfo::containerField = "componentInfo";
-
-ComponentInfo::ComponentInfo (X3DExecutionContext* const executionContext, const std::string & name, const size_t level) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext),
+ComponentInfo::ComponentInfo (const std::string & title, const std::string & name, const size_t level) :
+	      title (title),
+	       name (name),
 	      level (level),
-	      title (name + " Component"),
 	providerUrl ("http://titania.create3000.de")
-{
-	setName (name);
-}
-
-X3DBaseNode*
-ComponentInfo::create (X3DExecutionContext* const executionContext) const
-{
-	return new ComponentInfo (executionContext, getName (), getLevel ());
-}
+{ }
 
 void
 ComponentInfo::toStream (std::ostream & ostream) const
@@ -81,11 +68,11 @@ ComponentInfo::toStream (std::ostream & ostream) const
 	ostream
 		<< "COMPONENT"
 		<< Generator::Space
-		<< getName ()
+		<< name
 		<< Generator::TidySpace
 		<< ':'
 		<< Generator::TidySpace
-		<< getLevel ();
+		<< level;
 }
 
 } // X3D

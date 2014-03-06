@@ -173,7 +173,7 @@ private:
 	void
 	componentStatements ();
 
-	const ComponentInfo*
+	ComponentInfoPtr
 	componentStatement ();
 
 	bool

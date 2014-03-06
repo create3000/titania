@@ -1,5 +1,36 @@
 2014-03-06  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Parser.h:
+	* Parser.cpp:
+	* Scene.cpp:
+	* X3DBrowser.h:
+	* X3DBrowser.cpp:
+	* ProfileInfo.h:
+	* ProfileInfo.cpp:
+	* ComponentInfo.h:
+	* SupportedFields.h:
+	* X3DExecutionContext.h:
+	* ComponentInfo.cpp:
+	* ProfileInfoArray.h:
+	* X3DExecutionContext.cpp:
+	* SupportedProfiles.h:
+	* SupportedFields.cpp:
+	* ProfileInfoArray.cpp:
+	* ComponentInfoArray.h:
+	* SupportedProfiles.cpp:
+	* SupportedComponents.h:
+	* ComponentInfoArray.cpp:
+	* SupportedComponents.cpp:
+	* jsConstArray.h:
+	* jsProfileInfo.h:
+	* X3DPrototypeInstance.cpp:
+	* jsComponentInfo.h:
+	* jsProfileInfo.cpp:
+	* jsComponentInfo.cpp:
+	* jsX3DFieldDefinition.cpp: 
+
+2014-03-06  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Parser.cpp:
 	* X3DBaseNode.h:
 	* X3DBaseNode.cpp:

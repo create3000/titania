@@ -63,11 +63,11 @@ public:
 
 	static
 	void
-	init (JSContext*, JSObject*);
+	init (JSContext* const, JSObject* const);
 
 	static
 	JSBool
-	create (JSContext*, const ComponentInfo*, jsval*, const bool = false);
+	create (JSContext* const, const ComponentInfoPtr &, jsval* const, const bool = false);
 
 	static
 	JSClass*
@@ -89,6 +89,8 @@ private:
 	static JSBool level       (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool title       (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool providerUrl (JSContext *, JSObject *, jsid, jsval*);
+
+	static void finalize (JSContext*, JSObject*);
 
 	static JSClass        static_class;
 	static JSPropertySpec properties [ ];

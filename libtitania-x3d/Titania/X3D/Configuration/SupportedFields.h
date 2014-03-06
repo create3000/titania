@@ -61,7 +61,7 @@ class SupportedFields
 {
 public:
 
-	SupportedFields (X3DExecutionContext* const);
+	SupportedFields ();
 
 	void
 	add (X3DFieldDefinition* const);

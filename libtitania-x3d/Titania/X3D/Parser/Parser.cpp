@@ -364,20 +364,17 @@ Parser::componentStatements ()
 {
 	//__LOG__ << this << " " << std::endl;
 
-	ComponentInfoArray _componentStatements;
-
-	const ComponentInfo* _componentStatement = componentStatement ();
+	ComponentInfoPtr _componentStatement = componentStatement ();
 
 	while (_componentStatement)
 	{
-		_componentStatements .push_back (_componentStatement -> getName (), _componentStatement);
+		scene -> addComponent (_componentStatement);
 		_componentStatement = componentStatement ();
 	}
 
-	scene -> addComponents (_componentStatements);
 }
 
-const ComponentInfo*
+ComponentInfoPtr
 Parser::componentStatement ()
 {
 	//__LOG__ << this << " " << std::endl;

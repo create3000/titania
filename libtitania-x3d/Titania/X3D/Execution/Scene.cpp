@@ -85,9 +85,13 @@ throw (Error <INVALID_OPERATION_TIMING>,
 			if (getProfile ())
 			{
 				if (scene -> getProfile ())
-					addComponents (scene -> getProfile () -> getComponents ());
+				{
+					for (const auto & component : scene -> getProfile () -> getComponents ())
+						addComponent (component);
+				}
 
-				addComponents (scene -> getComponents ());
+				for (const auto & component : scene -> getComponents ())
+					addComponent (component);
 			}
 			else
 				setProfile (getBrowser () -> getProfile ("Full"));

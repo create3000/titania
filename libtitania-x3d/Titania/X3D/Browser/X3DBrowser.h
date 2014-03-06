@@ -124,11 +124,11 @@ public:
 	getNode (const std::string &) const
 	throw (Error <INVALID_NAME>);
 
-	const ComponentInfo*
+	ComponentInfoPtr
 	getComponent (const std::string &, const size_t) const
 	throw (Error <NOT_SUPPORTED>);
 
-	const ProfileInfo*
+	const ProfileInfoPtr &
 	getProfile (const std::string &) const
 	throw (Error <NOT_SUPPORTED>);
 
@@ -146,7 +146,7 @@ public:
 	       Error <DISPOSED>);
 
 	X3DSFNode <Scene>
-	createScene (const ProfileInfo*, const ComponentInfoArray &) const
+	createScene (const ProfileInfoPtr &, const ComponentInfoArray &) const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 

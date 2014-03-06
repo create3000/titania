@@ -100,8 +100,10 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 
 		setWorldURL (proto -> getWorldURL ());
 
-		addComponents (proto -> getComponents ());
 		setProfile (proto -> getProfile ());
+		
+		for (const auto & component : proto -> getComponents ())
+			addComponent (component);
 
 		cloneExternProtos (proto);
 		cloneProtos (proto);

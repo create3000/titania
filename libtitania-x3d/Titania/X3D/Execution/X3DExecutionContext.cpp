@@ -73,8 +73,8 @@ X3DExecutionContext::X3DExecutionContext () :
 	specificationVersion ("3.3"),
 	   characterEncoding ("utf8"),
 	             comment ("Titania"),
+	             profile (nullptr),
 	          components (),
-	             profile (NULL),
 	          namedNodes (),
 	       importedNodes (),
 	       importedNames (),
@@ -111,29 +111,13 @@ X3DExecutionContext::initialize ()
 	//__LOG__ << "Initialize done: " << getWorldURL () << std::endl; 
 }
 
-void
-X3DExecutionContext::addComponents (const ComponentInfoArray & componentInfoArray)
-{
-	for (const auto & component : componentInfoArray)
-	{
-		try
-		{
-			components .rfind (component -> getName ());
-		}
-		catch (const std::out_of_range &)
-		{
-			components .push_back (component -> getName (), component);
-		}
-	}
-}
-
 SFNode
 X3DExecutionContext::createNode (const std::string & name)
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	const X3DBaseNode* declaration = getBrowser () -> getNode (name);
+	const X3DBaseNode* const declaration = getBrowser () -> getNode (name);
 
 	if (getProfile () or not getComponents () .empty ())
 	{
@@ -151,7 +135,7 @@ throw (Error <INVALID_NAME>,
 
 		try
 		{
-			components .rfind (declaration -> getComponentName ());
+			getComponents () .rfind (declaration -> getComponentName ());
 
 			return declaration -> create (this);
 		}
@@ -884,9 +868,6 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 void
 X3DExecutionContext::dispose ()
 {
-	profile = NULL;
-	components .clear ();
-
 	namedNodes    .clear ();
 	importedNodes .clear ();
 	importedNames .clear ();

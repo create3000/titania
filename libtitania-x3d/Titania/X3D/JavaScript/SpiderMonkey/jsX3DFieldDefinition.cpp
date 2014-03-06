@@ -121,7 +121,7 @@ jsX3DFieldDefinition::dataType (JSContext* context, JSObject* obj, jsid id, jsva
 }
 
 void
-jsX3DFieldDefinition:: finalize (JSContext* context, JSObject* obj)
+jsX3DFieldDefinition::finalize (JSContext* context, JSObject* obj)
 {
 	const auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
 	const auto field      = static_cast <X3DFieldDefinition*> (JS_GetPrivate (context, obj));

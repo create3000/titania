@@ -55,146 +55,167 @@
 namespace titania {
 namespace X3D {
 
-SupportedProfiles::SupportedProfiles (X3DExecutionContext* const executionContext, const SupportedComponents & supportedComponents) :
-	executionContext (executionContext)
+SupportedProfiles::SupportedProfiles (const SupportedComponents & supportedComponents) :
+	profiles ()
 {
 	//std::clog << "Creating profile index:" << std::endl;
 
 	ComponentInfoArray CADInterchange;
 
-	add ("CADInterchange", {
-	        supportedComponents .get ("Core"),
-	        supportedComponents .get ("Networking"),
-	        supportedComponents .get ("Grouping"),
-	        supportedComponents .get ("Rendering"),
-	        supportedComponents .get ("Shape"),
-	        supportedComponents .get ("Lighting"),
-	        supportedComponents .get ("Texturing"),
-	        supportedComponents .get ("Navigation"),
-	        supportedComponents .get ("Shaders"),
-	        supportedComponents .get ("CADGeometry")
+	add ("Computer-Aided Design (CAD) interchange", "CADInterchange", {
+	        supportedComponents .get ("Core",        1),
+	        supportedComponents .get ("Networking",  2),
+	        supportedComponents .get ("Grouping",    1),
+	        supportedComponents .get ("Rendering",   4),
+	        supportedComponents .get ("Shape",       2),
+	        supportedComponents .get ("Lighting",    1),
+	        supportedComponents .get ("Texturing",   2),
+	        supportedComponents .get ("Navigation",  2),
+	        supportedComponents .get ("Shaders",     1),
+	        supportedComponents .get ("CADGeometry", 2)
 		  });
 
-	add ("Core", {
-	        supportedComponents .get ("Core")
+	add ("Core", "Core", {
+	        supportedComponents .get ("Core", 1)
 		  });
 
-	add ("Full", {
-	        supportedComponents .get ("Core"),
-	        supportedComponents .get ("Time"),
-	        supportedComponents .get ("Networking"),
-	        supportedComponents .get ("Grouping"),
-	        supportedComponents .get ("Rendering"),
-	        supportedComponents .get ("Shape"),
-	        supportedComponents .get ("Geometry3D"),
-	        supportedComponents .get ("Geometry2D"),
-	        supportedComponents .get ("Text"),
-	        supportedComponents .get ("Sound"),
-	        supportedComponents .get ("Lighting"),
-	        supportedComponents .get ("Texturing"),
-	        supportedComponents .get ("Interpolation"),
-	        supportedComponents .get ("PointingDeviceSensor"),
-	        supportedComponents .get ("KeyDeviceSensor"),
-	        supportedComponents .get ("EnvironmentalSensor"),
-	        supportedComponents .get ("Navigation"),
-	        supportedComponents .get ("EnvironmentalEffects"),
-	        supportedComponents .get ("Geospatial"),
-	        supportedComponents .get ("H-Anim"),
-	        supportedComponents .get ("NURBS"),
-	        supportedComponents .get ("DIS"),
-	        supportedComponents .get ("Scripting"),
-	        supportedComponents .get ("EventUtilities"),
-	        supportedComponents .get ("Shaders"),
-	        supportedComponents .get ("CADGeometry"),
-	        supportedComponents .get ("Texturing3D"),
-	        supportedComponents .get ("CubeMapTexturing"),
-	        supportedComponents .get ("Layering"),
-	        supportedComponents .get ("Layout"),
-	        supportedComponents .get ("RigidBodyPhysics"),
-	        supportedComponents .get ("Picking"),
-	        supportedComponents .get ("Followers"),
-	        supportedComponents .get ("ParticleSystems")
+	add ("Full", "Full", {
+	        supportedComponents .get ("Core",                 2),
+	        supportedComponents .get ("Time",                 2),
+	        supportedComponents .get ("Networking",           3),
+	        supportedComponents .get ("Grouping",             3),
+	        supportedComponents .get ("Rendering",            5),
+	        supportedComponents .get ("Shape",                4),
+	        supportedComponents .get ("Geometry3D",           4),
+	        supportedComponents .get ("Geometry2D",           2),
+	        supportedComponents .get ("Text",                 1),
+	        supportedComponents .get ("Sound",                1),
+	        supportedComponents .get ("Lighting",             3),
+	        supportedComponents .get ("Texturing",            3),
+	        supportedComponents .get ("Interpolation",        5),
+	        supportedComponents .get ("PointingDeviceSensor", 1),
+	        supportedComponents .get ("KeyDeviceSensor",      2),
+	        supportedComponents .get ("EnvironmentalSensor",  3),
+	        supportedComponents .get ("Navigation",           3),
+	        supportedComponents .get ("EnvironmentalEffects", 4),
+	        supportedComponents .get ("Geospatial",           2),
+	        supportedComponents .get ("H-Anim",               1),
+	        supportedComponents .get ("NURBS",                4),
+	        supportedComponents .get ("DIS",                  2),
+	        supportedComponents .get ("Scripting",            1),
+	        supportedComponents .get ("EventUtilities",       1),
+	        supportedComponents .get ("Shaders",              1),
+	        supportedComponents .get ("CADGeometry",          2),
+	        supportedComponents .get ("Texturing3D",          2),
+	        supportedComponents .get ("CubeMapTexturing",     3),
+	        supportedComponents .get ("Layering",             1),
+	        supportedComponents .get ("Layout",               2),
+	        supportedComponents .get ("RigidBodyPhysics",     2),
+	        supportedComponents .get ("Picking",              3),
+	        supportedComponents .get ("Followers",            1),
+	        supportedComponents .get ("ParticleSystems",      3) /*,
+	        supportedComponents .get ("VolumeRendering",      4) */
 		  });
 
-	add ("Immersive", {
-	        supportedComponents .get ("Core"),
-	        supportedComponents .get ("Time"),
-	        supportedComponents .get ("Networking"),
-	        supportedComponents .get ("Grouping"),
-	        supportedComponents .get ("Rendering"),
-	        supportedComponents .get ("Shape"),
-	        supportedComponents .get ("Geometry3D"),
-	        supportedComponents .get ("Geometry2D"),
-	        supportedComponents .get ("Text"),
-	        supportedComponents .get ("Sound"),
-	        supportedComponents .get ("Lighting"),
-	        supportedComponents .get ("Texturing"),
-	        supportedComponents .get ("Interpolation"),
-	        supportedComponents .get ("PointingDeviceSensor"),
-	        supportedComponents .get ("KeyDeviceSensor"),
-	        supportedComponents .get ("EnvironmentalSensor"),
-	        supportedComponents .get ("Navigation"),
-	        supportedComponents .get ("EnvironmentalEffects"),
-	        supportedComponents .get ("Scripting"),
-	        supportedComponents .get ("EventUtilities")
+	add ("Immersive", "Immersive", {
+	        supportedComponents .get ("Core",                 2),
+	        supportedComponents .get ("Time",                 1),
+	        supportedComponents .get ("Networking",           3),
+	        supportedComponents .get ("Grouping",             2),
+	        supportedComponents .get ("Rendering",            3),
+	        supportedComponents .get ("Shape",                2),
+	        supportedComponents .get ("Geometry3D",           4),
+	        supportedComponents .get ("Geometry2D",           1),
+	        supportedComponents .get ("Text",                 1),
+	        supportedComponents .get ("Sound",                1),
+	        supportedComponents .get ("Lighting",             2),
+	        supportedComponents .get ("Texturing",            3),
+	        supportedComponents .get ("Interpolation",        2),
+	        supportedComponents .get ("PointingDeviceSensor", 1),
+	        supportedComponents .get ("KeyDeviceSensor",      2),
+	        supportedComponents .get ("EnvironmentalSensor",  2),
+	        supportedComponents .get ("Navigation",           2),
+	        supportedComponents .get ("EnvironmentalEffects", 2),
+	        supportedComponents .get ("Scripting",            1),
+	        supportedComponents .get ("EventUtilities",       1)
 		  });
 
-	add ("Interactive", {
-	        supportedComponents .get ("Core"),
-	        supportedComponents .get ("Time"),
-	        supportedComponents .get ("Networking"),
-	        supportedComponents .get ("Grouping"),
-	        supportedComponents .get ("Rendering"),
-	        supportedComponents .get ("Shape"),
-	        supportedComponents .get ("Geometry3D"),
-	        supportedComponents .get ("Lighting"),
-	        supportedComponents .get ("Texturing"),
-	        supportedComponents .get ("Interpolation"),
-	        supportedComponents .get ("PointingDeviceSensor"),
-	        supportedComponents .get ("KeyDeviceSensor"),
-	        supportedComponents .get ("EnvironmentalSensor"),
-	        supportedComponents .get ("Navigation"),
-	        supportedComponents .get ("EnvironmentalEffects"),
-	        supportedComponents .get ("EventUtilities")
+	add ("Interactive", "Interactive", {
+	        supportedComponents .get ("Core",                 1),
+	        supportedComponents .get ("Time",                 1),
+	        supportedComponents .get ("Networking",           2),
+	        supportedComponents .get ("Grouping",             2),
+	        supportedComponents .get ("Rendering",            3),
+	        supportedComponents .get ("Shape",                1),
+	        supportedComponents .get ("Geometry3D",           3),
+	        supportedComponents .get ("Lighting",             2),
+	        supportedComponents .get ("Texturing",            2),
+	        supportedComponents .get ("Interpolation",        2),
+	        supportedComponents .get ("PointingDeviceSensor", 1),
+	        supportedComponents .get ("KeyDeviceSensor",      1),
+	        supportedComponents .get ("EnvironmentalSensor",  1),
+	        supportedComponents .get ("Navigation",           1),
+	        supportedComponents .get ("EnvironmentalEffects", 1),
+	        supportedComponents .get ("EventUtilities",       1)
 		  });
 
-	add ("Interchange", {
-	        supportedComponents .get ("Core"),
-	        supportedComponents .get ("Time"),
-	        supportedComponents .get ("Networking"),
-	        supportedComponents .get ("Grouping"),
-	        supportedComponents .get ("Rendering"),
-	        supportedComponents .get ("Shape"),
-	        supportedComponents .get ("Geometry3D"),
-	        supportedComponents .get ("Lighting"),
-	        supportedComponents .get ("Texturing"),
-	        supportedComponents .get ("Interpolation"),
-	        supportedComponents .get ("Navigation"),
-	        supportedComponents .get ("EnvironmentalEffects")
+	add ("Interchange", "Interchange", {
+	        supportedComponents .get ("Core",                 1),
+	        supportedComponents .get ("Time",                 1),
+	        supportedComponents .get ("Networking",           1),
+	        supportedComponents .get ("Grouping",             1),
+	        supportedComponents .get ("Rendering",            3),
+	        supportedComponents .get ("Shape",                1),
+	        supportedComponents .get ("Geometry3D",           2),
+	        supportedComponents .get ("Lighting",             1),
+	        supportedComponents .get ("Texturing",            2),
+	        supportedComponents .get ("Interpolation",        2),
+	        supportedComponents .get ("Navigation",           1),
+	        supportedComponents .get ("EnvironmentalEffects", 1)
 		  });
 
-	add ("MPEG-4", {
-	        supportedComponents .get ("Core"),
-	        supportedComponents .get ("Time"),
-	        supportedComponents .get ("Networking"),
-	        supportedComponents .get ("Grouping"),
-	        supportedComponents .get ("Rendering"),
-	        supportedComponents .get ("Shape"),
-	        supportedComponents .get ("Geometry3D"),
-	        supportedComponents .get ("Lighting"),
-	        supportedComponents .get ("Texturing"),
-	        supportedComponents .get ("Interpolation"),
-	        supportedComponents .get ("PointingDeviceSensor"),
-	        supportedComponents .get ("EnvironmentalSensor"),
-	        supportedComponents .get ("Navigation"),
-	        supportedComponents .get ("EnvironmentalEffects")
+//	add ("Medical interchange", "MedicalInterchange", {
+//	        supportedComponents .get ("Core",                 1),
+//	        supportedComponents .get ("Time",                 1),
+//	        supportedComponents .get ("Networking",           2),
+//	        supportedComponents .get ("Grouping",             3),
+//	        supportedComponents .get ("Rendering",            5),
+//	        supportedComponents .get ("Shape",                3),
+//	        supportedComponents .get ("Geometry3D",           2),
+//	        supportedComponents .get ("Geometry2D",           2),
+//	        supportedComponents .get ("Text",                 1),
+//	        supportedComponents .get ("Lighting",             1),
+//	        supportedComponents .get ("Texturing",            2),
+//	        supportedComponents .get ("Interpolation",        2),
+//	        supportedComponents .get ("Navigation",           3),
+//	        supportedComponents .get ("EnvironmentalEffects", 1),
+//	        supportedComponents .get ("EventUtilities",       1),
+//	        supportedComponents .get ("Texturing3D",          2),
+//	        supportedComponents .get ("VolumeRendering",      4)
+//		  });
+
+	add ("MPEG-4 interactive", "MPEG-4", {
+	        supportedComponents .get ("Core",                 1),
+	        supportedComponents .get ("Time",                 1),
+	        supportedComponents .get ("Networking",           2),
+	        supportedComponents .get ("Grouping",             2),
+	        supportedComponents .get ("Rendering",            1),
+	        supportedComponents .get ("Shape",                1),
+	        supportedComponents .get ("Geometry3D",           2),
+	        supportedComponents .get ("Lighting",             2),
+	        supportedComponents .get ("Texturing",            1),
+	        supportedComponents .get ("Interpolation",        2),
+	        supportedComponents .get ("PointingDeviceSensor", 1),
+	        supportedComponents .get ("EnvironmentalSensor",  1),
+	        supportedComponents .get ("Navigation",           1),
+	        supportedComponents .get ("EnvironmentalEffects", 1)
 		  });
 
 	//std::clog << "\tDone creating profile index." << std::endl;
 }
 
 void
-SupportedProfiles::add (const std::string & name, std::initializer_list <const ComponentInfo*> component_list)
+SupportedProfiles::add (const std::string & title, const std::string & name, std::initializer_list <ComponentInfoPtr> component_list)
 {
 	//std::clog << "\tAdding profile " << name << ": " << std::flush;
 
@@ -203,18 +224,18 @@ SupportedProfiles::add (const std::string & name, std::initializer_list <const C
 	for (const auto & component : component_list)
 		components .push_back (component -> getName (), component);
 
-	add (new ProfileInfo (executionContext, name, std::move (components)));
+	add (ProfileInfoPtr (new ProfileInfo (title, name, std::move (components))));
 
 	//std::clog << "Done." << std::endl;
 }
 
 void
-SupportedProfiles::add (const ProfileInfo* const profile)
+SupportedProfiles::add (const ProfileInfoPtr & profile)
 {
 	profiles .push_back (profile -> getName (), profile);
 }
 
-const ProfileInfo*
+const ProfileInfoPtr &
 SupportedProfiles::get (const std::string & name) const
 throw (Error <NOT_SUPPORTED>)
 {
@@ -227,24 +248,6 @@ throw (Error <NOT_SUPPORTED>)
 		throw Error <NOT_SUPPORTED> ("Unkown profile '" + name + "'");
 	}
 }
-
-const ProfileInfoArray &
-SupportedProfiles::get () const
-{
-	return profiles;
-}
-
-void
-SupportedProfiles::dispose ()
-{
-	for (const auto & profile : profiles)
-		delete profile;
-
-	profiles .clear ();
-}
-
-SupportedProfiles::~SupportedProfiles ()
-{ }
 
 } // X3D
 } // titania

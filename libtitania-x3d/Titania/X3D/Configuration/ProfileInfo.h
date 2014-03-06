@@ -51,48 +51,28 @@
 #ifndef __TITANIA_X3D_CONFIGURATION_PROFILE_INFO_H__
 #define __TITANIA_X3D_CONFIGURATION_PROFILE_INFO_H__
 
-#include "../Basic/X3DBaseNode.h"
 #include "../Configuration/ComponentInfoArray.h"
 
 namespace titania {
 namespace X3D {
 
-class ProfileInfo :
-	virtual public X3DBaseNode
+class ProfileInfo
 {
 public:
 
 	///  @name Construction
 
-	ProfileInfo (X3DExecutionContext* const, const std::string &, ComponentInfoArray &&);
-
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
-
-	///  @name Common members
-
-	virtual
-	const std::string &
-	getComponentName () const final override
-	{ return componentName; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
+	ProfileInfo (const std::string &, const std::string &, ComponentInfoArray &&);
 
 	///  @name Member access
 
 	const std::string &
 	getTitle () const
 	{ return title; }
+
+	const std::string &
+	getName () const
+	{ return name; }
 
 	const std::string &
 	getProviderUrl () const
@@ -104,33 +84,31 @@ public:
 
 	///  @name Input/Output
 
-	virtual
 	void
-	toStream (std::ostream & ostream) const final override;
-
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () final override;
+	toStream (std::ostream & ostream) const;
 
 
 private:
 
-	///  @name Static members
-
-	static const std::string componentName;
-	static const std::string typeName;
-	static const std::string containerField;
-
 	///  @name Members
 
-	std::string title;
-	std::string providerUrl;
+	const std::string title;
+	const std::string name;
+	const std::string providerUrl;
 
-	ComponentInfoArray components;
+	const ComponentInfoArray components;
 
 };
+
+template <class CharT, class Traits>
+std::basic_ostream <CharT, Traits> &
+operator << (std::basic_ostream <CharT, Traits> & ostream, const ProfileInfo & profileInfo)
+{
+	profileInfo .toStream (ostream);
+	return ostream;
+}
+
+using ProfileInfoPtr = std::shared_ptr <const ProfileInfo>;
 
 } // X3D
 } // titania

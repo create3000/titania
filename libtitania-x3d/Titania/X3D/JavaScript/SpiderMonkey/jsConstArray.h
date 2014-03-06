@@ -202,8 +202,7 @@ jsConstArray <Type, ValueType>::get1Value (JSContext* context, JSObject* obj, js
 		return JS_TRUE;
 
 	const int32 index = JSID_TO_INT (id);
-
-	const auto array = static_cast <Type*> (JS_GetPrivate (context, obj));
+	const auto  array = static_cast <Type*> (JS_GetPrivate (context, obj));
 
 	if (index < 0 and index >= (int32) array -> size ())
 	{

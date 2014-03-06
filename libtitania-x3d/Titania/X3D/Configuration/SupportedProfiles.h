@@ -64,31 +64,32 @@ class SupportedProfiles
 {
 public:
 
-	SupportedProfiles (X3DExecutionContext* const, const SupportedComponents &);
+	///  @name Construction
+
+	SupportedProfiles (const SupportedComponents &);
+
+	///  @name Operations
 
 	void
-	add (const ProfileInfo* const);
+	add (const ProfileInfoPtr &);
 
-	const ProfileInfo*
+	const ProfileInfoPtr &
 	get (const std::string &) const
 	throw (Error <NOT_SUPPORTED>);
 
 	const ProfileInfoArray &
-	get () const;
-
-	void
-	dispose ();
-
-	virtual
-	~SupportedProfiles ();
+	get () const
+	{ return profiles; }
 
 
 private:
 
-	void
-	add (const std::string &, std::initializer_list <const ComponentInfo*>);
+	///  @name Operations
 
-	X3DExecutionContext* const executionContext;
+	void
+	add (const std::string &, const std::string &, std::initializer_list <ComponentInfoPtr>);
+
+	///  @name Members
 
 	ProfileInfoArray profiles;
 

@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_EXECUTION_X3DEXECUTION_CONTEXT_H__
 
 #include "../Components/Core/X3DNode.h"
-#include "../Configuration/ComponentInfoArray.h"
+#include "../Configuration/SupportedComponents.h"
 #include "../Configuration/ProfileInfo.h"
 #include "../Execution/ImportedNodeArray.h"
 #include "../Prototype/ExternProtoArray.h"
@@ -144,23 +144,24 @@ public:
 	{ return comment; }
 
 	void
-	addComponents (const ComponentInfoArray &);
+	setProfile (const ProfileInfoPtr & value)
+	{ profile = value; }
+
+	const ProfileInfoPtr &
+	getProfile ()  const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
+	{ return profile; }
+
+	void
+	addComponent (const ComponentInfoPtr & component)
+	{ components .add (component); }
 
 	const ComponentInfoArray &
 	getComponents () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>)
-	{ return components; }
-
-	void
-	setProfile (const ProfileInfo* value)
-	{ profile = value; }
-
-	const ProfileInfo*
-	getProfile ()  const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
-	{ return profile; }
+	{ return components .get (); }
 
 	SFNode
 	createNode (const std::string &)
@@ -481,8 +482,8 @@ private:
 	std::string characterEncoding;
 	std::string comment;
 
-	ComponentInfoArray components;
-	const ProfileInfo* profile;
+	ProfileInfoPtr      profile;
+	SupportedComponents components;
 
 	NamedNodeIndex     namedNodes;
 	ImportedNodeArray  importedNodes;
