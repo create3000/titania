@@ -241,6 +241,54 @@ throw (Error <INVALID_NAME>,
 	return copy;
 }
 
+X3DBaseNode*
+X3DBaseNode::copy (X3DExecutionContext* const executionContext, const FlattCopyType &) const
+throw (Error <NOT_SUPPORTED>)
+{
+	X3DBaseNode* const copy = create (executionContext);
+
+	if (not getName () .empty ())
+		executionContext -> updateNamedNode (executionContext -> getUniqueName (getName ()), copy);
+
+	for (const auto & field : getUserDefinedFields ())
+		copy -> addUserDefinedField (field -> getAccessType (), field -> getName (), field -> create ());
+
+	try
+	{
+		copy -> assign (this);
+	}
+	catch (const X3DError &)
+	{ }
+
+	executionContext -> addUninitializedNode (copy);
+
+	return copy;
+}
+
+X3DBaseNode*
+X3DBaseNode::copy (X3DExecutionContext* const executionContext, const DeepCopyType &) const
+throw (Error <NOT_SUPPORTED>)
+{
+	throw Error <NOT_SUPPORTED> ("Deep copy is currently not supported.");
+}
+
+void
+X3DBaseNode::assign (const X3DBaseNode* const node)
+throw (Error <INVALID_NODE>,
+       Error <INVALID_FIELD>)
+{
+	for (const auto & lhs : getFieldDefinitions ())
+	{
+		if (lhs -> getAccessType () & initializeOnly)
+		{
+			X3DFieldDefinition* const rhs = node -> getField (lhs -> getName ());
+
+			if (*lhs not_eq *rhs)
+				*lhs = *rhs;
+		}
+	}
+}
+
 void
 X3DBaseNode::replace (X3DBaseNode* const node, const std::set <const X3DFieldDefinition*> & exclude)
 {
@@ -274,21 +322,6 @@ X3DBaseNode::replace (X3DBaseNode* const node, const std::set <const X3DFieldDef
 	{
 		parent -> write (SFNode (this));
 		parent -> addEvent ();
-	}
-}
-
-void
-X3DBaseNode::assign (const X3DBaseNode* const node)
-{
-	for (const auto & lhs : getFieldDefinitions ())
-	{
-		if (lhs -> getAccessType () & initializeOnly)
-		{
-			X3DFieldDefinition* const rhs = node -> getField (lhs -> getName ());
-
-			if (*lhs not_eq *rhs)
-				*lhs = *rhs;
-			}
 	}
 }
 

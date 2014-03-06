@@ -1061,9 +1061,6 @@ X3DBrowserEditor::createClone (const X3D::SFNode & clone, const X3D::MFNode & no
 X3D::MFNode
 X3DBrowserEditor::unlinkClone (const X3D::MFNode & clones, const UndoStepPtr & undoStep) const
 {
-	X3D::pushContext ();
-	getBrowser () -> makeCurrent ();
-
 	X3D::MFNode nodes;
 
 	for (const auto & clone : clones)
@@ -1082,42 +1079,32 @@ X3DBrowserEditor::unlinkClone (const X3D::MFNode & clones, const UndoStepPtr & u
 		                     {
 										case X3D::X3DConstants::SFNode:
 											{
-											   const auto sfnode = static_cast <X3D::SFNode*> (field);
-
-											   if (*sfnode == clone)
+											   try
 											   {
-											      if (not first)
+											      const auto sfnode = static_cast <X3D::SFNode*> (field);
+
+											      if (*sfnode == clone)
 											      {
-											         // Flat copy clone
+											         if (not first)
+											         {
+											            const X3D::SFNode node = (*sfnode) -> copy (scene, X3D::FlattCopyType ());
 
-											         const X3D::SFNode node = (*sfnode) -> create (scene);
+											            replaceNode (parent, *sfnode, node, undoStep);
 
-											         for (const auto & field : (*sfnode) -> getUserDefinedFields ())
-															node -> addUserDefinedField (field -> getAccessType (), field -> getName (), field -> create ());
+											            nodes .emplace_back (node);
+														}
 
-											         node -> assign (*sfnode);
-											         node -> setup ();
-
-											         // Set name
-
-											         if (not (*sfnode) -> getName () .empty ())
-															scene -> updateNamedNode (scene -> getUniqueName ((*sfnode) -> getName ()), node);
-
-											         // Replace node
-
-											         replaceNode (parent, *sfnode, node, undoStep);
-
-											         nodes .emplace_back (node);
+											         first = false;
 													}
-
-											      first = false;
 												}
+											   catch (const X3D::Error <X3D::NOT_SUPPORTED> &)
+											   { }
 
 											   break;
 											}
 										case X3D::X3DConstants::MFNode:
 											{
-											   const auto mfnode  = static_cast <X3D::MFNode*> (field);
+											   const auto mfnode = static_cast <X3D::MFNode*> (field);
 
 											   unlinkClone (scene, parent, *mfnode, clone, nodes, first, undoStep);
 
@@ -1131,10 +1118,17 @@ X3DBrowserEditor::unlinkClone (const X3D::MFNode & clones, const UndoStepPtr & u
 		                  return true;
 							});
 
-		// Unlink in rootNodes array;
+		// Unlink in rootNodes array.
 
 		unlinkClone (scene, scene .getValue (), scene -> getRootNodes (), clone, nodes, first, undoStep);
 	}
+
+	// Setup new nodes.
+
+	X3D::pushContext ();
+	getBrowser () -> makeCurrent ();
+
+	scene -> setup ();
 
 	X3D::popContext ();
 
@@ -1157,31 +1151,21 @@ X3DBrowserEditor::unlinkClone (const X3D::X3DSFNode <X3D::Scene> & scene,
 
 	for (const auto & index : indices)
 	{
-		if (not first)
+		try
 		{
-			// Flat copy clone
+			if (not first)
+			{
+				const X3D::SFNode node = mfnode [index] -> copy (scene, X3D::FlattCopyType ());
 
-			const X3D::SFNode node = mfnode [index] -> create (scene);
+				replaceNode (parent, mfnode, index, node, undoStep);
 
-			for (const auto & field : mfnode [index] -> getUserDefinedFields ())
-				node -> addUserDefinedField (field -> getAccessType (), field -> getName (), field -> create ());
+				nodes .emplace_back (node);
+			}
 
-			node -> assign (mfnode [index]);
-			node -> setup ();
-
-			// Set name
-
-			if (not mfnode [index] -> getName () .empty ())
-				scene -> updateNamedNode (scene -> getUniqueName (mfnode [index] -> getName ()), node);
-
-			// Replace node
-
-			replaceNode (parent, mfnode, index, node, undoStep);
-
-			nodes .emplace_back (node);
+			first = false;
 		}
-
-		first = false;
+		catch (const X3D::Error <X3D::NOT_SUPPORTED> &)
+		{ }
 	}
 }
 

@@ -75,6 +75,9 @@ typedef std::map <std::string, X3DFieldDefinition*> FieldsMap;
 class X3DBrowser;
 class X3DExecutionContext;
 
+struct FlattCopyType { };
+struct DeepCopyType { };
+
 class X3DBaseNode :
 	public X3DChildObject
 {
@@ -101,8 +104,18 @@ public:
 	throw (Error <INVALID_NAME>,
           Error <NOT_SUPPORTED>);
 
+	X3DBaseNode*
+	copy (X3DExecutionContext* const, const FlattCopyType &) const
+	throw (Error <NOT_SUPPORTED>);
+
+	X3DBaseNode*
+	copy (X3DExecutionContext* const, const DeepCopyType &) const
+	throw (Error <NOT_SUPPORTED>);
+
 	void
-	assign (const X3DBaseNode* const);
+	assign (const X3DBaseNode* const)
+	throw (Error <INVALID_NODE>,
+          Error <INVALID_FIELD>);
 
 	virtual
 	void

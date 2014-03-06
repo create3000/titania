@@ -876,7 +876,7 @@ Parser::restrictedInterfaceDeclaration ()
 
 			if (inputOnlyId (_fieldId))
 			{
-				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> clone ();
+				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> create ();
 				_field -> setAccessType (inputOnly);
 				_field -> setName (_fieldId);
 				_field -> addComments (getComments ());
@@ -899,7 +899,7 @@ Parser::restrictedInterfaceDeclaration ()
 
 			if (outputOnlyId (_fieldId))
 			{
-				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> clone ();
+				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> create ();
 				_field -> setAccessType (outputOnly);
 				_field -> setName (_fieldId);
 				_field -> addComments (getComments ());
@@ -922,7 +922,7 @@ Parser::restrictedInterfaceDeclaration ()
 
 			if (initializeOnlyId (_fieldId))
 			{
-				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> clone ();
+				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> create ();
 
 				if (fieldValue (_field))
 				{
@@ -969,7 +969,7 @@ Parser::interfaceDeclaration ()
 
 			if (inputOutputId (_fieldId))
 			{
-				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> clone ();
+				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> create ();
 
 				if (fieldValue (_field))
 				{
@@ -1083,7 +1083,7 @@ Parser::externInterfaceDeclaration ()
 
 			if (inputOnlyId (_fieldId))
 			{
-				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> clone ();
+				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> create ();
 				_field -> setAccessType (inputOnly);
 				_field -> setName (_fieldId);
 				_field -> addComments (getComments ());
@@ -1106,7 +1106,7 @@ Parser::externInterfaceDeclaration ()
 
 			if (outputOnlyId (_fieldId))
 			{
-				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> clone ();
+				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> create ();
 				_field -> setAccessType (outputOnly);
 				_field -> setName (_fieldId);
 				_field -> addComments (getComments ());
@@ -1129,7 +1129,7 @@ Parser::externInterfaceDeclaration ()
 
 			if (initializeOnlyId (_fieldId))
 			{
-				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> clone ();
+				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> create ();
 				_field -> setAccessType (initializeOnly);
 				_field -> setName (_fieldId);
 				_field -> addComments (getComments ());
@@ -1152,7 +1152,7 @@ Parser::externInterfaceDeclaration ()
 
 			if (inputOutputId (_fieldId))
 			{
-				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> clone ();
+				X3DFieldDefinition* _field = getBrowser () -> getFieldType (_fieldType) -> create ();
 				_field -> setAccessType (inputOutput);
 				_field -> setName (_fieldId);
 				_field -> addComments (getComments ());
@@ -1448,7 +1448,7 @@ Parser::scriptBodyElement (X3DBaseNode* const _basicNode)
 										}
 										catch (const Error <INVALID_NAME> &)
 										{
-											_field = _supportedField -> clone ();
+											_field = _supportedField -> create ();
 
 											_basicNode -> addUserDefinedField (_accessType -> second,
 											                                   _fieldId,
