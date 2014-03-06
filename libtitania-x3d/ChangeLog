@@ -1,5 +1,12 @@
 2014-03-06  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Geospatial.h:
+	* Geospatial.cpp:
+	* X3DGeospatialObject.h:
+	* X3DGeospatialObject.cpp: 
+
+2014-03-06  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* Parser.cpp:

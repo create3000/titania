@@ -141,7 +141,7 @@ X3DGeospatialObject::getElevation (const Vector3d & point) const
 Vector3d
 X3DGeospatialObject::getUpVector (const Vector3d & point) const
 {
-	return normalize (point + origin);
+	return elevationFrame -> normal (point + origin);
 }
 
 Vector3d
@@ -163,18 +163,17 @@ X3DGeospatialObject::getLocationMatrix (const Vector3d & geoPoint) const
 	// up for that region of the planet's surface. This will be the
 	// value of the rotation matrix for the transform.
 
-	Vector3d y = p;
-	Vector3d x = cross (Vector3d (0, 0, 1), p);
+	const Vector3d y = elevationFrame -> normal (p);
+	Vector3d       x = cross (Vector3d (0, 0, 1), y);
 
 	// Handle poles
 
 	if (x == Vector3d ())
 		x = Vector3d (1, 0, 0);
 
-	Vector3d z = cross (x, p);
+	Vector3d z = cross (x, y);
 
 	x .normalize ();
-	y .normalize ();
 	z .normalize ();
 
 	return Matrix4d (x [0], x [1], x [2], 0,

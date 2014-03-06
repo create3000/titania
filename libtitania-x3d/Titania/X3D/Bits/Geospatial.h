@@ -55,6 +55,7 @@
 #include "../Types/Geometry.h"
 
 #include <Titania/Geospatial/BasicConverter.h>
+#include <Titania/Geospatial/Geodetic.h>
 #include <memory>
 
 namespace titania {
@@ -65,6 +66,7 @@ class Geospatial
 public:
 
 	using ReferenceFramePtr = std::shared_ptr <geospatial::basic_converter <double>> ;
+	using ElevationFramePtr = std::shared_ptr <geospatial::geodetic <double>> ;
 
 	enum class CoordinateSystemType
 	{
@@ -82,7 +84,7 @@ public:
 	getReferenceFrame (const MFString &);
 
 	static
-	ReferenceFramePtr
+	ElevationFramePtr
 	getElevationFrame (const MFString &);
 
 	static

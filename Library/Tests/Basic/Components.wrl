@@ -39,11 +39,19 @@ COMPONENT Time : 1
 
 META "title" "Components"
 
-DEF Cube Transform {
+Transform {
   children Shape {
     appearance Appearance {
       material Material { }
     }
-    geometry Box { }
+    geometry Text {
+      string "Components"
+      fontStyle FontStyle {
+        justify [
+          "MIDDLE",
+          "MIDDLE"
+        ]
+      }
+    }
   }
 }

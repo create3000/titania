@@ -17,9 +17,12 @@ Transform {
       material Material { }
     }
     geometry Text {
-      string "Unit statement"
+      string "UNIT statement"
       fontStyle FontStyle {
-        justify [ "MIDDLE", "MIDDLE" ]
+        justify [
+          "MIDDLE",
+          "MIDDLE"
+        ]
       }
     }
   }

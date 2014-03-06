@@ -1,23 +1,16 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Layering/X3DLayerNode.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Library/Tests/Basic/UNIT.wrl">
     <Files>
       <File FileName="experimental/main.cpp" Line="290" Column="39" />
-      <File FileName="libtitania-x3d/Titania/X3D/Bits/Geospatial.h" Line="87" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Bits/Geospatial.cpp" Line="146" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geospatial/X3DGeospatialObject.h" Line="109" Column="31" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geospatial/X3DGeospatialObject.cpp" Line="146" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geospatial/GeoViewpoint.h" Line="140" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geospatial/GeoViewpoint.cpp" Line="151" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/Viewpoint.h" Line="123" Column="17" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/Viewpoint.cpp" Line="57" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/X3DViewpointNode.h" Line="164" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/X3DViewpointNode.cpp" Line="282" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Viewer/X3DFlyViewer.cpp" Line="67" Column="36" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/X3DLayerNode.cpp" Line="210" Column="35" />
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderer.cpp" Line="298" Column="14" />
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/DepthBuffer.h" Line="68" Column="41" />
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/DepthBuffer.cpp" Line="96" Column="59" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="69" Column="1" />
+      <File FileName="Library/Tests/Basic/Components.wrl" Line="7" Column="1" />
+      <File FileName="Library/Tests/Scripting/Browser.wrl" Line="61" Column="4" />
+      <File FileName="Library/Tests/Basic/UNIT.wrl" Line="19" Column="20" />
+      <File FileName="libtitania-x3d/Titania/X3D/Configuration/Unit.h" Line="110" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Configuration/Unit.cpp" Line="96" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Prototype/Proto.cpp" Line="70" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Prototype/ExternProto.cpp" Line="79" Column="15" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -37,8 +30,9 @@
               </Node>
             </Node>
             <Node name="Tests" expanded="True">
-              <Node name="3rd Party" expanded="True" />
-              <Node name="Basic" expanded="True" />
+              <Node name="Basic" expanded="True">
+                <Node name="UNIT.wrl" selected="True" />
+              </Node>
               <Node name="Geometry3D" expanded="True" />
               <Node name="Geospatial" expanded="True" />
               <Node name="Navigation" expanded="True" />
@@ -50,6 +44,7 @@
           </Node>
           <Node name="libtitania-standard" expanded="True">
             <Node name="Titania" expanded="True">
+              <Node name="Basic" expanded="True" />
               <Node name="Geospatial" expanded="True" />
               <Node name="Math" expanded="True">
                 <Node name="Geometry" expanded="True" />
@@ -73,34 +68,20 @@
             </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
-                <Node name="Bits" expanded="True" />
-                <Node name="Browser" expanded="True">
-                  <Node name="Picking" expanded="True" />
-                  <Node name="Viewer" expanded="True" />
-                </Node>
+                <Node name="Base" expanded="True" />
+                <Node name="Browser" expanded="True" />
                 <Node name="Components" expanded="True">
                   <Node name="CADGeometry" expanded="True" />
+                  <Node name="Core" expanded="True" />
                   <Node name="EnvironmentalEffects" expanded="True" />
                   <Node name="EnvironmentalSensor" expanded="True" />
-                  <Node name="Geospatial" expanded="True" />
-                  <Node name="Layering" expanded="True">
-                    <Node name="X3DLayerNode.cpp" selected="True" />
-                  </Node>
-                  <Node name="Navigation" expanded="True" />
-                  <Node name="Shape" expanded="True" />
+                  <Node name="Networking" expanded="True" />
                 </Node>
+                <Node name="Configuration" expanded="True" />
                 <Node name="Execution" expanded="True" />
                 <Node name="Fields" expanded="True" />
-                <Node name="Handles" expanded="True" />
-                <Node name="InputOutput" expanded="True" />
-                <Node name="JavaScript" expanded="True">
-                  <Node name="SpiderMonkey" expanded="True">
-                    <Node name="Fields" expanded="True" />
-                  </Node>
-                </Node>
-                <Node name="Miscellaneous" expanded="True" />
-                <Node name="Rendering" expanded="True" />
-                <Node name="Types" expanded="True" />
+                <Node name="Parser" expanded="True" />
+                <Node name="Prototype" expanded="True" />
               </Node>
             </Node>
           </Node>
@@ -121,11 +102,12 @@
                 <Node name="pages" expanded="True">
                   <Node name="about" expanded="True" />
                 </Node>
+                <Node name="ui" expanded="True" />
               </Node>
             </Node>
             <Node name="Titania" expanded="True">
-              <Node name="Base" expanded="True" />
               <Node name="Browser" expanded="True" />
+              <Node name="OutlineEditor" expanded="True" />
             </Node>
           </Node>
         </State>

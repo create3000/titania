@@ -85,6 +85,10 @@ public:
 	vector3 <Type>
 	apply (const vector3 <Type> & geocentric) const final override;
 
+	virtual
+	vector3 <Type>
+	normal (const vector3 <Type> & geocentric) const;
+
 
 private:
 
@@ -100,11 +104,11 @@ private:
 
 template <class Type>
 vector3 <Type>
-geodetic <Type>::convert (const vector3 <Type> & geospatial) const
+geodetic <Type>::convert (const vector3 <Type> & geodetic) const
 {
-	Type       latitude  = geospatial .x ();
-	Type       longitude = geospatial .y ();
-	const Type elevation = geospatial .z ();
+	Type       latitude  = geodetic .x ();
+	Type       longitude = geodetic .y ();
+	const Type elevation = geodetic .z ();
 
 	if (longitude_first)
 		std::swap (latitude, longitude);
@@ -166,6 +170,27 @@ geodetic <Type>::apply (const vector3 <Type> & geocentric) const
 
 	// latitude, longitude, elevation
 	return vector3 <Type> (p, l, h);
+}
+
+template <class Type>
+vector3 <Type>
+geodetic <Type>::normal (const vector3 <Type> & geocentric) const
+{
+	const vector3 <Type> geodetic = apply (geocentric);
+
+	Type latitude  = geodetic .x ();
+	Type longitude = geodetic .y ();
+
+	if (longitude_first)
+		std::swap (latitude, longitude);
+
+	const Type clat = std::cos (latitude);
+
+	const Type nx = std::cos (longitude) * clat;
+	const Type ny = std::sin (longitude) * clat;
+	const Type nz = std::sin (latitude);
+
+	return vector3 <Type> (nx, ny, nz);
 }
 
 extern template class geodetic <float>;

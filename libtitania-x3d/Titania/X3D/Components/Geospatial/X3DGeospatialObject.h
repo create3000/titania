@@ -154,7 +154,7 @@ private:
 
 	Geospatial::CoordinateSystemType coordinateSystem;
 	Geospatial::ReferenceFramePtr    referenceFrame;
-	Geospatial::ReferenceFramePtr    elevationFrame;
+	Geospatial::ElevationFramePtr    elevationFrame;
 	bool                             reversedOrder;
 	X3DSFNode <GeoOrigin>            geoOriginNode;
 	Vector3d                         origin;
