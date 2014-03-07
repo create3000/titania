@@ -176,6 +176,9 @@ protected:
 	///  @name Event handlers
 
 	void
+	set_attrib ();
+
+	void
 	set_color ();
 
 	void
@@ -188,6 +191,10 @@ protected:
 	set_coord ();
 
 	///  @name Member access
+
+	const X3DMFNode <X3DVertexAttributeNode> &
+	getAttrib () const
+	{ return attribNodes; }
 
 	const X3DSFNode <X3DColorNode> &
 	getColor () const
@@ -249,6 +256,7 @@ private:
 
 	Fields fields;
 
+	X3DMFNode <X3DVertexAttributeNode>   attribNodes;
 	X3DSFNode <X3DColorNode>             colorNode;
 	X3DSFNode <X3DTextureCoordinateNode> texCoordNode;
 	X3DSFNode <X3DNormalNode>            normalNode;

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -62,6 +62,8 @@
 
 namespace titania {
 namespace X3D {
+
+class X3DVertexAttributeNode;
 
 class X3DGeometryNode :
 	virtual public X3DNode
@@ -122,6 +124,12 @@ public:
 	void
 	draw (const bool, const bool, const bool);
 
+	///  @name Destruction
+	
+	virtual
+	void
+	dispose () override;
+
 
 protected:
 
@@ -132,6 +140,9 @@ protected:
 	X3DGeometryNode ();
 
 	///  @name Member access
+
+	void
+	setAttribs (const X3DMFNode <X3DVertexAttributeNode> &, const std::vector <std::vector <float>>  &);
 
 	std::vector <Color4f> &
 	getColors ()
@@ -219,7 +230,7 @@ private:
 	///  @name Operations
 
 	bool
-	intersect (const Line3f &, size_t, size_t, size_t, const Matrix4f &, std::vector <IntersectionPtr> &) const;
+	intersect (const Line3f &, size_t, size_t, size_t, const Matrix4f &, std::vector <IntersectionPtr>&) const;
 
 	bool
 	isClipped (const Vector3f &, const Matrix4f &) const;
@@ -228,7 +239,7 @@ private:
 	isClipped (const Vector3f &, const Matrix4f &, const CollectableObjectArray &) const;
 
 	void
-	triangulate (size_t, size_t, size_t, std::vector <Color4f> &, TexCoordArray &, std::vector <Vector3f> &, std::vector <Vector3f> &) const;
+	triangulate (size_t, size_t, size_t, std::vector <Color4f>&, TexCoordArray &, std::vector <Vector3f>&, std::vector <Vector3f>&) const;
 
 	void
 	clear ();
@@ -239,15 +250,17 @@ private:
 
 	///  @name Members
 
-	Box3f                     bbox;
-	std::vector <Color4f>     colors;
-	X3DTextureCoordinateNode* texCoordNode;
-	TexCoordArray             texCoords;
-	std::vector <Vector3f>    normals;
-	std::vector <Vector3f>    vertices;
-	bool                      solid;
-	GLenum                    frontFace;
-	std::vector <Element>     elements;
+	Box3f                                 bbox;
+	std::vector <X3DVertexAttributeNode*> attribNodes;
+	std::vector <GLuint>                  attribBuffers;
+	std::vector <Color4f>                 colors;
+	X3DTextureCoordinateNode*             texCoordNode;
+	TexCoordArray                         texCoords;
+	std::vector <Vector3f>                normals;
+	std::vector <Vector3f>                vertices;
+	bool                                  solid;
+	GLenum                                frontFace;
+	std::vector <Element>                 elements;
 
 };
 

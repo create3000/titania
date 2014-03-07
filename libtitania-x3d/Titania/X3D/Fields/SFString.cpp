@@ -97,6 +97,12 @@ SFString::str () const
 	return getValue () .raw ();
 }
 
+const SFString::char_type*
+SFString::c_str () const
+{
+	return getValue () .c_str ();
+}
+
 bool
 SFString::empty () const
 {

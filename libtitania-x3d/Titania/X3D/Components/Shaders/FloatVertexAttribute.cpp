@@ -81,5 +81,46 @@ FloatVertexAttribute::create (X3DExecutionContext* const executionContext) const
 	return new FloatVertexAttribute (executionContext);
 }
 
+void
+FloatVertexAttribute::addValue (std::vector <float> & values, const size_t index) const
+{
+	const size_t size  = clamp <int32_t> (numComponents (), 1, 4);
+	const size_t first = index * size;
+	const size_t last  = first + size;
+
+	if (last <= value () .size ())
+	{
+		for (size_t i = first; i < last; ++ i)
+			values .emplace_back (value () [i]);
+	}
+	else
+		values .resize (values .size () + size);
+}
+
+void
+FloatVertexAttribute::enable (const GLint program, const GLuint buffer) const
+{
+	const GLint location = glGetAttribLocation (program, name () .c_str ());
+
+	if (location == -1)
+		return;
+
+	glEnableVertexAttribArray (location);
+
+	glBindBuffer (GL_ARRAY_BUFFER, buffer);
+	glVertexAttribPointer (location, clamp <int32_t> (numComponents (), 1, 4), GL_FLOAT, false, 0, (void*) 0);
+}
+
+void
+FloatVertexAttribute::disable (const GLint program) const
+{
+	const GLint location = glGetAttribLocation (program, name () .c_str ());
+
+	if (location == -1)
+		return;
+
+	glDisableVertexAttribArray (location);
+}
+
 } // X3D
 } // titania

@@ -166,6 +166,10 @@ IndexedFaceSet::build ()
 	if (not getCoord () or polygons .empty ())
 		return;
 
+	// Vertex attribute
+
+	std::vector <std::vector <float>> attribArrays (getAttrib () .size ());
+
 	// Color
 
 	if (getColor ())
@@ -210,6 +214,11 @@ IndexedFaceSet::build ()
 
 			for (const auto & i : element)
 			{
+				const size_t index = coordIndex () [i];
+
+				for (size_t a = 0, size = getAttrib () .size (); a < size; ++ a)
+					getAttrib () [a] -> addValue (attribArrays [a], index);
+
 				if (getTexCoord ())
 					getTexCoord () -> addTexCoord (getTexCoords (), getTexCoordIndex (i));
 
@@ -231,7 +240,7 @@ IndexedFaceSet::build ()
 						getNormal () -> addVector (getNormals (), getNormalIndex (face));
 				}
 
-				getCoord () -> addVertex (getVertices (), coordIndex () [i]);
+				getCoord () -> addVertex (getVertices (), index);
 			}
 		}
 
@@ -247,6 +256,7 @@ IndexedFaceSet::build ()
 
 	setSolid (solid ());
 	setCCW (ccw ());
+	setAttribs (getAttrib (), attribArrays);
 	setTextureCoordinate (getTexCoord ());
 }
 

@@ -321,7 +321,7 @@ RenderingProperties::build ()
 			std::ostringstream stringstream;
 
 			string -> emplace_back ("Current Graphics Renderer");
-			string -> emplace_back (basic::sprintf ("  Name: %s", renderer () .getValue () .c_str ()));
+			string -> emplace_back (basic::sprintf ("  Name: %s", renderer () .c_str ()));
 			string -> emplace_back ();
 			string -> emplace_back ("Rendering properties");
 			string -> emplace_back (basic::sprintf ("Max threads:               %d", maxThreads () .getValue ()));

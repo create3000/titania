@@ -79,5 +79,44 @@ Matrix4VertexAttribute::create (X3DExecutionContext* const executionContext) con
 	return new Matrix4VertexAttribute (executionContext);
 }
 
+void
+Matrix4VertexAttribute::addValue (std::vector <float> & values, const size_t index) const
+{
+	if (index < value () .size ())
+	{
+		for (size_t i = 0; i < 16; ++ i)
+			values .emplace_back (value () [index] .get1Value (i));
+	}
+	else
+		values .resize (value () .size () + 16);
+}
+
+void
+Matrix4VertexAttribute::enable (const GLint program, const GLuint buffer) const
+{
+//	glBindBuffer (GL_ARRAY_BUFFER, buffer);
+//
+//	glEnableVertexAttribArray (i + 0);
+//	glEnableVertexAttribArray (i + 1);
+//	glEnableVertexAttribArray (i + 2);
+//	glEnableVertexAttribArray (i + 3);
+//
+//	glVertexAttribPointer (i + 0, 4, GL_FLOAT, false, sizeof (float) * 16, (void*) (sizeof (float) * 0));
+//	glVertexAttribPointer (i + 1, 4, GL_FLOAT, false, sizeof (float) * 16, (void*) (sizeof (float) * 4));
+//	glVertexAttribPointer (i + 2, 4, GL_FLOAT, false, sizeof (float) * 16, (void*) (sizeof (float) * 8));
+//	glVertexAttribPointer (i + 3, 4, GL_FLOAT, false, sizeof (float) * 16, (void*) (sizeof (float) * 12));
+//
+//	glBindBuffer (GL_ARRAY_BUFFER, 0);
+}
+
+void
+Matrix4VertexAttribute::disable (const GLint program) const
+{
+//	glDisableVertexAttribArray (i ++);
+//	glDisableVertexAttribArray (i ++);
+//	glDisableVertexAttribArray (i ++);
+//	glDisableVertexAttribArray (i ++);
+}
+
 } // X3D
 } // titania

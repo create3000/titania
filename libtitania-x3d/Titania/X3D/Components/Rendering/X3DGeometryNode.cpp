@@ -52,6 +52,7 @@
 
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Shaders/X3DVertexAttributeNode.h"
 
 #include <cassert>
 
@@ -59,16 +60,18 @@ namespace titania {
 namespace X3D {
 
 X3DGeometryNode::X3DGeometryNode () :
-	     X3DNode (),
-	        bbox (),
-	      colors (),
-	texCoordNode (nullptr),
-	   texCoords (),
-	     normals (),
-	    vertices (),
-	       solid (true),
-	   frontFace (GL_CCW),
-	    elements ()
+	      X3DNode (),
+	         bbox (),
+	  attribNodes (),
+	attribBuffers (),
+	       colors (),
+	 texCoordNode (nullptr),
+	    texCoords (),
+	      normals (),
+	     vertices (),
+	        solid (true),
+	    frontFace (GL_CCW),
+	     elements ()
 {
 	addNodeType (X3DConstants::X3DGeometryNode);
 }
@@ -92,6 +95,28 @@ Box3f
 X3DGeometryNode::createBBox ()
 {
 	return Box3f (vertices .begin (), vertices .end (), math::iterator_type ());
+}
+
+void
+X3DGeometryNode::setAttribs (const X3DMFNode <X3DVertexAttributeNode> & nodes, const std::vector <std::vector <float>>   & attribs)
+{
+	if (attribs .empty ())
+		return;
+
+	const size_t numAttribs = nodes .size ();
+
+	attribNodes .assign (nodes .begin (), nodes .end ());
+	attribBuffers .resize (numAttribs);
+
+	glGenBuffers (numAttribs, attribBuffers .data ());
+
+	for (size_t i = 0; i < numAttribs; ++ i)
+	{
+		glBindBuffer (GL_ARRAY_BUFFER, attribBuffers [i]);
+		glBufferData (GL_ARRAY_BUFFER, sizeof (float) * attribs [i] .size (), attribs [i] .data (), GL_STATIC_COPY);
+	}
+
+	glBindBuffer (GL_ARRAY_BUFFER, 0);
 }
 
 void
@@ -586,6 +611,14 @@ X3DGeometryNode::update ()
 void
 X3DGeometryNode::clear ()
 {
+	if (not attribBuffers .empty ())
+	{
+		glDeleteBuffers (attribBuffers .size (), attribBuffers .data ()); // See dispose.
+
+		attribNodes .clear ();
+		attribBuffers .clear ();
+	}
+
 	colors    .clear ();
 	texCoordNode = nullptr;
 	texCoords .clear ();
@@ -610,6 +643,21 @@ X3DGeometryNode::draw (const bool solid, const bool texture, const bool lighting
 		glDisable (GL_CULL_FACE);
 
 	glFrontFace (ModelViewMatrix4f () .determinant3 () > 0 ? frontFace : (frontFace == GL_CCW ? GL_CW : GL_CCW));
+
+	if (not attribNodes .empty ())
+	{
+		GLint program = 0;
+
+		glGetIntegerv (GL_CURRENT_PROGRAM, &program);
+
+		if (program)
+		{
+			for (size_t i = 0, size = attribNodes .size (); i < size; ++ i)
+				attribNodes [i] -> enable (program, attribBuffers [i]);
+
+			glBindBuffer (GL_ARRAY_BUFFER, 0);
+		}
+	}
 
 	if (not colors .empty ())
 	{
@@ -646,6 +694,21 @@ X3DGeometryNode::draw (const bool solid, const bool texture, const bool lighting
 		first += element .count;
 	}
 
+	// VertexAttribs
+
+	if (not attribNodes .empty ())
+	{
+		GLint program = 0;
+
+		glGetIntegerv (GL_CURRENT_PROGRAM, &program);
+
+		if (program)
+		{
+			for (size_t i = 0, size = attribNodes .size (); i < size; ++ i)
+				attribNodes [i] -> disable (program);
+		}
+	}
+
 	// Texture
 
 	if (texture)
@@ -659,6 +722,15 @@ X3DGeometryNode::draw (const bool solid, const bool texture, const bool lighting
 	glDisableClientState (GL_COLOR_ARRAY);
 	glDisableClientState (GL_NORMAL_ARRAY);
 	glDisableClientState (GL_VERTEX_ARRAY);
+}
+
+void
+X3DGeometryNode::dispose ()
+{
+	if (not attribBuffers .empty ())
+		glDeleteBuffers (attribBuffers .size (), attribBuffers .data ()); // See clear.
+
+	X3DNode::dispose ();
 }
 
 } // X3D

@@ -1370,7 +1370,7 @@ ParticleSystem::drawGeometry ()
 		}
 		case GeometryType::GEOMETRY:
 		{
-			auto geometryNode = x3d_cast <X3DGeometryNode*> (geometry ());
+			const auto geometryNode = x3d_cast <X3DGeometryNode*> (geometry ());
 
 			if (geometryNode)
 			{
@@ -1380,7 +1380,7 @@ ParticleSystem::drawGeometry ()
 				// Copy positions
 
 				glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [readBuffer]);
-				auto particles = static_cast <const Particle*> (glMapBufferRange (GL_ARRAY_BUFFER, 0, sizeof (Particle) * numParticles, GL_MAP_READ_BIT));
+				const auto particles = static_cast <const Particle*> (glMapBufferRange (GL_ARRAY_BUFFER, 0, sizeof (Particle) * numParticles, GL_MAP_READ_BIT));
 
 				for (const auto & particle : basic::adapter (particles, particles + numParticles))
 					positions .emplace_back (particle .position);

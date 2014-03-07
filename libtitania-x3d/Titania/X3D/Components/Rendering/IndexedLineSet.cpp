@@ -263,6 +263,9 @@ IndexedLineSet::build ()
 			{
 				const auto i = polyline [index];
 
+//				for (size_t a = 0, size = getVertexAttrib () .size (); a < size; ++ a)
+//					getVertexAttrib () [a] -> addValue (getVertexAttribs () [a], coordIndex () [i]);
+
 				if (colorNode)
 				{
 					if (colorPerVertex ())

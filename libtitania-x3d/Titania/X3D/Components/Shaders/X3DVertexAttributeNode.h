@@ -61,6 +61,8 @@ class X3DVertexAttributeNode :
 {
 public:
 
+	///  @name Fields
+
 	SFString &
 	name ()
 	{ return *fields .name; }
@@ -69,13 +71,31 @@ public:
 	name () const
 	{ return *fields .name; }
 
+	///  @name Operations
+
+	virtual
+	void
+	addValue (std::vector <float> &, const size_t) const = 0;
+
+	virtual
+	void
+	enable (const GLint, const GLuint) const = 0;
+
+	virtual
+	void
+	disable (const GLint) const = 0;
+
 
 protected:
+
+	///  @name Construction
 
 	X3DVertexAttributeNode ();
 
 
 private:
+
+	///  @name Members
 
 	struct Fields
 	{

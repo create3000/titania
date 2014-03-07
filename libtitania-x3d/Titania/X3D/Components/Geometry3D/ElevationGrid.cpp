@@ -354,6 +354,9 @@ ElevationGrid::build ()
 		{
 			const size_t i = *index;
 
+//			for (size_t a = 0, size = getVertexAttrib () .size (); a < size; ++ a)
+//				getVertexAttrib () [a] -> addValue (getVertexAttribs () [a], i);
+
 			if (texCoordNode)
 				texCoordNode -> addTexCoord (getTexCoords (), i);
 

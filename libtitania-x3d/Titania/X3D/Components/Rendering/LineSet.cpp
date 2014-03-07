@@ -164,6 +164,9 @@ LineSet::build ()
 		{
 			for (size_t i = 0; i < (size_t) count; ++ i, ++ index)
 			{
+//				for (size_t a = 0, size = getVertexAttrib () .size (); a < size; ++ a)
+//					getVertexAttrib () [a] -> addValue (getVertexAttribs () [a], index);
+
 				if (colorNode)
 					colorNode -> addColor (getColors (), index);
 

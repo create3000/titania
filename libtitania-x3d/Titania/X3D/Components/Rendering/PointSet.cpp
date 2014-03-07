@@ -137,6 +137,12 @@ PointSet::build ()
 	if (not coordNode)
 		return;
 
+//	for (size_t a = 0, size = getVertexAttrib () .size (); a < size; ++ a)
+//	{
+//		for (size_t i = 0, size = coordNode -> getSize (); i < size; ++ i)
+//			getVertexAttrib () [a] -> addValue (getVertexAttribs () [a], i);
+//	}
+
 	if (colorNode)
 	{
 		getColors () .reserve (coordNode -> getSize ());

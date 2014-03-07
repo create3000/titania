@@ -51,6 +51,7 @@
 #include "X3DComposedGeometryNode.h"
 
 #include "../../Bits/Cast.h"
+#include "../Shaders/X3DVertexAttributeNode.h"
 
 namespace titania {
 namespace X3D {
@@ -71,6 +72,7 @@ X3DComposedGeometryNode::Fields::Fields () :
 X3DComposedGeometryNode::X3DComposedGeometryNode () :
 	X3DGeometryNode (),
 	         fields (),
+	    attribNodes (),
 	      colorNode (),
 	   texCoordNode (),
 	     normalNode (),
@@ -79,7 +81,8 @@ X3DComposedGeometryNode::X3DComposedGeometryNode () :
 {
 	addNodeType (X3DConstants::X3DComposedGeometryNode);
 
-	addChildren (colorNode,
+	addChildren (attribNodes,
+	             colorNode,
 	             texCoordNode,
 	             normalNode,
 	             coordNode);
@@ -90,15 +93,39 @@ X3DComposedGeometryNode::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
+	attrib ()   .addInterest (this, &X3DComposedGeometryNode::set_attrib);
 	color ()    .addInterest (this, &X3DComposedGeometryNode::set_color);
 	texCoord () .addInterest (this, &X3DComposedGeometryNode::set_texCoord);
 	normal ()   .addInterest (this, &X3DComposedGeometryNode::set_normal);
 	coord ()    .addInterest (this, &X3DComposedGeometryNode::set_coord);
-	
+
+	set_attrib ();
 	set_color ();
 	set_texCoord ();
 	set_normal ();
 	set_coord ();
+}
+
+void
+X3DComposedGeometryNode::set_attrib ()
+{
+	for (const auto & node : attribNodes)
+		node -> removeInterest (this);
+
+	std::vector <X3DVertexAttributeNode*> value;
+
+	for (const auto & node : attrib ())
+	{
+		const auto attribNode = x3d_cast <X3DVertexAttributeNode*> (node);
+		
+		if (attribNode)
+			value .emplace_back (attribNode);
+	}
+
+	attribNodes .set (value .begin (), value .end ());
+
+	for (const auto & node : attribNodes)
+		node -> addInterest (this);
 }
 
 void
@@ -198,6 +225,9 @@ X3DComposedGeometryNode::buildPolygons (const size_t vertexCount, size_t size)
 		{
 			const size_t index = getIndex (i);
 
+			//			for (size_t a = 0, size = getVertexAttrib () .size (); a < size; ++ a)
+			//				getVertexAttrib () [a] -> addValue (getVertexAttribs () [a], index);
+
 			if (colorNode)
 			{
 				if (colorPerVertex ())
@@ -275,6 +305,7 @@ X3DComposedGeometryNode::buildFaceNormals (const size_t vertexCount, const size_
 void
 X3DComposedGeometryNode::dispose ()
 {
+	attribNodes  .dispose ();
 	colorNode    .dispose ();
 	texCoordNode .dispose ();
 	normalNode   .dispose ();

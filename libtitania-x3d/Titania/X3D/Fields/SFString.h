@@ -114,6 +114,9 @@ public:
 	const std::string &
 	str () const;
 
+	const char_type*
+	c_str () const;
+
 	bool
 	empty () const;
 

@@ -103,9 +103,22 @@ public:
 	value () const
 	{ return *fields .value; }
 
+	///  @name Operations
+
+	virtual
+	void
+	addValue (std::vector <float> &, const size_t) const final override;
+
+	virtual
+	void
+	enable (const GLint, const GLuint) const final override;
+
+	virtual
+	void
+	disable (const GLint) const final override;
+
 
 private:
-
 
 	///  @name Static members
 
