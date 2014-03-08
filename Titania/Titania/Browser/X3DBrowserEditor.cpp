@@ -201,8 +201,7 @@ X3DBrowserEditor::isSaved ()
 
 	if (isModified ())
 	{
-		getBrowserWindow () -> getKeys () .control (false);
-		getBrowserWindow () -> getKeys () .shift (false);
+		getBrowserWindow () -> getKeys () .clear ();
 
 		const auto response_id = getFileSaveWarningDialog () .run ();
 

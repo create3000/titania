@@ -311,8 +311,7 @@ BrowserWindow::on_open ()
 {
 	if (isSaved ())
 	{
-		getKeys () .control (false);
-		getKeys () .shift (false);
+		getKeys () .clear ();
 
 		updateWidget ("FileOpenDialog");
 		const auto fileOpenDialog = getWidget <Gtk::FileChooserDialog> ("FileOpenDialog");
@@ -344,8 +343,7 @@ BrowserWindow::on_open_location ()
 {
 	if (isSaved ())
 	{
-		getKeys () .control (false);
-		getKeys () .shift (false);
+		getKeys () .clear ();
 
 		const Glib::RefPtr <Gtk::Clipboard> clipboard = Gtk::Clipboard::get ();
 
@@ -385,8 +383,7 @@ BrowserWindow::on_toolbar_drag_data_received (const Glib::RefPtr <Gdk::DragConte
 void
 BrowserWindow::on_import ()
 {
-	getKeys () .control (false);
-	getKeys () .shift (false);
+	getKeys () .clear ();
 
 	updateWidget ("FileImportDialog");
 
@@ -500,8 +497,7 @@ BrowserWindow::dragDataHandling (const Glib::RefPtr <Gdk::DragContext> & context
 void
 BrowserWindow::on_save ()
 {
-	getKeys () .control (false);
-	getKeys () .shift (false);
+	getKeys () .clear ();
 
 	const basic::uri worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
 
@@ -515,8 +511,7 @@ BrowserWindow::on_save ()
 void
 BrowserWindow::on_save_as ()
 {
-	getKeys () .control (false);
-	getKeys () .shift (false);
+	getKeys () .clear ();
 
 	updateWidget ("FileSaveDialog");
 

@@ -169,5 +169,13 @@ Keys::restore_alt ()
 	m_alt = m_saved_alt;
 }
 
+void
+Keys::clear ()
+{
+	shift (false);
+	control (false);
+	alt (false);
+}
+
 } // X3D
 } // titania/

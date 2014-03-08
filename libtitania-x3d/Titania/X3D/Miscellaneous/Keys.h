@@ -95,6 +95,9 @@ public:
 	void
 	restore_alt ();
 
+	void
+	clear ();
+
 	static constexpr int Shift_R   = 1;
 	static constexpr int Shift_L   = 2;
 	static constexpr int Control_R = 1;
