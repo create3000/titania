@@ -182,8 +182,11 @@ private:
 	virtual
 	void
 	initialize () final override;
-	
+
 	///  @name Event handler
+
+	void
+	set_attrib ();
 
 	void
 	set_color ();
@@ -233,9 +236,10 @@ private:
 
 	Fields fields;
 
-	X3DSFNode <X3DColorNode>      colorNode;
-	X3DSFNode <X3DCoordinateNode> coordNode;
-	bool                          transparent;
+	X3DMFNode <X3DVertexAttributeNode> attribNodes;
+	X3DSFNode <X3DColorNode>           colorNode;
+	X3DSFNode <X3DCoordinateNode>      coordNode;
+	bool                               transparent;
 
 };
 

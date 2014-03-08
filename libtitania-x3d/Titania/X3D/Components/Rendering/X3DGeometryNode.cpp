@@ -52,7 +52,6 @@
 
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "../Shaders/X3DVertexAttributeNode.h"
 
 #include <cassert>
 

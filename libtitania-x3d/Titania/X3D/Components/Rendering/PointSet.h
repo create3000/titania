@@ -100,6 +100,14 @@ public:
 	{ return *fields .attrib; }
 
 	SFNode &
+	fogCoord ()
+	{ return *fields .fogCoord; }
+
+	const SFNode &
+	fogCoord () const
+	{ return *fields .fogCoord; }
+
+	SFNode &
 	color ()
 	{ return *fields .color; }
 
@@ -114,14 +122,6 @@ public:
 	const SFNode &
 	coord () const
 	{ return *fields .coord; }
-
-	SFNode &
-	fogCoord ()
-	{ return *fields .fogCoord; }
-
-	const SFNode &
-	fogCoord () const
-	{ return *fields .fogCoord; }
 
 	///  @name Test
 
@@ -159,6 +159,9 @@ private:
 	///  @name Event handler
 
 	void
+	set_attrib ();
+
+	void
 	set_color ();
 
 	void
@@ -183,16 +186,17 @@ private:
 		Fields ();
 
 		MFNode* const attrib;
+		SFNode* const fogCoord;
 		SFNode* const color;
 		SFNode* const coord;
-		SFNode* const fogCoord;
 	};
 
 	Fields fields;
 
-	X3DSFNode <X3DColorNode>      colorNode;
-	X3DSFNode <X3DCoordinateNode> coordNode;
-	bool                          transparent;
+	X3DMFNode <X3DVertexAttributeNode> attribNodes;
+	X3DSFNode <X3DColorNode>           colorNode;
+	X3DSFNode <X3DCoordinateNode>      coordNode;
+	bool                               transparent;
 
 };
 

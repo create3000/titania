@@ -170,6 +170,9 @@ IndexedFaceSet::build ()
 
 	std::vector <std::vector <float>> attribArrays (getAttrib () .size ());
 
+	for (size_t a = 0, size = getAttrib () .size (); a < size; ++ a)
+		attribArrays [a] .reserve (reserve);
+
 	// Color
 
 	if (getColor ())

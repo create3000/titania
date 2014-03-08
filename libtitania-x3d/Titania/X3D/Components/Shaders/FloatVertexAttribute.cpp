@@ -82,7 +82,7 @@ FloatVertexAttribute::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-FloatVertexAttribute::addValue (std::vector <float> & values, const size_t index) const
+FloatVertexAttribute::addValue (std::vector <float> & array, const size_t index) const
 {
 	const size_t size  = clamp <int32_t> (numComponents (), 1, 4);
 	const size_t first = index * size;
@@ -91,10 +91,10 @@ FloatVertexAttribute::addValue (std::vector <float> & values, const size_t index
 	if (last <= value () .size ())
 	{
 		for (size_t i = first; i < last; ++ i)
-			values .emplace_back (value () [i]);
+			array .emplace_back (value () [i]);
 	}
 	else
-		values .resize (values .size () + size);
+		array .resize (array .size () + size);
 }
 
 void

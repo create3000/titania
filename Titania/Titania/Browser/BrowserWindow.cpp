@@ -491,7 +491,7 @@ BrowserWindow::dragDataHandling (const Glib::RefPtr <Gdk::DragContext> & context
 void
 BrowserWindow::on_save ()
 {
-	basic::uri worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
+	const basic::uri worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
 
 	if (worldURL .empty () or worldURL .is_network ())
 		on_save_as ();

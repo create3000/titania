@@ -74,7 +74,7 @@ public:
 
 	virtual
 	void
-	save (const basic::uri &, bool);
+	save (const basic::uri &, const bool);
 
 	void
 	reload ();
@@ -100,10 +100,10 @@ protected:
 	saveSession () override;
 
 	void
-	updateTitle (bool) const;
+	updateTitle (const bool) const;
 
 	void
-	setTransparent (bool);
+	setTransparent (const bool);
 
 
 private:

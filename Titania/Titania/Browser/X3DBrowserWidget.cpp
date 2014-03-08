@@ -232,7 +232,7 @@ X3DBrowserWidget::saveSession ()
 }
 
 void
-X3DBrowserWidget::updateTitle (bool edited) const
+X3DBrowserWidget::updateTitle (const bool edited) const
 {
 	getWindow () .set_title (getBrowser () -> getExecutionContext () -> getTitle ()
 	                         + " · "                        
@@ -262,7 +262,7 @@ X3DBrowserWidget::open (const basic::uri & worldURL)
 }
 
 void
-X3DBrowserWidget::save (const basic::uri & worldURL, bool compressed)
+X3DBrowserWidget::save (const basic::uri & worldURL, const bool compressed)
 {
 	getBrowser () -> getExecutionContext () -> setWorldURL (worldURL);
 	getBrowser () -> getExecutionContext () -> isCompressed (compressed);
@@ -405,7 +405,7 @@ X3DBrowserWidget::loadIcon ()
 }
 
 void
-X3DBrowserWidget::setTransparent (bool value)
+X3DBrowserWidget::setTransparent (const bool value)
 {
 	if (value)
 	{

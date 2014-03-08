@@ -199,6 +199,13 @@ X3DComposedGeometryNode::buildPolygons (const size_t vertexCount, size_t size)
 
 	size -= size % vertexCount;
 
+	// Vertex attribute
+
+	std::vector <std::vector <float>> attribArrays (getAttrib () .size ());
+
+	for (size_t a = 0, size = getAttrib () .size (); a < size; ++ a)
+		attribArrays [a] .reserve (size);
+
 	// Color
 
 	if (colorNode)
@@ -225,8 +232,8 @@ X3DComposedGeometryNode::buildPolygons (const size_t vertexCount, size_t size)
 		{
 			const size_t index = getIndex (i);
 
-			//			for (size_t a = 0, size = getVertexAttrib () .size (); a < size; ++ a)
-			//				getVertexAttrib () [a] -> addValue (getVertexAttribs () [a], index);
+			for (size_t a = 0, size = getAttrib () .size (); a < size; ++ a)
+				getAttrib () [a] -> addValue (attribArrays [a], index);
 
 			if (colorNode)
 			{
@@ -261,6 +268,7 @@ X3DComposedGeometryNode::buildPolygons (const size_t vertexCount, size_t size)
 	addElements (getVertexMode (vertexCount), getVertices () .size ());
 	setSolid (solid ());
 	setCCW (ccw ());
+	setAttribs (getAttrib (), attribArrays);
 	setTextureCoordinate (texCoordNode);
 }
 

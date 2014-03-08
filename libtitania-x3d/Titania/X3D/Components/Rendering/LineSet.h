@@ -167,6 +167,9 @@ private:
 	///  @name Event handler
 
 	void
+	set_attrib ();
+
+	void
 	set_color ();
 
 	void
@@ -203,9 +206,10 @@ private:
 
 	Fields fields;
 
-	X3DSFNode <X3DColorNode>      colorNode;
-	X3DSFNode <X3DCoordinateNode> coordNode;
-	bool                          transparent;
+	X3DMFNode <X3DVertexAttributeNode> attribNodes;
+	X3DSFNode <X3DColorNode>           colorNode;
+	X3DSFNode <X3DCoordinateNode>      coordNode;
+	bool                               transparent;
 
 };
 

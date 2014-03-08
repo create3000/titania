@@ -74,6 +74,7 @@ IndexedLineSet::IndexedLineSet (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DGeometryNode (),
 	         fields (),
+	    attribNodes (),
 	      colorNode (),
 	      coordNode (),
 	    transparent (false)
@@ -87,7 +88,8 @@ IndexedLineSet::IndexedLineSet (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "color",          color ());
 	addField (inputOutput,    "coord",          coord ());
 
-	addChildren (colorNode,
+	addChildren (attribNodes,
+	             colorNode,
 	             coordNode);
 }
 
@@ -102,11 +104,35 @@ IndexedLineSet::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	color () .addInterest (this, &IndexedLineSet::set_color);
-	coord () .addInterest (this, &IndexedLineSet::set_coord);
+	attrib () .addInterest (this, &IndexedLineSet::set_attrib);
+	color ()  .addInterest (this, &IndexedLineSet::set_color);
+	coord ()  .addInterest (this, &IndexedLineSet::set_coord);
 
+	set_attrib ();
 	set_color ();
 	set_coord ();
+}
+
+void
+IndexedLineSet::set_attrib ()
+{
+	for (const auto & node : attribNodes)
+		node -> removeInterest (this);
+
+	std::vector <X3DVertexAttributeNode*> value;
+
+	for (const auto & node : attrib ())
+	{
+		const auto attribNode = x3d_cast <X3DVertexAttributeNode*> (node);
+		
+		if (attribNode)
+			value .emplace_back (attribNode);
+	}
+
+	attribNodes .set (value .begin (), value .end ());
+
+	for (const auto & node : attribNodes)
+		node -> addInterest (this);
 }
 
 void
@@ -249,6 +275,8 @@ IndexedLineSet::build ()
 
 	const auto polylines = getPolylineIndices ();
 
+	std::vector <std::vector <float>> attribArrays (attribNodes .size ());
+
 	// Fill GeometryNode
 
 	int face = 0;
@@ -263,8 +291,8 @@ IndexedLineSet::build ()
 			{
 				const auto i = polyline [index];
 
-//				for (size_t a = 0, size = getVertexAttrib () .size (); a < size; ++ a)
-//					getVertexAttrib () [a] -> addValue (getVertexAttribs () [a], coordIndex () [i]);
+				for (size_t a = 0, size = attribNodes .size (); a < size; ++ a)
+					attribNodes [a] -> addValue (attribArrays [a], coordIndex () [i]);
 
 				if (colorNode)
 				{
@@ -284,6 +312,7 @@ IndexedLineSet::build ()
 
 	addElements (GL_LINES, getVertices () .size ());
 	setSolid (false);
+	setAttribs (attribNodes, attribArrays);
 }
 
 void
@@ -296,8 +325,9 @@ IndexedLineSet::draw ()
 void
 IndexedLineSet::dispose ()
 {
-	colorNode .dispose ();
-	coordNode .dispose ();
+	attribNodes .dispose ();
+	colorNode   .dispose ();
+	coordNode   .dispose ();
 
 	X3DGeometryNode::dispose ();
 }

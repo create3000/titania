@@ -80,42 +80,55 @@ Matrix4VertexAttribute::create (X3DExecutionContext* const executionContext) con
 }
 
 void
-Matrix4VertexAttribute::addValue (std::vector <float> & values, const size_t index) const
+Matrix4VertexAttribute::addValue (std::vector <float> & array, const size_t index) const
 {
 	if (index < value () .size ())
 	{
-		for (size_t i = 0; i < 16; ++ i)
-			values .emplace_back (value () [index] .get1Value (i));
+		const Matrix4f & mat4 = value () [index];
+
+		array .insert (array .end (), mat4 .data (), mat4 .data () + mat4 .size ());
 	}
 	else
-		values .resize (value () .size () + 16);
+	{
+		static const Matrix4f mat4;
+
+		array .insert (array .end (), mat4 .data (), mat4 .data () + mat4 .size ());
+	}
 }
 
 void
 Matrix4VertexAttribute::enable (const GLint program, const GLuint buffer) const
 {
-//	glBindBuffer (GL_ARRAY_BUFFER, buffer);
-//
-//	glEnableVertexAttribArray (i + 0);
-//	glEnableVertexAttribArray (i + 1);
-//	glEnableVertexAttribArray (i + 2);
-//	glEnableVertexAttribArray (i + 3);
-//
-//	glVertexAttribPointer (i + 0, 4, GL_FLOAT, false, sizeof (float) * 16, (void*) (sizeof (float) * 0));
-//	glVertexAttribPointer (i + 1, 4, GL_FLOAT, false, sizeof (float) * 16, (void*) (sizeof (float) * 4));
-//	glVertexAttribPointer (i + 2, 4, GL_FLOAT, false, sizeof (float) * 16, (void*) (sizeof (float) * 8));
-//	glVertexAttribPointer (i + 3, 4, GL_FLOAT, false, sizeof (float) * 16, (void*) (sizeof (float) * 12));
-//
-//	glBindBuffer (GL_ARRAY_BUFFER, 0);
+	const GLint location = glGetAttribLocation (program, name () .c_str ());
+
+	if (location == -1)
+		return;
+
+	glEnableVertexAttribArray (location + 0);
+	glEnableVertexAttribArray (location + 1);
+	glEnableVertexAttribArray (location + 2);
+	glEnableVertexAttribArray (location + 3);
+
+	glBindBuffer (GL_ARRAY_BUFFER, buffer);
+
+	glVertexAttribPointer (location + 0, 4, GL_FLOAT, false, sizeof (Matrix4f), (void*) (sizeof (Vector4f) * 0));
+	glVertexAttribPointer (location + 1, 4, GL_FLOAT, false, sizeof (Matrix4f), (void*) (sizeof (Vector4f) * 1));
+	glVertexAttribPointer (location + 2, 4, GL_FLOAT, false, sizeof (Matrix4f), (void*) (sizeof (Vector4f) * 2));
+	glVertexAttribPointer (location + 3, 4, GL_FLOAT, false, sizeof (Matrix4f), (void*) (sizeof (Vector4f) * 3));
 }
 
 void
 Matrix4VertexAttribute::disable (const GLint program) const
 {
-//	glDisableVertexAttribArray (i ++);
-//	glDisableVertexAttribArray (i ++);
-//	glDisableVertexAttribArray (i ++);
-//	glDisableVertexAttribArray (i ++);
+	const GLint location = glGetAttribLocation (program, name () .c_str ());
+
+	if (location == -1)
+		return;
+
+	glDisableVertexAttribArray (location + 0);
+	glDisableVertexAttribArray (location + 1);
+	glDisableVertexAttribArray (location + 2);
+	glDisableVertexAttribArray (location + 3);
 }
 
 } // X3D

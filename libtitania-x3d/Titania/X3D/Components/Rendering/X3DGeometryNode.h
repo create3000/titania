@@ -56,14 +56,13 @@
 #include "../../Rendering/X3DCollectableObject.h"
 #include "../../Types/Geometry.h"
 #include "../Core/X3DNode.h"
+#include "../Shaders/X3DVertexAttributeNode.h"
 #include "../Texturing/TextureCoordinateGenerator.h"
 
 #include <map>
 
 namespace titania {
 namespace X3D {
-
-class X3DVertexAttributeNode;
 
 class X3DGeometryNode :
 	virtual public X3DNode
@@ -125,7 +124,7 @@ public:
 	draw (const bool, const bool, const bool);
 
 	///  @name Destruction
-	
+
 	virtual
 	void
 	dispose () override;
@@ -142,7 +141,7 @@ protected:
 	///  @name Member access
 
 	void
-	setAttribs (const X3DMFNode <X3DVertexAttributeNode> &, const std::vector <std::vector <float>>  &);
+	setAttribs (const X3DMFNode <X3DVertexAttributeNode> &, const std::vector <std::vector <float>>   &);
 
 	std::vector <Color4f> &
 	getColors ()

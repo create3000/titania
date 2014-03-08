@@ -80,39 +80,52 @@ Matrix3VertexAttribute::create (X3DExecutionContext* const executionContext) con
 }
 
 void
-Matrix3VertexAttribute::addValue (std::vector <float> & values, const size_t index) const
+Matrix3VertexAttribute::addValue (std::vector <float> & array, const size_t index) const
 {
 	if (index < value () .size ())
 	{
-		for (size_t i = 0; i < 9; ++ i)
-			values .emplace_back (value () [index] .get1Value (i));
+		const Matrix3f & mat3 = value () [index];
+
+		array .insert (array .end (), mat3 .data (), mat3 .data () + mat3 .size ());
 	}
 	else
-		values .resize (value () .size () + 9);
+	{
+		static const Matrix3f mat3;
+
+		array .insert (array .end (), mat3 .data (), mat3 .data () + mat3 .size ());
+	}
 }
 
 void
 Matrix3VertexAttribute::enable (const GLint program, const GLuint buffer) const
 {
-//	glBindBuffer (GL_ARRAY_BUFFER, buffer);
-//
-//	glEnableVertexAttribArray (i + 0);
-//	glEnableVertexAttribArray (i + 1);
-//	glEnableVertexAttribArray (i + 2);
-//
-//	glVertexAttribPointer (i + 0, 3, GL_FLOAT, false, sizeof (float) * 9, (void*) (sizeof (float) * 0));
-//	glVertexAttribPointer (i + 1, 3, GL_FLOAT, false, sizeof (float) * 9, (void*) (sizeof (float) * 3));
-//	glVertexAttribPointer (i + 2, 3, GL_FLOAT, false, sizeof (float) * 9, (void*) (sizeof (float) * 6));
-//
-//	glBindBuffer (GL_ARRAY_BUFFER, 0);
+	const GLint location = glGetAttribLocation (program, name () .c_str ());
+
+	if (location == -1)
+		return;
+
+	glEnableVertexAttribArray (location + 0);
+	glEnableVertexAttribArray (location + 1);
+	glEnableVertexAttribArray (location + 2);
+
+	glBindBuffer (GL_ARRAY_BUFFER, buffer);
+
+	glVertexAttribPointer (location + 0, 3, GL_FLOAT, false, sizeof (Matrix3f), (void*) (sizeof (Vector3f) * 0));
+	glVertexAttribPointer (location + 1, 3, GL_FLOAT, false, sizeof (Matrix3f), (void*) (sizeof (Vector3f) * 1));
+	glVertexAttribPointer (location + 2, 3, GL_FLOAT, false, sizeof (Matrix3f), (void*) (sizeof (Vector3f) * 2));
 }
 
 void
 Matrix3VertexAttribute::disable (const GLint program) const
 {
-//	glDisableVertexAttribArray (i ++);
-//	glDisableVertexAttribArray (i ++);
-//	glDisableVertexAttribArray (i ++);
+	const GLint location = glGetAttribLocation (program, name () .c_str ());
+
+	if (location == -1)
+		return;
+
+	glDisableVertexAttribArray (location + 0);
+	glDisableVertexAttribArray (location + 1);
+	glDisableVertexAttribArray (location + 2);
 }
 
 } // X3D

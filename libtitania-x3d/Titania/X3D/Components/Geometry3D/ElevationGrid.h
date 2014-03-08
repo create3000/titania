@@ -243,6 +243,9 @@ private:
 	///  @name Event handlers
 
 	void
+	set_attrib ();
+
+	void
 	set_color ();
 
 	void
@@ -307,6 +310,7 @@ private:
 
 	Fields fields;
 
+	X3DMFNode <X3DVertexAttributeNode>   attribNodes;
 	X3DSFNode <X3DColorNode>             colorNode;
 	X3DSFNode <X3DTextureCoordinateNode> texCoordNode;
 	X3DSFNode <X3DNormalNode>            normalNode;

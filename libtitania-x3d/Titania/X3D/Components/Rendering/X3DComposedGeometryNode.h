@@ -56,7 +56,6 @@
 #include "../Rendering/X3DCoordinateNode.h"
 #include "../Rendering/X3DGeometryNode.h"
 #include "../Rendering/X3DNormalNode.h"
-#include "../Shaders/X3DVertexAttributeNode.h"
 #include "../Texturing/X3DTextureCoordinateNode.h"
 
 namespace titania {

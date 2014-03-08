@@ -1,3 +1,22 @@
+2014-03-08  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* LineSet.h:
+	* PointSet.h:
+	* LineSet.cpp:
+	* PointSet.cpp:
+	* ElevationGrid.h:
+	* IndexedLineSet.h:
+	* X3DGeometryNode.h:
+	* ElevationGrid.cpp:
+	* IndexedLineSet.cpp:
+	* X3DGeometryNode.cpp:
+	* IndexedFaceSet.cpp:
+	* FloatVertexAttribute.cpp:
+	* Matrix3VertexAttribute.cpp:
+	* Matrix4VertexAttribute.cpp:
+	* X3DComposedGeometryNode.h:
+	* X3DComposedGeometryNode.cpp: 
+
 2014-03-07  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* SFString.h:

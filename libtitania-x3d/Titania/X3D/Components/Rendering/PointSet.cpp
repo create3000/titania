@@ -62,26 +62,28 @@ const std::string PointSet::containerField = "geometry";
 
 PointSet::Fields::Fields () :
 	  attrib (new MFNode ()),
+	fogCoord (new SFNode ()),
 	   color (new SFNode ()),
-	   coord (new SFNode ()),
-	fogCoord (new SFNode ())
+	   coord (new SFNode ())
 { }
 
 PointSet::PointSet (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DGeometryNode (),
 	         fields (),
+	    attribNodes (),
 	      colorNode (),
 	      coordNode (),
 	    transparent (false)
 {
 	addField (inputOutput, "metadata", metadata ());
 	addField (inputOutput, "attrib",   attrib ());
+	addField (inputOutput, "fogCoord", fogCoord ());
 	addField (inputOutput, "color",    color ());
 	addField (inputOutput, "coord",    coord ());
-	addField (inputOutput, "fogCoord", fogCoord ());
 
-	addChildren (colorNode,
+	addChildren (attribNodes,
+	             colorNode,
 	             coordNode);
 }
 
@@ -96,11 +98,35 @@ PointSet::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	color () .addInterest (this, &PointSet::set_color);
-	coord () .addInterest (this, &PointSet::set_coord);
+	attrib () .addInterest (this, &PointSet::set_attrib);
+	color ()  .addInterest (this, &PointSet::set_color);
+	coord ()  .addInterest (this, &PointSet::set_coord);
 
+	set_attrib ();
 	set_color ();
 	set_coord ();
+}
+
+void
+PointSet::set_attrib ()
+{
+	for (const auto & node : attribNodes)
+		node -> removeInterest (this);
+
+	std::vector <X3DVertexAttributeNode*> value;
+
+	for (const auto & node : attrib ())
+	{
+		const auto attribNode = x3d_cast <X3DVertexAttributeNode*> (node);
+		
+		if (attribNode)
+			value .emplace_back (attribNode);
+	}
+
+	attribNodes .set (value .begin (), value .end ());
+
+	for (const auto & node : attribNodes)
+		node -> addInterest (this);
 }
 
 void
@@ -137,11 +163,15 @@ PointSet::build ()
 	if (not coordNode)
 		return;
 
-//	for (size_t a = 0, size = getVertexAttrib () .size (); a < size; ++ a)
-//	{
-//		for (size_t i = 0, size = coordNode -> getSize (); i < size; ++ i)
-//			getVertexAttrib () [a] -> addValue (getVertexAttribs () [a], i);
-//	}
+	std::vector <std::vector <float>> attribArrays (attribNodes .size ());
+
+	for (size_t a = 0, size = attribNodes .size (); a < size; ++ a)
+	{
+		attribArrays [a] .reserve (coordNode -> getSize ());
+
+		for (size_t i = 0, size = coordNode -> getSize (); i < size; ++ i)
+			attribNodes [a] -> addValue (attribArrays [a], i);
+	}
 
 	if (colorNode)
 	{
@@ -153,11 +183,14 @@ PointSet::build ()
 		getColors () .resize  (coordNode -> getSize (), Color4f (1, 1, 1, 1));
 	}
 
+	getVertices () .reserve (coordNode -> getSize ());
+
 	for (size_t i = 0, size = coordNode -> getSize (); i < size; ++ i)
 		coordNode -> addVertex (getVertices (), i);
 
 	addElements (GL_POINTS, getVertices () .size ());
 	setSolid (false);
+	setAttribs (attribNodes, attribArrays);
 }
 
 void
@@ -170,8 +203,9 @@ PointSet::draw ()
 void
 PointSet::dispose ()
 {
-	colorNode .dispose ();
-	coordNode .dispose ();
+	attribNodes .dispose ();
+	colorNode   .dispose ();
+	coordNode   .dispose ();
 
 	X3DGeometryNode::dispose ();
 }

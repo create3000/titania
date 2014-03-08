@@ -72,6 +72,7 @@ LineSet::LineSet (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DGeometryNode (),
 	         fields (),
+	    attribNodes (),
 	      colorNode (),
 	      coordNode (),
 	    transparent (false)
@@ -83,7 +84,8 @@ LineSet::LineSet (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "color",       color ());
 	addField (inputOutput, "coord",       coord ());
 
-	addChildren (colorNode,
+	addChildren (attribNodes,
+	             colorNode,
 	             coordNode);
 }
 
@@ -98,11 +100,35 @@ LineSet::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	color () .addInterest (this, &LineSet::set_color);
-	coord () .addInterest (this, &LineSet::set_coord);
+	attrib () .addInterest (this, &LineSet::set_attrib);
+	color ()  .addInterest (this, &LineSet::set_color);
+	coord ()  .addInterest (this, &LineSet::set_coord);
 
+	set_attrib ();
 	set_color ();
 	set_coord ();
+}
+
+void
+LineSet::set_attrib ()
+{
+	for (const auto & node : attribNodes)
+		node -> removeInterest (this);
+
+	std::vector <X3DVertexAttributeNode*> value;
+
+	for (const auto & node : attrib ())
+	{
+		const auto attribNode = x3d_cast <X3DVertexAttributeNode*> (node);
+		
+		if (attribNode)
+			value .emplace_back (attribNode);
+	}
+
+	attribNodes .set (value .begin (), value .end ());
+
+	for (const auto & node : attribNodes)
+		node -> addInterest (this);
 }
 
 void
@@ -150,6 +176,8 @@ LineSet::build ()
 
 	// Fill GeometryNode
 
+	std::vector <std::vector <float>> attribArrays (attribNodes .size ());
+
 	size_t       index = 0;
 	const size_t size  = coordNode -> getSize ();
 
@@ -164,8 +192,8 @@ LineSet::build ()
 		{
 			for (size_t i = 0; i < (size_t) count; ++ i, ++ index)
 			{
-//				for (size_t a = 0, size = getVertexAttrib () .size (); a < size; ++ a)
-//					getVertexAttrib () [a] -> addValue (getVertexAttribs () [a], index);
+				for (size_t a = 0, size = attribNodes .size (); a < size; ++ a)
+					attribNodes [a] -> addValue (attribArrays [a], index);
 
 				if (colorNode)
 					colorNode -> addColor (getColors (), index);
@@ -183,6 +211,7 @@ LineSet::build ()
 	}
 
 	setSolid (false);
+	setAttribs (attribNodes, attribArrays);
 }
 
 void
@@ -195,8 +224,9 @@ LineSet::draw ()
 void
 LineSet::dispose ()
 {
-	colorNode .dispose ();
-	coordNode .dispose ();
+	attribNodes .dispose ();
+	colorNode   .dispose ();
+	coordNode   .dispose ();
 
 	X3DGeometryNode::dispose ();
 }
