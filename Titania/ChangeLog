@@ -1,6 +1,11 @@
 2014-03-08  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* BrowserWindow.cpp:
+	* X3DBrowserEditor.cpp: 
+
+2014-03-08  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* BrowserWindow.cpp:
 	* X3DBrowserWidget.h:
 	* X3DBrowserWidget.cpp: 
 
