@@ -3,11 +3,38 @@
 META "icon" "../../ui/icons/icon-bw.svg"
 META "title" "about:date"
 
-Inline {
-  url "library/background.wrl"
+DEF None NavigationInfo {
+  type [
+    "NONE",
+    "ANY"
+  ]
 }
 
-Transform {
+DEF White Background {
+  skyColor 1 1 1
+}
+
+DEF Logo Transform {
+  translation -1.32437 3.27246 -1
+  scale 1.00059 1.00059 1.00059
+  center 0.00357008 -0.00325632 0
+  children DEF Background Inline {
+    url "library/logo.wrl"
+  }
+}
+
+DEF Rectangle2D Transform {
+  translation 0 0 -0.5
+  scale 20 0.75 1
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry Rectangle2D { }
+  }
+}
+
+DEF Text Transform {
   children Shape {
     appearance Appearance {
       material Material {
@@ -15,13 +42,16 @@ Transform {
       }
     }
     geometry DEF Time Text {
-      string "10 مار, 2014 CET 10:57:27 ص"
+      string "Mo 10 Mär 2014 19:07:33 CET"
       length 10
       fontStyle FontStyle {
         family "TYPEWRITER"
         style "BOLD"
         size 0.735
-        justify "MIDDLE"
+        justify [
+          "MIDDLE",
+          "MIDDLE"
+        ]
       }
     }
   }
@@ -31,7 +61,7 @@ DEF Timer TimeSensor {
   loop TRUE
 }
 
-DEF RandomText Script {
+DEF DateScript Script {
   eventIn SFTime set_time
   field   SFNode time USE Time
 
@@ -44,4 +74,4 @@ function set_time (value)
   directOutput TRUE
 }
 
-ROUTE Timer.cycleTime TO RandomText.set_time
+ROUTE Timer.cycleTime TO DateScript.set_time
