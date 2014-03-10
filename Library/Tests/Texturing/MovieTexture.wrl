@@ -10,18 +10,20 @@ Viewpoint {
   description "Home"
 }
 
-Transform {
+DEF MovieTexture Transform {
   children Shape {
     appearance Appearance {
       material Material { }
       texture DEF Movie MovieTexture {
         url [
-          "http://www.web3d.org/x3d/content/examples/Basic/StudentProjects/flames.mpg",
+          "http://www.visionbakery.com/content/dynamic/videos/project_574_video_1350486246_mod.mp4",
+          "https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/bipbop_4x3_variant.m3u8",
           "../../Examples/Vattenfall/stage/film6.mpv",
-          "http://www.visionbakery.com/content/dynamic/videos/project_574_video_1350486246_mod.mp4"
+          "http://www.web3d.org/x3d/content/examples/Basic/StudentProjects/flames.mpg"
         ]
         loop TRUE
-        startTime 1391656630.1284
+        startTime 1394361843.25533
+        stopTime 1394355536.05188
         repeatS FALSE
         repeatT FALSE
       }

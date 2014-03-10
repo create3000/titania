@@ -15,10 +15,10 @@ Transform {
       }
     }
     geometry DEF Time Text {
-      string "Mi 19 Feb 2014 09:41:00 CET"
+      string "10 مار, 2014 CET 10:57:27 ص"
       length 10
       fontStyle FontStyle {
-        family [ "Ubuntu Mono", "TYPEWRITER" ]
+        family "TYPEWRITER"
         style "BOLD"
         size 0.735
         justify "MIDDLE"

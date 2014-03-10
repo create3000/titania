@@ -62,11 +62,12 @@ extern "C"
 namespace titania {
 namespace X3D {
 
-using Player = Gst::PlayBin;
-
 class MediaStream
 {
 public:
+
+	using Player    = Gst::PlayBin2;
+	using VideoSink = Gst::XImageSink;
 
 	MediaStream ();
 	
@@ -77,7 +78,7 @@ public:
 	getPlayer () const
 	{ return player; }
 
-	const Glib::RefPtr <Gst::XImageSink> &
+	const Glib::RefPtr <VideoSink> &
 	getVideoSink () const
 	{ return vsink; }
 
@@ -116,8 +117,8 @@ public:
 
 private:
 
-	Glib::RefPtr <Player>          player;
-	Glib::RefPtr <Gst::XImageSink> vsink;
+	Glib::RefPtr <Player>    player;
+	Glib::RefPtr <VideoSink> vsink;
 
 	Pixmap   pixmap;
 	Display* display;

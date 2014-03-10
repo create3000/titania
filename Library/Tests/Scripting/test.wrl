@@ -24,32 +24,26 @@ Shape {
 }
 
 DEF Script Script {
+  field SFString u "äöü"
   field SFNode circle USE Circle
 
   url "vrmlscript:
 function initialize ()
 {
-	circle .point .length = 0;
+	var d = new Date (2014, 2);
+	var s = d .toLocaleString ('de-DE');
 
-	for (var i = 0; i < 10; ++ i)
-		circle .point [circle .point .length] = vector (Math .PI / 4);
-}
+	print (s .length);
+	print (s);
+	print (s [6]);
+	print (s [7]);
+	print (s [8]);
+	print (s [9]);
 
-function vector (angle)
-{
-	var theta = Math .random () * 2 * Math .PI;
-	var cphi  = random (Math .cos (angle), 1);
-	var phi   = Math .acos (cphi);
-	var r     = Math .sin (phi);
-
-	return new SFVec3f (Math .sin (theta) * r,
-	                    Math .cos (theta) * r,
-	                    cphi);
-}
-
-function random (min, max)
-{
-	return min + Math .random () * (max - min);
+	print (u .length);
+	print (u [0]);
+	print (u [1]);
+	print (u [2]);
 }
 "
   directOutput TRUE

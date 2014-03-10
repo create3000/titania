@@ -80,13 +80,12 @@ MediaStream::MediaStream () :
 	// Construct
 
 	player = Player::create ("player");
-	vsink  = Gst::XImageSink::create ("vsink");
+	vsink  = VideoSink::create ("vsink");
 
 	player -> set_property ("video-sink", vsink);
 	player -> set_property ("volume", volume);
 
-	auto bus = player -> get_bus ();
-
+	const auto bus = player -> get_bus ();
 	bus -> enable_sync_message_emission ();
 	bus -> signal_sync_message () .connect (sigc::mem_fun (*this, &MediaStream::on_bus_message_sync));
 }
@@ -129,8 +128,8 @@ void
 MediaStream::setVolume (double value)
 {
 	value = math::clamp (value, 0.0, 1.0);
-	
-	if (value != volume)
+
+	if (value not_eq volume)
 	{
 		volume = value;
 		player -> set_property ("volume", volume);
@@ -144,17 +143,22 @@ MediaStream::getState () const
 	Gst::State             pending;
 	Gst::StateChangeReturn ret = player -> get_state (state, pending, 10 * Gst::SECOND);
 
-	if (ret == Gst::STATE_CHANGE_SUCCESS)
+	switch (ret)
 	{
-		return state;
-	}
-	else if (ret == Gst::STATE_CHANGE_ASYNC)
-	{
-		__LOG__ << "Query state failed, still performing change" << std::endl;
-	}
-	else
-	{
-		__LOG__ << "Query state failed, hard failure" << std::endl;
+		case Gst::STATE_CHANGE_SUCCESS:
+		{
+			return state;
+		}
+		case Gst::STATE_CHANGE_ASYNC:
+		{
+			__LOG__ << "Query state failed, still performing change" << std::endl;
+			break;
+		}
+		default:
+		{
+			__LOG__ << "Query state failed, hard failure" << std::endl;
+			break;
+		}
 	}
 
 	return Gst::STATE_NULL;
@@ -201,7 +205,7 @@ MediaStream::sync () const
 void
 MediaStream::start (const double speed, const double position)
 {
-	auto format = Gst::FORMAT_TIME;
+	const auto format = Gst::FORMAT_TIME;
 
 	player -> seek (format,
 	                Gst::SEEK_FLAG_FLUSH | Gst::SEEK_FLAG_ACCURATE,
@@ -238,8 +242,8 @@ MediaStream::on_bus_message_sync (const Glib::RefPtr <Gst::Message> & message)
 	if (not message -> get_structure () .has_name ("prepare-xwindow-id"))
 		return;
 
-	auto element  = Glib::RefPtr <Gst::Element>::cast_dynamic (message -> get_source ());
-	auto xOverlay = Gst::Interface::cast <Gst::XOverlay> (element);
+	const auto element  = Glib::RefPtr <Gst::Element>::cast_dynamic (message -> get_source ());
+	const auto xOverlay = Gst::Interface::cast <Gst::XOverlay> (element);
 
 	if (xOverlay)
 	{

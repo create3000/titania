@@ -36,6 +36,11 @@ PROTO Gear [
 
 function initialize ()
 {
+	eventsProcessed ();
+}
+
+function eventsProcessed ()
+{
 	print ('### Generating gear ...');
 
 	var indices = new MFInt32 ();
@@ -252,91 +257,92 @@ Viewpoint {
 }
 
 DEF RedRotor Rotor {
+  enabled TRUE
   cycleInterval 10
   loop TRUE
+  startTime 0
+  stopTime 0
 }
 
 DEF GreenRotor Rotor {
+  enabled TRUE
   cycleInterval 5
   loop TRUE
+  startTime 0
+  stopTime 0
 }
 
 DEF BlueRotor Rotor {
+  enabled TRUE
   cycleInterval 5
   loop TRUE
+  startTime 0
+  stopTime 0
 }
 
-Transform {
-  rotation 1 0 0 0.349066
-  children Transform {
-    rotation 0 1 0 0.523599
-    children [
-      Transform {
-        translation -3 -2 0
-        children DEF RedGear Transform {
-          children Shape {
-            appearance Appearance {
-              material Material {
-                diffuseColor 0.8 0.1 0
-              }
-            }
-            geometry Gear {
-              teeth 20
-              toothDepth 0.7
-              creaseAngle 0.6
-            }
-          }
+DEF RedGear_1 Transform {
+  translation -2.59808 -2.39242 0.725499
+  rotation 0.543846 0.826436 0.145723 0.627057
+  children DEF Gear_1 Transform {
+    rotation 0 0 1 0.0757023
+    children Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0.8 0.1 0
         }
       }
-      Transform {
-        translation 3.1 -2 0
-        rotation 0 1 0 3.14159
-        children Transform {
-          rotation 0 0 1 0.32
-          children DEF GreenGear Transform {
-            children Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0 0.8 0.2
-                }
-              }
-              geometry Gear {
-                toothDepth 0.7
-                innerRadius 0.5
-                outerRadius 2
-                width 2
-                creaseAngle 0.7
-              }
-            }
-          }
-        }
+      geometry Gear {
+        teeth 20
+        toothDepth 0.7
+        creaseAngle 0.6
       }
-      Transform {
-        translation -3.1 4.2 0
-        rotation 0 1 0 3.14159
-        children Transform {
-          rotation 0 0 -1 0.0200017
-          children DEF BlueGear Transform {
-            children Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.2 0.2 1
-                }
-              }
-              geometry Gear {
-                toothDepth 0.7
-                innerRadius 1.3
-                outerRadius 2
-                width 0.5
-              }
-            }
-          }
-        }
-      }
-    ]
+    }
   }
 }
 
-ROUTE RedRotor.value_changed TO RedGear.set_rotation
-ROUTE GreenRotor.value_changed TO GreenGear.set_rotation
-ROUTE BlueRotor.value_changed TO BlueGear.set_rotation
+DEF GreenGear_1 Transform {
+  translation 2.68468 -1.34925 -2.14056
+  rotation 0.111593 0.985198 0.130124 3.70575
+  children DEF Gear_2 Transform {
+    rotation 0 0 1 0.151397
+    children Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0.8 0.2
+        }
+      }
+      geometry Gear {
+        toothDepth 0.7
+        innerRadius 0.5
+        outerRadius 2
+        width 2
+        creaseAngle 0.7
+      }
+    }
+  }
+}
+
+DEF BlueGear_1 Transform {
+  translation -2.68468 3.41658 2.89301
+  rotation -0.0562884 0.982778 0.176007 3.65356
+  children DEF Gear_3 Transform {
+    rotation 0 0 1 0.151397
+    children Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0.2 0.2 1
+        }
+      }
+      geometry Gear {
+        toothDepth 0.7
+        innerRadius 1.3
+        outerRadius 2
+        width 0.5
+      }
+    }
+  }
+}
+
+ROUTE RedRotor.value_changed TO Gear_1.set_rotation
+ROUTE GreenRotor.value_changed TO Gear_2.set_rotation
+ROUTE BlueRotor.value_changed TO Gear_3.set_rotation

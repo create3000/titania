@@ -1,0 +1,52 @@
+#X3D V3.3 utf8 Titania
+
+DEF Fire ParticleSystem {
+  geometryType "POINT"
+  maxParticles 2000
+  particleLifetime 4
+  lifetimeVariation 0.5
+  particleSize 1 1
+  colorKey [
+    0,
+    0.2,
+    0.5,
+    0.7,
+    0.8,
+    1
+  ]
+  emitter PointEmitter {
+    direction 0 0 0
+    speed 0.2
+    variation 0.5
+    mass 0.1
+    surfaceArea 0.1
+  }
+  colorRamp ColorRGBA {
+    color [
+      1 0.38 0 0,
+      1 0.58 0.06 0.01,
+      1 0.37 0 0.1,
+      1 0.05 0 0,
+      0 0 0 0.015,
+      0 0 0 0
+    ]
+  }
+  appearance Appearance {
+    lineProperties LineProperties {
+      linewidthScaleFactor 10
+    }
+  }
+  physics [
+    WindPhysicsModel {
+      direction 0 1 0
+      speed 0.5
+      gustiness 1.7
+      turbulence 0.3
+    }
+    WindPhysicsModel {
+      direction 1 0 0
+      speed 0.34
+      gustiness 2
+    }
+  ]
+}

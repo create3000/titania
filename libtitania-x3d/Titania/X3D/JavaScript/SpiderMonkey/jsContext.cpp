@@ -131,6 +131,7 @@ jsContext::jsContext (Script* const script, const std::string & ecmascript, cons
 	if (context == nullptr)
 		throw std::invalid_argument ("Couldn't not create JavaScript context.");
 
+	JS_SetCStringsAreUTF8 ();
 	JS_SetOptions (context, JSOPTION_ATLINE | JSOPTION_VAROBJFIX | JSOPTION_JIT | JSOPTION_METHODJIT);
 	JS_SetVersion (context, JSVERSION_LATEST);
 	JS_SetErrorReporter (context, error);
