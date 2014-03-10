@@ -6,10 +6,16 @@ META "title" "about:home"
 EXTERNPROTO Rotor [
   inputOutput SFBool     enabled
   inputOutput SFTime     cycleInterval
+  inputOutput SFVec3f    axis
+  inputOutput SFFloat    angle
   inputOutput SFBool     loop
   inputOutput SFTime     startTime
+  inputOutput SFTime     pauseTime
+  inputOutput SFTime     resumeTime
   inputOutput SFTime     stopTime
-  outputOnly  SFRotation value_changed
+  outputOnly  SFBool     isActive
+  outputOnly  SFTime     cycleTime
+  outputOnly  SFRotation rotation_changed
 ]
 "library/Rotor.wrl"
 
@@ -34,36 +40,61 @@ DEF Fastener Rotor {
   loop TRUE
 }
 
+DEF Slower Rotor {
+  cycleInterval 61
+  axis 0 0 -1
+  loop TRUE
+}
+
 LayerSet {
   order [
-    0, 1, 2
+    0,
+    1,
+    2,
+    3
   ]
   layers [
-    DEF _0 Layer {
+    Layer {
       children [
         USE NavigationInfo
         USE Home
         USE Far
-        DEF Greater Transform {
+        DEF Lesser Transform {
+          rotation 0 0 1 2.5915
+          scale 0.236068 0.236068 1
           children DEF loops Inline {
             url "library/red.orange.yellow.wrl"
           }
         }
       ]
     }
-    DEF _1 Layer {
+    Layer {
       children [
         USE NavigationInfo
         USE Home
         USE Far
-        DEF Lesser Transform {
-          rotation 0 0 1 1.50152
-          scale 0.236068 0.236068 1
+        DEF Greater Transform {
           children USE loops
+        }
+      ]
+    }
+    Layer {
+      children [
+        USE NavigationInfo
+        USE Home
+        USE Far
+        DEF Greater1 Transform {
+          translation 0.0524366 2.42285e-15 0
+          rotation 0 0 -1 2.5915
+          scale 4.5 4.5 4.5
+          children DEF loops1 Inline {
+            url "library/red.orange.yellow.wrl"
+          }
         }
       ]
     }
   ]
 }
 
-ROUTE Fastener.value_changed TO Lesser.set_rotation
+ROUTE Fastener.rotation_changed TO Lesser.set_rotation
+ROUTE Slower.rotation_changed TO Greater1.set_rotation

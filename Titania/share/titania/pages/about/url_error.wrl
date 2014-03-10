@@ -25,7 +25,7 @@ Transform {
       material Red { }
     }
     geometry DEF Message Text {
-      string ""
+      string "file:///home/holger/Projekte/Titania/Titania/share/titania/pages/about/url_error.wrl"
       fontStyle FontStyle {
         family "Ubuntu"
         size 0.3

@@ -3,11 +3,22 @@
 META "title" "Titania ✩ Red, Orange & Yellow"
 
 EXTERNPROTO Rotor [
+  inputOutput SFBool     enabled
   inputOutput SFTime     cycleInterval
+  inputOutput SFVec3f    axis
+  inputOutput SFFloat    angle
   inputOutput SFBool     loop
-  outputOnly  SFRotation value_changed
+  inputOutput SFTime     startTime
+  inputOutput SFTime     pauseTime
+  inputOutput SFTime     resumeTime
+  inputOutput SFTime     stopTime
+  outputOnly  SFBool     isActive
+  outputOnly  SFTime     cycleTime
+  outputOnly  SFRotation rotation_changed
 ]
-"Rotor.wrl"
+[
+  "Rotor.wrl",
+]
 
 EXTERNPROTO Red [
   inputOutput SFFloat transparency
@@ -105,6 +116,6 @@ DEF YellowRotor Rotor {
   loop TRUE
 }
 
-ROUTE RedRotor.value_changed TO Red.set_rotation
-ROUTE OrangeRotor.value_changed TO Orange.set_rotation
-ROUTE YellowRotor.value_changed TO Yellow.set_rotation
+ROUTE RedRotor.rotation_changed TO Red.set_rotation
+ROUTE OrangeRotor.rotation_changed TO Orange.set_rotation
+ROUTE YellowRotor.rotation_changed TO Yellow.set_rotation

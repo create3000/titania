@@ -4,9 +4,18 @@ META "icon" "../../ui/icons/icon-bw.svg"
 META "title" "about:gears"
 
 EXTERNPROTO Rotor [
+  inputOutput SFBool     enabled
   inputOutput SFTime     cycleInterval
+  inputOutput SFVec3f    axis
+  inputOutput SFFloat    angle
   inputOutput SFBool     loop
-  outputOnly  SFRotation value_changed
+  inputOutput SFTime     startTime
+  inputOutput SFTime     pauseTime
+  inputOutput SFTime     resumeTime
+  inputOutput SFTime     stopTime
+  outputOnly  SFBool     isActive
+  outputOnly  SFTime     cycleTime
+  outputOnly  SFRotation rotation_changed
 ]
 "library/Rotor.wrl"
 
@@ -257,34 +266,25 @@ Viewpoint {
 }
 
 DEF RedRotor Rotor {
-  enabled TRUE
   cycleInterval 10
   loop TRUE
-  startTime 0
-  stopTime 0
 }
 
 DEF GreenRotor Rotor {
-  enabled TRUE
   cycleInterval 5
   loop TRUE
-  startTime 0
-  stopTime 0
 }
 
 DEF BlueRotor Rotor {
-  enabled TRUE
   cycleInterval 5
   loop TRUE
-  startTime 0
-  stopTime 0
 }
 
 DEF RedGear_1 Transform {
   translation -2.59808 -2.39242 0.725499
   rotation 0.543846 0.826436 0.145723 0.627057
   children DEF Gear_1 Transform {
-    rotation 0 0 1 0.0757023
+    rotation 0 0 1 0.580734
     children Shape {
       appearance Appearance {
         material Material {
@@ -304,7 +304,7 @@ DEF GreenGear_1 Transform {
   translation 2.68468 -1.34925 -2.14056
   rotation 0.111593 0.985198 0.130124 3.70575
   children DEF Gear_2 Transform {
-    rotation 0 0 1 0.151397
+    rotation 0 0 1 1.16147
     children Shape {
       appearance Appearance {
         material Material {
@@ -326,7 +326,7 @@ DEF BlueGear_1 Transform {
   translation -2.68468 3.41658 2.89301
   rotation -0.0562884 0.982778 0.176007 3.65356
   children DEF Gear_3 Transform {
-    rotation 0 0 1 0.151397
+    rotation 0 0 1 1.16147
     children Shape {
       appearance Appearance {
         material Material {
@@ -343,6 +343,6 @@ DEF BlueGear_1 Transform {
   }
 }
 
-ROUTE RedRotor.value_changed TO Gear_1.set_rotation
-ROUTE GreenRotor.value_changed TO Gear_2.set_rotation
-ROUTE BlueRotor.value_changed TO Gear_3.set_rotation
+ROUTE RedRotor.rotation_changed TO Gear_1.set_rotation
+ROUTE GreenRotor.rotation_changed TO Gear_2.set_rotation
+ROUTE BlueRotor.rotation_changed TO Gear_3.set_rotation

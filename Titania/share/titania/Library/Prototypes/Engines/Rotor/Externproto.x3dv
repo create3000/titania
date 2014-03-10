@@ -1,17 +1,18 @@
 #VRML V2.0 utf8 Titania 0.1
 
 EXTERNPROTO Rotor [
-  exposedField SFBool     enabled
-  exposedField SFVec3f    axis
-  exposedField SFFloat    angle
-  exposedField SFBool     loop
-  exposedField SFTime     startTime
-  exposedField SFTime     pauseTime
-  exposedField SFTime     resumeTime
-  exposedField SFTime     stopTime
-  eventOut     SFBool     isActive
-  eventOut     SFTime     cycleInterval
-  eventOut     SFRotation rotation_changed
+  inputOutput SFBool     enabled
+  inputOutput SFTime     cycleInterval
+  inputOutput SFVec3f    axis
+  inputOutput SFFloat    angle
+  inputOutput SFBool     loop
+  inputOutput SFTime     startTime
+  inputOutput SFTime     pauseTime
+  inputOutput SFTime     resumeTime
+  inputOutput SFTime     stopTime
+  outputOnly  SFBool     isActive
+  outputOnly  SFTime     cycleTime
+  outputOnly  SFRotation rotation_changed
 ]
 [
   "Rotor.x3dv",

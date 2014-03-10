@@ -42,7 +42,7 @@ DEF Text Transform {
       }
     }
     geometry DEF Time Text {
-      string "Mo 10 Mär 2014 19:07:33 CET"
+      string "Mo 10 Mär 2014 20:17:08 CET"
       length 10
       fontStyle FontStyle {
         family "TYPEWRITER"

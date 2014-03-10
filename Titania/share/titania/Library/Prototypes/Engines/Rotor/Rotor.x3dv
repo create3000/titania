@@ -47,12 +47,6 @@ function initialize ()
 	eventsProcessed ();
 }
 
-function set_axis ()
-{ }
-
-function set_angle ()
-{ }
-
 function eventsProcessed ()
 {
 	var keyValue = interpolator .keyValue;
