@@ -78,7 +78,7 @@ OutlineEditor::initialize ()
 
 	// Register browser interest
 	getBrowser () -> initialized () .addInterest (this, &OutlineEditor::set_initialized);
-	
+
 	set_initialized ();
 }
 

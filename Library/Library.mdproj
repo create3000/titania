@@ -2411,6 +2411,7 @@
     <None Include="Tests\Geospatial\test.wrl" />
     <None Include="Tests\Basic\UNIT.wrl" />
     <None Include="Tests\Shaders\VertexAttibutes.wrl" />
+    <None Include="Tests\ParticleSystems\uft8.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

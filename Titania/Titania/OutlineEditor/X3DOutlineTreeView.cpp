@@ -383,6 +383,8 @@ X3DOutlineTreeView::on_row_expanded (const Gtk::TreeModel::iterator & iter, cons
 	routeGraph -> expand (iter);
 	treeObserver -> watch (iter, path);
 
+	columns_autosize (); // HACK: tell the tree view that the size has changed.
+
 	auto_expand (iter);
 }
 
