@@ -1,5 +1,10 @@
 2014-03-11  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBindableNode.h:
+	* X3DBindableNode.cpp: 
+
+2014-03-11  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* X3DConstants.h:

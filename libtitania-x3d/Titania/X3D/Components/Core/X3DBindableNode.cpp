@@ -67,12 +67,10 @@ X3DBindableNode::Fields::Fields () :
 X3DBindableNode::X3DBindableNode () :
 	X3DChildNode (),
 	      fields (),
-	    wasBound (false),
-	      layers ()
+	      layers (),
+	    wasBound (false)
 {
 	addNodeType (X3DConstants::X3DBindableNode);
-	
-	addChildren (layers);
 }
 
 void
@@ -88,19 +86,27 @@ X3DBindableNode::_set_bind ()
 {
 	if (set_bind ())
 	{
-		const auto value = getLayers ();
-		
-		layers .set (value .begin (), value .end ());
+		// Save layers
 
-		for (auto & layer : layers)
+		for (const auto & layer : layers)
+			layer -> shutdown () .removeInterest (this, &X3DBindableNode::removeLayer);
+
+		layers = getLayers ();
+
+		for (const auto & layer : layers)
+			layer -> shutdown () .addInterest (this, &X3DBindableNode::removeLayer, layer);
+
+		// Bind
+
+		for (const auto & layer : layers)
 			bindToLayer (layer);
 	}
 	else
 	{
-		for (auto & layer : layers)
-			unbindFromLayer (layer);
+		// Unbind
 
-		layers .set ({ });
+		for (const auto & layer : layers)
+			unbindFromLayer (layer);
 	}
 }
 
@@ -108,6 +114,17 @@ void
 X3DBindableNode::addLayer (X3DLayerNode* const layer)
 {
 	layers .emplace_back (layer);
+	
+	layer -> shutdown () .addInterest (this, &X3DBindableNode::removeLayer, layer);
+}
+
+void 
+X3DBindableNode::removeLayer (X3DLayerNode* const layer)
+{
+	const auto iter = std::find (layers .begin (), layers .end (), layer);
+
+	if (iter not_eq layers .end ())
+		layers .erase (iter);
 }
 
 void
@@ -120,7 +137,7 @@ X3DBindableNode::saveState ()
 
 	wasBound = isBound ();
 
-	for (auto & layer : layers)
+	for (const auto & layer : layers)
 		removeFromLayer (layer);
 }
 
@@ -134,21 +151,10 @@ X3DBindableNode::restoreState ()
 
 	if (wasBound)
 	{
-		for (auto & layer : layers)
+		for (const auto & layer : layers)
 			bindToLayer (layer);
 	}
 }
-
-void
-X3DBindableNode::dispose ()
-{
-	layers .dispose ();
-
-	X3DChildNode::dispose ();
-}
-
-X3DBindableNode::~X3DBindableNode ()
-{ }
 
 } // X3D
 } // titania

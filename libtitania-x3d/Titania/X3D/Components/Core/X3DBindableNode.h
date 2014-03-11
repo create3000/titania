@@ -100,14 +100,6 @@ public:
 	void
 	restoreState () final override;
 
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () override;
-
-	~X3DBindableNode ();
-
 
 protected:
 
@@ -141,6 +133,9 @@ private:
 	void
 	_set_bind ();
 
+	void
+	removeLayer (X3DLayerNode* const);
+
 	///  @name Members
 
 	struct Fields
@@ -154,8 +149,8 @@ private:
 
 	Fields fields;
 	
-	bool                     wasBound;
-	X3DMFNode <X3DLayerNode> layers;
+	std::vector <X3DLayerNode*> layers;
+	bool                        wasBound;
 
 };
 
