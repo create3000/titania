@@ -586,11 +586,11 @@ X3DBaseNode::hasRoutes () const
 }
 
 void
-X3DBaseNode::isInternal (bool value)
+X3DBaseNode::isInternal (const bool value)
 {
 	internal = value;
 
-	if (value)
+	if (internal)
 	{
 		for (const auto & field : fieldDefinitions)
 			field -> setName ("");
@@ -599,6 +599,38 @@ X3DBaseNode::isInternal (bool value)
 	{
 		for (const auto & field : fields)
 			field .second -> setName (field .first);
+	}
+}
+
+void
+X3DBaseNode::saveState ()
+{
+	saved = true;
+}
+
+void
+X3DBaseNode::restoreState ()
+{
+	saved = false;
+}
+
+void
+X3DBaseNode::addHandle (X3DBaseNode* const value)
+{
+	handle = value;
+	handle -> setName (getName ());
+	handle -> setUserData (getUserData ());
+	handle -> replace (this);
+	handle -> setup ();
+}
+
+void
+X3DBaseNode::removeHandle ()
+{
+	if (handle)
+	{
+		replace (handle);
+		handle = nullptr;
 	}
 }
 
@@ -669,26 +701,6 @@ X3DBaseNode::removeEvents ()
 	{
 		getBrowser () -> getRouter () .removeNode (nodeId);
 		nodeId .time = 0;
-	}
-}
-
-void
-X3DBaseNode::addHandle (X3DBaseNode* const value)
-{
-	handle = value;
-	handle -> setName (getName ());
-	handle -> setUserData (getUserData ());
-	handle -> replace (this);
-	handle -> setup ();
-}
-
-void
-X3DBaseNode::removeHandle ()
-{
-	if (handle)
-	{
-		replace (handle);
-		handle = nullptr;
 	}
 }
 

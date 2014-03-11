@@ -62,18 +62,17 @@ X3DTransformNode::Fields::Fields () :
 { }
 
 X3DTransformNode::X3DTransformNode () :
-	X3DGroupingNode (),
-	         fields (),
-	         matrix ()
+	X3DTransformMatrix4DNode (),
+	                  fields ()
 {
-	addNodeType (X3DConstants::X3DTransformNode);
+	//addNodeType (X3DConstants::X3DTransformNode);
 }
 
 void
 X3DTransformNode::initialize ()
 {
-	X3DGroupingNode::initialize ();
-	
+	X3DTransformMatrix4DNode::initialize ();
+
 	addInterest (this, &X3DTransformNode::eventsProcessed);
 
 	eventsProcessed ();
@@ -86,30 +85,21 @@ X3DTransformNode::eventsProcessed ()
 	            scale () .getY () not_eq 0 and
 	            scale () .getZ () not_eq 0);
 
-	matrix .set (translation (),
-	             rotation (),
-	             scale (),
-	             scaleOrientation (),
-	             center ());
-}
-
-Box3f
-X3DTransformNode::getBBox () const
-{
-	if (getDisplay ())
-		return X3DGroupingNode::getBBox () * matrix;
-	
-	return Box3f ();
+	X3DTransformMatrix4DNode::setMatrix (translation (),
+	                                     rotation (),
+	                                     scale (),
+	                                     scaleOrientation (),
+	                                     center ());
 }
 
 void
-X3DTransformNode::setMatrix (const Matrix4f & matrix)
+X3DTransformNode::setMatrix (const Matrix4d & matrix)
 {
 	setMatrixWithCenter (matrix, center ());
 }
 
 void
-X3DTransformNode::setMatrixWithCenter (const Matrix4f & matrix, const Vector3f & c)
+X3DTransformNode::setMatrixWithCenter (const Matrix4d & matrix, const Vector3f & c)
 {
 	Vector3f   t, s;
 	Rotation4f r, so;
@@ -119,20 +109,18 @@ X3DTransformNode::setMatrixWithCenter (const Matrix4f & matrix, const Vector3f &
 	translation ()      = t;
 	rotation ()         = r;
 	scale ()            = s;
-	scaleOrientation () = s == Vector3f (1, 1, 1) ? Rotation4f () : so;
+	scaleOrientation () = (isUniform (s) ? Rotation4f () : so);
 	center ()           = c;
 }
 
-void
-X3DTransformNode::traverse (const TraverseType type)
+bool
+X3DTransformNode::isUniform (const Vector3f & vector)
 {
-	getModelViewMatrix () .push ();
-
-	getModelViewMatrix () .mult_left (matrix);
-
-	X3DGroupingNode::traverse (type);
-
-	getModelViewMatrix () .pop ();
+	std::string x = std::to_string (vector .x ());
+	std::string y = std::to_string (vector .y ());
+	std::string z = std::to_string (vector .z ());
+	
+	return x == y and x == z;
 }
 
 } // X3D

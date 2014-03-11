@@ -1,0 +1,101 @@
+#X3D V3.0 utf8 Titania
+
+META "icon" "../../ui/icons/icon-bw.svg"
+META "title" "about:home"
+
+EXTERNPROTO Rotor [
+  inputOutput SFBool     enabled
+  inputOutput SFTime     cycleInterval
+  inputOutput SFVec3f    axis
+  inputOutput SFFloat    angle
+  inputOutput SFBool     loop
+  inputOutput SFTime     startTime
+  inputOutput SFTime     pauseTime
+  inputOutput SFTime     resumeTime
+  inputOutput SFTime     stopTime
+  outputOnly  SFBool     isActive
+  outputOnly  SFTime     cycleTime
+  outputOnly  SFRotation rotation_changed
+]
+"library/Rotor.wrl"
+
+DEF NavigationInfo NavigationInfo { }
+
+DEF Home Viewpoint {
+  description "Home"
+  position 0 0 34
+}
+
+DEF Far Viewpoint {
+  description "Far"
+  position 0 0 68
+}
+
+DEF White Background {
+  skyColor 1 1 1
+}
+
+DEF Fastener Rotor {
+  cycleInterval 61
+  loop TRUE
+}
+
+DEF Slower Rotor {
+  cycleInterval 61
+  axis 0 0 -1
+  loop TRUE
+}
+
+LayerSet {
+  activeLayer 1
+  order [
+    0,
+    1,
+    2,
+    3
+  ]
+  layers [
+    Layer {
+      children [
+        USE NavigationInfo
+        USE Home
+        USE Far
+        DEF Lesser Transform {
+          rotation 0 0 1 2.88243
+          scale 0.236068 0.236068 1
+          children DEF loops Inline {
+            url "library/red.orange.yellow.wrl"
+          }
+        }
+      ]
+    }
+    Layer {
+      children [
+        USE NavigationInfo
+        USE Home
+        USE Far
+        DEF Greater Transform {
+          children USE loops
+        }
+      ]
+    }
+    Layer {
+      children [
+        USE NavigationInfo
+        USE Home
+        USE Far
+        DEF Greater1 Transform {
+          translation 0.0524366 2.42285e-15 0
+          rotation 0 0 -1 2.88243
+          scale 4.5 4.5 4.5
+          children DEF loops1 Inline {
+            url "library/red.orange.yellow.wrl"
+          }
+        }
+      ]
+    }
+  ]
+}
+
+ROUTE Fastener.rotation_changed TO Lesser.set_rotation
+ROUTE Slower.rotation_changed TO Greater1.set_rotation

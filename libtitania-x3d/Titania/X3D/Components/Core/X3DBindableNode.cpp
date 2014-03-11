@@ -67,9 +67,12 @@ X3DBindableNode::Fields::Fields () :
 X3DBindableNode::X3DBindableNode () :
 	X3DChildNode (),
 	      fields (),
-	    wasBound (false)
+	    wasBound (false),
+	      layers ()
 {
 	addNodeType (X3DConstants::X3DBindableNode);
+	
+	addChildren (layers);
 }
 
 void
@@ -85,14 +88,26 @@ X3DBindableNode::_set_bind ()
 {
 	if (set_bind ())
 	{
-		for (auto & layer : getLayers ())
+		const auto value = getLayers ();
+		
+		layers .set (value .begin (), value .end ());
+
+		for (auto & layer : layers)
 			bindToLayer (layer);
 	}
 	else
 	{
-		for (auto & layer : getLayers ())
+		for (auto & layer : layers)
 			unbindFromLayer (layer);
+
+		layers .set ({ });
 	}
+}
+
+void 
+X3DBindableNode::addLayer (X3DLayerNode* const layer)
+{
+	layers .emplace_back (layer);
 }
 
 void
@@ -105,7 +120,7 @@ X3DBindableNode::saveState ()
 
 	wasBound = isBound ();
 
-	for (auto & layer : getLayers ())
+	for (auto & layer : layers)
 		removeFromLayer (layer);
 }
 
@@ -118,8 +133,22 @@ X3DBindableNode::restoreState ()
 	X3DChildNode::restoreState ();
 
 	if (wasBound)
-		set_bind () = true;
+	{
+		for (auto & layer : layers)
+			bindToLayer (layer);
+	}
 }
+
+void
+X3DBindableNode::dispose ()
+{
+	layers .dispose ();
+
+	X3DChildNode::dispose ();
+}
+
+X3DBindableNode::~X3DBindableNode ()
+{ }
 
 } // X3D
 } // titania

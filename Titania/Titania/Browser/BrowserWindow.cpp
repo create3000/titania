@@ -876,7 +876,7 @@ BrowserWindow::enableEditor (const bool enabled)
 	getLibraryViewBox ()   .set_visible (enabled);
 	getOutlineEditorBox () .set_visible (enabled);
 
-	if (enabled)
+	if (enabled and getConfig () .getBoolean ("arrow"))
 		getArrowButton () .set_active (true);
 	else
 		getHandButton () .set_active (true);
@@ -1102,6 +1102,7 @@ BrowserWindow::on_hand_button_toggled ()
 	{
 		std::clog << "Hand button clicked." << std::endl;
 
+		getConfig () .setItem ("arrow", false);
 		getSelection () -> setEnabled (false);
 	}
 }
@@ -1113,6 +1114,7 @@ BrowserWindow::on_arrow_button_toggled ()
 	{
 		std::clog << "Arrow button clicked." << std::endl;
 
+		getConfig () .setItem ("arrow", true);
 		getSelection () -> setEnabled (true);
 	}
 }

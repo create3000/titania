@@ -73,7 +73,7 @@ X3DGeospatialObject::X3DGeospatialObject () :
 	   geoOriginNode (),
 	          origin ()
 {
-	addNodeType (X3DConstants::X3DGeospatialObject);
+	//addNodeType (X3DConstants::X3DGeospatialObject);
 
 	addChildren (geoOriginNode);
 }

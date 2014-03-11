@@ -88,7 +88,10 @@ public:
 	{ return *fields .bindTime; }
 
 	///  @name Operations
-	
+
+	void
+	addLayer (X3DLayerNode* const);
+
 	virtual
 	void
 	saveState () final override;
@@ -96,6 +99,15 @@ public:
 	virtual
 	void
 	restoreState () final override;
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () override;
+
+	~X3DBindableNode ();
+
 
 protected:
 
@@ -141,8 +153,9 @@ private:
 	};
 
 	Fields fields;
-
-	bool wasBound;
+	
+	bool                     wasBound;
+	X3DMFNode <X3DLayerNode> layers;
 
 };
 

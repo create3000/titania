@@ -68,11 +68,10 @@ GeoTransform::Fields::Fields () :
 { }
 
 GeoTransform::GeoTransform (X3DExecutionContext* const executionContext) :
-	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	    X3DGroupingNode (),
-	X3DGeospatialObject (),
-	             fields (),
-	             matrix ()
+	             X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DTransformMatrix4DNode (),
+	     X3DGeospatialObject (),
+	                  fields ()
 {
 	addField (inputOutput,    "metadata",         metadata ());
 	addField (initializeOnly, "geoSystem",        geoSystem ());
@@ -98,7 +97,7 @@ GeoTransform::create (X3DExecutionContext* const executionContext) const
 void
 GeoTransform::initialize ()
 {
-	X3DGroupingNode::initialize ();
+	X3DTransformMatrix4DNode::initialize ();
 	X3DGeospatialObject::initialize ();
 
 	addInterest (this, &GeoTransform::eventsProcessed);
@@ -116,28 +115,7 @@ GeoTransform::eventsProcessed ()
 	                     scale () .getValue (),
 	                     scaleOrientation () .getValue ());
 
-	matrix = transformation * getLocationMatrix (geoCenter ());
-}
-
-Box3f
-GeoTransform::getBBox () const
-{
-	if (getDisplay ())
-		return Box3d (X3DGroupingNode::getBBox ()) * matrix;
-
-	return Box3f ();
-}
-
-void
-GeoTransform::traverse (const TraverseType type)
-{
-	getModelViewMatrix () .push ();
-
-	getModelViewMatrix () .mult_left (matrix);
-
-	X3DGroupingNode::traverse (type);
-
-	getModelViewMatrix () .pop ();
+	setMatrix (transformation * getLocationMatrix (geoCenter ()));
 }
 
 void

@@ -166,7 +166,7 @@ public:
 	translateSelection (const X3D::Vector3f &, const bool);
 
 	void
-	setMatrix (const X3D::X3DSFNode <X3D::X3DTransformNode> &, const X3D::Matrix4f &, const UndoStepPtr &) const;
+	setMatrix (const X3D::X3DSFNode <X3D::X3DTransformNode> &, const X3D::Matrix4d &, const UndoStepPtr &) const;
 
 	/// @name Selection operations
 	
@@ -284,11 +284,11 @@ private:
 
 	///  @name Misc
 
-	X3D::Matrix4f
+	X3D::Matrix4d
 	findModelViewMatrix (X3D::X3DBaseNode* const) const;
 
 	bool
-	findModelViewMatrix (X3D::X3DBaseNode* const, X3D::Matrix4f &, std::set <X3D::X3DBaseNode*> &) const;
+	findModelViewMatrix (X3D::X3DBaseNode* const, X3D::Matrix4d &, std::set <X3D::X3DBaseNode*> &) const;
 
 	std::vector <X3D::X3DBaseNode*>
 	getParentNodes (X3D::X3DBaseNode* const) const;

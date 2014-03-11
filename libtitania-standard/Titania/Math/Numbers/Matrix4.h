@@ -358,71 +358,60 @@ public:
 	throw (std::domain_error);
 
 	///  Add @a matrix to this matrix.
-	template <class T>
 	matrix4 &
-	operator += (const matrix4 <T> &);
+	operator += (const matrix4 &);
 
 	///  Add @a matrix to this matrix.
-	template <class T>
 	matrix4 &
-	operator -= (const matrix4 <T> &);
+	operator -= (const matrix4 &);
 
 	///  Returns this matrix multiplies by @a scalar.
 	matrix4 &
 	operator *= (const Type &);
 
 	///  Returns this matrix right multiplied by @a matrix.
-	template <class T>
 	matrix4 &
-	operator *= (const matrix4 <T> &);
+	operator *= (const matrix4 &);
 
 	///  Returns this matrix divided by @a scalar.
 	matrix4 &
 	operator /= (const Type &);
 
 	///  Returns this matrix left multiplied by @a matrix.
-	template <class T>
 	void
-	mult_left (const matrix4 <T> &);
+	mult_left (const matrix4 &);
 
 	///  Returns this matrix right multiplied by @a matrix.
-	template <class T>
 	void
-	mult_right (const matrix4 <T> &);
+	mult_right (const matrix4 &);
 
 	///  Returns a new vector that is @vector multiplies by matrix.
-	template <class T>
 	vector3 <Type>
-	mult_vec_matrix (const vector3 <T> &) const;
+	mult_vec_matrix (const vector3 <Type> &) const;
 
 	///  Returns a new vector that is @vector multiplies by matrix.
-	template <class T>
 	constexpr
 	vector4 <Type>
-	mult_vec_matrix (const vector4 <T> &) const;
+	mult_vec_matrix (const vector4 <Type> &) const;
 
 	///  Returns a new vector that is matrix multiplies by @vector.
-	template <class T>
 	vector3 <Type>
-	mult_matrix_vec (const vector3 <T> &) const;
+	mult_matrix_vec (const vector3 <Type> &) const;
 
 	///  Returns a new vector that is matrix multiplies by @vector.
-	template <class T>
 	constexpr
 	vector4 <Type>
-	mult_matrix_vec (const vector4 <T> &) const;
+	mult_matrix_vec (const vector4 <Type> &) const;
 
 	///  Returns a new vector that is @vector (a normal or direction vector) multiplies by matrix.
-	template <class T>
 	constexpr
 	vector3 <Type>
-	mult_dir_matrix (const vector3 <T> &) const;
+	mult_dir_matrix (const vector3 <Type> &) const;
 
 	///  Returns a new vector that is matrix multiplies by @vector (a normal or direction vector).
-	template <class T>
 	constexpr
 	vector3 <Type>
-	mult_matrix_dir (const vector3 <T> &) const;
+	mult_matrix_dir (const vector3 <Type> &) const;
 
 	///  Returns this matrix translated by @a translation.
 	void
@@ -439,10 +428,11 @@ public:
 
 private:
 
+	template <class T, class S>
 	bool
-	factor (vector3 <Type> & translation,
+	factor (vector3 <T> & translation,
 	        matrix3 <Type> & rotation,
-	        vector3 <Type> & scale,
+	        vector3 <S> & scale,
 	        matrix3 <Type> & scaleOrientation) const;
 
 	Type
@@ -542,12 +532,13 @@ matrix4 <Type>::set (const vector3 <Type> & translation,
 	if (scaleFactor not_eq vector3 <Type> (1, 1, 1))
 	{
 		if (scaleOrientation not_eq rotation4 <Type> ())
+		{
 			rotate (scaleOrientation);
-
-		scale (scaleFactor);
-
-		if (scaleOrientation not_eq rotation4 <Type> ())
+			scale (scaleFactor);
 			rotate (~scaleOrientation);
+		}
+		else
+			scale (scaleFactor);
 	}
 }
 
@@ -571,12 +562,13 @@ matrix4 <Type>::set (const vector3 <Type> & translation,
 	if (scaleFactor not_eq vector3 <Type> (1, 1, 1))
 	{
 		if (scaleOrientation not_eq rotation4 <Type> ())
+		{
 			rotate (scaleOrientation);
-
-		scale (scaleFactor);
-
-		if (scaleOrientation not_eq rotation4 <Type> ())
+			scale (scaleFactor);
 			rotate (~scaleOrientation);
+		}
+		else
+			scale (scaleFactor);
 	}
 
 	if (center not_eq vector3 <Type> ())
@@ -650,10 +642,11 @@ matrix4 <Type>::get (vector3 <T> & translation,
 }
 
 template <class Type>
+template <class T, class S>
 bool
-matrix4 <Type>::factor (vector3 <Type> & translation,
+matrix4 <Type>::factor (vector3 <T> & translation,
                         matrix3 <Type> & rotation,
-                        vector3 <Type> & scale,
+                        vector3 <S> & scale,
                         matrix3 <Type> & scaleOrientation) const
 {
 	// (1) Get translation.
@@ -788,20 +781,18 @@ throw (std::domain_error)
 }
 
 template <class Type>
-template <class T>
 inline
 matrix4 <Type> &
-matrix4 <Type>::operator += (const matrix4 <T> & matrix)
+matrix4 <Type>::operator += (const matrix4 & matrix)
 {
 	value += matrix .vector ();
 	return *this;
 }
 
 template <class Type>
-template <class T>
 inline
 matrix4 <Type> &
-matrix4 <Type>::operator -= (const matrix4 <T> & matrix)
+matrix4 <Type>::operator -= (const matrix4 & matrix)
 {
 	value -= matrix .vector ();
 	return *this;
@@ -820,10 +811,9 @@ matrix4 <Type>::operator *= (const Type & t)
 }
 
 template <class Type>
-template <class T>
 inline
 matrix4 <Type> &
-matrix4 <Type>::operator *= (const matrix4 <T> & matrix)
+matrix4 <Type>::operator *= (const matrix4 & matrix)
 {
 	mult_right (matrix);
 	return *this;
@@ -845,9 +835,8 @@ matrix4 <Type>::operator /= (const Type & t)
  * It takes 64 multiplies and 64 adds.
  */
 template <class Type>
-template <class T>
 void
-matrix4 <Type>::mult_left (const matrix4 <T> & matrix)
+matrix4 <Type>::mult_left (const matrix4 & matrix)
 {
 	#define MULT_LEFT(i, j) \
 	   (array [0 * 4 + j] * matrix .array [i * 4 + 0] +   \
@@ -882,9 +871,8 @@ matrix4 <Type>::mult_left (const matrix4 <T> & matrix)
  * It takes 64 multiplies and 64 adds.
  */
 template <class Type>
-template <class T>
 void
-matrix4 <Type>::mult_right (const matrix4 <T> & matrix)
+matrix4 <Type>::mult_right (const matrix4 & matrix)
 {
 	#define MULT_RIGHT(i, j) \
 	   (array [i * 4 + 0] * matrix .array [0 * 4 + j] +   \
@@ -919,9 +907,8 @@ matrix4 <Type>::mult_right (const matrix4 <T> & matrix)
  * It takes 12 multiplies, 3 divs and 12 adds.
  */
 template <class Type>
-template <class T>
 vector3 <Type>
-matrix4 <Type>::mult_vec_matrix (const vector3 <T> & vector) const
+matrix4 <Type>::mult_vec_matrix (const vector3 <Type> & vector) const
 {
 	const Type w = vector .x () * array [3] + vector .y () * array [7] + vector .z () * array [11] + array [15];
 
@@ -934,10 +921,9 @@ matrix4 <Type>::mult_vec_matrix (const vector3 <T> & vector) const
  * It takes 16 multiplies and 12 adds.
  */
 template <class Type>
-template <class T>
 constexpr
 vector4 <Type>
-matrix4 <Type>::mult_vec_matrix (const vector4 <T> & vector) const
+matrix4 <Type>::mult_vec_matrix (const vector4 <Type> & vector) const
 {
 	return vector4 <Type> (vector .x () * array [0] + vector .y () * array [4] + vector .z () * array [ 8] + vector .w () * array [12],
 	                       vector .x () * array [1] + vector .y () * array [5] + vector .z () * array [ 9] + vector .w () * array [13],
@@ -949,9 +935,8 @@ matrix4 <Type>::mult_vec_matrix (const vector4 <T> & vector) const
  * It takes 12 multiplies, 3 divs and 12 adds.
  */
 template <class Type>
-template <class T>
 vector3 <Type>
-matrix4 <Type>::mult_matrix_vec (const vector3 <T> & vector) const
+matrix4 <Type>::mult_matrix_vec (const vector3 <Type> & vector) const
 {
 	const Type w = vector .x () * array [12] + vector .y () * array [13] + vector .z () * array [14] + array [15];
 
@@ -964,10 +949,9 @@ matrix4 <Type>::mult_matrix_vec (const vector3 <T> & vector) const
  * It takes 16 multiplies and 12 adds.
  */
 template <class Type>
-template <class T>
 constexpr
 vector4 <Type>
-matrix4 <Type>::mult_matrix_vec (const vector4 <T> & vector) const
+matrix4 <Type>::mult_matrix_vec (const vector4 <Type> & vector) const
 {
 	return vector4 <Type> (vector .x () * array [ 0] + vector .y () * array [ 1] + vector .z () * array [ 2] + vector .w () * array [ 3],
 	                       vector .x () * array [ 4] + vector .y () * array [ 5] + vector .z () * array [ 6] + vector .w () * array [ 7],
@@ -979,10 +963,9 @@ matrix4 <Type>::mult_matrix_vec (const vector4 <T> & vector) const
  * It takes 9 multiplies and 6 adds.
  */
 template <class Type>
-template <class T>
 constexpr
 vector3 <Type>
-matrix4 <Type>::mult_dir_matrix (const vector3 <T> & vector) const
+matrix4 <Type>::mult_dir_matrix (const vector3 <Type> & vector) const
 {
 	return vector3 <Type> (vector .x () * array [0] + vector .y () * array [4] + vector .z () * array [ 8],
 	                       vector .x () * array [1] + vector .y () * array [5] + vector .z () * array [ 9],
@@ -993,10 +976,9 @@ matrix4 <Type>::mult_dir_matrix (const vector3 <T> & vector) const
  * It takes 9 multiplies and 6 adds.
  */
 template <class Type>
-template <class T>
 constexpr
 vector3 <Type>
-matrix4 <Type>::mult_matrix_dir (const vector3 <T> & vector) const
+matrix4 <Type>::mult_matrix_dir (const vector3 <Type> & vector) const
 {
 	return vector3 <Type> (vector .x () * array [0] + vector .y () * array [1] + vector .z () * array [ 2],
 	                       vector .x () * array [4] + vector .y () * array [5] + vector .z () * array [ 6],

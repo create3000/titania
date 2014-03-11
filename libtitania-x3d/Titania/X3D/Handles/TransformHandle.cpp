@@ -163,15 +163,15 @@ TransformHandle::removeHandle ()
 // transform -> setMatrix (childModelViewMatrix);
 
 void
-TransformHandle::addAbsoluteMatrix (const Matrix4f & absoluteMatrix)
+TransformHandle::addAbsoluteMatrix (const Matrix4d & absoluteMatrix)
 {
 	++ interestEvents;
 
-	transform -> setMatrix (getMatrix () * parentMatrix * absoluteMatrix * ~parentMatrix);
+	transform -> setMatrix (Matrix4d (getMatrix ()) * parentMatrix * absoluteMatrix * ~parentMatrix);
 }
 
 void
-TransformHandle::setMatrix (const Matrix4f & matrix)
+TransformHandle::setMatrix (const Matrix4d & matrix)
 {
 	++ interestEvents;
 
@@ -179,7 +179,7 @@ TransformHandle::setMatrix (const Matrix4f & matrix)
 }
 
 void
-TransformHandle::setMatrixWithCenter (const Matrix4f & matrix, const Vector3f & center)
+TransformHandle::setMatrixWithCenter (const Matrix4d & matrix, const Vector3f & center)
 {
 	++ interestEvents;
 
@@ -194,7 +194,7 @@ TransformHandle::interestsProcessed ()
 		
 	else
 	{
-		const auto differenceMatrix = ~(matrix * parentMatrix) * getMatrix () * parentMatrix;
+		const auto differenceMatrix = ~(matrix * parentMatrix) * Matrix4d (getMatrix ()) * parentMatrix;
 
 		for (const auto & node : getBrowser () -> getSelection () -> getChildren ())
 		{
@@ -233,7 +233,7 @@ TransformHandle::traverse (const TraverseType type)
 
 	getCurrentLayer () -> getLocalObjects () .emplace_back (new PolygonModeContainer (GL_FILL));
 	
-	//
+	// Remember matrices
 	
 	if (type == TraverseType::CAMERA)
 	{

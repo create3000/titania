@@ -181,25 +181,18 @@ public:
 	void
 	setUserData (const UserDataPtr &) final override;
 
+	virtual
 	void
-	addAbsoluteMatrix (const Matrix4f &);
+	setMatrix (const Matrix4d &) final override;
 
 	virtual
 	void
-	setMatrix (const Matrix4f &) final override;
-
-	virtual
-	void
-	setMatrixWithCenter (const Matrix4f &, const Vector3f &) final override;
+	setMatrixWithCenter (const Matrix4d &, const Vector3f &) final override;
 
 	virtual
 	const Matrix4f &
 	getMatrix () const final override
 	{ return transform -> getMatrix (); }
-
-	const Matrix4f &
-	getParentMatrix () const
-	{ return parentMatrix; }
 
 	///  @name Root node handling
 
@@ -275,6 +268,9 @@ private:
 	///  @name Operatations
 
 	void
+	addAbsoluteMatrix (const Matrix4d &);
+
+	void
 	reshape ();
 
 	///  @name Members
@@ -283,8 +279,8 @@ private:
 	SFBool* const      isActive;
 	X3DSFNode <Scene>  scene;
 
-	Matrix4f parentMatrix;
-	Matrix4f matrix;
+	Matrix4d parentMatrix;
+	Matrix4d matrix;
 	size_t   interestEvents;
 
 };

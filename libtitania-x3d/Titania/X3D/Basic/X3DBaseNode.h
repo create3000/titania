@@ -209,7 +209,7 @@ public:
 	{ return internal; }
 
 	void
-	isInternal (bool);
+	isInternal (const bool);
 	
 	bool
 	isSaved () const
@@ -217,13 +217,22 @@ public:
 
 	virtual
 	void
-	saveState ()
-	{ saved = true; }
+	saveState ();
 
 	virtual
 	void
-	restoreState ()
-	{ saved = false; }
+	restoreState ();
+
+	///  @name Handle handling
+
+	virtual
+	void
+	addHandle (SFBool* const)
+	{ }
+
+	virtual
+	void
+	removeHandle ();
 
 	///  @name Event handling
 
@@ -278,17 +287,6 @@ public:
 	void
 	traverse (const TraverseType)
 	{ }
-
-	///  @name Handle handling
-
-	virtual
-	void
-	addHandle (SFBool* const)
-	{ }
-
-	virtual
-	void
-	removeHandle ();
 
 	///  @name Comment handling
 

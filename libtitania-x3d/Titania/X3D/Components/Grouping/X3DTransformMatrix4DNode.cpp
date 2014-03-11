@@ -48,132 +48,38 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_GEOSPATIAL_GEO_TRANSFORM_H__
-#define __TITANIA_X3D_COMPONENTS_GEOSPATIAL_GEO_TRANSFORM_H__
-
-#include "../Geospatial/X3DGeospatialObject.h"
-#include "../Grouping/X3DTransformMatrix4DNode.h"
+#include "X3DTransformMatrix4DNode.h"
 
 namespace titania {
 namespace X3D {
 
-class GeoTransform :
-	public X3DTransformMatrix4DNode, public X3DGeospatialObject
+X3DTransformMatrix4DNode::X3DTransformMatrix4DNode () :
+	X3DGroupingNode (),
+	         matrix ()
 {
-public:
+	//addNodeType (X3DConstants::X3DTransformMatrix4DNode);
+}
 
-	///  @name Construction
+Box3f
+X3DTransformMatrix4DNode::getBBox () const
+{
+	if (getDisplay ())
+		return X3DGroupingNode::getBBox () * matrix;
+	
+	return Box3f ();
+}
 
-	GeoTransform (X3DExecutionContext* const);
+void
+X3DTransformMatrix4DNode::traverse (const TraverseType type)
+{
+	getModelViewMatrix () .push ();
 
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
+	getModelViewMatrix () .mult_left (matrix);
 
-	///  @name Common members
+	X3DGroupingNode::traverse (type);
 
-	virtual
-	const std::string &
-	getComponentName () const final override
-	{ return componentName; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
-
-	///  @name Fields
-
-	SFVec3f &
-	translation ()
-	{ return *fields .translation; }
-
-	const SFVec3f &
-	translation () const
-	{ return *fields .translation; }
-
-	SFRotation &
-	rotation ()
-	{ return *fields .rotation; }
-
-	const SFRotation &
-	rotation () const
-	{ return *fields .rotation; }
-
-	SFVec3f &
-	scale ()
-	{ return *fields .scale; }
-
-	const SFVec3f &
-	scale () const
-	{ return *fields .scale; }
-
-	SFRotation &
-	scaleOrientation ()
-	{ return *fields .scaleOrientation; }
-
-	const SFRotation &
-	scaleOrientation () const
-	{ return *fields .scaleOrientation; }
-
-	SFVec3d &
-	geoCenter ()
-	{ return *fields .geoCenter; }
-
-	const SFVec3d &
-	geoCenter () const
-	{ return *fields .geoCenter; }
-
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () final override;
-
-
-private:
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
-
-	///  @name Event handlers
-
-	void
-	eventsProcessed ();
-
-	///  @name Static members
-
-	static const std::string componentName;
-	static const std::string typeName;
-	static const std::string containerField;
-
-	///  @name Members
-
-	struct Fields
-	{
-		Fields ();
-
-		SFVec3f* const translation;
-		SFRotation* const rotation;
-		SFVec3f* const scale;
-		SFRotation* const scaleOrientation;
-		SFVec3d* const geoCenter;
-	};
-
-	Fields fields;
-
-};
+	getModelViewMatrix () .pop ();
+}
 
 } // X3D
 } // titania
-
-#endif

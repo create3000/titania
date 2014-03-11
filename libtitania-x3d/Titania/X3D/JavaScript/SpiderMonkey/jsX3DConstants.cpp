@@ -166,7 +166,6 @@ JSPropertySpec jsX3DConstants::properties [ ] = {
 	{ "X3DFontStyleNode",             JS_X3D_FONTSTYLE_NODE,             JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DFontStyleNode,             NULL },
 	{ "X3DGeometricPropertyNode",     JS_X3D_GEOMETRICPROPERTY_NODE,     JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DGeometricPropertyNode,     NULL },
 	{ "X3DGeometryNode",              JS_X3D_GEOMETRY_NODE,              JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DGeometryNode,              NULL },
-	{ "X3DGeospatialObject",          JS_X3D_GEOSPATIAL_OBJECT,          JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DGeospatialObject,          NULL },
 	{ "X3DGroupingNode",              JS_X3D_GROUPING_NODE,              JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DGroupingNode,              NULL },
 	{ "X3DInfoNode",                  JS_X3D_INFO_NODE,                  JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DInfoNode,                  NULL },
 	{ "X3DInterpolatorNode",          JS_X3D_INTERPOLATOR_NODE,          JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DInterpolatorNode,          NULL },
@@ -208,7 +207,6 @@ JSPropertySpec jsX3DConstants::properties [ ] = {
 	{ "X3DTextureTransformNode",      JS_X3D_TEXTURETRANSFORM_NODE,      JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DTextureTransformNode,      NULL },
 	{ "X3DTimeDependentNode",         JS_X3D_TIMEDEPENDENT_NODE,         JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DTimeDependentNode,         NULL },
 	{ "X3DTouchSensorNode",           JS_X3D_TOUCHSENSOR_NODE,           JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DTouchSensorNode,           NULL },
-	{ "X3DTransformNode",             JS_X3D_TRANSFORM_NODE,             JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DTransformNode,             NULL },
 	{ "X3DTriggerNode",               JS_X3D_TRIGGER_NODE,               JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DTriggerNode,               NULL },
 	{ "X3DUrlObject",                 JS_X3D_URL_OBJECT,                 JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DUrlObject,                 NULL },
 	{ "X3DVertexAttributeNode",       JS_X3D_VERTEXATTRIBUTE_NODE,       JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DVertexAttributeNode,       NULL },
@@ -686,12 +684,6 @@ jsX3DConstants::X3DGeometryNode (JSContext* context, JSObject* obj, jsid id, jsv
 }
 
 JSBool
-jsX3DConstants::X3DGeospatialObject (JSContext* context, JSObject* obj, jsid id, jsval* vp)
-{
-	return JS_NewNumberValue (context, X3DConstants::X3DGeospatialObject, vp);
-}
-
-JSBool
 jsX3DConstants::X3DGroupingNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	return JS_NewNumberValue (context, X3DConstants::X3DGroupingNode, vp);
@@ -935,12 +927,6 @@ JSBool
 jsX3DConstants::X3DTouchSensorNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	return JS_NewNumberValue (context, X3DConstants::X3DTouchSensorNode, vp);
-}
-
-JSBool
-jsX3DConstants::X3DTransformNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
-{
-	return JS_NewNumberValue (context, X3DConstants::X3DTransformNode, vp);
 }
 
 JSBool

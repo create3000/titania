@@ -2544,6 +2544,7 @@
     <Folder Include="Tests\Texturing3D\" />
     <Folder Include="Tests\ParticleSystems\" />
     <Folder Include="Tests\Geospatial\" />
+    <Folder Include="Tests\Layering\home1\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Navigation\Rotor.wrl" />
@@ -2562,5 +2563,13 @@
     <Content Include="Tests\Follower\CoordinateChaser.wrl" />
     <Content Include="Tests\Follower\OrientationChaser.wrl" />
     <Content Include="Tests\Follower\OrientationDamper.wrl" />
+    <Content Include="Tests\Layering\home1\home.wrl" />
+    <Content Include="Tests\Layering\home1\library\Rotor.wrl" />
+    <Content Include="Tests\Layering\home1\library\Colors.wrl" />
+    <Content Include="Tests\Layering\home1\library\background.wrl" />
+    <Content Include="Tests\Layering\home1\library\info.png" />
+    <Content Include="Tests\Layering\home1\library\info.svg" />
+    <Content Include="Tests\Layering\home1\library\logo.wrl" />
+    <Content Include="Tests\Layering\home1\library\red.orange.yellow.wrl" />
   </ItemGroup>
 </Project>

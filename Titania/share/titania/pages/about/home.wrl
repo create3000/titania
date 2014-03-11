@@ -19,20 +19,17 @@ EXTERNPROTO Rotor [
 ]
 "library/Rotor.wrl"
 
-DEF NavigationInfo NavigationInfo { }
-
-DEF Home Viewpoint {
-  description "Home"
-  position 0 0 34
-}
-
-DEF Far Viewpoint {
-  description "Far"
-  position 0 0 68
+DEF NavigationInfo NavigationInfo {
+  type "NONE"
 }
 
 DEF White Background {
   skyColor 1 1 1
+}
+
+DEF Home Viewpoint {
+  description "Home"
+  position 0 0 0.5
 }
 
 DEF Fastener Rotor {
@@ -46,55 +43,89 @@ DEF Slower Rotor {
   loop TRUE
 }
 
-LayerSet {
-  order [
+DEF _1 TimeSensor {
+  cycleInterval 40
+}
+
+DEF _2 ScalarInterpolator {
+  key [
+    0,
+    0.2,
+    0.25,
+    0.35,
+    1
+  ]
+  keyValue [
+    1,
+    0,
     0,
     1,
-    2,
-    3
-  ]
-  layers [
-    Layer {
-      children [
-        USE NavigationInfo
-        USE Home
-        USE Far
-        DEF Lesser Transform {
-          rotation 0 0 1 2.5915
-          scale 0.236068 0.236068 1
-          children DEF loops Inline {
-            url "library/red.orange.yellow.wrl"
-          }
-        }
-      ]
-    }
-    Layer {
-      children [
-        USE NavigationInfo
-        USE Home
-        USE Far
-        DEF Greater Transform {
-          children USE loops
-        }
-      ]
-    }
-    Layer {
-      children [
-        USE NavigationInfo
-        USE Home
-        USE Far
-        DEF Greater1 Transform {
-          translation 0.0524366 2.42285e-15 0
-          rotation 0 0 -1 2.5915
-          scale 4.5 4.5 4.5
-          children DEF loops1 Inline {
-            url "library/red.orange.yellow.wrl"
-          }
-        }
-      ]
-    }
+    1
   ]
 }
 
-ROUTE Fastener.rotation_changed TO Lesser.set_rotation
-ROUTE Slower.rotation_changed TO Greater1.set_rotation
+DEF _3 PositionInterpolator {
+  key [
+    0,
+    0.35,
+    1
+  ]
+  keyValue [
+    0 0 0.5,
+    0 0 0.5,
+    0 0 34
+  ]
+}
+
+DEF Titania Transform {
+  children Shape {
+    appearance Appearance {
+      material DEF _4 Material {
+        diffuseColor 0 0 0
+        transparency 1
+      }
+    }
+    geometry Text {
+      string "Titania"
+      fontStyle FontStyle {
+        family [
+          "../../fonts/pt-sans/PTN77F.ttf",
+          "sans"
+        ]
+        size 0.1
+        justify [
+          "MIDDLE",
+          "MIDDLE"
+        ]
+      }
+    }
+  }
+}
+
+DEF Small Transform {
+  scale 0.222222 0.222222 1
+  children DEF loops Inline {
+    url "library/red.orange.yellow.wrl"
+  }
+}
+
+DEF Medium Transform {
+  children USE loops
+}
+
+DEF Large Transform {
+  scale 4.5 4.5 1
+  children USE loops
+}
+
+DEF _5 LoadSensor {
+  watchList USE loops
+}
+
+ROUTE Fastener.rotation_changed TO Small.set_rotation
+ROUTE Slower.rotation_changed TO Large.set_rotation
+ROUTE _2.value_changed TO _4.set_transparency
+ROUTE _3.value_changed TO Home.set_position
+ROUTE _1.fraction_changed TO _2.set_fraction
+ROUTE _1.fraction_changed TO _3.set_fraction
+ROUTE _5.loadTime TO _1.set_startTime

@@ -1,3 +1,9 @@
+2014-03-11  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Matrix4.h:
+	* Matrix3.h:
+	* Matrix2.h: 
+
 2014-03-06  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Geodetic.h: 

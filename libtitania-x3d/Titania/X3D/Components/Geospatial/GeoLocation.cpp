@@ -63,11 +63,10 @@ GeoLocation::Fields::Fields () :
 { }
 
 GeoLocation::GeoLocation (X3DExecutionContext* const executionContext) :
-	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	    X3DGroupingNode (),
-	X3DGeospatialObject (),
-	             fields (),
-	             matrix ()
+	             X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DTransformMatrix4DNode (),
+	     X3DGeospatialObject (),
+	                  fields ()
 {
 	addField (inputOutput,    "metadata",       metadata ());
 	addField (initializeOnly, "geoSystem",      geoSystem ());
@@ -89,9 +88,9 @@ GeoLocation::create (X3DExecutionContext* const executionContext) const
 void
 GeoLocation::initialize ()
 {
-	X3DGroupingNode::initialize ();
+	X3DTransformMatrix4DNode::initialize ();
 	X3DGeospatialObject::initialize ();
-	
+
 	addInterest (this, &GeoLocation::eventsProcessed);
 
 	eventsProcessed ();
@@ -100,35 +99,14 @@ GeoLocation::initialize ()
 void
 GeoLocation::eventsProcessed ()
 {
-	matrix = getLocationMatrix (geoCoords ());
-}
-
-Box3f
-GeoLocation::getBBox () const
-{
-	if (getDisplay ())
-		return Box3d (X3DGroupingNode::getBBox ()) * matrix;
-
-	return Box3f ();
-}
-
-void
-GeoLocation::traverse (const TraverseType type)
-{
-	getModelViewMatrix () .push ();
-
-	getModelViewMatrix () .mult_left (matrix);
-
-	X3DGroupingNode::traverse (type);
-
-	getModelViewMatrix () .pop ();
+	setMatrix (getLocationMatrix (geoCoords ()));
 }
 
 void
 GeoLocation::dispose ()
 {
 	X3DGeospatialObject::dispose ();
-	X3DGroupingNode::dispose ();
+	X3DTransformMatrix4DNode::dispose ();
 }
 
 } // X3D

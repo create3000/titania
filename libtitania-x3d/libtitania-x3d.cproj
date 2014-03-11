@@ -639,6 +639,7 @@
     <None Include="Titania\X3D\Types\MatrixStack.h" />
     <None Include="Titania\X3D\Configuration\Unit.h" />
     <None Include="Titania\X3D\Configuration\UnitArray.h" />
+    <None Include="Titania\X3D\Components\Grouping\X3DTransformMatrix4DNode.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1103,6 +1104,7 @@
     <Compile Include="Titania\X3D\Components\Geospatial\X3DGeospatialObject.cpp" />
     <Compile Include="Titania\X3D\Configuration\Unit.cpp" />
     <Compile Include="Titania\X3D\Configuration\UnitArray.cpp" />
+    <Compile Include="Titania\X3D\Components\Grouping\X3DTransformMatrix4DNode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

@@ -148,18 +148,21 @@ World::bind ()
 		{
 			const auto navigationInfo = layer -> getNavigationInfos () -> bound ();
 			layer -> getNavigationInfoStack () -> force_push (navigationInfo);
+			navigationInfo -> addLayer (layer);
 		}
 
 		if (not layer -> getBackgrounds () -> empty ())
 		{
 			const auto background = layer -> getBackgrounds () -> bound ();
 			layer -> getBackgroundStack () -> force_push (background);
+			background -> addLayer (layer);
 		}
 
 		if (not layer -> getFogs () -> empty ())
 		{
 			const auto fog = layer -> getFogs () -> bound ();
 			layer -> getFogStack () -> force_push (fog);
+			fog -> addLayer (layer);
 		}
 
 		// Bind first viewpoint in viewpoint stack.
@@ -168,8 +171,8 @@ World::bind ()
 		{
 			const auto viewpoint = layer -> getViewpoints () -> bound ();
 			layer -> getViewpointStack () -> force_push (viewpoint);
+			viewpoint -> addLayer (layer);
 		}
-		
 	}
 
 	// Bind viewpoint from URL.

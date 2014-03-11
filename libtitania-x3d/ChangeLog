@@ -1,3 +1,29 @@
+2014-03-11  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* X3DConstants.h:
+	* World.cpp:
+	* X3DBaseNode.h:
+	* X3DBaseNode.cpp:
+	* TransformHandle.h:
+	* TransformHandle.cpp:
+	* Transform.h:
+	* X3DBindableNode.h:
+	* X3DBindableNode.cpp:
+	* GeoLocation.h:
+	* GeoTransform.h:
+	* GeoLocation.cpp:
+	* X3DTransformNode.h:
+	* GeoTransform.cpp:
+	* jsX3DConstants.h:
+	* X3DTransformNode.cpp:
+	* jsX3DConstants.cpp:
+	* X3DGeospatialObject.cpp:
+	* Background.cpp:
+	* X3DTransformMatrix4DNode.h:
+	* X3DTransformMatrix4DNode.cpp: 
+
 2014-03-10  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* MediaStream.h:

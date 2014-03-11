@@ -117,7 +117,7 @@ Background::copy (X3DExecutionContext* const executionContext) const
 throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>)
 {
-	Background* copy = dynamic_cast <Background*> (X3DBaseNode::copy (executionContext));
+	Background* const copy = dynamic_cast <Background*> (X3DBaseNode::copy (executionContext));
 
 	X3DUrlObject::transform (copy -> frontUrl (),  getExecutionContext (), executionContext);
 	X3DUrlObject::transform (copy -> backUrl (),   getExecutionContext (), executionContext);

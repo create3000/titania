@@ -165,7 +165,6 @@ private:
 		JS_X3D_FONTSTYLE_NODE,
 		JS_X3D_GEOMETRICPROPERTY_NODE,
 		JS_X3D_GEOMETRY_NODE,
-		JS_X3D_GEOSPATIAL_OBJECT,
 		JS_X3D_GROUPING_NODE,
 		JS_X3D_INFO_NODE,
 		JS_X3D_INTERPOLATOR_NODE,
@@ -208,7 +207,6 @@ private:
 		JS_X3D_TEXTURETRANSFORM_NODE,
 		JS_X3D_TIMEDEPENDENT_NODE,
 		JS_X3D_TOUCHSENSOR_NODE,
-		JS_X3D_TRANSFORM_NODE,
 		JS_X3D_TRIGGER_NODE,
 		JS_X3D_URL_OBJECT,
 		JS_X3D_VERTEXATTRIBUTE_NODE,
@@ -307,7 +305,6 @@ private:
 	static JSBool X3DFontStyleNode             (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool X3DGeometricPropertyNode     (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool X3DGeometryNode              (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DGeospatialObject          (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool X3DGroupingNode              (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool X3DInfoNode                  (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool X3DInterpolatorNode          (JSContext *, JSObject *, jsid, jsval*);
@@ -349,7 +346,6 @@ private:
 	static JSBool X3DTextureTransformNode      (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool X3DTimeDependentNode         (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool X3DTouchSensorNode           (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DTransformNode             (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool X3DTriggerNode               (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool X3DUrlObject                 (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool X3DVertexAttributeNode       (JSContext *, JSObject *, jsid, jsval*);

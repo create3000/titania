@@ -1,0 +1,176 @@
+#X3D V3.0 utf8 Titania
+
+META "icon" "about:icon"
+META "title" "about:url_error"
+
+# Background used in date and url_error
+
+EXTERNPROTO Red [
+  inputOutput SFFloat transparency
+]
+"Colors.wrl"
+
+EXTERNPROTO Orange [
+  inputOutput SFFloat transparency
+]
+"Colors.wrl"
+
+EXTERNPROTO Yellow [
+  inputOutput SFFloat transparency
+]
+"Colors.wrl"
+
+DEF EnterWorld VisibilitySensor { }
+
+DEF Blue Background {
+  skyColor 0.25098 0.270588 0.329412
+}
+
+DEF Home Viewpoint {
+  description "Home"
+}
+
+ROUTE EnterWorld .isActive TO Blue.set_bind
+ROUTE EnterWorld .isActive TO Home.set_bind
+
+DEF Titania Transform {
+  translation 3 -4 0
+  children [
+    DEF T Transform {
+      children [
+        DEF Balken Transform {
+          translation 0 0.4 0
+          rotation 0 0 1 0.3
+          scale 0.2 0.05 0.06
+          children Shape {
+            appearance Appearance {
+              material Red { }
+            }
+            geometry Box { }
+          }
+        }
+        DEF Mast Transform {
+          translation 0 0.1 0
+          scale 0.06 0.2 0.06
+          children Shape {
+            appearance Appearance {
+              material Red { }
+            }
+            geometry Cylinder { }
+          }
+        }
+      ]
+    }
+    DEF i Transform {
+      translation 0.25 0 0
+      children [
+        DEF Punkt Transform {
+          translation 0 0.2 0
+          scale 0.06 0.06 0.06
+          children Shape {
+            appearance Appearance {
+              material Yellow { }
+            }
+            geometry Sphere { }
+          }
+        }
+        DEF Stamm Transform {
+          scale 0.06 0.1 0.06
+          children Shape {
+            appearance Appearance {
+              material Orange { }
+            }
+            geometry Cylinder { }
+          }
+        }
+      ]
+    }
+    DEF t Transform {
+      translation 0.5 0 0
+      children DEF Mast Transform {
+        translation 0 0.1 0
+        scale 0.06 0.2 0.06
+        children Shape {
+          appearance Appearance {
+            material Red { }
+          }
+          geometry Cylinder { }
+        }
+      }
+    }
+    DEF a Transform {
+      translation 0.75 0 0
+      children DEF Mast Transform {
+        translation 0 0.05 0
+        scale 0.06 0.15 0.06
+        children Shape {
+          appearance Appearance {
+            material Orange { }
+          }
+          geometry Cone { }
+        }
+      }
+    }
+    DEF n Transform {
+      translation 1 0 0
+      children DEF Mast Transform {
+        scale 0.08 0.1 0.06
+        children Shape {
+          appearance Appearance {
+            material Yellow { }
+          }
+          geometry Cylinder { }
+        }
+      }
+    }
+    DEF i2 Transform {
+      translation 1.25 0 0
+      children [
+        DEF i2Punkt Transform {
+          translation 0 0.25 0
+          scale 0.06 0.06 0.06
+          children Shape {
+            appearance Appearance {
+              material Orange { }
+            }
+            geometry Sphere { }
+          }
+        }
+        DEF i2Stamm Transform {
+          scale 0.06 0.1 0.06
+          children Shape {
+            appearance Appearance {
+              material Red { }
+            }
+            geometry Cylinder { }
+          }
+        }
+      ]
+    }
+    DEF a Transform {
+      translation 1.5 0 0
+      children DEF Mast Transform {
+        translation 0 0.05 0
+        scale 0.06 0.15 0.06
+        children Shape {
+          appearance Appearance {
+            material Yellow { }
+          }
+          geometry Cone { }
+        }
+      }
+    }
+  ]
+}
+
+DEF i2Timer TimeSensor {
+  loop TRUE
+}
+
+DEF i2PointInterpolator PositionInterpolator {
+  key [ 0, 0.25, 0.5, 0.75, 1 ]
+  keyValue [ 0 0.2 0, 0 0.22 0, 0 0.3 0, 0 0.22 0, 0 0.2 0 ]
+}
+
+ROUTE i2Timer.fraction_changed TO i2PointInterpolator.set_fraction
+ROUTE i2PointInterpolator.value_changed TO i2Punkt.set_translation

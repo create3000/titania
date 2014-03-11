@@ -268,57 +268,50 @@ public:
 	throw (std::domain_error);
 
 	///  Add @a matrix to this matrix.
-	template <class T>
 	matrix2 &
-	operator += (const matrix2 <T> &);
+	operator += (const matrix2 &);
 
 	///  Add @a matrix to this matrix.
-	template <class T>
 	matrix2 &
-	operator -= (const matrix2 <T> &);
+	operator -= (const matrix2 &);
 
 	///  Returns this matrix multiplies by @a scalar.
 	matrix2 &
 	operator *= (const Type &);
 
 	///  Returns this matrix right multiplied by @a matrix.
-	template <class T>
 	matrix2 &
-	operator *= (const matrix2 <T> &);
+	operator *= (const matrix2 &);
 
 	///  Returns this matrix divided by @a scalar.
 	matrix2 &
 	operator /= (const Type &);
 
 	///  Returns this matrix left multiplied by @a matrix.
-	template <class T>
 	void
-	mult_left (const matrix2 <T> &);
+	mult_left (const matrix2 &);
 
 	///  Returns this matrix right multiplied by @a matrix.
-	template <class T>
 	void
-	mult_right (const matrix2 <T> &);
+	mult_right (const matrix2 &);
 
 	///  Returns a new vector that is @vector multiplies by matrix.
 	Type
 	mult_vec_matrix (const Type &) const;
 
 	///  Returns a new vector that is @vector multiplies by matrix.
-	template <class T>
 	constexpr
 	vector2 <Type>
-	mult_vec_matrix (const vector2 <T> &) const;
+	mult_vec_matrix (const vector2 <Type> &) const;
 
 	///  Returns a new vector that is matrix multiplies by @vector.
 	Type
 	mult_matrix_vec (const Type &) const;
 
 	///  Returns a new vector that is matrix multiplies by @vector.
-	template <class T>
 	constexpr
 	vector2 <Type>
-	mult_matrix_vec (const vector2 <T> &) const;
+	mult_matrix_vec (const vector2 <Type> &) const;
 
 	///  Returns a new vector that is @vector (a normal or direction vector) multiplies by matrix.
 	constexpr
@@ -468,20 +461,18 @@ throw (std::domain_error)
 }
 
 template <class Type>
-template <class T>
 inline
 matrix2 <Type> &
-matrix2 <Type>::operator += (const matrix2 <T> & matrix)
+matrix2 <Type>::operator += (const matrix2 & matrix)
 {
 	value += matrix .vector ();
 	return *this;
 }
 
 template <class Type>
-template <class T>
 inline
 matrix2 <Type> &
-matrix2 <Type>::operator -= (const matrix2 <T> & matrix)
+matrix2 <Type>::operator -= (const matrix2 & matrix)
 {
 	value -= matrix .vector ();
 	return *this;
@@ -498,10 +489,9 @@ matrix2 <Type>::operator *= (const Type & t)
 }
 
 template <class Type>
-template <class T>
 inline
 matrix2 <Type> &
-matrix2 <Type>::operator *= (const matrix2 <T> & matrix)
+matrix2 <Type>::operator *= (const matrix2 & matrix)
 {
 	mult_right (matrix);
 	return *this;
@@ -518,9 +508,8 @@ matrix2 <Type>::operator /= (const Type & t)
 }
 
 template <class Type>
-template <class T>
 void
-matrix2 <Type>::mult_left (const matrix2 <T> & matrix)
+matrix2 <Type>::mult_left (const matrix2 & matrix)
 {
 	#define MULT_LEFT(i, j) \
 	   (array [0 * 2 + j] * matrix .array [i * 2 + 0] +   \
@@ -536,9 +525,8 @@ matrix2 <Type>::mult_left (const matrix2 <T> & matrix)
 }
 
 template <class Type>
-template <class T>
 void
-matrix2 <Type>::mult_right (const matrix2 <T> & matrix)
+matrix2 <Type>::mult_right (const matrix2 & matrix)
 {
 	#define MULT_RIGHT(i, j) \
 	   (array [i * 2 + 0] * matrix .array [0 * 2 + j] +   \
@@ -563,10 +551,9 @@ matrix2 <Type>::mult_vec_matrix (const Type & vector) const
 }
 
 template <class Type>
-template <class T>
 constexpr
 vector2 <Type>
-matrix2 <Type>::mult_vec_matrix (const vector2 <T> & vector) const
+matrix2 <Type>::mult_vec_matrix (const vector2 <Type> & vector) const
 {
 	return vector2 <Type> (vector .x () * array [0] + vector .y () * array [2],
 	                       vector .x () * array [1] + vector .y () * array [3]);
@@ -582,10 +569,9 @@ matrix2 <Type>::mult_matrix_vec (const Type & vector) const
 }
 
 template <class Type>
-template <class T>
 constexpr
 vector2 <Type>
-matrix2 <Type>::mult_matrix_vec (const vector2 <T> & vector) const
+matrix2 <Type>::mult_matrix_vec (const vector2 <Type> & vector) const
 {
 	return vector2 <Type> (vector .x () * array [0] + vector .y () * array [1],
 	                       vector .x () * array [2] + vector .y () * array [3]);

@@ -96,11 +96,6 @@ public:
 	addHandle (SFBool* const) override;
 
 
-protected:
-
-	using X3DGroupingNode::addHandle;
-
-
 private:
 
 	///  @name Static members

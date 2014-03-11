@@ -35,6 +35,30 @@ EXTERNPROTO Yellow [
 ]
 "Colors.wrl"
 
+DEF NavigationInfo NavigationInfo {
+  headlight FALSE
+}
+
+Background {
+  skyColor 1 1 1
+  transparency 1
+}
+
+DEF Viewpoint1 Viewpoint {
+  description "Red Orange Yellow Viewpoint 1"
+  position 0 0 34
+}
+
+DEF Viewpoint2 Viewpoint {
+  description "Red Orange Yellow Viewpoint 2"
+  position 0 0 23
+}
+
+DEF Viewpoint3 Viewpoint {
+  description "Red Orange Yellow Viewpoint 3"
+  position 0 0 17
+}
+
 DEF Red Transform {
   children Shape {
     appearance Appearance {

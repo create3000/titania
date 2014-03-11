@@ -51,13 +51,13 @@
 #ifndef __TITANIA_X3D_COMPONENTS_GROUPING_X3DTRANSFORM_NODE_H__
 #define __TITANIA_X3D_COMPONENTS_GROUPING_X3DTRANSFORM_NODE_H__
 
-#include "../Grouping/X3DGroupingNode.h"
+#include "../Grouping/X3DTransformMatrix4DNode.h"
 
 namespace titania {
 namespace X3D {
 
 class X3DTransformNode :
-	public X3DGroupingNode
+	public X3DTransformMatrix4DNode
 {
 public:
 
@@ -116,27 +116,12 @@ public:
 	///  @name Member access
 
 	virtual
-	Box3f
-	getBBox () const override;
+	void
+	setMatrix (const Matrix4d &) override;
 
 	virtual
 	void
-	setMatrix (const Matrix4f &);
-
-	virtual
-	void
-	setMatrixWithCenter (const Matrix4f &, const Vector3f &);
-
-	virtual
-	const Matrix4f &
-	getMatrix () const
-	{ return matrix; }
-
-	///  @name Operations
-
-	virtual
-	void
-	traverse (const TraverseType) override;
+	setMatrixWithCenter (const Matrix4d &, const Vector3f &);
 
 
 protected:
@@ -157,6 +142,10 @@ protected:
 
 private:
 
+	static
+	bool
+	isUniform (const Vector3f &);
+
 	///  @name Members
 
 	struct Fields
@@ -171,8 +160,6 @@ private:
 	};
 
 	Fields fields;
-
-	Matrix4f matrix;
 
 };
 

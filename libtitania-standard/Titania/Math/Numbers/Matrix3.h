@@ -329,71 +329,60 @@ public:
 	throw (std::domain_error);
 
 	///  Add @a matrix to this matrix.
-	template <class T>
 	matrix3 &
-	operator += (const matrix3 <T> &);
+	operator += (const matrix3 <Type> &);
 
 	///  Add @a matrix to this matrix.
-	template <class T>
 	matrix3 &
-	operator -= (const matrix3 <T> &);
+	operator -= (const matrix3 <Type> &);
 
 	///  Returns this matrix multiplies by @a scalar.
 	matrix3 &
 	operator *= (const Type &);
 
 	///  Returns this matrix right multiplied by @a matrix.
-	template <class T>
 	matrix3 &
-	operator *= (const matrix3 <T> &);
+	operator *= (const matrix3 &);
 
 	///  Returns this matrix divided by @a scalar.
 	matrix3 &
 	operator /= (const Type &);
 
 	///  Returns this matrix left multiplied by @a matrix.
-	template <class T>
 	void
-	mult_left (const matrix3 <T> &);
+	mult_left (const matrix3 &);
 
 	///  Returns this matrix right multiplied by @a matrix.
-	template <class T>
 	void
-	mult_right (const matrix3 <T> &);
+	mult_right (const matrix3 &);
 
 	///  Returns a new vector that is @vector multiplies by matrix.
-	template <class T>
 	vector2 <Type>
-	mult_vec_matrix (const vector2 <T> &) const;
+	mult_vec_matrix (const vector2 <Type> &) const;
 
 	///  Returns a new vector that is @vector multiplies by matrix.
-	template <class T>
 	constexpr
 	vector3 <Type>
-	mult_vec_matrix (const vector3 <T> &) const;
+	mult_vec_matrix (const vector3 <Type> &) const;
 
 	///  Returns a new vector that is matrix multiplies by @vector.
-	template <class T>
 	vector2 <Type>
-	mult_matrix_vec (const vector2 <T> &) const;
+	mult_matrix_vec (const vector2 <Type> &) const;
 
 	///  Returns a new vector that is matrix multiplies by @vector.
-	template <class T>
 	constexpr
 	vector3 <Type>
-	mult_matrix_vec (const vector3 <T> &) const;
+	mult_matrix_vec (const vector3 <Type> &) const;
 
 	///  Returns a new vector that is @vector (a normal or direction vector) multiplies by matrix.
-	template <class T>
 	constexpr
 	vector2 <Type>
-	mult_dir_matrix (const vector2 <T> &) const;
+	mult_dir_matrix (const vector2 <Type> &) const;
 
 	///  Returns a new vector that is matrix multiplies by @vector (a normal or direction vector).
-	template <class T>
 	constexpr
 	vector2 <Type>
-	mult_matrix_dir (const vector2 <T> &) const;
+	mult_matrix_dir (const vector2 <Type> &) const;
 
 	///  Returns this matrix translated by @a translation.
 	void
@@ -416,10 +405,11 @@ private:
 	Type
 	rotation () const;
 
+	template <class T, class S>
 	bool
-	factor (vector2 <Type> &,
+	factor (vector2 <T> &,
 	        matrix2 <Type> &,
-	        vector2 <Type> &,
+	        vector2 <S> &,
 	        matrix2 <Type> &) const;
 
 	union
@@ -536,12 +526,13 @@ matrix3 <Type>::set (const vector2 <Type> & translation,
 	if (scaleFactor not_eq vector2 <Type> (1, 1))
 	{
 		if (scaleOrientation not_eq Type (0))
+		{
 			rotate (scaleOrientation);
-
-		scale (scaleFactor);
-
-		if (scaleOrientation not_eq Type (0))
+			scale (scaleFactor);
 			rotate (-scaleOrientation);
+		}
+		else
+			scale (scaleFactor);
 	}
 }
 
@@ -564,12 +555,13 @@ matrix3 <Type>::set (const vector2 <Type> & translation,
 	if (scaleFactor not_eq vector2 <Type> (1, 1))
 	{
 		if (scaleOrientation not_eq Type (0))
+		{
 			rotate (scaleOrientation);
-
-		scale (scaleFactor);
-
-		if (scaleOrientation not_eq Type (0))
+			scale (scaleFactor);
 			rotate (-scaleOrientation);
+		}
+		else
+			scale (scaleFactor);
 	}
 
 	if (center not_eq vector2 <Type> ())
@@ -638,10 +630,11 @@ matrix3 <Type>::get (vector2 <Type> & translation,
 }
 
 template <class Type>
+template <class T, class S>
 bool
-matrix3 <Type>::factor (vector2 <Type> & translation,
+matrix3 <Type>::factor (vector2 <T> & translation,
                         matrix2 <Type> & rotation,
-                        vector2 <Type> & scale,
+                        vector2 <S> & scale,
                         matrix2 <Type> & scaleOrientation) const
 {
 	// (1) Get translation.
@@ -673,8 +666,11 @@ matrix3 <Type>::factor (vector2 <Type> & translation,
 	// Compute s = sqrt(evalues), with sign. Set si = s-inverse
 	matrix2 <Type> si;
 
-	scale [0]  = det_sign * std::sqrt (evalues [0]);
-	si [0] [0] = 1 / scale [0];
+	for (size_t i = 0; i < 2; ++ i)
+	{
+		scale [i]  = det_sign * std::sqrt (evalues [i]);
+		si [i] [i] = 1 / scale [i];
+	}
 
 	// (5) Compute U = !R ~S R A.
 	rotation = scaleOrientation * si * ! scaleOrientation * a;
@@ -765,20 +761,18 @@ throw (std::domain_error)
 }
 
 template <class Type>
-template <class T>
 inline
 matrix3 <Type> &
-matrix3 <Type>::operator += (const matrix3 <T> & matrix)
+matrix3 <Type>::operator += (const matrix3 & matrix)
 {
 	value += matrix .vector ();
 	return *this;
 }
 
 template <class Type>
-template <class T>
 inline
 matrix3 <Type> &
-matrix3 <Type>::operator -= (const matrix3 <T> & matrix)
+matrix3 <Type>::operator -= (const matrix3 & matrix)
 {
 	value -= matrix .vector ();
 	return *this;
@@ -796,10 +790,9 @@ matrix3 <Type>::operator *= (const Type & t)
 }
 
 template <class Type>
-template <class T>
 inline
 matrix3 <Type> &
-matrix3 <Type>::operator *= (const matrix3 <T> & matrix)
+matrix3 <Type>::operator *= (const matrix3 & matrix)
 {
 	mult_right (matrix);
 	return *this;
@@ -817,9 +810,8 @@ matrix3 <Type>::operator /= (const Type & t)
 }
 
 template <class Type>
-template <class T>
 void
-matrix3 <Type>::mult_left (const matrix3 <T> & matrix)
+matrix3 <Type>::mult_left (const matrix3 <Type> & matrix)
 {
 	#define MULT_LEFT(i, j) \
 	   (array [0 * 3 + j] * matrix .array [i * 3 + 0] +   \
@@ -842,9 +834,8 @@ matrix3 <Type>::mult_left (const matrix3 <T> & matrix)
 }
 
 template <class Type>
-template <class T>
 void
-matrix3 <Type>::mult_right (const matrix3 <T> & matrix)
+matrix3 <Type>::mult_right (const matrix3 <Type> & matrix)
 {
 	#define MULT_RIGHT(i, j) \
 	   (array [i * 3 + 0] * matrix .array [0 * 3 + j] +   \
@@ -867,9 +858,8 @@ matrix3 <Type>::mult_right (const matrix3 <T> & matrix)
 }
 
 template <class Type>
-template <class T>
 vector2 <Type>
-matrix3 <Type>::mult_vec_matrix (const vector2 <T> & vector) const
+matrix3 <Type>::mult_vec_matrix (const vector2 <Type> & vector) const
 {
 	const Type w = vector .x () * array [2] + vector .y () * array [5] + array [8];
 
@@ -878,10 +868,9 @@ matrix3 <Type>::mult_vec_matrix (const vector2 <T> & vector) const
 }
 
 template <class Type>
-template <class T>
 constexpr
 vector3 <Type>
-matrix3 <Type>::mult_vec_matrix (const vector3 <T> & vector) const
+matrix3 <Type>::mult_vec_matrix (const vector3 <Type> & vector) const
 {
 	return vector3 <Type> (vector .x () * array [0] + vector .y () * array [3] + vector .z () * array [6],
 	                       vector .x () * array [1] + vector .y () * array [4] + vector .z () * array [7],
@@ -889,9 +878,8 @@ matrix3 <Type>::mult_vec_matrix (const vector3 <T> & vector) const
 }
 
 template <class Type>
-template <class T>
 vector2 <Type>
-matrix3 <Type>::mult_matrix_vec (const vector2 <T> & vector) const
+matrix3 <Type>::mult_matrix_vec (const vector2 <Type> & vector) const
 {
 	const Type w = vector .x () * array [6] + vector .y () * array [7] + array [8];
 
@@ -900,10 +888,9 @@ matrix3 <Type>::mult_matrix_vec (const vector2 <T> & vector) const
 }
 
 template <class Type>
-template <class T>
 constexpr
 vector3 <Type>
-matrix3 <Type>::mult_matrix_vec (const vector3 <T> & vector) const
+matrix3 <Type>::mult_matrix_vec (const vector3 <Type> & vector) const
 {
 	return vector3 <Type> (vector .x () * array [0] + vector .y () * array [1] + vector .z () * array [2],
 	                       vector .x () * array [3] + vector .y () * array [4] + vector .z () * array [5],
@@ -911,20 +898,18 @@ matrix3 <Type>::mult_matrix_vec (const vector3 <T> & vector) const
 }
 
 template <class Type>
-template <class T>
 constexpr
 vector2 <Type>
-matrix3 <Type>::mult_dir_matrix (const vector2 <T> & vector) const
+matrix3 <Type>::mult_dir_matrix (const vector2 <Type> & vector) const
 {
 	return vector2 <Type> (vector .x () * array [0] + vector .y () * array [3],
 	                       vector .x () * array [1] + vector .y () * array [4]);
 }
 
 template <class Type>
-template <class T>
 constexpr
 vector2 <Type>
-matrix3 <Type>::mult_matrix_dir (const vector2 <T> & vector) const
+matrix3 <Type>::mult_matrix_dir (const vector2 <Type> & vector) const
 {
 	return vector2 <Type> (vector .x () * array [0] + vector .y () * array [1],
 	                       vector .x () * array [3] + vector .y () * array [4]);

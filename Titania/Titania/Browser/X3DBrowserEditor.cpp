@@ -713,7 +713,7 @@ X3DBrowserEditor::removeNodeFromScene (const X3D::X3DSFNode <X3D::Scene> & scene
 	                  return true;
 						});
 
-	// Remove rest, this are only nodes not in scene
+	// Remove rest, these are only nodes that are not in scene
 
 	for (const auto & child : children)
 	{
@@ -725,6 +725,14 @@ X3DBrowserEditor::removeNodeFromScene (const X3D::X3DSFNode <X3D::Scene> & scene
 		removeExportedNodes (scene, child, undoStep);
 		removeImportedNodes (scene, child, undoStep);
 		deleteRoutes (scene, child, undoStep);
+
+		// Hide node
+
+		using isInternal = void (X3D::X3DBaseNode::*) (const bool);
+
+		undoStep -> addUndoFunction (std::mem_fn ((isInternal) &X3D::X3DBaseNode::isInternal), child, false);
+		undoStep -> addRedoFunction (std::mem_fn ((isInternal) &X3D::X3DBaseNode::isInternal), child, true);
+		child -> isInternal (true);
 	}
 }
 
@@ -761,9 +769,17 @@ X3DBrowserEditor::removeNodeFromExecutionContext (X3D::X3DExecutionContext* cons
 	removeImportedNodes (executionContext, node, undoStep);
 	deleteRoutes (executionContext, node, undoStep);
 
-	/// Remove unused Prototypes
+	// Remove unused Prototypes
 
 	removePrototypes (executionContext, node, undoStep);
+
+	// Hide node
+
+	using isInternal = void (X3D::X3DBaseNode::*) (const bool);
+
+	undoStep -> addUndoFunction (std::mem_fn ((isInternal) &X3D::X3DBaseNode::isInternal), node, false);
+	undoStep -> addRedoFunction (std::mem_fn ((isInternal) &X3D::X3DBaseNode::isInternal), node, true);
+	node -> isInternal (true);
 }
 
 void
@@ -1188,7 +1204,7 @@ X3DBrowserEditor::groupNodes (const X3D::MFNode & nodes, const UndoStepPtr & und
 			continue;
 
 		// Adjust transformation
-		X3D::Matrix4f                                childModelViewMatrix = findModelViewMatrix (child);
+		X3D::Matrix4d                                childModelViewMatrix = findModelViewMatrix (child);
 		const X3D::X3DSFNode <X3D::X3DTransformNode> transform (child);
 
 		if (transform)
@@ -1245,7 +1261,7 @@ X3DBrowserEditor::ungroupNodes (const X3D::MFNode & groups, const UndoStepPtr & 
 
 				// Adjust transformation
 
-				X3D::Matrix4f                                childModelViewMatrix = findModelViewMatrix (child);
+				X3D::Matrix4d                                childModelViewMatrix = findModelViewMatrix (child);
 				const X3D::X3DSFNode <X3D::X3DTransformNode> transform (child);
 
 				if (transform)
@@ -1316,8 +1332,8 @@ X3DBrowserEditor::addToGroup (const X3D::SFNode & group, const X3D::MFNode & chi
 
 			// Get group modelview matrix
 
-			X3D::Matrix4f                                groupModelViewMatrix = findModelViewMatrix (group);
-			const X3D::X3DSFNode <X3D::X3DTransformNode> transform (group);
+			X3D::Matrix4d                                        groupModelViewMatrix = findModelViewMatrix (group);
+			const X3D::X3DSFNode <X3D::X3DTransformMatrix4DNode> transform (group);
 
 			if (transform)
 				groupModelViewMatrix .mult_left (transform -> getMatrix ());
@@ -1325,7 +1341,7 @@ X3DBrowserEditor::addToGroup (const X3D::SFNode & group, const X3D::MFNode & chi
 			// Adjust child transformation
 
 			{
-				X3D::Matrix4f                                childModelViewMatrix = findModelViewMatrix (child);
+				X3D::Matrix4d                                childModelViewMatrix = findModelViewMatrix (child);
 				const X3D::X3DSFNode <X3D::X3DTransformNode> transform (child);
 
 				if (transform)
@@ -1400,7 +1416,7 @@ X3DBrowserEditor::detachFromGroup (X3D::MFNode children, const bool detachToLaye
 
 		if (transform)
 		{
-			X3D::Matrix4f childModelViewMatrix = findModelViewMatrix (node);
+			X3D::Matrix4d childModelViewMatrix = findModelViewMatrix (node);
 
 			childModelViewMatrix .mult_left (transform -> getMatrix ());
 
@@ -1584,7 +1600,7 @@ X3DBrowserEditor::saveMatrix (const X3D::SFNode & node, const UndoStepPtr & undo
 }
 
 void
-X3DBrowserEditor::setMatrix (const X3D::X3DSFNode <X3D::X3DTransformNode> & transform, const X3D::Matrix4f & matrix, const UndoStepPtr & undoStep) const
+X3DBrowserEditor::setMatrix (const X3D::X3DSFNode <X3D::X3DTransformNode> & transform, const X3D::Matrix4d & matrix, const UndoStepPtr & undoStep) const
 {
 	undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DTransformNode::setMatrix),
 	                             transform,
@@ -1645,10 +1661,10 @@ X3DBrowserEditor::undoEraseNode (X3D::MFNode & field, const X3D::SFNode & value,
 
 // Misc
 
-X3D::Matrix4f
+X3D::Matrix4d
 X3DBrowserEditor::findModelViewMatrix (X3D::X3DBaseNode* const node) const
 {
-	X3D::Matrix4f modelViewMatix;
+	X3D::Matrix4d modelViewMatix;
 
 	std::set <X3D::X3DBaseNode*> seen;
 
@@ -1662,7 +1678,7 @@ X3DBrowserEditor::findModelViewMatrix (X3D::X3DBaseNode* const node) const
 }
 
 bool
-X3DBrowserEditor::findModelViewMatrix (X3D::X3DBaseNode* const node, X3D::Matrix4f & modelViewMatix, std::set <X3D::X3DBaseNode*> & seen) const
+X3DBrowserEditor::findModelViewMatrix (X3D::X3DBaseNode* const node, X3D::Matrix4d & modelViewMatix, std::set <X3D::X3DBaseNode*> & seen) const
 {
 	if (not seen .emplace (node) .second)
 		return false;
@@ -1692,7 +1708,7 @@ X3DBrowserEditor::findModelViewMatrix (X3D::X3DBaseNode* const node, X3D::Matrix
 	{
 		if (findModelViewMatrix (parentNode, modelViewMatix, seen))
 		{
-			const auto transform = dynamic_cast <X3D::X3DTransformNode*> (node);
+			const auto transform = dynamic_cast <X3D::X3DTransformMatrix4DNode*> (node);
 
 			if (transform)
 				modelViewMatix .mult_left (transform -> getMatrix ());

@@ -48,128 +48,64 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_GEOSPATIAL_GEO_TRANSFORM_H__
-#define __TITANIA_X3D_COMPONENTS_GEOSPATIAL_GEO_TRANSFORM_H__
+#ifndef __TITANIA_X3D_COMPONENTS_GROUPING_X3DTRANSFORM_MATRIX4DNODE_H__
+#define __TITANIA_X3D_COMPONENTS_GROUPING_X3DTRANSFORM_MATRIX4DNODE_H__
 
-#include "../Geospatial/X3DGeospatialObject.h"
-#include "../Grouping/X3DTransformMatrix4DNode.h"
+#include "../Grouping/X3DGroupingNode.h"
 
 namespace titania {
 namespace X3D {
 
-class GeoTransform :
-	public X3DTransformMatrix4DNode, public X3DGeospatialObject
+class X3DTransformMatrix4DNode :
+	public X3DGroupingNode
 {
 public:
 
-	///  @name Construction
-
-	GeoTransform (X3DExecutionContext* const);
+	///  @name Member access
 
 	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
-
-	///  @name Common members
-
-	virtual
-	const std::string &
-	getComponentName () const final override
-	{ return componentName; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const final override
-	{ return containerField; }
-
-	///  @name Fields
-
-	SFVec3f &
-	translation ()
-	{ return *fields .translation; }
-
-	const SFVec3f &
-	translation () const
-	{ return *fields .translation; }
-
-	SFRotation &
-	rotation ()
-	{ return *fields .rotation; }
-
-	const SFRotation &
-	rotation () const
-	{ return *fields .rotation; }
-
-	SFVec3f &
-	scale ()
-	{ return *fields .scale; }
-
-	const SFVec3f &
-	scale () const
-	{ return *fields .scale; }
-
-	SFRotation &
-	scaleOrientation ()
-	{ return *fields .scaleOrientation; }
-
-	const SFRotation &
-	scaleOrientation () const
-	{ return *fields .scaleOrientation; }
-
-	SFVec3d &
-	geoCenter ()
-	{ return *fields .geoCenter; }
-
-	const SFVec3d &
-	geoCenter () const
-	{ return *fields .geoCenter; }
-
-	///  @name Destruction
+	Box3f
+	getBBox () const override;
 
 	virtual
 	void
-	dispose () final override;
+	setMatrix (const Matrix4d & value)
+	{ matrix = value; }
+
+	virtual
+	const Matrix4f &
+	getMatrix () const
+	{ return matrix; }
+
+	///  @name Operations
+
+	virtual
+	void
+	traverse (const TraverseType) override;
+
+
+protected:
+
+	///  @name Construction
+
+	X3DTransformMatrix4DNode ();
+
+	///  @name Member access
+
+	void
+	setMatrix (const Vector3f & t,
+	           const Rotation4f & r,
+	           const Vector3f & s,
+	           const Rotation4f & so,
+	           const Vector3f & c)
+	{ matrix .set (t, r, s, so, c); }
 
 
 private:
 
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
-
-	///  @name Event handlers
-
-	void
-	eventsProcessed ();
-
-	///  @name Static members
-
-	static const std::string componentName;
-	static const std::string typeName;
-	static const std::string containerField;
-
 	///  @name Members
 
-	struct Fields
-	{
-		Fields ();
-
-		SFVec3f* const translation;
-		SFRotation* const rotation;
-		SFVec3f* const scale;
-		SFRotation* const scaleOrientation;
-		SFVec3d* const geoCenter;
-	};
-
-	Fields fields;
+	Matrix4f matrix;
 
 };
 
