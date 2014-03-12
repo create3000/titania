@@ -76,11 +76,11 @@ public:
 	virtual
 	void
 	setName (const std::string & value)
-	{ name = value; }
+	{ realize (); data -> name = value; }
 
 	const std::string &
 	getName () const
-	{ return name; }
+	{ realize (); return data -> name; }
 
 	virtual
 	const std::string &
@@ -91,22 +91,22 @@ public:
 
 	void
 	addComments (const std::vector <std::string> & value)
-	{ comments .insert (comments .end (), value .begin (), value .end ()); }
+	{ realize (); data -> comments .insert (data -> comments .end (), value .begin (), value .end ()); }
 
 	const std::vector <std::string> &
 	getComments () const
-	{ return comments; }
+	{ realize (); return data -> comments; }
 
 	///  @name User data handling
 
 	virtual
 	void
 	setUserData (const UserDataPtr & value)
-	{ userData = value; }
+	{ realize (); data -> userData = value; }
 
 	const UserDataPtr &
 	getUserData () const
-	{ return userData; }
+	{ realize (); return data -> userData; }
 
 	///  @name Garbage Collection
 
@@ -155,15 +155,25 @@ protected:
 
 private:
 
+	///  @name Construction
+
+	void
+	realize () const;
+
 	///  @name Static members
 
 	static GarbageCollector garbageCollector;
 
 	///  @name Members
-
-	std::string               name;
-	std::vector <std::string> comments;
-	UserDataPtr               userData;
+	
+	struct Data
+	{
+		std::string               name;
+		std::vector <std::string> comments;
+		UserDataPtr               userData;
+	};
+	
+	mutable std::unique_ptr <Data> data;
 
 };
 

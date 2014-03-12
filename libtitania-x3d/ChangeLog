@@ -1,5 +1,10 @@
 2014-03-12  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DObject.h:
+	* X3DObject.cpp: 
+
+2014-03-12  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DRenderer.cpp:
 	* X3DViewer.cpp:
 	* X3DLayerNode.cpp:

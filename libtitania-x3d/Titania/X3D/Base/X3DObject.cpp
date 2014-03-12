@@ -60,10 +60,17 @@ GarbageCollector X3DObject::garbageCollector;
 X3DObject::X3DObject () :
 	 X3DInput (),
 	X3DOutput (),
-	     name (),
-	 comments (),
-	 userData ()
+	     data ()
 { }
+
+void
+X3DObject::realize () const
+{
+	if (data)
+		return;
+
+	data .reset (new Data ());
+}
 
 // String
 
