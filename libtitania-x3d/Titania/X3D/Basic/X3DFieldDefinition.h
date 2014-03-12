@@ -82,25 +82,25 @@ public:
 	X3DFieldDefinition*
 	clone () const
 	throw (Error <INVALID_NAME>,
-          Error <NOT_SUPPORTED>) = 0;
+	       Error <NOT_SUPPORTED>) = 0;
 
 	virtual
 	X3DFieldDefinition*
 	clone (X3DExecutionContext* const) const
 	throw (Error <INVALID_NAME>,
-          Error <NOT_SUPPORTED>)
+	       Error <NOT_SUPPORTED>)
 	{ return clone (); }
 
 	virtual
 	void
 	clone (X3DExecutionContext* const, X3DFieldDefinition*) const
 	throw (Error <INVALID_NAME>,
-          Error <NOT_SUPPORTED>) = 0;
+	       Error <NOT_SUPPORTED>) = 0;
 
 	X3DFieldDefinition &
 	operator = (const X3DFieldDefinition &);
 
-	///  @name 
+	///  @name
 
 	virtual
 	bool
@@ -168,33 +168,33 @@ public:
 
 	const FieldDefinitionSet &
 	getReferences () const
-	{ return references; }
+	{ realize (); return io -> references; }
 
 	///  @name Route handling
 
 	void
 	addInputRoute (Route* const route)
-	{ inputRoutes .emplace (route); }
+	{ realize (); io -> inputRoutes .emplace (route); }
 
 	void
 	removeInputRoute (Route* const route)
-	{ inputRoutes .erase (route); }
+	{ realize (); io -> inputRoutes .erase (route); }
 
 	const RouteSet &
 	getInputRoutes () const
-	{ return inputRoutes; }
+	{ realize (); return io -> inputRoutes; }
 
 	void
 	addOutputRoute (Route* const route)
-	{ outputRoutes .emplace (route); }
+	{ realize (); io -> outputRoutes .emplace (route); }
 
 	void
 	removeOutputRoute (Route* const route)
-	{ outputRoutes .erase (route); }
+	{ realize (); io -> outputRoutes .erase (route); }
 
 	const RouteSet &
 	getOutputRoutes () const
-	{ return outputRoutes; }
+	{ realize (); return io -> outputRoutes; }
 
 	///  @name Interest handling
 
@@ -203,16 +203,16 @@ public:
 
 	void
 	addInterest (X3DFieldDefinition &);
-	
+
 	void
 	removeInterest (X3DFieldDefinition* const);
 
 	void
 	removeInterest (X3DFieldDefinition &);
-	
+
 	const FieldDefinitionSet &
 	getInterests () const
-	{ return outputInterests; }
+	{ realize (); return io -> outputInterests; }
 
 	///  @name Event handling
 
@@ -239,6 +239,11 @@ protected:
 
 private:
 
+	///  @name Construction
+
+	void
+	realize () const;
+
 	///  @name Reference handling
 
 	void
@@ -254,15 +259,19 @@ private:
 
 	///  @name Members
 
-	FieldDefinitionSet references;
+	struct IO
+	{
+		FieldDefinitionSet references;
+		RouteSet inputRoutes;
+		RouteSet outputRoutes;
+		FieldDefinitionSet inputInterests;
+		FieldDefinitionSet outputInterests;
+	};
 
 	AccessType  accessType;
 	std::string aliasName;
 
-	RouteSet           inputRoutes;
-	RouteSet           outputRoutes;
-	FieldDefinitionSet inputInterests;
-	FieldDefinitionSet outputInterests;
+	mutable std::unique_ptr <IO> io;
 
 };
 

@@ -62,7 +62,7 @@ X3DOutput::X3DOutput () :
 { }
 
 void
-X3DOutput::initialize () const
+X3DOutput::realize () const
 {
 	if (data)
 		return;
@@ -73,7 +73,7 @@ X3DOutput::initialize () const
 const RequesterArray &
 X3DOutput::getRequesters () const
 {
-	initialize ();
+	realize ();
 	return data -> requesters;
 }
 
@@ -105,7 +105,7 @@ X3DOutput::checkInterest (const void* const object, const void* const memberFunc
 bool
 X3DOutput::insertInterest (const Requester & function, const void* const object, const void* const memberFunction) const
 {
-	initialize ();
+	realize ();
 
 	// Insert only when not in index.
 
@@ -125,7 +125,7 @@ X3DOutput::insertInterest (const Requester & function, const void* const object,
 void
 X3DOutput::insertInput (const X3DInput* const input, const void* const memberFunction) const
 {
-	initialize ();
+	realize ();
 
 	data -> inputs .emplace (input, memberFunction);
 
@@ -161,7 +161,7 @@ X3DOutput::eraseInput (const X3DInput* const input, void* const memberFunction) 
 void
 X3DOutput::insertDeleter (const X3DOutput* const output, const void* const input, const void* const memberFunction) const
 {
-	initialize ();
+	realize ();
 
 	const RequesterPair requesterPair (output, input, memberFunction); // Reversed
 

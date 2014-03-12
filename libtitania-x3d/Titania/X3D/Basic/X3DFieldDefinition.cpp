@@ -56,15 +56,20 @@ namespace titania {
 namespace X3D {
 
 X3DFieldDefinition::X3DFieldDefinition () :
-	 X3DChildObject (),
-	     references (),
-	     accessType (initializeOnly),
-	      aliasName (),
-	    inputRoutes (),
-	   outputRoutes (),
-	 inputInterests (),
-	outputInterests ()
+	X3DChildObject (),
+	    accessType (initializeOnly),
+	     aliasName (),
+	            io ()
 { }
+
+void
+X3DFieldDefinition::realize () const
+{
+	if (io)
+		return;
+
+	io .reset (new IO ());
+}
 
 X3DFieldDefinition &
 X3DFieldDefinition::operator = (const X3DFieldDefinition & value)
@@ -81,8 +86,10 @@ X3DFieldDefinition::hasRoots (ChildObjectSet & seen)
 		return true;
 
 	for (auto & parent : getParents ())
+	{
 		if (parent -> hasRoots (seen))
 			return true;
+	}
 
 	return false;
 }
@@ -90,7 +97,9 @@ X3DFieldDefinition::hasRoots (ChildObjectSet & seen)
 void
 X3DFieldDefinition::addReference (X3DFieldDefinition* const reference)
 {
-	if (references .emplace (reference) .second)
+	realize ();
+
+	if (io -> references .emplace (reference) .second)
 	{
 		// Create IS relationship
 
@@ -117,24 +126,27 @@ X3DFieldDefinition::addReference (X3DFieldDefinition* const reference)
 void
 X3DFieldDefinition::removeReference (X3DFieldDefinition* const reference)
 {
-	if (references .erase (reference))
+	if (io)
 	{
-		// Remove IS relationship
-
-		switch (getAccessType () & reference -> getAccessType ())
+		if (io -> references .erase (reference))
 		{
-			case initializeOnly:
-				break;
-			case inputOnly:
-				reference -> removeInterest (this);
-				break;
-			case outputOnly:
-				removeInterest (reference);
-				break;
-			case inputOutput:
-				reference -> removeInterest (this);
-				removeInterest (reference);
-				break;
+			// Remove IS relationship
+
+			switch (getAccessType () & reference -> getAccessType ())
+			{
+				case initializeOnly:
+					break;
+				case inputOnly:
+					reference -> removeInterest (this);
+					break;
+				case outputOnly:
+					removeInterest (reference);
+					break;
+				case inputOutput:
+					reference -> removeInterest (this);
+					removeInterest (reference);
+					break;
+			}
 		}
 	}
 }
@@ -142,7 +154,9 @@ X3DFieldDefinition::removeReference (X3DFieldDefinition* const reference)
 void
 X3DFieldDefinition::updateReferences ()
 {
-	for (auto & reference : references)
+	realize ();
+
+	for (auto & reference : io -> references)
 		updateReference (reference);
 }
 
@@ -164,41 +178,54 @@ X3DFieldDefinition::updateReference (X3DFieldDefinition* const reference)
 void
 X3DFieldDefinition::addInterest (X3DFieldDefinition* const fieldDefinition)
 {
-	outputInterests .emplace (fieldDefinition);
+	realize ();
+
+	io -> outputInterests .emplace (fieldDefinition);
 	fieldDefinition -> addInputInterest (this);
 }
 
 void
 X3DFieldDefinition::addInterest (X3DFieldDefinition & fieldDefinition)
 {
-	outputInterests .emplace (&fieldDefinition);
+	realize ();
+
+	io -> outputInterests .emplace (&fieldDefinition);
 	fieldDefinition .addInputInterest (this);
 }
 
 void
 X3DFieldDefinition::removeInterest (X3DFieldDefinition* const fieldDefinition)
 {
-	outputInterests .erase (fieldDefinition);
-	fieldDefinition -> removeInputInterest (this);
+	if (io)
+	{
+		io -> outputInterests .erase (fieldDefinition);
+		fieldDefinition -> removeInputInterest (this);
+	}
 }
 
 void
 X3DFieldDefinition::removeInterest (X3DFieldDefinition & fieldDefinition)
 {
-	outputInterests .erase (&fieldDefinition);
-	fieldDefinition .removeInputInterest (this);
+	if (io)
+	{
+		io -> outputInterests .erase (&fieldDefinition);
+		fieldDefinition .removeInputInterest (this);
+	}
 }
 
 void
 X3DFieldDefinition::addInputInterest (X3DFieldDefinition* const fieldDefinition)
 {
-	inputInterests .emplace (fieldDefinition);
+	realize ();
+
+	io -> inputInterests .emplace (fieldDefinition);
 }
 
 void
 X3DFieldDefinition::removeInputInterest (X3DFieldDefinition* const fieldDefinition)
 {
-	inputInterests .erase (fieldDefinition);
+	if (io)
+		io -> inputInterests .erase (fieldDefinition);
 }
 
 void
@@ -214,39 +241,45 @@ X3DFieldDefinition::processEvent (const EventPtr & event)
 
 	processInterests ();
 
-	bool first = true;
-
-	for (const auto & fieldDefinition : outputInterests)
+	if (io)
 	{
-		if (first)
+		bool first = true;
+
+		for (const auto & fieldDefinition : io -> outputInterests)
 		{
-			first = false;
-			fieldDefinition -> addEvent (fieldDefinition, event);
+			if (first)
+			{
+				first = false;
+				fieldDefinition -> addEvent (fieldDefinition, event);
+			}
+			else
+				fieldDefinition -> addEvent (fieldDefinition, EventPtr (new Event (*event)));
 		}
-		else
-			fieldDefinition -> addEvent (fieldDefinition, EventPtr (new Event (*event)));
 	}
 }
 
 void
 X3DFieldDefinition::dispose ()
 {
-	references .clear ();
+	if (io)
+	{
+		io -> references .clear ();
 
-	for (const auto & route : RouteSet (std::move (inputRoutes)))
-		route -> remove ();
+		for (const auto & route : RouteSet (std::move (io -> inputRoutes)))
+			route -> remove ();
 
-	for (const auto & route : RouteSet (std::move (outputRoutes)))
-		route -> remove ();
-		
-	for (auto & fieldDefinition : FieldDefinitionSet (std::move (inputInterests)))
-		fieldDefinition -> removeInterest (this);
+		for (const auto & route : RouteSet (std::move (io -> outputRoutes)))
+			route -> remove ();
 
-	for (auto & fieldDefinition : outputInterests) // No copy is made
-		fieldDefinition -> removeInputInterest (this);
+		for (auto & fieldDefinition : FieldDefinitionSet (std::move (io -> inputInterests)))
+			fieldDefinition -> removeInterest (this);
 
-	inputInterests  .clear ();
-	outputInterests .clear ();
+		for (auto & fieldDefinition : io -> outputInterests) // No copy is made
+			fieldDefinition -> removeInputInterest (this);
+
+		io -> inputInterests  .clear ();
+		io -> outputInterests .clear ();
+	}
 
 	X3DChildObject::dispose ();
 }

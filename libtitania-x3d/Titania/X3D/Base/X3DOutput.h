@@ -180,7 +180,7 @@ private:
 	typedef std::set <std::pair <const X3DInput*, const void*>>  InputSet;
 
 	void
-	initialize () const;
+	realize () const;
 
 	bool
 	checkInterest (const void* const, const void* const) const;
@@ -222,7 +222,7 @@ private:
 	{
 		RequesterArray requesters;
 		RequesterIndex requesterIndex;
-		InputSet       inputs;
+		InputSet inputs;
 	};
 
 	mutable std::unique_ptr <Data> data;
