@@ -1,5 +1,9 @@
 2014-03-12  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DViewer.cpp: 
+
+2014-03-12  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DOutput.h:
 	* X3DOutput.cpp:
 	* X3DFieldDefinition.h:
