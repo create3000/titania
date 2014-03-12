@@ -1,5 +1,13 @@
 2014-03-12  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Parser.cpp:
+	* X3DScene.cpp:
+	* ExportedNode.cpp:
+	* ImportedNode.cpp:
+	* X3DExecutionContext.cpp: 
+
+2014-03-12  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DObject.h:
 	* X3DObject.cpp: 
 

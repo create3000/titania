@@ -503,7 +503,9 @@ Parser::exportStatement ()
 			else
 				_exportedNodeNameId = _localNodeNameId;
 
-			scene -> addExportedNode (_exportedNodeNameId, node);
+			const X3DSFNode <ExportedNode> & _exportedNode = scene -> addExportedNode (_exportedNodeNameId, node);
+
+			_exportedNode -> addComments (getComments ());
 
 			return true;
 		}
@@ -552,7 +554,9 @@ Parser::importStatement ()
 						if (isInsideProtoDefinition () and _inlineNode -> load ())
 							_inlineNode -> requestImmediateLoad ();
 
-						getExecutionContext () -> addImportedNode (_inlineNode, _exportedNodeNameId, _nodeNameId);
+						const X3DSFNode <ImportedNode> & _importedNode = getExecutionContext () -> addImportedNode (_inlineNode, _exportedNodeNameId, _nodeNameId);
+						
+						_importedNode -> addComments (getComments ());
 
 						return true;
 					}

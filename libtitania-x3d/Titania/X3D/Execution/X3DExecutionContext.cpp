@@ -884,7 +884,7 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 			<< Generator::Break;
 	}
 
-	if (not getInnerComments () .empty ())
+	if (not getInnerComments () .empty () and not isScene ())
 	{
 		ostream << Generator::TidyBreak;
 

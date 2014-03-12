@@ -124,6 +124,22 @@ ImportedNode::toStream (std::ostream & ostream) const
 		{
 			Generator::AddImportedNode (getExportedNode (), importedName);
 
+			if (not getComments () .empty ())
+			{
+				ostream << Generator::TidyBreak;
+
+				for (const auto & comment : getComments ())
+				{
+					ostream
+						<< Generator::Indent
+						<< Generator::Comment
+						<< comment
+						<< Generator::ForceBreak;
+				}
+
+				ostream << Generator::TidyBreak;
+			}
+
 			ostream
 				<< Generator::Indent
 				<< "IMPORT"

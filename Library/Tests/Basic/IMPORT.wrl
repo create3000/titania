@@ -6,6 +6,6 @@ DEF Inline Inline {
   url "EXPORT.wrl"
 }
 
-#IMPORT Inline.CubeExport AS CubeImport
+IMPORT Inline.CubeExport AS CubeImport
 
-#EXPORT CubeImport AS CubeExport
+EXPORT CubeImport AS CubeExport

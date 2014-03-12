@@ -339,6 +339,20 @@ X3DScene::toStream (std::ostream & ostream) const
 	for (const auto & exportedNode : getExportedNodes ())
 		ostream << exportedNode;
 
+	if (not getInnerComments () .empty ())
+	{
+		ostream << Generator::TidyBreak;
+
+		for (const auto & comment : getInnerComments ())
+		{
+			ostream
+				<< Generator::Indent
+				<< Generator::Comment
+				<< comment
+				<< Generator::Break;
+		}
+	}
+
 	Generator::PopContext ();
 
 	ostream << std::flush;
