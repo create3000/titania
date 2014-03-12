@@ -1,5 +1,18 @@
 2014-03-12  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DRenderer.cpp:
+	* X3DViewer.cpp:
+	* X3DLayerNode.cpp:
+	* Fog.h:
+	* NavigationInfo.h:
+	* NavigationInfo.cpp:
+	* X3DViewpointNode.cpp:
+	* X3DFogObject.h:
+	* X3DFogObject.cpp:
+	* X3DBackgroundNode.h: 
+
+2014-03-12  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DViewer.cpp: 
 
 2014-03-12  Holger Seelig  <holger.seelig@yahoo.de>

@@ -131,7 +131,7 @@ private:
 	getVisibilityRange ();
 
 	float
-	getDensitiy (float);
+	getDensitiy (const float);
 
 	///  @name Event handlers
 

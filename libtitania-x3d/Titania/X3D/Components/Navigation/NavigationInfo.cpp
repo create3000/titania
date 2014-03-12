@@ -173,9 +173,9 @@ NavigationInfo::getNearPlane () const
 }
 
 float
-NavigationInfo::getFarPlane () const
+NavigationInfo::getFarPlane (X3DViewpointNode* const viewpoint) const
 {
-	return visibilityLimit () ? visibilityLimit () : getCurrentViewpoint () -> getMaxZFar ();
+	return visibilityLimit () ? visibilityLimit () : viewpoint -> getMaxZFar ();
 }
 
 TransitionType

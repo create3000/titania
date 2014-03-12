@@ -34,12 +34,12 @@ DEF Home Viewpoint {
 
 DEF Fastener Rotor {
   cycleInterval 61
+  axis 0 0 -1
   loop TRUE
 }
 
 DEF Slower Rotor {
   cycleInterval 61
-  axis 0 0 -1
   loop TRUE
 }
 

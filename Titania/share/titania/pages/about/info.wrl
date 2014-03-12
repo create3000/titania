@@ -135,6 +135,7 @@ DEF about:info_1 LayerSet {
                   children [
                     DEF LogoRotor Rotor {
                       cycleInterval 10
+                      axis 0 0 -1
                       loop TRUE
                     }
                     DEF Logo Transform {

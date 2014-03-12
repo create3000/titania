@@ -78,7 +78,7 @@ X3DViewer::getPointOnCenterPlane (const double x, const double y)
 		{
 			const auto viewpoint = getActiveViewpoint ();
 
-			viewpoint -> reshape (0.125, 100000);
+			viewpoint -> reshape (getNavigationInfo () -> getNearPlane (), getNavigationInfo () -> getFarPlane (viewpoint));
 
 			const Matrix4d modelview; // Use identity
 			const Matrix4d projection = ProjectionMatrix4d ();

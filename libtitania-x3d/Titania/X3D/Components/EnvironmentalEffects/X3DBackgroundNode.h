@@ -107,7 +107,7 @@ public:
 	///  @name Operations
 
 	void
-	transitionStart (X3DBackgroundNode*)
+	transitionStart (X3DBackgroundNode* const)
 	{ }
 
 	void

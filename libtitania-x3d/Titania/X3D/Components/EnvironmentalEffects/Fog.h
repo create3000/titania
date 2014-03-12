@@ -91,7 +91,7 @@ public:
 	///  @name Operations
 
 	void
-	transitionStart (Fog*)
+	transitionStart (Fog* const)
 	{ }
 
 	void

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -60,10 +60,13 @@
 namespace titania {
 namespace X3D {
 
-enum class TransitionType : uint8_t {
+enum class TransitionType :
+	uint8_t
+{
 	TELEPORT,
 	LINEAR,
 	ANIMATE
+
 };
 
 class NavigationInfo :
@@ -186,15 +189,15 @@ public:
 	getNearPlane () const;
 
 	float
-	getFarPlane () const;
-	
+	getFarPlane (X3DViewpointNode* const) const;
+
 	TransitionType
 	getTransitionType () const;
 
 	///  @name Operations
 
 	void
-	transitionStart (NavigationInfo*)
+	transitionStart (NavigationInfo* const)
 	{ }
 
 	void

@@ -79,16 +79,19 @@ DEF Yellow Transform {
 
 DEF RedRotor Rotor {
   cycleInterval 7
+  axis 0 0 -1
   loop TRUE
 }
 
 DEF OrangeRotor Rotor {
   cycleInterval 11
+  axis 0 0 -1
   loop TRUE
 }
 
 DEF YellowRotor Rotor {
   cycleInterval 17
+  axis 0 0 -1
   loop TRUE
 }
 

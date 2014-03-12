@@ -157,12 +157,8 @@ X3DLayerNode::getTranslation (const Vector3f & positionOffset, const float width
 	float       distance = getDistance (positionOffset, width, height, translation);
 	const float length   = math::abs (translation);
 
-	getBrowser () -> getLayers () .push (this);
-
-	const float zFar            = getNavigationInfo () -> getFarPlane ();
+	const float zFar            = getNavigationInfo () -> getFarPlane (getViewpoint ());
 	const float collisionRadius = getNavigationInfo () -> getCollisionRadius ();
-
-	getBrowser () -> getLayers () .pop ();
 
 	if (zFar - distance > 0) // Are there polygons under the viewer
 	{
@@ -194,15 +190,11 @@ X3DLayerNode::getTranslation (const Vector3f & positionOffset, const float width
 float
 X3DLayerNode::getDistance (const Vector3f & positionOffset, const float width, const float height, const Vector3f & direction)
 {
-	getBrowser () -> getLayers () .push (this);
-
 	const double width1_2  = width / 2;
 	const double height1_2 = height / 2;
 
 	const double zNear = getNavigationInfo () -> getNearPlane ();
-	const double zFar  = getNavigationInfo () -> getFarPlane ();
-
-	getBrowser () -> getLayers () .pop ();
+	const double zFar  = getNavigationInfo () -> getFarPlane (getViewpoint ());
 
 	// Reshape camera
 
@@ -384,10 +376,10 @@ X3DLayerNode::collision ()
 {
 	// Get NavigationInfo values
 
-	const auto navigationInfo = getCurrentNavigationInfo ();
+	const auto navigationInfo = getNavigationInfo ();
 
 	const double zNear           = navigationInfo -> getNearPlane ();
-	const double zFar            = navigationInfo -> getFarPlane ();
+	const double zFar            = navigationInfo -> getFarPlane (getViewpoint ());
 	const double collisionRadius = zNear / std::sqrt (2.0f); // Use zNear instead of navigationInfo -> getCollisionRatius ();
 
 	// Reshape viewpoint

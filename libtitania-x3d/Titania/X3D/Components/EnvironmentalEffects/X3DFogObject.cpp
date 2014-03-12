@@ -90,11 +90,13 @@ X3DFogObject::getVisibilityRange ()
 	if (visibilityRange ())
 		return visibilityRange ();
 
-	return getBrowser () -> getLayers () .top () -> getNavigationInfo () -> getFarPlane ();
+	const auto viewpoint = getBrowser () -> getLayers () .top () -> getViewpoint ();
+
+	return getBrowser () -> getLayers () .top () -> getNavigationInfo () -> getFarPlane (viewpoint);
 }
 
 float
-X3DFogObject::getDensitiy (float visibilityRange)
+X3DFogObject::getDensitiy (const float visibilityRange)
 {
 	switch (glMode)
 	{
@@ -143,8 +145,8 @@ X3DFogObject::enable ()
 {
 	if (glColor [3])
 	{
-		float glVisibilityRange = getVisibilityRange ();
-		float glDensity         = getDensitiy (glVisibilityRange);
+		const float glVisibilityRange = getVisibilityRange ();
+		const float glDensity         = getDensitiy (glVisibilityRange);
 
 		glEnable (GL_FOG);
 

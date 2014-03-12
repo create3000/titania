@@ -499,7 +499,7 @@ X3DViewpointNode::reshape ()
 {
 	NavigationInfo* const navigationInfo = getCurrentLayer () -> getNavigationInfo ();
 
-	reshape (navigationInfo -> getNearPlane (), navigationInfo -> getFarPlane ());
+	reshape (navigationInfo -> getNearPlane (), navigationInfo -> getFarPlane (this));
 }
 
 void

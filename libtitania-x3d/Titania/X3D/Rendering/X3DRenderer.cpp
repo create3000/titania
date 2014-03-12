@@ -293,9 +293,10 @@ X3DRenderer::navigation ()
 	// Get NavigationInfo values
 
 	const auto navigationInfo = getCurrentNavigationInfo ();
+	const auto viewpoint      = getCurrentViewpoint ();
 
 	const double zNear = navigationInfo -> getNearPlane ();
-	const double zFar  = navigationInfo -> getFarPlane ();
+	const double zFar  = navigationInfo -> getFarPlane (viewpoint);
 
 	// Render all objects
 
@@ -367,9 +368,10 @@ X3DRenderer::gravite ()
 	// Get NavigationInfo values
 
 	const auto navigationInfo = getCurrentNavigationInfo ();
+	const auto viewpoint      = getCurrentViewpoint ();
 
 	const float zNear      = navigationInfo -> getNearPlane ();
-	const float zFar       = navigationInfo -> getFarPlane ();
+	const float zFar       = navigationInfo -> getFarPlane (viewpoint);
 	const float height     = navigationInfo -> getAvatarHeight ();
 	const float stepHeight = navigationInfo -> getStepHeight ();
 
