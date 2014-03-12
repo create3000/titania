@@ -55,6 +55,7 @@
 #include <functional>
 #include <list>
 #include <map>
+#include <memory>
 #include <set>
 #include <tuple>
 #include <vector>
@@ -178,6 +179,9 @@ private:
 
 	typedef std::set <std::pair <const X3DInput*, const void*>>  InputSet;
 
+	void
+	initialize () const;
+
 	bool
 	checkInterest (const void* const, const void* const) const;
 
@@ -212,9 +216,16 @@ private:
 	void
 	clear ();
 
-	mutable RequesterArray requesters;
-	mutable RequesterIndex requesterIndex;
-	mutable InputSet       inputs;
+	///  @name Members
+
+	struct Data
+	{
+		RequesterArray requesters;
+		RequesterIndex requesterIndex;
+		InputSet       inputs;
+	};
+
+	mutable std::unique_ptr <Data> data;
 
 };
 

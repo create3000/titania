@@ -57,16 +57,24 @@ namespace titania {
 namespace X3D {
 
 X3DOutput::X3DOutput () :
-	       X3DBase (),
-	    requesters (),
-	requesterIndex (),
-	        inputs ()
+	X3DBase (),
+	   data ()
 { }
+
+void
+X3DOutput::initialize () const
+{
+	if (data)
+		return;
+
+	data .reset (new Data ());
+}
 
 const RequesterArray &
 X3DOutput::getRequesters () const
 {
-	return requesters;
+	initialize ();
+	return data -> requesters;
 }
 
 void
@@ -84,22 +92,29 @@ X3DOutput::removeInterest (const Requester & function) const
 bool
 X3DOutput::checkInterest (const void* const object, const void* const memberFunction) const
 {
-	const RequesterPair requesterPair (this, memberFunction, object);
+	if (data)
+	{
+		const RequesterPair requesterPair (this, memberFunction, object);
 
-	return requesterIndex .find (requesterPair) not_eq requesterIndex .end ();
+		return data -> requesterIndex .find (requesterPair) not_eq data -> requesterIndex .end ();
+	}
+
+	return false;
 }
 
 bool
 X3DOutput::insertInterest (const Requester & function, const void* const object, const void* const memberFunction) const
 {
+	initialize ();
+
 	// Insert only when not in index.
 
 	const RequesterPair requesterPair (this, memberFunction, object);
 
-	if (requesterIndex .find (requesterPair) == requesterIndex .end ())
+	if (data -> requesterIndex .find (requesterPair) == data -> requesterIndex .end ())
 	{
-		requesters .emplace_back (function);
-		requesterIndex .emplace (requesterPair, -- requesters .end ());
+		data -> requesters .emplace_back (function);
+		data -> requesterIndex .emplace (requesterPair, -- data -> requesters .end ());
 
 		return true;
 	}
@@ -110,7 +125,9 @@ X3DOutput::insertInterest (const Requester & function, const void* const object,
 void
 X3DOutput::insertInput (const X3DInput* const input, const void* const memberFunction) const
 {
-	inputs .emplace (input, memberFunction);
+	initialize ();
+
+	data -> inputs .emplace (input, memberFunction);
 
 	input -> deleted () .insertDeleter (this, input, memberFunction);
 }
@@ -118,18 +135,21 @@ X3DOutput::insertInput (const X3DInput* const input, const void* const memberFun
 void
 X3DOutput::eraseInterest (const void* const object, const void* const memberFunction) const
 {
-	const RequesterPair requesterPair (this, memberFunction, object);
-
-	const auto requester = requesterIndex .find (requesterPair);
-
-	if (requester not_eq requesterIndex .end ())
+	if (data)
 	{
-		requesters .erase (requester -> second);
-		requesterIndex .erase (requester);
-	}
+		const RequesterPair requesterPair (this, memberFunction, object);
 
-	// Allways try to erase input, this output could be disposed.
-	inputs .erase (std::make_pair (static_cast <const X3DInput*> (object), memberFunction));
+		const auto requester = data -> requesterIndex .find (requesterPair);
+
+		if (requester not_eq data -> requesterIndex .end ())
+		{
+			data -> requesters .erase (requester -> second);
+			data -> requesterIndex .erase (requester);
+		}
+
+		// Allways try to erase input, this output could be disposed.
+		data -> inputs .erase (std::make_pair (static_cast <const X3DInput*> (object), memberFunction));
+	}
 }
 
 void
@@ -141,56 +161,64 @@ X3DOutput::eraseInput (const X3DInput* const input, void* const memberFunction) 
 void
 X3DOutput::insertDeleter (const X3DOutput* const output, const void* const input, const void* const memberFunction) const
 {
+	initialize ();
+
 	const RequesterPair requesterPair (output, input, memberFunction); // Reversed
 
-	const auto requester = requesterIndex .find (requesterPair);
+	const auto requester = data -> requesterIndex .find (requesterPair);
 
-	if (requester == requesterIndex .end ())
+	if (requester == data -> requesterIndex .end ())
 	{
-		requesters .emplace_back (std::bind (&X3DOutput::eraseInterest, output, input, memberFunction));
-		requesterIndex .emplace (requesterPair, -- requesters .end ());
+		data -> requesters .emplace_back (std::bind (&X3DOutput::eraseInterest, output, input, memberFunction));
+		data -> requesterIndex .emplace (requesterPair, -- data -> requesters .end ());
 	}
 }
 
 void
 X3DOutput::removeDeleter (const X3DOutput* const output, const void* const input, const void* const memberFunction) const
 {
-	const RequesterPair requesterPair (output, input, memberFunction); // Reversed
-
-	const auto requester = requesterIndex .find (requesterPair);
-
-	if (requester not_eq requesterIndex .end ())
+	if (data)
 	{
-		requesters .erase (requester -> second);
-		requesterIndex .erase (requester);
+		const RequesterPair requesterPair (output, input, memberFunction); // Reversed
+
+		const auto requester = data -> requesterIndex .find (requesterPair);
+
+		if (requester not_eq data -> requesterIndex .end ())
+		{
+			data -> requesters .erase (requester -> second);
+			data -> requesterIndex .erase (requester);
+		}
 	}
 }
 
 void
 X3DOutput::processInterests () const
 {
-	if (requesters .empty ())
-		return;
+	if (data)
+	{
+		// The requesters have to be copied, due to the fact that the requester could
+		// remove itself from the output during the loop call.
 
-	// The requesters have to be copied, due to the fact that the requester could
-	// remove itself from the output during the loop call.
+		const std::vector <Requester> copy (data -> requesters .cbegin (), data -> requesters .cend ());
 
-	const std::vector <Requester> copy (requesters .cbegin (), requesters .cend ());
-
-	for (const auto & requester : copy)
-		requester ();
+		for (const auto & requester : copy)
+			requester ();
+	}
 }
 
 void
 X3DOutput::clear ()
 {
-	requesters .clear ();
-	requesterIndex .clear ();
+	if (data)
+	{
+		data -> requesters .clear ();
+		data -> requesterIndex .clear ();
 
-	for (const auto & input : inputs)
-		input .first -> deleted () .removeDeleter (this, input .first, input .second);
+		for (const auto & input : data -> inputs)
+			input .first -> deleted () .removeDeleter (this, input .first, input .second);
 
-	inputs .clear ();
+		data -> inputs .clear ();
+	}
 }
 
 X3DOutput::~X3DOutput ()
