@@ -56,12 +56,15 @@
 namespace titania {
 namespace X3D {
 
+// See http://www.web3d.org/files/specifications/19775-1/V3.3/Part01/components/networking.html#X3DUrlObject for
+// how to handle the profile and component arguments/statements of inline nodes.
+
 SceneLoader::SceneLoader (X3DExecutionContext* const executionContext, const MFString & url, const Callback & callback) :
 	         browser (executionContext -> getBrowser ()),
 	executionContext (executionContext),
 	        callback (callback),
 	         running (true),
-	          future (getFuture (url))
+	          future (getFuture (url /*, executionContext -> getProfile (), executionContext -> getComponents () */))
 {
 	browser -> prepareEvents () .addInterest (this, &SceneLoader::prepareEvents);
 	browser -> addEvent ();

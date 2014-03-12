@@ -134,7 +134,10 @@ float
 NavigationInfo::getCollisionRadius () const
 {
 	if (avatarSize () .size () > 0)
-		return avatarSize () [0];
+	{
+		if (avatarSize () [0] > 0)
+			return avatarSize () [0];
+	}
 
 	return 0.25;
 }

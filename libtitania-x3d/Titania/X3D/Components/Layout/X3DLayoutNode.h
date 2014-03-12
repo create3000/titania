@@ -61,7 +61,7 @@ class X3DLayoutNode :
 {
 public:
 
-	enum class HorizontalAlignType
+	enum class HorizontalAlignType : uint8_t
 	{
 		LEFT,
 		CENTER,
@@ -69,7 +69,7 @@ public:
 
 	};
 
-	enum class VerticalAlignType
+	enum class VerticalAlignType : uint8_t
 	{
 		BOTTOM,
 		CENTER,
@@ -77,7 +77,7 @@ public:
 
 	};
 
-	enum class SizeUnitType
+	enum class SizeUnitType : uint8_t
 	{
 		WORLD,
 		FRACTION,
@@ -85,7 +85,7 @@ public:
 
 	};
 
-	enum class ScaleModeType
+	enum class ScaleModeType : uint8_t
 	{
 		NONE,
 		FRACTION,

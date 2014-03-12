@@ -51,18 +51,21 @@
 #ifndef __TITANIA_X3D_BITS_X3DCONSTANTS_H__
 #define __TITANIA_X3D_BITS_X3DCONSTANTS_H__
 
+#include <cstdint>
+
 namespace titania {
 namespace X3D {
 
 namespace X3DConstants {
-enum EventType
+
+enum EventType : uint8_t
 {
 	INITIALIZED_EVENT,
 	SHUTDOWN_EVENT
 
 };
 
-enum ErrorType
+enum ErrorType : uint8_t
 {
 	BROWSER_UNAVAILABLE,
 	CONNECTION_ERROR,
@@ -89,7 +92,7 @@ enum ErrorType
 
 };
 
-enum LoadState
+enum LoadState : uint8_t
 {
 	NOT_STARTED_STATE,
 	IN_PROGRESS_STATE,
@@ -98,7 +101,7 @@ enum LoadState
 
 };
 
-enum AccessType
+enum AccessType : uint8_t
 {
 	initializeOnly = 1, // 0b001
 	inputOnly      = 2, // 0b010
@@ -107,7 +110,7 @@ enum AccessType
 
 };
 
-enum FieldType
+enum FieldType : uint8_t
 {
 	SFBool,
 	SFColor,
@@ -155,7 +158,7 @@ enum FieldType
 
 };
 
-enum NodeType
+enum NodeType : uint8_t
 {
 	X3DAppearanceChildNode,
 	X3DAppearanceNode,

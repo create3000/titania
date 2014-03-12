@@ -54,7 +54,7 @@
 namespace titania {
 namespace X3D {
 
-enum class ViewerType
+enum class ViewerType : uint8_t
 {
 	NONE,
 	EXAMINE,

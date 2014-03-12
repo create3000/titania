@@ -196,6 +196,9 @@ throw (Error <INVALID_NAME>,
 
 // Named node handling
 
+// TODO: A node may be part of more than one run-time name scope. A node shall be removed from a name scope when it is
+// removed from the scene graph. See: http://www.web3d.org/files/specifications/19775-1/V3.3/Part01/concepts.html#Runtimenamescope
+
 const SFNode &
 X3DExecutionContext::getNode (const std::string & name) const
 throw (Error <INVALID_NAME>,

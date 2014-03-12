@@ -464,7 +464,7 @@ DEF hangar Transform {
                       Transform {
                         children [
                           Anchor {
-                            description "Remixer verlassen und zur Hompage zurÃ¼ckkehren"
+                            description "Remixer verlassen und zur Hompage zurückkehren"
                             url "/"
                             parameter ""
                             children Transform {

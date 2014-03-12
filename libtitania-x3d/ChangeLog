@@ -1,3 +1,24 @@
+2014-03-12  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DOutput.h:
+	* Geospatial.h:
+	* X3DOutput.cpp:
+	* X3DConstants.h:
+	* TraverseType.h:
+	* SceneLoader.cpp:
+	* Generator.h:
+	* UnitArray.h:
+	* FontConfig.h:
+	* ViewerType.h:
+	* X3DExecutionContext.cpp:
+	* X3DLayoutNode.h:
+	* X3DFontStyleNode.h:
+	* MultiTexture.h:
+	* NavigationInfo.h:
+	* NavigationInfo.cpp:
+	* TextureProperties.h:
+	* ParticleSystem.h: 
+
 2014-03-11  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBindableNode.h:

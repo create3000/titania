@@ -68,13 +68,13 @@ class Font
 {
 public:
 
-	enum class Slant
+	enum class Slant : uint8_t
 	{
 		ROMAN,
 		ITALIC
 	};
 
-	enum class Weight
+	enum class Weight : uint8_t
 	{
 		NORMAL,
 		BOLD

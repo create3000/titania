@@ -68,7 +68,7 @@ public:
 	using ReferenceFramePtr = std::shared_ptr <geospatial::basic_converter <double>> ;
 	using ElevationFramePtr = std::shared_ptr <geospatial::geodetic <double>> ;
 
-	enum class CoordinateSystemType
+	enum class CoordinateSystemType : uint8_t
 	{
 		GD,
 		UTM,

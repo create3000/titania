@@ -257,7 +257,7 @@ private:
 	class Vertex;
 	class OddEvenMergeSort;
 
-	enum class GeometryType
+	enum class GeometryType : uint8_t
 	{
 		POINT,
 		LINE,

@@ -56,8 +56,8 @@
 #include <list>
 #include <map>
 #include <set>
-#include <vector>
 #include <tuple>
+#include <vector>
 
 namespace titania {
 namespace X3D {
@@ -65,11 +65,11 @@ namespace X3D {
 class X3DInput;
 class X3DOutput;
 
-typedef std::function <void (void)>           Requester;
-typedef std::list <Requester>                 RequesterArray;
-typedef RequesterArray::iterator              RequesterId;
-typedef std::tuple <const X3DOutput*, const void*, const void*>  RequesterPair;
-typedef std::map <RequesterPair, RequesterId> RequesterIndex;
+typedef std::function <void (void)>                             Requester;
+typedef std::list <Requester>                                   RequesterArray;
+typedef RequesterArray::iterator                                RequesterId;
+typedef std::tuple <const X3DOutput*, const void*, const void*> RequesterPair;
+typedef std::map <RequesterPair, RequesterId>                   RequesterIndex;
 
 class X3DOutput :
 	virtual public X3DBase
@@ -176,7 +176,7 @@ protected:
 
 private:
 
-	typedef std::set <std::pair <const X3DInput*, const void*>> InputSet;
+	typedef std::set <std::pair <const X3DInput*, const void*>>  InputSet;
 
 	bool
 	checkInterest (const void* const, const void* const) const;
@@ -212,10 +212,9 @@ private:
 	void
 	clear ();
 
-	mutable RequesterArray          requesters;
-	mutable RequesterIndex          requesterIndex;
-	mutable InputSet                inputs;
-	mutable std::vector <Requester> copy;
+	mutable RequesterArray requesters;
+	mutable RequesterIndex requesterIndex;
+	mutable InputSet       inputs;
 
 };
 

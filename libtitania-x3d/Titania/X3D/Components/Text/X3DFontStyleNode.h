@@ -149,7 +149,7 @@ class X3DFontStyleNode :
 {
 public:
 
-	enum Alignment
+	enum Alignment : uint8_t
 	{
 		BEGIN,
 		FIRST,

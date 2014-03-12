@@ -54,7 +54,7 @@
 namespace titania {
 namespace X3D {
 
-enum class TraverseType
+enum class TraverseType : uint8_t
 {
 	PICKING,
 	CAMERA,

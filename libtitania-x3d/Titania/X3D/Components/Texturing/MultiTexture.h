@@ -157,7 +157,7 @@ public:
 
 private:
 
-	enum class ModeType {
+	enum class ModeType : uint8_t {
 		REPLACE,
 		MODULATE,
 		MODULATE2X,
@@ -180,14 +180,14 @@ private:
 		OFF
 	};
 
-	enum class SourceType {
+	enum class SourceType : uint8_t {
 		DEFAULT,
 		DIFFUSE,
 		SPECULAR,
 		FACTOR
 	};
 	
-	enum class FunctionType {
+	enum class FunctionType : uint8_t {
 		DEFAULT,
 		COMPLEMENT,
 		ALPHAREPLICATE

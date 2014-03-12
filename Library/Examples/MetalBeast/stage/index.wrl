@@ -8440,7 +8440,7 @@ DEF hud Transform {
 			    }
 
 			    url	"#exitVP"
-			    description	"Zur Startansicht zur�ckkehren"
+			    description	"Zur Startansicht zurückkehren"
 			    parameter	""
 			  }
 			  Anchor {
@@ -8548,7 +8548,7 @@ DEF hud Transform {
 			    }
 
 			    url	"#gate"
-			    description	"Zum Schalter f�r das Haupttor - �ffne es!"
+			    description	"Zum Schalter für das Haupttor - öffne es!"
 			    parameter	""
 			  }
 			  Anchor {
@@ -8602,7 +8602,7 @@ DEF hud Transform {
 			    }
 
 			    url	"#bridge"
-			    description	"Zur Hebeb�hne"
+			    description	"Zur Hebebühne"
 			    parameter	""
 			  }
 			  Anchor {

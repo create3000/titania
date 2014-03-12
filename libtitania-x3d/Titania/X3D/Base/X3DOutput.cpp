@@ -60,8 +60,7 @@ X3DOutput::X3DOutput () :
 	       X3DBase (),
 	    requesters (),
 	requesterIndex (),
-	        inputs (),
-	          copy ()
+	        inputs ()
 { }
 
 const RequesterArray &
@@ -85,7 +84,7 @@ X3DOutput::removeInterest (const Requester & function) const
 bool
 X3DOutput::checkInterest (const void* const object, const void* const memberFunction) const
 {
-	RequesterPair requesterPair (this, memberFunction, object);
+	const RequesterPair requesterPair (this, memberFunction, object);
 
 	return requesterIndex .find (requesterPair) not_eq requesterIndex .end ();
 }
@@ -95,7 +94,7 @@ X3DOutput::insertInterest (const Requester & function, const void* const object,
 {
 	// Insert only when not in index.
 
-	RequesterPair requesterPair (this, memberFunction, object);
+	const RequesterPair requesterPair (this, memberFunction, object);
 
 	if (requesterIndex .find (requesterPair) == requesterIndex .end ())
 	{
@@ -119,9 +118,9 @@ X3DOutput::insertInput (const X3DInput* const input, const void* const memberFun
 void
 X3DOutput::eraseInterest (const void* const object, const void* const memberFunction) const
 {
-	RequesterPair requesterPair (this, memberFunction, object);
+	const RequesterPair requesterPair (this, memberFunction, object);
 
-	auto requester = requesterIndex .find (requesterPair);
+	const auto requester = requesterIndex .find (requesterPair);
 
 	if (requester not_eq requesterIndex .end ())
 	{
@@ -142,9 +141,9 @@ X3DOutput::eraseInput (const X3DInput* const input, void* const memberFunction) 
 void
 X3DOutput::insertDeleter (const X3DOutput* const output, const void* const input, const void* const memberFunction) const
 {
-	RequesterPair requesterPair (output, input, memberFunction); // Reversed
+	const RequesterPair requesterPair (output, input, memberFunction); // Reversed
 
-	auto requester = requesterIndex .find (requesterPair);
+	const auto requester = requesterIndex .find (requesterPair);
 
 	if (requester == requesterIndex .end ())
 	{
@@ -156,9 +155,9 @@ X3DOutput::insertDeleter (const X3DOutput* const output, const void* const input
 void
 X3DOutput::removeDeleter (const X3DOutput* const output, const void* const input, const void* const memberFunction) const
 {
-	RequesterPair requesterPair (output, input, memberFunction); // Reversed
+	const RequesterPair requesterPair (output, input, memberFunction); // Reversed
 
-	auto requester = requesterIndex .find (requesterPair);
+	const auto requester = requesterIndex .find (requesterPair);
 
 	if (requester not_eq requesterIndex .end ())
 	{
@@ -176,7 +175,7 @@ X3DOutput::processInterests () const
 	// The requesters have to be copied, due to the fact that the requester could
 	// remove itself from the output during the loop call.
 
-	copy .assign (requesters .cbegin (), requesters .cend ());
+	const std::vector <Requester> copy (requesters .cbegin (), requesters .cend ());
 
 	for (const auto & requester : copy)
 		requester ();

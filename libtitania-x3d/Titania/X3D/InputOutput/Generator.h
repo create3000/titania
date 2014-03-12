@@ -70,7 +70,7 @@ class Generator :
 {
 public:
 
-	enum StyleType
+	enum StyleType : uint8_t
 	{
 		SMALLEST,
 		SMALL,

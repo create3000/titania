@@ -60,7 +60,7 @@
 namespace titania {
 namespace X3D {
 
-enum class TransitionType {
+enum class TransitionType : uint8_t {
 	TELEPORT,
 	LINEAR,
 	ANIMATE

@@ -59,7 +59,7 @@
 namespace titania {
 namespace X3D {
 
-enum class UnitCategory
+enum class UnitCategory : uint8_t
 {
 	ANGLE,
 	FORCE,

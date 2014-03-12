@@ -56,7 +56,7 @@
 namespace titania {
 namespace X3D {
 
-enum CompressionMode
+enum CompressionMode : uint8_t
 {
 	LOW,
 	MEDIUM,
