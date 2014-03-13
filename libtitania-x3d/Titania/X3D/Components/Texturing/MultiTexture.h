@@ -148,7 +148,7 @@ public:
 	checkLoadState () const final override
 	{ return loadState; }
 
-	///  @name Operstions
+	///  @name Operations
 
 	virtual
 	void

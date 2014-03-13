@@ -1,3 +1,22 @@
+2014-03-13  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DConstants.h:
+	* X3DBaseNode.h:
+	* X3DBaseNode.cpp:
+	* X3DScene.cpp:
+	* Generator.h:
+	* Generator.cpp:
+	* X3DFieldDefinition.h:
+	* X3DFieldDefinition.cpp:
+	* LOD.cpp:
+	* Switch.cpp:
+	* X3DExecutionContext.h:
+	* X3DExecutionContext.cpp:
+	* Collision.cpp:
+	* MultiTexture.h:
+	* BrowserOptions.cpp:
+	* RenderingProperties.cpp: 
+
 2014-03-12  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Parser.cpp:

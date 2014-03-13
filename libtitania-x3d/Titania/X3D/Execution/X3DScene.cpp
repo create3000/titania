@@ -51,6 +51,7 @@
 #include "X3DScene.h"
 
 #include "../Bits/Error.h"
+#include "../Browser/X3DBrowser.h"
 #include "../Parser/Parser.h"
 #include "../Parser/RegEx.h"
 
@@ -236,21 +237,24 @@ throw (Error <INVALID_X3D>,
 void
 X3DScene::toStream (std::ostream & ostream) const
 {
-	const bool X3D = (getEncoding () == "X3D");
+	const auto version = getVersion ();
 
-	Generator::X3DAccessTypes (X3D);
-	Generator::X3DFieldNames (X3D);
+	Generator::Version (version);
+	Generator::X3DAccessTypes (getEncoding () == "X3D");
 
 	ostream
 		<< '#'
-		<< getEncoding ()
-		<< Generator::Space
-		<< 'V'
-		<< getSpecificationVersion ()
+		<< version
 		<< Generator::Space
 		<< getCharacterEncoding ();
 
-	if (not getComment () .empty ())
+	if (getComment () .empty ())
+	{
+		ostream
+			<< Generator::Space
+			<< getBrowser () -> getName ();		
+	}
+	else
 	{
 		ostream
 			<< Generator::Space

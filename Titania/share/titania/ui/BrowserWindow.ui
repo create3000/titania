@@ -687,12 +687,12 @@
   </object>
   <object class="GtkWindow" id="Window">
     <property name="width_request">768</property>
-    <property name="height_request">576</property>
+    <property name="height_request">480</property>
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Titania</property>
     <property name="window_position">center</property>
     <property name="default_width">768</property>
-    <property name="default_height">576</property>
+    <property name="default_height">480</property>
     <property name="has_resize_grip">False</property>
     <style>
       <class name="Titania"/>

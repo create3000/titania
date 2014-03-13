@@ -1,0 +1,32 @@
+#VRML V2.0 utf8 Titania
+
+META "title" "VRML V2.0"
+
+DEF Switch Switch {
+  choice DEF LOD LOD {
+    level DEF Collision Collision {
+      collide FALSE
+    }
+  }
+}
+
+Script {
+  field SFNode switch_ USE Switch
+  field SFNode lod USE LOD
+  field SFNode collision USE Collision
+
+  url "vrmlscript:
+
+function initialize ()
+{
+	print (switch_ .choice);
+	print (lod .level);
+	print (collision .collide);
+
+	print (switch_ .children);
+	print (lod .children);
+	print (collision .enabled);
+}
+"
+  directOutput TRUE
+}

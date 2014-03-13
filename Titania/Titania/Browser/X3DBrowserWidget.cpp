@@ -235,7 +235,7 @@ void
 X3DBrowserWidget::updateTitle (const bool edited) const
 {
 	getWindow () .set_title (getBrowser () -> getExecutionContext () -> getTitle ()
-	                         + " · "                        
+	                         + " · "
 	                         + getBrowser () -> getExecutionContext () -> getWorldURL ()
 	                         + (edited ? "*" : "")
 	                         + " · "
@@ -299,7 +299,7 @@ X3DBrowserWidget::set_initialized ()
 	const basic::uri worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
 
 	if (not worldURL .empty () and worldURL .is_local ())
-		getFileOpenDialog () .set_uri (worldURL .str ());
+		getFileOpenDialog () .set_uri (worldURL .filename () .str ());
 
 	else
 		getFileOpenDialog () .set_current_folder (os::home ());
@@ -353,7 +353,7 @@ X3DBrowserWidget::set_console ()
 void
 X3DBrowserWidget::set_urlError (const X3D::MFString & urlError)
 {
-	getMessageDialog () .set_message (_("Invalid X3D"));
+	getMessageDialog () .set_message (_ ("Invalid X3D"));
 	getMessageDialog () .set_secondary_text ("<span font_desc=\"mono\">"
 	                                         + Glib::Markup::escape_text (basic::join (urlError, "\n"))
 	                                         + "</span>",

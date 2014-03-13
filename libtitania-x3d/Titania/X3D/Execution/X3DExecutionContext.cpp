@@ -127,6 +127,27 @@ X3DExecutionContext::initialize ()
 	//__LOG__ << "Initialize done: " << getWorldURL () << std::endl;
 }
 
+VersionType
+X3DExecutionContext::getVersion () const
+{
+	static const std::map <std::string, VersionType> versions = {
+		std::make_pair ("VRML V2.0", VRML_2_0),
+		std::make_pair ("X3D V3.0",  X3D_3_0),
+		std::make_pair ("X3D V3.1",  X3D_3_1),
+		std::make_pair ("X3D V3.2",  X3D_3_2),
+		std::make_pair ("X3D V3.3",  X3D_3_3),
+	};
+
+	const std::string versionString = getEncoding () + " V" + getSpecificationVersion ();
+	
+	const auto version = versions .find (versionString);
+	
+	if (version not_eq versions .end ())
+		return version -> second;
+
+	return LATEST_VERSION;
+}
+
 void
 X3DExecutionContext::updateUnit (const std::string & category, const std::string & name, const double conversion)
 throw (Error <INVALID_NAME>,

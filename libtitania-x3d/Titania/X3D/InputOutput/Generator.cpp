@@ -197,8 +197,8 @@ static const std::string      emptyName;
 bool                 Generator::expandNodes = false;
 Generator::StyleType Generator::style       = NICEST;
 
-bool Generator::x3dFieldNames  = true;
-bool Generator::x3dAccessTypes = true;
+VersionType Generator::version        = LATEST_VERSION;
+bool        Generator::x3dAccessTypes = true;
 
 void
 Generator::Style (const std::string & value)

@@ -67,7 +67,7 @@ nodeIndex ()
 			std::cout
 				<< '\t'
 				<< field -> getName () << " = "
-				<< field -> getAliasName () << ";"
+				<< field -> getName () << ";"
 				<< X3D::Generator::AccessTypes [field] << ";"
 				<< field -> getTypeName () << ";";
 

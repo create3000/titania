@@ -51,6 +51,8 @@
 #ifndef __TITANIA_X3D_INPUT_OUTPUT_GENERATOR_H__
 #define __TITANIA_X3D_INPUT_OUTPUT_GENERATOR_H__
 
+#include "../Bits/X3DConstants.h"
+
 #include <map>
 #include <map>
 #include <set>
@@ -154,13 +156,13 @@ public:
 
 	static
 	void
-	X3DFieldNames (const bool value)
-	{ x3dFieldNames = value; }
+	Version (const VersionType value)
+	{ version = value; }
 
 	static
-	bool
-	X3DFieldNames ()
-	{ return x3dFieldNames; }
+	VersionType
+	Version ()
+	{ return version; }
 
 	static
 	void
@@ -223,10 +225,10 @@ private:
 	static size_t             newName;
 	static ImportedNamesIndex importedNames;
 
-	static bool      expandNodes;
-	static StyleType style;
-	static bool      x3dFieldNames;
-	static bool      x3dAccessTypes;
+	static bool        expandNodes;
+	static StyleType   style;
+	static VersionType version;
+	static bool        x3dAccessTypes;
 
 };
 

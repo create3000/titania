@@ -40,7 +40,7 @@ iurlstream::iurlstream () :
 	 response_headers_map (),
 	response_http_version (),
 	      response_status (0),
-	      response_reason ("Could not establish connection.")
+	      response_reason ("Couldn't establish connection.")
 {
 	init (buf);
 	clear ();

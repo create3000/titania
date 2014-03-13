@@ -2412,6 +2412,7 @@
     <None Include="Tests\Basic\UNIT.wrl" />
     <None Include="Tests\Shaders\VertexAttibutes.wrl" />
     <None Include="Tests\ParticleSystems\uft8.wrl" />
+    <None Include="Tests\Basic\VRML2.0.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

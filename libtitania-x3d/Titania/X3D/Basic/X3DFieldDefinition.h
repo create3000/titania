@@ -118,14 +118,6 @@ public:
 	///  @name Member access
 
 	void
-	setAliasName (const std::string & value)
-	{ aliasName = value; }
-
-	const std::string &
-	getAliasName () const
-	{ return aliasName; }
-
-	void
 	setAccessType (const AccessType value)
 	{ accessType = value; }
 
@@ -269,7 +261,6 @@ private:
 	};
 
 	AccessType  accessType;
-	std::string aliasName;
 
 	mutable std::unique_ptr <IO> io;
 

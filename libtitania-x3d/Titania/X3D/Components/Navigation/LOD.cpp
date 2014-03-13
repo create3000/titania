@@ -84,7 +84,7 @@ LOD::LOD (X3DExecutionContext* const executionContext) :
 	addField (inputOnly,      "removeChildren",   removeChildren ());
 	addField (inputOutput,    "children",         children ());
 
-	addField ("level", "children");
+	addField (VRML_2_0, "level", "children");
 }
 
 X3DBaseNode*

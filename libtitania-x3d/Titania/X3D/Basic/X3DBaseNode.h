@@ -343,10 +343,10 @@ protected:
 	addField (const AccessType, const std::string &, X3DFieldDefinition &);
 
 	void
-	removeField (const std::string &);
+	addField (const VersionType, const std::string &, const std::string &);
 
 	void
-	addField (const std::string &, const std::string &);
+	removeField (const std::string &);
 
 	void
 	setExtendedEventHandling (const bool value)
@@ -367,7 +367,7 @@ protected:
 
 private:
 
-	typedef std::map <std::string, std::string> FieldAliasesMap;
+	using FieldAliasIndex = std::map <VersionType, std::pair <std::map <std::string, std::string>, std::map <std::string, std::string>>>;
 
 	///  @name Misc
 
@@ -376,6 +376,9 @@ private:
 
 	const std::string &
 	getFieldName (const std::string &) const;
+
+	const std::string &
+	getFieldName (const std::string &, const VersionType) const;
 
 	FieldDefinitionArray
 	getInitializeableFields (const bool = false) const;
@@ -393,26 +396,26 @@ private:
 
 	///  @name Members
 
-	X3DBrowser* const          browser;
-	X3DExecutionContext* const executionContext;
+	X3DBrowser* const          browser;          // This nodes Browser
+	X3DExecutionContext* const executionContext; // This nodes ExecutionContext
 
 	NodeTypeArray nodeType;
 
 	FieldDefinitionArray fieldDefinitions;      // Pre-defined and user-defined field definitions
 	FieldsMap            fields;                // Pre-defined and user-defined fields
-	FieldAliasesMap      fieldAliases;          // VRML names
+	FieldAliasIndex      fieldAliases;          // VRML names
 	size_t               numUserDefinedFields;  // Number of user defined fields
 
-	bool                  internal;
-	bool                  saved;
+	bool                  internal;              // Is this node interally used
+	bool                  saved;                 // Is this node hidden and saved
 	bool                  extendedEventHandling; // Handle initializeOnlys as input events
 	NodeId                nodeId;                // Router eventsProcessed id
 	std::vector <EventId> events;
 
-	X3DBaseNode*              handle;
-	std::vector <std::string> comments;
+	X3DBaseNode*              handle;   // Does this node has a handle
+	std::vector <std::string> comments; // This nodes comments
 
-	Output shutdownOutput;
+	Output shutdownOutput; // Shutdown service
 
 };
 

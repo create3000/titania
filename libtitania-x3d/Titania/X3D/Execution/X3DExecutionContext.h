@@ -104,6 +104,9 @@ public:
 	       Error <DISPOSED>)
 	{ return worldURL; }
 
+	VersionType
+	getVersion () const;
+
 	void
 	setEncoding (const std::string & value)
 	{ encoding = value; }

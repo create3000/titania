@@ -365,10 +365,18 @@ X3DBaseNode::addField (const AccessType accessType, const std::string & name, X3
 	field .addParent (this);
 	field .setAccessType (accessType);
 	field .setName (name);
-	field .setAliasName (name);
 
 	fieldDefinitions .emplace_back (&field);
 	fields .emplace (name, &field);
+}
+
+void
+X3DBaseNode::addField (const VersionType version, const std::string & alias, const std::string & name)
+{
+	auto & fieldAlias = fieldAliases [version];
+
+	fieldAlias .first [alias] = name;
+	fieldAlias .second [name] = alias;
 }
 
 void
@@ -389,18 +397,6 @@ X3DBaseNode::removeField (const std::string & name)
 
 		field -> second -> removeParent (this);
 		fields .erase (field);
-	}
-}
-
-void
-X3DBaseNode::addField (const std::string & alias, const std::string & name)
-{
-	const auto iter = fields .find (name);
-
-	if (iter not_eq fields .end ())
-	{
-		fieldAliases .emplace (alias, name);
-		iter -> second -> setAliasName (alias);
 	}
 }
 
@@ -435,26 +431,37 @@ throw (Error <INVALID_NAME>,
 }
 
 const std::string &
-X3DBaseNode::getFieldName (const std::string & name) const
+X3DBaseNode::getFieldName (const std::string & alias) const
 {
-	const auto fieldAlias = fieldAliases .find (name);
+	for (const auto & version : fieldAliases)
+	{
+		const auto fieldAlias = version .second .first .find (alias);
+		
+		if (fieldAlias not_eq version .second .first .end ())
+			return fieldAlias -> second;
+	}
 
-	if (fieldAlias not_eq fieldAliases .end ())
-		return fieldAlias -> second;
+	return alias;
+}
+
+const std::string &
+X3DBaseNode::getFieldName (const std::string & name, const VersionType version) const
+{
+	if (not fieldAliases .empty ())
+	{
+		const auto fieldAlias = fieldAliases .find (version);
+
+		if (fieldAlias not_eq fieldAliases .end ())
+		{
+			const auto alias = fieldAlias -> second .second .find (name);
+
+			if (alias not_eq fieldAlias -> second .second  .end ())
+				return alias -> second;
+		}
+	}
 
 	return name;
 }
-
-//const std:string &
-//X3DBaseNode::getFieldAlias (X3DFieldDefinition* field) const
-//{
-//	auto fieldAlias = fieldAliases .find (field -> getName ());
-//
-//	if (fieldAlias not_eq fieldAliases .end ())
-//		return fieldAlias -> first;
-//
-//	return field -> getName ();
-//}
 
 void
 X3DBaseNode::addUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field)
@@ -889,10 +896,7 @@ X3DBaseNode::toStreamField (std::ostream & ostream, X3DFieldDefinition* const fi
 
 		ostream << Generator::Indent;
 
-		if (Generator::X3DFieldNames ())
-			ostream << field -> getName ();
-		else
-			ostream << field -> getAliasName ();
+		ostream << getFieldName (field -> getName (), Generator::Version ());
 
 		ostream
 			<< Generator::Space
@@ -906,10 +910,7 @@ X3DBaseNode::toStreamField (std::ostream & ostream, X3DFieldDefinition* const fi
 
 			ostream << Generator::Indent;
 
-			if (Generator::X3DFieldNames ())
-				ostream << field -> getName ();
-			else
-				ostream << field -> getAliasName ();
+			ostream << getFieldName (field -> getName (), Generator::Version ());
 
 			ostream
 				<< Generator::Space
@@ -948,10 +949,7 @@ X3DBaseNode::toStreamUserDefinedField (std::ostream & ostream, X3DFieldDefinitio
 			<< std::setiosflags (std::ios::left) << std::setw (fieldTypeLength) << field -> getTypeName ()
 			<< Generator::Space;
 
-		if (Generator::X3DFieldNames ())
-			ostream << field -> getName ();
-		else
-			ostream << field -> getAliasName ();
+		ostream << getFieldName (field -> getName (), Generator::Version ());
 
 		if (field -> isInitializeable ())
 		{
@@ -982,10 +980,7 @@ X3DBaseNode::toStreamUserDefinedField (std::ostream & ostream, X3DFieldDefinitio
 				<< std::setiosflags (std::ios::left) << std::setw (fieldTypeLength) << field -> getTypeName ()
 				<< Generator::Space;
 
-			if (Generator::X3DFieldNames ())
-				ostream << field -> getName ();
-			else
-				ostream << field -> getAliasName ();
+			ostream << getFieldName (field -> getName (), Generator::Version ());
 
 			ostream
 				<< Generator::Space
@@ -1010,10 +1005,7 @@ X3DBaseNode::toStreamUserDefinedField (std::ostream & ostream, X3DFieldDefinitio
 				<< std::setiosflags (std::ios::left) << std::setw (fieldTypeLength) << field -> getTypeName ()
 				<< Generator::Space;
 
-			if (Generator::X3DFieldNames ())
-				ostream << field -> getName ();
-			else
-				ostream << field -> getAliasName ();
+			ostream << getFieldName (field -> getName (), Generator::Version ());
 
 			if (field -> isInitializeable ())
 			{

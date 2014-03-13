@@ -3,31 +3,32 @@
 META "icon" "../../ui/icons/icon-bw.svg"
 META "title" "about:url_error"
 
-EXTERNPROTO Red [
-  inputOutput SFFloat transparency
-]
-"library/Colors.wrl"
-
-NavigationInfo {
-  type "NONE"
+DEF None NavigationInfo {
+  type [
+    "NONE",
+    "ANY"
+  ]
 }
 
-Inline {
-  url "library/background.wrl"
+DEF White Background {
+  skyColor 1 1 1
 }
-
-Viewpoint { }
 
 Transform {
-  translation -5 0 0
+  translation -3.00464 1.23037 0
   children Shape {
     appearance Appearance {
-      material Red { }
+      material Material {
+        diffuseColor 0 0 0
+      }
     }
     geometry DEF Message Text {
-      string "file:///home/holger/Projekte/Titania/Titania/share/titania/pages/about/url_error.wrl"
+      string [
+        "Couldn't load URL 'about:hello_world'.",
+        "Couldn't establish connection."
+      ]
       fontStyle FontStyle {
-        family "Ubuntu"
+        family "TYPEWRITER"
         size 0.3
       }
     }
@@ -41,9 +42,38 @@ Script {
 
 function initialize ()
 {
-	print ('### worldURL: ' + Browser .getWorldURL ());
+	var worldURL = Browser .getWorldURL ()
+	//var worldURL = 'file:///home/holger/Projekte/Titania/Titania/share/titania/pages/about/url_error.wrl?what=Couldn%27t%20load%20URL%20%27about%3Ahello_world%27.%0ACouldn%27t%20establish%20connection.'
+
+	var match = worldURL .match (/what=(.*)/)
+	var what  = unescape (match [1]) .split ('\\n');
+
+	var string = new MFString ();
 	
-	message .string = new MFString (Browser .getWorldURL ());
+	for each (var s in what)
+		string [string .length] = s;
+
+	message .string = string;
 }
 	"
+}
+
+DEF dialog-error Transform {
+  translation -3.70573 1.12522 0
+  scale 0.364357 0.364357 5.37931
+  children Shape {
+    appearance Appearance {
+      texture ImageTexture {
+        url [
+          "../../../../../../../../../usr/share/icons/Faenza/status/96/dialog-error.png",
+          "file:///usr/share/icons/Faenza/status/96/dialog-error.png"
+        ]
+        repeatS FALSE
+        repeatT FALSE
+      }
+    }
+    geometry Rectangle2D {
+      solid FALSE
+    }
+  }
 }
