@@ -84,7 +84,7 @@ Collision::Collision (X3DExecutionContext* const executionContext) :
 	addField (inputOnly,      "removeChildren", removeChildren ());
 	addField (inputOutput,    "children",       children ());
 
-	addField (VRML_2_0, "collide", "enabled");
+	addField (VRML_V2_0, "collide", "enabled");
 }
 
 X3DBaseNode*

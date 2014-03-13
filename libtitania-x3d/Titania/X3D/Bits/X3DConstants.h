@@ -60,25 +60,25 @@ namespace X3D {
 
 enum VersionType : uint8_t
 {
-	VRML_2_0,
-	X3D_3_0,
-	X3D_3_1,
-	X3D_3_2,
-	X3D_3_3
+	VRML_V2_0,
+	X3D_V3_0,
+	X3D_V3_1,
+	X3D_V3_2,
+	X3D_V3_3
 };
 
-static constexpr VersionType LATEST_VERSION = VersionType::X3D_3_3;
+static constexpr VersionType LATEST_VERSION = VersionType::X3D_V3_3;
 
 inline
 std::ostream &
 operator << (std::ostream & ostream, const VersionType version)
 {
 	static const std::map <VersionType, std::string> versions = {
-		std::make_pair (VRML_2_0, "VRML V2.0"),
-		std::make_pair (X3D_3_0,  "X3D V3.0"),
-		std::make_pair (X3D_3_1,  "X3D V3.1"),
-		std::make_pair (X3D_3_2,  "X3D V3.2"),
-		std::make_pair (X3D_3_3,  "X3D V3.3"),	
+		std::make_pair (VRML_V2_0, "VRML V2.0"),
+		std::make_pair (X3D_V3_0,  "X3D V3.0"),
+		std::make_pair (X3D_V3_1,  "X3D V3.1"),
+		std::make_pair (X3D_V3_2,  "X3D V3.2"),
+		std::make_pair (X3D_V3_3,  "X3D V3.3"),	
 	};
 
 	return ostream << versions .find (version) -> second;

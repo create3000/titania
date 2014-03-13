@@ -120,7 +120,7 @@ RenderingProperties::RenderingProperties (X3DExecutionContext* const executionCo
 	addField (outputOnly, "ColorDepth",     colorDepth ());
 	addField (outputOnly, "TextureMemory",  textureMemory ());
 
-	addField (X3D_3_3, "AntiAliased", "Antialiased");
+	addField (X3D_V3_3, "AntiAliased", "Antialiased");
 
 	addChildren (world);
 }

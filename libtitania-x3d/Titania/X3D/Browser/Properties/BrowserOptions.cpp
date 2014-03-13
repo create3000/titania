@@ -151,7 +151,7 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "Gravity",                gravity ());
 	addField (inputOutput, "MinTextureSize",         minTextureSize ());
 
-	addField (X3D_3_3, "AntiAliased", "Antialiased");
+	addField (X3D_V3_3, "AntiAliased", "Antialiased");
 
 	addChildren (motionBlurOptions (),
 	             appearance (),

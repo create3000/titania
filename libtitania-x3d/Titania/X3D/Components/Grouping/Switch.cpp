@@ -77,7 +77,7 @@ Switch::Switch (X3DExecutionContext* const executionContext) :
 	addField (inputOnly,      "removeChildren", removeChildren ());
 	addField (inputOutput,    "children",       children ());
 
-	addField (VRML_2_0, "choice", "children");
+	addField (VRML_V2_0, "choice", "children");
 }
 
 X3DBaseNode*

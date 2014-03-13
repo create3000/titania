@@ -131,11 +131,11 @@ VersionType
 X3DExecutionContext::getVersion () const
 {
 	static const std::map <std::string, VersionType> versions = {
-		std::make_pair ("VRML V2.0", VRML_2_0),
-		std::make_pair ("X3D V3.0",  X3D_3_0),
-		std::make_pair ("X3D V3.1",  X3D_3_1),
-		std::make_pair ("X3D V3.2",  X3D_3_2),
-		std::make_pair ("X3D V3.3",  X3D_3_3),
+		std::make_pair ("VRML V2.0", VRML_V2_0),
+		std::make_pair ("X3D V3.0",  X3D_V3_0),
+		std::make_pair ("X3D V3.1",  X3D_V3_1),
+		std::make_pair ("X3D V3.2",  X3D_V3_2),
+		std::make_pair ("X3D V3.3",  X3D_V3_3),
 	};
 
 	const std::string versionString = getEncoding () + " V" + getSpecificationVersion ();
