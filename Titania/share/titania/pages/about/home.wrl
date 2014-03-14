@@ -39,7 +39,7 @@ DEF Fastener Rotor {
 }
 
 DEF Slower Rotor {
-  cycleInterval 61
+  cycleInterval 67
   loop TRUE
 }
 

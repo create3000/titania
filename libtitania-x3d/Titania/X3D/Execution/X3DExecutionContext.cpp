@@ -446,8 +446,6 @@ throw (Error <INVALID_NODE>,
 
 	try
 	{
-		inlineNode -> setup ();
-
 		importedNodes .erase (importedNames .at (inlineNode -> getExportedNode (exportedName)));
 	}
 	catch (const std::out_of_range &)

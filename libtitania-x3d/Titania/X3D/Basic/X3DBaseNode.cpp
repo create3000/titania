@@ -262,7 +262,7 @@ X3DBaseNode*
 X3DBaseNode::copy (X3DExecutionContext* const executionContext, const FlattCopyType &) const
 throw (Error <NOT_SUPPORTED>)
 {
-	X3DBaseNode* const copy = create (executionContext);
+	const SFNode copy = create (executionContext);
 
 	if (not getName () .empty ())
 		executionContext -> updateNamedNode (executionContext -> getUniqueName (getName ()), copy);
@@ -1033,13 +1033,6 @@ X3DBaseNode::dispose ()
 	fieldDefinitions .clear ();
 
 	executionContext -> removeParent (this);
-
-	try
-	{
-		__LOG__ << getTypeName () << std::endl;	
-	}
-	catch (...)
-	{ }
 }
 
 X3DBaseNode::~X3DBaseNode ()

@@ -223,16 +223,13 @@ OutlineRouteGraph::remove_routes (const Gtk::TreeModel::Path & path, OutlineTree
 void
 OutlineRouteGraph::add_input_route (const Gtk::TreeModel::Path & destinationPath, OutlineTreeData* const destinationData, X3D::Route* const route)
 {
-	if (not route -> isConnected ())
-		return;
-	
-	const auto sourceNode = route -> getSourceNode ();
-
-	if (sourceNode -> getExecutionContext () not_eq treeView -> get_model () -> get_execution_context ())
-		return;
-
 	try
 	{
+		const auto sourceNode = route -> getSourceNode ();
+
+		if (sourceNode -> getExecutionContext () not_eq treeView -> get_model () -> get_execution_context ())
+			return;
+
 		const auto sourceField    = sourceNode -> getField (route -> getSourceField ());
 		const auto sourceUserData = treeView -> get_user_data (sourceField);
 
@@ -305,16 +302,13 @@ OutlineRouteGraph::add_input_route (const Gtk::TreeModel::Path & destinationPath
 void
 OutlineRouteGraph::add_output_route (const Gtk::TreeModel::Path & sourcePath, OutlineTreeData* const sourceData, X3D::Route* const route)
 {
-	if (not route -> isConnected ())
-		return;
-
-	const auto destinationNode = route -> getDestinationNode ();
-
-	if (destinationNode -> getExecutionContext () not_eq treeView -> get_model () -> get_execution_context ())
-		return;
-
 	try
 	{
+		const auto destinationNode = route -> getDestinationNode ();
+
+		if (destinationNode -> getExecutionContext () not_eq treeView -> get_model () -> get_execution_context ())
+			return;
+
 		const auto destinationField    = destinationNode -> getField (route -> getDestinationField ());
 		const auto destinationUserData = treeView -> get_user_data (destinationField);
 
@@ -599,22 +593,19 @@ OutlineRouteGraph::collapse_field (const Gtk::TreeModel::iterator & parent)
 void
 OutlineRouteGraph::remove_input_route (const Gtk::TreeModel::Path & destinationPath, OutlineTreeData* const destinationData, X3D::Route* const route)
 {
-	//__LOG__ << std::endl;
-	
-	if (not route -> isConnected ())
-		return;
-
-	const auto sourceNode = route -> getSourceNode ();
-
-	if (sourceNode -> getExecutionContext () not_eq treeView -> get_model () -> get_execution_context ())
-		return;
-
-	// Remove disconnected interest
-
-	route -> disconnected () .removeInterest (this, &OutlineRouteGraph::disconnect_route);
-
 	try
 	{
+		//__LOG__ << std::endl;
+
+		const auto sourceNode = route -> getSourceNode ();
+
+		if (sourceNode -> getExecutionContext () not_eq treeView -> get_model () -> get_execution_context ())
+			return;
+
+		// Remove disconnected interest
+
+		route -> disconnected () .removeInterest (this, &OutlineRouteGraph::disconnect_route);
+
 		const auto sourceField    = sourceNode -> getField (route -> getSourceField ());
 		const auto sourceUserData = treeView -> get_user_data (sourceField);
 
@@ -681,22 +672,19 @@ OutlineRouteGraph::remove_input_route (const Gtk::TreeModel::Path & destinationP
 void
 OutlineRouteGraph::remove_output_route (const Gtk::TreeModel::Path & sourcePath, OutlineTreeData* const sourceData, X3D::Route* const route)
 {
-	//__LOG__ << std::endl;
-	
-	if (not route -> isConnected ())
-		return;
-
-	const auto destinationNode = route -> getDestinationNode ();
-
-	if (destinationNode -> getExecutionContext () not_eq treeView -> get_model () -> get_execution_context ())
-		return;
-
-	// Remove disconnected interest
-
-	route -> disconnected () .removeInterest (this, &OutlineRouteGraph::disconnect_route);
-
 	try
 	{
+		//__LOG__ << std::endl;
+
+		const auto destinationNode = route -> getDestinationNode ();
+
+		if (destinationNode -> getExecutionContext () not_eq treeView -> get_model () -> get_execution_context ())
+			return;
+
+		// Remove disconnected interest
+
+		route -> disconnected () .removeInterest (this, &OutlineRouteGraph::disconnect_route);
+
 		const auto destinationField    = destinationNode -> getField (route -> getDestinationField ());
 		const auto destinationUserData = treeView -> get_user_data (destinationField);
 

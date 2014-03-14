@@ -97,9 +97,6 @@ Inline::create (X3DExecutionContext* const executionContext) const
 void
 Inline::initialize ()
 {
-	if (initialized)
-		return;
-
 	X3DChildNode::initialize ();
 	X3DBoundedObject::initialize ();
 	X3DUrlObject::initialize ();
@@ -108,6 +105,12 @@ Inline::initialize ()
 
 	load () .addInterest (this, &Inline::set_load);
 	url ()  .addInterest (this, &Inline::set_url);
+
+	if (scene)
+	{
+		setScene (scene);
+		setLoadState (COMPLETE_STATE);
+	}
 
 	if (X3D_PARALLEL)
 	{
@@ -152,12 +155,7 @@ Inline::setScene (const X3DSFNode <Scene> & value)
 		scene -> getRootNodes () .removeInterest (group -> children ());
 
 	scene = value;
-
-	if (initialized)
-		scene -> setup ();
-
-	else
-		getExecutionContext () -> addUninitializedNode (scene);
+	scene -> setup ();
 
 	scene -> getRootNodes () .addInterest (group -> children ());
 	group -> children () = scene -> getRootNodes ();
@@ -179,10 +177,34 @@ throw (Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
 	if (load ())
-		const_cast <Inline*> (this) -> requestImmediateLoad ();
+	{
+		if (not initialized)
+		{
+			try
+			{
+				if (not scene)
+				{
+					X3DSFNode <Scene> scene = getBrowser () -> createScene ();
 
-	if (checkLoadState () == COMPLETE_STATE)
-		return scene -> getExportedNode (exportedName);
+					Loader (getExecutionContext ()) .parseIntoScene (scene, url ());
+
+					const_cast <Inline*> (this) -> scene .set (scene);
+				}
+			}
+			catch (const X3DError & error)
+			{ }
+
+			if (scene)
+				return scene -> getExportedNode (exportedName);
+		}
+		else
+		{
+			const_cast <Inline*> (this) -> requestImmediateLoad ();
+
+			if (checkLoadState () == COMPLETE_STATE)
+				return scene -> getExportedNode (exportedName);
+		}
+	}
 
 	throw Error <INVALID_NAME> ("Imported node error: Inline node '" + getName () + "' is not loaded.");
 }

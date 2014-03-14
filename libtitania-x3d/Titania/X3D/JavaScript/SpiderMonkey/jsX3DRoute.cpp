@@ -109,33 +109,65 @@ jsX3DRoute::create (JSContext* const context, const X3DSFNode <Route> & route, j
 JSBool
 jsX3DRoute::sourceNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto & route = *static_cast <X3DSFNode <Route>*> (JS_GetPrivate (context, obj));
+	try
+	{
+		const auto & route = *static_cast <X3DSFNode <Route>*> (JS_GetPrivate (context, obj));
 
-	return jsSFNode::create (context, new SFNode (route -> getSourceNode ()), vp);
+		return jsSFNode::create (context, new SFNode (route -> getSourceNode ()), vp);
+	}
+	catch (const X3DError & error)
+	{
+		JS_ReportError (context, error .what ());
+		return JS_FALSE;
+	}
 }
 
 JSBool
 jsX3DRoute::sourceField (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto & route = *static_cast <X3DSFNode <Route>*> (JS_GetPrivate (context, obj));
+	try
+	{
+		const auto & route = *static_cast <X3DSFNode <Route>*> (JS_GetPrivate (context, obj));
 
-	return JS_NewStringValue (context, route -> getSourceField (), vp);
+		return JS_NewStringValue (context, route -> getSourceField (), vp);
+	}
+	catch (const X3DError & error)
+	{
+		JS_ReportError (context, error .what ());
+		return JS_FALSE;
+	}
 }
 
 JSBool
 jsX3DRoute::destinationNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto & route = *static_cast <X3DSFNode <Route>*> (JS_GetPrivate (context, obj));
+	try
+	{
+		const auto & route = *static_cast <X3DSFNode <Route>*> (JS_GetPrivate (context, obj));
 
-	return jsSFNode::create (context, new SFNode (route -> getDestinationNode ()), vp);
+		return jsSFNode::create (context, new SFNode (route -> getDestinationNode ()), vp);
+	}
+	catch (const X3DError & error)
+	{
+		JS_ReportError (context, error .what ());
+		return JS_FALSE;
+	}
 }
 
 JSBool
 jsX3DRoute::destinationField (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto & route = *static_cast <X3DSFNode <Route>*> (JS_GetPrivate (context, obj));
+	try
+	{
+		const auto & route = *static_cast <X3DSFNode <Route>*> (JS_GetPrivate (context, obj));
 
-	return JS_NewStringValue (context, route -> getDestinationField (), vp);
+		return JS_NewStringValue (context, route -> getDestinationField (), vp);
+	}
+	catch (const X3DError & error)
+	{
+		JS_ReportError (context, error .what ());
+		return JS_FALSE;
+	}
 }
 
 void

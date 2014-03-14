@@ -497,8 +497,13 @@ X3DBrowserEditor::toString (X3D::MFNode & nodes) const
 	                     {
 	                        if (route -> getExecutionContext () == getBrowser () -> getExecutionContext ())
 	                        {
-	                           if (nodeIndex .find (route -> getDestinationNode ()) not_eq nodeIndex .end ())
-											routes .emplace_back (route);
+	                           try
+	                           {
+		                           if (nodeIndex .find (route -> getDestinationNode ()) not_eq nodeIndex .end ())
+												routes .emplace_back (route);
+										}
+										catch (const X3D::X3DError &)
+										{ }
 									}
 								}
 							}
@@ -903,15 +908,20 @@ X3DBrowserEditor::deleteRoutes (X3D::X3DExecutionContext* const executionContext
 
 	for (const auto & route : X3D::RouteArray (executionContext -> getRoutes ()))
 	{
-		if (route -> getSourceNode () == node or route -> getDestinationNode () == node)
+		try
 		{
-			deleteRoute (executionContext,
-			             route -> getSourceNode (),
-			             route -> getSourceField (),
-			             route -> getDestinationNode (),
-			             route -> getDestinationField (),
-			             undoStep);
+			if (route -> getSourceNode () == node or route -> getDestinationNode () == node)
+			{
+				deleteRoute (executionContext,
+				             route -> getSourceNode (),
+				             route -> getSourceField (),
+				             route -> getDestinationNode (),
+				             route -> getDestinationField (),
+				             undoStep);
+			}
 		}
+		catch (const X3D::X3DError &)
+		{ }
 	}
 }
 

@@ -1,3 +1,11 @@
+2014-03-14  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* home.wrl:
+	* X3DBrowserEditor.cpp:
+	* OutlineTreeModel.cpp:
+	* OutlineRouteGraph.cpp:
+	* OutlineCellRenderer.cpp: 
+
 2014-03-13  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* BrowserWindow.ui:

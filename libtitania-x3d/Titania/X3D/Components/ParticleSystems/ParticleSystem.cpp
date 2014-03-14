@@ -1549,7 +1549,7 @@ ParticleSystem::dispose ()
 	// Color ramp texture buffer
 
 	if (colorRampMapId [0])
-		glDeleteTextures (1, colorRampMapId .data ());
+		glDeleteTextures (2, colorRampMapId .data ());
 
 	if (colorRampBufferId [0])
 		glDeleteBuffers (2, colorRampBufferId .data ());
@@ -1557,7 +1557,7 @@ ParticleSystem::dispose ()
 	// Color ramp texture buffer
 
 	if (texCoordRampMapId [0])
-		glDeleteTextures (1, texCoordRampMapId .data ());
+		glDeleteTextures (2, texCoordRampMapId .data ());
 
 	if (texCoordRampBufferId [0])
 		glDeleteBuffers (2, texCoordRampBufferId .data ());

@@ -67,7 +67,7 @@ public:
 	///  @name Construction
 
 	ImportedNode (X3DExecutionContext* const,
-	              Inline* const,
+	              const X3DSFNode <Inline> &,
 	              const std::string &,
 	              const std::string &)
 	throw (Error <INVALID_NAME>,

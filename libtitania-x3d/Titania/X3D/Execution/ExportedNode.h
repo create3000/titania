@@ -67,7 +67,7 @@ public:
 	///  @name Construction
 
 	ExportedNode (X3DScene* const,
-	              const std::string &, X3DBaseNode* const);
+	              const std::string &, const SFNode &);
 
 	ExportedNode*
 	copy (X3DScene* const) const

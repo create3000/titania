@@ -62,7 +62,7 @@ const std::string ImportedNode::typeName       = "ImportedNode";
 const std::string ImportedNode::containerField = "importedNode";
 
 ImportedNode::ImportedNode (X3DExecutionContext* const executionContext,
-                            Inline* const inlineNode,
+                            const X3DSFNode <Inline> & inlineNode,
                             const std::string & exportedName,
                             const std::string & importedName)
 throw (Error <INVALID_NAME>,
@@ -74,7 +74,7 @@ throw (Error <INVALID_NAME>,
 	exportedName (exportedName),
 	importedName (importedName)
 {
-	inlineNode -> shutdown () .addInterest (this, &ImportedNode::remove);
+	inlineNode   -> shutdown () .addInterest (this, &ImportedNode::remove);
 	exportedNode -> shutdown () .addInterest (this, &ImportedNode::remove);
 
 	setup ();

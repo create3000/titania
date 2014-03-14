@@ -33,9 +33,9 @@ DEF Debug Script {
 
 function initialize ()
 {
-	var scene = Browser .currentScene;
+//	var scene = Browser .currentScene;
 	
-	scene .updateExportedNode ('SphereExport', scene .getNamedNode ('Sphere'));
+//	scene .updateExportedNode ('SphereExport', scene .getNamedNode ('Sphere'));
 }
 "
 }

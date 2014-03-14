@@ -110,27 +110,26 @@ public:
 	getContainerField () const final override
 	{ return containerField; }
 
-	///  @name Tests
-
-	bool
-	isConnected () const;
-
 	///  @name Member access
 
 	RouteId
 	getId () const;
 
-	const SFNode &
-	getSourceNode () const;
+	SFNode
+	getSourceNode () const
+	throw (Error <DISPOSED>);
 
 	const std::string &
-	getSourceField () const;
+	getSourceField () const
+	throw (Error <DISPOSED>);
 
-	const SFNode &
-	getDestinationNode () const;
+	SFNode
+	getDestinationNode () const
+	throw (Error <DISPOSED>);
 
 	const std::string &
-	getDestinationField () const;
+	getDestinationField () const
+	throw (Error <DISPOSED>);
 
 	///  @name Operations
 
@@ -161,6 +160,11 @@ private:
 	Route*
 	create (X3DExecutionContext* const) const final override;
 
+	///  @name Tests
+
+	bool
+	isConnected () const;
+
 	///  @name Operations
 
 	void
@@ -174,12 +178,11 @@ private:
 
 	///  @name Members
 
-	SFNode              sourceNode;
+	X3DBaseNode*        sourceNode;
 	X3DFieldDefinition* sourceField;
-	SFNode              destinationNode;
+	X3DBaseNode*        destinationNode;
 	X3DFieldDefinition* destinationField;
 
-	bool   connected;
 	Output disconnectedOutput;
 
 };

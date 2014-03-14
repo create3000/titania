@@ -124,8 +124,13 @@ OutlineTreeModel::get_input_routes (X3D::X3DFieldDefinition* const field) const
 
 	for (const auto & route : field -> getInputRoutes ())
 	{
-		if (route -> getSourceNode () -> getExecutionContext () == executionContext)
-			routes .emplace_back (route);
+		try
+		{
+			if (route -> getSourceNode () -> getExecutionContext () == executionContext)
+				routes .emplace_back (route);
+		}
+		catch (const X3D::X3DError &)
+		{ }
 	}
 
 	return routes;
@@ -137,7 +142,14 @@ OutlineTreeModel::get_input_routes_size (X3D::X3DFieldDefinition* const field) c
 	size_t size = 0;
 
 	for (const auto & route : field -> getInputRoutes ())
-		size += route -> getSourceNode () -> getExecutionContext () == executionContext;
+	{
+		try
+		{
+			size += route -> getSourceNode () -> getExecutionContext () == executionContext;
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
 
 	return size;
 }
@@ -149,8 +161,13 @@ OutlineTreeModel::get_output_routes (X3D::X3DFieldDefinition* const field) const
 
 	for (const auto & route : field -> getOutputRoutes ())
 	{
-		if (route -> getDestinationNode () -> getExecutionContext () == executionContext)
-			routes .emplace_back (route);
+		try
+		{
+			if (route -> getDestinationNode () -> getExecutionContext () == executionContext)
+				routes .emplace_back (route);
+		}
+		catch (const X3D::X3DError &)
+		{ }
 	}
 
 	return routes;
@@ -162,7 +179,14 @@ OutlineTreeModel::get_output_routes_size (X3D::X3DFieldDefinition* const field) 
 	size_t size = 0;
 
 	for (const auto & route : field -> getOutputRoutes ())
-		size += route -> getDestinationNode () -> getExecutionContext () == executionContext;
+	{
+		try
+		{
+			size += route -> getDestinationNode () -> getExecutionContext () == executionContext;
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
 
 	return size;
 }

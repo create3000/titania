@@ -1,0 +1,25 @@
+#VRML V2.0 utf8
+
+DEF _1 Inline {
+	url "../Basic/Comments.wrl"
+}
+
+DEF Timer TimeSensor {
+	cycleInterval 0.2
+  loop TRUE
+}
+
+DEF Debug Script {
+  eventIn SFTime set_time
+  field SFNode inlineNode USE _1
+
+  url "vrmlscript:
+
+function set_time ()
+{
+	inlineNode .load = ! inlineNode .load;
+}
+"
+}
+
+ROUTE Timer.cycleTime TO Debug.set_time

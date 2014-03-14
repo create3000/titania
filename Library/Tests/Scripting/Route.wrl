@@ -1,50 +1,109 @@
 #VRML V2.0 utf8
 
 Transform {
-  translation -2 0 0
+  translation -2 2 0
   children [
-    DEF Touch TouchSensor { }
+    DEF AddTouch TouchSensor { }
     Shape {
       appearance Appearance {
         material Material { }
       }
-      geometry Box { }
+      geometry Text {
+         string "Add Route"
+         fontStyle FontStyle { }
+      }
+    }
+  ]
+}
+
+Transform {
+  translation -2 0 0
+  children [
+    DEF RemoveTouch TouchSensor { }
+    Shape {
+      appearance Appearance {
+        material Material { }
+      }
+      geometry Text {
+         string "Remove Route"
+         fontStyle FontStyle { }
+      }
+    }
+  ]
+}
+
+Transform {
+  translation -2 -2 0
+  children [
+    DEF DeleteTouch TouchSensor { }
+    Shape {
+      appearance Appearance {
+        material Material { }
+      }
+      geometry Text {
+         string "Delete Node"
+         fontStyle FontStyle { }
+      }
     }
   ]
 }
 
 DEF Debug Script {
-	eventIn SFTime set_time
+	eventIn SFTime set_add
+	eventIn SFTime set_remove
+	eventIn SFTime set_delete
 	eventIn SFVec3f set_translation
+	field SFNode transform NULL
 	field SFNode self USE Debug
 
 	url "vrmlscript:
+// Global variable to store Route.
 var route;
 
-function initialize ()
+function set_add ()
 {
-	var transform = Browser .currentScene .createNode ('Transform');
-
-	route = Browser .currentScene .addRoute (transform, 'translation', self, 'set_translation');
+	transform = Browser .currentScene .createNode ('Transform');
+	route     = Browser .currentScene .addRoute (transform, 'translation', self, 'set_translation');
 	
-	print (route .sourceNode);
-	print (route .sourceField);
-	print (route .destinationNode);
-	print (route .destinationField);
+	print ('ROUTE ' + route .sourceNode + '.' + route .sourceField + ' TO ' + route .destinationNode + '.' + route .destinationField);
 }
 
-function set_time (value)
+function set_remove ()
 {
-	print (route .sourceNode);
-	print (route .sourceField);
-	print (route .destinationNode);
-	print (route .destinationField);	
-
 	Browser .currentScene .deleteRoute (route);
+
+	try
+	{
+		print ('ROUTE ' + route .sourceNode + '.' + route .sourceField + ' TO ' + route .destinationNode + '.' + route .destinationField);
+	}
+	catch (error)
+	{
+		print ('Route is deleted!');
+	}
+	
+	route = undefined;
+}
+
+function set_delete ()
+{
+	transform = null;
+
+	try
+	{
+		print ('ROUTE ' + route .sourceNode + '.' + route .sourceField + ' TO ' + route .destinationNode + '.' + route .destinationField);
+	}
+	catch (error)
+	{
+		print ('Route is deleted!');
+	}
+
+	route = undefined;
 }
 "
 }
 
 # 0
 
-ROUTE Touch.touchTime TO Debug.set_time
+ROUTE AddTouch.touchTime TO Debug.set_add
+ROUTE RemoveTouch.touchTime TO Debug.set_remove
+ROUTE DeleteTouch.touchTime TO Debug.set_delete

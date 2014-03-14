@@ -62,7 +62,7 @@ const std::string ExportedNode::containerField = "exportedNode";
 
 ExportedNode::ExportedNode (X3DScene* const scene,
                             const std::string & exportedName,
-                            X3DBaseNode* const node) :
+                            const SFNode & node) :
 	 X3DBaseNode (scene -> getBrowser (), scene),
 	       scene (scene),
 	exportedName (exportedName),

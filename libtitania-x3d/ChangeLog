@@ -1,5 +1,19 @@
 2014-03-14  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Route.h:
+	* Route.cpp:
+	* X3DBaseNode.cpp:
+	* ExportedNode.h:
+	* ImportedNode.h:
+	* ImportedNode.cpp:
+	* ExportedNode.cpp:
+	* Inline.cpp:
+	* X3DExecutionContext.cpp:
+	* jsX3DRoute.cpp:
+	* ParticleSystem.cpp: 
+
+2014-03-14  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Parser.cpp:
 	* Route.cpp:
 	* Scene.cpp:

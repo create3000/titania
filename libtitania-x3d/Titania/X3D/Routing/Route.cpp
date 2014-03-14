@@ -61,17 +61,17 @@ const std::string Route::typeName       = "Route";
 const std::string Route::containerField = "route";
 
 Route::Route (X3DExecutionContext* const executionContext,
-              const SFNode & _sourceNode,      X3DFieldDefinition* const sourceField,
-              const SFNode & _destinationNode, X3DFieldDefinition* const destinationField) :
+              const SFNode & sourceNode,      X3DFieldDefinition* const sourceField,
+              const SFNode & destinationNode, X3DFieldDefinition* const destinationField) :
 	       X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	        sourceNode (_sourceNode),
+	        sourceNode (sourceNode),
 	       sourceField (sourceField),
-	   destinationNode (_destinationNode),
+	   destinationNode (destinationNode),
 	  destinationField (destinationField),
-	         connected (false),
 	disconnectedOutput ()
 {
-	addChildren (sourceNode, destinationNode);
+	sourceNode      -> shutdown () .addInterest (this, &Route::remove);
+	destinationNode -> shutdown () .addInterest (this, &Route::remove);
 
 	setup ();
 	connect ();
@@ -112,7 +112,7 @@ throw (Error <INVALID_NAME>,
 bool
 Route::isConnected () const
 {
-	return connected and
+	return sourceNode and destinationNode and
 	       not sourceNode      -> getParents () .empty () and
 	       not destinationNode -> getParents () .empty ();
 }
@@ -123,38 +123,49 @@ Route::getId () const
 	return std::make_pair (sourceField, destinationField);
 }
 
-const SFNode &
+SFNode
 Route::getSourceNode () const
+throw (Error <DISPOSED>)
 {
-	return sourceNode;
+	if (isConnected ())
+		return sourceNode;
+
+	throw Error <DISPOSED> ("Route is already disposed.");
 }
 
 const std::string &
 Route::getSourceField () const
+throw (Error <DISPOSED>)
 {
-	return sourceField -> getName ();
+	if (isConnected ())
+		return sourceField -> getName ();
+
+	throw Error <DISPOSED> ("Route is already disposed.");
 }
 
-const SFNode &
+SFNode
 Route::getDestinationNode () const
+throw (Error <DISPOSED>)
 {
-	return destinationNode;
+	if (isConnected ())
+		return destinationNode;
+
+	throw Error <DISPOSED> ("Route is already disposed.");
 }
 
 const std::string &
 Route::getDestinationField () const
+throw (Error <DISPOSED>)
 {
-	return destinationField -> getName ();
+	if (isConnected ())
+		return destinationField -> getName ();
+
+	throw Error <DISPOSED> ("Route is already disposed.");
 }
 
 void
 Route::connect ()
 {
-	if (connected)
-		return;
-
-	connected = true;
-
 	sourceField -> addInterest (destinationField);
 	sourceField -> addOutputRoute (this);
 	destinationField -> addInputRoute (this);
@@ -163,9 +174,10 @@ Route::connect ()
 void
 Route::disconnect ()
 {
-	if (connected)
+	if (sourceNode and destinationNode)
 	{
-		connected = false;
+		sourceNode      = nullptr;
+		destinationNode = nullptr;
 
 		sourceField -> removeInterest (destinationField);
 		sourceField -> removeOutputRoute (this);
@@ -239,9 +251,6 @@ void
 Route::dispose ()
 {
 	disconnect ();
-
-	sourceNode      .dispose ();
-	destinationNode .dispose ();
 
 	X3DBaseNode::dispose ();
 }

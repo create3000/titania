@@ -144,14 +144,23 @@ OutlineCellRenderer::on_data ()
 	{
 		case OutlineIterType::X3DInputRoute:
 		{
-			const auto route = static_cast <X3D::Route*> (get_object ());
+			try
+			{
+				const auto route  = static_cast <X3D::Route*> (get_object ());
+				const auto source = route -> getSourceNode ();
 
-			const std::string name = route -> getSourceNode () -> getName () .size ()
-			                         ? route -> getSourceNode () -> getName ()
-											 : _ ("<unnamed>");
+				const std::string name = source -> getName () .empty ()
+				                         ? _ ("<unnamed>")
+												 : source -> getName ();
+
+				property_markup () = _ ("Route from ") + name + "." + route -> getSourceField ();
+			}
+			catch (const X3D::X3DError &)
+			{
+				property_markup () = "";
+			}
 
 			property_editable ()                              = false;
-			property_markup ()                                = _ ("Route from ") + name + "." + route -> getSourceField ();
 			cellrenderer_access_type_icon .property_pixbuf () = accessTypeImages [X3D::inputOnly] [1];
 			accessType                                        = X3D::inputOnly;
 			set_alignment (0, 0.5);
@@ -159,14 +168,23 @@ OutlineCellRenderer::on_data ()
 		}
 		case OutlineIterType::X3DOutputRoute:
 		{
-			const auto route = static_cast <X3D::Route*> (get_object ());
+			try
+			{
+				const auto route       = static_cast <X3D::Route*> (get_object ());
+				const auto destination = route -> getDestinationNode ();
 
-			const std::string name = route -> getDestinationNode () -> getName () .size ()
-			                         ? route -> getDestinationNode () -> getName ()
-											 : _ ("<unnamed>");
+				const std::string name = destination -> getName () .empty ()
+				                         ? _ ("<unnamed>")
+												 : destination -> getName ();
 
+				property_markup () = _ ("Route to ") + name + "." + route -> getDestinationField ();
+			}
+			catch (const X3D::X3DError &)
+			{
+				property_markup () = "";
+			}
+	
 			property_editable ()                              = false;
-			property_markup ()                                = _ ("Route to ") + name + "." + route -> getDestinationField ();
 			cellrenderer_access_type_icon .property_pixbuf () = accessTypeImages [X3D::outputOnly] [1];
 			accessType                                        = X3D::outputOnly;
 			set_alignment (0, 0.5);
