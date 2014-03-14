@@ -220,7 +220,7 @@ throw (Error <INVALID_NAME>,
 // TODO: A node may be part of more than one run-time name scope. A node shall be removed from a name scope when it is
 // removed from the scene graph. See: http://www.web3d.org/files/specifications/19775-1/V3.3/Part01/concepts.html#Runtimenamescope
 
-const SFNode &
+SFNode
 X3DExecutionContext::getNode (const std::string & name) const
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
@@ -230,13 +230,13 @@ throw (Error <INVALID_NAME>,
 	{
 		return getNamedNode (name);
 	}
-	catch (const Error <INVALID_NAME> &)
+	catch (const X3DError &)
 	{
 		try
 		{
 			return getImportedNode (name);
 		}
-		catch (const Error <INVALID_NAME> &)
+		catch (const X3DError &)
 		{
 			throw Error <INVALID_NAME> ("Unknown named node '" + name + "'.");
 		}
@@ -280,10 +280,9 @@ throw (Error <IMPORTED_NODE>,
 	removeNamedNode (name);
 
 	namedNodes [name] = node;
-	namedNodes [name] .isTainted (true);
-	namedNodes [name] .addParent (this);
 
 	node -> setName (name);
+	node -> shutdown () .addInterest (this, &X3DExecutionContext::eraseNamedNode, name);
 }
 
 void
@@ -291,19 +290,25 @@ X3DExecutionContext::removeNamedNode (const std::string & name)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	if (name .empty ())
-		return;
-
-	const auto namedNode = namedNodes .find (name);
-
-	if (namedNode not_eq namedNodes .end ())
+	try
 	{
-		namedNode -> second -> setName ("");
-		namedNodes .erase (namedNode);
+		const auto namedNode = getNamedNode (name);
+
+		namedNode -> setName ("");
+		namedNode -> shutdown () .removeInterest (this, &X3DExecutionContext::eraseNamedNode);
+		namedNodes .erase (name);
 	}
+	catch (const X3DError &)
+	{ }
 }
 
-const SFNode &
+void
+X3DExecutionContext::eraseNamedNode (const std::string & name)
+{
+	namedNodes .erase (name);
+}
+
+SFNode
 X3DExecutionContext::getNamedNode (const std::string & name) const
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
@@ -312,7 +317,10 @@ throw (Error <INVALID_NAME>,
 	const auto namedNode = namedNodes .find (name);
 
 	if (namedNode not_eq namedNodes .end ())
-		return namedNode -> second;
+	{
+		if (not namedNode -> second -> getParents () .empty ())
+			return namedNode -> second;
+	}
 
 	throw Error <INVALID_NAME> ("Named node '" + name + "' not found.");
 }
@@ -349,7 +357,7 @@ X3DExecutionContext::getUniqueName (std::string name, bool hidden) const
 				newName += std::to_string (++ i);
 			}
 		}
-		catch (const Error <INVALID_NAME> &)
+		catch (const X3DError &)
 		{
 			return newName;
 		}
@@ -371,7 +379,7 @@ X3DExecutionContext::getUniqueName () const
 			getNamedNode (name);
 		}
 	}
-	catch (const Error <INVALID_NAME> &)
+	catch (const X3DError &)
 	{ }
 
 	return name;
@@ -450,7 +458,7 @@ throw (Error <INVALID_NODE>,
 	addImportedNode (inlineNode, exportedName, importedName);
 }
 
-const SFNode &
+SFNode
 X3DExecutionContext::getImportedNode (const std::string & importedName) const
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
@@ -460,7 +468,7 @@ throw (Error <INVALID_NAME>,
 	{
 		return importedNodes .rfind (importedName) -> getExportedNode ();
 	}
-	catch (const std::out_of_range &)
+	catch (...)
 	{
 		throw Error <INVALID_NAME> ("Imported node '" + importedName + "' not found.");
 	}
@@ -834,7 +842,8 @@ throw (Error <INVALID_NAME>,
 {
 	try
 	{
-		const auto viewpoint = x3d_cast <X3DViewpointNode*> (getNamedNode (name));
+		const auto namedNode = getNamedNode (name);
+		const auto viewpoint = x3d_cast <X3DViewpointNode*> (namedNode);
 
 		if (viewpoint)
 			viewpoint -> set_bind () = true;
@@ -842,7 +851,7 @@ throw (Error <INVALID_NAME>,
 		else
 			throw Error <INVALID_NAME> ("Warning: Node named '" + name + "' is not a viewpoint node.");
 	}
-	catch (const Error <INVALID_NAME> & error)
+	catch (const X3DError & error)
 	{
 		if (not isScene ())
 			getExecutionContext () -> changeViewpoint (name);

@@ -328,7 +328,7 @@ jsX3DScene::getExportedNode (JSContext* context, uintN argc, jsval* vp)
 		{
 			const auto scene = static_cast <X3DScene*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
 
-			const auto & namedNode = scene -> getExportedNode (JS_GetString (context, exportedName));
+			const auto namedNode = scene -> getExportedNode (JS_GetString (context, exportedName));
 
 			return jsSFNode::create (context, new SFNode (namedNode), &JS_RVAL (context, vp));
 		}

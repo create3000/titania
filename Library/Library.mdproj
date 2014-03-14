@@ -2413,6 +2413,8 @@
     <None Include="Tests\Shaders\VertexAttibutes.wrl" />
     <None Include="Tests\ParticleSystems\uft8.wrl" />
     <None Include="Tests\Basic\VRML2.0.wrl" />
+    <None Include="Tests\Basic\RuntimeNameScopeEXPORT.wrl" />
+    <None Include="Tests\Basic\RuntimeNameScopeIMPORT.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

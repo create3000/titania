@@ -66,8 +66,8 @@ public:
 
 	///  @name Construction
 
-	ExportedNode (X3DExecutionContext* const,
-	              const std::string &, const SFNode &);
+	ExportedNode (X3DScene* const,
+	              const std::string &, X3DBaseNode* const);
 
 	ExportedNode*
 	copy (X3DScene* const) const
@@ -111,9 +111,9 @@ public:
 	getExportedName () const
 	{ return exportedName; }
 
-	const SFNode &
+	SFNode
 	getNode () const
-	{ return node; }
+	throw (Error <DISPOSED>);
 
 	///  @name Input/Output
 
@@ -121,18 +121,19 @@ public:
 	void
 	toStream (std::ostream &) const final override;
 
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () final override;
-
 
 private:
+
+	///  @name Construction
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const final override;
+
+	///  @name Destruction
+	
+	void
+	remove ();
 
 	///  @name Static members
 
@@ -142,8 +143,9 @@ private:
 
 	///  @name Members
 
-	const std::string exportedName;
-	SFNode            node;
+	X3DScene* const    scene;
+	const std::string  exportedName;
+	X3DBaseNode*       node;
 
 };
 

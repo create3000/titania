@@ -1,3 +1,26 @@
+2014-03-14  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Parser.cpp:
+	* Route.cpp:
+	* Scene.cpp:
+	* X3DScene.h:
+	* X3DBaseNode.cpp:
+	* X3DScene.cpp:
+	* ImportedNode.h:
+	* ExportedNode.h:
+	* Notification.cpp:
+	* ImportedNode.cpp:
+	* ExportedNode.cpp:
+	* TransformHandle.cpp:
+	* Inline.h:
+	* X3DExecutionContext.h:
+	* Inline.cpp:
+	* X3DExecutionContext.cpp:
+	* jsX3DScene.cpp:
+	* X3DGeometryNode.cpp:
+	* X3DTexture3DNode.cpp:
+	* jsX3DExecutionContext.cpp: 
+
 2014-03-13  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DConstants.h:

@@ -115,7 +115,7 @@ public:
 
 	///  @name Exported node handling
 
-	const SFNode &
+	SFNode
 	getExportedNode (const std::string &) const
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,

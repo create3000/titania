@@ -60,14 +60,15 @@ const std::string ExportedNode::componentName  = "Browser";
 const std::string ExportedNode::typeName       = "ExportedNode";
 const std::string ExportedNode::containerField = "exportedNode";
 
-ExportedNode::ExportedNode (X3DExecutionContext* const executionContext,
+ExportedNode::ExportedNode (X3DScene* const scene,
                             const std::string & exportedName,
-                            const SFNode & node) :
-	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
+                            X3DBaseNode* const node) :
+	 X3DBaseNode (scene -> getBrowser (), scene),
+	       scene (scene),
 	exportedName (exportedName),
 	        node (node)
 {
-	addChildren (this -> node);
+	node -> shutdown () .addInterest (this, &ExportedNode::remove);
 
 	setup ();
 }
@@ -110,11 +111,31 @@ throw (Error <INVALID_NAME>)
 	}
 }
 
+SFNode
+ExportedNode::getNode () const
+throw (Error <DISPOSED>)
+{
+	if (not node or node -> getParents () .empty ())
+		throw Error <DISPOSED> ("ExportedNode: Node '" + exportedName + "' is already disposed.");
+
+	return node;
+}
+
+void
+ExportedNode::remove ()
+{
+	node = nullptr;
+
+	scene -> removeExportedNode (exportedName);
+}
+
 void
 ExportedNode::toStream (std::ostream & ostream) const
 {
 	try
 	{
+		const std::string localName = Generator::GetLocalName (getNode ());
+
 		if (not getComments () .empty ())
 		{
 			ostream << Generator::TidyBreak;
@@ -130,8 +151,6 @@ ExportedNode::toStream (std::ostream & ostream) const
 
 			ostream << Generator::TidyBreak;
 		}
-
-		const std::string localName = Generator::GetLocalName (node);
 
 		ostream
 			<< Generator::Indent
@@ -152,14 +171,6 @@ ExportedNode::toStream (std::ostream & ostream) const
 	}
 	catch (...)
 	{ }
-}
-
-void
-ExportedNode::dispose ()
-{
-	node .dispose ();
-
-	X3DBaseNode::dispose ();
 }
 
 } // X3D

@@ -147,13 +147,13 @@ Scene::getUniqueName (const X3DSFNode <Scene> & scene, std::string name) const
 			{
 				getNamedNode (newName);
 			}
-			catch (const Error <INVALID_NAME> &)
+			catch (const X3DError &)
 			{
 				try
 				{
 					scene -> getNamedNode (newName);
 				}
-				catch (const Error <INVALID_NAME> &)
+				catch (const X3DError &)
 				{
 					break;
 				}
@@ -180,13 +180,13 @@ Scene::getUniqueName (const X3DSFNode <Scene> & scene) const
 		{
 			getNamedNode (name);
 		}
-		catch (const Error <INVALID_NAME> &)
+		catch (const X3DError &)
 		{
 			try
 			{
 				scene -> getNamedNode (name);
 			}
-			catch (const Error <INVALID_NAME> &)
+			catch (const X3DError &)
 			{
 				break;
 			}

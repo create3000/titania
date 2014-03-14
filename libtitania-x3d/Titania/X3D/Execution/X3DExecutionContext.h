@@ -72,7 +72,7 @@ class X3DProto;
 class X3DBrowser;
 class X3DPrototypeInstance;
 
-typedef std::map <std::string, SFNode> NamedNodeIndex;
+typedef std::map <std::string, X3DBaseNode*> NamedNodeIndex;
 
 class X3DExecutionContext :
 	virtual public X3DNode
@@ -203,7 +203,7 @@ public:
 
 	///  @name Named/Imported node handling
 
-	const SFNode &
+	SFNode
 	getNode (const std::string &) const
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -239,7 +239,7 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	const SFNode &
+	SFNode
 	getNamedNode (const std::string &) const
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -281,7 +281,7 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	const SFNode &
+	SFNode
 	getImportedNode (const std::string &) const
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -483,6 +483,9 @@ private:
 	using ImportedNamesIndex = std::map <X3DBaseNode*, std::string>;
 
 	///  @name Operations
+
+	void
+	eraseNamedNode (const std::string &);
 
 	X3DSFNode <Proto>
 	createProtoDeclaration (const std::string &, const FieldDefinitionArray &)

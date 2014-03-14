@@ -125,28 +125,31 @@ X3DTexture3DNode::setTexture (const Texture3DPtr & texture)
 void
 X3DTexture3DNode::setImage (const GLenum internalFormat, const size_t comp, const GLint w, const GLint h, const GLint depth, const GLenum format, const void* const data)
 {
-	// transfer image
+	if (glXGetCurrentContext ())
+	{
+		// transfer image
 
-	width       = w;
-	height      = h;
-	components  = comp;
-	transparent = math::is_even (comp);
+		width       = w;
+		height      = h;
+		components  = comp;
+		transparent = math::is_even (comp);
 
-	updateTextureProperties ();
+		updateTextureProperties ();
 
-	glBindTexture (GL_TEXTURE_3D, getTextureId ());
+		glBindTexture (GL_TEXTURE_3D, getTextureId ());
 
-	glTexImage3D (GL_TEXTURE_3D,
-	              0,     // This texture is level 0 in mimpap generation.
-	              internalFormat,
-	              width, height, depth,
-	              0, /* clamp <int> (texturePropertiesNode -> borderWidth (), 0, 1), */ // This value must be 0.
-	              format, GL_UNSIGNED_BYTE,
-	              data);
+		glTexImage3D (GL_TEXTURE_3D,
+		              0,     // This texture is level 0 in mimpap generation.
+		              internalFormat,
+		              width, height, depth,
+		              0, /* clamp <int> (texturePropertiesNode -> borderWidth (), 0, 1), */ // This value must be 0.
+		              format, GL_UNSIGNED_BYTE,
+		              data);
 
-	glBindTexture (GL_TEXTURE_3D, 0);
+		glBindTexture (GL_TEXTURE_3D, 0);
 
-	addEvent ();
+		addEvent ();
+	}
 }
 
 void

@@ -127,7 +127,7 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	const SFNode &
+	SFNode
 	getExportedNode (const std::string &) const
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,

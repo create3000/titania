@@ -67,7 +67,12 @@ public:
 	///  @name Construction
 
 	ImportedNode (X3DExecutionContext* const,
-	              const X3DSFNode <Inline> &, const std::string &, const std::string &);
+	              Inline* const,
+	              const std::string &,
+	              const std::string &)
+	throw (Error <INVALID_NAME>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
 
 	virtual
 	ImportedNode*
@@ -101,9 +106,9 @@ public:
 
 	///  @name Member access
 
-	const X3DSFNode <Inline> &
+	X3DSFNode <Inline>
 	getInlineNode () const
-	{ return inlineNode; }
+	throw (Error <DISPOSED>);
 
 	const std::string &
 	getExportedName () const
@@ -113,23 +118,15 @@ public:
 	getImportedName () const
 	{ return importedName; }
 
-	const SFNode &
+	SFNode
 	getExportedNode () const
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	throw (Error <DISPOSED>);
 
 	///  @name Input/Output
 
 	virtual
 	void
 	toStream (std::ostream &) const final override;
-
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () final override;
 
 
 private:
@@ -140,6 +137,11 @@ private:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const final override;
 
+	///  @name Destruction
+
+	void
+	remove ();
+
 	///  @name Static members
 
 	static const std::string componentName;
@@ -148,7 +150,8 @@ private:
 
 	///  @name Members
 
-	X3DSFNode <Inline> inlineNode;
+	Inline*      inlineNode;
+	X3DBaseNode* exportedNode;
 
 	const std::string exportedName;
 	const std::string importedName;

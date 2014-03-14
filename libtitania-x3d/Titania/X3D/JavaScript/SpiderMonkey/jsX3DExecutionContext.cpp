@@ -421,7 +421,7 @@ jsX3DExecutionContext::getNamedNode (JSContext* context, uintN argc, jsval* vp)
 		{
 			auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
 
-			const auto & namedNode = executionContext -> getNamedNode (JS_GetString (context, name));
+			const auto namedNode = executionContext -> getNamedNode (JS_GetString (context, name));
 
 			return jsSFNode::create (context, new SFNode (namedNode), &JS_RVAL (context, vp));
 		}
@@ -595,7 +595,7 @@ jsX3DExecutionContext::getImportedNode (JSContext* context, uintN argc, jsval* v
 		{
 			auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, JS_THIS_OBJECT (context, vp)));
 
-			const auto & namedNode = executionContext -> getImportedNode (JS_GetString (context, importedName));
+			const auto namedNode = executionContext -> getImportedNode (JS_GetString (context, importedName));
 
 			return jsSFNode::create (context, new SFNode (namedNode), &JS_RVAL (context, vp));
 		}

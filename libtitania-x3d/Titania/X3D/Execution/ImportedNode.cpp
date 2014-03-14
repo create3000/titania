@@ -62,15 +62,20 @@ const std::string ImportedNode::typeName       = "ImportedNode";
 const std::string ImportedNode::containerField = "importedNode";
 
 ImportedNode::ImportedNode (X3DExecutionContext* const executionContext,
-                            const X3DSFNode <Inline> & inlineNode,
+                            Inline* const inlineNode,
                             const std::string & exportedName,
-                            const std::string & importedName) :
+                            const std::string & importedName)
+throw (Error <INVALID_NAME>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	  inlineNode (inlineNode),
+	exportedNode (inlineNode -> getExportedNode (exportedName)),
 	exportedName (exportedName),
 	importedName (importedName)
 {
-	addChildren (this -> inlineNode);
+	inlineNode -> shutdown () .addInterest (this, &ImportedNode::remove);
+	exportedNode -> shutdown () .addInterest (this, &ImportedNode::remove);
 
 	setup ();
 }
@@ -96,7 +101,8 @@ throw (Error <INVALID_NAME>,
 {
 	try
 	{
-		const auto localInlineNode = x3d_cast <Inline*> (executionContext -> getNamedNode (inlineNode -> getName ()));
+		const auto namedNode       = executionContext -> getNamedNode (inlineNode -> getName ());
+		const auto localInlineNode = x3d_cast <Inline*> (namedNode);
 
 		return executionContext -> addImportedNode (localInlineNode, exportedName, importedName) .getValue ();
 	}
@@ -106,13 +112,33 @@ throw (Error <INVALID_NAME>,
 	}
 }
 
-const SFNode &
-ImportedNode::getExportedNode () const
-throw (Error <INVALID_NAME>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
+X3DSFNode <Inline>
+ImportedNode::getInlineNode () const
+throw (Error <DISPOSED>)
 {
-	return inlineNode -> getExportedNode (exportedName);
+	if (not inlineNode or inlineNode -> getParents () .empty ())
+		throw Error <DISPOSED> ("ImportedNode: Inline node is already disposed.");
+
+	return inlineNode;
+}
+
+SFNode
+ImportedNode::getExportedNode () const
+throw (Error <DISPOSED>)
+{
+	if (not exportedNode or exportedNode -> getParents () .empty ())
+		throw Error <DISPOSED> ("ImportedNode: Exported node '" + exportedName + "' is already disposed.");
+
+	return exportedNode;
+}
+
+void
+ImportedNode::remove ()
+{
+	inlineNode   = nullptr;
+	exportedNode = nullptr;
+
+	getExecutionContext () -> removeImportedNode (importedName);
 }
 
 void
@@ -162,14 +188,6 @@ ImportedNode::toStream (std::ostream & ostream) const
 	}
 	catch (const X3DError &)
 	{ }
-}
-
-void
-ImportedNode::dispose ()
-{
-	inlineNode .dispose ();
-
-	X3DBaseNode::dispose ();
 }
 
 } // X3D

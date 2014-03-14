@@ -1,0 +1,74 @@
+#VRML V2.0 utf8 Titania
+
+DEF EXPORT Transform {
+  translation -2.98767 2.45237 0
+  children [
+    DEF Export Transform {
+      translation 0.481351 0 0
+      children [
+        DEF EXPORT-Touch TouchSensor { }
+        Shape {
+          geometry Text {
+            string "EXPORT"
+            fontStyle FontStyle {
+              justify "MIDDLE"
+            }
+          }
+        }
+      ]
+    }
+    DEF Remove Transform {
+      translation 5.21631 1.66893e-06 0
+      children [
+        DEF EXPORT-Touch1 TouchSensor { }
+        Shape {
+          geometry Text {
+            string "remove"
+            fontStyle FontStyle {
+              justify "MIDDLE"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+
+DEF _1 Script {
+  eventIn SFTime set_export
+  eventIn SFTime set_remove
+  field   SFNode node NULL
+
+  url "vrmlscript:
+
+function set_export ()
+{
+	var currentScene = Browser .currentScene;
+
+	node = currentScene .createNode ('MetadataBool');
+
+	currentScene .updateExportedNode ('ExportedName', node);
+
+	print ('Exported node: ' + currentScene .getExportedNode ('ExportedName'));
+}
+
+function set_remove ()
+{
+	node = null;
+
+	try
+	{
+		var currentScene = Browser .currentScene;
+		print (currentScene .getExportedNode ('ExportedName'));
+	}
+	catch (error)
+	{
+		print (error);
+	}
+}
+"
+  directOutput TRUE
+}
+
+ROUTE EXPORT-Touch.touchTime TO _1.set_export
+ROUTE EXPORT-Touch1.touchTime TO _1.set_remove

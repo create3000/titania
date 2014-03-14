@@ -1,0 +1,101 @@
+#VRML V2.0 utf8 Titania
+
+DEF _1 Inline {
+  url "RuntimeNameScopeEXPORT.wrl"
+}
+
+DEF IMPORT Transform {
+  translation -2.98767 0.290637 0
+  children [
+    DEF Import Transform {
+      translation 0.481351 0 0
+      children [
+        DEF IMPORT-Touch TouchSensor { }
+        Shape {
+          geometry Text {
+            string "IMPORT"
+            fontStyle FontStyle {
+              justify "MIDDLE"
+            }
+          }
+        }
+      ]
+    }
+    DEF Remove Transform {
+      translation 5.21631 1.66893e-06 0
+      children [
+        DEF Remove-Touch TouchSensor { }
+        Shape {
+          geometry Text {
+            string "remove"
+            fontStyle FontStyle {
+              justify "MIDDLE"
+            }
+          }
+        }
+      ]
+    }
+    DEF Unload Transform {
+      translation 7.62985 0.0836781 0
+      scale 0.517597 0.517597 0.517597
+      center 0 -0.166123 0
+      children [
+        DEF Unload-Touch TouchSensor { }
+        Shape {
+          geometry Text {
+            string "unload"
+            fontStyle FontStyle {
+              justify "MIDDLE"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+
+DEF _2 Script {
+  eventIn SFTime set_import
+  eventIn SFTime set_remove
+  eventIn SFTime set_unload
+  field   SFNode inlineNode USE _1
+
+  url "vrmlscript:
+
+function set_import ()
+{
+	var currentScene = Browser .currentScene;
+
+	currentScene .updateImportedNode (inlineNode, 'ExportedName', 'ImportedName');
+
+	print ('Imported node: ' + currentScene .getImportedNode ('ImportedName'));
+}
+
+function set_remove ()
+{
+	var currentScene = Browser .currentScene;
+
+	currentScene .rootNodes [0] = null;
+	inlineNode = null;
+
+	try
+	{
+		print (currentScene .getImportedNode ('ImportedName'));
+	}
+	catch (error)
+	{
+		print (error);
+	}
+}
+
+function set_unload ()
+{
+	inlineNode .load = false;
+}
+"
+  directOutput TRUE
+}
+
+ROUTE IMPORT-Touch.touchTime TO _2.set_import
+ROUTE Remove-Touch.touchTime TO _2.set_remove
+ROUTE Unload-Touch.touchTime TO _2.set_unload

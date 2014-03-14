@@ -96,7 +96,7 @@ Notification::initialize ()
 
 			try
 			{
-				auto notification = scene -> getNamedNode ("Notification");
+				const auto notification = scene -> getNamedNode ("Notification");
 
 				SFBool & field = *static_cast <SFBool*> (notification -> getField ("isActive"));
 
@@ -125,7 +125,7 @@ Notification::set_string ()
 {
 	try
 	{
-		auto notification = world -> getExecutionContext () -> getNamedNode ("Notification");
+		const auto notification = world -> getExecutionContext () -> getNamedNode ("Notification");
 
 		try
 		{

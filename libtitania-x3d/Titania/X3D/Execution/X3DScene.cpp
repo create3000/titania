@@ -178,7 +178,7 @@ throw (Error <INVALID_NAME>,
 	addExportedNode (exportedName, node);
 }
 
-const SFNode &
+SFNode
 X3DScene::getExportedNode (const std::string & exportedName) const
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
@@ -188,7 +188,7 @@ throw (Error <INVALID_NAME>,
 	{
 		return exportedNodes .rfind (exportedName) -> getNode ();
 	}
-	catch (const std::out_of_range &)
+	catch (...)
 	{
 		throw Error <INVALID_NAME> ("Exported node '" + exportedName + "' not found.");
 	}

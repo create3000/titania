@@ -89,7 +89,7 @@ TransformHandle::initialize ()
 	{
 		scene = getBrowser () -> createX3DFromURL ({ get_tool ("TransformTool.wrl") .str () });
 
-		const SFNode & handle = scene -> getNamedNode ("Handle");
+		const SFNode handle = scene -> getNamedNode ("Handle");
 
 		handle -> getField ("isActive") -> addInterest (*isActive);
 
@@ -214,8 +214,8 @@ TransformHandle::reshape ()
 {
 	try
 	{
-		const auto & handle = scene -> getNamedNode ("Handle");
-		const auto   bbox   = transform -> X3DGroupingNode::getBBox ();
+		const auto handle = scene -> getNamedNode ("Handle");
+		const auto bbox   = transform -> X3DGroupingNode::getBBox ();
 
 		handle -> setField <SFMatrix4f> ("cameraSpaceMatrix", getCameraSpaceMatrix (),       true);
 		handle -> setField <SFMatrix4f> ("modelViewMatrix",   getModelViewMatrix () .get (), true);

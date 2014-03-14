@@ -97,6 +97,9 @@ Inline::create (X3DExecutionContext* const executionContext) const
 void
 Inline::initialize ()
 {
+	if (initialized)
+		return;
+
 	X3DChildNode::initialize ();
 	X3DBoundedObject::initialize ();
 	X3DUrlObject::initialize ();
@@ -169,7 +172,7 @@ Inline::getBBox () const
 	return Box3f (bboxSize (), bboxCenter ());
 }
 
-const SFNode &
+SFNode
 Inline::getExportedNode (const std::string & exportedName) const
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,

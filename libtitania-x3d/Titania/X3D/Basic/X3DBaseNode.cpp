@@ -135,6 +135,23 @@ X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const 
 	assert (executionContext);
 }
 
+void
+X3DBaseNode::setup ()
+{
+	executionContext -> addParent (this);
+
+	if (executionContext -> isProto ())
+		return;
+
+	for (const auto & field : fieldDefinitions)
+	{
+		field -> updateReferences ();
+		field -> isTainted (false);
+	}
+
+	initialize ();
+}
+
 X3DBaseNode*
 X3DBaseNode::clone (X3DExecutionContext* const executionContext) const
 throw (Error <INVALID_NAME>,
@@ -149,7 +166,7 @@ throw (Error <INVALID_NAME>,
 		{
 			return executionContext -> getNamedNode (getName ());
 		}
-		catch (const Error <INVALID_NAME> &)
+		catch (const X3DError &)
 		{
 			return copy (executionContext);
 		}
@@ -161,7 +178,7 @@ X3DBaseNode::copy (X3DExecutionContext* const executionContext) const
 throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>)
 {
-	X3DBaseNode* const copy = create (executionContext);
+	const SFNode copy = create (executionContext);
 
 	if (not getName () .empty ())
 		executionContext -> updateNamedNode (getName (), copy);
@@ -323,23 +340,6 @@ X3DBaseNode::replace (X3DBaseNode* const node, const std::set <const X3DFieldDef
 		parent -> write (SFNode (this));
 		parent -> addEvent ();
 	}
-}
-
-void
-X3DBaseNode::setup ()
-{
-	executionContext -> addParent (this);
-
-	if (executionContext -> isProto ())
-		return;
-
-	for (const auto & field : fieldDefinitions)
-	{
-		field -> updateReferences ();
-		field -> isTainted (false);
-	}
-
-	initialize ();
 }
 
 time_type
@@ -1033,6 +1033,13 @@ X3DBaseNode::dispose ()
 	fieldDefinitions .clear ();
 
 	executionContext -> removeParent (this);
+
+	try
+	{
+		__LOG__ << getTypeName () << std::endl;	
+	}
+	catch (...)
+	{ }
 }
 
 X3DBaseNode::~X3DBaseNode ()

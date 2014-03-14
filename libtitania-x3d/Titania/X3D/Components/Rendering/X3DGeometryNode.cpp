@@ -97,7 +97,7 @@ X3DGeometryNode::createBBox ()
 }
 
 void
-X3DGeometryNode::setAttribs (const X3DMFNode <X3DVertexAttributeNode> & nodes, const std::vector <std::vector <float>>   & attribs)
+X3DGeometryNode::setAttribs (const X3DMFNode <X3DVertexAttributeNode> & nodes, const std::vector <std::vector <float>> & attribs)
 {
 	if (attribs .empty ())
 		return;
