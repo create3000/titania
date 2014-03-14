@@ -1,23 +1,27 @@
-#VRML V2.0 utf8
+#VRML V2.0 utf8 Titania
 
 DEF _1 Inline {
-	url "../Basic/Comments.wrl"
+  url [
+    "../../Examples/Vattenfall/stage/index.wrl",
+    "../../Examples/TreasureIsland/stage/index.wrl",
+    "../../Examples/MetalBeast/stage/index.wrl"
+  ]
 }
 
 DEF Timer TimeSensor {
-	cycleInterval 0.2
+  cycleInterval 3.14159
   loop TRUE
 }
 
 DEF Debug Script {
   eventIn SFTime set_time
-  field SFNode inlineNode USE _1
+  field   SFNode inlineNode USE _1
 
   url "vrmlscript:
 
 function set_time ()
 {
-	inlineNode .load = ! inlineNode .load;
+	inlineNode .url = inlineNode .url;
 }
 "
 }

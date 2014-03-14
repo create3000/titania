@@ -1,5 +1,12 @@
 2014-03-14  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* SceneLoader.cpp:
+	* TextureLoader.cpp:
+	* Texture3DLoader.cpp:
+	* Inline.cpp: 
+
+2014-03-14  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Route.h:
 	* Route.cpp:
 	* X3DBaseNode.cpp:

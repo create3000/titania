@@ -155,7 +155,12 @@ Inline::setScene (const X3DSFNode <Scene> & value)
 		scene -> getRootNodes () .removeInterest (group -> children ());
 
 	scene = value;
-	scene -> setup ();
+
+	if (initialized)
+		scene -> setup ();
+
+	else
+		getExecutionContext () -> addUninitializedNode (scene);
 
 	scene -> getRootNodes () .addInterest (group -> children ());
 	group -> children () = scene -> getRootNodes ();

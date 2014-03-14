@@ -48,65 +48,76 @@
  *
  ******************************************************************************/
 
-#include "TextureLoader.h"
+#include "Texture3DLoader.h"
 
 #include "../InputOutput/Loader.h"
 
 namespace titania {
 namespace X3D {
 
-TextureLoader::TextureLoader (X3DExecutionContext* const executionContext,
-                              const MFString & url,
-                              const size_t minTextureSize, const size_t maxTextureSize,
-                              const Callback & callback) :
+Texture3DLoader::Texture3DLoader (X3DExecutionContext* const executionContext,
+                                  const MFString & url,
+                                  const size_t minTextureSize, const size_t maxTextureSize,
+                                  const Callback & callback) :
 	         browser (executionContext -> getBrowser ()),
 	executionContext (executionContext),
 	        callback (callback),
 	         running (true),
 	          future (getFuture (url, minTextureSize, maxTextureSize))
 {
-	browser -> prepareEvents () .addInterest (this, &TextureLoader::prepareEvents);
+	browser -> prepareEvents () .addInterest (this, &Texture3DLoader::prepareEvents);
 	browser -> addEvent ();
 }
 
 void
-TextureLoader::cancel ()
+Texture3DLoader::cancel ()
 {
-	running = false;
-	browser -> prepareEvents () .removeInterest (this, &TextureLoader::prepareEvents);
+	if (running)
+	{
+		running = false;
+
+		browser -> prepareEvents () .removeInterest (this, &Texture3DLoader::prepareEvents);
+
+		callback = [ ] (const Texture3DPtr &) { }; // Clear callback
+	}
 }
 
-std::future <TexturePtr>
-TextureLoader::getFuture (const MFString & url,
-                          const size_t minTextureSize, const size_t maxTextureSize)
+std::future <Texture3DPtr>
+Texture3DLoader::getFuture (const MFString & url,
+                            const size_t minTextureSize, const size_t maxTextureSize)
 {
 	if (url .empty ())
 		std::async (std::launch::deferred, [ ] (){ return nullptr; });
 
-	return std::async (std::launch::async, std::mem_fn (&TextureLoader::loadAsync), this,
+	return std::async (std::launch::async, std::mem_fn (&Texture3DLoader::loadAsync), this,
 	                   url,
 	                   minTextureSize, maxTextureSize);
 }
 
-TexturePtr
-TextureLoader::loadAsync (const MFString & url,
-                          const size_t minTextureSize, const size_t maxTextureSize)
+Texture3DPtr
+Texture3DLoader::loadAsync (const MFString & url,
+                            const size_t minTextureSize, const size_t maxTextureSize)
 {
 	for (const auto & URL : url)
 	{
 		try
 		{
-			std::lock_guard <std::mutex> lock (browser -> getDownloadMutex ());
-
-			TexturePtr texture;
-
 			if (running)
-				texture .reset (new Texture (Loader (executionContext) .loadDocument (URL)));
+			{
+				std::lock_guard <std::mutex> lock (browser -> getDownloadMutex ());
 
-			if (running)
-				texture -> process (minTextureSize, maxTextureSize);
+				Texture3DPtr texture;
 
-			return texture;
+				if (running)
+					texture .reset (new Texture3D (Loader (executionContext) .loadDocument (URL)));
+
+				if (running)
+					texture -> process (minTextureSize, maxTextureSize);
+
+				return texture;
+			}
+
+			return nullptr;
 		}
 		catch (const X3DError & error)
 		{
@@ -125,26 +136,28 @@ TextureLoader::loadAsync (const MFString & url,
 }
 
 void
-TextureLoader::prepareEvents ()
+Texture3DLoader::prepareEvents ()
 {
-	browser -> addEvent ();
-
-	if (future .valid ())
+	if (running)
 	{
-		const auto status = future .wait_for (std::chrono::milliseconds (0));
+		browser -> addEvent ();
 
-		if (status == std::future_status::ready)
+		if (future .valid ())
 		{
-			browser -> prepareEvents () .removeInterest (this, &TextureLoader::prepareEvents);
-			callback (future .get ());
+			const auto status = future .wait_for (std::chrono::milliseconds (0));
+
+			if (status == std::future_status::ready)
+			{
+				callback (future .get ());
+				
+				cancel ();
+			}
 		}
 	}
 }
 
-TextureLoader::~TextureLoader ()
+Texture3DLoader::~Texture3DLoader ()
 {
-	cancel ();
-
 	if (future .valid ())
 		future .wait ();
 }

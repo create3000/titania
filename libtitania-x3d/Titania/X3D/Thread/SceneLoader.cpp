@@ -83,8 +83,14 @@ SceneLoader::wait ()
 void
 SceneLoader::cancel ()
 {
-	running = false;
-	browser -> prepareEvents () .removeInterest (this, &SceneLoader::prepareEvents);
+	if (running)
+	{
+		running = false;
+
+		browser -> prepareEvents () .removeInterest (this, &SceneLoader::prepareEvents);
+
+		callback = [ ] (const X3DSFNode <Scene> &) { }; // Clear callback
+	}
 }
 
 std::future <X3DSFNode <Scene>> 
@@ -96,53 +102,56 @@ SceneLoader::getFuture (const MFString & url)
 X3DSFNode <Scene>
 SceneLoader::loadAsync (const MFString & url)
 {
-	std::lock_guard <std::mutex> lock (browser -> getDownloadMutex ());
-
-	X3DSFNode <Scene> scene;
-
 	if (running)
-		scene = browser -> createScene ();
+	{
+		std::lock_guard <std::mutex> lock (browser -> getDownloadMutex ());
 
-	if (running)
-		Loader (executionContext) .parseIntoScene (scene, url);
+		X3DSFNode <Scene> scene;
 
-	return scene;
+		if (running)
+			scene = browser -> createScene ();
+
+		if (running)
+			Loader (executionContext) .parseIntoScene (scene, url);
+
+		if (running)
+			return scene;
+	}
+
+	return nullptr;
 }
 
 void
 SceneLoader::prepareEvents ()
 {
-	browser -> addEvent ();
-
-	if (future .valid ())
+	if (running)
 	{
-		const auto status = future .wait_for (std::chrono::milliseconds (0));
+		browser -> addEvent ();
 
-		if (status == std::future_status::ready)
+		if (future .valid ())
 		{
-			browser -> prepareEvents () .removeInterest (this, &SceneLoader::prepareEvents);
+			const auto status = future .wait_for (std::chrono::milliseconds (0));
 
-			try
+			if (status == std::future_status::ready)
 			{
-				const X3DSFNode <Scene> scene = future .get ();
+				try
+				{
+					callback (future .get ());
+				}
+				catch (const X3DError & error)
+				{
+					browser -> println (error .what ());
+					callback (nullptr);
+				}
 
-				callback (scene);
+				cancel ();
 			}
-			catch (const X3DError & error)
-			{
-				browser -> println (error .what ());
-				callback (nullptr);
-			}
-
-			callback = [ ] (const X3DSFNode <Scene> &) { }; // Clear callback
 		}
 	}
 }
 
 SceneLoader::~SceneLoader ()
 {
-	cancel ();
-
 	if (future .valid ())
 		future .wait ();
 }
