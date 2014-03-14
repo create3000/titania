@@ -153,11 +153,11 @@ OutlineCellRenderer::on_data ()
 				                         ? _ ("<unnamed>")
 												 : source -> getName ();
 
-				property_markup () = _ ("Route from ") + name + "." + route -> getSourceField ();
+				property_text () = _ ("Route from ") + name + "." + route -> getSourceField ();
 			}
 			catch (const X3D::X3DError &)
 			{
-				property_markup () = "";
+				property_text () = "";
 			}
 
 			property_editable ()                              = false;
@@ -177,11 +177,11 @@ OutlineCellRenderer::on_data ()
 				                         ? _ ("<unnamed>")
 												 : destination -> getName ();
 
-				property_markup () = _ ("Route to ") + name + "." + route -> getDestinationField ();
+				property_text () = _ ("Route to ") + name + "." + route -> getDestinationField ();
 			}
 			catch (const X3D::X3DError &)
 			{
-				property_markup () = "";
+				property_text () = "";
 			}
 	
 			property_editable ()                              = false;
