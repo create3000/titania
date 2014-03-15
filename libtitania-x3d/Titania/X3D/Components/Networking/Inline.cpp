@@ -204,7 +204,8 @@ throw (Error <INVALID_NAME>,
 		}
 		else
 		{
-			const_cast <Inline*> (this) -> requestImmediateLoad ();
+			if (X3D_PARALLEL and checkLoadState () == IN_PROGRESS_STATE)
+				future -> wait ();
 
 			if (checkLoadState () == COMPLETE_STATE)
 				return scene -> getExportedNode (exportedName);
@@ -224,6 +225,9 @@ Inline::requestAsyncLoad ()
 
 	setLoadState (IN_PROGRESS_STATE);
 
+	if (future)
+		future -> cancel ();
+
 	future .reset (new SceneLoader (getExecutionContext (),
 	                                url (),
 	                                std::bind (std::mem_fn (&Inline::setSceneAsync), this, _1)));
@@ -232,13 +236,10 @@ Inline::requestAsyncLoad ()
 void
 Inline::requestImmediateLoad ()
 {
-	if (X3D_PARALLEL)
+	if (X3D_PARALLEL and checkLoadState () == IN_PROGRESS_STATE)
 	{
-		if (checkLoadState () == IN_PROGRESS_STATE)
-		{
-			future -> wait ();
-			return;
-		}
+		future -> wait ();
+		return;
 	}
 
 	if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)

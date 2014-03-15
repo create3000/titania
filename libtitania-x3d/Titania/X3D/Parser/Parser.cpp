@@ -552,9 +552,6 @@ Parser::importStatement ()
 								throw Error <INVALID_X3D> ("No name given after AS.");
 						}
 
-						if (isInsideProtoDefinition () and _inlineNode -> load ())
-							_inlineNode -> requestImmediateLoad ();
-
 						const X3DSFNode <ImportedNode> & _importedNode = getExecutionContext () -> addImportedNode (_inlineNode, _exportedNodeNameId, _nodeNameId);
 
 						_importedNode -> addComments (getComments ());

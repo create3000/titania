@@ -120,6 +120,9 @@ ImageTexture3D::requestAsyncLoad ()
 
 	setLoadState (IN_PROGRESS_STATE);
 
+	if (future)
+		future -> cancel ();
+
 	future .reset (new Texture3DLoader (getExecutionContext (),
 	                                    url (),
 	                                    getBrowser () -> getBrowserOptions () -> minTextureSize (),

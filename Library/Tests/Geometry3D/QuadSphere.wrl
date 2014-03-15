@@ -5,6 +5,9 @@ Group {
     children Shape {
       appearance Appearance {
         material Material { }
+        texture ImageTexture {
+          url "../images/image.png"
+        }
       }
       geometry IndexedFaceSet {
         coord Coordinate {
