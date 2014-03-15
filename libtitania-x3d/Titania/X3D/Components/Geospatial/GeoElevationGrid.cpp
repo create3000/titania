@@ -389,10 +389,6 @@ GeoElevationGrid::build ()
 void
 GeoElevationGrid::dispose ()
 {
-	colorNode    .dispose ();
-	texCoordNode .dispose ();
-	normalNode   .dispose ();
-
 	X3DGeospatialObject::dispose ();
 	X3DGeometryNode::dispose ();
 }

@@ -213,8 +213,6 @@ PolylineEmitter::set_polyline ()
 void
 PolylineEmitter::dispose ()
 {
-	polylineNode .dispose ();
-
 	// Polyline map
 
 	if (polylineMapId)

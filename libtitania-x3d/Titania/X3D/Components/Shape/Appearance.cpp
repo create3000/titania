@@ -270,19 +270,5 @@ Appearance::draw ()
 		shaderNode -> draw ();
 }
 
-void
-Appearance::dispose ()
-{
-	fillPropertiesNode   .dispose ();
-	linePropertiesNode   .dispose ();
-	materialNode         .dispose ();
-	textureNode          .dispose ();
-	textureTransformNode .dispose ();
-	shaderNodes          .dispose ();
-	shaderNode           .dispose ();
-
-	X3DAppearanceNode::dispose ();
-}
-
 } // X3D
 } // titania

@@ -310,17 +310,5 @@ X3DComposedGeometryNode::buildFaceNormals (const size_t vertexCount, const size_
 		std::for_each (getNormals () .begin (), getNormals () .end (), std::mem_fn (&Vector3f::negate));
 }
 
-void
-X3DComposedGeometryNode::dispose ()
-{
-	attribNodes  .dispose ();
-	colorNode    .dispose ();
-	texCoordNode .dispose ();
-	normalNode   .dispose ();
-	coordNode    .dispose ();
-
-	X3DGeometryNode::dispose ();
-}
-
 } // X3D
 } // titania

@@ -75,10 +75,6 @@ ExternProto::ExternProto (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "metadata", metadata ());
 
 	addChildren (url (), scene, proto);
-
-	disableEvents ();
-	scene .isTainted (true);
-	proto .isTainted (true);
 }
 
 ExternProto*
@@ -132,6 +128,11 @@ ExternProto::initialize ()
 	
 	for (const auto & field : getFieldDefinitions ())
 		field -> isTainted (true);
+
+	disableEvents ();
+
+	scene .isTainted (true);
+	proto .isTainted (true);
 }
 
 X3DPrototypeInstance*
@@ -370,9 +371,6 @@ void
 ExternProto::dispose ()
 {
 	removeChildren (url ());
-
-	scene .dispose ();
-	proto .dispose ();
 
 	X3DUrlObject::dispose ();
 	X3DProto::dispose ();

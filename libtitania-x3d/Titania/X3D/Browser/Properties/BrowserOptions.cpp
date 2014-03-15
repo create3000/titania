@@ -394,27 +394,5 @@ BrowserOptions::set_shading ()
 	}
 }
 
-void
-BrowserOptions::dispose ()
-{
-	motionBlurOptions () .dispose ();
-	appearance ()        .dispose ();
-	lineProperties ()    .dispose ();
-	fillProperties ()    .dispose ();
-	textureProperties () .dispose ();
-	textureTransform ()  .dispose ();
-	emitter ()           .dispose ();
-	arc2D ()             .dispose ();
-	arcClose2D ()        .dispose ();
-	circle2D ()          .dispose ();
-	disc2D ()            .dispose ();
-	rectangle2D ()       .dispose ();
-	box ()               .dispose ();
-	sphere ()            .dispose ();
-	texCoord ()          .dispose ();
-	fontStyle ()         .dispose ();
-	viewport ()          .dispose ();
-}
-
 } // X3D
 } // titania

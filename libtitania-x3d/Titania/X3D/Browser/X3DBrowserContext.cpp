@@ -749,19 +749,6 @@ X3DBrowserContext::dispose ()
 	finishedOutput      .dispose ();
 	changedOutput       .dispose ();
 
-	renderingProperties  .dispose ();
-	browserProperties    .dispose ();
-	browserOptions       .dispose ();
-	javaScriptEngine     .dispose ();
-	activeLayer          .dispose ();
-	overSensors          .clear ();
-	activeSensors        .clear ();
-	selection            .dispose ();
-	notification         .dispose ();
-	console              .dispose ();
-
-	javaScriptEngine .dispose ();
-
 	X3DExecutionContext::dispose ();
 }
 

@@ -438,25 +438,6 @@ X3DLayerNode::collect (const TraverseType type)
 void
 X3DLayerNode::dispose ()
 {
-	defaultNavigationInfo .dispose ();
-	defaultBackground     .dispose ();
-	defaultFog            .dispose ();
-	defaultViewpoint      .dispose ();
-
-	navigationInfoStack .dispose ();
-	backgroundStack     .dispose ();
-	fogStack            .dispose ();
-	viewpointStack      .dispose ();
-
-	navigationInfos .dispose ();
-	backgrounds     .dispose ();
-	fogs            .dispose ();
-	viewpoints      .dispose ();
-
-	group .dispose ();
-
-	// Dont't dispose stack nodes, they were automatically disposed.
-
 	X3DNode::dispose ();
 	X3DRenderer::dispose ();
 }

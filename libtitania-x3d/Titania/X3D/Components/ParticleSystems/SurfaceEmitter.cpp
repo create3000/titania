@@ -241,8 +241,6 @@ SurfaceEmitter::setShaderFields (const X3DSFNode <ComposedShader> & shader) cons
 void
 SurfaceEmitter::dispose ()
 {
-	surfaceNode .dispose ();
-
 	// Surface map
 
 	if (normalMapId)

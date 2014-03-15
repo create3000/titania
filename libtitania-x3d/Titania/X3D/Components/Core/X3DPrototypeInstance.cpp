@@ -271,15 +271,5 @@ X3DPrototypeInstance::toStream (std::ostream & ostream) const
 	X3DBaseNode::toStream (ostream);
 }
 
-void
-X3DPrototypeInstance::dispose ()
-{
-	savedChildren .dispose ();
-
-	X3DExecutionContext::dispose ();
-
-	protoDeclaration .dispose ();
-}
-
 } // X3D
 } // titania

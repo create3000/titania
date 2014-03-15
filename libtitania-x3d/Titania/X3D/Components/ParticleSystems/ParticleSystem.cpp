@@ -1514,14 +1514,6 @@ ParticleSystem::restoreState ()
 void
 ParticleSystem::dispose ()
 {
-	transformShader          .dispose ();
-	geometryShader           .dispose ();
-	emitterNode              .dispose ();
-	colorRampNode            .dispose ();
-	texCoordRampNode         .dispose ();
-	physicsModelNodes        .dispose ();
-	boundedPhysicsModelNodes .dispose ();
-
 	// Particle buffer
 
 	if (particleFeedbackId [0])

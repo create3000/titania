@@ -201,17 +201,6 @@ public:
 			stack .erase (node);
 	}
 
-	virtual
-	void
-	dispose () final override
-	{
-		for (const auto & node : stack)
-			node -> shutdown () .removeInterest (this, &X3DBindableNodeStack::erase);
-	
-		stack .clear ();
-
-		X3DBaseNode::dispose ();
-	}
 
 private:
 

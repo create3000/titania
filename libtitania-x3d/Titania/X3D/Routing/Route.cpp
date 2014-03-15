@@ -183,7 +183,8 @@ Route::disconnect ()
 		sourceField -> removeOutputRoute (this);
 		destinationField -> removeInputRoute  (this);
 
-		disconnected () .processInterests ();
+		disconnectedOutput .processInterests ();
+		disconnectedOutput .dispose ();
 	}
 }
 

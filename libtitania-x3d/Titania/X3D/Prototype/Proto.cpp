@@ -134,6 +134,12 @@ Proto::createInstance (X3DExecutionContext* const executionContext)
 	return new X3DPrototypeInstance (executionContext, this);
 }
 
+void
+Proto::setup ()
+{
+	getExecutionContext () -> addParent (this);
+}
+
 X3DBaseNode*
 Proto::getRootNode () const
 {
@@ -266,7 +272,7 @@ Proto::toStream (std::ostream & ostream) const
 		<< '}';
 }
 void
-Proto::toStreamField (std::ostream & ostream, X3DFieldDefinition* const field, size_t accessTypeLength, size_t typeLength) const
+Proto::toStreamField (std::ostream & ostream, X3DFieldDefinition* const field, const size_t accessTypeLength, const size_t typeLength) const
 {
 	for (const auto & comment : field -> getComments ())
 	{

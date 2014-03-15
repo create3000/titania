@@ -225,12 +225,6 @@ public:
 	isLineGeometry () const final override
 	{ return false; }
 
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () final override;
-
 
 private:
 

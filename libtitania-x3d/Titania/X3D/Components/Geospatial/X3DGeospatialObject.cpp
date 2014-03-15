@@ -200,11 +200,5 @@ X3DGeospatialObject::lerp (const Vector3d & source, const Vector3d & destination
 	return Vector3d ();
 }
 
-void
-X3DGeospatialObject::dispose ()
-{
-	geoOriginNode .dispose ();
-}
-
 } // X3D
 } // titania

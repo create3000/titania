@@ -55,8 +55,8 @@ namespace X3D {
 
 const pcrecpp::RE RegEx::Id ("\\A[^\\x30-\\x39\\x00-\\x20\\x22\\x23\\x27\\x2b\\x2c\\x2d\\x2e\\x5b\\x5c\\x5d\\x7b\\x7d\\x7f]{1}[^\\x00-\\x20\\x22\\x23\\x27\\x2c\\x2e\\x5b\\x5c\\x5d\\x7b\\x7d\\x7f]*$");
 
-const pcrecpp::RE RegEx::_LastNumber ("_\\d+$");
-const pcrecpp::RE RegEx::LastNumber ("\\d+$");
+const pcrecpp::RE RegEx::_LastNumber ("(_\\d+)$");
+const pcrecpp::RE RegEx::LastNumber ("(\\d+)$");
 const pcrecpp::RE RegEx::ECMAScript ("\\A(?:vrmlscript|javascript|ecmascript)\\:(.*)$", pcrecpp::RE_Options () .set_dotall (true));
 
 } // X3D

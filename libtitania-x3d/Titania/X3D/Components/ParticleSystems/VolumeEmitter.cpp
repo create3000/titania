@@ -243,8 +243,6 @@ VolumeEmitter::setShaderFields (const X3DSFNode <ComposedShader> & shader) const
 void
 VolumeEmitter::dispose ()
 {
-	surfaceNode .dispose ();
-
 	// Surface map
 
 	if (normalMapId)

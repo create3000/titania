@@ -109,12 +109,6 @@ public:
 	void
 	draw () override;
 
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () override;
-
 
 protected:
 

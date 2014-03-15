@@ -313,8 +313,6 @@ LoadSensor::dispose ()
 {
 	timeOut_connection .disconnect ();
 
-	urlObjects .dispose ();
-
 	X3DNetworkSensorNode::dispose ();
 }
 

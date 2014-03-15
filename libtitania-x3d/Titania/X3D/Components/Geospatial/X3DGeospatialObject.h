@@ -80,12 +80,6 @@ public:
 	geoOrigin () const
 	{ return *fields .geoOrigin; }
 
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () override;
-
 
 protected:
 

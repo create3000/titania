@@ -363,10 +363,6 @@ public:
 	viewport () const
 	{ return fields .viewport; }
 
-	virtual
-	void
-	dispose () final override;
-
 
 private:
 

@@ -123,12 +123,6 @@ public:
 	void
 	restoreState () final override;
 
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () final override;
-
 
 private:
 

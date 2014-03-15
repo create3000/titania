@@ -72,8 +72,9 @@ public:
 	                 const MFString &, const size_t, const size_t,
 	                 const Callback &);
 
+	virtual
 	void
-	cancel ();
+	dispose () final override;
 
 	virtual
 	~Texture3DLoader ();

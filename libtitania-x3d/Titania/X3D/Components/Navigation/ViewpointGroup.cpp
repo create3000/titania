@@ -182,8 +182,6 @@ ViewpointGroup::traverse (const TraverseType type)
 void
 ViewpointGroup::dispose ()
 {
-	proximitySensor .dispose ();
-
 	X3DViewpointObject::dispose ();
 	X3DChildNode::dispose ();
 }

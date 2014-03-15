@@ -215,13 +215,5 @@ Script::restoreState ()
 	requestImmediateLoad ();
 }
 
-void
-Script::dispose ()
-{
-	javaScript .dispose ();
-
-	X3DScriptNode::dispose ();
-}
-
 } // X3D
 } // titania

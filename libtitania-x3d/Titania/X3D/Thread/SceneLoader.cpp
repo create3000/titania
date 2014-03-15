@@ -60,6 +60,7 @@ namespace X3D {
 // how to handle the profile and component arguments/statements of inline nodes.
 
 SceneLoader::SceneLoader (X3DExecutionContext* const executionContext, const MFString & url, const Callback & callback) :
+	        X3DInput (),
 	         browser (executionContext -> getBrowser ()),
 	executionContext (executionContext),
 	        callback (callback),
@@ -77,19 +78,6 @@ SceneLoader::wait ()
 	{
 		future .wait ();
 		prepareEvents ();
-	}
-}
-
-void
-SceneLoader::cancel ()
-{
-	if (running)
-	{
-		running = false;
-
-		browser -> prepareEvents () .removeInterest (this, &SceneLoader::prepareEvents);
-
-		callback = [ ] (const X3DSFNode <Scene> &) { }; // Clear callback
 	}
 }
 
@@ -144,9 +132,22 @@ SceneLoader::prepareEvents ()
 					callback (nullptr);
 				}
 
-				cancel ();
+				dispose ();
 			}
 		}
+	}
+}
+
+void
+SceneLoader::dispose ()
+{
+	if (running)
+	{
+		running = false;
+
+		callback = [ ] (const X3DSFNode <Scene> &) { };
+
+		X3DInput::dispose ();
 	}
 }
 

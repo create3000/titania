@@ -425,16 +425,5 @@ ElevationGrid::build ()
 	setTextureCoordinate (texCoordNode);
 }
 
-void
-ElevationGrid::dispose ()
-{
-	attribNodes  .dispose ();
-	colorNode    .dispose ();
-	texCoordNode .dispose ();
-	normalNode   .dispose ();
-
-	X3DGeometryNode::dispose ();
-}
-
 } // X3D
 } // titania

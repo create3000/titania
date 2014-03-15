@@ -183,7 +183,6 @@ void
 Text::dispose ()
 {
 	textGeometry .reset ();
-	fontStyleNode .dispose ();
 
 	X3DGeometryNode::dispose ();
 }

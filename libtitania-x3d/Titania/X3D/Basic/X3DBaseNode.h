@@ -348,6 +348,14 @@ protected:
 	void
 	removeField (const std::string &);
 
+	virtual
+	void
+	addChild (X3DChildObject &) final override;
+
+	virtual
+	void
+	removeChild (X3DChildObject &) final override;
+
 	void
 	setExtendedEventHandling (const bool value)
 	{ extendedEventHandling = value; }
@@ -405,6 +413,7 @@ private:
 	FieldsMap            fields;                // Pre-defined and user-defined fields
 	FieldAliasIndex      fieldAliases;          // VRML names
 	size_t               numUserDefinedFields;  // Number of user defined fields
+	ChildObjectSet       children;              // Internal used fields
 
 	bool                  internal;              // Is this node interally used
 	bool                  saved;                 // Is this node hidden and saved

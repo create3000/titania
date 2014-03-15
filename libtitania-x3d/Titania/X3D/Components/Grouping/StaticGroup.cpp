@@ -117,8 +117,6 @@ StaticGroup::traverse (const TraverseType type)
 void
 StaticGroup::dispose ()
 {
-	group .dispose ();
-
 	X3DBoundedObject::dispose ();
 	X3DChildNode::dispose ();
 }

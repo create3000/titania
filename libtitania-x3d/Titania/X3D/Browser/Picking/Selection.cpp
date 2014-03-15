@@ -161,13 +161,5 @@ Selection::clear ()
 	removeChildren (MFNode (children)); // Make copy because we erase in children.
 }
 
-void
-Selection::dispose ()
-{
-	children .dispose ();
-
-	X3DBaseNode::dispose ();
-}
-
 } // X3D
 } // titania

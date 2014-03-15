@@ -320,13 +320,6 @@ GeoLOD::traverse (const TraverseType type)
 void
 GeoLOD::dispose ()
 {
-	rootGroup    .dispose ();
-	rootInline   .dispose ();
-	child1Inline .dispose ();
-	child2Inline .dispose ();
-	child3Inline .dispose ();
-	child4Inline .dispose ();
-
 	X3DGeospatialObject::dispose ();
 	X3DBoundedObject::dispose ();
 	X3DChildNode::dispose ();

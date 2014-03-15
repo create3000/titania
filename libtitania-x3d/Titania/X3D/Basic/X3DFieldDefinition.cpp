@@ -262,8 +262,6 @@ X3DFieldDefinition::dispose ()
 {
 	if (io)
 	{
-		io -> references .clear ();
-
 		for (const auto & route : RouteSet (std::move (io -> inputRoutes)))
 			route -> remove ();
 
@@ -276,8 +274,8 @@ X3DFieldDefinition::dispose ()
 		for (auto & fieldDefinition : io -> outputInterests) // No copy is made
 			fieldDefinition -> removeInputInterest (this);
 
-		io -> inputInterests  .clear ();
-		io -> outputInterests .clear ();
+		io -> inputRoutes  .dispose ();
+		io -> outputRoutes .dispose ();
 	}
 
 	X3DChildObject::dispose ();

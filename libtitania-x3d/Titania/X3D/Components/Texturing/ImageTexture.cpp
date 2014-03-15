@@ -120,7 +120,7 @@ ImageTexture::requestAsyncLoad ()
 	setLoadState (IN_PROGRESS_STATE);
 
 	if (future)
-		future -> cancel ();
+		future -> dispose ();
 
 	future .reset (new TextureLoader (getExecutionContext (),
 	                                  url (),
@@ -141,7 +141,7 @@ void
 ImageTexture::dispose ()
 {
 	if (future)
-		future -> cancel ();
+		future -> dispose ();
 
 	X3DUrlObject::dispose ();
 	X3DTexture2DNode::dispose ();

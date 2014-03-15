@@ -120,12 +120,6 @@ public:
 	void
 	clear ();
 
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () final override;
-
 
 private:
 

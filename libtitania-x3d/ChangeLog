@@ -1,5 +1,91 @@
 2014-03-15  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* RegEx.cpp:
+	* Proto.h:
+	* World.h:
+	* Route.cpp:
+	* World.cpp:
+	* Proto.cpp:
+	* X3DBaseNode.h:
+	* SceneLoader.h:
+	* X3DChildObject.h:
+	* X3DBaseNode.cpp:
+	* TextureLoader.h:
+	* SceneLoader.cpp:
+	* X3DBrowser.cpp:
+	* TextureLoader.cpp:
+	* Texture3DLoader.h:
+	* Notification.cpp:
+	* Text.cpp:
+	* ExternProto.cpp:
+	* Texture3DLoader.cpp:
+	* TransformHandle.cpp:
+	* Selection.h:
+	* X3DFieldDefinition.cpp:
+	* BindableNodeList.h:
+	* BindableNodeStack.h:
+	* X3DBrowserContext.cpp:
+	* Script.h:
+	* Selection.cpp:
+	* Appearance.h:
+	* LineSet.h:
+	* Script.cpp:
+	* Appearance.cpp:
+	* PointSet.h:
+	* Inline.cpp:
+	* LineSet.cpp:
+	* LayerSet.cpp:
+	* GeoLOD.cpp:
+	* X3DExecutionContext.cpp:
+	* PointSet.cpp:
+	* StaticGroup.cpp:
+	* BrowserOptions.h:
+	* X3DUrlObject.h:
+	* ProgramShader.cpp:
+	* LoadSensor.cpp:
+	* X3DLayerNode.cpp:
+	* BrowserOptions.cpp:
+	* ElevationGrid.h:
+	* ImageTexture.cpp:
+	* ComposedShader.cpp:
+	* IndexedLineSet.h:
+	* NavigationInfo.h:
+	* X3DPrototypeInstance.h:
+	* IndexedLineSet.cpp:
+	* ElevationGrid.cpp:
+	* X3DTexture2DNode.h:
+	* X3DPrototypeInstance.cpp:
+	* ViewpointGroup.cpp:
+	* NavigationInfo.cpp:
+	* X3DTexture2DNode.cpp:
+	* X3DTexture3DNode.h:
+	* ImageTexture3D.cpp:
+	* ComposedTexture3D.h:
+	* RenderingProperties.cpp:
+	* GeoElevationGrid.cpp:
+	* X3DViewpointNode.cpp:
+	* X3DGeospatialObject.h:
+	* X3DTexture3DNode.cpp:
+	* VolumeEmitter.cpp:
+	* ComposedTexture3D.cpp:
+	* Background.h:
+	* GeoProximitySensor.cpp:
+	* ParticleSystem.cpp:
+	* X3DGeospatialObject.cpp:
+	* SurfaceEmitter.cpp:
+	* Background.cpp:
+	* X3DNurbsSurfaceGeometryNode.h:
+	* X3DComposedGeometryNode.h:
+	* PolylineEmitter.cpp:
+	* X3DNurbsSurfaceGeometryNode.cpp:
+	* BoundedPhysicsModel.h:
+	* X3DComposedGeometryNode.cpp:
+	* BoundedPhysicsModel.cpp:
+	* ComposedCubeMapTexture.h:
+	* ComposedCubeMapTexture.cpp: 
+
+2014-03-15  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Parser.cpp:
 	* Inline.cpp:
 	* ImageTexture.cpp:

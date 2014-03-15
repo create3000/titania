@@ -72,8 +72,9 @@ public:
 
 	SceneLoader (X3DExecutionContext* const, const MFString &, const Callback &);
 
+	virtual
 	void
-	cancel ();
+	dispose () final override;
 
 	void
 	wait ();

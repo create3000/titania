@@ -243,13 +243,5 @@ NavigationInfo::traverse (const TraverseType type)
 	}
 }
 
-void
-NavigationInfo::dispose ()
-{
-	directionalLight .dispose ();
-
-	X3DBindableNode::dispose ();
-}
-
 } // X3D
 } // titania

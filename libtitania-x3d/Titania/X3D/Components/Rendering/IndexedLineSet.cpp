@@ -322,15 +322,5 @@ IndexedLineSet::draw ()
 	X3DGeometryNode::draw ();
 }
 
-void
-IndexedLineSet::dispose ()
-{
-	attribNodes .dispose ();
-	colorNode   .dispose ();
-	coordNode   .dispose ();
-
-	X3DGeometryNode::dispose ();
-}
-
 } // X3D
 } // titania

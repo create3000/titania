@@ -117,13 +117,5 @@ BoundedPhysicsModel::addTriangles (std::vector <Vector3f> & normals, std::vector
 	}
 }
 
-void
-BoundedPhysicsModel::dispose () 
-{
-	geometryNode .dispose ();
-
-	X3DParticlePhysicsModelNode::dispose (); 
-}
-
 } // X3D
 } // titania

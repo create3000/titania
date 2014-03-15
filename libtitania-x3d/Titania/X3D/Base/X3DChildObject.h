@@ -135,6 +135,7 @@ protected:
 	addChildren (Args & ... args)
 	{ basic::pass ((addChild (args), 1) ...); }
 
+	virtual
 	void
 	addChild (X3DChildObject & child)
 	{ child .addParent (this); }
@@ -144,6 +145,7 @@ protected:
 	removeChildren (Args & ... args)
 	{ basic::pass ((removeChild (args), 1) ...); }
 
+	virtual
 	void
 	removeChild (X3DChildObject & child)
 	{ child .removeParent (this); }

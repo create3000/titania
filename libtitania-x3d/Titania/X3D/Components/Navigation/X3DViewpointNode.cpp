@@ -511,13 +511,6 @@ X3DViewpointNode::transform ()
 void
 X3DViewpointNode::dispose ()
 {
-	timeSensor                   .dispose ();
-	easeInEaseOut                .dispose ();
-	positionInterpolator         .dispose ();
-	orientationInterpolator      .dispose ();
-	scaleInterpolator            .dispose ();
-	scaleOrientationInterpolator .dispose ();
-
 	X3DViewpointObject::dispose ();
 	X3DBindableNode::dispose ();
 }

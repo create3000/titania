@@ -85,6 +85,10 @@ public:
 	throw (Error <INVALID_NAME>,
           Error <NOT_SUPPORTED>) final override;
 
+	virtual
+	void
+	setup () final override;
+
 	///  @name Instance construction
 
 	virtual
@@ -142,13 +146,6 @@ public:
 
 private:
 
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override
-	{ }
-
 	virtual
 	void
 	addUninitializedNode (X3DBaseNode* const node) final override
@@ -157,7 +154,7 @@ private:
 	///  @name Input/Output
 
 	void
-	toStreamField (std::ostream &, X3DFieldDefinition* const, size_t, size_t) const;
+	toStreamField (std::ostream &, X3DFieldDefinition* const, const size_t, const size_t) const;
 
 	///  @name Static members
 

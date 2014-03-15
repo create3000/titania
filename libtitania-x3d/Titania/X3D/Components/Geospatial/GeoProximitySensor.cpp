@@ -137,8 +137,6 @@ GeoProximitySensor::traverse (const TraverseType type)
 void
 GeoProximitySensor::dispose ()
 {
-	proximitySensor .dispose ();
-
 	X3DGeospatialObject::dispose ();
 	X3DEnvironmentalSensorNode::dispose ();
 }

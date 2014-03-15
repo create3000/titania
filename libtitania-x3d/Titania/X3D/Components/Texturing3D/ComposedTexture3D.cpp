@@ -155,13 +155,5 @@ ComposedTexture3D::update ()
 	setImage (getInternalFormat (components), components, width, height, depth, GL_RGBA, image .data ());
 }
 
-void
-ComposedTexture3D::dispose ()
-{
-	textureNodes .dispose ();
-	
-	X3DTexture3DNode::dispose ();
-}
-
 } // X3D
 } // titania

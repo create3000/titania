@@ -227,8 +227,6 @@ ComposedShader::draw ()
 void
 ComposedShader::dispose ()
 {
-	loadSensor .dispose ();
-
 	if (programId)
 		glDeleteProgram (programId);
 

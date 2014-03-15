@@ -200,15 +200,5 @@ PointSet::draw ()
 	X3DGeometryNode::draw ();
 }
 
-void
-PointSet::dispose ()
-{
-	attribNodes .dispose ();
-	colorNode   .dispose ();
-	coordNode   .dispose ();
-
-	X3DGeometryNode::dispose ();
-}
-
 } // X3D
 } // titania

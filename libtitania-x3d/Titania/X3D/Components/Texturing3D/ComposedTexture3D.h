@@ -104,12 +104,6 @@ public:
 	checkLoadState () const final override
 	{ return loadState; }
 
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () final override;
-
 
 private:
 

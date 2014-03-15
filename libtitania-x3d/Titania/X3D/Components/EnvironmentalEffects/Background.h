@@ -145,12 +145,6 @@ public:
 	bottomUrl () const
 	{ return *fields .bottomUrl; }
 
-	///  @name Operations
-
-	virtual
-	void
-	dispose () final override;
-
 
 private:
 

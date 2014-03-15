@@ -207,16 +207,6 @@ public:
 		}
 	}
 
-	/// @name Destruction
-
-	virtual
-	void
-	dispose () final override
-	{
-		list .clear ();
-
-		X3DBaseNode::dispose ();
-	}
 
 private:
 

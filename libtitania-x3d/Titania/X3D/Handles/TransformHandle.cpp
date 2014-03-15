@@ -265,7 +265,6 @@ void
 TransformHandle::dispose ()
 {
 	transform -> removeParent (this);
-	scene .dispose ();
 
 	X3DHandleObject::dispose ();
 	Transform::dispose ();

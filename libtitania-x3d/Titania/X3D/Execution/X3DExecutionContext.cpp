@@ -102,9 +102,6 @@ X3DExecutionContext::X3DExecutionContext () :
 {
 	rootNodes .setName ("rootNodes"); // Set this for numClones.
 
-	rootNodes          .isTainted (true);
-	uninitializedNodes .isTainted (true);
-
 	addChildren (rootNodes, uninitializedNodes);
 }
 
@@ -115,8 +112,7 @@ X3DExecutionContext::initialize ()
 
 	//__LOG__ << "Initialize: " << getWorldURL () << std::endl;
 
-	rootNodes .isTainted (false);
-	//uninitializedNodes .isTainted (false);
+	uninitializedNodes .isTainted (true);
 
 	while (not uninitializedNodes .empty ())
 	{
@@ -938,9 +934,6 @@ X3DExecutionContext::dispose ()
 	protos        .clear ();
 	externProtos  .clear ();
 	routes        .clear ();
-
-	rootNodes          .dispose ();
-	uninitializedNodes .dispose ();
 
 	X3DNode::dispose ();
 }

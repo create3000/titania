@@ -170,13 +170,5 @@ X3DTexture2DNode::draw ()
 	X3DTextureNode::draw (GL_TEXTURE_2D, components);
 }
 
-void
-X3DTexture2DNode::dispose ()
-{
-	texturePropertiesNode .dispose ();
-
-	X3DTextureNode::dispose ();
-}
-
 } // X3D
 } // titania

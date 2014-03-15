@@ -226,7 +226,7 @@ Inline::requestAsyncLoad ()
 	setLoadState (IN_PROGRESS_STATE);
 
 	if (future)
-		future -> cancel ();
+		future -> dispose ();
 
 	future .reset (new SceneLoader (getExecutionContext (),
 	                                url (),
@@ -273,7 +273,7 @@ Inline::requestUnload ()
 		return;
 
 	if (future)
-		future -> cancel ();
+		future -> dispose ();
 
 	setScene (getBrowser () -> createScene ());
 
@@ -348,10 +348,7 @@ void
 Inline::dispose ()
 {
 	if (future)
-		future -> cancel ();
-
-	scene .dispose ();
-	group .dispose ();
+		future -> dispose ();
 
 	X3DUrlObject::dispose ();
 	X3DBoundedObject::dispose ();

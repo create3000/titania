@@ -108,12 +108,6 @@ public:
 	void
 	addTriangles (std::vector <Vector3f> &, std::vector <Vector3f> &) const;
 
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () final override;
-
 
 private:
 

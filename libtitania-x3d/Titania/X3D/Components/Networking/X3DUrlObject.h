@@ -113,7 +113,7 @@ protected:
 	///  @name Member access
 
 	void
-	setLoadState (LoadState value)
+	setLoadState (const LoadState value)
 	{ loadState = value; }
 
 	///  @name Operations

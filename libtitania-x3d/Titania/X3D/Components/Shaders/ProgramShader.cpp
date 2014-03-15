@@ -208,8 +208,6 @@ ProgramShader::draw ()
 void
 ProgramShader::dispose ()
 {
-	loadSensor .dispose ();
-
 	if (pipelineId)
 		glDeleteProgramPipelines (1, &pipelineId);
 

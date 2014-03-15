@@ -104,8 +104,6 @@ RenderingProperties::RenderingProperties (X3DExecutionContext* const executionCo
 	 extensions (),
 	      world ()
 {
-	addChildren (enabled (), cycleInterval ());
-
 	addField (outputOnly, "Vendor",         vendor ());
 	addField (outputOnly, "Renderer",       renderer ());
 	addField (outputOnly, "Version",        version ());
@@ -122,7 +120,7 @@ RenderingProperties::RenderingProperties (X3DExecutionContext* const executionCo
 
 	addField (X3D_V3_3, "AntiAliased", "Antialiased");
 
-	addChildren (world);
+	addChildren (enabled (), cycleInterval (), world);
 }
 
 RenderingProperties*
@@ -371,8 +369,6 @@ void
 RenderingProperties::dispose ()
 {
 	getBrowser () -> makeCurrent ();
-
-	world .dispose ();
 
 	X3DNode::dispose ();
 }

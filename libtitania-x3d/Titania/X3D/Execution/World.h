@@ -105,15 +105,6 @@ public:
 	traverse (const TraverseType type) final override
 	{ layerSet -> traverse (type); }
 
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () final override;
-
-	virtual
-	~World ();
-
 
 private:
 

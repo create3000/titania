@@ -177,19 +177,5 @@ Background::initialize ()
 	set_bottomTexture (bottomTexture);
 }
 
-void
-Background::dispose ()
-{
-	textureProperties .dispose ();
-	frontTexture      .dispose ();
-	backTexture       .dispose ();
-	leftTexture       .dispose ();
-	rightTexture      .dispose ();
-	topTexture        .dispose ();
-	bottomTexture     .dispose ();
-
-	X3DBackgroundNode::dispose ();
-}
-
 } // X3D
 } // titania

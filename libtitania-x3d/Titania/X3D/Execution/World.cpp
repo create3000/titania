@@ -181,22 +181,5 @@ World::bind ()
 		scene -> changeViewpoint (scene -> getWorldURL () .fragment ());
 }
 
-// Dispose
-
-void
-World::dispose ()
-{
-	scene           .dispose ();
-	layerSet        .dispose ();
-	defaultLayerSet .dispose ();
-	layer0          .dispose ();
-	activeLayer     .dispose ();
-
-	X3DBaseNode::dispose ();
-}
-
-World::~World ()
-{ }
-
 } // X3D
 } // titania

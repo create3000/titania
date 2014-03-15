@@ -464,10 +464,6 @@ X3DBrowser::dispose ()
 
 	lock ();
 
-	scene .dispose ();
-	world .dispose ();
-	root  .dispose ();
-
 	supportedFields .dispose ();
 	supportedNodes  .dispose ();
 

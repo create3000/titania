@@ -155,12 +155,6 @@ public:
 	isTransparent () const final override
 	{ return transparent; }
 
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () override;
-
 
 protected:
 

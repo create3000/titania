@@ -123,6 +123,7 @@ X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const 
 	               fields (),
 	         fieldAliases (),
 	 numUserDefinedFields (0),
+	             children (),
 	             internal (false),
 	                saved (false),
 	extendedEventHandling (true),
@@ -148,6 +149,9 @@ X3DBaseNode::setup ()
 		field -> updateReferences ();
 		field -> isTainted (false);
 	}
+
+	for (const auto & child : children)
+		child -> isTainted (false);
 
 	initialize ();
 }
@@ -518,6 +522,24 @@ X3DBaseNode::isDefaultValue (const X3DFieldDefinition* const field) const
 	{
 		return false;
 	}
+}
+
+void
+X3DBaseNode::addChild (X3DChildObject & child)
+{
+	child .isTainted (true);
+
+	children .insert (&child);
+
+	X3DChildObject::addChild (child);
+}
+
+void
+X3DBaseNode::removeChild (X3DChildObject & child)
+{
+	children .erase (&child);
+
+	X3DChildObject::removeChild (child);
 }
 
 size_t
@@ -1020,7 +1042,15 @@ X3DBaseNode::toStreamUserDefinedField (std::ostream & ostream, X3DFieldDefinitio
 void
 X3DBaseNode::dispose ()
 {
-	X3DBaseNode::shutdown () .processInterests ();
+//	try
+//	{
+//		__LOG__ << getTypeName () << std::endl;	
+//	}
+//	catch (...)
+//	{ }
+
+	shutdownOutput .processInterests ();
+	shutdownOutput .dispose ();
 
 	X3DChildObject::dispose ();
 
@@ -1029,8 +1059,12 @@ X3DBaseNode::dispose ()
 	for (const auto & field : fieldDefinitions)
 		field -> removeParent (this);
 
+	for (const auto & child : children)
+		child -> dispose ();
+
 	fields .clear ();
 	fieldDefinitions .clear ();
+	children .clear ();
 
 	executionContext -> removeParent (this);
 }

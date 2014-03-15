@@ -523,14 +523,5 @@ X3DNurbsSurfaceGeometryNode::tessError (GLenum errorCode)
 	__LOG__ << gluErrorString (errorCode) << std::endl;
 }
 
-void
-X3DNurbsSurfaceGeometryNode::dispose ()
-{
-	texCoordNode     .dispose ();
-	controlPointNode .dispose ();
-	
-	X3DParametricGeometryNode::dispose ();
-}
-
 } // X3D
 } // titania

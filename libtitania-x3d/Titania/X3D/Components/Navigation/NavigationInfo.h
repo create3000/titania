@@ -214,12 +214,6 @@ public:
 	void
 	traverse (const TraverseType) final override;
 
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () final override;
-
 
 private:
 

@@ -213,13 +213,5 @@ ComposedCubeMapTexture::draw ()
 	X3DEnvironmentTextureNode::draw (GL_TEXTURE_CUBE_MAP, components);
 }
 
-void
-ComposedCubeMapTexture::dispose ()
-{
-	nodes .dispose ();
-
-	X3DEnvironmentTextureNode::dispose ();
-}
-
 } // X3D
 } // titania

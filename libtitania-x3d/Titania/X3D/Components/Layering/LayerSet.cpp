@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -65,8 +65,8 @@ const std::string LayerSet::containerField = "children";
 
 LayerSet::Fields::Fields () :
 	activeLayer (new SFInt32 ()),
-	order (new MFInt32 ({ 0 })),
-	layers (new MFNode ())
+	      order (new MFInt32 ({ 0 })),
+	     layers (new MFNode ())
 { }
 
 LayerSet::LayerSet (X3DExecutionContext* const executionContext) :
@@ -163,9 +163,6 @@ void
 LayerSet::dispose ()
 {
 	children .clear ();
-
-	layer0          .dispose ();
-	activeLayerNode .dispose ();
 
 	X3DNode::dispose ();
 }

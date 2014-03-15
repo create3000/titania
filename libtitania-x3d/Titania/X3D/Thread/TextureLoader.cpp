@@ -59,6 +59,7 @@ TextureLoader::TextureLoader (X3DExecutionContext* const executionContext,
                               const MFString & url,
                               const size_t minTextureSize, const size_t maxTextureSize,
                               const Callback & callback) :
+	        X3DInput (),
 	         browser (executionContext -> getBrowser ()),
 	executionContext (executionContext),
 	        callback (callback),
@@ -67,19 +68,6 @@ TextureLoader::TextureLoader (X3DExecutionContext* const executionContext,
 {
 	browser -> prepareEvents () .addInterest (this, &TextureLoader::prepareEvents);
 	browser -> addEvent ();
-}
-
-void
-TextureLoader::cancel ()
-{
-	if (running)
-	{
-		running = false;
-
-		browser -> prepareEvents () .removeInterest (this, &TextureLoader::prepareEvents);
-
-		callback = [ ] (const TexturePtr &) { }; // Clear callback
-	}
 }
 
 std::future <TexturePtr>
@@ -150,9 +138,22 @@ TextureLoader::prepareEvents ()
 			{
 				callback (future .get ());
 				
-				cancel ();
+				dispose ();
 			}
 		}
+	}
+}
+
+void
+TextureLoader::dispose ()
+{
+	if (running)
+	{
+		running = false;
+
+		callback = [ ] (const TexturePtr &) { };
+
+		X3DInput::dispose ();
 	}
 }
 

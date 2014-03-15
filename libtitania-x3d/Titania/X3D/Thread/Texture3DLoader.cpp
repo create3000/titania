@@ -59,6 +59,7 @@ Texture3DLoader::Texture3DLoader (X3DExecutionContext* const executionContext,
                                   const MFString & url,
                                   const size_t minTextureSize, const size_t maxTextureSize,
                                   const Callback & callback) :
+	        X3DInput (),
 	         browser (executionContext -> getBrowser ()),
 	executionContext (executionContext),
 	        callback (callback),
@@ -67,19 +68,6 @@ Texture3DLoader::Texture3DLoader (X3DExecutionContext* const executionContext,
 {
 	browser -> prepareEvents () .addInterest (this, &Texture3DLoader::prepareEvents);
 	browser -> addEvent ();
-}
-
-void
-Texture3DLoader::cancel ()
-{
-	if (running)
-	{
-		running = false;
-
-		browser -> prepareEvents () .removeInterest (this, &Texture3DLoader::prepareEvents);
-
-		callback = [ ] (const Texture3DPtr &) { }; // Clear callback
-	}
 }
 
 std::future <Texture3DPtr>
@@ -150,9 +138,22 @@ Texture3DLoader::prepareEvents ()
 			{
 				callback (future .get ());
 				
-				cancel ();
+				dispose ();
 			}
 		}
+	}
+}
+
+void
+Texture3DLoader::dispose ()
+{
+	if (running)
+	{
+		running = false;
+
+		callback = [ ] (const Texture3DPtr &) { };
+
+		X3DInput::dispose ();
 	}
 }
 
