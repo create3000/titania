@@ -34,6 +34,7 @@ sub new {
 		specificationVersion => 3.3,
 		profile              => undef,
 		components           => [ ],
+		units                => [ ],
 		metaData             => [ ],
 		externProtos         => [ ],
 		externProtosByName   => { },
@@ -125,6 +126,12 @@ sub head {
 			next;
 		}
 
+		if ($child -> nodeName () eq "unit")
+		{
+			$self -> unit ($child);
+			next;
+		}
+
 		if ($child -> nodeName () eq "meta")
 		{
 			$self -> meta ($child);
@@ -139,6 +146,16 @@ sub component {
 	push @{$self -> {components}}, {
 		name  => $xml -> getAttribute ("name"),
 		level => $xml -> getAttribute ("level")
+	};
+}
+
+sub unit {
+	my ($self, $xml) = @_;
+	
+	push @{$self -> {units}}, {
+		category         => $xml -> getAttribute ("category"),
+		name             => $xml -> getAttribute ("name"),
+		conversionFactor => $xml -> getAttribute ("conversionFactor")
 	};
 }
 
@@ -625,12 +642,11 @@ sub scene {
 	my ($self) = @_;
 	
 	print "#X3D V", $self -> {document} -> {specificationVersion}, " utf8\n\n";
-	
-	print "PROFILE ", $self -> {document} -> {profile}, "\n\n"
-		if $self -> {document} -> {profile};
 
+	$self -> profile    ($self -> {document} -> {profile});
 	$self -> components ($self -> {document} -> {components});
-	$self -> metaData ($self -> {document} -> {metaData});
+	$self -> units      ($self -> {document} -> {units});
+	$self -> metaData   ($self -> {document} -> {metaData});
 
 	$self -> externProtos (@{$self -> {document} -> {externProtos}});
 	$self -> protos       (@{$self -> {document} -> {protos}});
@@ -638,6 +654,13 @@ sub scene {
 	$self -> imports      (@{$self -> {document} -> {imports}});
 	$self -> routes       (@{$self -> {document} -> {routes}});
 	$self -> exports      (@{$self -> {document} -> {exports}});
+}
+
+sub profile {
+	my ($self, $profile) = @_;
+
+	print "PROFILE ", $profile, "\n\n"
+		if $profile;
 }
 
 sub components {
@@ -649,6 +672,17 @@ sub components {
 	}
 
 	print "\n" if @$components;
+}
+
+sub units {
+	my ($self, $units) = @_;
+	
+	foreach (@$units)
+	{
+		print "UNIT ", $_ -> {category}, " ", $_ -> {name}, " ", $_ -> {conversionFactor}, "\n";
+	}
+
+	print "\n" if @$units;
 }
 
 sub metaData {

@@ -135,7 +135,10 @@ jsProfileInfo::components (JSContext* context, JSObject* obj, jsid id, jsval* vp
 void
 jsProfileInfo::finalize (JSContext* context, JSObject* obj)
 {
-	delete static_cast <ProfileInfoPtr*> (JS_GetPrivate (context, obj));
+	const auto profileInfo = static_cast <ProfileInfoPtr*> (JS_GetPrivate (context, obj));
+
+	if (profileInfo)
+		delete profileInfo;
 }
 
 } // X3D

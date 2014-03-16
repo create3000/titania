@@ -135,7 +135,10 @@ jsComponentInfo::providerUrl (JSContext* context, JSObject* obj, jsid id, jsval*
 void
 jsComponentInfo::finalize (JSContext* context, JSObject* obj)
 {
-	delete static_cast <ComponentInfoPtr*> (JS_GetPrivate (context, obj));
+	const auto componentInfo = static_cast <ComponentInfoPtr*> (JS_GetPrivate (context, obj));
+
+	if (componentInfo)
+		delete componentInfo;
 }
 
 } // X3D

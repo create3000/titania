@@ -1,5 +1,10 @@
 2014-03-16  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* jsProfileInfo.cpp:
+	* jsComponentInfo.cpp: 
+
+2014-03-16  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* SceneLoader.cpp:
 	* TextureLoader.cpp:
 	* Texture3DLoader.cpp: 
