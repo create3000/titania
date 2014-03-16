@@ -1,0 +1,46 @@
+#X3D V3.3 utf8 Titania
+
+EXTERNPROTO SceneProto [
+  inputOutput SFNode geometry
+]
+"SceneProto.wrl"
+
+Transform {
+  translation -2 0 0
+  children [
+    DEF Touch TouchSensor { }
+    Shape {
+      appearance Appearance {
+        material Material { }
+      }
+      geometry Box { }
+    }
+  ]
+}
+
+Transform {
+  translation 2 0 0
+  children DEF Shape Shape {
+    appearance Appearance {
+      material Material { }
+    }
+  }
+}
+
+DEF Debug Script {
+  inputOnly      SFTime set_time
+  initializeOnly SFNode shape USE Shape
+
+  url "javascript:
+function set_time ()
+{
+	var node = Browser .currentScene .createProto ('SceneProto');
+
+	shape .geometry = node .geometry;
+
+	print (node .toVRMLString ());
+}
+"
+}
+
+ROUTE Touch.touchTime TO Debug.set_time

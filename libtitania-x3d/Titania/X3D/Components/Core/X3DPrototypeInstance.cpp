@@ -113,6 +113,8 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 	}
 
 	setExtendedEventHandling (false);
+
+	getRootNodes () .setAccessType (initializeOnly);
 }
 
 X3DPrototypeInstance*

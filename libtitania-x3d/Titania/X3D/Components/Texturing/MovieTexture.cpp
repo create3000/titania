@@ -177,9 +177,9 @@ MovieTexture::prepareEvents ()
 
 	if (buffer)
 	{
-		updateImage (GL_BGRA,
-		             getVideoSink () -> get_width (),
+		updateImage (getVideoSink () -> get_width (),
 		             getVideoSink () -> get_height (),
+		             GL_BGRA,
 		             GST_BUFFER_DATA (buffer));
 
 		gst_buffer_unref (buffer);

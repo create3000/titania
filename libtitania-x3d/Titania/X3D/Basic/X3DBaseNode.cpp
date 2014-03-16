@@ -128,7 +128,8 @@ X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const 
 	                saved (false),
 	extendedEventHandling (true),
 	               nodeId ({ 0 }),
-	               handle (NULL),
+	               events (),
+	               handle (nullptr),
 	             comments (),
 	       shutdownOutput ()
 {

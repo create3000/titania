@@ -98,7 +98,8 @@ X3DExecutionContext::X3DExecutionContext () :
 	        externProtos (),
 	              routes (),
 	           rootNodes (),
-	  uninitializedNodes ()
+	  uninitializedNodes (),
+	         initialized (false)
 {
 	rootNodes .setName ("rootNodes"); // Set this for numClones.
 
@@ -109,6 +110,8 @@ void
 X3DExecutionContext::initialize ()
 {
 	X3DNode::initialize ();
+
+	initialized = true;
 
 	//__LOG__ << "Initialize: " << getWorldURL () << std::endl;
 

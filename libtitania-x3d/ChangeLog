@@ -1,3 +1,17 @@
+2014-03-16  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DBaseNode.cpp:
+	* ExternProto.cpp:
+	* X3DFieldDefinition.cpp:
+	* X3DExecutionContext.h:
+	* Inline.cpp:
+	* X3DExecutionContext.cpp:
+	* MovieTexture.cpp:
+	* X3DTexture2DNode.h:
+	* X3DPrototypeInstance.cpp:
+	* X3DTexture2DNode.cpp:
+	* jsX3DExecutionContext.cpp: 
+
 2014-03-15  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* RegEx.cpp:

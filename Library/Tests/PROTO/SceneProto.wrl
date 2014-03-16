@@ -1,0 +1,8 @@
+#X3D V3.3 utf8 Titania
+
+PROTO SceneProto [
+  inputOutput SFNode geometry Sphere { }
+]
+{
+	MetadataBool { }
+}

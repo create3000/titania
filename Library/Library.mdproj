@@ -2417,6 +2417,8 @@
     <None Include="Tests\Basic\RuntimeNameScopeIMPORT.wrl" />
     <None Include="Tests\Networking\InlineTimer.wrl" />
     <None Include="Tests\Basic\IMPORT-Inline.wrl" />
+    <None Include="Tests\PROTO\SceneProto.wrl" />
+    <None Include="Tests\PROTO\SceneExternProto.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

@@ -183,8 +183,18 @@ throw (Error <INVALID_NAME>,
 {
 	if (load ())
 	{
-		if (not initialized)
+		if (initialized)
 		{
+			if (X3D_PARALLEL and checkLoadState () == IN_PROGRESS_STATE)
+				future -> wait ();
+
+			if (checkLoadState () == COMPLETE_STATE)
+				return scene -> getExportedNode (exportedName);
+		}
+		else
+		{
+			// Thread save part
+
 			try
 			{
 				if (not scene)
@@ -201,14 +211,8 @@ throw (Error <INVALID_NAME>,
 
 			if (scene)
 				return scene -> getExportedNode (exportedName);
-		}
-		else
-		{
-			if (X3D_PARALLEL and checkLoadState () == IN_PROGRESS_STATE)
-				future -> wait ();
 
-			if (checkLoadState () == COMPLETE_STATE)
-				return scene -> getExportedNode (exportedName);
+			// End thread save part
 		}
 	}
 

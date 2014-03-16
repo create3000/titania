@@ -24,6 +24,9 @@ function set_time ()
 	print ();
 	print (scene);
 	print (scene .rootNodes);
+	print ('Name: ' + scene .rootNodes .getName ());
+	print ('isReadable: ' + scene .rootNodes .isReadable ());
+	print ('isWriteable: ' + scene .rootNodes .isWritable ());
 
 	scene .rootNodes .length = 0;
 	

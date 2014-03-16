@@ -153,7 +153,7 @@ X3DTexture2DNode::updateTextureProperties ()
 }
 
 void
-X3DTexture2DNode::updateImage (GLenum format, GLint width, GLint height, const void* const data)
+X3DTexture2DNode::updateImage (const GLint width, const GLint height, const GLenum format, const void* const data)
 {
 	// update image
 

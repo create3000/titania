@@ -1,11 +1,11 @@
-#VRML V2.0 utf8
+#VRML V2.0 utf8 Titania
 
 META "title" "Scene.rootNodes"
 
 DEF Touch TouchSensor { }
 
 DEF Inline Inline {
-	url "../Basic/EXPORT.wrl"
+  url "../Basic/EXPORT.wrl"
 }
 
 DEF Debug Script {
@@ -24,6 +24,9 @@ function set_time ()
 	print ();
 	print (scene);
 	print (scene .rootNodes);
+	print ('Name: ' + scene .rootNodes .getName ());
+	print ('isReadable: ' + scene .rootNodes .isReadable ());
+	print ('isWriteable: ' + scene .rootNodes .isWritable ());
 
 	scene .rootNodes .length = 0;
 	

@@ -119,13 +119,20 @@ throw (Error <INVALID_NAME>,
 
 	return copy;
 }
+X3DPrototypeInstance*
+ExternProto::createInstance (X3DExecutionContext* const executionContext)
+{
+	requestImmediateLoad ();
+
+	return new X3DPrototypeInstance (executionContext, this);
+}
 
 void
 ExternProto::initialize ()
 {
 	X3DProto::initialize ();
 	X3DUrlObject::initialize ();
-	
+
 	for (const auto & field : getFieldDefinitions ())
 		field -> isTainted (true);
 
@@ -133,14 +140,6 @@ ExternProto::initialize ()
 
 	scene .isTainted (true);
 	proto .isTainted (true);
-}
-
-X3DPrototypeInstance*
-ExternProto::createInstance (X3DExecutionContext* const executionContext)
-{
-	requestImmediateLoad ();
-
-	return new X3DPrototypeInstance (executionContext, this);
 }
 
 void
@@ -158,8 +157,12 @@ ExternProto::requestImmediateLoad ()
 		scene = getBrowser () -> createScene ();
 
 		loader .parseIntoScene (scene, url ());
-		
-		getExecutionContext () -> addUninitializedNode (scene);
+
+		if (getExecutionContext () -> isInitialized ())
+			scene -> setup ();
+
+		else
+			getExecutionContext () -> addUninitializedNode (scene);
 	}
 	catch (const X3DError & error)
 	{

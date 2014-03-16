@@ -210,8 +210,12 @@ JSBool
 jsX3DExecutionContext::rootNodes (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	const auto executionContext = static_cast <X3DExecutionContext*> (JS_GetPrivate (context, obj));
+	const auto rootNodes        = new MFNode (executionContext -> getRootNodes ());
 
-	return jsMFNode::create (context, new MFNode (executionContext -> getRootNodes ()), vp, true);
+	rootNodes -> setName ("rootNodes");
+	rootNodes -> setAccessType (initializeOnly);
+
+	return jsMFNode::create (context, rootNodes, vp, true);
 }
 
 JSBool

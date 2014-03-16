@@ -80,6 +80,10 @@ class X3DExecutionContext :
 public:
 
 	///  @name Tests
+	
+	bool
+	isInitialized () const
+	{ return initialized; }
 
 	virtual
 	bool
@@ -529,6 +533,7 @@ private:
 	MFNode             rootNodes;
 
 	MFNode uninitializedNodes;
+	bool   initialized;
 
 };
 

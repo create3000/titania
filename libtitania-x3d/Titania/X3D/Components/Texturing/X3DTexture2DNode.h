@@ -134,7 +134,7 @@ protected:
 	setImage (const GLenum, size_t, const GLint, const GLint, const GLenum, const void* const);
 
 	void
-	updateImage (const GLenum, const GLint, const GLint, const void* const);
+	updateImage (const GLint, const GLint, const GLenum, const void* const);
 
 	///  @name Operations
 
