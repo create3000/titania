@@ -110,7 +110,7 @@ jsSFRotation::init (JSContext* const context, JSObject* const global)
 }
 
 JSBool
-jsSFRotation::create (JSContext* const context, SFRotation4f* const field, jsval* const vp, const bool seal)
+jsSFRotation::create (JSContext* const context, SFRotation4f* const field, jsval* const vp)
 {
 	const auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
 
@@ -126,9 +126,6 @@ jsSFRotation::create (JSContext* const context, SFRotation4f* const field, jsval
 			return JS_FALSE;
 
 		JS_SetPrivate (context, result, field);
-
-		//if (seal)
-		//	JS_SealObject (context, result, JS_FALSE);
 
 		javaScript -> addObject (field, result);
 

@@ -67,7 +67,7 @@ public:
 
 	static
 	JSBool
-	create (JSContext* const, const Type* const, jsval* const, const bool = false);
+	create (JSContext* const, const Type* const, jsval* const);
 
 	static
 	JSClass*
@@ -124,7 +124,7 @@ jsConstArray <Type, ValueType>::init (JSContext* const context, JSObject* const 
 
 template <class Type, class ValueType>
 JSBool
-jsConstArray <Type, ValueType>::create (JSContext* const context, const Type* const array, jsval* const vp, const bool seal)
+jsConstArray <Type, ValueType>::create (JSContext* const context, const Type* const array, jsval* const vp)
 {
 	JSObject* const result = JS_NewObject (context, &static_class, NULL, NULL);
 
@@ -132,9 +132,6 @@ jsConstArray <Type, ValueType>::create (JSContext* const context, const Type* co
 		return JS_FALSE;
 
 	JS_SetPrivate (context, result, const_cast <Type*> (array));
-
-	//if (seal)
-	//	JS_SealObject (context, result, JS_FALSE);
 
 	*vp = OBJECT_TO_JSVAL (result);
 

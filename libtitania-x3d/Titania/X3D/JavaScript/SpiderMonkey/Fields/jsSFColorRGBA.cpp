@@ -103,7 +103,7 @@ jsSFColorRGBA::init (JSContext* const context, JSObject* const global)
 }
 
 JSBool
-jsSFColorRGBA::create (JSContext* const context, SFColorRGBA* const field, jsval* const vp, const bool seal)
+jsSFColorRGBA::create (JSContext* const context, SFColorRGBA* const field, jsval* const vp)
 {
 	const auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
 
@@ -119,9 +119,6 @@ jsSFColorRGBA::create (JSContext* const context, SFColorRGBA* const field, jsval
 			return JS_FALSE;
 
 		JS_SetPrivate (context, result, field);
-
-		//if (seal)
-		//	JS_SealObject (context, result, JS_FALSE);
 
 		javaScript -> addObject (field, result);
 

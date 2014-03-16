@@ -86,7 +86,7 @@ jsComponentInfo::init (JSContext* const context, JSObject* const global)
 }
 
 JSBool
-jsComponentInfo::create (JSContext* const context, const ComponentInfoPtr & componentInfo, jsval* const vp, const bool seal)
+jsComponentInfo::create (JSContext* const context, const ComponentInfoPtr & componentInfo, jsval* const vp)
 {
 	JSObject* const result = JS_NewObject (context, &static_class, NULL, NULL);
 
@@ -94,9 +94,6 @@ jsComponentInfo::create (JSContext* const context, const ComponentInfoPtr & comp
 		return JS_FALSE;
 
 	JS_SetPrivate (context, result, new ComponentInfoPtr (componentInfo));
-
-	//if (seal)
-	//	JS_SealObject (context, result, JS_FALSE);
 
 	*vp = OBJECT_TO_JSVAL (result);
 

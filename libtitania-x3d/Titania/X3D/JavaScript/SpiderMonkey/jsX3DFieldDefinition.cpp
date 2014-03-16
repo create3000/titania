@@ -48,17 +48,21 @@
  *
  ******************************************************************************/
 
+#include "jsX3DFieldDefinition.h"
+
+#include "../../Fields/X3DScalar.h"
 #include "jsContext.h"
 #include "jsString.h"
-#include "jsX3DFieldDefinition.h"
 
 namespace titania {
 namespace X3D {
 
+using jsX3DFieldDefinitionPrivate = X3DScalar <const X3DFieldDefinition*>;
+
 JSClass jsX3DFieldDefinition::static_class = {
 	"X3DFieldDefinition", JSCLASS_HAS_PRIVATE,
 	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
-	JS_EnumerateStub, JS_ResolveStub, JS_ConvertStub, JS_FinalizeStub,
+	JS_EnumerateStub, JS_ResolveStub, JS_ConvertStub, privateFinalize,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
@@ -79,17 +83,21 @@ jsX3DFieldDefinition::init (JSContext* const context, JSObject* const global)
 }
 
 JSBool
-jsX3DFieldDefinition::create (JSContext* const context, X3DFieldDefinition* const field, jsval* const vp, const bool seal)
+jsX3DFieldDefinition::create (JSContext* const context, const X3DFieldDefinition* const field, jsval* const vp)
 {
+	const auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
+
 	JSObject* const result = JS_NewObject (context, &static_class, NULL, NULL);
 
 	if (result == NULL)
 		return JS_FALSE;
 
-	JS_SetPrivate (context, result, field);
+	const auto privateField = new jsX3DFieldDefinitionPrivate (field);
 
-	//if (seal)
-	//	JS_SealObject (context, result, JS_FALSE);
+	privateField -> addParent (javaScript);
+	const_cast <X3DFieldDefinition*> (field) -> addParent (privateField);
+
+	JS_SetPrivate (context, result, privateField);
 
 	*vp = OBJECT_TO_JSVAL (result);
 
@@ -99,26 +107,43 @@ jsX3DFieldDefinition::create (JSContext* const context, X3DFieldDefinition* cons
 JSBool
 jsX3DFieldDefinition::name (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto field = static_cast <X3DFieldDefinition*> (JS_GetPrivate (context, obj));
+	const auto field = static_cast <jsX3DFieldDefinitionPrivate*> (JS_GetPrivate (context, obj));
 
-	return JS_NewStringValue (context, field -> getName (), vp);
+	return JS_NewStringValue (context, field -> getValue () -> getName (), vp);
 }
 
 JSBool
 jsX3DFieldDefinition::accessType (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto field = static_cast <X3DFieldDefinition*> (JS_GetPrivate (context, obj));
+	const auto field = static_cast <jsX3DFieldDefinitionPrivate*> (JS_GetPrivate (context, obj));
 
-	return JS_NewNumberValue (context, field -> getAccessType (), vp);
+	return JS_NewNumberValue (context, field -> getValue () -> getAccessType (), vp);
 }
 
 JSBool
 jsX3DFieldDefinition::dataType (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	const auto field = static_cast <X3DFieldDefinition*> (JS_GetPrivate (context, obj));
+	const auto field = static_cast <jsX3DFieldDefinitionPrivate*> (JS_GetPrivate (context, obj));
 
-	return JS_NewNumberValue (context, field -> getType (), vp);
+	return JS_NewNumberValue (context, field -> getValue () -> getType (), vp);
 }
+
+void
+jsX3DFieldDefinition::privateFinalize (JSContext* context, JSObject* obj)
+{
+	const auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
+	const auto field      = static_cast <jsX3DFieldDefinitionPrivate*> (JS_GetPrivate (context, obj));
+
+	// Proto objects have no private
+
+	if (field)
+	{
+		const_cast <X3DFieldDefinition*> (field -> getValue ()) -> removeParent (field);
+		field -> removeParent (javaScript);
+	}
+}
+
+// This function is for concrete fields only.
 
 void
 jsX3DFieldDefinition::finalize (JSContext* context, JSObject* obj)

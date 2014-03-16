@@ -86,7 +86,7 @@ jsProfileInfo::init (JSContext* const context, JSObject* const global)
 }
 
 JSBool
-jsProfileInfo::create (JSContext* const context, const ProfileInfoPtr & profileInfo, jsval* const vp, const bool seal)
+jsProfileInfo::create (JSContext* const context, const ProfileInfoPtr & profileInfo, jsval* const vp)
 {
 	JSObject* result = JS_NewObject (context, &static_class, NULL, NULL);
 
@@ -94,9 +94,6 @@ jsProfileInfo::create (JSContext* const context, const ProfileInfoPtr & profileI
 		return JS_FALSE;
 
 	JS_SetPrivate (context, result, new ProfileInfoPtr (profileInfo));
-
-	//if (seal)
-	//	JS_SealObject (context, result, JS_FALSE);
 
 	*vp = OBJECT_TO_JSVAL (result);
 

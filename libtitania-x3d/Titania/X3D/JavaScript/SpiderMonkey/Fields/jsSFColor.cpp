@@ -101,7 +101,7 @@ jsSFColor::init (JSContext* context, JSObject* global)
 }
 
 JSBool
-jsSFColor::create (JSContext* const context, SFColor* const field, jsval* const vp, const bool seal)
+jsSFColor::create (JSContext* const context, SFColor* const field, jsval* const vp)
 {
 	const auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
 
@@ -117,9 +117,6 @@ jsSFColor::create (JSContext* const context, SFColor* const field, jsval* const 
 			return JS_FALSE;
 
 		JS_SetPrivate (context, result, field);
-
-		//if (seal)
-		//	JS_SealObject (context, result, JS_FALSE);
 
 		javaScript -> addObject (field, result);
 

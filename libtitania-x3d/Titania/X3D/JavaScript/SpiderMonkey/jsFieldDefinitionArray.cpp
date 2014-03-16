@@ -50,19 +50,280 @@
 
 #include "jsFieldDefinitionArray.h"
 
+#include "../../Basic/X3DArrayField.h"
+#include "jsContext.h"
+
 namespace titania {
 namespace X3D {
 
-template <>
-JSClass jsConstArray <FieldDefinitionArray, jsX3DFieldDefinition>::static_class = {
+// Minimal X3DArrayField to wrap X3DFieldDefinitions
+
+template <class ValueType>
+class X3DConstArrayField :
+	public X3DField <Array <ValueType>> 
+{
+public:
+
+	typedef ValueType         value_type;
+	typedef Array <ValueType> internal_type;
+
+	typedef basic::reference_iterator <typename internal_type::iterator, ValueType>                     iterator;
+	typedef basic::reference_iterator <typename internal_type::reverse_iterator, ValueType>             reverse_iterator;
+	typedef basic::reference_iterator <typename internal_type::const_iterator, const ValueType>         const_iterator;
+	typedef basic::reference_iterator <typename internal_type::const_reverse_iterator, const ValueType> const_reverse_iterator;
+
+	typedef typename internal_type::difference_type difference_type;
+	typedef typename internal_type::size_type       size_type;
+
+	using X3DField <internal_type>::getValue;
+
+	///  @name Construction
+
+	///  Default constructor.
+	X3DConstArrayField () :
+		X3DField <internal_type> ()
+	{ }
+
+	template <class InputIterator>
+	X3DConstArrayField (InputIterator first, InputIterator last) :
+		X3DField <internal_type> ()
+	{
+		for (const auto & field : basic::adapter (first, last))
+		{
+			get () .emplace_back (field);
+
+			field -> addParent (this);
+		}
+	}
+
+	virtual
+	X3DConstArrayField*
+	create () const final override
+	{ return new X3DConstArrayField (); }
+
+	virtual
+	X3DConstArrayField*
+	clone () const
+	throw (Error <INVALID_NAME>,
+	       Error <NOT_SUPPORTED>) final override
+	{ return new X3DConstArrayField (*this); }
+
+	virtual
+	X3DConstArrayField*
+	clone (X3DExecutionContext* const) const
+	throw (Error <INVALID_NAME>,
+	       Error <NOT_SUPPORTED>) final override
+	{ return clone (); }
+
+	///  @name Tests
+
+	virtual
+	bool
+	isArray () const final override
+	{ return true; }
+
+	const ValueType*
+	at (const size_type index) const
+	{ return getValue () .at (index); }
+
+	size_type
+	size () const
+	{ return getValue () .size (); }
+
+	///  @name Input/Output
+
+	virtual
+	void
+	fromStream (std::istream &)
+	throw (Error <INVALID_X3D>,
+	       Error <NOT_SUPPORTED>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override
+	{ }
+
+	virtual
+	void
+	toStream (std::ostream &) const final override
+	{ }
+
+	///  @name Destruction
+
+	virtual
+	~X3DConstArrayField ()
+	{ }
+
+
+private:
+
+	using X3DField <internal_type>::get;
+
+	///  @name Element access
+
+	virtual
+	void
+	set (const internal_type &) final override
+	{ }
+
+	virtual
+	void
+	reset () final override
+	{
+		for (auto & field : get ())
+			field -> removeParent (this);
+
+		get () .clear ();
+	}
+
+};
+
+// Private type
+
+using jsFieldDefinitionArrayPrivate = X3DConstArrayField <X3DFieldDefinition>;
+
+// jsFieldDefinitionArray
+
+JSClass jsFieldDefinitionArray::static_class = {
 	"FieldDefinitionArray", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, get1Value, JS_StrictPropertyStub,
-	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, JS_FinalizeStub,
+	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
 
-template class jsConstArray <FieldDefinitionArray, jsX3DFieldDefinition>;
+JSPropertySpec jsFieldDefinitionArray::properties [ ] = {
+	{ "length", LENGTH, JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, length, NULL },
+	{ 0 }
+
+};
+
+JSFunctionSpec jsFieldDefinitionArray::functions [ ] = {
+	{ 0, 0, 0, 0 }
+
+};
+
+void
+jsFieldDefinitionArray::init (JSContext* const context, JSObject* const global)
+{
+	JS_InitClass (context, global, NULL, &static_class, NULL,
+	              0, properties, functions, NULL, NULL);
+}
+
+JSBool
+jsFieldDefinitionArray::create (JSContext* const context, const FieldDefinitionArray* const array, jsval* const vp)
+{
+	const auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
+
+	JSObject* const result = JS_NewObject (context, &static_class, NULL, NULL);
+
+	if (result == NULL)
+		return JS_FALSE;
+
+	jsFieldDefinitionArrayPrivate* privateArray = nullptr;
+
+	if (array)
+		privateArray = new jsFieldDefinitionArrayPrivate (array -> begin (), array -> end ());
+
+	else
+		privateArray = new jsFieldDefinitionArrayPrivate ();
+
+	privateArray -> addParent (javaScript);
+
+	JS_SetPrivate (context, result, privateArray);
+
+	*vp = OBJECT_TO_JSVAL (result);
+
+	return JS_TRUE;
+}
+
+JSBool
+jsFieldDefinitionArray::enumerate (JSContext* context, JSObject* obj, JSIterateOp enum_op, jsval* statep, jsid* idp)
+{
+	const auto array = static_cast <jsFieldDefinitionArrayPrivate*> (JS_GetPrivate (context, obj));
+
+	if (not array)
+	{
+		*statep = JSVAL_NULL;
+		return JS_TRUE;
+	}
+
+	size_t* index;
+
+	switch (enum_op)
+	{
+		case JSENUMERATE_INIT:
+		case JSENUMERATE_INIT_ALL:
+		{
+			index   = new size_t (0);
+			*statep = PRIVATE_TO_JSVAL (index);
+
+			if (idp)
+				*idp = INT_TO_JSID (array -> size ());
+
+			break;
+		}
+		case JSENUMERATE_NEXT:
+		{
+			index = (size_t*) JSVAL_TO_PRIVATE (*statep);
+
+			if (*index < array -> size ())
+			{
+				if (idp)
+					*idp = INT_TO_JSID (*index);
+
+				*index = *index + 1;
+				break;
+			}
+
+			//else done -- cleanup.
+		}
+		case JSENUMERATE_DESTROY:
+		{
+			index = (size_t*) JSVAL_TO_PRIVATE (*statep);
+			delete index;
+			*statep = JSVAL_NULL;
+		}
+	}
+
+	return JS_TRUE;
+}
+
+JSBool
+jsFieldDefinitionArray::get1Value (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+{
+	if (not JSID_IS_INT (id))
+		return JS_TRUE;
+
+	const int32 index = JSID_TO_INT (id);
+	const auto  array = static_cast <jsFieldDefinitionArrayPrivate*> (JS_GetPrivate (context, obj));
+
+	if (index < 0 and index >= (int32) array -> size ())
+	{
+		JS_ReportError (context, "index out of range");
+		return JS_FALSE;
+	}
+
+	return jsX3DFieldDefinition::create (context, array -> at (index), vp);
+}
+
+JSBool
+jsFieldDefinitionArray::length (JSContext* context, JSObject* obj, jsid id, jsval* vp)
+{
+	const auto array = static_cast <jsFieldDefinitionArrayPrivate*> (JS_GetPrivate (context, obj));
+
+	return JS_NewNumberValue (context, array -> size (), vp);
+}
+
+void
+jsFieldDefinitionArray::finalize (JSContext* context, JSObject* obj)
+{
+	const auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
+	const auto array      = static_cast <jsFieldDefinitionArrayPrivate*> (JS_GetPrivate (context, obj));
+
+	// Proto objects have no private
+
+	if (array)
+		array -> removeParent (javaScript);
+}
 
 } // X3D
 } // titania

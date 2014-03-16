@@ -81,7 +81,7 @@ public:
 
 	static
 	JSBool
-	create (JSContext* const, Type* const, jsval* const, const bool = false);
+	create (JSContext* const, Type* const, jsval* const);
 
 	static
 	JSClass*
@@ -163,7 +163,7 @@ jsSFMatrix3 <Type>::init (JSContext* const context, JSObject* const global)
 
 template <class Type>
 JSBool
-jsSFMatrix3 <Type>::create (JSContext* const context, Type* const field, jsval* const vp, const bool seal)
+jsSFMatrix3 <Type>::create (JSContext* const context, Type* const field, jsval* const vp)
 {
 	const auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
 
@@ -179,9 +179,6 @@ jsSFMatrix3 <Type>::create (JSContext* const context, Type* const field, jsval* 
 			return JS_FALSE;
 
 		JS_SetPrivate (context, result, field);
-
-		//if (seal)
-		//	JS_SealObject (context, result, JS_FALSE);
 
 		javaScript -> addObject (field, result);
 

@@ -97,7 +97,7 @@ jsSFNode::init (JSContext* const context, JSObject* const global)
 }
 
 JSBool
-jsSFNode::create (JSContext* const context, SFNode* const field, jsval* const vp, const bool seal)
+jsSFNode::create (JSContext* const context, SFNode* const field, jsval* const vp)
 {
 	const auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
 
@@ -113,9 +113,6 @@ jsSFNode::create (JSContext* const context, SFNode* const field, jsval* const vp
 			return JS_FALSE;
 
 		JS_SetPrivate (context, result, field);
-
-		//if (seal)
-		//	JS_SealObject (context, result, JS_FALSE);
 
 		javaScript -> addObject (field, result);
 
@@ -344,6 +341,7 @@ jsSFNode::getFieldDefinitions (JSContext* context, uintN argc, jsval* vp)
 
 		if (*sfnode)
 			return jsFieldDefinitionArray::create (context, &sfnode -> getValue () -> getFieldDefinitions (), &JS_RVAL (context, vp));
+
 		else
 			return jsFieldDefinitionArray::create (context, NULL, &JS_RVAL (context, vp));
 	}

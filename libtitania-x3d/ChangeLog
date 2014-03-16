@@ -1,5 +1,47 @@
 2014-03-16  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* jsfield.h:
+	* jsContext.h:
+	* jsfield.cpp:
+	* jsX3DRoute.h:
+	* jsX3DScene.h:
+	* jsContext.cpp:
+	* jsX3DScene.cpp:
+	* jsConstArray.h:
+	* jsX3DRoute.cpp:
+	* jsProfileInfo.h:
+	* jsComponentInfo.h:
+	* jsSFVec4.h:
+	* jsProfileInfo.cpp:
+	* jsX3DArrayField.h:
+	* jsSFVec2.h:
+	* jsSFNode.h:
+	* jsSFVec3.h:
+	* jsSFImage.h:
+	* jsSFColor.h:
+	* jsSFNode.cpp:
+	* jsComponentInfo.cpp:
+	* jsSFMatrix3.h:
+	* jsSFImage.cpp:
+	* jsSFColor.cpp:
+	* jsSFMatrix4.h:
+	* jsSFRotation.h:
+	* jsSFColorRGBA.h:
+	* jsX3DFieldDefinition.h:
+	* jsX3DProtoDeclaration.h:
+	* jsSFRotation.cpp:
+	* jsX3DExecutionContext.h:
+	* jsFieldDefinitionArray.h:
+	* jsX3DFieldDefinition.cpp:
+	* jsSFColorRGBA.cpp:
+	* jsX3DProtoDeclaration.cpp:
+	* jsX3DExecutionContext.cpp:
+	* jsFieldDefinitionArray.cpp:
+	* jsX3DExternProtoDeclaration.h:
+	* jsX3DExternProtoDeclaration.cpp: 
+
+2014-03-16  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBaseNode.cpp:
 	* ExternProto.cpp:
 	* X3DFieldDefinition.cpp:

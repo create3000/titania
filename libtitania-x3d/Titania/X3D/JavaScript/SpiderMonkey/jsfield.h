@@ -61,7 +61,7 @@ JSBool
 JS_ValueToField (JSContext* const, X3DFieldDefinition* const, jsval* const);
 
 JSBool
-JS_NewFieldValue (JSContext* const, X3DFieldDefinition* const, jsval*, const bool = false);
+JS_NewFieldValue (JSContext* const, X3DFieldDefinition* const, jsval*);
 
 } // X3D
 } // titania

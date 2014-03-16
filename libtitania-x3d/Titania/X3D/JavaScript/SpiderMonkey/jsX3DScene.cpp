@@ -92,7 +92,7 @@ jsX3DScene::init (JSContext* const context, JSObject* const global, JSObject* co
 }
 
 JSBool
-jsX3DScene::create (JSContext* const context, X3DScene* const scene, jsval* const vp, const bool seal)
+jsX3DScene::create (JSContext* const context, X3DScene* const scene, jsval* const vp)
 {
 	JSObject* const result = JS_NewObject (context, &static_class, NULL, NULL);
 
@@ -106,9 +106,6 @@ jsX3DScene::create (JSContext* const context, X3DScene* const scene, jsval* cons
 
 	JS_SetPrivate (context, result, scene);
 
-	//if (seal)
-	//	JS_SealObject (context, result, JS_FALSE);
-
 	*vp = OBJECT_TO_JSVAL (result);
 
 	return JS_TRUE;
@@ -121,7 +118,7 @@ jsX3DScene::rootNodes (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 
 	const auto scene = static_cast <X3DScene*> (JS_GetPrivate (context, obj));
 
-	return jsMFNode::create (context, &scene -> getRootNodes (), vp, true);
+	return jsMFNode::create (context, &scene -> getRootNodes (), vp);
 }
 
 JSBool

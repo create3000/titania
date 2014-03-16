@@ -50,8 +50,6 @@ function initialize()
 	for (var i in a) {  print (i + ' = ' + a [i]) }
 	print (a);
 
-return;
-
 	print (Browser);
 	for (key in Browser) { print (key + ': ' + Browser[key]); };
 	scene = Browser.currentScene;
@@ -106,14 +104,10 @@ return;
 	
 	print ('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
 
-return;
-return;
-return;
 	var a = nodes [1];
 	
 	
 
-return;
 	print ('#######################################');
 
 	print (nodes [1]);
@@ -137,7 +131,7 @@ return;
 	print (node.toXMLString());
 	print (new SFVec4f(1,2,3,4));
 	print (new SFMatrix4f());
-	print (matrix = new SFMatrix4f(1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4));
+	print (matrix = new SFMatrix4f(1,0,0,0, 0,2,0,0, 0,0,3,0, 1,2,3,4));
 	print (matrix.inverse());
 	print (matrix.transpose());
 	print (new MFBool(true, false, false));
@@ -161,7 +155,7 @@ return;
 	print (f[2]);
 	for (key in node) { print (key + ': ' + node[key]); };
 
-	print ('');
+	print ('FieldDefinitions');
 	print ('getFieldDefinitions().length');
 	print (node.getFieldDefinitions());
 	print (node.getFieldDefinitions().length);

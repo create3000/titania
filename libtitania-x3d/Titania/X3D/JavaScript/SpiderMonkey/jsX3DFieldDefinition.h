@@ -68,7 +68,7 @@ public:
 
 	static
 	JSBool
-	create (JSContext* const, X3DFieldDefinition* const, jsval* const, const bool = false);
+	create (JSContext* const, const X3DFieldDefinition* const, jsval* const);
 
 	static
 	JSClass*
@@ -88,6 +88,10 @@ protected:
 
 
 private:
+
+	static
+	void
+	privateFinalize (JSContext*, JSObject*);
 
 	enum Property {NAME, ACCESSTYPE, DATATYPE};
 

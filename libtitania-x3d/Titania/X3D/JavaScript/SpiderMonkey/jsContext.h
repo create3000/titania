@@ -124,14 +124,16 @@ public:
 	eventsProcessed () final override;
 
 	void
-	addObject (X3DFieldDefinition* const, JSObject* const);
+	addObject (X3DFieldDefinition* const, JSObject* const)
+	throw (Error <INVALID_FIELD>);
 
 	void
 	removeObject (X3DFieldDefinition*);
 
 	JSObject*
-	getObject (X3DFieldDefinition* const);
-	
+	getObject (X3DFieldDefinition* const)
+	throw (std::out_of_range);
+
 	std::unique_ptr <SceneLoader> &
 	getFuture ()
 	{ return future; }

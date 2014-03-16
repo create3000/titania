@@ -83,7 +83,7 @@ jsX3DRoute::init (JSContext* const context, JSObject* const global)
 }
 
 JSBool
-jsX3DRoute::create (JSContext* const context, const X3DSFNode <Route> & route, jsval* const vp, const bool seal)
+jsX3DRoute::create (JSContext* const context, const X3DSFNode <Route> & route, jsval* const vp)
 {
 	JSObject* const result = JS_NewObject (context, &static_class, NULL, NULL);
 
@@ -93,9 +93,6 @@ jsX3DRoute::create (JSContext* const context, const X3DSFNode <Route> & route, j
 	const auto field = new X3DSFNode <Route> (route);
 
 	JS_SetPrivate (context, result, field);
-
-	//if (seal)
-	//	JS_SealObject (context, result, JS_FALSE);
 
 	static_cast <jsContext*> (JS_GetContextPrivate (context)) -> addObject (field, result);
 

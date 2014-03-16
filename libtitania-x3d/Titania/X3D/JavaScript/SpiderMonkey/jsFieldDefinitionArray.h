@@ -52,15 +52,49 @@
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_FIELD_DEFINITION_ARRAY_H__
 
 #include "../../Basic/FieldDefinitionArray.h"
-#include "jsConstArray.h"
 #include "jsX3DFieldDefinition.h"
 
 namespace titania {
 namespace X3D {
 
-typedef jsConstArray <FieldDefinitionArray, jsX3DFieldDefinition> jsFieldDefinitionArray;
+class jsFieldDefinitionArray
+{
+public:
 
-extern template class jsConstArray <FieldDefinitionArray, jsX3DFieldDefinition>;
+	static
+	void
+	init (JSContext* const, JSObject* const);
+
+	static
+	JSBool
+	create (JSContext* const, const FieldDefinitionArray* const, jsval* const);
+
+	static
+	JSClass*
+	getClass () { return &static_class; }
+
+
+private:
+
+	enum Property {LENGTH};
+
+	static
+	JSBool
+	enumerate (JSContext *, JSObject *, JSIterateOp, jsval *, jsid*);
+
+	static JSBool get1Value (JSContext *, JSObject *, jsid, jsval*);
+
+	static JSBool length (JSContext *, JSObject *, jsid, jsval*);
+
+	static
+	void
+	finalize (JSContext*, JSObject*);
+
+	static JSClass        static_class;
+	static JSPropertySpec properties [ ];
+	static JSFunctionSpec functions [ ];
+
+};
 
 } // X3D
 } // titania

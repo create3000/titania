@@ -90,7 +90,7 @@ jsX3DProtoDeclaration::init (JSContext* const context, JSObject* const global)
 }
 
 JSBool
-jsX3DProtoDeclaration::create (JSContext* const context, const X3DSFNode <Proto> & proto, jsval* const vp, const bool seal)
+jsX3DProtoDeclaration::create (JSContext* const context, const X3DSFNode <Proto> & proto, jsval* const vp)
 {
 	JSObject* const result = JS_NewObject (context, &static_class, NULL, NULL);
 
@@ -100,9 +100,6 @@ jsX3DProtoDeclaration::create (JSContext* const context, const X3DSFNode <Proto>
 	const auto field = new X3DSFNode <Proto> (proto);
 
 	JS_SetPrivate (context, result, field);
-
-	//if (seal)
-	//	JS_SealObject (context, result, JS_FALSE);
 
 	static_cast <jsContext*> (JS_GetContextPrivate (context)) -> addObject (field, result);
 

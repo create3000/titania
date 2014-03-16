@@ -75,7 +75,7 @@ public:
 
 	static
 	JSBool
-	create (JSContext* const, FieldType* const, jsval* const, const bool = false);
+	create (JSContext* const, FieldType* const, jsval* const);
 
 	static
 	JSClass*
@@ -155,7 +155,7 @@ jsX3DArrayField <Type, FieldType>::init (JSContext* const context, JSObject* con
 
 template <class Type, class FieldType>
 JSBool
-jsX3DArrayField <Type, FieldType>::create (JSContext* const context, FieldType* const field, jsval* const vp, const bool seal)
+jsX3DArrayField <Type, FieldType>::create (JSContext* const context, FieldType* const field, jsval* const vp)
 {
 	const auto javaScript = static_cast <jsContext*> (JS_GetContextPrivate (context));
 
@@ -171,9 +171,6 @@ jsX3DArrayField <Type, FieldType>::create (JSContext* const context, FieldType* 
 			return JS_FALSE;
 
 		JS_SetPrivate (context, result, field);
-
-		//if (seal)
-		//	JS_SealObject (context, result, JS_FALSE);
 
 		javaScript -> addObject (field, result);
 

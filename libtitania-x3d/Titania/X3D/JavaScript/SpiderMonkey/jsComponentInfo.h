@@ -67,7 +67,7 @@ public:
 
 	static
 	JSBool
-	create (JSContext* const, const ComponentInfoPtr &, jsval* const, const bool = false);
+	create (JSContext* const, const ComponentInfoPtr &, jsval* const);
 
 	static
 	JSClass*
