@@ -151,9 +151,11 @@ Texture3DLoader::dispose ()
 	{
 		running = false;
 
-		callback = [ ] (const Texture3DPtr &) { };
-
 		X3DInput::dispose ();
+		
+		// This must be the last command.
+
+		callback = [ ] (const Texture3DPtr &) { };
 	}
 }
 
