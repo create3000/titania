@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra�e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -251,7 +251,7 @@ throw (Error <INVALID_NAME>,
 					}
 					catch (const Error <INVALID_NAME> &)
 					{
-						throw Error <INVALID_NAME> ("No reference '" + originalReference -> getName () + "' inside execution context " + executionContext -> getTypeName () + " '" + executionContext -> getName ()  + "'.");
+						throw Error <INVALID_NAME> ("No reference '" + originalReference -> getName () + "' inside execution context " + executionContext -> getTypeName () + " '" + executionContext -> getName () + "'.");
 					}
 				}
 			}
@@ -441,7 +441,7 @@ X3DBaseNode::getFieldName (const std::string & alias) const
 	for (const auto & version : fieldAliases)
 	{
 		const auto fieldAlias = version .second .first .find (alias);
-		
+
 		if (fieldAlias not_eq version .second .first .end ())
 			return fieldAlias -> second;
 	}
@@ -688,20 +688,26 @@ X3DBaseNode::addEvent (X3DChildObject* const object, const EventPtr & event)
 
 	// Register for processEvents
 
-	isTainted (isTainted () or object -> isInput () or (extendedEventHandling and not object -> isOutput ()));
+	if (not isTainted ())
+	{
+		if (object -> isInput () or (extendedEventHandling and not object -> isOutput ()))
+		{
+			isTainted (true);
 
-	if (not nodeId .time)
-		nodeId = getBrowser () -> getRouter () .addNode (this);
+			nodeId = getBrowser () -> getRouter () .addNode (this);
+		}
+	}
 }
 
 void
 X3DBaseNode::addEvent ()
 {
-	isTainted (true);
-
-	if (not nodeId .time)
+	if (not isTainted ())
 	{
+		isTainted (true);
+
 		getBrowser () -> addEvent ();
+
 		nodeId = getBrowser () -> getRouter () .addNode (this);
 	}
 }
@@ -1043,12 +1049,12 @@ X3DBaseNode::toStreamUserDefinedField (std::ostream & ostream, X3DFieldDefinitio
 void
 X3DBaseNode::dispose ()
 {
-//	try
-//	{
-//		__LOG__ << getTypeName () << std::endl;	
-//	}
-//	catch (...)
-//	{ }
+	//	try
+	//	{
+	//		__LOG__ << getTypeName () << std::endl;
+	//	}
+	//	catch (...)
+	//	{ }
 
 	shutdownOutput .processInterests ();
 	shutdownOutput .dispose ();

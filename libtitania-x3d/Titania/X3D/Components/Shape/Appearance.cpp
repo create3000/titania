@@ -151,46 +151,46 @@ Appearance::isTransparent () const
 void
 Appearance::set_fillProperties ()
 {
-	fillPropertiesNode = x3d_cast <FillProperties*> (fillProperties ());
+	fillPropertiesNode .set (x3d_cast <FillProperties*> (fillProperties ()));
 
 	if (fillPropertiesNode)
 		return;
 
-	fillPropertiesNode = getBrowser () -> getBrowserOptions () -> fillProperties ();
+	fillPropertiesNode .set (getBrowser () -> getBrowserOptions () -> fillProperties ());
 }
 
 void
 Appearance::set_lineProperties ()
 {
-	linePropertiesNode = x3d_cast <LineProperties*> (lineProperties ());
+	linePropertiesNode .set (x3d_cast <LineProperties*> (lineProperties ()));
 
 	if (linePropertiesNode)
 		return;
 
-	linePropertiesNode = getBrowser () -> getBrowserOptions () -> lineProperties ();
+	linePropertiesNode .set (getBrowser () -> getBrowserOptions () -> lineProperties ());
 }
 
 void
 Appearance::set_material ()
 {
-	materialNode = x3d_cast <X3DMaterialNode*> (material ());
+	materialNode .set (x3d_cast <X3DMaterialNode*> (material ()));
 }
 
 void
 Appearance::set_texture ()
 {
-	textureNode = x3d_cast <X3DTextureNode*> (texture ());
+	textureNode .set (x3d_cast <X3DTextureNode*> (texture ()));
 }
 
 void
 Appearance::set_textureTransform ()
 {
-	textureTransformNode = x3d_cast <X3DTextureTransformNode*> (textureTransform ());
+	textureTransformNode .set (x3d_cast <X3DTextureTransformNode*> (textureTransform ()));
 
 	if (textureTransformNode)
 		return;
 
-	textureTransformNode = getBrowser () -> getBrowserOptions () -> textureTransform ();
+	textureTransformNode .set (getBrowser () -> getBrowserOptions () -> textureTransform ());
 }
 
 void
@@ -227,7 +227,7 @@ Appearance::set_shader ()
 	{
 		if (shader -> isValid ())
 		{
-			shaderNode = shader;
+			shaderNode .set (shader);
 
 			shaderNode -> select ();
 
@@ -235,7 +235,7 @@ Appearance::set_shader ()
 		}
 	}
 
-	shaderNode = nullptr;
+	shaderNode .set (nullptr);
 }
 
 void

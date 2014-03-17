@@ -2,6 +2,7 @@
 
 DEF _1 Inline {
   url [
+    "../Geospatial/GeoCoordinate.wrl"
     "../../Examples/Vattenfall/stage/index.wrl",
     "../Scripting/Script-vrmlscript1.wrl"
     "../PROTO/GoldenSpheresProto.wrl"
@@ -13,7 +14,7 @@ DEF _1 Inline {
 }
 
 DEF Timer TimeSensor {
-  cycleInterval 3
+  cycleInterval 0.6
   loop TRUE
 }
 

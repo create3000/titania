@@ -1,3 +1,10 @@
+2014-03-17  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DBaseNode.cpp:
+	* X3DFieldDefinition.cpp:
+	* Appearance.cpp:
+	* Script.cpp: 
+
 2014-03-16  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* jsProfileInfo.cpp:

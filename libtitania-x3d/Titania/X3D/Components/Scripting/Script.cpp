@@ -95,8 +95,6 @@ Script::initialize ()
 	X3DScriptNode::initialize ();
 	
 	url () .addInterest (this, &Script::set_url);
-	
-	addInterest (this, &Script::eventsProcessed);
 
 	requestImmediateLoad ();
 }
@@ -143,7 +141,7 @@ Script::requestImmediateLoad ()
 		{
 			try
 			{
-				javaScript = getBrowser () -> getJavaScriptEngine () -> createContext (this, ecmascript, getWorldURL (), index);
+				javaScript .set (getBrowser () -> getJavaScriptEngine () -> createContext (this, ecmascript, getWorldURL (), index));
 				break;
 			}
 			catch (const std::invalid_argument & error)
@@ -156,17 +154,22 @@ Script::requestImmediateLoad ()
 	}
 
 	if (javaScript)
+	{
+		addInterest (this, &Script::eventsProcessed);
+
 		setLoadState (COMPLETE_STATE);
-	
+	}
 	else
 	{
 		try
 		{
 			// Assign an empty script if no working script is found.
-			javaScript = getBrowser () -> getJavaScriptEngine () -> createContext (this, "", "", 0);
+			javaScript .set (getBrowser () -> getJavaScriptEngine () -> createContext (this, "", "", 0));
 		}
 		catch (const std::invalid_argument & error)
 		{ }
+
+		removeInterest (this, &Script::eventsProcessed);
 
 		setLoadState (FAILED_STATE);
 	}
@@ -187,8 +190,7 @@ Script::set_url ()
 void
 Script::eventsProcessed ()
 {
-	if (checkLoadState () == COMPLETE_STATE)
-		javaScript -> eventsProcessed ();
+	javaScript -> eventsProcessed ();
 }
 
 void
