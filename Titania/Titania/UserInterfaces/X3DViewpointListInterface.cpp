@@ -80,6 +80,7 @@ X3DViewpointListInterface::create (const std::string & filename)
 
 	// Connect object Gtk::TreeView with id 'TreeView'.
 	m_treeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DViewpointListInterface::on_row_activated));
+	m_treeView -> signal_key_press_event () .connect (sigc::mem_fun (*this, &X3DViewpointListInterface::on_key_press_event));
 
 	// Call construct handler of base class.
 	construct ();

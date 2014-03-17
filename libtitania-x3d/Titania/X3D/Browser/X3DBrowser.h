@@ -201,7 +201,7 @@ public:
 	       Error <URL_UNAVAILABLE>,
 	       Error <INVALID_OPERATION_TIMING>);
 
-	///
+	/// @name Update service
 
 	void
 	beginUpdate ()
@@ -211,7 +211,7 @@ public:
 	endUpdate ()
 	throw (Error <DISPOSED>);
 
-	///
+	/// @name Browser properties service
 
 	const X3DSFNode <RenderingProperties> &
 	getRenderingProperties () const
@@ -236,20 +236,32 @@ public:
 	       Error <DISPOSED>)
 	{ return browserOptions; }
 
+	/// @name Change viewpoint service
+
+	void
+	firstViewpoint ()
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	void
+	previousViewpoint ()
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	void
+	nextViewpoint ()
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	void
+	lastViewpoint ()
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
 	void
 	changeViewpoint (const std::string &)
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
-
-	//	void
-	//	changeViewpoint (SAIAction)
-	//	throw (Error <INVALID_OPERATION_TIMING>,
-	//	       Error <DISPOSED>);
-	//
-	//	void
-	//	changeViewpoint (SAIAction, int32_t SAILayerID)
-	//	throw (Error <INVALID_OPERATION_TIMING>,
-	//	       Error <DISPOSED>);
 
 	///  @name print
 

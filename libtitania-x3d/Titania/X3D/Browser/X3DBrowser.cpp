@@ -441,6 +441,104 @@ throw (Error <DISPOSED>)
 }
 
 void
+X3DBrowser::firstViewpoint ()
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	if (getActiveLayer ())
+	{
+		const auto viewpoints = getActiveLayer () -> getUserViewpoints ();
+		
+		if (not viewpoints .empty ())
+			viewpoints .front () -> set_bind () = true;
+	}
+}
+
+void
+X3DBrowser::previousViewpoint ()
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	if (getActiveLayer ())
+	{
+		const auto viewpoints = getActiveLayer () -> getUserViewpoints ();
+
+		if (not viewpoints .empty ())
+		{
+			size_t index = 0;
+			
+			for (const auto & viewpoint : viewpoints)
+			{
+				if (viewpoint -> isBound ())
+					break;
+
+				++ index;
+			}
+
+			if (index < viewpoints .size ())
+			{
+				if (index == 0)
+					viewpoints .back () -> set_bind () = true;
+				
+				else
+					viewpoints [index - 1] -> set_bind () = true;
+			}
+			else
+				viewpoints .back () -> set_bind () = true;
+		}
+	}
+}
+
+void
+X3DBrowser::nextViewpoint ()
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	if (getActiveLayer ())
+	{
+		const auto viewpoints = getActiveLayer () -> getUserViewpoints ();
+
+		if (not viewpoints .empty ())
+		{
+			size_t index = 0;
+			
+			for (const auto & viewpoint : viewpoints)
+			{
+				if (viewpoint -> isBound ())
+					break;
+
+				++ index;
+			}
+
+			if (index < viewpoints .size ())
+			{
+				if (index == viewpoints .size () - 1)
+					viewpoints .front () -> set_bind () = true;
+				
+				else
+					viewpoints [index + 1] -> set_bind () = true;
+			}
+			else
+				viewpoints .front () -> set_bind () = true;
+		}
+	}
+}
+
+void
+X3DBrowser::lastViewpoint ()
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	if (getActiveLayer ())
+	{
+		const auto viewpoints = getActiveLayer () -> getUserViewpoints ();
+		
+		if (not viewpoints .empty ())
+			viewpoints .back () -> set_bind () = true;
+	}
+}
+
+void
 X3DBrowser::changeViewpoint (const std::string & name)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)

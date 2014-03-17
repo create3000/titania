@@ -196,6 +196,12 @@ ViewpointList::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeVie
 
 }
 
+bool
+ViewpointList::on_key_press_event (GdkEventKey* event)
+{
+	return true;
+}
+
 ViewpointList::~ViewpointList ()
 { }
 

@@ -51,10 +51,10 @@
 #include "BrowserWindow.h"
 
 #include "../Configuration/config.h"
-#include "../OutlineEditor/OutlineTreeModel.h"
 #include "../MaterialEditor/MaterialEditor.h"
-#include "../TextureEditor/TextureEditor.h"
 #include "../NodePropertiesEditor/NodePropertiesEditor.h"
+#include "../OutlineEditor/OutlineTreeModel.h"
+#include "../TextureEditor/TextureEditor.h"
 #include "BrowserSelection.h"
 
 #include <Titania/OS.h>
@@ -79,7 +79,8 @@ BrowserWindow::BrowserWindow (const X3D::X3DSFNode <X3D::Browser> & browserSurfa
 	if (getConfig () .getBoolean ("transparent"))
 		setTransparent (true);
 	else
-		getBrowserSurface () -> set_antialiasing (4); // 4 x Antialiasing
+		getBrowserSurface () -> set_antialiasing (4);  // 4 x Antialiasing
+
 }
 
 void
@@ -165,9 +166,9 @@ BrowserWindow::getStyles () const
 
 	const auto styleContext = getWidget () .get_style_context ();
 
-	const auto fg_selected = styleContext -> get_color (Gtk::STATE_FLAG_SELECTED); 
-	const auto bg_normal   = styleContext -> get_background_color (Gtk::STATE_FLAG_NORMAL); 
-	const auto bg_selected = styleContext -> get_background_color (Gtk::STATE_FLAG_SELECTED); 
+	const auto fg_selected = styleContext -> get_color (Gtk::STATE_FLAG_SELECTED);
+	const auto bg_normal   = styleContext -> get_background_color (Gtk::STATE_FLAG_NORMAL);
+	const auto bg_selected = styleContext -> get_background_color (Gtk::STATE_FLAG_SELECTED);
 
 	string += "#OutlineTreeViewEditor .textview-editable {";
 	string += "  background-color: mix (" + bg_selected .to_string () + ", " + bg_normal .to_string () + ", 0.9);";
@@ -213,7 +214,7 @@ BrowserWindow::set_selection (const X3D::MFNode & children)
 	getCutMenuItem ()    .set_sensitive (haveSelection);
 	getCopyMenuItem ()   .set_sensitive (haveSelection);
 	getDeleteMenuItem () .set_sensitive (haveSelection);
-	
+
 	getCloneMenuItem ()       .set_sensitive (haveSelection);
 	getCreateCloneMenuItem () .set_sensitive (haveSelections);
 	getUnlinkCloneMenuItem () .set_sensitive (haveSelection);
@@ -251,31 +252,33 @@ BrowserWindow::on_key_press_event (GdkEventKey* event)
 			switch (event -> keyval)
 			{
 				case GDK_KEY_Up:
-				case GDK_KEY_KP_Up:
+					//case GDK_KEY_KP_Up:
 				{
 					if (keys .control ())
 						translateSelection (X3D::Vector3f (0, 0, -nudge), alongFrontPlane);
 					else
 						translateSelection (X3D::Vector3f (0, nudge, 0), alongFrontPlane);
+
 					return true;
 				}
 				case GDK_KEY_Down:
-				case GDK_KEY_KP_Down:
+					//case GDK_KEY_KP_Down:
 				{
 					if (keys .control ())
 						translateSelection (X3D::Vector3f (0, 0, nudge), alongFrontPlane);
 					else
 						translateSelection (X3D::Vector3f (0, -nudge, 0), alongFrontPlane);
+
 					return true;
 				}
 				case GDK_KEY_Left:
-				case GDK_KEY_KP_Left:
+					//case GDK_KEY_KP_Left:
 				{
 					translateSelection (X3D::Vector3f (-nudge, 0, 0), alongFrontPlane);
 					return true;
 				}
 				case GDK_KEY_Right:
-				case GDK_KEY_KP_Right:
+					//case GDK_KEY_KP_Right:
 				{
 					translateSelection (X3D::Vector3f (nudge, 0, 0), alongFrontPlane);
 					return true;
@@ -283,6 +286,36 @@ BrowserWindow::on_key_press_event (GdkEventKey* event)
 				default:
 					break;
 			}
+		}
+
+		switch (event -> keyval)
+		{
+			case GDK_KEY_Home:
+				//case GDK_KEY_KP_Home:
+			{
+				getBrowser () -> firstViewpoint ();
+				break;
+			}
+			case GDK_KEY_Page_Up:
+				//case GDK_KEY_KP_Page_Up:
+			{
+				getBrowser () -> previousViewpoint ();
+				break;
+			}
+			case GDK_KEY_Page_Down:
+				//case GDK_KEY_KP_Page_Down:
+			{
+				getBrowser () -> nextViewpoint ();
+				break;
+			}
+			case GDK_KEY_End:
+				//case GDK_KEY_KP_End:
+			{
+				getBrowser () -> lastViewpoint ();
+				break;
+			}
+			default:
+				break;
 		}
 	}
 
@@ -321,7 +354,7 @@ BrowserWindow::on_open ()
 		fileOpenDialog -> add_filter (getFileFilterAudio ());
 		fileOpenDialog -> add_filter (getFileFilterVideo ());
 		fileOpenDialog -> set_filter (getFileFilterX3D ());
-	
+
 		if (getFileOpenDialog () .get_uri () .empty ())
 			fileOpenDialog -> set_current_folder (os::home ());
 		else
@@ -447,10 +480,10 @@ BrowserWindow::dragDataHandling (const Glib::RefPtr <Gdk::DragContext> & context
 		if (selection_data .get_data_type () == "text/uri-list")
 		{
 			std::vector <basic::uri> uris;
-			const auto strings = selection_data .get_uris ();
+			const auto               strings = selection_data .get_uris ();
 
 			for (auto & string : strings)
-				uris .emplace_back (Glib::uri_unescape_string (string)); // ???
+				uris .emplace_back (Glib::uri_unescape_string (string));         // ???
 
 			if (uris .size ())
 			{
@@ -470,7 +503,7 @@ BrowserWindow::dragDataHandling (const Glib::RefPtr <Gdk::DragContext> & context
 		if (selection_data .get_data_type () == "STRING")
 		{
 			std::vector <basic::uri> uris;
-			const auto strings = basic::split (basic::trim (selection_data .get_data_as_string ()), "\r\n");
+			const auto               strings = basic::split (basic::trim (selection_data .get_data_as_string ()), "\r\n");
 
 			for (auto & string : strings)
 				uris .emplace_back (Glib::uri_unescape_string (string));
@@ -1154,13 +1187,13 @@ BrowserWindow::set_viewer (X3D::ViewerType type)
 		default:
 		{
 			viewer = type;
-		
+
 			getHandButton ()  .set_sensitive (true);
 			getArrowButton () .set_sensitive (true);
 
 			if (getArrowButton () .get_active ())
 				getSelection () -> connect ();
-				
+
 			if (getLookAtButton () .get_active ())
 				getLookAtButton () .set_active (false);
 

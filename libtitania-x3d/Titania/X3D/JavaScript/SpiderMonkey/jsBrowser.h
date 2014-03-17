@@ -109,6 +109,12 @@ private:
 	static JSBool getBrowserProperty   (JSContext *, uintN, jsval*);
 	static JSBool getBrowserOption     (JSContext *, uintN, jsval*);
 	static JSBool setBrowserOption     (JSContext *, uintN, jsval*);
+	
+	static JSBool firstViewpoint       (JSContext *, uintN, jsval*);
+	static JSBool previousViewpoint    (JSContext *, uintN, jsval*);
+	static JSBool nextViewpoint        (JSContext *, uintN, jsval*);
+	static JSBool lastViewpoint        (JSContext *, uintN, jsval*);
+
 	static JSBool print                (JSContext *, uintN, jsval*);
 	static JSBool println              (JSContext *, uintN, jsval*);
 

@@ -853,7 +853,7 @@ throw (Error <INVALID_NAME>,
 		if (not isScene ())
 			getExecutionContext () -> changeViewpoint (name);
 		else
-			throw error;
+			throw;
 	}
 }
 

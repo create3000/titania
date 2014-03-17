@@ -100,6 +100,10 @@ private:
 	void
 	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final override;
 
+	virtual
+	bool
+	on_key_press_event (GdkEventKey*) final override;
+
 	X3D::X3DSFNode <X3D::X3DLayerNode> activeLayer;
 
 };

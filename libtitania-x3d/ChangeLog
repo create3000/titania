@@ -1,5 +1,14 @@
 2014-03-17  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBrowser.h:
+	* X3DBrowser.cpp:
+	* BindableNodeList.h:
+	* X3DExecutionContext.cpp:
+	* jsBrowser.h:
+	* jsBrowser.cpp: 
+
+2014-03-17  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBaseNode.cpp:
 	* X3DFieldDefinition.cpp:
 	* Appearance.cpp:

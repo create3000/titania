@@ -102,6 +102,12 @@ JSFunctionSpec jsBrowser::functions [ ] = {
 	{ "getBrowserProperty",   getBrowserProperty,   1, 0 },
 	{ "getBrowserOption",     getBrowserOption,     1, 0 },
 	{ "setBrowserOption",     setBrowserOption,     2, 0 },
+
+	{ "firstViewpoint",       firstViewpoint,       0, 0 },
+	{ "previousViewpoint",    previousViewpoint,    0, 0 },
+	{ "nextViewpoint",        nextViewpoint,        0, 0 },
+	{ "lastViewpoint",        lastViewpoint,        0, 0 },
+
 	{ "print",                print,                1, 0 },
 	{ "println",              println,              1, 0 },
 
@@ -590,6 +596,74 @@ jsBrowser::setBrowserOption (JSContext* context, uintN argc, jsval* vp)
 	}
 	else
 		JS_ReportError (context, "Browser .setBrowserOption: wrong number of arguments");
+
+	return JS_FALSE;
+}
+
+JSBool
+jsBrowser::firstViewpoint (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 0)
+	{
+		Script* const script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+		
+		script -> getBrowser () -> firstViewpoint ();
+
+		return JS_TRUE;
+	}
+
+	JS_ReportError (context, "Browser .firstViewpoint: wrong number of arguments");
+
+	return JS_FALSE;
+}
+
+JSBool
+jsBrowser::previousViewpoint (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 0)
+	{
+		Script* const script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+		
+		script -> getBrowser () -> previousViewpoint ();
+
+		return JS_TRUE;
+	}
+
+	JS_ReportError (context, "Browser .previousViewpoint: wrong number of arguments");
+
+	return JS_FALSE;
+}
+
+JSBool
+jsBrowser::nextViewpoint (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 0)
+	{
+		Script* const script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+		
+		script -> getBrowser () -> nextViewpoint ();
+
+		return JS_TRUE;
+	}
+
+	JS_ReportError (context, "Browser .nextViewpoint: wrong number of arguments");
+
+	return JS_FALSE;
+}
+
+JSBool
+jsBrowser::lastViewpoint (JSContext* context, uintN argc, jsval* vp)
+{
+	if (argc == 0)
+	{
+		Script* const script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+		
+		script -> getBrowser () -> lastViewpoint ();
+
+		return JS_TRUE;
+	}
+
+	JS_ReportError (context, "Browser .lastViewpoint: wrong number of arguments");
 
 	return JS_FALSE;
 }

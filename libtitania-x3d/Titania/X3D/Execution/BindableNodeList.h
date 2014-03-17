@@ -135,6 +135,7 @@ public:
 
 	const pointer_type &
 	at (const size_type & index) const
+	throw (std::out_of_range)
 	{ return list .at (index); }
 
 	/// @name Capacity
