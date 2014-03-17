@@ -71,8 +71,8 @@ private:
 	static JSBool _false (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool _true  (JSContext *, JSObject *, jsid, jsval*);
 
-	static JSBool require (JSContext *, uintN, jsval*);
 	static JSBool print   (JSContext *, uintN, jsval*);
+	static JSBool require (JSContext *, uintN, jsval*);
 
 	static JSPropertySpec properties [ ];
 	static JSFunctionSpec functions [ ];

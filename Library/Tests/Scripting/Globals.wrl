@@ -7,8 +7,13 @@ function initialize ()
 {
 	print ('+ Globals +++++++++++++++++++++++++++++++++++++++++++++');	
 
+	print (NULL);	
 	print (FALSE);	
 	print (TRUE);	
+
+	print (NULL === null);	
+	print (FALSE === false);	
+	print (TRUE === true);	
 
 	print ('+++++++++++++++++++++++++++++++++++++++++++++++++++++++');	
 }

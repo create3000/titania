@@ -1,5 +1,10 @@
 2014-03-17  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* jsGlobals.h:
+	* jsGlobals.cpp: 
+
+2014-03-17  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* MediaStream.cpp: 
 
 2014-03-17  Holger Seelig  <holger.seelig@yahoo.de>

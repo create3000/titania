@@ -63,7 +63,7 @@ namespace titania {
 namespace X3D {
 
 JSPropertySpec jsGlobals::properties [ ] = {
-	//{ "NULL",  0,     JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT, _null,  NULL },
+	{ "NULL",  0,     JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT, _null,  NULL },
 	{ "FALSE", false, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT, _false, NULL },
 	{ "TRUE",  true,  JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_PERMANENT, _true,  NULL },
 	{ 0 }
@@ -71,13 +71,13 @@ JSPropertySpec jsGlobals::properties [ ] = {
 };
 
 JSFunctionSpec jsGlobals::functions [ ] = {
-	{ "require", jsGlobals::require, 1, 0 },
-	{ "print",   jsGlobals::print,   0, 0 },
+	{ "print",   jsGlobals::print,   0, 0 }, // VRML 2.0
+
+	{ "require", jsGlobals::require, 1, 0 }, // Non standard
+	{ "trace",   jsGlobals::print,   0, 0 }, // Non standard
 	{ 0 }
 
 };
-
-jsval jsGlobals::X3D_JS_NULL = JSVAL_VOID;
 
 void
 jsGlobals::init (JSContext* const context, JSObject* const global)
@@ -91,7 +91,7 @@ jsGlobals::init (JSContext* const context, JSObject* const global)
 JSBool
 jsGlobals::_null (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
-	*vp = X3D_JS_NULL;
+	*vp = JSVAL_NULL;
 	return JS_TRUE;
 }
 
@@ -108,6 +108,24 @@ jsGlobals::_true (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 	*vp = JSVAL_TRUE;
 	return JS_TRUE;
 }
+
+JSBool
+jsGlobals::print (JSContext* context, uintN argc, jsval* vp)
+{
+	X3DBrowser* const browser = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getBrowser ();
+
+	jsval* const argv = JS_ARGV (context, vp);
+
+	for (uintN i = 0; i < argc; ++ i)
+		browser -> print (JS_GetString (context, argv [i]));
+
+	browser -> print ('\n');
+
+	JS_SET_RVAL (context, vp, JSVAL_VOID);
+	return JS_TRUE;
+}
+
+// Non standard
 
 JSBool
 jsGlobals::require (JSContext* context, uintN argc, jsval* vp)
@@ -130,22 +148,6 @@ jsGlobals::require (JSContext* context, uintN argc, jsval* vp)
 
 	JS_SET_RVAL (context, vp, rval);
 	return success;
-}
-
-JSBool
-jsGlobals::print (JSContext* context, uintN argc, jsval* vp)
-{
-	X3DBrowser* const browser = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getBrowser ();
-
-	jsval* const argv = JS_ARGV (context, vp);
-
-	for (uintN i = 0; i < argc; ++ i)
-		browser -> print (JS_GetString (context, argv [i]));
-
-	browser -> print ('\n');
-
-	JS_SET_RVAL (context, vp, JSVAL_VOID);
-	return JS_TRUE;
 }
 
 } // X3D
