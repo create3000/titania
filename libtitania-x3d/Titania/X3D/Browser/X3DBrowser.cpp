@@ -450,7 +450,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		const auto viewpoints = getActiveLayer () -> getUserViewpoints ();
 		
 		if (not viewpoints .empty ())
-			viewpoints .front () -> set_bind () = true;
+			bindViewpoint (viewpoints .front ());
 	}
 }
 
@@ -478,13 +478,13 @@ throw (Error <INVALID_OPERATION_TIMING>,
 			if (index < viewpoints .size ())
 			{
 				if (index == 0)
-					viewpoints .back () -> set_bind () = true;
+					bindViewpoint (viewpoints .back ());
 				
 				else
-					viewpoints [index - 1] -> set_bind () = true;
+					bindViewpoint (viewpoints [index - 1]);
 			}
 			else
-				viewpoints .back () -> set_bind () = true;
+				bindViewpoint (viewpoints .back ());
 		}
 	}
 }
@@ -513,13 +513,13 @@ throw (Error <INVALID_OPERATION_TIMING>,
 			if (index < viewpoints .size ())
 			{
 				if (index == viewpoints .size () - 1)
-					viewpoints .front () -> set_bind () = true;
+					bindViewpoint (viewpoints .front ());
 				
 				else
-					viewpoints [index + 1] -> set_bind () = true;
+					bindViewpoint (viewpoints [index + 1]);
 			}
 			else
-				viewpoints .front () -> set_bind () = true;
+				bindViewpoint (viewpoints .front ());
 		}
 	}
 }
@@ -534,7 +534,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		const auto viewpoints = getActiveLayer () -> getUserViewpoints ();
 		
 		if (not viewpoints .empty ())
-			viewpoints .back () -> set_bind () = true;
+			bindViewpoint (viewpoints .back ());
 	}
 }
 
@@ -551,6 +551,16 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	{
 		std::clog << error .what ();
 	}
+}
+
+void
+X3DBrowser::bindViewpoint (X3DViewpointNode* const viewpoint)
+{
+	if (viewpoint -> isBound ())
+		viewpoint -> transitionStart (viewpoint);
+
+	else
+		viewpoint -> set_bind () = true;
 }
 
 // Destruction

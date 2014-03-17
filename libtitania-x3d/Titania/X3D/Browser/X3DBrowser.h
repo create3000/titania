@@ -312,6 +312,9 @@ private:
 	getWorld () const final override
 	{ return world; }
 
+	void
+	bindViewpoint (X3DViewpointNode* const);
+
 	template <typename First, typename ... Args>
 	void
 	print (std::ostringstream & stream, First && first, Args && ... args);

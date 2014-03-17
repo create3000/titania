@@ -127,10 +127,6 @@ public:
 	void
 	on_row_activated (const TreeModel::Path & path, TreeViewColumn* column) = 0;
 
-	virtual
-	bool
-	on_key_press_event (GdkEventKey* event) = 0;
-
 	~X3DViewpointListInterface ();
 
 

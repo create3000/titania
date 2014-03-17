@@ -252,7 +252,6 @@ BrowserWindow::on_key_press_event (GdkEventKey* event)
 			switch (event -> keyval)
 			{
 				case GDK_KEY_Up:
-					//case GDK_KEY_KP_Up:
 				{
 					if (keys .control ())
 						translateSelection (X3D::Vector3f (0, 0, -nudge), alongFrontPlane);
@@ -262,7 +261,6 @@ BrowserWindow::on_key_press_event (GdkEventKey* event)
 					return true;
 				}
 				case GDK_KEY_Down:
-					//case GDK_KEY_KP_Down:
 				{
 					if (keys .control ())
 						translateSelection (X3D::Vector3f (0, 0, nudge), alongFrontPlane);
@@ -272,13 +270,11 @@ BrowserWindow::on_key_press_event (GdkEventKey* event)
 					return true;
 				}
 				case GDK_KEY_Left:
-					//case GDK_KEY_KP_Left:
 				{
 					translateSelection (X3D::Vector3f (-nudge, 0, 0), alongFrontPlane);
 					return true;
 				}
 				case GDK_KEY_Right:
-					//case GDK_KEY_KP_Right:
 				{
 					translateSelection (X3D::Vector3f (nudge, 0, 0), alongFrontPlane);
 					return true;
@@ -291,28 +287,24 @@ BrowserWindow::on_key_press_event (GdkEventKey* event)
 		switch (event -> keyval)
 		{
 			case GDK_KEY_Home:
-				//case GDK_KEY_KP_Home:
 			{
 				getBrowser () -> firstViewpoint ();
-				break;
+				return true;
 			}
 			case GDK_KEY_Page_Up:
-				//case GDK_KEY_KP_Page_Up:
 			{
 				getBrowser () -> previousViewpoint ();
-				break;
+				return true;
 			}
 			case GDK_KEY_Page_Down:
-				//case GDK_KEY_KP_Page_Down:
 			{
 				getBrowser () -> nextViewpoint ();
-				break;
+				return true;
 			}
 			case GDK_KEY_End:
-				//case GDK_KEY_KP_End:
 			{
 				getBrowser () -> lastViewpoint ();
-				break;
+				return true;
 			}
 			default:
 				break;

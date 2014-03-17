@@ -843,8 +843,13 @@ throw (Error <INVALID_NAME>,
 		const auto viewpoint = x3d_cast <X3DViewpointNode*> (namedNode);
 
 		if (viewpoint)
-			viewpoint -> set_bind () = true;
+		{
+			if (viewpoint -> isBound ())
+				viewpoint -> transitionStart (viewpoint);
 
+			else
+				viewpoint -> set_bind () = true;
+		}
 		else
 			throw Error <INVALID_NAME> ("Warning: Node named '" + name + "' is not a viewpoint node.");
 	}

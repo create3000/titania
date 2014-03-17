@@ -7,6 +7,15 @@
 	* X3DViewpointListInterface.h:
 	* X3DViewpointListInterface.cpp: 
 
+2014-03-17  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* ViewpointList.ui:
+	* BrowserWindow.cpp:
+	* ViewpointList.h:
+	* ViewpointList.cpp:
+	* X3DViewpointListInterface.h:
+	* X3DViewpointListInterface.cpp: 
+
 2014-03-14  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* OutlineCellRenderer.cpp: 
