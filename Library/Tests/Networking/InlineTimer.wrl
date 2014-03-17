@@ -2,6 +2,7 @@
 
 DEF _1 Inline {
   url [
+    "../Texturing/MovieTexture.wrl"
     "../Geospatial/GeoCoordinate.wrl"
     "../../Examples/Vattenfall/stage/index.wrl",
     "../Scripting/Script-vrmlscript1.wrl"

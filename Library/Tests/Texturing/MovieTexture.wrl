@@ -16,9 +16,9 @@ DEF MovieTexture Transform {
       material Material { }
       texture DEF Movie MovieTexture {
         url [
+          "../../Examples/Vattenfall/stage/film6.mpv",
           "http://www.visionbakery.com/content/dynamic/videos/project_574_video_1350486246_mod.mp4",
           "https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/bipbop_4x3_variant.m3u8",
-          "../../Examples/Vattenfall/stage/film6.mpv",
           "http://www.web3d.org/x3d/content/examples/Basic/StudentProjects/flames.mpg"
         ]
         loop TRUE

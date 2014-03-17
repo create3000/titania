@@ -256,6 +256,8 @@ MediaStream::~MediaStream ()
 {
 	player -> set_state (Gst::STATE_NULL);
 
+	sync ();
+
 	if (pixmap)
 		XFreePixmap (display, pixmap);
 
