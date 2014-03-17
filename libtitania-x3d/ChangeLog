@@ -1,5 +1,9 @@
 2014-03-17  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBrowser.cpp: 
+
+2014-03-17  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBrowser.h:
 	* X3DBrowser.cpp:
 	* X3DExecutionContext.cpp: 

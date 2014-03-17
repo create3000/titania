@@ -561,6 +561,8 @@ X3DBrowser::bindViewpoint (X3DViewpointNode* const viewpoint)
 
 	else
 		viewpoint -> set_bind () = true;
+
+	getNotification () -> string () = viewpoint -> description ();
 }
 
 // Destruction
