@@ -121,6 +121,12 @@ public:
 
 private:
 
+	///  @name Construction
+	
+	virtual
+	void
+	initialize () final override;
+
 	///  @name Static members
 
 	static const std::string componentName;
@@ -139,6 +145,8 @@ private:
 	};
 
 	Fields fields;
+
+	bool radians;
 
 };
 

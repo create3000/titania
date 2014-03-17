@@ -1,5 +1,13 @@
 2014-03-17  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* test.wrl:
+	* GeoLOD.wrl:
+	* GeoCoordinate.wrl:
+	* GeoTouchSensor.wrl:
+	* GeoElevationGrid.wrl: 
+
+2014-03-17  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Globals.wrl: 
 
 2014-03-17  Holger Seelig  <holger.seelig@yahoo.de>

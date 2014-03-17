@@ -53,7 +53,6 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Components/Scripting/Script.h"
 #include "../../InputOutput/Generator.h"
-#include "Fields/jsSFNode.h"
 #include "jsContext.h"
 #include "jsString.h"
 
@@ -84,8 +83,6 @@ jsGlobals::init (JSContext* const context, JSObject* const global)
 {
 	JS_DefineProperties (context, global, properties);
 	JS_DefineFunctions (context, global, functions);
-
-	jsSFNode::create (context, new SFNode (), &X3D_JS_NULL);
 }
 
 JSBool

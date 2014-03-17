@@ -1,5 +1,16 @@
 2014-03-17  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Geospatial.h:
+	* Geospatial.cpp:
+	* GeoOrigin.h:
+	* jsGlobals.h:
+	* GeoOrigin.cpp:
+	* jsGlobals.cpp:
+	* X3DGeospatialObject.h:
+	* X3DGeospatialObject.cpp: 
+
+2014-03-17  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBrowser.cpp: 
 
 2014-03-17  Holger Seelig  <holger.seelig@yahoo.de>

@@ -70,8 +70,9 @@ class geodetic :
 public:
 
 	constexpr
-	geodetic (const spheroid3 <Type> & spheroid, const bool longitude_first = false) :
+	geodetic (const spheroid3 <Type> & spheroid, const bool longitude_first = false, const bool radians = true) :
 		longitude_first (longitude_first),
+		        radians (radians),
 		              a (spheroid .a ()),
 		           c2a2 (sqr (spheroid .c () / a)),
 		           ecc2 (1 - c2a2)
@@ -93,6 +94,7 @@ public:
 private:
 
 	const bool longitude_first;
+	const bool radians;
 
 	const Type a;
 	const Type c2a2;
@@ -109,6 +111,12 @@ geodetic <Type>::convert (const vector3 <Type> & geodetic) const
 	Type       latitude  = geodetic .x ();
 	Type       longitude = geodetic .y ();
 	const Type elevation = geodetic .z ();
+
+	if (not radians)
+	{
+		latitude  = math::radians (latitude);
+		longitude = math::radians (longitude);
+	}
 
 	if (longitude_first)
 		std::swap (latitude, longitude);
@@ -142,9 +150,9 @@ geodetic <Type>::apply (const vector3 <Type> & geocentric) const
 
 	const Type P = std::sqrt (x * x + y * y);
 
-	const Type l = std::atan2 (y, x); // longitude
-	Type       p = 0;                 // latitude
-	Type       h = 0;                 // elevation
+	Type l = std::atan2 (y, x); // longitude
+	Type p = 0;                 // latitude
+	Type h = 0;                 // elevation
 
 	Type N = a;
 
@@ -164,6 +172,12 @@ geodetic <Type>::apply (const vector3 <Type> & geocentric) const
 			break;
 	}
 
+	if (not radians)
+	{
+		p = math::degrees (p);
+		l = math::degrees (l);
+	}
+
 	if (longitude_first)
 		// longitude, latitude, elevation
 		return vector3 <Type> (l, p, h);
@@ -180,6 +194,12 @@ geodetic <Type>::normal (const vector3 <Type> & geocentric) const
 
 	Type latitude  = geodetic .x ();
 	Type longitude = geodetic .y ();
+
+	if (not radians)
+	{
+		latitude  = math::radians (latitude);
+		longitude = math::radians (longitude);
+	}
 
 	if (longitude_first)
 		std::swap (latitude, longitude);

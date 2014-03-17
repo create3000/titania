@@ -52,6 +52,7 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Types/Geometry.h"
+#include "../../Execution/Scene.h"
 
 #include <Titania/Geospatial/Interpolation.h>
 
@@ -71,7 +72,8 @@ X3DGeospatialObject::X3DGeospatialObject () :
 	  elevationFrame (),
 	   reversedOrder (false),
 	   geoOriginNode (),
-	          origin ()
+	          origin (),
+	         radians (true)
 {
 	//addNodeType (X3DConstants::X3DGeospatialObject);
 
@@ -84,6 +86,18 @@ X3DGeospatialObject::initialize ()
 	geoSystem () .addInterest (this, &X3DGeospatialObject::set_geoSystem);
 	geoOrigin () .addInterest (this, &X3DGeospatialObject::set_geoOrigin);
 
+	switch (getScene () -> getVersion ())
+	{
+		case VRML_V2_0:
+		case X3D_V3_0:
+		case X3D_V3_1:
+		case X3D_V3_2:
+			radians = false;
+			break;
+		default:
+			break;
+	}
+
 	set_geoSystem ();
 	set_geoOrigin ();
 }
@@ -92,8 +106,8 @@ void
 X3DGeospatialObject::set_geoSystem ()
 {
 	coordinateSystem = Geospatial::getCoordinateSystem (geoSystem ());
-	referenceFrame   = Geospatial::getReferenceFrame (geoSystem ());
-	elevationFrame   = Geospatial::getElevationFrame (geoSystem ());
+	referenceFrame   = Geospatial::getReferenceFrame (geoSystem (), radians);
+	elevationFrame   = Geospatial::getElevationFrame (geoSystem (), radians);
 	reversedOrder    = Geospatial::getReversedOrder (geoSystem ());
 }
 
@@ -124,6 +138,17 @@ X3DGeospatialObject::set_origin ()
 		origin = geoOriginNode -> getOrigin ();
 	else
 		origin = Vector3d ();
+}
+
+Scene*
+X3DGeospatialObject::getScene () const
+{
+	X3DExecutionContext* executionContext = getExecutionContext ();
+
+	while (not executionContext -> isScene ())
+		executionContext = executionContext -> getExecutionContext ();
+
+	return static_cast <Scene*> (executionContext);
 }
 
 Vector3d

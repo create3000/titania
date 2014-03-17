@@ -77,8 +77,6 @@ private:
 	static JSPropertySpec properties [ ];
 	static JSFunctionSpec functions [ ];
 
-	static jsval X3D_JS_NULL;
-
 };
 
 } // X3D

@@ -122,14 +122,14 @@ Geospatial::getReversedOrder (const MFString & geoSystem)
 }
 
 Geospatial::ReferenceFramePtr
-Geospatial::getReferenceFrame (const MFString & geoSystem)
+Geospatial::getReferenceFrame (const MFString & geoSystem, const bool radians)
 {
 	switch (getCoordinateSystem (geoSystem))
 	{
 		case CoordinateSystemType::GD:
 		{
 			return ReferenceFramePtr (new Geodetic (getEllipsoid (geoSystem),
-			                                        getLongitudeFirst (geoSystem)));
+			                                        getLongitudeFirst (geoSystem), radians));
 		}
 		case CoordinateSystemType::UTM:
 		{
@@ -144,13 +144,13 @@ Geospatial::getReferenceFrame (const MFString & geoSystem)
 		}
 	}
 
-	return ReferenceFramePtr (new Geodetic (geospatial::WE));
+	return ReferenceFramePtr (new Geodetic (geospatial::WE, false, radians));
 }
 
 Geospatial::ElevationFramePtr
-Geospatial::getElevationFrame (const MFString & geoSystem)
+Geospatial::getElevationFrame (const MFString & geoSystem, const bool radians)
 {
-	return ElevationFramePtr (new Geodetic (getEllipsoid (geoSystem)));
+	return ElevationFramePtr (new Geodetic (getEllipsoid (geoSystem), false, radians));
 }
 
 Geospatial::CoordinateSystemType

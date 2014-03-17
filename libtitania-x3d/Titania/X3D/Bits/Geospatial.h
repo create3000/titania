@@ -81,11 +81,11 @@ public:
 
 	static
 	ReferenceFramePtr
-	getReferenceFrame (const MFString &);
+	getReferenceFrame (const MFString &, const bool);
 
 	static
 	ElevationFramePtr
-	getElevationFrame (const MFString &);
+	getElevationFrame (const MFString &, const bool);
 
 	static
 	bool

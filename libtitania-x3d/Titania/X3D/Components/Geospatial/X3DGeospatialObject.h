@@ -57,6 +57,8 @@
 namespace titania {
 namespace X3D {
 
+class Scene;
+
 class X3DGeospatialObject :
 	virtual public X3DBaseNode
 {
@@ -117,6 +119,7 @@ protected:
 
 private:
 
+
 	///  @name Event handlers
 
 	void
@@ -127,6 +130,11 @@ private:
 
 	void
 	set_origin ();
+	
+	///  @name Operations
+
+	Scene*
+	getScene () const;
 
 	///  @name Member access
 
@@ -152,6 +160,7 @@ private:
 	bool                             reversedOrder;
 	X3DSFNode <GeoOrigin>            geoOriginNode;
 	Vector3d                         origin;
+	bool                             radians;
 
 };
 

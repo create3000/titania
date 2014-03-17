@@ -52,6 +52,7 @@
 
 #include "../../Bits/Geospatial.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Execution/Scene.h"
 
 namespace titania {
 namespace X3D {
@@ -73,7 +74,8 @@ GeoOrigin::Fields::Fields () :
 GeoOrigin::GeoOrigin (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	    X3DNode (),
-	     fields ()
+	     fields (),
+	    radians (true)
 {
 	addField (inputOutput,    "metadata",  metadata ());
 	addField (initializeOnly, "rotateYUp", rotateYUp ());
@@ -87,10 +89,28 @@ GeoOrigin::create (X3DExecutionContext* const executionContext) const
 	return new GeoOrigin (executionContext);
 }
 
+void
+GeoOrigin::initialize ()
+{
+	X3DNode::initialize ();
+
+	switch (getScene () -> getVersion ())
+	{
+		case VRML_V2_0:
+		case X3D_V3_0:
+		case X3D_V3_1:
+		case X3D_V3_2:
+			radians = false;
+			break;
+		default:
+			break;
+	}
+}
+
 Vector3d
 GeoOrigin::getOrigin () const
 {
-	return Geospatial::getReferenceFrame (geoSystem ()) -> convert (geoCoords ());
+	return Geospatial::getReferenceFrame (geoSystem (), radians) -> convert (geoCoords ());
 }
 
 } // X3D
