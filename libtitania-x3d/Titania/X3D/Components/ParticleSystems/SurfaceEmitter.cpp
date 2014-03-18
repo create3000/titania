@@ -134,7 +134,7 @@ SurfaceEmitter::set_surface ()
 	if (surfaceNode)
 		surfaceNode -> removeInterest (this, &SurfaceEmitter::set_geometry);
 
-	surfaceNode = x3d_cast <X3DGeometryNode*> (surface ());
+	surfaceNode .set (x3d_cast <X3DGeometryNode*> (surface ()));
 
 	if (surfaceNode)
 		surfaceNode -> addInterest (this, &SurfaceEmitter::set_geometry);

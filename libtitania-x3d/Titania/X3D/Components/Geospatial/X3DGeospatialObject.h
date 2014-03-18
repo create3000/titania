@@ -130,11 +130,6 @@ private:
 
 	void
 	set_origin ();
-	
-	///  @name Operations
-
-	Scene*
-	getScene () const;
 
 	///  @name Member access
 

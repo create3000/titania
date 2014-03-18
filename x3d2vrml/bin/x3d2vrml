@@ -923,13 +923,17 @@ sub fields {
 				my $proto           = $self -> getPrototype ($node -> {context}, $node -> {typeName});
 				my $fieldDefinition = $proto -> {fields} -> {$_ -> {name}};
 				
-				$self -> field ([$fieldDefinition -> {name}, $fieldDefinition -> {accessType}, $fieldDefinition -> {type}], $_);	
+				$self -> field ([$fieldDefinition -> {name}, $fieldDefinition -> {accessType}, $fieldDefinition -> {type}], $_);
 			}
 			else
 			{
 				if ($self -> {nodes} -> has_key ($node -> {typeName}, $_ -> {name}))
 				{
 					$self -> field ([$self -> {nodes} -> get_string_list ($node -> {typeName}, $_ -> {name})], $_);
+				}
+				else
+				{
+					$self -> field ([ ], $_);
 				}
 			}
 		}
@@ -965,10 +969,20 @@ sub userDefinedFields {
 	}
 }
 
+my %Depreciated = (
+	navType   => "MFString",
+	headlight => "SFBool"
+);
+
 sub field {
 	my ($self, $fieldDefinition, $field) = @_;
 
 	my $typeName = $fieldDefinition -> [2];
+
+	if (not $typeName)
+	{
+		$typeName = $Depreciated {$field -> {name}};
+	}
 
 	if ($typeName eq "SFBool")
 	{

@@ -63,8 +63,9 @@ const std::string Viewpoint::typeName       = "Viewpoint";
 const std::string Viewpoint::containerField = "children";
 
 Viewpoint::Fields::Fields () :
-	   position (new SFVec3f (0, 0, 10)),
-	fieldOfView (new SFFloat (0.785398))
+	        position (new SFVec3f (0, 0, 10)),
+	centerOfRotation (new SFVec3f ()),
+	     fieldOfView (new SFFloat (0.785398))
 { }
 
 Viewpoint::Viewpoint (X3DExecutionContext* const executionContext) :

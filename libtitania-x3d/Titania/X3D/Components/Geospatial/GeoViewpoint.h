@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_COMPONENTS_GEOSPATIAL_GEO_VIEWPOINT_H__
 
 #include "../Geospatial/X3DGeospatialObject.h"
+#include "../Navigation/NavigationInfo.h"
 #include "../Navigation/X3DViewpointNode.h"
 
 namespace titania {
@@ -90,14 +91,6 @@ public:
 
 	///  @name Fields
 
-	SFFloat &
-	fieldOfView ()
-	{ return *fields .fieldOfView; }
-
-	const SFFloat &
-	fieldOfView () const
-	{ return *fields .fieldOfView; }
-
 	SFVec3d &
 	position ()
 	{ return *fields .position; }
@@ -105,6 +98,22 @@ public:
 	const SFVec3d &
 	position () const
 	{ return *fields .position; }
+
+	SFVec3d &
+	centerOfRotation ()
+	{ return *fields .centerOfRotation; }
+
+	const SFVec3d &
+	centerOfRotation () const
+	{ return *fields .centerOfRotation; }
+
+	SFFloat &
+	fieldOfView ()
+	{ return *fields .fieldOfView; }
+
+	const SFFloat &
+	fieldOfView () const
+	{ return *fields .fieldOfView; }
 
 	SFFloat &
 	speedFactor ()
@@ -124,6 +133,11 @@ public:
 	virtual
 	Rotation4f
 	getOrientation () const final override;
+
+	virtual
+	Vector3f
+	getCenterOfRotation () const final override
+	{ return centerOfRotation () .getValue (); }
 
 	virtual
 	Vector3f
@@ -161,6 +175,24 @@ public:
 
 private:
 
+	///  @name Depeciated fields
+
+	MFString &
+	navType ()
+	{ return *fields .navType; }
+
+	const MFString &
+	navType () const
+	{ return *fields .navType; }
+
+	SFBool &
+	headlight ()
+	{ return *fields .headlight; }
+
+	const SFBool &
+	headlight () const
+	{ return *fields .headlight; }
+
 	///  @name Construction
 
 	virtual
@@ -172,7 +204,7 @@ private:
 	void
 	set_position ();
 
-	///  @name Member access
+	///  @name Operations
 
 	double
 	getFieldOfView () const;
@@ -180,6 +212,18 @@ private:
 	virtual
 	Vector3f
 	getLookAtPositionOffset (const Box3f &) const final override;
+
+	virtual
+	void
+	bindToLayer (X3DLayerNode* const) final override;
+
+	virtual
+	void
+	unbindFromLayer (X3DLayerNode* const) final override;
+
+	virtual
+	void
+	removeFromLayer (X3DLayerNode* const) final override;
 
 	///  @name Static members
 
@@ -194,14 +238,19 @@ private:
 		Fields ();
 
 		SFVec3d* const position;
+		SFVec3d* const centerOfRotation;
 		SFFloat* const fieldOfView;
 		SFFloat* const speedFactor;
+		
+		MFString* navType;
+		SFBool* headlight;
 	};
 
 	Fields fields;
 
-	Vector3d coord;
-	double   elevation;
+	Vector3d                   coord;
+	double                     elevation;
+	X3DSFNode <NavigationInfo> navigationInfoNode;
 
 };
 

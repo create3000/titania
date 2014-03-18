@@ -196,6 +196,18 @@ public:
 
 	///  @name Operations
 
+	virtual
+	void
+	bindToLayer (X3DLayerNode* const) final override;
+
+	virtual
+	void
+	unbindFromLayer (X3DLayerNode* const) final override;
+
+	virtual
+	void
+	removeFromLayer (X3DLayerNode* const) final override;
+
 	void
 	transitionStart (NavigationInfo* const)
 	{ }
@@ -227,20 +239,6 @@ private:
 
 	void
 	set_headlight ();
-
-	///  @name Operations
-
-	virtual
-	void
-	bindToLayer (X3DLayerNode* const) final override;
-
-	virtual
-	void
-	unbindFromLayer (X3DLayerNode* const) final override;
-
-	virtual
-	void
-	removeFromLayer (X3DLayerNode* const) final override;
 
 	///  @name Static members
 

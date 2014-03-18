@@ -1603,7 +1603,7 @@ Parser::nodeBodyElement (X3DBaseNode* const _baseNode)
 				throw Error <INVALID_X3D> ("Couldn't read value for field '" + _fieldId + "'.");
 		}
 		else
-			throw Error <INVALID_X3D> ("Couldn't assign value for " + Generator::AccessTypes [_field] + " '" + _fieldId + "'.");
+			throw Error <INVALID_X3D> ("Couldn't assign value to " + Generator::AccessTypes [_field] + " field '" + _fieldId + "'.");
 	}
 
 	return false;

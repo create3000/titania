@@ -62,8 +62,9 @@ const std::string OrthoViewpoint::typeName       = "OrthoViewpoint";
 const std::string OrthoViewpoint::containerField = "children";
 
 OrthoViewpoint::Fields::Fields () :
-	   position (new SFVec3f (0, 0, 10)),
-	fieldOfView (new MFFloat ({ -1, -1, 1, 1 }))
+	        position (new SFVec3f (0, 0, 10)),
+	centerOfRotation (new SFVec3f ()),
+	     fieldOfView (new MFFloat ({ -1, -1, 1, 1 }))
 { }
 
 OrthoViewpoint::OrthoViewpoint (X3DExecutionContext* const executionContext) :
@@ -88,12 +89,6 @@ X3DBaseNode*
 OrthoViewpoint::create (X3DExecutionContext* const executionContext) const
 {
 	return new OrthoViewpoint (executionContext);
-}
-
-Vector3f
-OrthoViewpoint::getPosition () const
-{
-	return position ();
 }
 
 double

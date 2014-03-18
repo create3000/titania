@@ -97,6 +97,14 @@ public:
 	position () const
 	{ return *fields .position; }
 
+	SFVec3f &
+	centerOfRotation ()
+	{ return *fields .centerOfRotation; }
+
+	const SFVec3f &
+	centerOfRotation () const
+	{ return *fields .centerOfRotation; }
+
 	SFFloat &
 	fieldOfView ()
 	{ return *fields .fieldOfView; }
@@ -105,12 +113,17 @@ public:
 	fieldOfView () const
 	{ return *fields .fieldOfView; }
 
+	///  @name Member access
+
 	virtual
 	Vector3f
 	getPosition () const
 	{ return position (); }
 
-	///  @name Member access
+	virtual
+	Vector3f
+	getCenterOfRotation () const final override
+	{ return centerOfRotation (); }
 
 	virtual
 	Vector3d
@@ -146,6 +159,7 @@ private:
 		Fields ();
 
 		SFVec3f* const position;
+		SFVec3f* const centerOfRotation;
 		SFFloat* const fieldOfView;
 	};
 

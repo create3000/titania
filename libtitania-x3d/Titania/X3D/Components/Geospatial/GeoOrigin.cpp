@@ -94,7 +94,7 @@ GeoOrigin::initialize ()
 {
 	X3DNode::initialize ();
 
-	switch (getScene () -> getVersion ())
+	switch (getExecutionContext () -> getVersion ())
 	{
 		case VRML_V2_0:
 		case X3D_V3_0:

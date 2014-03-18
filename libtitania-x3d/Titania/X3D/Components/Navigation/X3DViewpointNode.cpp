@@ -66,7 +66,6 @@ static constexpr Vector3f zAxis (0, 0, 1);
 
 X3DViewpointNode::Fields::Fields () :
 	           orientation (new SFRotation ()),
-	      centerOfRotation (new SFVec3f ()),
 	                  jump (new SFBool (true)),
 	        positionOffset (),
 	     orientationOffset (),
@@ -159,7 +158,7 @@ X3DViewpointNode::getUserOrientation () const
 Vector3f
 X3DViewpointNode::getUserCenterOfRotation () const
 {
-	return centerOfRotation () + centerOfRotationOffset ();
+	return getCenterOfRotation () + centerOfRotationOffset ();
 }
 
 void
@@ -254,7 +253,7 @@ X3DViewpointNode::straighten (const bool horizon)
 
 	const auto distanceToCenter = abs (getUserCenterOfRotation () - getUserPosition ());
 
-	centerOfRotationOffset () = getUserPosition () + (Vector3f (0, 0, -1) * distanceToCenter) * (getOrientation () * rotation) - centerOfRotation ();
+	centerOfRotationOffset () = getUserPosition () + (Vector3f (0, 0, -1) * distanceToCenter) * (getOrientation () * rotation) - getCenterOfRotation ();
 
 	set_bind () = true;
 }
@@ -307,7 +306,7 @@ X3DViewpointNode::lookAt (Box3f bbox, const float distance, const bool straighte
 
 		const auto translation = lerp <Vector3f> (positionOffset (), getLookAtPositionOffset (bbox), distance);
 		const auto direction   = getPosition () + translation - bbox .center ();
-		auto       rotation    = orientationOffset () * Rotation4f (Vector3f (0, 0, 1) * getUserOrientation (), direction);
+		auto       rotation    = orientationOffset () * Rotation4f (zAxis * getUserOrientation (), direction);
 
 		if (straighten)
 			rotation = ~getOrientation () * straightenHorizon (getOrientation () * rotation);
@@ -317,7 +316,7 @@ X3DViewpointNode::lookAt (Box3f bbox, const float distance, const bool straighte
 		scaleInterpolator            -> keyValue () = { scaleOffset (), scaleOffset () };
 		scaleOrientationInterpolator -> keyValue () = { scaleOrientationOffset (), scaleOrientationOffset () };
 
-		centerOfRotationOffset () = bbox .center () - centerOfRotation ();
+		centerOfRotationOffset () = bbox .center () - getCenterOfRotation ();
 		set_bind ()               = true;
 	}
 	catch (const std::domain_error &)

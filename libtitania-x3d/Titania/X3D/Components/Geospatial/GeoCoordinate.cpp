@@ -67,7 +67,9 @@ GeoCoordinate::GeoCoordinate (X3DExecutionContext* const executionContext) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	  X3DCoordinateNode (),
 	X3DGeospatialObject (),
-	             fields ()
+	             fields (),
+	             points (),
+	             origin ()
 {
 	addField (inputOutput,    "metadata",  metadata ());
 	addField (initializeOnly, "geoSystem", geoSystem ());
@@ -86,23 +88,38 @@ GeoCoordinate::initialize ()
 {
 	X3DCoordinateNode::initialize ();
 	X3DGeospatialObject::initialize ();
+
+	addInterest (this, &GeoCoordinate::eventsProcessed);
+	
+	eventsProcessed ();
+}
+	
+void
+GeoCoordinate::eventsProcessed ()
+{
+	points .clear ();
+
+	for (const auto & p : point ())
+		points .emplace_back (getCoord (p));
+
+	origin = getCoord (Vector3f ());
 }
 
 Box3f
 GeoCoordinate::getBBox () const
 {
-	return Box3d (point () .begin (), point () .end (), math::iterator_type ());
+	return Box3d (points .begin (), points .end (), math::iterator_type ());
 }
 
 Vector3f
 GeoCoordinate::getNormal (const size_t index1, const size_t index2, const size_t index3) const
 {
-	const size_t size = point () .size ();
+	const size_t size = points .size ();
 
 	if (index1 < size and index2 < size and index3 < size)
-		return math::normal (getCoord (point () [index1]),
-		                     getCoord (point () [index2]),
-		                     getCoord (point () [index3]));
+		return math::normal (points [index1],
+		                     points [index2],
+		                     points [index3]);
 
 	return Vector3f (0, 0, 1);
 }
@@ -110,21 +127,21 @@ GeoCoordinate::getNormal (const size_t index1, const size_t index2, const size_t
 void
 GeoCoordinate::addVertex (opengl::tessellator <size_t> & tessellator, const size_t index, const size_t i) const
 {
-	if (index < point () .size ())
-		tessellator .add_vertex (getCoord (point () [index]), i);
+	if (index < points .size ())
+		tessellator .add_vertex (points [index], i);
 
 	else
-		tessellator .add_vertex (getCoord (Vector3f ()), i);
+		tessellator .add_vertex (origin, i);
 }
 
 void
 GeoCoordinate::addVertex (std::vector <Vector3f> & vertices, const size_t index) const
 {
-	if (index < point () .size ())
-		vertices .emplace_back (getCoord (point () [index]));
+	if (index < points .size ())
+		vertices .emplace_back (points [index]);
 
 	else
-		vertices .emplace_back (getCoord (Vector3f ()));
+		vertices .emplace_back (origin);
 }
 
 std::vector <Vector4f>
@@ -132,22 +149,22 @@ GeoCoordinate::getControlPoints (const MFDouble & weight) const
 {
 	std::vector <Vector4f> controlPoints;
 
-	controlPoints .reserve (point () .size ());
+	controlPoints .reserve (points .size ());
 
-	if (weight .size () < point () .size ())
+	if (weight .size () < points .size ())
 	{
-		for (size_t i = 0; i < point () .size (); i ++)
+		for (size_t i = 0; i < points .size (); i ++)
 		{
-			const auto p = getCoord (point () [i]);
+			const auto p = points [i];
 
 			controlPoints .emplace_back (p .x (), p .y (), p .z (), 1);
 		}
 	}
 	else
 	{
-		for (size_t i = 0; i < point () .size (); i ++)
+		for (size_t i = 0; i < points .size (); i ++)
 		{
-			const auto p = getCoord (point () [i]);
+			const auto p = points [i];
 
 			controlPoints .emplace_back (p . x (), p . y (), p . z (), weight [i]);
 		}

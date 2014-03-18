@@ -144,6 +144,9 @@ private:
 	virtual
 	void
 	initialize () final override;
+	
+	void
+	eventsProcessed ();
 
 	///  @name Static members
 
@@ -161,6 +164,9 @@ private:
 	};
 
 	Fields fields;
+
+	std::vector <Vector3d> points;
+	Vector3d               origin;
 
 };
 

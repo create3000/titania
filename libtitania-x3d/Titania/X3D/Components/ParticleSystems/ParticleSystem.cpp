@@ -638,7 +638,7 @@ ParticleSystem::set_emitter ()
 {
 	// Emitter node
 
-	emitterNode = x3d_cast <X3DParticleEmitterNode*> (emitter ());
+	emitterNode .set (x3d_cast <X3DParticleEmitterNode*> (emitter ()));
 
 	if (not emitterNode)
 		emitterNode = getBrowser () -> getBrowserOptions () -> emitter ();
@@ -654,7 +654,7 @@ ParticleSystem::set_colorRamp ()
 	if (colorRampNode)
 		colorRampNode -> removeInterest (this, &ParticleSystem::set_color);
 
-	colorRampNode = x3d_cast <X3DColorNode*> (colorRamp ());
+	colorRampNode .set (x3d_cast <X3DColorNode*> (colorRamp ()));
 
 	if (colorRampNode)
 		colorRampNode -> addInterest (this, &ParticleSystem::set_color);
@@ -726,7 +726,7 @@ ParticleSystem::set_texCoordRamp ()
 	if (texCoordRampNode)
 		texCoordRampNode -> removeInterest (this, &ParticleSystem::set_texCoord);
 
-	texCoordRampNode = x3d_cast <X3DTextureCoordinateNode*> (texCoordRamp ());
+	texCoordRampNode .set (x3d_cast <X3DTextureCoordinateNode*> (texCoordRamp ()));
 
 	if (texCoordRampNode)
 		texCoordRampNode -> addInterest (this, &ParticleSystem::set_texCoord);

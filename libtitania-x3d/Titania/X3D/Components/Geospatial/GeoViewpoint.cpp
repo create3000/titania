@@ -64,10 +64,12 @@ const std::string GeoViewpoint::typeName       = "GeoViewpoint";
 const std::string GeoViewpoint::containerField = "children";
 
 GeoViewpoint::Fields::Fields () :
-	position (new SFVec3d (0, 0, 100000)),
-	//centerOfRotation (new SFVec3d ()),
-	fieldOfView (new SFFloat (0.785398)),
-	speedFactor (new SFFloat (1))
+	        position (new SFVec3d (0, 0, 100000)),
+	centerOfRotation (new SFVec3d ()),
+	     fieldOfView (new SFFloat (0.785398)),
+	     speedFactor (new SFFloat (1)),
+	         navType (nullptr),
+	       headlight (nullptr)
 { }
 
 GeoViewpoint::GeoViewpoint (X3DExecutionContext* const executionContext) :
@@ -76,7 +78,8 @@ GeoViewpoint::GeoViewpoint (X3DExecutionContext* const executionContext) :
 	X3DGeospatialObject (),
 	             fields (),
 	              coord (),
-	          elevation (0)
+	          elevation (0),
+	 navigationInfoNode ()
 {
 	addField (inputOutput,    "metadata",          metadata ());
 	addField (initializeOnly, "geoSystem",         geoSystem ());
@@ -88,6 +91,29 @@ GeoViewpoint::GeoViewpoint (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "fieldOfView",       fieldOfView ());
 	addField (inputOutput,    "jump",              jump ());
 	addField (inputOutput,    "retainUserOffsets", retainUserOffsets ());
+
+	switch (executionContext -> getVersion ())
+	{
+		case VRML_V2_0:
+		case X3D_V3_0:
+		case X3D_V3_1:
+		case X3D_V3_2:
+		{
+			navigationInfoNode .set (new NavigationInfo (executionContext));
+
+			fields .navType   = new MFString ({ "EXAMINE", "ANY" });
+			fields .headlight = new SFBool (true);
+
+			addField (inputOutput, "navType",   navType ());
+			addField (inputOutput, "headlight", headlight ());
+
+			addChildren (navigationInfoNode);
+			break;
+		}
+		default:
+			break;
+	}
+
 	addField (initializeOnly, "speedFactor",       speedFactor ());
 	addField (outputOnly,     "isBound",           isBound ());
 	addField (outputOnly,     "bindTime",          bindTime ());
@@ -110,6 +136,14 @@ GeoViewpoint::initialize ()
 	positionOffset () .addInterest (this, &GeoViewpoint::set_position);
 
 	set_position ();
+
+	if (navigationInfoNode)
+	{
+		navType ()   .addInterest (navigationInfoNode -> type ());
+		headlight () .addInterest (navigationInfoNode -> headlight ());
+
+		navigationInfoNode -> setup ();
+	}
 }
 
 void
@@ -181,6 +215,33 @@ GeoViewpoint::getLookAtPositionOffset (const Box3f & bbox) const
 	}
 
 	return Vector3f ();
+}
+
+void
+GeoViewpoint::bindToLayer (X3DLayerNode* const layer)
+{
+	if (navigationInfoNode)
+		navigationInfoNode -> bindToLayer (layer);
+
+	X3DViewpointNode::bindToLayer (layer);
+}
+
+void
+GeoViewpoint::unbindFromLayer (X3DLayerNode* const layer)
+{
+	if (navigationInfoNode)
+		navigationInfoNode -> unbindFromLayer (layer);
+
+	X3DViewpointNode::unbindFromLayer (layer);
+}
+
+void
+GeoViewpoint::removeFromLayer (X3DLayerNode* const layer)
+{
+	if (navigationInfoNode)
+		navigationInfoNode -> removeFromLayer (layer);
+
+	X3DViewpointNode::removeFromLayer (layer);
 }
 
 ///  Reshape viewpoint that it suits for X3DBackground.

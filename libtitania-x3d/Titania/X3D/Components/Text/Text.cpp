@@ -114,10 +114,10 @@ Text::set_fontStyle ()
 	if (fontStyleNode)
 		fontStyleNode -> removeInterest (this);
 
-	fontStyleNode = x3d_cast <X3DFontStyleNode*> (fontStyle ());
+	fontStyleNode .set (x3d_cast <X3DFontStyleNode*> (fontStyle ()));
 
 	if (not fontStyleNode)
-		fontStyleNode = getBrowser () -> getBrowserOptions () -> fontStyle ();
+		fontStyleNode .set (getBrowser () -> getBrowserOptions () -> fontStyle ());
 
 	if (fontStyleNode)
 		fontStyleNode -> addInterest (this);

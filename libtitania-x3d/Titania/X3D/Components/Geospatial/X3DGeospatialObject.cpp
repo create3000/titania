@@ -86,7 +86,7 @@ X3DGeospatialObject::initialize ()
 	geoSystem () .addInterest (this, &X3DGeospatialObject::set_geoSystem);
 	geoOrigin () .addInterest (this, &X3DGeospatialObject::set_geoOrigin);
 
-	switch (getScene () -> getVersion ())
+	switch (getExecutionContext () -> getVersion ())
 	{
 		case VRML_V2_0:
 		case X3D_V3_0:
@@ -120,7 +120,7 @@ X3DGeospatialObject::set_geoOrigin ()
 		geoOriginNode -> removeInterest (this);
 	}
 
-	geoOriginNode = x3d_cast <GeoOrigin*> (geoOrigin ());
+	geoOriginNode .set (x3d_cast <GeoOrigin*> (geoOrigin ()));
 
 	if (geoOriginNode)
 	{
@@ -138,17 +138,6 @@ X3DGeospatialObject::set_origin ()
 		origin = geoOriginNode -> getOrigin ();
 	else
 		origin = Vector3d ();
-}
-
-Scene*
-X3DGeospatialObject::getScene () const
-{
-	X3DExecutionContext* executionContext = getExecutionContext ();
-
-	while (not executionContext -> isScene ())
-		executionContext = executionContext -> getExecutionContext ();
-
-	return static_cast <Scene*> (executionContext);
 }
 
 Vector3d

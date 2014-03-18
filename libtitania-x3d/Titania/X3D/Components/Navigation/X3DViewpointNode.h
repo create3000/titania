@@ -79,14 +79,6 @@ public:
 	orientation () const
 	{ return *fields .orientation; }
 
-	SFVec3f &
-	centerOfRotation ()
-	{ return *fields .centerOfRotation; }
-
-	const SFVec3f &
-	centerOfRotation () const
-	{ return *fields .centerOfRotation; }
-
 	SFBool &
 	jump ()
 	{ return *fields .jump; }
@@ -143,6 +135,10 @@ public:
 
 	Rotation4f
 	getUserOrientation () const;
+
+	virtual
+	Vector3f
+	getCenterOfRotation () const = 0;
 
 	Vector3f
 	getUserCenterOfRotation () const;
@@ -236,6 +232,20 @@ protected:
 	void
 	initialize () override;
 
+	///  @name Operations
+
+	virtual
+	void
+	bindToLayer (X3DLayerNode* const) override;
+
+	virtual
+	void
+	unbindFromLayer (X3DLayerNode* const) override;
+
+	virtual
+	void
+	removeFromLayer (X3DLayerNode* const) override;
+
 
 private:
 
@@ -275,18 +285,6 @@ private:
 	Vector3f
 	getLookAtPositionOffset (const Box3f &) const = 0;
 
-	virtual
-	void
-	bindToLayer (X3DLayerNode* const) final override;
-
-	virtual
-	void
-	unbindFromLayer (X3DLayerNode* const) final override;
-
-	virtual
-	void
-	removeFromLayer (X3DLayerNode* const) final override;
-
 	void
 	set_isActive (const bool);
 
@@ -300,7 +298,6 @@ private:
 		Fields ();
 
 		SFRotation* const orientation;
-		SFVec3f* const centerOfRotation;
 		SFBool* const jump;
 		SFVec3f positionOffset;
 		SFRotation orientationOffset;
