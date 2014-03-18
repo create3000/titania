@@ -81,32 +81,31 @@ vector_slerp (Type source, Type destination, const T & t)
 ///  and @a destination by an amout of @a t.
 template <class Type>
 vector3 <Type>
-gd_lerp (const vector3 <Type> & source, const vector3 <Type> & destination, const Type & t, const bool longitude_first = false)
+gd_lerp (vector3 <Type> source, vector3 <Type> destination, const Type & t, const bool latitude_first = true)
 {
-	const Type range = longitude_first
-	                   ? std::abs (destination .x () - source .x ())
-							 : std::abs (destination .y () - source .y ());
+	Type range;
+
+	if (latitude_first)
+	{
+		source .x (interval (source .x (), -M_PI2, M_PI2));
+		source .y (interval (source .y (), -M_PI,  M_PI));
+		
+		range = std::abs (destination .y () - source .y ());
+	}
+	else
+	{
+		source .x (interval (source .x (), -M_PI,  M_PI));	
+		source .y (interval (source .y (), -M_PI2, M_PI2));
+		
+		range = std::abs (destination .x () - source .x ());
+	}
 
 	if (range <= Type (M_PI))
 		return lerp (source, destination, t);
 
 	const Type step = (Type (M_PI2) - range) * t;
 
-	if (longitude_first)
-	{
-		Type longitude = source .x () < destination .x () ? source .x () - step : source .x () + step;
-
-		if (longitude < Type (-M_PI))
-			longitude += Type (M_PI2);
-
-		else if (longitude > Type (M_PI))
-			longitude -= Type (M_PI2);
-
-		return vector3 <Type> (longitude,
-		                       lerp (source .y (), destination .y (), t),
-		                       lerp (source .z (), destination .z (), t));
-	}
-	else
+	if (latitude_first)
 	{
 		Type longitude = source .y () < destination .y () ? source .y () - step : source .y () + step;
 
@@ -118,6 +117,20 @@ gd_lerp (const vector3 <Type> & source, const vector3 <Type> & destination, cons
 
 		return vector3 <Type> (lerp (source .x (), destination .x (), t),
 		                       longitude,
+		                       lerp (source .z (), destination .z (), t));
+	}
+	else
+	{
+		Type longitude = source .x () < destination .x () ? source .x () - step : source .x () + step;
+
+		if (longitude < Type (-M_PI))
+			longitude += Type (M_PI2);
+
+		else if (longitude > Type (M_PI))
+			longitude -= Type (M_PI2);
+
+		return vector3 <Type> (longitude,
+		                       lerp (source .y (), destination .y (), t),
 		                       lerp (source .z (), destination .z (), t));
 	}
 }

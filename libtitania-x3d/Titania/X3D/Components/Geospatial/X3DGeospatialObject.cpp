@@ -213,8 +213,16 @@ X3DGeospatialObject::lerp (const Vector3d & source, const Vector3d & destination
 	switch (getCoordinateSystem ())
 	{
 		case Geospatial::CoordinateSystemType::GD:
-			return geospatial::gd_lerp <double> (source, destination, weight, getReversedOrder ());
+		{
+			if (radians)
+				return geospatial::gd_lerp <double> (source, destination, weight, not getReversedOrder ());
+			
+			Vector3d s (math::radians (source .x ()),      math::radians (source .y ()),      source .z ());
+			Vector3d d (math::radians (destination .x ()), math::radians (destination .y ()), source .z ());
+			Vector3d r (geospatial::gd_lerp <double> (s, d, weight, not getReversedOrder ()));
 
+			return Vector3d (math::degrees (r .x ()), math::degrees (r .y ()), r .z ());
+		}
 		case Geospatial::CoordinateSystemType::UTM:
 			return geospatial::utm_lerp <double> (source, destination, weight);
 
