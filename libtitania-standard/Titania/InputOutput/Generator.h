@@ -107,12 +107,12 @@ public:
 	{ return ostream << comma; }
 
 	static
-	const bool &
+	bool
 	ListSpace ()
 	{ return listSpace; }
 
 	static
-	const bool &
+	bool
 	HasListBreak ()
 	{ return hasListBreak; }
 
@@ -133,7 +133,7 @@ public:
 	std::basic_ostream <CharT, Traits> &
 	DecIndent (std::basic_ostream <CharT, Traits> & ostream)
 	{
-		indent = std::string (indent, 0, indent .length () - indentChar .length ());
+		indent .resize (indent .size () - indentChar .size ());
 		return ostream;
 	}
 
@@ -196,7 +196,7 @@ public:
 	template <class Type>
 	static
 	void
-	Precision (size_t value)
+	Precision (const size_t value)
 	{ NumericLimits <Type>::digits10 = value; }
 
 	template <class Type>

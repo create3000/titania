@@ -175,15 +175,15 @@ golden_image (const basic::uri & uri)
 	image .read (uri);
 	image .resolutionUnits (Magick::PixelsPerInchResolution);
 
-	const float width  = (float) image .size () .width  () / (float) image .density () .width  () * M_INCH;
-	const float height = (float) image .size () .height () / (float) image .density () .height () * M_INCH;
+	const float width  = float (image .size () .width  ()) / float (image .density () .width  ()) * M_INCH;
+	const float height = float (image .size () .height ()) / float (image .density () .height ()) * M_INCH;
 
 	std::string file = os::load_file (os::find_data_file ("titania/goldengate/image.wrl"));
 
 	Name   .GlobalReplace (get_name_from_uri (uri), &file);
 	Width  .GlobalReplace (basic::to_string (width), &file);
 	Height .GlobalReplace (basic::to_string (height), &file);
-	URL    .GlobalReplace (MFString ({ uri .basename (), uri .str () }) .toString (), &file);
+	URL    .GlobalReplace ("[ " + SFString (uri .basename ()) .toString () + ", " + SFString (uri .str ()) .toString () + " ]", &file);
 
 	return basic::ifilestream (file);
 }
@@ -196,7 +196,7 @@ golden_audio (const basic::uri & uri)
 
 	Name        .GlobalReplace (get_name_from_uri (uri), &file);
 	Description .GlobalReplace (SFString (uri .basename (false)) .toString (), &file);
-	URL         .GlobalReplace (MFString ({ uri .basename (), uri .str () }) .toString (), &file);
+	URL         .GlobalReplace ("[ " + SFString (uri .basename ()) .toString () + ", " + SFString (uri .str ()) .toString () + " ]", &file);
 
 	return basic::ifilestream (file);
 }
@@ -218,15 +218,15 @@ golden_video (const basic::uri & uri)
 
 	if (mediaStream .getVideoSink () -> get_last_buffer ())
 	{
-		width  = (float) mediaStream .getVideoSink () -> get_width  () / 72.0f * M_INCH;
-		height = (float) mediaStream .getVideoSink () -> get_height () / 72.0f * M_INCH;
+		width  = mediaStream .getVideoSink () -> get_width  () / 72.0 * M_INCH;
+		height = mediaStream .getVideoSink () -> get_height () / 72.0 * M_INCH;
 	}
 
 	Name        .GlobalReplace (get_name_from_uri (uri), &file);
 	Description .GlobalReplace (SFString (uri .basename (false)) .toString (), &file);
 	Width       .GlobalReplace (basic::to_string (width),  &file);
 	Height      .GlobalReplace (basic::to_string (height), &file);
-	URL         .GlobalReplace (MFString ({ uri .basename (), uri .str () }) .toString (), &file);
+	URL         .GlobalReplace ("[ " + SFString (uri .basename ()) .toString () + ", " + SFString (uri .str ()) .toString () + " ]", &file);
 
 	return basic::ifilestream (file);
 }

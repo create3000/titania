@@ -139,8 +139,17 @@ SFString::toStream (std::ostream & ostream) const
 
 	for (const auto & c : getValue () .raw ())
 	{
-		if (c == '"' or c == '\\')
-			ostream << '\\';
+		switch (c)
+		{
+			case '"':
+			case '\\':
+			{
+				ostream << '\\';
+				break;
+			}
+			default:
+				break;
+		}
 
 		ostream << c;
 	}
