@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -357,7 +357,14 @@ const X3DBaseNode*
 X3DBaseNode::getType () const
 throw (Error <DISPOSED>)
 {
-	return getBrowser () -> getNode (getTypeName ());
+	try
+	{
+		return getBrowser () -> getNode (getTypeName ());
+	}
+	catch (const X3DError &)
+	{
+		return this;
+	}
 }
 
 void
@@ -515,13 +522,30 @@ X3DBaseNode::isDefaultValue (const X3DFieldDefinition* const field) const
 {
 	try
 	{
-		const X3DFieldDefinition* declarationField = getType () -> getField (field -> getName ());
+		const X3DFieldDefinition* const declarationField = getType () -> getField (field -> getName ());
 
 		return *field == *declarationField;
 	}
-	catch (const Error <INVALID_NAME> &)
+	catch (const X3DError &)
 	{
-		return false;
+		try
+		{
+			// Fallback
+
+			X3DBaseNode* const type = create (executionContext);
+
+			const X3DFieldDefinition* const declarationField = type -> getField (field -> getName ());
+
+			const bool result = (*field == *declarationField);
+
+			const_cast <X3DBaseNode*> (this) -> getGarbageCollector () .addObject (type);
+
+			return result;
+		}
+		catch (const X3DError &)
+		{
+			return false;
+		}
 	}
 }
 
@@ -1080,4 +1104,5 @@ X3DBaseNode::~X3DBaseNode ()
 { }
 
 } // X3D
+
 } // titania
