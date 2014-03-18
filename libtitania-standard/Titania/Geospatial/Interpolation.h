@@ -95,7 +95,7 @@ gd_lerp (vector3 <Type> source, vector3 <Type> destination, const Type & t, cons
 		source .y (interval (source .y (), -RANGE,    RANGE));
 
 		destination .x (interval (destination .x (), -RANGE1_2, RANGE1_2));
-		destination .y (interval (destination .y (), -RANGE,  RANGE));
+		destination .y (interval (destination .y (), -RANGE,    RANGE));
 
 		range = std::abs (destination .y () - source .y ());
 	}
