@@ -106,11 +106,11 @@ Geospatial::getReversedOrder (const MFString & geoSystem)
 	{
 		case CoordinateSystemType::GD:
 		{
-			return getLongitudeFirst (geoSystem);
+			return not getLatitudeFirst (geoSystem);
 		}
 		case CoordinateSystemType::UTM:
 		{
-			return getEastingFirst (geoSystem);
+			return not getNorthingFirst (geoSystem);
 		}
 		case CoordinateSystemType::GC:
 		{
@@ -118,7 +118,7 @@ Geospatial::getReversedOrder (const MFString & geoSystem)
 		}
 	}
 
-	return getLongitudeFirst (geoSystem);
+	return not getLatitudeFirst (geoSystem);
 }
 
 Geospatial::ReferenceFramePtr
@@ -129,14 +129,15 @@ Geospatial::getReferenceFrame (const MFString & geoSystem, const bool radians)
 		case CoordinateSystemType::GD:
 		{
 			return ReferenceFramePtr (new Geodetic (getEllipsoid (geoSystem),
-			                                        getLongitudeFirst (geoSystem), radians));
+			                                        getLatitudeFirst (geoSystem),
+			                                        radians));
 		}
 		case CoordinateSystemType::UTM:
 		{
 			return ReferenceFramePtr (new UniversalTransverseMercator (getEllipsoid (geoSystem),
 			                                                           getZone (geoSystem),
-			                                                           getSouthernHemisphere (geoSystem),
-			                                                           getEastingFirst (geoSystem)));
+			                                                           getNorthernHemisphere (geoSystem),
+			                                                           getNorthingFirst (geoSystem)));
 		}
 		case CoordinateSystemType::GC:
 		{
@@ -144,13 +145,13 @@ Geospatial::getReferenceFrame (const MFString & geoSystem, const bool radians)
 		}
 	}
 
-	return ReferenceFramePtr (new Geodetic (geospatial::WE, false, radians));
+	return ReferenceFramePtr (new Geodetic (geospatial::WE, true, radians));
 }
 
 Geospatial::ElevationFramePtr
 Geospatial::getElevationFrame (const MFString & geoSystem, const bool radians)
 {
-	return ElevationFramePtr (new Geodetic (getEllipsoid (geoSystem), false, radians));
+	return ElevationFramePtr (new Geodetic (getEllipsoid (geoSystem), true, radians));
 }
 
 Geospatial::CoordinateSystemType
@@ -182,27 +183,27 @@ Geospatial::getEllipsoid (const MFString & geoSystem)
 }
 
 bool
-Geospatial::getLongitudeFirst (const MFString & geoSystem)
+Geospatial::getLatitudeFirst (const MFString & geoSystem)
 {
 	for (const auto & string : geoSystem)
 	{
 		if (string == "longitude_first")
-			return true;
+			return false;
 	}
 
-	return false;
+	return true;
 }
 
 bool
-Geospatial::getEastingFirst (const MFString & geoSystem)
+Geospatial::getNorthingFirst (const MFString & geoSystem)
 {
 	for (const auto & string : geoSystem)
 	{
 		if (string == "easting_first")
-			return true;
+			return false;
 	}
 
-	return false;
+	return true;
 }
 
 int
@@ -222,15 +223,15 @@ Geospatial::getZone (const MFString & geoSystem)
 }
 
 bool
-Geospatial::getSouthernHemisphere (const MFString & geoSystem)
+Geospatial::getNorthernHemisphere (const MFString & geoSystem)
 {
 	for (const auto & string : geoSystem)
 	{
 		if (string == "S")
-			return true;
+			return false;
 	}
 
-	return false;
+	return true;
 }
 
 } // X3D

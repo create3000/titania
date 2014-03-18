@@ -65,9 +65,9 @@ class universal_transverse_mercator :
 public:
 
 	constexpr
-	universal_transverse_mercator (const spheroid3 <Type> & spheroid, const int zone, const bool southern_hemisphere = false, const bool easting_first = false) :
-		southern_hemisphere (southern_hemisphere),
-		      easting_first (easting_first),
+	universal_transverse_mercator (const spheroid3 <Type> & spheroid, const int zone, const bool northern_hemisphere = true, const bool northing_first = true) :
+		southern_hemisphere (not northern_hemisphere),
+		      easting_first (not northing_first),
 		                  a (spheroid .a ()),
 		               ecc2 (1 - sqr (spheroid .c () / a)),
 		                 EE (ecc2 / (1 - ecc2)),
@@ -183,7 +183,7 @@ universal_transverse_mercator <Type>::convert (const vector3 <Type> & utm) const
 
 	const Type longitude = longitude0 + (I - (1 + 2 * T2 + C1) * std::pow (I, 3) / 6 + L) / cosphi1;
 
-	return geodetic_converter .convert (vector3 <Type> (latitude, longitude, utm .z ()));
+	return geodetic_converter .convert_radians (vector3 <Type> (latitude, longitude, utm .z ()));
 }
 
 // https://gist.github.com/duedal/840476
@@ -192,7 +192,7 @@ template <class Type>
 vector3 <Type>
 universal_transverse_mercator <Type>::apply (const vector3 <Type> & geocentric) const
 {
-	const vector3 <Type> geodetic = geodetic_converter .apply (geocentric);
+	const vector3 <Type> geodetic = geodetic_converter .apply_radians (geocentric);
 
 	const Type latitude  = geodetic .x ();
 	const Type longitude = geodetic .y ();

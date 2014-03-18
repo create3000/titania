@@ -70,9 +70,9 @@ class geodetic :
 public:
 
 	constexpr
-	geodetic (const spheroid3 <Type> & spheroid, const bool longitude_first = false, const bool radians = true) :
-		longitude_first (longitude_first),
-		        radians (radians),
+	geodetic (const spheroid3 <Type> & spheroid, const bool latitude_first = true, const bool radians = true) :
+		longitude_first (not latitude_first),
+		        degrees (not radians),
 		              a (spheroid .a ()),
 		           c2a2 (sqr (spheroid .c () / a)),
 		           ecc2 (1 - c2a2)
@@ -84,7 +84,15 @@ public:
 
 	virtual
 	vector3 <Type>
+	convert_radians (const vector3 <Type> & geospatial) const;
+
+	virtual
+	vector3 <Type>
 	apply (const vector3 <Type> & geocentric) const final override;
+
+	virtual
+	vector3 <Type>
+	apply_radians (const vector3 <Type> & geocentric) const;
 
 	virtual
 	vector3 <Type>
@@ -94,7 +102,7 @@ public:
 private:
 
 	const bool longitude_first;
-	const bool radians;
+	const bool degrees;
 
 	const Type a;
 	const Type c2a2;
@@ -112,15 +120,26 @@ geodetic <Type>::convert (const vector3 <Type> & geodetic) const
 	Type       longitude = geodetic .y ();
 	const Type elevation = geodetic .z ();
 
-	if (not radians)
+	if (longitude_first)
+		std::swap (latitude, longitude);
+
+	if (degrees)
 	{
 		latitude  = math::radians (latitude);
 		longitude = math::radians (longitude);
 	}
 
-	if (longitude_first)
-		std::swap (latitude, longitude);
-		
+	return convert_radians (vector3 <Type> (latitude, longitude, elevation));
+}
+
+template <class Type>
+vector3 <Type>
+geodetic <Type>::convert_radians (const vector3 <Type> & geodetic) const
+{
+	const Type latitude  = geodetic .x ();
+	const Type longitude = geodetic .y ();
+	const Type elevation = geodetic .z ();
+
 	const Type slat  = std::sin (latitude);
 	const Type slat2 = sqr (slat);
 
@@ -140,6 +159,28 @@ template <class Type>
 vector3 <Type>
 geodetic <Type>::apply (const vector3 <Type> & geocentric) const
 {
+	const vector3 <Type> geodetic = apply_radians (geocentric);
+
+	Type       latitude  = geodetic .x ();
+	Type       longitude = geodetic .y ();
+	const Type elevation = geodetic .z ();
+
+	if (degrees)
+	{
+		latitude  = math::degrees (latitude);
+		longitude = math::degrees (longitude);
+	}
+
+	if (longitude_first)
+		return vector3 <Type> (longitude, latitude, elevation);
+
+	return vector3 <Type> (latitude, longitude, elevation);
+}
+
+template <class Type>
+vector3 <Type>
+geodetic <Type>::apply_radians (const vector3 <Type> & geocentric) const
+{
 	static constexpr Type   EPS_H = 1e-3;
 	static constexpr Type   EPS_P = 1e-10;
 	static constexpr size_t IMAX  = 30;
@@ -150,59 +191,39 @@ geodetic <Type>::apply (const vector3 <Type> & geocentric) const
 
 	const Type P = std::sqrt (x * x + y * y);
 
-	Type l = std::atan2 (y, x); // longitude
-	Type p = 0;                 // latitude
-	Type h = 0;                 // elevation
+	Type latitude  = 0;
+	Type longitude = std::atan2 (y, x);
+	Type elevation = 0;
 
 	Type N = a;
 
 	for (size_t i = 0; i < IMAX; ++ i)
 	{
-		const Type h0 = h;
-		const Type b0 = p;
+		const Type h0 = elevation;
+		const Type b0 = latitude;
 
-		p = std::atan (z / P / (1 - ecc2 * N / (N + h)));
+		latitude = std::atan (z / P / (1 - ecc2 * N / (N + elevation)));
 
-		const Type sin_p = std::sin (p);
+		const Type sin_p = std::sin (latitude);
 
-		N = a / std::sqrt (1 - ecc2 * sin_p * sin_p);
-		h = P / std::cos (p) - N;
+		N         = a / std::sqrt (1 - ecc2 * sin_p * sin_p);
+		elevation = P / std::cos (latitude) - N;
 
-		if (std::abs (h - h0) < EPS_H && std::abs (p - b0) < EPS_P)
+		if (std::abs (elevation - h0) < EPS_H && std::abs (latitude - b0) < EPS_P)
 			break;
 	}
 
-	if (not radians)
-	{
-		p = math::degrees (p);
-		l = math::degrees (l);
-	}
-
-	if (longitude_first)
-		// longitude, latitude, elevation
-		return vector3 <Type> (l, p, h);
-
-	// latitude, longitude, elevation
-	return vector3 <Type> (p, l, h);
+	return vector3 <Type> (latitude, longitude, elevation);
 }
 
 template <class Type>
 vector3 <Type>
 geodetic <Type>::normal (const vector3 <Type> & geocentric) const
 {
-	const vector3 <Type> geodetic = apply (geocentric);
+	const vector3 <Type> geodetic = apply_radians (geocentric);
 
 	Type latitude  = geodetic .x ();
 	Type longitude = geodetic .y ();
-
-	if (not radians)
-	{
-		latitude  = math::radians (latitude);
-		longitude = math::radians (longitude);
-	}
-
-	if (longitude_first)
-		std::swap (latitude, longitude);
 
 	const Type clat = std::cos (latitude);
 

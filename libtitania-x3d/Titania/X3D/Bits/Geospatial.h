@@ -120,11 +120,11 @@ private:
 
 	static
 	bool
-	getLongitudeFirst (const MFString &);
+	getLatitudeFirst (const MFString &);
 
 	static
 	bool
-	getEastingFirst (const MFString &);
+	getNorthingFirst (const MFString &);
 
 	static
 	int
@@ -132,7 +132,7 @@ private:
 
 	static
 	bool
-	getSouthernHemisphere (const MFString &);
+	getNorthernHemisphere (const MFString &);
 
 	//  @name Static members
 
