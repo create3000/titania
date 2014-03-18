@@ -61,6 +61,7 @@
 #include <Magick++.h>
 #include <giomm.h>
 #include <pcrecpp.h>
+#include <mutex>
 
 //
 
@@ -72,6 +73,8 @@ static const pcrecpp::RE Description ("__DESCRIPTION__");
 static const pcrecpp::RE Width       ("__WIDTH__");
 static const pcrecpp::RE Height      ("__HEIGHT__");
 static const pcrecpp::RE URL         ("__URL__");
+
+static std::mutex mutex;
 
 std::string
 get_name_from_uri (const basic::uri & uri)
@@ -171,6 +174,8 @@ static
 basic::ifilestream
 golden_image (const basic::uri & uri)
 {
+	std::lock_guard <std::mutex> lock (mutex);
+
 	const auto locale = std::locale::global (std::locale::classic ());
 
 	try
@@ -217,6 +222,8 @@ static
 basic::ifilestream
 golden_video (const basic::uri & uri)
 {
+	std::lock_guard <std::mutex> lock (mutex);
+
 	MediaStream mediaStream;
 
 	mediaStream .setup ();
