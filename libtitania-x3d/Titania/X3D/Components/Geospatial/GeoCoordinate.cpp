@@ -93,7 +93,7 @@ GeoCoordinate::initialize ()
 	
 	eventsProcessed ();
 }
-	
+
 void
 GeoCoordinate::eventsProcessed ()
 {
