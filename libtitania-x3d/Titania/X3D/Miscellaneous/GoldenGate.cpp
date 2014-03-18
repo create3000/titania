@@ -61,7 +61,6 @@
 #include <Magick++.h>
 #include <giomm.h>
 #include <pcrecpp.h>
-#include <mutex>
 
 //
 
@@ -73,8 +72,6 @@ static const pcrecpp::RE Description ("__DESCRIPTION__");
 static const pcrecpp::RE Width       ("__WIDTH__");
 static const pcrecpp::RE Height      ("__HEIGHT__");
 static const pcrecpp::RE URL         ("__URL__");
-
-static std::mutex mutex;
 
 std::string
 get_name_from_uri (const basic::uri & uri)
@@ -174,35 +171,21 @@ static
 basic::ifilestream
 golden_image (const basic::uri & uri)
 {
-	std::lock_guard <std::mutex> lock (mutex);
+	Magick::Image image;
+	image .read (uri);
+	image .resolutionUnits (Magick::PixelsPerInchResolution);
 
-	const auto locale = std::locale::global (std::locale::classic ());
+	const float width  = (float) image .size () .width  () / (float) image .density () .width  () * M_INCH;
+	const float height = (float) image .size () .height () / (float) image .density () .height () * M_INCH;
 
-	try
-	{
-		Magick::Image image;
-		image .read (uri);
-		image .resolutionUnits (Magick::PixelsPerInchResolution);
+	std::string file = os::load_file (os::find_data_file ("titania/goldengate/image.wrl"));
 
-		const float width  = (float) image .size () .width  () / (float) image .density () .width  () * M_INCH;
-		const float height = (float) image .size () .height () / (float) image .density () .height () * M_INCH;
+	Name   .GlobalReplace (get_name_from_uri (uri), &file);
+	Width  .GlobalReplace (basic::to_string (width), &file);
+	Height .GlobalReplace (basic::to_string (height), &file);
+	URL    .GlobalReplace (MFString ({ uri .basename (), uri .str () }) .toString (), &file);
 
-		std::string file = os::load_file (os::find_data_file ("titania/goldengate/image.wrl"));
-
-		Name   .GlobalReplace (get_name_from_uri (uri), &file);
-		Width  .GlobalReplace (std::to_string (width), &file);
-		Height .GlobalReplace (std::to_string (height), &file);
-		URL    .GlobalReplace (MFString ({ uri .basename (), uri .str () }) .toString (), &file);
-
-		std::locale::global (locale);
-
-		return basic::ifilestream (file);
-	}
-	catch (...)
-	{
-		std::locale::global (locale);
-		throw;
-	}
+	return basic::ifilestream (file);
 }
 
 static
@@ -222,8 +205,6 @@ static
 basic::ifilestream
 golden_video (const basic::uri & uri)
 {
-	std::lock_guard <std::mutex> lock (mutex);
-
 	MediaStream mediaStream;
 
 	mediaStream .setup ();
@@ -241,15 +222,11 @@ golden_video (const basic::uri & uri)
 		height = (float) mediaStream .getVideoSink () -> get_height () / 72.0f * M_INCH;
 	}
 
-	const auto locale = std::locale::global (std::locale::classic ());
-
 	Name        .GlobalReplace (get_name_from_uri (uri), &file);
 	Description .GlobalReplace (SFString (uri .basename (false)) .toString (), &file);
-	Width       .GlobalReplace (std::to_string (width),  &file);
-	Height      .GlobalReplace (std::to_string (height), &file);
+	Width       .GlobalReplace (basic::to_string (width),  &file);
+	Height      .GlobalReplace (basic::to_string (height), &file);
 	URL         .GlobalReplace (MFString ({ uri .basename (), uri .str () }) .toString (), &file);
-
-	std::locale::global (locale);
 
 	return basic::ifilestream (file);
 }

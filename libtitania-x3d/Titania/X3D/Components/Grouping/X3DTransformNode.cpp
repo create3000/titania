@@ -50,6 +50,8 @@
 
 #include "X3DTransformNode.h"
 
+#include <Titania/String/to_string.h>
+
 namespace titania {
 namespace X3D {
 
@@ -116,10 +118,10 @@ X3DTransformNode::setMatrixWithCenter (const Matrix4d & matrix, const Vector3f &
 bool
 X3DTransformNode::isUniform (const Vector3f & vector)
 {
-	std::string x = std::to_string (vector .x ());
-	std::string y = std::to_string (vector .y ());
-	std::string z = std::to_string (vector .z ());
-	
+	std::string x = basic::to_string (vector .x ());
+	std::string y = basic::to_string (vector .y ());
+	std::string z = basic::to_string (vector .z ());
+
 	return x == y and x == z;
 }
 

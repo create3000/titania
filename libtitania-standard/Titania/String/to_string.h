@@ -54,6 +54,87 @@
 namespace titania {
 namespace basic {
 
+inline
+std::string
+to_string (const int value)
+{
+	std::ostringstream ostream;
+	ostream << value;
+	return ostream .str ();
+}
+
+inline
+std::string
+to_string (const long value)
+{
+	std::ostringstream ostream;
+	ostream << value;
+	return ostream .str ();
+}
+
+inline
+std::string
+to_string (const long long value)
+{
+	std::ostringstream ostream;
+	ostream << value;
+	return ostream .str ();
+}
+
+inline
+std::string
+to_string (const unsigned value)
+{
+	std::ostringstream ostream;
+	ostream << value;
+	return ostream .str ();
+}
+
+inline
+std::string
+to_string (const unsigned long value)
+{
+	std::ostringstream ostream;
+	ostream << value;
+	return ostream .str ();
+}
+
+inline
+std::string
+to_string (const unsigned long long value)
+{
+	std::ostringstream ostream;
+	ostream << value;
+	return ostream .str ();
+}
+
+inline
+std::string
+to_string (const float value)
+{
+	std::ostringstream ostream;
+	ostream << value;
+	return ostream .str ();
+}
+
+inline
+std::string
+to_string (const double value)
+{
+	std::ostringstream ostream;
+	ostream << value;
+	return ostream .str ();
+}
+
+inline
+std::string
+to_string (const long double value)
+{
+	std::ostringstream ostream;
+	ostream << value;
+	return ostream .str ();
+}
+
 template <
    class CharT,
    class Traits    = std::char_traits <CharT>,
