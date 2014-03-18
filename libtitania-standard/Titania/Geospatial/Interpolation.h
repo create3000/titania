@@ -81,39 +81,49 @@ vector_slerp (Type source, Type destination, const T & t)
 ///  and @a destination by an amout of @a t.
 template <class Type>
 vector3 <Type>
-gd_lerp (vector3 <Type> source, vector3 <Type> destination, const Type & t, const bool latitude_first = true)
+gd_lerp (vector3 <Type> source, vector3 <Type> destination, const Type & t, const bool latitude_first = true, const bool radians = true)
 {
+	const Type RANGE    = radians ? M_PI : 180;
+	const Type RANGE1_2 = RANGE / 2;
+	const Type RANGE2   = RANGE * 2;
+
 	Type range;
 
 	if (latitude_first)
 	{
-		source .x (interval (source .x (), -M_PI2, M_PI2));
-		source .y (interval (source .y (), -M_PI,  M_PI));
-		
+		source .x (interval (source .x (), -RANGE1_2, RANGE1_2));
+		source .y (interval (source .y (), -RANGE,    RANGE));
+
+		destination .x (interval (destination .x (), -RANGE1_2, RANGE1_2));
+		destination .y (interval (destination .y (), -RANGE,  RANGE));
+
 		range = std::abs (destination .y () - source .y ());
 	}
 	else
 	{
-		source .x (interval (source .x (), -M_PI,  M_PI));	
-		source .y (interval (source .y (), -M_PI2, M_PI2));
-		
+		source .x (interval (source .x (), -RANGE,    RANGE));	
+		source .y (interval (source .y (), -RANGE1_2, RANGE1_2));
+
+		destination .x (interval (destination .x (), -RANGE,    RANGE));	
+		destination .y (interval (destination .y (), -RANGE1_2, RANGE1_2));
+
 		range = std::abs (destination .x () - source .x ());
 	}
 
-	if (range <= Type (M_PI))
+	if (range <= RANGE)
 		return lerp (source, destination, t);
 
-	const Type step = (Type (M_PI2) - range) * t;
+	const Type step = (RANGE2 - range) * t;
 
 	if (latitude_first)
 	{
 		Type longitude = source .y () < destination .y () ? source .y () - step : source .y () + step;
 
-		if (longitude < Type (-M_PI))
-			longitude += Type (M_PI2);
+		if (longitude < -RANGE)
+			longitude += RANGE2;
 
-		else if (longitude > Type (M_PI))
-			longitude -= Type (M_PI2);
+		else if (longitude > RANGE)
+			longitude -= RANGE2;
 
 		return vector3 <Type> (lerp (source .x (), destination .x (), t),
 		                       longitude,
@@ -123,11 +133,11 @@ gd_lerp (vector3 <Type> source, vector3 <Type> destination, const Type & t, cons
 	{
 		Type longitude = source .x () < destination .x () ? source .x () - step : source .x () + step;
 
-		if (longitude < Type (-M_PI))
-			longitude += Type (M_PI2);
+		if (longitude < -RANGE)
+			longitude += RANGE2;
 
-		else if (longitude > Type (M_PI))
-			longitude -= Type (M_PI2);
+		else if (longitude > RANGE)
+			longitude -= RANGE2;
 
 		return vector3 <Type> (longitude,
 		                       lerp (source .y (), destination .y (), t),

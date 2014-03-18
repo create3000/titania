@@ -111,8 +111,8 @@ protected:
 	getLocationMatrix (const Vector3d &) const;
 
 	bool
-	getReversedOrder () const
-	{ return reversedOrder; }
+	isStandardOrder () const
+	{ return standardOrder; }
 
 	Vector3d
 	lerp (const Vector3d &, const Vector3d &, const double);
@@ -157,7 +157,7 @@ private:
 	Geospatial::CoordinateSystemType coordinateSystem;
 	Geospatial::ReferenceFramePtr    referenceFrame;
 	Geospatial::ElevationFramePtr    elevationFrame;
-	bool                             reversedOrder;
+	bool                             standardOrder;
 	X3DSFNode <GeoOrigin>            geoOriginNode;
 	Vector3d                         origin;
 	bool                             radians;

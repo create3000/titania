@@ -1,5 +1,13 @@
 2014-03-18  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Geospatial.h:
+	* Geospatial.cpp:
+	* GeoElevationGrid.cpp:
+	* X3DGeospatialObject.h:
+	* X3DGeospatialObject.cpp: 
+
+2014-03-18  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DGeospatialObject.cpp: 
 
 2014-03-18  Holger Seelig  <holger.seelig@yahoo.de>

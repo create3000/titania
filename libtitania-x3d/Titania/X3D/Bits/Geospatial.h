@@ -89,7 +89,7 @@ public:
 
 	static
 	bool
-	getReversedOrder (const MFString & geoSystem);
+	isStandardOrder (const MFString & geoSystem);
 
 
 private:

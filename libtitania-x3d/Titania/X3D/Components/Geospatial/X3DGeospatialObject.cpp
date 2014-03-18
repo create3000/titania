@@ -70,7 +70,7 @@ X3DGeospatialObject::X3DGeospatialObject () :
 	coordinateSystem (Geospatial::CoordinateSystemType::GD),
 	  referenceFrame (),
 	  elevationFrame (),
-	   reversedOrder (false),
+	   standardOrder (true),
 	   geoOriginNode (),
 	          origin (),
 	         radians (true)
@@ -108,7 +108,7 @@ X3DGeospatialObject::set_geoSystem ()
 	coordinateSystem = Geospatial::getCoordinateSystem (geoSystem ());
 	referenceFrame   = Geospatial::getReferenceFrame (geoSystem (), radians);
 	elevationFrame   = Geospatial::getElevationFrame (geoSystem (), radians);
-	reversedOrder    = Geospatial::getReversedOrder (geoSystem ());
+	standardOrder    = Geospatial::isStandardOrder (geoSystem ());
 }
 
 void
@@ -213,21 +213,13 @@ X3DGeospatialObject::lerp (const Vector3d & source, const Vector3d & destination
 	switch (getCoordinateSystem ())
 	{
 		case Geospatial::CoordinateSystemType::GD:
-		{
-			if (radians)
-				return geospatial::gd_lerp <double> (source, destination, weight, not getReversedOrder ());
-			
-			Vector3d s (math::radians (source .x ()),      math::radians (source .y ()),      source .z ());
-			Vector3d d (math::radians (destination .x ()), math::radians (destination .y ()), source .z ());
-			Vector3d r (geospatial::gd_lerp <double> (s, d, weight, not getReversedOrder ()));
+			return geospatial::gd_lerp <double> (source, destination, weight, standardOrder, radians);
 
-			return Vector3d (math::degrees (r .x ()), math::degrees (r .y ()), r .z ());
-		}
 		case Geospatial::CoordinateSystemType::UTM:
-			return geospatial::utm_lerp <double> (source, destination, weight);
+			return geospatial::utm_lerp (source, destination, weight);
 
 		case Geospatial::CoordinateSystemType::GC:
-			return geospatial::gc_lerp <double> (source, destination, weight);
+			return geospatial::gc_lerp (source, destination, weight);
 	}
 
 	return Vector3d ();

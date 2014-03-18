@@ -100,25 +100,25 @@ const std::map <std::string, Spheroid3d> Geospatial::ellipsoids = {
 };
 
 bool
-Geospatial::getReversedOrder (const MFString & geoSystem)
+Geospatial::isStandardOrder (const MFString & geoSystem)
 {
 	switch (getCoordinateSystem (geoSystem))
 	{
 		case CoordinateSystemType::GD:
 		{
-			return not getLatitudeFirst (geoSystem);
+			return getLatitudeFirst (geoSystem);
 		}
 		case CoordinateSystemType::UTM:
 		{
-			return not getNorthingFirst (geoSystem);
+			return getNorthingFirst (geoSystem);
 		}
 		case CoordinateSystemType::GC:
 		{
-			return false;
+			return true;
 		}
 	}
 
-	return not getLatitudeFirst (geoSystem);
+	return getLatitudeFirst (geoSystem);
 }
 
 Geospatial::ReferenceFramePtr

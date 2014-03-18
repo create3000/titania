@@ -276,14 +276,14 @@ GeoElevationGrid::createPoints () const
 	// When the geoSystem is "UTM", xSpacing refers to the number of eastings (length base units) between adjacent
 	// height values and zSpacing refers to the number of northings (length base units) between vertical height values.
 
-	if (getReversedOrder ())
+	if (isStandardOrder ())
 	{
 		for (int32_t z = 0; z < zDimension (); ++ z)
 		{
 			for (int32_t x = 0; x < xDimension (); ++ x)
 			{
-				points .emplace_back (getCoord (Vector3d (xSpacing () * x, // longitude, easting
-				                                          zSpacing () * z, // latitude, northing
+				points .emplace_back (getCoord (Vector3d (zSpacing () * z, // latitude, northing
+				                                          xSpacing () * x, // longitude, easting
 				                                          getHeight (x + z * xDimension ())) + geoGridOrigin ()));
 			}
 		}
@@ -294,8 +294,8 @@ GeoElevationGrid::createPoints () const
 		{
 			for (int32_t x = 0; x < xDimension (); ++ x)
 			{
-				points .emplace_back (getCoord (Vector3d (zSpacing () * z, // latitude, northing
-				                                          xSpacing () * x, // longitude, easting
+				points .emplace_back (getCoord (Vector3d (xSpacing () * x, // longitude, easting
+				                                          zSpacing () * z, // latitude, northing
 				                                          getHeight (x + z * xDimension ())) + geoGridOrigin ()));
 			}
 		}
