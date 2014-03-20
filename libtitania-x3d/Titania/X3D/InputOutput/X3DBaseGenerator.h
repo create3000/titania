@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_INPUT_OUTPUT_GENERATOR_H__
-#define __TITANIA_INPUT_OUTPUT_GENERATOR_H__
+#ifndef __TITANIA_X3D_INPUT_OUTPUT_X3DBASE_GENERATOR_H__
+#define __TITANIA_X3D_INPUT_OUTPUT_X3DBASE_GENERATOR_H__
 
 #include <iomanip>
 #include <limits>
@@ -57,16 +57,16 @@
 #include <string>
 
 namespace titania {
-namespace io {
+namespace X3D {
 
-template <class CharT, class Traits = std::char_traits <CharT>>
-class basic_generator
+template <class CharT, class Traits = std::char_traits <CharT>> 
+class X3DBaseGenerator
 {
 public:
 
-	basic_generator () = delete;
+	X3DBaseGenerator () = delete;
 
-	basic_generator (const basic_generator &) = delete;
+	X3DBaseGenerator (const X3DBaseGenerator &) = delete;
 
 	static
 	std::basic_ostream <CharT, Traits> &
@@ -181,6 +181,92 @@ public:
 
 	};
 
+	template <class Type>
+	class XMLListSeparator :
+		public std::iterator <std::output_iterator_tag, void, void, void, void>
+	{
+	public:
+
+		typedef CharT                              char_type;
+		typedef Traits                             traits_type;
+		typedef std::basic_ostream <CharT, Traits> ostream_type;
+
+		XMLListSeparator (ostream_type & ostream) :
+			ostream (ostream) { }
+
+		~XMLListSeparator () { }
+
+		XMLListSeparator &
+		operator = (const Type & value)
+		{
+			ostream
+				<< XMLEncode (value)
+				<< Comma
+				<< Space;
+
+			return *this;
+		}
+
+		XMLListSeparator &
+		operator * () { return *this; }
+
+		XMLListSeparator &
+		operator ++ () { return *this; }
+
+		XMLListSeparator &
+		operator ++ (int) { return *this; }
+
+
+	private:
+
+		ostream_type & ostream;
+
+	};
+
+	template <class Type>
+	class XMLStringSeparator :
+		public std::iterator <std::output_iterator_tag, void, void, void, void>
+	{
+	public:
+
+		typedef CharT                              char_type;
+		typedef Traits                             traits_type;
+		typedef std::basic_ostream <CharT, Traits> ostream_type;
+
+		XMLStringSeparator (ostream_type & ostream) :
+			ostream (ostream) { }
+
+		~XMLStringSeparator () { }
+
+		XMLStringSeparator &
+		operator = (const Type & value)
+		{
+			ostream
+				<< '"'
+				<< XMLEncode (value)
+				<< '"'
+				<< Comma
+				<< Space;
+
+			return *this;
+		}
+
+		XMLStringSeparator &
+		operator * () { return *this; }
+
+		XMLStringSeparator &
+		operator ++ () { return *this; }
+
+		XMLStringSeparator &
+		operator ++ (int) { return *this; }
+
+
+	private:
+
+		ostream_type & ostream;
+
+	};
+
 	static
 	std::basic_ostream <CharT, Traits> &
 	OpenBracket (std::basic_ostream <CharT, Traits> &);
@@ -232,6 +318,7 @@ protected:
 		static size_t digits10;
 	};
 
+
 private:
 
 	static std::string forceBreak;
@@ -239,38 +326,38 @@ private:
 };
 
 template <class CharT, class Traits>
-std::string basic_generator <CharT, Traits>::comment = "#";
+std::string X3DBaseGenerator <CharT, Traits>::comment = "#";
 template <class CharT, class Traits>
-std::string basic_generator <CharT, Traits>::space = " ";
+std::string X3DBaseGenerator <CharT, Traits>::space = " ";
 template <class CharT, class Traits>
-std::string basic_generator <CharT, Traits>::tidySpace = " ";
+std::string X3DBaseGenerator <CharT, Traits>::tidySpace = " ";
 template <class CharT, class Traits>
-std::string basic_generator <CharT, Traits>::forceBreak = "\n";
+std::string X3DBaseGenerator <CharT, Traits>::forceBreak = "\n";
 template <class CharT, class Traits>
-std::string basic_generator <CharT, Traits>::endl = "\n";
+std::string X3DBaseGenerator <CharT, Traits>::endl = "\n";
 template <class CharT, class Traits>
-std::string basic_generator <CharT, Traits>::tidyBreak = "\n";
+std::string X3DBaseGenerator <CharT, Traits>::tidyBreak = "\n";
 template <class CharT, class Traits>
-std::string basic_generator <CharT, Traits>::listBreak = "\n";
+std::string X3DBaseGenerator <CharT, Traits>::listBreak = "\n";
 template <class CharT, class Traits>
-std::string basic_generator <CharT, Traits>::comma = ",";
+std::string X3DBaseGenerator <CharT, Traits>::comma = ",";
 template <class CharT, class Traits>
-bool basic_generator <CharT, Traits>::listSpace = true;
+bool X3DBaseGenerator <CharT, Traits>::listSpace = true;
 template <class CharT, class Traits>
-bool basic_generator <CharT, Traits>::hasListBreak = true;
+bool X3DBaseGenerator <CharT, Traits>::hasListBreak = true;
 
 template <class CharT, class Traits>
-std::string basic_generator <CharT, Traits>::indent = "";
+std::string X3DBaseGenerator <CharT, Traits>::indent = "";
 template <class CharT, class Traits>
-std::string basic_generator <CharT, Traits>::indentChar = "  ";
+std::string X3DBaseGenerator <CharT, Traits>::indentChar = "  ";
 
 template <class CharT, class Traits>
 template <class Type>
-size_t basic_generator <CharT, Traits>::NumericLimits <Type>::digits10 = std::numeric_limits <Type>::digits10;
+size_t X3DBaseGenerator <CharT, Traits>::NumericLimits <Type>::digits10 = std::numeric_limits <Type>::digits10;
 
 template <class CharT, class Traits>
 std::basic_ostream <CharT, Traits> &
-basic_generator <CharT, Traits>::OpenBracket (std::basic_ostream <CharT, Traits> & stream)
+X3DBaseGenerator <CharT, Traits>::OpenBracket (std::basic_ostream <CharT, Traits> & stream)
 {
 	stream .put (stream .widen ('['));
 
@@ -287,11 +374,11 @@ basic_generator <CharT, Traits>::OpenBracket (std::basic_ostream <CharT, Traits>
 
 template <class CharT, class Traits>
 std::basic_ostream <CharT, Traits> &
-basic_generator <CharT, Traits>::CloseBracket (std::basic_ostream <CharT, Traits> & stream)
+X3DBaseGenerator <CharT, Traits>::CloseBracket (std::basic_ostream <CharT, Traits> & stream)
 {
 	if (ListSpace ())
 		stream << ListBreak;
-		
+
 	stream << DecIndent;
 
 	if (HasListBreak ())
@@ -303,7 +390,7 @@ basic_generator <CharT, Traits>::CloseBracket (std::basic_ostream <CharT, Traits
 
 template <class CharT, class Traits>
 std::basic_ostream <CharT, Traits> &
-basic_generator <CharT, Traits>::EmptyBrackets (std::basic_ostream <CharT, Traits> & stream)
+X3DBaseGenerator <CharT, Traits>::EmptyBrackets (std::basic_ostream <CharT, Traits> & stream)
 {
 	stream .put (stream .widen ('['));
 	stream << TidySpace;
@@ -314,28 +401,14 @@ basic_generator <CharT, Traits>::EmptyBrackets (std::basic_ostream <CharT, Trait
 template <class CharT, class Traits>
 template <class Type>
 std::basic_ostream <CharT, Traits> &
-basic_generator <CharT, Traits>::Precision (std::basic_ostream <CharT, Traits> & stream)
+X3DBaseGenerator <CharT, Traits>::Precision (std::basic_ostream <CharT, Traits> & stream)
 {
 	return stream << std::setprecision (NumericLimits <Type>::digits10);
 }
 
-typedef basic_generator <char> Generator;
+extern template class X3DBaseGenerator <char>;
 
-} // io
+} // X3D
 } // titania
-
-extern template std::ostream & titania::io::Generator::Comment       (std::ostream &);
-extern template std::ostream & titania::io::Generator::Space         (std::ostream &);
-extern template std::ostream & titania::io::Generator::TidySpace     (std::ostream &);
-extern template std::ostream & titania::io::Generator::Break         (std::ostream &);
-extern template std::ostream & titania::io::Generator::TidyBreak     (std::ostream &);
-extern template std::ostream & titania::io::Generator::ListBreak     (std::ostream &);
-extern template std::ostream & titania::io::Generator::Comma         (std::ostream &);
-extern template std::ostream & titania::io::Generator::Indent        (std::ostream &);
-extern template std::ostream & titania::io::Generator::IncIndent     (std::ostream &);
-extern template std::ostream & titania::io::Generator::DecIndent     (std::ostream &);
-extern template std::ostream & titania::io::Generator::OpenBracket   (std::ostream &);
-extern template std::ostream & titania::io::Generator::CloseBracket  (std::ostream &);
-extern template std::ostream & titania::io::Generator::EmptyBrackets (std::ostream &);
 
 #endif

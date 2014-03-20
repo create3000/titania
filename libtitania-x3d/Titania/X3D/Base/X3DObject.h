@@ -55,7 +55,10 @@
 #include "../Base/X3DInput.h"
 #include "../Base/X3DOutput.h"
 #include "../Bits/Error.h"
+#include "../InputOutput/Generator.h"
+
 #include <Titania/LOG.h>
+
 #include <deque>
 #include <istream>
 #include <memory>
@@ -122,6 +125,9 @@ public:
 	std::string
 	toString () const;
 
+	std::string
+	toXMLString () const;
+
 	///  @name Stream Handling
 
 	virtual
@@ -135,6 +141,10 @@ public:
 	virtual
 	void
 	toStream (std::ostream &) const = 0;
+
+	virtual
+	void
+	toXMLStream (std::ostream &) const = 0;
 
 	///  @name Destruction
 
@@ -165,19 +175,20 @@ private:
 	static GarbageCollector garbageCollector;
 
 	///  @name Members
-	
+
 	struct Data
 	{
-		std::string               name;
+		std::string name;
 		std::vector <std::string> comments;
-		UserDataPtr               userData;
+		UserDataPtr userData;
 	};
-	
+
 	mutable std::unique_ptr <Data> data;
 
 };
 
 template <class CharT, class Traits>
+inline
 std::basic_istream <CharT, Traits> &
 operator >> (std::basic_istream <CharT, Traits> & istream, X3DObject & object)
 {
@@ -186,6 +197,7 @@ operator >> (std::basic_istream <CharT, Traits> & istream, X3DObject & object)
 }
 
 template <class CharT, class Traits>
+inline
 std::basic_ostream <CharT, Traits> &
 operator << (std::basic_ostream <CharT, Traits> & ostream, const X3DObject & object)
 {
@@ -193,8 +205,48 @@ operator << (std::basic_ostream <CharT, Traits> & ostream, const X3DObject & obj
 	return ostream;
 }
 
-extern template std::istream & operator >> (std::istream &, X3DObject &);
-extern template std::ostream & operator << (std::ostream &, const X3DObject &);
+struct XMLEncodeObjectType { const X3DObject* const object; };
+
+inline
+XMLEncodeObjectType
+XMLEncode (const X3DObject & object)
+{
+	return XMLEncodeObjectType { &object };
+}
+
+inline
+XMLEncodeObjectType
+XMLEncode (const X3DObject* const object)
+{
+	return XMLEncodeObjectType { object };
+}
+
+template <typename CharT, typename Traits>
+inline
+std::basic_ostream <CharT, Traits> &
+operator << (std::basic_ostream <CharT, Traits> & ostream, const XMLEncodeObjectType & value)
+{
+	value .object -> toXMLStream (ostream);
+	return ostream;
+}
+
+struct XMLEncodeStringType { const std::string & string; };
+
+inline
+XMLEncodeStringType
+XMLEncode (const std::string & string)
+{
+	return XMLEncodeStringType { string };
+}
+
+template <typename CharT, typename Traits>
+inline
+std::basic_ostream <CharT, Traits> &
+operator << (std::basic_ostream <CharT, Traits> & ostream, const XMLEncodeStringType & value)
+{
+	Generator::XMLEncodeToStream (ostream, value .string);
+	return ostream;
+}
 
 } // X3D
 } // titania

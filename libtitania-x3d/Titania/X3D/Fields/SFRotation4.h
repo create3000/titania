@@ -174,7 +174,8 @@ public:
 	SFRotation4*
 	slerp (const SFRotation4 &, const value_type &) const;
 
-	///  @name Input operator.
+	///  @name Input/Output
+
 	virtual
 	void
 	fromStream (std::istream &)
@@ -183,10 +184,13 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) final override;
 
-	///  @name Output operator.
 	virtual
 	void
 	toStream (std::ostream &) const final override;
+
+	virtual
+	void
+	toXMLStream (std::ostream &) const final override;
 
 
 private:
@@ -421,6 +425,14 @@ void
 SFRotation4 <ValueType>::toStream (std::ostream & ostream) const
 {
 	ostream << Generator::Precision <value_type> << getValue ();
+}
+
+template <class ValueType>
+inline
+void
+SFRotation4 <ValueType>::toXMLStream (std::ostream & ostream) const
+{
+	toStream (ostream);
 }
 
 // Aritmetic operators.

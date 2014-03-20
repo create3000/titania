@@ -270,12 +270,29 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compressed)
 	if (compressed)
 	{
 		ogzstream file (worldURL .path ());
-		file << X3D::SmallestStyle << getBrowser () -> getExecutionContext ();
+
+		file
+			<< X3D::SmallestStyle
+			<< getBrowser () -> getExecutionContext ();
 	}
 	else
 	{
 		std::ofstream file (worldURL .path ());
-		file << X3D::NicestStyle << getBrowser () -> getExecutionContext ();
+
+		file
+			<< X3D::NicestStyle
+			<< getBrowser () -> getExecutionContext ();
+	}
+
+	// Debug
+
+	std::string test = "/home/holger/Projekte/Titania/Library/Tests/Basic/X3D.x3d";
+	
+	if (os::file_exists (test))
+	{
+		std::ofstream file (test);
+
+		file << X3D::XMLEncode (getBrowser () -> getExecutionContext ());
 	}
 }
 

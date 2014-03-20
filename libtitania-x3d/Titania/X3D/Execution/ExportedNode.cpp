@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -131,46 +131,70 @@ ExportedNode::remove ()
 
 void
 ExportedNode::toStream (std::ostream & ostream) const
+//throw (Error <INVALID_NODE>,
+//       Error <DISPOSED>)
 {
-	try
+	const std::string localName = Generator::GetLocalName (getNode ());
+
+	if (not getComments () .empty ())
 	{
-		const std::string localName = Generator::GetLocalName (getNode ());
+		ostream << Generator::TidyBreak;
 
-		if (not getComments () .empty ())
-		{
-			ostream << Generator::TidyBreak;
-
-			for (const auto & comment : getComments ())
-			{
-				ostream
-					<< Generator::Indent
-					<< Generator::Comment
-					<< comment
-					<< Generator::ForceBreak;
-			}
-
-			ostream << Generator::TidyBreak;
-		}
-
-		ostream
-			<< Generator::Indent
-			<< "EXPORT"
-			<< Generator::Space
-			<< localName;
-
-		if (exportedName not_eq localName)
+		for (const auto & comment : getComments ())
 		{
 			ostream
-				<< Generator::Space
-				<< "AS"
-				<< Generator::Space
-				<< exportedName;
+				<< Generator::Indent
+				<< Generator::Comment
+				<< comment
+				<< Generator::ForceBreak;
 		}
 
-		ostream << Generator::Break;
+		ostream << Generator::TidyBreak;
 	}
-	catch (...)
-	{ }
+
+	ostream
+		<< Generator::Indent
+		<< "EXPORT"
+		<< Generator::Space
+		<< localName;
+
+	if (exportedName not_eq localName)
+	{
+		ostream
+			<< Generator::Space
+			<< "AS"
+			<< Generator::Space
+			<< exportedName;
+	}
+
+	ostream << Generator::Break;
+}
+
+void
+ExportedNode::toXMLStream (std::ostream & ostream) const
+//throw (Error <INVALID_NODE>,
+//       Error <DISPOSED>)
+{
+	const std::string localName = Generator::GetLocalName (getNode ());
+
+	ostream
+		<< Generator::Indent
+		<< "<EXPORT"
+		<< Generator::Space
+		<< "localDEF='"
+		<< XMLEncode (localName)
+		<< "'";
+
+	if (exportedName not_eq localName)
+	{
+		ostream
+			<< Generator::Space
+			<< "AS='"
+			<< XMLEncode (exportedName)
+			<< "'";
+	}
+
+	ostream << "/>";
 }
 
 } // X3D

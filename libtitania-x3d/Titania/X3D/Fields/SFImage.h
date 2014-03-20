@@ -139,7 +139,7 @@ public:
 	void
 	getValue (size_type &, size_type &, size_type &, MFInt32 &) const;
 
-	///  @name Input operator.
+	///  @name Input/Output
 	virtual
 	void
 	fromStream (std::istream &)
@@ -148,10 +148,15 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) final override;
 
-	///  @name Output operator.
 	virtual
 	void
 	toStream (std::ostream &) const final override;
+
+	virtual
+	void
+	toXMLStream (std::ostream &) const final override;
+
+	///  @name Destruction
 
 	virtual
 	void

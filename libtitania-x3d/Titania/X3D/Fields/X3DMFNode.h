@@ -53,7 +53,6 @@
 
 #include "../Basic/X3DArrayField.h"
 #include "../Fields/X3DSFNode.h"
-#include "../InputOutput/Generator.h"
 
 #include <Titania/Utility/Adapter.h>
 
@@ -77,6 +76,7 @@ public:
 	using X3DArrayField <X3DSFNode <ValueType>> ::front;
 	using X3DArrayField <X3DSFNode <ValueType>> ::back;
 	using X3DArrayField <X3DSFNode <ValueType>> ::cend;
+	using X3DArrayField <X3DSFNode <ValueType>> ::empty;
 	using X3DArrayField <X3DSFNode <ValueType>> ::size;
 
 	X3DMFNode () :
@@ -179,6 +179,10 @@ public:
 	void
 	toStream (std::ostream &) const final override;
 
+	virtual
+	void
+	toXMLStream (std::ostream &) const final override;
+
 
 private:
 
@@ -278,6 +282,41 @@ X3DMFNode <ValueType>::toStream (std::ostream & ostream) const
 
 			return;
 		}
+	}
+}
+
+template <class ValueType>
+void
+X3DMFNode <ValueType>::toXMLStream (std::ostream & ostream) const
+{
+	if (not empty ())
+	{
+		for (const auto & value : *this)
+		{
+			if (value)
+			{
+				ostream
+					<< XMLEncode (value)
+					<< Generator::ForceBreak;
+			}
+			else
+			{
+				ostream
+					<< Generator::Indent
+					<< "<!-- NULL -->"
+					<< Generator::ForceBreak;
+			}
+		}
+
+		if (back ())
+			ostream << XMLEncode (back ());
+
+		else
+		{
+			ostream
+				<< Generator::Indent
+				<< "<!-- NULL -->";
+		}	
 	}
 }
 

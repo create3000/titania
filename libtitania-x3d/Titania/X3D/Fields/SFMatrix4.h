@@ -227,7 +227,8 @@ public:
 	vector3_type*
 	multMatrixDir (const vector3_type &) const;
 
-	///  @name Input operator.
+	///  @name Input/Output
+
 	virtual
 	void
 	fromStream (std::istream &)
@@ -236,10 +237,13 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) final override;
 
-	///  @name Output operator.
 	virtual
 	void
 	toStream (std::ostream &) const final override;
+
+	virtual
+	void
+	toXMLStream (std::ostream &) const final override;
 
 
 private:
@@ -546,6 +550,14 @@ void
 SFMatrix4 <ValueType>::toStream (std::ostream & ostream) const
 {
 	ostream << Generator::Precision <value_type> << getValue ();
+}
+
+template <class ValueType>
+inline
+void
+SFMatrix4 <ValueType>::toXMLStream (std::ostream & ostream) const
+{
+	toStream (ostream);
 }
 
 //extern template class X3DField <Matrix4d>;

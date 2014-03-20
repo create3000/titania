@@ -885,11 +885,11 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 
 	if (not getRootNodes () .empty ())
 	{
-		for (const auto & child : basic::adapter (getRootNodes () .cbegin (), getRootNodes () .cend () - 1))
+		for (const auto & rootNode : basic::adapter (getRootNodes () .cbegin (), getRootNodes () .cend () - 1))
 		{
 			ostream
 				<< Generator::Indent
-				<< child
+				<< rootNode
 				<< Generator::TidyBreak
 				<< Generator::TidyBreak;
 		}
@@ -901,19 +901,35 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 	}
 
 	if (not getImportedNodes () .empty ())
+	{
 		ostream << Generator::TidyBreak;
 
-	for (const auto & importedNode : getImportedNodes ())
-		ostream << importedNode;
+		for (const auto & importedNode : getImportedNodes ())
+		{
+			try
+			{
+				ostream << importedNode;
+			}
+			catch (const X3DError &)
+			{ }
+		}
+	}
 
 	if (not getRoutes () .empty ())
+	{
 		ostream << Generator::TidyBreak;
 
-	for (const auto & route : getRoutes ())
-	{
-		ostream
-			<< route
-			<< Generator::Break;
+		for (const auto & route : getRoutes ())
+		{
+			try
+			{
+				ostream
+					<< route
+					<< Generator::Break;
+			}
+			catch (const X3DError &)
+			{ }
+		}
 	}
 
 	if (not getInnerComments () .empty () and not isScene ())
@@ -928,6 +944,62 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 				<< comment
 				<< Generator::Break;
 		}
+	}
+
+	Generator::PopContext ();
+}
+
+void
+X3DExecutionContext::toXMLStream (std::ostream & ostream) const
+{
+	Generator::PushContext ();
+
+	for (const auto & externProto : getExternProtoDeclarations ())
+	{
+		ostream
+			<< XMLEncode (externProto)
+			<< Generator::ForceBreak;
+	}
+
+	for (const auto & proto : getProtoDeclarations ())
+	{
+		ostream
+			<< XMLEncode (proto)
+			<< Generator::ForceBreak;
+	}
+	
+	for (const auto & rootNode : getRootNodes ())
+	{
+		if (rootNode)
+		{
+			ostream
+				<< XMLEncode (rootNode)
+				<< Generator::ForceBreak;
+		}
+	}
+
+	for (const auto & importedNode : getImportedNodes ())
+	{
+		try
+		{
+			ostream
+				<<	XMLEncode (importedNode)
+				<< Generator::ForceBreak;
+		}
+		catch (const X3DError &)
+		{ }
+	}
+
+	for (const auto & route : getRoutes ())
+	{
+		try
+		{
+			ostream
+				<<	XMLEncode (route)
+				<< Generator::ForceBreak;
+		}
+		catch (const X3DError &)
+		{ }
 	}
 
 	Generator::PopContext ();

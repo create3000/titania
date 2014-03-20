@@ -12,13 +12,18 @@ use XML::LibXML;
 use Glib;
 #libglib-perl
 
-my $DTDDirectory = "/usr/share/titania/dtd";
+use Switch;
+
+
+my $Share        = "/usr/share/titania";
+my $DTDDirectory = "$Share/dtd";
 my $X3DCatalog   = "$DTDDirectory/x3d-catalog.xml";
+my $Info         = "$Share/info";
+my $NodeIndex    = "$Info/node-index.txt";
+my $FieldIndex   = "$Info/field-index.txt";
 
-my $RecommendedPublicId = "ISO//Web3D//DTD X3D 3.2//EN";
-my $RecomemndedSystemId = "$DTDDirectory/x3d-3.2.dtd";
-
-my $TitaniaInfo = "titania-info";
+my $RecommendedPublicId = "ISO//Web3D//DTD X3D 3.3//EN";
+my $RecomemndedSystemId = "$DTDDirectory/x3d-3.3.dtd";
 
 XML::LibXML -> load_catalog ($X3DCatalog);
 
@@ -48,7 +53,7 @@ sub new {
 		parents              => [ ]
 	};
 
-	$self -> {nodes} -> load_from_data (join ("", `$TitaniaInfo -i=nodes 2>/dev/null`), "none");
+	$self -> {nodes} -> load_from_file ($NodeIndex, "none");
 
 	unshift @{$self -> {contexts}}, $self;
 
@@ -58,7 +63,7 @@ sub new {
 
 sub escape {
 	my ($value) = @_;
-	$value =~ s/(\A|[^\\])((?:\\\\)*["])/$1\\$2/sgo;  # Escape "
+	$value =~ s/([\\"])/\\$1/sgo;  # Escape "
 	return $value;
 }
 
@@ -595,9 +600,6 @@ use strict;
 use warnings;
 use v5.10.0;
 
-use Glib;
-#libglib-perl
-
 binmode STDOUT, ":utf8";
 
 sub new {
@@ -610,14 +612,54 @@ sub new {
 		indent   => 0
 	};
 
-	$self -> {fields} -> load_from_data (join ("", `$TitaniaInfo -f 2>/dev/null`), "none");
+	$self -> {fields} -> load_from_file ($FieldIndex, "none");
 
 	bless $self, $class;
 	return $self;
 }
 
 sub escape {
-	return X3D::Parser::escape (@_);
+	my ($value) = @_;
+	
+	my $result;
+
+	while ($value =~ /\G(.)/sgo)
+	{
+		switch ($1)
+		{
+			case "\\"
+			{
+				if ($value =~ /\G(.)/sgo)
+				{
+					switch ($1)
+					{
+						case "\\"
+						{
+							$result .= "\\\\";
+						}
+						case "\""
+						{
+							$result .= "\\\"";
+						}
+						else
+						{
+							$result .= $1;
+						}
+					}
+				}
+			}
+			case "\""
+			{
+				$result .= "\\\"";
+			}
+			else
+			{
+				$result .= $1;
+			}
+		}
+	}
+
+	return $result;
 }
 
 sub getPrototype {
@@ -1055,7 +1097,7 @@ sub field {
 				if $self -> {fields} -> has_group ($typeName);
 		}
 	}
-	else
+	else # /^MF/
 	{
 		$field -> {value}
 		? print "[ ", $field -> {value} , " ]"
@@ -1181,3 +1223,11 @@ my $generator = new X3D::Generator ($parser);
 $generator -> output ();
 
 #print STDERR $@ if $@;
+
+1;
+__END__
+
+# How to update indices
+titania-info -i=nodes 2>/dev/null >~/Projekte/Titania/x3d2vrml/share/titania/info/node-index.txt
+titania-info -f 2>/dev/null >~/Projekte/Titania/x3d2vrml/share/titania/info/field-index.txt
+sudo cp -r /home/holger/Projekte/Titania/x3d2vrml/share/titania/info/ /usr/share/titania/

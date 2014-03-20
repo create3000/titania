@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -188,6 +188,43 @@ ImportedNode::toStream (std::ostream & ostream) const
 	}
 	catch (const X3DError &)
 	{ }
+}
+
+void
+ImportedNode::toXMLStream (std::ostream & ostream) const
+//throw (Error <INVALID_NODE>,
+//       Error <DISPOSED>)
+{
+	if (Generator::ExistsNode (inlineNode))
+	{
+		Generator::AddImportedNode (getExportedNode (), importedName);
+
+		ostream
+			<< Generator::Indent
+			<< "<IMPORT"
+			<< Generator::Space
+			<< "inlineDEF='"
+			<< XMLEncode (inlineNode -> getName ())
+			<< "'"
+			<< Generator::Space
+			<< "exportedDEF='"
+			<< XMLEncode (exportedName)
+			<< "'";
+
+		if (importedName not_eq exportedName)
+		{
+			ostream
+				<< Generator::Space
+				<< "AS='"
+				<< XMLEncode (importedName)
+				<< "'";
+		}
+
+		ostream
+			<< "/>";
+	}
+	else
+		throw Error <INVALID_NODE> ("ImportedNode::toXMLStream: Inline node does not exist.");
 }
 
 } // X3D

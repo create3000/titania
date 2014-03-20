@@ -192,5 +192,11 @@ SFColor::toStream (std::ostream & ostream) const
 	ostream << Generator::Precision <value_type> << getValue ();
 }
 
+void
+SFColor::toXMLStream (std::ostream & ostream) const
+{
+	toStream (ostream);
+}
+
 } // X3D
 } // titania

@@ -17,6 +17,7 @@
     <Folder Include="share\titania\" />
     <Folder Include="share\titania\dtd\" />
     <Folder Include="bin\" />
+    <Folder Include="share\titania\info\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="share\titania\dtd\x3d-3.0.dtd" />
@@ -25,5 +26,7 @@
     <None Include="share\titania\dtd\x3d-3.3.dtd" />
     <None Include="share\titania\dtd\x3d-catalog.xml" />
     <None Include="bin\x3d2vrml" />
+    <None Include="share\titania\info\field-index.txt" />
+    <None Include="share\titania\info\node-index.txt" />
   </ItemGroup>
 </Project>

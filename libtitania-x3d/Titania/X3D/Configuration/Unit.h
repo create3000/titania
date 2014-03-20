@@ -89,6 +89,9 @@ public:
 	void
 	toStream (std::ostream & ostream) const;
 
+	void
+	toXMLStream (std::ostream & ostream) const;
+
 
 private:
 
@@ -105,6 +108,24 @@ std::basic_ostream <CharT, Traits> &
 operator << (std::basic_ostream <CharT, Traits> & ostream, const Unit & unit)
 {
 	unit .toStream (ostream);
+	return ostream;
+}
+
+struct XMLEncodeUnitType { const Unit & unit; };
+
+inline
+XMLEncodeUnitType
+XMLEncode (const Unit & unit)
+{
+	return XMLEncodeUnitType { unit };
+}
+
+template <typename CharT, typename Traits>
+inline
+std::basic_ostream <CharT, Traits> &
+operator << (std::basic_ostream <CharT, Traits> & ostream, const XMLEncodeUnitType & value)
+{
+	value .unit .toXMLStream (ostream);
 	return ostream;
 }
 

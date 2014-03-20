@@ -160,6 +160,10 @@ public:
 	void
 	toStream (std::ostream &) const override;
 
+	virtual
+	void
+	toXMLStream (std::ostream &) const override;
+
 	///  @name Destruction
 
 	virtual

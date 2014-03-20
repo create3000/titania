@@ -119,5 +119,11 @@ SFTime::toStream (std::ostream & ostream) const
 	ostream << Generator::Precision <value_type> << getValue ();
 }
 
+void
+SFTime::toXMLStream (std::ostream & ostream) const
+{
+	toStream (ostream);
+}
+
 } // X3D
 } // titania

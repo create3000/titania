@@ -50,8 +50,9 @@
 
 #include "Proto.h"
 
+#include "../Browser/X3DBrowser.h"
 #include "../Components/Core/X3DPrototypeInstance.h"
-#include "ExternProto.h"
+
 #include <iomanip>
 
 namespace titania {
@@ -149,8 +150,6 @@ Proto::getRootNode () const
 void
 Proto::toStream (std::ostream & ostream) const
 {
-	Generator::PushContext ();
-
 	if (not getComments () .empty ())
 	{
 		for (const auto & comment : getComments ())
@@ -173,9 +172,11 @@ Proto::toStream (std::ostream & ostream) const
 		<< Generator::TidySpace
 		<< '[';
 
-	const FieldDefinitionArray fields = getUserDefinedFields ();
+	Generator::PushContext ();
 
-	if (fields .empty ())
+	const FieldDefinitionArray userDefinedFields = getUserDefinedFields ();
+
+	if (userDefinedFields .empty ())
 	{
 		if (not getInterfaceComments () .empty ())
 		{
@@ -218,7 +219,7 @@ Proto::toStream (std::ostream & ostream) const
 			}
 			default:
 			{
-				for (const auto & field : fields)
+				for (const auto & field : userDefinedFields)
 				{
 					typeLength = std::max (typeLength, field -> getTypeName () .length ());
 
@@ -229,13 +230,13 @@ Proto::toStream (std::ostream & ostream) const
 			}
 		}
 
-		for (const auto & field : basic::adapter (fields .begin (), fields .end () - 1))
+		for (const auto & field : basic::adapter (userDefinedFields .begin (), userDefinedFields .end () - 1))
 		{
 			toStreamField (ostream, field, accessTypeLength, typeLength);
 			ostream << Generator::Break;			
 		}
 
-		toStreamField (ostream, fields .back (), accessTypeLength, typeLength);
+		toStreamField (ostream, userDefinedFields .back (), accessTypeLength, typeLength);
 		ostream << Generator::TidyBreak;			
 
 		for (const auto & comment : getInterfaceComments ())
@@ -304,6 +305,133 @@ Proto::toStreamField (std::ostream & ostream, X3DFieldDefinition* const field, c
 	}
 }
 
+void
+Proto::toXMLStream (std::ostream & ostream) const
+{
+	ostream
+		<< Generator::Indent
+		<< "<ProtoDeclare"
+		<< Generator::Space
+		<< "name='"
+		<< XMLEncode (getName ())
+		<< "'"
+		<< ">"
+		<< Generator::ForceBreak;
+
+	// <ProtoInterface>
+
+	Generator::PushContext ();
+
+	const FieldDefinitionArray userDefinedFields = getUserDefinedFields ();
+	
+	if (not userDefinedFields .empty ())
+	{
+		ostream
+			<< Generator::IncIndent
+			<< Generator::Indent
+			<< "<ProtoInterface>"
+			<< Generator::ForceBreak
+			<< Generator::IncIndent;
+
+		for (const auto & field : userDefinedFields)
+		{
+			ostream
+				<< Generator::Indent
+				<< "<field"
+				<< Generator::Space
+				<< "accessType='"
+				<< Generator::X3DAccessTypes [field]
+				<< "'"
+				<< Generator::Space
+				<< "type='"
+				<< field-> getTypeName ()
+				<< "'"
+				<< Generator::Space
+				<< "name='"
+				<< XMLEncode (field-> getName ())
+				<< "'";
+
+			if (*field == *getBrowser () -> getFieldType (field-> getTypeName ()))
+			{				
+				ostream
+					<< "/>"
+					<< Generator::ForceBreak;
+			}
+			else
+			{
+				switch (field -> getType ())
+				{
+					case X3DConstants::SFNode:
+					case X3DConstants::MFNode:
+					{
+						Generator::PushContainerField (nullptr);
+
+						ostream
+							<< ">"
+							<< Generator::ForceBreak
+							<< Generator::IncIndent
+							<< XMLEncode (field)
+							<< Generator::DecIndent
+							<< Generator::Indent
+							<< "</field>"
+							<< Generator::ForceBreak;
+
+						Generator::PopContainerField ();
+
+						break;
+					}
+					default:
+					{
+						ostream
+							<< Generator::Space
+							<< "value='"
+							<< XMLEncode (field)
+							<< "'"
+							<< "/>"
+							<< Generator::ForceBreak;
+
+						break;
+					}
+				}
+			}
+		}
+
+		ostream
+			<< Generator::DecIndent
+			<< Generator::Indent
+			<< "</ProtoInterface>"
+			<< Generator::ForceBreak
+			<< Generator::DecIndent;
+	}
+
+	Generator::PopContext ();
+
+	// </ProtoInterface>
+
+	// <ProtoBody>
+
+	ostream
+		<< Generator::IncIndent
+		<< Generator::Indent
+		<< "<ProtoBody>"
+		<< Generator::ForceBreak
+		<< Generator::IncIndent;
+
+	X3DExecutionContext::toXMLStream (ostream);
+
+	ostream
+		<< Generator::DecIndent
+		<< Generator::Indent
+		<< "</ProtoBody>"
+		<< Generator::ForceBreak
+		<< Generator::DecIndent;
+
+	// </ProtoBody>
+
+	ostream
+		<< Generator::Indent
+		<< "</ProtoDeclare>";
+}
 
 } // X3D
 } // titania

@@ -81,6 +81,7 @@
 #include "jsfield.h"
 
 #include <thread>
+#include <cassert>
 
 namespace titania {
 namespace X3D {

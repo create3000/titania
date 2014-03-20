@@ -240,7 +240,7 @@ X3DScene::toStream (std::ostream & ostream) const
 	const auto version = getVersion ();
 
 	Generator::Version (version);
-	Generator::X3DAccessTypes (getEncoding () == "X3D");
+	Generator::AccessTypeStyle (getEncoding () == "X3D");
 
 	ostream
 		<< '#'
@@ -333,15 +333,30 @@ X3DScene::toStream (std::ostream & ostream) const
 		ostream << Generator::TidyBreak;
 	}
 
+	// Scene
+
 	Generator::PushContext ();
 
 	X3DExecutionContext::toStream (ostream);
 
 	if (not getExportedNodes () .empty ())
+	{
 		ostream << Generator::TidyBreak;
 
-	for (const auto & exportedNode : getExportedNodes ())
-		ostream << exportedNode;
+		for (const auto & exportedNode : getExportedNodes ())
+		{
+			try
+			{
+				ostream << exportedNode;
+			}
+			catch (const X3DError &)
+			{ }
+		}
+	}
+
+	Generator::PopContext ();
+
+	// ~Scene
 
 	if (not getInnerComments () .empty ())
 	{
@@ -357,9 +372,150 @@ X3DScene::toStream (std::ostream & ostream) const
 		}
 	}
 
+	ostream << std::flush;
+}
+
+void
+X3DScene::toXMLStream (std::ostream & ostream) const
+{
+	const auto version = getVersion ();
+
+	std::string versionString;
+
+	switch (version)
+	{
+		case X3D_V3_0:
+			versionString = "3.0";
+			break;
+		case X3D_V3_1:
+			versionString = "3.1";
+			break;
+		case X3D_V3_2:
+			versionString = "3.2";
+			break;
+		case X3D_V3_3:
+		default:
+			versionString = "3.3";
+			break;
+	}
+
+	Generator::Version (version);
+
+	ostream
+		<< "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+		<< Generator::ForceBreak;
+
+	ostream
+		<< "<!DOCTYPE X3D PUBLIC \"ISO//Web3D//DTD X3D "
+		<< versionString
+		<< "//EN\" \"http://www.web3d.org/specifications/x3d-"
+		<< versionString
+		<< ".dtd\">"
+		<< Generator::ForceBreak;
+
+	ostream
+		<<	"<X3D"
+		<< Generator::Space
+		<< "profile='"
+		<< (getProfile () ? getProfile () -> getName () : "Full")
+		<< "'"
+		<< Generator::Space
+		<< "version='"
+		<< versionString
+		<< "'"
+		<< Generator::Space
+		<< "xmlns:xsd='http://www.w3.org/2001/XMLSchema-instance'"
+		<< Generator::Space
+		<< "xsd:noNamespaceSchemaLocation='http://www.web3d.org/specifications/x3d-"
+		<< versionString
+		<< ".xsd'>"
+		<< Generator::ForceBreak;
+
+	ostream
+		<< Generator::IncIndent
+		<< Generator::Indent
+		<< "<head>"
+		<< Generator::ForceBreak
+		<< Generator::IncIndent;
+
+	// <head>
+
+	for (const auto & component : getComponents ())
+	{
+		ostream
+			<< XMLEncode (component)
+			<< Generator::ForceBreak;
+	}
+
+	for (const auto & unit : getUnits ())
+	{
+		if (unit .getConversion () not_eq 1)
+		{
+			ostream
+				<< XMLEncode (unit)
+				<< Generator::ForceBreak;
+		}
+	}
+
+	for (const auto & metaData : getMetaDatas ())
+	{
+		ostream
+			<< Generator::Indent
+			<< "<meta"
+			<< Generator::Space
+			<< "name='"
+			<< XMLEncode (metaData .first)
+			<< "'"
+			<< Generator::Space
+			<< "content='"
+			<< XMLEncode (metaData .second)
+			<< "'"
+			<< "/>"
+			<< Generator::ForceBreak;
+	}
+
+	// </head>
+
+	ostream
+		<< Generator::DecIndent
+		<< Generator::Indent
+		<< "</head>"
+		<< Generator::ForceBreak
+		<< Generator::Indent
+		<< "<Scene>"
+		<< Generator::ForceBreak
+		<< Generator::IncIndent;
+
+	// <Scene>
+
+	Generator::PushContext ();
+
+	X3DExecutionContext::toXMLStream (ostream);
+
+	for (const auto & exportedNode : getExportedNodes ())
+	{
+		try
+		{
+			ostream
+				<<	XMLEncode (exportedNode)
+				<< Generator::ForceBreak;
+		}
+		catch (const X3DError &)
+		{ }
+	}
+
 	Generator::PopContext ();
 
-	ostream << std::flush;
+	// </Scene>
+
+	ostream
+		<< Generator::DecIndent
+		<< Generator::Indent
+		<< "</Scene>"
+		<< Generator::ForceBreak
+		<< Generator::DecIndent
+		<< "</X3D>"
+		<< std::flush;
 }
 
 void

@@ -1,61 +1,110 @@
-#VRML V2.0 utf8 Titania
+#X3D V3.3 utf8 Titania
 
-# Scene Comment 
-# Scene Comment2 
+# Scene Comment
+# Scene Comment2
 
 PROFILE Full
 
 COMPONENT Core : 1
 
 UNIT angle degree 0.0174532925199433
+UNIT mass pound 0.45359237
 
 META "title" "Comments"
+META "utf8" "äöü'\\\\\"áóú<&\\>"
 
-# EXTERNPROTO Comment 
+# EXTERNPROTO Comment
 
 EXTERNPROTO Rotor [
   # Field Comment
-  exposedField SFTime     cycleInterval
-  exposedField SFBool     loop
-  eventOut     SFRotation value_changed
+  inputOutput SFTime     cycleInterval
+  inputOutput SFBool     loop
+  outputOnly  SFRotation value_changed
   # Interface Comment
 ]
-# Inner Comment 
+# Inner Comment
 "../PROTO/Rotor.wrl"
 
 # PROTO Comment
 
-PROTO Test [
-  # Field Comment 
-  exposedField SFString test "\\\"äöüáóúâôû"
-  # Interface Comment 
+PROTO Test-utf8-<äöü&> [
+  # Field Comment
+  inputOnly   SFBool   set_bind
+  inputOutput SFBool   enabled FALSE
+  outputOnly  SFBool   isBound
+  inputOutput SFString test "\\\"äöüáóúâôû&<'"
+  inputOutput MFNode   children DEF Default WorldInfo { }
+  # Interface Comment
 ]
 {
-  # Ooops 
+  # Ooops
   # PROTO Comment
 
   PROTO Test [
     #exposedField SFString test ""
   ]
   {
-    # Node Comment 
-    # Node Comment 
+    # Node Comment
+    # Node Comment
     Group { }
 
     # Inner Comment
   }
 
-  # Node Comment 
-  # Node Comment 
-  Group { }
+  # First Node Comment
+  # Second Node Comment
+  Group {
+    # Field Comment
+    children IS children
+  }
+
+  # Multiple References
+  TimeSensor {
+    # Multiple IS statements on build in field
+    enabled IS isBound
+    enabled IS set_bind
+    enabled FALSE
+    # IS statement on build in field
+    isActive IS isBound
+  }
+
+  Script {
+    # Field with utf8 name and special characters
+    inputOnly      SFBool   set_utf8-is-gorgeous-&-nice!-<utf8-ist-älegant-&-schön!>
+    # Multiple IS statements on user defined field
+    inputOutput    SFBool   enabled IS isBound
+    inputOutput    SFBool   enabled IS set_bind
+    inputOutput    SFBool   enabled TRUE
+    # IS statement on user defined field
+    inputOutput    SFString test IS test
+    # User defined field with value
+    inputOutput    MFNode   children DEF Meta MetadataBoolean { }
+    # User defined field with reference value
+    initializeOnly SFNode   node USE Meta
+
+    url "javascript:
+function initialize ()
+{
+	// JavaScript Comment
+}
+"
+    directOutput TRUE
+  }
 
   # Inner Comment
 }
 
-# Node Comment 
-Viewpoint {
+# Node Comment
+DEF Reference Viewpoint {
   description "Cube"
   position 0 0 8
+}
+
+USE Reference
+
+# ProtoInstance Comment
+Rotor {
+  cycleInterval 10
 }
 
 # Node Comment
@@ -69,26 +118,116 @@ DEF Transform Transform {
       # Field Comment
       solid FALSE
       colorPerVertex FALSE
-      texCoordIndex [ 0, 1, 3, 2, -1, 0, 1, 3, 2, -1, 0, 1, 3, 2, -1, 0, 1, 3, 2, -1, 0, 1, 3, 2, -1, 0, 1, 3, 2, -1 ]
-      colorIndex [ 0, 1, 2, 3, 4, 5 ]
-      coordIndex [ 0, 1, 3, 2, -1, 4, 5, 7, 6, -1, 6, 7, 1, 0, -1, 2, 3, 5, 4, -1, 6, 0, 2, 4, -1, 1, 7, 5, 3, -1 ]
+      texCoordIndex [
+        0,
+        1,
+        3,
+        2,
+        -1,
+        0,
+        1,
+        3,
+        2,
+        -1,
+        0,
+        1,
+        3,
+        2,
+        -1,
+        0,
+        1,
+        3,
+        2,
+        -1,
+        0,
+        1,
+        3,
+        2,
+        -1,
+        0,
+        1,
+        3,
+        2,
+        -1
+      ]
+      colorIndex [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+      coordIndex [
+        0,
+        1,
+        3,
+        2,
+        -1,
+        4,
+        5,
+        7,
+        6,
+        -1,
+        6,
+        7,
+        1,
+        0,
+        -1,
+        2,
+        3,
+        5,
+        4,
+        -1,
+        6,
+        0,
+        2,
+        4,
+        -1,
+        1,
+        7,
+        5,
+        3,
+        -1
+      ]
       color Color {
-        color [ 1 0 0, 0 1 0, 0 0 1, 1 1 0, 0 1 1, 1 0 1 ]
+        color [
+          1 0 0,
+          0 1 0,
+          0 0 1,
+          1 1 0,
+          0 1 1,
+          1 0 1
+        ]
       }
       texCoord TextureCoordinate {
-        point [ 0 1, 0 0, 1 1, 1 0 ]
+        point [
+          0 1,
+          0 0,
+          1 1,
+          1 0
+        ]
       }
       coord Coordinate {
-        point [ -1 1 1, -1 -1 1, 1 1 1, 1 -1 1, 1 1 -1, 1 -1 -1, -1 1 -1, -1 -1 -1 ]
+        point [
+          -1 1 1,
+          -1 -1 1,
+          1 1 1,
+          1 -1 1,
+          1 1 -1,
+          1 -1 -1,
+          -1 1 -1,
+          -1 -1 -1
+        ]
       
-        # Inner Comment 
+        # Inner Comment
       }
     }
   }
 }
 
 Group {
-  # Inner Comment 
+  # Inner Comment
   children [
     # Node comment
     Transform { }
@@ -100,28 +239,29 @@ Group {
 # Import test
 Transform {
   translation 0 0 -2
+  # This Inline node exports something
   children DEF Inline Inline {
     url "EXPORT.wrl"
   }
 }
 
 
-# IMPORT Comment 
+# IMPORT Comment
 
 IMPORT Inline.CubeExport AS CubeImport
 
 
-# ROUTE Comment 
+# ROUTE Comment
 
 ROUTE Transform.translation_changed TO Transform.set_translation
 
 
-# EXPORT Comment 
+# EXPORT Comment
 
 EXPORT Transform AS ColoredCube
 
-# EXPORT Comment 
+# EXPORT Comment
 
 EXPORT Transform AS ColoredCube1
 
-# End Comment 
+# End Comment

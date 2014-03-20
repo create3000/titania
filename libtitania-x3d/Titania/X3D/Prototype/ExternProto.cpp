@@ -250,7 +250,7 @@ ExternProto::toStream (std::ostream & ostream) const
 	size_t typeLength       = 0;
 	size_t accessTypeLength = 0;
 
-	FieldDefinitionArray fields = getUserDefinedFields ();
+	const FieldDefinitionArray fields = getUserDefinedFields ();
 
 	if (fields .empty ())
 	{
@@ -377,6 +377,53 @@ ExternProto::dispose ()
 
 	X3DUrlObject::dispose ();
 	X3DProto::dispose ();
+}
+
+void
+ExternProto::toXMLStream (std::ostream & ostream) const
+{
+	ostream
+		<< Generator::Indent
+		<< "<ExternProtoDeclare"
+		<< Generator::Space
+		<< "name='"
+		<< XMLEncode (getName ())
+		<< "'"
+		<< Generator::Space
+		<< "url='"
+		<< XMLEncode (url ())
+		<< "'"
+		<< ">"
+		<< Generator::ForceBreak
+		<< Generator::IncIndent;
+
+	const FieldDefinitionArray fields = getUserDefinedFields ();
+	
+	for (const auto & field : fields)
+	{
+		ostream
+			<< Generator::Indent
+			<< "<field"
+			<< Generator::Space
+			<< "accessType='"
+			<< Generator::X3DAccessTypes [field]
+			<< "'"
+			<< Generator::Space
+			<< "type='"
+			<< field-> getTypeName ()
+			<< "'"
+			<< Generator::Space
+			<< "name='"
+			<< XMLEncode (field-> getName ())
+			<< "'"
+			<< "/>"
+			<< Generator::ForceBreak;
+	}
+
+	ostream
+		<< Generator::DecIndent
+		<< Generator::Indent
+		<< "</ExternProtoDeclare>";
 }
 
 ExternProto::~ExternProto ()

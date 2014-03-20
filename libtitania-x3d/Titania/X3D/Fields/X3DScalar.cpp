@@ -188,6 +188,34 @@ X3DScalar <int32_t>::toStream (std::ostream & ostream) const
 	ostream << getValue ();
 }
 
+template <>
+void
+X3DScalar <bool>::toXMLStream (std::ostream & ostream) const
+{
+	ostream << (getValue () ? "true" : "false");
+}
+
+template <>
+void
+X3DScalar <double>::toXMLStream (std::ostream & ostream) const
+{
+	toStream (ostream);
+}
+
+template <>
+void
+X3DScalar <float>::toXMLStream (std::ostream & ostream) const
+{
+	toStream (ostream);
+}
+
+template <>
+void
+X3DScalar <int32_t>::toXMLStream (std::ostream & ostream) const
+{
+	toStream (ostream);
+}
+
 template class X3DField <bool>;
 template class X3DField <double>;
 template class X3DField <float>;

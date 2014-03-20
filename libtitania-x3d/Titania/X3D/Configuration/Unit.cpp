@@ -50,6 +50,7 @@
 
 #include "Unit.h"
 
+#include "../Base/X3DObject.h"
 #include "../InputOutput/Generator.h"
 
 namespace titania {
@@ -89,6 +90,28 @@ Unit::toStream (std::ostream & ostream) const
 		<< Generator::Space
 		<< Generator::Precision <double>
 		<< conversion;
+}
+
+void
+Unit::toXMLStream (std::ostream & ostream) const
+{
+	ostream
+		<< Generator::Indent
+		<< "<unit"
+		<< Generator::Space
+		<< "category='"
+		<< category
+		<< "'"
+		<< Generator::Space
+		<< "name='"
+		<< XMLEncode (name)
+		<< "'"
+		<< Generator::Space
+		<< "conversionFactor='"
+		<< Generator::Precision <double>
+		<< conversion
+		<< "'"
+		<< "/>";
 }
 
 } // X3D

@@ -5,9 +5,9 @@ PROFILE Full
 COMPONENT Core : 1
 
 UNIT angle degree 0.0174532925199433
-UNIT force dyne 1e-05
-UNIT length millimetre 0.001
-UNIT mass gram 0.001
+UNIT force poundf 4.4482216152605
+UNIT length foot 0.3048
+UNIT mass pound 0.45359237
 
 META "title" "Unit statement"
 
@@ -19,10 +19,7 @@ Transform {
     geometry Text {
       string "UNIT statement"
       fontStyle FontStyle {
-        justify [
-          "MIDDLE",
-          "MIDDLE"
-        ]
+        justify [ "MIDDLE", "MIDDLE" ]
       }
     }
   }

@@ -69,6 +69,10 @@
 namespace titania {
 namespace X3D {
 
+template <>
+void
+X3DArrayField <SFString>::toXMLStream (std::ostream &) const;
+
 //  Inhibit implicit instantiation for required instantiations.
 //extern template class Array <SFBool>;
 //extern template class Array <SFColor>;

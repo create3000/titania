@@ -58,37 +58,40 @@
 namespace titania {
 namespace X3D {
 
-template std::ostream & SmallestStyle (std::ostream &);
-template std::ostream & CompactStyle  (std::ostream &);
-template std::ostream & NicestStyle   (std::ostream &);
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Generator::AccessTypesIndex::AccessTypesIndex () :
-	std::vector <std::string> ({ "initializeOnly", "inputOnly", "outputOnly", "inputOutput" })
+Generator::AccessTypesIndex::AccessTypesIndex ()
 { }
 
 const std::string &
 Generator::AccessTypesIndex::operator [ ] (const X3DFieldDefinition* const fieldDefinition) const
 {
-	if (X3DAccessTypes ())
-	{
-		switch (fieldDefinition -> getAccessType ())
-		{
-			case initializeOnly: return data () [0];
-			case inputOnly:      return data () [1];
-			case outputOnly:     return data () [2];
-			case inputOutput:    return data () [3];
-		}
-
-		assert (false);
-	}
+	if (AccessTypeStyle ())
+		return X3DAccessTypes [fieldDefinition];
 
 	return VrmlAccessTypes [fieldDefinition];
 }
 
+Generator::X3DAccessTypesIndex::X3DAccessTypesIndex () :
+	array ({ "initializeOnly", "inputOnly", "outputOnly", "inputOutput" })
+{ }
+
+const std::string &
+Generator::X3DAccessTypesIndex::operator [ ] (const X3DFieldDefinition* const fieldDefinition) const
+{
+	switch (fieldDefinition -> getAccessType ())
+	{
+		case initializeOnly: return array [0];
+		case inputOnly:      return array [1];
+		case outputOnly:     return array [2];
+		case inputOutput:    return array [3];
+	}
+
+	assert (false);
+}
+
 Generator::VrmlAccessTypesIndex::VrmlAccessTypesIndex () :
-	std::vector <std::string> ({ "field", "eventIn", "eventOut", "exposedField" })
+	array ({ "field", "eventIn", "eventOut", "exposedField" })
 { }
 
 const std::string &
@@ -96,85 +99,86 @@ Generator::VrmlAccessTypesIndex::operator [ ] (const X3DFieldDefinition* const f
 {
 	switch (fieldDefinition -> getAccessType ())
 	{
-		case initializeOnly: return data () [0];
-		case inputOnly:      return data () [1];
-		case outputOnly:     return data () [2];
-		case inputOutput:    return data () [3];
+		case initializeOnly: return array [0];
+		case inputOnly:      return array [1];
+		case outputOnly:     return array [2];
+		case inputOutput:    return array [3];
 	}
 
 	assert (false);
 }
 
-Generator::NodeTypesIndex::NodeTypesIndex ()
-{
-	emplace_back ("X3DAppearanceChildNode");
-	emplace_back ("X3DAppearanceNode");
-	emplace_back ("X3DBackgroundNode");
-	emplace_back ("X3DBindableNode");
-	emplace_back ("X3DBoundedObject");
-	emplace_back ("X3DChaserNode");
-	emplace_back ("X3DChildNode");
-	emplace_back ("X3DColorNode");
-	emplace_back ("X3DComposedGeometryNode");
-	emplace_back ("X3DCoordinateNode");
-	emplace_back ("X3DDamperNode");
-	emplace_back ("X3DDragSensorNode");
-	emplace_back ("X3DEnvironmentalSensorNode");
-	emplace_back ("X3DEnvironmentTextureNode");
-	emplace_back ("X3DFogObject");
-	emplace_back ("X3DFollowerNode");
-	emplace_back ("X3DFontStyleNode");
-	emplace_back ("X3DGeometricPropertyNode");
-	emplace_back ("X3DGeometryNode");
-	emplace_back ("X3DGeospatialObject");
-	emplace_back ("X3DGroupingNode");
-	emplace_back ("X3DInfoNode");
-	emplace_back ("X3DInterpolatorNode");
-	emplace_back ("X3DKeyDeviceSensorNode");
-	emplace_back ("X3DLayerNode");
-	emplace_back ("X3DLayoutNode");
-	emplace_back ("X3DLightNode");
-	emplace_back ("X3DMaterialNode");
-	emplace_back ("X3DMetadataObject");
-	emplace_back ("X3DNBodyCollidableNode");
-	emplace_back ("X3DNBodyCollisionSpaceNode");
-	emplace_back ("X3DNetworkSensorNode");
-	emplace_back ("X3DNode");
-	emplace_back ("X3DNormalNode");
-	emplace_back ("X3DNurbsControlCurveNode");
-	emplace_back ("X3DNurbsSurfaceGeometryNode");
-	emplace_back ("X3DParametricGeometryNode");
-	emplace_back ("X3DParticleEmitterNode");
-	emplace_back ("X3DParticlePhysicsModelNode");
-	emplace_back ("X3DPickableObject");
-	emplace_back ("X3DPickingNode");
-	emplace_back ("X3DPickSensorNode");
-	emplace_back ("X3DPointingDeviceSensorNode");
-	emplace_back ("X3DProductStructureChildNode");
-	emplace_back ("X3DProgrammableShaderObject");
-	emplace_back ("X3DPrototypeInstance");
-	emplace_back ("X3DRigidJointNode");
-	emplace_back ("X3DScriptNode");
-	emplace_back ("X3DSensorNode");
-	emplace_back ("X3DSequencerNode");
-	emplace_back ("X3DShaderNode");
-	emplace_back ("X3DShapeNode");
-	emplace_back ("X3DSoundNode");
-	emplace_back ("X3DSoundSourceNode");
-	emplace_back ("X3DTexture2DNode");
-	emplace_back ("X3DTexture3DNode");
-	emplace_back ("X3DTextureCoordinateNode");
-	emplace_back ("X3DTextureNode");
-	emplace_back ("X3DTextureTransformNode");
-	emplace_back ("X3DTimeDependentNode");
-	emplace_back ("X3DTouchSensorNode");
-	emplace_back ("X3DTransformNode");
-	emplace_back ("X3DTriggerNode");
-	emplace_back ("X3DUrlObject");
-	emplace_back ("X3DVertexAttributeNode");
-	emplace_back ("X3DViewpointNode");
-	emplace_back ("X3DViewportNode");
-}
+Generator::NodeTypesIndex::NodeTypesIndex () :
+	array ({
+		"X3DAppearanceChildNode",
+		"X3DAppearanceNode",
+		"X3DBackgroundNode",
+		"X3DBindableNode",
+		"X3DBoundedObject",
+		"X3DChaserNode",
+		"X3DChildNode",
+		"X3DColorNode",
+		"X3DComposedGeometryNode",
+		"X3DCoordinateNode",
+		"X3DDamperNode",
+		"X3DDragSensorNode",
+		"X3DEnvironmentalSensorNode",
+		"X3DEnvironmentTextureNode",
+		"X3DFogObject",
+		"X3DFollowerNode",
+		"X3DFontStyleNode",
+		"X3DGeometricPropertyNode",
+		"X3DGeometryNode",
+		"X3DGeospatialObject",
+		"X3DGroupingNode",
+		"X3DInfoNode",
+		"X3DInterpolatorNode",
+		"X3DKeyDeviceSensorNode",
+		"X3DLayerNode",
+		"X3DLayoutNode",
+		"X3DLightNode",
+		"X3DMaterialNode",
+		"X3DMetadataObject",
+		"X3DNBodyCollidableNode",
+		"X3DNBodyCollisionSpaceNode",
+		"X3DNetworkSensorNode",
+		"X3DNode",
+		"X3DNormalNode",
+		"X3DNurbsControlCurveNode",
+		"X3DNurbsSurfaceGeometryNode",
+		"X3DParametricGeometryNode",
+		"X3DParticleEmitterNode",
+		"X3DParticlePhysicsModelNode",
+		"X3DPickableObject",
+		"X3DPickingNode",
+		"X3DPickSensorNode",
+		"X3DPointingDeviceSensorNode",
+		"X3DProductStructureChildNode",
+		"X3DProgrammableShaderObject",
+		"X3DPrototypeInstance",
+		"X3DRigidJointNode",
+		"X3DScriptNode",
+		"X3DSensorNode",
+		"X3DSequencerNode",
+		"X3DShaderNode",
+		"X3DShapeNode",
+		"X3DSoundNode",
+		"X3DSoundSourceNode",
+		"X3DTexture2DNode",
+		"X3DTexture3DNode",
+		"X3DTextureCoordinateNode",
+		"X3DTextureNode",
+		"X3DTextureTransformNode",
+		"X3DTimeDependentNode",
+		"X3DTouchSensorNode",
+		"X3DTransformNode",
+		"X3DTriggerNode",
+		"X3DUrlObject",
+		"X3DVertexAttributeNode",
+		"X3DViewpointNode",
+		"X3DViewportNode"
+	})
+{ }
 
 const std::string &
 Generator::NodeTypesIndex::operator [ ] (const X3DBaseNode* const basicNode) const
@@ -182,9 +186,15 @@ Generator::NodeTypesIndex::operator [ ] (const X3DBaseNode* const basicNode) con
 	return operator [ ] (basicNode -> getNodeType () .back ());
 }
 
-const Generator::VrmlAccessTypesIndex Generator::VrmlAccessTypes;
 const Generator::AccessTypesIndex     Generator::AccessTypes;
+const Generator::X3DAccessTypesIndex  Generator::X3DAccessTypes;
+const Generator::VrmlAccessTypesIndex Generator::VrmlAccessTypes;
 const Generator::NodeTypesIndex       Generator::NodeTypes;
+
+Generator::StyleType    Generator::style           = NICEST;
+bool                    Generator::expandNodes     = false;
+bool                    Generator::accessTypeStyle = true;
+VersionType             Generator::version         = LATEST_VERSION;
 
 size_t                        Generator::level = 0;
 Generator::NodeSet            Generator::nodes;
@@ -192,13 +202,8 @@ Generator::NameIndex          Generator::names;
 Generator::NameIndexByNode    Generator::namesByNode;
 size_t                        Generator::newName = 0;
 Generator::ImportedNamesIndex Generator::importedNames;
+Generator::FieldStack         Generator::containerFieldStack (1);
 static const std::string      emptyName;
-
-bool                 Generator::expandNodes = false;
-Generator::StyleType Generator::style       = NICEST;
-
-VersionType Generator::version        = LATEST_VERSION;
-bool        Generator::x3dAccessTypes = true;
 
 void
 Generator::Style (const std::string & value)
@@ -453,6 +458,47 @@ Generator::GetLocalName (const X3DBaseNode* node)
 	}
 
 	throw Error <INVALID_NODE> ("Couldn't get local name.");
+}
+
+void
+Generator::XMLEncodeToStream (std::ostream & ostream, const std::string & string)
+{
+	for (const auto & c : string)
+	{
+		switch (c)
+		{
+			case '<':
+			{
+				ostream << "&lt;";
+				break;
+			}
+			case '&':
+			{
+				ostream << "&amp;";
+				break;
+			}
+			case '\'':
+			{
+				ostream << "&apos;";
+				break;
+			}
+			case '"':
+			{
+				ostream << "\\\"";
+				break;
+			}
+			case '\\':
+			{
+				ostream << "\\\\";
+				break;
+			}
+			default:
+			{
+				ostream << c;
+				break;
+			}
+		}
+	}
 }
 
 } // X3D

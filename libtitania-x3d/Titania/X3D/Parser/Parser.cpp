@@ -1376,6 +1376,7 @@ Parser::scriptBodyElement (X3DBaseNode* const _baseNode)
 	auto state = istream .rdstate ();
 	auto pos   = istream .tellg ();
 	auto ws    = whitespaces .size ();
+	auto com   = currentComments .size ();
 
 	std::string _accessTypeId;
 
@@ -1480,6 +1481,7 @@ Parser::scriptBodyElement (X3DBaseNode* const _baseNode)
 		istream .clear (state);
 		istream .seekg (pos - istream .tellg (), std::ios_base::cur);
 		whitespaces .resize (ws);
+		currentComments .resize (com);
 	}
 
 	X3DFieldDefinition* _field = interfaceDeclaration ();

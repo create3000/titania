@@ -52,14 +52,12 @@
 #define __TITANIA_X3D_INPUT_OUTPUT_GENERATOR_H__
 
 #include "../Bits/X3DConstants.h"
+#include "../InputOutput/X3DBaseGenerator.h"
 
-#include <map>
 #include <map>
 #include <set>
 #include <string>
 #include <vector>
-
-#include <Titania/InputOutput/Generator.h>
 
 namespace titania {
 namespace X3D {
@@ -68,7 +66,7 @@ class X3DFieldDefinition;
 class X3DBaseNode;
 
 class Generator :
-	public io::Generator
+	public X3DBaseGenerator <char>
 {
 public:
 
@@ -80,8 +78,7 @@ public:
 		NICEST
 	};
 
-	class AccessTypesIndex :
-		private std::vector <std::string>
+	class AccessTypesIndex
 	{
 	public:
 
@@ -92,8 +89,22 @@ public:
 
 	};
 
-	class VrmlAccessTypesIndex :
-		private std::vector <std::string>
+	class X3DAccessTypesIndex
+	{
+	public:
+
+		X3DAccessTypesIndex ();
+
+		const std::string &
+		operator [ ] (const X3DFieldDefinition* const) const;
+
+
+	private:
+
+		const std::vector <std::string> array;
+	};
+
+	class VrmlAccessTypesIndex
 	{
 	public:
 
@@ -102,22 +113,34 @@ public:
 		const std::string &
 		operator [ ] (const X3DFieldDefinition* const) const;
 
+
+	private:
+
+		const std::vector <std::string> array;
+
 	};
 
-	class NodeTypesIndex :
-		private std::vector <std::string>
+	class NodeTypesIndex
 	{
 	public:
-
-		using std::vector <std::string>::operator [ ];
-		using std::vector <std::string>::at;
 
 		NodeTypesIndex ();
 
 		const std::string &
 		operator [ ] (const X3DBaseNode* const) const;
 
+		const std::string &
+		operator [ ] (const X3DConstants::NodeType index) const
+		{ return array [index]; }
+
+
+	private:
+
+		const std::vector <std::string> array;
+
 	};
+
+	///  @name Member access
 
 	static
 	void
@@ -156,6 +179,16 @@ public:
 
 	static
 	void
+	AccessTypeStyle (const bool value)
+	{ accessTypeStyle = value; }
+
+	static
+	bool
+	AccessTypeStyle ()
+	{ return accessTypeStyle; }
+
+	static
+	void
 	Version (const VersionType value)
 	{ version = value; }
 
@@ -163,16 +196,6 @@ public:
 	VersionType
 	Version ()
 	{ return version; }
-
-	static
-	void
-	X3DAccessTypes (const bool value)
-	{ x3dAccessTypes = value; }
-
-	static
-	bool
-	X3DAccessTypes ()
-	{ return x3dAccessTypes; }
 
 	static
 	void
@@ -202,8 +225,30 @@ public:
 	const std::string &
 	GetLocalName (const X3DBaseNode* const);
 
-	static const VrmlAccessTypesIndex VrmlAccessTypes;
+	static
+	void
+	PushContainerField (const X3DFieldDefinition* const field)
+	{ containerFieldStack .emplace_back (field); }
+
+	static
+	void
+	PopContainerField ()
+	{ containerFieldStack .pop_back (); }
+
+	static
+	const X3DFieldDefinition*
+	GetContainerField ()
+	{ return containerFieldStack .back (); }
+
+	static
+	void
+	XMLEncodeToStream (std::ostream &, const std::string &);
+
+	/// @name Static members
+
 	static const AccessTypesIndex     AccessTypes;
+	static const X3DAccessTypesIndex  X3DAccessTypes;
+	static const VrmlAccessTypesIndex VrmlAccessTypes;
 	static const NodeTypesIndex       NodeTypes;
 
 
@@ -217,6 +262,12 @@ private:
 	typedef std::map <std::string, const X3DBaseNode*> NameIndex;
 	typedef std::map <const X3DBaseNode*, std::string> NameIndexByNode;
 	typedef std::map <const X3DBaseNode*, std::string> ImportedNamesIndex;
+	typedef std::vector <const X3DFieldDefinition*>    FieldStack;
+
+	static StyleType   style;
+	static bool        expandNodes;
+	static bool        accessTypeStyle;
+	static VersionType version;
 
 	static size_t             level;
 	static NodeSet            nodes;
@@ -224,15 +275,12 @@ private:
 	static NameIndexByNode    namesByNode;
 	static size_t             newName;
 	static ImportedNamesIndex importedNames;
-
-	static bool        expandNodes;
-	static StyleType   style;
-	static VersionType version;
-	static bool        x3dAccessTypes;
+	static FieldStack         containerFieldStack;
 
 };
 
 template <class CharT, class Traits>
+inline
 std::basic_ostream <CharT, Traits> &
 SmallestStyle (std::basic_ostream <CharT, Traits> & ostream)
 {
@@ -241,6 +289,7 @@ SmallestStyle (std::basic_ostream <CharT, Traits> & ostream)
 }
 
 template <class CharT, class Traits>
+inline
 std::basic_ostream <CharT, Traits> &
 SmallStyle (std::basic_ostream <CharT, Traits> & ostream)
 {
@@ -249,6 +298,7 @@ SmallStyle (std::basic_ostream <CharT, Traits> & ostream)
 }
 
 template <class CharT, class Traits>
+inline
 std::basic_ostream <CharT, Traits> &
 CompactStyle (std::basic_ostream <CharT, Traits> & ostream)
 {
@@ -257,18 +307,13 @@ CompactStyle (std::basic_ostream <CharT, Traits> & ostream)
 }
 
 template <class CharT, class Traits>
+inline
 std::basic_ostream <CharT, Traits> &
 NicestStyle (std::basic_ostream <CharT, Traits> & ostream)
 {
 	Generator::NicestStyle ();
 	return ostream;
 }
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-extern template std::ostream & SmallestStyle   (std::ostream &);
-extern template std::ostream & CompactStyle (std::ostream &);
-extern template std::ostream & NicestStyle    (std::ostream &);
 
 } // X3D
 } // titania

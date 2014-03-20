@@ -52,6 +52,8 @@
 
 #include "../Browser/BrowserWindow.h"
 
+#include <cassert>
+
 namespace titania {
 namespace puck {
 

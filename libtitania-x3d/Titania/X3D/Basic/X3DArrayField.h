@@ -458,6 +458,10 @@ public:
 	void
 	toStream (std::ostream &) const override;
 
+	virtual
+	void
+	toXMLStream (std::ostream &) const override;
+
 	///  @name Destruction
 
 	virtual
@@ -851,6 +855,29 @@ X3DArrayField <ValueType>::toStream (std::ostream & ostream) const
 			           Generator::ListSeparator <ValueType> (ostream));
 
 			ostream << back () << Generator::CloseBracket;
+
+			return;
+		}
+	}
+}
+
+template <class ValueType>
+void
+X3DArrayField <ValueType>::toXMLStream (std::ostream & ostream) const
+{
+	switch (size ())
+	{
+		case 0:
+		{
+			return;
+		}
+		default:
+		{
+			std::copy (begin (),
+			           end () - 1,
+			           Generator::XMLListSeparator <ValueType> (ostream));
+
+			ostream << XMLEncode (back ());
 
 			return;
 		}

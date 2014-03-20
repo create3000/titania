@@ -124,7 +124,8 @@ public:
 	addInterest (Class & object, void (Class::* memberFunction) (time_type)) const
 	{ addInterest (object, memberFunction, std::cref (this -> getValue ())); }
 
-	///  @name Input operator.
+	///  @name Input/Output
+
 	virtual
 	void
 	fromStream (std::istream &)
@@ -133,10 +134,13 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) final override;
 
-	///  @name Output operator.
 	virtual
 	void
 	toStream (std::ostream &) const final override;
+
+	virtual
+	void
+	toXMLStream (std::ostream &) const final override;
 
 
 private:

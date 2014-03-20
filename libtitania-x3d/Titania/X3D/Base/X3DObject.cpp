@@ -94,6 +94,16 @@ X3DObject::toString () const
 	return ostringstream .str ();
 }
 
+std::string
+X3DObject::toXMLString () const
+{
+	std::ostringstream ostringstream;
+
+	toXMLStream (ostringstream);
+
+	return ostringstream .str ();
+}
+
 // Object
 
 void
@@ -105,9 +115,6 @@ X3DObject::dispose ()
 
 X3DObject::~X3DObject ()
 { }
-
-template std::istream & operator >> (std::istream &, X3DObject &);
-template std::ostream & operator << (std::ostream &, const X3DObject &);
 
 } // X3D
 } // titania

@@ -75,5 +75,22 @@ ComponentInfo::toStream (std::ostream & ostream) const
 		<< level;
 }
 
+void
+ComponentInfo::toXMLStream (std::ostream & ostream) const
+{
+	ostream
+		<< Generator::Indent
+		<< "<component"
+		<< Generator::Space
+		<< "name='"
+		<< name
+		<< "'"
+		<< Generator::Space
+		<< "level='"
+		<< level
+		<< "'"
+		<< "/>";
+}
+
 } // X3D
 } // titania

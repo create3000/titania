@@ -206,5 +206,11 @@ SFColorRGBA::toStream (std::ostream & ostream) const
 	ostream << Generator::Precision <value_type> << getValue ();
 }
 
+void
+SFColorRGBA::toXMLStream (std::ostream & ostream) const
+{
+	toStream (ostream);
+}
+
 } // X3D
 } // titania

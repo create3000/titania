@@ -273,5 +273,11 @@ X3DPrototypeInstance::toStream (std::ostream & ostream) const
 	X3DBaseNode::toStream (ostream);
 }
 
+void
+X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
+{
+	X3DBaseNode::toXMLStream (ostream);
+}
+
 } // X3D
 } // titania

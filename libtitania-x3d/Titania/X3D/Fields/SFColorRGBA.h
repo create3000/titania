@@ -148,7 +148,7 @@ public:
 	void
 	getHSV (value_type &, value_type &, value_type &) const;
 
-	///  @name Input operator.
+	///  @name Input/Output
 	virtual
 	void
 	fromStream (std::istream &)
@@ -157,10 +157,13 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) final override;
 
-	///  @name Output operator.
 	virtual
 	void
 	toStream (std::ostream &) const final override;
+
+	virtual
+	void
+	toXMLStream (std::ostream &) const final override;
 
 
 private:

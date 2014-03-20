@@ -171,6 +171,34 @@ const X3DConstants::FieldType X3DField <Array <SFVec4d>>::type = X3DConstants::M
 template <>
 const X3DConstants::FieldType X3DField <Array <SFVec4f>>::type = X3DConstants::MFVec4f;
 
+// MFString
+
+template <>
+void
+X3DArrayField <SFString>::toXMLStream (std::ostream & ostream) const
+{
+	switch (size ())
+	{
+		case 0:
+		{
+			return;
+		}
+		default:
+		{
+			std::copy (begin (),
+			           end () - 1,
+			           Generator::XMLStringSeparator <SFString> (ostream));
+
+			ostream
+				<< '"'
+				<< XMLEncode (back ())
+				<< '"';
+
+			return;
+		}
+	}
+}
+
 // Explicit instantiation for required instantiations.
 //template class Array <SFBool>;
 //template class Array <SFColor>;

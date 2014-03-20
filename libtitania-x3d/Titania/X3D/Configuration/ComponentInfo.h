@@ -89,6 +89,9 @@ public:
 	void
 	toStream (std::ostream & ostream) const;
 
+	void
+	toXMLStream (std::ostream & ostream) const;
+
 
 private:
 
@@ -110,6 +113,24 @@ operator << (std::basic_ostream <CharT, Traits> & ostream, const ComponentInfo &
 }
 
 using ComponentInfoPtr = std::shared_ptr <const ComponentInfo>;
+
+struct XMLEncodeComponentInfoType { const ComponentInfoPtr & component; };
+
+inline
+XMLEncodeComponentInfoType
+XMLEncode (const ComponentInfoPtr & component)
+{
+	return XMLEncodeComponentInfoType { component };
+}
+
+template <typename CharT, typename Traits>
+inline
+std::basic_ostream <CharT, Traits> &
+operator << (std::basic_ostream <CharT, Traits> & ostream, const XMLEncodeComponentInfoType & value)
+{
+	value .component -> toXMLStream (ostream);
+	return ostream;
+}
 
 } // X3D
 } // titania

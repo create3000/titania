@@ -157,5 +157,11 @@ SFString::toStream (std::ostream & ostream) const
 	ostream << '"';
 }
 
+void
+SFString::toXMLStream (std::ostream & ostream) const
+{
+	Generator::XMLEncodeToStream (ostream, getValue () .raw ());
+}
+
 } // X3D
 } // titania

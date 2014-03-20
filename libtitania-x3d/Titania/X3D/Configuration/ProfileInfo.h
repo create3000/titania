@@ -87,6 +87,9 @@ public:
 	void
 	toStream (std::ostream & ostream) const;
 
+	void
+	toXMLStream (std::ostream & ostream) const;
+
 
 private:
 
@@ -109,6 +112,24 @@ operator << (std::basic_ostream <CharT, Traits> & ostream, const ProfileInfo & p
 }
 
 using ProfileInfoPtr = std::shared_ptr <const ProfileInfo>;
+
+struct XMLEncodeProfileType { const ProfileInfoPtr & profile; };
+
+inline
+XMLEncodeProfileType
+XMLEncode (const ProfileInfoPtr & profile)
+{
+	return XMLEncodeProfileType { profile };
+}
+
+template <typename CharT, typename Traits>
+inline
+std::basic_ostream <CharT, Traits> &
+operator << (std::basic_ostream <CharT, Traits> & ostream, const XMLEncodeProfileType & value)
+{
+	value .profile -> toXMLStream (ostream);
+	return ostream;
+}
 
 } // X3D
 } // titania

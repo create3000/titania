@@ -52,9 +52,7 @@
 #define __TITANIA_X3D_BASIC_X3DFIELD_H__
 
 #include "../Basic/X3DFieldDefinition.h"
-#include "../InputOutput/Generator.h"
 #include "../Parser/Grammar.h"
-#include <cassert>
 
 namespace titania {
 namespace X3D {
@@ -154,10 +152,7 @@ public:
 	virtual
 	bool
 	operator == (const X3DFieldDefinition & field) const override
-	{
-		assert (getType () == field .getType ());
-		return getValue () == static_cast <const X3DField &> (field) .getValue ();
-	}
+	{ return getValue () == static_cast <const X3DField &> (field) .getValue (); }
 
 	///  Returns true if the type or the value of both fields are not equal.
 	virtual

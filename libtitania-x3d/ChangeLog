@@ -1,3 +1,66 @@
+2014-03-20  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* SFVec2.h:
+	* SFTime.h:
+	* SFVec3.h:
+	* Route.h:
+	* SFVec4.h:
+	* SFColor.h:
+	* SFImage.h:
+	* X3DObject.h:
+	* X3DField.h:
+	* SFTime.cpp:
+	* Proto.h:
+	* Route.cpp:
+	* SFString.h:
+	* Parser.cpp:
+	* SFMatrix3.h:
+	* SFImage.cpp:
+	* SFColor.cpp:
+	* SFMatrix4.h:
+	* X3DMFNode.h:
+	* X3DObject.cpp:
+	* X3DScalar.h:
+	* X3DSFNode.h:
+	* X3DBaseNode.h:
+	* SFString.cpp:
+	* Proto.cpp:
+	* Unit.h:
+	* SFColorRGBA.h:
+	* X3DScalar.cpp:
+	* X3DScene.h:
+	* SFRotation4.h:
+	* ArrayFields.h:
+	* X3DArrayField.h:
+	* X3DBaseNode.cpp:
+	* X3DScene.cpp:
+	* SFColorRGBA.cpp:
+	* Unit.cpp:
+	* ArrayFields.cpp:
+	* ExternProto.h:
+	* Generator.h:
+	* ExportedNode.h:
+	* ImportedNode.h:
+	* Generator.cpp:
+	* ExternProto.cpp:
+	* ImportedNode.cpp:
+	* ExportedNode.cpp:
+	* ProfileInfo.h:
+	* X3DBrowserContext.cpp:
+	* ComponentInfo.h:
+	* ProfileInfo.cpp:
+	* X3DBaseGenerator.h:
+	* ComponentInfo.cpp:
+	* X3DExecutionContext.h:
+	* X3DBaseGenerator.cpp:
+	* X3DExecutionContext.cpp:
+	* jsContext.cpp:
+	* X3DPrototypeInstance.h:
+	* X3DPrototypeInstance.cpp:
+	* jsFieldDefinitionArray.cpp: 
+
 2014-03-18  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBaseNode.cpp: 

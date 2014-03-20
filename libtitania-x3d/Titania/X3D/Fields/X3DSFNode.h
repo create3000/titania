@@ -263,7 +263,7 @@ public:
 	addInterest (Class & object, void (Class::* memberFunction) (const X3DSFNode &)) const
 	{ addInterest (object, memberFunction, std::cref (*this)); }
 
-	///  @name Input operator.
+	///  @name Input/Output
 	virtual
 	void
 	fromStream (std::istream &)
@@ -272,10 +272,13 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) final override;
 
-	///  @name Output operator.
 	virtual
 	void
 	toStream (std::ostream &) const final override;
+
+	virtual
+	void
+	toXMLStream (std::ostream &) const final override;
 
 	///  @name Dispose
 
@@ -442,6 +445,18 @@ X3DSFNode <ValueType>::toStream (std::ostream & ostream) const
 {
 	if (getValue ())
 		getValue () -> toStream (ostream);
+
+	else
+		ostream << "NULL";
+}
+
+template <class ValueType>
+inline
+void
+X3DSFNode <ValueType>::toXMLStream (std::ostream & ostream) const
+{
+	if (getValue ())
+		getValue () -> toXMLStream (ostream);
 
 	else
 		ostream << "NULL";

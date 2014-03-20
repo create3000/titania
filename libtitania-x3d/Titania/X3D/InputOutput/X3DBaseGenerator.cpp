@@ -48,28 +48,12 @@
  *
  ******************************************************************************/
 
-#include "Generator.h"
+#include "X3DBaseGenerator.h"
 
 namespace titania {
-namespace io {
+namespace X3D {
 
-//
+template class X3DBaseGenerator <char>;
 
 } // basic
 } // titania
-
-// Implicit template instantiations.
-template std::ostream & titania::io::Generator::Comment       (std::ostream &);
-template std::ostream & titania::io::Generator::Space         (std::ostream &);
-template std::ostream & titania::io::Generator::TidySpace     (std::ostream &);
-template std::ostream & titania::io::Generator::ForceBreak    (std::ostream &);
-template std::ostream & titania::io::Generator::Break         (std::ostream &);
-template std::ostream & titania::io::Generator::TidyBreak     (std::ostream &);
-template std::ostream & titania::io::Generator::ListBreak     (std::ostream &);
-template std::ostream & titania::io::Generator::Comma         (std::ostream &);
-template std::ostream & titania::io::Generator::Indent        (std::ostream &);
-template std::ostream & titania::io::Generator::IncIndent     (std::ostream &);
-template std::ostream & titania::io::Generator::DecIndent     (std::ostream &);
-template std::ostream & titania::io::Generator::OpenBracket   (std::ostream &);
-template std::ostream & titania::io::Generator::CloseBracket  (std::ostream &);
-template std::ostream & titania::io::Generator::EmptyBrackets (std::ostream &);

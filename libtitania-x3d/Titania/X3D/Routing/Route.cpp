@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -196,56 +196,93 @@ Route::remove ()
 
 void
 Route::toStream (std::ostream & ostream) const
+//throw (Error <INVALID_NODE>,
+//       Error <DISPOSED>)
 {
-	try
+	const std::string sourceNodeName      = Generator::GetLocalName (getSourceNode ());
+	const std::string destinationNodeName = Generator::GetLocalName (getDestinationNode ());
+
+	if (not getComments () .empty ())
 	{
-		const std::string sourceNodeName      = Generator::GetLocalName (getSourceNode ());
-		const std::string destinationNodeName = Generator::GetLocalName (getDestinationNode ());
+		ostream << Generator::TidyBreak;
 
-		if (not getComments () .empty ())
+		for (const auto & comment : getComments ())
 		{
-			ostream << Generator::TidyBreak;
-
-			for (const auto & comment : getComments ())
-			{
-				ostream
-					<< Generator::Indent
-					<< Generator::Comment
-					<< comment
-					<< Generator::ForceBreak;
-			}
-
-			ostream << Generator::TidyBreak;
+			ostream
+				<< Generator::Indent
+				<< Generator::Comment
+				<< comment
+				<< Generator::ForceBreak;
 		}
 
-		ostream
-			<< Generator::Indent
-			<< "ROUTE"
-			<< Generator::Space
-			<< sourceNodeName;
-
-		ostream << '.';
-
-		ostream << sourceField -> getName ();
-
-		if (sourceField -> getAccessType () == inputOutput)
-			ostream << "_changed";
-
-		ostream
-			<< Generator::Space
-			<< "TO"
-			<< Generator::Space
-			<< destinationNodeName;
-
-		ostream << '.';
-
-		if (destinationField -> getAccessType () == inputOutput)
-			ostream << "set_";
-
-		ostream << destinationField -> getName ();
+		ostream << Generator::TidyBreak;
 	}
-	catch (...)
-	{ }
+
+	ostream
+		<< Generator::Indent
+		<< "ROUTE"
+		<< Generator::Space
+		<< sourceNodeName;
+
+	ostream << '.';
+
+	ostream << sourceField -> getName ();
+
+	if (sourceField -> getAccessType () == inputOutput)
+		ostream << "_changed";
+
+	ostream
+		<< Generator::Space
+		<< "TO"
+		<< Generator::Space
+		<< destinationNodeName;
+
+	ostream << '.';
+
+	if (destinationField -> getAccessType () == inputOutput)
+		ostream << "set_";
+
+	ostream << destinationField -> getName ();
+}
+
+void
+Route::toXMLStream (std::ostream & ostream) const
+//throw (Error <INVALID_NODE>,
+//       Error <DISPOSED>)
+{
+	const std::string sourceNodeName      = Generator::GetLocalName (getSourceNode ());
+	const std::string destinationNodeName = Generator::GetLocalName (getDestinationNode ());
+
+	ostream
+		<< Generator::Indent
+		<< "<ROUTE"
+		<< Generator::Space
+		<< "fromNode='"
+		<< XMLEncode (sourceNodeName)
+		<< "'"
+		<< Generator::Space
+		<< "fromField='"
+		<< XMLEncode (sourceField -> getName ());
+
+	if (sourceField -> getAccessType () == inputOutput)
+		ostream << "_changed";
+
+	ostream
+		<< "'"
+		<< Generator::Space
+		<< "toNode='"
+		<< XMLEncode (destinationNodeName)
+		<< "'"
+		<< Generator::Space
+		<< "toField='";
+
+	if (destinationField -> getAccessType () == inputOutput)
+		ostream << "set_";
+
+	ostream
+		<< XMLEncode (destinationField -> getName ())
+		<< "'"
+		<< "/>";
 }
 
 void

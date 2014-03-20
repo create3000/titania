@@ -59,6 +59,8 @@
 #include <Titania/Chrono/CountingClock.h>
 #include <Titania/Chrono/SystemClock.h>
 
+#include <cassert>
+
 namespace titania {
 namespace X3D {
 

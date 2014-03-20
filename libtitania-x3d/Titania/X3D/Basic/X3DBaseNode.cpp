@@ -945,7 +945,7 @@ X3DBaseNode::toStreamField (std::ostream & ostream, X3DFieldDefinition* const fi
 
 	if (field -> getReferences () .empty ())
 	{
-		// Output build field
+		// Output build in field
 
 		ostream << Generator::Indent;
 
@@ -957,8 +957,13 @@ X3DBaseNode::toStreamField (std::ostream & ostream, X3DFieldDefinition* const fi
 	}
 	else
 	{
+		size_t index                  = 0;
+		bool   initializableReference = false;
+
 		for (const auto & reference : field -> getReferences ())
 		{
+			initializableReference |= reference -> isInitializeable ();
+
 			// Output build in reference
 
 			ostream << Generator::Indent;
@@ -970,6 +975,29 @@ X3DBaseNode::toStreamField (std::ostream & ostream, X3DFieldDefinition* const fi
 				<< "IS"
 				<< Generator::Space
 				<< reference -> getName ();
+		
+			++ index;
+		
+			if (index not_eq field -> getReferences () .size ())
+				ostream << Generator::TidyBreak;			
+		}
+
+		// If the field is a inputOutput and we have as reference only inputOnly or outputOnly we must output the value
+		// for this field.
+
+		if (field -> getAccessType () == inputOutput and not initializableReference and not isDefaultValue (field))
+		{
+			// Output build in field
+
+			ostream
+				<< Generator::TidyBreak
+				<< Generator::Indent;
+
+			ostream << getFieldName (field -> getName (), Generator::Version ());
+
+			ostream
+				<< Generator::Space
+				<< *field;
 		}
 	}
 }
@@ -1002,7 +1030,7 @@ X3DBaseNode::toStreamUserDefinedField (std::ostream & ostream, X3DFieldDefinitio
 			<< std::setiosflags (std::ios::left) << std::setw (fieldTypeLength) << field -> getTypeName ()
 			<< Generator::Space;
 
-		ostream << getFieldName (field -> getName (), Generator::Version ());
+		ostream << field -> getName ();
 
 		if (field -> isInitializeable ())
 		{
@@ -1013,7 +1041,8 @@ X3DBaseNode::toStreamUserDefinedField (std::ostream & ostream, X3DFieldDefinitio
 	}
 	else
 	{
-		bool initializableReference = false;
+		size_t index                  = 0;
+		bool   initializableReference = false;
 
 		for (const auto & reference : field -> getReferences ())
 		{
@@ -1033,20 +1062,29 @@ X3DBaseNode::toStreamUserDefinedField (std::ostream & ostream, X3DFieldDefinitio
 				<< std::setiosflags (std::ios::left) << std::setw (fieldTypeLength) << field -> getTypeName ()
 				<< Generator::Space;
 
-			ostream << getFieldName (field -> getName (), Generator::Version ());
+			ostream << field -> getName ();
 
 			ostream
 				<< Generator::Space
 				<< "IS"
 				<< Generator::Space
 				<< reference -> getName ();
+				
+			++ index;
+				
+			if (index not_eq field -> getReferences () .size ())
+				ostream << Generator::TidyBreak;				
 		}
+
+		// If the field is a inputOutput and we have as reference only inputOnly or outputOnly we must output the value
+		// for this field.
 
 		if (field -> getAccessType () == inputOutput and not initializableReference)
 		{
 			// Output user defined field
 
 			ostream
+				<< Generator::TidyBreak
 				<< Generator::Indent
 				<< std::setiosflags (std::ios::left)
 				<< std::setw (accessTypeLength);
@@ -1058,7 +1096,7 @@ X3DBaseNode::toStreamUserDefinedField (std::ostream & ostream, X3DFieldDefinitio
 				<< std::setiosflags (std::ios::left) << std::setw (fieldTypeLength) << field -> getTypeName ()
 				<< Generator::Space;
 
-			ostream << getFieldName (field -> getName (), Generator::Version ());
+			ostream << field -> getName ();
 
 			if (field -> isInitializeable ())
 			{
@@ -1068,6 +1106,295 @@ X3DBaseNode::toStreamUserDefinedField (std::ostream & ostream, X3DFieldDefinitio
 			}
 		}
 	}
+}
+
+void
+X3DBaseNode::toXMLStream (std::ostream & ostream) const
+{
+	Generator::PushContext ();
+
+	const std::string name = Generator::GetName (this);
+
+	if (not name .empty ())
+	{
+		if (Generator::ExistsNode (this))
+		{
+			ostream
+				<< Generator::Indent
+				<< "<"
+				<< getTypeName ()
+				<< Generator::Space
+				<< "USE='"
+				<< XMLEncode (name)
+				<< "'";
+
+			const auto containerField = Generator::GetContainerField ();
+
+			if (containerField)
+			{
+				if (containerField -> getName () not_eq getContainerField ())
+				{
+					ostream
+						<< Generator::Space
+						<< "containerField='"
+						<< XMLEncode (containerField -> getName ())
+						<< "'";
+				}
+			}
+
+			ostream << "/>";
+
+			Generator::PopContext ();
+
+			return;
+		}
+	}
+
+	ostream
+		<< Generator::Indent
+		<< "<"
+		<< getTypeName ();
+
+	if (not name .empty ())
+	{
+		Generator::AddNode (this);
+
+		ostream
+			<< Generator::Space
+			<< "DEF='"
+			<< XMLEncode (name)
+			<< "'";
+	}
+
+	const auto containerField = Generator::GetContainerField ();
+
+	if (containerField)
+	{
+		if (containerField -> getName () not_eq getContainerField ())
+		{
+			ostream
+				<< Generator::Space
+				<< "containerField='"
+				<< XMLEncode (containerField -> getName ())
+				<< "'";
+		}
+	}
+
+	const FieldDefinitionArray fields            = getInitializeableFields (Generator::ExpandNodes ());
+	const FieldDefinitionArray userDefinedFields = getUserDefinedFields ();
+
+	FieldDefinitionArray references;
+	FieldDefinitionArray childNodes;
+
+	for (const auto & field : fields)
+	{
+		// If the field is a inputOutput and we have as reference only inputOnly or outputOnly we must output the value
+		// for this field.
+
+		bool mustOutputValue = false;
+
+		if (field -> getAccessType () == inputOutput and not field -> getReferences () .empty ())
+		{
+			bool initializeableReference = false;
+	
+			for (const auto & reference : field -> getReferences ())
+				initializeableReference |= reference -> isInitializeable ();
+			
+			if (not initializeableReference)
+				mustOutputValue = true;
+		}
+
+		if (field -> getReferences () .empty () or mustOutputValue)
+		{
+			if (mustOutputValue)
+				references .emplace_back (field);
+
+			switch (field -> getType ())
+			{
+				case X3DConstants::SFNode:
+				case X3DConstants::MFNode:
+				{
+					childNodes .emplace_back (field);
+					break;
+				}
+				default:
+				{
+					ostream
+						<< Generator::Space
+						<< getFieldName (field -> getName (), Generator::Version ())
+						<< "='"
+						<< XMLEncode (field)
+						<< "'";
+
+					break;
+				}	
+			}
+		}
+		else
+		{
+			references .emplace_back (field);
+		}
+	}
+
+	if (childNodes .empty () and userDefinedFields .empty ())
+	{
+		ostream << "/>";
+	}
+	else
+	{
+		ostream
+			<< ">"
+			<< Generator::ForceBreak
+			<< Generator::IncIndent;
+
+		for (const auto & field : userDefinedFields)
+		{
+			ostream
+				<< Generator::Indent
+				<< "<field"
+				<< Generator::Space
+				<< "accessType='"
+				<< Generator::X3DAccessTypes [field]
+				<< "'"
+				<< Generator::Space
+				<< "type='"
+				<< field-> getTypeName ()
+				<< "'"
+				<< Generator::Space
+				<< "name='"
+				<< XMLEncode (field -> getName ())
+				<< "'";
+
+			// If the field is a inputOutput and we have as reference only inputOnly or outputOnly we must output the value
+			// for this field.
+
+			bool mustOutputValue = false;
+
+			if (field -> getAccessType () == inputOutput and not field -> getReferences () .empty ())
+			{
+				bool initializeableReference = false;
+		
+				for (const auto & reference : field -> getReferences ())
+					initializeableReference |= reference -> isInitializeable ();
+				
+				if (not initializeableReference)
+					mustOutputValue = true;
+			}
+
+			if (field -> getReferences () .empty () or mustOutputValue)
+			{
+				if (mustOutputValue)
+					references .emplace_back (field);
+
+				if (*field == *getBrowser () -> getFieldType (field-> getTypeName ()))
+				{
+					ostream
+						<< "/>"
+						<< Generator::ForceBreak;
+				}
+				else
+				{
+					switch (field -> getType ())
+					{
+						case X3DConstants::SFNode:
+						case X3DConstants::MFNode:
+						{
+							Generator::PushContainerField (field);
+
+							ostream
+								<< ">"
+								<< Generator::ForceBreak
+								<< Generator::IncIndent
+								<< XMLEncode (field)
+								<< Generator::DecIndent
+								<< Generator::Indent
+								<< "</field>"
+								<< Generator::ForceBreak;
+
+							Generator::PopContainerField ();
+
+							break;
+						}
+						default:
+						{
+							ostream
+								<< Generator::Space
+								<< "value='"
+								<< XMLEncode (field)
+								<< "'"
+								<< "/>"
+								<< Generator::ForceBreak;
+
+							break;
+						}
+					}
+				}
+			}
+			else
+			{
+				references .emplace_back (field);
+			
+				ostream
+					<< "/>"
+					<< Generator::ForceBreak;
+			}
+		}
+		
+		if (not references .empty ())
+		{
+			ostream
+				<< Generator::Indent
+				<< "<IS>"
+				<< Generator::ForceBreak
+				<< Generator::IncIndent;
+	
+			for (const auto & field : references)
+			{
+				for (const auto & reference : field -> getReferences ())
+				{
+					ostream
+						<< Generator::Indent
+						<< "<connect"
+						<< Generator::Space
+						<< "nodeField='"
+						<< XMLEncode (field -> getName ())
+						<< "'"
+						<< Generator::Space
+						<< "protoField='"
+						<< XMLEncode (reference -> getName ())
+						<< "'"
+						<< "/>"
+						<< Generator::ForceBreak;
+				}
+			}
+
+			ostream
+				<< Generator::DecIndent
+				<< Generator::Indent
+				<< "</IS>"
+				<< Generator::ForceBreak;
+		}
+
+		for (const auto & field : childNodes)
+		{
+			Generator::PushContainerField (field);
+	
+			ostream
+				<< XMLEncode (field)
+				<< Generator::ForceBreak;
+
+			Generator::PopContainerField ();
+		}
+
+		ostream
+			<< Generator::DecIndent
+			<< Generator::Indent
+			<< "</"
+			<< getTypeName ()
+			<< ">";
+	}
+
+	Generator::PopContext ();
 }
 
 void
