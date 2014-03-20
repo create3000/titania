@@ -78,7 +78,10 @@ PROTO Test-utf8-<äöü&> [
     # IS statement on user defined field
     inputOutput    SFString test IS test
     # User defined field with value
-    inputOutput    MFNode   children DEF Meta MetadataBoolean { }
+    inputOutput    MFNode   children [
+      DEF Meta MetadataBoolean { }
+      NULL
+    ]
     # User defined field with reference value
     initializeOnly SFNode   node USE Meta
 

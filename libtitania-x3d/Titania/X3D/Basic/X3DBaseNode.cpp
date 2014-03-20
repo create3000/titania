@@ -1299,13 +1299,14 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 						case X3DConstants::SFNode:
 						case X3DConstants::MFNode:
 						{
-							Generator::PushContainerField (field);
+							Generator::PushContainerField (nullptr);
 
 							ostream
 								<< ">"
 								<< Generator::ForceBreak
 								<< Generator::IncIndent
 								<< XMLEncode (field)
+								<< Generator::ForceBreak
 								<< Generator::DecIndent
 								<< Generator::Indent
 								<< "</field>"

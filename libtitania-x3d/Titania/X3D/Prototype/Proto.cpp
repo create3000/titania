@@ -371,6 +371,7 @@ Proto::toXMLStream (std::ostream & ostream) const
 							<< Generator::ForceBreak
 							<< Generator::IncIndent
 							<< XMLEncode (field)
+							<< Generator::ForceBreak
 							<< Generator::DecIndent
 							<< Generator::Indent
 							<< "</field>"

@@ -21,7 +21,8 @@
         <field accessType='outputOnly' type='SFBool' name='isBound'/>
         <field accessType='inputOutput' type='SFString' name='test' value='\\\"äöüáóúâôû&amp;&lt;&apos;'/>
         <field accessType='inputOutput' type='MFNode' name='children'>
-          <WorldInfo DEF='Default'/>        </field>
+          <WorldInfo DEF='Default'/>
+        </field>
       </ProtoInterface>
       <ProtoBody>
         <ProtoDeclare name='Test'>
@@ -41,9 +42,12 @@ function initialize ()
           <field accessType='inputOutput' type='SFBool' name='enabled' value='true'/>
           <field accessType='inputOutput' type='SFString' name='test'/>
           <field accessType='inputOutput' type='MFNode' name='children'>
-            <MetadataBoolean DEF='Meta' containerField='children'/>          </field>
+            <MetadataBoolean DEF='Meta'/>
+            <!-- NULL -->
+          </field>
           <field accessType='initializeOnly' type='SFNode' name='node'>
-            <MetadataBoolean USE='Meta' containerField='node'/>          </field>
+            <MetadataBoolean USE='Meta'/>
+          </field>
           <IS>
             <connect nodeField='enabled' protoField='isBound'/>
             <connect nodeField='enabled' protoField='set_bind'/>
@@ -68,7 +72,8 @@ function initialize ()
       </Shape>
     </Transform>
     <Group>
-      <Transform/>      <Transform/>
+      <Transform/>
+      <Transform/>
     </Group>
     <Transform translation='0 0 -2'>
       <Inline DEF='Inline' url='"EXPORT.wrl"'/>

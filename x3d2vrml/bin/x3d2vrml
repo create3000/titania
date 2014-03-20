@@ -1034,8 +1034,8 @@ sub field {
 	}
 	elsif ($typeName eq "SFNode")
 	{
-		$field -> {value}
-		? $self -> node ($field -> {value} -> [0])
+		ref ($field -> {value}) eq "ARRAY"
+		? $self -> node ($field -> {value} -> [$#{$field -> {value}}])
 		: print "NULL";
 	}
 	elsif ($typeName eq "SFString")

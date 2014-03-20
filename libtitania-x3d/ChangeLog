@@ -1,5 +1,11 @@
 2014-03-20  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DMFNode.h:
+	* Proto.cpp:
+	* X3DBaseNode.cpp: 
+
+2014-03-20  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* SFVec2.h:

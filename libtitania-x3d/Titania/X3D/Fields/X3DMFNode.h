@@ -291,7 +291,7 @@ X3DMFNode <ValueType>::toXMLStream (std::ostream & ostream) const
 {
 	if (not empty ())
 	{
-		for (const auto & value : *this)
+		for (const auto & value : basic::adapter (cbegin (), cend () - 1))
 		{
 			if (value)
 			{
