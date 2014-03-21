@@ -968,14 +968,11 @@ X3DExecutionContext::toXMLStream (std::ostream & ostream) const
 			<< Generator::ForceBreak;
 	}
 	
-	for (const auto & rootNode : getRootNodes ())
+	if (not getRootNodes () .empty ())
 	{
-		if (rootNode)
-		{
-			ostream
-				<< XMLEncode (rootNode)
-				<< Generator::ForceBreak;
-		}
+		ostream
+			<< XMLEncode (getRootNodes ())
+			<< Generator::ForceBreak;
 	}
 
 	for (const auto & importedNode : getImportedNodes ())

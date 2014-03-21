@@ -352,6 +352,9 @@ protected:
 	void
 	removeField (const std::string &);
 
+	FieldDefinitionArray
+	getInitializeableFields (const bool = false) const;
+
 	virtual
 	void
 	addChild (X3DChildObject &) final override;
@@ -391,9 +394,6 @@ private:
 
 	const std::string &
 	getFieldName (const std::string &, const VersionType) const;
-
-	FieldDefinitionArray
-	getInitializeableFields (const bool = false) const;
 
 	void
 	removeEvents ();

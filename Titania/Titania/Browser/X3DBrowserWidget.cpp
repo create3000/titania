@@ -264,35 +264,44 @@ X3DBrowserWidget::open (const basic::uri & worldURL)
 void
 X3DBrowserWidget::save (const basic::uri & worldURL, const bool compressed)
 {
+	const std::string suffix = worldURL .suffix ();
+
 	getBrowser () -> getExecutionContext () -> setWorldURL (worldURL);
 	getBrowser () -> getExecutionContext () -> isCompressed (compressed);
 
-	if (compressed)
+	if (suffix == ".x3d")
 	{
-		ogzstream file (worldURL .path ());
+		if (compressed)
+		{
+			ogzstream file (worldURL .path ());
 
-		file
-			<< X3D::SmallestStyle
-			<< getBrowser () -> getExecutionContext ();
+			file << X3D::XMLEncode (getBrowser () -> getExecutionContext ());
+		}
+		else
+		{
+			std::ofstream file (worldURL .path ());
+
+			file << X3D::XMLEncode (getBrowser () -> getExecutionContext ());
+		}
 	}
 	else
 	{
-		std::ofstream file (worldURL .path ());
+		if (compressed)
+		{
+			ogzstream file (worldURL .path ());
 
-		file
-			<< X3D::NicestStyle
-			<< getBrowser () -> getExecutionContext ();
-	}
+			file
+				<< X3D::SmallestStyle
+				<< getBrowser () -> getExecutionContext ();
+		}
+		else
+		{
+			std::ofstream file (worldURL .path ());
 
-	// Debug
-
-	std::string test = "/home/holger/Projekte/Titania/Library/Tests/Basic/X3D.x3d";
-	
-	if (os::file_exists (test))
-	{
-		std::ofstream file (test);
-
-		file << X3D::XMLEncode (getBrowser () -> getExecutionContext ());
+			file
+				<< X3D::NicestStyle
+				<< getBrowser () -> getExecutionContext ();
+		}
 	}
 }
 

@@ -275,8 +275,220 @@ X3DPrototypeInstance::toStream (std::ostream & ostream) const
 
 void
 X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
+//throw (Error <DISPOSED>)
 {
-	X3DBaseNode::toXMLStream (ostream);
+	Generator::PushContext ();
+
+	const std::string name = Generator::GetName (this);
+
+	if (not name .empty ())
+	{
+		if (Generator::ExistsNode (this))
+		{
+			ostream
+				<< Generator::Indent
+				<< "<ProtoInstance"
+				<< Generator::Space
+				<< "name='"
+				<< XMLEncode (getTypeName ())
+				<< "'"
+				<< Generator::Space
+				<< "USE='"
+				<< XMLEncode (name)
+				<< "'";
+
+			const auto containerField = Generator::GetContainerField ();
+
+			if (containerField)
+			{
+				if (containerField -> getName () not_eq getContainerField ())
+				{
+					ostream
+						<< Generator::Space
+						<< "containerField='"
+						<< XMLEncode (containerField -> getName ())
+						<< "'";
+				}
+			}
+
+			ostream << "/>";
+
+			Generator::PopContext ();
+
+			return;
+		}
+	}
+
+	ostream
+		<< Generator::Indent
+		<< "<ProtoInstance"
+		<< Generator::Space
+		<< "name='"
+		<< XMLEncode (getTypeName ())
+		<< "'";
+
+	if (not name .empty ())
+	{
+		Generator::AddNode (this);
+
+		ostream
+			<< Generator::Space
+			<< "DEF='"
+			<< XMLEncode (name)
+			<< "'";
+	}
+
+	const auto containerField = Generator::GetContainerField ();
+
+	if (containerField)
+	{
+		if (containerField -> getName () not_eq getContainerField ())
+		{
+			ostream
+				<< Generator::Space
+				<< "containerField='"
+				<< XMLEncode (containerField -> getName ())
+				<< "'";
+		}
+	}
+
+	const FieldDefinitionArray fields = getInitializeableFields (Generator::ExpandNodes ());
+
+	if (fields .empty ())
+	{
+		ostream << "/>";
+	}
+	else
+	{
+		ostream
+			<< ">"
+			<< Generator::ForceBreak
+			<< Generator::IncIndent;
+
+		FieldDefinitionArray references;
+		FieldDefinitionArray childNodes;
+
+		for (const auto & field : fields)
+		{
+			// If the field is a inputOutput and we have as reference only inputOnly or outputOnly we must output the value
+			// for this field.
+
+			bool mustOutputValue = false;
+
+			if (field -> getAccessType () == inputOutput and not field -> getReferences () .empty ())
+			{
+				bool initializeableReference = false;
+		
+				for (const auto & reference : field -> getReferences ())
+					initializeableReference |= reference -> isInitializeable ();
+				
+				if (not initializeableReference)
+					mustOutputValue = true;
+			}
+
+			if (field -> getReferences () .empty () or mustOutputValue)
+			{
+				if (mustOutputValue)
+					references .emplace_back (field);
+
+				switch (field -> getType ())
+				{
+					case X3DConstants::MFNode:
+					{
+						childNodes .emplace_back (field);
+						break;
+					}
+					case X3DConstants::SFNode:
+					{
+						static const SFNode _null;
+						
+						if (*field not_eq _null)
+						{
+							childNodes .emplace_back (field);
+							break;
+						}
+
+						// Proceed with next case.
+					}
+					default:
+					{
+						ostream
+							<< Generator::Indent
+							<< "<fieldValue"
+							<< Generator::Space
+							<< "name='"
+							<< XMLEncode (field -> getName ())
+							<< "'"
+							<< Generator::Space
+							<< "value='"
+							<< XMLEncode (field)
+							<< "'"
+							<< "/>"
+							<< Generator::ForceBreak;
+
+						break;
+					}	
+				}
+			}
+			else
+			{
+				references .emplace_back (field);
+			}
+		}
+
+		if (not references .empty ())
+		{
+			ostream
+				<< Generator::Indent
+				<< "<IS>"
+				<< Generator::ForceBreak
+				<< Generator::IncIndent;
+	
+			for (const auto & field : references)
+			{
+				for (const auto & reference : field -> getReferences ())
+				{
+					ostream
+						<< Generator::Indent
+						<< "<connect"
+						<< Generator::Space
+						<< "nodeField='"
+						<< XMLEncode (field -> getName ())
+						<< "'"
+						<< Generator::Space
+						<< "protoField='"
+						<< XMLEncode (reference -> getName ())
+						<< "'"
+						<< "/>"
+						<< Generator::ForceBreak;
+				}
+			}
+
+			ostream
+				<< Generator::DecIndent
+				<< Generator::Indent
+				<< "</IS>"
+				<< Generator::ForceBreak;
+		}
+
+		for (const auto & field : childNodes)
+		{
+			Generator::PushContainerField (field);
+	
+			ostream
+				<< XMLEncode (field)
+				<< Generator::ForceBreak;
+
+			Generator::PopContainerField ();
+		}
+
+		ostream
+			<< Generator::DecIndent
+			<< Generator::Indent
+			<< "</ProtoInstance>";
+	}
+
+	Generator::PopContext ();
 }
 
 } // X3D

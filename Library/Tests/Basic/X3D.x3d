@@ -23,6 +23,9 @@
         <field accessType='inputOutput' type='MFNode' name='children'>
           <WorldInfo DEF='Default'/>
         </field>
+        <field accessType='inputOutput' type='SFNode' name='node'>
+          <WorldInfo USE='Default'/>
+        </field>
       </ProtoInterface>
       <ProtoBody>
         <ProtoDeclare name='Test'>
@@ -32,25 +35,18 @@
         </ProtoDeclare>
         <Group/>
         <TimeSensor enabled='false'/>
-        <Script url='"javascript:
-function initialize ()
-{
-	// JavaScript Comment
-}
-"' directOutput='true'>
+        <Script url='"javascript: function initialize () {  // JavaScript Comment } "' directOutput='true'>
           <field accessType='inputOnly' type='SFBool' name='set_utf8-is-gorgeous-&amp;-nice!-&lt;utf8-ist-älegant-&amp;-schön!>'/>
-          <field accessType='inputOutput' type='SFBool' name='enabled' value='true'/>
+          <field accessType='inputOutput' type='SFBool' name='enabled'/>
           <field accessType='inputOutput' type='SFString' name='test'/>
           <field accessType='inputOutput' type='MFNode' name='children'>
             <MetadataBoolean DEF='Meta'/>
-            <!-- NULL -->
           </field>
           <field accessType='initializeOnly' type='SFNode' name='node'>
             <MetadataBoolean USE='Meta'/>
           </field>
           <IS>
             <connect nodeField='enabled' protoField='isBound'/>
-            <connect nodeField='enabled' protoField='set_bind'/>
             <connect nodeField='test' protoField='test'/>
           </IS>
         </Script>
@@ -58,8 +54,13 @@ function initialize ()
     </ProtoDeclare>
     <Viewpoint DEF='Reference' description='Cube' position='0 0 8'/>
     <Viewpoint USE='Reference'/>
-    <Rotor cycleInterval='10'/>
-    <Transform DEF='Transform'>
+    <ProtoInstance name='Rotor'>
+      <fieldValue name='cycleInterval' value='10'/>
+    </ProtoInstance>
+    <ProtoInstance name='Test-utf8-&lt;äöü&amp;>'>
+      <Group containerField='node'/>
+    </ProtoInstance>
+    <Transform DEF='Transform' translation='0.0778763 1.81664 0'>
       <Shape>
         <Appearance>
           <Material/>
@@ -74,13 +75,11 @@ function initialize ()
     <Group>
       <Transform/>
       <Transform/>
+      <MetadataBoolean containerField='children'/>
     </Group>
     <Transform translation='0 0 -2'>
       <Inline DEF='Inline' url='"EXPORT.wrl"'/>
     </Transform>
     <IMPORT inlineDEF='Inline' exportedDEF='CubeExport' AS='CubeImport'/>
-    <ROUTE fromNode='Transform' fromField='translation_changed' toNode='Transform' toField='set_translation'/>
-    <EXPORT localDEF='Transform' AS='ColoredCube'/>
-    <EXPORT localDEF='Transform' AS='ColoredCube1'/>
   </Scene>
 </X3D>

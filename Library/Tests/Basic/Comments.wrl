@@ -34,6 +34,7 @@ PROTO Test-utf8-<äöü&> [
   outputOnly  SFBool   isBound
   inputOutput SFString test "\\\"äöüáóúâôû&<'"
   inputOutput MFNode   children DEF Default WorldInfo { }
+  inputOutput SFNode   node USE Default
   # Interface Comment
 ]
 {
@@ -61,8 +62,8 @@ PROTO Test-utf8-<äöü&> [
   # Multiple References
   TimeSensor {
     # Multiple IS statements on build in field
-    enabled IS isBound
     enabled IS set_bind
+    enabled IS isBound
     enabled FALSE
     # IS statement on build in field
     isActive IS isBound
@@ -72,8 +73,8 @@ PROTO Test-utf8-<äöü&> [
     # Field with utf8 name and special characters
     inputOnly      SFBool   set_utf8-is-gorgeous-&-nice!-<utf8-ist-älegant-&-schön!>
     # Multiple IS statements on user defined field
-    inputOutput    SFBool   enabled IS isBound
     inputOutput    SFBool   enabled IS set_bind
+    inputOutput    SFBool   enabled IS isBound
     inputOutput    SFBool   enabled TRUE
     # IS statement on user defined field
     inputOutput    SFString test IS test
@@ -108,6 +109,10 @@ USE Reference
 # ProtoInstance Comment
 Rotor {
   cycleInterval 10
+}
+
+Test-utf8-<äöü&> {
+  node NULL
 }
 
 # Node Comment
@@ -236,6 +241,8 @@ Group {
     Transform { }
     # Node comment
     Transform { }
+    # Node comment
+    MetadataBoolean { }
   ]
 }
 
