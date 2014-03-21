@@ -269,7 +269,7 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compressed)
 	getBrowser () -> getExecutionContext () -> setWorldURL (worldURL);
 	getBrowser () -> getExecutionContext () -> isCompressed (compressed);
 
-	if (suffix == ".x3d")
+	if (suffix == ".x3d" or suffix == ".x3d.gz")
 	{
 		if (compressed)
 		{
