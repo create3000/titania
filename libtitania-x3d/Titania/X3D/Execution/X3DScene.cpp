@@ -239,7 +239,6 @@ X3DScene::toStream (std::ostream & ostream) const
 {
 	const auto version = getVersion ();
 
-	Generator::Version (version);
 	Generator::AccessTypeStyle (getEncoding () == "X3D");
 
 	ostream
@@ -399,8 +398,6 @@ X3DScene::toXMLStream (std::ostream & ostream) const
 			break;
 	}
 
-	Generator::Version (version);
-
 	ostream
 		<< "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 		<< Generator::ForceBreak;
@@ -429,13 +426,13 @@ X3DScene::toXMLStream (std::ostream & ostream) const
 		<< "xsd:noNamespaceSchemaLocation='http://www.web3d.org/specifications/x3d-"
 		<< versionString
 		<< ".xsd'>"
-		<< Generator::ForceBreak;
+		<< Generator::Break;
 
 	ostream
 		<< Generator::IncIndent
 		<< Generator::Indent
 		<< "<head>"
-		<< Generator::ForceBreak
+		<< Generator::Break
 		<< Generator::IncIndent;
 
 	// <head>
@@ -444,7 +441,7 @@ X3DScene::toXMLStream (std::ostream & ostream) const
 	{
 		ostream
 			<< XMLEncode (component)
-			<< Generator::ForceBreak;
+			<< Generator::Break;
 	}
 
 	for (const auto & unit : getUnits ())
@@ -453,7 +450,7 @@ X3DScene::toXMLStream (std::ostream & ostream) const
 		{
 			ostream
 				<< XMLEncode (unit)
-				<< Generator::ForceBreak;
+				<< Generator::Break;
 		}
 	}
 
@@ -471,7 +468,7 @@ X3DScene::toXMLStream (std::ostream & ostream) const
 			<< XMLEncode (metaData .second)
 			<< "'"
 			<< "/>"
-			<< Generator::ForceBreak;
+			<< Generator::Break;
 	}
 
 	// </head>
@@ -480,10 +477,10 @@ X3DScene::toXMLStream (std::ostream & ostream) const
 		<< Generator::DecIndent
 		<< Generator::Indent
 		<< "</head>"
-		<< Generator::ForceBreak
+		<< Generator::Break
 		<< Generator::Indent
 		<< "<Scene>"
-		<< Generator::ForceBreak
+		<< Generator::Break
 		<< Generator::IncIndent;
 
 	// <Scene>
@@ -498,7 +495,7 @@ X3DScene::toXMLStream (std::ostream & ostream) const
 		{
 			ostream
 				<<	XMLEncode (exportedNode)
-				<< Generator::ForceBreak;
+				<< Generator::Break;
 		}
 		catch (const X3DError &)
 		{ }
@@ -512,9 +509,10 @@ X3DScene::toXMLStream (std::ostream & ostream) const
 		<< Generator::DecIndent
 		<< Generator::Indent
 		<< "</Scene>"
-		<< Generator::ForceBreak
+		<< Generator::Break
 		<< Generator::DecIndent
 		<< "</X3D>"
+		<< Generator::Break
 		<< std::flush;
 }
 

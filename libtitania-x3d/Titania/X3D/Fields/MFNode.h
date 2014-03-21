@@ -54,12 +54,13 @@
 #include "../Fields/SFNode.h"
 #include "../Fields/X3DMFNode.h"
 
+extern template class std::vector <titania::X3D::SFNode*>;
+
 namespace titania {
 namespace X3D {
 
 typedef X3DMFNode <X3DBaseNode> MFNode;
 
-//extern template class Array <SFNode>;
 extern template class X3DField <Array <SFNode>>;
 extern template class X3DArrayField <SFNode>;
 extern template class X3DMFNode <X3DBaseNode>;

@@ -869,7 +869,7 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 		}
 
 		toStreamUserDefinedField (ostream, userDefinedFields .back (), fieldTypeLength, accessTypeLength);
-		ostream << Generator::TidyBreak;
+		ostream << Generator::Break;
 
 		ostream
 			<< Generator::DecIndent
@@ -949,7 +949,7 @@ X3DBaseNode::toStreamField (std::ostream & ostream, X3DFieldDefinition* const fi
 
 		ostream << Generator::Indent;
 
-		ostream << getFieldName (field -> getName (), Generator::Version ());
+		ostream << getFieldName (field -> getName (), executionContext -> getVersion ());
 
 		ostream
 			<< Generator::Space
@@ -968,18 +968,18 @@ X3DBaseNode::toStreamField (std::ostream & ostream, X3DFieldDefinition* const fi
 
 			ostream << Generator::Indent;
 
-			ostream << getFieldName (field -> getName (), Generator::Version ());
+			ostream << getFieldName (field -> getName (), executionContext -> getVersion ());
 
 			ostream
 				<< Generator::Space
 				<< "IS"
 				<< Generator::Space
 				<< reference -> getName ();
-		
+
 			++ index;
-		
+
 			if (index not_eq field -> getReferences () .size ())
-				ostream << Generator::TidyBreak;			
+				ostream << Generator::TidyBreak;
 		}
 
 		// If the field is a inputOutput and we have as reference only inputOnly or outputOnly we must output the value
@@ -993,7 +993,7 @@ X3DBaseNode::toStreamField (std::ostream & ostream, X3DFieldDefinition* const fi
 				<< Generator::TidyBreak
 				<< Generator::Indent;
 
-			ostream << getFieldName (field -> getName (), Generator::Version ());
+			ostream << getFieldName (field -> getName (), executionContext -> getVersion ());
 
 			ostream
 				<< Generator::Space
@@ -1069,11 +1069,11 @@ X3DBaseNode::toStreamUserDefinedField (std::ostream & ostream, X3DFieldDefinitio
 				<< "IS"
 				<< Generator::Space
 				<< reference -> getName ();
-				
+
 			++ index;
-				
+
 			if (index not_eq field -> getReferences () .size ())
-				ostream << Generator::TidyBreak;				
+				ostream << Generator::TidyBreak;
 		}
 
 		// If the field is a inputOutput and we have as reference only inputOnly or outputOnly we must output the value
@@ -1196,10 +1196,10 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 		if (field -> getAccessType () == inputOutput and not field -> getReferences () .empty ())
 		{
 			bool initializeableReference = false;
-	
+
 			for (const auto & reference : field -> getReferences ())
 				initializeableReference |= reference -> isInitializeable ();
-			
+
 			if (not initializeableReference)
 				mustOutputValue = true;
 		}
@@ -1221,13 +1221,13 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 				{
 					ostream
 						<< Generator::Space
-						<< getFieldName (field -> getName (), Generator::Version ())
+						<< getFieldName (field -> getName (), executionContext -> getVersion ())
 						<< "='"
 						<< XMLEncode (field)
 						<< "'";
 
 					break;
-				}	
+				}
 			}
 		}
 		else
@@ -1244,7 +1244,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 	{
 		ostream
 			<< ">"
-			<< Generator::ForceBreak
+			<< Generator::Break
 			<< Generator::IncIndent;
 
 		for (const auto & field : userDefinedFields)
@@ -1258,7 +1258,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 				<< "'"
 				<< Generator::Space
 				<< "type='"
-				<< field-> getTypeName ()
+				<< field -> getTypeName ()
 				<< "'"
 				<< Generator::Space
 				<< "name='"
@@ -1273,10 +1273,10 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 			if (field -> getAccessType () == inputOutput and not field -> getReferences () .empty ())
 			{
 				bool initializeableReference = false;
-		
+
 				for (const auto & reference : field -> getReferences ())
 					initializeableReference |= reference -> isInitializeable ();
-				
+
 				if (not initializeableReference)
 					mustOutputValue = true;
 			}
@@ -1286,11 +1286,11 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 				if (mustOutputValue)
 					references .emplace_back (field);
 
-				if (*field == *getBrowser () -> getFieldType (field-> getTypeName ()))
+				if (*field == *getBrowser () -> getFieldType (field -> getTypeName ()))
 				{
 					ostream
 						<< "/>"
-						<< Generator::ForceBreak;
+						<< Generator::Break;
 				}
 				else
 				{
@@ -1303,14 +1303,14 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 
 							ostream
 								<< ">"
-								<< Generator::ForceBreak
+								<< Generator::Break
 								<< Generator::IncIndent
 								<< XMLEncode (field)
-								<< Generator::ForceBreak
+								<< Generator::Break
 								<< Generator::DecIndent
 								<< Generator::Indent
 								<< "</field>"
-								<< Generator::ForceBreak;
+								<< Generator::Break;
 
 							Generator::PopContainerField ();
 
@@ -1324,7 +1324,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 								<< XMLEncode (field)
 								<< "'"
 								<< "/>"
-								<< Generator::ForceBreak;
+								<< Generator::Break;
 
 							break;
 						}
@@ -1334,21 +1334,21 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 			else
 			{
 				references .emplace_back (field);
-			
+
 				ostream
 					<< "/>"
-					<< Generator::ForceBreak;
+					<< Generator::Break;
 			}
 		}
-		
+
 		if (not references .empty ())
 		{
 			ostream
 				<< Generator::Indent
 				<< "<IS>"
-				<< Generator::ForceBreak
+				<< Generator::Break
 				<< Generator::IncIndent;
-	
+
 			for (const auto & field : references)
 			{
 				for (const auto & reference : field -> getReferences ())
@@ -1365,7 +1365,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 						<< XMLEncode (reference -> getName ())
 						<< "'"
 						<< "/>"
-						<< Generator::ForceBreak;
+						<< Generator::Break;
 				}
 			}
 
@@ -1373,16 +1373,16 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 				<< Generator::DecIndent
 				<< Generator::Indent
 				<< "</IS>"
-				<< Generator::ForceBreak;
+				<< Generator::Break;
 		}
 
 		for (const auto & field : childNodes)
 		{
 			Generator::PushContainerField (field);
-	
+
 			ostream
 				<< XMLEncode (field)
-				<< Generator::ForceBreak;
+				<< Generator::Break;
 
 			Generator::PopContainerField ();
 		}

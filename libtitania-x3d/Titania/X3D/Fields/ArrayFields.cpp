@@ -50,6 +50,27 @@
 
 #include "ArrayFields.h"
 
+// Explicit instantiation for required instantiations.
+template class std::vector <titania::X3D::SFBool*>;
+template class std::vector <titania::X3D::SFColor*>;
+template class std::vector <titania::X3D::SFColorRGBA*>;
+template class std::vector <titania::X3D::SFDouble*>;
+template class std::vector <titania::X3D::SFFloat*>;
+template class std::vector <titania::X3D::SFImage*>;
+template class std::vector <titania::X3D::SFMatrix3d*>;
+template class std::vector <titania::X3D::SFMatrix3f*>;
+template class std::vector <titania::X3D::SFMatrix4d*>;
+template class std::vector <titania::X3D::SFMatrix4f*>;
+template class std::vector <titania::X3D::SFRotation*>;
+template class std::vector <titania::X3D::SFString*>;
+template class std::vector <titania::X3D::SFTime*>;
+template class std::vector <titania::X3D::SFVec2d*>;
+template class std::vector <titania::X3D::SFVec2f*>;
+template class std::vector <titania::X3D::SFVec3d*>;
+template class std::vector <titania::X3D::SFVec3f*>;
+template class std::vector <titania::X3D::SFVec4d*>;
+template class std::vector <titania::X3D::SFVec4f*>;
+
 namespace titania {
 namespace X3D {
 
@@ -177,48 +198,24 @@ template <>
 void
 X3DArrayField <SFString>::toXMLStream (std::ostream & ostream) const
 {
-	switch (size ())
+	if (not empty ())
 	{
-		case 0:
+		for (const auto & value : basic::adapter (cbegin (), cend () - 1))
 		{
-			return;
-		}
-		default:
-		{
-			std::copy (begin (),
-			           end () - 1,
-			           Generator::XMLStringSeparator <SFString> (ostream));
-
 			ostream
 				<< '"'
-				<< XMLEncode (back ())
-				<< '"';
-
-			return;
+				<< XMLEncode (value)
+				<< '"'
+				<< Generator::Comma
+				<< Generator::Space;
 		}
+
+		ostream
+			<< '"'
+			<< XMLEncode (back ())
+			<< '"';
 	}
 }
-
-// Explicit instantiation for required instantiations.
-//template class Array <SFBool>;
-//template class Array <SFColor>;
-//template class Array <SFColorRGBA>;
-//template class Array <SFDouble>;
-//template class Array <SFFloat>;
-//template class Array <SFImage>;
-//template class Array <SFMatrix3d>;
-//template class Array <SFMatrix3f>;
-//template class Array <SFMatrix4d>;
-//template class Array <SFMatrix4f>;
-//template class Array <SFRotation>;
-//template class Array <SFString>;
-//template class Array <SFTime>;
-//template class Array <SFVec2d>;
-//template class Array <SFVec2f>;
-//template class Array <SFVec3d>;
-//template class Array <SFVec3f>;
-//template class Array <SFVec4d>;
-//template class Array <SFVec4f>;
 
 // Explicit instantiation for required instantiations.
 template class X3DField <Array <SFBool>>;

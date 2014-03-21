@@ -1,5 +1,10 @@
 2014-03-21  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* BrowserWindow.cpp:
+	* X3DBrowserWidget.cpp: 
+
+2014-03-21  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBrowserWidget.cpp: 
 
 2014-03-21  Holger Seelig  <holger.seelig@yahoo.de>

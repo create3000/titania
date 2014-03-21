@@ -189,16 +189,6 @@ public:
 
 	static
 	void
-	Version (const VersionType value)
-	{ version = value; }
-
-	static
-	VersionType
-	Version ()
-	{ return version; }
-
-	static
-	void
 	PushContext ();
 
 	static
@@ -264,10 +254,9 @@ private:
 	typedef std::map <const X3DBaseNode*, std::string> ImportedNamesIndex;
 	typedef std::vector <const X3DFieldDefinition*>    FieldStack;
 
-	static StyleType   style;
-	static bool        expandNodes;
-	static bool        accessTypeStyle;
-	static VersionType version;
+	static StyleType style;
+	static bool      expandNodes;
+	static bool      accessTypeStyle;
 
 	static size_t             level;
 	static NodeSet            nodes;

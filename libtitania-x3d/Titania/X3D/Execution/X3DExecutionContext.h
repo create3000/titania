@@ -108,9 +108,6 @@ public:
 	       Error <DISPOSED>)
 	{ return worldURL; }
 
-	VersionType
-	getVersion () const;
-
 	void
 	setEncoding (const std::string & value)
 	{ encoding = value; }
@@ -122,8 +119,7 @@ public:
 	{ return encoding; }
 
 	void
-	setSpecificationVersion (const std::string & value)
-	{ specificationVersion = value; }
+	setSpecificationVersion (const std::string &);
 
 	const std::string &
 	getSpecificationVersion () const
@@ -150,6 +146,12 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>)
 	{ return comment; }
+
+	VersionType
+	getVersion () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
+	{ return version; }
 
 	void
 	setProfile (const ProfileInfoPtr & value)
@@ -491,6 +493,9 @@ private:
 	using ImportedNamesIndex = std::map <X3DBaseNode*, std::string>;
 
 	///  @name Operations
+	
+	VersionType
+	getVersion (const bool) const;
 
 	void
 	eraseNamedNode (const std::string &);
@@ -523,6 +528,7 @@ private:
 	std::string specificationVersion;
 	std::string characterEncoding;
 	std::string comment;
+	VersionType version;
 
 	ProfileInfoPtr      profile;
 	SupportedComponents components;

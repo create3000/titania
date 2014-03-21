@@ -338,15 +338,15 @@ public:
 
 	/// @name Filename Operations
 
-	///  Returns the full basename of this URI.
+	///  Returns the full basename of this URI with or without query. The default is without query.
 	basic_uri
 	filename (const bool = false) const;
 
-	///  Returns the full basename of this URI.
+	///  Returns the full basename of this URI with or without suffix. The default is with suffix.
 	string_type
 	basename (const bool = true) const;
 
-	///  Returns the basename of this URI.
+	///  Returns the basename of this URI stript of @a suffix.
 	string_type
 	basename (const string_type &) const;
 
@@ -763,11 +763,11 @@ basic_uri <StringT>::basename (const bool suf) const
 	{
 		if (path () .length ())
 			return path () .substr (path (). rfind (Signs::Slash) + 1);
-	}
-	else
-		return basename (suffix ());
 
-	return string_type ();
+		return string_type ();
+	}
+
+	return basename (suffix ());
 }
 
 template <class StringT>

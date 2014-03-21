@@ -35,7 +35,7 @@
         </ProtoDeclare>
         <Group/>
         <TimeSensor enabled='false'/>
-        <Script url='"javascript: function initialize () {  // JavaScript Comment } "' directOutput='true'>
+        <Script url='"javascript:&#xA;function initialize ()&#xA;{&#xA;&#x9;// JavaScript Comment&#xA;}&#xA;"' directOutput='true'>
           <field accessType='inputOnly' type='SFBool' name='set_utf8-is-gorgeous-&amp;-nice!-&lt;utf8-ist-älegant-&amp;-schön!>'/>
           <field accessType='inputOutput' type='SFBool' name='enabled'/>
           <field accessType='inputOutput' type='SFString' name='test'/>
@@ -58,9 +58,9 @@
       <fieldValue name='cycleInterval' value='10'/>
     </ProtoInstance>
     <ProtoInstance name='Test-utf8-&lt;äöü&amp;>'>
-      <Group containerField='node'/>
+      <fieldValue name='node' value='NULL'/>
     </ProtoInstance>
-    <Transform DEF='Transform' translation='0.0778763 1.81664 0'>
+    <Transform DEF='Transform'>
       <Shape>
         <Appearance>
           <Material/>
@@ -81,5 +81,8 @@
       <Inline DEF='Inline' url='"EXPORT.wrl"'/>
     </Transform>
     <IMPORT inlineDEF='Inline' exportedDEF='CubeExport' AS='CubeImport'/>
+    <ROUTE fromNode='Transform' fromField='translation_changed' toNode='Transform' toField='set_translation'/>
+    <EXPORT localDEF='Transform' AS='ColoredCube'/>
+    <EXPORT localDEF='Transform' AS='ColoredCube1'/>
   </Scene>
 </X3D>

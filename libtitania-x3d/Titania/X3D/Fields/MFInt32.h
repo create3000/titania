@@ -54,11 +54,12 @@
 #include "../Basic/X3DArrayField.h"
 #include "../Fields/X3DScalar.h"
 
+extern template class std::vector <titania::X3D::SFInt32*>;
+
 namespace titania {
 namespace X3D {
 
 // Inhibit implicit instantiation for required instantiations.
-//extern template class Array <SFInt32>;
 extern template class X3DField <Array <SFInt32>>;
 extern template class X3DArrayField <SFInt32>;
 

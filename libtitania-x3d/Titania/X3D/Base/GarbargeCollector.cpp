@@ -88,7 +88,7 @@ GarbageCollector::trimFreeMemory ()
 }
 
 void
-GarbageCollector::addObject (X3DObject* const object)
+GarbageCollector::addObject (const X3DObject* const object)
 {
 	std::lock_guard <std::mutex> lock (mutex);
 

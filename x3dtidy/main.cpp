@@ -98,7 +98,7 @@ main (int argc, char** argv)
 	options .addUsage ("");
 	options .addUsage ("       x3dtidy file.wrl beautified.wrl");
 	options .addUsage ("              Formats file.wrl's contents and saves the output in");
-   options .addUsage ("              beautified.wrl.");
+	options .addUsage ("              beautified.wrl.");
 	options .addUsage ("");
 	options .addUsage ("COPYRIGHT");
 	options .addUsage ("       Copyright \xc2\xa9 2010 Holger Seelig.  License GPLv3+:");
@@ -138,11 +138,11 @@ main (int argc, char** argv)
 
 		if (options .getArgc ())
 		{
-			X3D::MFString url ({ options .getArgv (0) });
-		
+			basic::uri uri = options .getArgv (0);
+
 			if (options .getArgc () > 1)
 			{
-				std::string tmpFilename = "/tmp/x3dtidy." + std::to_string (getpid ()) + ".wrl";
+				std::string tmpFilename = "/tmp/x3dtidy." + std::to_string (getpid ()) + uri .suffix ();
 
 				try
 				{
@@ -150,7 +150,11 @@ main (int argc, char** argv)
 
 					// Create temp file
 
-					file << browser -> createX3DFromURL (url);
+					if (uri .suffix () == ".x3d")
+						file << X3D::XMLEncode (browser -> createX3DFromURL ({ uri .str () }));
+
+					else
+						file << browser -> createX3DFromURL ({ uri .str () });
 
 					// Replace original
 
@@ -164,7 +168,11 @@ main (int argc, char** argv)
 			}
 			else
 			{
-				std::cout << browser -> createX3DFromURL (url);
+				if (uri .suffix () == ".x3d")
+					std::cout << X3D::XMLEncode (browser -> createX3DFromURL ({ uri .str () }));
+
+				else
+					std::cout << browser -> createX3DFromURL ({ uri .str () });
 			}
 		}
 		else

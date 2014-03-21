@@ -394,7 +394,7 @@ ExternProto::toXMLStream (std::ostream & ostream) const
 		<< XMLEncode (url ())
 		<< "'"
 		<< ">"
-		<< Generator::ForceBreak
+		<< Generator::Break
 		<< Generator::IncIndent;
 
 	const FieldDefinitionArray fields = getUserDefinedFields ();
@@ -417,7 +417,7 @@ ExternProto::toXMLStream (std::ostream & ostream) const
 			<< XMLEncode (field-> getName ())
 			<< "'"
 			<< "/>"
-			<< Generator::ForceBreak;
+			<< Generator::Break;
 	}
 
 	ostream

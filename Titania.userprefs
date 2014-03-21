@@ -1,37 +1,88 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Geospatial/GeoViewpoint.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Browser/BrowserWindow.cpp">
     <Files>
-      <File FileName="Library/Tests/Networking/InlineTimer.wrl" Line="23" Column="26" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geospatial/GeoViewpoint.h" Line="213" Column="10" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geospatial/GeoViewpoint.cpp" Line="106" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/NavigationInfo.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geospatial/X3DGeospatialObject.cpp" Line="100" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/X3DViewpointNode.h" Line="234" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/X3DViewpointNode.cpp" Line="310" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/NavigationInfo.h" Line="198" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.h" Line="77" Column="26" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="267" Column="8" />
+      <File FileName="Library/Tests/Basic/X3D.x3d" Line="42" Column="8" />
+      <File FileName="x3d2vrml/bin/x3d2vrml" Line="1208" Column="17" />
+      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DBaseNode.cpp" Line="872" Column="25" />
+      <File FileName="x3dtidy/main.cpp" Line="146" Column="1" />
+      <File FileName="Library/Tests/Basic/Comments.wrl" Line="115" Column="12" />
+      <File FileName="libtitania-x3d/Titania/X3D/InputOutput/Generator.cpp" Line="517" Column="1" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="334" Column="5" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="Library" expanded="True">
-            <Node name="Tests" expanded="True" />
+            <Node name="Tests" expanded="True">
+              <Node name="Basic" expanded="True" />
+              <Node name="Geospatial" expanded="True" />
+              <Node name="Networking" expanded="True" />
+              <Node name="NURBS" expanded="True" />
+            </Node>
+          </Node>
+          <Node name="libtitania-standard" expanded="True">
+            <Node name="Titania" expanded="True">
+              <Node name="Basic" expanded="True" />
+              <Node name="InputOutput" expanded="True" />
+            </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
+            <Node name="share" expanded="True">
+              <Node name="titania" expanded="True">
+                <Node name="mime" expanded="True">
+                  <Node name="model" expanded="True" />
+                </Node>
+              </Node>
+            </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
+                <Node name="Base" expanded="True" />
+                <Node name="Basic" expanded="True" />
+                <Node name="Bits" expanded="True" />
+                <Node name="Browser" expanded="True" />
                 <Node name="Components" expanded="True">
-                  <Node name="Geospatial" expanded="True">
-                    <Node name="GeoViewpoint.cpp" selected="True" />
-                  </Node>
-                  <Node name="Navigation" expanded="True" />
+                  <Node name="Core" expanded="True" />
                 </Node>
+                <Node name="Execution" expanded="True" />
+                <Node name="Fields" expanded="True" />
+                <Node name="InputOutput" expanded="True" />
+                <Node name="JavaScript" expanded="True">
+                  <Node name="SpiderMonkey" expanded="True">
+                    <Node name="Fields" expanded="True" />
+                  </Node>
+                </Node>
+                <Node name="Prototype" expanded="True" />
+                <Node name="Routing" expanded="True" />
               </Node>
             </Node>
           </Node>
           <Node name="Titania" expanded="True">
-            <Node name="Titania" expanded="True" />
+            <Node name="share" expanded="True">
+              <Node name="titania" expanded="True">
+                <Node name="Library" expanded="True" />
+              </Node>
+            </Node>
+            <Node name="Titania" expanded="True">
+              <Node name="Base" expanded="True" />
+              <Node name="Browser" expanded="True">
+                <Node name="BrowserWindow.cpp" selected="True" />
+              </Node>
+              <Node name="OutlineEditor" expanded="True" />
+            </Node>
           </Node>
+          <Node name="titania-info" expanded="True" />
+          <Node name="x3d2vrml" expanded="True">
+            <Node name="bin" expanded="True" />
+            <Node name="share" expanded="True">
+              <Node name="titania" expanded="True">
+                <Node name="info" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
+          <Node name="x3dtidy" expanded="True" />
         </State>
       </Pad>
       <Pad Id="ClassPad">

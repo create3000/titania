@@ -347,10 +347,13 @@ BrowserWindow::on_open ()
 		fileOpenDialog -> add_filter (getFileFilterVideo ());
 		fileOpenDialog -> set_filter (getFileFilterX3D ());
 
-		if (getFileOpenDialog () .get_uri () .empty ())
-			fileOpenDialog -> set_current_folder (os::home ());
+		const auto worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
+
+		if (not worldURL .empty () and worldURL .is_local ())
+			fileOpenDialog -> set_uri (worldURL .filename () .str ());
+
 		else
-			fileOpenDialog -> set_uri (getFileOpenDialog () .get_uri ());
+			fileOpenDialog -> set_current_folder (os::home ());
 
 		const auto response_id = fileOpenDialog -> run ();
 
@@ -420,15 +423,13 @@ BrowserWindow::on_import ()
 	fileImportDialog -> add_filter (getFileFilterVideo ());
 	fileImportDialog -> set_filter (getFileFilterX3D ());
 
-	if (getFileImportDialog () .get_uri () .empty ())
-	{
-		if (getFileOpenDialog () .get_uri () .empty ())
-			fileImportDialog -> set_current_folder (os::home ());
-		else
-			fileImportDialog -> set_uri (getFileOpenDialog () .get_uri ());
-	}
+	const auto worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
+
+	if (not worldURL .empty () and worldURL .is_local ())
+		fileImportDialog -> set_uri (worldURL .filename () .str ());
+
 	else
-		fileImportDialog -> set_uri (getFileImportDialog () .get_uri ());
+		fileImportDialog -> set_current_folder (os::home ());
 
 	const auto response_id = fileImportDialog -> run ();
 
@@ -545,18 +546,16 @@ BrowserWindow::on_save_as ()
 	fileSaveDialog -> add_filter (getFileFilterX3D ());
 	fileSaveDialog -> set_filter (getFileFilterX3D ());
 
-	if (getFileSaveDialog () .get_uri () .empty ())
-	{
-		if (getFileOpenDialog () .get_uri () .empty ())
-		{
-			fileSaveDialog -> set_current_folder (os::home ());
-			fileSaveDialog -> set_current_name (getBrowser () -> getExecutionContext () -> getWorldURL () .basename (false) + ".x3dv");
-		}
-		else
-			fileSaveDialog -> set_uri (getFileOpenDialog () .get_uri ());
-	}
+	const auto worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
+	
+	if (not worldURL .empty () and worldURL .is_local ())
+		fileSaveDialog -> set_uri (worldURL .filename () .str ());
+
 	else
-		fileSaveDialog -> set_uri (getFileSaveDialog () .get_uri ());
+	{
+		fileSaveDialog -> set_current_folder (os::home ());
+		fileSaveDialog -> set_current_name (getBrowser () -> getExecutionContext () -> getWorldURL () .basename ());
+	}
 
 	const auto saveCompressedButton = getWidget <Gtk::CheckButton> ("SaveCompressedButton");
 

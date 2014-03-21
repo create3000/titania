@@ -60,8 +60,6 @@ namespace X3D {
 
 class X3DObject;
 
-typedef std::deque <X3DObject*> ObjectArray;
-
 class GarbageCollector
 {
 public:
@@ -77,7 +75,7 @@ public:
 	trimFreeMemory ();
 
 	void
-	addObject (X3DObject* const);
+	addObject (const X3DObject* const);
 
 	template <class InputIt>
 	void
@@ -101,6 +99,8 @@ public:
 
 
 private:
+
+	typedef std::deque <const X3DObject*> ObjectArray;
 
 	GarbageCollector (const GarbageCollector &) = delete;
 

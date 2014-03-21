@@ -850,11 +850,20 @@ X3DArrayField <ValueType>::toStream (std::ostream & ostream) const
 		{
 			ostream << Generator::OpenBracket;
 
-			std::copy (begin (),
-			           end () - 1,
-			           Generator::ListSeparator <ValueType> (ostream));
+			for (const auto & value : basic::adapter (cbegin (), cend () - 1))
+			{
+				ostream
+					<< value
+					<< Generator::Comma
+					<< Generator::ListBreak;
+					
+				if (Generator::HasListBreak ())
+					ostream << Generator::Indent;
+			}
 
-			ostream << back () << Generator::CloseBracket;
+			ostream
+				<< back ()
+				<< Generator::CloseBracket;
 
 			return;
 		}
@@ -865,22 +874,17 @@ template <class ValueType>
 void
 X3DArrayField <ValueType>::toXMLStream (std::ostream & ostream) const
 {
-	switch (size ())
+	if (not empty ())
 	{
-		case 0:
+		for (const auto & value : basic::adapter (cbegin (), cend () - 1))
 		{
-			return;
+			ostream
+				<< XMLEncode (value)
+				<< Generator::Comma
+				<< Generator::Space;
 		}
-		default:
-		{
-			std::copy (begin (),
-			           end () - 1,
-			           Generator::XMLListSeparator <ValueType> (ostream));
 
-			ostream << XMLEncode (back ());
-
-			return;
-		}
+		ostream << XMLEncode (back ());
 	}
 }
 

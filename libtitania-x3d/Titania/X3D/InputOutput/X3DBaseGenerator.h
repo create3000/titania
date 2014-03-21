@@ -137,136 +137,6 @@ public:
 		return ostream;
 	}
 
-	template <class Type>
-	class ListSeparator :
-		public std::iterator <std::output_iterator_tag, void, void, void, void>
-	{
-	public:
-
-		typedef CharT                              char_type;
-		typedef Traits                             traits_type;
-		typedef std::basic_ostream <CharT, Traits> ostream_type;
-
-		ListSeparator (ostream_type & ostream) :
-			ostream (ostream) { }
-
-		~ListSeparator () { }
-
-		ListSeparator &
-		operator = (const Type & value)
-		{
-			ostream << value;
-
-			ostream << Comma << ListBreak;
-
-			if (HasListBreak ())
-				ostream << Indent;
-
-			return *this;
-		}
-
-		ListSeparator &
-		operator * () { return *this; }
-
-		ListSeparator &
-		operator ++ () { return *this; }
-
-		ListSeparator &
-		operator ++ (int) { return *this; }
-
-
-	private:
-
-		ostream_type & ostream;
-
-	};
-
-	template <class Type>
-	class XMLListSeparator :
-		public std::iterator <std::output_iterator_tag, void, void, void, void>
-	{
-	public:
-
-		typedef CharT                              char_type;
-		typedef Traits                             traits_type;
-		typedef std::basic_ostream <CharT, Traits> ostream_type;
-
-		XMLListSeparator (ostream_type & ostream) :
-			ostream (ostream) { }
-
-		~XMLListSeparator () { }
-
-		XMLListSeparator &
-		operator = (const Type & value)
-		{
-			ostream
-				<< XMLEncode (value)
-				<< Comma
-				<< Space;
-
-			return *this;
-		}
-
-		XMLListSeparator &
-		operator * () { return *this; }
-
-		XMLListSeparator &
-		operator ++ () { return *this; }
-
-		XMLListSeparator &
-		operator ++ (int) { return *this; }
-
-
-	private:
-
-		ostream_type & ostream;
-
-	};
-
-	template <class Type>
-	class XMLStringSeparator :
-		public std::iterator <std::output_iterator_tag, void, void, void, void>
-	{
-	public:
-
-		typedef CharT                              char_type;
-		typedef Traits                             traits_type;
-		typedef std::basic_ostream <CharT, Traits> ostream_type;
-
-		XMLStringSeparator (ostream_type & ostream) :
-			ostream (ostream) { }
-
-		~XMLStringSeparator () { }
-
-		XMLStringSeparator &
-		operator = (const Type & value)
-		{
-			ostream
-				<< '"'
-				<< XMLEncode (value)
-				<< '"'
-				<< Comma
-				<< Space;
-
-			return *this;
-		}
-
-		XMLStringSeparator &
-		operator * () { return *this; }
-
-		XMLStringSeparator &
-		operator ++ () { return *this; }
-
-		XMLStringSeparator &
-		operator ++ (int) { return *this; }
-
-
-	private:
-
-		ostream_type & ostream;
-
-	};
-
 	static
 	std::basic_ostream <CharT, Traits> &
 	OpenBracket (std::basic_ostream <CharT, Traits> &);
@@ -294,7 +164,8 @@ public:
 	template <class Type>
 	static
 	std::basic_ostream <CharT, Traits> &
-	Precision (std::basic_ostream <CharT, Traits> &);
+	Precision (std::basic_ostream <CharT, Traits> & ostream)
+	{ return ostream << std::setprecision (NumericLimits <Type>::digits10); }
 
 
 protected:
@@ -396,14 +267,6 @@ X3DBaseGenerator <CharT, Traits>::EmptyBrackets (std::basic_ostream <CharT, Trai
 	stream << TidySpace;
 	stream .put (stream .widen (']'));
 	return stream;
-}
-
-template <class CharT, class Traits>
-template <class Type>
-std::basic_ostream <CharT, Traits> &
-X3DBaseGenerator <CharT, Traits>::Precision (std::basic_ostream <CharT, Traits> & stream)
-{
-	return stream << std::setprecision (NumericLimits <Type>::digits10);
 }
 
 extern template class X3DBaseGenerator <char>;

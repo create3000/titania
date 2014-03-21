@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -115,7 +115,7 @@ throw (Error <INVALID_NAME>,
 		                             field -> getName (),
 		                             field -> clone (executionContext));
 	}
-	
+
 	copy -> setup ();
 
 	executionContext -> updateProtoDeclaration (copy -> getName (), copy);
@@ -233,11 +233,11 @@ Proto::toStream (std::ostream & ostream) const
 		for (const auto & field : basic::adapter (userDefinedFields .begin (), userDefinedFields .end () - 1))
 		{
 			toStreamField (ostream, field, accessTypeLength, typeLength);
-			ostream << Generator::Break;			
+			ostream << Generator::Break;
 		}
 
 		toStreamField (ostream, userDefinedFields .back (), accessTypeLength, typeLength);
-		ostream << Generator::TidyBreak;			
+		ostream << Generator::TidyBreak;
 
 		for (const auto & comment : getInterfaceComments ())
 		{
@@ -272,6 +272,7 @@ Proto::toStream (std::ostream & ostream) const
 		<< Generator::Indent
 		<< '}';
 }
+
 void
 Proto::toStreamField (std::ostream & ostream, X3DFieldDefinition* const field, const size_t accessTypeLength, const size_t typeLength) const
 {
@@ -316,21 +317,21 @@ Proto::toXMLStream (std::ostream & ostream) const
 		<< XMLEncode (getName ())
 		<< "'"
 		<< ">"
-		<< Generator::ForceBreak;
+		<< Generator::Break;
 
 	// <ProtoInterface>
 
 	Generator::PushContext ();
 
 	const FieldDefinitionArray userDefinedFields = getUserDefinedFields ();
-	
+
 	if (not userDefinedFields .empty ())
 	{
 		ostream
 			<< Generator::IncIndent
 			<< Generator::Indent
 			<< "<ProtoInterface>"
-			<< Generator::ForceBreak
+			<< Generator::Break
 			<< Generator::IncIndent;
 
 		for (const auto & field : userDefinedFields)
@@ -344,18 +345,18 @@ Proto::toXMLStream (std::ostream & ostream) const
 				<< "'"
 				<< Generator::Space
 				<< "type='"
-				<< field-> getTypeName ()
+				<< field -> getTypeName ()
 				<< "'"
 				<< Generator::Space
 				<< "name='"
-				<< XMLEncode (field-> getName ())
+				<< XMLEncode (field -> getName ())
 				<< "'";
 
-			if (*field == *getBrowser () -> getFieldType (field-> getTypeName ()))
-			{				
+			if (*field == *getBrowser () -> getFieldType (field -> getTypeName ()))
+			{
 				ostream
 					<< "/>"
-					<< Generator::ForceBreak;
+					<< Generator::Break;
 			}
 			else
 			{
@@ -368,14 +369,14 @@ Proto::toXMLStream (std::ostream & ostream) const
 
 						ostream
 							<< ">"
-							<< Generator::ForceBreak
+							<< Generator::Break
 							<< Generator::IncIndent
 							<< XMLEncode (field)
-							<< Generator::ForceBreak
+							<< Generator::Break
 							<< Generator::DecIndent
 							<< Generator::Indent
 							<< "</field>"
-							<< Generator::ForceBreak;
+							<< Generator::Break;
 
 						Generator::PopContainerField ();
 
@@ -389,7 +390,7 @@ Proto::toXMLStream (std::ostream & ostream) const
 							<< XMLEncode (field)
 							<< "'"
 							<< "/>"
-							<< Generator::ForceBreak;
+							<< Generator::Break;
 
 						break;
 					}
@@ -401,7 +402,7 @@ Proto::toXMLStream (std::ostream & ostream) const
 			<< Generator::DecIndent
 			<< Generator::Indent
 			<< "</ProtoInterface>"
-			<< Generator::ForceBreak
+			<< Generator::Break
 			<< Generator::DecIndent;
 	}
 
@@ -415,7 +416,7 @@ Proto::toXMLStream (std::ostream & ostream) const
 		<< Generator::IncIndent
 		<< Generator::Indent
 		<< "<ProtoBody>"
-		<< Generator::ForceBreak
+		<< Generator::Break
 		<< Generator::IncIndent;
 
 	X3DExecutionContext::toXMLStream (ostream);
@@ -424,7 +425,7 @@ Proto::toXMLStream (std::ostream & ostream) const
 		<< Generator::DecIndent
 		<< Generator::Indent
 		<< "</ProtoBody>"
-		<< Generator::ForceBreak
+		<< Generator::Break
 		<< Generator::DecIndent;
 
 	// </ProtoBody>

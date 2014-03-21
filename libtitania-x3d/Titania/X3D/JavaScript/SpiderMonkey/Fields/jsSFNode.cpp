@@ -356,6 +356,8 @@ jsSFNode::toVRMLString (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
+		Generator::NicestStyle ();
+
 		SFNode* const sfnode = (SFNode*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
 
 		return JS_NewStringValue (context, sfnode -> toString (), &JS_RVAL (context, vp));
@@ -371,9 +373,11 @@ jsSFNode::toXMLString (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
-		//SFNode* sfnode = (SFNode*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+		Generator::NicestStyle ();
 
-		return JS_NewStringValue (context, "", &JS_RVAL (context, vp));
+		SFNode* const sfnode = (SFNode*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
+
+		return JS_NewStringValue (context, sfnode -> toXMLString (), &JS_RVAL (context, vp));
 	}
 
 	JS_ReportError (context, "SFNode .toXMLString: wrong number of arguments");

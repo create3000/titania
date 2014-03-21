@@ -1,10 +1,10 @@
-#X3D V3.3 utf8
+#X3D V3.3 utf8 Titania
 
 EXTERNPROTO QuadSphere [
-  exposedField SFInt32 uDimension
-  exposedField SFInt32 vDimension
-  exposedField SFFloat radius
-  field        SFBool  solid
+  inputOutput    SFInt32 uDimension
+  inputOutput    SFInt32 vDimension
+  inputOutput    SFFloat radius
+  initializeOnly SFBool  solid
 ]
 [
   "../../../Titania/share/titania/Library/Prototypes/Geometry3D/QuadSphere/QuadSphere.x3dv",
@@ -29066,7 +29066,7 @@ DEF Satellite Transform {
     }
     DEF _6 GeoTransform {
       scale 200000 200000 200000
-      geoCenter 0 -1.98052907975001 1500000
+      geoCenter 0 -2.29133770174704 1500000
       children [
         DEF Axes_3 Transform {
           scale 2 2 2
@@ -29167,7 +29167,7 @@ DEF UTM Transform {
 }
 
 DEF Debug Script {
-  eventIn SFVec3d set_geoCoord
+  inputOnly SFVec3d set_geoCoord
 
   url "vrmlscript:
 function set_geoCoord (value, time)

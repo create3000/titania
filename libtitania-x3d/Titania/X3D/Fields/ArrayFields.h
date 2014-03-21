@@ -66,33 +66,29 @@
 
 #include "../Basic/X3DArrayField.h"
 
+//  Inhibit implicit instantiation for required instantiations.
+extern template class std::vector <titania::X3D::SFBool*>;
+extern template class std::vector <titania::X3D::SFColor*>;
+extern template class std::vector <titania::X3D::SFColorRGBA*>;
+extern template class std::vector <titania::X3D::SFDouble*>;
+extern template class std::vector <titania::X3D::SFFloat*>;
+extern template class std::vector <titania::X3D::SFImage*>;
+extern template class std::vector <titania::X3D::SFMatrix3d*>;
+extern template class std::vector <titania::X3D::SFMatrix3f*>;
+extern template class std::vector <titania::X3D::SFMatrix4d*>;
+extern template class std::vector <titania::X3D::SFMatrix4f*>;
+extern template class std::vector <titania::X3D::SFRotation*>;
+extern template class std::vector <titania::X3D::SFString*>;
+extern template class std::vector <titania::X3D::SFTime*>;
+extern template class std::vector <titania::X3D::SFVec2d*>;
+extern template class std::vector <titania::X3D::SFVec2f*>;
+extern template class std::vector <titania::X3D::SFVec3d*>;
+extern template class std::vector <titania::X3D::SFVec3f*>;
+extern template class std::vector <titania::X3D::SFVec4d*>;
+extern template class std::vector <titania::X3D::SFVec4f*>;
+
 namespace titania {
 namespace X3D {
-
-template <>
-void
-X3DArrayField <SFString>::toXMLStream (std::ostream &) const;
-
-//  Inhibit implicit instantiation for required instantiations.
-//extern template class Array <SFBool>;
-//extern template class Array <SFColor>;
-//extern template class Array <SFColorRGBA>;
-//extern template class Array <SFDouble>;
-//extern template class Array <SFFloat>;
-//extern template class Array <SFImage>;
-//extern template class Array <SFMatrix3d>;
-//extern template class Array <SFMatrix3f>;
-//extern template class Array <SFMatrix4d>;
-//extern template class Array <SFMatrix4f>;
-//extern template class Array <SFRotation>;
-//extern template class Array <SFString>;
-//extern template class Array <SFTime>;
-//extern template class Array <SFVec2d>;
-//extern template class Array <SFVec2f>;
-//extern template class Array <SFVec3d>;
-//extern template class Array <SFVec3f>;
-//extern template class Array <SFVec4d>;
-//extern template class Array <SFVec4f>;
 
 // Inhibit implicit instantiation for required instantiations.
 extern template class X3DField <Array <SFBool>>;
@@ -114,6 +110,10 @@ extern template class X3DField <Array <SFVec3d>>;
 extern template class X3DField <Array <SFVec3f>>;
 extern template class X3DField <Array <SFVec4d>>;
 extern template class X3DField <Array <SFVec4f>>;
+
+template <>
+void
+X3DArrayField <SFString>::toXMLStream (std::ostream &) const;
 
 // Inhibit implicit instantiation for required instantiations.
 extern template class X3DArrayField <SFBool>;

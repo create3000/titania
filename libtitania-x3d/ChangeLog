@@ -1,5 +1,31 @@
 2014-03-21  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* MFNode.h:
+	* MFInt32.h:
+	* MFNode.cpp:
+	* MFInt32.cpp:
+	* X3DMFNode.h:
+	* Proto.cpp:
+	* ArrayFields.h:
+	* X3DArrayField.h:
+	* X3DBaseNode.cpp:
+	* ArrayFields.cpp:
+	* X3DScene.cpp:
+	* Generator.h:
+	* GarbageCollector.h:
+	* Generator.cpp:
+	* ExternProto.cpp:
+	* GarbargeCollector.cpp:
+	* X3DBaseGenerator.h:
+	* X3DExecutionContext.h:
+	* X3DExecutionContext.cpp:
+	* jsX3DObject.h:
+	* X3DPrototypeInstance.cpp:
+	* jsSFNode.cpp:
+	* jsX3DExecutionContext.cpp: 
+
+2014-03-21  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBaseNode.h:
 	* X3DExecutionContext.cpp:
 	* X3DPrototypeInstance.cpp: 

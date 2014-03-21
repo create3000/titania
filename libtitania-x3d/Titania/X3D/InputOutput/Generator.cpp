@@ -110,74 +110,74 @@ Generator::VrmlAccessTypesIndex::operator [ ] (const X3DFieldDefinition* const f
 
 Generator::NodeTypesIndex::NodeTypesIndex () :
 	array ({
-		"X3DAppearanceChildNode",
-		"X3DAppearanceNode",
-		"X3DBackgroundNode",
-		"X3DBindableNode",
-		"X3DBoundedObject",
-		"X3DChaserNode",
-		"X3DChildNode",
-		"X3DColorNode",
-		"X3DComposedGeometryNode",
-		"X3DCoordinateNode",
-		"X3DDamperNode",
-		"X3DDragSensorNode",
-		"X3DEnvironmentalSensorNode",
-		"X3DEnvironmentTextureNode",
-		"X3DFogObject",
-		"X3DFollowerNode",
-		"X3DFontStyleNode",
-		"X3DGeometricPropertyNode",
-		"X3DGeometryNode",
-		"X3DGeospatialObject",
-		"X3DGroupingNode",
-		"X3DInfoNode",
-		"X3DInterpolatorNode",
-		"X3DKeyDeviceSensorNode",
-		"X3DLayerNode",
-		"X3DLayoutNode",
-		"X3DLightNode",
-		"X3DMaterialNode",
-		"X3DMetadataObject",
-		"X3DNBodyCollidableNode",
-		"X3DNBodyCollisionSpaceNode",
-		"X3DNetworkSensorNode",
-		"X3DNode",
-		"X3DNormalNode",
-		"X3DNurbsControlCurveNode",
-		"X3DNurbsSurfaceGeometryNode",
-		"X3DParametricGeometryNode",
-		"X3DParticleEmitterNode",
-		"X3DParticlePhysicsModelNode",
-		"X3DPickableObject",
-		"X3DPickingNode",
-		"X3DPickSensorNode",
-		"X3DPointingDeviceSensorNode",
-		"X3DProductStructureChildNode",
-		"X3DProgrammableShaderObject",
-		"X3DPrototypeInstance",
-		"X3DRigidJointNode",
-		"X3DScriptNode",
-		"X3DSensorNode",
-		"X3DSequencerNode",
-		"X3DShaderNode",
-		"X3DShapeNode",
-		"X3DSoundNode",
-		"X3DSoundSourceNode",
-		"X3DTexture2DNode",
-		"X3DTexture3DNode",
-		"X3DTextureCoordinateNode",
-		"X3DTextureNode",
-		"X3DTextureTransformNode",
-		"X3DTimeDependentNode",
-		"X3DTouchSensorNode",
-		"X3DTransformNode",
-		"X3DTriggerNode",
-		"X3DUrlObject",
-		"X3DVertexAttributeNode",
-		"X3DViewpointNode",
-		"X3DViewportNode"
-	})
+	          "X3DAppearanceChildNode",
+	          "X3DAppearanceNode",
+	          "X3DBackgroundNode",
+	          "X3DBindableNode",
+	          "X3DBoundedObject",
+	          "X3DChaserNode",
+	          "X3DChildNode",
+	          "X3DColorNode",
+	          "X3DComposedGeometryNode",
+	          "X3DCoordinateNode",
+	          "X3DDamperNode",
+	          "X3DDragSensorNode",
+	          "X3DEnvironmentalSensorNode",
+	          "X3DEnvironmentTextureNode",
+	          "X3DFogObject",
+	          "X3DFollowerNode",
+	          "X3DFontStyleNode",
+	          "X3DGeometricPropertyNode",
+	          "X3DGeometryNode",
+	          "X3DGeospatialObject",
+	          "X3DGroupingNode",
+	          "X3DInfoNode",
+	          "X3DInterpolatorNode",
+	          "X3DKeyDeviceSensorNode",
+	          "X3DLayerNode",
+	          "X3DLayoutNode",
+	          "X3DLightNode",
+	          "X3DMaterialNode",
+	          "X3DMetadataObject",
+	          "X3DNBodyCollidableNode",
+	          "X3DNBodyCollisionSpaceNode",
+	          "X3DNetworkSensorNode",
+	          "X3DNode",
+	          "X3DNormalNode",
+	          "X3DNurbsControlCurveNode",
+	          "X3DNurbsSurfaceGeometryNode",
+	          "X3DParametricGeometryNode",
+	          "X3DParticleEmitterNode",
+	          "X3DParticlePhysicsModelNode",
+	          "X3DPickableObject",
+	          "X3DPickingNode",
+	          "X3DPickSensorNode",
+	          "X3DPointingDeviceSensorNode",
+	          "X3DProductStructureChildNode",
+	          "X3DProgrammableShaderObject",
+	          "X3DPrototypeInstance",
+	          "X3DRigidJointNode",
+	          "X3DScriptNode",
+	          "X3DSensorNode",
+	          "X3DSequencerNode",
+	          "X3DShaderNode",
+	          "X3DShapeNode",
+	          "X3DSoundNode",
+	          "X3DSoundSourceNode",
+	          "X3DTexture2DNode",
+	          "X3DTexture3DNode",
+	          "X3DTextureCoordinateNode",
+	          "X3DTextureNode",
+	          "X3DTextureTransformNode",
+	          "X3DTimeDependentNode",
+	          "X3DTouchSensorNode",
+	          "X3DTransformNode",
+	          "X3DTriggerNode",
+	          "X3DUrlObject",
+	          "X3DVertexAttributeNode",
+	          "X3DViewpointNode",
+	          "X3DViewportNode"
+			 })
 { }
 
 const std::string &
@@ -191,10 +191,9 @@ const Generator::X3DAccessTypesIndex  Generator::X3DAccessTypes;
 const Generator::VrmlAccessTypesIndex Generator::VrmlAccessTypes;
 const Generator::NodeTypesIndex       Generator::NodeTypes;
 
-Generator::StyleType    Generator::style           = NICEST;
-bool                    Generator::expandNodes     = false;
-bool                    Generator::accessTypeStyle = true;
-VersionType             Generator::version         = LATEST_VERSION;
+Generator::StyleType Generator::style           = NICEST;
+bool                 Generator::expandNodes     = false;
+bool                 Generator::accessTypeStyle = true;
 
 size_t                        Generator::level = 0;
 Generator::NodeSet            Generator::nodes;
@@ -467,6 +466,21 @@ Generator::XMLEncodeToStream (std::ostream & ostream, const std::string & string
 	{
 		switch (c)
 		{
+			case '\t':
+			{
+				ostream << "&#x9;";
+				break;
+			}
+			case '\n':
+			{
+				ostream << "&#xA;";
+				break;
+			}
+			case '\r':
+			{
+				ostream << "&#xD;";
+				break;
+			}
 			case '<':
 			{
 				ostream << "&lt;";

@@ -297,14 +297,14 @@ X3DMFNode <ValueType>::toXMLStream (std::ostream & ostream) const
 			{
 				ostream
 					<< XMLEncode (value)
-					<< Generator::ForceBreak;
+					<< Generator::Break;
 			}
 			else
 			{
 				ostream
 					<< Generator::Indent
 					<< "<!-- NULL -->"
-					<< Generator::ForceBreak;
+					<< Generator::Break;
 			}
 		}
 

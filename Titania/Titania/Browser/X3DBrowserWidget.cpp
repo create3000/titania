@@ -321,14 +321,6 @@ X3DBrowserWidget::set_initialized ()
 
 	loadIcon ();
 	updateTitle (false);
-
-	const basic::uri worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
-
-	if (not worldURL .empty () and worldURL .is_local ())
-		getFileOpenDialog () .set_uri (worldURL .filename () .str ());
-
-	else
-		getFileOpenDialog () .set_current_folder (os::home ());
 }
 
 bool

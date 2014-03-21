@@ -269,6 +269,7 @@ X3DPrototypeInstance::traverse (const TraverseType type)
 
 void
 X3DPrototypeInstance::toStream (std::ostream & ostream) const
+//throw (Error <DISPOSED>)
 {
 	X3DBaseNode::toStream (ostream);
 }
@@ -362,7 +363,7 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 	{
 		ostream
 			<< ">"
-			<< Generator::ForceBreak
+			<< Generator::Break
 			<< Generator::IncIndent;
 
 		FieldDefinitionArray references;
@@ -378,10 +379,10 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 			if (field -> getAccessType () == inputOutput and not field -> getReferences () .empty ())
 			{
 				bool initializeableReference = false;
-		
+
 				for (const auto & reference : field -> getReferences ())
 					initializeableReference |= reference -> isInitializeable ();
-				
+
 				if (not initializeableReference)
 					mustOutputValue = true;
 			}
@@ -401,7 +402,7 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 					case X3DConstants::SFNode:
 					{
 						static const SFNode _null;
-						
+
 						if (*field not_eq _null)
 						{
 							childNodes .emplace_back (field);
@@ -424,10 +425,10 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 							<< XMLEncode (field)
 							<< "'"
 							<< "/>"
-							<< Generator::ForceBreak;
+							<< Generator::Break;
 
 						break;
-					}	
+					}
 				}
 			}
 			else
@@ -441,9 +442,9 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 			ostream
 				<< Generator::Indent
 				<< "<IS>"
-				<< Generator::ForceBreak
+				<< Generator::Break
 				<< Generator::IncIndent;
-	
+
 			for (const auto & field : references)
 			{
 				for (const auto & reference : field -> getReferences ())
@@ -460,7 +461,7 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 						<< XMLEncode (reference -> getName ())
 						<< "'"
 						<< "/>"
-						<< Generator::ForceBreak;
+						<< Generator::Break;
 				}
 			}
 
@@ -468,16 +469,16 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 				<< Generator::DecIndent
 				<< Generator::Indent
 				<< "</IS>"
-				<< Generator::ForceBreak;
+				<< Generator::Break;
 		}
 
 		for (const auto & field : childNodes)
 		{
 			Generator::PushContainerField (field);
-	
+
 			ostream
 				<< XMLEncode (field)
-				<< Generator::ForceBreak;
+				<< Generator::Break;
 
 			Generator::PopContainerField ();
 		}

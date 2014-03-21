@@ -88,6 +88,7 @@ X3DExecutionContext::X3DExecutionContext () :
 	specificationVersion ("3.3"),
 	   characterEncoding ("utf8"),
 	             comment ("Titania"),
+	             version (LATEST_VERSION),
 	             profile (),
 	          components (),
 	               units (standardUnits),
@@ -126,21 +127,26 @@ X3DExecutionContext::initialize ()
 	//__LOG__ << "Initialize done: " << getWorldURL () << std::endl;
 }
 
+void
+X3DExecutionContext::setSpecificationVersion (const std::string & value)
+{
+	specificationVersion = value;
+	version              = getVersion (true);
+}
+
 VersionType
-X3DExecutionContext::getVersion () const
+X3DExecutionContext::getVersion (const bool) const
 {
 	static const std::map <std::string, VersionType> versions = {
-		std::make_pair ("VRML V2.0", VRML_V2_0),
-		std::make_pair ("X3D V3.0",  X3D_V3_0),
-		std::make_pair ("X3D V3.1",  X3D_V3_1),
-		std::make_pair ("X3D V3.2",  X3D_V3_2),
-		std::make_pair ("X3D V3.3",  X3D_V3_3),
+		std::make_pair ("2.0", VRML_V2_0),
+		std::make_pair ("3.0",  X3D_V3_0),
+		std::make_pair ("3.1",  X3D_V3_1),
+		std::make_pair ("3.2",  X3D_V3_2),
+		std::make_pair ("3.3",  X3D_V3_3),
 	};
 
-	const std::string versionString = getEncoding () + " V" + getSpecificationVersion ();
-	
-	const auto version = versions .find (versionString);
-	
+	const auto version = versions .find (getSpecificationVersion ());
+
 	if (version not_eq versions .end ())
 		return version -> second;
 
@@ -958,21 +964,21 @@ X3DExecutionContext::toXMLStream (std::ostream & ostream) const
 	{
 		ostream
 			<< XMLEncode (externProto)
-			<< Generator::ForceBreak;
+			<< Generator::Break;
 	}
 
 	for (const auto & proto : getProtoDeclarations ())
 	{
 		ostream
 			<< XMLEncode (proto)
-			<< Generator::ForceBreak;
+			<< Generator::Break;
 	}
 	
 	if (not getRootNodes () .empty ())
 	{
 		ostream
 			<< XMLEncode (getRootNodes ())
-			<< Generator::ForceBreak;
+			<< Generator::Break;
 	}
 
 	for (const auto & importedNode : getImportedNodes ())
@@ -981,7 +987,7 @@ X3DExecutionContext::toXMLStream (std::ostream & ostream) const
 		{
 			ostream
 				<<	XMLEncode (importedNode)
-				<< Generator::ForceBreak;
+				<< Generator::Break;
 		}
 		catch (const X3DError &)
 		{ }
@@ -993,7 +999,7 @@ X3DExecutionContext::toXMLStream (std::ostream & ostream) const
 		{
 			ostream
 				<<	XMLEncode (route)
-				<< Generator::ForceBreak;
+				<< Generator::Break;
 		}
 		catch (const X3DError &)
 		{ }

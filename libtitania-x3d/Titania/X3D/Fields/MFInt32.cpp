@@ -50,6 +50,8 @@
 
 #include "MFInt32.h"
 
+template class std::vector <titania::X3D::SFInt32*>;
+
 namespace titania {
 namespace X3D {
 
@@ -59,7 +61,6 @@ const std::string X3DField <Array <SFInt32>>::typeName ("MFInt32");
 template <>
 const X3DConstants::FieldType X3DField <Array <SFInt32>>::type = X3DConstants::MFInt32;
 
-//template class Array <SFInt32>;
 template class X3DField <Array <SFInt32>>;
 template class X3DArrayField <SFInt32>;
 
