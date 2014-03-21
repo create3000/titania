@@ -190,7 +190,7 @@ Proto::toStream (std::ostream & ostream) const
 					<< Generator::Indent
 					<< Generator::Comment
 					<< comment
-					<< Generator::Break;
+					<< Generator::ForceBreak;
 			}
 
 			ostream
@@ -245,7 +245,7 @@ Proto::toStream (std::ostream & ostream) const
 				<< Generator::Indent
 				<< Generator::Comment
 				<< comment
-				<< Generator::Break;
+				<< Generator::ForceBreak;
 		}
 
 		ostream
@@ -282,7 +282,7 @@ Proto::toStreamField (std::ostream & ostream, X3DFieldDefinition* const field, c
 			<< Generator::Indent
 			<< Generator::Comment
 			<< comment
-			<< Generator::Break;
+			<< Generator::ForceBreak;
 	}
 
 	ostream

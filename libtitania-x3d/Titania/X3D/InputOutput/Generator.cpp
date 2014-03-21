@@ -214,7 +214,7 @@ Generator::Style (const std::string & value)
 	if (style == "SMALLEST")
 		SmallestStyle ();
 
-	if (style == "SMALL")
+	else if (style == "SMALL")
 		SmallStyle ();
 
 	else if (style == "COMPACT")

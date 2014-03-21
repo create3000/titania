@@ -948,7 +948,7 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 				<< Generator::Indent
 				<< Generator::Comment
 				<< comment
-				<< Generator::Break;
+				<< Generator::ForceBreak;
 		}
 	}
 

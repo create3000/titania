@@ -1,5 +1,14 @@
 2014-03-21  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Proto.cpp:
+	* X3DBaseNode.cpp:
+	* X3DScene.cpp:
+	* ExternProto.cpp:
+	* Generator.cpp:
+	* X3DExecutionContext.cpp: 
+
+2014-03-21  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* MFNode.h:
 	* MFInt32.h:
 	* MFNode.cpp:

@@ -801,7 +801,7 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 		ostream
 			<< Generator::Comment
 			<< getComments () .front ()
-			<< Generator::Break;
+			<< Generator::ForceBreak;
 
 		for (const auto & comment : basic::adapter (getComments () .begin () + 1, getComments (). end ()))
 		{
@@ -918,7 +918,7 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 				<< Generator::Indent
 				<< Generator::Comment
 				<< comment
-				<< Generator::Break;
+				<< Generator::ForceBreak;
 		}
 
 		ostream
@@ -940,7 +940,7 @@ X3DBaseNode::toStreamField (std::ostream & ostream, X3DFieldDefinition* const fi
 			<< Generator::Indent
 			<< Generator::Comment
 			<< comment
-			<< Generator::Break;
+			<< Generator::ForceBreak;
 	}
 
 	if (field -> getReferences () .empty ())
@@ -979,7 +979,7 @@ X3DBaseNode::toStreamField (std::ostream & ostream, X3DFieldDefinition* const fi
 			++ index;
 
 			if (index not_eq field -> getReferences () .size ())
-				ostream << Generator::TidyBreak;
+				ostream << Generator::Break;
 		}
 
 		// If the field is a inputOutput and we have as reference only inputOnly or outputOnly we must output the value
@@ -990,7 +990,7 @@ X3DBaseNode::toStreamField (std::ostream & ostream, X3DFieldDefinition* const fi
 			// Output build in field
 
 			ostream
-				<< Generator::TidyBreak
+				<< Generator::Break
 				<< Generator::Indent;
 
 			ostream << getFieldName (field -> getName (), executionContext -> getVersion ());
@@ -1011,7 +1011,7 @@ X3DBaseNode::toStreamUserDefinedField (std::ostream & ostream, X3DFieldDefinitio
 			<< Generator::Indent
 			<< Generator::Comment
 			<< comment
-			<< Generator::Break;
+			<< Generator::ForceBreak;
 	}
 
 	if (field -> getReferences () .empty ())
@@ -1073,7 +1073,7 @@ X3DBaseNode::toStreamUserDefinedField (std::ostream & ostream, X3DFieldDefinitio
 			++ index;
 
 			if (index not_eq field -> getReferences () .size ())
-				ostream << Generator::TidyBreak;
+				ostream << Generator::Break;
 		}
 
 		// If the field is a inputOutput and we have as reference only inputOnly or outputOnly we must output the value
@@ -1084,7 +1084,7 @@ X3DBaseNode::toStreamUserDefinedField (std::ostream & ostream, X3DFieldDefinitio
 			// Output user defined field
 
 			ostream
-				<< Generator::TidyBreak
+				<< Generator::Break
 				<< Generator::Indent
 				<< std::setiosflags (std::ios::left)
 				<< std::setw (accessTypeLength);

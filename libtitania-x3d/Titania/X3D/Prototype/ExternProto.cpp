@@ -266,7 +266,7 @@ ExternProto::toStream (std::ostream & ostream) const
 					<< Generator::Indent
 					<< Generator::Comment
 					<< comment
-					<< Generator::Break;
+					<< Generator::ForceBreak;
 			}
 
 			ostream
@@ -318,7 +318,7 @@ ExternProto::toStream (std::ostream & ostream) const
 				<< Generator::Indent
 				<< Generator::Comment
 				<< comment
-				<< Generator::Break;
+				<< Generator::ForceBreak;
 		}
 
 		ostream
@@ -336,7 +336,7 @@ ExternProto::toStream (std::ostream & ostream) const
 			<< Generator::Indent
 			<< Generator::Comment
 			<< comment
-			<< Generator::Break;
+			<< Generator::ForceBreak;
 	}
 
 	ostream
@@ -353,7 +353,7 @@ ExternProto::toStreamField (std::ostream & ostream, X3DFieldDefinition* const fi
 			<< Generator::Indent
 			<< Generator::Comment
 			<< comment
-			<< Generator::Break;
+			<< Generator::ForceBreak;
 	}
 
 	ostream
