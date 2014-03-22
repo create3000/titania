@@ -110,7 +110,10 @@ private:
 
 	virtual
 	void
-	on_grab_focus ();
+	on_grab_focus () final override;
+
+	bool
+	on_textview_button_press_event (GdkEventButton*);
 
 	bool
 	on_textview_focus_out_event (GdkEventFocus*);
@@ -127,6 +130,7 @@ private:
 	bool                   multiline;
 	const Glib::ustring    path;
 	bool                   validated;
+	bool                   handleFocusOut;
 
 };
 

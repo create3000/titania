@@ -64,7 +64,8 @@ TextViewEditable::TextViewEditable (OutlineTreeData* const data, const Glib::ust
 	                     data (data),
 	                multiline (multiline),
 	                     path (path),
-	                validated (false)
+	                validated (false),
+	           handleFocusOut (true)
 {
 	set_policy (Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
 	set_visible (true);
@@ -74,15 +75,16 @@ TextViewEditable::TextViewEditable (OutlineTreeData* const data, const Glib::ust
 	textview .set_editable (true);
 	textview .set_visible (true);
 
-	textview .signal_focus_out_event () .connect (sigc::mem_fun (this, &TextViewEditable::on_textview_focus_out_event));
-	textview .signal_key_press_event () .connect (sigc::mem_fun (this, &TextViewEditable::on_textview_key_press_event), false);
+	textview .signal_button_press_event () .connect (sigc::mem_fun (this, &TextViewEditable::on_textview_button_press_event), false);
+	textview .signal_focus_out_event ()    .connect (sigc::mem_fun (this, &TextViewEditable::on_textview_focus_out_event));
+	textview .signal_key_press_event ()    .connect (sigc::mem_fun (this, &TextViewEditable::on_textview_key_press_event), false);
 }
 
 void
 TextViewEditable::start_editing_vfunc (GdkEvent* event)
 {
 	property_editing_canceled () = false;
-	validated = false;
+	validated                    = false;
 }
 
 void
@@ -96,9 +98,22 @@ TextViewEditable::on_grab_focus ()
 }
 
 bool
+TextViewEditable::on_textview_button_press_event (GdkEventButton* event)
+{
+	if (event -> button == 3)
+		handleFocusOut = false;
+
+	return false;
+}
+
+bool
 TextViewEditable::on_textview_focus_out_event (GdkEventFocus* event)
 {
-	editing_done ();
+	if (handleFocusOut)
+		editing_done ();
+
+	handleFocusOut = true;
+
 	return false;
 }
 
