@@ -1251,7 +1251,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 		}
 	}
 
-	if (childNodes .empty () and userDefinedFields .empty ())
+	if (userDefinedFields .empty () and references .empty () and childNodes .empty ())
 	{
 		ostream << "/>";
 	}

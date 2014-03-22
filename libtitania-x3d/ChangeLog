@@ -1,5 +1,11 @@
 2014-03-22  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBaseNode.cpp:
+	* X3DExecutionContext.cpp:
+	* X3DPrototypeInstance.cpp: 
+
+2014-03-22  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* libtitania-x3d.cproj:
 	* Nodes.h:

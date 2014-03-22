@@ -123,10 +123,12 @@ Test-utf8-<äöü&> {
 }
 
 # These fields must have a Group
-Test-utf8-<äöü&> {
+DEF ProtoRef Test-utf8-<äöü&> {
   children Group { }
   node Group { }
 }
+
+USE ProtoRef
 
 USE Reference
 

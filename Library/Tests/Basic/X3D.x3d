@@ -33,8 +33,18 @@
             <Group/>
           </ProtoBody>
         </ProtoDeclare>
-        <Group/>
-        <TimeSensor enabled='false'/>
+        <Group>
+          <IS>
+            <connect nodeField='children' protoField='children'/>
+          </IS>
+        </Group>
+        <TimeSensor enabled='false'>
+          <IS>
+            <connect nodeField='enabled' protoField='set_bind'/>
+            <connect nodeField='enabled' protoField='isBound'/>
+            <connect nodeField='isActive' protoField='isBound'/>
+          </IS>
+        </TimeSensor>
         <Script url='"javascript:&#xA;function initialize ()&#xA;{&#xA;&#x9;// JavaScript Comment&#xA;}&#xA;"' directOutput='true'>
           <field accessType='inputOnly' type='SFBool' name='set_utf8-is-gorgeous-&amp;-nice!-&lt;utf8-ist-älegant-&amp;-schön!>'/>
           <field accessType='inputOutput' type='SFBool' name='enabled' value='true'/>
@@ -47,8 +57,8 @@
             <MetadataBoolean USE='Meta'/>
           </field>
           <IS>
-            <connect nodeField='enabled' protoField='isBound'/>
             <connect nodeField='enabled' protoField='set_bind'/>
+            <connect nodeField='enabled' protoField='isBound'/>
             <connect nodeField='test' protoField='test'/>
           </IS>
         </Script>
@@ -59,11 +69,12 @@
     <ProtoInstance name='Rotor'>
       <fieldValue name='cycleInterval' value='10'/>
     </ProtoInstance>
+    <ProtoInstance name='Test-utf8-&lt;äöü&amp;>'/>
     <ProtoInstance name='Test-utf8-&lt;äöü&amp;>'>
       <fieldValue name='children'/>
       <fieldValue name='node' value='NULL'/>
     </ProtoInstance>
-    <ProtoInstance name='Test-utf8-&lt;äöü&amp;>'>
+    <ProtoInstance name='Test-utf8-&lt;äöü&amp;>' DEF='ProtoRef'>
       <fieldValue name='children'>
         <Group/>
       </fieldValue>
@@ -71,6 +82,7 @@
         <Group/>
       </fieldValue>
     </ProtoInstance>
+    <ProtoInstance name='Test-utf8-&lt;äöü&amp;>' USE='ProtoRef'/>
     <Viewpoint USE='Reference'/>
     <Viewpoint USE='Reference'/>
     <Transform>

@@ -42,9 +42,9 @@ sub new {
 		units                => [ ],
 		metaData             => [ ],
 		externProtos         => [ ],
-		externProtosByName   => { },
+		externProtosIndex    => { },
 		protos               => [ ],
-		protosByName         => { },
+		protosIndex          => { },
 		scene                => [ ],
 		imports              => [ ],
 		routes               => [ ],
@@ -244,7 +244,7 @@ sub externProtoDeclare {
 		name          => $xml -> getAttribute ("name"),
 		appinfo       => $xml -> getAttribute ("appinfo"),
 		documentation => $xml -> getAttribute ("documentation"),
-		fields        => { },
+		fieldIndex    => { },
 		interface     => [ ],
 		url           => $xml -> getAttribute ("url")
 	};
@@ -258,29 +258,30 @@ sub externProtoDeclare {
 		}
 	}
 
-	push @{$self -> {contexts} -> [0] -> {externProtos}}, $externProto;
+	my $context = $self -> {contexts} -> [0];
 
-	$self -> {contexts} -> [0] -> {externProtosByName} -> {$externProto -> {name}} = $externProto;
+	push @{$context -> {externProtos}}, $externProto;
+	$context -> {externProtosIndex} -> {$externProto -> {name}} = $externProto;
 }
 
 sub protoDeclare {
 	my ($self, $xml) = @_;
 
 	my $proto = {
-		context            => $self -> {contexts} -> [0],
-		name               => $xml -> getAttribute ("name"),
-		appinfo            => $xml -> getAttribute ("appinfo"),
-		documentation      => $xml -> getAttribute ("documentation"),
-		fields             => { },
-		interface          => [ ],
-		externProtos       => [ ],
-		externProtosByName => { },
-		protos             => [ ],
-		protosByName       => { },
-		scene              => [ ],
-		imports            => [ ],
-		routes             => [ ],
-		exports            => [ ]
+		context           => $self -> {contexts} -> [0],
+		name              => $xml -> getAttribute ("name"),
+		appinfo           => $xml -> getAttribute ("appinfo"),
+		documentation     => $xml -> getAttribute ("documentation"),
+		fieldIndex        => { },
+		interface         => [ ],
+		externProtos      => [ ],
+		externProtosIndex => { },
+		protos            => [ ],
+		protosIndex       => { },
+		scene             => [ ],
+		imports           => [ ],
+		routes            => [ ],
+		exports           => [ ]
 	};
 
 	foreach my $child ($xml -> getChildnodes ())
@@ -302,8 +303,10 @@ sub protoDeclare {
 		}
 	}
 
-	push @{$self -> {contexts} -> [0] -> {protos}}, $proto;
-	$self -> {contexts} -> [0] -> {protosByName} -> {$proto -> {name}} = $proto;
+	my $context = $self -> {contexts} -> [0];
+
+	push @{$context -> {protos}}, $proto;
+	$context -> {protosIndex} -> {$proto -> {name}} = $proto;
 }
 
 sub protoInterface {
@@ -334,7 +337,7 @@ sub field {
 	$field -> {value} = $xml -> getAttribute ("value")
 		if $xml -> getAttribute ("value");
 
-	$node -> {fields} -> {$field -> {name}} = $field;
+	$node -> {fieldIndex} -> {$field -> {name}} = $field;
 	push @$interface, $field;
 
 	unshift @{$self -> {parents}}, $field;
@@ -355,7 +358,8 @@ sub protoInstance {
 		userDefined       => 1,
 		context           => $self -> {contexts} -> [0],
 	   typeName          => $xml -> getAttribute ("name"),
-		fields            => { },
+		fields            => [ ],
+		fieldIndex        => { },
 		userDefinedFields => [ ]
 	};
 
@@ -373,7 +377,7 @@ sub protoInstance {
 		{
 			if ($child -> nodeName () eq "fieldValue")
 			{
-				$self -> fieldValue ($child, $node -> {fields});
+				$self -> fieldValue ($child, $node);
 				next;
 			}
 		}
@@ -385,7 +389,7 @@ sub protoInstance {
 }
 
 sub fieldValue {
-	my ($self, $xml, $fields) = @_;
+	my ($self, $xml, $node) = @_;
 	
 	my $name = $xml -> getAttribute ("name");
 
@@ -394,7 +398,8 @@ sub fieldValue {
 		name       => $name
 	};
 
-	$fields -> {$name} = $field;
+	push @{$node -> {fields}}, $field;
+	$node -> {fieldIndex} -> {$name} = $field;
 
 	$field -> {value} = $xml -> getAttribute ("value")
 		if $xml -> getAttribute ("value");
@@ -407,25 +412,31 @@ sub fieldValue {
 sub is {
 	my ($self, $xml) = @_;
 	
-	my $node              = $self -> {parents} -> [0];
-	my $fields            = $node -> {fields};
+	my $node       = $self -> {parents} -> [0];
+	my $fieldIndex = $node -> {fieldIndex};
 	
 	foreach ($xml -> getChildnodes ())
 	{
-		$self -> connect ($_, $node, $fields)
+		$self -> connect ($_, $node)
 			if $_ -> getName () eq "connect";
 	}
 }
 
 sub connect {
-	my ($self, $xml, $node, $fields) = @_;
+	my ($self, $xml, $node) = @_;
 
-	my $nodeField = $xml -> getAttribute ("nodeField");
+	my $fieldIndex = $node -> {fieldIndex};
+	my $nodeField  = $xml -> getAttribute ("nodeField");
 
-	$fields -> {$nodeField} = { }
-		unless exists $fields -> {$nodeField};
-		
-	my $field = $fields -> {$nodeField};
+	unless (exists $fieldIndex -> {$nodeField})
+	{
+		my $field = { };
+
+		push @{$node -> {fields}}, $field;
+		$fieldIndex -> {$nodeField} = $field;
+	}
+
+	my $field = $fieldIndex -> {$nodeField};
 
 	$field -> {name}      = $nodeField;
 	$field -> {reference} = $xml -> getAttribute ("protoField");
@@ -437,7 +448,8 @@ sub node {
 	my $node = {
 		context           => $self -> {contexts} -> [0],
 	   typeName          => $xml -> getName (),
-		fields            => { },
+		fields            => [ ],
+		fieldIndex        => { },
 		userDefinedFields => [ ]
 	};
 
@@ -451,7 +463,7 @@ sub node {
 
 		unshift @{$self -> {parents}}, $node;
 
-		$self -> attributes ($xml, $node -> {fields});
+		$self -> attributes ($xml, $node);
 	
 		foreach my $child ($xml -> getChildnodes ())
 		{
@@ -465,7 +477,7 @@ sub node {
 			{
 				if ($self -> {nodes} -> has_key ($node -> {typeName}, "url"))
 				{
-					$self -> cdata ($child, $node -> {fields});
+					$self -> cdata ($child, $node -> {fieldIndex});
 					next;
 				}
 			}
@@ -480,25 +492,25 @@ sub node {
 }
 
 sub cdata {
-	my ($self, $xml, $fields) = @_;
+	my ($self, $xml, $fieldIndex) = @_;
 	
-	if ($fields -> {url})
+	if ($fieldIndex -> {url})
 	{
-		if ($fields -> {url} -> {value})
+		if ($fieldIndex -> {url} -> {value})
 		{
-			if ($fields -> {url} -> {value} !~ /^\s*"/sgo)
+			if ($fieldIndex -> {url} -> {value} !~ /^\s*"/sgo)
 			{
-				$fields -> {url} -> {value} = "\"" . $fields -> {url} -> {value} . "\""
+				$fieldIndex -> {url} -> {value} = "\"" . $fieldIndex -> {url} -> {value} . "\""
 			}
 		}
 		else
 		{
-			$fields -> {url} -> {value} = "";
+			$fieldIndex -> {url} -> {value} = "";
 		}
 	}
 	else
 	{
-		$fields -> {url} = {
+		$fieldIndex -> {url} = {
 			name  => "url",
 			value => ""
 		};
@@ -509,7 +521,7 @@ sub cdata {
 	$value =~ s/\A\s*//sgo;      # Remove spaces from beginning
 	$value =~ s/\s*$//sgo;       # Remove spaces from end
 
-	$fields -> {url} -> {value} .= " \"" . escape ($value) . "\"";
+	$fieldIndex -> {url} -> {value} .= " \"" . escape ($value) . "\"";
 }
 
 sub addNode {
@@ -520,20 +532,25 @@ sub addNode {
 		my $parent = $self -> {parents} -> [0];
 		my $field  = $parent;
 	
-		if (exists $parent -> {fields})
+		if (exists $parent -> {fieldIndex})
 		{
 			# Parent is a node
 		
-			my $fields         = $parent -> {fields};
+			my $fieldIndex     = $parent -> {fieldIndex};
 			my $containerField = $xml -> getAttribute ("containerField");
 
-			$fields -> {$containerField} = {
-				name  => $containerField,
-				value => [ ]
+			unless (exists $fieldIndex -> {$containerField})
+			{
+				my $field = {
+					name  => $containerField,
+					value => [ ]
+				};
+
+				push @{$parent -> {fields}}, $field;
+				$fieldIndex -> {$containerField} = $field;
 			}
-			unless exists $fields -> {$containerField};
 		
-			$field = $fields -> {$containerField};
+			$field = $fieldIndex -> {$containerField};
 		}
 		# else parent is a custom field
 
@@ -549,7 +566,7 @@ sub addNode {
 }
 
 sub attributes {
-	my ($self, $xml, $fields) = @_;
+	my ($self, $xml, $node) = @_;
 	
 	foreach my $attribute ($xml -> getAttributes ())
 	{
@@ -557,10 +574,13 @@ sub attributes {
 
 		next if $name =~ /DEF|USE|containerField|class/sgo;
 
-		$fields -> {$name} = {
+		my $field = {
 			name  => $name,
 			value => $attribute -> getValue ()
 		};
+
+		push @{$node -> {fields}}, $field; 
+		$node -> {fieldIndex} -> {$name} = $field;
 	}
 }
 
@@ -665,11 +685,11 @@ sub escape {
 sub getPrototype {
 	my ($self, $context, $name) = @_;
 
-	return $context -> {externProtosByName} -> {$name}
-		if exists $context -> {externProtosByName} -> {$name};
+	return $context -> {externProtosIndex} -> {$name}
+		if exists $context -> {externProtosIndex} -> {$name};
 
-	return $context -> {protosByName} -> {$name}
-		if exists $context -> {protosByName} -> {$name};
+	return $context -> {protosIndex} -> {$name}
+		if exists $context -> {protosIndex} -> {$name};
 
 	return $self -> getPrototype ($context -> {context}, $name)
 		if $context -> {context};
@@ -925,13 +945,13 @@ sub node {
 		print "DEF ", $node -> {name}, " " if $node -> {name};
 		print $node -> {typeName}, " {";
 
-		if (%{$node -> {fields}})
+		if (%{$node -> {fieldIndex}})
 		{
 			print "\n";
 			++ $self -> {indent};
 		
-			$self -> fields ($node);
 			$self -> userDefinedFields ($node);
+			$self -> fields ($node);
 
 			-- $self -> {indent};
 			print "  " x $self -> {indent};
@@ -947,7 +967,7 @@ sub node {
 sub fields {
 	my ($self, $node) = @_;
 
-	foreach (values %{$node -> {fields}})
+	foreach (@{$node -> {fields}})
 	{
 		next if $_ -> {userDefined};
 	
@@ -963,7 +983,7 @@ sub fields {
 			if ($_ -> {fieldValue})
 			{
 				my $proto           = $self -> getPrototype ($node -> {context}, $node -> {typeName});
-				my $fieldDefinition = $proto -> {fields} -> {$_ -> {name}};
+				my $fieldDefinition = $proto -> {fieldIndex} -> {$_ -> {name}};
 				
 				$self -> field ([$fieldDefinition -> {name}, $fieldDefinition -> {accessType}, $fieldDefinition -> {type}], $_);
 			}

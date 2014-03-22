@@ -278,6 +278,15 @@ void
 X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 //throw (Error <DISPOSED>)
 {
+	if (Generator::IsSharedNode (this))
+	{
+		ostream
+			<< Generator::Indent
+			<< "<!-- NULL -->";
+
+		return;
+	}
+
 	Generator::PushContext ();
 
 	const std::string name = Generator::GetName (this);

@@ -866,6 +866,7 @@ throw (Error <INVALID_NAME>,
 void
 X3DExecutionContext::toStream (std::ostream & ostream) const
 {
+	Generator::PushExecutionContext (this);
 	Generator::PushContext ();
 
 	for (const auto & externProto : getExternProtoDeclarations ())
@@ -948,6 +949,7 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 	}
 
 	Generator::PopContext ();
+	Generator::PopExecutionContext ();
 }
 
 void
