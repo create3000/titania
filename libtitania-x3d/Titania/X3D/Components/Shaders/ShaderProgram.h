@@ -133,6 +133,10 @@ private:
 
 	///  @name Operations
 
+	virtual
+	const MFString*
+	getCDataField () const final override;
+
 	GLenum
 	getShaderType () const;
 

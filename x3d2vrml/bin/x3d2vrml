@@ -631,16 +631,22 @@ sub new {
 	my ($class, $document) = @_;
 
 	my $self = {
-		document => $document,
-		nodes    => $document -> {nodes},
-		fields   => new Glib::KeyFile (),
-		indent   => 0
+		document   => $document,
+		nodes      => $document -> {nodes},
+		fields     => new Glib::KeyFile (),
+		indent     => 0,
+		indentChar => ""
 	};
 
 	$self -> {fields} -> load_from_file ($FieldIndex, "none");
 
 	bless $self, $class;
 	return $self;
+}
+
+sub indent {
+	my ($self) = @_;
+	return $self -> {indentChar} x $self -> {indent};
 }
 
 sub escape {
@@ -768,7 +774,7 @@ sub externProtos {
 	
 	for (@_)
 	{
-		print "  " x $self -> {indent};
+		print $self -> indent ();
 		$self -> externProto ($_);
 		print "\n\n";
 	}
@@ -789,7 +795,7 @@ sub externProto {
 		$self -> restrictedInterfaceDeclarations (@{$externProto -> {interface}});
 	
 		-- $self -> {indent};
-		print "  " x $self -> {indent};
+		print $self -> indent ();
 		print "]\n";
 	}
 	else
@@ -797,7 +803,7 @@ sub externProto {
 		print " ]\n";
 	}
 
-	print "  " x $self -> {indent};
+	print $self -> indent ();
 	$self -> MFString ($externProto -> {url});
 }
 
@@ -815,7 +821,7 @@ sub restrictedInterfaceDeclaration {
 
 	$self -> documentation ($field);
 
-	print "  " x $self -> {indent};
+	print $self -> indent ();
 	print
 		$field -> {accessType},
 		" ",
@@ -828,16 +834,16 @@ sub restrictedInterfaceDeclaration {
 sub documentation {
 	my ($self, $object) = @_;
 	
-	print "  " x $self -> {indent}, "# " , $object -> {appinfo}, "\n"
+	print $self -> indent (), "# " , $object -> {appinfo}, "\n"
 		if $object -> {appinfo};
 		
 	if ($object -> {documentation})
 	{
-		print "  " x $self -> {indent}, "# \n"
+		print $self -> indent (), "# \n"
 			if $object -> {appinfo};
 
-		print "  " x $self -> {indent}, "# DOCUMENTATION\n";
-		print "  " x $self -> {indent}, "# " , $object -> {documentation}, "\n";
+		print $self -> indent (), "# DOCUMENTATION\n";
+		print $self -> indent (), "# " , $object -> {documentation}, "\n";
 	}
 }
 
@@ -846,7 +852,7 @@ sub protos {
 
 	for (@_)
 	{
-		print "  " x $self -> {indent};
+		print $self -> indent ();
 		$self -> proto ($_);
 		print "\n\n";
 	}
@@ -869,7 +875,7 @@ sub proto {
 		$self -> interfaceDeclarations (@{$proto -> {interface}});
 	
 		-- $self -> {indent};
-		print "  " x $self -> {indent};
+		print $self -> indent ();
 		print "]\n";
 	}
 	else
@@ -877,7 +883,7 @@ sub proto {
 		print " ]\n";
 	}
 	
-	print "  " x $self -> {indent};
+	print $self -> indent ();
 	print "{\n";
 	++ $self -> {indent};
 
@@ -888,7 +894,7 @@ sub proto {
 	$self -> routes       (@{$proto -> {routes}});
 
 	-- $self -> {indent};
-	print "  " x $self -> {indent};
+	print $self -> indent ();
 	print "}\n";
 }
 
@@ -906,7 +912,7 @@ sub interfaceDeclaration {
 
 	$self -> documentation ($field);
 
-	print "  " x $self -> {indent};
+	print $self -> indent ();
 	print
 		$field -> {accessType},
 		" ",
@@ -928,7 +934,7 @@ sub nodes {
 	
 	for (@_)
 	{
-		print "  " x $self -> {indent};
+		print $self -> indent ();
 		$self -> node ($_);
 		print "\n\n";
 	}
@@ -959,7 +965,7 @@ sub node {
 			$self -> fields ($node);
 
 			-- $self -> {indent};
-			print "  " x $self -> {indent};
+			print $self -> indent ();
 			print "}";		
 		}
 		else
@@ -976,7 +982,7 @@ sub fields {
 	{
 		next if $_ -> {userDefined};
 	
-		print "  " x $self -> {indent};
+		print $self -> indent ();
 		print $_ -> {name}, " ";
 
 		if ($_ -> {reference})
@@ -1014,7 +1020,7 @@ sub userDefinedFields {
 
 	foreach (@{$node -> {userDefinedFields}})
 	{
-		print "  " x $self -> {indent};
+		print $self -> indent ();
 		print $_ -> {accessType}, " ";
 		print $_ -> {type}, " ";
 		print $_ -> {name};
@@ -1086,14 +1092,14 @@ sub field {
 		
 				foreach (@{$field -> {value}})
 				{
-					print "  " x $self -> {indent};
+					print $self -> indent ();
 
 					$self -> node ($_);
 					print "\n";
 				}
 
 				-- $self -> {indent};
-				print "  " x $self -> {indent};
+				print $self -> indent ();
 				print "]";
 			}
 			else
@@ -1155,7 +1161,7 @@ sub imports {
 
 	for (@_)
 	{
-		print "  " x $self -> {indent};
+		print $self -> indent ();
 		$self -> import ($_);
 		print "\n";
 	}
@@ -1181,7 +1187,7 @@ sub routes {
 
 	for (@_)
 	{
-		print "  " x $self -> {indent};
+		print $self -> indent ();
 		$self -> route ($_);
 		print "\n";
 	}
@@ -1203,7 +1209,7 @@ sub exports {
 
 	for (@_)
 	{
-		print "  " x $self -> {indent};
+		print $self -> indent ();
 		$self -> export ($_);
 		print "\n";
 	}

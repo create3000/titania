@@ -93,8 +93,10 @@ PROTO Test-utf8-<äöü&> [
     url "javascript:
 function initialize ()
 {
-	// JavaScript Comment
-	// <![CDATA[ content ]]>
+	// First JavaScript Comment
+	// Second JavaScript Comment
+	// First <![CDATA[ content ]]>
+	// Second <![CDATA[ content ]]>
 
 	var q  = 'A string that\\'s single quoted';
 	string = \"A string that's single quoted with special characters \\\"<\\n\\r\\t>\\\"\";

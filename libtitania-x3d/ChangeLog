@@ -1,5 +1,17 @@
 2014-03-22  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBaseNode.h:
+	* X3DBaseNode.cpp:
+	* Script.h:
+	* ShaderPart.h:
+	* Script.cpp:
+	* ShaderPart.cpp:
+	* ShaderProgram.h:
+	* ShaderProgram.cpp:
+	* X3DPrototypeInstance.cpp: 
+
+2014-03-22  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DField.h:
 	* Proto.cpp:
 	* X3DBaseNode.h:

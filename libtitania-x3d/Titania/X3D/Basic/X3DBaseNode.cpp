@@ -55,7 +55,9 @@
 #include "../Fields/ArrayFields.h"
 #include "../Fields/MFNode.h"
 #include "../Fields/SFNode.h"
+
 #include <Titania/Utility/Adapter.h>
+
 #include <cassert>
 #include <iomanip>
 #include <iostream>
@@ -1201,7 +1203,8 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 
 	FieldDefinitionArray references;
 	FieldDefinitionArray childNodes;
-	X3DFieldDefinition*  cdata = nullptr;
+
+	const MFString* const cdata = static_cast <const MFString*> (getCDataField ());
 
 	for (const auto & field : fields)
 	{
@@ -1236,12 +1239,9 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 				}
 				default:
 				{
-					if (isCDataField (field))
-					{
-						cdata = field;
+					if (field == cdata)
 						break;
-					}
-				
+
 					ostream
 						<< Generator::Space
 						<< getFieldName (field -> getName (), Generator::Version ())
@@ -1411,15 +1411,16 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 
 			Generator::PopContainerField ();
 		}
-		
+
 		if (cdata)
 		{
-			static const pcrecpp::RE cdata_end ("(\\]\\]\\>)");
-		
-			for (std::string value : *static_cast <MFString*> (cdata))
-			{
-				cdata_end .Replace ("\\\\]\\\\]\\\\>", &value);
+			static const pcrecpp::RE cdata_end_pattern ("(\\]\\]\\>)");
+			static const std::string cdata_end_subs ("\\\\]\\\\]\\\\>");
 
+			for (std::string value : *cdata)
+			{
+				cdata_end_pattern .GlobalReplace (cdata_end_subs, &value);
+			
 				ostream
 					<< "<![CDATA["
 					<< value

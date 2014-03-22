@@ -475,7 +475,7 @@ BrowserWindow::dragDataHandling (const Glib::RefPtr <Gdk::DragContext> & context
 			std::vector <basic::uri> uris;
 			const auto               strings = selection_data .get_uris ();
 
-			for (auto & string : strings)
+			for (const auto & string : strings)
 				uris .emplace_back (Glib::uri_unescape_string (string));         // ???
 
 			if (uris .size ())
@@ -498,7 +498,7 @@ BrowserWindow::dragDataHandling (const Glib::RefPtr <Gdk::DragContext> & context
 			std::vector <basic::uri> uris;
 			const auto               strings = basic::split (basic::trim (selection_data .get_data_as_string ()), "\r\n");
 
-			for (auto & string : strings)
+			for (const auto & string : strings)
 				uris .emplace_back (Glib::uri_unescape_string (string));
 
 			if (uris .size ())

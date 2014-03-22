@@ -356,9 +356,9 @@ protected:
 	getChangedFields () const;
 
 	virtual
-	bool
-	isCDataField (const X3DFieldDefinition* const) const
-	{ return false; }
+	const X3DFieldDefinition*
+	getCDataField () const
+	{ return nullptr; }
 
 	virtual
 	void

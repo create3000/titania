@@ -143,8 +143,8 @@ private:
 	///  @name Member access
 
 	virtual
-	bool
-	isCDataField (const X3DFieldDefinition* const) const final override;
+	const MFString*
+	getCDataField () const final override;
 
 	///  @name Static members
 

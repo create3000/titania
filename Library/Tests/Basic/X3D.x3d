@@ -41,8 +41,8 @@
         </Group>
         <TimeSensor enabled='false'>
           <IS>
-            <connect nodeField='enabled' protoField='set_bind'/>
             <connect nodeField='enabled' protoField='isBound'/>
+            <connect nodeField='enabled' protoField='set_bind'/>
             <connect nodeField='isActive' protoField='isBound'/>
           </IS>
         </TimeSensor>
@@ -59,16 +59,18 @@
             <MetadataBoolean USE='Meta'/>
           </field>
           <IS>
-            <connect nodeField='enabled' protoField='set_bind'/>
             <connect nodeField='enabled' protoField='isBound'/>
+            <connect nodeField='enabled' protoField='set_bind'/>
             <connect nodeField='test' protoField='test'/>
             <connect nodeField='string' protoField='string'/>
           </IS>
 <![CDATA[javascript:
 function initialize ()
 {
-	// JavaScript Comment
-	// <![CDATA[ content \]\]\>
+	// First JavaScript Comment
+	// Second JavaScript Comment
+	// First <![CDATA[ content \]\]\>
+	// Second <![CDATA[ content \]\]\>
 
 	var q  = 'A string that\'s single quoted';
 	string = "A string that's single quoted with special characters \"<\n\r\t>\"";
@@ -99,7 +101,7 @@ function initialize ()
         <Group/>
       </fieldValue>
     </ProtoInstance>
-    <ProtoInstance name='Test-utf8-&lt;äöü&amp;>' USE='ProtoRef'/>
+    <ProtoInstance USE='ProtoRef'/>
     <Viewpoint USE='Reference'/>
     <Viewpoint USE='Reference'/>
     <Transform>

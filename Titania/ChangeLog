@@ -1,5 +1,9 @@
 2014-03-22  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* BrowserWindow.cpp: 
+
+2014-03-22  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBrowserWidget.cpp:
 	* vrml2.lang: 
 
