@@ -39,6 +39,7 @@ function set_time ()
 	scene .rootNodes [0] = shape;
 	
 	print (scene .rootNodes [0]);
+	print (scene .rootNodes [0] .toXMLString ());
 
 	print ('+++++++++++++++++++++++++++++++++++++++++++++++++++++++');
 }

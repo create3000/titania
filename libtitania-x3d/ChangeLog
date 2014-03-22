@@ -1,5 +1,10 @@
 2014-03-22  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DBaseNode.cpp:
+	* X3DBrowser.cpp: 
+
+2014-03-22  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DBaseNode.h:
 	* X3DBaseNode.cpp:
 	* Script.h:

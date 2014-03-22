@@ -1206,6 +1206,10 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 
 	const MFString* const cdata = static_cast <const MFString*> (getCDataField ());
 
+	ostream
+		<< Generator::IncIndent
+		<< Generator::IncIndent;
+
 	for (const auto & field : fields)
 	{
 		// If the field is a inputOutput and we have as reference only inputOnly or outputOnly we must output the value
@@ -1243,7 +1247,8 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 						break;
 
 					ostream
-						<< Generator::Space
+						<< Generator::Break
+						<< Generator::Indent
 						<< getFieldName (field -> getName (), Generator::Version ())
 						<< "='"
 						<< XMLEncode (field)
@@ -1258,6 +1263,10 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 			references .emplace_back (field);
 		}
 	}
+
+	ostream
+		<< Generator::DecIndent
+		<< Generator::DecIndent;
 
 	if (userDefinedFields .empty () and references .empty () and childNodes .empty () and not cdata)
 	{
