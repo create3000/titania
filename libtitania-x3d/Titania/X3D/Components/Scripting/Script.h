@@ -140,6 +140,12 @@ private:
 	void
 	eventsProcessed ();
 
+	///  @name Member access
+
+	virtual
+	bool
+	isCDataField (const X3DFieldDefinition* const) const final override;
+
 	///  @name Static members
 
 	static const std::string componentName;

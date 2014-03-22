@@ -52,6 +52,7 @@
 
 #include "../Bits/X3DConstants.h"
 #include "../Browser/X3DBrowser.h"
+#include "../Fields/ArrayFields.h"
 #include "../Fields/MFNode.h"
 #include "../Fields/SFNode.h"
 #include <Titania/Utility/Adapter.h>
@@ -496,7 +497,7 @@ X3DBaseNode::getUserDefinedFields () const
 }
 
 FieldDefinitionArray
-X3DBaseNode::getInitializeableFields (const bool all) const
+X3DBaseNode::getChangedFields () const
 {
 	FieldDefinitionArray changedFields;
 
@@ -507,7 +508,7 @@ X3DBaseNode::getInitializeableFields (const bool all) const
 			if (not field -> isInitializeable ())
 				continue;
 
-			if (not all and isDefaultValue (field))
+			if (isDefaultValue (field))
 				continue;
 		}
 
@@ -882,7 +883,7 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 			<< Generator::TidyBreak;
 	}
 
-	const FieldDefinitionArray fields = getInitializeableFields (Generator::ExpandNodes ());
+	const FieldDefinitionArray fields = getChangedFields ();
 
 	if (fields .empty ())
 	{
@@ -1195,11 +1196,12 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 		}
 	}
 
-	const FieldDefinitionArray fields            = getInitializeableFields (Generator::ExpandNodes ());
+	const FieldDefinitionArray fields            = getChangedFields ();
 	const FieldDefinitionArray userDefinedFields = getUserDefinedFields ();
 
 	FieldDefinitionArray references;
 	FieldDefinitionArray childNodes;
+	X3DFieldDefinition*  cdata = nullptr;
 
 	for (const auto & field : fields)
 	{
@@ -1234,6 +1236,12 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 				}
 				default:
 				{
+					if (isCDataField (field))
+					{
+						cdata = field;
+						break;
+					}
+				
 					ostream
 						<< Generator::Space
 						<< getFieldName (field -> getName (), Generator::Version ())
@@ -1251,7 +1259,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 		}
 	}
 
-	if (userDefinedFields .empty () and references .empty () and childNodes .empty ())
+	if (userDefinedFields .empty () and references .empty () and childNodes .empty () and not cdata)
 	{
 		ostream << "/>";
 	}
@@ -1301,7 +1309,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 				if (mustOutputValue)
 					references .emplace_back (field);
 
-				if (not field -> isInitializeable () or *field == *getBrowser () -> getFieldType (field -> getTypeName ()))
+				if (not field -> isInitializeable () or field -> isDefaultValue ())
 				{
 					ostream
 						<< "/>"
@@ -1402,6 +1410,22 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 				<< Generator::Break;
 
 			Generator::PopContainerField ();
+		}
+		
+		if (cdata)
+		{
+			static const pcrecpp::RE cdata_end ("(\\]\\]\\>)");
+		
+			for (std::string value : *static_cast <MFString*> (cdata))
+			{
+				cdata_end .Replace ("\\\\]\\\\]\\\\>", &value);
+
+				ostream
+					<< "<![CDATA["
+					<< value
+					<< "]]> "
+					<< Generator::Break;
+			}
 		}
 
 		ostream

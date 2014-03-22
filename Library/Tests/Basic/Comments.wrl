@@ -32,7 +32,8 @@ PROTO Test-utf8-<äöü&> [
   inputOnly   SFBool   set_bind
   inputOutput SFBool   enabled FALSE
   outputOnly  SFBool   isBound
-  inputOutput SFString test "\\\"äöüáóúâôû&<'"
+  inputOutput SFString test "\\\"äöüáóúâôû&<'\\r\\n"
+  inputOutput SFString string ""
   inputOutput MFNode   children DEF Default WorldInfo { }
   inputOutput SFNode   node USE Default
   # Interface Comment
@@ -78,6 +79,7 @@ PROTO Test-utf8-<äöü&> [
     inputOutput    SFBool   enabled TRUE
     # IS statement on user defined field
     inputOutput    SFString test IS test
+    inputOutput    SFString string IS string
     # User defined field with value
     inputOutput    MFNode   children [
       # Node and NULL node
@@ -92,6 +94,10 @@ PROTO Test-utf8-<äöü&> [
 function initialize ()
 {
 	// JavaScript Comment
+	// <![CDATA[ content ]]>
+
+	var q  = 'A string that\\'s single quoted';
+	string = \"A string that's single quoted with special characters \\\"<\\n\\r\\t>\\\"\";
 }
 "
     directOutput TRUE

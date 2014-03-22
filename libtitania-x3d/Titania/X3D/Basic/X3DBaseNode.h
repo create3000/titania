@@ -353,7 +353,12 @@ protected:
 	removeField (const std::string &);
 
 	FieldDefinitionArray
-	getInitializeableFields (const bool = false) const;
+	getChangedFields () const;
+
+	virtual
+	bool
+	isCDataField (const X3DFieldDefinition* const) const
+	{ return false; }
 
 	virtual
 	void

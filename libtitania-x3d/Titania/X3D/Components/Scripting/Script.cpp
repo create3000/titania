@@ -100,6 +100,12 @@ Script::initialize ()
 }
 
 bool
+Script::isCDataField (const X3DFieldDefinition* const field) const
+{
+	return field == &url ();
+}
+
+bool
 Script::loadDocument (const SFString & URL, std::string & ecmascript)
 {
 	if (RegEx::ECMAScript .FullMatch (URL .str (), &ecmascript))

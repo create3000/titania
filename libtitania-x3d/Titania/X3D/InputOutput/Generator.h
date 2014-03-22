@@ -170,16 +170,6 @@ public:
 
 	static
 	void
-	ExpandNodes (const bool value)
-	{ expandNodes = value; }
-
-	static
-	bool
-	ExpandNodes ()
-	{ return expandNodes; }
-
-	static
-	void
 	Version (const VersionType value)
 	{ version = value; }
 
@@ -271,7 +261,6 @@ private:
 	using FieldStack            = std::vector <const X3DFieldDefinition*>;
 
 	static StyleType   style;
-	static bool        expandNodes;
 	static VersionType version;
 
 	static ExecutionContextStack executionContextStack;

@@ -353,7 +353,7 @@ Proto::toXMLStream (std::ostream & ostream) const
 				<< XMLEncode (field -> getName ())
 				<< "'";
 
-			if (*field == *getBrowser () -> getFieldType (field -> getTypeName ()))
+			if (field -> isDefaultValue ())
 			{
 				ostream
 					<< "/>"

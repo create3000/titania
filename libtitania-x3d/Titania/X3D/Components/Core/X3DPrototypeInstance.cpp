@@ -362,7 +362,7 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 		}
 	}
 
-	const FieldDefinitionArray fields = getInitializeableFields (Generator::ExpandNodes ());
+	const FieldDefinitionArray fields = getChangedFields ();
 
 	if (fields .empty ())
 	{

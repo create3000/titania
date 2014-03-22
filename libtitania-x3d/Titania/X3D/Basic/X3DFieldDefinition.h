@@ -138,6 +138,10 @@ public:
 	bool
 	isOutput () const override
 	{ return accessType & outputOnly; }
+	
+	virtual
+	bool
+	isDefaultValue () const = 0;
 
 	virtual
 	bool

@@ -19,7 +19,8 @@
         <field accessType='inputOnly' type='SFBool' name='set_bind'/>
         <field accessType='inputOutput' type='SFBool' name='enabled'/>
         <field accessType='outputOnly' type='SFBool' name='isBound'/>
-        <field accessType='inputOutput' type='SFString' name='test' value='\\\"äöüáóúâôû&amp;&lt;&apos;'/>
+        <field accessType='inputOutput' type='SFString' name='test' value='\\\"äöüáóúâôû&amp;&lt;&apos;\\r\\n'/>
+        <field accessType='inputOutput' type='SFString' name='string'/>
         <field accessType='inputOutput' type='MFNode' name='children'>
           <WorldInfo DEF='Default'/>
         </field>
@@ -45,10 +46,11 @@
             <connect nodeField='isActive' protoField='isBound'/>
           </IS>
         </TimeSensor>
-        <Script url='"javascript:&#xA;function initialize ()&#xA;{&#xA;&#x9;// JavaScript Comment&#xA;}&#xA;"' directOutput='true'>
+        <Script directOutput='true'>
           <field accessType='inputOnly' type='SFBool' name='set_utf8-is-gorgeous-&amp;-nice!-&lt;utf8-ist-älegant-&amp;-schön!>'/>
           <field accessType='inputOutput' type='SFBool' name='enabled' value='true'/>
           <field accessType='inputOutput' type='SFString' name='test'/>
+          <field accessType='inputOutput' type='SFString' name='string'/>
           <field accessType='inputOutput' type='MFNode' name='children'>
             <MetadataBoolean DEF='Meta'/>
             <!-- NULL -->
@@ -60,7 +62,18 @@
             <connect nodeField='enabled' protoField='set_bind'/>
             <connect nodeField='enabled' protoField='isBound'/>
             <connect nodeField='test' protoField='test'/>
+            <connect nodeField='string' protoField='string'/>
           </IS>
+<![CDATA[javascript:
+function initialize ()
+{
+	// JavaScript Comment
+	// <![CDATA[ content \]\]\>
+
+	var q  = 'A string that\'s single quoted';
+	string = "A string that's single quoted with special characters \"<\n\r\t>\"";
+}
+]]> 
         </Script>
       </ProtoBody>
     </ProtoDeclare>
@@ -69,12 +82,16 @@
     <ProtoInstance name='Rotor'>
       <fieldValue name='cycleInterval' value='10'/>
     </ProtoInstance>
-    <ProtoInstance name='Test-utf8-&lt;äöü&amp;>'/>
     <ProtoInstance name='Test-utf8-&lt;äöü&amp;>'>
+      <fieldValue name='string' value='A string that&apos;s single quoted with special characters \"&lt;&#xA;&#xD;&#x9;>\"'/>
+    </ProtoInstance>
+    <ProtoInstance name='Test-utf8-&lt;äöü&amp;>'>
+      <fieldValue name='string' value='A string that&apos;s single quoted with special characters \"&lt;&#xA;&#xD;&#x9;>\"'/>
       <fieldValue name='children'/>
       <fieldValue name='node' value='NULL'/>
     </ProtoInstance>
     <ProtoInstance name='Test-utf8-&lt;äöü&amp;>' DEF='ProtoRef'>
+      <fieldValue name='string' value='A string that&apos;s single quoted with special characters \"&lt;&#xA;&#xD;&#x9;>\"'/>
       <fieldValue name='children'>
         <Group/>
       </fieldValue>

@@ -477,7 +477,7 @@ sub node {
 			{
 				if ($self -> {nodes} -> has_key ($node -> {typeName}, "url"))
 				{
-					$self -> cdata ($child, $node -> {fieldIndex});
+					$self -> cdata ($child, $node);
 					next;
 				}
 			}
@@ -492,8 +492,10 @@ sub node {
 }
 
 sub cdata {
-	my ($self, $xml, $fieldIndex) = @_;
-	
+	my ($self, $xml, $node) = @_;
+
+	my $fieldIndex = $node -> {fieldIndex};
+
 	if ($fieldIndex -> {url})
 	{
 		if ($fieldIndex -> {url} -> {value})
@@ -510,10 +512,13 @@ sub cdata {
 	}
 	else
 	{
-		$fieldIndex -> {url} = {
+		my $field = {
 			name  => "url",
 			value => ""
 		};
+
+		push @{$node -> {fields}}, $field;
+		$fieldIndex -> {url} = $field;
 	}
 
 	my $value = $xml -> getValue ();
@@ -521,7 +526,7 @@ sub cdata {
 	$value =~ s/\A\s*//sgo;      # Remove spaces from beginning
 	$value =~ s/\s*$//sgo;       # Remove spaces from end
 
-	$fieldIndex -> {url} -> {value} .= " \"" . escape ($value) . "\"";
+	$fieldIndex -> {url} -> {value} .= ' "' . escape ($value) . '"';
 }
 
 sub addNode {
@@ -653,13 +658,13 @@ sub escape {
 				{
 					switch ($1)
 					{
-						case "\\"
-						{
-							$result .= "\\\\";
-						}
 						case "\""
 						{
 							$result .= "\\\"";
+						}
+						case "\\"
+						{
+							$result .= "\\\\";
 						}
 						else
 						{

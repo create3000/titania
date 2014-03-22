@@ -109,6 +109,14 @@ public:
 	{ return typeName; }
 
 	///  @name Element access
+	
+	virtual
+	bool
+	isDefaultValue () const final override
+	{
+		static const ValueType defaultValue = ValueType ();
+		return value == defaultValue;
+	}
 
 	///  6.7.5 getValue service.
 	const ValueType &
@@ -158,7 +166,7 @@ public:
 	virtual
 	bool
 	operator not_eq (const X3DFieldDefinition & field) const override
-	{ return not (*this == field); }
+	{ return getValue () not_eq static_cast <const X3DField &> (field) .getValue (); }
 
 	///  @name Event handling
 
@@ -172,18 +180,6 @@ public:
 	void
 	addInterest (Class & object, void (Class::* memberFunction) (const ValueType &)) const
 	{ addInterest (object, memberFunction, std::cref (value)); }
-	
-	///  Process interest service
-	void
-	processInterests (const X3DField & field)
-	{ processInterests (field .getValue ()); }
-
-	void
-	processInterests (const ValueType & value)
-	{
-		set (value);
-		processInterests ();
-	}
 
 	///  @name Destruction
 

@@ -191,9 +191,8 @@ const Generator::X3DAccessTypesIndex  Generator::X3DAccessTypes;
 const Generator::VrmlAccessTypesIndex Generator::VrmlAccessTypes;
 const Generator::NodeTypesIndex       Generator::NodeTypes;
 
-Generator::StyleType Generator::style       = NICEST;
-bool                 Generator::expandNodes = false;
-VersionType          Generator::version     = LATEST_VERSION;
+Generator::StyleType Generator::style   = NICEST;
+VersionType          Generator::version = LATEST_VERSION;
 
 Generator::ExecutionContextStack Generator::executionContextStack;
 size_t                           Generator::level = 0;

@@ -81,9 +81,6 @@ main (int argc, char** argv)
 	options .addUsage ("       -c, --compact");
 	options .addUsage ("              output in compact style");
 	options .addUsage ("");
-	options .addUsage ("       -e, --expanded");
-	options .addUsage ("              expands nodes, this means all printable fields are printed");
-	options .addUsage ("");
 	options .addUsage ("       -h, --help");
 	options .addUsage ("              prints usage");
 	options .addUsage ("");
@@ -106,9 +103,8 @@ main (int argc, char** argv)
 	options .addUsage ("       This is free software: you are free to change and redistribute it.");
 	options .addUsage ("       There is NO WARRANTY, to the extent permitted by law.");
 
-	options .setFlag ("compact",  'c');
-	options .setFlag ("expanded", 'e');
-	options .setFlag ("help",     'h');
+	options .setFlag ("compact", 'c');
+	options .setFlag ("help",    'h');
 
 	options .setOption ("style", 's');
 
@@ -119,9 +115,6 @@ main (int argc, char** argv)
 		options .printUsage ();
 		return 0;
 	}
-
-	if (options .getFlag ("expanded") or options .getFlag ('e'))
-		X3D::Generator::ExpandNodes (true);
 
 	if (options .getFlag ("compact") or options .getFlag ('c'))
 		X3D::Generator::CompactStyle ();
