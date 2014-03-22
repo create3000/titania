@@ -37,16 +37,18 @@
         <TimeSensor enabled='false'/>
         <Script url='"javascript:&#xA;function initialize ()&#xA;{&#xA;&#x9;// JavaScript Comment&#xA;}&#xA;"' directOutput='true'>
           <field accessType='inputOnly' type='SFBool' name='set_utf8-is-gorgeous-&amp;-nice!-&lt;utf8-ist-älegant-&amp;-schön!>'/>
-          <field accessType='inputOutput' type='SFBool' name='enabled'/>
+          <field accessType='inputOutput' type='SFBool' name='enabled' value='true'/>
           <field accessType='inputOutput' type='SFString' name='test'/>
           <field accessType='inputOutput' type='MFNode' name='children'>
             <MetadataBoolean DEF='Meta'/>
+            <!-- NULL -->
           </field>
           <field accessType='initializeOnly' type='SFNode' name='node'>
             <MetadataBoolean USE='Meta'/>
           </field>
           <IS>
             <connect nodeField='enabled' protoField='isBound'/>
+            <connect nodeField='enabled' protoField='set_bind'/>
             <connect nodeField='test' protoField='test'/>
           </IS>
         </Script>
@@ -58,8 +60,26 @@
       <fieldValue name='cycleInterval' value='10'/>
     </ProtoInstance>
     <ProtoInstance name='Test-utf8-&lt;äöü&amp;>'>
+      <fieldValue name='children'/>
       <fieldValue name='node' value='NULL'/>
     </ProtoInstance>
+    <ProtoInstance name='Test-utf8-&lt;äöü&amp;>'>
+      <fieldValue name='children'>
+        <Group/>
+      </fieldValue>
+      <fieldValue name='node'>
+        <Group/>
+      </fieldValue>
+    </ProtoInstance>
+    <Viewpoint USE='Reference'/>
+    <Viewpoint USE='Reference'/>
+    <Transform>
+      <Viewpoint USE='Reference'/>
+      <Transform/>
+      <Viewpoint USE='Reference'/>
+      <Viewpoint USE='Reference'/>
+      <Transform/>
+    </Transform>
     <Transform DEF='Transform'>
       <Shape>
         <Appearance>

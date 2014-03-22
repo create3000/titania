@@ -356,6 +356,9 @@ jsSFNode::toVRMLString (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
+		Script* const script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+
+		Generator::Version (script -> getExecutionContext () -> getVersion ());
 		Generator::NicestStyle ();
 
 		SFNode* const sfnode = (SFNode*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));
@@ -373,6 +376,14 @@ jsSFNode::toXMLString (JSContext* context, uintN argc, jsval* vp)
 {
 	if (argc == 0)
 	{
+		Script* const script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
+
+		auto version = script -> getExecutionContext () -> getVersion ();
+
+		if (version == VRML_V2_0)
+			version = LATEST_VERSION;
+
+		Generator::Version (version);
 		Generator::NicestStyle ();
 
 		SFNode* const sfnode = (SFNode*) JS_GetPrivate (context, JS_THIS_OBJECT (context, vp));

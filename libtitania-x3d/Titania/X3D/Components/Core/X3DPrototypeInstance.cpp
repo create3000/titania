@@ -367,7 +367,6 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 			<< Generator::IncIndent;
 
 		FieldDefinitionArray references;
-		FieldDefinitionArray childNodes;
 
 		for (const auto & field : fields)
 		{
@@ -396,7 +395,36 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 				{
 					case X3DConstants::MFNode:
 					{
-						childNodes .emplace_back (field);
+						static const MFNode _empty;
+
+						ostream
+							<< Generator::Indent
+							<< "<fieldValue"
+							<< Generator::Space
+							<< "name='"
+							<< XMLEncode (field -> getName ())
+							<< "'";
+						
+						if (*field == _empty)
+						{
+							ostream
+								<< "/>"
+								<< Generator::Break;
+						}
+						else
+						{
+							ostream
+								<< ">"
+								<< Generator::Break
+								<< Generator::IncIndent
+								<< XMLEncode (field)
+								<< Generator::Break
+								<< Generator::DecIndent
+								<< Generator::Indent
+								<< "</fieldValue>"
+								<< Generator::Break;
+						}
+
 						break;
 					}
 					case X3DConstants::SFNode:
@@ -405,7 +433,23 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 
 						if (*field not_eq _null)
 						{
-							childNodes .emplace_back (field);
+							ostream
+								<< Generator::Indent
+								<< "<fieldValue"
+								<< Generator::Space
+								<< "name='"
+								<< XMLEncode (field -> getName ())
+								<< "'"
+								<< ">"
+								<< Generator::Break
+								<< Generator::IncIndent
+								<< XMLEncode (field)
+								<< Generator::Break
+								<< Generator::DecIndent
+								<< Generator::Indent
+								<< "</fieldValue>"
+								<< Generator::Break;
+
 							break;
 						}
 
@@ -470,17 +514,6 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 				<< Generator::Indent
 				<< "</IS>"
 				<< Generator::Break;
-		}
-
-		for (const auto & field : childNodes)
-		{
-			Generator::PushContainerField (field);
-
-			ostream
-				<< XMLEncode (field)
-				<< Generator::Break;
-
-			Generator::PopContainerField ();
 		}
 
 		ostream

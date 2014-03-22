@@ -52,6 +52,7 @@
 
 #include "../Browser/X3DBrowser.h"
 #include "../Components/Core/X3DPrototypeInstance.h"
+#include "../Execution/X3DExecutionContext.h"
 
 #include <iomanip>
 

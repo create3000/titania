@@ -66,10 +66,10 @@ Generator::AccessTypesIndex::AccessTypesIndex ()
 const std::string &
 Generator::AccessTypesIndex::operator [ ] (const X3DFieldDefinition* const fieldDefinition) const
 {
-	if (AccessTypeStyle ())
-		return X3DAccessTypes [fieldDefinition];
+	if (version == VRML_V2_0)
+		return VrmlAccessTypes [fieldDefinition];
 
-	return VrmlAccessTypes [fieldDefinition];
+	return X3DAccessTypes [fieldDefinition];
 }
 
 Generator::X3DAccessTypesIndex::X3DAccessTypesIndex () :
@@ -181,9 +181,9 @@ Generator::NodeTypesIndex::NodeTypesIndex () :
 { }
 
 const std::string &
-Generator::NodeTypesIndex::operator [ ] (const X3DBaseNode* const basicNode) const
+Generator::NodeTypesIndex::operator [ ] (const X3DBaseNode* const baseNode) const
 {
-	return operator [ ] (basicNode -> getNodeType () .back ());
+	return operator [ ] (baseNode -> getNodeType () .back ());
 }
 
 const Generator::AccessTypesIndex     Generator::AccessTypes;
@@ -191,18 +191,19 @@ const Generator::X3DAccessTypesIndex  Generator::X3DAccessTypes;
 const Generator::VrmlAccessTypesIndex Generator::VrmlAccessTypes;
 const Generator::NodeTypesIndex       Generator::NodeTypes;
 
-Generator::StyleType Generator::style           = NICEST;
-bool                 Generator::expandNodes     = false;
-bool                 Generator::accessTypeStyle = true;
+Generator::StyleType Generator::style       = NICEST;
+bool                 Generator::expandNodes = false;
+VersionType          Generator::version     = LATEST_VERSION;
 
-size_t                        Generator::level = 0;
-Generator::NodeSet            Generator::nodes;
-Generator::NameIndex          Generator::names;
-Generator::NameIndexByNode    Generator::namesByNode;
-size_t                        Generator::newName = 0;
-Generator::ImportedNamesIndex Generator::importedNames;
-Generator::FieldStack         Generator::containerFieldStack (1);
-static const std::string      emptyName;
+Generator::ExecutionContextStack Generator::executionContextStack;
+size_t                           Generator::level = 0;
+Generator::NodeSet               Generator::nodes;
+Generator::NameIndex             Generator::names;
+Generator::NameIndexByNode       Generator::namesByNode;
+size_t                           Generator::newName = 0;
+Generator::ImportedNamesIndex    Generator::importedNames;
+Generator::FieldStack            Generator::containerFieldStack (1);
+static const std::string         emptyName;
 
 void
 Generator::Style (const std::string & value)
@@ -336,56 +337,65 @@ Generator::PopContext ()
 }
 
 bool
-Generator::ExistsNode (const X3DBaseNode* const basicNode)
+Generator::IsSharedNode (const X3DBaseNode* const baseNode)
 {
-	return nodes .find (basicNode) not_eq nodes .end ();
+	if (executionContextStack .empty ())
+		return false;
+
+	return executionContextStack .back () not_eq baseNode -> getExecutionContext ();
+}
+
+bool
+Generator::ExistsNode (const X3DBaseNode* const baseNode)
+{
+	return nodes .find (baseNode) not_eq nodes .end ();
 }
 
 void
-Generator::AddNode (const X3DBaseNode* const basicNode)
+Generator::AddNode (const X3DBaseNode* const baseNode)
 {
-	nodes .emplace (basicNode);
+	nodes .emplace (baseNode);
 }
 
 const std::string &
-Generator::GetName (const X3DBaseNode* const basicNode)
+Generator::GetName (const X3DBaseNode* const baseNode)
 {
 	// Is the node already in index
 
-	auto iter = namesByNode .find (basicNode);
+	auto iter = namesByNode .find (baseNode);
 
 	if (iter not_eq namesByNode .end ())
 		return iter -> second;
 
 	// The node has no name
 
-	if (basicNode -> getName () .empty ())
+	if (baseNode -> getName () .empty ())
 	{
-		if (basicNode -> getNumClones () > 1 or basicNode -> hasRoutes ())
+		if (baseNode -> getNumClones () > 1 or baseNode -> hasRoutes ())
 		{
 			std::string name = getUniqueName ();
 
-			names [name]            = basicNode;
-			namesByNode [basicNode] = name;
+			names [name]           = baseNode;
+			namesByNode [baseNode] = name;
 
-			return namesByNode [basicNode];
+			return namesByNode [baseNode];
 		}
 
 		// The node doesn't need a name
 
-		return basicNode -> getName ();
+		return baseNode -> getName ();
 	}
 
 	// The node has a name
 
-	std::string name      = basicNode -> getName ();
+	std::string name      = baseNode -> getName ();
 	bool        hasNumber = RegEx::_LastNumber .PartialMatch (name);
 
 	RegEx::_LastNumber .Replace ("", &name);
 
 	if (name .empty ())
 	{
-		if (basicNode -> getNumClones () > 1 or basicNode -> hasRoutes ())
+		if (baseNode -> getNumClones () > 1 or baseNode -> hasRoutes ())
 			name = getUniqueName ();
 
 		else
@@ -411,10 +421,10 @@ Generator::GetName (const X3DBaseNode* const basicNode)
 		}
 	}
 
-	names [name]            = basicNode;
-	namesByNode [basicNode] = name;
+	names [name]           = baseNode;
+	namesByNode [baseNode] = name;
 
-	return namesByNode [basicNode];
+	return namesByNode [baseNode];
 }
 
 std::string
@@ -466,11 +476,11 @@ Generator::XMLEncodeToStream (std::ostream & ostream, const std::string & string
 	{
 		switch (c)
 		{
-			case '\t':
-			{
-				ostream << "&#x9;";
-				break;
-			}
+			case '\t' :
+				{
+					ostream << "&#x9;";
+					break;
+				}
 			case '\n':
 			{
 				ostream << "&#xA;";

@@ -51,15 +51,13 @@
 #ifndef __TITANIA_X3D_PROTOTYPE_PROTO_ARRAY_H__
 #define __TITANIA_X3D_PROTOTYPE_PROTO_ARRAY_H__
 
-#include "../Fields/SFNode.h"
+#include "../Types/Nodes.h"
 
 #include <Titania/Basic/IndexedMultiMap.h>
 #include <string>
 
 namespace titania {
 namespace X3D {
-
-class Proto;
 
 typedef basic::indexed_multimap <std::string, X3DSFNode <Proto>> ProtoArray;
 

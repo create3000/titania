@@ -64,6 +64,7 @@ namespace X3D {
 
 class X3DFieldDefinition;
 class X3DBaseNode;
+class X3DExecutionContext;
 
 class Generator :
 	public X3DBaseGenerator <char>
@@ -179,13 +180,23 @@ public:
 
 	static
 	void
-	AccessTypeStyle (const bool value)
-	{ accessTypeStyle = value; }
+	Version (const VersionType value)
+	{ version = value; }
 
 	static
-	bool
-	AccessTypeStyle ()
-	{ return accessTypeStyle; }
+	VersionType
+	Version ()
+	{ return version; }
+
+	static
+	void
+	PushExecutionContext (const X3DExecutionContext* const value)
+	{ executionContextStack .emplace_back (value); }
+
+	static
+	void
+	PopExecutionContext ()
+	{ executionContextStack .pop_back (); }
 
 	static
 	void
@@ -194,6 +205,10 @@ public:
 	static
 	void
 	PopContext ();
+
+	bool
+	static
+	IsSharedNode (const X3DBaseNode* const);
 
 	static
 	bool
@@ -248,23 +263,25 @@ private:
 	std::string
 	getUniqueName ();
 
-	typedef std::set <const X3DBaseNode*>              NodeSet;
-	typedef std::map <std::string, const X3DBaseNode*> NameIndex;
-	typedef std::map <const X3DBaseNode*, std::string> NameIndexByNode;
-	typedef std::map <const X3DBaseNode*, std::string> ImportedNamesIndex;
-	typedef std::vector <const X3DFieldDefinition*>    FieldStack;
+	using ExecutionContextStack = std::vector <const X3DExecutionContext*>;
+	using NodeSet               = std::set <const X3DBaseNode*>;
+	using NameIndex             = std::map <std::string, const X3DBaseNode*>;
+	using NameIndexByNode       = std::map <const X3DBaseNode*, std::string>;
+	using ImportedNamesIndex    = std::map <const X3DBaseNode*, std::string>;
+	using FieldStack            = std::vector <const X3DFieldDefinition*>;
 
-	static StyleType style;
-	static bool      expandNodes;
-	static bool      accessTypeStyle;
+	static StyleType   style;
+	static bool        expandNodes;
+	static VersionType version;
 
-	static size_t             level;
-	static NodeSet            nodes;
-	static NameIndex          names;
-	static NameIndexByNode    namesByNode;
-	static size_t             newName;
-	static ImportedNamesIndex importedNames;
-	static FieldStack         containerFieldStack;
+	static ExecutionContextStack executionContextStack;
+	static size_t                level;
+	static NodeSet               nodes;
+	static NameIndex             names;
+	static NameIndexByNode       namesByNode;
+	static size_t                newName;
+	static ImportedNamesIndex    importedNames;
+	static FieldStack            containerFieldStack;
 
 };
 

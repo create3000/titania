@@ -641,6 +641,7 @@
     <None Include="Titania\X3D\Configuration\UnitArray.h" />
     <None Include="Titania\X3D\Components\Grouping\X3DTransformMatrix4DNode.h" />
     <None Include="Titania\X3D\InputOutput\X3DBaseGenerator.h" />
+    <None Include="Titania\X3D\Types\Nodes.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1107,6 +1108,7 @@
     <Compile Include="Titania\X3D\Configuration\UnitArray.cpp" />
     <Compile Include="Titania\X3D\Components\Grouping\X3DTransformMatrix4DNode.cpp" />
     <Compile Include="Titania\X3D\InputOutput\X3DBaseGenerator.cpp" />
+    <Compile Include="Titania\X3D\Types\Nodes.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

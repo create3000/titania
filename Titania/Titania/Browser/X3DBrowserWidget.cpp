@@ -275,13 +275,17 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compressed)
 		{
 			ogzstream file (worldURL .path ());
 
-			file << X3D::XMLEncode (getBrowser () -> getExecutionContext ());
+			file
+				<< X3D::SmallestStyle
+				<< X3D::XMLEncode (getBrowser () -> getExecutionContext ());
 		}
 		else
 		{
 			std::ofstream file (worldURL .path ());
 
-			file << X3D::XMLEncode (getBrowser () -> getExecutionContext ());
+			file
+				<< X3D::CompactStyle
+				<< X3D::XMLEncode (getBrowser () -> getExecutionContext ());
 		}
 	}
 	else
@@ -299,7 +303,7 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compressed)
 			std::ofstream file (worldURL .path ());
 
 			file
-				<< X3D::NicestStyle
+				<< X3D::CompactStyle
 				<< getBrowser () -> getExecutionContext ();
 		}
 	}

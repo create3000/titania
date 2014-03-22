@@ -1,3 +1,27 @@
+2014-03-22  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* libtitania-x3d.cproj:
+	* Nodes.h:
+	* Parser.h:
+	* Nodes.cpp:
+	* Parser.cpp:
+	* X3DMFNode.h:
+	* X3DConstants.h:
+	* Proto.cpp:
+	* X3DScene.h:
+	* X3DBaseNode.cpp:
+	* X3DScene.cpp:
+	* ProtoArray.h:
+	* Generator.h:
+	* ExternProto.cpp:
+	* Generator.cpp:
+	* ExternProtoArray.h:
+	* X3DExecutionContext.h:
+	* X3DExecutionContext.cpp:
+	* X3DPrototypeInstance.cpp:
+	* jsSFNode.cpp: 
+
 2014-03-21  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Proto.cpp:

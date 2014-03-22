@@ -72,7 +72,7 @@ class X3DProto;
 class X3DBrowser;
 class X3DPrototypeInstance;
 
-typedef std::map <std::string, X3DBaseNode*> NamedNodeIndex;
+using NamedNodeIndex = std::map <std::string, X3DBaseNode*>;
 
 class X3DExecutionContext :
 	virtual public X3DNode
@@ -119,7 +119,8 @@ public:
 	{ return encoding; }
 
 	void
-	setSpecificationVersion (const std::string &);
+	setSpecificationVersion (const std::string & value)
+	{ specificationVersion = value; }
 
 	const std::string &
 	getSpecificationVersion () const
@@ -150,8 +151,7 @@ public:
 	VersionType
 	getVersion () const
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
-	{ return version; }
+	       Error <DISPOSED>);
 
 	void
 	setProfile (const ProfileInfoPtr & value)
@@ -493,9 +493,6 @@ private:
 	using ImportedNamesIndex = std::map <X3DBaseNode*, std::string>;
 
 	///  @name Operations
-	
-	VersionType
-	getVersion (const bool) const;
 
 	void
 	eraseNamedNode (const std::string &);
@@ -528,7 +525,6 @@ private:
 	std::string specificationVersion;
 	std::string characterEncoding;
 	std::string comment;
-	VersionType version;
 
 	ProfileInfoPtr      profile;
 	SupportedComponents components;

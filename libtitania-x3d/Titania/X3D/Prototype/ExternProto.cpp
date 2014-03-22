@@ -53,6 +53,7 @@
 #include "../Bits/Error.h"
 #include "../Browser/X3DBrowser.h"
 #include "../Components/Core/X3DPrototypeInstance.h"
+#include "../Execution/Scene.h"
 #include "../InputOutput/Loader.h"
 #include "../Parser/RegEx.h"
 

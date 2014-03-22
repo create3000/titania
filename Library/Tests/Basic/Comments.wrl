@@ -80,12 +80,14 @@ PROTO Test-utf8-<äöü&> [
     inputOutput    SFString test IS test
     # User defined field with value
     inputOutput    MFNode   children [
+      # Node and NULL node
       DEF Meta MetadataBoolean { }
       NULL
     ]
     # User defined field with reference value
     initializeOnly SFNode   node USE Meta
 
+    # Build in field
     url "javascript:
 function initialize ()
 {
@@ -111,8 +113,33 @@ Rotor {
   cycleInterval 10
 }
 
+# These node must stay empty
+Test-utf8-<äöü&> { }
+
+# These field must stay empty
 Test-utf8-<äöü&> {
+  children [ ]
   node NULL
+}
+
+# These fields must have a Group
+Test-utf8-<äöü&> {
+  children Group { }
+  node Group { }
+}
+
+USE Reference
+
+USE Reference
+
+Transform {
+  children [
+    USE Reference
+    Transform { }
+    USE Reference
+    USE Reference
+    Transform { }
+  ]
 }
 
 # Node Comment

@@ -53,12 +53,13 @@
 
 #include "../Execution/ExportedNodeArray.h"
 #include "../Execution/X3DExecutionContext.h"
+
 #include <map>
 
 namespace titania {
 namespace X3D {
 
-typedef std::multimap <std::string, std::string> MetaDataIndex;
+using MetaDataIndex = std::multimap <std::string, std::string>;
 
 class X3DScene :
 	public X3DExecutionContext

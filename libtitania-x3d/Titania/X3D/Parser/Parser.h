@@ -132,7 +132,8 @@ private:
 	getline ();
 
 	std::string
-	rgetline ();
+	rgetline ()
+	throw (std::out_of_range);
 
 	void
 	pushExecutionContext (X3DExecutionContext* const);

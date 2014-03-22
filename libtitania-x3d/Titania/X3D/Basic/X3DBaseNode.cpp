@@ -777,6 +777,12 @@ throw (Error <INVALID_X3D>,
 void
 X3DBaseNode::toStream (std::ostream & ostream) const
 {
+	if (Generator::IsSharedNode (this))
+	{
+		ostream << "NULL";
+		return;
+	}
+
 	Generator::PushContext ();
 
 	const std::string name = Generator::GetName (this);
@@ -949,7 +955,7 @@ X3DBaseNode::toStreamField (std::ostream & ostream, X3DFieldDefinition* const fi
 
 		ostream << Generator::Indent;
 
-		ostream << getFieldName (field -> getName (), executionContext -> getVersion ());
+		ostream << getFieldName (field -> getName (), Generator::Version ());
 
 		ostream
 			<< Generator::Space
@@ -968,7 +974,7 @@ X3DBaseNode::toStreamField (std::ostream & ostream, X3DFieldDefinition* const fi
 
 			ostream << Generator::Indent;
 
-			ostream << getFieldName (field -> getName (), executionContext -> getVersion ());
+			ostream << getFieldName (field -> getName (), Generator::Version ());
 
 			ostream
 				<< Generator::Space
@@ -993,7 +999,7 @@ X3DBaseNode::toStreamField (std::ostream & ostream, X3DFieldDefinition* const fi
 				<< Generator::Break
 				<< Generator::Indent;
 
-			ostream << getFieldName (field -> getName (), executionContext -> getVersion ());
+			ostream << getFieldName (field -> getName (), Generator::Version ());
 
 			ostream
 				<< Generator::Space
@@ -1111,6 +1117,15 @@ X3DBaseNode::toStreamUserDefinedField (std::ostream & ostream, X3DFieldDefinitio
 void
 X3DBaseNode::toXMLStream (std::ostream & ostream) const
 {
+	if (Generator::IsSharedNode (this))
+	{
+		ostream
+			<< Generator::Indent
+			<< "<!-- NULL -->";
+
+		return;
+	}
+
 	Generator::PushContext ();
 
 	const std::string name = Generator::GetName (this);
@@ -1221,7 +1236,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 				{
 					ostream
 						<< Generator::Space
-						<< getFieldName (field -> getName (), executionContext -> getVersion ())
+						<< getFieldName (field -> getName (), Generator::Version ())
 						<< "='"
 						<< XMLEncode (field)
 						<< "'";
@@ -1286,7 +1301,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 				if (mustOutputValue)
 					references .emplace_back (field);
 
-				if (*field == *getBrowser () -> getFieldType (field -> getTypeName ()))
+				if (not field -> isInitializeable () or *field == *getBrowser () -> getFieldType (field -> getTypeName ()))
 				{
 					ostream
 						<< "/>"
@@ -1294,6 +1309,8 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 				}
 				else
 				{
+					// Output value
+
 					switch (field -> getType ())
 					{
 						case X3DConstants::SFNode:

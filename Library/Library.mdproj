@@ -1584,9 +1584,7 @@
     <None Include="Examples\Mushrooms\stage\gras-na-bw.png" />
     <None Include="Examples\Mushrooms\stage\gras-na.png" />
     <None Include="Examples\Mushrooms\stage\gras.png" />
-    <None Include="Examples\Mushrooms\stage\grassT.wrl" />
     <None Include="Examples\Mushrooms\stage\himmelszelt__2.png" />
-    <None Include="Examples\Mushrooms\stage\hupfpilz.T.wrl" />
     <None Include="Examples\Mushrooms\stage\hupfpilz.wrl" />
     <None Include="Examples\Mushrooms\stage\index.wrl" />
     <None Include="Examples\Mushrooms\stage\matches.png" />
@@ -1598,7 +1596,6 @@
     <None Include="Examples\Mushrooms\stage\pilzfenster.png" />
     <None Include="Examples\Mushrooms\stage\pilzhaus.png" />
     <None Include="Examples\Mushrooms\stage\pilzhaus.wrl" />
-    <None Include="Examples\Mushrooms\stage\pilzhausT.wrl" />
     <None Include="Examples\Mushrooms\stage\pilzhaus_RemapRamp1.png" />
     <None Include="Examples\Mushrooms\stage\pilzshadow.png" />
     <None Include="Examples\Mushrooms\stage\pilzstiel.png" />
@@ -1612,7 +1609,6 @@
     <None Include="Examples\Mushrooms\preview.gif" />
     <None Include="Examples\Mushrooms\index.wrl" />
     <None Include="Examples\Mushrooms\stage\BodenT.wrl" />
-    <None Include="Examples\Mushrooms\stage\plantT.wrl" />
     <None Include="Examples\NIST-Logo\stage\nistlogo.wrl" />
     <None Include="Examples\NIST-Logo\index.wrl" />
     <None Include="Examples\Primacom\stage\aussenkachel1.jpg" />

@@ -84,6 +84,24 @@ operator << (std::ostream & ostream, const VersionType version)
 	return ostream << versions .find (version) -> second;
 }
 
+inline
+std::string
+XMLEncode (const VersionType version)
+{
+	switch (version)
+	{
+		case X3D_V3_0:
+			return "3.0";
+		case X3D_V3_1:
+			return "3.1";
+		case X3D_V3_2:
+			return "3.2";
+		case X3D_V3_3:
+		default:
+			return "3.3";
+	}
+}
+
 // Official Constants
 
 namespace X3DConstants {

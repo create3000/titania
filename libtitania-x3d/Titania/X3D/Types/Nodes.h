@@ -48,23 +48,31 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PROTOTYPE_EXTERN_PROTO_ARRAY_H__
-#define __TITANIA_X3D_PROTOTYPE_EXTERN_PROTO_ARRAY_H__
+#ifndef __TITANIA_X3D_TYPES_NODES_H__
+#define __TITANIA_X3D_TYPES_NODES_H__
 
-#include "../Types/Nodes.h"
-
-#include <Titania/Basic/IndexedMultiMap.h>
-#include <string>
+#include "../Fields/X3DSFNode.h"
 
 namespace titania {
 namespace X3D {
 
-typedef basic::indexed_multimap <std::string, X3DSFNode <ExternProto>> ExternProtoArray;
+class Scene;
+class Proto;
+class ExternProto;
+class ImportedNode;
+class Route;
+class ExportedNode;
+class Inline;
+
+extern template class X3DSFNode <Scene>;
+extern template class X3DSFNode <Proto>;
+extern template class X3DSFNode <ExternProto>;
+extern template class X3DSFNode <ImportedNode>;
+extern template class X3DSFNode <Route>;
+extern template class X3DSFNode <ExportedNode>;
+extern template class X3DSFNode <Inline>;
 
 } // X3D
-
-extern template class basic::indexed_multimap <std::string, X3D::X3DSFNode <X3D::ExternProto>>;
-
 } // titania
 
 #endif

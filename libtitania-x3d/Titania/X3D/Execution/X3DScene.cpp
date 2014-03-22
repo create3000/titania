@@ -239,7 +239,7 @@ X3DScene::toStream (std::ostream & ostream) const
 {
 	const auto version = getVersion ();
 
-	Generator::AccessTypeStyle (getEncoding () == "X3D");
+	Generator::Version (version);
 
 	ostream
 		<< '#'
@@ -377,26 +377,14 @@ X3DScene::toStream (std::ostream & ostream) const
 void
 X3DScene::toXMLStream (std::ostream & ostream) const
 {
-	const auto version = getVersion ();
+	auto version = getVersion ();
+	
+	if (version == VRML_V2_0)
+		version = LATEST_VERSION;
 
-	std::string versionString;
+	std::string versionString = XMLEncode (version);
 
-	switch (version)
-	{
-		case X3D_V3_0:
-			versionString = "3.0";
-			break;
-		case X3D_V3_1:
-			versionString = "3.1";
-			break;
-		case X3D_V3_2:
-			versionString = "3.2";
-			break;
-		case X3D_V3_3:
-		default:
-			versionString = "3.3";
-			break;
-	}
+	Generator::Version (version);
 
 	ostream
 		<< "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"

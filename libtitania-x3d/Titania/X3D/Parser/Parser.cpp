@@ -123,36 +123,57 @@ Parser::getMessageFromError (const X3DError & error)
 
 	istream .clear ();
 
-	size_t lineNumber = std::count (whitespaces .begin (), whitespaces .end (), '\n') + 1;
+	size_t      lineNumber = std::count (whitespaces .begin (), whitespaces .end (), '\n') + 1;
+	std::string string     = error .what ();
 
-	std::string rest    = getline ();
-	std::string line    = rgetline ();
-	std::string preLine = rgetline ();
-	size_t      linePos = line .size () - rest .size ();
-	std::string string  = error .what ();
-
-	filter_control_characters (line);
-	filter_control_characters (preLine);
 	filter_control_characters (string);
-
-	filter_bad_utf8_characters (line);
-	filter_bad_utf8_characters (preLine);
 	filter_bad_utf8_characters (string);
-
-	// Format error
 
 	std::ostringstream stringstream;
 
-	stringstream
-		<< std::string (80, '*') << std::endl
-		<< "Parser error at line " << lineNumber << ':' << linePos + 1 << std::endl
-		<< "in '" << scene -> getWorldURL () << '\'' << std::endl
-		<< std::endl
-		<< preLine << std::endl
-		<< line << std::endl
-		<< std::string (linePos, ' ') << '^' << std::endl
-		<< string << std::endl
-		<< std::string (80, '*');
+	try
+	{
+		std::string rest    = getline ();
+		std::string line    = rgetline ();
+		std::string preLine = rgetline ();
+		size_t      linePos = line .size () - rest .size ();
+
+		filter_control_characters (line);
+		filter_control_characters (preLine);
+
+		filter_bad_utf8_characters (line);
+		filter_bad_utf8_characters (preLine);
+
+		if (line .size () > 80)
+		{
+			line    = line .substr (line .size () - 80, 80);
+			preLine = std::string ();
+			linePos = 80;
+		}
+
+		// Format error
+
+		stringstream
+			<< std::string (80, '*') << std::endl
+			<< "Parser error at line " << lineNumber << ':' << linePos + 1 << std::endl
+			<< "in '" << scene -> getWorldURL () << '\'' << std::endl
+			<< std::endl
+			<< preLine << std::endl
+			<< line << std::endl
+			<< std::string (linePos, ' ') << '^' << std::endl
+			<< string << std::endl
+			<< std::string (80, '*');
+	}
+	catch (...)
+	{
+		stringstream
+			<< std::string (80, '*') << std::endl
+			<< "Parser error at line " << lineNumber << std::endl
+			<< "in '" << scene -> getWorldURL () << '\'' << std::endl
+			<< std::endl
+			<< string << std::endl
+			<< std::string (80, '*');
+	}
 
 	return stringstream .str ();
 }
@@ -190,6 +211,7 @@ Parser::getline ()
 
 std::string
 Parser::rgetline ()
+throw (std::out_of_range)
 {
 	//__LOG__ << this << " " << std::endl;
 
@@ -210,7 +232,7 @@ Parser::rgetline ()
 				string .push_back (c);
 		}
 		else
-			break;
+			throw std::out_of_range ("rgetline");
 	}
 
 	istream .clear ();

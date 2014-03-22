@@ -267,7 +267,7 @@ X3DMFNode <ValueType>::toStream (std::ostream & ostream) const
 				ostream
 					<< Generator::Indent
 					<< field
-					<< Generator::TidyBreak;
+					<< Generator::Break;
 			}
 
 			ostream
@@ -291,6 +291,8 @@ X3DMFNode <ValueType>::toXMLStream (std::ostream & ostream) const
 {
 	if (not empty ())
 	{
+		Generator::PushContext ();
+
 		for (const auto & value : basic::adapter (cbegin (), cend () - 1))
 		{
 			if (value)
@@ -317,6 +319,8 @@ X3DMFNode <ValueType>::toXMLStream (std::ostream & ostream) const
 				<< Generator::Indent
 				<< "<!-- NULL -->";
 		}	
+
+		Generator::PopContext ();
 	}
 }
 

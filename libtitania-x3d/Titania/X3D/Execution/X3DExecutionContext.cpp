@@ -79,6 +79,7 @@ const UnitArray X3DExecutionContext::standardUnits = {
 	Unit ("force",  "newton",   1),
 	Unit ("length", "metre",    1),
 	Unit ("mass",   "kilogram", 1)
+
 };
 
 X3DExecutionContext::X3DExecutionContext () :
@@ -88,7 +89,6 @@ X3DExecutionContext::X3DExecutionContext () :
 	specificationVersion ("3.3"),
 	   characterEncoding ("utf8"),
 	             comment ("Titania"),
-	             version (LATEST_VERSION),
 	             profile (),
 	          components (),
 	               units (standardUnits),
@@ -127,15 +127,10 @@ X3DExecutionContext::initialize ()
 	//__LOG__ << "Initialize done: " << getWorldURL () << std::endl;
 }
 
-void
-X3DExecutionContext::setSpecificationVersion (const std::string & value)
-{
-	specificationVersion = value;
-	version              = getVersion (true);
-}
-
 VersionType
-X3DExecutionContext::getVersion (const bool) const
+X3DExecutionContext::getVersion () const
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
 {
 	static const std::map <std::string, VersionType> versions = {
 		std::make_pair ("2.0", VRML_V2_0),
@@ -958,6 +953,7 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 void
 X3DExecutionContext::toXMLStream (std::ostream & ostream) const
 {
+	Generator::PushExecutionContext (this);
 	Generator::PushContext ();
 
 	for (const auto & externProto : getExternProtoDeclarations ())
@@ -973,7 +969,7 @@ X3DExecutionContext::toXMLStream (std::ostream & ostream) const
 			<< XMLEncode (proto)
 			<< Generator::Break;
 	}
-	
+
 	if (not getRootNodes () .empty ())
 	{
 		ostream
@@ -986,7 +982,7 @@ X3DExecutionContext::toXMLStream (std::ostream & ostream) const
 		try
 		{
 			ostream
-				<<	XMLEncode (importedNode)
+				<< XMLEncode (importedNode)
 				<< Generator::Break;
 		}
 		catch (const X3DError &)
@@ -998,7 +994,7 @@ X3DExecutionContext::toXMLStream (std::ostream & ostream) const
 		try
 		{
 			ostream
-				<<	XMLEncode (route)
+				<< XMLEncode (route)
 				<< Generator::Break;
 		}
 		catch (const X3DError &)
@@ -1006,6 +1002,7 @@ X3DExecutionContext::toXMLStream (std::ostream & ostream) const
 	}
 
 	Generator::PopContext ();
+	Generator::PopExecutionContext ();
 }
 
 void
