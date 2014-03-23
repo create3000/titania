@@ -143,7 +143,7 @@ private:
 	get_node_name () const;
 
 	std::string
-	get_field_value () const;
+	get_field_value (const bool) const;
 
 	bool
 	is_array () const;

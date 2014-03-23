@@ -83,6 +83,8 @@ static constexpr double ROUTE_INPUT_PAD   = 14;
 static constexpr double ROUTE_Y_PAD       = 3.5; // Depends on image
 static constexpr double RIGHT_PAD         = 8;
 
+static constexpr int VALUES_MAX = 64;
+
 OutlineCellRenderer::OutlineCellRenderer (X3D::X3DBrowser* const browser, X3DOutlineTreeView* const treeView) :
 	             Glib::ObjectBase (typeid (OutlineCellRenderer)),
 	        Gtk::CellRendererText (),
@@ -193,7 +195,7 @@ OutlineCellRenderer::on_data ()
 		case OutlineIterType::X3DFieldValue:
 		{
 			property_editable () = true;
-			property_text ()     = get_field_value ();
+			property_text ()     = get_field_value (false);
 			set_alignment (0, 0);
 			break;
 		}
@@ -335,26 +337,36 @@ OutlineCellRenderer::get_node_name () const
 template <class Type>
 static
 std::string
-array_to_string (const Type & array)
+array_to_string (const Type & array, const bool full)
 {
 	std::ostringstream stream;
 
 	if (array .empty ())
 		return stream .str ();
 
-	for (const auto & value : basic::adapter (array .begin (), array .end () - 1))
+	const size_t lines = full ? array .size () : std::min <size_t> (VALUES_MAX, array .size ());
+
+	for (const auto & value : basic::adapter (array .begin (), array .begin () + lines - 1))
 	{
-		value .toStream (stream);
-		stream << std::endl;
+		stream
+			<< value
+			<< X3D::Generator::ForceBreak;
 	}
 
-	array .back () .toStream (stream);
+	stream << array [lines - 1];
+	
+	if (lines < array .size ())
+	{
+		stream
+			<< X3D::Generator::ForceBreak
+			<< "...";
+	}
 
 	return stream .str ();
 }
 
 std::string
-OutlineCellRenderer::get_field_value () const
+OutlineCellRenderer::get_field_value (const bool full) const
 {
 	const auto field = static_cast <X3D::X3DFieldDefinition*> (get_object ());
 
@@ -365,68 +377,71 @@ OutlineCellRenderer::get_field_value () const
 		case X3D::X3DConstants::SFNode:
 			return "";
 
+		case X3D::X3DConstants::SFString:
+			return static_cast <X3D::SFString*> (field) -> getValue ();
+
 		case X3D::X3DConstants::MFBool:
-			return array_to_string (*static_cast <X3D::MFBool*> (field));
+			return array_to_string (*static_cast <X3D::MFBool*> (field), full);
 
 		case X3D::X3DConstants::MFColor:
-			return array_to_string (*static_cast <X3D::MFColor*> (field));
+			return array_to_string (*static_cast <X3D::MFColor*> (field), full);
 
 		case X3D::X3DConstants::MFColorRGBA:
-			return array_to_string (*static_cast <X3D::MFColorRGBA*> (field));
+			return array_to_string (*static_cast <X3D::MFColorRGBA*> (field), full);
 
 		case X3D::X3DConstants::MFDouble:
-			return array_to_string (*static_cast <X3D::MFDouble*> (field));
+			return array_to_string (*static_cast <X3D::MFDouble*> (field), full);
 
 		case X3D::X3DConstants::MFFloat:
-			return array_to_string (*static_cast <X3D::MFFloat*> (field));
+			return array_to_string (*static_cast <X3D::MFFloat*> (field), full);
 
 		case X3D::X3DConstants::MFImage:
-			return array_to_string (*static_cast <X3D::MFImage*> (field));
+			return array_to_string (*static_cast <X3D::MFImage*> (field), full);
 
 		case X3D::X3DConstants::MFInt32:
-			return array_to_string (*static_cast <X3D::MFInt32*> (field));
+			return array_to_string (*static_cast <X3D::MFInt32*> (field), full);
 
 		case X3D::X3DConstants::MFMatrix3d:
-			return array_to_string (*static_cast <X3D::MFMatrix3d*> (field));
+			return array_to_string (*static_cast <X3D::MFMatrix3d*> (field), full);
 
 		case X3D::X3DConstants::MFMatrix3f:
-			return array_to_string (*static_cast <X3D::MFMatrix3f*> (field));
+			return array_to_string (*static_cast <X3D::MFMatrix3f*> (field), full);
 
 		case X3D::X3DConstants::MFMatrix4d:
-			return array_to_string (*static_cast <X3D::MFMatrix4d*> (field));
+			return array_to_string (*static_cast <X3D::MFMatrix4d*> (field), full);
 
 		case X3D::X3DConstants::MFMatrix4f:
-			return array_to_string (*static_cast <X3D::MFMatrix4f*> (field));
+			return array_to_string (*static_cast <X3D::MFMatrix4f*> (field), full);
 
 		case X3D::X3DConstants::MFNode:
 			return "";
 
 		case X3D::X3DConstants::MFRotation:
-			return array_to_string (*static_cast <X3D::MFRotation*> (field));
+			return array_to_string (*static_cast <X3D::MFRotation*> (field), full);
 
 		case X3D::X3DConstants::MFString:
-			return array_to_string (*static_cast <X3D::MFString*> (field));
+			return array_to_string (*static_cast <X3D::MFString*> (field), full);
 
 		case X3D::X3DConstants::MFTime:
-			return array_to_string (*static_cast <X3D::MFTime*> (field));
+			return array_to_string (*static_cast <X3D::MFTime*> (field), full);
 
 		case X3D::X3DConstants::MFVec2d:
-			return array_to_string (*static_cast <X3D::MFVec2d*> (field));
+			return array_to_string (*static_cast <X3D::MFVec2d*> (field), full);
 
 		case X3D::X3DConstants::MFVec2f:
-			return array_to_string (*static_cast <X3D::MFVec2f*> (field));
+			return array_to_string (*static_cast <X3D::MFVec2f*> (field), full);
 
 		case X3D::X3DConstants::MFVec3d:
-			return array_to_string (*static_cast <X3D::MFVec3d*> (field));
+			return array_to_string (*static_cast <X3D::MFVec3d*> (field), full);
 
 		case X3D::X3DConstants::MFVec3f:
-			return array_to_string (*static_cast <X3D::MFVec3f*> (field));
+			return array_to_string (*static_cast <X3D::MFVec3f*> (field), full);
 
 		case X3D::X3DConstants::MFVec4d:
-			return array_to_string (*static_cast <X3D::MFVec4d*> (field));
+			return array_to_string (*static_cast <X3D::MFVec4d*> (field), full);
 
 		case X3D::X3DConstants::MFVec4f:
-			return array_to_string (*static_cast <X3D::MFVec4f*> (field));
+			return array_to_string (*static_cast <X3D::MFVec4f*> (field), full);
 
 		default:
 			return field -> toString ();
@@ -677,7 +692,7 @@ OutlineCellRenderer::start_editing_vfunc (GdkEvent* event,
 			const auto field = static_cast <X3D::X3DFieldDefinition*> (get_object ());
 
 			textview .reset (new TextViewEditable (property_data (), path, field -> isArray () or dynamic_cast <X3D::SFString*> (field)));
-			textview -> set_text (property_text ());
+			textview -> set_text (get_field_value (true));
 			textview -> set_margin_left (x_pad);
 			textview -> set_margin_top (property_ypad ());
 			textview -> set_margin_bottom (property_ypad ());
@@ -745,17 +760,39 @@ OutlineCellRenderer::set_field_value (X3D::X3DChildObject* const object, const s
 bool
 OutlineCellRenderer::set_field_value (X3D::X3DFieldDefinition* const field, const std::string & string, const X3D::SFNode & node)
 {
-	const std::string value = field -> toString ();
-
-	if (field -> fromString (string))
+	if (field -> getType () == X3D::X3DConstants::SFString)
 	{
-		if (field -> toString () not_eq value)
+		const auto        sfstring     = static_cast <X3D::SFString*> (field);
+		const std::string currentValue = sfstring -> getValue ();
+
+		sfstring -> setValue (string);
+
+		if (string not_eq currentValue)
 		{
 			const auto undoStep = std::make_shared <UndoStep> (_ ("Edit Field Value"));
 
 			undoStep -> addVariables (node);
 
-			undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DFieldDefinition::fromString), field, value);
+			undoStep -> addUndoFunction (std::mem_fn (&X3D::SFString::setValue), sfstring, currentValue);
+			undoStep -> addRedoFunction (std::mem_fn (&X3D::SFString::setValue), sfstring, string);
+
+			treeView -> getBrowserWindow () -> addUndoStep (undoStep);
+		}
+
+		return true;
+	}
+
+	const std::string currentValue = field -> toString ();
+
+	if (field -> fromString (string))
+	{
+		if (field -> toString () not_eq currentValue)
+		{
+			const auto undoStep = std::make_shared <UndoStep> (_ ("Edit Field Value"));
+
+			undoStep -> addVariables (node);
+
+			undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DFieldDefinition::fromString), field, currentValue);
 			undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DFieldDefinition::fromString), field, string);
 
 			treeView -> getBrowserWindow () -> addUndoStep (undoStep);

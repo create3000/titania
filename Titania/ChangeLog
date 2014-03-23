@@ -1,3 +1,9 @@
+2014-03-23  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* ViewpointList.ui:
+	* OutlineCellRenderer.h:
+	* OutlineCellRenderer.cpp: 
+
 2014-03-22  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* TextViewEditable.h:
