@@ -1,0 +1,229 @@
+#VRML V2.0 utf8
+
+META "title" "Particle"
+
+EXTERNPROTO Grid [
+  exposedField SFInt32 xDimension
+  exposedField SFFloat xSpacing
+  exposedField SFInt32 zDimension
+  exposedField SFFloat zSpacing
+  exposedField SFColor color
+  exposedField SFFloat transparency
+  field        SFBool  solid
+]
+"Grid.wrl"
+
+EXTERNPROTO ParticleGroup [
+  exposedField MFNode children
+]
+"ParticleGroup.wrl"
+
+EXTERNPROTO Particle [
+  exposedField SFBool     enabled
+  exposedField SFDouble   maximumSpeed
+  exposedField SFDouble   mass
+  exposedField SFVec3f    acceleration
+  exposedField SFVec3f    velocity
+  exposedField SFVec3f    translation
+  exposedField SFRotation rotation
+  exposedField SFTime     startTime
+  exposedField SFTime     stopTime
+  eventOut     SFBool     isActive
+  exposedField MFNode     friends
+  eventIn      MFNode     addChildren
+  eventIn      MFNode     removeChildren
+  exposedField MFNode     children
+]
+"Particle.wrl"
+
+EXTERNPROTO ParticleShape [
+  exposedField SFColor color
+]
+"ParticleShape.wrl"
+
+EXTERNPROTO LineTrail [
+  exposedField SFVec3f point
+  field        SFInt32 dimension
+]
+"LineTrail.wrl"
+
+EXTERNPROTO MFNode [
+  exposedField MFNode keyValue
+  exposedField SFTime triggerTime
+  eventOut     MFNode value_changed
+]
+"MFNode.wrl"
+
+DEF _1 LayerSet {
+  activeLayer 1
+  order [ 2, 1 ]
+  layers [
+    Layer {
+      isPickable FALSE
+      children DEF _4 Collision {
+        collide FALSE
+        children [
+          Background {
+            skyColor 0.2 0.2 0.2
+            transparency 0.5
+          }
+          Viewpoint {
+            description "Pespective"
+            position 5.25938 11.9066 14.585
+            orientation -0.888734 0.442501 0.119768 0.734172
+          }
+          Viewpoint {
+            description "Top"
+            position 0 20 0
+            orientation -1 -0 -0 1.5708
+          }
+          Grid {
+            solid FALSE
+          }
+          DEF ParticleGroup ParticleGroup {
+            children [
+              DEF Particle1 Particle {
+                mass 20000000000
+                acceleration 0.0194337 -0.0103067 0
+                velocity -0.140869 -0.253399 0
+                translation -3.44084 1.82486 0
+                rotation 0.874024 -0.485884 0 1.5708
+                friends DEF Particle2 Particle {
+                  mass 20000000000
+                  acceleration -0.0194337 0.0103067 0
+                  velocity 0.140869 0.253399 0
+                  translation 3.44084 -1.82486 0
+                  rotation -0.874024 0.485884 0 1.5708
+                  friends USE Particle1
+                  children ParticleShape {
+                    color 0.8 0 0.8
+                  }
+                }
+                children ParticleShape {
+                  color 0 0.8 0.8
+                }
+              }
+              USE Particle2
+            ]
+          }
+          Shape {
+            appearance Appearance {
+              material Material {
+                emissiveColor 0 0.8 0.8
+              }
+            }
+            geometry DEF LineTrail1 LineTrail {
+              point -3.44084 1.82486 0
+            }
+          }
+          Shape {
+            appearance Appearance {
+              material Material {
+                emissiveColor 0.8 0 0.8
+              }
+            }
+            geometry DEF LineTrail2 LineTrail {
+              point 3.44084 -1.82486 0
+            }
+          }
+        ]
+      }
+    }
+    Layer {
+      children DEF _0 Collision {
+        collide FALSE
+        children [
+          OrthoViewpoint { }
+          Transform {
+            translation 0.8 -0.9 0
+            scale 0.1 0.1 0.1
+            children [
+              DEF Touch0 TouchSensor { }
+              Shape {
+                appearance Appearance {
+                  material Material {
+                    diffuseColor 0 0 0
+                  }
+                }
+                geometry Rectangle2D {
+                  size 1 1
+                }
+              }
+              DEF ParticleContainer0 MFNode {
+                triggerTime 1374177937.74797
+              }
+            ]
+          }
+          Transform {
+            translation 1 -0.9 0
+            scale 0.1 0.1 0.1
+            children [
+              DEF Touch2 TouchSensor { }
+              Shape {
+                appearance Appearance {
+                  material Material { }
+                }
+                geometry Rectangle2D {
+                  size 1 1
+                }
+              }
+              DEF ParticleContainer2 MFNode {
+                keyValue [
+                  USE Particle1
+                  USE Particle2
+                ]
+                triggerTime 1374177939.38379
+              }
+            ]
+          }
+          Transform {
+            translation 1.2 -0.9 0
+            scale 0.1 0.1 0.1
+            children [
+              DEF Touch3 TouchSensor { }
+              Shape {
+                appearance Appearance {
+                  material Material { }
+                }
+                geometry Rectangle2D {
+                  size 1 1
+                }
+              }
+              DEF ParticleContainer3 MFNode {
+                keyValue [
+                  USE Particle1
+                  USE Particle2
+                  DEF Particle3 Particle {
+                    mass 2000000000
+                    rotation 0 1 0 3.14159
+                    children ParticleShape {
+                      color 0.8 0.8 0
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
+
+ROUTE Particle1.translation_changed TO LineTrail1.set_point
+ROUTE Particle2.translation_changed TO LineTrail2.set_point
+
+# 0 Particles
+
+ROUTE Touch0.touchTime TO ParticleContainer0.set_triggerTime
+ROUTE ParticleContainer0.value_changed TO ParticleGroup.set_children
+
+# 2 Particles
+
+ROUTE Touch2.touchTime TO ParticleContainer2.set_triggerTime
+ROUTE ParticleContainer2.value_changed TO ParticleGroup.set_children
+
+# 3 Particles
+
+ROUTE Touch3.touchTime TO ParticleContainer3.set_triggerTime
+ROUTE ParticleContainer3.value_changed TO ParticleGroup.set_children

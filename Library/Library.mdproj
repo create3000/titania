@@ -291,12 +291,9 @@
     <None Include="Models\Vehicles\spacestation.wrl" />
     <None Include="Models\Vehicles\x29.wrl" />
     <None Include="Models\Vehicles\tie.wrl" />
-    <None Include="Tests\PROTO\GoldenSphereAnimation.wrl" />
     <None Include="Tests\PROTO\Inline.wrl" />
     <None Include="Tests\PROTO\Simple.wrl" />
     <None Include="Tests\PROTO\Fields.wrl" />
-    <None Include="Tests\PROTO\GoldenSpheresProto.wrl" />
-    <None Include="Tests\PROTO\GoldenSphere.wrl" />
     <None Include="Tests\Layering\Simple.wrl" />
     <None Include="Tests\PROTO\Rotor.wrl" />
     <None Include="Tests\Navigation\Viewpoint.wrl" />
@@ -2422,6 +2419,14 @@
     <None Include="Tests\Basic\EmptyWorld.wrl" />
     <None Include="Tests\Basic\Components.wrl" />
     <None Include="Tests\Basic\Clone.wrl" />
+    <None Include="Tests\PROTO\GoldenSphere.x3dv" />
+    <None Include="Tests\PROTO\GoldenSphereAnimation.x3dv" />
+    <None Include="Tests\PROTO\GoldenSpheresProto.x3dv" />
+    <None Include="Tests\PROTO\GoldenSphere.wrl" />
+    <None Include="Tests\PROTO\GoldenSphereAnimation.wrl" />
+    <None Include="Tests\PROTO\GoldenSpheresProto.wrl" />
+    <None Include="Tests\PROTO\proto2.wrl" />
+    <None Include="Tests\PROTO\Particle\index.T.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

@@ -1,6 +1,16 @@
 2014-03-23  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Library.mdproj:
+	* Comments.wrl:
+	* GoldenSphere.x3dv:
+	* index.T.wrl:
+	* GoldenSpheresProto.wrl:
+	* GoldenSpheresProto.x3dv:
+	* GoldenSphereAnimation.x3dv: 
+
+2014-03-23  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Library.mdproj:
 	* X3D.x3d:
 	* Comment.x3d:
 	* Comments.wrl:

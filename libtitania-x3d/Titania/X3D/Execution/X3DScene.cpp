@@ -284,9 +284,6 @@ X3DScene::toStream (std::ostream & ostream) const
 
 	if (getProfile ())
 	{
-		if (version == VRML_V2_0)
-			ostream << "# ";
-	
 		ostream
 			<< *getProfile ()
 			<< Generator::Break
@@ -297,9 +294,6 @@ X3DScene::toStream (std::ostream & ostream) const
 	{
 		for (const auto & component : getComponents ())
 		{
-			if (version == VRML_V2_0)
-				ostream << "# ";
-
 			ostream
 				<< *component
 				<< Generator::Break;
@@ -317,9 +311,6 @@ X3DScene::toStream (std::ostream & ostream) const
 			{
 				empty = false;
 			
-				if (version == VRML_V2_0)
-					ostream << "# ";
-	
 				ostream
 					<< unit
 					<< Generator::Break;
@@ -334,9 +325,6 @@ X3DScene::toStream (std::ostream & ostream) const
 	{
 		for (const auto & metaData : getMetaDatas ())
 		{
-			if (version == VRML_V2_0)
-				ostream << "# ";
-	
 			ostream
 				<< "META"
 				<< Generator::Space
