@@ -136,27 +136,27 @@ protected:
 
 	void
 	set_frontTexture (X3DTextureNode* const value)
-	{ frontTexture = value; }
+	{ frontTexture .set (value); }
 
 	void
 	set_backTexture (X3DTextureNode* const value)
-	{ backTexture = value; }
+	{ backTexture .set (value); }
 
 	void
 	set_leftTexture (X3DTextureNode* const value)
-	{ leftTexture = value; }
+	{ leftTexture .set (value); }
 
 	void
 	set_rightTexture (X3DTextureNode* const value)
-	{ rightTexture = value; }
+	{ rightTexture .set (value); }
 
 	void
 	set_topTexture (X3DTextureNode* const value)
-	{ topTexture = value; }
+	{ topTexture .set (value); }
 
 	void
 	set_bottomTexture (X3DTextureNode* const value)
-	{ bottomTexture = value; }
+	{ bottomTexture .set (value); }
 
 
 private:
@@ -210,12 +210,12 @@ private:
 	std::vector <Vector3f> glPoints;
 	GLsizei                numIndices;
 
-	X3DTextureNode* frontTexture;
-	X3DTextureNode* backTexture;
-	X3DTextureNode* leftTexture;
-	X3DTextureNode* rightTexture;
-	X3DTextureNode* topTexture;
-	X3DTextureNode* bottomTexture;
+	X3DSFNode <X3DTextureNode> frontTexture;
+	X3DSFNode <X3DTextureNode> backTexture;
+	X3DSFNode <X3DTextureNode> leftTexture;
+	X3DSFNode <X3DTextureNode> rightTexture;
+	X3DSFNode <X3DTextureNode> topTexture;
+	X3DSFNode <X3DTextureNode> bottomTexture;
 
 };
 

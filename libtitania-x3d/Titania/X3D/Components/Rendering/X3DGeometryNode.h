@@ -253,7 +253,7 @@ private:
 	std::vector <X3DVertexAttributeNode*> attribNodes;
 	std::vector <GLuint>                  attribBuffers;
 	std::vector <Color4f>                 colors;
-	X3DTextureCoordinateNode*             texCoordNode;
+	X3DSFNode <X3DTextureCoordinateNode>  texCoordNode;
 	TexCoordArray                         texCoords;
 	std::vector <Vector3f>                normals;
 	std::vector <Vector3f>                vertices;

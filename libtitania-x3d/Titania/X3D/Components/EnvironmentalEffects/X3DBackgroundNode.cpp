@@ -81,14 +81,21 @@ X3DBackgroundNode::Fields::Fields () :
 X3DBackgroundNode::X3DBackgroundNode () :
 	X3DBindableNode (),
 	         fields (),
-	   frontTexture (nullptr),
-	    backTexture (nullptr),
-	    leftTexture (nullptr),
-	   rightTexture (nullptr),
-	     topTexture (nullptr),
-	  bottomTexture (nullptr)
+	   frontTexture (),
+	    backTexture (),
+	    leftTexture (),
+	   rightTexture (),
+	     topTexture (),
+	  bottomTexture ()
 {
 	addNodeType (X3DConstants::X3DBackgroundNode);
+
+	addChildren (frontTexture,
+	             backTexture,
+	             leftTexture,
+	             rightTexture,
+	             topTexture,
+	             bottomTexture);
 }
 
 void

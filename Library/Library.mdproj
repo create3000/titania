@@ -2427,6 +2427,7 @@
     <None Include="Tests\PROTO\GoldenSpheresProto.wrl" />
     <None Include="Tests\PROTO\proto2.wrl" />
     <None Include="Tests\PROTO\Particle\index.T.wrl" />
+    <None Include="Tests\Geometry3D\QuadSphereTransparent.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

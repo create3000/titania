@@ -150,11 +150,6 @@ public:
 
 private:
 
-	virtual
-	void
-	addUninitializedNode (X3DBaseNode* const node) final override
-	{ }
-
 	///  @name Input/Output
 
 	void

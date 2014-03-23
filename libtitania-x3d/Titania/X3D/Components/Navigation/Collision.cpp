@@ -71,7 +71,7 @@ Collision::Collision (X3DExecutionContext* const executionContext) :
 	X3DGroupingNode (),
 	  X3DSensorNode (),
 	         fields (),
-	         _proxy (NULL)
+	      proxyNode ()
 {
 	addField (inputOutput,    "metadata",       metadata ());
 	addField (inputOutput,    "enabled",        enabled ());
@@ -85,6 +85,8 @@ Collision::Collision (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "children",       children ());
 
 	addField (VRML_V2_0, "collide", "enabled");
+	
+	addChildren (proxyNode);
 }
 
 X3DBaseNode*
@@ -118,7 +120,7 @@ Collision::set_active (bool value)
 void
 Collision::set_proxy ()
 {
-	_proxy = x3d_cast <X3DChildNode*> (proxy ());
+	proxyNode .set (x3d_cast <X3DChildNode*> (proxy ()));
 }
 
 void
@@ -131,8 +133,8 @@ Collision::traverse (const TraverseType type)
 		{
 			if (enabled ())
 			{
-				if (_proxy)
-					_proxy -> traverse (type);
+				if (proxyNode)
+					proxyNode -> traverse (type);
 
 				else
 				{

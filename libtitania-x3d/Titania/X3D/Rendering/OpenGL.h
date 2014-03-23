@@ -51,8 +51,6 @@
 #ifndef __TITANIA_X3D_RENDERING_OPEN_GL_H__
 #define __TITANIA_X3D_RENDERING_OPEN_GL_H__
 
-#include <giomm.h> 
-
 extern "C"
 {
 #include <GL/glew.h>

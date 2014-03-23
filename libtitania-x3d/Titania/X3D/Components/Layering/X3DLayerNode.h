@@ -301,7 +301,7 @@ private:
 	X3DSFNode <Fog>               defaultFog;
 	X3DSFNode <X3DViewpointNode>  defaultViewpoint;
 
-	X3DViewportNode* currentViewport;
+	X3DSFNode <X3DViewportNode> currentViewport;
 
 	X3DSFNode <NavigationInfoStack> navigationInfoStack;
 	X3DSFNode <BackgroundStack>     backgroundStack;

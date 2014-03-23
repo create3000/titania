@@ -127,6 +127,8 @@ throw (Error <INVALID_NAME>,
 	copy -> copyImportedNodes (this);
 	copy -> copyRoutes (this);
 
+	copy -> getUninitializedNodes () .clear ();
+
 	return copy;
 }
 

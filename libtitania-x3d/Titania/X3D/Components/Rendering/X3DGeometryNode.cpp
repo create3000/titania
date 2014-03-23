@@ -64,7 +64,7 @@ X3DGeometryNode::X3DGeometryNode () :
 	  attribNodes (),
 	attribBuffers (),
 	       colors (),
-	 texCoordNode (nullptr),
+	 texCoordNode (),
 	    texCoords (),
 	      normals (),
 	     vertices (),
@@ -73,6 +73,8 @@ X3DGeometryNode::X3DGeometryNode () :
 	     elements ()
 {
 	addNodeType (X3DConstants::X3DGeometryNode);
+	
+	addChildren (texCoordNode);
 }
 
 void
@@ -122,10 +124,10 @@ void
 X3DGeometryNode::setTextureCoordinate (X3DTextureCoordinateNode* const value)
 {
 	if (value)
-		texCoordNode = value;
+		texCoordNode .set (value);
 
 	else
-		texCoordNode = getBrowser () -> getBrowserOptions () -> texCoord ();
+		texCoordNode .set (getBrowser () -> getBrowserOptions () -> texCoord ());
 }
 
 bool
@@ -619,7 +621,7 @@ X3DGeometryNode::clear ()
 	}
 
 	colors    .clear ();
-	texCoordNode = nullptr;
+	texCoordNode .set (nullptr);
 	texCoords .clear ();
 	normals   .clear ();
 	vertices  .clear ();

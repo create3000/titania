@@ -73,7 +73,7 @@ ProximitySensor::ProximitySensor (X3DExecutionContext* const executionContext) :
 	               X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DEnvironmentalSensorNode (),
 	                    fields (),
-	                 viewpoint (NULL),
+	                 viewpoint (),
 	           modelViewMatrix (),
 	                    inside (false)
 {
@@ -87,6 +87,8 @@ ProximitySensor::ProximitySensor (X3DExecutionContext* const executionContext) :
 	addField (outputOnly,  "position_changed",         position_changed ());
 	addField (outputOnly,  "orientation_changed",      orientation_changed ());
 	addField (outputOnly,  "centerOfRotation_changed", centerOfRotation_changed ());
+	
+	addChildren (viewpoint);
 }
 
 X3DBaseNode*
@@ -170,6 +172,8 @@ ProximitySensor::update ()
 	}
 	catch (const std::domain_error &)
 	{ }
+
+	viewpoint .set (nullptr);
 }
 
 void
@@ -179,7 +183,7 @@ ProximitySensor::traverse (const TraverseType type)
 	{
 		case TraverseType::CAMERA:
 		{
-			viewpoint       = getCurrentViewpoint ();
+			viewpoint .set (getCurrentViewpoint ());
 			modelViewMatrix = getModelViewMatrix () .get ();
 			break;
 		}

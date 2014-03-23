@@ -222,7 +222,7 @@ private:
 
 	Fields fields;
 
-	X3DSoundSourceNode* _source;
+	X3DSFNode <X3DSoundSourceNode> sourceNode;
 
 };
 

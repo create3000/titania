@@ -69,11 +69,14 @@ X3DShapeNode::X3DShapeNode () :
 	         X3DChildNode (),
 	     X3DBoundedObject (),
 	               fields (),
-	       appearanceNode (nullptr),
-	         geometryNode (nullptr),
+	       appearanceNode (),
+	         geometryNode (),
 	glBindProgramPipeline ()
 {
 	addNodeType (X3DConstants::X3DShapeNode);
+	
+	addChildren (appearanceNode,
+	             geometryNode);
 }
 
 void
@@ -102,13 +105,13 @@ X3DShapeNode::set_appearance ()
 	if (appearanceNode)
 		return;
 
-	appearanceNode = getBrowser () -> getBrowserOptions () -> appearance ();
+	appearanceNode .set (getBrowser () -> getBrowserOptions () -> appearance ());
 }
 
 void
 X3DShapeNode::set_geometry ()
 {
-	geometryNode = x3d_cast <X3DGeometryNode*> (geometry ());
+	geometryNode .set (x3d_cast <X3DGeometryNode*> (geometry ()));
 }
 
 void

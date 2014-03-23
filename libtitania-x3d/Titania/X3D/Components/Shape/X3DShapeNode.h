@@ -121,14 +121,14 @@ protected:
 	
 	///  @name Member access
 	
-	X3DAppearanceNode*
+	const X3DSFNode <X3DAppearanceNode> &
 	getAppearance () const
 	{ return appearanceNode; }
-	
-	X3DGeometryNode*
+
+	const X3DSFNode <X3DGeometryNode> &
 	getGeometry () const
 	{ return geometryNode; }
-	
+
 	///  @name Operations
 	
 	virtual
@@ -167,8 +167,8 @@ private:
 
 	Fields fields;
 
-	X3DAppearanceNode* appearanceNode;
-	X3DGeometryNode*   geometryNode;
+	X3DSFNode <X3DAppearanceNode> appearanceNode;
+	X3DSFNode <X3DGeometryNode>   geometryNode;
 
 	std::function <void (GLuint)> glBindProgramPipeline;
 

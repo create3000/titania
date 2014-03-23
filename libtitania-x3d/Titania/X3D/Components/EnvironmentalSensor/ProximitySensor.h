@@ -156,9 +156,9 @@ private:
 
 	Fields fields;
 
-	X3DViewpointNode* viewpoint;
-	Matrix4f          modelViewMatrix;
-	bool              inside;
+	X3DSFNode <X3DViewpointNode> viewpoint;
+	Matrix4f                     modelViewMatrix;
+	bool                         inside;
 
 };
 

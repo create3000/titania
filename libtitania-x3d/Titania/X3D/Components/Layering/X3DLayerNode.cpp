@@ -80,7 +80,7 @@ X3DLayerNode::X3DLayerNode (X3DViewpointNode* _defaultViewpoint, X3DGroupingNode
 	    defaultBackground (new Background (getExecutionContext ())),
 	           defaultFog (new Fog (getExecutionContext ())),
 	     defaultViewpoint (_defaultViewpoint),
-	      currentViewport (nullptr),
+	      currentViewport (),
 	  navigationInfoStack (new NavigationInfoStack (getExecutionContext (), defaultNavigationInfo)),
 	      backgroundStack (new BackgroundStack (getExecutionContext (), defaultBackground)),
 	             fogStack (new FogStack (getExecutionContext (), defaultFog)),
@@ -98,6 +98,7 @@ X3DLayerNode::X3DLayerNode (X3DViewpointNode* _defaultViewpoint, X3DGroupingNode
 	             defaultBackground,
 	             defaultFog,
 	             defaultViewpoint,
+	             currentViewport,
 	             navigationInfoStack,
 	             backgroundStack,
 	             fogStack,
@@ -270,10 +271,10 @@ X3DLayerNode::lookAt ()
 void
 X3DLayerNode::set_viewport ()
 {
-	currentViewport = x3d_cast <X3DViewportNode*> (viewport ());
+	currentViewport .set (x3d_cast <X3DViewportNode*> (viewport ()));
 
 	if (not currentViewport)
-		currentViewport = getBrowser () -> getBrowserOptions () -> viewport ();
+		currentViewport .set (getBrowser () -> getBrowserOptions () -> viewport ());
 }
 
 void

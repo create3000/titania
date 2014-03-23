@@ -175,12 +175,12 @@ private:
 
 	Fields fields;
 
-	bool                                       display;
-	MFBool                                     visible;
-	std::vector <X3DPointingDeviceSensorNode*> pointingDeviceSensors;
-	std::vector <LocalFog*>                    localFogs;
-	std::vector <X3DChildNode*>                collectables;
-	std::vector <X3DChildNode*>                childNodes;
+	bool                                    display;
+	MFBool                                  visible;
+	X3DMFNode <X3DPointingDeviceSensorNode> pointingDeviceSensors;
+	X3DMFNode <LocalFog>                    localFogs;
+	X3DMFNode <X3DChildNode>                collectables;
+	X3DMFNode <X3DChildNode>                childNodes;
 
 };
 

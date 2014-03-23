@@ -1,101 +1,19 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Library/Tests/Basic/Comments.wrl">
-    <Files>
-      <File FileName="Library/Tests/Basic/Comments.wrl" Line="13" Column="1" />
-      <File FileName="Library/Tests/Basic/Comments.x3dv" Line="18" Column="1" />
-      <File FileName="Library/Tests/Basic/Comment.x3d" Line="1" Column="1" />
-    </Files>
+  <MonoDevelop.Ide.Workbench>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="build" expanded="True">
-            <Node name="debian" expanded="True" />
-          </Node>
-          <Node name="Library" expanded="True">
-            <Node name="Examples" expanded="True">
-              <Node name="Arcadia" expanded="True">
-                <Node name="stage" expanded="True" />
-              </Node>
-              <Node name="Mikroben" expanded="True">
-                <Node name="stage" expanded="True" />
-              </Node>
-              <Node name="Mushrooms" expanded="True">
-                <Node name="stage" expanded="True" />
-              </Node>
-            </Node>
-            <Node name="Tests" expanded="True">
-              <Node name="Basic" expanded="True">
-                <Node name="Comments.wrl" selected="True" />
-              </Node>
-              <Node name="PROTO" expanded="True" />
-            </Node>
-          </Node>
-          <Node name="libtitania-standard" expanded="True">
-            <Node name="Titania" expanded="True">
-              <Node name="Basic" expanded="True" />
-              <Node name="InputOutput" expanded="True" />
-            </Node>
-          </Node>
           <Node name="libtitania-x3d" expanded="True">
-            <Node name="share" expanded="True">
-              <Node name="titania" expanded="True">
-                <Node name="mime" expanded="True">
-                  <Node name="model" expanded="True" />
-                </Node>
-              </Node>
-            </Node>
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
-                <Node name="Browser" expanded="True">
-                  <Node name="Viewer" expanded="True" />
-                </Node>
-                <Node name="Components" expanded="True">
-                  <Node name="Core" expanded="True" />
-                  <Node name="Layout" expanded="True" />
-                  <Node name="ParticleSystems" expanded="True" />
-                  <Node name="Scripting" expanded="True" />
-                  <Node name="Shaders" expanded="True" />
-                </Node>
-                <Node name="Configuration" expanded="True" />
-                <Node name="Execution" expanded="True" />
-                <Node name="InputOutput" expanded="True" />
-                <Node name="Parser" expanded="True" />
-                <Node name="Prototype" expanded="True" />
-                <Node name="Routing" expanded="True" />
-                <Node name="Types" expanded="True" />
+                <Node name="Components" expanded="True" />
               </Node>
             </Node>
           </Node>
           <Node name="Titania" expanded="True">
-            <Node name="share" expanded="True">
-              <Node name="gtksourceview-3.0" expanded="True">
-                <Node name="language-specs" expanded="True" />
-              </Node>
-              <Node name="titania" expanded="True">
-                <Node name="Library" expanded="True" />
-                <Node name="ui" expanded="True" />
-              </Node>
-            </Node>
-            <Node name="Titania" expanded="True">
-              <Node name="Base" expanded="True" />
-              <Node name="Browser" expanded="True" />
-              <Node name="OutlineEditor" expanded="True">
-                <Node name="CellRenderer" expanded="True" />
-              </Node>
-              <Node name="ViewpointList" expanded="True" />
-            </Node>
+            <Node name="Titania" expanded="True" />
           </Node>
-          <Node name="titania-info" expanded="True" />
-          <Node name="x3d2vrml" expanded="True">
-            <Node name="bin" expanded="True" />
-            <Node name="share" expanded="True">
-              <Node name="titania" expanded="True">
-                <Node name="info" expanded="True" />
-              </Node>
-            </Node>
-          </Node>
-          <Node name="x3dtidy" expanded="True" />
         </State>
       </Pad>
       <Pad Id="ClassPad">

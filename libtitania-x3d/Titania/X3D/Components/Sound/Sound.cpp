@@ -78,7 +78,7 @@ Sound::Sound (X3DExecutionContext* const executionContext) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DSoundNode (),
 	      fields (),
-	     _source (NULL)
+	  sourceNode ()
 {
 	addField (inputOutput,    "metadata",   metadata ());
 	addField (inputOutput,    "intensity",  intensity ());
@@ -91,6 +91,8 @@ Sound::Sound (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "maxFront",   maxFront ());
 	addField (inputOutput,    "priority",   priority ());
 	addField (inputOutput,    "source",     source ());
+
+	addChildren (sourceNode);
 }
 
 X3DBaseNode*
@@ -112,7 +114,7 @@ Sound::initialize ()
 void
 Sound::set_source ()
 {
-	_source = x3d_cast <X3DSoundSourceNode*> (source ());
+	sourceNode .set (x3d_cast <X3DSoundSourceNode*> (source ()));
 }
 
 void
@@ -120,7 +122,7 @@ Sound::traverse (const TraverseType type)
 {
 	if (type == TraverseType::COLLECT)
 	{
-		if (_source)
+		if (sourceNode)
 		{
 			try
 			{
@@ -132,18 +134,18 @@ Sound::traverse (const TraverseType type)
 				if (maxDistance < maxRadius)
 				{
 					if (minDistance < minRadius)
-						_source -> setVolume (intensity ());
+						sourceNode -> setVolume (intensity ());
 
 					else
 					{
 						const float d1 = maxRadius - maxDistance;
 						const float d2 = maxRadius - minRadius;
 
-						_source -> setVolume (intensity () * (d1 / d2));
+						sourceNode -> setVolume (intensity () * (d1 / d2));
 					}
 				}
 				else
-					_source -> setVolume (0);
+					sourceNode -> setVolume (0);
 			}
 			catch (const std::domain_error &)
 			{ }

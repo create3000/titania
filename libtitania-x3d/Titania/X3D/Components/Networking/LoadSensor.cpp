@@ -53,6 +53,7 @@
 #include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
 
+#include <glibmm/main.h>
 #include <gdk/gdk.h>
 
 namespace titania {

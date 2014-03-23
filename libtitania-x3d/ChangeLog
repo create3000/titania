@@ -1,5 +1,32 @@
 2014-03-23  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Proto.h:
+	* OpenGL.h:
+	* Proto.cpp:
+	* Sound.h:
+	* Sound.cpp:
+	* LayoutGroup.h:
+	* X3DShapeNode.h:
+	* X3DExecutionContext.h:
+	* Collision.h:
+	* X3DShapeNode.cpp:
+	* LayoutGroup.cpp:
+	* LoadSensor.h:
+	* X3DLayerNode.h:
+	* Collision.cpp:
+	* X3DLayerNode.cpp:
+	* LoadSensor.cpp:
+	* X3DGroupingNode.h:
+	* X3DGeometryNode.h:
+	* X3DGroupingNode.cpp:
+	* X3DGeometryNode.cpp:
+	* ProximitySensor.h:
+	* ProximitySensor.cpp:
+	* X3DBackgroundNode.h:
+	* X3DBackgroundNode.cpp: 
+
+2014-03-23  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DScene.cpp:
 	* ImportedNode.cpp:
 	* ExportedNode.cpp: 

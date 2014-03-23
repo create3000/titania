@@ -1,6 +1,14 @@
 2014-03-23  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Library.mdproj:
+	* VRML2.0.x3d:
+	* GeoCoordinate.x3d:
+	* GoldenSpheresProto.x3dv:
+	* QuadSphereTransparent.x3dv: 
+
+2014-03-23  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Library.mdproj:
 	* Comments.wrl:
 	* GoldenSphere.x3dv:
 	* index.T.wrl:

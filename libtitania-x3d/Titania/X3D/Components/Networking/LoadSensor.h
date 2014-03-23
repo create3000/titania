@@ -54,6 +54,8 @@
 #include "../Networking/X3DNetworkSensorNode.h"
 #include "../Networking/X3DUrlObject.h"
 
+#include <sigc++/connection.h>
+
 namespace titania {
 namespace X3D {
 

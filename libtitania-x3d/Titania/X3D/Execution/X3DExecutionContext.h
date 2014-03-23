@@ -462,6 +462,10 @@ protected:
 
 	///  @name Import handling
 
+	MFNode &
+	getUninitializedNodes ()
+	{ return uninitializedNodes; }
+
 	void
 	cloneExternProtos (const X3DExecutionContext* const);
 

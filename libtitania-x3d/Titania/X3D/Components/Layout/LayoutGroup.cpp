@@ -71,8 +71,8 @@ LayoutGroup::LayoutGroup (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DGroupingNode (),
 	         fields (),
-	currentViewport (nullptr),
-	  currentLayout (nullptr)
+	currentViewport (),
+	  currentLayout ()
 {
 	addField (inputOutput,    "metadata",       metadata ());
 	addField (inputOutput,    "viewport",       viewport ());
@@ -82,6 +82,9 @@ LayoutGroup::LayoutGroup (X3DExecutionContext* const executionContext) :
 	addField (inputOnly,      "addChildren",    addChildren ());
 	addField (inputOnly,      "removeChildren", removeChildren ());
 	addField (inputOutput,    "children",       children ());
+
+	addChildren (currentViewport,
+	             currentLayout);
 }
 
 X3DBaseNode*
@@ -111,13 +114,13 @@ LayoutGroup::getBBox () const
 void
 LayoutGroup::set_viewport ()
 {
-	currentViewport = x3d_cast <X3DViewportNode*> (viewport ());
+	currentViewport .set (x3d_cast <X3DViewportNode*> (viewport ()));
 }
 
 void
 LayoutGroup::set_layout ()
 {
-	currentLayout = x3d_cast <X3DLayoutNode*> (layout ());
+	currentLayout .set (x3d_cast <X3DLayoutNode*> (layout ()));
 }
 
 void
