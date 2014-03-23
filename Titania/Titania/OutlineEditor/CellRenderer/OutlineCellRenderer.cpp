@@ -195,7 +195,7 @@ OutlineCellRenderer::on_data ()
 		case OutlineIterType::X3DFieldValue:
 		{
 			property_editable () = true;
-			property_text ()     = get_field_value (false);
+			property_text ()     = get_field_value (true);
 			set_alignment (0, 0);
 			break;
 		}
@@ -337,14 +337,14 @@ OutlineCellRenderer::get_node_name () const
 template <class Type>
 static
 std::string
-array_to_string (const Type & array, const bool full)
+array_to_string (const Type & array, const bool ellipsize)
 {
 	std::ostringstream stream;
 
 	if (array .empty ())
 		return stream .str ();
 
-	const size_t lines = full ? array .size () : std::min <size_t> (VALUES_MAX, array .size ());
+	const size_t lines = ellipsize ? std::min <size_t> (VALUES_MAX, array .size ()) : array .size ();
 
 	for (const auto & value : basic::adapter (array .begin (), array .begin () + lines - 1))
 	{
@@ -359,14 +359,14 @@ array_to_string (const Type & array, const bool full)
 	{
 		stream
 			<< X3D::Generator::ForceBreak
-			<< "...";
+			<< "…";
 	}
 
 	return stream .str ();
 }
 
 std::string
-OutlineCellRenderer::get_field_value (const bool full) const
+OutlineCellRenderer::get_field_value (const bool ellipsize) const
 {
 	const auto field = static_cast <X3D::X3DFieldDefinition*> (get_object ());
 
@@ -381,67 +381,67 @@ OutlineCellRenderer::get_field_value (const bool full) const
 			return static_cast <X3D::SFString*> (field) -> getValue ();
 
 		case X3D::X3DConstants::MFBool:
-			return array_to_string (*static_cast <X3D::MFBool*> (field), full);
+			return array_to_string (*static_cast <X3D::MFBool*> (field), ellipsize);
 
 		case X3D::X3DConstants::MFColor:
-			return array_to_string (*static_cast <X3D::MFColor*> (field), full);
+			return array_to_string (*static_cast <X3D::MFColor*> (field), ellipsize);
 
 		case X3D::X3DConstants::MFColorRGBA:
-			return array_to_string (*static_cast <X3D::MFColorRGBA*> (field), full);
+			return array_to_string (*static_cast <X3D::MFColorRGBA*> (field), ellipsize);
 
 		case X3D::X3DConstants::MFDouble:
-			return array_to_string (*static_cast <X3D::MFDouble*> (field), full);
+			return array_to_string (*static_cast <X3D::MFDouble*> (field), ellipsize);
 
 		case X3D::X3DConstants::MFFloat:
-			return array_to_string (*static_cast <X3D::MFFloat*> (field), full);
+			return array_to_string (*static_cast <X3D::MFFloat*> (field), ellipsize);
 
 		case X3D::X3DConstants::MFImage:
-			return array_to_string (*static_cast <X3D::MFImage*> (field), full);
+			return array_to_string (*static_cast <X3D::MFImage*> (field), ellipsize);
 
 		case X3D::X3DConstants::MFInt32:
-			return array_to_string (*static_cast <X3D::MFInt32*> (field), full);
+			return array_to_string (*static_cast <X3D::MFInt32*> (field), ellipsize);
 
 		case X3D::X3DConstants::MFMatrix3d:
-			return array_to_string (*static_cast <X3D::MFMatrix3d*> (field), full);
+			return array_to_string (*static_cast <X3D::MFMatrix3d*> (field), ellipsize);
 
 		case X3D::X3DConstants::MFMatrix3f:
-			return array_to_string (*static_cast <X3D::MFMatrix3f*> (field), full);
+			return array_to_string (*static_cast <X3D::MFMatrix3f*> (field), ellipsize);
 
 		case X3D::X3DConstants::MFMatrix4d:
-			return array_to_string (*static_cast <X3D::MFMatrix4d*> (field), full);
+			return array_to_string (*static_cast <X3D::MFMatrix4d*> (field), ellipsize);
 
 		case X3D::X3DConstants::MFMatrix4f:
-			return array_to_string (*static_cast <X3D::MFMatrix4f*> (field), full);
+			return array_to_string (*static_cast <X3D::MFMatrix4f*> (field), ellipsize);
 
 		case X3D::X3DConstants::MFNode:
 			return "";
 
 		case X3D::X3DConstants::MFRotation:
-			return array_to_string (*static_cast <X3D::MFRotation*> (field), full);
+			return array_to_string (*static_cast <X3D::MFRotation*> (field), ellipsize);
 
 		case X3D::X3DConstants::MFString:
-			return array_to_string (*static_cast <X3D::MFString*> (field), full);
+			return array_to_string (*static_cast <X3D::MFString*> (field), ellipsize);
 
 		case X3D::X3DConstants::MFTime:
-			return array_to_string (*static_cast <X3D::MFTime*> (field), full);
+			return array_to_string (*static_cast <X3D::MFTime*> (field), ellipsize);
 
 		case X3D::X3DConstants::MFVec2d:
-			return array_to_string (*static_cast <X3D::MFVec2d*> (field), full);
+			return array_to_string (*static_cast <X3D::MFVec2d*> (field), ellipsize);
 
 		case X3D::X3DConstants::MFVec2f:
-			return array_to_string (*static_cast <X3D::MFVec2f*> (field), full);
+			return array_to_string (*static_cast <X3D::MFVec2f*> (field), ellipsize);
 
 		case X3D::X3DConstants::MFVec3d:
-			return array_to_string (*static_cast <X3D::MFVec3d*> (field), full);
+			return array_to_string (*static_cast <X3D::MFVec3d*> (field), ellipsize);
 
 		case X3D::X3DConstants::MFVec3f:
-			return array_to_string (*static_cast <X3D::MFVec3f*> (field), full);
+			return array_to_string (*static_cast <X3D::MFVec3f*> (field), ellipsize);
 
 		case X3D::X3DConstants::MFVec4d:
-			return array_to_string (*static_cast <X3D::MFVec4d*> (field), full);
+			return array_to_string (*static_cast <X3D::MFVec4d*> (field), ellipsize);
 
 		case X3D::X3DConstants::MFVec4f:
-			return array_to_string (*static_cast <X3D::MFVec4f*> (field), full);
+			return array_to_string (*static_cast <X3D::MFVec4f*> (field), ellipsize);
 
 		default:
 			return field -> toString ();
@@ -692,7 +692,7 @@ OutlineCellRenderer::start_editing_vfunc (GdkEvent* event,
 			const auto field = static_cast <X3D::X3DFieldDefinition*> (get_object ());
 
 			textview .reset (new TextViewEditable (property_data (), path, field -> isArray () or dynamic_cast <X3D::SFString*> (field)));
-			textview -> set_text (get_field_value (true));
+			textview -> set_text (get_field_value (false));
 			textview -> set_margin_left (x_pad);
 			textview -> set_margin_top (property_ypad ());
 			textview -> set_margin_bottom (property_ypad ());
