@@ -123,9 +123,9 @@ PolylineEmitter::initialize ()
 	polylineNode -> isInternal (true);
 	polylineNode -> coordIndex () = coordIndex ();
 	polylineNode -> coord ()      = coord ();
-	polylineNode -> addInterest (this, &PolylineEmitter::set_polyline);
 
 	polylineNode -> setup ();
+	polylineNode -> addInterest (this, &PolylineEmitter::set_polyline);
 
 	set_polyline ();
 }

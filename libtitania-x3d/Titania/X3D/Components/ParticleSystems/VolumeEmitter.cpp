@@ -139,9 +139,9 @@ VolumeEmitter::initialize ()
 	surfaceNode -> convex ()      = false;
 	surfaceNode -> coordIndex ()  = coordIndex ();
 	surfaceNode -> coord ()       = coord ();
-	surfaceNode -> addInterest (this, &VolumeEmitter::set_geometry);
 
 	surfaceNode -> setup ();
+	surfaceNode -> addInterest (this, &VolumeEmitter::set_geometry);
 
 	set_geometry ();
 }
