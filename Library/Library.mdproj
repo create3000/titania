@@ -70,7 +70,6 @@
     <None Include="Tests\EnvironmentalEffects\Background.wrl" />
     <None Include="Tests\EnvironmentalEffects\Background2.wrl" />
     <None Include="Tests\EnvironmentalEffects\LocalFog.wrl" />
-    <None Include="Tests\Basic\EmptyWorld.wrl" />
     <None Include="Tests\Basic\NodeIndex.wrl" />
     <None Include="Tests\Basic\FieldTypes.wrl" />
     <None Include="Tests\Scripting\Script-vrmlscript1.wrl" />
@@ -2197,7 +2196,6 @@
     <None Include="Tests\Handles\TransformHandle.wrl" />
     <None Include="Tests\Handles\Grid.wrl" />
     <None Include="Tests\Scripting\X3DScene.rootNodes.2.wrl" />
-    <None Include="Tests\Basic\Clone.wrl" />
     <None Include="Tests\Scripting\SFNode.wrl" />
     <None Include="Tests\Scripting\SFNode.input.wrl" />
     <None Include="Models\Machines\bucketWheel.wrl" />
@@ -2260,7 +2258,6 @@
     <None Include="Tests\Shape\Connectors.wrl" />
     <None Include="Tests\Shape\FillProperties.wrl" />
     <None Include="Tests\CADGeometry\CADLayer.wrl" />
-    <None Include="Tests\Basic\Components.wrl" />
     <None Include="Tests\Layout\ScreenGroup.wrl" />
     <None Include="Tests\Layout\LayoutGroup.wrl" />
     <None Include="Tests\Layout\LayoutLayer.wrl" />
@@ -2415,12 +2412,16 @@
     <None Include="Tests\Basic\IMPORT-Inline.wrl" />
     <None Include="Tests\PROTO\SceneProto.wrl" />
     <None Include="Tests\PROTO\SceneExternProto.wrl" />
-    <None Include="Tests\Basic\X3D.x3d" />
     <None Include="Tests\Geospatial\GeoCoordinate.x3d" />
     <None Include="Tests\Geometry3D\Beethoven.x3d" />
     <None Include="Tests\Basic\VRML2.0.x3d" />
     <None Include="Tests\Geometry3D\Coordinate.x3dv" />
     <None Include="Tests\Geometry3D\Coordinate.x3d" />
+    <None Include="Tests\Basic\Comments.x3dv" />
+    <None Include="Tests\Basic\Comment.x3d" />
+    <None Include="Tests\Basic\EmptyWorld.wrl" />
+    <None Include="Tests\Basic\Components.wrl" />
+    <None Include="Tests\Basic\Clone.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

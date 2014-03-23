@@ -166,6 +166,9 @@ ImportedNode::toStream (std::ostream & ostream) const
 				ostream << Generator::TidyBreak;
 			}
 
+			if (getExecutionContext () -> getVersion () == VRML_V2_0)
+				ostream << "# ";
+
 			ostream
 				<< Generator::Indent
 				<< "IMPORT"

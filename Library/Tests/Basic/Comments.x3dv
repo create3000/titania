@@ -1,26 +1,26 @@
-#VRML V2.0 utf8 Titania V0.6.7
+#X3D V3.3 utf8 Titania V0.6.7
 
 # Scene Comment
 # Scene Comment2
 
-# PROFILE Full
+PROFILE Full
 
-# COMPONENT Core : 1
+COMPONENT Core : 1
 
-# UNIT angle degree 0.0174532925199433
-# UNIT mass pound 0.45359237
+UNIT angle degree 0.0174532925199433
+UNIT mass pound 0.45359237
 
-# META "generator" "Titania V0.6.7, http://titania.create3000.de"
-# META "title" "Comments"
-# META "utf8" "äöü'\\\\\"áóú<&\\>"
+META "generator" "Titania V0.6.7, http://titania.create3000.de"
+META "title" "Comments"
+META "utf8" "äöü'\\\\\"áóú<&\\>"
 
 # EXTERNPROTO Comment
 
 EXTERNPROTO Rotor [
   # Field Comment
-  exposedField SFTime     cycleInterval
-  exposedField SFBool     loop
-  eventOut     SFRotation value_changed
+  inputOutput SFTime     cycleInterval
+  inputOutput SFBool     loop
+  outputOnly  SFRotation value_changed
   # Interface Comment
 ]
 # Inner Comment
@@ -30,13 +30,13 @@ EXTERNPROTO Rotor [
 
 PROTO Test-utf8-<äöü&> [
   # Field Comment
-  eventIn      SFBool   set_bind
-  exposedField SFBool   enabled FALSE
-  eventOut     SFBool   isBound
-  exposedField SFString test "\\\"äöüáóúâôû&<'\\r\\n"
-  exposedField SFString string ""
-  exposedField MFNode   children DEF Default WorldInfo { }
-  exposedField SFNode   node USE Default
+  inputOnly   SFBool   set_bind
+  inputOutput SFBool   enabled FALSE
+  outputOnly  SFBool   isBound
+  inputOutput SFString test "\\\"äöüáóúâôû&<'\\r\\n"
+  inputOutput SFString string ""
+  inputOutput MFNode   children DEF Default WorldInfo { }
+  inputOutput SFNode   node USE Default
   # Interface Comment
 ]
 {
@@ -73,22 +73,22 @@ PROTO Test-utf8-<äöü&> [
 
   Script {
     # Field with utf8 name and special characters
-    eventIn      SFBool   set_utf8-is-gorgeous-&-nice!-<utf8-ist-älegant-&-schön!>
+    inputOnly      SFBool   set_utf8-is-gorgeous-&-nice!-<utf8-ist-älegant-&-schön!>
     # Multiple IS statements on user defined field
-    exposedField SFBool   enabled IS isBound
-    exposedField SFBool   enabled IS set_bind
-    exposedField SFBool   enabled TRUE
+    inputOutput    SFBool   enabled IS isBound
+    inputOutput    SFBool   enabled IS set_bind
+    inputOutput    SFBool   enabled TRUE
     # IS statement on user defined field
-    exposedField SFString test IS test
-    exposedField SFString string IS string
+    inputOutput    SFString test IS test
+    inputOutput    SFString string IS string
     # User defined field with value
-    exposedField MFNode   children [
+    inputOutput    MFNode   children [
       # Node and NULL node
       DEF Meta MetadataBoolean { }
       NULL
     ]
     # User defined field with reference value
-    field        SFNode   node USE Meta
+    initializeOnly SFNode   node USE Meta
 
     # Build in field
     url "javascript:
@@ -213,7 +213,7 @@ Transform {
 
 # IMPORT Comment
 
-# IMPORT Inline.CubeExport AS CubeImport
+IMPORT Inline.CubeExport AS CubeImport
 
 
 # ROUTE Comment
@@ -223,10 +223,10 @@ ROUTE Transform.translation_changed TO Transform.set_translation
 
 # EXPORT Comment
 
-# EXPORT Transform AS ColoredCube
+EXPORT Transform AS ColoredCube
 
 # EXPORT Comment
 
-# EXPORT Transform AS ColoredCube1
+EXPORT Transform AS ColoredCube1
 
 # End Comment

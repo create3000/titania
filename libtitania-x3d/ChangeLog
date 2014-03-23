@@ -1,5 +1,11 @@
 2014-03-23  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DScene.cpp:
+	* ImportedNode.cpp:
+	* ExportedNode.cpp: 
+
+2014-03-23  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DScene.cpp: 
 
 2014-03-23  Holger Seelig  <holger.seelig@yahoo.de>

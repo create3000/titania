@@ -273,6 +273,12 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compressed)
 
 	if (suffix == ".x3d")
 	{
+		if (executionContext -> getVersion () == X3D::VRML_V2_0)
+		{
+			executionContext -> setEncoding ("X3D");
+			executionContext -> setSpecificationVersion (X3D::XMLEncode (X3D::LATEST_VERSION));
+		}
+
 		if (compressed)
 		{
 			ogzstream file (worldURL .path ());
@@ -300,7 +306,7 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compressed)
 		else if (suffix == ".wrl" and executionContext -> getVersion () not_eq X3D::VRML_V2_0)
 		{
 			executionContext -> setEncoding ("VRML");
-			executionContext -> setSpecificationVersion (X3D::XMLEncode (X3D::VRML_V2_0));		
+			executionContext -> setSpecificationVersion ("2.0");		
 		}
 
 		if (compressed)

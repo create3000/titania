@@ -5,6 +5,7 @@
     <component name='Core' level='1'/>
     <unit category='angle' name='degree' conversionFactor='0.0174532925199433'/>
     <unit category='mass' name='pound' conversionFactor='0.45359237'/>
+    <meta name='generator' content='Titania V0.6.7, http://titania.create3000.de'/>
     <meta name='title' content='Comments'/>
     <meta name='utf8' content='äöü&apos;\\\\\"áóú&lt;&amp;\\>'/>
   </head>
@@ -40,8 +41,9 @@
           </IS>
         </Group>
         <TimeSensor
-            enabled='true'>
+            enabled='false'>
           <IS>
+            <connect nodeField='enabled' protoField='isBound'/>
             <connect nodeField='enabled' protoField='set_bind'/>
             <connect nodeField='isActive' protoField='isBound'/>
           </IS>
@@ -49,16 +51,18 @@
         <Script
             directOutput='true'>
           <field accessType='inputOnly' type='SFBool' name='set_utf8-is-gorgeous-&amp;-nice!-&lt;utf8-ist-älegant-&amp;-schön!>'/>
-          <field accessType='inputOutput' type='SFBool' name='enabled'/>
+          <field accessType='inputOutput' type='SFBool' name='enabled' value='true'/>
           <field accessType='inputOutput' type='SFString' name='test'/>
           <field accessType='inputOutput' type='SFString' name='string'/>
           <field accessType='inputOutput' type='MFNode' name='children'>
             <MetadataBoolean DEF='Meta'/>
+            <!-- NULL -->
           </field>
           <field accessType='initializeOnly' type='SFNode' name='node'>
             <MetadataBoolean USE='Meta'/>
           </field>
           <IS>
+            <connect nodeField='enabled' protoField='isBound'/>
             <connect nodeField='enabled' protoField='set_bind'/>
             <connect nodeField='test' protoField='test'/>
             <connect nodeField='string' protoField='string'/>
@@ -73,7 +77,8 @@ function initialize ()
 
 	var q  = 'A string that\'s single quoted';
 	string = "A string that's single quoted with special characters \"<\n\r\t>\"";
-}]]> 
+}
+]]> 
         </Script>
       </ProtoBody>
     </ProtoDeclare>
