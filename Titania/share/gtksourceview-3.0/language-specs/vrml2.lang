@@ -27,6 +27,7 @@
     </metadata>
 
     <styles>
+
         <style id="comment"             _name="Comment"                  map-to="def:comment"/>
 
         <style id="keyword"             _name="Keyword"                  map-to="def:keyword"/>
@@ -34,14 +35,11 @@
         
         <style id="error"               _name="Error"                    map-to="def:error"/>
         <style id="string"              _name="String"                   map-to="def:string"/>
+        <style id="escaped-character"   _name="Escaped Character"        map-to="def:special-char"/>
 
         <style id="floating-point"      _name="Floating point number"    map-to="def:floating-point"/>
         <style id="decimal"             _name="Decimal number"           map-to="def:decimal"/>
-        <style id="octal"               _name="Octal number"             map-to="def:base-n-integer"/>
-        <style id="hexadecimal"         _name="Hexadecimal number"       map-to="def:base-n-integer"/>
 
-        <style id="escaped-character"   _name="Escaped Character"        map-to="def:special-char"/>
-       
         <style id="access-type"         _name="Access Type"              map-to="def:special-constant"/>
         <style id="field-type"          _name="Field Type"               map-to="def:type"/>
         <style id="vrml-node-type-name" _name="Vrml Node Type Name"      map-to="def:preprocessor"/>
@@ -185,25 +183,7 @@
                 <context id="float" style-ref="floating-point">
                     <match extended="true">
                         (?&lt;![\w\.])
-                        ((\.[0-9]+ | [0-9]+\.[0-9]*) ([Ee][+-]?[0-9]*)? |
-                         ([0-9]+[Ee][+-]?[0-9]*))
-                        [fFlL]?
-                        (?![\w\.])
-                    </match>
-                </context>
-
-                <context id="hexadecimal" style-ref="hexadecimal">
-                    <match extended="true">
-                        (?&lt;![\w\.])
-                        0[xX][a-fA-F0-9]+[uUlL]*
-                        (?![\w\.])
-                    </match>
-                </context>
-
-                <context id="octal" style-ref="octal">
-                    <match extended="true">
-                        (?&lt;![\w\.])
-                        0[0-7]+[uUlL]*
+                        (?:[+/-]?(?:(?:(?:[0-9]+(?:\.)?)|(?:[0-9]*\.[0-9]+))(?:[eE][+\-]?[0-9]+)?))
                         (?![\w\.])
                     </match>
                 </context>
@@ -211,7 +191,7 @@
                 <context id="decimal" style-ref="decimal">
                     <match extended="true">
                         (?&lt;![\w\.])
-                        [0-9]+[uUlL]*
+                        (?:[+\-]?(?:(?:[0-9]+)|(?:0[xX][0-9a-fA-F]+)))
                         (?![\w\.])
                     </match>
                 </context>

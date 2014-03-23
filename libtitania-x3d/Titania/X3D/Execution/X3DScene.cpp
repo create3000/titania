@@ -237,11 +237,12 @@ throw (Error <INVALID_X3D>,
 void
 X3DScene::toStream (std::ostream & ostream) const
 {
-	const_cast <X3DScene*> (this) -> setMetaData ("generator", getBrowser () -> getName () + " V" + getBrowser () -> getVersion () + ", http://titania.create3000.de");
-
 	const auto version = getVersion ();
 
 	Generator::Version (version);
+
+	if (version not_eq VRML_V2_0)
+		const_cast <X3DScene*> (this) -> setMetaData ("generator", getBrowser () -> getName () + " V" + getBrowser () -> getVersion () + ", http://titania.create3000.de");
 
 	ostream
 		<< '#'
@@ -393,8 +394,6 @@ X3DScene::toStream (std::ostream & ostream) const
 void
 X3DScene::toXMLStream (std::ostream & ostream) const
 {
-	const_cast <X3DScene*> (this) -> setMetaData ("generator", getBrowser () -> getName () + " V" + getBrowser () -> getVersion () + ", http://titania.create3000.de");
-
 	auto version = getVersion ();
 	
 	if (version == VRML_V2_0)
@@ -403,6 +402,8 @@ X3DScene::toXMLStream (std::ostream & ostream) const
 	std::string versionString = XMLEncode (version);
 
 	Generator::Version (version);
+
+	const_cast <X3DScene*> (this) -> setMetaData ("generator", getBrowser () -> getName () + " V" + getBrowser () -> getVersion () + ", http://titania.create3000.de");
 
 	ostream
 		<< "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"

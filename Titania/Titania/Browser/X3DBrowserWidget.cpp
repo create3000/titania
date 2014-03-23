@@ -322,7 +322,7 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compressed)
 			std::ofstream file (worldURL .path ());
 
 			file
-				<< X3D::CompactStyle
+				<< X3D::NicestStyle
 				<< executionContext;
 		}
 	}
