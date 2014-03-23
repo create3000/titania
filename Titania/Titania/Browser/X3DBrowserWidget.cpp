@@ -266,8 +266,10 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compressed)
 {
 	const std::string suffix = worldURL .suffix ();
 
-	getBrowser () -> getExecutionContext () -> setWorldURL (worldURL);
-	getBrowser () -> getExecutionContext () -> isCompressed (compressed);
+	const auto executionContext = getBrowser () -> getExecutionContext ();
+
+	executionContext -> setWorldURL (worldURL);
+	executionContext -> isCompressed (compressed);
 
 	if (suffix == ".x3d")
 	{
@@ -277,7 +279,7 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compressed)
 
 			file
 				<< X3D::SmallestStyle
-				<< X3D::XMLEncode (getBrowser () -> getExecutionContext ());
+				<< X3D::XMLEncode (executionContext);
 		}
 		else
 		{
@@ -285,18 +287,29 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compressed)
 
 			file
 				<< X3D::CompactStyle
-				<< X3D::XMLEncode (getBrowser () -> getExecutionContext ());
+				<< X3D::XMLEncode (executionContext);
 		}
 	}
 	else
 	{
+		if (suffix == ".x3dv" and executionContext -> getVersion () == X3D::VRML_V2_0)
+		{
+			executionContext -> setEncoding ("X3D");
+			executionContext -> setSpecificationVersion (X3D::XMLEncode (X3D::LATEST_VERSION));
+		}
+		else if (suffix == ".wrl" and executionContext -> getVersion () not_eq X3D::VRML_V2_0)
+		{
+			executionContext -> setEncoding ("VRML");
+			executionContext -> setSpecificationVersion (X3D::XMLEncode (X3D::VRML_V2_0));		
+		}
+
 		if (compressed)
 		{
 			ogzstream file (worldURL .path ());
 
 			file
 				<< X3D::SmallestStyle
-				<< getBrowser () -> getExecutionContext ();
+				<< executionContext;
 		}
 		else
 		{
@@ -304,7 +317,7 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compressed)
 
 			file
 				<< X3D::CompactStyle
-				<< getBrowser () -> getExecutionContext ();
+				<< executionContext;
 		}
 	}
 }

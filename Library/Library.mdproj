@@ -2420,6 +2420,7 @@
     <None Include="Tests\Geometry3D\Beethoven.x3d" />
     <None Include="Tests\Basic\VRML2.0.x3d" />
     <None Include="Tests\Geometry3D\Coordinate.x3dv" />
+    <None Include="Tests\Geometry3D\Coordinate.x3d" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
