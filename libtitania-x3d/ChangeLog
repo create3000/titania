@@ -1,5 +1,9 @@
 2014-03-23  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* TransformHandle.cpp: 
+
+2014-03-23  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Proto.h:
 	* OpenGL.h:
 	* Proto.cpp:

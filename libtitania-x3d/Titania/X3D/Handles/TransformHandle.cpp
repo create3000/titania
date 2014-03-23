@@ -221,6 +221,8 @@ TransformHandle::reshape ()
 		handle -> setField <SFMatrix4f> ("modelViewMatrix",   getModelViewMatrix () .get (), true);
 		handle -> setField <SFVec3f>    ("bboxSize",          bbox .size (),                 true);
 		handle -> setField <SFVec3f>    ("bboxCenter",        bbox .center (),               true);
+
+		getBrowser () -> getRouter () .processEvents ();
 	}
 	catch (const X3DError & error)
 	{ }
@@ -230,8 +232,6 @@ void
 TransformHandle::traverse (const TraverseType type)
 {
 	transform -> traverse (type);
-
-	getCurrentLayer () -> getLocalObjects () .emplace_back (new PolygonModeContainer (GL_FILL));
 	
 	// Remember matrices
 	
@@ -243,11 +243,12 @@ TransformHandle::traverse (const TraverseType type)
 
 	// Handle
 
-	getModelViewMatrix () .push ();
+	getCurrentLayer () -> getLocalObjects () .emplace_back (new PolygonModeContainer (GL_FILL));
 
+	getModelViewMatrix () .push ();
 	getModelViewMatrix () .mult_left (getMatrix ());
 
-	if (type == TraverseType::CAMERA) // Last chance to process events
+	if (type == TraverseType::COLLECT) // Last chance to process events
 		reshape ();
 
 	for (const auto & rootNode : scene -> getRootNodes ())
