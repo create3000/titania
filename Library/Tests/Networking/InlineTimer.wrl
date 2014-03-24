@@ -2,20 +2,20 @@
 
 DEF _1 Inline {
   url [
+    "../../Examples/TreasureIsland/stage/index.wrl",
+    "../PROTO/GoldenSpheresProto.wrl"
+    "../../Examples/Vattenfall/stage/index.wrl",
     "../Texturing/MovieTexture.wrl"
     "../Geospatial/GeoCoordinate.wrl"
-    "../../Examples/Vattenfall/stage/index.wrl",
     "../Scripting/Script-vrmlscript1.wrl"
-    "../PROTO/GoldenSpheresProto.wrl"
    "../Geometry3D/QuadSphere.wrl"
     "../CADGeometry/CADGeometry.wrl"
-    "../../Examples/TreasureIsland/stage/index.wrl",
     "../../Examples/MetalBeast/stage/index.wrl"
   ]
 }
 
 DEF Timer TimeSensor {
-  cycleInterval 0.6
+  cycleInterval 5
   loop TRUE
 }
 

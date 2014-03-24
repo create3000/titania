@@ -2,6 +2,17 @@
 
 META "generator" "Titania V0.6.7, http://titania.create3000.de"
 
+EXTERNPROTO IcoSphere [
+  inputOutput    SFString type
+  inputOutput    SFInt32  order
+  inputOutput    SFFloat  radius
+  initializeOnly SFBool   solid
+]
+[
+  "../../../Titania/share/titania/Library/Prototypes/Geometry3D/IcoSphere/IcoSphere.x3dv",
+  "file:///usr/share/titania/Library/Prototypes/Geometry3D/IcoSphere/IcoSphere.x3dv"
+]
+
 PROTO Rotor [
   inputOutput SFBool     enabled TRUE
   inputOutput SFTime     cycleInterval 1
@@ -77,6 +88,7 @@ function eventsProcessed ()
 }
 
 DEF QuadSphere Transform {
+  translation -3.44197 1.48393 0
   children Shape {
     appearance Appearance {
       material Material {
@@ -2908,7 +2920,7 @@ DEF Summer Background {
 }
 
 DEF Sphere Transform {
-  translation 3.11116 0.68951 0
+  translation -1.13286 1.56409 0
   children Shape {
     appearance Appearance {
       material Material {
@@ -2922,7 +2934,7 @@ DEF Sphere Transform {
 }
 
 DEF Sphere1 Transform {
-  translation 2.64849 -2.1076 0
+  translation 1.14206 1.55694 0
   children Shape {
     appearance Appearance {
       material Material {
@@ -2936,7 +2948,7 @@ DEF Sphere1 Transform {
 }
 
 DEF Sphere2 Transform {
-  translation -2.17883 2.84256 0
+  translation 3.55503 1.53766 0
   children Shape {
     appearance Appearance {
       material Material {
@@ -2950,7 +2962,7 @@ DEF Sphere2 Transform {
 }
 
 DEF Sphere3 Transform {
-  translation -3.49232 -0.173092 0
+  translation -3.44722 -0.807616 0
   children Shape {
     appearance Appearance {
       material Material {
@@ -2958,6 +2970,33 @@ DEF Sphere3 Transform {
       }
     }
     geometry Sphere {
+      solid FALSE
+    }
+  }
+}
+
+DEF Icosahedron Transform {
+  translation -1.12384 -0.723248 0
+  children Shape {
+    appearance Appearance {
+      material DEF _1 Material {
+        transparency 0.41
+      }
+    }
+    geometry IcoSphere {
+      solid FALSE
+    }
+  }
+}
+
+DEF Octahedron Transform {
+  translation 1.17027 -0.672585 0
+  children Shape {
+    appearance Appearance {
+      material USE _1
+    }
+    geometry IcoSphere {
+      type "OCTAHEDRON"
       solid FALSE
     }
   }

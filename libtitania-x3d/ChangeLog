@@ -1,3 +1,9 @@
+2014-03-24  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* X3DChildObject.cpp:
+	* ProximitySensor.h:
+	* ProximitySensor.cpp: 
+
 2014-03-23  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* TransformHandle.cpp: 
