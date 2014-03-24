@@ -1,5 +1,10 @@
 2014-03-24  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3DFlyViewer.cpp:
+	* X3DGroupingNode.cpp: 
+
+2014-03-24  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* libtitania-x3d.cproj:
 	* Struct.h:
 	* SFTime.h:

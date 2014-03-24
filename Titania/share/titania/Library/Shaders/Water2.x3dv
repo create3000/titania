@@ -1,0 +1,193 @@
+#X3D V3.0 utf8 Titania V0.6.7
+
+META "generator" "Titania V0.6.7, http://titania.create3000.de"
+
+DEF Water2 Transform {
+  children [
+    DEF Timer TimeSensor {
+      cycleInterval 31104000
+      loop TRUE
+    }
+    DEF ElapsedTime ScalarInterpolator {
+      key [
+        0,
+        1
+      ]
+      keyValue [
+        0,
+        3.1104e+07
+      ]
+    }
+    DEF _1 ProximitySensor {
+      size 1000 1000 1000
+    }
+    Shape {
+      appearance Appearance {
+        shaders DEF WaterShader2 ComposedShader {
+          inputOutput SFFloat time 15.1947
+          inputOutput SFVec3f position -0 0 10
+          inputOutput SFInt32 numWaves 5
+          inputOutput MFFloat amplitude [
+            0.2,
+            0.2,
+            0.1,
+            0.1,
+            0.1
+          ]
+          inputOutput MFFloat waveLength [
+            1.1,
+            2.3,
+            3.1,
+            4.1,
+            5.3
+          ]
+          inputOutput MFFloat speed [
+            1.09,
+            0.79,
+            0.19,
+            0.29,
+            0.37
+          ]
+          inputOutput MFVec2f direction [
+            0.1 0.2,
+            0.3 0.4,
+            0.5 0.6,
+            0.7 0.8,
+            0.9 0.1
+          ]
+          inputOutput SFFloat transparency 0.5
+          inputOutput SFNode  texture ComposedCubeMapTexture {
+            front ImageTexture {
+              url "../Textures/CubeMapTextures/LostValley/lostvalley_south.jpg"
+            }
+            back ImageTexture {
+              url "../Textures/CubeMapTextures/LostValley/lostvalley_north.jpg"
+            }
+            left ImageTexture {
+              url "../Textures/CubeMapTextures/LostValley/lostvalley_west.jpg"
+            }
+            right ImageTexture {
+              url "../Textures/CubeMapTextures/LostValley/lostvalley_east.jpg"
+            }
+            bottom ImageTexture {
+              url "../Textures/CubeMapTextures/LostValley/lostvalley_down.jpg"
+            }
+            top ImageTexture {
+              url "../Textures/CubeMapTextures/LostValley/lostvalley_up.jpg"
+            }
+          }
+
+          language "GLSL"
+          parts [
+            ShaderPart {
+              url "data:text/plain,
+#version 120
+
+uniform float time;
+uniform int   numWaves;
+uniform float amplitude [8];
+uniform float waveLength [8];
+uniform float speed [8];
+uniform vec2  direction [8];
+
+varying vec3 translation;
+varying vec3 worldNormal;
+varying vec3 eyeNormal;
+
+const float pi = 3.14159;
+
+float wave (int i, float x, float y)
+{
+	float frequency = 2 * pi / waveLength [i];
+	float phase     = speed [i] * frequency;
+	float theta     = dot (direction [i], vec2 (x, y));
+	return amplitude [i] * sin (theta * frequency + time * phase);
+}
+
+float waveHeight (float x, float y)
+{
+	float height = 0.0;
+	for (int i = 0; i < numWaves; ++i)
+		height += wave (i, x, y);
+	return height;
+}
+
+float dWavedx (int i, float x, float y)
+{
+	float frequency = 2 * pi / waveLength [i];
+	float phase = speed [i] * frequency;
+	float theta = dot (direction [i], vec2 (x, y));
+	float A = amplitude [i] * direction [i] .x * frequency;
+	return A * cos (theta * frequency + time * phase);
+}
+
+float dWavedy (int i, float x, float y)
+{
+	float frequency = 2 * pi / waveLength [i];
+	float phase = speed [i] * frequency;
+	float theta = dot (direction [i], vec2 (x, y));
+	float A = amplitude [i] * direction [i] .y * frequency;
+	return A * cos (theta * frequency + time * phase);
+}
+
+vec3 waveNormal (float x, float y)
+{
+	float dx = 0.0;
+	float dy = 0.0;
+	for (int i = 0; i < numWaves; ++i)
+	{
+		dx += dWavedx (i, x, y);
+		dy += dWavedy (i, x, y);
+	}
+	vec3 n = vec3 (-dx, -dy, 1.0);
+	return normalize(n);
+}
+
+void main () {
+	vec4 pos    = gl_Vertex;
+	pos.y       = waveHeight (pos .x, pos .z);
+	translation = pos .xyz / pos .w;
+	worldNormal = waveNormal (pos .x, pos .z);
+	eyeNormal   = gl_NormalMatrix * worldNormal;
+	gl_Position = gl_ModelViewProjectionMatrix * pos;
+}
+"
+            }
+            ShaderPart {
+              type "FRAGMENT"
+              url "data:text/plain,
+#version 120
+
+varying vec3  translation;
+varying vec3  worldNormal;
+varying vec3  eyeNormal;
+uniform vec3  position;
+uniform float transparency;
+
+uniform samplerCube texture;
+
+void main ()
+{
+	vec3 eye     = normalize (position - translation);
+	vec3 r       = reflect (eye, worldNormal);
+	vec4 color   = textureCube (texture, r);
+	color.a      = 1 - transparency;
+	gl_FragColor = color;
+}
+"
+            }
+          ]
+        }
+      }
+      geometry ElevationGrid {
+        xDimension 60
+        zDimension 60
+        solid FALSE
+      }
+    }
+  ]
+}
+
+ROUTE Timer.fraction_changed TO ElapsedTime.set_fraction
+ROUTE ElapsedTime.value_changed TO WaterShader2.set_time
+ROUTE _1.position_changed TO WaterShader2.set_position

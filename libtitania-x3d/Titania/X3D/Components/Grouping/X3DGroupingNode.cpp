@@ -90,6 +90,12 @@ X3DGroupingNode::initialize ()
 	X3DChildNode::initialize ();
 	X3DBoundedObject::initialize ();
 
+	visible               .isTainted (true);
+	pointingDeviceSensors .isTainted (true);
+	localFogs             .isTainted (true);
+	collectables          .isTainted (true);
+	childNodes            .isTainted (true);
+
 	addChildren ()    .addInterest (this, &X3DGroupingNode::set_addChildren);
 	removeChildren () .addInterest (this, &X3DGroupingNode::set_removeChildren);
 	children ()       .addInterest (this, &X3DGroupingNode::set_children);

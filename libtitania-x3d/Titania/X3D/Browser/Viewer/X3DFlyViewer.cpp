@@ -295,7 +295,7 @@ X3DFlyViewer::fly ()
 	// Rotation
 
 	float weight = ROTATION_SPEED_FACTOR * dt;
-	weight *= rubberBandLength / (rubberBandLength + ROTATION_LIMIT);
+	weight *= std::pow (rubberBandLength / (rubberBandLength + ROTATION_LIMIT), 2);
 
 	viewpoint -> orientationOffset () *= slerp (Rotation4f (), rubberBandRotation, weight);
 
