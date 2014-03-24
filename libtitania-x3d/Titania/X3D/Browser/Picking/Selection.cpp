@@ -105,7 +105,7 @@ Selection::addChildren (const MFNode & value)
 				continue;
 
 			if (child -> getExecutionContext () == getBrowser () -> getExecutionContext ())
-				child -> addHandle (&active);
+				child -> addHandle ();
 
 			children .emplace_back (child);
 		}

@@ -1,5 +1,57 @@
 2014-03-24  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* libtitania-x3d.cproj:
+	* Struct.h:
+	* SFTime.h:
+	* Parser.h:
+	* X3DField.h:
+	* Scene.h:
+	* Parser.cpp:
+	* SFTime.cpp:
+	* X3DSFNode.h:
+	* X3DMFNode.h:
+	* Proto.cpp:
+	* Scene.cpp:
+	* TraverseType.h:
+	* X3DBaseNode.h:
+	* X3DScene.h:
+	* SceneLoader.h:
+	* X3DArrayField.h:
+	* X3DChildObject.h:
+	* X3DScene.cpp:
+	* SceneLoader.cpp:
+	* X3DChildObject.cpp:
+	* ExportedNode.h:
+	* Notification.cpp:
+	* X3DRenderer.cpp:
+	* TransformHandle.h:
+	* ExportedNode.cpp:
+	* Shape.cpp:
+	* Sound.cpp:
+	* TransformHandle.cpp:
+	* X3DBrowserContext.cpp:
+	* Selection.cpp:
+	* Inline.h:
+	* Transform.h:
+	* X3DExecutionContext.h:
+	* Inline.cpp:
+	* X3DExecutionContext.cpp:
+	* Transform.cpp:
+	* LayoutGroup.cpp:
+	* jsBrowser.h:
+	* Billboard.cpp:
+	* X3DLightNode.cpp:
+	* X3DLayerNode.cpp:
+	* jsBrowser.cpp:
+	* X3DGroupingNode.cpp:
+	* X3DPrototypeInstance.cpp:
+	* RenderingProperties.cpp:
+	* ParticleSystem.cpp:
+	* ProximitySensor.cpp:
+	* X3DBackgroundNode.cpp: 
+
+2014-03-24  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* X3DChildObject.cpp:
 	* ProximitySensor.h:
 	* ProximitySensor.cpp: 

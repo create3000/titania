@@ -65,78 +65,15 @@ X3DChildObject::addParent (X3DChildObject* const parent)
 	parents  .emplace (parent);
 }
 
-//void
-//X3DChildObject::replaceParent (X3DChildObject* const parentToRemove, X3DChildObject* const parentToAdd)
-//{
-//	parents .erase (parentToRemove)
-//	parents .emplace (parentToAdd);
-//}
+void
+X3DChildObject::replaceParent (X3DChildObject* const parentToRemove, X3DChildObject* const parentToAdd)
+{
+	if (root == parentToRemove)
+		root = parentToAdd;
 
-//	///  Move constructor.
-//	X3DArrayField (X3DArrayField && field) :
-//		X3DField <internal_type> (field .get ())
-//	{
-//		for (auto & value : get ())
-//			value -> replaceParent (&field, this);
-//
-//		field .get () .clear ();
-//		field .addEvent ();
-//	}
-
-//	X3DArrayField &
-//	operator = (X3DArrayField && field)
-//	{
-//		if (&field == this)
-//			return *this;
-//
-//		clear (); // addEvent ();
-//
-//		get () = field .get ();
-//
-//		for (auto & value : get ())
-//			value -> replaceParent (&field, this);
-//
-//		field .get () .clear ();
-//		field .addEvent ();
-//
-//		return *this;
-//	}
-
-//	X3DSFNode (X3DSFNode && field) :
-//		X3DField <ValueType*> (field .getValue ())
-//	{
-//		if (getValue ())
-//		{
-//			getValue () -> replaceParent (&field, this);
-//			field .set (nullptr);
-//			field .addEvent ();
-//		}
-//	}
-
-//template <class ValueType>
-//template <class Up>
-//inline
-//X3DSFNode <ValueType> &
-//X3DSFNode <ValueType>::operator = (X3DSFNode <Up> && field)
-//{
-// if (&field == this)
-//    return;
-//
-// removeNode (getValue ());
-//
-//	X3DField <ValueType*>::set (dynamic_cast <ValueType*> (field .getValue ()));
-//
-//	if (getValue ())
-//	{
-//		getValue () -> replaceParent (&field, this);
-//		field .set (nullptr);
-//		field .addEvent ();
-//	}
-//
-// addEvent ();
-//
-//	return *this;
-//}
+	parents .erase (parentToRemove);
+	parents .emplace (parentToAdd);
+}
 
 void
 X3DChildObject::removeParent (X3DChildObject* const parent)

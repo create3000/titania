@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,105 +48,13 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_FIELDS_SFTIME_H__
-#define __TITANIA_X3D_FIELDS_SFTIME_H__
-
-#include "../Basic/X3DField.h"
-#include "../Fields/X3DScalar.h"
-#include "../Types/Numbers.h"
+#ifndef __TITANIA_X3D_TYPES_STRUCT_H__
+#define __TITANIA_X3D_TYPES_STRUCT_H__
 
 namespace titania {
 namespace X3D {
 
-class SFTime :
-	public X3DField <time_type>
-{
-public:
-
-	typedef time_type value_type;
-
-	using X3DField <time_type>::addInterest;
-	using X3DField <time_type>::operator =;
-
-	SFTime ();
-
-	SFTime (const SFTime &);
-
-	explicit
-	SFTime (const time_type);
-
-	virtual
-	SFTime*
-	create () const final override
-	{ return new SFTime (); }
-
-	SFTime*
-	clone () const
-	throw (Error <NOT_SUPPORTED>)
-	{ return new SFTime (*this); }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	X3DConstants::FieldType
-	getType () const final override
-	{ return type; }
-
-	std::string
-	toLocaleString () const;
-
-	///  6.7.7 Add field interest.
-
-	template <class Class>
-	void
-	addInterest (Class* const object, void (Class::* memberFunction) (const SFTime &)) const
-	{ addInterest (object, memberFunction, std::cref (*this)); }
-
-	template <class Class>
-	void
-	addInterest (Class & object, void (Class::* memberFunction) (const SFTime &)) const
-	{ addInterest (object, memberFunction, std::cref (*this)); }
-
-	template <class Class>
-	void
-	addInterest (Class* const object, void (Class::* memberFunction) (time_type)) const
-	{ addInterest (object, memberFunction, std::cref (this -> getValue ())); }
-
-	template <class Class>
-	void
-	addInterest (Class & object, void (Class::* memberFunction) (time_type)) const
-	{ addInterest (object, memberFunction, std::cref (this -> getValue ())); }
-
-	///  @name Input/Output
-
-	virtual
-	void
-	fromStream (std::istream &)
-	throw (Error <INVALID_X3D>,
-	       Error <NOT_SUPPORTED>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override;
-
-	virtual
-	void
-	toStream (std::ostream &) const final override;
-
-	virtual
-	void
-	toXMLStream (std::ostream &) const final override;
-
-
-private:
-
-	static const std::string typeName;
-
-	static const X3DConstants::FieldType type;
-
-};
+struct CloneType { };
 
 } // X3D
 } // titania

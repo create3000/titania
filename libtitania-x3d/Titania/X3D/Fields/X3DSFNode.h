@@ -86,6 +86,7 @@ public:
 	typedef ValueType* internal_type;
 	typedef ValueType* value_type;
 
+	using X3DField <ValueType*>::addEvent;
 	using X3DField <ValueType*>::operator =;
 	using X3DField <ValueType*>::addInterest;
 	using X3DField <ValueType*>::setValue;
@@ -108,17 +109,29 @@ public:
 	{ }
 
 	X3DSFNode (X3DSFNode && field) :
-		X3DSFNode (field .getValue ())
+		X3DField <ValueType*> (field .getValue ())
 	{
-		field = nullptr;
+		if (getValue ())
+		{
+			getValue () -> replaceParent (&field, this);
+			field .reset ();
+			field .addEvent ();
+		}
 	}
 
 	template <class Up>
 	explicit
 	X3DSFNode (X3DSFNode <Up> && field) :
-		X3DSFNode (dynamic_cast <ValueType*> (field .getValue ()))
+		X3DField <ValueType*> (dynamic_cast <ValueType*> (field .getValue ()))
 	{
-		field = nullptr;
+		if (getValue ())
+		{
+			getValue () -> replaceParent (&field, this);
+			field .reset ();
+			field .addEvent ();
+		}
+		else
+			field = nullptr;
 	}
 
 	//explicit
@@ -292,6 +305,9 @@ public:
 
 private:
 
+	template <class Up>
+	friend class X3DSFNode;
+
 	using X3DField <ValueType*>::reset;
 
 	void
@@ -360,8 +376,22 @@ inline
 X3DSFNode <ValueType> &
 X3DSFNode <ValueType>::operator = (X3DSFNode && field)
 {
-	X3DField <ValueType*>::operator = (field);
-	field = nullptr;
+	if (&field == this)
+		return *this;
+
+	removeNode (getValue ());
+
+	X3DField <ValueType*>::set (field .getValue ());
+
+	if (getValue ())
+	{
+		getValue () -> replaceParent (&field, this);
+		field .reset ();
+		field .addEvent ();
+	}
+
+	addEvent ();
+
 	return *this;
 }
 
@@ -371,8 +401,24 @@ inline
 X3DSFNode <ValueType> &
 X3DSFNode <ValueType>::operator = (X3DSFNode <Up> && field)
 {
-	X3DField <ValueType*>::operator = (dynamic_cast <ValueType*> (field .getValue ()));
-	field = nullptr;
+	if (&field == this)
+		return *this;
+
+	removeNode (getValue ());
+
+	X3DField <ValueType*>::set (dynamic_cast <ValueType*> (field .getValue ()));
+
+	if (getValue ())
+	{
+		getValue () -> replaceParent (&field, this);
+		field .reset ();
+		field .addEvent ();
+	}
+	else
+		field = nullptr;
+
+	addEvent ();
+
 	return *this;
 }
 

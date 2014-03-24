@@ -121,11 +121,11 @@ throw (Error <INVALID_NAME>,
 
 	executionContext -> updateProtoDeclaration (copy -> getName (), copy);
 
-	copy -> copyExternProtos (this);
-	copy -> copyProtos (this);
-	copy -> copyRootNodes (this);
-	copy -> copyImportedNodes (this);
-	copy -> copyRoutes (this);
+	copy -> importExternProtos (this);
+	copy -> importProtos (this);
+	copy -> importRootNodes (this);
+	copy -> importImportedNodes (this);
+	copy -> importRoutes (this);
 
 	copy -> getUninitializedNodes () .clear ();
 

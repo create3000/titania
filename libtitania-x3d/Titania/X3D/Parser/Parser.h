@@ -154,7 +154,7 @@ private:
 	isInsideProtoDefinition () const;
 
 	void
-	addRootNode (const SFNode &);
+	addRootNode (SFNode &&);
 
 	void
 	x3dScene ();

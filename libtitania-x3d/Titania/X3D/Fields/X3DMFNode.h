@@ -91,6 +91,10 @@ public:
 		ArrayField (std::move (field))
 	{ }
 
+	template <class Up>
+	explicit
+	X3DMFNode (X3DMFNode <Up> &&);
+
 	X3DMFNode (std::initializer_list <X3DSFNode <ValueType>>  initializer_list) :
 		ArrayField (initializer_list)
 	{ }
@@ -142,6 +146,10 @@ public:
 		return *this;
 	}
 
+	template <class Up>
+	X3DMFNode &
+	operator = (X3DMFNode <Up> &&);
+
 	virtual
 	X3DConstants::FieldType
 	getType () const final override
@@ -186,6 +194,8 @@ public:
 
 private:
 
+	using X3DArrayField <X3DSFNode <ValueType>> ::get;
+
 	///  TypeName identifer for X3DFields.
 	static const std::string typeName;
 
@@ -193,6 +203,28 @@ private:
 
 template <class ValueType>
 const std::string X3DMFNode <ValueType>::typeName ("MFNode");
+
+template <class ValueType>
+template <class Up>
+X3DMFNode <ValueType>::X3DMFNode (X3DMFNode <Up> && field) :
+	ArrayField ()
+{
+	auto       first = field .begin ();
+	const auto last  = field .end ();	
+
+	// Insert at end
+
+	for ( ; first not_eq last; ++ first)
+	{
+		ValueType* const field = new ValueType (std::move (*first));
+
+		get () .emplace_back (field);
+
+		addChild (field);
+	}
+
+	field .clear ();
+}
 
 template <class ValueType>
 X3DMFNode <ValueType>*
@@ -223,6 +255,48 @@ throw (Error <INVALID_NAME>,
 		else
 			field -> emplace_back ();
 	}
+}
+
+template <class ValueType>
+template <class Up>
+X3DMFNode <ValueType> &
+X3DMFNode <ValueType>::operator = (X3DMFNode <Up> && field)
+{
+	auto       first = field .begin ();
+	const auto last  = field .end ();
+
+	auto current = this -> begin ();
+
+	for (const auto end = this -> end (); first not_eq last && current not_eq end; ++ current, ++ first)
+		*current = std::move (*first);
+	
+	if (first == last)
+	{
+		// Remove trailing fields
+
+		const size_t count = current - this -> begin ();
+
+		removeChildren (get () .begin () + count, get () .end ());
+
+		get () .resize (count);
+	}
+	else
+	{
+		// Insert at end
+
+		for ( ; first not_eq last; ++ first)
+		{
+			ValueType* const field = new ValueType (std::move (*first));
+
+			get () .emplace_back (field);
+
+			addChild (field);
+		}
+	}
+
+	field .clear ();
+
+	return *this;
 }
 
 template <class ValueType>

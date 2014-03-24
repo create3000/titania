@@ -75,7 +75,9 @@ Scene::create (X3DExecutionContext* const executionContext) const
 
 void
 Scene::importScene (const X3DSFNode <Scene> & scene)
-throw (Error <INVALID_OPERATION_TIMING>,
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>,
+       Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	if (getBrowser () -> makeCurrent ())
@@ -99,17 +101,17 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 		//importMetaData (scene);
 
-		copyExternProtos (scene);
-		copyProtos (scene);
+		importExternProtos (scene);
+		importProtos (scene);
 
 		updateNamedNodes (scene);
-		copyRootNodes (scene);
+		importRootNodes (scene);
 
 		initialize ();
 
-		copyImportedNodes (scene);
-		copyRoutes (scene);
-		copyExportedNodes (scene);
+		importImportedNodes (scene);
+		importRoutes (scene);
+		importExportedNodes (scene);
 
 		return;
 	}

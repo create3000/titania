@@ -177,10 +177,14 @@ public:
 protected:
 
 	void
-	copyMetaData (const X3DScene* const);
+	importMetaData (const X3DScene* const)
+	throw (Error <INVALID_NAME>,
+          Error <NOT_SUPPORTED>);
 
 	void
-	copyExportedNodes (const X3DScene* const);
+	importExportedNodes (const X3DScene* const)
+	throw (Error <INVALID_NAME>,
+          Error <NOT_SUPPORTED>);
 
 
 private:

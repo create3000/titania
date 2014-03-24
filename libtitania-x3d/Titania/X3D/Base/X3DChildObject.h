@@ -72,6 +72,10 @@ public:
 	void
 	addParent (X3DChildObject* const);
 
+	///  Fast replaces @a parentToRemove with @a parentToAdd.
+	void
+	replaceParent (X3DChildObject* const, X3DChildObject* const);
+
 	///  Remove a parent from this object.
 	void
 	removeParent (X3DChildObject* const);
@@ -81,7 +85,7 @@ public:
 	getParents () const
 	{ return parents; }
 
-	///  Returns to if this object has root objects and collects in @a seen all objects seen.
+	///  Returns true if this object has root objects and collects in @a seen all objects seen.
 	virtual
 	bool
 	hasRoots (ChildObjectSet &);

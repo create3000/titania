@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -59,12 +59,11 @@
 namespace titania {
 namespace X3D {
 
-TransformHandle::TransformHandle (Transform* const transform, SFBool* const isActive, X3DExecutionContext* const executionContext) :
+TransformHandle::TransformHandle (Transform* const transform, X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	      Transform (executionContext),
 	X3DHandleObject (),
 	      transform (transform),
-	       isActive (isActive),
 	          scene (),
 	   parentMatrix (),
 	         matrix (),
@@ -91,7 +90,7 @@ TransformHandle::initialize ()
 
 		const SFNode handle = scene -> getNamedNode ("Handle");
 
-		handle -> getField ("isActive") -> addInterest (*isActive);
+		handle -> getField ("isActive") -> addInterest (getBrowser () -> getSelection () -> isActive ());
 
 		handle -> setField <SFNode> ("transform", transform);
 	}
@@ -248,7 +247,7 @@ TransformHandle::traverse (const TraverseType type)
 	getModelViewMatrix () .push ();
 	getModelViewMatrix () .mult_left (getMatrix ());
 
-	if (type == TraverseType::COLLECT) // Last chance to process events
+	if (type == TraverseType::DISPLAY) // Last chance to process events
 		reshape ();
 
 	for (const auto & rootNode : scene -> getRootNodes ())

@@ -902,7 +902,7 @@ jsBrowser::createVrmlFromURL (JSContext* context, uintN argc, jsval* vp)
 }
 
 void
-jsBrowser::setSceneAsync (const SFNode & node, MFNode & field, const X3DSFNode <Scene> & scene)
+jsBrowser::setSceneAsync (const SFNode & node, MFNode & field, X3DSFNode <Scene> && scene)
 {
 	if (scene)
 	{

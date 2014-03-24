@@ -172,10 +172,10 @@ private:
 	///  @name Event handling
 
 	void
-	setSceneAsync (const X3DSFNode <Scene> &);
+	setSceneAsync (X3DSFNode <Scene> &&);
 
 	void
-	setScene (const X3DSFNode <Scene> &);
+	setScene (X3DSFNode <Scene> &&);
 
 	void
 	requestAsyncLoad ();

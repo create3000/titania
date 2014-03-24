@@ -71,7 +71,8 @@ public:
 
 	ExportedNode*
 	copy (X3DScene* const) const
-	throw (Error <INVALID_NAME>);
+	throw (Error <INVALID_NAME>,
+          Error <NOT_SUPPORTED>);
 
 	///  @name Construction (NOT SUPPORTED)
 

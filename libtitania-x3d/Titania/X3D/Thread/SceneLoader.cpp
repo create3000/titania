@@ -149,7 +149,7 @@ SceneLoader::dispose ()
 		
 		// This must be the last command.
 
-		callback = [ ] (const X3DSFNode <Scene> &) { };
+		callback = [ ] (X3DSFNode <Scene> &&) { };
 	}
 }
 

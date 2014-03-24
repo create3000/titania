@@ -59,6 +59,7 @@
 #include "../Prototype/ExternProtoArray.h"
 #include "../Prototype/ProtoArray.h"
 #include "../Routing/RouteArray.h"
+#include "../Types/Struct.h"
 
 #include <Titania/Basic/URI.h>
 #include <map>
@@ -467,29 +468,39 @@ protected:
 	{ return uninitializedNodes; }
 
 	void
-	cloneExternProtos (const X3DExecutionContext* const);
-
-	void
-	copyExternProtos (const X3DExecutionContext* const);
-
-	void
-	cloneProtos (const X3DExecutionContext* const);
-
-	void
-	copyProtos (const X3DExecutionContext* const)
+	importExternProtos (const X3DExecutionContext* const, const CloneType &)
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>);
 
 	void
-	copyRootNodes (const X3DExecutionContext* const)
+	importExternProtos (const X3DExecutionContext* const)
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>);
 
 	void
-	copyImportedNodes (const X3DExecutionContext* const);
+	importProtos (const X3DExecutionContext* const, const CloneType &)
+	throw (Error <INVALID_NAME>,
+	       Error <NOT_SUPPORTED>);
 
 	void
-	copyRoutes (const X3DExecutionContext* const);
+	importProtos (const X3DExecutionContext* const)
+	throw (Error <INVALID_NAME>,
+	       Error <NOT_SUPPORTED>);
+
+	void
+	importRootNodes (const X3DExecutionContext* const)
+	throw (Error <INVALID_NAME>,
+	       Error <NOT_SUPPORTED>);
+
+	void
+	importImportedNodes (const X3DExecutionContext* const)
+	throw (Error <INVALID_NAME>,
+	       Error <NOT_SUPPORTED>);
+
+	void
+	importRoutes (const X3DExecutionContext* const)
+	throw (Error <INVALID_NAME>,
+	       Error <NOT_SUPPORTED>);
 
 
 private:

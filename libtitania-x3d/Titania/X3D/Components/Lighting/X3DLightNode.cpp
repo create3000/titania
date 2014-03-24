@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -74,7 +74,7 @@ X3DLightNode::X3DLightNode () :
 void
 X3DLightNode::push (const TraverseType type)
 {
-	if (type not_eq TraverseType::COLLECT)
+	if (type not_eq TraverseType::DISPLAY)
 		return;
 
 	if (on ())
@@ -90,7 +90,7 @@ X3DLightNode::push (const TraverseType type)
 void
 X3DLightNode::pop (const TraverseType type)
 {
-	if (type not_eq TraverseType::COLLECT)
+	if (type not_eq TraverseType::DISPLAY)
 		return;
 
 	if (on () and not global ())

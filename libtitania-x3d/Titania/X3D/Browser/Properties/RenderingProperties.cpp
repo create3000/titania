@@ -295,7 +295,7 @@ RenderingProperties::display ()
 
 	PolygonMode polygonMode (GL_FILL);
 
-	world -> traverse (TraverseType::COLLECT);
+	world -> traverse (TraverseType::DISPLAY);
 }
 
 void

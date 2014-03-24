@@ -107,9 +107,9 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 
 		setUnits (proto -> getUnits ());
 
-		cloneExternProtos (proto);
-		cloneProtos (proto);
-		copyRootNodes (proto);
+		importExternProtos (proto, CloneType ());
+		importProtos (proto, CloneType ());
+		importRootNodes (proto);
 	}
 
 	setExtendedEventHandling (false);
@@ -163,8 +163,8 @@ X3DPrototypeInstance::initialize ()
 
 		Proto* const proto = protoDeclaration -> getProto ();
 
-		copyImportedNodes (proto);
-		copyRoutes (proto);
+		importImportedNodes (proto);
+		importRoutes (proto);
 	}
 }
 

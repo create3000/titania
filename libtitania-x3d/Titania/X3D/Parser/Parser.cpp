@@ -275,11 +275,11 @@ Parser::isInsideProtoDefinition () const
 }
 
 void
-Parser::addRootNode (const SFNode & rootNode)
+Parser::addRootNode (SFNode && rootNode)
 {
 	//__LOG__ << this << " " << std::endl;
 
-	getExecutionContext () -> getRootNodes () .emplace_back (rootNode);
+	getExecutionContext () -> getRootNodes () .emplace_back (std::move (rootNode));
 }
 
 void
@@ -668,7 +668,7 @@ Parser::statement ()
 
 	if (nodeStatement (_node))
 	{
-		addRootNode (_node);
+		addRootNode (std::move (_node));
 		return true;
 	}
 
@@ -855,7 +855,7 @@ Parser::protoBody ()
 	SFNode _rootNodeStatement;
 
 	if (rootNodeStatement (_rootNodeStatement))
-		addRootNode (_rootNodeStatement);
+		addRootNode (std::move (_rootNodeStatement));
 
 	else
 		throw Error <INVALID_X3D> ("Expected root node statement inside PROTO body.");
@@ -2783,7 +2783,7 @@ Parser::mfnodeValue (MFNode* _field)
 
 	if (nodeStatement (value))
 	{
-		_field -> emplace_back (value);
+		_field -> emplace_back (std::move (value));
 		return true;
 	}
 
@@ -2811,7 +2811,7 @@ Parser::nodeStatements (MFNode* _field)
 	SFNode _node;
 
 	while (nodeStatement (_node))
-		_field -> emplace_back (_node);
+		_field -> emplace_back (std::move (_node));
 }
 
 bool

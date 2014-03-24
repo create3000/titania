@@ -447,7 +447,7 @@ sub node {
 	
 	my $node = {
 		context           => $self -> {contexts} -> [0],
-	   typeName          => $xml -> getName (),
+		typeName          => $xml -> getName (),
 		fields            => [ ],
 		fieldIndex        => { },
 		userDefinedFields => [ ]

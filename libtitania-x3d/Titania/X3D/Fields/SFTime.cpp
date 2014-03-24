@@ -71,27 +71,14 @@ SFTime::SFTime (const time_type value) :
 std::string
 SFTime::toLocaleString () const
 {
+	constexpr size_t BUFFER_SIZE = 128;
+
 	time_t time = getValue ();
 
-	char   buffer [80];
-	size_t size = std::strftime (buffer, 80, "%a, %d %b %Y %H:%M:%S %Z", std::localtime (&time));
+	char   buffer [BUFFER_SIZE];
+	size_t size = std::strftime (buffer, BUFFER_SIZE, "%a, %d %b %Y %H:%M:%S %Z", std::localtime (&time));
 
 	std::string string (buffer, buffer + size);
-
-	return string;
-}
-
-std::string
-SFTime::toUTCString () const
-{
-	const auto   locale = std::locale::global (std::locale::classic ());
-	const time_t time   = getValue ();
-	
-	char buffer [80];
-	const size_t size = std::strftime (buffer, 80, "%a, %d %b %Y %H:%M:%S %Z", std::gmtime (&time));
-	const std::string string (buffer, buffer + size);
-
-	std::locale::global (locale);
 
 	return string;
 }

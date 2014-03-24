@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -74,7 +74,7 @@ public:
 	void
 	clone (X3DExecutionContext* const, X3DFieldDefinition* field) const
 	throw (Error <INVALID_NAME>,
-          Error <NOT_SUPPORTED>) override
+	       Error <NOT_SUPPORTED>) override
 	{ static_cast <X3DField*> (field) -> set (value); }
 
 	///  @name Assignment operators
@@ -109,12 +109,13 @@ public:
 	{ return typeName; }
 
 	///  @name Element access
-	
+
 	virtual
 	bool
 	isDefaultValue () const final override
 	{
 		static const ValueType defaultValue = ValueType ();
+
 		return value == defaultValue;
 	}
 
@@ -192,7 +193,6 @@ public:
 		reset (); // Reset as final step when parents empty.
 	}
 
-
 protected:
 
 	/// @name Construction
@@ -200,34 +200,40 @@ protected:
 	///  Default constructor.
 	X3DField () :
 		X3DFieldDefinition (),
-		value ()
+		             value ()
 	{ }
 
 	///  Copy constructor.
 	X3DField (const X3DField & field) :
 		X3DFieldDefinition (),
-		value (field .getValue ())
+		             value (field .getValue ())
 	{ }
 
 	///  Value constructor.
 	explicit
 	X3DField (const ValueType & value) :
 		X3DFieldDefinition (),
-		value (value)
+		             value (value)
 	{ }
 
 	///  Move Value constructor.
 	explicit
 	X3DField (ValueType && value) :
 		X3DFieldDefinition (),
-		value (value)
+		             value (std::move (value))
 	{ }
 
 	/// @name Member access
 
 	///  Get a non const value.
 	ValueType &
-	get () { return value; }
+	get ()
+	{ return value; }
+
+	///  Move @a _value.
+	void
+	move (ValueType && _value)
+	{ value = std::move (_value); }
 
 	///  Set this field to its default value.
 	virtual
@@ -237,7 +243,6 @@ protected:
 
 
 private:
-
 
 	/// @name Static members
 

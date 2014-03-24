@@ -127,7 +127,7 @@ Billboard::rotate (const TraverseType type) const
 
 			const Rotation4f rotation (vector, normal);
 
-			getModelViewMatrix () .mult_left (Matrix4f (rotation));                                      // rotate zAxis in plane
+			getModelViewMatrix () .mult_left (Matrix4f (rotation));                            // rotate zAxis in plane
 		}
 	}
 	catch (const std::domain_error &)

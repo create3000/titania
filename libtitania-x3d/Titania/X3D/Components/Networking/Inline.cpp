@@ -108,7 +108,7 @@ Inline::initialize ()
 
 	if (scene)
 	{
-		setScene (scene);
+		setScene (std::move (scene));
 		setLoadState (COMPLETE_STATE);
 	}
 
@@ -134,11 +134,11 @@ Inline::initialize ()
 }
 
 void
-Inline::setSceneAsync (const X3DSFNode <Scene> & value)
+Inline::setSceneAsync (X3DSFNode <Scene> && value)
 {
 	if (value)
 	{
-		setScene (value);
+		setScene (std::move (value));
 		setLoadState (COMPLETE_STATE);
 	}
 	else
@@ -149,12 +149,12 @@ Inline::setSceneAsync (const X3DSFNode <Scene> & value)
 }
 
 void
-Inline::setScene (const X3DSFNode <Scene> & value)
+Inline::setScene (X3DSFNode <Scene> && value)
 {
 	if (scene)
 		scene -> getRootNodes () .removeInterest (group -> children ());
 
-	scene = value;
+	scene = std::move (value);
 
 	if (initialized)
 		scene -> setup ();

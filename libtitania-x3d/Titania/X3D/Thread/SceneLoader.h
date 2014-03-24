@@ -68,7 +68,7 @@ class SceneLoader :
 {
 public:
 
-	typedef std::function <void (const X3DSFNode <Scene> &)> Callback;
+	typedef std::function <void (X3DSFNode <Scene> &&)> Callback;
 
 	SceneLoader (X3DExecutionContext* const, const MFString &, const Callback &);
 

@@ -100,7 +100,9 @@ public:
 
 	void
 	importScene (const X3DSFNode <Scene> &)
-	throw (Error <INVALID_OPERATION_TIMING>,
+	throw (Error <INVALID_NAME>,
+	       Error <NOT_SUPPORTED>,
+	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
 	///  @name Destruction

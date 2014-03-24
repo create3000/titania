@@ -1,10 +1,10 @@
-#VRML V2.0 utf8 Titania
+#X3D V3.3 utf8 Titania
 
 DEF _1 Inline {
   url [
+    "../../Examples/Vattenfall/stage/index.wrl",
     "../../Examples/TreasureIsland/stage/index.wrl",
     "../PROTO/GoldenSpheresProto.wrl"
-    "../../Examples/Vattenfall/stage/index.wrl",
     "../Texturing/MovieTexture.wrl"
     "../Geospatial/GeoCoordinate.wrl"
     "../Scripting/Script-vrmlscript1.wrl"
@@ -15,7 +15,7 @@ DEF _1 Inline {
 }
 
 DEF Timer TimeSensor {
-  cycleInterval 5
+  cycleInterval 3
   loop TRUE
 }
 

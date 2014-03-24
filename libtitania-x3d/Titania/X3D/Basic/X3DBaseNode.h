@@ -227,7 +227,7 @@ public:
 
 	virtual
 	void
-	addHandle (SFBool* const)
+	addHandle ()
 	{ }
 
 	virtual

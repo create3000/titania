@@ -642,6 +642,7 @@
     <None Include="Titania\X3D\Components\Grouping\X3DTransformMatrix4DNode.h" />
     <None Include="Titania\X3D\InputOutput\X3DBaseGenerator.h" />
     <None Include="Titania\X3D\Types\Nodes.h" />
+    <None Include="Titania\X3D\Types\Struct.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

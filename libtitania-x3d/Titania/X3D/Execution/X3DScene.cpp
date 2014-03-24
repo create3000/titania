@@ -197,14 +197,18 @@ throw (Error <INVALID_NAME>,
 // Import handling
 
 void
-X3DScene::copyMetaData (const X3DScene* const scene)
+X3DScene::importMetaData (const X3DScene* const scene)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>)
 {
 	for (const auto & metaData : scene -> getMetaDatas ())
 		addMetaData (metaData .first, metaData .second);
 }
 
 void
-X3DScene::copyExportedNodes (const X3DScene* const scene)
+X3DScene::importExportedNodes (const X3DScene* const scene)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>)
 {
 	for (const auto & exportedNode : scene -> getExportedNodes ())
 		exportedNode -> copy (this);
@@ -256,7 +260,7 @@ X3DScene::toStream (std::ostream & ostream) const
 			<< Generator::Space
 			<< getBrowser () -> getName ()
 			<< " V"
-			<< getBrowser () -> getVersion ();		
+			<< getBrowser () -> getVersion ();
 	}
 	else
 	{
@@ -301,8 +305,8 @@ X3DScene::toStream (std::ostream & ostream) const
 
 		ostream << Generator::TidyBreak;
 	}
-	
-	{ // Unit
+
+	{        // Unit
 		bool empty = true;
 
 		for (const auto & unit : getUnits ())
@@ -310,7 +314,7 @@ X3DScene::toStream (std::ostream & ostream) const
 			if (unit .getConversion () not_eq 1)
 			{
 				empty = false;
-			
+
 				ostream
 					<< unit
 					<< Generator::Break;
@@ -383,7 +387,7 @@ void
 X3DScene::toXMLStream (std::ostream & ostream) const
 {
 	auto version = getVersion ();
-	
+
 	if (version == VRML_V2_0)
 		version = LATEST_VERSION;
 
@@ -406,7 +410,7 @@ X3DScene::toXMLStream (std::ostream & ostream) const
 		<< Generator::ForceBreak;
 
 	ostream
-		<<	"<X3D"
+		<< "<X3D"
 		<< Generator::Space
 		<< "profile='"
 		<< (getProfile () ? getProfile () -> getName () : "Full")
@@ -489,7 +493,7 @@ X3DScene::toXMLStream (std::ostream & ostream) const
 		try
 		{
 			ostream
-				<<	XMLEncode (exportedNode)
+				<< XMLEncode (exportedNode)
 				<< Generator::Break;
 		}
 		catch (const X3DError &)

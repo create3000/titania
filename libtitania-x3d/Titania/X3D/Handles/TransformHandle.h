@@ -67,7 +67,7 @@ public:
 
 	///  @name Construction
 
-	TransformHandle (Transform* const, SFBool* const, X3DExecutionContext* const);
+	TransformHandle (Transform* const, X3DExecutionContext* const);
 
 	///  @name Fields
 
@@ -216,7 +216,7 @@ public:
 
 	virtual
 	void
-	addHandle (SFBool* const) final override
+	addHandle () final override
 	{ }
 
 	virtual
@@ -276,7 +276,6 @@ private:
 	///  @name Members
 
 	Transform* const   transform;
-	SFBool* const      isActive;
 	X3DSFNode <Scene>  scene;
 
 	Matrix4d parentMatrix;

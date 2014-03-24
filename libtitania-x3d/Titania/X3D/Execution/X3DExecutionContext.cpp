@@ -774,28 +774,34 @@ throw (Error <INVALID_NODE>,
 // Import handling
 
 void
-X3DExecutionContext::cloneExternProtos (const X3DExecutionContext* const executionContext)
+X3DExecutionContext::importExternProtos (const X3DExecutionContext* const executionContext, const CloneType &)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>)
 {
 	for (const auto & externProto : executionContext -> getExternProtoDeclarations ())
 		externProto -> clone (this);
 }
 
 void
-X3DExecutionContext::copyExternProtos (const X3DExecutionContext* const executionContext)
+X3DExecutionContext::importExternProtos (const X3DExecutionContext* const executionContext)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>)
 {
 	for (const auto & externProto : executionContext -> getExternProtoDeclarations ())
 		externProto -> copy (this);
 }
 
 void
-X3DExecutionContext::cloneProtos (const X3DExecutionContext* const executionContext)
+X3DExecutionContext::importProtos (const X3DExecutionContext* const executionContext, const CloneType &)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>)
 {
 	for (const auto & proto : executionContext -> getProtoDeclarations ())
 		proto -> clone (this);
 }
 
 void
-X3DExecutionContext::copyProtos (const X3DExecutionContext* const executionContext)
+X3DExecutionContext::importProtos (const X3DExecutionContext* const executionContext)
 throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>)
 {
@@ -804,7 +810,7 @@ throw (Error <INVALID_NAME>,
 }
 
 void
-X3DExecutionContext::copyRootNodes (const X3DExecutionContext* const executionContext)
+X3DExecutionContext::importRootNodes (const X3DExecutionContext* const executionContext)
 throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>)
 {
@@ -819,14 +825,18 @@ throw (Error <INVALID_NAME>,
 }
 
 void
-X3DExecutionContext::copyImportedNodes (const X3DExecutionContext* const executionContext)
+X3DExecutionContext::importImportedNodes (const X3DExecutionContext* const executionContext)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>)
 {
 	for (const auto & importedNode : executionContext -> getImportedNodes ())
 		importedNode -> copy (this);
 }
 
 void
-X3DExecutionContext::copyRoutes (const X3DExecutionContext* const executionContext)
+X3DExecutionContext::importRoutes (const X3DExecutionContext* const executionContext)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>)
 {
 	for (const auto & route : executionContext -> getRoutes ())
 		route -> copy (this);

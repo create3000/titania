@@ -85,9 +85,9 @@ Transform::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-Transform::addHandle (SFBool* const isActive)
+Transform::addHandle ()
 {
-	X3DTransformNode::addHandle (new TransformHandle (this, isActive, getExecutionContext ()));
+	X3DTransformNode::addHandle (new TransformHandle (this, getExecutionContext ()));
 }
 
 } // X3D

@@ -97,7 +97,8 @@ throw (Error <INVALID_NAME>,
 
 ExportedNode*
 ExportedNode::copy (X3DScene* const scene) const
-throw (Error <INVALID_NAME>)
+throw (Error <INVALID_NAME>,
+       Error <NOT_SUPPORTED>)
 {
 	try
 	{
