@@ -445,9 +445,6 @@ private:
 	void
 	set_navigationInfo_type ();
 
-	void
-	motionVerifyEvent ();
-
 	// Members
 
 	SFTime initializedOutput;

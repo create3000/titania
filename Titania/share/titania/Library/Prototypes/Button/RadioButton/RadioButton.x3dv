@@ -3,10 +3,12 @@
 META "generator" "Titania V0.6.7, http://titania.create3000.de"
 
 PROTO RadioButton [
-  inputOutput SFInt32 whichChoice -1
-  inputOnly   MFNode  addChildren
-  inputOnly   MFNode  removeChildren
-  inputOutput MFNode  children [ ]
+  inputOutput    SFInt32 whichChoice -1
+  initializeOnly SFVec3f bboxSize -1 -1 -1
+  initializeOnly SFVec3f bboxCenter 0 0 0
+  inputOnly      MFNode  addChildren
+  inputOnly      MFNode  removeChildren
+  inputOutput    MFNode  children [ ]
 ]
 {
   PROTO Fields [
@@ -17,6 +19,8 @@ PROTO RadioButton [
   }
 
   DEF Buttons Group {
+    bboxSize IS bboxSize
+    bboxCenter IS bboxCenter
     addChildren IS addChildren
     removeChildren IS removeChildren
     children IS children

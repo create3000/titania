@@ -92,36 +92,51 @@ bool
 X3DPointingDevice::on_motion_notify_event (GdkEventMotion* event)
 {
 	if (button == 0 or button == 1)
-	{
-		bool picked = pick (event -> x, event -> y);
-
-		if (picked)
-		{
-			if (haveSensor ())
-			{
-				if (not isOver)
-				{
-					browser -> setCursor (Gdk::HAND2);
-					isOver = true;
-				}
-
-				browser -> motionNotifyEvent ();
-
-				return false;
-			}
-		}
-
-		if (isOver)
-		{
-			browser -> setCursor (Gdk::ARROW);
-			isOver = false;
-		}
-
-		browser -> motionNotifyEvent ();
-		motionNotifyEvent (picked);
-	}
+		set_motion (event -> x, event -> y);
 
 	return false;
+}
+
+void
+X3DPointingDevice::set_motion (const double x, const double y)
+{
+	const bool picked = pick (x, y);
+
+	if (picked)
+	{
+		if (haveSensor ())
+		{
+			if (not isOver)
+			{
+				browser -> setCursor (Gdk::HAND2);
+				isOver = true;
+			}
+
+			browser -> motionNotifyEvent ();
+
+			return;
+		}
+	}
+
+	if (isOver)
+	{
+		browser -> setCursor (Gdk::ARROW);
+		isOver = false;
+	}
+
+	browser -> motionNotifyEvent ();
+	motionNotifyEvent (picked);
+}
+
+void
+X3DPointingDevice::set_verify_motion (const double x, const double y)
+{
+	// Veryfy isOver state. This is neccessay if an Switch changes on buttonReleaseEvent
+	// and the new child has a sensor node inside. This sensor node must be update to
+	// reflect the correct isOver state.
+
+	browser -> finished () .removeInterest (this, &X3DPointingDevice::set_verify_motion);
+	set_motion (x, y);
 }
 
 bool
@@ -133,7 +148,7 @@ X3DPointingDevice::on_button_press_event (GdkEventButton* event)
 
 	if (button == 1)
 	{
-		bool picked = pick (event -> x, event -> y);
+		const bool picked = pick (event -> x, event -> y);
 
 		if (picked)
 		{
@@ -142,12 +157,14 @@ X3DPointingDevice::on_button_press_event (GdkEventButton* event)
 				browser -> buttonPressEvent ();
 
 				browser -> setCursor (Gdk::HAND1);
+				
+				browser -> finished () .addInterest (this, &X3DPointingDevice::set_verify_motion, event -> x, event -> y);
 
 				return true;
 			}
 		}
 
-		bool cursor = buttonPressEvent (picked);
+		const bool cursor = buttonPressEvent (picked);
 
 		if (cursor)
 			browser -> setCursor (Gdk::FLEUR);
@@ -169,6 +186,8 @@ X3DPointingDevice::on_button_release_event (GdkEventButton* event)
 	if (event -> button == 1)
 	{
 		browser -> buttonReleaseEvent ();
+				
+		browser -> finished () .addInterest (this, &X3DPointingDevice::set_verify_motion, event -> x, event -> y);
 
 		if (not browser -> getHits () .empty ())
 		{
@@ -198,6 +217,7 @@ X3DPointingDevice::on_button_release_event (GdkEventButton* event)
 
 	return false;
 }
+
 
 bool
 X3DPointingDevice::on_leave_notify_event (GdkEventCrossing*)

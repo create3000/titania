@@ -3,16 +3,20 @@
 META "generator" "Titania V0.6.7, http://titania.create3000.de"
 
 PROTO Button [
-  inputOutput SFBool enabled TRUE
-  outputOnly  SFBool isOver
-  outputOnly  SFBool isActive
-  outputOnly  SFTime touchTime
-  inputOnly   MFNode addChildren
-  inputOnly   MFNode removeChildren
-  inputOutput MFNode children [ ]
+  inputOutput    SFBool  enabled TRUE
+  outputOnly     SFBool  isOver
+  outputOnly     SFBool  isActive
+  outputOnly     SFTime  touchTime
+  initializeOnly SFVec3f bboxSize -1 -1 -1
+  initializeOnly SFVec3f bboxCenter 0 0 0
+  inputOnly      MFNode  addChildren
+  inputOnly      MFNode  removeChildren
+  inputOutput    MFNode  children [ ]
 ]
 {
   Group {
+    bboxSize IS bboxSize
+    bboxCenter IS bboxCenter
     children [
       DEF Touch TouchSensor {
         enabled IS enabled

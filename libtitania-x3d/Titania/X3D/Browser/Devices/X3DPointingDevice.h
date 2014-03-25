@@ -113,6 +113,12 @@ private:
 	bool
 	on_motion_notify_event (GdkEventMotion*);
 
+	void
+	set_motion (const double, const double);
+
+	void
+	set_verify_motion (const double, const double);
+
 	bool
 	on_button_press_event (GdkEventButton*);
 

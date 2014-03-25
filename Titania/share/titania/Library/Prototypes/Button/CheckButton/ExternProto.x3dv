@@ -3,13 +3,15 @@
 META "title" "CheckButton"
 
 EXTERNPROTO Button [
-  exposedField SFBool enabled
-  eventOut     SFBool isOver
-  eventOut     SFBool isActive
-  eventOut     SFTime touchTime
-  eventIn      MFNode addChildren
-  eventIn      MFNode removeChildren
-  exposedField MFNode children
+  exposedField SFBool  enabled
+  eventOut     SFBool  isOver
+  eventOut     SFBool  isActive
+  eventOut     SFTime  touchTime
+  field        SFVec3f bboxSize
+  field        SFVec3f bboxCenter
+  eventIn      MFNode  addChildren
+  eventIn      MFNode  removeChildren
+  exposedField MFNode  children
 ]
 [
   "../Button/Button.x3dv",
@@ -17,13 +19,15 @@ EXTERNPROTO Button [
 ]
 
 EXTERNPROTO CheckButton [
-  exposedField SFBool enabled
-  eventOut     SFBool isActive
-  eventOut     SFTime enterTime
-  eventOut     SFTime exitTime
-  eventIn      MFNode addChildren
-  eventIn      MFNode removeChildren
-  exposedField MFNode children
+  exposedField SFBool  enabled
+  eventOut     SFBool  isActive
+  eventOut     SFTime  enterTime
+  eventOut     SFTime  exitTime
+  field        SFVec3f bboxSize
+  field        SFVec3f bboxCenter
+  eventIn      MFNode  addChildren
+  eventIn      MFNode  removeChildren
+  exposedField MFNode  children
 ]
 [
   "CheckButton.x3dv",

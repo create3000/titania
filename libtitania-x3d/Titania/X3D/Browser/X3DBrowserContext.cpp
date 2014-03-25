@@ -619,9 +619,6 @@ X3DBrowserContext::buttonPressEvent ()
 				anchor -> set_active (true);
 		}
 	}
-
-	// Veryfy isOver state. See buttonReleaseEvent.
-	finished () .addInterest (this, &X3DBrowserContext::motionVerifyEvent);
 }
 
 void
@@ -645,21 +642,6 @@ X3DBrowserContext::buttonReleaseEvent ()
 	}
 
 	activeSensors .clear ();
-
-	// Veryfy isOver state. This is neccessay if an Switch changes on buttonReleaseEvent
-	// and the new child has a sensor node inside. This sensor node must be update to
-	// reflect the correct isOver state.
-
-	finished () .addInterest (this, &X3DBrowserContext::motionVerifyEvent);
-}
-
-void
-X3DBrowserContext::motionVerifyEvent ()
-{
-	finished () .removeInterest (this, &X3DBrowserContext::motionVerifyEvent);
-
-	pick (x, y);
-	motionNotifyEvent ();
 }
 
 void

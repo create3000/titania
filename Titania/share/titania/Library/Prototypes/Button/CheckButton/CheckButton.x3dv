@@ -3,16 +3,20 @@
 META "generator" "Titania V0.6.7, http://titania.create3000.de"
 
 PROTO CheckButton [
-  inputOutput SFBool enabled FALSE
-  outputOnly  SFBool isActive
-  outputOnly  SFTime enterTime
-  outputOnly  SFTime exitTime
-  inputOnly   MFNode addChildren
-  inputOnly   MFNode removeChildren
-  inputOutput MFNode children [ ]
+  inputOutput    SFBool  enabled FALSE
+  outputOnly     SFBool  isActive
+  outputOnly     SFTime  enterTime
+  outputOnly     SFTime  exitTime
+  initializeOnly SFVec3f bboxSize -1 -1 -1
+  initializeOnly SFVec3f bboxCenter 0 0 0
+  inputOnly      MFNode  addChildren
+  inputOnly      MFNode  removeChildren
+  inputOutput    MFNode  children [ ]
 ]
 {
   DEF Switch Switch {
+    bboxSize IS bboxSize
+    bboxCenter IS bboxCenter
     addChildren IS addChildren
     removeChildren IS removeChildren
     children IS children

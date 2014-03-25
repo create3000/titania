@@ -4,13 +4,15 @@ META "generator" "Titania V0.6.7, http://titania.create3000.de"
 META "title" "Button"
 
 EXTERNPROTO Button [
-  inputOutput SFBool enabled
-  outputOnly  SFBool isOver
-  outputOnly  SFBool isActive
-  outputOnly  SFTime touchTime
-  inputOnly   MFNode addChildren
-  inputOnly   MFNode removeChildren
-  inputOutput MFNode children
+  inputOutput    SFBool  enabled
+  outputOnly     SFBool  isOver
+  outputOnly     SFBool  isActive
+  outputOnly     SFTime  touchTime
+  initializeOnly SFVec3f bboxSize
+  initializeOnly SFVec3f bboxCenter
+  inputOnly      MFNode  addChildren
+  inputOnly      MFNode  removeChildren
+  inputOutput    MFNode  children
 ]
 [
   "Button.x3dv",
