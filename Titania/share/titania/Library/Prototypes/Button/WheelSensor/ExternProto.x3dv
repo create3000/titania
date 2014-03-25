@@ -24,6 +24,21 @@ EXTERNPROTO WheelSensor [
   "file:///usr/share/titania/Library/Prototypes/Button/WheelSensor/WheelSensor.x3dv"
 ]
 
+EXTERNPROTO Number [
+  inputOutput    SFFloat value
+  inputOutput    SFInt32 precision
+  inputOutput    SFFloat length
+  inputOutput    SFFloat maxExtent
+  initializeOnly SFBool  solid
+  outputOnly     SFVec3f origin
+  outputOnly     SFVec2f textBounds
+  inputOutput    SFNode  fontStyle
+]
+[
+  "../../Geometry3D/Number/Number.x3dv",
+  "file:///usr/share/titania/Library/Prototypes/Geometry3D/Number/Number.x3dv"
+]
+
 DEF Wheel_1 Transform {
   children [
     DEF WheelSensor WheelSensor {
@@ -31,50 +46,6 @@ DEF Wheel_1 Transform {
       axisRotation 1 0 0 1.5708
       minValue -10
       maxValue 10
-    }
-    DEF WheelScript Script {
-      inputOutput SFInt32  precision 3
-      inputOnly   SFFloat  set_value
-      outputOnly  SFFloat  value_changed
-      outputOnly  MFString string_changed
-
-      url "vrmlscript:
-
-function round (value)
-{
-	var factor = Math .pow (10, precision);
-	return Math .floor (value * factor) / factor;
-}
-
-function fill (value)
-{
-	var string = String (value);
-	var point  = string .indexOf ('.');
-
-	if (point < 0)
-	{
-		string += '.';
-
-		for (var i = 0; i < precision; ++ i)
-			string += '0';	
-	}
-	else
-	{
-		var size = precision - (string .length - point - 1);
-
-		for (var i = 0; i < size; ++ i)
-			string += '0';
-	}
-
-	return string;
-}
-
-function set_value (value)
-{
-	value_changed  = value;
-	string_changed = new MFString (fill (round (value)));
-}
-"
     }
     DEF Disk Transform {
       children Shape {
@@ -93,8 +64,7 @@ function set_value (value)
         appearance Appearance {
           material Material { }
         }
-        geometry DEF Text Text {
-          string "0.000"
+        geometry DEF _1 Number {
           fontStyle FontStyle {
             family "TYPEWRITER"
             justify [
@@ -108,6 +78,5 @@ function set_value (value)
   ]
 }
 
-ROUTE WheelSensor.value_changed TO WheelScript.set_value
-ROUTE WheelScript.string_changed TO Text.set_string
 ROUTE WheelSensor.rotation_changed TO Disk.set_rotation
+ROUTE WheelSensor.value_changed TO _1.set_value

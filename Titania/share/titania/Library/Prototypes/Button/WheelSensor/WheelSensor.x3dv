@@ -110,6 +110,7 @@ function set_active (active)
 	}
 }
 "
+    directOutput TRUE
   }
 
   ROUTE CylinderTouch.rotation_changed TO Wheel.set_rotation

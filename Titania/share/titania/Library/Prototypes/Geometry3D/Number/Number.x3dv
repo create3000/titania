@@ -1,0 +1,79 @@
+#X3D V3.3 utf8 Titania V0.6.7
+
+META "generator" "Titania V0.6.7, http://titania.create3000.de"
+
+PROTO Number [
+  inputOutput    SFFloat value 0
+  inputOutput    SFInt32 precision 3
+  inputOutput    SFFloat length 0
+  inputOutput    SFFloat maxExtent 0
+  initializeOnly SFBool  solid TRUE
+  outputOnly     SFVec3f origin
+  outputOnly     SFVec2f textBounds
+  inputOutput    SFNode  fontStyle NULL
+]
+{
+  DEF Number Text {
+    maxExtent IS maxExtent
+    solid IS solid
+    origin IS origin
+    textBounds IS textBounds
+    fontStyle IS fontStyle
+  }
+
+  DEF NumberScript Script {
+    inputOutput    SFFloat value IS value
+    inputOutput    SFInt32 precision IS precision
+    inputOutput    SFFloat length IS length
+    initializeOnly SFNode  text USE Number
+
+    url "vrmlscript:
+
+function initialize ()
+{
+	set_value (value);
+}
+
+function set_value (value)
+{
+	text .string = new MFString (fill (round (value)));
+}
+
+function set_length (value)
+{
+	text .length = new MFFloat (value);
+}
+
+function round (value)
+{
+	var factor = Math .pow (10, precision);
+	return Math .floor (value * factor) / factor;
+}
+
+function fill (value)
+{
+	var string = String (value);
+	var point  = string .indexOf ('.');
+
+	if (point < 0)
+	{
+		string += '.';
+
+		for (var i = 0; i < precision; ++ i)
+			string += '0';	
+	}
+	else
+	{
+		var size = precision - (string .length - point - 1);
+
+		for (var i = 0; i < size; ++ i)
+			string += '0';
+	}
+
+	return string;
+}
+"
+    directOutput TRUE
+  }
+}
+
