@@ -36,41 +36,12 @@ function initialize ()
 
 function set_value (value)
 {
-	text .string = new MFString (fill (round (value)));
+	text .string = new MFString (value .toFixed (precision));
 }
 
 function set_length (value)
 {
 	text .length = new MFFloat (value);
-}
-
-function round (value)
-{
-	var factor = Math .pow (10, precision);
-	return Math .floor (value * factor) / factor;
-}
-
-function fill (value)
-{
-	var string = String (value);
-	var point  = string .indexOf ('.');
-
-	if (point < 0)
-	{
-		string += '.';
-
-		for (var i = 0; i < precision; ++ i)
-			string += '0';	
-	}
-	else
-	{
-		var size = precision - (string .length - point - 1);
-
-		for (var i = 0; i < size; ++ i)
-			string += '0';
-	}
-
-	return string;
 }
 "
     directOutput TRUE
