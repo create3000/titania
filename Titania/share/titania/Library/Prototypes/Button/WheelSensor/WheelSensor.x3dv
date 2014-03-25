@@ -7,8 +7,9 @@ PROTO WheelSensor [
   inputOutput SFString   description ""
   inputOutput SFRotation axisRotation 0 0 1 0
   inputOutput SFFloat    diskAngle 0.261799
-  inputOutput SFFloat    minAngle 0
-  inputOutput SFFloat    maxAngle -1
+  inputOutput SFFloat    factor 0.159155
+  inputOutput SFFloat    minValue 0
+  inputOutput SFFloat    maxValue -1
   inputOutput SFFloat    offset 0
   inputOutput SFBool     autoOffset TRUE
   outputOnly  SFBool     isActive
@@ -23,45 +24,95 @@ PROTO WheelSensor [
     description IS description
     axisRotation IS axisRotation
     diskAngle IS diskAngle
-    minAngle IS minAngle
-    maxAngle IS maxAngle
-    offset IS offset
     autoOffset IS autoOffset
-    rotation_changed IS rotation_changed
+    trackPoint_changed IS trackPoint_changed
     isOver IS isOver
     isActive IS isActive
-    trackPoint_changed IS trackPoint_changed
   }
 
   DEF Wheel Script {
     inputOnly      SFRotation set_rotation
-    inputOutput    SFRotation axisRotation IS axisRotation
+    inputOnly      SFBool     set_active
+    inputOutput    SFFloat    factor IS factor
+    inputOutput    SFFloat    minValue IS minValue
+    inputOutput    SFFloat    maxValue IS maxValue
+    inputOutput    SFFloat    offset IS offset
+    outputOnly     SFRotation rotation_changed IS rotation_changed
     outputOnly     SFFloat    value_changed IS value_changed
     initializeOnly SFVec3f    startVector 0 0 1
+    initializeOnly SFFloat    value 0
+    initializeOnly SFNode     sensor USE CylinderTouch
 
     url "vrmlscript:
 
 function initialize ()
 {
-	startVector = axisRotation .multVec (new SFVec3f (0, 0, 1));
+	set_offset ();
 }
 
-function set_rotation (value)
+function set_factor ()
 {
-	var endVector     = value .multVec (new SFVec3f (0, 0, 1));
+	set_offset ();
+}
+
+function set_offset ()
+{
+	value          = offset;
+	sensor .offset = -offset / factor;
+}
+
+function set_rotation (rotation)
+{
+	var endVector     = rotation .multVec (sensor .axisRotation .multVec (new SFVec3f (0, 0, 1)));
 	var deltaRotation = new SFRotation (startVector, endVector);
 
 	startVector = endVector;
 
-	var axis  = axisRotation .multVec (new SFVec3f (0, 1, 0));
+	var axis  = sensor .axisRotation .multVec (new SFVec3f (0, 1, 0));
 	var angle = axis .dot (deltaRotation .getAxis ());
 	var sign  = angle < 0 ? 1 : -1;
-	
-	value_changed += sign * deltaRotation .angle;
+
+	value += sign * deltaRotation .angle * factor;
+
+	if (minValue > maxValue || (value > minValue && value < maxValue))
+	{
+		rotation_changed = rotation_changed .multiply (deltaRotation);
+		value_changed    = value;
+	}
+	else
+	{
+		value = Math .max (minValue, Math .min (maxValue, value));
+
+		if (value != value_changed)
+		{
+			var axis = sensor .axisRotation .multVec (new SFVec3f (0, 1, 0));
+			
+			rotation_changed = new SFRotation (axis, -value / factor);
+			value_changed    = value;
+		}
+	}
+}
+
+function set_active (active)
+{
+	if (active)
+	{
+		var axis = sensor .axisRotation .multVec (new SFVec3f (0, 1, 0));
+
+		rotation_changed = new SFRotation (axis, sensor .offset);
+		startVector      = rotation_changed .multVec (sensor .axisRotation .multVec (new SFVec3f (0, 0, 1)));
+		value            = offset;
+	}
+	else
+	{
+		if (sensor .autoOffset)
+			offset = value;
+	}
 }
 "
   }
 
   ROUTE CylinderTouch.rotation_changed TO Wheel.set_rotation
+  ROUTE CylinderTouch.isActive TO Wheel.set_active
 }
 

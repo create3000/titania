@@ -166,7 +166,7 @@ CylinderSensor::set_active (const HitPtr & hit, const bool active)
 			const auto hitPoint = hit -> point * inverseModelViewMatrix;
 
 			const Vector3d yAxis = Vector3d (0, 1, 0) * Rotation4d (axisRotation () .getValue ());                 // Local y-axis
-			const Vector3d zAxis = inverseModelViewMatrix .mult_dir_matrix (Vector3f (0, 0, 1) * axisRotation ()); // Camera direction
+			const Vector3d zAxis = inverseModelViewMatrix .mult_dir_matrix (Vector3f (0, 0, 1));                   // Camera direction
 
 			const auto axis    = Line3d (Vector3d (), yAxis);
 			const auto pvector = axis .perpendicular_vector (hitPoint);

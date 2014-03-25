@@ -8,8 +8,9 @@ EXTERNPROTO WheelSensor [
   inputOutput SFString   description
   inputOutput SFRotation axisRotation
   inputOutput SFFloat    diskAngle
-  inputOutput SFFloat    minAngle
-  inputOutput SFFloat    maxAngle
+  inputOutput SFFloat    factor
+  inputOutput SFFloat    minValue
+  inputOutput SFFloat    maxValue
   inputOutput SFFloat    offset
   inputOutput SFBool     autoOffset
   outputOnly  SFBool     isActive
@@ -27,13 +28,11 @@ DEF Wheel_1 Transform {
   rotation 1 0 0 1.5708
   children [
     DEF WheelSensor WheelSensor {
-      description "Wheel"
-      minAngle -6
-      maxAngle 1
-      offset -6
+      description "WheelSensor"
+      minValue -10
+      maxValue 10
     }
     DEF WheelScript Script {
-      inputOutput SFFloat  factor 1
       inputOutput SFInt32  precision 3
       inputOnly   SFFloat  set_value
       outputOnly  SFFloat  value_changed
@@ -72,18 +71,23 @@ function fill (value)
 
 function set_value (value)
 {
-	value *= factor;
-
 	value_changed  = value;
 	string_changed = new MFString (fill (round (value)));
 }
 "
     }
     DEF Disk Transform {
-      rotation -0 -1 -0 6
       children Shape {
         appearance Appearance {
           material Material { }
+          texture ImageTexture {
+            url [
+              "../../../Textures/People/Lena.jpg",
+              "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/People/Lena.jpg"
+            ]
+            repeatS FALSE
+            repeatT FALSE
+          }
         }
         geometry Cylinder {
           height 1
@@ -98,7 +102,7 @@ function set_value (value)
           material Material { }
         }
         geometry DEF Text Text {
-          string "-0.284"
+          string "0.000"
           fontStyle FontStyle {
             family "TYPEWRITER"
             justify [
