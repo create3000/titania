@@ -38,5 +38,3 @@ function set_whichChoice (value)
     directOutput TRUE
   }
 }
-
-BooleanSwitch { }
