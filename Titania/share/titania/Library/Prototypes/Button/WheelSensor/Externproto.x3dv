@@ -25,10 +25,10 @@ EXTERNPROTO WheelSensor [
 ]
 
 DEF Wheel_1 Transform {
-  rotation 1 0 0 1.5708
   children [
     DEF WheelSensor WheelSensor {
       description "WheelSensor"
+      axisRotation 1 0 0 1.5708
       minValue -10
       maxValue 10
     }
@@ -80,23 +80,15 @@ function set_value (value)
       children Shape {
         appearance Appearance {
           material Material { }
-          texture ImageTexture {
-            url [
-              "../../../Textures/People/Lena.jpg",
-              "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/People/Lena.jpg"
-            ]
-            repeatS FALSE
-            repeatT FALSE
-          }
         }
-        geometry Cylinder {
-          height 1
+        geometry ArcClose2D {
+          startAngle 1.76715
+          endAngle 1.37445
         }
       }
     }
     DEF Number_1 Transform {
-      translation 0 -7.39098e-06 -2
-      rotation 1 0 0 4.71239
+      translation 0 2 0
       children Shape {
         appearance Appearance {
           material Material { }
