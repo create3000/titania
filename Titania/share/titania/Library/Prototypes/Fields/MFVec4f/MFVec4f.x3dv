@@ -13,7 +13,7 @@ PROTO MFVec4f [
     inputOutput MFVec4f keyValue IS keyValue
     outputOnly  MFVec4f value_changed IS value_changed
 
-    url "vrmlscript:
+    url "javascript:
 function set_triggerTime (value, time)
 {
 	value_changed = keyValue;

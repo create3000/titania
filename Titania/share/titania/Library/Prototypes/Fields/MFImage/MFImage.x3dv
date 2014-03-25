@@ -13,7 +13,7 @@ PROTO MFImage [
     inputOutput MFImage keyValue IS keyValue
     outputOnly  MFImage value_changed IS value_changed
 
-    url "vrmlscript:
+    url "javascript:
 function set_triggerTime (value, time)
 {
 	value_changed = keyValue;

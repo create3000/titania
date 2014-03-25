@@ -20,7 +20,8 @@ PROTO QuadSphere [
     inputOutput    SFFloat radius IS radius
     initializeOnly SFNode  geometry USE Geometry
 
-    url "vrmlscript:
+    url "javascript:
+
 function initialize ()
 {
 	eventsProcessed ();

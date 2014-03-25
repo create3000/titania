@@ -27,7 +27,7 @@ PROTO Number [
     inputOutput    SFFloat length IS length
     initializeOnly SFNode  text USE Number
 
-    url "vrmlscript:
+    url "javascript:
 
 function initialize ()
 {

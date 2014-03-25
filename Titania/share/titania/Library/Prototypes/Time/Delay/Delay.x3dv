@@ -22,7 +22,8 @@ PROTO Delay [
       isActive IS isActive
     }
 
-    url "vrmlscript:
+    url "javascript:
+
 function initialize ()
 {
 	if (timeSensor .enabled && startTime)

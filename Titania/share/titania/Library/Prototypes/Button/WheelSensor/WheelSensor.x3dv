@@ -43,7 +43,7 @@ PROTO WheelSensor [
     initializeOnly SFFloat    value 0
     initializeOnly SFNode     sensor USE CylinderTouch
 
-    url "vrmlscript:
+    url "javascript:
 
 function initialize ()
 {

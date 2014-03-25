@@ -17,7 +17,7 @@ PROTO RoundedRectangle2D [
     initializeOnly SFFloat cornerDimension 10
     initializeOnly SFNode  geometry USE Geometry
 
-    url "vrmlscript:
+    url "javascript:
 
 function initialize ()
 {

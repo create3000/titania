@@ -34,7 +34,7 @@ PROTO CheckButton [
     inputOutput    SFBool enabled IS enabled
     initializeOnly SFNode self USE CheckButton
 
-    url "vrmlscript:
+    url "javascript:
 
 function initialize ()
 {

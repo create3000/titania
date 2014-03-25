@@ -41,7 +41,7 @@ PROTO $name [
     exposedField  $name  keyValue IS keyValue
     eventOut      $name  value_changed IS value_changed
 
-    url \"vrmlscript:
+    url \"javascript:
 function set_triggerTime (value, time)
 {
 	value_changed = keyValue;

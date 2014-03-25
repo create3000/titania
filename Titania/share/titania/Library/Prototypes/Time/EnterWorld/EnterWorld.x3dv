@@ -10,7 +10,8 @@ PROTO EnterWorld [
     outputOnly SFBool isActive IS isActive
     outputOnly SFTime enterTime IS enterTime
 
-    url "vrmlscript:
+    url "javascript:
+
 function initialize ()
 {
 	isActive = true;

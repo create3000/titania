@@ -13,7 +13,7 @@ PROTO SFColorRGBA [
     inputOutput SFColorRGBA keyValue IS keyValue
     outputOnly  SFColorRGBA value_changed IS value_changed
 
-    url "vrmlscript:
+    url "javascript:
 function set_triggerTime (value, time)
 {
 	value_changed = keyValue;

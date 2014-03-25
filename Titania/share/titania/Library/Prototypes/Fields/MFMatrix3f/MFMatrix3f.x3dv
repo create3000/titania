@@ -13,7 +13,7 @@ PROTO MFMatrix3f [
     inputOutput MFMatrix3f keyValue IS keyValue
     outputOnly  MFMatrix3f value_changed IS value_changed
 
-    url "vrmlscript:
+    url "javascript:
 function set_triggerTime (value, time)
 {
 	value_changed = keyValue;

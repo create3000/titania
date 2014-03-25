@@ -13,7 +13,7 @@ PROTO SFMatrix3d [
     inputOutput SFMatrix3d keyValue IS keyValue
     outputOnly  SFMatrix3d value_changed IS value_changed
 
-    url "vrmlscript:
+    url "javascript:
 function set_triggerTime (value, time)
 {
 	value_changed = keyValue;

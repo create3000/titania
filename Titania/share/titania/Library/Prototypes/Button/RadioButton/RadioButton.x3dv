@@ -38,7 +38,8 @@ PROTO RadioButton [
     }
     initializeOnly SFNode  self USE RadioButton
 
-    url "vrmlscript:
+    url "javascript:
+
 function initialize ()
 {
 	set_children (buttons .children);
