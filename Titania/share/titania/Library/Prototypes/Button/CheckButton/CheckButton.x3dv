@@ -1,0 +1,94 @@
+#X3D V3.3 utf8 Titania V0.6.7
+
+META "generator" "Titania V0.6.7, http://titania.create3000.de"
+
+PROTO CheckButton [
+  inputOutput SFBool enabled FALSE
+  outputOnly  SFBool isActive
+  outputOnly  SFTime enterTime
+  outputOnly  SFTime exitTime
+  inputOnly   MFNode addChildren
+  inputOnly   MFNode removeChildren
+  inputOutput MFNode children [ ]
+]
+{
+  DEF Switch Switch {
+    addChildren IS addChildren
+    removeChildren IS removeChildren
+    children IS children
+  }
+
+  DEF CheckButton Script {
+    inputOnly      SFTime set_disabled
+    inputOnly      SFTime set_active
+    inputOnly      MFNode set_children
+    outputOnly     SFBool isActive IS isActive
+    outputOnly     SFTime enterTime IS enterTime
+    outputOnly     SFTime exitTime IS exitTime
+    initializeOnly MFNode children [ ]
+    initializeOnly SFNode button USE Switch
+    inputOutput    SFBool enabled IS enabled
+    initializeOnly SFNode self USE CheckButton
+
+    url "vrmlscript:
+
+function initialize ()
+{
+	set_children (button .children);
+	choose ();
+}
+
+function set_enabled (value, time)
+{
+	if (value)
+	{
+		isActive  = TRUE;
+		enterTime = time;	
+	}
+	else
+	{
+		isActive = FALSE;
+		exitTime = time;
+	}
+
+	choose ();
+} 
+
+function set_disabled (value, time)
+{
+	enabled = false;
+}
+
+function set_active (value, time)
+{
+	enabled = true;
+}
+
+function set_children (value)
+{
+	if (children .length > 1)
+	{
+		Browser .deleteRoute (children [0], 'touchTime', self, 'set_active');
+		Browser .deleteRoute (children [1], 'touchTime', self, 'set_disabled');
+	}
+
+	children = value;
+
+	if (children .length > 1)
+	{
+		Browser .addRoute (children [0], 'touchTime', self, 'set_active');
+		Browser .addRoute (children [1], 'touchTime', self, 'set_disabled');
+	}
+}
+
+function choose ()
+{
+	button .whichChoice = isActive;
+}
+"
+    directOutput TRUE
+  }
+
+  ROUTE Switch.children_changed TO CheckButton.set_children
+}
+

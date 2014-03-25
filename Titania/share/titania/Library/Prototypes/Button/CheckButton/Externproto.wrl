@@ -1,0 +1,55 @@
+#VRML V2.0 utf8 Titania V0.6.7
+
+META "title" "CheckButton"
+
+EXTERNPROTO Button [
+  exposedField SFBool enabled
+  eventOut     SFBool isOver
+  eventOut     SFBool isActive
+  eventOut     SFTime touchTime
+  eventIn      MFNode addChildren
+  eventIn      MFNode removeChildren
+  exposedField MFNode children
+]
+[
+  "../Button/Button.x3dv",
+  "file:///usr/share/titania/Library/Prototypes/Button/Button/Button.x3dv"
+]
+
+EXTERNPROTO CheckButton [
+  exposedField SFBool enabled
+  eventOut     SFBool isActive
+  eventOut     SFTime enterTime
+  eventOut     SFTime exitTime
+  eventIn      MFNode addChildren
+  eventIn      MFNode removeChildren
+  exposedField MFNode children
+]
+[
+  "CheckButton.x3dv",
+  "file:///usr/share/titania/Library/Prototypes/Button/CheckButton/CheckButton.x3dv"
+]
+
+CheckButton {
+  enabled TRUE
+  children [
+    DEF _1 Button {
+      children DEF Default Shape {
+        appearance Appearance {
+          material Material { }
+        }
+        geometry Box { }
+      }
+    }
+    DEF _2 Button {
+      children DEF Active Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 0.4 0.4 0.4
+          }
+        }
+        geometry Box { }
+      }
+    }
+  ]
+}

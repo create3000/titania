@@ -1,0 +1,89 @@
+#X3D V3.3 utf8 Titania V0.6.7
+
+META "generator" "Titania V0.6.7, http://titania.create3000.de"
+
+PROTO Button [
+  inputOutput SFBool enabled TRUE
+  outputOnly  SFBool isOver
+  outputOnly  SFBool isActive
+  outputOnly  SFTime touchTime
+  inputOnly   MFNode addChildren
+  inputOnly   MFNode removeChildren
+  inputOutput MFNode children [ ]
+]
+{
+  Group {
+    children [
+      DEF Touch TouchSensor {
+        enabled IS enabled
+        isOver IS isOver
+        isActive IS isActive
+        touchTime IS touchTime
+      }
+      DEF Switch Switch {
+        addChildren IS addChildren
+        removeChildren IS removeChildren
+        children IS children
+      }
+    ]
+  }
+
+  DEF Button Script {
+    inputOnly      SFBool set_enabled
+    inputOnly      SFBool set_active
+    inputOnly      SFBool set_over
+    initializeOnly SFNode touchSensor USE Touch
+    initializeOnly SFNode button USE Switch
+
+    url "vrmlscript:
+ 
+var DEFAULT  = 0;
+var OVER     = 1;
+var ACTIVE   = 2;
+var DISABLED = 3;
+
+function initialize ()
+{
+	choose ();
+}
+
+function set_enabled (value)
+{
+	set_whichChoice (value ? DEFAULT : DISABLED);
+}
+
+function set_active (value)
+{
+	choose ();
+}
+
+function set_over (value)
+{
+	choose ();
+}
+
+function set_whichChoice (value)
+{
+	button .whichChoice = value < button .children .length ? value : DEFAULT;
+}
+
+function choose ()
+{
+	if (touchSensor .isActive)
+		set_whichChoice (touchSensor .isOver ? ACTIVE : DEFAULT);
+
+	else if (touchSensor .isOver)
+		set_whichChoice (OVER);
+
+	else
+		set_whichChoice (DEFAULT);
+}
+"
+    directOutput TRUE
+  }
+
+  ROUTE Touch.enabled_changed TO Button.set_enabled
+  ROUTE Touch.isActive TO Button.set_active
+  ROUTE Touch.isOver TO Button.set_over
+}
+
