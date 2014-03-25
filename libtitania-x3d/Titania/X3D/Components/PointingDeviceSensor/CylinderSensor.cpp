@@ -139,6 +139,8 @@ CylinderSensor::getTrackPoint (const Line3d & hitRay, Vector3d & trackPoint, con
 	return false;
 }
 
+// Returns an angle in the interval [-2?,2?]
+
 double
 CylinderSensor::getAngle (const Rotation4d & rotation) const
 {
@@ -249,9 +251,11 @@ CylinderSensor::set_motion (const HitPtr & hit)
 
 		else
 		{
-			const auto angle = getAngle (rotation);
+			const auto angle = interval <double> (getAngle (rotation), -M_PI, M_PI);
+			const auto min   = interval <double> (minAngle (), -M_PI, M_PI);
+			const auto max   = interval <double> (maxAngle (), -M_PI, M_PI);
 
-			if (angle > minAngle () and angle < maxAngle ())
+			if (angle > min and angle < max)
 				rotation_changed () = rotation;
 		}
 	}

@@ -23,30 +23,14 @@ EXTERNPROTO WheelSensor [
   "file:///usr/share/titania/Library/Prototypes/Button/WheelSensor/WheelSensor.x3dv"
 ]
 
-DEF Number_1 Transform {
-  translation 0 2 0
-  children Shape {
-    appearance Appearance {
-      material Material { }
-    }
-    geometry DEF Text Text {
-      string "0.000"
-      fontStyle FontStyle {
-        family "TYPEWRITER"
-        justify [
-          "MIDDLE",
-          "MIDDLE"
-        ]
-      }
-    }
-  }
-}
-
 DEF Wheel_1 Transform {
   rotation 1 0 0 1.5708
   children [
     DEF WheelSensor WheelSensor {
       description "Wheel"
+      minAngle -6
+      maxAngle 1
+      offset -6
     }
     DEF WheelScript Script {
       inputOutput SFFloat  factor 1
@@ -95,8 +79,8 @@ function set_value (value)
 }
 "
     }
-    DEF XForm Transform {
-      rotation 0 1 0 2.04822
+    DEF Disk Transform {
+      rotation -0 -1 -0 6
       children Shape {
         appearance Appearance {
           material Material { }
@@ -106,9 +90,28 @@ function set_value (value)
         }
       }
     }
+    DEF Number_1 Transform {
+      translation 0 -7.39098e-06 -2
+      rotation 1 0 0 4.71239
+      children Shape {
+        appearance Appearance {
+          material Material { }
+        }
+        geometry DEF Text Text {
+          string "-0.284"
+          fontStyle FontStyle {
+            family "TYPEWRITER"
+            justify [
+              "MIDDLE",
+              "MIDDLE"
+            ]
+          }
+        }
+      }
+    }
   ]
 }
 
 ROUTE WheelSensor.value_changed TO WheelScript.set_value
 ROUTE WheelScript.string_changed TO Text.set_string
-ROUTE WheelSensor.rotation_changed TO XForm.set_rotation
+ROUTE WheelSensor.rotation_changed TO Disk.set_rotation
