@@ -21,8 +21,8 @@ DEF Water1 Transform {
     Shape {
       appearance Appearance {
         shaders DEF WaterShader1 ComposedShader {
-          inputOutput SFFloat time 3.14092
-          inputOutput SFInt32 numWaves 5
+          inputOnly   SFFloat set_time
+          inputOutput SFInt32 waves 5
           inputOutput MFFloat amplitude [
             0.1,
             0.2,
@@ -62,38 +62,46 @@ DEF Water1 Transform {
               url "data:text/plain,
 #version 120
 
-uniform float time;
-uniform int   numWaves;
-uniform float amplitude [8];
-uniform float waveLength [8];
-uniform float speed [8];
-uniform vec2  direction [8];
+#define WAVE_MAX 8
 
-varying vec3 position;
+uniform float set_time;
+uniform int   waves;
+uniform float amplitude [WAVE_MAX];
+uniform float waveLength [WAVE_MAX];
+uniform float speed [WAVE_MAX];
+uniform vec2  direction [WAVE_MAX];
 
-const float PI = 3.14159;
+varying float positionY;
 
-float wave (int i, float x, float y)
+const float M_PI = 3.14159;
+
+float
+wave (in int i, in float x, in float y)
 {
-	float frequency = 2 * PI / waveLength [i];
+	float frequency = 2 * M_PI / waveLength [i];
 	float phase     = speed [i] * frequency;
 	float theta     = dot (direction [i], vec2 (x, y));
-	return amplitude [i] * sin (theta * frequency + time * phase);
+
+	return amplitude [i] * sin (theta * frequency + set_time * phase);
 }
 
-float waveHeight (float x, float y)
+float
+waveHeight (in float x, in float y)
 {
 	float height = 0.0;
-	for (int i = 0; i < numWaves; ++ i)
+
+	for (int i = 0; i < waves; ++ i)
 		height += wave (i, x, y);
+
 	return height;
 }
 
-void main()
+void
+main ()
 {
 	vec4 pos    = gl_Vertex;
 	pos .y      = waveHeight (pos .x, pos .z);
-	position    = pos .xyz / pos .w;
+	positionY   = pos .y / pos .w;
 	gl_Position = gl_ModelViewProjectionMatrix * pos;
 }
 "
@@ -103,22 +111,26 @@ void main()
               url "data:text/plain,
 #version 120
 
-uniform int   numWaves;
-uniform float amplitude [8];
+#define WAVE_MAX 8
+
+uniform int   waves;
+uniform float amplitude [WAVE_MAX];
 uniform vec3  color;
 uniform float transparency;
 uniform vec3  bottomColor;
 uniform float bottomTransparency;
 
-varying vec3 position;
+varying float positionY;
 
-void main ()
+void
+main ()
 {
 	float height = 0;
-	for (int i = 0; i < numWaves; ++ i)
+
+	for (int i = 0; i < waves; ++ i)
 		height += amplitude [i];
 
-	float alpha = ((height + position .y) / (2 * height));
+	float alpha = ((height + positionY) / (2 * height));
 	
 	vec4 topColor    = vec4 (color, alpha * (1 - transparency));
 	vec4 bottomColor = vec4 (bottomColor, alpha * (1 - bottomTransparency));
@@ -133,7 +145,6 @@ void main ()
       geometry ElevationGrid {
         xDimension 30
         zDimension 30
-        solid FALSE
       }
     }
   ]

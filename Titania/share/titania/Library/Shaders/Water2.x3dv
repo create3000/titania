@@ -24,9 +24,9 @@ DEF Water2 Transform {
     Shape {
       appearance Appearance {
         shaders DEF WaterShader2 ComposedShader {
-          inputOutput SFFloat time 15.1947
+          inputOnly   SFFloat set_time
           inputOutput SFVec3f position -0 0 10
-          inputOutput SFInt32 numWaves 5
+          inputOutput SFInt32 waves 5
           inputOutput MFFloat amplitude [
             0.2,
             0.2,
@@ -58,22 +58,40 @@ DEF Water2 Transform {
           inputOutput SFFloat transparency 0.5
           inputOutput SFNode  texture ComposedCubeMapTexture {
             front ImageTexture {
-              url "../Textures/CubeMapTextures/LostValley/lostvalley_south.jpg"
+              url [
+                "../Textures/CubeMapTextures/LostValley/lostvalley_south.jpg",
+                "/usr/share/titania/Library/Textures/CubeMapTextures/LostValley/lostvalley_south.jpg"
+              ]
             }
             back ImageTexture {
-              url "../Textures/CubeMapTextures/LostValley/lostvalley_north.jpg"
+              url [
+                "../Textures/CubeMapTextures/LostValley/lostvalley_north.jpg",
+                "/usr/share/titania/Library/Textures/CubeMapTextures/LostValley/lostvalley_north.jpg"
+              ]
             }
             left ImageTexture {
-              url "../Textures/CubeMapTextures/LostValley/lostvalley_west.jpg"
+              url [
+                "../Textures/CubeMapTextures/LostValley/lostvalley_west.jpg",
+                "/usr/share/titania/Library/Textures/CubeMapTextures/LostValley/lostvalley_west.jpg"
+              ]
             }
             right ImageTexture {
-              url "../Textures/CubeMapTextures/LostValley/lostvalley_east.jpg"
+              url [
+                "../Textures/CubeMapTextures/LostValley/lostvalley_east.jpg",
+                "/usr/share/titania/Library/Textures/CubeMapTextures/LostValley/lostvalley_east.jpg"
+              ]
             }
             bottom ImageTexture {
-              url "../Textures/CubeMapTextures/LostValley/lostvalley_down.jpg"
+              url [
+                "../Textures/CubeMapTextures/LostValley/lostvalley_down.jpg",
+                "/usr/share/titania/Library/Textures/CubeMapTextures/LostValley/lostvalley_down.jpg"
+              ]
             }
             top ImageTexture {
-              url "../Textures/CubeMapTextures/LostValley/lostvalley_up.jpg"
+              url [
+                "../Textures/CubeMapTextures/LostValley/lostvalley_up.jpg",
+                "/usr/share/titania/Library/Textures/CubeMapTextures/LostValley/lostvalley_up.jpg"
+              ]
             }
           }
 
@@ -83,71 +101,80 @@ DEF Water2 Transform {
               url "data:text/plain,
 #version 120
 
-uniform float time;
-uniform int   numWaves;
-uniform float amplitude [8];
-uniform float waveLength [8];
-uniform float speed [8];
-uniform vec2  direction [8];
+#define WAVE_MAX 8
+
+uniform float set_time;
+uniform vec3  position;
+uniform int   waves;
+uniform float amplitude [WAVE_MAX];
+uniform float waveLength [WAVE_MAX];
+uniform float speed [WAVE_MAX];
+uniform vec2  direction [WAVE_MAX];
 
 varying vec3 translation;
 varying vec3 worldNormal;
+varying vec3 reflection;
 varying vec3 eyeNormal;
 
-const float pi = 3.14159;
+const float M_PI = 3.14159;
 
-float wave (int i, float x, float y)
+float
+wave (in int i, in float x, in float y)
 {
-	float frequency = 2 * pi / waveLength [i];
+	float frequency = 2 * M_PI / waveLength [i];
 	float phase     = speed [i] * frequency;
 	float theta     = dot (direction [i], vec2 (x, y));
-	return amplitude [i] * sin (theta * frequency + time * phase);
+
+	return amplitude [i] * sin (theta * frequency + set_time * phase);
 }
 
-float waveHeight (float x, float y)
+float
+waveHeight (in float x, in float y)
 {
 	float height = 0.0;
-	for (int i = 0; i < numWaves; ++i)
+
+	for (int i = 0; i < waves; ++i)
 		height += wave (i, x, y);
+
 	return height;
 }
 
-float dWavedx (int i, float x, float y)
+float
+dWaved (in int i, in float x, in float y, in float d)
 {
-	float frequency = 2 * pi / waveLength [i];
-	float phase = speed [i] * frequency;
-	float theta = dot (direction [i], vec2 (x, y));
-	float A = amplitude [i] * direction [i] .x * frequency;
-	return A * cos (theta * frequency + time * phase);
+	float frequency = 2 * M_PI / waveLength [i];
+	float phase     = speed [i] * frequency;
+	float theta     = dot (direction [i], vec2 (x, y));
+	float A         = amplitude [i] * d * frequency;
+
+	return A * cos (theta * frequency + set_time * phase);
 }
 
-float dWavedy (int i, float x, float y)
-{
-	float frequency = 2 * pi / waveLength [i];
-	float phase = speed [i] * frequency;
-	float theta = dot (direction [i], vec2 (x, y));
-	float A = amplitude [i] * direction [i] .y * frequency;
-	return A * cos (theta * frequency + time * phase);
-}
-
-vec3 waveNormal (float x, float y)
+vec3
+waveNormal (in float x, in float y)
 {
 	float dx = 0.0;
 	float dy = 0.0;
-	for (int i = 0; i < numWaves; ++i)
+
+	for (int i = 0; i < waves; ++i)
 	{
-		dx += dWavedx (i, x, y);
-		dy += dWavedy (i, x, y);
+		dx += dWaved (i, x, y, direction [i] .x);
+		dy += dWaved (i, x, y, direction [i] .y);
 	}
+
 	vec3 n = vec3 (-dx, -dy, 1.0);
-	return normalize(n);
+
+	return normalize (n);
 }
 
-void main () {
+void
+main ()
+{
 	vec4 pos    = gl_Vertex;
 	pos.y       = waveHeight (pos .x, pos .z);
-	translation = pos .xyz / pos .w;
+	translation = position - pos .xyz / pos .w;
 	worldNormal = waveNormal (pos .x, pos .z);
+	reflection  = reflect (translation, worldNormal);
 	eyeNormal   = gl_NormalMatrix * worldNormal;
 	gl_Position = gl_ModelViewProjectionMatrix * pos;
 }
@@ -158,21 +185,16 @@ void main () {
               url "data:text/plain,
 #version 120
 
-varying vec3  translation;
-varying vec3  worldNormal;
-varying vec3  eyeNormal;
-uniform vec3  position;
-uniform float transparency;
-
+uniform float       transparency;
 uniform samplerCube texture;
 
-void main ()
+varying vec3 reflection;
+
+void
+main ()
 {
-	vec3 eye     = normalize (position - translation);
-	vec3 r       = reflect (eye, worldNormal);
-	vec4 color   = textureCube (texture, r);
-	color.a      = 1 - transparency;
-	gl_FragColor = color;
+	vec3 color   = vec3 (textureCube (texture, reflection));
+	gl_FragColor = vec4 (color, 1 - transparency);
 }
 "
             }
@@ -182,7 +204,6 @@ void main ()
       geometry ElevationGrid {
         xDimension 60
         zDimension 60
-        solid FALSE
       }
     }
   ]
