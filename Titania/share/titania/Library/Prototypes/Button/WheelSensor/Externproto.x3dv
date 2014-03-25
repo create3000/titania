@@ -1,0 +1,114 @@
+#X3D V3.3 utf8 Titania V0.6.7
+
+META "generator" "Titania V0.6.7, http://titania.create3000.de"
+META "title" "WheelSensor"
+
+EXTERNPROTO WheelSensor [
+  inputOutput SFBool     enabled
+  inputOutput SFString   description
+  inputOutput SFRotation axisRotation
+  inputOutput SFFloat    diskAngle
+  inputOutput SFFloat    minAngle
+  inputOutput SFFloat    maxAngle
+  inputOutput SFFloat    offset
+  inputOutput SFBool     autoOffset
+  outputOnly  SFBool     isActive
+  outputOnly  SFBool     isOver
+  outputOnly  SFRotation rotation_changed
+  outputOnly  SFVec3f    trackPoint_changed
+  outputOnly  SFFloat    value_changed
+]
+[
+  "WheelSensor.x3dv",
+  "file:///usr/share/titania/Library/Prototypes/Button/WheelSensor/WheelSensor.x3dv"
+]
+
+DEF Number_1 Transform {
+  translation 0 2 0
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry DEF Text Text {
+      string "0.000"
+      fontStyle FontStyle {
+        family "TYPEWRITER"
+        justify [
+          "MIDDLE",
+          "MIDDLE"
+        ]
+      }
+    }
+  }
+}
+
+DEF Wheel_1 Transform {
+  rotation 1 0 0 1.5708
+  children [
+    DEF WheelSensor WheelSensor {
+      description "Wheel"
+    }
+    DEF WheelScript Script {
+      inputOutput SFFloat  factor 1
+      inputOutput SFInt32  precision 3
+      inputOnly   SFFloat  set_value
+      outputOnly  SFFloat  value_changed
+      outputOnly  MFString string_changed
+
+      url "vrmlscript:
+
+function round (value)
+{
+	var factor = Math .pow (10, precision);
+	return Math .floor (value * factor) / factor;
+}
+
+function fill (value)
+{
+	var string = String (value);
+	var point  = string .indexOf ('.');
+
+	if (point < 0)
+	{
+		string += '.';
+
+		for (var i = 0; i < precision; ++ i)
+			string += '0';	
+	}
+	else
+	{
+		var size = precision - (string .length - point - 1);
+
+		for (var i = 0; i < size; ++ i)
+			string += '0';
+	}
+
+	return string;
+}
+
+function set_value (value)
+{
+	value *= factor;
+
+	value_changed  = value;
+	string_changed = new MFString (fill (round (value)));
+}
+"
+    }
+    DEF XForm Transform {
+      rotation 0 1 0 2.04822
+      children Shape {
+        appearance Appearance {
+          material Material { }
+        }
+        geometry Cylinder {
+          height 1
+        }
+      }
+    }
+  ]
+}
+
+ROUTE WheelSensor.value_changed TO WheelScript.set_value
+ROUTE WheelScript.string_changed TO Text.set_string
+ROUTE WheelSensor.rotation_changed TO XForm.set_rotation

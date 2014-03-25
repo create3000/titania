@@ -1,0 +1,67 @@
+#X3D V3.3 utf8 Titania V0.6.7
+
+META "generator" "Titania V0.6.7, http://titania.create3000.de"
+
+PROTO WheelSensor [
+  inputOutput SFBool     enabled TRUE
+  inputOutput SFString   description ""
+  inputOutput SFRotation axisRotation 0 0 1 0
+  inputOutput SFFloat    diskAngle 0.261799
+  inputOutput SFFloat    minAngle 0
+  inputOutput SFFloat    maxAngle -1
+  inputOutput SFFloat    offset 0
+  inputOutput SFBool     autoOffset TRUE
+  outputOnly  SFBool     isActive
+  outputOnly  SFBool     isOver
+  outputOnly  SFRotation rotation_changed
+  outputOnly  SFVec3f    trackPoint_changed
+  outputOnly  SFFloat    value_changed
+]
+{
+  DEF CylinderTouch CylinderSensor {
+    enabled IS enabled
+    description IS description
+    axisRotation IS axisRotation
+    diskAngle IS diskAngle
+    minAngle IS minAngle
+    maxAngle IS maxAngle
+    offset IS offset
+    autoOffset IS autoOffset
+    rotation_changed IS rotation_changed
+    isOver IS isOver
+    isActive IS isActive
+    trackPoint_changed IS trackPoint_changed
+  }
+
+  DEF Wheel Script {
+    inputOnly      SFRotation set_rotation
+    inputOutput    SFRotation axisRotation IS axisRotation
+    outputOnly     SFFloat    value_changed IS value_changed
+    initializeOnly SFVec3f    startVector 0 0 1
+
+    url "vrmlscript:
+
+function initialize ()
+{
+	startVector = axisRotation .multVec (new SFVec3f (0, 0, 1));
+}
+
+function set_rotation (value)
+{
+	var endVector     = value .multVec (new SFVec3f (0, 0, 1));
+	var deltaRotation = new SFRotation (startVector, endVector);
+
+	startVector = endVector;
+
+	var axis  = axisRotation .multVec (new SFVec3f (0, 1, 0));
+	var angle = axis .dot (deltaRotation .getAxis ());
+	var sign  = angle < 0 ? 1 : -1;
+	
+	value_changed += sign * deltaRotation .angle;
+}
+"
+  }
+
+  ROUTE CylinderTouch.rotation_changed TO Wheel.set_rotation
+}
+

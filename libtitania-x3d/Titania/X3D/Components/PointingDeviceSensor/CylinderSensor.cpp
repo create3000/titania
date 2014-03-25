@@ -61,7 +61,7 @@ const std::string CylinderSensor::containerField = "children";
 
 CylinderSensor::Fields::Fields () :
 	    axisRotation (new SFRotation (0, 1, 0, 0)),
-	       diskAngle (new SFFloat (M_PI / 12)),
+	       diskAngle (new SFFloat (0.261799)), // M_PI / 12
 	        minAngle (new SFFloat ()),
 	        maxAngle (new SFFloat (-1)),
 	          offset (new SFFloat ()),
@@ -76,7 +76,7 @@ CylinderSensor::CylinderSensor (X3DExecutionContext* const executionContext) :
 	                  disk (false),
 	                yPlane (),
 	                zPlane (),
-	                behind (false),
+	                behind (1),
 	            fromVector (),
 	           startOffset (),
 	inverseModelViewMatrix ()
@@ -120,7 +120,7 @@ CylinderSensor::getVector (const Line3d & hitRay, const Vector3d & trackPoint) c
 	if (disk and yPlane .intersect (hitRay, intersection))
 		return normalize (intersection);
 
-	return normalize (-cylinder .axis () .perpendicular_vector (trackPoint));
+	return -normalize (cylinder .axis () .perpendicular_vector (trackPoint));
 }
 
 bool
@@ -174,7 +174,7 @@ CylinderSensor::set_active (const HitPtr & hit, const bool active)
 			yPlane = Plane3d (Vector3d (), yAxis);                                                 // Sensor aligned Y-plane
 			zPlane = Plane3d (hitPoint, zAxis);                                                    // Screen aligned Z-plane.
 
-			disk   = std::abs (dot (hitRay .direction (), yAxis)) > std::cos (diskAngle ());
+			disk   = std::abs (dot (zAxis, yAxis)) > std::cos (diskAngle ());
 			behind = isBehind (hitRay, hitPoint);
 
 			Vector3d trackPoint;
@@ -207,8 +207,7 @@ CylinderSensor::set_motion (const HitPtr & hit)
 
 		if (getTrackPoint (hitRay, trackPoint, behind))
 		{
-			const auto zAxis = inverseModelViewMatrix .mult_dir_matrix (Vector3f (0, 0, 1) * axisRotation ()); // Camera direction
-			zPlane = Plane3d (trackPoint, zAxis);                                                            // Screen aligned Z-plane
+			zPlane = Plane3d (trackPoint, zPlane .normal ());                                                            // Screen aligned Z-plane
 		}
 		else
 		{
@@ -219,7 +218,7 @@ CylinderSensor::set_motion (const HitPtr & hit)
 
 			const auto axisPoint = p1 + cylinder .axis () .perpendicular_vector (p1);
 
-			auto hitRay = Line3d (p1, axisPoint, true);
+			auto hitRay = Line3d (p1, axisPoint, point_type ());
 
 			getTrackPoint (hitRay, trackPoint);
 
@@ -230,7 +229,7 @@ CylinderSensor::set_motion (const HitPtr & hit)
 			if (behind)
 				normal .negate ();
 
-			hitRay = Line3d (trackPoint - normal * abs (p1 - trackPoint), axisPoint, true);
+			hitRay = Line3d (trackPoint - normal * abs (p1 - trackPoint), axisPoint, point_type ());
 
 			getTrackPoint (hitRay, trackPoint);
 		}
@@ -250,7 +249,7 @@ CylinderSensor::set_motion (const HitPtr & hit)
 
 		else
 		{
-			auto angle = getAngle (rotation);
+			const auto angle = getAngle (rotation);
 
 			if (angle > minAngle () and angle < maxAngle ())
 				rotation_changed () = rotation;

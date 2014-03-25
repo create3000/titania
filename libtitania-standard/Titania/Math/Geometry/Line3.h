@@ -53,6 +53,7 @@
 
 #include "../Numbers/Matrix4.h"
 #include "../Numbers/Vector3.h"
+#include "../Utility/Types.h"
 
 #include "../../LOG.h"
 
@@ -101,7 +102,7 @@ public:
 
 	///  Constructs a line of from @a point and @a point.
 	constexpr
-	line3 (const vector3 <Type> & point1, const vector3 <Type> & point2, bool) :
+	line3 (const vector3 <Type> & point1, const vector3 <Type> & point2, const point_type &) :
 		value { point1, normalize (point2 - point1) }
 
 	{ }

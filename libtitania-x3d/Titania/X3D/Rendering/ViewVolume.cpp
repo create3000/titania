@@ -168,7 +168,7 @@ throw (std::domain_error)
 	const Vector3f near = ViewVolume::unProjectPoint (winx, winy, 0.0, matrix, viewport);
 	const Vector3f far  = ViewVolume::unProjectPoint (winx, winy, 0.9, matrix, viewport);
 
-	return Line3d (near, far, true);
+	return Line3d (near, far, point_type ());
 }
 
 Vector3d
@@ -199,7 +199,7 @@ throw (std::domain_error)
 	point1 .z (0);
 	point2 .z (0);
 
-	return Line3d (point1, point2, true);
+	return Line3d (point1, point2, point_type ());
 }
 
 } // X3D

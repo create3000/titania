@@ -130,6 +130,15 @@ private:
 
 };
 
+////////////////////////////////////////////////////////////////////////
+//
+// Description:
+//  Intersect given line with this cylinder, returning the
+//  results in enter and exit. Returns TRUE if there was an
+//  intersection (and results are valid).
+//
+// Taken from Inventor SbCylinder.c++
+
 template <class Type>
 bool
 cylinder3 <Type>::intersect (const line3 <Type> & line, vector3 <Type> & enter, vector3 <Type> & exit) const
@@ -149,8 +158,7 @@ cylinder3 <Type>::intersect (const line3 <Type> & line, vector3 <Type> & enter, 
 	toUnitCylSpace .mult_left (mtxToYAxis);
 
 	// find the given line un-translated
-	vector3 <Type> point = line .point ();
-	point -= axis () .point ();
+	const vector3 <Type> point = line .point () - axis () .point ();
 	const line3 <Type> noTranslationLine (point, line .direction ());
 
 	// find the un-translated line in unit cylinder's space
@@ -174,6 +182,22 @@ cylinder3 <Type>::intersect (const line3 <Type> & line, vector3 <Type> & enter, 
 
 	return intersected;
 }
+
+////////////////////////////////////////////////////////////////////////
+//
+// Description:
+//  Intersect the line with a unit cylinder. Returns TRUE if
+//  there was an intersection, and returns the intersection points
+//  in enter and exit.
+//
+//  The cylinder has radius 1 and is aligned with the
+//  y axis, such that x^2 + z^2 - 1 = 0
+//
+//  Taken from Pat Hanrahan's chapter in Glassner's
+//  _Intro to Ray Tracing_, page 91, and some code
+//  stolen from Paul Strauss.
+//
+// Taken from Inventor SbCylinder.c++
 
 template <class Type>
 bool
