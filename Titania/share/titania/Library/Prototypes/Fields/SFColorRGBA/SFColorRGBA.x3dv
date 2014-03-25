@@ -1,0 +1,24 @@
+#X3D V3.3 utf8 Titania V0.6.7
+
+META "generator" "Titania V0.6.7, http://titania.create3000.de"
+
+PROTO SFColorRGBA [
+  inputOnly   SFTime      set_triggerTime
+  inputOutput SFColorRGBA keyValue 0 0 0 0
+  outputOnly  SFColorRGBA value_changed
+]
+{
+  DEF SFColorRGBA Script {
+    inputOnly   SFTime      set_triggerTime IS set_triggerTime
+    inputOutput SFColorRGBA keyValue IS keyValue
+    outputOnly  SFColorRGBA value_changed IS value_changed
+
+    url "vrmlscript:
+function set_triggerTime (value, time)
+{
+	value_changed = keyValue;
+}
+"
+  }
+}
+

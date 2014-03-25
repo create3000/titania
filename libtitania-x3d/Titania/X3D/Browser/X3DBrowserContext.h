@@ -422,6 +422,8 @@ protected:
 
 private:
 
+	// Event handlers
+
 	void
 	set_initialized ();
 
@@ -442,6 +444,9 @@ private:
 
 	void
 	set_navigationInfo_type ();
+
+	void
+	motionVerifyEvent ();
 
 	// Members
 

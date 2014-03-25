@@ -1,0 +1,24 @@
+#X3D V3.3 utf8 Titania V0.6.7
+
+META "generator" "Titania V0.6.7, http://titania.create3000.de"
+
+PROTO SFDouble [
+  inputOnly   SFTime   set_triggerTime
+  inputOutput SFDouble keyValue 0
+  outputOnly  SFDouble value_changed
+]
+{
+  DEF SFDouble Script {
+    inputOnly   SFTime   set_triggerTime IS set_triggerTime
+    inputOutput SFDouble keyValue IS keyValue
+    outputOnly  SFDouble value_changed IS value_changed
+
+    url "vrmlscript:
+function set_triggerTime (value, time)
+{
+	value_changed = keyValue;
+}
+"
+  }
+}
+

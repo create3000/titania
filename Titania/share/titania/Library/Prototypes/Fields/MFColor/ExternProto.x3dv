@@ -1,0 +1,15 @@
+#X3D V3.3 utf8 Titania V0.6.7
+
+META "generator" "Titania V0.6.7, http://titania.create3000.de"
+
+EXTERNPROTO MFColor [
+  inputOnly   SFTime  set_triggerTime
+  inputOutput MFColor keyValue
+  outputOnly  MFColor value_changed
+]
+[
+  "MFColor.x3dv",
+  "/usr/share/titania/Library/Prototypes/Fields/MFColor/MFColor.x3dv"
+]
+
+MFColor { }

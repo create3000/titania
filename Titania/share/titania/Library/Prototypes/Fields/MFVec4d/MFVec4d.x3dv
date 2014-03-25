@@ -1,0 +1,24 @@
+#X3D V3.3 utf8 Titania V0.6.7
+
+META "generator" "Titania V0.6.7, http://titania.create3000.de"
+
+PROTO MFVec4d [
+  inputOnly   SFTime  set_triggerTime
+  inputOutput MFVec4d keyValue [ ]
+  outputOnly  MFVec4d value_changed
+]
+{
+  DEF MFVec4d Script {
+    inputOnly   SFTime  set_triggerTime IS set_triggerTime
+    inputOutput MFVec4d keyValue IS keyValue
+    outputOnly  MFVec4d value_changed IS value_changed
+
+    url "vrmlscript:
+function set_triggerTime (value, time)
+{
+	value_changed = keyValue;
+}
+"
+  }
+}
+

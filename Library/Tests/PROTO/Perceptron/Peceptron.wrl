@@ -23,18 +23,18 @@ EXTERNPROTO CheckButton [
 "/home/holger/Projekte/Titania/Library/Prototypes/Button/CheckButton/CheckButton.wrl"
 
 EXTERNPROTO SFBool [
+  eventIn SFTime set_triggerTime
   exposedField SFBool keyValue
-  exposedField SFTime triggerTime
   eventOut     SFBool value_changed
 ]
-"/home/holger/Projekte/Titania/Library/Prototypes/Fields/SFBool/SFBool.wrl"
+"/home/holger/Projekte/Titania/Library/Prototypes/Fields/SFBool/SFBool.x3dv"
 
 EXTERNPROTO SFFloat [
+  eventIn SFTime  set_triggerTime
   exposedField SFFloat keyValue
-  exposedField SFTime  triggerTime
   eventOut     SFFloat value_changed
 ]
-"/home/holger/Projekte/Titania/Library/Prototypes/Fields/SFFloat/SFFloat.wrl"
+"/home/holger/Projekte/Titania/Library/Prototypes/Fields/SFFloat/SFFloat.x3dv"
 
 EXTERNPROTO SFFloatConverter [
   eventOut     SFFloat value_changed

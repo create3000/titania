@@ -1,0 +1,15 @@
+#X3D V3.3 utf8 Titania V0.6.7
+
+META "generator" "Titania V0.6.7, http://titania.create3000.de"
+
+EXTERNPROTO MFString [
+  inputOnly   SFTime   set_triggerTime
+  inputOutput MFString keyValue
+  outputOnly  MFString value_changed
+]
+[
+  "MFString.x3dv",
+  "/usr/share/titania/Library/Prototypes/Fields/MFString/MFString.x3dv"
+]
+
+MFString { }

@@ -542,14 +542,14 @@ X3DBrowserContext::motionNotifyEvent ()
 
 	for (const auto & node : difference)
 	{
-		auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node);
+		const auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node);
 
 		if (pointingDeviceSensorNode)
 			pointingDeviceSensorNode -> set_over (getHits () .front (), false);
 
 		else
 		{
-			auto anchor = dynamic_cast <Anchor*> (node);
+			const auto anchor = dynamic_cast <Anchor*> (node);
 
 			if (anchor)
 				anchor -> set_over (false);
@@ -568,14 +568,14 @@ X3DBrowserContext::motionNotifyEvent ()
 
 		for (const auto & node : overSensors)
 		{
-			auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node .getValue ());
+			const auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node .getValue ());
 
 			if (pointingDeviceSensorNode)
 				pointingDeviceSensorNode -> set_over (getHits () .front (), true);
 
 			else
 			{
-				auto anchor = dynamic_cast <Anchor*> (node .getValue ());
+				const auto anchor = dynamic_cast <Anchor*> (node .getValue ());
 
 				if (anchor)
 					anchor -> set_over (true);
@@ -587,7 +587,7 @@ X3DBrowserContext::motionNotifyEvent ()
 
 	for (const auto & node : activeSensors)
 	{
-		auto dragSensorNode = dynamic_cast <X3DDragSensorNode*> (node .getValue ());
+		const auto dragSensorNode = dynamic_cast <X3DDragSensorNode*> (node .getValue ());
 
 		if (dragSensorNode)
 		{
@@ -606,19 +606,22 @@ X3DBrowserContext::buttonPressEvent ()
 
 	for (const auto & node : activeSensors)
 	{
-		auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node .getValue ());
+		const auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node .getValue ());
 
 		if (pointingDeviceSensorNode)
 			pointingDeviceSensorNode -> set_active (getHits () .front (), true);
 
 		else
 		{
-			auto anchor = dynamic_cast <Anchor*> (node .getValue ());
+			const auto anchor = dynamic_cast <Anchor*> (node .getValue ());
 
 			if (anchor)
 				anchor -> set_active (true);
 		}
 	}
+
+	// Veryfy isOver state. See buttonReleaseEvent.
+	finished () .addInterest (this, &X3DBrowserContext::motionVerifyEvent);
 }
 
 void
@@ -626,7 +629,7 @@ X3DBrowserContext::buttonReleaseEvent ()
 {
 	for (const auto & node : activeSensors)
 	{
-		auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node .getValue ());
+		const auto pointingDeviceSensorNode = dynamic_cast <X3DPointingDeviceSensorNode*> (node .getValue ());
 
 		if (pointingDeviceSensorNode)
 			pointingDeviceSensorNode -> set_active (std::make_shared <Hit> (x, y, Matrix4d (), hitRay, std::make_shared <Intersection> (), NodeSet (), nullptr),
@@ -634,7 +637,7 @@ X3DBrowserContext::buttonReleaseEvent ()
 
 		else
 		{
-			auto anchor = dynamic_cast <Anchor*> (node .getValue ());
+			const auto anchor = dynamic_cast <Anchor*> (node .getValue ());
 
 			if (anchor)
 				anchor -> set_active (false);
@@ -642,6 +645,21 @@ X3DBrowserContext::buttonReleaseEvent ()
 	}
 
 	activeSensors .clear ();
+
+	// Veryfy isOver state. This is neccessay if an Switch changes on buttonReleaseEvent
+	// and the new child has a sensor node inside. This sensor node must be update to
+	// reflect the correct isOver state.
+
+	finished () .addInterest (this, &X3DBrowserContext::motionVerifyEvent);
+}
+
+void
+X3DBrowserContext::motionVerifyEvent ()
+{
+	finished () .removeInterest (this, &X3DBrowserContext::motionVerifyEvent);
+
+	pick (x, y);
+	motionNotifyEvent ();
 }
 
 void

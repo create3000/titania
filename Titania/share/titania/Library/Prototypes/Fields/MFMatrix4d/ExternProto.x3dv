@@ -1,0 +1,15 @@
+#X3D V3.3 utf8 Titania V0.6.7
+
+META "generator" "Titania V0.6.7, http://titania.create3000.de"
+
+EXTERNPROTO MFMatrix4d [
+  inputOnly   SFTime     set_triggerTime
+  inputOutput MFMatrix4d keyValue
+  outputOnly  MFMatrix4d value_changed
+]
+[
+  "MFMatrix4d.x3dv",
+  "/usr/share/titania/Library/Prototypes/Fields/MFMatrix4d/MFMatrix4d.x3dv"
+]
+
+MFMatrix4d { }
