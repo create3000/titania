@@ -32,6 +32,7 @@ PROTO Number [
 function initialize ()
 {
 	set_value (value);
+	set_length (length);
 }
 
 function set_value (value)
