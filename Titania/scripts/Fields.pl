@@ -17,7 +17,7 @@ foreach my $name ($keyFile -> get_groups ())
 
 	next if $name eq "Fields.pl";
 
-	my $prototypes = "/home/holger/Projekte/Titania/Titania/share/titania/Prototypes/Fields";
+	my $prototypes = "/home/holger/Projekte/Titania/Titania/share/titania/Prototypes/0.1/Fields";
 
 	system "mkdir", "-p", $prototypes;
 
@@ -71,8 +71,8 @@ EXTERNPROTO $name [
   eventOut     $name  value_changed
 ]
 [
-	\"../../../Prototypes/Fields/$name.x3dv\"
-	\"file:///usr/share/titania/Prototypes/Fields/$name.x3dv\"
+	\"../../../Prototypes/0.1/Fields/$name.x3dv\"
+	\"file:///usr/share/titania/Prototypes/0.1/Fields/$name.x3dv\"
    \"http://titania.create3000.de/Library/Prototypes/0.1/Fields/$name.x3dv\"
 ]
 

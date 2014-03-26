@@ -30,7 +30,7 @@ PROTO WheelSensor [
     isActive IS isActive
   }
 
-  DEF Wheel Script {
+  DEF WheelSensorScript Script {
     inputOnly      SFRotation set_rotation
     inputOnly      SFBool     set_active
     inputOutput    SFFloat    factor IS factor
@@ -113,7 +113,7 @@ function set_active (active)
     directOutput TRUE
   }
 
-  ROUTE CylinderTouch.rotation_changed TO Wheel.set_rotation
-  ROUTE CylinderTouch.isActive TO Wheel.set_active
+  ROUTE CylinderTouch.rotation_changed TO WheelSensorScript.set_rotation
+  ROUTE CylinderTouch.isActive TO WheelSensorScript.set_active
 }
 

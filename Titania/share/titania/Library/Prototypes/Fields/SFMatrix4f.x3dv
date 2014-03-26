@@ -8,8 +8,8 @@ EXTERNPROTO SFMatrix4f [
   outputOnly  SFMatrix4f value_changed
 ]
 [
-  "../../../Prototypes/Fields/SFMatrix4f.x3dv",
-  "file:///usr/share/titania/Prototypes/Fields/SFMatrix4f.x3dv",
+  "../../../Prototypes/0.1/Fields/SFMatrix4f.x3dv",
+  "file:///usr/share/titania/Prototypes/0.1/Fields/SFMatrix4f.x3dv",
   "http://titania.create3000.de/Library/Prototypes/0.1/Fields/SFMatrix4f.x3dv"
 ]
 

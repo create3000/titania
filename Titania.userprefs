@@ -1,18 +1,62 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/share/titania/Library/Prototypes/Widgets/RadioButton.x3dv">
+    <Files>
+      <File FileName="Titania/share/titania/Library/Shaders/Water1.x3dv" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/X3DTouchSensorNode.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/X3DPointingDeviceSensorNode.cpp" Line="1" Column="1" />
+      <File FileName="Titania/share/titania/Library/Prototypes/Widgets/Button.x3dv" Line="8" Column="33" />
+      <File FileName="Titania/share/titania/Library/Prototypes/Widgets/CheckButton.x3dv" Line="1" Column="1" />
+      <File FileName="Titania/share/titania/Library/Prototypes/Widgets/RadioButton.x3dv" Line="31" Column="40" />
+    </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
+          <Node name="Library" expanded="True">
+            <Node name="Tests" expanded="True">
+              <Node name="Geometry3D" expanded="True" />
+              <Node name="PROTO" expanded="True">
+                <Node name="Particle" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
           <Node name="libtitania-x3d" expanded="True">
             <Node name="Titania" expanded="True">
               <Node name="X3D" expanded="True">
-                <Node name="Components" expanded="True" />
+                <Node name="Components" expanded="True">
+                  <Node name="Geospatial" expanded="True" />
+                  <Node name="Navigation" expanded="True" />
+                  <Node name="PointingDeviceSensor" expanded="True" />
+                </Node>
+                <Node name="Prototype" expanded="True" />
               </Node>
             </Node>
           </Node>
           <Node name="Titania" expanded="True">
-            <Node name="Titania" expanded="True" />
+            <Node name="scripts" expanded="True" />
+            <Node name="share" expanded="True">
+              <Node name="titania" expanded="True">
+                <Node name="Library" expanded="True">
+                  <Node name="Prototypes" expanded="True">
+                    <Node name="Engines" expanded="True" />
+                    <Node name="Navigation" expanded="True" />
+                    <Node name="Time" expanded="True" />
+                    <Node name="Widgets" expanded="True">
+                      <Node name="RadioButton.x3dv" selected="True" />
+                    </Node>
+                  </Node>
+                </Node>
+                <Node name="Prototypes" expanded="True">
+                  <Node name="0.1" expanded="True" />
+                </Node>
+              </Node>
+            </Node>
+            <Node name="Titania" expanded="True">
+              <Node name="HistoryEditor" expanded="True" />
+              <Node name="OutlineEditor" expanded="True">
+                <Node name="CellRenderer" expanded="True" />
+              </Node>
+            </Node>
           </Node>
         </State>
       </Pad>

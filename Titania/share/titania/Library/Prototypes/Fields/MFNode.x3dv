@@ -8,8 +8,8 @@ EXTERNPROTO MFNode [
   outputOnly  MFNode value_changed
 ]
 [
-  "../../../Prototypes/Fields/MFNode.x3dv",
-  "file:///usr/share/titania/Prototypes/Fields/MFNode.x3dv",
+  "../../../Prototypes/0.1/Fields/MFNode.x3dv",
+  "file:///usr/share/titania/Prototypes/0.1/Fields/MFNode.x3dv",
   "http://titania.create3000.de/Library/Prototypes/0.1/Fields/MFNode.x3dv"
 ]
 

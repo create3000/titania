@@ -517,8 +517,10 @@ OutlineCellRenderer::get_preferred_width_vfunc (Gtk::Widget & widget, int & mini
 void
 OutlineCellRenderer::get_preferred_height_for_width_vfunc (Gtk::Widget & widget, int width, int & minimum_height, int & natural_height) const
 {
-	minimum_height = 0;
-	natural_height = 0;
+	const float diameter = 2 * ROUTE_RADIUS;
+
+	minimum_height = diameter;
+	natural_height = diameter;
 
 	int minimum = 0;
 	int natural = 0;
@@ -565,8 +567,10 @@ OutlineCellRenderer::get_preferred_height_for_width_vfunc (Gtk::Widget & widget,
 void
 OutlineCellRenderer::get_preferred_height_vfunc (Gtk::Widget & widget, int & minimum_height, int & natural_height) const
 {
-	minimum_height = 0;
-	natural_height = 0;
+	const float diameter = 2 * ROUTE_RADIUS;
+
+	minimum_height = diameter;
+	natural_height = diameter;
 
 	int minimum = 0;
 	int natural = 0;
@@ -608,6 +612,7 @@ OutlineCellRenderer::get_preferred_height_vfunc (Gtk::Widget & widget, int & min
 		default:
 			break;
 	}
+	
 }
 
 void
@@ -1201,7 +1206,7 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 	const double output_y = y + y_pad + minimum_height - ROUTE_Y_PAD;
 	const double output_w = width;
 
-	const double radius      = std::min (y_pad + ROUTE_Y_PAD, ROUTE_RADIUS);
+	const double radius      = ROUTE_RADIUS;
 	const double connector_x = x + width + radius;
 
 	if (accessType == X3D::inputOutput)

@@ -11,8 +11,8 @@ EXTERNPROTO Number [
   inputOutput    SFNode  fontStyle
 ]
 [
-  "../../../Prototypes/Geometry3D/Number.x3dv",
-  "file:///usr/share/titania/Prototypes/Geometry3D/Number.x3dv",
+  "../../../Prototypes/0.1/Geometry3D/Number.x3dv",
+  "file:///usr/share/titania/Prototypes/0.1/Geometry3D/Number.x3dv",
   "http://titania.create3000.de/Library/Prototypes/0.1/Geometry3D/Number.x3dv"
 ]
 

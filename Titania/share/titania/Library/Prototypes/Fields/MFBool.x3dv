@@ -8,8 +8,8 @@ EXTERNPROTO MFBool [
   outputOnly  MFBool value_changed
 ]
 [
-  "../../../Prototypes/Fields/MFBool.x3dv",
-  "file:///usr/share/titania/Prototypes/Fields/MFBool.x3dv",
+  "../../../Prototypes/0.1/Fields/MFBool.x3dv",
+  "file:///usr/share/titania/Prototypes/0.1/Fields/MFBool.x3dv",
   "http://titania.create3000.de/Library/Prototypes/0.1/Fields/MFBool.x3dv"
 ]
 

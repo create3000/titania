@@ -6,8 +6,8 @@ EXTERNPROTO RoundedRectangle2D [
   initializeOnly SFBool  solid
 ]
 [
-  "../../../Prototypes/Geometry2D/RoundedRectangle2D.x3dv",
-  "file:///usr/share/titania/Prototypes/Geometry2D/RoundedRectangle2D.x3dv",
+  "../../../Prototypes/0.1/Geometry2D/RoundedRectangle2D.x3dv",
+  "file:///usr/share/titania/Prototypes/0.1/Geometry2D/RoundedRectangle2D.x3dv",
   "http://titania.create3000.de/Library/Prototypes/0.1/Geometry2D/RoundedRectangle2D.x3dv"
 ]
 

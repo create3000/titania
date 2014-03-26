@@ -1,23 +1,23 @@
 #X3D V3.3 utf8 Titania V0.6.7
 
 META "generator" "Titania V0.6.7, http://titania.create3000.de"
-META "title" "Button"
 
 EXTERNPROTO Button [
-  inputOutput    SFBool  enabled
-  outputOnly     SFBool  isOver
-  outputOnly     SFBool  isActive
-  outputOnly     SFTime  touchTime
-  initializeOnly SFVec3f bboxSize
-  initializeOnly SFVec3f bboxCenter
-  inputOnly      MFNode  addChildren
-  inputOnly      MFNode  removeChildren
-  inputOutput    MFNode  children
+  inputOutput    SFBool   enabled
+  inputOutput    SFString description
+  outputOnly     SFBool   isOver
+  outputOnly     SFBool   isActive
+  outputOnly     SFTime   touchTime
+  initializeOnly SFVec3f  bboxSize
+  initializeOnly SFVec3f  bboxCenter
+  inputOnly      MFNode   addChildren
+  inputOnly      MFNode   removeChildren
+  inputOutput    MFNode   children
 ]
 [
-  "../../../Prototypes/Button/Button.x3dv",
-  "file:///usr/share/titania/Prototypes/Button/Button.x3dv",
-  "http://titania.create3000.de/Library/Prototypes/0.1/Button/Button.x3dv"
+  "../../../Prototypes/0.1/Widgets/Button.x3dv",
+  "file:///usr/share/titania/Prototypes/0.1/Widgets/Button.x3dv",
+  "http://titania.create3000.de/Library/Prototypes/0.1/Widgets/Button.x3dv"
 ]
 
 Button {

@@ -5,8 +5,8 @@ EXTERNPROTO EnterWorld [
   outputOnly SFTime enterTime
 ]
 [
-  "../../../Prototypes/Time/EnterWorld.x3dv",
-  "file:///usr/share/titania/Prototypes/Time/EnterWorld.x3dv",
+  "../../../Prototypes/0.1/Time/EnterWorld.x3dv",
+  "file:///usr/share/titania/Prototypes/0.1/Time/EnterWorld.x3dv",
   "http://titania.create3000.de/Library/Prototypes/0.1/Time/EnterWorld.x3dv"
 ]
 

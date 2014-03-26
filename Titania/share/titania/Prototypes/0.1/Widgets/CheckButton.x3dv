@@ -22,7 +22,7 @@ PROTO CheckButton [
     children IS children
   }
 
-  DEF CheckButton Script {
+  DEF CheckButtonScript Script {
     inputOnly      SFTime set_disabled
     inputOnly      SFTime set_active
     inputOnly      MFNode set_children
@@ -93,6 +93,6 @@ function choose ()
     directOutput TRUE
   }
 
-  ROUTE Switch.children_changed TO CheckButton.set_children
+  ROUTE Switch.children_changed TO CheckButtonScript.set_children
 }
 

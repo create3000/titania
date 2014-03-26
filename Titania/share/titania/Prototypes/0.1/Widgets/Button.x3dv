@@ -3,15 +3,16 @@
 META "generator" "Titania V0.6.7, http://titania.create3000.de"
 
 PROTO Button [
-  inputOutput    SFBool  enabled TRUE
-  outputOnly     SFBool  isOver
-  outputOnly     SFBool  isActive
-  outputOnly     SFTime  touchTime
-  initializeOnly SFVec3f bboxSize -1 -1 -1
-  initializeOnly SFVec3f bboxCenter 0 0 0
-  inputOnly      MFNode  addChildren
-  inputOnly      MFNode  removeChildren
-  inputOutput    MFNode  children [ ]
+  inputOutput    SFBool   enabled TRUE
+  inputOutput    SFString description ""
+  outputOnly     SFBool   isOver
+  outputOnly     SFBool   isActive
+  outputOnly     SFTime   touchTime
+  initializeOnly SFVec3f  bboxSize -1 -1 -1
+  initializeOnly SFVec3f  bboxCenter 0 0 0
+  inputOnly      MFNode   addChildren
+  inputOnly      MFNode   removeChildren
+  inputOutput    MFNode   children [ ]
 ]
 {
   Group {
@@ -20,6 +21,7 @@ PROTO Button [
     children [
       DEF Touch TouchSensor {
         enabled IS enabled
+        description IS description
         isOver IS isOver
         isActive IS isActive
         touchTime IS touchTime
@@ -32,10 +34,11 @@ PROTO Button [
     ]
   }
 
-  DEF Button Script {
+  DEF ButtonScript Script {
     inputOnly      SFBool set_enabled
     inputOnly      SFBool set_active
     inputOnly      SFBool set_over
+    inputOnly      MFNode set_children
     initializeOnly SFNode touchSensor USE Touch
     initializeOnly SFNode button USE Switch
 
@@ -56,19 +59,23 @@ function set_enabled (value)
 	set_whichChoice (value ? DEFAULT : DISABLED);
 }
 
-function set_active (value)
+function set_active ()
 {
 	choose ();
 }
 
-function set_over (value)
+function set_over ()
 {
 	choose ();
 }
 
 function set_whichChoice (value)
 {
-	button .whichChoice = value < button .children .length ? value : DEFAULT;
+	if (value < button .children .length)
+		button .whichChoice = value;
+
+	else
+		button .whichChoice = DEFAULT;
 }
 
 function choose ()
@@ -82,12 +89,18 @@ function choose ()
 	else
 		set_whichChoice (DEFAULT);
 }
+
+function set_children ()
+{
+	choose ();
+}
 "
     directOutput TRUE
   }
 
-  ROUTE Touch.enabled_changed TO Button.set_enabled
-  ROUTE Touch.isActive TO Button.set_active
-  ROUTE Touch.isOver TO Button.set_over
+  ROUTE Touch.enabled_changed TO ButtonScript.set_enabled
+  ROUTE Touch.isActive TO ButtonScript.set_active
+  ROUTE Touch.isOver TO ButtonScript.set_over
+  ROUTE Switch.children_changed TO ButtonScript.set_children
 }
 

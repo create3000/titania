@@ -8,8 +8,8 @@ EXTERNPROTO SFColor [
   outputOnly  SFColor value_changed
 ]
 [
-  "../../../Prototypes/Fields/SFColor.x3dv",
-  "file:///usr/share/titania/Prototypes/Fields/SFColor.x3dv",
+  "../../../Prototypes/0.1/Fields/SFColor.x3dv",
+  "file:///usr/share/titania/Prototypes/0.1/Fields/SFColor.x3dv",
   "http://titania.create3000.de/Library/Prototypes/0.1/Fields/SFColor.x3dv"
 ]
 
