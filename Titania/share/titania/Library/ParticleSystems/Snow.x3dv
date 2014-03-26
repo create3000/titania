@@ -32,8 +32,9 @@ DEF Snow ParticleSystem {
   appearance Appearance {
     texture ImageTexture {
       url [
-        "snowflake.png",
-        "file:///usr/share/titania/Library/ParticleSystems/snowflake.png"
+        "../Textures/EnvironmentalEffects/snowflake1.png",
+        "file:///usr/share/titania/Library/Textures/EnvironmentalEffects/snowflake1.png"
+        "http://titania.create3000.de/Library/Textures/EnvironmentalEffects/snowflake1.png"
       ]
       repeatS FALSE
       repeatT FALSE

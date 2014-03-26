@@ -1,3 +1,8 @@
+2014-03-26  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* ExternProto.h:
+	* ExternProto.cpp: 
+
 2014-03-25  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DBrowserContext.h:

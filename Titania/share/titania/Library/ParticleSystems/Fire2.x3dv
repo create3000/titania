@@ -346,8 +346,9 @@ DEF Fire2 ParticleSystem {
   appearance Appearance {
     texture ImageTexture {
       url [
-        "fire2.png",
-        "file:///usr/share/titania/Library/ParticleSystems/fire2.png"
+        "../Textures/EnvironmentalEffects/fire2.png",
+        "file:///usr/share/titania/Library/Textures/EnvironmentalEffects/fire2.png"
+        "http://titania.create3000.de/Library/Textures/EnvironmentalEffects/fire2.png"
       ]
     }
   }

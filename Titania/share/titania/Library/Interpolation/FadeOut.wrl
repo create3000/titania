@@ -1,0 +1,6 @@
+#X3D V3.3 utf8 Titania
+
+DEF FadeOut ScalarInterpolator {
+  key [ 0, 1 ]
+  keyValue [ 1, 0 ]
+}

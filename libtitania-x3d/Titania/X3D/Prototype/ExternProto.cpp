@@ -155,23 +155,33 @@ ExternProto::requestImmediateLoad ()
 
 	try
 	{
-		scene = getBrowser () -> createScene ();
+		try
+		{
+			scene = getBrowser () -> createScene ();
 
-		loader .parseIntoScene (scene, url ());
+			loader .parseIntoScene (scene, url ());
 
-		if (getExecutionContext () -> isInitialized ())
-			scene -> setup ();
+			if (getExecutionContext () -> isInitialized ())
+				scene -> setup ();
 
-		else
-			getExecutionContext () -> addUninitializedNode (scene);
+			else
+				getExecutionContext () -> addUninitializedNode (scene);
+		}
+		catch (const X3DError & error)
+		{
+			scene = nullptr;
+
+			setLoadState (FAILED_STATE);
+
+			throw Error <URL_UNAVAILABLE> ("Couldn't load any URL specified for EXTERNPROTO '" + getName () + "'\n" + error .what ());
+		}
 	}
-	catch (const X3DError & error)
+	catch (...)
 	{
-		scene = nullptr;
+		// Legacy code
 
-		setLoadState (FAILED_STATE);
-
-		throw Error <URL_UNAVAILABLE> ("Couldn't load any URL specified for EXTERNPROTO '" + getName () + "'\n" + error .what ());
+		if (not rewrite (loader))
+			throw;
 	}
 
 	const std::string protoName = loader .getWorldURL () .fragment () .empty ()
@@ -221,6 +231,43 @@ ExternProto::requestImmediateLoad ()
 		setLoadState (FAILED_STATE);
 		throw Error <INVALID_NAME> ("No PROTO '" + protoName + "' found for EXTERNPROTO '" + getName () + "' in url '" + loader .getWorldURL () + "'");
 	}
+}
+
+bool
+ExternProto::rewrite (Loader & loader)
+{
+	// Legacy code
+
+	try
+	{
+		for (auto & URL : url ())
+		{
+			static const pcrecpp::RE path ("file\\:///usr/share/titania/Library/Prototypes/(.*?)/(.*?)/(.*?)\\.x3dv");
+			
+			std::string rewritten = URL;
+
+			if (path .Replace ("http://titania.create3000.de/Library/Prototypes/0.1/\\1/\\2.x3dv", &rewritten))
+			{
+				URL = rewritten;
+
+				scene = getBrowser () -> createScene ();
+
+				loader .parseIntoScene (scene, { URL });
+
+				if (getExecutionContext () -> isInitialized ())
+					scene -> setup ();
+
+				else
+					getExecutionContext () -> addUninitializedNode (scene);
+
+				return true;
+			}
+		}
+	}
+	catch (...)
+	{ }
+
+	return false;
 }
 
 void

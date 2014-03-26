@@ -59,6 +59,8 @@
 namespace titania {
 namespace X3D {
 
+class Loader;
+
 class ExternProto :
 	public X3DProto, public X3DUrlObject
 {
@@ -155,6 +157,9 @@ private:
 	virtual
 	void
 	initialize () final override;
+
+	bool
+	rewrite (Loader &);
 
 	///  @name Input/Output
 
