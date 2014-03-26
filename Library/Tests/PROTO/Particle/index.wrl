@@ -1,4 +1,4 @@
-#VRML V2.0 utf8
+#VRML V2.0 utf8 Titania V0.6.7
 
 META "title" "Particle"
 
@@ -54,12 +54,32 @@ EXTERNPROTO MFNode [
 ]
 "MFNode.wrl"
 
+EXTERNPROTO TrackingViewpoint [
+  eventIn      SFBool   set_bind
+  exposedField SFString description
+  exposedField SFVec3f  trackPoint
+  exposedField SFVec3f  position
+  exposedField SFVec3f  centerOfRotation
+  exposedField SFFloat  fieldOfView
+  exposedField SFBool   retainUserOffsets
+  eventOut     SFBool   isBound
+  eventOut     SFTime   bindTime
+]
+[
+  "../../../../Titania/share/titania/Prototypes/Navigation/TrackingViewpoint.x3dv",
+  "file:///usr/share/titania/Prototypes/Navigation/TrackingViewpoint.x3dv",
+  "http://titania.create3000.de/Library/Prototypes/0.1/Navigation/TrackingViewpoint.x3dv"
+]
+
 LayerSet {
   activeLayer 1
-  order [ 1, 2 ]
+  order [
+    1,
+    2
+  ]
   layers [
-    Layer {
-      children DEF _4 Collision {
+    DEF Scene Layer {
+      children Collision {
         collide FALSE
         children [
           Background {
@@ -75,6 +95,11 @@ LayerSet {
             position 0 20 0
             orientation -1 -0 -0 1.5708
           }
+          DEF _1 TrackingViewpoint {
+            description "TrackingViewpoint"
+            trackPoint 7.82794 1.15224 0
+            position 0 20 0
+          }
           Grid {
             solid FALSE
           }
@@ -82,20 +107,43 @@ LayerSet {
             children [
               DEF Particle1 Particle {
                 mass 20000000000
-                velocity 0 -0.28 0
-                translation -4 0 0
+                acceleration -0.0073827 -0.0010867 0
+                velocity 0.0345006 0.212937 0
+                translation 7.82794 1.15224 0
+                rotation -0.987127 0.159937 0 1.5708
+                friends [
+                  DEF Particle2 Particle {
+                    mass 20000000000
+                    acceleration 0.0073827 0.0010867 0
+                    velocity -0.0345006 -0.212937 0
+                    translation -7.82794 -1.15224 0
+                    rotation 0.987127 -0.159937 0 1.5708
+                    friends [
+                      USE Particle1
+                      DEF Particle3 Particle {
+                        mass 2000000000
+                        rotation 0 1 0 3.14159
+                        friends [
+                          USE Particle1
+                          USE Particle2
+                        ]
+                        children ParticleShape {
+                          color 0.8 0.8 0
+                        }
+                      }
+                    ]
+                    children ParticleShape {
+                      color 0.8 0 0.8
+                    }
+                  }
+                  USE Particle3
+                ]
                 children ParticleShape {
                   color 0 0.8 0.8
                 }
               }
-              DEF Particle2 Particle {
-                mass 20000000000
-                velocity 0 0.28 0
-                translation 4 0 0
-                children ParticleShape {
-                  color 0.8 0 0.8
-                }
-              }
+              USE Particle2
+              USE Particle3
             ]
           }
           Shape {
@@ -104,7 +152,9 @@ LayerSet {
                 emissiveColor 0 0.8 0.8
               }
             }
-            geometry DEF LineTrail1 LineTrail { }
+            geometry DEF LineTrail1 LineTrail {
+              point 7.82794 1.15224 0
+            }
           }
           Shape {
             appearance Appearance {
@@ -112,13 +162,15 @@ LayerSet {
                 emissiveColor 0.8 0 0.8
               }
             }
-            geometry DEF LineTrail2 LineTrail { }
+            geometry DEF LineTrail2 LineTrail {
+              point -7.82794 -1.15224 0
+            }
           }
         ]
       }
     }
-    Layer {
-      children DEF _0 Collision {
+    DEF HUD Layer {
+      children Collision {
         collide FALSE
         children [
           OrthoViewpoint { }
@@ -126,17 +178,21 @@ LayerSet {
             translation 0.8 -0.9 0
             scale 0.1 0.1 0.1
             children [
-              DEF Touch0 TouchSensor { }
+              DEF Touch0 TouchSensor {
+                description "Zero"
+              }
               Shape {
                 appearance Appearance {
-                  material Material { diffuseColor 0 0 0 }
+                  material Material {
+                    diffuseColor 0 0 0
+                  }
                 }
                 geometry Rectangle2D {
                   size 1 1
                 }
               }
               DEF ParticleContainer0 MFNode {
-                keyValue [ ]
+                triggerTime 1395819366.4677
               }
             ]
           }
@@ -144,7 +200,9 @@ LayerSet {
             translation 1 -0.9 0
             scale 0.1 0.1 0.1
             children [
-              DEF Touch2 TouchSensor { }
+              DEF Touch2 TouchSensor {
+                description "Two"
+              }
               Shape {
                 appearance Appearance {
                   material Material { }
@@ -158,6 +216,7 @@ LayerSet {
                   USE Particle1
                   USE Particle2
                 ]
+                triggerTime 1395819361.87583
               }
             ]
           }
@@ -165,7 +224,9 @@ LayerSet {
             translation 1.2 -0.9 0
             scale 0.1 0.1 0.1
             children [
-              DEF Touch3 TouchSensor { }
+              DEF Touch3 TouchSensor {
+                description "Three"
+              }
               Shape {
                 appearance Appearance {
                   material Material { }
@@ -178,13 +239,9 @@ LayerSet {
                 keyValue [
                   USE Particle1
                   USE Particle2
-                  DEF Particle3 Particle {
-                    mass 2000000000
-                    children ParticleShape {
-                      color 0.8 0.8 0
-                    }
-                  }
+                  USE Particle3
                 ]
+                triggerTime 1395819376.30828
               }
             ]
           }
@@ -211,4 +268,4 @@ ROUTE ParticleContainer2.value_changed TO ParticleGroup.set_children
 
 ROUTE Touch3.touchTime TO ParticleContainer3.set_triggerTime
 ROUTE ParticleContainer3.value_changed TO ParticleGroup.set_children
-
+ROUTE Particle1.translation_changed TO _1.set_trackPoint

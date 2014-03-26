@@ -1,0 +1,20 @@
+#X3D V3.3 utf8 Titania
+
+EXTERNPROTO TrackingViewpoint [
+  inputOnly   SFBool   set_bind
+  inputOutput SFString description
+  inputOutput SFVec3f  trackPoint 
+  inputOutput SFVec3f  position 
+  inputOutput SFVec3f  centerOfRotation 
+  inputOutput SFFloat  fieldOfView 
+  inputOutput SFBool   retainUserOffsets 
+  outputOnly  SFBool   isBound
+  outputOnly  SFTime   bindTime
+]
+[
+  "../../../Prototypes/Navigation/TrackingViewpoint.x3dv",
+  "file:///usr/share/titania/Prototypes/Navigation/TrackingViewpoint.x3dv",
+  "http://titania.create3000.de/Library/Prototypes/0.1/Navigation/TrackingViewpoint.x3dv"
+]
+
+TrackingViewpoint { }

@@ -1,5 +1,12 @@
 2014-03-26  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Viewpoint.cpp:
+	* GeoViewpoint.cpp:
+	* OrthoViewpoint.cpp:
+	* X3DViewpointObject.cpp: 
+
+2014-03-26  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* ExternProto.h:
 	* ExternProto.cpp: 
 

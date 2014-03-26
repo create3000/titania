@@ -14,8 +14,8 @@ EXTERNPROTO Button [
   exposedField MFNode  children
 ]
 [
-  "../../../Prototypes/Button/Button.x3dv",
-  "file:///usr/share/titania/Prototypes/Button/Button.x3dv",
+  "../../../Prototypes/Widgets/Button.x3dv",
+  "file:///usr/share/titania/Prototypes/Widgets/Button.x3dv",
   "http://titania.create3000.de/Library/Prototypes/0.1/Button/Button.x3dv"
 ]
 
@@ -31,8 +31,8 @@ EXTERNPROTO CheckButton [
   exposedField MFNode  children
 ]
 [
-  "../../../Prototypes/Button/CheckButton.x3dv",
-  "file:///usr/share/titania/Prototypes/Button/CheckButton.x3dv",
+  "../../../Prototypes/Widgets/CheckButton.x3dv",
+  "file:///usr/share/titania/Prototypes/Widgets/CheckButton.x3dv",
   "http://titania.create3000.de/Library/Prototypes/0.1/Button/CheckButton.x3dv"
 ]
 
@@ -45,8 +45,8 @@ EXTERNPROTO RadioButton [
   exposedField MFNode  children
 ]
 [
-  "../../../Prototypes/Button/RadioButton.x3dv",
-  "file:///usr/share/titania/Prototypes/Button/RadioButton.x3dv",
+  "../../../Prototypes/Widgets/RadioButton.x3dv",
+  "file:///usr/share/titania/Prototypes/Widgets/RadioButton.x3dv",
   "http://titania.create3000.de/Library/Prototypes/0.1/Button/RadioButton.x3dv"
 ]
 

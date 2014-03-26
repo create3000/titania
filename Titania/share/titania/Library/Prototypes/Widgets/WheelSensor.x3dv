@@ -20,8 +20,8 @@ EXTERNPROTO WheelSensor [
   outputOnly  SFFloat    value_changed
 ]
 [
-  "../../../Prototypes/Button/WheelSensor.x3dv",
-  "file:///usr/share/titania/Prototypes/Button/WheelSensor.x3dv",
+  "../../../Prototypes/Widgets/WheelSensor.x3dv",
+  "file:///usr/share/titania/Prototypes/Widgets/WheelSensor.x3dv",
   "http://titania.create3000.de/Library/Prototypes/0.1/Button/WheelSensor.x3dv"
 ]
 

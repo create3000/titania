@@ -73,8 +73,8 @@ OrthoViewpoint::OrthoViewpoint (X3DExecutionContext* const executionContext) :
 	          fields ()
 {
 	addField (inputOutput, "metadata",          metadata ());
-	addField (inputOutput, "description",       description ());
 	addField (inputOnly,   "set_bind",          set_bind ());
+	addField (inputOutput, "description",       description ());
 	addField (inputOutput, "position",          position ());
 	addField (inputOutput, "orientation",       orientation ());
 	addField (inputOutput, "centerOfRotation",  centerOfRotation ());
