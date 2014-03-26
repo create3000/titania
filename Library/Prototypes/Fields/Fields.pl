@@ -8,8 +8,6 @@ use utf8;
 
 use Glib;
 
-my $fields = "/home/holger/Projekte/Titania/Titania/share/titania/Library/Prototypes/Fields";
-
 my $keyFile = new Glib::KeyFile ();
 $keyFile -> load_from_data (join ("", `titania-info -f 2>/dev/null`), "none");
 
@@ -19,12 +17,12 @@ foreach my $name ($keyFile -> get_groups ())
 
 	next if $name eq "Fields.pl";
 
-	my $folder = "$fields/$name";
+	my $prototypes = "/home/holger/Projekte/Titania/Titania/share/titania/prototypes/Fields";
 
-	system "mkdir", "-p", $folder;
+	system "mkdir", "-p", $prototypes;
 
 	my $value = $keyFile -> get_string ($name, "value");
-	my $proto = "$fields/$name/$name.x3dv";
+	my $proto = "$prototypes/$name.x3dv";
 
 	open FILE, ">", $proto;
 
@@ -54,10 +52,14 @@ function set_triggerTime (value, time)
 	close FILE;
 
 	system "x3dtidy", $proto, $proto;
+
+
+	my $extern_prototypes = "/home/holger/Projekte/Titania/Titania/share/titania/Library/Prototypes/Fields";
+
+	system "mkdir", "-p", $extern_prototypes;
 	
 	
-	
-	my $externproto = "$fields/$name/ExternProto.x3dv";
+	my $externproto = "$extern_prototypes/$name.x3dv";
 
 	open FILE, ">", $externproto;
 
@@ -69,8 +71,8 @@ EXTERNPROTO $name [
   eventOut     $name  value_changed
 ]
 [
-	\"$name.x3dv\"
-	\"/usr/share/titania/Library/Prototypes/Fields/$name/$name.x3dv\"
+	\"../../../prototypes/Fields/$name.x3dv\"
+	\"/usr/share/titania/prototypes/Fields/$name.x3dv\"
 ]
 
 $name { }

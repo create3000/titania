@@ -1,0 +1,27 @@
+#X3D V3.3 utf8 Titania
+
+EXTERNPROTO Number [
+  inputOutput    SFFloat value
+  inputOutput    SFInt32 precision
+  inputOutput    SFFloat length
+  inputOutput    SFFloat maxExtent
+  initializeOnly SFBool  solid
+  outputOnly     SFVec3f origin
+  outputOnly     SFVec2f textBounds
+  inputOutput    SFNode  fontStyle
+]
+[
+  "../../../prototypes/Geometry3D/Number.x3dv",
+  "file:///usr/share/titania/prototypes/Geometry3D/Number.x3dv"
+]
+
+DEF Number Transform {
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry Number {
+      fontStyle FontStyle { }
+    }
+  }
+}

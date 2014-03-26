@@ -1,0 +1,16 @@
+#X3D V3.3 utf8 Titania
+
+EXTERNPROTO Delay [
+  inputOutput SFTime cycleInterval
+  inputOutput SFBool enabled
+  inputOutput SFTime startTime
+  inputOutput SFTime stopTime
+  outputOnly  SFBool isActive
+  outputOnly  SFTime exitTime
+]
+[
+  "../../../prototypes/Time/Delay.x3dv",
+  "file:///usr/share/titania/prototypes/Time/Delay.x3dv"
+]
+
+Delay { }

@@ -1,0 +1,22 @@
+#X3D V3.3 utf8 Titania
+
+EXTERNPROTO Torus [
+  exposedField SFFloat minorRadius
+  exposedField SFFloat majorRadius
+  exposedField SFInt32 minorDimension
+  exposedField SFInt32 majorDimension
+  field SFBool  solid
+]
+[
+  "../../../prototypes/Geometry3D/Torus.x3dv",
+  "file:///usr/share/titania/prototypes/Geometry3D/Torus.x3dv"
+]
+
+DEF Torus Transform {
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry Torus { }
+  }
+}

@@ -1,0 +1,15 @@
+#X3D V3.3 utf8 Titania V0.6.7
+
+META "generator" "Titania V0.6.7, http://titania.create3000.de"
+
+EXTERNPROTO MFVec4d [
+  inputOnly   SFTime  set_triggerTime
+  inputOutput MFVec4d keyValue
+  outputOnly  MFVec4d value_changed
+]
+[
+  "../../../prototypes/Fields/MFVec4d.x3dv",
+  "/usr/share/titania/prototypes/Fields/MFVec4d.x3dv"
+]
+
+MFVec4d { }

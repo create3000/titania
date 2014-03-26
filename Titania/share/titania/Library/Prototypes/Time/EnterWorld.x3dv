@@ -1,0 +1,12 @@
+#X3D V3.3 utf8 Titania
+
+EXTERNPROTO EnterWorld [
+  outputOnly SFBool isActive
+  outputOnly SFTime enterTime
+]
+[
+  "../../../prototypes/Time/EnterWorld.x3dv",
+  "file:///usr/share/titania/prototypes/Time/EnterWorld.x3dv"
+]
+
+EnterWorld { }

@@ -1,0 +1,15 @@
+#X3D V3.3 utf8 Titania V0.6.7
+
+META "generator" "Titania V0.6.7, http://titania.create3000.de"
+
+EXTERNPROTO SFFloat [
+  inputOnly   SFTime  set_triggerTime
+  inputOutput SFFloat keyValue
+  outputOnly  SFFloat value_changed
+]
+[
+  "../../../prototypes/Fields/SFFloat.x3dv",
+  "/usr/share/titania/prototypes/Fields/SFFloat.x3dv"
+]
+
+SFFloat { }

@@ -1,0 +1,15 @@
+#X3D V3.3 utf8 Titania V0.6.7
+
+META "generator" "Titania V0.6.7, http://titania.create3000.de"
+
+EXTERNPROTO MFRotation [
+  inputOnly   SFTime     set_triggerTime
+  inputOutput MFRotation keyValue
+  outputOnly  MFRotation value_changed
+]
+[
+  "../../../prototypes/Fields/MFRotation.x3dv",
+  "/usr/share/titania/prototypes/Fields/MFRotation.x3dv"
+]
+
+MFRotation { }

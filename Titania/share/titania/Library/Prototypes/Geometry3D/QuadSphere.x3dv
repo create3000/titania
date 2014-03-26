@@ -1,0 +1,21 @@
+#X3D V3.3 utf8 Titania
+
+EXTERNPROTO QuadSphere [
+  inputOutput    SFInt32 uDimension
+  inputOutput    SFInt32 vDimension
+  inputOutput    SFFloat radius
+  initializeOnly SFBool  solid
+]
+[
+  "../../../prototypes/Geometry3D/QuadSphere.x3dv",
+  "file:///usr/share/titania/prototypes/Geometry3D/QuadSphere.x3dv"
+]
+
+DEF QuadSphere Transform {
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry QuadSphere { }
+  }
+}
