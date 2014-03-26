@@ -17,7 +17,7 @@ foreach my $name ($keyFile -> get_groups ())
 
 	next if $name eq "Fields.pl";
 
-	my $prototypes = "/home/holger/Projekte/Titania/Titania/share/titania/prototypes/Fields";
+	my $prototypes = "/home/holger/Projekte/Titania/Titania/share/titania/Prototypes/Fields";
 
 	system "mkdir", "-p", $prototypes;
 
