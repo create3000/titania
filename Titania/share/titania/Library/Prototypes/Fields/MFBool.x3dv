@@ -8,8 +8,8 @@ EXTERNPROTO MFBool [
   outputOnly  MFBool value_changed
 ]
 [
-  "../../../prototypes/Fields/MFBool.x3dv",
-  "/usr/share/titania/prototypes/Fields/MFBool.x3dv"
+  "../../../Prototypes/Fields/MFBool.x3dv",
+  "/usr/share/titania/Prototypes/Fields/MFBool.x3dv"
 ]
 
 MFBool { }

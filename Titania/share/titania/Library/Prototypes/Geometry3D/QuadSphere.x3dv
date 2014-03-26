@@ -7,8 +7,8 @@ EXTERNPROTO QuadSphere [
   initializeOnly SFBool  solid
 ]
 [
-  "../../../prototypes/Geometry3D/QuadSphere.x3dv",
-  "file:///usr/share/titania/prototypes/Geometry3D/QuadSphere.x3dv"
+  "../../../Prototypes/Geometry3D/QuadSphere.x3dv",
+  "file:///usr/share/titania/Prototypes/Geometry3D/QuadSphere.x3dv"
 ]
 
 DEF QuadSphere Transform {

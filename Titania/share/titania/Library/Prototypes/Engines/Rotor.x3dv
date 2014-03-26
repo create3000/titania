@@ -15,8 +15,8 @@ EXTERNPROTO Rotor [
   outputOnly  SFRotation rotation_changed
 ]
 [
-  "../../../prototypes/Engines/Rotor.x3dv",
-  "file:///usr/share/titania/prototypes/Engines/Rotor.x3dv"
+  "../../../Prototypes/Engines/Rotor.x3dv",
+  "file:///usr/share/titania/Prototypes/Engines/Rotor.x3dv"
 ]
 
 Rotor { }

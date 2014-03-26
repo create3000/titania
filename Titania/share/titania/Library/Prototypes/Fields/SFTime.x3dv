@@ -8,8 +8,9 @@ EXTERNPROTO SFTime [
   outputOnly  SFTime value_changed
 ]
 [
-  "../../../prototypes/Fields/SFTime.x3dv",
-  "/usr/share/titania/prototypes/Fields/SFTime.x3dv"
+  "../../../Prototypes/Fields/SFTime.x3dv",
+  "/usr/share/titania/Prototypes/Fields/SFTime.x3dv"
+  "http://titania.create3000.de/Library/Prototypes/0.1/Fields/SFTime.x3dv"
 ]
 
 SFTime { }

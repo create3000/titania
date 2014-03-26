@@ -8,8 +8,9 @@ EXTERNPROTO MFVec3f [
   outputOnly  MFVec3f value_changed
 ]
 [
-  "../../../prototypes/Fields/MFVec3f.x3dv",
-  "/usr/share/titania/prototypes/Fields/MFVec3f.x3dv"
+  "../../../Prototypes/Fields/MFVec3f.x3dv",
+  "/usr/share/titania/Prototypes/Fields/MFVec3f.x3dv"
+  "http://titania.create3000.de/Library/Prototypes/0.1/Fields/MFVec3f.x3dv"
 ]
 
 MFVec3f { }

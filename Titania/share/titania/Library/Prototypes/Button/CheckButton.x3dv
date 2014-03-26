@@ -14,8 +14,8 @@ EXTERNPROTO Button [
   exposedField MFNode  children
 ]
 [
-  "../../../prototypes/Button/Button.x3dv",
-  "file:///usr/share/titania/prototypes/Button/Button.x3dv"
+  "../../../Prototypes/Button/Button.x3dv",
+  "file:///usr/share/titania/Prototypes/Button/Button.x3dv"
 ]
 
 EXTERNPROTO CheckButton [
@@ -30,8 +30,8 @@ EXTERNPROTO CheckButton [
   exposedField MFNode  children
 ]
 [
-  "../../../prototypes/Button/CheckButton.x3dv",
-  "file:///usr/share/titania/prototypes/Button/CheckButton.x3dv"
+  "../../../Prototypes/Button/CheckButton.x3dv",
+  "file:///usr/share/titania/Prototypes/Button/CheckButton.x3dv"
 ]
 
 CheckButton {

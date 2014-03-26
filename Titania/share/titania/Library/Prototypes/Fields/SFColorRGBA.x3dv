@@ -8,8 +8,9 @@ EXTERNPROTO SFColorRGBA [
   outputOnly  SFColorRGBA value_changed
 ]
 [
-  "../../../prototypes/Fields/SFColorRGBA.x3dv",
-  "/usr/share/titania/prototypes/Fields/SFColorRGBA.x3dv"
+  "../../../Prototypes/Fields/SFColorRGBA.x3dv",
+  "/usr/share/titania/Prototypes/Fields/SFColorRGBA.x3dv"
+  "http://titania.create3000.de/Library/Prototypes/0.1/Fields/SFColorRGBA.x3dv"
 ]
 
 SFColorRGBA { }

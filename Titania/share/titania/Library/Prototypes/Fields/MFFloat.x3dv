@@ -8,8 +8,9 @@ EXTERNPROTO MFFloat [
   outputOnly  MFFloat value_changed
 ]
 [
-  "../../../prototypes/Fields/MFFloat.x3dv",
-  "/usr/share/titania/prototypes/Fields/MFFloat.x3dv"
+  "../../../Prototypes/Fields/MFFloat.x3dv",
+  "/usr/share/titania/Prototypes/Fields/MFFloat.x3dv"
+  "http://titania.create3000.de/Library/Prototypes/0.1/Fields/MFFloat.x3dv"
 ]
 
 MFFloat { }

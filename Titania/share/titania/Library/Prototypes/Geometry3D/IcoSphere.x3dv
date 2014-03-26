@@ -7,8 +7,8 @@ EXTERNPROTO IcoSphere [
   initializeOnly SFBool   solid
 ]
 [
-  "../../../prototypes/Geometry3D/IcoSphere.x3dv",
-  "file:///usr/share/titania/prototypes/Geometry3D/IcoSphere.x3dv"
+  "../../../Prototypes/Geometry3D/IcoSphere.x3dv",
+  "file:///usr/share/titania/Prototypes/Geometry3D/IcoSphere.x3dv"
 ]
 
 DEF Icosahedron Transform {

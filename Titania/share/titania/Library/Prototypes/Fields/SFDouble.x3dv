@@ -8,8 +8,9 @@ EXTERNPROTO SFDouble [
   outputOnly  SFDouble value_changed
 ]
 [
-  "../../../prototypes/Fields/SFDouble.x3dv",
-  "/usr/share/titania/prototypes/Fields/SFDouble.x3dv"
+  "../../../Prototypes/Fields/SFDouble.x3dv",
+  "/usr/share/titania/Prototypes/Fields/SFDouble.x3dv"
+  "http://titania.create3000.de/Library/Prototypes/0.1/Fields/SFDouble.x3dv"
 ]
 
 SFDouble { }

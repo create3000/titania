@@ -9,8 +9,8 @@ EXTERNPROTO Delay [
   outputOnly  SFTime exitTime
 ]
 [
-  "../../../prototypes/Time/Delay.x3dv",
-  "file:///usr/share/titania/prototypes/Time/Delay.x3dv"
+  "../../../Prototypes/Time/Delay.x3dv",
+  "file:///usr/share/titania/Prototypes/Time/Delay.x3dv"
 ]
 
 Delay { }

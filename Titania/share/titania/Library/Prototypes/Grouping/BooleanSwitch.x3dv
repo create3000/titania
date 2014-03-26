@@ -11,8 +11,8 @@ EXTERNPROTO BooleanSwitch [
   inputOutput    MFNode  children
 ]
 [
-  "../../../prototypes/Grouping/BooleanSwitch.x3dv",
-  "file:///usr/share/titania/prototypes/Grouping/BooleanSwitch.x3dv"
+  "../../../Prototypes/Grouping/BooleanSwitch.x3dv",
+  "file:///usr/share/titania/Prototypes/Grouping/BooleanSwitch.x3dv"
 ]
 
 BooleanSwitch { }

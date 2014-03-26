@@ -8,8 +8,9 @@ EXTERNPROTO MFImage [
   outputOnly  MFImage value_changed
 ]
 [
-  "../../../prototypes/Fields/MFImage.x3dv",
-  "/usr/share/titania/prototypes/Fields/MFImage.x3dv"
+  "../../../Prototypes/Fields/MFImage.x3dv",
+  "/usr/share/titania/Prototypes/Fields/MFImage.x3dv"
+  "http://titania.create3000.de/Library/Prototypes/0.1/Fields/MFImage.x3dv"
 ]
 
 MFImage { }

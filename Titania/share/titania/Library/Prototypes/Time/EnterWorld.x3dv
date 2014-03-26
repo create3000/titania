@@ -5,8 +5,8 @@ EXTERNPROTO EnterWorld [
   outputOnly SFTime enterTime
 ]
 [
-  "../../../prototypes/Time/EnterWorld.x3dv",
-  "file:///usr/share/titania/prototypes/Time/EnterWorld.x3dv"
+  "../../../Prototypes/Time/EnterWorld.x3dv",
+  "file:///usr/share/titania/Prototypes/Time/EnterWorld.x3dv"
 ]
 
 EnterWorld { }

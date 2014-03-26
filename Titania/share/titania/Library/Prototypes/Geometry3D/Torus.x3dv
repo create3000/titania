@@ -8,8 +8,8 @@ EXTERNPROTO Torus [
   field SFBool  solid
 ]
 [
-  "../../../prototypes/Geometry3D/Torus.x3dv",
-  "file:///usr/share/titania/prototypes/Geometry3D/Torus.x3dv"
+  "../../../Prototypes/Geometry3D/Torus.x3dv",
+  "file:///usr/share/titania/Prototypes/Geometry3D/Torus.x3dv"
 ]
 
 DEF Torus Transform {

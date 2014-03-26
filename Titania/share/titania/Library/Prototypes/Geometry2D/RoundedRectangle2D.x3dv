@@ -6,8 +6,8 @@ EXTERNPROTO RoundedRectangle2D [
   initializeOnly SFBool  solid
 ]
 [
-  "../../../prototypes/Geometry2D/RoundedRectangle2D.x3dv",
-  "file:///usr/share/titania/prototypes/Geometry2D/RoundedRectangle2D.x3dv"
+  "../../../Prototypes/Geometry2D/RoundedRectangle2D.x3dv",
+  "file:///usr/share/titania/Prototypes/Geometry2D/RoundedRectangle2D.x3dv"
 ]
 
 DEF RoundedRectangle2D Transform {

@@ -20,8 +20,8 @@ EXTERNPROTO WheelSensor [
   outputOnly  SFFloat    value_changed
 ]
 [
-  "../../../prototypes/Button/WheelSensor.x3dv",
-  "file:///usr/share/titania/prototypes/Button/WheelSensor.x3dv"
+  "../../../Prototypes/Button/WheelSensor.x3dv",
+  "file:///usr/share/titania/Prototypes/Button/WheelSensor.x3dv"
 ]
 
 EXTERNPROTO Number [
@@ -35,8 +35,8 @@ EXTERNPROTO Number [
   inputOutput    SFNode  fontStyle
 ]
 [
-  "../../../prototypes/Geometry3D/Number.x3dv",
-  "file:///usr/share/titania/prototypes/Geometry3D/Number.x3dv"
+  "../../../Prototypes/Geometry3D/Number.x3dv",
+  "file:///usr/share/titania/Prototypes/Geometry3D/Number.x3dv"
 ]
 
 DEF Wheel_1 Transform {

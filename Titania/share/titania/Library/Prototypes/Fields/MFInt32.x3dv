@@ -8,8 +8,9 @@ EXTERNPROTO MFInt32 [
   outputOnly  MFInt32 value_changed
 ]
 [
-  "../../../prototypes/Fields/MFInt32.x3dv",
-  "/usr/share/titania/prototypes/Fields/MFInt32.x3dv"
+  "../../../Prototypes/Fields/MFInt32.x3dv",
+  "/usr/share/titania/Prototypes/Fields/MFInt32.x3dv"
+  "http://titania.create3000.de/Library/Prototypes/0.1/Fields/MFInt32.x3dv"
 ]
 
 MFInt32 { }

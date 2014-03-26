@@ -8,8 +8,9 @@ EXTERNPROTO SFNode [
   outputOnly  SFNode value_changed
 ]
 [
-  "../../../prototypes/Fields/SFNode.x3dv",
-  "/usr/share/titania/prototypes/Fields/SFNode.x3dv"
+  "../../../Prototypes/Fields/SFNode.x3dv",
+  "/usr/share/titania/Prototypes/Fields/SFNode.x3dv"
+  "http://titania.create3000.de/Library/Prototypes/0.1/Fields/SFNode.x3dv"
 ]
 
 SFNode { }

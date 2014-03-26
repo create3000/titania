@@ -8,8 +8,9 @@ EXTERNPROTO MFString [
   outputOnly  MFString value_changed
 ]
 [
-  "../../../prototypes/Fields/MFString.x3dv",
-  "/usr/share/titania/prototypes/Fields/MFString.x3dv"
+  "../../../Prototypes/Fields/MFString.x3dv",
+  "/usr/share/titania/Prototypes/Fields/MFString.x3dv"
+  "http://titania.create3000.de/Library/Prototypes/0.1/Fields/MFString.x3dv"
 ]
 
 MFString { }

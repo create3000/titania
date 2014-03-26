@@ -8,8 +8,9 @@ EXTERNPROTO MFMatrix3d [
   outputOnly  MFMatrix3d value_changed
 ]
 [
-  "../../../prototypes/Fields/MFMatrix3d.x3dv",
-  "/usr/share/titania/prototypes/Fields/MFMatrix3d.x3dv"
+  "../../../Prototypes/Fields/MFMatrix3d.x3dv",
+  "/usr/share/titania/Prototypes/Fields/MFMatrix3d.x3dv"
+  "http://titania.create3000.de/Library/Prototypes/0.1/Fields/MFMatrix3d.x3dv"
 ]
 
 MFMatrix3d { }

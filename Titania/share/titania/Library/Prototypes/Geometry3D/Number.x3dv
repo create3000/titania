@@ -11,8 +11,8 @@ EXTERNPROTO Number [
   inputOutput    SFNode  fontStyle
 ]
 [
-  "../../../prototypes/Geometry3D/Number.x3dv",
-  "file:///usr/share/titania/prototypes/Geometry3D/Number.x3dv"
+  "../../../Prototypes/Geometry3D/Number.x3dv",
+  "file:///usr/share/titania/Prototypes/Geometry3D/Number.x3dv"
 ]
 
 DEF Number Transform {

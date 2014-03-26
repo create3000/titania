@@ -8,8 +8,9 @@ EXTERNPROTO SFBool [
   outputOnly  SFBool value_changed
 ]
 [
-  "../../../prototypes/Fields/SFBool.x3dv",
-  "/usr/share/titania/prototypes/Fields/SFBool.x3dv"
+  "../../../Prototypes/Fields/SFBool.x3dv",
+  "/usr/share/titania/Prototypes/Fields/SFBool.x3dv"
+  "http://titania.create3000.de/Library/Prototypes/0.1/Fields/SFBool.x3dv"
 ]
 
 SFBool { }

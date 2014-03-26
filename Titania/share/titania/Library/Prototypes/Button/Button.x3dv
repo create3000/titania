@@ -15,8 +15,8 @@ EXTERNPROTO Button [
   inputOutput    MFNode  children
 ]
 [
-  "../../../prototypes/Button/Button.x3dv",
-  "file:///usr/share/titania/prototypes/Button/Button.x3dv"
+  "../../../Prototypes/Button/Button.x3dv",
+  "file:///usr/share/titania/Prototypes/Button/Button.x3dv"
 ]
 
 Button {

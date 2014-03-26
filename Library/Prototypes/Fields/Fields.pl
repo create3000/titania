@@ -71,8 +71,8 @@ EXTERNPROTO $name [
   eventOut     $name  value_changed
 ]
 [
-	\"../../../prototypes/Fields/$name.x3dv\"
-	\"/usr/share/titania/prototypes/Fields/$name.x3dv\"
+	\"../../../Prototypes/Fields/$name.x3dv\"
+	\"/usr/share/titania/Prototypes/Fields/$name.x3dv\"
 ]
 
 $name { }
