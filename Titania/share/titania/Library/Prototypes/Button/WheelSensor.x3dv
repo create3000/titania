@@ -15,13 +15,13 @@ EXTERNPROTO WheelSensor [
   inputOutput SFBool     autoOffset
   outputOnly  SFBool     isActive
   outputOnly  SFBool     isOver
-  outputOnly  SFRotation rotation_changed
   outputOnly  SFVec3f    trackPoint_changed
+  outputOnly  SFRotation rotation_changed
   outputOnly  SFFloat    value_changed
 ]
 [
   "../../../Prototypes/Button/WheelSensor.x3dv",
-  "file:///usr/share/titania/Prototypes/Button/WheelSensor.x3dv"
+  "file:///usr/share/titania/Prototypes/Button/WheelSensor.x3dv",
   "http://titania.create3000.de/Library/Prototypes/0.1/Button/WheelSensor.x3dv"
 ]
 
@@ -37,7 +37,7 @@ EXTERNPROTO Number [
 ]
 [
   "../../../Prototypes/Geometry3D/Number.x3dv",
-  "file:///usr/share/titania/Prototypes/Geometry3D/Number.x3dv"
+  "file:///usr/share/titania/Prototypes/Geometry3D/Number.x3dv",
   "http://titania.create3000.de/Library/Prototypes/0.1/Geometry3D/Number.x3dv"
 ]
 
@@ -46,8 +46,6 @@ DEF Wheel_1 Transform {
     DEF WheelSensor WheelSensor {
       description "WheelSensor"
       axisRotation 1 0 0 1.5708
-      minValue -10
-      maxValue 10
     }
     DEF Disk Transform {
       children Shape {
@@ -67,6 +65,7 @@ DEF Wheel_1 Transform {
           material Material { }
         }
         geometry DEF _1 Number {
+          precision 3
           fontStyle FontStyle {
             family "TYPEWRITER"
             justify [

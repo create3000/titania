@@ -11,8 +11,7 @@ use File::Basename qw (dirname);
 say "Generate Components";
 
 my $TitaniaInfo = "/home/holger/Projekte/Titania/titania-info/titania-info";
-my $project     = dirname $0;
-my $components  = "$project/share/titania/Library/Components";
+my $components  = "/home/holger/Projekte/Titania/Titania/share/titania/Library/Components";
 
 system "rm", "-r", $components if -e $components;
 system "mkdir", "-p", $components;

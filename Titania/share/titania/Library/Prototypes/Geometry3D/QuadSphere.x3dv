@@ -8,7 +8,7 @@ EXTERNPROTO QuadSphere [
 ]
 [
   "../../../Prototypes/Geometry3D/QuadSphere.x3dv",
-  "file:///usr/share/titania/Prototypes/Geometry3D/QuadSphere.x3dv"
+  "file:///usr/share/titania/Prototypes/Geometry3D/QuadSphere.x3dv",
   "http://titania.create3000.de/Library/Prototypes/0.1/Geometry3D/QuadSphere.x3dv"
 ]
 

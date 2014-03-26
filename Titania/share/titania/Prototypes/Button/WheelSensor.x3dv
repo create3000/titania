@@ -14,8 +14,8 @@ PROTO WheelSensor [
   inputOutput SFBool     autoOffset TRUE
   outputOnly  SFBool     isActive
   outputOnly  SFBool     isOver
-  outputOnly  SFRotation rotation_changed
   outputOnly  SFVec3f    trackPoint_changed
+  outputOnly  SFRotation rotation_changed
   outputOnly  SFFloat    value_changed
 ]
 {

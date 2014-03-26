@@ -4,7 +4,7 @@ META "generator" "Titania V0.6.7, http://titania.create3000.de"
 
 PROTO Number [
   inputOutput    SFFloat value 0
-  inputOutput    SFInt32 precision 3
+  inputOutput    SFInt32 precision 0
   inputOutput    SFFloat length 0
   inputOutput    SFFloat maxExtent 0
   initializeOnly SFBool  solid TRUE
@@ -40,9 +40,14 @@ function set_value (value)
 	text .string = new MFString (value .toFixed (precision));
 }
 
-function set_length (value)
+function set_precision ()
 {
-	text .length = new MFFloat (value);
+	set_value (value);
+}
+
+function set_length (length)
+{
+	text .length = new MFFloat (length);
 }
 "
     directOutput TRUE
