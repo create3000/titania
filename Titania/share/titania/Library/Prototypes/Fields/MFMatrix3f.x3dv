@@ -9,7 +9,7 @@ EXTERNPROTO MFMatrix3f [
 ]
 [
   "../../../Prototypes/Fields/MFMatrix3f.x3dv",
-  "/usr/share/titania/Prototypes/Fields/MFMatrix3f.x3dv"
+  "file:///usr/share/titania/Prototypes/Fields/MFMatrix3f.x3dv",
   "http://titania.create3000.de/Library/Prototypes/0.1/Fields/MFMatrix3f.x3dv"
 ]
 

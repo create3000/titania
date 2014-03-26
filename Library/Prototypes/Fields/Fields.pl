@@ -72,7 +72,8 @@ EXTERNPROTO $name [
 ]
 [
 	\"../../../Prototypes/Fields/$name.x3dv\"
-	\"/usr/share/titania/Prototypes/Fields/$name.x3dv\"
+	\"file:///usr/share/titania/Prototypes/Fields/$name.x3dv\"
+   \"http://titania.create3000.de/Library/Prototypes/0.1/Fields/$name.x3dv\"
 ]
 
 $name { }

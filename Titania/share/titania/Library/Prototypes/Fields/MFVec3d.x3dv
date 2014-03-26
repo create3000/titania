@@ -9,7 +9,7 @@ EXTERNPROTO MFVec3d [
 ]
 [
   "../../../Prototypes/Fields/MFVec3d.x3dv",
-  "/usr/share/titania/Prototypes/Fields/MFVec3d.x3dv"
+  "file:///usr/share/titania/Prototypes/Fields/MFVec3d.x3dv",
   "http://titania.create3000.de/Library/Prototypes/0.1/Fields/MFVec3d.x3dv"
 ]
 

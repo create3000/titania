@@ -9,7 +9,7 @@ EXTERNPROTO SFVec2d [
 ]
 [
   "../../../Prototypes/Fields/SFVec2d.x3dv",
-  "/usr/share/titania/Prototypes/Fields/SFVec2d.x3dv"
+  "file:///usr/share/titania/Prototypes/Fields/SFVec2d.x3dv",
   "http://titania.create3000.de/Library/Prototypes/0.1/Fields/SFVec2d.x3dv"
 ]
 

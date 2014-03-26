@@ -17,6 +17,7 @@ EXTERNPROTO Button [
 [
   "../../../Prototypes/Button/Button.x3dv",
   "file:///usr/share/titania/Prototypes/Button/Button.x3dv"
+  "http://titania.create3000.de/Library/Prototypes/0.1/Button/Button.x3dv"
 ]
 
 Button {

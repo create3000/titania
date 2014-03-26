@@ -9,7 +9,7 @@ EXTERNPROTO SFColorRGBA [
 ]
 [
   "../../../Prototypes/Fields/SFColorRGBA.x3dv",
-  "/usr/share/titania/Prototypes/Fields/SFColorRGBA.x3dv"
+  "file:///usr/share/titania/Prototypes/Fields/SFColorRGBA.x3dv",
   "http://titania.create3000.de/Library/Prototypes/0.1/Fields/SFColorRGBA.x3dv"
 ]
 

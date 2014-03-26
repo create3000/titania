@@ -16,6 +16,7 @@ EXTERNPROTO Button [
 [
   "../../../Prototypes/Button/Button.x3dv",
   "file:///usr/share/titania/Prototypes/Button/Button.x3dv"
+  "http://titania.create3000.de/Library/Prototypes/0.1/Button/Button.x3dv"
 ]
 
 EXTERNPROTO CheckButton [
@@ -32,6 +33,7 @@ EXTERNPROTO CheckButton [
 [
   "../../../Prototypes/Button/CheckButton.x3dv",
   "file:///usr/share/titania/Prototypes/Button/CheckButton.x3dv"
+  "http://titania.create3000.de/Library/Prototypes/0.1/Button/CheckButton.x3dv"
 ]
 
 CheckButton {

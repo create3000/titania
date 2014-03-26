@@ -22,6 +22,7 @@ EXTERNPROTO WheelSensor [
 [
   "../../../Prototypes/Button/WheelSensor.x3dv",
   "file:///usr/share/titania/Prototypes/Button/WheelSensor.x3dv"
+  "http://titania.create3000.de/Library/Prototypes/0.1/Button/WheelSensor.x3dv"
 ]
 
 EXTERNPROTO Number [
@@ -37,6 +38,7 @@ EXTERNPROTO Number [
 [
   "../../../Prototypes/Geometry3D/Number.x3dv",
   "file:///usr/share/titania/Prototypes/Geometry3D/Number.x3dv"
+  "http://titania.create3000.de/Library/Prototypes/0.1/Geometry3D/Number.x3dv"
 ]
 
 DEF Wheel_1 Transform {

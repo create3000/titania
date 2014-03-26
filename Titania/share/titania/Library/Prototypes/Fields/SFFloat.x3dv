@@ -9,7 +9,7 @@ EXTERNPROTO SFFloat [
 ]
 [
   "../../../Prototypes/Fields/SFFloat.x3dv",
-  "/usr/share/titania/Prototypes/Fields/SFFloat.x3dv"
+  "file:///usr/share/titania/Prototypes/Fields/SFFloat.x3dv",
   "http://titania.create3000.de/Library/Prototypes/0.1/Fields/SFFloat.x3dv"
 ]
 

@@ -9,7 +9,7 @@ EXTERNPROTO SFNode [
 ]
 [
   "../../../Prototypes/Fields/SFNode.x3dv",
-  "/usr/share/titania/Prototypes/Fields/SFNode.x3dv"
+  "file:///usr/share/titania/Prototypes/Fields/SFNode.x3dv",
   "http://titania.create3000.de/Library/Prototypes/0.1/Fields/SFNode.x3dv"
 ]
 
