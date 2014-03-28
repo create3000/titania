@@ -36,7 +36,7 @@ PROTO RadioButton [
     initializeOnly SFNode  fields DEF Fields Fields {
       whichChoice IS whichChoice
     }
-    initializeOnly SFNode  self USE RadioButton
+    initializeOnly SFNode  self USE RadioButtonScript
 
     url "javascript:
 
@@ -61,6 +61,16 @@ function set_whichChoice (value)
 		var checkButton = buttons .children [whichChoice];
 		checkButton .enabled = TRUE;
 		checkButton .children [1] .enabled = FALSE;
+	}
+	else
+	{
+		// Disable all buttons
+
+		for each (var checkButton in buttons .children)
+		{
+			checkButton .enabled = FALSE;
+			checkButton .children [1] .enabled = TRUE;
+		}
 	}
 }
 

@@ -7,10 +7,10 @@ DEF Wheel Transform {
   rotation 1 0 0 1.5708
   children [
     DEF _1 CylinderSensor {
-      offset 4.00324
+      offset 2.08118
     }
     DEF XForm Transform {
-      rotation 0 1 0 4.00324
+      rotation 0 1 0 2.08118
       children Shape {
         appearance Appearance {
           material Material { }
@@ -25,11 +25,12 @@ DEF Wheel Transform {
         }
         geometry Cylinder {
           height 1
+          radius 2
         }
       }
     }
     DEF PointSet Transform {
-      translation -0.66325 3.43522 -0.0677737
+      translation -0.931366 -5.61722 -0.33249
       children Shape {
         appearance Appearance {
           lineProperties LineProperties {

@@ -32,7 +32,7 @@ PROTO CheckButton [
     initializeOnly MFNode children [ ]
     initializeOnly SFNode button USE Switch
     inputOutput    SFBool enabled IS enabled
-    initializeOnly SFNode self USE CheckButton
+    initializeOnly SFNode self USE CheckButtonScript
 
     url "javascript:
 

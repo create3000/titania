@@ -1,4 +1,4 @@
-#VRML V2.0 utf8 Titania
+#VRML V2.0 utf8 Titania V0.6.7
 
 META "title" "CylinderSensor"
 
@@ -41,27 +41,51 @@ Transform {
       children [
         DEF Touch1 CylinderSensor {
           description "CylinderSensor Test"
-          axisRotation 0 0 1 1.5708
+          axisRotation 0 0 1 0.75
+          offset 2.64236
         
           #minAngle -1
           #maxAngle 1
           #diskAngle 2.8
         }
         DEF Shape1 Transform {
-          children Transform {
-            translation 2 0 0
-            children Shape {
-              appearance Appearance {
-                texture ImageTexture {
-                  url "../images/image.png"
+          rotation -0.681639 0.731689 -1.00048e-08 2.64236
+          children DEF _1 Transform {
+            rotation 0 0 1 0.75
+            children [
+              Shape {
+                appearance Appearance {
+                  texture ImageTexture {
+                    url "../images/image.png"
+                  }
+                }
+                geometry Cylinder {
+                  radius 2
                 }
               }
-              geometry Cylinder { }
-            }
+              Transform {
+                scale 1 20 1
+                children Shape {
+                  geometry IndexedLineSet {
+                    coordIndex [
+                      0,
+                      1,
+                      -1
+                    ]
+                    coord Coordinate {
+                      point [
+                        0 -1 0,
+                        0 1 0
+                      ]
+                    }
+                  }
+                }
+              }
+            ]
           }
         }
         DEF TrackPoint Transform {
-          translation 0.262648 1.51216 0.853617
+          translation -1.48267 -0.914495 0.966335
           scaleOrientation -0.357407 0.862856 -0.357407 4.51948
           children Shape {
             appearance Appearance {
@@ -77,17 +101,6 @@ Transform {
           }
         }
       ]
-    }
-    Transform {
-      scale 1 2 1
-      children Shape {
-        geometry IndexedLineSet {
-          coordIndex [ 0, 1, -1 ]
-          coord Coordinate {
-            point [ 0 -1 0, 0 1 0 ]
-          }
-        }
-      }
     }
   ]
 }
@@ -120,3 +133,4 @@ ROUTE Touch1.isOver TO Debug.set_isOver1
 ROUTE Touch1.isActive TO Debug.set_isActive1
 ROUTE Touch1.trackPoint_changed TO Debug.set_trackPoint1
 ROUTE Touch1.rotation_changed TO Shape1.set_rotation
+ROUTE Touch1.axisRotation_changed TO _1.set_rotation

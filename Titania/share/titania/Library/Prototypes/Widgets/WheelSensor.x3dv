@@ -1,7 +1,6 @@
 #X3D V3.3 utf8 Titania V0.6.7
 
 META "generator" "Titania V0.6.7, http://titania.create3000.de"
-META "title" "WheelSensor"
 
 EXTERNPROTO WheelSensor [
   inputOutput SFBool     enabled

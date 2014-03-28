@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra�e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, ScheffelstraÃÂÃÂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -97,12 +97,11 @@ Billboard::rotate (const TraverseType type) const
 	{
 		const Matrix4f modelViewMatrix        = getModelViewMatrix (type);
 		const Matrix4f inverseModelViewMatrix = ~modelViewMatrix;
-
-		const Vector3f billboardToViewer = normalize (inverseModelViewMatrix .origin ());
+		const Vector3f billboardToViewer      = normalize (inverseModelViewMatrix .origin ());       // Normalized to get work with Geo
 
 		if (axisOfRotation () == Vector3f ())
 		{
-			const Vector3f viewerYAxis = normalize (inverseModelViewMatrix .mult_dir_matrix (yAxis));
+			const Vector3f viewerYAxis = normalize (inverseModelViewMatrix .mult_dir_matrix (yAxis)); // Normalized to get work with Geo
 
 			Vector3f x = cross (viewerYAxis, billboardToViewer);
 			Vector3f y = cross (billboardToViewer, x);

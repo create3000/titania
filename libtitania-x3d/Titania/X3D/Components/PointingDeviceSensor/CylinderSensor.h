@@ -151,9 +151,6 @@ private:
 	bool
 	isBehind (const Line3d &, const Vector3d &) const;
 
-	Vector3d
-	getVector (const Line3d &, const Vector3d &) const;
-
 	bool
 	getTrackPoint (const Line3d &, Vector3d &, const bool = false) const;
 
@@ -187,6 +184,8 @@ private:
 	bool       disk;
 	Plane3d    yPlane;
 	Plane3d    zPlane;
+	Plane3d    sxPlane;
+	Vector3d   szNormal;
 	bool       behind;
 	Vector3d   fromVector;
 	Rotation4d startOffset;

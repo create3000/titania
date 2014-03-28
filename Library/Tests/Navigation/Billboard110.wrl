@@ -1,12 +1,34 @@
-#VRML V2.0 utf8
+#VRML V2.0 utf8 Titania V0.6.7
 
 META "title" "Billboard 1 1 1"
 
 Background {
-  skyAngle [ 0.8, 1.3, 1.4, 1.5708 ]
-  skyColor [ 0.21 0.31 0.59, 0.33 0.45 0.7, 0.57 0.66 0.85, 0.6 0.73 0.89, 0.7 0.83 0.98 ]
-  groundAngle [ 0.6, 1.2, 1.3, 1.5708 ]
-  groundColor [ 0.21 0.31 0.59, 0.33 0.45 0.7, 0.57 0.66 0.85, 0.6 0.73 0.89, 0.7 0.83 0.98 ]
+  skyAngle [
+    0.8,
+    1.3,
+    1.4,
+    1.5708
+  ]
+  skyColor [
+    0.21 0.31 0.59,
+    0.33 0.45 0.7,
+    0.57 0.66 0.85,
+    0.6 0.73 0.89,
+    0.7 0.83 0.98
+  ]
+  groundAngle [
+    0.6,
+    1.2,
+    1.3,
+    1.5708
+  ]
+  groundColor [
+    0.21 0.31 0.59,
+    0.33 0.45 0.7,
+    0.57 0.66 0.85,
+    0.6 0.73 0.89,
+    0.7 0.83 0.98
+  ]
 }
 
 Viewpoint {
@@ -30,15 +52,17 @@ DEF Proxy ProximitySensor {
 
 # Buttons for predefined axes and random axis
 DEF HUD Transform {
-  translation -1.61071 4.86312 -8.58801
-  rotation -0.98057 -0.19312 0.0344446 2.60806
+  translation -8.79761 -10.4014 5.76692
+  rotation 0.16289 -0.862406 0.479293 1.61849
   children Transform {
     translation 0 -0.3 -1
     scale 0.02 0.02 0.02
     children [
       Transform {
         children [
-          DEF TouchX TouchSensor { }
+          DEF TouchX TouchSensor {
+            description "1 0 0"
+          }
           Transform {
             children Shape {
               appearance Appearance {
@@ -52,7 +76,9 @@ DEF HUD Transform {
       Transform {
         translation 3 0 0
         children [
-          DEF TouchY TouchSensor { }
+          DEF TouchY TouchSensor {
+            description "0 1 0"
+          }
           Transform {
             children Shape {
               appearance Appearance {
@@ -66,7 +92,9 @@ DEF HUD Transform {
       Transform {
         translation 6 0 0
         children [
-          DEF TouchXYZ TouchSensor { }
+          DEF TouchXYZ TouchSensor {
+            description "1 1 1"
+          }
           Transform {
             children Shape {
               appearance Appearance {
@@ -80,7 +108,9 @@ DEF HUD Transform {
       Transform {
         translation 9 0 0
         children [
-          DEF TouchZ TouchSensor { }
+          DEF TouchZ TouchSensor {
+            description "0 0 1"
+          }
           Transform {
             children Shape {
               appearance Appearance {
@@ -96,7 +126,6 @@ DEF HUD Transform {
 }
 
 DEF Billboard Billboard {
-  axisOfRotation 1 1 1
   children [
     DEF XForm Transform {
       children [
@@ -114,13 +143,37 @@ DEF Billboard Billboard {
             material Material { }
           }
           geometry IndexedLineSet {
-            colorIndex [ 0, 1, -1, 2, 3, -1 ]
-            coordIndex [ 0, 1, -1, 2, 3, -1 ]
+            colorIndex [
+              0,
+              1,
+              -1,
+              2,
+              3,
+              -1
+            ]
+            coordIndex [
+              0,
+              1,
+              -1,
+              2,
+              3,
+              -1
+            ]
             color Color {
-              color [ 0 0 0, 1 1 1, 0 0 0, 1 1 1 ]
+              color [
+                0 0 0,
+                1 1 1,
+                0 0 0,
+                1 1 1
+              ]
             }
             coord DEF Local Coordinate {
-              point [ -2 0 0, 2 0 0, 0 -2 0, 0 2 0 ]
+              point [
+                -2 0 0,
+                2 0 0,
+                0 -2 0,
+                0 2 0
+              ]
             }
           }
         }
@@ -168,9 +221,16 @@ DEF Billboard Billboard {
         material Material { }
       }
       geometry IndexedLineSet {
-        coordIndex [ 0, 1, -1 ]
+        coordIndex [
+          0,
+          1,
+          -1
+        ]
         coord DEF LocalAxisOfRotation Coordinate {
-          point [ -3 -3 -3, 3 3 3 ]
+          point [
+            -0 -3 -0,
+            0 3 0
+          ]
         }
       }
     }
@@ -181,10 +241,10 @@ DEF Billboard Billboard {
 Transform {
   children [
     DEF AxisSensor SphereSensor {
-      offset -0.707107 0.707107 0 0.955317
+      offset -1 0 0 1.5708
     }
     DEF AxisOfRotation Transform {
-      rotation -0.707107 0.707107 0 0.955317
+      rotation -1 0 0 1.5708
       children [
         Transform {
           translation 0 0 2
@@ -217,13 +277,30 @@ Transform {
           }
           geometry IndexedLineSet {
             colorPerVertex FALSE
-            colorIndex [ 0, 1 ]
-            coordIndex [ 0, 1, -1, 1, 2, -1 ]
+            colorIndex [
+              0,
+              1
+            ]
+            coordIndex [
+              0,
+              1,
+              -1,
+              1,
+              2,
+              -1
+            ]
             color Color {
-              color [ 1 0 0, 0 1 0 ]
+              color [
+                1 0 0,
+                0 1 0
+              ]
             }
             coord Coordinate {
-              point [ 0 0 -2, 0 0 0, 0 0 2 ]
+              point [
+                0 0 -2,
+                0 0 0,
+                0 0 2
+              ]
             }
           }
         }
@@ -240,13 +317,30 @@ DEF ZAxis Transform {
       }
       geometry IndexedLineSet {
         colorPerVertex FALSE
-        colorIndex [ 0, 1 ]
-        coordIndex [ 0, 1, -1, 1, 2, -1 ]
+        colorIndex [
+          0,
+          1
+        ]
+        coordIndex [
+          0,
+          1,
+          -1,
+          1,
+          2,
+          -1
+        ]
         color Color {
-          color [ 0 0 0, 0 0 1 ]
+          color [
+            0 0 0,
+            0 0 1
+          ]
         }
         coord Coordinate {
-          point [ 0 0 -2, 0 0 0, 0 0 2 ]
+          point [
+            0 0 -2,
+            0 0 0,
+            0 0 2
+          ]
         }
       }
     }
@@ -285,7 +379,7 @@ DEF ZAxis Transform {
 
 # Normal
 DEF Normal Transform {
-  rotation -0.460454 -0.887684 0 1.16704
+  rotation 0 1 -0 0.580239
   children [
     Shape {
       appearance Appearance {
@@ -293,13 +387,26 @@ DEF Normal Transform {
       }
       geometry IndexedLineSet {
         colorPerVertex FALSE
-        colorIndex [ 0, 1 ]
-        coordIndex [ 0, 1, -1 ]
+        colorIndex [
+          0,
+          1
+        ]
+        coordIndex [
+          0,
+          1,
+          -1
+        ]
         color Color {
-          color [ 1 1 0, 1 1 0 ]
+          color [
+            1 1 0,
+            1 1 0
+          ]
         }
         coord Coordinate {
-          point [ 0 0 0, 0 0 2 ]
+          point [
+            0 0 0,
+            0 0 2
+          ]
         }
       }
     }
@@ -337,7 +444,7 @@ DEF Normal Transform {
 }
 
 DEF Rotation Transform {
-  rotation -0.357407 -0.862856 -0.357407 1.71777
+  rotation 0 -1 0 1.5708
   children Shape {
     appearance Appearance {
       material Material {
@@ -345,7 +452,7 @@ DEF Rotation Transform {
       }
     }
     geometry DEF Arc Arc2D {
-      endAngle 0.955317
+      endAngle 1.5708
     }
   }
 }
