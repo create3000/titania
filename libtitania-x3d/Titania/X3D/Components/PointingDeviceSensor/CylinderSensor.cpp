@@ -188,7 +188,7 @@ CylinderSensor::set_active (const HitPtr & hit, const bool active)
 			const auto hitPoint = hit -> point * inverseModelViewMatrix;
 
 			const auto     yAxis      = Vector3d (0, 1, 0) * Rotation4d (axisRotation () .getValue ());
-			const Vector3d cameraBack = inverseModelViewMatrix .mult_dir_matrix (Vector3d (0, 0, 1));
+			const Vector3d cameraBack = normalize (inverseModelViewMatrix .mult_dir_matrix (Vector3d (0, 0, 1)));
 
 			const auto axis   = Line3d (Vector3d (), yAxis);
 			const auto radius = abs (axis .perpendicular_vector (hitPoint));
@@ -214,6 +214,8 @@ CylinderSensor::set_active (const HitPtr & hit, const bool active)
 				yPlane .intersect (hitRay, trackPoint);
 			else
 				getTrackPoint (hitRay, trackPoint, behind);
+
+			__LOG__ << disk << std::endl;
 
 			fromVector = -cylinder .axis () .perpendicular_vector (trackPoint);
 
@@ -242,7 +244,6 @@ CylinderSensor::set_motion (const HitPtr & hit)
 
 		if (disk)
 			yPlane .intersect (hitRay, trackPoint);
-
 		else
 			getTrackPoint (hitRay, trackPoint, behind);
 
@@ -293,7 +294,7 @@ CylinderSensor::set_active (const HitPtr & hit, const bool active)
 			const auto hitPoint = hit -> point * inverseModelViewMatrix;
 
 			const Vector3d yAxis      = Vector3d (0, 1, 0) * Rotation4d (axisRotation () .getValue ());
-			const Vector3d cameraBack = inverseModelViewMatrix .mult_dir_matrix (Vector3d (0, 0, 1));
+			const Vector3d cameraBack = normalize (inverseModelViewMatrix .mult_dir_matrix (Vector3d (0, 0, 1)));
 
 			const auto axis   = Line3d (Vector3d (), yAxis);
 			const auto radius = abs (axis .perpendicular_vector (hitPoint));
