@@ -109,6 +109,10 @@ BrowserWindow::initialize ()
 	getFileSaveDialog ()        .set_transient_for (getWindow ());
 	getMessageDialog ()         .set_transient_for (getWindow ());
 
+	getFileOpenDialog ()   .set_filename (os::home () + _ ("scene.x3dv"));
+	getFileImportDialog () .set_filename (os::home () + _ ("scene.x3dv"));
+	getFileSaveDialog ()   .set_filename (os::home () + _ ("scene.x3dv"));
+
 	// Sidebar
 	getViewpointList () .reparent (getViewpointListBox (), getWindow ());
 	getHistoryEditor () .reparent (getHistoryEditorBox (), getWindow ());
@@ -353,7 +357,7 @@ BrowserWindow::on_open ()
 			fileOpenDialog -> set_uri (worldURL .filename () .str ());
 
 		else
-			fileOpenDialog -> set_current_folder (os::home ());
+			fileOpenDialog -> set_uri (getFileOpenDialog () .get_uri ());
 
 		const auto response_id = fileOpenDialog -> run ();
 
@@ -429,7 +433,7 @@ BrowserWindow::on_import ()
 		fileImportDialog -> set_uri (worldURL .filename () .str ());
 
 	else
-		fileImportDialog -> set_current_folder (os::home ());
+		fileImportDialog -> set_uri (getFileOpenDialog () .get_uri ());
 
 	const auto response_id = fileImportDialog -> run ();
 
@@ -553,8 +557,12 @@ BrowserWindow::on_save_as ()
 
 	else
 	{
-		fileSaveDialog -> set_current_folder (os::home ());
-		fileSaveDialog -> set_current_name (getBrowser () -> getExecutionContext () -> getWorldURL () .basename ());
+		fileSaveDialog -> set_uri (getFileOpenDialog () .get_uri ());
+
+		if (worldURL .basename () .empty ())
+			fileSaveDialog -> set_current_name (_ ("scene.x3dv"));
+		else
+			fileSaveDialog -> set_current_name (worldURL .basename ());
 	}
 
 	const auto saveCompressedButton = getWidget <Gtk::CheckButton> ("SaveCompressedButton");

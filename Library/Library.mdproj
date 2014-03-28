@@ -2428,6 +2428,7 @@
     <None Include="Tests\PROTO\Particle\index.T.wrl" />
     <None Include="Tests\Geometry3D\QuadSphereTransparent.x3dv" />
     <None Include="Tests\PointingDeviceSensor\CylinderSensor2.x3dv" />
+    <None Include="Tests\PointingDeviceSensor\Wheel2.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

@@ -2,7 +2,7 @@
 
 META "generator" "Titania V0.6.7, http://titania.create3000.de"
 
-PROTO WheelSensor [
+PROTO DiskSensor [
   inputOutput SFBool     enabled TRUE
   inputOutput SFString   description ""
   inputOutput SFRotation axisRotation 0 0 1 0
@@ -30,7 +30,7 @@ PROTO WheelSensor [
     isActive IS isActive
   }
 
-  DEF WheelSensorScript Script {
+  DEF DiskSensorScript Script {
     inputOnly      SFRotation set_rotation
     inputOnly      SFBool     set_active
     inputOutput    SFFloat    factor IS factor
@@ -58,7 +58,7 @@ function set_factor ()
 function set_offset ()
 {
 	value          = offset;
-	sensor .offset = -offset / factor;
+	sensor .offset = offset / factor;
 }
 
 function set_rotation (rotation)
@@ -70,7 +70,7 @@ function set_rotation (rotation)
 
 	var axis  = sensor .axisRotation .multVec (new SFVec3f (0, 1, 0));
 	var angle = axis .dot (deltaRotation .getAxis ());
-	var sign  = angle < 0 ? 1 : -1;
+	var sign  = angle > 0 ? 1 : -1;
 
 	value += sign * deltaRotation .angle * factor;
 
@@ -113,7 +113,7 @@ function set_active (active)
     directOutput TRUE
   }
 
-  ROUTE CylinderTouch.rotation_changed TO WheelSensorScript.set_rotation
-  ROUTE CylinderTouch.isActive TO WheelSensorScript.set_active
+  ROUTE CylinderTouch.rotation_changed TO DiskSensorScript.set_rotation
+  ROUTE CylinderTouch.isActive TO DiskSensorScript.set_active
 }
 

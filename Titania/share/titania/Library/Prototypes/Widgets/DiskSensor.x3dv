@@ -2,7 +2,7 @@
 
 META "generator" "Titania V0.6.7, http://titania.create3000.de"
 
-EXTERNPROTO WheelSensor [
+EXTERNPROTO DiskSensor [
   inputOutput SFBool     enabled
   inputOutput SFString   description
   inputOutput SFRotation axisRotation
@@ -19,9 +19,9 @@ EXTERNPROTO WheelSensor [
   outputOnly  SFFloat    value_changed
 ]
 [
-  "../../../Prototypes/0.1/Widgets/WheelSensor.x3dv",
-  "file:///usr/share/titania/Prototypes/0.1/Widgets/WheelSensor.x3dv",
-  "http://titania.create3000.de/Library/Prototypes/0.1/Widgets/WheelSensor.x3dv"
+  "../../../Prototypes/0.1/Widgets/DiskSensor.x3dv",
+  "file:///usr/share/titania/Prototypes/0.1/Widgets/DiskSensor.x3dv",
+  "http://titania.create3000.de/Library/Prototypes/0.1/Widgets/DiskSensor.x3dv"
 ]
 
 EXTERNPROTO Number [
@@ -40,11 +40,12 @@ EXTERNPROTO Number [
   "http://titania.create3000.de/Library/Prototypes/0.1/Geometry3D/Number.x3dv"
 ]
 
-DEF Wheel_1 Transform {
+DEF Disk_1 Transform {
   children [
-    DEF WheelSensor WheelSensor {
-      description "WheelSensor"
+    DEF DiskSensor DiskSensor {
+      description "DiskSensor"
       axisRotation 1 0 0 1.5708
+      factor -0.159155
     }
     DEF Disk Transform {
       children Shape {
@@ -78,5 +79,5 @@ DEF Wheel_1 Transform {
   ]
 }
 
-ROUTE WheelSensor.rotation_changed TO Disk.set_rotation
-ROUTE WheelSensor.value_changed TO _1.set_value
+ROUTE DiskSensor.rotation_changed TO Disk.set_rotation
+ROUTE DiskSensor.value_changed TO _1.set_value

@@ -1,5 +1,14 @@
 2014-03-28  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* BrowserWindow.cpp:
+	* X3DBrowserWidget.cpp:
+	* DiskSensor.x3dv:
+	* WheelSensor.x3dv:
+	* DiskSensor.x3dv:
+	* WheelSensor.x3dv: 
+
+2014-03-28  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Example.x3dv:
 	* CheckButton.x3dv:
 	* RadioButton.x3dv:

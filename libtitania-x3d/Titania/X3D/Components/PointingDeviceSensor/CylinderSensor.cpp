@@ -126,9 +126,9 @@ CylinderSensor::getTrackPoint (const Line3d & hitRay, Vector3d & trackPoint, con
 	const auto distance  = sxPlane .distance (zPoint) / cylinder .radius ();
 	const auto section   = std::floor ((distance + 1) / 2);
 
-	// Use linear angle if outside cylinder otherwise asin.
+	// Use asin on the cylinder and outside linear angle.
 	const auto sinp  = interval (distance, -1.0, 1.0);
-	const auto phi   = section ? sinp * M_PI1_2 : std::asin (sinp);
+	const auto phi   = section == 0 ? std::asin (sinp) : sinp * M_PI1_2;
 	const auto angle = phi + section * M_PI;
 
 	const Rotation4d rotation (cylinder .axis () .direction (), angle);
@@ -195,13 +195,13 @@ CylinderSensor::set_active (const HitPtr & hit, const bool active)
 
 			cylinder = Cylinder3d (axis, radius);
 
-			disk   = std::abs (dot (cameraBack, yAxis)) > std::cos (diskAngle ());
+			disk   = not (std::cos (diskAngle ()) < std::abs (dot (cameraBack, yAxis)));
 			behind = isBehind (hitRay, hitPoint);
 
 			yPlane = Plane3d (hitPoint, yAxis);             // Sensor aligned y-plane
 			zPlane = Plane3d (hitPoint, cameraBack);        // Screen aligned z-plane
 
-			// Calculate billboard rotation with yAxis as rotation axis.
+			// Compute normal as in Billboard with yAxis as axis of rotation.
 			const Vector3d billboardToViewer = normalize (inverseModelViewMatrix .origin ());
 			const Vector3d sxNormal          = normalize (cross (yAxis, billboardToViewer));
 
@@ -299,7 +299,7 @@ CylinderSensor::set_active (const HitPtr & hit, const bool active)
 
 			cylinder = Cylinder3d (axis, radius);
 
-			disk   = std::abs (dot (cameraBack, yAxis)) > std::cos (diskAngle ());
+			disk   = not (std::cos (diskAngle ()) < std::abs (dot (cameraBack, yAxis)));
 			behind = isBehind (hitRay, hitPoint);
 
 			yPlane = Plane3d (hitPoint, yAxis);                                     // Sensor aligned y-plane

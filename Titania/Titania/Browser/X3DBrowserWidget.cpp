@@ -344,6 +344,13 @@ X3DBrowserWidget::set_initialized ()
 
 	loadIcon ();
 	updateTitle (false);
+	
+	// Remember last local file
+
+	const auto worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
+
+	if (not worldURL .empty () and worldURL .is_local ())
+		getFileOpenDialog () .set_uri (worldURL .str ());
 }
 
 bool

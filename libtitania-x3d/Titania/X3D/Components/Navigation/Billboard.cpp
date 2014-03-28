@@ -121,12 +121,12 @@ Billboard::rotate (const TraverseType type) const
 		}
 		else
 		{
-			const Vector3f normal = cross (axisOfRotation () .getValue (), billboardToViewer); // normal vector of plane
-			const Vector3f vector = cross (axisOfRotation () .getValue (), zAxis);             // normal vector of plane between axisOfRotation and zAxis
+			const Vector3f N1 = cross (axisOfRotation () .getValue (), billboardToViewer); // Normal vector of plane as in specification
+			const Vector3f N2 = cross (axisOfRotation () .getValue (), zAxis);             // Normal vector of plane between axisOfRotation and zAxis
 
-			const Rotation4f rotation (vector, normal);
+			const Rotation4f rotation (N2, N1);
 
-			getModelViewMatrix () .mult_left (Matrix4f (rotation));                            // rotate zAxis in plane
+			getModelViewMatrix () .mult_left (Matrix4f (rotation));                        // Rotate zAxis in plane
 		}
 	}
 	catch (const std::domain_error &)

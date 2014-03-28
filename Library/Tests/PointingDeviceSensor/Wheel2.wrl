@@ -1,0 +1,96 @@
+#VRML V2.0 utf8 Titania V0.6.7
+
+EXTERNPROTO Number [
+  exposedField SFFloat value
+  exposedField SFInt32 precision
+  exposedField SFFloat length
+  exposedField SFFloat maxExtent
+  field        SFBool  solid
+  eventOut     SFVec3f origin
+  eventOut     SFVec2f textBounds
+  exposedField SFNode  fontStyle
+]
+[
+  "../../../Titania/share/titania/Prototypes/0.1/Geometry3D/Number.x3dv",
+  "file:///usr/share/titania/Prototypes/0.1/Geometry3D/Number.x3dv",
+  "http://titania.create3000.de/Library/Prototypes/0.1/Geometry3D/Number.x3dv"
+]
+
+EXTERNPROTO DiskSensor [
+  exposedField SFBool     enabled
+  exposedField SFString   description
+  exposedField SFRotation axisRotation
+  exposedField SFFloat    diskAngle
+  exposedField SFFloat    factor
+  exposedField SFFloat    minValue
+  exposedField SFFloat    maxValue
+  exposedField SFFloat    offset
+  exposedField SFBool     autoOffset
+  eventOut     SFBool     isActive
+  eventOut     SFBool     isOver
+  eventOut     SFVec3f    trackPoint_changed
+  eventOut     SFRotation rotation_changed
+  eventOut     SFFloat    value_changed
+]
+[
+  "../../../Titania/share/titania/Prototypes/0.1/Widgets/DiskSensor.x3dv",
+  "file:///usr/share/titania/Prototypes/0.1/Widgets/DiskSensor.x3dv",
+  "http://titania.create3000.de/Library/Prototypes/0.1/Widgets/DiskSensor.x3dv"
+]
+
+Transform {
+  children [
+    DEF DiskSensor DiskSensor {
+      description "DiskSensor"
+    }
+    DEF Cylinder Transform {
+      children [
+        Shape {
+          appearance Appearance {
+            material Material { }
+          }
+          geometry DEF _1 Cylinder {
+            height 0.3
+          }
+        }
+        Shape {
+          appearance Appearance {
+            fillProperties FillProperties {
+              filled FALSE
+              hatched FALSE
+            }
+            lineProperties LineProperties {
+              linewidthScaleFactor 1
+            }
+            material Material {
+              diffuseColor 0 0 0
+            }
+          }
+          geometry USE _1
+        }
+      ]
+    }
+    DEF Number Transform {
+      translation 2 0 0
+      scale 0.5 0.5 0.5
+      children Shape {
+        appearance Appearance {
+          material Material { }
+        }
+        geometry DEF _2 Number {
+          precision 3
+          fontStyle FontStyle {
+            family "TYPEWRITER"
+            justify [
+              "MIDDLE",
+              "MIDDLE"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}
+
+ROUTE DiskSensor.value_changed TO _2.set_value
+ROUTE DiskSensor.rotation_changed TO Cylinder.set_rotation

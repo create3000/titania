@@ -1,8 +1,8 @@
 #VRML V2.0 utf8 Titania
 
-META "title" "WheelSensor"
+META "title" "DiskSensor"
 
-PROTO WheelSensor [
+PROTO DiskSensor [
   exposedField SFString   description ""
   exposedField SFRotation axisRotation 0 0 1 0
   exposedField SFFloat    offset 0
@@ -114,7 +114,7 @@ function set_value (value)
 
 DEF Wheel_1 Transform {
   children [
-    DEF WheelSensor WheelSensor {
+    DEF DiskSensor DiskSensor {
       description "Wheel"
       offset -0.0087619
     }
@@ -132,6 +132,6 @@ DEF Wheel_1 Transform {
   ]
 }
 
-ROUTE WheelSensor.value_changed TO Debug.set_value
+ROUTE DiskSensor.value_changed TO Debug.set_value
 ROUTE Debug.string_changed TO Text.set_string
-ROUTE WheelSensor.rotation_changed TO XForm.set_rotation
+ROUTE DiskSensor.rotation_changed TO XForm.set_rotation
