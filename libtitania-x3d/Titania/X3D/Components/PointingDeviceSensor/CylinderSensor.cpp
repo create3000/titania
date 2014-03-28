@@ -119,6 +119,7 @@ bool
 CylinderSensor::getTrackPoint (const Line3d & hitRay, Vector3d & trackPoint, const bool) const
 {
 	Vector3d zPoint;
+
 	zPlane .intersect (hitRay, zPoint);
 
 	const auto axisPoint = zPoint + cylinder .axis () .perpendicular_vector (zPoint);
@@ -134,7 +135,7 @@ CylinderSensor::getTrackPoint (const Line3d & hitRay, Vector3d & trackPoint, con
 
 	trackPoint  = szNormal * cylinder .radius () * rotation;
 	trackPoint += axisPoint;
-	
+
 	return true;
 }
 
@@ -170,7 +171,6 @@ CylinderSensor::getAngle (const Rotation4d & rotation) const
 		return -rotation .angle ();
 }
 
-
 #ifdef ROTATE_ALWAYS
 
 void
@@ -187,10 +187,7 @@ CylinderSensor::set_active (const HitPtr & hit, const bool active)
 			const auto hitRay   = hit -> ray * inverseModelViewMatrix;
 			const auto hitPoint = hit -> point * inverseModelViewMatrix;
 
-			const auto xAxis = Vector3d (1, 0, 0) * Rotation4d (axisRotation () .getValue ());
-			const auto yAxis = Vector3d (0, 1, 0) * Rotation4d (axisRotation () .getValue ());
-			const auto zAxis = Vector3d (0, 0, 1) * Rotation4d (axisRotation () .getValue ());
-
+			const auto     yAxis      = Vector3d (0, 1, 0) * Rotation4d (axisRotation () .getValue ());
 			const Vector3d cameraBack = inverseModelViewMatrix .mult_dir_matrix (Vector3d (0, 0, 1));
 
 			const auto axis   = Line3d (Vector3d (), yAxis);
@@ -201,17 +198,15 @@ CylinderSensor::set_active (const HitPtr & hit, const bool active)
 			disk   = std::abs (dot (cameraBack, yAxis)) > std::cos (diskAngle ());
 			behind = isBehind (hitRay, hitPoint);
 
-			yPlane = Plane3d (hitPoint, yAxis);                 // Sensor aligned y-plane
-			zPlane = Plane3d (hitPoint, cameraBack);            // Screen aligned z-plane
+			yPlane = Plane3d (hitPoint, yAxis);             // Sensor aligned y-plane
+			zPlane = Plane3d (hitPoint, cameraBack);        // Screen aligned z-plane
 
 			// Calculate billboard rotation with yAxis as rotation axis.
-			const Vector3d   billboardToViewer = normalize (inverseModelViewMatrix .origin ());
-			const Vector3d   normal            = cross (yAxis, billboardToViewer);
-			const Vector3d   vector            = cross (yAxis, Vector3d (0, 0, 1));
-			const Rotation4d billboard (vector, normal);
+			const Vector3d billboardToViewer = normalize (inverseModelViewMatrix .origin ());
+			const Vector3d sxNormal          = normalize (cross (yAxis, billboardToViewer));
 
-			sxPlane  = Plane3d (Vector3d (), xAxis * billboard); // Billboarded special x-plane made parallel to sensors axis.
-			szNormal = zAxis * billboard;                        // Billboarded special z-normal made parallel to sensors axis.
+			sxPlane  = Plane3d (Vector3d (), sxNormal);     // Billboarded special x-plane made parallel to sensors axis.
+			szNormal = normalize (cross (sxNormal, yAxis)); // Billboarded special z-normal made parallel to sensors axis.
 
 			Vector3d trackPoint;
 
