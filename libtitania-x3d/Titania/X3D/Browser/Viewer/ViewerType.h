@@ -61,7 +61,7 @@ enum class ViewerType : uint8_t
 	WALK,
 	FLY,
 	PLANE,
-	LOOK_AT
+	LOOKAT
 
 };
 

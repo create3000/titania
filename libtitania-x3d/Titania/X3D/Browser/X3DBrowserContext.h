@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra�e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, ScheffelstraÃÂÃÂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -219,29 +219,9 @@ public:
 	getViewer () const
 	{ return viewer; }
 
-	const SFBool &
-	getExamineViewer () const
-	{ return examineViewer; }
-
-	const SFBool &
-	getWalkViewer () const
-	{ return walkViewer; }
-
-	const SFBool &
-	getFlyViewer () const
-	{ return flyViewer; }
-
-	const SFBool &
-	getPlaneViewer () const
-	{ return planeViewer; }
-
-	const SFBool &
-	getNoneViewer () const
-	{ return noneViewer; }
-
-	const SFBool &
-	getLookAt () const
-	{ return lookAt; }
+	const X3DArrayField <X3DScalar <ViewerType>>  &
+	getAvailableViewers () const
+	{ return availableViewers; }
 
 	///  @name Light stack handling
 
@@ -412,10 +392,10 @@ protected:
 	NavigationInfo*
 	getActiveNavigationInfo () const
 	{ return activeNavigationInfo; }
-	
+
 	void
 	lock ();
-	
+
 	void
 	unlock ();
 
@@ -470,31 +450,26 @@ private:
 	TextureArray     textureStages;
 	bool             texture;
 
-	X3DSFNode <X3DLayerNode> activeLayer;
-	NavigationInfo*          activeNavigationInfo;
-	SFTime                   activeNavigationInfoChanged;
-	X3DScalar <ViewerType>   viewer;
-	SFBool                   examineViewer;
-	SFBool                   walkViewer;
-	SFBool                   flyViewer;
-	SFBool                   planeViewer;
-	SFBool                   noneViewer;
-	SFBool                   lookAt;
-	SFTime                   activeViewpointChanged;
+	X3DSFNode <X3DLayerNode>                activeLayer;
+	NavigationInfo*                         activeNavigationInfo;
+	SFTime                                  activeNavigationInfoChanged;
+	X3DScalar <ViewerType>                  viewer;
+	X3DArrayField <X3DScalar <ViewerType>>  availableViewers;
+	SFTime                                  activeViewpointChanged;
 
 	X3DKeyDeviceSensorNode* keyDeviceSensorNode;
 	SFTime                  keyDeviceSensorNodeOutput;
 
-	SFBool                 picking;
-	double                 x;
-	double                 y;
-	Line3d                 hitRay;
-	HitArray               hits;
-	HitComp                hitComp;
-	std::vector <NodeSet>  enabledSensors;
-	MFNode                 overSensors;
-	MFNode                 activeSensors;
-	X3DSFNode <Selection>  selection;
+	SFBool                picking;
+	double                x;
+	double                y;
+	Line3d                hitRay;
+	HitArray              hits;
+	HitComp               hitComp;
+	std::vector <NodeSet> enabledSensors;
+	MFNode                overSensors;
+	MFNode                activeSensors;
+	X3DSFNode <Selection> selection;
 
 	time_type      changedTime;
 	Speed <double> currentSpeed;

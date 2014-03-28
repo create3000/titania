@@ -95,12 +95,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	       activeNavigationInfo (nullptr),
 	activeNavigationInfoChanged (),
 	                     viewer (ViewerType::NONE),
-	              examineViewer (),
-	                 walkViewer (),
-	                  flyViewer (),
-	                planeViewer (),
-	                 noneViewer (),
-	                     lookAt (),
+	           availableViewers (),
 	     activeViewpointChanged (),
 	        keyDeviceSensorNode (nullptr),
 	                    picking (true),
@@ -132,12 +127,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	             activeLayer,
 	             activeNavigationInfoChanged,
 	             viewer,
-	             examineViewer,
-	             walkViewer,
-	             flyViewer,
-	             planeViewer,
-	             noneViewer,
-	             lookAt,
+	             availableViewers,
 	             activeViewpointChanged,
 	             keyDeviceSensorNodeOutput,
 	             picking,
@@ -362,6 +352,15 @@ X3DBrowserContext::set_viewpoint ()
 void
 X3DBrowserContext::set_navigationInfo_type ()
 {
+	availableViewers .clear ();
+
+	bool examineViewer = activeNavigationInfo -> type () .empty ();
+	bool walkViewer    = false;
+	bool flyViewer     = false;
+	bool planeViewer   = false;
+	bool noneViewer    = false;
+	bool lookAt        = false;
+
 	if (activeNavigationInfo)
 	{
 		for (const auto & type : activeNavigationInfo -> type ())
@@ -400,13 +399,6 @@ X3DBrowserContext::set_navigationInfo_type ()
 		viewer = ViewerType::EXAMINE;
 
 END:;
-
-		examineViewer = activeNavigationInfo -> type () .empty ();
-		walkViewer    = false;
-		flyViewer     = false;
-		planeViewer   = false;
-		noneViewer    = false;
-		lookAt        = false;
 
 		for (const auto & type : activeNavigationInfo -> type ())
 		{
@@ -451,6 +443,24 @@ END:;
 		noneViewer    = false;
 		lookAt        = false;
 	}
+	
+	if (examineViewer)
+		availableViewers .emplace_back (ViewerType::EXAMINE);
+
+	if (walkViewer)
+		availableViewers .emplace_back (ViewerType::WALK);
+
+	if (flyViewer)
+		availableViewers .emplace_back (ViewerType::FLY);
+
+	if (planeViewer)
+		availableViewers .emplace_back (ViewerType::PLANE);
+
+	if (noneViewer)
+		availableViewers .emplace_back (ViewerType::NONE);
+
+	if (lookAt)
+		availableViewers .emplace_back (ViewerType::LOOKAT);
 }
 
 // Key device

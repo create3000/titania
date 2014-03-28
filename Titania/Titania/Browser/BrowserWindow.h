@@ -432,19 +432,7 @@ private:
 	set_viewer (X3D::ViewerType);
 
 	void
-	set_examine_viewer (const bool);
-
-	void
-	set_walk_viewer (const bool);
-
-	void
-	set_fly_viewer (const bool);
-
-	void
-	set_plane_viewer (const bool);
-
-	void
-	set_none_viewer (const bool);
+	set_available_viewers (const X3D::X3DArrayField <X3D::X3DScalar <X3D::ViewerType>> &);
 
 	virtual
 	void
@@ -473,9 +461,6 @@ private:
 	virtual
 	void
 	on_straighten_clicked () final override;
-
-	void
-	set_look_at (const bool);
 
 	virtual
 	void

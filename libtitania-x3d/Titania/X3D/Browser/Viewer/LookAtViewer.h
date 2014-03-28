@@ -72,7 +72,7 @@ public:
 	virtual
 	ViewerType
 	getType () const final override
-	{ return ViewerType::LOOK_AT; }
+	{ return ViewerType::LOOKAT; }
 
 	virtual
 	NavigationInfo*

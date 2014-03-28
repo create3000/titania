@@ -149,13 +149,8 @@ BrowserWindow::initialize ()
 
 	// Dashboard
 	getBrowser () -> getBrowserOptions () -> dashboard () .addInterest (this, &BrowserWindow::set_dashboard);
-	getBrowser () -> getViewer ()        .addInterest (this, &BrowserWindow::set_viewer);
-	getBrowser () -> getExamineViewer () .addInterest (this, &BrowserWindow::set_examine_viewer);
-	getBrowser () -> getWalkViewer ()    .addInterest (this, &BrowserWindow::set_walk_viewer);
-	getBrowser () -> getFlyViewer ()     .addInterest (this, &BrowserWindow::set_fly_viewer);
-	getBrowser () -> getPlaneViewer ()   .addInterest (this, &BrowserWindow::set_plane_viewer);
-	getBrowser () -> getNoneViewer ()    .addInterest (this, &BrowserWindow::set_none_viewer);
-	getBrowser () -> getLookAt ()        .addInterest (this, &BrowserWindow::set_look_at);
+	getBrowser () -> getViewer ()           .addInterest (this, &BrowserWindow::set_viewer);
+	getBrowser () -> getAvailableViewers () .addInterest (this, &BrowserWindow::set_available_viewers);
 	getViewerButton () .set_menu (getViewerTypeMenu ());
 
 	// Window
@@ -1173,7 +1168,7 @@ BrowserWindow::set_viewer (X3D::ViewerType type)
 
 	switch (type)
 	{
-		case X3D::ViewerType::LOOK_AT:
+		case X3D::ViewerType::LOOKAT:
 		{
 			getHandButton ()  .set_sensitive (false);
 			getArrowButton () .set_sensitive (false);
@@ -1227,7 +1222,7 @@ BrowserWindow::set_viewer (X3D::ViewerType type)
 			getViewerButton () .set_stock_id (Gtk::StockID ("PlaneViewer"));
 			break;
 		}
-		case X3D::ViewerType::LOOK_AT:
+		case X3D::ViewerType::LOOKAT:
 		{
 			if (not getLookAtButton () .get_active ())
 				getLookAtButton () .set_active (true);
@@ -1238,33 +1233,48 @@ BrowserWindow::set_viewer (X3D::ViewerType type)
 }
 
 void
-BrowserWindow::set_examine_viewer (const bool value)
+BrowserWindow::set_available_viewers (const X3D::X3DArrayField <X3D::X3DScalar <X3D::ViewerType>> & availableViewers)
 {
-	getExamineViewerMenuItem () .set_visible (value);
-}
+	bool examine = false;
+	bool walk    = false;
+	bool fly     = false;
+	bool plane   = false;
+	bool none    = false;
+	bool lookat  = false;
+	
+	for (const auto & viewer : availableViewers)
+	{
+		switch (viewer)
+		{
+			case X3D::ViewerType::EXAMINE:
+				examine = true;
+				break;
+			case X3D::ViewerType::WALK:
+				walk = true;
+				break;
+			case X3D::ViewerType::FLY:
+				fly = true;
+				break;
+			case X3D::ViewerType::PLANE:
+				plane = true;
+				break;
+			case X3D::ViewerType::NONE:
+				none = true;
+				break;
+			case X3D::ViewerType::LOOKAT:
+				lookat = true;
+				break;
+		}
+	}
 
-void
-BrowserWindow::set_walk_viewer (const bool value)
-{
-	getWalkViewerMenuItem () .set_visible (value);
-}
+	getExamineViewerMenuItem () .set_visible (examine);
+	getWalkViewerMenuItem ()    .set_visible (walk);
+	getFlyViewerMenuItem ()     .set_visible (fly);
+	getPlaneViewerMenuItem ()   .set_visible (plane);
+	getNoneViewerMenuItem ()    .set_visible (none);
 
-void
-BrowserWindow::set_fly_viewer (const bool value)
-{
-	getFlyViewerMenuItem () .set_visible (value);
-}
-
-void
-BrowserWindow::set_plane_viewer (const bool value)
-{
-	getPlaneViewerMenuItem () .set_visible (value);
-}
-
-void
-BrowserWindow::set_none_viewer (const bool value)
-{
-	getNoneViewerMenuItem () .set_visible (value);
+	getLookAtAllButton () .set_visible (lookat);
+	getLookAtButton ()    .set_visible (lookat);
 }
 
 void
@@ -1316,13 +1326,6 @@ BrowserWindow::on_straighten_clicked ()
 // Look at
 
 void
-BrowserWindow::set_look_at (const bool value)
-{
-	getLookAtAllButton () .set_visible (value);
-	getLookAtButton ()    .set_visible (value);
-}
-
-void
 BrowserWindow::on_look_at_all_clicked ()
 {
 	if (getBrowser () -> getActiveLayer ())
@@ -1334,8 +1337,8 @@ BrowserWindow::on_look_at_toggled ()
 {
 	if (getLookAtButton () .get_active ())
 	{
-		if (getBrowser () -> getViewer () not_eq X3D::ViewerType::LOOK_AT)
-			getBrowser () -> setViewer (X3D::ViewerType::LOOK_AT);
+		if (getBrowser () -> getViewer () not_eq X3D::ViewerType::LOOKAT)
+			getBrowser () -> setViewer (X3D::ViewerType::LOOKAT);
 	}
 	else
 	{

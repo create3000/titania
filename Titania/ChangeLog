@@ -1,5 +1,67 @@
 2014-03-28  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* BrowserWindow.h:
+	* BrowserWindow.cpp:
+	* Snow.x3dv:
+	* Fire.x3dv:
+	* Rain.x3dv:
+	* Fire2.x3dv:
+	* Smoke.x3dv:
+	* Water1.x3dv:
+	* Water2.x3dv:
+	* Water2.x3dv:
+	* Water1.x3dv:
+	* Bubbles.x3dv:
+	* Fountain.x3dv:
+	* Snow.x3dv:
+	* Fire.x3dv:
+	* Rain.x3dv:
+	* Smoke.x3dv:
+	* earth.wrl:
+	* Fire2.x3dv:
+	* Beethoven.wrl:
+	* coasts.wrl:
+	* Bubbles.x3dv:
+	* Fountain.x3dv:
+	* Box.x3dv:
+	* Cone.x3dv:
+	* Text.x3dv:
+	* Arc2D.x3dv:
+	* Disk2D.x3dv:
+	* Sphere.x3dv:
+	* PointSet.x3dv:
+	* Circle2D.x3dv:
+	* Cylinder.x3dv:
+	* Extrusion.x3dv:
+	* Polyline2D.x3dv:
+	* Box.x3dv:
+	* ArcClose2D.x3dv:
+	* Rectangle2D.x3dv:
+	* Text.x3dv:
+	* Polypoint2D.x3dv:
+	* Cone.x3dv:
+	* Arc2D.x3dv:
+	* IndexedLineSet.x3dv:
+	* TriangleSet2D.x3dv:
+	* Sphere.x3dv:
+	* ElevationGrid.x3dv:
+	* Disk2D.x3dv:
+	* IndexedFaceSet.x3dv:
+	* PointSet.x3dv:
+	* Cylinder.x3dv:
+	* Circle2D.x3dv:
+	* Extrusion.x3dv:
+	* Polyline2D.x3dv:
+	* ArcClose2D.x3dv:
+	* Polypoint2D.x3dv:
+	* Rectangle2D.x3dv:
+	* IndexedLineSet.x3dv:
+	* ElevationGrid.x3dv:
+	* TriangleSet2D.x3dv:
+	* IndexedFaceSet.x3dv: 
+
+2014-03-28  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* DiskSensor.x3dv:
 	* DiskSensor.x3dv: 
 

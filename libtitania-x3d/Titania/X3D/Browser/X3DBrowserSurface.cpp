@@ -163,7 +163,7 @@ X3DBrowserSurface::set_viewer (ViewerType type)
 				viewer .reset (new PlaneViewer (this, getActiveNavigationInfo ()));
 				break;
 			}
-			case ViewerType::LOOK_AT:
+			case ViewerType::LOOKAT:
 			{
 				viewer .reset (new LookAtViewer (this));
 				break;
