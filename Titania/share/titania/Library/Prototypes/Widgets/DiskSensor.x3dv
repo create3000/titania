@@ -6,7 +6,6 @@ EXTERNPROTO DiskSensor [
   inputOutput SFBool     enabled
   inputOutput SFString   description
   inputOutput SFRotation axisRotation
-  inputOutput SFFloat    diskAngle
   inputOutput SFFloat    factor
   inputOutput SFFloat    minValue
   inputOutput SFFloat    maxValue

@@ -6,7 +6,6 @@ PROTO DiskSensor [
   inputOutput SFBool     enabled TRUE
   inputOutput SFString   description ""
   inputOutput SFRotation axisRotation 0 0 1 0
-  inputOutput SFFloat    diskAngle 0.261799
   inputOutput SFFloat    factor 0.159155
   inputOutput SFFloat    minValue 0
   inputOutput SFFloat    maxValue -1
@@ -23,7 +22,7 @@ PROTO DiskSensor [
     enabled IS enabled
     description IS description
     axisRotation IS axisRotation
-    diskAngle IS diskAngle
+    diskAngle 1.5708
     autoOffset IS autoOffset
     trackPoint_changed IS trackPoint_changed
     isOver IS isOver

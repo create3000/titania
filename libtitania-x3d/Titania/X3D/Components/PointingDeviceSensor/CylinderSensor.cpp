@@ -195,7 +195,7 @@ CylinderSensor::set_active (const HitPtr & hit, const bool active)
 
 			cylinder = Cylinder3d (axis, radius);
 
-			disk   = std::abs (dot (cameraBack, yAxis)) < std::cos (diskAngle ());
+			disk   = std::abs (dot (cameraBack, yAxis)) > std::cos (diskAngle ());
 			behind = isBehind (hitRay, hitPoint);
 
 			yPlane = Plane3d (hitPoint, yAxis);             // Sensor aligned y-plane
@@ -299,7 +299,7 @@ CylinderSensor::set_active (const HitPtr & hit, const bool active)
 
 			cylinder = Cylinder3d (axis, radius);
 
-			disk   = std::abs (dot (cameraBack, yAxis)) < std::cos (diskAngle ());
+			disk   = std::abs (dot (cameraBack, yAxis)) > std::cos (diskAngle ());
 			behind = isBehind (hitRay, hitPoint);
 
 			yPlane = Plane3d (hitPoint, yAxis);                                     // Sensor aligned y-plane
