@@ -215,8 +215,6 @@ CylinderSensor::set_active (const HitPtr & hit, const bool active)
 			else
 				getTrackPoint (hitRay, trackPoint, behind);
 
-			__LOG__ << disk << std::endl;
-
 			fromVector = -cylinder .axis () .perpendicular_vector (trackPoint);
 
 			startOffset           = Rotation4d (yAxis, offset ());
