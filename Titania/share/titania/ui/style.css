@@ -6,14 +6,14 @@
 * {
 	-GtkTreeView-expander-size: 6;
 }
+
+GtkSeparator {
+	border-width: 1px;
+}
 */
 
 GtkExpander > GtkLabel {
 	font-weight: bold;
-}
-
-GtkSeparator {
-	border-width: 1px;
 }
 
 #OutlineTreeViewEditor column-header .button {

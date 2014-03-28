@@ -1,4 +1,4 @@
-#VRML V2.0 utf8
+#VRML V2.0 utf8 Titania V0.6.7
 
 META "title" "OutlineEditor"
 
@@ -24,7 +24,7 @@ EXTERNPROTO Rotor [
   eventOut     SFBool     isActive
   eventOut     SFRotation rotation_changed
 ]
-"../../../Titania/share/titania/Library/Prototypes/Engines/Rotor/Rotor.x3dv"
+"http://titania.create3000.de/Library/Prototypes/0.1/Engines/Rotor.x3dv"
 
 EXTERNPROTO Rotor2 [
   exposedField SFBool     enabled
@@ -37,14 +37,14 @@ EXTERNPROTO Rotor2 [
   eventOut     SFBool     isActive
   eventOut     SFRotation rotation_changed
 ]
-"../../../Titania/share/titania/Library/Prototypes/Engines/Rotor/Rotor.x3dv#Rotor"
+"http://titania.create3000.de/Library/Prototypes/0.1/Engines/Rotor.x3dv#Rotor"
 
 EXTERNPROTO RoundedRectangle2D [
   exposedField SFFloat cornerRadius
   exposedField SFVec2f size
   field        SFBool  solid
 ]
-"../../../Titania/share/titania/Library/Prototypes/Geometry2D/RoundedRectangle2D/RoundedRectangle2D.x3dv"
+"http://titania.create3000.de/Library/Prototypes/0.1//Geometry2D/RoundedRectangle2D.x3dv"
 
 PROTO Children1 [
   exposedField MFNode children1 [ ]
@@ -126,13 +126,11 @@ Group {
 DEF Rotor Rotor {
   cycleInterval 10
   loop TRUE
-  pauseTime 0
-  resumeTime 0
 }
 
 DEF Box Transform {
   translation 1.40843 1.10727 0.193803
-  rotation 0 0 1 5.38217
+  rotation 0 0 1 2.47876
   scale 0.2 0.2 0.2
   children Transform {
     children Shape {
@@ -205,10 +203,7 @@ Children1 {
   ]
 }
 
-DEF Rotor2 Rotor2 {
-  pauseTime 0
-  resumeTime 0
-}
+DEF Rotor2 Rotor2 { }
 
 Anchor {
   description "Reload"

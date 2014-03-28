@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,48 +51,27 @@
 #ifndef __TITANIA_OUTLINE_EDITOR_CELL_RENDERER_TEXT_VIEW_EDITABLE_H__
 #define __TITANIA_OUTLINE_EDITOR_CELL_RENDERER_TEXT_VIEW_EDITABLE_H__
 
-#include "../OutlineTreeData.h"
+#include "X3DTextViewEditable.h"
+
 #include <Titania/X3D.h>
-#include <gtkmm.h>
 
 namespace titania {
 namespace puck {
 
 class TextViewEditable :
-	public Gtk::ScrolledWindow, public Gtk::CellEditable
+	public X3DTextViewEditable
 {
 public:
 
-	TextViewEditable (OutlineTreeData* const, const Glib::ustring &, bool = true);
+	TextViewEditable (const X3D::SFNode &, X3D::X3DFieldDefinition* const, const Glib::ustring &, bool = true);
 
-	// Properties
-	Glib::Property <bool> &
-	property_editing_canceled ()
-	{ return editing_canceled_property; }
+	const X3D::SFNode &
+	get_node () const
+	{ return node; }
 
-	const Glib::Property <bool> &
-	property_editing_canceled () const
-	{ return editing_canceled_property; }
-	
-	void
-	set_validated (bool value)
-	{ validated = value; }
-
-	bool
-	get_validated () const
-	{ return validated; }
-
-	void
-	set_text (const Glib::ustring & value)
-	{ textview .get_buffer () -> set_text (value); }
-
-	Glib::ustring
-	get_text () const
-	{ return textview .get_buffer () -> get_text (); }
-
-	OutlineTreeData*
-	get_data () const
-	{ return data; }
+	X3D::X3DFieldDefinition*
+	get_field () const
+	{ return field; }
 
 	const Glib::ustring &
 	get_path () const
@@ -104,33 +83,15 @@ public:
 
 private:
 
-	virtual
 	void
-	start_editing_vfunc (GdkEvent*) final override;
-
-	virtual
-	void
-	on_grab_focus () final override;
-
-	bool
-	on_textview_button_press_event (GdkEventButton*);
-
-	bool
-	on_textview_focus_out_event (GdkEventFocus*);
-
-	bool
-	on_textview_key_press_event (GdkEventKey*);
+	on_textview_populate_popup (Gtk::Menu*);
 
 	void
-	editing_canceled ();
+	on_reset_activate ();
 
-	Glib::Property <bool>  editing_canceled_property;
-	Gtk::TextView          textview;
-	OutlineTreeData* const data;
-	bool                   multiline;
-	const Glib::ustring    path;
-	bool                   validated;
-	bool                   handleFocusOut;
+	const X3D::SFNode              node;
+	X3D::X3DFieldDefinition* const field;
+	const Glib::ustring            path;
 
 };
 

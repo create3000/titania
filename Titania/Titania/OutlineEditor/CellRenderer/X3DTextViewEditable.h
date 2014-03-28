@@ -48,60 +48,105 @@
  *
  ******************************************************************************/
 
-#include "TextViewEditable.h"
+#ifndef __TITANIA_OUTLINE_EDITOR_CELL_RENDERER_X3DTEXT_VIEW_EDITABLE_H__
+#define __TITANIA_OUTLINE_EDITOR_CELL_RENDERER_X3DTEXT_VIEW_EDITABLE_H__
 
-#include "Array.h"
-
-#include <Titania/LOG.h>
+#include <gtkmm.h>
 
 namespace titania {
 namespace puck {
 
-TextViewEditable::TextViewEditable (const X3D::SFNode & node, X3D::X3DFieldDefinition* const field, const Glib::ustring & path, bool multiline) :
-	   Glib::ObjectBase (typeid (TextViewEditable)),
-	X3DTextViewEditable (multiline),
-	               node (node),
-	              field (field),
-	               path (path)
+class X3DTextViewEditable :
+	public Gtk::ScrolledWindow, public Gtk::CellEditable
 {
-	get_textview () .signal_populate_popup () .connect (sigc::mem_fun (this, &TextViewEditable::on_textview_populate_popup));
-}
+public:
 
-void
-TextViewEditable::on_textview_populate_popup (Gtk::Menu* menu)
-{
-	__LOG__ << std::endl;
+	///  @name Construction
 
-	const auto separator = Gtk::manage (new Gtk::SeparatorMenuItem ());
+	X3DTextViewEditable (const bool);
 
-	separator -> show ();
+	///  @name Properties
 
-	const auto resetMenuItem = Gtk::manage (new Gtk::MenuItem (_ ("Reset To Default Value")));
+	Glib::Property <bool> &
+	property_editing_canceled ()
+	{ return editing_canceled_property; }
 
-	resetMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &TextViewEditable::on_reset_activate));
-	resetMenuItem -> show ();
+	const Glib::Property <bool> &
+	property_editing_canceled () const
+	{ return editing_canceled_property; }
 
-	menu -> append (*separator);
-	menu -> append (*resetMenuItem);
-}
+	///  @name Member access
 
-void
-TextViewEditable::on_reset_activate ()
-{
-	__LOG__ << std::endl;
+	void
+	set_validated (bool value)
+	{ validated = value; }
 
-	try
-	{
-		const auto defaultField = node -> getType () -> getField (field -> getName ());
+	bool
+	get_validated () const
+	{ return validated; }
 
-		set_text (get_field_value (defaultField, false));
-	}
-	catch (...)
-	{ }
-}
+	void
+	set_text (const Glib::ustring & value)
+	{ textview .get_buffer () -> set_text (value); }
 
-TextViewEditable::~TextViewEditable ()
-{ }
+	Glib::ustring
+	get_text () const
+	{ return textview .get_buffer () -> get_text (); }
+
+	///  @name Destruction
+
+	virtual
+	~X3DTextViewEditable ();
+
+
+protected:
+
+	///  @name Member access
+
+	Gtk::TextView &
+	get_textview ()
+	{ return textview; }
+
+	const Gtk::TextView &
+	get_textview () const
+	{ return textview; }
+
+
+private:
+
+	///  @name Event handlers
+
+	virtual
+	void
+	start_editing_vfunc (GdkEvent*) final override;
+
+	virtual
+	void
+	on_grab_focus () final override;
+
+	bool
+	on_textview_button_press_event (GdkEventButton*);
+
+	bool
+	on_textview_focus_out_event (GdkEventFocus*);
+
+	bool
+	on_textview_key_press_event (GdkEventKey*);
+
+	void
+	editing_canceled ();
+
+	///  @name Members
+
+	Glib::Property <bool> editing_canceled_property;
+	Gtk::TextView         textview;
+	bool                  multiline;
+	bool                  validated;
+	bool                  handleFocusOut;
+
+};
 
 } // puck
 } // titania
+
+#endif

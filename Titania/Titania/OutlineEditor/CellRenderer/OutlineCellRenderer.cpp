@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra�e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,6 +55,7 @@
 #include "../../Undo/UndoStep.h"
 #include "../OutlineTreeModel.h"
 #include "../X3DOutlineTreeView.h"
+#include "Array.h"
 
 namespace titania {
 namespace puck {
@@ -82,8 +83,6 @@ static constexpr double ROUTE_RADIUS      = 8.5;
 static constexpr double ROUTE_INPUT_PAD   = 14;
 static constexpr double ROUTE_Y_PAD       = 3.5; // Depends on image
 static constexpr double RIGHT_PAD         = 8;
-
-static constexpr int VALUES_MAX = 64;
 
 OutlineCellRenderer::OutlineCellRenderer (X3D::X3DBrowser* const browser, X3DOutlineTreeView* const treeView) :
 	             Glib::ObjectBase (typeid (OutlineCellRenderer)),
@@ -185,7 +184,7 @@ OutlineCellRenderer::on_data ()
 			{
 				property_text () = "";
 			}
-	
+
 			property_editable ()                              = false;
 			cellrenderer_access_type_icon .property_pixbuf () = accessTypeImages [X3D::outputOnly] [1];
 			accessType                                        = X3D::outputOnly;
@@ -195,7 +194,7 @@ OutlineCellRenderer::on_data ()
 		case OutlineIterType::X3DFieldValue:
 		{
 			property_editable () = true;
-			property_text ()     = get_field_value (true);
+			property_text ()     = get_field_value (static_cast <X3D::X3DFieldDefinition*> (get_object ()), true);
 			set_alignment (0, 0);
 			break;
 		}
@@ -278,9 +277,9 @@ OutlineCellRenderer::get_icon () const
 const Glib::RefPtr <Gdk::Pixbuf> &
 OutlineCellRenderer::get_access_type_icon (X3D::AccessType & accessType) const
 {
-	const auto   field = static_cast <X3D::X3DFieldDefinition*> (get_object ());
-	const auto   iter  = accessTypeImages .find (field -> getAccessType ());
-	size_t index = 0;
+	const auto field = static_cast <X3D::X3DFieldDefinition*> (get_object ());
+	const auto iter  = accessTypeImages .find (field -> getAccessType ());
+	size_t     index = 0;
 
 	const size_t inputRoutes  = treeView -> get_model () -> get_input_routes_size (field);
 	const size_t outputRoutes = treeView -> get_model () -> get_output_routes_size (field);
@@ -332,120 +331,6 @@ OutlineCellRenderer::get_node_name () const
 	}
 
 	return "<b>NULL</b>";
-}
-
-template <class Type>
-static
-std::string
-array_to_string (const Type & array, const bool ellipsize)
-{
-	std::ostringstream stream;
-
-	if (array .empty ())
-		return stream .str ();
-
-	const size_t lines = ellipsize ? std::min <size_t> (VALUES_MAX, array .size ()) : array .size ();
-
-	for (const auto & value : basic::adapter (array .begin (), array .begin () + lines - 1))
-	{
-		stream
-			<< value
-			<< X3D::Generator::ForceBreak;
-	}
-
-	stream << array [lines - 1];
-	
-	if (lines < array .size ())
-	{
-		stream
-			<< X3D::Generator::ForceBreak
-			<< "…";
-	}
-
-	return stream .str ();
-}
-
-std::string
-OutlineCellRenderer::get_field_value (const bool ellipsize) const
-{
-	const auto field = static_cast <X3D::X3DFieldDefinition*> (get_object ());
-
-	X3D::Generator::NicestStyle ();
-
-	switch (field -> getType ())
-	{
-		case X3D::X3DConstants::SFNode:
-			return "";
-
-		case X3D::X3DConstants::SFString:
-			return static_cast <X3D::SFString*> (field) -> getValue ();
-
-		case X3D::X3DConstants::MFBool:
-			return array_to_string (*static_cast <X3D::MFBool*> (field), ellipsize);
-
-		case X3D::X3DConstants::MFColor:
-			return array_to_string (*static_cast <X3D::MFColor*> (field), ellipsize);
-
-		case X3D::X3DConstants::MFColorRGBA:
-			return array_to_string (*static_cast <X3D::MFColorRGBA*> (field), ellipsize);
-
-		case X3D::X3DConstants::MFDouble:
-			return array_to_string (*static_cast <X3D::MFDouble*> (field), ellipsize);
-
-		case X3D::X3DConstants::MFFloat:
-			return array_to_string (*static_cast <X3D::MFFloat*> (field), ellipsize);
-
-		case X3D::X3DConstants::MFImage:
-			return array_to_string (*static_cast <X3D::MFImage*> (field), ellipsize);
-
-		case X3D::X3DConstants::MFInt32:
-			return array_to_string (*static_cast <X3D::MFInt32*> (field), ellipsize);
-
-		case X3D::X3DConstants::MFMatrix3d:
-			return array_to_string (*static_cast <X3D::MFMatrix3d*> (field), ellipsize);
-
-		case X3D::X3DConstants::MFMatrix3f:
-			return array_to_string (*static_cast <X3D::MFMatrix3f*> (field), ellipsize);
-
-		case X3D::X3DConstants::MFMatrix4d:
-			return array_to_string (*static_cast <X3D::MFMatrix4d*> (field), ellipsize);
-
-		case X3D::X3DConstants::MFMatrix4f:
-			return array_to_string (*static_cast <X3D::MFMatrix4f*> (field), ellipsize);
-
-		case X3D::X3DConstants::MFNode:
-			return "";
-
-		case X3D::X3DConstants::MFRotation:
-			return array_to_string (*static_cast <X3D::MFRotation*> (field), ellipsize);
-
-		case X3D::X3DConstants::MFString:
-			return array_to_string (*static_cast <X3D::MFString*> (field), ellipsize);
-
-		case X3D::X3DConstants::MFTime:
-			return array_to_string (*static_cast <X3D::MFTime*> (field), ellipsize);
-
-		case X3D::X3DConstants::MFVec2d:
-			return array_to_string (*static_cast <X3D::MFVec2d*> (field), ellipsize);
-
-		case X3D::X3DConstants::MFVec2f:
-			return array_to_string (*static_cast <X3D::MFVec2f*> (field), ellipsize);
-
-		case X3D::X3DConstants::MFVec3d:
-			return array_to_string (*static_cast <X3D::MFVec3d*> (field), ellipsize);
-
-		case X3D::X3DConstants::MFVec3f:
-			return array_to_string (*static_cast <X3D::MFVec3f*> (field), ellipsize);
-
-		case X3D::X3DConstants::MFVec4d:
-			return array_to_string (*static_cast <X3D::MFVec4d*> (field), ellipsize);
-
-		case X3D::X3DConstants::MFVec4f:
-			return array_to_string (*static_cast <X3D::MFVec4f*> (field), ellipsize);
-
-		default:
-			return field -> toString ();
-	}
 }
 
 bool
@@ -612,7 +497,7 @@ OutlineCellRenderer::get_preferred_height_vfunc (Gtk::Widget & widget, int & min
 		default:
 			break;
 	}
-	
+
 }
 
 void
@@ -694,10 +579,16 @@ OutlineCellRenderer::start_editing_vfunc (GdkEvent* event,
 	{
 		case OutlineIterType::X3DFieldValue:
 		{
-			const auto field = static_cast <X3D::X3DFieldDefinition*> (get_object ());
+			Gtk::TreePath parentPath (path);
+			parentPath .up ();
+			parentPath .up ();
 
-			textview .reset (new TextViewEditable (property_data (), path, field -> isArray () or dynamic_cast <X3D::SFString*> (field)));
-			textview -> set_text (get_field_value (false));
+			const auto parent = treeView -> get_model () -> get_iter (parentPath);
+			const auto node   = static_cast <X3D::SFNode*> (treeView -> get_object (parent));
+			const auto field  = static_cast <X3D::X3DFieldDefinition*> (get_object ());
+
+			textview .reset (new TextViewEditable (*node, field, path, field -> isArray () or dynamic_cast <X3D::SFString*> (field)));
+			textview -> set_text (get_field_value (field, false));
 			textview -> set_margin_left (x_pad);
 			textview -> set_margin_top (property_ypad ());
 			textview -> set_margin_bottom (property_ypad ());
@@ -720,50 +611,27 @@ OutlineCellRenderer::on_editing_done ()
 	if (textview -> property_editing_canceled () or textview -> get_validated ())
 		return;
 
-	OutlineTreeData* const data = textview -> get_data ();
+	const std::string string = textview -> get_text ();
 
-	switch (data -> get_type ())
+	if (set_field_value (textview -> get_node (), textview -> get_field (), string))
 	{
-		case OutlineIterType::X3DInputRoute:
-		case OutlineIterType::X3DOutputRoute:
-		case OutlineIterType::X3DField:
-			break;
-		case OutlineIterType::X3DFieldValue:
-		{
-			const std::string string = textview -> get_text ();
-
-			if (set_field_value (data -> get_object (), string, data -> get_path ()))
-			{
-				textview -> set_validated (true);
-				textview -> remove_widget ();
-				edited (textview -> get_path (), string);
-			}
-
-			break;
-		}
-		case OutlineIterType::X3DBaseNode:
-			break;
+		textview -> set_validated (true);
+		textview -> remove_widget ();
+		edited (textview -> get_path (), string);
 	}
 }
 
 bool
-OutlineCellRenderer::set_field_value (X3D::X3DChildObject* const object, const std::string & string, Gtk::TreeModel::Path path)
+OutlineCellRenderer::set_field_value (const X3D::SFNode & node, X3D::X3DFieldDefinition* const field, const std::string & string)
 {
-	path .up ();
-	path .up ();
-
-	const auto parent = treeView -> get_model () -> get_iter (path);
-	const auto node   = static_cast <X3D::SFNode*> (treeView -> get_object (parent));
-	const auto field  = static_cast <X3D::X3DFieldDefinition*> (object);
-
 	if (field -> isArray ())
-		return set_field_value (field, "[" + string + "]", *node);
+		return set_field_value (node, field, "[" + string + "]", true);
 
-	return set_field_value (field, string, *node);
+	return set_field_value (node, field, string, true);
 }
 
 bool
-OutlineCellRenderer::set_field_value (X3D::X3DFieldDefinition* const field, const std::string & string, const X3D::SFNode & node)
+OutlineCellRenderer::set_field_value (const X3D::SFNode & node, X3D::X3DFieldDefinition* const field, const std::string & string, const bool)
 {
 	if (field -> getType () == X3D::X3DConstants::SFString)
 	{

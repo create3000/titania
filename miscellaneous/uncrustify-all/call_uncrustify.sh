@@ -8,20 +8,17 @@ cp "$1" /tmp/uncrustify-last-document.txt
 
 cat "$1" | \
 perl -e '
-	binmode STDOUT, ":utf8";
 	$f = join "", <>;
 	$f =~ s|^\n+||so;                                                       # remove newlines from beginning of file
 	$f =~ s|^/\*.+?\*\*/|\n\n|so;                                           # remove copying header
 	print $f;
 ' | \
 perl -p -e '
-	binmode STDOUT, ":utf8";
 	s/\[\s+\]/[]/go;                                                        # remove space between []
 ' |  \
 uncrustify -q -l CPP -c "$HOME/bin/uncrustify.cfg" \
 	| \
 perl -p -e '
-	binmode STDOUT, ":utf8";
 	sub replace {
 		my $expression = shift;
 		
@@ -57,7 +54,6 @@ perl -p -e '
    replace (sub { $_ [0] =~ s/(\w)\s*:\*\s*(\w)/$1 : *$2/so });                                          # remove :* in for loops
 ' | \
 perl -e '
-	binmode STDOUT, ":utf8";
 	# Remove \n in template argument one liner
 	@lines = <>;
 	$file = join "", @lines;
@@ -65,7 +61,6 @@ perl -e '
    print $file;
 ' | \
 perl -e '
-	binmode STDOUT, ":utf8";
 	# indent constuctor bases and member initialization
 	sub max { return $_[0] > $_[1] ? $_[0] : $_[1]; }
 
@@ -152,7 +147,6 @@ perl -e '
 	}
 ' | \
 perl -e '
-	binmode STDOUT, ":utf8";
 	# multiline replacements
 	$f = join "", <>;
 

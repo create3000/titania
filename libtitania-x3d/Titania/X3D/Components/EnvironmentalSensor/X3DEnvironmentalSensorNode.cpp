@@ -54,10 +54,10 @@ namespace titania {
 namespace X3D {
 
 X3DEnvironmentalSensorNode::Fields::Fields () :
-	center (new SFVec3f ()),
-	size (new SFVec3f ()),
+	   center (new SFVec3f ()),
+	     size (new SFVec3f ()),
 	enterTime (new SFTime ()),
-	exitTime (new SFTime ())
+	 exitTime (new SFTime ())
 { }
 
 X3DEnvironmentalSensorNode::X3DEnvironmentalSensorNode () :

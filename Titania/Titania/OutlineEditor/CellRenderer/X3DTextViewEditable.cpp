@@ -48,59 +48,111 @@
  *
  ******************************************************************************/
 
-#include "TextViewEditable.h"
-
-#include "Array.h"
+#include "X3DTextViewEditable.h"
 
 #include <Titania/LOG.h>
 
 namespace titania {
 namespace puck {
 
-TextViewEditable::TextViewEditable (const X3D::SFNode & node, X3D::X3DFieldDefinition* const field, const Glib::ustring & path, bool multiline) :
-	   Glib::ObjectBase (typeid (TextViewEditable)),
-	X3DTextViewEditable (multiline),
-	               node (node),
-	              field (field),
-	               path (path)
+X3DTextViewEditable::X3DTextViewEditable (const bool multiline) :
+	         Glib::ObjectBase (typeid (X3DTextViewEditable)),
+	      Gtk::ScrolledWindow (),
+	        Gtk::CellEditable (),
+	editing_canceled_property (*this, "editing-canceled", false),
+	                 textview (),
+	                multiline (multiline),
+	                validated (false),
+	           handleFocusOut (true)
 {
-	get_textview () .signal_populate_popup () .connect (sigc::mem_fun (this, &TextViewEditable::on_textview_populate_popup));
+	set_policy (Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+	set_visible (true);
+	add (textview);
+
+	textview .get_style_context () -> add_class ("textview-editable");
+	textview .set_editable (true);
+	textview .set_visible (true);
+
+	textview .signal_button_press_event () .connect (sigc::mem_fun (this, &X3DTextViewEditable::on_textview_button_press_event), false);
+	textview .signal_focus_out_event ()    .connect (sigc::mem_fun (this, &X3DTextViewEditable::on_textview_focus_out_event));
+	textview .signal_key_press_event ()    .connect (sigc::mem_fun (this, &X3DTextViewEditable::on_textview_key_press_event), false);
 }
 
 void
-TextViewEditable::on_textview_populate_popup (Gtk::Menu* menu)
+X3DTextViewEditable::start_editing_vfunc (GdkEvent* event)
 {
-	__LOG__ << std::endl;
-
-	const auto separator = Gtk::manage (new Gtk::SeparatorMenuItem ());
-
-	separator -> show ();
-
-	const auto resetMenuItem = Gtk::manage (new Gtk::MenuItem (_ ("Reset To Default Value")));
-
-	resetMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &TextViewEditable::on_reset_activate));
-	resetMenuItem -> show ();
-
-	menu -> append (*separator);
-	menu -> append (*resetMenuItem);
+	property_editing_canceled () = false;
+	validated                    = false;
 }
 
 void
-TextViewEditable::on_reset_activate ()
+X3DTextViewEditable::on_grab_focus ()
 {
-	__LOG__ << std::endl;
+	textview .grab_focus ();
 
-	try
+	const auto buffer = textview .get_buffer ();
+
+	buffer -> place_cursor (buffer -> begin ());
+}
+
+bool
+X3DTextViewEditable::on_textview_button_press_event (GdkEventButton* event)
+{
+	if (event -> button == 3)
+		handleFocusOut = false;
+
+	return false;
+}
+
+bool
+X3DTextViewEditable::on_textview_focus_out_event (GdkEventFocus* event)
+{
+	if (handleFocusOut)
+		editing_done ();
+
+	handleFocusOut = true;
+
+	return false;
+}
+
+bool
+X3DTextViewEditable::on_textview_key_press_event (GdkEventKey* event)
+{
+	if (multiline)
 	{
-		const auto defaultField = node -> getType () -> getField (field -> getName ());
-
-		set_text (get_field_value (defaultField, false));
+		if (event -> state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK) and (event -> keyval == GDK_KEY_Return or event -> keyval == GDK_KEY_KP_Enter))
+		{
+			editing_done ();
+			return true;
+		}
 	}
-	catch (...)
-	{ }
+	else
+	{
+		if (event -> keyval == GDK_KEY_Return or event -> keyval == GDK_KEY_KP_Enter)
+		{
+			editing_done ();
+			return true;
+		}
+	}
+
+	if (event -> keyval == GDK_KEY_Escape)
+	{
+		editing_canceled ();
+		return true;
+	}
+
+	return false;
 }
 
-TextViewEditable::~TextViewEditable ()
+void
+X3DTextViewEditable::editing_canceled ()
+{
+	property_editing_canceled () = true;
+	editing_done ();
+	remove_widget ();
+}
+
+X3DTextViewEditable::~X3DTextViewEditable ()
 { }
 
 } // puck

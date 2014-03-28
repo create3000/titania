@@ -1,5 +1,17 @@
 2014-03-28  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* Makefile.am:
+	* style.css:
+	* Array.h:
+	* TextViewEditable.h:
+	* TextViewEditable.cpp:
+	* OutlineCellRenderer.h:
+	* X3DTextViewEditable.h:
+	* X3DTextViewEditable.cpp:
+	* OutlineCellRenderer.cpp: 
+
+2014-03-28  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* BrowserWindow.h:
 	* BrowserWindow.cpp:
 	* Snow.x3dv:

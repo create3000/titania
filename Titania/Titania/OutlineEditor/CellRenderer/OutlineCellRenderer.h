@@ -142,9 +142,6 @@ private:
 	std::string
 	get_node_name () const;
 
-	std::string
-	get_field_value (const bool) const;
-
 	bool
 	is_array () const;
 
@@ -172,10 +169,10 @@ private:
 	on_editing_done ();
 
 	bool
-	set_field_value (X3D::X3DChildObject* const, const std::string &, Gtk::TreeModel::Path);
+	set_field_value (const X3D::SFNode &, X3D::X3DFieldDefinition* const, const std::string &);
 
 	bool
-	set_field_value (X3D::X3DFieldDefinition* const, const std::string &, const X3D::SFNode &);
+	set_field_value (const X3D::SFNode &, X3D::X3DFieldDefinition* const, const std::string &, const bool);
 
 	virtual
 	void
