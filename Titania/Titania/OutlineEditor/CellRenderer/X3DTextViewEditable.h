@@ -133,6 +133,8 @@ private:
 	bool
 	on_textview_key_press_event (GdkEventKey*);
 
+	///  @name Operations
+
 	void
 	editing_canceled ();
 

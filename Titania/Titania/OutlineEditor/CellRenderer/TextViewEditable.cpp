@@ -70,8 +70,6 @@ TextViewEditable::TextViewEditable (const X3D::SFNode & node, X3D::X3DFieldDefin
 void
 TextViewEditable::on_textview_populate_popup (Gtk::Menu* menu)
 {
-	__LOG__ << std::endl;
-
 	const auto separator = Gtk::manage (new Gtk::SeparatorMenuItem ());
 
 	separator -> show ();
@@ -88,8 +86,6 @@ TextViewEditable::on_textview_populate_popup (Gtk::Menu* menu)
 void
 TextViewEditable::on_reset_activate ()
 {
-	__LOG__ << std::endl;
-
 	try
 	{
 		const auto defaultField = node -> getType () -> getField (field -> getName ());
@@ -98,6 +94,14 @@ TextViewEditable::on_reset_activate ()
 	}
 	catch (...)
 	{ }
+}
+
+void
+TextViewEditable::on_remove_widget ()
+{
+	node .dispose ();
+
+	X3DTextViewEditable::on_remove_widget ();
 }
 
 TextViewEditable::~TextViewEditable ()

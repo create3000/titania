@@ -88,10 +88,14 @@ private:
 
 	void
 	on_reset_activate ();
+	
+	virtual
+	void
+	on_remove_widget () final override;
 
-	const X3D::SFNode              node;
-	X3D::X3DFieldDefinition* const field;
-	const Glib::ustring            path;
+	X3D::SFNode              node;
+	X3D::X3DFieldDefinition* field;
+	const Glib::ustring      path;
 
 };
 
