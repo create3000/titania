@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -65,7 +65,7 @@ MagicImport::MagicImport (BrowserWindow* const browserWindow) :
 { }
 
 bool
-MagicImport::import (X3D::MFNode & selection, const X3D::X3DSFNode <X3D::Scene> & scene, const UndoStepPtr & undoStep)
+MagicImport::import (X3D::MFNode & selection, const X3D::X3DPtr <X3D::Scene> & scene, const UndoStepPtr & undoStep)
 {
 	if (selection .empty ())
 		return false;
@@ -87,7 +87,7 @@ MagicImport::import (X3D::MFNode & selection, const X3D::X3DSFNode <X3D::Scene> 
 }
 
 bool
-MagicImport::material (X3D::MFNode & selection, const X3D::X3DSFNode <X3D::Scene> & scene, const UndoStepPtr & undoStep)
+MagicImport::material (X3D::MFNode & selection, const X3D::X3DPtr <X3D::Scene> & scene, const UndoStepPtr & undoStep)
 {
 	// Find first material node in scene
 
@@ -95,7 +95,7 @@ MagicImport::material (X3D::MFNode & selection, const X3D::X3DSFNode <X3D::Scene
 
 	X3D::traverse (scene -> getRootNodes (), [this, &material, &undoStep] (X3D::SFNode & node)
 	               {
-	                  const X3D::X3DSFNode <X3D::Appearance> appearance (node);
+	                  const X3D::X3DPtr <X3D::Appearance> appearance (node);
 
 	                  if (appearance and X3D::x3d_cast <X3D::X3DMaterialNode*> (appearance -> material ()))
 	                  {
@@ -137,7 +137,7 @@ MagicImport::material (X3D::MFNode & selection, const X3D::X3DSFNode <X3D::Scene
 }
 
 bool
-MagicImport::texture (X3D::MFNode & selection, const X3D::X3DSFNode <X3D::Scene> & scene, const UndoStepPtr & undoStep)
+MagicImport::texture (X3D::MFNode & selection, const X3D::X3DPtr <X3D::Scene> & scene, const UndoStepPtr & undoStep)
 {
 	// Find first material node in scene
 
@@ -145,7 +145,7 @@ MagicImport::texture (X3D::MFNode & selection, const X3D::X3DSFNode <X3D::Scene>
 
 	X3D::traverse (scene -> getRootNodes (), [this, &texture, &undoStep] (X3D::SFNode & node)
 	               {
-	                  const X3D::X3DSFNode <X3D::Appearance> appearance (node);
+	                  const X3D::X3DPtr <X3D::Appearance> appearance (node);
 
 	                  if (appearance and X3D::x3d_cast <X3D::X3DTextureNode*> (appearance -> texture ()))
 	                  {
@@ -240,14 +240,14 @@ MagicImport::importProtoDeclaration (const X3D::SFNode & node, const UndoStepPtr
 			undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DExecutionContext::updateExternProtoDeclaration),
 			                             getBrowser () -> getExecutionContext (),
 			                             name,
-			                             X3D::X3DSFNode <X3D::ExternProto> (proto));
+			                             X3D::X3DPtr <X3D::ExternProto> (proto));
 		}
 		else
 		{
 			undoStep -> addRedoFunction (std::mem_fn (&X3D::X3DExecutionContext::updateProtoDeclaration),
 			                             getBrowser () -> getExecutionContext (),
 			                             name,
-			                             X3D::X3DSFNode <X3D::Proto> (proto));
+			                             X3D::X3DPtr <X3D::Proto> (proto));
 		}	
 	}
 }

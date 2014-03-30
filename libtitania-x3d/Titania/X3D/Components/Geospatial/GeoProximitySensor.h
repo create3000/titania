@@ -169,7 +169,7 @@ private:
 
 	Fields fields;
 
-	X3DSFNode <ProximitySensor> proximitySensor;
+	X3DPtr <ProximitySensor> proximitySensor;
 
 };
 

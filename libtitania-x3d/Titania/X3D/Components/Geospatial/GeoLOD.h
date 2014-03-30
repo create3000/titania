@@ -242,12 +242,12 @@ private:
 
 	Fields fields;
 
-	X3DSFNode <Group>  rootGroup;
-	X3DSFNode <Inline> rootInline;
-	X3DSFNode <Inline> child1Inline;
-	X3DSFNode <Inline> child2Inline;
-	X3DSFNode <Inline> child3Inline;
-	X3DSFNode <Inline> child4Inline;
+	X3DPtr <Group>  rootGroup;
+	X3DPtr <Inline> rootInline;
+	X3DPtr <Inline> child1Inline;
+	X3DPtr <Inline> child2Inline;
+	X3DPtr <Inline> child3Inline;
+	X3DPtr <Inline> child4Inline;
 
 };
 

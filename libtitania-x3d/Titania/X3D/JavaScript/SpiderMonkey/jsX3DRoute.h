@@ -67,7 +67,7 @@ public:
 
 	static
 	JSBool
-	create (JSContext* const, const X3DSFNode <Route> &, jsval* const);
+	create (JSContext* const, const X3DPtr <Route> &, jsval* const);
 
 	static
 	JSClass*

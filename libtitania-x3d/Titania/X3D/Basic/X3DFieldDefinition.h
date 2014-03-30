@@ -97,8 +97,21 @@ public:
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>) = 0;
 
+	/// Assigns @a field to this X3DFieldDefinition. Both fields must be of the same type.
 	X3DFieldDefinition &
 	operator = (const X3DFieldDefinition &);
+
+	///  @name Comparators
+
+	/// Compares this X3DFieldDefinition with @a field. Both fields must be of the same type.
+	virtual
+	bool
+	operator == (const X3DFieldDefinition &) const = 0;
+
+	/// Compares this X3DFieldDefinition with @a field. Both fields must be of the same type.
+	virtual
+	bool
+	operator not_eq (const X3DFieldDefinition &) const = 0;
 
 	///  @name
 
@@ -108,14 +121,14 @@ public:
 	{ return false; }
 
 	virtual
-	X3DConstants::FieldType
-	getType () const = 0;
-
-	virtual
 	bool
 	hasRoots (ChildObjectSet &) override;
 
 	///  @name Member access
+
+	virtual
+	X3DConstants::FieldType
+	getType () const = 0;
 
 	void
 	setAccessType (const AccessType value)
@@ -142,14 +155,6 @@ public:
 	virtual
 	bool
 	isDefaultValue () const = 0;
-
-	virtual
-	bool
-	operator == (const X3DFieldDefinition &) const = 0;
-
-	virtual
-	bool
-	operator not_eq (const X3DFieldDefinition &) const = 0;
 
 	///  @name Reference handling
 

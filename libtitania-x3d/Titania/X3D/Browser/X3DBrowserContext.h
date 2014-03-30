@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, ScheffelstraÃÂÃÂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra�e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -167,7 +167,7 @@ public:
 	getViewport () const
 	{ return viewport; }
 
-	const X3DSFNode <X3DLayerNode> &
+	const X3DPtr <X3DLayerNode> &
 	getActiveLayer () const
 	{ return activeLayer; }
 
@@ -187,7 +187,7 @@ public:
 
 	///  @name JavaScript handling
 
-	const X3DSFNode <X3DJavaScriptEngine> &
+	const X3DPtr <X3DJavaScriptEngine> &
 	getJavaScriptEngine () const
 	{ return javaScriptEngine; }
 
@@ -219,7 +219,7 @@ public:
 	getViewer () const
 	{ return viewer; }
 
-	const X3DArrayField <X3DScalar <ViewerType>>  &
+	const X3DArrayField <X3DScalar <ViewerType>>   &
 	getAvailableViewers () const
 	{ return availableViewers; }
 
@@ -315,19 +315,19 @@ public:
 	void
 	leaveNotifyEvent ();
 
-	const X3DSFNode <Selection> &
+	const X3DPtr <Selection> &
 	getSelection ()
 	{ return selection; }
 
 	///  @name Notification handling
 
-	const X3DSFNode <Notification> &
+	const X3DPtr <Notification> &
 	getNotification () const
 	{ return notification; }
 
 	///  @name Console handling
 
-	const X3DSFNode <Console> &
+	const X3DPtr <Console> &
 	getConsole () const
 	{ return console; }
 
@@ -372,10 +372,10 @@ public:
 
 protected:
 
-	X3DSFNode <RenderingProperties> renderingProperties;
-	X3DSFNode <BrowserProperties>   browserProperties;
-	X3DSFNode <BrowserOptions>      browserOptions;
-	X3DSFNode <X3DJavaScriptEngine> javaScriptEngine;
+	X3DPtr <RenderingProperties> renderingProperties;
+	X3DPtr <BrowserProperties>   browserProperties;
+	X3DPtr <BrowserOptions>      browserOptions;
+	X3DPtr <X3DJavaScriptEngine> javaScriptEngine;
 
 	///  @name Constructor
 
@@ -386,7 +386,7 @@ protected:
 	initialize () override;
 
 	virtual
-	const X3DSFNode <World> &
+	const X3DPtr <World> &
 	getWorld () const = 0;
 
 	NavigationInfo*
@@ -450,7 +450,7 @@ private:
 	TextureArray     textureStages;
 	bool             texture;
 
-	X3DSFNode <X3DLayerNode>                activeLayer;
+	X3DPtr <X3DLayerNode>                   activeLayer;
 	NavigationInfo*                         activeNavigationInfo;
 	SFTime                                  activeNavigationInfoChanged;
 	X3DScalar <ViewerType>                  viewer;
@@ -469,7 +469,7 @@ private:
 	std::vector <NodeSet> enabledSensors;
 	MFNode                overSensors;
 	MFNode                activeSensors;
-	X3DSFNode <Selection> selection;
+	X3DPtr <Selection>    selection;
 
 	time_type      changedTime;
 	Speed <double> currentSpeed;
@@ -479,8 +479,8 @@ private:
 	std::deque <std::mutex> downloadMutexes;
 	std::mutex              downloadMutex;
 
-	X3DSFNode <Notification> notification;
-	X3DSFNode <Console>      console;
+	X3DPtr <Notification> notification;
+	X3DPtr <Console>      console;
 
 };
 

@@ -117,8 +117,8 @@ protected:
 	Vector3d
 	lerp (const Vector3d &, const Vector3d &, const double);
 
-private:
 
+private:
 
 	///  @name Event handlers
 
@@ -153,7 +153,7 @@ private:
 	Geospatial::ReferenceFramePtr    referenceFrame;
 	Geospatial::ElevationFramePtr    elevationFrame;
 	bool                             standardOrder;
-	X3DSFNode <GeoOrigin>            geoOriginNode;
+	X3DPtr <GeoOrigin>               geoOriginNode;
 	Vector3d                         origin;
 	bool                             radians;
 

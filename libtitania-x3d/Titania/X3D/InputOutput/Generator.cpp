@@ -361,7 +361,7 @@ Generator::GetName (const X3DBaseNode* const baseNode)
 {
 	// Is the node already in index
 
-	auto iter = namesByNode .find (baseNode);
+	const auto iter = namesByNode .find (baseNode);
 
 	if (iter not_eq namesByNode .end ())
 		return iter -> second;
@@ -388,7 +388,7 @@ Generator::GetName (const X3DBaseNode* const baseNode)
 	// The node has a name
 
 	std::string name      = baseNode -> getName ();
-	bool        hasNumber = RegEx::_LastNumber .PartialMatch (name);
+	const bool  hasNumber = RegEx::_LastNumber .PartialMatch (name);
 
 	RegEx::_LastNumber .Replace ("", &name);
 
@@ -465,7 +465,7 @@ Generator::GetLocalName (const X3DBaseNode* node)
 			return GetName (node);
 	}
 
-	throw Error <INVALID_NODE> ("Couldn't get local name.");
+	throw Error <INVALID_NODE> ("Couldn't get local name for node '" + node -> getTypeName () + "'.");
 }
 
 void

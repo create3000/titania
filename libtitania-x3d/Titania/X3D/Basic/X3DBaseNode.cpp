@@ -343,9 +343,11 @@ X3DBaseNode::replace (X3DBaseNode* const node, const std::set <const X3DFieldDef
 		}
 	}
 
+	SFNode replacement (this);
+
 	for (auto & parent : parents)
 	{
-		parent -> write (SFNode (this));
+		parent -> write (replacement);
 		parent -> addEvent ();
 	}
 }
@@ -1452,13 +1454,6 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 void
 X3DBaseNode::dispose ()
 {
-	//	try
-	//	{
-	//		__LOG__ << getTypeName () << std::endl;
-	//	}
-	//	catch (...)
-	//	{ }
-
 	shutdownOutput .processInterests ();
 	shutdownOutput .dispose ();
 

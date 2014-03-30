@@ -137,7 +137,7 @@ private:
 
 	Fields fields;
 
-	X3DSFNode <X3DGeometryNode> geometryNode;
+	X3DPtr <X3DGeometryNode> geometryNode;
 
 };
 

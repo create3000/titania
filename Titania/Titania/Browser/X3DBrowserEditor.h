@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -166,7 +166,7 @@ public:
 	translateSelection (const X3D::Vector3f &, const bool);
 
 	void
-	setMatrix (const X3D::X3DSFNode <X3D::X3DTransformNode> &, const X3D::Matrix4d &, const UndoStepPtr &) const;
+	setMatrix (const X3D::X3DPtr <X3D::X3DTransformNode> &, const X3D::Matrix4d &, const UndoStepPtr &) const;
 
 	/// @name Selection operations
 	
@@ -229,7 +229,7 @@ private:
 	// File
 
 	void
-	import (const X3D::X3DSFNode <X3D::Scene> &, const UndoStepPtr &);
+	import (const X3D::X3DPtr <X3D::Scene> &, const UndoStepPtr &);
 
 	// Clipboard
 
@@ -239,10 +239,10 @@ private:
 	// Edit
 
 	void
-	removeNodeFromScene (const X3D::X3DSFNode <X3D::Scene> &, X3D::SFNode, const UndoStepPtr &) const;
+	removeNodeFromScene (const X3D::X3DPtr <X3D::Scene> &, X3D::SFNode, const UndoStepPtr &) const;
 
 	void
-	removeExportedNodes (const X3D::X3DSFNode <X3D::Scene> &, const X3D::SFNode &, const UndoStepPtr &) const;
+	removeExportedNodes (const X3D::X3DPtr <X3D::Scene> &, const X3D::SFNode &, const UndoStepPtr &) const;
 
 	void
 	removeNodeFromExecutionContext (X3D::X3DExecutionContext* const, X3D::SFNode &, const UndoStepPtr &) const;
@@ -266,7 +266,7 @@ private:
 	removePrototypes (X3D::X3DExecutionContext* const, X3D::SFNode &, const UndoStepPtr &) const;
 
 	void
-	unlinkClone (const X3D::X3DSFNode <X3D::Scene> &, const X3D::SFNode &, X3D::MFNode &, const X3D::SFNode &, X3D::MFNode &, bool &, const UndoStepPtr &) const;
+	unlinkClone (const X3D::X3DPtr <X3D::Scene> &, const X3D::SFNode &, X3D::MFNode &, const X3D::SFNode &, X3D::MFNode &, bool &, const UndoStepPtr &) const;
 
 	void
 	createParentGroup (X3D::MFNode &, const X3D::SFNode &, const X3D::SFNode &, X3D::MFNode &, const UndoStepPtr &) const;
@@ -299,12 +299,12 @@ private:
 
 	///  @name Members
 
-	using UndoMatrixIndex = std::map <X3D::X3DSFNode <X3D::X3DTransformNode>, std::pair <X3D::Matrix4f, X3D::Vector3f>> ;
+	using UndoMatrixIndex = std::map <X3D::X3DPtr <X3D::X3DTransformNode>, std::pair <X3D::Matrix4f, X3D::Vector3f>> ;
 
 	bool                        modified;
 	bool                        saveConfirmed;
 	int                         savedIndex;
-	X3D::X3DSFNode <X3D::Scene> scene;
+	X3D::X3DPtr <X3D::Scene> scene;
 
 	std::shared_ptr <MagicImport>      magicImport;
 	UndoHistory                        undoHistory;

@@ -132,7 +132,7 @@ public:
 	getProfile (const std::string &) const
 	throw (Error <NOT_SUPPORTED>);
 
-	const X3DSFNode <Scene> &
+	const X3DPtr <Scene> &
 	getExecutionContext () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>)
@@ -140,22 +140,22 @@ public:
 
 	///  @name X3D Creation Handling
 
-	X3DSFNode <Scene>
+	X3DPtr <Scene>
 	createScene () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	X3DSFNode <Scene>
+	X3DPtr <Scene>
 	createScene (const ProfileInfoPtr &, const ComponentInfoArray &) const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
 	void
-	replaceWorld (const X3DSFNode <Scene> &)
+	replaceWorld (const X3DPtr <Scene> &)
 	throw (Error <INVALID_SCENE>,
 	       Error <INVALID_OPERATION_TIMING>);
 
-	X3DSFNode <Scene>
+	X3DPtr <Scene>
 	importDocument (/*const XML DOMNode &*/)
 	throw (Error <INVALID_DOCUMENT>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -174,28 +174,28 @@ public:
 	       Error <URL_UNAVAILABLE>,
 	       Error <INVALID_OPERATION_TIMING>);
 
-	X3DSFNode <Scene>
+	X3DPtr <Scene>
 	createX3DFromString (const std::string &)
 	throw (Error <INVALID_X3D>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	X3DSFNode <Scene>
+	X3DPtr <Scene>
 	createX3DFromStream (basic::ifilestream &)
 	throw (Error <INVALID_X3D>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	X3DSFNode <Scene>
+	X3DPtr <Scene>
 	createX3DFromStream (const basic::uri &, basic::ifilestream &)
 	throw (Error <INVALID_X3D>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	X3DSFNode <Scene>
+	X3DPtr <Scene>
 	createX3DFromURL (const MFString &)
 	throw (Error <INVALID_URL>,
 	       Error <URL_UNAVAILABLE>,
@@ -213,13 +213,13 @@ public:
 
 	/// @name Browser properties service
 
-	const X3DSFNode <RenderingProperties> &
+	const X3DPtr <RenderingProperties> &
 	getRenderingProperties () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>)
 	{ return renderingProperties; }
 
-	const X3DSFNode <BrowserProperties> &
+	const X3DPtr <BrowserProperties> &
 	getBrowserProperties () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>)
@@ -230,7 +230,7 @@ public:
 	//	throw (Error <INVALID_OPERATION_TIMING>,
 	//	       Error <DISPOSED>);
 
-	const X3DSFNode <BrowserOptions> &
+	const X3DPtr <BrowserOptions> &
 	getBrowserOptions () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>)
@@ -308,7 +308,7 @@ private:
 	{ userAgent = value; }
 
 	virtual
-	const X3DSFNode <World> &
+	const X3DPtr <World> &
 	getWorld () const final override
 	{ return world; }
 
@@ -343,11 +343,11 @@ private:
 	std::string userAgent;
 	SFString    description;
 
-	X3DSFNode <Scene> scene;
-	X3DSFNode <World> world;
-	X3DSFNode <World> root;
-	MFString          urlError;
-	size_t            inShutdown;
+	X3DPtr <Scene> scene;
+	X3DPtr <World> world;
+	X3DPtr <World> root;
+	MFString       urlError;
+	size_t         inShutdown;
 
 };
 

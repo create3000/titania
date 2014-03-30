@@ -232,7 +232,7 @@ private:
 	Fields fields;
 
 	std::shared_ptr <X3DTextGeometry> textGeometry;
-	X3DSFNode <X3DFontStyleNode>      fontStyleNode;
+	X3DPtr <X3DFontStyleNode>         fontStyleNode;
 
 };
 

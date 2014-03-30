@@ -69,15 +69,15 @@ struct Plugin
 {
 public:
 
-	Plugin (const X3DSFNode <Browser> & browser) :
-		window (0),
-		plug (NULL),
+	Plugin (const X3DPtr <Browser> & browser) :
+		 window (0),
+		   plug (NULL),
 		browser (browser)
 	{ }
 
 	Window window;
 	Gtk::Plug* plug;
-	X3DSFNode <Browser> browser;
+	X3DPtr <Browser> browser;
 
 };
 

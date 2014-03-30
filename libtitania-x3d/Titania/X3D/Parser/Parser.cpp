@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -525,7 +525,7 @@ Parser::exportStatement ()
 			else
 				_exportedNodeNameId = _localNodeNameId;
 
-			const X3DSFNode <ExportedNode> & _exportedNode = scene -> addExportedNode (_exportedNodeNameId, node);
+			const X3DPtr <ExportedNode> & _exportedNode = scene -> addExportedNode (_exportedNodeNameId, node);
 
 			_exportedNode -> addComments (getComments ());
 
@@ -552,7 +552,7 @@ Parser::importStatement ()
 		if (inlineNodeNameId (_inlineNodeNameId))
 		{
 			const SFNode             _namedNode  = getExecutionContext () -> getNamedNode (_inlineNodeNameId);
-			const X3DSFNode <Inline> _inlineNode = x3d_cast <Inline*> (_namedNode);
+			const X3DPtr <Inline> _inlineNode = x3d_cast <Inline*> (_namedNode);
 
 			if (_inlineNode)
 			{
@@ -574,7 +574,7 @@ Parser::importStatement ()
 								throw Error <INVALID_X3D> ("No name given after AS.");
 						}
 
-						const X3DSFNode <ImportedNode> & _importedNode = getExecutionContext () -> addImportedNode (_inlineNode, _exportedNodeNameId, _nodeNameId);
+						const X3DPtr <ImportedNode> & _importedNode = getExecutionContext () -> addImportedNode (_inlineNode, _exportedNodeNameId, _nodeNameId);
 
 						_importedNode -> addComments (getComments ());
 
@@ -806,7 +806,7 @@ Parser::proto ()
 
 					if (Grammar::OpenBrace (istream))
 					{
-						const X3DSFNode <Proto> & _proto = getExecutionContext () -> addProtoDeclaration (_nodeTypeId, _interfaceDeclarations);
+						const X3DPtr <Proto> & _proto = getExecutionContext () -> addProtoDeclaration (_nodeTypeId, _interfaceDeclarations);
 
 						pushExecutionContext (_proto);
 
@@ -1046,7 +1046,7 @@ Parser::externproto ()
 
 					if (URLList (&_URLList))
 					{
-						const X3DSFNode <ExternProto> & _externProto = getExecutionContext () -> addExternProtoDeclaration (_nodeTypeId, _externInterfaceDeclarations, _URLList);
+						const X3DPtr <ExternProto> & _externProto = getExecutionContext () -> addExternProtoDeclaration (_nodeTypeId, _externInterfaceDeclarations, _URLList);
 
 						_externProto -> addInterfaceComments (_interfaceComments);
 						_externProto -> addComments (_comments);
@@ -1254,7 +1254,7 @@ Parser::routeStatement ()
 
 									if (_eventOut -> getType () == _eventIn -> getType ())
 									{
-										const X3DSFNode <Route> & _route = getExecutionContext () -> addRoute (_fromNode, _eventOutId, _toNode, _eventInId);
+										const X3DPtr <Route> & _route = getExecutionContext () -> addRoute (_fromNode, _eventOutId, _toNode, _eventInId);
 
 										_route -> addComments (getComments ());
 

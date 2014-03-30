@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -57,7 +57,7 @@ namespace X3D {
 
 template class X3DField <Array <SFNode>>;
 template class X3DArrayField <SFNode>;
-template class X3DMFNode <X3DBaseNode>;
+template class X3DArrayPtr <X3DBaseNode>;
 
 } // X3D
 } // titania

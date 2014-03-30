@@ -74,7 +74,7 @@ Scene::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-Scene::importScene (const X3DSFNode <Scene> & scene)
+Scene::importScene (const X3DPtr <Scene> & scene)
 throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>,
        Error <INVALID_OPERATION_TIMING>,
@@ -120,17 +120,17 @@ throw (Error <INVALID_NAME>,
 }
 
 void
-Scene::updateNamedNodes (const X3DSFNode <Scene> & scene)
+Scene::updateNamedNodes (const X3DPtr <Scene> & scene)
 {
 	for (const auto & node : NamedNodeIndex (scene -> getNamedNodes ()))
 	{
 		scene -> removeNamedNode (node .first);
-		scene -> updateNamedNode (getUniqueName (scene, node .first), node .second);
+		scene -> updateNamedNode (getUniqueName (scene, node .first), node .second -> getNode ());
 	}
 }
 
 std::string
-Scene::getUniqueName (const X3DSFNode <Scene> & scene, std::string name) const
+Scene::getUniqueName (const X3DPtr <Scene> & scene, std::string name) const
 {
 	RegEx::_LastNumber .Replace ("", &name);
 	RegEx::LastNumber .Replace ("", &name);
@@ -169,7 +169,7 @@ Scene::getUniqueName (const X3DSFNode <Scene> & scene, std::string name) const
 }
 
 std::string
-Scene::getUniqueName (const X3DSFNode <Scene> & scene) const
+Scene::getUniqueName (const X3DPtr <Scene> & scene) const
 {
 	std::string name;
 	size_t      i = 0;

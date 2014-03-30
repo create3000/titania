@@ -354,7 +354,7 @@ X3DBrowserContext::set_navigationInfo_type ()
 {
 	availableViewers .clear ();
 
-	bool examineViewer = activeNavigationInfo -> type () .empty ();
+	bool examineViewer = false;
 	bool walkViewer    = false;
 	bool flyViewer     = false;
 	bool planeViewer   = false;
@@ -363,87 +363,108 @@ X3DBrowserContext::set_navigationInfo_type ()
 
 	if (activeNavigationInfo)
 	{
-		for (const auto & type : activeNavigationInfo -> type ())
-		{
-			if (type == "NONE")
-			{
-				viewer = ViewerType::NONE;
-				goto END;
-			}
-			else if (type == "WALK")
-			{
-				viewer = ViewerType::WALK;
-				goto END;
-			}
-			else if (type == "FLY")
-			{
-				viewer = ViewerType::FLY;
-				goto END;
-			}
-			else if (type == "PLANE_create3000.de")
-			{
-				viewer = ViewerType::PLANE;
-				goto END;
-			}
-			else if (type == "LOOKAT")
-				;
-			else if (type == "ANY")
-				;
-			else
-			{
-				viewer = ViewerType::EXAMINE;
-				goto END;
-			}
-		}
+		static const std::map <std::string, ViewerType> viewerTypes = {
+			std::make_pair ("EXAMINE",             ViewerType::EXAMINE),
+			std::make_pair ("WALK",                ViewerType::WALK),
+			std::make_pair ("FLY",                 ViewerType::FLY),
+			std::make_pair ("PLANE_create3000.de", ViewerType::PLANE),
+			std::make_pair ("NONE",                ViewerType::NONE),
+			std::make_pair ("LOOKAT",              ViewerType::LOOKAT)
+		};
+
+		// Determine active viewer.
 
 		viewer = ViewerType::EXAMINE;
 
-END:;
-
-		for (const auto & type : activeNavigationInfo -> type ())
+		for (const auto & string : activeNavigationInfo -> type ())
 		{
-			if (type == "NONE")
-				noneViewer = true;
+			const auto viewerType = viewerTypes .find (string);
+			
+			if (viewerType == viewerTypes .end ())
+				continue;
 
-			else if (type == "EXAMINE")
-				examineViewer = true;
-
-			else if (type == "WALK")
-				walkViewer = true;
-
-			else if (type == "FLY")
-				flyViewer = true;
-
-			else if (type == "PLANE")
-				planeViewer = true;
-
-			else if (type == "LOOKAT")
-				lookAt = true;
-
-			else if (type == "ANY")
+			switch (viewerType -> second)
 			{
-				examineViewer = true;
-				walkViewer    = true;
-				flyViewer     = true;
-				planeViewer   = true;
-				lookAt        = true;
-				noneViewer    = true;
+				case ViewerType::LOOKAT:
+					// Continue with next type.
+					continue;
+				default:
+					viewer = viewerType -> second;
+					break;
 			}
-			else
+			
+			// Leave for loop.
+			break;
+		}
+		
+		// Determine available viewers.
+		
+		if (activeNavigationInfo -> type () .empty ())
+		{
+			examineViewer = true;
+			walkViewer    = true;
+			flyViewer     = true;
+			planeViewer   = true;
+			noneViewer    = true;
+			lookAt        = true;
+		}
+		else
+		{
+			for (const auto & string : activeNavigationInfo -> type ())
+			{
+				const auto viewerType = viewerTypes .find (string);
+				
+				if (viewerType not_eq viewerTypes .end ())
+				{
+					switch (viewerType -> second)
+					{
+						case ViewerType::EXAMINE:
+							examineViewer = true;
+							continue;
+						case ViewerType::WALK:
+							walkViewer = true;
+							continue;
+						case ViewerType::FLY:
+							flyViewer = true;
+							continue;
+						case ViewerType::PLANE:
+							planeViewer = true;
+							continue;
+						case ViewerType::NONE:
+							noneViewer = true;
+							continue;
+						case ViewerType::LOOKAT:
+							lookAt = true;
+							continue;
+					}
+
+					// All cases handled continue.
+				}
+
+				if (string == "ANY")
+				{
+					examineViewer = true;
+					walkViewer    = true;
+					flyViewer     = true;
+					planeViewer   = true;
+					noneViewer    = true;
+					lookAt        = true;
+
+					// Leave for loop.
+					break;
+				}
+
+				// Some string defaults to EXAMINE.
 				examineViewer = true;
+			}
 		}
 	}
 	else
 	{
-		viewer        = ViewerType::NONE;
-		examineViewer = false;
-		walkViewer    = false;
-		flyViewer     = false;
-		planeViewer   = false;
-		noneViewer    = false;
-		lookAt        = false;
+		viewer     = ViewerType::NONE;
+		noneViewer = true;
 	}
-	
+
 	if (examineViewer)
 		availableViewers .emplace_back (ViewerType::EXAMINE);
 
@@ -460,7 +481,15 @@ END:;
 		availableViewers .emplace_back (ViewerType::NONE);
 
 	if (lookAt)
+	{
+		if (availableViewers .empty ())
+		{
+			viewer = ViewerType::NONE;
+			availableViewers .emplace_back (ViewerType::NONE);
+		}
+
 		availableViewers .emplace_back (ViewerType::LOOKAT);
+	}
 }
 
 // Key device
@@ -771,3 +800,4 @@ X3DBrowserContext::~X3DBrowserContext ()
 
 } // X3D
 } // titania
+

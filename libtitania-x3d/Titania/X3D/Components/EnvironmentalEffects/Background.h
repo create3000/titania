@@ -176,13 +176,13 @@ private:
 
 	Fields fields;
 
-	X3DSFNode <ImageTexture>      frontTexture;
-	X3DSFNode <ImageTexture>      backTexture;
-	X3DSFNode <ImageTexture>      leftTexture;
-	X3DSFNode <ImageTexture>      rightTexture;
-	X3DSFNode <ImageTexture>      topTexture;
-	X3DSFNode <ImageTexture>      bottomTexture;
-	X3DSFNode <TextureProperties> textureProperties;
+	X3DPtr <ImageTexture>      frontTexture;
+	X3DPtr <ImageTexture>      backTexture;
+	X3DPtr <ImageTexture>      leftTexture;
+	X3DPtr <ImageTexture>      rightTexture;
+	X3DPtr <ImageTexture>      topTexture;
+	X3DPtr <ImageTexture>      bottomTexture;
+	X3DPtr <TextureProperties> textureProperties;
 
 };
 

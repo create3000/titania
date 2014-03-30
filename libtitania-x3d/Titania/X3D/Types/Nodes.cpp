@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -61,13 +61,13 @@
 namespace titania {
 namespace X3D {
 
-template class X3DSFNode <Scene>;
-template class X3DSFNode <Proto>;
-template class X3DSFNode <ExternProto>;
-template class X3DSFNode <ImportedNode>;
-template class X3DSFNode <Route>;
-template class X3DSFNode <ExportedNode>;
-template class X3DSFNode <Inline>;
+template class X3DPtr <Scene>;
+template class X3DPtr <Proto>;
+template class X3DPtr <ExternProto>;
+template class X3DPtr <ImportedNode>;
+template class X3DPtr <Route>;
+template class X3DPtr <ExportedNode>;
+template class X3DPtr <Inline>;
 
 } // X3D
 } // titania

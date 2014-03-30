@@ -53,6 +53,9 @@
 #include "../Bits/Error.h"
 #include "../Execution/X3DExecutionContext.h"
 
+#include <Titania/Backtrace.h>
+#include <cassert>
+
 namespace titania {
 namespace X3D {
 
@@ -61,17 +64,19 @@ const std::string Route::typeName       = "Route";
 const std::string Route::containerField = "route";
 
 Route::Route (X3DExecutionContext* const executionContext,
-              const SFNode & sourceNode,      X3DFieldDefinition* const sourceField,
-              const SFNode & destinationNode, X3DFieldDefinition* const destinationField) :
+              const SFNode & _sourceNode,      X3DFieldDefinition* const _sourceField,
+              const SFNode & _destinationNode, X3DFieldDefinition* const _destinationField) :
 	       X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	        sourceNode (sourceNode),
-	       sourceField (sourceField),
-	   destinationNode (destinationNode),
-	  destinationField (destinationField),
+	        sourceNode (_sourceNode),
+	       sourceField (_sourceField),
+	   destinationNode (_destinationNode),
+	  destinationField (_destinationField),
 	disconnectedOutput ()
 {
-	sourceNode      -> shutdown () .addInterest (this, &Route::remove);
-	destinationNode -> shutdown () .addInterest (this, &Route::remove);
+	addChildren (sourceNode, destinationNode);
+
+	sourceNode      .addInterest (this, &Route::set_node);
+	destinationNode .addInterest (this, &Route::set_node);
 
 	setup ();
 	connect ();
@@ -109,18 +114,18 @@ throw (Error <INVALID_NAME>,
 	}
 }
 
-bool
-Route::isConnected () const
-{
-	return sourceNode and destinationNode and
-	       not sourceNode      -> getParents () .empty () and
-	       not destinationNode -> getParents () .empty ();
-}
-
 RouteId
 Route::getId () const
 {
 	return std::make_pair (sourceField, destinationField);
+}
+
+bool
+Route::isConnected () const
+{
+	return sourceNode and destinationNode and
+	       sourceNode -> getReferenceCount () and
+	       destinationNode -> getReferenceCount ();
 }
 
 SFNode
@@ -128,7 +133,7 @@ Route::getSourceNode () const
 throw (Error <DISPOSED>)
 {
 	if (isConnected ())
-		return sourceNode;
+		return SFNode (sourceNode);
 
 	throw Error <DISPOSED> ("Route is already disposed.");
 }
@@ -148,7 +153,7 @@ Route::getDestinationNode () const
 throw (Error <DISPOSED>)
 {
 	if (isConnected ())
-		return destinationNode;
+		return SFNode (destinationNode);
 
 	throw Error <DISPOSED> ("Route is already disposed.");
 }
@@ -174,10 +179,10 @@ Route::connect ()
 void
 Route::disconnect ()
 {
-	if (sourceNode and destinationNode)
+	if (sourceNode or destinationNode)
 	{
-		sourceNode      = nullptr;
-		destinationNode = nullptr;
+		sourceNode      .dispose ();
+		destinationNode .dispose ();
 
 		sourceField -> removeInterest (destinationField);
 		sourceField -> removeOutputRoute (this);
@@ -189,9 +194,16 @@ Route::disconnect ()
 }
 
 void
-Route::remove ()
+Route::erase ()
 {
 	getExecutionContext () -> deleteRoute (this);
+}
+
+void
+Route::set_node ()
+{
+	if (not sourceNode or not destinationNode)
+		getExecutionContext () -> deleteRoute (this);
 }
 
 void

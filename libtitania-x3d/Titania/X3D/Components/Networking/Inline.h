@@ -172,10 +172,10 @@ private:
 	///  @name Event handling
 
 	void
-	setSceneAsync (X3DSFNode <Scene> &&);
+	setSceneAsync (X3DPtr <Scene> &&);
 
 	void
-	setScene (X3DSFNode <Scene> &&);
+	setScene (X3DPtr <Scene> &&);
 
 	void
 	requestAsyncLoad ();
@@ -206,8 +206,8 @@ private:
 
 	Fields fields;
 
-	X3DSFNode <Scene> scene;
-	X3DSFNode <Group> group;
+	X3DPtr <Scene> scene;
+	X3DPtr <Group> group;
 
 	std::unique_ptr <SceneLoader> future;
 	bool                          initialized;

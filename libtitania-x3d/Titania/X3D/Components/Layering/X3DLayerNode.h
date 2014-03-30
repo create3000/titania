@@ -162,37 +162,37 @@ public:
 
 	///  @name X3DBindableNode stack handling
 
-	const X3DSFNode <NavigationInfoStack> &
+	const X3DPtr <NavigationInfoStack> &
 	getNavigationInfoStack () const
 	{ return navigationInfoStack; }
 
-	const X3DSFNode <BackgroundStack> &
+	const X3DPtr <BackgroundStack> &
 	getBackgroundStack () const
 	{ return backgroundStack; }
 
-	const X3DSFNode <FogStack> &
+	const X3DPtr <FogStack> &
 	getFogStack () const
 	{ return fogStack; }
 
-	const X3DSFNode <ViewpointStack> &
+	const X3DPtr <ViewpointStack> &
 	getViewpointStack () const
 	{ return viewpointStack; }
 
 	///  @name X3DBindableNode list handling
 
-	const X3DSFNode <NavigationInfoList> &
+	const X3DPtr <NavigationInfoList> &
 	getNavigationInfos () const
 	{ return navigationInfos; }
 
-	const X3DSFNode <BackgroundList> &
+	const X3DPtr <BackgroundList> &
 	getBackgrounds () const
 	{ return backgrounds; }
 
-	const X3DSFNode <FogList> &
+	const X3DPtr <FogList> &
 	getFogs () const
 	{ return fogs; }
 
-	const X3DSFNode <ViewpointList> &
+	const X3DPtr <ViewpointList> &
 	getViewpoints () const
 	{ return viewpoints; }
 
@@ -239,7 +239,7 @@ protected:
 
 	///  @name Member access
 
-	const X3DSFNode <X3DGroupingNode>
+	const X3DPtr <X3DGroupingNode>
 	getGroup () const
 	{ return group; }
 
@@ -296,26 +296,26 @@ private:
 	
 	bool layer0;
 
-	X3DSFNode <NavigationInfo>    defaultNavigationInfo;
-	X3DSFNode <X3DBackgroundNode> defaultBackground;
-	X3DSFNode <Fog>               defaultFog;
-	X3DSFNode <X3DViewpointNode>  defaultViewpoint;
+	X3DPtr <NavigationInfo>    defaultNavigationInfo;
+	X3DPtr <X3DBackgroundNode> defaultBackground;
+	X3DPtr <Fog>               defaultFog;
+	X3DPtr <X3DViewpointNode>  defaultViewpoint;
 
-	X3DSFNode <X3DViewportNode> currentViewport;
+	X3DPtr <X3DViewportNode> currentViewport;
 
-	X3DSFNode <NavigationInfoStack> navigationInfoStack;
-	X3DSFNode <BackgroundStack>     backgroundStack;
-	X3DSFNode <FogStack>            fogStack;
-	X3DSFNode <ViewpointStack>      viewpointStack;
+	X3DPtr <NavigationInfoStack> navigationInfoStack;
+	X3DPtr <BackgroundStack>     backgroundStack;
+	X3DPtr <FogStack>            fogStack;
+	X3DPtr <ViewpointStack>      viewpointStack;
 
-	X3DSFNode <NavigationInfoList> navigationInfos;
-	X3DSFNode <BackgroundList>     backgrounds;
-	X3DSFNode <FogList>            fogs;
-	X3DSFNode <ViewpointList>      viewpoints;
+	X3DPtr <NavigationInfoList> navigationInfos;
+	X3DPtr <BackgroundList>     backgrounds;
+	X3DPtr <FogList>            fogs;
+	X3DPtr <ViewpointList>      viewpoints;
 
 	LocalFogStack  localFogs;
 
-	X3DSFNode <X3DGroupingNode> group;
+	X3DPtr <X3DGroupingNode> group;
 
 };
 

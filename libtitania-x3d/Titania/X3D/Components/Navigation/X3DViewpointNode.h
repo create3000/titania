@@ -313,12 +313,12 @@ private:
 	Matrix4f transformationMatrix;
 	Matrix4f inverseTransformationMatrix;
 
-	X3DSFNode <TimeSensor>              timeSensor;
-	X3DSFNode <EaseInEaseOut>           easeInEaseOut;
-	X3DSFNode <PositionInterpolator>    positionInterpolator;
-	X3DSFNode <OrientationInterpolator> orientationInterpolator;
-	X3DSFNode <PositionInterpolator>    scaleInterpolator;
-	X3DSFNode <OrientationInterpolator> scaleOrientationInterpolator;
+	X3DPtr <TimeSensor>              timeSensor;
+	X3DPtr <EaseInEaseOut>           easeInEaseOut;
+	X3DPtr <PositionInterpolator>    positionInterpolator;
+	X3DPtr <OrientationInterpolator> orientationInterpolator;
+	X3DPtr <PositionInterpolator>    scaleInterpolator;
+	X3DPtr <OrientationInterpolator> scaleOrientationInterpolator;
 
 };
 

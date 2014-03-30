@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -52,7 +52,8 @@
 #define __TITANIA_X3D_EXECUTION_EXPORTED_NODE_H__
 
 #include "../Basic/X3DBaseNode.h"
-#include "../Fields.h"
+#include "../Fields/SFNode.h"
+#include "../Fields/X3DWeakPtr.h"
 
 namespace titania {
 namespace X3D {
@@ -72,7 +73,7 @@ public:
 	ExportedNode*
 	copy (X3DScene* const) const
 	throw (Error <INVALID_NAME>,
-          Error <NOT_SUPPORTED>);
+	       Error <NOT_SUPPORTED>);
 
 	///  @name Construction (NOT SUPPORTED)
 
@@ -80,13 +81,13 @@ public:
 	ExportedNode*
 	clone (X3DExecutionContext* const) const
 	throw (Error <INVALID_NAME>,
-          Error <NOT_SUPPORTED>) final override;
+	       Error <NOT_SUPPORTED>) final override;
 
 	virtual
 	ExportedNode*
 	copy (X3DExecutionContext* const) const
 	throw (Error <INVALID_NAME>,
-          Error <NOT_SUPPORTED>) final override;
+	       Error <NOT_SUPPORTED>) final override;
 
 	///  @name Common members
 
@@ -136,9 +137,9 @@ private:
 	create (X3DExecutionContext* const) const final override;
 
 	///  @name Destruction
-	
+
 	void
-	remove ();
+	set_node ();
 
 	///  @name Static members
 
@@ -148,9 +149,9 @@ private:
 
 	///  @name Members
 
-	X3DScene* const    scene;
-	const std::string  exportedName;
-	X3DBaseNode*       node;
+	X3DScene* const          scene;
+	const std::string        exportedName;
+	X3DWeakPtr <X3DBaseNode> node;
 
 };
 

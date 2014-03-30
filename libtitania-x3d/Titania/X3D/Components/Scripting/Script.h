@@ -164,7 +164,7 @@ private:
 
 	Fields fields;
 
-	X3DSFNode <X3DJavaScriptContext> javaScript;
+	X3DPtr <X3DJavaScriptContext> javaScript;
 
 };
 

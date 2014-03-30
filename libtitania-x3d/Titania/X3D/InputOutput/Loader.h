@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -86,28 +86,28 @@ public:
 
 	///  @name X3D Creation Handling
 
-	X3DSFNode <Scene>
+	X3DPtr <Scene>
 	createX3DFromString (const std::string & string)
 	throw (Error <INVALID_X3D>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	X3DSFNode <Scene>
+	X3DPtr <Scene>
 	createX3DFromStream (basic::ifilestream & istream)
 	throw (Error <INVALID_X3D>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	X3DSFNode <Scene>
+	X3DPtr <Scene>
 	createX3DFromStream (const basic::uri & worldURL, basic::ifilestream &)
 	throw (Error <INVALID_X3D>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	X3DSFNode <Scene>
+	X3DPtr <Scene>
 	createX3DFromURL (const MFString & url)
 	throw (Error <INVALID_URL>,
 	       Error <URL_UNAVAILABLE>);

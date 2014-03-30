@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -272,7 +272,7 @@ jsBrowser::createX3DFromString (JSContext* context, uintN argc, jsval* vp)
 
 		try
 		{
-			const X3DSFNode <Scene> scene = Loader (script -> getExecutionContext (),
+			const X3DPtr <Scene> scene = Loader (script -> getExecutionContext (),
 			                                        script -> getWorldURL ()) .createX3DFromString (JS_GetString (context, x3dSyntax));
 
 			return jsX3DScene::create (context, scene, vp);
@@ -329,7 +329,7 @@ jsBrowser::createX3DFromURL (JSContext* context, uintN argc, jsval* vp)
 							{
 								try
 								{
-									const X3DSFNode <Scene> scene = Loader (script -> getExecutionContext (),
+									const X3DPtr <Scene> scene = Loader (script -> getExecutionContext (),
 									                                        script -> getWorldURL ()) .createX3DFromURL (*url);
 
 									if (scene)
@@ -371,7 +371,7 @@ jsBrowser::createX3DFromURL (JSContext* context, uintN argc, jsval* vp)
 			{
 				try
 				{
-					const X3DSFNode <Scene> scene = Loader (script -> getExecutionContext (),
+					const X3DPtr <Scene> scene = Loader (script -> getExecutionContext (),
 					                                        script -> getWorldURL ()) .createX3DFromURL (*url);
 
 					if (argc == 2)
@@ -405,7 +405,7 @@ jsBrowser::createX3DFromURL (JSContext* context, uintN argc, jsval* vp)
 		{
 			try
 			{
-				const X3DSFNode <Scene> scene = Loader (script -> getExecutionContext (),
+				const X3DPtr <Scene> scene = Loader (script -> getExecutionContext (),
 				                                        script -> getWorldURL ()) .createX3DFromURL (*url);
 
 				return jsX3DScene::create (context, scene, vp);
@@ -809,7 +809,7 @@ jsBrowser::createVrmlFromString (JSContext* context, uintN argc, jsval* vp)
 
 		try
 		{
-			const X3DSFNode <Scene> scene = Loader (script -> getExecutionContext (),
+			const X3DPtr <Scene> scene = Loader (script -> getExecutionContext (),
 			                                        script -> getWorldURL ()) .createX3DFromString (JS_GetString (context, vrmlSyntax));
 
 			return jsMFNode::create (context, new MFNode (scene -> getRootNodes ()), &JS_RVAL (context, vp));
@@ -902,7 +902,7 @@ jsBrowser::createVrmlFromURL (JSContext* context, uintN argc, jsval* vp)
 }
 
 void
-jsBrowser::setSceneAsync (const SFNode & node, MFNode & field, X3DSFNode <Scene> && scene)
+jsBrowser::setSceneAsync (const SFNode & node, MFNode & field, X3DPtr <Scene> && scene)
 {
 	if (scene)
 	{

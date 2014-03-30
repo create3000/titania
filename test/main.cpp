@@ -64,7 +64,7 @@ using namespace titania;
 struct Test
 {
 void
-set_initialized (const X3D::X3DSFNode <X3D::Browser> & browser)
+set_initialized (const X3D::X3DPtr <X3D::Browser> & browser)
 {
 	browser -> initialized () .removeInterest (this, &Test::set_initialized);
 	browser -> loadURL ({ "/home/holger/Projekte/Titania/Library/Examples/ICTS/stage/index__6.T.wrl" });

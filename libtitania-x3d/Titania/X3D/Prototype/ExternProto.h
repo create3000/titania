@@ -174,8 +174,8 @@ private:
 
 	///  @name Members
 
-	X3DSFNode <Scene> scene;
-	X3DSFNode <Proto> proto;
+	X3DPtr <Scene> scene;
+	X3DPtr <Proto> proto;
 
 };
 

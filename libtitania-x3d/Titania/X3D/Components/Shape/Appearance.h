@@ -236,13 +236,13 @@ private:
 
 	Fields fields;
 
-	X3DSFNode <FillProperties>          fillPropertiesNode;
-	X3DSFNode <LineProperties>          linePropertiesNode;
-	X3DSFNode <X3DMaterialNode>         materialNode;
-	X3DSFNode <X3DTextureNode>          textureNode;
-	X3DSFNode <X3DTextureTransformNode> textureTransformNode;
-	X3DMFNode <X3DShaderNode>           shaderNodes;
-	X3DSFNode <X3DShaderNode>           shaderNode;
+	X3DPtr <FillProperties>          fillPropertiesNode;
+	X3DPtr <LineProperties>          linePropertiesNode;
+	X3DPtr <X3DMaterialNode>         materialNode;
+	X3DPtr <X3DTextureNode>          textureNode;
+	X3DPtr <X3DTextureTransformNode> textureTransformNode;
+	X3DArrayPtr <X3DShaderNode>      shaderNodes;
+	X3DPtr <X3DShaderNode>           shaderNode;
 
 };
 

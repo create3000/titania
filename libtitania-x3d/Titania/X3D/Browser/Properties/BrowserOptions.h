@@ -227,139 +227,139 @@ public:
 	minTextureSize () const
 	{ return *fields .minTextureSize; }
 
-	X3DSFNode <MotionBlur> &
+	X3DPtr <MotionBlur> &
 	motionBlurOptions ()
 	{ return fields .motionBlurOptions; }
 
-	const X3DSFNode <MotionBlur> &
+	const X3DPtr <MotionBlur> &
 	motionBlurOptions () const
 	{ return fields .motionBlurOptions; }
 
-	X3DSFNode <Appearance> &
+	X3DPtr <Appearance> &
 	appearance ()
 	{ return fields .appearance; }
 
-	const X3DSFNode <Appearance> &
+	const X3DPtr <Appearance> &
 	appearance () const
 	{ return fields .appearance; }
 
-	X3DSFNode <LineProperties> &
+	X3DPtr <LineProperties> &
 	lineProperties ()
 	{ return fields .lineProperties; }
 
-	const X3DSFNode <LineProperties> &
+	const X3DPtr <LineProperties> &
 	lineProperties () const
 	{ return fields .lineProperties; }
 
-	X3DSFNode <FillProperties> &
+	X3DPtr <FillProperties> &
 	fillProperties ()
 	{ return fields .fillProperties; }
 
-	const X3DSFNode <FillProperties> &
+	const X3DPtr <FillProperties> &
 	fillProperties () const
 	{ return fields .fillProperties; }
 
-	X3DSFNode <TextureProperties> &
+	X3DPtr <TextureProperties> &
 	textureProperties ()
 	{ return fields .textureProperties; }
 
-	const X3DSFNode <TextureProperties> &
+	const X3DPtr <TextureProperties> &
 	textureProperties () const
 	{ return fields .textureProperties; }
 
-	X3DSFNode <X3DTextureTransformNode> &
+	X3DPtr <X3DTextureTransformNode> &
 	textureTransform ()
 	{ return fields .textureTransform; }
 
-	const X3DSFNode <X3DTextureTransformNode> &
+	const X3DPtr <X3DTextureTransformNode> &
 	textureTransform () const
 	{ return fields .textureTransform; }
 
-	X3DSFNode <X3DParticleEmitterNode> &
+	X3DPtr <X3DParticleEmitterNode> &
 	emitter ()
 	{ return fields .emitter; }
 
-	const X3DSFNode <X3DParticleEmitterNode> &
+	const X3DPtr <X3DParticleEmitterNode> &
 	emitter () const
 	{ return fields .emitter; }
 
-	X3DSFNode <Arc2DOptions> &
+	X3DPtr <Arc2DOptions> &
 	arc2D ()
 	{ return fields .arc2D; }
 
-	const X3DSFNode <Arc2DOptions> &
+	const X3DPtr <Arc2DOptions> &
 	arc2D () const
 	{ return fields .arc2D; }
 
-	X3DSFNode <ArcClose2DOptions> &
+	X3DPtr <ArcClose2DOptions> &
 	arcClose2D ()
 	{ return fields .arcClose2D; }
 
-	const X3DSFNode <ArcClose2DOptions> &
+	const X3DPtr <ArcClose2DOptions> &
 	arcClose2D () const
 	{ return fields .arcClose2D; }
 
-	X3DSFNode <Circle2DOptions> &
+	X3DPtr <Circle2DOptions> &
 	circle2D ()
 	{ return fields .circle2D; }
 
-	const X3DSFNode <Circle2DOptions> &
+	const X3DPtr <Circle2DOptions> &
 	circle2D () const
 	{ return fields .circle2D; }
 
-	X3DSFNode <Disk2DOptions> &
+	X3DPtr <Disk2DOptions> &
 	disc2D ()
 	{ return fields .disc2D; }
 
-	const X3DSFNode <Disk2DOptions> &
+	const X3DPtr <Disk2DOptions> &
 	disc2D () const
 	{ return fields .disc2D; }
 
-	X3DSFNode <Rectangle2DOptions> &
+	X3DPtr <Rectangle2DOptions> &
 	rectangle2D ()
 	{ return fields .rectangle2D; }
 
-	const X3DSFNode <Rectangle2DOptions> &
+	const X3DPtr <Rectangle2DOptions> &
 	rectangle2D () const
 	{ return fields .rectangle2D; }
 
-	X3DSFNode <BoxOptions> &
+	X3DPtr <BoxOptions> &
 	box ()
 	{ return fields .box; }
 
-	const X3DSFNode <BoxOptions> &
+	const X3DPtr <BoxOptions> &
 	box () const
 	{ return fields .box; }
 
-	X3DSFNode <X3DSphereOptionNode> &
+	X3DPtr <X3DSphereOptionNode> &
 	sphere ()
 	{ return fields .sphere; }
 
-	const X3DSFNode <X3DSphereOptionNode> &
+	const X3DPtr <X3DSphereOptionNode> &
 	sphere () const
 	{ return fields .sphere; }
 
-	X3DSFNode <X3DTextureCoordinateNode> &
+	X3DPtr <X3DTextureCoordinateNode> &
 	texCoord ()
 	{ return fields .texCoord; }
 
-	const X3DSFNode <X3DTextureCoordinateNode> &
+	const X3DPtr <X3DTextureCoordinateNode> &
 	texCoord () const
 	{ return fields .texCoord; }
 
-	X3DSFNode <X3DFontStyleNode> &
+	X3DPtr <X3DFontStyleNode> &
 	fontStyle ()
 	{ return fields .fontStyle; }
 
-	const X3DSFNode <X3DFontStyleNode> &
+	const X3DPtr <X3DFontStyleNode> &
 	fontStyle () const
 	{ return fields .fontStyle; }
 
-	X3DSFNode <Viewport> &
+	X3DPtr <Viewport> &
 	viewport ()
 	{ return fields .viewport; }
 
-	const X3DSFNode <Viewport> &
+	const X3DPtr <Viewport> &
 	viewport () const
 	{ return fields .viewport; }
 
@@ -410,23 +410,23 @@ private:
 		SFBool* const animateStairWalks;
 		SFFloat* const gravity;
 		SFInt32* const minTextureSize;
-		X3DSFNode <MotionBlur> motionBlurOptions;
-		X3DSFNode <Appearance> appearance;
-		X3DSFNode <LineProperties> lineProperties;
-		X3DSFNode <FillProperties> fillProperties;
-		X3DSFNode <TextureProperties> textureProperties;
-		X3DSFNode <X3DTextureTransformNode> textureTransform;
-		X3DSFNode <X3DParticleEmitterNode> emitter;
-		X3DSFNode <Arc2DOptions> arc2D;
-		X3DSFNode <ArcClose2DOptions> arcClose2D;
-		X3DSFNode <Circle2DOptions> circle2D;
-		X3DSFNode <Disk2DOptions> disc2D;
-		X3DSFNode <Rectangle2DOptions> rectangle2D;
-		X3DSFNode <BoxOptions> box;
-		X3DSFNode <X3DSphereOptionNode> sphere;
-		X3DSFNode <X3DTextureCoordinateNode> texCoord;
-		X3DSFNode <X3DFontStyleNode> fontStyle;
-		X3DSFNode <Viewport> viewport;
+		X3DPtr <MotionBlur> motionBlurOptions;
+		X3DPtr <Appearance> appearance;
+		X3DPtr <LineProperties> lineProperties;
+		X3DPtr <FillProperties> fillProperties;
+		X3DPtr <TextureProperties> textureProperties;
+		X3DPtr <X3DTextureTransformNode> textureTransform;
+		X3DPtr <X3DParticleEmitterNode> emitter;
+		X3DPtr <Arc2DOptions> arc2D;
+		X3DPtr <ArcClose2DOptions> arcClose2D;
+		X3DPtr <Circle2DOptions> circle2D;
+		X3DPtr <Disk2DOptions> disc2D;
+		X3DPtr <Rectangle2DOptions> rectangle2D;
+		X3DPtr <BoxOptions> box;
+		X3DPtr <X3DSphereOptionNode> sphere;
+		X3DPtr <X3DTextureCoordinateNode> texCoord;
+		X3DPtr <X3DFontStyleNode> fontStyle;
+		X3DPtr <Viewport> viewport;
 	};
 
 	Fields fields;

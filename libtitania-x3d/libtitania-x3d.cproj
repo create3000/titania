@@ -534,7 +534,6 @@
     <None Include="Titania\X3D\Rendering\DepthBuffer.h" />
     <None Include="Titania\X3D\Base\Event.h" />
     <None Include="Titania\X3D\Handles\X3DHandleObject.h" />
-    <None Include="Titania\X3D\Fields\X3DSFNode.h" />
     <None Include="Titania\X3D\Fields\SFNode.h" />
     <None Include="Titania\X3D\Types\Set.h" />
     <None Include="Titania\X3D\Browser\Properties\X3DOptionNode.h" />
@@ -631,7 +630,6 @@
     <None Include="Titania\X3D\Miscellaneous\Shader.h" />
     <None Include="Titania\X3D\Miscellaneous\BVH.h" />
     <None Include="share\titania\shaders\ParticleSystems\Bits\BVH.h" />
-    <None Include="Titania\X3D\Fields\X3DMFNode.h" />
     <None Include="share\titania\shaders\ParticleSystems\ExplosionEmitter.vs" />
     <None Include="Titania\X3D\Fields\VrmlMatrix.h" />
     <None Include="Titania\X3D\Bits\Geospatial.h" />
@@ -643,6 +641,11 @@
     <None Include="Titania\X3D\InputOutput\X3DBaseGenerator.h" />
     <None Include="Titania\X3D\Types\Nodes.h" />
     <None Include="Titania\X3D\Types\Struct.h" />
+    <None Include="Titania\X3D\Execution\NamedNodeIndex.h" />
+    <None Include="Titania\X3D\Execution\NamedNode.h" />
+    <None Include="Titania\X3D\Fields\X3DWeakPtr.h" />
+    <None Include="Titania\X3D\Fields\X3DPtr.h" />
+    <None Include="Titania\X3D\Fields\X3DArrayPtr.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1110,6 +1113,8 @@
     <Compile Include="Titania\X3D\Components\Grouping\X3DTransformMatrix4DNode.cpp" />
     <Compile Include="Titania\X3D\InputOutput\X3DBaseGenerator.cpp" />
     <Compile Include="Titania\X3D\Types\Nodes.cpp" />
+    <Compile Include="Titania\X3D\Execution\NamedNodeIndex.cpp" />
+    <Compile Include="Titania\X3D\Execution\NamedNode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

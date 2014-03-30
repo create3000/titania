@@ -257,7 +257,8 @@ private:
 	class Vertex;
 	class OddEvenMergeSort;
 
-	enum class GeometryType : uint8_t
+	enum class GeometryType :
+		uint8_t
 	{
 		POINT,
 		LINE,
@@ -396,38 +397,38 @@ private:
 
 	Fields fields;
 
-	GeometryType                            geometryTypeId;
-	GLenum                                  glGeometryType;
-	size_t                                  numVertices;
-	int32_t                                 numParticles;
-	time_type                               creationTime;
-	size_t                                  readBuffer;
-	size_t                                  writeBuffer;
-	std::array <GLuint, 2>                  particleFeedbackId;
-	std::array <GLuint, 2>                  particleBufferId;
-	GLuint                                  particleMapId;
-	GLuint                                  vertexFeedbackId;
-	GLuint                                  vertexBufferId;
-	GLuint                                  geometryBufferId;
-	std::array <GLuint, 2>                  colorRampMapId;
-	std::array <GLuint, 2>                  colorRampBufferId;
-	std::array <GLuint, 2>                  texCoordRampMapId;
-	std::array <GLuint, 2>                  texCoordRampBufferId;
-	X3DSFNode <ComposedShader>              transformShader;
-	X3DSFNode <ComposedShader>              geometryShader;
-	X3DSFNode <X3DParticleEmitterNode>      emitterNode;
-	X3DSFNode <X3DColorNode>                colorRampNode;
-	X3DSFNode <X3DTextureCoordinateNode>    texCoordRampNode;
-	size_t                                  numColors;
-	size_t                                  numTexCoord;
-	X3DMFNode <X3DParticlePhysicsModelNode> physicsModelNodes;
-	X3DMFNode <BoundedPhysicsModel>         boundedPhysicsModelNodes;
-	GLuint                                  boundedNormalMapId;
-	GLuint                                  boundedNormalBufferId;
-	GLuint                                  boundedSurfaceMapId;
-	GLuint                                  boundedSurfaceBufferId;
-	GLuint                                  boundedVolumeMapId;
-	GLuint                                  boundedVolumeBufferId;
+	GeometryType                              geometryTypeId;
+	GLenum                                    glGeometryType;
+	size_t                                    numVertices;
+	int32_t                                   numParticles;
+	time_type                                 creationTime;
+	size_t                                    readBuffer;
+	size_t                                    writeBuffer;
+	std::array <GLuint, 2>                    particleFeedbackId;
+	std::array <GLuint, 2>                    particleBufferId;
+	GLuint                                    particleMapId;
+	GLuint                                    vertexFeedbackId;
+	GLuint                                    vertexBufferId;
+	GLuint                                    geometryBufferId;
+	std::array <GLuint, 2>                    colorRampMapId;
+	std::array <GLuint, 2>                    colorRampBufferId;
+	std::array <GLuint, 2>                    texCoordRampMapId;
+	std::array <GLuint, 2>                    texCoordRampBufferId;
+	X3DPtr <ComposedShader>                   transformShader;
+	X3DPtr <ComposedShader>                   geometryShader;
+	X3DPtr <X3DParticleEmitterNode>           emitterNode;
+	X3DPtr <X3DColorNode>                     colorRampNode;
+	X3DPtr <X3DTextureCoordinateNode>         texCoordRampNode;
+	size_t                                    numColors;
+	size_t                                    numTexCoord;
+	X3DArrayPtr <X3DParticlePhysicsModelNode> physicsModelNodes;
+	X3DArrayPtr <BoundedPhysicsModel>         boundedPhysicsModelNodes;
+	GLuint                                    boundedNormalMapId;
+	GLuint                                    boundedNormalBufferId;
+	GLuint                                    boundedSurfaceMapId;
+	GLuint                                    boundedSurfaceBufferId;
+	GLuint                                    boundedVolumeMapId;
+	GLuint                                    boundedVolumeBufferId;
 
 	std::unique_ptr <OddEvenMergeSort> sortAlgorithm;
 

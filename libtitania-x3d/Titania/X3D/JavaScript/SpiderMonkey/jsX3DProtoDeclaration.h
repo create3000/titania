@@ -67,7 +67,7 @@ public:
 
 	static
 	JSBool
-	create (JSContext* const, const X3DSFNode <Proto> &, jsval* const);
+	create (JSContext* const, const X3DPtr <Proto> &, jsval* const);
 
 	static
 	JSClass*

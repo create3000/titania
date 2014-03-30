@@ -61,7 +61,7 @@ const std::string Console::typeName       = "Console";
 const std::string Console::containerField = "console";
 
 Console::Fields::Fields () :
-	set_string (new MFString ()),
+	    set_string (new MFString ()),
 	string_changed (new MFString ())
 { }
 
@@ -86,7 +86,7 @@ Console::initialize ()
 	X3DBaseNode::initialize ();
 
 	set_string () .addInterest (this, &Console::_set_string);
-	
+
 	addInterest (this, &Console::eventsProcessed);
 }
 

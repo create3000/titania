@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -95,13 +95,13 @@ ViewpointList::initialize ()
 	set_activeLayer ();
 }
 
-const X3D::X3DSFNode <X3D::ViewpointStack> &
+const X3D::X3DPtr <X3D::ViewpointStack> &
 ViewpointList::getViewpointStack ()
 {
 	return activeLayer -> getViewpointStack ();
 }
 
-const X3D::X3DSFNode <X3D::ViewpointList> &
+const X3D::X3DPtr <X3D::ViewpointList> &
 ViewpointList::getViewpoints () const
 {
 	return activeLayer -> getViewpoints ();

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -113,9 +113,9 @@ public:
 	{ return *fields .layers; }
 
 	void
-	setLayer0 (const X3DSFNode <X3DLayerNode> &);
+	setLayer0 (const X3DPtr <X3DLayerNode> &);
 
-	const X3DSFNode <X3DLayerNode> &
+	const X3DPtr <X3DLayerNode> &
 	getActiveLayer () const
 	{ return activeLayerNode; }
 
@@ -144,7 +144,6 @@ private:
 	void
 	set_layers ();
 
-
 	///  @name Static members
 
 	static const std::string componentName;
@@ -165,8 +164,8 @@ private:
 	Fields fields;
 
 	std::vector <X3DLayerNode*> children;
-	X3DSFNode <X3DLayerNode>   layer0;
-	X3DSFNode <X3DLayerNode>   activeLayerNode;
+	X3DPtr <X3DLayerNode>       layer0;
+	X3DPtr <X3DLayerNode>       activeLayerNode;
 
 };
 

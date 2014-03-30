@@ -58,7 +58,7 @@
 namespace titania {
 namespace puck {
 
-OutlineTreeModel::OutlineTreeModel (BrowserWindow* const browserWindow, const X3D::X3DSFNode <X3D::X3DExecutionContext> & executionContext) :
+OutlineTreeModel::OutlineTreeModel (BrowserWindow* const browserWindow, const X3D::X3DPtr <X3D::X3DExecutionContext> & executionContext) :
 	Glib::ObjectBase (typeid (OutlineTreeModel)),
 	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	    Glib::Object (),
@@ -71,7 +71,7 @@ OutlineTreeModel::OutlineTreeModel (BrowserWindow* const browserWindow, const X3
 }
 
 Glib::RefPtr <OutlineTreeModel>
-OutlineTreeModel::create (BrowserWindow* const browserWindow, const X3D::X3DSFNode <X3D::X3DExecutionContext> & executionContext)
+OutlineTreeModel::create (BrowserWindow* const browserWindow, const X3D::X3DPtr <X3D::X3DExecutionContext> & executionContext)
 {
 	//__LOG__ << std::endl;
 	return Glib::RefPtr <OutlineTreeModel> (new OutlineTreeModel (browserWindow, executionContext));
@@ -610,7 +610,7 @@ OutlineTreeModel::on_rows_reordered (const Path & path, const iterator & iter, i
 
 OutlineTreeModel::~OutlineTreeModel ()
 {
-	__LOG__ << std::endl;
+	//__LOG__ << std::endl;
 }
 
 } // puck

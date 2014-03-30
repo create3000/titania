@@ -101,7 +101,7 @@ SpiderMonkey::initialize ()
 	}
 }
 
-X3DSFNode <X3DJavaScriptContext>
+X3DPtr <X3DJavaScriptContext>
 SpiderMonkey::createContext (Script* script, const std::string & ecmascript, const basic::uri & uri, size_t index)
 {
 	return new jsContext (script, ecmascript, uri, index);

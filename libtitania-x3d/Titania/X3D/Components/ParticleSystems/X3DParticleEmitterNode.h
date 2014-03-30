@@ -109,16 +109,16 @@ public:
 
 	virtual
 	void
-	addShaderFields (const X3DSFNode <ComposedShader> &) const;	
+	addShaderFields (const X3DPtr <ComposedShader> &) const;	
 
 	virtual
 	void
-	setTextureBuffer (const X3DSFNode <ComposedShader> &) const
+	setTextureBuffer (const X3DPtr <ComposedShader> &) const
 	{ }
 
 	virtual
 	void
-	setShaderFields (const X3DSFNode <ComposedShader> &) const;
+	setShaderFields (const X3DPtr <ComposedShader> &) const;
 
 	virtual
 	void

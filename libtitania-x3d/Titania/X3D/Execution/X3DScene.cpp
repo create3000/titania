@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -122,7 +122,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 // Exported nodes handling
 
-const X3DSFNode <ExportedNode> &
+const X3DPtr <ExportedNode> &
 X3DScene::addExportedNode (const std::string & exportedName, const SFNode & node)
 throw (Error <NODE_IN_USE>,
        Error <INVALID_NAME>,

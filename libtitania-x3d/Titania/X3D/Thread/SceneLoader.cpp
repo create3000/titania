@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -81,20 +81,20 @@ SceneLoader::wait ()
 	}
 }
 
-std::future <X3DSFNode <Scene>> 
+std::future <X3DPtr <Scene>> 
 SceneLoader::getFuture (const MFString & url)
 {
 	return std::async (std::launch::async, std::mem_fn (&SceneLoader::loadAsync), this, url);
 }
 
-X3DSFNode <Scene>
+X3DPtr <Scene>
 SceneLoader::loadAsync (const MFString & url)
 {
 	if (running)
 	{
 		std::lock_guard <std::mutex> lock (browser -> getDownloadMutex ());
 
-		X3DSFNode <Scene> scene;
+		X3DPtr <Scene> scene;
 
 		if (running)
 			scene = browser -> createScene ();
@@ -149,7 +149,7 @@ SceneLoader::dispose ()
 		
 		// This must be the last command.
 
-		callback = [ ] (X3DSFNode <Scene> &&) { };
+		callback = [ ] (X3DPtr <Scene> &&) { };
 	}
 }
 

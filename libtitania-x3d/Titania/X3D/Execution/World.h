@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -64,7 +64,7 @@ public:
 
 	///  @name Construction
 
-	World (const X3DSFNode <Scene> &);
+	World (const X3DPtr <Scene> &);
 
 	///  @name Common members
 
@@ -86,15 +86,15 @@ public:
 
 	///  @name Scene handling
 
-	const X3DSFNode <Scene> &
+	const X3DPtr <Scene> &
 	getScene () const
 	{ return scene; }
 
-	const X3DSFNode <LayerSet> &
+	const X3DPtr <LayerSet> &
 	getLayerSet () const
 	{ return layerSet; }
 
-	const X3DSFNode <X3DLayerNode> &
+	const X3DPtr <X3DLayerNode> &
 	getActiveLayer () const
 	{ return activeLayer; }
 
@@ -133,11 +133,11 @@ private:
 
 	///  @name Members
 
-	X3DSFNode <Scene>        scene;
-	X3DSFNode <LayerSet>     layerSet;
-	X3DSFNode <LayerSet>     defaultLayerSet;
-	X3DSFNode <X3DLayerNode> layer0;
-	X3DSFNode <X3DLayerNode> activeLayer;
+	X3DPtr <Scene>        scene;
+	X3DPtr <LayerSet>     layerSet;
+	X3DPtr <LayerSet>     defaultLayerSet;
+	X3DPtr <X3DLayerNode> layer0;
+	X3DPtr <X3DLayerNode> activeLayer;
 
 };
 

@@ -62,7 +62,7 @@ class jsSFNode :
 {
 public:
 
-	typedef X3DSFNode <X3DBaseNode*> field_type;
+	typedef SFNode field_type;
 
 	static
 	void

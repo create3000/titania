@@ -60,11 +60,11 @@
 namespace titania {
 namespace X3D {
 
-typedef basic::indexed_multimap <std::string, X3DSFNode <ExportedNode>> ExportedNodeArray;
+using ExportedNodeArray = basic::indexed_multimap <std::string, X3DPtr <ExportedNode>>;
 
 } // X3D
 
-extern template class basic::indexed_multimap <std::string, X3D::X3DSFNode <X3D::ExportedNode>>;
+extern template class basic::indexed_multimap <std::string, X3D::X3DPtr <X3D::ExportedNode>>;
 
 } // titania
 

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -141,7 +141,7 @@ protected:
 	///  @name Member access
 
 	void
-	setAttribs (const X3DMFNode <X3DVertexAttributeNode> &, const std::vector <std::vector <float>>   &);
+	setAttribs (const X3DArrayPtr <X3DVertexAttributeNode> &, const std::vector <std::vector <float>>    &);
 
 	std::vector <Color4f> &
 	getColors ()
@@ -253,7 +253,7 @@ private:
 	std::vector <X3DVertexAttributeNode*> attribNodes;
 	std::vector <GLuint>                  attribBuffers;
 	std::vector <Color4f>                 colors;
-	X3DSFNode <X3DTextureCoordinateNode>  texCoordNode;
+	X3DPtr <X3DTextureCoordinateNode>     texCoordNode;
 	TexCoordArray                         texCoords;
 	std::vector <Vector3f>                normals;
 	std::vector <Vector3f>                vertices;

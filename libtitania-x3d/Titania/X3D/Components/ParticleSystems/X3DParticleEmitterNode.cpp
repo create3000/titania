@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -68,14 +68,14 @@ X3DParticleEmitterNode::X3DParticleEmitterNode () :
 }
 
 void
-X3DParticleEmitterNode::addShaderFields (const X3DSFNode <ComposedShader> & shader) const
+X3DParticleEmitterNode::addShaderFields (const X3DPtr <ComposedShader> & shader) const
 {
 	shader -> addUserDefinedField (inputOutput, "speed",     new SFFloat (speed ()));
 	shader -> addUserDefinedField (inputOutput, "variation", new SFFloat (variation ()));
 }
 
 void
-X3DParticleEmitterNode::setShaderFields (const X3DSFNode <ComposedShader> & shader) const
+X3DParticleEmitterNode::setShaderFields (const X3DPtr <ComposedShader> & shader) const
 {
 	shader -> setField <SFFloat> ("speed",     std::max <float> (0, speed ()),     true);
 	shader -> setField <SFFloat> ("variation", std::max <float> (0, variation ()), true);

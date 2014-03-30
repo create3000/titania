@@ -68,7 +68,7 @@ namespace X3D {
 const std::string X3DPrototypeInstance::componentName  = "Core";
 const std::string X3DPrototypeInstance::containerField = "children";
 
-X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const executionContext, const X3DSFNode <X3DProto> & prototype) :
+X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const executionContext, const X3DPtr <X3DProto> & prototype) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DExecutionContext (),
 	   protoDeclaration (prototype),
@@ -130,26 +130,6 @@ X3DPrototypeInstance::create (X3DExecutionContext* const executionContext) const
 	}
 
 	return new X3DPrototypeInstance (executionContext, protoDeclaration);
-}
-
-X3DPrototypeInstance*
-X3DPrototypeInstance::copy (X3DExecutionContext* const executionContext) const
-throw (Error <INVALID_NAME>,
-       Error <NOT_SUPPORTED>)
-{
-	X3DPrototypeInstance* copy = dynamic_cast <X3DPrototypeInstance*> (X3DBaseNode::copy (executionContext));
-
-	try
-	{
-		X3DFieldDefinition* const field = copy -> getField ("url");
-
-		if (field -> getType () == X3DConstants::MFString)
-			X3DUrlObject::transform (*static_cast <MFString*> (field), getExecutionContext (), executionContext);
-	}
-	catch (const Error <INVALID_NAME> &)
-	{ }
-
-	return copy;
 }
 
 void
@@ -528,6 +508,12 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 	}
 
 	Generator::PopContext ();
+}
+
+void
+X3DPrototypeInstance::dispose ()
+{
+	X3DExecutionContext::dispose ();
 }
 
 } // X3D

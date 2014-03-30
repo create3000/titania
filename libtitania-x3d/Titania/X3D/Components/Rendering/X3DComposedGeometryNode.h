@@ -185,23 +185,23 @@ protected:
 
 	///  @name Member access
 
-	const X3DMFNode <X3DVertexAttributeNode> &
+	const X3DArrayPtr <X3DVertexAttributeNode> &
 	getAttrib () const
 	{ return attribNodes; }
 
-	const X3DSFNode <X3DColorNode> &
+	const X3DPtr <X3DColorNode> &
 	getColor () const
 	{ return colorNode; }
 
-	const X3DSFNode <X3DTextureCoordinateNode> &
+	const X3DPtr <X3DTextureCoordinateNode> &
 	getTexCoord () const
 	{ return texCoordNode; }
 
-	const X3DSFNode <X3DNormalNode> &
+	const X3DPtr <X3DNormalNode> &
 	getNormal () const
 	{ return normalNode; }
 
-	const X3DSFNode <X3DCoordinateNode> &
+	const X3DPtr <X3DCoordinateNode> &
 	getCoord () const
 	{ return coordNode; }
 
@@ -249,11 +249,11 @@ private:
 
 	Fields fields;
 
-	X3DMFNode <X3DVertexAttributeNode>   attribNodes;
-	X3DSFNode <X3DColorNode>             colorNode;
-	X3DSFNode <X3DTextureCoordinateNode> texCoordNode;
-	X3DSFNode <X3DNormalNode>            normalNode;
-	X3DSFNode <X3DCoordinateNode>        coordNode;
+	X3DArrayPtr <X3DVertexAttributeNode> attribNodes;
+	X3DPtr <X3DColorNode>                colorNode;
+	X3DPtr <X3DTextureCoordinateNode>    texCoordNode;
+	X3DPtr <X3DNormalNode>               normalNode;
+	X3DPtr <X3DCoordinateNode>           coordNode;
 	bool                                 transparent;
 
 };

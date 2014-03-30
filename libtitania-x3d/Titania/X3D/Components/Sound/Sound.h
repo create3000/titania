@@ -222,7 +222,7 @@ private:
 
 	Fields fields;
 
-	X3DSFNode <X3DSoundSourceNode> sourceNode;
+	X3DPtr <X3DSoundSourceNode> sourceNode;
 
 };
 

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -57,6 +57,6 @@ namespace X3D {
 
 } // X3D
 
-template class basic::indexed_multimap <std::string, X3D::X3DSFNode <X3D::ImportedNode>>;
+template class basic::indexed_multimap <std::string, X3D::X3DPtr <X3D::ImportedNode>>;
 
 } // titania

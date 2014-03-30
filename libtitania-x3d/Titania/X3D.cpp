@@ -59,11 +59,11 @@ static std::vector <std::tuple <Display*, GLXDrawable, GLXContext>>  contexts;
 
 ///  6.2.2 The getBrowser service returns a reference to an instance of an X3D browser through which other service
 ///  requests may be processed.  This is a unique identifier per application instance.
-const X3DSFNode <BrowserApplication> &
+const X3DPtr <BrowserApplication> &
 getBrowser (/* parameter */)
 throw (Error <BROWSER_UNAVAILABLE>)
 {
-	static X3DSFNode <BrowserApplication> browserApplication;
+	static X3DPtr <BrowserApplication> browserApplication;
 
 	if (not browserApplication)
 	{
@@ -80,20 +80,20 @@ throw (Error <BROWSER_UNAVAILABLE>)
 }
 
 ///  6.2.3 The createBrowser service creates a new instance of a browser application.
-X3DSFNode <Browser>
+X3DPtr <Browser>
 createBrowser (/* parameter */)
 throw (Error <BROWSER_UNAVAILABLE>)
 {
 	std::clog << "Creating Browser ..." << std::endl;
-	X3DSFNode <Browser> browser = new Browser ();
+	X3DPtr <Browser> browser = new Browser ();
 
 	std::clog << "Done creating Browser." << std::endl;
 	return browser;
 }
 
 ///  6.2.3 The createBrowser service creates a new instance of a browser application.
-X3DSFNode <Browser>
-createBrowser (const X3DSFNode <Browser> & sharingBrowser)
+X3DPtr <Browser>
+createBrowser (const X3DPtr <Browser> & sharingBrowser)
 throw (Error <INVALID_NODE>,
        Error <BROWSER_UNAVAILABLE>)
 {
@@ -101,14 +101,14 @@ throw (Error <INVALID_NODE>,
 		throw Error <INVALID_NODE> ("createBrowser: No sharingBrowser given.");
 
 	std::clog << "Creating Browser ..." << std::endl;
-	X3DSFNode <Browser> browser = new Browser (*sharingBrowser);
+	X3DPtr <Browser> browser = new Browser (*sharingBrowser);
 
 	std::clog << "Done creating Browser." << std::endl;
 	return browser;
 }
 
 void
-removeBrowser (X3D::X3DSFNode <X3D::Browser> & browser)
+removeBrowser (X3D::X3DPtr <X3D::Browser> & browser)
 noexcept (true)
 {
 	if (not browser)

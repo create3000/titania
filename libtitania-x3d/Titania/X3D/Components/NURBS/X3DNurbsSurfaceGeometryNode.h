@@ -278,8 +278,8 @@ private:
 
 	Fields fields;
 	
-	X3DSFNode <X3DTextureCoordinateNode> texCoordNode;
-	X3DSFNode <X3DCoordinateNode>        controlPointNode;
+	X3DPtr <X3DTextureCoordinateNode> texCoordNode;
+	X3DPtr <X3DCoordinateNode>        controlPointNode;
 
 	GLenum type;
 	std::vector <Vector4f> texCoords;

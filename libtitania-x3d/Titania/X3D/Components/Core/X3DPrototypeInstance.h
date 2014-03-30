@@ -66,17 +66,11 @@ public:
 
 	///  @name Construction
 
-	X3DPrototypeInstance (X3DExecutionContext* const, const X3DSFNode <X3DProto> &);
+	X3DPrototypeInstance (X3DExecutionContext* const, const X3DPtr <X3DProto> &);
 
 	virtual
 	X3DPrototypeInstance*
 	create (X3DExecutionContext* const) const final override;
-
-	virtual
-	X3DPrototypeInstance*
-	copy (X3DExecutionContext* const) const
-	throw (Error <INVALID_NAME>,
-          Error <NOT_SUPPORTED>) final override;
 
 	///  @name Common members
 
@@ -109,7 +103,7 @@ public:
 	X3DBaseNode*
 	getRootNode () const;
 
-	const X3DSFNode <X3DProto> &
+	const X3DPtr <X3DProto> &
 	getProtoDeclaration () const
 	{ return protoDeclaration; }
 
@@ -136,6 +130,12 @@ public:
 	virtual
 	void
 	toXMLStream (std::ostream &) const final override;
+	
+	///  @name Destruction
+	
+	virtual
+	void
+	dispose () final override;
 
 
 private:
@@ -153,7 +153,7 @@ private:
 
 	///  @name Members
 
-	X3DSFNode <X3DProto> protoDeclaration;
+	X3DPtr <X3DProto> protoDeclaration;
 
 	MFNode savedChildren;
 };

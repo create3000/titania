@@ -64,7 +64,7 @@ namespace puck {
 
 const std::string OutlineTreeViewEditor::dragDataType = "titania/outline-tree/row";
 
-OutlineTreeViewEditor::OutlineTreeViewEditor (BrowserWindow* const browserWindow, const X3D::X3DSFNode <X3D::X3DExecutionContext> & executionContext) :
+OutlineTreeViewEditor::OutlineTreeViewEditor (BrowserWindow* const browserWindow, const X3D::X3DPtr <X3D::X3DExecutionContext> & executionContext) :
 	        Glib::ObjectBase (typeid (OutlineTreeViewEditor)),
 	        X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	      X3DOutlineTreeView (executionContext),

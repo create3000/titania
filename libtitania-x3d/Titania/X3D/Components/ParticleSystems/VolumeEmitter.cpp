@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -214,7 +214,7 @@ VolumeEmitter::getShaderUrl () const
 }
 
 void
-VolumeEmitter::addShaderFields (const X3DSFNode <ComposedShader> & shader) const
+VolumeEmitter::addShaderFields (const X3DPtr <ComposedShader> & shader) const
 {
 	X3DParticleEmitterNode::addShaderFields (shader);
 
@@ -223,7 +223,7 @@ VolumeEmitter::addShaderFields (const X3DSFNode <ComposedShader> & shader) const
 }
 
 void
-VolumeEmitter::setTextureBuffer (const X3DSFNode <ComposedShader> & shader) const
+VolumeEmitter::setTextureBuffer (const X3DPtr <ComposedShader> & shader) const
 {
 	shader -> setTextureBuffer ("normalMap",       normalMapId);
 	shader -> setTextureBuffer ("surfaceMap",      surfaceMapId);
@@ -232,7 +232,7 @@ VolumeEmitter::setTextureBuffer (const X3DSFNode <ComposedShader> & shader) cons
 }
 
 void
-VolumeEmitter::setShaderFields (const X3DSFNode <ComposedShader> & shader) const
+VolumeEmitter::setShaderFields (const X3DPtr <ComposedShader> & shader) const
 {
 	X3DParticleEmitterNode::setShaderFields (shader);
 

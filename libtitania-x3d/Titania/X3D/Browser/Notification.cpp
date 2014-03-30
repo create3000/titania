@@ -88,7 +88,7 @@ Notification::initialize ()
 
 	if (glXGetCurrentContext ())
 	{
-		X3DSFNode <Scene> scene;
+		X3DPtr <Scene> scene;
 
 		try
 		{

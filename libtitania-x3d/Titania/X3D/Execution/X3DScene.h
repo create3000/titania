@@ -108,7 +108,7 @@ public:
 
 	///  @name Exported nodes handling
 
-	const X3DSFNode <ExportedNode> &
+	const X3DPtr <ExportedNode> &
 	addExportedNode (const std::string &, const SFNode &)
 	throw (Error <NODE_IN_USE>,
 	       Error <INVALID_NAME>,

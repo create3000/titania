@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -70,7 +70,7 @@ Loader::Loader (X3DExecutionContext* const executionContext, const basic::uri & 
 
 //  X3D Creation Handling
 
-X3DSFNode <Scene>
+X3DPtr <Scene>
 Loader::createX3DFromString (const std::string & string)
 throw (Error <INVALID_X3D>,
        Error <NOT_SUPPORTED>,
@@ -82,7 +82,7 @@ throw (Error <INVALID_X3D>,
 	return createX3DFromStream (istream);
 }
 
-X3DSFNode <Scene>
+X3DPtr <Scene>
 Loader::createX3DFromStream (basic::ifilestream & istream)
 throw (Error <INVALID_X3D>,
        Error <NOT_SUPPORTED>,
@@ -92,14 +92,14 @@ throw (Error <INVALID_X3D>,
 	return createX3DFromStream (referer, istream);
 }
 
-X3DSFNode <Scene>
+X3DPtr <Scene>
 Loader::createX3DFromStream (const basic::uri & worldURL, basic::ifilestream & istream)
 throw (Error <INVALID_X3D>,
        Error <NOT_SUPPORTED>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	const X3DSFNode <Scene> scene = getBrowser () -> createScene ();
+	const X3DPtr <Scene> scene = getBrowser () -> createScene ();
 
 	basic::ifilestream goldenistream = golden_gate ("<stream>", std::move (istream));
 
@@ -110,12 +110,12 @@ throw (Error <INVALID_X3D>,
 	return scene;
 }
 
-X3DSFNode <Scene>
+X3DPtr <Scene>
 Loader::createX3DFromURL (const MFString & url)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>)
 {
-	const X3DSFNode <Scene> scene = getBrowser () -> createScene ();
+	const X3DPtr <Scene> scene = getBrowser () -> createScene ();
 
 	parseIntoScene (scene, url);
 
@@ -228,12 +228,12 @@ throw (Error <INVALID_URL>,
 		throw Error <INVALID_URL> ("Couldn't load URL '" + uri + "'.");
 
 	if (uri .scheme () not_eq "data")
-		std::clog << "Trying to load URI '" << uri << "': " << std::endl;
+		std::clog << "Trying to load URI '" << uri << "': " << std::flush;
 
 	const basic::uri transformedURL = referer .transform (uri);
 
-	if (transformedURL .scheme () not_eq "data")
-		std::clog << "\tTransformed URL is '" << transformedURL << "'" << std::endl;
+	//if (transformedURL .scheme () not_eq "data")
+	//	std::clog << "\tTransformed URL is '" << transformedURL << "'" << std::endl;
 
 	basic::ifilestream istream (transformedURL, 15000);
 
@@ -249,7 +249,7 @@ throw (Error <INVALID_URL>,
 			{
 				worldURL = istream .url ();
 
-				std::clog << "\tLoaded URL is '" << worldURL << "': " << std::endl;
+				//std::clog << "\tLoaded URL is '" << worldURL << "': " << std::endl;
 				std::clog << "Done." << std::endl;
 			}
 			else

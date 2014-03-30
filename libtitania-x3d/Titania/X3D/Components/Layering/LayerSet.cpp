@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -107,7 +107,7 @@ LayerSet::initialize ()
 }
 
 void
-LayerSet::setLayer0 (const X3DSFNode <X3DLayerNode> & value)
+LayerSet::setLayer0 (const X3DPtr <X3DLayerNode> & value)
 {
 	layer0       = value;
 	children [0] = value;

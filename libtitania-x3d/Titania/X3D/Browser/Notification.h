@@ -137,7 +137,7 @@ private:
 
 	Fields fields;
 
-	X3DSFNode <World> world;
+	X3DPtr <World> world;
 
 };
 

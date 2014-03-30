@@ -68,7 +68,7 @@ class SceneLoader :
 {
 public:
 
-	typedef std::function <void (X3DSFNode <Scene> &&)> Callback;
+	typedef std::function <void (X3DPtr <Scene>&&)> Callback;
 
 	SceneLoader (X3DExecutionContext* const, const MFString &, const Callback &);
 
@@ -85,20 +85,20 @@ public:
 
 private:
 
-	std::future <X3DSFNode <Scene>> 
+	std::future <X3DPtr <Scene>> 
 	getFuture (const MFString &);
 
-	X3DSFNode <Scene>
+	X3DPtr <Scene>
 	loadAsync (const MFString &);
 
 	void
 	prepareEvents ();
 
-	X3DBrowser* const                browser;
-	X3DExecutionContext* const       executionContext;
-	Callback                         callback;
-	std::atomic <bool>               running;
-	std::future <X3DSFNode <Scene>>  future;
+	X3DBrowser* const             browser;
+	X3DExecutionContext* const    executionContext;
+	Callback                      callback;
+	std::atomic <bool>            running;
+	std::future <X3DPtr <Scene>>  future;
 
 };
 

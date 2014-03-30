@@ -200,10 +200,10 @@ private:
 
 	Fields fields;
 
-	X3DMFNode <X3DVertexAttributeNode> attribNodes;
-	X3DSFNode <X3DColorNode>           colorNode;
-	X3DSFNode <X3DCoordinateNode>      coordNode;
-	bool                               transparent;
+	X3DArrayPtr <X3DVertexAttributeNode> attribNodes;
+	X3DPtr <X3DColorNode>                colorNode;
+	X3DPtr <X3DCoordinateNode>           coordNode;
+	bool                                 transparent;
 
 };
 

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -52,7 +52,8 @@
 #define __TITANIA_X3D_EXECUTION_IMPORTED_NODE_H__
 
 #include "../Basic/X3DBaseNode.h"
-#include "../Fields.h"
+#include "../Fields/SFNode.h"
+#include "../Fields/X3DWeakPtr.h"
 
 namespace titania {
 namespace X3D {
@@ -67,7 +68,7 @@ public:
 	///  @name Construction
 
 	ImportedNode (X3DExecutionContext* const,
-	              const X3DSFNode <Inline> &,
+	              const X3DPtr <Inline> &,
 	              const std::string &,
 	              const std::string &)
 	throw (Error <INVALID_NAME>,
@@ -78,13 +79,13 @@ public:
 	ImportedNode*
 	clone (X3DExecutionContext* const) const
 	throw (Error <INVALID_NAME>,
-          Error <NOT_SUPPORTED>) final override;
+	       Error <NOT_SUPPORTED>) final override;
 
 	virtual
 	ImportedNode*
 	copy (X3DExecutionContext* const) const
 	throw (Error <INVALID_NAME>,
-          Error <NOT_SUPPORTED>) final override;
+	       Error <NOT_SUPPORTED>) final override;
 
 	///  @name Common members
 
@@ -106,7 +107,7 @@ public:
 
 	///  @name Member access
 
-	X3DSFNode <Inline>
+	X3DPtr <Inline>
 	getInlineNode () const
 	throw (Error <DISPOSED>);
 
@@ -144,7 +145,7 @@ private:
 	///  @name Destruction
 
 	void
-	remove ();
+	set_node ();
 
 	///  @name Static members
 
@@ -154,8 +155,8 @@ private:
 
 	///  @name Members
 
-	Inline*      inlineNode;
-	X3DBaseNode* exportedNode;
+	X3DWeakPtr <Inline>      inlineNode;
+	X3DWeakPtr <X3DBaseNode> exportedNode;
 
 	const std::string exportedName;
 	const std::string importedName;

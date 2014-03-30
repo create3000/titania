@@ -268,6 +268,15 @@ mult_quat_vec (const quaternion <Type> & q, const vector3 <Type> & vector)
 	                       a * vector .z () + b * q .z () - c * (q .x () * vector .y () - q .y () * vector .x ()));
 }
 
+using Type = int*;
+
+void
+f (Type p)
+{
+	if (p)
+		__LOG__ << p << std::endl;
+}
+
 int
 main (int argc, char** argv)
 {
@@ -320,6 +329,10 @@ main (int argc, char** argv)
 	std::clog << std::endl;
 	std::clog << std::endl;
 	
+	for (int i = 0; i < 1000000000; ++ i)
+	{
+		f (Type ());
+	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

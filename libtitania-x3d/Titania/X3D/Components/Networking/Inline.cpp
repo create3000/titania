@@ -134,7 +134,7 @@ Inline::initialize ()
 }
 
 void
-Inline::setSceneAsync (X3DSFNode <Scene> && value)
+Inline::setSceneAsync (X3DPtr <Scene> && value)
 {
 	if (value)
 	{
@@ -149,7 +149,7 @@ Inline::setSceneAsync (X3DSFNode <Scene> && value)
 }
 
 void
-Inline::setScene (X3DSFNode <Scene> && value)
+Inline::setScene (X3DPtr <Scene> && value)
 {
 	if (scene)
 		scene -> getRootNodes () .removeInterest (group -> children ());
@@ -199,7 +199,7 @@ throw (Error <INVALID_NAME>,
 			{
 				if (not scene)
 				{
-					X3DSFNode <Scene> scene = getBrowser () -> createScene ();
+					X3DPtr <Scene> scene = getBrowser () -> createScene ();
 
 					Loader (getExecutionContext ()) .parseIntoScene (scene, url ());
 

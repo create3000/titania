@@ -2916,7 +2916,7 @@ DEF Icosahedron Transform {
 }
 
 DEF Octahedron Transform {
-  translation 1.17027 -0.672585 0
+  translation 1.60836 -0.883518 0
   children Shape {
     appearance Appearance {
       material USE _1

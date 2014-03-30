@@ -2,6 +2,7 @@
 
 DEF _1 Inline {
   url [
+    "../Handles/OutlineEditor.wrl",
     "../../Examples/Vattenfall/stage/index.wrl",
     "../../Examples/TreasureIsland/stage/index.wrl",
     "../PROTO/GoldenSpheresProto.wrl"
@@ -15,7 +16,7 @@ DEF _1 Inline {
 }
 
 DEF Timer TimeSensor {
-  cycleInterval 3
+  cycleInterval 0.3
   loop TRUE
 }
 

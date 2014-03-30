@@ -48,11 +48,11 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_FIELDS_X3DMFNODE_H__
-#define __TITANIA_X3D_FIELDS_X3DMFNODE_H__
+#ifndef __TITANIA_X3D_FIELDS_X3DMFPTR_H__
+#define __TITANIA_X3D_FIELDS_X3DMFPTR_H__
 
 #include "../Basic/X3DArrayField.h"
-#include "../Fields/X3DSFNode.h"
+#include "../Fields/X3DPtr.h"
 
 #include <Titania/Utility/Adapter.h>
 
@@ -60,68 +60,68 @@ namespace titania {
 namespace X3D {
 
 template <class ValueType>
-class X3DMFNode :
-	public X3DArrayField <X3DSFNode <ValueType>> 
+class X3DArrayPtr :
+	public X3DArrayField <X3DPtr <ValueType>> 
 {
 private:
 
-	typedef X3DArrayField <X3DSFNode <ValueType>>  ArrayField;
+	typedef X3DArrayField <X3DPtr <ValueType>>  ArrayField;
 
 
 public:
 
-	using X3DArrayField <X3DSFNode <ValueType>> ::operator =;
-	using X3DArrayField <X3DSFNode <ValueType>> ::addInterest;
-	using X3DArrayField <X3DSFNode <ValueType>> ::cbegin;
-	using X3DArrayField <X3DSFNode <ValueType>> ::front;
-	using X3DArrayField <X3DSFNode <ValueType>> ::back;
-	using X3DArrayField <X3DSFNode <ValueType>> ::cend;
-	using X3DArrayField <X3DSFNode <ValueType>> ::empty;
-	using X3DArrayField <X3DSFNode <ValueType>> ::size;
+	using X3DArrayField <X3DPtr <ValueType>> ::operator =;
+	using X3DArrayField <X3DPtr <ValueType>> ::addInterest;
+	using X3DArrayField <X3DPtr <ValueType>> ::cbegin;
+	using X3DArrayField <X3DPtr <ValueType>> ::front;
+	using X3DArrayField <X3DPtr <ValueType>> ::back;
+	using X3DArrayField <X3DPtr <ValueType>> ::cend;
+	using X3DArrayField <X3DPtr <ValueType>> ::empty;
+	using X3DArrayField <X3DPtr <ValueType>> ::size;
 
-	X3DMFNode () :
+	X3DArrayPtr () :
 		ArrayField ()
 	{ }
 
-	X3DMFNode (const X3DMFNode & field) :
+	X3DArrayPtr (const X3DArrayPtr & field) :
 		ArrayField (field)
 	{ }
 
-	X3DMFNode (X3DMFNode && field) :
+	X3DArrayPtr (X3DArrayPtr && field) :
 		ArrayField (std::move (field))
 	{ }
 
 	template <class Up>
 	explicit
-	X3DMFNode (X3DMFNode <Up> &&);
+	X3DArrayPtr (X3DArrayPtr <Up>&&);
 
-	X3DMFNode (std::initializer_list <X3DSFNode <ValueType>>  initializer_list) :
+	X3DArrayPtr (std::initializer_list <X3DPtr <ValueType>>     initializer_list) :
 		ArrayField (initializer_list)
 	{ }
 
-	X3DMFNode (std::initializer_list <const typename X3DSFNode <ValueType>::internal_type> initializer_list) :
+	X3DArrayPtr (std::initializer_list <const typename X3DPtr <ValueType>::internal_type> initializer_list) :
 		ArrayField (initializer_list)
 	{ }
 
 	template <class InputIterator>
-	X3DMFNode (InputIterator first, InputIterator last) :
+	X3DArrayPtr (InputIterator first, InputIterator last) :
 		ArrayField (first, last)
 	{ }
 
 	virtual
-	X3DMFNode*
+	X3DArrayPtr*
 	create () const final override
-	{ return new X3DMFNode (); }
+	{ return new X3DArrayPtr (); }
 
 	virtual
-	X3DMFNode*
+	X3DArrayPtr*
 	clone () const
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>) final override
-	{ return new X3DMFNode (*this); }
+	{ return new X3DArrayPtr (*this); }
 
 	virtual
-	X3DMFNode*
+	X3DArrayPtr*
 	clone (X3DExecutionContext* const executionContext) const
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>) final override;
@@ -132,23 +132,23 @@ public:
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>) final override;
 
-	X3DMFNode &
-	operator = (const X3DMFNode & field)
+	X3DArrayPtr &
+	operator = (const X3DArrayPtr & field)
 	{
 		ArrayField::operator = (field);
 		return *this;
 	}
 
-	X3DMFNode &
-	operator = (X3DMFNode && field)
+	X3DArrayPtr &
+	operator = (X3DArrayPtr && field)
 	{
 		ArrayField::operator = (std::move (field));
 		return *this;
 	}
 
 	template <class Up>
-	X3DMFNode &
-	operator = (X3DMFNode <Up> &&);
+	X3DArrayPtr &
+	operator = (X3DArrayPtr <Up>&&);
 
 	virtual
 	X3DConstants::FieldType
@@ -165,12 +165,12 @@ public:
 
 	template <class Class>
 	void
-	addInterest (Class* const object, void (Class::* memberFunction) (const X3DMFNode &)) const
+	addInterest (Class* const object, void (Class::* memberFunction) (const X3DArrayPtr &)) const
 	{ addInterest (object, memberFunction, std::cref (*this)); }
 
 	template <class Class>
 	void
-	addInterest (Class & object, void (Class::* memberFunction) (const X3DMFNode &)) const
+	addInterest (Class & object, void (Class::* memberFunction) (const X3DArrayPtr &)) const
 	{ addInterest (object, memberFunction, std::cref (*this)); }
 
 	///  Input/Output
@@ -194,7 +194,7 @@ public:
 
 private:
 
-	using X3DArrayField <X3DSFNode <ValueType>> ::get;
+	using X3DArrayField <X3DPtr <ValueType>> ::get;
 
 	///  TypeName identifer for X3DFields.
 	static const std::string typeName;
@@ -202,15 +202,15 @@ private:
 };
 
 template <class ValueType>
-const std::string X3DMFNode <ValueType>::typeName ("MFNode");
+const std::string X3DArrayPtr <ValueType>::typeName ("MFNode");
 
 template <class ValueType>
 template <class Up>
-X3DMFNode <ValueType>::X3DMFNode (X3DMFNode <Up> && field) :
+X3DArrayPtr <ValueType>::X3DArrayPtr (X3DArrayPtr <Up>&& field) :
 	ArrayField ()
 {
 	auto       first = field .begin ();
-	const auto last  = field .end ();	
+	const auto last  = field .end ();
 
 	// Insert at end
 
@@ -227,12 +227,12 @@ X3DMFNode <ValueType>::X3DMFNode (X3DMFNode <Up> && field) :
 }
 
 template <class ValueType>
-X3DMFNode <ValueType>*
-X3DMFNode <ValueType>::clone (X3DExecutionContext* const executionContext) const
+X3DArrayPtr <ValueType>*
+X3DArrayPtr <ValueType>::clone (X3DExecutionContext* const executionContext) const
 throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>)
 {
-	X3DMFNode* const field = new X3DMFNode ();
+	X3DArrayPtr* const field = new X3DArrayPtr ();
 
 	clone (executionContext, field);
 
@@ -241,11 +241,11 @@ throw (Error <INVALID_NAME>,
 
 template <class ValueType>
 void
-X3DMFNode <ValueType>::clone (X3DExecutionContext* const executionContext, X3DFieldDefinition* fieldDefinition) const
+X3DArrayPtr <ValueType>::clone (X3DExecutionContext* const executionContext, X3DFieldDefinition* fieldDefinition) const
 throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>)
 {
-	X3DMFNode* const field = static_cast <X3DMFNode*> (fieldDefinition);
+	X3DArrayPtr* const field = static_cast <X3DArrayPtr*> (fieldDefinition);
 
 	for (const auto & value : *this)
 	{
@@ -259,8 +259,8 @@ throw (Error <INVALID_NAME>,
 
 template <class ValueType>
 template <class Up>
-X3DMFNode <ValueType> &
-X3DMFNode <ValueType>::operator = (X3DMFNode <Up> && field)
+X3DArrayPtr <ValueType> &
+X3DArrayPtr <ValueType>::operator = (X3DArrayPtr <Up>&& field)
 {
 	auto       first = field .begin ();
 	const auto last  = field .end ();
@@ -269,7 +269,7 @@ X3DMFNode <ValueType>::operator = (X3DMFNode <Up> && field)
 
 	for (const auto end = this -> end (); first not_eq last && current not_eq end; ++ current, ++ first)
 		*current = std::move (*first);
-	
+
 	if (first == last)
 	{
 		// Remove trailing fields
@@ -301,7 +301,7 @@ X3DMFNode <ValueType>::operator = (X3DMFNode <Up> && field)
 
 template <class ValueType>
 void
-X3DMFNode <ValueType>::fromStream (std::istream & istream)
+X3DArrayPtr <ValueType>::fromStream (std::istream & istream)
 throw (Error <INVALID_X3D>,
        Error <NOT_SUPPORTED>,
        Error <INVALID_OPERATION_TIMING>,
@@ -310,7 +310,7 @@ throw (Error <INVALID_X3D>,
 
 template <class ValueType>
 void
-X3DMFNode <ValueType>::toStream (std::ostream & ostream) const
+X3DArrayPtr <ValueType>::toStream (std::ostream & ostream) const
 {
 	switch (size ())
 	{
@@ -361,7 +361,7 @@ X3DMFNode <ValueType>::toStream (std::ostream & ostream) const
 
 template <class ValueType>
 void
-X3DMFNode <ValueType>::toXMLStream (std::ostream & ostream) const
+X3DArrayPtr <ValueType>::toXMLStream (std::ostream & ostream) const
 {
 	if (not empty ())
 	{
@@ -392,7 +392,7 @@ X3DMFNode <ValueType>::toXMLStream (std::ostream & ostream) const
 			ostream
 				<< Generator::Indent
 				<< "<!-- NULL -->";
-		}	
+		}
 
 		Generator::PopContext ();
 	}

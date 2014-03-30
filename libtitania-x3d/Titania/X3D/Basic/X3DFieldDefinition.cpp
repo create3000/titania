@@ -263,10 +263,10 @@ X3DFieldDefinition::dispose ()
 	if (io)
 	{
 		for (const auto & route : RouteSet (std::move (io -> inputRoutes)))
-			route -> remove ();
+			route -> erase ();
 
 		for (const auto & route : RouteSet (std::move (io -> outputRoutes)))
-			route -> remove ();
+			route -> erase ();
 
 		for (auto & fieldDefinition : FieldDefinitionSet (std::move (io -> inputInterests)))
 			fieldDefinition -> removeInterest (this);

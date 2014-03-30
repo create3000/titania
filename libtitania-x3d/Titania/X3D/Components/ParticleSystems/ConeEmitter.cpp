@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -94,7 +94,7 @@ ConeEmitter::getShaderUrl () const
 }
 
 void
-ConeEmitter::addShaderFields (const X3DSFNode <ComposedShader> & shader) const
+ConeEmitter::addShaderFields (const X3DPtr <ComposedShader> & shader) const
 {
 	X3DParticleEmitterNode::addShaderFields (shader);
 
@@ -104,7 +104,7 @@ ConeEmitter::addShaderFields (const X3DSFNode <ComposedShader> & shader) const
 }
 
 void
-ConeEmitter::setShaderFields (const X3DSFNode <ComposedShader> & shader) const
+ConeEmitter::setShaderFields (const X3DPtr <ComposedShader> & shader) const
 {
 	X3DParticleEmitterNode::setShaderFields (shader);
 

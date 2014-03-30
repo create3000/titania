@@ -210,12 +210,12 @@ private:
 	std::vector <Vector3f> glPoints;
 	GLsizei                numIndices;
 
-	X3DSFNode <X3DTextureNode> frontTexture;
-	X3DSFNode <X3DTextureNode> backTexture;
-	X3DSFNode <X3DTextureNode> leftTexture;
-	X3DSFNode <X3DTextureNode> rightTexture;
-	X3DSFNode <X3DTextureNode> topTexture;
-	X3DSFNode <X3DTextureNode> bottomTexture;
+	X3DPtr <X3DTextureNode> frontTexture;
+	X3DPtr <X3DTextureNode> backTexture;
+	X3DPtr <X3DTextureNode> leftTexture;
+	X3DPtr <X3DTextureNode> rightTexture;
+	X3DPtr <X3DTextureNode> topTexture;
+	X3DPtr <X3DTextureNode> bottomTexture;
 
 };
 

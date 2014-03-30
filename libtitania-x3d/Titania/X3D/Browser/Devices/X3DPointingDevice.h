@@ -87,17 +87,17 @@ protected:
 
 	virtual
 	void
-	motionNotifyEvent (bool)
+	motionNotifyEvent (const bool)
 	{ }
 
 	virtual
 	bool
-	buttonPressEvent (bool)
-	{ return true; }
+	buttonPressEvent (const bool, const int)
+	{ return false; }
 
 	virtual
 	void
-	buttonReleaseEvent (bool)
+	buttonReleaseEvent (const bool, const int)
 	{ }
 	
 	virtual

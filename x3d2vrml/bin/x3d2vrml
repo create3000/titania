@@ -380,6 +380,12 @@ sub protoInstance {
 				$self -> fieldValue ($child, $node);
 				next;
 			}
+
+			if ($child -> nodeName () eq "IS")
+			{
+				$self -> is ($child);
+				next;
+			}
 		}
 
 		shift @{$self -> {parents}};

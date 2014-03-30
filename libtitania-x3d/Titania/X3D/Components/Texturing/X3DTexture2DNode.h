@@ -174,11 +174,11 @@ private:
 
 	Fields fields;
 
-	bool                          transparent;
-	size_t                        width;
-	size_t                        height;
-	size_t                        components;
-	X3DSFNode <TextureProperties> texturePropertiesNode;
+	bool                       transparent;
+	size_t                     width;
+	size_t                     height;
+	size_t                     components;
+	X3DPtr <TextureProperties> texturePropertiesNode;
 
 };
 

@@ -68,11 +68,11 @@ public:
 
 	/// @name Construction
 
-	BrowserWindow (const X3D::X3DSFNode <X3D::Browser> &, int, char**);
+	BrowserWindow (const X3D::X3DPtr <X3D::Browser> &, int, char**);
 
 	/// @name Widgets
 	
-	const X3D::X3DSFNode <X3D::Browser> &
+	const X3D::X3DPtr <X3D::Browser> &
 	getBrowserSurface () const
 	{ return browserSurface; }
 
@@ -477,7 +477,7 @@ private:
 
 	///  @name Members
 
-	const X3D::X3DSFNode <X3D::Browser> browserSurface;
+	const X3D::X3DPtr <X3D::Browser> browserSurface;
 
 	MotionBlurEditor motionBlurEditor;
 	LibraryView      libraryView;

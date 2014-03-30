@@ -149,7 +149,7 @@ private:
 
 	Fields fields;
 
-	X3DSFNode <X3DChildNode> proxyNode;
+	X3DPtr <X3DChildNode> proxyNode;
 
 };
 

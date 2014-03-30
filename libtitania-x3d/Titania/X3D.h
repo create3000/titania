@@ -78,21 +78,21 @@
 namespace titania {
 namespace X3D {
 
-const X3DSFNode <BrowserApplication> &
+const X3DPtr <BrowserApplication> &
 getBrowser (/* parameter */)
 throw (Error <BROWSER_UNAVAILABLE>);
 
-X3DSFNode <Browser>
+X3DPtr <Browser>
 createBrowser ()
 throw (Error <BROWSER_UNAVAILABLE>);
 
-X3DSFNode <Browser>
-createBrowser (const X3DSFNode <Browser> &)
+X3DPtr <Browser>
+createBrowser (const X3DPtr <Browser> &)
 throw (Error <INVALID_NODE>,
        Error <BROWSER_UNAVAILABLE>);
 
 void
-removeBrowser (X3D::X3DSFNode <X3D::Browser> &)
+removeBrowser (X3DPtr <X3D::Browser> &)
 noexcept (true);
 
 void

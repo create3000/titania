@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -196,10 +196,10 @@ Appearance::set_textureTransform ()
 void
 Appearance::set_shaders ()
 {
-	using addEvent = void (X3DMFNode <X3DShaderNode>::*) ();
+	using addEvent = void (X3DArrayPtr <X3DShaderNode>::*) ();
 
 	for (const auto & shaderNode : shaderNodes)
-		shaderNode -> isValid () .removeInterest (shaderNodes, (addEvent) & X3DMFNode <X3DShaderNode>::addEvent);
+		shaderNode -> isValid () .removeInterest (shaderNodes, (addEvent) & X3DArrayPtr <X3DShaderNode>::addEvent);
 
 	shaderNodes .clear ();
 
@@ -210,7 +210,7 @@ Appearance::set_shaders ()
 		if (shaderNode)
 		{
 			shaderNodes .emplace_back (shaderNode);
-			shaderNode -> isValid () .addInterest (shaderNodes, (addEvent) & X3DMFNode <X3DShaderNode>::addEvent);
+			shaderNode -> isValid () .addInterest (shaderNodes, (addEvent) & X3DArrayPtr <X3DShaderNode>::addEvent);
 		}
 	}
 }

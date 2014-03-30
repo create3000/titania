@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -59,7 +59,7 @@ namespace puck {
 OutlineEditor::OutlineEditor (BrowserWindow* const browserWindow) :
 	         X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DOutlineEditorInterface (get_ui ("OutlineEditor.ui"), gconf_dir ()),
-	                 treeview (browserWindow, X3D::X3DSFNode <X3D::X3DExecutionContext> (getBrowser () -> getExecutionContext ()))
+	                 treeview (browserWindow, X3D::X3DPtr <X3D::X3DExecutionContext> (getBrowser () -> getExecutionContext ()))
 { }
 
 void
@@ -85,7 +85,7 @@ OutlineEditor::initialize ()
 void
 OutlineEditor::set_initialized ()
 {
-	treeview .set_execution_context (X3D::X3DSFNode <X3D::X3DExecutionContext> (getBrowser () -> getExecutionContext ()));
+	treeview .set_execution_context (X3D::X3DPtr <X3D::X3DExecutionContext> (getBrowser () -> getExecutionContext ()));
 }
 
 } // puck

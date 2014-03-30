@@ -300,7 +300,7 @@ private:
 	chrono::stopwatch <double> clock;
 	chrono::stopwatch <double> renderClock;
 
-	X3DSFNode <World> world;
+	X3DPtr <World> world;
 
 };
 

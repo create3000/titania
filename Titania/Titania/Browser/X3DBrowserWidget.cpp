@@ -350,7 +350,7 @@ X3DBrowserWidget::set_initialized ()
 	const auto worldURL = getBrowser () -> getExecutionContext () -> getWorldURL ();
 
 	if (not worldURL .empty () and worldURL .is_local ())
-		getFileOpenDialog () .set_uri (worldURL .str ());
+		getFileOpenDialog () .set_uri (worldURL .filename () .str ());
 }
 
 bool
@@ -430,10 +430,13 @@ X3DBrowserWidget::loadIcon ()
 		}
 		catch (const X3D::Error <X3D::INVALID_NAME> &)
 		{
+			if (worldURL .is_local ())
+				throw;
+
 			uri = "/favicon.ico";
 		}
 
-		const titania::Image icon (X3D::Loader (getBrowser ()) .loadDocument (uri));
+		const titania::Image icon (X3D::Loader (getBrowser () -> getExecutionContext ()) .loadDocument (uri));
 
 		iconSet = Gtk::IconSet::create (Gdk::Pixbuf::create_from_data (icon .getData (),
 		                                                               Gdk::COLORSPACE_RGB,

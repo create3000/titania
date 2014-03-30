@@ -62,13 +62,15 @@ const std::string ExportedNode::containerField = "exportedNode";
 
 ExportedNode::ExportedNode (X3DScene* const scene,
                             const std::string & exportedName,
-                            const SFNode & node) :
+                            const SFNode & _node) :
 	 X3DBaseNode (scene -> getBrowser (), scene),
 	       scene (scene),
 	exportedName (exportedName),
-	        node (node)
+	        node (_node)
 {
-	node -> shutdown () .addInterest (this, &ExportedNode::remove);
+	addChildren (node);
+
+	node .addInterest (this, &ExportedNode::set_node);
 
 	setup ();
 }
@@ -116,18 +118,17 @@ SFNode
 ExportedNode::getNode () const
 throw (Error <DISPOSED>)
 {
-	if (not node or node -> getParents () .empty ())
-		throw Error <DISPOSED> ("ExportedNode: Node '" + exportedName + "' is already disposed.");
+	if (node and node -> getReferenceCount ())
+		return SFNode (node);
 
-	return node;
+	throw Error <DISPOSED> ("ExportedNode: Node '" + exportedName + "' is already disposed.");
 }
 
 void
-ExportedNode::remove ()
+ExportedNode::set_node ()
 {
-	node = nullptr;
-
-	scene -> removeExportedNode (exportedName);
+	if (not node)
+		scene -> removeExportedNode (exportedName);
 }
 
 void

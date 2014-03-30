@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -137,7 +137,7 @@ PolylineEmitter::getShaderUrl () const
 }
 
 void
-PolylineEmitter::addShaderFields (const X3DSFNode <ComposedShader> & shader) const
+PolylineEmitter::addShaderFields (const X3DPtr <ComposedShader> & shader) const
 {
 	X3DParticleEmitterNode::addShaderFields (shader);
 
@@ -146,14 +146,14 @@ PolylineEmitter::addShaderFields (const X3DSFNode <ComposedShader> & shader) con
 }
 
 void
-PolylineEmitter::setTextureBuffer (const X3DSFNode <ComposedShader> & shader) const
+PolylineEmitter::setTextureBuffer (const X3DPtr <ComposedShader> & shader) const
 {
 	shader -> setTextureBuffer ("polylineMap", polylineMapId);
 	shader -> setTextureBuffer ("lengthMap",   lengthMapId);
 }
 
 void
-PolylineEmitter::setShaderFields (const X3DSFNode <ComposedShader> & shader) const
+PolylineEmitter::setShaderFields (const X3DPtr <ComposedShader> & shader) const
 {
 	X3DParticleEmitterNode::setShaderFields (shader);
 

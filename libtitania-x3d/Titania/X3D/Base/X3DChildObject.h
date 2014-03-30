@@ -80,6 +80,14 @@ public:
 	void
 	removeParent (X3DChildObject* const);
 
+	///  Add a parent to this object.
+	void
+	addWeakParent (X3DChildObject* const);
+
+	///  Remove a parent from this object.
+	void
+	removeWeakParent (X3DChildObject* const);
+
 	///  Get all parents of this object.
 	const ChildObjectSet &
 	getParents () const
@@ -89,6 +97,10 @@ public:
 	virtual
 	bool
 	hasRoots (ChildObjectSet &);
+
+	size_t
+	getReferenceCount () const
+	{ return referenceCount; }
 
 	///  @name Event Handling
 
@@ -170,6 +182,7 @@ private:
 
 	typedef std::vector <X3DChildObject*> ChildObjectArray;
 
+	size_t          referenceCount;
 	ChildObjectSet  parents;
 	X3DChildObject* root;
 	bool            tainted;

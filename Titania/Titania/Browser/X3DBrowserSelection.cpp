@@ -66,7 +66,7 @@ X3DBrowserSelection::X3DBrowserSelection (BrowserWindow* const browserWindow) :
 { }
 
 void
-X3DBrowserSelection::setEnabled (bool value)
+X3DBrowserSelection::setEnabled (const bool value)
 {
 	enabled = value;
 
@@ -84,137 +84,165 @@ X3DBrowserSelection::setEnabled (bool value)
 	}
 }
 
+bool
+X3DBrowserSelection::trackSensors ()
+{
+	return not (getBrowserWindow () -> getKeys () .shift () or getBrowserWindow () -> getKeys () .control ());
+}
+
 void
-X3DBrowserSelection::motionNotifyEvent (bool)
+X3DBrowserSelection::motionNotifyEvent (const bool)
 {
 	hasMoved = true;
 }
 
 bool
-X3DBrowserSelection::buttonPressEvent (bool)
+X3DBrowserSelection::buttonPressEvent (const bool, const int button)
 {
 	pressTime = chrono::now ();
 	hasMoved  = false;
 
-	return false;
+	switch (button)
+	{
+		case 2:
+		{
+			if (getBrowserWindow () -> getKeys () .control ())
+			{
+				__LOG__ << std::endl;
+				// Activate SnapTarget.
+			}
+
+			break;
+		}
+		default:
+			break;
+	}
+
+	return true;
 }
 
 void
-X3DBrowserSelection::buttonReleaseEvent (bool picked)
+X3DBrowserSelection::buttonReleaseEvent (const bool picked, const int button)
 {
-	if (hasMoved and chrono::now () - pressTime > SELECTION_TIME)
-		return;
-
-	if (picked)
+	switch (button)
 	{
-		const auto hit       = getBrowser () -> getHits () .front ();
-		const auto hierarchy = X3D::find (getBrowser () -> getExecutionContext () -> getRootNodes (), hit -> shape, false);
-
-		if (not hierarchy .empty ())
+		case 1:
 		{
-			X3D::SFNode node;
+			// Selected highest or lowest Node, or clear selection.z
 
-			if (getBrowserWindow () -> getConfig () .getBoolean ("selectLowest"))
+			if (hasMoved and chrono::now () - pressTime > SELECTION_TIME)
+				return;
+
+			if (picked)
 			{
-				for (const auto & object : basic::reverse_adapter (hierarchy))
+				const auto hit       = getBrowser () -> getHits () .front ();
+				const auto hierarchy = X3D::find (getBrowser () -> getExecutionContext () -> getRootNodes (), hit -> shape, false);
+
+				if (not hierarchy .empty ())
 				{
-					const X3D::SFNode lowest (object);
+					X3D::SFNode node;
 
-					if (not lowest)
-						continue;
-
-					if (lowest -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
-						continue;
-						
-					if (not node)
-						node = lowest;
-
-					if (dynamic_cast <X3D::Transform*> (lowest .getValue ()))
+					if (getBrowserWindow () -> getConfig () .getBoolean ("selectLowest"))
 					{
-						node = lowest;
-						break;
+						for (const auto & object : basic::reverse_adapter (hierarchy))
+						{
+							const X3D::SFNode lowest (object);
+
+							if (not lowest)
+								continue;
+
+							if (lowest -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
+								continue;
+								
+							if (not node)
+								node = lowest;
+
+							if (dynamic_cast <X3D::Transform*> (lowest .getValue ()))
+							{
+								node = lowest;
+								break;
+							}
+						}
+					}
+					else
+					{
+						// Find highest Transform
+					
+						for (const auto & object : hierarchy)
+						{
+							const X3D::SFNode highest (object);
+
+							if (not highest)
+								continue;
+
+							if (highest -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
+								continue;
+
+							if (not node)
+								node = highest;
+
+							if (dynamic_cast <X3D::Transform*> (highest .getValue ()))
+							{
+								node = highest;
+								break;
+							}
+						}
+
+						// If highest is a LayerSet, no Transform is found and we search for the highest X3DChildNode.
+
+						if (X3D::x3d_cast <X3D::LayerSet*> (node .getValue ()))
+						{
+							for (const auto & object : hierarchy)
+							{
+								const X3D::SFNode highest (object);
+
+								if (not highest)
+									continue;
+
+								if (highest -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
+									continue;
+
+								if (X3D::x3d_cast <X3D::X3DChildNode*> (highest .getValue ()))
+								{
+									node = highest;
+									break;
+								}
+							}
+						}
+					}
+
+					if (node)
+					{
+						if (getBrowser () -> getSelection () -> isSelected (node))
+							getBrowser () -> getSelection () -> removeChildren ({ node });
+
+						else
+						{
+							if (getBrowserWindow () -> getKeys () .shift ())
+								getBrowser () -> getSelection () -> addChildren ({ node });
+
+							else
+								getBrowser () -> getSelection () -> setChildren ({ node });
+						}
+
+						getBrowser () -> update ();
+
+						if (getBrowserWindow () -> getConfig () .getBoolean ("followPrimarySelection"))
+							getBrowserWindow () -> getOutlineTreeView () .expand_to (node);
 					}
 				}
 			}
 			else
 			{
-				// Find highest Transform
-			
-				for (const auto & object : hierarchy)
-				{
-					const X3D::SFNode highest (object);
-
-					if (not highest)
-						continue;
-
-					if (highest -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
-						continue;
-
-					if (not node)
-						node = highest;
-
-					if (dynamic_cast <X3D::Transform*> (highest .getValue ()))
-					{
-						node = highest;
-						break;
-					}
-				}
-
-				// If highest is a LayerSet, no Transform is found and we search for the highest X3DChildNode.
-
-				if (X3D::x3d_cast <X3D::LayerSet*> (node .getValue ()))
-				{
-					for (const auto & object : hierarchy)
-					{
-						const X3D::SFNode highest (object);
-
-						if (not highest)
-							continue;
-
-						if (highest -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
-							continue;
-
-						if (X3D::x3d_cast <X3D::X3DChildNode*> (highest .getValue ()))
-						{
-							node = highest;
-							break;
-						}
-					}
-				}
-			}
-
-			if (node)
-			{
-				if (getBrowser () -> getSelection () -> isSelected (node))
-					getBrowser () -> getSelection () -> removeChildren ({ node });
-
-				else
-				{
-					if (getBrowserWindow () -> getKeys () .shift ())
-						getBrowser () -> getSelection () -> addChildren ({ node });
-
-					else
-						getBrowser () -> getSelection () -> setChildren ({ node });
-				}
-
+				getBrowser () -> getSelection () -> clear ();
 				getBrowser () -> update ();
-
-				if (getBrowserWindow () -> getConfig () .getBoolean ("followPrimarySelection"))
-					getBrowserWindow () -> getOutlineTreeView () .expand_to (node);
 			}
+			
+			break;
 		}
+		default:
+			break;
 	}
-	else
-	{
-		getBrowser () -> getSelection () -> clear ();
-		getBrowser () -> update ();
-	}
-}
-
-bool
-X3DBrowserSelection::trackSensors ()
-{
-	return not (getBrowserWindow () -> getKeys () .shift () or getBrowserWindow () -> getKeys () .control ());
 }
 
 X3DBrowserSelection::~X3DBrowserSelection ()

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,8 +51,8 @@
 #ifndef __TITANIA_X3D_COMPONENTS_PARTICLE_SYSTEMS_VOLUME_EMITTER_H__
 #define __TITANIA_X3D_COMPONENTS_PARTICLE_SYSTEMS_VOLUME_EMITTER_H__
 
-#include "../ParticleSystems/X3DParticleEmitterNode.h"
 #include "../Geometry3D/IndexedFaceSet.h"
+#include "../ParticleSystems/X3DParticleEmitterNode.h"
 
 namespace titania {
 namespace X3D {
@@ -130,15 +130,15 @@ public:
 
 	virtual
 	void
-	addShaderFields (const X3DSFNode <ComposedShader> &) const final override;
+	addShaderFields (const X3DPtr <ComposedShader> &) const final override;
 
 	virtual
 	void
-	setTextureBuffer (const X3DSFNode <ComposedShader> &) const final override;
+	setTextureBuffer (const X3DPtr <ComposedShader> &) const final override;
 
 	virtual
 	void
-	setShaderFields (const X3DSFNode <ComposedShader> &) const final override;
+	setShaderFields (const X3DPtr <ComposedShader> &) const final override;
 
 	///  @name Destruction
 
@@ -180,17 +180,17 @@ private:
 
 	Fields fields;
 
-	GLuint                     normalMapId;
-	GLuint                     normalBufferId;
-	GLuint                     surfaceMapId;
-	GLuint                     surfaceBufferId;
-	GLuint                     surfaceAreaMapId;
-	GLuint                     surfaceAreaBufferId;
-	GLuint                     volumeMapId;
-	GLuint                     volumeBufferId;
-	X3DSFNode <IndexedFaceSet> surfaceNode;
-	bool                       pointEmitter;
-	bool                       solid;
+	GLuint                  normalMapId;
+	GLuint                  normalBufferId;
+	GLuint                  surfaceMapId;
+	GLuint                  surfaceBufferId;
+	GLuint                  surfaceAreaMapId;
+	GLuint                  surfaceAreaBufferId;
+	GLuint                  volumeMapId;
+	GLuint                  volumeBufferId;
+	X3DPtr <IndexedFaceSet> surfaceNode;
+	bool                    pointEmitter;
+	bool                    solid;
 
 };
 

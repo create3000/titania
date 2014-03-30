@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -60,7 +60,7 @@
 namespace titania {
 namespace puck {
 
-X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DSFNode <X3D::X3DExecutionContext> & executionContext) :
+X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DPtr <X3D::X3DExecutionContext> & executionContext) :
 	              Gtk::TreeView (),
 	X3DOutlineTreeViewInterface (get_ui ("OutlineTreeView.ui"), gconf_dir ()),
 	               treeObserver (new OutlineTreeObserver (this)),
@@ -307,7 +307,7 @@ X3DOutlineTreeView::get_alt_key ()
 }
 
 void
-X3DOutlineTreeView::set_execution_context (const X3D::X3DSFNode <X3D::X3DExecutionContext> & executionContext)
+X3DOutlineTreeView::set_execution_context (const X3D::X3DPtr <X3D::X3DExecutionContext> & executionContext)
 {
 	//__LOG__ << std::endl;
 

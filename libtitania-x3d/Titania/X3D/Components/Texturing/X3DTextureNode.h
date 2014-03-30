@@ -98,7 +98,7 @@ protected:
 	///  @name Operations
 
 	void
-	updateTextureProperties (const GLenum, const bool, const X3DSFNode <TextureProperties> &, const int32_t, const int32_t, const bool, const bool, const bool);
+	updateTextureProperties (const GLenum, const bool, const X3DPtr <TextureProperties> &, const int32_t, const int32_t, const bool, const bool, const bool);
 
 	void
 	draw (const GLenum, const size_t);

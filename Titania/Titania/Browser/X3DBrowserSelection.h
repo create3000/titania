@@ -68,7 +68,7 @@ public:
 	///  @name Operations
 
 	void
-	setEnabled (bool);
+	setEnabled (const bool);
 
 	bool
 	getEnabled () const
@@ -91,15 +91,15 @@ private:
 
 	virtual
 	void
-	motionNotifyEvent (bool) final override;
+	motionNotifyEvent (const bool) final override;
 
 	virtual
 	bool
-	buttonPressEvent (bool) final override;
+	buttonPressEvent (const bool, const int) final override;
 
 	virtual
 	void
-	buttonReleaseEvent (bool) final override;
+	buttonReleaseEvent (const bool, const int) final override;
 
 	virtual
 	bool

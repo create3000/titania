@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -52,7 +52,8 @@
 #define __TITANIA_X3D_ROUTING_ROUTE_H__
 
 #include "../Basic/X3DBaseNode.h"
-#include "../Fields.h"
+#include "../Fields/SFNode.h"
+#include "../Fields/X3DWeakPtr.h"
 
 namespace titania {
 namespace X3D {
@@ -137,7 +138,7 @@ public:
 	disconnect ();
 
 	void
-	remove ();
+	erase ();
 
 	///  @name Input/Output
 
@@ -164,15 +165,16 @@ private:
 	Route*
 	create (X3DExecutionContext* const) const final override;
 
-	///  @name Tests
+	///  @name Operations
 
 	bool
 	isConnected () const;
 
-	///  @name Operations
-
 	void
 	connect ();
+
+	void
+	set_node ();
 
 	///  @name Static members
 
@@ -182,10 +184,10 @@ private:
 
 	///  @name Members
 
-	X3DBaseNode*        sourceNode;
-	X3DFieldDefinition* sourceField;
-	X3DBaseNode*        destinationNode;
-	X3DFieldDefinition* destinationField;
+	X3DWeakPtr <X3DBaseNode> sourceNode;
+	X3DFieldDefinition*      sourceField;
+	X3DWeakPtr <X3DBaseNode> destinationNode;
+	X3DFieldDefinition*      destinationField;
 
 	Output disconnectedOutput;
 

@@ -32,10 +32,11 @@ namespace titania {
 namespace X3D {
 
 X3DChildObject::X3DChildObject () :
-	X3DObject (),
-	  parents (),
-	     root (nullptr),
-	  tainted (false)
+	     X3DObject (),
+	referenceCount (0),
+	       parents (),
+	          root (nullptr),
+	       tainted (false)
 { }
 
 // Object
@@ -62,7 +63,8 @@ X3DChildObject::addParent (X3DChildObject* const parent)
 	if (not root)
 		root = parent;
 
-	parents  .emplace (parent);
+	if (parents .emplace (parent) .second)
+		++ referenceCount;
 }
 
 void
@@ -83,8 +85,12 @@ X3DChildObject::removeParent (X3DChildObject* const parent)
 		if (root == parent)
 			root = nullptr;
 
-		if (parents .empty ())
+		-- referenceCount;
+
+		if (referenceCount == 0)
 		{
+			parents .clear ();
+
 			dispose ();
 
 			getGarbageCollector () .addObject (this);
@@ -98,7 +104,10 @@ X3DChildObject::removeParent (X3DChildObject* const parent)
 			return;
 
 		for (auto & child : circle)
+		{
+			child -> referenceCount = 0;
 			child -> parents .clear ();
+		}
 
 		for (auto & child : circle)
 			child -> dispose ();
@@ -107,16 +116,28 @@ X3DChildObject::removeParent (X3DChildObject* const parent)
 	}
 }
 
+void
+X3DChildObject::addWeakParent (X3DChildObject* const parent)
+{
+	parents .emplace (parent);
+}
+
+void
+X3DChildObject::removeWeakParent (X3DChildObject* const parent)
+{
+	parents .erase (parent);
+}
+
 bool
 X3DChildObject::hasRoots (ChildObjectSet & seen)
 {
 	if (parents .empty ())
 		return true;
-		
+
 	if (seen .emplace (this) .second)
 	{
 		// First test the good way
-	
+
 		if (root)
 		{
 			if (root -> hasRoots (seen))
@@ -124,14 +145,14 @@ X3DChildObject::hasRoots (ChildObjectSet & seen)
 			else
 				root = nullptr;
 		}
-		
+
 		// Test all other ways and save the good way.
 
 		for (auto & parent : parents)
 		{
 			if (parent -> hasRoots (seen))
 			{
-				root = parent;					
+				root = parent;
 				return true;
 			}
 		}

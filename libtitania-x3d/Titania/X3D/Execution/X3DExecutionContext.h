@@ -56,6 +56,7 @@
 #include "../Configuration/SupportedComponents.h"
 #include "../Configuration/UnitArray.h"
 #include "../Execution/ImportedNodeArray.h"
+#include "../Execution/NamedNodeIndex.h"
 #include "../Prototype/ExternProtoArray.h"
 #include "../Prototype/ProtoArray.h"
 #include "../Routing/RouteArray.h"
@@ -73,15 +74,13 @@ class X3DProto;
 class X3DBrowser;
 class X3DPrototypeInstance;
 
-using NamedNodeIndex = std::map <std::string, X3DBaseNode*>;
-
 class X3DExecutionContext :
 	virtual public X3DNode
 {
 public:
 
 	///  @name Tests
-	
+
 	bool
 	isInitialized () const
 	{ return initialized; }
@@ -192,7 +191,7 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	X3DSFNode <X3DPrototypeInstance>
+	X3DPtr <X3DPrototypeInstance>
 	createProtoInstance (const std::string &)
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_X3D>,
@@ -266,8 +265,8 @@ public:
 
 	///  @name Imported nodes handling
 
-	const X3DSFNode <ImportedNode> &
-	addImportedNode (const X3DSFNode <Inline> &, const std::string &, std::string = "")
+	const X3DPtr <ImportedNode> &
+	addImportedNode (const X3DPtr <Inline> &, const std::string &, std::string = "")
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_NAME>,
 	       Error <NODE_IN_USE>,
@@ -281,7 +280,7 @@ public:
 	       Error <DISPOSED>);
 
 	void
-	updateImportedNode (const X3DSFNode <Inline> &, const std::string &, std::string = "")
+	updateImportedNode (const X3DPtr <Inline> &, const std::string &, std::string = "")
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_NAME>,
 	       Error <URL_UNAVAILABLE>,
@@ -302,7 +301,7 @@ public:
 
 	///  @name Proto declaration handling
 
-	const X3DSFNode <Proto> &
+	const X3DPtr <Proto> &
 	addProtoDeclaration (const std::string &, const FieldDefinitionArray &)
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -315,12 +314,12 @@ public:
 	{ protos .erase (name); }
 
 	void
-	updateProtoDeclaration (const std::string &, const X3DSFNode <Proto> &)
+	updateProtoDeclaration (const std::string &, const X3DPtr <Proto> &)
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	const X3DSFNode <Proto> &
+	const X3DPtr <Proto> &
 	getProtoDeclaration (const std::string &)
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -342,7 +341,7 @@ public:
 
 	///  @name Exterproto declaration handling
 
-	const X3DSFNode <ExternProto> &
+	const X3DPtr <ExternProto> &
 	addExternProtoDeclaration (const std::string &, const FieldDefinitionArray &, const MFString &)
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -355,12 +354,12 @@ public:
 	{ externProtos .erase (name); }
 
 	void
-	updateExternProtoDeclaration (const std::string &, const X3DSFNode <ExternProto> &)
+	updateExternProtoDeclaration (const std::string &, const X3DPtr <ExternProto> &)
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	const X3DSFNode <ExternProto> &
+	const X3DPtr <ExternProto> &
 	getExternProtoDeclaration (const std::string &)
 	throw (Error <INVALID_NAME>,
 	       Error <URL_UNAVAILABLE>,
@@ -389,7 +388,7 @@ public:
 
 	///  @name Dynamic route node handling
 
-	const X3DSFNode <Route> &
+	const X3DPtr <Route> &
 	addRoute (const SFNode &, const std::string &,
 	          const SFNode &, const std::string &)
 	throw (Error <INVALID_NODE>,
@@ -456,7 +455,7 @@ protected:
 	initialize () override;
 
 	///  @name Unit handling
-	
+
 	void
 	setUnits (const UnitArray & value)
 	{ units = value; }
@@ -509,15 +508,12 @@ private:
 
 	///  @name Operations
 
-	void
-	eraseNamedNode (const std::string &);
-
-	X3DSFNode <Proto>
+	X3DPtr <Proto>
 	createProtoDeclaration (const std::string &, const FieldDefinitionArray &)
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	X3DSFNode <ExternProto>
+	X3DPtr <ExternProto>
 	createExternProtoDeclaration (const std::string &, const FieldDefinitionArray &, const MFString &)
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);

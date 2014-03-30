@@ -238,7 +238,7 @@ golden_gate (const basic::uri & uri, basic::ifilestream && istream)
 	{
 		const std::string contentType = istream .response_headers () .at ("Content-Type");
 	
-		__LOG__ << contentType << " : " << uri << std::endl;
+		//__LOG__ << contentType << " : " << uri << std::endl;
 
 		if (contentType == "model/vrml")
 			return std::move (istream);

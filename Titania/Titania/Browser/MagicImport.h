@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -69,7 +69,7 @@ public:
 	///  @name Operations
 
 	bool
-	import (X3D::MFNode &, const X3D::X3DSFNode <X3D::Scene> &, const UndoStepPtr &);
+	import (X3D::MFNode &, const X3D::X3DPtr <X3D::Scene> &, const UndoStepPtr &);
 
 	///  @name Destruction
 
@@ -82,17 +82,17 @@ private:
 	///  @name Magic handlers
 
 	bool
-	material (X3D::MFNode &, const X3D::X3DSFNode <X3D::Scene> &, const UndoStepPtr &);
+	material (X3D::MFNode &, const X3D::X3DPtr <X3D::Scene> &, const UndoStepPtr &);
 
 	bool
-	texture (X3D::MFNode &, const X3D::X3DSFNode <X3D::Scene> &, const UndoStepPtr &);
+	texture (X3D::MFNode &, const X3D::X3DPtr <X3D::Scene> &, const UndoStepPtr &);
 
 	void
 	importProtoDeclaration (const X3D::SFNode &, const UndoStepPtr &);
 
 	///  @name Members
 
-	using ImportFunction = std::function <bool (X3D::MFNode &, const X3D::X3DSFNode <X3D::Scene> &, const UndoStepPtr &)>;
+	using ImportFunction = std::function <bool (X3D::MFNode &, const X3D::X3DPtr <X3D::Scene> &, const UndoStepPtr &)>;
 	
 	std::map <std::string, ImportFunction> importFunctions;
 

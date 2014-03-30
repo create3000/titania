@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -99,7 +99,7 @@ MaterialEditor::MaterialEditor (BrowserWindow* const browserWindow, X3D::MFNode 
 
 	for (const auto & appearance : basic::reverse_adapter (appearances))
 	{
-		X3D::X3DSFNode <X3D::Material> m (appearance -> material ());
+		X3D::X3DPtr <X3D::Material> m (appearance -> material ());
 
 		if (m)
 		{
@@ -119,7 +119,7 @@ MaterialEditor::MaterialEditor (BrowserWindow* const browserWindow, X3D::MFNode 
 
 	for (const auto & appearance : basic::reverse_adapter (appearances))
 	{
-		X3D::X3DSFNode <X3D::TwoSidedMaterial> m (appearance -> material ());
+		X3D::X3DPtr <X3D::TwoSidedMaterial> m (appearance -> material ());
 
 		if (m)
 		{
@@ -582,7 +582,7 @@ MaterialEditor::updateMaterial ()
 {
 	try
 	{
-		const X3D::X3DSFNode <X3D::Appearance> appearance (browserSurface -> getExecutionContext () -> getNamedNode ("Appearance"));
+		const X3D::X3DPtr <X3D::Appearance> appearance (browserSurface -> getExecutionContext () -> getNamedNode ("Appearance"));
 
 		if (appearance)
 		{

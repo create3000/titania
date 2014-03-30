@@ -2429,6 +2429,9 @@
     <None Include="Tests\Geometry3D\QuadSphereTransparent.x3dv" />
     <None Include="Tests\PointingDeviceSensor\CylinderSensor2.x3dv" />
     <None Include="Tests\PointingDeviceSensor\Wheel2.wrl" />
+    <None Include="Tests\Handles\OutlineEditor.x3d" />
+    <None Include="Tests\Handles\SnapTarget.x3dv" />
+    <None Include="Tests\Handles\OutlineEditorXXX.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

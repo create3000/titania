@@ -146,33 +146,48 @@ X3DPointingDevice::on_button_press_event (GdkEventButton* event)
 
 	browser -> grab_focus ();
 
-	if (button == 1)
+	switch (button)
 	{
-		const bool picked = pick (event -> x, event -> y);
-
-		if (picked)
+		case 1:
 		{
-			if (haveSensor ())
+			const bool picked = pick (event -> x, event -> y);
+
+			if (picked)
 			{
-				browser -> buttonPressEvent ();
+				if (haveSensor ())
+				{
+					browser -> buttonPressEvent ();
 
-				browser -> setCursor (Gdk::HAND1);
-				
-				browser -> finished () .addInterest (this, &X3DPointingDevice::set_verify_motion, event -> x, event -> y);
+					browser -> setCursor (Gdk::HAND1);
+					
+					browser -> finished () .addInterest (this, &X3DPointingDevice::set_verify_motion, event -> x, event -> y);
 
-				return true;
+					return true;
+				}
 			}
-		}
 
-		const bool cursor = buttonPressEvent (picked);
+			const bool eventHandled = buttonPressEvent (picked, event -> button);
 
-		if (cursor)
+			if (eventHandled)
+				return not trackSensors ();
+
 			browser -> setCursor (Gdk::FLEUR);
-	}
+			
+			break;
+		}
+		case 2:
+		{
+			const bool picked       = pick (event -> x, event -> y);
+			const bool eventHandled = buttonPressEvent (picked, event -> button);
 
-	else if (button == 2)
-	{
-		browser -> setCursor (Gdk::FLEUR);
+			if (eventHandled)
+				return not trackSensors ();
+
+			browser -> setCursor (Gdk::FLEUR);
+			break;
+		}
+		default:
+			break;
 	}
 
 	return false;
@@ -183,36 +198,44 @@ X3DPointingDevice::on_button_release_event (GdkEventButton* event)
 {
 	button = 0;
 
-	if (event -> button == 1)
+	switch (event -> button)
 	{
-		browser -> buttonReleaseEvent ();
-				
-		browser -> finished () .addInterest (this, &X3DPointingDevice::set_verify_motion, event -> x, event -> y);
-
-		if (not browser -> getHits () .empty ())
+		case 1:
 		{
-			if (not haveSensor ())
-				buttonReleaseEvent (true);
+			browser -> buttonReleaseEvent ();
+					
+			browser -> finished () .addInterest (this, &X3DPointingDevice::set_verify_motion, event -> x, event -> y);
+
+			if (not browser -> getHits () .empty ())
+			{
+				if (not haveSensor ())
+					buttonReleaseEvent (true, event -> button);
+			}
+			else
+				buttonReleaseEvent (false, event -> button);
+
+			// Set cursor
+
+			if (isOver)
+				browser -> setCursor (Gdk::HAND2);
+
+			else
+				browser -> setCursor (Gdk::ARROW);
+			
+			break;
 		}
-		else
-			buttonReleaseEvent (false);
+		case 2:
+		{
+			if (isOver)
+				browser -> setCursor (Gdk::HAND2);
 
-		// Set cursor
+			else
+				browser -> setCursor (Gdk::ARROW);
 
-		if (isOver)
-			browser -> setCursor (Gdk::HAND2);
-
-		else
-			browser -> setCursor (Gdk::ARROW);
-	}
-
-	else if (event -> button == 2)
-	{
-		if (isOver)
-			browser -> setCursor (Gdk::HAND2);
-
-		else
-			browser -> setCursor (Gdk::ARROW);
+			break;
+		}
+		default:
+			break;
 	}
 
 	return false;

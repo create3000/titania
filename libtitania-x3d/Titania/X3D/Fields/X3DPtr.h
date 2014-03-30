@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_FIELDS_X3DSFNODE_H__
-#define __TITANIA_X3D_FIELDS_X3DSFNODE_H__
+#ifndef __TITANIA_X3D_FIELDS_X3DPTR_H__
+#define __TITANIA_X3D_FIELDS_X3DPTR_H__
 
 #include "../Basic/X3DBaseNode.h"
 #include "../Basic/X3DField.h"
@@ -57,13 +57,13 @@
 namespace titania {
 namespace X3D {
 
-class X3DSFNodeBase :
+class X3DPtrBase :
 	virtual public X3DBase
 {
 public:
 
 	///  @name Operations
-	
+
 	virtual
 	X3DBaseNode*
 	getBaseNode () const = 0;
@@ -71,15 +71,15 @@ public:
 
 protected:
 
-	X3DSFNodeBase () :
+	X3DPtrBase () :
 		X3DBase ()
 	{ }
 
 };
 
 template <class ValueType>
-class X3DSFNode :
-	public X3DField <ValueType*>, public X3DSFNodeBase
+class X3DPtr :
+	public X3DField <ValueType*>, public X3DPtrBase
 {
 public:
 
@@ -94,21 +94,20 @@ public:
 
 	///  @name Constructors
 
-	X3DSFNode () :
+	X3DPtr () :
 		X3DField <ValueType*> (nullptr)
 	{ }
 
-	X3DSFNode (const X3DSFNode & field) :
-		X3DSFNode (field .getValue ())
+	X3DPtr (const X3DPtr & field) :
+		X3DPtr (field .getValue ())
 	{ }
 
-	template <class Up>
 	explicit
-	X3DSFNode (const X3DSFNode <Up> & field) :
-		X3DSFNode (dynamic_cast <ValueType*> (field .getValue ()))
+	X3DPtr (const X3DPtrBase & field) :
+		X3DPtr (dynamic_cast <ValueType*> (field .getBaseNode ()))
 	{ }
 
-	X3DSFNode (X3DSFNode && field) :
+	X3DPtr (X3DPtr && field) :
 		X3DField <ValueType*> (field .getValue ())
 	{
 		if (getValue ())
@@ -121,7 +120,7 @@ public:
 
 	template <class Up>
 	explicit
-	X3DSFNode (X3DSFNode <Up> && field) :
+	X3DPtr (X3DPtr <Up>&& field) :
 		X3DField <ValueType*> (dynamic_cast <ValueType*> (field .getValue ()))
 	{
 		if (getValue ())
@@ -135,65 +134,64 @@ public:
 	}
 
 	//explicit
-	X3DSFNode (ValueType* const value) :
+	X3DPtr (ValueType* const value) :
 		X3DField <ValueType*> (value)
 	{
-		if (getValue ())
-			getValue () -> addParent (this);
+		if (value)
+			value -> addParent (this);
 	}
 
 	template <class Up>
 	explicit
-	X3DSFNode (Up* const value) :
-		X3DSFNode (dynamic_cast <ValueType*> (value))
+	X3DPtr (Up* const value) :
+		X3DPtr (dynamic_cast <ValueType*> (value))
 	{ }
 
 	///  @name Construction
 
 	virtual
-	X3DSFNode*
+	X3DPtr*
 	create () const final override
-	{ return new X3DSFNode (); }
+	{ return new X3DPtr (); }
 
 	virtual
-	X3DSFNode*
+	X3DPtr*
 	clone () const
 	throw (Error <INVALID_NAME>,
-          Error <NOT_SUPPORTED>) final override
-	{ return new X3DSFNode (*this); }
+	       Error <NOT_SUPPORTED>) final override
+	{ return new X3DPtr (*this); }
 
 	virtual
-	X3DSFNode*
+	X3DPtr*
 	clone (X3DExecutionContext* const) const
 	throw (Error <INVALID_NAME>,
-          Error <NOT_SUPPORTED>) final override;
+	       Error <NOT_SUPPORTED>) final override;
 
 	virtual
 	void
 	clone (X3DExecutionContext* const, X3DFieldDefinition*) const
 	throw (Error <INVALID_NAME>,
-          Error <NOT_SUPPORTED>) final override;
+	       Error <NOT_SUPPORTED>) final override;
 
 	/// @name Assignment operators
 
 	///  Default assignment operator.  Behaves the same as the 6.7.6 setValue service.
-	X3DSFNode &
-	operator = (const X3DSFNode &);
+	X3DPtr &
+	operator = (const X3DPtr &);
 
-	template <class Up>
-	X3DSFNode &
-	operator = (const X3DSFNode <Up> &);
+	X3DPtr &
+	operator = (const X3DPtrBase &);
 
 	///  Move assignment operator.  Behaves the same as the 6.7.6 setValue service.
-	X3DSFNode &
-	operator = (X3DSFNode &&);
+	X3DPtr &
+	operator = (X3DPtr &&);
 
 	template <class Up>
-	X3DSFNode &
-	operator = (X3DSFNode <Up> &&);
+	X3DPtr &
+	operator = (X3DPtr <Up>&&);
 
 	template <class Up>
-	X3DSFNode &
+	X3DPtr &
 	operator = (Up* const);
 
 	///  @name Field services
@@ -243,7 +241,7 @@ public:
 	virtual
 	void
 	write (const X3DChildObject &) final override;
-	
+
 	virtual
 	X3DBaseNode*
 	getBaseNode () const final override
@@ -268,12 +266,12 @@ public:
 
 	template <class Class>
 	void
-	addInterest (Class* const object, void (Class::* memberFunction) (const X3DSFNode &)) const
+	addInterest (Class* const object, void (Class::* memberFunction) (const X3DPtr &)) const
 	{ addInterest (object, memberFunction, std::cref (*this)); }
 
 	template <class Class>
 	void
-	addInterest (Class & object, void (Class::* memberFunction) (const X3DSFNode &)) const
+	addInterest (Class & object, void (Class::* memberFunction) (const X3DPtr &)) const
 	{ addInterest (object, memberFunction, std::cref (*this)); }
 
 	///  @name Input/Output
@@ -300,13 +298,13 @@ public:
 	dispose () final override;
 
 	virtual
-	~X3DSFNode ();
+	~X3DPtr ();
 
 
 private:
 
 	template <class Up>
-	friend class X3DSFNode;
+	friend class X3DPtr;
 
 	using X3DField <ValueType*>::reset;
 
@@ -322,15 +320,15 @@ private:
 };
 
 template <class ValueType>
-const std::string X3DSFNode <ValueType>::typeName ("SFNode");
+const std::string X3DPtr <ValueType>::typeName ("SFNode");
 
 template <class ValueType>
-X3DSFNode <ValueType>*
-X3DSFNode <ValueType>::clone (X3DExecutionContext* const executionContext) const
+X3DPtr <ValueType>*
+X3DPtr <ValueType>::clone (X3DExecutionContext* const executionContext) const
 throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>)
 {
-	X3DSFNode* const field = new X3DSFNode ();
+	X3DPtr* const field = new X3DPtr ();
 
 	clone (executionContext, field);
 
@@ -339,11 +337,11 @@ throw (Error <INVALID_NAME>,
 
 template <class ValueType>
 void
-X3DSFNode <ValueType>::clone (X3DExecutionContext* const executionContext, X3DFieldDefinition* fieldDefinition) const
+X3DPtr <ValueType>::clone (X3DExecutionContext* const executionContext, X3DFieldDefinition* fieldDefinition) const
 throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>)
 {
-	X3DSFNode* const field = static_cast <X3DSFNode*> (fieldDefinition);
+	X3DPtr* const field = static_cast <X3DPtr*> (fieldDefinition);
 
 	if (getValue ())
 		field -> set (dynamic_cast <ValueType*> (getValue () -> clone (executionContext)));
@@ -354,27 +352,26 @@ throw (Error <INVALID_NAME>,
 
 template <class ValueType>
 inline
-X3DSFNode <ValueType> &
-X3DSFNode <ValueType>::operator = (const X3DSFNode & field)
+X3DPtr <ValueType> &
+X3DPtr <ValueType>::operator = (const X3DPtr & field)
 {
 	X3DField <ValueType*>::operator = (field);
 	return *this;
 }
 
 template <class ValueType>
-template <class Up>
 inline
-X3DSFNode <ValueType> &
-X3DSFNode <ValueType>::operator = (const X3DSFNode <Up> & field)
+X3DPtr <ValueType> &
+X3DPtr <ValueType>::operator = (const X3DPtrBase & field)
 {
-	X3DField <ValueType*>::operator = (dynamic_cast <ValueType*> (field .getValue ()));
+	X3DField <ValueType*>::operator = (dynamic_cast <ValueType*> (field .getBaseNode ()));
 	return *this;
 }
 
 template <class ValueType>
 inline
-X3DSFNode <ValueType> &
-X3DSFNode <ValueType>::operator = (X3DSFNode && field)
+X3DPtr <ValueType> &
+X3DPtr <ValueType>::operator = (X3DPtr && field)
 {
 	if (&field == this)
 		return *this;
@@ -398,8 +395,8 @@ X3DSFNode <ValueType>::operator = (X3DSFNode && field)
 template <class ValueType>
 template <class Up>
 inline
-X3DSFNode <ValueType> &
-X3DSFNode <ValueType>::operator = (X3DSFNode <Up> && field)
+X3DPtr <ValueType> &
+X3DPtr <ValueType>::operator = (X3DPtr <Up>&& field)
 {
 	if (&field == this)
 		return *this;
@@ -425,8 +422,8 @@ X3DSFNode <ValueType>::operator = (X3DSFNode <Up> && field)
 template <class ValueType>
 template <class Up>
 inline
-X3DSFNode <ValueType> &
-X3DSFNode <ValueType>::operator = (Up* const value)
+X3DPtr <ValueType> &
+X3DPtr <ValueType>::operator = (Up* const value)
 {
 	X3DField <ValueType*>::operator = (dynamic_cast <ValueType*> (value));
 	return *this;
@@ -434,7 +431,7 @@ X3DSFNode <ValueType>::operator = (Up* const value)
 
 template <class ValueType>
 void
-X3DSFNode <ValueType>::set (const internal_type & value)
+X3DPtr <ValueType>::set (const internal_type & value)
 {
 	addNode (value);
 	X3DField <ValueType*>::set (value);
@@ -442,16 +439,16 @@ X3DSFNode <ValueType>::set (const internal_type & value)
 
 template <class ValueType>
 void
-X3DSFNode <ValueType>::write (const X3DChildObject & field)
+X3DPtr <ValueType>::write (const X3DChildObject & field)
 {
-	X3DBaseNode* baseNode = dynamic_cast <const X3DSFNodeBase &> (field) .getBaseNode ();
+	X3DBaseNode* baseNode = dynamic_cast <const X3DPtrBase &> (field) .getBaseNode ();
 
 	set (dynamic_cast <internal_type> (baseNode));
 }
 
 template <class ValueType>
 void
-X3DSFNode <ValueType>::addNode (ValueType* const value)
+X3DPtr <ValueType>::addNode (ValueType* const value)
 {
 	if (getValue () not_eq value)
 	{
@@ -464,7 +461,7 @@ X3DSFNode <ValueType>::addNode (ValueType* const value)
 
 template <class ValueType>
 void
-X3DSFNode <ValueType>::removeNode (ValueType* const value)
+X3DPtr <ValueType>::removeNode (ValueType* const value)
 {
 	if (value)
 	{
@@ -477,7 +474,7 @@ X3DSFNode <ValueType>::removeNode (ValueType* const value)
 template <class ValueType>
 inline
 void
-X3DSFNode <ValueType>::fromStream (std::istream & istream)
+X3DPtr <ValueType>::fromStream (std::istream & istream)
 throw (Error <INVALID_X3D>,
        Error <NOT_SUPPORTED>,
        Error <INVALID_OPERATION_TIMING>,
@@ -487,7 +484,7 @@ throw (Error <INVALID_X3D>,
 template <class ValueType>
 inline
 void
-X3DSFNode <ValueType>::toStream (std::ostream & ostream) const
+X3DPtr <ValueType>::toStream (std::ostream & ostream) const
 {
 	if (getValue ())
 		getValue () -> toStream (ostream);
@@ -499,7 +496,7 @@ X3DSFNode <ValueType>::toStream (std::ostream & ostream) const
 template <class ValueType>
 inline
 void
-X3DSFNode <ValueType>::toXMLStream (std::ostream & ostream) const
+X3DPtr <ValueType>::toXMLStream (std::ostream & ostream) const
 {
 	if (getValue ())
 		getValue () -> toXMLStream (ostream);
@@ -510,7 +507,7 @@ X3DSFNode <ValueType>::toXMLStream (std::ostream & ostream) const
 
 template <class ValueType>
 void
-X3DSFNode <ValueType>::dispose ()
+X3DPtr <ValueType>::dispose ()
 {
 	removeNode (getValue ());
 
@@ -519,7 +516,7 @@ X3DSFNode <ValueType>::dispose ()
 
 template <class ValueType>
 inline
-X3DSFNode <ValueType>::~X3DSFNode ()
+X3DPtr <ValueType>::~X3DPtr ()
 {
 	removeNode (getValue ());
 }
@@ -527,7 +524,7 @@ X3DSFNode <ValueType>::~X3DSFNode ()
 template <class Type>
 inline
 bool
-operator < (const X3DSFNode <Type> & lhs, const X3DSFNode <Type> & rhs)
+operator < (const X3DPtr <Type> & lhs, const X3DPtr <Type> & rhs)
 {
 	return lhs .getValue () < rhs .getValue ();
 }

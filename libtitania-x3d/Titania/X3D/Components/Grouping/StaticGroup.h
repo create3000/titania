@@ -143,7 +143,7 @@ private:
 
 	Fields fields;
 
-	X3DSFNode <Group> group;
+	X3DPtr <Group> group;
 
 };
 

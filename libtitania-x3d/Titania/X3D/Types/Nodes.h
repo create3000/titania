@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_TYPES_NODES_H__
 #define __TITANIA_X3D_TYPES_NODES_H__
 
-#include "../Fields/X3DSFNode.h"
+#include "../Fields/X3DPtr.h"
 
 namespace titania {
 namespace X3D {
@@ -64,13 +64,13 @@ class Route;
 class ExportedNode;
 class Inline;
 
-extern template class X3DSFNode <Scene>;
-extern template class X3DSFNode <Proto>;
-extern template class X3DSFNode <ExternProto>;
-extern template class X3DSFNode <ImportedNode>;
-extern template class X3DSFNode <Route>;
-extern template class X3DSFNode <ExportedNode>;
-extern template class X3DSFNode <Inline>;
+extern template class X3DPtr <Scene>;
+extern template class X3DPtr <Proto>;
+extern template class X3DPtr <ExternProto>;
+extern template class X3DPtr <ImportedNode>;
+extern template class X3DPtr <Route>;
+extern template class X3DPtr <ExportedNode>;
+extern template class X3DPtr <Inline>;
 
 } // X3D
 } // titania

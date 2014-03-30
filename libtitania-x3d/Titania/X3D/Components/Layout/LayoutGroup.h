@@ -152,8 +152,8 @@ private:
 
 	Fields fields;
 
-	X3DSFNode <X3DViewportNode> currentViewport;
-	X3DSFNode <X3DLayoutNode>   currentLayout;
+	X3DPtr <X3DViewportNode> currentViewport;
+	X3DPtr <X3DLayoutNode>   currentLayout;
 
 };
 

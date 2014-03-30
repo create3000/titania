@@ -93,7 +93,7 @@ public:
 	///  @name Operations
 
 	virtual
-	X3DSFNode <X3DJavaScriptContext>
+	X3DPtr <X3DJavaScriptContext>
 	createContext (Script *, const std::string &, const basic::uri &, size_t) final override;
 
 	///  @name Input/Output

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -227,11 +227,11 @@ private:
 
 	///  @name Members
 
-	X3D::X3DSFNode <X3D::Browser> browserSurface;
+	X3D::X3DPtr <X3D::Browser> browserSurface;
 
-	std::vector <X3D::X3DSFNode <X3D::Appearance>> appearances;
-	X3D::X3DSFNode <X3D::Material>                 material;
-	X3D::X3DSFNode <X3D::TwoSidedMaterial>         twoSidedMaterial;
+	std::vector <X3D::X3DPtr <X3D::Appearance>> appearances;
+	X3D::X3DPtr <X3D::Material>                 material;
+	X3D::X3DPtr <X3D::TwoSidedMaterial>         twoSidedMaterial;
 	
 	std::shared_ptr <UndoStep> undoStep;
 

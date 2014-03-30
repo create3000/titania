@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -160,7 +160,7 @@ private:
 
 	void
 	add (const MFNode &);
-	
+
 	void
 	clear ();
 
@@ -175,12 +175,12 @@ private:
 
 	Fields fields;
 
-	bool                                    display;
-	MFBool                                  visible;
-	X3DMFNode <X3DPointingDeviceSensorNode> pointingDeviceSensors;
-	X3DMFNode <LocalFog>                    localFogs;
-	X3DMFNode <X3DChildNode>                collectables;
-	X3DMFNode <X3DChildNode>                childNodes;
+	bool                                      display;
+	MFBool                                    visible;
+	X3DArrayPtr <X3DPointingDeviceSensorNode> pointingDeviceSensors;
+	X3DArrayPtr <LocalFog>                    localFogs;
+	X3DArrayPtr <X3DChildNode>                collectables;
+	X3DArrayPtr <X3DChildNode>                childNodes;
 
 };
 

@@ -265,7 +265,7 @@ private:
 
 	Fields fields;
 
-	X3DSFNode <DirectionalLight>     directionalLight;
+	X3DPtr <DirectionalLight>        directionalLight;
 	std::unique_ptr <LightContainer> light;
 
 };
