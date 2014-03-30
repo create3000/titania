@@ -1,0 +1,76 @@
+#X3D V3.3 utf8 Titania V0.6.7
+
+META "generator" "Titania V0.6.7, http://titania.create3000.de"
+
+DEF DEF Transform {
+  translation -2.98767 2.45237 0
+  children [
+    DEF Def Transform {
+      translation 0.481351 0 0
+      children [
+        DEF DEF-Touch TouchSensor { }
+        Shape {
+          geometry Text {
+            string "DEF"
+            fontStyle FontStyle {
+              justify "MIDDLE"
+            }
+          }
+        }
+      ]
+    }
+    DEF Remove Transform {
+      translation 5.21631 1.66893e-06 0
+      children [
+        DEF EXPORT-Touch1 TouchSensor { }
+        Shape {
+          geometry Text {
+            string "remove"
+            fontStyle FontStyle {
+              justify "MIDDLE"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+
+DEF _1 Script {
+  inputOnly      SFTime set_export
+  inputOnly      SFTime set_remove
+  initializeOnly SFNode node NULL
+
+  url "vrmlscript:
+
+function set_export ()
+{
+	var currentScene = Browser .currentScene;
+
+	node = currentScene .createNode ('MetadataBool');
+
+	currentScene .updateNamedNode ('DEFName', node);
+
+	print ('Named node: ' + currentScene .getNamedNode ('DEFName'));
+}
+
+function set_remove ()
+{
+	node = null;
+
+	try
+	{
+		var currentScene = Browser .currentScene;
+		print (currentScene .getNamedNode ('DEFName'));
+	}
+	catch (error)
+	{
+		print (error);
+	}
+}
+"
+  directOutput TRUE
+}
+
+ROUTE DEF-Touch.touchTime TO _1.set_export
+ROUTE EXPORT-Touch1.touchTime TO _1.set_remove

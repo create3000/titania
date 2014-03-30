@@ -1,6 +1,12 @@
 2014-03-30  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* Library.mdproj:
+	* OutlineEditorXXX.wrl:
+	* RuntimeNameScopeDEF.x3dv: 
+
+2014-03-30  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Library.mdproj:
 	* SnapTarget.x3dv:
 	* OutlineEditor.wrl:
 	* OutlineEditor.x3d:

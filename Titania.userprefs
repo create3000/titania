@@ -1,58 +1,28 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/OutlineEditor/CellRenderer/TextViewEditable.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Library/Tests/Handles/OutlineEditorXXX.wrl">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/OutlineEditor/CellRenderer/TextViewEditable.cpp" Line="83" Column="20" />
+      <File FileName="Library/Tests/Handles/OutlineEditorXXX.wrl" Line="41" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="miscellaneous" expanded="True">
-            <Node name="uncrustify-all" expanded="True" />
-          </Node>
           <Node name="Library" expanded="True">
             <Node name="Tests" expanded="True">
               <Node name="Geometry3D" expanded="True" />
-              <Node name="Handles" expanded="True" />
+              <Node name="Handles" expanded="True">
+                <Node name="OutlineEditorXXX.wrl" selected="True" />
+              </Node>
+              <Node name="Networking" expanded="True" />
             </Node>
           </Node>
           <Node name="libtitania-x3d" expanded="True">
             <Node name="Titania" expanded="True">
-              <Node name="X3D" expanded="True">
-                <Node name="Basic" expanded="True" />
-                <Node name="Browser" expanded="True">
-                  <Node name="Viewer" expanded="True" />
-                </Node>
-                <Node name="Components" expanded="True">
-                  <Node name="EnvironmentalSensor" expanded="True" />
-                </Node>
-                <Node name="Prototype" expanded="True" />
-              </Node>
+              <Node name="X3D" expanded="True" />
             </Node>
           </Node>
           <Node name="Titania" expanded="True">
-            <Node name="scripts" expanded="True" />
-            <Node name="share" expanded="True">
-              <Node name="titania" expanded="True">
-                <Node name="Prototypes" expanded="True">
-                  <Node name="0.1" expanded="True">
-                    <Node name="Widgets" expanded="True" />
-                  </Node>
-                </Node>
-                <Node name="ui" expanded="True" />
-              </Node>
-            </Node>
-            <Node name="Titania" expanded="True">
-              <Node name="OutlineEditor" expanded="True">
-                <Node name="CellRenderer" expanded="True">
-                  <Node name="TextViewEditable.cpp" selected="True" />
-                </Node>
-              </Node>
-            </Node>
-          </Node>
-          <Node name="x3d2vrml" expanded="True">
-            <Node name="bin" expanded="True" />
+            <Node name="Titania" expanded="True" />
           </Node>
         </State>
       </Pad>

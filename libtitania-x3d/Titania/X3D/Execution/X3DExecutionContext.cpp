@@ -307,7 +307,13 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 	if (namedNode not_eq namedNodes .end ())
 	{
-		namedNode -> second -> getNode () -> setName ("");
+		try
+		{
+			namedNode -> second -> getNode () -> setName ("");
+		}
+		catch (const X3DError &)
+		{ }
+
 		namedNodes .erase (namedNode);
 	}
 }
