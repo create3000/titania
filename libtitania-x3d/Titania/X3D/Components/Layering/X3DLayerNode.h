@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_COMPONENTS_LAYERING_X3DLAYER_NODE_H__
 
 #include "../../Rendering/X3DRenderer.h"
+#include "../../Types/Pointer.h"
 #include "../EnvironmentalEffects/LocalFog.h"
 #include "../Grouping/X3DGroupingNode.h"
 #include "../Layering/X3DViewportNode.h"
@@ -65,22 +66,6 @@
 
 namespace titania {
 namespace X3D {
-
-template <class Type>
-class X3DBindableNodeStack;
-
-template <class Type>
-class X3DBindableNodeList;
-
-typedef X3DBindableNodeStack <NavigationInfo>    NavigationInfoStack;
-typedef X3DBindableNodeStack <X3DBackgroundNode> BackgroundStack;
-typedef X3DBindableNodeStack <Fog>               FogStack;
-typedef X3DBindableNodeStack <X3DViewpointNode>  ViewpointStack;
-
-typedef X3DBindableNodeList <NavigationInfo>    NavigationInfoList;
-typedef X3DBindableNodeList <X3DBackgroundNode> BackgroundList;
-typedef X3DBindableNodeList <Fog>               FogList;
-typedef X3DBindableNodeList <X3DViewpointNode>  ViewpointList;
 
 typedef std::vector <X3D::X3DViewpointNode*> UserViewpointList;
 typedef std::stack <LocalFog*>               LocalFogStack;
@@ -162,37 +147,37 @@ public:
 
 	///  @name X3DBindableNode stack handling
 
-	const X3DPtr <NavigationInfoStack> &
+	const NavigationInfoStackPtr &
 	getNavigationInfoStack () const
 	{ return navigationInfoStack; }
 
-	const X3DPtr <BackgroundStack> &
+	const BackgroundStackPtr &
 	getBackgroundStack () const
 	{ return backgroundStack; }
 
-	const X3DPtr <FogStack> &
+	const FogStackPtr &
 	getFogStack () const
 	{ return fogStack; }
 
-	const X3DPtr <ViewpointStack> &
+	const ViewpointStackPtr &
 	getViewpointStack () const
 	{ return viewpointStack; }
 
 	///  @name X3DBindableNode list handling
 
-	const X3DPtr <NavigationInfoList> &
+	const NavigationInfoListPtr &
 	getNavigationInfos () const
 	{ return navigationInfos; }
 
-	const X3DPtr <BackgroundList> &
+	const BackgroundListPtr &
 	getBackgrounds () const
 	{ return backgrounds; }
 
-	const X3DPtr <FogList> &
+	const FogListPtr &
 	getFogs () const
 	{ return fogs; }
 
-	const X3DPtr <ViewpointList> &
+	const ViewpointListPtr &
 	getViewpoints () const
 	{ return viewpoints; }
 
@@ -296,22 +281,22 @@ private:
 	
 	bool layer0;
 
-	X3DPtr <NavigationInfo>    defaultNavigationInfo;
-	X3DPtr <X3DBackgroundNode> defaultBackground;
-	X3DPtr <Fog>               defaultFog;
-	X3DPtr <X3DViewpointNode>  defaultViewpoint;
+	NavigationInfoPtr    defaultNavigationInfo;
+	X3DBackgroundNodePtr defaultBackground;
+	FogPtr               defaultFog;
+	X3DViewpointNodePtr  defaultViewpoint;
 
-	X3DPtr <X3DViewportNode> currentViewport;
+	X3DViewportNodePtr currentViewport;
 
-	X3DPtr <NavigationInfoStack> navigationInfoStack;
-	X3DPtr <BackgroundStack>     backgroundStack;
-	X3DPtr <FogStack>            fogStack;
-	X3DPtr <ViewpointStack>      viewpointStack;
+	NavigationInfoStackPtr navigationInfoStack;
+	BackgroundStackPtr     backgroundStack;
+	FogStackPtr            fogStack;
+	ViewpointStackPtr      viewpointStack;
 
-	X3DPtr <NavigationInfoList> navigationInfos;
-	X3DPtr <BackgroundList>     backgrounds;
-	X3DPtr <FogList>            fogs;
-	X3DPtr <ViewpointList>      viewpoints;
+	NavigationInfoListPtr navigationInfos;
+	BackgroundListPtr     backgrounds;
+	FogListPtr            fogs;
+	ViewpointListPtr      viewpoints;
 
 	LocalFogStack  localFogs;
 

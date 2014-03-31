@@ -137,7 +137,7 @@ private:
 
 	Fields fields;
 
-	X3DPtr <World> world;
+	WorldPtr world;
 
 };
 

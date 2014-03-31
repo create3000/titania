@@ -72,7 +72,7 @@ public:
 	{ }
 
 	virtual
-	const X3DScalar <ViewerType> &
+	const SFEnum <ViewerType> &
 	getViewer () const final override
 	{ return viewer; }
 
@@ -84,7 +84,7 @@ private:
 	create (X3DExecutionContext* const) const final override
 	{ return new BrowserApplication (); }
 	
-	X3DScalar <ViewerType> viewer;
+	SFEnum <ViewerType> viewer;
 
 };
 

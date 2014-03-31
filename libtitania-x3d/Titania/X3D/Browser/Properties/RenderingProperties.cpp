@@ -136,7 +136,7 @@ RenderingProperties::initialize ()
 
 	if (glXGetCurrentContext ())
 	{
-		X3DPtr <Scene> scene;
+		ScenePtr scene;
 
 		try
 		{

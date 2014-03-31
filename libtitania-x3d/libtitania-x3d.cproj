@@ -639,13 +639,13 @@
     <None Include="Titania\X3D\Configuration\UnitArray.h" />
     <None Include="Titania\X3D\Components\Grouping\X3DTransformMatrix4DNode.h" />
     <None Include="Titania\X3D\InputOutput\X3DBaseGenerator.h" />
-    <None Include="Titania\X3D\Types\Nodes.h" />
     <None Include="Titania\X3D\Types\Struct.h" />
     <None Include="Titania\X3D\Execution\NamedNodeIndex.h" />
     <None Include="Titania\X3D\Execution\NamedNode.h" />
     <None Include="Titania\X3D\Fields\X3DWeakPtr.h" />
     <None Include="Titania\X3D\Fields\X3DPtr.h" />
     <None Include="Titania\X3D\Fields\X3DArrayPtr.h" />
+    <None Include="Titania\X3D\Types\Pointer.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1112,9 +1112,9 @@
     <Compile Include="Titania\X3D\Configuration\UnitArray.cpp" />
     <Compile Include="Titania\X3D\Components\Grouping\X3DTransformMatrix4DNode.cpp" />
     <Compile Include="Titania\X3D\InputOutput\X3DBaseGenerator.cpp" />
-    <Compile Include="Titania\X3D\Types\Nodes.cpp" />
     <Compile Include="Titania\X3D\Execution\NamedNodeIndex.cpp" />
     <Compile Include="Titania\X3D\Execution\NamedNode.cpp" />
+    <Compile Include="Titania\X3D\Types\Pointer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

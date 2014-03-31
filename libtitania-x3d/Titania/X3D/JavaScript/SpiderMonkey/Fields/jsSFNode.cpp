@@ -142,8 +142,8 @@ jsSFNode::construct (JSContext* context, uintN argc, jsval* vp)
 		{
 			Script* const script = static_cast <jsContext*> (JS_GetContextPrivate (context)) -> getNode ();
 
-			const X3DPtr <Scene> scene = Loader (script -> getExecutionContext (), script -> getWorldURL ())
-			                                        .createX3DFromString (JS_GetString (context, vrmlSyntax));
+			const ScenePtr scene = Loader (script -> getExecutionContext (), script -> getWorldURL ())
+			                               .createX3DFromString (JS_GetString (context, vrmlSyntax));
 
 			return create (context,
 			               scene and not scene -> getRootNodes () .empty ()

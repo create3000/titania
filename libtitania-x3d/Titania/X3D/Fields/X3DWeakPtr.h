@@ -156,31 +156,6 @@ public:
 	throw (Error <DISPOSED>) final override
 	{ return typeName; }
 
-	///  @name Node services
-
-	const std::string &
-	getNodeTypeName () const
-	{ return getValue () -> getTypeName (); }
-
-	const X3DBaseNode*
-	getNodeType () const
-	{ return getValue () -> getType (); }
-
-	const std::string &
-	getNodeName () const
-	{ return getValue () -> getName (); }
-
-	const FieldDefinitionArray &
-	getFieldDefinitions () const
-	{ return getValue () -> getFieldDefinitions (); }
-
-	X3DFieldDefinition*
-	getField (const std::string & name) const
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
-	{ return getValue () -> getField (name); }
-
 	///  @name X3DChildObject
 	virtual
 	bool

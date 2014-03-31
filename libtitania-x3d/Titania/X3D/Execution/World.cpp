@@ -63,7 +63,7 @@ const std::string World::componentName  = "Browser";
 const std::string World::typeName       = "World";
 const std::string World::containerField = "world";
 
-World::World (const X3DPtr <Scene> & _scene) :
+World::World (const ScenePtr & _scene) :
 	    X3DBaseNode (_scene -> getBrowser (), _scene),
 	          scene (_scene),
 	       layerSet (new LayerSet (_scene)),
@@ -106,7 +106,7 @@ World::initialize ()
 void
 World::set_rootNodes ()
 {
-	const X3DPtr <LayerSet> oldLayerSet = layerSet;
+	const LayerSetPtr oldLayerSet = layerSet;
 	layerSet = defaultLayerSet;
 
 	layer0 -> children () = scene -> getRootNodes ();

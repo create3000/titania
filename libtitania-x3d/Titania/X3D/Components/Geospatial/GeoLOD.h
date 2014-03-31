@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -242,12 +242,12 @@ private:
 
 	Fields fields;
 
-	X3DPtr <Group>  rootGroup;
-	X3DPtr <Inline> rootInline;
-	X3DPtr <Inline> child1Inline;
-	X3DPtr <Inline> child2Inline;
-	X3DPtr <Inline> child3Inline;
-	X3DPtr <Inline> child4Inline;
+	GroupPtr  rootGroup;
+	InlinePtr rootInline;
+	InlinePtr child1Inline;
+	InlinePtr child2Inline;
+	InlinePtr child3Inline;
+	InlinePtr child4Inline;
 
 };
 

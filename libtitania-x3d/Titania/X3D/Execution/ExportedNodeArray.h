@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,20 +51,19 @@
 #ifndef __TITANIA_X3D_EXECUTION_EXPORTED_NODE_ARRAY_H__
 #define __TITANIA_X3D_EXECUTION_EXPORTED_NODE_ARRAY_H__
 
-#include <Titania/Basic/IndexedMultiMap.h>
+#include "../Types/Pointer.h"
 
-#include "../Execution/ExportedNode.h"
-#include "../Fields/SFNode.h"
+#include <Titania/Basic/IndexedMultiMap.h>
 #include <string>
 
 namespace titania {
 namespace X3D {
 
-using ExportedNodeArray = basic::indexed_multimap <std::string, X3DPtr <ExportedNode>>;
+using ExportedNodeArray = basic::indexed_multimap <std::string, ExportedNodePtr>;
 
 } // X3D
 
-extern template class basic::indexed_multimap <std::string, X3D::X3DPtr <X3D::ExportedNode>>;
+extern template class basic::indexed_multimap <std::string, X3D::ExportedNodePtr>;
 
 } // titania
 

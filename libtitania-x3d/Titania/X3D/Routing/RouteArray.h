@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,18 +51,19 @@
 #ifndef __TITANIA_X3D_ROUTING_ROUTE_ARRAY_H__
 #define __TITANIA_X3D_ROUTING_ROUTE_ARRAY_H__
 
-#include "../Fields/SFNode.h"
-#include "../Routing/Route.h"
+#include "../Basic/X3DFieldDefinition.h"
+#include "../Types/Pointer.h"
+
 #include <Titania/Basic/IndexedMultiMap.h>
 
 namespace titania {
 namespace X3D {
 
-typedef basic::indexed_multimap <std::pair <X3DFieldDefinition*, X3DFieldDefinition*>, X3DPtr <Route>> RouteArray;
+typedef basic::indexed_multimap <std::pair <X3DFieldDefinition*, X3DFieldDefinition*>, RoutePtr> RouteArray;
 
 } // X3D
 
-extern template class basic::indexed_multimap <std::pair <X3D::X3DFieldDefinition*, X3D::X3DFieldDefinition*>, X3D::X3DPtr <X3D::Route>>;
+extern template class basic::indexed_multimap <std::pair <X3D::X3DFieldDefinition*, X3D::X3DFieldDefinition*>, X3D::RoutePtr>;
 
 } // titania
 

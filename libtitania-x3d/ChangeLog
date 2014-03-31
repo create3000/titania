@@ -1,3 +1,75 @@
+2014-03-31  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* Makefile.am:
+	* X3D.h:
+	* X3D.cpp:
+	* libtitania-x3d.cproj:
+	* Nodes.h:
+	* X3DPtr.h:
+	* Pointer.h:
+	* Nodes.cpp:
+	* Scene.h:
+	* World.h:
+	* Parser.cpp:
+	* Pointer.cpp:
+	* X3DScalar.h:
+	* World.cpp:
+	* Scene.cpp:
+	* X3DWeakPtr.h:
+	* RouteArray.h:
+	* SceneLoader.h:
+	* X3DScene.h:
+	* Loader.h:
+	* ArrayFields.h:
+	* X3DBrowser.h:
+	* Loader.cpp:
+	* X3DScene.cpp:
+	* X3DBrowser.cpp:
+	* Notification.h:
+	* SceneLoader.cpp:
+	* RouteArray.cpp:
+	* ProtoArray.h:
+	* ExternProto.h:
+	* Notification.cpp:
+	* ProtoArray.cpp:
+	* ImportedNode.h:
+	* TransformHandle.h:
+	* NamedNodeIndex.h:
+	* ImportedNode.cpp:
+	* X3DBrowserContext.h:
+	* BrowserApplication.h:
+	* ExternProtoArray.h:
+	* NamedNodeIndex.cpp:
+	* ExportedNodeArray.h:
+	* ImportedNodeArray.h:
+	* Inline.h:
+	* ExternProtoArray.cpp:
+	* LayerSet.h:
+	* GeoLOD.h:
+	* ExportedNodeArray.cpp:
+	* ImportedNodeArray.cpp:
+	* X3DExecutionContext.h:
+	* LayoutGroup.h:
+	* LayerSet.cpp:
+	* Inline.cpp:
+	* X3DExecutionContext.cpp:
+	* StaticGroup.h:
+	* X3DLayerNode.h:
+	* jsBrowser.h:
+	* jsX3DRoute.h:
+	* jsBrowser.cpp:
+	* X3DPrototypeInstance.h:
+	* jsX3DRoute.cpp:
+	* RenderingProperties.h:
+	* X3DPrototypeInstance.cpp:
+	* RenderingProperties.cpp:
+	* jsSFNode.cpp:
+	* jsX3DProtoDeclaration.h:
+	* jsX3DProtoDeclaration.cpp:
+	* jsX3DExecutionContext.cpp:
+	* jsX3DExternProtoDeclaration.h:
+	* jsX3DExternProtoDeclaration.cpp: 
+
 2014-03-30  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* X3DExecutionContext.cpp: 

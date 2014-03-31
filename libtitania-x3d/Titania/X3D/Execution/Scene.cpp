@@ -51,6 +51,7 @@
 #include "Scene.h"
 
 #include "../Browser/X3DBrowser.h"
+#include "../Execution/NamedNode.h"
 #include "../Parser/RegEx.h"
 
 namespace titania {
@@ -74,7 +75,7 @@ Scene::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-Scene::importScene (const X3DPtr <Scene> & scene)
+Scene::importScene (const ScenePtr & scene)
 throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>,
        Error <INVALID_OPERATION_TIMING>,
@@ -120,7 +121,7 @@ throw (Error <INVALID_NAME>,
 }
 
 void
-Scene::updateNamedNodes (const X3DPtr <Scene> & scene)
+Scene::updateNamedNodes (const ScenePtr & scene)
 {
 	for (const auto & node : NamedNodeIndex (scene -> getNamedNodes ()))
 	{
@@ -130,7 +131,7 @@ Scene::updateNamedNodes (const X3DPtr <Scene> & scene)
 }
 
 std::string
-Scene::getUniqueName (const X3DPtr <Scene> & scene, std::string name) const
+Scene::getUniqueName (const ScenePtr & scene, std::string name) const
 {
 	RegEx::_LastNumber .Replace ("", &name);
 	RegEx::LastNumber .Replace ("", &name);
@@ -169,7 +170,7 @@ Scene::getUniqueName (const X3DPtr <Scene> & scene, std::string name) const
 }
 
 std::string
-Scene::getUniqueName (const X3DPtr <Scene> & scene) const
+Scene::getUniqueName (const ScenePtr & scene) const
 {
 	std::string name;
 	size_t      i = 0;

@@ -63,7 +63,7 @@
 namespace titania {
 namespace puck {
 
-BrowserWindow::BrowserWindow (const X3D::X3DPtr <X3D::Browser> & browserSurface, int argc, char** argv) :
+BrowserWindow::BrowserWindow (const X3D::BrowserPtr & browserSurface, int argc, char** argv) :
 	X3DBaseInterface (this, browserSurface),
 	X3DBrowserEditor (argc, argv),
 	  browserSurface (browserSurface),
@@ -1233,7 +1233,7 @@ BrowserWindow::set_viewer (X3D::ViewerType type)
 }
 
 void
-BrowserWindow::set_available_viewers (const X3D::X3DArrayField <X3D::X3DScalar <X3D::ViewerType>> & availableViewers)
+BrowserWindow::set_available_viewers (const X3D::MFEnum <X3D::ViewerType> & availableViewers)
 {
 	bool examine = false;
 	bool walk    = false;

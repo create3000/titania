@@ -66,7 +66,7 @@ public:
 
 	///  @name Construction
 
-	X3DPrototypeInstance (X3DExecutionContext* const, const X3DPtr <X3DProto> &);
+	X3DPrototypeInstance (X3DExecutionContext* const, const X3DProtoPtr &);
 
 	virtual
 	X3DPrototypeInstance*
@@ -103,7 +103,7 @@ public:
 	X3DBaseNode*
 	getRootNode () const;
 
-	const X3DPtr <X3DProto> &
+	const X3DProtoPtr &
 	getProtoDeclaration () const
 	{ return protoDeclaration; }
 
@@ -153,7 +153,7 @@ private:
 
 	///  @name Members
 
-	X3DPtr <X3DProto> protoDeclaration;
+	X3DProtoPtr protoDeclaration;
 
 	MFNode savedChildren;
 };

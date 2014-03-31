@@ -227,11 +227,11 @@ private:
 
 	///  @name Members
 
-	X3D::X3DPtr <X3D::Browser> browserSurface;
+	X3D::BrowserPtr browserSurface;
 
-	std::vector <X3D::X3DPtr <X3D::Appearance>> appearances;
-	X3D::X3DPtr <X3D::Material>                 material;
-	X3D::X3DPtr <X3D::TwoSidedMaterial>         twoSidedMaterial;
+	std::vector <X3D::AppearancePtr> appearances;
+	X3D::MaterialPtr                 material;
+	X3D::TwoSidedMaterialPtr         twoSidedMaterial;
 	
 	std::shared_ptr <UndoStep> undoStep;
 

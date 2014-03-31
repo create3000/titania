@@ -59,11 +59,11 @@ static std::vector <std::tuple <Display*, GLXDrawable, GLXContext>>  contexts;
 
 ///  6.2.2 The getBrowser service returns a reference to an instance of an X3D browser through which other service
 ///  requests may be processed.  This is a unique identifier per application instance.
-const X3DPtr <BrowserApplication> &
+const BrowserApplicationPtr &
 getBrowser (/* parameter */)
 throw (Error <BROWSER_UNAVAILABLE>)
 {
-	static X3DPtr <BrowserApplication> browserApplication;
+	static BrowserApplicationPtr browserApplication;
 
 	if (not browserApplication)
 	{
@@ -80,20 +80,20 @@ throw (Error <BROWSER_UNAVAILABLE>)
 }
 
 ///  6.2.3 The createBrowser service creates a new instance of a browser application.
-X3DPtr <Browser>
+BrowserPtr
 createBrowser (/* parameter */)
 throw (Error <BROWSER_UNAVAILABLE>)
 {
 	std::clog << "Creating Browser ..." << std::endl;
-	X3DPtr <Browser> browser = new Browser ();
+	BrowserPtr browser = new Browser ();
 
 	std::clog << "Done creating Browser." << std::endl;
 	return browser;
 }
 
 ///  6.2.3 The createBrowser service creates a new instance of a browser application.
-X3DPtr <Browser>
-createBrowser (const X3DPtr <Browser> & sharingBrowser)
+BrowserPtr
+createBrowser (const BrowserPtr & sharingBrowser)
 throw (Error <INVALID_NODE>,
        Error <BROWSER_UNAVAILABLE>)
 {
@@ -101,14 +101,14 @@ throw (Error <INVALID_NODE>,
 		throw Error <INVALID_NODE> ("createBrowser: No sharingBrowser given.");
 
 	std::clog << "Creating Browser ..." << std::endl;
-	X3DPtr <Browser> browser = new Browser (*sharingBrowser);
+	BrowserPtr browser = new Browser (*sharingBrowser);
 
 	std::clog << "Done creating Browser." << std::endl;
 	return browser;
 }
 
 void
-removeBrowser (X3D::X3DPtr <X3D::Browser> & browser)
+removeBrowser (BrowserPtr & browser)
 noexcept (true)
 {
 	if (not browser)

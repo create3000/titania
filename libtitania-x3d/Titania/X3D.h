@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_H__
 #define __TITANIA_X3D_H__
 
-// Include Browser as first file
+// Include Browser at first.
 #include "X3D/Browser/Browser.h"
 #include "X3D/Browser/BrowserApplication.h"
 
@@ -64,11 +64,14 @@
 
 #include "X3D/Execution/BindableNodeList.h"
 #include "X3D/Execution/BindableNodeStack.h"
+#include "X3D/Execution/ExportedNode.h"
+#include "X3D/Execution/ImportedNode.h"
+#include "X3D/Execution/NamedNode.h"
 
 #include "X3D/Browser/Properties/MotionBlur.h"
 #include "X3D/InputOutput/Loader.h"
-#include "X3D/Miscellaneous/Keys.h"
 #include "X3D/Miscellaneous/GoldenGate.h"
+#include "X3D/Miscellaneous/Keys.h"
 #include "X3D/Miscellaneous/MediaStream.h"
 #include "X3D/Parser/Filter.h"
 #include "X3D/Parser/RegEx.h"
@@ -78,21 +81,21 @@
 namespace titania {
 namespace X3D {
 
-const X3DPtr <BrowserApplication> &
+const BrowserApplicationPtr &
 getBrowser (/* parameter */)
 throw (Error <BROWSER_UNAVAILABLE>);
 
-X3DPtr <Browser>
+BrowserPtr
 createBrowser ()
 throw (Error <BROWSER_UNAVAILABLE>);
 
-X3DPtr <Browser>
-createBrowser (const X3DPtr <Browser> &)
+BrowserPtr
+createBrowser (const BrowserPtr &)
 throw (Error <INVALID_NODE>,
        Error <BROWSER_UNAVAILABLE>);
 
 void
-removeBrowser (X3DPtr <X3D::Browser> &)
+removeBrowser (BrowserPtr &)
 noexcept (true);
 
 void

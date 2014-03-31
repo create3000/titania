@@ -1,3 +1,26 @@
+2014-03-31  Holger Seelig  <holger.seelig@yahoo.de>
+
+	* MagicImport.h:
+	* BrowserWindow.h:
+	* MagicImport.cpp:
+	* X3DBaseInterface.h:
+	* X3DBaseInterface.cpp:
+	* BrowserWindow.cpp:
+	* X3DBrowserEditor.h:
+	* X3DBrowserEditor.cpp:
+	* TextureEditor.h:
+	* ViewpointList.h:
+	* ViewpointList.cpp:
+	* MaterialEditor.h:
+	* OutlineEditor.cpp:
+	* OutlineTreeModel.h:
+	* MaterialEditor.cpp:
+	* X3DOutlineTreeView.h:
+	* OutlineTreeModel.cpp:
+	* X3DOutlineTreeView.cpp:
+	* OutlineTreeViewEditor.h:
+	* OutlineTreeViewEditor.cpp: 
+
 2014-03-30  Holger Seelig  <holger.seelig@yahoo.de>
 
 	* main.cpp:

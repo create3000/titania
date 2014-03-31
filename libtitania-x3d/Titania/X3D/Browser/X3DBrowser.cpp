@@ -209,7 +209,7 @@ throw (Error <NOT_SUPPORTED>)
 	return supportedProfiles .get (name);
 }
 
-X3DPtr <Scene>
+ScenePtr
 X3DBrowser::createScene () const
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
@@ -217,12 +217,12 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	return new Scene (const_cast <X3DBrowser*> (this));
 }
 
-X3DPtr <Scene>
+ScenePtr
 X3DBrowser::createScene (const ProfileInfoPtr & profile, const ComponentInfoArray & components) const
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	X3DPtr <Scene> scene = createScene ();
+	ScenePtr scene = createScene ();
 
 	scene -> setProfile (profile);
 
@@ -233,7 +233,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 void
-X3DBrowser::replaceWorld (const X3DPtr <Scene> & value)
+X3DBrowser::replaceWorld (const ScenePtr & value)
 throw (Error <INVALID_SCENE>,
        Error <INVALID_OPERATION_TIMING>)
 {
@@ -301,7 +301,7 @@ X3DBrowser::set_scene ()
 	std::clog << "Replacing world done." << std::endl;
 }
 
-X3DPtr <Scene>
+ScenePtr
 X3DBrowser::importDocument (/*const XML DOMNode &*/)
 throw (Error <INVALID_DOCUMENT>,
        Error <INVALID_OPERATION_TIMING>,
@@ -335,7 +335,7 @@ throw (Error <INVALID_URL>,
 
 		try
 		{
-			X3DPtr <Scene> scene = createScene ();
+			ScenePtr scene = createScene ();
 
 			loader .parseIntoScene (scene, url);
 
@@ -359,7 +359,7 @@ throw (Error <INVALID_URL>,
 	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
 }
 
-X3DPtr <Scene>
+ScenePtr
 X3DBrowser::createX3DFromString (const std::string & string)
 throw (Error <INVALID_X3D>,
        Error <NOT_SUPPORTED>,
@@ -372,7 +372,7 @@ throw (Error <INVALID_X3D>,
 	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
 }
 
-X3DPtr <Scene>
+ScenePtr
 X3DBrowser::createX3DFromStream (basic::ifilestream & istream)
 throw (Error <INVALID_X3D>,
        Error <NOT_SUPPORTED>,
@@ -385,7 +385,7 @@ throw (Error <INVALID_X3D>,
 	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
 }
 
-X3DPtr <Scene>
+ScenePtr
 X3DBrowser::createX3DFromStream (const basic::uri & worldURL, basic::ifilestream & istream)
 throw (Error <INVALID_X3D>,
        Error <NOT_SUPPORTED>,
@@ -398,7 +398,7 @@ throw (Error <INVALID_X3D>,
 	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
 }
 
-X3DPtr <Scene>
+ScenePtr
 X3DBrowser::createX3DFromURL (const MFString & url)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>,
@@ -410,7 +410,7 @@ throw (Error <INVALID_URL>,
 		{
 			Loader loader (this);
 
-			X3DPtr <Scene> scene = loader .createX3DFromURL (url);
+			ScenePtr scene = loader .createX3DFromURL (url);
 
 			return scene;
 		}

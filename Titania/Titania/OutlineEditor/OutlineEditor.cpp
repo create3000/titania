@@ -59,7 +59,7 @@ namespace puck {
 OutlineEditor::OutlineEditor (BrowserWindow* const browserWindow) :
 	         X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	X3DOutlineEditorInterface (get_ui ("OutlineEditor.ui"), gconf_dir ()),
-	                 treeview (browserWindow, X3D::X3DPtr <X3D::X3DExecutionContext> (getBrowser () -> getExecutionContext ()))
+	                 treeview (browserWindow, X3D::X3DExecutionContextPtr (getBrowser () -> getExecutionContext ()))
 { }
 
 void
@@ -85,7 +85,7 @@ OutlineEditor::initialize ()
 void
 OutlineEditor::set_initialized ()
 {
-	treeview .set_execution_context (X3D::X3DPtr <X3D::X3DExecutionContext> (getBrowser () -> getExecutionContext ()));
+	treeview .set_execution_context (X3D::X3DExecutionContextPtr (getBrowser () -> getExecutionContext ()));
 }
 
 } // puck

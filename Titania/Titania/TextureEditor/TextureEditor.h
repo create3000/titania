@@ -90,7 +90,7 @@ private:
 
 	///  @name Members
 
-	X3D::X3DPtr <X3D::Browser> browserSurface;
+	X3D::BrowserPtr browserSurface;
 
 	bool initialized;
 

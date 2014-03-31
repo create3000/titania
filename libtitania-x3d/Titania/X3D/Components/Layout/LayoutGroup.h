@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,6 +51,7 @@
 #ifndef __TITANIA_X3D_COMPONENTS_LAYOUT_LAYOUT_GROUP_H__
 #define __TITANIA_X3D_COMPONENTS_LAYOUT_LAYOUT_GROUP_H__
 
+#include "../../Types/Pointer.h"
 #include "../Grouping/X3DGroupingNode.h"
 #include "../Layering/X3DViewportNode.h"
 #include "../Layout/X3DLayoutNode.h"
@@ -152,8 +153,8 @@ private:
 
 	Fields fields;
 
-	X3DPtr <X3DViewportNode> currentViewport;
-	X3DPtr <X3DLayoutNode>   currentLayout;
+	X3DViewportNodePtr currentViewport;
+	X3DLayoutNodePtr   currentLayout;
 
 };
 

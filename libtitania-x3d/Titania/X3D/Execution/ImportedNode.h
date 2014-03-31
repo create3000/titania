@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -54,6 +54,7 @@
 #include "../Basic/X3DBaseNode.h"
 #include "../Fields/SFNode.h"
 #include "../Fields/X3DWeakPtr.h"
+#include "../Types/Pointer.h"
 
 namespace titania {
 namespace X3D {
@@ -68,7 +69,7 @@ public:
 	///  @name Construction
 
 	ImportedNode (X3DExecutionContext* const,
-	              const X3DPtr <Inline> &,
+	              const InlinePtr &,
 	              const std::string &,
 	              const std::string &)
 	throw (Error <INVALID_NAME>,
@@ -107,7 +108,7 @@ public:
 
 	///  @name Member access
 
-	X3DPtr <Inline>
+	InlinePtr
 	getInlineNode () const
 	throw (Error <DISPOSED>);
 

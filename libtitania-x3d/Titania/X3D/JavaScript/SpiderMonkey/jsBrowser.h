@@ -52,14 +52,13 @@
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_BROWSER_H__
 
 #include "../../Fields.h"
+#include "../../Types/Pointer.h"
 
 #include <iostream>
 #include <jsapi.h>
 
 namespace titania {
 namespace X3D {
-
-class Scene;
 
 class jsBrowser
 {
@@ -132,7 +131,7 @@ private:
 
 	static
 	void
-	setSceneAsync (const SFNode &, MFNode &, X3DPtr <Scene> &&);
+	setSceneAsync (const SFNode &, MFNode &, ScenePtr &&);
 
 	static JSClass        static_class;
 	static JSPropertySpec properties [ ];

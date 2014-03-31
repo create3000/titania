@@ -95,13 +95,13 @@ ViewpointList::initialize ()
 	set_activeLayer ();
 }
 
-const X3D::X3DPtr <X3D::ViewpointStack> &
+const X3D::ViewpointStackPtr &
 ViewpointList::getViewpointStack ()
 {
 	return activeLayer -> getViewpointStack ();
 }
 
-const X3D::X3DPtr <X3D::ViewpointList> &
+const X3D::ViewpointListPtr &
 ViewpointList::getViewpoints () const
 {
 	return activeLayer -> getViewpoints ();

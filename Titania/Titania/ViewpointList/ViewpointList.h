@@ -78,10 +78,10 @@ private:
 	void
 	initialize () final override;
 
-	const X3D::X3DPtr <X3D::ViewpointStack> &
+	const X3D::ViewpointStackPtr &
 	getViewpointStack ();
 
-	const X3D::X3DPtr <X3D::ViewpointList> &
+	const X3D::ViewpointListPtr &
 	getViewpoints () const;
 
 	X3D::UserViewpointList
@@ -100,7 +100,7 @@ private:
 	void
 	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final override;
 
-	X3D::X3DPtr <X3D::X3DLayerNode> activeLayer;
+	X3D::X3DLayerNodePtr activeLayer;
 
 };
 

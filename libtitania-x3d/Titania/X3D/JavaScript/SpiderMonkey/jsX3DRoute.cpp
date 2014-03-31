@@ -83,14 +83,14 @@ jsX3DRoute::init (JSContext* const context, JSObject* const global)
 }
 
 JSBool
-jsX3DRoute::create (JSContext* const context, const X3DPtr <Route> & route, jsval* const vp)
+jsX3DRoute::create (JSContext* const context, const RoutePtr & route, jsval* const vp)
 {
 	JSObject* const result = JS_NewObject (context, &static_class, NULL, NULL);
 
 	if (result == NULL)
 		return JS_FALSE;
 
-	const auto field = new X3DPtr <Route> (route);
+	const auto field = new RoutePtr (route);
 
 	JS_SetPrivate (context, result, field);
 
@@ -108,7 +108,7 @@ jsX3DRoute::sourceNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	try
 	{
-		const auto & route = *static_cast <X3DPtr <Route>*> (JS_GetPrivate (context, obj));
+		const auto & route = *static_cast <RoutePtr*> (JS_GetPrivate (context, obj));
 
 		return jsSFNode::create (context, new SFNode (route -> getSourceNode ()), vp);
 	}
@@ -124,7 +124,7 @@ jsX3DRoute::sourceField (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	try
 	{
-		const auto & route = *static_cast <X3DPtr <Route>*> (JS_GetPrivate (context, obj));
+		const auto & route = *static_cast <RoutePtr*> (JS_GetPrivate (context, obj));
 
 		return JS_NewStringValue (context, route -> getSourceField (), vp);
 	}
@@ -140,7 +140,7 @@ jsX3DRoute::destinationNode (JSContext* context, JSObject* obj, jsid id, jsval* 
 {
 	try
 	{
-		const auto & route = *static_cast <X3DPtr <Route>*> (JS_GetPrivate (context, obj));
+		const auto & route = *static_cast <RoutePtr*> (JS_GetPrivate (context, obj));
 
 		return jsSFNode::create (context, new SFNode (route -> getDestinationNode ()), vp);
 	}
@@ -156,7 +156,7 @@ jsX3DRoute::destinationField (JSContext* context, JSObject* obj, jsid id, jsval*
 {
 	try
 	{
-		const auto & route = *static_cast <X3DPtr <Route>*> (JS_GetPrivate (context, obj));
+		const auto & route = *static_cast <RoutePtr*> (JS_GetPrivate (context, obj));
 
 		return JS_NewStringValue (context, route -> getDestinationField (), vp);
 	}
@@ -170,7 +170,7 @@ jsX3DRoute::destinationField (JSContext* context, JSObject* obj, jsid id, jsval*
 void
 jsX3DRoute:: finalize (JSContext* context, JSObject* obj)
 {
-	const auto route = static_cast <X3DPtr <Route>*> (JS_GetPrivate (context, obj));
+	const auto route = static_cast <RoutePtr*> (JS_GetPrivate (context, obj));
 
 	if (route)
 		static_cast <jsContext*> (JS_GetContextPrivate (context)) -> removeObject (route);

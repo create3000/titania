@@ -52,6 +52,7 @@
 
 #include "../Bits/Error.h"
 #include "../Browser/X3DBrowser.h"
+#include "../Execution/ExportedNode.h"
 #include "../Parser/Parser.h"
 #include "../Parser/RegEx.h"
 
@@ -122,7 +123,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 // Exported nodes handling
 
-const X3DPtr <ExportedNode> &
+const ExportedNodePtr &
 X3DScene::addExportedNode (const std::string & exportedName, const SFNode & node)
 throw (Error <NODE_IN_USE>,
        Error <INVALID_NAME>,

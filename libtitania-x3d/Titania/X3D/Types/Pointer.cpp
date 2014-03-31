@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,11 +48,24 @@
  *
  ******************************************************************************/
 
-#include "Nodes.h"
+#include "Pointer.h"
 
+// Include browser at first.
+#include "../Browser/Browser.h"
+#include "../Browser/BrowserApplication.h"
+
+#include "../Components/Core/X3DPrototypeInstance.h"
+#include "../Components/Grouping/Group.h"
+#include "../Components/Grouping/Transform.h"
 #include "../Components/Networking/Inline.h"
+#include "../Components/Shape/Appearance.h"
+#include "../Components/Shape/Material.h"
+#include "../Components/Shape/TwoSidedMaterial.h"
+#include "../Execution/BindableNodeList.h"
+#include "../Execution/BindableNodeStack.h"
 #include "../Execution/ExportedNode.h"
 #include "../Execution/ImportedNode.h"
+#include "../Execution/NamedNode.h"
 #include "../Execution/Scene.h"
 #include "../Prototype/ExternProto.h"
 #include "../Prototype/Proto.h"
@@ -61,13 +74,61 @@
 namespace titania {
 namespace X3D {
 
+//
+template class X3DPtr <BrowserApplication>;
+template class X3DPtr <Browser>;
+template class X3DPtr <RenderingProperties>;
+template class X3DPtr <BrowserProperties>;
+template class X3DPtr <BrowserOptions>;
+template class X3DPtr <X3DJavaScriptEngine>;
+template class X3DPtr <Selection>;
+template class X3DPtr <Notification>;
+template class X3DPtr <Console>;
+
+//
+template class X3DPtr <World>;
 template class X3DPtr <Scene>;
+template class X3DPtr <X3DExecutionContext>;
 template class X3DPtr <Proto>;
+template class X3DPtr <X3DProto>;
+template class X3DPtr <X3DPrototypeInstance>;
 template class X3DPtr <ExternProto>;
+template class X3DPtr <NamedNode>;
 template class X3DPtr <ImportedNode>;
 template class X3DPtr <Route>;
 template class X3DPtr <ExportedNode>;
+
+//
+template class X3DPtr <LayerSet>;
+template class X3DPtr <X3DLayerNode>;
+template class X3DPtr <NavigationInfoStack>;
+template class X3DPtr <BackgroundStack>;
+template class X3DPtr <FogStack>;
+template class X3DPtr <ViewpointStack>;
+template class X3DPtr <NavigationInfoList>;
+template class X3DPtr <BackgroundList>;
+template class X3DPtr <FogList>;
+template class X3DPtr <ViewpointList>;
+template class X3DPtr <NavigationInfo>;
+template class X3DPtr <X3DBackgroundNode>;
+template class X3DPtr <Fog>;
+template class X3DPtr <X3DViewpointNode>;
+template class X3DPtr <X3DViewportNode>;
+template class X3DPtr <X3DLayoutNode>;
+
+//
+template class X3DPtr <X3DNode>;
+template class X3DPtr <Group>;
+template class X3DPtr <Transform>;
+template class X3DPtr <X3DTransformNode>;
+template class X3DPtr <X3DTransformMatrix4DNode>;
+template class X3DPtr <X3DGroupingNode>;
 template class X3DPtr <Inline>;
+
+//
+template class X3DPtr <Appearance>;
+template class X3DPtr <Material>;
+template class X3DPtr <TwoSidedMaterial>;
 
 } // X3D
 } // titania

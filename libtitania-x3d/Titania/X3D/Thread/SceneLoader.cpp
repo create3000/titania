@@ -81,20 +81,20 @@ SceneLoader::wait ()
 	}
 }
 
-std::future <X3DPtr <Scene>> 
+std::future <ScenePtr> 
 SceneLoader::getFuture (const MFString & url)
 {
 	return std::async (std::launch::async, std::mem_fn (&SceneLoader::loadAsync), this, url);
 }
 
-X3DPtr <Scene>
+ScenePtr
 SceneLoader::loadAsync (const MFString & url)
 {
 	if (running)
 	{
 		std::lock_guard <std::mutex> lock (browser -> getDownloadMutex ());
 
-		X3DPtr <Scene> scene;
+		ScenePtr scene;
 
 		if (running)
 			scene = browser -> createScene ();
@@ -149,7 +149,7 @@ SceneLoader::dispose ()
 		
 		// This must be the last command.
 
-		callback = [ ] (X3DPtr <Scene> &&) { };
+		callback = [ ] (ScenePtr &&) { };
 	}
 }
 

@@ -55,6 +55,8 @@
 #include "../Components/Core/X3DPrototypeInstance.h"
 #include "../Components/Navigation/X3DViewpointNode.h"
 #include "../Components/Networking/Inline.h"
+#include "../Execution/NamedNode.h"
+#include "../Execution/ImportedNode.h"
 #include "../Parser/RegEx.h"
 #include "../Prototype/ExternProto.h"
 #include "../Prototype/Proto.h"
@@ -117,6 +119,15 @@ X3DExecutionContext::initialize ()
 		X3DNode::initialize ();
 
 		initialized = true;
+		
+		// To remove this below:
+		// add setup to NamedNode
+		// remove setup from addNamedNode
+		// add addUnititializedNode to Proto
+		// change SFNode copy = create ... <- replace SFNode by X3DBaseNode
+		// change addNamedNode (X3DBaseNode* const)
+		// change NamedNode constructor (X3DBaseNode* const)
+		// probably this works.
 		
 		for (const auto & namedNode : namedNodes)
 			namedNode .second -> setup ();
@@ -208,7 +219,7 @@ throw (Error <INVALID_NAME>,
 	return declaration -> create (this);
 }
 
-X3DPtr <X3DPrototypeInstance>
+X3DPrototypeInstancePtr
 X3DExecutionContext::createProtoInstance (const std::string & name)
 throw (Error <INVALID_NAME>,
        Error <INVALID_X3D>,
@@ -394,8 +405,8 @@ X3DExecutionContext::getUniqueName () const
 
 // Imported nodes handling
 
-const X3DPtr <ImportedNode> &
-X3DExecutionContext::addImportedNode (const X3DPtr <Inline> & inlineNode, const std::string & exportedName, std::string importedName)
+const ImportedNodePtr &
+X3DExecutionContext::addImportedNode (const InlinePtr & inlineNode, const std::string & exportedName, std::string importedName)
 throw (Error <INVALID_NODE>,
        Error <INVALID_NAME>,
        Error <NODE_IN_USE>,
@@ -438,7 +449,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 void
-X3DExecutionContext::updateImportedNode (const X3DPtr <Inline> & inlineNode, const std::string & exportedName, std::string importedName)
+X3DExecutionContext::updateImportedNode (const InlinePtr & inlineNode, const std::string & exportedName, std::string importedName)
 throw (Error <INVALID_NODE>,
        Error <INVALID_NAME>,
        Error <URL_UNAVAILABLE>,
@@ -498,7 +509,7 @@ throw (Error <INVALID_NODE>,
 
 //	Proto declaration handling
 
-const X3DPtr <Proto> &
+const ProtoPtr &
 X3DExecutionContext::addProtoDeclaration (const std::string & name, const FieldDefinitionArray & interfaceDeclarations)
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
@@ -515,7 +526,7 @@ throw (Error <INVALID_NAME>,
 }
 
 void
-X3DExecutionContext::updateProtoDeclaration (const std::string & name, const X3DPtr <Proto> & protoDeclaration)
+X3DExecutionContext::updateProtoDeclaration (const std::string & name, const ProtoPtr & protoDeclaration)
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
@@ -531,7 +542,7 @@ throw (Error <INVALID_NAME>,
 	protoDeclaration -> setName (name);
 }
 
-const X3DPtr <Proto> &
+const ProtoPtr &
 X3DExecutionContext::getProtoDeclaration (const std::string & name)
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
@@ -547,7 +558,7 @@ throw (Error <INVALID_NAME>,
 	}
 }
 
-X3DPtr <Proto>
+ProtoPtr
 X3DExecutionContext::createProtoDeclaration (const std::string & name, const FieldDefinitionArray & interfaceDeclarations)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
@@ -555,7 +566,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	if (name .empty ())
 		throw Error <INVALID_NAME> ("Couldn't create proto declaration: proto name is empty.");
 
-	X3DPtr <Proto> proto = new Proto (this);
+	ProtoPtr proto = new Proto (this);
 
 	proto -> setName (name);
 
@@ -601,7 +612,7 @@ throw (Error <INVALID_NAME>,
 
 //	externprotoDeclarationHandling
 
-const X3DPtr <ExternProto> &
+const ExternProtoPtr &
 X3DExecutionContext::addExternProtoDeclaration (const std::string & name, const FieldDefinitionArray & externInterfaceDeclarations, const MFString & URLList)
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
@@ -618,7 +629,7 @@ throw (Error <INVALID_NAME>,
 }
 
 void
-X3DExecutionContext::updateExternProtoDeclaration (const std::string & name, const X3DPtr <ExternProto> & externProtoDeclaration)
+X3DExecutionContext::updateExternProtoDeclaration (const std::string & name, const ExternProtoPtr & externProtoDeclaration)
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
@@ -635,7 +646,7 @@ throw (Error <INVALID_NAME>,
 }
 
 const
-X3DPtr <ExternProto> &
+ExternProtoPtr &
 X3DExecutionContext::getExternProtoDeclaration (const std::string & name)
 throw (Error <INVALID_NAME>,
        Error <URL_UNAVAILABLE>,
@@ -652,12 +663,12 @@ throw (Error <INVALID_NAME>,
 	}
 }
 
-X3DPtr <ExternProto>
+ExternProtoPtr
 X3DExecutionContext::createExternProtoDeclaration (const std::string & name, const FieldDefinitionArray & externInterfaceDeclarations, const MFString & URLList)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	X3DPtr <ExternProto> externProto = new ExternProto (this);
+	ExternProtoPtr externProto = new ExternProto (this);
 
 	externProto -> setName (name);
 
@@ -677,7 +688,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 //	Dynamic route handling
 
-const X3DPtr <Route> &
+const RoutePtr &
 X3DExecutionContext::addRoute (const SFNode & sourceNode,      const std::string & sourceFieldId,
                                const SFNode & destinationNode, const std::string & destinationFieldId)
 throw (Error <INVALID_NODE>,
@@ -761,7 +772,7 @@ throw (Error <INVALID_NODE>,
 	}
 	catch (const Error <INVALID_NAME> &)
 	{
-		throw Error <INVALID_FIELD> ("Bad ROUTE specification: Unknown eventOut '" + sourceFieldId + "' in node '" + sourceNode .getNodeName () + "'.");
+		throw Error <INVALID_FIELD> ("Bad ROUTE specification: Unknown eventOut '" + sourceFieldId + "' in node '" + sourceNode -> getName () + "'.");
 	}
 
 	X3DFieldDefinition* destinationField = NULL;
@@ -772,7 +783,7 @@ throw (Error <INVALID_NODE>,
 	}
 	catch (const Error <INVALID_NAME> &)
 	{
-		throw Error <INVALID_FIELD> ("Bad ROUTE specification: Unknown eventIn '" + destinationFieldId + "' in node '" + destinationNode .getNodeName () + "'.");
+		throw Error <INVALID_FIELD> ("Bad ROUTE specification: Unknown eventIn '" + destinationFieldId + "' in node '" + destinationNode -> getName () + "'.");
 	}
 
 	return std::make_pair (sourceField, destinationField);

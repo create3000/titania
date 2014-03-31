@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -139,7 +139,7 @@ X3DBrowserEditor::set_selection_active (const bool value)
 	{
 		for (const auto & child : getBrowser () -> getSelection () -> getChildren ())
 		{
-			const X3D::X3DPtr <X3D::X3DTransformNode> transform (child);
+			const X3D::X3DTransformNodePtr transform (child);
 
 			if (transform)
 				undoMatrices [transform] = std::make_pair (transform -> getMatrix (), transform -> center () .getValue ());
@@ -155,7 +155,7 @@ X3DBrowserEditor::set_selection_active (const bool value)
 
 		for (const auto & child : getBrowser () -> getSelection () -> getChildren ())
 		{
-			const X3D::X3DPtr <X3D::X3DTransformNode> transform (child);
+			const X3D::X3DTransformNodePtr transform (child);
 
 			if (transform)
 			{
@@ -307,7 +307,7 @@ X3DBrowserEditor::import (const std::vector <basic::uri> & uris, const bool impo
 }
 
 void
-X3DBrowserEditor::import (const X3D::X3DPtr <X3D::Scene> & scene, const UndoStepPtr & undoStep)
+X3DBrowserEditor::import (const X3D::ScenePtr & scene, const UndoStepPtr & undoStep)
 {
 	try
 	{
@@ -461,7 +461,7 @@ X3DBrowserEditor::toString (X3D::MFNode & nodes) const
 {
 	// Find proto declarations
 
-	std::set <X3D::X3DPtr <X3D::X3DProto>>  protoDeclarations;
+	std::set <X3D::X3DProtoPtr>  protoDeclarations;
 
 	X3D::traverse (nodes, [&protoDeclarations] (X3D::SFNode & node)
 	               {
@@ -497,11 +497,11 @@ X3DBrowserEditor::toString (X3D::MFNode & nodes) const
 	                        {
 	                           try
 	                           {
-		                           if (nodeIndex .find (route -> getDestinationNode ()) not_eq nodeIndex .end ())
+	                              if (nodeIndex .find (route -> getDestinationNode ()) not_eq nodeIndex .end ())
 												routes .emplace_back (route);
 										}
-										catch (const X3D::X3DError &)
-										{ }
+	                           catch (const X3D::X3DError &)
+	                           { }
 									}
 								}
 							}
@@ -682,7 +682,7 @@ X3DBrowserEditor::removeNodes (const X3D::MFNode & nodes, const UndoStepPtr & un
 }
 
 void
-X3DBrowserEditor::removeNodeFromScene (const X3D::X3DPtr <X3D::Scene> & scene, X3D::SFNode node, const UndoStepPtr & undoStep) const
+X3DBrowserEditor::removeNodeFromScene (const X3D::ScenePtr & scene, X3D::SFNode node, const UndoStepPtr & undoStep) const
 {
 	removeNodeFromExecutionContext (scene, node, undoStep);
 
@@ -730,14 +730,14 @@ X3DBrowserEditor::removeNodeFromScene (const X3D::X3DPtr <X3D::Scene> & scene, X
 
 		using isInternal = void (X3D::X3DBaseNode::*) (const bool);
 
-		undoStep -> addUndoFunction (std::mem_fn ((isInternal) &X3D::X3DBaseNode::isInternal), child, false);
-		undoStep -> addRedoFunction (std::mem_fn ((isInternal) &X3D::X3DBaseNode::isInternal), child, true);
+		undoStep -> addUndoFunction (std::mem_fn ((isInternal) & X3D::X3DBaseNode::isInternal), child, false);
+		undoStep -> addRedoFunction (std::mem_fn ((isInternal) & X3D::X3DBaseNode::isInternal), child, true);
 		child -> isInternal (true);
 	}
 }
 
 void
-X3DBrowserEditor::removeExportedNodes (const X3D::X3DPtr <X3D::Scene> & scene, const X3D::SFNode & node, const UndoStepPtr & undoStep) const
+X3DBrowserEditor::removeExportedNodes (const X3D::ScenePtr & scene, const X3D::SFNode & node, const UndoStepPtr & undoStep) const
 {
 	// Remove exported nodes
 
@@ -775,8 +775,8 @@ X3DBrowserEditor::removeNodeFromExecutionContext (X3D::X3DExecutionContext* cons
 
 	using isInternal = void (X3D::X3DBaseNode::*) (const bool);
 
-	undoStep -> addUndoFunction (std::mem_fn ((isInternal) &X3D::X3DBaseNode::isInternal), node, false);
-	undoStep -> addRedoFunction (std::mem_fn ((isInternal) &X3D::X3DBaseNode::isInternal), node, true);
+	undoStep -> addUndoFunction (std::mem_fn ((isInternal) & X3D::X3DBaseNode::isInternal), node, false);
+	undoStep -> addRedoFunction (std::mem_fn ((isInternal) & X3D::X3DBaseNode::isInternal), node, true);
 	node -> isInternal (true);
 }
 
@@ -870,7 +870,7 @@ X3DBrowserEditor::removeImportedNodes (X3D::X3DExecutionContext* const execution
 {
 	// Remove nodes imported from node
 
-	const X3D::X3DPtr <X3D::Inline> inlineNode (node);
+	const X3D::InlinePtr inlineNode (node);
 
 	if (inlineNode)
 	{
@@ -975,13 +975,13 @@ X3DBrowserEditor::deleteRoute (X3D::X3DExecutionContext* const executionContext,
 void
 X3DBrowserEditor::removePrototypes (X3D::X3DExecutionContext* const executionContext, X3D::SFNode & node, const UndoStepPtr & undoStep) const
 {
-	std::set <X3D::X3DPtr <X3D::X3DProto>>  protoDeclarations;
+	std::set <X3D::X3DProtoPtr>  protoDeclarations;
 
 	// Find proto declaration used in node and children of node
 
 	X3D::traverse (node, [&protoDeclarations] (X3D::SFNode & child)
 	               {
-	                  const X3D::X3DPtr <X3D::X3DPrototypeInstance> instance (child);
+	                  const X3D::X3DPrototypeInstancePtr instance (child);
 
 	                  if (instance)
 								protoDeclarations .emplace (instance -> getProtoDeclaration ());
@@ -993,7 +993,7 @@ X3DBrowserEditor::removePrototypes (X3D::X3DExecutionContext* const executionCon
 
 	X3D::traverse (executionContext -> getRootNodes (), [&protoDeclarations] (X3D::SFNode & child)
 	               {
-	                  const X3D::X3DPtr <X3D::X3DPrototypeInstance> instance (child);
+	                  const X3D::X3DPrototypeInstancePtr instance (child);
 
 	                  if (instance)
 								protoDeclarations .erase (instance -> getProtoDeclaration ());
@@ -1157,7 +1157,7 @@ X3DBrowserEditor::unlinkClone (const X3D::MFNode & clones, const UndoStepPtr & u
 }
 
 void
-X3DBrowserEditor::unlinkClone (const X3D::X3DPtr <X3D::Scene> & scene,
+X3DBrowserEditor::unlinkClone (const X3D::ScenePtr & scene,
                                const X3D::SFNode & parent,
                                X3D::MFNode & mfnode,
                                const X3D::SFNode & clone,
@@ -1197,7 +1197,7 @@ X3DBrowserEditor::groupNodes (const X3D::MFNode & nodes, const UndoStepPtr & und
 {
 	const auto scene = getBrowser () -> getExecutionContext ();
 
-	const X3D::X3DPtr <X3D::X3DGroupingNode> group (scene -> createNode ("Transform"));
+	const X3D::X3DGroupingNodePtr group (scene -> createNode ("Transform"));
 
 	undoStep -> addVariables (group);
 
@@ -1207,8 +1207,8 @@ X3DBrowserEditor::groupNodes (const X3D::MFNode & nodes, const UndoStepPtr & und
 			continue;
 
 		// Adjust transformation
-		X3D::Matrix4d                                childModelViewMatrix = findModelViewMatrix (child);
-		const X3D::X3DPtr <X3D::X3DTransformNode> transform (child);
+		X3D::Matrix4d                  childModelViewMatrix = findModelViewMatrix (child);
+		const X3D::X3DTransformNodePtr transform (child);
 
 		if (transform)
 		{
@@ -1244,7 +1244,7 @@ X3DBrowserEditor::ungroupNodes (const X3D::MFNode & groups, const UndoStepPtr & 
 	{
 		try
 		{
-			const X3D::X3DPtr <X3D::X3DGroupingNode> group (node);
+			const X3D::X3DGroupingNodePtr group (node);
 
 			if (not group)
 				continue;
@@ -1264,8 +1264,8 @@ X3DBrowserEditor::ungroupNodes (const X3D::MFNode & groups, const UndoStepPtr & 
 
 				// Adjust transformation
 
-				X3D::Matrix4d                                childModelViewMatrix = findModelViewMatrix (child);
-				const X3D::X3DPtr <X3D::X3DTransformNode> transform (child);
+				X3D::Matrix4d                  childModelViewMatrix = findModelViewMatrix (child);
+				const X3D::X3DTransformNodePtr transform (child);
 
 				if (transform)
 				{
@@ -1335,8 +1335,8 @@ X3DBrowserEditor::addToGroup (const X3D::SFNode & group, const X3D::MFNode & chi
 
 			// Get group modelview matrix
 
-			X3D::Matrix4d                                        groupModelViewMatrix = findModelViewMatrix (group);
-			const X3D::X3DPtr <X3D::X3DTransformMatrix4DNode> transform (group);
+			X3D::Matrix4d                          groupModelViewMatrix = findModelViewMatrix (group);
+			const X3D::X3DTransformMatrix4DNodePtr transform (group);
 
 			if (transform)
 				groupModelViewMatrix .mult_left (transform -> getMatrix ());
@@ -1344,8 +1344,8 @@ X3DBrowserEditor::addToGroup (const X3D::SFNode & group, const X3D::MFNode & chi
 			// Adjust child transformation
 
 			{
-				X3D::Matrix4d                                childModelViewMatrix = findModelViewMatrix (child);
-				const X3D::X3DPtr <X3D::X3DTransformNode> transform (child);
+				X3D::Matrix4d                  childModelViewMatrix = findModelViewMatrix (child);
+				const X3D::X3DTransformNodePtr transform (child);
 
 				if (transform)
 				{
@@ -1406,7 +1406,7 @@ X3DBrowserEditor::detachFromGroup (X3D::MFNode children, const bool detachToLaye
 
 	for (const auto & child : children)
 	{
-		X3D::X3DPtr <X3D::X3DNode> node (child);
+		X3D::X3DNodePtr node (child);
 
 		if (not node)
 			continue;
@@ -1415,7 +1415,7 @@ X3DBrowserEditor::detachFromGroup (X3D::MFNode children, const bool detachToLaye
 
 		// Adjust transformation
 
-		const X3D::X3DPtr <X3D::X3DTransformNode> transform (node);
+		const X3D::X3DTransformNodePtr transform (node);
 
 		if (transform)
 		{
@@ -1479,7 +1479,7 @@ X3DBrowserEditor::createParentGroup (const X3D::MFNode & children, const UndoSte
 											   {
 											      // Add node to group
 
-											      const X3D::X3DPtr <X3D::X3DGroupingNode> group (scene -> createNode ("Transform"));
+											      const X3D::X3DGroupingNodePtr group (scene -> createNode ("Transform"));
 
 											      undoStep -> addVariables (group);
 
@@ -1537,7 +1537,7 @@ X3DBrowserEditor::createParentGroup (X3D::MFNode & mfnode, const X3D::SFNode & c
 	{
 		// Add node to group
 
-		const X3D::X3DPtr <X3D::X3DGroupingNode> group (scene -> createNode ("Transform"));
+		const X3D::X3DGroupingNodePtr group (scene -> createNode ("Transform"));
 
 		undoStep -> addVariables (group);
 
@@ -1565,7 +1565,7 @@ X3DBrowserEditor::translateSelection (const X3D::Vector3f & translation, const b
 {
 	for (const auto & node : basic::reverse_adapter (getBrowser () -> getSelection () -> getChildren ()))
 	{
-		X3D::X3DPtr <X3D::X3DTransformNode> transform (node);
+		X3D::X3DTransformNodePtr transform (node);
 
 		if (transform)
 		{
@@ -1592,7 +1592,7 @@ X3DBrowserEditor::translateSelection (const X3D::Vector3f & translation, const b
 void
 X3DBrowserEditor::saveMatrix (const X3D::SFNode & node, const UndoStepPtr & undoStep) const
 {
-	X3D::X3DPtr <X3D::X3DTransformNode> transform (node);
+	X3D::X3DTransformNodePtr transform (node);
 
 	if (transform)
 	{
@@ -1603,7 +1603,7 @@ X3DBrowserEditor::saveMatrix (const X3D::SFNode & node, const UndoStepPtr & undo
 }
 
 void
-X3DBrowserEditor::setMatrix (const X3D::X3DPtr <X3D::X3DTransformNode> & transform, const X3D::Matrix4d & matrix, const UndoStepPtr & undoStep) const
+X3DBrowserEditor::setMatrix (const X3D::X3DTransformNodePtr & transform, const X3D::Matrix4d & matrix, const UndoStepPtr & undoStep) const
 {
 	undoStep -> addUndoFunction (std::mem_fn (&X3D::X3DTransformNode::setMatrix),
 	                             transform,

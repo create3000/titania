@@ -50,6 +50,8 @@
 
 #include "RouteArray.h"
 
+#include "../Routing/Route.h"
+
 namespace titania {
 namespace X3D {
 
@@ -57,6 +59,6 @@ namespace X3D {
 
 } // X3D
 
-template class basic::indexed_multimap <std::pair <X3D::X3DFieldDefinition*, X3D::X3DFieldDefinition*>, X3D::X3DPtr <X3D::Route>>;
+template class basic::indexed_multimap <std::pair <X3D::X3DFieldDefinition*, X3D::X3DFieldDefinition*>, X3D::RoutePtr>;
 
 } // titania

@@ -54,6 +54,7 @@
 #include "../Handles/X3DHandleObject.h"
 
 #include "../Components/Grouping/Transform.h"
+#include "../Types/Pointer.h"
 
 namespace titania {
 namespace X3D {
@@ -276,7 +277,7 @@ private:
 	///  @name Members
 
 	Transform* const transform;
-	X3DPtr <Scene>   scene;
+	ScenePtr         scene;
 
 	Matrix4d parentMatrix;
 	Matrix4d matrix;

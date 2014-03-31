@@ -59,19 +59,17 @@
 #include "../Execution/NamedNodeIndex.h"
 #include "../Prototype/ExternProtoArray.h"
 #include "../Prototype/ProtoArray.h"
+#include "../Routing/Route.h"
 #include "../Routing/RouteArray.h"
 #include "../Types/Struct.h"
 
 #include <Titania/Basic/URI.h>
 #include <map>
-#include <mutex>
 
 namespace titania {
 namespace X3D {
 
-class Inline;
 class X3DProto;
-class X3DBrowser;
 class X3DPrototypeInstance;
 
 class X3DExecutionContext :
@@ -191,7 +189,7 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	X3DPtr <X3DPrototypeInstance>
+	X3DPrototypeInstancePtr
 	createProtoInstance (const std::string &)
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_X3D>,
@@ -265,8 +263,8 @@ public:
 
 	///  @name Imported nodes handling
 
-	const X3DPtr <ImportedNode> &
-	addImportedNode (const X3DPtr <Inline> &, const std::string &, std::string = "")
+	const ImportedNodePtr &
+	addImportedNode (const InlinePtr &, const std::string &, std::string = "")
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_NAME>,
 	       Error <NODE_IN_USE>,
@@ -280,7 +278,7 @@ public:
 	       Error <DISPOSED>);
 
 	void
-	updateImportedNode (const X3DPtr <Inline> &, const std::string &, std::string = "")
+	updateImportedNode (const InlinePtr &, const std::string &, std::string = "")
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_NAME>,
 	       Error <URL_UNAVAILABLE>,
@@ -301,7 +299,7 @@ public:
 
 	///  @name Proto declaration handling
 
-	const X3DPtr <Proto> &
+	const ProtoPtr &
 	addProtoDeclaration (const std::string &, const FieldDefinitionArray &)
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -314,12 +312,12 @@ public:
 	{ protos .erase (name); }
 
 	void
-	updateProtoDeclaration (const std::string &, const X3DPtr <Proto> &)
+	updateProtoDeclaration (const std::string &, const ProtoPtr &)
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	const X3DPtr <Proto> &
+	const ProtoPtr &
 	getProtoDeclaration (const std::string &)
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -341,7 +339,7 @@ public:
 
 	///  @name Exterproto declaration handling
 
-	const X3DPtr <ExternProto> &
+	const ExternProtoPtr &
 	addExternProtoDeclaration (const std::string &, const FieldDefinitionArray &, const MFString &)
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -354,12 +352,12 @@ public:
 	{ externProtos .erase (name); }
 
 	void
-	updateExternProtoDeclaration (const std::string &, const X3DPtr <ExternProto> &)
+	updateExternProtoDeclaration (const std::string &, const ExternProtoPtr &)
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	const X3DPtr <ExternProto> &
+	const ExternProtoPtr &
 	getExternProtoDeclaration (const std::string &)
 	throw (Error <INVALID_NAME>,
 	       Error <URL_UNAVAILABLE>,
@@ -388,7 +386,7 @@ public:
 
 	///  @name Dynamic route node handling
 
-	const X3DPtr <Route> &
+	const RoutePtr &
 	addRoute (const SFNode &, const std::string &,
 	          const SFNode &, const std::string &)
 	throw (Error <INVALID_NODE>,
@@ -508,12 +506,12 @@ private:
 
 	///  @name Operations
 
-	X3DPtr <Proto>
+	ProtoPtr
 	createProtoDeclaration (const std::string &, const FieldDefinitionArray &)
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
-	X3DPtr <ExternProto>
+	ExternProtoPtr
 	createExternProtoDeclaration (const std::string &, const FieldDefinitionArray &, const MFString &)
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -66,6 +66,7 @@
 #include "../Execution/BindableNodeStack.h"
 #include "../Execution/World.h"
 #include "../JavaScript/X3DJavaScriptEngine.h"
+#include "../Types/Pointer.h"
 
 #include "../Rendering/X3DRenderer.h"
 #include "../Routing/Router.h"
@@ -167,7 +168,7 @@ public:
 	getViewport () const
 	{ return viewport; }
 
-	const X3DPtr <X3DLayerNode> &
+	const X3DLayerNodePtr &
 	getActiveLayer () const
 	{ return activeLayer; }
 
@@ -187,7 +188,7 @@ public:
 
 	///  @name JavaScript handling
 
-	const X3DPtr <X3DJavaScriptEngine> &
+	const X3DJavaScriptEnginePtr &
 	getJavaScriptEngine () const
 	{ return javaScriptEngine; }
 
@@ -211,15 +212,15 @@ public:
 
 	virtual
 	void
-	setViewer (ViewerType value)
+	setViewer (const ViewerType value)
 	{ viewer = value; }
 
 	virtual
-	const X3DScalar <ViewerType> &
+	const SFEnum <ViewerType> &
 	getViewer () const
 	{ return viewer; }
 
-	const X3DArrayField <X3DScalar <ViewerType>>   &
+	const MFEnum <ViewerType> &
 	getAvailableViewers () const
 	{ return availableViewers; }
 
@@ -315,19 +316,19 @@ public:
 	void
 	leaveNotifyEvent ();
 
-	const X3DPtr <Selection> &
+	const SelectionPtr &
 	getSelection ()
 	{ return selection; }
 
 	///  @name Notification handling
 
-	const X3DPtr <Notification> &
+	const NotificationPtr &
 	getNotification () const
 	{ return notification; }
 
 	///  @name Console handling
 
-	const X3DPtr <Console> &
+	const ConsolePtr &
 	getConsole () const
 	{ return console; }
 
@@ -372,10 +373,10 @@ public:
 
 protected:
 
-	X3DPtr <RenderingProperties> renderingProperties;
-	X3DPtr <BrowserProperties>   browserProperties;
-	X3DPtr <BrowserOptions>      browserOptions;
-	X3DPtr <X3DJavaScriptEngine> javaScriptEngine;
+	RenderingPropertiesPtr renderingProperties;
+	BrowserPropertiesPtr   browserProperties;
+	BrowserOptionsPtr      browserOptions;
+	X3DJavaScriptEnginePtr javaScriptEngine;
 
 	///  @name Constructor
 
@@ -386,7 +387,7 @@ protected:
 	initialize () override;
 
 	virtual
-	const X3DPtr <World> &
+	const WorldPtr &
 	getWorld () const = 0;
 
 	NavigationInfo*
@@ -450,12 +451,12 @@ private:
 	TextureArray     textureStages;
 	bool             texture;
 
-	X3DPtr <X3DLayerNode>                   activeLayer;
-	NavigationInfo*                         activeNavigationInfo;
-	SFTime                                  activeNavigationInfoChanged;
-	X3DScalar <ViewerType>                  viewer;
-	X3DArrayField <X3DScalar <ViewerType>>  availableViewers;
-	SFTime                                  activeViewpointChanged;
+	X3DLayerNodePtr     activeLayer;
+	NavigationInfo*     activeNavigationInfo;
+	SFTime              activeNavigationInfoChanged;
+	SFEnum <ViewerType> viewer;
+	MFEnum <ViewerType> availableViewers;
+	SFTime              activeViewpointChanged;
 
 	X3DKeyDeviceSensorNode* keyDeviceSensorNode;
 	SFTime                  keyDeviceSensorNodeOutput;
@@ -469,7 +470,7 @@ private:
 	std::vector <NodeSet> enabledSensors;
 	MFNode                overSensors;
 	MFNode                activeSensors;
-	X3DPtr <Selection>    selection;
+	SelectionPtr          selection;
 
 	time_type      changedTime;
 	Speed <double> currentSpeed;
@@ -479,8 +480,8 @@ private:
 	std::deque <std::mutex> downloadMutexes;
 	std::mutex              downloadMutex;
 
-	X3DPtr <Notification> notification;
-	X3DPtr <Console>      console;
+	NotificationPtr notification;
+	ConsolePtr      console;
 
 };
 

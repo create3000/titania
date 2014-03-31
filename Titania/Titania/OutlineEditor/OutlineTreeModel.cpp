@@ -58,7 +58,7 @@
 namespace titania {
 namespace puck {
 
-OutlineTreeModel::OutlineTreeModel (BrowserWindow* const browserWindow, const X3D::X3DPtr <X3D::X3DExecutionContext> & executionContext) :
+OutlineTreeModel::OutlineTreeModel (BrowserWindow* const browserWindow, const X3D::X3DExecutionContextPtr & executionContext) :
 	Glib::ObjectBase (typeid (OutlineTreeModel)),
 	X3DBaseInterface (browserWindow, browserWindow -> getBrowser ()),
 	    Glib::Object (),
@@ -71,7 +71,7 @@ OutlineTreeModel::OutlineTreeModel (BrowserWindow* const browserWindow, const X3
 }
 
 Glib::RefPtr <OutlineTreeModel>
-OutlineTreeModel::create (BrowserWindow* const browserWindow, const X3D::X3DPtr <X3D::X3DExecutionContext> & executionContext)
+OutlineTreeModel::create (BrowserWindow* const browserWindow, const X3D::X3DExecutionContextPtr & executionContext)
 {
 	//__LOG__ << std::endl;
 	return Glib::RefPtr <OutlineTreeModel> (new OutlineTreeModel (browserWindow, executionContext));
@@ -462,7 +462,7 @@ OutlineTreeModel::iter_has_child_vfunc (const iterator & iter) const
 		}
 		case OutlineIterType::X3DBaseNode:
 		{
-			const auto sfnode = static_cast <X3D::SFNode*> (get_object (iter));
+			const auto & sfnode = *static_cast <X3D::SFNode*> (get_object (iter));
 
 			// Prevent self referencing traversal
 
@@ -470,16 +470,16 @@ OutlineTreeModel::iter_has_child_vfunc (const iterator & iter) const
 			{
 				if (parent -> get_type () == OutlineIterType::X3DBaseNode)
 				{
-					const auto parent_sfnode = static_cast <X3D::SFNode*> (parent -> get_object ());
+					const auto & parent_sfnode = *static_cast <X3D::SFNode*> (parent -> get_object ());
 
-					if (*sfnode == *parent_sfnode)
+					if (sfnode == parent_sfnode)
 						return 0;
 				}
 			}
 
 			// Test SFNode
 
-			if (*sfnode)
+			if (sfnode)
 				return sfnode -> getFieldDefinitions () .size ();
 
 			return 0;

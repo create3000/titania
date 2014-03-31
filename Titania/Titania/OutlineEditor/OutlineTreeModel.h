@@ -110,11 +110,11 @@ public:
 
 	static
 	Glib::RefPtr <OutlineTreeModel>
-	create (BrowserWindow* const, const X3D::X3DPtr <X3D::X3DExecutionContext> &);
+	create (BrowserWindow* const, const X3D::X3DExecutionContextPtr &);
 	
 	///  @name Member access
 
-	const X3D::X3DPtr <X3D::X3DExecutionContext> &
+	const X3D::X3DExecutionContextPtr &
 	get_execution_context () const
 	{ return executionContext; }
 
@@ -176,7 +176,7 @@ public:
 
 private:
 
-	OutlineTreeModel (BrowserWindow* const, const X3D::X3DPtr <X3D::X3DExecutionContext> &);
+	OutlineTreeModel (BrowserWindow* const, const X3D::X3DExecutionContextPtr &);
 
 	bool
 	iter_is_valid (const iterator & iter) const;
@@ -278,7 +278,7 @@ private:
 	typedef Gtk::TreeModelColumn <OutlineTreeData*> DataColumn;
 	typedef Gtk::TreeModelColumn <bool>             SelectedColumn;
 
-	X3D::X3DPtr <X3D::X3DExecutionContext> executionContext;
+	X3D::X3DExecutionContextPtr executionContext;
 
 	DataColumn     data_column;
 	SelectedColumn selected_column;

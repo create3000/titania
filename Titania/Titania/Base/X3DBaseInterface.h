@@ -71,7 +71,7 @@ public:
 	getBrowserWindow () const
 	{ return browserWindow; }
 
-	const X3D::X3DPtr <X3D::Browser> &
+	const X3D::BrowserPtr &
 	getBrowser () const
 	{ return browser; }
 
@@ -85,7 +85,7 @@ protected:
 
 	///  @name Construction
 
-	X3DBaseInterface (BrowserWindow* const, const X3D::X3DPtr <X3D::Browser> &);
+	X3DBaseInterface (BrowserWindow* const, const X3D::BrowserPtr &);
 
 	X3DBaseInterface ()
 	{ }
@@ -96,7 +96,7 @@ private:
 	///  @name Members
 
 	BrowserWindow*                browserWindow;
-	X3D::X3DPtr <X3D::Browser> browser;
+	X3D::BrowserPtr browser;
 
 };
 

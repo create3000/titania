@@ -68,11 +68,11 @@ public:
 
 	/// @name Construction
 
-	BrowserWindow (const X3D::X3DPtr <X3D::Browser> &, int, char**);
+	BrowserWindow (const X3D::BrowserPtr &, int, char**);
 
 	/// @name Widgets
 	
-	const X3D::X3DPtr <X3D::Browser> &
+	const X3D::BrowserPtr &
 	getBrowserSurface () const
 	{ return browserSurface; }
 
@@ -432,7 +432,7 @@ private:
 	set_viewer (X3D::ViewerType);
 
 	void
-	set_available_viewers (const X3D::X3DArrayField <X3D::X3DScalar <X3D::ViewerType>> &);
+	set_available_viewers (const X3D::MFEnum <X3D::ViewerType> &);
 
 	virtual
 	void
@@ -477,7 +477,7 @@ private:
 
 	///  @name Members
 
-	const X3D::X3DPtr <X3D::Browser> browserSurface;
+	const X3D::BrowserPtr browserSurface;
 
 	MotionBlurEditor motionBlurEditor;
 	LibraryView      libraryView;

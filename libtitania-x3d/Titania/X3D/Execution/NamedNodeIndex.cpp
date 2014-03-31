@@ -50,6 +50,8 @@
 
 #include "NamedNodeIndex.h"
 
+#include "../Execution/NamedNode.h"
+
 namespace titania {
 namespace X3D {
 
@@ -58,4 +60,4 @@ namespace X3D {
 } // X3D
 } // titania
 
-template class std::map <std::string, titania::X3D::X3DPtr <titania::X3D::NamedNode>> ;
+template class std::map <std::string, titania::X3D::NamedNodePtr> ;

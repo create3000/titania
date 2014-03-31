@@ -60,7 +60,7 @@
 namespace titania {
 namespace puck {
 
-X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DPtr <X3D::X3DExecutionContext> & executionContext) :
+X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DExecutionContextPtr & executionContext) :
 	              Gtk::TreeView (),
 	X3DOutlineTreeViewInterface (get_ui ("OutlineTreeView.ui"), gconf_dir ()),
 	               treeObserver (new OutlineTreeObserver (this)),
@@ -307,7 +307,7 @@ X3DOutlineTreeView::get_alt_key ()
 }
 
 void
-X3DOutlineTreeView::set_execution_context (const X3D::X3DPtr <X3D::X3DExecutionContext> & executionContext)
+X3DOutlineTreeView::set_execution_context (const X3D::X3DExecutionContextPtr & executionContext)
 {
 	//__LOG__ << std::endl;
 

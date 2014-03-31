@@ -78,7 +78,7 @@ public:
 	{ return model; }
 
 	void
-	set_execution_context (const X3D::X3DPtr <X3D::X3DExecutionContext> &);
+	set_execution_context (const X3D::X3DExecutionContextPtr &);
 
 	///  @name Iter access
 
@@ -133,7 +133,7 @@ protected:
 
 	///  @name Construction
 
-	X3DOutlineTreeView (const X3D::X3DPtr <X3D::X3DExecutionContext> &);
+	X3DOutlineTreeView (const X3D::X3DExecutionContextPtr &);
 
 	///  @name Member access
 

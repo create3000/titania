@@ -51,19 +51,19 @@
 #ifndef __TITANIA_X3D_EXECUTION_NAMED_NODE_INDEX_H__
 #define __TITANIA_X3D_EXECUTION_NAMED_NODE_INDEX_H__
 
-#include "../Execution/NamedNode.h"
-#include "../Fields/X3DPtr.h"
+#include "../Types/Pointer.h"
+
 #include <map>
 #include <string>
 
 namespace titania {
 namespace X3D {
 
-using NamedNodeIndex = std::map <std::string, X3DPtr <NamedNode>> ;
+using NamedNodeIndex = std::map <std::string, NamedNodePtr> ;
 
 } // X3D
 } // titania
 
-extern template class std::map <std::string, titania::X3D::X3DPtr <titania::X3D::NamedNode>>;
+extern template class std::map <std::string, titania::X3D::NamedNodePtr>;
 
 #endif

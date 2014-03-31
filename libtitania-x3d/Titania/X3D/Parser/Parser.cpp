@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -54,6 +54,8 @@
 #include "../Browser/X3DBrowser.h"
 #include "../Components/Core/X3DPrototypeInstance.h"
 #include "../Components/Networking/Inline.h"
+#include "../Execution/ExportedNode.h"
+#include "../Execution/ImportedNode.h"
 #include "../Parser/Filter.h"
 #include "../Parser/Grammar.h"
 #include "../Prototype/ExternProto.h"
@@ -525,7 +527,7 @@ Parser::exportStatement ()
 			else
 				_exportedNodeNameId = _localNodeNameId;
 
-			const X3DPtr <ExportedNode> & _exportedNode = scene -> addExportedNode (_exportedNodeNameId, node);
+			const ExportedNodePtr & _exportedNode = scene -> addExportedNode (_exportedNodeNameId, node);
 
 			_exportedNode -> addComments (getComments ());
 
@@ -551,8 +553,8 @@ Parser::importStatement ()
 
 		if (inlineNodeNameId (_inlineNodeNameId))
 		{
-			const SFNode             _namedNode  = getExecutionContext () -> getNamedNode (_inlineNodeNameId);
-			const X3DPtr <Inline> _inlineNode = x3d_cast <Inline*> (_namedNode);
+			const SFNode    _namedNode  = getExecutionContext () -> getNamedNode (_inlineNodeNameId);
+			const InlinePtr _inlineNode = x3d_cast <Inline*> (_namedNode);
 
 			if (_inlineNode)
 			{
@@ -574,7 +576,7 @@ Parser::importStatement ()
 								throw Error <INVALID_X3D> ("No name given after AS.");
 						}
 
-						const X3DPtr <ImportedNode> & _importedNode = getExecutionContext () -> addImportedNode (_inlineNode, _exportedNodeNameId, _nodeNameId);
+						const ImportedNodePtr & _importedNode = getExecutionContext () -> addImportedNode (_inlineNode, _exportedNodeNameId, _nodeNameId);
 
 						_importedNode -> addComments (getComments ());
 
@@ -806,7 +808,7 @@ Parser::proto ()
 
 					if (Grammar::OpenBrace (istream))
 					{
-						const X3DPtr <Proto> & _proto = getExecutionContext () -> addProtoDeclaration (_nodeTypeId, _interfaceDeclarations);
+						const ProtoPtr & _proto = getExecutionContext () -> addProtoDeclaration (_nodeTypeId, _interfaceDeclarations);
 
 						pushExecutionContext (_proto);
 
@@ -1046,7 +1048,7 @@ Parser::externproto ()
 
 					if (URLList (&_URLList))
 					{
-						const X3DPtr <ExternProto> & _externProto = getExecutionContext () -> addExternProtoDeclaration (_nodeTypeId, _externInterfaceDeclarations, _URLList);
+						const ExternProtoPtr & _externProto = getExecutionContext () -> addExternProtoDeclaration (_nodeTypeId, _externInterfaceDeclarations, _URLList);
 
 						_externProto -> addInterfaceComments (_interfaceComments);
 						_externProto -> addComments (_comments);
@@ -1216,11 +1218,11 @@ Parser::routeStatement ()
 
 					try
 					{
-						_eventOut = _fromNode .getField (_eventOutId);
+						_eventOut = _fromNode -> getField (_eventOutId);
 					}
 					catch (const Error <INVALID_NAME> &)
 					{
-						throw Error <INVALID_X3D> ("Bad ROUTE specification: Unknown eventOut '" + _eventOutId + "' in node '" + _fromNodeId + "' class " + _fromNode .getNodeTypeName ());
+						throw Error <INVALID_X3D> ("Bad ROUTE specification: Unknown eventOut '" + _eventOutId + "' in node '" + _fromNodeId + "' class " + _fromNode -> getTypeName ());
 					}
 
 					comments ();
@@ -1245,16 +1247,16 @@ Parser::routeStatement ()
 
 									try
 									{
-										_eventIn = _toNode .getField (_eventInId);
+										_eventIn = _toNode -> getField (_eventInId);
 									}
 									catch (const Error <INVALID_NAME> &)
 									{
-										throw Error <INVALID_X3D> ("Bad ROUTE specification: Unknown eventIn '" + _eventInId + "' in node '" + _toNodeId + "' class " + _toNode .getNodeTypeName ());
+										throw Error <INVALID_X3D> ("Bad ROUTE specification: Unknown eventIn '" + _eventInId + "' in node '" + _toNodeId + "' class " + _toNode -> getTypeName ());
 									}
 
 									if (_eventOut -> getType () == _eventIn -> getType ())
 									{
-										const X3DPtr <Route> & _route = getExecutionContext () -> addRoute (_fromNode, _eventOutId, _toNode, _eventInId);
+										const RoutePtr & _route = getExecutionContext () -> addRoute (_fromNode, _eventOutId, _toNode, _eventInId);
 
 										_route -> addComments (getComments ());
 

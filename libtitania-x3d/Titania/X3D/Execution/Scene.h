@@ -99,7 +99,7 @@ public:
 	///  @name Import handling
 
 	void
-	importScene (const X3DPtr <Scene> &)
+	importScene (const ScenePtr &)
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -122,13 +122,13 @@ private:
 	///  @name Members
 
 	void
-	updateNamedNodes (const X3DPtr <Scene> &);
+	updateNamedNodes (const ScenePtr &);
 
 	std::string
-	getUniqueName (const X3DPtr <Scene> &, std::string) const;
+	getUniqueName (const ScenePtr &, std::string) const;
 
 	std::string
-	getUniqueName (const X3DPtr <Scene> &) const;
+	getUniqueName (const ScenePtr &) const;
 
 };
 

@@ -641,7 +641,7 @@ jsX3DExecutionContext::addRoute (JSContext* context, uintN argc, jsval* vp)
 
 		try
 		{
-			const X3DPtr <Route> & route = script -> getExecutionContext () -> addRoute (fromNode, JS_GetString (context, fromEventOut),
+			const RoutePtr & route = script -> getExecutionContext () -> addRoute (fromNode, JS_GetString (context, fromEventOut),
 			                                                                                toNode,   JS_GetString (context, toEventIn));
 
 			return jsX3DRoute::create (context, route, &JS_RVAL (context, vp));
@@ -675,7 +675,7 @@ jsX3DExecutionContext::deleteRoute (JSContext* context, uintN argc, jsval* vp)
 		if (JS_InstanceOfError (context, oRoute, jsX3DRoute::getClass ()))
 			return JS_FALSE;
 
-		auto & route = *static_cast <X3DPtr <Route>*> (JS_GetPrivate (context, oRoute));
+		auto & route = *static_cast <RoutePtr*> (JS_GetPrivate (context, oRoute));
 
 		try
 		{

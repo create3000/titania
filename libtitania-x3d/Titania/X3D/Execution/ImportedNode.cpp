@@ -62,7 +62,7 @@ const std::string ImportedNode::typeName       = "ImportedNode";
 const std::string ImportedNode::containerField = "importedNode";
 
 ImportedNode::ImportedNode (X3DExecutionContext* const executionContext,
-                            const X3DPtr <Inline> & _inlineNode,
+                            const InlinePtr & _inlineNode,
                             const std::string & exportedName,
                             const std::string & importedName)
 throw (Error <INVALID_NAME>,
@@ -114,12 +114,12 @@ throw (Error <INVALID_NAME>,
 	}
 }
 
-X3DPtr <Inline>
+InlinePtr
 ImportedNode::getInlineNode () const
 throw (Error <DISPOSED>)
 {
 	if (inlineNode and inlineNode -> getReferenceCount ())
-		return X3DPtr <Inline> (inlineNode);
+		return InlinePtr (inlineNode);
 
 	throw Error <DISPOSED> ("ImportedNode: Inline node is already disposed.");
 }

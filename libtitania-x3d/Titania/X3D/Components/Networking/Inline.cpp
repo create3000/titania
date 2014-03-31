@@ -134,7 +134,7 @@ Inline::initialize ()
 }
 
 void
-Inline::setSceneAsync (X3DPtr <Scene> && value)
+Inline::setSceneAsync (ScenePtr && value)
 {
 	if (value)
 	{
@@ -149,7 +149,7 @@ Inline::setSceneAsync (X3DPtr <Scene> && value)
 }
 
 void
-Inline::setScene (X3DPtr <Scene> && value)
+Inline::setScene (ScenePtr && value)
 {
 	if (scene)
 		scene -> getRootNodes () .removeInterest (group -> children ());
@@ -199,7 +199,7 @@ throw (Error <INVALID_NAME>,
 			{
 				if (not scene)
 				{
-					X3DPtr <Scene> scene = getBrowser () -> createScene ();
+					ScenePtr scene = getBrowser () -> createScene ();
 
 					Loader (getExecutionContext ()) .parseIntoScene (scene, url ());
 

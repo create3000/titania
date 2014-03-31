@@ -91,25 +91,25 @@ namespace titania {
 namespace X3D {
 
 // Inhibit implicit instantiation for required instantiations.
-extern template class X3DField <Array <SFBool>>;
-extern template class X3DField <Array <SFColor>>;
-extern template class X3DField <Array <SFColorRGBA>>;
-extern template class X3DField <Array <SFDouble>>;
-extern template class X3DField <Array <SFFloat>>;
-extern template class X3DField <Array <SFImage>>;
-extern template class X3DField <Array <SFMatrix3d>>;
-extern template class X3DField <Array <SFMatrix3f>>;
-extern template class X3DField <Array <SFMatrix4d>>;
-extern template class X3DField <Array <SFMatrix4f>>;
-extern template class X3DField <Array <SFRotation>>;
-extern template class X3DField <Array <SFString>>;
-extern template class X3DField <Array <SFTime>>;
-extern template class X3DField <Array <SFVec2d>>;
-extern template class X3DField <Array <SFVec2f>>;
-extern template class X3DField <Array <SFVec3d>>;
-extern template class X3DField <Array <SFVec3f>>;
-extern template class X3DField <Array <SFVec4d>>;
-extern template class X3DField <Array <SFVec4f>>;
+extern template class X3DField <Array <SFBool>> ;
+extern template class X3DField <Array <SFColor>> ;
+extern template class X3DField <Array <SFColorRGBA>> ;
+extern template class X3DField <Array <SFDouble>> ;
+extern template class X3DField <Array <SFFloat>> ;
+extern template class X3DField <Array <SFImage>> ;
+extern template class X3DField <Array <SFMatrix3d>> ;
+extern template class X3DField <Array <SFMatrix3f>> ;
+extern template class X3DField <Array <SFMatrix4d>> ;
+extern template class X3DField <Array <SFMatrix4f>> ;
+extern template class X3DField <Array <SFRotation>> ;
+extern template class X3DField <Array <SFString>> ;
+extern template class X3DField <Array <SFTime>> ;
+extern template class X3DField <Array <SFVec2d>> ;
+extern template class X3DField <Array <SFVec2f>> ;
+extern template class X3DField <Array <SFVec3d>> ;
+extern template class X3DField <Array <SFVec3f>> ;
+extern template class X3DField <Array <SFVec4d>> ;
+extern template class X3DField <Array <SFVec4f>> ;
 
 template <>
 void
@@ -137,25 +137,28 @@ extern template class X3DArrayField <SFVec4d>;
 extern template class X3DArrayField <SFVec4f>;
 
 // Typedefs for standard X3DArrayFields
-typedef X3DArrayField <SFBool>      MFBool;
-typedef X3DArrayField <SFColor>     MFColor;
-typedef X3DArrayField <SFColorRGBA> MFColorRGBA;
-typedef X3DArrayField <SFDouble>    MFDouble;
-typedef X3DArrayField <SFFloat>     MFFloat;
-typedef X3DArrayField <SFImage>     MFImage;
-typedef X3DArrayField <SFMatrix3d>  MFMatrix3d;
-typedef X3DArrayField <SFMatrix3f>  MFMatrix3f;
-typedef X3DArrayField <SFMatrix4d>  MFMatrix4d;
-typedef X3DArrayField <SFMatrix4f>  MFMatrix4f;
-typedef X3DArrayField <SFRotation>  MFRotation;
-typedef X3DArrayField <SFString>    MFString;
-typedef X3DArrayField <SFTime>      MFTime;
-typedef X3DArrayField <SFVec2d>     MFVec2d;
-typedef X3DArrayField <SFVec2f>     MFVec2f;
-typedef X3DArrayField <SFVec3d>     MFVec3d;
-typedef X3DArrayField <SFVec3f>     MFVec3f;
-typedef X3DArrayField <SFVec4d>     MFVec4d;
-typedef X3DArrayField <SFVec4f>     MFVec4f;
+using MFBool      = X3DArrayField <SFBool>;
+using MFColor     = X3DArrayField <SFColor>;
+using MFColorRGBA = X3DArrayField <SFColorRGBA>;
+using MFDouble    = X3DArrayField <SFDouble>;
+using MFFloat     = X3DArrayField <SFFloat>;
+using MFImage     = X3DArrayField <SFImage>;
+using MFMatrix3d  = X3DArrayField <SFMatrix3d>;
+using MFMatrix3f  = X3DArrayField <SFMatrix3f>;
+using MFMatrix4d  = X3DArrayField <SFMatrix4d>;
+using MFMatrix4f  = X3DArrayField <SFMatrix4f>;
+using MFRotation  = X3DArrayField <SFRotation>;
+using MFString    = X3DArrayField <SFString>;
+using MFTime      = X3DArrayField <SFTime>;
+using MFVec2d     = X3DArrayField <SFVec2d>;
+using MFVec2f     = X3DArrayField <SFVec2f>;
+using MFVec3d     = X3DArrayField <SFVec3d>;
+using MFVec3f     = X3DArrayField <SFVec3f>;
+using MFVec4d     = X3DArrayField <SFVec4d>;
+using MFVec4f     = X3DArrayField <SFVec4f>;
+
+template <class Type>
+using MFEnum = X3DArrayField <SFEnum <Type>>;
 
 } // X3D
 } // titania

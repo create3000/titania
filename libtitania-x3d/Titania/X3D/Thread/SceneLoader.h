@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_THREAD_SCENE_LOADER_H__
 
 #include "../Fields.h"
+#include "../Types/Pointer.h"
 
 #include <atomic>
 #include <future>
@@ -68,7 +69,7 @@ class SceneLoader :
 {
 public:
 
-	typedef std::function <void (X3DPtr <Scene>&&)> Callback;
+	typedef std::function <void (ScenePtr &&)> Callback;
 
 	SceneLoader (X3DExecutionContext* const, const MFString &, const Callback &);
 
@@ -85,20 +86,20 @@ public:
 
 private:
 
-	std::future <X3DPtr <Scene>> 
+	std::future <ScenePtr>
 	getFuture (const MFString &);
 
-	X3DPtr <Scene>
+	ScenePtr
 	loadAsync (const MFString &);
 
 	void
 	prepareEvents ();
 
-	X3DBrowser* const             browser;
-	X3DExecutionContext* const    executionContext;
-	Callback                      callback;
-	std::atomic <bool>            running;
-	std::future <X3DPtr <Scene>>  future;
+	X3DBrowser* const          browser;
+	X3DExecutionContext* const executionContext;
+	Callback                   callback;
+	std::atomic <bool>         running;
+	std::future <ScenePtr>     future;
 
 };
 

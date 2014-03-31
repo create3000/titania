@@ -471,7 +471,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Thread/Texture3DLoader.cpp \
 	Titania/X3D/Thread/TextureLoader.cpp \
 	Titania/X3D/Types/Image.cpp \
-	Titania/X3D/Types/Nodes.cpp
+	Titania/X3D/Types/Pointer.cpp
 
 libtitania_x3d_la_LIBADD = $(TITANIA_X3D_LIBS)  \
 	$(TITANIA_OPENGL_SURFACE_LIBS) \

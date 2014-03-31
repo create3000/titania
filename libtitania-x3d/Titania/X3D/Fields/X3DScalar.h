@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -439,10 +439,13 @@ extern template class X3DScalar <double>;
 extern template class X3DScalar <float>;
 extern template class X3DScalar <int32_t>;
 
-typedef X3DScalar <bool>    SFBool;
-typedef X3DScalar <double>  SFDouble;
-typedef X3DScalar <float>   SFFloat;
-typedef X3DScalar <int32_t> SFInt32;
+using SFBool   = X3DScalar <bool>;
+using SFDouble = X3DScalar <double>;
+using SFFloat  = X3DScalar <float>;
+using SFInt32  = X3DScalar <int32_t>;
+
+template <class Type>
+using SFEnum = X3DScalar <Type>;
 
 } // X3D
 } // titania

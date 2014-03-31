@@ -107,7 +107,7 @@
     </ProtoInstance>
     <Transform DEF='Box'
         translation='1.40843 1.10727 0.193803'
-        rotation='0 0 1 3.37334'
+        rotation='0 0 1 2.04041'
         scale='0.2 0.2 0.2'>
       <Transform>
         <Shape>

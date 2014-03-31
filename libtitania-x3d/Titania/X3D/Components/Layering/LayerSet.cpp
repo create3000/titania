@@ -107,7 +107,7 @@ LayerSet::initialize ()
 }
 
 void
-LayerSet::setLayer0 (const X3DPtr <X3DLayerNode> & value)
+LayerSet::setLayer0 (const X3DLayerNodePtr & value)
 {
 	layer0       = value;
 	children [0] = value;
