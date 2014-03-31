@@ -66,8 +66,7 @@
         </ProtoInstance>
       </ProtoBody>
     </ProtoDeclare>
-    <NavigationInfo DEF='None'
-        type='"LOOKAT"'/>
+    <NavigationInfo DEF='None'/>
     <Background DEF='Sunset'
         skyAngle='0.8, 1.2, 1.5, 1.55, 1.5708'
         skyColor='0.0196078 0.0196078 0.0196078, 0.054902 0.0705882 0.0862745, 0.203922 0.243137 0.313726, 0.541176 0.462745 0.435294, 0.745098 0.541176 0.376471, 0.890196 0.537255 0.172549'
@@ -100,25 +99,25 @@
     </Transform>
     <Group>
       <ProximitySensor USE='_1'/>
+      <Transform DEF='Box'
+          translation='1.40843 1.10727 0.193803'
+          rotation='0 0 1 2.45116'
+          scale='0.2 0.2 0.2'>
+        <Transform>
+          <Shape>
+            <Appearance>
+              <Material
+                  diffuseColor='0.8 0 0'/>
+            </Appearance>
+            <Box/>
+          </Shape>
+        </Transform>
+      </Transform>
     </Group>
     <ProtoInstance name='Rotor' DEF='Rotor'>
       <fieldValue name='cycleInterval' value='10'/>
       <fieldValue name='loop' value='true'/>
     </ProtoInstance>
-    <Transform DEF='Box'
-        translation='1.40843 1.10727 0.193803'
-        rotation='0 0 1 2.04041'
-        scale='0.2 0.2 0.2'>
-      <Transform>
-        <Shape>
-          <Appearance>
-            <Material
-                diffuseColor='0.8 0 0'/>
-          </Appearance>
-          <Box/>
-        </Shape>
-      </Transform>
-    </Transform>
     <Transform DEF='Sphere'
         translation='2.22045 1.17457 6.31221e-08'
         rotation='-3.46428e-13 -3.62463e-06 1 0.178426'

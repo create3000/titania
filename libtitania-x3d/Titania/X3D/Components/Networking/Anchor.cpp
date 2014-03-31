@@ -50,6 +50,7 @@
 
 #include "Anchor.h"
 
+#include "../../Browser/Notification.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../InputOutput/Loader.h"

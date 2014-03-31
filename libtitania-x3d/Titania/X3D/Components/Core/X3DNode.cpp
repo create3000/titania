@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -52,6 +52,7 @@
 
 #include "../../Bits/Traverse.h"
 #include "../../Browser/X3DBrowser.h"
+#include "../Layering/X3DLayerNode.h"
 
 namespace titania {
 namespace X3D {
@@ -121,7 +122,7 @@ X3DNode::getModelViewMatrix (const TraverseType type) const
 {
 	if (type == TraverseType::CAMERA)
 		return getModelViewMatrix () .get () * getInverseCameraSpaceMatrix ();
-	
+
 	return getModelViewMatrix () .get ();
 }
 

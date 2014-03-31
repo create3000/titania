@@ -96,8 +96,8 @@ X3DTimeDependentNode::initialize ()
 {
 	X3DChildNode::initialize ();
 
-	initialized   .addInterest (this, &TimeSensor::set_loop);
-	enabled ()    .addInterest (this, &TimeSensor::set_enabled);
+	initialized   .addInterest (this, &X3DTimeDependentNode::set_loop);
+	enabled ()    .addInterest (this, &X3DTimeDependentNode::set_enabled);
 	loop ()       .addInterest (this, &X3DTimeDependentNode::set_loop);
 	startTime ()  .addInterest (this, &X3DTimeDependentNode::set_startTime);
 	pauseTime ()  .addInterest (this, &X3DTimeDependentNode::set_pauseTime);
@@ -160,7 +160,7 @@ X3DTimeDependentNode::set_startTime ()
 		do_start ();
 
 	else
-		addTimeout (startTimeout, &TimeSensor::do_start, startTimeValue);
+		addTimeout (startTimeout, &X3DTimeDependentNode::do_start, startTimeValue);
 }
 
 void
@@ -180,7 +180,7 @@ X3DTimeDependentNode::set_pauseTime ()
 		do_pause ();
 
 	else
-		addTimeout (pauseTimeout, &TimeSensor::do_pause, pauseTimeValue);
+		addTimeout (pauseTimeout, &X3DTimeDependentNode::do_pause, pauseTimeValue);
 }
 
 void
@@ -200,7 +200,7 @@ X3DTimeDependentNode::set_resumeTime ()
 		do_resume ();
 
 	else
-		addTimeout (resumeTimeout, &TimeSensor::do_resume, resumeTimeValue);
+		addTimeout (resumeTimeout, &X3DTimeDependentNode::do_resume, resumeTimeValue);
 }
 
 void
@@ -220,7 +220,7 @@ X3DTimeDependentNode::set_stopTime ()
 		do_stop ();
 
 	else
-		addTimeout (stopTimeout, &TimeSensor::do_stop, stopTimeValue);
+		addTimeout (stopTimeout, &X3DTimeDependentNode::do_stop, stopTimeValue);
 }
 
 // Wrapper functions

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -50,8 +50,9 @@
 
 #include "SurfaceEmitter.h"
 
-#include "../../Bits/config.h"
 #include "../../Bits/Cast.h"
+#include "../../Bits/config.h"
+#include "../../Browser/Properties/RenderingProperties.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Types/Geometry.h"
@@ -154,9 +155,9 @@ SurfaceEmitter::set_geometry ()
 
 		surfaceNode -> triangulate (colors, texCoords, normals, vertices);
 
-		float surfaceArea = 0;
+		float               surfaceArea = 0;
 		std::vector <float> surfaceAreas (1);
-		
+
 		for (size_t i = 0, size = vertices .size (); i < size; i += 3)
 		{
 			surfaceArea += area (vertices [i], vertices [i + 1], vertices [i + 2]);

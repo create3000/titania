@@ -56,6 +56,7 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/ViewVolume.h"
 #include "../../Types/Geometry.h"
+#include "../Layering/X3DLayerNode.h"
 #include "../Rendering/X3DGeometryNode.h"
 #include "../Shape/Appearance.h"
 

@@ -211,7 +211,6 @@ JSPropertySpec jsX3DConstants::properties [ ] = {
 	{ "X3DUrlObject",                 JS_X3D_URL_OBJECT,                 JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DUrlObject,                 NULL },
 	{ "X3DVertexAttributeNode",       JS_X3D_VERTEXATTRIBUTE_NODE,       JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DVertexAttributeNode,       NULL },
 	{ "X3DViewpointNode",             JS_X3D_VIEWPOINT_NODE,             JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DViewpointNode,             NULL },
-	{ "X3DViewpointObject",           JS_X3D_VIEWPOINT_OBJECT,           JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DViewpointObject,           NULL },
 	{ "X3DViewportNode",              JS_X3D_VIEWPORT_NODE,              JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DViewportNode,              NULL },
 
 	{ 0 }
@@ -951,12 +950,6 @@ JSBool
 jsX3DConstants::X3DViewpointNode (JSContext* context, JSObject* obj, jsid id, jsval* vp)
 {
 	return JS_NewNumberValue (context, X3DConstants::X3DViewpointNode, vp);
-}
-
-JSBool
-jsX3DConstants::X3DViewpointObject (JSContext* context, JSObject* obj, jsid id, jsval* vp)
-{
-	return JS_NewNumberValue (context, X3DConstants::X3DViewpointObject, vp);
 }
 
 JSBool

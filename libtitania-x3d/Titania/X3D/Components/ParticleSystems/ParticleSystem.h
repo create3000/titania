@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -421,8 +421,8 @@ private:
 	X3DPtr <X3DTextureCoordinateNode>         texCoordRampNode;
 	size_t                                    numColors;
 	size_t                                    numTexCoord;
-	X3DArrayPtr <X3DParticlePhysicsModelNode> physicsModelNodes;
-	X3DArrayPtr <BoundedPhysicsModel>         boundedPhysicsModelNodes;
+	X3DPtrArray <X3DParticlePhysicsModelNode> physicsModelNodes;
+	X3DPtrArray <BoundedPhysicsModel>         boundedPhysicsModelNodes;
 	GLuint                                    boundedNormalMapId;
 	GLuint                                    boundedNormalBufferId;
 	GLuint                                    boundedSurfaceMapId;

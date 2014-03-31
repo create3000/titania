@@ -51,6 +51,7 @@
 #include "ArcClose2D.h"
 
 #include "../../Browser/Geometry2D/ArcClose2DOptions.h"
+#include "../../Browser/Properties/BrowserOptions.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
@@ -126,9 +127,9 @@ ArcClose2D::build ()
 {
 	const ArcClose2DOptions* const properties = getBrowser () -> getBrowserOptions () -> arcClose2D ();
 
-	const float  difference = getAngle ();
-	size_t       segments   = std::ceil (difference / properties -> minAngle ());
-	const float  angle      = difference / segments;
+	const float difference = getAngle ();
+	size_t      segments   = std::ceil (difference / properties -> minAngle ());
+	const float angle      = difference / segments;
 
 	const size_t elements = solid () ? 1 : 2;
 	const size_t vertices = segments + 2;

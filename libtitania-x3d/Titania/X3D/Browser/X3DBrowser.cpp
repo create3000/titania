@@ -31,6 +31,10 @@
 #include "X3DBrowser.h"
 
 #include "../Bits/config.h"
+#include "../Browser/Notification.h"
+#include "../Browser/Properties/BrowserOptions.h"
+#include "../Execution/Scene.h"
+#include "../Execution/World.h"
 #include "../InputOutput/Loader.h"
 
 #include <Titania/Backtrace.h>
@@ -448,7 +452,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	if (getActiveLayer ())
 	{
 		const auto viewpoints = getActiveLayer () -> getUserViewpoints ();
-		
+
 		if (not viewpoints .empty ())
 			bindViewpoint (viewpoints .front ());
 	}
@@ -466,7 +470,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		if (not viewpoints .empty ())
 		{
 			size_t index = 0;
-			
+
 			for (const auto & viewpoint : viewpoints)
 			{
 				if (viewpoint -> isBound ())
@@ -479,7 +483,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 			{
 				if (index == 0)
 					bindViewpoint (viewpoints .back ());
-				
+
 				else
 					bindViewpoint (viewpoints [index - 1]);
 			}
@@ -501,7 +505,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		if (not viewpoints .empty ())
 		{
 			size_t index = 0;
-			
+
 			for (const auto & viewpoint : viewpoints)
 			{
 				if (viewpoint -> isBound ())
@@ -514,7 +518,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 			{
 				if (index == viewpoints .size () - 1)
 					bindViewpoint (viewpoints .front ());
-				
+
 				else
 					bindViewpoint (viewpoints [index + 1]);
 			}
@@ -532,7 +536,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	if (getActiveLayer ())
 	{
 		const auto viewpoints = getActiveLayer () -> getUserViewpoints ();
-		
+
 		if (not viewpoints .empty ())
 			bindViewpoint (viewpoints .back ());
 	}

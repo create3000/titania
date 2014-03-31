@@ -277,6 +277,19 @@ f (Type p)
 		__LOG__ << p << std::endl;
 }
 
+
+class X
+{ };
+
+template <class Type>
+class A :
+	public Type
+{ };
+
+class B :
+	public A <X>
+{ };
+
 int
 main (int argc, char** argv)
 {

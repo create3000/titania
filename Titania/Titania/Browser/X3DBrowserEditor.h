@@ -94,7 +94,7 @@ public:
 	/// @name Undo/Redo operations
 
 	void
-	addUndoStep (const std::shared_ptr <UndoStep> &);
+	addUndoStep (const UndoStepPtr &);
 
 	std::shared_ptr <const UndoStep>
 	getLastUndoStep () const

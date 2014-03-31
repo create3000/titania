@@ -52,6 +52,7 @@
 
 #include "../X3DBrowserSurface.h"
 
+#include <Titania/Chrono/Now.h>
 #include <cmath>
 #include <glibmm/main.h>
 

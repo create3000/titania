@@ -1,5 +1,15 @@
 2014-03-31  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* UndoStep.h:
+	* UndoHistory.h:
+	* UndoHistory.cpp:
+	* X3DBrowserEditor.h:
+	* X3DBrowserEditor.cpp:
+	* MaterialEditor.h:
+	* MaterialEditor.cpp: 
+
+2014-03-31  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* MagicImport.h:
 	* BrowserWindow.h:
 	* MagicImport.cpp:

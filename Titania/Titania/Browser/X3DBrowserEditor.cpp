@@ -365,7 +365,7 @@ X3DBrowserEditor::close ()
 // Undo/Redo operations
 
 void
-X3DBrowserEditor::addUndoStep (const std::shared_ptr <UndoStep> & undoStep)
+X3DBrowserEditor::addUndoStep (const UndoStepPtr & undoStep)
 {
 	undoHistory .addUndoStep (undoStep);
 }

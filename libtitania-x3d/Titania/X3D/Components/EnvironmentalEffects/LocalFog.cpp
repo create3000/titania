@@ -52,6 +52,7 @@
 
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Layering/X3DLayerNode.h"
 
 namespace titania {
 namespace X3D {

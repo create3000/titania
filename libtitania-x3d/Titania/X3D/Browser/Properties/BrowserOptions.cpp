@@ -51,6 +51,7 @@
 #include "BrowserOptions.h"
 
 #include "../../Components/Layering/Viewport.h"
+#include "../../Components/ParticleSystems/PointEmitter.h"
 #include "../../Components/Shape/Appearance.h"
 #include "../../Components/Shape/FillProperties.h"
 #include "../../Components/Shape/LineProperties.h"
@@ -58,7 +59,6 @@
 #include "../../Components/Texturing/TextureCoordinate.h"
 #include "../../Components/Texturing/TextureProperties.h"
 #include "../../Components/Texturing/TextureTransform.h"
-#include "../../Components/ParticleSystems/PointEmitter.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Geometry2D/Arc2DOptions.h"
 #include "../Geometry2D/ArcClose2DOptions.h"
@@ -69,6 +69,7 @@
 #include "../Geometry3D/QuadSphereOptions.h"
 #include "../Geometry3D/X3DSphereOptionNode.h"
 #include "../Properties/MotionBlur.h"
+#include "../Properties/RenderingProperties.h"
 #include "../X3DBrowser.h"
 
 #include "../../Rendering/OpenGL.h"
@@ -394,5 +395,5 @@ BrowserOptions::set_shading ()
 	}
 }
 
-} // X3D
-} // titania
+}       // X3D
+}       // titania

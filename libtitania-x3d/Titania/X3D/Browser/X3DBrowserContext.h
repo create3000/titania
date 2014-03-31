@@ -53,19 +53,10 @@
 
 #include "../Execution/X3DExecutionContext.h"
 
-#include "../Browser/Console.h"
-#include "../Browser/Notification.h"
 #include "../Browser/Picking/HitArray.h"
-#include "../Browser/Picking/Selection.h"
-#include "../Browser/Properties/BrowserOptions.h"
-#include "../Browser/Properties/BrowserProperties.h"
-#include "../Browser/Properties/RenderingProperties.h"
 #include "../Browser/Viewer/ViewerType.h"
 #include "../Components/KeyDeviceSensor/X3DKeyDeviceSensorNode.h"
 #include "../Components/Layout/X3DLayoutNode.h"
-#include "../Execution/BindableNodeStack.h"
-#include "../Execution/World.h"
-#include "../JavaScript/X3DJavaScriptEngine.h"
 #include "../Types/Pointer.h"
 
 #include "../Rendering/X3DRenderer.h"
@@ -349,7 +340,7 @@ public:
 	virtual
 	void
 	traverse (const TraverseType type) final override
-	{ getWorld () -> traverse (type); }
+	{ update (); }
 
 	virtual
 	bool
@@ -437,7 +428,7 @@ private:
 	Output finishedOutput;
 	Output changedOutput;
 
-	std::shared_ptr <X3DClock> clock;
+	std::unique_ptr <X3DClock> clock;
 
 	Router           router;
 	RendererStack    renderers;

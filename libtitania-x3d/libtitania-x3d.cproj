@@ -644,8 +644,12 @@
     <None Include="Titania\X3D\Execution\NamedNode.h" />
     <None Include="Titania\X3D\Fields\X3DWeakPtr.h" />
     <None Include="Titania\X3D\Fields\X3DPtr.h" />
-    <None Include="Titania\X3D\Fields\X3DArrayPtr.h" />
     <None Include="Titania\X3D\Types\Pointer.h" />
+    <None Include="Titania\X3D\Fields\X3DPtrArray.h" />
+    <None Include="Titania\X3D\Handles\X3DBaseHandle.h" />
+    <None Include="share\titania\tools\BoundingBox.wrl" />
+    <None Include="Titania\X3D\Handles\GroupHandle.h" />
+    <None Include="Titania\X3D\Handles\X3DGroupingNodeHandle.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

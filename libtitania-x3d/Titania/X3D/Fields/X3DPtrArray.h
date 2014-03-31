@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_FIELDS_X3DMFPTR_H__
-#define __TITANIA_X3D_FIELDS_X3DMFPTR_H__
+#ifndef __TITANIA_X3D_FIELDS_X3DPTR_ARRAY_H__
+#define __TITANIA_X3D_FIELDS_X3DPTR_ARRAY_H__
 
 #include "../Basic/X3DArrayField.h"
 #include "../Fields/X3DPtr.h"
@@ -60,7 +60,7 @@ namespace titania {
 namespace X3D {
 
 template <class ValueType>
-class X3DArrayPtr :
+class X3DPtrArray :
 	public X3DArrayField <X3DPtr <ValueType>> 
 {
 private:
@@ -79,49 +79,49 @@ public:
 	using X3DArrayField <X3DPtr <ValueType>> ::empty;
 	using X3DArrayField <X3DPtr <ValueType>> ::size;
 
-	X3DArrayPtr () :
+	X3DPtrArray () :
 		ArrayField ()
 	{ }
 
-	X3DArrayPtr (const X3DArrayPtr & field) :
+	X3DPtrArray (const X3DPtrArray & field) :
 		ArrayField (field)
 	{ }
 
-	X3DArrayPtr (X3DArrayPtr && field) :
+	X3DPtrArray (X3DPtrArray && field) :
 		ArrayField (std::move (field))
 	{ }
 
 	template <class Up>
 	explicit
-	X3DArrayPtr (X3DArrayPtr <Up>&&);
+	X3DPtrArray (X3DPtrArray <Up>&&);
 
-	X3DArrayPtr (std::initializer_list <X3DPtr <ValueType>>     initializer_list) :
+	X3DPtrArray (std::initializer_list <X3DPtr <ValueType>>      initializer_list) :
 		ArrayField (initializer_list)
 	{ }
 
-	X3DArrayPtr (std::initializer_list <const typename X3DPtr <ValueType>::internal_type> initializer_list) :
+	X3DPtrArray (std::initializer_list <const typename X3DPtr <ValueType>::internal_type> initializer_list) :
 		ArrayField (initializer_list)
 	{ }
 
 	template <class InputIterator>
-	X3DArrayPtr (InputIterator first, InputIterator last) :
+	X3DPtrArray (InputIterator first, InputIterator last) :
 		ArrayField (first, last)
 	{ }
 
 	virtual
-	X3DArrayPtr*
+	X3DPtrArray*
 	create () const final override
-	{ return new X3DArrayPtr (); }
+	{ return new X3DPtrArray (); }
 
 	virtual
-	X3DArrayPtr*
+	X3DPtrArray*
 	clone () const
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>) final override
-	{ return new X3DArrayPtr (*this); }
+	{ return new X3DPtrArray (*this); }
 
 	virtual
-	X3DArrayPtr*
+	X3DPtrArray*
 	clone (X3DExecutionContext* const executionContext) const
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>) final override;
@@ -132,23 +132,23 @@ public:
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>) final override;
 
-	X3DArrayPtr &
-	operator = (const X3DArrayPtr & field)
+	X3DPtrArray &
+	operator = (const X3DPtrArray & field)
 	{
 		ArrayField::operator = (field);
 		return *this;
 	}
 
-	X3DArrayPtr &
-	operator = (X3DArrayPtr && field)
+	X3DPtrArray &
+	operator = (X3DPtrArray && field)
 	{
 		ArrayField::operator = (std::move (field));
 		return *this;
 	}
 
 	template <class Up>
-	X3DArrayPtr &
-	operator = (X3DArrayPtr <Up>&&);
+	X3DPtrArray &
+	operator = (X3DPtrArray <Up>&&);
 
 	virtual
 	X3DConstants::FieldType
@@ -165,12 +165,12 @@ public:
 
 	template <class Class>
 	void
-	addInterest (Class* const object, void (Class::* memberFunction) (const X3DArrayPtr &)) const
+	addInterest (Class* const object, void (Class::* memberFunction) (const X3DPtrArray &)) const
 	{ addInterest (object, memberFunction, std::cref (*this)); }
 
 	template <class Class>
 	void
-	addInterest (Class & object, void (Class::* memberFunction) (const X3DArrayPtr &)) const
+	addInterest (Class & object, void (Class::* memberFunction) (const X3DPtrArray &)) const
 	{ addInterest (object, memberFunction, std::cref (*this)); }
 
 	///  Input/Output
@@ -202,11 +202,11 @@ private:
 };
 
 template <class ValueType>
-const std::string X3DArrayPtr <ValueType>::typeName ("MFNode");
+const std::string X3DPtrArray <ValueType>::typeName ("MFNode");
 
 template <class ValueType>
 template <class Up>
-X3DArrayPtr <ValueType>::X3DArrayPtr (X3DArrayPtr <Up>&& field) :
+X3DPtrArray <ValueType>::X3DPtrArray (X3DPtrArray <Up>&& field) :
 	ArrayField ()
 {
 	auto       first = field .begin ();
@@ -227,12 +227,12 @@ X3DArrayPtr <ValueType>::X3DArrayPtr (X3DArrayPtr <Up>&& field) :
 }
 
 template <class ValueType>
-X3DArrayPtr <ValueType>*
-X3DArrayPtr <ValueType>::clone (X3DExecutionContext* const executionContext) const
+X3DPtrArray <ValueType>*
+X3DPtrArray <ValueType>::clone (X3DExecutionContext* const executionContext) const
 throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>)
 {
-	X3DArrayPtr* const field = new X3DArrayPtr ();
+	X3DPtrArray* const field = new X3DPtrArray ();
 
 	clone (executionContext, field);
 
@@ -241,11 +241,11 @@ throw (Error <INVALID_NAME>,
 
 template <class ValueType>
 void
-X3DArrayPtr <ValueType>::clone (X3DExecutionContext* const executionContext, X3DFieldDefinition* fieldDefinition) const
+X3DPtrArray <ValueType>::clone (X3DExecutionContext* const executionContext, X3DFieldDefinition* fieldDefinition) const
 throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>)
 {
-	X3DArrayPtr* const field = static_cast <X3DArrayPtr*> (fieldDefinition);
+	X3DPtrArray* const field = static_cast <X3DPtrArray*> (fieldDefinition);
 
 	for (const auto & value : *this)
 	{
@@ -259,8 +259,8 @@ throw (Error <INVALID_NAME>,
 
 template <class ValueType>
 template <class Up>
-X3DArrayPtr <ValueType> &
-X3DArrayPtr <ValueType>::operator = (X3DArrayPtr <Up>&& field)
+X3DPtrArray <ValueType> &
+X3DPtrArray <ValueType>::operator = (X3DPtrArray <Up>&& field)
 {
 	auto       first = field .begin ();
 	const auto last  = field .end ();
@@ -301,7 +301,7 @@ X3DArrayPtr <ValueType>::operator = (X3DArrayPtr <Up>&& field)
 
 template <class ValueType>
 void
-X3DArrayPtr <ValueType>::fromStream (std::istream & istream)
+X3DPtrArray <ValueType>::fromStream (std::istream & istream)
 throw (Error <INVALID_X3D>,
        Error <NOT_SUPPORTED>,
        Error <INVALID_OPERATION_TIMING>,
@@ -310,7 +310,7 @@ throw (Error <INVALID_X3D>,
 
 template <class ValueType>
 void
-X3DArrayPtr <ValueType>::toStream (std::ostream & ostream) const
+X3DPtrArray <ValueType>::toStream (std::ostream & ostream) const
 {
 	switch (size ())
 	{
@@ -361,7 +361,7 @@ X3DArrayPtr <ValueType>::toStream (std::ostream & ostream) const
 
 template <class ValueType>
 void
-X3DArrayPtr <ValueType>::toXMLStream (std::ostream & ostream) const
+X3DPtrArray <ValueType>::toXMLStream (std::ostream & ostream) const
 {
 	if (not empty ())
 	{

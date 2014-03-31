@@ -1,5 +1,93 @@
 2014-03-31  Holger Seelig  <holger.seelig@yahoo.de>
 
+	* X3D.h:
+	* libtitania-x3d.cproj:
+	* MFNode.h:
+	* MFInt32.h:
+	* Pointer.cpp:
+	* MFNode.cpp:
+	* X3DPtrArray.h:
+	* X3DBrowser.h:
+	* X3DArrayPtr.h:
+	* GroupHandle.h:
+	* X3DBrowser.cpp:
+	* SceneLoader.cpp:
+	* Loader.cpp:
+	* X3DBaseHandle.h:
+	* BoundingBox.wrl:
+	* Text.cpp:
+	* TransformTool.wrl:
+	* X3DRenderer.cpp:
+	* TransformHandle.h:
+	* X3DBoundingBox.cpp:
+	* Shape.cpp:
+	* Group.h:
+	* X3DNode.cpp:
+	* X3DBrowserContext.h:
+	* TransformHandle.cpp:
+	* BrowserApplication.h:
+	* X3DViewer.cpp:
+	* Selection.cpp:
+	* Group.cpp:
+	* Appearance.h:
+	* WorldInfo.cpp:
+	* Box.cpp:
+	* X3DBrowserContext.cpp:
+	* LineSet.h:
+	* X3DFlyViewer.cpp:
+	* X3DGroupingNodeHandle.h:
+	* Appearance.cpp:
+	* Arc2D.cpp:
+	* PointSet.h:
+	* Script.cpp:
+	* ExamineViewer.cpp:
+	* Disk2D.cpp:
+	* Sphere.cpp:
+	* Viewport.cpp:
+	* Anchor.cpp:
+	* X3DShapeNode.cpp:
+	* Transform.cpp:
+	* Circle2D.cpp:
+	* Viewpoint.cpp:
+	* ProgramShader.cpp:
+	* ShaderProgram.cpp:
+	* X3DLayerNode.cpp:
+	* ArcClose2D.cpp:
+	* jsBrowser.cpp:
+	* Rectangle2D.cpp:
+	* BrowserOptions.cpp:
+	* PixelTexture.cpp:
+	* ImageTexture.cpp:
+	* IndexedLineSet.h:
+	* X3DGroupingNode.h:
+	* ElevationGrid.h:
+	* GeoViewpoint.cpp:
+	* X3DGeometryNode.h:
+	* X3DTextureNode.cpp:
+	* X3DTimeDependentNode.cpp:
+	* X3DGeometryNode.cpp:
+	* jsX3DConstants.h:
+	* ImageTexture3D.cpp:
+	* X3DTexture2DNode.cpp:
+	* PixelTexture3D.cpp:
+	* jsX3DConstants.cpp:
+	* TextureProperties.cpp:
+	* ParticleSystem.h:
+	* jsSFNode.cpp:
+	* X3DTexture3DNode.cpp:
+	* LocalFog.cpp:
+	* VolumeEmitter.cpp:
+	* SurfaceEmitter.cpp:
+	* ParticleSystem.cpp:
+	* PolylineEmitter.cpp:
+	* MultiTextureTransform.cpp:
+	* X3DComposedGeometryNode.h:
+	* X3DFogObject.cpp:
+	* VisibilitySensor.cpp:
+	* X3DPointingDeviceSensorNode.cpp: 
+
+2014-03-31  Holger Seelig  <holger.seelig@yahoo.de>
+
 	* Makefile.am:
 	* X3D.h:
 	* X3D.cpp:

@@ -51,6 +51,7 @@
 #include "Circle2D.h"
 
 #include "../../Browser/Geometry2D/Circle2DOptions.h"
+#include "../../Browser/Properties/BrowserOptions.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 

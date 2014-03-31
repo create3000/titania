@@ -211,7 +211,6 @@ private:
 		JS_X3D_URL_OBJECT,
 		JS_X3D_VERTEXATTRIBUTE_NODE,
 		JS_X3D_VIEWPOINT_NODE,
-		JS_X3D_VIEWPOINT_OBJECT,
 		JS_X3D_VIEWPORT_NODE
 	};
 
@@ -350,7 +349,6 @@ private:
 	static JSBool X3DUrlObject                 (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool X3DVertexAttributeNode       (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool X3DViewpointNode             (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DViewpointObject           (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool X3DViewportNode              (JSContext *, JSObject *, jsid, jsval*);
 
 	// Members

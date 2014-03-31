@@ -50,6 +50,7 @@
 
 #include "X3DPointingDeviceSensorNode.h"
 
+#include "../../Browser/Notification.h"
 #include "../../Browser/X3DBrowser.h"
 
 namespace titania {

@@ -198,8 +198,6 @@ MaterialEditor::on_paste ()
 void
 MaterialEditor::on_frontAndBackButton_toggled ()
 {
-	__LOG__ << std::endl;
-
 	// Copy front material
 
 	if (initialized)
@@ -609,7 +607,7 @@ MaterialEditor::toColor (const X3D::Color3f & color)
 }
 
 Gdk::Color
-MaterialEditor::toColor (float value)
+MaterialEditor::toColor (const float value)
 {
 	Gdk::Color rgb;
 
@@ -619,8 +617,6 @@ MaterialEditor::toColor (float value)
 
 MaterialEditor::~MaterialEditor ()
 {
-	__LOG__ << std::endl;
-
 	X3D::removeBrowser (browserSurface);
 }
 

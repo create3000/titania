@@ -223,7 +223,7 @@ private:
 	toColor (const X3D::Color3f &);
 
 	Gdk::Color
-	toColor (float value);
+	toColor (const float value);
 
 	///  @name Members
 
@@ -233,7 +233,7 @@ private:
 	X3D::MaterialPtr                 material;
 	X3D::TwoSidedMaterialPtr         twoSidedMaterial;
 	
-	std::shared_ptr <UndoStep> undoStep;
+	UndoStepPtr undoStep;
 
 	bool initialized;
 

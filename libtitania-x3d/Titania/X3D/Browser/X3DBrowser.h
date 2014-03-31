@@ -29,17 +29,14 @@
 #ifndef __TITANIA_X3D_BROWSER_X3DBROWSER_H__
 #define __TITANIA_X3D_BROWSER_X3DBROWSER_H__
 
+#include "../Browser/Console.h"
 #include "../Browser/X3DBrowserContext.h"
-
 #include "../Configuration/SupportedComponents.h"
 #include "../Configuration/SupportedFields.h"
 #include "../Configuration/SupportedNodes.h"
 #include "../Configuration/SupportedProfiles.h"
-#include "../Execution/Scene.h"
 
 #include <Titania/Stream/InputFileStream.h>
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 namespace titania {
 namespace X3D {

@@ -53,6 +53,7 @@
 #include "X3DViewer.h"
 
 #include "../../Components/Navigation/OrthoViewpoint.h"
+#include "../../Components/Layering/X3DLayerNode.h"
 #include "../../Rendering/ViewVolume.h"
 
 namespace titania {

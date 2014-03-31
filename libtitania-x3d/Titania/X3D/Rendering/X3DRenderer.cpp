@@ -50,8 +50,11 @@
 
 #include "X3DRenderer.h"
 
+#include "../Browser/Properties/BrowserOptions.h"
 #include "../Browser/X3DBrowser.h"
+#include "../Components/Navigation/NavigationInfo.h"
 #include "../Components/Navigation/X3DViewpointNode.h"
+#include "../Components/Layering/X3DLayerNode.h"
 #include "../Components/Shape/Appearance.h"
 
 #include <Titania/Utility/Adapter.h>

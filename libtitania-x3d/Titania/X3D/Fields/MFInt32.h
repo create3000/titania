@@ -63,7 +63,7 @@ namespace X3D {
 extern template class X3DField <Array <SFInt32>>;
 extern template class X3DArrayField <SFInt32>;
 
-typedef X3DArrayField <SFInt32> MFInt32;
+using MFInt32 = X3DArrayField <SFInt32>;
 
 } // X3D
 

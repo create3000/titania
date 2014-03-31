@@ -50,11 +50,13 @@
 
 #include "X3DFlyViewer.h"
 
+#include "../../Components/Layering/X3DLayerNode.h"
 #include "../../Rendering/ViewVolume.h"
+#include "../Properties/BrowserOptions.h"
 #include "../X3DBrowserSurface.h"
 
-#include <Titania/Math/Geometry/Camera.h>
 #include <Titania/Chrono/Now.h>
+#include <Titania/Math/Geometry/Camera.h>
 
 #include <cmath>
 #include <glibmm/main.h>
@@ -353,7 +355,7 @@ Vector3f
 X3DFlyViewer::getTranslation (const Vector3f & translation) const
 {
 	const float collisionRadius = navigationInfo -> getCollisionRadius ();
-	
+
 	// Get width and height of camera
 
 	const float width  = collisionRadius * 2;
@@ -361,7 +363,7 @@ X3DFlyViewer::getTranslation (const Vector3f & translation) const
 
 	// Get position offset
 
-	const float positionOffset  = height / 2 - collisionRadius;
+	const float positionOffset = height / 2 - collisionRadius;
 
 	return getBrowser () -> getActiveLayer () -> getTranslation (Vector3f (0, -positionOffset, 0), width, height, translation);
 }

@@ -51,6 +51,7 @@
 #include "VolumeEmitter.h"
 
 #include "../../Bits/config.h"
+#include "../../Browser/Properties/RenderingProperties.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Miscellaneous/BVH.h"

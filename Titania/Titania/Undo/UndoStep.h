@@ -118,7 +118,7 @@ private:
 
 };
 
-typedef std::shared_ptr <UndoStep> UndoStepPtr;
+using UndoStepPtr = std::shared_ptr <UndoStep>;
 
 } // puck
 } // titania

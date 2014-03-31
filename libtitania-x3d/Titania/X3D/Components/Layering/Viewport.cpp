@@ -51,6 +51,7 @@
 #include "Viewport.h"
 
 #include "../../Browser/X3DBrowser.h"
+#include "../Layering/X3DLayerNode.h"
 
 namespace titania {
 namespace X3D {

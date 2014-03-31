@@ -83,7 +83,7 @@ public:
 	getIndex () const
 	{ return index; }
 	
-	const std::vector <std::shared_ptr <UndoStep>> &
+	const std::vector <UndoStepPtr> &
 	getList () const
 	{ return list; }
 
@@ -104,7 +104,7 @@ public:
 	{ savedIndex = index; }
 
 	void
-	addUndoStep (const std::shared_ptr <UndoStep> &);
+	addUndoStep (const UndoStepPtr &);
 	
 	std::shared_ptr <const UndoStep>
 	getLastUndoStep () const;
@@ -131,7 +131,7 @@ private:
 
 	///  @name Members
 
-	std::vector <std::shared_ptr <UndoStep>>  list;
+	std::vector <UndoStepPtr>  list;
 
 	int         index;
 	int         savedIndex;

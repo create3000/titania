@@ -51,6 +51,7 @@
 #include "Group.h"
 
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Handles/X3DGroupingNodeHandle.h"
 
 namespace titania {
 namespace X3D {
@@ -75,6 +76,12 @@ X3DBaseNode*
 Group::create (X3DExecutionContext* const executionContext) const
 {
 	return new Group (executionContext);
+}
+
+void
+Group::addHandle ()
+{
+	X3DGroupingNode::addHandle (new GroupHandle (this));
 }
 
 } // X3D

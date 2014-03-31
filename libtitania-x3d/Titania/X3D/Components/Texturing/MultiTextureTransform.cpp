@@ -51,6 +51,7 @@
 #include "MultiTextureTransform.h"
 
 #include "../../Bits/Cast.h"
+#include "../../Browser/Properties/BrowserOptions.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 

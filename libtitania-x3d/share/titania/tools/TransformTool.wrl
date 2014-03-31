@@ -113,7 +113,7 @@ PROTO TransformTool [
       Transform {
         translation IS bboxCenter
         children [
-          Shape {
+          DEF BoundingBox Shape {
             appearance Appearance {
               material Material {
                 emissiveColor 0.35 1 0.7

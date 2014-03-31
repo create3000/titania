@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -185,7 +185,7 @@ protected:
 
 	///  @name Member access
 
-	const X3DArrayPtr <X3DVertexAttributeNode> &
+	const X3DPtrArray <X3DVertexAttributeNode> &
 	getAttrib () const
 	{ return attribNodes; }
 
@@ -249,7 +249,7 @@ private:
 
 	Fields fields;
 
-	X3DArrayPtr <X3DVertexAttributeNode> attribNodes;
+	X3DPtrArray <X3DVertexAttributeNode> attribNodes;
 	X3DPtr <X3DColorNode>                colorNode;
 	X3DPtr <X3DTextureCoordinateNode>    texCoordNode;
 	X3DPtr <X3DNormalNode>               normalNode;

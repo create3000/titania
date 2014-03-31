@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -50,9 +50,18 @@
 
 #include "X3DBrowserContext.h"
 
+#include "../Browser/Console.h"
+#include "../Browser/Notification.h"
+#include "../Browser/Notification.h"
+#include "../Browser/Picking/Selection.h"
+#include "../Browser/Picking/Selection.h"
+#include "../Browser/Properties/BrowserOptions.h"
+#include "../Browser/Properties/BrowserProperties.h"
+#include "../Browser/Properties/RenderingProperties.h"
 #include "../Components/Networking/Anchor.h"
 #include "../Components/PointingDeviceSensor/X3DDragSensorNode.h"
 #include "../Components/PointingDeviceSensor/X3DTouchSensorNode.h"
+#include "../Execution/BindableNodeStack.h"
 #include "../JavaScript/SpiderMonkey.h"
 #include "../Rendering/ViewVolume.h"
 
@@ -199,10 +208,10 @@ X3DBrowserContext::initialize ()
 		// TextureUnits
 
 		for (int32_t i = renderingProperties -> textureUnits () - 1; i >= 0; -- i)
-			textureUnits .push (i);                                                                                                                 // Don't add GL_TEXTURE0
+			textureUnits .push (i);                                                                                                                                                                                                                       // Don't add GL_TEXTURE0
 
 		for (int32_t i = renderingProperties -> textureUnits (); i < renderingProperties -> combinedTextureUnits (); ++ i)
-			combinedTextureUnits .push (i);                                                                                                         // Don't add GL_TEXTURE0
+			combinedTextureUnits .push (i);                                                                                                                                                                                                               // Don't add GL_TEXTURE0
 
 		downloadMutexes .resize (std::min <int32_t> (renderingProperties -> maxThreads () * 2, MAX_DOWNLOAD_THREADS));
 	}
@@ -379,7 +388,7 @@ X3DBrowserContext::set_navigationInfo_type ()
 		for (const auto & string : activeNavigationInfo -> type ())
 		{
 			const auto viewerType = viewerTypes .find (string);
-			
+
 			if (viewerType == viewerTypes .end ())
 				continue;
 
@@ -392,13 +401,13 @@ X3DBrowserContext::set_navigationInfo_type ()
 					viewer = viewerType -> second;
 					break;
 			}
-			
+
 			// Leave for loop.
 			break;
 		}
-		
+
 		// Determine available viewers.
-		
+
 		if (activeNavigationInfo -> type () .empty ())
 		{
 			examineViewer = true;
@@ -413,7 +422,7 @@ X3DBrowserContext::set_navigationInfo_type ()
 			for (const auto & string : activeNavigationInfo -> type ())
 			{
 				const auto viewerType = viewerTypes .find (string);
-				
+
 				if (viewerType not_eq viewerTypes .end ())
 				{
 					switch (viewerType -> second)
@@ -520,7 +529,7 @@ X3DBrowserContext::pick (const double _x, const double _y)
 	hits .clear ();
 
 	// Pick.
-	
+
 	//update (); // We cannot make an update here because of gravity.
 
 	getWorld () -> traverse (TraverseType::PICKING);
@@ -537,8 +546,8 @@ X3DBrowserContext::pick (const double _x, const double _y)
 bool
 X3DBrowserContext::intersect (const Vector4i & scissor) const
 {
-	return x > scissor .x () and x < scissor .x () + scissor .z () and
-	       y > scissor .y () and y < scissor .y () + scissor .w ();
+	return x > scissor .x () and x <scissor .x () + scissor .z () and
+	                                y> scissor .y () and y < scissor .y () + scissor .w ();
 }
 
 Line3d
@@ -573,7 +582,7 @@ X3DBrowserContext::motionNotifyEvent ()
 	else
 	{
 		// overSensors and sensors are always sorted.
-	
+
 		std::set_difference (overSensors .begin (), overSensors .end (),
 		                     getHits () .front () -> sensors .begin (), getHits () .front () -> sensors .end (),
 		                     std::back_inserter (difference));
@@ -800,4 +809,3 @@ X3DBrowserContext::~X3DBrowserContext ()
 
 } // X3D
 } // titania
-

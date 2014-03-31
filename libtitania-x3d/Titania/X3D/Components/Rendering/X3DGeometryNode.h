@@ -141,7 +141,7 @@ protected:
 	///  @name Member access
 
 	void
-	setAttribs (const X3DArrayPtr <X3DVertexAttributeNode> &, const std::vector <std::vector <float>>    &);
+	setAttribs (const X3DPtrArray <X3DVertexAttributeNode> &, const std::vector <std::vector <float>>    &);
 
 	std::vector <Color4f> &
 	getColors ()

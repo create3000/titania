@@ -48,116 +48,146 @@
  *
  ******************************************************************************/
 
-#include "Selection.h"
+#ifndef __TITANIA_X3D_HANDLES_X3DBASE_HANDLE_H__
+#define __TITANIA_X3D_HANDLES_X3DBASE_HANDLE_H__
 
-#include "../../Execution/Scene.h"
-#include "../../Execution/X3DExecutionContext.h"
-#include "../X3DBrowser.h"
+#include "../Handles/X3DHandleObject.h"
 
 namespace titania {
 namespace X3D {
 
-const std::string Selection::componentName  = "Browser";
-const std::string Selection::typeName       = "Selection";
-const std::string Selection::containerField = "selection";
-
-Selection::Selection (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	     active (),
-	   children ()
+template <class Type>
+class X3DBaseHandle :
+	public Type, public X3DHandleObject
 {
-	X3DChildObject::addChildren (active, children);
+public:
+
+	///  @name Member access
+
+	virtual
+	void
+	setName (const std::string &) final override;
+
+	virtual
+	void
+	setUserData (const UserDataPtr &) final override;
+
+	virtual
+	void
+	addHandle () final override
+	{ }
+
+	virtual
+	void
+	removeHandle () final override;
+
+	virtual
+	void
+	addEvent () final override
+	{ }
+
+	virtual
+	void
+	addEvent (X3DChildObject* const) final override
+	{ }
+
+	virtual
+	void
+	addEvent (X3DChildObject* const, const EventPtr &) final override
+	{ }
+
+	///  @name Destruction
+
+	virtual
+	const Output &
+	shutdown () const final override
+	{ return node -> shutdown (); }
+
+	virtual
+	void
+	dispose () final override;
+
+
+protected:
+
+	///  @name Construction
+
+	X3DBaseHandle (Type* const);
+
+	virtual
+	void
+	initialize () override;
+
+	///  @name Members
+
+	Type*
+	getNode () const
+	{ return node; }
+
+
+private:
+
+	///  @name Members
+
+	Type* const node;
+
+};
+
+template <class Type>
+X3DBaseHandle <Type>::X3DBaseHandle (Type* const node) :
+	Type (node -> getExecutionContext ()),
+	node (node)
+{
+	node -> addParent (this);
+
+	for (auto & field : node -> getFieldDefinitions ())
+		addField (field -> getAccessType (), field -> getName (), *field);
 }
 
-X3DBaseNode*
-Selection::create (X3DExecutionContext* const executionContext) const
-{
-	return new Selection (executionContext);
-}
-
+template <class Type>
 void
-Selection::initialize ()
+X3DBaseHandle <Type>::initialize ()
 {
-	X3DBaseNode::initialize ();
-
-	getBrowser () -> initialized () .addInterest (this, &Selection::clear);
+	Type::initialize ();
+	X3DHandleObject::initialize ();
 }
 
-bool
-Selection::isSelected (const SFNode & node) const
-{
-	return std::find (children .begin (), children .end (), node) not_eq children .end ();
-}
-
+template <class Type>
 void
-Selection::addChildren (const MFNode & value)
+X3DBaseHandle <Type>::setName (const std::string & value)
 {
-	if (getBrowser () -> makeCurrent ())
-	{
-		for (const auto & child : value)
-		{
-			if (not child)
-				continue;
+	node -> setName (value);
 
-			if (isSelected (child))
-				continue;
-
-			if (child -> getExecutionContext () == getBrowser () -> getExecutionContext ())
-				child -> addHandle ();
-
-			children .emplace_back (child);
-		}
-	}
+	X3DHandleObject::setName (value);
 }
 
+template <class Type>
 void
-Selection::removeChildren (const MFNode & value)
+X3DBaseHandle <Type>::setUserData (const UserDataPtr & value)
 {
-	if (getBrowser () -> makeCurrent ())
-	{
-		for (const auto & child : value)
-		{
-			if (child)
-			{
-				children .erase (std::remove (children .begin (),
-				                              children .end (),
-				                              child),
-				                 children .end ());
+	node -> setUserData (value);
 
-				child -> removeHandle ();
-			}
-		}
-	}
+	X3DHandleObject::setUserData (value);
 }
 
+template <class Type>
 void
-Selection::setChildren (const MFNode & value)
+X3DBaseHandle <Type>::removeHandle ()
 {
-	if (not children .empty ())
-	{
-		MFNode sortedValue = value;
-		MFNode difference;
-
-		std::sort (children .begin (), children .end ());
-		std::sort (sortedValue .begin (), sortedValue .end ());
-
-		std::set_difference (children .begin (), children .end (),
-		                     sortedValue .begin (), sortedValue .end (),
-		                     std::back_inserter (difference));
-
-		removeChildren (difference);
-
-		children .clear ();
-	}
-
-	addChildren (value);
+	node -> removeHandle ();
 }
 
+template <class Type>
 void
-Selection::clear ()
+X3DBaseHandle <Type>::dispose ()
 {
-	removeChildren (MFNode (children)); // Make copy because we erase in children.
+	node -> removeParent (this);
+
+	X3DHandleObject::dispose ();
+	Type::dispose ();
 }
 
 } // X3D
 } // titania
+
+#endif

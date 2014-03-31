@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_COMPONENTS_GROUPING_GROUP_H__
 
 #include "../Grouping/X3DGroupingNode.h"
+#include "../../Handles/GroupHandle.h"
 
 namespace titania {
 namespace X3D {
@@ -86,6 +87,13 @@ public:
 	const std::string &
 	getContainerField () const final override
 	{ return containerField; }
+
+	///  @name Operations
+
+	virtual
+	void
+	addHandle () override;
+
 
 private:
 

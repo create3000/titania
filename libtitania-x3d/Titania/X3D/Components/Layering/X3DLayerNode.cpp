@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,6 +51,7 @@
 #include "X3DLayerNode.h"
 
 #include "../../Bits/Cast.h"
+#include "../../Browser/Properties/BrowserOptions.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/BindableNodeList.h"
 #include "../../Execution/BindableNodeStack.h"
@@ -328,11 +329,11 @@ X3DLayerNode::pick ()
 		getViewpoint () -> reshape ();
 		getBrowser ()   -> updateHitRay ();
 		getViewpoint () -> transform ();
-		
+
 		getViewVolumeStack () .emplace (ProjectionMatrix4d (), currentViewport -> getViewport ());
-		
+
 		group -> traverse (TraverseType::PICKING);
-	
+
 		getViewVolumeStack () .pop ();
 		getGlobalObjects () .clear ();
 	}
@@ -423,7 +424,7 @@ X3DLayerNode::collect ()
 	getViewpoint ()      -> transform ();
 
 	getViewVolumeStack () .emplace (ProjectionMatrix4d (), currentViewport -> getViewport ());
-	
+
 	render (TraverseType::DISPLAY);
 
 	getViewVolumeStack () .pop ();

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,8 +51,9 @@
 #include "Script.h"
 
 #include "../../Browser/X3DBrowser.h"
-#include "../../InputOutput/Loader.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../InputOutput/Loader.h"
+#include "../../JavaScript/X3DJavaScriptEngine.h"
 #include "../../Parser/RegEx.h"
 
 namespace titania {
@@ -93,7 +94,7 @@ void
 Script::initialize ()
 {
 	X3DScriptNode::initialize ();
-	
+
 	url () .addInterest (this, &Script::set_url);
 
 	requestImmediateLoad ();

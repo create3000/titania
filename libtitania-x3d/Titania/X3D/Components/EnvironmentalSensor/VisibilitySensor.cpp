@@ -48,10 +48,12 @@
  *
  ******************************************************************************/
 
+#include "VisibilitySensor.h"
+
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/ViewVolume.h"
-#include "VisibilitySensor.h"
+#include "../Layering/X3DLayerNode.h"
 
 namespace titania {
 namespace X3D {

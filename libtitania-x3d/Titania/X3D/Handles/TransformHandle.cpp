@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,38 +51,34 @@
 #include "TransformHandle.h"
 
 #include "../Bits/config.h"
+#include "../Browser/Picking/Selection.h"
 #include "../Browser/X3DBrowser.h"
 #include "../Components/Grouping/Transform.h"
+#include "../Components/Layering/X3DLayerNode.h"
+#include "../Execution/Scene.h"
 #include "../Execution/X3DExecutionContext.h"
 #include "../Rendering/PolygonModeContainer.h"
 
 namespace titania {
 namespace X3D {
 
-TransformHandle::TransformHandle (Transform* const transform, X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	      Transform (executionContext),
-	X3DHandleObject (),
-	      transform (transform),
-	          scene (),
-	   parentMatrix (),
-	         matrix (),
-	 interestEvents (transform -> isTainted ())
+TransformHandle::TransformHandle (Transform* const transform) :
+	           X3DBaseNode (transform -> getExecutionContext () -> getBrowser (), transform -> getExecutionContext ()),
+	X3DTransformHandleNode (transform),
+	                 scene (),
+	          parentMatrix (),
+	                matrix (),
+	        interestEvents (transform -> isTainted ())
 {
-	for (auto & field : transform -> getFieldDefinitions ())
-		addField (field -> getAccessType (), field -> getName (), *field);
-
 	X3DChildObject::addChildren (scene);
-	transform -> addParent (this);
 }
 
 void
 TransformHandle::initialize ()
 {
-	Transform::initialize ();
-	X3DHandleObject::initialize ();
-	
-	transform -> addInterest (this, &TransformHandle::interestsProcessed);
+	X3DTransformHandleNode::initialize ();
+
+	getNode () -> addInterest (this, &TransformHandle::interestsProcessed);
 
 	try
 	{
@@ -92,7 +88,7 @@ TransformHandle::initialize ()
 
 		handle -> getField ("isActive") -> addInterest (getBrowser () -> getSelection () -> isActive ());
 
-		handle -> setField <SFNode> ("transform", transform);
+		handle -> setField <SFNode> ("transform", getNode ());
 	}
 	catch (const X3DError & error)
 	{
@@ -103,26 +99,10 @@ TransformHandle::initialize ()
 	}
 }
 
-void
-TransformHandle::setName (const std::string & value)
-{
-	transform -> setName (value);
-
-	X3DHandleObject::setName (value);
-}
-
-void
-TransformHandle::setUserData (const UserDataPtr & value)
-{
-	transform -> setUserData (value);
-
-	X3DHandleObject::setUserData (value);
-}
-
 Box3f
 TransformHandle::getBBox () const
 {
-	return transform -> getBBox ();
+	return getNode () -> getBBox ();
 }
 
 MFNode &
@@ -141,12 +121,6 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	return scene -> getRootNodes ();
 }
 
-void
-TransformHandle::removeHandle ()
-{
-	transform -> removeHandle ();
-}
-
 // T  P
 // P  T'
 // I
@@ -159,14 +133,14 @@ TransformHandle::removeHandle ()
 //
 // childModelViewMatrix = childModelViewMatrix * ~groupModelViewMatrix
 //
-// transform -> setMatrix (childModelViewMatrix);
+// getNode () -> setMatrix (childModelViewMatrix);
 
 void
 TransformHandle::addAbsoluteMatrix (const Matrix4d & absoluteMatrix)
 {
 	++ interestEvents;
 
-	transform -> setMatrix (Matrix4d (getMatrix ()) * parentMatrix * absoluteMatrix * ~parentMatrix);
+	getNode () -> setMatrix (Matrix4d (getMatrix ()) * parentMatrix * absoluteMatrix * ~parentMatrix);
 }
 
 void
@@ -174,7 +148,7 @@ TransformHandle::setMatrix (const Matrix4d & matrix)
 {
 	++ interestEvents;
 
-	transform -> setMatrix (matrix);
+	getNode () -> setMatrix (matrix);
 }
 
 void
@@ -182,7 +156,7 @@ TransformHandle::setMatrixWithCenter (const Matrix4d & matrix, const Vector3f & 
 {
 	++ interestEvents;
 
-	transform -> setMatrixWithCenter (matrix, center);
+	getNode () -> setMatrixWithCenter (matrix, center);
 }
 
 void
@@ -190,7 +164,7 @@ TransformHandle::interestsProcessed ()
 {
 	if (interestEvents)
 		-- interestEvents;
-		
+
 	else
 	{
 		const auto differenceMatrix = ~(matrix * parentMatrix) * Matrix4d (getMatrix ()) * parentMatrix;
@@ -199,9 +173,9 @@ TransformHandle::interestsProcessed ()
 		{
 			if (node == this)
 				continue;
-			
+
 			const auto handle = dynamic_cast <TransformHandle*> (node .getValue ());
-			
+
 			if (handle)
 				handle -> addAbsoluteMatrix (differenceMatrix);
 		}
@@ -214,7 +188,7 @@ TransformHandle::reshape ()
 	try
 	{
 		const auto handle = scene -> getNamedNode ("Handle");
-		const auto bbox   = transform -> X3DGroupingNode::getBBox ();
+		const auto bbox   = getNode () -> X3DGroupingNode::getBBox ();
 
 		handle -> setField <SFMatrix4f> ("cameraSpaceMatrix", getCameraSpaceMatrix (),       true);
 		handle -> setField <SFMatrix4f> ("modelViewMatrix",   getModelViewMatrix () .get (), true);
@@ -230,10 +204,10 @@ TransformHandle::reshape ()
 void
 TransformHandle::traverse (const TraverseType type)
 {
-	transform -> traverse (type);
-	
+	getNode () -> traverse (type);
+
 	// Remember matrices
-	
+
 	if (type == TraverseType::CAMERA)
 	{
 		parentMatrix = getModelViewMatrix () .get ();
@@ -259,15 +233,6 @@ TransformHandle::traverse (const TraverseType type)
 	getModelViewMatrix () .pop ();
 
 	getCurrentLayer () -> getLocalObjects () .pop_back ();
-}
-
-void
-TransformHandle::dispose ()
-{
-	transform -> removeParent (this);
-
-	X3DHandleObject::dispose ();
-	Transform::dispose ();
 }
 
 } // X3D

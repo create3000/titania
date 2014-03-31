@@ -50,8 +50,10 @@
 
 #include "X3DGeometryNode.h"
 
+#include "../../Browser/Properties/BrowserOptions.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Layering/X3DLayerNode.h"
 
 #include <cassert>
 
@@ -99,7 +101,7 @@ X3DGeometryNode::createBBox ()
 }
 
 void
-X3DGeometryNode::setAttribs (const X3DArrayPtr <X3DVertexAttributeNode> & nodes, const std::vector <std::vector <float>> & attribs)
+X3DGeometryNode::setAttribs (const X3DPtrArray <X3DVertexAttributeNode> & nodes, const std::vector <std::vector <float>> & attribs)
 {
 	if (attribs .empty ())
 		return;

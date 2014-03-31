@@ -51,6 +51,7 @@
 #include "Appearance.h"
 
 #include "../../Bits/Cast.h"
+#include "../../Browser/Properties/BrowserOptions.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Shaders/X3DShaderNode.h"
@@ -196,10 +197,10 @@ Appearance::set_textureTransform ()
 void
 Appearance::set_shaders ()
 {
-	using addEvent = void (X3DArrayPtr <X3DShaderNode>::*) ();
+	using addEvent = void (X3DPtrArray <X3DShaderNode>::*) ();
 
 	for (const auto & shaderNode : shaderNodes)
-		shaderNode -> isValid () .removeInterest (shaderNodes, (addEvent) & X3DArrayPtr <X3DShaderNode>::addEvent);
+		shaderNode -> isValid () .removeInterest (shaderNodes, (addEvent) & X3DPtrArray <X3DShaderNode>::addEvent);
 
 	shaderNodes .clear ();
 
@@ -210,7 +211,7 @@ Appearance::set_shaders ()
 		if (shaderNode)
 		{
 			shaderNodes .emplace_back (shaderNode);
-			shaderNode -> isValid () .addInterest (shaderNodes, (addEvent) & X3DArrayPtr <X3DShaderNode>::addEvent);
+			shaderNode -> isValid () .addInterest (shaderNodes, (addEvent) & X3DPtrArray <X3DShaderNode>::addEvent);
 		}
 	}
 }

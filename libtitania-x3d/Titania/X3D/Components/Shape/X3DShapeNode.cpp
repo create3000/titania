@@ -51,6 +51,8 @@
 #include "X3DShapeNode.h"
 
 #include "../../Bits/Cast.h"
+#include "../../Browser/Properties/BrowserOptions.h"
+#include "../../Browser/Properties/RenderingProperties.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../Shape/Appearance.h"
 #include "../Shape/FillProperties.h"

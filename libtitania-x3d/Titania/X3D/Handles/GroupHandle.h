@@ -48,120 +48,20 @@
  *
  ******************************************************************************/
 
-#include "X3DFogObject.h"
-
-#include "../../Browser/X3DBrowser.h"
-#include "../Layering/X3DLayerNode.h"
+#ifndef __TITANIA_X3D_HANDLES_GROUP_HANDLE_H__
+#define __TITANIA_X3D_HANDLES_GROUP_HANDLE_H__
 
 namespace titania {
 namespace X3D {
 
-X3DFogObject::Fields::Fields () :
-	          color (new SFColor (1, 1, 1)),
-	        fogType (new SFString ("LINEAR")),
-	visibilityRange (new SFFloat ()),
-	   transparency (0)
-{ }
+class Group;
 
-X3DFogObject::X3DFogObject () :
-	X3DBaseNode (),
-	     fields ()
-{
-	addNodeType (X3DConstants::X3DFogObject);
+template <class Type>
+class X3DGroupingNodeHandle;
 
-	addChildren (transparency ());
-}
-
-void
-X3DFogObject::initialize ()
-{
-	color ()           .addInterest (this, &X3DFogObject::set_color);
-	fogType ()         .addInterest (this, &X3DFogObject::set_fogType);
-	visibilityRange () .addInterest (this, &X3DFogObject::set_fogType);
-	transparency ()    .addInterest (this, &X3DFogObject::set_transparency);
-
-	set_color        ();
-	set_transparency ();
-	set_fogType      ();
-}
-
-float
-X3DFogObject::getVisibilityRange ()
-{
-	if (visibilityRange ())
-		return visibilityRange ();
-
-	const auto viewpoint = getBrowser () -> getLayers () .top () -> getViewpoint ();
-
-	return getBrowser () -> getLayers () .top () -> getNavigationInfo () -> getFarPlane (viewpoint);
-}
-
-float
-X3DFogObject::getDensitiy (const float visibilityRange)
-{
-	switch (glMode)
-	{
-		case GL_EXP2:
-			return 4 / visibilityRange;
-		case GL_EXP:
-			return 2 / visibilityRange;
-		default:
-			return 1;
-	}
-}
-
-void
-X3DFogObject::set_color ()
-{
-	glColor [0] = color () .getR ();
-	glColor [1] = color () .getG ();
-	glColor [2] = color () .getB ();
-}
-
-void
-X3DFogObject::set_transparency ()
-{
-	glColor [3] = 1 - transparency ();
-}
-
-void
-X3DFogObject::set_fogType ()
-{
-	if (fogType () == "EXPONENTIAL2")
-	{
-		glMode = GL_EXP2;
-	}
-	else if (fogType () == "EXPONENTIAL")
-	{
-		glMode = GL_EXP;
-	}
-	else  // LINEAR
-	{
-		glMode = GL_LINEAR;
-	}
-}
-
-void
-X3DFogObject::enable ()
-{
-	if (glColor [3])
-	{
-		const float glVisibilityRange = getVisibilityRange ();
-		const float glDensity         = getDensitiy (glVisibilityRange);
-
-		glEnable (GL_FOG);
-
-		glFogi  (GL_FOG_MODE,    glMode);
-		glFogf  (GL_FOG_DENSITY, glDensity);
-		glFogf  (GL_FOG_START,   0);
-		glFogf  (GL_FOG_END,     glVisibilityRange);
-		glFogfv (GL_FOG_COLOR,   glColor);
-	}
-}
-
-void
-X3DFogObject::dispose ()
-{ }
+using GroupHandle = X3DGroupingNodeHandle <Group>;
 
 } // X3D
 } // titania
+
+#endif

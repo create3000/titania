@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -241,7 +241,7 @@ private:
 	X3DPtr <X3DMaterialNode>         materialNode;
 	X3DPtr <X3DTextureNode>          textureNode;
 	X3DPtr <X3DTextureTransformNode> textureTransformNode;
-	X3DArrayPtr <X3DShaderNode>      shaderNodes;
+	X3DPtrArray <X3DShaderNode>      shaderNodes;
 	X3DPtr <X3DShaderNode>           shaderNode;
 
 };

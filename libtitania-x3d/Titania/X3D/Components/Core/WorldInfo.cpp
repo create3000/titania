@@ -51,6 +51,7 @@
 #include "WorldInfo.h"
 
 #include "../../Browser/X3DBrowser.h"
+#include "../../Browser/Notification.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {

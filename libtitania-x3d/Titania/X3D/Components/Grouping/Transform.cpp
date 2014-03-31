@@ -87,7 +87,7 @@ Transform::create (X3DExecutionContext* const executionContext) const
 void
 Transform::addHandle ()
 {
-	X3DTransformNode::addHandle (new TransformHandle (this, getExecutionContext ()));
+	X3DTransformNode::addHandle (new TransformHandle (this));
 }
 
 } // X3D

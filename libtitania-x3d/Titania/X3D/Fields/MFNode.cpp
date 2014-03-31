@@ -57,7 +57,7 @@ namespace X3D {
 
 template class X3DField <Array <SFNode>>;
 template class X3DArrayField <SFNode>;
-template class X3DArrayPtr <X3DBaseNode>;
+template class X3DPtrArray <X3DBaseNode>;
 
 } // X3D
 } // titania

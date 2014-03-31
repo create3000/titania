@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -52,14 +52,16 @@
 
 #include "../../Bits/Cast.h"
 #include "../../Bits/config.h"
+#include "../../Browser/Properties/BrowserOptions.h"
+#include "../../Browser/Properties/RenderingProperties.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Miscellaneous/BVH.h"
 #include "../../Miscellaneous/Random.h"
+#include "../ParticleSystems/X3DParticlePhysicsModelNode.h"
 #include "../Rendering/X3DGeometryNode.h"
 #include "../Shaders/ShaderPart.h"
 #include "../Shape/X3DAppearanceNode.h"
-#include "X3DParticlePhysicsModelNode.h"
 
 #include <cstddef>
 

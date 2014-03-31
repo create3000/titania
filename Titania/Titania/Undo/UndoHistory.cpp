@@ -73,7 +73,7 @@ UndoHistory::getRedoDescription () const
 }
 
 void
-UndoHistory::addUndoStep (const std::shared_ptr <UndoStep> & undoStep)
+UndoHistory::addUndoStep (const UndoStepPtr & undoStep)
 {
 	if (undoStep -> empty ())
 		return;

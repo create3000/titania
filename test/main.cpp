@@ -96,7 +96,6 @@ main (int argc, char* argv [ ])
 			Test test;
 			
 			auto browser = X3D::createBrowser ();
-			browser -> getRenderingProperties () -> enabled () = true;
 			browser -> initialized () .addInterest (&test, &Test::set_initialized, browser);
 			browser -> show ();
 			window .add (*browser);

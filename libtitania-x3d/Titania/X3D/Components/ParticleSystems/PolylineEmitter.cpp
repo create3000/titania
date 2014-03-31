@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,6 +51,7 @@
 #include "PolylineEmitter.h"
 
 #include "../../Bits/config.h"
+#include "../../Browser/Properties/RenderingProperties.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
@@ -164,8 +165,8 @@ PolylineEmitter::setShaderFields (const X3DPtr <ComposedShader> & shader) const
 void
 PolylineEmitter::set_polyline ()
 {
-	const auto polylineArray = polylineNode -> getPolylines ();	
-	
+	const auto polylineArray = polylineNode -> getPolylines ();
+
 	if (polylineArray .empty ())
 	{
 		pointEmitter = true;
@@ -185,9 +186,9 @@ PolylineEmitter::set_polyline ()
 
 		// Length map
 
-		float length = 0;
+		float               length = 0;
 		std::vector <float> lengthArray (1);
-		
+
 		for (size_t i = 0, size = polylineArray .size (); i < size; i += 2)
 		{
 			length += abs (polylineArray [i + 1] - polylineArray [i]);
